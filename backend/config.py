@@ -1,0 +1,71 @@
+"""
+云端部署配置 —— DeepPhilosophy API 服务器
+所有路径使用环境变量，适配容器化部署
+"""
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# ============================================================
+# DeepSeek API 配置
+# ============================================================
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "your-api-key-here")
+DEEPSEEK_BASE_URL = "https://api.deepseek.com"
+DEEPSEEK_MODEL = "deepseek-chat"
+
+# ============================================================
+# 路径配置（云端适配）
+# ============================================================
+# 知识库书籍存储目录
+KNOWLEDGE_DIR = os.getenv("KNOWLEDGE_DIR", os.path.join(os.path.dirname(__file__), "data", "books"))
+
+# OCR提取文本存储
+EXTRACTED_DIR = os.getenv("EXTRACTED_DIR", os.path.join(os.path.dirname(__file__), "data", "extracted"))
+
+# 向量数据库持久化目录
+CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIR", os.path.join(os.path.dirname(__file__), "data", "vectordb"))
+
+# 向量数据库集合名
+CHROMA_COLLECTION_NAME = os.getenv("CHROMA_COLLECTION_NAME", "deephilosophy_knowledge")
+
+# ============================================================
+# 嵌入模型配置
+# ============================================================
+EMBEDDING_MODEL_NAME = "BAAI/bge-small-zh-v1.5"
+
+# ============================================================
+# 文本分块配置
+# ============================================================
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+
+# ============================================================
+# 检索配置
+# ============================================================
+TOP_K_RETRIEVAL = 5
+
+# ============================================================
+# 嵌入模型策略
+# ============================================================
+# 云端建议 True（有网络），本地开发可设 False 用 TF-IDF 回退
+USE_BGE_MODEL = os.getenv("USE_BGE_MODEL", "True").lower() in ("true", "1", "yes")
+
+# ============================================================
+# LLM 生成参数
+# ============================================================
+LLM_TEMPERATURE = 0.7
+LLM_MAX_TOKENS = 1024
+
+# ============================================================
+# 服务器配置
+# ============================================================
+SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
+SERVER_PORT = int(os.getenv("SERVER_PORT", "8000"))
+
+# ============================================================
+# HuggingFace 镜像（国内加速）
+# ============================================================
+HF_ENDPOINT = os.getenv("HF_ENDPOINT", "https://hf-mirror.com")
+os.environ.setdefault("HF_ENDPOINT", HF_ENDPOINT)
+os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
