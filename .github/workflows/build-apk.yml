@@ -22,9 +22,12 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          build-tools: 34.0.0
 
       - name: Install npm dependencies
-        run: cd app && npm ci
+        run: cd app && npm install --no-audit --no-fund
 
       - name: Build web app
         run: cd app && npx vite build
@@ -34,8 +37,11 @@ jobs:
       - name: Sync Capacitor
         run: cd app && npx cap sync android
 
+      - name: Make Gradle executable
+        run: chmod +x app/android/gradlew
+
       - name: Build APK
-        run: cd app/android && ./gradlew assembleDebug
+        run: cd app/android && ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
