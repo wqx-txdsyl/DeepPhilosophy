@@ -42,37 +42,43 @@ function QAPage() {
       const headers = { 'Content-Type': 'application/json' };
       let answer, sources = [];
 
-      // Strategy 1: Try Render server (RAG with knowledge base)
+      // Strategy 1: Local RAG backend (knowledge base retrieval + DeepSeek generation)
       try {
         const resp = await fetch(`${getApiBase()}/api/qa`, {
           method: 'POST', headers,
-          body: JSON.stringify({ question, api_key: apiConfig.apiKey || null, model: apiConfig.model || 'deepseek-chat' }),
-          signal: AbortSignal.timeout(10000),
+          body: JSON.stringify({
+            question,
+            api_key: apiConfig.apiKey || null,
+            model: apiConfig.model || 'deepseek-chat',
+          }),
+          signal: AbortSignal.timeout(30000),
         });
         if (resp.ok) {
           const data = await resp.json();
-          answer = data.answer;
-          sources = data.sources || [];
+          // Only accept if it's a real answer (not an error message)
+          if (data.answer && !data.answer.includes('问答服务暂不可用') && !data.answer.includes('知识库尚未初始化')) {
+            answer = data.answer;
+            sources = data.sources || [];
+          }
         }
       } catch (serverErr) {
-        // Render unavailable, try direct API call
+        // Backend unavailable, fall through
       }
 
-      // Strategy 2: Direct DeepSeek API (no Render, no knowledge base)
+      // Strategy 2: Direct DeepSeek API (fallback, no knowledge base retrieval)
       if (!answer && apiConfig.apiKey) {
         try {
-          const baseUrl = apiConfig.apiUrl || 'https://api.deepseek.com';
+          const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
           const directResp = await fetch(`${baseUrl}/v1/chat/completions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiConfig.apiKey}` },
             body: JSON.stringify({
               model: apiConfig.model || 'deepseek-chat',
               messages: [
-                { role: 'system', content: '你是一个哲学知识助手。请用中文回答用户的问题。' },
+                { role: 'system', content: '你是一个哲学知识助手，精通中西方哲学。请用中文回答，回答要准确、有深度。' },
                 { role: 'user', content: question },
               ],
-              temperature: 0.7,
-              max_tokens: 1024,
+              temperature: 0.7, max_tokens: 1024,
             }),
             signal: AbortSignal.timeout(30000),
           });
