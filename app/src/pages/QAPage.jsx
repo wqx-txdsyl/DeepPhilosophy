@@ -1,15 +1,12 @@
 /**
- * 问答分区 —— RAG智能问答，答案始终附带参考文献
- * 登录后自动同步聊天历史到云端
+ * 问答分区 —— 直连 DeepSeek API，支持 Render RAG 作为优先源
+ * 聊天历史本地自动保存
  */
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { getApiBase } from '../App';
+import { saveChatMessage } from '../data/userData';
 
 function QAPage() {
-  const { user, getAuthHeaders } = useAuth();
-  const navigate = useNavigate();
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -42,7 +39,7 @@ function QAPage() {
 
     try {
       const apiConfig = getApiConfig();
-      const headers = { 'Content-Type': 'application/json', ...getAuthHeaders() };
+      const headers = { 'Content-Type': 'application/json' };
       let answer, sources = [];
 
       // Strategy 1: Try Render server (RAG with knowledge base)
@@ -90,6 +87,10 @@ function QAPage() {
         answer = '无法获取回答。\n\n💡 请检查：\n1. 网络是否连通\n2. 在设置中填写 DeepSeek API Key\n3. 服务器是否可用';
       }
 
+      // Save to local history
+      saveChatMessage('user', question);
+      saveChatMessage('assistant', answer, sources);
+
       setMessages(prev => [...prev, {
         role: 'assistant', content: answer, sources,
       }]);
@@ -113,16 +114,6 @@ function QAPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - var(--header-height) - var(--nav-height))' }}>
       <div className="chat-container" ref={chatRef}>
-        {!user && (
-          <div style={{
-            textAlign: 'center', padding: '8px 16px', marginBottom: 8,
-            background: 'var(--secondary)', borderRadius: 8,
-            fontSize: 12, color: 'var(--text-dim)',
-          }}>
-            💡 <span style={{ color: 'var(--accent)', cursor: 'pointer', textDecoration: 'underline' }}
-              onClick={() => navigate('/login')}>登录</span>后可同步聊天历史到云端
-          </div>
-        )}
         {messages.map((msg, i) => (
           <div key={i} className={`chat-message ${msg.role}`}>
             <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div>

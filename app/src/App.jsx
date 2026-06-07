@@ -3,8 +3,9 @@
  * 开发者: @txdsyl_
  * 四个分区: 书籍 | 谱图 | 问答 | 我的
  */
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { startAutoSave, stopAutoSave } from './data/userData';
 import BooksPage from './pages/BooksPage';
 import BookDetailPage from './pages/BookDetailPage';
 import GenealogyPage from './pages/GenealogyPage';
@@ -12,7 +13,6 @@ import AuthorDetailPage from './pages/AuthorDetailPage';
 import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
 import ReaderPage from './pages/ReaderPage';
-import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import './App.css';
 
@@ -26,19 +26,23 @@ export function getApiBase() {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="app-container">
-          <MainLayout />
-        </div>
-      </BrowserRouter>
-    </AuthProvider>
+    <BrowserRouter>
+      <div className="app-container">
+        <MainLayout />
+      </div>
+    </BrowserRouter>
   );
 }
 
 function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Auto-save user data every 10 min
+  useEffect(() => {
+    startAutoSave();
+    return () => stopAutoSave();
+  }, []);
 
   const tabs = [
     { key: 'books', label: '📚', text: '书籍', path: '/books' },
@@ -51,13 +55,12 @@ function MainLayout() {
     const p = location.pathname;
     if (p.startsWith('/genealogy') || p.startsWith('/author')) return 'genealogy';
     if (p.startsWith('/qa')) return 'qa';
-    if (p.startsWith('/profile') || p.startsWith('/login')) return 'profile';
+    if (p.startsWith('/profile')) return 'profile';
     return 'books';
   };
 
   const isReader = location.pathname.startsWith('/reader');
-  const isLogin = location.pathname === '/login';
-  const hideNav = isReader || isLogin;
+  const hideNav = isReader;
   const activeTab = getActiveTab();
 
   return (
@@ -81,7 +84,6 @@ function MainLayout() {
           <Route path="/author/:authorName" element={<AuthorDetailPage />} />
           <Route path="/qa" element={<QAPage />} />
           <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </main>

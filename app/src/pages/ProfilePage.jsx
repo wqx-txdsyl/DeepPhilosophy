@@ -1,128 +1,135 @@
 /**
- * 个人中心 —— 阅读历史、聊天历史同步、登出
+ * 个人中心 —— 阅读历史、聊天历史、数据导出导入
+ * 所有数据本地存储，无需登录
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { getApiBase } from '../App';
+import {
+  getReadingHistory, getChatHistory, clearChatHistory,
+  exportToFile, importFromFile, getAllUserData,
+} from '../data/userData';
 
 function ProfilePage() {
-  const { user, logout, getAuthHeaders } = useAuth();
   const navigate = useNavigate();
   const [tab, setTab] = useState('reading');
   const [readingHistory, setReadingHistory] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [importMsg, setImportMsg] = useState('');
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (!user) { navigate('/login'); return; }
-    if (tab === 'reading') loadReadingHistory();
-  }, [user, tab]);
+    if (tab === 'reading') setReadingHistory(getReadingHistory());
+    else setChatHistory(getChatHistory());
+  }, [tab]);
 
-  const loadReadingHistory = async () => {
-    setLoading(true);
+  const handleImport = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
     try {
-      const resp = await fetch(`${getApiBase()}/api/history/reading`, {
-        headers: getAuthHeaders(),
-      });
-      if (resp.ok) {
-        const data = await resp.json();
-        setReadingHistory(data.history || []);
-      }
-    } catch (e) { console.error(e); }
-    setLoading(false);
+      const data = await importFromFile(file);
+      setImportMsg(`导入成功：${data.readingHistory.length} 条阅读记录，${data.chatHistory.length} 条聊天记录`);
+      setTimeout(() => setImportMsg(''), 5000);
+    } catch (err) {
+      setImportMsg('导入失败：' + err.message);
+      setTimeout(() => setImportMsg(''), 5000);
+    }
   };
 
-  const loadChatHistory = async () => {
-    setLoading(true);
-    try {
-      const resp = await fetch(`${getApiBase()}/api/history/chat`, {
-        headers: getAuthHeaders(),
-      });
-      if (resp.ok) {
-        const data = await resp.json();
-        setChatHistory(data.messages || []);
-      }
-    } catch (e) { console.error(e); }
-    setLoading(false);
+  const handleClearChat = () => {
+    if (confirm('确定清空所有聊天历史？')) {
+      clearChatHistory();
+      setChatHistory([]);
+    }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/books');
-  };
-
-  if (!user) return null;
+  const userData = getAllUserData();
 
   return (
     <div className="page-container">
-      {/* 用户信息卡 */}
+      {/* 数据概览 */}
       <div className="card" style={{ cursor: 'default', textAlign: 'center' }}>
         <div style={{ fontSize: 48, marginBottom: 8 }}>👤</div>
-        <h2 style={{ fontSize: 18, color: 'var(--accent)' }}>{user.username}</h2>
-        <p style={{ fontSize: 12, color: 'var(--text-dim)' }}>哲学爱好者</p>
-        <button className="btn btn-secondary" style={{ marginTop: 12, padding: '6px 20px', fontSize: 13 }}
-          onClick={handleLogout}>退出登录</button>
+        <h2 style={{ fontSize: 18, color: 'var(--accent)' }}>DeepPhilosophy</h2>
+        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 8 }}>
+          📖 {userData.readingHistory.length} 条阅读 · 💬 {userData.chatHistory.length} 条对话
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
+          自动保存 · {userData.updated ? userData.updated.slice(0, 16) : '从未'}
+        </div>
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 12 }}>
+          <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
+            onClick={exportToFile}>📤 导出</button>
+          <button className="btn btn-secondary" style={{ padding: '6px 16px', fontSize: 13 }}
+            onClick={() => fileInputRef.current?.click()}>📥 导入</button>
+          <input type="file" ref={fileInputRef} style={{ display: 'none' }}
+            accept=".phi,.json" onChange={handleImport} />
+        </div>
+        {importMsg && (
+          <div style={{ fontSize: 12, marginTop: 8, color: importMsg.includes('成功') ? 'var(--success)' : 'var(--danger)' }}>
+            {importMsg}
+          </div>
+        )}
       </div>
 
       {/* 标签切换 */}
       <div style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
-        {[
-          { key: 'reading', label: '📖 阅读历史' },
-          { key: 'chat', label: '💬 聊天历史' },
-        ].map(t => (
-          <button key={t.key}
-            className={`btn ${tab === t.key ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ flex: 1, padding: '8px', fontSize: 13 }}
-            onClick={() => { setTab(t.key); if (t.key === 'chat') loadChatHistory(); else loadReadingHistory(); }}>
-            {t.label}
-          </button>
-        ))}
+        <button className={`btn ${tab === 'reading' ? 'btn-primary' : 'btn-secondary'}`}
+          style={{ flex: 1, padding: '8px', fontSize: 13 }}
+          onClick={() => setTab('reading')}>📖 阅读历史</button>
+        <button className={`btn ${tab === 'chat' ? 'btn-primary' : 'btn-secondary'}`}
+          style={{ flex: 1, padding: '8px', fontSize: 13 }}
+          onClick={() => setTab('chat')}>💬 聊天历史</button>
       </div>
 
       {/* 阅读历史 */}
       {tab === 'reading' && (
-        <div>
-          {loading ? <div className="loading">加载中...</div> :
-           readingHistory.length === 0 ? <div className="empty-state"><p>暂无阅读记录</p></div> :
-           readingHistory.map((item, i) => (
-            <div key={i} className="card"
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                // 搜索对应书籍ID并跳转
-                navigate('/books');
-              }}>
-              <div className="card-title" style={{ fontSize: 14 }}>{item.book_title}</div>
+        readingHistory.length === 0 ? (
+          <div className="empty-state"><p>暂无阅读记录</p></div>
+        ) : (
+          readingHistory.map((item, i) => (
+            <div key={i} className="card" onClick={() => navigate('/books')}>
+              <div className="card-title" style={{ fontSize: 14 }}>{item.bookTitle}</div>
               <div className="card-subtitle">
-                {item.book_author} · 进度: {Math.round(item.progress_percent * 100)}%
+                {item.bookAuthor} · 进度: {Math.round((item.percent || 0) * 100)}%
               </div>
               <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
-                上次阅读: {item.last_read_at?.slice(0, 16)}
+                {item.lastReadAt?.slice(0, 16)}
               </div>
             </div>
-          ))}
-        </div>
+          ))
+        )
       )}
 
       {/* 聊天历史 */}
       {tab === 'chat' && (
-        <div>
-          {loading ? <div className="loading">加载中...</div> :
-           chatHistory.length === 0 ? <div className="empty-state"><p>暂无聊天记录</p></div> :
-           chatHistory.map((msg, i) => (
-            <div key={i} className={`chat-message ${msg.role}`}
-              style={{
-                maxWidth: '100%', marginBottom: 8,
-                alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-              }}>
-              <div style={{ whiteSpace: 'pre-wrap', fontSize: 13 }}>{msg.content}</div>
-              {msg.sources && (
-                <div className="chat-sources">📎 {msg.sources}</div>
-              )}
-            </div>
-          ))}
-        </div>
+        <>
+          {chatHistory.length > 0 && (
+            <button className="btn btn-secondary" style={{ marginBottom: 8, padding: '4px 12px', fontSize: 12 }}
+              onClick={handleClearChat}>🗑 清空聊天</button>
+          )}
+          {chatHistory.length === 0 ? (
+            <div className="empty-state"><p>暂无聊天记录</p></div>
+          ) : (
+            chatHistory.map((msg, i) => (
+              <div key={i} className={`chat-message ${msg.role}`}
+                style={{ maxWidth: '100%', marginBottom: 8, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                <div style={{ whiteSpace: 'pre-wrap', fontSize: 13 }}>{msg.content}</div>
+                {msg.sources?.length > 0 && (
+                  <div className="chat-sources">📎 {msg.sources.join(', ')}</div>
+                )}
+              </div>
+            ))
+          )}
+        </>
       )}
+
+      {/* 跨设备说明 */}
+      <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
+        <h3 style={{ fontSize: 14, marginBottom: 8 }}>💡 跨设备使用</h3>
+        <p style={{ fontSize: 12, color: 'var(--text-dim)', lineHeight: 1.6 }}>
+          点击「导出」生成 userdata.phi 文件，传到新设备后点「导入」即可恢复所有阅读和聊天记录。
+        </p>
+      </div>
     </div>
   );
 }
