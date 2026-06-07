@@ -562,12 +562,7 @@ async def ask_question(req: QARequest,
         mgr = EmbeddingManager()
         store = VectorStoreManager(embedding_function=mgr.get_embedding_function())
 
-        if store.get_collection_stats()["chunk_count"] == 0:
-            return {
-                "answer": "知识库尚未初始化，请联系管理员或前往设置页面初始化知识库。",
-                "sources": [],
-                "question": req.question,
-            }
+        kb_ready = store.get_collection_stats()["chunk_count"] > 0
 
         # LLM 客户端
         if req.api_key:
@@ -595,8 +590,19 @@ async def ask_question(req: QARequest,
             from modules.llm_client import DeepSeekClient
             llm = DeepSeekClient()
 
-        rag = RAGChain(vector_store=store, llm_client=llm)
-        result = rag.query(req.question)
+        if kb_ready:
+            rag = RAGChain(vector_store=store, llm_client=llm)
+            result = rag.query(req.question)
+        else:
+            # No knowledge base - direct LLM Q&A
+            try:
+                answer = llm.chat(messages=[
+                    {"role": "system", "content": "你是一个哲学知识助手。请用中文回答用户的问题，尽可能准确和详细。如果不知道，请如实说明。"},
+                    {"role": "user", "content": req.question},
+                ])
+                result = {"answer": answer, "sources": [], "question": req.question}
+            except Exception as e:
+                result = {"answer": f"问答服务暂不可用: {e}\n\n请确认已在设置中配置了有效的 API Key。", "sources": [], "question": req.question}
 
         # 如果用户已登录，自动保存聊天历史
         if authorization and authorization.startswith("Bearer "):
