@@ -1,6 +1,4 @@
-# ============================================================
-# DeepPhilosophy 云端 API —— Python依赖
-# ============================================================
+# DeepPhilosophy 云端 API —— 精简依赖（Render 免费版兼容）
 
 # Web Server
 fastapi>=0.115.0
@@ -8,18 +6,13 @@ uvicorn[standard]>=0.30.0
 python-multipart>=0.0.12
 pydantic>=2.0.0
 
-# Core Framework
-streamlit>=1.28.0
+# Core
 python-dotenv>=1.0.0
 
-# Document Processing
+# Document Processing (lightweight)
 pdfplumber>=0.10.0
-PyMuPDF>=1.23.0
-pypdfium2>=4.30.0
-Pillow>=10.0.0
-opencv-python-headless>=4.8.0
 
-# NLP & Text Processing
+# NLP
 jieba>=0.42.1
 langchain>=0.3.0
 langchain-community>=0.3.0
@@ -29,9 +22,12 @@ langchain-text-splitters>=0.3.0
 chromadb>=0.5.0
 sentence-transformers>=2.7.0
 
-# LLM API (DeepSeek via OpenAI-compatible interface)
+# LLM API
 openai>=1.30.0
 
 # Utilities
 tqdm>=4.66.0
 loguru>=0.7.0
+
+# Note: paddlepaddle/paddleocr removed (too large for free tier)
+# OCR features gracefully disabled when packages not installed
