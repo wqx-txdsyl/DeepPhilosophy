@@ -627,8 +627,10 @@ async def ask_question(req: QARequest,
 
 @app.post("/api/knowledge/init")
 async def init_knowledge_base():
-    """初始化/重建知识库"""
-    try:
+    """初始化/重建知识库（后台异步）"""
+    import threading
+
+    def _build():
         from modules.document_loader import DocumentLoader
         from modules.text_processor import TextProcessor
         from modules.embedding import EmbeddingManager
@@ -653,7 +655,6 @@ async def init_knowledge_base():
                 ext = Path(f).suffix.lower()
                 if ext not in ('.epub', '.pdf'):
                     continue
-
                 file_path = os.path.join(root, f)
                 if ext == '.pdf':
                     try:
@@ -665,7 +666,6 @@ async def init_knowledge_base():
                     except Exception:
                         skipped += 1
                         continue
-
                 try:
                     pages = loader.load_file(file_path)
                     if pages:
@@ -683,10 +683,8 @@ async def init_knowledge_base():
                 except Exception:
                     pass
 
-        stats = store.get_collection_stats()
-        return {"status": "ok", "documents_indexed": count, "skipped": skipped, "chunks": stats["chunk_count"]}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+    threading.Thread(target=_build, daemon=True).start()
+    return {"status": "started", "message": "Building in background. Check /api/knowledge/stats for progress."}
 
 
 @app.get("/api/knowledge/stats")
