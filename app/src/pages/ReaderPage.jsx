@@ -7,7 +7,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import ePub from 'epubjs';
 import { Capacitor } from '@capacitor/core';
 import { getApiBase } from '../App';
-import { getBookById, getLocalBookUrl } from '../data';
+import { getBookById } from '../data';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -53,15 +53,15 @@ function ReaderPage() {
 
     let url;
     if (Capacitor.isNativePlatform()) {
-      const localPath = getLocalBookUrl(b);
-      if (localPath) {
-        // Convert file path to WebView-accessible URL
-        url = Capacitor.convertFileSrc(localPath.replace('file://', ''));
+      const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
+      const basePath = config.booksPath || '';
+      if (basePath && b.path) {
+        const fullPath = basePath.replace(/\/$/, '') + '/' + b.path;
+        // Capacitor convertFileSrc serves file via local HTTP
+        url = Capacitor.convertFileSrc(fullPath);
       }
-      if (!url) {
-        url = `${getApiBase()}/api/books/${bookId}/file`;
-      }
-    } else {
+    }
+    if (!url) {
       url = `${getApiBase()}/api/books/${bookId}/file`;
     }
     setFileUrl(url);
