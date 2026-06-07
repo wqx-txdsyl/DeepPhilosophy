@@ -17,6 +17,8 @@ RUN pip install --no-cache-dir --default-timeout=300 \
 # 复制应用代码
 COPY config.py .
 COPY main.py .
+COPY auth.py .
+COPY philosophers_db.py .
 COPY modules/ ./modules/
 
 # 数据目录（书籍通过 API 上传或挂载卷）
