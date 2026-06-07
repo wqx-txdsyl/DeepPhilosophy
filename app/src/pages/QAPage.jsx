@@ -43,29 +43,59 @@ function QAPage() {
     try {
       const apiConfig = getApiConfig();
       const headers = { 'Content-Type': 'application/json', ...getAuthHeaders() };
-      const resp = await fetch(`${getApiBase()}/api/qa`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          question,
-          api_key: apiConfig.apiKey || null,
-          model: apiConfig.model || 'deepseek-chat',
-        }),
-      });
-      const data = await resp.json();
+      let answer, sources = [];
 
-      const answer = data.answer || '抱歉，无法获取回答。';
-      const sources = data.sources || [];
+      // Strategy 1: Try Render server (RAG with knowledge base)
+      try {
+        const resp = await fetch(`${getApiBase()}/api/qa`, {
+          method: 'POST', headers,
+          body: JSON.stringify({ question, api_key: apiConfig.apiKey || null, model: apiConfig.model || 'deepseek-chat' }),
+          signal: AbortSignal.timeout(10000),
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          answer = data.answer;
+          sources = data.sources || [];
+        }
+      } catch (serverErr) {
+        // Render unavailable, try direct API call
+      }
+
+      // Strategy 2: Direct DeepSeek API (no Render, no knowledge base)
+      if (!answer && apiConfig.apiKey) {
+        try {
+          const baseUrl = apiConfig.apiUrl || 'https://api.deepseek.com';
+          const directResp = await fetch(`${baseUrl}/v1/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiConfig.apiKey}` },
+            body: JSON.stringify({
+              model: apiConfig.model || 'deepseek-chat',
+              messages: [
+                { role: 'system', content: '你是一个哲学知识助手。请用中文回答用户的问题。' },
+                { role: 'user', content: question },
+              ],
+              temperature: 0.7,
+              max_tokens: 1024,
+            }),
+            signal: AbortSignal.timeout(30000),
+          });
+          if (directResp.ok) {
+            const d = await directResp.json();
+            answer = d.choices?.[0]?.message?.content;
+          }
+        } catch (directErr) {}
+      }
+
+      if (!answer) {
+        answer = '无法获取回答。\n\n💡 请检查：\n1. 网络是否连通\n2. 在设置中填写 DeepSeek API Key\n3. 服务器是否可用';
+      }
 
       setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: answer,
-        sources: sources,
+        role: 'assistant', content: answer, sources,
       }]);
     } catch (e) {
       setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: '网络连接失败，请确认后端服务正在运行。\n\n💡 请检查：\n1. 服务器地址是否正确\n2. 网络是否连通',
+        role: 'assistant', content: '发生错误，请重试。',
         sources: [],
       }]);
     } finally {
