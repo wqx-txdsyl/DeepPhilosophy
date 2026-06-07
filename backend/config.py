@@ -48,8 +48,8 @@ TOP_K_RETRIEVAL = 5
 # ============================================================
 # 嵌入模型策略
 # ============================================================
-# 云端建议 True（有网络），本地开发可设 False 用 TF-IDF 回退
-USE_BGE_MODEL = os.getenv("USE_BGE_MODEL", "True").lower() in ("true", "1", "yes")
+# Render 免费版内存有限，默认用 TF-IDF；付费后可改为 True
+USE_BGE_MODEL = os.getenv("USE_BGE_MODEL", "False").lower() in ("true", "1", "yes")
 
 # ============================================================
 # LLM 生成参数
