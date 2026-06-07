@@ -1,7 +1,7 @@
 /**
- * 设置页面 — API Key 配置、服务器地址
+ * 设置页面 — API Key、模型、书籍目录
  */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function SettingsPage() {
@@ -11,6 +11,7 @@ function SettingsPage() {
   const [apiUrl, setApiUrl] = useState('');
   const [booksPath, setBooksPath] = useState('');
   const [saved, setSaved] = useState(false);
+  const folderInputRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -26,8 +27,28 @@ function SettingsPage() {
     const config = { apiKey, model, apiUrl, booksPath };
     localStorage.setItem('dp_api_config', JSON.stringify(config));
     setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-    window.location.reload();
+    setTimeout(() => setSaved(false), 3000);
+  };
+
+  const handleFolderPick = (e) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    // Extract directory path from first file
+    const first = files[0];
+    const relPath = first.webkitRelativePath || first.name;
+    // The relative path looks like "philosophy/西方/尼采/book.pdf"
+    // Find the root folder name
+    const rootFolder = relPath.split('/')[0];
+    // Common Android storage paths
+    setBooksPath(`/storage/emulated/0/${rootFolder}`);
+    // Auto-save
+    const config = {
+      apiKey, model, apiUrl,
+      booksPath: `/storage/emulated/0/${rootFolder}`,
+    };
+    localStorage.setItem('dp_api_config', JSON.stringify(config));
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
   };
 
   return (
@@ -39,77 +60,73 @@ function SettingsPage() {
 
       <div className="settings-form">
         <div className="card" style={{ cursor: 'default' }}>
-          <h3 style={{ fontSize: 15, marginBottom: 12 }}>🤖 云端 AI 配置</h3>
+          <h3 style={{ fontSize: 15, marginBottom: 12 }}>🤖 AI 配置</h3>
           <p style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
-            输入你自己的 API Key 以使用云端大模型。支持 DeepSeek 及其兼容接口。
-            如不填写，将使用本地知识库（无需API）。
+            填入你自己的 DeepSeek API Key 即可使用 AI 问答。不填则无法使用问答功能。
           </p>
 
           <label>
             API 地址
-            <input
-              type="text"
-              placeholder="https://api.deepseek.com"
-              value={apiUrl}
-              onChange={e => setApiUrl(e.target.value)}
-            />
+            <input type="text" placeholder="https://api.deepseek.com"
+              value={apiUrl} onChange={e => setApiUrl(e.target.value)} />
           </label>
 
           <label style={{ marginTop: 10 }}>
             API Key
-            <input
-              type="password"
-              placeholder="sk-..."
-              value={apiKey}
-              onChange={e => setApiKey(e.target.value)}
-            />
+            <input type="password" placeholder="sk-..."
+              value={apiKey} onChange={e => setApiKey(e.target.value)} />
           </label>
 
           <label style={{ marginTop: 10 }}>
             模型名称
-            <input
-              type="text"
-              placeholder="deepseek-chat"
-              value={model}
-              onChange={e => setModel(e.target.value)}
-            />
+            <input type="text" placeholder="deepseek-chat"
+              value={model} onChange={e => setModel(e.target.value)} />
           </label>
-
-          <button
-            className="btn btn-primary btn-block"
-            style={{ marginTop: 14 }}
-            onClick={saveConfig}
-          >
-            {saved ? '✅ 已保存' : '💾 保存配置'}
-          </button>
         </div>
 
         <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
-          <h3 style={{ fontSize: 15, marginBottom: 12 }}>📂 本地书籍路径</h3>
+          <h3 style={{ fontSize: 15, marginBottom: 12 }}>📂 书籍目录</h3>
           <p style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
-            将 F:/philosophy 文件夹复制到手机存储，填入路径。留空则使用内置书单（无法阅读书籍内容）。
+            将 philosophy 文件夹复制到手机后，点击下方按钮选择该文件夹。
           </p>
+
+          <button className="btn btn-primary" style={{ width: '100%', marginBottom: 10 }}
+            onClick={() => folderInputRef.current?.click()}>
+            📁 选择书籍文件夹
+          </button>
+          <input
+            ref={folderInputRef}
+            type="file"
+            style={{ display: 'none' }}
+            webkitdirectory=""
+            directory=""
+            onChange={handleFolderPick}
+          />
+
           <label>
-            书籍存储路径
-            <input
-              type="text"
-              placeholder="/storage/emulated/0/DeepPhilosophy/books"
+            或手动输入路径
+            <input type="text"
+              placeholder="/storage/emulated/0/philosophy"
               value={booksPath}
-              onChange={e => setBooksPath(e.target.value)}
-            />
+              onChange={e => setBooksPath(e.target.value)} />
           </label>
           <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 6 }}>
-            💡 手机连接电脑后，将 philosophy 文件夹复制到手机，路径通常为 /storage/emulated/0/philosophy
+            💡 常见路径：/storage/emulated/0/philosophy 或 /sdcard/philosophy
           </p>
         </div>
+
+        <button className="btn btn-primary btn-block" style={{ marginTop: 14 }}
+          onClick={saveConfig}>
+          {saved ? '✅ 已保存' : '💾 保存配置'}
+        </button>
 
         <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>📱 关于</h3>
           <p style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.6 }}>
             <strong>DeepPhilosophy</strong> v1.0.0<br />
             开发者: @txdsyl_<br />
-            一个面向哲学爱好者的知识库应用<br />
-            支持东西方哲学典籍的浏览、检索与AI问答
+            哲学爱好者知识库应用<br />
+            支持 EPUB/PDF 本地阅读与 AI 问答
           </p>
         </div>
       </div>
