@@ -22,7 +22,9 @@ function BooksPage() {
   const fetchBooks = async () => {
     try {
       // 尝试从服务器获取（带标签）
-      const resp = await fetch(`${getApiBase()}/api/books`);
+      const resp = await fetch(`${getApiBase()}/api/books`, {
+        signal: AbortSignal.timeout(3000),
+      });
       if (resp.ok) {
         const data = await resp.json();
         setBooks(data.books || []);
@@ -31,7 +33,6 @@ function BooksPage() {
     } catch (e) {
       const data = await loadBooks();
       setBooks(data);
-      // 本地模式提取标签
       const tags = new Set();
       data.forEach(b => (b.tags || []).forEach(t => tags.add(t)));
       setAllTags([...tags].sort());

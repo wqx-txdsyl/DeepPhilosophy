@@ -7,9 +7,11 @@ let cachedBooks = null;
 
 /** 加载书籍列表（服务器优先，本地兜底） */
 export async function loadBooks() {
-  // 先尝试服务器
+  // 先尝试服务器（3秒超时，失败快速回退本地）
   try {
-    const resp = await fetch(`${getApiBase()}/api/books`);
+    const resp = await fetch(`${getApiBase()}/api/books`, {
+      signal: AbortSignal.timeout(3000),
+    });
     if (resp.ok) {
       const data = await resp.json();
       if (data.books?.length) {
@@ -18,7 +20,7 @@ export async function loadBooks() {
       }
     }
   } catch (e) {
-    console.log('服务器不可用，使用本地数据');
+    // Server unavailable, use local
   }
 
   // 回退到内置数据
