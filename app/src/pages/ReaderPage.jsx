@@ -50,23 +50,17 @@ function ReaderPage() {
     if (!b) { setError('书籍未找到'); setLoading(false); return; }
     setBook(b);
 
-    // EPUBs: prefer local (embedded in APK), fallback to server
-    // PDFs: use server
+    // All books: prefer local (embedded in APK), fallback to server
+    const localUrl = `/books/${b.path}`;
     let url;
-    if (b.file_type === 'epub') {
-      const localUrl = `/books/${b.path}`;
-      // Try local first
-      try {
-        const test = await fetch(localUrl, { method: 'HEAD' });
-        if (test.ok) {
-          url = localUrl;
-        } else {
-          url = `${getApiBase()}/api/books/${bookId}/file`;
-        }
-      } catch {
+    try {
+      const test = await fetch(localUrl, { method: 'HEAD' });
+      if (test.ok) {
+        url = localUrl;
+      } else {
         url = `${getApiBase()}/api/books/${bookId}/file`;
       }
-    } else {
+    } catch {
       url = `${getApiBase()}/api/books/${bookId}/file`;
     }
     setFileUrl(url);
