@@ -711,7 +711,14 @@ async def sync_upload(file: UploadFile = File(...)):
     if safe_name.startswith("/") or ".." in safe_name:
         raise HTTPException(status_code=400, detail="非法文件路径")
 
-    target_path = os.path.join(config.KNOWLEDGE_DIR, safe_name)
+    # Check if uploading to vectordb (special path)
+    if safe_name.startswith("vectordb/"):
+        base = config.CHROMA_PERSIST_DIR
+        safe_name = safe_name[len("vectordb/"):]
+    else:
+        base = config.KNOWLEDGE_DIR
+
+    target_path = os.path.join(base, safe_name)
     os.makedirs(os.path.dirname(target_path), exist_ok=True)
     content = await file.read()
     with open(target_path, "wb") as f:
