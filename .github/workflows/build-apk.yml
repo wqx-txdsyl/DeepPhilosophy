@@ -48,6 +48,7 @@ jobs:
         run: cd app/android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon
         env:
           ANDROID_HOME: ${{ runner.temp }}/android-sdk
+          ANDROID_SDK_ROOT: ${{ runner.temp }}/android-sdk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
