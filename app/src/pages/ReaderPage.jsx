@@ -6,7 +6,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import ePub from 'epubjs';
 import { getApiBase } from '../App';
-import { getBookById } from '../data';
+import { getBookById, getLocalBookUrl } from '../data';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -50,17 +50,17 @@ function ReaderPage() {
     if (!b) { setError('书籍未找到'); setLoading(false); return; }
     setBook(b);
 
-    // All books: prefer local (embedded in APK), fallback to server
-    const localUrl = `/books/${b.path}`;
-    let url;
-    try {
-      const test = await fetch(localUrl, { method: 'HEAD' });
-      if (test.ok) {
-        url = localUrl;
-      } else {
-        url = `${getApiBase()}/api/books/${bookId}/file`;
-      }
-    } catch {
+    // 1. Local file path (user configured)
+    let url = getLocalBookUrl(b);
+    if (url) {
+      // Verify file exists
+      try {
+        const test = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(2000) });
+        if (!test.ok) url = null;
+      } catch { url = null; }
+    }
+    // 2. Server fallback
+    if (!url) {
       url = `${getApiBase()}/api/books/${bookId}/file`;
     }
     setFileUrl(url);

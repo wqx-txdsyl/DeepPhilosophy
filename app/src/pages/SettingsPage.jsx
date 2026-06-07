@@ -9,6 +9,7 @@ function SettingsPage() {
   const [apiKey, setApiKey] = useState('');
   const [model, setModel] = useState('deepseek-chat');
   const [apiUrl, setApiUrl] = useState('');
+  const [booksPath, setBooksPath] = useState('');
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -17,14 +18,16 @@ function SettingsPage() {
       if (config.apiKey) setApiKey(config.apiKey);
       if (config.model) setModel(config.model);
       if (config.apiUrl) setApiUrl(config.apiUrl);
+      if (config.booksPath) setBooksPath(config.booksPath);
     } catch {}
   }, []);
 
   const saveConfig = () => {
-    const config = { apiKey, model, apiUrl };
+    const config = { apiKey, model, apiUrl, booksPath };
     localStorage.setItem('dp_api_config', JSON.stringify(config));
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+    window.location.reload();
   };
 
   return (
@@ -79,6 +82,25 @@ function SettingsPage() {
           >
             {saved ? '✅ 已保存' : '💾 保存配置'}
           </button>
+        </div>
+
+        <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
+          <h3 style={{ fontSize: 15, marginBottom: 12 }}>📂 本地书籍路径</h3>
+          <p style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
+            将 F:/philosophy 文件夹复制到手机存储，填入路径。留空则使用内置书单（无法阅读书籍内容）。
+          </p>
+          <label>
+            书籍存储路径
+            <input
+              type="text"
+              placeholder="/storage/emulated/0/DeepPhilosophy/books"
+              value={booksPath}
+              onChange={e => setBooksPath(e.target.value)}
+            />
+          </label>
+          <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 6 }}>
+            💡 手机连接电脑后，将 philosophy 文件夹复制到手机，路径通常为 /storage/emulated/0/philosophy
+          </p>
         </div>
 
         <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
