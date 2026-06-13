@@ -68,6 +68,30 @@ function BookDetailPage() {
         )}
       </div>
 
+      {/* Keywords */}
+      {book.keywords && book.keywords.length > 0 && (
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 12 }}>
+          {book.keywords.map((kw, i) => (
+            <span key={i} className="tag" style={{
+              fontSize: 12, padding: '4px 10px',
+              background: 'var(--secondary)', color: 'var(--accent)',
+              borderRadius: 12, border: '1px solid var(--border)',
+            }}>
+              {kw.word || kw}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Summary */}
+      {book.summary && (
+        <div className="card" style={{ cursor: 'default', marginTop: 10 }}>
+          <div style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.7 }}>
+            {book.summary}
+          </div>
+        </div>
+      )}
+
       {isTxt ? (
         <div className="pending-notice">
           <p style={{ fontSize: 48 }}>📝</p>

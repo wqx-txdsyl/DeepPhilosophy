@@ -13,12 +13,12 @@ function getBooksPath() {
   } catch { return ''; }
 }
 
-/** 加载书籍列表 */
+/** 加载书籍列表 — 服务器优先，本地兜底 */
 export async function loadBooks() {
-  // 1. Try server (fast timeout)
+  // 1. 优先从服务器获取（保证ID与后端一致）
   try {
     const resp = await fetch(`${getApiBase()}/api/books`, {
-      signal: AbortSignal.timeout(3000),
+      signal: AbortSignal.timeout(5000),
     });
     if (resp.ok) {
       const data = await resp.json();
@@ -29,24 +29,14 @@ export async function loadBooks() {
     }
   } catch (e) {}
 
-  // 2. Try local books path (scan directory)
-  const booksPath = getBooksPath();
-  if (booksPath) {
-    try {
-      const resp = await fetch(`${getApiBase()}/api/books`);
-      // Server not available, build from local catalog + path
-    } catch (e) {}
+  // 2. 兜底：嵌入式本地书目（离线可用）
+  try {
+    const local = await import('./assets/books.json');
+    cachedBooks = local.default?.books || local.books || [];
+  } catch (e) {
+    cachedBooks = [];
   }
 
-  // 3. Fallback to embedded catalog
-  if (!cachedBooks) {
-    try {
-      const local = await import('./assets/books.json');
-      cachedBooks = local.default?.books || local.books || [];
-    } catch (e) {
-      cachedBooks = [];
-    }
-  }
   return cachedBooks;
 }
 

@@ -15,6 +15,7 @@ function BooksPage() {
   const [activeTag, setActiveTag] = useState(null);
   const [expandedAuthor, setExpandedAuthor] = useState(null);
   const [showSummary, setShowSummary] = useState(null);
+  const [showAllTags, setShowAllTags] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => { fetchBooks(); }, []);
@@ -66,6 +67,11 @@ function BooksPage() {
 
   return (
     <div className="page-container">
+      {/* 统计 */}
+      <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 10 }}>
+        📚 共 {books.length} 本书，{Object.keys(grouped).reduce((s, r) => s + Object.keys(grouped[r]).filter(a => a !== '合集&概述').length, 0)} 位作者
+      </div>
+
       {/* 搜索 */}
       <input
         className="search-box"
@@ -76,40 +82,54 @@ function BooksPage() {
 
       {/* 分类标签 */}
       {allTags.length > 0 && (
-        <div style={{ display: 'flex', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
-          <button
-            className={`tag ${!activeTag ? 'tag-active' : ''}`}
-            style={{
-              background: !activeTag ? 'var(--accent)' : 'var(--secondary)',
-              color: !activeTag ? 'var(--primary)' : 'var(--text-dim)',
-              border: 'none', borderRadius: 14, padding: '4px 12px',
-              fontSize: 12, cursor: 'pointer', fontWeight: activeTag ? 400 : 600,
-            }}
-            onClick={() => setActiveTag(null)}>
-            全部
-          </button>
-          {allTags.map(tag => (
-            <button key={tag}
+        <div style={{ marginBottom: 14 }}>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 6 }}>
+            标签 ({allTags.length})
+            {allTags.length > 20 && (
+              <span onClick={() => setShowAllTags(!showAllTags)} style={{ cursor: 'pointer', color: 'var(--accent)', marginLeft: 8 }}>
+                {showAllTags ? '收起' : '展开全部'}
+              </span>
+            )}
+          </div>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            <button
+              className={`tag ${!activeTag ? 'tag-active' : ''}`}
               style={{
-                background: activeTag === tag ? 'var(--accent)' : 'var(--secondary)',
-                color: activeTag === tag ? 'var(--primary)' : 'var(--text-dim)',
+                background: !activeTag ? 'var(--accent)' : 'var(--secondary)',
+                color: !activeTag ? 'var(--primary)' : 'var(--text-dim)',
                 border: 'none', borderRadius: 14, padding: '4px 12px',
-                fontSize: 12, cursor: 'pointer', fontWeight: activeTag === tag ? 600 : 400,
+                fontSize: 12, cursor: 'pointer', fontWeight: activeTag ? 400 : 600,
               }}
-              onClick={() => setActiveTag(activeTag === tag ? null : tag)}>
-              {tag}
+              onClick={() => setActiveTag(null)}>
+              全部
             </button>
-          ))}
+            {(showAllTags ? allTags : allTags.slice(0, 20)).map(tag => (
+              <button key={tag}
+                style={{
+                  background: activeTag === tag ? 'var(--accent)' : 'var(--secondary)',
+                  color: activeTag === tag ? 'var(--primary)' : 'var(--text-dim)',
+                  border: 'none', borderRadius: 14, padding: '4px 12px',
+                  fontSize: 12, cursor: 'pointer', fontWeight: activeTag === tag ? 600 : 400,
+                }}
+                onClick={() => setActiveTag(activeTag === tag ? null : tag)}>
+                {tag}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
-      {/* 书籍列表 */}
-      {Object.keys(grouped).sort().map(region => (
+      {/* 书籍列表（东方优先，区域内按时序） */}
+      {Object.keys(grouped).sort((a, b) => {
+        if (a === '东方') return -1;
+        if (b === '东方') return 1;
+        return a.localeCompare(b);
+      }).map(region => (
         <div key={region}>
           <h2 className="section-title">
             {region === '东方' ? '🏯' : '🏛️'} {region}哲学
           </h2>
-          {Object.keys(grouped[region]).sort().map(author => {
+          {Object.keys(grouped[region]).map(author => {
             const authorBooks = grouped[region][author];
             const isExpanded = expandedAuthor === `${region}-${author}`;
             return (

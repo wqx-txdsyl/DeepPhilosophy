@@ -120,13 +120,31 @@ function AuthorDetailPage() {
       {author.books && author.books.length > 0 && (
         <>
           <h3 className="section-title">📚 作品 ({author.books.length})</h3>
-          {author.books.map((book, i) => (
-            <div key={i} className="card" style={{ padding: '10px 14px' }}>
-              <span className="card-title" style={{ fontSize: 14 }}>
-                {typeof book === 'string' ? book : book.title}
-              </span>
-            </div>
-          ))}
+          {author.books.map((book, i) => {
+            const bookTitle = typeof book === 'string' ? book : book.title;
+            const bookId = typeof book === 'string' ? null : book.id;
+            return (
+              <div key={i} className="card" style={{ padding: '10px 14px' }}
+                onClick={() => {
+                  if (bookId) {
+                    navigate(`/reader/${bookId}?type=${book.file_type}`);
+                  }
+                }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="card-title" style={{ fontSize: 14 }}>
+                    {bookTitle}
+                  </span>
+                  {book.file_type && (
+                    <span className={`badge ${book.file_type === 'txt' ? 'badge-pending' : 'badge-available'}`}
+                      style={{ fontSize: 10 }}>
+                      {book.file_type.toUpperCase()}
+                    </span>
+                  )}
+                  <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>📖</span>
+                </div>
+              </div>
+            );
+          })}
         </>
       )}
     </div>

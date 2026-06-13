@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-ro
 import { startAutoSave, stopAutoSave } from './data/userData';
 import BooksPage from './pages/BooksPage';
 import BookDetailPage from './pages/BookDetailPage';
-import GenealogyPage from './pages/GenealogyPage';
+import AuthorsPage from './pages/AuthorsPage';
 import AuthorDetailPage from './pages/AuthorDetailPage';
 import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
@@ -46,14 +46,14 @@ function MainLayout() {
 
   const tabs = [
     { key: 'books', label: '📚', text: '书籍', path: '/books' },
-    { key: 'genealogy', label: '🔗', text: '谱图', path: '/genealogy' },
+    { key: 'authors', label: '✒️', text: '作家', path: '/authors' },
     { key: 'qa', label: '💬', text: '问答', path: '/qa' },
     { key: 'profile', label: '👤', text: '我的', path: '/profile' },
   ];
 
   const getActiveTab = () => {
     const p = location.pathname;
-    if (p.startsWith('/genealogy') || p.startsWith('/author')) return 'genealogy';
+    if (p.startsWith('/authors') || p.startsWith('/author')) return 'authors';
     if (p.startsWith('/qa')) return 'qa';
     if (p.startsWith('/profile')) return 'profile';
     return 'books';
@@ -80,7 +80,7 @@ function MainLayout() {
           <Route path="/books" element={<BooksPage />} />
           <Route path="/book/:bookId" element={<BookDetailPage />} />
           <Route path="/reader/:bookId" element={<ReaderPage />} />
-          <Route path="/genealogy" element={<GenealogyPage />} />
+          <Route path="/authors" element={<AuthorsPage />} />
           <Route path="/author/:authorName" element={<AuthorDetailPage />} />
           <Route path="/qa" element={<QAPage />} />
           <Route path="/settings" element={<SettingsPage />} />

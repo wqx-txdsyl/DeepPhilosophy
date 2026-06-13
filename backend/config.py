@@ -69,3 +69,18 @@ SERVER_PORT = int(os.getenv("SERVER_PORT", "8000"))
 HF_ENDPOINT = os.getenv("HF_ENDPOINT", "https://hf-mirror.com")
 os.environ.setdefault("HF_ENDPOINT", HF_ENDPOINT)
 os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
+
+# ============================================================
+# Cloudflare R2 云存储配置（备选）
+# ============================================================
+USE_R2 = os.getenv("USE_R2", "False").lower() in ("true", "1", "yes")
+R2_ACCESS_KEY = os.getenv("R2_ACCESS_KEY", "")
+R2_SECRET_KEY = os.getenv("R2_SECRET_KEY", "")
+R2_ENDPOINT = os.getenv("R2_ENDPOINT", "")
+R2_BUCKET = os.getenv("R2_BUCKET", "deepphilosophy-books")
+
+# ============================================================
+# GitHub Release 云存储配置（主力方案，无需信用卡）
+# ============================================================
+USE_GITHUB = os.getenv("USE_GITHUB", "False").lower() in ("true", "1", "yes")
+GITHUB_MANIFEST_PATH = os.path.join(os.path.dirname(__file__), "data", "github_manifest.json")

@@ -13,7 +13,10 @@ import { saveReadingProgress } from '../data/userData';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// Setup PDF.js worker — MUST match react-pdf v10.4.1's internal pdfjs-dist version
+// Now using pdfjs-dist@5.4.296 (installed locally) to match react-pdf's bundled API
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 function ReaderPage() {
   const { bookId } = useParams();
@@ -38,11 +41,33 @@ function ReaderPage() {
   const epubTocRef = useRef([]);
   const [epubReady, setEpubReady] = useState(false);
   const [showToc, setShowToc] = useState(false);
+  const [epubLocation, setEpubLocation] = useState(0); // percentage 0-100
+  const [showEpubJump, setShowEpubJump] = useState(false);
+  const [jumpEpubPage, setJumpEpubPage] = useState('');
 
   // Notes state
   const [showNotes, setShowNotes] = useState(false);
   const [noteText, setNoteText] = useState('');
   const notesKey = `dp_notes_${bookId}`;
+
+  // Two-page view toggle
+  const [twoPage, setTwoPage] = useState(true);
+
+  // AI Chat state
+  const [showAiChat, setShowAiChat] = useState(false);
+  const [aiQuestion, setAiQuestion] = useState('');
+  const [aiAnswer, setAiAnswer] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiHistory, setAiHistory] = useState([]);
+  const aiChatRef = useRef(null);
+  const aiBottomRef = useRef(null);
+
+  // AI 聊天自动滚动
+  useEffect(() => {
+    if (aiBottomRef.current) {
+      aiBottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [aiHistory]);
 
   useEffect(() => { loadBook(); }, [bookId]);
 
@@ -55,35 +80,41 @@ function ReaderPage() {
     } catch { setNoteText(''); }
   }, [bookId]);
 
-  // Load saved page from reading history
+  // Auto-save reading progress every 30 seconds (PDF) — uses ref to avoid timer reset
+  const pdfSaveRef = useRef({ bookId: '', title: '', author: '', page: 0, total: 0 });
+  useEffect(() => { if (book && numPages > 0) { pdfSaveRef.current = { bookId, title: book.title, author: book.author, page: pageNumber, total: numPages }; } }, [bookId, book?.title, pageNumber, numPages]);
   useEffect(() => {
-    if (!book || numPages === 0) return;
-    try {
-      const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-      const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
-      if (entry && entry.page > 0 && entry.page <= numPages) {
-        setPageNumber(entry.page);
-      }
-    } catch {}
-  }, [book, numPages]);
-
-  // Auto-save reading progress every 30 seconds
-  useEffect(() => {
-    if (!book || numPages === 0) return;
+    if (fileType !== 'pdf') return;
     const interval = setInterval(() => {
-      saveReadingProgress(bookId, book.title, book.author, pageNumber, (pageNumber / numPages));
-    }, 30000);
+      const s = pdfSaveRef.current;
+      if (s.total > 0) saveReadingProgress(s.bookId, s.title, s.author, s.page, s.page / s.total, 'pdf');
+    }, 15000);
     return () => clearInterval(interval);
-  }, [book, numPages, pageNumber]);
+  }, [fileType]);
+
+  // Auto-save for EPUB — uses ref to avoid timer reset
+  const epubSaveRef = useRef({ bookId: '', title: '', author: '', loc: 0 });
+  useEffect(() => { if (book && epubLocation > 0) { epubSaveRef.current = { bookId, title: book.title, author: book.author, loc: epubLocation }; } }, [bookId, book?.title, epubLocation]);
+  useEffect(() => {
+    if (fileType !== 'epub') return;
+    const interval = setInterval(() => {
+      const s = epubSaveRef.current;
+      if (s.loc > 0) saveReadingProgress(s.bookId, s.title, s.author, s.loc, s.loc / 100, 'epub');
+    }, 15000);
+    return () => clearInterval(interval);
+  }, [fileType]);
 
   // Save progress on page change
   const goToPage = useCallback((n) => {
+    const step = (twoPage && numPages > 1) ? 2 : 1;
     const p = Math.max(1, Math.min(numPages, n));
-    setPageNumber(p);
+    // snap to odd page in two-page mode
+    const finalP = twoPage ? (p % 2 === 0 ? p - 1 : p) : p;
+    setPageNumber(finalP);
     if (book) {
-      saveReadingProgress(bookId, book.title, book.author, p, (p / numPages));
+      saveReadingProgress(bookId, book.title, book.author, finalP, (finalP / numPages));
     }
-  }, [book, bookId, numPages]);
+  }, [book, bookId, numPages, twoPage]);
 
   const handleJump = () => {
     const p = parseInt(jumpPage, 10);
@@ -101,6 +132,82 @@ function ReaderPage() {
     } catch {}
   };
 
+  // AI 问答：基于当前阅读内容（流式输出）
+  const askAI = async () => {
+    if (!aiQuestion.trim() || aiLoading) return;
+    const q = aiQuestion.trim();
+    setAiQuestion('');
+    setAiHistory(prev => [...prev, { role: 'user', content: q }, { role: 'assistant', content: '', _streaming: true }]);
+    setAiLoading(true);
+
+    const apiConfig = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
+    const systemPrompt = `你是一位博学的哲学导师。读者正在阅读哲学著作，需要你的帮助理解文本。\n\n当前阅读上下文：\n- 书名：《${book?.title}》\n- 作者：${book?.author}\n- 当前页码：第${pageNumber}页${numPages ? `（共${numPages}页）` : ''}\n${book?.region ? `- 所属传统：${book.region}哲学` : ''}\n\n请根据读者的问题，结合你对这本书和该作者哲学思想的了解，给出深入浅出的解答。`;
+
+    let answer = '';
+    try {
+      if (apiConfig.apiKey) {
+        const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
+        const resp = await fetch(`${baseUrl}/v1/chat/completions`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiConfig.apiKey}` },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              ...aiHistory.filter(m => !m._streaming).map(m => ({ role: m.role, content: m.content })),
+              { role: 'user', content: q },
+            ],
+            temperature: 0.7, max_tokens: 1024, stream: true,
+          }),
+          signal: AbortSignal.timeout(60000),
+        });
+
+        if (resp.ok) {
+          const reader = resp.body.getReader();
+          const decoder = new TextDecoder();
+          let buffer = '';
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6).trim();
+                if (data === '[DONE]') continue;
+                try {
+                  const delta = JSON.parse(data).choices?.[0]?.delta?.content || '';
+                  if (delta) {
+                    answer += delta;
+                    setAiHistory(prev => {
+                      const u = [...prev];
+                      const l = { ...u[u.length - 1] };
+                      l.content = answer;
+                      u[u.length - 1] = l;
+                      return u;
+                    });
+                  }
+                } catch {}
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {}
+
+    if (!answer) answer = '无法获取回答。请检查网络连接或在设置中配置 API Key。';
+    setAiLoading(false);
+    setAiHistory(prev => {
+      const u = [...prev];
+      const l = { ...u[u.length - 1] };
+      l.content = answer;
+      delete l._streaming;
+      u[u.length - 1] = l;
+      return u;
+    });
+  };
+
   const loadBook = async () => {
     setLoading(true); setError(null);
     const b = await getBookById(bookId);
@@ -108,7 +215,9 @@ function ReaderPage() {
     setBook(b);
     setFileType(b.file_type);
 
-    let url;
+    let url = null;
+    // Android APK 上通过 Capacitor 文件系统直接读取本地文件
+    // 浏览器环境直接走服务器 API（file:// 协议会被浏览器安全策略阻止）
     if (Capacitor.isNativePlatform()) {
       const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
       const basePath = config.booksPath || '';
@@ -116,19 +225,40 @@ function ReaderPage() {
         url = Capacitor.convertFileSrc(basePath.replace(/\/$/, '') + '/' + b.path);
       }
     }
-    if (!url) url = `${getApiBase()}/api/books/${bookId}/file`;
-    setFileUrl(url);
 
-    if (b.file_type === 'epub') {
-      setTimeout(() => initEpub(url), 100);
+    // 兜底：服务器 API（浏览器/开发环境自动走此路径）
+    if (!url) {
+      url = `${getApiBase()}/api/books/${bookId}/file`;
     }
+    setFileUrl(url);
     setLoading(false);
   };
+
+  // Init EPUB after DOM renders (more reliable than setTimeout)
+  useEffect(() => {
+    if (!loading && fileType === 'epub' && fileUrl && epubViewerRef.current) {
+      initEpub(fileUrl);
+    }
+  }, [loading, fileType, fileUrl]);
 
   // PDF callbacks
   const onPdfLoadSuccess = ({ numPages: n }) => {
     setNumPages(n);
-    goToPage(1);
+    // Restore saved position directly (more reliable than useEffect timing)
+    try {
+      const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+      const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
+      if (entry && entry.page > 0 && entry.page <= n) {
+        setPageNumber(entry.page);
+        saveReadingProgress(bookId, book.title, book.author, entry.page, entry.page / n, 'pdf');
+        return;
+      }
+    } catch {}
+    setPageNumber(1);
+  };
+  const onPdfLoadError = (err) => {
+    console.error('PDF load error:', err);
+    setError('PDF 加载失败：' + (err?.message || err?.toString?.() || '未知错误'));
   };
 
   // EPUB init
@@ -137,16 +267,86 @@ function ReaderPage() {
       if (!epubViewerRef.current) return;
       const bk = ePub(url, { openAs: 'epub' });
       const rendition = bk.renderTo(epubViewerRef.current, {
-        width: '100%', height: '100%', flow: 'paginated', spread: 'none',
+        width: '100%', height: '100%', flow: 'paginated', spread: 'auto',
       });
       epubRenditionRef.current = rendition;
+      // Add bottom padding so text isn't hidden by controls
+      rendition.themes.register('deepphilosophy', { body: { 'padding-bottom': '80px !important' } });
+      rendition.themes.select('deepphilosophy');
       bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
-      rendition.display();
+      // Track current location for page display
+      rendition.on('relocated', (loc) => {
+        if (loc?.start?.percentage != null) {
+          setEpubLocation(Math.round(loc.start.percentage * 100));
+        }
+      });
+      // Generate locations for percentage-based navigation
+      bk.ready.then(() => bk.locations.generate(1000)).catch(() => {});
+
+      // 确定起始位置（有保存进度则恢复，否则从首页开始）
+      let startHref = null;
+      try {
+        const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+        const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
+        if (entry && entry.page > 0) {
+          const target = entry.page / 100;
+          bk.ready.then(() => {
+            if (bk.spine && bk.spine.length > 0) {
+              const idx = Math.min(bk.spine.length - 1, Math.max(0, Math.floor(target * bk.spine.length)));
+              const section = bk.spine.get(idx);
+              if (section && section.href) {
+                rendition.display(section.href);
+                saveReadingProgress(bookId, book.title, book.author, entry.page, target, 'epub');
+                return;
+              }
+            }
+            rendition.display();
+          });
+        } else {
+          rendition.display();
+        }
+      } catch {
+        rendition.display();
+      }
       setEpubReady(true);
     } catch (e) { setError('EPUB 加载失败：' + e.message); }
   };
 
-  useEffect(() => { return () => { epubRenditionRef.current?.destroy(); }; }, []);
+  const goToEpubPage = (pct) => {
+    const rendition = epubRenditionRef.current;
+    if (!rendition || !rendition.book) return;
+    const target = Math.max(0, Math.min(100, Number(pct))) / 100;
+    setShowEpubJump(false);
+    setJumpEpubPage('');
+
+    const spine = rendition.book.spine;
+    if (spine && spine.length > 0) {
+      const idx = Math.min(spine.length - 1, Math.max(0, Math.floor(target * spine.length)));
+      const section = spine.get(idx);
+      if (section && section.href) rendition.display(section.href);
+    }
+  };
+
+  // Toggle EPUB spread mode (single/double page)
+  useEffect(() => {
+    const rendition = epubRenditionRef.current;
+    if (!rendition || fileType !== 'epub') return;
+    rendition.spread(twoPage ? 'auto' : 'none');
+  }, [twoPage, fileType]);
+
+  // Save on unmount (only when actually leaving the page)
+  const saveRef = useRef({ epubLoc: 0, pdfPage: 0, pdfTotal: 0, bookId: '', title: '', author: '' });
+  useEffect(() => {
+    saveRef.current = { epubLoc: epubLocation, pdfPage: pageNumber, pdfTotal: numPages, bookId, title: book?.title || '', author: book?.author || '' };
+  });
+  useEffect(() => {
+    return () => {
+      const s = saveRef.current;
+      if (s.epubLoc > 0) saveReadingProgress(s.bookId, s.title, s.author, s.epubLoc, s.epubLoc / 100, 'epub');
+      if (s.pdfTotal > 0) saveReadingProgress(s.bookId, s.title, s.author, s.pdfPage, s.pdfPage / s.pdfTotal, 'pdf');
+      epubRenditionRef.current?.destroy();
+    };
+  }, []);
 
   if (loading) return <div className="loading">加载中...</div>;
   if (error) return (
@@ -170,35 +370,67 @@ function ReaderPage() {
           {book.title}
         </span>
         <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
-          onClick={() => { setShowNotes(!showNotes); if (showNotes) saveNotes(); }}>
+          onClick={() => { setShowNotes(!showNotes); if (!showNotes) setShowAiChat(false); if (showNotes) saveNotes(); }}>
           {showNotes ? '关闭批注' : '📝 批注'}
+        </button>
+        <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
+          onClick={() => setTwoPage(!twoPage)}>
+          {twoPage ? '📖 单页' : '📖 双页'}
+        </button>
+        <button className="btn btn-primary" style={{ padding: '4px 8px', fontSize: 11 }}
+          onClick={() => { setShowAiChat(!showAiChat); if (!showAiChat) setShowNotes(false); }}>
+          {showAiChat ? '关闭问答' : '💬 问AI'}
         </button>
       </div>
 
       {/* Main area: reader + optional notes panel */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Reader */}
-        <div style={{ flex: showNotes ? '0 0 60%' : 1, overflow: 'auto', background: '#1a1a1a' }}>
+        <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative' }}>
           {fileType === 'epub' ? (
-            <div style={{ position: 'relative', height: '100%' }}>
-              <div ref={epubViewerRef} style={{ width: '100%', height: '100%' }} />
+            <>
+              <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
+              {/* EPUB controls — flex item, always matches reader width */}
               <div style={{
-                position: 'fixed', bottom: 0, left: 0, right: 0,
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '8px 16px', background: 'var(--primary)',
-                borderTop: '1px solid var(--border)', zIndex: 200, maxWidth: 480, margin: '0 auto',
+                flexShrink: 0,
+                background: 'var(--primary)', borderTop: '1px solid var(--border)',
+                padding: '6px 12px',
               }}>
-                <button className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: 13 }}
-                  onClick={() => epubRenditionRef.current?.prev()}>◀</button>
-                <button className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: 12 }}
-                  onClick={() => setShowToc(!showToc)}>{showToc ? '关闭' : '目录'}</button>
-                <button className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: 13 }}
-                  onClick={() => epubRenditionRef.current?.next()}>▶</button>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                  <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
+                    onClick={() => setShowToc(!showToc)}>{showToc ? '关闭目录' : '📑 目录'}</button>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    {showEpubJump ? (
+                      <form onSubmit={e => { e.preventDefault(); goToEpubPage(Number(jumpEpubPage)); }}
+                        style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                        <input type="number" min={0} max={100} value={jumpEpubPage}
+                          onChange={e => setJumpEpubPage(e.target.value)}
+                          style={{ width: 45, padding: '2px 6px', borderRadius: 6, border: '1px solid var(--accent)',
+                            background: 'var(--secondary)', color: 'var(--text)', fontSize: 13, textAlign: 'center' }}
+                          placeholder="1-100" autoFocus />
+                        <button type="submit" className="btn btn-primary" style={{ padding: '2px 8px', fontSize: 11 }}>跳转</button>
+                        <button type="button" className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 11 }}
+                          onClick={() => { setShowEpubJump(false); setJumpEpubPage(''); }}>✕</button>
+                      </form>
+                    ) : (
+                      <span style={{ fontSize: 13, color: 'var(--text-dim)', cursor: 'pointer' }}
+                        onClick={() => setShowEpubJump(true)}>
+                        {epubLocation}%
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
+                    onClick={() => epubRenditionRef.current?.prev()} disabled={epubLocation <= 0}>◀ 上一页</button>
+                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
+                    onClick={() => epubRenditionRef.current?.next()} disabled={epubLocation >= 100}>下一页 ▶</button>
+                </div>
               </div>
               {showToc && (
                 <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', zIndex: 300 }}
                   onClick={() => setShowToc(false)}>
-                  <div style={{ maxWidth: 480, margin: '50px auto 0', width: '90%', background: 'var(--primary)', borderRadius: 12, maxHeight: '70vh', overflow: 'auto', padding: 16 }}
+                  <div style={{ maxWidth: 900, margin: '50px auto 0', width: '90%', background: 'var(--primary)', borderRadius: 12, maxHeight: '70vh', overflow: 'auto', padding: 16 }}
                     onClick={e => e.stopPropagation()}>
                     <h3 style={{ color: 'var(--accent)', marginBottom: 12 }}>目录</h3>
                     {epubTocRef.current.map((item, i) => (
@@ -210,23 +442,49 @@ function ReaderPage() {
                   </div>
                 </div>
               )}
-            </div>
+            </>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0 120px' }}>
-              <Document file={fileUrl} onLoadSuccess={onPdfLoadSuccess}
-                loading={<div className="loading">加载PDF中...</div>}
-                error={<div className="loading">PDF加载失败</div>}>
-                <Page pageNumber={pageNumber} scale={pdfScale}
-                  renderTextLayer={false} renderAnnotationLayer={false}
-                  width={Math.min(440, window.innerWidth - (showNotes ? 180 : 32))} />
-              </Document>
-              {/* PDF controls */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0 8px' }}>
+                <Document file={fileUrl} onLoadSuccess={onPdfLoadSuccess} onLoadError={onPdfLoadError}
+                  loading={<div className="loading">加载PDF中...</div>}
+                  error={<div className="loading">PDF加载失败</div>}>
+                  {twoPage ? (
+                    <div style={{
+                      display: 'flex', justifyContent: 'center', alignItems: 'flex-start',
+                      gap: 0, background: '#1a1a1a',
+                      boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+                      borderRadius: 2,
+                    }}>
+                      <div style={{
+                        borderRight: '1px solid rgba(0,0,0,0.15)',
+                        boxShadow: '2px 0 8px rgba(0,0,0,0.1)',
+                      }}>
+                        <Page pageNumber={pageNumber} scale={pdfScale}
+                          renderTextLayer={false} renderAnnotationLayer={false}
+                          width={Math.min(440, (window.innerWidth - ((showNotes || showAiChat) ? 260 : 100)) / 2)} />
+                      </div>
+                      <div style={{
+                        boxShadow: '-2px 0 8px rgba(0,0,0,0.1)',
+                      }}>
+                        <Page pageNumber={pageNumber + 1} scale={pdfScale}
+                          renderTextLayer={false} renderAnnotationLayer={false}
+                          width={Math.min(440, (window.innerWidth - ((showNotes || showAiChat) ? 260 : 100)) / 2)} />
+                      </div>
+                    </div>
+                  ) : (
+                    <Page pageNumber={pageNumber} scale={pdfScale}
+                      renderTextLayer={false} renderAnnotationLayer={false}
+                      width={Math.min(480, window.innerWidth - ((showNotes || showAiChat) ? 220 : 80))} />
+                  )}
+                </Document>
+              </div>
+              {/* PDF controls — flex item, always matches reader width */}
               <div style={{
-                position: 'fixed', bottom: 0, left: 0, right: 0,
+                flexShrink: 0,
                 background: 'var(--primary)', borderTop: '1px solid var(--border)',
-                padding: '8px 12px', zIndex: 200, maxWidth: 480, margin: '0 auto',
+                padding: '6px 12px',
               }}>
-                {/* Zoom + Page display */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                   <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
                     onClick={() => setPdfScale(s => Math.max(0.4, s - 0.2))}>🔍−</button>
@@ -253,12 +511,11 @@ function ReaderPage() {
                   <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
                     onClick={() => setPdfScale(s => Math.min(3, s + 0.2))}>🔍+</button>
                 </div>
-                {/* Prev/Next */}
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => goToPage(pageNumber - 1)} disabled={pageNumber <= 1}>◀ 上一页</button>
+                    onClick={() => goToPage(pageNumber - (twoPage ? 2 : 1))} disabled={pageNumber <= 1}>◀ 上一页</button>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => goToPage(pageNumber + 1)} disabled={pageNumber >= numPages}>下一页 ▶</button>
+                    onClick={() => goToPage(pageNumber + (twoPage ? 2 : 1))} disabled={pageNumber >= numPages}>下一页 ▶</button>
                 </div>
               </div>
             </div>
@@ -296,7 +553,98 @@ function ReaderPage() {
             </button>
           </div>
         )}
+
       </div>
+
+      {/* AI Chat sidebar — same style as notes panel */}
+      {showAiChat && (
+        <div style={{
+          flex: '0 0 40%', borderLeft: '1px solid var(--border)',
+          background: 'var(--primary)', display: 'flex', flexDirection: 'column',
+          overflow: 'hidden',
+        }}>
+          {/* Header */}
+          <div style={{
+            padding: '10px 12px', borderBottom: '1px solid var(--border)',
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            flexShrink: 0,
+          }}>
+            <span style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 600 }}>
+              💬 AI 伴读 · 第{pageNumber}页
+            </span>
+            <button onClick={() => setShowAiChat(false)}
+              style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
+              ✕
+            </button>
+          </div>
+          <div style={{ fontSize: 10, color: 'var(--text-dim)', padding: '4px 12px', lineHeight: 1.4, flexShrink: 0 }}>
+            🤖 正在阅读《{book?.title}》（{book?.author}）
+          </div>
+
+          {/* Chat history */}
+          <div ref={aiChatRef} style={{
+            flex: 1, overflow: 'auto', padding: '8px 10px',
+            display: 'flex', flexDirection: 'column', gap: 6,
+          }}>
+            {aiHistory.length === 0 && (
+              <div style={{ fontSize: 12, color: 'var(--text-dim)', textAlign: 'center', padding: 20 }}>
+                💡 试试问：<br/>
+                <span style={{ color: 'var(--accent)' }}>"这段的核心思想是什么？"</span><br/>
+                <span style={{ color: 'var(--accent)' }}>"作者想表达什么？"</span>
+              </div>
+            )}
+            {aiHistory.map((msg, i) => (
+              <div key={i} style={{
+                alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                maxWidth: '90%',
+                background: msg.role === 'user' ? 'var(--accent)' : 'var(--secondary)',
+                color: msg.role === 'user' ? 'var(--primary)' : 'var(--text)',
+                padding: '6px 10px', borderRadius: 10,
+                fontSize: 12, lineHeight: 1.5, whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+              }}>
+                {msg.content}
+              </div>
+            ))}
+            {aiLoading && (
+              <div style={{ alignSelf: 'flex-start', display: 'flex', gap: 4, padding: '6px 10px' }}>
+                {[0,1,2].map(i => (
+                  <span key={i} style={{
+                    width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
+                    animation: `pulse 0.6s ease-in-out ${i * 0.15}s infinite`,
+                  }}/>
+                ))}
+              </div>
+            )}
+            <div ref={aiBottomRef} />
+          </div>
+
+          {/* Input */}
+          <div style={{
+            display: 'flex', gap: 6, padding: '8px 10px',
+            borderTop: '1px solid var(--border)', flexShrink: 0,
+          }}>
+            <input
+              value={aiQuestion}
+              onChange={e => setAiQuestion(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAI(); }}}
+              placeholder="问AI..."
+              disabled={aiLoading}
+              autoFocus
+              style={{
+                flex: 1, padding: '8px 12px', borderRadius: 18,
+                border: '1px solid var(--accent)', background: 'var(--secondary)',
+                color: 'var(--text)', fontSize: 13, outline: 'none',
+              }}
+            />
+            <button onClick={askAI} disabled={aiLoading}
+              style={{
+                width: 34, height: 34, borderRadius: '50%', flexShrink: 0,
+                border: 'none', background: 'var(--accent)', color: 'var(--primary)',
+                fontSize: 16, cursor: 'pointer', fontWeight: 700,
+              }}>↑</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

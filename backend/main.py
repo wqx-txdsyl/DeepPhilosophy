@@ -30,6 +30,29 @@ from auth import (
 from philosophers_db import get_philosopher_info
 
 # ============================================================
+# Cloudflare R2 客户端（懒加载）
+# ============================================================
+_r2_client = None
+
+def _get_r2_client():
+    """懒加载 R2 S3 兼容客户端"""
+    global _r2_client
+    if _r2_client is None and config.USE_R2:
+        import boto3
+        from botocore.config import Config as BotoConfig
+        _r2_client = boto3.client(
+            's3',
+            aws_access_key_id=config.R2_ACCESS_KEY,
+            aws_secret_access_key=config.R2_SECRET_KEY,
+            endpoint_url=config.R2_ENDPOINT,
+            config=BotoConfig(
+                region_name='auto',
+                signature_version='s3v4',
+            ),
+        )
+    return _r2_client
+
+# ============================================================
 # FastAPI 应用
 # ============================================================
 app = FastAPI(
@@ -111,11 +134,233 @@ def auth_required(authorization: str = Header(None)) -> dict:
 
 
 # ============================================================
-# 书籍目录 API
+# 书籍目录 API (带缓存，关键词预计算一次)
 # ============================================================
 
+_BOOKS_CACHE = None
+_BOOKS_CACHE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "books_cache.json")
+_SUMMARIES_CACHE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "book_summaries.json")
+
+def _get_cached_keywords(book_title: str, book_author: str) -> list:
+    """从预计算缓存中获取关键词"""
+    if not os.path.exists(_BOOKS_CACHE_PATH):
+        return []
+    try:
+        with open(_BOOKS_CACHE_PATH, "r", encoding="utf-8") as f:
+            cache = json.load(f)
+        return cache.get(book_title + "||" + book_author, [])
+    except Exception:
+        return []
+
+def _build_and_cache_keywords():
+    """一次性预计算所有书籍的关键词（后台线程调一次）"""
+    import threading
+    def _build():
+        try:
+            from modules.text_processor import TextProcessor
+            from modules.document_loader import DocumentLoader
+            tp = TextProcessor()
+            loader = DocumentLoader()
+            cache = {}
+            total = len([1 for r, d, fs in os.walk(config.KNOWLEDGE_DIR) for f in fs if os.path.splitext(f)[1].lower() in ('.epub', '.pdf')])
+            idx = 0
+            for root, dirs, files in os.walk(config.KNOWLEDGE_DIR):
+                for f in files:
+                    ext = os.path.splitext(f)[1].lower()
+                    if ext not in ('.epub', '.pdf'): continue
+                    idx += 1
+                    fp = os.path.join(root, f)
+                    try:
+                        pages = loader.load_file(fp)
+                        if pages:
+                            text = loader.merge_pages_to_text(pages)[:5000]
+                            kws = tp.extract_keywords(text, top_k=6)
+                            title = os.path.splitext(f)[0]
+                            author = os.path.basename(os.path.dirname(fp))
+                            cache[title + "||" + author] = [kw for kw, w in kws]
+                    except: pass
+                    if idx % 10 == 0:
+                        print(f"  Keywords: {idx}/{total}")
+            os.makedirs(os.path.dirname(_BOOKS_CACHE_PATH), exist_ok=True)
+            with open(_BOOKS_CACHE_PATH, "w", encoding="utf-8") as f:
+                json.dump(cache, f, ensure_ascii=False)
+            print(f"  Keywords cached: {idx} books")
+        except Exception as e:
+            print(f"  Keywords cache error: {e}")
+    threading.Thread(target=_build, daemon=True).start()
+
 def scan_books() -> list[dict]:
-    """扫描哲学目录，返回所有书籍信息"""
+    """扫描书籍目录 —— 自动切换本地 / R2 / GitHub"""
+    if config.USE_GITHUB:
+        return _scan_books_github()
+    if config.USE_R2:
+        return _scan_books_r2()
+    return _scan_books_local()
+
+
+def _scan_books_github() -> list[dict]:
+    """从 GitHub Release manifest 重建书籍列表"""
+    TITLE_FIXES = {"SZ": "S/Z"}
+    if not os.path.exists(config.GITHUB_MANIFEST_PATH):
+        return []
+
+    with open(config.GITHUB_MANIFEST_PATH, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+
+    books = []
+    seen_authors = set()
+
+    for rel_path, download_url in manifest.items():
+        # rel_path: 东方/孔子/论语.epub
+        parts = rel_path.split("/")
+        if len(parts) < 3:
+            continue
+        region = parts[0]
+        author_raw = parts[1]
+        author = author_raw.replace("###合集&概述###", "合集&概述")
+        ext = os.path.splitext(parts[-1])[1].lower().replace(".", "")
+        title = Path(parts[-1]).stem
+        title = TITLE_FIXES.get(title, title)
+
+        file_id = hashlib.md5(rel_path.encode()).hexdigest()[:12]
+        seen_authors.add(author)
+
+        tags = _classify_book(title, author, region)
+        books.append({
+            "id": file_id,
+            "title": title,
+            "author": author,
+            "region": region,
+            "file_type": ext,
+            "file_size": 0,  # GitHub 不提供 metadata size，但不影响
+            "status": "pending" if ext == "txt" else "available",
+            "path": rel_path,
+            "tags": tags,
+            "updated_at": datetime.now().isoformat(),
+            "_download_url": download_url,
+        })
+
+    # 附加缓存标签（从 book_summaries.json）
+    summary_cache = _load_summaries_cache()
+    for b in books:
+        key = b["title"] + "||" + b["author"]
+        if key in summary_cache and summary_cache[key].get("tags"):
+            for t in summary_cache[key]["tags"]:
+                if t not in b["tags"]:
+                    b["tags"].append(t)
+
+    return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
+
+
+def _scan_books_r2() -> list[dict]:
+    """从 Cloudflare R2 列出所有书籍"""
+    TITLE_FIXES = {"SZ": "S/Z"}
+    client = _get_r2_client()
+    if client is None:
+        return []
+
+    books = []
+    seen_authors = set()
+
+    paginator = client.get_paginator('list_objects_v2')
+    for page in paginator.paginate(Bucket=config.R2_BUCKET, Prefix='books/'):
+        for obj in page.get('Contents', []):
+            key = obj['Key']
+            filename = key.rsplit('/', 1)[-1]
+            ext = Path(filename).suffix.lower()
+            if ext not in ('.pdf', '.epub', '.txt', '.md'):
+                continue
+
+            parts = key.replace('books/', '', 1).split('/')
+            if len(parts) < 3:
+                continue
+            region = parts[0]
+            author_raw = parts[1]
+            author = author_raw.replace('###合集&概述###', '合集&概述')
+            title = Path(parts[-1]).stem
+            title = TITLE_FIXES.get(title, title)
+
+            file_id = hashlib.md5(key.encode()).hexdigest()[:12]
+            seen_authors.add(author)
+
+            tags = _classify_book(title, author, region)
+            books.append({
+                "id": file_id,
+                "title": title,
+                "author": author,
+                "region": region,
+                "file_type": ext.replace('.', ''),
+                "file_size": obj['Size'],
+                "status": "pending" if ext == '.txt' else "available",
+                "path": key.replace('books/', '', 1),
+                "tags": tags,
+                "updated_at": obj['LastModified'].strftime('%Y-%m-%dT%H:%M:%S'),
+            })
+
+    # 补充空目录占位
+    prefix_len = len('books/')
+    paginator2 = client.get_paginator('list_objects_v2')
+    for page in paginator2.paginate(Bucket=config.R2_BUCKET, Prefix='books/', Delimiter='/'):
+        for prefix in page.get('CommonPrefixes', []):
+            p = prefix['Prefix'][prefix_len:]
+            sub_paginator = client.get_paginator('list_objects_v2')
+            for sub_page in sub_paginator.paginate(
+                Bucket=config.R2_BUCKET,
+                Prefix=prefix['Prefix'],
+                Delimiter='/',
+                MaxKeys=1,
+            ):
+                for cp in sub_page.get('CommonPrefixes', []):
+                    pp = cp['Prefix'][len(prefix['Prefix']):].rstrip('/')
+                    if not pp or pp.startswith('###合集&概述###'):
+                        continue
+                    author_clean = pp.replace('###合集&概述###', '合集&概述')
+                    if author_clean not in seen_authors:
+                        seen_authors.add(author_clean)
+                        # figure out region
+                        reg = '西方' if '西方' in prefix['Prefix'] else '东方'
+                        pfx = hashlib.md5((reg + author_clean).encode()).hexdigest()[:12]
+                        books.append({
+                            "id": pfx,
+                            "title": f"（待收录：{author_clean}）",
+                            "author": author_clean,
+                            "region": reg,
+                            "file_type": "txt",
+                            "file_size": 0,
+                            "status": "pending",
+                            "path": f"{reg}/{author_clean}/",
+                            "tags": ["待收录"],
+                            "updated_at": datetime.now().isoformat(),
+                        })
+                break  # only one page needed for delimiter query
+
+    # 附加缓存
+    kw_cache = {}
+    if os.path.exists(_BOOKS_CACHE_PATH):
+        try:
+            with open(_BOOKS_CACHE_PATH, 'r', encoding='utf-8') as f:
+                kw_cache = json.load(f)
+        except Exception:
+            pass
+    summary_cache = _load_summaries_cache()
+    for b in books:
+        key = b["title"] + "||" + b["author"]
+        b["keywords"] = kw_cache.get(key, [])
+        if key in summary_cache and summary_cache[key].get("tags"):
+            for t in summary_cache[key]["tags"]:
+                if t not in b["tags"]:
+                    b["tags"].append(t)
+
+    return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
+
+
+def _scan_books_local() -> list[dict]:
+    """扫描本地哲学目录，返回所有书籍信息"""
+    # 文件名→显示标题修正（因文件系统不允许 / 等字符）
+    TITLE_FIXES = {
+        "SZ": "S/Z",
+    }
+
     books = []
     knowledge_dir = config.KNOWLEDGE_DIR
     if not os.path.exists(knowledge_dir):
@@ -135,6 +380,7 @@ def scan_books() -> list[dict]:
             author = parts[1] if len(parts) > 1 else "未知"
             author_clean = author.replace("###合集&概述###", "合集&概述")
             title = Path(f).stem
+            title = TITLE_FIXES.get(title, title)  # 修正文件名限制导致的显示问题
 
             file_id = hashlib.md5(rel_path.encode()).hexdigest()[:12]
 
@@ -156,7 +402,80 @@ def scan_books() -> list[dict]:
                 ).isoformat(),
             })
 
-    return sorted(books, key=lambda b: (b["region"], b["author"], b["title"]))
+    # Also include empty author directories (no books yet, but author exists)
+    seen_authors = {b["author"] for b in books}
+    for region_name in ["东方", "西方"]:
+        region_path = os.path.join(knowledge_dir, region_name)
+        if not os.path.isdir(region_path): continue
+        for author_dir in os.listdir(region_path):
+            author_full = os.path.join(region_path, author_dir)
+            if not os.path.isdir(author_full): continue
+            author_clean = author_dir.replace("###合集&概述###", "合集&概述")
+            if author_clean in seen_authors: continue
+            # Count actual book files
+            has_files = any(
+                os.path.splitext(f)[1].lower() in ('.pdf', '.epub', '.txt', '.md')
+                for f in os.listdir(author_full)
+            )
+            if has_files: continue  # alreay counted in main loop
+            seen_authors.add(author_clean)
+            pfx = hashlib.md5(author_dir.encode()).hexdigest()[:12]
+            books.append({
+                "id": pfx,
+                "title": f"（待收录：{author_clean}）",
+                "author": author_clean,
+                "region": region_name,
+                "file_type": "txt",
+                "file_size": 0,
+                "status": "pending",
+                "path": f"{region_name}/{author_dir}/",
+                "tags": ["待收录"],
+                "updated_at": datetime.now().isoformat(),
+            })
+
+    # Attach cached keywords and tags (fast, no file loading)
+    kw_cache = {}
+    if os.path.exists(_BOOKS_CACHE_PATH):
+        try:
+            with open(_BOOKS_CACHE_PATH, "r", encoding="utf-8") as f:
+                kw_cache = json.load(f)
+        except Exception:
+            pass
+    summary_cache = _load_summaries_cache()
+    for b in books:
+        key = b["title"] + "||" + b["author"]
+        b["keywords"] = kw_cache.get(key, [])
+        # 从摘要缓存追加标签
+        if b["title"] in summary_cache and summary_cache[b["title"]].get("tags"):
+            cached_tags = summary_cache[b["title"]]["tags"]
+            # 去重合并
+            for t in cached_tags:
+                if t not in b["tags"]:
+                    b["tags"].append(t)
+    return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
+
+
+def _book_sort_key(book: dict) -> int:
+    """计算排序权重：合集最先，然后按哲学家出生年份升序"""
+    author = book["author"]
+    # 合集/概述排最前
+    if "合集" in author or "概述" in author:
+        return -99999
+    # 从内置数据库获取年代
+    info = get_philosopher_info(author)
+    if info and info.get("era"):
+        era = info["era"]
+        # 提取出生年份
+        import re
+        m = re.search(r'(\d+)', era)
+        if m:
+            year = int(m.group(1))
+            # 公元前年份转为负数（公元前数值越大=越早，所以直接取反）
+            if "公元前" in era or "前" in era:
+                year = -year
+            return year
+    # 未知年代的放最后
+    return 9999
 
 
 def _classify_book(title: str, author: str, region: str) -> list[str]:
@@ -233,6 +552,19 @@ async def list_books(
     if status:
         books = [b for b in books if b["status"] == status]
 
+    # 附加摘要缓存和AI标签（覆盖 pattern-based 标签为高优先级）
+    summaries_cache = _load_summaries_cache()
+    for b in books:
+        title = b["title"]
+        author = b.get("author", "")
+        key = f"{title}||{author}"
+        cached = summaries_cache.get(key, {})
+        if cached.get("summary"):
+            b["summary"] = cached["summary"]
+        # 用缓存中的AI标签覆盖 _classify_book 的 pattern 标签
+        if cached.get("tags"):
+            b["tags"] = cached["tags"]
+
     # 收集所有标签
     all_tags = sorted(set(t for b in books for t in b.get("tags", [])))
 
@@ -252,35 +584,112 @@ async def list_tags():
 
 @app.get("/api/books/{book_id}")
 async def get_book(book_id: str):
-    """获取单本书籍详情（含摘要）"""
+    """获取单本书籍详情（含摘要和关键词）"""
     books = scan_books()
     for b in books:
         if b["id"] == book_id:
             b["summary"] = _generate_summary(b)
+            b["keywords"] = b.get("keywords", [])
             return b
     raise HTTPException(status_code=404, detail="书籍未找到")
 
 
+def _load_summaries_cache() -> dict:
+    """加载书籍摘要缓存"""
+    if not os.path.exists(_SUMMARIES_CACHE_PATH):
+        return {}
+    try:
+        with open(_SUMMARIES_CACHE_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
 def _generate_summary(book: dict) -> str:
-    """生成书籍摘要"""
-    author = book["author"]
+    """生成书籍摘要（纯缓存，瞬间返回）"""
+    cache = _load_summaries_cache()
     title = book["title"]
-    region = book["region"]
-    tags = book.get("tags", [])
+    author = book.get("author", "")
+    # 优先用 title||author 作为 key（同名不同作者不冲突）
+    key = f"{title}||{author}"
+    if key in cache and cache[key].get("summary"):
+        return cache[key]["summary"]
+    # 兼容旧格式（仅 title 作为 key）
+    if title in cache and cache[title].get("summary"):
+        return cache[title]["summary"]
 
-    parts = []
-    if tags:
-        parts.append(f"本书属于{'、'.join(tags)}领域的{t('专著', '著作')}。")
-    if region == "东方":
-        parts.append(f"{author}是东方哲学的重要思想家。")
-    else:
-        parts.append(f"{author}是西方哲学史上的重要思想家。")
-    if book["file_type"] == "txt":
-        parts.append(f"《{title}》目前尚未收录全文，敬请期待。")
-    else:
-        parts.append(f"《{title}》以{book['file_type'].upper()}格式提供阅读。")
+    # 极少数未缓存的情况：走极简兜底
+    return f"《{title}》是{book['author']}的著作，{book['file_type'].upper()}格式，约{(book['file_size']/1024/1024):.1f}MB。"
 
-    return "".join(parts)
+
+def _read_book_sample(book: dict) -> str:
+    """读取书籍开头内容样本（最多5000字符）"""
+    try:
+        file_path = os.path.join(config.KNOWLEDGE_DIR, book["path"])
+        if not os.path.exists(file_path):
+            return ""
+        ext = os.path.splitext(file_path)[1].lower()
+        if ext == ".txt":
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                return f.read(5000)
+        elif ext == ".epub":
+            import ebooklib
+            from ebooklib import epub
+            from bs4 import BeautifulSoup
+            import html2text
+            bk = epub.read_epub(file_path)
+            h2t = html2text.HTML2Text()
+            h2t.ignore_links = True
+            h2t.ignore_images = True
+            h2t.body_width = 0
+            texts = []
+            for item in bk.get_items_of_type(ebooklib.ITEM_DOCUMENT):
+                try:
+                    soup = BeautifulSoup(item.get_content(), "html.parser")
+                    for tag in soup(["script", "style", "nav"]):
+                        tag.decompose()
+                    t = h2t.handle(str(soup)).strip()
+                    if len(t) > 50:
+                        texts.append(t)
+                except Exception:
+                    pass
+                if sum(len(t) for t in texts) > 5000:
+                    break
+            return "\n".join(texts)[:5000]
+        elif ext == ".pdf":
+            try:
+                import pdfplumber
+                with pdfplumber.open(file_path) as pdf:
+                    texts = []
+                    for page in pdf.pages[:3]:
+                        t = page.extract_text()
+                        if t:
+                            texts.append(t)
+                    return "\n".join(texts)[:5000]
+            except Exception:
+                return ""
+    except Exception:
+        return ""
+    return ""
+
+
+def _extract_summary_from_content(content: str, book: dict) -> str:
+    """从内容中提取摘要信息（使用jieba关键词 + 启发式规则）"""
+    import jieba.analyse
+    try:
+        # 提取关键词
+        keywords = jieba.analyse.textrank(content[:3000], topK=8, withWeight=True,
+            allowPOS=("n", "nr", "ns", "nt", "nz", "v", "vn", "a", "an"))
+        key_terms = [kw for kw, w in keywords if len(kw) >= 2 and w > 0.01][:6]
+
+        parts = []
+        parts.append(f"《{book['title']}》是{book['author']}的{'哲学' if book['region'] == '西方' else ''}著作。")
+        if key_terms:
+            parts.append(f"主要涉及{'、'.join(key_terms[:4])}等主题。")
+        parts.append(f"本书约{(book['file_size'] / 1024 / 1024):.1f}MB，以{book['file_type'].upper()}格式收录。")
+        return "".join(parts)
+    except Exception:
+        return f"《{book['title']}》是{book['author']}的著作，约{(book['file_size'] / 1024 / 1024):.1f}MB。"
 
 
 def t(a, b):
@@ -290,18 +699,50 @@ def t(a, b):
 
 @app.get("/api/books/{book_id}/file")
 async def download_book(book_id: str):
-    """下载/流式传输书籍文件"""
+    """下载/流式传输书籍文件 —— R2 模式返回预签名 URL，本地模式返回文件流"""
     books = scan_books()
+    book = None
     for b in books:
         if b["id"] == book_id:
-            file_path = os.path.join(config.KNOWLEDGE_DIR, b["path"])
-            if os.path.exists(file_path):
-                return FileResponse(
-                    file_path,
-                    media_type="application/octet-stream",
-                    filename=Path(file_path).name,
-                )
-    raise HTTPException(status_code=404, detail="文件未找到")
+            book = b
+            break
+    if not book:
+        raise HTTPException(status_code=404, detail="书籍未找到")
+
+    # GitHub 模式：重定向到 Release 下载 URL
+    if config.USE_GITHUB and "_download_url" in book:
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url=book["_download_url"])
+
+    # R2 模式：生成 1 小时有效的预签名下载 URL
+    if config.USE_R2:
+        client = _get_r2_client()
+        r2_key = 'books/' + book["path"]
+        url = client.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': config.R2_BUCKET, 'Key': r2_key},
+            ExpiresIn=3600,
+        )
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url=url)
+
+    # 本地模式：流式返回文件
+    file_path = os.path.join(config.KNOWLEDGE_DIR, book["path"])
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="文件不存在")
+    ext = Path(file_path).suffix.lower()
+    mime_map = {
+        ".pdf": "application/pdf",
+        ".epub": "application/epub+zip",
+        ".mobi": "application/x-mobipocket-ebook",
+        ".txt": "text/plain",
+        ".md": "text/markdown",
+    }
+    return FileResponse(
+        file_path,
+        media_type=mime_map.get(ext, "application/octet-stream"),
+        headers={"Content-Disposition": "inline"},
+    )
 
 
 # ============================================================
@@ -341,6 +782,157 @@ def scrape_baidu_baike(author_name: str) -> Optional[dict]:
         return None
 
 
+# ⚠️ 标签分隔符统一：[/,、，;；] — 新增分隔符时，下面3个地方必须同步修改：
+#   1. get_author_filters() — 第626/631行 (split+countries/schools)
+#   2. list_all_authors() — 第768/772行 (filter matching)
+#   3. AuthorsPage.jsx 前端 — 第88/91行 (client-side filter)
+def _normalize_tag(tag):
+    """Merge similar tags into broader categories for filter DISPLAY only.
+    Returns a single canonical tag."""
+    tag = tag.strip()
+    merge_map = {
+        "存在主义先驱": "存在主义", "存在哲学": "存在主义", "文学哲学": "存在主义",
+        "柏拉图主义": "古希腊哲学", "逍遥学派": "古希腊哲学", "伊壁鸠鲁主义": "古希腊哲学",
+        "米利都学派": "古希腊哲学", "埃利亚派": "古希腊哲学", "前苏格拉底": "古希腊哲学",
+        "古代哲学": "古希腊哲学", "犬儒学派": "古希腊哲学", "自然哲学": "古希腊哲学",
+        "新柏拉图主义": "古希腊哲学", "折衷主义": "古希腊哲学", "元素论": "古希腊哲学",
+        "斯多葛派": "斯多葛学派", "斯多葛主义": "斯多葛学派", "晚期斯多亚": "斯多葛学派",
+        "批判哲学": "德国古典哲学", "德国唯心论": "德国古典哲学", "唯意志论": "德国古典哲学",
+        "交往理论": "法兰克福学派", "文化批评": "法兰克福学派",
+        "法兰克福学派（批判理论）": "法兰克福学派",
+        "启蒙哲学": "启蒙运动", "启蒙思想": "启蒙运动", "苏格兰启蒙": "启蒙运动", "人文主义": "启蒙运动",
+        "精神分析": "精神分析学", "分析心理学": "精神分析学", "心理治疗": "精神分析学",
+        "逻辑原子主义": "分析哲学", "逻辑实用主义": "分析哲学",
+        "逻辑实证": "分析哲学", "日常语言": "分析哲学", "语言哲学": "分析哲学",
+        "形式社会学": "社会学", "社会心理学": "社会学", "群体心理学": "社会学", "社会达尔文": "社会学",
+        "激进平等": "政治哲学", "责任伦理": "政治哲学", "社会契约论": "政治哲学", "古典经济学": "政治哲学",
+        "德性伦理": "伦理学", "批判理性主义": "科学哲学",
+        "解释学": "现象学", "身体哲学": "现象学", "意向性": "现象学",
+        "常识实在论": "实在论", "人本唯物论": "实在论", "机械唯物主义": "实在论",
+        "结构语言学": "结构主义", "进步教育": "实用主义", "新实用主义": "实用主义",
+        "荒诞文学": "荒诞哲学", "浪漫主义先驱": "浪漫主义",
+        "近代哲学之父": "近代哲学", "有机体哲学": "过程哲学",
+        "后现代哲学": "后现代主义", "解构主义": "后现代主义",
+        # 新增合并
+        "宗教社会学": "社会学", "政治经济学": "政治哲学",
+        "现实主义政治哲学": "政治哲学", "文艺复兴人文主义": "启蒙运动",
+        "逻辑实证主义": "实证主义", "绝对唯心主义": "唯心主义",
+        "历史唯物主义": "马克思主义", "结构马克思主义": "马克思主义",
+    }
+    return merge_map.get(tag, tag)
+
+def _expand_tags(tag):
+    """Expand a tag for FILTER MATCHING. Each tag maps to itself + all its
+    merged/expanded parents (used by both merge_map and multi_map logic)."""
+    tag = tag.strip()
+    # Start with the tag itself
+    result = [tag]
+    # Add the display-merged parent (from merge_map)
+    display_parent = _normalize_tag(tag)
+    if display_parent != tag and display_parent not in result:
+        result.append(display_parent)
+    # Add any multi-tag expansions
+    multi_map = {
+        "结构马克思主义": ["马克思主义", "结构主义"],
+        "政治经济学": ["政治哲学", "社会学"],
+        "宗教社会学": ["社会学", "宗教哲学"],
+        "逻辑实证主义": ["实证主义", "分析哲学"],
+        "现实主义政治哲学": ["政治哲学"],
+        "文艺复兴人文主义": ["启蒙运动"],
+        "绝对唯心主义": ["唯心主义"],
+        "历史唯物主义": ["马克思主义"],
+        "后现代哲学": ["后现代主义"],
+        "解构主义": ["后现代主义"],
+    }
+    extras = multi_map.get(tag, [])
+    for t in extras:
+        if t not in result:
+            result.append(t)
+    return result
+
+def _era_to_century(era_str):
+    """Convert era string to century: '约前624-前546' -> '公元前7世纪'"""
+    import re
+    if not era_str or era_str in ("-", "未知", ""):
+        return None
+    # BCE: 公元前xxx / 约前xxx / 约公元前xxx / 前xxx
+    m = re.search(r'(?:公元前|约公元前|约前|前)\s*(\d+)', era_str)
+    if m:
+        year = int(m.group(1))
+        return f'公元前{(year + 99) // 100}世纪'
+    # CE: find the first 3-4 digit number as birth year
+    m = re.search(r'(?<!\d)(\d{3,4})', era_str)
+    if m:
+        year = int(m.group(1))
+        century = (year + 99) // 100 if year < 1000 else (year - 1) // 100 + 1
+        return f'{century}世纪'
+    return None
+
+@app.get("/api/authors/filters")
+async def get_author_filters():
+    """获取作者多维度筛选选项（按世纪分组）"""
+    books = scan_books()
+    eras = set()
+    countries = set()
+    schools = set()
+
+    for b in books:
+        author = b["author"]
+        if not is_valid_author(author):
+            continue
+        info = get_philosopher_info(author)
+        if info:
+            if info.get("era"):
+                century = _era_to_century(info["era"])
+                if century:
+                    eras.add(century)
+            if info.get("country"):
+                cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
+                for c in re.split(r'[/,、，;；]', info["country"]):
+                    c = c.strip()
+                    c = cnt_map.get(c, c)
+                    if c: countries.add(c)
+            if info.get("school"):
+                for tag in re.split(r'[/,、，;；]', info["school"]):
+                    tag = tag.strip()
+                    if tag:
+                        schools.add(_normalize_tag(tag))
+
+    def _century_sort_key(c):
+        """Sort centuries: 公元前 first (descending), then CE (ascending)"""
+        import re
+        m_bce = re.match(r'公元前(\d+)世纪', c)
+        if m_bce:
+            return (-int(m_bce.group(1)), 0)  # negative so -5 before -4
+        m_ce = re.match(r'(\d+)世纪', c)
+        if m_ce:
+            return (0, int(m_ce.group(1)))  # positive after BCE
+        return (1, 0)
+
+    # Sort schools by historical influence (rough ranking)
+    _school_rank = {
+        "古希腊哲学": 1, "启蒙运动": 2, "德国古典哲学": 3, "经验主义": 4,
+        "理性主义": 5, "马克思主义": 6, "存在主义": 7, "现象学": 8,
+        "分析哲学": 9, "实用主义": 10, "自由主义": 11, "政治哲学": 12,
+        "伦理学": 13, "科学哲学": 14, "斯多葛学派": 15, "怀疑论": 16,
+        "经院哲学": 17, "浪漫主义": 18, "宗教哲学": 19, "荒诞哲学": 20,
+        "结构主义": 21, "后现代主义": 22, "精神分析学": 23, "法兰克福学派": 24,
+        "生命哲学": 25, "功利主义": 26, "实证主义": 27, "实在论": 28,
+        "唯心主义": 29, "历史唯物主义": 30, "后结构主义": 31, "过程哲学": 32,
+        "哲学诠释学": 33, "技术哲学": 34, "社会学": 35, "女性主义": 36,
+        "超验主义": 37, "教父哲学": 38, "托马斯主义": 39, "绝对唯心主义": 40,
+        "唯名论": 41, "近代哲学": 42, "社群主义": 43, "基督教哲学": 44,
+        "悲观主义哲学": 45,
+    }
+    def _school_sort_key(s):
+        return _school_rank.get(s, 100)
+
+    return {
+        "eras": sorted(eras, key=_century_sort_key),
+        "countries": sorted(countries),
+        "schools": sorted(schools, key=_school_sort_key),
+    }
+
 @app.get("/api/authors/{author_name}")
 async def get_author_info(author_name: str):
     """获取作者详细信息（内置库 + 百度百科爬虫）"""
@@ -351,54 +943,51 @@ async def get_author_info(author_name: str):
     ]
 
     region = author_books[0]["region"] if author_books else "未知"
-    book_titles = [b["title"] for b in author_books]
+    book_list = [{"id": b["id"], "title": b["title"], "file_type": b["file_type"]} for b in author_books]
+    book_count = len(book_list)
 
     # 1. 先从内置数据库获取
     info = get_philosopher_info(author_name)
 
-    if info:
+    def build_response(source, era="", country="", school="", bio="", wiki_url=None):
         return {
             "name": author_name,
             "region": region,
-            "era": info.get("era", ""),
-            "country": info.get("country", ""),
-            "school": info.get("school", ""),
-            "bio": info.get("bio", ""),
-            "wiki_url": info.get("wiki_url", f"https://baike.baidu.com/item/{author_name}"),
-            "books": book_titles,
-            "book_count": len(book_titles),
-            "source": "builtin_database",
+            "era": era,
+            "country": country,
+            "school": school,
+            "bio": bio,
+            "wiki_url": wiki_url or f"https://baike.baidu.com/item/{author_name}",
+            "books": book_list,
+            "book_count": book_count,
+            "source": source,
         }
+
+    if info:
+        return build_response(
+            "builtin_database",
+            era=info.get("era", ""),
+            country=info.get("country", ""),
+            school=info.get("school", ""),
+            bio=info.get("bio", ""),
+            wiki_url=info.get("wiki_url"),
+        )
 
     # 2. 尝试从百度百科爬取
     scraped = scrape_baidu_baike(author_name)
     if scraped:
-        return {
-            "name": author_name,
-            "region": region,
-            "era": "",
-            "country": "",
-            "school": "",
-            "bio": scraped["bio"],
-            "wiki_url": scraped.get("wiki_url", f"https://baike.baidu.com/item/{author_name}"),
-            "books": book_titles,
-            "book_count": len(book_titles),
-            "source": "baidu_baike",
-        }
+        return build_response(
+            "baidu_baike",
+            bio=scraped["bio"],
+            wiki_url=scraped.get("wiki_url"),
+        )
 
     # 3. 兜底
-    return {
-        "name": author_name,
-        "region": region,
-        "era": "",
-        "country": "",
-        "school": "",
-        "bio": f"{author_name}是{region}哲学史上的重要思想家。著有{'、'.join(book_titles[:5])}等作品。",
-        "wiki_url": f"https://baike.baidu.com/item/{author_name}",
-        "books": book_titles,
-        "book_count": len(book_titles),
-        "source": "fallback",
-    }
+    book_titles = [b["title"] for b in author_books]
+    return build_response(
+        "fallback",
+        bio=f"{author_name}是{region}哲学史上的重要思想家。著有{'、'.join(book_titles[:5])}等作品。",
+    )
 
 
 @app.get("/api/authors")
@@ -427,49 +1016,59 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
 
     result = []
     for name, info in authors_map.items():
+        century = _era_to_century(info.get("era", "")) if info.get("era") else ""
         entry = {
             "name": name,
             "region": info["region"],
             "book_count": len(info["books"]),
             "books": info["books"][:10],
             "era": info["era"],
+            "century": century,
             "country": info["country"],
             "school": info["school"],
         }
-        # 标签筛选
-        if tag and tag not in info.get("school", "") and tag not in info.get("country", ""):
-            continue
+        # 多标签筛选（逗号分隔，AND逻辑，流派/国家/时代/世纪）
+        if tag:
+            raw_school = info.get("school") or ""
+            expanded_schools = [t for s in re.split(r'[/,、，;；]', raw_school) if s.strip() for t in _expand_tags(s.strip())]
+            raw_country = info.get("country") or ""
+            cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
+            norm_countries = set()
+            for c in re.split(r'[/,、，;；]', raw_country):
+                c = c.strip()
+                c = cnt_map.get(c, c)
+                if c: norm_countries.add(c)
+            # All tags must match (AND logic)
+            all_match = True
+            for t in tag.split(","):
+                t = t.strip()
+                if not t: continue
+                if t in raw_school or t in expanded_schools: continue
+                if t in raw_country or t in norm_countries: continue
+                if t == info.get("era", "") or t == (century or ""): continue
+                all_match = False
+                break
+            if not all_match:
+                continue
         result.append(entry)
 
-    return {"authors": sorted(result, key=lambda a: (a["region"], a["name"]))}
+    return {"authors": sorted(result, key=lambda a: (_author_sort_key(a["name"]), a["region"], a["name"]))}
 
 
-@app.get("/api/authors/filters")
-async def get_author_filters():
-    """获取作者多维度筛选选项"""
-    books = scan_books()
-    eras = set()
-    countries = set()
-    schools = set()
-
-    for b in books:
-        author = b["author"]
-        if not is_valid_author(author):
-            continue
-        info = get_philosopher_info(author)
-        if info:
-            if info.get("era"):
-                eras.add(info["era"])
-            if info.get("country"):
-                countries.add(info["country"])
-            if info.get("school"):
-                schools.add(info["school"])
-
-    return {
-        "eras": sorted(eras),
-        "countries": sorted(countries),
-        "schools": sorted(schools),
-    }
+def _author_sort_key(author_name: str) -> int:
+    """作者排序权重：合集=最前，按出生年份升序"""
+    if "合集" in author_name or "概述" in author_name:
+        return -99999
+    info = get_philosopher_info(author_name)
+    if info and info.get("era"):
+        import re
+        m = re.search(r'(\d+)', info["era"])
+        if m:
+            year = int(m.group(1))
+            if "公元前" in info["era"] or "前" in info["era"]:
+                year = -year
+            return year
+    return 9999
 
 
 # ============================================================
@@ -776,5 +1375,8 @@ if __name__ == "__main__":
     print(f"  数据目录: {config.KNOWLEDGE_DIR}")
     print(f"  API: http://0.0.0.0:{config.SERVER_PORT}")
     print(f"  文档: http://0.0.0.0:{config.SERVER_PORT}/docs")
+    # Pre-compute keywords in background (will be cached after first run)
+    if not os.path.exists(_BOOKS_CACHE_PATH):
+        _build_and_cache_keywords()
     print("=" * 50)
     uvicorn.run(app, host=config.SERVER_HOST, port=config.SERVER_PORT)

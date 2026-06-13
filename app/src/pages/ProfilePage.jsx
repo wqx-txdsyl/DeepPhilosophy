@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   getReadingHistory, getChatHistory, clearChatHistory,
   exportToFile, importFromFile, getAllUserData,
+  relativeTime,
 } from '../data/userData';
 
 function ProfilePage() {
@@ -83,21 +84,38 @@ function ProfilePage() {
 
       {/* 阅读历史 */}
       {tab === 'reading' && (
-        readingHistory.length === 0 ? (
-          <div className="empty-state"><p>暂无阅读记录</p></div>
-        ) : (
-          readingHistory.map((item, i) => (
-            <div key={i} className="card" onClick={() => navigate('/books')}>
-              <div className="card-title" style={{ fontSize: 14 }}>{item.bookTitle}</div>
-              <div className="card-subtitle">
-                {item.bookAuthor} · 进度: {Math.round((item.percent || 0) * 100)}%
+        <div>
+          {readingHistory.length > 0 && (
+            <button className="btn btn-secondary" style={{ marginBottom: 8, padding: '4px 12px', fontSize: 12 }}
+              onClick={() => { const ok = confirm('确定清空所有阅读记录？'); if (ok) { const d = JSON.parse(localStorage.getItem('dp_userdata') || '{}'); d.readingHistory = []; localStorage.setItem('dp_userdata', JSON.stringify(d)); setReadingHistory([]); } }}>
+              清空阅读记录
+            </button>
+          )}
+          {readingHistory.length === 0 ? (
+            <div className="empty-state"><p>暂无阅读记录</p></div>
+          ) : (
+            readingHistory.map((item, i) => (
+              <div key={i} className="card" style={{ cursor: 'pointer' }}
+                onClick={() => navigate('/reader/' + item.bookId)}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div className="card-title" style={{ fontSize: 14, flex: 1 }}>{item.bookTitle}</div>
+                  {item.fileType && (
+                    <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 8,
+                      background: item.fileType === 'pdf' ? 'var(--accent)' : 'var(--secondary)',
+                      color: item.fileType === 'pdf' ? '#fff' : 'var(--text-dim)',
+                    }}>{item.fileType.toUpperCase()}</span>
+                  )}
+                </div>
+                <div className="card-subtitle">
+                  {item.bookAuthor} 进度: {Math.round((item.percent || 0) * 100)}%
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
+                  {relativeTime(item.lastReadAt)}
+                </div>
               </div>
-              <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
-                {item.lastReadAt?.slice(0, 16)}
-              </div>
-            </div>
-          ))
-        )
+            ))
+          )}
+        </div>
       )}
 
       {/* 聊天历史 */}
