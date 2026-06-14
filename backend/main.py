@@ -745,7 +745,7 @@ async def download_book(book_id: str, request: Request):
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
 
-    # GitHub 模式：支持 Range 的代理（PDF 逐页加载、EPUB 边下边看）
+    # GitHub 模式：代理文件（支持 Range，PDF 逐页加载）
     if config.USE_GITHUB and "_download_url" in book:
         gh_url = book["_download_url"]
         ext = Path(gh_url).suffix.lower()
@@ -754,43 +754,40 @@ async def download_book(book_id: str, request: Request):
         range_header = request.headers.get("range", "")
 
         try:
+            # 先获取文件总大小
             gh_req = urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"})
             with urllib.request.urlopen(gh_req, timeout=30) as src:
                 file_size = int(src.headers.get("Content-Length", 0))
-                if range_header and file_size:
-                    # 解析 Range: bytes=0-65535
-                    import re as _re
-                    m = _re.match(r'bytes=(\d+)-(\d*)', range_header)
-                    if m:
-                        start = int(m.group(1))
-                        end = min(int(m.group(2)), file_size - 1) if m.group(2) else min(start + 1048575, file_size - 1)
-                        gh_req2 = urllib.request.Request(gh_url, headers={
-                            "User-Agent": "DeepPhilosophy/1.0",
-                            "Range": f"bytes={start}-{end}",
-                        })
-                        with urllib.request.urlopen(gh_req2, timeout=30) as src2:
-                            data = src2.read()
-                        return Response(
-                            content=data,
-                            status_code=206,
-                            media_type=mime,
-                            headers={
-                                "Content-Range": f"bytes {start}-{end}/{file_size}",
-                                "Accept-Ranges": "bytes",
-                            },
-                        )
-                # 无 Range 请求：流式全部返回
-                def generate():
-                    with urllib.request.urlopen(urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"}), timeout=30) as s:
-                        while True:
-                            chunk = s.read(65536)
-                            if not chunk: break
-                            yield chunk
-                return StreamingResponse(
-                    generate(),
-                    media_type=mime,
-                    headers={"Accept-Ranges": "bytes", "Content-Length": str(file_size)} if file_size else {},
-                )
+
+            if range_header and file_size:
+                import re as _re
+                m = _re.match(r'bytes=(\d+)-(\d*)', range_header)
+                if m:
+                    start = int(m.group(1))
+                    end = min(int(m.group(2)), file_size - 1) if m.group(2) else min(start + 1048575, file_size - 1)
+                    gh_req2 = urllib.request.Request(gh_url, headers={
+                        "User-Agent": "DeepPhilosophy/1.0",
+                        "Range": f"bytes={start}-{end}",
+                    })
+                    with urllib.request.urlopen(gh_req2, timeout=30) as src2:
+                        data = src2.read()
+                    return Response(
+                        content=data, status_code=206, media_type=mime,
+                        headers={
+                            "Content-Range": f"bytes {start}-{end}/{file_size}",
+                            "Accept-Ranges": "bytes",
+                            "Content-Length": str(len(data)),
+                        },
+                    )
+
+            # 无 Range：全量下载返回
+            gh_req2 = urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"})
+            with urllib.request.urlopen(gh_req2, timeout=60) as src:
+                data = src.read()
+            return Response(
+                content=data, media_type=mime,
+                headers={"Accept-Ranges": "bytes", "Content-Length": str(file_size)},
+            )
         except Exception as e:
             raise HTTPException(status_code=502, detail=f"下载失败: {str(e)[:100]}")
 
