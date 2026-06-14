@@ -643,23 +643,23 @@ async def list_books(
     if status:
         books = [b for b in books if b["status"] == status]
 
-    # 附加摘要缓存和AI标签（覆盖 pattern-based 标签为高优先级）
+    # 附加AI标签（不附加摘要，减小列表体积加速加载）
     summaries_cache = _load_summaries_cache()
     for b in books:
-        title = b["title"]
-        author = b.get("author", "")
-        key = f"{title}||{author}"
+        key = f"{b['title']}||{b.get('author', '')}"
         cached = summaries_cache.get(key, {})
-        if cached.get("summary"):
-            b["summary"] = cached["summary"]
-        # 用缓存中的AI标签覆盖 _classify_book 的 pattern 标签
         if cached.get("tags"):
             b["tags"] = cached["tags"]
 
     # 收集所有标签
     all_tags = sorted(set(t for b in books for t in b.get("tags", [])))
 
-    return {"books": books, "total": len(books), "tags": all_tags}
+    # 允许浏览器缓存 5 分钟（减少重复加载）
+    from starlette.responses import JSONResponse as StarletteJSON
+    return StarletteJSON(
+        {"books": books, "total": len(books), "tags": all_tags},
+        headers={"Cache-Control": "public, max-age=300"},
+    )
 
 
 @app.get("/api/books/tags")
@@ -1063,11 +1063,12 @@ async def get_author_filters():
     def _school_sort_key(s):
         return _school_rank.get(s, 100)
 
-    return {
+    from starlette.responses import JSONResponse as StarletteJSON3
+    return StarletteJSON3({
         "eras": sorted(eras, key=_century_sort_key),
         "countries": sorted(countries),
         "schools": sorted(schools, key=_school_sort_key),
-    }
+    }, headers={"Cache-Control": "public, max-age=300"})
 
 @app.get("/api/authors/{author_name}")
 async def get_author_info(author_name: str):
@@ -1228,7 +1229,11 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
                 continue
         result.append(entry)
 
-    return {"authors": sorted(result, key=lambda a: (_author_sort_key(a["name"]), a["region"], a["name"]))}
+    from starlette.responses import JSONResponse as StarletteJSON2
+    return StarletteJSON2(
+        {"authors": sorted(result, key=lambda a: (_author_sort_key(a["name"]), a["region"], a["name"]))},
+        headers={"Cache-Control": "public, max-age=300"},
+    )
 
 
 def _author_sort_key(author_name: str) -> int:
