@@ -69,13 +69,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 挂载前端静态文件（同源部署，无需 CORS）
-import os as _os
-_STATIC_DIR = _os.path.join(_os.path.dirname(__file__), "static")
-if _os.path.isdir(_STATIC_DIR) and _os.path.isfile(_os.path.join(_STATIC_DIR, "index.html")):
-    app.mount("/assets", StaticFiles(directory=_os.path.join(_STATIC_DIR, "assets")), name="static_assets")
-    app.mount("/", StaticFiles(directory=_STATIC_DIR, html=True), name="static_root")
-
 # ============================================================
 # 工具函数
 # ============================================================
@@ -1441,9 +1434,26 @@ async def health_check():
     return {"status": "healthy", "version": "1.1.0", "timestamp": datetime.now().isoformat()}
 
 
-@app.get("/")
-async def root():
-    return {"name": "DeepPhilosophy API", "version": "1.1.0", "docs": "/docs"}
+# ============================================================
+# 静态前端（同源部署，须在 API 路由之后注册）
+# ============================================================
+import os as _os2
+_STATIC_DIR = _os2.path.join(_os2.path.dirname(__file__), "static")
+if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR, "index.html")):
+    # 先挂 assets，再挂根路由
+    app.mount("/assets", StaticFiles(directory=_os2.path.join(_STATIC_DIR, "assets")), name="spa_assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        """SPA fallback: 非 API 路径返回 index.html"""
+        fp = _os2.path.join(_STATIC_DIR, full_path) if full_path else _os2.path.join(_STATIC_DIR, "index.html")
+        if _os2.path.isfile(fp):
+            return FileResponse(fp)
+        return FileResponse(_os2.path.join(_STATIC_DIR, "index.html"))
+
+    @app.get("/")
+    async def serve_index():
+        return FileResponse(_os2.path.join(_STATIC_DIR, "index.html"))
 
 
 # ============================================================
