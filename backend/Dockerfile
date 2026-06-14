@@ -20,18 +20,17 @@ COPY main.py .
 COPY auth.py .
 COPY philosophers_db.py .
 COPY modules/ ./modules/
+COPY data/ ./data/
 
-# 数据目录（书籍通过 API 上传或挂载卷）
-RUN mkdir -p /app/data/books /app/data/extracted /app/data/vectordb
-
-# 环境变量默认值（可在 Zeabur 面板覆盖）
+# 环境变量默认值（可在 Render 面板覆盖）
 ENV KNOWLEDGE_DIR=/app/data/books
 ENV CHROMA_PERSIST_DIR=/app/data/vectordb
 ENV EXTRACTED_DIR=/app/data/extracted
-ENV USE_BGE_MODEL=true
+ENV USE_BGE_MODEL=false
 ENV HF_ENDPOINT=https://hf-mirror.com
 ENV SERVER_HOST=0.0.0.0
 ENV SERVER_PORT=8000
+ENV USE_GITHUB=true
 
 EXPOSE 8000
 

@@ -240,7 +240,7 @@ def _scan_books_github() -> list[dict]:
             "_download_url": download_url,
         })
 
-    # 附加缓存标签（从 book_summaries.json）
+    # 附加缓存标签
     summary_cache = _load_summaries_cache()
     for b in books:
         key = b["title"] + "||" + b["author"]
@@ -248,6 +248,33 @@ def _scan_books_github() -> list[dict]:
             for t in summary_cache[key]["tags"]:
                 if t not in b["tags"]:
                     b["tags"].append(t)
+
+    # 补充 TXT 占位书（在缓存中但没有 PDF/EPUB 的书）
+    seen = {(b["title"], b["author"]) for b in books}
+    for cache_key, entry in summary_cache.items():
+        if "||" not in cache_key:
+            continue
+        title, author = cache_key.split("||", 1)
+        if (title, author) in seen:
+            continue
+        if "待收录" in title and "：" in title:
+            continue  # 跳过空目录占位（如"待收录：XXX"）
+        seen.add((title, author))
+        cached_tags = entry.get("tags", [])
+        region = "西方"
+        pfx = hashlib.md5((title + author).encode()).hexdigest()[:12]
+        books.append({
+            "id": pfx,
+            "title": title,
+            "author": author,
+            "region": region,
+            "file_type": "txt",
+            "file_size": 0,
+            "status": "pending",
+            "path": f"{region}/{author}/{title}.txt",
+            "tags": cached_tags,
+            "updated_at": datetime.now().isoformat(),
+        })
 
     return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
 

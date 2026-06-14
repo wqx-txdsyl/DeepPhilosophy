@@ -52,7 +52,7 @@ def main():
     todo = []
     for root, dirs, files in os.walk(BOOKS_DIR):
         for f in files:
-            if not f.lower().endswith(('.pdf', '.epub')):
+            if not f.lower().endswith(('.pdf', '.epub', '.txt')):
                 continue
             full = os.path.join(root, f)
             rel = os.path.relpath(full, BOOKS_DIR).replace("\\", "/")
