@@ -42,6 +42,8 @@ function ReaderPage() {
   const [epubReady, setEpubReady] = useState(false);
   const [showToc, setShowToc] = useState(false);
   const [epubLocation, setEpubLocation] = useState(0); // percentage 0-100
+  const [epubSpineIdx, setEpubSpineIdx] = useState(0); // current spine index
+  const [epubSpineLen, setEpubSpineLen] = useState(0); // total spine items
   const [showEpubJump, setShowEpubJump] = useState(false);
   const [jumpEpubPage, setJumpEpubPage] = useState('');
 
@@ -274,10 +276,17 @@ function ReaderPage() {
       rendition.themes.register('deepphilosophy', { body: { 'padding-bottom': '80px !important' } });
       rendition.themes.select('deepphilosophy');
       bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
-      // Track current location for page display
+      // Track current location + spine index
       rendition.on('relocated', (loc) => {
         if (loc?.start?.percentage != null) {
           setEpubLocation(Math.round(loc.start.percentage * 100));
+        }
+        if (bk.spine) {
+          const href = loc?.start?.href;
+          const items = bk.spine.items || [];
+          const idx = items.findIndex(item => item.href === href || item.id === href?.replace('#',''));
+          if (idx >= 0) setEpubSpineIdx(idx);
+          if (items.length > 0) setEpubSpineLen(items.length);
         }
       });
       // Generate locations for percentage-based navigation
@@ -422,9 +431,21 @@ function ReaderPage() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => epubRenditionRef.current?.prev()} disabled={epubLocation <= 0}>◀ 上一页</button>
+                    onClick={() => {
+                      const r = epubRenditionRef.current;
+                      if (r?.book?.spine && epubSpineIdx > 0) {
+                        const s = r.book.spine.get(epubSpineIdx - 1);
+                        if (s?.href) r.display(s.href);
+                      }
+                    }} disabled={epubSpineIdx <= 0}>◀ 上一页</button>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => epubRenditionRef.current?.next()} disabled={epubLocation >= 100}>下一页 ▶</button>
+                    onClick={() => {
+                      const r = epubRenditionRef.current;
+                      if (r?.book?.spine && epubSpineIdx < epubSpineLen - 1) {
+                        const s = r.book.spine.get(epubSpineIdx + 1);
+                        if (s?.href) r.display(s.href);
+                      }
+                    }} disabled={epubSpineIdx >= epubSpineLen - 1}>下一页 ▶</button>
                 </div>
               </div>
               {showToc && (
