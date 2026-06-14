@@ -744,9 +744,9 @@ async def download_book(book_id: str):
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
 
-    # GitHub 模式：流式代理（urllib 双向流，不落盘）
+    # GitHub 模式：下载后返回（Render 中转，避免 CORS）
     if config.USE_GITHUB and "_download_url" in book:
-        from fastapi.responses import StreamingResponse
+        from fastapi.responses import Response
         gh_url = book["_download_url"]
         ext = Path(gh_url).suffix.lower()
         mime_map = {
@@ -755,18 +755,17 @@ async def download_book(book_id: str):
             ".txt": "text/plain",
             ".md": "text/markdown",
         }
-        def stream_file():
-            with urllib.request.urlopen(gh_url) as src:
-                while True:
-                    chunk = src.read(65536)
-                    if not chunk:
-                        break
-                    yield chunk
-        return StreamingResponse(
-            stream_file(),
-            media_type=mime_map.get(ext, "application/octet-stream"),
-            headers={"Content-Disposition": f'inline; filename="{book["title"]}{ext}"'},
-        )
+        try:
+            with urllib.request.urlopen(gh_url, timeout=60) as src:
+                data = src.read()
+            return Response(
+                content=data,
+                media_type=mime_map.get(ext, "application/octet-stream"),
+                headers={"Content-Disposition": f'inline; filename="{book["title"]}{ext}"'},
+            )
+        except Exception:
+            from fastapi.responses import RedirectResponse
+            return RedirectResponse(url=gh_url)
 
     # R2 模式：生成 1 小时有效的预签名下载 URL
     if config.USE_R2:
