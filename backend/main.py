@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import uvicorn
@@ -734,7 +734,7 @@ def t(a, b):
 
 
 @app.get("/api/books/{book_id}/file")
-async def download_book(book_id: str):
+async def download_book(book_id: str, request: Request):
     """下载/流式传输书籍文件 —— R2 模式返回预签名 URL，本地模式返回文件流"""
     books = scan_books()
     book = None
@@ -745,32 +745,54 @@ async def download_book(book_id: str):
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
 
-    # GitHub 模式：Render 流式代理（边下边传）
+    # GitHub 模式：支持 Range 的代理（PDF 逐页加载、EPUB 边下边看）
     if config.USE_GITHUB and "_download_url" in book:
-        from fastapi.responses import StreamingResponse
         gh_url = book["_download_url"]
         ext = Path(gh_url).suffix.lower()
-        mime_types = {
-            ".pdf": "application/pdf",
-            ".epub": "application/epub+zip",
-            ".txt": "text/plain",
-            ".md": "text/markdown",
-        }
-        def generate():
-            try:
-                req = urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"})
-                with urllib.request.urlopen(req, timeout=30) as src:
-                    while True:
-                        chunk = src.read(65536)
-                        if not chunk:
-                            break
-                        yield chunk
-            except Exception:
-                pass
-        return StreamingResponse(
-            generate(),
-            media_type=mime_types.get(ext, "application/octet-stream"),
-        )
+        mime_map = {".pdf": "application/pdf", ".epub": "application/epub+zip", ".txt": "text/plain", ".md": "text/markdown"}
+        mime = mime_map.get(ext, "application/octet-stream")
+        range_header = request.headers.get("range", "")
+
+        try:
+            gh_req = urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"})
+            with urllib.request.urlopen(gh_req, timeout=30) as src:
+                file_size = int(src.headers.get("Content-Length", 0))
+                if range_header and file_size:
+                    # 解析 Range: bytes=0-65535
+                    import re as _re
+                    m = _re.match(r'bytes=(\d+)-(\d*)', range_header)
+                    if m:
+                        start = int(m.group(1))
+                        end = min(int(m.group(2)), file_size - 1) if m.group(2) else min(start + 1048575, file_size - 1)
+                        gh_req2 = urllib.request.Request(gh_url, headers={
+                            "User-Agent": "DeepPhilosophy/1.0",
+                            "Range": f"bytes={start}-{end}",
+                        })
+                        with urllib.request.urlopen(gh_req2, timeout=30) as src2:
+                            data = src2.read()
+                        return Response(
+                            content=data,
+                            status_code=206,
+                            media_type=mime,
+                            headers={
+                                "Content-Range": f"bytes {start}-{end}/{file_size}",
+                                "Accept-Ranges": "bytes",
+                            },
+                        )
+                # 无 Range 请求：流式全部返回
+                def generate():
+                    with urllib.request.urlopen(urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"}), timeout=30) as s:
+                        while True:
+                            chunk = s.read(65536)
+                            if not chunk: break
+                            yield chunk
+                return StreamingResponse(
+                    generate(),
+                    media_type=mime,
+                    headers={"Accept-Ranges": "bytes", "Content-Length": str(file_size)} if file_size else {},
+                )
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"下载失败: {str(e)[:100]}")
 
     # R2 模式：生成 1 小时有效的预签名下载 URL
     if config.USE_R2:
