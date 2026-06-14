@@ -29,13 +29,11 @@ class OCREngine:
             self.ready = True
             logger.info("PaddleOCR 引擎初始化成功 (PP-OCRv4, CPU模式)")
         except ImportError:
-            logger.error(
-                "PaddleOCR 未安装！请运行: pip install paddlepaddle paddleocr"
-            )
+            logger.warning("PaddleOCR 未安装（Render 免费版不支持，已跳过）")
             self.ocr = None
             self.ready = False
         except Exception as e:
-            logger.error(f"PaddleOCR 初始化失败: {e}")
+            logger.warning(f"PaddleOCR 初始化跳过: {e}")
             self.ocr = None
             self.ready = False
 
