@@ -1038,8 +1038,33 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
                 "country": info.get("country", "") if info else "",
                 "school": info.get("school", "") if info else "",
             }
-        if b["title"] not in authors_map[author]["books"]:
+        if b["title"] not in authors_map[author]["books"] and "待收录" not in b["title"]:
             authors_map[author]["books"].append(b["title"])
+
+    # 补入只有空目录没有著作的哲学家
+    knowledge_dir = config.KNOWLEDGE_DIR
+    for region_name in ["东方", "西方"]:
+        region_path = os.path.join(knowledge_dir, region_name)
+        if not os.path.isdir(region_path):
+            continue
+        for author_dir in os.listdir(region_path):
+            author_full = os.path.join(region_path, author_dir)
+            if not os.path.isdir(author_full):
+                continue
+            author_clean = author_dir.replace("###合集&概述###", "合集&概述")
+            if not is_valid_author(author_clean):
+                continue
+            if author_clean in authors_map:
+                continue
+            info = get_philosopher_info(author_clean)
+            authors_map[author_clean] = {
+                "name": author_clean,
+                "region": region_name,
+                "books": [],
+                "era": info.get("era", "") if info else "",
+                "country": info.get("country", "") if info else "",
+                "school": info.get("school", "") if info else "",
+            }
 
     result = []
     for name, info in authors_map.items():
