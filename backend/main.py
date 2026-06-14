@@ -745,10 +745,28 @@ async def download_book(book_id: str):
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
 
-    # GitHub 模式：重定向到 GitHub Release 直链
+    # GitHub 模式：Render 代理下载（GitHub 在国内被墙）
     if config.USE_GITHUB and "_download_url" in book:
-        from fastapi.responses import RedirectResponse
-        return RedirectResponse(url=book["_download_url"])
+        from fastapi.responses import Response
+        gh_url = book["_download_url"]
+        ext = Path(gh_url).suffix.lower()
+        mime_types = {
+            ".pdf": "application/pdf",
+            ".epub": "application/epub+zip",
+            ".txt": "text/plain",
+            ".md": "text/markdown",
+        }
+        try:
+            req = urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"})
+            with urllib.request.urlopen(req, timeout=30) as src:
+                data = src.read()
+            return Response(
+                content=data,
+                media_type=mime_types.get(ext, "application/octet-stream"),
+                headers={"Cache-Control": "public, max-age=86400"},
+            )
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"文件下载失败: {str(e)[:100]}")
 
     # R2 模式：生成 1 小时有效的预签名下载 URL
     if config.USE_R2:
