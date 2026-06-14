@@ -226,9 +226,13 @@ function ReaderPage() {
       }
     }
 
-    // 兜底：服务器 API（浏览器/开发环境自动走此路径）
+    // 优先用 GitHub 直链，否则走 API 中转
     if (!url) {
-      url = `${getApiBase()}/api/books/${bookId}/file`;
+      if (b._download_url) {
+        url = b._download_url;  // GitHub CDN 直链，快
+      } else {
+        url = `${getApiBase()}/api/books/${bookId}/file`;
+      }
     }
     setFileUrl(url);
     setLoading(false);

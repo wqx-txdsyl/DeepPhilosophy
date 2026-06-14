@@ -744,33 +744,10 @@ async def download_book(book_id: str):
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
 
-    # GitHub 模式：下载到临时文件后返回（避免 CORS）
+    # GitHub 模式：直接重定向（前端优先用 _download_url 直链，这里仅兜底）
     if config.USE_GITHUB and "_download_url" in book:
-        import tempfile, asyncio
-        gh_url = book["_download_url"]
-        ext = Path(gh_url).suffix.lower()
-        mime_map = {
-            ".pdf": "application/pdf",
-            ".epub": "application/epub+zip",
-            ".txt": "text/plain",
-            ".md": "text/markdown",
-        }
-        def _download():
-            tmp = tempfile.NamedTemporaryFile(delete=False, suffix=ext)
-            tmp_path = tmp.name
-            tmp.close()
-            urllib.request.urlretrieve(gh_url, tmp_path)
-            return tmp_path
-        try:
-            tmp_path = await asyncio.to_thread(_download)
-            return FileResponse(
-                tmp_path,
-                media_type=mime_map.get(ext, "application/octet-stream"),
-                filename=book["title"] + ext,
-            )
-        except Exception:
-            from fastapi.responses import RedirectResponse
-            return RedirectResponse(url=gh_url)
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url=book["_download_url"])
 
     # R2 模式：生成 1 小时有效的预签名下载 URL
     if config.USE_R2:
