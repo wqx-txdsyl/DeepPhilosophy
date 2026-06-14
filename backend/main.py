@@ -802,7 +802,8 @@ async def download_book(book_id: str, request: Request):
 
     # OSS 模式：重定向到 OSS 直链（国内高速）
     if config.USE_OSS and "_download_url" in book:
-        return RedirectResponse(url=book["_download_url"])
+        from starlette.responses import RedirectResponse as StarletteRedirect
+        return StarletteRedirect(url=book["_download_url"], status_code=302)
 
     # GitHub 模式：Render 代理下载（支持 Range 按需取块）
     if config.USE_GITHUB and "_download_url" in book:
