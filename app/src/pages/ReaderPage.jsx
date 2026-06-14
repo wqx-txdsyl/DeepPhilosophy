@@ -50,8 +50,8 @@ function ReaderPage() {
   const [noteText, setNoteText] = useState('');
   const notesKey = `dp_notes_${bookId}`;
 
-  // Two-page view toggle
-  const [twoPage, setTwoPage] = useState(true);
+  // Two-page view toggle (default single for mobile)
+  const [twoPage, setTwoPage] = useState(false);
 
   // AI Chat state
   const [showAiChat, setShowAiChat] = useState(false);
@@ -462,20 +462,20 @@ function ReaderPage() {
                       }}>
                         <Page pageNumber={pageNumber} scale={pdfScale}
                           renderTextLayer={false} renderAnnotationLayer={false}
-                          width={Math.min(440, (window.innerWidth - ((showNotes || showAiChat) ? 260 : 100)) / 2)} />
+                          width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / 2 - 8, 500)} />
                       </div>
                       <div style={{
                         boxShadow: '-2px 0 8px rgba(0,0,0,0.1)',
                       }}>
                         <Page pageNumber={pageNumber + 1} scale={pdfScale}
                           renderTextLayer={false} renderAnnotationLayer={false}
-                          width={Math.min(440, (window.innerWidth - ((showNotes || showAiChat) ? 260 : 100)) / 2)} />
+                          width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / 2 - 8, 500)} />
                       </div>
                     </div>
                   ) : (
                     <Page pageNumber={pageNumber} scale={pdfScale}
                       renderTextLayer={false} renderAnnotationLayer={false}
-                      width={Math.min(480, window.innerWidth - ((showNotes || showAiChat) ? 220 : 80))} />
+                      width={Math.min(window.innerWidth - ((showNotes || showAiChat) ? 260 : 32), 800)} />
                   )}
                 </Document>
               </div>
