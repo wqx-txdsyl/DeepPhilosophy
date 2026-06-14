@@ -736,10 +736,30 @@ async def download_book(book_id: str):
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
 
-    # GitHub 模式：重定向到 Release 下载 URL
+    # GitHub 模式：流式代理（避免 CORS + 支持 Range 请求）
     if config.USE_GITHUB and "_download_url" in book:
-        from fastapi.responses import RedirectResponse
-        return RedirectResponse(url=book["_download_url"])
+        from fastapi.responses import StreamingResponse
+        import requests as req_lib
+        gh_url = book["_download_url"]
+        ext = Path(gh_url).suffix.lower()
+        mime_map = {
+            ".pdf": "application/pdf",
+            ".epub": "application/epub+zip",
+            ".txt": "text/plain",
+            ".md": "text/markdown",
+        }
+
+        def stream_file():
+            with req_lib.get(gh_url, stream=True, timeout=30) as r:
+                r.raise_for_status()
+                for chunk in r.iter_content(chunk_size=8192):
+                    yield chunk
+
+        return StreamingResponse(
+            stream_file(),
+            media_type=mime_map.get(ext, "application/octet-stream"),
+            headers={"Content-Disposition": f'inline; filename="{book["title"]}{ext}"'},
+        )
 
     # R2 模式：生成 1 小时有效的预签名下载 URL
     if config.USE_R2:
@@ -1060,6 +1080,21 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
             authors_map[author_clean] = {
                 "name": author_clean,
                 "region": region_name,
+                "books": [],
+                "era": info.get("era", "") if info else "",
+                "country": info.get("country", "") if info else "",
+                "school": info.get("school", "") if info else "",
+            }
+    # 云端兜底：GitHub/R2 模式下书香目录为空，用硬编码的16位空目录作者列表
+    if config.USE_GITHUB or config.USE_R2:
+        from philosophers_db import EMPTY_DIR_AUTHORS
+        for author_clean in EMPTY_DIR_AUTHORS:
+            if author_clean in authors_map:
+                continue
+            info = get_philosopher_info(author_clean)
+            authors_map[author_clean] = {
+                "name": author_clean,
+                "region": "西方",
                 "books": [],
                 "era": info.get("era", "") if info else "",
                 "country": info.get("country", "") if info else "",

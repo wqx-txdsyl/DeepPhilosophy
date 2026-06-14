@@ -1104,4 +1104,22 @@ def get_philosopher_info(name: str) -> Optional[dict]:
         if key in resolved_name or resolved_name in key:
             return info
 
-    return None
+# 16 位有目录但无著作的哲学家（云端部署时必须保留在作家列表中）
+EMPTY_DIR_AUTHORS = [
+    "乔尔丹诺·布鲁诺",
+    "亨利·柏格森",
+    "以赛亚·伯林",
+    "克里斯蒂安·沃尔夫",
+    "加斯东·巴什拉",
+    "南希·卡特赖特",
+    "威廉·狄尔泰",
+    "尼古拉·哈特曼",
+    "弗里德里希·H.雅可比",
+    "托马斯·里德",
+    "拉卡托斯·伊姆雷",
+    "朱迪斯·巴特勒",
+    "皮埃尔·迪昂",
+    "皮埃尔·阿多",
+    "约翰·邓斯·司各脱",
+    "马克思·舍勒",
+]
