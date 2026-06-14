@@ -80,7 +80,14 @@ R2_ENDPOINT = os.getenv("R2_ENDPOINT", "")
 R2_BUCKET = os.getenv("R2_BUCKET", "deepphilosophy-books")
 
 # ============================================================
-# GitHub Release 云存储配置（主力方案，无需信用卡）
+# GitHub Release 云存储配置（无需信用卡，境外访问）
 # ============================================================
 USE_GITHUB = os.getenv("USE_GITHUB", "False").lower() in ("true", "1", "yes")
 GITHUB_MANIFEST_PATH = os.path.join(os.path.dirname(__file__), "data", "github_manifest.json")
+
+# ============================================================
+# 阿里云 OSS 存储配置（国内高速）
+# ============================================================
+USE_OSS = os.getenv("USE_OSS", "False").lower() in ("true", "1", "yes")
+OSS_MANIFEST_PATH = os.path.join(os.path.dirname(__file__), "data", "oss_manifest.json")
+OSS_BUCKET_HOST = os.getenv("OSS_BUCKET_HOST", "deepphilosophy.oss-cn-shanghai.aliyuncs.com")

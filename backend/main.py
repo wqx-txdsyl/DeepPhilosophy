@@ -191,12 +191,67 @@ def _build_and_cache_keywords():
     threading.Thread(target=_build, daemon=True).start()
 
 def scan_books() -> list[dict]:
-    """扫描书籍目录 —— 自动切换本地 / R2 / GitHub"""
+    """扫描书籍目录 —— 自动切换本地 / OSS / R2 / GitHub"""
+    if config.USE_OSS:
+        return _scan_books_oss()
     if config.USE_GITHUB:
         return _scan_books_github()
     if config.USE_R2:
         return _scan_books_r2()
     return _scan_books_local()
+
+
+def _scan_books_oss() -> list[dict]:
+    """从阿里云 OSS manifest 重建书籍列表"""
+    TITLE_FIXES = {"SZ": "S/Z"}
+    if not os.path.exists(config.OSS_MANIFEST_PATH):
+        return []
+    with open(config.OSS_MANIFEST_PATH, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+    books = []
+    for rel_path, entry in manifest.items():
+        parts = rel_path.split("/")
+        if len(parts) < 3: continue
+        region = parts[0]
+        author = parts[1].replace("###合集&概述###", "合集&概述")
+        title = Path(parts[-1]).stem
+        title = TITLE_FIXES.get(title, title)
+        ext = os.path.splitext(parts[-1])[1].lower().replace(".", "")
+        file_id = hashlib.md5(rel_path.encode()).hexdigest()[:12]
+        tags = _classify_book(title, author, region)
+        url = entry["url"] if isinstance(entry, dict) else entry
+        size = entry.get("size", 0) if isinstance(entry, dict) else 0
+        books.append({
+            "id": file_id, "title": title, "author": author, "region": region,
+            "file_type": ext, "file_size": size,
+            "status": "available",
+            "path": rel_path, "tags": tags,
+            "updated_at": datetime.now().isoformat(),
+            "_download_url": url,
+        })
+    # 附加缓存标签 + TXT 占位
+    summary_cache = _load_summaries_cache()
+    for b in books:
+        key = b["title"] + "||" + b["author"]
+        if key in summary_cache and summary_cache[key].get("tags"):
+            for t in summary_cache[key]["tags"]:
+                if t not in b["tags"]: b["tags"].append(t)
+    seen = {(b["title"], b["author"]) for b in books}
+    for cache_key, entry in summary_cache.items():
+        if "||" not in cache_key: continue
+        title, author = cache_key.split("||", 1)
+        if (title, author) in seen: continue
+        if "待收录" in title and "：" in title: continue
+        seen.add((title, author))
+        pfx = hashlib.md5((title + author).encode()).hexdigest()[:12]
+        books.append({
+            "id": pfx, "title": title, "author": author, "region": "西方",
+            "file_type": "txt", "file_size": 0, "status": "pending",
+            "path": f"西方/{author}/{title}.txt",
+            "tags": entry.get("tags", []),
+            "updated_at": datetime.now().isoformat(),
+        })
+    return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
 
 
 def _scan_books_github() -> list[dict]:
@@ -744,6 +799,10 @@ async def download_book(book_id: str, request: Request):
             break
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
+
+    # OSS 模式：重定向到 OSS 直链（国内高速）
+    if config.USE_OSS and "_download_url" in book:
+        return RedirectResponse(url=book["_download_url"])
 
     # GitHub 模式：Render 代理下载（支持 Range 按需取块）
     if config.USE_GITHUB and "_download_url" in book:
