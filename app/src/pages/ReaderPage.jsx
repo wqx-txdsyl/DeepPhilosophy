@@ -13,8 +13,7 @@ import { saveReadingProgress } from '../data/userData';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// Setup PDF.js worker — MUST match react-pdf v10.4.1's internal pdfjs-dist version
-// Now using pdfjs-dist@5.4.296 (installed locally) to match react-pdf's bundled API
+// Setup PDF.js worker
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
@@ -228,9 +227,15 @@ function ReaderPage() {
       }
     }
 
-    // Render 代理下载
+    // Render 代理 / OSS 重定向
     if (!url) {
       url = `${getApiBase()}/api/books/${bookId}/file`;
+      // Android WebView 不支持 react-pdf worker，PDF 调系统阅读器
+      if (Capacitor.isNativePlatform() && b.file_type === 'pdf' && url) {
+        window.open(url, '_system');
+        navigate(-1);
+        return;
+      }
     }
     setFileUrl(url);
     setLoading(false);
