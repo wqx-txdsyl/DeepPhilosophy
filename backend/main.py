@@ -210,7 +210,7 @@ def _scan_books_github() -> list[dict]:
     books = []
     seen_authors = set()
 
-    for rel_path, download_url in manifest.items():
+    for rel_path, entry in manifest.items():
         # rel_path: 东方/孔子/论语.epub
         parts = rel_path.split("/")
         if len(parts) < 3:
@@ -225,6 +225,14 @@ def _scan_books_github() -> list[dict]:
         file_id = hashlib.md5(rel_path.encode()).hexdigest()[:12]
         seen_authors.add(author)
 
+        # Manifest entry may be {url, size} dict or plain string
+        if isinstance(entry, dict):
+            download_url = entry.get("url", "")
+            file_size = entry.get("size", 0)
+        else:
+            download_url = entry
+            file_size = 0
+
         tags = _classify_book(title, author, region)
         books.append({
             "id": file_id,
@@ -232,7 +240,7 @@ def _scan_books_github() -> list[dict]:
             "author": author,
             "region": region,
             "file_type": ext,
-            "file_size": 0,  # GitHub 不提供 metadata size，但不影响
+            "file_size": file_size,
             "status": "pending" if ext == "txt" else "available",
             "path": rel_path,
             "tags": tags,
@@ -736,30 +744,10 @@ async def download_book(book_id: str):
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
 
-    # GitHub 模式：流式代理（避免 CORS + 支持 Range 请求）
+    # GitHub 模式：重定向到 Release 下载直链
     if config.USE_GITHUB and "_download_url" in book:
-        from fastapi.responses import StreamingResponse
-        import requests as req_lib
-        gh_url = book["_download_url"]
-        ext = Path(gh_url).suffix.lower()
-        mime_map = {
-            ".pdf": "application/pdf",
-            ".epub": "application/epub+zip",
-            ".txt": "text/plain",
-            ".md": "text/markdown",
-        }
-
-        def stream_file():
-            with req_lib.get(gh_url, stream=True, timeout=30) as r:
-                r.raise_for_status()
-                for chunk in r.iter_content(chunk_size=8192):
-                    yield chunk
-
-        return StreamingResponse(
-            stream_file(),
-            media_type=mime_map.get(ext, "application/octet-stream"),
-            headers={"Content-Disposition": f'inline; filename="{book["title"]}{ext}"'},
-        )
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url=book["_download_url"])
 
     # R2 模式：生成 1 小时有效的预签名下载 URL
     if config.USE_R2:
