@@ -17,7 +17,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import uvicorn
 
@@ -67,6 +68,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 挂载前端静态文件（同源部署，无需 CORS）
+import os as _os
+_STATIC_DIR = _os.path.join(_os.path.dirname(__file__), "static")
+if _os.path.isdir(_STATIC_DIR) and _os.path.isfile(_os.path.join(_STATIC_DIR, "index.html")):
+    app.mount("/assets", StaticFiles(directory=_os.path.join(_STATIC_DIR, "assets")), name="static_assets")
+    app.mount("/", StaticFiles(directory=_STATIC_DIR, html=True), name="static_root")
 
 # ============================================================
 # 工具函数
@@ -744,28 +752,10 @@ async def download_book(book_id: str):
     if not book:
         raise HTTPException(status_code=404, detail="书籍未找到")
 
-    # GitHub 模式：下载后返回（Render 中转，避免 CORS）
+    # GitHub 模式：重定向到 GitHub Release 直链
     if config.USE_GITHUB and "_download_url" in book:
-        from fastapi.responses import Response
-        gh_url = book["_download_url"]
-        ext = Path(gh_url).suffix.lower()
-        mime_map = {
-            ".pdf": "application/pdf",
-            ".epub": "application/epub+zip",
-            ".txt": "text/plain",
-            ".md": "text/markdown",
-        }
-        try:
-            with urllib.request.urlopen(gh_url, timeout=60) as src:
-                data = src.read()
-            return Response(
-                content=data,
-                media_type=mime_map.get(ext, "application/octet-stream"),
-                headers={"Content-Disposition": f'inline; filename="{book["title"]}{ext}"'},
-            )
-        except Exception:
-            from fastapi.responses import RedirectResponse
-            return RedirectResponse(url=gh_url)
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url=book["_download_url"])
 
     # R2 模式：生成 1 小时有效的预签名下载 URL
     if config.USE_R2:

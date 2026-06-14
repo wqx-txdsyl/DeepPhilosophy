@@ -22,6 +22,9 @@ COPY philosophers_db.py .
 COPY modules/ ./modules/
 COPY data/ ./data/
 
+# 复制前端构建产物（同源部署，避免 CORS）
+COPY app-dist/ ./static/
+
 # 环境变量默认值（可在 Render 面板覆盖）
 ENV KNOWLEDGE_DIR=/app/data/books
 ENV CHROMA_PERSIST_DIR=/app/data/vectordb
