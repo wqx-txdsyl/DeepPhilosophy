@@ -1572,3 +1572,4 @@ if __name__ == "__main__":
         _build_and_cache_keywords()
     print("=" * 50)
     uvicorn.run(app, host=config.SERVER_HOST, port=config.SERVER_PORT)
+# force redeploy Sun Jun 14 18:39:51     2026
