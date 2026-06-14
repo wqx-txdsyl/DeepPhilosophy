@@ -226,13 +226,9 @@ function ReaderPage() {
       }
     }
 
-    // 优先直接用 GitHub Release 直链（快），失败才走 API 代理
+    // Render 代理下载
     if (!url) {
-      if (b._download_url) {
-        url = b._download_url;
-      } else {
-        url = `${getApiBase()}/api/books/${bookId}/file`;
-      }
+      url = `${getApiBase()}/api/books/${bookId}/file`;
     }
     setFileUrl(url);
     setLoading(false);
