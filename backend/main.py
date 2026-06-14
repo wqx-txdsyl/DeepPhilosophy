@@ -754,39 +754,50 @@ async def download_book(book_id: str, request: Request):
         range_header = request.headers.get("range", "")
 
         try:
-            # 先获取文件总大小
-            gh_req = urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"})
-            with urllib.request.urlopen(gh_req, timeout=30) as src:
-                file_size = int(src.headers.get("Content-Length", 0))
-
-            if range_header and file_size:
+            # Range 请求：只下载需要的字节块
+            if range_header:
                 import re as _re
                 m = _re.match(r'bytes=(\d+)-(\d*)', range_header)
                 if m:
                     start = int(m.group(1))
-                    end = min(int(m.group(2)), file_size - 1) if m.group(2) else min(start + 1048575, file_size - 1)
-                    gh_req2 = urllib.request.Request(gh_url, headers={
+                    end_str = m.group(2)
+                    # 首次探测取 64KB，后续按需取最大 2MB
+                    chunk = 65536 if start == 0 and not end_str else 2097152
+                    end = int(end_str) if end_str else min(start + chunk - 1, 999999999)
+                    gh_req = urllib.request.Request(gh_url, headers={
                         "User-Agent": "DeepPhilosophy/1.0",
                         "Range": f"bytes={start}-{end}",
                     })
-                    with urllib.request.urlopen(gh_req2, timeout=30) as src2:
-                        data = src2.read()
+                    with urllib.request.urlopen(gh_req, timeout=30) as src:
+                        data = src.read()
+                        # 从 Content-Range 响应头提取总大小
+                        cr = src.headers.get("Content-Range", "")
+                        total = int(cr.split("/")[-1]) if "/" in cr else len(data)
                     return Response(
                         content=data, status_code=206, media_type=mime,
                         headers={
-                            "Content-Range": f"bytes {start}-{end}/{file_size}",
+                            "Content-Range": f"bytes {start}-{start+len(data)-1}/{total}",
                             "Accept-Ranges": "bytes",
                             "Content-Length": str(len(data)),
                         },
                     )
 
-            # 无 Range：全量下载返回
-            gh_req2 = urllib.request.Request(gh_url, headers={"User-Agent": "DeepPhilosophy/1.0"})
-            with urllib.request.urlopen(gh_req2, timeout=60) as src:
+            # 无 Range：只下载前 128KB 返回（让 reader 感知到 Range 支持后自动切换）
+            gh_req = urllib.request.Request(gh_url, headers={
+                "User-Agent": "DeepPhilosophy/1.0",
+                "Range": "bytes=0-131071",
+            })
+            with urllib.request.urlopen(gh_req, timeout=30) as src:
                 data = src.read()
+                cr = src.headers.get("Content-Range", "")
+                total = int(cr.split("/")[-1]) if "/" in cr else len(data)
             return Response(
-                content=data, media_type=mime,
-                headers={"Accept-Ranges": "bytes", "Content-Length": str(file_size)},
+                content=data, status_code=206, media_type=mime,
+                headers={
+                    "Content-Range": f"bytes 0-{len(data)-1}/{total}",
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": str(len(data)),
+                },
             )
         except Exception as e:
             raise HTTPException(status_code=502, detail=f"下载失败: {str(e)[:100]}")
