@@ -59,7 +59,6 @@ export function saveReadingProgress(bookId, bookTitle, bookAuthor, page, percent
   const data = loadUserData();
   const idx = data.readingHistory.findIndex(r => r.bookId === bookId);
   if (idx >= 0) {
-    // Move to top and update timestamp (like all normal apps)
     const [entry] = data.readingHistory.splice(idx, 1);
     entry.page = page;
     entry.percent = percent;
@@ -73,9 +72,25 @@ export function saveReadingProgress(bookId, bookTitle, bookAuthor, page, percent
       fileType: fileType || '',
     });
   }
-  // Keep last 100
   if (data.readingHistory.length > 100) data.readingHistory = data.readingHistory.slice(0, 100);
   saveUserData(data);
+
+  // Cloud sync (fire-and-forget)
+  const token = localStorage.getItem('dp_token');
+  if (token) {
+    fetch(`${getApiBase()}/api/history/reading`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ book_id: bookId, book_title: bookTitle, book_author: bookAuthor, page, percent }),
+      signal: AbortSignal.timeout(5000),
+    }).catch(() => {});
+  }
+}
+
+function getApiBase() {
+  try {
+    return JSON.parse(localStorage.getItem('dp_api_config') || '{}').apiUrl || 'https://deepphilosophy.onrender.com';
+  } catch { return 'https://deepphilosophy.onrender.com'; }
 }
 
 export function getReadingHistory() {
@@ -90,6 +105,17 @@ export function saveChatMessage(role, content, sources) {
   data.chatHistory.push({ role, content, sources: sources || [], createdAt: now() });
   if (data.chatHistory.length > 500) data.chatHistory = data.chatHistory.slice(-500);
   saveUserData(data);
+
+  // Cloud sync
+  const token = localStorage.getItem('dp_token');
+  if (token && role === 'assistant') {
+    fetch(`${getApiBase()}/api/history/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ role, content, sources: JSON.stringify(sources || []) }),
+      signal: AbortSignal.timeout(5000),
+    }).catch(() => {});
+  }
 }
 
 export function getChatHistory() {
