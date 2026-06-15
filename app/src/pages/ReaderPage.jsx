@@ -258,22 +258,7 @@ ${textContext}
     setBook(b);
     setFileType(b.file_type);
 
-    let url = null;
-    // Android APK 上通过 Capacitor 文件系统直接读取本地文件
-    // 浏览器环境直接走服务器 API（file:// 协议会被浏览器安全策略阻止）
-    if (Capacitor.isNativePlatform()) {
-      const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
-      const basePath = config.booksPath || '';
-      if (basePath && b.path) {
-        url = Capacitor.convertFileSrc(basePath.replace(/\/$/, '') + '/' + b.path);
-      }
-    }
-
-    // Render 代理 / OSS 重定向
-    if (!url) {
-      url = `${getApiBase()}/api/books/${bookId}/file`;
-    }
-    // Android PDF 内嵌渲染（WebView 支持 react-pdf）
+    const url = `${getApiBase()}/api/books/${bookId}/file`;
     setFileUrl(url);
     setLoading(false);
   };

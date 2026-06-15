@@ -1,17 +1,9 @@
 /**
- * 数据层 — 本地文件优先，服务器兜底
- * 用户在设置中配置书籍存储路径即可完全离线使用
+ * 数据层 — 云端优先，本地嵌入式书目兜底
  */
 import { getApiBase } from './App';
 
 let cachedBooks = null;
-
-function getBooksPath() {
-  try {
-    const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
-    return config.booksPath || '';
-  } catch { return ''; }
-}
 
 /** 加载书籍列表 — 服务器优先，本地兜底 */
 export async function loadBooks() {
@@ -82,9 +74,3 @@ export async function getAuthorInfo(authorName) {
   } : null;
 }
 
-/** 获取本地书籍文件 URL */
-export function getLocalBookUrl(book) {
-  const booksPath = getBooksPath();
-  if (!booksPath) return null;
-  return `file://${booksPath}/${book.path}`;
-}
