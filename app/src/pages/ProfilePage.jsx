@@ -86,17 +86,26 @@ function ProfilePage() {
   const syncFromCloud = async (token) => {
     setSyncing(true);
     try {
-      // Pull reading history
+      // Pull reading history — normalize snake_case → camelCase
       const rh = await fetch(`${getApiBase()}/api/history/reading`, {
         headers: { 'Authorization': `Bearer ${token}` },
         signal: AbortSignal.timeout(10000),
       });
       if (rh.ok) {
         const d = await rh.json();
+        const normalized = (d.history || []).map(h => ({
+          bookId: h.book_id || h.id,
+          bookTitle: h.book_title || '',
+          bookAuthor: h.book_author || '',
+          page: h.page || 0,
+          percent: h.percent || 0,
+          fileType: h.file_type || h.fileType || '',
+          lastReadAt: h.last_read_at || h.lastReadAt || h.created_at || '',
+        }));
         const local = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        local.readingHistory = d.history || [];
+        local.readingHistory = normalized;
         localStorage.setItem('dp_userdata', JSON.stringify(local));
-        if (tab === 'reading') setReadingHistory(d.history || []);
+        if (tab === 'reading') setReadingHistory(normalized);
       }
       // Pull chat history
       const ch = await fetch(`${getApiBase()}/api/history/chat`, {
