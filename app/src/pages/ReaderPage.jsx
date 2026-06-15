@@ -13,9 +13,18 @@ import { saveReadingProgress } from '../data/userData';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// Setup PDF.js worker
+// PDF.js — import worker as blob for WebView compat
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+(async () => {
+  try {
+    const resp = await fetch(pdfjsWorker);
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    pdfjs.GlobalWorkerOptions.workerSrc = url;
+  } catch {
+    pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker; // fallback
+  }
+})();
 
 function ReaderPage() {
   const { bookId } = useParams();
@@ -133,16 +142,49 @@ function ReaderPage() {
     } catch {}
   };
 
+  // 获取当前页文字
+  const getCurrentPageText = async () => {
+    if (fileType === 'epub') {
+      const rendition = epubRenditionRef.current;
+      if (!rendition) return '';
+      try {
+        const contents = rendition.getContents();
+        if (contents && contents.length > 0) {
+          const doc = contents[0].document;
+          return doc?.body?.innerText?.trim()?.substring(0, 3000) || '';
+        }
+      } catch {}
+      return '';
+    }
+    if (fileType === 'pdf') {
+      // 从 TextLayer DOM 提取
+      const layers = document.querySelectorAll('.react-pdf__Page__textContent');
+      return Array.from(layers).map(l => l.textContent).join(' ').substring(0, 3000);
+    }
+    return '';
+  };
+
   // AI 问答：基于当前阅读内容（流式输出）
   const askAI = async () => {
     if (!aiQuestion.trim() || aiLoading) return;
     const q = aiQuestion.trim();
+    const pageText = await getCurrentPageText();
     setAiQuestion('');
     setAiHistory(prev => [...prev, { role: 'user', content: q }, { role: 'assistant', content: '', _streaming: true }]);
     setAiLoading(true);
 
     const apiConfig = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
-    const systemPrompt = `你是一位博学的哲学导师。读者正在阅读哲学著作，需要你的帮助理解文本。\n\n当前阅读上下文：\n- 书名：《${book?.title}》\n- 作者：${book?.author}\n- 当前页码：第${pageNumber}页${numPages ? `（共${numPages}页）` : ''}\n${book?.region ? `- 所属传统：${book.region}哲学` : ''}\n\n请根据读者的问题，结合你对这本书和该作者哲学思想的了解，给出深入浅出的解答。`;
+    const locInfo = fileType === 'epub' ? `位置：${epubLocation}%` : `第${pageNumber}页${numPages ? `（共${numPages}页）` : ''}`;
+    const textContext = pageText ? `\n当前页面文字内容：\n"""\n${pageText}\n"""\n` : '';
+    const systemPrompt = `你是一位博学的哲学导师。读者正在阅读哲学著作，需要你的帮助理解文本。
+
+当前阅读上下文：
+- 书名：《${book?.title}》
+- 作者：${book?.author}
+- ${locInfo}
+${book?.region ? `- 所属传统：${book.region}哲学` : ''}
+${textContext}
+请根据读者的问题，结合你看到的页面内容以及对这本书和该作者哲学思想的了解，给出深入浅出的解答。`;
 
     let answer = '';
     try {
@@ -230,13 +272,8 @@ function ReaderPage() {
     // Render 代理 / OSS 重定向
     if (!url) {
       url = `${getApiBase()}/api/books/${bookId}/file`;
-      // Android WebView 不支持 react-pdf worker，PDF 调系统阅读器
-      if (Capacitor.isNativePlatform() && b.file_type === 'pdf' && url) {
-        window.open(url, '_system');
-        navigate(-1);
-        return;
-      }
     }
+    // Android PDF 内嵌渲染（WebView 支持 react-pdf）
     setFileUrl(url);
     setLoading(false);
   };
@@ -487,20 +524,20 @@ function ReaderPage() {
                         boxShadow: '2px 0 8px rgba(0,0,0,0.1)',
                       }}>
                         <Page pageNumber={pageNumber} scale={pdfScale}
-                          renderTextLayer={false} renderAnnotationLayer={false}
+                          renderTextLayer={true} renderAnnotationLayer={false}
                           width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / 2 - 8, 500)} />
                       </div>
                       <div style={{
                         boxShadow: '-2px 0 8px rgba(0,0,0,0.1)',
                       }}>
                         <Page pageNumber={pageNumber + 1} scale={pdfScale}
-                          renderTextLayer={false} renderAnnotationLayer={false}
+                          renderTextLayer={true} renderAnnotationLayer={false}
                           width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / 2 - 8, 500)} />
                       </div>
                     </div>
                   ) : (
                     <Page pageNumber={pageNumber} scale={pdfScale}
-                      renderTextLayer={false} renderAnnotationLayer={false}
+                      renderTextLayer={true} renderAnnotationLayer={false}
                       width={Math.min(window.innerWidth - ((showNotes || showAiChat) ? 260 : 32), 800)} />
                   )}
                 </Document>
