@@ -249,7 +249,16 @@ function ProfilePage() {
         readingHistory.length === 0 ? (
           <div className="empty-state"><p>暂无阅读记录</p></div>
         ) : (
-          readingHistory.map((item, i) => (
+          <>
+            <button className="btn btn-secondary" style={{ marginBottom: 8, padding: '4px 12px', fontSize: 12 }}
+              onClick={() => {
+                if (!confirm('确定清空所有阅读记录？')) return;
+                const d = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+                d.readingHistory = [];
+                localStorage.setItem('dp_userdata', JSON.stringify(d));
+                setReadingHistory([]);
+              }}>🗑 清空阅读记录</button>
+            {readingHistory.map((item, i) => (
             <div key={i} className="card" style={{ cursor: 'pointer' }}
               onClick={() => navigate('/reader/' + item.bookId)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -268,7 +277,8 @@ function ProfilePage() {
                 {relativeTime(item.lastReadAt)}
               </div>
             </div>
-          ))
+          )))
+          </>
         )
       )}
 
