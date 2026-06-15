@@ -119,6 +119,17 @@ function ProfilePage() {
         localStorage.setItem('dp_userdata', JSON.stringify(local));
         if (tab === 'chat') setChatHistory(d.messages || []);
       }
+      // Pull book notes
+      const notes = await fetch(`${getApiBase()}/api/notes`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+        signal: AbortSignal.timeout(10000),
+      });
+      if (notes.ok) {
+        const d = await notes.json();
+        Object.entries(d.notes || {}).forEach(([bid, txt]) => {
+          localStorage.setItem(`dp_notes_${bid}`, txt);
+        });
+      }
     } catch {}
     setSyncing(false);
   };
