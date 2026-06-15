@@ -135,10 +135,20 @@ function ReaderPage() {
     }
   };
 
-  // Save notes
+  // Save notes — local + cloud
   const saveNotes = () => {
     try {
       localStorage.setItem(notesKey, noteText);
+      // Cloud sync
+      const token = localStorage.getItem('dp_token');
+      if (token) {
+        fetch(`${getApiBase()}/api/notes/save`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ book_id: bookId, note_text: noteText }),
+          signal: AbortSignal.timeout(5000),
+        }).catch(() => {});
+      }
     } catch {}
   };
 
@@ -249,7 +259,47 @@ ${textContext}
       u[u.length - 1] = l;
       return u;
     });
+
+    // Cloud sync: save both user question + AI answer
+    const token = localStorage.getItem('dp_token');
+    if (token) {
+      fetch(`${getApiBase()}/api/book-chat/save`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ book_id: bookId, role: 'user', content: q }),
+        signal: AbortSignal.timeout(5000),
+      }).catch(() => {});
+      if (answer && answer !== '无法获取回答。请检查网络连接或在设置中配置 API Key。') {
+        fetch(`${getApiBase()}/api/book-chat/save`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ book_id: bookId, role: 'assistant', content: answer }),
+          signal: AbortSignal.timeout(5000),
+        }).catch(() => {});
+      }
+    }
   };
+
+  // Load AI chat + notes from cloud on book open (if logged in)
+  useEffect(() => {
+    if (!bookId) return;
+    const token = localStorage.getItem('dp_token');
+    if (!token) return;
+    // Load notes
+    fetch(`${getApiBase()}/api/notes/${bookId}`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+      signal: AbortSignal.timeout(5000),
+    }).then(r => r.ok && r.json()).then(d => {
+      if (d?.note_text) setNoteText(d.note_text);
+    }).catch(() => {});
+    // Load AI chat
+    fetch(`${getApiBase()}/api/book-chat/${bookId}`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+      signal: AbortSignal.timeout(5000),
+    }).then(r => r.ok && r.json()).then(d => {
+      if (d?.messages?.length) setAiHistory(d.messages.map(m => ({ role: m.role, content: m.content })));
+    }).catch(() => {});
+  }, [bookId]);
 
   const loadBook = async () => {
     setLoading(true); setError(null);

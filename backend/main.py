@@ -27,6 +27,8 @@ from auth import (
     register, login, get_user_by_token,
     save_reading_progress, get_reading_history,
     save_chat_message, get_chat_history, clear_chat_history,
+    save_book_note, get_book_note, get_all_book_notes,
+    save_book_chat, get_book_chat, clear_book_chat,
 )
 from philosophers_db import get_philosopher_info
 
@@ -1323,6 +1325,57 @@ async def get_chat(user: dict = __import__('fastapi').Depends(auth_required)):
 async def clear_chat(user: dict = __import__('fastapi').Depends(auth_required)):
     """清空聊天历史"""
     clear_chat_history(user["id"])
+    return {"success": True}
+
+
+# ============================================================
+# 批注笔记 API
+# ============================================================
+
+class NoteRequest(BaseModel):
+    book_id: str
+    note_text: str = ""
+
+@app.post("/api/notes/save")
+async def api_save_note(req: NoteRequest,
+                       user: dict = __import__('fastapi').Depends(auth_required)):
+    save_book_note(user["id"], req.book_id, req.note_text)
+    return {"success": True}
+
+@app.get("/api/notes/{book_id}")
+async def api_get_note(book_id: str,
+                      user: dict = __import__('fastapi').Depends(auth_required)):
+    return {"note_text": get_book_note(user["id"], book_id)}
+
+@app.get("/api/notes")
+async def api_get_all_notes(user: dict = __import__('fastapi').Depends(auth_required)):
+    return {"notes": get_all_book_notes(user["id"])}
+
+
+# ============================================================
+# 书内 AI 对话 API
+# ============================================================
+
+class BookChatRequest(BaseModel):
+    book_id: str
+    role: str
+    content: str
+
+@app.post("/api/book-chat/save")
+async def api_save_book_chat(req: BookChatRequest,
+                            user: dict = __import__('fastapi').Depends(auth_required)):
+    save_book_chat(user["id"], req.book_id, req.role, req.content)
+    return {"success": True}
+
+@app.get("/api/book-chat/{book_id}")
+async def api_get_book_chat(book_id: str,
+                           user: dict = __import__('fastapi').Depends(auth_required)):
+    return {"messages": get_book_chat(user["id"], book_id)}
+
+@app.delete("/api/book-chat/{book_id}")
+async def api_clear_book_chat(book_id: str,
+                             user: dict = __import__('fastapi').Depends(auth_required)):
+    clear_book_chat(user["id"], book_id)
     return {"success": True}
 
 

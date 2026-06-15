@@ -62,6 +62,26 @@ def init_db():
             created_at TEXT NOT NULL DEFAULT (datetime('now')),
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
+
+        CREATE TABLE IF NOT EXISTS book_notes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            book_id TEXT NOT NULL,
+            note_text TEXT NOT NULL DEFAULT '',
+            updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            UNIQUE(user_id, book_id)
+        );
+
+        CREATE TABLE IF NOT EXISTS book_chat (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            book_id TEXT NOT NULL,
+            role TEXT NOT NULL,
+            content TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT (datetime('now')),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        );
     """)
     conn.commit()
     conn.close()
@@ -226,6 +246,81 @@ def clear_chat_history(user_id: int):
     """清空聊天历史"""
     conn = _get_conn()
     conn.execute("DELETE FROM chat_history WHERE user_id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+
+
+# ============================================================
+# 批注笔记（按书+用户）
+# ============================================================
+
+def save_book_note(user_id: int, book_id: str, note_text: str) -> bool:
+    """保存/更新批注"""
+    conn = _get_conn()
+    conn.execute("""
+        INSERT INTO book_notes (user_id, book_id, note_text, updated_at)
+        VALUES (?, ?, ?, datetime('now'))
+        ON CONFLICT(user_id, book_id) DO UPDATE SET
+            note_text = excluded.note_text,
+            updated_at = datetime('now')
+    """, (user_id, book_id, note_text))
+    conn.commit()
+    conn.close()
+    return True
+
+
+def get_book_note(user_id: int, book_id: str) -> str:
+    """获取批注内容"""
+    conn = _get_conn()
+    row = conn.execute(
+        "SELECT note_text FROM book_notes WHERE user_id = ? AND book_id = ?",
+        (user_id, book_id),
+    ).fetchone()
+    conn.close()
+    return row["note_text"] if row else ""
+
+
+def get_all_book_notes(user_id: int) -> dict:
+    """获取用户所有批注"""
+    conn = _get_conn()
+    rows = conn.execute(
+        "SELECT book_id, note_text FROM book_notes WHERE user_id = ?",
+        (user_id,),
+    ).fetchall()
+    conn.close()
+    return {r["book_id"]: r["note_text"] for r in rows}
+
+
+# ============================================================
+# 书内 AI 对话（按书+用户）
+# ============================================================
+
+def save_book_chat(user_id: int, book_id: str, role: str, content: str):
+    """保存书内AI对话消息"""
+    conn = _get_conn()
+    conn.execute(
+        "INSERT INTO book_chat (user_id, book_id, role, content) VALUES (?, ?, ?, ?)",
+        (user_id, book_id, role, content),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_book_chat(user_id: int, book_id: str, limit: int = 50) -> list[dict]:
+    """获取书内AI对话历史"""
+    conn = _get_conn()
+    rows = conn.execute(
+        "SELECT role, content, created_at FROM book_chat WHERE user_id = ? AND book_id = ? ORDER BY id ASC LIMIT ?",
+        (user_id, book_id, limit),
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def clear_book_chat(user_id: int, book_id: str):
+    """清空书内AI对话"""
+    conn = _get_conn()
+    conn.execute("DELETE FROM book_chat WHERE user_id = ? AND book_id = ?", (user_id, book_id))
     conn.commit()
     conn.close()
 
