@@ -66,11 +66,10 @@ function QAPage() {
     };
   }, []);
 
-  const getApiConfig = () => {
-    try {
-      return JSON.parse(localStorage.getItem('dp_api_config') || '{}');
-    } catch { return {}; }
-  };
+  const [apiConfig, setApiConfig] = useState({});
+  useEffect(() => {
+    import('../data/crypto').then(({ loadConfig }) => loadConfig().then(setApiConfig));
+  }, []);
 
   // 自动滚动到底部（流式输出时逐字跟随）
   const bottomRef = useRef(null);
@@ -95,7 +94,6 @@ function QAPage() {
     let answer = '';
     let sources = [];
 
-    const apiConfig = getApiConfig();
     const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
     const streamBody = {
       model: apiConfig.model || 'deepseek-chat',

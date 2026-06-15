@@ -183,7 +183,14 @@ function ReaderPage() {
     setAiHistory(prev => [...prev, { role: 'user', content: q }, { role: 'assistant', content: '', _streaming: true }]);
     setAiLoading(true);
 
-    const apiConfig = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
+    const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
+    // Decrypt if needed
+    let apiKey = config.apiKey;
+    if (config._encrypted && apiKey && apiKey.includes(':')) {
+      const { decryptApiKey } = await import('../data/crypto');
+      apiKey = await decryptApiKey(apiKey);
+    }
+    const apiConfig = { ...config, apiKey };
     const locInfo = fileType === 'epub' ? `位置：${epubLocation}%` : `第${pageNumber}页${numPages ? `（共${numPages}页）` : ''}`;
     const textContext = pageText ? `\n当前页面文字内容：\n"""\n${pageText}\n"""\n` : '';
     const systemPrompt = `你是一位博学的哲学导师。读者正在阅读哲学著作，需要你的帮助理解文本。

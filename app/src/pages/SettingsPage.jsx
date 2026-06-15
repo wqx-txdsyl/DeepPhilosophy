@@ -1,9 +1,9 @@
 /**
- * 设置页面 — API Key、模型配置
- * 书籍已全部云端化（OSS），无需本地路径
+ * 设置页面 — API Key（加密存储）、模型配置
  */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { saveConfig, loadConfig } from '../data/crypto';
 
 function SettingsPage() {
   const navigate = useNavigate();
@@ -13,17 +13,15 @@ function SettingsPage() {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    try {
-      const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
+    loadConfig().then(config => {
       if (config.apiKey) setApiKey(config.apiKey);
       if (config.model) setModel(config.model);
       if (config.apiUrl) setApiUrl(config.apiUrl);
-    } catch {}
+    });
   }, []);
 
-  const saveConfig = () => {
-    const config = { apiKey, model, apiUrl };
-    localStorage.setItem('dp_api_config', JSON.stringify(config));
+  const handleSave = async () => {
+    await saveConfig(apiKey, model, apiUrl);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -62,7 +60,7 @@ function SettingsPage() {
         </div>
 
         <button className="btn btn-primary btn-block" style={{ marginTop: 14 }}
-          onClick={saveConfig}>
+          onClick={handleSave}>
           {saved ? '✅ 已保存' : '💾 保存配置'}
         </button>
 
