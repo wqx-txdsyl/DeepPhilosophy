@@ -352,9 +352,10 @@ ${textContext}
     try {
       if (!epubViewerRef.current) return;
       const bk = ePub(url, { openAs: 'epub' });
-      // 连续滚动模式：全书内容一滚到底，不存在翻页问题
+      // 必须给 epubjs 精确像素高度，否则分页失效
+      const vh = epubViewerRef.current.parentElement?.clientHeight || window.innerHeight - 120;
       const rendition = bk.renderTo(epubViewerRef.current, {
-        width: '100%', height: window.innerHeight - 120, flow: 'scrolled-continuous', manager: 'continuous',
+        width: '100%', height: vh, flow: 'paginated', spread: 'none',
       });
       epubRenditionRef.current = rendition;
       // Add bottom padding so text isn't hidden by controls
@@ -485,7 +486,7 @@ ${textContext}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative' }}>
           {fileType === 'epub' ? (
             <>
-              <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
+              <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0, overflow: 'auto' }} />
               {/* EPUB controls — flex item, always matches reader width */}
               <div style={{
                 flexShrink: 0,
