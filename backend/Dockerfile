@@ -20,7 +20,14 @@ COPY main.py .
 COPY auth.py .
 COPY philosophers_db.py .
 COPY modules/ ./modules/
-COPY data/ ./data/
+
+# 复制静态数据（摘要、标签、manifest — 不覆盖运行时用户数据）
+RUN mkdir -p /app/data
+COPY data/book_summaries.json /app/data/
+COPY data/books_cache.json /app/data/
+COPY data/github_manifest.json /app/data/
+COPY data/oss_manifest.json /app/data/
+COPY data/books_catalog.json /app/data/
 
 # 复制前端构建产物（同源部署，避免 CORS）
 COPY app-dist/ ./static/
