@@ -352,10 +352,8 @@ ${textContext}
     try {
       if (!epubViewerRef.current) return;
       const bk = ePub(url, { openAs: 'epub' });
-      // Get explicit pixel height for epubjs pagination
-      const containerHeight = epubViewerRef.current.parentElement?.clientHeight || window.innerHeight - 120;
       const rendition = bk.renderTo(epubViewerRef.current, {
-        width: '100%', height: containerHeight, flow: 'paginated', spread: 'none',
+        width: '100%', height: '100%', flow: 'scrolled-doc', manager: 'default',
       });
       epubRenditionRef.current = rendition;
       // Add bottom padding so text isn't hidden by controls
