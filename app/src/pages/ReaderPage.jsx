@@ -352,8 +352,10 @@ ${textContext}
     try {
       if (!epubViewerRef.current) return;
       const bk = ePub(url, { openAs: 'epub' });
+      // Get explicit pixel height for epubjs pagination
+      const containerHeight = epubViewerRef.current.parentElement?.clientHeight || window.innerHeight - 120;
       const rendition = bk.renderTo(epubViewerRef.current, {
-        width: '100%', height: '100%', flow: 'paginated', spread: 'auto',
+        width: '100%', height: containerHeight, flow: 'paginated', spread: 'none',
       });
       epubRenditionRef.current = rendition;
       // Add bottom padding so text isn't hidden by controls
@@ -402,6 +404,15 @@ ${textContext}
         rendition.display();
       }
       setEpubReady(true);
+
+      // Resize handler: update epub dimensions when window resizes
+      const handleResize = () => {
+        const h = epubViewerRef.current?.parentElement?.clientHeight || window.innerHeight - 120;
+        if (h > 0) rendition.resize('100%', h);
+      };
+      window.addEventListener('resize', handleResize);
+      // Store for cleanup
+      rendition._resizeHandler = handleResize;
     } catch (e) { setError('EPUB 加载失败：' + e.message); }
   };
 
@@ -437,7 +448,9 @@ ${textContext}
       const s = saveRef.current;
       if (s.epubLoc > 0) saveReadingProgress(s.bookId, s.title, s.author, s.epubLoc, s.epubLoc / 100, 'epub');
       if (s.pdfTotal > 0) saveReadingProgress(s.bookId, s.title, s.author, s.pdfPage, s.pdfPage / s.pdfTotal, 'pdf');
-      epubRenditionRef.current?.destroy();
+      const r = epubRenditionRef.current;
+      if (r?._resizeHandler) window.removeEventListener('resize', r._resizeHandler);
+      r?.destroy();
     };
   }, []);
 
