@@ -352,8 +352,9 @@ ${textContext}
     try {
       if (!epubViewerRef.current) return;
       const bk = ePub(url, { openAs: 'epub' });
+      // 连续滚动模式：全书内容一滚到底，不存在翻页问题
       const rendition = bk.renderTo(epubViewerRef.current, {
-        width: '100%', height: '100%', flow: 'scrolled-doc', manager: 'default',
+        width: '100%', height: window.innerHeight - 120, flow: 'scrolled-continuous', manager: 'continuous',
       });
       epubRenditionRef.current = rendition;
       // Add bottom padding so text isn't hidden by controls
@@ -402,15 +403,6 @@ ${textContext}
         rendition.display();
       }
       setEpubReady(true);
-
-      // Resize handler: update epub dimensions when window resizes
-      const handleResize = () => {
-        const h = epubViewerRef.current?.parentElement?.clientHeight || window.innerHeight - 120;
-        if (h > 0) rendition.resize('100%', h);
-      };
-      window.addEventListener('resize', handleResize);
-      // Store for cleanup
-      rendition._resizeHandler = handleResize;
     } catch (e) { setError('EPUB 加载失败：' + e.message); }
   };
 
