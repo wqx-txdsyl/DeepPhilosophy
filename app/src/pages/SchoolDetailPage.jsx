@@ -79,6 +79,20 @@ const GREEK_DATA = {
 每一个后继时代都不断回到古希腊——中世纪在亚里士多德身上找到神学的架构，文艺复兴在柏拉图身上找到人文的光辉，启蒙时代在斯多葛身上找到自由的锚点。正如怀特海所言，整个西方哲学不过是"对柏拉图的一系列脚注"。
 
 古希腊哲学教导我们：哲学不是书本上的学问，而是生活的方式——是苏格拉底在审判席上的从容，是第欧根尼对亚历山大大帝说的"请别挡住我的阳光"，是爱比克泰德在锁链中写下的"人不是被事物所困扰，而是被对事物的看法所困扰"。`,
+  works: [
+    { title:"理想国", author:"柏拉图", era:"约前380", desc:"西方哲学史上最伟大的著作之一。以苏格拉底对话形式探讨正义的本质，构建由哲人王统治的理想城邦。其核心篇章包含了理念论、洞穴喻、灵魂三分、线喻等柏拉图哲学的全部核心概念，是理解整个西方形而上学传统不可绕过的源头之作。" },
+    { title:"形而上学", author:"亚里士多德", era:"约前330", desc:"'第一哲学'——存在之为存在的科学。奠定了实体论、四因说、潜能与现实、不动的推动者等核心范畴，将古希腊哲学的系统性推至顶峰。'形而上学'一词本身即来源于此书编目——'物理学之后'（ta meta ta physika）。" },
+    { title:"尼各马可伦理学", author:"亚里士多德", era:"约前340", desc:"西方伦理学的奠基之作。以幸福（eudaimonia）为终极目的，以'灵魂合乎逻各斯的活动'为德性的本质定义，提出中庸之道和明智（phronesis）为道德实践的核心。第十卷更将'沉思的生活'（theoria）确立为人的最高完善。" },
+    { title:"柏拉图对话集", author:"柏拉图", era:"约前399-前347", desc:"跨越苏格拉底之死到柏拉图晚年的全部对话录合集，涵盖《苏格拉底的申辩》《斐多篇》《会饮篇》《斐德罗篇》《泰阿泰德篇》《蒂迈欧篇》等名篇。'未经审视的人生不值得过'、灵魂不朽的论证、爱的阶梯、知识即回忆，皆出于此。" },
+    { title:"工具论", author:"亚里士多德", era:"约前340", desc:"西方逻辑学的开端。六篇论文集合——《范畴篇》《解释篇》《前分析篇》《后分析篇》《论题篇》《辩谬篇》——建立了三段论推理体系和范畴分类法，定义了此后两千年逻辑学的基本语法。" },
+    { title:"论自然（残篇）", author:"赫拉克利特", era:"约前500", desc:"西方哲学的最早文本之一。以凝练的箴言体揭示'万物皆流'（panta rhei）与'逻各斯'的辩证统一——宇宙在永恒变化中受不变的理性法则支配。'人不能两次踏入同一条河流'是最著名的断片之一。" },
+    { title:"论自然（残篇）", author:"巴门尼德", era:"约前480", desc:"首次以严格的逻辑论证提出'存在'概念——'存在者存在，非存在者不存在'——以理性推论的确定性否定感官世界的真实性。区分真理之路与意见之路，为西方形而上学确立了理性主义的根基。" },
+    { title:"九章集", author:"普罗提诺", era:"约270", desc:"古希腊哲学的终曲与新柏拉图主义的圣经。以'太一流溢说'构建存在等级体系——太一→理智→灵魂→物质——人的使命是通过哲学沉思和道德净化从物质世界回归太一。深刻影响了教父哲学和整个中世纪神秘主义传统。" },
+    { title:"手册", author:"爱比克泰德", era:"约135", desc:"斯多葛伦理学最凝练的表达——由学生阿利安记录的44条精要教导。'困扰人的不是事物，而是对事物的看法。'严格区分可控（选择、判断、欲求）与不可控（身体、财产、名誉、权力），以此获得内心的绝对自由。" },
+    { title:"沉思录", author:"马可·奥勒留", era:"约170-180", desc:"罗马皇帝在军营中写下的斯多葛哲学独白。以自我对话形式记录了'顺应自然''热爱命运''人之为人在于内在德性'的古典智慧。赫拉克利特的流变、爱比克泰德的选择自由、宇宙的理性秩序——在一位帝王的心灵中融汇为实践的哲学。" },
+    { title:"苏格拉底的申辩", author:"柏拉图", era:"约前399", desc:"苏格拉底在雅典法庭上的自我辩护。拒绝以乞求宽恕换取生命，选择以死亡完成'哲学殉道'——'一个未经审视的人生是不值得人过的'。此篇奠定了苏格拉底作为哲学本身的人格化身，也确立了哲学与城邦之间永恒的紧张关系。" },
+    { title:"致梅诺凯奥斯信", author:"伊壁鸠鲁", era:"约前300", desc:"伊壁鸠鲁伦理学的简洁摘要。论证死亡不足畏惧（'当我们存在时死亡不在，当死亡来临时我们已不在'）、诸神不干预人事、快乐即善（以身体的健康和心灵的宁静为真正快乐）。古希腊'心灵治疗'哲学的最著名宣言。" },
+  ],
   closingQuote: '"令我们不安的不是现实，而是我们对现实的看法。 — 爱比克泰德',
 };
 
@@ -742,7 +756,50 @@ function SchoolDetailPage() {
         </div>
       </div>
 
-      {/* ====== Section 6: Conclusion ====== */}
+      {/* ====== Section 6: Key Works 重要著作 ====== */}
+      {data.works && (
+      <div style={{
+        minHeight: '100vh', padding: '60px 40px', maxWidth: 800, margin: '0 auto',
+        display: 'flex', flexDirection: 'column', justifyContent: 'center',
+      }}>
+        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center' }}>
+          重要著作
+        </h2>
+        <p style={{ fontSize: 13, color: 'var(--text-dim)', textAlign: 'center', marginBottom: 36 }}>
+          点击展开查看简介
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {data.works.map((work, i) => (
+            <div key={i} style={{
+              background: 'rgba(237,231,221,0.6)',
+              borderRadius: 10,
+              padding: '18px 22px',
+              borderLeft: '3px solid var(--ochre)',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+            }}
+            onClick={() => setHovered(hovered === `work-${i}` ? null : `work-${i}`)}
+            >
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+                  <h4 style={{ fontSize: 17, fontWeight: 700, fontStyle: 'italic', color: 'var(--ink)', margin: 0 }}>《{work.title}》</h4>
+                  <span style={{ fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>{work.author}</span>
+                </div>
+                <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>{work.era}</span>
+              </div>
+              {hovered === `work-${i}` && (
+                <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.9, margin: '10px 0 0', borderTop: '1px solid var(--border)', paddingTop: 10 }}>
+                  {work.desc}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      )}
+
+      {/* ====== Section 7: Conclusion ====== */}
       <div style={{
         minHeight: '100vh', padding: '60px 40px', maxWidth: 720, margin: '0 auto',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
