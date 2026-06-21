@@ -1195,7 +1195,7 @@ function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
   const SCHOOL_MAP = {
-    '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/patristic.png)' },
+    '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/patristic.jpg)' },
     '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/scholastic.png)' },
     '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/rationalist.png)' },
     '经验主义': { data:EMPIRICISM_DATA, sub:EMPIRICISM_SUB_SCHOOLS, ci:EMPIRICISM_CIHAI, bg:'url(/schools/empiricist.png)' },
