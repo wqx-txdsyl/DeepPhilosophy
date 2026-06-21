@@ -832,34 +832,12 @@ async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
     item = items[chapter_idx]
     content = item.get_content().decode('utf-8', errors='replace')
     soup = BeautifulSoup(content, 'html.parser')
-    for tag in soup(["script", "style", "nav", "head", "meta"]):
+    for tag in soup(["script", "style", "nav", "head", "meta", "link"]):
         tag.decompose()
     body = soup.find('body')
-    root = body if body else soup
-
-    # Split by <p> tags into pages of ~1500 chars
-    paras = []
-    for el in root.find_all(['p','h1','h2','h3','h4','div','blockquote','li']):
-        text = el.get_text().strip()
-        if text:
-            paras.append(str(el))
-    if not paras:
-        paras = [str(root)]
-
-    pages = []
-    buf = ''
-    for p in paras:
-        if len(buf) + len(p) > 2500 and buf:
-            pages.append(buf)
-            buf = p
-        else:
-            buf += p
-    if buf:
-        pages.append(buf)
+    page_html = str(body) if body else soup.prettify()
 
     total_chapters = len(items)
-    total_pages = len(pages)
-    page_html = '\n'.join(pages)  # all pages of this chapter, scrollable
 
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
