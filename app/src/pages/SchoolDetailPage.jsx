@@ -1450,41 +1450,30 @@ function SchoolDetailPage() {
           悬停词语查看释义与出处
         </p>
 
-        <div style={{ position: 'relative', width: '100%', maxWidth: 900, height: 520, margin: '0 auto', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline', position: 'relative', padding: '20px 8px', lineHeight: 1.6, gap: '2px 12px' }}>
           {cihai.map((item, i) => {
             const hash = item.word.split('').reduce((s,c)=>s+c.charCodeAt(0),0);
             const si = (hash * 7919 + i * 3571) % 53;
-            const ss = [10,13,22,11,15,28,12,18,24,10,14,20,26,11,16,31,10,13,19,23,11,14,17,27,12,15,21,25,10,12,15,19,13,17,22,11,14,18,10,12,16,20,14,13,24,11,19,15,22,10,13,17,14];
-            const ws = [300,400,700,300,500,800,300,500,700,300,400,600,700,300,400,900,300,400,600,700,300,400,500,800,300,400,600,700,300,300,400,500,400,500,600,300,400,500,300,300,500,600,400,300,600,300,500,600,700,300,400,500,400];
+            const ss = [10,26,14,19,22,11,17,30,12,15,24,10,13,28,15,20,11,17,33,12,14,22,10,25,13,18,21,11,16,27,13,15,23,10,14,19,12,15,20,11,14,24,13,17,10,16,22,12,15,18,10,13,20];
+            const ws = [300,800,400,600,700,300,400,900,300,400,700,300,300,800,400,600,300,500,900,300,400,700,300,800,300,500,700,300,400,800,300,400,600,300,400,600,300,400,500,300,400,700,300,500,300,400,600,300,400,500,300,300,600];
             const size = ss[si % ss.length];
             const weight = ws[si % ws.length];
-            const r = (hash * 3571 + i * 719) % 53 - 26; // -2.6° to +2.6°
+            const r = (hash * 3571 + i * 719) % 41 - 20;
             const rot = r / 10;
-            // 阿基米德螺旋 + 抖动 → 中心密集、向外扩散
-            const total = cihai.length;
-            const t = i / total;
-            const spiralAngle = i * 2.85 + (hash % 13) * 0.15;
-            const spiralR = 8 + t * 240 + (hash % 23) * 2;
-            const jitterX = (hash * 173 + i * 419) % 31 - 15;
-            const jitterY = (hash * 283 + i * 631) % 31 - 15;
-            const cx = 450; const cy = 260;
-            const x = cx + Math.cos(spiralAngle) * spiralR + jitterX;
-            const y = cy + Math.sin(spiralAngle) * spiralR * 0.65 + jitterY;
-            // 约束在容器内
-            const clampX = Math.max(10, Math.min(890, x));
-            const clampY = Math.max(10, Math.min(510, y));
+            // 大小词交错混排 → 打破从左到右的规律感
+            const extraPad = size > 22 ? '6px 10px' : size > 17 ? '4px 7px' : size > 13 ? '2px 5px' : '1px 3px';
+            const topShift = (hash * 79 + i * 113) % 7 - 3;
             return (
               <span key={i} style={{
-                position: 'absolute', left: clampX, top: clampY,
                 fontSize: size, fontWeight: weight,
                 color: hovered === item.word ? 'var(--ochre)' : 'var(--ink)',
-                opacity: hovered !== null ? (hovered === item.word ? 1 : 0.28) : 0.65 + (size - 10) * 0.012,
-                cursor: 'pointer', whiteSpace: 'nowrap',
+                opacity: hovered !== null ? (hovered === item.word ? 1 : 0.3) : 0.62 + (size - 10) * 0.013,
+                padding: extraPad, cursor: 'pointer', position: 'relative',
+                top: topShift + 'px',
                 transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)',
                 fontFamily: size > 16 ? '"Playfair Display","PingFang SC",serif' : 'inherit',
-                transform: hovered === item.word ? 'translate(-50%,-50%) scale(1.3) rotate(0deg)' : `translate(-50%,-50%) rotate(${rot}deg)`,
-                zIndex: hovered === item.word ? 20 : Math.round(size),
-                textShadow: size > 20 ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                transform: hovered === item.word ? 'scale(1.3) rotate(0deg)' : `rotate(${rot}deg)`,
+                zIndex: hovered === item.word ? 20 : 1,
               }}
               onMouseEnter={() => setHovered(item.word)}
               onMouseLeave={() => setHovered(null)}
