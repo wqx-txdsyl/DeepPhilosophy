@@ -14,7 +14,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --default-timeout=300 \
     -r requirements.txt
 
-# 复制应用代码
+# 复制应用代码（v2）
 COPY config.py .
 COPY main.py .
 COPY auth.py .
