@@ -83,6 +83,10 @@ const GREEK_DATA = {
 };
 
 
+
+const SUB_SCHOOL_DATA = {};
+
+// Sub-schools will show filtered Greek thinkers
 const SUB_COLORS = {
   '米利都学派':'#C4956A','前苏格拉底':'#B8875E','埃利亚学派':'#AC7A52',
   '多元论':'#A06D46','古希腊哲学':'#94603A','柏拉图学派':'#88532E',
