@@ -1013,26 +1013,28 @@ function SchoolDetailPage() {
           悬停词语查看释义与出处
         </p>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px', justifyContent: 'center', alignItems: 'baseline', position: 'relative', padding: '20px 0' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', position: 'relative', padding: '30px 10px', lineHeight: 1.8 }}>
           {cihai.map((item, i) => {
-            const tier = i < 4 ? 0 : i < 8 ? 1 : i < 14 ? 2 : 3;
-            const sizeMap = [[21,20,19,18],[17,16,16,17],[15,15,14,14,15,16],[13,14,13,12,14,13,12,13,14]];
-            const weightMap = [700,600,500,400];
-            const opacityMap = [0.95,0.85,0.72,0.62];
-            const padMap = ['6px 14px','5px 12px','3px 9px','2px 7px'];
-            const size = sizeMap[tier][i % sizeMap[tier].length];
-            const weight = weightMap[tier];
+            // 重要性加权的不规则尺寸 — 大体倾向前面大后面小，但刻意打乱规律
+            const rawSizes = [24,17,19,22,15,20,13,18,16,21,11,14,12,17,23,14,11,16,13,15,18,12,10,14,17,11,13,15,12,10];
+            const rawWeights = [700,400,600,700,400,600,300,500,400,600,300,400,300,500,700,400,300,500,300,400,500,300,300,400,500,300,300,400,300,300];
+            const size = rawSizes[i % rawSizes.length];
+            const weight = rawWeights[i % rawWeights.length];
+            // 轻微随机旋转，模拟手写海报感
+            const rots = [0.5,-1,0,-0.5,1.2,0,-0.8,0.3,0,-1.1,0.7,-0.3,0,0.9,-0.6,0.4,0,-0.7,0,1,0,-0.4,0,0.6,-0.9,0,0.3,-0.5,0,0.8];
+            const rot = rots[i % rots.length];
+            // 大小决定边距 — 大词周围留空更多
+            const margin = size > 20 ? '6px 10px' : size > 16 ? '4px 8px' : size > 13 ? '3px 6px' : '2px 5px';
             return (
               <span key={i} style={{
                 fontSize: size, fontWeight: weight,
                 color: hovered === item.word ? 'var(--ochre)' : 'var(--ink)',
-                opacity: hovered === item.word ? 1 : opacityMap[tier],
-                padding: padMap[tier], cursor: 'pointer',
-                transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)', position: 'relative',
-                fontFamily: tier <= 1 ? '"Playfair Display","PingFang SC",serif' : 'inherit',
-                letterSpacing: tier <= 1 ? '0.5px' : 'normal',
-                transform: hovered === item.word ? 'scale(1.2)' : 'scale(1)',
-                zIndex: hovered === item.word ? 20 : tier === 0 ? 3 : tier === 1 ? 2 : 1,
+                opacity: hovered !== null ? (hovered === item.word ? 1 : 0.4) : 0.78,
+                margin: margin, cursor: 'pointer',
+                transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)', position: 'relative',
+                fontFamily: size > 16 ? '"Playfair Display","PingFang SC",serif' : 'inherit',
+                transform: hovered === item.word ? 'scale(1.25) rotate(0deg)' : `rotate(${rot}deg)`,
+                zIndex: hovered === item.word ? 20 : 1,
               }}
               onMouseEnter={() => setHovered(item.word)}
               onMouseLeave={() => setHovered(null)}
