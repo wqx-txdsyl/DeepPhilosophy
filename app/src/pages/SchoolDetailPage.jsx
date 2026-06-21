@@ -115,7 +115,7 @@ function SchoolDetailPage() {
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center', textAlign: 'center',
         padding: '40px 32px', position: 'relative', overflow: 'hidden',
-        backgroundImage: 'url(https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/schools/greek.jpg)',
+        backgroundImage: 'url(/schools/greek.jpg)',
         backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         {/* Dark elegant overlay */}
