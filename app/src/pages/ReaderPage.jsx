@@ -396,25 +396,13 @@ ${textContext}
         {/* Reader */}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' ? (
-            <>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 56, background: '#1a1a1a' }}>
               <iframe
                 ref={epubIframeRef}
                 src={`${getApiBase()}/api/books/${bookId}/render?chapter=${epubChapter}`}
-                style={{ flex: 1, border: 'none', width: '100%', minHeight: 0 }}
+                style={{ width: '100%', height: '100%', border: 'none' }}
                 title="EPUB Reader" />
-              <div style={{
-                flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '6px 12px',
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => goEpubChapter(epubChapter - 1)}
-                    disabled={epubChapter <= 0}>◀ 上一章</button>
-                  <span style={{ fontSize: 13, color: 'var(--text-dim)', alignSelf: 'center' }}>第 {epubChapter + 1} 章</span>
-                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => goEpubChapter(epubChapter + 1)}>下一章 ▶</button>
-                </div>
-              </div>
-            </>
+            </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
               <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0 8px' }}>
