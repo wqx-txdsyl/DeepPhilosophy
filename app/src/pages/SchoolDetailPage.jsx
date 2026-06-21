@@ -358,7 +358,7 @@ function SchoolDetailPage() {
   const data = isPatristic ? PATRISTIC_DATA : isScholastic ? SCHOLASTIC_DATA : GREEK_DATA;
   const subSchools = isPatristic ? PATRISTIC_SUB_SCHOOLS : isScholastic ? SCHOLASTIC_SUB_SCHOOLS : GREEK_SUB_SCHOOLS;
   const cihai = isPatristic ? PATRISTIC_CIHAI : isScholastic ? SCHOLASTIC_CIHAI : GREEK_CIHAI;
-  const heroImage = isPatristic ? 'url(/schools/patristic.jpg)' : isScholastic ? 'url(/schools/greek.jpg)' : 'url(/schools/greek.jpg)';
+  const heroImage = isPatristic ? 'url(/schools/patristic.jpg)' : isScholastic ? 'url(/schools/scholastic.jpg)' : 'url(/schools/greek.jpg)';
   const [hovered, setHovered] = useState(null);
 
   // Pre-calculate nebula positions — wide spread, Fibonacci-like golden angle
