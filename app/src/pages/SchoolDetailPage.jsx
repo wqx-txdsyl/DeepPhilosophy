@@ -119,7 +119,7 @@ function SchoolDetailPage() {
         backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         {/* Dark elegant overlay */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(244,240,235,0.92) 0%, rgba(244,240,235,0.82) 40%, rgba(244,240,235,0.88) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(244,240,235,0.96)', backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)' }} />
 
         <div style={{ position: 'absolute', top: 16, left: 16 }}>
           <button className="btn btn-secondary" style={{ padding:'4px 10px',fontSize:12 }}
@@ -171,7 +171,7 @@ function SchoolDetailPage() {
           { name:'新柏拉图主义', era:'3世纪-6世纪', desc:'普罗提诺在前3世纪整合柏拉图、亚里士多德与斯多葛思想，创立"太一流溢说"——太一派生出理智（Nous）、理智派生出灵魂（Psyche），灵魂下降为物质世界。人的使命是通过哲学沉思回归太一。深刻影响了早期基督教神学。' },
         ].map(sub => (
           <div key={sub.name} style={{
-            background: 'var(--card-bg)', borderRadius: 10, padding: '16px 20px',
+            background: 'rgba(237,231,221,0.95)', borderRadius: 10, padding: '16px 20px',
             marginBottom: 14, borderLeft: '3px solid var(--ochre)',
           }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
@@ -258,7 +258,7 @@ function SchoolDetailPage() {
                     top: showBelow ? size + 22 : 'auto',
                     bottom: showBelow ? 'auto' : size + 22,
                     left: '50%', transform: 'translateX(-50%)',
-                    background: 'var(--primary)', border: '1px solid var(--border)',
+                    background: 'rgba(248,244,238,0.98)', border: '1px solid var(--border)',
                     borderRadius: 8, padding: '6px 12px', whiteSpace: 'nowrap', zIndex: 30,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
                   }}>
@@ -300,7 +300,7 @@ function SchoolDetailPage() {
                   <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: 30 }}>
                     {isLeft && (
                       <div style={{
-                        maxWidth: 340, background: 'var(--card-bg)', borderRadius: 10,
+                        maxWidth: 340, background: 'rgba(237,231,221,0.95)', borderRadius: 10,
                         padding: '10px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
                       }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
@@ -317,7 +317,7 @@ function SchoolDetailPage() {
                   <div style={{ flex: 1, paddingLeft: 30 }}>
                     {!isLeft && (
                       <div style={{
-                        maxWidth: 340, background: 'var(--card-bg)', borderRadius: 10,
+                        maxWidth: 340, background: 'rgba(237,231,221,0.95)', borderRadius: 10,
                         padding: '10px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
                       }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
@@ -396,7 +396,7 @@ function SchoolDetailPage() {
                 {hovered === item.word && (
                   <div style={{
                     position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
-                    background: 'var(--primary)', border: '1px solid var(--border)',
+                    background: 'rgba(248,244,238,0.98)', border: '1px solid var(--border)',
                     borderRadius: 10, padding: '14px 20px', zIndex: 30, width: 320,
                     boxShadow: '0 6px 30px rgba(0,0,0,0.15)',
                     marginBottom: 10,
