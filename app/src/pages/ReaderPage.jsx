@@ -342,7 +342,7 @@ ${textContext}
   const initEpub = (url) => {
     if (!epubViewerRef.current) return;
     const bk = ePub(url, { openAs: 'epub' });
-    const vh = epubViewerRef.current.parentElement?.clientHeight || window.innerHeight - 110;
+    const vh = epubViewerRef.current.clientHeight || window.innerHeight - 180;
     const rendition = bk.renderTo(epubViewerRef.current, {
       width: '100%', height: vh, flow: 'paginated', spread: 'none',
     });
@@ -436,17 +436,15 @@ ${textContext}
         {/* Reader */}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' ? (
-            <>
-              <div ref={epubViewerRef} style={{ height: 'calc(100vh - 170px)' }} />
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+              <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
               <div style={{ flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '6px 12px' }}>
-                {/* Page nav */}
                 <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 6 }}>
                   <button className="btn btn-secondary" style={{ padding: '4px 14px', fontSize: 12 }}
                     onClick={() => epubRenditionRef.current?.prev()}>◀ 上一页</button>
                   <button className="btn btn-secondary" style={{ padding: '4px 14px', fontSize: 12 }}
                     onClick={() => epubRenditionRef.current?.next()}>下一页 ▶</button>
                 </div>
-                {/* Chapter nav */}
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <button className="btn btn-primary" style={{ padding: '4px 14px', fontSize: 12 }}
                     onClick={() => goEpubChapter(epubChapter - 1)} disabled={epubChapter <= 0}>◀◀ 上一章</button>
@@ -457,7 +455,7 @@ ${textContext}
                     onClick={() => goEpubChapter(epubChapter + 1)}>下一章 ▶▶</button>
                 </div>
               </div>
-            </>
+            </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
               <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0 8px' }}>
