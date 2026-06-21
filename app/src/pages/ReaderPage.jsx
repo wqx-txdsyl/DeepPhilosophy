@@ -50,6 +50,8 @@ function ReaderPage() {
   const [showToc, setShowToc] = useState(false);
   const [epubReady, setEpubReady] = useState(false);
   const [epubChapter, setEpubChapter] = useState(0);
+  const [epubPage, setEpubPage] = useState(0);
+  const [epubTotalPages, setEpubTotalPages] = useState(0);
   // PDF state
 
   // Notes state
@@ -349,6 +351,12 @@ ${textContext}
     });
     epubRenditionRef.current = rendition;
     bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
+    rendition.on('relocated', (loc) => {
+      if (loc?.start?.displayed) {
+        setEpubPage(loc.start.displayed.page);
+        setEpubTotalPages(loc.start.displayed.total);
+      }
+    });
     rendition.display();
     setEpubReady(true);
   };
@@ -433,11 +441,14 @@ ${textContext}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: 12 }}
                     onClick={() => setShowToc(true)}>📑 目录</button>
-                  <div style={{ display: 'flex', gap: 10 }}>
+                  <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                     <button className="btn btn-primary" style={{ padding: '6px 20px', fontSize: 14 }}
-                      onClick={() => epubRenditionRef.current?.prev()}>◀ 上一页</button>
+                      onClick={() => epubRenditionRef.current?.prev()}>◀</button>
+                    <span style={{ fontSize: 13, color: 'var(--text)', minWidth: 60, textAlign: 'center', fontWeight: 600 }}>
+                      {epubPage + 1}/{epubTotalPages || '?'}
+                    </span>
                     <button className="btn btn-primary" style={{ padding: '6px 20px', fontSize: 14 }}
-                      onClick={() => epubRenditionRef.current?.next()}>下一页 ▶</button>
+                      onClick={() => epubRenditionRef.current?.next()}>▶</button>
                   </div>
                   <span style={{ fontSize: 12, color: 'var(--text-dim)' }}></span>
                 </div>
