@@ -864,29 +864,12 @@ async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-  body {{ font-family: SimSun, serif; font-size: 18px; line-height: 1.9; color: #ccc; background: #1a1a1a; }}
-  .reader {{
-    height: 100vh; height: 100dvh;
-    column-width: 100vw; column-width: 100dvw;
-    column-gap: 0;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }}
-  .page {{
-    break-inside: avoid;
-    padding: 20px 24px 40px;
-    max-width: 800px;
-    margin: 0 auto;
-  }}
+  body {{ font-family: SimSun, serif; font-size: 18px; line-height: 1.9; color: #ccc; background: #1a1a1a; padding: 16px 20px 60px; max-width: 800px; margin: 0 auto; }}
   h1,h2,h3,h4 {{ color: #d4a574; text-align: center; margin: 1em 0 0.6em; }}
   p {{ margin: 0 0 0.8em; text-indent: 2em; }}
   blockquote {{ border-left: 3px solid #555; margin: 0.6em 1em; padding: 0.3em 1em; color: #aaa; }}
-  .pos {{ position: fixed; bottom: 8px; right: 12px; font-size: 12px; color: #555; background: rgba(26,26,26,0.8); padding: 2px 8px; border-radius: 4px; }}
 </style></head><body>
-<div class="reader">{page_html}</div>
-<div class="pos">{chapter_idx + 1}/{total_chapters}</div>
+{page_html}
 </body></html>"""
 
     from fastapi.responses import HTMLResponse
