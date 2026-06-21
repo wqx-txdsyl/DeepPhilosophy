@@ -89,6 +89,7 @@ function MainLayout() {
     if (p.startsWith('/genealogy')) return 'genealogy';
     if (p.startsWith('/qa')) return 'qa';
     if (p.startsWith('/profile')) return 'profile';
+    if (p === '/' || p.startsWith('/genealogy') || p.startsWith('/school')) return 'genealogy';
     return 'books';
   };
 
@@ -100,7 +101,7 @@ function MainLayout() {
     <>
       {!isReader && (
         <header className="app-header">
-          <h1 className="app-title" onClick={() => navigate('/books')}>
+          <h1 className="app-title" onClick={() => navigate('/genealogy')}>
             DeepPhilosophy
           </h1>
           <button className="settings-btn" onClick={() => navigate('/settings')}>⚙️</button>
@@ -109,7 +110,7 @@ function MainLayout() {
 
       <main className="app-main" style={isReader ? { paddingBottom: 0 } : undefined}>
         <Routes>
-          <Route path="/" element={<BooksPage />} />
+          <Route path="/" element={<GenealogyPage />} />
           <Route path="/books" element={<BooksPage />} />
           <Route path="/book/:bookId" element={<BookDetailPage />} />
           <Route path="/reader/:bookId" element={<ReaderPage />} />
