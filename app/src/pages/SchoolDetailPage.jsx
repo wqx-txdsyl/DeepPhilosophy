@@ -98,22 +98,16 @@ function SchoolDetailPage() {
   return (
     <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
 
-      {/* ====== Section 1: Hero ====== */}
+      {/* ====== Section 1: Hero with Raphael's School of Athens ====== */}
       <div style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center', textAlign: 'center',
-        padding: '40px 32px', position: 'relative',
-        background: 'linear-gradient(135deg, #F4F0EB 0%, #E8E0D5 25%, #EDE7DD 50%, #F0E8DC 75%, #F4F0EB 100%)',
-        overflow: 'hidden',
+        padding: '40px 32px', position: 'relative', overflow: 'hidden',
+        backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/3/31/Raphael_School_of_Athens.jpg)',
+        backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
-        {/* Decorative elements */}
-        <div style={{ position: 'absolute', top: -80, right: -60, width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(196,149,106,0.08) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', bottom: -40, left: -40, width: 250, height: 250, borderRadius: '50%', background: 'radial-gradient(circle, rgba(58,90,124,0.06) 0%, transparent 70%)' }} />
-        {/* Greek key pattern hint */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'repeating-linear-gradient(90deg, var(--ochre) 0px, var(--ochre) 12px, transparent 12px, transparent 20px)', opacity: 0.3 }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: 'repeating-linear-gradient(90deg, var(--ochre) 0px, var(--ochre) 12px, transparent 12px, transparent 20px)', opacity: 0.3 }} />
-        <div style={{ position: 'absolute', top: 4, bottom: 4, left: 0, width: 4, background: 'repeating-linear-gradient(0deg, var(--ochre) 0px, var(--ochre) 12px, transparent 12px, transparent 20px)', opacity: 0.3 }} />
-        <div style={{ position: 'absolute', top: 4, bottom: 4, right: 0, width: 4, background: 'repeating-linear-gradient(0deg, var(--ochre) 0px, var(--ochre) 12px, transparent 12px, transparent 20px)', opacity: 0.3 }} />
+        {/* Dark elegant overlay */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(244,240,235,0.92) 0%, rgba(244,240,235,0.82) 40%, rgba(244,240,235,0.88) 100%)' }} />
 
         <div style={{ position: 'absolute', top: 16, left: 16 }}>
           <button className="btn btn-secondary" style={{ padding:'4px 10px',fontSize:12 }}
@@ -162,28 +156,26 @@ function SchoolDetailPage() {
 
         {/* Constellation canvas */}
         <div style={{
-          width: '100%', maxWidth: 750, height: 550,
+          width: '100%', maxWidth: 800, height: 560, margin: '0 auto',
           position: 'relative', overflow: 'hidden',
         }}>
+          {/* Background nebula glow */}
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(196,149,106,0.06) 0%, transparent 70%)' }} />
+
           {/* SVG lines */}
           <svg style={{ position: 'absolute', top:0, left:0, width:'100%', height:'100%' }}>
             {data.relations.map((r, i) => {
               const from = data.thinkers.find(t => t.name === r.from);
               const to = data.thinkers.find(t => t.name === r.to);
               if (!from || !to) return null;
-              const fi = data.thinkers.indexOf(from);
-              const ti = data.thinkers.indexOf(to);
-              const fx = 90 + (fi % 4) * 170;
-              const fy = 90 + Math.floor(fi / 4) * 120;
-              const tx = 90 + (ti % 4) * 170;
-              const ty = 90 + Math.floor(ti / 4) * 120;
+              if (!from._x) return null;
               return (
                 <g key={i}>
-                  <line x1={fx} y1={fy} x2={tx} y2={ty}
+                  <line x1={from._x} y1={from._y} x2={to._x} y2={to._y}
                     stroke={r.type==='师生'?'var(--ochre)':r.type==='对立'?'#A06050':r.type==='继承'?'var(--prussian)':'#999'}
-                    strokeWidth={1.2} strokeDasharray={r.type==='对立'?'5,4':''} opacity={0.4} />
-                  <text x={(fx+tx)/2} y={(fy+ty)/2-6}
-                    fontSize={9} fill="var(--text-dim)" textAnchor="middle" fontStyle="italic">
+                    strokeWidth={1} strokeDasharray={r.type==='对立'?'6,4':''} opacity={0.35} />
+                  <text x={(from._x+to._x)/2} y={(from._y+to._y)/2-6}
+                    fontSize={8} fill="var(--text-dim)" textAnchor="middle" fontStyle="italic" opacity={0.6}>
                     {r.type}
                   </text>
                 </g>
@@ -191,17 +183,26 @@ function SchoolDetailPage() {
             })}
           </svg>
 
-          {/* Thinker dots + labels */}
+          {/* Thinker dots — randomized nebula positions */}
           {data.thinkers.map((t, i) => {
-            const col = Math.floor(i / 4);
-            const row = i % 4;
-            const x = 90 + row * 170;
-            const y = 90 + col * 120;
-            const size = 18 + t.influence * 4;
+            // Seeded pseudo-random positions for star-like scatter
+            const seed = t.name.charCodeAt(0) + t.name.charCodeAt(t.name.length-1) + i * 7;
+            const angle = (seed * 137.5) % 360;
+            const radius = 60 + (seed % 180);
+            const cx = 400, cy = 280;
+            const rad = angle * Math.PI / 180;
+            const x = cx + Math.cos(rad) * radius * 0.8 + (i % 3) * 60 - 80;
+            const y = cy + Math.sin(rad) * radius * 0.6 + (i % 4) * 30 - 40;
+            // Clamp to bounds
+            const px = Math.max(50, Math.min(750, x));
+            const py = Math.max(50, Math.min(510, y));
+            // Store position for SVG lines
+            t._x = px; t._y = py;
+            const size = 16 + t.influence * 4;
             const isHovered = hovered === t.name;
             return (
               <div key={t.name} style={{
-                position: 'absolute', left: x, top: y,
+                position: 'absolute', left: px, top: py,
                 transform: 'translate(-50%, -50%)',
                 display: 'flex', flexDirection: 'column', alignItems: 'center',
                 cursor: 'pointer', zIndex: isHovered ? 10 : 1,
@@ -212,29 +213,29 @@ function SchoolDetailPage() {
               >
                 <div style={{
                   width: size, height: size, borderRadius: '50%',
-                  background: `radial-gradient(circle at 35% 35%, ${SUB_COLORS[t.sub]}dd, ${SUB_COLORS[t.sub]})`,
-                  boxShadow: isHovered ? `0 0 20px ${SUB_COLORS[t.sub]}60` : '0 2px 6px rgba(0,0,0,0.1)',
-                  transition: 'all 0.3s',
-                  transform: isHovered ? 'scale(1.3)' : 'scale(1)',
-                  animation: `pulse 3s ease-in-out ${i * 0.2}s infinite`,
+                  background: `radial-gradient(circle at 35% 35%, ${SUB_COLORS[t.sub] || 'var(--ochre)'}dd, ${SUB_COLORS[t.sub] || 'var(--ochre)'})`,
+                  boxShadow: isHovered ? `0 0 24px ${SUB_COLORS[t.sub] || 'var(--ochre)'}80` : '0 1px 4px rgba(0,0,0,0.08)',
+                  transition: 'all 0.4s cubic-bezier(0.4,0,0.2,1)',
+                  transform: isHovered ? 'scale(1.4)' : 'scale(1)',
+                  animation: `pulse ${2.5 + (i%5)*0.4}s ease-in-out ${i * 0.15}s infinite`,
                 }} />
                 <span style={{
                   fontSize: 10, color: 'var(--ink)', marginTop: 4,
                   fontWeight: isHovered ? 600 : 400,
-                  maxWidth: 80, textAlign: 'center',
+                  maxWidth: 80, textAlign: 'center', lineHeight: 1.2,
                   transition: 'all 0.3s',
                 }}>
                   {t.name}
                 </span>
                 {isHovered && (
                   <div style={{
-                    position: 'absolute', top: -60, left: '50%', transform: 'translateX(-50%)',
+                    position: 'absolute', top: -58, left: '50%', transform: 'translateX(-50%)',
                     background: 'var(--primary)', border: '1px solid var(--border)',
-                    borderRadius: 8, padding: '8px 14px', whiteSpace: 'nowrap',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
+                    borderRadius: 8, padding: '6px 12px', whiteSpace: 'nowrap', zIndex: 30,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
                   }}>
-                    <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{t.sub} · {t.era}</div>
-                    <div style={{ fontSize: 12, color: 'var(--ochre)', fontStyle: 'italic', marginTop: 2 }}>"{t.key}"</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{t.sub} · {t.era}</div>
+                    <div style={{ fontSize: 12, color: 'var(--ochre)', fontStyle: 'italic' }}>"{t.key}"</div>
                   </div>
                 )}
               </div>
@@ -245,58 +246,59 @@ function SchoolDetailPage() {
 
       {/* ====== Section 4: Timeline ====== */}
       <div style={{
-        minHeight: '100vh', padding: '40px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        minHeight: '100vh', padding: '60px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
       }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 32, paddingLeft: 40 }}>
+        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 40, textAlign: 'center' }}>
           思想史时间轴
         </h2>
 
-        {/* Horizontal scroll timeline */}
-        <div style={{
-          display: 'flex', overflowX: 'auto', gap: 0,
-          padding: '40px 60px 40px 40px',
-          position: 'relative',
-        }}>
-          {/* Horizontal line */}
+        <div style={{ position: 'relative', maxWidth: 900, margin: '0 auto' }}>
+          {/* Central horizontal line */}
           <div style={{
-            position: 'absolute', top: 75, left: 60, right: 60, height: 2,
-            background: 'var(--border)',
+            position: 'absolute', top: '50%', left: 0, right: 0, height: 2,
+            background: 'linear-gradient(to right, transparent, var(--ochre), var(--prussian), var(--ochre), transparent)',
+            opacity: 0.4,
           }} />
 
-          {data.timeline.map((ev, i) => {
-            const isUp = i % 2 === 0;
-            const icon = ev.type==='birth'?'👶':ev.type==='death'?'✝️':ev.type==='book'?'📖':ev.type==='idea'?'💡':'📜';
-            const dotColor = ev.type==='birth'?'var(--ochre)':ev.type==='death'?'#A04040':ev.type==='book'?'var(--prussian)':ev.type==='idea'?'var(--success)':'var(--border)';
-            return (
-              <div key={i} style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center',
-                minWidth: 140, position: 'relative', flexShrink: 0,
-              }}>
-                {/* Content above/below */}
-                <div style={{
-                  height: 70, display: 'flex', flexDirection: 'column',
-                  justifyContent: isUp ? 'flex-end' : 'flex-start',
-                  textAlign: 'center', padding: '0 4px',
-                  order: isUp ? 0 : 2,
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            {data.timeline.map((ev, i) => {
+              const isUp = i % 2 === 0;
+              const dotColors = { birth:'#C4956A', death:'#A06060', book:'#5A7A8A', idea:'#6A8A6A', event:'#C4956A' };
+              const iconMap = { birth:'✦', death:'†', book:'¶', idea:'§', event:'○' };
+              return (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center',
+                  justifyContent: isUp ? 'flex-start' : 'flex-end',
+                  paddingLeft: isUp ? 0 : '50%', paddingRight: isUp ? '50%' : 0,
+                  position: 'relative',
                 }}>
-                  <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>{ev.event}</span>
+                  {/* Card */}
+                  <div style={{
+                    background: 'var(--card-bg)',
+                    borderRadius: 10, padding: '12px 18px',
+                    borderLeft: `3px solid ${dotColors[ev.type]}`,
+                    maxWidth: 380,
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 16, color: dotColors[ev.type] }}>{iconMap[ev.type]}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
+                    </div>
+                    <div style={{ fontSize: 14, color: 'var(--text)', marginTop: 4 }}>{ev.event}</div>
+                  </div>
+                  {/* Dot on line */}
+                  <div style={{
+                    position: 'absolute',
+                    left: '50%', top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 10, height: 10, borderRadius: '50%',
+                    background: dotColors[ev.type],
+                    border: '2px solid var(--bg)',
+                    zIndex: 1,
+                  }} />
                 </div>
-                {/* Dot */}
-                <div style={{
-                  width: 14, height: 14, borderRadius: '50%', background: dotColor,
-                  border: '2px solid var(--bg)', zIndex: 1,
-                  order: 1,
-                }} />
-                {/* Year */}
-                <div style={{
-                  fontSize: 11, fontWeight: 600, color: 'var(--ochre)',
-                  marginTop: 4, order: 3, textAlign: 'center',
-                }}>
-                  {ev.year}
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
 
