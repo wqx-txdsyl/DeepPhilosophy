@@ -39,7 +39,7 @@ function ReaderPage() {
   // PDF state
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pdfScale, setPdfScale] = useState(1.0);
+  const [pdfScale, setPdfScale] = useState(0.99);
   const [jumpPage, setJumpPage] = useState('');
   const [showJumpInput, setShowJumpInput] = useState(false);
 
@@ -408,8 +408,8 @@ ${textContext}
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       {/* Top bar */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: 8,
-        padding: '6px 10px', background: 'var(--primary)', borderBottom: '1px solid var(--border)',
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '4px 10px', background: 'var(--primary)', borderBottom: '1px solid var(--border)',
       }}>
         <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 12 }}
           onClick={() => navigate(-1)}>←</button>
@@ -526,7 +526,7 @@ ${textContext}
               <div style={{
                 flexShrink: 0,
                 background: 'var(--primary)', borderTop: '1px solid var(--border)',
-                padding: '6px 12px',
+                padding: '4px 10px',
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                   <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
