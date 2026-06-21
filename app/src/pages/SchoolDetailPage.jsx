@@ -54,24 +54,24 @@ const GREEK_DATA = {
   ],
 
   timeline: [
-    { year:'约前624', event:'泰勒斯出生', type:'birth' },
-    { year:'约前585', event:'泰勒斯预言日食', type:'event' },
-    { year:'约前546', event:'泰勒斯逝世；阿那克西曼德活跃', type:'death' },
-    { year:'约前500', event:'赫拉克利特提出"逻各斯"概念', type:'idea' },
-    { year:'约前480', event:'巴门尼德著《论自然》', type:'book' },
-    { year:'约前399', event:'苏格拉底被判死刑', type:'death' },
-    { year:'约前387', event:'柏拉图创立雅典学园', type:'event' },
-    { year:'约前380', event:'柏拉图著《理想国》', type:'book' },
-    { year:'约前335', event:'亚里士多德创立吕克昂学园', type:'event' },
-    { year:'约前330', event:'亚里士多德著《形而上学》《尼各马可伦理学》', type:'book' },
-    { year:'约前306', event:'伊壁鸠鲁创立"花园"学派', type:'event' },
-    { year:'约前300', event:'斯多葛学派在雅典画廊创立', type:'event' },
-    { year:'约前270', event:'伊壁鸠鲁逝世', type:'death' },
-    { year:'约前155', event:'雅典三哲使团访罗马，希腊哲学传入罗马', type:'event' },
-    { year:'约135', event:'爱比克泰德逝世', type:'death' },
-    { year:'180', event:'马可·奥勒留逝世；斯多葛帝国时代终结', type:'death' },
-    { year:'270', event:'普罗提诺逝世；新柏拉图主义为基督教神学铺路', type:'death' },
-    { year:'529', event:'查士丁尼关闭雅典学园，古希腊哲学终结', type:'event' },
+    { year:'约前624', event:'泰勒斯出生', detail:'米利都学派创始人，西方哲学之父', type:'birth' },
+    { year:'约前585', event:'泰勒斯预言日食', detail:'以理性解释自然现象，标志神话思维的终结', type:'event' },
+    { year:'约前546', event:'泰勒斯逝世', detail:'米利都学派由阿那克西曼德继承发展', type:'death' },
+    { year:'约前500', event:'赫拉克利特提出"逻各斯"', detail:'万物皆流，对立统一，逻各斯即宇宙理性法则', type:'idea' },
+    { year:'约前480', event:'巴门尼德著《论自然》', detail:'首次提出"存在"概念，区分真理之路与意见之路', type:'book' },
+    { year:'约前399', event:'苏格拉底被判死刑', detail:'以"不义之生不如死"的从容赴死，成为哲学殉道者', type:'death' },
+    { year:'约前387', event:'柏拉图创立雅典学园', detail:'西方第一所高等学府，门口刻有"不懂几何者不得入内"', type:'event' },
+    { year:'约前380', event:'柏拉图著《理想国》', detail:'构建理念论体系，描绘哲人王的理想城邦蓝图', type:'book' },
+    { year:'约前335', event:'亚里士多德创立吕克昂学园', detail:'逍遥学派诞生，经验观察与逻辑分类并重', type:'event' },
+    { year:'约前330', event:'亚里士多德著《形而上学》', detail:'奠定实体论、四因说、范畴论，系统化古希腊哲学成就', type:'book' },
+    { year:'约前306', event:'伊壁鸠鲁创立"花园"学派', detail:'以追求心灵宁静为至善，最早接纳女性和奴隶', type:'event' },
+    { year:'约前300', event:'斯多葛学派创立', detail:'芝诺在雅典画廊讲学，以顺应自然为德性核心', type:'event' },
+    { year:'约前270', event:'伊壁鸠鲁逝世', detail:'享乐主义伦理学影响罗马，原子论思想影响近代科学', type:'death' },
+    { year:'约前155', event:'雅典三哲使团访罗马', detail:'学院派、斯多葛派、逍遥派代表将希腊哲学引入罗马', type:'event' },
+    { year:'135', event:'爱比克泰德逝世', detail:'奴隶出身的斯多葛哲人，教导"可控与不可控"的智慧', type:'death' },
+    { year:'180', event:'马可·奥勒留逝世', detail:'最后一位斯多葛贤君，《沉思录》成为古典哲学绝唱', type:'death' },
+    { year:'270', event:'普罗提诺逝世', detail:'新柏拉图主义完成对古希腊哲学的总结与神秘化升华', type:'death' },
+    { year:'529', event:'雅典学园被关闭', detail:'查士丁尼大帝禁绝异教哲学，古希腊千年传统就此终结', type:'event' },
   ],
 
   conclusion: `古希腊哲学是西方思想永不枯竭的源泉。从米利都的星空到雅典的广场，从对"万物本原"的朴素追问到对"善的生活"的精微思辨，这千年旅程塑造了理性、自由与德性这三个西方文明最核心的价值。
@@ -95,16 +95,16 @@ function SchoolDetailPage() {
   const data = GREEK_DATA;
   const [hovered, setHovered] = useState(null);
 
-  // Pre-calculate nebula positions once
+  // Pre-calculate nebula positions — wide spread, Fibonacci-like golden angle
   const thinkers = data.thinkers.map((t, i) => {
-    const seed = t.name.charCodeAt(0) + t.name.charCodeAt(t.name.length-1) + i * 7;
-    const angle = (seed * 137.5) % 360;
-    const radius = 60 + (seed % 180);
-    const rad = angle * Math.PI / 180;
-    const cx = 400, cy = 270;
-    const x = cx + Math.cos(rad) * radius * 0.8 + (i % 3) * 65 - 80;
-    const y = cy + Math.sin(rad) * radius * 0.6 + (i % 4) * 30 - 40;
-    return { ...t, _x: Math.max(50, Math.min(750, x)), _y: Math.max(50, Math.min(510, y)) };
+    const total = data.thinkers.length;
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~137.5 degrees in radians
+    const radius = 140 + (i / total) * 200 + (i % 3) * 40;
+    const angle = i * goldenAngle * 2.2;
+    const cx = 380, cy = 270;
+    const x = cx + Math.cos(angle) * radius;
+    const y = cy + Math.sin(angle) * radius * 0.65;
+    return { ...t, _x: Math.max(40, Math.min(720, x)), _y: Math.max(30, Math.min(520, y)) };
   });
 
   return (
@@ -115,7 +115,7 @@ function SchoolDetailPage() {
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center', textAlign: 'center',
         padding: '40px 32px', position: 'relative', overflow: 'hidden',
-        backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/3/31/Raphael_School_of_Athens.jpg)',
+        backgroundImage: 'url(https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/schools/greek.jpg)',
         backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         {/* Dark elegant overlay */}
@@ -168,7 +168,7 @@ function SchoolDetailPage() {
 
         {/* Constellation canvas */}
         <div style={{
-          width: '100%', maxWidth: 800, height: 560, margin: '0 auto',
+          width: '100%', maxWidth: 850, height: 600, margin: '0 auto',
           position: 'relative', overflow: 'hidden',
         }}>
           {/* Background nebula glow */}
@@ -216,7 +216,6 @@ function SchoolDetailPage() {
                   boxShadow: isHovered ? `0 0 24px ${SUB_COLORS[t.sub] || 'var(--ochre)'}80` : '0 1px 4px rgba(0,0,0,0.08)',
                   transition: 'all 0.4s cubic-bezier(0.4,0,0.2,1)',
                   transform: isHovered ? 'scale(1.4)' : 'scale(1)',
-                  animation: `pulse ${2.5 + (i%5)*0.4}s ease-in-out ${i * 0.15}s infinite`,
                 }} />
                 <span style={{
                   fontSize: 10, color: 'var(--ink)', marginTop: 4,
@@ -245,54 +244,65 @@ function SchoolDetailPage() {
 
       {/* ====== Section 4: Timeline ====== */}
       <div style={{
-        minHeight: '100vh', padding: '60px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        minHeight: '100vh', padding: '60px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center',
       }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 40, textAlign: 'center' }}>
+        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 36, paddingLeft: 40 }}>
           思想史时间轴
         </h2>
 
-        <div style={{ position: 'relative', maxWidth: 900, margin: '0 auto' }}>
-          {/* Central horizontal line */}
+        {/* Horizontal scroll timeline */}
+        <div style={{
+          overflowX: 'auto', padding: '50px 40px 30px',
+          WebkitOverflowScrolling: 'touch',
+        }}>
           <div style={{
-            position: 'absolute', top: '50%', left: 0, right: 0, height: 2,
-            background: 'linear-gradient(to right, transparent, var(--ochre), var(--prussian), var(--ochre), transparent)',
-            opacity: 0.4,
-          }} />
+            display: 'flex', gap: 0, position: 'relative',
+            minWidth: data.timeline.length * 155,
+            paddingTop: 120, paddingBottom: 100,
+          }}>
+            {/* Thick dark line */}
+            <div style={{
+              position: 'absolute', top: 200, left: 0, right: 0, height: 3,
+              background: 'var(--ink)', opacity: 0.25,
+            }} />
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             {data.timeline.map((ev, i) => {
               const isUp = i % 2 === 0;
-              const dotColors = { birth:'#C4956A', death:'#A06060', book:'#5A7A8A', idea:'#6A8A6A', event:'#C4956A' };
-              const iconMap = { birth:'✦', death:'†', book:'¶', idea:'§', event:'○' };
+              const colors = { birth:'#C4956A', death:'#8B5A5A', book:'#3A5A7C', idea:'#5A8A5A', event:'#C4956A' };
+              const icons = { birth:'✦', death:'†', book:'¶', idea:'§', event:'○' };
               return (
                 <div key={i} style={{
-                  display: 'flex', alignItems: 'center',
-                  justifyContent: isUp ? 'flex-start' : 'flex-end',
-                  paddingLeft: isUp ? 0 : '50%', paddingRight: isUp ? '50%' : 0,
-                  position: 'relative',
+                  display: 'flex', flexDirection: 'column',
+                  alignItems: 'center', minWidth: 155, position: 'relative',
                 }}>
-                  {/* Card */}
+                  {/* Card above or below */}
                   <div style={{
+                    order: isUp ? 0 : 2,
+                    marginBottom: isUp ? 14 : 0, marginTop: isUp ? 0 : 14,
                     background: 'var(--card-bg)',
-                    borderRadius: 10, padding: '12px 18px',
-                    borderLeft: `3px solid ${dotColors[ev.type]}`,
-                    maxWidth: 380,
+                    borderRadius: 10, padding: '10px 14px',
+                    borderLeft: `3px solid ${colors[ev.type]}`,
+                    width: 145, minHeight: 70,
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
                   }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <span style={{ fontSize: 16, color: dotColors[ev.type] }}>{iconMap[ev.type]}</span>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+                      <span style={{ fontSize: 13, color: colors[ev.type] }}>{icons[ev.type]}</span>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
                     </div>
-                    <div style={{ fontSize: 14, color: 'var(--text)', marginTop: 4 }}>{ev.event}</div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.4 }}>{ev.detail}</div>
                   </div>
-                  {/* Dot on line */}
+                  {/* Dot on timeline */}
                   <div style={{
-                    position: 'absolute',
-                    left: '50%', top: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 10, height: 10, borderRadius: '50%',
-                    background: dotColors[ev.type],
-                    border: '2px solid var(--bg)',
+                    order: 1, width: 8, height: 8, borderRadius: '50%',
+                    background: 'var(--bg)', border: `2px solid ${colors[ev.type]}`,
                     zIndex: 1,
+                  }} />
+                  {/* Connector line */}
+                  <div style={{
+                    position: 'absolute', top: isUp ? 108 : 200, left: '50%',
+                    width: 1, height: isUp ? 93 : 93,
+                    background: colors[ev.type], opacity: 0.3,
                   }} />
                 </div>
               );
