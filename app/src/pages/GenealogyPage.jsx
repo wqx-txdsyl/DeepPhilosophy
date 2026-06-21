@@ -130,6 +130,7 @@ function GenealogyPage() {
                     borderRadius: 12,
                     padding: '16px 22px',
                     marginBottom: 12,
+                    border: '1px solid var(--border)',
                     borderLeft: `4px solid ${color}`,
                     cursor: 'pointer',
                   }}
