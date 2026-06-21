@@ -83,53 +83,6 @@ const GREEK_DATA = {
 };
 
 
-const SKEPTICISM_DATA = {
-  name: "怀疑论",
-  quote: "我唯一知道的就是我一无所知。",
-  quoteAuthor: "苏格拉底",
-  subtitle: "悬搁一切判断，在不确知中寻找心灵的宁静",
-  overview: "怀疑论（Skepticism）是哲学中最持久的传统之一。从古希腊的皮浪到近代的休谟，怀疑论不断挑战哲学的根基，迫使每一个知识体系面对我们如何知道这一终极追问。古代怀疑论由皮浪（约前360-前270年）创立，主张悬搁判断（epoche）——对一切命题既不肯定也不否定。学院派怀疑论将怀疑论带入柏拉图学园。近代怀疑论以休谟为巅峰：因果关系没有理性或经验的必然基础。笛卡尔以普遍怀疑为方法，蒙田以怀疑论为生活态度。",
-  thinkers: [
-    { name:"苏格拉底", sub:"怀疑论的先驱", era:"前470-前399", influence:9, key:"我只知道我一无所知", works:["柏拉图对话集"] },
-    { name:"皮浪", sub:"古代怀疑论", era:"前360-前270", influence:10, key:"悬搁一切判断", works:["皮浪学说概要"] },
-    { name:"阿凯西劳斯", sub:"学院派怀疑论", era:"前316-前241", influence:7, key:"不可能知道任何事物", works:["（佚失）"] },
-    { name:"卡尔涅阿德", sub:"学院派怀疑论", era:"前214-前129", influence:8, key:"盖然性作为行动指南", works:["（佚失）"] },
-    { name:"塞克斯都恩披里柯", sub:"古代怀疑论", era:"约160-210", influence:9, key:"系统化皮浪怀疑论", works:["皮浪学说概要"] },
-    { name:"蒙田", sub:"生活怀疑论", era:"1533-1592", influence:8, key:"我知道什么？", works:["随笔集"] },
-    { name:"勒内笛卡尔", sub:"方法论怀疑论", era:"1596-1650", influence:9, key:"普遍怀疑以求确定", works:["第一哲学沉思集"] },
-    { name:"大卫休谟", sub:"经验论怀疑论", era:"1711-1776", influence:10, key:"因果只是习惯联想", works:["人性论"] },
-    { name:"索伦克尔凯郭尔", sub:"存在论怀疑", era:"1813-1855", influence:8, key:"信仰的跳跃", works:["恐惧与战栗"] },
-    { name:"弗里德里希尼采", sub:"价值怀疑论", era:"1844-1900", influence:9, key:"重估一切价值", works:["查拉图斯特拉如是说"] },
-    { name:"路德维希维特根斯坦", sub:"语言怀疑论", era:"1889-1951", influence:10, key:"对不可言说者应保持沉默", works:["逻辑哲学论"] },
-  ],
-  relations: [
-    { from:"苏格拉底", to:"皮浪", type:"影响" },
-    { from:"皮浪", to:"阿凯西劳斯", type:"影响" },
-    { from:"阿凯西劳斯", to:"卡尔涅阿德", type:"师生" },
-    { from:"皮浪", to:"塞克斯都恩披里柯", type:"继承" },
-    { from:"塞克斯都恩披里柯", to:"蒙田", type:"影响" },
-    { from:"蒙田", to:"笛卡尔", type:"影响" },
-    { from:"笛卡尔", to:"休谟", type:"对立" },
-    { from:"休谟", to:"克尔凯郭尔", type:"影响" },
-    { from:"克尔凯郭尔", to:"尼采", type:"影响" },
-    { from:"尼采", to:"维特根斯坦", type:"影响" },
-    { from:"休谟", to:"维特根斯坦", type:"影响" },
-  ],
-  timeline: [
-    { year:"前399", event:"苏格拉底被判死刑", detail:"以我只知道我一无所知诠释哲学怀疑精神的本源", type:"death" },
-    { year:"前300", event:"皮浪创立怀疑论学派", detail:"主张悬搁一切判断以获得心灵宁静", type:"event" },
-    { year:"前265", event:"阿凯西劳斯执掌雅典学园", detail:"将怀疑论引入柏拉图学园", type:"event" },
-    { year:"前155", event:"卡尔涅阿德出使罗马", detail:"发表著名演说——第一天论证正义的必然性，第二天用同等力度推翻", type:"event" },
-    { year:"200", event:"塞克斯都著皮浪学说概要", detail:"系统总结古代怀疑论的全部论证", type:"book" },
-    { year:"1580", event:"蒙田出版随笔集", detail:"将怀疑论从学术问题转化为生活智慧", type:"book" },
-    { year:"1641", event:"笛卡尔著第一哲学沉思集", detail:"以普遍怀疑为方法，意在超越怀疑", type:"book" },
-    { year:"1748", event:"休谟著人类理解研究", detail:"归纳问题正式提出——过去太阳升起不能证明未来太阳升起", type:"book" },
-    { year:"1882", event:"尼采宣告上帝已死", detail:"将怀疑论从认识领域扩展到价值领域", type:"idea" },
-    { year:"1951", event:"维特根斯坦去世", detail:"遗作论确实性——怀疑的游戏本身就预设了确定性", type:"death" },
-  ],
-  conclusion: "怀疑论是哲学最大的麻烦制造者——它不断地追问那些被认为理所当然的根基，迫使每一个知识体系、每一个价值信仰去面对你怎么知道的拷问。但怀疑论并非纯粹的消极——它的目的是精神的自由。皮浪以悬搁判断换取心灵宁静，蒙田以我知道什么卸下独断的重负，休谟以对因果必然性的质疑为人类的习惯与情感保留了空间。正如维特根斯坦所言：怀疑的游戏本身就预设了不容怀疑的东西。",
-  closingQuote: "如果你想怀疑一切，那么你将连怀疑本身都无法怀疑。怀疑的游戏本身就预设了确定性。 — 维特根斯坦",
-};
 const SUB_COLORS = {
   '米利都学派':'#C4956A','前苏格拉底':'#B8875E','埃利亚学派':'#AC7A52',
   '多元论':'#A06D46','古希腊哲学':'#94603A','柏拉图学派':'#88532E',
@@ -140,7 +93,7 @@ const SUB_COLORS = {
 function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
-  const data = name === '怀疑论' ? SKEPTICISM_DATA : GREEK_DATA;
+  const data = GREEK_DATA;
   const [hovered, setHovered] = useState(null);
 
   // Pre-calculate nebula positions — wide spread, Fibonacci-like golden angle
