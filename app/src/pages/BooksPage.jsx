@@ -42,9 +42,25 @@ function BooksPage() {
     }
   };
 
+  // Tag normalization
+  const normMap = {
+    '古希腊哲学':'古希腊哲学','柏拉图主义':'古希腊哲学','亚里士多德主义':'古希腊哲学',
+    '伊壁鸠鲁学派':'古希腊哲学','斯多葛学派':'斯多葛学派','斯多葛主义':'斯多葛学派',
+    '存在主义':'存在主义','存在哲学':'存在主义','荒诞哲学':'存在主义',
+    '德国古典哲学':'德国古典哲学','德国唯心论':'德国古典哲学','德国哲学':'德国古典哲学',
+    '分析哲学':'分析哲学','语言哲学':'分析哲学','逻辑哲学':'分析哲学',
+    '现象学':'现象学','欧陆哲学':'现象学','意识哲学':'现象学',
+    '西方马克思主义':'西方马克思主义','马克思主义哲学':'西方马克思主义','批判理论':'西方马克思主义','法兰克福学派':'西方马克思主义',
+    '法国哲学':'法国哲学','当代法国哲学':'法国哲学',
+  };
+  const normalize = (t) => normMap[t] || t;
+
+  // Dedup + normalize tags from all books
+  const normalizedTags = [...new Set(allTags.map(normalize))].sort();
+
   // 筛选
   const filtered = books.filter(b => {
-    if (activeTag && !(b.tags || []).includes(activeTag)) return false;
+    if (activeTag && !(b.tags || []).some(t => normalize(t) === activeTag)) return false;
     if (search) {
       const q = search.toLowerCase();
       return b.title.toLowerCase().includes(q) ||
@@ -81,37 +97,40 @@ function BooksPage() {
       />
 
       {/* 分类标签 */}
-      {allTags.length > 0 && (
+      {normalizedTags.length > 0 && (
         <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 6 }}>
-            标签 ({allTags.length})
-            {allTags.length > 20 && (
-              <span onClick={() => setShowAllTags(!showAllTags)} style={{ cursor: 'pointer', color: 'var(--accent)', marginLeft: 8 }}>
+          <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 8 }}>
+            标签 ({normalizedTags.length})
+            {normalizedTags.length > 20 && (
+              <span onClick={() => setShowAllTags(!showAllTags)} style={{ cursor: 'pointer', color: 'var(--ochre)', marginLeft: 8 }}>
                 {showAllTags ? '收起' : '展开全部'}
               </span>
             )}
           </div>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             <button
-              className={`tag ${!activeTag ? 'tag-active' : ''}`}
+              onClick={() => setActiveTag(null)}
               style={{
-                background: !activeTag ? 'var(--accent)' : 'var(--secondary)',
-                color: !activeTag ? 'var(--primary)' : 'var(--text-dim)',
-                border: 'none', borderRadius: 14, padding: '4px 12px',
-                fontSize: 12, cursor: 'pointer', fontWeight: activeTag ? 400 : 600,
-              }}
-              onClick={() => setActiveTag(null)}>
+                background: !activeTag ? 'var(--ink)' : 'transparent',
+                color: !activeTag ? 'var(--bone)' : 'var(--text-dim)',
+                border: '1px solid var(--border)',
+                borderRadius: 4, padding: '4px 14px',
+                fontSize: 12, cursor: 'pointer', fontWeight: !activeTag ? 600 : 400,
+                fontFamily: 'inherit',
+              }}>
               全部
             </button>
-            {(showAllTags ? allTags : allTags.slice(0, 20)).map(tag => (
+            {(showAllTags ? normalizedTags : normalizedTags.slice(0, 20)).map(tag => (
               <button key={tag}
+                onClick={() => setActiveTag(activeTag === tag ? null : tag)}
                 style={{
-                  background: activeTag === tag ? 'var(--accent)' : 'var(--secondary)',
-                  color: activeTag === tag ? 'var(--primary)' : 'var(--text-dim)',
-                  border: 'none', borderRadius: 14, padding: '4px 12px',
+                  background: activeTag === tag ? 'var(--ink)' : 'transparent',
+                  color: activeTag === tag ? 'var(--bone)' : 'var(--text-dim)',
+                  border: activeTag === tag ? '1px solid var(--ink)' : '1px solid var(--border)',
+                  borderRadius: 4, padding: '4px 14px',
                   fontSize: 12, cursor: 'pointer', fontWeight: activeTag === tag ? 600 : 400,
-                }}
-                onClick={() => setActiveTag(activeTag === tag ? null : tag)}>
+                  fontFamily: 'inherit',
+                }}>
                 {tag}
               </button>
             ))}
