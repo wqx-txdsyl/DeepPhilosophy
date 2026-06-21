@@ -3,7 +3,7 @@
  * 开发者: @txdsyl_
  * 四个分区: 书籍 | 谱图 | 问答 | 我的
  */
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
 import BooksPage from './pages/BooksPage';
@@ -39,10 +39,39 @@ function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Auto-save user data every 10 min
+  // Auto-save
+  useEffect(() => { startAutoSave(); return () => stopAutoSave(); }, []);
+
+  // Candlelight cursor glow
+  const glowRef = useRef(null);
   useEffect(() => {
-    startAutoSave();
-    return () => stopAutoSave();
+    const el = document.createElement('div');
+    el.className = 'candle-glow';
+    document.body.appendChild(el);
+    glowRef.current = el;
+    const onMove = (e) => { el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px'; el.style.opacity = '1'; };
+    const onLeave = () => { el.style.opacity = '0'; };
+    window.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseleave', onLeave);
+    return () => { window.removeEventListener('mousemove', onMove); document.removeEventListener('mouseleave', onLeave); el.remove(); };
+  }, []);
+
+  // Parallax slow scroll
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const main = document.querySelector('.app-main');
+          if (main) main.style.transform = `translateY(${scrollY * 0.3}px)`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const tabs = [
