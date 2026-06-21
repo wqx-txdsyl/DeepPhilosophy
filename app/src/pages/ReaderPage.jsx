@@ -438,19 +438,35 @@ ${textContext}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
               <div style={{ flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '6px 12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: 12 }}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
                     onClick={() => setShowToc(true)}>📑 目录</button>
-                  <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                    <button className="btn btn-primary" style={{ padding: '6px 20px', fontSize: 14 }}
-                      onClick={() => epubRenditionRef.current?.prev()}>◀</button>
-                    <span style={{ fontSize: 13, color: 'var(--text)', minWidth: 60, textAlign: 'center', fontWeight: 600 }}>
-                      {epubPage + 1}/{epubTotalPages || '?'}
-                    </span>
-                    <button className="btn btn-primary" style={{ padding: '6px 20px', fontSize: 14 }}
-                      onClick={() => epubRenditionRef.current?.next()}>▶</button>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    {showJumpInput ? (
+                      <form onSubmit={e => { e.preventDefault(); const p = parseInt(jumpPage, 10); if (p >= 1 && p <= epubTotalPages) { epubRenditionRef.current?.display(p - 1); setShowJumpInput(false); setJumpPage(''); } }}
+                        style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                        <input type="number" min={1} max={epubTotalPages} value={jumpPage}
+                          onChange={e => setJumpPage(e.target.value)}
+                          style={{ width: 50, padding: '2px 6px', borderRadius: 6, border: '1px solid var(--accent)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 13, textAlign: 'center' }}
+                          autoFocus />
+                        <button type="submit" className="btn btn-primary" style={{ padding: '2px 8px', fontSize: 11 }}>跳转</button>
+                        <button type="button" className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 11 }}
+                          onClick={() => { setShowJumpInput(false); setJumpPage(''); }}>✕</button>
+                      </form>
+                    ) : (
+                      <span style={{ fontSize: 13, color: 'var(--text-dim)', cursor: 'pointer' }}
+                        onClick={() => setShowJumpInput(true)}>
+                        {epubPage + 1} / {epubTotalPages || '?'}
+                      </span>
+                    )}
                   </div>
-                  <span style={{ fontSize: 12, color: 'var(--text-dim)' }}></span>
+                  <span style={{ width: 50 }} />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
+                    onClick={() => epubRenditionRef.current?.prev()}>◀ 上一页</button>
+                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
+                    onClick={() => epubRenditionRef.current?.next()}>下一页 ▶</button>
                 </div>
               </div>
               {/* TOC overlay */}
