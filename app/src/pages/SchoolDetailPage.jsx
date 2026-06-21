@@ -344,7 +344,7 @@ function SchoolDetailPage() {
           悬停词语查看释义与出处
         </p>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
           {[
             { word:'Arche（本原）', def:'万物所从出又复归于它的终极元素或第一原理。泰勒斯以"水"、阿那克西曼德以"无定者"为 arche。', source:'亚里士多德《形而上学》卷一' },
             { word:'Logos（逻各斯）', def:'宇宙的理性法则与秩序。赫拉克利特首次以 logos 指称万物运行的内在规律，后为斯多葛学派发展为宇宙理性。', source:'赫拉克利特《论自然》残篇 DK22B1' },
@@ -382,16 +382,33 @@ function SchoolDetailPage() {
             return (
               <span key={i} style={{
                 fontSize: size, fontWeight: size > 16 ? 600 : 400,
-                color: 'var(--ink)', opacity: 0.75,
+                color: hovered === item.word ? 'var(--ochre)' : 'var(--ink)',
+                opacity: hovered === item.word ? 1 : 0.75,
                 padding: '4px 10px', cursor: 'pointer',
                 transition: 'all 0.25s', position: 'relative',
                 fontFamily: size > 16 ? '"Playfair Display",serif' : 'inherit',
+                transform: hovered === item.word ? 'scale(1.15)' : 'scale(1)',
               }}
-              onMouseEnter={e => { e.target.style.opacity = '1'; e.target.style.color = 'var(--ochre)'; e.target.style.transform = 'scale(1.15)'; }}
-              onMouseLeave={e => { e.target.style.opacity = '0.75'; e.target.style.color = 'var(--ink)'; e.target.style.transform = 'scale(1)'; }}
-              title={`${item.def}\n\n—— ${item.source}`}
+              onMouseEnter={() => setHovered(item.word)}
+              onMouseLeave={() => setHovered(null)}
               >
                 {item.word}
+                {hovered === item.word && (
+                  <div style={{
+                    position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
+                    background: 'var(--primary)', border: '1px solid var(--border)',
+                    borderRadius: 10, padding: '14px 20px', zIndex: 30, width: 320,
+                    boxShadow: '0 6px 30px rgba(0,0,0,0.15)',
+                    marginBottom: 10,
+                  }}>
+                    <div style={{ fontSize: 14, lineHeight: 1.7, color: 'var(--text)', marginBottom: 8 }}>
+                      {item.def}
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--ochre)', fontStyle: 'italic', borderTop: '1px solid var(--border)', paddingTop: 6 }}>
+                      {item.source}
+                    </div>
+                  </div>
+                )}
               </span>
             );
           })}
