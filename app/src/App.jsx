@@ -11,6 +11,7 @@ import BookDetailPage from './pages/BookDetailPage';
 import AuthorsPage from './pages/AuthorsPage';
 import AuthorDetailPage from './pages/AuthorDetailPage';
 import GenealogyPage from './pages/GenealogyPage';
+import SchoolDetailPage from './pages/SchoolDetailPage';
 import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
 import ReaderPage from './pages/ReaderPage';
@@ -115,6 +116,7 @@ function MainLayout() {
           <Route path="/authors" element={<AuthorsPage />} />
           <Route path="/author/:authorName" element={<AuthorDetailPage />} />
           <Route path="/genealogy" element={<GenealogyPage />} />
+          <Route path="/school/:name" element={<SchoolDetailPage />} />
           <Route path="/qa" element={<QAPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/profile" element={<ProfilePage />} />

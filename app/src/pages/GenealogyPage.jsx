@@ -2,6 +2,7 @@
  * 谱系 —— 垂直时间轴，每行一个大流派卡片
  */
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 
 const WESTERN_TIMELINE = [
@@ -29,6 +30,7 @@ const SCHOOL_COLORS = [
 ];
 
 function GenealogyPage() {
+  const navigate = useNavigate();
   const [schoolData, setSchoolData] = useState({});
 
   useEffect(() => {
@@ -131,7 +133,10 @@ function GenealogyPage() {
                     padding: '16px 22px',
                     marginBottom: 12,
                     borderLeft: `4px solid ${color}`,
-                  }}>
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => navigate(`/school/${encodeURIComponent(school)}`)}
+                  >
                     <h3 style={{ fontSize: 17, fontWeight: 700, color: color, margin: '0 0 6px' }}>
                       {school}
                     </h3>
