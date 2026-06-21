@@ -152,9 +152,35 @@ function SchoolDetailPage() {
         <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 24 }}>
           核心思想与流派脉络
         </h2>
-        <div style={{ fontSize: 16, lineHeight: 2.0, color: 'var(--text)', whiteSpace: 'pre-line' }}>
+        <div style={{ fontSize: 16, lineHeight: 2.0, color: 'var(--text)', whiteSpace: 'pre-line', marginBottom: 40 }}>
           {data.overview}
         </div>
+
+        {/* Sub-school cards */}
+        <h3 style={{ fontSize: 20, fontWeight: 600, color: 'var(--ochre)', marginBottom: 20 }}>下属流派</h3>
+        {[
+          { name:'米利都学派', era:'前6世纪', desc:'西方哲学的第一个学派，以自然哲学追问万物的物质本原（arche）。泰勒斯提出"水"，阿那克西曼德提出"无定者"，阿那克西美尼提出"气"，开创了以理性而非神话解释自然的传统。' },
+          { name:'埃利亚学派', era:'前5世纪', desc:'巴门尼德及其追随者建立的思辨学派，首次区分"存在"与"非存在"，坚持"存在者存在，非存在者不存在"的逻辑原则。以严格的逻辑推理论证世界的永恒不变性，否定感官经验的有效性，奠定了西方形而上学的理性主义基础。' },
+          { name:'智者学派', era:'前5世纪', desc:'以普罗泰戈拉和高尔吉亚为代表的职业教师群体，宣称"人是万物的尺度"，强调修辞术与辩论技巧，将哲学关注从自然哲学转向人与社会。他们对传统宗教与道德持怀疑态度，为希腊民主政治提供教育支撑。' },
+          { name:'柏拉图学派（学园派）', era:'前4世纪-前1世纪', desc:'柏拉图于前387年创立的雅典学园延续约900年。以理念论为核心，主张真实世界是永恒不变的理念世界，可感世界只是其模仿。中期学园转向怀疑论，新学园派在批判斯多葛中发展。' },
+          { name:'亚里士多德学派（逍遥学派）', era:'前4世纪-3世纪', desc:'亚里士多德在吕克昂学园边散步边讲学，故名"逍遥"。以经验观察与逻辑分析并重，构建了涵盖形而上学、物理学、伦理学、政治学、逻辑学的百科全书式体系。提出实体论、四因说与中庸之道。' },
+          { name:'伊壁鸠鲁学派', era:'前4世纪-4世纪', desc:'伊壁鸠鲁在雅典的"花园"中创立，以追求心灵宁静（ataraxia）为人生至善。继承德谟克利特的原子论，认为诸神不干预人世，死亡是原子的消散无需恐惧。是最早接纳女性和奴隶的哲学共同体。' },
+          { name:'斯多葛学派', era:'前3世纪-2世纪', desc:'芝诺在雅典画廊（stoa）创立，历经早期、中期、罗马时期三个阶段。主张顺应自然（逻各斯）生活，严格区分可控与不可控之事，强调内在德性是唯一真正的善。塞涅卡、爱比克泰德、马可·奥勒留为罗马斯多葛三杰。' },
+          { name:'怀疑论（皮浪主义）', era:'前4世纪-3世纪', desc:'皮浪创立，主张对一切判断"悬搁"（epoche），认为任何命题都可以找到同等的反命题，因此应放弃追求确定知识，以达心灵宁静。影响了中期学园派，后通过恩披里柯的著作影响了近代哲学。' },
+          { name:'犬儒学派', era:'前4世纪-5世纪', desc:'安提斯泰尼创立，第欧根尼为最著名代表。主张摒弃社会习俗与物质欲望，回归"自然"生活。第欧根尼以木桶为家，以极端简朴的行为挑战社会规范，其"世界公民"（kosmopolites）概念影响了斯多葛学派。' },
+          { name:'新柏拉图主义', era:'3世纪-6世纪', desc:'普罗提诺在前3世纪整合柏拉图、亚里士多德与斯多葛思想，创立"太一流溢说"——太一派生出理智（Nous）、理智派生出灵魂（Psyche），灵魂下降为物质世界。人的使命是通过哲学沉思回归太一。深刻影响了早期基督教神学。' },
+        ].map(sub => (
+          <div key={sub.name} style={{
+            background: 'var(--card-bg)', borderRadius: 10, padding: '16px 20px',
+            marginBottom: 14, borderLeft: '3px solid var(--ochre)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
+              <h4 style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>{sub.name}</h4>
+              <span style={{ fontSize: 12, color: 'var(--ochre)' }}>{sub.era}</span>
+            </div>
+            <p style={{ fontSize: 14, color: 'var(--text-dim)', lineHeight: 1.8, margin: 0 }}>{sub.desc}</p>
+          </div>
+        ))}
       </div>
 
       {/* ====== Section 3: Star Constellation ====== */}
@@ -306,7 +332,73 @@ function SchoolDetailPage() {
         </div>
       </div>
 
-      {/* ====== Section 5: Conclusion ====== */}
+      {/* ====== Section 5: Word Sea 辞海 ====== */}
+      <div style={{
+        minHeight: '100vh', padding: '60px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        maxWidth: 900, margin: '0 auto',
+      }}>
+        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center' }}>
+          辞海
+        </h2>
+        <p style={{ fontSize: 13, color: 'var(--text-dim)', textAlign: 'center', marginBottom: 32 }}>
+          悬停词语查看释义与出处
+        </p>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', alignItems: 'center' }}>
+          {[
+            { word:'Arche（本原）', def:'万物所从出又复归于它的终极元素或第一原理。泰勒斯以"水"、阿那克西曼德以"无定者"为 arche。', source:'亚里士多德《形而上学》卷一' },
+            { word:'Logos（逻各斯）', def:'宇宙的理性法则与秩序。赫拉克利特首次以 logos 指称万物运行的内在规律，后为斯多葛学派发展为宇宙理性。', source:'赫拉克利特《论自然》残篇 DK22B1' },
+            { word:'Eidos（理念/形式）', def:'柏拉图哲学核心概念，指超越可感世界的永恒不变的真正实在。具体事物因"分有"理念而存在，因"模仿"理念而有性质。', source:'柏拉图《理想国》卷六-卷七' },
+            { word:'Aletheia（真理/无蔽）', def:'海德格尔追溯的古希腊原初真理概念。本意为"去蔽"或"无遮蔽状态"（a-lethe），指存在者从隐藏中显现出来的过程，而非后世命题与事实的符合。', source:'海德格尔《存在与时间》§44' },
+            { word:'Ousia（实体）', def:'亚里士多德形而上学核心范畴，指"是其所是"的最根本存在。第一实体是个别具体事物，第二实体是种和属。', source:'亚里士多德《范畴篇》第5章' },
+            { word:'Physis（自然/本性）', def:'万物按其自身本性的生长与显现。前苏格拉底哲学家以 physis 为研究对象，追问"按本性而论，事物究竟是什么"。', source:'亚里士多德《物理学》卷二' },
+            { word:'Arete（德性/卓越）', def:'事物实现其本质功能的优秀品质。人的德性即灵魂合乎理性的活动。苏格拉底以"德性即知识"开启西方伦理学传统。', source:'亚里士多德《尼各马可伦理学》' },
+            { word:'Eudaimonia（幸福/至善）', def:'古希腊伦理学的终极目标，不是主观的快乐感受，而是灵魂合乎完满德性的活动。亚里士多德称之为"灵魂合乎逻各斯的现实活动"。', source:'亚里士多德《尼各马可伦理学》卷一' },
+            { word:'Ataraxia（心灵宁静）', def:'伊壁鸠鲁学派和怀疑论追求的最高境界：灵魂免于纷扰、身体免受痛苦的安宁状态。通过哲学理性消解对死亡和诸神的恐惧而获得。', source:'伊壁鸠鲁《致梅诺凯奥斯信》' },
+            { word:'Apologia（申辩）', def:'苏格拉底在雅典法庭上的自我辩护。他不以乞求宽恕为策略，而是以"未经审视的人生不值得过"为哲学使命宣言，选择死亡而不放弃哲学。', source:'柏拉图《苏格拉底的申辩》' },
+            { word:'四因说', def:'亚里士多德解释事物存在与变化的四种原因：质料因（由什么构成）、形式因（是什么）、动力因（谁使之运动）、目的因（为了什么）。', source:'亚里士多德《物理学》卷二·3' },
+            { word:'中庸之道（Mesotes）', def:'亚里士多德伦理学的核心原则：德性是两种极端之间的中道。勇敢是鲁莽与怯懦的中道，慷慨是挥霍与吝啬的中道。', source:'亚里士多德《尼各马可伦理学》卷二' },
+            { word:'认识你自己（Gnothi seauton）', def:'德尔斐神庙铭文，苏格拉底将其作为哲学第一原则。真正的智慧始于对自身无知的承认——"我只知道我一无所知"。', source:'柏拉图《苏格拉底的申辩》21d' },
+            { word:'洞穴喻', def:'柏拉图《理想国》中的著名寓言。人类如同被锁在洞穴中的囚徒，只能看到墙上的影子（可感世界），哲学的任务是挣脱锁链、走出洞穴、看见太阳（理念/善）。', source:'柏拉图《理想国》卷七 514a-517a' },
+            { word:'太一（To Hen）', def:'普罗提诺哲学中的最高本原，超越一切存在和思想，不可言说、不可界定。万物由太一通过"流溢"逐级派生：太一→理智→灵魂→物质世界。', source:'普罗提诺《九章集》卷五' },
+            { word:'Demiurge（造物匠）', def:'柏拉图《蒂迈欧篇》中的神圣工匠，以理念为蓝本、以混沌物质为材料，创造了有序的宇宙。不是从无中创造（creatio ex nihilo），而是赋予原始混沌以秩序。', source:'柏拉图《蒂迈欧篇》28a-30c' },
+            { word:'辩证法（Dialektike）', def:'柏拉图理解为"理念的科学"，即通过纯粹理性从假设上升到无假设的第一原理的能力。亚里士多德视之为从普遍接受的意见出发的推理方法。苏格拉底的"诘问法"是其雏形。', source:'柏拉图《理想国》卷六 511b' },
+            { word:'自然法（Lex Naturalis）', def:'斯多葛学派认为宇宙由理性（Logos）支配，存在一种普遍的、永恒的、基于自然理性的法律。西塞罗将这一概念系统化：真正的法律是与自然相一致的正当理性。', source:'西塞罗《论共和国》卷三·22' },
+            { word:'悬搁判断（Epoche）', def:'皮浪怀疑论的核心方法：对一切命题"既不肯定也不否定"，停止做出任何判断。目的是通过放弃对确定知识的追求而获得内心的宁静。', source:'塞克斯都·恩披里柯《皮浪学说概要》' },
+            { word:'Maieutike（精神助产术）', def:'苏格拉底自称继承母亲助产士的职业，以问答法帮助对方"生出"心中已有的真理。承认无知（反讽）→提问诘难（驳斥）→引出真知（助产）。', source:'柏拉图《泰阿泰德篇》149a-151d' },
+            { word:'万物皆流（Panta rhei）', def:'赫拉克利特名言："人不能两次踏入同一条河流"。强调宇宙万物的永恒变化与流动，同时在这流变背后存在不变的逻各斯。', source:'柏拉图《克拉底鲁篇》402a 引述' },
+            { word:'人是万物的尺度', def:'智者普罗泰戈拉的名言，意为人（个体感知）是判断一切存在与不存在的标准。开创了西方相对主义和人文主义的先河。', source:'柏拉图《泰阿泰德篇》152a' },
+            { word:'不义之生不如死', def:'苏格拉底在审判后的名言。当朋友提议越狱时，他拒绝逃跑——宁可承受不正义的死刑，也不做不正义的事。以生命为哲学殉道。', source:'柏拉图《克里同篇》' },
+            { word:'Kosmos（宇宙/秩序）', def:'希腊人用 kosmos 指称有序、和谐的整体。前苏格拉底哲学家关注 kosmos 的物质构成，柏拉图用 demiurge 解释其秩序来源，斯多葛用 logos 贯穿宇宙。', source:'柯克&拉文《前苏格拉底哲学家》' },
+            { word:'Dike（正义）', def:'起初指宇宙秩序的"方式"或"常规"，前苏格拉底哲学家将其自然化为宇宙法则。柏拉图在《理想国》中将正义定义为"各司其职"——灵魂三部分的和谐。', source:'柏拉图《理想国》卷四' },
+            { word:'Aporia（疑难/困境）', def:'苏格拉底对话中，对话者常常陷入"不知如何前进"的困境。亚里士多德认为哲学始于 aporia——正是疑难推动思想前进。', source:'亚里士多德《形而上学》卷三' },
+            { word:'Theoria（沉思/理论）', def:'古希腊哲学中最高的生活方式。不是为实用目的的知识，而是"为了知识本身"的纯粹沉思。亚里士多德称 theoria 是最接近神的生活。', source:'亚里士多德《尼各马可伦理学》卷十·7' },
+            { word:'Prohairesis（选择/意愿）', def:'爱比克泰德斯多葛哲学核心概念：人唯一真正自由的是"选择"——即对表象的判断与回应。所有外在之物非我们所能控制，唯有 prohairesis 是属己的。', source:'爱比克泰德《手册》§1' },
+            { word:'鸿蒙（Chaos）', def:'赫西俄德《神谱》中最初的存在："最先产生的是 Chaos"。希腊哲学从此神话概念出发，追问秩序如何从鸿蒙中产生——此即 kosmos 的诞生。', source:'赫西俄德《神谱》116行' },
+            { word:'Elenchos（辩驳/检验）', def:'苏格拉底的核心方法：通过系统性的提问揭示对方信念中的矛盾，使之认识到自己的无知。不是为了驳倒对方，而是共同探寻真理。', source:'弗拉斯托斯《苏格拉底的辩驳法》' },
+          ].map((item, i) => {
+            const sizes = [14,15,16,17,18,14,15,16,14,17,15,16,18,14,15,16,17,14,15,16,14,15,16,17,18,14,15,16,14,15];
+            const size = sizes[i % sizes.length];
+            return (
+              <span key={i} style={{
+                fontSize: size, fontWeight: size > 16 ? 600 : 400,
+                color: 'var(--ink)', opacity: 0.75,
+                padding: '4px 10px', cursor: 'pointer',
+                transition: 'all 0.25s', position: 'relative',
+                fontFamily: size > 16 ? '"Playfair Display",serif' : 'inherit',
+              }}
+              onMouseEnter={e => { e.target.style.opacity = '1'; e.target.style.color = 'var(--ochre)'; e.target.style.transform = 'scale(1.15)'; }}
+              onMouseLeave={e => { e.target.style.opacity = '0.75'; e.target.style.color = 'var(--ink)'; e.target.style.transform = 'scale(1)'; }}
+              title={`${item.def}\n\n—— ${item.source}`}
+              >
+                {item.word}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ====== Section 6: Conclusion ====== */}
       <div style={{
         minHeight: '100vh', padding: '60px 40px', maxWidth: 720, margin: '0 auto',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
