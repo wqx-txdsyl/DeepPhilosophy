@@ -439,14 +439,22 @@ ${textContext}
             <>
               <div ref={epubViewerRef} style={{ height: window.innerHeight - 110 }} />
               <div style={{ flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '6px 12px' }}>
+                {/* Page nav */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 6 }}>
+                  <button className="btn btn-secondary" style={{ padding: '4px 14px', fontSize: 12 }}
+                    onClick={() => epubRenditionRef.current?.prev()}>◀ 上一页</button>
+                  <button className="btn btn-secondary" style={{ padding: '4px 14px', fontSize: 12 }}
+                    onClick={() => epubRenditionRef.current?.next()}>下一页 ▶</button>
+                </div>
+                {/* Chapter nav */}
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => goEpubChapter(epubChapter - 1)} disabled={epubChapter <= 0}>◀ 上一章</button>
-                  <span style={{ fontSize: 13, color: 'var(--text-dim)', alignSelf: 'center' }}>
+                  <button className="btn btn-primary" style={{ padding: '4px 14px', fontSize: 12 }}
+                    onClick={() => goEpubChapter(epubChapter - 1)} disabled={epubChapter <= 0}>◀◀ 上一章</button>
+                  <span style={{ fontSize: 12, color: 'var(--text-dim)', alignSelf: 'center' }}>
                     {epubChapter + 1}{epubTotalChapters > 0 ? ` / ${epubTotalChapters}` : ''}
                   </span>
-                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => goEpubChapter(epubChapter + 1)}>下一章 ▶</button>
+                  <button className="btn btn-primary" style={{ padding: '4px 14px', fontSize: 12 }}
+                    onClick={() => goEpubChapter(epubChapter + 1)}>下一章 ▶▶</button>
                 </div>
               </div>
             </>
