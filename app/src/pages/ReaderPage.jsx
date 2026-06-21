@@ -514,43 +514,32 @@ ${textContext}
                   )}
                 </Document>
               </div>
-              {/* PDF controls — flex item, always matches reader width */}
+              {/* PDF controls — single row */}
               <div style={{
-                flexShrink: 0,
-                background: 'var(--primary)', borderTop: '1px solid var(--border)',
-                padding: '4px 10px',
+                flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '2px 8px',
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                  <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
-                    onClick={() => setPdfScale(s => Math.max(0.4, s - 0.2))}>🔍−</button>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    {showJumpInput ? (
-                      <form onSubmit={e => { e.preventDefault(); handleJump(); }}
-                        style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-                        <input type="number" min={1} max={numPages} value={jumpPage}
-                          onChange={e => setJumpPage(e.target.value)}
-                          style={{ width: 50, padding: '2px 6px', borderRadius: 6, border: '1px solid var(--accent)',
-                            background: 'var(--secondary)', color: 'var(--text)', fontSize: 13, textAlign: 'center' }}
-                          autoFocus />
-                        <button type="submit" className="btn btn-primary" style={{ padding: '2px 8px', fontSize: 11 }}>跳转</button>
-                        <button type="button" className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 11 }}
-                          onClick={() => { setShowJumpInput(false); setJumpPage(''); }}>✕</button>
-                      </form>
-                    ) : (
-                      <span style={{ fontSize: 13, color: 'var(--text-dim)', cursor: 'pointer' }}
-                        onClick={() => setShowJumpInput(true)}>
-                        {pageNumber} / {numPages}
-                      </span>
-                    )}
-                  </div>
-                  <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 11 }}
-                    onClick={() => setPdfScale(s => Math.min(3, s + 0.2))}>🔍+</button>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => goToPage(pageNumber - (twoPage ? 2 : 1))} disabled={pageNumber <= 1}>◀ 上一页</button>
-                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => goToPage(pageNumber + (twoPage ? 2 : 1))} disabled={pageNumber >= numPages}>下一页 ▶</button>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
+                    onClick={() => goToPage(pageNumber - (twoPage ? 2 : 1))} disabled={pageNumber <= 1}>◀</button>
+                  {showJumpInput ? (
+                    <form onSubmit={e => { e.preventDefault(); handleJump(); }}
+                      style={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                      <input type="number" min={1} max={numPages} value={jumpPage}
+                        onChange={e => setJumpPage(e.target.value)}
+                        style={{ width: 36, padding: '1px 4px', borderRadius: 4, border: '1px solid var(--accent)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 11, textAlign: 'center' }}
+                        autoFocus />
+                      <button type="submit" className="btn btn-primary" style={{ padding: '1px 6px', fontSize: 10 }}>跳</button>
+                      <button type="button" className="btn btn-secondary" style={{ padding: '1px 6px', fontSize: 10 }}
+                        onClick={() => { setShowJumpInput(false); setJumpPage(''); }}>✕</button>
+                    </form>
+                  ) : (
+                    <span style={{ fontSize: 12, color: 'var(--text-dim)', cursor: 'pointer' }}
+                      onClick={() => setShowJumpInput(true)}>
+                      {pageNumber}/{numPages}
+                    </span>
+                  )}
+                  <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
+                    onClick={() => goToPage(pageNumber + (twoPage ? 2 : 1))} disabled={pageNumber >= numPages}>▶</button>
                 </div>
               </div>
             </div>
