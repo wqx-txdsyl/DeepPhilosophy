@@ -47,6 +47,7 @@ function ReaderPage() {
   const epubRenditionRef = useRef(null);
   const epubTocRef = useRef([]);
   const [epubReady, setEpubReady] = useState(false);
+  const [epubContent, setEpubContent] = useState('');
   const [showToc, setShowToc] = useState(false);
   const [epubLocation, setEpubLocation] = useState(0); // percentage 0-100
   const [epubSpineIdx, setEpubSpineIdx] = useState(0); // current spine index
@@ -346,13 +347,19 @@ ${textContext}
     setError('PDF 加载失败：' + (err?.message || err?.toString?.() || '未知错误'));
   };
 
-  // EPUB init — 后端渲染 HTML，iframe 显示，稳定可靠
-  const initEpub = (url) => {
-    const chapter = epubSpineIdx || 0;
-    const renderUrl = `${getApiBase()}/api/books/${bookId}/render?chapter=${chapter}`;
-    setEpubLocation(chapter); // use as chapter index
-    setEpubReady(true);
+  // EPUB init — fetch rendered HTML from backend
+  const loadEpubChapter = async (chapter) => {
+    try {
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/render?chapter=${chapter}`);
+      if (resp.ok) {
+        const html = await resp.text();
+        setEpubContent(html);
+        setEpubSpineIdx(chapter);
+        setEpubReady(true);
+      }
+    } catch {}
   };
+  const initEpub = (url) => loadEpubChapter(epubSpineIdx || 0);
 
   const goToEpubPage = (pct) => {
     const rendition = epubRenditionRef.current;
@@ -430,9 +437,8 @@ ${textContext}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative' }}>
           {fileType === 'epub' ? (
             <>
-              <iframe ref={epubViewerRef} src={`${getApiBase()}/api/books/${bookId}/render?chapter=${epubSpineIdx || 0}`}
-                style={{ flex: 1, minHeight: 0, border: 'none', width: '100%' }}
-                title="EPUB Reader" />
+              <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0, overflow: 'auto', padding: '8px 16px', color: '#ccc', background: '#1a1a1a', fontSize: 17, lineHeight: 1.8, fontFamily: 'serif' }}
+                dangerouslySetInnerHTML={{ __html: epubContent }} />
               {/* EPUB controls — flex item, always matches reader width */}
               <div style={{
                 flexShrink: 0,
@@ -465,19 +471,10 @@ ${textContext}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => {
-                      const next = Math.max(0, (epubSpineIdx || 0) - 1);
-                      setEpubSpineIdx(next);
-                      setEpubLocation(next);
-                      epubViewerRef.current.src = `${getApiBase()}/api/books/${bookId}/render?chapter=${next}`;
-                    }} disabled={(epubSpineIdx || 0) <= 0}>◀ 上一章</button>
+                    onClick={() => loadEpubChapter(Math.max(0, (epubSpineIdx || 0) - 1))}
+                    disabled={(epubSpineIdx || 0) <= 0}>◀ 上一章</button>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => {
-                      const next = (epubSpineIdx || 0) + 1;
-                      setEpubSpineIdx(next);
-                      setEpubLocation(next);
-                      epubViewerRef.current.src = `${getApiBase()}/api/books/${bookId}/render?chapter=${next}`;
-                    }}>下一章 ▶</button>
+                    onClick={() => loadEpubChapter((epubSpineIdx || 0) + 1)}>下一章 ▶</button>
                 </div>
               </div>
               {showToc && (

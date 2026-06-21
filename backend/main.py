@@ -792,10 +792,10 @@ def t(a, b):
 
 @app.get("/api/books/{book_id}/render")
 async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
-    """将 EPUB 章节渲染为 HTML"""
+    """将 EPUB 章节渲染为分页 HTML"""
     import ebooklib
     from ebooklib import epub
-    from bs4 import BeautifulSoup
+    from bs4 import BeautifulSoup, NavigableString
 
     books = scan_books()
     book = next((b for b in books if b["id"] == book_id), None)
@@ -824,42 +824,61 @@ async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
     else:
         eb = epub.read_epub(os.path.join(config.KNOWLEDGE_DIR, book["path"]))
 
-    # Get spine items (ordered chapters)
-    spine = eb.spine if hasattr(eb, 'spine') else []
     items = [it for it in eb.get_items_of_type(ebooklib.ITEM_DOCUMENT)]
-
     if not items:
         raise HTTPException(status_code=404, detail="无内容")
 
-    # Build chapter list & paginate
     chapter_idx = max(0, min(chapter, len(items) - 1))
     item = items[chapter_idx]
     content = item.get_content().decode('utf-8', errors='replace')
-
     soup = BeautifulSoup(content, 'html.parser')
-    for tag in soup(["script", "style", "nav", "head"]):
+    for tag in soup(["script", "style", "nav", "head", "meta"]):
         tag.decompose()
     body = soup.find('body')
-    body_html = str(body) if body else soup.prettify()
+    root = body if body else soup
 
-    total = len(items)
-    prev_link = f'<a href="?chapter={chapter_idx-1}" style="float:left">← 上一章</a>' if chapter_idx > 0 else ''
-    next_link = f'<a href="?chapter={chapter_idx+1}" style="float:right">下一章 →</a>' if chapter_idx < total - 1 else ''
+    # Split by <p> tags into pages of ~1500 chars
+    paras = []
+    for el in root.find_all(['p','h1','h2','h3','h4','div','blockquote','li']):
+        text = el.get_text().strip()
+        if text:
+            paras.append(str(el))
+    if not paras:
+        paras = [str(root)]
+
+    pages = []
+    buf = ''
+    for p in paras:
+        if len(buf) + len(p) > 2500 and buf:
+            pages.append(buf)
+            buf = p
+        else:
+            buf += p
+    if buf:
+        pages.append(buf)
+
+    total_chapters = len(items)
+    total_pages = len(pages)
+    page_html = '\n'.join(pages)  # all pages of this chapter, scrollable
+
+    prev_ch = f'<a onclick="goChapter({chapter_idx-1})" style="float:left">← 上一章</a>' if chapter_idx > 0 else ''
+    next_ch = f'<a onclick="goChapter({chapter_idx+1})" style="float:right">下一章 →</a>' if chapter_idx < total_chapters - 1 else ''
 
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-  body {{ font-family: 'Noto Serif CJK SC', 'Source Han Serif SC', SimSun, serif; font-size: 18px; line-height: 1.8; padding: 16px 20px 100px; color: #ccc; background: #1a1a1a; max-width: 800px; margin: 0 auto; }}
-  h1,h2,h3 {{ color: #d4a574; }}
-  p {{ margin: 0 0 0.8em; text-indent: 2em; }}
-  a {{ color: #d4a574; text-decoration: none; padding: 8px 16px; border: 1px solid #444; border-radius: 6px; }}
+  body {{ font-family: SimSun, 'Noto Serif CJK SC', serif; font-size: 18px; line-height: 1.9; padding: 16px 20px 100px; color: #ccc; background: #1a1a1a; max-width: 800px; margin: 0 auto; }}
+  h1,h2,h3,h4 {{ color: #d4a574; text-align: center; margin: 1.2em 0 0.8em; }}
+  p {{ margin: 0 0 1em; text-indent: 2em; }}
+  blockquote {{ border-left: 3px solid #555; margin: 0.8em 1em; padding: 0.4em 1em; color: #aaa; }}
+  a {{ color: #d4a574; text-decoration: none; padding: 8px 16px; border: 1px solid #444; border-radius: 6px; cursor: pointer; }}
   .nav {{ overflow: hidden; padding: 12px 0; margin-bottom: 20px; border-bottom: 1px solid #333; font-size: 14px; }}
-  .pos {{ text-align: center; color: #666; font-size: 14px; margin-top: 30px; }}
+  .pos {{ text-align: center; color: #666; font-size: 14px; margin: 30px 0; }}
 </style></head><body>
-<div class="nav">{prev_link}{next_link}<div style="clear:both"></div></div>
-{body_html}
-<div class="pos">{chapter_idx + 1} / {total}</div>
-<div class="nav">{prev_link}{next_link}<div style="clear:both"></div></div>
+<div class="nav">{prev_ch}{next_ch}<div style="clear:both"></div></div>
+{page_html}
+<div class="pos">第 {chapter_idx + 1}/{total_chapters} 章</div>
+<div class="nav">{prev_ch}{next_ch}<div style="clear:both"></div></div>
 </body></html>"""
 
     from fastapi.responses import HTMLResponse
