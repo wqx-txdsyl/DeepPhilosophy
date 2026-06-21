@@ -92,8 +92,20 @@ const SUB_COLORS = {
 function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
-  const data = GREEK_DATA; // 未来根据 name 动态加载
+  const data = GREEK_DATA;
   const [hovered, setHovered] = useState(null);
+
+  // Pre-calculate nebula positions once
+  const thinkers = data.thinkers.map((t, i) => {
+    const seed = t.name.charCodeAt(0) + t.name.charCodeAt(t.name.length-1) + i * 7;
+    const angle = (seed * 137.5) % 360;
+    const radius = 60 + (seed % 180);
+    const rad = angle * Math.PI / 180;
+    const cx = 400, cy = 270;
+    const x = cx + Math.cos(rad) * radius * 0.8 + (i % 3) * 65 - 80;
+    const y = cy + Math.sin(rad) * radius * 0.6 + (i % 4) * 30 - 40;
+    return { ...t, _x: Math.max(50, Math.min(750, x)), _y: Math.max(50, Math.min(510, y)) };
+  });
 
   return (
     <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
@@ -165,10 +177,9 @@ function SchoolDetailPage() {
           {/* SVG lines */}
           <svg style={{ position: 'absolute', top:0, left:0, width:'100%', height:'100%' }}>
             {data.relations.map((r, i) => {
-              const from = data.thinkers.find(t => t.name === r.from);
-              const to = data.thinkers.find(t => t.name === r.to);
+              const from = thinkers.find(t => t.name === r.from);
+              const to = thinkers.find(t => t.name === r.to);
               if (!from || !to) return null;
-              if (!from._x) return null;
               return (
                 <g key={i}>
                   <line x1={from._x} y1={from._y} x2={to._x} y2={to._y}
@@ -183,21 +194,9 @@ function SchoolDetailPage() {
             })}
           </svg>
 
-          {/* Thinker dots — randomized nebula positions */}
-          {data.thinkers.map((t, i) => {
-            // Seeded pseudo-random positions for star-like scatter
-            const seed = t.name.charCodeAt(0) + t.name.charCodeAt(t.name.length-1) + i * 7;
-            const angle = (seed * 137.5) % 360;
-            const radius = 60 + (seed % 180);
-            const cx = 400, cy = 280;
-            const rad = angle * Math.PI / 180;
-            const x = cx + Math.cos(rad) * radius * 0.8 + (i % 3) * 60 - 80;
-            const y = cy + Math.sin(rad) * radius * 0.6 + (i % 4) * 30 - 40;
-            // Clamp to bounds
-            const px = Math.max(50, Math.min(750, x));
-            const py = Math.max(50, Math.min(510, y));
-            // Store position for SVG lines
-            t._x = px; t._y = py;
+          {/* Thinker dots — nebula positions */}
+          {thinkers.map((t, i) => {
+            const px = t._x, py = t._y;
             const size = 16 + t.influence * 4;
             const isHovered = hovered === t.name;
             return (
