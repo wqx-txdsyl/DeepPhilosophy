@@ -97,18 +97,7 @@ const SUB_COLORS = {
 function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
-  // Sub-school filter: only apply if name is a known sub-school
-  const subNames = [...new Set(GREEK_DATA.thinkers.map(t => t.sub))];
-  const isSubSchool = subNames.includes(name);
-  const data = isSubSchool ? {
-    ...GREEK_DATA,
-    name,
-    thinkers: GREEK_DATA.thinkers.filter(t => t.sub === name),
-    relations: GREEK_DATA.relations.filter(r =>
-      GREEK_DATA.thinkers.find(t => t.name === r.from && t.sub === name) &&
-      GREEK_DATA.thinkers.find(t => t.name === r.to && t.sub === name)
-    ),
-  } : GREEK_DATA;
+  const data = GREEK_DATA;
   const [hovered, setHovered] = useState(null);
 
   // Pre-calculate nebula positions — wide spread, Fibonacci-like golden angle
