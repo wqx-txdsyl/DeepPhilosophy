@@ -11,7 +11,6 @@ const WESTERN_TIMELINE = [
 
   { century: '4世纪', schools: ['教父哲学'] },
   { century: '11世纪', schools: ['经院哲学'] },
-  { century: '13世纪', schools: ['托马斯主义'] },
   { century: '14世纪', schools: ['唯名论'] },
   { century: '17世纪', schools: ['近代哲学', '理性主义', '经验主义'] },
   { century: '18世纪', schools: ['启蒙运动', '实在论', '唯心主义', '自由主义', '浪漫主义'] },
