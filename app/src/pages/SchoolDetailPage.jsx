@@ -119,7 +119,7 @@ function SchoolDetailPage() {
         backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         {/* Dark elegant overlay */}
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(244,240,235,0.96)', backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(244,240,235,0.75)' }} />
 
         <div style={{ position: 'absolute', top: 16, left: 16 }}>
           <button className="btn btn-secondary" style={{ padding:'4px 10px',fontSize:12 }}
