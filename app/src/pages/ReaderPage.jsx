@@ -437,8 +437,9 @@ ${textContext}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative' }}>
           {fileType === 'epub' ? (
             <>
-              <div style={{ flex: 1, overflowY: 'scroll', WebkitOverflowScrolling: 'touch', padding: '8px 16px', color: '#ccc', background: '#1a1a1a', fontSize: 17, lineHeight: 1.8, fontFamily: 'serif', height: window.innerHeight - 160 }}
-                dangerouslySetInnerHTML={{ __html: epubContent }} />
+              <iframe src={`${getApiBase()}/api/books/${bookId}/render?chapter=${epubSpineIdx || 0}`}
+                style={{ flex: 1, border: 'none', width: '100%' }}
+                title="EPUB Reader" />
               {/* EPUB controls — flex item, always matches reader width */}
               <div style={{
                 flexShrink: 0,
@@ -471,10 +472,17 @@ ${textContext}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => loadEpubChapter(Math.max(0, (epubSpineIdx || 0) - 1))}
-                    disabled={(epubSpineIdx || 0) <= 0}>◀ 上一章</button>
+                    onClick={() => {
+                      const next = Math.max(0, (epubSpineIdx || 0) - 1);
+                      setEpubSpineIdx(next);
+                      epubViewerRef.current.src = `${getApiBase()}/api/books/${bookId}/render?chapter=${next}`;
+                    }} disabled={(epubSpineIdx || 0) <= 0}>◀ 上一章</button>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
-                    onClick={() => loadEpubChapter((epubSpineIdx || 0) + 1)}>下一章 ▶</button>
+                    onClick={() => {
+                      const next = (epubSpineIdx || 0) + 1;
+                      setEpubSpineIdx(next);
+                      epubViewerRef.current.src = `${getApiBase()}/api/books/${bookId}/render?chapter=${next}`;
+                    }}>下一章 ▶</button>
                 </div>
               </div>
               {showToc && (
