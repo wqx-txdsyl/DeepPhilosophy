@@ -101,10 +101,10 @@ function SchoolDetailPage() {
     const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~137.5 degrees in radians
     const radius = 140 + (i / total) * 200 + (i % 3) * 40;
     const angle = i * goldenAngle * 2.2;
-    const cx = 380, cy = 270;
+    const cx = 400, cy = 280;
     const x = cx + Math.cos(angle) * radius;
-    const y = cy + Math.sin(angle) * radius * 0.65;
-    return { ...t, _x: Math.max(40, Math.min(720, x)), _y: Math.max(30, Math.min(520, y)) };
+    const y = cy + Math.sin(angle) * radius * 0.7;
+    return { ...t, _x: Math.max(50, Math.min(750, x)), _y: Math.max(40, Math.min(540, y)) };
   });
 
   return (
@@ -244,65 +244,54 @@ function SchoolDetailPage() {
 
       {/* ====== Section 4: Timeline ====== */}
       <div style={{
-        minHeight: '100vh', padding: '60px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        minHeight: '100vh', padding: '60px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
       }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 36, paddingLeft: 40 }}>
+        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 40, textAlign: 'center' }}>
           思想史时间轴
         </h2>
 
-        {/* Horizontal scroll timeline */}
-        <div style={{
-          overflowX: 'auto', padding: '50px 40px 30px',
-          WebkitOverflowScrolling: 'touch',
-        }}>
+        <div style={{ position: 'relative', maxWidth: 900, margin: '0 auto' }}>
+          {/* Central vertical line */}
           <div style={{
-            display: 'flex', gap: 0, position: 'relative',
-            minWidth: data.timeline.length * 155,
-            paddingTop: 120, paddingBottom: 100,
-          }}>
-            {/* Thick dark line */}
-            <div style={{
-              position: 'absolute', top: 200, left: 0, right: 0, height: 3,
-              background: 'var(--ink)', opacity: 0.25,
-            }} />
+            position: 'absolute', left: '50%', top: 0, bottom: 0, width: 3,
+            background: 'var(--ink)', opacity: 0.2, transform: 'translateX(-50%)',
+          }} />
 
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
             {data.timeline.map((ev, i) => {
-              const isUp = i % 2 === 0;
+              const isLeft = i % 2 === 0;
               const colors = { birth:'#C4956A', death:'#8B5A5A', book:'#3A5A7C', idea:'#5A8A5A', event:'#C4956A' };
               const icons = { birth:'✦', death:'†', book:'¶', idea:'§', event:'○' };
               return (
                 <div key={i} style={{
-                  display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', minWidth: 155, position: 'relative',
+                  display: 'flex', alignItems: 'center',
+                  justifyContent: isLeft ? 'flex-start' : 'flex-end',
+                  position: 'relative',
                 }}>
-                  {/* Card above or below */}
+                  {/* Card */}
                   <div style={{
-                    order: isUp ? 0 : 2,
-                    marginBottom: isUp ? 14 : 0, marginTop: isUp ? 0 : 14,
+                    width: '46%',
                     background: 'var(--card-bg)',
-                    borderRadius: 10, padding: '10px 14px',
+                    borderRadius: 10, padding: '14px 18px',
                     borderLeft: `3px solid ${colors[ev.type]}`,
-                    width: 145, minHeight: 70,
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                    marginRight: isLeft ? 0 : '4%',
+                    marginLeft: isLeft ? '4%' : 0,
                   }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-                      <span style={{ fontSize: 13, color: colors[ev.type] }}>{icons[ev.type]}</span>
-                      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 14, color: colors[ev.type] }}>{icons[ev.type]}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
                     </div>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.4 }}>{ev.detail}</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>{ev.event}</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-dim)', lineHeight: 1.6 }}>{ev.detail}</div>
                   </div>
                   {/* Dot on timeline */}
                   <div style={{
-                    order: 1, width: 8, height: 8, borderRadius: '50%',
-                    background: 'var(--bg)', border: `2px solid ${colors[ev.type]}`,
+                    position: 'absolute', left: '50%', top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 10, height: 10, borderRadius: '50%',
+                    background: colors[ev.type],
+                    border: '2px solid var(--bg)',
                     zIndex: 1,
-                  }} />
-                  {/* Connector line */}
-                  <div style={{
-                    position: 'absolute', top: isUp ? 108 : 200, left: '50%',
-                    width: 1, height: isUp ? 93 : 93,
-                    background: colors[ev.type], opacity: 0.3,
                   }} />
                 </div>
               );
