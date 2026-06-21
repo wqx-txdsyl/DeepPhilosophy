@@ -861,9 +861,6 @@ async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
     total_pages = len(pages)
     page_html = '\n'.join(pages)  # all pages of this chapter, scrollable
 
-    prev_ch = f'<a onclick="goChapter({chapter_idx-1})" style="float:left">← 上一章</a>' if chapter_idx > 0 else ''
-    next_ch = f'<a onclick="goChapter({chapter_idx+1})" style="float:right">下一章 →</a>' if chapter_idx < total_chapters - 1 else ''
-
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
@@ -871,14 +868,8 @@ async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
   h1,h2,h3,h4 {{ color: #d4a574; text-align: center; margin: 1.2em 0 0.8em; }}
   p {{ margin: 0 0 1em; text-indent: 2em; }}
   blockquote {{ border-left: 3px solid #555; margin: 0.8em 1em; padding: 0.4em 1em; color: #aaa; }}
-  a {{ color: #d4a574; text-decoration: none; padding: 8px 16px; border: 1px solid #444; border-radius: 6px; cursor: pointer; }}
-  .nav {{ overflow: hidden; padding: 12px 0; margin-bottom: 20px; border-bottom: 1px solid #333; font-size: 14px; }}
-  .pos {{ text-align: center; color: #666; font-size: 14px; margin: 30px 0; }}
 </style></head><body>
-<div class="nav">{prev_ch}{next_ch}<div style="clear:both"></div></div>
 {page_html}
-<div class="pos">第 {chapter_idx + 1}/{total_chapters} 章</div>
-<div class="nav">{prev_ch}{next_ch}<div style="clear:both"></div></div>
 </body></html>"""
 
     from fastapi.responses import HTMLResponse
