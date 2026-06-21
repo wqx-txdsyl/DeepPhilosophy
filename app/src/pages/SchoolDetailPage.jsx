@@ -1157,7 +1157,7 @@ const LIBERALISM_CIHAI = [
 const LIBERALISM_SUB_SCHOOLS = [
   { name:'古典自由主义', era:'17-18世纪', desc:'洛克、孟德斯鸠、亚当·斯密——自然权利、社会契约、自由贸易。国家的合法性来自被统治者的同意，权力的范围必须被宪法和法律严格限制。经济领域由"看不见的手"自发协调——政府的角色是"守夜人"：保护财产、执行合同、维护国防，而不是指挥生产和分配。' },
   { name:'后革命自由主义', era:'19世纪', desc:'法国大革命暴露了自由主义的内在紧张——"公意"既能证成民主也能证成恐怖。贡斯当：现代人不需要雅典式的全天候参政——他们要的是"私人不受打扰"的自由。托克维尔：民主不可阻挡，但民主社会面临新型威胁——多数人的暴政和温和的监护人式专制。密尔：以"伤害原则"划定个人自由的绝对边界。' },
-  { name:'社会自由主义', era:'20世纪', desc:'面对工业革命后的阶级分化和贫困，自由主义开始反思"守夜人国家"的不足。格林、霍布豪斯和凯恩斯论证：真正的自由不是免于干涉——还需要教育、医疗和社会保障等'积极条件'。罗尔斯以"作为公平的正义"为自由主义提供了一个与古典功利主义和社会民主都不同的道德框架。' },
+  { name:'社会自由主义', era:'20世纪', desc:'面对工业革命后的阶级分化和贫困，自由主义开始反思"守夜人国家"的不足。格林、霍布豪斯和凯恩斯论证：真正的自由不是免于干涉——还需要教育、医疗和社会保障等"积极条件"。罗尔斯以"作为公平的正义"为自由主义提供了一个与古典功利主义和社会民主都不同的道德框架。' },
 ];
 
 // ——— 浪漫主义辞海 ———
@@ -1188,17 +1188,17 @@ const ROMANTICISM_SUB_SCHOOLS = [
   { name:'浪漫主义先驱', era:'18世纪中', desc:'卢梭——以"回归自然"的口号和《忏悔录》中前所未有的自我暴露开辟了现代内心世界作为哲学的对象。他的"自然教育"、对文明腐蚀性影响的诊断、以及"人是生而自由的却无往不在枷锁之中"的宣言，是全部浪漫主义反叛的源头。"我感受故我在"——感受优先于推理。' },
   { name:'古典-浪漫的张力', era:'18世纪末-19世纪初', desc:'歌德与席勒——站在古典与浪漫的交界处的两位巨人。歌德的"浮士德式追求"——灵魂以无限的渴望拥抱一切知识和经验——定义了浪漫主义的终极主题。席勒的"审美教育"——通过艺术和美的游戏弥合现代劳动分工造成的灵魂碎片化——是对启蒙理性主义的第一次系统"补充"而非否定。' },
   { name:'耶拿浪漫派', era:'1798-1800', desc:'施莱格尔兄弟、诺瓦利斯、蒂克——以《雅典娜神殿》为阵地的早期德国浪漫派核心圈子。在短短两年多的密集交流中，他们以"断片"、"对话"和"诗歌"的形式重新定义了诗、哲学和宗教的关系——"浪漫诗是进步的普遍的诗"，"世界必须被浪漫化"。诺瓦利斯的"蓝色花"和施莱格尔的"浪漫反讽"是整个运动的标志性概念。' },
-  { name:'表现主义与历史主义', era:'18世纪末', desc:'赫尔德——浪漫主义的哲学基石。他提出"表现主义"的核心洞见：艺术作品、语言和诗歌不是对永恒理念的模仿，而是一个民族内在灵魂的独特表达。每种语言以自己的方式'表现'世界——这一洞见既为文化多元主义奠基，也埋下了民族主义的种子。'历史主义'——每个时代都应以自身的标准而非普遍理性的标准来理解。' },
+  { name:'表现主义与历史主义', era:'18世纪末', desc:'赫尔德——浪漫主义的哲学基石。他提出"表现主义"的核心洞见：艺术作品、语言和诗歌不是对永恒理念的模仿，而是一个民族内在灵魂的独特表达。每种语言以自己的方式"表现"世界——这一洞见既为文化多元主义奠基，也埋下了民族主义的种子。"历史主义"——每个时代都应以自身的标准而非普遍理性的标准来理解。' },
 ];
 
 function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
   const SCHOOL_MAP = {
-    '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/patristic.jpg)' },
-    '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/scholastic.jpg)' },
-    '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '经验主义': { data:EMPIRICISM_DATA, sub:EMPIRICISM_SUB_SCHOOLS, ci:EMPIRICISM_CIHAI, bg:'url(/schools/greek.jpg)' },
+    '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/patristic.png)' },
+    '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/scholastic.png)' },
+    '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/rationalist.png)' },
+    '经验主义': { data:EMPIRICISM_DATA, sub:EMPIRICISM_SUB_SCHOOLS, ci:EMPIRICISM_CIHAI, bg:'url(/schools/empiricist.png)' },
     '启蒙运动': { data:ENLIGHTENMENT_DATA, sub:ENLIGHTENMENT_SUB_SCHOOLS, ci:ENLIGHTENMENT_CIHAI, bg:'url(/schools/greek.jpg)' },
     '实在论': { data:REALISM_DATA, sub:REALISM_SUB_SCHOOLS, ci:REALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
     '唯心主义': { data:IDEALISM_DATA, sub:IDEALISM_SUB_SCHOOLS, ci:IDEALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
