@@ -60,7 +60,7 @@ function ReaderPage() {
   const notesKey = `dp_notes_${bookId}`;
 
   // Two-page view toggle (default single for mobile)
-  const [twoPage, setTwoPage] = useState(false);
+  const [twoPage, setTwoPage] = useState(true);
 
   // AI Chat state
   const [showAiChat, setShowAiChat] = useState(false);

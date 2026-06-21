@@ -204,7 +204,7 @@ function QAPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 56px - 60px)', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 116px)', overflow: 'hidden' }}>
       {/* Top bar with clear button */}
       <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 14px', borderBottom: '1px solid var(--border)' }}>
         <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
