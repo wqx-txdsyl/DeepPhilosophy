@@ -42,9 +42,10 @@ function ReaderPage() {
   const [jumpPage, setJumpPage] = useState('');
   const [showJumpInput, setShowJumpInput] = useState(false);
 
-  // EPUB state (iframe-based, no epubjs)
-  const epubIframeRef = useRef(null);
+  // EPUB state
   const [epubChapter, setEpubChapter] = useState(0);
+  const [epubHtml, setEpubHtml] = useState('');
+  const epubDivRef = useRef(null);
   // PDF state
 
   // Notes state
@@ -141,14 +142,7 @@ function ReaderPage() {
   // 获取当前页文字
   const getCurrentPageText = async () => {
     if (fileType === 'epub') {
-      // Try getting text from iframe
-      try {
-        const iframe = epubIframeRef.current;
-        if (iframe?.contentDocument?.body) {
-          return iframe.contentDocument.body.innerText?.trim()?.substring(0, 3000) || '';
-        }
-      } catch {}
-      return '';
+      return epubDivRef.current?.innerText?.trim()?.substring(0, 3000) || '';
     }
     if (fileType === 'pdf') {
       // 从 TextLayer DOM 提取
@@ -336,13 +330,15 @@ ${textContext}
   };
 
   // EPUB chapter navigation
-  const goEpubChapter = (ch) => {
+  const goEpubChapter = async (ch) => {
     const next = Math.max(0, ch);
     setEpubChapter(next);
-    if (epubIframeRef.current) {
-      epubIframeRef.current.src = `${getApiBase()}/api/books/${bookId}/render?chapter=${next}`;
-    }
+    try {
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/render?chapter=${next}`);
+      if (resp.ok) setEpubHtml(await resp.text());
+    } catch {}
   };
+  useEffect(() => { if (fileType === 'epub') goEpubChapter(epubChapter); }, [fileType]);
 
   // Save on unmount (only when actually leaving the page)
   const saveRef = useRef({ pdfPage: 0, pdfTotal: 0, bookId: '', title: '', author: '' });
@@ -396,13 +392,19 @@ ${textContext}
         {/* Reader */}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' ? (
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 56, background: '#1a1a1a' }}>
-              <iframe
-                ref={epubIframeRef}
-                src={`${getApiBase()}/api/books/${bookId}/render?chapter=${epubChapter}`}
-                style={{ width: '100%', height: '100%', border: 'none' }}
-                title="EPUB Reader" />
-            </div>
+            <>
+              <div ref={epubDivRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', color: '#ccc', background: '#1a1a1a', fontSize: 17, lineHeight: 1.9, fontFamily: 'serif', minHeight: 0 }}
+                dangerouslySetInnerHTML={{ __html: epubHtml }} />
+              <div style={{ flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '6px 12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
+                    onClick={() => goEpubChapter(epubChapter - 1)} disabled={epubChapter <= 0}>◀ 上一章</button>
+                  <span style={{ fontSize: 13, color: 'var(--text-dim)', alignSelf: 'center' }}>第 {epubChapter + 1} 章</span>
+                  <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
+                    onClick={() => goEpubChapter(epubChapter + 1)}>下一章 ▶</button>
+                </div>
+              </div>
+            </>
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
               <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0 8px' }}>
