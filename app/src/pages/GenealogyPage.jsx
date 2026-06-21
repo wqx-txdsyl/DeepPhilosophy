@@ -1,7 +1,8 @@
 /**
- * 谱系 —— 东西方哲学流派时间轴
+ * 谱系 —— 垂直时间轴，每行一个大流派卡片
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getApiBase } from '../App';
 
 const WESTERN_TIMELINE = [
   { century: '公元前6世纪', schools: ['古希腊哲学'] },
@@ -20,87 +21,157 @@ const WESTERN_TIMELINE = [
   { century: '21世纪', schools: ['技术哲学'] },
 ];
 
-const SCHOOL_COLORS = {
-  '古希腊哲学': '#d4a574', '怀疑论': '#c9a96e', '斯多葛学派': '#bf9e68',
-  '教父哲学': '#b89462', '经院哲学': '#b0895c', '托马斯主义': '#a87f56',
-  '唯名论': '#a07550', '近代哲学': '#986b4a', '理性主义': '#906144',
-  '经验主义': '#88573e', '启蒙运动': '#804d38', '实在论': '#784332',
-  '唯心主义': '#70392c', '自由主义': '#682f26', '浪漫主义': '#602520',
-  '德国古典哲学': '#581b1a', '功利主义': '#5c2020', '超验主义': '#602626',
-  '实证主义': '#642c2c', '马克思主义': '#683232', '生命哲学': '#6c3838',
-  '社会学': '#703e3e', '实用主义': '#744444', '精神分析学': '#784a4a',
-  '现象学': '#7c5050', '存在主义': '#805656', '分析哲学': '#845c5c',
-  '过程哲学': '#886262', '哲学人类学': '#8c6868', '西方马克思主义': '#906e6e',
-  '法兰克福学派': '#947474', '批判理论': '#987a7a', '科学哲学': '#9c8080',
-  '荒诞哲学': '#a08686', '基督教哲学': '#a48c8c', '结构主义': '#a89292',
-  '政治哲学': '#ac9898', '哲学诠释学': '#b09e9e', '后结构主义': '#b4a4a4',
-  '后现代主义': '#b8aaaa', '伦理学': '#bcb0b0', '宗教哲学': '#c0b6b6',
-  '女性主义': '#c4bcbc', '社群主义': '#c8c2c2', '技术哲学': '#ccc8c8',
-};
+const SCHOOL_COLORS = [
+  '#d4a574','#c49a68','#b4905c','#a48650','#947c44','#847238','#74682c','#645e20',
+  '#5c5820','#585c26','#54602c','#506432','#4c6838','#486c3e','#447044','#40744a',
+  '#3c7850','#387c56','#34805c','#308462','#2c8868','#288c6e','#248074','#20847a',
+  '#1c8880','#188c86','#14908c','#109492','#0c9898','#089c9e','#04a0a4','#00a4aa',
+];
 
 function GenealogyPage() {
+  const [schoolData, setSchoolData] = useState({});
+
+  useEffect(() => {
+    fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(10000) })
+      .then(r => r.json())
+      .then(d => {
+        const map = {};
+        (d.authors || []).forEach(a => {
+          const raw = a.school || '';
+          if (!raw) return;
+          raw.replace('、','/').replace('，','/').replace(',','/').split('/').forEach(s => {
+            s = s.trim();
+            if (!s || s.length < 2) return;
+            // Normalize to big schools
+            const normMap = {
+              '存在主义先驱':'存在主义','存在哲学':'存在主义','文学哲学':'存在主义',
+              '柏拉图主义':'古希腊哲学','逍遥学派':'古希腊哲学','伊壁鸠鲁主义':'古希腊哲学',
+              '米利都学派':'古希腊哲学','埃利亚派':'古希腊哲学','前苏格拉底':'古希腊哲学',
+              '古代哲学':'古希腊哲学','犬儒学派':'古希腊哲学','自然哲学':'古希腊哲学',
+              '新柏拉图主义':'古希腊哲学','折衷主义':'古希腊哲学','元素论':'古希腊哲学',
+              '斯多葛派':'斯多葛学派','斯多葛主义':'斯多葛学派','晚期斯多亚':'斯多葛学派',
+              '批判哲学':'德国古典哲学','德国唯心论':'德国古典哲学','唯意志论':'德国古典哲学','悲观主义哲学':'德国古典哲学',
+              '交往理论':'法兰克福学派','文化批评':'法兰克福学派','法兰克福学派（批判理论）':'法兰克福学派',
+              '结构马克思主义':'马克思主义','政治经济学':'政治哲学','宗教社会学':'社会学',
+              '现实主义政治哲学':'政治哲学','文艺复兴人文主义':'启蒙运动','逻辑实证主义':'实证主义',
+              '启蒙哲学':'启蒙运动','启蒙思想':'启蒙运动','苏格兰启蒙':'启蒙运动','人文主义':'启蒙运动',
+              '精神分析':'精神分析学','分析心理学':'精神分析学','心理治疗':'精神分析学',
+              '逻辑原子主义':'分析哲学','逻辑实用主义':'分析哲学','逻辑实证':'分析哲学',
+              '日常语言':'分析哲学','语言哲学':'分析哲学',
+              '形式社会学':'社会学','社会心理学':'社会学','群体心理学':'社会学','社会达尔文':'社会学',
+              '激进平等':'政治哲学','责任伦理':'政治哲学','社会契约论':'政治哲学','古典经济学':'政治哲学',
+              '德性伦理':'伦理学','批判理性主义':'科学哲学',
+              '解释学':'现象学','身体哲学':'现象学','意向性':'现象学',
+              '常识实在论':'实在论','人本唯物论':'实在论','机械唯物主义':'实在论',
+              '结构语言学':'结构主义','进步教育':'实用主义','新实用主义':'实用主义',
+              '荒诞文学':'荒诞哲学','浪漫主义先驱':'浪漫主义',
+              '近代哲学之父':'近代哲学','有机体哲学':'过程哲学',
+              '后现代哲学':'后现代主义','解构主义':'后现代主义',
+              '绝对唯心主义':'唯心主义','历史唯物主义':'马克思主义',
+              '文化霸权理论':'西方马克思主义',
+            };
+            const big = normMap[s] || s;
+            if (!map[big]) map[big] = { authors: [], keywords: new Set(), books: [] };
+            if (!map[big].authors.includes(a.name)) {
+              map[big].authors.push(a.name);
+              map[big].books.push(...(a.books || []));
+            }
+            if (a.era) map[big].keywords.add(a.era.split('-')[0].replace(/[^0-9]/g,'') + '年代');
+            if (a.country) map[big].keywords.add(a.country.split('/')[0]);
+          });
+        });
+        setSchoolData(map);
+      }).catch(() => {});
+  }, []);
+
   return (
-    <div className="page-container" style={{ paddingBottom: 40 }}>
-      <h2 className="section-title" style={{ marginBottom: 20 }}>🧬 哲学谱系</h2>
+    <div className="page-container" style={{ paddingBottom: 60 }}>
+      <h2 className="section-title" style={{ marginBottom: 24, textAlign: 'center' }}>🧬 西方哲学谱系</h2>
 
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
-        <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-          西方哲学流派沿时间轴排列 · 点击流派查看详情（即将开放）
-        </span>
-      </div>
-
-      {/* Timeline */}
-      <div style={{ position: 'relative', paddingLeft: 120, paddingRight: 40 }}>
+      {/* Centered timeline */}
+      <div style={{ maxWidth: 660, margin: '0 auto', position: 'relative' }}>
         {/* Center line */}
         <div style={{
-          position: 'absolute', left: 60, top: 0, bottom: 0, width: 2,
-          background: 'linear-gradient(to bottom, var(--accent), var(--secondary))',
+          position: 'absolute', left: '50%', top: 0, bottom: 0, width: 3,
+          background: 'linear-gradient(to bottom, #d4a574, #645e20, #54806c, #00a4aa)',
+          transform: 'translateX(-50%)',
         }} />
 
-        {WESTERN_TIMELINE.map((era, i) => (
-          <div key={i} style={{ position: 'relative', marginBottom: 24 }}>
-            {/* Century marker */}
+        {WESTERN_TIMELINE.map((era, eraIdx) => (
+          <div key={eraIdx} style={{ marginBottom: 32 }}>
+            {/* Century marker — left side of timeline */}
             <div style={{
-              position: 'absolute', left: -60, top: 8,
-              width: 120, textAlign: 'right', paddingRight: 20,
-              fontSize: 12, color: 'var(--accent)', fontWeight: 600,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              marginBottom: 16, position: 'relative',
             }}>
-              {era.century}
+              <div style={{
+                background: 'var(--accent)', color: 'var(--primary)',
+                padding: '4px 18px', borderRadius: 16, fontSize: 15, fontWeight: 700,
+                zIndex: 1,
+              }}>
+                {era.century}
+              </div>
             </div>
 
-            {/* Dot on timeline */}
-            <div style={{
-              position: 'absolute', left: -68, top: 12,
-              width: 10, height: 10, borderRadius: '50%',
-              background: 'var(--accent)', border: '2px solid var(--primary)',
-              zIndex: 1,
-            }} />
-
-            {/* School chips */}
-            <div style={{
-              display: 'flex', flexWrap: 'wrap', gap: 8,
-              paddingLeft: 8,
-            }}>
-              {era.schools.map(school => (
-                <span key={school}
-                  style={{
-                    display: 'inline-block',
-                    padding: '8px 16px',
-                    borderRadius: 20,
-                    background: SCHOOL_COLORS[school] || 'var(--secondary)',
-                    color: '#1a1a1a',
-                    fontSize: 13,
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    transition: 'transform 0.15s',
-                  }}
-                  onMouseEnter={e => e.target.style.transform = 'scale(1.05)'}
-                  onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+            {/* School cards */}
+            {era.schools.map((school, si) => {
+              const data = schoolData[school] || {};
+              const color = SCHOOL_COLORS[(eraIdx * 3 + si) % SCHOOL_COLORS.length];
+              return (
+                <div key={school} style={{
+                  background: 'var(--secondary)',
+                  borderRadius: 16,
+                  padding: '20px 24px',
+                  marginBottom: 14,
+                  borderLeft: `4px solid ${color}`,
+                  cursor: 'pointer',
+                  transition: 'transform 0.15s, box-shadow 0.15s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateX(4px)'; e.currentTarget.style.boxShadow = `0 4px 20px ${color}40`; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.boxShadow = 'none'; }}
                 >
-                  {school}
-                </span>
-              ))}
-            </div>
+                  {/* School name */}
+                  <h3 style={{ fontSize: 20, fontWeight: 700, color: color, margin: '0 0 10px' }}>
+                    {school}
+                  </h3>
+
+                  {/* Keywords */}
+                  {data.keywords && data.keywords.size > 0 && (
+                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
+                      {[...data.keywords].slice(0, 6).map(kw => (
+                        <span key={kw} style={{
+                          fontSize: 11, padding: '2px 10px', borderRadius: 10,
+                          background: `${color}20`, color: color,
+                        }}>
+                          {kw}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Authors */}
+                  {data.authors && data.authors.length > 0 && (
+                    <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 6 }}>
+                      <span style={{ color: 'var(--text)', fontWeight: 600 }}>代表哲学家：</span>
+                      {data.authors.slice(0, 8).join('、')}
+                      {data.authors.length > 8 && ` 等${data.authors.length}位`}
+                    </div>
+                  )}
+
+                  {/* Books */}
+                  {data.books && data.books.length > 0 && (
+                    <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                      <span style={{ color: 'var(--text)', fontWeight: 600 }}>代表作品：</span>
+                      {[...new Set(data.books)].slice(0, 6).map((t, i) => (
+                        <span key={i} style={{ color: 'var(--accent)' }}>
+                          《{t}》{i < Math.min(5, [...new Set(data.books)].length - 1) ? '、' : ''}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
