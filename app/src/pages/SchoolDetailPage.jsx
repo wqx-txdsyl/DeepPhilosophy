@@ -229,7 +229,8 @@ function SchoolDetailPage() {
                 {isHovered && (
                   <div style={{
                     position: 'absolute',
-                    [showBelow ? 'top' : 'bottom']: showBelow ? size + 22 : size + 22,
+                    top: showBelow ? size + 22 : 'auto',
+                    bottom: showBelow ? 'auto' : size + 22,
                     left: '50%', transform: 'translateX(-50%)',
                     background: 'var(--primary)', border: '1px solid var(--border)',
                     borderRadius: 8, padding: '6px 12px', whiteSpace: 'nowrap', zIndex: 30,
