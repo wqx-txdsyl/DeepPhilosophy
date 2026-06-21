@@ -97,13 +97,16 @@ const SUB_COLORS = {
 function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
-    const subThinkers = GREEK_DATA.thinkers.filter(t => t.sub === name);
-  const data = subThinkers.length > 0 ? {
+  // Sub-school filter: only apply if name is a known sub-school
+  const subNames = [...new Set(GREEK_DATA.thinkers.map(t => t.sub))];
+  const isSubSchool = subNames.includes(name);
+  const data = isSubSchool ? {
     ...GREEK_DATA,
     name,
-    thinkers: subThinkers,
-    relations: GREEK_DATA.relations.filter(r => 
-      subThinkers.find(t => t.name === r.from) && subThinkers.find(t => t.name === r.to)
+    thinkers: GREEK_DATA.thinkers.filter(t => t.sub === name),
+    relations: GREEK_DATA.relations.filter(r =>
+      GREEK_DATA.thinkers.find(t => t.name === r.from && t.sub === name) &&
+      GREEK_DATA.thinkers.find(t => t.name === r.to && t.sub === name)
     ),
   } : GREEK_DATA;
   const [hovered, setHovered] = useState(null);
@@ -183,7 +186,7 @@ function SchoolDetailPage() {
           { name:'犬儒学派', era:'前4世纪-5世纪', desc:'安提斯泰尼创立，第欧根尼为最著名代表。主张摒弃社会习俗与物质欲望，回归"自然"生活。第欧根尼以木桶为家，以极端简朴的行为挑战社会规范，其"世界公民"（kosmopolites）概念影响了斯多葛学派。' },
           { name:'新柏拉图主义', era:'3世纪-6世纪', desc:'普罗提诺在前3世纪整合柏拉图、亚里士多德与斯多葛思想，创立"太一流溢说"——太一派生出理智（Nous）、理智派生出灵魂（Psyche），灵魂下降为物质世界。人的使命是通过哲学沉思回归太一。深刻影响了早期基督教神学。' },
         ].map(sub => (
-          <div key={sub.name} onClick={() => navigate()} style={{
+          <div key={sub.name} onClick={() => navigate(`/school/${encodeURIComponent(sub.name)}`)} style={{
             background: 'rgba(237,231,221,0.95)', borderRadius: 10, padding: '16px 20px',
             marginBottom: 14, borderLeft: '3px solid var(--ochre)',
           }}>
