@@ -104,7 +104,7 @@ function SchoolDetailPage() {
     const cx = 400, cy = 280;
     const x = cx + Math.cos(angle) * radius;
     const y = cy + Math.sin(angle) * radius * 0.7;
-    return { ...t, _x: Math.max(50, Math.min(750, x)), _y: Math.max(40, Math.min(540, y)) };
+    return { ...t, _x: Math.max(50, Math.min(750, x)), _y: Math.max(50, Math.min(560, y)) };
   });
 
   return (
@@ -257,42 +257,51 @@ function SchoolDetailPage() {
             background: 'var(--ink)', opacity: 0.2, transform: 'translateX(-50%)',
           }} />
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             {data.timeline.map((ev, i) => {
               const isLeft = i % 2 === 0;
               const colors = { birth:'#C4956A', death:'#8B5A5A', book:'#3A5A7C', idea:'#5A8A5A', event:'#C4956A' };
               const icons = { birth:'✦', death:'†', book:'¶', idea:'§', event:'○' };
               return (
                 <div key={i} style={{
-                  display: 'flex', alignItems: 'center',
-                  justifyContent: isLeft ? 'flex-start' : 'flex-end',
-                  position: 'relative',
+                  display: 'flex', alignItems: 'center', position: 'relative', height: 80,
                 }}>
-                  {/* Card */}
-                  <div style={{
-                    width: '46%',
-                    background: 'var(--card-bg)',
-                    borderRadius: 10, padding: '14px 18px',
-                    borderLeft: `3px solid ${colors[ev.type]}`,
-                    marginRight: isLeft ? 0 : '4%',
-                    marginLeft: isLeft ? '4%' : 0,
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                      <span style={{ fontSize: 14, color: colors[ev.type] }}>{icons[ev.type]}</span>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
-                    </div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>{ev.event}</div>
-                    <div style={{ fontSize: 12, color: 'var(--text-dim)', lineHeight: 1.6 }}>{ev.detail}</div>
+                  {/* Left spacer or card */}
+                  <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: 40 }}>
+                    {isLeft && (
+                      <div style={{
+                        maxWidth: 340, background: 'var(--card-bg)', borderRadius: 10,
+                        padding: '12px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                          <span style={{ fontSize: 13, color: colors[ev.type] }}>{icons[ev.type]}</span>
+                          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
+                        </div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.5 }}>{ev.detail}</div>
+                      </div>
+                    )}
                   </div>
-                  {/* Dot on timeline */}
-                  <div style={{
-                    position: 'absolute', left: '50%', top: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 10, height: 10, borderRadius: '50%',
-                    background: colors[ev.type],
-                    border: '2px solid var(--bg)',
-                    zIndex: 1,
-                  }} />
+                  {/* Dot + connector */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 20, flexShrink: 0 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: colors[ev.type], border: '2px solid var(--bg)', zIndex: 1 }} />
+                  </div>
+                  {/* Right card */}
+                  <div style={{ flex: 1, paddingLeft: 40 }}>
+                    {!isLeft && (
+                      <div style={{
+                        maxWidth: 340, background: 'var(--card-bg)', borderRadius: 10,
+                        padding: '12px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                          <span style={{ fontSize: 13, color: colors[ev.type] }}>{icons[ev.type]}</span>
+                          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
+                        </div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.5 }}>{ev.detail}</div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}
