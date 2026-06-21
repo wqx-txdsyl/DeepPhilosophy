@@ -199,6 +199,7 @@ function SchoolDetailPage() {
             const px = t._x, py = t._y;
             const size = 16 + t.influence * 4;
             const isHovered = hovered === t.name;
+            const showBelow = py < 100; // near top: tooltip below
             return (
               <div key={t.name} style={{
                 position: 'absolute', left: px, top: py,
@@ -227,7 +228,9 @@ function SchoolDetailPage() {
                 </span>
                 {isHovered && (
                   <div style={{
-                    position: 'absolute', top: -58, left: '50%', transform: 'translateX(-50%)',
+                    position: 'absolute',
+                    [showBelow ? 'top' : 'bottom']: showBelow ? size + 22 : size + 22,
+                    left: '50%', transform: 'translateX(-50%)',
                     background: 'var(--primary)', border: '1px solid var(--border)',
                     borderRadius: 8, padding: '6px 12px', whiteSpace: 'nowrap', zIndex: 30,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
@@ -267,36 +270,29 @@ function SchoolDetailPage() {
                   display: 'flex', alignItems: 'center', position: 'relative', height: 80,
                 }}>
                   {/* Left spacer or card */}
-                  <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: 40 }}>
+                  <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: 30 }}>
                     {isLeft && (
                       <div style={{
                         maxWidth: 340, background: 'var(--card-bg)', borderRadius: 10,
-                        padding: '12px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
+                        padding: '10px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                          <span style={{ fontSize: 13, color: colors[ev.type] }}>{icons[ev.type]}</span>
-                          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
-                        </div>
                         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
                         <div style={{ fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.5 }}>{ev.detail}</div>
                       </div>
                     )}
                   </div>
-                  {/* Dot + connector */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 20, flexShrink: 0 }}>
+                  {/* Dot + year on axis */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 80, flexShrink: 0 }}>
                     <div style={{ width: 10, height: 10, borderRadius: '50%', background: colors[ev.type], border: '2px solid var(--bg)', zIndex: 1 }} />
+                    <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--ochre)', marginTop: 4, textAlign: 'center' }}>{ev.year}</span>
                   </div>
                   {/* Right card */}
-                  <div style={{ flex: 1, paddingLeft: 40 }}>
+                  <div style={{ flex: 1, paddingLeft: 30 }}>
                     {!isLeft && (
                       <div style={{
                         maxWidth: 340, background: 'var(--card-bg)', borderRadius: 10,
-                        padding: '12px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
+                        padding: '10px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                          <span style={{ fontSize: 13, color: colors[ev.type] }}>{icons[ev.type]}</span>
-                          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ochre)' }}>{ev.year}</span>
-                        </div>
                         <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
                         <div style={{ fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.5 }}>{ev.detail}</div>
                       </div>
