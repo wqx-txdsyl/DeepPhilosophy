@@ -437,11 +437,11 @@ ${textContext}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' ? (
             <>
-              <div style={{ flex: 1, position: 'relative' }}>
-                <iframe src={`${getApiBase()}/api/books/${bookId}/render?chapter=${epubSpineIdx || 0}`}
-                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
-                  title="EPUB Reader" />
-              </div>
+              <iframe
+                ref={epubViewerRef}
+                src={`${getApiBase()}/api/books/${bookId}/render?chapter=${epubSpineIdx || 0}`}
+                style={{ flex: 1, border: 'none', width: '100%', minHeight: 0 }}
+                title="EPUB Reader" />
               {/* EPUB controls — flex item, always matches reader width */}
               <div style={{
                 flexShrink: 0,
