@@ -88,92 +88,82 @@ function GenealogyPage() {
     <div className="page-container" style={{ paddingBottom: 60 }}>
       <h2 className="section-title" style={{ marginBottom: 24, textAlign: 'center' }}>🧬 西方哲学谱系</h2>
 
-      {/* Centered timeline */}
-      <div style={{ maxWidth: 660, margin: '0 auto', position: 'relative' }}>
-        {/* Center line */}
+      {/* Two-column timeline: 东方(empty) | axis | 西方 */}
+      <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', maxWidth: 900, margin: '0 auto' }}>
+        {/* Center axis line */}
         <div style={{
           position: 'absolute', left: '50%', top: 0, bottom: 0, width: 3,
           background: 'linear-gradient(to bottom, #d4a574, #645e20, #54806c, #00a4aa)',
-          transform: 'translateX(-50%)',
+          transform: 'translateX(-50%)', zIndex: 0,
         }} />
 
-        {WESTERN_TIMELINE.map((era, eraIdx) => (
-          <div key={eraIdx} style={{ marginBottom: 32 }}>
-            {/* Century marker — left side of timeline */}
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              marginBottom: 16, position: 'relative',
-            }}>
-              <div style={{
-                background: 'var(--accent)', color: 'var(--primary)',
-                padding: '4px 18px', borderRadius: 16, fontSize: 15, fontWeight: 700,
-                zIndex: 1,
-              }}>
-                {era.century}
-              </div>
+        <div style={{ display: 'flex', width: '100%' }}>
+          {/* Left column: 东方 (empty placeholder) */}
+          <div style={{ flex: 1, paddingRight: 30, minWidth: 0 }}>
+            <div style={{ textAlign: 'center', paddingTop: 100 }}>
+              <span style={{ fontSize: 14, color: 'var(--text-dim)', opacity: 0.4 }}>☯️ 东方哲学</span>
+              <div style={{ fontSize: 11, color: 'var(--text-dim)', opacity: 0.3, marginTop: 6 }}>即将开放</div>
             </div>
-
-            {/* School cards */}
-            {era.schools.map((school, si) => {
-              const data = schoolData[school] || {};
-              const color = SCHOOL_COLORS[(eraIdx * 3 + si) % SCHOOL_COLORS.length];
-              return (
-                <div key={school} style={{
-                  background: 'var(--secondary)',
-                  borderRadius: 16,
-                  padding: '20px 24px',
-                  marginBottom: 14,
-                  borderLeft: `4px solid ${color}`,
-                  cursor: 'pointer',
-                  transition: 'transform 0.15s, box-shadow 0.15s',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateX(4px)'; e.currentTarget.style.boxShadow = `0 4px 20px ${color}40`; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.boxShadow = 'none'; }}
-                >
-                  {/* School name */}
-                  <h3 style={{ fontSize: 20, fontWeight: 700, color: color, margin: '0 0 10px' }}>
-                    {school}
-                  </h3>
-
-                  {/* Keywords */}
-                  {data.keywords && data.keywords.size > 0 && (
-                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
-                      {[...data.keywords].slice(0, 6).map(kw => (
-                        <span key={kw} style={{
-                          fontSize: 11, padding: '2px 10px', borderRadius: 10,
-                          background: `${color}20`, color: color,
-                        }}>
-                          {kw}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Authors */}
-                  {data.authors && data.authors.length > 0 && (
-                    <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 6 }}>
-                      <span style={{ color: 'var(--text)', fontWeight: 600 }}>代表哲学家：</span>
-                      {data.authors.slice(0, 8).join('、')}
-                      {data.authors.length > 8 && ` 等${data.authors.length}位`}
-                    </div>
-                  )}
-
-                  {/* Books */}
-                  {data.books && data.books.length > 0 && (
-                    <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-                      <span style={{ color: 'var(--text)', fontWeight: 600 }}>代表作品：</span>
-                      {[...new Set(data.books)].slice(0, 6).map((t, i) => (
-                        <span key={i} style={{ color: 'var(--accent)' }}>
-                          《{t}》{i < Math.min(5, [...new Set(data.books)].length - 1) ? '、' : ''}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
           </div>
-        ))}
+
+          {/* Right column: 西方流派 */}
+          <div style={{ flex: 1, paddingLeft: 30, minWidth: 0 }}>
+            {WESTERN_TIMELINE.map((era, eraIdx) => (
+              <div key={eraIdx} style={{ marginBottom: 28 }}>
+                {/* Century marker */}
+                <div style={{
+                  display: 'flex', alignItems: 'center', marginBottom: 10,
+                }}>
+                  <div style={{
+                    width: 12, height: 12, borderRadius: '50%',
+                    background: 'var(--accent)', border: '2px solid var(--primary)',
+                    marginLeft: -37, marginRight: 10, zIndex: 1, flexShrink: 0,
+                  }} />
+                  <span style={{
+                    fontSize: 13, fontWeight: 700, color: 'var(--accent)',
+                  }}>
+                    {era.century}
+                  </span>
+                </div>
+
+                {/* School cards */}
+                {era.schools.map((school, si) => {
+                  const data = schoolData[school] || {};
+                  const color = SCHOOL_COLORS[(eraIdx * 3 + si) % SCHOOL_COLORS.length];
+                  return (
+                    <div key={school} style={{
+                      background: 'var(--secondary)',
+                      borderRadius: 12,
+                      padding: '14px 18px',
+                      marginBottom: 10,
+                      marginLeft: -25,
+                      borderLeft: `3px solid ${color}`,
+                      cursor: 'pointer',
+                      transition: 'transform 0.15s, box-shadow 0.15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateX(3px)'; e.currentTarget.style.boxShadow = `0 2px 12px ${color}30`; }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                    >
+                      <h3 style={{ fontSize: 17, fontWeight: 700, color: color, margin: '0 0 6px' }}>{school}</h3>
+                      {data.authors?.length > 0 && (
+                        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 4 }}>
+                          {data.authors.slice(0, 6).join('、')}{data.authors.length > 6 ? ` 等${data.authors.length}位` : ''}
+                        </div>
+                      )}
+                      {data.books?.length > 0 && (
+                        <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+                          {[...new Set(data.books)].slice(0, 4).map((t, i) => (
+                            <span key={i} style={{ color: 'var(--accent)' }}>《{t}》{i < 3 ? ' ' : ''}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
