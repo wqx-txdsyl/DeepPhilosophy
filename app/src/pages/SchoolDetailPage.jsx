@@ -250,6 +250,7 @@ function SchoolDetailPage() {
   const data = name === '教父哲学' ? PATRISTIC_DATA : GREEK_DATA;
   const subSchools = name === '教父哲学' ? PATRISTIC_SUB_SCHOOLS : GREEK_SUB_SCHOOLS;
   const cihai = name === '教父哲学' ? PATRISTIC_CIHAI : GREEK_CIHAI;
+  const heroImage = name === '教父哲学' ? 'url(/schools/patristic.jpg)' : 'url(/schools/greek.jpg)';
   const [hovered, setHovered] = useState(null);
 
   // Pre-calculate nebula positions — wide spread, Fibonacci-like golden angle
@@ -272,7 +273,7 @@ function SchoolDetailPage() {
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center', textAlign: 'center',
         padding: '40px 32px', position: 'relative', overflow: 'hidden',
-        backgroundImage: 'url(/schools/greek.jpg)',
+        backgroundImage: heroImage,
         backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         {/* Dark elegant overlay */}
@@ -316,7 +317,7 @@ function SchoolDetailPage() {
         {/* Sub-school cards */}
         <h3 style={{ fontSize: 20, fontWeight: 600, color: 'var(--ochre)', marginBottom: 20 }}>下属流派</h3>
         {subSchools.map(sub => (
-          <div key={sub.name} onClick={() => navigate(`/school/${encodeURIComponent(sub.name)}`)} style={{
+          <div key={sub.name} style={{
             background: 'rgba(237,231,221,0.95)', borderRadius: 10, padding: '16px 20px',
             marginBottom: 14, borderLeft: '3px solid var(--ochre)',
           }}>
