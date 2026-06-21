@@ -5,7 +5,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
-import ePub from 'epubjs';
 import { Capacitor } from '@capacitor/core';
 import { getApiBase } from '../App';
 import { getBookById } from '../data';
@@ -347,64 +346,12 @@ ${textContext}
     setError('PDF 加载失败：' + (err?.message || err?.toString?.() || '未知错误'));
   };
 
-  // EPUB init
+  // EPUB init — 后端渲染 HTML，iframe 显示，稳定可靠
   const initEpub = (url) => {
-    try {
-      if (!epubViewerRef.current) return;
-      const bk = ePub(url, { openAs: 'epub' });
-      // 必须给 epubjs 精确像素高度，否则分页失效
-      const vh = epubViewerRef.current.parentElement?.clientHeight || window.innerHeight - 120;
-      const rendition = bk.renderTo(epubViewerRef.current, {
-        width: '100%', height: vh, flow: 'paginated', spread: 'none',
-      });
-      epubRenditionRef.current = rendition;
-      // Add bottom padding so text isn't hidden by controls
-      rendition.themes.register('deepphilosophy', { body: { 'padding-bottom': '80px !important' } });
-      rendition.themes.select('deepphilosophy');
-      bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
-      // Track current location + spine index
-      rendition.on('relocated', (loc) => {
-        if (loc?.start?.percentage != null) {
-          setEpubLocation(Math.round(loc.start.percentage * 100));
-        }
-        if (bk.spine) {
-          const href = loc?.start?.href;
-          const items = bk.spine.items || [];
-          const idx = items.findIndex(item => item.href === href || item.id === href?.replace('#',''));
-          if (idx >= 0) setEpubSpineIdx(idx);
-          if (items.length > 0) setEpubSpineLen(items.length);
-        }
-      });
-      // Generate locations for percentage-based navigation
-      bk.ready.then(() => bk.locations.generate(1000)).catch(() => {});
-
-      // 确定起始位置（有保存进度则恢复，否则从首页开始）
-      let startHref = null;
-      try {
-        const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
-        if (entry && entry.page > 0) {
-          const target = entry.page / 100;
-          bk.ready.then(() => {
-            if (bk.spine && bk.spine.length > 0) {
-              const idx = Math.min(bk.spine.length - 1, Math.max(0, Math.floor(target * bk.spine.length)));
-              const section = bk.spine.get(idx);
-              if (section && section.href) {
-                rendition.display(section.href);
-                saveReadingProgress(bookId, book.title, book.author, entry.page, target, 'epub');
-                return;
-              }
-            }
-            rendition.display();
-          });
-        } else {
-          rendition.display();
-        }
-      } catch {
-        rendition.display();
-      }
-      setEpubReady(true);
-    } catch (e) { setError('EPUB 加载失败：' + e.message); }
+    const chapter = epubSpineIdx || 0;
+    const renderUrl = `${getApiBase()}/api/books/${bookId}/render?chapter=${chapter}`;
+    setEpubLocation(chapter); // use as chapter index
+    setEpubReady(true);
   };
 
   const goToEpubPage = (pct) => {
@@ -439,9 +386,6 @@ ${textContext}
       const s = saveRef.current;
       if (s.epubLoc > 0) saveReadingProgress(s.bookId, s.title, s.author, s.epubLoc, s.epubLoc / 100, 'epub');
       if (s.pdfTotal > 0) saveReadingProgress(s.bookId, s.title, s.author, s.pdfPage, s.pdfPage / s.pdfTotal, 'pdf');
-      const r = epubRenditionRef.current;
-      if (r?._resizeHandler) window.removeEventListener('resize', r._resizeHandler);
-      r?.destroy();
     };
   }, []);
 
@@ -486,7 +430,9 @@ ${textContext}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative' }}>
           {fileType === 'epub' ? (
             <>
-              <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0, overflow: 'auto' }} />
+              <iframe ref={epubViewerRef} src={`${getApiBase()}/api/books/${bookId}/render?chapter=${epubSpineIdx || 0}`}
+                style={{ flex: 1, minHeight: 0, border: 'none', width: '100%' }}
+                title="EPUB Reader" />
               {/* EPUB controls — flex item, always matches reader width */}
               <div style={{
                 flexShrink: 0,
@@ -520,20 +466,18 @@ ${textContext}
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
                     onClick={() => {
-                      const r = epubRenditionRef.current;
-                      if (r?.book?.spine && epubSpineIdx > 0) {
-                        const s = r.book.spine.get(epubSpineIdx - 1);
-                        if (s?.href) r.display(s.href);
-                      }
-                    }} disabled={epubSpineIdx <= 0}>◀ 上一页</button>
+                      const next = Math.max(0, (epubSpineIdx || 0) - 1);
+                      setEpubSpineIdx(next);
+                      setEpubLocation(next);
+                      epubViewerRef.current.src = `${getApiBase()}/api/books/${bookId}/render?chapter=${next}`;
+                    }} disabled={(epubSpineIdx || 0) <= 0}>◀ 上一章</button>
                   <button className="btn btn-primary" style={{ padding: '6px 16px', fontSize: 13 }}
                     onClick={() => {
-                      const r = epubRenditionRef.current;
-                      if (r?.book?.spine && epubSpineIdx < epubSpineLen - 1) {
-                        const s = r.book.spine.get(epubSpineIdx + 1);
-                        if (s?.href) r.display(s.href);
-                      }
-                    }} disabled={epubSpineIdx >= epubSpineLen - 1}>下一页 ▶</button>
+                      const next = (epubSpineIdx || 0) + 1;
+                      setEpubSpineIdx(next);
+                      setEpubLocation(next);
+                      epubViewerRef.current.src = `${getApiBase()}/api/books/${bookId}/render?chapter=${next}`;
+                    }}>下一章 ▶</button>
                 </div>
               </div>
               {showToc && (

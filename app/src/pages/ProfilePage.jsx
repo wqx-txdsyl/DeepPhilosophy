@@ -277,7 +277,7 @@ function ProfilePage() {
                 {relativeTime(item.lastReadAt)}
               </div>
             </div>
-          )))
+          ))}
           </>
         )
       )}

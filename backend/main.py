@@ -790,6 +790,82 @@ def t(a, b):
     return a
 
 
+@app.get("/api/books/{book_id}/render")
+async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
+    """将 EPUB 章节渲染为 HTML"""
+    import ebooklib
+    from ebooklib import epub
+    from bs4 import BeautifulSoup
+
+    books = scan_books()
+    book = next((b for b in books if b["id"] == book_id), None)
+    if not book or book["file_type"] != "epub":
+        raise HTTPException(status_code=404, detail="仅支持 EPUB")
+
+    # Resolve file location
+    if config.USE_OSS and "_download_url" in book:
+        req = urllib.request.Request(book["_download_url"], headers={"User-Agent": "DeepPhilosophy/1.0"})
+        with urllib.request.urlopen(req, timeout=30) as src:
+            raw = src.read()
+        import tempfile, os as _os
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".epub")
+        tmp.write(raw); tmp.close()
+        eb = epub.read_epub(tmp.name)
+        _os.unlink(tmp.name)
+    elif config.USE_GITHUB and "_download_url" in book:
+        req = urllib.request.Request(book["_download_url"], headers={"User-Agent": "DeepPhilosophy/1.0"})
+        with urllib.request.urlopen(req, timeout=30) as src:
+            raw = src.read()
+        import tempfile, os as _os2
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".epub")
+        tmp.write(raw); tmp.close()
+        eb = epub.read_epub(tmp.name)
+        _os2.unlink(tmp.name)
+    else:
+        eb = epub.read_epub(os.path.join(config.KNOWLEDGE_DIR, book["path"]))
+
+    # Get spine items (ordered chapters)
+    spine = eb.spine if hasattr(eb, 'spine') else []
+    items = [it for it in eb.get_items_of_type(ebooklib.ITEM_DOCUMENT)]
+
+    if not items:
+        raise HTTPException(status_code=404, detail="无内容")
+
+    # Build chapter list & paginate
+    chapter_idx = max(0, min(chapter, len(items) - 1))
+    item = items[chapter_idx]
+    content = item.get_content().decode('utf-8', errors='replace')
+
+    soup = BeautifulSoup(content, 'html.parser')
+    for tag in soup(["script", "style", "nav", "head"]):
+        tag.decompose()
+    body = soup.find('body')
+    body_html = str(body) if body else soup.prettify()
+
+    total = len(items)
+    prev_link = f'<a href="?chapter={chapter_idx-1}" style="float:left">← 上一章</a>' if chapter_idx > 0 else ''
+    next_link = f'<a href="?chapter={chapter_idx+1}" style="float:right">下一章 →</a>' if chapter_idx < total - 1 else ''
+
+    html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body {{ font-family: 'Noto Serif CJK SC', 'Source Han Serif SC', SimSun, serif; font-size: 18px; line-height: 1.8; padding: 16px 20px 100px; color: #ccc; background: #1a1a1a; max-width: 800px; margin: 0 auto; }}
+  h1,h2,h3 {{ color: #d4a574; }}
+  p {{ margin: 0 0 0.8em; text-indent: 2em; }}
+  a {{ color: #d4a574; text-decoration: none; padding: 8px 16px; border: 1px solid #444; border-radius: 6px; }}
+  .nav {{ overflow: hidden; padding: 12px 0; margin-bottom: 20px; border-bottom: 1px solid #333; font-size: 14px; }}
+  .pos {{ text-align: center; color: #666; font-size: 14px; margin-top: 30px; }}
+</style></head><body>
+<div class="nav">{prev_link}{next_link}<div style="clear:both"></div></div>
+{body_html}
+<div class="pos">{chapter_idx + 1} / {total}</div>
+<div class="nav">{prev_link}{next_link}<div style="clear:both"></div></div>
+</body></html>"""
+
+    from fastapi.responses import HTMLResponse
+    return HTMLResponse(content=html)
+
+
 @app.get("/api/books/{book_id}/file")
 async def download_book(book_id: str, request: Request):
     """下载/流式传输书籍文件 —— R2 模式返回预签名 URL，本地模式返回文件流"""
