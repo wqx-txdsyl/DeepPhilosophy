@@ -27,8 +27,6 @@ COPY data/book_summaries.json /app/data/
 COPY data/books_cache.json /app/data/
 COPY data/github_manifest.json /app/data/
 COPY data/oss_manifest.json /app/data/
-COPY data/books_catalog.json /app/data/
-
 # 复制前端构建产物（同源部署，避免 CORS）
 COPY app-dist/ ./static/
 
