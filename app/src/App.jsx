@@ -10,6 +10,7 @@ import BooksPage from './pages/BooksPage';
 import BookDetailPage from './pages/BookDetailPage';
 import AuthorsPage from './pages/AuthorsPage';
 import AuthorDetailPage from './pages/AuthorDetailPage';
+import GenealogyPage from './pages/GenealogyPage';
 import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
 import ReaderPage from './pages/ReaderPage';
@@ -47,6 +48,7 @@ function MainLayout() {
   const tabs = [
     { key: 'books', label: '📚', text: '书籍', path: '/books' },
     { key: 'authors', label: '✒️', text: '作家', path: '/authors' },
+    { key: 'genealogy', label: '🧬', text: '谱系', path: '/genealogy' },
     { key: 'qa', label: '💬', text: '问答', path: '/qa' },
     { key: 'profile', label: '👤', text: '我的', path: '/profile' },
   ];
@@ -54,6 +56,7 @@ function MainLayout() {
   const getActiveTab = () => {
     const p = location.pathname;
     if (p.startsWith('/authors') || p.startsWith('/author')) return 'authors';
+    if (p.startsWith('/genealogy')) return 'genealogy';
     if (p.startsWith('/qa')) return 'qa';
     if (p.startsWith('/profile')) return 'profile';
     return 'books';
@@ -82,6 +85,7 @@ function MainLayout() {
           <Route path="/reader/:bookId" element={<ReaderPage />} />
           <Route path="/authors" element={<AuthorsPage />} />
           <Route path="/author/:authorName" element={<AuthorDetailPage />} />
+          <Route path="/genealogy" element={<GenealogyPage />} />
           <Route path="/qa" element={<QAPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
