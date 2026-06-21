@@ -587,36 +587,22 @@ ${textContext}
           background: 'var(--primary)', display: 'flex', flexDirection: 'column',
           overflow: 'hidden',
         }}>
-          {/* Header */}
+          {/* Header — compact */}
           <div style={{
-            padding: '10px 12px', borderBottom: '1px solid var(--border)',
+            padding: '4px 10px', borderBottom: '1px solid var(--border)',
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
             flexShrink: 0,
           }}>
-            <span style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 600 }}>
-              💬 AI 伴读 · 第{pageNumber}页
-            </span>
+            <span style={{ fontSize: 11, color: 'var(--accent)' }}>💬 AI · {book?.title?.slice(0,8)}</span>
             <button onClick={() => setShowAiChat(false)}
-              style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: 16, cursor: 'pointer' }}>
-              ✕
-            </button>
-          </div>
-          <div style={{ fontSize: 10, color: 'var(--text-dim)', padding: '4px 12px', lineHeight: 1.4, flexShrink: 0 }}>
-            🤖 正在阅读《{book?.title}》（{book?.author}）
+              style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: 14, cursor: 'pointer' }}>✕</button>
           </div>
 
           {/* Chat history */}
           <div ref={aiChatRef} style={{
-            flex: 1, overflow: 'auto', padding: '8px 10px',
-            display: 'flex', flexDirection: 'column', gap: 6,
+            flex: 1, overflow: 'auto', padding: '4px 8px',
+            display: 'flex', flexDirection: 'column', gap: 4,
           }}>
-            {aiHistory.length === 0 && (
-              <div style={{ fontSize: 12, color: 'var(--text-dim)', textAlign: 'center', padding: 20 }}>
-                💡 试试问：<br/>
-                <span style={{ color: 'var(--accent)' }}>"这段的核心思想是什么？"</span><br/>
-                <span style={{ color: 'var(--accent)' }}>"作者想表达什么？"</span>
-              </div>
-            )}
             {aiHistory.map((msg, i) => (
               <div key={i} style={{
                 alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
@@ -644,7 +630,7 @@ ${textContext}
 
           {/* Input */}
           <div style={{
-            display: 'flex', gap: 6, padding: '8px 10px',
+            display: 'flex', gap: 4, padding: '4px 8px',
             borderTop: '1px solid var(--border)', flexShrink: 0,
           }}>
             <input
