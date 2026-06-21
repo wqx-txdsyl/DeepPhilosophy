@@ -433,7 +433,7 @@ ${textContext}
       {/* Main area: reader + optional notes panel */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Reader */}
-        <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' ? (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
@@ -495,7 +495,7 @@ ${textContext}
                   {twoPage ? (
                     <div style={{
                       display: 'flex', justifyContent: 'center', alignItems: 'flex-start',
-                      gap: 0, background: '#1a1a1a',
+                      gap: 0, background: 'var(--card-bg)',
                       boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
                       borderRadius: 2,
                     }}>
