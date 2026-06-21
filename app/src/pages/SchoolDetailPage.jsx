@@ -1450,28 +1450,28 @@ function SchoolDetailPage() {
           悬停词语查看释义与出处
         </p>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', position: 'relative', padding: '30px 10px', lineHeight: 1.8 }}>
+        <div style={{ columns: '280px 3', columnGap: '24px', maxWidth: 960, margin: '0 auto', padding: '20px 0', lineHeight: 2.0 }}>
           {cihai.map((item, i) => {
-            // 重要性加权的不规则尺寸 — 大体倾向前面大后面小，但刻意打乱规律
-            const rawSizes = [24,17,19,22,15,20,13,18,16,21,11,14,12,17,23,14,11,16,13,15,18,12,10,14,17,11,13,15,12,10];
-            const rawWeights = [700,400,600,700,400,600,300,500,400,600,300,400,300,500,700,400,300,500,300,400,500,300,300,400,500,300,300,400,300,300];
-            const size = rawSizes[i % rawSizes.length];
-            const weight = rawWeights[i % rawWeights.length];
-            // 轻微随机旋转，模拟手写海报感
-            const rots = [0.5,-1,0,-0.5,1.2,0,-0.8,0.3,0,-1.1,0.7,-0.3,0,0.9,-0.6,0.4,0,-0.7,0,1,0,-0.4,0,0.6,-0.9,0,0.3,-0.5,0,0.8];
-            const rot = rots[i % rots.length];
-            // 大小决定边距 — 大词周围留空更多
-            const margin = size > 20 ? '6px 10px' : size > 16 ? '4px 8px' : size > 13 ? '3px 6px' : '2px 5px';
+            // 基于 hash 的伪随机重排 —— 每次渲染同顺序，但视觉上无规律
+            const hash = item.word.split('').reduce((s,c)=>s+c.charCodeAt(0),0);
+            const si = (hash * 7919 + i * 3571) % 47;
+            const ss = [24,14,19,26,11,22,17,13,28,15,20,10,25,12,18,23,14,27,11,16,21,31,10,13,22,18,15,12,17,24,13,19,11,26,14,20,16,30,12,15,22,17,13,21,11,18,14];
+            const ws = [700,300,500,700,300,600,400,200,800,400,500,200,600,300,400,700,300,700,200,400,600,900,200,300,500,400,300,200,500,700,300,400,200,600,300,500,400,800,200,400,500,400,300,500,200,400,300];
+            const size = ss[si % ss.length];
+            const weight = ws[si % ws.length];
+            const r = (hash * 3571 + i * 719) % 41 - 20; // -20 to +20 tenths of degree → -2° to +2°
+            const rot = r / 10;
+            const margin = size > 22 ? '8px 4px 4px 0' : size > 17 ? '5px 3px 3px 0' : size > 13 ? '3px 2px 2px 0' : '2px 1px 1px 0';
             return (
               <span key={i} style={{
                 fontSize: size, fontWeight: weight,
                 color: hovered === item.word ? 'var(--ochre)' : 'var(--ink)',
-                opacity: hovered !== null ? (hovered === item.word ? 1 : 0.4) : 0.78,
-                margin: margin, cursor: 'pointer',
+                opacity: hovered !== null ? (hovered === item.word ? 1 : 0.35) : 0.72 + (size - 10) * 0.012,
+                margin: margin, cursor: 'pointer', display: 'inline-block',
                 transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)', position: 'relative',
                 fontFamily: size > 16 ? '"Playfair Display","PingFang SC",serif' : 'inherit',
                 transform: hovered === item.word ? 'scale(1.25) rotate(0deg)' : `rotate(${rot}deg)`,
-                zIndex: hovered === item.word ? 20 : 1,
+                zIndex: hovered === item.word ? 20 : 1, breakInside: 'avoid',
               }}
               onMouseEnter={() => setHovered(item.word)}
               onMouseLeave={() => setHovered(null)}
