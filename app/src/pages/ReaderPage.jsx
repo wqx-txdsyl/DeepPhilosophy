@@ -80,13 +80,29 @@ function ReaderPage() {
 
   useEffect(() => { loadBook(); }, [bookId]);
 
-  // Load saved notes on book change
+  // Load saved notes on book change — cloud first, localStorage fallback
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(notesKey);
-      if (saved) setNoteText(saved);
-      else setNoteText('');
-    } catch { setNoteText(''); }
+    const loadNotes = async () => {
+      const token = localStorage.getItem('dp_token');
+      if (token) {
+        try {
+          const r = await fetch(`${getApiBase()}/api/notes/load?book_id=${encodeURIComponent(bookId)}`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+            signal: AbortSignal.timeout(5000),
+          });
+          if (r.ok) {
+            const d = await r.json();
+            if (d.note_text) { setNoteText(d.note_text); localStorage.setItem(notesKey, d.note_text); return; }
+          }
+        } catch {}
+      }
+      try {
+        const saved = localStorage.getItem(notesKey);
+        if (saved) setNoteText(saved);
+        else setNoteText('');
+      } catch { setNoteText(''); }
+    };
+    loadNotes();
   }, [bookId]);
 
   // Auto-save reading progress every 30 seconds (PDF) — uses ref to avoid timer reset
@@ -419,6 +435,10 @@ ${textContext}
         <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 10 }}
           onClick={() => setTwoPage(!twoPage)}>
           {twoPage ? '单页' : '双页'}
+        </button>
+        <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
+          onClick={() => { setShowNotes(!showNotes); if (!showNotes) setShowAiChat(false); }}>
+          📝
         </button>
         <button className="btn btn-primary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowAiChat(!showAiChat); if (!showAiChat) setShowNotes(false); }}>
