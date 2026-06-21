@@ -206,7 +206,7 @@ function QAPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 116px)', overflow: 'hidden' }}>
       {/* Top bar with clear button */}
-      <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 14px', borderBottom: '1px solid var(--border)' }}>
+      <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '2px 12px', borderBottom: '1px solid var(--border)' }}>
         <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
           {messages.length > 1 ? `${messages.length} 条消息` : '新对话'}
         </span>
@@ -281,7 +281,7 @@ function QAPage() {
         <div ref={bottomRef} />
       </div>
 
-      <div className="chat-input-area" style={{ position: 'static', flexShrink: 0, paddingBottom: 18 }}>
+      <div className="chat-input-area" style={{ position: 'static', flexShrink: 0, padding: '6px 12px', paddingBottom: 12 }}>
         <input
           className="chat-input"
           placeholder="输入哲学问题..."
