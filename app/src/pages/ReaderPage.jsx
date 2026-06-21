@@ -393,7 +393,7 @@ ${textContext}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#1a1a1a', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' ? (
             <>
-              <div ref={epubDivRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', color: '#ccc', background: '#1a1a1a', fontSize: 17, lineHeight: 1.9, fontFamily: 'serif', minHeight: 0 }}
+              <div ref={epubDivRef} style={{ height: window.innerHeight - 110, overflowY: 'scroll', WebkitOverflowScrolling: 'touch', padding: '16px 20px', color: '#ccc', background: '#1a1a1a', fontSize: 17, lineHeight: 1.9, fontFamily: 'serif' }}
                 dangerouslySetInnerHTML={{ __html: epubHtml }} />
               <div style={{ flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '6px 12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
