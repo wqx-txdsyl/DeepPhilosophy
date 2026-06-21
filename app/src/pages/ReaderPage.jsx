@@ -46,9 +46,10 @@ function ReaderPage() {
   // EPUB state
   const epubViewerRef = useRef(null);
   const epubRenditionRef = useRef(null);
+  const epubTocRef = useRef([]);
+  const [showToc, setShowToc] = useState(false);
   const [epubReady, setEpubReady] = useState(false);
   const [epubChapter, setEpubChapter] = useState(0);
-  const [epubTotalChapters, setEpubTotalChapters] = useState(0);
   // PDF state
 
   // Notes state
@@ -347,33 +348,17 @@ ${textContext}
       width: '100%', height: vh, flow: 'paginated', spread: 'none',
     });
     epubRenditionRef.current = rendition;
-    bk.loaded.navigation.then(nav => {
-      const toc = nav.toc || [];
-      const flat = [];
-      const flatten = (items) => {
-        items.forEach(it => { if (it.subitems?.length) flatten(it.subitems); else flat.push(it); });
-      };
-      flatten(toc);
-      setEpubTotalChapters(flat.length);
-    }).catch(() => {});
+    bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
     rendition.display();
-    // Restore saved chapter
-    try {
-      const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-      const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
-      if (entry?.page > 0) setEpubChapter(entry.page);
-    } catch {}
     setEpubReady(true);
   };
 
   const goEpubChapter = (ch) => {
-    const next = Math.max(0, ch);
-    setEpubChapter(next);
-    // Navigate via spine
+    const idx = Math.max(0, ch);
+    setEpubChapter(idx);
     const bk = epubRenditionRef.current?.book;
     if (bk?.spine && bk.spine.length > 0) {
-      const idx = Math.min(bk.spine.length - 1, next);
-      const section = bk.spine.get(idx);
+      const section = bk.spine.get(Math.min(bk.spine.length - 1, idx));
       if (section?.href) epubRenditionRef.current.display(section.href);
     }
   };
@@ -383,6 +368,12 @@ ${textContext}
       initEpub(fileUrl);
     }
   }, [loading, fileType, fileUrl]);
+
+  // Two-page toggle for EPUB
+  useEffect(() => {
+    const r = epubRenditionRef.current;
+    if (r && fileType === 'epub') r.spread(twoPage ? 'auto' : 'none');
+  }, [twoPage, fileType]);
 
   // Save on unmount (only when actually leaving the page)
   const saveRef = useRef({ pdfPage: 0, pdfTotal: 0, bookId: '', title: '', author: '' });
@@ -439,22 +430,34 @@ ${textContext}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
               <div style={{ flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '6px 12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 6 }}>
-                  <button className="btn btn-secondary" style={{ padding: '4px 14px', fontSize: 12 }}
-                    onClick={() => epubRenditionRef.current?.prev()}>◀ 上一页</button>
-                  <button className="btn btn-secondary" style={{ padding: '4px 14px', fontSize: 12 }}
-                    onClick={() => epubRenditionRef.current?.next()}>下一页 ▶</button>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <button className="btn btn-primary" style={{ padding: '4px 14px', fontSize: 12 }}
-                    onClick={() => goEpubChapter(epubChapter - 1)} disabled={epubChapter <= 0}>◀◀ 上一章</button>
-                  <span style={{ fontSize: 12, color: 'var(--text-dim)', alignSelf: 'center' }}>
-                    {epubChapter + 1}{epubTotalChapters > 0 ? ` / ${epubTotalChapters}` : ''}
-                  </span>
-                  <button className="btn btn-primary" style={{ padding: '4px 14px', fontSize: 12 }}
-                    onClick={() => goEpubChapter(epubChapter + 1)}>下一章 ▶▶</button>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: 12 }}
+                    onClick={() => setShowToc(true)}>📑 目录</button>
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    <button className="btn btn-primary" style={{ padding: '6px 20px', fontSize: 14 }}
+                      onClick={() => epubRenditionRef.current?.prev()}>◀ 上一页</button>
+                    <button className="btn btn-primary" style={{ padding: '6px 20px', fontSize: 14 }}
+                      onClick={() => epubRenditionRef.current?.next()}>下一页 ▶</button>
+                  </div>
+                  <span style={{ fontSize: 12, color: 'var(--text-dim)' }}></span>
                 </div>
               </div>
+              {/* TOC overlay */}
+              {showToc && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', zIndex: 400 }}
+                  onClick={() => setShowToc(false)}>
+                  <div style={{ maxWidth: 600, margin: '50px auto 0', width: '90%', background: 'var(--primary)', borderRadius: 12, maxHeight: '70vh', overflow: 'auto', padding: 20 }}
+                    onClick={e => e.stopPropagation()}>
+                    <h3 style={{ color: 'var(--accent)', marginBottom: 12 }}>📑 目录</h3>
+                    {epubTocRef.current.map((item, i) => (
+                      <div key={i} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: 8, borderBottom: '1px solid var(--border)', fontSize: 14 }}
+                        onClick={() => { epubRenditionRef.current?.display(item.href); setShowToc(false); }}>
+                        {item.label}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
