@@ -832,10 +832,27 @@ async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
     item = items[chapter_idx]
     content = item.get_content().decode('utf-8', errors='replace')
     soup = BeautifulSoup(content, 'html.parser')
+
+    # Clean out unwanted tags
     for tag in soup(["script", "style", "nav", "head", "meta", "link"]):
         tag.decompose()
+
+    # Extract text from body
     body = soup.find('body')
-    page_html = str(body) if body else soup.prettify()
+    if body:
+        # Get all text with paragraph breaks
+        paras = []
+        for el in body.descendants:
+            if el.name in ('p','h1','h2','h3','h4','h5','h6','div','blockquote','li') and el.get_text(strip=True):
+                tag = el.name
+                txt = el.get_text(strip=False)
+                if tag.startswith('h'):
+                    paras.append(f'<{tag}>{txt}</{tag}>')
+                elif tag == 'blockquote':
+                    paras.append(f'<blockquote>{txt}</blockquote>')
+                else:
+                    paras.append(f'<p>{txt}</p>')
+        page_html = '\n'.join(paras) if paras else body.get_text()
 
     total_chapters = len(items)
 
@@ -843,9 +860,10 @@ async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
   body {{ font-family: SimSun, serif; font-size: 18px; line-height: 1.9; color: #ccc; background: #1a1a1a; padding: 16px 20px 60px; max-width: 800px; margin: 0 auto; }}
-  h1,h2,h3,h4 {{ color: #d4a574; text-align: center; margin: 1em 0 0.6em; }}
+  h1,h2,h3,h4,h5,h6 {{ color: #d4a574; text-align: center; margin: 1em 0 0.6em; }}
   p {{ margin: 0 0 0.8em; text-indent: 2em; }}
   blockquote {{ border-left: 3px solid #555; margin: 0.6em 1em; padding: 0.3em 1em; color: #aaa; }}
+  li {{ margin: 0 0 0.4em; }}
 </style></head><body>
 {page_html}
 </body></html>"""
