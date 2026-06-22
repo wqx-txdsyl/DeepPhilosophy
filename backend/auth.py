@@ -20,17 +20,18 @@ _OSS_KEY = "_system/users.db"
 def _oss_request(method, key_path, body=None):
     """向 OSS 发送带签名的 HTTP 请求"""
     import requests as _req
-    endpoint = os.getenv("OSS_ENDPOINT", "oss-cn-shanghai.aliyuncs.com")
+    ep = os.getenv("OSS_ENDPOINT", "oss-cn-shanghai.aliyuncs.com")
+    if ep.startswith("https://"): ep = ep[8:]
+    if ep.startswith("http://"): ep = ep[7:]
     ak = os.getenv("OSS_ACCESS_KEY", "")
     sk = os.getenv("OSS_SECRET_KEY", "")
     bucket = os.getenv("OSS_BUCKET", "deepphilosophy")
     if not ak: return None
-    # OSS HMAC-SHA1 签名
     date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime())
     string_to_sign = f"{method}\n\n\n{date}\n/{bucket}/{key_path}"
     import base64, hmac as _hmac
     sig = base64.b64encode(_hmac.new(sk.encode(), string_to_sign.encode(), hashlib.sha1).digest()).decode()
-    url = f"https://{bucket}.{endpoint}/{key_path}"
+    url = f"https://{bucket}.{ep}/{key_path}"
     hdrs = {'Date': date, 'Authorization': f'OSS {ak}:{sig}'}
     if body is not None:
         hdrs['Content-Type'] = 'application/octet-stream'
