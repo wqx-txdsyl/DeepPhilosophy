@@ -28,13 +28,14 @@ def _oss_request(method, key_path, body=None):
     bucket = os.getenv("OSS_BUCKET", "deepphilosophy")
     if not ak: return None
     date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime())
-    string_to_sign = f"{method}\n\n\n{date}\n/{bucket}/{key_path}"
+    ctype = 'application/octet-stream' if body else ''
+    string_to_sign = f"{method}\n\n{ctype}\n{date}\n/{bucket}/{key_path}"
     import base64, hmac as _hmac
     sig = base64.b64encode(_hmac.new(sk.encode(), string_to_sign.encode(), hashlib.sha1).digest()).decode()
     url = f"https://{bucket}.{ep}/{key_path}"
     hdrs = {'Date': date, 'Authorization': f'OSS {ak}:{sig}'}
     if body is not None:
-        hdrs['Content-Type'] = 'application/octet-stream'
+        hdrs['Content-Type'] = ctype
         return _req.put(url, data=body, headers=hdrs, timeout=30)
     return _req.get(url, headers=hdrs, timeout=30)
 
