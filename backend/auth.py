@@ -18,11 +18,11 @@ _OSS_KEY = "_system/users.db"
 
 # OSS 云端同步（S3 兼容 API，boto3 已安装）
 def _get_oss_client():
-    """懒加载 OSS/S3 兼容客户端"""
-    endpoint = os.getenv("R2_ENDPOINT", "") or os.getenv("OSS_ENDPOINT", "")
-    key = os.getenv("R2_ACCESS_KEY", "") or os.getenv("OSS_ACCESS_KEY", "")
-    secret = os.getenv("R2_SECRET_KEY", "") or os.getenv("OSS_SECRET_KEY", "")
-    bucket = os.getenv("R2_BUCKET", "") or os.getenv("OSS_BUCKET", "") or "deepphilosophy"
+    """懒加载 OSS/S3 兼容客户端 — 使用环境变量"""
+    endpoint = os.getenv("OSS_ENDPOINT", "")
+    key = os.getenv("OSS_ACCESS_KEY", "")
+    secret = os.getenv("OSS_SECRET_KEY", "")
+    bucket = os.getenv("OSS_BUCKET", "deepphilosophy")
     if not endpoint or not key:
         return None
     try:
