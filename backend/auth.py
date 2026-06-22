@@ -17,55 +17,50 @@ DB_PATH = os.path.join(_PERSIST, "users.db")
 _OSS_KEY = "_system/users.db"
 
 # OSS 云端同步（S3 兼容 API，boto3 已安装）
-def _get_oss_client():
-    """懒加载 OSS/S3 兼容客户端 — 使用环境变量"""
-    endpoint = os.getenv("OSS_ENDPOINT", "")
-    key = os.getenv("OSS_ACCESS_KEY", "")
-    secret = os.getenv("OSS_SECRET_KEY", "")
+def _oss_request(method, key_path, body=None):
+    """向 OSS 发送带签名的 HTTP 请求"""
+    import requests as _req
+    endpoint = os.getenv("OSS_ENDPOINT", "oss-cn-shanghai.aliyuncs.com")
+    ak = os.getenv("OSS_ACCESS_KEY", "")
+    sk = os.getenv("OSS_SECRET_KEY", "")
     bucket = os.getenv("OSS_BUCKET", "deepphilosophy")
-    if not endpoint or not key:
-        return None
-    try:
-        import boto3
-        from botocore.config import Config as BotoConfig
-        return boto3.client(
-            's3',
-            aws_access_key_id=key,
-            aws_secret_access_key=secret,
-            endpoint_url=endpoint,
-            config=BotoConfig(region_name='auto', signature_version='s3v4'),
-        ), bucket
-    except Exception:
-        return None
+    if not ak: return None
+    # OSS HMAC-SHA1 签名
+    date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime())
+    string_to_sign = f"{method}\n\n\n{date}\n/{bucket}/{key_path}"
+    import base64, hmac as _hmac
+    sig = base64.b64encode(_hmac.new(sk.encode(), string_to_sign.encode(), hashlib.sha1).digest()).decode()
+    url = f"https://{bucket}.{endpoint}/{key_path}"
+    hdrs = {'Date': date, 'Authorization': f'OSS {ak}:{sig}'}
+    if body is not None:
+        hdrs['Content-Type'] = 'application/octet-stream'
+        return _req.put(url, data=body, headers=hdrs, timeout=30)
+    return _req.get(url, headers=hdrs, timeout=30)
 
 def _sync_db_to_cloud():
     """上传 users.db 到 OSS"""
     if not os.path.exists(DB_PATH): return
-    oss = _get_oss_client()
-    if not oss: return
-    client, bucket = oss
     try:
         with open(DB_PATH, 'rb') as f:
-            client.put_object(Bucket=bucket, Key=_OSS_KEY, Body=f.read())
+            _oss_request('PUT', _OSS_KEY, f.read())
     except Exception:
         pass
 
 def _sync_db_from_cloud():
-    """从 OSS 下载 users.db，如果云端版本更新"""
-    oss = _get_oss_client()
-    if not oss: return
-    client, bucket = oss
+    """从 OSS 下载 users.db（如果存在且比本地新）"""
     try:
-        # 检查云端文件
-        resp = client.head_object(Bucket=bucket, Key=_OSS_KEY)
-        cloud_mtime = resp['LastModified'].timestamp()
+        r = _oss_request('GET', _OSS_KEY)
+        if r is None or r.status_code == 404: return
+        if r.status_code != 200: return
+        cloud_data = r.content
+        if len(cloud_data) == 0: return
+        # 比本地新？
         local_mtime = os.path.getmtime(DB_PATH) if os.path.exists(DB_PATH) else 0
-        if cloud_mtime <= local_mtime: return  # 本地已经更新
-        # 下载
-        resp = client.get_object(Bucket=bucket, Key=_OSS_KEY)
+        # OSS Last-Modified 在 header 中
+        if os.path.exists(DB_PATH) and len(cloud_data) == os.path.getsize(DB_PATH):
+            return  # 大小相同，跳过
         with open(DB_PATH + '.tmp', 'wb') as f:
-            f.write(resp['Body'].read())
-        # 原子替换
+            f.write(cloud_data)
         if os.path.getsize(DB_PATH + '.tmp') > 0:
             shutil.move(DB_PATH + '.tmp', DB_PATH)
         else:
