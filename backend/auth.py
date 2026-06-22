@@ -1,18 +1,77 @@
 """
-用户认证模块 —— SQLite + Token 认证
-零额外依赖，纯 Python 标准库实现
+用户认证模块 —— SQLite + OSS 云端持久化
+零额外依赖，boto3 已安装用于 S3 兼容的 OSS 存储
 """
 import os
 import sqlite3
 import hashlib
 import uuid
 import time
+import shutil
 from datetime import datetime
 from typing import Optional
 
 _PERSIST = os.getenv("PERSIST_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"))
 os.makedirs(_PERSIST, exist_ok=True)
 DB_PATH = os.path.join(_PERSIST, "users.db")
+_OSS_KEY = "_system/users.db"
+
+# OSS 云端同步（S3 兼容 API，boto3 已安装）
+def _get_oss_client():
+    """懒加载 OSS/S3 兼容客户端"""
+    endpoint = os.getenv("R2_ENDPOINT", "") or os.getenv("OSS_ENDPOINT", "")
+    key = os.getenv("R2_ACCESS_KEY", "") or os.getenv("OSS_ACCESS_KEY", "")
+    secret = os.getenv("R2_SECRET_KEY", "") or os.getenv("OSS_SECRET_KEY", "")
+    bucket = os.getenv("R2_BUCKET", "") or os.getenv("OSS_BUCKET", "") or "deepphilosophy"
+    if not endpoint or not key:
+        return None
+    try:
+        import boto3
+        from botocore.config import Config as BotoConfig
+        return boto3.client(
+            's3',
+            aws_access_key_id=key,
+            aws_secret_access_key=secret,
+            endpoint_url=endpoint,
+            config=BotoConfig(region_name='auto', signature_version='s3v4'),
+        ), bucket
+    except Exception:
+        return None
+
+def _sync_db_to_cloud():
+    """上传 users.db 到 OSS"""
+    if not os.path.exists(DB_PATH): return
+    oss = _get_oss_client()
+    if not oss: return
+    client, bucket = oss
+    try:
+        with open(DB_PATH, 'rb') as f:
+            client.put_object(Bucket=bucket, Key=_OSS_KEY, Body=f.read())
+    except Exception:
+        pass
+
+def _sync_db_from_cloud():
+    """从 OSS 下载 users.db，如果云端版本更新"""
+    oss = _get_oss_client()
+    if not oss: return
+    client, bucket = oss
+    try:
+        # 检查云端文件
+        resp = client.head_object(Bucket=bucket, Key=_OSS_KEY)
+        cloud_mtime = resp['LastModified'].timestamp()
+        local_mtime = os.path.getmtime(DB_PATH) if os.path.exists(DB_PATH) else 0
+        if cloud_mtime <= local_mtime: return  # 本地已经更新
+        # 下载
+        resp = client.get_object(Bucket=bucket, Key=_OSS_KEY)
+        with open(DB_PATH + '.tmp', 'wb') as f:
+            f.write(resp['Body'].read())
+        # 原子替换
+        if os.path.getsize(DB_PATH + '.tmp') > 0:
+            shutil.move(DB_PATH + '.tmp', DB_PATH)
+        else:
+            os.remove(DB_PATH + '.tmp')
+    except Exception:
+        pass
 
 
 def _get_conn() -> sqlite3.Connection:
@@ -87,6 +146,7 @@ def init_db():
     """)
     conn.commit()
     conn.close()
+    _sync_db_to_cloud()
 
 
 def _hash_password(password: str, salt: Optional[str] = None) -> tuple[str, str]:
@@ -202,6 +262,7 @@ def save_reading_progress(user_id: int, book_id: str, book_title: str,
     )
     conn.commit()
     conn.close()
+    _sync_db_to_cloud()
 
 
 def get_reading_history(user_id: int, limit: int = 50) -> list[dict]:
@@ -230,6 +291,7 @@ def save_chat_message(user_id: int, role: str, content: str, sources: Optional[s
     )
     conn.commit()
     conn.close()
+    _sync_db_to_cloud()
 
 
 def get_chat_history(user_id: int, limit: int = 100) -> list[dict]:
@@ -250,6 +312,7 @@ def clear_chat_history(user_id: int):
     conn.execute("DELETE FROM chat_history WHERE user_id = ?", (user_id,))
     conn.commit()
     conn.close()
+    _sync_db_to_cloud()
 
 
 # ============================================================
@@ -268,6 +331,7 @@ def save_book_note(user_id: int, book_id: str, note_text: str) -> bool:
     """, (user_id, book_id, note_text))
     conn.commit()
     conn.close()
+    _sync_db_to_cloud()
     return True
 
 
@@ -306,6 +370,7 @@ def save_book_chat(user_id: int, book_id: str, role: str, content: str):
     )
     conn.commit()
     conn.close()
+    _sync_db_to_cloud()
 
 
 def get_book_chat(user_id: int, book_id: str, limit: int = 50) -> list[dict]:
@@ -325,9 +390,11 @@ def clear_book_chat(user_id: int, book_id: str):
     conn.execute("DELETE FROM book_chat WHERE user_id = ? AND book_id = ?", (user_id, book_id))
     conn.commit()
     conn.close()
+    _sync_db_to_cloud()
 
 
 # ============================================================
 # 初始化
 # ============================================================
 init_db()
+_sync_db_from_cloud()  # 从 OSS 拉取最新用户数据
