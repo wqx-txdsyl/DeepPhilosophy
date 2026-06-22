@@ -15,7 +15,7 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Header, Request
+from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Header, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -1360,7 +1360,7 @@ async def api_login(req: LoginRequest):
 
 
 @app.get("/api/auth/profile")
-async def api_profile(user: dict = __import__('fastapi').Depends(auth_required)):
+async def api_profile(user: dict = Depends(auth_required)):
     """获取用户信息"""
     return {"username": user["username"], "id": user["id"]}
 
@@ -1371,7 +1371,7 @@ async def api_profile(user: dict = __import__('fastapi').Depends(auth_required))
 
 @app.post("/api/history/reading")
 async def save_reading(req: ReadingProgressRequest,
-                       user: dict = __import__('fastapi').Depends(auth_required)):
+                       user: dict = Depends(auth_required)):
     """保存阅读进度"""
     save_reading_progress(
         user["id"], req.book_id, req.book_title,
@@ -1381,7 +1381,7 @@ async def save_reading(req: ReadingProgressRequest,
 
 
 @app.get("/api/history/reading")
-async def get_reading(user: dict = __import__('fastapi').Depends(auth_required)):
+async def get_reading(user: dict = Depends(auth_required)):
     """获取阅读历史"""
     return {"history": get_reading_history(user["id"])}
 
@@ -1392,20 +1392,20 @@ async def get_reading(user: dict = __import__('fastapi').Depends(auth_required))
 
 @app.post("/api/history/chat")
 async def save_chat(req: ChatMessageRequest,
-                    user: dict = __import__('fastapi').Depends(auth_required)):
+                    user: dict = Depends(auth_required)):
     """保存聊天消息"""
     save_chat_message(user["id"], req.role, req.content, req.sources)
     return {"success": True}
 
 
 @app.get("/api/history/chat")
-async def get_chat(user: dict = __import__('fastapi').Depends(auth_required)):
+async def get_chat(user: dict = Depends(auth_required)):
     """获取聊天历史"""
     return {"messages": get_chat_history(user["id"])}
 
 
 @app.delete("/api/history/chat")
-async def clear_chat(user: dict = __import__('fastapi').Depends(auth_required)):
+async def clear_chat(user: dict = Depends(auth_required)):
     """清空聊天历史"""
     clear_chat_history(user["id"])
     return {"success": True}
@@ -1421,17 +1421,17 @@ class NoteRequest(BaseModel):
 
 @app.post("/api/notes/save")
 async def api_save_note(req: NoteRequest,
-                       user: dict = __import__('fastapi').Depends(auth_required)):
+                       user: dict = Depends(auth_required)):
     save_book_note(user["id"], req.book_id, req.note_text)
     return {"success": True}
 
 @app.get("/api/notes/{book_id}")
 async def api_get_note(book_id: str,
-                      user: dict = __import__('fastapi').Depends(auth_required)):
+                      user: dict = Depends(auth_required)):
     return {"note_text": get_book_note(user["id"], book_id)}
 
 @app.get("/api/notes")
-async def api_get_all_notes(user: dict = __import__('fastapi').Depends(auth_required)):
+async def api_get_all_notes(user: dict = Depends(auth_required)):
     return {"notes": get_all_book_notes(user["id"])}
 
 
@@ -1446,18 +1446,18 @@ class BookChatRequest(BaseModel):
 
 @app.post("/api/book-chat/save")
 async def api_save_book_chat(req: BookChatRequest,
-                            user: dict = __import__('fastapi').Depends(auth_required)):
+                            user: dict = Depends(auth_required)):
     save_book_chat(user["id"], req.book_id, req.role, req.content)
     return {"success": True}
 
 @app.get("/api/book-chat/{book_id}")
 async def api_get_book_chat(book_id: str,
-                           user: dict = __import__('fastapi').Depends(auth_required)):
+                           user: dict = Depends(auth_required)):
     return {"messages": get_book_chat(user["id"], book_id)}
 
 @app.delete("/api/book-chat/{book_id}")
 async def api_clear_book_chat(book_id: str,
-                             user: dict = __import__('fastapi').Depends(auth_required)):
+                             user: dict = Depends(auth_required)):
     clear_book_chat(user["id"], book_id)
     return {"success": True}
 

@@ -10,7 +10,9 @@ import time
 from datetime import datetime
 from typing import Optional
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "users.db")
+_PERSIST = os.getenv("PERSIST_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"))
+os.makedirs(_PERSIST, exist_ok=True)
+DB_PATH = os.path.join(_PERSIST, "users.db")
 
 
 def _get_conn() -> sqlite3.Connection:

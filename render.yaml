@@ -8,6 +8,10 @@ services:
     region: singapore
     plan: free
     dockerfilePath: ./backend/Dockerfile
+    disk:
+      name: user-data
+      mountPath: /app/persist
+      sizeGB: 1
     envVars:
       - key: PYTHON_VERSION
         value: 3.11
@@ -15,3 +19,5 @@ services:
         value: 8000
       - key: USE_GITHUB
         value: true
+      - key: PERSIST_DIR
+        value: /app/persist
