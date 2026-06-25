@@ -2331,7 +2331,10 @@ const PHENOMENOLOGY_SUB_SCHOOLS = [
 ];
 
 
-// ═══ 法兰克福学派 ═══
+// ═══ 分析哲学 (minimal stub) ═══
+const ANALYTIC_PHILOSOPHY_DATA = { name:"分析哲学", quote:"全部哲学就是语言的批判。", quoteAuthor:"维特根斯坦", subtitle:"以逻辑分析澄清概念——20世纪英美哲学的主流", overview:`分析哲学是20世纪英美哲学的主流传统，以逻辑和语言分析为方法。`, thinkers:[], relations:[], timeline:[], conclusion:`分析哲学改变了哲学的面貌。`, works:[], quotes:[], closingQuote:"凡是能说的都能说清楚。 — 维特根斯坦"};
+const ANALYTIC_PHILOSOPHY_CIHAI = [{ word:"逻辑分析", def:`分析哲学的核心方法。`, source:`弗雷格、罗素` }];
+const ANALYTIC_PHILOSOPHY_SUB_SCHOOLS = [{ name:"分析哲学", era:"20世纪", desc:`英语世界主流哲学传统。` }];// ═══ 法兰克福学派 ═══
 const FRANKFURT_SCHOOL_DATA = { name:"法兰克福学派", quote:"工具理性已沦为新的统治形式——启蒙必须反思其自身的辩证法。", quoteAuthor:"霍克海默与阿多诺", subtitle:"以批判理论为方法——揭示理性、文化和权力的交织",
   overview:`法兰克福学派(Frankfurt School)是20世纪最具影响力的批判理论传统。1923年，社会研究所在法兰克福大学成立——这个跨学科的学者群体将马克思的政治经济学批判与弗洛伊德的精神分析、韦伯的合理化理论以及德国唯心主义的哲学深度融合为一种独特的"批判理论\u201c。
 
@@ -2661,7 +2664,7 @@ function SchoolDetailPage() {
     '精神分析学':{data:PSYCHOANALYSIS_DATA,sub:PSYCHOANALYSIS_SUB_SCHOOLS,ci:PSYCHOANALYSIS_CIHAI,bg:'url(/schools/greek.jpg)'},
     '结构主义':{data:STRUCTURALISM_DATA,sub:STRUCTURALISM_SUB_SCHOOLS,ci:STRUCTURALISM_CIHAI,bg:'url(/schools/greek.jpg)'},
     '现象学':{data:PHENOMENOLOGY_DATA,sub:PHENOMENOLOGY_SUB_SCHOOLS,ci:PHENOMENOLOGY_CIHAI,bg:'url(/schools/greek.jpg)'},
-    
+    '分析哲学':{data:ANALYTIC_PHILOSOPHY_DATA,sub:ANALYTIC_PHILOSOPHY_SUB_SCHOOLS,ci:ANALYTIC_PHILOSOPHY_CIHAI,bg:'url(/schools/greek.jpg)'},
     '法兰克福学派':{data:FRANKFURT_SCHOOL_DATA,sub:FRANKFURT_SCHOOL_SUB_SCHOOLS,ci:FRANKFURT_SCHOOL_CIHAI,bg:'url(/schools/greek.jpg)'},
     '荒诞哲学':{data:ABSURD_PHILOSOPHY_DATA,sub:ABSURD_PHILOSOPHY_SUB_SCHOOLS,ci:ABSURD_PHILOSOPHY_CIHAI,bg:'url(/schools/greek.jpg)'},
     '后结构主义':{data:POSTSTRUCTURALISM_DATA,sub:POSTSTRUCTURALISM_SUB_SCHOOLS,ci:POSTSTRUCTURALISM_CIHAI,bg:'url(/schools/greek.jpg)'},
