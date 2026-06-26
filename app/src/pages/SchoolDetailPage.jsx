@@ -3474,15 +3474,25 @@ function SchoolDetailPage() {
   const heroImage = m.bg || 'url(/schools/greek.jpg)';
   const [hovered, setHovered] = useState(null);
 
-  // Pre-calculate nebula positions — wide spread, Fibonacci-like golden angle
+  // Pre-calculate nebula positions — concentric layout to minimize line crossings
   const thinkers = data.thinkers.map((t, i) => {
     const total = data.thinkers.length;
-    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~137.5 degrees in radians
-    const radius = 140 + (i / total) * 200 + (i % 3) * 40;
-    const angle = i * goldenAngle * 2.2;
+    // Sort by influence: high-influence thinkers in inner circle, low-influence in outer
+    // This groups primary thinkers centrally, reducing edge crossings
+    const sorted = [...data.thinkers].sort((a,b) => b.influence - a.influence);
+    const rank = sorted.findIndex(s => s.name === t.name);
+    // 3 concentric rings
+    const ringSize = Math.ceil(total / 3);
+    const ring = Math.floor(rank / ringSize); // 0=inner, 1=middle, 2=outer
+    const posInRing = rank % ringSize;
+    const countInRing = ring === 0 ? Math.min(ringSize, total) :
+                        ring === 1 ? Math.min(ringSize, total - ringSize) :
+                        total - 2*ringSize;
+    const radius = 90 + ring * 120 + (posInRing % 3) * 20;
+    const angle = (posInRing / countInRing) * Math.PI * 2 + ring * 0.5;
     const cx = 400, cy = 280;
     const x = cx + Math.cos(angle) * radius;
-    const y = cy + Math.sin(angle) * radius * 0.7;
+    const y = cy + Math.sin(angle) * radius * 0.75;
     return { ...t, _x: Math.max(50, Math.min(750, x)), _y: Math.max(50, Math.min(560, y)) };
   });
 
@@ -3568,19 +3578,22 @@ function SchoolDetailPage() {
           {/* Background nebula glow */}
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(196,149,106,0.06) 0%, transparent 70%)' }} />
 
-          {/* SVG lines */}
+          {/* SVG curved lines */}
           <svg style={{ position: 'absolute', top:0, left:0, width:'100%', height:'100%' }}>
             {data.relations.map((r, i) => {
               const from = thinkers.find(t => t.name === r.from);
               const to = thinkers.find(t => t.name === r.to);
               if (!from || !to) return null;
+              const midX = (from._x + to._x) / 2;
+              const midY = (from._y + to._y) / 2 - 20;
+              const d = `M${from._x},${from._y} Q${midX},${midY} ${to._x},${to._y}`;
               return (
                 <g key={i}>
-                  <line x1={from._x} y1={from._y} x2={to._x} y2={to._y}
+                  <path d={d} fill="none"
                     stroke={r.type==='师生'?'var(--ochre)':r.type==='对立'?'#A06050':r.type==='继承'?'var(--prussian)':'#999'}
-                    strokeWidth={1} strokeDasharray={r.type==='对立'?'6,4':''} opacity={0.35} />
-                  <text x={(from._x+to._x)/2} y={(from._y+to._y)/2-6}
-                    fontSize={8} fill="var(--text-dim)" textAnchor="middle" fontStyle="italic" opacity={0.6}>
+                    strokeWidth={1.2} strokeDasharray={r.type==='对立'?'6,4':''} opacity={0.4} />
+                  <text x={midX} y={midY-8}
+                    fontSize={8} fill="var(--text-dim)" textAnchor="middle" fontStyle="italic" opacity={0.7}>
                     {r.type}
                   </text>
                 </g>
