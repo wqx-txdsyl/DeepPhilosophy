@@ -134,7 +134,7 @@ function GenealogyPage() {
 
   return (
     <div className="page-container" style={{ paddingBottom: 60 }}>
-      <h2 className="section-title" style={{ marginBottom: 24, textAlign: 'center' }}>🧬 西方哲学谱系</h2>
+      <h2 className="section-title" style={{ marginBottom: 24, textAlign: 'center' }}>🧬 西方哲学谱系 · 43流派</h2>
 
       {/* Timeline */}
       <div style={{ maxWidth: 720, margin: '0 auto', position: 'relative', padding: '40px 0' }}>
