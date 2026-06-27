@@ -1,6 +1,6 @@
 /**
  * 作者详情页 —— 人物信息卡片（年代/国家/流派/生平）、作品列表
- * 优先使用内置数据库，其次百度百科爬虫
+ * 优先使用内置数据库，其次维基百科/百度百科
  */
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -35,7 +35,7 @@ function AuthorDetailPage() {
     if (author?.wiki_url) {
       window.open(author.wiki_url, '_blank');
     } else {
-      window.open(`https://baike.baidu.com/item/${encodeURIComponent(authorName)}`, '_blank');
+      window.open(`https://en.wikipedia.org/wiki/${encodeURIComponent(authorName)}`, '_blank');
     }
   };
 
@@ -66,7 +66,8 @@ function AuthorDetailPage() {
               {author.source && (
                 <span className="badge badge-available" style={{ fontSize: 10 }}>
                   数据: {author.source === 'builtin_database' ? '内置库' :
-                         author.source === 'baidu_baike' ? '百度百科' : '基础'}
+                         author.source === 'baidu_baike' ? '百度百科' :
+                         author.source === 'wikipedia' ? '维基百科' : '基础'}
                 </span>
               )}
             </div>
@@ -111,7 +112,7 @@ function AuthorDetailPage() {
 
         <div style={{ marginTop: 14, display: 'flex', gap: 8 }}>
           <button className="btn btn-secondary" onClick={openWiki} style={{ padding: '8px 16px', fontSize: 13 }}>
-            🔗 百科详情
+            🔗 维基百科
           </button>
         </div>
       </div>

@@ -1179,7 +1179,7 @@ async def get_author_info(author_name: str):
             "country": country,
             "school": school,
             "bio": bio,
-            "wiki_url": wiki_url or f"https://baike.baidu.com/item/{author_name}",
+            "wiki_url": wiki_url or f"https://en.wikipedia.org/wiki/{author_name}",
             "books": book_list,
             "book_count": book_count,
             "source": source,
