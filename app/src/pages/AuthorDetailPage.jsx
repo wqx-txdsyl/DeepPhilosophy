@@ -112,7 +112,11 @@ function AuthorDetailPage() {
 
         <div style={{ marginTop: 14, display: 'flex', gap: 8 }}>
           <button className="btn btn-secondary" onClick={openWiki} style={{ padding: '8px 16px', fontSize: 13 }}>
-            🔗 维基百科
+            维基百科
+          </button>
+          <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: 13 }}
+            onClick={() => window.open(`https://baike.baidu.com/item/${encodeURIComponent(authorName)}`, '_blank')}>
+            百度百科
           </button>
         </div>
       </div>
