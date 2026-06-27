@@ -197,7 +197,7 @@ function GenealogyPage() {
       <h2 className="section-title" style={{ marginBottom: 24, textAlign: 'center' }}>🧬 东西方哲学谱系 · 66流派</h2>
 
       {/* Timeline — dual-sided */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', padding: '40px 0' }}>
+      <div style={{ maxWidth: '100%', margin: '0 auto', position: 'relative', padding: '40px 24px' }}>
 
         {/* Center axis */}
         <div style={{ position: 'absolute', left: '50%', top: 60, bottom: 60, width: 2, background: 'var(--border)', transform: 'translateX(-50%)' }} />
