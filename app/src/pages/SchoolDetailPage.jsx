@@ -7781,85 +7781,85 @@ function SchoolDetailPage() {
   const navigate = useNavigate();
     const SCHOOL_MAP = {
     '古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/古希腊哲学.jpg)' },
-    '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/教父哲学.png)' },
-    '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/scholastic.png)' },
-    '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/rationalist.png)' },
-    '经验主义': { data:EMPIRICISM_DATA, sub:EMPIRICISM_SUB_SCHOOLS, ci:EMPIRICISM_CIHAI, bg:'url(/schools/empiricist.png)' },
-    '启蒙运动': { data:ENLIGHTENMENT_DATA, sub:ENLIGHTENMENT_SUB_SCHOOLS, ci:ENLIGHTENMENT_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '实在论': { data:REALISM_DATA, sub:REALISM_SUB_SCHOOLS, ci:REALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '唯心主义': { data:IDEALISM_DATA, sub:IDEALISM_SUB_SCHOOLS, ci:IDEALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '自由主义': { data:LIBERALISM_DATA, sub:LIBERALISM_SUB_SCHOOLS, ci:LIBERALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '浪漫主义': { data:ROMANTICISM_DATA, sub:ROMANTICISM_SUB_SCHOOLS, ci:ROMANTICISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '女性主义': { data:FEMINISM_DATA, sub:FEMINISM_SUB_SCHOOLS, ci:FEMINISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '德国古典哲学': { data:GERMAN_IDEALISM_DATA, sub:GERMAN_IDEALISM_SUB_SCHOOLS, ci:GERMAN_IDEALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '生命哲学': { data:LIFE_PHILOSOPHY_DATA, sub:LIFE_PHILOSOPHY_SUB_SCHOOLS, ci:LIFE_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '马克思主义': { data:MARXISM_DATA, sub:MARXISM_SUB_SCHOOLS, ci:MARXISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '存在主义': { data:EXISTENTIALISM_DATA, sub:EXISTENTIALISM_SUB_SCHOOLS, ci:EXISTENTIALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '精神分析学': { data:PSYCHOANALYSIS_DATA, sub:PSYCHOANALYSIS_SUB_SCHOOLS, ci:PSYCHOANALYSIS_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '结构主义': { data:STRUCTURALISM_DATA, sub:STRUCTURALISM_SUB_SCHOOLS, ci:STRUCTURALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '现象学': { data:PHENOMENOLOGY_DATA, sub:PHENOMENOLOGY_SUB_SCHOOLS, ci:PHENOMENOLOGY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '分析哲学': { data:ANALYTIC_PHILOSOPHY_DATA, sub:ANALYTIC_PHILOSOPHY_SUB_SCHOOLS, ci:ANALYTIC_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '法兰克福学派': { data:FRANKFURT_SCHOOL_DATA, sub:FRANKFURT_SCHOOL_SUB_SCHOOLS, ci:FRANKFURT_SCHOOL_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '荒诞哲学': { data:ABSURD_PHILOSOPHY_DATA, sub:ABSURD_PHILOSOPHY_SUB_SCHOOLS, ci:ABSURD_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '后结构主义': { data:POSTSTRUCTURALISM_DATA, sub:POSTSTRUCTURALISM_SUB_SCHOOLS, ci:POSTSTRUCTURALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '功利主义': { data:UTILITARIANISM_DATA, sub:UTILITARIANISM_SUB_SCHOOLS, ci:UTILITARIANISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '超验主义': { data:TRANSCENDENTALISM_DATA, sub:TRANSCENDENTALISM_SUB_SCHOOLS, ci:TRANSCENDENTALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '实证主义': { data:POSITIVISM_DATA, sub:POSITIVISM_SUB_SCHOOLS, ci:POSITIVISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '社会学': { data:SOCIOLOGY_DATA, sub:SOCIOLOGY_SUB_SCHOOLS, ci:SOCIOLOGY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '实用主义': { data:PRAGMATISM_DATA, sub:PRAGMATISM_SUB_SCHOOLS, ci:PRAGMATISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '过程哲学': { data:PROCESS_PHILOSOPHY_DATA, sub:PROCESS_PHILOSOPHY_SUB_SCHOOLS, ci:PROCESS_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '哲学人类学': { data:PHILOSOPHICAL_ANTHROPOLOGY_DATA, sub:PHILOSOPHICAL_ANTHROPOLOGY_SUB_SCHOOLS, ci:PHILOSOPHICAL_ANTHROPOLOGY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '科学哲学': { data:PHILOSOPHY_OF_SCIENCE_DATA, sub:PHILOSOPHY_OF_SCIENCE_SUB_SCHOOLS, ci:PHILOSOPHY_OF_SCIENCE_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '西方马克思主义': { data:WESTERN_MARXISM_DATA, sub:WESTERN_MARXISM_SUB_SCHOOLS, ci:WESTERN_MARXISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '政治哲学': { data:POLITICAL_PHILOSOPHY_DATA, sub:POLITICAL_PHILOSOPHY_SUB_SCHOOLS, ci:POLITICAL_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '伦理学': { data:ETHICS_DATA, sub:ETHICS_SUB_SCHOOLS, ci:ETHICS_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '基督教哲学': { data:CHRISTIAN_PHILOSOPHY_DATA, sub:CHRISTIAN_PHILOSOPHY_SUB_SCHOOLS, ci:CHRISTIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '哲学诠释学': { data:HERMENEUTICS_DATA, sub:HERMENEUTICS_SUB_SCHOOLS, ci:HERMENEUTICS_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '后现代主义': { data:POSTMODERNISM_DATA, sub:POSTMODERNISM_SUB_SCHOOLS, ci:POSTMODERNISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '斯多葛学派': { data:STOICISM_DATA, sub:STOICISM_SUB_SCHOOLS, ci:STOICISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '怀疑论': { data:SKEPTICISM_DATA, sub:SKEPTICISM_SUB_SCHOOLS, ci:SKEPTICISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '唯名论': { data:NOMINALISM_DATA, sub:NOMINALISM_SUB_SCHOOLS, ci:NOMINALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '批判理论': { data:CRITICAL_THEORY_DATA, sub:CRITICAL_THEORY_SUB_SCHOOLS, ci:CRITICAL_THEORY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '社群主义': { data:COMMUNITARIANISM_DATA, sub:COMMUNITARIANISM_SUB_SCHOOLS, ci:COMMUNITARIANISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '技术哲学': { data:PHILOSOPHY_OF_TECHNOLOGY_DATA, sub:PHILOSOPHY_OF_TECHNOLOGY_SUB_SCHOOLS, ci:PHILOSOPHY_OF_TECHNOLOGY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '宗教哲学': { data:RELIGION_PHILOSOPHY_DATA, sub:RELIGION_PHILOSOPHY_SUB_SCHOOLS, ci:RELIGION_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
+    '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/教父哲学.jpg)' },
+    '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/scholastic.jpg)' },
+    '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/rationalist.jpg)' },
+    '经验主义': { data:EMPIRICISM_DATA, sub:EMPIRICISM_SUB_SCHOOLS, ci:EMPIRICISM_CIHAI, bg:'url(/schools/empiricist.jpg)' },
+    '启蒙运动': { data:ENLIGHTENMENT_DATA, sub:ENLIGHTENMENT_SUB_SCHOOLS, ci:ENLIGHTENMENT_CIHAI, bg:'url(/schools/default.jpg)' },
+    '实在论': { data:REALISM_DATA, sub:REALISM_SUB_SCHOOLS, ci:REALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '唯心主义': { data:IDEALISM_DATA, sub:IDEALISM_SUB_SCHOOLS, ci:IDEALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '自由主义': { data:LIBERALISM_DATA, sub:LIBERALISM_SUB_SCHOOLS, ci:LIBERALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '浪漫主义': { data:ROMANTICISM_DATA, sub:ROMANTICISM_SUB_SCHOOLS, ci:ROMANTICISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '女性主义': { data:FEMINISM_DATA, sub:FEMINISM_SUB_SCHOOLS, ci:FEMINISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '德国古典哲学': { data:GERMAN_IDEALISM_DATA, sub:GERMAN_IDEALISM_SUB_SCHOOLS, ci:GERMAN_IDEALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '生命哲学': { data:LIFE_PHILOSOPHY_DATA, sub:LIFE_PHILOSOPHY_SUB_SCHOOLS, ci:LIFE_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '马克思主义': { data:MARXISM_DATA, sub:MARXISM_SUB_SCHOOLS, ci:MARXISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '存在主义': { data:EXISTENTIALISM_DATA, sub:EXISTENTIALISM_SUB_SCHOOLS, ci:EXISTENTIALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '精神分析学': { data:PSYCHOANALYSIS_DATA, sub:PSYCHOANALYSIS_SUB_SCHOOLS, ci:PSYCHOANALYSIS_CIHAI, bg:'url(/schools/default.jpg)' },
+    '结构主义': { data:STRUCTURALISM_DATA, sub:STRUCTURALISM_SUB_SCHOOLS, ci:STRUCTURALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '现象学': { data:PHENOMENOLOGY_DATA, sub:PHENOMENOLOGY_SUB_SCHOOLS, ci:PHENOMENOLOGY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '分析哲学': { data:ANALYTIC_PHILOSOPHY_DATA, sub:ANALYTIC_PHILOSOPHY_SUB_SCHOOLS, ci:ANALYTIC_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '法兰克福学派': { data:FRANKFURT_SCHOOL_DATA, sub:FRANKFURT_SCHOOL_SUB_SCHOOLS, ci:FRANKFURT_SCHOOL_CIHAI, bg:'url(/schools/default.jpg)' },
+    '荒诞哲学': { data:ABSURD_PHILOSOPHY_DATA, sub:ABSURD_PHILOSOPHY_SUB_SCHOOLS, ci:ABSURD_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '后结构主义': { data:POSTSTRUCTURALISM_DATA, sub:POSTSTRUCTURALISM_SUB_SCHOOLS, ci:POSTSTRUCTURALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '功利主义': { data:UTILITARIANISM_DATA, sub:UTILITARIANISM_SUB_SCHOOLS, ci:UTILITARIANISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '超验主义': { data:TRANSCENDENTALISM_DATA, sub:TRANSCENDENTALISM_SUB_SCHOOLS, ci:TRANSCENDENTALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '实证主义': { data:POSITIVISM_DATA, sub:POSITIVISM_SUB_SCHOOLS, ci:POSITIVISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '社会学': { data:SOCIOLOGY_DATA, sub:SOCIOLOGY_SUB_SCHOOLS, ci:SOCIOLOGY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '实用主义': { data:PRAGMATISM_DATA, sub:PRAGMATISM_SUB_SCHOOLS, ci:PRAGMATISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '过程哲学': { data:PROCESS_PHILOSOPHY_DATA, sub:PROCESS_PHILOSOPHY_SUB_SCHOOLS, ci:PROCESS_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '哲学人类学': { data:PHILOSOPHICAL_ANTHROPOLOGY_DATA, sub:PHILOSOPHICAL_ANTHROPOLOGY_SUB_SCHOOLS, ci:PHILOSOPHICAL_ANTHROPOLOGY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '科学哲学': { data:PHILOSOPHY_OF_SCIENCE_DATA, sub:PHILOSOPHY_OF_SCIENCE_SUB_SCHOOLS, ci:PHILOSOPHY_OF_SCIENCE_CIHAI, bg:'url(/schools/default.jpg)' },
+    '西方马克思主义': { data:WESTERN_MARXISM_DATA, sub:WESTERN_MARXISM_SUB_SCHOOLS, ci:WESTERN_MARXISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '政治哲学': { data:POLITICAL_PHILOSOPHY_DATA, sub:POLITICAL_PHILOSOPHY_SUB_SCHOOLS, ci:POLITICAL_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '伦理学': { data:ETHICS_DATA, sub:ETHICS_SUB_SCHOOLS, ci:ETHICS_CIHAI, bg:'url(/schools/default.jpg)' },
+    '基督教哲学': { data:CHRISTIAN_PHILOSOPHY_DATA, sub:CHRISTIAN_PHILOSOPHY_SUB_SCHOOLS, ci:CHRISTIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '哲学诠释学': { data:HERMENEUTICS_DATA, sub:HERMENEUTICS_SUB_SCHOOLS, ci:HERMENEUTICS_CIHAI, bg:'url(/schools/default.jpg)' },
+    '后现代主义': { data:POSTMODERNISM_DATA, sub:POSTMODERNISM_SUB_SCHOOLS, ci:POSTMODERNISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '斯多葛学派': { data:STOICISM_DATA, sub:STOICISM_SUB_SCHOOLS, ci:STOICISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '怀疑论': { data:SKEPTICISM_DATA, sub:SKEPTICISM_SUB_SCHOOLS, ci:SKEPTICISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '唯名论': { data:NOMINALISM_DATA, sub:NOMINALISM_SUB_SCHOOLS, ci:NOMINALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '批判理论': { data:CRITICAL_THEORY_DATA, sub:CRITICAL_THEORY_SUB_SCHOOLS, ci:CRITICAL_THEORY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '社群主义': { data:COMMUNITARIANISM_DATA, sub:COMMUNITARIANISM_SUB_SCHOOLS, ci:COMMUNITARIANISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '技术哲学': { data:PHILOSOPHY_OF_TECHNOLOGY_DATA, sub:PHILOSOPHY_OF_TECHNOLOGY_SUB_SCHOOLS, ci:PHILOSOPHY_OF_TECHNOLOGY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '宗教哲学': { data:RELIGION_PHILOSOPHY_DATA, sub:RELIGION_PHILOSOPHY_SUB_SCHOOLS, ci:RELIGION_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
   
 
-    '儒家': { data:CONFUCIANISM_DATA, sub:CONFUCIANISM_SUB_SCHOOLS, ci:CONFUCIANISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '道家': { data:TAOISM_DATA, sub:TAOISM_SUB_SCHOOLS, ci:TAOISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '墨家': { data:MOHISM_DATA, sub:MOHISM_SUB_SCHOOLS, ci:MOHISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '法家': { data:LEGALISM_DATA, sub:LEGALISM_SUB_SCHOOLS, ci:LEGALISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '名家': { data:SCHOOL_OF_NAMES_DATA, sub:SCHOOL_OF_NAMES_SUB_SCHOOLS, ci:SCHOOL_OF_NAMES_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '阴阳家': { data:YINYANG_SCHOOL_DATA, sub:YINYANG_SCHOOL_SUB_SCHOOLS, ci:YINYANG_SCHOOL_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '兵家': { data:MILITARY_SCHOOL_DATA, sub:MILITARY_SCHOOL_SUB_SCHOOLS, ci:MILITARY_SCHOOL_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '两汉经学': { data:HAN_CONFUCIANISM_DATA, sub:HAN_CONFUCIANISM_SUB_SCHOOLS, ci:HAN_CONFUCIANISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '魏晋玄学': { data:WEIJIN_METAPHYSICS_DATA, sub:WEIJIN_METAPHYSICS_SUB_SCHOOLS, ci:WEIJIN_METAPHYSICS_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '隋唐佛学': { data:SUITANG_BUDDHISM_DATA, sub:SUITANG_BUDDHISM_SUB_SCHOOLS, ci:SUITANG_BUDDHISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '宋明理学': { data:SONGMING_NEO_CONFUCIANISM_DATA, sub:SONGMING_NEO_CONFUCIANISM_SUB_SCHOOLS, ci:SONGMING_NEO_CONFUCIANISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '明清实学': { data:MINGQING_PRACTICAL_DATA, sub:MINGQING_PRACTICAL_SUB_SCHOOLS, ci:MINGQING_PRACTICAL_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '乾嘉朴学': { data:QIANJIA_EVIDENTIAL_DATA, sub:QIANJIA_EVIDENTIAL_SUB_SCHOOLS, ci:QIANJIA_EVIDENTIAL_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '天演论': { data:EVOLUTION_CHINA_DATA, sub:EVOLUTION_CHINA_SUB_SCHOOLS, ci:EVOLUTION_CHINA_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '维新派': { data:REFORMIST_DATA, sub:REFORMIST_SUB_SCHOOLS, ci:REFORMIST_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '三民主义': { data:THREE_PRINCIPLES_DATA, sub:THREE_PRINCIPLES_SUB_SCHOOLS, ci:THREE_PRINCIPLES_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '毛泽东思想': { data:MAO_ZEDONG_THOUGHT_DATA, sub:MAO_ZEDONG_THOUGHT_SUB_SCHOOLS, ci:MAO_ZEDONG_THOUGHT_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '中国马克思主义哲学': { data:CHINESE_MARXIST_PHILOSOPHY_DATA, sub:CHINESE_MARXIST_PHILOSOPHY_SUB_SCHOOLS, ci:CHINESE_MARXIST_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '现代新儒家': { data:NEW_CONFUCIANISM_DATA, sub:NEW_CONFUCIANISM_SUB_SCHOOLS, ci:NEW_CONFUCIANISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '中国实证哲学': { data:CHINESE_POSITIVISM_DATA, sub:CHINESE_POSITIVISM_SUB_SCHOOLS, ci:CHINESE_POSITIVISM_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '马克思主义哲学的中国化与体系化': { data:MARXISM_SINICIZATION_DATA, sub:MARXISM_SINICIZATION_SUB_SCHOOLS, ci:MARXISM_SINICIZATION_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '习近平新时代中国特色社会主义思想': { data:XI_JINPING_THOUGHT_DATA, sub:XI_JINPING_THOUGHT_SUB_SCHOOLS, ci:XI_JINPING_THOUGHT_CIHAI, bg:'url(/schools/greek.jpg)' },
-  '印度哲学': { data:INDIAN_PHILOSOPHY_DATA, sub:INDIAN_PHILOSOPHY_SUB_SCHOOLS, ci:INDIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-  '日本哲学': { data:JAPANESE_PHILOSOPHY_DATA, sub:JAPANESE_PHILOSOPHY_SUB_SCHOOLS, ci:JAPANESE_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-  '伊斯兰阿拉伯哲学': { data:ISLAMIC_PHILOSOPHY_DATA, sub:ISLAMIC_PHILOSOPHY_SUB_SCHOOLS, ci:ISLAMIC_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-  '非洲哲学': { data:AFRICAN_PHILOSOPHY_DATA, sub:AFRICAN_PHILOSOPHY_SUB_SCHOOLS, ci:AFRICAN_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-  '犹太哲学': { data:JEWISH_PHILOSOPHY_DATA, sub:JEWISH_PHILOSOPHY_SUB_SCHOOLS, ci:JEWISH_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-  '波斯哲学': { data:PERSIAN_PHILOSOPHY_DATA, sub:PERSIAN_PHILOSOPHY_SUB_SCHOOLS, ci:PERSIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-  '拉丁美洲哲学': { data:LATIN_AMERICAN_PHILOSOPHY_DATA, sub:LATIN_AMERICAN_PHILOSOPHY_SUB_SCHOOLS, ci:LATIN_AMERICAN_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },
-  '东南亚哲学': { data:SOUTHEAST_ASIAN_PHILOSOPHY_DATA, sub:SOUTHEAST_ASIAN_PHILOSOPHY_SUB_SCHOOLS, ci:SOUTHEAST_ASIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/greek.jpg)' },};
+    '儒家': { data:CONFUCIANISM_DATA, sub:CONFUCIANISM_SUB_SCHOOLS, ci:CONFUCIANISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '道家': { data:TAOISM_DATA, sub:TAOISM_SUB_SCHOOLS, ci:TAOISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '墨家': { data:MOHISM_DATA, sub:MOHISM_SUB_SCHOOLS, ci:MOHISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '法家': { data:LEGALISM_DATA, sub:LEGALISM_SUB_SCHOOLS, ci:LEGALISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '名家': { data:SCHOOL_OF_NAMES_DATA, sub:SCHOOL_OF_NAMES_SUB_SCHOOLS, ci:SCHOOL_OF_NAMES_CIHAI, bg:'url(/schools/default.jpg)' },
+    '阴阳家': { data:YINYANG_SCHOOL_DATA, sub:YINYANG_SCHOOL_SUB_SCHOOLS, ci:YINYANG_SCHOOL_CIHAI, bg:'url(/schools/default.jpg)' },
+    '兵家': { data:MILITARY_SCHOOL_DATA, sub:MILITARY_SCHOOL_SUB_SCHOOLS, ci:MILITARY_SCHOOL_CIHAI, bg:'url(/schools/default.jpg)' },
+    '两汉经学': { data:HAN_CONFUCIANISM_DATA, sub:HAN_CONFUCIANISM_SUB_SCHOOLS, ci:HAN_CONFUCIANISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '魏晋玄学': { data:WEIJIN_METAPHYSICS_DATA, sub:WEIJIN_METAPHYSICS_SUB_SCHOOLS, ci:WEIJIN_METAPHYSICS_CIHAI, bg:'url(/schools/default.jpg)' },
+    '隋唐佛学': { data:SUITANG_BUDDHISM_DATA, sub:SUITANG_BUDDHISM_SUB_SCHOOLS, ci:SUITANG_BUDDHISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '宋明理学': { data:SONGMING_NEO_CONFUCIANISM_DATA, sub:SONGMING_NEO_CONFUCIANISM_SUB_SCHOOLS, ci:SONGMING_NEO_CONFUCIANISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '明清实学': { data:MINGQING_PRACTICAL_DATA, sub:MINGQING_PRACTICAL_SUB_SCHOOLS, ci:MINGQING_PRACTICAL_CIHAI, bg:'url(/schools/default.jpg)' },
+    '乾嘉朴学': { data:QIANJIA_EVIDENTIAL_DATA, sub:QIANJIA_EVIDENTIAL_SUB_SCHOOLS, ci:QIANJIA_EVIDENTIAL_CIHAI, bg:'url(/schools/default.jpg)' },
+    '天演论': { data:EVOLUTION_CHINA_DATA, sub:EVOLUTION_CHINA_SUB_SCHOOLS, ci:EVOLUTION_CHINA_CIHAI, bg:'url(/schools/default.jpg)' },
+    '维新派': { data:REFORMIST_DATA, sub:REFORMIST_SUB_SCHOOLS, ci:REFORMIST_CIHAI, bg:'url(/schools/default.jpg)' },
+    '三民主义': { data:THREE_PRINCIPLES_DATA, sub:THREE_PRINCIPLES_SUB_SCHOOLS, ci:THREE_PRINCIPLES_CIHAI, bg:'url(/schools/default.jpg)' },
+    '毛泽东思想': { data:MAO_ZEDONG_THOUGHT_DATA, sub:MAO_ZEDONG_THOUGHT_SUB_SCHOOLS, ci:MAO_ZEDONG_THOUGHT_CIHAI, bg:'url(/schools/default.jpg)' },
+    '中国马克思主义哲学': { data:CHINESE_MARXIST_PHILOSOPHY_DATA, sub:CHINESE_MARXIST_PHILOSOPHY_SUB_SCHOOLS, ci:CHINESE_MARXIST_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+    '现代新儒家': { data:NEW_CONFUCIANISM_DATA, sub:NEW_CONFUCIANISM_SUB_SCHOOLS, ci:NEW_CONFUCIANISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '中国实证哲学': { data:CHINESE_POSITIVISM_DATA, sub:CHINESE_POSITIVISM_SUB_SCHOOLS, ci:CHINESE_POSITIVISM_CIHAI, bg:'url(/schools/default.jpg)' },
+    '马克思主义哲学的中国化与体系化': { data:MARXISM_SINICIZATION_DATA, sub:MARXISM_SINICIZATION_SUB_SCHOOLS, ci:MARXISM_SINICIZATION_CIHAI, bg:'url(/schools/default.jpg)' },
+    '习近平新时代中国特色社会主义思想': { data:XI_JINPING_THOUGHT_DATA, sub:XI_JINPING_THOUGHT_SUB_SCHOOLS, ci:XI_JINPING_THOUGHT_CIHAI, bg:'url(/schools/default.jpg)' },
+  '印度哲学': { data:INDIAN_PHILOSOPHY_DATA, sub:INDIAN_PHILOSOPHY_SUB_SCHOOLS, ci:INDIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '日本哲学': { data:JAPANESE_PHILOSOPHY_DATA, sub:JAPANESE_PHILOSOPHY_SUB_SCHOOLS, ci:JAPANESE_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '伊斯兰阿拉伯哲学': { data:ISLAMIC_PHILOSOPHY_DATA, sub:ISLAMIC_PHILOSOPHY_SUB_SCHOOLS, ci:ISLAMIC_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '非洲哲学': { data:AFRICAN_PHILOSOPHY_DATA, sub:AFRICAN_PHILOSOPHY_SUB_SCHOOLS, ci:AFRICAN_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '犹太哲学': { data:JEWISH_PHILOSOPHY_DATA, sub:JEWISH_PHILOSOPHY_SUB_SCHOOLS, ci:JEWISH_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '波斯哲学': { data:PERSIAN_PHILOSOPHY_DATA, sub:PERSIAN_PHILOSOPHY_SUB_SCHOOLS, ci:PERSIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '拉丁美洲哲学': { data:LATIN_AMERICAN_PHILOSOPHY_DATA, sub:LATIN_AMERICAN_PHILOSOPHY_SUB_SCHOOLS, ci:LATIN_AMERICAN_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '东南亚哲学': { data:SOUTHEAST_ASIAN_PHILOSOPHY_DATA, sub:SOUTHEAST_ASIAN_PHILOSOPHY_SUB_SCHOOLS, ci:SOUTHEAST_ASIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },};
   const m = SCHOOL_MAP[name] || {};
   const data = m.data || GREEK_DATA;
   const subSchools = m.sub || GREEK_SUB_SCHOOLS;
   const cihai = m.ci || GREEK_CIHAI;
-  const heroImage = m.bg || 'url(/schools/greek.jpg)';
+  const heroImage = m.bg || 'url(/schools/default.jpg)';
   const [hovered, setHovered] = useState(null);
 
   // Radial force-directed layout: center-outward, no overlaps, minimum line length
@@ -7867,14 +7867,14 @@ function SchoolDetailPage() {
     const ts = data.thinkers;
     const rels = data.relations || [];
     const cx = 400, cy = 280;
-    const MIN_DIST = 55; // minimum center-to-center distance between nodes
-    const MIN_LINE = 80; // minimum line length
+    const MIN_DIST = 72; // minimum center-to-center distance between nodes
+    const MIN_LINE = 100; // minimum line length
 
     // Get node display radius: baseSize + hover margin
     const getR = (t) => {
       const inf = t.influence || 5;
       const base = inf >= 10 ? 28 : inf >= 9 ? 24 : inf >= 8 ? 20 : inf >= 7 ? 17 : 14;
-      return base + 8; // display radius with padding
+      return base + 14; // display radius with generous padding
     };
 
     // Build adjacency map
@@ -7910,7 +7910,7 @@ function SchoolDetailPage() {
     layerKeys.forEach(layer => {
       if (layer === 0) return;
       const names = layers[layer] || [];
-      const layerRadius = 50 + (layer / maxLayer) * 230;
+      const layerRadius = 70 + (layer / maxLayer) * 240;
       const count = names.length;
 
       // For each name, find its connected parent in previous layer
@@ -7927,7 +7927,7 @@ function SchoolDetailPage() {
             const dx = positions[p]._x - cx, dy = positions[p]._y - cy;
             return s + Math.atan2(dy, dx);
           }, 0);
-          angle = sumAngle / parents.length + (i - count / 2) * 0.5;
+          angle = sumAngle / parents.length + (i - count / 2) * 1.2;
         } else {
           // No parent: spread evenly
           angle = (i / Math.max(count, 1)) * Math.PI * 2 + layer * 0.4;
@@ -7940,7 +7940,7 @@ function SchoolDetailPage() {
         // Ensure minimum distance from all placed nodes
         let attempts = 0;
         let overlap = true;
-        while (overlap && attempts < 30) {
+        while (overlap && attempts < 50) {
           overlap = false;
           for (const pName in positions) {
             const dx2 = px - positions[pName]._x;
@@ -7953,8 +7953,8 @@ function SchoolDetailPage() {
               overlap = true;
               // Push outward
               const pushAngle = Math.atan2(dy2, dx2);
-              px += Math.cos(pushAngle) * 8;
-              py += Math.sin(pushAngle) * 8;
+              px += Math.cos(pushAngle) * 14;
+              py += Math.sin(pushAngle) * 14;
               break;
             }
           }

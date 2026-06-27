@@ -1469,32 +1469,33 @@ async def api_clear_book_chat(book_id: str,
 @app.post("/api/ai/stream")
 async def ai_stream_proxy(req: Request):
     """流式代理 DeepSeek API，使用服务器默认 Key"""
-    if not config.DEEPSEEK_API_KEY:
+    key = config.DEEPSEEK_API_KEY
+    if not key:
         return JSONResponse({"error": "Server API key not configured"}, status_code=500)
     try:
         body = await req.json()
-        import httpx
-        async with httpx.AsyncClient(timeout=120) as client:
-            async with client.stream(
-                "POST",
-                f"{config.DEEPSEEK_BASE_URL}/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {config.DEEPSEEK_API_KEY}",
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": body.get("model", config.DEEPSEEK_MODEL),
-                    "messages": body.get("messages", []),
-                    "temperature": body.get("temperature", 0.7),
-                    "max_tokens": body.get("max_tokens", 1024),
-                    "stream": True,
-                },
-            ) as resp:
-                return StreamingResponse(
-                    resp.aiter_bytes(),
-                    media_type="text/event-stream",
-                    headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"},
-                )
+        import requests as sync_req
+        resp = sync_req.post(
+            f"{config.DEEPSEEK_BASE_URL}/v1/chat/completions",
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json={
+                "model": body.get("model", config.DEEPSEEK_MODEL),
+                "messages": body.get("messages", []),
+                "temperature": body.get("temperature", 0.7),
+                "max_tokens": body.get("max_tokens", 1024),
+                "stream": True,
+            },
+            stream=True,
+            timeout=120,
+        )
+        def generate():
+            for chunk in resp.iter_content(chunk_size=None):
+                if chunk: yield chunk
+        return StreamingResponse(
+            generate(),
+            media_type="text/event-stream",
+            headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"},
+        )
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
