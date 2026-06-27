@@ -163,12 +163,13 @@ python main.py        # FastAPI → http://localhost:8000
 ## 谱系数据架构
 
 ### 最新变更（2026-06-28）
-- 星丛图：中心辐射BFS分层布局 + 直线连接 + 防重叠算法
+- AI问答：无用户Key时自动走服务器代理（需在Render设置 DEEPSEEK_API_KEY 环境变量）
+- 星丛图：中心辐射BFS分层 + 直线 + 间距加大（MIN_DIST=72）+ 防重叠50次迭代
 - Hero区：流派英文全大写名称（如 CONFUCIANISM）
 - 进化论（天演论）→ 天演论
-- 全站 editorial 风格统一（底部细线卡片 + 衬线标题）
-- 深色模式一键切换（☀️/🌙）
-- 背景图压缩（25MB → 2MB）
+- 全站 editorial 风格统一
+- 深色模式一键切换
+- 背景图压缩 + 默认背景（6张专属+1张通用default.jpg）
 - 148位哲学家 Wikipedia 链接
 
 ### 组件化架构（v2）
