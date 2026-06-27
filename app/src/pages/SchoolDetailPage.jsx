@@ -7971,7 +7971,7 @@ function SchoolDetailPage() {
                 <g key={i}>
                   <path d={d} fill="none"
                     stroke={r.type==='师生'?'var(--ochre)':r.type==='对立'?'#A06050':r.type==='继承'?'var(--prussian)':'#999'}
-                    strokeWidth={1.2} strokeDasharray={r.type==='对立'?'6,4':''} opacity={0.4} />
+                    strokeWidth={1.8} strokeDasharray={r.type==='对立'?'6,4':r.type==='友谊'?'4,4':''} opacity={0.6} />
                   <text x={midX} y={midY-8}
                     fontSize={8} fill="var(--text-dim)" textAnchor="middle" fontStyle="italic" opacity={0.7}>
                     {r.type}
@@ -7979,6 +7979,36 @@ function SchoolDetailPage() {
                 </g>
               );
             })}
+            {/* Auto-generate lines: group thinkers by sub-school, connect same-sub thinkers */}
+            {(() => {
+              const existing = new Set(data.relations.map(r => `${r.from}||${r.to}`));
+              const lines = [];
+              const groups = {};
+              thinkers.forEach(t => {
+                const g = t.sub || '__default__';
+                if (!groups[g]) groups[g] = [];
+                groups[g].push(t);
+              });
+              Object.values(groups).forEach(group => {
+                for (let a = 0; a < group.length; a++) {
+                  for (let b = a + 1; b < group.length; b++) {
+                    const k1 = `${group[a].name}||${group[b].name}`;
+                    const k2 = `${group[b].name}||${group[a].name}`;
+                    if (!existing.has(k1) && !existing.has(k2)) {
+                      const mx = (group[a]._x + group[b]._x) / 2;
+                      const my = (group[a]._y + group[b]._y) / 2 - 15;
+                      lines.push(
+                        <path key={`auto-${a}-${b}`}
+                          d={`M${group[a]._x},${group[a]._y} Q${mx},${my} ${group[b]._x},${group[b]._y}`}
+                          fill="none" stroke="rgba(201,169,110,0.15)" strokeWidth="0.8"
+                          strokeDasharray="5,5" />
+                      );
+                    }
+                  }
+                }
+              });
+              return lines;
+            })()}
           </svg>
 
           {/* Thinker dots — nebula positions */}
