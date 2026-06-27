@@ -6,8 +6,11 @@ export default function GlossaryCloud({ cihai = [] }) {
 
   return (
     <section style={{ padding: `${SPACE.xxxl}px 30px`, maxWidth: 900, margin: '0 auto' }}>
-      <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center', fontFamily: FONT.serif }}>辞海</h2>
-      <p style={{ fontSize: 13, color: 'var(--text-dim)', textAlign: 'center', marginBottom: 32, fontFamily: FONT.sans }}>悬停词语查看释义与出处</p>
+      <div style={{ textAlign: 'center', marginBottom: 40 }}>
+        <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', fontFamily: FONT.sans }}>Chapter 4</span>
+        <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>辞海</h2>
+        <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px auto 0', opacity: 0.5 }} />
+      </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline', gap: '2px 12px', padding: '20px 8px' }}>
         {cihai.map((item, i) => {
           const hash = item.word.split('').reduce((s, c) => s + c.charCodeAt(0), 0);

@@ -7,8 +7,12 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
   const navigate = useNavigate();
 
   return (
-    <section style={{ padding: `${SPACE.xl}px 20px`, background: 'var(--card-bg)' }}>
-      <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 30, textAlign: 'center', fontFamily: FONT.serif }}>思想星丛</h2>
+    <section style={{ padding: `${SPACE.hero}px 20px`, background: 'var(--card-bg)', position: 'relative' }}>
+      <div style={{ textAlign: 'center', marginBottom: 48 }}>
+        <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', fontFamily: FONT.sans }}>Chapter 2</span>
+        <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>思想星丛</h2>
+        <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px auto 0', opacity: 0.5 }} />
+      </div>
       <div style={{ width: '100%', maxWidth: WIDTH.wide, height: 600, margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(196,149,106,0.06) 0%, transparent 70%)' }} />
         <svg viewBox="0 0 800 560" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>

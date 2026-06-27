@@ -7,8 +7,11 @@ export default function QuotesGallery({ quotes = [] }) {
 
   return (
     <section style={{ padding: `${SPACE.xxxl}px 30px`, maxWidth: WIDTH.wide, margin: '0 auto' }}>
-      <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center', fontFamily: FONT.serif }}>金句荟萃</h2>
-      <p style={{ fontSize: 13, color: 'var(--text-dim)', textAlign: 'center', marginBottom: 32, fontFamily: FONT.sans }}>悬停名句查看阐释</p>
+      <div style={{ textAlign: 'center', marginBottom: 48 }}>
+        <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', fontFamily: FONT.sans }}>Golden Quotes</span>
+        <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>金句</h2>
+        <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px auto 0', opacity: 0.5 }} />
+      </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', alignItems: 'center' }}>
         {quotes.map((q, i) => {
           const hash = q.text.split('').reduce((s, c) => s + c.charCodeAt(0), 0);

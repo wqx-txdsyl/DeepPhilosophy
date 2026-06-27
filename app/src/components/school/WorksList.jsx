@@ -7,7 +7,11 @@ export default function WorksList({ works = [] }) {
 
   return (
     <section style={{ padding: `${SPACE.xl}px 24px`, maxWidth: WIDTH.prose, margin: '0 auto' }}>
-      <h2 style={{ fontSize: 24, fontWeight: 600, color: 'var(--ink)', marginBottom: 28, fontFamily: FONT.serif }}>重要著作</h2>
+      <div style={{ marginBottom: 36 }}>
+        <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', fontFamily: FONT.sans }}>Chapter 5</span>
+        <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>重要著作</h2>
+        <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px 0 0', opacity: 0.5 }} />
+      </div>
       {works.map((work, i) => {
         const isOpen = hovered === i;
         return (

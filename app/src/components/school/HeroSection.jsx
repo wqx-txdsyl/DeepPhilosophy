@@ -12,7 +12,7 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
     }}>
       {/* Lighter overlay — let the architecture breathe */}
       <div style={{ position: 'absolute', inset: 0,
-        background: 'linear-gradient(to top, rgba(244,240,235,0.92) 0%, rgba(244,240,235,0.45) 35%, rgba(244,240,235,0.15) 100%)' }} />
+        background: 'linear-gradient(to top, rgba(244,240,235,0.96) 0%, rgba(244,240,235,0.55) 30%, rgba(244,240,235,0.2) 70%, rgba(244,240,235,0.05) 100%)' }} />
       {/* Subtle vignette */}
       <div style={{ position: 'absolute', inset: 0,
         background: 'radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(244,240,235,0.3) 100%)' }} />
