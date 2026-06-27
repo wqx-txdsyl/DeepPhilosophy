@@ -7877,439 +7877,401 @@ function SchoolDetailPage() {
   });
 
   return (
-    <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
+    <div style={{ background: 'var(--bone)', color: 'var(--ink)', fontFamily: '"Playfair Display","PingFang SC",serif', minHeight: '100vh' }}>
 
-      {/* ====== Section 1: Hero with Raphael's School of Athens ====== */}
-      <div style={{
-        minHeight: '100vh', display: 'flex', flexDirection: 'column',
-        justifyContent: 'center', alignItems: 'center', textAlign: 'center',
-        padding: '40px 32px', position: 'relative', overflow: 'hidden',
-        backgroundImage: heroImage,
-        backgroundSize: 'cover', backgroundPosition: 'center',
+      {/* ══════════ 1. HERO — restrained ══════════ */}
+      <section style={{
+        padding: '80px 32px 56px', textAlign: 'center', maxWidth: 720, margin: '0 auto',
+        position: 'relative'
       }}>
-        {/* Dark elegant overlay */}
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(244,240,235,0.75)' }} />
-
-        <div style={{ position: 'absolute', top: 16, left: 16 }}>
-          <button className="btn btn-secondary" style={{ padding:'4px 10px',fontSize:12 }}
-            onClick={() => navigate('/genealogy')}>← 谱系</button>
+        {/* Subtle background wash */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: heroImage, backgroundSize: 'cover', backgroundPosition: 'center',
+          opacity: 0.06, zIndex: 0
+        }} />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <button onClick={() => navigate('/genealogy')} style={{
+            background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13,
+            color: 'var(--text-dim)', letterSpacing: '0.04em', marginBottom: 40, padding: 0
+          }}>← 返回谱系</button>
+          <h1 style={{
+            fontFamily: 'var(--font-serif)', fontSize: 'clamp(2.2rem, 6vw, 3.6rem)', fontWeight: 400,
+            color: 'var(--ink)', letterSpacing: '0.05em', lineHeight: 1.2, margin: '0 0 16px'
+          }}>{data.name}</h1>
+          {data.subtitle && (
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--text-dim)', fontWeight: 300, maxWidth: 480, margin: '0 auto 28px', lineHeight: 1.6 }}>
+              {data.subtitle}
+            </p>
+          )}
+          <div style={{ width: 48, height: 1, background: 'var(--border)', margin: '0 auto 28px' }} />
+          <blockquote style={{ maxWidth: 560, margin: '0 auto', border: 'none', padding: 0 }}>
+            <p style={{
+              fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 'clamp(1.1rem, 2vw, 1.3rem)',
+              color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, margin: 0
+            }}>
+              &ldquo;{data.quote}&rdquo;
+            </p>
+            <footer style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--fade)', marginTop: 12, fontStyle: 'normal' }}>
+              &mdash; {data.quoteAuthor}
+            </footer>
+          </blockquote>
         </div>
-        <p style={{ fontSize: 14, color: 'var(--ochre)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 16, position: 'relative' }}>
-          {data.subtitle}
-        </p>
-        <h1 style={{ fontSize: 56, fontWeight: 700, fontStyle: 'italic', color: 'var(--ink)', margin: '0 0 16px', position: 'relative', textShadow: '2px 2px 0 rgba(196,149,106,0.15)' }}>
-          {data.name}
-        </h1>
-        <div style={{ width: 80, height: 3, background: 'var(--ochre)', margin: '16px 0 28px' }} />
-        <blockquote style={{
-          fontSize: 22, fontStyle: 'italic', color: 'var(--text-dim)',
-          maxWidth: 560, lineHeight: 1.8, margin: '0 0 12px', position: 'relative',
+      </section>
+
+      {/* ══════════ 2. OVERVIEW + SUB-SCHOOLS ══════════ */}
+      <section style={{ maxWidth: 680, margin: '0 auto', padding: '64px 32px' }}>
+        <h2 style={{
+          fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)',
+          letterSpacing: '0.04em', margin: '0 0 32px'
         }}>
-          {data.quote}
-        </blockquote>
-        <p style={{ fontSize: 14, color: 'var(--ochre)', fontWeight: 500 }}>— {data.quoteAuthor}</p>
-        <div style={{ position: 'absolute', bottom: 40, animation: 'pulse 1.5s infinite' }}>
-          <span style={{ fontSize: 24, color: 'var(--border)' }}>↓</span>
-        </div>
-      </div>
-
-      {/* ====== Section 2: Overview ====== */}
-      <div style={{
-        minHeight: '100vh', padding: '60px 40px', maxWidth: 800, margin: '0 auto',
-        display: 'flex', flexDirection: 'column', justifyContent: 'center',
-      }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 24 }}>
-          核心思想与流派脉络
+          概述
         </h2>
-        <div style={{ fontSize: 16, lineHeight: 2.0, color: 'var(--text)', whiteSpace: 'pre-line', marginBottom: 40 }}>
+        <div style={{
+          fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 300, color: 'var(--text)',
+          lineHeight: 1.9, whiteSpace: 'pre-line'
+        }}>
           {data.overview}
         </div>
 
-        {/* Sub-school cards */}
-        <h3 style={{ fontSize: 20, fontWeight: 600, color: 'var(--ochre)', marginBottom: 20 }}>下属流派</h3>
-        {subSchools.map(sub => (
-          <div key={sub.name} style={{
-            background: 'rgba(237,231,221,0.95)', borderRadius: 10, padding: '16px 20px',
-            marginBottom: 14, borderLeft: '3px solid var(--ochre)',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
-              <h4 style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink)', margin: 0 }}>{sub.name}</h4>
-              <span style={{ fontSize: 12, color: 'var(--ochre)' }}>{sub.era}</span>
+        {subSchools && subSchools.length > 0 && (
+          <div style={{ marginTop: 48 }}>
+            <h3 style={{
+              fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 400, color: 'var(--ink)',
+              letterSpacing: '0.04em', margin: '0 0 20px'
+            }}>
+              下属流派
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+              {subSchools.map((s, i) => (
+                <div key={i} style={{
+                  padding: '18px 20px', border: '1px solid var(--border)', background: 'var(--bone)',
+                  transition: 'border-color 0.25s'
+                }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+                >
+                  <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.name}</h4>
+                  <span style={{ fontSize: 11, color: 'var(--fade)', fontFamily: 'var(--font-sans)' }}>{s.era}</span>
+                  <p style={{ fontSize: 13, color: 'var(--text-dim)', fontFamily: 'var(--font-sans)', fontWeight: 300, lineHeight: 1.7, margin: '8px 0 0' }}>{s.desc}</p>
+                </div>
+              ))}
             </div>
-            <p style={{ fontSize: 14, color: 'var(--text-dim)', lineHeight: 1.8, margin: 0 }}>{sub.desc}</p>
           </div>
-        ))}
-      </div>
+        )}
+      </section>
 
-      {/* ====== Section 3: Star Constellation ====== */}
-      <div style={{
-        minHeight: '100vh', padding: '40px 20px', position: 'relative',
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-      }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 30 }}>
-          思想星丛
-        </h2>
-
-        {/* Constellation canvas */}
-        <div style={{
-          width: '100%', maxWidth: 850, height: 600, margin: '0 auto',
-          position: 'relative', overflow: 'hidden',
-        }}>
-          {/* Background nebula glow */}
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(196,149,106,0.06) 0%, transparent 70%)' }} />
-
-          {/* SVG curved lines */}
-          <svg style={{ position: 'absolute', top:0, left:0, width:'100%', height:'100%' }}>
-            {data.relations.map((r, i) => {
-              const from = thinkers.find(t => t.name === r.from);
-              const to = thinkers.find(t => t.name === r.to);
-              if (!from || !to) return null;
-              const midX = (from._x + to._x) / 2;
-              const midY = (from._y + to._y) / 2 - 20;
-              const d = `M${from._x},${from._y} Q${midX},${midY} ${to._x},${to._y}`;
-              return (
-                <g key={i}>
-                  <path d={d} fill="none"
-                    stroke={r.type==='师生'?'var(--ochre)':r.type==='对立'?'#A06050':r.type==='继承'?'var(--prussian)':'#999'}
-                    strokeWidth={1.8} strokeDasharray={r.type==='对立'?'6,4':r.type==='友谊'?'4,4':''} opacity={0.6} />
-                  <text x={midX} y={midY-8}
-                    fontSize={8} fill="var(--text-dim)" textAnchor="middle" fontStyle="italic" opacity={0.7}>
-                    {r.type}
-                  </text>
-                </g>
-              );
-            })}
-            {/* Auto-generate lines: group thinkers by sub-school, connect same-sub thinkers */}
-            {(() => {
-              const existing = new Set(data.relations.map(r => `${r.from}||${r.to}`));
-              const lines = [];
-              const groups = {};
-              thinkers.forEach(t => {
-                const g = t.sub || '__default__';
-                if (!groups[g]) groups[g] = [];
-                groups[g].push(t);
-              });
-              Object.values(groups).forEach(group => {
-                for (let a = 0; a < group.length; a++) {
-                  for (let b = a + 1; b < group.length; b++) {
-                    const k1 = `${group[a].name}||${group[b].name}`;
-                    const k2 = `${group[b].name}||${group[a].name}`;
-                    if (!existing.has(k1) && !existing.has(k2)) {
-                      const mx = (group[a]._x + group[b]._x) / 2;
-                      const my = (group[a]._y + group[b]._y) / 2 - 15;
-                      lines.push(
-                        <path key={`auto-${a}-${b}`}
-                          d={`M${group[a]._x},${group[a]._y} Q${mx},${my} ${group[b]._x},${group[b]._y}`}
-                          fill="none" stroke="rgba(201,169,110,0.15)" strokeWidth="0.8"
-                          strokeDasharray="5,5" />
-                      );
+      {/* ══════════ 3. CONSTELLATION MAP ══════════ */}
+      <section style={{ padding: '64px 32px', background: 'var(--card-bg)' }}>
+        <div style={{ maxWidth: 850, margin: '0 auto' }}>
+          <h2 style={{
+            fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)',
+            letterSpacing: '0.04em', margin: '0 0 32px', textAlign: 'center'
+          }}>
+            思想星丛
+          </h2>
+          <div style={{ width: '100%', height: 560, position: 'relative' }}>
+            <svg viewBox="0 0 800 560" style={{ width: '100%', height: '100%' }}>
+              {/* Relation lines — thin, academic */}
+              {data.relations.map((r, i) => {
+                const from = thinkers.find(t => t.name === r.from);
+                const to = thinkers.find(t => t.name === r.to);
+                if (!from || !to) return null;
+                const mx = (from._x + to._x) / 2, my = (from._y + to._y) / 2 - 25;
+                const dash = r.type === '对立' ? '6,4' : r.type === '友谊' ? '4,4' : '';
+                const isHovered = hovered === `rel-${i}`;
+                return (
+                  <g key={i} onMouseEnter={() => setHovered(`rel-${i}`)} onMouseLeave={() => setHovered(null)}>
+                    <path d={`M${from._x},${from._y} Q${mx},${my} ${to._x},${to._y}`}
+                      fill="none" stroke={isHovered ? 'var(--accent)' : 'var(--border)'}
+                      strokeWidth={isHovered ? 1.5 : 0.8} strokeDasharray={dash}
+                      style={{ transition: 'all 0.3s' }} />
+                    {isHovered && (
+                      <text x={mx} y={my - 6} textAnchor="middle" fontSize={9} fill="var(--text-dim)" fontStyle="italic">{r.type}</text>
+                    )}
+                  </g>
+                );
+              })}
+              {/* Auto-generate lines for same-sub thinkers without explicit relations */}
+              {(() => {
+                const existing = new Set(data.relations.map(r => `${r.from}||${r.to}`));
+                const lines = [];
+                const groups = {};
+                thinkers.forEach(t => { const g = t.sub || '__d__'; if (!groups[g]) groups[g] = []; groups[g].push(t); });
+                Object.values(groups).forEach(group => {
+                  for (let a = 0; a < group.length; a++) {
+                    for (let b = a + 1; b < group.length; b++) {
+                      if (!existing.has(`${group[a].name}||${group[b].name}`) && !existing.has(`${group[b].name}||${group[a].name}`)) {
+                        const mx = (group[a]._x + group[b]._x) / 2;
+                        const my = (group[a]._y + group[b]._y) / 2 - 15;
+                        lines.push(
+                          <path key={`auto-${a}-${b}`}
+                            d={`M${group[a]._x},${group[a]._y} Q${mx},${my} ${group[b]._x},${group[b]._y}`}
+                            fill="none" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="4,6" />
+                        );
+                      }
                     }
                   }
-                }
-              });
-              return lines;
-            })()}
-          </svg>
+                });
+                return lines;
+              })()}
+              {/* Thinker nodes */}
+              {thinkers.map((t, i) => {
+                const r = 14 + (t.influence || 5) * 2;
+                const color = SUB_COLORS[t.sub] || 'var(--accent)';
+                const isHovered = hovered === `t-${i}`;
+                return (
+                  <g key={i} style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => setHovered(`t-${i}`)} onMouseLeave={() => setHovered(null)}
+                    onClick={() => navigate('/author/' + encodeURIComponent(t.name))}>
+                    <circle cx={t._x} cy={t._y} r={isHovered ? r * 1.25 : r}
+                      fill="var(--bone)" stroke={color} strokeWidth={isHovered ? 2 : 1.2}
+                      style={{ transition: 'all 0.25s' }} />
+                    <text x={t._x} y={t._y + 4} textAnchor="middle" fill="var(--ink)" fontSize={9}
+                      fontFamily="var(--font-serif)" fontWeight={500}>{t.name[0]}</text>
+                    <text x={t._x} y={t._y + r + 12} textAnchor="middle" fill="var(--text-dim)"
+                      fontSize={isHovered ? 10 : 8} fontFamily="var(--font-sans)" fontWeight={300}
+                      style={{ transition: 'all 0.25s', opacity: isHovered ? 1 : 0.6 }}>{t.name}</text>
+                    {isHovered && (
+                      <g>
+                        <rect x={t._x - 72} y={t._y - r - 52} width={144} height={44} rx={4}
+                          fill="var(--bone)" stroke="var(--border)" strokeWidth="0.5" />
+                        <text x={t._x} y={t._y - r - 36} textAnchor="middle" fill="var(--ink)" fontSize={11}
+                          fontFamily="var(--font-serif)" fontWeight={500}>{t.name}</text>
+                        <text x={t._x} y={t._y - r - 22} textAnchor="middle" fill="var(--text-dim)" fontSize={9}
+                          fontFamily="var(--font-sans)">{t.sub}{t.era ? ' · ' + t.era : ''}</text>
+                      </g>
+                    )}
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+        </div>
+      </section>
 
-          {/* Thinker dots — nebula positions */}
-          {thinkers.map((t, i) => {
-            const px = t._x, py = t._y;
-            const size = 16 + t.influence * 4;
-            const isHovered = hovered === t.name;
-            const showBelow = py < 100; // near top: tooltip below
+      {/* ══════════ 4. TIMELINE — vertical, minimal ══════════ */}
+      <section style={{ padding: '64px 32px', maxWidth: 680, margin: '0 auto' }}>
+        <h2 style={{
+          fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)',
+          letterSpacing: '0.04em', margin: '0 0 40px'
+        }}>
+          时间轴
+        </h2>
+        <div style={{ position: 'relative', paddingLeft: 32 }}>
+          <div style={{
+            position: 'absolute', left: 8, top: 0, bottom: 0, width: 1,
+            background: 'var(--border)'
+          }} />
+          {data.timeline.map((ev, i) => {
+            const colorMap = { birth: 'var(--ochre)', death: 'var(--fade)', book: 'var(--prussian)', idea: 'var(--accent)', event: 'var(--text-dim)' };
+            const color = colorMap[ev.type] || 'var(--text-dim)';
             return (
-              <div key={t.name} style={{
-                position: 'absolute', left: px, top: py,
-                transform: 'translate(-50%, -50%)',
-                display: 'flex', flexDirection: 'column', alignItems: 'center',
-                cursor: 'pointer', zIndex: isHovered ? 10 : 1,
-              }}
-              onMouseEnter={() => setHovered(t.name)}
-              onMouseLeave={() => setHovered(null)}
-              onClick={() => navigate(`/author/${encodeURIComponent(t.name)}`)}
-              >
+              <div key={i} style={{ position: 'relative', marginBottom: 36, paddingLeft: 24 }}>
                 <div style={{
-                  width: size, height: size, borderRadius: '50%',
-                  background: SUB_COLORS[t.sub] ? `radial-gradient(circle at 35% 35%, ${SUB_COLORS[t.sub]}cc, ${SUB_COLORS[t.sub]})` : 'radial-gradient(circle at 35% 35%, var(--ochre), #8B6914)',
-                  boxShadow: isHovered ? `0 0 24px ${SUB_COLORS[t.sub] || 'var(--ochre)'}` : '0 1px 4px rgba(0,0,0,0.08)',
-                  transition: 'all 0.4s cubic-bezier(0.4,0,0.2,1)',
-                  transform: isHovered ? 'scale(1.4)' : 'scale(1)',
+                  position: 'absolute', left: -27, top: 4, width: 9, height: 9, borderRadius: '50%',
+                  background: 'var(--bone)', border: '2px solid ' + color, zIndex: 2
                 }} />
                 <span style={{
-                  fontSize: 10, color: 'var(--ink)', marginTop: 4,
-                  fontWeight: isHovered ? 600 : 400,
-                  maxWidth: 80, textAlign: 'center', lineHeight: 1.2,
-                  transition: 'all 0.3s',
+                  display: 'block', fontFamily: 'var(--font-serif)', fontSize: 15, fontWeight: 400,
+                  color: color, letterSpacing: '0.04em', marginBottom: 4
                 }}>
-                  {t.name}
+                  {ev.year}
                 </span>
-                {isHovered && (
-                  <div style={{
-                    position: 'absolute',
-                    top: showBelow ? size + 22 : 'auto',
-                    bottom: showBelow ? 'auto' : size + 22,
-                    left: '50%', transform: 'translateX(-50%)',
-                    background: 'rgba(248,244,238,0.98)', border: '1px solid var(--border)',
-                    borderRadius: 8, padding: '6px 12px', whiteSpace: 'nowrap', zIndex: 30,
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
-                  }}>
-                    <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{t.sub} · {t.era}</div>
-                    <div style={{ fontSize: 12, color: 'var(--ochre)', fontStyle: 'italic' }}>"{t.key}"</div>
-                  </div>
-                )}
+                <h4 style={{
+                  fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 400, color: 'var(--ink)',
+                  margin: '0 0 4px', letterSpacing: '0.02em'
+                }}>
+                  {ev.event}
+                </h4>
+                <p style={{
+                  fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 300, color: 'var(--text-dim)',
+                  lineHeight: 1.7, margin: 0
+                }}>
+                  {ev.detail}
+                </p>
               </div>
             );
           })}
         </div>
-      </div>
+      </section>
 
-      {/* ====== Section 4: Timeline ====== */}
-      <div style={{
-        minHeight: '100vh', padding: '60px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
-      }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 40, textAlign: 'center' }}>
-          思想史时间轴
-        </h2>
-
-        <div style={{ position: 'relative', maxWidth: 900, margin: '0 auto' }}>
-          {/* Central vertical line */}
-          <div style={{
-            position: 'absolute', left: '50%', top: 0, bottom: 0, width: 3,
-            background: 'var(--ink)', opacity: 0.2, transform: 'translateX(-50%)',
-          }} />
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-            {data.timeline.map((ev, i) => {
-              const isLeft = i % 2 === 0;
-              const colors = { birth:'#C4956A', death:'#8B5A5A', book:'#3A5A7C', idea:'#5A8A5A', event:'#C4956A' };
-              const icons = { birth:'✦', death:'†', book:'¶', idea:'§', event:'○' };
+      {/* ══════════ 5. GLOSSARY ══════════ */}
+      <section style={{ padding: '64px 32px', background: 'var(--card-bg)' }}>
+        <div style={{ maxWidth: 680, margin: '0 auto' }}>
+          <h2 style={{
+            fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)',
+            letterSpacing: '0.04em', margin: '0 0 8px'
+          }}>
+            辞海
+          </h2>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--fade)', marginBottom: 32, fontWeight: 300 }}>
+            悬停查看释义
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px' }}>
+            {cihai.map((item, i) => {
+              let hash = 0; for (let c = 0; c < item.word.length; c++) hash = ((hash << 5) - hash) + item.word.charCodeAt(c); hash = Math.abs(hash);
+              const size = 13 + (hash % 18);
+              const isHovered = hovered === `ci-${i}`;
+              const weight = size > 26 ? 500 : size > 20 ? 400 : 300;
               return (
-                <div key={i} style={{
-                  display: 'flex', alignItems: 'center', position: 'relative', height: 80,
-                }}>
-                  {/* Left spacer or card */}
-                  <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: 30 }}>
-                    {isLeft && (
-                      <div style={{
-                        maxWidth: 340, background: 'rgba(237,231,221,0.95)', borderRadius: 10,
-                        padding: '10px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
-                      }}>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
-                        <div style={{ fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.5 }}>{ev.detail}</div>
-                      </div>
-                    )}
-                  </div>
-                  {/* Dot + year on axis */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 80, flexShrink: 0 }}>
-                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: colors[ev.type], border: '2px solid var(--bg)', zIndex: 1 }} />
-                    <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--ochre)', marginTop: 4, textAlign: 'center' }}>{ev.year}</span>
-                  </div>
-                  {/* Right card */}
-                  <div style={{ flex: 1, paddingLeft: 30 }}>
-                    {!isLeft && (
-                      <div style={{
-                        maxWidth: 340, background: 'rgba(237,231,221,0.95)', borderRadius: 10,
-                        padding: '10px 16px', borderLeft: `3px solid ${colors[ev.type]}`,
-                      }}>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', marginBottom: 2 }}>{ev.event}</div>
-                        <div style={{ fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.5 }}>{ev.detail}</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <span key={i} style={{
+                  fontSize: size, fontWeight: weight, fontFamily: 'var(--font-serif)',
+                  color: isHovered ? 'var(--accent)' : 'var(--text)',
+                  cursor: 'pointer', transition: 'color 0.25s', position: 'relative', padding: '2px 6px',
+                  borderBottom: isHovered ? '1px solid var(--accent)' : '1px solid transparent'
+                }}
+                  onMouseEnter={() => setHovered(`ci-${i}`)} onMouseLeave={() => setHovered(null)}
+                >
+                  {item.word}
+                  {isHovered && (
+                    <span style={{
+                      position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)', marginBottom: 8,
+                      background: 'var(--bone)', border: '1px solid var(--border)', padding: '10px 14px',
+                      fontSize: 12, color: 'var(--text-dim)', whiteSpace: 'nowrap', maxWidth: 280, zIndex: 10,
+                      fontFamily: 'var(--font-sans)', fontWeight: 300, lineHeight: 1.6, boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
+                    }}>
+                      {item.def}
+                      <br /><span style={{ color: 'var(--fade)', fontSize: 10 }}>{item.source}</span>
+                    </span>
+                  )}
+                </span>
               );
             })}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ====== Section 5: Word Sea 辞海 ====== */}
-      <div style={{
-        minHeight: '100vh', padding: '60px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        maxWidth: 900, margin: '0 auto',
-      }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center' }}>
-          辞海
+      {/* ══════════ 6. GOLDEN QUOTES ══════════ */}
+      <section style={{ padding: '64px 32px 48px', maxWidth: 680, margin: '0 auto' }}>
+        <h2 style={{
+          fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)',
+          letterSpacing: '0.04em', margin: '0 0 40px'
+        }}>
+          金句
         </h2>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', textAlign: 'center', marginBottom: 32 }}>
-          悬停词语查看释义与出处
-        </p>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline', position: 'relative', padding: '20px 8px', lineHeight: 1.6, gap: '2px 12px' }}>
-          {cihai.map((item, i) => {
-            const hash = item.word.split('').reduce((s,c)=>s+c.charCodeAt(0),0);
-            const si = (hash * 7919 + i * 3571) % 53;
-            const ss = [10,28,14,20,32,11,18,34,12,15,26,10,13,30,15,22,11,17,36,12,14,24,10,27,13,19,33,11,16,29,13,15,25,10,14,21,12,15,20,11,14,26,13,17,10,16,24,12,15,18,10,28,14,19,34,11,17,30,12,15,26,10,13,32,15,20,11,17,36,12,14,22,10,27,13,18,21,11,16,29,13,15,23,10,14,19,12,15,20,11,14,24,13,17,10,16,22,12,15,18,10,13,20,28,14,19,34,11];
-            const ws = [300,800,400,600,900,300,400,900,300,500,700,300,300,800,400,600,300,500,900,300,400,700,300,800,300,500,900,300,400,800,300,400,600,300,400,600,300,400,500,300,400,700,300,500,300,400,600,300,400,500,300,800,400,600,900,300,400,900,300,500,700,300,300,800,400,600,300,500,900,300,400,700,300,800,300,500,900,300,400,800,300,400,600,300,400,600,300,400,500,300,400,700,300,500,300,400,600,300,400,500,300,300,600,800,400,700,900,300];
-            const size = ss[si % ss.length];
-            const weight = ws[si % ws.length];
-            const r = (hash * 3571 + i * 719) % 41 - 20;
-            const rot = r / 10;
-            // 大小词交错混排 → 打破从左到右的规律感
-            const extraPad = size > 22 ? '6px 10px' : size > 17 ? '4px 7px' : size > 13 ? '2px 5px' : '1px 3px';
-            const topShift = (hash * 79 + i * 113) % 7 - 3;
-            return (
-              <span key={i} style={{
-                fontSize: size, fontWeight: weight,
-                color: hovered === item.word ? 'var(--ochre)' : 'var(--ink)',
-                opacity: hovered !== null ? (hovered === item.word ? 1 : 0.3) : 0.62 + (size - 10) * 0.013,
-                padding: extraPad, cursor: 'pointer', position: 'relative',
-                top: topShift + 'px',
-                transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)',
-                fontFamily: size > 16 ? '"Playfair Display","PingFang SC",serif' : 'inherit',
-                transform: hovered === item.word ? 'scale(1.3) rotate(0deg)' : `rotate(${rot}deg)`,
-                zIndex: hovered === item.word ? 20 : 1,
-              }}
-              onMouseEnter={() => setHovered(item.word)}
-              onMouseLeave={() => setHovered(null)}
-              >
-                {item.word}
-                {hovered === item.word && (
-                  <div style={{
-                    position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
-                    background: 'rgba(248,244,238,0.98)', border: '1px solid var(--border)',
-                    borderRadius: 10, padding: '14px 20px', zIndex: 30, width: 320,
-                    boxShadow: '0 6px 30px rgba(0,0,0,0.15)',
-                    marginBottom: 10,
-                  }}>
-                    <div style={{ fontSize: 14, lineHeight: 1.7, color: 'var(--text)', marginBottom: 8 }}>
-                      {item.def}
-                    </div>
-                    <div style={{ fontSize: 11, color: 'var(--ochre)', fontStyle: 'italic', borderTop: '1px solid var(--border)', paddingTop: 6 }}>
-                      {item.source}
-                    </div>
-                  </div>
-                )}
-              </span>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* ====== Section 6: Golden Quotes 金句荟萃 ====== */}
-      {data.quotes && (
-      <div style={{
-        minHeight: '100vh', padding: '60px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        maxWidth: 900, margin: '0 auto',
-      }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center' }}>
-          金句荟萃
-        </h2>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', textAlign: 'center', marginBottom: 32 }}>
-          悬停名句查看阐释
-        </p>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           {data.quotes.map((q, i) => {
-            const sizes = [14,15,16,17,15,18,14,16,15,17,14,16,15,18,14,15,16,17,14,15,16,14,17,15,16,18,14,15,16,14,17,15];
-            const size = sizes[i % sizes.length];
+            const isHovered = hovered === `q-${i}`;
             return (
-              <span key={i} style={{
-                fontSize: size, fontWeight: size > 16 ? 600 : 400,
-                color: hovered === `qt-${i}` ? 'var(--ochre)' : 'var(--ink)',
-                opacity: hovered === `qt-${i}` ? 1 : 0.8,
-                padding: '4px 8px', cursor: 'pointer',
-                transition: 'all 0.25s', position: 'relative',
-                fontFamily: size > 16 ? '"Playfair Display","PingFang SC",serif' : 'inherit',
-                fontStyle: 'italic',
-                transform: hovered === `qt-${i}` ? 'scale(1.12)' : 'scale(1)',
-                maxWidth: 400, textAlign: 'center', lineHeight: 1.6,
+              <div key={i} style={{
+                borderLeft: '2px solid', borderColor: isHovered ? 'var(--ochre)' : 'var(--border)',
+                paddingLeft: 20, transition: 'all 0.3s', cursor: 'default'
               }}
-              onMouseEnter={() => setHovered(`qt-${i}`)}
-              onMouseLeave={() => setHovered(null)}
+                onMouseEnter={() => setHovered(`q-${i}`)} onMouseLeave={() => setHovered(null)}
               >
-                &#x201C;{q.text}&#x201D;
-                {hovered === `qt-${i}` && (
-                  <div style={{
-                    position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
-                    background: 'rgba(248,244,238,0.98)', border: '1px solid var(--border)',
-                    borderRadius: 10, padding: '14px 20px', zIndex: 30, width: 340,
-                    boxShadow: '0 6px 30px rgba(0,0,0,0.15)',
-                    marginBottom: 10, textAlign: 'left', fontStyle: 'normal', cursor: 'default',
+                <p style={{
+                  fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 'clamp(0.95rem, 1.3vw, 1.1rem)',
+                  color: isHovered ? 'var(--ink)' : 'var(--text)', lineHeight: 1.8, margin: 0,
+                  transition: 'color 0.3s', fontWeight: 300
+                }}>
+                  &ldquo;{q.text}&rdquo;
+                </p>
+                <p style={{
+                  fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--fade)', margin: '6px 0 0',
+                  fontWeight: 300
+                }}>
+                  &mdash; {q.author}
+                </p>
+                {isHovered && (
+                  <p style={{
+                    fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', margin: '8px 0 0',
+                    fontWeight: 300, lineHeight: 1.7
                   }}>
-                    <div style={{ fontSize: 14, lineHeight: 1.8, color: 'var(--text)', marginBottom: 8 }}>
-                      {q.exp}
-                    </div>
-                    <div style={{ fontSize: 11, color: 'var(--ochre)', fontStyle: 'italic', borderTop: '1px solid var(--border)', paddingTop: 6 }}>
-                      — {q.author}
-                    </div>
-                  </div>
+                    {q.exp}
+                  </p>
                 )}
-              </span>
+              </div>
             );
           })}
         </div>
-      </div>
-      )}
+      </section>
 
-      {/* ====== Section 7: Key Works 重要著作 ====== */}
-      {data.works && (
-      <div style={{
-        minHeight: '100vh', padding: '60px 40px', maxWidth: 800, margin: '0 auto',
-        display: 'flex', flexDirection: 'column', justifyContent: 'center',
-      }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center' }}>
-          重要著作
-        </h2>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', textAlign: 'center', marginBottom: 36 }}>
-          点击展开查看简介
-        </p>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {data.works.map((work, i) => (
-            <div key={i} style={{
-              background: 'rgba(237,231,221,0.6)',
-              borderRadius: 10,
-              padding: '18px 22px',
-              borderLeft: '3px solid var(--ochre)',
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-            }}
-            onClick={() => setHovered(hovered === `work-${i}` ? null : `work-${i}`)}
-            >
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
-                  <h4 style={{ fontSize: 17, fontWeight: 700, fontStyle: 'italic', color: 'var(--ink)', margin: 0 }}>《{work.title}》</h4>
-                  <span style={{ fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>{work.author}</span>
+      {/* ══════════ 7. KEY WORKS ══════════ */}
+      {data.works && data.works.length > 0 && (
+        <section style={{ padding: '48px 32px 64px', maxWidth: 680, margin: '0 auto' }}>
+          <h2 style={{
+            fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)',
+            letterSpacing: '0.04em', margin: '0 0 36px'
+          }}>
+            重要著作
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {data.works.map((work, i) => {
+              const isOpen = hovered === `work-${i}`;
+              const title = typeof work === 'string' ? work : (work.title || '');
+              return (
+                <div key={i} style={{
+                  padding: '14px 0', borderBottom: '1px solid var(--border)', cursor: 'pointer',
+                  transition: 'border-color 0.25s'
+                }}
+                  onClick={() => setHovered(isOpen ? null : `work-${i}`)}
+                  onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--accent)'}
+                  onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'var(--border)'}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
+                    <h4 style={{
+                      fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 400, fontStyle: 'italic',
+                      color: 'var(--ink)', margin: 0
+                    }}>
+                      {title.includes('《') ? title : '《' + title + '》'}
+                    </h4>
+                    {typeof work !== 'string' && (
+                      <span style={{ fontSize: 12, color: 'var(--fade)', fontFamily: 'var(--font-sans)' }}>
+                        {work.author}{work.era ? ' · ' + work.era : ''}
+                      </span>
+                    )}
+                  </div>
+                  {isOpen && typeof work !== 'string' && work.desc && (
+                    <p style={{
+                      fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 300, color: 'var(--text-dim)',
+                      lineHeight: 1.8, margin: '10px 0 0'
+                    }}>
+                      {work.desc}
+                    </p>
+                  )}
                 </div>
-                <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>{work.era}</span>
-              </div>
-              {hovered === `work-${i}` && (
-                <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.9, margin: '10px 0 0', borderTop: '1px solid var(--border)', paddingTop: 10 }}>
-                  {work.desc}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+              );
+            })}
+          </div>
+        </section>
       )}
 
-      {/* ====== Section 8: Conclusion ====== */}
-      <div style={{
-        minHeight: '100vh', padding: '60px 40px', maxWidth: 720, margin: '0 auto',
-        display: 'flex', flexDirection: 'column', justifyContent: 'center',
-      }}>
-        <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 28 }}>
+      {/* ══════════ 8. EPILOGUE ══════════ */}
+      <section style={{ padding: '64px 32px 80px', maxWidth: 680, margin: '0 auto', borderTop: '1px solid var(--border)' }}>
+        <h2 style={{
+          fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)',
+          letterSpacing: '0.04em', margin: '0 0 32px'
+        }}>
           结语
         </h2>
-        <div style={{ fontSize: 16, lineHeight: 2.2, color: 'var(--text)', whiteSpace: 'pre-line' }}>
+        <div style={{
+          fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 300, color: 'var(--text)',
+          lineHeight: 1.9, whiteSpace: 'pre-line', marginBottom: 40
+        }}>
           {data.conclusion}
         </div>
-        <div style={{ width: 40, height: 2, background: 'var(--ochre)', margin: '32px 0 20px' }} />
-        <blockquote style={{
-          fontSize: 18, fontStyle: 'italic', color: 'var(--ochre)',
-          borderLeft: '3px solid var(--ochre)', paddingLeft: 16, lineHeight: 1.8,
-        }}>
-          {data.closingQuote}
-        </blockquote>
-        <div style={{ textAlign: 'center', marginTop: 40 }}>
-          <button className="btn btn-primary" style={{ padding: '10px 28px' }}
-            onClick={() => navigate('/genealogy')}>
-            ← 返回谱系
-          </button>
-        </div>
-      </div>
+        {data.closingQuote && (
+          <blockquote style={{ border: 'none', padding: 0, margin: '0 0 40px' }}>
+            <p style={{
+              fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+              color: 'var(--text-dim)', lineHeight: 1.7, fontWeight: 300, margin: 0
+            }}>
+              &ldquo;{data.closingQuote}&rdquo;
+            </p>
+          </blockquote>
+        )}
+        <button onClick={() => navigate('/genealogy')} style={{
+          background: 'none', border: '1px solid var(--border)', cursor: 'pointer',
+          fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-dim)',
+          padding: '8px 20px', letterSpacing: '0.04em', transition: 'all 0.25s'
+        }}
+          onMouseEnter={e => { e.target.style.borderColor = 'var(--accent)'; e.target.style.color = 'var(--accent)'; }}
+          onMouseLeave={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.color = 'var(--text-dim)'; }}
+        >
+          ← 返回谱系
+        </button>
+      </section>
     </div>
   );
 }
