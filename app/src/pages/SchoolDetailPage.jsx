@@ -7780,8 +7780,8 @@ function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
     const SCHOOL_MAP = {
-    '古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/greek.jpg)' },
-    '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/patristic.jpg)' },
+    '古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/古希腊哲学.jpg)' },
+    '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/教父哲学.png)' },
     '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/scholastic.png)' },
     '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/rationalist.png)' },
     '经验主义': { data:EMPIRICISM_DATA, sub:EMPIRICISM_SUB_SCHOOLS, ci:EMPIRICISM_CIHAI, bg:'url(/schools/empiricist.png)' },
