@@ -75,6 +75,56 @@ const SCHOOL_COLORS = [
   '#0A787E','#0B747A','#0C7076',
 ];
 
+// ——— 东方哲学 ———
+const EASTERN_TIMELINE = [
+  { century: '公元前6世纪', schools: ['道家','儒家'] },
+  { century: '公元前5世纪', schools: ['墨家','兵家'] },
+  { century: '公元前4世纪', schools: ['法家','名家','阴阳家'] },
+  { century: '公元前2世纪', schools: ['两汉经学'] },
+  { century: '3世纪', schools: ['魏晋玄学'] },
+  { century: '6世纪', schools: ['隋唐佛学'] },
+  { century: '11世纪', schools: ['宋明理学'] },
+  { century: '17世纪', schools: ['明清实学','乾嘉朴学'] },
+  { century: '19世纪末', schools: ['进化论（天演论）','维新派'] },
+  { century: '20世纪初', schools: ['三民主义'] },
+  { century: '20世纪中', schools: ['毛泽东思想','中国马克思主义哲学'] },
+  { century: '20世纪末', schools: ['现代新儒家','中国实证哲学','马克思主义哲学的中国化与体系化'] },
+  { century: '21世纪', schools: ['习近平新时代中国特色社会主义思想'] },
+];
+
+const EASTERN_DESCRIPTIONS = {
+  '儒家':'以仁为核心，以礼为规范——修身齐家治国平天下，两千年来塑造了东亚文明的精神底色。',
+  '道家':'道法自然，无为而治——以柔克刚的智慧，在文明的对立面为心灵保留一片返璞归真的天地。',
+  '墨家':'兼爱非攻，尚贤节用——以普遍之爱与逻辑理性，发出先秦最激进的平等主义呼声。',
+  '法家':'以法治国，不别亲疏——制度先于道德，法律面前人人平等，为大一统帝国奠定制度哲学。',
+  '名家':'白马非马，离坚白——中国最早的逻辑学与语言哲学，以概念辨析与悖论追问名与实的边界。',
+  '阴阳家':'阴阳消长，五德终始——以宇宙论框架将自然、历史与政治纳入统一的运转法则。',
+  '兵家':'知己知彼，不战屈人——将冲突升华为博弈的艺术，以最小代价达成最大目标的智慧。',
+  '两汉经学':'通经致用，以经为法——今文以微言大义构建天人感应的政治神学，古文以训诂考据守护经典本义。',
+  '魏晋玄学':'越名教而任自然——以老庄注解为表，以人格解放为里，在乱世中为个体心灵开辟自由的精神空间。',
+  '隋唐佛学':'八宗竞秀，会通中印——天台之圆融、唯识之精密、华严之无尽、禅宗之顿悟，佛教在中国完成最深刻的本土化创造。',
+  '宋明理学':'为天地立心，为生民立命——以天理为宇宙与道德的共同根基，在佛道冲击后重建儒家的形而上学体系。气学、理学、心学三家鼎立。',
+  '明清实学':'经世致用，实事求是——以批判空疏理学为旗帜，将学术重心从心性玄谈转向国计民生与实测之学。',
+  '乾嘉朴学':'无征不信，孤证不立——以训诂考据校勘为方法，将语言学与历史学提升为严谨的实证科学。',
+  '进化论（天演论）':'物竞天择，适者生存——严复以《天演论》震醒甲午之后整整一代知识分子：不变则亡。',
+  '维新派':'变则通，通则久——康梁借今文经改制传统为政治变革提供哲学合法性，探索中国政治转型的第一条道路。',
+  '三民主义':'民族、民权、民生——孙中山以兼容中西的理论框架为现代中国提供第一个系统化的建国哲学方案。',
+  '毛泽东思想':'实事求是，群众路线——将马克思主义普遍原理与中国革命具体实践相结合，从《实践论》《矛盾论》到农村包围城市，奠定了马克思主义中国化的理论与实践的基石。',
+  '中国马克思主义哲学':'辩证唯物主义与历史唯物主义在中国的传播、研究与体系化——从革命指南发展为学科体系和教科书体系，成为当代中国哲学的基本范式。',
+  '现代新儒家':'返本开新，内圣外王——熊十力、牟宗三、唐君毅等以儒家心性之学为根基，与康德、黑格尔展开深度对话，寻求中国传统智慧的现代转型。',
+  '中国实证哲学':'大胆假设，小心求证——胡适将杜威实验主义引入中国，以科学方法整理国故，开辟中国现代学术的新范式。',
+  '马克思主义哲学的中国化与体系化':'从实践标准到特色社会主义理论体系的哲学基础——马克思主义哲学在中国制度实践与理论创新的双轮驱动下，不断生成新的理论形态。',
+  '习近平新时代中国特色社会主义思想':'以人民为中心的发展思想——将马克思主义基本原理与新时代中国具体实际相结合，系统回应了坚持和发展什么样的中国特色社会主义这一重大时代课题。',
+};
+
+const EASTERN_COLORS = [
+  '#C46A6A','#BE5E5E','#B85252','#B24646','#AE3A3A','#A44040','#9A4646',
+  '#924C4C','#8A5252','#805858','#765E5E','#6C6464','#626A6A',
+  '#587070','#537676','#4E7C7C','#498282','#448888','#3F8E8E',
+  '#3A9494','#359A9A','#30A0A0','#2BA6A6','#26ACAC','#21B2B2',
+];
+
+
 function GenealogyPage() {
   const navigate = useNavigate();
   const [schoolData, setSchoolData] = useState({});
@@ -134,69 +184,71 @@ function GenealogyPage() {
 
   return (
     <div className="page-container" style={{ paddingBottom: 60 }}>
-      <h2 className="section-title" style={{ marginBottom: 24, textAlign: 'center' }}>🧬 西方哲学谱系 · 43流派</h2>
+      <h2 className="section-title" style={{ marginBottom: 24, textAlign: 'center' }}>🧬 东西方哲学谱系 · 66流派</h2>
 
-      {/* Timeline */}
-      <div style={{ maxWidth: 720, margin: '0 auto', position: 'relative', padding: '40px 0' }}>
+      {/* Timeline — dual-sided */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', padding: '40px 0' }}>
 
         {/* Center axis */}
-        <div style={{
-          position: 'absolute', left: 180, top: 60, bottom: 60, width: 2,
-          background: 'var(--border)',
-        }} />
+        <div style={{ position: 'absolute', left: '50%', top: 60, bottom: 60, width: 2, background: 'var(--border)', transform: 'translateX(-50%)' }} />
 
-        {WESTERN_TIMELINE.map((era, eraIdx) => (
-          <div key={eraIdx} style={{ display: 'flex', marginBottom: 48 }}>
-            {/* Left: century + 东方 placeholder */}
-            <div style={{ width: 160, textAlign: 'right', paddingRight: 24, paddingTop: 4, flexShrink: 0 }}>
-              <div style={{
-                fontSize: 14, fontWeight: 700, color: 'var(--accent)',
-                marginBottom: 6,
-              }}>
-                {era.century}
-              </div>
-              <div style={{
-                width: 12, height: 12, borderRadius: '50%',
-                background: 'var(--accent)', border: '2px solid var(--primary)',
-                position: 'absolute', left: 175, marginTop: -10,
-              }} />
-              {eraIdx === 0 && (
-                <div style={{ fontSize: 11, color: 'var(--text-dim)', opacity: 0.3, marginTop: 12 }}>
-                  ☯️ 东方
+        {/* Merged eras from both timelines */}
+        {(() => {
+          const allEras = [];
+          const eastMap = {}, westMap = {};
+          EASTERN_TIMELINE.forEach(e => { eastMap[e.century] = e.schools; });
+          WESTERN_TIMELINE.forEach(e => { westMap[e.century] = e.schools; });
+          const centuries = [...new Set([...Object.keys(eastMap), ...Object.keys(westMap)])];
+          centuries.sort((a,b) => {
+            const aBCE = a.includes('公元前'), bBCE = b.includes('公元前');
+            if (aBCE && bBCE) { const an = parseInt(a.match(/\d+/)[0]), bn = parseInt(b.match(/\d+/)[0]); return bn - an; }
+            if (aBCE) return -1; if (bBCE) return 1;
+            const an = parseInt(a.match(/\d+/)[0]), bn = parseInt(b.match(/\d+/)[0]); return an - bn;
+          });
+          centuries.forEach(c => { allEras.push({ century: c, east: eastMap[c] || [], west: westMap[c] || [] }); });
+          let eastIdx = 0, westIdx = 0;
+
+          return allEras.map((era, eraIdx) => {
+            const hasEast = era.east.length > 0, hasWest = era.west.length > 0;
+            return (
+              <div key={eraIdx} style={{ display: 'flex', marginBottom: 36, position: 'relative' }}>
+                {/* LEFT: Eastern */}
+                <div style={{ flex: 1, paddingRight: 24, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                  {hasEast && era.east.map((school, si) => {
+                    const color = EASTERN_COLORS[(eastIdx + si) % EASTERN_COLORS.length];
+                    return (
+                      <div key={school} style={{ background: 'var(--secondary)', borderRadius: 10, padding: '10px 16px', marginBottom: 10, maxWidth: 380, border: '1px solid var(--border)', borderRight: '4px solid ' + color, cursor: 'pointer', textAlign: 'right' }}
+                      onClick={() => navigate('/school/' + encodeURIComponent(school))}>
+                        <h3 style={{ fontSize: 15, fontWeight: 700, color: color, margin: '0 0 4px' }}>{school}</h3>
+                        {EASTERN_DESCRIPTIONS[school] && <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{EASTERN_DESCRIPTIONS[school]}</p>}
+                      </div>
+                    );
+                  })}
+                  {hasEast && (() => { eastIdx += era.east.length; })()}
                 </div>
-              )}
-            </div>
-
-            {/* Right: school cards */}
-            <div style={{ flex: 1, paddingLeft: 40 }}>
-              {era.schools.map((school, si) => {
-                const color = SCHOOL_COLORS[(eraIdx * 3 + si) % SCHOOL_COLORS.length];
-                return (
-                  <div key={school} style={{
-                    background: 'var(--secondary)',
-                    borderRadius: 12,
-                    padding: '16px 22px',
-                    marginBottom: 12,
-                    border: '1px solid var(--border)',
-                    borderLeft: `4px solid ${color}`,
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => navigate(`/school/${encodeURIComponent(school)}`)}
-                  >
-                    <h3 style={{ fontSize: 17, fontWeight: 700, color: color, margin: '0 0 6px' }}>
-                      {school}
-                    </h3>
-                    {SCHOOL_DESCRIPTIONS[school] && (
-                      <p style={{ fontSize: 13, color: 'var(--text-dim)', margin: 0, lineHeight: 1.7 }}>
-                        {SCHOOL_DESCRIPTIONS[school]}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+                {/* Center dot + label */}
+                <div style={{ width: 70, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 6 }}>
+                  <div style={{ width: 10, height: 10, borderRadius: '50%', background: hasWest ? 'var(--accent)' : '#C46A6A', border: '2px solid var(--bg)', zIndex: 2 }} />
+                  <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--accent)', marginTop: 4, textAlign: 'center', whiteSpace: 'nowrap' }}>{era.century}</span>
+                </div>
+                {/* RIGHT: Western */}
+                <div style={{ flex: 1, paddingLeft: 24 }}>
+                  {hasWest && era.west.map((school, si) => {
+                    const color = SCHOOL_COLORS[(westIdx + si) % SCHOOL_COLORS.length];
+                    return (
+                      <div key={school} style={{ background: 'var(--secondary)', borderRadius: 10, padding: '10px 16px', marginBottom: 10, maxWidth: 380, border: '1px solid var(--border)', borderLeft: '4px solid ' + color, cursor: 'pointer' }}
+                      onClick={() => navigate('/school/' + encodeURIComponent(school))}>
+                        <h3 style={{ fontSize: 15, fontWeight: 700, color: color, margin: '0 0 4px' }}>{school}</h3>
+                        {SCHOOL_DESCRIPTIONS[school] && <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{SCHOOL_DESCRIPTIONS[school]}</p>}
+                      </div>
+                    );
+                  })}
+                  {hasWest && (() => { westIdx += era.west.length; })()}
+                </div>
+              </div>
+            );
+          });
+        })()}
       </div>
     </div>
   );
