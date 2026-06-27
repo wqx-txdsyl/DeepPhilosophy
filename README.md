@@ -162,6 +162,15 @@ python main.py        # FastAPI → http://localhost:8000
 
 ## 谱系数据架构
 
+### 最新变更（2026-06-28）
+- 星丛图：中心辐射BFS分层布局 + 直线连接 + 防重叠算法
+- Hero区：流派英文全大写名称（如 CONFUCIANISM）
+- 进化论（天演论）→ 天演论
+- 全站 editorial 风格统一（底部细线卡片 + 衬线标题）
+- 深色模式一键切换（☀️/🌙）
+- 背景图压缩（25MB → 2MB）
+- 148位哲学家 Wikipedia 链接
+
 ### 组件化架构（v2）
 
 `SchoolDetailPage.jsx` 已重构为组件容器，8 个可复用组件位于 `components/school/`：
