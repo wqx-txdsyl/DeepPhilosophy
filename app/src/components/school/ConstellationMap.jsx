@@ -80,24 +80,22 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
               : true;
             const opacity = focusNode ? (isRelevant ? 1 : 0.06) : 1;
 
-            const dx = to._x - from._x, dy = to._y - from._y;
-            const mx = (from._x + to._x) / 2, my = (from._y + to._y) / 2 - Math.abs(dx) * 0.08;
+            const midX = (from._x + to._x) / 2, midY = (from._y + to._y) / 2;
 
             return (
               <g key={i}>
-                {/* Glow underlay for focused edges */}
                 {isRelevant && focusNode && (
-                  <path d={`M${from._x},${from._y} Q${mx},${my} ${to._x},${to._y}`}
+                  <path d={`M${from._x},${from._y} L${to._x},${to._y}`}
                     fill="none" stroke={style.stroke} strokeWidth={style.width + 3} opacity={0.15}
                     strokeDasharray={style.dash} />
                 )}
-                <path d={`M${from._x},${from._y} Q${mx},${my} ${to._x},${to._y}`}
+                <path d={`M${from._x},${from._y} L${to._x},${to._y}`}
                   fill="none" stroke={style.stroke} strokeWidth={style.width}
                   strokeDasharray={style.dash} opacity={opacity}
                   markerEnd={style.dash ? undefined : 'url(#arrowhead)'}
                   style={{ transition: 'opacity 0.35s' }} />
                 {isRelevant && focusNode && (
-                  <text x={mx} y={my - 10} textAnchor="middle" fontSize={9} fill="var(--ochre)" fontStyle="italic" opacity={0.8}>{r.type}</text>
+                  <text x={midX} y={midY - 6} textAnchor="middle" fontSize={8} fill="var(--ochre)" fontStyle="italic" opacity={0.7}>{r.type}</text>
                 )}
               </g>
             );
@@ -114,7 +112,7 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
                 for (let b = a + 1; b < group.length; b++)
                   if (!existing.has(`${group[a].name}||${group[b].name}`) && !existing.has(`${group[b].name}||${group[a].name}`))
                     lines.push(<path key={`auto-${a}-${b}`}
-                      d={`M${group[a]._x},${group[a]._y} Q${(group[a]._x + group[b]._x) / 2},${(group[a]._y + group[b]._y) / 2 - 15} ${group[b]._x},${group[b]._y}`}
+                      d={`M${group[a]._x},${group[a]._y} L${group[b]._x},${group[b]._y}`}
                       fill="none" stroke="rgba(196,149,106,0.06)" strokeWidth="0.6" strokeDasharray="4,8"
                       opacity={focusNode ? 0.02 : 1} style={{ transition: 'opacity 0.35s' }} />);
             });

@@ -7862,27 +7862,82 @@ function SchoolDetailPage() {
   const heroImage = m.bg || 'url(/schools/greek.jpg)';
   const [hovered, setHovered] = useState(null);
 
-  // Pre-calculate nebula positions — concentric layout to minimize line crossings
-  const thinkers = data.thinkers.map((t, i) => {
-    const total = data.thinkers.length;
-    // Sort by influence: high-influence thinkers in inner circle, low-influence in outer
-    // This groups primary thinkers centrally, reducing edge crossings
-    const sorted = [...data.thinkers].sort((a,b) => b.influence - a.influence);
-    const rank = sorted.findIndex(s => s.name === t.name);
-    // 3 concentric rings
-    const ringSize = Math.ceil(total / 3);
-    const ring = Math.floor(rank / ringSize); // 0=inner, 1=middle, 2=outer
-    const posInRing = rank % ringSize;
-    const countInRing = ring === 0 ? Math.min(ringSize, total) :
-                        ring === 1 ? Math.min(ringSize, total - ringSize) :
-                        total - 2*ringSize;
-    const radius = 90 + ring * 120 + (posInRing % 3) * 20;
-    const angle = (posInRing / countInRing) * Math.PI * 2 + ring * 0.5;
+  // Smart layout: cluster related thinkers, minimize crossings, add organic randomness
+  const thinkers = (() => {
+    const ts = data.thinkers;
+    const rels = data.relations || [];
+    const total = ts.length;
     const cx = 400, cy = 280;
-    const x = cx + Math.cos(angle) * radius;
-    const y = cy + Math.sin(angle) * radius * 0.75;
-    return { ...t, _x: Math.max(50, Math.min(750, x)), _y: Math.max(50, Math.min(560, y)) };
-  });
+    const maxR = 250;
+
+    // Build adjacency from relations
+    const adj = {};
+    ts.forEach(t => { adj[t.name] = []; });
+    rels.forEach(r => {
+      if (adj[r.from] && adj[r.to]) {
+        adj[r.from].push(r.to);
+        adj[r.to].push(r.from);
+      }
+    });
+
+    // Find connected components via BFS
+    const visited = new Set();
+    const components = [];
+    ts.forEach(t => {
+      if (!visited.has(t.name)) {
+        const comp = [];
+        const queue = [t.name];
+        visited.add(t.name);
+        while (queue.length) {
+          const n = queue.shift();
+          comp.push(n);
+          (adj[n] || []).forEach(nb => {
+            if (!visited.has(nb)) { visited.add(nb); queue.push(nb); }
+          });
+        }
+        components.push(comp);
+      }
+    });
+
+    // Place each component as a cluster in a circle arrangement
+    const positions = {};
+    const compCount = components.length;
+
+    components.forEach((comp, ci) => {
+      // Component center on a large circle
+      const compAngle = (ci / compCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
+      const compDist = compCount <= 1 ? 0 : maxR * 0.45;
+      const compCx = cx + Math.cos(compAngle) * compDist;
+      const compCy = cy + Math.sin(compAngle) * compDist * 0.7;
+
+      // Within component: arrange thinkers by influence (core thinkers central)
+      const sorted = [...comp].sort((a, b) => {
+        const ta = ts.find(t => t.name === a);
+        const tb = ts.find(t => t.name === b);
+        return (tb?.influence || 5) - (ta?.influence || 5);
+      });
+
+      sorted.forEach((name, si) => {
+        const t = ts.find(x => x.name === name);
+        const influence = t?.influence || 5;
+        // Higher influence = closer to component center
+        const r = comp.length <= 1 ? 20 : 30 + (sorted.length - si - 1) * (90 / Math.max(comp.length, 1));
+        const a = (si / sorted.length) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
+        const px = compCx + Math.cos(a) * r + (Math.random() - 0.5) * 25;
+        const py = compCy + Math.sin(a) * r * 0.7 + (Math.random() - 0.5) * 20;
+        positions[name] = {
+          _x: Math.max(55, Math.min(745, px)),
+          _y: Math.max(50, Math.min(510, py)),
+        };
+      });
+    });
+
+    return ts.map(t => ({
+      ...t,
+      _x: (positions[t.name] || { _x: cx + (Math.random()-0.5)*400 })._x,
+      _y: (positions[t.name] || { _y: cy + (Math.random()-0.5)*300 })._y,
+    }));
+  })();
 
   return (
     <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
