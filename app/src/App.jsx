@@ -109,7 +109,7 @@ function MainLayout() {
         </header>
       )}
 
-      <main className="app-main" style={isReader ? { paddingBottom: 0 } : undefined}>
+      <main className={`app-main${isReader ? ' reader-mode' : ''}`} style={isReader ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <Routes>
           <Route path="/" element={<GenealogyPage />} />
           <Route path="/books" element={<BooksPage />} />
