@@ -7862,80 +7862,62 @@ function SchoolDetailPage() {
   const heroImage = m.bg || 'url(/schools/greek.jpg)';
   const [hovered, setHovered] = useState(null);
 
-  // Smart layout: cluster related thinkers, minimize crossings, add organic randomness
+  // Layout: group by sub-school, spread across canvas with organic spacing
   const thinkers = (() => {
     const ts = data.thinkers;
     const rels = data.relations || [];
-    const total = ts.length;
     const cx = 400, cy = 280;
-    const maxR = 250;
+    const maxR = 240;
 
-    // Build adjacency from relations
-    const adj = {};
-    ts.forEach(t => { adj[t.name] = []; });
-    rels.forEach(r => {
-      if (adj[r.from] && adj[r.to]) {
-        adj[r.from].push(r.to);
-        adj[r.to].push(r.from);
-      }
-    });
-
-    // Find connected components via BFS
-    const visited = new Set();
-    const components = [];
+    // Group thinkers by sub-school
+    const groups = {};
     ts.forEach(t => {
-      if (!visited.has(t.name)) {
-        const comp = [];
-        const queue = [t.name];
-        visited.add(t.name);
-        while (queue.length) {
-          const n = queue.shift();
-          comp.push(n);
-          (adj[n] || []).forEach(nb => {
-            if (!visited.has(nb)) { visited.add(nb); queue.push(nb); }
-          });
-        }
-        components.push(comp);
-      }
+      const g = t.sub || 'default';
+      if (!groups[g]) groups[g] = [];
+      groups[g].push(t);
+    });
+    const groupNames = Object.keys(groups);
+    const groupCount = groupNames.length;
+
+    // Build adjacency for keeping related thinkers close
+    const related = new Set();
+    rels.forEach(r => {
+      related.add(r.from + '||' + r.to);
+      related.add(r.to + '||'  + r.from);
     });
 
-    // Place each component as a cluster in a circle arrangement
     const positions = {};
-    const compCount = components.length;
 
-    components.forEach((comp, ci) => {
-      // Component center on a large circle
-      const compAngle = (ci / compCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
-      const compDist = compCount <= 1 ? 0 : maxR * 0.45;
-      const compCx = cx + Math.cos(compAngle) * compDist;
-      const compCy = cy + Math.sin(compAngle) * compDist * 0.7;
+    groupNames.forEach((gName, gi) => {
+      const group = groups[gName];
+      // Place group center evenly on a large circle
+      const gAngle = (gi / groupCount) * Math.PI * 2;
+      const gDist = groupCount <= 1 ? 0 : maxR * 0.4;
+      const gCx = cx + Math.cos(gAngle) * gDist;
+      const gCy = cy + Math.sin(gAngle) * gDist * 0.7;
 
-      // Within component: arrange thinkers by influence (core thinkers central)
-      const sorted = [...comp].sort((a, b) => {
-        const ta = ts.find(t => t.name === a);
-        const tb = ts.find(t => t.name === b);
-        return (tb?.influence || 5) - (ta?.influence || 5);
-      });
+      // Sort by influence within group
+      const sorted = [...group].sort((a, b) => (b.influence || 5) - (a.influence || 5));
 
-      sorted.forEach((name, si) => {
-        const t = ts.find(x => x.name === name);
-        const influence = t?.influence || 5;
-        // Higher influence = closer to component center
-        const r = comp.length <= 1 ? 20 : 30 + (sorted.length - si - 1) * (90 / Math.max(comp.length, 1));
-        const a = (si / sorted.length) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
-        const px = compCx + Math.cos(a) * r + (Math.random() - 0.5) * 25;
-        const py = compCy + Math.sin(a) * r * 0.7 + (Math.random() - 0.5) * 20;
-        positions[name] = {
-          _x: Math.max(55, Math.min(745, px)),
-          _y: Math.max(50, Math.min(510, py)),
+      sorted.forEach((t, si) => {
+        // Spread thinkers within group in a mini-circle
+        const radius = Math.max(40, group.length * 18);
+        const angle = (si / group.length) * Math.PI * 2 + (gi * 0.7);
+        const jitterX = (Math.random() - 0.5) * 20;
+        const jitterY = (Math.random() - 0.5) * 15;
+        const px = gCx + Math.cos(angle) * radius + jitterX;
+        const py = gCy + Math.sin(angle) * radius * 0.65 + jitterY;
+        positions[t.name] = {
+          _x: Math.max(60, Math.min(740, px)),
+          _y: Math.max(45, Math.min(515, py)),
         };
       });
     });
 
     return ts.map(t => ({
       ...t,
-      _x: (positions[t.name] || { _x: cx + (Math.random()-0.5)*400 })._x,
-      _y: (positions[t.name] || { _y: cy + (Math.random()-0.5)*300 })._y,
+      _x: (positions[t.name] || { _x: cx + (Math.random()-0.5)*350 })._x,
+      _y: (positions[t.name] || { _y: cy + (Math.random()-0.5)*250 })._y,
     }));
   })();
 

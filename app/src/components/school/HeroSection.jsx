@@ -12,18 +12,16 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
     }}>
       {/* Lighter overlay — let the architecture breathe */}
       <div style={{ position: 'absolute', inset: 0,
-        background: 'linear-gradient(to top, rgba(244,240,235,0.96) 0%, rgba(244,240,235,0.55) 30%, rgba(244,240,235,0.2) 70%, rgba(244,240,235,0.05) 100%)' }} />
-      {/* Subtle vignette */}
-      <div style={{ position: 'absolute', inset: 0,
-        background: 'radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(244,240,235,0.3) 100%)' }} />
+        background: 'linear-gradient(to top, rgba(244,240,235,0.82) 0%, rgba(244,240,235,0.45) 35%, rgba(244,240,235,0.15) 100%)' }} />
 
       <button onClick={() => navigate('/genealogy')} style={{
         position: 'absolute', top: SPACE.lg, left: SPACE.lg, zIndex: 10,
-        fontFamily: FONT.sans, fontSize: 13, color: 'var(--text-dim)', background: 'none', border: 'none',
-        cursor: 'pointer', letterSpacing: '0.04em', transition: 'color 0.25s'
+        fontFamily: FONT.sans, fontSize: 13, color: 'var(--ochre)', background: 'rgba(244,240,235,0.5)',
+        border: '1px solid rgba(196,149,106,0.3)', borderRadius: 4,
+        cursor: 'pointer', letterSpacing: '0.04em', transition: 'all 0.25s', padding: '6px 14px'
       }}
-        onMouseEnter={e => e.currentTarget.style.color = 'var(--ink)'}
-        onMouseLeave={e => e.currentTarget.style.color = 'var(--text-dim)'}
+        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.8)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.5)'; e.currentTarget.style.borderColor = 'rgba(196,149,106,0.3)'; }}
       >← 谱系</button>
 
       {/* Editorial kicker */}
