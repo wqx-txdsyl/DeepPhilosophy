@@ -107,8 +107,10 @@ function MainLayout() {
           <h1 className="app-title" onClick={() => navigate('/genealogy')}>
             DeepPhilosophy
           </h1>
-          <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}>{darkMode ? '☀️' : '🌙'}</button>
-          <button className="settings-btn" onClick={() => navigate('/settings')} style={{ paddingLeft: 4 }}>⚙️</button>
+          <span style={{ display: 'flex', gap: 0 }}>
+            <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}>{darkMode ? '☀️' : '🌙'}</button>
+            <button className="settings-btn" onClick={() => navigate('/settings')}>⚙️</button>
+          </span>
         </header>
       )}
 
