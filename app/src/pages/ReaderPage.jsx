@@ -438,7 +438,7 @@ ${textContext}
         </button>
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowNotes(!showNotes); if (!showNotes) setShowAiChat(false); }}>
-          📝
+          📝批注
         </button>
         <button className="btn btn-primary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowAiChat(!showAiChat); if (!showAiChat) setShowNotes(false); }}>
