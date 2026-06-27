@@ -272,6 +272,24 @@ function GenealogyPage() {
           });
         })()}
       </div>
+      <div style={{ textAlign: 'center', marginTop: 32, paddingBottom: 24 }}>
+        <button
+          onClick={() => navigate('/world-philosophies')}
+          style={{
+            background: 'var(--accent)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 24,
+            padding: '12px 36px',
+            fontSize: 15,
+            fontWeight: 600,
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          }}
+        >
+          🌍 查看更多哲学传统
+        </button>
+      </div>
     </div>
   );
 }

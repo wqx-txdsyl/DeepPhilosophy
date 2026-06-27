@@ -16,6 +16,7 @@ import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
 import ReaderPage from './pages/ReaderPage';
 import ProfilePage from './pages/ProfilePage';
+import WorldPhilosophiesPage from './pages/WorldPhilosophiesPage';
 import './App.css';
 
 export function getApiBase() {
@@ -118,6 +119,7 @@ function MainLayout() {
           <Route path="/author/:authorName" element={<AuthorDetailPage />} />
           <Route path="/genealogy" element={<GenealogyPage />} />
           <Route path="/school/:name" element={<SchoolDetailPage />} />
+          <Route path="/world-philosophies" element={<WorldPhilosophiesPage />} />
           <Route path="/qa" element={<QAPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
