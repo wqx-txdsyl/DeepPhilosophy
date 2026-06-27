@@ -61,7 +61,7 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
       <div style={{ width: '100%', maxWidth: 1000, height: 640, margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(196,149,106,0.05) 0%, transparent 65%)' }} />
 
-        <svg viewBox="0 0 800 560" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+        <svg viewBox="0 0 800 560" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} onClick={() => { setSelected(null); setHovered(null); }}>
           <defs>
             <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
               <polygon points="0,0 6,2 0,4" fill="rgba(58,90,124,0.4)" />
@@ -132,14 +132,7 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
             return (
               <g key={i} style={{ cursor: 'pointer', transition: 'opacity 0.35s' }}
                 opacity={dimmed ? 0.22 : 1}
-                onClick={() => {
-                  if (selected === t.name) {
-                    setSelected(null);
-                    navigate('/author/' + encodeURIComponent(t.name));
-                  } else {
-                    setSelected(selected === t.name ? null : t.name);
-                  }
-                }}
+                onClick={(e) => { e.stopPropagation(); if (selected === t.name) { setSelected(null); navigate('/author/' + encodeURIComponent(t.name)); } else { setSelected(selected === t.name ? null : t.name); } }}
                 onMouseEnter={() => setHovered(t.name)}
                 onMouseLeave={() => setHovered(null)}>
 
