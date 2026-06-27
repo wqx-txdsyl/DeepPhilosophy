@@ -106,8 +106,8 @@ function AuthorDetailPage() {
         </div>
 
         {/* 生平简介 */}
-        <div style={{ lineHeight: 1.7, fontSize: 14, color: 'var(--text)' }}>
-          {author.bio}
+        <div style={{ lineHeight: 1.9, fontSize: 14, color: 'var(--text)', whiteSpace: 'pre-line' }}>
+          {typeof author.bio === 'string' ? author.bio.replace(/\\n/g, '\n') : author.bio}
         </div>
 
         <div style={{ marginTop: 14, display: 'flex', gap: 8 }}>
