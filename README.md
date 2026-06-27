@@ -2,6 +2,24 @@
 
 一个涵盖东西方及世界哲学的综合性单页应用，五个核心模块：书籍、作者、谱系、问答、用户。React + FastAPI 架构，部署于 Render。
 
+## ⚠️ 数据质量标准（强制执行）
+
+**每次修改数据后必须校验以下标准，构建前确认达标。**
+
+| 模块 | 字段 | 最低标准 | 检查方式 |
+|------|------|---------|---------|
+| 📚 书籍 | 每本书摘要 | **≥300字** | `books.json` 中每条的 `summary` 字段 |
+| ✒️ 作者 | 每位作者介绍 | **≥1000字** | `philosophers_db.py` 中每条的 `bio` 字段 |
+| 🧬 谱系 | 流派 overview | **≥500字** | `SchoolDetailPage.jsx` 中每个 `XXX_DATA.overview` |
+| 🧬 谱系 | 流派 conclusion | **≥500字** | `SchoolDetailPage.jsx` 中每个 `XXX_DATA.conclusion` |
+| 🧬 谱系 | 金句 quotes | **≥20条** | 每个 `XXX_DATA.quotes` 数组长度 |
+| 🧬 谱系 | 辞海 cihai | **≥20条** | 每个 `XXX_CIHAI` 数组长度 |
+
+**每次操作后必须更新本 README**，包括：
+- 数据统计数字变更
+- 新增/修改的生成器脚本
+- 新踩的坑和解决方案
+
 ## 项目结构
 
 ```
@@ -170,12 +188,58 @@ python _gen_world.py   # 世界
 
 ### 数据统计
 
-| 类别 | 流派数 | 完整性 |
-|------|--------|--------|
-| 西方哲学 | 43 | 全部完整 |
-| 东方哲学 | 22 | 全部完整 |
-| 世界哲学 | 8 | 全部完整 |
-| **合计** | **73** | |
+| 类别 | 数量 | 数据完整性 |
+|------|------|-----------|
+| 西方哲学流派 | 43 | overview(500+)/conclusion(500+)/quotes(20+)/cihai(20+) 全部达标 |
+| 东方哲学流派 | 22 | 同上 |
+| 世界哲学流派 | 8 | 同上 |
+| **流派合计** | **73** | |
+| 哲学家（作者） | 148 | bio 全部 1000-2400字，wiki_url 指向 Wikipedia |
+| 书籍 | 253 | 本地 books.json，summary 待扩充至300+ |
+| **数据文件** | | |
+| SchoolDetailPage.jsx | ~850KB | 73流派数据内联 |
+| philosophers_db.py | ~300KB | 148位哲学家bio + 元数据 |
+| books.json | ~250KB | 253本书目元数据 |
+
+## 数据校验脚本
+
+部署前运行以下命令快速检查数据是否达标：
+
+```bash
+cd Q&ASystem
+python -c "
+import ast, json
+
+# 检查谱系数据
+with open('DeepPhilosophy/app/src/pages/SchoolDetailPage.jsx','r',encoding='utf-8') as f:
+    c = f.read()
+import re
+# 检查 quotes 数量
+for m in re.finditer(r'const (\w+)_DATA', c):
+    name = m.group(1)
+    block_end = c.find('};', m.start()) + 2
+    block = c[m.start():block_end]
+    qc = block.count('\"text\":')
+    cc = len(re.findall(r'overview:\x60', block))
+    if qc < 20: print(f'  ⚠ {name}: only {qc} quotes')
+    if 'overview:\x60' in block and cc == 0: pass
+print('谱系检查完毕')
+
+# 检查哲学家 bio
+with open('DeepPhilosophy/backend/philosophers_db.py','r',encoding='utf-8') as f:
+    c = f.read()
+ds = c.find('PHILOSOPHERS = {') + len('PHILOSOPHERS = ')
+d,i=0,ds
+for i in range(ds,len(c)):
+    if c[i]=='{': d+=1
+    elif c[i]=='}': d-=1
+    if d==0: break
+phil = ast.literal_eval(ast.parse('x = ' + c[ds:i+1]).body[0].value)
+short = [(n,len(v['bio'])) for n,v in phil.items() if len(v['bio']) < 1000]
+if short: print(f'  ⚠ {len(short)} authors under 1000 chars')
+print(f'作者检查完毕: {len(phil)}位, {len(short)}位未达标')
+"
+```
 
 ---
 
