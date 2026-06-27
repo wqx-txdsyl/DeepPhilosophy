@@ -65,15 +65,19 @@ const SCHOOL_DESCRIPTIONS = {
   '唯名论':'共相只是名称不是实在——只有个别事物真实存在。',
 };
 
-const SCHOOL_COLORS = [
-  '#C4956A','#C08C5E','#BC8452','#B87C46','#B4743A','#A97040','#9E6C46',
-  '#94684C','#8A6452','#806058','#765C5E','#6C5864','#62546A',
-  '#585070','#535876','#4E607C','#496882','#447088','#3F788E',
-  '#3A8094','#35889A','#3090A0','#2B98A6','#26A0AC','#21A8B2',
-  '#1CA8AE','#17A4AA','#12A0A6','#0D9CA2','#08989E','#03949A',
-  '#049096','#058C92','#06888E','#07848A','#088086','#097C82',
-  '#0A787E','#0B747A','#0C7076',
-];
+const SCHOOL_COLORS = (() => {
+  const base = [];
+  // 43 Western schools: warm bronze -> cool blue gradient
+  for (let i = 0; i < 43; i++) {
+    const t = i / 42;
+    const r = Math.round(196 - t * 180);
+    const g = Math.round(149 - t * 70);
+    const b = Math.round(106 + t * 30);
+    const toHex = n => n.toString(16).padStart(2,'0');
+    base.push('#' + toHex(r) + toHex(g) + toHex(b));
+  }
+  return base;
+})();
 
 // ——— 东方哲学 ———
 const EASTERN_TIMELINE = [
@@ -117,12 +121,18 @@ const EASTERN_DESCRIPTIONS = {
   '习近平新时代中国特色社会主义思想':'以人民为中心的发展思想——将马克思主义基本原理与新时代中国具体实际相结合，系统回应了坚持和发展什么样的中国特色社会主义这一重大时代课题。',
 };
 
-const EASTERN_COLORS = [
-  '#C46A6A','#BE5E5E','#B85252','#B24646','#AE3A3A','#A44040','#9A4646',
-  '#924C4C','#8A5252','#805858','#765E5E','#6C6464','#626A6A',
-  '#587070','#537676','#4E7C7C','#498282','#448888','#3F8E8E',
-  '#3A9494','#359A9A','#30A0A0','#2BA6A6','#26ACAC','#21B2B2',
-];
+const EASTERN_COLORS = (() => {
+  const base = [];
+  for (let i = 0; i < 23; i++) {
+    const t = i / 22;
+    const r = Math.round(196 - t * 150);
+    const g = Math.round(106 - t * 25);
+    const b = Math.round(106 + t * 15);
+    const toHex = n => n.toString(16).padStart(2,'0');
+    base.push('#' + toHex(r) + toHex(g) + toHex(b));
+  }
+  return base;
+})();
 
 
 function GenealogyPage() {
@@ -200,10 +210,22 @@ function GenealogyPage() {
           WESTERN_TIMELINE.forEach(e => { westMap[e.century] = e.schools; });
           const centuries = [...new Set([...Object.keys(eastMap), ...Object.keys(westMap)])];
           centuries.sort((a,b) => {
-            const aBCE = a.includes('公元前'), bBCE = b.includes('公元前');
-            if (aBCE && bBCE) { const an = parseInt(a.match(/\d+/)[0]), bn = parseInt(b.match(/\d+/)[0]); return bn - an; }
-            if (aBCE) return -1; if (bBCE) return 1;
-            const an = parseInt(a.match(/\d+/)[0]), bn = parseInt(b.match(/\d+/)[0]); return an - bn;
+            // Extract century number and sub-marker (初=early, 中=mid, 末=late)
+            const parse = (s) => {
+              const bce = s.includes('公元前');
+              const nums = s.match(/\d+/g);
+              const n = nums ? parseInt(nums[0]) : 0;
+              let sub = 0;
+              if (s.includes('初')) sub = 0;
+              else if (s.includes('中')) sub = 1;
+              else if (s.includes('末')) sub = 2;
+              return { bce, n, sub };
+            };
+            const pa = parse(a), pb = parse(b);
+            if (pa.bce && !pb.bce) return -1;
+            if (!pa.bce && pb.bce) return 1;
+            if (pa.bce && pb.bce) return pb.n - pa.n || pa.sub - pb.sub;
+            return pa.n - pb.n || pa.sub - pb.sub;
           });
           centuries.forEach(c => { allEras.push({ century: c, east: eastMap[c] || [], west: westMap[c] || [] }); });
           let eastIdx = 0, westIdx = 0;
