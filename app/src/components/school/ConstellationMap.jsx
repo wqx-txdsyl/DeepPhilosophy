@@ -121,50 +121,17 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
             return lines;
           })()}
 
-          {/* NODES — first pass: all non-focused nodes */}
+          {/* NODES — hierarchical sizing, focus mode */}
           {thinkers.map((t, i) => {
-            if (t.name === focusNode) return null;
             const baseSize = getNodeSize(t);
+            const isFoc = t.name === focusNode;
             const isConn = isConnected(t.name);
-            const color = SUB_COLORS[t.sub] || "#C4956A";
-            const dimmed = focusNode && !isConn;
+            const color = SUB_COLORS[t.sub] || 'var(--ochre)';
+            const dimmed = focusNode && !isFoc && !isConn;
 
             return (
               <g key={i} style={{ cursor: 'pointer', transition: 'opacity 0.35s' }}
                 opacity={dimmed ? 0.22 : 1}
-                onClick={() => setSelected(selected === t.name ? null : t.name)}
-                onMouseEnter={() => setHovered(t.name)}
-                onMouseLeave={() => setHovered(null)}>
-
-                <circle cx={t._x} cy={t._y} r={baseSize}
-                  fill="var(--bone)" stroke={color}
-                  strokeWidth={t.influence >= 9 ? 1.8 : 1.2}
-                  style={{ transition: 'all 0.4s cubic-bezier(0.22,1,0.36,1)' }} />
-
-                <text x={t._x} y={t._y + (baseSize > 20 ? 5 : 3)} textAnchor="middle"
-                  fill="var(--ink)" fontSize={baseSize > 22 ? 13 : 10}
-                  fontFamily={FONT.serif} fontWeight={600}>
-                  {t.name[0]}
-                </text>
-
-                {baseSize >= 22 && (
-                  <text x={t._x} y={t._y + baseSize + 14} textAnchor="middle"
-                    fill="var(--ink)" fontSize={9} fontFamily={FONT.sans} fontWeight={300}>
-                    {t.name}
-                  </text>
-                )}
-              </g>
-            );
-          })}
-
-          {/* NODES — second pass: focused node ON TOP */}
-          {thinkers.map((t, i) => {
-            if (t.name !== focusNode) return null;
-            const baseSize = getNodeSize(t);
-            const color = SUB_COLORS[t.sub] || 'var(--ochre');
-
-            return (
-              <g key={`focus-${i}`} style={{ cursor: 'pointer' }}
                 onClick={() => {
                   if (selected === t.name) {
                     setSelected(null);
@@ -176,49 +143,76 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
                 onMouseEnter={() => setHovered(t.name)}
                 onMouseLeave={() => setHovered(null)}>
 
-                {/* Pulse ring */}
+                {/* Pulse ring for selected */}
                 {selected === t.name && (
                   <circle cx={t._x} cy={t._y} r={baseSize + 16} fill="none" stroke={color} strokeWidth="1" opacity="0.25"
                     style={{ animation: 'pulse 2s ease-out infinite' }} />
                 )}
 
-                {/* Main circle — enlarged */}
-                <circle cx={t._x} cy={t._y} r={baseSize * 1.2}
-                  fill="var(--bone)" stroke={color} strokeWidth={2.2}
-                  filter={`drop-shadow(0 0 8px ${color}60)`}
+                {/* Main circle */}
+                <circle cx={t._x} cy={t._y} r={isFoc ? baseSize * 1.2 : baseSize}
+                  fill="var(--bone)" stroke={color}
+                  strokeWidth={isFoc ? 2.2 : (t.influence >= 9 ? 1.8 : 1.2)}
+                  filter={isFoc ? `drop-shadow(0 0 8px ${color}60)` : 'none'}
                   style={{ transition: 'all 0.4s cubic-bezier(0.22,1,0.36,1)' }} />
 
                 {/* Initial */}
-                <text x={t._x} y={t._y + (baseSize > 20 ? 6 : 4)} textAnchor="middle"
-                  fill={color} fontSize={baseSize > 22 ? 14 : 11}
-                  fontFamily={FONT.serif} fontWeight={600}>
+                <text x={t._x} y={t._y + (baseSize > 20 ? 5 : 3)} textAnchor="middle"
+                  fill={isFoc ? color : 'var(--ink)'} fontSize={baseSize > 22 ? 13 : 10}
+                  fontFamily={FONT.serif} fontWeight={600} style={{ transition: 'all 0.3s' }}>
                   {t.name[0]}
                 </text>
 
-                {/* Name label */}
-                <text x={t._x} y={t._y + baseSize + 16} textAnchor="middle"
-                  fill="var(--ink)" fontSize={11} fontFamily={FONT.sans} fontWeight={500}>
-                  {t.name}
-                </text>
+                {/* Name label — visible for large nodes or focused */}
+                {(baseSize >= 22 || isFoc) && (
+                  <text x={t._x} y={t._y + baseSize + 14} textAnchor="middle"
+                    fill="var(--ink)" fontSize={isFoc ? 11 : 9} fontFamily={FONT.sans}
+                    fontWeight={isFoc ? 500 : 300} style={{ transition: 'all 0.3s' }}>
+                    {t.name}
+                  </text>
+                )}
 
-                {/* Detail panel — rendered last, always on top */}
-                <g>
-                  <rect x={t._x - 80} y={t._y - baseSize - 78} width={160} height={66} rx={6}
-                    fill="rgba(248,244,238,0.97)" stroke={color} strokeWidth="0.8" strokeOpacity="0.5"
-                    filter="drop-shadow(0 2px 12px rgba(0,0,0,0.08))" />
-                  <text x={t._x} y={t._y - baseSize - 60} textAnchor="middle" fill="var(--ink)"
-                    fontSize={12} fontFamily={FONT.serif} fontWeight={600}>{t.name}</text>
-                  <text x={t._x} y={t._y - baseSize - 44} textAnchor="middle" fill={color}
-                    fontSize={9} fontFamily={FONT.sans} fontWeight={500}>{t.sub}</text>
-                  <text x={t._x} y={t._y - baseSize - 30} textAnchor="middle" fill="var(--text-dim)"
-                    fontSize={9} fontFamily={FONT.sans}>{t.era} · {t.key}</text>
-                  <text x={t._x} y={t._y - baseSize - 18} textAnchor="middle" fill="var(--fade)"
-                    fontSize={8} fontFamily={FONT.sans}>{t.works ? t.works.length + ' works' : ''}</text>
-                </g>
+                {/* Hover/selected detail panel */}
+                {isFoc && (
+                  <g>
+                    <rect x={t._x - 80} y={t._y - baseSize - 78} width={160} height={66} rx={6}
+                      fill="rgba(248,244,238,0.97)" stroke={color} strokeWidth="0.8" strokeOpacity="0.5"
+                      filter="drop-shadow(0 2px 12px rgba(0,0,0,0.08))" />
+                    <text x={t._x} y={t._y - baseSize - 60} textAnchor="middle" fill="var(--ink)"
+                      fontSize={12} fontFamily={FONT.serif} fontWeight={600}>{t.name}</text>
+                    <text x={t._x} y={t._y - baseSize - 44} textAnchor="middle" fill={color}
+                      fontSize={9} fontFamily={FONT.sans} fontWeight={500}>{t.sub}</text>
+                    <text x={t._x} y={t._y - baseSize - 30} textAnchor="middle" fill="var(--text-dim)"
+                      fontSize={9} fontFamily={FONT.sans}>{t.era} · {t.key}</text>
+                    <text x={t._x} y={t._y - baseSize - 18} textAnchor="middle" fill="var(--fade)"
+                      fontSize={8} fontFamily={FONT.sans}>{t.works ? t.works.length + ' works' : ''}</text>
+                  </g>
+                )}
               </g>
             );
           })}
-        </svg>
+        
+          {/* TOP LAYER — focused node detail panel, renders above all nodes */}
+          {focusNode && thinkers.filter(t => t.name === focusNode).map(t => {
+            const bs = getNodeSize(t);
+            const co = SUB_COLORS[t.sub] || 'var(--ochre)';
+            return (
+              <g key="top-detail">
+                <rect x={t._x - 80} y={t._y - bs - 78} width={160} height={66} rx={6}
+                  fill="rgba(248,244,238,0.97)" stroke={co} strokeWidth="0.8" strokeOpacity="0.5"
+                  filter="drop-shadow(0 2px 12px rgba(0,0,0,0.08))" />
+                <text x={t._x} y={t._y - bs - 60} textAnchor="middle" fill="var(--ink)"
+                  fontSize={12} fontFamily={FONT.serif} fontWeight={600}>{t.name}</text>
+                <text x={t._x} y={t._y - bs - 44} textAnchor="middle" fill={co}
+                  fontSize={9} fontFamily={FONT.sans} fontWeight={500}>{t.sub}</text>
+                <text x={t._x} y={t._y - bs - 30} textAnchor="middle" fill="var(--text-dim)"
+                  fontSize={9} fontFamily={FONT.sans}>{t.era} · {t.key}</text>
+                <text x={t._x} y={t._y - bs - 18} textAnchor="middle" fill="var(--fade)"
+                  fontSize={8} fontFamily={FONT.sans}>{Array.isArray(t.works) ? t.works.length + ' works' : ''}</text>
+              </g>
+            );
+          })}
+</svg>
       </div>
     </section>
   );
