@@ -3,7 +3,7 @@
  * 开发者: @txdsyl_
  * 四个分区: 书籍 | 谱图 | 问答 | 我的
  */
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
 import BooksPage from './pages/BooksPage';
@@ -40,10 +40,11 @@ function App() {
 function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('dp_dark_mode') === '1');
 
   // Auto-save
   useEffect(() => { startAutoSave(); return () => stopAutoSave(); }, []);
-  useEffect(() => { if (localStorage.getItem('dp_dark_mode') === '1') document.documentElement.classList.add('dark-mode'); }, []);
+  useEffect(() => { if (darkMode) document.documentElement.classList.add('dark-mode'); else document.documentElement.classList.remove('dark-mode'); }, [darkMode]);
 
   // Candlelight cursor glow
   const glowRef = useRef(null);
@@ -106,7 +107,7 @@ function MainLayout() {
           <h1 className="app-title" onClick={() => navigate('/genealogy')}>
             DeepPhilosophy
           </h1>
-          <button className="settings-btn" onClick={() => { const isDark = document.documentElement.classList.toggle('dark-mode'); localStorage.setItem('dp_dark_mode', isDark ? '1' : '0'); }} style={{ marginRight: 4 }}>{document.documentElement.classList.contains('dark-mode') ? '☀️' : '🌙'}</button>
+          <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }} style={{ marginRight: 8 }}>{darkMode ? '☀️' : '🌙'}</button>
           <button className="settings-btn" onClick={() => navigate('/settings')}>⚙️</button>
         </header>
       )}
