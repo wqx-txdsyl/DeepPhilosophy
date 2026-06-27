@@ -37,11 +37,22 @@ Q&ASystem/
     │       │   ├── AuthorsPage.jsx        # 作者列表（搜索/筛选）
     │       │   ├── AuthorDetailPage.jsx   # 作者详情 + 作品列表
     │       │   ├── GenealogyPage.jsx      # 东西方哲学谱系双列时间轴
-    │       │   ├── SchoolDetailPage.jsx   # 流派详情（~850KB，73学派数据内联）
+    │       │   ├── SchoolDetailPage.jsx   # 流派详情页（组件容器）
     │       │   ├── WorldPhilosophiesPage.jsx # 世界哲学概览卡片
     │       │   ├── QAPage.jsx             # AI 哲学问答（RAG + 流式）
     │       │   ├── ProfilePage.jsx        # 个人中心（登录/历史/同步）
     │       │   └── SettingsPage.jsx       # API 配置
+    │       ├── components/
+    │       │   └── school/                # 谱系详情页组件库（8组件+tokens）
+    │       │       ├── tokens.js          # 设计tokens（色彩/间距/字体/动效）
+    │       │       ├── HeroSection.jsx    # 英雄区（全屏背景+引文）
+    │       │       ├── OverviewSection.jsx # 概述+子流派网格
+    │       │       ├── ConstellationMap.jsx # SVG星丛关系图
+    │       │       ├── TimelineSection.jsx # 垂直交错时间轴
+    │       │       ├── GlossaryCloud.jsx  # 辞海词云
+    │       │       ├── QuotesGallery.jsx  # 金句画廊
+    │       │       ├── WorksList.jsx      # 著作折叠列表
+    │       │       └── EpilogueSection.jsx # 结语+收尾引语
     │       ├── data/
     │       │   ├── data.js               # 数据访问层（云端优先，本地兜底）
     │       │   ├── userData.js           # 用户本地数据（阅读历史/聊天/笔记）
@@ -110,7 +121,7 @@ python main.py        # FastAPI → http://localhost:8000
 | 流派详情 | `SchoolDetailPage.jsx` | **星丛**（思想家关系网+子流派颜色）、**辞海**（术语表 20+）、**金句**（18+条带解释）、**重要著作**（6-8部）、**时间轴**（12-20事件） |
 | 世界哲学 | `WorldPhilosophiesPage.jsx` | 印度/日本/伊斯兰阿拉伯/非洲/犹太/波斯/拉美/东南亚 8 大传统概览卡片 |
 
-**数据来源**：73 个学派数据全部内联在 `SchoolDetailPage.jsx` 中（~850KB）。生成器见根目录 `_gen_*.py`。
+**数据来源**：73 个学派数据内联在 `SchoolDetailPage.jsx` 中（~835KB），渲染由 8 个可复用组件完成。
 
 ### 4. 💬 问答（QA）
 
@@ -150,6 +161,24 @@ python main.py        # FastAPI → http://localhost:8000
 ---
 
 ## 谱系数据架构
+
+### 组件化架构（v2）
+
+`SchoolDetailPage.jsx` 已重构为组件容器，8 个可复用组件位于 `components/school/`：
+
+```
+SchoolDetailPage (数据获取 + 坐标计算)
+  ├── HeroSection        ← name, subtitle, quote, quoteAuthor, heroImage
+  ├── OverviewSection    ← overview, subSchools[]
+  ├── ConstellationMap   ← thinkers[], relations[], SUB_COLORS
+  ├── TimelineSection    ← timeline[]
+  ├── GlossaryCloud      ← cihai[]
+  ├── QuotesGallery      ← data.quotes[]
+  ├── WorksList          ← data.works[]
+  └── EpilogueSection    ← conclusion, closingQuote
+```
+
+所有组件通过 props 接收数据，73 个学派共用同一套组件。设计 tokens 统一管理于 `tokens.js`。
 
 ### 流派数据格式
 
@@ -197,7 +226,8 @@ python _gen_world.py   # 世界
 | 哲学家（作者） | 148 | bio 全部 1000-2400字，wiki_url 指向 Wikipedia |
 | 书籍 | 253 | 本地 books.json，summary 待扩充至300+ |
 | **数据文件** | | |
-| SchoolDetailPage.jsx | ~850KB | 73流派数据内联 |
+| SchoolDetailPage.jsx | ~835KB | 73流派数据内联，8组件渲染 |
+| components/school/ | 9文件 | 8可复用组件 + tokens.js |
 | philosophers_db.py | ~300KB | 148位哲学家bio + 元数据 |
 | books.json | ~250KB | 253本书目元数据 |
 
