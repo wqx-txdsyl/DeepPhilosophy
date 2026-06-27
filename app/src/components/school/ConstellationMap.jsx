@@ -192,22 +192,29 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
             );
           })}
         
-          {/* TOP LAYER — focused node detail panel, renders above all nodes */}
+          {/* TOP LAYER — focused node detail panel, renders above all nodes, positioned smartly */}
           {focusNode && thinkers.filter(t => t.name === focusNode).map(t => {
             const bs = getNodeSize(t);
             const co = SUB_COLORS[t.sub] || 'var(--ochre)';
+            const panelH = 66;
+            const panelW = 160;
+            const above = t._y - bs - panelH - 12;
+            const below = t._y + bs + 12;
+            const showBelow = above < 10;
+            const py = showBelow ? below : above;
+            const px = Math.max(panelW/2 + 4, Math.min(800 - panelW/2 - 4, t._x));
             return (
               <g key="top-detail">
-                <rect x={t._x - 80} y={t._y - bs - 78} width={160} height={66} rx={6}
+                <rect x={px - panelW/2} y={py} width={panelW} height={panelH} rx={6}
                   fill="rgba(248,244,238,0.97)" stroke={co} strokeWidth="0.8" strokeOpacity="0.5"
                   filter="drop-shadow(0 2px 12px rgba(0,0,0,0.08))" />
-                <text x={t._x} y={t._y - bs - 60} textAnchor="middle" fill="var(--ink)"
+                <text x={px} y={py + 16} textAnchor="middle" fill="var(--ink)"
                   fontSize={12} fontFamily={FONT.serif} fontWeight={600}>{t.name}</text>
-                <text x={t._x} y={t._y - bs - 44} textAnchor="middle" fill={co}
+                <text x={px} y={py + 32} textAnchor="middle" fill={co}
                   fontSize={9} fontFamily={FONT.sans} fontWeight={500}>{t.sub}</text>
-                <text x={t._x} y={t._y - bs - 30} textAnchor="middle" fill="var(--text-dim)"
+                <text x={px} y={py + 46} textAnchor="middle" fill="var(--text-dim)"
                   fontSize={9} fontFamily={FONT.sans}>{t.era} · {t.key}</text>
-                <text x={t._x} y={t._y - bs - 18} textAnchor="middle" fill="var(--fade)"
+                <text x={px} y={py + 60} textAnchor="middle" fill="var(--fade)"
                   fontSize={8} fontFamily={FONT.sans}>{Array.isArray(t.works) ? t.works.length + ' works' : ''}</text>
               </g>
             );
