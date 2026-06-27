@@ -1,10 +1,43 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FONT, SPACE, WIDTH } from './tokens';
+import { FONT, SPACE } from './tokens';
+
+const EDGE_STYLES = {
+  '师生': { stroke: 'rgba(58,90,124,0.5)', width: 2, dash: '' },
+  '继承': { stroke: 'rgba(58,90,124,0.35)', width: 1.4, dash: '' },
+  '影响': { stroke: 'rgba(196,149,106,0.4)', width: 1.2, dash: '' },
+  '再传': { stroke: 'rgba(58,90,124,0.3)', width: 1, dash: '4,3' },
+  '批判': { stroke: 'rgba(160,80,80,0.45)', width: 1.2, dash: '6,4' },
+  '对立': { stroke: 'rgba(160,80,80,0.4)', width: 1, dash: '6,4' },
+  '批判/超越': { stroke: 'rgba(160,80,80,0.45)', width: 1.2, dash: '6,4' },
+  '友谊': { stroke: 'rgba(196,149,106,0.3)', width: 0.8, dash: '3,5' },
+  '注释': { stroke: 'rgba(196,149,106,0.25)', width: 0.8, dash: '2,4' },
+  '合作': { stroke: 'rgba(196,149,106,0.3)', width: 0.8, dash: '3,5' },
+  '学术交流': { stroke: 'rgba(196,149,106,0.3)', width: 0.8, dash: '3,5' },
+};
 
 export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} }) {
   const [hovered, setHovered] = useState(null);
+  const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
+
+  const focusNode = selected || hovered;
+  const isFocused = (name) => !focusNode || name === focusNode;
+  const isConnected = (name) => {
+    if (!focusNode) return true;
+    const rels = relations.filter(r => r.from === focusNode || r.to === focusNode);
+    const connected = new Set(rels.flatMap(r => [r.from, r.to]));
+    return connected.has(name) || name === focusNode;
+  };
+
+  const getNodeSize = (t) => {
+    const inf = t.influence || 5;
+    if (inf >= 10) return 28;
+    if (inf >= 9) return 24;
+    if (inf >= 8) return 20;
+    if (inf >= 7) return 17;
+    return 14;
+  };
 
   return (
     <section style={{ padding: `${SPACE.hero}px 20px`, background: 'var(--card-bg)', position: 'relative' }}>
@@ -12,28 +45,65 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
         <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', fontFamily: FONT.sans }}>Chapter 2</span>
         <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>思想星丛</h2>
         <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px auto 0', opacity: 0.5 }} />
+        <p style={{ fontSize: 11, color: 'var(--fade)', marginTop: 8, fontFamily: FONT.sans, fontWeight: 300 }}>
+          悬停探索思想谱系 · 点击固定焦点 · 再次点击跳转作者页
+        </p>
       </div>
-      <div style={{ width: '100%', maxWidth: WIDTH.wide, height: 600, margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(196,149,106,0.06) 0%, transparent 70%)' }} />
+
+      {/* Legend */}
+      <div style={{ maxWidth: 900, margin: '0 auto 20px', display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap', fontFamily: FONT.sans, fontSize: 10, color: 'var(--fade)' }}>
+        <span>── 师生/继承</span>
+        <span>- - 再传/影响</span>
+        <span style={{ opacity: 0.7 }}>··· 批判/对立</span>
+        <span style={{ opacity: 0.5 }}>··· 学术交流</span>
+      </div>
+
+      <div style={{ width: '100%', maxWidth: 1000, height: 640, margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(196,149,106,0.05) 0%, transparent 65%)' }} />
+
         <svg viewBox="0 0 800 560" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-          {/* Explicit relations */}
+          <defs>
+            <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
+              <polygon points="0,0 6,2 0,4" fill="rgba(58,90,124,0.4)" />
+            </marker>
+          </defs>
+
+          {/* EDGES — typed by relationship */}
           {relations.map((r, i) => {
             const from = thinkers.find(t => t.name === r.from);
             const to = thinkers.find(t => t.name === r.to);
             if (!from || !to) return null;
-            const mx = (from._x + to._x) / 2, my = (from._y + to._y) / 2 - 20;
-            const dash = r.type === '对立' ? '6,4' : r.type === '友谊' ? '4,4' : '';
-            const isHov = hovered === `rel-${i}`;
+
+            const style = EDGE_STYLES[r.type] || EDGE_STYLES['影响'];
+            const isRelevant = focusNode
+              ? (r.from === focusNode || r.to === focusNode)
+              : true;
+            const opacity = focusNode ? (isRelevant ? 1 : 0.06) : 1;
+
+            const dx = to._x - from._x, dy = to._y - from._y;
+            const mx = (from._x + to._x) / 2, my = (from._y + to._y) / 2 - Math.abs(dx) * 0.08;
+
             return (
-              <g key={i} onMouseEnter={() => setHovered(`rel-${i}`)} onMouseLeave={() => setHovered(null)}>
+              <g key={i}>
+                {/* Glow underlay for focused edges */}
+                {isRelevant && focusNode && (
+                  <path d={`M${from._x},${from._y} Q${mx},${my} ${to._x},${to._y}`}
+                    fill="none" stroke={style.stroke} strokeWidth={style.width + 3} opacity={0.15}
+                    strokeDasharray={style.dash} />
+                )}
                 <path d={`M${from._x},${from._y} Q${mx},${my} ${to._x},${to._y}`}
-                  fill="none" stroke={isHov ? 'var(--ochre)' : 'rgba(196,149,106,0.25)'}
-                  strokeWidth={isHov ? 2 : 1.2} strokeDasharray={dash} style={{ transition: 'all 0.3s' }} />
-                {isHov && <text x={mx} y={my - 8} textAnchor="middle" fontSize={9} fill="var(--text-dim)" fontStyle="italic">{r.type}</text>}
+                  fill="none" stroke={style.stroke} strokeWidth={style.width}
+                  strokeDasharray={style.dash} opacity={opacity}
+                  markerEnd={style.dash ? undefined : 'url(#arrowhead)'}
+                  style={{ transition: 'opacity 0.35s' }} />
+                {isRelevant && focusNode && (
+                  <text x={mx} y={my - 10} textAnchor="middle" fontSize={9} fill="var(--ochre)" fontStyle="italic" opacity={0.8}>{r.type}</text>
+                )}
               </g>
             );
           })}
-          {/* Auto sub-school lines */}
+
+          {/* Auto sub-school lines — even fainter */}
           {(() => {
             const existing = new Set(relations.map(r => `${r.from}||${r.to}`));
             const lines = [];
@@ -45,38 +115,78 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
                   if (!existing.has(`${group[a].name}||${group[b].name}`) && !existing.has(`${group[b].name}||${group[a].name}`))
                     lines.push(<path key={`auto-${a}-${b}`}
                       d={`M${group[a]._x},${group[a]._y} Q${(group[a]._x + group[b]._x) / 2},${(group[a]._y + group[b]._y) / 2 - 15} ${group[b]._x},${group[b]._y}`}
-                      fill="none" stroke="rgba(196,149,106,0.1)" strokeWidth="0.8" strokeDasharray="5,6" />);
+                      fill="none" stroke="rgba(196,149,106,0.06)" strokeWidth="0.6" strokeDasharray="4,8"
+                      opacity={focusNode ? 0.02 : 1} style={{ transition: 'opacity 0.35s' }} />);
             });
             return lines;
           })()}
-          {/* Nodes */}
+
+          {/* NODES — hierarchical sizing, focus mode */}
           {thinkers.map((t, i) => {
-            const r = 14 + (t.influence || 5) * 2;
+            const baseSize = getNodeSize(t);
+            const isFoc = t.name === focusNode;
+            const isConn = isConnected(t.name);
             const color = SUB_COLORS[t.sub] || 'var(--ochre)';
-            const isHov = hovered === `t-${i}`;
-            const size = isHov ? r * 1.3 + 6 : r + 6;
-            const showBelow = t._y < 350;
+            const dimmed = focusNode && !isFoc && !isConn;
+
             return (
-              <g key={i} style={{ cursor: 'pointer' }}
-                onMouseEnter={() => setHovered(`t-${i}`)} onMouseLeave={() => setHovered(null)}
-                onClick={() => navigate('/author/' + encodeURIComponent(t.name))}>
-                <circle cx={t._x} cy={t._y} r={size} fill="var(--bone)" stroke={color}
-                  strokeWidth={isHov ? 2.5 : 1.5} filter={isHov ? 'drop-shadow(0 0 6px rgba(196,149,106,0.4))' : 'none'}
-                  style={{ transition: 'all 0.4s cubic-bezier(0.4,0,0.2,1)' }} />
-                <text x={t._x} y={t._y + 4} textAnchor="middle" fill="var(--ink)" fontSize={10}
-                  fontFamily={FONT.serif} fontWeight={600}>{t.name[0]}</text>
-                <span style={{ position: 'absolute', left: t._x - 40, top: t._y + size + 4, width: 80, textAlign: 'center',
-                  fontSize: 10, color: 'var(--ink)', fontWeight: isHov ? 600 : 400, transition: 'all 0.3s' }}>
-                  {t.name}
-                </span>
-                {isHov && (
-                  <foreignObject x={t._x - 65} y={showBelow ? t._y + size + 16 : t._y - size - 48} width={130} height={40}>
-                    <div style={{ background: 'rgba(248,244,238,0.98)', border: '1px solid var(--border)', borderRadius: 8,
-                      padding: '6px 12px', textAlign: 'center', fontSize: 11, fontFamily: FONT.sans }}>
-                      <div style={{ color: 'var(--text-dim)' }}>{t.sub} &middot; {t.era}</div>
-                      <div style={{ color: 'var(--ochre)', fontStyle: 'italic' }}>&ldquo;{t.key}&rdquo;</div>
-                    </div>
-                  </foreignObject>
+              <g key={i} style={{ cursor: 'pointer', transition: 'opacity 0.35s' }}
+                opacity={dimmed ? 0.22 : 1}
+                onClick={() => {
+                  if (selected === t.name) {
+                    setSelected(null);
+                    navigate('/author/' + encodeURIComponent(t.name));
+                  } else {
+                    setSelected(selected === t.name ? null : t.name);
+                  }
+                }}
+                onMouseEnter={() => setHovered(t.name)}
+                onMouseLeave={() => setHovered(null)}>
+
+                {/* Pulse ring for selected */}
+                {selected === t.name && (
+                  <circle cx={t._x} cy={t._y} r={baseSize + 16} fill="none" stroke={color} strokeWidth="1" opacity="0.25"
+                    style={{ animation: 'pulse 2s ease-out infinite' }} />
+                )}
+
+                {/* Main circle */}
+                <circle cx={t._x} cy={t._y} r={isFoc ? baseSize * 1.2 : baseSize}
+                  fill="var(--bone)" stroke={color}
+                  strokeWidth={isFoc ? 2.2 : (t.influence >= 9 ? 1.8 : 1.2)}
+                  filter={isFoc ? `drop-shadow(0 0 8px ${color}60)` : 'none'}
+                  style={{ transition: 'all 0.4s cubic-bezier(0.22,1,0.36,1)' }} />
+
+                {/* Initial */}
+                <text x={t._x} y={t._y + (baseSize > 20 ? 5 : 3)} textAnchor="middle"
+                  fill={isFoc ? color : 'var(--ink)'} fontSize={baseSize > 22 ? 13 : 10}
+                  fontFamily={FONT.serif} fontWeight={600} style={{ transition: 'all 0.3s' }}>
+                  {t.name[0]}
+                </text>
+
+                {/* Name label — visible for large nodes or focused */}
+                {(baseSize >= 22 || isFoc) && (
+                  <text x={t._x} y={t._y + baseSize + 14} textAnchor="middle"
+                    fill="var(--ink)" fontSize={isFoc ? 11 : 9} fontFamily={FONT.sans}
+                    fontWeight={isFoc ? 500 : 300} style={{ transition: 'all 0.3s' }}>
+                    {t.name}
+                  </text>
+                )}
+
+                {/* Hover/selected detail panel */}
+                {isFoc && (
+                  <g>
+                    <rect x={t._x - 80} y={t._y - baseSize - 78} width={160} height={66} rx={6}
+                      fill="rgba(248,244,238,0.97)" stroke={color} strokeWidth="0.8" strokeOpacity="0.5"
+                      filter="drop-shadow(0 2px 12px rgba(0,0,0,0.08))" />
+                    <text x={t._x} y={t._y - baseSize - 60} textAnchor="middle" fill="var(--ink)"
+                      fontSize={12} fontFamily={FONT.serif} fontWeight={600}>{t.name}</text>
+                    <text x={t._x} y={t._y - baseSize - 44} textAnchor="middle" fill={color}
+                      fontSize={9} fontFamily={FONT.sans} fontWeight={500}>{t.sub}</text>
+                    <text x={t._x} y={t._y - baseSize - 30} textAnchor="middle" fill="var(--text-dim)"
+                      fontSize={9} fontFamily={FONT.sans}>{t.era} · {t.key}</text>
+                    <text x={t._x} y={t._y - baseSize - 18} textAnchor="middle" fill="var(--fade)"
+                      fontSize={8} fontFamily={FONT.sans}>{t.works ? t.works.length + ' works' : ''}</text>
+                  </g>
                 )}
               </g>
             );
