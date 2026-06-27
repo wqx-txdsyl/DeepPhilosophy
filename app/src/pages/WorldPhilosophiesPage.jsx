@@ -51,79 +51,80 @@ export default function WorldPhilosophiesPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="page-container" style={{ paddingBottom: 60 }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 16px' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-          <button
-            onClick={() => navigate('/genealogy')}
-            style={{
-              background: 'none', border: 'none', fontSize: 22, cursor: 'pointer',
-              color: 'var(--text-dim)', padding: '4px 8px', lineHeight: 1,
-            }}
-            aria-label="返回"
-          >
-            ←
-          </button>
-          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>🌍 世界哲学传统</h2>
-        </div>
-        <p style={{ color: 'var(--text-dim)', fontSize: 13, margin: '0 0 28px', lineHeight: 1.7 }}>
-          除了东西方两大哲学谱系，世界上还有丰富的哲学传统值得探索。以下八大哲学传统覆盖了从南亚到非洲、从中东到拉美的广阔思想版图。
-        </p>
+    <div className="page-container" style={{ paddingBottom: 80 }}>
 
-        {/* Cards Grid */}
+      {/* ══════════ HERO ══════════ */}
+      <section style={{ padding: '72px 32px 48px', textAlign: 'center', maxWidth: 720, margin: '0 auto' }}>
+        <button onClick={() => navigate('/genealogy')} style={{
+          background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13,
+          color: 'var(--text-dim)', letterSpacing: '0.04em', marginBottom: 32, padding: 0
+        }}>← 返回谱系</button>
+        <p style={{
+          fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500,
+          letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 16px'
+        }}>
+          World Philosophies
+        </p>
+        <h1 style={{
+          fontFamily: '"Playfair Display", "PingFang SC", serif',
+          fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 400, color: 'var(--ink)',
+          letterSpacing: '0.04em', lineHeight: 1.2, margin: '0 0 20px'
+        }}>
+          世界哲学传统
+        </h1>
+        <p style={{
+          fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 300,
+          color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto'
+        }}>
+          除了东西方两大谱系，从南亚到非洲、从中东到拉美，<br />八大哲学传统覆盖了广阔的思想版图。
+        </p>
+        <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
+      </section>
+
+      {/* ══════════ CARDS — editorial gallery ══════════ */}
+      <section style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 32px 64px' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-          gap: 16,
+          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+          gap: 24,
         }}>
           {WORLD_PHILOSOPHIES.map((phil) => (
             <div
               key={phil.name}
               onClick={() => navigate('/school/' + encodeURIComponent(phil.name))}
               style={{
-                background: 'var(--secondary)',
-                borderRadius: 12,
-                padding: '18px 20px',
-                border: '1px solid var(--border)',
-                borderLeft: '5px solid ' + phil.color,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                cursor: 'pointer',
+                padding: '24px 0', cursor: 'pointer',
+                borderBottom: '1px solid var(--border)',
+                transition: 'all 0.25s', background: 'transparent'
               }}
+              onMouseEnter={e => { e.currentTarget.style.borderBottomColor = phil.color; }}
+              onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; }}
             >
               <h3 style={{
-                fontSize: 17,
-                fontWeight: 700,
-                color: phil.color,
-                margin: 0,
+                fontFamily: '"Playfair Display", "PingFang SC", serif',
+                fontSize: 22, fontWeight: 400, color: 'var(--ink)',
+                letterSpacing: '0.03em', margin: '0 0 8px'
               }}>
                 {phil.name}
               </h3>
               <p style={{
-                fontSize: 13,
-                color: 'var(--text-dim)',
-                margin: 0,
-                lineHeight: 1.75,
+                fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300,
+                color: 'var(--text-dim)', lineHeight: 1.8, margin: 0
               }}>
                 {phil.desc}
               </p>
             </div>
           ))}
         </div>
+      </section>
 
-        {/* Footer hint */}
-        <p style={{
-          textAlign: 'center',
-          color: 'var(--text-dim)',
-          fontSize: 12,
-          marginTop: 32,
-          opacity: 0.6,
-        }}>
-          更多哲学传统持续收录中 · 详情页即将上线
-        </p>
-      </div>
+      {/* ══════════ FOOTER ══════════ */}
+      <p style={{
+        textAlign: 'center', color: 'var(--fade)', fontSize: 12, fontFamily: 'var(--font-sans)',
+        fontWeight: 300, paddingBottom: 24
+      }}>
+        更多哲学传统持续收录中
+      </p>
     </div>
   );
 }
