@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { FONT, SPACE } from './tokens';
 
-export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroImage }) {
+export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroImage, englishName }) {
   const navigate = useNavigate();
   return (
     <section style={{
@@ -28,7 +28,7 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
       <p style={{
         fontSize: 11, fontWeight: 500, letterSpacing: '0.25em', textTransform: 'uppercase',
         color: 'var(--ochre)', marginBottom: SPACE.lg, position: 'relative', fontFamily: FONT.sans
-      }}>Philosophical School</p>
+      }}>{englishName || 'PHILOSOPHICAL SCHOOL'}</p>
 
       {/* Dramatic title — larger, bolder letter spacing */}
       <h1 style={{
