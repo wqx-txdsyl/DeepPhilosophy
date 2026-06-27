@@ -7862,63 +7862,116 @@ function SchoolDetailPage() {
   const heroImage = m.bg || 'url(/schools/greek.jpg)';
   const [hovered, setHovered] = useState(null);
 
-  // Layout: spread thinkers across canvas with sub-school grouping, no overlaps
+  // Radial force-directed layout: center-outward, no overlaps, minimum line length
   const thinkers = (() => {
     const ts = data.thinkers;
-    const total = ts.length;
+    const rels = data.relations || [];
     const cx = 400, cy = 280;
-    const W = 800, H = 560;
+    const MIN_DIST = 55; // minimum center-to-center distance between nodes
+    const MIN_LINE = 80; // minimum line length
 
-    // Group thinkers by sub-school
-    const groups = {};
-    ts.forEach(t => {
-      const g = t.sub || 'default';
-      if (!groups[g]) groups[g] = [];
-      groups[g].push(t);
-    });
-    const groupNames = Object.keys(groups);
-    const groupCount = groupNames.length;
+    // Get node display radius: baseSize + hover margin
+    const getR = (t) => {
+      const inf = t.influence || 5;
+      const base = inf >= 10 ? 28 : inf >= 9 ? 24 : inf >= 8 ? 20 : inf >= 7 ? 17 : 14;
+      return base + 8; // display radius with padding
+    };
 
-    const positions = {};
+    // Build adjacency map
+    const adj = {}; ts.forEach(t => { adj[t.name] = []; });
+    rels.forEach(r => { if (adj[r.from] && adj[r.to]) { adj[r.from].push(r.to); adj[r.to].push(r.from); } });
 
-    if (groupCount <= 2 && total <= 10) {
-      // Small schools: spread evenly across full canvas with slight grouping
-      const sorted = [...ts].sort((a, b) => (b.influence || 5) - (a.influence || 5));
-      sorted.forEach((t, i) => {
-        // Golden-angle spiral for organic non-overlapping spread
-        const phi = i * 2.39996; // golden angle
-        const r = 40 + i * (Math.min(W, H) / 2 - 50) / total;
-        const px = cx + Math.cos(phi) * r;
-        const py = cy + Math.sin(phi) * r * 0.7;
-        positions[t.name] = { _x: Math.max(60, Math.min(740, px)), _y: Math.max(45, Math.min(515, py)) };
-      });
-    } else {
-      // Multi-group: place groups in a circle, thinkers within each group in mini-circles
-      const groupRadius = Math.min(220, groupCount * 35 + 60);
-
-      groupNames.forEach((gName, gi) => {
-        const group = groups[gName];
-        const gAngle = (gi / groupCount) * Math.PI * 2 + (gi % 2) * 0.3;
-        const gCx = cx + Math.cos(gAngle) * groupRadius;
-        const gCy = cy + Math.sin(gAngle) * groupRadius * 0.7;
-
-        const sorted = [...group].sort((a, b) => (b.influence || 5) - (a.influence || 5));
-        const nodeRadius = Math.max(55, group.length * 28);
-
-        sorted.forEach((t, si) => {
-          const angle = (si / group.length) * Math.PI * 2 + (gi * 0.5);
-          const r = nodeRadius * (0.3 + 0.7 * (si / group.length)); // inner + outer rings
-          const px = gCx + Math.cos(angle) * r;
-          const py = gCy + Math.sin(angle) * r * 0.6;
-          positions[t.name] = { _x: Math.max(55, Math.min(745, px)), _y: Math.max(45, Math.min(515, py)) };
-        });
+    // BFS from highest-influence node to determine radial layers
+    const sorted = [...ts].sort((a, b) => (b.influence || 5) - (a.influence || 5));
+    const center = sorted[0];
+    const layers = {};
+    const visited = new Set();
+    const queue = [{ name: center.name, layer: 0 }];
+    visited.add(center.name);
+    while (queue.length) {
+      const { name, layer } = queue.shift();
+      if (!layers[layer]) layers[layer] = [];
+      layers[layer].push(name);
+      (adj[name] || []).forEach(nb => {
+        if (!visited.has(nb)) { visited.add(nb); queue.push({ name: nb, layer: layer + 1 }); }
       });
     }
+    // Handle unconnected thinkers
+    ts.forEach(t => { if (!visited.has(t.name)) { if (!layers[99]) layers[99] = []; layers[99].push(t.name); } });
+
+    const positions = {};
+    const layerKeys = Object.keys(layers).map(Number).sort((a, b) => a - b);
+    const maxLayer = Math.max(...layerKeys, 1);
+
+    // Place center node
+    positions[center.name] = { _x: cx, _y: cy };
+
+    // Place nodes layer by layer, radiating outward
+    layerKeys.forEach(layer => {
+      if (layer === 0) return;
+      const names = layers[layer] || [];
+      const layerRadius = 50 + (layer / maxLayer) * 230;
+      const count = names.length;
+
+      // For each name, find its connected parent in previous layer
+      names.forEach((name, i) => {
+        // Find which parent(s) in earlier layers connect to this node
+        const parents = rels.filter(r => r.from === name || r.to === name)
+          .map(r => r.from === name ? r.to : r.from)
+          .filter(p => positions[p]);
+
+        let angle;
+        if (parents.length > 0) {
+          // Position near the average angle of parents
+          const sumAngle = parents.reduce((s, p) => {
+            const dx = positions[p]._x - cx, dy = positions[p]._y - cy;
+            return s + Math.atan2(dy, dx);
+          }, 0);
+          angle = sumAngle / parents.length + (i - count / 2) * 0.5;
+        } else {
+          // No parent: spread evenly
+          angle = (i / Math.max(count, 1)) * Math.PI * 2 + layer * 0.4;
+        }
+
+        // Base position
+        let px = cx + Math.cos(angle) * layerRadius;
+        let py = cy + Math.sin(angle) * layerRadius * 0.7;
+
+        // Ensure minimum distance from all placed nodes
+        let attempts = 0;
+        let overlap = true;
+        while (overlap && attempts < 30) {
+          overlap = false;
+          for (const pName in positions) {
+            const dx2 = px - positions[pName]._x;
+            const dy2 = py - positions[pName]._y;
+            const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+            const t1 = ts.find(x => x.name === name);
+            const t2 = ts.find(x => x.name === pName);
+            const minD = getR(t1) + getR(t2) + 12;
+            if (dist < minD) {
+              overlap = true;
+              // Push outward
+              const pushAngle = Math.atan2(dy2, dx2);
+              px += Math.cos(pushAngle) * 8;
+              py += Math.sin(pushAngle) * 8;
+              break;
+            }
+          }
+          // Clamp to canvas
+          px = Math.max(60, Math.min(740, px));
+          py = Math.max(45, Math.min(515, py));
+          attempts++;
+        }
+
+        positions[name] = { _x: px, _y: py };
+      });
+    });
 
     return ts.map(t => ({
       ...t,
-      _x: (positions[t.name] || { _x: cx })._x,
-      _y: (positions[t.name] || { _y: cy })._y,
+      _x: (positions[t.name] || { _x: cx + (Math.random()-0.5)*300 })._x,
+      _y: (positions[t.name] || { _y: cy + (Math.random()-0.5)*200 })._y,
     }));
   })();
 
