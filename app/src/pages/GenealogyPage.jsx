@@ -193,16 +193,46 @@ function GenealogyPage() {
   }, []);
 
   return (
-    <div className="page-container" style={{ paddingBottom: 60 }}>
-      <h2 className="section-title" style={{ marginBottom: 24, textAlign: 'center' }}>🧬 东西方哲学谱系 · 66流派</h2>
+    <div className="page-container" style={{ paddingBottom: 80 }}>
 
-      {/* Timeline — dual-sided */}
-      <div style={{ maxWidth: '100%', margin: '0 auto', position: 'relative', padding: '40px 24px' }}>
+      {/* ══════════ HERO — editorial ══════════ */}
+      <section style={{
+        padding: '80px 32px 56px', textAlign: 'center', maxWidth: 780, margin: '0 auto'
+      }}>
+        <p style={{
+          fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500,
+          letterSpacing: '0.22em', textTransform: 'uppercase',
+          color: 'var(--ochre)', margin: '0 0 20px'
+        }}>
+          Philosophical Genealogy
+        </p>
+        <h1 style={{
+          fontFamily: '"Playfair Display", "PingFang SC", serif',
+          fontSize: 'clamp(2.4rem, 6vw, 3.6rem)', fontWeight: 400,
+          color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.2,
+          margin: '0 auto 16px', maxWidth: 640
+        }}>
+          东西方哲学谱系
+        </h1>
+        <p style={{
+          fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 300,
+          color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto'
+        }}>
+          从公元前六世纪至二十一世纪，七十三个流派，<br />一部横跨两千五百年的思想史长卷。
+        </p>
+        <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '32px auto 0', opacity: 0.4 }} />
+      </section>
 
-        {/* Center axis */}
-        <div style={{ position: 'absolute', left: '50%', top: 60, bottom: 60, width: 2, background: 'var(--border)', transform: 'translateX(-50%)' }} />
+      {/* ══════════ TIMELINE — dual-sided, refined ══════════ */}
+      <div style={{ maxWidth: '100%', margin: '0 auto', position: 'relative', padding: '24px 24px 40px' }}>
 
-        {/* Merged eras from both timelines */}
+        {/* Center axis — thinner, softer */}
+        <div style={{
+          position: 'absolute', left: '50%', top: 40, bottom: 40, width: 1,
+          background: 'linear-gradient(to bottom, transparent 0%, var(--border) 10%, var(--border) 90%, transparent 100%)',
+          transform: 'translateX(-50%)'
+        }} />
+
         {(() => {
           const allEras = [];
           const eastMap = {}, westMap = {};
@@ -210,7 +240,6 @@ function GenealogyPage() {
           WESTERN_TIMELINE.forEach(e => { westMap[e.century] = e.schools; });
           const centuries = [...new Set([...Object.keys(eastMap), ...Object.keys(westMap)])];
           centuries.sort((a,b) => {
-            // Extract century number and sub-marker (初=early, 中=mid, 末=late)
             const parse = (s) => {
               const bce = s.includes('公元前');
               const nums = s.match(/\d+/g);
@@ -233,35 +262,86 @@ function GenealogyPage() {
           return allEras.map((era, eraIdx) => {
             const hasEast = era.east.length > 0, hasWest = era.west.length > 0;
             return (
-              <div key={eraIdx} style={{ display: 'flex', marginBottom: 36, position: 'relative' }}>
+              <div key={eraIdx} style={{ display: 'flex', marginBottom: 48, position: 'relative' }}>
                 {/* LEFT: Eastern */}
-                <div style={{ flex: 1, paddingRight: 24, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <div style={{ flex: 1, paddingRight: 28, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                   {hasEast && era.east.map((school, si) => {
                     const color = EASTERN_COLORS[(eastIdx + si) % EASTERN_COLORS.length];
                     return (
-                      <div key={school} style={{ background: 'var(--secondary)', borderRadius: 10, padding: '10px 16px', marginBottom: 10, maxWidth: 380, border: '1px solid var(--border)', borderRight: '4px solid ' + color, cursor: 'pointer', textAlign: 'right' }}
-                      onClick={() => navigate('/school/' + encodeURIComponent(school))}>
-                        <h3 style={{ fontSize: 15, fontWeight: 700, color: color, margin: '0 0 4px' }}>{school}</h3>
-                        {EASTERN_DESCRIPTIONS[school] && <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{EASTERN_DESCRIPTIONS[school]}</p>}
+                      <div key={school}
+                        onClick={() => navigate('/school/' + encodeURIComponent(school))}
+                        style={{
+                          maxWidth: 360, marginBottom: 8, cursor: 'pointer', textAlign: 'right',
+                          padding: '12px 18px', borderRight: '3px solid ' + color,
+                          transition: 'all 0.25s', background: 'transparent'
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                      >
+                        <h3 style={{
+                          fontFamily: '"Playfair Display", "PingFang SC", serif',
+                          fontSize: 16, fontWeight: 500, color: 'var(--ink)',
+                          margin: '0 0 3px', letterSpacing: '0.03em'
+                        }}>
+                          {school}
+                        </h3>
+                        {EASTERN_DESCRIPTIONS[school] && (
+                          <p style={{
+                            fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300,
+                            color: 'var(--text-dim)', margin: 0, lineHeight: 1.6
+                          }}>
+                            {EASTERN_DESCRIPTIONS[school]}
+                          </p>
+                        )}
                       </div>
                     );
                   })}
                   {hasEast && (() => { eastIdx += era.east.length; })()}
                 </div>
-                {/* Center dot + label */}
-                <div style={{ width: 70, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 6 }}>
-                  <div style={{ width: 10, height: 10, borderRadius: '50%', background: hasWest ? 'var(--accent)' : '#C46A6A', border: '2px solid var(--bg)', zIndex: 2 }} />
-                  <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--accent)', marginTop: 4, textAlign: 'center', whiteSpace: 'nowrap' }}>{era.century}</span>
+                {/* Center: century marker */}
+                <div style={{ width: 56, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 8 }}>
+                  <div style={{
+                    width: 8, height: 8, borderRadius: '50%', zIndex: 2,
+                    background: 'var(--bone)', border: '2px solid var(--ochre)'
+                  }} />
+                  <span style={{
+                    fontFamily: '"Playfair Display", serif', fontSize: 11, fontWeight: 500,
+                    color: 'var(--ochre)', marginTop: 8, textAlign: 'center',
+                    whiteSpace: 'nowrap', letterSpacing: '0.05em'
+                  }}>
+                    {era.century}
+                  </span>
                 </div>
                 {/* RIGHT: Western */}
-                <div style={{ flex: 1, paddingLeft: 24 }}>
+                <div style={{ flex: 1, paddingLeft: 28 }}>
                   {hasWest && era.west.map((school, si) => {
                     const color = SCHOOL_COLORS[(westIdx + si) % SCHOOL_COLORS.length];
                     return (
-                      <div key={school} style={{ background: 'var(--secondary)', borderRadius: 10, padding: '10px 16px', marginBottom: 10, maxWidth: 380, border: '1px solid var(--border)', borderLeft: '4px solid ' + color, cursor: 'pointer' }}
-                      onClick={() => navigate('/school/' + encodeURIComponent(school))}>
-                        <h3 style={{ fontSize: 15, fontWeight: 700, color: color, margin: '0 0 4px' }}>{school}</h3>
-                        {SCHOOL_DESCRIPTIONS[school] && <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{SCHOOL_DESCRIPTIONS[school]}</p>}
+                      <div key={school}
+                        onClick={() => navigate('/school/' + encodeURIComponent(school))}
+                        style={{
+                          maxWidth: 360, marginBottom: 8, cursor: 'pointer',
+                          padding: '12px 18px', borderLeft: '3px solid ' + color,
+                          transition: 'all 0.25s', background: 'transparent'
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                      >
+                        <h3 style={{
+                          fontFamily: '"Playfair Display", "PingFang SC", serif',
+                          fontSize: 16, fontWeight: 500, color: 'var(--ink)',
+                          margin: '0 0 3px', letterSpacing: '0.03em'
+                        }}>
+                          {school}
+                        </h3>
+                        {SCHOOL_DESCRIPTIONS[school] && (
+                          <p style={{
+                            fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300,
+                            color: 'var(--text-dim)', margin: 0, lineHeight: 1.6
+                          }}>
+                            {SCHOOL_DESCRIPTIONS[school]}
+                          </p>
+                        )}
                       </div>
                     );
                   })}
@@ -272,22 +352,21 @@ function GenealogyPage() {
           });
         })()}
       </div>
-      <div style={{ textAlign: 'center', marginTop: 32, paddingBottom: 24 }}>
+
+      {/* ══════════ FOOTER ══════════ */}
+      <div style={{ textAlign: 'center', paddingBottom: 32 }}>
         <button
           onClick={() => navigate('/world-philosophies')}
           style={{
-            background: 'var(--accent)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 24,
-            padding: '12px 36px',
-            fontSize: 15,
-            fontWeight: 600,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontFamily: '"Playfair Display", serif', fontSize: 15, fontWeight: 400,
+            color: 'var(--ochre)', letterSpacing: '0.04em',
+            padding: '8px 16px', transition: 'opacity 0.2s'
           }}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
         >
-          🌍 查看更多哲学传统
+          世界哲学传统 →
         </button>
       </div>
     </div>
