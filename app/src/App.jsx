@@ -43,6 +43,7 @@ function MainLayout() {
 
   // Auto-save
   useEffect(() => { startAutoSave(); return () => stopAutoSave(); }, []);
+  useEffect(() => { if (localStorage.getItem('dp_dark_mode') === '1') document.documentElement.classList.add('dark-mode'); }, []);
 
   // Candlelight cursor glow
   const glowRef = useRef(null);
@@ -105,6 +106,7 @@ function MainLayout() {
           <h1 className="app-title" onClick={() => navigate('/genealogy')}>
             DeepPhilosophy
           </h1>
+          <button className="settings-btn" onClick={() => { const isDark = document.documentElement.classList.toggle('dark-mode'); localStorage.setItem('dp_dark_mode', isDark ? '1' : '0'); }} style={{ marginRight: 4 }}>{document.documentElement.classList.contains('dark-mode') ? '☀️' : '🌙'}</button>
           <button className="settings-btn" onClick={() => navigate('/settings')}>⚙️</button>
         </header>
       )}

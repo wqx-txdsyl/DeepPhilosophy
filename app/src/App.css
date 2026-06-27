@@ -188,6 +188,30 @@ body {
 /* ——— EPUB ——— */
 .epub-container { background: var(--bone) !important; max-width: 800px !important; margin: 0 auto !important; }
 
+/* ——— Dark Mode ——— */
+html.dark-mode {
+  --bone: #1A1816;
+  --ink: #E8E3D9;
+  --ochre: #C9A96E;
+  --prussian: #6B8FAE;
+  --fade: #7A7068;
+  --text: #E8E3D9;
+  --text-dim: #B8B0A0;
+  --bg: #0F0E0C;
+  --card-bg: #1E1C19;
+  --border: #3A3530;
+  --accent: #6B8FAE;
+  --accent2: #C9A96E;
+}
+html.dark-mode body { background: var(--bg); color: var(--text); }
+html.dark-mode .app-header { background: linear-gradient(to bottom, #1A1816, rgba(26,24,22,0.95)); }
+html.dark-mode .bottom-nav { background: linear-gradient(to top, #1A1816, rgba(26,24,22,0.97)); }
+html.dark-mode .candle-glow { background: radial-gradient(circle, rgba(201,169,110,0.04) 0%, rgba(201,169,110,0.01) 40%, transparent 70%); }
+html.dark-mode .card:hover { border-bottom-color: var(--ochre); }
+html.dark-mode .btn-primary { border-color: var(--ink); color: var(--ink); }
+html.dark-mode .search-box { color: var(--text); }
+html.dark-mode .search-box:focus { border-bottom-color: var(--ochre); }
+
 /* ——— Animation ——— */
 @keyframes pulse { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1.2)} }
 
