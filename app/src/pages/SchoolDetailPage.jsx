@@ -7888,7 +7888,7 @@ function SchoolDetailPage() {
         backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         {/* Dark elegant overlay */}
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(244,240,235,0.75)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.55) 40%, rgba(244,240,235,0.3) 100%)' }} />
 
         <div style={{ position: 'absolute', top: 16, left: 16 }}>
           <button className="btn btn-secondary" style={{ padding:'4px 10px',fontSize:12 }}
@@ -7897,15 +7897,15 @@ function SchoolDetailPage() {
         <p style={{ fontSize: 14, color: 'var(--ochre)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 16, position: 'relative' }}>
           {data.subtitle}
         </p>
-        <h1 style={{ fontSize: 56, fontWeight: 700, fontStyle: 'italic', color: 'var(--ink)', margin: '0 0 16px', position: 'relative', textShadow: '2px 2px 0 rgba(196,149,106,0.15)' }}>
+        <h1 style={{ fontSize: 'clamp(2.8rem, 7vw, 4.5rem)', fontWeight: 400, fontStyle: 'italic', color: 'var(--ink)', margin: '0 0 16px', position: 'relative', letterSpacing: '0.02em' }}>
           {data.name}
         </h1>
         <div style={{ width: 80, height: 3, background: 'var(--ochre)', margin: '16px 0 28px' }} />
         <blockquote style={{
-          fontSize: 22, fontStyle: 'italic', color: 'var(--text-dim)',
-          maxWidth: 560, lineHeight: 1.8, margin: '0 0 12px', position: 'relative',
+          fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontStyle: 'italic', color: 'var(--text-dim)',
+          maxWidth: 620, lineHeight: 1.8, margin: '0 0 12px', position: 'relative', fontWeight: 300
         }}>
-          {data.quote}
+          &ldquo;{data.quote}&rdquo;
         </blockquote>
         <p style={{ fontSize: 14, color: 'var(--ochre)', fontWeight: 500 }}>— {data.quoteAuthor}</p>
         <div style={{ position: 'absolute', bottom: 40, animation: 'pulse 1.5s infinite' }}>
@@ -7915,7 +7915,7 @@ function SchoolDetailPage() {
 
       {/* ====== Section 2: Overview ====== */}
       <div style={{
-        minHeight: '100vh', padding: '60px 40px', maxWidth: 800, margin: '0 auto',
+        padding: '60px 40px', maxWidth: 800, margin: '0 auto',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
       }}>
         <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 24 }}>
@@ -7943,7 +7943,7 @@ function SchoolDetailPage() {
 
       {/* ====== Section 3: Star Constellation ====== */}
       <div style={{
-        minHeight: '100vh', padding: '40px 20px', position: 'relative',
+        padding: '40px 20px', position: 'relative',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
       }}>
         <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 30 }}>
@@ -8065,7 +8065,7 @@ function SchoolDetailPage() {
 
       {/* ====== Section 4: Timeline ====== */}
       <div style={{
-        minHeight: '100vh', padding: '60px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        padding: '60px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
       }}>
         <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 40, textAlign: 'center' }}>
           思想史时间轴
@@ -8074,8 +8074,8 @@ function SchoolDetailPage() {
         <div style={{ position: 'relative', maxWidth: 900, margin: '0 auto' }}>
           {/* Central vertical line */}
           <div style={{
-            position: 'absolute', left: '50%', top: 0, bottom: 0, width: 3,
-            background: 'var(--ink)', opacity: 0.2, transform: 'translateX(-50%)',
+            position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1,
+            background: 'var(--border)', transform: 'translateX(-50%)',
           }} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
@@ -8125,7 +8125,7 @@ function SchoolDetailPage() {
 
       {/* ====== Section 5: Word Sea 辞海 ====== */}
       <div style={{
-        minHeight: '100vh', padding: '60px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        padding: '60px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
         maxWidth: 900, margin: '0 auto',
       }}>
         <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center' }}>
@@ -8189,7 +8189,7 @@ function SchoolDetailPage() {
       {/* ====== Section 6: Golden Quotes 金句荟萃 ====== */}
       {data.quotes && (
       <div style={{
-        minHeight: '100vh', padding: '60px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        padding: '60px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
         maxWidth: 900, margin: '0 auto',
       }}>
         <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center' }}>
@@ -8245,7 +8245,7 @@ function SchoolDetailPage() {
       {/* ====== Section 7: Key Works 重要著作 ====== */}
       {data.works && (
       <div style={{
-        minHeight: '100vh', padding: '60px 40px', maxWidth: 800, margin: '0 auto',
+        padding: '60px 40px', maxWidth: 800, margin: '0 auto',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
       }}>
         <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 12, textAlign: 'center' }}>
@@ -8287,7 +8287,7 @@ function SchoolDetailPage() {
 
       {/* ====== Section 8: Conclusion ====== */}
       <div style={{
-        minHeight: '100vh', padding: '60px 40px', maxWidth: 720, margin: '0 auto',
+        padding: '60px 40px', maxWidth: 720, margin: '0 auto',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
       }}>
         <h2 style={{ fontSize: 28, fontWeight: 600, color: 'var(--ink)', marginBottom: 28 }}>
