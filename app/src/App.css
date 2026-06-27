@@ -22,6 +22,54 @@
   --nav-height: 60px;
 }
 
+/* ============================================================
+   SchoolDetailPage — 暗金博物馆叙事主题
+   ============================================================ */
+.school-detail-dark {
+  --bg-deep: #0A0908;
+  --bg-panel: #1A1816;
+  --bg-card: rgba(26, 24, 22, 0.6);
+  --text-primary: #E8E3D9;
+  --text-secondary: #B8B0A0;
+  --text-muted: #5A5248;
+  --gold: #C9A96E;
+  --gold-dim: rgba(201, 169, 110, 0.25);
+  --gold-glow: rgba(201, 169, 110, 0.15);
+  --glass-bg: rgba(26, 24, 22, 0.7);
+  --glass-border: 1px solid rgba(201, 169, 110, 0.15);
+  --section-py: 6rem;
+  --section-gap: 4rem;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+}
+.school-detail-dark h1,.school-detail-dark h2,.school-detail-dark h3 {
+  font-family: var(--font-serif);
+  color: var(--text-primary);
+}
+/* 金色滚动条 */
+.school-detail-dark::-webkit-scrollbar { width: 4px; }
+.school-detail-dark::-webkit-scrollbar-track { background: #0A0908; }
+.school-detail-dark::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 2px; }
+
+/* 噪声纹理叠加 */
+.school-detail-dark::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: repeating-radial-gradient(circle at 17% 32%, rgba(201,169,110,0.008) 0px, transparent 2px);
+  opacity: 0.6;
+}
+
+/* 章节动画 */
+@keyframes fadeUpIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.anim-fade-up { animation: fadeUpIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+@keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.8); opacity: 0; } }
+.pulse-ring { animation: pulse-ring 2.5s ease-out infinite; }
+
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
