@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Header, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Response
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import uvicorn
@@ -1461,6 +1461,42 @@ async def api_clear_book_chat(book_id: str,
     clear_book_chat(user["id"], book_id)
     return {"success": True}
 
+
+# ============================================================
+# AI 流式代理 — 无用户Key时用服务器Key
+# ============================================================
+
+@app.post("/api/ai/stream")
+async def ai_stream_proxy(req: Request):
+    """流式代理 DeepSeek API，使用服务器默认 Key"""
+    if not config.DEEPSEEK_API_KEY:
+        return JSONResponse({"error": "Server API key not configured"}, status_code=500)
+    try:
+        body = await req.json()
+        import httpx
+        async with httpx.AsyncClient(timeout=120) as client:
+            async with client.stream(
+                "POST",
+                f"{config.DEEPSEEK_BASE_URL}/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {config.DEEPSEEK_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": body.get("model", config.DEEPSEEK_MODEL),
+                    "messages": body.get("messages", []),
+                    "temperature": body.get("temperature", 0.7),
+                    "max_tokens": body.get("max_tokens", 1024),
+                    "stream": True,
+                },
+            ) as resp:
+                return StreamingResponse(
+                    resp.aiter_bytes(),
+                    media_type="text/event-stream",
+                    headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"},
+                )
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
 
 # ============================================================
 # RAG 问答 API

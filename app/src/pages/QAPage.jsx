@@ -118,50 +118,55 @@ function QAPage() {
       }
     } catch {}
 
-    // 流式调用 DeepSeek API
+    // 流式调用 DeepSeek API（有用户Key直连，无Key走服务器代理）
     try {
-      if (apiConfig.apiKey) {
-        const resp = await fetch(`${baseUrl}/v1/chat/completions`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiConfig.apiKey}` },
-          body: JSON.stringify(streamBody),
-          signal: AbortSignal.timeout(60000),
-        });
+      const useProxy = !apiConfig.apiKey;
+      const resp = useProxy
+        ? await fetch(`${getApiBase()}/api/ai/stream`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(streamBody),
+            signal: AbortSignal.timeout(60000),
+          })
+        : await fetch(`${baseUrl}/v1/chat/completions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiConfig.apiKey}` },
+            body: JSON.stringify(streamBody),
+            signal: AbortSignal.timeout(60000),
+          });
 
-        if (resp.ok) {
-          const reader = resp.body.getReader();
-          const decoder = new TextDecoder();
-          let buffer = '';
+      if (resp.ok) {
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
 
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
 
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            buffer = lines.pop() || '';
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
 
-            for (const line of lines) {
-              if (line.startsWith('data: ')) {
-                const data = line.slice(6).trim();
-                if (data === '[DONE]') continue;
-                try {
-                  const json = JSON.parse(data);
-                  const delta = json.choices?.[0]?.delta?.content || '';
-                  if (delta) {
-                    answer += delta;
-                    // 逐字更新最后一条消息
-                    setMessages(prev => {
-                      const updated = [...prev];
-                      const last = { ...updated[updated.length - 1] };
-                      last.content = answer;
-                      last.sources = sources;
-                      updated[updated.length - 1] = last;
-                      return updated;
-                    });
-                  }
-                } catch {}
-              }
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') continue;
+              try {
+                const json = JSON.parse(data);
+                const delta = json.choices?.[0]?.delta?.content || '';
+                if (delta) {
+                  answer += delta;
+                  setMessages(prev => {
+                    const updated = [...prev];
+                    const last = { ...updated[updated.length - 1] };
+                    last.content = answer;
+                    last.sources = sources;
+                    updated[updated.length - 1] = last;
+                    return updated;
+                  });
+                }
+              } catch {}
             }
           }
         }
