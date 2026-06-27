@@ -421,7 +421,7 @@ ${textContext}
   if (!book || !fileUrl) return <div className="loading">正在获取文件...</div>;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden' }}>
       {/* Top bar — compact */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0,
@@ -449,7 +449,7 @@ ${textContext}
       {/* Main area: reader + optional notes panel */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Reader */}
-        <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'auto', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' ? (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
