@@ -68,7 +68,7 @@ export default function WorldPhilosophiesPage() {
           <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>🌍 世界哲学传统</h2>
         </div>
         <p style={{ color: 'var(--text-dim)', fontSize: 13, margin: '0 0 28px', lineHeight: 1.7 }}>
-          除了东西方两大哲学谱系，世界上还有丰富的哲学传统值得探索。以下九大哲学传统覆盖了从南亚到非洲、从中东到拉美的广阔思想版图。
+          除了东西方两大哲学谱系，世界上还有丰富的哲学传统值得探索。以下八大哲学传统覆盖了从南亚到非洲、从中东到拉美的广阔思想版图。
         </p>
 
         {/* Cards Grid */}
