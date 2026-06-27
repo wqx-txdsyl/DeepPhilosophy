@@ -7862,12 +7862,12 @@ function SchoolDetailPage() {
   const heroImage = m.bg || 'url(/schools/greek.jpg)';
   const [hovered, setHovered] = useState(null);
 
-  // Layout: group by sub-school, spread across canvas with organic spacing
+  // Layout: spread thinkers across canvas with sub-school grouping, no overlaps
   const thinkers = (() => {
     const ts = data.thinkers;
-    const rels = data.relations || [];
+    const total = ts.length;
     const cx = 400, cy = 280;
-    const maxR = 240;
+    const W = 800, H = 560;
 
     // Group thinkers by sub-school
     const groups = {};
@@ -7879,45 +7879,46 @@ function SchoolDetailPage() {
     const groupNames = Object.keys(groups);
     const groupCount = groupNames.length;
 
-    // Build adjacency for keeping related thinkers close
-    const related = new Set();
-    rels.forEach(r => {
-      related.add(r.from + '||' + r.to);
-      related.add(r.to + '||'  + r.from);
-    });
-
     const positions = {};
 
-    groupNames.forEach((gName, gi) => {
-      const group = groups[gName];
-      // Place group center evenly on a large circle
-      const gAngle = (gi / groupCount) * Math.PI * 2;
-      const gDist = groupCount <= 1 ? 0 : maxR * 0.4;
-      const gCx = cx + Math.cos(gAngle) * gDist;
-      const gCy = cy + Math.sin(gAngle) * gDist * 0.7;
-
-      // Sort by influence within group
-      const sorted = [...group].sort((a, b) => (b.influence || 5) - (a.influence || 5));
-
-      sorted.forEach((t, si) => {
-        // Spread thinkers within group in a mini-circle
-        const radius = Math.max(40, group.length * 18);
-        const angle = (si / group.length) * Math.PI * 2 + (gi * 0.7);
-        const jitterX = (Math.random() - 0.5) * 20;
-        const jitterY = (Math.random() - 0.5) * 15;
-        const px = gCx + Math.cos(angle) * radius + jitterX;
-        const py = gCy + Math.sin(angle) * radius * 0.65 + jitterY;
-        positions[t.name] = {
-          _x: Math.max(60, Math.min(740, px)),
-          _y: Math.max(45, Math.min(515, py)),
-        };
+    if (groupCount <= 2 && total <= 10) {
+      // Small schools: spread evenly across full canvas with slight grouping
+      const sorted = [...ts].sort((a, b) => (b.influence || 5) - (a.influence || 5));
+      sorted.forEach((t, i) => {
+        // Golden-angle spiral for organic non-overlapping spread
+        const phi = i * 2.39996; // golden angle
+        const r = 40 + i * (Math.min(W, H) / 2 - 50) / total;
+        const px = cx + Math.cos(phi) * r;
+        const py = cy + Math.sin(phi) * r * 0.7;
+        positions[t.name] = { _x: Math.max(60, Math.min(740, px)), _y: Math.max(45, Math.min(515, py)) };
       });
-    });
+    } else {
+      // Multi-group: place groups in a circle, thinkers within each group in mini-circles
+      const groupRadius = Math.min(220, groupCount * 35 + 60);
+
+      groupNames.forEach((gName, gi) => {
+        const group = groups[gName];
+        const gAngle = (gi / groupCount) * Math.PI * 2 + (gi % 2) * 0.3;
+        const gCx = cx + Math.cos(gAngle) * groupRadius;
+        const gCy = cy + Math.sin(gAngle) * groupRadius * 0.7;
+
+        const sorted = [...group].sort((a, b) => (b.influence || 5) - (a.influence || 5));
+        const nodeRadius = Math.max(55, group.length * 28);
+
+        sorted.forEach((t, si) => {
+          const angle = (si / group.length) * Math.PI * 2 + (gi * 0.5);
+          const r = nodeRadius * (0.3 + 0.7 * (si / group.length)); // inner + outer rings
+          const px = gCx + Math.cos(angle) * r;
+          const py = gCy + Math.sin(angle) * r * 0.6;
+          positions[t.name] = { _x: Math.max(55, Math.min(745, px)), _y: Math.max(45, Math.min(515, py)) };
+        });
+      });
+    }
 
     return ts.map(t => ({
       ...t,
-      _x: (positions[t.name] || { _x: cx + (Math.random()-0.5)*350 })._x,
-      _y: (positions[t.name] || { _y: cy + (Math.random()-0.5)*250 })._y,
+      _x: (positions[t.name] || { _x: cx })._x,
+      _y: (positions[t.name] || { _y: cy })._y,
     }));
   })();
 
