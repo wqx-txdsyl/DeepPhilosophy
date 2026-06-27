@@ -7969,10 +7969,16 @@ function SchoolDetailPage() {
                     <circle cx={t._x} cy={t._y} r={isHovered ? r * 1.3 : r} fill="#1A1816" stroke={color} strokeWidth={isHovered ? 2.5 : 1.5}
                       filter="url(#glow)" style={{ transition: 'all 0.3s' }} />
                     <text x={t._x} y={t._y + 5} textAnchor="middle" fill={color} fontSize={10} fontFamily="var(--font-serif)" fontWeight={600}>{t.name[0]}</text>
+                    {/* Full name always visible below node */}
+                    <text x={t._x} y={t._y + r + 14} textAnchor="middle" fill={isHovered ? '#E8E3D9' : 'var(--text-secondary)'}
+                      fontSize={isHovered ? 11 : 8} fontFamily="var(--font-serif)" fontWeight={isHovered ? 600 : 400}
+                      style={{ transition: 'all 0.3s', opacity: isHovered ? 1 : 0.65 }}>{t.name}</text>
                     {isHovered && (
                       <g>
-                        <rect x={t._x - 60} y={t._y - r - 48} width={120} height={40} rx={6} fill="rgba(26,24,22,0.9)" stroke={color} strokeOpacity="0.4" />
-                        <text x={t._x} y={t._y - r - 30} textAnchor="middle" fill="#E8E3D9" fontSize={12} fontFamily="var(--font-serif)">{t.name}</text>
+                        <rect x={t._x - 75} y={t._y - r - 70} width={150} height={60} rx={8} fill="rgba(20,18,16,0.95)" stroke={color} strokeOpacity="0.5" strokeWidth="1" />
+                        <text x={t._x} y={t._y - r - 52} textAnchor="middle" fill="#E8E3D9" fontSize={13} fontFamily="var(--font-serif)" fontWeight={600}>{t.name}</text>
+                        <text x={t._x} y={t._y - r - 36} textAnchor="middle" fill={color} fontSize={10} fontFamily="var(--font-sans)" fontWeight={500}>{t.sub}</text>
+                        <text x={t._x} y={t._y - r - 22} textAnchor="middle" fill="var(--text-muted)" fontSize={9} fontFamily="var(--font-sans)">{t.era} · {t.key}</text>
                         <text x={t._x} y={t._y - r - 16} textAnchor="middle" fill={color} fontSize={10} fontFamily="var(--font-sans)">{t.sub}</text>
                       </g>
                     )}
@@ -7989,7 +7995,11 @@ function SchoolDetailPage() {
         <h2 style={{ textAlign: 'center', fontSize: 28, fontFamily: 'var(--font-serif)', color: 'var(--gold)', marginBottom: 8, fontWeight: 300 }}>思想史时间轴</h2>
         <div style={{ width: 64, height: 1, background: 'linear-gradient(to right, transparent, var(--gold), transparent)', margin: '0 auto 56px' }} />
         <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1.5, background: 'linear-gradient(to bottom, transparent, rgba(201,169,110,0.5), transparent)', transform: 'translateX(-50%)' }} />
+          {/* Dual-layer center line */}
+          <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1, background: 'rgba(201,169,110,0.15)', transform: 'translateX(-50%)' }} />
+          <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2, transform: 'translateX(-50%)',
+            background: 'repeating-linear-gradient(to bottom, rgba(201,169,110,0.4) 0px, rgba(201,169,110,0.4) 5px, transparent 5px, transparent 10px)',
+            filter: 'drop-shadow(0 0 5px rgba(201,169,110,0.25))' }} />
           {data.timeline.map((ev, i) => {
             const colorMap = { birth: '#C9A96E', death: '#A06050', book: '#6B8E6B', idea: '#7B8EA0', event: '#B8A080' };
             const color = colorMap[ev.type] || '#C9A96E';
@@ -8006,8 +8016,11 @@ function SchoolDetailPage() {
                     <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{ev.detail}</p>
                   </div>
                 </div>
-                <div style={{ flexShrink: 0, width: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 24 }}>
-                  <div style={{ width: 12, height: 12, borderRadius: '50%', border: '2px solid ' + color, background: '#0A0908', position: 'relative', zIndex: 1 }} />
+                <div style={{ flexShrink: 0, width: 20, display: 'flex', justifyContent: 'center', paddingTop: 24, position: 'relative', zIndex: 2 }}>
+                  <svg width="14" height="14" viewBox="0 0 14 14">
+                    <polygon points="7,0 11,7 7,14 3,7" fill="#0A0908" stroke={color} strokeWidth="1.5"
+                      style={{ filter: `drop-shadow(0 0 5px ${color})` }} />
+                  </svg>
                 </div>
                 <div style={{ flex: '1 1 45%' }} />
               </div>
