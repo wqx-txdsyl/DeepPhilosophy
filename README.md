@@ -23,8 +23,11 @@ DeepPhilosophy/
 ```
 
 根目录的辅助脚本（在 `../Q&ASystem/` 下）：
-- `_gen_east3.py` — 东方学派数据生成器（调用 DeepSeek API）
-- `_gen_world.py` — 世界哲学数据生成器（调用 DeepSeek API）
+- `_gen_east.py` — 东方学派数据生成器（22学派，调用 DeepSeek API）
+- `_gen_west.py` — 西方学派数据生成器（43学派，调用 DeepSeek API）
+- `_gen_world.py` — 世界哲学数据生成器（8学派，调用 DeepSeek API）
+
+三个脚本共享 `_gen_east.py` 中的 API 密钥，可独立运行。已存在的学派会自动跳过。
 
 ## 快速开始
 
@@ -111,8 +114,9 @@ const SCHOOL_MAP = {
 
 ```bash
 cd ../Q&ASystem
-python _gen_world.py    # 生成世界哲学数据
-python _gen_east3.py    # 生成东方哲学数据
+python _gen_east.py    # 生成东方哲学数据
+python _gen_west.py    # 生成西方哲学数据
+python _gen_world.py   # 生成世界哲学数据
 ```
 
 生成器通过 DeepSeek API 自动生成 overview/conclusion/thinkers/cihai/quotes/works/timeline。
