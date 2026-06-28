@@ -102,12 +102,14 @@ function MainLayout() {
   };
 
   const isReader = location.pathname.startsWith('/reader');
-  const hideNav = isReader;
+  const isHome = location.pathname === '/';
+  const hideNav = isReader || isHome;
+  const hideHeader = isHome || isReader;
   const activeTab = getActiveTab();
 
   return (
     <>
-      {!isReader && (
+      {!hideHeader && (
         <header className="app-header">
           <h1 className="app-title" onClick={() => navigate('/')}>
             DeepPhilosophy
