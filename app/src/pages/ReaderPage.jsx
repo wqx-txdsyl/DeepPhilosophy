@@ -329,7 +329,7 @@ ${textContext}
     setLoading(false);
   };
 
-  // Init EPUB — restore saved chapter
+  // Init EPUB — restore saved chapter on load
   useEffect(() => {
     if (!loading && fileType === 'epub') {
       try {
@@ -339,6 +339,14 @@ ${textContext}
       } catch {}
     }
   }, [loading, fileType]);
+
+  // Navigate EPUB to restored chapter after rendition is ready
+  useEffect(() => {
+    if (epubReady && epubChapter > 0 && epubRenditionRef.current) {
+      const timer = setTimeout(() => goEpubChapter(epubChapter), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [epubReady, epubChapter]);
 
   // PDF callbacks
   const onPdfLoadSuccess = ({ numPages: n }) => {
@@ -493,7 +501,7 @@ ${textContext}
                     onClick={e => e.stopPropagation()}>
                     <h3 style={{ color: 'var(--accent)', marginBottom: 12 }}>📑 目录</h3>
                     {epubTocRef.current.map((item, i) => (
-                      <div key={i} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: 8, borderBottom: '1px solid var(--border)', fontSize: 14 }}
+                      <div key={i} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: 8, borderBottom: '1px solid var(--border)', fontSize: 14, color: 'var(--text)' }}
                         onClick={() => { epubRenditionRef.current?.display(item.href); setShowToc(false); }}>
                         {item.label}
                       </div>
