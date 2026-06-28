@@ -172,8 +172,8 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
           {focusNode && thinkers.filter(t => t.name === focusNode).map(t => {
             const bs = getNodeSize(t);
             const co = SUB_COLORS[t.sub] || 'var(--ochre)';
-            const panelH = 66;
-            const panelW = 160;
+            const panelH = 82;
+            const panelW = 180;
             const above = t._y - bs - panelH - 12;
             const below = t._y + bs + 12;
             const showBelow = above < 10;
@@ -186,12 +186,13 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
                   filter="drop-shadow(0 2px 12px rgba(0,0,0,0.08))" />
                 <text x={px} y={py + 16} textAnchor="middle" fill="var(--ink)"
                   fontSize={12} fontFamily={FONT.serif} fontWeight={600}>{t.name}</text>
-                <text x={px} y={py + 32} textAnchor="middle" fill={co}
-                  fontSize={9} fontFamily={FONT.sans} fontWeight={500}>{t.sub}</text>
-                <text x={px} y={py + 46} textAnchor="middle" fill="var(--text-dim)"
-                  fontSize={9} fontFamily={FONT.sans}>{t.era} · {t.key}</text>
-                <text x={px} y={py + 60} textAnchor="middle" fill="var(--fade)"
-                  fontSize={8} fontFamily={FONT.sans}>{Array.isArray(t.works) ? t.works.length + ' works' : ''}</text>
+                <foreignObject x={px - panelW/2 + 8} y={py + 24} width={panelW - 16} height={54}>
+                  <div style={{ fontFamily: FONT.sans, fontSize: 9, color: 'var(--text-dim)', lineHeight: 1.5, wordBreak: 'break-word', textAlign: 'center' }}>
+                    <span style={{ color: co, fontWeight: 500 }}>{t.sub}</span><br/>
+                    <span>{t.era}{t.key ? ' · ' + t.key : ''}</span>
+                    {Array.isArray(t.works) && t.works.length > 0 && <><br/><span style={{ color: 'var(--fade)', fontSize: 8 }}>{t.works.length} 部著作</span></>}
+                  </div>
+                </foreignObject>
               </g>
             );
           })}
