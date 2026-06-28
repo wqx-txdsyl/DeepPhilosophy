@@ -50,7 +50,7 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
       }}>
         <span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.7, marginRight: 6 }}>&#x201C;</span>{quote}<span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.7, marginLeft: 6 }}>&#x201D;</span>
       </blockquote>
-      <p style={{ fontSize: 16, color: 'var(--ink)', fontWeight: 600, fontFamily: FONT.sans, letterSpacing: '0.04em' }}>{quoteAuthor}</p>
+      <p style={{ fontSize: 16, color: 'var(--ochre)', fontWeight: 600, fontFamily: FONT.sans, letterSpacing: '0.04em' }}>{quoteAuthor}</p>
 
       {/* Scroll indicator — softer */}
       <div style={{ position: 'absolute', bottom: 36, opacity: 0.5 }}>
