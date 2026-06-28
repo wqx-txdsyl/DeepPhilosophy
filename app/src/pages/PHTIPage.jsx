@@ -22,14 +22,14 @@ function PHTIPage() {
   const [result, setResult] = useState(null); // matched personality
   const [roast, setRoast] = useState('');
   const [roasting, setRoasting] = useState(false);
-  const roastRef = useRef('');
-
   // Start test
   const startTest = () => {
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
     setQuestions(shuffled.slice(0, TOTAL_QUESTIONS));
     setCurrentQ(0);
     setAnswers([]);
+    setRoast('');
+    setResult(null);
     setPhase('testing');
   };
 
@@ -123,48 +123,59 @@ function PHTIPage() {
 - 最后一句必须是致命暴击金句，让人看完沉默三秒然后转发
 - 字数一定要够300字以上！不要敷衍！`;
 
-    try {
       const apiBase = getApiBase();
-      const resp = await fetch(`${apiBase}/api/ai/stream`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'deepseek-chat',
-          messages: [
-            { role: 'system', content: '你是一个毒舌脱口秀演员兼哲学教授。吐槽犀利长篇不留情面，像微博热评第一+脱口秀开场段子。每句话都要有杀伤力，绝不说教，绝不温和。字数不少于300。' },
-            { role: 'user', content: roastPrompt },
-          ],
-          temperature: 1.0,
-          max_tokens: 1200,
-        }),
-      });
+      // Fix URL: on deployed site, use relative path to avoid localhost mismatch
+      const apiUrl = apiBase.includes('localhost') && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')
+        ? apiBase.replace('http://localhost:8000', '') : apiBase;
 
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let fullText = '';
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
-        for (const line of lines) {
-          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-            try {
-              const data = JSON.parse(line.slice(6));
-              if (data.choices?.[0]?.delta?.content) {
-                fullText += data.choices[0].delta.content;
-                roastRef.current = fullText;
-                setRoast(fullText);
-              }
-            } catch {}
+      try {
+        const resp = await fetch(`${apiUrl}/api/ai/stream`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              { role: 'system', content: '你是一个毒舌脱口秀演员兼哲学教授。吐槽犀利长篇不留情面，像微博热评第一+脱口秀开场段子。每句话都要有杀伤力，绝不说教，绝不温和。字数不少于300。' },
+              { role: 'user', content: roastPrompt },
+            ],
+            temperature: 1.0, max_tokens: 1200,
+          }),
+          signal: controller.signal,
+        });
+
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let fullText = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+              try {
+                const data = JSON.parse(line.slice(6));
+                if (data.choices?.[0]?.delta?.content) {
+                  fullText += data.choices[0].delta.content;
+                  setRoast(fullText);
+                }
+              } catch {}
+            }
           }
         }
+        if (!fullText) setRoast('（毒舌评论家今天词穷了，请稍后再试）');
+      } catch (e) {
+        setRoast('（毒舌评论家暂时不在，请稍后再试）');
+      } finally {
+        clearTimeout(timeoutId);
+        setRoasting(false);
       }
-    } catch (e) {
-      setRoast('（毒舌评论家暂时不在，请稍后再试）');
-    }
-    setRoasting(false);
   };
 
   // Progress bar

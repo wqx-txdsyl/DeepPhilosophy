@@ -44,6 +44,8 @@ function PHTISillyPage() {
     setQuestions(shuffled.slice(0, TOTAL_Q));
     setCurrentQ(0);
     setAnswers([]);
+    setRoast('');
+    setResult(null);
     setPhase('testing');
   };
 
