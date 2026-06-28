@@ -8295,7 +8295,7 @@ const OLD_DEMOCRACY_DATA = {
       era: `1866-1925`,
       influence: 10,
       key: `三民主义、五权宪法、权能分别、平均地权、节制资本，主张通过革命建立民主共和国`,
-      works:[{title:`三民主义`,author:`佚名`,era:`近代`,desc:`暂无简介`},{title:`建国方略`,author:`佚名`,era:`近代`,desc:`暂无简介`},{title:`五权宪法`,author:`佚名`,era:`近代`,desc:`暂无简介`}]
+      works:['三民主义','建国方略','五权宪法']
     },
 {
       name: `黄兴`,
@@ -8383,7 +8383,7 @@ const NEW_DEMOCRACY_DATA = {
       era: `1893-1976`,
       influence: 10,
       key: `革命分两步走，各革命阶级联合专政，新民主主义文化`,
-      works:[{title:`《新民主主义论》`,author:`佚名`,era:`近代`,desc:`暂无简介`},{title:`《论联合政府》`,author:`佚名`,era:`近代`,desc:`暂无简介`},{title:`《中国革命和中国共产党》`,author:`佚名`,era:`近代`,desc:`暂无简介`}]
+      works:['《新民主主义论》','《论联合政府》','《中国革命和中国共产党》']
     },
 {
       name: `周恩来`,
