@@ -30,11 +30,12 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
         color: 'var(--ochre)', marginBottom: SPACE.lg, position: 'relative', fontFamily: FONT.sans
       }}>{englishName || 'PHILOSOPHICAL SCHOOL'}</p>
 
-      {/* Dramatic title — oversized, bold */}
+      {/* Dramatic title — size adapts to name length */}
       <h1 style={{
-        fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 600, fontStyle: 'italic',
+        fontSize: name.length > 12 ? 'clamp(2rem, 6vw, 3.5rem)' : name.length > 8 ? 'clamp(2.5rem, 8vw, 5rem)' : 'clamp(3rem, 10vw, 6rem)',
+        fontWeight: 600, fontStyle: 'italic',
         color: 'var(--ink)', margin: 0, position: 'relative', letterSpacing: '0.015em',
-        lineHeight: 1.05, fontFamily: FONT.serif
+        lineHeight: 1.15, fontFamily: FONT.serif, whiteSpace: 'nowrap'
       }}>{name}</h1>
 
       {/* Refined divider — thinner, more elegant */}
