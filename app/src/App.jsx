@@ -50,7 +50,7 @@ function MainLayout() {
   useEffect(() => { startAutoSave(); return () => stopAutoSave(); }, []);
   useEffect(() => { if (darkMode) document.documentElement.classList.add('dark-mode'); else document.documentElement.classList.remove('dark-mode'); }, [darkMode]);
   useEffect(() => { if (mobileMode) document.documentElement.classList.add('mobile-mode'); else document.documentElement.classList.remove('mobile-mode'); }, [mobileMode]);
-  useEffect(() => { window.scrollTo(0, 0); }, [location.pathname]);
+  useEffect(() => { window.scrollTo(0, 0); const m = document.querySelector('.app-main'); if (m) m.style.transform = 'translateY(0)'; }, [location.pathname]);
 
   // Candlelight cursor glow
   const glowRef = useRef(null);
