@@ -254,6 +254,18 @@ function HomePage() {
         );
       })()}
 
+      {/* ══════════ NUMBERS ══════════ */}
+      <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
+          {[{ num: '305', label: '哲学著作' }, { num: '140', label: '哲学家' }, { num: '76', label: '哲学流派' }].map(s => (
+            <div key={s.label}>
+              <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ══════════ THREE ENTRY CARDS ══════════ */}
       <section id="home-content" style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
@@ -271,18 +283,6 @@ function HomePage() {
               <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: card.color }}>{card.count}</span>
               <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 28, fontWeight: 400, color: 'var(--ink)', margin: '8px 0 8px', letterSpacing: '0.03em' }}>{card.title}</h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>{card.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════ NUMBERS ══════════ */}
-      <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
-          {[{ num: '305', label: '哲学著作' }, { num: '140', label: '哲学家' }, { num: '76', label: '哲学流派' }].map(s => (
-            <div key={s.label}>
-              <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
             </div>
           ))}
         </div>
