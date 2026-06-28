@@ -32,7 +32,7 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
 
       {/* Dramatic title — oversized, bold */}
       <h1 style={{
-        fontSize: 'clamp(4rem, 12vw, 9rem)', fontWeight: 600, fontStyle: 'italic',
+        fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 600, fontStyle: 'italic',
         color: 'var(--ink)', margin: 0, position: 'relative', letterSpacing: '0.015em',
         lineHeight: 1.05, fontFamily: FONT.serif
       }}>{name}</h1>
