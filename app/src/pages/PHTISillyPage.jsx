@@ -56,34 +56,40 @@ function PHTISillyPage() {
   };
 
   const finish = async (allAnswers) => {
-    // 计算四维度得分
+    // 计算四维度原始总分（不做归一化，保持区分度）
     const dims = ['Rationalism', 'Stoicism', 'Essentialism', 'Communitarian'];
     const scores = {};
     for (const dim of dims) {
       const relevant = allAnswers.filter(a => a.dimension === dim);
-      const total = relevant.reduce((s, a) => s + a.score * (a.direction === 'high' ? 1 : -1), 0);
-      scores[dim] = relevant.length > 0 ? Math.round((total / relevant.length) * 5) : 0;
+      scores[dim] = relevant.reduce((s, a) => s + a.score * (a.direction === 'high' ? 1 : -1), 0);
     }
 
-    // 找最近的哲学家（欧氏距离）
-    const userVec = [scores.Rationalism, scores.Stoicism, scores.Essentialism, scores.Communitarian];
+    // 缩放到与哲学家坐标匹配的范围（哲学家坐标在 -10..10）
+    const perDim = TOTAL_Q / 4; // ~12.5题/维度
+    const userVec = [
+      Math.round(scores.Rationalism / perDim * 5),
+      Math.round(scores.Stoicism / perDim * 5),
+      Math.round(scores.Essentialism / perDim * 5),
+      Math.round(scores.Communitarian / perDim * 5),
+    ];
     let bestKey = 'PLA', bestDist = Infinity;
     for (const [key, phil] of Object.entries(PHILOSOPHER_MAP)) {
       const dist = phil.dims.reduce((sum, v, i) => sum + (v - userVec[i]) ** 2, 0);
       if (dist < bestDist) { bestDist = dist; bestKey = key; }
     }
 
-    setResult({ ...PHILOSOPHER_MAP[bestKey], scores, code: bestKey });
+    setResult({ ...PHILOSOPHER_MAP[bestKey], scores: userVec, code: bestKey });
     setPhase('roasting');
     setRoasting(true);
 
     // AI Roast
     const phil = PHILOSOPHER_MAP[bestKey];
+    const s = userVec;
     const dimLabel = [
-      `理性${scores.Rationalism >= 0 ? '+' : ''}${scores.Rationalism} vs 感性${scores.Rationalism >= 0 ? '' : '+'}${-scores.Rationalism}`,
-      `斯多葛${scores.Stoicism >= 0 ? '+' : ''}${scores.Stoicism} vs 伊壁鸠鲁${scores.Stoicism >= 0 ? '' : '+'}${-scores.Stoicism}`,
-      `本质${scores.Essentialism >= 0 ? '+' : ''}${scores.Essentialism} vs 存在${scores.Essentialism >= 0 ? '' : '+'}${-scores.Essentialism}`,
-      `社群${scores.Communitarian >= 0 ? '+' : ''}${scores.Communitarian} vs 个人${scores.Communitarian >= 0 ? '' : '+'}${-scores.Communitarian}`,
+      `理性${s[0] >= 0 ? '+' : ''}${s[0]} vs 感性${s[0] >= 0 ? '' : '+'}${-s[0]}`,
+      `斯多葛${s[1] >= 0 ? '+' : ''}${s[1]} vs 伊壁鸠鲁${s[1] >= 0 ? '' : '+'}${-s[1]}`,
+      `本质${s[2] >= 0 ? '+' : ''}${s[2]} vs 存在${s[2] >= 0 ? '' : '+'}${-s[2]}`,
+      `社群${s[3] >= 0 ? '+' : ''}${s[3]} vs 个人${s[3] >= 0 ? '' : '+'}${-s[3]}`,
     ];
     const prompt = `你是一个毒舌脱口秀演员兼哲学教授。有人刚做了沙雕哲学人格测试，结果显示：
 
