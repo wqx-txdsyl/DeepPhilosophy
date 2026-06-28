@@ -16,6 +16,7 @@ import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
 import ReaderPage from './pages/ReaderPage';
 import ProfilePage from './pages/ProfilePage';
+import GamesPage from './pages/GamesPage';
 import HomePage from './pages/HomePage';
 import WorldPhilosophiesPage from './pages/WorldPhilosophiesPage';
 import WesternPhilosophiesPage from './pages/WesternPhilosophiesPage';
@@ -89,6 +90,7 @@ function MainLayout() {
     { key: 'authors', label: '✒️', text: '作家', path: '/authors' },
     { key: 'genealogy', label: '🧬', text: '谱系', path: '/genealogy' },
     { key: 'qa', label: '💬', text: '问答', path: '/qa' },
+    { key: 'games', label: '🎮', text: '游戏', path: '/games' },
   ];
 
   const getActiveTab = () => {
@@ -96,6 +98,7 @@ function MainLayout() {
     if (p.startsWith('/authors') || p.startsWith('/author')) return 'authors';
     if (p.startsWith('/genealogy')) return 'genealogy';
     if (p.startsWith('/qa')) return 'qa';
+    if (p.startsWith('/games')) return 'games';
     if (p.startsWith('/profile')) return 'profile';
     if (p === '/' || p.startsWith('/genealogy') || p.startsWith('/school')) return 'genealogy';
     return 'books';
@@ -148,6 +151,7 @@ function MainLayout() {
           <Route path="/western-philosophies" element={<WesternPhilosophiesPage />} />
           <Route path="/eastern-philosophies" element={<EasternPhilosophiesPage />} />
           <Route path="/qa" element={<QAPage />} />
+          <Route path="/games" element={<GamesPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
