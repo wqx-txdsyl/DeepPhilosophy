@@ -237,75 +237,10 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ══════════ THREE ENTRY CARDS ══════════ */}
-      <section id="home-content" style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
-          {[
-            { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/western-philosophies', color: 'var(--ochre)' },
-            { title: '东方哲学', count: '24 流派', desc: '儒道墨法至当代，两千五百年不断的思想脉络', path: '/eastern-philosophies', color: 'var(--prussian)' },
-            { title: '世界哲学', count: '9 流派', desc: '印度、日本、伊斯兰、非洲…全球哲学版图', path: '/world-philosophies', color: '#5A8A5A' },
-          ].map(card => (
-            <div key={card.title} onClick={() => navigate(card.path)} style={{
-              padding: '36px 28px', cursor: 'pointer', borderBottom: '2px solid var(--border)',
-              transition: 'all 0.3s', background: 'transparent'
-            }}
-              onMouseEnter={e => { e.currentTarget.style.borderBottomColor = card.color; e.currentTarget.style.background = 'var(--card-bg)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: card.color }}>{card.count}</span>
-              <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 28, fontWeight: 400, color: 'var(--ink)', margin: '8px 0 8px', letterSpacing: '0.03em' }}>{card.title}</h2>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>{card.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════════ THREE ENTRY CARDS ══════════ */}
-      <section id="home-content" style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
-          {[
-            { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/western-philosophies', color: 'var(--ochre)' },
-            { title: '东方哲学', count: '24 流派', desc: '儒道墨法至当代，两千五百年不断的思想脉络', path: '/eastern-philosophies', color: 'var(--prussian)' },
-            { title: '世界哲学', count: '9 流派', desc: '印度、日本、伊斯兰、非洲…全球哲学版图', path: '/world-philosophies', color: '#5A8A5A' },
-          ].map(card => (
-            <div key={card.title} onClick={() => navigate(card.path)} style={{
-              padding: '36px 28px', cursor: 'pointer', borderBottom: '2px solid var(--border)',
-              transition: 'all 0.3s', background: 'transparent'
-            }}
-              onMouseEnter={e => { e.currentTarget.style.borderBottomColor = card.color; e.currentTarget.style.background = 'var(--card-bg)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: card.color }}>{card.count}</span>
-              <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 28, fontWeight: 400, color: 'var(--ink)', margin: '8px 0 8px', letterSpacing: '0.03em' }}>{card.title}</h2>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>{card.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ══════════ DAILY QUOTE ══════════ */}
       {(() => {
-        const _unused = [
-          { text: '全部西方哲学史不过是柏拉图的一串注脚。', author: '怀特海' },
-          { text: '认识你自己。', author: '古希腊德尔斐神谕' },
-          { text: '我思故我在。', author: '笛卡尔' },
-          { text: '存在先于本质。', author: '萨特' },
-          { text: '己所不欲，勿施于人。', author: '孔子' },
-          { text: '道可道，非常道。', author: '老子' },
-          { text: '人不能两次踏入同一条河流。', author: '赫拉克利特' },
-          { text: '上帝死了。', author: '尼采' },
-          { text: '我唯一知道的就是我一无所知。', author: '苏格拉底' },
-          { text: '人是万物的尺度。', author: '普罗泰戈拉' },
-          { text: '凡不能毁灭我的，必使我更强大。', author: '尼采' },
-          { text: '知人者智，自知者明。', author: '老子' },
-          { text: '我只担心一件事，就是配不上我所受的苦难。', author: '陀思妥耶夫斯基' },
-          { text: '自由即是对必然的认识。', author: '斯宾诺莎' },
-          { text: '生活在树上——始终与大地保持距离。', author: '卡尔维诺' },
-          { text: '菩提本无树，明镜亦非台。', author: '慧能' },
-          { text: '哲学的目的不是知道世界是什么，而是知道人应该如何生活。', author: '康德' },
-          { text: '一切伟大的思想都是危险的。', author: '尼采' },
-          { text: '最困难的事情是认识自己。', author: '泰勒斯' },
-          { text: '幸福是灵魂合乎逻各斯的现实活动。', author: '亚里士多德' },
-        ];
-        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        // quotes loaded from DAILY_QUOTES
+        const q = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
         return (
           <section style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%' }}>
             <div style={{ maxWidth: 680, margin: '0 auto' }}>
@@ -318,6 +253,28 @@ function HomePage() {
           </section>
         );
       })()}
+
+      {/* ══════════ THREE ENTRY CARDS ══════════ */}
+      <section id="home-content" style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
+          {[
+            { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/western-philosophies', color: 'var(--ochre)' },
+            { title: '东方哲学', count: '24 流派', desc: '儒道墨法至当代，两千五百年不断的思想脉络', path: '/eastern-philosophies', color: 'var(--prussian)' },
+            { title: '世界哲学', count: '9 流派', desc: '印度、日本、伊斯兰、非洲…全球哲学版图', path: '/world-philosophies', color: '#5A8A5A' },
+          ].map(card => (
+            <div key={card.title} onClick={() => navigate(card.path)} style={{
+              padding: '36px 28px', cursor: 'pointer', borderBottom: '2px solid var(--border)',
+              transition: 'all 0.3s', background: 'transparent'
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderBottomColor = card.color; e.currentTarget.style.background = 'var(--card-bg)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: card.color }}>{card.count}</span>
+              <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 28, fontWeight: 400, color: 'var(--ink)', margin: '8px 0 8px', letterSpacing: '0.03em' }}>{card.title}</h2>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>{card.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* ══════════ NUMBERS ══════════ */}
       <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
