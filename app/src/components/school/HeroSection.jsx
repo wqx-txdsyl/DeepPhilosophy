@@ -26,7 +26,7 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
 
       {/* Editorial kicker */}
       <p style={{
-        fontSize: 13, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase',
+        fontSize: 16, fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase',
         color: 'var(--ochre)', marginBottom: SPACE.lg, position: 'relative', fontFamily: FONT.sans
       }}>{englishName || 'PHILOSOPHICAL SCHOOL'}</p>
 
@@ -42,8 +42,8 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
 
       {/* Quote as visual pause — larger, more breathing room */}
       <blockquote style={{
-        fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', fontStyle: 'italic', color: 'var(--text-dim)',
-        maxWidth: 720, lineHeight: 1.7, margin: '0 0 16px', position: 'relative', fontWeight: 500,
+        fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontStyle: 'italic', color: 'var(--text-dim)',
+        maxWidth: 680, lineHeight: 1.7, margin: '0 0 16px', position: 'relative', fontWeight: 400,
         fontFamily: FONT.serif, letterSpacing: '0.01em'
       }}>
         {quote}
