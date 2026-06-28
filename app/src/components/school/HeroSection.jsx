@@ -43,8 +43,9 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
 
       {/* Quote as visual pause — larger, more breathing room */}
       <blockquote style={{
-        fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontStyle: 'italic', color: 'var(--text-dim)',
-        maxWidth: 680, lineHeight: 1.7, margin: '0 0 16px', position: 'relative', fontWeight: 400,
+        fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontStyle: 'italic', color: 'var(--ink)',
+        maxWidth: 680, lineHeight: 1.7, margin: '0 0 16px', position: 'relative', fontWeight: 500,
+        textShadow: '0 0 40px rgba(244,240,235,0.8)',
         fontFamily: FONT.serif, letterSpacing: '0.01em'
       }}>
         {quote}
