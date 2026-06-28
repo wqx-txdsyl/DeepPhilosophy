@@ -218,7 +218,7 @@ function HomePage() {
             DeepPhilosophy
           </h1>
           <div style={{ width: 60, height: 1.5, background: 'var(--ochre)', margin: '0 auto 24px', opacity: 0.7 }} />
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>
             从公元前六世纪至二十一世纪<br />七十六个流派，一部横跨两千五百年的思想史长卷
           </p>
           <button onClick={scrollToTimeline} style={{
