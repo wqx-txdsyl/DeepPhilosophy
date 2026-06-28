@@ -258,15 +258,43 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ══════════ QUOTE SECTION ══════════ */}
-      <section style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%' }}>
-        <div style={{ maxWidth: 680, margin: '0 auto' }}>
-          <p style={{ fontFamily: '"Playfair Display",serif', fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, margin: '0 0 16px' }}>
-            &ldquo;全部西方哲学史不过是柏拉图的一串注脚。&rdquo;
-          </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>&mdash; 怀特海</p>
-        </div>
-      </section>
+      {/* ══════════ DAILY QUOTE ══════════ */}
+      {(() => {
+        const quotes = [
+          { text: '全部西方哲学史不过是柏拉图的一串注脚。', author: '怀特海' },
+          { text: '认识你自己。', author: '古希腊德尔斐神谕' },
+          { text: '我思故我在。', author: '笛卡尔' },
+          { text: '存在先于本质。', author: '萨特' },
+          { text: '己所不欲，勿施于人。', author: '孔子' },
+          { text: '道可道，非常道。', author: '老子' },
+          { text: '人不能两次踏入同一条河流。', author: '赫拉克利特' },
+          { text: '上帝死了。', author: '尼采' },
+          { text: '我唯一知道的就是我一无所知。', author: '苏格拉底' },
+          { text: '人是万物的尺度。', author: '普罗泰戈拉' },
+          { text: '凡不能毁灭我的，必使我更强大。', author: '尼采' },
+          { text: '知人者智，自知者明。', author: '老子' },
+          { text: '我只担心一件事，就是配不上我所受的苦难。', author: '陀思妥耶夫斯基' },
+          { text: '自由即是对必然的认识。', author: '斯宾诺莎' },
+          { text: '生活在树上——始终与大地保持距离。', author: '卡尔维诺' },
+          { text: '菩提本无树，明镜亦非台。', author: '慧能' },
+          { text: '哲学的目的不是知道世界是什么，而是知道人应该如何生活。', author: '康德' },
+          { text: '一切伟大的思想都是危险的。', author: '尼采' },
+          { text: '最困难的事情是认识自己。', author: '泰勒斯' },
+          { text: '幸福是灵魂合乎逻各斯的现实活动。', author: '亚里士多德' },
+        ];
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        return (
+          <section style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%' }}>
+            <div style={{ maxWidth: 680, margin: '0 auto' }}>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', marginBottom: 20 }}>Daily Quote</p>
+              <p style={{ fontFamily: '"Playfair Display",serif', fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, margin: '0 0 16px' }}>
+                &ldquo;{q.text}&rdquo;
+              </p>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>&mdash; {q.author}</p>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ══════════ NUMBERS ══════════ */}
       <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
