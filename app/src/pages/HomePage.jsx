@@ -214,7 +214,7 @@ function HomePage() {
       }}
         onMouseEnter={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.9)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
         onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.7)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
-        {loggedIn && username ? username : '登录 / 注册'}
+        {loggedIn && username ? '👤 ' + username : '登录 / 注册'}
       </button>
 
       {/* ══════════ HERO — full screen, world philosophy background ══════════ */}
