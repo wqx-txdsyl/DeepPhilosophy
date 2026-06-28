@@ -102,18 +102,22 @@ function PHTIPage() {
       return `${dim}: 均分=${avg.toFixed(1)}, 极端回答=${strongAgrees}/${dimAnswers.length}`;
     }).join('; ');
 
-    const roastPrompt = `你是一个毒舌但充满智慧的哲学评论家。现在有一个人刚做完了哲学人格测试，结果如下：
+    const roastPrompt = `你是一个毒舌脱口秀演员兼哲学教授。有人刚做完哲学人格测试：
 
 人格类型：${matched.title}（${matched.name}）
 性格简述：${matched.short_desc}
-各维度得分：${JSON.stringify(scores)}
-答题模式（正分=倾向第一个，负分=倾向第二个）：
-- 理性主义(${scores.Rationalism >= 0 ? '+' : ''}${scores.Rationalism}) vs 经验主义(${scores.Rationalism >= 0 ? '' : '+'}${-scores.Rationalism})
-- 斯多葛(${scores.Stoicism >= 0 ? '+' : ''}${scores.Stoicism}) vs 伊壁鸠鲁(${scores.Stoicism >= 0 ? '' : '+'}${-scores.Stoicism})
-- 本质主义(${scores.Essentialism >= 0 ? '+' : ''}${scores.Essentialism}) vs 存在主义(${scores.Essentialism >= 0 ? '' : '+'}${-scores.Essentialism})
-- 社群主义(${scores.Communitarian >= 0 ? '+' : ''}${scores.Communitarian}) vs 个人主义(${scores.Communitarian >= 0 ? '' : '+'}${-scores.Communitarian})
+维度得分：${JSON.stringify(scores)}
+- 理性主义(${scores.Rationalism >= 0 ? '+' : ''}${scores.Rationalism}) vs 经验主义
+- 斯多葛(${scores.Stoicism >= 0 ? '+' : ''}${scores.Stoicism}) vs 伊壁鸠鲁
+- 本质主义(${scores.Essentialism >= 0 ? '+' : ''}${scores.Essentialism}) vs 存在主义
+- 社群主义(${scores.Communitarian >= 0 ? '+' : ''}${scores.Communitarian}) vs 个人主义
 
-请以毒舌幽默的口吻对这个人进行锐评（200-300字），风格参考：犀利、一针见血、但又让人会心一笑。指出他/她的矛盾之处、自我欺骗、和可笑的执念。语言要有哲学底蕴但不掉书袋。不要过于刻薄伤自尊，要让人觉得'虽然被骂了但好像说得对'。`;
+请写一段300-400字的毒舌锐评，要求：
+- 开头直接暴击，戳穿这个人格最自欺欺人的地方
+- 中间用2-3个具体生活场景精准吐槽
+- 语气像微博热评、脱口秀段子，哲学梗+网络梗混用
+- 最后一句必须是致命暴击金句，让人看完沉默三秒然后转发
+- 字数一定要够300字以上！不要敷衍！`;
 
     try {
       const apiBase = getApiBase();
@@ -123,11 +127,11 @@ function PHTIPage() {
         body: JSON.stringify({
           model: 'deepseek-chat',
           messages: [
-            { role: 'system', content: '你是一个毒舌但充满智慧的哲学评论家。你的锐评犀利精准、幽默刻薄但不失温度，让人在笑声中反思自己。' },
+            { role: 'system', content: '你是一个毒舌脱口秀演员兼哲学教授。吐槽犀利长篇不留情面，像微博热评第一+脱口秀开场段子。每句话都要有杀伤力，绝不说教，绝不温和。字数不少于300。' },
             { role: 'user', content: roastPrompt },
           ],
-          temperature: 0.9,
-          max_tokens: 1024,
+          temperature: 1.0,
+          max_tokens: 1200,
         }),
       });
 

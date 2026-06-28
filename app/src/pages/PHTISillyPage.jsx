@@ -105,18 +105,20 @@ function PHTISillyPage() {
       `本质${s[2] >= 0 ? '+' : ''}${s[2]} vs 存在${s[2] >= 0 ? '' : '+'}${-s[2]}`,
       `社群${s[3] >= 0 ? '+' : ''}${s[3]} vs 个人${s[3] >= 0 ? '' : '+'}${-s[3]}`,
     ];
-    const prompt = `你是一个毒舌脱口秀演员兼哲学教授。有人刚做了沙雕哲学人格测试，结果显示：
+    const prompt = `你是一个毒舌脱口秀演员兼哲学教授，以犀利刻薄著称。有人刚做了沙雕哲学人格测试：
 
 🏆 ${phil.title} —— ${phil.name}
 📝 ${phil.desc}
 
-各维度得分：${dimLabel.join('；')}
+维度得分：${dimLabel.join('；')}
 
-请用150-200字进行毒舌锐评，要求：
-- 幽默刻薄但让人会心一笑
-- 结合这个人格的特点精准吐槽
-- 网络段子手风格，像微博热评
-- 最后一定要有一句暴击金句收尾`;
+请写一段300-400字的毒舌锐评，要求：
+- 开头直接暴击，戳穿这个人格最自欺欺人的地方
+- 中间用2-3个具体生活场景精准吐槽（比如：你大概是这样的人——在豆瓣标记了500本'想读'但一本都没翻开过...）
+- 语气像微博热评第一、脱口秀开场段子
+- 哲学梗和网络梗混着用，但不要掉书袋
+- 最后一句必须是致命暴击金句，让人看完沉默三秒然后转发朋友圈
+- 字数一定要够300字以上，不要敷衍！`;
 
     try {
       const resp = await fetch(`${getApiBase()}/api/ai/stream`, {
@@ -124,10 +126,10 @@ function PHTISillyPage() {
         body: JSON.stringify({
           model: 'deepseek-chat',
           messages: [
-            { role: 'system', content: '你是一个犀利的脱口秀演员，吐槽精准幽默，像微博热评。' },
+            { role: 'system', content: '你是一个毒舌脱口秀演员兼哲学教授。你的吐槽犀利、长篇、不留情面，像微博万字长评+脱口秀开场段子。每句话都要有杀伤力，绝不说教，绝不温和。字数永远不少于300字。' },
             { role: 'user', content: prompt },
           ],
-          temperature: 0.95, max_tokens: 800,
+          temperature: 1.0, max_tokens: 1200,
         }),
       });
       const reader = resp.body.getReader();
