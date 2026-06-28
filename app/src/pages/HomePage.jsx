@@ -202,6 +202,19 @@ function HomePage() {
   return (
     <div className="page-container" style={{ paddingBottom: 0, margin: 0 }}>
 
+      {/* Floating login button */}
+      <button onClick={() => navigate('/profile')} style={{
+        position: 'fixed', top: 20, right: 20, zIndex: 1000,
+        fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
+        color: 'var(--ink)', background: 'rgba(244,240,235,0.7)', backdropFilter: 'blur(8px)',
+        border: '1px solid var(--border)', borderRadius: 4, padding: '8px 18px',
+        cursor: 'pointer', letterSpacing: '0.04em', transition: 'all 0.25s'
+      }}
+        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.9)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.7)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
+        登录 / 注册
+      </button>
+
       {/* ══════════ HERO — full screen, world philosophy background ══════════ */}
       <section style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center',
