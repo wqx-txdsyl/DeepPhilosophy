@@ -204,7 +204,32 @@ function HomePage() {
   return (
     <div className="page-container" style={{ paddingBottom: 0, margin: 0 }}>
 
-      {/* Floating login/user button */}
+      {/* Floating nav links — left side */}
+      <nav style={{
+        position: 'fixed', top: 24, left: 24, zIndex: 1000,
+        display: 'flex', flexDirection: 'column', gap: 2,
+      }}>
+        {[
+          { label: '📚 书籍', path: '/books' },
+          { label: '✒️ 作家', path: '/authors' },
+          { label: '🧬 谱系', path: '/genealogy' },
+          { label: '💬 问答', path: '/qa' },
+          { label: '🎮 游戏', path: '/games' },
+        ].map(item => (
+          <button key={item.path} onClick={() => navigate(item.path)} style={{
+            fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
+            color: 'var(--ink)', background: 'none', border: 'none',
+            padding: '4px 0', cursor: 'pointer', textAlign: 'left',
+            letterSpacing: '0.04em', opacity: 0.6, transition: 'opacity 0.2s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '1'; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '0.6'; }}>
+            {item.label}
+          </button>
+        ))}
+      </nav>
+
+      {/* Floating login/user button — right side */}
       <button onClick={() => navigate('/profile')} style={{
         position: 'fixed', top: 20, right: 20, zIndex: 1000,
         fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
