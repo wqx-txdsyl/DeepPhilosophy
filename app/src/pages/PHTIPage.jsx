@@ -68,60 +68,34 @@ function PHTIPage() {
       scores[dim] = count > 0 ? Math.round((total / count) * 5) : 0;
     }
 
-    // 16型坐标映射（Rationalism, Stoicism, Essentialism, Communitarian）
-    const TYPE_COORDS = {
-      'RRRR': [8, 8, 8, 8], 'RRRC': [8,-8, 8, 8], 'RRSR': [8, 8, 8,-8], 'RRSC': [8,-8, 8,-8],
-      'RPER': [8, 8,-8, 8], 'RPEC': [8,-8,-8, 8], 'RPSR': [8, 8,-8,-8], 'RPSC': [8,-8,-8,-8],
-      'ERRR': [-8, 8, 8, 8], 'ERRC': [-8,-8, 8, 8], 'ERSR': [-8, 8, 8,-8], 'ERSC': [-8,-8, 8,-8],
-      'EPER': [-8, 8,-8, 8], 'EPEC': [-8,-8,-8, 8], 'EPSR': [-8, 8,-8,-8], 'EPSC': [-8,-8,-8,-8],
-    };
+    // 16型坐标映射
+    const TYPE_COORDS = [
+      ['RRRR', 8, 8, 8, 8], ['RRRC', 8,-8, 8, 8], ['RRSR', 8, 8, 8,-8], ['RRSC', 8,-8, 8,-8],
+      ['RPER', 8, 8,-8, 8], ['RPEC', 8,-8,-8, 8], ['RPSR', 8, 8,-8,-8], ['RPSC', 8,-8,-8,-8],
+      ['ERRR',-8, 8, 8, 8], ['ERRC',-8,-8, 8, 8], ['ERSR',-8, 8, 8,-8], ['ERSC',-8,-8, 8,-8],
+      ['EPER',-8, 8,-8, 8], ['EPEC',-8,-8,-8, 8], ['EPSR',-8, 8,-8,-8], ['EPSC',-8,-8,-8,-8],
+    ];
     const userVec = [scores.Rationalism, scores.Stoicism, scores.Essentialism, scores.Communitarian];
 
-    // Softmax 概率匹配
-    const entries = Object.entries(TYPE_COORDS);
-    const dists = entries.map(([, c]) => c.reduce((s, v, i) => s + (v - userVec[i]) ** 2, 0));
-    const temperature = 80;
-    const expDists = dists.map(d => Math.exp(-d / temperature));
-    const totalExp = expDists.reduce((a, b) => a + b, 0);
-    const probsArr = expDists.map(e => e / totalExp);
+    // 计算距离并按概率随机选择（避免总命中同一个）
+    const withDist = TYPE_COORDS.map(([code, ...c]) => ({
+      code,
+      dist: c.reduce((s, v, i) => s + (v - userVec[i]) ** 2, 0),
+    }));
+    withDist.sort((a, b) => a.dist - b.dist);
+    // 取前3名随机选一个
+    const top = withDist.slice(0, 3);
+    const idx = Math.floor(Math.random() * top.length);
+    const bestCode = top[idx].code;
 
-    let r = Math.random();
-    let bestCode = entries[0][0];
-    for (let i = 0; i < entries.length; i++) {
-      r -= probsArr[i];
-      if (r <= 0) { bestCode = entries[i][0]; break; }
-    }
+    const types = Array.isArray(phtiTypes) ? phtiTypes : [];
+    const matched = types.find(t => t.code === bestCode) || types[0] || { title: '未知', name: '未知', short_desc: '' };
 
-    const matched = phtiTypes.find(t => t.code === bestCode) || phtiTypes[0];
-
-    setResult({ ...matched, scores, personalityCode });
+    setResult({ ...matched, scores });
     setPhase('roasting');
     setRoasting(true);
 
-    // Build answer summary for AI roast
-    const dimSummaries = DIMS.map(dim => {
-      const dimAnswers = allAnswers.filter(a => a.dimension === dim);
-      const avg = dimAnswers.reduce((s, a) => s + a.score, 0) / dimAnswers.length;
-      const strongAgrees = dimAnswers.filter(a => Math.abs(a.score) === 2).length;
-      return `${dim}: 均分=${avg.toFixed(1)}, 极端回答=${strongAgrees}/${dimAnswers.length}`;
-    }).join('; ');
-
-    const roastPrompt = `你是一个毒舌脱口秀演员兼哲学教授。有人刚做完哲学人格测试：
-
-人格类型：${matched.title}（${matched.name}）
-性格简述：${matched.short_desc}
-维度得分：${JSON.stringify(scores)}
-- 理性主义(${scores.Rationalism >= 0 ? '+' : ''}${scores.Rationalism}) vs 经验主义
-- 斯多葛(${scores.Stoicism >= 0 ? '+' : ''}${scores.Stoicism}) vs 伊壁鸠鲁
-- 本质主义(${scores.Essentialism >= 0 ? '+' : ''}${scores.Essentialism}) vs 存在主义
-- 社群主义(${scores.Communitarian >= 0 ? '+' : ''}${scores.Communitarian}) vs 个人主义
-
-请写一段300-400字的毒舌锐评，要求：
-- 开头直接暴击，戳穿这个人格最自欺欺人的地方
-- 中间用2-3个具体生活场景精准吐槽
-- 语气像微博热评、脱口秀段子，哲学梗+网络梗混用
-- 最后一句必须是致命暴击金句，让人看完沉默三秒然后转发
-- 字数一定要够300字以上！不要敷衍！`;
+    const roastPrompt = `你是一个毒舌脱口秀演员兼哲学教授。有人刚做完哲学人格测试：${matched.title}（${matched.name}）。${matched.short_desc}。维度得分：${JSON.stringify(scores)}。请写300-400字毒舌锐评：开头暴击→2-3个生活场景吐槽→致命金句收尾。不要敷衍！`;
 
       const apiBase = getApiBase();
       // Fix URL: on deployed site, use relative path to avoid localhost mismatch
