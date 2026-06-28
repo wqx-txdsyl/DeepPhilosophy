@@ -104,8 +104,9 @@ function MainLayout() {
 
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
-  const hideNav = isReader || isHome;
-  const hideHeader = isHome || isReader;
+  const isSchool = location.pathname.startsWith('/school/');
+  const hideNav = isReader || isHome || isSchool;
+  const hideHeader = isHome || isReader || isSchool;
   const activeTab = getActiveTab();
 
   return (
@@ -123,7 +124,7 @@ function MainLayout() {
         </header>
       )}
 
-      <main className={`app-main${isReader || isHome ? ' reader-mode' : ''}`} style={isReader || isHome ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      <main className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}`} style={isReader || isHome || isSchool ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BooksPage />} />
