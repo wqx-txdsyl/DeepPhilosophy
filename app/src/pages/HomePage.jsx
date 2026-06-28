@@ -195,7 +195,7 @@ function HomePage() {
   }, []);
 
   const scrollToTimeline = () => {
-    document.getElementById('genealogy-timeline')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('home-content')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -237,7 +237,7 @@ function HomePage() {
       </section>
 
       {/* ══════════ THREE ENTRY CARDS ══════════ */}
-      <section style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
+      <section id="home-content" style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
           {[
             { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/western-philosophies', color: 'var(--ochre)' },
