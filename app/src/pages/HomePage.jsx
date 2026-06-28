@@ -137,7 +137,7 @@ const EASTERN_COLORS = (() => {
 })();
 
 
-function GenealogyPage() {
+function HomePage() {
   const navigate = useNavigate();
   const [schoolData, setSchoolData] = useState({});
 
@@ -194,46 +194,98 @@ function GenealogyPage() {
       }).catch(() => {});
   }, []);
 
-  return (
-    <div className="page-container" style={{ paddingBottom: 80 }}>
+  const scrollToTimeline = () => {
+    document.getElementById('genealogy-timeline')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-      {/* ══════════ HERO — editorial ══════════ */}
+  return (
+    <div className="page-container" style={{ paddingBottom: 0 }}>
+
+      {/* ══════════ HERO — full screen, world philosophy background ══════════ */}
       <section style={{
-        padding: '80px 32px 56px', textAlign: 'center', maxWidth: 780, margin: '0 auto'
+        minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        alignItems: 'center', textAlign: 'center', padding: '80px 32px',
+        position: 'relative', overflow: 'hidden',
+        backgroundImage: 'url(/schools/世界哲学总览.jpg)', backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
-        <p style={{
-          fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500,
-          letterSpacing: '0.22em', textTransform: 'uppercase',
-          color: 'var(--ochre)', margin: '0 0 20px'
-        }}>
-          Philosophical Genealogy
-        </p>
-        <h1 style={{
-          fontFamily: '"Playfair Display", "PingFang SC", serif',
-          fontSize: 'clamp(2.4rem, 6vw, 3.6rem)', fontWeight: 400,
-          color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.2,
-          margin: '0 auto 16px', maxWidth: 640
-        }}>
-          东西方哲学谱系
-        </h1>
-        <p style={{
-          fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 300,
-          color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto'
-        }}>
-          从公元前六世纪至二十一世纪，七十六个流派，<br />一部横跨两千五百年的思想史长卷。
-        </p>
-        <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '32px auto 0', opacity: 0.4 }} />
+        <div style={{ position: 'absolute', inset: 0,
+          background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.5) 40%, rgba(244,240,235,0.2) 100%)' }} />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 24px' }}>
+            Philosophical Genealogy
+          </p>
+          <h1 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 'clamp(3rem, 9vw, 7rem)', fontWeight: 400, fontStyle: 'italic', color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.1, margin: '0 0 20px' }}>
+            东西方哲学谱系
+          </h1>
+          <div style={{ width: 60, height: 1.5, background: 'var(--ochre)', margin: '0 auto 24px', opacity: 0.7 }} />
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px' }}>
+            从公元前六世纪至二十一世纪<br />七十六个流派，一部横跨两千五百年的思想史长卷
+          </p>
+          <button onClick={scrollToTimeline} style={{
+            fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, letterSpacing: '0.08em',
+            color: '#fff', background: 'var(--ink)', border: 'none', borderRadius: 4,
+            padding: '14px 36px', cursor: 'pointer', transition: 'all 0.25s'
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--ochre)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--ink)'; }}>
+            开始探索 ↓
+          </button>
+        </div>
+        <div style={{ position: 'absolute', bottom: 36, opacity: 0.4 }}>
+          <span style={{ fontSize: 20, color: 'var(--text-dim)' }}>↓</span>
+        </div>
       </section>
 
-      {/* ══════════ TIMELINE — dual-sided, refined ══════════ */}
-      <div style={{ maxWidth: '100%', margin: '0 auto', position: 'relative', padding: '24px 24px 40px' }}>
+      {/* ══════════ THREE ENTRY CARDS ══════════ */}
+      <section style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
+          {[
+            { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/school/古希腊哲学', color: 'var(--ochre)' },
+            { title: '东方哲学', count: '24 流派', desc: '儒道墨法至当代，两千五百年不断的思想脉络', path: '/school/儒家', color: 'var(--prussian)' },
+            { title: '世界哲学', count: '9 流派', desc: '印度、日本、伊斯兰、非洲…全球哲学版图', path: '/world-philosophies', color: '#5A8A5A' },
+          ].map(card => (
+            <div key={card.title} onClick={() => navigate(card.path)} style={{
+              padding: '36px 28px', cursor: 'pointer', borderBottom: '2px solid var(--border)',
+              transition: 'all 0.3s', background: 'transparent'
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderBottomColor = card.color; e.currentTarget.style.background = 'var(--card-bg)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: card.color }}>{card.count}</span>
+              <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 28, fontWeight: 400, color: 'var(--ink)', margin: '8px 0 8px', letterSpacing: '0.03em' }}>{card.title}</h2>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>{card.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-        {/* Center axis — thinner, softer */}
-        <div style={{
-          position: 'absolute', left: '50%', top: 40, bottom: 40, width: 1,
+      {/* ══════════ QUOTE SECTION ══════════ */}
+      <section style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%' }}>
+        <div style={{ maxWidth: 680, margin: '0 auto' }}>
+          <p style={{ fontFamily: '"Playfair Display",serif', fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, margin: '0 0 16px' }}>
+            &ldquo;全部西方哲学史不过是柏拉图的一串注脚。&rdquo;
+          </p>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>&mdash; 怀特海</p>
+        </div>
+      </section>
+
+      {/* ══════════ NUMBERS ══════════ */}
+      <section style={{ padding: '64px 32px', maxWidth: 800, margin: '0 auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
+          {[{ num: '253', label: '哲学著作' }, { num: '148', label: '哲学家' }, { num: '76', label: '哲学流派' }].map(s => (
+            <div key={s.label}>
+              <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════ TIMELINE — dual-sided ══════════ */}
+      <div id="genealogy-timeline" style={{ maxWidth: '100%', margin: '0 auto', position: 'relative', padding: '48px 24px 40px' }}>
+        <h2 style={{ textAlign: 'center', fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 40, letterSpacing: '0.04em' }}>思想史时间轴</h2>
+        <div style={{ position: 'absolute', left: '50%', top: 120, bottom: 40, width: 1,
           background: 'linear-gradient(to bottom, transparent 0%, var(--border) 10%, var(--border) 90%, transparent 100%)',
-          transform: 'translateX(-50%)'
-        }} />
+          transform: 'translateX(-50%)' }} />
 
         {(() => {
           const allEras = [];
@@ -265,85 +317,35 @@ function GenealogyPage() {
             const hasEast = era.east.length > 0, hasWest = era.west.length > 0;
             return (
               <div key={eraIdx} style={{ display: 'flex', marginBottom: 48, position: 'relative' }}>
-                {/* LEFT: Eastern */}
                 <div style={{ flex: 1, paddingRight: 28, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                   {hasEast && era.east.map((school, si) => {
                     const color = EASTERN_COLORS[(eastIdx + si) % EASTERN_COLORS.length];
                     return (
-                      <div key={school}
-                        onClick={() => navigate('/school/' + encodeURIComponent(school))}
-                        style={{
-                          maxWidth: 360, marginBottom: 8, cursor: 'pointer', textAlign: 'right',
-                          padding: '12px 18px', borderRight: '3px solid ' + color,
-                          transition: 'all 0.25s', background: 'transparent'
-                        }}
+                      <div key={school} onClick={() => navigate('/school/' + encodeURIComponent(school))}
+                        style={{ maxWidth: 360, marginBottom: 8, cursor: 'pointer', textAlign: 'right', padding: '12px 18px', borderRight: '3px solid ' + color, transition: 'all 0.25s', background: 'transparent' }}
                         onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-                      >
-                        <h3 style={{
-                          fontFamily: '"Playfair Display", "PingFang SC", serif',
-                          fontSize: 16, fontWeight: 500, color: 'var(--ink)',
-                          margin: '0 0 3px', letterSpacing: '0.03em'
-                        }}>
-                          {school}
-                        </h3>
-                        {EASTERN_DESCRIPTIONS[school] && (
-                          <p style={{
-                            fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300,
-                            color: 'var(--text-dim)', margin: 0, lineHeight: 1.6
-                          }}>
-                            {EASTERN_DESCRIPTIONS[school]}
-                          </p>
-                        )}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                        <h3 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 16, fontWeight: 500, color: 'var(--ink)', margin: '0 0 3px', letterSpacing: '0.03em' }}>{school}</h3>
+                        {EASTERN_DESCRIPTIONS[school] && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{EASTERN_DESCRIPTIONS[school]}</p>}
                       </div>
                     );
                   })}
                   {hasEast && (() => { eastIdx += era.east.length; })()}
                 </div>
-                {/* Center: century marker */}
                 <div style={{ width: 56, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 8 }}>
-                  <div style={{
-                    width: 8, height: 8, borderRadius: '50%', zIndex: 2,
-                    background: 'var(--bone)', border: '2px solid var(--ochre)'
-                  }} />
-                  <span style={{
-                    fontFamily: '"Playfair Display", serif', fontSize: 11, fontWeight: 500,
-                    color: 'var(--ochre)', marginTop: 8, textAlign: 'center',
-                    whiteSpace: 'nowrap', letterSpacing: '0.05em'
-                  }}>
-                    {era.century}
-                  </span>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', zIndex: 2, background: 'var(--bone)', border: '2px solid var(--ochre)' }} />
+                  <span style={{ fontFamily: '"Playfair Display",serif', fontSize: 11, fontWeight: 500, color: 'var(--ochre)', marginTop: 8, textAlign: 'center', whiteSpace: 'nowrap', letterSpacing: '0.05em' }}>{era.century}</span>
                 </div>
-                {/* RIGHT: Western */}
                 <div style={{ flex: 1, paddingLeft: 28 }}>
                   {hasWest && era.west.map((school, si) => {
                     const color = SCHOOL_COLORS[(westIdx + si) % SCHOOL_COLORS.length];
                     return (
-                      <div key={school}
-                        onClick={() => navigate('/school/' + encodeURIComponent(school))}
-                        style={{
-                          maxWidth: 360, marginBottom: 8, cursor: 'pointer',
-                          padding: '12px 18px', borderLeft: '3px solid ' + color,
-                          transition: 'all 0.25s', background: 'transparent'
-                        }}
+                      <div key={school} onClick={() => navigate('/school/' + encodeURIComponent(school))}
+                        style={{ maxWidth: 360, marginBottom: 8, cursor: 'pointer', padding: '12px 18px', borderLeft: '3px solid ' + color, transition: 'all 0.25s', background: 'transparent' }}
                         onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-                      >
-                        <h3 style={{
-                          fontFamily: '"Playfair Display", "PingFang SC", serif',
-                          fontSize: 16, fontWeight: 500, color: 'var(--ink)',
-                          margin: '0 0 3px', letterSpacing: '0.03em'
-                        }}>
-                          {school}
-                        </h3>
-                        {SCHOOL_DESCRIPTIONS[school] && (
-                          <p style={{
-                            fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300,
-                            color: 'var(--text-dim)', margin: 0, lineHeight: 1.6
-                          }}>
-                            {SCHOOL_DESCRIPTIONS[school]}
-                          </p>
-                        )}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                        <h3 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 16, fontWeight: 500, color: 'var(--ink)', margin: '0 0 3px', letterSpacing: '0.03em' }}>{school}</h3>
+                        {SCHOOL_DESCRIPTIONS[school] && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{SCHOOL_DESCRIPTIONS[school]}</p>}
                       </div>
                     );
                   })}
@@ -356,18 +358,13 @@ function GenealogyPage() {
       </div>
 
       {/* ══════════ FOOTER ══════════ */}
-      <div style={{ textAlign: 'center', paddingBottom: 32 }}>
-        <button
-          onClick={() => navigate('/world-philosophies')}
-          style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            fontFamily: '"Playfair Display", serif', fontSize: 15, fontWeight: 400,
-            color: 'var(--ochre)', letterSpacing: '0.04em',
-            padding: '8px 16px', transition: 'opacity 0.2s'
-          }}
+      <div style={{ textAlign: 'center', paddingBottom: 40 }}>
+        <button onClick={() => navigate('/world-philosophies')} style={{
+          fontFamily: '"Playfair Display",serif', fontSize: 15, fontWeight: 400, color: 'var(--ochre)', letterSpacing: '0.04em',
+          background: 'none', border: 'none', cursor: 'pointer', padding: '8px 16px', transition: 'opacity 0.2s'
+        }}
           onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-        >
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
           世界哲学传统 →
         </button>
       </div>
@@ -375,4 +372,4 @@ function GenealogyPage() {
   );
 }
 
-export default GenealogyPage;
+export default HomePage;

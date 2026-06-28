@@ -16,6 +16,7 @@ import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
 import ReaderPage from './pages/ReaderPage';
 import ProfilePage from './pages/ProfilePage';
+import HomePage from './pages/HomePage';
 import WorldPhilosophiesPage from './pages/WorldPhilosophiesPage';
 import WesternPhilosophiesPage from './pages/WesternPhilosophiesPage';
 import EasternPhilosophiesPage from './pages/EasternPhilosophiesPage';
@@ -118,7 +119,7 @@ function MainLayout() {
 
       <main className={`app-main${isReader ? ' reader-mode' : ''}`} style={isReader ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <Routes>
-          <Route path="/" element={<GenealogyPage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BooksPage />} />
           <Route path="/book/:bookId" element={<BookDetailPage />} />
           <Route path="/reader/:bookId" element={<ReaderPage />} />
