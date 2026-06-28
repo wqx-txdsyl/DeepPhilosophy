@@ -1280,6 +1280,33 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
                 "school": info.get("school", "") if info else "",
             }
 
+    # 补入哲学家数据库中所有未在作者列表中出现的人物（星丛补全后共355位）
+    from philosophers_db import PHILOSOPHERS
+    for ph_name, ph_info in PHILOSOPHERS.items():
+        if ph_name in authors_map:
+            continue
+        # 检查别名是否有匹配
+        matched = False
+        from philosophers_db import NAME_ALIASES
+        for alias, target in NAME_ALIASES.items():
+            if alias in authors_map:
+                matched = True
+                break
+            if target == ph_name and alias not in authors_map:
+                pass  # alias not in authors either
+        if matched:
+            continue
+        # 添加到作者列表
+        authors_map[ph_name] = {
+            "name": ph_name,
+            "region": "东方" if any(kw in (ph_info.get("school", "") + ph_info.get("country", ""))
+                                    for kw in ["中国", "儒家", "道家", "墨家", "法家", "兵家", "宋明", "魏晋", "禅", "佛"]) else "西方",
+            "books": [],
+            "era": ph_info.get("era", ""),
+            "country": ph_info.get("country", ""),
+            "school": ph_info.get("school", ""),
+        }
+
     result = []
     for name, info in authors_map.items():
         century = _era_to_century(info.get("era", "")) if info.get("era") else ""
