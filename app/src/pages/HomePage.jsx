@@ -215,7 +215,7 @@ function HomePage() {
             Philosophical Genealogy
           </p>
           <h1 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 'clamp(3rem, 9vw, 7rem)', fontWeight: 400, fontStyle: 'italic', color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.1, margin: '0 0 20px' }}>
-            东西方哲学谱系
+            DeepPhilosophy
           </h1>
           <div style={{ width: 60, height: 1.5, background: 'var(--ochre)', margin: '0 auto 24px', opacity: 0.7 }} />
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px' }}>
