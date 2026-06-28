@@ -68,27 +68,25 @@ function PHTIPage() {
       scores[dim] = count > 0 ? Math.round((total / count) * 5) : 0;
     }
 
-    // Determine 4-letter code
-    const code =
-      (scores.Rationalism >= 0 ? 'R' : 'E') +
-      (scores.Stoicism >= 0 ? 'R' : 'E') +  // R for stoic, E for epicurean
-      (scores.Essentialism >= 0 ? 'R' : 'E') +  // R for essentialist, E for existentialist
-      (scores.Communitarian >= 0 ? 'R' : 'E');  // R for communitarian, E for individualist
+    // 概率性匹配：得分越极端越确定，越接近0越随机
+    // 每个维度的 R/E 概率由得分决定（sigmoid）
+    const sigmoid = (x) => 1 / (1 + Math.exp(-x / 2)); // 温度=2，得分±5时概率≈0.92/0.08
+    const probs = [
+      sigmoid(scores.Rationalism), // >0.5 means R, <0.5 means E
+      sigmoid(scores.Stoicism),
+      sigmoid(scores.Essentialism),
+      sigmoid(scores.Communitarian),
+    ];
 
-    // Wait, our code uses actual dimension names. Let me map correctly:
-    const codeMap = {
-      Rationalism: scores.Rationalism >= 0 ? 'R' : 'E',
-      Stoicism: scores.Stoicism >= 0 ? 'S' : 'E',
-      Essentialism: scores.Essentialism >= 0 ? 'E' : 'P',
-      Communitarian: scores.Communitarian >= 0 ? 'C' : 'I',
-    };
-    // Actually let me use the CSV code format: R/E for dim1, R/E for dim2, R/E for dim3, R/E for dim4
-    // But the CSV uses RRRR etc. Let me rebuild:
-    const letter1 = scores.Rationalism >= 0 ? 'R' : 'E';
-    const letter2 = scores.Stoicism >= 0 ? 'R' : 'E';
-    const letter3 = scores.Essentialism >= 0 ? 'R' : 'E';
-    const letter4 = scores.Communitarian >= 0 ? 'R' : 'E';
-    const personalityCode = letter1 + letter2 + letter3 + letter4;
+    // 按概率生成4-letter code (多次采样取最常见？不，就一次采样)
+    const genLetter = (dimIdx, highLetter, lowLetter) =>
+      Math.random() < probs[dimIdx] ? highLetter : lowLetter;
+
+    const personalityCode =
+      genLetter(0, 'R', 'E') +
+      genLetter(1, 'R', 'E') +
+      genLetter(2, 'R', 'E') +
+      genLetter(3, 'R', 'E');
 
     const matched = phtiTypes.find(t => t.code === personalityCode) || phtiTypes[0];
 

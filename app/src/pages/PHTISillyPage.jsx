@@ -65,17 +65,31 @@ function PHTISillyPage() {
     }
 
     // 缩放到与哲学家坐标匹配的范围（哲学家坐标在 -10..10）
-    const perDim = TOTAL_Q / 4; // ~12.5题/维度
+    const perDim = TOTAL_Q / 4;
     const userVec = [
       Math.round(scores.Rationalism / perDim * 5),
       Math.round(scores.Stoicism / perDim * 5),
       Math.round(scores.Essentialism / perDim * 5),
       Math.round(scores.Communitarian / perDim * 5),
     ];
-    let bestKey = 'PLA', bestDist = Infinity;
-    for (const [key, phil] of Object.entries(PHILOSOPHER_MAP)) {
-      const dist = phil.dims.reduce((sum, v, i) => sum + (v - userVec[i]) ** 2, 0);
-      if (dist < bestDist) { bestDist = dist; bestKey = key; }
+
+    // 概率匹配：距离转 softmax，得分越近概率越高，避免总是同一个
+    const entries = Object.entries(PHILOSOPHER_MAP);
+    const dists = entries.map(([, p]) =>
+      p.dims.reduce((sum, v, i) => sum + (v - userVec[i]) ** 2, 0)
+    );
+    // 温度参数：越低越倾向最近的那个，越高越均匀
+    const temperature = 80;
+    const expDists = dists.map(d => Math.exp(-d / temperature));
+    const totalExp = expDists.reduce((a, b) => a + b, 0);
+    const probs = expDists.map(e => e / totalExp);
+
+    // 加权随机选择
+    let r = Math.random();
+    let bestKey = entries[0][0];
+    for (let i = 0; i < entries.length; i++) {
+      r -= probs[i];
+      if (r <= 0) { bestKey = entries[i][0]; break; }
     }
 
     setResult({ ...PHILOSOPHER_MAP[bestKey], scores: userVec, code: bestKey });
