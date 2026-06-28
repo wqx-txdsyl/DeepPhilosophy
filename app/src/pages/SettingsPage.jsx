@@ -67,10 +67,11 @@ function SettingsPage() {
         <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}>📱 关于</h3>
           <p style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.6 }}>
-            <strong>DeepPhilosophy</strong> v1.2.0<br />
+            <strong>DeepPhilosophy</strong> v2.0.0<br />
             开发者: @txdsyl_<br />
-            哲学爱好者知识库应用<br />
-            214 本哲学著作 · 云端 OSS 高速访问
+            哲学爱好者知识平台<br />
+            342 本哲学著作 · 140 位哲学家 · 76 个流派<br />
+            答案之书 · PHTI 哲学人格测试 · AI 毒舌锐评
           </p>
         </div>
       </div>

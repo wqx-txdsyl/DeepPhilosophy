@@ -62,7 +62,7 @@ def _get_r2_client():
 app = FastAPI(
     title="DeepPhilosophy API",
     description="哲学爱好者知识库云端服务",
-    version="1.2.0",
+    version="2.0.0",
 )
 
 app.add_middleware(
