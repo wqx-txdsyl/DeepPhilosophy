@@ -219,7 +219,7 @@ function HomePage() {
         <span style={{ display: 'flex', gap: 0, marginRight: 'auto', marginLeft: -2 }}>
           {[
             { label: '📚', text: '书籍', path: '/books' },
-            { label: '✒️', text: '作家', path: '/authors' },
+            { label: '✒️', text: '哲人', path: '/authors' },
             { label: '🧬', text: '谱系', path: '/genealogy' },
             { label: '💬', text: '问答', path: '/qa' },
             { label: '🎮', text: '游戏', path: '/games' },
