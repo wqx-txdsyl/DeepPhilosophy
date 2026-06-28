@@ -141,6 +141,8 @@ const EASTERN_COLORS = (() => {
 function HomePage() {
   const navigate = useNavigate();
   const [schoolData, setSchoolData] = useState({});
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('dp_token'));
+  const [username, setUsername] = useState(localStorage.getItem('dp_username') || '');
 
   useEffect(() => {
     fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(10000) })
@@ -202,7 +204,7 @@ function HomePage() {
   return (
     <div className="page-container" style={{ paddingBottom: 0, margin: 0 }}>
 
-      {/* Floating login button */}
+      {/* Floating login/user button */}
       <button onClick={() => navigate('/profile')} style={{
         position: 'fixed', top: 20, right: 20, zIndex: 1000,
         fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
@@ -212,7 +214,7 @@ function HomePage() {
       }}
         onMouseEnter={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.9)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
         onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.7)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
-        登录 / 注册
+        {loggedIn && username ? username : '登录 / 注册'}
       </button>
 
       {/* ══════════ HERO — full screen, world philosophy background ══════════ */}
