@@ -68,27 +68,31 @@ function PHTIPage() {
       scores[dim] = count > 0 ? Math.round((total / count) * 5) : 0;
     }
 
-    // 概率性匹配：得分越极端越确定，越接近0越随机
-    // 每个维度的 R/E 概率由得分决定（sigmoid）
-    const sigmoid = (x) => 1 / (1 + Math.exp(-x / 2)); // 温度=2，得分±5时概率≈0.92/0.08
-    const probs = [
-      sigmoid(scores.Rationalism), // >0.5 means R, <0.5 means E
-      sigmoid(scores.Stoicism),
-      sigmoid(scores.Essentialism),
-      sigmoid(scores.Communitarian),
-    ];
+    // 16型坐标映射（Rationalism, Stoicism, Essentialism, Communitarian）
+    const TYPE_COORDS = {
+      'RRRR': [8, 8, 8, 8], 'RRRC': [8,-8, 8, 8], 'RRSR': [8, 8, 8,-8], 'RRSC': [8,-8, 8,-8],
+      'RPER': [8, 8,-8, 8], 'RPEC': [8,-8,-8, 8], 'RPSR': [8, 8,-8,-8], 'RPSC': [8,-8,-8,-8],
+      'ERRR': [-8, 8, 8, 8], 'ERRC': [-8,-8, 8, 8], 'ERSR': [-8, 8, 8,-8], 'ERSC': [-8,-8, 8,-8],
+      'EPER': [-8, 8,-8, 8], 'EPEC': [-8,-8,-8, 8], 'EPSR': [-8, 8,-8,-8], 'EPSC': [-8,-8,-8,-8],
+    };
+    const userVec = [scores.Rationalism, scores.Stoicism, scores.Essentialism, scores.Communitarian];
 
-    // 按概率生成4-letter code (多次采样取最常见？不，就一次采样)
-    const genLetter = (dimIdx, highLetter, lowLetter) =>
-      Math.random() < probs[dimIdx] ? highLetter : lowLetter;
+    // Softmax 概率匹配
+    const entries = Object.entries(TYPE_COORDS);
+    const dists = entries.map(([, c]) => c.reduce((s, v, i) => s + (v - userVec[i]) ** 2, 0));
+    const temperature = 80;
+    const expDists = dists.map(d => Math.exp(-d / temperature));
+    const totalExp = expDists.reduce((a, b) => a + b, 0);
+    const probsArr = expDists.map(e => e / totalExp);
 
-    const personalityCode =
-      genLetter(0, 'R', 'E') +
-      genLetter(1, 'R', 'E') +
-      genLetter(2, 'R', 'E') +
-      genLetter(3, 'R', 'E');
+    let r = Math.random();
+    let bestCode = entries[0][0];
+    for (let i = 0; i < entries.length; i++) {
+      r -= probsArr[i];
+      if (r <= 0) { bestCode = entries[i][0]; break; }
+    }
 
-    const matched = phtiTypes.find(t => t.code === personalityCode) || phtiTypes[0];
+    const matched = phtiTypes.find(t => t.code === bestCode) || phtiTypes[0];
 
     setResult({ ...matched, scores, personalityCode });
     setPhase('roasting');
