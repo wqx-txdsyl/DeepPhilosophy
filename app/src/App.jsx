@@ -104,7 +104,7 @@ function MainLayout() {
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
-  const hideNav = isReader || isHome || isSchool;
+  const hideNav = true;
   const hideHeader = isHome || isReader || isSchool;
   const activeTab = getActiveTab();
 
@@ -112,10 +112,20 @@ function MainLayout() {
     <>
       {!hideHeader && (
         <header className="app-header">
-          <h1 className="app-title" onClick={() => navigate('/')}>
+          <h1 className="app-title" onClick={() => navigate('/')} style={{ marginRight: 4 }}>
             DeepPhilosophy
           </h1>
-          <span style={{ display: 'flex', gap: 0 }}>
+          <span style={{ display: 'flex', gap: 0, marginRight: 'auto', marginLeft: -2 }}>
+            {tabs.map((tab) => (
+              <button key={tab.key} className={`nav-btn ${activeTab === tab.key ? 'active' : ''}`}
+                onClick={() => navigate(tab.path)}
+                style={{ flexDirection: 'row', gap: 3, fontSize: 12, padding: '4px 8px' }}>
+                <span style={{ fontSize: 15 }}>{tab.label}</span>
+                <span>{tab.text}</span>
+              </button>
+            ))}
+          </span>
+          <span style={{ display: 'flex', gap: 0, flexShrink: 0 }}>
             <button className="settings-btn" onClick={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }} title="手机版">{mobileMode ? '💻' : '📱'}</button>
             <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}>{darkMode ? '☀️' : '🌙'}</button>
             <button className="settings-btn" onClick={() => navigate('/settings')}>⚙️</button>
