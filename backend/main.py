@@ -1469,44 +1469,29 @@ async def api_clear_book_chat(book_id: str,
 @app.post("/api/ai/stream")
 async def ai_stream_proxy(req: Request):
     """流式代理 DeepSeek API，使用服务器默认 Key"""
-    import urllib.request as ur
+    from openai import OpenAI
     key = config.DEEPSEEK_API_KEY
     if not key:
         return JSONResponse({"error": "Server API key not configured"}, status_code=500)
 
     body = await req.json()
-    data = json.dumps({
-        "model": body.get("model", config.DEEPSEEK_MODEL),
-        "messages": body.get("messages", []),
-        "temperature": body.get("temperature", 0.7),
-        "max_tokens": body.get("max_tokens", 1024),
-        "stream": True,
-    }).encode()
-
-    def blocking_call():
-        r = ur.Request(
-            f"{config.DEEPSEEK_BASE_URL}/v1/chat/completions",
-            data=data,
-            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-        )
-        return ur.urlopen(r, timeout=120)
-
-    import asyncio
-    loop = asyncio.get_event_loop()
-    try:
-        resp = await loop.run_in_executor(None, blocking_call)
-    except Exception as e:
-        return JSONResponse({"error": str(e)}, status_code=500)
+    client = OpenAI(api_key=key, base_url=config.DEEPSEEK_BASE_URL)
 
     def generate():
         try:
-            while True:
-                chunk = resp.read(4096)
-                if not chunk:
-                    break
-                yield chunk
-        finally:
-            resp.close()
+            stream = client.chat.completions.create(
+                model=body.get("model", config.DEEPSEEK_MODEL),
+                messages=body.get("messages", []),
+                temperature=body.get("temperature", 0.7),
+                max_tokens=body.get("max_tokens", 1024),
+                stream=True,
+            )
+            for chunk in stream:
+                if chunk.choices[0].delta.content:
+                    yield f"data: {json.dumps({'choices':[{'delta':{'content': chunk.choices[0].delta.content}}]})}\n\n"
+            yield "data: [DONE]\n\n"
+        except Exception as e:
+            yield f"data: {json.dumps({'error': str(e)})}\n\n"
 
     return StreamingResponse(
         generate(),
