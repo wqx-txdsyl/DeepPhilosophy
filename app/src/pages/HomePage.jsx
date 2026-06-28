@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
+import DAILY_QUOTES from '../data/dailyQuotes';
 
 const WESTERN_TIMELINE = [
   { century: '公元前6世纪', schools: ['古希腊哲学'] },
@@ -258,9 +259,31 @@ function HomePage() {
         </div>
       </section>
 
+      {/* ══════════ THREE ENTRY CARDS ══════════ */}
+      <section id="home-content" style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
+          {[
+            { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/western-philosophies', color: 'var(--ochre)' },
+            { title: '东方哲学', count: '24 流派', desc: '儒道墨法至当代，两千五百年不断的思想脉络', path: '/eastern-philosophies', color: 'var(--prussian)' },
+            { title: '世界哲学', count: '9 流派', desc: '印度、日本、伊斯兰、非洲…全球哲学版图', path: '/world-philosophies', color: '#5A8A5A' },
+          ].map(card => (
+            <div key={card.title} onClick={() => navigate(card.path)} style={{
+              padding: '36px 28px', cursor: 'pointer', borderBottom: '2px solid var(--border)',
+              transition: 'all 0.3s', background: 'transparent'
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderBottomColor = card.color; e.currentTarget.style.background = 'var(--card-bg)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: card.color }}>{card.count}</span>
+              <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 28, fontWeight: 400, color: 'var(--ink)', margin: '8px 0 8px', letterSpacing: '0.03em' }}>{card.title}</h2>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>{card.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ══════════ DAILY QUOTE ══════════ */}
       {(() => {
-        const quotes = [
+        const QUOTES_LOCAL = [
           { text: '全部西方哲学史不过是柏拉图的一串注脚。', author: '怀特海' },
           { text: '认识你自己。', author: '古希腊德尔斐神谕' },
           { text: '我思故我在。', author: '笛卡尔' },
