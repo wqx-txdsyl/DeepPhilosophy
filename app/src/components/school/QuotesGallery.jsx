@@ -27,7 +27,7 @@ export default function QuotesGallery({ quotes = [] }) {
                 color: isHov ? 'var(--ochre)' : 'var(--ink)', cursor: 'pointer',
                 opacity: hovered != null && !isHov ? 0.35 : 0.75,
                 transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)',
-                transform: `rotate(${rot}deg) scale(${isHov ? 1.25 : 1})`,
+                transform: `rotate(${isHov ? 0 : rot}deg) scale(${isHov ? 1.25 : 1})`,
                 padding: '4px 10px', lineHeight: 1.4,
               }}>
                 &ldquo;{q.text.length > 20 ? q.text.substring(0, 18) + '…' : q.text}&rdquo;
