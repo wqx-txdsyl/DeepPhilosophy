@@ -22,14 +22,32 @@ function ProfilePage() {
   const [authMsg, setAuthMsg] = useState('');
   const [syncing, setSyncing] = useState(false);
 
-  // Restore login from token
+  // Restore login from token — verify with backend first
   useEffect(() => {
     const token = localStorage.getItem('dp_token');
     const user = localStorage.getItem('dp_username');
     if (token && user) {
-      setLoggedIn(true);
-      setLoginUser(user);
-      syncFromCloud(token);
+      // 先验证 token 是否仍然有效
+      fetch(`${getApiBase()}/api/auth/profile`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+        signal: AbortSignal.timeout(8000),
+      }).then(r => {
+        if (r.ok) {
+          setLoggedIn(true);
+          setLoginUser(user);
+          syncFromCloud(token, false);  // auto-restore: merge, don't replace
+        } else {
+          // Token 已过期或后端重建 → 清除旧凭据，保留本地数据
+          localStorage.removeItem('dp_token');
+          localStorage.removeItem('dp_username');
+          setLoggedIn(false);
+          setLoginUser('');
+        }
+      }).catch(() => {
+        // 网络错误 → 暂时保持登录状态，用本地数据
+        setLoggedIn(true);
+        setLoginUser(user);
+      });
     }
     loadLocalData();
   }, [tab]);
@@ -69,7 +87,7 @@ function ProfilePage() {
       setLoginUser(username);
       setPassword('');
       setAuthMsg('');
-      syncFromCloud(r.token);
+      syncFromCloud(r.token, true);  // fresh login: replace with cloud data
     } catch (e) { setAuthMsg(e.message); }
   };
 
@@ -83,7 +101,9 @@ function ProfilePage() {
   };
 
   // ========== Cloud Sync ==========
-  const syncFromCloud = async (token) => {
+  // isFreshLogin=true: 新登录 → 云端数据完全替换本地（切换账号场景）
+  // isFreshLogin=false: token恢复 → 合并，避免云端为空时清空本地数据
+  const syncFromCloud = async (token, isFreshLogin = false) => {
     setSyncing(true);
     try {
       // Pull reading history — normalize snake_case → camelCase
@@ -93,19 +113,31 @@ function ProfilePage() {
       });
       if (rh.ok) {
         const d = await rh.json();
-        const normalized = (d.history || []).map(h => ({
-          bookId: h.book_id || h.id,
+        const cloudHistory = (d.history || []).map(h => ({
+          bookId: h.book_id || '',
           bookTitle: h.book_title || '',
           bookAuthor: h.book_author || '',
-          page: h.page || 0,
-          percent: h.percent || 0,
+          page: h.progress_page || h.page || 0,
+          percent: h.progress_percent || h.percent || 0,
           fileType: h.file_type || h.fileType || '',
           lastReadAt: h.last_read_at || h.lastReadAt || h.created_at || '',
         }));
         const local = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        local.readingHistory = normalized;
+        const localHistory = local.readingHistory || [];
+        if (isFreshLogin || cloudHistory.length > 0) {
+          // 新登录或云端有数据 → 云端优先，但保留本地独有的
+          const cloudIds = new Set(cloudHistory.map(h => h.bookId));
+          const merged = [...cloudHistory];
+          for (const h of localHistory) {
+            if (h.bookId && !cloudIds.has(h.bookId)) {
+              merged.push(h);
+            }
+          }
+          local.readingHistory = merged;
+        }
+        // 云端为空且非新登录 → 保留本地数据不变
         localStorage.setItem('dp_userdata', JSON.stringify(local));
-        if (tab === 'reading') setReadingHistory(normalized);
+        if (tab === 'reading') setReadingHistory(local.readingHistory || localHistory);
       }
       // Pull chat history
       const ch = await fetch(`${getApiBase()}/api/history/chat`, {
@@ -114,10 +146,15 @@ function ProfilePage() {
       });
       if (ch.ok) {
         const d = await ch.json();
+        const cloudChat = d.messages || [];
         const local = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        local.chatHistory = d.messages || [];
+        const localChat = local.chatHistory || [];
+        if (isFreshLogin || cloudChat.length > 0) {
+          local.chatHistory = cloudChat;
+        }
+        // 云端为空且非新登录 → 保留本地数据不变
         localStorage.setItem('dp_userdata', JSON.stringify(local));
-        if (tab === 'chat') setChatHistory(d.messages || []);
+        if (tab === 'chat') setChatHistory(local.chatHistory || localChat);
       }
       // Pull book notes
       const notes = await fetch(`${getApiBase()}/api/notes`, {
@@ -127,7 +164,7 @@ function ProfilePage() {
       if (notes.ok) {
         const d = await notes.json();
         Object.entries(d.notes || {}).forEach(([bid, txt]) => {
-          localStorage.setItem(`dp_notes_${bid}`, txt);
+          if (txt) localStorage.setItem(`dp_notes_${bid}`, txt);
         });
       }
     } catch {}

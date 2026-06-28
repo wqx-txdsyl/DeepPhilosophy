@@ -1,20 +1,35 @@
 """
-用户认证模块 —— SQLite + OSS 云端持久化
+用户认证模块 —— SQLite + OSS 云端持久化 + GitHub Release 备份
 零额外依赖，boto3 已安装用于 S3 兼容的 OSS 存储
 """
 import os
+import sys
+import json
 import sqlite3
 import hashlib
 import uuid
 import time
 import shutil
+import logging
+import urllib.request
+import urllib.error
 from datetime import datetime
 from typing import Optional
+
+_log = logging.getLogger("auth")
 
 _PERSIST = os.getenv("PERSIST_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"))
 os.makedirs(_PERSIST, exist_ok=True)
 DB_PATH = os.path.join(_PERSIST, "users.db")
+_log.info(f"Auth DB path: {DB_PATH}")
 _OSS_KEY = "_system/users.db"
+
+# GitHub Release 备份配置
+_GITHUB_REPO = os.getenv("GITHUB_REPO", "wqx-txdsyl/DeepPhilosophy")
+_GITHUB_TAG = "userdb-v1"
+_GITHUB_ASSET = "users.db"
+_GH_TOKEN = os.getenv("GITHUB_TOKEN", "")
+_GH_API_BASE = "https://api.github.com"
 
 # OSS 云端同步（S3 兼容 API，boto3 已安装）
 def _oss_request(method, key_path, body=None):
@@ -26,7 +41,9 @@ def _oss_request(method, key_path, body=None):
     ak = os.getenv("OSS_ACCESS_KEY", "")
     sk = os.getenv("OSS_SECRET_KEY", "")
     bucket = os.getenv("OSS_BUCKET", "deepphilosophy")
-    if not ak: return None
+    if not ak:
+        _log.debug("OSS_ACCESS_KEY not set, skipping cloud sync")
+        return None
     date = time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime())
     ctype = 'application/octet-stream' if body else ''
     string_to_sign = f"{method}\n\n{ctype}\n{date}\n/{bucket}/{key_path}"
@@ -44,16 +61,23 @@ def _sync_db_to_cloud():
     if not os.path.exists(DB_PATH): return
     try:
         with open(DB_PATH, 'rb') as f:
-            _oss_request('PUT', _OSS_KEY, f.read())
-    except Exception:
-        pass
+            resp = _oss_request('PUT', _OSS_KEY, f.read())
+        if resp is not None and resp.status_code >= 400:
+            _log.warning(f"OSS upload failed: {resp.status_code}")
+    except Exception as e:
+        _log.warning(f"OSS upload error: {e}")
 
 def _sync_db_from_cloud():
     """从 OSS 下载 users.db（如果存在且比本地新）"""
     try:
         r = _oss_request('GET', _OSS_KEY)
-        if r is None or r.status_code == 404: return
-        if r.status_code != 200: return
+        if r is None: return  # No OSS credentials configured
+        if r.status_code == 404:
+            _log.info("No remote users.db found, starting fresh")
+            return
+        if r.status_code != 200:
+            _log.warning(f"OSS download failed: {r.status_code}")
+            return
         cloud_data = r.content
         if len(cloud_data) == 0: return
         # 比本地新？
@@ -65,10 +89,183 @@ def _sync_db_from_cloud():
             f.write(cloud_data)
         if os.path.getsize(DB_PATH + '.tmp') > 0:
             shutil.move(DB_PATH + '.tmp', DB_PATH)
+            _log.info("Restored users.db from OSS cloud")
         else:
             os.remove(DB_PATH + '.tmp')
-    except Exception:
-        pass
+    except Exception as e:
+        _log.warning(f"OSS download error: {e}")
+
+
+# ============================================================
+# GitHub Release 备份（纯 stdlib，零新依赖）
+# ============================================================
+
+def _gh_request(method, api_path, body=None, json_body=True, host=None):
+    """GitHub API 通用请求，返回 (status, data_or_dict) 或 (0, None)"""
+    if not _GH_TOKEN:
+        _log.debug("GITHUB_TOKEN not set, skipping GitHub sync")
+        return 0, None
+    try:
+        h = host or "api.github.com"
+        url = f"https://{h}{api_path}"
+        data = None
+        headers = {
+            "Authorization": f"Bearer {_GH_TOKEN}",
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "DeepPhilosophy/1.2",
+        }
+        if body is not None:
+            if json_body:
+                data = json.dumps(body).encode("utf-8")
+                headers["Content-Type"] = "application/json"
+            else:
+                data = body
+                headers["Content-Type"] = "application/octet-stream"
+        req = urllib.request.Request(url, data=data, headers=headers, method=method)
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            raw = resp.read()
+            if raw:
+                return resp.status, json.loads(raw)
+            return resp.status, None
+    except urllib.error.HTTPError as e:
+        body = e.read() if e.fp else b""
+        try:
+            return e.code, json.loads(body) if body else None
+        except Exception:
+            return e.code, None
+    except Exception as e:
+        _log.warning(f"GitHub API error: {e}")
+        return 0, None
+
+
+def _gh_upload_asset(release_id, asset_name, data):
+    """上传二进制资产到 GitHub Release（uploads.github.com）"""
+    if not _GH_TOKEN:
+        return False
+    try:
+        path = f"/repos/{_GITHUB_REPO}/releases/{release_id}/assets?name={urllib.parse.quote(asset_name)}"
+        status, result = _gh_request("POST", path, body=data, json_body=False, host="uploads.github.com")
+        return status == 201
+    except Exception as e:
+        _log.warning(f"GitHub upload error: {e}")
+        return False
+
+
+def _gh_download_asset(download_url):
+    """从 GitHub Release 下载资产，返回原始字节"""
+    if not _GH_TOKEN:
+        return None
+    try:
+        req = urllib.request.Request(
+            download_url,
+            headers={
+                "Authorization": f"Bearer {_GH_TOKEN}",
+                "User-Agent": "DeepPhilosophy/1.2",
+            },
+        )
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return resp.read()
+    except Exception as e:
+        _log.warning(f"GitHub download error: {e}")
+        return None
+
+
+def _get_or_create_release():
+    """查找或创建 userdb-v1 Release，返回 release dict 或 None"""
+    if not _GH_TOKEN:
+        return None
+    # 先查找
+    status, data = _gh_request("GET", f"/repos/{_GITHUB_REPO}/releases/tags/{_GITHUB_TAG}")
+    if status == 200 and isinstance(data, dict):
+        return data
+    if status == 404:
+        # 不存在，创建
+        status2, data2 = _gh_request("POST", f"/repos/{_GITHUB_REPO}/releases", body={
+            "tag_name": _GITHUB_TAG,
+            "name": "User Database",
+            "body": "DeepPhilosophy users.db 自动备份（由后端自动同步）",
+            "prerelease": False,
+            "generate_release_notes": False,
+        })
+        if status2 == 201 and isinstance(data2, dict):
+            _log.info("Created GitHub Release: userdb-v1")
+            return data2
+        _log.warning(f"Failed to create GitHub Release: {status2}")
+    return None
+
+
+def _sync_db_to_github():
+    """上传 users.db 到 GitHub Release（删除旧资产→上传新资产）"""
+    if not os.path.exists(DB_PATH):
+        return
+    if not _GH_TOKEN:
+        return
+    try:
+        release = _get_or_create_release()
+        if not release:
+            return
+        release_id = release["id"]
+        # 删除旧资产
+        for asset in release.get("assets", []):
+            if asset.get("name") == _GITHUB_ASSET:
+                _gh_request("DELETE", f"/repos/{_GITHUB_REPO}/releases/assets/{asset['id']}")
+                _log.debug("Deleted old users.db asset from GitHub Release")
+                break
+        # 上传新资产
+        with open(DB_PATH, "rb") as f:
+            db_data = f.read()
+        if _gh_upload_asset(release_id, _GITHUB_ASSET, db_data):
+            _log.info(f"Synced users.db to GitHub Release ({len(db_data)} bytes)")
+        else:
+            _log.warning("Failed to upload users.db to GitHub Release")
+    except Exception as e:
+        _log.warning(f"GitHub sync upload error: {e}")
+
+
+def _sync_db_from_github():
+    """从 GitHub Release 下载 users.db 并恢复"""
+    if not _GH_TOKEN:
+        return
+    try:
+        release = _get_or_create_release()
+        if not release:
+            return
+        # 查找 users.db 资产
+        asset_url = None
+        for asset in release.get("assets", []):
+            if asset.get("name") == _GITHUB_ASSET:
+                asset_url = asset.get("browser_download_url")
+                remote_size = asset.get("size", 0)
+                break
+        if not asset_url:
+            _log.info("No remote users.db found in GitHub Release")
+            return
+        # 大小相同则跳过
+        if os.path.exists(DB_PATH) and os.path.getsize(DB_PATH) == remote_size:
+            _log.debug("Local users.db matches GitHub version, skip restore")
+            return
+        # 下载
+        cloud_data = _gh_download_asset(asset_url)
+        if not cloud_data or len(cloud_data) == 0:
+            return
+        # 原子写入：先写 .tmp，校验后移动
+        tmp_path = DB_PATH + ".tmp"
+        with open(tmp_path, "wb") as f:
+            f.write(cloud_data)
+        if os.path.getsize(tmp_path) > 0:
+            shutil.move(tmp_path, DB_PATH)
+            _log.info(f"Restored users.db from GitHub Release ({len(cloud_data)} bytes)")
+        else:
+            os.remove(tmp_path)
+    except Exception as e:
+        _log.warning(f"GitHub sync download error: {e}")
+
+
+def _sync_db():
+    """同步 users.db 到所有已配置的云端后端"""
+    _sync_db_to_github()
+    _sync_db_to_cloud()
 
 
 def _get_conn() -> sqlite3.Connection:
@@ -81,7 +278,8 @@ def _get_conn() -> sqlite3.Connection:
 
 def init_db():
     """初始化用户数据库表，先从云端恢复"""
-    _sync_db_from_cloud()  # 先尝试从OSS恢复
+    _sync_db_from_github()  # 先尝试从 GitHub Release 恢复
+    _sync_db_from_cloud()   # 再从 OSS 恢复（OSS 数据更新会覆盖 GitHub 恢复的）
     conn = _get_conn()
     conn.executescript("""
         CREATE TABLE IF NOT EXISTS users (
@@ -144,7 +342,7 @@ def init_db():
     """)
     conn.commit()
     conn.close()
-    _sync_db_to_cloud()
+    _sync_db()  # 同时备份到 GitHub + OSS
 
 
 def _hash_password(password: str, salt: Optional[str] = None) -> tuple[str, str]:
@@ -260,7 +458,7 @@ def save_reading_progress(user_id: int, book_id: str, book_title: str,
     )
     conn.commit()
     conn.close()
-    _sync_db_to_cloud()
+    _sync_db()
 
 
 def get_reading_history(user_id: int, limit: int = 50) -> list[dict]:
@@ -289,7 +487,7 @@ def save_chat_message(user_id: int, role: str, content: str, sources: Optional[s
     )
     conn.commit()
     conn.close()
-    _sync_db_to_cloud()
+    _sync_db()
 
 
 def get_chat_history(user_id: int, limit: int = 100) -> list[dict]:
@@ -310,7 +508,7 @@ def clear_chat_history(user_id: int):
     conn.execute("DELETE FROM chat_history WHERE user_id = ?", (user_id,))
     conn.commit()
     conn.close()
-    _sync_db_to_cloud()
+    _sync_db()
 
 
 # ============================================================
@@ -329,7 +527,7 @@ def save_book_note(user_id: int, book_id: str, note_text: str) -> bool:
     """, (user_id, book_id, note_text))
     conn.commit()
     conn.close()
-    _sync_db_to_cloud()
+    _sync_db()
     return True
 
 
@@ -368,7 +566,7 @@ def save_book_chat(user_id: int, book_id: str, role: str, content: str):
     )
     conn.commit()
     conn.close()
-    _sync_db_to_cloud()
+    _sync_db()
 
 
 def get_book_chat(user_id: int, book_id: str, limit: int = 50) -> list[dict]:
@@ -388,11 +586,12 @@ def clear_book_chat(user_id: int, book_id: str):
     conn.execute("DELETE FROM book_chat WHERE user_id = ? AND book_id = ?", (user_id, book_id))
     conn.commit()
     conn.close()
-    _sync_db_to_cloud()
+    _sync_db()
 
 
 # ============================================================
 # 初始化
 # ============================================================
 init_db()
-_sync_db_from_cloud()  # 从 OSS 拉取最新用户数据
+_sync_db_from_github()  # 从 GitHub Release 拉取最新用户数据
+_sync_db_from_cloud()   # 从 OSS 拉取最新用户数据
