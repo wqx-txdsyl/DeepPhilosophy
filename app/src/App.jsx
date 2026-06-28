@@ -17,6 +17,7 @@ import SettingsPage from './pages/SettingsPage';
 import ReaderPage from './pages/ReaderPage';
 import ProfilePage from './pages/ProfilePage';
 import GamesPage from './pages/GamesPage';
+import AnswerBookPage from './pages/AnswerBookPage';
 import HomePage from './pages/HomePage';
 import WorldPhilosophiesPage from './pages/WorldPhilosophiesPage';
 import WesternPhilosophiesPage from './pages/WesternPhilosophiesPage';
@@ -152,6 +153,7 @@ function MainLayout() {
           <Route path="/eastern-philosophies" element={<EasternPhilosophiesPage />} />
           <Route path="/qa" element={<QAPage />} />
           <Route path="/games" element={<GamesPage />} />
+          <Route path="/games/answer-book" element={<AnswerBookPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
