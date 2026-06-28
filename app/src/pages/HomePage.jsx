@@ -204,29 +204,34 @@ function HomePage() {
   return (
     <div className="page-container" style={{ paddingBottom: 0, margin: 0 }}>
 
-      {/* Floating nav links — left side */}
+      {/* Floating nav bar — matching header layout */}
       <nav style={{
-        position: 'fixed', top: 24, left: 24, zIndex: 1000,
-        display: 'flex', flexDirection: 'column', gap: 2,
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+        display: 'flex', alignItems: 'center',
+        padding: '8px 16px',
       }}>
-        {[
-          { label: '📚 书籍', path: '/books' },
-          { label: '✒️ 作家', path: '/authors' },
-          { label: '🧬 谱系', path: '/genealogy' },
-          { label: '💬 问答', path: '/qa' },
-          { label: '🎮 游戏', path: '/games' },
-        ].map(item => (
-          <button key={item.path} onClick={() => navigate(item.path)} style={{
-            fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
-            color: 'var(--ink)', background: 'none', border: 'none',
-            padding: '4px 0', cursor: 'pointer', textAlign: 'left',
-            letterSpacing: '0.04em', opacity: 0.6, transition: 'opacity 0.2s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = '1'; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = '0.6'; }}>
-            {item.label}
-          </button>
-        ))}
+        <h1 onClick={() => navigate('/')} style={{
+          fontFamily: '"Playfair Display","PingFang SC",serif',
+          fontSize: 16, fontWeight: 400, fontStyle: 'italic',
+          color: 'var(--ink)', cursor: 'pointer',
+          margin: 0, marginRight: 4, letterSpacing: '0.03em',
+        }}>DeepPhilosophy</h1>
+        <span style={{ display: 'flex', gap: 0, marginRight: 'auto', marginLeft: -2 }}>
+          {[
+            { label: '📚', text: '书籍', path: '/books' },
+            { label: '✒️', text: '作家', path: '/authors' },
+            { label: '🧬', text: '谱系', path: '/genealogy' },
+            { label: '💬', text: '问答', path: '/qa' },
+            { label: '🎮', text: '游戏', path: '/games' },
+          ].map(item => (
+            <button key={item.path} onClick={() => navigate(item.path)}
+              className="nav-btn"
+              style={{ flexDirection: 'row', gap: 3, fontSize: 12, padding: '4px 8px' }}>
+              <span style={{ fontSize: 15 }}>{item.label}</span>
+              <span>{item.text}</span>
+            </button>
+          ))}
+        </span>
       </nav>
 
       {/* Floating login/user button — right side */}
