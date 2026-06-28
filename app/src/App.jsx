@@ -90,7 +90,7 @@ function MainLayout() {
 
   const tabs = [
     { key: 'books', label: '📚', text: '书籍', path: '/books' },
-    { key: 'authors', label: '✒️', text: '作家', path: '/authors' },
+    { key: 'authors', label: '✒️', text: '哲人', path: '/authors' },
     { key: 'genealogy', label: '🧬', text: '谱系', path: '/genealogy' },
     { key: 'qa', label: '💬', text: '问答', path: '/qa' },
     { key: 'games', label: '🎮', text: '游戏', path: '/games' },
