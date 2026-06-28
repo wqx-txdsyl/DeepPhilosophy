@@ -8537,8 +8537,8 @@ function SchoolDetailPage() {
   '东南亚哲学': { data:SOUTHEAST_ASIAN_PHILOSOPHY_DATA, sub:SOUTHEAST_ASIAN_PHILOSOPHY_SUB_SCHOOLS, ci:SOUTHEAST_ASIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/东南亚哲学.jpg)' },
   '阿拉伯哲学': { data:ARABIC_PHILOSOPHY_DATA, sub:ARABIC_PHILOSOPHY_SUB_SCHOOLS, ci:ARABIC_PHILOSOPHY_CIHAI, bg:'url(/schools/阿拉伯哲学.jpg)' },
   '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },
-  '旧民主主义': { data:OLD_DEMOCRACY_DATA, sub:OLD_DEMOCRACY_SUB_SCHOOLS, ci:OLD_DEMOCRACY_CIHAI, bg:'url(/schools/default.jpg)' },
-  '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/default.jpg)' },};
+  '旧民主主义': { data:OLD_DEMOCRACY_DATA, sub:OLD_DEMOCRACY_SUB_SCHOOLS, ci:OLD_DEMOCRACY_CIHAI, bg:'url(/schools/旧民主主义.jpg)' },
+  '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },};
   const m = SCHOOL_MAP[name] || {};
   const data = m.data || GREEK_DATA;
   const subSchools = m.sub || GREEK_SUB_SCHOOLS;
