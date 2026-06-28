@@ -1,5 +1,5 @@
 /**
- * 作家页面 —— 东西方哲学家按时间排序，显示年代/国家/流派/简介/作品
+ * 哲人页面 —— 东西方哲学家按时间排序，显示年代/国家/流派/简介/作品
  * 离线可用（内置数据库兜底）
  */
 import { useState, useEffect } from 'react';
@@ -99,6 +99,7 @@ function AuthorsPage() {
   }
   if (filter === 'east') filtered = filtered.filter(a => a.region === '东方');
   else if (filter === 'west') filtered = filtered.filter(a => a.region === '西方');
+  else if (filter === 'world') filtered = filtered.filter(a => a.region === '世界');
   // Multi-tag filter (client-side, mirrored normalization)
   for (const tag of activeTags) {
     filtered = filtered.filter(a => {
@@ -142,7 +143,7 @@ function AuthorsPage() {
     <div className="page-container">
       {/* 统计 */}
       <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 10 }}>
-        ✒️ 共 {allAuthors.length} 位作家，{allAuthors.reduce((s, a) => s + (a.book_count || 0), 0)} 部作品
+        ✒️ 共 {allAuthors.length} 位哲人，{allAuthors.reduce((s, a) => s + (a.book_count || 0), 0)} 部作品
       </div>
 
       {/* Search + Region filter */}
@@ -150,19 +151,19 @@ function AuthorsPage() {
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="搜索作家/国家/流派..."
+          placeholder="搜索哲人/国家/流派..."
           style={{
             flex: 1, padding: '8px 14px', borderRadius: 8,
             border: '1px solid var(--border)', background: 'var(--secondary)',
             color: 'var(--text)', fontSize: 13, outline: 'none',
           }}
         />
-        {['all', 'east', 'west'].map(f => (
+        {['all', 'east', 'west', 'world'].map(f => (
           <button key={f}
             className={`btn ${filter === f ? 'btn-primary' : 'btn-secondary'}`}
             style={{ padding: '6px 12px', fontSize: 13, flexShrink: 0 }}
             onClick={() => setFilter(f)}>
-            {f === 'all' ? '全部' : f === 'east' ? '☯' : '🏛'}
+            {f === 'all' ? '全部' : f === 'east' ? '☯ 东方' : f === 'west' ? '🏛 西方' : '🌍 世界'}
           </button>
         ))}
       </div>
@@ -267,7 +268,7 @@ function AuthorsPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <span className={`badge ${author.region === '东方' ? 'badge-east' : 'badge-west'}`}
+                  <span className={`badge ${author.region === '东方' ? 'badge-east' : author.region === '世界' ? 'badge-world' : 'badge-west'}`}
                     style={{ fontSize: 10, padding: '2px 8px' }}>
                     {author.region}
                   </span>
@@ -291,7 +292,7 @@ function AuthorsPage() {
                 </div>
               </div>
               <span style={{ fontSize: 24, flexShrink: 0, marginLeft: 8 }}>
-                {author.region === '东方' ? '☯' : '🏛'}
+                {author.region === '东方' ? '☯' : author.region === '世界' ? '🌍' : '🏛'}
               </span>
             </div>
           </div>
@@ -300,7 +301,7 @@ function AuthorsPage() {
 
       {filtered.length === 0 && !loading && (
         <div className="empty-state">
-          <p>暂无匹配的作家</p>
+          <p>暂无匹配的哲人</p>
         </div>
       )}
     </div>
