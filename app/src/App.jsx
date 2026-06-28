@@ -123,7 +123,7 @@ function MainLayout() {
         </header>
       )}
 
-      <main className={`app-main${isReader ? ' reader-mode' : ''}`} style={isReader ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      <main className={`app-main${isReader || isHome ? ' reader-mode' : ''}`} style={isReader || isHome ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BooksPage />} />
