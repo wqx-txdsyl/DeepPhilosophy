@@ -203,9 +203,9 @@ function HomePage() {
 
       {/* ══════════ HERO — full screen, world philosophy background ══════════ */}
       <section style={{
-        minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center',
         alignItems: 'center', textAlign: 'center', padding: '80px 32px',
-        position: 'relative', overflow: 'hidden', marginLeft: 'calc(-50vw + 50%)',
+        position: 'relative', overflow: 'hidden',
         backgroundImage: 'url(/schools/世界哲学总览.jpg)', backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         <div style={{ position: 'absolute', inset: 0,
