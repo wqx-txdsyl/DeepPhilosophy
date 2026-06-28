@@ -26,13 +26,13 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
 
       {/* Editorial kicker */}
       <p style={{
-        fontSize: 11, fontWeight: 500, letterSpacing: '0.25em', textTransform: 'uppercase',
+        fontSize: 13, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase',
         color: 'var(--ochre)', marginBottom: SPACE.lg, position: 'relative', fontFamily: FONT.sans
       }}>{englishName || 'PHILOSOPHICAL SCHOOL'}</p>
 
-      {/* Dramatic title — larger, bolder letter spacing */}
+      {/* Dramatic title — oversized, bold */}
       <h1 style={{
-        fontSize: 'clamp(3rem, 8vw, 5.5rem)', fontWeight: 400, fontStyle: 'italic',
+        fontSize: 'clamp(4rem, 12vw, 9rem)', fontWeight: 600, fontStyle: 'italic',
         color: 'var(--ink)', margin: 0, position: 'relative', letterSpacing: '0.015em',
         lineHeight: 1.05, fontFamily: FONT.serif
       }}>{name}</h1>
@@ -42,15 +42,15 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
 
       {/* Quote as visual pause — larger, more breathing room */}
       <blockquote style={{
-        fontSize: 'clamp(1.3rem, 2.8vw, 1.8rem)', fontStyle: 'italic', color: 'var(--text-dim)',
-        maxWidth: 640, lineHeight: 1.75, margin: '0 0 16px', position: 'relative', fontWeight: 300,
+        fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', fontStyle: 'italic', color: 'var(--text-dim)',
+        maxWidth: 720, lineHeight: 1.7, margin: '0 0 16px', position: 'relative', fontWeight: 500,
         fontFamily: FONT.serif, letterSpacing: '0.01em'
       }}>
         <span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.6, marginRight: 6 }}>&#x201C;</span>
         {quote}
         <span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.6, marginLeft: 6 }}>&#x201D;</span>
       </blockquote>
-      <p style={{ fontSize: 14, color: 'var(--ink)', fontWeight: 500, fontFamily: FONT.sans, letterSpacing: '0.04em' }}>{quoteAuthor}</p>
+      <p style={{ fontSize: 16, color: 'var(--ink)', fontWeight: 600, fontFamily: FONT.sans, letterSpacing: '0.04em' }}>{quoteAuthor}</p>
 
       {/* Scroll indicator — softer */}
       <div style={{ position: 'absolute', bottom: 36, opacity: 0.5 }}>
