@@ -501,7 +501,7 @@ ${textContext}
                     onClick={e => e.stopPropagation()}>
                     <h3 style={{ color: 'var(--accent)', marginBottom: 12 }}>📑 目录</h3>
                     {epubTocRef.current.map((item, i) => (
-                      <div key={i} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: 8, borderBottom: '1px solid var(--border)', fontSize: 14, color: 'var(--text)' }}
+                      <div key={i} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: 8, borderBottom: '1px solid var(--border)', fontSize: 14, color: '#d4a574' }}
                         onClick={() => { epubRenditionRef.current?.display(item.href); setShowToc(false); }}>
                         {item.label}
                       </div>
