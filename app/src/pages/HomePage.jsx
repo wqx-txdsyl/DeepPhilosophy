@@ -208,7 +208,7 @@ function HomePage() {
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
         display: 'flex', alignItems: 'center',
-        padding: '8px 16px',
+        padding: '16px 20px',
       }}>
         <h1 onClick={() => navigate('/')} style={{
           fontFamily: '"Playfair Display","PingFang SC",serif',
@@ -236,7 +236,7 @@ function HomePage() {
 
       {/* Floating login/user button — right side */}
       <button onClick={() => navigate('/profile')} style={{
-        position: 'fixed', top: 20, right: 20, zIndex: 1000,
+        position: 'fixed', top: 18, right: 20, zIndex: 1000,
         fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
         color: 'var(--ink)', background: 'rgba(244,240,235,0.7)', backdropFilter: 'blur(8px)',
         border: '1px solid var(--border)', borderRadius: 4, padding: '8px 18px',
