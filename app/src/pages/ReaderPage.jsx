@@ -52,6 +52,7 @@ function ReaderPage() {
   const [epubChapter, setEpubChapter] = useState(0);
   const [epubPage, setEpubPage] = useState(0);
   const [epubTotalPages, setEpubTotalPages] = useState(0);
+  const [epubTotalChapters, setEpubTotalChapters] = useState(0);
   // PDF state
 
   // Notes state
@@ -117,11 +118,13 @@ function ReaderPage() {
     return () => clearInterval(interval);
   }, [fileType]);
 
-  // EPUB: save chapter index as progress
+  // EPUB: save chapter + page as progress
   useEffect(() => {
     if (fileType !== 'epub' || !book || epubChapter < 0) return;
-    saveReadingProgress(bookId, book.title, book.author, epubChapter, epubChapter / 1, 'epub');
-  }, [epubChapter, fileType]);
+    const total = epubTotalChapters || 1;
+    const percent = Math.min(1, Math.max(0, epubChapter / total));
+    saveReadingProgress(bookId, book.title, book.author, epubChapter + 1, percent, 'epub');
+  }, [epubChapter, fileType, epubTotalChapters]);
 
   // Save progress on page change
   const goToPage = useCallback((n) => {
@@ -367,6 +370,7 @@ ${textContext}
     });
     epubRenditionRef.current = rendition;
     bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
+    bk.loaded.spine.then(spine => { setEpubTotalChapters(spine?.length || 0); }).catch(() => {});
     rendition.on('relocated', (loc) => {
       if (loc?.start?.displayed) {
         setEpubPage(loc.start.displayed.page);
