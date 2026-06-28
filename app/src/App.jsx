@@ -107,7 +107,7 @@ function MainLayout() {
     <>
       {!isReader && (
         <header className="app-header">
-          <h1 className="app-title" onClick={() => navigate('/genealogy')}>
+          <h1 className="app-title" onClick={() => navigate('/')}>
             DeepPhilosophy
           </h1>
           <span style={{ display: 'flex', gap: 0 }}>

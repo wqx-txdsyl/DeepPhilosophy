@@ -240,8 +240,8 @@ function HomePage() {
       <section style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
           {[
-            { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/school/古希腊哲学', color: 'var(--ochre)' },
-            { title: '东方哲学', count: '24 流派', desc: '儒道墨法至当代，两千五百年不断的思想脉络', path: '/school/儒家', color: 'var(--prussian)' },
+            { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/western-philosophies', color: 'var(--ochre)' },
+            { title: '东方哲学', count: '24 流派', desc: '儒道墨法至当代，两千五百年不断的思想脉络', path: '/eastern-philosophies', color: 'var(--prussian)' },
             { title: '世界哲学', count: '9 流派', desc: '印度、日本、伊斯兰、非洲…全球哲学版图', path: '/world-philosophies', color: '#5A8A5A' },
           ].map(card => (
             <div key={card.title} onClick={() => navigate(card.path)} style={{
