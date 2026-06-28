@@ -208,7 +208,8 @@ function PHTISillyPage() {
       {phase === 'roasting' && result && (
         <div>
           <div className="card" style={{ cursor: 'default', textAlign: 'center', padding: '24px 20px', marginBottom: 12 }}>
-            <div style={{ fontSize: 56, marginBottom: 8 }}>{result.title.slice(0, 2)}</div>
+            <img src={`/phti/${result.name}.png`} alt={result.name}
+              style={{ width: 180, height: 180, objectFit: 'contain', borderRadius: 12, marginBottom: 8 }} />
             <h2 style={{ fontSize: 20, marginBottom: 4 }}>{result.title}</h2>
             <p style={{ fontSize: 15, color: 'var(--accent)', fontWeight: 600, marginBottom: 12 }}>{result.name}</p>
             <p style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.7, fontStyle: 'italic' }}>
