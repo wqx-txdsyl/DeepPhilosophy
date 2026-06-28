@@ -46,9 +46,9 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
         maxWidth: 720, lineHeight: 1.7, margin: '0 0 16px', position: 'relative', fontWeight: 500,
         fontFamily: FONT.serif, letterSpacing: '0.01em'
       }}>
-        <span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.6, marginRight: 6 }}>&#x201C;</span>
         {quote}
-        <span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.6, marginLeft: 6 }}>&#x201D;</span>
+        {quote}
+        {!(quote||'').match(/[“”‘’」]$/) && <span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.6, marginLeft: 6 }}>&#x201D;</span>}}
       </blockquote>
       <p style={{ fontSize: 16, color: 'var(--ink)', fontWeight: 600, fontFamily: FONT.sans, letterSpacing: '0.04em' }}>{quoteAuthor}</p>
 
