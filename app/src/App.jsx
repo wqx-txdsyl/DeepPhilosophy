@@ -89,7 +89,6 @@ function MainLayout() {
     { key: 'authors', label: '✒️', text: '作家', path: '/authors' },
     { key: 'genealogy', label: '🧬', text: '谱系', path: '/genealogy' },
     { key: 'qa', label: '💬', text: '问答', path: '/qa' },
-    { key: 'profile', label: '👤', text: '我的', path: '/profile' },
   ];
 
   const getActiveTab = () => {
@@ -105,7 +104,7 @@ function MainLayout() {
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
-  const hideNav = true;  // Nav moved to header
+  const hideNav = isReader || isHome || isSchool;
   const hideHeader = isHome || isReader || isSchool;
   const activeTab = getActiveTab();
 
@@ -113,27 +112,14 @@ function MainLayout() {
     <>
       {!hideHeader && (
         <header className="app-header">
-          <h1 className="app-title" onClick={() => navigate('/')} style={{ marginRight: 8 }}>
+          <h1 className="app-title" onClick={() => navigate('/')}>
             DeepPhilosophy
           </h1>
-          {/* Nav tabs in header */}
-          <span style={{ display: 'flex', gap: 0, marginRight: 'auto', marginLeft: -4 }}>
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                className={`nav-btn ${activeTab === tab.key ? 'active' : ''}`}
-                onClick={() => navigate(tab.path)}
-                style={{ flexDirection: 'row', gap: 3, fontSize: 12, padding: '4px 8px' }}
-              >
-                <span style={{ fontSize: 15 }}>{tab.label}</span>
-                <span>{tab.text}</span>
-              </button>
-            ))}
-          </span>
-          <span style={{ display: 'flex', gap: 0, flexShrink: 0 }}>
+          <span style={{ display: 'flex', gap: 0 }}>
             <button className="settings-btn" onClick={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }} title="手机版">{mobileMode ? '💻' : '📱'}</button>
             <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}>{darkMode ? '☀️' : '🌙'}</button>
             <button className="settings-btn" onClick={() => navigate('/settings')}>⚙️</button>
+            <button className="settings-btn" onClick={() => navigate('/profile')}>👤</button>
           </span>
         </header>
       )}
