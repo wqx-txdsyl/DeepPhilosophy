@@ -24,6 +24,7 @@ import uvicorn
 
 import config
 from auth import (
+    init_db,
     register, login, get_user_by_token,
     save_reading_progress, get_reading_history,
     save_chat_message, get_chat_history, clear_chat_history,
@@ -70,6 +71,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 初始化用户数据库（从OSS云端恢复）
+init_db()
 
 # ============================================================
 # 工具函数

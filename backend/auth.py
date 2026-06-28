@@ -80,7 +80,8 @@ def _get_conn() -> sqlite3.Connection:
 
 
 def init_db():
-    """初始化用户数据库表"""
+    """初始化用户数据库表，先从云端恢复"""
+    _sync_db_from_cloud()  # 先尝试从OSS恢复
     conn = _get_conn()
     conn.executescript("""
         CREATE TABLE IF NOT EXISTS users (
