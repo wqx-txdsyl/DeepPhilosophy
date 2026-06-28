@@ -44,10 +44,12 @@ function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('dp_dark_mode') === '1');
+  const [mobileMode, setMobileMode] = useState(() => localStorage.getItem('dp_mobile_mode') === '1');
 
   // Auto-save
   useEffect(() => { startAutoSave(); return () => stopAutoSave(); }, []);
   useEffect(() => { if (darkMode) document.documentElement.classList.add('dark-mode'); else document.documentElement.classList.remove('dark-mode'); }, [darkMode]);
+  useEffect(() => { if (mobileMode) document.documentElement.classList.add('mobile-mode'); else document.documentElement.classList.remove('mobile-mode'); }, [mobileMode]);
 
   // Candlelight cursor glow
   const glowRef = useRef(null);
@@ -111,6 +113,7 @@ function MainLayout() {
             DeepPhilosophy
           </h1>
           <span style={{ display: 'flex', gap: 0 }}>
+            <button className="settings-btn" onClick={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }} title="手机版">{mobileMode ? '💻' : '📱'}</button>
             <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}>{darkMode ? '☀️' : '🌙'}</button>
             <button className="settings-btn" onClick={() => navigate('/settings')}>⚙️</button>
           </span>

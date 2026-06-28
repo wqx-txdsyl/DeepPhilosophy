@@ -188,6 +188,24 @@ body {
 /* ——— EPUB ——— */
 .epub-container { background: var(--bone) !important; max-width: 800px !important; margin: 0 auto !important; }
 
+/* ——— Mobile Mode (强制手机布局) ——— */
+html.mobile-mode .app-container { max-width: 480px !important; margin: 0 auto !important; }
+html.mobile-mode .app-main { padding: 16px 12px !important; padding-bottom: calc(var(--nav-height) + 20px) !important; }
+html.mobile-mode .bottom-nav { max-width: 480px !important; }
+html.mobile-mode .app-header { padding: 0 12px !important; }
+html.mobile-mode .app-title { font-size: 16px !important; }
+html.mobile-mode .card { padding: 10px 0 !important; }
+html.mobile-mode .card-title { font-size: 14px !important; }
+html.mobile-mode .card-subtitle { font-size: 12px !important; }
+html.mobile-mode .section-title { font-size: 16px !important; }
+html.mobile-mode .search-box { font-size: 14px !important; padding: 10px 14px !important; }
+html.mobile-mode .btn { font-size: 12px !important; padding: 6px 14px !important; }
+html.mobile-mode .chat-message { max-width: 90% !important; font-size: 13px !important; }
+html.mobile-mode .chat-input { font-size: 13px !important; }
+/* Sidebar notes/AI panels: stack instead of side-by-side */
+html.mobile-mode [style*="flex: 0 0 60%"] { flex: 1 1 100% !important; }
+html.mobile-mode [style*="showNotes"] [style*="flex:"] { flex-direction: column !important; }
+
 /* ——— Dark Mode ——— */
 html.dark-mode {
   --bone: #1A1816;
