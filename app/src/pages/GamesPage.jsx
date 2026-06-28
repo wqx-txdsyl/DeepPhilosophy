@@ -15,8 +15,9 @@ const games = [
   {
     key: 'phti',
     title: '🧠 PHTI',
-    desc: 'Philosophical Turing Intelligence — 哲学图灵测试',
-    disabled: true,
+    desc: 'Philosophical Turing Intelligence — 哲学人格测试',
+    path: '/games/phti',
+    disabled: false,
   },
 ];
 
