@@ -125,8 +125,8 @@ const EASTERN_DESCRIPTIONS = {
 
 const EASTERN_COLORS = (() => {
   const base = [];
-  for (let i = 0; i < 23; i++) {
-    const t = i / 22;
+  for (let i = 0; i < 24; i++) {
+    const t = i / 23;
     const r = Math.round(196 - t * 150);
     const g = Math.round(106 - t * 25);
     const b = Math.round(106 + t * 15);
