@@ -283,7 +283,7 @@ function HomePage() {
 
       {/* ══════════ DAILY QUOTE ══════════ */}
       {(() => {
-        const QUOTES_LOCAL = [
+        const _unused = [
           { text: '全部西方哲学史不过是柏拉图的一串注脚。', author: '怀特海' },
           { text: '认识你自己。', author: '古希腊德尔斐神谕' },
           { text: '我思故我在。', author: '笛卡尔' },
