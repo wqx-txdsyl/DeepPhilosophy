@@ -220,7 +220,7 @@ function GenealogyPage() {
           fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 300,
           color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto'
         }}>
-          从公元前六世纪至二十一世纪，七十三个流派，<br />一部横跨两千五百年的思想史长卷。
+          从公元前六世纪至二十一世纪，七十六个流派，<br />一部横跨两千五百年的思想史长卷。
         </p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '32px auto 0', opacity: 0.4 }} />
       </section>
