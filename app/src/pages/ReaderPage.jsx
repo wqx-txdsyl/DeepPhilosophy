@@ -329,24 +329,32 @@ ${textContext}
     setLoading(false);
   };
 
-  // Init EPUB — restore saved chapter on load
+  // Init EPUB — restore saved chapter on load (page is 1-indexed, epubChapter is 0-indexed)
+  const restoredRef = useRef(false);
   useEffect(() => {
-    if (!loading && fileType === 'epub') {
+    if (!loading && fileType === 'epub' && !restoredRef.current) {
       try {
         const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
         const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
-        if (entry?.page > 0) setEpubChapter(entry.page);
+        if (entry?.page > 0) {
+          restoredRef.current = true;
+          setEpubChapter(entry.page - 1);  // page is saved as epubChapter+1
+        }
       } catch {}
     }
-  }, [loading, fileType]);
+  }, [loading, fileType, bookId]);
 
   // Navigate EPUB to restored chapter after rendition is ready
+  const navRef = useRef(false);
   useEffect(() => {
-    if (epubReady && epubChapter > 0 && epubRenditionRef.current) {
-      const timer = setTimeout(() => goEpubChapter(epubChapter), 300);
+    if (epubReady && epubChapter >= 0 && epubRenditionRef.current && !navRef.current) {
+      navRef.current = true;
+      const timer = setTimeout(() => {
+        goEpubChapter(epubChapter);
+      }, 500);
       return () => clearTimeout(timer);
     }
-  }, [epubReady, epubChapter]);
+  }, [epubReady]);
 
   // PDF callbacks
   const onPdfLoadSuccess = ({ numPages: n }) => {
