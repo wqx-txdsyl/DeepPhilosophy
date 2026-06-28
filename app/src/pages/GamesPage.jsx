@@ -19,6 +19,13 @@ const games = [
     path: '/games/phti',
     disabled: false,
   },
+  {
+    key: 'phti-silly',
+    title: '🤪 PHTI 沙雕版',
+    desc: '测测你是哪个哲学家的摆烂版本',
+    path: '/games/phti-silly',
+    disabled: false,
+  },
 ];
 
 function GamesPage() {

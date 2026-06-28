@@ -19,6 +19,7 @@ import ProfilePage from './pages/ProfilePage';
 import GamesPage from './pages/GamesPage';
 import AnswerBookPage from './pages/AnswerBookPage';
 import PHTIPage from './pages/PHTIPage';
+import PHTISillyPage from './pages/PHTISillyPage';
 import HomePage from './pages/HomePage';
 import WorldPhilosophiesPage from './pages/WorldPhilosophiesPage';
 import WesternPhilosophiesPage from './pages/WesternPhilosophiesPage';
@@ -156,6 +157,7 @@ function MainLayout() {
           <Route path="/games" element={<GamesPage />} />
           <Route path="/games/answer-book" element={<AnswerBookPage />} />
           <Route path="/games/phti" element={<PHTIPage />} />
+          <Route path="/games/phti-silly" element={<PHTISillyPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>

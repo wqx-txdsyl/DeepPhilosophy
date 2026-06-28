@@ -5,7 +5,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
-import phtiTypes from '../data/phti_types.json';
+import phtiTypes from '../data/phti_original_types.json';
 import allQuestions from '../data/phti_questions.json';
 
 const TOTAL_QUESTIONS = 50;
