@@ -16,6 +16,12 @@ import urllib.error
 from datetime import datetime
 from typing import Optional
 
+# 配置日志（确保 Render 上可见）
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [auth] %(levelname)s: %(message)s",
+    datefmt="%H:%M:%S",
+)
 _log = logging.getLogger("auth")
 
 _PERSIST = os.getenv("PERSIST_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"))
@@ -196,41 +202,60 @@ def _get_or_create_release():
 
 
 def _sync_db_to_github():
-    """上传 users.db 到 GitHub Release（删除旧资产→上传新资产）"""
+    """上传 users.db 到 GitHub Release（删除旧资产→上传新资产）
+    返回 True/False 表示是否成功上传"""
     if not os.path.exists(DB_PATH):
-        return
+        return False
     if not _GH_TOKEN:
-        return
+        _log.debug("GITHUB_TOKEN not set, skip GitHub upload")
+        return False
     try:
+        # 检查 DB 是否有用户数据，空 DB 不上传（保护远端备份）
+        conn = _get_conn()
+        user_count = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
+        conn.close()
+        if user_count == 0:
+            _log.info("Skipping GitHub upload: no users in DB (protecting remote backup)")
+            return False
+
         release = _get_or_create_release()
         if not release:
-            return
+            _log.warning("GitHub upload failed: cannot get/create release")
+            return False
         release_id = release["id"]
         # 删除旧资产
         for asset in release.get("assets", []):
             if asset.get("name") == _GITHUB_ASSET:
                 _gh_request("DELETE", f"/repos/{_GITHUB_REPO}/releases/assets/{asset['id']}")
-                _log.debug("Deleted old users.db asset from GitHub Release")
                 break
         # 上传新资产
         with open(DB_PATH, "rb") as f:
             db_data = f.read()
         if _gh_upload_asset(release_id, _GITHUB_ASSET, db_data):
-            _log.info(f"Synced users.db to GitHub Release ({len(db_data)} bytes)")
+            _log.info(f"GitHub backup OK: {len(db_data)} bytes, {user_count} users")
+            print(f"[auth] GitHub backup OK ({len(db_data)} bytes, {user_count} users)")
+            return True
         else:
-            _log.warning("Failed to upload users.db to GitHub Release")
+            _log.warning("GitHub upload returned non-201 status")
+            print("[auth] WARNING: GitHub upload failed (non-201 response)")
+            return False
     except Exception as e:
         _log.warning(f"GitHub sync upload error: {e}")
+        print(f"[auth] WARNING: GitHub upload error: {e}")
+        return False
 
 
 def _sync_db_from_github():
-    """从 GitHub Release 下载 users.db 并恢复"""
+    """从 GitHub Release 下载 users.db 并恢复
+    返回 True 表示成功恢复，False 表示未恢复（无备份/无token/失败）"""
     if not _GH_TOKEN:
-        return
+        _log.debug("GITHUB_TOKEN not set, skip GitHub restore")
+        return False
     try:
         release = _get_or_create_release()
         if not release:
-            return
+            _log.info("Cannot access GitHub Release (no release or API error)")
+            return False
         # 查找 users.db 资产
         asset_url = None
         for asset in release.get("assets", []):
@@ -239,16 +264,19 @@ def _sync_db_from_github():
                 remote_size = asset.get("size", 0)
                 break
         if not asset_url:
-            _log.info("No remote users.db found in GitHub Release")
-            return
+            _log.info("No users.db backup found on GitHub Release")
+            print("[auth] No GitHub backup found (fresh start)")
+            return False
         # 大小相同则跳过
         if os.path.exists(DB_PATH) and os.path.getsize(DB_PATH) == remote_size:
-            _log.debug("Local users.db matches GitHub version, skip restore")
-            return
+            _log.info("Local users.db matches GitHub backup, skip restore")
+            return True
         # 下载
+        print(f"[auth] Restoring users.db from GitHub Release ({remote_size} bytes)...")
         cloud_data = _gh_download_asset(asset_url)
         if not cloud_data or len(cloud_data) == 0:
-            return
+            _log.warning("GitHub download returned empty data")
+            return False
         # 原子写入：先写 .tmp，校验后移动
         tmp_path = DB_PATH + ".tmp"
         with open(tmp_path, "wb") as f:
@@ -256,10 +284,15 @@ def _sync_db_from_github():
         if os.path.getsize(tmp_path) > 0:
             shutil.move(tmp_path, DB_PATH)
             _log.info(f"Restored users.db from GitHub Release ({len(cloud_data)} bytes)")
+            print(f"[auth] GitHub restore OK ({len(cloud_data)} bytes)")
+            return True
         else:
             os.remove(tmp_path)
+            return False
     except Exception as e:
         _log.warning(f"GitHub sync download error: {e}")
+        print(f"[auth] WARNING: GitHub restore error: {e}")
+        return False
 
 
 def _sync_db():
@@ -278,8 +311,8 @@ def _get_conn() -> sqlite3.Connection:
 
 def init_db():
     """初始化用户数据库表，先从云端恢复"""
-    _sync_db_from_github()  # 先尝试从 GitHub Release 恢复
-    _sync_db_from_cloud()   # 再从 OSS 恢复（OSS 数据更新会覆盖 GitHub 恢复的）
+    restored_github = _sync_db_from_github()  # 尝试从 GitHub Release 恢复
+    restored_oss = _sync_db_from_cloud()      # 尝试从 OSS 恢复
     conn = _get_conn()
     conn.executescript("""
         CREATE TABLE IF NOT EXISTS users (
@@ -340,9 +373,17 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
     """)
+    # 检查恢复后是否有用户数据
+    user_count = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
     conn.commit()
     conn.close()
-    _sync_db()  # 同时备份到 GitHub + OSS
+    if user_count > 0:
+        # 恢复成功或已有数据 → 备份到云端
+        _sync_db()
+        _log.info(f"init_db: restored {user_count} users, synced to cloud backends")
+    else:
+        # 新部署 / 恢复失败 → 不备份，避免空 DB 覆盖远端数据
+        _log.info("init_db: no users found, skipping backup to protect remote data")
 
 
 def _hash_password(password: str, salt: Optional[str] = None) -> tuple[str, str]:
@@ -370,6 +411,7 @@ def register(username: str, password: str) -> dict:
             (username, pw_hash, salt),
         )
         conn.commit()
+        _sync_db()  # 立即备份到云端
         return {"success": True, "message": "注册成功"}
     except sqlite3.IntegrityError:
         return {"success": False, "error": "用户名已存在"}
