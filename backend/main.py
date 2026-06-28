@@ -1469,35 +1469,50 @@ async def api_clear_book_chat(book_id: str,
 @app.post("/api/ai/stream")
 async def ai_stream_proxy(req: Request):
     """流式代理 DeepSeek API，使用服务器默认 Key"""
+    import urllib.request as ur
     key = config.DEEPSEEK_API_KEY
     if not key:
         return JSONResponse({"error": "Server API key not configured"}, status_code=500)
-    try:
-        body = await req.json()
-        import requests as sync_req
-        resp = sync_req.post(
+
+    body = await req.json()
+    data = json.dumps({
+        "model": body.get("model", config.DEEPSEEK_MODEL),
+        "messages": body.get("messages", []),
+        "temperature": body.get("temperature", 0.7),
+        "max_tokens": body.get("max_tokens", 1024),
+        "stream": True,
+    }).encode()
+
+    def blocking_call():
+        r = ur.Request(
             f"{config.DEEPSEEK_BASE_URL}/v1/chat/completions",
+            data=data,
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-            json={
-                "model": body.get("model", config.DEEPSEEK_MODEL),
-                "messages": body.get("messages", []),
-                "temperature": body.get("temperature", 0.7),
-                "max_tokens": body.get("max_tokens", 1024),
-                "stream": True,
-            },
-            stream=True,
-            timeout=120,
         )
-        def generate():
-            for chunk in resp.iter_content(chunk_size=None):
-                if chunk: yield chunk
-        return StreamingResponse(
-            generate(),
-            media_type="text/event-stream",
-            headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"},
-        )
+        return ur.urlopen(r, timeout=120)
+
+    import asyncio
+    loop = asyncio.get_event_loop()
+    try:
+        resp = await loop.run_in_executor(None, blocking_call)
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
+
+    def generate():
+        try:
+            while True:
+                chunk = resp.read(4096)
+                if not chunk:
+                    break
+                yield chunk
+        finally:
+            resp.close()
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"},
+    )
 
 # ============================================================
 # RAG 问答 API
