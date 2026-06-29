@@ -1236,16 +1236,16 @@ async def get_author_filters():
             for century in _era_to_centuries(info["era"]):
                 eras.add(century)
         if info.get("country"):
-            cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
+            # Country normalization matching philosophers.json
             for c in re.split(r'[/,、，;；]', info["country"]):
                 c = c.strip()
-                c = cnt_map.get(c, c)
                 if c: countries.add(c)
         if info.get("school"):
+            # Tags already canonical in philosophers.json — use as-is
             for tag in re.split(r'[/,、，;；]', info["school"]):
                 tag = tag.strip()
                 if tag:
-                    schools.add(_normalize_tag(tag))
+                    schools.add(tag)
 
     def _century_sort_key(c):
         """Sort centuries: 公元前 first (descending), then CE (ascending)"""
@@ -1445,11 +1445,9 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
             expanded_schools = [t for s in re.split(r'[/,、，;；]', raw_school) if s.strip() for t in _expand_tags(s.strip())]
             # 清理国家字段：去掉括号注释，拆分为多国家
             raw_country_clean = re.sub(r'[（(][^)）]*[)）]', '', info.get("country") or "")
-            cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
             norm_countries = set()
             for c in re.split(r'[/,、，;；]', raw_country_clean):
                 c = c.strip()
-                c = cnt_map.get(c, c)
                 if c: norm_countries.add(c)
             # All tags must match (AND logic)
             all_match = True
