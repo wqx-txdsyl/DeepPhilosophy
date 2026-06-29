@@ -363,7 +363,7 @@ function HomePage() {
             onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>☯ 东方 24 流派</span>
           <span onClick={() => navigate('/world-philosophies')} style={{ fontSize: 12, color: '#5A8A5A', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.borderBottomColor = '#5A8A5A'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🌍 世界 18 流派</span>
+            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🌍 世界 20 流派</span>
         </div>
       </section>
 

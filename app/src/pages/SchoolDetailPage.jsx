@@ -8403,6 +8403,7 @@ function SchoolDetailPage() {
   '蒙古中亚哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/蒙古中亚哲学.jpg)', _json:'school_蒙古中亚哲学.json' },
   '东欧斯拉夫哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.jpg)', _json:'school_东欧斯拉夫哲学.json' },
   '北美哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/北美哲学.jpg)', _json:'school_北美哲学.json' },
+  '美索不达米亚哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/美索不达米亚哲学.jpg)', _json:'school_美索不达米亚哲学.json' },
   '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },
   '旧民主主义': { data:OLD_DEMOCRACY_DATA, sub:OLD_DEMOCRACY_SUB_SCHOOLS, ci:OLD_DEMOCRACY_CIHAI, bg:'url(/schools/旧民主主义.jpg)' },
 
@@ -8415,13 +8416,15 @@ function SchoolDetailPage() {
   '蒙古中亚哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/蒙古中亚哲学.jpg)', _json:'school_蒙古中亚哲学.json' },
   '东欧斯拉夫哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.jpg)', _json:'school_东欧斯拉夫哲学.json' },
   '北美哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/北美哲学.jpg)', _json:'school_北美哲学.json' },
+  '美索不达米亚哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/美索不达米亚哲学.jpg)', _json:'school_美索不达米亚哲学.json' },
   '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },
 };
   const m = SCHOOL_MAP[name] || {};
-  // Dynamic loader for JSON-based schools (hooks must be before usage)
+  // Dynamic loader for JSON-based schools — show loading, not Greek
   const [dynamicData, setDynamicData] = useState(null);
-  useEffect(() => { if (m._json) { fetch('/schools/' + m._json).then(r=>r.json()).then(setDynamicData).catch(()=>{}); } }, [name]);
-  const data = dynamicData || m.data || GREEK_DATA;
+  const [loadingJson, setLoadingJson] = useState(!!m._json);
+  useEffect(() => { if (m._json) { setLoadingJson(true); fetch('/schools/' + m._json).then(r=>r.json()).then(d=>{ setDynamicData(d); setLoadingJson(false); }).catch(()=>setLoadingJson(false)); } }, [name]);
+  const data = loadingJson ? null : (dynamicData || m.data || GREEK_DATA);
   const subSchools = dynamicData?.sub || m.sub || (m.data ? GREEK_SUB_SCHOOLS : {});
   // Auto-generate SUB_COLORS for dynamic schools (JSON-loaded)
   const subColors = Object.keys(subSchools).length > 0 ? 
