@@ -3,6 +3,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PhilosophyTimeline from '../components/PhilosophyTimeline';
 import { getApiBase } from '../App';
 
 const WESTERN_TIMELINE = [
@@ -262,152 +263,9 @@ function GenealogyPage() {
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '32px auto 0', opacity: 0.4 }} />
       </section>
 
-      {/* ══════════ TIMELINE — dual-sided, refined ══════════ */}
-      <div style={{ maxWidth: '100%', margin: '0 auto', position: 'relative', padding: '24px 24px 40px' }}>
+      <PhilosophyTimeline />
 
-        {/* Center axis — thinner, softer */}
-        <div style={{
-          position: 'absolute', left: '50%', top: 40, bottom: 40, width: 1,
-          background: 'linear-gradient(to bottom, transparent 0%, var(--border) 10%, var(--border) 90%, transparent 100%)',
-          transform: 'translateX(-50%)'
-        }} />
-
-        {(() => {
-          const allEras = [];
-          const eastMap = {}, westMap = {}, worldMap = {};
-          EASTERN_TIMELINE.forEach(e => { eastMap[e.century] = e.schools; });
-          WESTERN_TIMELINE.forEach(e => { westMap[e.century] = e.schools; });
-          WORLD_TIMELINE.forEach(e => { worldMap[e.century] = e.schools; });
-          const centuries = [...new Set([...Object.keys(eastMap), ...Object.keys(westMap), ...Object.keys(worldMap)])];
-          centuries.sort((a,b) => {
-            const parse = (s) => {
-              const bce = s.includes('公元前');
-              const nums = s.match(/\d+/g);
-              const n = nums ? parseInt(nums[0]) : 0;
-              let sub = 0;
-              if (s.includes('初')) sub = 0;
-              else if (s.includes('中')) sub = 1;
-              else if (s.includes('末')) sub = 2;
-              return { bce, n, sub };
-            };
-            const pa = parse(a), pb = parse(b);
-            if (pa.bce && !pb.bce) return -1;
-            if (!pa.bce && pb.bce) return 1;
-            if (pa.bce && pb.bce) return pb.n - pa.n || pa.sub - pb.sub;
-            return pa.n - pb.n || pa.sub - pb.sub;
-          });
-          centuries.forEach(c => { allEras.push({ century: c, east: eastMap[c] || [], west: westMap[c] || [], world: worldMap[c] || [] }); });
-          let eastIdx = 0, westIdx = 0, worldIdx = 0;
-          const WORLD_COLORS = Array(20).fill(0).map((_,i) => { const t=i/19; const r=Math.round(80+t*40); const g=Math.round(130+t*30); const b=Math.round(80+t*30); return "#"+[r,g,b].map(n=>n.toString(16).padStart(2,"0")).join(""); });
-
-          return allEras.map((era, eraIdx) => {
-            const hasEast = era.east.length > 0, hasWest = era.west.length > 0, hasWorld = era.world.length > 0;
-            return (
-              <div key={eraIdx} style={{ display: 'flex', marginBottom: 48, position: 'relative' }}>
-                {/* LEFT: Eastern */}
-                <div style={{ flex: 1, paddingRight: 28, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                  {hasEast && era.east.map((school, si) => {
-                    const color = EASTERN_COLORS[(eastIdx + si) % EASTERN_COLORS.length];
-                    return (
-                      <div key={school}
-                        onClick={() => navigate('/school/' + encodeURIComponent(school))}
-                        style={{
-                          maxWidth: 360, marginBottom: 8, cursor: 'pointer', textAlign: 'right',
-                          padding: '12px 18px', borderRight: '3px solid ' + color,
-                          transition: 'all 0.25s', background: 'transparent'
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-                      >
-                        <h3 style={{
-                          fontFamily: '"Playfair Display", "PingFang SC", serif',
-                          fontSize: 16, fontWeight: 500, color: 'var(--ink)',
-                          margin: '0 0 3px', letterSpacing: '0.03em'
-                        }}>
-                          {school}
-                        </h3>
-                        {EASTERN_DESCRIPTIONS[school] && (
-                          <p style={{
-                            fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300,
-                            color: 'var(--text-dim)', margin: 0, lineHeight: 1.6
-                          }}>
-                            {EASTERN_DESCRIPTIONS[school]}
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })}
-                  {hasEast && (() => { eastIdx += era.east.length; })()}
-                  {hasWorld && era.world.map((school, si) => {
-                    const color = WORLD_COLORS[(worldIdx + si) % WORLD_COLORS.length];
-                    return (
-                      <div key={school} onClick={() => navigate('/school/' + encodeURIComponent(school))}
-                        style={{ maxWidth: 360, marginBottom: 8, cursor: 'pointer', textAlign: 'right', padding: '12px 18px', borderRight: '3px solid ' + color, transition: 'all 0.25s', background: 'transparent' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
-                        <h3 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 16, fontWeight: 500, color: 'var(--ink)', margin: '0 0 3px', letterSpacing: '0.03em' }}>🌍 {school}</h3>
-                        {WORLD_DESCRIPTIONS[school] && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{WORLD_DESCRIPTIONS[school]}</p>}
-                      </div>
-                    );
-                  })}
-                  {hasWorld && (() => { worldIdx += era.world.length; })()}
-                </div>
-                {/* Center: century marker */}
-                <div style={{ width: 56, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 8 }}>
-                  <div style={{
-                    width: 8, height: 8, borderRadius: '50%', zIndex: 2,
-                    background: 'var(--bone)', border: '2px solid var(--ochre)'
-                  }} />
-                  <span style={{
-                    fontFamily: '"Playfair Display", serif', fontSize: 11, fontWeight: 500,
-                    color: 'var(--ochre)', marginTop: 8, textAlign: 'center',
-                    whiteSpace: 'nowrap', letterSpacing: '0.05em'
-                  }}>
-                    {era.century}
-                  </span>
-                </div>
-                {/* RIGHT: Western */}
-                <div style={{ flex: 1, paddingLeft: 28 }}>
-                  {hasWest && era.west.map((school, si) => {
-                    const color = SCHOOL_COLORS[(westIdx + si) % SCHOOL_COLORS.length];
-                    return (
-                      <div key={school}
-                        onClick={() => navigate('/school/' + encodeURIComponent(school))}
-                        style={{
-                          maxWidth: 360, marginBottom: 8, cursor: 'pointer',
-                          padding: '12px 18px', borderLeft: '3px solid ' + color,
-                          transition: 'all 0.25s', background: 'transparent'
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-                      >
-                        <h3 style={{
-                          fontFamily: '"Playfair Display", "PingFang SC", serif',
-                          fontSize: 16, fontWeight: 500, color: 'var(--ink)',
-                          margin: '0 0 3px', letterSpacing: '0.03em'
-                        }}>
-                          {school}
-                        </h3>
-                        {SCHOOL_DESCRIPTIONS[school] && (
-                          <p style={{
-                            fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300,
-                            color: 'var(--text-dim)', margin: 0, lineHeight: 1.6
-                          }}>
-                            {SCHOOL_DESCRIPTIONS[school]}
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })}
-                  {hasWest && (() => { westIdx += era.west.length; })()}
-                </div>
-              </div>
-            );
-          });
-        })()}
-      </div>
-
-      {/* ══════════ FOOTER ══════════ */}
+      {/* ══════════ FOOTER══════════ */}
       <div style={{ textAlign: 'center', paddingBottom: 32, display: 'flex', justifyContent: 'center', gap: 32 }}>
         <button onClick={() => navigate('/western-philosophies')} style={{ background:'none',border:'none',cursor:'pointer',fontFamily:'\"Playfair Display\",serif',fontSize:15,fontWeight:400,color:'var(--ochre)',letterSpacing:'0.04em',padding:'8px 16px',transition:'opacity 0.2s' }}
           onMouseEnter={e=>e.currentTarget.style.opacity='0.6'} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>西方哲学传统 →</button>
