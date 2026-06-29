@@ -1,13 +1,13 @@
 # DeepPhilosophy — 哲学爱好者知识平台
 
-东西方及世界哲学的综合Web应用，五个模块：首页、书籍、作者、谱系、问答。React + FastAPI，部署于 Render。
+东西方及世界哲学的综合Web应用。React + FastAPI，部署于 Render。v2.0
 
 ## 数据质量标准（强制执行）
 
 | 模块 | 字段 | 最低标准 |
 |------|------|---------|
 | 📚 书籍 | 摘要 | ≥300字 |
-| ✒️ 作者 | bio | ≥1000字 |
+| ✒️ 哲人 | bio | ≥1000字 |
 | 🧬 谱系 | overview | ≥500字 |
 | 🧬 谱系 | conclusion | ≥500字 |
 | 🧬 谱系 | quotes | ≥20条 |
@@ -15,94 +15,64 @@
 
 ---
 
-## 项目结构
-
-```
-Q&ASystem/
-├── _gen_east.py              # 东方学派数据生成器（24学派）
-├── _gen_west.py              # 西方学派数据生成器（43学派）
-├── _gen_world.py             # 世界哲学数据生成器（9学派）
-└── DeepPhilosophy/
-    ├── app/                  # React 前端 (Vite)
-    │   └── src/
-    │       ├── pages/
-    │       │   ├── HomePage.jsx              # 首页 Landing（Hero+金句+三入口+数字+时间轴）
-    │       │   ├── GenealogyPage.jsx         # 谱系时间轴（双列东西方）
-    │       │   ├── SchoolDetailPage.jsx      # 流派详情容器（~850KB，76学派数据内联）
-    │       │   ├── WorldPhilosophiesPage.jsx # 世界哲学9流派卡片
-    │       │   ├── WesternPhilosophiesPage.jsx # 西方哲学43流派卡片
-    │       │   ├── EasternPhilosophiesPage.jsx # 东方哲学24流派卡片
-    │       │   ├── BooksPage.jsx / BookDetailPage.jsx / ReaderPage.jsx
-    │       │   ├── AuthorsPage.jsx / AuthorDetailPage.jsx
-    │       │   ├── QAPage.jsx / ProfilePage.jsx / SettingsPage.jsx
-    │       ├── components/school/           # 谱系详情页组件库（8组件+tokens）
-    │       │   ├── tokens.js                # 设计token
-    │       │   ├── HeroSection / OverviewSection / ConstellationMap
-    │       │   ├── TimelineSection / GlossaryCloud / QuotesGallery
-    │       │   ├── WorksList / EpilogueSection
-    │       ├── data/
-    │       │   ├── dailyQuotes.js           # 665条每日金句
-    │       │   ├── data.js / userData.js / crypto.js
-    │       │   └── assets/books.json        # 305本书目
-    │       ├── App.jsx / App.css
-    ├── backend/               # FastAPI 后端
-    │   ├── main.py            # API路由 + AI代理
-    │   ├── config.py          # 配置（自动读取_gen_east.py或环境变量）
-    │   ├── philosophers_db.py # 140位哲学家数据
-    │   ├── Dockerfile / requirements.txt
-    │   └── app-dist/          # 前端构建产物
-    └── render.yaml            # Render部署配置
-```
-
----
-
-## 页面路由
-
-| 路由 | 页面 | 说明 |
-|------|------|------|
-| `/` | HomePage | 首页：Hero + 每日金句 + 三入口 + 数字 + 时间轴 |
-| `/genealogy` | GenealogyPage | 东西方哲学谱系双列时间轴 |
-| `/school/:name` | SchoolDetailPage | 流派详情（星丛+辞海+金句+著作+时间轴+结语） |
-| `/western-philosophies` | WesternPhilosophiesPage | 西方43流派概览卡片 |
-| `/eastern-philosophies` | EasternPhilosophiesPage | 东方24流派概览卡片 |
-| `/world-philosophies` | WorldPhilosophiesPage | 世界9流派概览卡片 |
-| `/books` `/book/:id` `/reader/:id` | 书籍 | 浏览/详情/阅读 |
-| `/authors` `/author/:name` | 作者 | 列表/详情（维基+百度百科链接） |
-| `/qa` | QAPage | AI哲学问答（RAG + DeepSeek流式） |
-| `/profile` `/settings` | 用户 | 个人中心/API配置 |
-
----
-
-## 谱系组件架构
-
-```
-SchoolDetailPage (数据容器 + 星丛坐标计算)
-  ├── HeroSection        ← name, subtitle, quote, quoteAuthor, heroImage, englishName
-  ├── OverviewSection    ← overview, subSchools[]
-  ├── ConstellationMap   ← thinkers[], relations[], SUB_COLORS
-  ├── TimelineSection    ← timeline[]
-  ├── GlossaryCloud      ← cihai[]
-  ├── QuotesGallery      ← quotes[]
-  ├── WorksList          ← works[]
-  └── EpilogueSection    ← conclusion, closingQuote
-```
-
-所有组件通过 props 接收数据，76 学派共用。设计 tokens: `components/school/tokens.js`
-
----
-
 ## 数据统计
 
 | 类别 | 数量 | 说明 |
 |------|------|------|
-| 西方哲学流派 | 42 | 斯多葛→后现代（古希腊移入世界） |
+| 西方哲学流派 | 40 | 教父哲学→技术哲学（古希腊+斯多葛+怀疑论移入世界） |
 | 东方哲学流派 | 24 | 先秦→当代 |
-| 世界哲学流派 | 22 | 古埃及/美索不达米亚/印度/犹太/波斯/古希腊/伊斯兰/阿拉伯/西藏/非洲/拉美/玛雅/阿兹特克/东南亚/韩国/北欧/东欧/北美/蒙古/澳洲/印加/前苏格拉底 |
+| 世界哲学流派 | 24 | 古希腊/古埃及/美索不达米亚/印度/犹太/波斯/伊斯兰/阿拉伯/西藏/非洲/拉美/玛雅/阿兹特克/东南亚/韩国/北欧/东欧/北美/蒙古中亚/澳洲/印加/前苏格拉底/伊壁鸠鲁学派/犬儒学派/新柏拉图主义 |
 | **流派合计** | **88** | |
 | 哲学著作 | 342 | PDF/EPUB/TXT |
-| 哲学家 | 353 | 含星丛全量覆盖 |
-| 每日金句 | 665 | 88流派金句去重汇合 |
+| 哲学家 | 353 | 含星丛全量覆盖，JSON存储 |
+| 每日金句 | 665 | |
 | 游戏 | 3 | 答案之书 / PHTI / PHTI沙雕版 |
+
+---
+
+## 关键架构决策
+
+### philosophers_db → JSON
+哲学家数据库从 1MB Python dict 转为 JSON 文件加载，避免 Python 字符串转义问题。`philosophers_db.py` → `data/philosophers.json`
+
+### SchoolDetailPage — inline DATA
+流派详情数据直接内联编译进 JS bundle（无动态 fetch），与 76 个老流派保持一致的渲染方式。生成脚本：`app/gen_inline_schools.py`
+
+### 标签系统
+哲学家标签（流派/时代/国家）经过三轮重构：
+1. 后端 `_normalize_tag` + 前端 `normMap` 双端同步
+2. `philosophers.json` 中直接规范化标签（215处合并）
+3. 国家名今名化（普鲁士→德国等14个映射）
+4. 跨世纪覆盖（`_era_to_centuries` 返回生卒年间所有世纪）
+
+### 世界哲学流派构建
+10个新流派通过 AI 批量生成 school JSON → gen_inline_schools.py 转为 JS DATA → 内联进 SchoolDetailPage。数据标准：overview≥800字, conclusion≥500字, quotes≥20条, cihai≥20条, timeline≥8条, thinkers≥8位。
+
+---
+
+## 部署
+
+推送到 GitHub `master` 分支，Render 自动部署。Dockerfile 使用 `backend/app-dist/` 作为静态文件。
+
+Render 环境变量：`DEEPSEEK_API_KEY`, `GITHUB_TOKEN`
+
+---
+
+## ⚠️ 经验教训
+
+| 错误 | 根因 | 教训 |
+|------|------|------|
+| 新流派白屏 | `import * as X from file` 但忘记 `export` | JS模块必须先export才能import |
+| 多次重复声明DATA | fix_school_page.py 插入点重复 | 脚本幂等性检查 |
+| 详情页全崩 | `useState` 在 `const data = dynamicData` 之后声明 | Hooks 必须在所有变量引用之前 |
+| 标签筛选全0人 | `_era_to_centuries` CE正则匹配了BCE年份 | 负向前瞻必须完整 |
+| `influence: "9"` | gen脚本输出字符串非数字 | 数据生成后必须类型检查 |
+| 双书名号 | JSON title自带《》，WorksList又包一层 | 组件加 `.replace()` 防御 |
+| 后台JSON写坏 | 并发进程同时写同一文件 | 加工单进程+JSON中间格式 |
+| `bg:.jpg`但文件是`.png` | 统一后缀疏忽 | 构建前校验文件存在性 |
+| 标签无效 | 前后端 normalize 不同步 | 标签统一从JSON规范化，前后端共享同一MERGE MAP |
+| git push被阻 | `git add -A` 带入敏感文件 | `.gitignore` 必须提前配置 |
+| `const`重复声明 | Python脚本多次插入同一段DATA | 插入前检查目标字符串是否已存在 |
 
 ---
 
