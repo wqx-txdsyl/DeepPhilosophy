@@ -171,7 +171,7 @@ export default function PhilosophyTimeline() {
                     <div key={s.name}
                       onClick={() => navigate('/school/' + encodeURIComponent(s.name))}
                       style={{
-                        padding:'4px 8px', marginBottom:2, cursor:'pointer', borderRadius:4,
+                        padding:'4px 8px', marginBottom:2, cursor:'pointer',
                         borderLeft:'3px solid ' + color, opacity,
                         transition:'all 0.2s', background:'transparent',
                         minHeight: ri===col.length-1 ? 'auto' : 56,

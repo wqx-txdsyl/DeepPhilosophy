@@ -1488,7 +1488,10 @@ const GREEK_SUB_SCHOOLS = [
   { name:'怀疑论', era:'前4世纪-3世纪', desc:'皮浪创立，主张对一切判断"悬搁"（epoche），认为任何命题都可以找到同等的反命题，因此应放弃追求确定知识，以达心灵宁静。影响了中期学园派，后通过恩披里柯的著作影响了近代哲学。' },
   { name:'犬儒学派', era:'前4世纪-5世纪', desc:'安提斯泰尼创立，第欧根尼为最著名代表。主张摒弃社会习俗与物质欲望，回归"自然"生活。第欧根尼以木桶为家，以极端简朴的行为挑战社会规范，其"世界公民"（kosmopolites）概念影响了斯多葛学派。' },
   { name:'新柏拉图主义', era:'3世纪-6世纪', desc:'普罗提诺在前3世纪整合柏拉图、亚里士多德与斯多葛思想，创立"太一流溢说"——太一派生出理智（Nous）、理智派生出灵魂（Psyche），灵魂下降为物质世界。人的使命是通过哲学沉思回归太一。深刻影响了早期基督教神学。' },
-];
+
+  { name:'伊壁鸠鲁学派', era:'前4世纪-4世纪', desc:'伊壁鸠鲁在雅典花园中创立，以追求心灵宁静为人生至善。继承德谟克利特原子论，主张快乐即至善——不是纵欲而是理性计算的恬淡。是最早接纳女性和奴隶的哲学共同体。' },
+  { name:'犬儒学派', era:'前4世纪-5世纪', desc:'安提斯泰尼创立，第欧根尼为最著名代表。主张摒弃社会习俗与物质欲望，回归自然生活。以极端简朴的行为挑战一切传统价值，其世界公民概念影响了斯多葛学派。' },
+  { name:'新柏拉图主义', era:'3世纪-6世纪', desc:'普罗提诺整合柏拉图、亚里士多德与斯多葛思想，创立太一流溢说。太一派生出理智、理智派生出灵魂、灵魂下降为物质世界。人的使命是通过哲学沉思回归太一。深刻影响了基督教神学。' },];
 
 // —— 教父哲学下属流派卡片 ——
 const PATRISTIC_SUB_SCHOOLS = [
@@ -9174,6 +9177,9 @@ function SchoolDetailPage() {
   const navigate = useNavigate();
     const SCHOOL_MAP = {
       '前苏格拉底哲学': { data:前苏格拉底哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古希腊哲学.jpg)' },
+  '伊壁鸠鲁学派': { data:伊壁鸠鲁学派_DATA, sub:{}, ci:[], bg:'url(/schools/伊壁鸠鲁学派.png)' },
+  '犬儒学派': { data:犬儒学派_DATA, sub:{}, ci:[], bg:'url(/schools/犬儒学派.png)' },
+  '新柏拉图主义': { data:新柏拉图主义_DATA, sub:{}, ci:[], bg:'url(/schools/新柏拉图主义.png)' },
 '古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/古希腊哲学.jpg)' },
     '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/教父哲学.jpg)' },
     '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/经院哲学.jpg)' },
@@ -9512,6 +9518,9 @@ const ENG_NAMES = {
   '北美哲学': 'NORTH AMERICAN PHILOSOPHY',
   '美索不达米亚哲学': 'MESOPOTAMIAN PHILOSOPHY',
   '前苏格拉底哲学': 'PRE-SOCRATIC PHILOSOPHY',
+  '新柏拉图主义': 'NEOPLATONISM',
+  '犬儒学派': 'CYNICISM',
+  '伊壁鸠鲁学派': 'EPICUREANISM',
 };
 
 

@@ -258,22 +258,14 @@ function GenealogyPage() {
           fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 300,
           color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto'
         }}>
-          从公元前六世纪至二十一世纪，七十六个流派，<br />一部横跨两千五百年的思想史长卷。
+          从公元前三十世纪至二十一世纪，八十四个流派，<br />一部横跨五千年的人类思想史长卷。
         </p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '32px auto 0', opacity: 0.4 }} />
       </section>
 
       <PhilosophyTimeline />
 
-      {/* ══════════ FOOTER══════════ */}
-      <div style={{ textAlign: 'center', paddingBottom: 32, display: 'flex', justifyContent: 'center', gap: 32 }}>
-        <button onClick={() => navigate('/western-philosophies')} style={{ background:'none',border:'none',cursor:'pointer',fontFamily:'\"Playfair Display\",serif',fontSize:15,fontWeight:400,color:'var(--ochre)',letterSpacing:'0.04em',padding:'8px 16px',transition:'opacity 0.2s' }}
-          onMouseEnter={e=>e.currentTarget.style.opacity='0.6'} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>西方哲学传统 →</button>
-        <button onClick={() => navigate('/eastern-philosophies')} style={{ background:'none',border:'none',cursor:'pointer',fontFamily:'\"Playfair Display\",serif',fontSize:15,fontWeight:400,color:'var(--prussian)',letterSpacing:'0.04em',padding:'8px 16px',transition:'opacity 0.2s' }}
-          onMouseEnter={e=>e.currentTarget.style.opacity='0.6'} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>东方哲学传统 →</button>
-        <button onClick={() => navigate('/world-philosophies')} style={{ background:'none',border:'none',cursor:'pointer',fontFamily:'\"Playfair Display\",serif',fontSize:15,fontWeight:400,color:'#5A8A5A',letterSpacing:'0.04em',padding:'8px 16px',transition:'opacity 0.2s' }}
-          onMouseEnter={e=>e.currentTarget.style.opacity='0.6'} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>世界哲学传统 →</button>
-      </div>
+      
     </div>
   );
 }
