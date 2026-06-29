@@ -66,20 +66,33 @@ function WorldMap() {
             zIndex: 1,
           }}
         >
-          {/* Golden pulse dot */}
+          {/* Golden pulse dot — shadow + glow + halo */}
           <div style={{
             position: 'absolute', left: '50%', top: '50%',
-            width: 6, height: 6, transform: 'translate(-50%, -50%)',
-            background: '#C4956A', borderRadius: '50%',
-            boxShadow: '0 0 6px 2px rgba(196,149,106,0.6)',
-            animation: 'pulse-dot 2s ease-in-out infinite',
+            width: 8, height: 8, transform: 'translate(-50%, -50%)',
+            background: 'radial-gradient(circle, #E8C87A 0%, #C4956A 50%, transparent 100%)',
+            borderRadius: '50%',
+            boxShadow: '0 0 12px 4px rgba(196,149,106,0.7), 0 0 24px 8px rgba(196,149,106,0.3)',
+            animation: 'pulse-dot 2.5s ease-in-out infinite',
+          }} />
+          {/* Outer glow ring */}
+          <div style={{
+            position: 'absolute', left: '50%', top: '50%',
+            width: 16, height: 16, transform: 'translate(-50%, -50%)',
+            border: '1px solid rgba(196,149,106,0.4)',
+            borderRadius: '50%',
+            animation: 'pulse-ring 2.5s ease-in-out infinite',
           }} />
         </div>
       ))}
       <style>{`
         @keyframes pulse-dot {
-          0%, 100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); }
-          50% { opacity: 1; transform: translate(-50%,-50%) scale(1.8); }
+          0%, 100% { opacity: 0.5; transform: translate(-50%,-50%) scale(0.8); }
+          50% { opacity: 1; transform: translate(-50%,-50%) scale(1.4); }
+        }
+        @keyframes pulse-ring {
+          0%, 100% { opacity: 0.3; transform: translate(-50%,-50%) scale(0.8); }
+          50% { opacity: 0.7; transform: translate(-50%,-50%) scale(1.6); }
         }
       `}</style>
 
