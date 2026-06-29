@@ -484,9 +484,25 @@ function HomePage() {
       </div>
 
       {/* ══════════ FOOTER ══════════ */}
-      <div style={{ textAlign: 'center', paddingBottom: 40 }}>
-        <button onClick={() => navigate('/world-philosophies')} style={{
+      <div style={{ textAlign: 'center', paddingBottom: 40, display: 'flex', justifyContent: 'center', gap: 32 }}>
+        <button onClick={() => navigate('/western-philosophies')} style={{
           fontFamily: '"Playfair Display",serif', fontSize: 15, fontWeight: 400, color: 'var(--ochre)', letterSpacing: '0.04em',
+          background: 'none', border: 'none', cursor: 'pointer', padding: '8px 16px', transition: 'opacity 0.2s'
+        }}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+          西方哲学传统 →
+        </button>
+        <button onClick={() => navigate('/eastern-philosophies')} style={{
+          fontFamily: '"Playfair Display",serif', fontSize: 15, fontWeight: 400, color: 'var(--prussian)', letterSpacing: '0.04em',
+          background: 'none', border: 'none', cursor: 'pointer', padding: '8px 16px', transition: 'opacity 0.2s'
+        }}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+          东方哲学传统 →
+        </button>
+        <button onClick={() => navigate('/world-philosophies')} style={{
+          fontFamily: '"Playfair Display",serif', fontSize: 15, fontWeight: 400, color: '#5A8A5A', letterSpacing: '0.04em',
           background: 'none', border: 'none', cursor: 'pointer', padding: '8px 16px', transition: 'opacity 0.2s'
         }}
           onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}

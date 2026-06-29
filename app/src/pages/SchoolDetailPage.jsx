@@ -8423,6 +8423,9 @@ function SchoolDetailPage() {
   useEffect(() => { if (m._json) { fetch('/schools/' + m._json).then(r=>r.json()).then(setDynamicData).catch(()=>{}); } }, [name]);
   const data = dynamicData || m.data || GREEK_DATA;
   const subSchools = dynamicData?.sub || m.sub || (m.data ? GREEK_SUB_SCHOOLS : {});
+  // Auto-generate SUB_COLORS for dynamic schools (JSON-loaded)
+  const subColors = Object.keys(subSchools).length > 0 ? 
+    (() => { const c = {}; Object.keys(subSchools).forEach((k,i) => { const t=i/Math.max(1,Object.keys(subSchools).length-1); const r=Math.round(150+t*80); const g=Math.round(100+t*80); const b=Math.round(180-t*80); c[k]='#'+[r,g,b].map(n=>n.toString(16).padStart(2,'0')).join(''); }); return c; })() : {};
   const cihai = dynamicData?.cihai || m.ci || GREEK_CIHAI;
   const heroImage = m.bg || 'url(/schools/default.jpg)';
   const [hovered, setHovered] = useState(null);
@@ -8621,7 +8624,7 @@ const ENG_NAMES = {
       <HeroSection name={data.name} subtitle={data.subtitle} quote={data.quote} quoteAuthor={data.quoteAuthor} heroImage={heroImage} englishName={ENG_NAMES[data.name]} />
       <div id="school-content">
       <OverviewSection overview={data.overview} subSchools={subSchools} />
-      <ConstellationMap thinkers={thinkers} relations={data.relations} SUB_COLORS={SUB_COLORS} />
+      <ConstellationMap thinkers={thinkers} relations={data.relations} SUB_COLORS={{...SUB_COLORS, ...subColors}} />
       <TimelineSection timeline={data.timeline} />
       <GlossaryCloud cihai={cihai} />
       <QuotesGallery quotes={data.quotes} />
