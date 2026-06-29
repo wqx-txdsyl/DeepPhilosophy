@@ -8422,9 +8422,9 @@ function SchoolDetailPage() {
   const m = SCHOOL_MAP[name] || {};
   // Dynamic loader for JSON-based schools — show loading, not Greek
   const [dynamicData, setDynamicData] = useState(null);
-  const [loadingJson, setLoadingJson] = useState(!!m._json);
-  useEffect(() => { if (m._json) { setLoadingJson(true); fetch('/schools/' + m._json).then(r=>r.json()).then(d=>{ setDynamicData(d); setLoadingJson(false); }).catch(()=>setLoadingJson(false)); } }, [name]);
-  const data = loadingJson ? null : (dynamicData || m.data || GREEK_DATA);
+  useEffect(() => { if (m._json) { fetch('/schools/' + m._json).then(r=>r.json()).then(setDynamicData).catch(()=>{}); } }, [name]);
+  const data = dynamicData || m.data || (m._json ? null : GREEK_DATA);
+  if (!data) return <div className='loading' style={{padding:'120px 40px',textAlign:'center',fontSize:18,color:'var(--text-dim)'}}>🕯️ 正在加载流派数据...</div>;
   const subSchools = dynamicData?.sub || m.sub || (m.data ? GREEK_SUB_SCHOOLS : {});
   // Auto-generate SUB_COLORS for dynamic schools (JSON-loaded)
   const subColors = Object.keys(subSchools).length > 0 ? 

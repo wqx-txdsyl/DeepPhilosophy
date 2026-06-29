@@ -123,6 +123,44 @@ const EASTERN_DESCRIPTIONS = {
   '习近平新时代中国特色社会主义思想':'以人民为中心的发展思想——将马克思主义基本原理与新时代中国具体实际相结合，系统回应了坚持和发展什么样的中国特色社会主义这一重大时代课题。',
 };
 
+
+// ——— 世界哲学 ———
+const WORLD_TIMELINE = [
+  { century: '公元前30世纪', schools: ['美索不达米亚哲学'] },
+  { century: '公元前15世纪', schools: ['印度哲学','犹太哲学'] },
+  { century: '公元前10世纪', schools: ['波斯哲学'] },
+  { century: '公元前6世纪', schools: ['古希腊哲学'] },
+  { century: '7世纪', schools: ['伊斯兰哲学','阿拉伯哲学'] },
+  { century: '8世纪', schools: ['西藏哲学'] },
+  { century: '13世纪', schools: ['非洲哲学'] },
+  { century: '15世纪', schools: ['拉丁美洲哲学','玛雅哲学','阿兹特克哲学'] },
+  { century: '16世纪', schools: ['东南亚哲学','韩国哲学'] },
+  { century: '19世纪', schools: ['北欧哲学','东欧斯拉夫哲学','北美哲学'] },
+  { century: '20世纪', schools: ['蒙古中亚哲学','澳洲原住民哲学'] },
+];
+
+const WORLD_DESCRIPTIONS = {
+  '美索不达米亚哲学':'人类最早的哲学追问——苏美尔智慧文学追问苦难与秩序。',
+  '印度哲学':'以《吠陀》《奥义书》为源头，六派哲学与佛教、耆那教追问解脱。',
+  '犹太哲学':'在雅典与耶路撒冷之间——从斐洛到列维纳斯的信仰理性对话。',
+  '波斯哲学':'从琐罗亚斯德教善恶二元论到光照哲学，两千五百年的连续传统。',
+  '古希腊哲学':'西方哲学的总源——以理性思辨取代神话解释。',
+  '伊斯兰哲学':'凯拉姆、苏非主义——理性与启示的对话。',
+  '阿拉伯哲学':'铿迪、法拉比、阿维森纳——中世纪哲学的关键桥梁。',
+  '西藏哲学':'宗喀巴体系——藏传佛教中观应成派的核心。',
+  '非洲哲学':'乌班图与去殖民化——口述传统中的共同体本体论。',
+  '拉丁美洲哲学':'从拉斯·卡萨斯到杜塞尔——解放的哲学。',
+  '玛雅哲学':'《波波尔·乌》——循环时间观与玉米人神话。',
+  '阿兹特克哲学':'第五太阳纪——花与歌对短暂生命的哲学回应。',
+  '东南亚哲学':'印度教、佛教、伊斯兰与本土智慧的交融。',
+  '韩国哲学':'性理学与实学——从四端七情论到主体思想。',
+  '北欧哲学':'克尔凯郭尔的信仰跳跃——冰冷风景中的存在追问。',
+  '东欧斯拉夫哲学':'索洛维约夫、舍斯托夫——东西方之间的第三条道路。',
+  '北美哲学':'爱默生、梭罗、皮尔士——将观念投入实践的熔炉。',
+  '蒙古中亚哲学':'萨满传统与长生天——游牧智慧追问人与自然。',
+  '澳洲原住民哲学':'梦时代(Dreamtime)——人类最古老文明的生命智慧。',
+};
+
 const EASTERN_COLORS = (() => {
   const base = [];
   for (let i = 0; i < 24; i++) {
@@ -237,10 +275,11 @@ function GenealogyPage() {
 
         {(() => {
           const allEras = [];
-          const eastMap = {}, westMap = {};
+          const eastMap = {}, westMap = {}, worldMap = {};
           EASTERN_TIMELINE.forEach(e => { eastMap[e.century] = e.schools; });
           WESTERN_TIMELINE.forEach(e => { westMap[e.century] = e.schools; });
-          const centuries = [...new Set([...Object.keys(eastMap), ...Object.keys(westMap)])];
+          WORLD_TIMELINE.forEach(e => { worldMap[e.century] = e.schools; });
+          const centuries = [...new Set([...Object.keys(eastMap), ...Object.keys(westMap), ...Object.keys(worldMap)])];
           centuries.sort((a,b) => {
             const parse = (s) => {
               const bce = s.includes('公元前');
@@ -258,11 +297,12 @@ function GenealogyPage() {
             if (pa.bce && pb.bce) return pb.n - pa.n || pa.sub - pb.sub;
             return pa.n - pb.n || pa.sub - pb.sub;
           });
-          centuries.forEach(c => { allEras.push({ century: c, east: eastMap[c] || [], west: westMap[c] || [] }); });
-          let eastIdx = 0, westIdx = 0;
+          centuries.forEach(c => { allEras.push({ century: c, east: eastMap[c] || [], west: westMap[c] || [], world: worldMap[c] || [] }); });
+          let eastIdx = 0, westIdx = 0, worldIdx = 0;
+          const WORLD_COLORS = Array(20).fill(0).map((_,i) => { const t=i/19; const r=Math.round(80+t*40); const g=Math.round(130+t*30); const b=Math.round(80+t*30); return "#"+[r,g,b].map(n=>n.toString(16).padStart(2,"0")).join(""); });
 
           return allEras.map((era, eraIdx) => {
-            const hasEast = era.east.length > 0, hasWest = era.west.length > 0;
+            const hasEast = era.east.length > 0, hasWest = era.west.length > 0, hasWorld = era.world.length > 0;
             return (
               <div key={eraIdx} style={{ display: 'flex', marginBottom: 48, position: 'relative' }}>
                 {/* LEFT: Eastern */}
@@ -299,6 +339,19 @@ function GenealogyPage() {
                     );
                   })}
                   {hasEast && (() => { eastIdx += era.east.length; })()}
+                  {hasWorld && era.world.map((school, si) => {
+                    const color = WORLD_COLORS[(worldIdx + si) % WORLD_COLORS.length];
+                    return (
+                      <div key={school} onClick={() => navigate('/school/' + encodeURIComponent(school))}
+                        style={{ maxWidth: 360, marginBottom: 8, cursor: 'pointer', textAlign: 'right', padding: '12px 18px', borderRight: '3px solid ' + color, transition: 'all 0.25s', background: 'transparent' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                        <h3 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 16, fontWeight: 500, color: 'var(--ink)', margin: '0 0 3px', letterSpacing: '0.03em' }}>🌍 {school}</h3>
+                        {WORLD_DESCRIPTIONS[school] && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{WORLD_DESCRIPTIONS[school]}</p>}
+                      </div>
+                    );
+                  })}
+                  {hasWorld && (() => { worldIdx += era.world.length; })()}
                 </div>
                 {/* Center: century marker */}
                 <div style={{ width: 56, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 8 }}>
