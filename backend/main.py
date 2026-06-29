@@ -1107,22 +1107,60 @@ def _expand_tags(tag):
     return result
 
 def _era_to_century(era_str):
-    """Convert era string to century: '约前624-前546' -> '公元前7世纪'"""
+    """Convert era string to century: '约前624-前546' -> '公元前7世纪' (birth century)"""
     import re
     if not era_str or era_str in ("-", "未知", ""):
         return None
-    # BCE: 公元前xxx / 约前xxx / 约公元前xxx / 前xxx
     m = re.search(r'(?:公元前|约公元前|约前|前)\s*(\d+)', era_str)
     if m:
         year = int(m.group(1))
         return f'公元前{(year + 99) // 100}世纪'
-    # CE: find the first 3-4 digit number as birth year
     m = re.search(r'(?<!\d)(\d{3,4})', era_str)
     if m:
         year = int(m.group(1))
         century = (year + 99) // 100 if year < 1000 else (year - 1) // 100 + 1
         return f'{century}世纪'
     return None
+
+def _era_to_centuries(era_str):
+    """Get ALL centuries a philosopher's lifespan covers. e.g. '前427-前347' -> ['公元前5世纪','公元前4世纪']"""
+    import re
+    if not era_str or era_str in ("-", "未知", ""):
+        return []
+    centuries = set()
+    # Extract all years from the era string
+    years = []
+    # BCE years
+    for m in re.finditer(r'(?:公元前|约公元前|约前|前)\s*(\d+)', era_str):
+        years.append(-int(m.group(1)))
+    # CE years
+    for m in re.finditer(r'(?<!\d)(\d{3,4})(?!\s*世纪)', era_str):
+        years.append(int(m.group(1)))
+    for y in years:
+        if y < 0:
+            centuries.add(f'公元前{(-y + 99) // 100}世纪')
+        else:
+            c = (y + 99) // 100 if y < 1000 else (y - 1) // 100 + 1
+            centuries.add(f'{c}世纪')
+    # If we have a range, also include centuries between birth and death
+    if len(years) >= 2:
+        ymin, ymax = min(years), max(years)
+        if ymin < 0 and ymax < 0:
+            for c in range(-(abs(ymin) + 99) // 100, -(abs(ymax) + 99) // 100 + 1):
+                centuries.add(f'公元前{abs(c)}世纪')
+        elif ymin > 0 and ymax > 0:
+            for c in range((ymin + 99) // 100, (ymax + 99) // 100 + 1):
+                centuries.add(f'{c}世纪')
+        elif ymin < 0 and ymax > 0:
+            # BCE to CE transition
+            for c in range(-(abs(ymin) + 99) // 100, 0):
+                centuries.add(f'公元前{abs(c)}世纪')
+            for c in range(1, (ymax + 99) // 100 + 1):
+                centuries.add(f'{c}世纪')
+    return sorted(centuries, key=lambda x: (
+        -int(re.search(r'(\d+)', x).group(1)) if '公元前' in x else 0,
+        int(re.search(r'(\d+)', x).group(1)) if '公元前' not in x else 0,
+    ))
 
 @app.get("/api/authors/filters")
 async def get_author_filters():
@@ -1135,8 +1173,7 @@ async def get_author_filters():
     from philosophers_db import PHILOSOPHERS
     for name, info in PHILOSOPHERS.items():
         if info.get("era"):
-            century = _era_to_century(info["era"])
-            if century:
+            for century in _era_to_centuries(info["era"]):
                 eras.add(century)
         if info.get("country"):
             cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
@@ -1307,11 +1344,15 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
                 pass  # alias not in authors either
         if matched:
             continue
-        # 添加到作者列表（推断区域）
-        school_country = ph_info.get("school", "") + ph_info.get("country", "")
-        if any(kw in school_country for kw in ["中国","儒家","道家","墨家","法家","兵家","宋明","魏晋","禅","佛","理学","心学","玄学","经学","朴学","维新","天演","三民","毛泽东思想","习近平"]):
-            region = "东方"
-        elif any(kw in school_country for kw in ["印度","日本","伊斯兰","阿拉伯","非洲","犹太","波斯","拉美","东南亚","韩国","朝鲜"]):
+        # 添加到作者列表（推断区域——以国家/地区为准，非流派）
+        country_raw = ph_info.get("country", "")
+        school_raw = ph_info.get("school", "")
+        # 先看country
+        if any(kw in country_raw for kw in ["中国","日本","印度","韩国","朝鲜","越南"]):
+            region = "东方" if "中国" in country_raw else "世界"
+        elif any(kw in school_raw for kw in ["印度哲学","日本哲学","伊斯兰","阿拉伯哲学","非洲哲学","犹太","波斯哲学","拉美哲学","东南亚哲学","韩国哲学"]):
+            region = "世界"
+        elif any(kw in country_raw for kw in ["以色列","伊朗","土耳其","埃及","巴西","阿根廷","墨西哥","泰国","印度尼西亚","巴基斯坦","孟加拉"]):
             region = "世界"
         else:
             region = "西方"
@@ -1326,25 +1367,27 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
 
     result = []
     for name, info in authors_map.items():
-        century = _era_to_century(info.get("era", "")) if info.get("era") else ""
+        centuries = _era_to_centuries(info.get("era", "")) if info.get("era") else []
         entry = {
             "name": name,
             "region": info["region"],
             "book_count": len(info["books"]),
             "books": info["books"][:10],
             "era": info["era"],
-            "century": century,
-            "country": info["country"],
+            "centuries": centuries,
+            # 清理国家字段中的括号注释
+            "country": re.sub(r'[（(][^)）]*[)）]', '', info.get("country", "")).strip(),
             "school": info["school"],
         }
         # 多标签筛选（逗号分隔，AND逻辑，流派/国家/时代/世纪）
         if tag:
             raw_school = info.get("school") or ""
             expanded_schools = [t for s in re.split(r'[/,、，;；]', raw_school) if s.strip() for t in _expand_tags(s.strip())]
-            raw_country = info.get("country") or ""
+            # 清理国家字段：去掉括号注释，拆分为多国家
+            raw_country_clean = re.sub(r'[（(][^)）]*[)）]', '', info.get("country") or "")
             cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
             norm_countries = set()
-            for c in re.split(r'[/,、，;；]', raw_country):
+            for c in re.split(r'[/,、，;；]', raw_country_clean):
                 c = c.strip()
                 c = cnt_map.get(c, c)
                 if c: norm_countries.add(c)
@@ -1354,8 +1397,9 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
                 t = t.strip()
                 if not t: continue
                 if t in raw_school or t in expanded_schools: continue
-                if t in raw_country or t in norm_countries: continue
-                if t == info.get("era", "") or t == (century or ""): continue
+                if t in raw_country_clean or t in norm_countries: continue
+                if t == info.get("era", ""): continue
+                if centuries and t in centuries: continue
                 all_match = False
                 break
             if not all_match:
