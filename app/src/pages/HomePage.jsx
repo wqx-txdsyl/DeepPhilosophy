@@ -318,9 +318,15 @@ function HomePage() {
         <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
         <WorldMap />
         <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 12, color: 'var(--ochre)' }}>🏛 西方 43 流派</span>
-          <span style={{ fontSize: 12, color: 'var(--prussian)' }}>☯ 东方 24 流派</span>
-          <span style={{ fontSize: 12, color: '#5A8A5A' }}>🌍 世界 9 流派</span>
+          <span onClick={() => navigate('/western-philosophies')} style={{ fontSize: 12, color: 'var(--ochre)', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--ochre)'}
+            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🏛 西方 43 流派</span>
+          <span onClick={() => navigate('/eastern-philosophies')} style={{ fontSize: 12, color: 'var(--prussian)', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--prussian)'}
+            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>☯ 东方 24 流派</span>
+          <span onClick={() => navigate('/world-philosophies')} style={{ fontSize: 12, color: '#5A8A5A', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.borderBottomColor = '#5A8A5A'}
+            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🌍 世界 9 流派</span>
         </div>
       </section>
 
