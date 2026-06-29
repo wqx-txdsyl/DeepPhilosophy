@@ -67,6 +67,10 @@ for fname in json_files:
     ws = data.get('works', [])
     lines.append('  works: ' + arr_str(ws, [('title',''),('author',''),('era',''),('desc','')]) + ',')
 
+    # subSchools
+    subs = data.get('subSchools', [])
+    lines.append('  subSchools: ' + arr_str(subs, [('name',''),('era',''),('desc','')]) + ',')
+
     # conclusion + closingQuote
     closing = data.get('closingQuote', data.get('quote', ''))
     lines.append(f'  conclusion: {esc(data.get("conclusion",""))},')
