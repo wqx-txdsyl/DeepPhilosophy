@@ -8418,16 +8418,13 @@ function SchoolDetailPage() {
   '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },
 };
   const m = SCHOOL_MAP[name] || {};
-  const data = dynamicData || m.data || GREEK_DATA;
-  const subSchools = m.sub || (dynamicData?.subSchools ? {} : GREEK_SUB_SCHOOLS);
-  const cihai = m.ci || (dynamicData?.cihai || GREEK_CIHAI);
-  const heroImage = m.bg || 'url(/schools/default.jpg)';
-  // Dynamic loader for JSON-based schools
+  // Dynamic loader for JSON-based schools (hooks must be before usage)
   const [dynamicData, setDynamicData] = useState(null);
-  useEffect(() => { if (m._json) { fetch('/schools/' + m._json).then(r=>r.json()).then(d=>{
-    if(d.cihai) d.ci = d.cihai; if(d.works) d.works = d.works; if(d.quotes) d.quotes = d.quotes;
-    setDynamicData(d);
-  }).catch(()=>{}); } }, [name]);
+  useEffect(() => { if (m._json) { fetch('/schools/' + m._json).then(r=>r.json()).then(setDynamicData).catch(()=>{}); } }, [name]);
+  const data = dynamicData || m.data || GREEK_DATA;
+  const subSchools = dynamicData?.sub || m.sub || (m.data ? GREEK_SUB_SCHOOLS : {});
+  const cihai = dynamicData?.cihai || m.ci || GREEK_CIHAI;
+  const heroImage = m.bg || 'url(/schools/default.jpg)';
   const [hovered, setHovered] = useState(null);
 
   // Radial force-directed layout: center-outward, no overlaps, minimum line length

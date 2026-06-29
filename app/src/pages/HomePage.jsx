@@ -125,6 +125,43 @@ const EASTERN_DESCRIPTIONS = {
   '习近平新时代中国特色社会主义思想':'以人民为中心的发展思想——将马克思主义基本原理与新时代中国具体实际相结合，系统回应了坚持和发展什么样的中国特色社会主义这一重大时代课题。',
 };
 
+
+// ——— 世界哲学 ———
+const WORLD_TIMELINE = [
+  { century: '公元前30世纪', schools: ['美索不达米亚哲学'] },
+  { century: '公元前15世纪', schools: ['印度哲学','犹太哲学'] },
+  { century: '公元前10世纪', schools: ['波斯哲学'] },
+  { century: '公元前6世纪', schools: ['古希腊哲学'] },
+  { century: '7世纪', schools: ['伊斯兰哲学','阿拉伯哲学'] },
+  { century: '8世纪', schools: ['西藏哲学'] },
+  { century: '13世纪', schools: ['非洲哲学'] },
+  { century: '15世纪', schools: ['拉丁美洲哲学','玛雅哲学','阿兹特克哲学'] },
+  { century: '16世纪', schools: ['东南亚哲学','韩国哲学'] },
+  { century: '19世纪', schools: ['北欧哲学','东欧斯拉夫哲学','北美哲学'] },
+  { century: '20世纪', schools: ['蒙古中亚哲学','澳洲原住民哲学'] },
+];
+
+const WORLD_DESCRIPTIONS = {
+  '美索不达米亚哲学':'人类最早的哲学追问——苏美尔智慧文学追问苦难与秩序，《吉尔伽美什》史诗探索死亡与不朽。',
+  '印度哲学':'以《吠陀》《奥义书》为源头，正统六派与佛教、耆那教共同构成人类对意识与解脱最深刻的追问。',
+  '犹太哲学':'以理性与信仰的对话为核心，从斐洛到列维纳斯，在雅典与耶路撒冷之间追问。',
+  '波斯哲学':'超过两千五百年的连续传统——从琐罗亚斯德教善恶二元论到光照哲学。',
+  '古希腊哲学':'西方哲学的总源——以理性思辨取代神话解释，首次追问万物的本原、存在的本质与善的生活。',
+  '伊斯兰哲学':'以理性与启示的对话为核心——凯拉姆、苏非主义、伊斯兰伦理学追问真主与人的关系。',
+  '阿拉伯哲学':'中世纪保存和发展希腊哲学的关键桥梁——铿迪、法拉比、阿维森纳、阿威罗伊。',
+  '西藏哲学':'以藏传佛教中观应成派为核心——宗喀巴体系化整合印度中观与密宗。',
+  '非洲哲学':'以口述传统和"乌班图"共同体本体论为核心——去殖民化与泛非主义的哲学根基。',
+  '拉丁美洲哲学':'以解放为核心主题——从拉斯·卡萨斯到杜塞尔、弗莱雷，将哲学转向被压迫者的声音。',
+  '玛雅哲学':'以《波波尔·乌》为圣书——循环时间观、玉米人神话、二元互补的宇宙结构。',
+  '阿兹特克哲学':'以"第五太阳纪"宇宙论为核心——花与歌是对短暂生命的哲学回应。',
+  '东南亚哲学':'印度教、佛教、伊斯兰教与本土万物有灵论交汇中的"和谐"智慧。',
+  '韩国哲学':'以性理学和实学为核心——从四端七情论到东学与主体思想。',
+  '北欧哲学':'以克尔凯郭尔为标志——在冰冷风景中燃烧着对个体生存最炽热的追问。',
+  '东欧斯拉夫哲学':'以俄罗斯宗教哲学为核心——索洛维约夫的"万物统一"、舍斯托夫的信仰跳跃。',
+  '北美哲学':'从超验主义到实用主义——爱默生、梭罗、皮尔士将观念投入实践的熔炉。',
+  '蒙古中亚哲学':'以萨满传统和长生天信仰为根基——游牧智慧追问人与自然的共生。',
+  '澳洲原住民哲学':'以"梦时代"（Dreamtime）为核心——人类最古老连续文明的生命智慧。',
+};
 const EASTERN_COLORS = (() => {
   const base = [];
   for (let i = 0; i < 24; i++) {
@@ -359,10 +396,11 @@ function HomePage() {
 
         {(() => {
           const allEras = [];
-          const eastMap = {}, westMap = {};
+          const eastMap = {}, westMap = {}, worldMap = {};
           EASTERN_TIMELINE.forEach(e => { eastMap[e.century] = e.schools; });
           WESTERN_TIMELINE.forEach(e => { westMap[e.century] = e.schools; });
-          const centuries = [...new Set([...Object.keys(eastMap), ...Object.keys(westMap)])];
+          WORLD_TIMELINE.forEach(e => { worldMap[e.century] = e.schools; });
+          const centuries = [...new Set([...Object.keys(eastMap), ...Object.keys(westMap), ...Object.keys(worldMap)])];
           centuries.sort((a,b) => {
             const parse = (s) => {
               const bce = s.includes('公元前');
@@ -380,11 +418,16 @@ function HomePage() {
             if (pa.bce && pb.bce) return pb.n - pa.n || pa.sub - pb.sub;
             return pa.n - pb.n || pa.sub - pb.sub;
           });
-          centuries.forEach(c => { allEras.push({ century: c, east: eastMap[c] || [], west: westMap[c] || [] }); });
-          let eastIdx = 0, westIdx = 0;
+          centuries.forEach(c => { allEras.push({ century: c, east: eastMap[c] || [], west: westMap[c] || [], world: worldMap[c] || [] }); });
+          let eastIdx = 0, westIdx = 0, worldIdx = 0;
+          const WORLD_COLORS = Array(20).fill('#5A8A5A').map((c,i) => {
+            const t = i/19; const r = Math.round(80+t*40); const g = Math.round(130+t*30); const b = Math.round(80+t*30);
+            const toHex = n => n.toString(16).padStart(2,'0');
+            return '#'+toHex(r)+toHex(g)+toHex(b);
+          });
 
           return allEras.map((era, eraIdx) => {
-            const hasEast = era.east.length > 0, hasWest = era.west.length > 0;
+            const hasEast = era.east.length > 0, hasWest = era.west.length > 0, hasWorld = era.world.length > 0;
             return (
               <div key={eraIdx} style={{ display: 'flex', marginBottom: 48, position: 'relative' }}>
                 <div style={{ flex: 1, paddingRight: 28, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -401,9 +444,22 @@ function HomePage() {
                     );
                   })}
                   {hasEast && (() => { eastIdx += era.east.length; })()}
+                  {hasWorld && era.world.map((school, si) => {
+                    const color = WORLD_COLORS[(worldIdx + si) % WORLD_COLORS.length];
+                    return (
+                      <div key={school} onClick={() => navigate('/school/' + encodeURIComponent(school))}
+                        style={{ maxWidth: 360, marginBottom: 8, cursor: 'pointer', textAlign: 'right', padding: '12px 18px', borderRight: '3px solid ' + color, transition: 'all 0.25s', background: 'transparent' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--card-bg)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                        <h3 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 16, fontWeight: 500, color: 'var(--ink)', margin: '0 0 3px', letterSpacing: '0.03em' }}>🌍 {school}</h3>
+                        {WORLD_DESCRIPTIONS[school] && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 300, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{WORLD_DESCRIPTIONS[school]}</p>}
+                      </div>
+                    );
+                  })}
+                  {hasWorld && (() => { worldIdx += era.world.length; })()}
                 </div>
                 <div style={{ width: 56, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 8 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', zIndex: 2, background: 'var(--bone)', border: '2px solid var(--ochre)' }} />
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', zIndex: 2, background: 'var(--bone)', border: '2px solid ' + (hasWorld && !hasEast && !hasWest ? '#5A8A5A' : hasEast && !hasWest ? 'var(--prussian)' : 'var(--ochre)') }} />
                   <span style={{ fontFamily: '"Playfair Display",serif', fontSize: 11, fontWeight: 500, color: 'var(--ochre)', marginTop: 8, textAlign: 'center', whiteSpace: 'nowrap', letterSpacing: '0.05em' }}>{era.century}</span>
                 </div>
                 <div style={{ flex: 1, paddingLeft: 28 }}>
