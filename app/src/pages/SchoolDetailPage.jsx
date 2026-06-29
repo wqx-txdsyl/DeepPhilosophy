@@ -3,6 +3,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import * as newSchools from './_new_schools_data.jsx';
 import { getApiBase } from '../App';
 import HeroSection from '../components/school/HeroSection';
 import OverviewSection from '../components/school/OverviewSection';
