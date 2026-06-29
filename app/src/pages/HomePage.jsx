@@ -326,8 +326,8 @@ function HomePage() {
             <area shape="circle" coords="650,260,50" href="/school/伊斯兰哲学" alt="伊斯兰哲学" title="伊斯兰哲学：阿维森纳、阿威罗伊、苏菲神秘主义" />
             <area shape="circle" coords="550,400,75" href="/school/非洲哲学" alt="非洲哲学" title="非洲哲学：口头传统、社群伦理、后殖民批判" />
             <area shape="circle" coords="920,360,45" href="/school/东南亚哲学" alt="东南亚哲学" title="东南亚哲学：上座部佛教与本土智慧的交融" />
-            <area shape="circle" coords="200,400,65" href="/school/拉美哲学" alt="拉美哲学" title="拉美哲学：解放神学、混血意识、魔幻现实主义" />
-            <area shape="circle" coords="150,180,60" href="/western-philosophies" alt="北美哲学" title="北美 · 实用主义、超验主义" />
+            <area shape="circle" coords="200,400,65" href="/school/拉丁美洲哲学" alt="拉丁美洲哲学" title="拉丁美洲哲学：解放神学、混血意识、魔幻现实主义" />
+            <area shape="circle" coords="150,180,60" href="/school/实用主义" alt="北美哲学" title="北美实用主义与超验主义：皮尔士、詹姆斯、杜威、爱默生" />
             <area shape="circle" coords="620,210,40" href="/school/犹太哲学" alt="犹太哲学" title="犹太哲学：塔木德传统、迈蒙尼德、列维纳斯" />
             <area shape="circle" coords="680,300,45" href="/school/波斯哲学" alt="波斯哲学" title="波斯哲学：琐罗亚斯德、苏菲诗歌、光明与黑暗" />
             <area shape="circle" coords="600,310,40" href="/school/阿拉伯哲学" alt="阿拉伯哲学" title="阿拉伯哲学：百年翻译运动、理性与信仰的调和" />
