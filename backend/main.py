@@ -1126,23 +1126,19 @@ def _era_to_century(era_str):
 
 @app.get("/api/authors/filters")
 async def get_author_filters():
-    """获取作者多维度筛选选项（按世纪分组）"""
-    books = scan_books()
+    """获取作者多维度筛选选项（按世纪分组）—— 包含所有哲学家"""
     eras = set()
     countries = set()
     schools = set()
 
-    for b in books:
-        author = b["author"]
-        if not is_valid_author(author):
-            continue
-        info = get_philosopher_info(author)
-        if info:
-            if info.get("era"):
-                century = _era_to_century(info["era"])
-                if century:
-                    eras.add(century)
-            if info.get("country"):
+    # 扫描所有哲学家（不限于书籍作者）
+    from philosophers_db import PHILOSOPHERS
+    for name, info in PHILOSOPHERS.items():
+        if info.get("era"):
+            century = _era_to_century(info["era"])
+            if century:
+                eras.add(century)
+        if info.get("country"):
                 cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
                 for c in re.split(r'[/,、，;；]', info["country"]):
                     c = c.strip()
@@ -1295,23 +1291,7 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
                 "country": info.get("country", "") if info else "",
                 "school": info.get("school", "") if info else "",
             }
-    # 云端兜底：GitHub/R2 模式下书香目录为空，用硬编码的16位空目录作者列表
-    if config.USE_GITHUB or config.USE_R2:
-        from philosophers_db import EMPTY_DIR_AUTHORS
-        for author_clean in EMPTY_DIR_AUTHORS:
-            if author_clean in authors_map:
-                continue
-            info = get_philosopher_info(author_clean)
-            authors_map[author_clean] = {
-                "name": author_clean,
-                "region": "西方",
-                "books": [],
-                "era": info.get("era", "") if info else "",
-                "country": info.get("country", "") if info else "",
-                "school": info.get("school", "") if info else "",
-            }
-
-    # 补入哲学家数据库中所有未在作者列表中出现的人物（星丛补全后共355位）
+    # 云端兜底 + 补入哲学家数据库中所有人物
     from philosophers_db import PHILOSOPHERS
     for ph_name, ph_info in PHILOSOPHERS.items():
         if ph_name in authors_map:
