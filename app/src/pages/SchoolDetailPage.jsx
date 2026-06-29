@@ -8437,6 +8437,7 @@ function SchoolDetailPage() {
   const cihai = dynamicData?.cihai || m.ci || GREEK_CIHAI;
   const heroImage = m.bg || 'url(/schools/default.jpg)';
   const [hovered, setHovered] = useState(null);
+  const [renderError, setRenderError] = useState(null);
 
   // Radial force-directed layout: center-outward, no overlaps, minimum line length
   const thinkers = (() => {
