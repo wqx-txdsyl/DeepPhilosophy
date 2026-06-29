@@ -311,25 +311,33 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ══════════ THREE ENTRY CARDS ══════════ */}
-      <section id="home-content" style={{ padding: '64px 32px', maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
-          {[
-            { title: '西方哲学', count: '43 流派', desc: '从古希腊到后现代，理性、存在与语言的探索', path: '/western-philosophies', color: 'var(--ochre)' },
-            { title: '东方哲学', count: '24 流派', desc: '儒道墨法至当代，两千五百年不断的思想脉络', path: '/eastern-philosophies', color: 'var(--prussian)' },
-            { title: '世界哲学', count: '9 流派', desc: '印度、日本、伊斯兰、非洲…全球哲学版图', path: '/world-philosophies', color: '#5A8A5A' },
-          ].map(card => (
-            <div key={card.title} onClick={() => navigate(card.path)} style={{
-              padding: '36px 28px', cursor: 'pointer', borderBottom: '2px solid var(--border)',
-              transition: 'all 0.3s', background: 'transparent'
-            }}
-              onMouseEnter={e => { e.currentTarget.style.borderBottomColor = card.color; e.currentTarget.style.background = 'var(--card-bg)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: card.color }}>{card.count}</span>
-              <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 28, fontWeight: 400, color: 'var(--ink)', margin: '8px 0 8px', letterSpacing: '0.03em' }}>{card.title}</h2>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>{card.desc}</p>
-            </div>
-          ))}
+      {/* ══════════ WORLD MAP ══════════ */}
+      <section id="home-content" style={{ padding: '48px 24px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
+        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>点击地图上的区域，进入对应哲学传统</p>
+        <div style={{ position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
+          <img src="/schools/世界地图.png" alt="世界哲学地图" useMap="#philosophy-map"
+            style={{ width: '100%', maxWidth: 1200, height: 'auto', borderRadius: 8 }} />
+          <map name="philosophy-map">
+            <area shape="circle" coords="960,200,80" href="/eastern-philosophies" alt="东方哲学" title="中国 · 东方哲学：儒道墨法至当代，24流派" />
+            <area shape="circle" coords="1100,150,45" href="/school/日本哲学" alt="日本哲学" title="日本哲学：禅、京都学派、西田几多郎" />
+            <area shape="circle" coords="780,320,55" href="/school/印度哲学" alt="印度哲学" title="印度哲学：吠陀、奥义书、佛教起源" />
+            <area shape="circle" coords="500,160,100" href="/western-philosophies" alt="西方哲学" title="欧洲 · 西方哲学：从古希腊到后现代，43流派" />
+            <area shape="circle" coords="650,260,50" href="/school/伊斯兰哲学" alt="伊斯兰哲学" title="伊斯兰哲学：阿维森纳、阿威罗伊、苏菲神秘主义" />
+            <area shape="circle" coords="550,400,75" href="/school/非洲哲学" alt="非洲哲学" title="非洲哲学：口头传统、社群伦理、后殖民批判" />
+            <area shape="circle" coords="920,360,45" href="/school/东南亚哲学" alt="东南亚哲学" title="东南亚哲学：上座部佛教与本土智慧的交融" />
+            <area shape="circle" coords="200,400,65" href="/school/拉美哲学" alt="拉美哲学" title="拉美哲学：解放神学、混血意识、魔幻现实主义" />
+            <area shape="circle" coords="150,180,60" href="/western-philosophies" alt="北美哲学" title="北美 · 实用主义、超验主义" />
+            <area shape="circle" coords="620,210,40" href="/school/犹太哲学" alt="犹太哲学" title="犹太哲学：塔木德传统、迈蒙尼德、列维纳斯" />
+            <area shape="circle" coords="680,300,45" href="/school/波斯哲学" alt="波斯哲学" title="波斯哲学：琐罗亚斯德、苏菲诗歌、光明与黑暗" />
+            <area shape="circle" coords="600,310,40" href="/school/阿拉伯哲学" alt="阿拉伯哲学" title="阿拉伯哲学：百年翻译运动、理性与信仰的调和" />
+          </map>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 12, color: 'var(--ochre)' }}>🏛 西方 43 流派</span>
+          <span style={{ fontSize: 12, color: 'var(--prussian)' }}>☯ 东方 24 流派</span>
+          <span style={{ fontSize: 12, color: '#5A8A5A' }}>🌍 世界 9 流派</span>
+          <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>🖱 悬停查看简介 · 点击进入详情</span>
         </div>
       </section>
 
