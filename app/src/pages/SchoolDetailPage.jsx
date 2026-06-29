@@ -8386,22 +8386,48 @@ function SchoolDetailPage() {
     '习近平新时代中国特色社会主义思想': { data:XI_JINPING_THOUGHT_DATA, sub:XI_JINPING_THOUGHT_SUB_SCHOOLS, ci:XI_JINPING_THOUGHT_CIHAI, bg:'url(/schools/习近平新时代中国特色社会主义思想.jpg)' },
   '印度哲学': { data:INDIAN_PHILOSOPHY_DATA, sub:INDIAN_PHILOSOPHY_SUB_SCHOOLS, ci:INDIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/印度哲学.jpg)' },
   '日本哲学': { data:JAPANESE_PHILOSOPHY_DATA, sub:JAPANESE_PHILOSOPHY_SUB_SCHOOLS, ci:JAPANESE_PHILOSOPHY_CIHAI, bg:'url(/schools/日本哲学.jpg)' },
-  '伊斯兰阿拉伯哲学': { data:ISLAMIC_PHILOSOPHY_DATA, sub:ISLAMIC_PHILOSOPHY_SUB_SCHOOLS, ci:ISLAMIC_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '伊斯兰哲学': { data:ISLAMIC_PHILOSOPHY_DATA, sub:ISLAMIC_PHILOSOPHY_SUB_SCHOOLS, ci:ISLAMIC_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
   '非洲哲学': { data:AFRICAN_PHILOSOPHY_DATA, sub:AFRICAN_PHILOSOPHY_SUB_SCHOOLS, ci:AFRICAN_PHILOSOPHY_CIHAI, bg:'url(/schools/非洲哲学.jpg)' },
   '犹太哲学': { data:JEWISH_PHILOSOPHY_DATA, sub:JEWISH_PHILOSOPHY_SUB_SCHOOLS, ci:JEWISH_PHILOSOPHY_CIHAI, bg:'url(/schools/犹太哲学.jpg)' },
   '波斯哲学': { data:PERSIAN_PHILOSOPHY_DATA, sub:PERSIAN_PHILOSOPHY_SUB_SCHOOLS, ci:PERSIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/波斯哲学.jpg)' },
   '拉丁美洲哲学': { data:LATIN_AMERICAN_PHILOSOPHY_DATA, sub:LATIN_AMERICAN_PHILOSOPHY_SUB_SCHOOLS, ci:LATIN_AMERICAN_PHILOSOPHY_CIHAI, bg:'url(/schools/拉丁美洲哲学.jpg)' },
   '东南亚哲学': { data:SOUTHEAST_ASIAN_PHILOSOPHY_DATA, sub:SOUTHEAST_ASIAN_PHILOSOPHY_SUB_SCHOOLS, ci:SOUTHEAST_ASIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/东南亚哲学.jpg)' },
   '阿拉伯哲学': { data:ARABIC_PHILOSOPHY_DATA, sub:ARABIC_PHILOSOPHY_SUB_SCHOOLS, ci:ARABIC_PHILOSOPHY_CIHAI, bg:'url(/schools/阿拉伯哲学.jpg)' },
+
+  '韩国哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/韩国哲学.jpg)', _json:'school_韩国哲学.json' },
+  '西藏哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/西藏哲学.jpg)', _json:'school_西藏哲学.json' },
+  '北欧哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/北欧哲学.jpg)', _json:'school_北欧哲学.json' },
+  '玛雅哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/玛雅哲学.jpg)', _json:'school_玛雅哲学.json' },
+  '阿兹特克哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/阿兹特克哲学.jpg)', _json:'school_阿兹特克哲学.json' },
+  '澳洲原住民哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/澳洲原住民哲学.jpg)', _json:'school_澳洲原住民哲学.json' },
+  '蒙古中亚哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/蒙古中亚哲学.jpg)', _json:'school_蒙古中亚哲学.json' },
+  '东欧斯拉夫哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.jpg)', _json:'school_东欧斯拉夫哲学.json' },
+  '北美哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/北美哲学.jpg)', _json:'school_北美哲学.json' },
   '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },
   '旧民主主义': { data:OLD_DEMOCRACY_DATA, sub:OLD_DEMOCRACY_SUB_SCHOOLS, ci:OLD_DEMOCRACY_CIHAI, bg:'url(/schools/旧民主主义.jpg)' },
+
+  '韩国哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/韩国哲学.jpg)', _json:'school_韩国哲学.json' },
+  '西藏哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/西藏哲学.jpg)', _json:'school_西藏哲学.json' },
+  '北欧哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/北欧哲学.jpg)', _json:'school_北欧哲学.json' },
+  '玛雅哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/玛雅哲学.jpg)', _json:'school_玛雅哲学.json' },
+  '阿兹特克哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/阿兹特克哲学.jpg)', _json:'school_阿兹特克哲学.json' },
+  '澳洲原住民哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/澳洲原住民哲学.jpg)', _json:'school_澳洲原住民哲学.json' },
+  '蒙古中亚哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/蒙古中亚哲学.jpg)', _json:'school_蒙古中亚哲学.json' },
+  '东欧斯拉夫哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.jpg)', _json:'school_东欧斯拉夫哲学.json' },
+  '北美哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/北美哲学.jpg)', _json:'school_北美哲学.json' },
   '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },
 };
   const m = SCHOOL_MAP[name] || {};
-  const data = m.data || GREEK_DATA;
-  const subSchools = m.sub || GREEK_SUB_SCHOOLS;
-  const cihai = m.ci || GREEK_CIHAI;
+  const data = dynamicData || m.data || GREEK_DATA;
+  const subSchools = m.sub || (dynamicData?.subSchools ? {} : GREEK_SUB_SCHOOLS);
+  const cihai = m.ci || (dynamicData?.cihai || GREEK_CIHAI);
   const heroImage = m.bg || 'url(/schools/default.jpg)';
+  // Dynamic loader for JSON-based schools
+  const [dynamicData, setDynamicData] = useState(null);
+  useEffect(() => { if (m._json) { fetch('/schools/' + m._json).then(r=>r.json()).then(d=>{
+    if(d.cihai) d.ci = d.cihai; if(d.works) d.works = d.works; if(d.quotes) d.quotes = d.quotes;
+    setDynamicData(d);
+  }).catch(()=>{}); } }, [name]);
   const [hovered, setHovered] = useState(null);
 
   // Radial force-directed layout: center-outward, no overlaps, minimum line length
@@ -8524,7 +8550,7 @@ const ENG_NAMES = {
   '中国马克思主义哲学': 'CHINESE MARXIST PHILOSOPHY',
   '习近平新时代中国特色社会主义思想': 'XI JINPING THOUGHT',
   '乾嘉朴学': 'QIAN-JIA EVidentialSCHOLARSHIP',
-  '伊斯兰阿拉伯哲学': 'ISLAMIC-ARABIC PHILOSOPHY',
+  '伊斯兰哲学': 'ISLAMIC-ARABIC PHILOSOPHY',
   '伦理学': 'ETHICS',
   '儒家': 'CONFUCIANISM',
   '兵家': 'MILITARY PHILOSOPHY',
