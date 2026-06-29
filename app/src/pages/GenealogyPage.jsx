@@ -7,7 +7,6 @@ import { getApiBase } from '../App';
 
 const WESTERN_TIMELINE = [
   { century: '公元前6世纪', schools: ['古希腊哲学'] },
-  { century: '公元前3世纪', schools: ['斯多葛学派','怀疑论'] },
   { century: '4世纪', schools: ['教父哲学'] },
   { century: '11世纪', schools: ['经院哲学','唯名论'] },
   { century: '17世纪', schools: ['理性主义', '经验主义'] },
