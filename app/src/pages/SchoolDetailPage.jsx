@@ -9647,7 +9647,7 @@ function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
     const SCHOOL_MAP = {
-      '前苏格拉底哲学': { data:前苏格拉底哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古希腊哲学.jpg)' },
+      '前苏格拉底哲学': { data:前苏格拉底哲学_DATA, sub:{}, ci:[], bg:'url(/schools/前苏格拉底哲学.png)' },
   '伊壁鸠鲁学派': { data:伊壁鸠鲁学派_DATA, sub:{}, ci:[], bg:'url(/schools/伊壁鸠鲁学派.png)' },
   '犬儒学派': { data:犬儒学派_DATA, sub:{}, ci:[], bg:'url(/schools/犬儒学派.png)' },
   '新柏拉图主义': { data:新柏拉图主义_DATA, sub:{}, ci:[], bg:'url(/schools/新柏拉图主义.png)' },
@@ -9656,7 +9656,7 @@ function SchoolDetailPage() {
   '新柏拉图主义': { data:新柏拉图主义_DATA, sub:{}, ci:[], bg:'url(/schools/新柏拉图主义.png)' },
   '古埃及哲学': { data:古埃及哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古埃及哲学.png)' },
   '印加哲学': { data:印加哲学_DATA, sub:{}, ci:[], bg:'url(/schools/印加哲学.png)' },
-'古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/古希腊哲学.jpg)' },
+'古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/前苏格拉底哲学.png)' },
     '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/教父哲学.jpg)' },
     '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/经院哲学.jpg)' },
     '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/理性主义.jpg)' },
