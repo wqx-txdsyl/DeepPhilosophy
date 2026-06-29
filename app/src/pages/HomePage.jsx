@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import DAILY_QUOTES from '../data/dailyQuotes';
+import WorldMap from '../components/WorldMap';
 
 const WESTERN_TIMELINE = [
   { century: '公元前6世纪', schools: ['古希腊哲学'] },
@@ -314,30 +315,12 @@ function HomePage() {
       {/* ══════════ WORLD MAP ══════════ */}
       <section id="home-content" style={{ padding: '48px 24px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>点击地图上的区域，进入对应哲学传统</p>
-        <div style={{ position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
-          <img src="/schools/世界地图.png" alt="世界哲学地图" useMap="#philosophy-map"
-            style={{ width: '100%', maxWidth: 1200, height: 'auto', borderRadius: 8 }} />
-          <map name="philosophy-map">
-            <area shape="circle" coords="960,200,80" href="/eastern-philosophies" alt="东方哲学" title="中国 · 东方哲学：儒道墨法至当代，24流派" />
-            <area shape="circle" coords="1100,150,45" href="/school/日本哲学" alt="日本哲学" title="日本哲学：禅、京都学派、西田几多郎" />
-            <area shape="circle" coords="780,320,55" href="/school/印度哲学" alt="印度哲学" title="印度哲学：吠陀、奥义书、佛教起源" />
-            <area shape="circle" coords="500,160,100" href="/western-philosophies" alt="西方哲学" title="欧洲 · 西方哲学：从古希腊到后现代，43流派" />
-            <area shape="circle" coords="650,260,50" href="/school/伊斯兰哲学" alt="伊斯兰哲学" title="伊斯兰哲学：阿维森纳、阿威罗伊、苏菲神秘主义" />
-            <area shape="circle" coords="550,400,75" href="/school/非洲哲学" alt="非洲哲学" title="非洲哲学：口头传统、社群伦理、后殖民批判" />
-            <area shape="circle" coords="920,360,45" href="/school/东南亚哲学" alt="东南亚哲学" title="东南亚哲学：上座部佛教与本土智慧的交融" />
-            <area shape="circle" coords="200,400,65" href="/school/拉丁美洲哲学" alt="拉丁美洲哲学" title="拉丁美洲哲学：解放神学、混血意识、魔幻现实主义" />
-            <area shape="circle" coords="150,180,60" href="/school/实用主义" alt="北美哲学" title="北美实用主义与超验主义：皮尔士、詹姆斯、杜威、爱默生" />
-            <area shape="circle" coords="620,210,40" href="/school/犹太哲学" alt="犹太哲学" title="犹太哲学：塔木德传统、迈蒙尼德、列维纳斯" />
-            <area shape="circle" coords="680,300,45" href="/school/波斯哲学" alt="波斯哲学" title="波斯哲学：琐罗亚斯德、苏菲诗歌、光明与黑暗" />
-            <area shape="circle" coords="600,310,40" href="/school/阿拉伯哲学" alt="阿拉伯哲学" title="阿拉伯哲学：百年翻译运动、理性与信仰的调和" />
-          </map>
-        </div>
+        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
+        <WorldMap />
         <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, flexWrap: 'wrap' }}>
           <span style={{ fontSize: 12, color: 'var(--ochre)' }}>🏛 西方 43 流派</span>
           <span style={{ fontSize: 12, color: 'var(--prussian)' }}>☯ 东方 24 流派</span>
           <span style={{ fontSize: 12, color: '#5A8A5A' }}>🌍 世界 9 流派</span>
-          <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>🖱 悬停查看简介 · 点击进入详情</span>
         </div>
       </section>
 
