@@ -181,6 +181,7 @@ function HomePage() {
   const [schoolData, setSchoolData] = useState({});
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('dp_token'));
   const [username, setUsername] = useState(localStorage.getItem('dp_username') || '');
+  const [dailyQuote, setDailyQuote] = useState(() => DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]);
 
   useEffect(() => {
     fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(10000) })
@@ -303,7 +304,7 @@ function HomePage() {
           </h1>
           <div style={{ width: 60, height: 1.5, background: 'var(--ochre)', margin: '0 auto 24px', opacity: 0.7 }} />
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>
-            从公元前六世纪至二十一世纪<br />一部横跨两千五百年的思想史长卷
+            从公元前三十世纪至二十一世纪<br />一部横跨五千年的思想史长卷
           </p>
           <button onClick={scrollToTimeline} style={{
             fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, letterSpacing: '0.08em',
@@ -321,21 +322,16 @@ function HomePage() {
       </section>
 
       {/* ══════════ DAILY QUOTE ══════════ */}
-      {(() => {
-        // quotes loaded from DAILY_QUOTES
-        const q = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
-        return (
-          <section style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%' }}>
-            <div style={{ maxWidth: 680, margin: '0 auto' }}>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', marginBottom: 20 }}>Daily Quote</p>
-              <p style={{ fontFamily: '"Playfair Display",serif', fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, margin: '0 0 16px' }}>
-                &ldquo;{q.text}&rdquo;
-              </p>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>&mdash; {q.author}</p>
-            </div>
-          </section>
-        );
-      })()}
+      <section onClick={() => { const q = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]; setDailyQuote(q); }}
+        style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%', cursor: 'pointer' }}>
+        <div style={{ maxWidth: 680, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', marginBottom: 20 }}>Daily Quote — 点击切换</p>
+          <p style={{ fontFamily: '"Playfair Display",serif', fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, margin: '0 0 16px', transition: 'opacity 0.15s' }}>
+            &ldquo;{dailyQuote.text}&rdquo;
+          </p>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>&mdash; {dailyQuote.author}</p>
+        </div>
+      </section>
 
       {/* ══════════ NUMBERS ══════════ */}
       <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
