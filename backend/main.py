@@ -1139,16 +1139,16 @@ async def get_author_filters():
             if century:
                 eras.add(century)
         if info.get("country"):
-                cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
-                for c in re.split(r'[/,、，;；]', info["country"]):
-                    c = c.strip()
-                    c = cnt_map.get(c, c)
-                    if c: countries.add(c)
-            if info.get("school"):
-                for tag in re.split(r'[/,、，;；]', info["school"]):
-                    tag = tag.strip()
-                    if tag:
-                        schools.add(_normalize_tag(tag))
+            cnt_map = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"}
+            for c in re.split(r'[/,、，;；]', info["country"]):
+                c = c.strip()
+                c = cnt_map.get(c, c)
+                if c: countries.add(c)
+        if info.get("school"):
+            for tag in re.split(r'[/,、，;；]', info["school"]):
+                tag = tag.strip()
+                if tag:
+                    schools.add(_normalize_tag(tag))
 
     def _century_sort_key(c):
         """Sort centuries: 公元前 first (descending), then CE (ascending)"""
