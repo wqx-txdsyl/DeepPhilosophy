@@ -336,7 +336,7 @@ function HomePage() {
       {/* ══════════ NUMBERS ══════════ */}
       <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
-          {[{ num: '305', label: '哲学著作' }, { num: '353', label: '哲学家' }, { num: '85', label: '哲学流派' }].map(s => (
+          {[{ num: '305', label: '哲学著作' }, { num: '353', label: '哲学家' }, { num: '86', label: '哲学流派' }].map(s => (
             <div key={s.label}>
               <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
@@ -353,7 +353,7 @@ function HomePage() {
         <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, flexWrap: 'wrap' }}>
           <span onClick={() => navigate('/western-philosophies')} style={{ fontSize: 12, color: 'var(--ochre)', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--ochre)'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🏛 西方 43 流派</span>
+            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🏛 西方 42 流派</span>
           <span onClick={() => navigate('/eastern-philosophies')} style={{ fontSize: 12, color: 'var(--prussian)', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--prussian)'}
             onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>☯ 东方 24 流派</span>
