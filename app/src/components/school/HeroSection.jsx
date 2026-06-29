@@ -52,10 +52,15 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
       </blockquote>
       <p style={{ fontSize: 16, color: 'var(--ochre)', fontWeight: 600, fontFamily: FONT.sans, letterSpacing: '0.04em' }}>{quoteAuthor}</p>
 
-      {/* Scroll indicator — softer */}
-      <div style={{ position: 'absolute', bottom: 36, opacity: 0.5 }}>
-        <span style={{ fontSize: 20, color: 'var(--text-dim)', display: 'block', animation: 'pulse 2s ease-in-out infinite' }}>&darr;</span>
-      </div>
+      <button onClick={() => document.getElementById('school-content')?.scrollIntoView({ behavior: 'smooth' })} style={{
+        fontFamily: FONT.sans, fontSize: 14, fontWeight: 500, letterSpacing: '0.08em',
+        color: '#fff', background: 'var(--ink)', border: 'none', borderRadius: 4,
+        padding: '14px 36px', cursor: 'pointer', transition: 'all 0.25s', marginTop: 24, position: 'relative', zIndex: 1,
+      }}
+        onMouseEnter={e => { e.currentTarget.style.background = 'var(--ochre)'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'var(--ink)'; }}>
+        开始探索 ↓
+      </button>
     </section>
   );
 }

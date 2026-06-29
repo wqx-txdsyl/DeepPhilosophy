@@ -8596,6 +8596,7 @@ const ENG_NAMES = {
   return (
     <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
       <HeroSection name={data.name} subtitle={data.subtitle} quote={data.quote} quoteAuthor={data.quoteAuthor} heroImage={heroImage} englishName={ENG_NAMES[data.name]} />
+      <div id="school-content">
       <OverviewSection overview={data.overview} subSchools={subSchools} />
       <ConstellationMap thinkers={thinkers} relations={data.relations} SUB_COLORS={SUB_COLORS} />
       <TimelineSection timeline={data.timeline} />
@@ -8603,6 +8604,7 @@ const ENG_NAMES = {
       <QuotesGallery quotes={data.quotes} />
       <WorksList works={data.works} />
       <EpilogueSection conclusion={data.conclusion} closingQuote={data.closingQuote} />
+      </div>
     </div>
   );
 }
