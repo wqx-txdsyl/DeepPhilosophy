@@ -28,6 +28,7 @@ const REGIONS = [
   { id: 'africa', name: '非洲', sub: '非洲哲学', desc: '口头传统、社群伦理、后殖民批判。', x: 44, y: 55, r: 45, path: '/school/非洲哲学' },
   // 美洲
   { id: 'na', name: '北美', sub: '北美哲学', desc: '实用主义、超验主义、过程哲学。', x: 12, y: 24, r: 28, path: '/school/北美哲学' },
+  { id: 'pragmatism', name: '美东', sub: '实用主义', desc: '皮尔士、詹姆斯、杜威——真理即有用。', x: 18, y: 28, r: 14, path: '/school/实用主义' },
   { id: 'latin', name: '拉丁美洲', sub: '拉丁美洲哲学', desc: '解放神学、混血意识、魔幻现实主义。', x: 17, y: 55, r: 36, path: '/school/拉丁美洲哲学' },
   { id: 'maya', name: '玛雅', sub: '玛雅哲学', desc: '波波尔·乌、时间循环、玉米人。', x: 15, y: 48, r: 16, path: '/school/玛雅哲学' },
   { id: 'aztec', name: '阿兹特克', sub: '阿兹特克哲学', desc: '宇宙论、献祭辩证法、第五太阳纪。', x: 14, y: 44, r: 16, path: '/school/阿兹特克哲学' },

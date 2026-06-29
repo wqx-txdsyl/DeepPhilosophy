@@ -14,7 +14,7 @@ export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroIm
       <div style={{ position: 'absolute', inset: 0,
         background: 'linear-gradient(to top, rgba(244,240,235,0.82) 0%, rgba(244,240,235,0.45) 35%, rgba(244,240,235,0.15) 100%)' }} />
 
-      <button onClick={() => navigate('/genealogy')} style={{
+      <button onClick={() => navigate(-1)} style={{
         position: 'absolute', top: SPACE.lg, left: SPACE.lg, zIndex: 10,
         fontFamily: FONT.sans, fontSize: 13, color: 'var(--ochre)', background: 'rgba(244,240,235,0.5)',
         border: '1px solid rgba(196,149,106,0.3)', borderRadius: 4,
