@@ -37,7 +37,8 @@ function WorldMap() {
           style={{
             position: 'absolute',
             left: `${r.x}%`, top: `${r.y}%`,
-            width: `${r.r * 0.08}%`, height: `${r.r * 0.12}%`,
+            width: `${Math.max(r.r * 0.35, 8)}%`,
+            height: `${Math.max(r.r * 0.5, 10)}%`,
             transform: 'translate(-50%, -50%)',
             cursor: 'pointer',
             borderRadius: '50%',
@@ -46,19 +47,21 @@ function WorldMap() {
         />
       ))}
 
-      {/* 悬浮卡片 */}
+      {/* 悬浮卡片 — 磨砂玻璃 */}
       {hover && (
         <div style={{
           position: 'absolute',
           left: `${hover.x}%`, top: `${hover.y - hover.r * 0.06}%`,
           transform: 'translate(-50%, -100%)',
-          background: 'var(--primary)',
-          border: '1px solid var(--border)',
+          background: 'rgba(244,240,235,0.75)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(196,149,106,0.3)',
           borderRadius: 8,
-          padding: '10px 14px',
-          minWidth: 140,
-          maxWidth: 220,
-          boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+          padding: '12px 16px',
+          minWidth: 160,
+          maxWidth: 260,
+          boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
           zIndex: 10,
           pointerEvents: 'none',
         }}>
