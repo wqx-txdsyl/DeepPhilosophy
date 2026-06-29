@@ -8420,11 +8420,16 @@ function SchoolDetailPage() {
   '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },
 };
   const m = SCHOOL_MAP[name] || {};
-  // Dynamic loader for JSON-based schools — show loading, not Greek
+  // Dynamic loader for JSON-based schools
   const [dynamicData, setDynamicData] = useState(null);
-  useEffect(() => { if (m._json) { fetch('/schools/' + m._json).then(r=>r.json()).then(setDynamicData).catch(()=>{}); } }, [name]);
+  const [jsonError, setJsonError] = useState(false);
+  useEffect(() => { if (m._json) { setJsonError(false); fetch('/schools/' + m._json).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(setDynamicData).catch(()=>setJsonError(true)); } }, [name]);
   const data = dynamicData || m.data || (m._json ? null : GREEK_DATA);
-  if (!data) return <div className='loading' style={{padding:'120px 40px',textAlign:'center',fontSize:18,color:'var(--text-dim)'}}>🕯️ 正在加载流派数据...</div>;
+  if (!data) return <div style={{padding:'120px 40px',textAlign:'center'}}>
+    <p style={{fontSize:36}}>🕯️</p>
+    <p style={{fontSize:16,color:'var(--text-dim)'}}>{jsonError ? '数据加载失败' : '正在加载流派数据...'}</p>
+    {jsonError && <p style={{fontSize:12,color:'var(--text-dim)'}}>JSON路径: /schools/{m._json}</p>}
+  </div>;
   const subSchools = dynamicData?.sub || m.sub || (m.data ? GREEK_SUB_SCHOOLS : {});
   // Auto-generate SUB_COLORS for dynamic schools (JSON-loaded)
   const subColors = Object.keys(subSchools).length > 0 ? 
