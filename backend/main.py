@@ -1133,8 +1133,8 @@ def _era_to_centuries(era_str):
     # BCE years
     for m in re.finditer(r'(?:公元前|约公元前|约前|前)\s*(\d+)', era_str):
         years.append(-int(m.group(1)))
-    # CE years
-    for m in re.finditer(r'(?<!\d)(\d{3,4})(?!\s*世纪)', era_str):
+    # CE years (NOT preceded by 前/公元前)
+    for m in re.finditer(r'(?<![前\d])(?<!公元前)(?<!约公元前)(?<!约前)(\d{3,4})(?!\s*世纪)', era_str):
         years.append(int(m.group(1)))
     for y in years:
         if y < 0:
@@ -1146,15 +1146,17 @@ def _era_to_centuries(era_str):
     if len(years) >= 2:
         ymin, ymax = min(years), max(years)
         if ymin < 0 and ymax < 0:
-            for c in range(-(abs(ymin) + 99) // 100, -(abs(ymax) + 99) // 100 + 1):
-                centuries.add(f'公元前{abs(c)}世纪')
+            bc_start = (abs(ymin) + 99) // 100
+            bc_end = (abs(ymax) + 99) // 100
+            for c in range(bc_end, bc_start + 1):
+                centuries.add(f'公元前{c}世纪')
         elif ymin > 0 and ymax > 0:
             for c in range((ymin + 99) // 100, (ymax + 99) // 100 + 1):
                 centuries.add(f'{c}世纪')
         elif ymin < 0 and ymax > 0:
-            # BCE to CE transition
-            for c in range(-(abs(ymin) + 99) // 100, 0):
-                centuries.add(f'公元前{abs(c)}世纪')
+            bc_start = (abs(ymin) + 99) // 100
+            for c in range(1, bc_start + 1):
+                centuries.add(f'公元前{c}世纪')
             for c in range(1, (ymax + 99) // 100 + 1):
                 centuries.add(f'{c}世纪')
     return sorted(centuries, key=lambda x: (

@@ -95,7 +95,13 @@ function PHTIPage() {
     setPhase('roasting');
     setRoasting(true);
 
-    const roastPrompt = `你是一个毒舌脱口秀演员兼哲学教授。有人刚做完哲学人格测试：${matched.title}（${matched.name}）。${matched.short_desc}。维度得分：${JSON.stringify(scores)}。请写300-400字毒舌锐评：开头暴击→2-3个生活场景吐槽→致命金句收尾。不要敷衍！`;
+    const roastPrompt = `你是一个毒舌脱口秀演员兼哲学教授。有人做完哲学人格测试：${matched.title}（${matched.name}）。${matched.short_desc}。维度得分：${JSON.stringify(scores)}。
+
+写300-400字毒舌锐评，要求：
+- 必须是流畅连贯的散文，自然段落
+- 绝对禁止标题、编号、列表、加粗等格式标记
+- 开头暴击→2-3个生活场景吐槽→致命金句收尾
+- 脱口秀风格，犀利幽默`;
 
       const apiBase = getApiBase();
       // Fix URL: on deployed site, use relative path to avoid localhost mismatch
