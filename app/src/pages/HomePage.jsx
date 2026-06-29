@@ -266,7 +266,7 @@ function HomePage() {
           </h1>
           <div style={{ width: 60, height: 1.5, background: 'var(--ochre)', margin: '0 auto 24px', opacity: 0.7 }} />
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>
-            从公元前六世纪至二十一世纪<br />七十六个流派，一部横跨两千五百年的思想史长卷
+            从公元前六世纪至二十一世纪<br />一部横跨两千五百年的思想史长卷
           </p>
           <button onClick={scrollToTimeline} style={{
             fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, letterSpacing: '0.08em',
@@ -326,7 +326,7 @@ function HomePage() {
             onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>☯ 东方 24 流派</span>
           <span onClick={() => navigate('/world-philosophies')} style={{ fontSize: 12, color: '#5A8A5A', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.borderBottomColor = '#5A8A5A'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🌍 世界 9 流派</span>
+            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🌍 世界 18 流派</span>
         </div>
       </section>
 

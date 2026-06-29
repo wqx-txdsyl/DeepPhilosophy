@@ -17,10 +17,12 @@ const REGIONS = [
   { id: 'mongol', name: '蒙古/中亚', sub: '蒙古中亚哲学', desc: '萨满传统、长生天、游牧智慧。', x: 70, y: 30, r: 24, path: '/school/蒙古中亚哲学' },
   // 欧洲
   { id: 'europe', name: '欧洲', sub: '西方哲学', desc: '从古希腊到后现代，43流派。', x: 40, y: 20, r: 50, path: '/western-philosophies' },
+  { id: 'greece', name: '希腊', sub: '古希腊哲学', desc: '西方哲学总源——泰勒斯、柏拉图、亚里士多德。', x: 48, y: 26, r: 16, path: '/school/古希腊哲学' },
   { id: 'nordic', name: '北欧', sub: '北欧哲学', desc: '克尔凯郭尔的存在主义源头、易卜生。', x: 45, y: 10, r: 18, path: '/school/北欧哲学' },
   { id: 'slavic', name: '东欧', sub: '东欧斯拉夫哲学', desc: '舍斯托夫、索洛维约夫、俄罗斯宗教哲学。', x: 52, y: 15, r: 22, path: '/school/东欧斯拉夫哲学' },
   // 中东集群(精细化间距)
   { id: 'islam', name: '伊斯兰', sub: '伊斯兰哲学', desc: '百年翻译运动、阿维森纳、苏菲神秘主义。', x: 54, y: 38, r: 26, path: '/school/伊斯兰哲学' },
+  { id: 'mesopotamia', name: '美索不达米亚', sub: '美索不达米亚哲学', desc: '人类最早的哲学追问——吉尔伽美什与智慧文学。', x: 52, y: 36, r: 14, path: '/school/美索不达米亚哲学' },
   { id: 'persia', name: '波斯', sub: '波斯哲学', desc: '琐罗亚斯德、苏菲诗歌、光明与黑暗。', x: 60, y: 34, r: 20, path: '/school/波斯哲学' },
   { id: 'arab', name: '阿拉伯', sub: '阿拉伯哲学', desc: '理性与信仰的调和。', x: 49, y: 40, r: 18, path: '/school/阿拉伯哲学' },
   { id: 'jewish', name: '犹太', sub: '犹太哲学', desc: '塔木德传统、迈蒙尼德、列维纳斯。', x: 48, y: 33, r: 16, path: '/school/犹太哲学' },
