@@ -9,6 +9,7 @@ import hashlib
 import urllib.request
 import urllib.error
 import re
+import time
 from pathlib import Path
 from typing import Optional
 from datetime import datetime
@@ -196,15 +197,26 @@ def _build_and_cache_keywords():
             print(f"  Keywords cache error: {e}")
     threading.Thread(target=_build, daemon=True).start()
 
-def scan_books() -> list[dict]:
-    """扫描书籍目录 —— 自动切换本地 / OSS / R2 / GitHub"""
+# 内存缓存（避免每次请求都扫描）
+_BOOKS_CACHE_LIST = None
+_BOOKS_CACHE_TIME = 0
+
+def scan_books(force=False) -> list[dict]:
+    """扫描书籍目录 —— 自动切换本地 / OSS / R2 / GitHub（带缓存）"""
+    global _BOOKS_CACHE_LIST, _BOOKS_CACHE_TIME
+    now = time.time()
+    if not force and _BOOKS_CACHE_LIST is not None and (now - _BOOKS_CACHE_TIME) < 300:
+        return _BOOKS_CACHE_LIST
     if config.USE_OSS:
-        return _scan_books_oss()
-    if config.USE_GITHUB:
-        return _scan_books_github()
-    if config.USE_R2:
-        return _scan_books_r2()
-    return _scan_books_local()
+        _BOOKS_CACHE_LIST = _scan_books_oss()
+    elif config.USE_GITHUB:
+        _BOOKS_CACHE_LIST = _scan_books_github()
+    elif config.USE_R2:
+        _BOOKS_CACHE_LIST = _scan_books_r2()
+    else:
+        _BOOKS_CACHE_LIST = _scan_books_local()
+    _BOOKS_CACHE_TIME = now
+    return _BOOKS_CACHE_LIST
 
 
 def _scan_books_oss() -> list[dict]:
