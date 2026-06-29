@@ -36,7 +36,7 @@ export default function EasternPhilosophiesPage() {
         <button onClick={() => navigate(-1)} style={{ position: 'relative', zIndex: 1, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.04em', marginBottom: 32, padding: 0 }}>← 返回</button>
         <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 16px' }}>Eastern Philosophy</p>
         <h1 style={{ position: 'relative', zIndex: 1, fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 400, color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.2, margin: '0 0 20px' }}>东方哲学</h1>
-        <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto' }}>从先秦诸子到当代，二十四个流派，<br />两千五百年不断的思想脉络。</p>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 400, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto' }}>从先秦诸子到当代，二十四个流派，<br />两千五百年不断的思想脉络。</p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
       </section>
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 32px 64px' }}>

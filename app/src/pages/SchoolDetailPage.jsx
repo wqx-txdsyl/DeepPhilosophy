@@ -8386,7 +8386,7 @@ function SchoolDetailPage() {
     '习近平新时代中国特色社会主义思想': { data:XI_JINPING_THOUGHT_DATA, sub:XI_JINPING_THOUGHT_SUB_SCHOOLS, ci:XI_JINPING_THOUGHT_CIHAI, bg:'url(/schools/习近平新时代中国特色社会主义思想.jpg)' },
   '印度哲学': { data:INDIAN_PHILOSOPHY_DATA, sub:INDIAN_PHILOSOPHY_SUB_SCHOOLS, ci:INDIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/印度哲学.jpg)' },
   '日本哲学': { data:JAPANESE_PHILOSOPHY_DATA, sub:JAPANESE_PHILOSOPHY_SUB_SCHOOLS, ci:JAPANESE_PHILOSOPHY_CIHAI, bg:'url(/schools/日本哲学.jpg)' },
-  '伊斯兰哲学': { data:ISLAMIC_PHILOSOPHY_DATA, sub:ISLAMIC_PHILOSOPHY_SUB_SCHOOLS, ci:ISLAMIC_PHILOSOPHY_CIHAI, bg:'url(/schools/default.jpg)' },
+  '伊斯兰哲学': { data:ISLAMIC_PHILOSOPHY_DATA, sub:ISLAMIC_PHILOSOPHY_SUB_SCHOOLS, ci:ISLAMIC_PHILOSOPHY_CIHAI, bg:'url(/schools/伊斯兰哲学.jpg)' },
   '非洲哲学': { data:AFRICAN_PHILOSOPHY_DATA, sub:AFRICAN_PHILOSOPHY_SUB_SCHOOLS, ci:AFRICAN_PHILOSOPHY_CIHAI, bg:'url(/schools/非洲哲学.jpg)' },
   '犹太哲学': { data:JEWISH_PHILOSOPHY_DATA, sub:JEWISH_PHILOSOPHY_SUB_SCHOOLS, ci:JEWISH_PHILOSOPHY_CIHAI, bg:'url(/schools/犹太哲学.jpg)' },
   '波斯哲学': { data:PERSIAN_PHILOSOPHY_DATA, sub:PERSIAN_PHILOSOPHY_SUB_SCHOOLS, ci:PERSIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/波斯哲学.jpg)' },
