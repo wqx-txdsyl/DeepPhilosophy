@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ALL_SCHOOLS = [
   // 公元前30世纪
+  { century:'公元前30世纪', name:'古埃及哲学', region:'世界', desc:'玛阿特——宇宙秩序、真理与正义的永恒法则。' },
   { century:'公元前30世纪', name:'美索不达米亚哲学', region:'世界', desc:'苏美尔智慧文学追问苦难与秩序——人类最早的哲学追问。' },
   // 公元前15世纪
   { century:'公元前15世纪', name:'印度哲学', region:'世界', desc:'《吠陀》《奥义书》为源头，六派哲学追问解脱。' },
@@ -107,6 +108,7 @@ const ALL_SCHOOLS = [
   { century:'20世纪末', name:'中国实证哲学', region:'东方', desc:'大胆假设，小心求证。' },
   { century:'20世纪末', name:'马克思主义哲学的中国化与体系化', region:'东方', desc:'实践标准到理论体系。' },
   { century:'20世纪末', name:'蒙古中亚哲学', region:'世界', desc:'萨满传统与长生天。' },
+  { century:'13世纪', name:'印加哲学', region:'世界', desc:'帕查与艾尼——安第斯的宇宙时空与互惠伦理。' },
   { century:'20世纪末', name:'澳洲原住民哲学', region:'世界', desc:'梦时代——最古老文明的生命智慧。' },
   // 21世纪
   { century:'21世纪', name:'技术哲学', region:'西方', desc:'技术不是中立的工具。' },

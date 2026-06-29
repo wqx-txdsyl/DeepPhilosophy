@@ -22,6 +22,8 @@ const REGIONS = [
   { id: 'slavic', name: '东欧', sub: '东欧斯拉夫哲学', desc: '舍斯托夫、索洛维约夫、俄罗斯宗教哲学。', x: 52, y: 15, r: 22, path: '/school/东欧斯拉夫哲学' },
   // 中东集群(精细化间距)
   { id: 'islam', name: '伊斯兰', sub: '伊斯兰哲学', desc: '百年翻译运动、阿维森纳、苏菲神秘主义。', x: 54, y: 38, r: 26, path: '/school/伊斯兰哲学' },
+  { id: 'egypt', name: '古埃及', sub: '古埃及哲学', desc: '玛阿特——宇宙秩序、真理与正义的永恒法则。', x: 50, y: 42, r: 16, path: '/school/古埃及哲学' },
+  { id: 'inca', name: '印加', sub: '印加哲学', desc: '帕查、艾尼、帕查玛玛——安第斯的大地伦理。', x: 22, y: 64, r: 14, path: '/school/印加哲学' },
   { id: 'mesopotamia', name: '美索不达米亚', sub: '美索不达米亚哲学', desc: '人类最早的哲学追问——吉尔伽美什与智慧文学。', x: 52, y: 36, r: 14, path: '/school/美索不达米亚哲学' },
   { id: 'persia', name: '波斯', sub: '波斯哲学', desc: '琐罗亚斯德、苏菲诗歌、光明与黑暗。', x: 60, y: 34, r: 20, path: '/school/波斯哲学' },
   { id: 'arab', name: '阿拉伯', sub: '阿拉伯哲学', desc: '理性与信仰的调和。', x: 49, y: 40, r: 18, path: '/school/阿拉伯哲学' },
