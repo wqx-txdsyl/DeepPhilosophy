@@ -31,14 +31,14 @@ export default function EpilogueSection({ conclusion, closingQuote }) {
       <div style={{ width: 16, height: 1, background: 'var(--fade)', margin: '0 auto 40px', opacity: 0.3 }} />
       <p style={{ fontSize: 10, color: 'var(--fade)', letterSpacing: '0.2em', fontFamily: FONT.sans, fontWeight: 400, textTransform: 'uppercase' }}>Fin</p>
 
-      <button onClick={() => navigate('/genealogy')} style={{
+      <button onClick={() => navigate(-1)} style={{
         marginTop: 48, background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: FONT.sans, fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.05em',
         transition: 'color 0.25s'
       }}
         onMouseEnter={e => e.currentTarget.style.color = 'var(--ink)'}
         onMouseLeave={e => e.currentTarget.style.color = 'var(--text-dim)'}>
-        &larr; 返回谱系
+        &larr; 返回上一页
       </button>
     </section>
   );
