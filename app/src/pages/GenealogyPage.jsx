@@ -117,12 +117,12 @@ function GenealogyPage() {
       <div style={{ position:'fixed',inset:0,zIndex:0,pointerEvents:'none',opacity:0.012,
         backgroundImage:'url(/schools/old_map_texture.png)',backgroundSize:'cover',backgroundPosition:'center',mixBlendMode:'multiply' }} />
 
-      {/* Layer 3: River of Philosophy — structural backbone, parallax */}
-      <div style={{ position:'fixed',top:0,left:'50%',transform:`translateX(-50%) translateY(${-scrollY*0.06}px)`,
-        width:'30vw',minWidth:300,maxWidth:460,height:'100vh',zIndex:0,pointerEvents:'none' }}>
-        <img src="/schools/哲学之河.png" alt="" style={{ width:'100%',height:'200%',objectFit:'cover',objectPosition:'center top',
-          opacity:0.08, maskImage:'linear-gradient(to right,transparent 0%,black 28%,black 72%,transparent 100%)',
-          WebkitMaskImage:'linear-gradient(to right,transparent 0%,black 28%,black 72%,transparent 100%)' }} />
+      {/* Layer 3: River of Philosophy — full-height, extends with page */}
+      <div style={{ position:'fixed',top:0,bottom:0,left:'50%',transform:`translateX(-50%) translateY(${-scrollY*0.04}px)`,
+        width:'30vw',minWidth:300,maxWidth:460,zIndex:0,pointerEvents:'none' }}>
+        <img src="/schools/哲学之河.png" alt="" style={{ width:'100%',height:'100%',objectFit:'cover',objectPosition:'center top',
+          opacity:0.10, maskImage:'linear-gradient(to right,transparent 0%,black 25%,black 75%,transparent 100%)',
+          WebkitMaskImage:'linear-gradient(to right,transparent 0%,black 25%,black 75%,transparent 100%)' }} />
       </div>
 
       {/* Golden particles */}
