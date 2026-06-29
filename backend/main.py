@@ -1022,6 +1022,33 @@ def scrape_baidu_baike(author_name: str) -> Optional[dict]:
 #   1. get_author_filters() — 第626/631行 (split+countries/schools)
 #   2. list_all_authors() — 第768/772行 (filter matching)
 #   3. AuthorsPage.jsx 前端 — 第88/91行 (client-side filter)
+
+# 历史→今名国家规范化
+COUNTRY_NORM = {
+    "古希腊":"希腊", "古罗马":"意大利", "罗马帝国":"意大利",
+    "普鲁士":"德国", "俄国":"俄罗斯", "苏联":"俄罗斯",
+    "奥匈帝国":"奥地利", "奥斯曼":"土耳其", "波斯":"伊朗",
+    "佛兰德斯":"比利时", "波希米亚":"捷克", "摩拉维亚":"捷克",
+    "苏格兰":"英国", "英格兰":"英国", "威尔士":"英国",
+    "北非":"",  # 太宽泛，不映射
+}
+
+def _norm_country(c):
+    """标准化国家名到一个现代国家名，返回列表（可能多个国家）"""
+    c = c.strip()
+    if not c: return []
+    # 清理括号注释
+    c = re.sub(r'[（(][^)）]*[)）]', '', c).strip()
+    # 拆分子国家
+    results = []
+    for part in re.split(r'[/,、，;；]', c):
+        part = part.strip()
+        if not part: continue
+        mapped = COUNTRY_NORM.get(part, part)
+        if mapped and mapped not in results:
+            results.append(mapped)
+    return results if results else [c]
+
 def _normalize_tag(tag):
     """Merge similar tags into broader categories for filter DISPLAY only.
     Returns a single canonical tag."""
@@ -1078,11 +1105,19 @@ def _normalize_tag(tag):
     return merge_map.get(tag, tag)
 
 def _expand_tags(tag):
-    """Expand a tag for FILTER MATCHING. Each tag maps to itself + all its
-    merged/expanded parents (used by both merge_map and multi_map logic)."""
+    """Expand a tag for FILTER MATCHING. Also splits concatenated tags."""
     tag = tag.strip()
-    # Start with the tag itself
+    # Start with the tag itself and any split parts
     result = [tag]
+    # Split concatenated tags: "存在主义女性主义" -> ["存在主义","女性主义"]
+    for kw in ['主义','哲学','学派','理论','思想']:
+        idx = tag.find(kw)
+        if idx > 0 and idx + len(kw) < len(tag):
+            part1 = tag[:idx+len(kw)]
+            part2 = tag[idx+len(kw):]
+            if part1 not in result: result.append(part1)
+            if part2 not in result: result.append(part2)
+
     # Add the display-merged parent (from merge_map)
     display_parent = _normalize_tag(tag)
     if display_parent != tag and display_parent not in result:
@@ -1369,7 +1404,7 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
 
     result = []
     for name, info in authors_map.items():
-        centuries = _era_to_centuries(info.get("era", "")) if info.get("era") else []
+        centuries = _era_to_centuries(info.get("era", "")) if info.get("era") else []  # already correct
         entry = {
             "name": name,
             "region": info["region"],

@@ -176,7 +176,7 @@ function GenealogyPage() {
           lineHeight: 1.8, maxWidth: 560,
         }}>
           从公元前三十世纪至二十一世纪<br />
-          八十四个流派，一部横跨五千年的人类思想史长卷
+          八十六个流派，一部横跨五千年的人类思想史长卷
         </p>
         <button onClick={() => {
           document.getElementById('river-start')?.scrollIntoView({ behavior: 'smooth' });

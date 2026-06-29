@@ -70,7 +70,7 @@ function SettingsPage() {
             <strong>DeepPhilosophy</strong> v2.0.0<br />
             开发者: @txdsyl_<br />
             哲学爱好者知识平台<br />
-            342 本哲学著作 · 353 位哲学家 · 84 个流派<br />
+            342 本哲学著作 · 353 位哲学家 · 88 个流派<br />
             答案之书 · PHTI 哲学人格测试 · AI 毒舌锐评
           </p>
         </div>

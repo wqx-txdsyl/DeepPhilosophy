@@ -65,8 +65,23 @@ function WorldMap() {
             borderRadius: '50%',
             zIndex: 1,
           }}
-        />
+        >
+          {/* Golden pulse dot */}
+          <div style={{
+            position: 'absolute', left: '50%', top: '50%',
+            width: 6, height: 6, transform: 'translate(-50%, -50%)',
+            background: '#C4956A', borderRadius: '50%',
+            boxShadow: '0 0 6px 2px rgba(196,149,106,0.6)',
+            animation: 'pulse-dot 2s ease-in-out infinite',
+          }} />
+        </div>
       ))}
+      <style>{`
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 0.4; transform: translate(-50%,-50%) scale(1); }
+          50% { opacity: 1; transform: translate(-50%,-50%) scale(1.8); }
+        }
+      `}</style>
 
       {/* 悬浮卡片 — 磨砂玻璃 */}
       {hover && (

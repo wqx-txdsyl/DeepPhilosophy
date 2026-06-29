@@ -336,7 +336,7 @@ function HomePage() {
       {/* ══════════ NUMBERS ══════════ */}
       <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
-          {[{ num: '305', label: '哲学著作' }, { num: '353', label: '哲学家' }, { num: '84', label: '哲学流派' }].map(s => (
+          {[{ num: '305', label: '哲学著作' }, { num: '353', label: '哲学家' }, { num: '88', label: '哲学流派' }].map(s => (
             <div key={s.label}>
               <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
