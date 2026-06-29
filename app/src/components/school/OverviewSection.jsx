@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { FONT, SPACE, WIDTH } from './tokens';
 
 export default function OverviewSection({ overview, subSchools = [] }) {
+  const navigate = useNavigate();
   return (
     <section style={{ padding: `${SPACE.xxxl}px ${SPACE.xl}px`, maxWidth: WIDTH.prose, margin: '0 auto' }}>
       {/* Editorial heading — numbered chapter feel */}
@@ -18,8 +20,8 @@ export default function OverviewSection({ overview, subSchools = [] }) {
           <h3 style={{ fontSize: 18, fontWeight: 400, color: 'var(--ink)', marginBottom: SPACE.lg, fontFamily: FONT.serif, letterSpacing: '0.04em' }}>下属流派</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: SPACE.md }}>
             {subSchools.map(sub => (
-              <div key={sub.name} style={{
-                padding: '20px 0', borderBottom: '1px solid var(--border)', transition: 'border-color 0.3s', cursor: 'default'
+              <div key={sub.name} onClick={() => navigate('/school/' + encodeURIComponent(sub.name))} style={{
+                padding: '20px 0', borderBottom: '1px solid var(--border)', transition: 'border-color 0.3s', cursor: 'pointer'
               }}
                 onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--ochre)'}
                 onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'var(--border)'}>

@@ -9225,25 +9225,25 @@ function SchoolDetailPage() {
   '旧民主主义': { data:OLD_DEMOCRACY_DATA, sub:OLD_DEMOCRACY_SUB_SCHOOLS, ci:OLD_DEMOCRACY_CIHAI, bg:'url(/schools/旧民主主义.jpg)' },
 
   '新民主主义': { data:NEW_DEMOCRACY_DATA, sub:NEW_DEMOCRACY_SUB_SCHOOLS, ci:NEW_DEMOCRACY_CIHAI, bg:'url(/schools/新民主主义.jpg)' },
-  '韩国哲学': { data:韩国哲学_DATA, sub:{}, ci:[], bg:'url(/schools/韩国哲学.jpg)' },
-  '西藏哲学': { data:西藏哲学_DATA, sub:{}, ci:[], bg:'url(/schools/西藏哲学.jpg)' },
-  '北欧哲学': { data:北欧哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北欧哲学.jpg)' },
-  '玛雅哲学': { data:玛雅哲学_DATA, sub:{}, ci:[], bg:'url(/schools/玛雅哲学.jpg)' },
-  '阿兹特克哲学': { data:阿兹特克哲学_DATA, sub:{}, ci:[], bg:'url(/schools/阿兹特克哲学.jpg)' },
-  '澳洲原住民哲学': { data:澳洲原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/澳洲原住民哲学.jpg)' },
-  '蒙古中亚哲学': { data:蒙古中亚哲学_DATA, sub:{}, ci:[], bg:'url(/schools/蒙古中亚哲学.jpg)' },
-  '东欧斯拉夫哲学': { data:东欧斯拉夫哲学_DATA, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.jpg)' },
-  '北美哲学': { data:北美哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北美哲学.jpg)' },
+  '韩国哲学': { data:韩国哲学_DATA, sub:{}, ci:[], bg:'url(/schools/韩国哲学.png)' },
+  '西藏哲学': { data:西藏哲学_DATA, sub:{}, ci:[], bg:'url(/schools/西藏哲学.png)' },
+  '北欧哲学': { data:北欧哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北欧哲学.png)' },
+  '玛雅哲学': { data:玛雅哲学_DATA, sub:{}, ci:[], bg:'url(/schools/玛雅哲学.png)' },
+  '阿兹特克哲学': { data:阿兹特克哲学_DATA, sub:{}, ci:[], bg:'url(/schools/阿兹特克哲学.png)' },
+  '澳洲原住民哲学': { data:澳洲原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/澳洲原住民哲学.png)' },
+  '蒙古中亚哲学': { data:蒙古中亚哲学_DATA, sub:{}, ci:[], bg:'url(/schools/蒙古中亚哲学.png)' },
+  '东欧斯拉夫哲学': { data:东欧斯拉夫哲学_DATA, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.png)' },
+  '北美哲学': { data:北美哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北美哲学.png)' },
   '美索不达米亚哲学': { data:美索不达米亚哲学_DATA, sub:{}, ci:[], bg:'url(/schools/美索不达米亚哲学.jpg)' },
-  '韩国哲学': { data:韩国哲学_DATA, sub:{}, ci:[], bg:'url(/schools/韩国哲学.jpg)' },
-  '西藏哲学': { data:西藏哲学_DATA, sub:{}, ci:[], bg:'url(/schools/西藏哲学.jpg)' },
-  '北欧哲学': { data:北欧哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北欧哲学.jpg)' },
-  '玛雅哲学': { data:玛雅哲学_DATA, sub:{}, ci:[], bg:'url(/schools/玛雅哲学.jpg)' },
-  '阿兹特克哲学': { data:阿兹特克哲学_DATA, sub:{}, ci:[], bg:'url(/schools/阿兹特克哲学.jpg)' },
-  '澳洲原住民哲学': { data:澳洲原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/澳洲原住民哲学.jpg)' },
-  '蒙古中亚哲学': { data:蒙古中亚哲学_DATA, sub:{}, ci:[], bg:'url(/schools/蒙古中亚哲学.jpg)' },
-  '东欧斯拉夫哲学': { data:东欧斯拉夫哲学_DATA, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.jpg)' },
-  '北美哲学': { data:北美哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北美哲学.jpg)' },
+  '韩国哲学': { data:韩国哲学_DATA, sub:{}, ci:[], bg:'url(/schools/韩国哲学.png)' },
+  '西藏哲学': { data:西藏哲学_DATA, sub:{}, ci:[], bg:'url(/schools/西藏哲学.png)' },
+  '北欧哲学': { data:北欧哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北欧哲学.png)' },
+  '玛雅哲学': { data:玛雅哲学_DATA, sub:{}, ci:[], bg:'url(/schools/玛雅哲学.png)' },
+  '阿兹特克哲学': { data:阿兹特克哲学_DATA, sub:{}, ci:[], bg:'url(/schools/阿兹特克哲学.png)' },
+  '澳洲原住民哲学': { data:澳洲原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/澳洲原住民哲学.png)' },
+  '蒙古中亚哲学': { data:蒙古中亚哲学_DATA, sub:{}, ci:[], bg:'url(/schools/蒙古中亚哲学.png)' },
+  '东欧斯拉夫哲学': { data:东欧斯拉夫哲学_DATA, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.png)' },
+  '北美哲学': { data:北美哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北美哲学.png)' },
   '美索不达米亚哲学': { data:美索不达米亚哲学_DATA, sub:{}, ci:[], bg:'url(/schools/美索不达米亚哲学.jpg)' },
 };
   const m = SCHOOL_MAP[name] || {};
@@ -9271,7 +9271,7 @@ function SchoolDetailPage() {
     }
     return sc;
   })();
-  const cihai = m.ci || GREEK_CIHAI;
+  const cihai = (m.ci && m.ci.length > 0) ? m.ci : (data.cihai || GREEK_CIHAI);
   const heroImage = m.bg || 'url(/schools/default.jpg)';
   const [hovered, setHovered] = useState(null);
   
