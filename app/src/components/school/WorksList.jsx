@@ -24,7 +24,7 @@ export default function WorksList({ works = [] }) {
             onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'var(--border)'}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
               <h4 style={{ fontSize: 17, fontWeight: 400, fontStyle: 'italic', color: 'var(--ink)', margin: 0, fontFamily: FONT.serif }}>
-                《{work.title}》
+                《{String(work.title).replace(/^《|》$/g, '')}》
               </h4>
               <span style={{ fontSize: 12, color: 'var(--fade)', fontFamily: FONT.sans }}>{work.author}{work.era ? ' · ' + work.era : ''}</span>
             </div>

@@ -9252,9 +9252,25 @@ function SchoolDetailPage() {
     useEffect(() => { if (m._json) { setJsonError(false); fetch('/schools/' + m._json).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(setDynamicData).catch(()=>setJsonError(true)); } }, [name]);
   const data = dynamicData || m.data || GREEK_DATA;
   const subSchools = m.sub || (m.data ? GREEK_SUB_SCHOOLS : {});
-  // Auto-generate SUB_COLORS for dynamic schools (JSON-loaded)
-  const subColors = Object.keys(subSchools).length > 0 ? 
-    (() => { const c = {}; Object.keys(subSchools).forEach((k,i) => { const t=i/Math.max(1,Object.keys(subSchools).length-1); const r=Math.round(150+t*80); const g=Math.round(100+t*80); const b=Math.round(180-t*80); c[k]='#'+[r,g,b].map(n=>n.toString(16).padStart(2,'0')).join(''); }); return c; })() : {};
+  // Auto-generate subColors from thinkers' sub field (for schools with sub:{})
+  const subColors = (() => {
+    const sc = {};
+    if (data.thinkers) {
+      data.thinkers.forEach(t => {
+        if (t.sub) {
+          t.sub.split(/[/,，、;；]/).forEach(s => {
+            s = s.trim().replace(/[（(].*[)）]/g, '');
+            if (s && !sc[s]) {
+              const hash = s.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+              const h = (hash * 137) % 360;
+              sc[s] = 'hsl(' + h + ',50%,55%)';
+            }
+          });
+        }
+      });
+    }
+    return sc;
+  })();
   const cihai = m.ci || GREEK_CIHAI;
   const heroImage = m.bg || 'url(/schools/default.jpg)';
   const [hovered, setHovered] = useState(null);
