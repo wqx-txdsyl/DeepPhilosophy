@@ -82,6 +82,34 @@ const 东欧斯拉夫哲学_DATA = {
   closingQuote: "人不是偶然被抛入世界的存在，而是背负着自由与责任走向深渊的朝圣者。",
 };
 
+const 前苏格拉底哲学_DATA = {
+  name: "前苏格拉底哲学",
+  subtitle: "从神话到理性的第一次飞跃",
+  overview: "前苏格拉底哲学指公元前7世纪至前5世纪活跃于古希腊的早期哲学思潮，以理性思辨取代神话解释，追问万物本原与宇宙秩序。",
+  quote: "万物的本原是水。",
+  quoteAuthor: "泰勒斯",
+  timeline: [
+    {year: "约前624", event: "泰勒斯诞生", detail: "米利都学派创立者，提出水是万物本原。", type: "birth"},
+  ],
+  thinkers: [
+    {name: "泰勒斯", sub: "米利都学派", era: "约前624-前546", influence: "10", key: "水是万物的本原", works: "['论自然[已佚失]']"},
+  ],
+  relations: [
+    {from: "泰勒斯", to: "阿那克西曼德", label: "师生"},
+  ],
+  cihai: [
+    {word: "Arche(本原)", def: "万物所从出的终极元素。", source: "亚里士多德《形而上学》"},
+  ],
+  quotes: [
+    {text: "万物的本原是水。", author: "泰勒斯", exp: "西方哲学第一个命题。"},
+  ],
+  works: [
+    {title: "论自然", author: "泰勒斯", era: "约前6世纪", desc: "最早自然哲学著作。"},
+  ],
+  conclusion: "前苏格拉底哲学开启了人类理性追问世界的最初尝试。",
+  closingQuote: "哲学始于惊异。",
+};
+
 const 北欧哲学_DATA = {
   name: "北欧哲学",
   subtitle: "极光下的哲思：北欧思想的独特传统",
@@ -827,6 +855,7 @@ const 韩国哲学_DATA = {
 
 // SCHOOL_MAP entries to replace _json versions:
   '东欧斯拉夫哲学': { data:东欧斯拉夫哲学_DATA, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.jpg)' },
+  '前苏格拉底哲学': { data:前苏格拉底哲学_DATA, sub:{}, ci:[], bg:'url(/schools/前苏格拉底哲学.jpg)' },
   '北欧哲学': { data:北欧哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北欧哲学.jpg)' },
   '北美哲学': { data:北美哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北美哲学.jpg)' },
   '澳洲原住民哲学': { data:澳洲原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/澳洲原住民哲学.jpg)' },

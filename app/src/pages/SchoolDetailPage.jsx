@@ -853,6 +853,22 @@ const 韩国哲学_DATA = {
   closingQuote: "理气互发，心统性情；天道在兹，人乃天。",
 };
 
+const 前苏格拉底哲学_DATA = {
+  name: "前苏格拉底哲学",
+  subtitle: "从神话到理性的第一次飞跃",
+  overview: "前苏格拉底哲学指公元前7世纪至前5世纪活跃于古希腊的早期哲学思潮，以理性思辨取代神话解释，追问万物本原与宇宙秩序。",
+  quote: "万物的本原是水。",
+  quoteAuthor: "泰勒斯",
+  timeline: [{"year": "约前624", "event": "泰勒斯诞生", "detail": "米利都学派创立者，提出水是万物本原。", "type": "birth"}],
+  thinkers: [{"name": "泰勒斯", "sub": "米利都学派", "era": "约前624-前546", "influence": 10, "key": "水是万物的本原", "works": ["论自然[已佚失]"]}],
+  relations: [{"from": "泰勒斯", "to": "阿那克西曼德", "label": "师生"}],
+  cihai: [{"word": "Arche(本原)", "def": "万物所从出的终极元素。", "source": "亚里士多德《形而上学》"}],
+  quotes: [{"text": "万物的本原是水。", "author": "泰勒斯", "exp": "西方哲学第一个命题。"}],
+  works: [{"title": "论自然", "author": "泰勒斯", "era": "约前6世纪", "desc": "最早自然哲学著作。"}],
+  conclusion: "前苏格拉底哲学开启了人类理性追问世界的最初尝试。",
+  closingQuote: "哲学始于惊异。",
+};
+
 const GREEK_DATA = {
   name: '古希腊哲学',
   quote: '"认识你自己。"',
@@ -1461,6 +1477,7 @@ const SUB_COLORS = {
 
 // —— 古希腊哲学下属流派卡片 ——
 const GREEK_SUB_SCHOOLS = [
+  { name:'前苏格拉底哲学', era:'前7世纪-前5世纪', desc:'西方哲学的最初阶段，以自然哲学为核心，追问万物的本原（arche）与宇宙的秩序（kosmos）。从泰勒斯的"水"到德谟克利特的"原子"，从赫拉克利特的"流变"到巴门尼德的"存在"，在神话与理性之间开辟了人类第一次哲学革命。' },
   { name:'米利都学派', era:'前6世纪', desc:'西方哲学的第一个学派，以自然哲学追问万物的物质本原（arche）。泰勒斯提出"水"，阿那克西曼德提出"无定者"，阿那克西美尼提出"气"，开创了以理性而非神话解释自然的传统。' },
   { name:'埃利亚学派', era:'前5世纪', desc:'巴门尼德及其追随者建立的思辨学派，首次区分"存在"与"非存在"，坚持"存在者存在，非存在者不存在"的逻辑原则。以严格的逻辑推理论证世界的永恒不变性，否定感官经验的有效性，奠定了西方形而上学的理性主义基础。' },
   { name:'智者学派', era:'前5世纪', desc:'以普罗泰戈拉和高尔吉亚为代表的职业教师群体，宣称"人是万物的尺度"，强调修辞术与辩论技巧，将哲学关注从自然哲学转向人与社会。他们对传统宗教与道德持怀疑态度，为希腊民主政治提供教育支撑。' },
@@ -9156,7 +9173,8 @@ function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
     const SCHOOL_MAP = {
-    '古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/古希腊哲学.jpg)' },
+      '前苏格拉底哲学': { data:前苏格拉底哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古希腊哲学.jpg)' },
+'古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/古希腊哲学.jpg)' },
     '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/教父哲学.jpg)' },
     '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/经院哲学.jpg)' },
     '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/理性主义.jpg)' },
@@ -9493,6 +9511,7 @@ const ENG_NAMES = {
   '东欧斯拉夫哲学': 'EASTERN EUROPEAN & SLAVIC PHILOSOPHY',
   '北美哲学': 'NORTH AMERICAN PHILOSOPHY',
   '美索不达米亚哲学': 'MESOPOTAMIAN PHILOSOPHY',
+  '前苏格拉底哲学': 'PRE-SOCRATIC PHILOSOPHY',
 };
 
 
