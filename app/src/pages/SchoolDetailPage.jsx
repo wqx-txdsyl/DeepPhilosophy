@@ -8424,7 +8424,7 @@ function SchoolDetailPage() {
   const [dynamicData, setDynamicData] = useState(null);
   const [jsonError, setJsonError] = useState(false);
   useEffect(() => { if (m._json) { setJsonError(false); fetch('/schools/' + m._json).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(setDynamicData).catch(()=>setJsonError(true)); } }, [name]);
-  const data = dynamicData || m.data || (m._json ? null : GREEK_DATA);
+  const data = dynamicData || m.data || GREEK_DATA;
   if (!data) return <div style={{padding:'120px 40px',textAlign:'center'}}>
     <p style={{fontSize:36}}>🕯️</p>
     <p style={{fontSize:16,color:'var(--text-dim)'}}>{jsonError ? '数据加载失败' : '正在加载流派数据...'}</p>
