@@ -5,18 +5,34 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const REGIONS = [
-  { id: 'china', name: '中国', sub: '东方哲学', desc: '儒道墨法至当代，两千五百年不断的思想脉络。', x: 79, y: 28, r: 45, path: '/eastern-philosophies' },
-  { id: 'japan', name: '日本', sub: '日本哲学', desc: '禅宗、京都学派、西田几多郎的无的哲学。', x: 91, y: 22, r: 25, path: '/school/日本哲学' },
-  { id: 'india', name: '印度', sub: '印度哲学', desc: '吠陀、奥义书、佛教起源、六派哲学。', x: 65, y: 47, r: 35, path: '/school/印度哲学' },
-  { id: 'europe', name: '欧洲', sub: '西方哲学', desc: '从古希腊到后现代，43流派的宏伟思想史。', x: 42, y: 23, r: 55, path: '/western-philosophies' },
-  { id: 'islam', name: '中东', sub: '伊斯兰哲学', desc: '百年翻译运动、阿维森纳、苏菲神秘主义。', x: 55, y: 38, r: 30, path: '/school/伊斯兰哲学' },
-  { id: 'africa', name: '非洲', sub: '非洲哲学', desc: '口头传统、社群伦理、后殖民批判思想。', x: 46, y: 59, r: 50, path: '/school/非洲哲学' },
-  { id: 'latin', name: '拉丁美洲', sub: '拉丁美洲哲学', desc: '解放神学、混血意识、魔幻现实主义。', x: 17, y: 59, r: 40, path: '/school/拉丁美洲哲学' },
-  { id: 'seasia', name: '东南亚', sub: '东南亚哲学', desc: '上座部佛教与本土智慧的交融。', x: 77, y: 53, r: 28, path: '/school/东南亚哲学' },
-  { id: 'na', name: '北美', sub: '实用主义', desc: '皮尔士、詹姆斯、杜威——真理即有用。', x: 12, y: 27, r: 30, path: '/school/实用主义' },
-  { id: 'jewish', name: '犹太', sub: '犹太哲学', desc: '塔木德传统、迈蒙尼德、列维纳斯。', x: 52, y: 31, r: 22, path: '/school/犹太哲学' },
-  { id: 'persia', name: '波斯', sub: '波斯哲学', desc: '琐罗亚斯德、苏菲诗歌、光明与黑暗。', x: 58, y: 33, r: 25, path: '/school/波斯哲学' },
-  { id: 'arab', name: '阿拉伯', sub: '阿拉伯哲学', desc: '理性与信仰的调和，百年翻译运动。', x: 50, y: 35, r: 22, path: '/school/阿拉伯哲学' },
+  // 东亚
+  { id: 'china', name: '中国', sub: '东方哲学', desc: '儒道墨法至当代，24流派。', x: 79, y: 24, r: 45, path: '/eastern-philosophies' },
+  { id: 'japan', name: '日本', sub: '日本哲学', desc: '禅宗、京都学派、西田几多郎的无的哲学。', x: 92, y: 20, r: 22, path: '/school/日本哲学' },
+  { id: 'korea', name: '韩国', sub: '韩国哲学', desc: '性理学、实学、东学、主体思想。', x: 87, y: 22, r: 18, path: '/school/韩国哲学' },
+  // 南亚
+  { id: 'india', name: '印度', sub: '印度哲学', desc: '吠陀、奥义书、佛教起源、六派哲学。', x: 65, y: 44, r: 32, path: '/school/印度哲学' },
+  { id: 'tibet', name: '西藏', sub: '西藏哲学', desc: '藏传佛教中观应成派、宗喀巴、密宗。', x: 72, y: 35, r: 18, path: '/school/西藏哲学' },
+  { id: 'seasia', name: '东南亚', sub: '东南亚哲学', desc: '上座部佛教与本土智慧的交融。', x: 80, y: 50, r: 24, path: '/school/东南亚哲学' },
+  // 中亚/蒙古
+  { id: 'mongol', name: '蒙古/中亚', sub: '蒙古中亚哲学', desc: '萨满传统、长生天、游牧智慧。', x: 70, y: 30, r: 24, path: '/school/蒙古中亚哲学' },
+  // 欧洲
+  { id: 'europe', name: '欧洲', sub: '西方哲学', desc: '从古希腊到后现代，43流派。', x: 40, y: 20, r: 50, path: '/western-philosophies' },
+  { id: 'nordic', name: '北欧', sub: '北欧哲学', desc: '克尔凯郭尔的存在主义源头、易卜生。', x: 45, y: 10, r: 18, path: '/school/北欧哲学' },
+  { id: 'slavic', name: '东欧', sub: '东欧斯拉夫哲学', desc: '舍斯托夫、索洛维约夫、俄罗斯宗教哲学。', x: 52, y: 15, r: 22, path: '/school/东欧斯拉夫哲学' },
+  // 中东集群(精细化间距)
+  { id: 'islam', name: '伊斯兰', sub: '伊斯兰哲学', desc: '百年翻译运动、阿维森纳、苏菲神秘主义。', x: 54, y: 38, r: 26, path: '/school/伊斯兰哲学' },
+  { id: 'persia', name: '波斯', sub: '波斯哲学', desc: '琐罗亚斯德、苏菲诗歌、光明与黑暗。', x: 60, y: 34, r: 20, path: '/school/波斯哲学' },
+  { id: 'arab', name: '阿拉伯', sub: '阿拉伯哲学', desc: '理性与信仰的调和。', x: 49, y: 40, r: 18, path: '/school/阿拉伯哲学' },
+  { id: 'jewish', name: '犹太', sub: '犹太哲学', desc: '塔木德传统、迈蒙尼德、列维纳斯。', x: 48, y: 33, r: 16, path: '/school/犹太哲学' },
+  // 非洲
+  { id: 'africa', name: '非洲', sub: '非洲哲学', desc: '口头传统、社群伦理、后殖民批判。', x: 44, y: 55, r: 45, path: '/school/非洲哲学' },
+  // 美洲
+  { id: 'na', name: '北美', sub: '北美哲学', desc: '实用主义、超验主义、过程哲学。', x: 12, y: 24, r: 28, path: '/school/北美哲学' },
+  { id: 'latin', name: '拉丁美洲', sub: '拉丁美洲哲学', desc: '解放神学、混血意识、魔幻现实主义。', x: 17, y: 55, r: 36, path: '/school/拉丁美洲哲学' },
+  { id: 'maya', name: '玛雅', sub: '玛雅哲学', desc: '波波尔·乌、时间循环、玉米人。', x: 15, y: 48, r: 16, path: '/school/玛雅哲学' },
+  { id: 'aztec', name: '阿兹特克', sub: '阿兹特克哲学', desc: '宇宙论、献祭辩证法、第五太阳纪。', x: 14, y: 44, r: 16, path: '/school/阿兹特克哲学' },
+  // 大洋洲
+  { id: 'australia', name: '澳洲', sub: '澳洲原住民哲学', desc: 'Dreamtime、歌线、土地伦理。', x: 82, y: 62, r: 22, path: '/school/澳洲原住民哲学' },
 ];
 
 function WorldMap() {
