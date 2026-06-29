@@ -134,17 +134,11 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
                 onMouseEnter={() => setHovered(t.name)}
                 onMouseLeave={() => setHovered(null)}>
 
-                {/* Pulse ring for selected */}
-                {selected === t.name && (
-                  <circle cx={t._x} cy={t._y} r={baseSize + 16} fill="none" stroke={color} strokeWidth="1" opacity="0.25"
-                    style={{ animation: 'pulse 2s ease-out infinite' }} />
-                )}
-
-                {/* Main circle */}
-                <circle cx={t._x} cy={t._y} r={isFoc ? baseSize * 1.2 : baseSize}
+                {/* Main circle — slight glow on selected */}
+                <circle cx={t._x} cy={t._y} r={isFoc ? baseSize * 1.15 : baseSize}
                   fill="var(--bone)" stroke={color}
-                  strokeWidth={isFoc ? 2.2 : (t.influence >= 9 ? 1.8 : 1.2)}
-                  filter={isFoc ? `drop-shadow(0 0 8px ${color}60)` : 'none'}
+                  strokeWidth={isFoc ? 2.5 : (t.influence >= 9 ? 1.8 : 1.2)}
+                  filter={isFoc ? `drop-shadow(0 0 6px ${color}40)` : 'none'}
                   style={{ transition: 'all 0.4s cubic-bezier(0.22,1,0.36,1)' }} />
 
                 {/* Initial */}
