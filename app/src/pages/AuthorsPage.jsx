@@ -136,7 +136,7 @@ function AuthorsPage() {
       const normCountries = countries.map(c => cntMap[c] || c);
       return matchTags.includes(tag) ||
              countries.includes(tag) || normCountries.includes(tag) ||
-             (a.century || '') === tag || (a.era || '') === tag;
+             (a.centuries || []).includes(tag) || (a.era || '') === tag;
     });
   }
 
