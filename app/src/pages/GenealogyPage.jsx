@@ -1,7 +1,7 @@
 /**
- * 哲学之河 V4 — Collage Museum
- * School images as backgrounds. Cards = stickers pasted on.
- * Two intertwined curves rotate with scroll.
+ * 哲学之河 V5 — DNA Helix Timeline + Collage Museum
+ * Two intertwined waves. Scroll reveals second wave, then dots, then schools.
+ * Background: full terrain collage + school images.
  */
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -105,9 +105,11 @@ const ALL_SCHOOLS = [
 ];
 
 const REGION_COLORS = { '西方': '#917647', '东方': '#3A5A7C', '世界': '#5A8A5A' };
-
-// Pre-compute rotation angles per exhibit (deterministic pseudo-random, stable across renders)
-const ROTATIONS = ALL_SCHOOLS.map((_, i) => ((i * 7 + 3) % 5 - 2) * 0.8); // -1.6 to +1.6 deg
+const ROTS = ALL_SCHOOLS.map((_, i) => ((i * 7 + 3) % 5 - 2) * 0.8);
+const SCHOOL_IMG_EXT = (name) => {
+  const jpgs = new Set(['凯尔特哲学','原住民哲学','古希伯来哲学','罗马哲学','拜占庭哲学','解放哲学','后殖民哲学','环境哲学','解构主义','黑人哲学','古希腊哲学']);
+  return jpgs.has(name) ? '.jpg' : '.png';
+};
 
 const ERAS = [
   { name:'Ancient World', title:'远古文明', range:'公元前30世纪 — 公元前10世纪', era:'era_ancient' },
@@ -117,263 +119,216 @@ const ERAS = [
   { name:'Modern Philosophy', title:'现代哲学', range:'19世纪 — 20世纪中', era:'era_modern' },
   { name:'Contemporary', title:'当代', range:'20世纪末 — 21世纪', era:'era_modern' },
 ];
-
-function getEraIndex(i) {
+function getEraIdx(i) {
   const c = ALL_SCHOOLS[i].century;
-  if (c.includes('公元前30') || c.includes('公元前15') || c.includes('公元前10')) return 0;
-  if (c.includes('公元前6') || c.includes('公元前5') || c.includes('公元前4') || c.includes('公元前2') || c.includes('公元前1') || c === '3世纪' || c === '4世纪') return 1;
-  if (c === '6世纪' || c === '7世纪' || c === '8世纪' || c === '11世纪' || c === '13世纪' || c === '15世纪' || c === '16世纪') return 2;
-  if (c === '17世纪' || c === '18世纪') return 3;
-  if (c.includes('19世纪') || c.includes('20世纪初') || c === '20世纪' || c.includes('20世纪中')) return 4;
+  if (/公元前(30|15|10)/.test(c)) return 0;
+  if (/公元前[65421]|^[34]世纪/.test(c)) return 1;
+  if (/^[678]世纪$|^1[1-6]世纪$/.test(c)) return 2;
+  if (/^1[78]世纪$/.test(c)) return 3;
+  if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4;
   return 5;
 }
 
-// --- Sticker Exhibit ---
-function Exhibit({ school, index, isLeft, isActive, onClick, onHover, onLeave }) {
-  const color = REGION_COLORS[school.region];
-  const rot = ROTATIONS[index];
-  const tierW = school.tier === 'A' ? 400 : school.tier === 'B' ? 320 : 260;
-  const tierF = school.tier === 'A' ? 20 : school.tier === 'B' ? 15 : 13;
-  const imgExt = school.name.includes('凯尔特') || school.name.includes('原住民') || school.name.includes('希伯来') || school.name.includes('罗马') || school.name.includes('拜占庭') || school.name.includes('解放') || school.name.includes('后殖民') || school.name.includes('环境') || school.name.includes('解构') || school.name.includes('黑人') || school.name.includes('希腊') ? '.jpg' : '.png';
+// ─── Exhibit Card ───
+function Exhibit({ school, i, side, active, onClick, onHover, onLeave, visible }) {
+  const c = REGION_COLORS[school.region];
+  const rot = ROTS[i];
+  const w = school.tier === 'A' ? 400 : school.tier === 'B' ? 320 : 260;
+  const fs = school.tier === 'A' ? 20 : school.tier === 'B' ? 15 : 13;
+  const ext = SCHOOL_IMG_EXT(school.name);
 
   return (
     <div style={{
-      display:'flex', justifyContent: isLeft ? 'flex-start' : 'flex-end',
+      display:'flex', justifyContent: side === 'left' ? 'flex-start' : 'flex-end',
       marginBottom: school.tier === 'A' ? 72 : school.tier === 'B' ? 48 : 32,
-      paddingLeft: isLeft ? '2%' : 'calc(50% + 40px)',
-      paddingRight: isLeft ? 'calc(50% + 40px)' : '2%',
+      paddingLeft: side === 'left' ? '2%' : 'calc(50% + 40px)',
+      paddingRight: side === 'left' ? 'calc(50% + 40px)' : '2%',
       position:'relative',
+      opacity: visible ? 1 : 0,
+      transform: visible ? 'translateY(0)' : 'translateY(24px)',
+      transition: 'opacity 700ms ease, transform 700ms ease',
     }}>
-      {/* Central timeline dot — small, subtle */}
-      <div style={{
-        position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%)',
-        width:5, height:5, borderRadius:'50%', background:color, opacity:0.3, zIndex:2
-      }} />
-
-      {/* Sticker card with school image background */}
-      <div
-        onClick={() => onClick(school.name)}
-        onMouseEnter={() => onHover(index)}
-        onMouseLeave={onLeave}
+      <div onClick={() => onClick(school.name)} onMouseEnter={() => onHover(i)} onMouseLeave={onLeave}
         style={{
-          maxWidth: tierW, width:'100%', cursor:'pointer',
-          borderRadius: 12,
-          transform: isActive ? `rotate(${rot * 0.3}deg) scale(1.02)` : `rotate(${rot}deg)`,
-          transition: 'all 450ms cubic-bezier(0.33, 0, 0.1, 1)',
-          position:'relative', zIndex: isActive ? 5 : 1,
-          boxShadow: isActive
-            ? '0 4px 16px rgba(42,31,26,0.12), 0 8px 32px rgba(42,31,26,0.06)'
-            : '0 1px 4px rgba(42,31,26,0.06)',
+          maxWidth:w, width:'100%', cursor:'pointer', borderRadius:12,
+          transform: active ? `rotate(${rot*0.3}deg) scale(1.02)` : `rotate(${rot}deg)`,
+          transition:'all 450ms cubic-bezier(0.33,0,0.1,1)',
+          position:'relative', zIndex: active ? 5 : 1,
+          boxShadow: active ? '0 4px 16px rgba(42,31,26,0.14), 0 8px 32px rgba(42,31,26,0.06)'
+                          : '0 1px 4px rgba(42,31,26,0.06)',
           overflow:'hidden',
-        }}
-      >
-        {/* School image background — softened, fully visible */}
-        <div style={{
-          position:'absolute', inset:0,
-          backgroundImage:`url(/schools/${encodeURI(school.name)}${imgExt})`,
-          backgroundSize:'cover', backgroundPosition:'center',
-          opacity:0.25, filter:'blur(0.5px)',
-        }} />
-
-        {/* Text overlay on semi-transparent paper */}
-        <div style={{
-          position:'relative',
-          background: 'linear-gradient(180deg, rgba(252,250,246,0.88) 0%, rgba(248,244,237,0.92) 100%)',
-          padding: school.tier === 'A' ? '22px 26px' : '14px 20px',
         }}>
-          <div style={{
-            fontSize:8, fontWeight:400, letterSpacing:'0.16em', textTransform:'uppercase',
-            color, marginBottom: school.tier === 'A' ? 8 : 5,
-            fontFamily:'var(--font-sans)', opacity:0.7
-          }}>
-            {school.region === '东方' ? 'Eastern' : school.region === '西方' ? 'Western' : 'World'}  ·  {school.century}
-          </div>
-          <h3 style={{
-            fontSize:tierF, fontWeight:500, color:'#2A1F1A', margin:'0 0 4px',
-            letterSpacing:'0.02em', lineHeight:1.3,
-            fontFamily:'"Playfair Display", "PingFang SC", serif'
-          }}>{school.name}</h3>
-          <p style={{
-            fontSize:11, fontWeight:300, color:'#7A6E64', lineHeight:1.7, margin:0,
-            fontFamily:'var(--font-sans)'
-          }}>{school.desc}</p>
+        {/* School image bg */}
+        <div style={{ position:'absolute', inset:0,
+          backgroundImage:`url(/schools/${encodeURI(school.name)}${ext})`,
+          backgroundSize:'cover', backgroundPosition:'center', opacity:0.28 }} />
+        {/* Text card */}
+        <div style={{ position:'relative',
+          background:'linear-gradient(180deg, rgba(252,250,246,0.86) 0%, rgba(248,244,237,0.90) 100%)',
+          padding: school.tier === 'A' ? '22px 26px' : '14px 20px' }}>
+          <div style={{ fontSize:8, fontWeight:400, letterSpacing:'0.16em', textTransform:'uppercase',
+            color:c, marginBottom: school.tier==='A'?8:5, fontFamily:'var(--font-sans)', opacity:0.7 }}>
+            {school.region==='东方'?'Eastern':school.region==='西方'?'Western':'World'} · {school.century}</div>
+          <h3 style={{ fontSize:fs, fontWeight:500, color:'#2A1F1A', margin:'0 0 4px',
+            letterSpacing:'0.02em', lineHeight:1.3, fontFamily:'"Playfair Display","PingFang SC",serif' }}>{school.name}</h3>
+          <p style={{ fontSize:11, fontWeight:300, color:'#7A6E64', lineHeight:1.7, margin:0,
+            fontFamily:'var(--font-sans)' }}>{school.desc}</p>
         </div>
       </div>
     </div>
   );
 }
 
-// --- Era Chapter Marker ---
+// ─── Era Marker ───
 function EraMarker({ era }) {
   return (
-    <div style={{ textAlign:'center', padding:'100px 24px 64px', position:'relative', zIndex:1 }}>
-      <div style={{ width:80, height:1, background:'linear-gradient(to right, transparent, #91764740, transparent)', margin:'0 auto 32px' }} />
+    <div style={{ textAlign:'center', padding:'90px 24px 56px', position:'relative', zIndex:1 }}>
+      <div style={{ width:80, height:1, background:'linear-gradient(to right,transparent,#91764740,transparent)', margin:'0 auto 28px' }} />
       <img src={`/schools/${era.era}.png`} alt="" loading="lazy"
-        style={{ height:180, width:'auto', opacity:0.45, marginBottom:24, objectFit:'contain' }} />
-      <p style={{ fontSize:10, fontWeight:400, letterSpacing:'0.28em', textTransform:'uppercase', color:'#917647', marginBottom:10, fontFamily:'var(--font-sans)' }}>{era.name}</p>
-      <h2 style={{ fontSize:'clamp(1.4rem,2.5vw,1.8rem)', fontWeight:400, color:'#2A1F1A', margin:'0 0 4px', letterSpacing:'0.06em', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{era.title}</h2>
+        style={{ height:160, width:'auto', opacity:0.40, marginBottom:20, objectFit:'contain' }} />
+      <p style={{ fontSize:10, fontWeight:400, letterSpacing:'0.28em', textTransform:'uppercase', color:'#917647', marginBottom:8, fontFamily:'var(--font-sans)' }}>{era.name}</p>
+      <h2 style={{ fontSize:'clamp(1.3rem,2.3vw,1.6rem)', fontWeight:400, color:'#2A1F1A', margin:'0 0 4px', letterSpacing:'0.06em', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{era.title}</h2>
       <p style={{ fontSize:12, fontWeight:300, color:'#A09080', fontFamily:'var(--font-sans)', margin:0 }}>{era.range}</p>
     </div>
   );
 }
 
-// --- Double Helix Curves SVG ---
-function HelixCurves({ scrollY, totalHeight }) {
-  if (totalHeight <= 0) return null;
-  // Two sine waves 180° out of phase, rotation driven by scroll
-  const rotation = scrollY * 0.03; // degrees
+// ─── DNA Helix Timeline ───
+function HelixTimeline({ totalH, scrollY, revealedCount }) {
+  if (!totalH) return null;
+  const cx = 400; const amp = 140; const waveLen = 320;
+  const rot = scrollY * 0.02;
+
+  // Build wave A (bronze, always visible)
+  let pathA = ''; let pathB = '';
+  const ptsA = []; const ptsB = [];
+  for (let y = 0; y <= totalH; y += 4) {
+    const t = (y / waveLen) * Math.PI * 2;
+    const xA = cx + amp * Math.sin(t);
+    const xB = cx + amp * Math.sin(t + Math.PI);
+    if (y === 0) { pathA = `M ${xA} ${y}`; pathB = `M ${xB} ${y}`; }
+    else { pathA += ` L ${xA} ${y}`; pathB += ` L ${xB} ${y}`; }
+    // Sample points for dots
+    if (Math.abs(Math.sin(t)) < 0.03 && Math.abs(Math.cos(t)) > 0.9) ptsA.push({ x: xA, y });
+    if (Math.abs(Math.sin(t + Math.PI)) < 0.03 && Math.abs(Math.cos(t + Math.PI)) > 0.9) ptsB.push({ x: xB, y });
+  }
+
+  // Wave B opacity based on scroll progress
+  const bOpacity = Math.min(1, scrollY / (totalH * 0.08));
+
   return (
-    <svg
-      style={{
-        position:'absolute', top:0, left:0, width:'100%', height:totalHeight,
-        pointerEvents:'none', zIndex:0, overflow:'visible',
-        transform:`rotate(${rotation}deg)`, transformOrigin:'center center',
-      }}
-      viewBox={`0 0 800 ${totalHeight}`}
-      preserveAspectRatio="none"
-    >
+    <svg style={{ position:'absolute', top:0, left:0, width:'100%', height:totalH,
+      pointerEvents:'none', zIndex:0, overflow:'visible',
+      transform:`rotate(${rot}deg)`, transformOrigin:'center center' }}
+      viewBox={`0 0 800 ${totalH}`} preserveAspectRatio="none">
       <defs>
-        <linearGradient id="curveGrad1" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="gA" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#917647" stopOpacity="0" />
-          <stop offset="10%" stopColor="#917647" stopOpacity="0.12" />
-          <stop offset="50%" stopColor="#917647" stopOpacity="0.18" />
-          <stop offset="90%" stopColor="#917647" stopOpacity="0.12" />
+          <stop offset="8%" stopColor="#917647" stopOpacity="0.30" />
+          <stop offset="50%" stopColor="#917647" stopOpacity="0.30" />
+          <stop offset="92%" stopColor="#917647" stopOpacity="0.30" />
           <stop offset="100%" stopColor="#917647" stopOpacity="0" />
         </linearGradient>
-        <linearGradient id="curveGrad2" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="gB" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#3A5A7C" stopOpacity="0" />
-          <stop offset="10%" stopColor="#3A5A7C" stopOpacity="0.10" />
-          <stop offset="50%" stopColor="#3A5A7C" stopOpacity="0.16" />
-          <stop offset="90%" stopColor="#3A5A7C" stopOpacity="0.10" />
+          <stop offset="8%" stopColor="#3A5A7C" stopOpacity="0.30" />
+          <stop offset="50%" stopColor="#3A5A7C" stopOpacity="0.30" />
+          <stop offset="92%" stopColor="#3A5A7C" stopOpacity="0.30" />
           <stop offset="100%" stopColor="#3A5A7C" stopOpacity="0" />
         </linearGradient>
       </defs>
-      {/* Curve 1 — bronze */}
-      <path
-        d={generateHelixPath(totalHeight, 0, 400, 120)}
-        fill="none" stroke="url(#curveGrad1)" strokeWidth="2"
-        opacity="0.5"
-      />
-      {/* Curve 2 — blue, 180° out of phase */}
-      <path
-        d={generateHelixPath(totalHeight, Math.PI, 400, 120)}
-        fill="none" stroke="url(#curveGrad2)" strokeWidth="1.5"
-        opacity="0.4"
-      />
+      {/* Wave A — bronze, always visible */}
+      <path d={pathA} fill="none" stroke="url(#gA)" strokeWidth="2.5" opacity="0.55" />
+      {/* Wave B — blue, fades in with scroll */}
+      <path d={pathB} fill="none" stroke="url(#gB)" strokeWidth="2" opacity={0.45 * bOpacity}
+        style={{ transition:'opacity 300ms ease' }} />
+      {/* Dots on wave peaks — reveal sequentially */}
+      {ptsB.map((p, di) => {
+        const dotRevealed = di < revealedCount;
+        return (
+          <circle key={di} cx={p.x} cy={p.y} r="4"
+            fill="#3A5A7C" opacity={dotRevealed ? 0.6 : 0}
+            style={{ transition:'opacity 600ms ease' }} />
+        );
+      })}
     </svg>
   );
 }
 
-function generateHelixPath(totalHeight, phaseOffset, centerX, amplitude) {
-  const steps = Math.ceil(totalHeight / 60);
-  let d = `M ${centerX - amplitude * Math.sin(phaseOffset)} 0`;
-  for (let i = 0; i < steps; i++) {
-    const y0 = i * 60;
-    const y1 = (i + 1) * 60;
-    const t0 = (y0 / totalHeight) * Math.PI * 16;
-    const t1 = (y1 / totalHeight) * Math.PI * 16;
-    const x0 = centerX + amplitude * Math.sin(t0 + phaseOffset);
-    const x1 = centerX + amplitude * Math.sin(t1 + phaseOffset);
-    // Cubic bezier control points for smooth sine wave
-    const cp1x = centerX + amplitude * Math.sin(t0 + phaseOffset + 0.5);
-    const cp1y = y0 + 30;
-    const cp2x = centerX + amplitude * Math.sin(t1 + phaseOffset - 0.5);
-    const cp2y = y1 - 30;
-    d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${x1} ${y1}`;
-  }
-  return d;
-}
-
-// --- Main Page ---
+// ─── Main Page ───
 export default function GenealogyPage() {
   const navigate = useNavigate();
   const [hoveredIdx, setHoveredIdx] = useState(null);
   const [scrollY, setScrollY] = useState(0);
-  const [pageHeight, setPageHeight] = useState(0);
-  const pageRef = useRef(null);
+  const [pageH, setPageH] = useState(0);
+  const galleryRef = useRef(null);
+  const [galleryTop, setGalleryTop] = useState(0);
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', onScroll, { passive: true });
-    // Measure page height after render
     const measure = () => {
-      if (pageRef.current) setPageHeight(pageRef.current.scrollHeight);
+      if (galleryRef.current) {
+        setPageH(galleryRef.current.scrollHeight);
+        setGalleryTop(galleryRef.current.getBoundingClientRect().top + window.scrollY);
+      }
     };
     measure();
-    const timer = setInterval(measure, 500);
-    return () => { window.removeEventListener('scroll', onScroll); clearInterval(timer); };
+    const t = setInterval(measure, 400);
+    return () => { window.removeEventListener('scroll', onScroll); clearInterval(t); };
   }, []);
 
-  // Era boundaries
+  // How many schools have been "revealed" based on scroll position
+  const galleryScroll = Math.max(0, scrollY - galleryTop);
+  const revealPerSchool = pageH / ALL_SCHOOLS.length;
+  const revealedCount = Math.floor(galleryScroll / revealPerSchool);
+
   const eraGroups = useMemo(() => {
-    const groups = [];
-    let cur = -1;
+    const g = []; let cur = -1;
     ALL_SCHOOLS.forEach((s, i) => {
-      const ei = getEraIndex(i);
-      if (ei !== cur) { cur = ei; groups.push({ era: ERAS[ei], startIdx: i }); }
+      const ei = getEraIdx(i);
+      if (ei !== cur) { cur = ei; g.push({ era: ERAS[ei], startIdx: i }); }
     });
-    return groups;
+    return g;
   }, []);
 
   return (
-    <div ref={pageRef} style={{
-      background:'#F4EFE6', minHeight:'100vh',
+    <div style={{ background:'#F4EFE6', minHeight:'100vh',
       fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A',
-      position:'relative', overflow:'visible'
-    }}>
+      position:'relative', overflow:'visible' }}>
 
       {/* ══════════ BACKGROUND COLLAGE ══════════ */}
-      {/* z:-2  Solid base */}
       <div style={{ position:'fixed', inset:0, zIndex:-2,
         background:'linear-gradient(180deg, #F4EFE6 0%, #EDE5D8 35%, #E8DFD0 65%, #E0D8C8 100%)' }} />
-
-      {/* z:-1  哲学星图 — distant thought-sphere, very faint */}
-      <div style={{ position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.08,
-        backgroundImage:'url(/gene/哲学星图.png)',
-        backgroundSize:'cover', backgroundPosition:'center' }} />
-
-      {/* z:-1  philosophy_symbols — scattered civilization artifacts */}
-      <div style={{ position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.06,
-        backgroundImage:'url(/gene/philosophy_symbols.png)',
-        backgroundSize:'80%', backgroundPosition:'center', backgroundRepeat:'no-repeat' }} />
-
-      {/* z:0  Mountains — top horizon */}
-      <div style={{ position:'fixed', top:0, left:0, right:0, height:'45vh', zIndex:0, pointerEvents:'none', opacity:0.22,
-        backgroundImage:'url(/gene/terrain/terrain_mountains.png)',
-        backgroundSize:'cover', backgroundPosition:'center top' }} />
-
-      {/* z:0  Valley — main river course through center */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.26,
-        backgroundImage:'url(/gene/terrain/terrain_river_valley.png)',
-        backgroundSize:'cover', backgroundPosition:'center' }} />
-
-      {/* z:0  Forest — lower left */}
-      <div style={{ position:'fixed', bottom:0, left:0, width:'55vw', height:'40vh', zIndex:0, pointerEvents:'none', opacity:0.14,
-        backgroundImage:'url(/gene/terrain/terrain_forest.png)',
-        backgroundSize:'cover', backgroundPosition:'left bottom' }} />
-
-      {/* z:0  Plateau — lower right */}
-      <div style={{ position:'fixed', bottom:0, right:0, width:'50vw', height:'35vh', zIndex:0, pointerEvents:'none', opacity:0.12,
-        backgroundImage:'url(/gene/terrain/terrain_plateau.png)',
-        backgroundSize:'cover', backgroundPosition:'right bottom' }} />
-
-      {/* z:0  Desert — far bottom horizon */}
-      <div style={{ position:'fixed', bottom:0, left:0, right:0, height:'20vh', zIndex:0, pointerEvents:'none', opacity:0.08,
-        backgroundImage:'url(/gene/terrain/terrain_desert.png)',
-        backgroundSize:'cover', backgroundPosition:'center bottom' }} />
-
-      {/* z:0  Civilization Silhouette — anchors the bottom */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.13,
-        backgroundImage:'url(/gene/civilization_silhouette.png)',
-        backgroundSize:'120%', backgroundPosition:'center bottom' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.07,
+        backgroundImage:'url(/gene/哲学星图.png)', backgroundSize:'cover', backgroundPosition:'center' }} />
+      <div style={{ position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.05,
+        backgroundImage:'url(/gene/philosophy_symbols.png)', backgroundSize:'80%', backgroundPosition:'center', backgroundRepeat:'no-repeat' }} />
+      {/* Mountains — top */}
+      <div style={{ position:'fixed', top:0, left:0, right:0, height:'50vh', zIndex:0, pointerEvents:'none', opacity:0.35,
+        backgroundImage:'url(/gene/terrain/terrain_mountains.png)', backgroundSize:'cover', backgroundPosition:'center top' }} />
+      {/* Valley — center main */}
+      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.32,
+        backgroundImage:'url(/gene/terrain/terrain_river_valley.png)', backgroundSize:'cover', backgroundPosition:'center' }} />
+      {/* Forest — bottom left */}
+      <div style={{ position:'fixed', bottom:0, left:0, width:'55vw', height:'45vh', zIndex:0, pointerEvents:'none', opacity:0.20,
+        backgroundImage:'url(/gene/terrain/terrain_forest.png)', backgroundSize:'cover', backgroundPosition:'left bottom' }} />
+      {/* Plateau — bottom right */}
+      <div style={{ position:'fixed', bottom:0, right:0, width:'50vw', height:'40vh', zIndex:0, pointerEvents:'none', opacity:0.18,
+        backgroundImage:'url(/gene/terrain/terrain_plateau.png)', backgroundSize:'cover', backgroundPosition:'right bottom' }} />
+      {/* Desert — far horizon */}
+      <div style={{ position:'fixed', bottom:0, left:0, right:0, height:'22vh', zIndex:0, pointerEvents:'none', opacity:0.12,
+        backgroundImage:'url(/gene/terrain/terrain_desert.png)', backgroundSize:'cover', backgroundPosition:'center bottom' }} />
+      {/* Civilization silhouette */}
+      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.16,
+        backgroundImage:'url(/gene/civilization_silhouette.png)', backgroundSize:'130%', backgroundPosition:'center bottom' }} />
 
       {/* ══════════ HERO ══════════ */}
-      <section style={{ minHeight:'85vh', display:'flex', flexDirection:'column',
+      <section style={{ minHeight:'80vh', display:'flex', flexDirection:'column',
         justifyContent:'center', alignItems:'center', textAlign:'center',
         position:'relative', zIndex:1, padding:'60px 32px' }}>
         <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)',
-          width:'60vw', height:'50vh',
-          background:'radial-gradient(ellipse, rgba(145,118,71,0.05) 0%, transparent 70%)', pointerEvents:'none' }} />
+          width:'60vw', height:'50vh', background:'radial-gradient(ellipse, rgba(145,118,71,0.05) 0%, transparent 70%)', pointerEvents:'none' }} />
         <p style={{ fontSize:10, fontWeight:400, letterSpacing:'0.32em', textTransform:'uppercase',
           color:'#917647', marginBottom:32, fontFamily:'var(--font-sans)', opacity:0.8 }}>
           Museum of Philosophy  ·  Genealogy Wing</p>
@@ -384,7 +339,7 @@ export default function GenealogyPage() {
         <p style={{ fontSize:'clamp(0.95rem,1.4vw,1.15rem)', fontWeight:300,
           color:'#8A7E74', lineHeight:2.0, maxWidth:580, fontFamily:'var(--font-sans)' }}>
           从公元前三十世纪至二十一世纪<br />九十五个哲学流派，一部横跨五千年的人类思想史长卷</p>
-        <button onClick={() => document.getElementById('museum-gallery')?.scrollIntoView({ behavior:'smooth' })}
+        <button onClick={() => galleryRef.current?.scrollIntoView({ behavior:'smooth' })}
           style={{ marginTop:48, background:'none', border:'1px solid rgba(145,118,71,0.2)',
             borderRadius:8, padding:'12px 36px', fontSize:13, fontWeight:300,
             color:'#8A7E74', cursor:'pointer', letterSpacing:'0.08em',
@@ -395,20 +350,18 @@ export default function GenealogyPage() {
       </section>
 
       {/* ══════════ GALLERY ══════════ */}
-      <div id="museum-gallery" style={{ position:'relative', zIndex:1, paddingBottom:120, maxWidth:1200, margin:'0 auto', padding:'0 24px' }}>
-        {/* Double helix curves — positioned behind exhibits */}
-        <HelixCurves scrollY={scrollY} totalHeight={pageHeight} />
-
-        <div style={{ height:80 }} />
-
+      <div ref={galleryRef} style={{ position:'relative', zIndex:1, paddingBottom:120, maxWidth:1200, margin:'0 auto', padding:'0 24px' }}>
+        <HelixTimeline totalH={pageH} scrollY={scrollY} revealedCount={revealedCount} />
+        <div style={{ height:60 }} />
         {ALL_SCHOOLS.map((school, i) => {
           const eraStart = eraGroups.find(g => g.startIdx === i);
-          const isLeft = i % 3 !== 1;
+          const side = i % 3 !== 1 ? 'left' : 'right';
+          const visible = i <= revealedCount;
           return (
             <div key={i}>
-              {eraStart && <EraMarker era={eraStart.era} />}
-              <Exhibit school={school} index={i} isLeft={isLeft}
-                isActive={hoveredIdx === i}
+              {eraStart && i <= revealedCount && <EraMarker era={eraStart.era} />}
+              <Exhibit school={school} i={i} side={side}
+                active={hoveredIdx === i} visible={visible}
                 onClick={(name) => navigate('/school/' + encodeURIComponent(name))}
                 onHover={setHoveredIdx} onLeave={() => setHoveredIdx(null)} />
             </div>
@@ -421,18 +374,18 @@ export default function GenealogyPage() {
       <div style={{ textAlign:'center', paddingBottom:80, position:'relative', zIndex:1,
         display:'flex', justifyContent:'center', gap:48, flexWrap:'wrap' }}>
         {[
-          { label:'西方哲学传统', sub:'Western Tradition', path:'/western-philosophies', color:REGION_COLORS['西方'] },
-          { label:'东方哲学传统', sub:'Eastern Tradition', path:'/eastern-philosophies', color:REGION_COLORS['东方'] },
-          { label:'世界哲学传统', sub:'World Traditions', path:'/world-philosophies', color:REGION_COLORS['世界'] },
-        ].map(btn => (
-          <button key={btn.path} onClick={() => navigate(btn.path)}
+          { label:'西方哲学传统', sub:'Western', path:'/western-philosophies', c:REGION_COLORS['西方'] },
+          { label:'东方哲学传统', sub:'Eastern', path:'/eastern-philosophies', c:REGION_COLORS['东方'] },
+          { label:'世界哲学传统', sub:'World', path:'/world-philosophies', c:REGION_COLORS['世界'] },
+        ].map(b => (
+          <button key={b.path} onClick={() => navigate(b.path)}
             style={{ background:'none', border:'none', cursor:'pointer', fontFamily:'"Playfair Display",serif',
-              fontSize:16, fontWeight:400, color:btn.color, letterSpacing:'0.04em', padding:'12px 20px',
+              fontSize:16, fontWeight:400, color:b.c, letterSpacing:'0.04em', padding:'12px 20px',
               transition:'all 300ms ease', opacity:0.7 }}
             onMouseEnter={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.letterSpacing='0.08em'; }}
             onMouseLeave={e => { e.currentTarget.style.opacity='0.7'; e.currentTarget.style.letterSpacing='0.04em'; }}>
-            <div style={{ fontSize:10, fontWeight:400, letterSpacing:'0.2em', textTransform:'uppercase', marginBottom:6, opacity:0.6 }}>{btn.sub}</div>
-            {btn.label}</button>
+            <div style={{ fontSize:10, fontWeight:400, letterSpacing:'0.2em', textTransform:'uppercase', marginBottom:6, opacity:0.6 }}>{b.sub}</div>
+            {b.label}</button>
         ))}</div>
     </div>
   );
