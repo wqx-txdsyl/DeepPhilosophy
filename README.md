@@ -2,7 +2,7 @@
 
 东西方及世界哲学的综合 Web 应用。React + FastAPI + DeepSeek AI，部署于 Render。
 
-**v2.0** — 88 个哲学流派，353 位哲学家，342 本著作，3 个互动游戏。
+**v2.1** — 88 个哲学流派，353 位哲学家，342 本著作，3 个互动游戏。哲学之河博物馆级谱系页。
 
 ---
 
@@ -62,7 +62,7 @@ DeepPhilosophy/
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── HomePage.jsx                  # 首页：世界地图 + 金句 + 时间轴
-│   │   │   ├── GenealogyPage.jsx             # 哲学之河（河流骨架+博物馆卡片）
+│   │   │   ├── GenealogyPage.jsx             # 哲学之河 V2 — 博物馆级谱系页（PRD compliant）
 │   │   │   ├── SchoolDetailPage.jsx          # 流派详情页（88 流派数据内联）
 │   │   │   ├── WorldPhilosophiesPage.jsx     # 世界哲学 24 流派
 │   │   │   ├── WesternPhilosophiesPage.jsx   # 西方哲学 40 流派
@@ -115,8 +115,14 @@ DeepPhilosophy/
 │   └── requirements.txt
 │
 ├── PHTI.csv                      # 16 种沙雕哲学家（答案之书版）
+├── DeepPhilosophy_Timeline_V2_PRD.md  # 哲学之河 V2 博物馆设计规范（203条）
 ├── render.yaml                   # Render 部署配置
+├── 流派列表.csv                   # 88流派完整列表
 └── README.md
+
+图片资源:
+F:/philosophy/jpg/                # 88张流派背景图 + 世界地图等
+F:/philosophy/jpg/gene/           # 博物馆环境素材（纸纹/古地图/金粒/时代插图/文明剪影）
 ```
 
 ---
