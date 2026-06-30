@@ -283,39 +283,37 @@ export default function GenealogyPage() {
       position:'relative', overflow:'visible'
     }}>
 
-      {/* ══════════ LAYER 0: Solid base — ensures full coverage ══════════ */}
+      {/* ══════════ LAYER -2: Solid base ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:-1,
+        position:'fixed', inset:0, zIndex:-2,
         background:'linear-gradient(180deg, #F4EFE6 0%, #EDE5D8 50%, #E8DFD0 100%)'
       }} />
 
-      {/* ══════════ LAYER 1: Paper Texture ══════════ */}
+      {/* ══════════ LAYER -1: Paper Texture — beneath everything ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.10,
+        position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.10,
         backgroundImage:'url(/gene/textures/texture_parchment.png)',
         backgroundSize:'400px', mixBlendMode:'multiply',
         transform:'translateZ(0)', willChange:'transform'
       }} />
 
-      {/* ══════════ LAYER 2: Terrain + Old Map merged ══════════ */}
+      {/* ══════════ LAYER 0a: Terrain — above paper ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.25,
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.30,
         backgroundImage:'url(/gene/terrain/terrain_river_valley.png)',
         backgroundSize:'cover', backgroundPosition:'center',
-        mixBlendMode:'multiply',
         transform:'translateZ(0)', willChange:'transform'
       }} />
 
-      {/* ══════════ LAYER 3: Civilization Silhouette ══════════ */}
+      {/* ══════════ LAYER 0b: Civilization Silhouette — above terrain ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.12,
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.16,
         backgroundImage:'url(/gene/civilization_silhouette.png)',
         backgroundSize:'120%', backgroundPosition:'center bottom',
-        mixBlendMode:'multiply',
         transform:'translateZ(0)', willChange:'transform'
       }} />
 
-      {/* ══════════ LAYER 4: River of Philosophy — NO mask, full visibility ══════════ */}
+      {/* ══════════ LAYER 0c: River of Philosophy — center, above other BGs ══════════ */}
       <div style={{
         position:'fixed', top:0, bottom:0, left:'50%', transform:'translate(-50%,0) translateZ(0)',
         width:'clamp(260px, 30vw, 400px)', zIndex:0, pointerEvents:'none',
@@ -324,11 +322,11 @@ export default function GenealogyPage() {
         <img src={"/gene/river/" + encodeURI("哲学之河2.0.png")} alt="" style={{
           width:'100%', height:'100%',
           objectFit:'cover', objectPosition:'center',
-          opacity:0.55
+          opacity:0.60
         }} />
       </div>
 
-      {/* ══════════ LAYER 5: God Rays — Hero only ══════════ */}
+      {/* ══════════ LAYER 0d: God Rays — Hero only ══════════ */}
       <div style={{
         position:'absolute', top:0, left:0, right:0, height:'100vh', zIndex:0, pointerEvents:'none',
         opacity:0.10,
