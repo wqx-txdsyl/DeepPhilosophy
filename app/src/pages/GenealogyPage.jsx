@@ -231,8 +231,8 @@ function EraMarker({ era, isVisible }) {
         alt=""
         loading="lazy"
         style={{
-          height:160, width:'auto', opacity:0.22, marginBottom:28,
-          filter:'saturate(0.6) brightness(1.1)',
+          height:180, width:'auto', opacity:0.35, marginBottom:28,
+          filter:'saturate(0.7) brightness(1.05)',
           objectFit:'contain'
         }}
       />
@@ -279,82 +279,80 @@ export default function GenealogyPage() {
 
   return (
     <div ref={pageRef} style={{
-      background:'#F9F7F3', minHeight:'100vh',
+      background:'#F4EFE6', minHeight:'100vh',
       fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A',
       position:'relative', overflow:'visible'
     }}>
 
-      {/* ══════════ LAYER 1: Paper Texture (VIS §2.10, §3.6) ══════════ */}
+      {/* ══════════ LAYER 1: Paper Texture ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.05,
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.12,
         backgroundImage:'url(/gene/textures/texture_parchment.png)',
-        backgroundSize:'500px', mixBlendMode:'multiply'
+        backgroundSize:'400px', mixBlendMode:'multiply'
       }} />
 
-      {/* ══════════ LAYER 2: Old Map Texture (VIS §2.10) ══════════ */}
+      {/* ══════════ LAYER 2: Old Map Texture ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.015,
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.08,
         backgroundImage:'url(/gene/textures/texture_old_map.png)',
         backgroundSize:'cover', backgroundPosition:'center', mixBlendMode:'multiply'
       }} />
 
-      {/* ══════════ LAYER 3: Terrain — foundation (VIS §2.9) ══════════ */}
+      {/* ══════════ LAYER 3: Terrain — valley landscape ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.08,
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.22,
         backgroundImage:'url(/gene/terrain/terrain_river_valley.png)',
         backgroundSize:'cover', backgroundPosition:'center',
         mixBlendMode:'multiply',
-        maskImage:'linear-gradient(to bottom, transparent 5%, black 20%, black 80%, transparent 95%)',
-        WebkitMaskImage:'linear-gradient(to bottom, transparent 5%, black 20%, black 80%, transparent 95%)'
+        maskImage:'linear-gradient(to bottom, black 0%, black 85%, transparent 100%)',
+        WebkitMaskImage:'linear-gradient(to bottom, black 0%, black 85%, transparent 100%)'
       }} />
 
-      {/* ══════════ LAYER 4: Civilization Silhouette (VIS §2.12) ══════════ */}
+      {/* ══════════ LAYER 4: Civilization Silhouette ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.04,
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.10,
         backgroundImage:'url(/gene/civilization_silhouette.png)',
         backgroundSize:'120%', backgroundPosition:'center bottom',
-        mixBlendMode:'multiply', filter:'blur(1px)',
-        maskImage:'linear-gradient(to top, black 40%, transparent 90%)',
-        WebkitMaskImage:'linear-gradient(to top, black 40%, transparent 90%)'
+        mixBlendMode:'multiply',
+        maskImage:'linear-gradient(to top, black 30%, transparent 100%)',
+        WebkitMaskImage:'linear-gradient(to top, black 30%, transparent 100%)'
       }} />
 
-      {/* ══════════ LAYER 5: River of Philosophy (VIS §2.7, §5.4) ══════════ */}
+      {/* ══════════ LAYER 5: River of Philosophy — central spine ══════════ */}
       <div style={{
         position:'fixed', top:0, bottom:0, left:'50%', transform:'translateX(-50%)',
-        width:'clamp(240px, 28vw, 380px)', zIndex:0, pointerEvents:'none'
+        width:'clamp(260px, 30vw, 400px)', zIndex:0, pointerEvents:'none'
       }}>
         <img src={"/gene/river/" + encodeURI("哲学之河2.0.png")} alt="" style={{
           width:'100%', height:'100%',
           objectFit:'cover', objectPosition:'center',
-          opacity:0.28,
-          maskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.5) 88%, transparent 100%)',
-          WebkitMaskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.5) 88%, transparent 100%)'
+          opacity:0.45,
+          maskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 10%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.6) 90%, transparent 100%)',
+          WebkitMaskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 10%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.6) 90%, transparent 100%)'
         }} />
       </div>
 
-      {/* ══════════ LAYER 6: Atmosphere — Mist between terrain (VIS §2.4) ══════════ */}
+      {/* ══════════ LAYER 6: Atmosphere — Mist ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.06,
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.14,
         backgroundImage:'url(/gene/atmosphere/effect_mist.png)',
         backgroundSize:'cover', backgroundPosition:'center',
-        mixBlendMode:'screen',
-        maskImage:'linear-gradient(to right, transparent, black 30%, black 70%, transparent)',
-        WebkitMaskImage:'linear-gradient(to right, transparent, black 30%, black 70%, transparent)'
+        mixBlendMode:'screen'
       }} />
 
-      {/* ══════════ LAYER 7: Golden Dust Particles (VIS §2.12) ══════════ */}
+      {/* ══════════ LAYER 7: Golden Dust ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.04,
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.07,
         backgroundImage:'url(/gene/gold_particles.png)',
         backgroundSize:'cover', backgroundPosition:'center',
         animation:'museum-drift 60s linear infinite',
         mixBlendMode:'screen'
       }} />
 
-      {/* ══════════ LAYER 8: God Rays — Hero only (VIS §2.4) ══════════ */}
+      {/* ══════════ LAYER 8: God Rays — Hero only ══════════ */}
       <div style={{
         position:'absolute', top:0, left:0, right:0, height:'100vh', zIndex:0, pointerEvents:'none',
-        opacity:0.06,
+        opacity:0.12,
         backgroundImage:'url(/gene/atmosphere/effect_god_rays.png)',
         backgroundSize:'cover', backgroundPosition:'center top',
         mixBlendMode:'screen'
