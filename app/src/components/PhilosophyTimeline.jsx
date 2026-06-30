@@ -76,6 +76,7 @@ const ALL_SCHOOLS = [
   { century:'19世纪', name:'北欧哲学', region:'世界', desc:'克尔凯郭尔的信仰跳跃。' },
   { century:'19世纪', name:'东欧斯拉夫哲学', region:'世界', desc:'索洛维约夫、舍斯托夫——第三条道路。' },
   { century:'19世纪', name:'北美哲学', region:'世界', desc:'实用主义与超验主义——观念投入实践。' },
+  { century:'19世纪', name:'黑人哲学', region:'世界', desc:'从废奴运动到黑权运动——双重意识、种族批判与黑人存在主义。' },
   // 19世纪末
   { century:'19世纪末', name:'天演论', region:'东方', desc:'物竞天择，适者生存。' },
   { century:'19世纪末', name:'维新派', region:'东方', desc:'变则通，通则久。' },
@@ -108,7 +109,7 @@ const ALL_SCHOOLS = [
   { century:'20世纪末', name:'后结构主义', region:'西方', desc:'解构逻各斯中心主义。' },
   { century:'20世纪末', name:'解构主义', region:'西方', desc:'德里达的解构——文字、意义与权力的边缘。' },
   { century:'20世纪末', name:'后现代主义', region:'西方', desc:'对宏大叙事的怀疑。' },
-  { century:'20世纪末', name:'环境哲学', region:'西方', desc:'人类与自然的伦理关系——深层生态学、生态女性主义与环境正义。' },
+  { century:'20世纪末', name:'环境哲学', region:'世界', desc:'人类与自然的伦理关系——深层生态学、生态女性主义与环境正义。' },
   { century:'20世纪末', name:'伦理学', region:'西方', desc:'追问人应该如何生活。' },
   { century:'20世纪末', name:'宗教哲学', region:'西方', desc:'以理性审视信仰。' },
   { century:'20世纪末', name:'女性主义', region:'西方', desc:'个人的即政治的。' },

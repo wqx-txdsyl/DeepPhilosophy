@@ -68,10 +68,10 @@ const WORLD_PHILOSOPHIES = [
   { name: '罗马哲学', color: '#8B3A5C', desc: '西塞罗、塞内卡、马可·奥勒留——斯多葛与伊壁鸠鲁在帝国的实践，将哲学融入政治与日常生活。' },
   { name: '拜占庭哲学', color: '#6B3FA0', desc: '东罗马帝国的神学哲学传统——伪狄奥尼修斯与拜占庭智慧，融合希腊哲学与基督教神学。' },
   { name: '解放哲学', color: '#C44A3A', desc: '从解放神学到巴西解放教育学——哲学为被压迫者发声，法农、弗莱雷、杜塞尔将哲学转向底层。' },
-  { name: '解构主义', color: '#5A7B8B', desc: '德里达的解构——文字、意义与权力的边缘，挑战逻各斯中心主义与二元等级。' },
   { name: '环境哲学', color: '#3A8C6B', desc: '人类与自然的伦理关系——深层生态学、生态女性主义与环境正义，重新定义人与土地的连接。' },
   { name: '后殖民哲学', color: '#8B5A3A', desc: '法农、萨义德、斯皮瓦克——殖民经验的哲学批判与去殖民化思想，揭示权力、知识与身份的关系。' },
   { name: '原住民哲学', color: '#5A8B3A', desc: '全球原住民的生态智慧与土地伦理——从澳大利亚到亚马逊，追问人与自然的共生关系。' },
+  { name: '黑人哲学', color: '#6B3A5C', desc: '从废奴运动到黑权运动，从杜波依斯双重意识到法农反殖民——全球黑人哲学追问种族、身份与自由的终极意义。' },
 ];
 
 export default function WorldPhilosophiesPage() {
@@ -104,7 +104,7 @@ export default function WorldPhilosophiesPage() {
           fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 300,
           color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto'
         }}>
-          从古希腊到美索不达米亚，从印度到澳洲，<br />三十大哲学传统覆盖了全球思想版图。
+          从古希腊到美索不达米亚，从印度到澳洲，<br />三十一大哲学传统覆盖了全球思想版图。
         </p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
       </section>

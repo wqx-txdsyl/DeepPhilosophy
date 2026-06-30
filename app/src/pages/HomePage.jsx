@@ -17,7 +17,7 @@ const WESTERN_TIMELINE = [
   { century: '19世纪', schools: ['德国古典哲学', '功利主义', '超验主义', '实证主义', '马克思主义', '生命哲学', '社会学'] },
   { century: '20世纪初', schools: ['实用主义', '精神分析学', '现象学', '存在主义', '分析哲学', '过程哲学', '哲学人类学'] },
   { century: '20世纪中', schools: ['西方马克思主义', '法兰克福学派', '批判理论', '科学哲学', '荒诞哲学', '基督教哲学', '结构主义', '政治哲学', '哲学诠释学'] },
-  { century: '20世纪末', schools: ['后结构主义', '后现代主义', '伦理学', '宗教哲学', '女性主义', '社群主义'] },
+  { century: '20世纪末', schools: ['解构主义', '后结构主义', '后现代主义', '伦理学', '宗教哲学', '女性主义', '社群主义'] },
   { century: '21世纪', schools: ['技术哲学'] },
 ];
 
@@ -128,29 +128,37 @@ const EASTERN_DESCRIPTIONS = {
 
 // ——— 世界哲学 ———
 const WORLD_TIMELINE = [
-  { century: '公元前30世纪', schools: ['美索不达米亚哲学'] },
+  { century: '公元前30世纪', schools: ['古希伯来哲学','古埃及哲学','美索不达米亚哲学'] },
   { century: '公元前15世纪', schools: ['印度哲学','犹太哲学'] },
   { century: '公元前10世纪', schools: ['波斯哲学'] },
-  { century: '公元前6世纪', schools: ['古希腊哲学'] },
+  { century: '公元前6世纪', schools: ['古希腊哲学','凯尔特哲学'] },
+  { century: '公元前1世纪', schools: ['罗马哲学'] },
+  { century: '4世纪', schools: ['拜占庭哲学'] },
   { century: '7世纪', schools: ['伊斯兰哲学','阿拉伯哲学'] },
   { century: '8世纪', schools: ['西藏哲学'] },
-  { century: '13世纪', schools: ['非洲哲学'] },
+  { century: '13世纪', schools: ['非洲哲学','印加哲学'] },
   { century: '15世纪', schools: ['拉丁美洲哲学','玛雅哲学','阿兹特克哲学'] },
   { century: '16世纪', schools: ['东南亚哲学','韩国哲学'] },
-  { century: '19世纪', schools: ['北欧哲学','东欧斯拉夫哲学','北美哲学'] },
-  { century: '20世纪', schools: ['蒙古中亚哲学','澳洲原住民哲学'] },
+  { century: '19世纪', schools: ['北欧哲学','东欧斯拉夫哲学','北美哲学','黑人哲学'] },
+  { century: '20世纪', schools: ['解放哲学','后殖民哲学','原住民哲学','环境哲学','蒙古中亚哲学','澳洲原住民哲学'] },
 ];
 
 const WORLD_DESCRIPTIONS = {
   '美索不达米亚哲学':'人类最早的哲学追问——苏美尔智慧文学追问苦难与秩序，《吉尔伽美什》史诗探索死亡与不朽。',
+  '古希伯来哲学':'约伯、传道书与智慧文学——信仰、苦难与神圣正义的追问，一神教伦理的哲学奠基。',
+  '古埃及哲学':'人类最早的智慧传统之一——以玛阿特为核心，追问宇宙秩序、死后存在与王权的神圣基础。',
   '印度哲学':'以《吠陀》《奥义书》为源头，正统六派与佛教、耆那教共同构成人类对意识与解脱最深刻的追问。',
   '犹太哲学':'以理性与信仰的对话为核心，从斐洛到列维纳斯，在雅典与耶路撒冷之间追问。',
   '波斯哲学':'超过两千五百年的连续传统——从琐罗亚斯德教善恶二元论到光照哲学。',
   '古希腊哲学':'西方哲学的总源——以理性思辨取代神话解释，首次追问万物的本原、存在的本质与善的生活。',
+  '凯尔特哲学':'德鲁伊传统与凯尔特智慧——自然、灵魂转世与森林中的哲学，欧洲最古老的灵性传统之一。',
+  '罗马哲学':'西塞罗、塞内卡、马可·奥勒留——斯多葛与伊壁鸠鲁在帝国的实践，哲学融入政治与生活。',
+  '拜占庭哲学':'东罗马帝国的神学哲学传统——伪狄奥尼修斯与拜占庭智慧，融合希腊哲学与基督教神学。',
   '伊斯兰哲学':'以理性与启示的对话为核心——凯拉姆、苏非主义、伊斯兰伦理学追问真主与人的关系。',
   '阿拉伯哲学':'中世纪保存和发展希腊哲学的关键桥梁——铿迪、法拉比、阿维森纳、阿威罗伊。',
   '西藏哲学':'以藏传佛教中观应成派为核心——宗喀巴体系化整合印度中观与密宗。',
   '非洲哲学':'以口述传统和"乌班图"共同体本体论为核心——去殖民化与泛非主义的哲学根基。',
+  '印加哲学':'安第斯文明的哲学结晶——帕查与艾尼为核心，大地母亲帕查玛玛的生态智慧。',
   '拉丁美洲哲学':'以解放为核心主题——从拉斯·卡萨斯到杜塞尔、弗莱雷，将哲学转向被压迫者的声音。',
   '玛雅哲学':'以《波波尔·乌》为圣书——循环时间观、玉米人神话、二元互补的宇宙结构。',
   '阿兹特克哲学':'以"第五太阳纪"宇宙论为核心——花与歌是对短暂生命的哲学回应。',
@@ -159,6 +167,11 @@ const WORLD_DESCRIPTIONS = {
   '北欧哲学':'以克尔凯郭尔为标志——在冰冷风景中燃烧着对个体生存最炽热的追问。',
   '东欧斯拉夫哲学':'以俄罗斯宗教哲学为核心——索洛维约夫的"万物统一"、舍斯托夫的信仰跳跃。',
   '北美哲学':'从超验主义到实用主义——爱默生、梭罗、皮尔士将观念投入实践的熔炉。',
+  '黑人哲学':'从废奴运动到黑权运动——杜波依斯双重意识、法农反殖民、黑人女性主义的全球哲学传统。',
+  '解放哲学':'从解放神学到巴西解放教育学——法农、弗莱雷、杜塞尔将哲学转向被压迫者的声音。',
+  '后殖民哲学':'法农、萨义德、斯皮瓦克——殖民经验的哲学批判与去殖民化思想。',
+  '原住民哲学':'全球原住民的生态智慧与土地伦理——从澳大利亚到亚马逊，追问人与自然的共生关系。',
+  '环境哲学':'人类与自然的伦理关系——深层生态学、生态女性主义与环境正义。',
   '蒙古中亚哲学':'以萨满传统和长生天信仰为根基——游牧智慧追问人与自然的共生。',
   '澳洲原住民哲学':'以"梦时代"（Dreamtime）为核心——人类最古老连续文明的生命智慧。',
 };
@@ -336,7 +349,7 @@ function HomePage() {
       {/* ══════════ NUMBERS ══════════ */}
       <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
-          {[{ num: '305', label: '哲学著作' }, { num: '353', label: '哲学家' }, { num: '88', label: '哲学流派' }].map(s => (
+          {[{ num: '305', label: '哲学著作' }, { num: '353', label: '哲学家' }, { num: '96', label: '哲学流派' }].map(s => (
             <div key={s.label}>
               <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
@@ -353,13 +366,13 @@ function HomePage() {
         <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, flexWrap: 'wrap' }}>
           <span onClick={() => navigate('/western-philosophies')} style={{ fontSize: 12, color: 'var(--ochre)', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--ochre)'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🏛 西方 40 流派</span>
+            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🏛 西方 41 流派</span>
           <span onClick={() => navigate('/eastern-philosophies')} style={{ fontSize: 12, color: 'var(--prussian)', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--prussian)'}
             onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>☯ 东方 24 流派</span>
           <span onClick={() => navigate('/world-philosophies')} style={{ fontSize: 12, color: '#5A8A5A', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.borderBottomColor = '#5A8A5A'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🌍 世界 20 流派</span>
+            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🌍 世界 31 流派</span>
         </div>
       </section>
 

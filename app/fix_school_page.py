@@ -18,7 +18,9 @@ main = main[:insert_pos] + school_data + '\n\n' + main[insert_pos:]
 
 # Remove old _json entries for new schools
 new_schools = ['韩国哲学','西藏哲学','北欧哲学','玛雅哲学','阿兹特克哲学',
-               '澳洲原住民哲学','蒙古中亚哲学','东欧斯拉夫哲学','北美哲学','美索不达米亚哲学']
+               '澳洲原住民哲学','蒙古中亚哲学','东欧斯拉夫哲学','北美哲学','美索不达米亚哲学',
+               '古希伯来哲学','凯尔特哲学','罗马哲学','拜占庭哲学','解放哲学',
+               '后殖民哲学','原住民哲学','环境哲学','解构主义','黑人哲学']
 for name in new_schools:
     # Remove any entry with this school name (both _json and non-_json versions)
     pattern = rf"  '{re.escape(name)}':\s*\{{[^}}]*\}},\n"
