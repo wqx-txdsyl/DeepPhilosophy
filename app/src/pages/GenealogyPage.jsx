@@ -106,10 +106,6 @@ const ALL_SCHOOLS = [
 
 const REGION_COLORS = { '西方': '#917647', '东方': '#3A5A7C', '世界': '#5A8A5A' };
 const ROTS = ALL_SCHOOLS.map((_, i) => ((i * 7 + 3) % 5 - 2) * 0.8);
-const SCHOOL_IMG_EXT = (name) => {
-  const jpgs = new Set(['凯尔特哲学','原住民哲学','古希伯来哲学','罗马哲学','拜占庭哲学','解放哲学','后殖民哲学','环境哲学','解构主义','黑人哲学','古希腊哲学']);
-  return jpgs.has(name) ? '.jpg' : '.png';
-};
 
 const ERAS = [
   { name:'Ancient World', title:'远古文明', range:'公元前30世纪 — 公元前10世纪', era:'era_ancient' },
@@ -135,7 +131,6 @@ function Exhibit({ school, i, side, active, onClick, onHover, onLeave, visible }
   const rot = ROTS[i];
   const w = school.tier === 'A' ? 400 : school.tier === 'B' ? 320 : 260;
   const fs = school.tier === 'A' ? 20 : school.tier === 'B' ? 15 : 13;
-  const ext = SCHOOL_IMG_EXT(school.name);
 
   return (
     <div style={{
@@ -156,15 +151,10 @@ function Exhibit({ school, i, side, active, onClick, onHover, onLeave, visible }
           position:'relative', zIndex: active ? 5 : 1,
           boxShadow: active ? '0 4px 16px rgba(42,31,26,0.14), 0 8px 32px rgba(42,31,26,0.06)'
                           : '0 1px 4px rgba(42,31,26,0.06)',
-          overflow:'hidden',
+          background:'linear-gradient(180deg, rgba(252,250,246,0.90) 0%, rgba(248,244,237,0.93) 100%)',
         }}>
-        {/* School image bg */}
-        <div style={{ position:'absolute', inset:0,
-          backgroundImage:`url(/schools/${encodeURI(school.name)}${ext})`,
-          backgroundSize:'cover', backgroundPosition:'center', opacity:0.28 }} />
         {/* Text card */}
-        <div style={{ position:'relative',
-          background:'linear-gradient(180deg, rgba(252,250,246,0.86) 0%, rgba(248,244,237,0.90) 100%)',
+        <div style={{
           padding: school.tier === 'A' ? '22px 26px' : '14px 20px' }}>
           <div style={{ fontSize:8, fontWeight:400, letterSpacing:'0.16em', textTransform:'uppercase',
             color:c, marginBottom: school.tier==='A'?8:5, fontFamily:'var(--font-sans)', opacity:0.7 }}>
@@ -196,8 +186,7 @@ function EraMarker({ era }) {
 // ─── DNA Helix Timeline ───
 function HelixTimeline({ totalH, scrollY, revealedCount }) {
   if (!totalH) return null;
-  const cx = 400; const amp = 140; const waveLen = 320;
-  const rot = scrollY * 0.02;
+  const cx = 400; const amp = 60; const waveLen = 400;
 
   // Build wave A (bronze, always visible)
   let pathA = ''; let pathB = '';
@@ -218,8 +207,7 @@ function HelixTimeline({ totalH, scrollY, revealedCount }) {
 
   return (
     <svg style={{ position:'absolute', top:0, left:0, width:'100%', height:totalH,
-      pointerEvents:'none', zIndex:0, overflow:'visible',
-      transform:`rotate(${rot}deg)`, transformOrigin:'center center' }}
+      pointerEvents:'none', zIndex:0, overflow:'visible' }}
       viewBox={`0 0 800 ${totalH}`} preserveAspectRatio="none">
       <defs>
         <linearGradient id="gA" x1="0" y1="0" x2="0" y2="1">
@@ -297,30 +285,14 @@ export default function GenealogyPage() {
       fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A',
       position:'relative', overflow:'visible' }}>
 
-      {/* ══════════ BACKGROUND COLLAGE ══════════ */}
-      <div style={{ position:'fixed', inset:0, zIndex:-2,
-        background:'linear-gradient(180deg, #F4EFE6 0%, #EDE5D8 35%, #E8DFD0 65%, #E0D8C8 100%)' }} />
-      <div style={{ position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.07,
-        backgroundImage:'url(/gene/哲学星图.png)', backgroundSize:'cover', backgroundPosition:'center' }} />
-      <div style={{ position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.05,
-        backgroundImage:'url(/gene/philosophy_symbols.png)', backgroundSize:'80%', backgroundPosition:'center', backgroundRepeat:'no-repeat' }} />
-      {/* Mountains — top */}
-      <div style={{ position:'fixed', top:0, left:0, right:0, height:'50vh', zIndex:0, pointerEvents:'none', opacity:0.35,
+      {/* ══════════ BACKGROUND ══════════ */}
+      <div style={{ position:'fixed', inset:0, zIndex:-1,
+        background:'linear-gradient(180deg, #F4EFE6 0%, #EDE5D8 40%, #E8DFD0 100%)' }} />
+      <div style={{ position:'fixed', top:0, left:0, right:0, height:'55vh', zIndex:0, pointerEvents:'none', opacity:0.32,
         backgroundImage:'url(/gene/terrain/terrain_mountains.png)', backgroundSize:'cover', backgroundPosition:'center top' }} />
-      {/* Valley — center main */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.32,
+      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.28,
         backgroundImage:'url(/gene/terrain/terrain_river_valley.png)', backgroundSize:'cover', backgroundPosition:'center' }} />
-      {/* Forest — bottom left */}
-      <div style={{ position:'fixed', bottom:0, left:0, width:'55vw', height:'45vh', zIndex:0, pointerEvents:'none', opacity:0.20,
-        backgroundImage:'url(/gene/terrain/terrain_forest.png)', backgroundSize:'cover', backgroundPosition:'left bottom' }} />
-      {/* Plateau — bottom right */}
-      <div style={{ position:'fixed', bottom:0, right:0, width:'50vw', height:'40vh', zIndex:0, pointerEvents:'none', opacity:0.18,
-        backgroundImage:'url(/gene/terrain/terrain_plateau.png)', backgroundSize:'cover', backgroundPosition:'right bottom' }} />
-      {/* Desert — far horizon */}
-      <div style={{ position:'fixed', bottom:0, left:0, right:0, height:'22vh', zIndex:0, pointerEvents:'none', opacity:0.12,
-        backgroundImage:'url(/gene/terrain/terrain_desert.png)', backgroundSize:'cover', backgroundPosition:'center bottom' }} />
-      {/* Civilization silhouette */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.16,
+      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.14,
         backgroundImage:'url(/gene/civilization_silhouette.png)', backgroundSize:'130%', backgroundPosition:'center bottom' }} />
 
       {/* ══════════ HERO ══════════ */}
