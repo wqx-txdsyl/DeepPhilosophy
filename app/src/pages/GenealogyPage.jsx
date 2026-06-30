@@ -283,6 +283,12 @@ export default function GenealogyPage() {
       position:'relative', overflow:'visible'
     }}>
 
+      {/* ══════════ LAYER 0: Solid base — ensures full coverage ══════════ */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:-1,
+        background:'linear-gradient(180deg, #F4EFE6 0%, #EDE5D8 50%, #E8DFD0 100%)'
+      }} />
+
       {/* ══════════ LAYER 1: Paper Texture ══════════ */}
       <div style={{
         position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.10,
