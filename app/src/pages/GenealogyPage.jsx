@@ -283,21 +283,13 @@ export default function GenealogyPage() {
       position:'relative', overflow:'visible'
     }}>
 
-      {/* ══════════ LAYER -2: Solid base ══════════ */}
+      {/* ══════════ Solid base ══════════ */}
       <div style={{
-        position:'fixed', inset:0, zIndex:-2,
+        position:'fixed', inset:0, zIndex:-1,
         background:'linear-gradient(180deg, #F4EFE6 0%, #EDE5D8 50%, #E8DFD0 100%)'
       }} />
 
-      {/* ══════════ LAYER -1: Paper Texture — beneath everything ══════════ */}
-      <div style={{
-        position:'fixed', inset:0, zIndex:-1, pointerEvents:'none', opacity:0.10,
-        backgroundImage:'url(/gene/textures/texture_parchment.png)',
-        backgroundSize:'400px', mixBlendMode:'multiply',
-        transform:'translateZ(0)', willChange:'transform'
-      }} />
-
-      {/* ══════════ LAYER 0a: Terrain — above paper ══════════ */}
+      {/* ══════════ Terrain ══════════ */}
       <div style={{
         position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.30,
         backgroundImage:'url(/gene/terrain/terrain_river_valley.png)',
