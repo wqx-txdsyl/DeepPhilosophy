@@ -1,9 +1,9 @@
 /**
- * 哲学之河 — Museum of Philosophy V2
- * PRD-compliant: Cards = museum exhibits. River = timeline structure.
- * Scrolling = travelling upstream through civilization.
+ * 哲学之河 — Museum of Philosophy V3
+ * VIS Part 05 Compliant: River = Timeline. Exhibits = Museum artifacts.
+ * Scrolling = walking upstream through 5000 years of human thought.
  */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ALL_SCHOOLS = [
@@ -105,109 +105,406 @@ const ALL_SCHOOLS = [
 ];
 
 const REGION_COLORS = { '西方': '#917647', '东方': '#3A5A7C', '世界': '#5A8A5A' };
+const REGION_GRADIENTS = {
+  '西方': 'linear-gradient(135deg, rgba(145,118,71,0.12), rgba(145,118,71,0.04))',
+  '东方': 'linear-gradient(135deg, rgba(58,90,124,0.10), rgba(58,90,124,0.03))',
+  '世界': 'linear-gradient(135deg, rgba(90,138,90,0.10), rgba(90,138,90,0.03))',
+};
 
-function GenealogyPage() {
-  const navigate = useNavigate();
-  const [scrollY, setScrollY] = useState(0);
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const pageRef = useRef(null);
-  const [pageHeight, setPageHeight] = useState('100vh');
+// --- Museum Era Chapters (VIS §5.6) ---
+const ERAS = [
+  { name:'Ancient World', title:'远古文明', range:'公元前30世纪 — 公元前10世纪', era:'era_ancient' },
+  { name:'Classical Antiquity', title:'古典时代', range:'公元前6世纪 — 4世纪', era:'era_greece' },
+  { name:'Middle Ages', title:'中世纪', range:'6世纪 — 16世纪', era:'era_medieval' },
+  { name:'Renaissance & Early Modern', title:'文艺复兴与近代', range:'17世纪 — 18世纪', era:'era_renaissance' },
+  { name:'Modern Philosophy', title:'现代哲学', range:'19世纪 — 20世纪中', era:'era_modern' },
+  { name:'Contemporary', title:'当代', range:'20世纪末 — 21世纪', era:'era_modern' },
+];
 
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', onScroll, { passive: true });
+// Map each school index to its era index
+function getEraIndex(i) {
+  const s = ALL_SCHOOLS[i];
+  const c = s.century;
+  if (c.includes('公元前30') || c.includes('公元前15') || c.includes('公元前10')) return 0;
+  if (c.includes('公元前6') || c.includes('公元前5') || c.includes('公元前4') || c.includes('公元前2') || c.includes('公元前1') || c === '3世纪' || c === '4世纪') return 1;
+  if (c === '6世纪' || c === '7世纪' || c === '8世纪' || c === '11世纪' || c === '13世纪' || c === '15世纪' || c === '16世纪') return 2;
+  if (c === '17世纪' || c === '18世纪') return 3;
+  if (c.includes('19世纪') || c.includes('20世纪初') || c === '20世纪' || c.includes('20世纪中')) return 4;
+  return 5;
+}
 
-    // Measure full page height after render
-    const measure = () => {
-      if (pageRef.current) {
-        setPageHeight(pageRef.current.scrollHeight + 'px');
-      }
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', measure); };
-  }, []);
+// --- Exhibit Component (VIS §13.4) ---
+function Exhibit({ school, index, isLeft, isActive, onClick, onHover, onLeave }) {
+  const color = REGION_COLORS[school.region];
+  const tierSize = school.tier === 'A' ? 'exhibit-major' : school.tier === 'B' ? 'exhibit-standard' : 'exhibit-minor';
+  const tierW = school.tier === 'A' ? 420 : school.tier === 'B' ? 340 : 270;
+  const tierF = school.tier === 'A' ? 22 : school.tier === 'B' ? 16 : 14;
 
   return (
-    <div ref={pageRef} style={{ background:'#F8F6F2', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A', position:'relative', overflow:'visible' }}>
-      {/* Layer 1: Museum Paper */}
-      <div style={{ position:'fixed',inset:0,zIndex:0,pointerEvents:'none',opacity:0.04,
-        backgroundImage:'url(/schools/paper_texture.png)',backgroundSize:'400px',mixBlendMode:'multiply' }} />
+    <div className={`exhibit ${tierSize}`} style={{
+      display:'flex', justifyContent: isLeft ? 'flex-start' : 'flex-end',
+      marginBottom: school.tier === 'A' ? 80 : school.tier === 'B' ? 56 : 36,
+      paddingLeft: isLeft ? 0 : 'calc(50% + 60px)',
+      paddingRight: isLeft ? 'calc(50% + 60px)' : 0,
+      position:'relative',
+    }}>
+      {/* River connector — subtle, no dots, no lines (VIS §5.2) */}
+      <div style={{
+        position:'absolute', left:'50%', top:'50%', transform:'translate(-50%,-50%)',
+        width:6, height:6, borderRadius:'50%', background:color, opacity:0.35, zIndex:2,
+        boxShadow:`0 0 12px ${color}20`
+      }} />
 
-      {/* Layer 1.5: Ancient Map */}
-      <div style={{ position:'fixed',inset:0,zIndex:0,pointerEvents:'none',opacity:0.012,
-        backgroundImage:'url(/schools/old_map_texture.png)',backgroundSize:'cover',backgroundPosition:'center',mixBlendMode:'multiply' }} />
+      {/* Exhibit artifact (VIS §7.2: museum display case) */}
+      <div
+        onClick={() => onClick(school.name)}
+        onMouseEnter={() => onHover(index)}
+        onMouseLeave={onLeave}
+        style={{
+          background: isActive
+            ? 'linear-gradient(180deg, rgba(253,251,247,0.98) 0%, rgba(248,244,237,0.96) 100%)'
+            : 'linear-gradient(180deg, rgba(252,250,246,0.94) 0%, rgba(246,242,234,0.92) 100%)',
+          border: isActive
+            ? `1px solid rgba(145,118,71,0.28)`
+            : '1px solid rgba(145,118,71,0.08)',
+          borderRadius: 16,
+          padding: school.tier === 'A' ? '24px 30px' : '16px 24px',
+          maxWidth: tierW,
+          width:'100%',
+          cursor:'pointer',
+          boxShadow: isActive
+            ? '0 8px 32px rgba(42,31,26,0.06), 0 2px 4px rgba(42,31,26,0.03)'
+            : '0 1px 3px rgba(42,31,26,0.02)',
+          transform: isActive ? 'translateY(-2px) scale(1.01)' : 'none',
+          transition: 'all 500ms cubic-bezier(0.33, 0, 0.1, 1)',
+          position:'relative', zIndex: isActive ? 5 : 1,
+        }}
+      >
+        {/* Top accent line on hover */}
+        {isActive && (
+          <div style={{
+            position:'absolute', top:0, left:24, right:24, height:1.5,
+            background:`linear-gradient(to right, transparent, ${color}40, transparent)`, borderRadius:2
+          }} />
+        )}
 
-      {/* Layer 2: River of Philosophy 2.0 — stretches to full content height, centered per PRD §23 */}
-      <div style={{ position:'absolute',top:0,left:0,right:0,zIndex:0,pointerEvents:'none',height:pageHeight,
-        display:'flex',justifyContent:'center',alignItems:'flex-start',overflow:'visible' }}>
-        <img src="/schools/哲学之河2.0.png" alt="" style={{
-          width:'32vw',minWidth:280,maxWidth:420,height:'100%',
-          objectFit:'cover',objectPosition:'center',
-          opacity:0.35,
-          maskImage:'linear-gradient(to right,transparent 0%,rgba(0,0,0,0.6) 15%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.6) 85%,transparent 100%)',
-          WebkitMaskImage:'linear-gradient(to right,transparent 0%,rgba(0,0,0,0.6) 15%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.6) 85%,transparent 100%)'
-        }} />
+        {/* Region + Century annotation */}
+        <div style={{
+          fontSize:9, fontWeight:400, letterSpacing:'0.16em', textTransform:'uppercase',
+          color, marginBottom: school.tier === 'A' ? 10 : 7,
+          fontFamily:'var(--font-sans)', opacity:0.8
+        }}>
+          {school.region === '东方' ? 'Eastern' : school.region === '西方' ? 'Western' : 'World'}  ·  {school.century}
+        </div>
+
+        {/* School name */}
+        <h3 style={{
+          fontSize:tierF, fontWeight:500, color:'#2A1F1A', margin:'0 0 6px',
+          letterSpacing:'0.02em', lineHeight:1.3,
+          fontFamily:'"Playfair Display", "PingFang SC", serif'
+        }}>{school.name}</h3>
+
+        {/* Description */}
+        <p style={{
+          fontSize:12, fontWeight:300, color:'#7A6E64', lineHeight:1.8, margin:0,
+          fontFamily:'var(--font-sans)'
+        }}>{school.desc}</p>
       </div>
-
-      {/* Layer 3: Constellation — Hero background per PRD §12 */}
-      <div style={{ position:'absolute',top:0,left:0,right:0,zIndex:0,pointerEvents:'none',height:'85vh',
-        backgroundImage:'url(/schools/哲学星图.png)',backgroundSize:'cover',backgroundPosition:'center',opacity:0.35 }} />
-
-      {/* Golden particles */}
-      {Array.from({length:5}).map((_,i)=>(<div key={'p'+i} style={{ position:'fixed',left:`${42+Math.random()*16}%`,top:`${Math.random()*100}%`,width:3,height:3,background:'#C4956A',borderRadius:'50%',opacity:0.12,pointerEvents:'none',zIndex:0,animation:`float-up ${8+Math.random()*6}s linear infinite`,animationDelay:`${i*1.5}s` }} />))}
-
-      {/* HERO — Museum Entrance */}
-      <section style={{ minHeight:'85vh',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',position:'relative',zIndex:1,padding:'60px 32px' }}>
-        <div style={{ position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'50vw',height:'50vh',background:'radial-gradient(ellipse,rgba(145,118,71,0.05) 0%,transparent 70%)',pointerEvents:'none' }} />
-        <p style={{ fontSize:10,fontWeight:400,letterSpacing:'0.32em',textTransform:'uppercase',color:'#917647',marginBottom:28,fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
-        <h1 style={{ fontSize:'clamp(2.5rem,7vw,5.5rem)',fontWeight:700,fontStyle:'italic',color:'#2A1F1A',letterSpacing:'0.04em',lineHeight:1.1,marginBottom:20 }}>世界哲学谱系</h1>
-        <div style={{ width:48,height:1.5,background:'#917647',marginBottom:24,opacity:0.5 }} />
-        <p style={{ fontSize:'clamp(0.95rem,1.4vw,1.1rem)',fontWeight:300,color:'#7A6E64',lineHeight:1.9,maxWidth:560 }}>
-          从公元前三十世纪至二十一世纪<br />九十七个流派，一部横跨五千年的人类思想史长卷</p>
-        <button onClick={()=>document.getElementById('river-start')?.scrollIntoView({behavior:'smooth'})} style={{ marginTop:40,background:'#2A1F1A',color:'#F8F6F2',border:'none',borderRadius:4,padding:'14px 40px',fontSize:14,fontWeight:400,cursor:'pointer',letterSpacing:'0.08em',fontFamily:'var(--font-sans)',transition:'background 0.3s' }}
-          onMouseEnter={e=>e.currentTarget.style.background='#917647'} onMouseLeave={e=>e.currentTarget.style.background='#2A1F1A'}>进入博物馆</button>
-      </section>
-
-      {/* Breathing space */}
-      <div style={{ height:160 }} />
-
-      {/* TIMELINE — Cards docked beside River */}
-      <div id="river-start" style={{ position:'relative',zIndex:1,paddingBottom:120,maxWidth:1200,margin:'0 auto',padding:'0 24px' }}>
-        {ALL_SCHOOLS.map((school,i) => {
-          const isLeft = i%3!==1; const color=REGION_COLORS[school.region]; const isHov=hoveredCard===i;
-          const fs=school.tier==='A'?22:school.tier==='B'?17:14; const cw=school.tier==='A'?420:school.tier==='B'?340:280;
-          return (
-            <div key={i} style={{ display:'flex',justifyContent:isLeft?'flex-start':'flex-end',marginBottom:school.tier==='A'?64:36,position:'relative',alignItems:'center' }}>
-              <div style={{ position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-50%)',width:5,height:5,borderRadius:'50%',background:color,opacity:0.45,zIndex:2 }}>
-                <div style={{ position:'absolute',top:'50%',[isLeft?'right':'left']:5,width:`calc(50vw - 140px)`,height:1,background:`linear-gradient(to ${isLeft?'left':'right'},${color}25,transparent)` }} />
-              </div>
-              <div onMouseEnter={()=>setHoveredCard(i)} onMouseLeave={()=>setHoveredCard(null)} onClick={()=>navigate('/school/'+encodeURIComponent(school.name))}
-                style={{ background:'#FDFBF7',border:isHov?`1px solid rgba(145,118,71,0.3)`:'1px solid rgba(145,118,71,0.1)',borderRadius:16,padding:'18px 26px',maxWidth:cw,width:'100%',cursor:'pointer',
-                  boxShadow:isHov?'0 8px 28px rgba(0,0,0,0.07)':'0 2px 8px rgba(0,0,0,0.03)',
-                  transform:isHov?'translateY(-3px) scale(1.01)':'none',transition:'all 0.5s cubic-bezier(0.25,0.1,0.25,1)',position:'relative',zIndex:isHov?5:1,
-                  marginLeft:isLeft?'2%':'auto',marginRight:isLeft?'auto':'2%' }}>
-                <div style={{ fontSize:9,fontWeight:400,letterSpacing:'0.14em',textTransform:'uppercase',color,marginBottom:8,fontFamily:'var(--font-sans)' }}>
-                  {school.region==='东方'?'Eastern':school.region==='西方'?'Western':'World'} · {school.century}</div>
-                <h3 style={{ fontSize:fs,fontWeight:500,color:'#2A1F1A',margin:'0 0 6px',letterSpacing:'0.02em',lineHeight:1.3,fontFamily:'"Playfair Display","PingFang SC",serif' }}>{school.name}</h3>
-                <p style={{ fontSize:12,fontWeight:300,color:'#7A6E64',lineHeight:1.7,margin:0,fontFamily:'var(--font-sans)' }}>{school.desc}</p>
-                {isHov&&<div style={{ position:'absolute',top:0,left:24,right:24,height:1.5,background:`linear-gradient(to right,transparent,${color}50,transparent)`,borderRadius:2 }} />}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* FOOTER */}
-      <div style={{ textAlign:'center',paddingBottom:80,position:'relative',zIndex:1,display:'flex',justifyContent:'center',gap:48 }}>
-        {[{label:'西方哲学传统 →',path:'/western-philosophies',color:REGION_COLORS['西方']},{label:'东方哲学传统 →',path:'/eastern-philosophies',color:REGION_COLORS['东方']},{label:'世界哲学传统 →',path:'/world-philosophies',color:REGION_COLORS['世界']}].map(btn=>(
-          <button key={btn.path} onClick={()=>navigate(btn.path)} style={{ background:'none',border:'none',cursor:'pointer',fontFamily:'"Playfair Display",serif',fontSize:15,fontWeight:400,color:btn.color,letterSpacing:'0.04em',padding:'8px 16px',transition:'opacity 0.2s' }}
-            onMouseEnter={e=>e.currentTarget.style.opacity='0.6'} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>{btn.label}</button>
-        ))}</div>
-
-      <style>{`@keyframes float-up{0%{transform:translateY(100vh);opacity:0}10%{opacity:0.5}90%{opacity:0.1}100%{transform:translateY(-10vh);opacity:0}}`}</style>
     </div>
   );
 }
 
-export default GenealogyPage;
+// --- Era Chapter Marker (VIS §5.7) ---
+function EraMarker({ era, isVisible }) {
+  return (
+    <div style={{
+      textAlign:'center', padding:'120px 24px 80px', position:'relative', zIndex:1,
+      opacity: isVisible ? 1 : 0.3,
+      transition: 'opacity 800ms ease',
+    }}>
+      <div style={{
+        width:80, height:1, background:'linear-gradient(to right, transparent, #91764740, transparent)',
+        margin:'0 auto 36px'
+      }} />
+      <img
+        src={`/schools/${era.era}.png`}
+        alt=""
+        loading="lazy"
+        style={{
+          height:160, width:'auto', opacity:0.22, marginBottom:28,
+          filter:'saturate(0.6) brightness(1.1)',
+          objectFit:'contain'
+        }}
+      />
+      <p style={{
+        fontSize:10, fontWeight:400, letterSpacing:'0.28em', textTransform:'uppercase',
+        color:'#917647', marginBottom:12, fontFamily:'var(--font-sans)'
+      }}>{era.name}</p>
+      <h2 style={{
+        fontSize:'clamp(1.5rem,3vw,2rem)', fontWeight:400, color:'#2A1F1A',
+        margin:'0 0 6px', letterSpacing:'0.06em',
+        fontFamily:'"Playfair Display", "PingFang SC", serif'
+      }}>{era.title}</h2>
+      <p style={{
+        fontSize:13, fontWeight:300, color:'#A09080', fontFamily:'var(--font-sans)', margin:0
+      }}>{era.range}</p>
+    </div>
+  );
+}
+
+// --- Museum Gallery (main page) ---
+export default function GenealogyPage() {
+  const navigate = useNavigate();
+  const [hoveredIdx, setHoveredIdx] = useState(null);
+  const [scrollY, setScrollY] = useState(0);
+  const pageRef = useRef(null);
+
+  // Scroll tracking
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Precompute era boundaries
+  const eraGroups = [];
+  let currentEra = -1;
+  ALL_SCHOOLS.forEach((s, i) => {
+    const ei = getEraIndex(i);
+    if (ei !== currentEra) {
+      currentEra = ei;
+      eraGroups.push({ era: ERAS[ei], startIdx: i });
+    }
+  });
+
+  return (
+    <div ref={pageRef} style={{
+      background:'#F9F7F3', minHeight:'100vh',
+      fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A',
+      position:'relative', overflow:'visible'
+    }}>
+
+      {/* ══════════ LAYER 1: Paper Texture (VIS §2.10, §3.6) ══════════ */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.05,
+        backgroundImage:'url(/gene/textures/texture_parchment.png)',
+        backgroundSize:'500px', mixBlendMode:'multiply'
+      }} />
+
+      {/* ══════════ LAYER 2: Old Map Texture (VIS §2.10) ══════════ */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.015,
+        backgroundImage:'url(/gene/textures/texture_old_map.png)',
+        backgroundSize:'cover', backgroundPosition:'center', mixBlendMode:'multiply'
+      }} />
+
+      {/* ══════════ LAYER 3: Terrain — foundation (VIS §2.9) ══════════ */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.08,
+        backgroundImage:'url(/gene/terrain/terrain_river_valley.png)',
+        backgroundSize:'cover', backgroundPosition:'center',
+        mixBlendMode:'multiply',
+        maskImage:'linear-gradient(to bottom, transparent 5%, black 20%, black 80%, transparent 95%)',
+        WebkitMaskImage:'linear-gradient(to bottom, transparent 5%, black 20%, black 80%, transparent 95%)'
+      }} />
+
+      {/* ══════════ LAYER 4: Civilization Silhouette (VIS §2.12) ══════════ */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.04,
+        backgroundImage:'url(/gene/civilization_silhouette.png)',
+        backgroundSize:'120%', backgroundPosition:'center bottom',
+        mixBlendMode:'multiply', filter:'blur(1px)',
+        maskImage:'linear-gradient(to top, black 40%, transparent 90%)',
+        WebkitMaskImage:'linear-gradient(to top, black 40%, transparent 90%)'
+      }} />
+
+      {/* ══════════ LAYER 5: River of Philosophy (VIS §2.7, §5.4) ══════════ */}
+      <div style={{
+        position:'fixed', top:0, bottom:0, left:'50%', transform:'translateX(-50%)',
+        width:'clamp(240px, 28vw, 380px)', zIndex:0, pointerEvents:'none'
+      }}>
+        <img src={"/gene/river/" + encodeURI("哲学之河2.0.png")} alt="" style={{
+          width:'100%', height:'100%',
+          objectFit:'cover', objectPosition:'center',
+          opacity:0.28,
+          maskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.5) 88%, transparent 100%)',
+          WebkitMaskImage:'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 12%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.5) 88%, transparent 100%)'
+        }} />
+      </div>
+
+      {/* ══════════ LAYER 6: Atmosphere — Mist between terrain (VIS §2.4) ══════════ */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.06,
+        backgroundImage:'url(/gene/atmosphere/effect_mist.png)',
+        backgroundSize:'cover', backgroundPosition:'center',
+        mixBlendMode:'screen',
+        maskImage:'linear-gradient(to right, transparent, black 30%, black 70%, transparent)',
+        WebkitMaskImage:'linear-gradient(to right, transparent, black 30%, black 70%, transparent)'
+      }} />
+
+      {/* ══════════ LAYER 7: Golden Dust Particles (VIS §2.12) ══════════ */}
+      <div style={{
+        position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.04,
+        backgroundImage:'url(/gene/gold_particles.png)',
+        backgroundSize:'cover', backgroundPosition:'center',
+        animation:'museum-drift 60s linear infinite',
+        mixBlendMode:'screen'
+      }} />
+
+      {/* ══════════ LAYER 8: God Rays — Hero only (VIS §2.4) ══════════ */}
+      <div style={{
+        position:'absolute', top:0, left:0, right:0, height:'100vh', zIndex:0, pointerEvents:'none',
+        opacity:0.06,
+        backgroundImage:'url(/gene/atmosphere/effect_god_rays.png)',
+        backgroundSize:'cover', backgroundPosition:'center top',
+        mixBlendMode:'screen'
+      }} />
+
+      {/* ══════════ HERO — Museum Entrance (VIS §4.2, §5.3) ══════════ */}
+      <section style={{
+        minHeight:'90vh', display:'flex', flexDirection:'column',
+        justifyContent:'center', alignItems:'center', textAlign:'center',
+        position:'relative', zIndex:1, padding:'60px 32px'
+      }}>
+        {/* Warm glow behind hero */}
+        <div style={{
+          position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)',
+          width:'60vw', height:'50vh',
+          background:'radial-gradient(ellipse, rgba(145,118,71,0.06) 0%, transparent 70%)',
+          pointerEvents:'none'
+        }} />
+
+        <p style={{
+          fontSize:10, fontWeight:400, letterSpacing:'0.32em', textTransform:'uppercase',
+          color:'#917647', marginBottom:32, fontFamily:'var(--font-sans)', opacity:0.85
+        }}>Museum of Philosophy  ·  Genealogy Wing</p>
+
+        <h1 style={{
+          fontSize:'clamp(2.5rem, 7vw, 5rem)', fontWeight:400, fontStyle:'italic',
+          color:'#2A1F1A', letterSpacing:'0.04em', lineHeight:1.15, marginBottom:24,
+          fontFamily:'"Playfair Display", "PingFang SC", serif'
+        }}>哲学之河</h1>
+
+        <div style={{ width:56, height:1.5, background:'#917647', marginBottom:28, opacity:0.45 }} />
+
+        <p style={{
+          fontSize:'clamp(0.95rem, 1.4vw, 1.15rem)', fontWeight:300,
+          color:'#8A7E74', lineHeight:2.0, maxWidth:580,
+          fontFamily:'var(--font-sans)'
+        }}>
+          从公元前三十世纪至二十一世纪<br />
+          九十五个哲学流派，一部横跨五千年的人类思想史长卷
+        </p>
+
+        <p style={{
+          fontSize:'clamp(0.85rem, 1.1vw, 0.95rem)', fontWeight:300,
+          color:'#A09080', lineHeight:2.0, maxWidth:540, marginTop:16,
+          fontFamily:'var(--font-sans)', fontStyle:'italic'
+        }}>
+          哲学不是孤立的学派。<br />
+          思想如河流——起源、分流、汇合、消失、复兴。
+        </p>
+
+        {/* Scroll invitation — museum annotation style (VIS §4.8) */}
+        <button
+          onClick={() => document.getElementById('museum-gallery')?.scrollIntoView({ behavior:'smooth' })}
+          style={{
+            marginTop:48, background:'none', border:'1px solid rgba(145,118,71,0.2)',
+            borderRadius:8, padding:'12px 36px', fontSize:13, fontWeight:300,
+            color:'#8A7E74', cursor:'pointer', letterSpacing:'0.08em',
+            fontFamily:'var(--font-sans)', transition:'all 400ms ease'
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = 'rgba(145,118,71,0.5)';
+            e.currentTarget.style.color = '#917647';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = 'rgba(145,118,71,0.2)';
+            e.currentTarget.style.color = '#8A7E74';
+          }}
+        >
+          沿河而上  ·  进入展廊
+        </button>
+      </section>
+
+      {/* ══════════ MUSEUM GALLERY — River Timeline (VIS §5) ══════════ */}
+      <div id="museum-gallery" style={{
+        position:'relative', zIndex:1, paddingBottom:120,
+        maxWidth:1280, margin:'0 auto', padding:'0 24px'
+      }}>
+        {/* Civilization breathing space before exhibits */}
+        <div style={{ height:120 }} />
+
+        {ALL_SCHOOLS.map((school, i) => {
+          // Check if this is an era boundary
+          const eraStart = eraGroups.find(g => g.startIdx === i);
+          const isEraBoundary = !!eraStart;
+          const isLeft = i % 3 !== 1; // Natural staggering — never mechanical L/R/L/R
+
+          return (
+            <div key={i}>
+              {/* Era chapter marker (VIS §5.7) */}
+              {isEraBoundary && (
+                <EraMarker era={eraStart.era} isVisible={true} />
+              )}
+
+              {/* Exhibit */}
+              <Exhibit
+                school={school}
+                index={i}
+                isLeft={isLeft}
+                isActive={hoveredIdx === i}
+                onClick={(name) => navigate('/school/' + encodeURIComponent(name))}
+                onHover={setHoveredIdx}
+                onLeave={() => setHoveredIdx(null)}
+              />
+            </div>
+          );
+        })}
+
+        {/* Closing breathing space */}
+        <div style={{ height:160 }} />
+      </div>
+
+      {/* ══════════ FOOTER — Continue Journey (VIS §5.17) ══════════ */}
+      <div style={{
+        textAlign:'center', paddingBottom:80, position:'relative', zIndex:1,
+        display:'flex', justifyContent:'center', gap:56, flexWrap:'wrap'
+      }}>
+        {[
+          { label:'西方哲学传统', sub:'Western Tradition', path:'/western-philosophies', color:REGION_COLORS['西方'] },
+          { label:'东方哲学传统', sub:'Eastern Tradition', path:'/eastern-philosophies', color:REGION_COLORS['东方'] },
+          { label:'世界哲学传统', sub:'World Traditions', path:'/world-philosophies', color:REGION_COLORS['世界'] },
+        ].map(btn => (
+          <button key={btn.path}
+            onClick={() => navigate(btn.path)}
+            style={{
+              background:'none', border:'none', cursor:'pointer',
+              fontFamily:'"Playfair Display",serif', fontSize:16, fontWeight:400,
+              color:btn.color, letterSpacing:'0.04em',
+              padding:'12px 20px', transition:'all 300ms ease',
+              opacity:0.75
+            }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.letterSpacing = '0.08em'; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '0.75'; e.currentTarget.style.letterSpacing = '0.04em'; }}
+          >
+            <div style={{ fontSize:10, fontWeight:400, letterSpacing:'0.2em', textTransform:'uppercase', marginBottom:6, opacity:0.6 }}>{btn.sub}</div>
+            {btn.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ══════════ ANIMATIONS ══════════ */}
+      <style>{`
+        @keyframes museum-drift {
+          0% { transform: translate(0, 0); }
+          25% { transform: translate(-1%, 0.5%); }
+          50% { transform: translate(0, 1%); }
+          75% { transform: translate(1%, 0.5%); }
+          100% { transform: translate(0, 0); }
+        }
+        .exhibit { transition: opacity 600ms ease; }
+      `}</style>
+    </div>
+  );
+}
