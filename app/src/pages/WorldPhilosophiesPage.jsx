@@ -63,6 +63,15 @@ const WORLD_PHILOSOPHIES = [
   { name: '古埃及哲学', color: '#C4A03A', desc: '人类最早的智慧传统之一——以玛阿特为核心，追问宇宙秩序、死后存在与王权的神圣基础，对希腊哲学产生深远影响。' },
   { name: '印加哲学', color: '#8B6E3A', desc: '安第斯文明的哲学结晶——帕查（宇宙时空）与艾尼（互惠平衡）为核心，大地母亲帕查玛玛的生态智慧为当代环境哲学提供古老资源。' },
   { name: '美索不达米亚哲学', color: '#C4A43A', desc: '人类最早的哲学追问。苏美尔智慧文学追问苦难与秩序，《吉尔伽美什》史诗探索死亡与不朽，巴比伦的天文学与占星术将宇宙秩序与人间命运相连。' },
+  { name: '古希伯来哲学', color: '#C4A03A', desc: '约伯、传道书与智慧文学——信仰、苦难与神圣正义的追问，希伯来思想对一神教伦理的奠基。' },
+  { name: '凯尔特哲学', color: '#3A8C6B', desc: '德鲁伊传统与凯尔特智慧——自然、灵魂转世与森林中的哲学，欧洲最古老的灵性传统之一。' },
+  { name: '罗马哲学', color: '#8B3A5C', desc: '西塞罗、塞内卡、马可·奥勒留——斯多葛与伊壁鸠鲁在帝国的实践，将哲学融入政治与日常生活。' },
+  { name: '拜占庭哲学', color: '#6B3FA0', desc: '东罗马帝国的神学哲学传统——伪狄奥尼修斯与拜占庭智慧，融合希腊哲学与基督教神学。' },
+  { name: '解放哲学', color: '#C44A3A', desc: '从解放神学到巴西解放教育学——哲学为被压迫者发声，法农、弗莱雷、杜塞尔将哲学转向底层。' },
+  { name: '解构主义', color: '#5A7B8B', desc: '德里达的解构——文字、意义与权力的边缘，挑战逻各斯中心主义与二元等级。' },
+  { name: '环境哲学', color: '#3A8C6B', desc: '人类与自然的伦理关系——深层生态学、生态女性主义与环境正义，重新定义人与土地的连接。' },
+  { name: '后殖民哲学', color: '#8B5A3A', desc: '法农、萨义德、斯皮瓦克——殖民经验的哲学批判与去殖民化思想，揭示权力、知识与身份的关系。' },
+  { name: '原住民哲学', color: '#5A8B3A', desc: '全球原住民的生态智慧与土地伦理——从澳大利亚到亚马逊，追问人与自然的共生关系。' },
 ];
 
 export default function WorldPhilosophiesPage() {
@@ -72,7 +81,8 @@ export default function WorldPhilosophiesPage() {
     <div className="page-container" style={{ paddingBottom: 80 }}>
 
       {/* ══════════ HERO ══════════ */}
-      <section style={{ padding: '72px 32px 48px', textAlign: 'center', maxWidth: 720, margin: '0 auto' }}>
+      <section style={{ minHeight: '40vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '72px 32px 48px', position: 'relative', overflow: 'hidden', backgroundImage: 'url(/schools/世界哲学传统.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.5) 40%, rgba(244,240,235,0.2) 100%)' }} />
         <button onClick={() => navigate('/genealogy')} style={{
           background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13,
           color: 'var(--text-dim)', letterSpacing: '0.04em', marginBottom: 32, padding: 0
@@ -94,7 +104,7 @@ export default function WorldPhilosophiesPage() {
           fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 300,
           color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto'
         }}>
-          从古希腊到美索不达米亚，从印度到澳洲，<br />二十二大哲学传统覆盖了全球思想版图。
+          从古希腊到美索不达米亚，从印度到澳洲，<br />三十大哲学传统覆盖了全球思想版图。
         </p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
       </section>

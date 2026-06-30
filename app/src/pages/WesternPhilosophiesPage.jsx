@@ -41,6 +41,8 @@ const SCHOOLS = [
   { name: '社群主义', color: '#6B8B5A', desc: '自我镶嵌于共同体之中——正义、善与归属不可分离。' },
   { name: '技术哲学', color: '#5A7B9B', desc: '技术不是中立的工具——它重塑了人的存在方式与世界的关系。' },
   { name: '宗教哲学', color: '#8B7B6E', desc: '以理性审视信仰——上帝存在的证明、恶的问题与宗教多元论。' },
+  { name: '解构主义', color: '#7B6B9B', desc: '德里达的解构——文字、意义与权力的边缘。' },
+  { name: '环境哲学', color: '#5A8B5A', desc: '人类与自然的伦理关系——深层生态学、生态女性主义与环境正义。' },
 ];
 
 export default function WesternPhilosophiesPage() {
@@ -52,7 +54,7 @@ export default function WesternPhilosophiesPage() {
         <button onClick={() => navigate(-1)} style={{ position: 'relative', zIndex: 1, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.04em', marginBottom: 32, padding: 0 }}>← 返回</button>
         <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 16px' }}>Western Philosophy</p>
         <h1 style={{ position: 'relative', zIndex: 1, fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 400, color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.2, margin: '0 0 20px' }}>西方哲学</h1>
-        <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>从古希腊到后现代，四十个流派，<br />理性、存在与语言的两千年探索。</p>
+        <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>从古希腊到后现代，四十二个流派，<br />理性、存在与语言的跨越两千年的探索。</p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
       </section>
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 32px 64px' }}>

@@ -7,6 +7,7 @@ const ALL_SCHOOLS = [
   // 公元前30世纪
   { century:'公元前30世纪', name:'古埃及哲学', region:'世界', desc:'玛阿特——宇宙秩序、真理与正义的永恒法则。' },
   { century:'公元前30世纪', name:'美索不达米亚哲学', region:'世界', desc:'苏美尔智慧文学追问苦难与秩序——人类最早的哲学追问。' },
+  { century:'公元前30世纪', name:'古希伯来哲学', region:'世界', desc:'约伯、传道书与智慧文学——信仰、苦难与神圣正义的追问。' },
   // 公元前15世纪
   { century:'公元前15世纪', name:'印度哲学', region:'世界', desc:'《吠陀》《奥义书》为源头，六派哲学追问解脱。' },
   { century:'公元前15世纪', name:'犹太哲学', region:'世界', desc:'从斐洛到列维纳斯，在雅典与耶路撒冷之间。' },
@@ -16,6 +17,7 @@ const ALL_SCHOOLS = [
   { century:'公元前6世纪', name:'道家', region:'东方', desc:'道法自然，无为而治——以柔克刚的东方智慧。' },
   { century:'公元前6世纪', name:'儒家', region:'东方', desc:'以仁为核心，以礼为规范——修身齐家治国平天下。' },
   { century:'公元前6世纪', name:'古希腊哲学', region:'世界', desc:'西方哲学总源——以理性思辨取代神话解释。' },
+  { century:'公元前6世纪', name:'凯尔特哲学', region:'世界', desc:'德鲁伊传统与凯尔特智慧——自然、灵魂转世与森林中的哲学。' },
   // 公元前5世纪
   { century:'公元前5世纪', name:'墨家', region:'东方', desc:'兼爱非攻，尚贤节用——先秦最激进的平等主义。' },
   { century:'公元前5世纪', name:'兵家', region:'东方', desc:'知己知彼，不战屈人——冲突的博弈艺术。' },
@@ -25,10 +27,13 @@ const ALL_SCHOOLS = [
   { century:'公元前4世纪', name:'阴阳家', region:'东方', desc:'阴阳消长，五德终始——宇宙论框架。' },
   // 公元前2世纪
   { century:'公元前2世纪', name:'两汉经学', region:'东方', desc:'通经致用，以经为法——天人感应的政治神学。' },
+  // 公元前1世纪
+  { century:'公元前1世纪', name:'罗马哲学', region:'世界', desc:'西塞罗、塞内卡、马可·奥勒留——斯多葛与伊壁鸠鲁在帝国的实践。' },
   // 3世纪
   { century:'3世纪', name:'魏晋玄学', region:'东方', desc:'越名教而任自然——乱世中的精神自由。' },
   // 4世纪
   { century:'4世纪', name:'教父哲学', region:'西方', desc:'以希腊理性为基督教信仰奠基。' },
+  { century:'4世纪', name:'拜占庭哲学', region:'世界', desc:'东罗马帝国的神学哲学传统——伪狄奥尼修斯与拜占庭智慧。' },
   // 6世纪
   { century:'6世纪', name:'隋唐佛学', region:'东方', desc:'八宗竞秀，会通中印——佛教中国化。' },
   // 7世纪
@@ -74,6 +79,8 @@ const ALL_SCHOOLS = [
   // 19世纪末
   { century:'19世纪末', name:'天演论', region:'东方', desc:'物竞天择，适者生存。' },
   { century:'19世纪末', name:'维新派', region:'东方', desc:'变则通，通则久。' },
+  // 20世纪
+  { century:'20世纪', name:'解放哲学', region:'世界', desc:'从解放神学到巴西解放教育学——哲学为被压迫者发声。' },
   // 20世纪初
   { century:'20世纪初', name:'实用主义', region:'西方', desc:'真理即有用，意义在于效果。' },
   { century:'20世纪初', name:'精神分析学', region:'西方', desc:'心灵深处有一个你不知道的你。' },
@@ -99,11 +106,15 @@ const ALL_SCHOOLS = [
   { century:'20世纪中', name:'新民主主义', region:'东方', desc:'革命分两步走。' },
   // 20世纪末
   { century:'20世纪末', name:'后结构主义', region:'西方', desc:'解构逻各斯中心主义。' },
+  { century:'20世纪末', name:'解构主义', region:'西方', desc:'德里达的解构——文字、意义与权力的边缘。' },
   { century:'20世纪末', name:'后现代主义', region:'西方', desc:'对宏大叙事的怀疑。' },
+  { century:'20世纪末', name:'环境哲学', region:'西方', desc:'人类与自然的伦理关系——深层生态学、生态女性主义与环境正义。' },
   { century:'20世纪末', name:'伦理学', region:'西方', desc:'追问人应该如何生活。' },
   { century:'20世纪末', name:'宗教哲学', region:'西方', desc:'以理性审视信仰。' },
   { century:'20世纪末', name:'女性主义', region:'西方', desc:'个人的即政治的。' },
   { century:'20世纪末', name:'社群主义', region:'西方', desc:'自我镶嵌于共同体之中。' },
+  { century:'20世纪末', name:'后殖民哲学', region:'世界', desc:'法农、萨义德、斯皮瓦克——殖民经验的哲学批判与去殖民化思想。' },
+  { century:'20世纪末', name:'原住民哲学', region:'世界', desc:'全球原住民的生态智慧与土地伦理——从澳大利亚到亚马逊。' },
   { century:'20世纪末', name:'现代新儒家', region:'东方', desc:'返本开新，内圣外王。' },
   { century:'20世纪末', name:'中国实证哲学', region:'东方', desc:'大胆假设，小心求证。' },
   { century:'20世纪末', name:'马克思主义哲学的中国化与体系化', region:'东方', desc:'实践标准到理论体系。' },

@@ -7,11 +7,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ALL_SCHOOLS = [
+  { century:'公元前30世纪', name:'古希伯来哲学', region:'世界', desc:'约伯、传道书与智慧文学——信仰、苦难与神圣正义的追问。', tier:'A' },
   { century:'公元前30世纪', name:'古埃及哲学', region:'世界', desc:'玛阿特——宇宙秩序、真理与正义的永恒法则。', tier:'A' },
   { century:'公元前30世纪', name:'美索不达米亚哲学', region:'世界', desc:'苏美尔智慧文学追问苦难与秩序——人类最早的哲学追问。', tier:'A' },
   { century:'公元前15世纪', name:'印度哲学', region:'世界', desc:'《吠陀》《奥义书》为源头，六派哲学追问解脱。', tier:'A' },
   { century:'公元前15世纪', name:'犹太哲学', region:'世界', desc:'从斐洛到列维纳斯——雅典与耶路撒冷之间。', tier:'B' },
   { century:'公元前10世纪', name:'波斯哲学', region:'世界', desc:'琐罗亚斯德教善恶二元论——两千五百年的连续传统。', tier:'B' },
+  { century:'公元前6世纪', name:'凯尔特哲学', region:'世界', desc:'德鲁伊传统与凯尔特智慧——自然、灵魂转世与森林中的哲学。', tier:'B' },
   { century:'公元前6世纪', name:'道家', region:'东方', desc:'道法自然，无为而治。', tier:'A' },
   { century:'公元前6世纪', name:'儒家', region:'东方', desc:'以仁为核心，以礼为规范。', tier:'A' },
   { century:'公元前6世纪', name:'古希腊哲学', region:'世界', desc:'西方哲学总源——以理性思辨取代神话解释。', tier:'A' },
@@ -20,8 +22,10 @@ const ALL_SCHOOLS = [
   { century:'公元前4世纪', name:'法家', region:'东方', desc:'以法治国，不别亲疏。', tier:'B' },
   { century:'公元前4世纪', name:'名家', region:'东方', desc:'白马非马——中国最早的逻辑学。', tier:'C' },
   { century:'公元前4世纪', name:'阴阳家', region:'东方', desc:'阴阳消长，五德终始。', tier:'C' },
+  { century:'公元前1世纪', name:'罗马哲学', region:'世界', desc:'西塞罗、塞内卡、马可·奥勒留——斯多葛与伊壁鸠鲁在帝国的实践。', tier:'A' },
   { century:'公元前2世纪', name:'两汉经学', region:'东方', desc:'通经致用，以经为法。', tier:'B' },
   { century:'3世纪', name:'魏晋玄学', region:'东方', desc:'越名教而任自然。', tier:'B' },
+  { century:'4世纪', name:'拜占庭哲学', region:'世界', desc:'东罗马帝国的神学哲学传统——伪狄奥尼修斯与拜占庭智慧。', tier:'B' },
   { century:'4世纪', name:'教父哲学', region:'西方', desc:'以希腊理性为基督教信仰奠基。', tier:'A' },
   { century:'6世纪', name:'隋唐佛学', region:'东方', desc:'八宗竞秀，会通中印。', tier:'A' },
   { century:'7世纪', name:'伊斯兰哲学', region:'世界', desc:'凯拉姆与苏非——理性与启示的对话。', tier:'A' },
@@ -67,6 +71,7 @@ const ALL_SCHOOLS = [
   { century:'20世纪初', name:'哲学人类学', region:'西方', desc:'人是什么。', tier:'C' },
   { century:'20世纪初', name:'三民主义', region:'东方', desc:'民族、民权、民生。', tier:'C' },
   { century:'20世纪初', name:'旧民主主义', region:'东方', desc:'探索民主共和道路。', tier:'C' },
+  { century:'20世纪', name:'解放哲学', region:'世界', desc:'从解放神学到巴西解放教育学——哲学为被压迫者发声。', tier:'A' },
   { century:'20世纪中', name:'西方马克思主义', region:'西方', desc:'回到黑格尔的马克思。', tier:'B' },
   { century:'20世纪中', name:'法兰克福学派', region:'西方', desc:'工具理性已沦为新的统治形式。', tier:'B' },
   { century:'20世纪中', name:'批判理论', region:'西方', desc:'传统理论描述世界，批判理论旨在解放。', tier:'B' },
@@ -79,11 +84,15 @@ const ALL_SCHOOLS = [
   { century:'20世纪中', name:'毛泽东思想', region:'东方', desc:'实事求是，群众路线。', tier:'B' },
   { century:'20世纪中', name:'中国马克思主义哲学', region:'东方', desc:'辩证唯物主义的中国化。', tier:'B' },
   { century:'20世纪中', name:'新民主主义', region:'东方', desc:'革命分两步走。', tier:'C' },
+  { century:'20世纪末', name:'解构主义', region:'西方', desc:'德里达的解构——文字、意义与权力的边缘。', tier:'B' },
   { century:'20世纪末', name:'后结构主义', region:'西方', desc:'解构逻各斯中心主义。', tier:'B' },
   { century:'20世纪末', name:'后现代主义', region:'西方', desc:'对宏大叙事的怀疑。', tier:'B' },
   { century:'20世纪末', name:'伦理学', region:'西方', desc:'追问人应该如何生活。', tier:'B' },
+  { century:'20世纪末', name:'环境哲学', region:'西方', desc:'人类与自然的伦理关系——深层生态学、生态女性主义与环境正义。', tier:'B' },
   { century:'20世纪末', name:'宗教哲学', region:'西方', desc:'以理性审视信仰。', tier:'C' },
+  { century:'20世纪末', name:'后殖民哲学', region:'世界', desc:'法农、萨义德、斯皮瓦克——殖民经验的哲学批判与去殖民化思想。', tier:'B' },
   { century:'20世纪末', name:'女性主义', region:'西方', desc:'个人的即政治的。', tier:'B' },
+  { century:'20世纪末', name:'原住民哲学', region:'世界', desc:'全球原住民的生态智慧与土地伦理——从澳大利亚到亚马逊。', tier:'B' },
   { century:'20世纪末', name:'社群主义', region:'西方', desc:'自我镶嵌于共同体之中。', tier:'C' },
   { century:'20世纪末', name:'现代新儒家', region:'东方', desc:'返本开新，内圣外王。', tier:'B' },
   { century:'20世纪末', name:'中国实证哲学', region:'东方', desc:'大胆假设，小心求证。', tier:'C' },
@@ -100,30 +109,49 @@ function GenealogyPage() {
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const pageRef = useRef(null);
+  const [pageHeight, setPageHeight] = useState('100vh');
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+
+    // Measure full page height after render
+    const measure = () => {
+      if (pageRef.current) {
+        setPageHeight(pageRef.current.scrollHeight + 'px');
+      }
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', measure); };
   }, []);
 
   return (
-    <div style={{ background:'#F8F6F2', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A', position:'relative', overflow:'hidden' }}>
+    <div ref={pageRef} style={{ background:'#F8F6F2', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A', position:'relative', overflow:'visible' }}>
       {/* Layer 1: Museum Paper */}
       <div style={{ position:'fixed',inset:0,zIndex:0,pointerEvents:'none',opacity:0.04,
         backgroundImage:'url(/schools/paper_texture.png)',backgroundSize:'400px',mixBlendMode:'multiply' }} />
 
-      {/* Layer 2: Ancient Map */}
+      {/* Layer 1.5: Ancient Map */}
       <div style={{ position:'fixed',inset:0,zIndex:0,pointerEvents:'none',opacity:0.012,
         backgroundImage:'url(/schools/old_map_texture.png)',backgroundSize:'cover',backgroundPosition:'center',mixBlendMode:'multiply' }} />
 
-      {/* Layer 3: River of Philosophy — full-height, extends with page */}
-      <div style={{ position:'fixed',top:0,bottom:0,left:'50%',transform:`translateX(-50%) translateY(${-scrollY*0.04}px)`,
-        width:'30vw',minWidth:300,maxWidth:460,zIndex:0,pointerEvents:'none' }}>
-        <img src="/schools/哲学之河.png" alt="" style={{ width:'100%',height:'100%',objectFit:'cover',objectPosition:'center top',
-          opacity:0.10, maskImage:'linear-gradient(to right,transparent 0%,black 25%,black 75%,transparent 100%)',
-          WebkitMaskImage:'linear-gradient(to right,transparent 0%,black 25%,black 75%,transparent 100%)' }} />
+      {/* Layer 2: River of Philosophy 2.0 — stretches to full content height, centered per PRD §23 */}
+      <div style={{ position:'absolute',top:0,left:0,right:0,zIndex:0,pointerEvents:'none',height:pageHeight,
+        display:'flex',justifyContent:'center',alignItems:'flex-start',overflow:'visible' }}>
+        <img src="/schools/哲学之河2.0.png" alt="" style={{
+          width:'32vw',minWidth:280,maxWidth:420,height:'100%',
+          objectFit:'cover',objectPosition:'center',
+          opacity:0.35,
+          maskImage:'linear-gradient(to right,transparent 0%,rgba(0,0,0,0.6) 15%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.6) 85%,transparent 100%)',
+          WebkitMaskImage:'linear-gradient(to right,transparent 0%,rgba(0,0,0,0.6) 15%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.6) 85%,transparent 100%)'
+        }} />
       </div>
+
+      {/* Layer 3: Constellation — Hero background per PRD §12 */}
+      <div style={{ position:'absolute',top:0,left:0,right:0,zIndex:0,pointerEvents:'none',height:'85vh',
+        backgroundImage:'url(/schools/哲学星图.png)',backgroundSize:'cover',backgroundPosition:'center',opacity:0.35 }} />
 
       {/* Golden particles */}
       {Array.from({length:5}).map((_,i)=>(<div key={'p'+i} style={{ position:'fixed',left:`${42+Math.random()*16}%`,top:`${Math.random()*100}%`,width:3,height:3,background:'#C4956A',borderRadius:'50%',opacity:0.12,pointerEvents:'none',zIndex:0,animation:`float-up ${8+Math.random()*6}s linear infinite`,animationDelay:`${i*1.5}s` }} />))}
@@ -135,7 +163,7 @@ function GenealogyPage() {
         <h1 style={{ fontSize:'clamp(2.5rem,7vw,5.5rem)',fontWeight:700,fontStyle:'italic',color:'#2A1F1A',letterSpacing:'0.04em',lineHeight:1.1,marginBottom:20 }}>世界哲学谱系</h1>
         <div style={{ width:48,height:1.5,background:'#917647',marginBottom:24,opacity:0.5 }} />
         <p style={{ fontSize:'clamp(0.95rem,1.4vw,1.1rem)',fontWeight:300,color:'#7A6E64',lineHeight:1.9,maxWidth:560 }}>
-          从公元前三十世纪至二十一世纪<br />八十八个流派，一部横跨五千年的人类思想史长卷</p>
+          从公元前三十世纪至二十一世纪<br />九十七个流派，一部横跨五千年的人类思想史长卷</p>
         <button onClick={()=>document.getElementById('river-start')?.scrollIntoView({behavior:'smooth'})} style={{ marginTop:40,background:'#2A1F1A',color:'#F8F6F2',border:'none',borderRadius:4,padding:'14px 40px',fontSize:14,fontWeight:400,cursor:'pointer',letterSpacing:'0.08em',fontFamily:'var(--font-sans)',transition:'background 0.3s' }}
           onMouseEnter={e=>e.currentTarget.style.background='#917647'} onMouseLeave={e=>e.currentTarget.style.background='#2A1F1A'}>进入博物馆</button>
       </section>
