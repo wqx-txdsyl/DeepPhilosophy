@@ -1,9 +1,9 @@
 /**
- * 哲学之河 V6 — Chessboard Collage
- * Alternating tiles: school image | decorative art | region image | symbol...
- * Everything sharp, full opacity, no blur.
+ * 哲学之河 V7 — Chessboard on Parchment
+ * School cards = image + name + desc. Region + deco tiles interspersed.
+ * Parchment background matching other pages. Uses small /schools/ images.
  */
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ALL_SCHOOLS = [
@@ -104,22 +104,20 @@ const ALL_SCHOOLS = [
   { century:'21世纪', name:'习近平新时代中国特色社会主义思想', region:'东方', desc:'以人民为中心的发展思想。', tier:'C' },
 ];
 
-const REGION_COLORS = { '西方': '#917647', '东方': '#3A5A7C', '世界': '#5A8A5A' };
+const R_COLORS = { '西方': '#917647', '东方': '#3A5A7C', '世界': '#5A8A5A' };
 
-// Region image mapping by school name
-const REGION_IMAGES = {
+const REGION_MAP = {
   '道家':'china','儒家':'china','墨家':'china','法家':'china','名家':'china','阴阳家':'china','兵家':'china',
   '两汉经学':'china','魏晋玄学':'china','隋唐佛学':'china','宋明理学':'china','明清实学':'china',
   '乾嘉朴学':'china','天演论':'china','维新派':'china','三民主义':'china','旧民主主义':'china',
   '毛泽东思想':'china','中国马克思主义哲学':'china','新民主主义':'china','现代新儒家':'china',
   '中国实证哲学':'china','马克思主义哲学的中国化与体系化':'china','习近平新时代中国特色社会主义思想':'china',
-  '古希腊哲学':'greece','前苏格拉底哲学':'greece',
-  '教父哲学':'medieval_europe','经院哲学':'medieval_europe','唯名论':'medieval_europe',
+  '古希腊哲学':'greece','教父哲学':'medieval_europe','经院哲学':'medieval_europe','唯名论':'medieval_europe',
   '理性主义':'france','经验主义':'britain','启蒙运动':'enlightenment',
   '德国古典哲学':'germany','马克思主义':'germany','法兰克福学派':'germany',
   '生命哲学':'germany','现象学':'germany','存在主义':'france','解构主义':'france',
   '后结构主义':'france','后现代主义':'france','荒诞哲学':'france',
-  '分析哲学':'britain','功利主义':'britain','自由主义':'britain', '社会学':'france',
+  '分析哲学':'britain','功利主义':'britain','自由主义':'britain','社会学':'france',
   '西方马克思主义':'germany','批判理论':'germany','哲学诠释学':'germany',
   '北欧哲学':'britain','东欧斯拉夫哲学':'germany','北美哲学':'america',
   '实用主义':'america','超验主义':'america','过程哲学':'america',
@@ -133,26 +131,13 @@ const REGION_IMAGES = {
   '罗马哲学':'rome','拜占庭哲学':'rome',
   '古希伯来哲学':'islam','凯尔特哲学':'britain',
   '澳洲原住民哲学':'world_origin','蒙古中亚哲学':'world_origin',
-  '原住民哲学':'world_origin','后殖民哲学':'africa','黑人哲学':'africa',
-  '环境哲学':'world_origin',
+  '原住民哲学':'world_origin','后殖民哲学':'africa','黑人哲学':'africa','环境哲学':'world_origin',
   '实在论':'enlightenment','唯心主义':'germany','浪漫主义':'germany',
   '实证主义':'france','精神分析学':'germany','结构主义':'france',
   '科学哲学':'britain','政治哲学':'enlightenment','伦理学':'enlightenment',
   '基督教哲学':'medieval_europe','宗教哲学':'enlightenment','女性主义':'france',
   '社群主义':'america','技术哲学':'america',
 };
-
-// Decorative tiles pool
-const DECO_CYCLE = [
-  { type:'art', src:'/gene/civilization_silhouette.png' },
-  { type:'art', src:'/gene/philosophy_symbols.png' },
-  { type:'art', src:'/gene/哲学星图.png' },
-  { type:'terrain', src:'/gene/terrain/terrain_mountains.png' },
-  { type:'terrain', src:'/gene/terrain/terrain_river_valley.png' },
-  { type:'terrain', src:'/gene/terrain/terrain_forest.png' },
-  { type:'terrain', src:'/gene/terrain/terrain_desert.png' },
-  { type:'terrain', src:'/gene/terrain/terrain_plateau.png' },
-];
 
 const ERAS = [
   { name:'Ancient World', title:'远古文明', range:'公元前30世纪 — 公元前10世纪', era:'era_ancient' },
@@ -162,7 +147,7 @@ const ERAS = [
   { name:'Modern Philosophy', title:'现代哲学', range:'19世纪 — 20世纪中', era:'era_modern' },
   { name:'Contemporary', title:'当代', range:'20世纪末 — 21世纪', era:'era_modern' },
 ];
-function getEraIdx(i) {
+function eraIdx(i) {
   const c = ALL_SCHOOLS[i].century;
   if (/公元前(30|15|10)/.test(c)) return 0;
   if (/公元前[65421]|^[34]世纪/.test(c)) return 1;
@@ -171,54 +156,26 @@ function getEraIdx(i) {
   if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4;
   return 5;
 }
+const IMG_EXT = (n) => (new Set(['凯尔特哲学','原住民哲学','古希伯来哲学','罗马哲学','拜占庭哲学','解放哲学','后殖民哲学','环境哲学','解构主义','黑人哲学','古希腊哲学']).has(n) ? '.jpg' : '.png');
 
-// School img extension
-const IMG_EXT = (name) => {
-  const jpgs = new Set(['凯尔特哲学','原住民哲学','古希伯来哲学','罗马哲学','拜占庭哲学','解放哲学','后殖民哲学','环境哲学','解构主义','黑人哲学','古希腊哲学']);
-  return jpgs.has(name) ? '.jpg' : '.png';
-};
-
-// ─── Decorative Tile ───
-function DecoTile({ src, style }) {
+// ─── School Card ───
+function SchoolCard({ school, onClick }) {
+  const c = R_COLORS[school.region];
   return (
-    <img src={src} alt="" loading="lazy"
-      style={{
-        width:'100%', height:'100%', objectFit:'cover',
-        display:'block', opacity:1, ...style
-      }} />
-  );
-}
-
-// ─── School Tile ───
-function SchoolTile({ school, onClick, onHover, onLeave, active }) {
-  const c = REGION_COLORS[school.region];
-  const ext = IMG_EXT(school.name);
-  const regImg = REGION_IMAGES[school.name] || 'world_origin';
-
-  return (
-    <div onClick={() => onClick(school.name)} onMouseEnter={() => onHover(school.name)} onMouseLeave={onLeave}
-      style={{
-        position:'relative', cursor:'pointer', borderRadius:8, overflow:'hidden',
-        border: active ? `2px solid ${c}` : '2px solid transparent',
-        boxShadow: active ? '0 4px 20px rgba(42,31,26,0.15)' : '0 1px 3px rgba(42,31,26,0.05)',
-        transition:'all 300ms ease',
-        transform: active ? 'scale(1.02)' : 'scale(1)',
-      }}>
-      {/* Main school image — sharp, full opacity */}
-      <img src={`/gene/schools/${encodeURI(school.name)}${ext}`} alt="" loading="lazy"
-        style={{ width:'100%', aspectRatio:'16/9', objectFit:'cover', display:'block' }} />
-
-      {/* Label overlay at bottom */}
-      <div style={{
-        position:'absolute', bottom:0, left:0, right:0,
-        background:'linear-gradient(transparent, rgba(0,0,0,0.7))',
-        padding:'32px 14px 12px'
-      }}>
-        <div style={{ fontSize:9, fontWeight:500, letterSpacing:'0.12em', textTransform:'uppercase', color:'rgba(255,255,255,0.7)', marginBottom:4 }}>
+    <div onClick={() => onClick(school.name)} style={{
+      cursor:'pointer', borderRadius:10, overflow:'hidden',
+      background:'#FDFBF7', border:'1px solid rgba(145,118,71,0.12)',
+      boxShadow:'0 1px 4px rgba(42,31,26,0.04)',
+      transition:'all 350ms ease',
+    }}>
+      <img src={`/schools/${encodeURI(school.name)}${IMG_EXT(school.name)}`} alt="" loading="lazy"
+        style={{ width:'100%', aspectRatio:'16/10', objectFit:'cover', display:'block', background:'#EDE5D8' }} />
+      <div style={{ padding:'14px 18px' }}>
+        <div style={{ fontSize:9, fontWeight:400, letterSpacing:'0.12em', textTransform:'uppercase', color:c, marginBottom:6, fontFamily:'var(--font-sans)', opacity:0.8 }}>
           {school.region==='东方'?'Eastern':school.region==='西方'?'Western':'World'} · {school.century}</div>
-        <div style={{ fontSize:15, fontWeight:600, color:'#fff', lineHeight:1.2,
-          fontFamily:'"Playfair Display","PingFang SC",serif' }}>{school.name}</div>
-        <div style={{ fontSize:10, fontWeight:300, color:'rgba(255,255,255,0.6)', lineHeight:1.5, marginTop:3 }}>{school.desc}</div>
+        <h3 style={{ fontSize:16, fontWeight:500, color:'#2A1F1A', margin:'0 0 4px', lineHeight:1.3,
+          fontFamily:'"Playfair Display","PingFang SC",serif' }}>{school.name}</h3>
+        <p style={{ fontSize:11, fontWeight:300, color:'#7A6E64', lineHeight:1.6, margin:0, fontFamily:'var(--font-sans)' }}>{school.desc}</p>
       </div>
     </div>
   );
@@ -226,23 +183,23 @@ function SchoolTile({ school, onClick, onHover, onLeave, active }) {
 
 // ─── Region Tile ───
 function RegionTile({ school }) {
-  const regImg = REGION_IMAGES[school.name] || 'world_origin';
+  const r = REGION_MAP[school.name] || 'world_origin';
   return (
-    <img src={`/gene/region/${regImg}.png`} alt="" loading="lazy"
-      style={{ width:'100%', aspectRatio:'4/3', objectFit:'cover', display:'block', borderRadius:8 }} />
+    <img src={`/gene/region/${r}.png`} alt="" loading="lazy"
+      style={{ width:'100%', aspectRatio:'4/3', objectFit:'cover', display:'block', borderRadius:8, opacity:0.85 }} />
   );
 }
 
 // ─── Era Marker ───
 function EraMarker({ era }) {
   return (
-    <div style={{ textAlign:'center', padding:'48px 16px 32px', gridColumn:'1 / -1' }}>
-      <div style={{ width:60, height:1, background:'#91764740', margin:'0 auto 20px' }} />
+    <div style={{ textAlign:'center', padding:'36px 16px 20px', gridColumn:'1 / -1' }}>
+      <div style={{ width:50, height:1, background:'#91764730', margin:'0 auto 16px' }} />
       <img src={`/gene/${era.era}.png`} alt="" loading="lazy"
-        style={{ height:120, width:'auto', margin:'0 auto 16px', display:'block', objectFit:'contain' }} />
-      <p style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', margin:'0 0 4px', fontFamily:'var(--font-sans)' }}>{era.name}</p>
-      <h2 style={{ fontSize:'clamp(1.2rem,2vw,1.5rem)', fontWeight:400, color:'#2A1F1A', margin:'0 0 4px', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{era.title}</h2>
-      <p style={{ fontSize:12, color:'#A09080', fontFamily:'var(--font-sans)', margin:0 }}>{era.range}</p>
+        style={{ height:100, width:'auto', margin:'0 auto 12px', display:'block', objectFit:'contain', opacity:0.7 }} />
+      <p style={{ fontSize:10, letterSpacing:'0.2em', textTransform:'uppercase', color:'#917647', margin:'0 0 2px', fontFamily:'var(--font-sans)' }}>{era.name}</p>
+      <h2 style={{ fontSize:'1.2rem', fontWeight:400, color:'#2A1F1A', margin:'0 0 2px', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{era.title}</h2>
+      <p style={{ fontSize:11, color:'#A09080', fontFamily:'var(--font-sans)', margin:0 }}>{era.range}</p>
     </div>
   );
 }
@@ -250,114 +207,80 @@ function EraMarker({ era }) {
 // ─── Build chessboard tiles ───
 function buildTiles() {
   const tiles = [];
-  ALL_SCHOOLS.forEach((school, i) => {
-    // Every school gets: its school image tile + a region tile OR a deco tile
-    tiles.push({ type:'school', school, idx:i });
-
-    // Alternate: region image, then deco art, then terrain
-    const cycleIdx = i % 3;
-    if (cycleIdx === 0) {
-      tiles.push({ type:'region', school, idx:i });
-    } else if (cycleIdx === 1) {
-      const deco = DECO_CYCLE[i % DECO_CYCLE.length];
-      tiles.push({ type:'deco', src:deco.src, idx:i });
-    } else {
-      // School image shown larger
-    }
+  ALL_SCHOOLS.forEach((s, i) => {
+    tiles.push({ type:'school', school:s, idx:i });
+    // Intersperse: every 2nd school gets a region tile, every 3rd gets a deco tile
+    if (i % 3 === 0) tiles.push({ type:'region', school:s, idx:i });
+    if (i % 7 === 3) tiles.push({ type:'deco', src:'/gene/civilization_silhouette.png', idx:i });
+    if (i % 11 === 5) tiles.push({ type:'deco', src:'/gene/philosophy_symbols.png', idx:i });
   });
   return tiles;
 }
 
-// ─── Main Page ───
+// ─── Page ───
 export default function GenealogyPage() {
   const navigate = useNavigate();
-  const [hoveredName, setHoveredName] = useState(null);
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   const tiles = useMemo(() => buildTiles(), []);
-  const eraGroups = useMemo(() => {
+  const eraGrps = useMemo(() => {
     const g = []; let cur = -1;
-    ALL_SCHOOLS.forEach((s, i) => {
-      const ei = getEraIdx(i);
-      if (ei !== cur) { cur = ei; g.push({ era: ERAS[ei], startIdx: i }); }
-    });
+    ALL_SCHOOLS.forEach((s, i) => { const ei = eraIdx(i); if (ei !== cur) { cur = ei; g.push({ era: ERAS[ei], startIdx: i }); } });
     return g;
   }, []);
 
   return (
-    <div style={{ background:'#1a1a1a', minHeight:'100vh', color:'#ccc',
-      fontFamily:'"Playfair Display","PingFang SC",serif' }}>
+    <div style={{ background:'#F8F6F2', minHeight:'100vh',
+      fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A' }}>
 
-      {/* ══════════ HERO ══════════ */}
-      <section style={{ minHeight:'60vh', display:'flex', flexDirection:'column',
-        justifyContent:'center', alignItems:'center', textAlign:'center',
-        padding:'60px 32px', background:'linear-gradient(180deg, #111 0%, #1a1a1a 100%)' }}>
-        <p style={{ fontSize:10, letterSpacing:'0.32em', textTransform:'uppercase',
-          color:'#917647', marginBottom:28, fontFamily:'var(--font-sans)' }}>
+      {/* Hero */}
+      <section style={{ minHeight:'40vh', display:'flex', flexDirection:'column',
+        justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
+        <p style={{ fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'#917647', marginBottom:24, fontFamily:'var(--font-sans)' }}>
           Museum of Philosophy  ·  Genealogy Wing</p>
-        <h1 style={{ fontSize:'clamp(2.5rem,7vw,4.5rem)', fontWeight:300, fontStyle:'italic',
-          color:'#E8DFD0', letterSpacing:'0.06em', lineHeight:1.15, marginBottom:20,
+        <h1 style={{ fontSize:'clamp(2rem,5vw,3.5rem)', fontWeight:400, fontStyle:'italic',
+          color:'#2A1F1A', letterSpacing:'0.04em', lineHeight:1.15, marginBottom:20,
           fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学之河</h1>
-        <div style={{ width:48, height:1.5, background:'#917647', marginBottom:24, opacity:0.5 }} />
-        <p style={{ fontSize:'clamp(0.9rem,1.3vw,1.1rem)', fontWeight:300,
-          color:'#999', lineHeight:2.0, maxWidth:560, fontFamily:'var(--font-sans)' }}>
-          从公元前三十世纪至二十一世纪<br />九十五个哲学流派，五千年人类思想史</p>
-        <button onClick={() => document.getElementById('chessboard')?.scrollIntoView({ behavior:'smooth' })}
-          style={{ marginTop:44, background:'none', border:'1px solid rgba(145,118,71,0.3)',
-            borderRadius:6, padding:'10px 32px', fontSize:12, fontWeight:300,
-            color:'#917647', cursor:'pointer', letterSpacing:'0.1em',
-            fontFamily:'var(--font-sans)', transition:'all 300ms ease' }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor='#917647'; e.currentTarget.style.color='#C4956A'; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(145,118,71,0.3)'; e.currentTarget.style.color='#917647'; }}>
+        <div style={{ width:40, height:1.5, background:'#917647', marginBottom:20, opacity:0.4 }} />
+        <p style={{ fontSize:'0.95rem', fontWeight:300, color:'#8A7E74', lineHeight:2.0, maxWidth:520, fontFamily:'var(--font-sans)' }}>
+          九十五个哲学流派，一部横跨五千年的人类思想史长卷</p>
+        <button onClick={() => document.getElementById('grid')?.scrollIntoView({ behavior:'smooth' })}
+          style={{ marginTop:36, background:'none', border:'1px solid rgba(145,118,71,0.2)',
+            borderRadius:6, padding:'10px 28px', fontSize:12, color:'#917647', cursor:'pointer',
+            letterSpacing:'0.08em', fontFamily:'var(--font-sans)', transition:'all 300ms ease' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor='#917647'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(145,118,71,0.2)'; }}>
           进入展廊</button>
       </section>
 
-      {/* ══════════ CHESSBOARD ══════════ */}
-      <div id="chessboard" style={{
-        padding:'24px', maxWidth:1400, margin:'0 auto',
-        display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(260px, 1fr))',
-        gap:16, alignItems:'start'
-      }}>
+      {/* Grid */}
+      <div id="grid" style={{ padding:'16px', maxWidth:1400, margin:'0 auto',
+        display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(260px, 1fr))', gap:14, alignItems:'start' }}>
         {tiles.map((tile, i) => {
-          const eraStart = tile.type === 'school' ? eraGroups.find(g => g.startIdx === tile.idx) : null;
+          const eraStart = tile.type === 'school' ? eraGrps.find(g => g.startIdx === tile.idx) : null;
           return (
             <div key={i} style={{ gridColumn: tile.type === 'school' ? 'span 2' : 'span 1' }}>
               {eraStart && <EraMarker era={eraStart.era} />}
-              {tile.type === 'school' && (
-                <SchoolTile school={tile.school}
-                  onClick={(name) => navigate('/school/' + encodeURIComponent(name))}
-                  onHover={setHoveredName} onLeave={() => setHoveredName(null)}
-                  active={hoveredName === tile.school.name} />
-              )}
+              {tile.type === 'school' && <SchoolCard school={tile.school} onClick={(n) => navigate('/school/' + encodeURIComponent(n))} />}
               {tile.type === 'region' && <RegionTile school={tile.school} />}
-              {tile.type === 'deco' && <DecoTile src={tile.src} />}
+              {tile.type === 'deco' && <img src={tile.src} alt="" loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', borderRadius:8, opacity:0.8 }} />}
             </div>
           );
         })}
       </div>
 
-      {/* ══════════ FOOTER ══════════ */}
-      <div style={{ textAlign:'center', padding:'80px 32px', background:'#111',
-        display:'flex', justifyContent:'center', gap:48, flexWrap:'wrap' }}>
+      {/* Footer */}
+      <div style={{ textAlign:'center', padding:'60px 32px', display:'flex', justifyContent:'center', gap:40, flexWrap:'wrap' }}>
         {[
-          { label:'西方哲学', path:'/western-philosophies', c:REGION_COLORS['西方'] },
-          { label:'东方哲学', path:'/eastern-philosophies', c:REGION_COLORS['东方'] },
-          { label:'世界哲学', path:'/world-philosophies', c:REGION_COLORS['世界'] },
+          { l:'西方哲学', p:'/western-philosophies', c:R_COLORS['西方'] },
+          { l:'东方哲学', p:'/eastern-philosophies', c:R_COLORS['东方'] },
+          { l:'世界哲学', p:'/world-philosophies', c:R_COLORS['世界'] },
         ].map(b => (
-          <button key={b.path} onClick={() => navigate(b.path)}
-            style={{ background:'none', border:'1px solid rgba(255,255,255,0.08)',
-              cursor:'pointer', fontFamily:'"Playfair Display",serif', fontSize:15,
-              color:b.c, letterSpacing:'0.04em', padding:'10px 20px', borderRadius:6,
-              transition:'all 300ms ease', opacity:0.7 }}
+          <button key={b.p} onClick={() => navigate(b.p)}
+            style={{ background:'none', border:'1px solid rgba(145,118,71,0.1)', cursor:'pointer',
+              fontFamily:'"Playfair Display",serif', fontSize:15, color:b.c, letterSpacing:'0.04em',
+              padding:'8px 18px', borderRadius:6, transition:'all 300ms ease', opacity:0.7 }}
             onMouseEnter={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.borderColor=b.c; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity='0.7'; e.currentTarget.style.borderColor='rgba(255,255,255,0.08)'; }}>
-            {b.label}</button>
+            onMouseLeave={e => { e.currentTarget.style.opacity='0.7'; e.currentTarget.style.borderColor='rgba(145,118,71,0.1)'; }}>
+            {b.l}</button>
         ))}</div>
     </div>
   );
