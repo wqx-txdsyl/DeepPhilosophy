@@ -101,8 +101,10 @@ export default function WorldPhilosophiesPage() {
           世界哲学传统
         </h1>
         <p style={{
-          fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 300,
-          color: 'var(--text-dim)', lineHeight: 1.8, maxWidth: 500, margin: '0 auto'
+          position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)',
+          fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500,
+          color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto',
+          textShadow: '0 0 40px rgba(244,240,235,0.8)'
         }}>
           从古希腊到美索不达米亚，从印度到澳洲，<br />三十一大哲学传统覆盖了全球思想版图。
         </p>
