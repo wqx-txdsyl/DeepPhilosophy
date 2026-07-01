@@ -9,6 +9,13 @@ function useFade() {
   useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setOn(true); }, { threshold: 0.05 }); o.observe(el); return () => o.disconnect(); }, []);
   return [ref, on];
 }
+
+// Only load image when within 300px of viewport
+function LazyImg({ src, alt, style }) {
+  const ref = useRef(null); const [loaded, setLoaded] = useState(false);
+  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoaded(true); o.disconnect(); } }, { rootMargin: '300px' }); o.observe(el); return () => o.disconnect(); }, []);
+  return <img ref={ref} src={loaded ? src : ''} alt={alt} style={style} />;
+}
 function FadeWrap({ children, style }) {
   const [ref, on] = useFade();
   return <div ref={ref} style={{ opacity:on?1:0, transform:on?'translateY(0)':'translateY(16px)', transition:'opacity 0.5s ease, transform 0.5s ease', ...style }}>{children}</div>;
@@ -164,9 +171,8 @@ function SchoolImg({ school, w }) {
       style={{ width:w, minHeight:100, cursor:'pointer', flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4',
         opacity:on?1:0, transform:on?'translateY(0)':'translateY(16px)',
         transition:'opacity 0.5s ease, transform 0.5s ease' }}>
-      <img src={imgUrl(school.name)} alt={school.name} loading="lazy"
-        style={{ width:'100%', height:'auto', display:'block' }}
-        onError={(e) => { e.currentTarget.style.display='none'; }} />
+      <LazyImg src={imgUrl(school.name)} alt={school.name}
+        style={{ width:'100%', height:'auto', display:'block' }} />
       <div style={{ position:'absolute', bottom:0, left:0, right:0,
         background:'linear-gradient(transparent 30%, rgba(0,0,0,0.65))', padding:'24px 12px 8px' }}>
         <div style={{ fontSize:12, fontWeight:600, color:'#fff', lineHeight:1.2,
@@ -230,7 +236,7 @@ export default function GenealogyPage() {
       {chapters.map((ch, ci) => (
         <div key={ci}>
           <section style={{ padding:'80px 24px 40px', textAlign:'center', maxWidth:1000, margin:'0 auto' }}>
-            {ch.era.e && <img src={`/gene/${ch.era.e}.jpg`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />}
+            {ch.era.e && <LazyImg src={`/gene/${ch.era.e}.png`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />}
             <div style={{ marginTop:40 }}>
               <div style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)', marginBottom:8 }}>{ch.era.n}</div>
               <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:400, color:'#2A1F1A', margin:'0 0 8px', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{ch.era.t}</h2>
@@ -242,7 +248,7 @@ export default function GenealogyPage() {
             return (
               <FadeWrap key={ri}>
                 <section style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto' }}>
-                  <img src={`/gene/region/${region.key}.jpg`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} onError={(e)=>{e.currentTarget.style.display='none';}} />
+                  <LazyImg src={`/gene/region/${region.key}.jpg`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} />
                   <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'#2A1F1A', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
                 </section>
                 <div style={{ maxWidth:900, margin:'0 auto', padding:'0 16px' }}>
