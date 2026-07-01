@@ -136,67 +136,59 @@ const REGION_OF = {
   '澳洲原住民哲学':'world_origin','蒙古中亚哲学':'world_origin','原住民哲学':'world_origin','环境哲学':'world_origin',
 };
 
-// Landmarks & symbols for interspersed decoration
-const LANDMARKS = [
-  'landmark_parthenon_temple','landmark_colosseum_rome','landmark_confucian_temple',
-  'landmark_forbidden_city','landmark_great_wall','landmark_nalanda_university',
-  'landmark_notre_dame','landmark_oxford_university','landmark_al_azhar_mosque',
-  'landmark_taj_mahal',
+// Era definitions for chapter dividers
+const ERAS = [
+  { n:'Ancient World', t:'远古文明', r:'公元前30世纪 — 公元前10世纪', e:'era_ancient' },
+  { n:'Classical Antiquity', t:'古典时代', r:'公元前6世纪 — 4世纪', e:'era_greece' },
+  { n:'Middle Ages', t:'中世纪', r:'6世纪 — 16世纪', e:'era_medieval' },
+  { n:'Renaissance & Early Modern', t:'文艺复兴与近代', r:'17世纪 — 18世纪', e:'era_renaissance' },
+  { n:'Modern Philosophy', t:'现代哲学', r:'19世纪 — 20世纪中', e:'era_modern' },
+  { n:'Contemporary', t:'当代', r:'20世纪末 — 21世纪', e:'era_modern' },
 ];
-const SYMBOLS = [
-  'symbol_scroll','symbol_quill','symbol_torch','symbol_compass','symbol_astrolabe',
-  'symbol_hourglass','symbol_ancient_book','symbol_bronze_vessel','symbol_olive_branch','symbol_laurel_crown',
-];
+function getEraIdx(i) { const c = ALL_SCHOOLS[i].century;
+  if (/公元前(30|15|10)/.test(c)) return 0; if (/公元前[65421]|^[34]世纪/.test(c)) return 1;
+  if (/^[678]世纪$|^1[1-6]世纪$/.test(c)) return 2; if (/^1[78]世纪$/.test(c)) return 3;
+  if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4; return 5; }
 
 function buildCollage() {
   const tiles = [];
   const seenRegions = new Set();
-  let li = 0, si = 0;
+  let lastEra = -1;
 
   for (let i = 0; i < ALL_SCHOOLS.length; i++) {
     const s = ALL_SCHOOLS[i];
     const r = REGION_OF[s.name] || 'world_origin';
+    const ei = getEraIdx(i);
 
+    // Era chapter marker
+    if (ei !== lastEra) {
+      lastEra = ei;
+      tiles.push({ type:'era', era:ERAS[ei] });
+    }
+
+    // Region banner before first school of new region
     if (!seenRegions.has(r)) {
       seenRegions.add(r);
       tiles.push({ type:'region', region:r });
     }
 
     tiles.push({ type:'school', school:s });
-
-    // Every ~5 schools, insert a landmark
-    if ((i + 1) % 5 === 0 && li < LANDMARKS.length) {
-      tiles.push({ type:'landmark', name: LANDMARKS[li] });
-      li++;
-    }
-    // Every ~8 schools, insert a symbol
-    if ((i + 1) % 8 === 0 && si < SYMBOLS.length) {
-      tiles.push({ type:'symbol', name: SYMBOLS[si] });
-      si++;
-    }
   }
   return tiles;
 }
 
-// ─── School Card — varied proportions for patchwork feel ───
-const CARD_STYLES = [
-  { w:280, ar:'16/10' }, { w:240, ar:'4/3' }, { w:300, ar:'16/9' },
-  { w:220, ar:'1/1' }, { w:260, ar:'3/2' }, { w:200, ar:'16/10' },
-  { w:290, ar:'4/3' }, { w:240, ar:'16/9' }, { w:270, ar:'3/2' },
-];
-
-function SchoolCard({ school, idx }) {
+// ─── School Card — all uniform size ───
+function SchoolCard({ school }) {
   const c = R_COLORS[school.region];
   const nav = useNavigate();
-  const style = CARD_STYLES[idx % CARD_STYLES.length];
   return (
     <div onClick={() => nav('/school/' + encodeURIComponent(school.name))} style={{
       cursor:'pointer', borderRadius:6, overflow:'hidden', background:'#FDFBF7',
       border:'1px solid rgba(145,118,71,0.08)', boxShadow:'0 1px 2px rgba(42,31,26,0.03)',
-      width:style.w, flexShrink:0,
+      width:240, flexShrink:0,
     }}>
       <img src={`/schools/${encodeURI(school.name)}${getExt(school.name)}`} alt={school.name} loading="lazy"
-        style={{ width:'100%', aspectRatio:style.ar, objectFit:'cover', display:'block', background:'#EDE5D8' }}
+        style={{ width:'100%', aspectRatio:'16/10', objectFit:'cover', display:'block', background:'#EDE5D8' }}
         onError={(e) => { e.currentTarget.src=`/gene/region/${REGION_OF[school.name]||'world_origin'}.png`; }} />
       <div style={{ padding:'10px 14px' }}>
         <div style={{ fontSize:8, fontWeight:500, letterSpacing:'0.10em', textTransform:'uppercase', color:c, marginBottom:3, fontFamily:'var(--font-sans)', opacity:0.8 }}>
@@ -209,27 +201,18 @@ function SchoolCard({ school, idx }) {
   );
 }
 
-// ─── Region Tile — same size range as school cards, packs densely ───
+// ─── Region Tile — full-width banner, original aspect ratio ───
 const REGION_LAB = { china:'中国',greece:'希腊',rome:'罗马',medieval_europe:'中世纪',enlightenment:'启蒙',france:'法国',britain:'英国',germany:'德国',america:'美洲',india:'印度',japan:'日本',korea:'韩国',islam:'伊斯兰',africa:'非洲',latin_america:'拉丁美洲',egypt:'埃及',mesopotamia:'美索不达米亚',southeast_asia:'东南亚',renaissance:'文艺复兴',world_origin:'世界' };
-const REGION_STYLES = [
-  { w:320, ar:'16/9' }, { w:280, ar:'4/3' }, { w:340, ar:'16/10' },
-  { w:260, ar:'3/2' }, { w:300, ar:'16/9' }, { w:240, ar:'1/1' },
-  { w:330, ar:'4/3' }, { w:270, ar:'16/10' }, { w:310, ar:'3/2' },
-];
-function RegionTile({ region, idx }) {
-  const st = REGION_STYLES[idx % REGION_STYLES.length];
+function RegionTile({ region }) {
   return (
-    <div style={{ width:st.w, borderRadius:6, overflow:'hidden', flexShrink:0, position:'relative',
-      boxShadow:'0 1px 2px rgba(42,31,26,0.03)' }}>
-      <div style={{ aspectRatio:st.ar }}>
-        <img src={`/gene/region/${region}.png`} alt="" loading="lazy"
-          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}
-          onError={(e) => { e.currentTarget.src='/gene/civilization_silhouette.png'; }} />
-      </div>
-      <div style={{ position:'absolute', bottom:0, left:0, right:0,
-        background:'linear-gradient(transparent, rgba(0,0,0,0.4))', padding:'12px 14px 8px' }}>
-        <div style={{ fontSize:14, fontWeight:400, color:'#fff', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{REGION_LAB[region]||region}</div>
-        <div style={{ fontSize:9, color:'rgba(255,255,255,0.6)', fontFamily:'var(--font-sans)', marginTop:1 }}>Region</div>
+    <div style={{ flexBasis:'100%', borderRadius:6, overflow:'hidden', position:'relative', marginBottom:2 }}>
+      <img src={`/gene/region/${region}.png`} alt="" loading="lazy"
+        style={{ width:'100%', height:'auto', maxHeight:280, objectFit:'cover', display:'block' }}
+        onError={(e) => { e.currentTarget.src='/gene/civilization_silhouette.png'; }} />
+      <div style={{ position:'absolute', inset:0,
+        background:'linear-gradient(to right, rgba(248,246,242,0.4) 0%, transparent 30%, transparent 70%, rgba(248,246,242,0.4) 100%)' }} />
+      <div style={{ position:'absolute', bottom:16, left:22 }}>
+        <div style={{ fontSize:20, fontWeight:400, color:'#2A1F1A', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{REGION_LAB[region]||region}</div>
       </div>
     </div>
   );
@@ -261,21 +244,20 @@ export default function GenealogyPage() {
       </section>
 
       {/* ══════════ COLLAGE ══════════ */}
-      <div style={{ maxWidth:'100%', margin:'0 auto', padding:'0 12px 80px',
-        display:'flex', flexWrap:'wrap', justifyContent:'center', alignItems:'flex-start', gap:10 }}>
+      <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 16px 80px',
+        display:'flex', flexWrap:'wrap', justifyContent:'center', alignItems:'flex-start', gap:12 }}>
         {tiles.map((tile, i) => (
-          tile.type === 'school' ? <SchoolCard key={i} school={tile.school} idx={i} />
-          : tile.type === 'region' ? <RegionTile key={i} region={tile.region} idx={i} />
-          : tile.type === 'landmark' ? (
-            <img key={i} src={`/gene/landmarks/${tile.name}.png`} alt="" loading="lazy"
-              style={{ width:220, aspectRatio:'4/3', objectFit:'cover', borderRadius:6, flexShrink:0, opacity:0.85,
-                boxShadow:'0 1px 2px rgba(42,31,26,0.04)' }}
-              onError={(e) => { e.currentTarget.style.display='none'; }} />)
-          : tile.type === 'symbol' ? (
-            <img key={i} src={`/gene/symbol/${tile.name}.png`} alt="" loading="lazy"
-              style={{ width:100, aspectRatio:'1/1', objectFit:'contain', borderRadius:4, flexShrink:0, opacity:0.7, padding:16,
-                background:'rgba(253,251,247,0.5)' }}
-              onError={(e) => { e.currentTarget.style.display='none'; }} />)
+          tile.type === 'era' ? (
+            <div key={i} style={{ flexBasis:'100%', textAlign:'center', padding:'28px 16px 12px' }}>
+              <div style={{ width:40, height:1, background:'#91764730', margin:'0 auto 12px' }} />
+              <img src={`/gene/${tile.era.e}.png`} alt="" loading="lazy"
+                style={{ height:80, width:'auto', margin:'0 auto 8px', display:'block', objectFit:'contain', opacity:0.5 }} />
+              <div style={{ fontSize:9, letterSpacing:'0.16em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)', marginBottom:2 }}>{tile.era.n}</div>
+              <div style={{ fontSize:15, fontWeight:400, color:'#2A1F1A', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{tile.era.t}</div>
+              <div style={{ fontSize:10, color:'#A09080', fontFamily:'var(--font-sans)' }}>{tile.era.r}</div>
+            </div>
+          ) : tile.type === 'region' ? <RegionTile key={i} region={tile.region} />
+          : tile.type === 'school' ? <SchoolCard key={i} school={tile.school} />
           : null
         ))}
       </div>
