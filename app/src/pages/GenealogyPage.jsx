@@ -13,8 +13,8 @@ function useFade() {
 // Only load image when within 300px of viewport
 function LazyImg({ src, alt, style }) {
   const ref = useRef(null); const [loaded, setLoaded] = useState(false);
-  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoaded(true); o.disconnect(); } }, { rootMargin: '300px' }); o.observe(el); return () => o.disconnect(); }, []);
-  return <img ref={ref} src={loaded ? src : ''} alt={alt} style={style} />;
+  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoaded(true); o.disconnect(); } }, { rootMargin: '1000px' }); o.observe(el); return () => o.disconnect(); }, []);
+  return loaded ? <img ref={ref} src={src} alt={alt} style={style} /> : <div ref={ref} style={{...style, background:'#E8E0D4'}} />;
 }
 function FadeWrap({ children, style }) {
   const [ref, on] = useFade();
