@@ -230,11 +230,12 @@ export default function GenealogyPage() {
 
   return (
     <div style={{ background:'#F8F6F2', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A' }}>
-      <section style={{ padding:'56px 32px 32px', textAlign:'center' }}>
-        <p style={{ fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'#917647', marginBottom:20, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
-        <h1 style={{ fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'#2A1F1A', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
-        <div style={{ width:32, height:1, background:'#917647', margin:'14px auto', opacity:0.35 }} />
-        <p style={{ fontSize:'0.85rem', fontWeight:300, color:'#8A7E74', fontFamily:'var(--font-sans)' }}>思想如河流，起源、分流、汇合、消失、复兴——五千年人类追问的视觉编年史</p>
+      <section style={{ padding:'56px 32px 32px', textAlign:'center', position:'relative', overflow:'hidden' }}>
+        <img src="/gene/civilization_silhouette.jpg" alt="" style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
+        <p style={{ position:'relative', fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'#917647', marginBottom:20, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
+        <h1 style={{ position:'relative', fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'#2A1F1A', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
+        <div style={{ position:'relative', width:32, height:1, background:'#917647', margin:'14px auto', opacity:0.35 }} />
+        <p style={{ position:'relative', fontSize:'0.85rem', fontWeight:300, color:'#8A7E74', fontFamily:'var(--font-sans)' }}>思想如河流，起源、分流、汇合、消失、复兴——五千年人类追问的视觉编年史</p>
       </section>
       {chapters.map((ch, ci) => (
         <div key={ci}>
