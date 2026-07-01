@@ -173,7 +173,7 @@ function SchoolImg({ school, w }) {
   const [ref, visible] = useFadeIn();
   return (
     <div ref={ref} onClick={() => nav('/school/' + encodeURIComponent(school.name))}
-      style={{ width:w, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4', cursor:'pointer',
+      style={{ width:w, minHeight:120, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4', cursor:'pointer',
       opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
       transition: 'opacity 0.5s ease, transform 0.5s ease' }}>
       <img src={imgUrl(school.name)} alt={school.name} loading="lazy"
@@ -375,10 +375,10 @@ function EraCover({ era }) {
 function RegionIntro({ region }) {
   const [ref, visible] = useFadeIn();
   return (
-    <section ref={ref} style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto',
+    <section ref={ref} style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto', minHeight:200,
       opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(20px)',
       transition:'opacity 0.6s ease, transform 0.6s ease' }}>
-      <img src={`/gene/region/${region.key}.png`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }}
+      <img src={`/gene/region/${region.key}.png`} alt="" style={{ width:'100%', minHeight:200, maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }}
         onError={(e) => { e.currentTarget.style.display='none'; }} />
       <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'#2A1F1A',
         fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
