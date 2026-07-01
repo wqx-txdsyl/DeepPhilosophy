@@ -136,19 +136,27 @@ const REGION_OF = {
   '澳洲原住民哲学':'world_origin','蒙古中亚哲学':'world_origin','原住民哲学':'world_origin','环境哲学':'world_origin',
 };
 
-// Build chronological collage. Region image before first school in region.
-// Deco images sprinkled between. All straight rectangles, no rotation.
+// Landmarks & symbols for interspersed decoration
+const LANDMARKS = [
+  'landmark_parthenon_temple','landmark_colosseum_rome','landmark_confucian_temple',
+  'landmark_forbidden_city','landmark_great_wall','landmark_nalanda_university',
+  'landmark_notre_dame','landmark_oxford_university','landmark_al_azhar_mosque',
+  'landmark_taj_mahal',
+];
+const SYMBOLS = [
+  'symbol_scroll','symbol_quill','symbol_torch','symbol_compass','symbol_astrolabe',
+  'symbol_hourglass','symbol_ancient_book','symbol_bronze_vessel','symbol_olive_branch','symbol_laurel_crown',
+];
+
 function buildCollage() {
   const tiles = [];
   const seenRegions = new Set();
-  const decos = ['/gene/civilization_silhouette.png','/gene/philosophy_symbols.png','/gene/哲学星图.png'];
-  let di = 0;
+  let li = 0, si = 0;
 
   for (let i = 0; i < ALL_SCHOOLS.length; i++) {
     const s = ALL_SCHOOLS[i];
     const r = REGION_OF[s.name] || 'world_origin';
 
-    // Region image before first school of new region
     if (!seenRegions.has(r)) {
       seenRegions.add(r);
       tiles.push({ type:'region', region:r });
@@ -156,10 +164,15 @@ function buildCollage() {
 
     tiles.push({ type:'school', school:s });
 
-    // Every ~7 schools, insert deco
-    if ((i + 1) % 7 === 0) {
-      tiles.push({ type:'deco', src: decos[di % decos.length] });
-      di++;
+    // Every ~5 schools, insert a landmark
+    if ((i + 1) % 5 === 0 && li < LANDMARKS.length) {
+      tiles.push({ type:'landmark', name: LANDMARKS[li] });
+      li++;
+    }
+    // Every ~8 schools, insert a symbol
+    if ((i + 1) % 8 === 0 && si < SYMBOLS.length) {
+      tiles.push({ type:'symbol', name: SYMBOLS[si] });
+      si++;
     }
   }
   return tiles;
@@ -253,9 +266,17 @@ export default function GenealogyPage() {
         {tiles.map((tile, i) => (
           tile.type === 'school' ? <SchoolCard key={i} school={tile.school} idx={i} />
           : tile.type === 'region' ? <RegionTile key={i} region={tile.region} idx={i} />
-          : <img key={i} src={tile.src} alt="" loading="lazy"
-              style={{ width:240, aspectRatio:'4/3', objectFit:'cover', borderRadius:6, flexShrink:0, opacity:0.8 }}
-              onError={(e) => { e.currentTarget.style.display='none'; }} />
+          : tile.type === 'landmark' ? (
+            <img key={i} src={`/gene/landmarks/${tile.name}.png`} alt="" loading="lazy"
+              style={{ width:220, aspectRatio:'4/3', objectFit:'cover', borderRadius:6, flexShrink:0, opacity:0.85,
+                boxShadow:'0 1px 2px rgba(42,31,26,0.04)' }}
+              onError={(e) => { e.currentTarget.style.display='none'; }} />)
+          : tile.type === 'symbol' ? (
+            <img key={i} src={`/gene/symbol/${tile.name}.png`} alt="" loading="lazy"
+              style={{ width:100, aspectRatio:'1/1', objectFit:'contain', borderRadius:4, flexShrink:0, opacity:0.7, padding:16,
+                background:'rgba(253,251,247,0.5)' }}
+              onError={(e) => { e.currentTarget.style.display='none'; }} />)
+          : null
         ))}
       </div>
 
