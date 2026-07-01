@@ -112,11 +112,7 @@ const PNG_SCHOOLS = new Set([
   '东欧斯拉夫哲学','伊壁鸠鲁学派','前苏格拉底哲学','北欧哲学','北美哲学',
   '印加哲学','古埃及哲学','新柏拉图主义','澳洲原住民哲学','犬儒学派',
   '玛雅哲学','美索不达米亚哲学','蒙古中亚哲学','西藏哲学','阿兹特克哲学',
-  '韩国哲学','儒家','道家','墨家','法家','名家','阴阳家','兵家',
-  '两汉经学','魏晋玄学','隋唐佛学','宋明理学','明清实学','乾嘉朴学',
-  '天演论','维新派','三民主义','旧民主主义','毛泽东思想',
-  '中国马克思主义哲学','新民主主义','现代新儒家','中国实证哲学',
-  '马克思主义哲学的中国化与体系化','习近平新时代中国特色社会主义思想',
+  '韩国哲学',
 ]);
 const getExt = (n) => PNG_SCHOOLS.has(n) ? '.png' : '.jpg';
 
@@ -258,11 +254,6 @@ export default function GenealogyPage() {
     <div style={{ background:'#F8F6F2', minHeight:'100vh',
       fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A', position:'relative' }}>
 
-      {/* philosophy_symbols tiled over parchment */}
-      <div style={{ position:'fixed', inset:0, zIndex:0, pointerEvents:'none', opacity:0.06,
-        backgroundImage:'url(/gene/philosophy_symbols.png)',
-        backgroundSize:'300px', backgroundRepeat:'repeat',
-        mixBlendMode:'multiply' }} />
 
       {/* ══════════ HERO ══════════ */}
       <section style={{ position:'relative', zIndex:1, minHeight:'50vh', display:'flex',
