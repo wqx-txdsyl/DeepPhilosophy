@@ -1,7 +1,7 @@
 /**
- * 哲学掠影 — Editorial Layout System
- * National Geographic × Phaidon art book style.
- * 10 hand-crafted layout blocks, cycled for curated rhythm.
+ * 哲学掠影 — Chronological Collage
+ * Region + school tiles flow naturally in flex-wrap.
+ * Region wider, school uniform. Consistent gaps. Images keep original ratio.
  */
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -127,7 +127,7 @@ const REGION_OF = {
   '古埃及哲学':'egypt','美索不达米亚哲学':'mesopotamia',
   '澳洲原住民哲学':'world_origin','蒙古中亚哲学':'world_origin','原住民哲学':'world_origin','环境哲学':'world_origin',
 };
-const REGION_NAME = { china:'中国哲学',greece:'古希腊',rome:'罗马',medieval_europe:'中世纪欧洲',enlightenment:'启蒙时代',france:'法国哲学',britain:'英国哲学',germany:'德国哲学',america:'美洲哲学',india:'印度哲学',japan:'日本哲学',korea:'韩国哲学',islam:'伊斯兰世界',africa:'非洲哲学',latin_america:'拉丁美洲',egypt:'古埃及',mesopotamia:'美索不达米亚',southeast_asia:'东南亚',renaissance:'文艺复兴',world_origin:'世界传统' };
+const REGION_NAME = { china:'中国',greece:'希腊',rome:'罗马',medieval_europe:'中世纪欧洲',enlightenment:'启蒙时代',france:'法国',britain:'英国',germany:'德国',america:'美洲',india:'印度',japan:'日本',korea:'韩国',islam:'伊斯兰',africa:'非洲',latin_america:'拉丁美洲',egypt:'埃及',mesopotamia:'美索不达米亚',southeast_asia:'东南亚',renaissance:'文艺复兴',world_origin:'世界' };
 
 const ERAS = [
   { n:'Ancient World', t:'远古文明', r:'公元前30世纪 — 公元前10世纪', e:'era_ancient' },
@@ -137,309 +137,124 @@ const ERAS = [
   { n:'Modern Philosophy', t:'现代哲学', r:'19世纪 — 20世纪中', e:'era_modern' },
   { n:'Contemporary', t:'当代', r:'20世纪末 — 21世纪', e:null },
 ];
-function getEraIdx(century) {
-  if (/公元前(30|15|10)/.test(century)) return 0;
-  if (/公元前[65421]|^[34]世纪/.test(century)) return 1;
-  if (/^[678]世纪$|^1[1-6]世纪$/.test(century)) return 2;
-  if (/^1[78]世纪$/.test(century)) return 3;
-  if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(century)) return 4;
-  return 5;
+function getEraIdx(c) {
+  if (/公元前(30|15|10)/.test(c)) return 0; if (/公元前[65421]|^[34]世纪/.test(c)) return 1;
+  if (/^[678]世纪$|^1[1-6]世纪$/.test(c)) return 2; if (/^1[78]世纪$/.test(c)) return 3;
+  if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4; return 5;
 }
 
-const PNG_SCHOOLS = new Set([
-  '东欧斯拉夫哲学','伊壁鸠鲁学派','前苏格拉底哲学','北欧哲学','北美哲学',
-  '印加哲学','古埃及哲学','新柏拉图主义','澳洲原住民哲学','犬儒学派',
-  '玛雅哲学','美索不达米亚哲学','蒙古中亚哲学','西藏哲学','阿兹特克哲学','韩国哲学',
-]);
+const PNG_SCHOOLS = new Set(['东欧斯拉夫哲学','伊壁鸠鲁学派','前苏格拉底哲学','北欧哲学','北美哲学','印加哲学','古埃及哲学','新柏拉图主义','澳洲原住民哲学','犬儒学派','玛雅哲学','美索不达米亚哲学','蒙古中亚哲学','西藏哲学','阿兹特克哲学','韩国哲学']);
 const imgUrl = (name) => `/schools/${encodeURI(name)}${PNG_SCHOOLS.has(name)?'.png':'.jpg'}`;
 
-// ─── 10 Editorial Layout Blocks ───
-// Each block takes an array of schools and a block index for variation.
-// Returns a flex/grid layout of image cards.
-
-function SchoolImg({ school, w, h }) {
-  return (
-    <div style={{ width:w, height:h, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative',
-      backgroundImage:`url(${imgUrl(school.name)})`, backgroundSize:'cover', backgroundPosition:'center',
-      backgroundRepeat:'no-repeat', backgroundColor:'#E8E0D4' }}>
-      <div style={{ position:'absolute', bottom:0, left:0, right:0,
-        background:'linear-gradient(transparent 30%, rgba(0,0,0,0.65))', padding:'24px 12px 8px' }}>
-        <div style={{ fontSize:12, fontWeight:600, color:'#fff', lineHeight:1.2,
-          fontFamily:'"Playfair Display","PingFang SC",serif' }}>{school.name}</div>
-        <div style={{ fontSize:9, color:'rgba(255,255,255,0.7)', marginTop:2, fontFamily:'var(--font-sans)' }}>{school.century}</div>
-      </div>
-    </div>
-  );
-}
-
-// Block A: 1 large left + 2 small stacked right
-function BlockA({ schools }) {
-  const [a,b,c] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
-      {a && <SchoolImg school={a} w={380} h={320} />}
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {b && <SchoolImg school={b} w={200} h={155} />}
-        {c && <SchoolImg school={c} w={200} h={155} />}
-      </div>
-    </div>
-  );
-}
-
-// Block B: 2 equal side by side
-function BlockB({ schools }) {
-  const [a,b] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
-      {a && <SchoolImg school={a} w={290} h={260} />}
-      {b && <SchoolImg school={b} w={290} h={260} />}
-    </div>
-  );
-}
-
-// Block C: 1 wide panorama
-function BlockC({ schools }) {
-  const [a] = schools;
-  return (
-    <div style={{ display:'flex', justifyContent:'center' }}>
-      {a && <SchoolImg school={a} w={600} h={280} />}
-    </div>
-  );
-}
-
-// Block D: 3 equal in a row
-function BlockD({ schools }) {
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
-      {schools.slice(0,3).map((s,i) => <SchoolImg key={i} school={s} w={200} h={240} />)}
-    </div>
-  );
-}
-
-// Block E: 1 tall + 1 wide
-function BlockE({ schools }) {
-  const [a,b] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {a && <SchoolImg school={a} w={240} h={340} />}
-      {b && <SchoolImg school={b} w={340} h={240} />}
-    </div>
-  );
-}
-
-// Block F: 2 small + 1 medium
-function BlockF({ schools }) {
-  const [a,b,c] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-end' }}>
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {a && <SchoolImg school={a} w={180} h={180} />}
-        {b && <SchoolImg school={b} w={180} h={180} />}
-      </div>
-      {c && <SchoolImg school={c} w={300} h={370} />}
-    </div>
-  );
-}
-
-// Block G: 4 in a square
-function BlockG({ schools }) {
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {schools.slice(0,2).map((s,i) => <SchoolImg key={i} school={s} w={200} h={180} />)}
-      </div>
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {schools.slice(2,4).map((s,i) => <SchoolImg key={i} school={s} w={200} h={180} />)}
-      </div>
-    </div>
-  );
-}
-
-// Block H: 1 extra large hero
-function BlockH({ schools }) {
-  const [a] = schools;
-  return (
-    <div style={{ display:'flex', justifyContent:'center' }}>
-      {a && <SchoolImg school={a} w={600} h={360} />}
-    </div>
-  );
-}
-
-// Block I: offset — 1 large right + 1 small left-top
-function BlockI({ schools }) {
-  const [a,b] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      <div style={{ paddingTop:60 }}>
-        {a && <SchoolImg school={a} w={200} h={200} />}
-      </div>
-      {b && <SchoolImg school={b} w={380} h={300} />}
-    </div>
-  );
-}
-
-// Block J: 3 in staircase
-function BlockJ({ schools }) {
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {schools.slice(0,3).map((s,i) => (
-        <div key={i} style={{ paddingTop: i*50 }}>
-          <SchoolImg school={s} w={190} h={260} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-const BLOCKS = [BlockA, BlockB, BlockC, BlockD, BlockE, BlockF, BlockG, BlockH, BlockI, BlockJ];
-
-// ─── Build page structure: eras → regions → schools → blocks ───
-function buildChapters() {
-  const chapters = [];
-  let eraIdx = -1;
+// ─── Build tiles: chronological, region before first school of that region, then repeat region every ~5 schools ───
+function buildTiles() {
+  const tiles = [];
+  const seen = new Set();
+  let lastEra = -1;
 
   for (let i = 0; i < ALL_SCHOOLS.length; i++) {
     const s = ALL_SCHOOLS[i];
-    const ei = getEraIdx(s.century);
     const r = REGION_OF[s.name] || 'world_origin';
+    const ei = getEraIdx(s.century);
 
-    // New era
-    if (ei !== eraIdx) {
-      eraIdx = ei;
-      const era = ERAS[ei];
-      chapters.push({ type:'era', era, regions:[] });
-    }
+    // Era marker
+    if (ei !== lastEra) { lastEra = ei; tiles.push({ type:'era', era:ERAS[ei] }); }
 
-    const chapter = chapters[chapters.length-1];
-    // Find or create region within this era
-    let region = chapter.regions.find(rg => rg.key === r);
-    if (!region) {
-      region = { key:r, name:REGION_NAME[r]||r, schools:[] };
-      chapter.regions.push(region);
-    }
-    region.schools.push(s);
+    // Region tile: first time, and repeat every ~6 schools
+    if (!seen.has(r)) { seen.add(r); tiles.push({ type:'region', key:r }); }
+    else if (i % 6 === 0) { tiles.push({ type:'region', key:r }); }
+
+    // School tile
+    tiles.push({ type:'school', school:s });
   }
-  return chapters;
+  return tiles;
 }
 
-// Chunk schools into groups of 2-4 for blocks
-function chunkSchools(schools) {
-  const chunks = [];
-  const pattern = [2, 3, 2, 4, 2, 3, 1, 2, 3, 2];
-  let pi = 0, i = 0;
-  while (i < schools.length) {
-    const size = pattern[pi % pattern.length];
-    chunks.push(schools.slice(i, i + size));
-    i += size;
-    pi++;
-  }
-  return chunks;
-}
-
-// ─── Components ───
-
-function EraCover({ era }) {
+// ─── School Card ───
+function SchoolCard({ school }) {
+  const nav = useNavigate();
   return (
-    <section style={{ padding:'80px 24px 40px', textAlign:'center', maxWidth:1000, margin:'0 auto' }}>
-      {era.e && (
-        <img src={`/gene/${era.e}.png`} alt="" style={{ width:'90%', maxWidth:800, height:380, objectFit:'cover', borderRadius:4, opacity:0.9 }} />
-      )}
-      {!era.e && <div style={{ width:'90%', maxWidth:800, height:120, margin:'0 auto' }} />}
-      <div style={{ marginTop:40 }}>
-        <div style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)', marginBottom:8 }}>{era.n}</div>
-        <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:400, color:'#2A1F1A', margin:'0 0 8px',
-          fontFamily:'"Playfair Display","PingFang SC",serif' }}>{era.t}</h2>
-        <div style={{ fontSize:13, color:'#A09080', fontFamily:'var(--font-sans)' }}>{era.r}</div>
-      </div>
-    </section>
-  );
-}
-
-function RegionIntro({ region }) {
-  return (
-    <section style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto' }}>
-      <img src={`/gene/region/${region.key}.png`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }}
+    <div onClick={() => nav('/school/' + encodeURIComponent(school.name))} style={{
+      width:260, cursor:'pointer', borderRadius:4, overflow:'hidden', flexShrink:0,
+      background:'#FDFBF7', border:'1px solid rgba(145,118,71,0.07)',
+      boxShadow:'0 1px 2px rgba(42,31,26,0.02)',
+    }}>
+      <img src={imgUrl(school.name)} alt={school.name} loading="lazy"
+        style={{ width:'100%', height:155, objectFit:'cover', display:'block', background:'#E8E0D4' }}
         onError={(e) => { e.currentTarget.style.display='none'; }} />
-      <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'#2A1F1A',
-        fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
-    </section>
+      <div style={{ padding:'10px 13px' }}>
+        <div style={{ fontSize:8, fontWeight:500, letterSpacing:'0.08em', textTransform:'uppercase',
+          color:s.region==='东方'?'#3A5A7C':s.region==='西方'?'#917647':'#5A8A5A',
+          marginBottom:2, fontFamily:'var(--font-sans)', opacity:0.7 }}>{s.century}</div>
+        <div style={{ fontSize:14, fontWeight:500, color:'#2A1F1A', lineHeight:1.25,
+          fontFamily:'"Playfair Display","PingFang SC",serif' }}>{s.name}</div>
+        <div style={{ fontSize:9, fontWeight:300, color:'#7A6E64', lineHeight:1.4, marginTop:2,
+          fontFamily:'var(--font-sans)' }}>{s.desc}</div>
+      </div>
+    </div>
   );
 }
 
-function SchoolBlock({ schools, blockIdx }) {
-  const Block = BLOCKS[blockIdx % BLOCKS.length];
+// ─── Region Tile — wider, original ratio ───
+function RegionTile({ rkey }) {
   return (
-    <div style={{ padding:'16px 0' }}>
-      <Block schools={schools} />
+    <div style={{ width:420, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative' }}>
+      <img src={`/gene/region/${rkey}.png`} alt="" style={{ width:'100%', height:'auto', display:'block' }}
+        onError={(e) => { e.currentTarget.style.display='none'; }} />
+      <div style={{ position:'absolute', bottom:10, left:14 }}>
+        <div style={{ fontSize:18, fontWeight:400, color:'#fff', fontFamily:'"Playfair Display","PingFang SC",serif',
+          textShadow:'0 1px 8px rgba(0,0,0,0.6)' }}>{REGION_NAME[rkey]||rkey}</div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Era Marker ───
+function EraMarker({ era }) {
+  return (
+    <div style={{ width:'100%', textAlign:'center', padding:'16px 8px', flexShrink:0 }}>
+      {era.e && <img src={`/gene/${era.e}.png`} alt="" style={{ height:50, opacity:0.4, marginBottom:6 }} />}
+      <div style={{ fontSize:8, letterSpacing:'0.14em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)' }}>{era.n} · {era.t} · {era.r}</div>
     </div>
   );
 }
 
 // ─── Page ───
 export default function GenealogyPage() {
+  const tiles = useMemo(() => buildTiles(), []);
   const nav = useNavigate();
-  const chapters = useMemo(() => buildChapters(), []);
 
   return (
-    <div style={{ background:'#F8F6F2', minHeight:'100vh',
-      fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A' }}>
+    <div style={{ background:'#F8F6F2', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A' }}>
 
-      {/* ══════════ MASTHEAD ══════════ */}
-      <section style={{ padding:'56px 32px 32px', textAlign:'center' }}>
-        <p style={{ fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'#917647', marginBottom:20, fontFamily:'var(--font-sans)' }}>
-          Museum of Philosophy</p>
-        <h1 style={{ fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic',
-          color:'#2A1F1A', letterSpacing:'0.06em', lineHeight:1.15,
-          fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
-        <div style={{ width:32, height:1, background:'#917647', margin:'14px auto', opacity:0.35 }} />
-        <p style={{ fontSize:'0.85rem', fontWeight:300, color:'#8A7E74', fontFamily:'var(--font-sans)' }}>
-          一部按照时间顺序翻阅的世界哲学图录</p>
+      {/* Masthead */}
+      <section style={{ padding:'48px 32px 20px', textAlign:'center' }}>
+        <p style={{ fontSize:10, letterSpacing:'0.26em', textTransform:'uppercase', color:'#917647', marginBottom:18, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
+        <h1 style={{ fontSize:'clamp(1.8rem,4vw,3rem)', fontWeight:400, fontStyle:'italic', color:'#2A1F1A', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
+        <div style={{ width:28, height:1, background:'#917647', margin:'12px auto', opacity:0.35 }} />
+        <p style={{ fontSize:'0.8rem', fontWeight:300, color:'#8A7E74', fontFamily:'var(--font-sans)' }}>九十五个流派 · 五千年思想史图录</p>
       </section>
 
-      {/* ══════════ CHAPTERS ══════════ */}
-      {chapters.map((ch, ci) => (
-        <div key={ci}>
-          <EraCover era={ch.era} />
+      {/* Collage */}
+      <div style={{ maxWidth:1400, margin:'0 auto', padding:'0 14px 80px',
+        display:'flex', flexWrap:'wrap', justifyContent:'center', alignItems:'flex-start', gap:12 }}>
+        {tiles.map((tile, i) => (
+          tile.type === 'era' ? <EraMarker key={i} era={tile.era} />
+          : tile.type === 'region' ? <RegionTile key={i} rkey={tile.key} />
+          : <SchoolCard key={i} school={tile.school} />
+        ))}
+      </div>
 
-          {ch.regions.map((region, ri) => {
-            const chunks = chunkSchools(region.schools);
-            return (
-              <div key={ri}>
-                <RegionIntro region={region} />
-
-                <div style={{ maxWidth:900, margin:'0 auto', padding:'0 16px' }}>
-                  {chunks.map((chunk, bi) => (
-                    <SchoolBlock key={bi} schools={chunk} blockIdx={ci*10 + ri*5 + bi} />
-                  ))}
-                </div>
-
-                {/* Inter-region breathing space */}
-                <div style={{ height:60 }} />
-              </div>
-            );
-          })}
-
-          {/* Inter-era breathing space */}
-          <div style={{ height:80 }} />
-        </div>
-      ))}
-
-      {/* ══════════ COLOPHON ══════════ */}
-      <div style={{ textAlign:'center', padding:'80px 32px', borderTop:'1px solid rgba(145,118,71,0.08)' }}>
-        <p style={{ fontSize:12, color:'#A09080', fontFamily:'var(--font-sans)', margin:0 }}>
-          九十五个哲学流派 · 一部横跨五千年的人类思想史图录</p>
-        <div style={{ display:'flex', justifyContent:'center', gap:32, marginTop:32 }}>
-          {[
-            { l:'西方哲学', p:'/western-philosophies' },
-            { l:'东方哲学', p:'/eastern-philosophies' },
-            { l:'世界哲学', p:'/world-philosophies' },
-          ].map(b => (
+      {/* Footer */}
+      <div style={{ textAlign:'center', padding:'60px 32px', borderTop:'1px solid rgba(145,118,71,0.06)' }}>
+        <div style={{ display:'flex', justifyContent:'center', gap:32, flexWrap:'wrap' }}>
+          {[{ l:'西方哲学', p:'/western-philosophies' },{ l:'东方哲学', p:'/eastern-philosophies' },{ l:'世界哲学', p:'/world-philosophies' }].map(b => (
             <button key={b.p} onClick={() => nav(b.p)}
-              style={{ background:'none', border:'1px solid rgba(145,118,71,0.10)', cursor:'pointer',
-                fontFamily:'"Playfair Display",serif', fontSize:13, color:'#917647', padding:'6px 16px',
-                borderRadius:4, transition:'all 300ms ease', opacity:0.7 }}
+              style={{ background:'none', border:'1px solid rgba(145,118,71,0.08)', cursor:'pointer',
+                fontFamily:'"Playfair Display",serif', fontSize:13, color:'#917647', padding:'5px 14px',
+                borderRadius:4, transition:'all 300ms ease', opacity:0.6 }}
               onMouseEnter={e => { e.currentTarget.style.opacity='1'; e.currentTarget.style.borderColor='#917647'; }}
-              onMouseLeave={e => { e.currentTarget.style.opacity='0.7'; e.currentTarget.style.borderColor='rgba(145,118,71,0.10)'; }}>
+              onMouseLeave={e => { e.currentTarget.style.opacity='0.6'; e.currentTarget.style.borderColor='rgba(145,118,71,0.08)'; }}>
               {b.l}</button>
           ))}</div>
       </div>
