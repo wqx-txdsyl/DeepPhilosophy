@@ -193,6 +193,7 @@ const TIMELINE_ITEMS = (() => {
   const allTimelines = [
     ...WESTERN_TIMELINE.map(t => ({...t, region:'西方'})),
     ...EASTERN_TIMELINE.map(t => ({...t, region:'东方'})),
+    ...WORLD_TIMELINE.map(t => ({...t, region:'世界'})),
   ];
   // Sort by century
   const centuryOrder = allTimelines.map(t => t.century).filter((v,i,a)=>a.indexOf(v)===i).sort();
@@ -251,7 +252,7 @@ function TimelineCard({ item, side, index }) {
 // ─── SVG Double Helix Curves ───
 function HelixCurves({ items }) {
   const [h, setH] = useState(800); const ref = useRef(null);
-  useEffect(() => { if (ref.current) setH(ref.current.scrollHeight + 200); }, []);
+  useEffect(() => { const el = ref.current?.parentElement; if (el) setH(el.scrollHeight + 100); }, []);
   if (h < 100 || !items) return null;
   const cx = 400, amp = 70, cycles = 10;
   const buildPath = (phase) => { let d = `M ${cx + amp*Math.sin(phase)} 0`; for (let y = 0; y <= h; y += 8) { const t = (y/h) * Math.PI * 2 * cycles; d += ` L ${cx + amp*Math.sin(t+phase)} ${y}`; } return d; };
