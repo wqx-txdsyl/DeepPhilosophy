@@ -3,20 +3,8 @@
  * National Geographic × Phaidon art book style.
  * 10 hand-crafted layout blocks, cycled for curated rhythm.
  */
-import { useMemo, useRef, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-function useFadeIn() {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold:0.1, rootMargin:'-30px 0px' });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, visible];
-}
 
 const ALL_SCHOOLS = [
   { century:'公元前30世纪', name:'古希伯来哲学', region:'世界', desc:'约伯、传道书与智慧文学——信仰、苦难与神圣正义的追问。', tier:'A' },
@@ -170,12 +158,9 @@ const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
 function SchoolImg({ school, w }) {
   const nav = useNavigate();
-  const [ref, visible] = useFadeIn();
   return (
-    <div ref={ref} onClick={() => nav('/school/' + encodeURIComponent(school.name))}
-      style={{ width:w, minHeight:120, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4', cursor:'pointer',
-      opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
-      transition: 'opacity 0.5s ease, transform 0.5s ease' }}>
+    <div onClick={() => nav('/school/' + encodeURIComponent(school.name))}
+      style={{ width:w, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4', cursor:'pointer' }}>
       <img src={imgUrl(school.name)} alt={school.name} loading="lazy"
         style={{ width:'100%', height:h||'auto', objectFit:'cover', display:'block' }}
         onError={(e) => { e.currentTarget.style.display='none'; }} />
@@ -373,12 +358,9 @@ function EraCover({ era }) {
 }
 
 function RegionIntro({ region }) {
-  const [ref, visible] = useFadeIn();
   return (
-    <section ref={ref} style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto', minHeight:200,
-      opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(20px)',
-      transition:'opacity 0.6s ease, transform 0.6s ease' }}>
-      <img src={`/gene/region/${region.key}.png`} alt="" style={{ width:'100%', minHeight:200, maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }}
+    <section style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto' }}>
+      <img src={`/gene/region/${region.key}.png`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }}
         onError={(e) => { e.currentTarget.style.display='none'; }} />
       <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'#2A1F1A',
         fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
