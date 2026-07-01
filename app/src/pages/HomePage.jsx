@@ -5,8 +5,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import DAILY_QUOTES from '../data/dailyQuotes';
-import WorldMap from '../components/WorldMap';
-import PhilosophyTimeline from '../components/PhilosophyTimeline';
 
 const WESTERN_TIMELINE = [
   { century: '公元前6世纪', schools: ['古希腊哲学'] },
@@ -195,7 +193,6 @@ const TIMELINE_ITEMS = (() => {
   const allTimelines = [
     ...WESTERN_TIMELINE.map(t => ({...t, region:'西方'})),
     ...EASTERN_TIMELINE.map(t => ({...t, region:'东方'})),
-    ...WORLD_TIMELINE.map(t => ({...t, region:'世界'})),
   ];
   // Sort by century
   const centuryOrder = allTimelines.map(t => t.century).filter((v,i,a)=>a.indexOf(v)===i).sort();
@@ -252,13 +249,15 @@ function TimelineCard({ item, side, index }) {
 }
 
 // ─── SVG Double Helix Curves ───
-function HelixCurves() {
-  const [h, setH] = useState(800);
-  const ref = useRef(null);
+function HelixCurves({ items }) {
+  const [h, setH] = useState(800); const ref = useRef(null);
   useEffect(() => { if (ref.current) setH(ref.current.scrollHeight + 200); }, []);
-  if (h < 100) return null;
-  const cx = 400, amp = 70, cycles = 12;
+  if (h < 100 || !items) return null;
+  const cx = 400, amp = 70, cycles = 10;
   const buildPath = (phase) => { let d = `M ${cx + amp*Math.sin(phase)} 0`; for (let y = 0; y <= h; y += 8) { const t = (y/h) * Math.PI * 2 * cycles; d += ` L ${cx + amp*Math.sin(t+phase)} ${y}`; } return d; };
+  // Unique timestamps
+  const stamps = []; let lastC = '';
+  items.forEach((item, i) => { if (item.century !== lastC) { lastC = item.century; stamps.push({ c: item.century, y: (i/items.length)*h, r: item.region }); } });
   return (
     <div ref={ref} style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0, overflow:'hidden' }}>
       <svg width="100%" height={h} style={{ position:'absolute', top:0, left:0 }} viewBox={`0 0 800 ${h}`} preserveAspectRatio="none">
@@ -268,6 +267,11 @@ function HelixCurves() {
         </defs>
         <path d={buildPath(0)} fill="none" stroke="url(#hgA)" strokeWidth="2" opacity="0.5"/>
         <path d={buildPath(Math.PI)} fill="none" stroke="url(#hgB)" strokeWidth="1.5" opacity="0.4"/>
+        {stamps.map((s, i) => {
+          const onA = i%2===0; const x = cx + amp*Math.sin((s.y/h)*Math.PI*2*cycles + (onA?0:Math.PI)) + (onA?28:-28);
+          const col = s.r==='西方'?'#917647':s.r==='东方'?'#3A5A7C':'#5A8A5A';
+          return <text key={i} x={x} y={s.y} fill={col} fontSize="10" fontFamily="var(--font-sans)" opacity="0.5" textAnchor="middle">{s.c}</text>;
+        })}
       </svg>
     </div>
   );
@@ -336,8 +340,8 @@ function HomePage() {
       }).catch(() => {});
   }, []);
 
-  const scrollToTimeline = () => {
-    document.getElementById('home-content')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToDaily = () => {
+    document.getElementById('daily-quote')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -406,7 +410,7 @@ function HomePage() {
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>
             从公元前三十世纪至二十一世纪<br />一部横跨五千年的思想史长卷
           </p>
-          <button onClick={scrollToTimeline} style={{
+          <button onClick={scrollToDaily} style={{
             fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, letterSpacing: '0.08em',
             color: '#fff', background: 'var(--ink)', border: 'none', borderRadius: 4,
             padding: '14px 36px', cursor: 'pointer', transition: 'all 0.25s'
@@ -422,7 +426,7 @@ function HomePage() {
       </section>
 
       {/* ══════════ DAILY QUOTE ══════════ */}
-      <section onClick={() => { const q = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]; setDailyQuote(q); }}
+      <section id="daily-quote" onClick={() => { const q = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]; setDailyQuote(q); }}
         style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%', cursor: 'pointer' }}>
         <div style={{ maxWidth: 680, margin: '0 auto' }}>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', marginBottom: 20 }}>Daily Quote — 点击切换</p>
@@ -493,7 +497,7 @@ function HomePage() {
         </div>
       </section>
 
-      <PhilosophyTimeline />
+      
 
       
     </div>
