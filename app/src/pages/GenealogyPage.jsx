@@ -151,8 +151,7 @@ function getEraIdx(c) {
   if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4; return 5;
 }
 
-const PNG_SCHOOLS = new Set(['东欧斯拉夫哲学','伊壁鸠鲁学派','前苏格拉底哲学','北欧哲学','北美哲学','印加哲学','古埃及哲学','新柏拉图主义','澳洲原住民哲学','犬儒学派','玛雅哲学','美索不达米亚哲学','蒙古中亚哲学','西藏哲学','阿兹特克哲学','韩国哲学']);
-function imgUrl(name) { return `/schools/${encodeURI(name)}${PNG_SCHOOLS.has(name)?'.png':'.jpg'}`; }
+function imgUrl(name) { return `/schools/${encodeURI(name)}.jpg`; }
 
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
