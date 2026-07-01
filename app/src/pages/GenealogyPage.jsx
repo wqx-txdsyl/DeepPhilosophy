@@ -19,101 +19,101 @@ function useFadeIn() {
 }
 
 const ALL_SCHOOLS = [
-  { century:'公元前30世纪', name:'古希伯来哲学', region:'世界', desc:'约伯、传道书与智慧文学——信仰、苦难与神圣正义的追问。' },
-  { century:'公元前30世纪', name:'古埃及哲学', region:'世界', desc:'玛阿特——宇宙秩序、真理与正义的永恒法则。' },
-  { century:'公元前30世纪', name:'美索不达米亚哲学', region:'世界', desc:'苏美尔智慧文学追问苦难与秩序——人类最早的哲学追问。' },
-  { century:'公元前15世纪', name:'印度哲学', region:'世界', desc:'《吠陀》《奥义书》为源头，六派哲学追问解脱。' },
-  { century:'公元前15世纪', name:'犹太哲学', region:'世界', desc:'从斐洛到列维纳斯——雅典与耶路撒冷之间。' },
-  { century:'公元前10世纪', name:'波斯哲学', region:'世界', desc:'琐罗亚斯德教善恶二元论——两千五百年的连续传统。' },
-  { century:'公元前6世纪', name:'凯尔特哲学', region:'世界', desc:'德鲁伊传统与凯尔特智慧——自然、灵魂转世与森林中的哲学。' },
-  { century:'公元前6世纪', name:'道家', region:'东方', desc:'道法自然，无为而治。' },
-  { century:'公元前6世纪', name:'儒家', region:'东方', desc:'以仁为核心，以礼为规范。' },
-  { century:'公元前6世纪', name:'古希腊哲学', region:'世界', desc:'西方哲学总源——以理性思辨取代神话解释。' },
-  { century:'公元前5世纪', name:'墨家', region:'东方', desc:'兼爱非攻，尚贤节用。' },
-  { century:'公元前5世纪', name:'兵家', region:'东方', desc:'知己知彼，不战屈人。' },
-  { century:'公元前4世纪', name:'法家', region:'东方', desc:'以法治国，不别亲疏。' },
-  { century:'公元前4世纪', name:'名家', region:'东方', desc:'白马非马——中国最早的逻辑学。' },
-  { century:'公元前4世纪', name:'阴阳家', region:'东方', desc:'阴阳消长，五德终始。' },
-  { century:'公元前1世纪', name:'罗马哲学', region:'世界', desc:'西塞罗、塞内卡、马可·奥勒留——斯多葛与伊壁鸠鲁在帝国的实践。' },
-  { century:'公元前2世纪', name:'两汉经学', region:'东方', desc:'通经致用，以经为法。' },
-  { century:'3世纪', name:'魏晋玄学', region:'东方', desc:'越名教而任自然。' },
-  { century:'4世纪', name:'拜占庭哲学', region:'世界', desc:'东罗马帝国的神学哲学传统——伪狄奥尼修斯与拜占庭智慧。' },
-  { century:'4世纪', name:'教父哲学', region:'西方', desc:'以希腊理性为基督教信仰奠基。' },
-  { century:'6世纪', name:'隋唐佛学', region:'东方', desc:'八宗竞秀，会通中印。' },
-  { century:'7世纪', name:'伊斯兰哲学', region:'世界', desc:'凯拉姆与苏非——理性与启示的对话。' },
-  { century:'7世纪', name:'阿拉伯哲学', region:'世界', desc:'铿迪、法拉比、阿维森纳——中世纪哲学桥梁。' },
-  { century:'8世纪', name:'西藏哲学', region:'世界', desc:'宗喀巴体系——藏传佛教中观应成派。' },
-  { century:'11世纪', name:'宋明理学', region:'东方', desc:'为天地立心，为生民立命。' },
-  { century:'11世纪', name:'经院哲学', region:'西方', desc:'以亚里士多德逻辑构建理性圣殿。' },
-  { century:'11世纪', name:'唯名论', region:'西方', desc:'共相只是名称不是实在。' },
-  { century:'13世纪', name:'印加哲学', region:'世界', desc:'帕查与艾尼——安第斯的宇宙时空与互惠伦理。' },
-  { century:'13世纪', name:'非洲哲学', region:'世界', desc:'乌班图与去殖民化。' },
-  { century:'15世纪', name:'拉丁美洲哲学', region:'世界', desc:'从拉斯·卡萨斯到杜塞尔——解放的哲学。' },
-  { century:'15世纪', name:'玛雅哲学', region:'世界', desc:'《波波尔·乌》——循环时间观与玉米人。' },
-  { century:'15世纪', name:'阿兹特克哲学', region:'世界', desc:'第五太阳纪——花与歌的哲学回应。' },
-  { century:'16世纪', name:'东南亚哲学', region:'世界', desc:'上座部佛教与本土智慧的交融。' },
-  { century:'16世纪', name:'韩国哲学', region:'世界', desc:'性理学与实学——从四端七情到主体思想。' },
-  { century:'17世纪', name:'明清实学', region:'东方', desc:'经世致用，实事求是。' },
-  { century:'17世纪', name:'乾嘉朴学', region:'东方', desc:'无征不信，孤证不立。' },
-  { century:'17世纪', name:'理性主义', region:'西方', desc:'以数学公理为范本。' },
-  { century:'17世纪', name:'经验主义', region:'西方', desc:'一切知识起源于感觉经验。' },
-  { century:'18世纪', name:'启蒙运动', region:'西方', desc:'敢于运用你自己的理性。' },
-  { century:'18世纪', name:'实在论', region:'西方', desc:'存在独立于心灵。' },
-  { century:'18世纪', name:'唯心主义', region:'西方', desc:'实在的本质是精神或观念。' },
-  { century:'18世纪', name:'自由主义', region:'西方', desc:'个人自由是最高政治价值。' },
-  { century:'18世纪', name:'浪漫主义', region:'西方', desc:'以情感和想象反抗启蒙理性。' },
-  { century:'19世纪', name:'德国古典哲学', region:'西方', desc:'从康德到黑格尔的哲学革命。' },
-  { century:'19世纪', name:'功利主义', region:'西方', desc:'最大多数人的最大幸福。' },
-  { century:'19世纪', name:'超验主义', region:'西方', desc:'美国精神独立宣言。' },
-  { century:'19世纪', name:'实证主义', region:'西方', desc:'只问如何不问为何。' },
-  { century:'19世纪', name:'马克思主义', region:'西方', desc:'问题在于改变世界。' },
-  { century:'19世纪', name:'生命哲学', region:'西方', desc:'理性不能穷尽生命。' },
-  { century:'19世纪', name:'社会学', region:'西方', desc:'追问社会何以可能。' },
-  { century:'19世纪', name:'北欧哲学', region:'世界', desc:'克尔凯郭尔的信仰跳跃。' },
-  { century:'19世纪', name:'东欧斯拉夫哲学', region:'世界', desc:'索洛维约夫、舍斯托夫——第三条道路。' },
-  { century:'19世纪', name:'北美哲学', region:'世界', desc:'实用主义与超验主义。' },
-  { century:'19世纪', name:'黑人哲学', region:'世界', desc:'从废奴运动到黑权运动——双重意识、种族批判与黑人存在主义的全球哲学传统。' },
-  { century:'19世纪末', name:'天演论', region:'东方', desc:'物竞天择，适者生存。' },
-  { century:'19世纪末', name:'维新派', region:'东方', desc:'变则通，通则久。' },
-  { century:'20世纪初', name:'实用主义', region:'西方', desc:'真理即有用，意义在于效果。' },
-  { century:'20世纪初', name:'精神分析学', region:'西方', desc:'心灵深处有一个你不知道的你。' },
-  { century:'20世纪初', name:'现象学', region:'西方', desc:'回到事物本身。' },
-  { century:'20世纪初', name:'存在主义', region:'西方', desc:'存在先于本质。' },
-  { century:'20世纪初', name:'分析哲学', region:'西方', desc:'全部哲学就是语言的批判。' },
-  { century:'20世纪初', name:'过程哲学', region:'西方', desc:'实在是生成而非存在。' },
-  { century:'20世纪初', name:'哲学人类学', region:'西方', desc:'人是什么。' },
-  { century:'20世纪初', name:'三民主义', region:'东方', desc:'民族、民权、民生。' },
-  { century:'20世纪初', name:'旧民主主义', region:'东方', desc:'探索民主共和道路。' },
-  { century:'20世纪', name:'解放哲学', region:'世界', desc:'从解放神学到巴西解放教育学——哲学为被压迫者发声。' },
-  { century:'20世纪中', name:'西方马克思主义', region:'西方', desc:'回到黑格尔的马克思。' },
-  { century:'20世纪中', name:'法兰克福学派', region:'西方', desc:'工具理性已沦为新的统治形式。' },
-  { century:'20世纪中', name:'批判理论', region:'西方', desc:'传统理论描述世界，批判理论旨在解放。' },
-  { century:'20世纪中', name:'科学哲学', region:'西方', desc:'科学何以成为科学。' },
-  { century:'20世纪中', name:'荒诞哲学', region:'西方', desc:'世界没有意义，但人必须活下去。' },
-  { century:'20世纪中', name:'基督教哲学', region:'西方', desc:'信仰在理性中追问自身。' },
-  { century:'20世纪中', name:'结构主义', region:'西方', desc:'意义在关系之中。' },
-  { century:'20世纪中', name:'政治哲学', region:'西方', desc:'追问正义、权力与自由。' },
-  { century:'20世纪中', name:'哲学诠释学', region:'西方', desc:'理解是存在方式。' },
-  { century:'20世纪中', name:'毛泽东思想', region:'东方', desc:'实事求是，群众路线。' },
-  { century:'20世纪中', name:'中国马克思主义哲学', region:'东方', desc:'辩证唯物主义的中国化。' },
-  { century:'20世纪中', name:'新民主主义', region:'东方', desc:'革命分两步走。' },
-  { century:'20世纪末', name:'解构主义', region:'西方', desc:'德里达的解构——文字、意义与权力的边缘。' },
-  { century:'20世纪末', name:'后结构主义', region:'西方', desc:'解构逻各斯中心主义。' },
-  { century:'20世纪末', name:'后现代主义', region:'西方', desc:'对宏大叙事的怀疑。' },
-  { century:'20世纪末', name:'伦理学', region:'西方', desc:'追问人应该如何生活。' },
-  { century:'20世纪末', name:'环境哲学', region:'世界', desc:'人类与自然的伦理关系——深层生态学、生态女性主义与环境正义。' },
-  { century:'20世纪末', name:'宗教哲学', region:'西方', desc:'以理性审视信仰。' },
-  { century:'20世纪末', name:'后殖民哲学', region:'世界', desc:'法农、萨义德、斯皮瓦克——殖民经验的哲学批判与去殖民化思想。' },
-  { century:'20世纪末', name:'女性主义', region:'西方', desc:'个人的即政治的。' },
-  { century:'20世纪末', name:'原住民哲学', region:'世界', desc:'全球原住民的生态智慧与土地伦理——从澳大利亚到亚马逊。' },
-  { century:'20世纪末', name:'社群主义', region:'西方', desc:'自我镶嵌于共同体之中。' },
-  { century:'20世纪末', name:'现代新儒家', region:'东方', desc:'返本开新，内圣外王。' },
-  { century:'20世纪末', name:'中国实证哲学', region:'东方', desc:'大胆假设，小心求证。' },
-  { century:'20世纪末', name:'马克思主义哲学的中国化与体系化', region:'东方', desc:'实践标准到理论体系。' },
-  { century:'20世纪末', name:'蒙古中亚哲学', region:'世界', desc:'萨满传统与长生天。' },
-  { century:'20世纪末', name:'澳洲原住民哲学', region:'世界', desc:'梦时代——最古老文明的生命智慧。' },
-  { century:'21世纪', name:'技术哲学', region:'西方', desc:'技术不是中立的工具。' },
-  { century:'21世纪', name:'习近平新时代中国特色社会主义思想', region:'东方', desc:'以人民为中心的发展思想。' },
+  { century:'公元前30世纪', name:'古希伯来哲学', region:'世界', desc:'约伯、传道书与智慧文学——信仰、苦难与神圣正义的追问。', tier:'A' },
+  { century:'公元前30世纪', name:'古埃及哲学', region:'世界', desc:'玛阿特——宇宙秩序、真理与正义的永恒法则。', tier:'A' },
+  { century:'公元前30世纪', name:'美索不达米亚哲学', region:'世界', desc:'苏美尔智慧文学追问苦难与秩序——人类最早的哲学追问。', tier:'A' },
+  { century:'公元前15世纪', name:'印度哲学', region:'世界', desc:'《吠陀》《奥义书》为源头，六派哲学追问解脱。', tier:'A' },
+  { century:'公元前15世纪', name:'犹太哲学', region:'世界', desc:'从斐洛到列维纳斯——雅典与耶路撒冷之间。', tier:'B' },
+  { century:'公元前10世纪', name:'波斯哲学', region:'世界', desc:'琐罗亚斯德教善恶二元论——两千五百年的连续传统。', tier:'B' },
+  { century:'公元前6世纪', name:'凯尔特哲学', region:'世界', desc:'德鲁伊传统与凯尔特智慧——自然、灵魂转世与森林中的哲学。', tier:'B' },
+  { century:'公元前6世纪', name:'道家', region:'东方', desc:'道法自然，无为而治。', tier:'A' },
+  { century:'公元前6世纪', name:'儒家', region:'东方', desc:'以仁为核心，以礼为规范。', tier:'A' },
+  { century:'公元前6世纪', name:'古希腊哲学', region:'世界', desc:'西方哲学总源——以理性思辨取代神话解释。', tier:'A' },
+  { century:'公元前5世纪', name:'墨家', region:'东方', desc:'兼爱非攻，尚贤节用。', tier:'B' },
+  { century:'公元前5世纪', name:'兵家', region:'东方', desc:'知己知彼，不战屈人。', tier:'B' },
+  { century:'公元前4世纪', name:'法家', region:'东方', desc:'以法治国，不别亲疏。', tier:'B' },
+  { century:'公元前4世纪', name:'名家', region:'东方', desc:'白马非马——中国最早的逻辑学。', tier:'C' },
+  { century:'公元前4世纪', name:'阴阳家', region:'东方', desc:'阴阳消长，五德终始。', tier:'C' },
+  { century:'公元前1世纪', name:'罗马哲学', region:'世界', desc:'西塞罗、塞内卡、马可·奥勒留——斯多葛与伊壁鸠鲁在帝国的实践。', tier:'A' },
+  { century:'公元前2世纪', name:'两汉经学', region:'东方', desc:'通经致用，以经为法。', tier:'B' },
+  { century:'3世纪', name:'魏晋玄学', region:'东方', desc:'越名教而任自然。', tier:'B' },
+  { century:'4世纪', name:'拜占庭哲学', region:'世界', desc:'东罗马帝国的神学哲学传统——伪狄奥尼修斯与拜占庭智慧。', tier:'B' },
+  { century:'4世纪', name:'教父哲学', region:'西方', desc:'以希腊理性为基督教信仰奠基。', tier:'A' },
+  { century:'6世纪', name:'隋唐佛学', region:'东方', desc:'八宗竞秀，会通中印。', tier:'A' },
+  { century:'7世纪', name:'伊斯兰哲学', region:'世界', desc:'凯拉姆与苏非——理性与启示的对话。', tier:'A' },
+  { century:'7世纪', name:'阿拉伯哲学', region:'世界', desc:'铿迪、法拉比、阿维森纳——中世纪哲学桥梁。', tier:'A' },
+  { century:'8世纪', name:'西藏哲学', region:'世界', desc:'宗喀巴体系——藏传佛教中观应成派。', tier:'B' },
+  { century:'11世纪', name:'宋明理学', region:'东方', desc:'为天地立心，为生民立命。', tier:'A' },
+  { century:'11世纪', name:'经院哲学', region:'西方', desc:'以亚里士多德逻辑构建理性圣殿。', tier:'A' },
+  { century:'11世纪', name:'唯名论', region:'西方', desc:'共相只是名称不是实在。', tier:'C' },
+  { century:'13世纪', name:'印加哲学', region:'世界', desc:'帕查与艾尼——安第斯的宇宙时空与互惠伦理。', tier:'B' },
+  { century:'13世纪', name:'非洲哲学', region:'世界', desc:'乌班图与去殖民化。', tier:'A' },
+  { century:'15世纪', name:'拉丁美洲哲学', region:'世界', desc:'从拉斯·卡萨斯到杜塞尔——解放的哲学。', tier:'A' },
+  { century:'15世纪', name:'玛雅哲学', region:'世界', desc:'《波波尔·乌》——循环时间观与玉米人。', tier:'B' },
+  { century:'15世纪', name:'阿兹特克哲学', region:'世界', desc:'第五太阳纪——花与歌的哲学回应。', tier:'B' },
+  { century:'16世纪', name:'东南亚哲学', region:'世界', desc:'上座部佛教与本土智慧的交融。', tier:'B' },
+  { century:'16世纪', name:'韩国哲学', region:'世界', desc:'性理学与实学——从四端七情到主体思想。', tier:'B' },
+  { century:'17世纪', name:'明清实学', region:'东方', desc:'经世致用，实事求是。', tier:'B' },
+  { century:'17世纪', name:'乾嘉朴学', region:'东方', desc:'无征不信，孤证不立。', tier:'C' },
+  { century:'17世纪', name:'理性主义', region:'西方', desc:'以数学公理为范本。', tier:'A' },
+  { century:'17世纪', name:'经验主义', region:'西方', desc:'一切知识起源于感觉经验。', tier:'A' },
+  { century:'18世纪', name:'启蒙运动', region:'西方', desc:'敢于运用你自己的理性。', tier:'A' },
+  { century:'18世纪', name:'实在论', region:'西方', desc:'存在独立于心灵。', tier:'B' },
+  { century:'18世纪', name:'唯心主义', region:'西方', desc:'实在的本质是精神或观念。', tier:'B' },
+  { century:'18世纪', name:'自由主义', region:'西方', desc:'个人自由是最高政治价值。', tier:'B' },
+  { century:'18世纪', name:'浪漫主义', region:'西方', desc:'以情感和想象反抗启蒙理性。', tier:'C' },
+  { century:'19世纪', name:'德国古典哲学', region:'西方', desc:'从康德到黑格尔的哲学革命。', tier:'A' },
+  { century:'19世纪', name:'功利主义', region:'西方', desc:'最大多数人的最大幸福。', tier:'B' },
+  { century:'19世纪', name:'超验主义', region:'西方', desc:'美国精神独立宣言。', tier:'C' },
+  { century:'19世纪', name:'实证主义', region:'西方', desc:'只问如何不问为何。', tier:'B' },
+  { century:'19世纪', name:'马克思主义', region:'西方', desc:'问题在于改变世界。', tier:'A' },
+  { century:'19世纪', name:'生命哲学', region:'西方', desc:'理性不能穷尽生命。', tier:'C' },
+  { century:'19世纪', name:'社会学', region:'西方', desc:'追问社会何以可能。', tier:'B' },
+  { century:'19世纪', name:'北欧哲学', region:'世界', desc:'克尔凯郭尔的信仰跳跃。', tier:'B' },
+  { century:'19世纪', name:'东欧斯拉夫哲学', region:'世界', desc:'索洛维约夫、舍斯托夫——第三条道路。', tier:'B' },
+  { century:'19世纪', name:'北美哲学', region:'世界', desc:'实用主义与超验主义。', tier:'B' },
+  { century:'19世纪', name:'黑人哲学', region:'世界', desc:'从废奴运动到黑权运动——双重意识、种族批判与黑人存在主义的全球哲学传统。', tier:'B' },
+  { century:'19世纪末', name:'天演论', region:'东方', desc:'物竞天择，适者生存。', tier:'C' },
+  { century:'19世纪末', name:'维新派', region:'东方', desc:'变则通，通则久。', tier:'C' },
+  { century:'20世纪初', name:'实用主义', region:'西方', desc:'真理即有用，意义在于效果。', tier:'B' },
+  { century:'20世纪初', name:'精神分析学', region:'西方', desc:'心灵深处有一个你不知道的你。', tier:'B' },
+  { century:'20世纪初', name:'现象学', region:'西方', desc:'回到事物本身。', tier:'A' },
+  { century:'20世纪初', name:'存在主义', region:'西方', desc:'存在先于本质。', tier:'A' },
+  { century:'20世纪初', name:'分析哲学', region:'西方', desc:'全部哲学就是语言的批判。', tier:'A' },
+  { century:'20世纪初', name:'过程哲学', region:'西方', desc:'实在是生成而非存在。', tier:'C' },
+  { century:'20世纪初', name:'哲学人类学', region:'西方', desc:'人是什么。', tier:'C' },
+  { century:'20世纪初', name:'三民主义', region:'东方', desc:'民族、民权、民生。', tier:'C' },
+  { century:'20世纪初', name:'旧民主主义', region:'东方', desc:'探索民主共和道路。', tier:'C' },
+  { century:'20世纪', name:'解放哲学', region:'世界', desc:'从解放神学到巴西解放教育学——哲学为被压迫者发声。', tier:'A' },
+  { century:'20世纪中', name:'西方马克思主义', region:'西方', desc:'回到黑格尔的马克思。', tier:'B' },
+  { century:'20世纪中', name:'法兰克福学派', region:'西方', desc:'工具理性已沦为新的统治形式。', tier:'B' },
+  { century:'20世纪中', name:'批判理论', region:'西方', desc:'传统理论描述世界，批判理论旨在解放。', tier:'B' },
+  { century:'20世纪中', name:'科学哲学', region:'西方', desc:'科学何以成为科学。', tier:'B' },
+  { century:'20世纪中', name:'荒诞哲学', region:'西方', desc:'世界没有意义，但人必须活下去。', tier:'B' },
+  { century:'20世纪中', name:'基督教哲学', region:'西方', desc:'信仰在理性中追问自身。', tier:'C' },
+  { century:'20世纪中', name:'结构主义', region:'西方', desc:'意义在关系之中。', tier:'B' },
+  { century:'20世纪中', name:'政治哲学', region:'西方', desc:'追问正义、权力与自由。', tier:'B' },
+  { century:'20世纪中', name:'哲学诠释学', region:'西方', desc:'理解是存在方式。', tier:'C' },
+  { century:'20世纪中', name:'毛泽东思想', region:'东方', desc:'实事求是，群众路线。', tier:'B' },
+  { century:'20世纪中', name:'中国马克思主义哲学', region:'东方', desc:'辩证唯物主义的中国化。', tier:'B' },
+  { century:'20世纪中', name:'新民主主义', region:'东方', desc:'革命分两步走。', tier:'C' },
+  { century:'20世纪末', name:'解构主义', region:'西方', desc:'德里达的解构——文字、意义与权力的边缘。', tier:'B' },
+  { century:'20世纪末', name:'后结构主义', region:'西方', desc:'解构逻各斯中心主义。', tier:'B' },
+  { century:'20世纪末', name:'后现代主义', region:'西方', desc:'对宏大叙事的怀疑。', tier:'B' },
+  { century:'20世纪末', name:'伦理学', region:'西方', desc:'追问人应该如何生活。', tier:'B' },
+  { century:'20世纪末', name:'环境哲学', region:'世界', desc:'人类与自然的伦理关系——深层生态学、生态女性主义与环境正义。', tier:'B' },
+  { century:'20世纪末', name:'宗教哲学', region:'西方', desc:'以理性审视信仰。', tier:'C' },
+  { century:'20世纪末', name:'后殖民哲学', region:'世界', desc:'法农、萨义德、斯皮瓦克——殖民经验的哲学批判与去殖民化思想。', tier:'B' },
+  { century:'20世纪末', name:'女性主义', region:'西方', desc:'个人的即政治的。', tier:'B' },
+  { century:'20世纪末', name:'原住民哲学', region:'世界', desc:'全球原住民的生态智慧与土地伦理——从澳大利亚到亚马逊。', tier:'B' },
+  { century:'20世纪末', name:'社群主义', region:'西方', desc:'自我镶嵌于共同体之中。', tier:'C' },
+  { century:'20世纪末', name:'现代新儒家', region:'东方', desc:'返本开新，内圣外王。', tier:'B' },
+  { century:'20世纪末', name:'中国实证哲学', region:'东方', desc:'大胆假设，小心求证。', tier:'C' },
+  { century:'20世纪末', name:'马克思主义哲学的中国化与体系化', region:'东方', desc:'实践标准到理论体系。', tier:'C' },
+  { century:'20世纪末', name:'蒙古中亚哲学', region:'世界', desc:'萨满传统与长生天。', tier:'C' },
+  { century:'20世纪末', name:'澳洲原住民哲学', region:'世界', desc:'梦时代——最古老文明的生命智慧。', tier:'B' },
+  { century:'21世纪', name:'技术哲学', region:'西方', desc:'技术不是中立的工具。', tier:'B' },
+  { century:'21世纪', name:'习近平新时代中国特色社会主义思想', region:'东方', desc:'以人民为中心的发展思想。', tier:'C' },
 ];
 
 const REGION_OF = {
@@ -165,11 +165,10 @@ const PNG_SCHOOLS = new Set([
 ]);
 const imgUrl = (name) => `/schools/${encodeURI(name)}${PNG_SCHOOLS.has(name)?'.png':'.jpg'}`;
 
-// ─── 10 Editorial Layout Blocks ───
-// Each block takes an array of schools and a block index for variation.
-// Returns a flex/grid layout of image cards.
+// ─── Tier-based image widths ───
+const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-function SchoolImg({ school, w, h }) {
+function SchoolImg({ school, w }) {
   const nav = useNavigate();
   const [ref, visible] = useFadeIn();
   return (
@@ -195,22 +194,23 @@ function BlockA({ schools }) {
   const [a,b,c] = schools;
   return (
     <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {a && <SchoolImg school={a} w={380} />}
+      {a && <SchoolImg school={a} w={tierW(a)} />}
       <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {b && <SchoolImg school={b} w={200} />}
-        {c && <SchoolImg school={c} w={200} />}
+        {b && <SchoolImg school={b} w={tierW(b)} />}
+        {c && <SchoolImg school={c} w={tierW(c)} />}
       </div>
     </div>
   );
 }
 
-// Block B: 2 equal side by side
+// Block B: 2 equal side by side (use larger tier for both)
 function BlockB({ schools }) {
   const [a,b] = schools;
+  const w = Math.max(tierW(a||{}), tierW(b||{}), 280);
   return (
     <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {a && <SchoolImg school={a} w={290} />}
-      {b && <SchoolImg school={b} w={290} />}
+      {a && <SchoolImg school={a} w={w} />}
+      {b && <SchoolImg school={b} w={w} />}
     </div>
   );
 }
@@ -220,7 +220,7 @@ function BlockC({ schools }) {
   const [a] = schools;
   return (
     <div style={{ display:'flex', justifyContent:'center' }}>
-      {a && <SchoolImg school={a} w={600} />}
+      {a && <SchoolImg school={a} w={Math.min(tierW(a)*1.5, 600)} />}
     </div>
   );
 }
@@ -229,7 +229,7 @@ function BlockC({ schools }) {
 function BlockD({ schools }) {
   return (
     <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {schools.slice(0,3).map((s,i) => <SchoolImg key={i} school={s} w={200} />)}
+      {schools.slice(0,3).map((s,i) => <SchoolImg key={i} school={s} w={tierW(s)} />)}
     </div>
   );
 }
@@ -239,8 +239,8 @@ function BlockE({ schools }) {
   const [a,b] = schools;
   return (
     <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {a && <SchoolImg school={a} w={240} />}
-      {b && <SchoolImg school={b} w={340} />}
+      {a && <SchoolImg school={a} w={tierW(a)} />}
+      {b && <SchoolImg school={b} w={tierW(b)} />}
     </div>
   );
 }
@@ -251,10 +251,10 @@ function BlockF({ schools }) {
   return (
     <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
       <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {a && <SchoolImg school={a} w={180} />}
-        {b && <SchoolImg school={b} w={180} />}
+        {a && <SchoolImg school={a} w={tierW(a)} />}
+        {b && <SchoolImg school={b} w={tierW(b)} />}
       </div>
-      {c && <SchoolImg school={c} w={300} />}
+      {c && <SchoolImg school={c} w={tierW(c)} />}
     </div>
   );
 }
@@ -264,10 +264,10 @@ function BlockG({ schools }) {
   return (
     <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
       <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {schools.slice(0,2).map((s,i) => <SchoolImg key={i} school={s} w={200} />)}
+        {schools.slice(0,2).map((s,i) => <SchoolImg key={i} school={s} w={tierW(s)} />)}
       </div>
       <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {schools.slice(2,4).map((s,i) => <SchoolImg key={i} school={s} w={200} />)}
+        {schools.slice(2,4).map((s,i) => <SchoolImg key={i} school={s} w={tierW(s)} />)}
       </div>
     </div>
   );
@@ -278,7 +278,7 @@ function BlockH({ schools }) {
   const [a] = schools;
   return (
     <div style={{ display:'flex', justifyContent:'center' }}>
-      {a && <SchoolImg school={a} w={600} />}
+      {a && <SchoolImg school={a} w={Math.min(tierW(a)*1.3, 560)} />}
     </div>
   );
 }
@@ -289,9 +289,9 @@ function BlockI({ schools }) {
   return (
     <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
       <div style={{ paddingTop:60 }}>
-        {a && <SchoolImg school={a} w={200} />}
+        {a && <SchoolImg school={a} w={tierW(a)} />}
       </div>
-      {b && <SchoolImg school={b} w={380} />}
+      {b && <SchoolImg school={b} w={tierW(b)} />}
     </div>
   );
 }
@@ -302,7 +302,7 @@ function BlockJ({ schools }) {
     <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
       {schools.slice(0,3).map((s,i) => (
         <div key={i} style={{ paddingTop: i*50 }}>
-          <SchoolImg school={s} w={190} />
+          <SchoolImg school={s} w={tierW(s)} />
         </div>
       ))}
     </div>
