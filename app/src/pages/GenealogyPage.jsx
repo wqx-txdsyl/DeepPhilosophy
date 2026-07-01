@@ -1,8 +1,18 @@
 /**
  * 哲学掠影 — Editorial Layout
  */
-import { useMemo } from 'react';
+import { useMemo, useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+function useFade() {
+  const ref = useRef(null); const [on, setOn] = useState(false);
+  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setOn(true); }, { threshold: 0.05 }); o.observe(el); return () => o.disconnect(); }, []);
+  return [ref, on];
+}
+function FadeWrap({ children, style }) {
+  const [ref, on] = useFade();
+  return <div ref={ref} style={{ opacity:on?1:0, transform:on?'translateY(0)':'translateY(16px)', transition:'opacity 0.5s ease, transform 0.5s ease', ...style }}>{children}</div>;
+}
 
 const ALL_SCHOOLS = [
   { century:'公元前30世纪', name:'古希伯来哲学', region:'世界', desc:'约伯、传道书与智慧文学——信仰、苦难与神圣正义的追问。', tier:'A' },
@@ -149,9 +159,12 @@ const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 // ─── School Card ───
 function SchoolImg({ school, w }) {
   const nav = useNavigate();
+  const [ref, on] = useFade();
   return (
-    <div onClick={() => nav('/school/' + encodeURIComponent(school.name))}
-      style={{ width:w, cursor:'pointer', flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4' }}>
+    <div ref={ref} onClick={() => nav('/school/' + encodeURIComponent(school.name))}
+      style={{ width:w, minHeight:100, cursor:'pointer', flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4',
+        opacity:on?1:0, transform:on?'translateY(0)':'translateY(16px)',
+        transition:'opacity 0.5s ease, transform 0.5s ease' }}>
       <img src={imgUrl(school.name)} alt={school.name} loading="lazy"
         style={{ width:'100%', height:'auto', display:'block' }}
         onError={(e) => { e.currentTarget.style.display='none'; }} />
@@ -228,7 +241,7 @@ export default function GenealogyPage() {
           {ch.regions.map((region, ri) => {
             const chunks = chunkSchools(region.schools);
             return (
-              <div key={ri}>
+              <FadeWrap key={ri}>
                 <section style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto' }}>
                   <img src={`/gene/region/${region.key}.png`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} onError={(e)=>{e.currentTarget.style.display='none';}} />
                   <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'#2A1F1A', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
@@ -240,7 +253,7 @@ export default function GenealogyPage() {
                   })}
                 </div>
                 <div style={{ height:60 }} />
-              </div>
+              </FadeWrap>
             );
           })}
           <div style={{ height:80 }} />
