@@ -253,7 +253,8 @@ function TimelineCard({ item, side, index }) {
 // ─── SVG Double Helix Curves ───
 function HelixCurves({ items }) {
   const ref = useRef(null);
-  const h = items ? Math.max(items.length * 72, 800) : 800;
+  if (!items || !items.length) return null;
+  const h = Math.max(items.length * 72, 800);
   const cx = 400, amp = 70, cycles = 10;
   const buildPath = (phase) => { let d = `M ${cx + amp*Math.sin(phase)} 0`; for (let y = 0; y <= h; y += 8) { const t = (y/h) * Math.PI * 2 * cycles; d += ` L ${cx + amp*Math.sin(t+phase)} ${y}`; } return d; };
   // Unique timestamps
@@ -476,7 +477,7 @@ function HomePage() {
         <p style={{ textAlign:'center', fontSize:13, color:'var(--text-dim)', marginBottom:40 }}>九十六个哲学流派 · 沿思想之河顺流而下</p>
 
         {/* SVG double helix */}
-        <HelixCurves />
+        <HelixCurves items={TIMELINE_ITEMS} />
 
         {/* Timeline cards */}
         <div style={{ position:'relative', zIndex:1 }}>
