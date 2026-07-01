@@ -161,7 +161,7 @@ function getEraIdx(c) {
   if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4; return 5;
 }
 
-function imgUrl(name) { return `/schools/${encodeURI(name)}.jpg`; }
+function imgUrl(name) { return `/schools/thumb/${encodeURI(name)}.jpg`; }
 
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
