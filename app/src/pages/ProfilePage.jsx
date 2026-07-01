@@ -321,15 +321,15 @@ function ProfilePage() {
 
       {/* Chat History */}
       {tab === 'chat' && (
-        <>
-          {chatHistory.length > 0 && (
+        <div key="chat-tab">
+          {(chatHistory && chatHistory.length > 0) && (
             <button className="btn btn-secondary" style={{ marginBottom: 8, padding: '4px 12px', fontSize: 12 }}
               onClick={handleClearChat}>🗑 清空聊天</button>
           )}
-          {!chatHistory || chatHistory.length === 0 ? (
+          {(!chatHistory || chatHistory.length === 0) ? (
             <div className="empty-state"><p>暂无聊天记录</p><p style={{fontSize:12,color:'var(--text-dim)'}}>在问答页面进行的对话会自动保存在这里</p></div>
           ) : (
-            (Array.isArray(chatHistory) ? chatHistory : []).map((msg, i) => (
+            chatHistory.map((msg, i) => (
               <div key={i} className={`chat-message ${msg.role}`}
                 style={{ maxWidth: '100%', marginBottom: 8, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
                 <div style={{ whiteSpace: 'pre-wrap', fontSize: 13 }}>{msg.content}</div>
@@ -339,7 +339,7 @@ function ProfilePage() {
               </div>
             ))
           )}
-        </>
+        </div>
       )}
     </div>
   );

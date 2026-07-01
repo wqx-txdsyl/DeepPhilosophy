@@ -251,9 +251,8 @@ function TimelineCard({ item, side, index }) {
 
 // ─── SVG Double Helix Curves ───
 function HelixCurves({ items }) {
-  const [h, setH] = useState(800); const ref = useRef(null);
-  useEffect(() => { const el = ref.current?.parentElement; if (el) setH(el.scrollHeight + 100); }, []);
-  if (h < 100 || !items) return null;
+  const ref = useRef(null);
+  const h = items ? Math.max(items.length * 72, 800) : 800;
   const cx = 400, amp = 70, cycles = 10;
   const buildPath = (phase) => { let d = `M ${cx + amp*Math.sin(phase)} 0`; for (let y = 0; y <= h; y += 8) { const t = (y/h) * Math.PI * 2 * cycles; d += ` L ${cx + amp*Math.sin(t+phase)} ${y}`; } return d; };
   // Unique timestamps
