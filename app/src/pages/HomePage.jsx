@@ -450,6 +450,26 @@ function HomePage() {
         </div>
       </section>
 
+      {/* ══════════ BOOKS + AUTHORS SHOWCASE ══════════ */}
+      <section style={{ padding: '48px 32px 64px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 32 }}>
+          <div onClick={() => navigate('/books')} style={{ cursor: 'pointer', padding: '28px 24px', borderBottom: '2px solid var(--border)', transition: 'all 0.3s' }}
+            onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'var(--ochre)'; e.currentTarget.style.background = 'var(--card-bg)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ochre)' }}>Library</span>
+            <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 8px', letterSpacing: '0.03em' }}>305 部哲学著作</h2>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>PDF · EPUB · TXT 三格式，涵盖古希腊至当代的中西方哲学经典。支持在线阅读、AI批注与笔记。</p>
+          </div>
+          <div onClick={() => navigate('/authors')} style={{ cursor: 'pointer', padding: '28px 24px', borderBottom: '2px solid var(--border)', transition: 'all 0.3s' }}
+            onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'var(--prussian)'; e.currentTarget.style.background = 'var(--card-bg)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--prussian)' }}>Philosophers</span>
+            <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 8px', letterSpacing: '0.03em' }}>{authorCount} 位哲学家</h2>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>从柏拉图到尼采，从孔子到牟宗三。每位哲学家配备千字思想剖析与Wikipedia链接。</p>
+          </div>
+        </div>
+      </section>
+
       {/* ══════════ DNA HELIX TIMELINE ══════════ */}
       <section style={{ padding: '48px 16px 64px', maxWidth: 1000, margin: '0 auto', position:'relative' }}>
         <h2 style={{ textAlign:'center', fontFamily:'"Playfair Display",serif', fontSize:24, fontWeight:400, color:'var(--ink)', marginBottom:8, letterSpacing:'0.04em' }}>流派一览</h2>
@@ -483,26 +503,6 @@ function HomePage() {
         <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
         <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
         <WorldMap />
-      </section>
-
-      {/* ══════════ BOOKS + AUTHORS SHOWCASE ══════════ */}
-      <section style={{ padding: '48px 32px 64px', maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 32 }}>
-          <div onClick={() => navigate('/books')} style={{ cursor: 'pointer', padding: '28px 24px', borderBottom: '2px solid var(--border)', transition: 'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'var(--ochre)'; e.currentTarget.style.background = 'var(--card-bg)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ochre)' }}>Library</span>
-            <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 8px', letterSpacing: '0.03em' }}>305 部哲学著作</h2>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>PDF · EPUB · TXT 三格式，涵盖古希腊至当代的中西方哲学经典。支持在线阅读、AI批注与笔记。</p>
-          </div>
-          <div onClick={() => navigate('/authors')} style={{ cursor: 'pointer', padding: '28px 24px', borderBottom: '2px solid var(--border)', transition: 'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'var(--prussian)'; e.currentTarget.style.background = 'var(--card-bg)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--prussian)' }}>Philosophers</span>
-            <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 8px', letterSpacing: '0.03em' }}>{authorCount} 位哲学家</h2>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>从柏拉图到尼采，从孔子到牟宗三。每位哲学家配备千字思想剖析与Wikipedia链接。</p>
-          </div>
-        </div>
       </section>
 
       
