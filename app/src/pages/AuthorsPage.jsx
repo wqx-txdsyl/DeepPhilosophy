@@ -2,9 +2,24 @@
  * 哲人页面 —— 东西方哲学家按时间排序，显示年代/国家/流派/简介/作品
  * 离线可用（内置数据库兜底）
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
+
+function FadeCard({ children, style }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold:0.1, rootMargin:'-30px 0px' });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} style={{ opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(20px)',
+      transition:'opacity 0.55s ease, transform 0.55s ease', ...style }}>{children}</div>
+  );
+}
 
 function AuthorsPage() {
   const navigate = useNavigate();
@@ -278,7 +293,8 @@ function AuthorsPage() {
       {/* Author list */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {filtered.map((author) => (
-          <div key={author.name}
+          <FadeCard key={author.name}>
+          <div
             className="card"
             onClick={() => navigate(`/author/${encodeURIComponent(author.name)}`)}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -312,6 +328,7 @@ function AuthorsPage() {
               </span>
             </div>
           </div>
+          </FadeCard>
         ))}
       </div>
 

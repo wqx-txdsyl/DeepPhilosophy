@@ -2,7 +2,22 @@
  * 书籍分区 —— 按东方/西方 → 作者层级浏览
  * 支持分类标签筛选、搜索、摘要预览
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+function FadeCard({ children, style }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold:0.1, rootMargin:'-30px 0px' });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} style={{ opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(20px)',
+      transition:'opacity 0.55s ease, transform 0.55s ease', ...style }}>{children}</div>
+  );
+}
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import { loadBooks } from '../data';
@@ -164,7 +179,8 @@ function BooksPage() {
                   </div>
                 </div>
                 {isExpanded && authorBooks.map(book => (
-                  <div key={book.id}
+                  <FadeCard key={book.id}>
+                  <div
                     className="card"
                     style={{ marginLeft: 16, padding: '10px 14px' }}
                     onClick={() => navigate(`/book/${book.id}`)}>
@@ -194,6 +210,7 @@ function BooksPage() {
                       </div>
                     )}
                   </div>
+                  </FadeCard>
                 ))}
               </div>
             );
