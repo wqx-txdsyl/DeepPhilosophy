@@ -1,7 +1,7 @@
 /**
  * 谱系 —— 垂直时间轴，每行一个大流派卡片
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import DAILY_QUOTES from '../data/dailyQuotes';
@@ -189,6 +189,90 @@ const EASTERN_COLORS = (() => {
 })();
 
 
+// ─── Merged timeline items ───
+const TIMELINE_ITEMS = (() => {
+  const items = [];
+  const allTimelines = [
+    ...WESTERN_TIMELINE.map(t => ({...t, region:'西方'})),
+    ...EASTERN_TIMELINE.map(t => ({...t, region:'东方'})),
+    ...WORLD_TIMELINE.map(t => ({...t, region:'世界'})),
+  ];
+  // Sort by century
+  const centuryOrder = allTimelines.map(t => t.century).filter((v,i,a)=>a.indexOf(v)===i).sort();
+  // Group and flatten
+  const seen = new Set();
+  for (const c of centuryOrder) {
+    for (const t of allTimelines) {
+      if (t.century === c) {
+        for (const s of t.schools) {
+          if (!seen.has(s)) {
+            seen.add(s);
+            const desc = SCHOOL_DESCRIPTIONS[s] || WORLD_DESCRIPTIONS[s] || '';
+            items.push({ century:t.century, name:s, region:t.region, desc });
+          }
+        }
+      }
+    }
+  }
+  return items;
+})();
+
+// ─── Fade card wrapper ───
+function useFadeIn() {
+  const ref = useRef(null); const [on, setOn] = useState(false);
+  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { setOn(e.isIntersecting); }, { threshold:0.1, rootMargin:'-20px 0px' }); o.observe(el); return () => o.disconnect(); }, []);
+  return [ref, on];
+}
+
+// ─── Timeline Card ───
+function TimelineCard({ item, side, index }) {
+  const nav = useNavigate();
+  const [ref, on] = useFadeIn();
+  const c = item.region==='西方'?'var(--ochre)':item.region==='东方'?'var(--prussian)':'#5A8A5A';
+  return (
+    <div ref={ref} onClick={() => nav('/school/' + encodeURIComponent(item.name))}
+      style={{
+        display:'flex', justifyContent: side==='left'?'flex-start':'flex-end',
+        marginBottom: 36, paddingLeft: side==='left'?0:'calc(50% + 32px)',
+        paddingRight: side==='left'?'calc(50% + 32px)':0,
+        opacity: on?1:0.15, transform: on?'translateY(0)':'translateY(16px)',
+        transition:'opacity 0.6s ease, transform 0.6s ease',
+        cursor:'pointer',
+      }}>
+      <div style={{ maxWidth:340, width:'100%', background:'var(--card-bg,#FDFBF7)',
+        border:'1px solid rgba(145,118,71,0.08)', borderRadius:8, padding:'12px 16px',
+        boxShadow:'0 1px 3px rgba(42,31,26,0.03)' }}>
+        <div style={{ fontSize:9, fontWeight:500, letterSpacing:'0.10em', textTransform:'uppercase', color:c, marginBottom:4, fontFamily:'var(--font-sans)', opacity:0.7 }}>
+          {item.region==='东方'?'Eastern':item.region==='西方'?'Western':'World'} · {item.century}</div>
+        <div style={{ fontSize:15, fontWeight:500, color:'var(--ink)', lineHeight:1.3, fontFamily:'"Playfair Display","PingFang SC",serif' }}>{item.name}</div>
+        {item.desc && <div style={{ fontSize:11, fontWeight:300, color:'var(--text-dim)', lineHeight:1.5, marginTop:3, fontFamily:'var(--font-sans)' }}>{item.desc}</div>}
+      </div>
+    </div>
+  );
+}
+
+// ─── SVG Double Helix Curves ───
+function HelixCurves() {
+  const [h, setH] = useState(800);
+  const ref = useRef(null);
+  useEffect(() => { if (ref.current) setH(ref.current.scrollHeight + 200); }, []);
+  if (h < 100) return null;
+  const cx = 400, amp = 70, cycles = 12;
+  const buildPath = (phase) => { let d = `M ${cx + amp*Math.sin(phase)} 0`; for (let y = 0; y <= h; y += 8) { const t = (y/h) * Math.PI * 2 * cycles; d += ` L ${cx + amp*Math.sin(t+phase)} ${y}`; } return d; };
+  return (
+    <div ref={ref} style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0, overflow:'hidden' }}>
+      <svg width="100%" height={h} style={{ position:'absolute', top:0, left:0 }} viewBox={`0 0 800 ${h}`} preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="hgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#917647" stopOpacity="0"/><stop offset="10%" stopColor="#917647" stopOpacity="0.18"/><stop offset="50%" stopColor="#917647" stopOpacity="0.22"/><stop offset="90%" stopColor="#917647" stopOpacity="0.18"/><stop offset="100%" stopColor="#917647" stopOpacity="0"/></linearGradient>
+          <linearGradient id="hgB" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#3A5A7C" stopOpacity="0"/><stop offset="10%" stopColor="#3A5A7C" stopOpacity="0.14"/><stop offset="50%" stopColor="#3A5A7C" stopOpacity="0.18"/><stop offset="90%" stopColor="#3A5A7C" stopOpacity="0.14"/><stop offset="100%" stopColor="#3A5A7C" stopOpacity="0"/></linearGradient>
+        </defs>
+        <path d={buildPath(0)} fill="none" stroke="url(#hgA)" strokeWidth="2" opacity="0.5"/>
+        <path d={buildPath(Math.PI)} fill="none" stroke="url(#hgB)" strokeWidth="1.5" opacity="0.4"/>
+      </svg>
+    </div>
+  );
+}
+
 function HomePage() {
   const navigate = useNavigate();
   const [authorCount, setAuthorCount] = useState(353);
@@ -361,22 +445,32 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ══════════ WORLD MAP ══════════ */}
-      <section id="home-content" style={{ padding: '48px 24px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
-        <WorldMap />
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, flexWrap: 'wrap' }}>
-          <span onClick={() => navigate('/western-philosophies')} style={{ fontSize: 12, color: 'var(--ochre)', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
-            onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--ochre)'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🏛 西方 41 流派</span>
-          <span onClick={() => navigate('/eastern-philosophies')} style={{ fontSize: 12, color: 'var(--prussian)', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
-            onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--prussian)'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>☯ 东方 24 流派</span>
-          <span onClick={() => navigate('/world-philosophies')} style={{ fontSize: 12, color: '#5A8A5A', cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
-            onMouseEnter={e => e.currentTarget.style.borderBottomColor = '#5A8A5A'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>🌍 世界 31 流派</span>
+      {/* ══════════ DNA HELIX TIMELINE ══════════ */}
+      <section style={{ padding: '48px 16px 64px', maxWidth: 1000, margin: '0 auto', position:'relative' }}>
+        <h2 style={{ textAlign:'center', fontFamily:'"Playfair Display",serif', fontSize:24, fontWeight:400, color:'var(--ink)', marginBottom:8, letterSpacing:'0.04em' }}>流派一览</h2>
+        <p style={{ textAlign:'center', fontSize:13, color:'var(--text-dim)', marginBottom:40 }}>九十六个哲学流派 · 沿思想之河顺流而下</p>
+
+        {/* SVG double helix */}
+        <HelixCurves />
+
+        {/* Timeline cards */}
+        <div style={{ position:'relative', zIndex:1 }}>
+          {TIMELINE_ITEMS.map((item, i) => {
+            const side = i % 2 === 0 ? 'left' : 'right';
+            return <TimelineCard key={i} item={item} side={side} index={i} />;
+          })}
         </div>
+
+        <div style={{ display:'flex', justifyContent:'center', gap:24, marginTop:48, flexWrap:'wrap' }}>
+          {[
+            { l:'西方哲学 41流派', p:'/western-philosophies', c:'var(--ochre)' },
+            { l:'东方哲学 24流派', p:'/eastern-philosophies', c:'var(--prussian)' },
+            { l:'世界哲学 31流派', p:'/world-philosophies', c:'#5A8A5A' },
+          ].map(b => (
+            <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize:12, color:b.c, cursor:'pointer', borderBottom:'1px solid transparent', transition:'all 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}
+              onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>{b.l}</span>
+          ))}</div>
       </section>
 
       {/* ══════════ BOOKS + AUTHORS SHOWCASE ══════════ */}
