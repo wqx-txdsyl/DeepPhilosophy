@@ -230,7 +230,7 @@ export default function GenealogyPage() {
       {chapters.map((ch, ci) => (
         <div key={ci}>
           <section style={{ padding:'80px 24px 40px', textAlign:'center', maxWidth:1000, margin:'0 auto' }}>
-            {ch.era.e && <img src={`/gene/${ch.era.e}.png`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />}
+            {ch.era.e && <img src={`/gene/${ch.era.e}.jpg`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />}
             <div style={{ marginTop:40 }}>
               <div style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)', marginBottom:8 }}>{ch.era.n}</div>
               <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:400, color:'#2A1F1A', margin:'0 0 8px', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{ch.era.t}</h2>
@@ -242,7 +242,7 @@ export default function GenealogyPage() {
             return (
               <FadeWrap key={ri}>
                 <section style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto' }}>
-                  <img src={`/gene/region/${region.key}.png`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} onError={(e)=>{e.currentTarget.style.display='none';}} />
+                  <img src={`/gene/region/${region.key}.jpg`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} onError={(e)=>{e.currentTarget.style.display='none';}} />
                   <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'#2A1F1A', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
                 </section>
                 <div style={{ maxWidth:900, margin:'0 auto', padding:'0 16px' }}>
