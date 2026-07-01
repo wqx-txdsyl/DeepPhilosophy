@@ -165,108 +165,23 @@ function SchoolImg({ school, w }) {
   );
 }
 
-// ─── 10 Layout Blocks ───
-function BlockA({ schools }) {
-  const [a,b,c] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {a && <SchoolImg school={a} w={tierW(a)} />}
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {b && <SchoolImg school={b} w={tierW(b)} />}
-        {c && <SchoolImg school={c} w={tierW(c)} />}
-      </div>
-    </div>
-  );
-}
-function BlockB({ schools }) {
-  const [a,b] = schools;
-  const w = Math.max(tierW(a||{}), tierW(b||{}), 280);
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {a && <SchoolImg school={a} w={w} />}
-      {b && <SchoolImg school={b} w={w} />}
-    </div>
-  );
-}
-function BlockC({ schools }) {
-  const [a] = schools;
-  return (
-    <div style={{ display:'flex', justifyContent:'center' }}>
-      {a && <SchoolImg school={a} w={Math.min(tierW(a)*1.5, 600)} />}
-    </div>
-  );
-}
-function BlockD({ schools }) {
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {schools.slice(0,3).map((s,i) => <SchoolImg key={i} school={s} w={tierW(s)} />)}
-    </div>
-  );
-}
-function BlockE({ schools }) {
-  const [a,b] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {a && <SchoolImg school={a} w={tierW(a)} />}
-      {b && <SchoolImg school={b} w={tierW(b)} />}
-    </div>
-  );
-}
-function BlockF({ schools }) {
-  const [a,b,c] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {a && <SchoolImg school={a} w={tierW(a)} />}
-        {b && <SchoolImg school={b} w={tierW(b)} />}
-      </div>
-      {c && <SchoolImg school={c} w={tierW(c)} />}
-    </div>
-  );
-}
-function BlockG({ schools }) {
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {schools.slice(0,2).map((s,i) => <SchoolImg key={i} school={s} w={tierW(s)} />)}
-      </div>
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        {schools.slice(2,4).map((s,i) => <SchoolImg key={i} school={s} w={tierW(s)} />)}
-      </div>
-    </div>
-  );
-}
-function BlockH({ schools }) {
-  const [a] = schools;
-  return (
-    <div style={{ display:'flex', justifyContent:'center' }}>
-      {a && <SchoolImg school={a} w={Math.min(tierW(a)*1.3, 560)} />}
-    </div>
-  );
-}
-function BlockI({ schools }) {
-  const [a,b] = schools;
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      <div style={{ paddingTop:60 }}>
-        {a && <SchoolImg school={a} w={tierW(a)} />}
-      </div>
-      {b && <SchoolImg school={b} w={tierW(b)} />}
-    </div>
-  );
-}
-function BlockJ({ schools }) {
-  return (
-    <div style={{ display:'flex', gap:10, justifyContent:'center', alignItems:'flex-start' }}>
-      {schools.slice(0,3).map((s,i) => (
-        <div key={i} style={{ paddingTop: i*50 }}>
-          <SchoolImg school={s} w={tierW(s)} />
-        </div>
-      ))}
-    </div>
-  );
-}
-const BLOCKS = [BlockA,BlockB,BlockC,BlockD,BlockE,BlockF,BlockG,BlockH,BlockI,BlockJ];
+// ─── Shared styles (avoids {{ JSX parse issues in compact blocks) ───
+const $flex = {display:'flex',gap:10,justifyContent:'center',alignItems:'flex-start'};
+const $col = {display:'flex',flexDirection:'column',gap:10};
+const $cen = {display:'flex',justifyContent:'center'};
+const $pad = (n) => ({paddingTop:n});
+
+function BlockA({s}){const[a,b,c]=s;return(<div style={$flex}>{a&&<SchoolImg school={a} w={tierW(a)}/>}<div style={$col}>{b&&<SchoolImg school={b} w={tierW(b)}/>}{c&&<SchoolImg school={c} w={tierW(c)}/>}</div></div>)}
+function BlockB({s}){const[a,b]=s;const w=Math.max(tierW(a||{}),tierW(b||{}),280);return(<div style={$flex}>{a&&<SchoolImg school={a} w={w}/>}{b&&<SchoolImg school={b} w={w}/>}</div>)}
+function BlockC({s}){const[a]=s;return(<div style={$cen}>{a&&<SchoolImg school={a} w={Math.min(tierW(a)*1.5,600)}/>}</div>)}
+function BlockD({s}){return(<div style={$flex}>{s.slice(0,3).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockE({s}){const[a,b]=s;return(<div style={$flex}>{a&&<SchoolImg school={a} w={tierW(a)}/>}{b&&<SchoolImg school={b} w={tierW(b)}/>}</div>)}
+function BlockF({s}){const[a,b,c]=s;return(<div style={$flex}><div style={$col}>{a&&<SchoolImg school={a} w={tierW(a)}/>}{b&&<SchoolImg school={b} w={tierW(b)}/>}</div>{c&&<SchoolImg school={c} w={tierW(c)}/>}</div>)}
+function BlockG({s}){return(<div style={$flex}><div style={$col}>{s.slice(0,2).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div><div style={$col}>{s.slice(2,4).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div></div>)}
+function BlockH({s}){const[a]=s;return(<div style={$cen}>{a&&<SchoolImg school={a} w={Math.min(tierW(a)*1.3,560)}/>}</div>)}
+function BlockI({s}){const[a,b]=s;return(<div style={$flex}><div style={$pad(60)}>{a&&<SchoolImg school={a} w={tierW(a)}/>}</div>{b&&<SchoolImg school={b} w={tierW(b)}/>}</div>)}
+function BlockJ({s}){return(<div style={$flex}>{s.slice(0,3).map((x,i)=>(<div key={i} style={$pad(i*50)}><SchoolImg school={x} w={tierW(x)}/></div>))}</div>)}
+const BLOCKS=[BlockA,BlockB,BlockC,BlockD,BlockE,BlockF,BlockG,BlockH,BlockI,BlockJ];
 
 // ─── Chapter structure ───
 function buildChapters() {
@@ -321,7 +236,7 @@ export default function GenealogyPage() {
                 <div style={{ maxWidth:900, margin:'0 auto', padding:'0 16px' }}>
                   {chunks.map((chunk, bi) => {
                     const Block = BLOCKS[(ci*10+ri*5+bi) % BLOCKS.length];
-                    return <div key={bi} style={{ padding:'16px 0' }}><Block schools={chunk} /></div>;
+                    return <div key={bi} style={{ padding:'16px 0' }}><Block s={chunk} /></div>;
                   })}
                 </div>
                 <div style={{ height:60 }} />
