@@ -174,8 +174,8 @@ function SchoolImg({ school, w }) {
   return (
     <div ref={ref} onClick={() => nav('/school/' + encodeURIComponent(school.name))}
       style={{ width:w, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4', cursor:'pointer',
-      opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(24px)',
-      transition:'opacity 0.6s ease, transform 0.6s ease' }}>
+      opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(20px)',
+      transition: 'opacity 0.5s ease, transform 0.5s ease' }}>
       <img src={imgUrl(school.name)} alt={school.name} loading="lazy"
         style={{ width:'100%', height:h||'auto', objectFit:'cover', display:'block' }}
         onError={(e) => { e.currentTarget.style.display='none'; }} />
