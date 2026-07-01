@@ -471,34 +471,22 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ══════════ DNA HELIX TIMELINE ══════════ */}
-      <section style={{ padding: '48px 16px 64px', maxWidth: 1000, margin: '0 auto', position:'relative' }}>
-        <h2 style={{ textAlign:'center', fontFamily:'"Playfair Display",serif', fontSize:24, fontWeight:400, color:'var(--ink)', marginBottom:8, letterSpacing:'0.04em' }}>流派一览</h2>
-        <p style={{ textAlign:'center', fontSize:13, color:'var(--text-dim)', marginBottom:40 }}>九十六个哲学流派 · 沿思想之河顺流而下</p>
-
-        {/* SVG double helix */}
-        <HelixCurves items={TIMELINE_ITEMS} />
-
-        {/* Timeline cards */}
-        <div style={{ position:'relative', zIndex:1 }}>
-          {TIMELINE_ITEMS.map((item, i) => {
-            const side = i % 2 === 0 ? 'left' : 'right';
-            return <TimelineCard key={i} item={item} side={side} index={i} />;
-          })}
-        </div>
-
-        <div style={{ display:'flex', justifyContent:'center', gap:24, marginTop:48, flexWrap:'wrap' }}>
+      {/* ========== 流派一览 ========== */}
+      <section style={{ padding: '48px 24px 64px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 8, letterSpacing: '0.04em' }}>流派一览</h2>
+        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
+        <WorldMap />
+        <div style={{ display:'flex', justifyContent:'center', gap:24, marginTop:20, flexWrap:'wrap' }}>
           {[
-            { l:'西方哲学 41流派', p:'/western-philosophies', c:'var(--ochre)' },
-            { l:'东方哲学 24流派', p:'/eastern-philosophies', c:'var(--prussian)' },
-            { l:'世界哲学 31流派', p:'/world-philosophies', c:'#5A8A5A' },
+            { l:'🏛 西方 41 流派', p:'/western-philosophies', c:'var(--ochre)' },
+            { l:'☯ 东方 24 流派', p:'/eastern-philosophies', c:'var(--prussian)' },
+            { l:'🌍 世界 31 流派', p:'/world-philosophies', c:'#5A8A5A' },
           ].map(b => (
             <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize:12, color:b.c, cursor:'pointer', borderBottom:'1px solid transparent', transition:'all 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}
               onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>{b.l}</span>
           ))}</div>
       </section>
-
       {/* ══════════ WORLD MAP ══════════ */}
       <section style={{ padding: '48px 24px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
