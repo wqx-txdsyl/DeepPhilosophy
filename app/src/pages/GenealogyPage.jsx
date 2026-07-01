@@ -187,14 +187,9 @@ function SchoolCard({ school }) {
       border:'1px solid rgba(145,118,71,0.08)', boxShadow:'0 1px 2px rgba(42,31,26,0.03)',
       width:260, flexShrink:0,
     }}>
-      <div style={{ width:'100%', aspectRatio:'16/10', background:'#E8E0D4', overflow:'hidden' }}>
-        <img src={`/schools/${encodeURI(school.name)}${getExt(school.name)}`} alt={school.name}
-          loading="lazy" decoding="async"
-          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block',
-            transition:'opacity 0.4s', opacity:0 }}
-          onLoad={(e) => { e.currentTarget.style.opacity = '1'; }}
-          onError={(e) => { e.currentTarget.src=`/gene/region/${REGION_OF[school.name]||'world_origin'}.png`; }} />
-      </div>
+      <div style={{ width:'100%', height:150, background:'#E8E0D4',
+        backgroundImage:`url(/schools/${encodeURI(school.name)}${getExt(school.name)})`,
+        backgroundSize:'cover', backgroundPosition:'center' }} />
       <div style={{ padding:'10px 14px' }}>
         <div style={{ fontSize:8, fontWeight:500, letterSpacing:'0.10em', textTransform:'uppercase', color:c, marginBottom:3, fontFamily:'var(--font-sans)', opacity:0.8 }}>
           {school.region==='东方'?'Eastern':school.region==='西方'?'Western':'World'} · {school.century}</div>
@@ -222,10 +217,9 @@ function EraMarker({ era }) {
 const REGION_LAB = { china:'中国',greece:'希腊',rome:'罗马',medieval_europe:'中世纪',enlightenment:'启蒙',france:'法国',britain:'英国',germany:'德国',america:'美洲',india:'印度',japan:'日本',korea:'韩国',islam:'伊斯兰',africa:'非洲',latin_america:'拉丁美洲',egypt:'埃及',mesopotamia:'美索不达米亚',southeast_asia:'东南亚',renaissance:'文艺复兴',world_origin:'世界' };
 function RegionTile({ region }) {
   return (
-    <div style={{ width:420, flexShrink:0, borderRadius:6, overflow:'hidden', position:'relative' }}>
-      <img src={`/gene/region/${region}.png`} alt="" loading="lazy"
-        style={{ width:'100%', height:'auto', display:'block' }}
-        onError={(e) => { e.currentTarget.src='/gene/civilization_silhouette.png'; }} />
+    <div style={{ width:420, height:260, flexShrink:0, borderRadius:6, position:'relative',
+      backgroundImage:`url(/gene/region/${region}.png)`,
+      backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat' }}>
       <div style={{ position:'absolute', bottom:12, left:16 }}>
         <div style={{ fontSize:18, fontWeight:400, color:'#fff', fontFamily:'"Playfair Display","PingFang SC",serif',
           textShadow:'0 1px 6px rgba(0,0,0,0.5)' }}>{REGION_LAB[region]||region}</div>
