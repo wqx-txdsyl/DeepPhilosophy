@@ -360,7 +360,7 @@ function EraCover({ era }) {
   return (
     <section style={{ padding:'80px 24px 40px', textAlign:'center', maxWidth:1000, margin:'0 auto' }}>
       {era.e && (
-        <img src={`/gene/${era.e}.png`} alt="" style={{ height:56, width:'auto', opacity:0.5, marginBottom:8 }} />
+        <img src={`/gene/${era.e}.png`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />
       )}
       <div style={{ marginTop:40 }}>
         <div style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)', marginBottom:8 }}>{era.n}</div>
@@ -413,7 +413,7 @@ export default function GenealogyPage() {
           fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
         <div style={{ width:32, height:1, background:'#917647', margin:'14px auto', opacity:0.35 }} />
         <p style={{ fontSize:'0.85rem', fontWeight:300, color:'#8A7E74', fontFamily:'var(--font-sans)' }}>
-          一部按照时间顺序翻阅的世界哲学图录</p>
+          思想如河流，起源、分流、汇合、消失、复兴——五千年人类追问的视觉编年史</p>
       </section>
 
       {/* ══════════ CHAPTERS ══════════ */}
