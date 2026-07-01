@@ -187,9 +187,14 @@ function SchoolCard({ school }) {
       border:'1px solid rgba(145,118,71,0.08)', boxShadow:'0 1px 2px rgba(42,31,26,0.03)',
       width:260, flexShrink:0,
     }}>
-      <img src={`/schools/${encodeURI(school.name)}${getExt(school.name)}`} alt={school.name} loading="lazy"
-        style={{ width:'100%', aspectRatio:'16/10', objectFit:'cover', display:'block', background:'#EDE5D8' }}
-        onError={(e) => { e.currentTarget.src=`/gene/region/${REGION_OF[school.name]||'world_origin'}.png`; }} />
+      <div style={{ width:'100%', aspectRatio:'16/10', background:'#E8E0D4', overflow:'hidden' }}>
+        <img src={`/schools/${encodeURI(school.name)}${getExt(school.name)}`} alt={school.name}
+          loading="lazy" decoding="async"
+          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block',
+            transition:'opacity 0.4s', opacity:0 }}
+          onLoad={(e) => { e.currentTarget.style.opacity = '1'; }}
+          onError={(e) => { e.currentTarget.src=`/gene/region/${REGION_OF[school.name]||'world_origin'}.png`; }} />
+      </div>
       <div style={{ padding:'10px 14px' }}>
         <div style={{ fontSize:8, fontWeight:500, letterSpacing:'0.10em', textTransform:'uppercase', color:c, marginBottom:3, fontFamily:'var(--font-sans)', opacity:0.8 }}>
           {school.region==='东方'?'Eastern':school.region==='西方'?'Western':'World'} · {school.century}</div>
