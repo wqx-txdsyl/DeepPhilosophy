@@ -177,7 +177,7 @@ function buildCollage() {
   return tiles;
 }
 
-// ─── School Card — all uniform size ───
+// ─── School Card — uniform, larger ───
 function SchoolCard({ school }) {
   const c = R_COLORS[school.region];
   const nav = useNavigate();
@@ -185,7 +185,7 @@ function SchoolCard({ school }) {
     <div onClick={() => nav('/school/' + encodeURIComponent(school.name))} style={{
       cursor:'pointer', borderRadius:6, overflow:'hidden', background:'#FDFBF7',
       border:'1px solid rgba(145,118,71,0.08)', boxShadow:'0 1px 2px rgba(42,31,26,0.03)',
-      width:240, flexShrink:0,
+      width:260, flexShrink:0,
     }}>
       <img src={`/schools/${encodeURI(school.name)}${getExt(school.name)}`} alt={school.name} loading="lazy"
         style={{ width:'100%', aspectRatio:'16/10', objectFit:'cover', display:'block', background:'#EDE5D8' }}
@@ -201,18 +201,29 @@ function SchoolCard({ school }) {
   );
 }
 
-// ─── Region Tile — full-width banner, original aspect ratio ───
+// ─── Era Marker — inline, doesn't break flow ───
+function EraMarker({ era }) {
+  return (
+    <div style={{ width:'100%', textAlign:'center', padding:'20px 8px 8px', flexShrink:0 }}>
+      <div style={{ width:30, height:1, background:'#91764725', margin:'0 auto 8px' }} />
+      <img src={`/gene/${era.e}.png`} alt="" loading="lazy"
+        style={{ height:60, width:'auto', margin:'0 auto 4px', display:'block', objectFit:'contain', opacity:0.4 }} />
+      <div style={{ fontSize:8, letterSpacing:'0.14em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)' }}>{era.n} · {era.t}</div>
+    </div>
+  );
+}
+
+// ─── Region Tile — large, original ratio, floats in flow ───
 const REGION_LAB = { china:'中国',greece:'希腊',rome:'罗马',medieval_europe:'中世纪',enlightenment:'启蒙',france:'法国',britain:'英国',germany:'德国',america:'美洲',india:'印度',japan:'日本',korea:'韩国',islam:'伊斯兰',africa:'非洲',latin_america:'拉丁美洲',egypt:'埃及',mesopotamia:'美索不达米亚',southeast_asia:'东南亚',renaissance:'文艺复兴',world_origin:'世界' };
 function RegionTile({ region }) {
   return (
-    <div style={{ flexBasis:'100%', borderRadius:6, overflow:'hidden', position:'relative', marginBottom:2 }}>
+    <div style={{ width:420, flexShrink:0, borderRadius:6, overflow:'hidden', position:'relative' }}>
       <img src={`/gene/region/${region}.png`} alt="" loading="lazy"
-        style={{ width:'100%', height:'auto', maxHeight:280, objectFit:'cover', display:'block' }}
+        style={{ width:'100%', height:'auto', display:'block' }}
         onError={(e) => { e.currentTarget.src='/gene/civilization_silhouette.png'; }} />
-      <div style={{ position:'absolute', inset:0,
-        background:'linear-gradient(to right, rgba(248,246,242,0.4) 0%, transparent 30%, transparent 70%, rgba(248,246,242,0.4) 100%)' }} />
-      <div style={{ position:'absolute', bottom:16, left:22 }}>
-        <div style={{ fontSize:20, fontWeight:400, color:'#2A1F1A', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{REGION_LAB[region]||region}</div>
+      <div style={{ position:'absolute', bottom:12, left:16 }}>
+        <div style={{ fontSize:18, fontWeight:400, color:'#fff', fontFamily:'"Playfair Display","PingFang SC",serif',
+          textShadow:'0 1px 6px rgba(0,0,0,0.5)' }}>{REGION_LAB[region]||region}</div>
       </div>
     </div>
   );
@@ -244,21 +255,12 @@ export default function GenealogyPage() {
       </section>
 
       {/* ══════════ COLLAGE ══════════ */}
-      <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 16px 80px',
-        display:'flex', flexWrap:'wrap', justifyContent:'center', alignItems:'flex-start', gap:12 }}>
+      <div style={{ maxWidth:1400, margin:'0 auto', padding:'0 14px 80px',
+        display:'flex', flexWrap:'wrap', justifyContent:'center', alignItems:'flex-start', gap:14 }}>
         {tiles.map((tile, i) => (
-          tile.type === 'era' ? (
-            <div key={i} style={{ flexBasis:'100%', textAlign:'center', padding:'28px 16px 12px' }}>
-              <div style={{ width:40, height:1, background:'#91764730', margin:'0 auto 12px' }} />
-              <img src={`/gene/${tile.era.e}.png`} alt="" loading="lazy"
-                style={{ height:80, width:'auto', margin:'0 auto 8px', display:'block', objectFit:'contain', opacity:0.5 }} />
-              <div style={{ fontSize:9, letterSpacing:'0.16em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)', marginBottom:2 }}>{tile.era.n}</div>
-              <div style={{ fontSize:15, fontWeight:400, color:'#2A1F1A', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{tile.era.t}</div>
-              <div style={{ fontSize:10, color:'#A09080', fontFamily:'var(--font-sans)' }}>{tile.era.r}</div>
-            </div>
-          ) : tile.type === 'region' ? <RegionTile key={i} region={tile.region} />
-          : tile.type === 'school' ? <SchoolCard key={i} school={tile.school} />
-          : null
+          tile.type === 'era' ? <EraMarker key={i} era={tile.era} />
+          : tile.type === 'region' ? <RegionTile key={i} region={tile.region} />
+          : <SchoolCard key={i} school={tile.school} />
         ))}
       </div>
 
