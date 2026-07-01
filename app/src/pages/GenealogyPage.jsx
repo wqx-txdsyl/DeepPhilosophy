@@ -170,9 +170,11 @@ const imgUrl = (name) => `/schools/${encodeURI(name)}${PNG_SCHOOLS.has(name)?'.p
 // Returns a flex/grid layout of image cards.
 
 function SchoolImg({ school, w, h }) {
+  const nav = useNavigate();
   const [ref, visible] = useFadeIn();
   return (
-    <div ref={ref} style={{ width:w, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4',
+    <div ref={ref} onClick={() => nav('/school/' + encodeURIComponent(school.name))}
+      style={{ width:w, flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4', cursor:'pointer',
       opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(24px)',
       transition:'opacity 0.6s ease, transform 0.6s ease' }}>
       <img src={imgUrl(school.name)} alt={school.name} loading="lazy"

@@ -167,7 +167,7 @@ function BooksPage() {
             const authorBooks = grouped[region][author];
             const isExpanded = expandedAuthor === `${region}-${author}`;
             return (
-              <div key={author} style={{ marginBottom: 6 }}>
+              <FadeCard key={author} style={{ marginBottom: 6 }}>
                 <div className="card"
                   style={{ marginBottom: isExpanded ? 4 : 8 }}
                   onClick={() => setExpandedAuthor(isExpanded ? null : `${region}-${author}`)}>
@@ -212,7 +212,7 @@ function BooksPage() {
                   </div>
                   </FadeCard>
                 ))}
-              </div>
+              </FadeCard>
             );
           })}
         </div>
