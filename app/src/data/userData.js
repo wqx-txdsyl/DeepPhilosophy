@@ -122,8 +122,8 @@ export function saveReadingProgress(bookId, bookTitle, bookAuthor, page, percent
 
 function getApiBase() {
   try {
-    return JSON.parse(localStorage.getItem('dp_api_config') || '{}').apiUrl || 'https://deepphilosophy.onrender.com';
-  } catch { return 'https://deepphilosophy.onrender.com'; }
+    return JSON.parse(localStorage.getItem('dp_api_config') || '{}').apiUrl || 'https://deepphilosophy-7g7m.onrender.com';
+  } catch { return 'https://deepphilosophy-7g7m.onrender.com'; }
 }
 
 export function getReadingHistory() {
