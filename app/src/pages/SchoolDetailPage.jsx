@@ -10960,18 +10960,7 @@ function SchoolDetailPage() {
   const data = dynamicData || m.data || GREEK_DATA;
   const subSchools = (m.sub && Object.keys(m.sub).length > 0) ? m.sub : (data.subSchools && data.subSchools.length > 0 ? data.subSchools : {});
 
-  // Coming soon page for schools without their own DATA
-  if (!m.data && !dynamicData) {
-    return (
-      <div style={{ background:'#F8F6F2', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
-        <p style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', marginBottom:24, fontFamily:'var(--font-sans)' }}>Coming Soon</p>
-        <h1 style={{ fontSize:'clamp(2rem,5vw,3rem)', fontWeight:400, color:'#2A1F1A', letterSpacing:'0.04em', marginBottom:16, fontFamily:'"Playfair Display","PingFang SC",serif' }}>{name}</h1>
-        <div style={{ width:32, height:1.5, background:'#917647', marginBottom:20, opacity:0.4 }} />
-        <p style={{ fontSize:'1rem', fontWeight:300, color:'#8A7E74', lineHeight:2.0, maxWidth:500, fontFamily:'var(--font-sans)' }}>该流派详情页正在建设中，敬请期待。</p>
-        <button onClick={() => window.history.back()} style={{ marginTop:32, background:'none', border:'1px solid rgba(145,118,71,0.2)', borderRadius:6, padding:'10px 28px', fontSize:13, color:'#917647', cursor:'pointer', letterSpacing:'0.06em', fontFamily:'var(--font-sans)' }}>← 返回</button>
-      </div>
-    );
-  }
+  const isComingSoon = !m.data && !dynamicData;
   // Auto-generate subColors from thinkers' sub field (for schools with sub:{})
   const subColors = (() => {
     const sc = {};
@@ -11212,6 +11201,18 @@ const ENG_NAMES = {
   '黑人哲学': 'BLACK PHILOSOPHY',
 };
 
+
+  if (isComingSoon) {
+    return (
+      <div style={{ background:'#F8F6F2', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
+        <p style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', marginBottom:24, fontFamily:'var(--font-sans)' }}>Coming Soon</p>
+        <h1 style={{ fontSize:'clamp(2rem,5vw,3rem)', fontWeight:400, color:'#2A1F1A', letterSpacing:'0.04em', marginBottom:16, fontFamily:'"Playfair Display","PingFang SC",serif' }}>{name}</h1>
+        <div style={{ width:32, height:1.5, background:'#917647', marginBottom:20, opacity:0.4 }} />
+        <p style={{ fontSize:'1rem', fontWeight:300, color:'#8A7E74', lineHeight:2.0, maxWidth:500, fontFamily:'var(--font-sans)' }}>该流派详情页正在建设中，敬请期待。</p>
+        <button onClick={() => window.history.back()} style={{ marginTop:32, background:'none', border:'1px solid rgba(145,118,71,0.2)', borderRadius:6, padding:'10px 28px', fontSize:13, color:'#917647', cursor:'pointer', letterSpacing:'0.06em', fontFamily:'var(--font-sans)' }}>← 返回</button>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
