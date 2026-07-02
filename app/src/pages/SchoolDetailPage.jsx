@@ -1,7 +1,7 @@
 /**
  * 流派详情页 — 滚轮下翻式，5面内容
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import HeroSection from '../components/school/HeroSection';
@@ -11202,6 +11202,13 @@ const ENG_NAMES = {
 };
 
 
+  // ─── Fade-in wrapper for sections ───
+  function FadeSection({ children, style }) {
+    const ref = useRef(null); const [on, setOn] = useState(false);
+    useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setOn(true); }, { threshold:0.05 }); o.observe(el); return () => o.disconnect(); }, []);
+    return <div ref={ref} style={{ opacity:on?1:0, transform:on?'translateY(0)':'translateY(20px)', transition:'opacity 0.6s ease, transform 0.6s ease', ...style }}>{children}</div>;
+  }
+
   if (isComingSoon) {
     return (
       <div style={{ background:'#F8F6F2', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
@@ -11218,13 +11225,13 @@ const ENG_NAMES = {
     <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
       <HeroSection name={data.name} subtitle={data.subtitle} quote={data.quote} quoteAuthor={data.quoteAuthor} heroImage={heroImage} englishName={ENG_NAMES[data.name]} />
       <div id="school-content">
-      <OverviewSection overview={data.overview} subSchools={subSchools} />
-      <ConstellationMap thinkers={thinkers} relations={data.relations} SUB_COLORS={{...SUB_COLORS, ...subColors}} />
-      <TimelineSection timeline={data.timeline} />
-      <GlossaryCloud cihai={cihai} />
-      <QuotesGallery quotes={data.quotes} />
-      <WorksList works={data.works} />
-      <EpilogueSection conclusion={data.conclusion} closingQuote={data.closingQuote} />
+      <FadeSection><OverviewSection overview={data.overview} subSchools={subSchools} /></FadeSection>
+      <FadeSection><ConstellationMap thinkers={thinkers} relations={data.relations} SUB_COLORS={{...SUB_COLORS, ...subColors}} /></FadeSection>
+      <FadeSection><TimelineSection timeline={data.timeline} /></FadeSection>
+      <FadeSection><GlossaryCloud cihai={cihai} /></FadeSection>
+      <FadeSection><QuotesGallery quotes={data.quotes} /></FadeSection>
+      <FadeSection><WorksList works={data.works} /></FadeSection>
+      <FadeSection><EpilogueSection conclusion={data.conclusion} closingQuote={data.closingQuote} /></FadeSection>
       </div>
     </div>
   );
