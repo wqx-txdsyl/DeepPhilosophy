@@ -161,7 +161,36 @@ function getEraIdx(c) {
 }
 
 function thumbUrl(name) { return `/schools/thumb/${encodeURI(name)}.jpg`; }
+function fullUrl(name) { return `/schools/${encodeURI(name)}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
+
+// ─── Idle Progressive Image: thumb → full-res when idle ───
+function ProgImg({ name, style }) {
+  const [src, setSrc] = useState(thumbUrl(name));
+  const [hd, setHd] = useState(false);
+  const idleId = useRef(null);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    // Schedule full-res load when browser is idle
+    const preload = () => {
+      idleId.current = requestIdleCallback(() => {
+        const full = new Image();
+        full.onload = () => { setSrc(fullUrl(name)); setHd(true); };
+        full.src = fullUrl(name);
+      }, { timeout: 3000 });
+    };
+    // Start after a short delay to let thumb load first
+    const t = setTimeout(preload, 500);
+    return () => { clearTimeout(t); if (idleId.current) cancelIdleCallback(idleId.current); };
+  }, [name]);
+
+  return (
+    <img ref={imgRef} src={src} alt={name}
+      style={{ ...style, filter: hd ? 'none' : 'blur(6px)', transition: 'filter 0.4s ease' }}
+      onError={(e) => { if (!hd) e.currentTarget.src = fullUrl(name); }} />
+  );
+}
 
 // ─── School Card ───
 function SchoolImg({ school, w }) {
@@ -172,7 +201,7 @@ function SchoolImg({ school, w }) {
       style={{ width:w, minHeight:100, cursor:'pointer', flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4',
         opacity:on?1:0, transform:on?'translateY(0)':'translateY(16px)',
         transition:'opacity 0.5s ease, transform 0.5s ease' }}>
-      <LazyImg src={thumbUrl(school.name)} alt={school.name}
+      <ProgImg name={school.name}
         style={{ width:'100%', height:'auto', display:'block' }} />
       <div style={{ position:'absolute', bottom:0, left:0, right:0,
         background:'linear-gradient(transparent 30%, rgba(0,0,0,0.65))', padding:'24px 12px 8px' }}>
