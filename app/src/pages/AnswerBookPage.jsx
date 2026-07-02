@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import answerBookData from '../data/answer_book.json';
+import Icon from '../components/Icon';
 
 function AnswerBookPage() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ function AnswerBookPage() {
         style={{ marginBottom: 16 }}>← 返回</button>
 
       <div className="card" style={{ cursor: 'default', textAlign: 'center', padding: '28px 24px' }}>
-        <div style={{ fontSize: 48, marginBottom: 8 }}>📖</div>
+        <div style={{ fontSize: 48, marginBottom: 8 }}><Icon name="icon-book-open" size={16} /></div>
         <h2 style={{ fontSize: 20, marginBottom: 4 }}>答案之书</h2>
         <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 16 }}>
           心中默念你的问题，然后翻开属于你的答案
@@ -56,7 +57,7 @@ function AnswerBookPage() {
             marginTop: 20, padding: '24px 20px',
             background: 'var(--secondary)', borderRadius: 12, opacity: 0.5,
           }}>
-            <div style={{ fontSize: 30, animation: 'pulse 1s infinite' }}>📜</div>
+            <div style={{ fontSize: 30, animation: 'pulse 1s infinite' }}><Icon name="icon-scroll" size={16} /></div>
           </div>
         )}
 
@@ -85,7 +86,7 @@ function AnswerBookPage() {
               disabled={animating}
               style={{ marginTop: 16, padding: '6px 20px', fontSize: 12, borderRadius: 16, width: '100%' }}
             >
-              🔄 再问一次
+              <Icon name="icon-refresh" size={16} /> 再问一次
             </button>
           </div>
         )}

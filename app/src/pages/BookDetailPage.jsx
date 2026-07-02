@@ -4,6 +4,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Icon from '../components/Icon';
 import { getBookById } from '../data';
 import { getApiBase } from '../App';
 
@@ -36,7 +37,7 @@ function BookDetailPage() {
   if (!book) return (
     <div className="page-container" style={{ textAlign: 'center' }}>
       <button className="btn btn-secondary" onClick={() => navigate(-1)} style={{ marginBottom: 16 }}>← 返回</button>
-      <div className="empty-state"><p>📚</p><p>书籍未找到</p></div>
+      <div className="empty-state"><p><Icon name="nav-books" size={16} /></p><p>书籍未找到</p></div>
     </div>
   );
 
@@ -68,7 +69,7 @@ function BookDetailPage() {
 
         {book.file_size > 0 && (
           <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>
-            📦 {(book.file_size / 1024 / 1024).toFixed(1)} MB
+            <Icon name="icon-file-size" size={16} /> {(book.file_size / 1024 / 1024).toFixed(1)} MB
           </div>
         )}
       </div>
@@ -99,7 +100,7 @@ function BookDetailPage() {
 
       {isTxt ? (
         <div className="pending-notice">
-          <p style={{ fontSize: 48 }}>📝</p>
+          <p style={{ fontSize: 48 }}><Icon name="icon-edit" size={16} /></p>
           <p>该书籍尚未收录</p>
           <p style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 8 }}>
             《{book.title}》的文件正在筹备中，<br />
@@ -109,13 +110,13 @@ function BookDetailPage() {
       ) : (
         <div style={{ marginTop: 16 }}>
           <button className="btn btn-primary btn-block" onClick={openReader}>
-            📖 打开阅读
+            <Icon name="icon-book-open" size={16} /> 打开阅读
           </button>
           <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 8, textAlign: 'center' }}>
             文件类型: {book.file_type.toUpperCase()} · {(book.file_size / 1024 / 1024).toFixed(1)} MB
           </p>
           <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4, textAlign: 'center' }}>
-            💡 提示：在线阅读需要连接服务器
+            <Icon name="icon-tip" size={16} /> 提示：在线阅读需要连接服务器
           </p>
         </div>
       )}
