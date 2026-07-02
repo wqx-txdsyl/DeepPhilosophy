@@ -142,7 +142,6 @@ function MainLayout() {
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
   const isQA = location.pathname.startsWith('/qa');
-  const hideNav = isReader;
   const hideHeader = isHome || isReader || isSchool;
   const activeTab = getActiveTab();
 
@@ -197,20 +196,6 @@ function MainLayout() {
         </ErrorBoundary>
       </main>
 
-      {!hideNav && (
-        <nav className="bottom-nav">
-          {tabs.map((tab) => (
-            <button
-              key={tab.key}
-              className={`nav-btn ${activeTab === tab.key ? 'active' : ''}`}
-              onClick={() => navigate(tab.path)}
-            >
-              <span className="nav-icon">{tab.label}</span>
-              <span className="nav-label">{tab.text}</span>
-            </button>
-          ))}
-        </nav>
-      )}
     </>
   );
 }

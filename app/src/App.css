@@ -21,7 +21,6 @@
   --primary: var(--bone);
   --secondary: var(--card-bg);
   --header-height: 56px;
-  --nav-height: 60px;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
   --font-serif: 'Playfair Display', 'Times New Roman', 'PingFang SC', serif;
 }
@@ -79,21 +78,12 @@ body {
 .app-main {
   padding: 24px 40px;
   padding-bottom: 40px;
-  min-height: calc(100vh - var(--header-height) - var(--nav-height));
+  min-height: calc(100vh - var(--header-height));
 }
 .app-main.reader-mode {
   padding: 0;
 }
 
-.bottom-nav {
-  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: 100%; height: var(--nav-height);
-  display: flex;
-  background: linear-gradient(to top, var(--bone), rgba(244,240,235,0.97));
-  backdrop-filter: blur(8px);
-  border-top: 1px solid var(--border);
-  z-index: 100;
-}
 .nav-btn {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -193,8 +183,7 @@ body {
 
 /* ——— Mobile Mode (强制手机布局) ——— */
 html.mobile-mode .app-container { max-width: 480px !important; margin: 0 auto !important; }
-html.mobile-mode .app-main { padding: 16px 12px !important; padding-bottom: calc(var(--nav-height) + 20px) !important; }
-html.mobile-mode .bottom-nav { max-width: 480px !important; }
+html.mobile-mode .app-main { padding: 16px 12px !important; padding-bottom: 20px !important; }
 html.mobile-mode .app-header { padding: 0 12px !important; }
 html.mobile-mode .app-title { font-size: 16px !important; }
 html.mobile-mode .card { padding: 10px 0 !important; }
@@ -228,7 +217,6 @@ html.dark-mode {
 }
 html.dark-mode body { background: var(--bg); color: var(--text); }
 html.dark-mode .app-header { background: linear-gradient(to bottom, #1A1816, rgba(26,24,22,0.95)); }
-html.dark-mode .bottom-nav { background: linear-gradient(to top, #1A1816, rgba(26,24,22,0.97)); }
 html.dark-mode .candle-glow { background: radial-gradient(circle, rgba(201,169,110,0.04) 0%, rgba(201,169,110,0.01) 40%, transparent 70%); }
 html.dark-mode .card:hover { border-bottom-color: var(--ochre); }
 html.dark-mode .btn-primary { border-color: var(--ink); color: var(--ink); }
@@ -241,13 +229,11 @@ html.dark-mode .search-box:focus { border-bottom-color: var(--ochre); }
 /* ——— Responsive ——— */
 @media (min-width: 768px) {
   .app-container { max-width: 100%; }
-  .bottom-nav { max-width: 100%; }
   .app-main { padding: 32px 48px; padding-bottom: 40px; }
   .chat-message { max-width: 70%; }
 }
 @media (min-width: 1200px) {
   .app-container { max-width: 100%; }
-  .bottom-nav { max-width: 100%; }
   .app-main { padding: 40px 64px; padding-bottom: 40px; }
   .chat-message { max-width: 60%; }
 }
