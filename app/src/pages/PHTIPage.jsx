@@ -136,26 +136,33 @@ function PHTIPage() {
         const reader = resp.body.getReader();
         const decoder = new TextDecoder();
         let fullText = '';
+        const streamStart = Date.now();
+        const STREAM_TIMEOUT = 90000;
 
         while (true) {
+          if (Date.now() - streamStart > STREAM_TIMEOUT) {
+            if (!fullText) setRoast('（毒舌评论家今天词穷了，请稍后再试）');
+            break;
+          }
           const { done, value } = await reader.read();
           if (done) break;
           const chunk = decoder.decode(value, { stream: true });
           const lines = chunk.split('\n');
           for (const line of lines) {
-            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            if (line.startsWith('data: ') && !line.startsWith('data: [DONE]')) {
               try {
                 const data = JSON.parse(line.slice(6));
                 if (data.choices?.[0]?.delta?.content) {
                   fullText += data.choices[0].delta.content;
                   setRoast(fullText);
                 }
-              } catch {}
+              } catch (e) { console.error('PHTI stream parse:', e); }
             }
           }
         }
         if (!fullText) setRoast('（毒舌评论家今天词穷了，请稍后再试）');
       } catch (e) {
+        console.error('PHTI roast stream failed:', e);
         setRoast('（毒舌评论家暂时不在，请稍后再试）');
       } finally {
         clearTimeout(timeoutId);

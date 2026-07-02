@@ -140,17 +140,22 @@ function PHTISillyPage() {
       });
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
-      let full = '';
+      let full = '', buffer = '';
+      const streamStart = Date.now();
       while (true) {
+        if (Date.now() - streamStart > 90000) { if (!full) setRoast('（毒舌评论家今天请假去晒太阳了🌞）'); break; }
         const { done, value } = await reader.read();
         if (done) break;
-        for (const line of decoder.decode(value, { stream: true }).split('\n')) {
-          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-            try { const d = JSON.parse(line.slice(6)); if (d.choices?.[0]?.delta?.content) { full += d.choices[0].delta.content; setRoast(full); } } catch {}
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        for (const line of lines) {
+          if (line.startsWith('data: ') && !line.startsWith('data: [DONE]')) {
+            try { const d = JSON.parse(line.slice(6)); if (d.choices?.[0]?.delta?.content) { full += d.choices[0].delta.content; setRoast(full); } } catch (e) { console.error('PHTI silly stream parse:', e); }
           }
         }
       }
-    } catch { setRoast('（毒舌评论家今天请假去晒太阳了🌞）'); }
+    } catch (e) { console.error('PHTI silly roast failed:', e); setRoast('（毒舌评论家今天请假去晒太阳了🌞）'); }
     setRoasting(false);
   };
 

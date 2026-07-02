@@ -1,7 +1,7 @@
 /**
  * 答案之书 —— 心中默念问题，翻开启示之页
  */
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import answerBookData from '../data/answer_book.json';
 
@@ -10,6 +10,11 @@ function AnswerBookPage() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [answer, setAnswer] = useState(null);
   const [animating, setAnimating] = useState(false);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
 
   const getAnswer = () => {
     if (animating) return;
@@ -17,7 +22,7 @@ function AnswerBookPage() {
     setShowAnswer(false);
 
     const delay = 800 + Math.random() * 1200;
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       const idx = Math.floor(Math.random() * answerBookData.length);
       setAnswer(answerBookData[idx]);
       setShowAnswer(true);

@@ -183,7 +183,10 @@ export default function PhilosophyTimeline() {
                   const opacity = 1 - (ri / maxRows) * 0.3;
                   return (
                     <div key={s.name}
+                      role="button" tabIndex={0}
+                      aria-label={s.name + ' — ' + s.desc}
                       onClick={() => navigate('/school/' + encodeURIComponent(s.name))}
+                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/school/' + encodeURIComponent(s.name)); } }}
                       style={{
                         padding:'4px 8px', marginBottom:2, cursor:'pointer',
                         borderLeft:'3px solid ' + color, opacity,

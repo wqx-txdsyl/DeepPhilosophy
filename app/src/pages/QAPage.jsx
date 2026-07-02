@@ -120,7 +120,7 @@ function QAPage() {
         const d = await ragResp.json();
         if (d.sources?.length > 0) sources = d.sources;
       }
-    } catch {}
+    } catch (e) { console.error('RAG backend unavailable:', e.message); }
 
     // 流式调用 DeepSeek API（有用户Key直连，无Key走服务器代理）
     try {
@@ -219,7 +219,7 @@ function QAPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 56px)', overflow: 'hidden', margin: '-24px -40px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 56px)', overflow: 'hidden' }}>
       {/* Top bar with clear button */}
       <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '2px 12px', borderBottom: '1px solid var(--border)' }}>
         <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>

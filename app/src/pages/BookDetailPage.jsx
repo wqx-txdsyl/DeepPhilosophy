@@ -33,7 +33,12 @@ function BookDetailPage() {
   };
 
   if (loading) return <div className="loading">加载中...</div>;
-  if (!book) return <div className="loading">书籍未找到</div>;
+  if (!book) return (
+    <div className="page-container" style={{ textAlign: 'center' }}>
+      <button className="btn btn-secondary" onClick={() => navigate(-1)} style={{ marginBottom: 16 }}>← 返回</button>
+      <div className="empty-state"><p>📚</p><p>书籍未找到</p></div>
+    </div>
+  );
 
   const isTxt = book.file_type === 'txt';
   const regionBadge = book.region === '东方' ? 'badge-east' : 'badge-west';

@@ -31,7 +31,7 @@ export function getApiBase() {
   try {
     const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
     if (config.apiUrl) return config.apiUrl;
-  } catch {}
+  } catch (e) { console.error('Failed to parse dp_api_config:', e); }
   return import.meta.env.VITE_API_URL || 'http://localhost:8000';
 }
 
@@ -141,6 +141,7 @@ function MainLayout() {
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
+  const isQA = location.pathname.startsWith('/qa');
   const hideNav = isReader;
   const hideHeader = isHome || isReader || isSchool;
   const activeTab = getActiveTab();
@@ -171,7 +172,7 @@ function MainLayout() {
         </header>
       )}
 
-      <main className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}`} style={isReader || isHome || isSchool ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      <main className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}${isQA ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isQA) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <ErrorBoundary>
         <Routes>
           <Route path="/" element={<HomePage />} />

@@ -19,13 +19,14 @@ export async function loadBooks() {
         return data.books;
       }
     }
-  } catch (e) {}
+  } catch (e) { console.error('Books API unavailable, using local fallback:', e.message); }
 
   // 2. 兜底：嵌入式本地书目（离线可用）
   try {
     const local = await import('./assets/books.json');
     cachedBooks = local.default?.books || local.books || [];
   } catch (e) {
+    console.error('Local books fallback failed:', e);
     cachedBooks = [];
   }
 
@@ -64,12 +65,12 @@ export async function getAuthorInfo(authorName) {
       signal: AbortSignal.timeout(3000),
     });
     if (resp.ok) return await resp.json();
-  } catch (e) {}
+  } catch (e) { console.error('Author API unavailable:', e.message); }
   const authors = await loadAuthors();
   const a = authors.find(x => x.name === authorName);
   return a ? {
     name: a.name, region: a.region, books: a.books, book_count: a.book_count,
-    bio: `${a.name}是${a.region}哲学史上的重要思想家。`,
+    bio: `${a.name}是${a.region}哲学史上的重要思想家。详情请连接网络后查看。`,
     wiki_url: `https://baike.baidu.com/item/${encodeURIComponent(authorName)}`,
   } : null;
 }

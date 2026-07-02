@@ -5,7 +5,9 @@
 const STORAGE_KEY = 'dp_api_config';
 
 function getRawKey() {
-  // Derive from device characteristics (not cryptographically strong, but obfuscates at rest)
+  if (!crypto?.subtle) {
+    throw new Error('Web Crypto API not available (requires HTTPS or localhost)');
+  }
   const seed = [
     navigator.hardwareConcurrency || 4,
     navigator.language || 'zh-CN',

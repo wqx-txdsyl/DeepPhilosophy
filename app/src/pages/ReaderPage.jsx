@@ -101,7 +101,7 @@ function ReaderPage() {
             const d = await r.json();
             if (d.note_text) { setNoteText(d.note_text); localStorage.setItem(notesKey, d.note_text); return; }
           }
-        } catch {}
+        } catch { /* network error, fall through to local */ }
       }
       try {
         const saved = localStorage.getItem(notesKey);
