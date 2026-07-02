@@ -4,7 +4,7 @@
  * 四个分区: 书籍 | 谱图 | 问答 | 我的
  */
 import { useEffect, useRef, useState } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useNavigationType } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
 import BooksPage from './pages/BooksPage';
 import BookDetailPage from './pages/BookDetailPage';
@@ -34,9 +34,38 @@ export function getApiBase() {
   return import.meta.env.VITE_API_URL || 'http://localhost:8000';
 }
 
+const scrollMemory = new Map();
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  const navType = useNavigationType();
+
+  useEffect(() => {
+    if (navType === 'POP') {
+      // Back/forward: restore saved position
+      const y = scrollMemory.get(pathname) || 0;
+      window.scrollTo(0, y);
+    } else {
+      // New navigation or refresh: save current then scroll top
+      scrollMemory.set(pathname, 0);
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]); // eslint-disable-line
+
+  // Save scroll position on scroll
+  useEffect(() => {
+    const save = () => scrollMemory.set(pathname, window.scrollY);
+    window.addEventListener('scroll', save, { passive: true });
+    return () => window.removeEventListener('scroll', save);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="app-container">
         <MainLayout />
       </div>
