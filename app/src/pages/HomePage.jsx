@@ -471,9 +471,8 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ========== 流派一览 ========== */}
-      <section style={{ padding: '48px 24px 64px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 8, letterSpacing: '0.04em' }}>流派一览</h2>
+      <section style={{ padding: '48px 24px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
         <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
         <WorldMap />
         <div style={{ display:'flex', justifyContent:'center', gap:24, marginTop:20, flexWrap:'wrap' }}>
@@ -486,12 +485,6 @@ function HomePage() {
               onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}
               onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>{b.l}</span>
           ))}</div>
-      </section>
-      {/* ══════════ WORLD MAP ══════════ */}
-      <section style={{ padding: '48px 24px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
-        <WorldMap />
       </section>
 
       
