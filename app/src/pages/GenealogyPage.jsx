@@ -13,11 +13,9 @@ function useFade() {
 // Only load image when within 300px of viewport
 function LazyImg({ src, alt, style, ph }) {
   const ref = useRef(null); const [loaded, setLoaded] = useState(false);
-  const [hd, setHd] = useState(false);
-  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoaded(true); o.disconnect(); } }, { rootMargin: '800px' }); o.observe(el); return () => o.disconnect(); }, []);
+  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoaded(true); o.disconnect(); } }, { rootMargin: '1000px' }); o.observe(el); return () => o.disconnect(); }, []);
   if (!loaded) { const h = ph || 150; return <div ref={ref} style={{...style, height:h, minHeight:h, background:'#E8E0D4'}} />; }
-  return <img ref={ref} src={src} alt={alt} onLoad={() => setHd(true)}
-    style={{ ...style, filter: hd ? 'none' : 'blur(8px)', transition: 'filter 0.4s ease' }} />;
+  return <img ref={ref} src={src} alt={alt} style={style} />;
 }
 function FadeWrap({ children, style }) {
   const [ref, on] = useFade();
@@ -293,7 +291,7 @@ export default function GenealogyPage() {
         </div>
       ))}
       <div style={{ textAlign:'center', padding:'80px 32px', borderTop:'1px solid rgba(145,118,71,0.08)' }}>
-        <p style={{ fontSize:12, color:'#A09080', fontFamily:'var(--font-sans)', margin:0 }}>九十五个哲学流派 · 一部横跨五千年的人类思想史图录</p>
+        <p style={{ fontSize:12, color:'#A09080', fontFamily:'var(--font-sans)', margin:0 }}>九十六个哲学流派 · 一部横跨五千年的人类思想史图录</p>
         <div style={{ display:'flex', justifyContent:'center', gap:32, marginTop:32 }}>
           {[{ l:'西方哲学', p:'/western-philosophies' },{ l:'东方哲学', p:'/eastern-philosophies' },{ l:'世界哲学', p:'/world-philosophies' }].map(b => (
             <button key={b.p} onClick={() => nav(b.p)} style={{ background:'none', border:'1px solid rgba(145,118,71,0.10)', cursor:'pointer', fontFamily:'"Playfair Display",serif', fontSize:13, color:'#917647', padding:'6px 16px', borderRadius:4, transition:'all 300ms ease', opacity:0.7 }}
