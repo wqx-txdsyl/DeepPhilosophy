@@ -45,7 +45,7 @@ function ReaderPage() {
   // PDF state
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pdfScale, setPdfScale] = useState(0.99);
+  const [pdfScale, setPdfScale] = useState(0.99); // 略低于1.0避免亚像素渲染伪影
   const [jumpPage, setJumpPage] = useState('');
   const [showJumpInput, setShowJumpInput] = useState(false);
 
