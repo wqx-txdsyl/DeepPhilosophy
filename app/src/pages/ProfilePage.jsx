@@ -2,7 +2,7 @@
  * 个人中心 —— 用户登录/注册、阅读历史、聊天历史
  * 登录后数据云端同步，未登录本地存储
  */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import {
@@ -22,7 +22,7 @@ function ProfilePage() {
   const [authMsg, setAuthMsg] = useState('');
   const [syncing, setSyncing] = useState(false);
 
-  // Restore login from token — verify with backend first
+  // Restore login from token — verify with backend first (只执行一次)
   useEffect(() => {
     const token = localStorage.getItem('dp_token');
     const user = localStorage.getItem('dp_username');
@@ -49,13 +49,9 @@ function ProfilePage() {
         setLoginUser(user);
       });
     }
-    loadLocalData();
-  }, [tab]);
-
-  const loadLocalData = () => {
-    if (tab === 'reading') setReadingHistory(getReadingHistory());
-    else setChatHistory(getChatHistory());
-  };
+    setReadingHistory(getReadingHistory());
+    setChatHistory(getChatHistory());
+  }, []); // 只在挂载时运行，切换 tab 不重复请求
 
   // ========== Auth ==========
   const api = (path, body) =>
@@ -137,7 +133,7 @@ function ProfilePage() {
         }
         // 云端为空且非新登录 → 保留本地数据不变
         localStorage.setItem('dp_userdata', JSON.stringify(local));
-        if (tab === 'reading') setReadingHistory(local.readingHistory || localHistory);
+        setReadingHistory(local.readingHistory || localHistory);
       }
       // Pull chat history
       const ch = await fetch(`${getApiBase()}/api/history/chat`, {
@@ -146,15 +142,25 @@ function ProfilePage() {
       });
       if (ch.ok) {
         const d = await ch.json();
-        const cloudChat = d.messages || [];
+        // 规范化 sources：云端存储的是 JSON 字符串，需转回数组
+        const _normalizeSources = (src) => {
+          if (Array.isArray(src)) return src;
+          if (typeof src === 'string') {
+            try { return JSON.parse(src); } catch { return []; }
+          }
+          return [];
+        };
+        const cloudChat = (d.messages || []).map(m => ({
+          ...m,
+          sources: _normalizeSources(m.sources),
+        }));
         const local = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
         const localChat = local.chatHistory || [];
         if (isFreshLogin || cloudChat.length > 0) {
           local.chatHistory = cloudChat;
         }
-        // 云端为空且非新登录 → 保留本地数据不变
         localStorage.setItem('dp_userdata', JSON.stringify(local));
-        if (tab === 'chat') setChatHistory(local.chatHistory || localChat);
+        setChatHistory(local.chatHistory || localChat);
       }
       // Pull book notes
       const notes = await fetch(`${getApiBase()}/api/notes`, {
@@ -333,7 +339,7 @@ function ProfilePage() {
               <div key={i} className={`chat-message ${msg.role}`}
                 style={{ maxWidth: '100%', marginBottom: 8, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
                 <div style={{ whiteSpace: 'pre-wrap', fontSize: 13 }}>{msg.content}</div>
-                {msg.sources?.length > 0 && (
+                {Array.isArray(msg.sources) && msg.sources.length > 0 && (
                   <div className="chat-sources">📎 {msg.sources.join(', ')}</div>
                 )}
               </div>

@@ -49,11 +49,15 @@ function QAPage() {
   useEffect(() => {
     const history = getChatHistory();
     if (history.length > 0) {
-      const msgs = history.map(m => ({
-        role: m.role,
-        content: m.content,
-        sources: m.sources || [],
-      }));
+      const msgs = history.map(m => {
+        let sources = m.sources || [];
+        // 云端同步时 sources 可能是 JSON 字符串，需要转回数组
+        if (typeof sources === 'string') {
+          try { sources = JSON.parse(sources); } catch { sources = []; }
+        }
+        if (!Array.isArray(sources)) sources = [];
+        return { role: m.role, content: m.content, sources };
+      });
       setMessages(msgs);
     } else {
       setMessages([WELCOME_MSG]);
@@ -235,7 +239,7 @@ function QAPage() {
         {messages.map((msg, i) => (
           <div key={i} className={`chat-message ${msg.role}`}>
             <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div>
-            {msg.sources && msg.sources.length > 0 && (
+            {Array.isArray(msg.sources) && msg.sources.length > 0 && (
               <div style={{
                 marginTop: 10, paddingTop: 10,
                 borderTop: '1px solid var(--border)',
