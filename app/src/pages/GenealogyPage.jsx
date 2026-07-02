@@ -164,31 +164,39 @@ function thumbUrl(name) { return `/schools/thumb/${encodeURI(name)}.jpg`; }
 function fullUrl(name) { return `/schools/${encodeURI(name)}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Idle Progressive Image: thumb → full-res when idle ───
+// ─── Smart Progressive Image: cache-first, then idle preload ───
 function ProgImg({ name, style }) {
-  const [src, setSrc] = useState(thumbUrl(name));
-  const [hd, setHd] = useState(false);
+  const full = fullUrl(name);
+  const thumb = thumbUrl(name);
+  // Check cache by attempting to load full-res immediately
+  const [src, setSrc] = useState(() => {
+    const test = new Image(); test.src = full;
+    // If already cached (complete within same tick), use full-res directly
+    return test.complete && test.naturalWidth > 0 ? full : thumb;
+  });
+  const [hd, setHd] = useState(() => {
+    const test = new Image(); test.src = full;
+    return test.complete && test.naturalWidth > 0;
+  });
   const idleId = useRef(null);
-  const imgRef = useRef(null);
 
   useEffect(() => {
-    // Schedule full-res load when browser is idle
+    if (hd) return; // Already got full-res from cache
     const preload = () => {
       idleId.current = requestIdleCallback(() => {
-        const full = new Image();
-        full.onload = () => { setSrc(fullUrl(name)); setHd(true); };
-        full.src = fullUrl(name);
-      }, { timeout: 3000 });
+        const img = new Image();
+        img.onload = () => { setSrc(full); setHd(true); };
+        img.src = full;
+      }, { timeout: 2000 });
     };
-    // Start after a short delay to let thumb load first
-    const t = setTimeout(preload, 500);
+    const t = setTimeout(preload, 300);
     return () => { clearTimeout(t); if (idleId.current) cancelIdleCallback(idleId.current); };
-  }, [name]);
+  }, [name, hd]);
 
   return (
-    <img ref={imgRef} src={src} alt={name}
-      style={{ ...style, filter: hd ? 'none' : 'blur(6px)', transition: 'filter 0.4s ease' }}
-      onError={(e) => { if (!hd) e.currentTarget.src = fullUrl(name); }} />
+    <img src={src} alt={name}
+      style={{ ...style, filter: hd ? 'none' : 'blur(4px)', transition: 'filter 0.3s ease' }}
+      onError={(e) => { if (!hd) e.currentTarget.src = full; }} />
   );
 }
 
