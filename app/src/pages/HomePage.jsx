@@ -384,12 +384,12 @@ function HomePage() {
       <button onClick={() => navigate('/profile')} style={{
         position: 'fixed', top: 18, right: 20, zIndex: 1000,
         fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
-        color: 'var(--ink)', background: 'rgba(244,240,235,0.7)', backdropFilter: 'blur(8px)',
+        color: 'var(--ink)', background: 'color-mix(in srgb, var(--primary) 70%, transparent)', backdropFilter: 'blur(8px)',
         border: '1px solid var(--border)', borderRadius: 4, padding: '8px 18px',
         cursor: 'pointer', letterSpacing: '0.04em', transition: 'all 0.25s'
       }}
-        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.9)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.7)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
+        onMouseEnter={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 90%, transparent)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 70%, transparent)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
         {loggedIn && username ? '👤 ' + username : '登录 / 注册'}
       </button>
 

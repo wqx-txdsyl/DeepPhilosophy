@@ -206,7 +206,7 @@ function SchoolImg({ school, w }) {
   const [ref, on] = useFade();
   return (
     <div ref={ref} onClick={() => nav('/school/' + encodeURIComponent(school.name))}
-      style={{ width:w, minHeight:100, cursor:'pointer', flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'#E8E0D4',
+      style={{ width:w, minHeight:100, cursor:'pointer', flexShrink:0, borderRadius:4, overflow:'hidden', position:'relative', backgroundColor:'var(--card-bg)',
         opacity:on?1:0, transform:on?'translateY(0)':'translateY(16px)',
         transition:'opacity 0.5s ease, transform 0.5s ease' }}>
       <ProgImg name={school.name}
@@ -264,22 +264,22 @@ export default function GenealogyPage() {
   const chapters = useMemo(() => buildChapters(), []);
 
   return (
-    <div style={{ background:'#F8F6F2', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A' }}>
+    <div style={{ background:'var(--bg)', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'var(--ink)' }}>
       <section style={{ padding:'56px 32px 32px', textAlign:'center', position:'relative', overflow:'hidden' }}>
         <img src="/gene/civilization_silhouette.jpg" alt="" style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
-        <p style={{ position:'relative', fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'#917647', marginBottom:20, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
-        <h1 style={{ position:'relative', fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'#2A1F1A', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
-        <div style={{ position:'relative', width:32, height:1, background:'#917647', margin:'14px auto', opacity:0.35 }} />
-        <p style={{ position:'relative', fontSize:'0.85rem', fontWeight:300, color:'#8A7E74', fontFamily:'var(--font-sans)' }}>思想如河流，起源、分流、汇合、消失、复兴——五千年人类追问的视觉编年史</p>
+        <p style={{ position:'relative', fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--ochre)', marginBottom:20, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
+        <h1 style={{ position:'relative', fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'var(--ink)', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
+        <div style={{ position:'relative', width:32, height:1, background:'var(--ochre)', margin:'14px auto', opacity:0.35 }} />
+        <p style={{ position:'relative', fontSize:'0.85rem', fontWeight:300, color:'var(--text-dim)', fontFamily:'var(--font-sans)' }}>思想如河流，起源、分流、汇合、消失、复兴——五千年人类追问的视觉编年史</p>
       </section>
       {chapters.map((ch, ci) => (
         <div key={ci}>
           <section style={{ padding:'80px 24px 40px', textAlign:'center', maxWidth:1000, margin:'0 auto' }}>
             {ch.era.e && <LazyImg src={`/gene/${ch.era.e}.png`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />}
             <div style={{ marginTop:40 }}>
-              <div style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', fontFamily:'var(--font-sans)', marginBottom:8 }}>{ch.era.n}</div>
-              <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:400, color:'#2A1F1A', margin:'0 0 8px', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{ch.era.t}</h2>
-              <div style={{ fontSize:13, color:'#A09080', fontFamily:'var(--font-sans)' }}>{ch.era.r}</div>
+              <div style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--ochre)', fontFamily:'var(--font-sans)', marginBottom:8 }}>{ch.era.n}</div>
+              <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:400, color:'var(--ink)', margin:'0 0 8px', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{ch.era.t}</h2>
+              <div style={{ fontSize:13, color:'var(--text-dim)', fontFamily:'var(--font-sans)' }}>{ch.era.r}</div>
             </div>
           </section>
           {ch.regions.map((region, ri) => {
@@ -288,7 +288,7 @@ export default function GenealogyPage() {
               <FadeWrap key={ri}>
                 <section style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto' }}>
                   <LazyImg src={`/gene/region/${region.key}.jpg`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} />
-                  <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'#2A1F1A', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
+                  <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'var(--ink)', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
                 </section>
                 <div style={{ maxWidth:900, margin:'0 auto', padding:'0 16px' }}>
                   {chunks.map((chunk, bi) => {
@@ -304,11 +304,11 @@ export default function GenealogyPage() {
         </div>
       ))}
       <div style={{ textAlign:'center', padding:'80px 32px', borderTop:'1px solid rgba(145,118,71,0.08)' }}>
-        <p style={{ fontSize:12, color:'#A09080', fontFamily:'var(--font-sans)', margin:0 }}>九十六个哲学流派 · 一部横跨五千年的人类思想史图录</p>
+        <p style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-sans)', margin:0 }}>九十六个哲学流派 · 一部横跨五千年的人类思想史图录</p>
         <div style={{ display:'flex', justifyContent:'center', gap:32, marginTop:32 }}>
           {[{ l:'西方哲学', p:'/western-philosophies' },{ l:'东方哲学', p:'/eastern-philosophies' },{ l:'世界哲学', p:'/world-philosophies' }].map(b => (
-            <button key={b.p} onClick={() => nav(b.p)} style={{ background:'none', border:'1px solid rgba(145,118,71,0.10)', cursor:'pointer', fontFamily:'"Playfair Display",serif', fontSize:13, color:'#917647', padding:'6px 16px', borderRadius:4, transition:'all 300ms ease', opacity:0.7 }}
-              onMouseEnter={e=>{e.currentTarget.style.opacity='1';e.currentTarget.style.borderColor='#917647';}} onMouseLeave={e=>{e.currentTarget.style.opacity='0.7';e.currentTarget.style.borderColor='rgba(145,118,71,0.10)';}}>{b.l}</button>
+            <button key={b.p} onClick={() => nav(b.p)} style={{ background:'none', border:'1px solid rgba(145,118,71,0.10)', cursor:'pointer', fontFamily:'"Playfair Display",serif', fontSize:13, color:'var(--ochre)', padding:'6px 16px', borderRadius:4, transition:'all 300ms ease', opacity:0.7 }}
+              onMouseEnter={e=>{e.currentTarget.style.opacity='1';e.currentTarget.style.borderColor='var(--ochre)';}} onMouseLeave={e=>{e.currentTarget.style.opacity='0.7';e.currentTarget.style.borderColor='rgba(145,118,71,0.10)';}}>{b.l}</button>
           ))}</div>
       </div>
     </div>

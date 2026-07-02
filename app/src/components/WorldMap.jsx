@@ -56,9 +56,14 @@ function WorldMap() {
 
       {REGIONS.map(r => (
         <div key={r.id}
+          role="button" tabIndex={0}
+          aria-label={r.name + ' — ' + r.desc}
           onMouseEnter={() => setHover(r)}
           onMouseLeave={() => setHover(null)}
+          onFocus={() => setHover(r)}
+          onBlur={() => setHover(null)}
           onClick={() => navigate(r.path)}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(r.path); } }}
           title=""
           style={{
             position: 'absolute',
@@ -107,7 +112,7 @@ function WorldMap() {
           position: 'absolute',
           left: `${hover.x}%`, top: `${hover.y - hover.r * 0.06}%`,
           transform: 'translate(-50%, -100%)',
-          background: 'rgba(244,240,235,0.75)',
+          background: 'color-mix(in srgb, var(--primary) 75%, transparent)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
           border: '1px solid rgba(196,149,106,0.3)',
