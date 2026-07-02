@@ -10958,7 +10958,10 @@ function SchoolDetailPage() {
   const [dynamicData, setDynamicData] = useState(null);
     useEffect(() => { if (m._json) { setJsonError(false); fetch('/schools/' + m._json).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(setDynamicData).catch(()=>setJsonError(true)); } }, [name]);
   const data = dynamicData || m.data || GREEK_DATA;
-  const subSchools = (m.sub && Object.keys(m.sub).length > 0) ? m.sub : (data.subSchools && data.subSchools.length > 0 ? data.subSchools : {});
+  let subSchools = (m.sub && Object.keys(m.sub).length > 0) ? m.sub : (data.subSchools && data.subSchools.length > 0 ? data.subSchools : {});
+  if (data.name !== '古希腊哲学' && Array.isArray(subSchools) && subSchools.length > 0) {
+    subSchools = [{name:'敬请期待', era:'', desc:'更多下属流派正在整理中'}];
+  }
   // Auto-generate subColors from thinkers' sub field (for schools with sub:{})
   const subColors = (() => {
     const sc = {};
