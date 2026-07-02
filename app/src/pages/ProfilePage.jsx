@@ -53,7 +53,12 @@ function ProfilePage() {
     setChatHistory(getChatHistory());
   }, []); // 只在挂载时运行，切换 tab 不重复请求
 
-  // ========== Auth ==========
+    const switchTab = (t) => {
+      setTab(t);
+      window.scrollTo(0, 0);
+      const m = document.querySelector('.app-main');
+      if (m) m.style.transform = 'translateY(0)';
+    };
   const api = (path, body) =>
     fetch(`${getApiBase()}${path}`, {
       method: 'POST',
@@ -281,10 +286,10 @@ function ProfilePage() {
       <div style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
         <button className={`btn ${tab === 'reading' ? 'btn-primary' : 'btn-secondary'}`}
           style={{ flex: 1, padding: '8px', fontSize: 13 }}
-          onClick={() => setTab('reading')}>📖 阅读历史</button>
+          onClick={() => switchTab('reading')}>📖 阅读历史</button>
         <button className={`btn ${tab === 'chat' ? 'btn-primary' : 'btn-secondary'}`}
           style={{ flex: 1, padding: '8px', fontSize: 13 }}
-          onClick={() => setTab('chat')}>💬 聊天历史</button>
+          onClick={() => switchTab('chat')}>💬 聊天历史</button>
       </div>
 
       {/* Reading History */}
