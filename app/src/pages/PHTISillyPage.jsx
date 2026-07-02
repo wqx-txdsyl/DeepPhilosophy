@@ -114,7 +114,7 @@ function PHTISillyPage() {
     const prompt = `你是一个毒舌脱口秀演员兼哲学教授，以犀利刻薄著称。有人刚做了沙雕哲学人格测试：
 
 🏆 ${phil.title} —— ${phil.name}
-📝 ${phil.desc}
+<Icon name="icon-edit" size={16} /> ${phil.desc}
 
 维度得分：${dimLabel.join('；')}
 
@@ -167,18 +167,18 @@ function PHTISillyPage() {
 
       {phase === 'intro' && (
         <div className="card" style={{ cursor: 'default', textAlign: 'center', padding: '24px 20px' }}>
-          <div style={{ fontSize: 48, marginBottom: 8 }}>🤪</div>
+          <div style={{ fontSize: 48, marginBottom: 8 }}><Icon name="icon-crazy" size={16} /></div>
           <h2 style={{ fontSize: 20, marginBottom: 4 }}>PHTI 沙雕版</h2>
           <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 16 }}>
             测测你是哪个哲学家……的摆烂版本
           </p>
           <div style={{ background: 'var(--secondary)', borderRadius: 10, padding: '14px 18px', marginBottom: 16, textAlign: 'left', fontSize: 13, lineHeight: 1.8, color: 'var(--text-dim)' }}>
-            <p style={{ margin: '0 0 4px' }}>📋 {TOTAL_Q}道轻松题 · 5秒一道</p>
-            <p style={{ margin: '0 0 4px' }}>🎭 16种沙雕哲学家等你认领</p>
-            <p style={{ margin: 0 }}>🔥 附带AI毒舌锐评（比亲妈还狠）</p>
+            <p style={{ margin: '0 0 4px' }}><Icon name="icon-clipboard" size={16} /> {TOTAL_Q}道轻松题 · 5秒一道</p>
+            <p style={{ margin: '0 0 4px' }}><Icon name="icon-drama" size={16} /> 16种沙雕哲学家等你认领</p>
+            <p style={{ margin: 0 }}><Icon name="icon-flame" size={16} /> 附带AI毒舌锐评（比亲妈还狠）</p>
           </div>
           <button className="btn btn-primary" onClick={start} style={{ padding: '12px 36px', fontSize: 15, borderRadius: 24 }}>
-            🤪 开始测试
+            <Icon name="icon-crazy" size={16} /> 开始测试
           </button>
         </div>
       )}
@@ -229,13 +229,13 @@ function PHTISillyPage() {
           </div>
 
           <div className="card" style={{ cursor: 'default', padding: '16px 20px', background: '#fef9f0' }}>
-            <h3 style={{ fontSize: 14, marginBottom: 8 }}>🔥 AI 毒舌锐评</h3>
-            {roasting && !roast && <p style={{ fontSize: 13, color: 'var(--text-dim)' }}>🕯️ 评论家正在酝酿暴击...</p>}
+            <h3 style={{ fontSize: 14, marginBottom: 8 }}><Icon name="icon-flame" size={16} /> AI 毒舌锐评</h3>
+            {roasting && !roast && <p style={{ fontSize: 13, color: 'var(--text-dim)' }}><Icon name="icon-candle" size={16} /> 评论家正在酝酿暴击...</p>}
             {roast && <p style={{ fontSize: 13, lineHeight: 1.9, whiteSpace: 'pre-line' }}>{roast}{roasting && <span style={{ color: 'var(--text-dim)' }}>▍</span>}</p>}
           </div>
 
           <div style={{ textAlign: 'center', marginTop: 16 }}>
-            <button className="btn btn-primary" onClick={start} style={{ padding: '10px 28px', fontSize: 14, borderRadius: 20 }}>🔄 再测一次</button>
+            <button className="btn btn-primary" onClick={start} style={{ padding: '10px 28px', fontSize: 14, borderRadius: 20 }}><Icon name="icon-refresh" size={16} /> 再测一次</button>
           </div>
         </div>
       )}

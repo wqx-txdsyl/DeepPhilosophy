@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useNavigationType } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
 import ErrorBoundary from './components/ErrorBoundary';
+import Icon from './components/Icon';
 import BooksPage from './pages/BooksPage';
 import BookDetailPage from './pages/BookDetailPage';
 import AuthorsPage from './pages/AuthorsPage';
@@ -120,11 +121,11 @@ function MainLayout() {
   }, [location.pathname]);
 
   const tabs = [
-    { key: 'books', label: '📚', text: '书籍', path: '/books' },
-    { key: 'authors', label: '✒️', text: '哲人', path: '/authors' },
-    { key: 'genealogy', label: '🧬', text: '谱系', path: '/genealogy' },
-    { key: 'qa', label: '💬', text: '问答', path: '/qa' },
-    { key: 'games', label: '🎮', text: '游戏', path: '/games' },
+    { key: 'books', label: <Icon name="nav-books" size={16} />, text: '书籍', path: '/books' },
+    { key: 'authors', label: <Icon name="nav-authors" size={16} />, text: '哲人', path: '/authors' },
+    { key: 'genealogy', label: <Icon name="nav-genealogy" size={16} />, text: '谱系', path: '/genealogy' },
+    { key: 'qa', label: <Icon name="nav-qa" size={16} />, text: '问答', path: '/qa' },
+    { key: 'games', label: <Icon name="nav-games" size={16} />, text: '游戏', path: '/games' },
   ];
 
   const getActiveTab = () => {
@@ -157,16 +158,16 @@ function MainLayout() {
               <button key={tab.key} className={`nav-btn ${activeTab === tab.key ? 'active' : ''}`}
                 onClick={() => navigate(tab.path)}
                 style={{ flexDirection: 'row', gap: 3, fontSize: 12, padding: '4px 8px' }}>
-                <span style={{ fontSize: 15 }}>{tab.label}</span>
+                {tab.label}
                 <span>{tab.text}</span>
               </button>
             ))}
           </span>
           <span style={{ display: 'flex', gap: 0, flexShrink: 0 }}>
-            <button className="settings-btn" onClick={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }} title="手机版">{mobileMode ? '💻' : '📱'}</button>
-            <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}>{darkMode ? '☀️' : '🌙'}</button>
-            <button className="settings-btn" onClick={() => navigate('/settings')}>⚙️</button>
-            <button className="settings-btn" onClick={() => navigate('/profile')}>👤</button>
+            <button className="settings-btn" onClick={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }} title="手机版"><Icon name={mobileMode ? 'mode-desktop' : 'mode-mobile'} size={18} /></button>
+            <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}><Icon name={darkMode ? 'theme-light' : 'theme-dark'} size={18} /></button>
+            <button className="settings-btn" onClick={() => navigate('/settings')}><Icon name="btn-settings" size={18} /></button>
+            <button className="settings-btn" onClick={() => navigate('/profile')}><Icon name="btn-user" size={18} /></button>
           </span>
         </header>
       )}

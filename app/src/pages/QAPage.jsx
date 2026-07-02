@@ -236,7 +236,7 @@ function QAPage() {
             </div>
           ) : (
             <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }}
-              onClick={() => setShowConfirmClear(true)}>🗑 新对话</button>
+              onClick={() => setShowConfirmClear(true)}><Icon name="icon-trash" size={16} /> 新对话</button>
           )
         )}
       </div>
@@ -251,7 +251,7 @@ function QAPage() {
                 borderTop: '1px solid var(--border)',
                 fontSize: 11, color: 'var(--text-dim)',
               }}>
-                📎 <strong>参考文献：</strong>
+                <Icon name="icon-link" size={16} /> <strong>参考文献：</strong>
                 {msg.sources.map((s, j) => (
                   <span key={j} style={{
                     display: 'inline-block',

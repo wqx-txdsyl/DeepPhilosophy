@@ -211,20 +211,20 @@ function ProfilePage() {
       <div className="card" style={{ cursor: 'default', textAlign: 'center' }}>
         {loggedIn ? (
           <>
-            <div style={{ fontSize: 36, marginBottom: 4 }}>👤</div>
+            <div style={{ fontSize: 36, marginBottom: 4 }}><Icon name="btn-user" size={18} /></div>
             <h2 style={{ fontSize: 18, color: 'var(--accent)' }}>{loginUser}</h2>
             <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
               {syncing ? '🔄 同步中...' : '☁️ 数据已云端同步'}
             </div>
             <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 8 }}>
-              📖 {userData.readingHistory.length} 条阅读 · 💬 {userData.chatHistory.length} 条对话
+              📖 {userData.readingHistory.length} 条阅读 · <Icon name="nav-qa" size={16} /> {userData.chatHistory.length} 条对话
             </div>
             <button className="btn btn-secondary" style={{ marginTop: 10, padding: '6px 20px', fontSize: 12 }}
               onClick={handleLogout}>退出登录</button>
           </>
         ) : (
           <>
-            <div style={{ fontSize: 36, marginBottom: 4 }}>🔐</div>
+            <div style={{ fontSize: 36, marginBottom: 4 }}><Icon name="icon-lock-key" size={16} /></div>
             <h2 style={{ fontSize: 16, marginBottom: 12 }}>登录 / 注册</h2>
             <input
               placeholder="用户名"
@@ -265,10 +265,10 @@ function ProfilePage() {
       <div style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
         <button className={`btn ${tab === 'reading' ? 'btn-primary' : 'btn-secondary'}`}
           style={{ flex: 1, padding: '8px', fontSize: 13 }}
-          onClick={() => switchTab('reading')}>📖 阅读历史</button>
+          onClick={() => switchTab('reading')}><Icon name="icon-book-open" size={16} /> 阅读历史</button>
         <button className={`btn ${tab === 'chat' ? 'btn-primary' : 'btn-secondary'}`}
           style={{ flex: 1, padding: '8px', fontSize: 13 }}
-          onClick={() => switchTab('chat')}>💬 聊天历史</button>
+          onClick={() => switchTab('chat')}><Icon name="nav-qa" size={16} /> 聊天历史</button>
       </div>
 
       {/* Reading History */}
@@ -284,7 +284,7 @@ function ProfilePage() {
                 d.readingHistory = [];
                 localStorage.setItem('dp_userdata', JSON.stringify(d));
                 setReadingHistory([]);
-              }}>🗑 清空阅读记录</button>
+              }}><Icon name="icon-trash" size={16} /> 清空阅读记录</button>
             {readingHistory.map((item, i) => (
             <div key={i} className="card" style={{ cursor: 'pointer' }}
               onClick={() => navigate('/reader/' + item.bookId)}>
@@ -314,7 +314,7 @@ function ProfilePage() {
         <div key="chat-tab">
           {(Array.isArray(chatHistory) && chatHistory.length > 0) && (
             <button className="btn btn-secondary" style={{ marginBottom: 8, padding: '4px 12px', fontSize: 12 }}
-              onClick={handleClearChat}>🗑 清空聊天</button>
+              onClick={handleClearChat}><Icon name="icon-trash" size={16} /> 清空聊天</button>
           )}
           {(!Array.isArray(chatHistory) || chatHistory.length === 0) ? (
             <div className="empty-state"><p>暂无聊天记录</p><p style={{fontSize:12,color:'var(--text-dim)'}}>在问答页面进行的对话会自动保存在这里</p></div>
@@ -324,7 +324,7 @@ function ProfilePage() {
                 style={{ maxWidth: '100%', marginBottom: 8, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
                 <div style={{ whiteSpace: 'pre-wrap', fontSize: 13 }}>{msg.content}</div>
                 {Array.isArray(msg.sources) && msg.sources.length > 0 && (
-                  <div className="chat-sources">📎 {msg.sources.join(', ')}</div>
+                  <div className="chat-sources"><Icon name="icon-link" size={16} /> {msg.sources.join(', ')}</div>
                 )}
               </div>
             ))

@@ -48,7 +48,7 @@ function AuthorDetailPage() {
     <div className="page-container">
       <button className="btn btn-secondary" onClick={() => navigate(-1)} style={{ marginBottom: 16 }}>← 返回</button>
       <div className="empty-state">
-        <p style={{ fontSize: 40 }}>😞</p>
+        <p style={{ fontSize: 40 }}><Icon name="icon-error" size={16} /></p>
         <p>作者信息未找到</p>
       </div>
     </div>
@@ -128,7 +128,7 @@ function AuthorDetailPage() {
       {/* 作品列表 */}
       {author.books && author.books.length > 0 && (
         <>
-          <h3 className="section-title">📚 作品 ({author.books.length})</h3>
+          <h3 className="section-title"><Icon name="nav-books" size={16} /> 作品 ({author.books.length})</h3>
           {author.books.map((book, i) => {
             const bookTitle = typeof book === 'string' ? book : book.title;
             const bookId = typeof book === 'string' ? null : book.id;
@@ -149,7 +149,7 @@ function AuthorDetailPage() {
                       {book.file_type.toUpperCase()}
                     </span>
                   )}
-                  <span style={{ color: 'var(--text-dim)', fontSize: 14 }}>📖</span>
+                  <span style={{ color: 'var(--text-dim)', fontSize: 14 }}><Icon name="icon-book-open" size={16} /></span>
                 </div>
               </div>
             );

@@ -2,6 +2,7 @@
  * Error Boundary — catches rendering crashes and shows fallback UI
  */
 import { Component } from 'react';
+import Icon from './Icon';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class ErrorBoundary extends Component {
           justifyContent: 'center', minHeight: '60vh', padding: 32,
           textAlign: 'center', fontFamily: 'var(--font-sans)',
         }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>😞</div>
+          <Icon name="icon-error" size={48} />
           <h2 style={{ fontSize: 18, color: 'var(--ink)', marginBottom: 8 }}>
             页面加载出错
           </h2>

@@ -34,7 +34,7 @@ function GamesPage() {
   return (
     <div className="page-container">
       <h2 className="section-title" style={{ fontSize: 20, marginBottom: 16 }}>
-        🎮 哲学游戏
+        <Icon name="nav-games" size={16} /> 哲学游戏
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import DAILY_QUOTES from '../data/dailyQuotes';
 import WorldMap from '../components/WorldMap';
+import Icon from '../components/Icon';
 
 const WESTERN_TIMELINE = [
   { century: '公元前6世纪', schools: ['古希腊哲学'] },
@@ -364,11 +365,11 @@ function HomePage() {
         }}>DeepPhilosophy</h1>
         <span style={{ display: 'flex', gap: 0, marginRight: 'auto', marginLeft: -2 }}>
           {[
-            { label: '📚', text: '书籍', path: '/books' },
-            { label: '✒️', text: '哲人', path: '/authors' },
-            { label: '🧬', text: '谱系', path: '/genealogy' },
-            { label: '💬', text: '问答', path: '/qa' },
-            { label: '🎮', text: '游戏', path: '/games' },
+            { label: <Icon name="nav-books" size={16} />, text: '书籍', path: '/books' },
+            { label: <Icon name="nav-authors" size={16} />, text: '哲人', path: '/authors' },
+            { label: <Icon name="nav-genealogy" size={16} />, text: '谱系', path: '/genealogy' },
+            { label: <Icon name="nav-qa" size={16} />, text: '问答', path: '/qa' },
+            { label: <Icon name="nav-games" size={16} />, text: '游戏', path: '/games' },
           ].map(item => (
             <button key={item.path} onClick={() => navigate(item.path)}
               className="nav-btn"
@@ -390,7 +391,7 @@ function HomePage() {
       }}
         onMouseEnter={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 90%, transparent)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
         onMouseLeave={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 70%, transparent)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
-        {loggedIn && username ? '👤 ' + username : '登录 / 注册'}
+        {loggedIn && username ? <><Icon name="btn-user" size={16} /> {username}</> : '登录 / 注册'}
       </button>
 
       {/* ══════════ HERO — full screen, world philosophy background ══════════ */}
@@ -478,9 +479,9 @@ function HomePage() {
         <WorldMap />
         <div style={{ display:'flex', justifyContent:'center', gap:24, marginTop:20, flexWrap:'wrap' }}>
           {[
-            { l:'🏛 西方 41 流派', p:'/western-philosophies', c:'var(--ochre)' },
-            { l:'☯ 东方 24 流派', p:'/eastern-philosophies', c:'var(--prussian)' },
-            { l:'🌍 世界 31 流派', p:'/world-philosophies', c:'#5A8A5A' },
+            { l: <><Icon name="region-west" size={14} /> 西方 41 流派</>, p:'/western-philosophies', c:'var(--ochre)' },
+            { l: <><Icon name="region-east" size={14} /> 东方 24 流派</>, p:'/eastern-philosophies', c:'var(--prussian)' },
+            { l: <><Icon name="region-world" size={14} /> 世界 31 流派</>, p:'/world-philosophies', c:'#5A8A5A' },
           ].map(b => (
             <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize:12, color:b.c, cursor:'pointer', borderBottom:'1px solid transparent', transition:'all 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}

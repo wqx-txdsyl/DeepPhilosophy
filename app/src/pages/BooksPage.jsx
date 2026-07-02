@@ -101,7 +101,7 @@ function BooksPage() {
     <div className="page-container">
       {/* 统计 */}
       <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 10 }}>
-        📚 共 {books.length} 本书，{Object.keys(grouped).reduce((s, r) => s + Object.keys(grouped[r]).filter(a => a !== '合集&概述').length, 0)} 位作者
+        <Icon name="nav-books" size={16} /> 共 {books.length} 本书，{Object.keys(grouped).reduce((s, r) => s + Object.keys(grouped[r]).filter(a => a !== '合集&概述').length, 0)} 位作者
       </div>
 
       {/* 搜索 */}
@@ -221,7 +221,7 @@ function BooksPage() {
 
       {filtered.length === 0 && (
         <div className="empty-state">
-          <p style={{ fontSize: 40, marginBottom: 12 }}>📚</p>
+          <p style={{ fontSize: 40, marginBottom: 12 }}><Icon name="nav-books" size={16} /></p>
           <p>未找到匹配的书籍</p>
         </div>
       )}
