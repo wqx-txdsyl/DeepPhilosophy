@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getBookById } from '../data';
+import Icon from '../components/Icon';
 import { getApiBase } from '../App';
 
 function BookDetailPage() {

@@ -4,6 +4,8 @@
  */
 import { useNavigate } from 'react-router-dom';
 
+import Icon from '../components/Icon';
+
 const games = [
   {
     key: 'answer-book',

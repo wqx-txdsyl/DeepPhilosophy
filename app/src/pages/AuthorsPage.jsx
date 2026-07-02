@@ -5,6 +5,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
+import Icon from '../components/Icon';
 
 function FadeCard({ children, style }) {
   const ref = useRef(null);

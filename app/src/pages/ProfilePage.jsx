@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
+import Icon from '../components/Icon';
 import {
   getReadingHistory, getChatHistory, clearChatHistory,
   getAllUserData, relativeTime,

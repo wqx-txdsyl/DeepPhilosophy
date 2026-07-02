@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import answerBookData from '../data/answer_book.json';
 
+import Icon from '../components/Icon';
 function AnswerBookPage() {
   const navigate = useNavigate();
   const [showAnswer, setShowAnswer] = useState(false);

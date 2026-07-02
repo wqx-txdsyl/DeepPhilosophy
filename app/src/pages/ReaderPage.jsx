@@ -5,6 +5,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
+import Icon from '../components/Icon';
 import ePub from 'epubjs';
 import { Capacitor } from '@capacitor/core';
 import { getApiBase } from '../App';

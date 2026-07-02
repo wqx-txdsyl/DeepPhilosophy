@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
+import Icon from '../components/Icon';
 import sillyQuestions from '../data/phti_silly_questions.json';
 
 // 16 哲学家在 4 维度空间中的坐标 (R/E, S/E, E/P, C/I) 归一化到 -10..10

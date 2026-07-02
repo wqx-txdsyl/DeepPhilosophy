@@ -5,6 +5,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { getApiBase } from '../App';
 import { saveChatMessage, getChatHistory, clearChatHistory } from '../data/userData';
+import Icon from '../components/Icon';
 
 const WELCOME_MSG = {
   role: 'assistant',

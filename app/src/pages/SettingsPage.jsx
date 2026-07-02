@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveConfig, loadConfig } from '../data/crypto';
 
+import Icon from '../components/Icon';
 function SettingsPage() {
   const navigate = useNavigate();
   const [apiKey, setApiKey] = useState('');

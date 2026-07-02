@@ -4,6 +4,7 @@
  */
 import { useState, useEffect, useRef } from 'react';
 
+import Icon from '../components/Icon';
 function FadeCard({ children, style }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
