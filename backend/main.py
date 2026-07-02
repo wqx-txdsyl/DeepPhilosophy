@@ -1870,6 +1870,11 @@ _STATIC_DIR = _os2.path.join(_os2.path.dirname(__file__), "static")
 if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR, "index.html")):
     # 先挂 assets，再挂根路由
     app.mount("/assets", StaticFiles(directory=_os2.path.join(_STATIC_DIR, "assets")), name="spa_assets")
+    # Mount gene/ and schools/ with 1-year cache for immutable images
+    if _os2.path.isdir(_os2.path.join(_STATIC_DIR, "gene")):
+        app.mount("/gene", StaticFiles(directory=_os2.path.join(_STATIC_DIR, "gene")), name="gene_assets")
+    if _os2.path.isdir(_os2.path.join(_STATIC_DIR, "schools")):
+        app.mount("/schools", StaticFiles(directory=_os2.path.join(_STATIC_DIR, "schools")), name="school_assets")
 
     @app.get("/{full_path:path}")
     async def serve_spa(full_path: str):
@@ -1882,6 +1887,15 @@ if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR,
     @app.get("/")
     async def serve_index():
         return FileResponse(_os2.path.join(_STATIC_DIR, "index.html"))
+
+    # Add cache headers for static assets
+    @app.middleware("http")
+    async def cache_static(request, call_next):
+        response = await call_next(request)
+        path = request.url.path
+        if path.startswith(("/gene/", "/schools/", "/assets/")) and not path.startswith("/api/"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return response
 
 
 # ============================================================
