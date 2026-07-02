@@ -2,7 +2,7 @@
 
 东西方及世界哲学的综合 Web 应用。React + FastAPI + DeepSeek AI，部署于 Render。
 
-**v2.2** — 88 流派，353 哲人，116 标签，31 国别，哲学之河博物馆级谱系。
+**v2.5** — 96 流派，353+ 哲人，305 著作，31 国别，Editorial Layout 谱系图录。
 
 ---
 
@@ -121,8 +121,8 @@ DeepPhilosophy/
 └── README.md
 
 图片资源:
-F:/philosophy/jpg/                # 88张流派背景图 + 世界地图等
-F:/philosophy/jpg/gene/           # 博物馆环境素材（纸纹/古地图/金粒/时代插图/文明剪影）
+app/public/schools/               # 96张流派卡片图（JPG缩略图 + 全分辨率）
+app/public/gene/                  # 博物馆素材库（region/era/symbol/landmark/terrain/textures）
 ```
 
 ---
