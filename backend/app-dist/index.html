@@ -9,10 +9,35 @@
     <meta name="apple-mobile-web-app-title" content="DeepPhilosophy" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>" />
     <title>DeepPhilosophy</title>
-    <script type="module" crossorigin src="/assets/index-BARanoca.js"></script>
+    <script type="module" crossorigin src="/assets/index-C3XdnyS3.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-CheOBITP.css">
   </head>
   <body>
     <div id="root"></div>
+    <!-- 启动时从 config.json 加载 API 地址，写入 localStorage（优先级低于用户手动设置） -->
+    <script>
+      (function(){
+        var stored = localStorage.getItem('dp_api_config');
+        if (stored) { try { var c = JSON.parse(stored); if (c.apiUrl) return; } catch(e){} }
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/config.json', true);
+        xhr.timeout = 3000;
+        xhr.onload = function(){
+          if (xhr.status === 200) {
+            try {
+              var cfg = JSON.parse(xhr.responseText);
+              if (cfg.apiUrl && !cfg.apiUrl.includes('YOUR_BACKEND_URL')) {
+                var prev = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
+                if (!prev.apiUrl) {
+                  prev.apiUrl = cfg.apiUrl;
+                  localStorage.setItem('dp_api_config', JSON.stringify(prev));
+                }
+              }
+            } catch(e){}
+          }
+        };
+        xhr.send();
+      })();
+    </script>
   </body>
 </html>
