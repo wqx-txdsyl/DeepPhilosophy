@@ -455,7 +455,7 @@ ${textContext}
         </button>
         <button className="btn btn-primary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowAiChat(!showAiChat); if (!showAiChat) setShowNotes(false); }}>
-          {showAiChat ? '关闭' : '💬AI'}
+          {showAiChat ? '关闭' : <><Icon name="nav-qa" size={16} /> AI</>}
         </button>
       </div>
 

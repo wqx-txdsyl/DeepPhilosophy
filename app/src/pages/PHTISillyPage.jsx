@@ -114,7 +114,7 @@ function PHTISillyPage() {
     ];
     const prompt = `你是一个毒舌脱口秀演员兼哲学教授，以犀利刻薄著称。有人刚做了沙雕哲学人格测试：
 
-🏆 ${phil.title} —— ${phil.name}
+[称号] ${phil.title} — ${phil.name}
 <Icon name="icon-edit" size={16} /> ${phil.desc}
 
 维度得分：${dimLabel.join('；')}
@@ -144,7 +144,7 @@ function PHTISillyPage() {
       let full = '', buffer = '';
       const streamStart = Date.now();
       while (true) {
-        if (Date.now() - streamStart > 90000) { if (!full) setRoast('（毒舌评论家今天请假去晒太阳了🌞）'); break; }
+        if (Date.now() - streamStart > 90000) { if (!full) setRoast('（毒舌评论家今天请假去晒太阳了）'); break; }
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
@@ -156,7 +156,7 @@ function PHTISillyPage() {
           }
         }
       }
-    } catch (e) { console.error('PHTI silly roast failed:', e); setRoast('（毒舌评论家今天请假去晒太阳了🌞）'); }
+    } catch (e) { console.error('PHTI silly roast failed:', e); setRoast('（毒舌评论家今天请假去晒太阳了）'); }
     setRoasting(false);
   };
 
@@ -201,11 +201,11 @@ function PHTISillyPage() {
             </p>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 4, flexWrap: 'wrap' }}>
               {[
-                { score: -2, label: '完全不', emoji: '👎' },
-                { score: -1, label: '不太', emoji: '🤔' },
-                { score: 0, label: '随便', emoji: '😐' },
-                { score: 1, label: '有点', emoji: '👍' },
-                { score: 2, label: '太对了', emoji: '💯' },
+                { score: -2, label: '完全不', icon: 'icon-thumbs-down' },
+                { score: -1, label: '不太', icon: 'icon-question' },
+                { score: 0, label: '随便', icon: 'icon-neutral' },
+                { score: 1, label: '有点', icon: 'icon-thumbs-up' },
+                { score: 2, label: '太对了', icon: 'icon-perfect' },
               ].map(o => (
                 <button key={o.score} onClick={() => answer(o.score)} className="btn btn-secondary"
                   style={{ flex: '1 1 55px', minWidth: 50, padding: '10px 4px', fontSize: 11, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, borderRadius: 10 }}>

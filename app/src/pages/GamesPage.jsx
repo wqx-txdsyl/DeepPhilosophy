@@ -8,21 +8,21 @@ import Icon from '../components/Icon';
 const games = [
   {
     key: 'answer-book',
-    title: '📖 答案之书',
+    title: '答案之书',
     desc: '心中默念问题，翻开启示之页',
     path: '/games/answer-book',
     disabled: false,
   },
   {
     key: 'phti',
-    title: '🧠 PHTI',
+    title: 'PHTI',
     desc: 'Philosophical Turing Intelligence — 哲学人格测试',
     path: '/games/phti',
     disabled: false,
   },
   {
     key: 'phti-silly',
-    title: '🤪 PHTI 沙雕版',
+    title: 'PHTI 沙雕版',
     desc: '测测你是哪个哲学家的摆烂版本',
     path: '/games/phti-silly',
     disabled: false,
@@ -63,7 +63,7 @@ function GamesPage() {
               </div>
             </div>
             <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
-              {game.disabled ? '🚧 即将上线' : '→'}
+              {game.disabled ? '即将上线' : '→'}
             </span>
           </div>
         ))}

@@ -3,8 +3,8 @@
  * 支持分类标签筛选、搜索、摘要预览
  */
 import { useState, useEffect, useRef } from 'react';
-
 import Icon from '../components/Icon';
+
 function FadeCard({ children, style }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -108,7 +108,7 @@ function BooksPage() {
       {/* 搜索 */}
       <input
         className="search-box"
-        placeholder="🔍 搜索书名或作者..."
+        placeholder="搜索书名或作者..."
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
@@ -163,7 +163,7 @@ function BooksPage() {
       }).map(region => (
         <div key={region}>
           <h2 className="section-title">
-            {region === '东方' ? '🏯' : '🏛️'} {region}哲学
+            {region === '东方' ? <Icon name='region-east-pagoda' size={16} /> : <Icon name='region-west' size={16} />} {region}哲学
           </h2>
           {Object.keys(grouped[region]).map(author => {
             const authorBooks = grouped[region][author];

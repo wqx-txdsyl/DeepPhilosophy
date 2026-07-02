@@ -2,6 +2,7 @@
  * 世界哲学时间轴 — 左时间线 + 三列(西方/东方/世界)渐变色
  */
 import { useNavigate } from 'react-router-dom';
+import Icon from './Icon';
 
 const ALL_SCHOOLS = [
   // 公元前30世纪

@@ -230,11 +230,11 @@ function PHTIPage() {
             {/* Likert scale */}
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 4, flexWrap: 'wrap' }}>
               {[
-                { score: -2, label: '完全不同意', emoji: '👎' },
-                { score: -1, label: '不太同意', emoji: '🤔' },
-                { score: 0, label: '中立', emoji: '😐' },
-                { score: 1, label: '比较同意', emoji: '👍' },
-                { score: 2, label: '完全同意', emoji: '💯' },
+                { score: -2, label: '完全不同意', icon: 'icon-thumbs-down' },
+                { score: -1, label: '不太同意', icon: 'icon-question' },
+                { score: 0, label: '中立', icon: 'icon-neutral' },
+                { score: 1, label: '比较同意', icon: 'icon-thumbs-up' },
+                { score: 2, label: '完全同意', icon: 'icon-perfect' },
               ].map(opt => (
                 <button key={opt.score} onClick={() => answer(opt.score)}
                   className="btn btn-secondary"
@@ -243,7 +243,7 @@ function PHTIPage() {
                     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
                     borderRadius: 10, border: '1px solid var(--border)',
                   }}>
-                  <span style={{ fontSize: 18 }}>{opt.emoji}</span>
+                  <Icon name={opt.icon} size={18} />
                   <span>{opt.label}</span>
                 </button>
               ))}

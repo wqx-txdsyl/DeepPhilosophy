@@ -191,7 +191,7 @@ function AuthorsPage() {
             className={`btn ${filter === f ? 'btn-primary' : 'btn-secondary'}`}
             style={{ padding: '6px 12px', fontSize: 13, flexShrink: 0 }}
             onClick={() => setFilter(f)}>
-            {f === 'all' ? '全部' : f === 'east' ? '☯ 东方' : f === 'west' ? '🏛 西方' : '🌍 世界'}
+            {f === 'all' ? '全部' : f === 'east' ? <><Icon name='region-east' size={14} /> 东方</> : f === 'west' ? <><Icon name='region-west' size={14} /> 西方</> : <><Icon name='region-world' size={14} /> 世界</>}
           </button>
         ))}
       </div>
@@ -321,7 +321,7 @@ function AuthorsPage() {
                 </div>
               </div>
               <span style={{ fontSize: 24, flexShrink: 0, marginLeft: 8 }}>
-                {author.region === '东方' ? '☯' : author.region === '世界' ? '🌍' : '🏛'}
+                {author.region === '东方' ? <Icon name='region-east' size={14} /> : author.region === '世界' ? <Icon name='region-world' size={14} /> : <Icon name='region-west' size={14} />}
               </span>
             </div>
           </div>

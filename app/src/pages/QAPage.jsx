@@ -9,7 +9,7 @@ import { saveChatMessage, getChatHistory, clearChatHistory } from '../data/userD
 
 const WELCOME_MSG = {
   role: 'assistant',
-  content: '你好！我是 DeepPhilosophy 哲学助手。你可以向我提问任何哲学问题，我会基于知识库中的文献为你解答，并附上参考文献。\n\n💡 提示：在设置页面可以配置你自己的 API Key。',
+  content: <>你好！我是 DeepPhilosophy 哲学助手。你可以向我提问任何哲学问题，我会基于知识库中的文献为你解答，并附上参考文献。{'\n\n'}<Icon name="icon-tip" size={14} /> 提示：在设置页面可以配置你自己的 API Key。</>,
 };
 
 function QAPage() {
@@ -23,10 +23,10 @@ function QAPage() {
 
   // 思考阶段动画
   const thinkingPhases = [
-    '🔍 检索相关文献...',
-    '📖 分析文档内容...',
-    '💭 深度思考中...',
-    '✍️ 组织回答...',
+    <><Icon name="icon-search" size={14} /> 检索相关文献...</>,
+    <><Icon name="icon-book-open" size={14} /> 分析文档内容...</>,
+    <><Icon name="icon-thinking" size={14} /> 深度思考中...</>,
+    <><Icon name="icon-writing" size={14} /> 组织回答...</>,
   ];
 
   const startThinking = () => {

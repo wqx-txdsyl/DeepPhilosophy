@@ -49,7 +49,7 @@ function AnswerBookPage() {
           disabled={animating}
           style={{ padding: '10px 32px', fontSize: 15, borderRadius: 24 }}
         >
-          {animating ? '🕯️ 正在寻找答案...' : '✨ 获取我的答案'}
+          {animating ? <><Icon name='icon-candle' size={16}/> 正在寻找答案...</> : <><Icon name='icon-sparkles' size={16}/> 获取我的答案</>}
         </button>
 
         {animating && (
