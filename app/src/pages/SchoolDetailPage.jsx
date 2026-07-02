@@ -10963,12 +10963,11 @@ function SchoolDetailPage() {
   // Coming soon page for schools without their own DATA
   if (!m.data && !dynamicData) {
     return (
-      <div style={{ background:'#F8F6F2', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'#2A1F1A',
-        display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
-        <p style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', marginBottom:24, fontFamily:'var(--font-sans)' }}>Sub-school · Coming Soon</p>
-        <h1 style={{ fontSize:'clamp(2rem,5vw,3rem)', fontWeight:400, fontStyle:'italic', color:'#2A1F1A', letterSpacing:'0.04em', lineHeight:1.15, marginBottom:16, fontFamily:'"Playfair Display","PingFang SC",serif' }}>{data.name}</h1>
+      <div style={{ background:'#F8F6F2', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
+        <p style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'#917647', marginBottom:24, fontFamily:'var(--font-sans)' }}>Coming Soon</p>
+        <h1 style={{ fontSize:'clamp(2rem,5vw,3rem)', fontWeight:400, color:'#2A1F1A', letterSpacing:'0.04em', marginBottom:16, fontFamily:'"Playfair Display","PingFang SC",serif' }}>{name}</h1>
         <div style={{ width:32, height:1.5, background:'#917647', marginBottom:20, opacity:0.4 }} />
-        <p style={{ fontSize:'1rem', fontWeight:300, color:'#8A7E74', lineHeight:2.0, maxWidth:500, fontFamily:'var(--font-sans)' }}>该下属流派的完整详情页正在建设中，敬请期待。</p>
+        <p style={{ fontSize:'1rem', fontWeight:300, color:'#8A7E74', lineHeight:2.0, maxWidth:500, fontFamily:'var(--font-sans)' }}>该流派详情页正在建设中，敬请期待。</p>
         <button onClick={() => window.history.back()} style={{ marginTop:32, background:'none', border:'1px solid rgba(145,118,71,0.2)', borderRadius:6, padding:'10px 28px', fontSize:13, color:'#917647', cursor:'pointer', letterSpacing:'0.06em', fontFamily:'var(--font-sans)' }}>← 返回</button>
       </div>
     );
