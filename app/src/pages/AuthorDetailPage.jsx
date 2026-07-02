@@ -24,7 +24,7 @@ function AuthorDetailPage() {
         setLoading(false);
         return;
       }
-    } catch (e) {}
+    } catch (e) { console.error('Author API unavailable:', e); }
     // 本地兜底
     const data = await getAuthorInfo(authorName);
     setAuthor(data);

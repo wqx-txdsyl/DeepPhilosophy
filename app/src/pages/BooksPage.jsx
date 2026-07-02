@@ -37,9 +37,9 @@ function BooksPage() {
 
   const fetchBooks = async () => {
     try {
-      // 尝试从服务器获取（带标签）
+      // 尝试从服务器获取（带标签），1.5s超时快速fallback
       const resp = await fetch(`${getApiBase()}/api/books`, {
-        signal: AbortSignal.timeout(3000),
+        signal: AbortSignal.timeout(1500),
       });
       if (resp.ok) {
         const data = await resp.json();
@@ -47,6 +47,7 @@ function BooksPage() {
         setAllTags(data.tags || []);
       } else throw new Error('Server error');
     } catch (e) {
+      console.error('Books API unavailable, using local data:', e.message);
       const data = await loadBooks();
       setBooks(data);
       const tags = new Set();

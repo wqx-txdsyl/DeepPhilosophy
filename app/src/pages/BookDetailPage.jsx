@@ -26,7 +26,7 @@ function BookDetailPage() {
         setLoading(false);
         return;
       }
-    } catch (e) {}
+    } catch (e) { console.error('Book API unavailable:', e); }
     const b = await getBookById(bookId);
     setBook(b);
     setLoading(false);

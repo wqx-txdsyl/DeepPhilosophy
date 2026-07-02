@@ -143,8 +143,14 @@ function QAPage() {
         const reader = resp.body.getReader();
         const decoder = new TextDecoder();
         let buffer = '';
+        const streamStart = Date.now();
+        const STREAM_TIMEOUT = 90000; // 90s hard timeout
 
         while (true) {
+          if (Date.now() - streamStart > STREAM_TIMEOUT) {
+            if (!answer) answer = '回答生成超时，请重试。';
+            break;
+          }
           const { done, value } = await reader.read();
           if (done) break;
 
@@ -175,7 +181,7 @@ function QAPage() {
           }
         }
       }
-    } catch (e) {}
+    } catch (e) { console.error('QA stream failed:', e); }
 
     if (!answer) {
       answer = '无法获取回答。\n\n请检查网络连接或在设置中配置 API Key。';

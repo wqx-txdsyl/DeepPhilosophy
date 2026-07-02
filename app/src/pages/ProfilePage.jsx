@@ -97,10 +97,15 @@ function ProfilePage() {
   const handleLogout = () => {
     localStorage.removeItem('dp_token');
     localStorage.removeItem('dp_username');
+    // 清除本地用户数据
+    const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+    data.readingHistory = [];
+    data.chatHistory = [];
+    localStorage.setItem('dp_userdata', JSON.stringify(data));
     setLoggedIn(false);
     setLoginUser('');
-    setReadingHistory(getReadingHistory());
-    setChatHistory(getChatHistory());
+    setReadingHistory([]);
+    setChatHistory([]);
   };
 
   // ========== Cloud Sync ==========

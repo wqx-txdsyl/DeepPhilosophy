@@ -112,7 +112,7 @@ function AuthorsPage() {
         const data = await resp.json();
         setAllAuthors(data.authors || []);
       }
-    } catch (e) {}
+    } catch (e) { console.error('Failed to load authors:', e); }
     setLoading(false);
   };
 
