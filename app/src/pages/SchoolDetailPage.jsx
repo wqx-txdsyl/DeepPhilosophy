@@ -10956,7 +10956,7 @@ function SchoolDetailPage() {
   const m = SCHOOL_MAP[name] || {};
   // Dynamic loader for JSON-based schools
   const [dynamicData, setDynamicData] = useState(null);
-    useEffect(() => { if (m._json) { setJsonError(false); fetch('/schools/' + m._json).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(setDynamicData).catch(()=>setJsonError(true)); } }, [name]);
+    useEffect(() => { if (m._json) { fetch('/schools/' + m._json).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(setDynamicData).catch(() => {}); } }, [name]);
   const data = dynamicData || m.data || GREEK_DATA;
   const subSchools = (m.sub && Object.keys(m.sub).length > 0) ? m.sub : (data.subSchools && data.subSchools.length > 0 ? data.subSchools : {});
 
