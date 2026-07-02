@@ -44,17 +44,27 @@ export function loadUserData() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const data = JSON.parse(raw);
+      let fixed = false;
       // 修正历史遗留问题：云端同步时 sources 被 JSON.stringify 转成了字符串
       if (Array.isArray(data.chatHistory)) {
+        const origLen = JSON.stringify(data.chatHistory).length;
         data.chatHistory = data.chatHistory.map(m => ({
           ...m,
           sources: _normalizeSources(m.sources),
         }));
+        if (JSON.stringify(data.chatHistory).length !== origLen) fixed = true;
       } else {
         data.chatHistory = [];
+        fixed = true;
       }
       if (!Array.isArray(data.readingHistory)) {
         data.readingHistory = [];
+        fixed = true;
+      }
+      // 持久化修复，永久治愈旧数据
+      if (fixed) {
+        data.updated = now();
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
       }
       return data;
     }
