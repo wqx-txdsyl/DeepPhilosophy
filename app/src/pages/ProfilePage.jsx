@@ -53,12 +53,14 @@ function ProfilePage() {
     setChatHistory(getChatHistory());
   }, []); // 只在挂载时运行，切换 tab 不重复请求
 
-    const switchTab = (t) => {
-      setTab(t);
-      window.scrollTo(0, 0);
-      const m = document.querySelector('.app-main');
-      if (m) m.style.transform = 'translateY(0)';
-    };
+  const switchTab = (t) => {
+    setTab(t);
+    window.scrollTo(0, 0);
+    const m = document.querySelector('.app-main');
+    if (m) m.style.transform = 'translateY(0)';
+  };
+
+  // ========== Auth ==========
   const api = (path, body) =>
     fetch(`${getApiBase()}${path}`, {
       method: 'POST',
@@ -181,34 +183,6 @@ function ProfilePage() {
     } catch {}
     setSyncing(false);
   };
-
-  // Sync when logged in (called from reader/qa pages)
-  useEffect(() => {
-    window.syncReadingToCloud = async (bookId, bookTitle, bookAuthor, page, percent, fileType) => {
-      const token = localStorage.getItem('dp_token');
-      if (!token) return;
-      try {
-        await fetch(`${getApiBase()}/api/history/reading`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({ book_id: bookId, book_title: bookTitle, book_author: bookAuthor, page, percent }),
-          signal: AbortSignal.timeout(5000),
-        });
-      } catch {}
-    };
-    window.syncChatToCloud = async (role, content, sources) => {
-      const token = localStorage.getItem('dp_token');
-      if (!token) return;
-      try {
-        await fetch(`${getApiBase()}/api/history/chat`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({ role, content, sources: sources ? JSON.stringify(sources) : '' }),
-          signal: AbortSignal.timeout(5000),
-        });
-      } catch {}
-    };
-  }, [loggedIn]);
 
   const handleClearChat = () => {
     if (confirm('确定清空所有聊天历史？')) {

@@ -116,10 +116,6 @@ function AuthorsPage() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    loadFilters();
-  }, []);
-
   // Client-side filtering (instant, no reload)
   let filtered = allAuthors;
   if (search) {

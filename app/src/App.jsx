@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useNavigationType } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
+import ErrorBoundary from './components/ErrorBoundary';
 import BooksPage from './pages/BooksPage';
 import BookDetailPage from './pages/BookDetailPage';
 import AuthorsPage from './pages/AuthorsPage';
@@ -99,8 +100,9 @@ function MainLayout() {
     return () => { window.removeEventListener('mousemove', onMove); document.removeEventListener('mouseleave', onLeave); el.remove(); };
   }, []);
 
-  // Parallax slow scroll
+  // Parallax slow scroll (homepage only)
   useEffect(() => {
+    if (location.pathname !== '/') return;
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
@@ -114,8 +116,8 @@ function MainLayout() {
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    return () => { window.removeEventListener('scroll', onScroll); };
+  }, [location.pathname]);
 
   const tabs = [
     { key: 'books', label: '📚', text: '书籍', path: '/books' },
@@ -132,14 +134,14 @@ function MainLayout() {
     if (p.startsWith('/qa')) return 'qa';
     if (p.startsWith('/games')) return 'games';
     if (p.startsWith('/profile')) return 'profile';
-    if (p === '/' || p.startsWith('/genealogy') || p.startsWith('/school')) return 'genealogy';
+    if (p === '/' || p.startsWith('/school')) return 'genealogy';
     return 'books';
   };
 
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
-  const hideNav = true;
+  const hideNav = isReader;
   const hideHeader = isHome || isReader || isSchool;
   const activeTab = getActiveTab();
 
@@ -170,6 +172,7 @@ function MainLayout() {
       )}
 
       <main className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}`} style={isReader || isHome || isSchool ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+        <ErrorBoundary>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BooksPage />} />
@@ -190,6 +193,7 @@ function MainLayout() {
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
+        </ErrorBoundary>
       </main>
 
       {!hideNav && (

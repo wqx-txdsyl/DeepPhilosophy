@@ -15,16 +15,22 @@ import 'react-pdf/dist/Page/TextLayer.css';
 
 // PDF.js — import worker as blob for WebView compat
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+let _workerBlobUrl = null;
 (async () => {
   try {
     const resp = await fetch(pdfjsWorker);
     const blob = await resp.blob();
-    const url = URL.createObjectURL(blob);
-    pdfjs.GlobalWorkerOptions.workerSrc = url;
+    _workerBlobUrl = URL.createObjectURL(blob);
+    pdfjs.GlobalWorkerOptions.workerSrc = _workerBlobUrl;
   } catch {
-    pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker; // fallback
+    pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
   }
 })();
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
+    if (_workerBlobUrl) URL.revokeObjectURL(_workerBlobUrl);
+  });
+}
 
 function ReaderPage() {
   const { bookId } = useParams();
@@ -106,17 +112,15 @@ function ReaderPage() {
     loadNotes();
   }, [bookId]);
 
-  // Auto-save reading progress every 30 seconds (PDF) — uses ref to avoid timer reset
+  // Save on unmount (PDF)
   const pdfSaveRef = useRef({ bookId: '', title: '', author: '', page: 0, total: 0 });
   useEffect(() => { if (book && numPages > 0) { pdfSaveRef.current = { bookId, title: book.title, author: book.author, page: pageNumber, total: numPages }; } }, [bookId, book?.title, pageNumber, numPages]);
   useEffect(() => {
-    if (fileType !== 'pdf') return;
-    const interval = setInterval(() => {
+    return () => {
       const s = pdfSaveRef.current;
       if (s.total > 0) saveReadingProgress(s.bookId, s.title, s.author, s.page, s.page / s.total, 'pdf');
-    }, 15000);
-    return () => clearInterval(interval);
-  }, [fileType]);
+    };
+  }, []);
 
   // EPUB: save chapter + page as progress
   useEffect(() => {
@@ -419,18 +423,6 @@ ${textContext}
     if (r && fileType === 'epub') r.spread(twoPage ? 'auto' : 'none');
   }, [twoPage, fileType]);
 
-  // Save on unmount (only when actually leaving the page)
-  const saveRef = useRef({ pdfPage: 0, pdfTotal: 0, bookId: '', title: '', author: '' });
-  useEffect(() => {
-    saveRef.current = { pdfPage: pageNumber, pdfTotal: numPages, bookId, title: book?.title || '', author: book?.author || '' };
-  });
-  useEffect(() => {
-    return () => {
-      const s = saveRef.current;
-      if (s.pdfTotal > 0) saveReadingProgress(s.bookId, s.title, s.author, s.pdfPage, s.pdfPage / s.pdfTotal, 'pdf');
-    };
-  }, []);
-
   if (loading) return <div className="loading">加载中...</div>;
   if (error) return (
     <div className="page-container">
@@ -532,13 +524,14 @@ ${textContext}
                       borderRadius: 2,
                     }}>
                       <div style={{
-                        borderRight: '1px solid rgba(0,0,0,0.15)',
-                        boxShadow: '2px 0 8px rgba(0,0,0,0.1)',
+                        borderRight: pageNumber < numPages ? '1px solid rgba(0,0,0,0.15)' : 'none',
+                        boxShadow: pageNumber < numPages ? '2px 0 8px rgba(0,0,0,0.1)' : 'none',
                       }}>
                         <Page pageNumber={pageNumber} scale={pdfScale}
                           renderTextLayer={true} renderAnnotationLayer={false}
-                          width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / 2 - 8, 500)} />
+                          width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / (pageNumber < numPages ? 2 : 1) - 8, pageNumber < numPages ? 500 : 800)} />
                       </div>
+                      {pageNumber < numPages && (
                       <div style={{
                         boxShadow: '-2px 0 8px rgba(0,0,0,0.1)',
                       }}>
@@ -546,6 +539,7 @@ ${textContext}
                           renderTextLayer={true} renderAnnotationLayer={false}
                           width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / 2 - 8, 500)} />
                       </div>
+                      )}
                     </div>
                   ) : (
                     <Page pageNumber={pageNumber} scale={pdfScale}
@@ -618,83 +612,82 @@ ${textContext}
           </div>
         )}
 
+        {/* AI Chat sidebar — inside flex container, side-by-side with reader */}
+        {showAiChat && (
+          <div style={{
+            flex: '0 0 40%', borderLeft: '1px solid var(--border)',
+            background: 'var(--primary)', display: 'flex', flexDirection: 'column',
+            overflow: 'hidden',
+          }}>
+            {/* Header — compact */}
+            <div style={{
+              padding: '4px 10px', borderBottom: '1px solid var(--border)',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: 11, color: 'var(--accent)' }}>💬 AI · {book?.title?.slice(0,8)}</span>
+              <button onClick={() => setShowAiChat(false)}
+                style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: 14, cursor: 'pointer' }}>✕</button>
+            </div>
+
+            {/* Chat history */}
+            <div ref={aiChatRef} style={{
+              flex: 1, overflow: 'auto', padding: '4px 8px',
+              display: 'flex', flexDirection: 'column', gap: 4,
+            }}>
+              {aiHistory.map((msg, i) => (
+                <div key={i} style={{
+                  alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                  maxWidth: '90%',
+                  background: msg.role === 'user' ? 'var(--accent)' : 'var(--secondary)',
+                  color: msg.role === 'user' ? 'var(--primary)' : 'var(--text)',
+                  padding: '6px 10px', borderRadius: 10,
+                  fontSize: 12, lineHeight: 1.5, whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+                }}>
+                  {msg.content}
+                </div>
+              ))}
+              {aiLoading && (
+                <div style={{ alignSelf: 'flex-start', display: 'flex', gap: 4, padding: '6px 10px' }}>
+                  {[0,1,2].map(i => (
+                    <span key={i} style={{
+                      width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
+                      animation: `pulse 0.6s ease-in-out ${i * 0.15}s infinite`,
+                    }}/>
+                  ))}
+                </div>
+              )}
+              <div ref={aiBottomRef} />
+            </div>
+
+            {/* Input */}
+            <div style={{
+              display: 'flex', gap: 4, padding: '4px 8px',
+              borderTop: '1px solid var(--border)', flexShrink: 0,
+            }}>
+              <input
+                value={aiQuestion}
+                onChange={e => setAiQuestion(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAI(); }}}
+                placeholder="问AI..."
+                disabled={aiLoading}
+                autoFocus
+                style={{
+                  flex: 1, padding: '8px 12px', borderRadius: 18,
+                  border: '1px solid var(--accent)', background: 'var(--secondary)',
+                  color: 'var(--text)', fontSize: 13, outline: 'none',
+                }}
+              />
+              <button onClick={askAI} disabled={aiLoading}
+                style={{
+                  width: 34, height: 34, borderRadius: '50%', flexShrink: 0,
+                  border: 'none', background: 'var(--accent)', color: 'var(--primary)',
+                  fontSize: 16, cursor: 'pointer', fontWeight: 700,
+                }}>↑</button>
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* AI Chat sidebar — same style as notes panel */}
-      {showAiChat && (
-        <div style={{
-          flex: '0 0 40%', borderLeft: '1px solid var(--border)',
-          background: 'var(--primary)', display: 'flex', flexDirection: 'column',
-          overflow: 'hidden',
-        }}>
-          {/* Header — compact */}
-          <div style={{
-            padding: '4px 10px', borderBottom: '1px solid var(--border)',
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            flexShrink: 0,
-          }}>
-            <span style={{ fontSize: 11, color: 'var(--accent)' }}>💬 AI · {book?.title?.slice(0,8)}</span>
-            <button onClick={() => setShowAiChat(false)}
-              style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: 14, cursor: 'pointer' }}>✕</button>
-          </div>
-
-          {/* Chat history */}
-          <div ref={aiChatRef} style={{
-            flex: 1, overflow: 'auto', padding: '4px 8px',
-            display: 'flex', flexDirection: 'column', gap: 4,
-          }}>
-            {aiHistory.map((msg, i) => (
-              <div key={i} style={{
-                alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                maxWidth: '90%',
-                background: msg.role === 'user' ? 'var(--accent)' : 'var(--secondary)',
-                color: msg.role === 'user' ? 'var(--primary)' : 'var(--text)',
-                padding: '6px 10px', borderRadius: 10,
-                fontSize: 12, lineHeight: 1.5, whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-              }}>
-                {msg.content}
-              </div>
-            ))}
-            {aiLoading && (
-              <div style={{ alignSelf: 'flex-start', display: 'flex', gap: 4, padding: '6px 10px' }}>
-                {[0,1,2].map(i => (
-                  <span key={i} style={{
-                    width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
-                    animation: `pulse 0.6s ease-in-out ${i * 0.15}s infinite`,
-                  }}/>
-                ))}
-              </div>
-            )}
-            <div ref={aiBottomRef} />
-          </div>
-
-          {/* Input */}
-          <div style={{
-            display: 'flex', gap: 4, padding: '4px 8px',
-            borderTop: '1px solid var(--border)', flexShrink: 0,
-          }}>
-            <input
-              value={aiQuestion}
-              onChange={e => setAiQuestion(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAI(); }}}
-              placeholder="问AI..."
-              disabled={aiLoading}
-              autoFocus
-              style={{
-                flex: 1, padding: '8px 12px', borderRadius: 18,
-                border: '1px solid var(--accent)', background: 'var(--secondary)',
-                color: 'var(--text)', fontSize: 13, outline: 'none',
-              }}
-            />
-            <button onClick={askAI} disabled={aiLoading}
-              style={{
-                width: 34, height: 34, borderRadius: '50%', flexShrink: 0,
-                border: 'none', background: 'var(--accent)', color: 'var(--primary)',
-                fontSize: 16, cursor: 'pointer', fontWeight: 700,
-              }}>↑</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

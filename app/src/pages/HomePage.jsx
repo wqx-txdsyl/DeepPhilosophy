@@ -284,8 +284,8 @@ function HomePage() {
   const navigate = useNavigate();
   const [authorCount, setAuthorCount] = useState(353);
   const [schoolData, setSchoolData] = useState({});
-  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('dp_token'));
-  const [username, setUsername] = useState(localStorage.getItem('dp_username') || '');
+  const loggedIn = !!localStorage.getItem('dp_token');
+  const username = localStorage.getItem('dp_username') || '';
   const [dailyQuote, setDailyQuote] = useState(() => DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]);
 
   useEffect(() => {
@@ -298,7 +298,7 @@ function HomePage() {
         authors.forEach(a => {
           const raw = a.school || '';
           if (!raw) return;
-          raw.replace('、','/').replace('，','/').replace(',','/').split('/').forEach(s => {
+          raw.replace(/[、，,]/g, '/').split('/').forEach(s => {
             s = s.trim();
             if (!s || s.length < 2) return;
             // Normalize to big schools

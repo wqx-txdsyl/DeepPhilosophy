@@ -24,7 +24,12 @@ function PHTIPage() {
   const [roasting, setRoasting] = useState(false);
   // Start test
   const startTest = () => {
-    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+    // Fisher-Yates shuffle (unbiased)
+    const shuffled = [...allQuestions];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
     setQuestions(shuffled.slice(0, TOTAL_QUESTIONS));
     setCurrentQ(0);
     setAnswers([]);
