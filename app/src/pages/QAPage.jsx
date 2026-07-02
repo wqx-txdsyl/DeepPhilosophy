@@ -5,7 +5,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { getApiBase } from '../App';
 import { saveChatMessage, getChatHistory, clearChatHistory } from '../data/userData';
-import Icon from '../components/Icon';
 
 const WELCOME_MSG = {
   role: 'assistant',
@@ -237,7 +236,7 @@ function QAPage() {
             </div>
           ) : (
             <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }}
-              onClick={() => setShowConfirmClear(true)}><Icon name="icon-trash" size={16} /> 新对话</button>
+              onClick={() => setShowConfirmClear(true)}>🗑 新对话</button>
           )
         )}
       </div>
@@ -252,7 +251,7 @@ function QAPage() {
                 borderTop: '1px solid var(--border)',
                 fontSize: 11, color: 'var(--text-dim)',
               }}>
-                <Icon name="icon-link" size={16} /> <strong>参考文献：</strong>
+                📎 <strong>参考文献：</strong>
                 {msg.sources.map((s, j) => (
                   <span key={j} style={{
                     display: 'inline-block',

@@ -5,7 +5,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
-import Icon from '../components/Icon';
 import ePub from 'epubjs';
 import { Capacitor } from '@capacitor/core';
 import { getApiBase } from '../App';
@@ -428,7 +427,7 @@ ${textContext}
   if (error) return (
     <div className="page-container">
       <button className="btn btn-secondary" onClick={() => navigate(-1)} style={{ marginBottom: 16 }}>← 返回</button>
-      <div className="card"><p style={{ textAlign: 'center', fontSize: 40 }}><Icon name="icon-error" size={16} /></p><p style={{ textAlign: 'center' }}>{error}</p></div>
+      <div className="card"><p style={{ textAlign: 'center', fontSize: 40 }}>😞</p><p style={{ textAlign: 'center' }}>{error}</p></div>
     </div>
   );
   if (!book || !fileUrl) return <div className="loading">正在获取文件...</div>;
@@ -451,7 +450,7 @@ ${textContext}
         </button>
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowNotes(!showNotes); if (!showNotes) setShowAiChat(false); }}>
-          <Icon name="icon-edit" size={16} />批注
+          📝批注
         </button>
         <button className="btn btn-primary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowAiChat(!showAiChat); if (!showAiChat) setShowNotes(false); }}>
@@ -469,7 +468,7 @@ ${textContext}
               <div style={{ flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '2px 8px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 10 }}
-                    onClick={() => setShowToc(true)}><Icon name="icon-toc" size={16} /></button>
+                    onClick={() => setShowToc(true)}>📑</button>
                   <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
                     onClick={() => epubRenditionRef.current?.prev()}>◀</button>
                   {showJumpInput ? (
@@ -481,7 +480,7 @@ ${textContext}
                         autoFocus />
                       <button type="submit" className="btn btn-primary" style={{ padding: '1px 6px', fontSize: 10 }}>跳</button>
                       <button type="button" className="btn btn-secondary" style={{ padding: '1px 6px', fontSize: 10 }}
-                        onClick={() => { setShowJumpInput(false); setJumpPage(''); }}><Icon name="icon-close" size={16} /></button>
+                        onClick={() => { setShowJumpInput(false); setJumpPage(''); }}>✕</button>
                     </form>
                   ) : (
                     <span style={{ fontSize: 12, color: 'var(--text-dim)', cursor: 'pointer' }}
@@ -500,7 +499,7 @@ ${textContext}
                   onClick={() => setShowToc(false)}>
                   <div style={{ maxWidth: 600, margin: '50px auto 0', width: '90%', background: 'var(--primary)', borderRadius: 12, maxHeight: '70vh', overflow: 'auto', padding: 20 }}
                     onClick={e => e.stopPropagation()}>
-                    <h3 style={{ color: 'var(--accent)', marginBottom: 12 }}><Icon name="icon-toc" size={16} /> 目录</h3>
+                    <h3 style={{ color: 'var(--accent)', marginBottom: 12 }}>📑 目录</h3>
                     {epubTocRef.current.map((item, i) => (
                       <div key={i} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: 8, borderBottom: '1px solid var(--border)', fontSize: 14, color: '#d4a574' }}
                         onClick={() => { epubRenditionRef.current?.display(item.href); setShowToc(false); }}>
@@ -565,7 +564,7 @@ ${textContext}
                         autoFocus />
                       <button type="submit" className="btn btn-primary" style={{ padding: '1px 6px', fontSize: 10 }}>跳</button>
                       <button type="button" className="btn btn-secondary" style={{ padding: '1px 6px', fontSize: 10 }}
-                        onClick={() => { setShowJumpInput(false); setJumpPage(''); }}><Icon name="icon-close" size={16} /></button>
+                        onClick={() => { setShowJumpInput(false); setJumpPage(''); }}>✕</button>
                     </form>
                   ) : (
                     <span style={{ fontSize: 12, color: 'var(--text-dim)', cursor: 'pointer' }}
@@ -589,7 +588,7 @@ ${textContext}
             display: 'flex', flexDirection: 'column', overflow: 'auto',
           }}>
             <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 6 }}>
-              <Icon name="icon-edit" size={16} /> 阅读批注 · 第{pageNumber}页
+              📝 阅读批注 · 第{pageNumber}页
             </div>
             <textarea
               value={noteText}
@@ -605,10 +604,10 @@ ${textContext}
               }}
             />
             <button className="btn btn-primary btn-block" style={{ marginTop: 8, padding: '6px', fontSize: 12 }}
-              onClick={saveNotes}><Icon name="icon-save" size={16} /> 保存批注</button>
+              onClick={saveNotes}>💾 保存批注</button>
             <button className="btn btn-secondary btn-block" style={{ marginTop: 4, padding: '6px', fontSize: 12 }}
               onClick={() => { navigator.clipboard?.writeText(noteText); }}>
-              <Icon name="icon-clipboard" size={16} /> 复制全部
+              📋 复制全部
             </button>
           </div>
         )}
@@ -626,9 +625,9 @@ ${textContext}
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               flexShrink: 0,
             }}>
-              <span style={{ fontSize: 11, color: 'var(--accent)' }}><Icon name="nav-qa" size={16} /> AI · {book?.title?.slice(0,8)}</span>
+              <span style={{ fontSize: 11, color: 'var(--accent)' }}>💬 AI · {book?.title?.slice(0,8)}</span>
               <button onClick={() => setShowAiChat(false)}
-                style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: 14, cursor: 'pointer' }}><Icon name="icon-close" size={16} /></button>
+                style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: 14, cursor: 'pointer' }}>✕</button>
             </div>
 
             {/* Chat history */}

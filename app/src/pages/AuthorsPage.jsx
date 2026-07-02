@@ -5,7 +5,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
-import Icon from '../components/Icon';
 
 function FadeCard({ children, style }) {
   const ref = useRef(null);
@@ -171,7 +170,7 @@ function AuthorsPage() {
     <div className="page-container">
       {/* 统计 */}
       <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 10 }}>
-        <Icon name="nav-authors" size={16} /> 共 {allAuthors.length} 位哲人，{allAuthors.reduce((s, a) => s + (a.book_count || 0), 0)} 部作品
+        ✒️ 共 {allAuthors.length} 位哲人，{allAuthors.reduce((s, a) => s + (a.book_count || 0), 0)} 部作品
       </div>
 
       {/* Search + Region filter */}
@@ -277,7 +276,7 @@ function AuthorsPage() {
                 background: 'var(--accent)', color: 'var(--primary)',
                 border: '1px solid var(--accent)',
               }}>
-              {t} <Icon name="icon-close" size={16} />
+              {t} ✕
             </span>
           ))}
           <span onClick={() => setActiveTags([])}
@@ -306,12 +305,12 @@ function AuthorsPage() {
                   </span>
                 </div>
                 <div style={{ fontSize: 12, color: 'var(--text-dim)', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  {author.era && <span><Icon name="icon-calendar" size={16} /> {author.era}</span>}
-                  {author.country && <span><Icon name="icon-pin" size={16} /> {author.country}</span>}
-                  {author.school && <span><Icon name="nav-books" size={16} /> {author.school}</span>}
+                  {author.era && <span>📅 {author.era}</span>}
+                  {author.country && <span>📍 {author.country}</span>}
+                  {author.school && <span>📚 {author.school}</span>}
                 </div>
                 <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4, lineHeight: 1.5 }}>
-                  <Icon name="icon-book-open" size={16} /> 收录 {author.book_count} 部作品:
+                  📖 收录 {author.book_count} 部作品:
                   {(author.books || []).slice(0, 5).map((b, i) => (
                     <span key={i} style={{ color: 'var(--accent)' }}>
                       《{b}》{i < Math.min(author.books.length, 5) - 1 ? '、' : ''}

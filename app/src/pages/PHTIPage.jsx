@@ -5,7 +5,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
-import Icon from '../components/Icon';
 import phtiTypes from '../data/phti_original_types.json';
 import allQuestions from '../data/phti_questions.json';
 
@@ -182,7 +181,7 @@ function PHTIPage() {
       {/* Intro */}
       {phase === 'intro' && (
         <div className="card" style={{ cursor: 'default', textAlign: 'center', padding: '28px 24px' }}>
-          <div style={{ fontSize: 48, marginBottom: 8 }}><Icon name="icon-brain" size={16} /></div>
+          <div style={{ fontSize: 48, marginBottom: 8 }}>🧠</div>
           <h2 style={{ fontSize: 20, marginBottom: 4 }}>PHTI 哲学人格测试</h2>
           <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 8 }}>
             Philosophical Turing Intelligence
@@ -191,15 +190,15 @@ function PHTIPage() {
             background: 'var(--secondary)', borderRadius: 10, padding: '16px 20px',
             margin: '16px 0', textAlign: 'left', fontSize: 13, lineHeight: 1.8, color: 'var(--text-dim)',
           }}>
-            <p style={{ margin: '0 0 8px' }}><Icon name="icon-clipboard" size={16} /> <strong>测试说明</strong></p>
+            <p style={{ margin: '0 0 8px' }}>📋 <strong>测试说明</strong></p>
             <p style={{ margin: '0 0 4px' }}>• 共 {TOTAL_QUESTIONS} 道哲学情境题</p>
             <p style={{ margin: '0 0 4px' }}>• 每题用 1-5 分表示你的同意程度</p>
             <p style={{ margin: '0 0 4px' }}>• 四个维度：理性/感性 · 斯多葛/伊壁鸠鲁 · 本质/存在 · 公民/个人</p>
-            <p style={{ margin: 0 }}>• 完成后显示你的哲学人格 + AI 毒舌锐评 <Icon name="icon-flame" size={16} /></p>
+            <p style={{ margin: 0 }}>• 完成后显示你的哲学人格 + AI 毒舌锐评 🔥</p>
           </div>
           <button className="btn btn-primary" onClick={startTest}
             style={{ padding: '12px 36px', fontSize: 15, borderRadius: 24, marginTop: 8 }}>
-            <Icon name="icon-rocket" size={16} /> 开始测试
+            🚀 开始测试
           </button>
         </div>
       )}
@@ -307,10 +306,10 @@ function PHTIPage() {
 
           {/* AI Roast */}
           <div className="card" style={{ cursor: 'default', padding: '16px 20px', background: 'var(--accent-light, #faf3e8)' }}>
-            <h3 style={{ fontSize: 14, marginBottom: 8 }}><Icon name="icon-flame" size={16} /> AI 毒舌锐评</h3>
+            <h3 style={{ fontSize: 14, marginBottom: 8 }}>🔥 AI 毒舌锐评</h3>
             {roasting && !roast && (
               <p style={{ fontSize: 13, color: 'var(--text-dim)', fontStyle: 'italic' }}>
-                <Icon name="icon-candle" size={16} /> 评论家正在酝酿犀利的点评...
+                🕯️ 评论家正在酝酿犀利的点评...
               </p>
             )}
             {roast && (
@@ -327,7 +326,7 @@ function PHTIPage() {
           <div style={{ textAlign: 'center', marginTop: 16 }}>
             <button className="btn btn-primary" onClick={startTest}
               style={{ padding: '10px 28px', fontSize: 14, borderRadius: 20 }}>
-              <Icon name="icon-refresh" size={16} /> 重新测试
+              🔄 重新测试
             </button>
           </div>
         </div>

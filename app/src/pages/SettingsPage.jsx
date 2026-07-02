@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveConfig, loadConfig } from '../data/crypto';
 
-import Icon from '../components/Icon';
 function SettingsPage() {
   const navigate = useNavigate();
   const [apiKey, setApiKey] = useState('');
@@ -32,11 +31,11 @@ function SettingsPage() {
       <button className="btn btn-secondary" onClick={() => navigate(-1)}
         style={{ marginBottom: 16 }}>← 返回</button>
 
-      <h2 className="section-title"><Icon name="btn-settings" size={18} /> 设置</h2>
+      <h2 className="section-title">⚙️ 设置</h2>
 
       <div className="settings-form">
         <div className="card" style={{ cursor: 'default' }}>
-          <h3 style={{ fontSize: 15, marginBottom: 12 }}><Icon name="icon-bot" size={16} /> AI 配置</h3>
+          <h3 style={{ fontSize: 15, marginBottom: 12 }}>🤖 AI 配置</h3>
           <p style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
             填入你自己的 DeepSeek API Key 即可使用 AI 问答。不填则无法使用问答功能。
           </p>
@@ -66,7 +65,7 @@ function SettingsPage() {
         </button>
 
         <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
-          <h3 style={{ fontSize: 15, marginBottom: 8 }}><Icon name="mode-mobile" size={18} /> 关于</h3>
+          <h3 style={{ fontSize: 15, marginBottom: 8 }}>📱 关于</h3>
           <p style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.6 }}>
             <strong>DeepPhilosophy</strong> v2.0.0<br />
             开发者: @txdsyl_<br />

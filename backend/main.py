@@ -1875,6 +1875,8 @@ if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR,
         app.mount("/gene", StaticFiles(directory=_os2.path.join(_STATIC_DIR, "gene")), name="gene_assets")
     if _os2.path.isdir(_os2.path.join(_STATIC_DIR, "schools")):
         app.mount("/schools", StaticFiles(directory=_os2.path.join(_STATIC_DIR, "schools")), name="school_assets")
+    if _os2.path.isdir(_os2.path.join(_STATIC_DIR, "icons")):
+        app.mount("/icons", StaticFiles(directory=_os2.path.join(_STATIC_DIR, "icons")), name="icon_assets")
 
     @app.get("/{full_path:path}")
     async def serve_spa(full_path: str):
