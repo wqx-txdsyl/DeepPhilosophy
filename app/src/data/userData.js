@@ -31,10 +31,33 @@ export function relativeTime(dateStr) {
   return then.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 }
 
+function _normalizeSources(src) {
+  if (Array.isArray(src)) return src;
+  if (typeof src === 'string') {
+    try { return JSON.parse(src); } catch { return []; }
+  }
+  return [];
+}
+
 export function loadUserData() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const data = JSON.parse(raw);
+      // 修正历史遗留问题：云端同步时 sources 被 JSON.stringify 转成了字符串
+      if (Array.isArray(data.chatHistory)) {
+        data.chatHistory = data.chatHistory.map(m => ({
+          ...m,
+          sources: _normalizeSources(m.sources),
+        }));
+      } else {
+        data.chatHistory = [];
+      }
+      if (!Array.isArray(data.readingHistory)) {
+        data.readingHistory = [];
+      }
+      return data;
+    }
   } catch {}
   return {
     version: 1,
