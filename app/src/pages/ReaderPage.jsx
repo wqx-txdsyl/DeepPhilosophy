@@ -418,6 +418,22 @@ ${textContext}
     }
   }, [loading, fileType, fileUrl]);
 
+  // Keyboard navigation: left/right arrow to turn pages
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'ArrowLeft') {
+        if (fileType === 'pdf') goToPage(pageNumber - (twoPage ? 2 : 1));
+        else epubRenditionRef.current?.prev();
+      } else if (e.key === 'ArrowRight') {
+        if (fileType === 'pdf') goToPage(pageNumber + (twoPage ? 2 : 1));
+        else epubRenditionRef.current?.next();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [fileType, pageNumber, numPages, twoPage, goToPage]);
+
   // Two-page toggle for EPUB
   useEffect(() => {
     const r = epubRenditionRef.current;
