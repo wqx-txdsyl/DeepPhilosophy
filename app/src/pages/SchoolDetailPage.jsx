@@ -10933,12 +10933,12 @@ function SchoolDetailPage() {
   '环境哲学': { data:环境哲学_DATA, sub:{}, ci:[], bg:'url(/schools/环境哲学.jpg)' },
   '解构主义': { data:解构主义_DATA, sub:{}, ci:[], bg:'url(/schools/解构主义.jpg)' },
   '黑人哲学': { data:黑人哲学_DATA, sub:{}, ci:[], bg:'url(/schools/黑人哲学.jpg)' },
-  '萨满哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/萨满哲学.jpg)', _json:'school_萨满哲学.json' },
-  '北极原住民哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/北极原住民哲学.jpg)', _json:'school_北极原住民哲学.json' },
-  '南岛哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/南岛哲学.jpg)', _json:'school_南岛哲学.json' },
-  '高加索哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/高加索哲学.jpg)', _json:'school_高加索哲学.json' },
-  '高加索-草原哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/高加索-草原哲学.jpg)', _json:'school_高加索-草原哲学.json' },
-  '太平洋原住民哲学': { data:null, sub:{}, ci:[], bg:'url(/schools/太平洋原住民哲学.jpg)', _json:'school_太平洋原住民哲学.json' },
+  '萨满哲学': { data:{name:'萨满哲学',subtitle:'万物有灵·三层宇宙',overview:'',conclusion:'',quote:'鼓是马，鼓槌是鞭，萨满骑着鼓奔向天空。',quoteAuthor:'西伯利亚萨满传统',works:[],cihai:[],quotes:[],timeline:[],thinkers:[],relations:[],sub_schools:{},bg:'url(/schools/萨满哲学.jpg)'}, sub:{}, ci:[], bg:'url(/schools/萨满哲学.jpg)', _json:'school_萨满哲学.json' },
+  '北极原住民哲学': { data:{name:'北极原住民哲学',subtitle:'冰雪中的智慧',overview:'',conclusion:'',quote:'最冷的不是零下五十度，是没有同伴。',quoteAuthor:'因纽特谚语',works:[],cihai:[],quotes:[],timeline:[],thinkers:[],relations:[],sub_schools:{},bg:'url(/schools/北极原住民哲学.jpg)'}, sub:{}, ci:[], bg:'url(/schools/北极原住民哲学.jpg)', _json:'school_北极原住民哲学.json' },
+  '南岛哲学': { data:{name:'南岛哲学',subtitle:'海洋迁徙者的智慧',overview:'',conclusion:'',quote:'海洋不是分隔我们的屏障，而是联结我们的道路。',quoteAuthor:'埃佩利·豪奥法',works:[],cihai:[],quotes:[],timeline:[],thinkers:[],relations:[],sub_schools:{},bg:'url(/schools/南岛哲学.jpg)'}, sub:{}, ci:[], bg:'url(/schools/南岛哲学.jpg)', _json:'school_南岛哲学.json' },
+  '高加索哲学': { data:{name:'高加索哲学',subtitle:'山脊上的思想平衡',overview:'',conclusion:'',quote:'宁为地狱之主，不为天堂之仆。',quoteAuthor:'纳尔特史诗',works:[],cihai:[],quotes:[],timeline:[],thinkers:[],relations:[],sub_schools:{},bg:'url(/schools/高加索哲学.jpg)'}, sub:{}, ci:[], bg:'url(/schools/高加索哲学.jpg)', _json:'school_高加索哲学.json' },
+  '高加索-草原哲学': { data:{name:'高加索-草原哲学',subtitle:'草原上的智慧',overview:'',conclusion:'',quote:'没有马的人没有腿。',quoteAuthor:'草原谚语',works:[],cihai:[],quotes:[],timeline:[],thinkers:[],relations:[],sub_schools:{},bg:'url(/schools/高加索-草原哲学.jpg)'}, sub:{}, ci:[], bg:'url(/schools/高加索-草原哲学.jpg)', _json:'school_高加索-草原哲学.json' },
+  '太平洋原住民哲学': { data:{name:'太平洋原住民哲学',subtitle:'岛屿的生存哲学',overview:'',conclusion:'',quote:'当大海淹没我们的岛，我们不是难民。',quoteAuthor:'太平洋岛屿气候活动家',works:[],cihai:[],quotes:[],timeline:[],thinkers:[],relations:[],sub_schools:{},bg:'url(/schools/太平洋原住民哲学.jpg)'}, sub:{}, ci:[], bg:'url(/schools/太平洋原住民哲学.jpg)', _json:'school_太平洋原住民哲学.json' },
 };
   const m = SCHOOL_MAP[name] || {};
   // Dynamic loader for JSON-based schools
