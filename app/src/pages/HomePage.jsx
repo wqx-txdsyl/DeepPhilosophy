@@ -289,6 +289,7 @@ function HomePage() {
   const [schoolData, setSchoolData] = useState({});
   const loggedIn = !!localStorage.getItem('dp_token');
   const username = localStorage.getItem('dp_username') || '';
+  const userAvatar = localStorage.getItem('dp_avatar') || '';
   const [dailyQuote, setDailyQuote] = useState(() => DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]);
 
   useEffect(() => {
@@ -403,8 +404,8 @@ function HomePage() {
         onMouseEnter={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 90%, transparent)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
         onMouseLeave={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 70%, transparent)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
         {loggedIn && username ? <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            {localStorage.getItem('dp_avatar') ? (
-              <img src={localStorage.getItem('dp_avatar')} alt="" style={{ width: 24, height: 24, borderRadius: 6, objectFit: 'cover' }} />
+            {userAvatar ? (
+              <img src={userAvatar} alt="" style={{ width: 24, height: 24, borderRadius: 6, objectFit: 'cover' }} />
             ) : (
               <Icon name="btn-user" size={16} />
             )}
