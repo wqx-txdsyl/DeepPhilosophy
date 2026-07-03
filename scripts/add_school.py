@@ -18,7 +18,11 @@ HP_FILE = os.path.join(ROOT, "app", "src", "pages", "HomePage.jsx")
 ST_FILE = os.path.join(ROOT, "app", "src", "pages", "SettingsPage.jsx")
 JSON_DIR = os.path.join(ROOT, "backend", "data")
 SCHOOLS_DIR = os.path.join(ROOT, "app", "public", "schools")
-API_KEY = "sk-tAli2tVgjAi5VG2zBG3oz4hUefyaqrD6UyjDaIpvhH6SKEAD"
+_keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
+with open(_keys_path) as f: _keys = json.load(f)
+DEEPSEEK_KEY = _keys["deepseek"]
+DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
+AGNES_KEY = _keys["agnes"]
 
 def esc(s):
     return json.dumps(s, ensure_ascii=False)
@@ -31,12 +35,58 @@ def step(msg):
 # ═══════════════════════════════════════════════
 def load_school(name):
     jp = os.path.join(JSON_DIR, f"school_{name}.json")
-    if not os.path.exists(jp):
-        print(f"✗ 未找到 {jp}")
-        print("  请先创建 JSON 文件（参考 README 格式）")
-        sys.exit(1)
-    with open(jp, "r", encoding="utf-8") as f:
-        return json.load(f)
+    if os.path.exists(jp):
+        with open(jp, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    print("  JSON 不存在，用 DeepSeek 自动生成数据...")
+    r = requests.post(DEEPSEEK_API,
+        headers={"Authorization":f"Bearer {DEEPSEEK_KEY}","Content-Type":"application/json"},
+        json={"model":"deepseek-chat","messages":[{"role":"user","content":f"""请为哲学流派"{name}"生成一份完整的流派数据JSON。严格按以下格式输出（不要markdown代码块，只要纯JSON）：
+
+{{
+  "name": "{name}",
+  "subtitle": "简短中文副标题",
+  "overview": "500字以上的流派概述，包括起源背景、核心命题、主要分支、发展脉络",
+  "conclusion": "500字以上的结语，包括当代意义、理论贡献、面临挑战、未来展望",
+  "quote": "一句该流派代表性名言",
+  "quoteAuthor": "名言作者",
+  "timeline": [
+    {{"year":"年份","event":"事件名","detail":"详细描述","type":"event"}}
+  ],
+  "thinkers": [
+    {{"name":"思想家姓名","sub":"下属分支","era":"生卒年","influence":8,"key":"核心概念","works":["代表作1","代表作2"]}}
+  ],
+  "relations": [
+    {{"from":"思想家A","to":"思想家B","label":"关系描述"}}
+  ],
+  "cihai": [
+    {{"word":"术语","def":"定义","source":"出处"}}
+  ],
+  "quotes": [
+    {{"text":"引文","author":"作者","exp":"阐释"}}
+  ],
+  "works": [
+    {{"title":"书名","author":"作者","era":"年代","desc":"简介"}}
+  ],
+  "meta": {{"中文名":"{name}","英文名":"ENGLISH NAME"}},
+  "region": "世界",
+  "bg": "url(/schools/{name}.jpg)",
+  "sub_schools": {{}}
+}}
+
+要求：timeline≥8条、thinkers≥8位、cihai≥20条、quotes≥20条、works数量不限。全部中文。"""}],
+        "temperature":0.7,"max_tokens":8000}, timeout=300)
+    content = r.json()["choices"][0]["message"]["content"]
+    # 清理可能的 markdown 包裹
+    content = re.sub(r'^```json\s*', '', content)
+    content = re.sub(r'\s*```$', '', content)
+    data = json.loads(content)
+    os.makedirs(JSON_DIR, exist_ok=True)
+    with open(jp, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"  ✓ DeepSeek 已生成 {jp}")
+    return data
 
 # ═══════════════════════════════════════════════
 # Step 2: 图片处理
@@ -228,10 +278,10 @@ def add_to_worldmap(name, data):
         print("  - 非地区流派，跳过地图")
         return
 
-    print("  正在用 AI 定位...")
+    print("  正在用 Agnes 识图定位...")
     desc = data.get("overview","")[:200]
     r = requests.post("https://apihub.agnes-ai.com/v1/chat/completions",
-        headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+        headers={"Authorization":f"Bearer {AGNES_KEY}","Content-Type":"application/json"},
         json={"model":"agnes-2.0-flash","messages":[{"role":"user","content":f"Analyze this philosophy school: {name}. {desc} Estimate its geographic center as percentage coordinates (x%, y%) on a world map. Return ONLY JSON: {{\"x\":NN,\"y\":NN}}. x=left edge, y=top edge."}],"temperature":0.1,"max_tokens":100}, timeout=60)
     content = r.json()["choices"][0]["message"]["content"]
     m = re.search(r'"x":\s*(\d+).*"y":\s*(\d+)', content)
