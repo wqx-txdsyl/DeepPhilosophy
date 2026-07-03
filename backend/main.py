@@ -1925,9 +1925,20 @@ async def get_stats():
         author = b.get("author", "")
         if author and "合集" not in author and "概述" not in author:
             authors_set.add(author)
-    # 哲人数 = 书籍作者 + 数据库中无书籍的哲学家
+    # 哲人数 = 调用 /api/authors 的完整逻辑计数
     from philosophers_db import PHILOSOPHERS
     philosopher_count = max(len(authors_set), len(PHILOSOPHERS))
+    # 补充空目录作者（与 list_all_authors 逻辑一致）
+    knowledge_dir = config.KNOWLEDGE_DIR
+    if os.path.isdir(knowledge_dir):
+        for region_name in ["东方", "西方"]:
+            region_path = os.path.join(knowledge_dir, region_name)
+            if os.path.isdir(region_path):
+                for author_dir in os.listdir(region_path):
+                    author_clean = author_dir.replace("###合集&概述###", "合集&概述")
+                    if author_clean and "合集" not in author_clean and author_clean not in authors_set:
+                        authors_set.add(author_clean)
+    philosopher_count = len(authors_set | set(PHILOSOPHERS.keys()))
     # 统计流派
     base = os.path.dirname(__file__)
     school_names = set()

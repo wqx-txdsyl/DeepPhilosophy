@@ -13,7 +13,7 @@ function SettingsPage() {
   const [model, setModel] = useState('deepseek-chat');
   const [apiUrl, setApiUrl] = useState('');
   const [saved, setSaved] = useState(false);
-  const [stats, setStats] = useState({ books: 342, authors: 353, schools: 102 });
+  const [stats, setStats] = useState({ books: 342, authors: 381, schools: 102 });
 
   useEffect(() => {
     fetch(`${getApiBase()}/api/stats`, { signal: AbortSignal.timeout(5000) })

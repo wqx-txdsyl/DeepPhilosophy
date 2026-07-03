@@ -283,7 +283,7 @@ function HelixCurves({ items }) {
 
 function HomePage() {
   const navigate = useNavigate();
-  const [authorCount, setAuthorCount] = useState(353);
+  const [authorCount, setAuthorCount] = useState(381);
   const [bookCount, setBookCount] = useState(305);
   const [schoolCount, setSchoolCount] = useState(102);
   const [schoolData, setSchoolData] = useState({});
