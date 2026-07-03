@@ -1862,6 +1862,25 @@ async def health_check():
     return {"status": "healthy", "version": "1.1.0", "timestamp": datetime.now().isoformat()}
 
 
+@app.get("/api/stats")
+async def get_stats():
+    """返回实时统计数据：书籍、哲人、流派数量"""
+    books = scan_books()
+    authors_set = set()
+    for b in books:
+        author = b.get("author", "")
+        if author and "合集" not in author and "概述" not in author:
+            authors_set.add(author)
+    # 统计流派 JSON 文件数量
+    schools_dir = os.path.join(os.path.dirname(__file__), "data")
+    school_count = len([f for f in os.listdir(schools_dir) if f.startswith("school_") and f.endswith(".json")])
+    return {
+        "books": len(books),
+        "authors": len(authors_set),
+        "schools": school_count,
+    }
+
+
 # ============================================================
 # 静态前端（同源部署，须在 API 路由之后注册）
 # ============================================================

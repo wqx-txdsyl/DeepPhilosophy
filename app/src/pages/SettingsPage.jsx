@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { saveConfig, loadConfig } from '../data/crypto';
+import { getApiBase } from '../App';
 import Icon from '../components/Icon';
 
 function SettingsPage() {
@@ -12,6 +13,12 @@ function SettingsPage() {
   const [model, setModel] = useState('deepseek-chat');
   const [apiUrl, setApiUrl] = useState('');
   const [saved, setSaved] = useState(false);
+  const [stats, setStats] = useState({ books: 342, authors: 353, schools: 102 });
+
+  useEffect(() => {
+    fetch(`${getApiBase()}/api/stats`, { signal: AbortSignal.timeout(5000) })
+      .then(r => r.json()).then(d => setStats(d)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     loadConfig().then(config => {
@@ -71,7 +78,7 @@ function SettingsPage() {
             <strong>DeepPhilosophy</strong> v2.0.0<br />
             开发者: @txdsyl_<br />
             哲学爱好者知识平台<br />
-            342 本哲学著作 · 353 位哲学家 · 102 个流派<br />
+            {stats.books} 本哲学著作 · {stats.authors} 位哲学家 · {stats.schools} 个流派<br />
             答案之书 · PHTI 哲学人格测试 · AI 毒舌锐评
           </p>
         </div>

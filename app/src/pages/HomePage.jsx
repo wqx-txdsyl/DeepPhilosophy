@@ -284,10 +284,21 @@ function HelixCurves({ items }) {
 function HomePage() {
   const navigate = useNavigate();
   const [authorCount, setAuthorCount] = useState(353);
+  const [bookCount, setBookCount] = useState(305);
+  const [schoolCount, setSchoolCount] = useState(102);
   const [schoolData, setSchoolData] = useState({});
   const loggedIn = !!localStorage.getItem('dp_token');
   const username = localStorage.getItem('dp_username') || '';
   const [dailyQuote, setDailyQuote] = useState(() => DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]);
+
+  useEffect(() => {
+    fetch(`${getApiBase()}/api/stats`, { signal: AbortSignal.timeout(5000) })
+      .then(r => r.json())
+      .then(d => {
+        if (d.books) setBookCount(d.books);
+        if (d.schools) setSchoolCount(d.schools);
+      }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(10000) })
@@ -444,7 +455,7 @@ function HomePage() {
       {/* ══════════ NUMBERS ══════════ */}
       <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
-          {[{ num: '305', label: '哲学著作' }, { num: String(authorCount), label: '哲学家' }, { num: '102', label: '哲学流派' }].map(s => (
+          {[{ num: String(bookCount), label: '哲学著作' }, { num: String(authorCount), label: '哲学家' }, { num: String(schoolCount), label: '哲学流派' }].map(s => (
             <div key={s.label}>
               <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
