@@ -13,16 +13,17 @@ IMG_API  = "https://apihub.agnes-ai.com/v1/images/generations"
 TEXT_MODEL = "agnes-2.0-flash"
 IMG_MODEL  = "agnes-image-2.1-flash"
 
-STYLE_FILE = os.path.join(os.path.dirname(__file__), "..", "backend", "data", "school_style_master.json")
-SCHOOLS_DIR = os.path.join(os.path.dirname(__file__), "..", "app", "public", "schools")
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+STYLE_FILE = os.path.join(_script_dir, "..", "backend", "data", "school_style_master.json")
+SCHOOLS_DIR = os.path.join(_script_dir, "..", "app", "public", "schools")
 
 def load_master_style():
     try:
-        with open(STYLE_FILE, "r") as f: return json.load(f)
+        with open(STYLE_FILE, "r", encoding="utf-8") as f: return json.load(f)
     except: return None
 
 def save_master_style(data):
-    with open(STYLE_FILE, "w") as f: json.dump(data, f, ensure_ascii=False, indent=2)
+    with open(STYLE_FILE, "w", encoding="utf-8") as f: json.dump(data, f, ensure_ascii=False, indent=2)
 
 def get_school_images():
     """获取所有流派背景图 URL"""
