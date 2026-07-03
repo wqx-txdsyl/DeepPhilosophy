@@ -94,7 +94,7 @@ def load_school(name):
     os.makedirs(JSON_DIR, exist_ok=True)
     with open(jp, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"  ✓ DeepSeek 已生成 {jp}")
+    print(f"  [OK] DeepSeek 已生成 {jp}")
     return data
 
 # ═══════════════════════════════════════════════
@@ -114,14 +114,14 @@ def fix_image(name, data):
     elif os.path.exists(src_png):
         img_path = src_png
     else:
-        print(f"✗ 未找到图片: {name}.jpg/png")
+        print(f"[FAIL] 未找到图片: {name}.jpg/png")
         print("  请将图片放到 app/public/schools/")
         return
 
     img = Image.open(img_path).convert("RGB")
     if dst and img_path != dst:
         img.save(dst, "JPEG", quality=92)
-        print(f"  ✓ 重命名: {os.path.basename(img_path)} → {os.path.basename(dst)}")
+        print(f"  [OK] 重命名: {os.path.basename(img_path)} → {os.path.basename(dst)}")
         img_path = dst
 
     # 缩略图
@@ -132,7 +132,7 @@ def fix_image(name, data):
     thumb = img.copy()
     thumb.thumbnail((200, 280), Image.LANCZOS)
     thumb.save(thumb_path, "JPEG", quality=75)
-    print(f"  ✓ 缩略图: {thumb_name}")
+    print(f"  [OK] 缩略图: {thumb_name}")
 
     # 更新 JSON bg
     data["bg"] = f"url(/schools/{os.path.basename(img_path)})"
@@ -196,7 +196,7 @@ def build_js_const(name, data):
     parts.append("};")
     return vn, "\n".join(parts)
 
-def inject_sd(name, block, vn):
+def inject_sd(name, block, vn, data):
     """将 DATA 块注入 SchoolDetailPage.jsx"""
     with open(SD_FILE, "r", encoding="utf-8") as f:
         sd = f.read()
@@ -230,7 +230,7 @@ def inject_sd(name, block, vn):
 
     with open(SD_FILE, "w", encoding="utf-8") as f:
         f.write(sd)
-    print("  ✓ SchoolDetailPage.jsx 已更新")
+    print("  [OK] SchoolDetailPage.jsx 已更新")
 
 # ═══════════════════════════════════════════════
 # Step 4+5: 插入分页 + 谱系
@@ -250,7 +250,7 @@ def inject_pages(name, data, school_century):
     with open(WP_FILE, "r", encoding="utf-8") as f: wp = f.read()
     wp = wp.replace("\n];", f"\n{wp_entry}", 1)
     with open(WP_FILE, "w", encoding="utf-8") as f: f.write(wp)
-    print("  ✓ WorldPhilosophiesPage")
+    print("  [OK] WorldPhilosophiesPage")
 
     # GenealogyPage ALL_SCHOOLS
     gl_entry = f"  {{ century:'{century}', name:'{name}', region:'{region}', desc:'{desc}', tier:'B' }},"
@@ -258,14 +258,14 @@ def inject_pages(name, data, school_century):
     # 插入到黑人哲学之前
     gl = gl.replace("  { century:'19世纪', name:'黑人哲学'", gl_entry + "\n  { century:'19世纪', name:'黑人哲学'")
     with open(GEN_FILE, "w", encoding="utf-8") as f: f.write(gl)
-    print("  ✓ GenealogyPage")
+    print("  [OK] GenealogyPage")
 
     # PhilosophyTimeline
     tl_entry = f"  {{ century:'{century}', name:'{name}', region:'{region}', desc:'{desc}' }},"
     with open(TL_FILE, "r", encoding="utf-8") as f: tl = f.read()
     tl = tl.replace("  { century:'19世纪', name:'黑人哲学'", tl_entry + "\n  { century:'19世纪', name:'黑人哲学'")
     with open(TL_FILE, "w", encoding="utf-8") as f: f.write(tl)
-    print("  ✓ PhilosophyTimeline")
+    print("  [OK] PhilosophyTimeline")
 
     # GenealogyPage IMG_MAP
     ascii_name = ASCII_MAP.get(name, name)
@@ -273,7 +273,7 @@ def inject_pages(name, data, school_century):
     with open(GEN_FILE, "r", encoding="utf-8") as f: gl = f.read()
     gl = gl.replace("const IMG_MAP = {", f"const IMG_MAP = {{\n  {map_line}")
     with open(GEN_FILE, "w", encoding="utf-8") as f: f.write(gl)
-    print("  ✓ GenealogyPage IMG_MAP")
+    print("  [OK] GenealogyPage IMG_MAP")
 
 # ═══════════════════════════════════════════════
 # Step 6: 世界地图定位
@@ -298,13 +298,13 @@ def add_to_worldmap(name, data):
         x, y = int(m.group(1)), int(m.group(2))
     else:
         x, y = 50, 50
-    print(f"  ✓ AI 定位: ({x}%, {y}%)")
+    print(f"  [OK] AI 定位: ({x}%, {y}%)")
 
     with open(MAP_FILE, "r", encoding="utf-8") as f: mp = f.read()
     entry = f"  {{ id: '{ASCII_MAP.get(name,name)}', name: '{name}', sub: '{name}', desc: '{desc[:40]}', x: {x}, y: {y}, r: 16, path: '/school/{name}' }},\n];"
     mp = mp.replace("\n];", f"\n{entry}")
     with open(MAP_FILE, "w", encoding="utf-8") as f: f.write(mp)
-    print("  ✓ WorldMap")
+    print("  [OK] WorldMap")
 
 # ═══════════════════════════════════════════════
 # Step 7: 更新计数
@@ -322,7 +322,7 @@ def update_counts():
         c = re.sub(r"(流派.*?)(\d+)(.*流派)", lambda m: m.group(1) + str(total) + m.group(3), c)
         c = re.sub(r"(世界.*?)(\d+)(.*流派)", lambda m: m.group(1) + str(world) + m.group(3), c)
         with open(fp, "w", encoding="utf-8") as f: f.write(c)
-    print(f"  ✓ 计数已更新: {total} 流派 (东{eastern}/西{western}/世{world})")
+    print(f"  [OK] 计数已更新: {total} 流派 (东{eastern}/西{western}/世{world})")
 
     # Genealogy 页脚
     with open(GEN_FILE, "r", encoding="utf-8") as f: gl = f.read()
@@ -347,7 +347,7 @@ def main():
 
     step("3/7 内联 DATA + 更新 SchoolDetailPage")
     vn, block = build_js_const(name, data)
-    inject_sd(name, block, vn)
+    inject_sd(name, block, vn, data)
 
     step("4/7 插入流派分页")
     step("5/7 插入谱系页")
