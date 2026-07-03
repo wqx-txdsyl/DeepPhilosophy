@@ -1854,6 +1854,60 @@ async def sync_delete(req: SyncDeleteRequest):
 
 
 # ============================================================
+# 用户资料编辑
+# ============================================================
+
+class UpdateProfileRequest(BaseModel):
+    username: str
+
+@app.put("/api/user/profile")
+async def update_profile(req: UpdateProfileRequest, authorization: str = Header(None)):
+    token = (authorization or "").replace("Bearer ", "")
+    user = get_user_by_token(token)
+    if not user: raise HTTPException(status_code=401, detail="未登录")
+    new_name = req.username.strip()
+    if not new_name: raise HTTPException(status_code=400, detail="用户名不能为空")
+    init_db()
+    import sqlite3
+    db_path = os.path.join(os.path.dirname(__file__), "data", "users.db")
+    conn = sqlite3.connect(db_path)
+    try:
+        conn.execute("UPDATE users SET username=? WHERE id=?", (new_name, user["id"]))
+        conn.commit()
+    finally:
+        conn.close()
+    return {"status": "ok", "username": new_name}
+
+
+class ChangePasswordRequest(BaseModel):
+    old_password: str
+    new_password: str
+
+@app.put("/api/user/password")
+async def change_password(req: ChangePasswordRequest, authorization: str = Header(None)):
+    token = (authorization or "").replace("Bearer ", "")
+    user = get_user_by_token(token)
+    if not user: raise HTTPException(status_code=401, detail="未登录")
+    import hashlib
+    old_hash = hashlib.sha256(req.old_password.encode()).hexdigest()
+    if old_hash != user.get("password_hash", ""):
+        raise HTTPException(status_code=403, detail="原密码错误")
+    if len(req.new_password) < 4:
+        raise HTTPException(status_code=400, detail="新密码至少4位")
+    new_hash = hashlib.sha256(req.new_password.encode()).hexdigest()
+    init_db()
+    import sqlite3
+    db_path = os.path.join(os.path.dirname(__file__), "data", "users.db")
+    conn = sqlite3.connect(db_path)
+    try:
+        conn.execute("UPDATE users SET password_hash=? WHERE id=?", (new_hash, user["id"]))
+        conn.commit()
+    finally:
+        conn.close()
+    return {"status": "ok"}
+
+
+# ============================================================
 # 健康检查
 # ============================================================
 

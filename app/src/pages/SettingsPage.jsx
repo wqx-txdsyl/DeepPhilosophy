@@ -72,6 +72,15 @@ function SettingsPage() {
           {saved ? <><Icon name="icon-check" size={16} /> 已保存</> : <><Icon name="icon-save" size={16} /> 保存配置</>}
         </button>
 
+        <div className="card" style={{ cursor: 'pointer', marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          onClick={() => navigate('/profile/edit')}>
+          <div>
+            <h3 style={{ fontSize: 15, marginBottom: 4 }}><Icon name="btn-user" size={16} /> 编辑个人信息</h3>
+            <p style={{ fontSize: 12, color: 'var(--text-dim)' }}>修改用户名、头像和密码</p>
+          </div>
+          <span style={{ fontSize: 18, color: 'var(--text-dim)' }}>→</span>
+        </div>
+
         <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
           <h3 style={{ fontSize: 15, marginBottom: 8 }}><Icon name="mode-mobile" size={16} /> 关于</h3>
           <p style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.6 }}>

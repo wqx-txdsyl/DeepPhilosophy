@@ -18,6 +18,7 @@ import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
 import ReaderPage from './pages/ReaderPage';
 import ProfilePage from './pages/ProfilePage';
+import ProfileEditPage from './pages/ProfileEditPage';
 import GamesPage from './pages/GamesPage';
 import AnswerBookPage from './pages/AnswerBookPage';
 import PHTIPage from './pages/PHTIPage';
@@ -193,6 +194,7 @@ function MainLayout() {
           <Route path="/games/phti-silly" element={<PHTISillyPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/edit" element={<ProfileEditPage />} />
         </Routes>
         </ErrorBoundary>
       </main>
