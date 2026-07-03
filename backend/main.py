@@ -1925,7 +1925,10 @@ async def get_stats():
         author = b.get("author", "")
         if author and "合集" not in author and "概述" not in author:
             authors_set.add(author)
-    # 统计流派：合并 static/schools 和 data 两个目录
+    # 哲人数 = 书籍作者 + 数据库中无书籍的哲学家
+    from philosophers_db import PHILOSOPHERS
+    philosopher_count = max(len(authors_set), len(PHILOSOPHERS))
+    # 统计流派
     base = os.path.dirname(__file__)
     school_names = set()
     for sub in ["static/schools", "data"]:
@@ -1936,7 +1939,7 @@ async def get_stats():
                     school_names.add(f)
     return {
         "books": len(books),
-        "authors": len(authors_set),
+        "authors": philosopher_count,
         "schools": len(school_names),
     }
 

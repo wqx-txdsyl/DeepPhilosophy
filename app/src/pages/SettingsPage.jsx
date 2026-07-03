@@ -20,7 +20,7 @@ function SettingsPage() {
       .then(r => r.json()).then(d => {
         setStats({
           books: d.books || 342,
-          authors: d.authors || 353,
+          authors: d.authors || 381,
           schools: Math.max(102, d.schools || 0),
         });
       }).catch(() => {});
