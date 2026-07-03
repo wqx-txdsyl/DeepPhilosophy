@@ -80,6 +80,7 @@ const ALL_SCHOOLS = [
   { century:'19世纪', name:'北欧哲学', region:'世界', desc:'克尔凯郭尔的信仰跳跃。', tier:'B' },
   { century:'19世纪', name:'东欧斯拉夫哲学', region:'世界', desc:'索洛维约夫、舍斯托夫——第三条道路。', tier:'B' },
   { century:'19世纪', name:'北美哲学', region:'世界', desc:'实用主义与超验主义。', tier:'B' },
+  { century:'1950', name:'人工智能哲学', region:'世界', desc:'人工智能哲学是二十世纪中叶随着计算机科学兴起而诞生的一个哲学分支，它试图回答一个古老而尖锐的问题：机器能否拥有心智？这一', tier:'B' },
   { century:'19世纪', name:'黑人哲学', region:'世界', desc:'从废奴运动到黑权运动——双重意识、种族批判与黑人存在主义的全球哲学传统。', tier:'B' },
 { century:'19世纪', name:'高加索哲学', region:'世界', desc:'纳尔特史诗·山地文明·欧亚交汇。', tier:'B' },
   { century:'19世纪末', name:'天演论', region:'东方', desc:'物竞天择，适者生存。', tier:'C' },
@@ -164,7 +165,8 @@ function getEraIdx(c) {
   if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4; return 5;
 }
 
-const IMG_MAP = { '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific' };
+const IMG_MAP = {
+   '人工智能哲学':'人工智能哲学', '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific' };
 function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.jpg`; }
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
@@ -306,7 +308,7 @@ export default function GenealogyPage() {
         </div>
       ))}
       <div style={{ textAlign:'center', padding:'80px 32px', borderTop:'1px solid rgba(145,118,71,0.08)' }}>
-        <p style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-sans)', margin:0 }}>一百零二个哲学流派 · 一部横跨五千年的人类思想史图录</p>
+        <p style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-sans)', margin:0 }}>109个哲学流派 · 一部横跨五千年的人类思想史图录</p>
         <div style={{ display:'flex', justifyContent:'center', gap:32, marginTop:32 }}>
           {[{ l:'西方哲学', p:'/western-philosophies' },{ l:'东方哲学', p:'/eastern-philosophies' },{ l:'世界哲学', p:'/world-philosophies' }].map(b => (
             <button key={b.p} onClick={() => nav(b.p)} style={{ background:'none', border:'1px solid rgba(145,118,71,0.10)', cursor:'pointer', fontFamily:'"Playfair Display",serif', fontSize:13, color:'var(--ochre)', padding:'6px 16px', borderRadius:4, transition:'all 300ms ease', opacity:0.7 }}
