@@ -709,9 +709,8 @@ git push  # Render 自动部署
 # 图标生成
 cd scripts && python gen_icon_from_emoji.py "🔥"
 
-# 流派背景（需先训练）
-python gen_school_bg.py --train           # 一次性预训练（分析现有背景图风格）
-python gen_school_bg.py "萨满哲学"         # 按需生成
+# 流派背景
+python gen_school_bg.py "萨满哲学"
 ```
 
 ### 本地文生图工具

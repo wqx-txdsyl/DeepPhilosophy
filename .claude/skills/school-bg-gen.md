@@ -1,33 +1,26 @@
 # School Background Generator Skill
 
-## 流派背景图自动生成
+## 流派背景图生成
 
-两阶段：预训练风格 → 按需生成
+输入流派名 → 读预训练风格 → AI 生成内容 prompt → 合并生图
 
-## 阶段 1：预训练（一次性）
+## 用法
 
 ```bash
 cd scripts
-python gen_school_bg.py --train
-```
-
-分析 `app/public/schools/` 下最多 15 张背景图，AI 输出 master style prompt 保存到 `backend/data/school_style_master.json`。
-
-## 阶段 2：生成
-
-```bash
 python gen_school_bg.py "萨满哲学"
 ```
 
-1. 读取 master style prompt
-2. 流派名发送给 `agnes-2.0-flash`，生成内容 prompt（含该流派的关键象征、景观、时代特征）
-3. 合并 `master + content` → 最终 prompt
-4. `agnes-image-2.1-flash` 生成 1024×768 JPG
-5. 自动生成 200×280 缩略图
+## 流程
 
-## 注意事项
+1. 读 `backend/data/school_style_master.json`（预训练已完成，包含色板/纹理/光线/构图风格）
+2. 读 `backend/data/school_{流派名}.json` 的 overview 文本作为上下文
+3. 发送给 `agnes-2.0-flash` 生成该流派的视觉内容 prompt
+4. 合并 `master style + content prompt` → 最终 prompt
+5. `agnes-image-2.1-flash` 生成 1024×768 JPG
+6. 自动生成 200×280 缩略图
 
-- 预训练只需运行一次
-- 生成时 AI 可能因不认识流派而拒绝——需在 prompt 中提供足够上下文
-- 输出路径：`app/public/schools/{name}.jpg` + `thumb/{name}.jpg`
-- API Key 在脚本内
+## 输出
+
+- `app/public/schools/{name}.jpg`
+- `app/public/schools/thumb/{name}.jpg`
