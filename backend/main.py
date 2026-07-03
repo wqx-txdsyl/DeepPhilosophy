@@ -1925,8 +1925,10 @@ async def get_stats():
         author = b.get("author", "")
         if author and "合集" not in author and "概述" not in author:
             authors_set.add(author)
-    # 统计流派 JSON 文件数量
-    schools_dir = os.path.join(os.path.dirname(__file__), "data")
+    # 统计流派 JSON 文件数量（从 static 目录，Docker 构建时复制）
+    schools_dir = os.path.join(os.path.dirname(__file__), "static", "schools")
+    if not os.path.isdir(schools_dir):
+        schools_dir = os.path.join(os.path.dirname(__file__), "data")
     school_count = len([f for f in os.listdir(schools_dir) if f.startswith("school_") and f.endswith(".json")])
     return {
         "books": len(books),
