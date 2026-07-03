@@ -3,7 +3,7 @@ from PIL import Image
 import glob, os
 from collections import deque
 
-ICON_DIR = os.path.join(os.path.dirname(__file__), '..', 'icons')
+ICON_DIR = os.path.join(os.path.dirname(__file__), '..', 'app', 'public', 'icons')
 
 def flood_clean(img):
     """从边缘种子泛洪填充，去除连通的浅色背景"""

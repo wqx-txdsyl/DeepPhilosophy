@@ -30,7 +30,7 @@ def remove_white_bg(img_bytes: bytes) -> bytes:
 API_URL  = "https://apihub.agnes-ai.com/v1/images/generations"
 API_KEY  = "sk-tAli2tVgjAi5VG2zBG3oz4hUefyaqrD6UyjDaIpvhH6SKEAD"
 MODEL    = "agnes-image-2.1-flash"
-OUT_DIR  = Path(__file__).parent.parent / "icons"
+OUT_DIR  = Path(__file__).parent.parent / "app" / "public" / "icons"
 DELAY_S  = 0.8  # 请求间隔，避免限流
 
 # ── 简洁 prompt（英文，图标生成效果好）─────────────────────
