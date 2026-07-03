@@ -19,6 +19,7 @@ COPY backend/config.py .
 COPY backend/main.py .
 COPY backend/auth.py .
 COPY backend/philosophers_db.py .
+COPY backend/admin.py .
 COPY backend/modules/ ./modules/
 
 # 复制静态数据（摘要、标签、manifest — 不覆盖运行时用户数据）
