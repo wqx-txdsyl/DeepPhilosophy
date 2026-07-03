@@ -68,7 +68,7 @@ Output ONLY the JSON object, no other text."""}]
     else:
         style_data = {"style_master": result, "color_palette": "", "texture": "", "lighting": "", "composition": ""}
     save_master_style(style_data)
-    print(f"✓ 风格已保存到 {STYLE_FILE}")
+    print(f"[OK] 风格已保存到 {STYLE_FILE}")
     print(f"  Master: {style_data.get('style_master','')[:120]}...")
     return style_data
 
@@ -108,9 +108,9 @@ Output ONLY the prompt, no other text."""}
         json={"model": IMG_MODEL, "prompt": final_prompt, "size": "1024x768", "extra_body": {"response_format": "url"}}, timeout=180)
     url = r.json()["data"][0].get("url", "")
     if not url:
-        print("✗ 无图片返回")
+        print("[FAIL] 无图片返回")
         return
-    print(f"  ✓ {url}")
+    print(f"  [OK] {url}")
 
     # 下载保存（使用 ASCII 文件名，避免 Render 404）
     IMG_MAP = {'萨满哲学':'shaman','北极原住民哲学':'arctic','南岛哲学':'austronesian','高加索哲学':'caucasus','高加索-草原哲学':'caucasus-steppe','太平洋原住民哲学':'pacific'}
@@ -119,7 +119,7 @@ Output ONLY the prompt, no other text."""}
     img_data = requests.get(url, timeout=60).content
     out = os.path.join(SCHOOLS_DIR, f"{safe}.jpg")
     with open(out, "wb") as f: f.write(img_data)
-    print(f"✓ {out} ({len(img_data)} bytes)")
+    print(f"[OK] {out} ({len(img_data)} bytes)")
 
     # 生成缩略图
     thumb_dir = os.path.join(SCHOOLS_DIR, "thumb")
@@ -127,7 +127,7 @@ Output ONLY the prompt, no other text."""}
     img = Image.open(io.BytesIO(img_data)).convert("RGB")
     img.thumbnail((200, 280), Image.LANCZOS)
     img.save(os.path.join(thumb_dir, f"{safe}.jpg"), "JPEG", quality=75)
-    print(f"✓ 缩略图已生成")
+    print(f"[OK] 缩略图已生成")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
