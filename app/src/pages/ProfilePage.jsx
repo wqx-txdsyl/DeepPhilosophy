@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import Icon from '../components/Icon';
+import AvatarUpload from '../components/AvatarUpload';
 import {
   getReadingHistory, getChatHistory, clearChatHistory,
   getAllUserData, relativeTime,
@@ -212,7 +213,18 @@ function ProfilePage() {
       <div className="card" style={{ cursor: 'default', textAlign: 'center' }}>
         {loggedIn ? (
           <>
-            <Icon name="btn-user" size={36} />
+            <AvatarUpload size={72} onSave={(dataUrl) => {
+            // 云端同步头像
+            const token = localStorage.getItem('dp_token');
+            if (token) {
+              fetch(`${getApiBase()}/api/user/avatar`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ avatar: dataUrl }),
+                signal: AbortSignal.timeout(10000),
+              }).catch(() => {});
+            }
+          }} />
             <h2 style={{ fontSize: 18, color: 'var(--accent)' }}>{loginUser}</h2>
             <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
               {syncing ? <><Icon name="icon-refresh" size={14} /> 同步中...</> : <><Icon name="icon-cloud" size={14} /> 数据已云端同步</>}
