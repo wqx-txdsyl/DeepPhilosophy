@@ -693,6 +693,33 @@ git push  # Render 自动部署
 
 ---
 
+## AI 工具与 Skill
+
+项目内置 3 个 Claude Code Skill（`.claude/skills/`），可直接用自然语言调用：
+
+| Skill | 功能 | 用法示例 |
+|-------|------|---------|
+| `agnes-image` | Agnes API 文生图 + 图像理解 | "用 Agnes 生成一张萨满哲学的插图" |
+| `icon-gen` | emoji → AI 分析 → 生成透明背景图标 | "把 🔥 生成图标" |
+| `school-bg-gen` | AI 学习现有流派背景图风格 → 按需生成新图 | "给萨满哲学生成背景图" |
+
+### 使用流程
+
+```bash
+# 图标生成
+cd scripts && python gen_icon_from_emoji.py "🔥"
+
+# 流派背景（需先训练）
+python gen_school_bg.py --train           # 一次性预训练（分析现有背景图风格）
+python gen_school_bg.py "萨满哲学"         # 按需生成
+```
+
+### 本地文生图工具
+
+浏览器打开 `scripts/img_gen.html`，输入 prompt 和尺寸即可生成图片。API Key 已预填在密码框中。
+
+---
+
 ## 技术栈
 
 - **前端**: React 19 + React Router v6 + Vite 8
