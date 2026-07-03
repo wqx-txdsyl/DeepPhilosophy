@@ -719,6 +719,29 @@ python gen_school_bg.py "萨满哲学"
 
 ---
 
+### 一键新增流派脚本
+
+```bash
+cd scripts && python add_school.py "流派名"
+```
+
+自动完成全部 7 步：数据处理 → 图片改名 → 内联 DATA → 谱系 → 地图 AI 定位 → 计数更新。详见 `.claude/skills/add-school.md`。
+
+### 血泪教训速查（新增流派必读）
+
+| # | 致命错误 | 后果 | 正确做法 |
+|---|---------|------|---------|
+| 1 | **DATA const 放在 SCHOOL_MAP 之后** | TDZ 崩溃 `Cannot access before initialization` | const 必须在引用之前 |
+| 2 | **图片中文文件名** | Render 返回 404 | 统一英文名 + IMG_MAP 映射 |
+| 3 | **SYNTAX_ERROR: `}` 未闭合** | const 被吞进对象 | Python 脚本插入后检查 `{` `}` 配对 |
+| 4 | **`git add .`** | API Key 泄露 | 精确 `git add <specific files>` |
+| 5 | **没复制 `backend/app-dist`** | Docker 镜像无新文件 | 每次 build 后 `rm -rf && cp -r` |
+| 6 | **Dockerfile 缺 `COPY`** | `ModuleNotFoundError` | 新增 .py 文件必须加到 Dockerfile |
+| 7 | **引号内嵌未转义** | JS 解析崩溃 | 用 `json.dumps` 安全编码 |
+| 8 | **缩略图缺失** | 谱系页模糊图永不升级 | 生成 JPG 同时生成 200×280 thumb |
+
+---
+
 ## 技术栈
 
 - **前端**: React 19 + React Router v6 + Vite 8
