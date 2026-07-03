@@ -75,6 +75,7 @@ def load_school(name):
   "quotes": [
     {{"text":"引文","author":"作者","exp":"阐释"}}
   ],
+  "closingQuote": "结语名言（取quotes最后一条，格式：'名言——作者'）",
   "works": [
     {{"title":"书名","author":"作者","era":"年代","desc":"简介"}}
   ],

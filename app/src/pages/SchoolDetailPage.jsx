@@ -7383,6 +7383,7 @@ const XI_JINPING_THOUGHT_SUB_SCHOOLS=[{name:"治国理政思想",era:"新时代"
 
 // 印度哲学
 const INDIAN_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `印度哲学`,
   quote: `梵我一如，解脱自在。`,
   quoteAuthor: `《奥义书》`,
@@ -7796,6 +7797,7 @@ const INDIAN_PHILOSOPHY_SUB_SCHOOLS = [
 
 // 日本哲学
 const JAPANESE_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `日本哲学`,
   quote: `物我两忘，主客未分，纯粹经验即实在。`,
   quoteAuthor: `西田几多郎`,
@@ -8243,6 +8245,7 @@ const JAPANESE_PHILOSOPHY_SUB_SCHOOLS = [
 
 // 伊斯兰阿拉伯哲学
 const ISLAMIC_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `伊斯兰阿拉伯哲学`,
   quote: `存在者要么是必然的，要么是可能的。必然存在者因其自身而必然存在。`,
   quoteAuthor: `伊本·西那（阿维森纳）`,
@@ -8618,6 +8621,7 @@ const ISLAMIC_PHILOSOPHY_DATA = {
 };
 
 const ARABIC_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `阿拉伯哲学`,
   quote: `存在者要么是必然的，要么是可能的。必然存在者因其自身而必然存在。`,
   quoteAuthor: `伊本·西那（阿维森纳）`,
@@ -9250,6 +9254,7 @@ const ARABIC_PHILOSOPHY_SUB_SCHOOLS = [
 
 // 非洲哲学
 const AFRICAN_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `非洲哲学`,
   quote: `我在，因为我们同在。人通过他人成为人。`,
   quoteAuthor: `约翰·姆比蒂`,
@@ -9728,6 +9733,7 @@ const AFRICAN_PHILOSOPHY_SUB_SCHOOLS = [
 
 // 犹太哲学
 const JEWISH_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `犹太哲学`,
   quote: `真理的印记是上帝唯一的印记，无论它出现在哪里。`,
   quoteAuthor: `迈蒙尼德`,
@@ -10192,6 +10198,7 @@ const JEWISH_PHILOSOPHY_SUB_SCHOOLS = [
 
 // 波斯哲学
 const PERSIAN_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `波斯哲学`,
   quote: `智慧之光从东方升起，照亮西方。`,
   quoteAuthor: `苏赫拉瓦迪`,
@@ -10644,6 +10651,7 @@ const PERSIAN_PHILOSOPHY_SUB_SCHOOLS = [
 
 // 拉丁美洲哲学
 const LATIN_AMERICAN_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `拉丁美洲哲学`,
   quote: `Nosotros, los indios, somos los verdaderos dueños de estas tierras, y los españoles no tienen derecho a despojarnos de ellas.`,
   quoteAuthor: `Bartolomé de las Casas`,
@@ -11074,6 +11082,7 @@ const LATIN_AMERICAN_PHILOSOPHY_SUB_SCHOOLS = [
 
 // 东南亚哲学
 const SOUTHEAST_ASIAN_PHILOSOPHY_DATA = {
+  region: "世界",
   name: `东南亚哲学`,
   quote: `多元归一，殊途同归，和谐共生乃天道之常。`,
   quoteAuthor: `苏加诺`,
@@ -11587,11 +11596,7 @@ function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
     const SCHOOL_MAP = {
-      '前苏格拉底哲学': { data:前苏格拉底哲学_DATA, sub:{}, ci:[], bg:'url(/schools/前苏格拉底哲学.jpg)' },
-  '伊壁鸠鲁学派': { data:伊壁鸠鲁学派_DATA, sub:{}, ci:[], bg:'url(/schools/伊壁鸠鲁学派.jpg)' },
-  '犬儒学派': { data:犬儒学派_DATA, sub:{}, ci:[], bg:'url(/schools/犬儒学派.jpg)' },
-  '新柏拉图主义': { data:新柏拉图主义_DATA, sub:{}, ci:[], bg:'url(/schools/新柏拉图主义.jpg)' },
-  '古埃及哲学': { data:古埃及哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古埃及哲学.jpg)' },
+      '前苏格拉底哲学': { data:前苏格拉底哲学_DATA, sub:{}, ci:[], bg:'url(/schools/前苏格拉底哲学.jpg)' },  '犬儒学派': { data:犬儒学派_DATA, sub:{}, ci:[], bg:'url(/schools/犬儒学派.jpg)' },  '古埃及哲学': { data:古埃及哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古埃及哲学.jpg)' },
   '印加哲学': { data:印加哲学_DATA, sub:{}, ci:[], bg:'url(/schools/印加哲学.jpg)' },
 '古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/古希腊哲学.jpg)' },
     '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/教父哲学.jpg)' },
@@ -11926,13 +11931,6 @@ const ENG_NAMES = {
   '美索不达米亚哲学': 'MESOPOTAMIAN PHILOSOPHY',
   '印加哲学': 'INCA PHILOSOPHY',
   '古埃及哲学': 'ANCIENT EGYPTIAN PHILOSOPHY',
-  '新柏拉图主义': 'NEOPLATONISM',
-  '犬儒学派': 'CYNICISM',
-  '伊壁鸠鲁学派': 'EPICUREANISM',
-  '前苏格拉底哲学': 'PRE-SOCRATIC PHILOSOPHY',
-  '新柏拉图主义': 'NEOPLATONISM',
-  '犬儒学派': 'CYNICISM',
-  '伊壁鸠鲁学派': 'EPICUREANISM',
   '古希伯来哲学': 'ANCIENT HEBREW PHILOSOPHY',
   '凯尔特哲学': 'CELTIC PHILOSOPHY',
   '罗马哲学': 'ROMAN PHILOSOPHY',
