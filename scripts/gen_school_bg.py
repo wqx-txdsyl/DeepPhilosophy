@@ -112,10 +112,11 @@ Output ONLY the prompt, no other text."""}
         return
     print(f"  ✓ {url}")
 
-    # 下载保存
-    print(f"[3/3] 保存...")
+    # 下载保存（使用 ASCII 文件名，避免 Render 404）
+    IMG_MAP = {'萨满哲学':'shaman','北极原住民哲学':'arctic','南岛哲学':'austronesian','高加索哲学':'caucasus','高加索-草原哲学':'caucasus-steppe','太平洋原住民哲学':'pacific'}
+    safe = IMG_MAP.get(school_name) or school_name.replace("/", "-").replace("\\", "-")
+    print(f"[3/3] 保存为 {safe}.jpg...")
     img_data = requests.get(url, timeout=60).content
-    safe = school_name.replace("/", "-").replace("\\", "-")
     out = os.path.join(SCHOOLS_DIR, f"{safe}.jpg")
     with open(out, "wb") as f: f.write(img_data)
     print(f"✓ {out} ({len(img_data)} bytes)")

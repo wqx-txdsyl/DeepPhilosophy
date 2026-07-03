@@ -14,7 +14,7 @@ TEXT_API = "https://apihub.agnes-ai.com/v1/chat/completions"
 IMG_API  = "https://apihub.agnes-ai.com/v1/images/generations"
 TEXT_MODEL = "agnes-2.0-flash"
 IMG_MODEL  = "agnes-image-2.1-flash"
-OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "icons")
+OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "app", "public", "icons")
 
 # ── 去背景 ──
 def remove_bg(img_bytes):
