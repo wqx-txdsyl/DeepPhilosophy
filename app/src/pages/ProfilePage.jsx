@@ -234,6 +234,10 @@ function ProfilePage() {
             </div>
             <button className="btn btn-secondary" style={{ marginTop: 10, padding: '6px 20px', fontSize: 12 }}
               onClick={handleLogout}>退出登录</button>
+            {loginUser === 'txdsyl_' && (
+              <button className="btn btn-primary" style={{ marginTop: 6, padding: '6px 20px', fontSize: 12 }}
+                onClick={() => navigate('/DEVELOPER_IS_TXDSYL')}>🔧 开发者后台</button>
+            )}
           </>
         ) : (
           <>

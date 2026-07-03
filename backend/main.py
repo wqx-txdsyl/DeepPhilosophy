@@ -1908,6 +1908,27 @@ async def change_password(req: ChangePasswordRequest, authorization: str = Heade
 
 
 # ============================================================
+# 开发者管理后台
+# ============================================================
+import admin as admin_module
+
+@app.middleware("http")
+async def track_visits(request: Request, call_next):
+    response = await call_next(request)
+    if not request.url.path.startswith("/api/admin"):
+        admin_module.record_visit(request.url.path)
+    return response
+
+@app.get("/api/admin/stats")
+async def admin_stats(password: str = Query("")):
+    if password != admin_module.ADMIN_PASSWORD:
+        raise HTTPException(status_code=403, detail="密码错误")
+    stats = admin_module.load_stats()
+    users = admin_module.get_users()
+    return {"stats": stats, "users": users, "user_count": len(users)}
+
+
+# ============================================================
 # 健康检查
 # ============================================================
 

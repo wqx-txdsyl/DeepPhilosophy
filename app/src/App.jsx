@@ -16,6 +16,7 @@ import GenealogyPage from './pages/GenealogyPage';
 import SchoolDetailPage from './pages/SchoolDetailPage';
 import QAPage from './pages/QAPage';
 import SettingsPage from './pages/SettingsPage';
+import DeveloperPage from './pages/DeveloperPage';
 import ReaderPage from './pages/ReaderPage';
 import ProfilePage from './pages/ProfilePage';
 import ProfileEditPage from './pages/ProfileEditPage';
@@ -193,6 +194,7 @@ function MainLayout() {
           <Route path="/games/phti" element={<PHTIPage />} />
           <Route path="/games/phti-silly" element={<PHTISillyPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/DEVELOPER_IS_TXDSYL" element={<DeveloperPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
         </Routes>
