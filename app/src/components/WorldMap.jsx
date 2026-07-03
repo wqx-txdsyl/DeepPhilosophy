@@ -76,20 +76,20 @@ function WorldMap() {
             zIndex: 1,
           }}
         >
-          {/* Golden pulse dot — shadow + glow + halo */}
+          {/* Pulse dot — crimson + white hot center, high contrast on map */}
           <div style={{
             position: 'absolute', left: '50%', top: '50%',
-            width: 8, height: 8, transform: 'translate(-50%, -50%)',
-            background: 'radial-gradient(circle, #E8C87A 0%, #C4956A 50%, transparent 100%)',
+            width: 10, height: 10, transform: 'translate(-50%, -50%)',
+            background: 'radial-gradient(circle, #FFFFFF 0%, #E85050 30%, #8B1A1A 70%, transparent 100%)',
             borderRadius: '50%',
-            boxShadow: '0 0 12px 4px rgba(196,149,106,0.7), 0 0 24px 8px rgba(196,149,106,0.3)',
+            boxShadow: '0 0 16px 6px rgba(232,80,80,0.8), 0 0 32px 12px rgba(200,30,30,0.4), 0 0 48px 16px rgba(180,20,20,0.2)',
             animation: 'pulse-dot 2.5s ease-in-out infinite',
           }} />
           {/* Outer glow ring */}
           <div style={{
             position: 'absolute', left: '50%', top: '50%',
-            width: 16, height: 16, transform: 'translate(-50%, -50%)',
-            border: '1px solid rgba(196,149,106,0.4)',
+            width: 18, height: 18, transform: 'translate(-50%, -50%)',
+            border: '2px solid rgba(232,80,80,0.5)',
             borderRadius: '50%',
             animation: 'pulse-ring 2.5s ease-in-out infinite',
           }} />
