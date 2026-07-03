@@ -579,6 +579,120 @@ USE_GITHUB=true python main.py
 
 ---
 
+## 新增流派完整教程
+
+> ⚠️ **血泪教训：必须严格按此流程，跳过任何一步都会导致白屏崩溃。**
+
+### 前置要求
+
+流派 JSON 必须包含以下全部字段（缺一不可）：
+
+```json
+{
+  "name": "流派名",
+  "subtitle": "简短描述",
+  "overview": "概述（≥500字）",
+  "conclusion": "结语（≥500字）",
+  "quote": "标题下名言",
+  "quoteAuthor": "名言作者",
+  "closingQuote": "结语名言（含作者，格式：'名言——作者'）",
+  "timeline": [{"year":"年份","event":"事件","detail":"详情","type":"event|era|person|book|idea|birth"}],
+  "thinkers": [{"name":"姓名","sub":"下属流派","era":"年代","influence":8,"key":"核心概念","works":["著作1","著作2"]}],
+  "relations": [{"from":"思想者A","to":"思想者B","label":"关系描述"}],
+  "cihai": [{"word":"术语","def":"定义","source":"出处"}],
+  "quotes": [{"text":"引文","author":"作者","exp":"阐释"}],
+  "works": [{"title":"书名","author":"作者","era":"年代","desc":"简介"}],
+  "meta": {"中文名":"流派名","英文名":"English Name"},
+  "region": "世界",
+  "bg": "url(/schools/english-name.jpg)",
+  "sub_schools": {"子流派key":{"name":"子流派名","desc":"描述"}}
+}
+```
+
+### 步骤 1：准备数据
+
+```bash
+# 1.1 在 backend/data/ 创建 school_新流派.json（严格按上述格式）
+# 1.2 准备背景图：app/public/schools/english-name.jpg（≤2MB，必须纯英文文件名）
+# 1.3 生成缩略图：app/public/schools/thumb/english-name.jpg（200×280）
+```
+
+### 步骤 2：生成内联 DATA 并注入 SchoolDetailPage
+
+```bash
+cd app
+
+# 2.1 从 JSON 生成 _new_schools_data.jsx
+python gen_inline_schools.py
+
+# 2.2 注入到 SchoolDetailPage.jsx（自动添加 SCHOOL_MAP 条目 + ENG_NAMES + DATA 常量）
+python fix_school_page.py
+
+# ⚠️ 如果 fix_school_page.py 创建了重复条目，手动清理 SchoolDetailPage.jsx，
+#    然后用 scripts/build_6_schools.py 手动注入（参考该脚本的逻辑）
+```
+
+### 步骤 3：更新谱系页和地图
+
+```bash
+# 3.1 GenealogyPage.jsx — ALL_SCHOOLS 数组添加条目
+# 3.2 PhilosophyTimeline.jsx — ALL_SCHOOLS 数组添加条目
+# 3.3 WorldMap.jsx — REGIONS 数组添加地图热点坐标
+# 3.4 WorldPhilosophiesPage.jsx — WORLD_PHILOSOPHIES 数组添加条目
+# 3.5 HomePage.jsx — 更新流派总数
+# 3.6 GenealogyPage.jsx — 更新页脚流派总数（一百零二个）
+# 3.7 SettingsPage.jsx — 更新关于页数量
+# 3.8 GenealogyPage.jsx — IMG_MAP 添加图片文件名映射
+```
+
+### 步骤 4：构建部署
+
+```bash
+npm run build
+rm -rf ../backend/app-dist ../backend/static
+cp -r dist ../backend/app-dist
+cp -r dist ../backend/static
+# 确保 JPG 图片在 backend/app-dist/schools/ 下
+git add <specific files>
+git commit -m "feat: 新增XXX流派"
+git push  # Render 自动部署
+```
+
+---
+
+## 新增流派常见致命错误
+
+| # | 错误 | 后果 | 正确做法 |
+|---|------|------|---------|
+| 1 | **DATA const 放在 SCHOOL_MAP 之后** | `Cannot access 'X' before initialization` 白屏 | DATA const 必须定义在 SCHOOL_MAP 引用之前 |
+| 2 | **图片用中文文件名** | 浏览器 URL 编码与服务器不匹配 → 404 | 统一用英文文件名，GenealogyPage 加 IMG_MAP |
+| 3 | **`works` 字段缺失或为字符串** | `Cannot read properties of undefined (reading 'map')` | `works` 必须是数组 |
+| 4 | **`thinkers` 为空数组** | 星座图 `sorted[0].name` 崩溃 | 至少有一个 thinker |
+| 5 | **`relations` 的 from/to 不匹配 thinkers** | 星座图连线异常 | from/to 必须是 thinkers 中存在的 name |
+| 6 | **JSON 缺少 `closingQuote`** | 结语后无名言 | 取 quotes 最后一条附加作者 |
+| 7 | **bg 路径用 `.png`** | 图片不显示 | PNG 太大不提交 git，用 JPG |
+| 8 | **单个引号 `'` 未转义** | JS 语法错误 | 用 `json.dumps` 自动转义，不要手写 |
+| 9 | **`influence` 为字符串 `"7"`** | 星座图大小异常 | 必须是数字 `7` |
+| 10 | **SCHOOL_MAP 缺少 `};` 闭合** | 后续 const 被吞进对象字面量 | 检查所有 `{ }` 配对 |
+| 11 | **用 `_json` 动态加载代替内联** | 先显示"正在构建中"，网络失败则永远不显示 | 流派 DATA 必须内联到 JS bundle |
+| 12 | **忘更新 ENG_NAMES** | 详情页显示 "PHILOSOPHICAL SCHOOL" | 中文名→英文大写名的映射 |
+| 13 | **忘更新 GenealogyPage 的 IMG_MAP** | 谱系页图片 404 | 中文流派名→英文文件名的映射 |
+| 14 | **`cp -r dist backend/app-dist` 覆盖而非替换** | 旧文件残留 | 先 `rm -rf backend/app-dist` 再 copy |
+| 15 | **`git add .` 提交敏感文件** | API Key 泄露 | 精确 `git add <specific files>` |
+
+---
+
+## 经验教训（新增流派专项）
+
+15. **DATA 定义顺序致命**：JavaScript `const` 不提升初始化。SCHOOL_MAP 引用的 DATA const 必须在 SCHOOL_MAP 之前定义，否则 TDZ 报错 `Cannot access before initialization`，页面直接白屏。
+16. **图片文件名禁止中文**：浏览器对 CSS `url()` 中的中文进行百分号编码后，与服务器文件系统的编码不一致，导致 404。全部图片使用 ASCII 文件名，通过 IMG_MAP 映射。
+17. **流派数据必须内联**：`_json` 动态加载依赖网络，会先闪"正在构建中"再加载，且网络失败时永远卡住。所有流派 DATA 应内联到 JS bundle，与已有 96 个流派保持一致。
+18. **`fix_school_page.py` 有去重 bug**：多次运行会重复插入已有 DATA，导致 `Identifier already declared`。运行前确保目标文件干净。
+19. **用 `json.dumps` 生成 JS 代码**：手动拼接字符串极易出现引号未转义、`\n` 被当作换行等问题。Python 脚本中用 `json.dumps(s, ensure_ascii=False)` 安全编码。
+20. **本地先测再推送**：`npm run build` 通过不代表运行时无错。`npx vite preview` 启动预览服务器，在浏览器 F12 看 Console 报错，确认无红字再 git push。
+
+---
+
 ## 技术栈
 
 - **前端**: React 19 + React Router v6 + Vite 8
