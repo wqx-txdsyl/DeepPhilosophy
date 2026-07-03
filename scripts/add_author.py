@@ -16,6 +16,7 @@ _keys = {}
 if os.path.exists(_keys_path):
     with open(_keys_path) as f: _keys = json.load(f)
 DEEPSEEK_KEY = _keys.get("deepseek", "")
+DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
 if not DEEPSEEK_KEY:
     _east = os.path.join(ROOT, "_gen_east.py")
     if os.path.exists(_east):

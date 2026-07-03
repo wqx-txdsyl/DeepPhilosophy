@@ -24,6 +24,7 @@ if os.path.exists(_keys_path):
     with open(_keys_path) as f: _keys = json.load(f)
 DEEPSEEK_KEY = _keys.get("deepseek", "")
 # fallback: 从 _gen_east.py 读取（同 backend/config.py 逻辑）
+DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
 if not DEEPSEEK_KEY:
     _east = os.path.join(ROOT, "_gen_east.py")
     if os.path.exists(_east):
