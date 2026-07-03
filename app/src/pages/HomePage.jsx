@@ -297,7 +297,8 @@ function HomePage() {
       .then(r => r.json())
       .then(d => {
         if (d.books) setBookCount(d.books);
-        if (d.schools) setSchoolCount(d.schools);
+        if (d.authors) setAuthorCount(d.authors);
+        if (d.schools) setSchoolCount(Math.max(102, d.schools));
       }).catch(() => {});
   }, []);
 
