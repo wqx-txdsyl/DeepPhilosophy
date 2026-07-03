@@ -19,10 +19,18 @@ ST_FILE = os.path.join(ROOT, "app", "src", "pages", "SettingsPage.jsx")
 JSON_DIR = os.path.join(ROOT, "backend", "data")
 SCHOOLS_DIR = os.path.join(ROOT, "app", "public", "schools")
 _keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
-with open(_keys_path) as f: _keys = json.load(f)
-DEEPSEEK_KEY = _keys["deepseek"]
-DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
-AGNES_KEY = _keys["agnes"]
+_keys = {}
+if os.path.exists(_keys_path):
+    with open(_keys_path) as f: _keys = json.load(f)
+DEEPSEEK_KEY = _keys.get("deepseek", "")
+# fallback: 从 _gen_east.py 读取（同 backend/config.py 逻辑）
+if not DEEPSEEK_KEY:
+    _east = os.path.join(ROOT, "_gen_east.py")
+    if os.path.exists(_east):
+        with open(_east, "r", encoding="utf-8") as f:
+            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
+            if m: DEEPSEEK_KEY = m.group(1)
+AGNES_KEY = _keys.get("agnes", "")
 
 def esc(s):
     return json.dumps(s, ensure_ascii=False)

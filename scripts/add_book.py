@@ -18,8 +18,16 @@ KNOWLEDGE_DIR = "F:/philosophy"
 
 # ── API ──
 _keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
-with open(_keys_path) as f: _keys = json.load(f)
-DEEPSEEK_KEY = _keys["deepseek"]
+_keys = {}
+if os.path.exists(_keys_path):
+    with open(_keys_path) as f: _keys = json.load(f)
+DEEPSEEK_KEY = _keys.get("deepseek", "")
+if not DEEPSEEK_KEY:
+    _east = os.path.join(ROOT, "_gen_east.py")
+    if os.path.exists(_east):
+        with open(_east, "r", encoding="utf-8") as f:
+            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
+            if m: DEEPSEEK_KEY = m.group(1)
 DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
 
 KNOWN_TAGS = [
