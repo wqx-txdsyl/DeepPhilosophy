@@ -185,16 +185,13 @@ function ProgImg({ name, style }) {
   const idleId = useRef(null);
 
   useEffect(() => {
-    if (hd) return; // Already got full-res from cache
-    const preload = () => {
-      idleId.current = (window.requestIdleCallback || ((cb, opts) => setTimeout(cb, opts?.timeout || 2000)))(() => {
-        const img = new Image();
-        img.onload = () => { setSrc(full); setHd(true); };
-        img.src = full;
-      }, { timeout: 2000 });
-    };
-    const t = setTimeout(preload, 300);
-    return () => { clearTimeout(t); if (idleId.current) (window.cancelIdleCallback || clearTimeout)(idleId.current); };
+    if (hd) return;
+    const t = setTimeout(() => {
+      const img = new Image();
+      img.onload = () => { setSrc(full); setHd(true); };
+      img.src = full;
+    }, 200);
+    return () => clearTimeout(t);
   }, [name, hd]);
 
   return (
