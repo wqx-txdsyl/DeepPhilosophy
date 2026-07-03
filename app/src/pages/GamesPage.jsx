@@ -8,6 +8,7 @@ import Icon from '../components/Icon';
 const games = [
   {
     key: 'answer-book',
+    icon: 'icon-book-open',
     title: '答案之书',
     desc: '心中默念问题，翻开启示之页',
     path: '/games/answer-book',
@@ -15,6 +16,7 @@ const games = [
   },
   {
     key: 'phti',
+    icon: 'icon-brain',
     title: 'PHTI',
     desc: 'Philosophical Turing Intelligence — 哲学人格测试',
     path: '/games/phti',
@@ -22,6 +24,7 @@ const games = [
   },
   {
     key: 'phti-silly',
+    icon: 'icon-crazy',
     title: 'PHTI 沙雕版',
     desc: '测测你是哪个哲学家的摆烂版本',
     path: '/games/phti-silly',
@@ -56,7 +59,7 @@ function GamesPage() {
           >
             <div>
               <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>
-                {game.title}
+                <Icon name={game.icon} size={22} /> {game.title}
               </div>
               <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
                 {game.desc}

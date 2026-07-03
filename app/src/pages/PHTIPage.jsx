@@ -11,6 +11,14 @@ import allQuestions from '../data/phti_questions.json';
 
 const TOTAL_QUESTIONS = 50;
 
+// 16型 code → icon
+const CODE_ICONS = {
+  PLA:'icon-flashlight', DES:'icon-zombie', HEG:'icon-coaster', NIE:'icon-hammer',
+  KAN:'icon-calendar', KIE:'icon-parachute', BEN:'icon-calc', CAM:'icon-car',
+  ARI:'icon-book-open', HUM:'icon-slot', HOB:'icon-lion', DIO:'icon-bucket',
+  SPI:'icon-cat', SAR:'icon-eye', ROU:'icon-leaf', WIT:'icon-zip-mouth',
+};
+
 // 4 dimensions: Rationalism, Stoicism, Essentialism, Communitarian
 const DIMS = ['Rationalism', 'Stoicism', 'Essentialism', 'Communitarian'];
 
@@ -257,7 +265,7 @@ function PHTIPage() {
         <div>
           {/* Result card */}
           <div className="card" style={{ cursor: 'default', textAlign: 'center', padding: '24px 20px', marginBottom: 12 }}>
-            <div style={{ fontSize: 48, marginBottom: 4 }}>{result.title.slice(0, 2)}</div>
+            <div style={{ marginBottom: 4 }}><Icon name={CODE_ICONS[result.code] || 'icon-brain'} size={48} /></div>
             <h2 style={{ fontSize: 18, marginBottom: 2 }}>{result.title}</h2>
             <p style={{ fontSize: 14, color: 'var(--accent)', fontWeight: 600, marginBottom: 12 }}>
               {result.name}
