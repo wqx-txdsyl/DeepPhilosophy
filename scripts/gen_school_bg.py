@@ -88,14 +88,22 @@ def generate(school_name):
             d = json.load(f)
             context = d.get("overview", "")[:500]
 
+    # 提取年代信息
+    timeline = d.get("timeline", []) if 'd' in dir() else []
+    era_hint = ""
+    if timeline:
+        years = [e.get("year","") for e in timeline[:3]]
+        era_hint = f"Historical period: {', '.join(years)}. "
+
     print(f"[1/3] 为「{school_name}」生成内容 prompt...")
     r = requests.post(TEXT_API, headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
         json={"model": TEXT_MODEL, "messages": [
-            {"role": "user", "content": f"""A digital museum has a philosophy school page for "{school_name}". Here is its description:
+            {"role": "user", "content": f"""A digital museum has a philosophy school page for "{school_name}". {era_hint}Here is its description:
 {context}
 
 Write a 2-3 sentence visual prompt (in English) for a hero background image for this school's page.
-Include: key symbolic elements, appropriate architecture/landscape, era-appropriate visual cues, and mood.
+CRITICAL: Match the visual style to the school's ACTUAL historical era. Do NOT use ancient/classical imagery for modern schools. Do NOT use futuristic imagery for ancient schools. Include key symbolic elements, era-appropriate architecture/landscape, and mood.
+The overall museum style is warm, elegant, timeless — but the SUBJECT must reflect THIS school's actual period.
 Output ONLY the prompt, no other text."""}
         ], "temperature": 0.5, "max_tokens": 300}, timeout=60)
     content_prompt = r.json()["choices"][0]["message"]["content"].strip()
@@ -105,7 +113,7 @@ Output ONLY the prompt, no other text."""}
     final_prompt = f"{master} {content_prompt}"
     print(f"[2/3] 生成图片...")
     r = requests.post(IMG_API, headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-        json={"model": IMG_MODEL, "prompt": final_prompt, "size": "1024x768", "extra_body": {"response_format": "url"}}, timeout=180)
+        json={"model": IMG_MODEL, "prompt": final_prompt, "size": "1280x720", "extra_body": {"response_format": "url"}}, timeout=180)
     url = r.json()["data"][0].get("url", "")
     if not url:
         print("[FAIL] 无图片返回")
