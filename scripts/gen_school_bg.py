@@ -80,13 +80,22 @@ def generate(school_name):
         return
 
     master = style.get("style_master", "")
+    # 读取流派的 overview 作为上下文
+    school_json = os.path.join(os.path.dirname(__file__), "..", "backend", "data", f"school_{school_name}.json")
+    context = ""
+    if os.path.exists(school_json):
+        with open(school_json, "r", encoding="utf-8") as f:
+            d = json.load(f)
+            context = d.get("overview", "")[:500]
+
     print(f"[1/3] 为「{school_name}」生成内容 prompt...")
-    # 文字AI生成该流派的细节描述
     r = requests.post(TEXT_API, headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
         json={"model": TEXT_MODEL, "messages": [
-            {"role": "user", "content": f"""You are a museum curator designing a hero background image for the philosophy school "{school_name}".
-Based on what you know about this school's historical period, geographic origin, key symbols, and philosophical themes, write a 2-3 sentence visual prompt describing what should appear in the image.
-Include: key symbolic elements, appropriate architecture or landscape, era-appropriate visual cues, and mood.
+            {"role": "user", "content": f"""A digital museum has a philosophy school page for "{school_name}". Here is its description:
+{context}
+
+Write a 2-3 sentence visual prompt (in English) for a hero background image for this school's page.
+Include: key symbolic elements, appropriate architecture/landscape, era-appropriate visual cues, and mood.
 Output ONLY the prompt, no other text."""}
         ], "temperature": 0.5, "max_tokens": 300}, timeout=60)
     content_prompt = r.json()["choices"][0]["message"]["content"].strip()
