@@ -15,9 +15,12 @@ const REGIONS = [
   { id: 'seasia', name: '东南亚', sub: '东南亚哲学', desc: '上座部佛教与本土智慧的交融。', x: 76, y: 55, r: 20, path: '/school/东南亚哲学' },
   // 中亚/蒙古
   { id: 'mongol', name: '蒙古/中亚', sub: '蒙古中亚哲学', desc: '萨满传统、长生天、游牧智慧。', x: 65, y: 25, r: 22, path: '/school/蒙古中亚哲学' },
+  { id: 'shaman', name: '萨满', sub: '萨满哲学', desc: '万物有灵·三层宇宙·灵魂旅程。', x: 62, y: 10, r: 24, path: '/school/萨满哲学' },
+  { id: 'caucasus-steppe', name: '高加索-草原', sub: '高加索-草原哲学', desc: '游牧伦理·马文化·口头史诗。', x: 54, y: 22, r: 18, path: '/school/高加索-草原哲学' },
+  { id: 'caucasus', name: '高加索', sub: '高加索哲学', desc: '纳尔特史诗·山地文明·欧亚交汇。', x: 56, y: 32, r: 16, path: '/school/高加索哲学' },
   // 欧洲
   { id: 'europe', name: '欧洲', sub: '西方哲学', desc: '从古希腊到后现代，41流派。', x: 45, y: 25, r: 46, path: '/western-philosophies' },
-  { id: 'world', name: '世界传统', sub: '世界哲学', desc: '31大世界哲学传统。', x: 36, y: 55, r: 36, path: '/world-philosophies' },
+  { id: 'world', name: '世界传统', sub: '世界哲学', desc: '37大世界哲学传统。', x: 36, y: 55, r: 36, path: '/world-philosophies' },
   { id: 'greece', name: '希腊', sub: '古希腊哲学', desc: '西方哲学总源——泰勒斯、柏拉图、亚里士多德。', x: 52, y: 32, r: 14, path: '/school/古希腊哲学' },
   { id: 'nordic', name: '北欧', sub: '北欧哲学', desc: '克尔凯郭尔的存在主义源头、易卜生。', x: 48, y: 12, r: 16, path: '/school/北欧哲学' },
   { id: 'celtic', name: '凯尔特', sub: '凯尔特哲学', desc: '德鲁伊传统、自然崇拜——森林中的哲学。', x: 38, y: 22, r: 14, path: '/school/凯尔特哲学' },
@@ -43,6 +46,9 @@ const REGIONS = [
   { id: 'aztec', name: '阿兹特克', sub: '阿兹特克哲学', desc: '宇宙论、献祭辩证法、第五太阳纪。', x: 18, y: 50, r: 14, path: '/school/阿兹特克哲学' },
   // 大洋洲
   { id: 'australia', name: '澳洲', sub: '澳洲原住民哲学', desc: 'Dreamtime、歌线、土地伦理。', x: 88, y: 75, r: 20, path: '/school/澳洲原住民哲学' },
+  { id: 'austronesian', name: '南岛', sub: '南岛哲学', desc: '海洋迁徙·Mana与Tapu·关系性自我。', x: 84, y: 48, r: 16, path: '/school/南岛哲学' },
+  { id: 'pacific', name: '太平洋', sub: '太平洋原住民哲学', desc: '礼物经济·土地人格·修复性正义。', x: 94, y: 62, r: 18, path: '/school/太平洋原住民哲学' },
+  { id: 'arctic', name: '北极', sub: '北极原住民哲学', desc: '冰雪智慧·动物能动性·Sila伦理。', x: 30, y: 5, r: 20, path: '/school/北极原住民哲学' },
 ];
 
 function WorldMap() {

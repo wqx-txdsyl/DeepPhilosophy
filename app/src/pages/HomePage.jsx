@@ -444,7 +444,7 @@ function HomePage() {
       {/* ══════════ NUMBERS ══════════ */}
       <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
-          {[{ num: '305', label: '哲学著作' }, { num: String(authorCount), label: '哲学家' }, { num: '96', label: '哲学流派' }].map(s => (
+          {[{ num: '305', label: '哲学著作' }, { num: String(authorCount), label: '哲学家' }, { num: '102', label: '哲学流派' }].map(s => (
             <div key={s.label}>
               <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
@@ -481,7 +481,7 @@ function HomePage() {
           {[
             { l: <><Icon name="region-west" size={14} /> 西方 41 流派</>, p:'/western-philosophies', c:'var(--ochre)' },
             { l: <><Icon name="region-east" size={14} /> 东方 24 流派</>, p:'/eastern-philosophies', c:'var(--prussian)' },
-            { l: <><Icon name="region-world" size={14} /> 世界 31 流派</>, p:'/world-philosophies', c:'#5A8A5A' },
+            { l: <><Icon name="region-world" size={14} /> 世界 37 流派</>, p:'/world-philosophies', c:'#5A8A5A' },
           ].map(b => (
             <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize:12, color:b.c, cursor:'pointer', borderBottom:'1px solid transparent', transition:'all 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}

@@ -106,7 +106,7 @@ export default function WorldPhilosophiesPage() {
           color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto',
           textShadow: '0 0 40px rgba(244,240,235,0.8)'
         }}>
-          从古希腊到美索不达米亚，从印度到澳洲，<br />三十一大哲学传统覆盖了全球思想版图。
+          从古希腊到美索不达米亚，从印度到澳洲，<br />三十七大哲学传统覆盖了全球思想版图。
         </p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
       </section>
