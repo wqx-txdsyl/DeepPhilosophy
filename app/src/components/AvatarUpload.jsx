@@ -94,11 +94,11 @@ function AvatarUpload({ size = 80, onSave }) {
   const handleMouseUp = () => setDragging(false);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
       {/* Avatar display */}
       <div
         onClick={() => setShowMenu(!showMenu)}
-        style={{ position: 'relative',
+        style={{
           width: size, height: size, borderRadius: '50%', overflow: 'hidden',
           cursor: 'pointer', border: '2px solid var(--border)',
           background: 'var(--card-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -122,7 +122,7 @@ function AvatarUpload({ size = 80, onSave }) {
           borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
           zIndex: 100, overflow: 'hidden', minWidth: 140,
         }}>
-          <div onClick={() => { setShowMenu(false); fileRef.current?.click(); }}
+          <div onClick={(e) => { e.stopPropagation(); setShowMenu(false); fileRef.current?.click(); }}
             style={{ padding: '10px 16px', cursor: 'pointer', fontSize: 13,
               color: 'var(--text)', borderBottom: '1px solid var(--border)',
               transition: 'background 0.15s',
@@ -131,7 +131,7 @@ function AvatarUpload({ size = 80, onSave }) {
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
             📷 替换头像
           </div>
-          <div onClick={() => setShowMenu(false)}
+          <div onClick={(e) => { e.stopPropagation(); setShowMenu(false); }}
             style={{ padding: '10px 16px', cursor: 'pointer', fontSize: 13, color: 'var(--text-dim)',
               transition: 'background 0.15s',
             }}
