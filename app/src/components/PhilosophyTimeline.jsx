@@ -143,7 +143,7 @@ export default function PhilosophyTimeline() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ maxWidth: 1300, margin: '0 auto', padding: '48px 24px 40px', position: 'relative' }}>
+    <div className="philosophy-timeline" style={{ maxWidth: 1300, margin: '0 auto', padding: '48px 24px 40px', position: 'relative' }}>
       <h2 style={{ textAlign:'center', fontFamily:'\"Playfair Display\",serif', fontSize:24, fontWeight:400, color:'var(--ink)', marginBottom:40, letterSpacing:'0.04em' }}>世界哲学时间轴</h2>
 
       {/* Column headers */}
