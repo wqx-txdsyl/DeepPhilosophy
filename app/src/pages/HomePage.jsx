@@ -402,7 +402,14 @@ function HomePage() {
       }}
         onMouseEnter={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 90%, transparent)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
         onMouseLeave={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 70%, transparent)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
-        {loggedIn && username ? <><Icon name="btn-user" size={16} /> {username}</> : '登录 / 注册'}
+        {loggedIn && username ? <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {localStorage.getItem('dp_avatar') ? (
+              <img src={localStorage.getItem('dp_avatar')} alt="" style={{ width: 24, height: 24, borderRadius: 6, objectFit: 'cover' }} />
+            ) : (
+              <Icon name="btn-user" size={16} />
+            )}
+            {username}
+          </span> : '登录 / 注册'}
       </button>
 
       {/* ══════════ HERO — full screen, world philosophy background ══════════ */}

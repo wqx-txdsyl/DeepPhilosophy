@@ -80,7 +80,7 @@ function AvatarUpload({ size = 72, onSave }) {
           }}
           onMouseUp={() => setDragging(false)}
           onMouseLeave={() => setDragging(false)}>
-          <div style={{ color: '#fff', textAlign: 'center', paddingTop: 40, fontSize: 13 }}>拖拽移动 · 滚轮缩放 · 正方形裁剪</div>
+          <div style={{ color: '#fff', textAlign: 'center', paddingTop: 40, fontSize: 13 }}>拖拽移动 · 滚轮缩放 · 圆形裁剪</div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 180px)' }}>
             <div style={{ width: CROP_SIZE, height: CROP_SIZE, overflow: 'hidden', position: 'relative', borderRadius: '50%', border: '3px solid rgba(255,255,255,0.5)', boxShadow: '0 0 0 9999px rgba(0,0,0,0.5)' }}
               onWheel={e => { e.preventDefault(); setScale(s => Math.max(0.5, Math.min(3, s - e.deltaY * 0.002))); }}
