@@ -24,18 +24,18 @@ def load_master_style():
 def save_master_style(data):
     with open(STYLE_FILE, "w") as f: json.dump(data, f, ensure_ascii=False, indent=2)
 
-def get_school_images(limit=15):
+def get_school_images():
     """获取所有流派背景图 URL"""
     base = "https://deepphilosophy-7g7m.onrender.com/schools"
     images = []
     for f in sorted(os.listdir(SCHOOLS_DIR)):
         if f.endswith(('.jpg', '.png')) and 'school_' not in f and 'thumb' not in f:
             images.append(f"{base}/{f}")
-    return images[:limit]
+    return images  # 全部，不限制数量
 
 def train():
     """预训练：喂所有背景图给 AI，输出 master style prompt"""
-    images = get_school_images(15)
+    images = get_school_images()
     if not images:
         print("没有找到学校背景图，使用缓存 URL")
         images = [
@@ -44,14 +44,16 @@ def train():
         ]
 
     print(f"预训练：分析 {len(images)} 张背景图...")
-    content = [{"type": "text", "text": """You are analyzing background images from a digital museum of philosophy. Study ALL these images together and identify the COMMON visual style.
+    content = [{"type": "text", "text": """You are analyzing background images from a digital museum of philosophy. These cover schools from 3000 BCE to 21st century — ancient, medieval, modern, and contemporary. Study ALL images and identify the COMMON museum-quality visual DNA.
+
+CRITICAL: The master style must be FLEXIBLE enough to work for ALL eras — not just classical/antiquity. Modern schools should look modern, ancient schools should look ancient. Describe the SHARED qualities (museum curation, elegant composition, scholarly mood, high production value) WITHOUT locking into a single era.
 
 Output a JSON object with:
-- "style_master": A 3-4 sentence master style prompt describing the SHARED visual DNA across all images: color palette warmth/temperature range, texture type (paper/parchment/canvas), lighting quality, composition approach (hero image/symbolic/architectural), mood (ancient/elegant/timeless/museum). This will be used as a PREFIX for ALL generated images.
-- "color_palette": Dominant colors observed (e.g. "warm ochre, bone white, deep ink")
-- "texture": The surface feel (e.g. "aged parchment with subtle grain")
-- "lighting": Light quality (e.g. "soft diffused natural light, chiaroscuro edges")
-- "composition": Layout approach (e.g. "central symbolic element, atmospheric background, negative space for text overlay")
+- "style_master": A 3-4 sentence master style prompt. Focus on MUSEUM QUALITY traits that transcend eras: balanced composition, atmospheric depth, scholarly elegance, curated visual hierarchy, warm-but-adaptable palette. Do NOT mention specific eras like "classical" or "oil painting". This is a PREFIX for generating all school images.
+- "color_palette": Dominant colors (e.g. "adaptable warm-cool spectrum")
+- "texture": Surface feel (e.g. "refined museum print quality")
+- "lighting": Light quality (e.g. "dramatic yet natural, era-flexible")
+- "composition": Layout (e.g. "hero focal point with atmospheric depth")
 
 Output ONLY the JSON object, no other text."""}]
     for url in images:
