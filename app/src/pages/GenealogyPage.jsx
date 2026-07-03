@@ -164,8 +164,9 @@ function getEraIdx(c) {
   if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4; return 5;
 }
 
-function thumbUrl(name) { return `/schools/thumb/${encodeURI(name)}.jpg`; }
-function fullUrl(name) { return `/schools/${encodeURI(name)}.jpg`; }
+const IMG_MAP = { '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific' };
+function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.jpg`; }
+function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
 // ─── Smart Progressive Image: cache-first, then idle preload ───
