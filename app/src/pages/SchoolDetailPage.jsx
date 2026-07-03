@@ -2627,7 +2627,7 @@ const 萨满哲学_DATA = {
     "标签": ["萨满", "万物有灵", "意识状态", "跨文化"],
   },
   region: "世界",
-  bg: "url(/schools/萨满哲学.jpg)",
+  bg: "url(/schools/shaman.jpg)",
   sub_schools: {
     "西伯利亚萨满传统": {name: "西伯利亚萨满传统", desc: "通古斯、尤卡吉尔等北亚民族的萨满体系，三层宇宙与灵魂旅程的原型形态。"},
     "美洲原住民萨满": {name: "美洲原住民萨满", desc: "汗蒸屋、灵视探索与动物守护灵——北美原住民的精神实践与哲学。"},
@@ -2734,7 +2734,7 @@ const 北极原住民哲学_DATA = {
     "标签": ["北极", "原住民", "极限环境", "气候正义"],
   },
   region: "世界",
-  bg: "url(/schools/北极原住民哲学.jpg)",
+  bg: "url(/schools/arctic.jpg)",
   sub_schools: {
     "因纽特传统": {name: "因纽特传统", desc: "从格陵兰到阿拉斯加的因纽特哲学——Sila伦理、海豹之礼与冰知识的活态传承。"},
     "萨米传统": {name: "萨米传统", desc: "北欧萨米人的约伊克吟唱、驯鹿牧养与赛义德圣地哲学。"},
@@ -2840,7 +2840,7 @@ const 南岛哲学_DATA = {
     "标签": ["南岛", "海洋哲学", "关系性自我", "原住民"],
   },
   region: "世界",
-  bg: "url(/schools/南岛哲学.jpg)",
+  bg: "url(/schools/austronesian.jpg)",
   sub_schools: {
     "波利尼西亚传统": {name: "波利尼西亚传统", desc: "Mana、Tapu与Wayfinding——大洋洲航海者的哲学体系，关系性自我与海洋本体论。"},
     "美拉尼西亚传统": {name: "美拉尼西亚传统", desc: "Wantok、Kastom与Big Man——西太平洋岛屿的礼物经济哲学与冲突解决智慧。"},
@@ -2947,7 +2947,7 @@ const 高加索哲学_DATA = {
     "标签": ["高加索", "史诗哲学", "欧亚交汇", "山地文明"],
   },
   region: "世界",
-  bg: "url(/schools/高加索哲学.jpg)",
+  bg: "url(/schools/caucasus.jpg)",
   sub_schools: {
     "格鲁吉亚人文主义": {name: "格鲁吉亚人文主义", desc: "鲁斯塔维利'爱即智慧'与恰夫恰瓦泽'祖国·语言·信仰'——格鲁吉亚民族复兴的哲学根基。"},
     "亚美尼亚经院哲学": {name: "亚美尼亚经院哲学", desc: "五世纪翻译运动与达维德·阿纳赫特——希腊哲学在高加索的保存与发展。"},
@@ -3052,7 +3052,7 @@ const 高加索草原哲学_DATA = {
     "标签": ["高加索-草原", "游牧哲学", "口头传统", "马文化"],
   },
   region: "世界",
-  bg: "url(/schools/高加索-草原哲学.jpg)",
+  bg: "url(/schools/caucasus-steppe.jpg)",
   sub_schools: {
     "卡尔梅克藏传佛教": {name: "卡尔梅克藏传佛教", desc: "欧洲唯一的藏传佛教民族——《江格尔》史诗与中观思想的草原化。"},
     "诺盖-哈萨克口头传统": {name: "诺盖-哈萨克口头传统", desc: "Zhirau即兴吟唱——口头哲学与部落历史的活态载体。"},
@@ -3154,7 +3154,7 @@ const 太平洋原住民哲学_DATA = {
     "标签": ["太平洋", "原住民", "礼物经济", "气候正义"],
   },
   region: "世界",
-  bg: "url(/schools/太平洋原住民哲学.jpg)",
+  bg: "url(/schools/pacific.jpg)",
   sub_schools: {
     "美拉尼西亚礼物经济": {name: "美拉尼西亚礼物经济", desc: "库拉圈、Moka与Big Man——礼物交换作为社会本体论的太平洋实践。"},
     "波利尼西亚航海哲学": {name: "波利尼西亚航海哲学", desc: "Wayfinding与Mana——海洋民族的空间认识论与权力哲学。"},
