@@ -2,6 +2,7 @@
  * 用户头像 —— 默认某人图标，支持上传+裁剪正方形
  */
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Icon from './Icon';
 
 const CROP_SIZE = 300;
@@ -71,8 +72,8 @@ function AvatarUpload({ size = 72, onSave }) {
       )}
       <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
 
-      {showEditor && srcImg && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.88)' }}
+      {showEditor && srcImg && createPortal(
+        <div style={{ position: 'fixed', inset: 0, zIndex: 99999, background: 'rgba(0,0,0,0.88)' }}
           onMouseMove={e => {
             if (!dragging) return;
             setOffX(dragRef.current.startOffX + e.clientX - dragRef.current.startX);
@@ -101,7 +102,8 @@ function AvatarUpload({ size = 72, onSave }) {
             <button className="btn btn-primary" onClick={handleSave}
               style={{ padding: '10px 28px', fontSize: 14, background: 'var(--ochre)', borderColor: 'var(--ochre)', color: '#fff' }}>确认裁剪</button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
