@@ -100,12 +100,18 @@ def generate(school_name):
     print(f"[1/3] 为「{school_name}」生成内容 prompt...")
     r = requests.post(TEXT_API, headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
         json={"model": TEXT_MODEL, "messages": [
-            {"role": "user", "content": f"""A digital museum has a philosophy school page for "{school_name}". {era_hint}Here is its description:
-{context}
+            {"role": "user", "content": f"""为哲学流派"{school_name}"的网页背景图写一段英文视觉prompt（2-3句）。
 
-Write a 2-3 sentence visual prompt (in English) for a hero background image for this school's page.
-CRITICAL: Match the visual style to the school's ACTUAL historical era. Do NOT use ancient/classical imagery for modern schools. Do NOT use futuristic imagery for ancient schools. Include key symbolic elements, era-appropriate architecture/landscape, and mood.
-The overall museum style is warm, elegant, timeless — but the SUBJECT must reflect THIS school's actual period.
+{era_hint}
+流派简介：{context}
+
+要求：
+1. 必须体现该流派最独特的视觉符号、核心场景和哲学气质
+2. 允许出现该流派时代的建筑、服饰、器物、自然景观
+3. 如果流派特征与通用风格冲突（如现代流派不应出现古典建筑），以流派特征为准
+4. 描述具体生动，避免空泛的形容词堆砌
+5. 与该流派的思想内核形成视觉隐喻
+
 Output ONLY the prompt, no other text."""}
         ], "temperature": 0.5, "max_tokens": 300}, timeout=60)
     content_prompt = r.json()["choices"][0]["message"]["content"].strip()
