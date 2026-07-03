@@ -11570,12 +11570,12 @@ function SchoolDetailPage() {
   '环境哲学': { data:环境哲学_DATA, sub:{}, ci:[], bg:'url(/schools/环境哲学.jpg)' },
   '解构主义': { data:解构主义_DATA, sub:{}, ci:[], bg:'url(/schools/解构主义.jpg)' },
   '黑人哲学': { data:黑人哲学_DATA, sub:{}, ci:[], bg:'url(/schools/黑人哲学.jpg)' },
-  '萨满哲学': { data:萨满哲学_DATA, sub:{}, ci:[], bg:'url(/schools/萨满哲学.jpg)' },
-  '北极原住民哲学': { data:北极原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北极原住民哲学.jpg)' },
-  '南岛哲学': { data:南岛哲学_DATA, sub:{}, ci:[], bg:'url(/schools/南岛哲学.jpg)' },
-  '高加索哲学': { data:高加索哲学_DATA, sub:{}, ci:[], bg:'url(/schools/高加索哲学.jpg)' },
-  '高加索-草原哲学': { data:高加索草原哲学_DATA, sub:{}, ci:[], bg:'url(/schools/高加索-草原哲学.jpg)' },
-  '太平洋原住民哲学': { data:太平洋原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/太平洋原住民哲学.jpg)' },
+  '萨满哲学': { data:萨满哲学_DATA, sub:{}, ci:[], bg:'url(/schools/shaman.jpg)' },
+  '北极原住民哲学': { data:北极原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/arctic.jpg)' },
+  '南岛哲学': { data:南岛哲学_DATA, sub:{}, ci:[], bg:'url(/schools/austronesian.jpg)' },
+  '高加索哲学': { data:高加索哲学_DATA, sub:{}, ci:[], bg:'url(/schools/caucasus.jpg)' },
+  '高加索-草原哲学': { data:高加索草原哲学_DATA, sub:{}, ci:[], bg:'url(/schools/caucasus-steppe.jpg)' },
+  '太平洋原住民哲学': { data:太平洋原住民哲学_DATA, sub:{}, ci:[], bg:'url(/schools/pacific.jpg)' },
 };
   const m = SCHOOL_MAP[name] || {};
   // Dynamic loader for JSON-based schools
