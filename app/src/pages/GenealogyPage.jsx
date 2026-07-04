@@ -166,7 +166,7 @@ function getEraIdx(c) {
 }
 
 const IMG_MAP = {
-   '人工智能哲学':'人工智能哲学_v2',
+   '人工智能哲学':'人工智能哲学_v2', '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific',
 };
 function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.jpg`; }
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
