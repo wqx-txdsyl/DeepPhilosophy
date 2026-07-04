@@ -171,27 +171,24 @@ function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/s
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Thumbnail-only card images (full-res loaded on hover for HD upgrade) ───
+// ─── Lazy thumbnail: only load when near viewport ───
 function ProgImg({ name, style }) {
-  const full = fullUrl(name);
-  const thumb = thumbUrl(name);
-  const [hd, setHd] = useState(false);
-  const src = hd ? full : thumb;
-
-  // Only preload full-res on hover (not for every card immediately)
-  const onEnter = () => {
-    if (hd) return;
-    const img = new Image();
-    img.onload = () => setHd(true);
-    img.src = full;
-  };
-
+  const ref = useRef(null);
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const o = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setShow(true); o.disconnect(); }
+    }, { rootMargin: '400px' });
+    o.observe(el);
+    return () => o.disconnect();
+  }, []);
+  const src = show ? thumbUrl(name) : '';
   return (
-    <img src={src} alt={name}
-      onMouseEnter={onEnter}
-      style={{ ...style, filter: hd ? 'none' : 'blur(2px)', transition: 'filter 0.3s ease' }}
-      loading="lazy"
-    />
+    <div ref={ref} style={{ ...style, background: show ? 'transparent' : '#E8E0D4', minHeight: style?.minHeight || 100 }}>
+      {show && <img src={src} alt={name} style={{ width: '100%', display: 'block' }} loading="lazy" />}
+    </div>
   );
 }
 
