@@ -72,14 +72,19 @@ function AuthorDetailPage() {
           <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 8, justifyContent: 'center' }}>
             {/* 第一行：区域 + 年代 + 国家 + 流派 */}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-              {author.region && (
+              {(() => {
+                const r = author.region || '未知';
+                const display = r === '未知' ? (author.country && /中国|日本|韩国|朝鲜|越南|蒙古/.test(author.country) ? '东方哲学' : '西方哲学') : (r + '哲学');
+                const regionKey = display.startsWith('东方') ? '东方' : display.startsWith('世界') ? '世界' : '西方';
+                return (
                 <span style={{
-                  background: author.region === '东方' ? 'rgba(59,90,150,0.1)' : author.region === '世界' ? 'rgba(90,138,90,0.1)' : 'rgba(145,118,71,0.1)',
-                  color: author.region === '东方' ? 'var(--prussian)' : author.region === '世界' ? '#5A8A5A' : 'var(--ochre)',
+                  background: regionKey === '东方' ? 'rgba(59,90,150,0.1)' : regionKey === '世界' ? 'rgba(90,138,90,0.1)' : 'rgba(145,118,71,0.1)',
+                  color: regionKey === '东方' ? 'var(--prussian)' : regionKey === '世界' ? '#5A8A5A' : 'var(--ochre)',
                   padding: '4px 12px', borderRadius: 14, fontSize: 12, fontWeight: 500, whiteSpace: 'nowrap',
-                  border: '1px solid ' + (author.region === '东方' ? 'rgba(59,90,150,0.2)' : author.region === '世界' ? 'rgba(90,138,90,0.2)' : 'rgba(145,118,71,0.2)'),
-                }}>{author.region}哲学</span>
-              )}
+                  border: '1px solid ' + (regionKey === '东方' ? 'rgba(59,90,150,0.2)' : regionKey === '世界' ? 'rgba(90,138,90,0.2)' : 'rgba(145,118,71,0.2)'),
+                }}>{display}</span>
+                );
+              })()}
               {author.era && (
                 <span style={{
                   background: 'var(--ochre)', color: '#fff', padding: '4px 12px',

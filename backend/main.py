@@ -496,7 +496,7 @@ def _scan_books_local() -> list[dict]:
             rel_path = os.path.relpath(full_path, knowledge_dir)
             parts = rel_path.replace("\\", "/").split("/")
 
-            region = parts[0] if len(parts) > 0 else "未知"
+            region = parts[0] if len(parts) > 0 else "西方"
             author = parts[1] if len(parts) > 1 else "未知"
             author_clean = author.replace("###合集&概述###", "合集&概述")
             title = Path(f).stem
