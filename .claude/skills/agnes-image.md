@@ -56,6 +56,20 @@ python fix_bg.py
 - AI 分析图片并返回各地区的百分比坐标
 - 输出 `map_coords_fixed.json`
 
+### 5. AI 哲人头像验证
+**文件**: `scripts/_ai_verify_images.py`
+- 将每位哲人的头像 URL 发送给 Agnes 2.0 Flash
+- AI 判断图片是否为该哲人的肖像（照片/雕像/画像）
+- 标记错误图片（风景、建筑、错人、文字等）
+- 输出 `_ai_bad_images.txt` 供重爬
+
+```bash
+cd scripts
+python _ai_verify_images.py             # 验证全部头像
+# 输出: OK 320张, BAD 24张 -> _ai_bad_images.txt
+python _refetch_noface.py               # 重爬错误图片
+```
+
 ---
 
 ## API 调用示例
