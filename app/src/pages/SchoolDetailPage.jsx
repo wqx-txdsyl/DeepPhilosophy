@@ -8409,7 +8409,7 @@ function SchoolDetailPage() {
   '环境哲学': { _json:'school_环境哲学.json', sub:{}, ci:[], bg:'url(/schools/环境哲学.jpg)' },
   '解构主义': { _json:'school_解构主义.json', sub:{}, ci:[], bg:'url(/schools/解构主义.jpg)' },
   '黑人哲学': { _json:'school_黑人哲学.json', sub:{}, ci:[], bg:'url(/schools/黑人哲学.jpg)' },
-  '人工智能哲学': { _json:'school_人工智能哲学.json', sub:{}, ci:[], bg:'url(/schools/人工智能哲学.jpg)' },
+  '人工智能哲学': { _json:'school_人工智能哲学.json', sub:{}, ci:[], bg:'url(/schools/人工智能哲学_v2.jpg)' },
   '萨满哲学': { _json:'school_萨满哲学.json', sub:{}, ci:[], bg:'url(/schools/shaman.jpg)' },
   '北极原住民哲学': { _json:'school_北极原住民哲学.json', sub:{}, ci:[], bg:'url(/schools/arctic.jpg)' },
   '南岛哲学': { _json:'school_南岛哲学.json', sub:{}, ci:[], bg:'url(/schools/austronesian.jpg)' },
