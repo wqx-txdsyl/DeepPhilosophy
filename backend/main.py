@@ -1423,8 +1423,9 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
         country_raw = ph_info.get("country", "")
         school_raw = ph_info.get("school", "")
         # 先看country
-        if any(kw in country_raw for kw in ["中国","日本","印度","韩国","朝鲜","越南"]):
-            region = "东方" if "中国" in country_raw else "世界"
+        eastern_countries = ["中国","日本","韩国","朝鲜","越南","印度","蒙古"]
+        if any(kw in country_raw for kw in eastern_countries):
+            region = "东方" if "中国" in country_raw or "日本" in country_raw or "韩国" in country_raw or "朝鲜" in country_raw or "越南" in country_raw or "蒙古" in country_raw else "世界"
         elif any(kw in school_raw for kw in ["印度哲学","日本哲学","伊斯兰","阿拉伯哲学","非洲哲学","犹太","波斯哲学","拉美哲学","东南亚哲学","韩国哲学"]):
             region = "世界"
         elif any(kw in country_raw for kw in ["以色列","伊朗","土耳其","埃及","巴西","阿根廷","墨西哥","泰国","印度尼西亚","巴基斯坦","孟加拉"]):

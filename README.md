@@ -2,7 +2,7 @@
 
 东西方及世界哲学的综合 Web 应用。React + FastAPI + DeepSeek AI，部署于 Render。
 
-**v2.5** — 96 流派，353+ 哲人，305 著作，31 国别，Editorial Layout 谱系图录。
+**v2.6** — 103 流派，347 哲人，340+ 头像，Editorial Layout 谱系图录。
 
 ---
 
@@ -59,14 +59,15 @@ rm -rf ../backend/app-dist && cp -r dist ../backend/app-dist
 DeepPhilosophy/
 ├── app/                          # React 前端 (Vite)
 │   ├── public/
-│   │   └── schools/              # 96 张流派背景图 + JSON 数据
+│   │   ├── schools/              # 103 张流派背景图 + JSON 数据
+│   │   ├── philosopher/           # 347 张哲人头像 + thumb/
 │   │   └── gene/                 # 博物馆素材库（region/era/symbol/landmark/terrain/textures）
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── HomePage.jsx                  # 首页：世界地图 + 金句 + 时间轴
 │   │   │   ├── GenealogyPage.jsx             # 哲学之河 V2 — 博物馆级谱系页
-│   │   │   ├── SchoolDetailPage.jsx          # 流派详情页（96 流派数据内联）
-│   │   │   ├── WorldPhilosophiesPage.jsx     # 世界哲学 31 流派
+│   │   │   ├── SchoolDetailPage.jsx          # 流派详情页（103 流派数据内联）
+│   │   │   ├── WorldPhilosophiesPage.jsx     # 世界哲学 38 流派
 │   │   │   ├── WesternPhilosophiesPage.jsx   # 西方哲学 41 流派
 │   │   │   ├── EasternPhilosophiesPage.jsx   # 东方哲学 24 流派
 │   │   │   ├── BooksPage.jsx / BookDetailPage.jsx / ReaderPage.jsx
@@ -162,9 +163,9 @@ KNOWLEDGE_DIR (F:/philosophy/) 或 R2 云存储
 | `/school/:name` | SchoolDetailPage | 流派详情（星丛+辞海+金句+时间轴） |
 | `/western-philosophies` | WesternPhilosophiesPage | 西方 41 流派 |
 | `/eastern-philosophies` | EasternPhilosophiesPage | 东方 24 流派 |
-| `/world-philosophies` | WorldPhilosophiesPage | 世界 31 流派 |
+| `/world-philosophies` | WorldPhilosophiesPage | 世界 38 流派 |
 | `/books` `/book/:id` `/reader/:id` | 书籍 | 浏览/详情/阅读 |
-| `/authors` `/author/:name` | 哲人 | 列表/详情（353 位） |
+| `/authors` `/author/:name` | 哲人 | 列表/详情（347 位 + 头像） |
 | `/qa` | QAPage | AI 哲学问答（流式） |
 | `/games` `/games/answer-book` `/games/phti` `/games/phti-silly` | 游戏 | 答案之书/PHTI/PHTI沙雕版 |
 | `/profile` `/settings` | 用户 | 登录/设置 |
@@ -175,8 +176,8 @@ KNOWLEDGE_DIR (F:/philosophy/) 或 R2 云存储
 
 | 文件 | 大小 | 用途 |
 |------|------|------|
-| `app/src/pages/SchoolDetailPage.jsx` | ~850KB | 96 流派 DATA 内联（最大文件） |
-| `backend/data/philosophers.json` | ~500KB | 353 位哲学家数据 |
+| `app/src/pages/SchoolDetailPage.jsx` | ~850KB | 103 流派 DATA 内联（最大文件） |
+| `backend/data/philosophers.json` | ~700KB | 347 位哲学家数据（含千字介绍） |
 | `backend/main.py` | ~1900 行 | API 路由 + 标签系统 + 扫描 |
 | `app/src/components/WorldMap.jsx` | | 世界地图（45+ 热点） |
 | `app/src/components/PhilosophyTimeline.jsx` | | 三列时间轴 |
