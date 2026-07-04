@@ -8424,7 +8424,8 @@ function SchoolDetailPage() {
   const data = dynamicData || m.data || GREEK_DATA;
   const subSchools = (m.sub && Object.keys(m.sub).length > 0) ? m.sub : (data.subSchools && data.subSchools.length > 0 ? data.subSchools : {});
 
-  const isComingSoon = !m.data && !dynamicData;
+  const isLoading = !!m._json && !dynamicData;
+  const isComingSoon = !m._json && !m.data;
   // Auto-generate subColors from thinkers' sub field (for schools with sub:{})
   const subColors = (() => {
     const sc = {};
@@ -8669,6 +8670,18 @@ const ENG_NAMES = {
     const ref = useRef(null); const [on, setOn] = useState(false);
     useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setOn(true); }, { threshold:0.05 }); o.observe(el); return () => o.disconnect(); }, []);
     return <div ref={ref} style={{ opacity:on?1:0, transform:on?'translateY(0)':'translateY(20px)', transition:'opacity 0.6s ease, transform 0.6s ease', ...style }}>{children}</div>;
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <style>{'@keyframes spin{to{transform:rotate(360deg)}}'}</style>
+        <div style={{ background:'#F8F6F2', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
+          <div style={{ width:40, height:40, border:'2px solid rgba(145,118,71,0.15)', borderTopColor:'#917647', borderRadius:'50%', animation:'spin 0.8s linear infinite', marginBottom:24 }} />
+          <h1 style={{ fontSize:'clamp(1.5rem,3vw,2rem)', fontWeight:400, color:'#2A1F1A', letterSpacing:'0.04em', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{name}</h1>
+        </div>
+      </>
+    );
   }
 
   if (isComingSoon) {
