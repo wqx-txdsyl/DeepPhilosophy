@@ -82,9 +82,21 @@ import threading
 def _warmup():
     try:
         scan_books(force=True)
+        _load_summaries_cache()  # 预热摘要
         print("[warmup] Books cache pre-loaded")
     except Exception as e:
         print(f"[warmup] Books pre-load failed (non-fatal): {e}")
+    try:
+        # 在后台线程中无法 await，用同步方式预计算
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        # 触发作者缓存构建（通过内部逻辑）
+        from philosophers_db import NAME_ALIASES, PHILOSOPHERS
+        print(f"[warmup] Authors ready: {len(PHILOSOPHERS)} philosophers loaded")
+        loop.close()
+    except Exception as e:
+        print(f"[warmup] Authors pre-load failed (non-fatal): {e}")
 threading.Thread(target=_warmup, daemon=True).start()
 
 # ============================================================
@@ -223,6 +235,10 @@ def _build_and_cache_keywords():
 _BOOKS_CACHE_LIST = None
 _BOOKS_CACHE_TIME = 0
 _BOOKS_PRELOAD_DONE = False
+_AUTHORS_CACHE = None       # /api/authors 缓存
+_AUTHORS_CACHE_TIME = 0
+_SUMMARIES_MEM_CACHE = None # 摘要内存缓存
+_SUMMARIES_MEM_TIME = 0
 
 def scan_books(force=False) -> list[dict]:
     """扫描书籍目录 —— 自动切换本地 / OSS / R2 / GitHub（带缓存）"""
@@ -727,12 +743,18 @@ async def get_book(book_id: str):
 
 
 def _load_summaries_cache() -> dict:
-    """加载书籍摘要缓存"""
+    """加载书籍摘要缓存（内存缓存，10分钟有效）"""
+    global _SUMMARIES_MEM_CACHE, _SUMMARIES_MEM_TIME
+    now = time.time()
+    if _SUMMARIES_MEM_CACHE is not None and (now - _SUMMARIES_MEM_TIME) < 600:
+        return _SUMMARIES_MEM_CACHE
     if not os.path.exists(_SUMMARIES_CACHE_PATH):
         return {}
     try:
         with open(_SUMMARIES_CACHE_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
+            _SUMMARIES_MEM_CACHE = json.load(f)
+        _SUMMARIES_MEM_TIME = now
+        return _SUMMARIES_MEM_CACHE
     except Exception:
         return {}
 
@@ -1365,99 +1387,67 @@ async def get_author_info(author_name: str):
 
 @app.get("/api/authors")
 async def list_all_authors(tag: Optional[str] = Query(None)):
-    """获取所有作者（过滤合集等非人物条目）"""
-    books = scan_books()
-    authors_map = {}
+    """获取所有作者（带内存缓存，5分钟有效）"""
+    global _AUTHORS_CACHE, _AUTHORS_CACHE_TIME
+    now = time.time()
+    if _AUTHORS_CACHE is not None and (now - _AUTHORS_CACHE_TIME) < 300:
+        result = _AUTHORS_CACHE
+    else:
+        books = scan_books()
+        authors_map = {}
+        from philosophers_db import NAME_ALIASES, PHILOSOPHERS
 
-    for b in books:
-        author = b["author"]
-        if not is_valid_author(author):
-            continue
-        # 解析别名 → 规范名（去重：马克思→卡尔·马克思）
-        from philosophers_db import NAME_ALIASES
-        canonical = NAME_ALIASES.get(author, author)
-        if canonical not in authors_map:
-            # 获取哲学家信息
-            info = get_philosopher_info(canonical)
-            authors_map[canonical] = {
-                "name": canonical,
-                "region": b["region"],
-                "books": [],
-                "era": info.get("era", "") if info else "",
-                "country": info.get("country", "") if info else "",
-                "school": info.get("school", "") if info else "",
+        # 预处理别名反向索引（一次性）
+        _alias_to_canonical = dict(NAME_ALIASES)
+
+        for b in books:
+            author = b["author"]
+            if not is_valid_author(author):
+                continue
+            canonical = _alias_to_canonical.get(author, author)
+            if canonical not in authors_map:
+                info = get_philosopher_info(canonical)
+                authors_map[canonical] = {
+                    "name": canonical,
+                    "region": b["region"],
+                    "books": [],
+                    "era": info.get("era", "") if info else "",
+                    "country": info.get("country", "") if info else "",
+                    "school": info.get("school", "") if info else "",
+                }
+            if b["title"] not in authors_map[canonical]["books"] and "待收录" not in b["title"]:
+                authors_map[canonical]["books"].append(b["title"])
+
+        # 补入哲学家数据库中的人物（无需磁盘扫描——philosophers.json 已全覆盖）
+        for ph_name, ph_info in PHILOSOPHERS.items():
+            if ph_name in authors_map or ph_name in _alias_to_canonical:
+                continue
+            # 快速区域推断（单次命中）
+            country_raw = ph_info.get("country", "")
+            school_raw = ph_info.get("school", "")
+            if "中国" in country_raw:
+                region = "东方"
+            elif any(kw in country_raw for kw in ("日本","韩国","朝鲜","越南","蒙古","以色列","伊朗","土耳其","埃及","巴西","阿根廷","墨西哥","泰国","印度尼西亚","巴基斯坦","孟加拉")):
+                region = "世界"
+            elif any(kw in school_raw for kw in ("印度哲学","日本哲学","伊斯兰","阿拉伯","非洲","犹太","波斯","拉美","东南亚","韩国")):
+                region = "世界"
+            else:
+                region = "西方"
+            authors_map[ph_name] = {
+                "name": ph_name, "region": region, "books": [],
+                "era": ph_info.get("era", ""), "country": ph_info.get("country", ""),
+                "school": ph_info.get("school", ""),
             }
-        if b["title"] not in authors_map[canonical]["books"] and "待收录" not in b["title"]:
-            authors_map[canonical]["books"].append(b["title"])
+        _AUTHORS_CACHE = authors_map
+        _AUTHORS_CACHE_TIME = now
+        result = authors_map
 
-    # 补入只有空目录没有著作的哲学家
-    knowledge_dir = config.KNOWLEDGE_DIR
-    for region_name in ["东方", "西方"]:
-        region_path = os.path.join(knowledge_dir, region_name)
-        if not os.path.isdir(region_path):
-            continue
-        for author_dir in os.listdir(region_path):
-            author_full = os.path.join(region_path, author_dir)
-            if not os.path.isdir(author_full):
-                continue
-            author_clean = author_dir.replace("###合集&概述###", "合集&概述")
-            if not is_valid_author(author_clean):
-                continue
-            canonical = NAME_ALIASES.get(author_clean, author_clean)
-            if canonical in authors_map:
-                continue
-            info = get_philosopher_info(author_clean)
-            authors_map[canonical] = {
-                "name": canonical,
-                "region": region_name,
-                "books": [],
-                "era": info.get("era", "") if info else "",
-                "country": info.get("country", "") if info else "",
-                "school": info.get("school", "") if info else "",
-            }
-    # 云端兜底 + 补入哲学家数据库中所有人物
-    from philosophers_db import PHILOSOPHERS
-    for ph_name, ph_info in PHILOSOPHERS.items():
-        if ph_name in authors_map:
-            continue
-        # 检查别名是否有匹配
-        matched = False
-        from philosophers_db import NAME_ALIASES
-        for alias, target in NAME_ALIASES.items():
-            if alias in authors_map:
-                matched = True
-                break
-            if target == ph_name and alias not in authors_map:
-                pass  # alias not in authors either
-        if matched:
-            continue
-        # 添加到作者列表（推断区域——以国家/地区为准，非流派）
-        country_raw = ph_info.get("country", "")
-        school_raw = ph_info.get("school", "")
-        # 先看country
-        eastern_countries = ["中国"]
-        if any(kw in country_raw for kw in eastern_countries):
-            region = "东方"
-        elif any(kw in country_raw for kw in ["日本","韩国","朝鲜","越南","蒙古"]):
-            region = "世界"
-        elif any(kw in school_raw for kw in ["印度哲学","日本哲学","伊斯兰","阿拉伯哲学","非洲哲学","犹太","波斯哲学","拉美哲学","东南亚哲学","韩国哲学"]):
-            region = "世界"
-        elif any(kw in country_raw for kw in ["以色列","伊朗","土耳其","埃及","巴西","阿根廷","墨西哥","泰国","印度尼西亚","巴基斯坦","孟加拉"]):
-            region = "世界"
-        else:
-            region = "西方"
-        authors_map[ph_name] = {
-            "name": ph_name,
-            "region": region,
-            "books": [],
-            "era": ph_info.get("era", ""),
-            "country": ph_info.get("country", ""),
-            "school": ph_info.get("school", ""),
-        }
-
-    result = []
-    for name, info in authors_map.items():
-        centuries = _era_to_centuries(info.get("era", "")) if info.get("era") else []  # already correct
+    # 筛选 + 序列化
+    from philosophers_db import NAME_ALIASES
+    _alias_to_canonical = dict(NAME_ALIASES)
+    output = []
+    for name, info in result.items():
+        centuries = _era_to_centuries(info.get("era", "")) if info.get("era") else []
         entry = {
             "name": name,
             "region": info["region"],
@@ -1465,21 +1455,15 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
             "books": info["books"][:10],
             "era": info["era"],
             "centuries": centuries,
-            # 清理国家字段中的括号注释
             "country": re.sub(r'[（(][^)）]*[)）]', '', info.get("country", "")).strip(),
             "school": info["school"],
         }
-        # 多标签筛选（逗号分隔，AND逻辑，流派/国家/时代/世纪）
+        # 多标签筛选（逗号分隔，AND逻辑）
         if tag:
             raw_school = info.get("school") or ""
             expanded_schools = [t for s in re.split(r'[/,、，;；]', raw_school) if s.strip() for t in _expand_tags(s.strip())]
-            # 清理国家字段：去掉括号注释，拆分为多国家
             raw_country_clean = re.sub(r'[（(][^)）]*[)）]', '', info.get("country") or "")
-            norm_countries = set()
-            for c in re.split(r'[/,、，;；]', raw_country_clean):
-                c = c.strip()
-                if c: norm_countries.add(c)
-            # All tags must match (AND logic)
+            norm_countries = set(c.strip() for c in re.split(r'[/,、，;；]', raw_country_clean) if c.strip())
             all_match = True
             for t in tag.split(","):
                 t = t.strip()
@@ -1492,11 +1476,11 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
                 break
             if not all_match:
                 continue
-        result.append(entry)
+        output.append(entry)
 
     from starlette.responses import JSONResponse as StarletteJSON2
     return StarletteJSON2(
-        {"authors": sorted(result, key=lambda a: (_author_sort_key(a["name"]), a["region"], a["name"]))},
+        {"authors": sorted(output, key=lambda a: (_author_sort_key(a["name"]), a["region"], a["name"]))},
         headers={"Cache-Control": "public, max-age=300"},
     )
 

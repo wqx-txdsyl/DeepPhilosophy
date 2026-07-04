@@ -8,28 +8,29 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation, useNavigationTy
 import { startAutoSave, stopAutoSave } from './data/userData';
 import ErrorBoundary from './components/ErrorBoundary';
 import Icon from './components/Icon';
-// 首屏页面（eager）
+// 首屏+常用页面（eager：小文件，即时响应）
 import BooksPage from './pages/BooksPage';
 import AuthorsPage from './pages/AuthorsPage';
 import GenealogyPage from './pages/GenealogyPage';
 import QAPage from './pages/QAPage';
 import HomePage from './pages/HomePage';
-// 非首屏页面（lazy：点击才加载）
+import SettingsPage from './pages/SettingsPage';       // 3.5KB, 常用
+import ProfilePage from './pages/ProfilePage';         // 9KB, 常用
+// 中型页面（lazy：点击才加载）
 const BookDetailPage = lazy(() => import('./pages/BookDetailPage'));
 const AuthorDetailPage = lazy(() => import('./pages/AuthorDetailPage'));
 const SchoolDetailPage = lazy(() => import('./pages/SchoolDetailPage'));
-const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const DeveloperPage = lazy(() => import('./pages/DeveloperPage'));
-const ReaderPage = lazy(() => import('./pages/ReaderPage'));
-const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
 const GamesPage = lazy(() => import('./pages/GamesPage'));
-const AnswerBookPage = lazy(() => import('./pages/AnswerBookPage'));
-const PHTIPage = lazy(() => import('./pages/PHTIPage'));
-const PHTISillyPage = lazy(() => import('./pages/PHTISillyPage'));
 const WorldPhilosophiesPage = lazy(() => import('./pages/WorldPhilosophiesPage'));
 const WesternPhilosophiesPage = lazy(() => import('./pages/WesternPhilosophiesPage'));
 const EasternPhilosophiesPage = lazy(() => import('./pages/EasternPhilosophiesPage'));
+// 重型页面（lazy：PDF/EPUB reader + 游戏）
+const ReaderPage = lazy(() => import('./pages/ReaderPage'));
+const AnswerBookPage = lazy(() => import('./pages/AnswerBookPage'));
+const PHTIPage = lazy(() => import('./pages/PHTIPage'));
+const PHTISillyPage = lazy(() => import('./pages/PHTISillyPage'));
 import './App.css';
 
 // 懒加载后 Loading 占位

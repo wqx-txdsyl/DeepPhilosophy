@@ -23,8 +23,9 @@ function ProfilePage() {
   const [loginUser, setLoginUser] = useState('');
   const [authMsg, setAuthMsg] = useState('');
   const [syncing, setSyncing] = useState(false);
+  const [checking, setChecking] = useState(true);  // 正在验证登录状态
 
-  // Restore login from token — verify with backend first (只执行一次)
+  // Restore login from token — verify with backend (只执行一次)
   useEffect(() => {
     const token = localStorage.getItem('dp_token');
     const user = localStorage.getItem('dp_username');
@@ -32,24 +33,27 @@ function ProfilePage() {
       // 先验证 token 是否仍然有效
       fetch(`${getApiBase()}/api/auth/profile`, {
         headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(8000),
+        signal: AbortSignal.timeout(6000),
       }).then(r => {
+        setChecking(false);
         if (r.ok) {
           setLoggedIn(true);
           setLoginUser(user);
-          syncFromCloud(token, false);  // auto-restore: merge, don't replace
+          syncFromCloud(token, false);
         } else {
-          // Token 已过期或后端重建 → 清除旧凭据，保留本地数据
-          localStorage.removeItem('dp_token');
-          localStorage.removeItem('dp_username');
+          // Token 失效 → 不清除本地凭据！仅显示未登录状态
+          // （后端可能刚重启，等几秒重试就能恢复；清除会导致反复登录）
           setLoggedIn(false);
-          setLoginUser('');
+          setLoginUser(user);
         }
       }).catch(() => {
-        // 网络错误 → 暂时保持登录状态，用本地数据
+        setChecking(false);
+        // 网络错误 → 保持登录状态，使用本地缓存
         setLoggedIn(true);
         setLoginUser(user);
       });
+    } else {
+      setChecking(false);
     }
     setReadingHistory(getReadingHistory());
     setChatHistory(getChatHistory());
@@ -239,7 +243,46 @@ function ProfilePage() {
                 onClick={() => navigate('/DEVELOPER_IS_TXDSYL')}>🔧 开发者后台</button>
             )}
           </>
+        ) : checking ? (
+          // 正在验证 token...
+          <div style={{ textAlign: 'center', padding: 20 }}>
+            <div style={{ width:28, height:28, border:'2px solid var(--border)', borderTopColor:'var(--accent)', borderRadius:'50%', animation:'spin 0.8s linear infinite', margin:'0 auto 12px' }} />
+            <p style={{ fontSize:13, color:'var(--text-dim)' }}>验证登录状态...</p>
+          </div>
+        ) : loginUser && !loggedIn ? (
+          // Token 验证失败（后端可能刚重启），显示重试
+          <>
+            <div style={{ fontSize: 36, marginBottom: 4 }}><Icon name="icon-refresh" size={36} /></div>
+            <h2 style={{ fontSize: 16, marginBottom: 8 }}>{loginUser}</h2>
+            <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 16, maxWidth: 260 }}>
+              会话已过期，请重新登录
+            </p>
+            <button className="btn btn-secondary" style={{ padding: '6px 20px', fontSize: 12, marginBottom: 8 }}
+              onClick={() => {
+                // 重试：重新检查 token
+                setChecking(true);
+                const t = localStorage.getItem('dp_token');
+                if (t) {
+                  fetch(`${getApiBase()}/api/auth/profile`, {
+                    headers: { 'Authorization': `Bearer ${t}` },
+                    signal: AbortSignal.timeout(6000),
+                  }).then(r => {
+                    setChecking(false);
+                    if (r.ok) { setLoggedIn(true); setLoginUser(localStorage.getItem('dp_username')||''); }
+                    else { setLoggedIn(false); }
+                  }).catch(() => { setChecking(false); setLoggedIn(true); });
+                } else { setChecking(false); }
+              }}>🔄 重试</button>
+            <button className="btn btn-danger" style={{ padding: '6px 20px', fontSize: 12 }}
+              onClick={() => {
+                localStorage.removeItem('dp_token');
+                localStorage.removeItem('dp_username');
+                setLoginUser('');
+                setLoggedIn(false);
+              }}>退出并重新登录</button>
+          </>
         ) : (
+          // 未登录状态
           <>
             <div style={{ fontSize: 36, marginBottom: 4 }}><Icon name="icon-lock-key" size={36} /></div>
             <h2 style={{ fontSize: 16, marginBottom: 12 }}>登录 / 注册</h2>
