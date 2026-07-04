@@ -130,7 +130,7 @@ function AuthorDetailPage() {
             width: 140, height: 180,
             borderRadius: '70px / 90px',
             overflow: 'hidden',
-            background: 'var(--secondary)',
+            background: 'rgba(145,118,71,0.06)',
             border: '2px solid rgba(145,118,71,0.12)',
             boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -138,7 +138,7 @@ function AuthorDetailPage() {
             <img
               src={`/philosopher/${encodeURIComponent(author.name)}.jpg`}
               alt={author.name}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
                 e.currentTarget.parentElement.innerHTML = '<span style=\"font-size:40px;opacity:0.3\">?</span>';
