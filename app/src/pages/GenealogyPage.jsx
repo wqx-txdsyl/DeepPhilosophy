@@ -13,7 +13,7 @@ function useFade() {
 // Only load image when within 300px of viewport
 function LazyImg({ src, alt, style, ph }) {
   const ref = useRef(null); const [loaded, setLoaded] = useState(false);
-  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoaded(true); o.disconnect(); } }, { rootMargin: '1000px' }); o.observe(el); return () => o.disconnect(); }, []);
+  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoaded(true); o.disconnect(); } }, { rootMargin: '200px' }); o.observe(el); return () => o.disconnect(); }, []);
   if (!loaded) { const h = ph || 150; return <div ref={ref} style={{...style, height:h, minHeight:h, background:'#E8E0D4'}} />; }
   return <img ref={ref} src={src} alt={alt} style={style} />;
 }
@@ -171,36 +171,27 @@ function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/s
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Smart Progressive Image: cache-first, then idle preload ───
+// ─── Thumbnail-only card images (full-res loaded on hover for HD upgrade) ───
 function ProgImg({ name, style }) {
   const full = fullUrl(name);
   const thumb = thumbUrl(name);
-  // Check cache by attempting to load full-res immediately
-  const [src, setSrc] = useState(() => {
-    const test = new Image(); test.src = full;
-    // If already cached (complete within same tick), use full-res directly
-    return test.complete && test.naturalWidth > 0 ? full : thumb;
-  });
-  const [hd, setHd] = useState(() => {
-    const test = new Image(); test.src = full;
-    return test.complete && test.naturalWidth > 0;
-  });
-  const idleId = useRef(null);
+  const [hd, setHd] = useState(false);
+  const src = hd ? full : thumb;
 
-  useEffect(() => {
+  // Only preload full-res on hover (not for every card immediately)
+  const onEnter = () => {
     if (hd) return;
-    const t = setTimeout(() => {
-      const img = new Image();
-      img.onload = () => { setSrc(full); setHd(true); };
-      img.src = full;
-    }, 200);
-    return () => clearTimeout(t);
-  }, [name, hd]);
+    const img = new Image();
+    img.onload = () => setHd(true);
+    img.src = full;
+  };
 
   return (
     <img src={src} alt={name}
-      style={{ ...style, filter: hd ? 'none' : 'blur(4px)', transition: 'filter 0.3s ease' }}
-      onError={(e) => { if (!hd) e.currentTarget.src = full; }} />
+      onMouseEnter={onEnter}
+      style={{ ...style, filter: hd ? 'none' : 'blur(2px)', transition: 'filter 0.3s ease' }}
+      loading="lazy"
+    />
   );
 }
 
