@@ -29,7 +29,7 @@ python add_subschool.py "伊壁鸠鲁学派" "古希腊哲学"
 |------|------|
 | 数据生成 | 流派 JSON 不存在时，DeepSeek 自动生成（概述/结语/思想家/著作/术语/名言/时间轴） |
 | closingQuote 补全 | 若 DeepSeek 遗漏 closingQuote，自动取 quotes 最后一条生成（格式：`名言。——作者`） |
-| 图片处理 | 生成 200×280 缩略图 |
+| 图片处理 | 生成 200×280 缩略图<br>**无图片时自动调用 `gen_school_bg.py` AI 生成** |
 | JSON 复制 | 将 JSON 复制到 `app/public/schools/` 供前端动态加载 |
 | SCHOOL_MAP 注入 | 在父流派条目后添加 `_json` 引用条目 |
 | 父流派更新 | 更新父流派的 `sub_schools` 字段及对应的 `_SUB_SCHOOLS` 数组 |

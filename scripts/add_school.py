@@ -127,9 +127,20 @@ def fix_image(name, data):
     elif os.path.exists(src_png):
         img_path = src_png
     else:
-        print(f"[FAIL] 未找到图片: {name}.jpg/png")
-        print("  请将图片放到 app/public/schools/")
-        return
+        print(f"[WARN] 未找到图片: {name}.jpg/png，尝试用 AI 生成...")
+        gen_script = os.path.join(os.path.dirname(__file__), "gen_school_bg.py")
+        if os.path.exists(gen_script):
+            import subprocess
+            result = subprocess.run([sys.executable, gen_script, name], cwd=os.path.dirname(__file__), timeout=300)
+            if result.returncode == 0 and os.path.exists(src_jpg):
+                img_path = src_jpg
+                print(f"  [OK] AI 已生成背景图: {name}.jpg")
+            else:
+                print(f"[FAIL] AI 生成失败，请手动准备图片放到 app/public/schools/")
+                return
+        else:
+            print(f"[FAIL] 未找到 gen_school_bg.py，请手动准备图片")
+            return
 
     img = Image.open(img_path).convert("RGB")
     if dst and img_path != dst:
