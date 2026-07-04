@@ -11687,6 +11687,7 @@ function SchoolDetailPage() {
   '东欧斯拉夫哲学': { data:东欧斯拉夫哲学_DATA, sub:{}, ci:[], bg:'url(/schools/东欧斯拉夫哲学.jpg)' },
   '北美哲学': { data:北美哲学_DATA, sub:{}, ci:[], bg:'url(/schools/北美哲学.jpg)' },
   '美索不达米亚哲学': { data:美索不达米亚哲学_DATA, sub:{}, ci:[], bg:'url(/schools/美索不达米亚哲学.jpg)' },
+  '古埃及哲学': { data:古埃及哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古埃及哲学.jpg)' },
   '古希伯来哲学': { data:古希伯来哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古希伯来哲学.jpg)' },
   '凯尔特哲学': { data:凯尔特哲学_DATA, sub:{}, ci:[], bg:'url(/schools/凯尔特哲学.jpg)' },
   '罗马哲学': { data:罗马哲学_DATA, sub:{}, ci:[], bg:'url(/schools/罗马哲学.jpg)' },
