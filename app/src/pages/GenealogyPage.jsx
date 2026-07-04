@@ -172,13 +172,16 @@ function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/s
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Card image: thumbnail only, native lazy loading ───
+// ─── Card image: thumbnail by default, HD only if already cached ───
 function ProgImg({ name, style }) {
-  return (
-    <img src={thumbUrl(name)} alt={name} loading="lazy"
-      style={{ ...style, display: 'block' }}
-    />
-  );
+  const full = fullUrl(name);
+  const thumb = thumbUrl(name);
+  // Check browser cache synchronously — no network request
+  const [src] = useState(() => {
+    const t = new Image(); t.src = full;
+    return (t.complete && t.naturalWidth > 0) ? full : thumb;
+  });
+  return <img src={src} alt={name} loading="lazy" style={{ ...style, display: 'block' }} />;
 }
 
 // ─── School Card ───
