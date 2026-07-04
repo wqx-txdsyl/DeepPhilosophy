@@ -30,7 +30,7 @@ COPY backend/data/github_manifest.json /app/data/
 COPY backend/data/oss_manifest.json /app/data/
 COPY backend/data/philosophers.json /app/data/
 COPY backend/data/name_aliases.json /app/data/
-# 复制前端构建产物（同源部署，避免 CORS）
+# 复制前端构建产物（同源部署，避免 CORS）— v2.7.1
 COPY backend/app-dist/ ./static/
 
 # 环境变量默认值（可在 Render 面板覆盖）
