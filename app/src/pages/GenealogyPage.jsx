@@ -166,25 +166,44 @@ function getEraIdx(c) {
 }
 
 const IMG_MAP = {
-   '人工智能哲学':'人工智能哲学_v2', '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific' };
+};
 function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.jpg`; }
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Thumbnail image with instant cache check for full-res ───
+// ─── Image: cache-first (HD > thumb), then idle-upgrade thumbs to HD ───
 function ProgImg({ name, style }) {
   const full = fullUrl(name);
   const thumb = thumbUrl(name);
-  // If full-res is already cached (e.g. from detail page), use it immediately
+
+  // Check cache synchronously: if HD cached → use it; else use thumb
   const [src, setSrc] = useState(() => {
-    const test = new Image(); test.src = full;
-    return test.complete && test.naturalWidth > 0 ? full : thumb;
+    const t = new Image(); t.src = full;
+    return (t.complete && t.naturalWidth > 0) ? full : thumb;
   });
+  const isThumb = src === thumb;
+
+  useEffect(() => {
+    if (!isThumb) return;
+    // Idle upgrade: when browser is free, load HD and swap
+    const id = requestIdleCallback ? requestIdleCallback(() => {
+      const img = new Image();
+      img.onload = () => setSrc(full);
+      img.src = full;
+    }, { timeout: 3000 }) : setTimeout(() => {
+      const img = new Image();
+      img.onload = () => setSrc(full);
+      img.src = full;
+    }, 1000);
+    return () => {
+      if (requestIdleCallback) cancelIdleCallback(id);
+      else clearTimeout(id);
+    };
+  }, [name, isThumb]);
 
   return (
-    <img src={src} alt={name} loading="lazy"
-      style={{ ...style, display: 'block' }}
-      onError={(e) => { e.currentTarget.src = thumb; }}
+    <img src={src} alt={name}
+      style={{ ...style, display: 'block', filter: isThumb ? 'blur(2px)' : 'none', transition: 'filter 0.3s ease' }}
     />
   );
 }
