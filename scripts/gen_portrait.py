@@ -8,33 +8,54 @@ import sys, os, json, requests, time
 from PIL import Image
 from io import BytesIO
 
-# Load API key from api_keys.json
-_keys_path = os.path.join(SCRIPT_DIR, "api_keys.json")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load API key — try api_keys.json first, then gen_school_bg.py fallback
 API_KEY = ""
+_keys_path = os.path.join(SCRIPT_DIR, "api_keys.json")
 if os.path.exists(_keys_path):
     with open(_keys_path, "r", encoding="utf-8") as f:
-        _keys = json.load(f)
-    API_KEY = _keys.get("agnes", _keys.get("deepseek", ""))
+        try:
+            _keys = json.load(f)
+            API_KEY = _keys.get("agnes", _keys.get("deepseek", ""))
+        except:
+            pass
+if not API_KEY:
+    # Fallback: extract from gen_school_bg.py
+    import re
+    _bg_path = os.path.join(SCRIPT_DIR, "gen_school_bg.py")
+    if os.path.exists(_bg_path):
+        with open(_bg_path, "r", encoding="utf-8") as f:
+            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
+            if m: API_KEY = m.group(1)
 IMG_API = "https://apihub.agnes-ai.com/v1/images/generations"
 TEXT_API = "https://apihub.agnes-ai.com/v1/chat/completions"
 TEXT_MODEL = "agnes-2.0-flash"
 IMG_MODEL = "agnes-image-2.1-flash"
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PHILO_DIR = os.path.join(SCRIPT_DIR, "..", "app", "public", "philosopher")
 THUMB_DIR = os.path.join(PHILO_DIR, "thumb")
+ROOT = os.path.dirname(SCRIPT_DIR)
 
 os.makedirs(PHILO_DIR, exist_ok=True)
 os.makedirs(THUMB_DIR, exist_ok=True)
 
-# 缺图哲人及其时代/流派信息
-MISSING_PHILOSOPHERS = {
-    "司马穰苴": {"era": "春秋", "school": "兵家", "desc": "春秋末期齐国军事家，著有《司马法》，被誉为'兵家之祖'之一"},
-    "尉缭": {"era": "战国", "school": "兵家", "desc": "战国末期军事家，著有《尉缭子》，主张以法治军"},
-    "慎到": {"era": "战国", "school": "法家", "desc": "战国时期法家思想家，强调'势'的重要性，认为君主应以势治天下"},
-    "邓析": {"era": "春秋", "school": "名家", "desc": "春秋末期郑国大夫，中国最早的名家思想家，擅长辩论和刑名之学"},
-    "邹奭": {"era": "战国", "school": "阴阳家", "desc": "战国末期阴阳家学者，邹衍的后学，继承发展了五德终始理论"},
-    "邹衍": {"era": "战国", "school": "阴阳家", "desc": "战国末期阴阳家代表人物，创立五德终始说和大九州说，影响深远"},
+# Load philosophers.json for context info
+PHILOSOPHERS_DB = {}
+_philo_path = os.path.join(ROOT, "backend", "data", "philosophers.json")
+if os.path.exists(_philo_path):
+    with open(_philo_path, "r", encoding="utf-8") as f:
+        PHILOSOPHERS_DB = json.load(f)
+
+# 已知缺图哲人的详细信息（优先于 philosophers.json 的简短描述）
+KNOWN_MISSING = {
+    "司马穰苴": {"era": "春秋", "school": "兵家", "desc": "春秋末期齐国军事家，著有《司马法》"},
+    "尉缭": {"era": "战国", "school": "兵家", "desc": "战国末期军事家，著有《尉缭子》"},
+    "慎到": {"era": "战国", "school": "法家", "desc": "战国法家思想家，强调'势'治天下"},
+    "邓析": {"era": "春秋", "school": "名家", "desc": "春秋郑国大夫，中国最早的名家思想家"},
+    "邹奭": {"era": "战国", "school": "阴阳家", "desc": "战国阴阳家学者，继承五德终始理论"},
+    "邹衍": {"era": "战国", "school": "阴阳家", "desc": "战国阴阳家代表，创五德终始说和大九州说"},
+    "相里氏之墨": {"era": "战国", "school": "墨家", "desc": "战国墨家学者，相里氏一派代表"},
 }
 
 STYLE_PROMPT = (
@@ -47,12 +68,20 @@ STYLE_PROMPT = (
 
 def generate_prompt(philosopher, info):
     """为哲人生成图片 prompt"""
-    return (
-        f"A dignified classical Chinese portrait of {philosopher}, "
-        f"{info['era']} period {info['school']} philosopher. "
-        f"{info['desc']}. "
-        f"{STYLE_PROMPT}"
-    )
+    if info:
+        return (
+            f"A dignified classical Chinese portrait of {philosopher}, "
+            f"{info.get('era', 'ancient')} period {info.get('school', 'philosophy')} philosopher. "
+            f"{info.get('desc', 'An influential thinker in Chinese philosophy')}. "
+            f"{STYLE_PROMPT}"
+        )
+    else:
+        # Generic prompt for unknown philosophers
+        return (
+            f"A dignified classical Chinese ink painting portrait of the philosopher {philosopher}, "
+            f"scholarly appearance, traditional Chinese attire, elegant brushwork, "
+            f"{STYLE_PROMPT}"
+        )
 
 def generate_image(prompt):
     """调用 Agnes Image API 生成图片"""
@@ -94,26 +123,40 @@ def save_portrait(name, img):
     thumb_path = os.path.join(THUMB_DIR, f"{safe}.jpg")
     thumb.save(thumb_path, "JPEG", quality=75)
 
+def get_philosopher_info(name):
+    """Get philosopher context from known dict or philosophers.json"""
+    if name in KNOWN_MISSING:
+        return KNOWN_MISSING[name]
+    if name in PHILOSOPHERS_DB:
+        p = PHILOSOPHERS_DB[name]
+        return {
+            "era": p.get("era", ""),
+            "school": p.get("school", ""),
+            "desc": p.get("bio", "")[:100] if p.get("bio") else "",
+        }
+    return {}
+
 def main():
     if len(sys.argv) > 1:
         names = [sys.argv[1]]
     else:
-        # Only generate for those missing images
+        # Batch: any philosopher missing image or with image < 20KB
         names = []
-        for n in MISSING_PHILOSOPHERS:
-            safe = n.replace("/", "-").replace(":", "：")
-            if not os.path.exists(os.path.join(PHILO_DIR, f"{safe}.jpg")):
-                names.append(n)
+        for name in PHILOSOPHERS_DB:
+            safe = name.replace("/", "-").replace(":", "：")
+            path = os.path.join(PHILO_DIR, f"{safe}.jpg")
+            if not os.path.exists(path) or os.path.getsize(path) < 20000:
+                names.append(name)
 
     if not names:
-        print("All philosophers already have images!")
+        print("All philosophers have good images!")
         return
 
     print(f"Generating portraits for {len(names)} philosophers:\n")
 
     for i, name in enumerate(names, 1):
-        info = MISSING_PHILOSOPHERS.get(name, {})
-        print(f"[{i}/{len(names)}] {name} ({info.get('era', '')} {info.get('school', '')})")
+        info = get_philosopher_info(name)
+        print(f"[{i}/{len(names)}] {name} ({info.get('era', '?')} {info.get('school', '?')})")
 
         prompt = generate_prompt(name, info)
         print(f"  Prompt: {prompt[:120]}...")
@@ -128,15 +171,12 @@ def main():
         except Exception as e:
             print(f"  ERROR: {e}")
 
-        time.sleep(1.5)  # Rate limit
+        time.sleep(1.5)
 
     # Final count
-    remaining = 0
-    for name in MISSING_PHILOSOPHERS:
-        safe = name.replace("/", "-").replace(":", "：")
-        if not os.path.exists(os.path.join(PHILO_DIR, f"{safe}.jpg")):
-            remaining += 1
-    print(f"\nRemaining without images: {remaining}")
+    missing = sum(1 for n in PHILOSOPHERS_DB
+                  if not os.path.exists(os.path.join(PHILO_DIR, n.replace("/", "-").replace(":", "：") + ".jpg")))
+    print(f"\nRemaining without images: {missing}/{len(PHILOSOPHERS_DB)}")
 
 if __name__ == "__main__":
     main()
