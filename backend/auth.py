@@ -320,7 +320,7 @@ def init_db():
             username TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
             salt TEXT NOT NULL,
-            created_at TEXT NOT NULL DEFAULT (datetime('now'))
+            created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
         );
 
         CREATE TABLE IF NOT EXISTS tokens (
@@ -338,7 +338,7 @@ def init_db():
             book_author TEXT NOT NULL,
             progress_page INTEGER DEFAULT 1,
             progress_percent REAL DEFAULT 0,
-            last_read_at TEXT NOT NULL DEFAULT (datetime('now')),
+            last_read_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
             FOREIGN KEY (user_id) REFERENCES users(id),
             UNIQUE(user_id, book_id)
         );
@@ -349,7 +349,7 @@ def init_db():
             role TEXT NOT NULL,
             content TEXT NOT NULL,
             sources TEXT,
-            created_at TEXT NOT NULL DEFAULT (datetime('now')),
+            created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
 
@@ -369,7 +369,7 @@ def init_db():
             book_id TEXT NOT NULL,
             role TEXT NOT NULL,
             content TEXT NOT NULL,
-            created_at TEXT NOT NULL DEFAULT (datetime('now')),
+            created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
     """)
@@ -435,19 +435,23 @@ def login(username: str, password: str) -> dict:
         if pw_hash != row["password_hash"]:
             return {"success": False, "error": "用户名或密码错误"}
 
-        # 生成 token（7天有效）
+        # 生成 token（30天有效）
         token = uuid.uuid4().hex + uuid.uuid4().hex
-        expires = datetime.now().timestamp() + 7 * 24 * 3600
+        expires = datetime.now().timestamp() + 30 * 24 * 3600
+        expires_str = datetime.fromtimestamp(expires).strftime('%Y-%m-%dT%H:%M:%SZ')
 
         conn.execute(
             "INSERT INTO tokens (token, user_id, expires_at) VALUES (?, ?, ?)",
-            (token, row["id"], datetime.fromtimestamp(expires).isoformat()),
+            (token, row["id"], expires_str),
         )
         # 清理旧 token
         conn.execute(
             "DELETE FROM tokens WHERE user_id = ? AND expires_at < datetime('now')",
             (row["id"],),
         )
+        conn.commit()
+        # 备份DB到GitHub（保留登录状态）
+        _sync_db_to_github()
         conn.commit()
 
         return {
@@ -489,14 +493,15 @@ def save_reading_progress(user_id: int, book_id: str, book_title: str,
                           book_author: str, page: int = 1, percent: float = 0):
     """保存/更新阅读进度"""
     conn = _get_conn()
+    now_utc = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
     conn.execute(
         """INSERT INTO reading_history (user_id, book_id, book_title, book_author, progress_page, progress_percent, last_read_at)
-           VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+           VALUES (?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(user_id, book_id) DO UPDATE SET
            progress_page=excluded.progress_page,
            progress_percent=excluded.progress_percent,
-           last_read_at=datetime('now')""",
-        (user_id, book_id, book_title, book_author, page, percent),
+           last_read_at=?""",
+        (user_id, book_id, book_title, book_author, page, percent, now_utc, now_utc),
     )
     conn.commit()
     conn.close()
