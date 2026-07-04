@@ -172,39 +172,11 @@ function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/s
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Image: cache-first (HD > thumb), then idle-upgrade thumbs to HD ───
+// ─── Card image: thumbnail only, native lazy loading ───
 function ProgImg({ name, style }) {
-  const full = fullUrl(name);
-  const thumb = thumbUrl(name);
-
-  // Check cache synchronously: if HD cached → use it; else use thumb
-  const [src, setSrc] = useState(() => {
-    const t = new Image(); t.src = full;
-    return (t.complete && t.naturalWidth > 0) ? full : thumb;
-  });
-  const isThumb = src === thumb;
-
-  useEffect(() => {
-    if (!isThumb) return;
-    // Idle upgrade: when browser is free, load HD and swap
-    const id = requestIdleCallback ? requestIdleCallback(() => {
-      const img = new Image();
-      img.onload = () => setSrc(full);
-      img.src = full;
-    }, { timeout: 3000 }) : setTimeout(() => {
-      const img = new Image();
-      img.onload = () => setSrc(full);
-      img.src = full;
-    }, 1000);
-    return () => {
-      if (requestIdleCallback) cancelIdleCallback(id);
-      else clearTimeout(id);
-    };
-  }, [name, isThumb]);
-
   return (
-    <img src={src} alt={name}
-      style={{ ...style, display: 'block', filter: isThumb ? 'blur(2px)' : 'none', transition: 'filter 0.3s ease' }}
+    <img src={thumbUrl(name)} alt={name} loading="lazy"
+      style={{ ...style, display: 'block' }}
     />
   );
 }
