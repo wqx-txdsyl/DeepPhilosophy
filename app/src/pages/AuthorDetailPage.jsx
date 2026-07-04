@@ -61,57 +61,85 @@ function AuthorDetailPage() {
 
       {/* 人物信息卡片 */}
       <div className="card" style={{ cursor: 'default' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-          <div>
-            <h2 style={{ fontSize: 22, marginBottom: 4 }}>{author.name}</h2>
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-              <span className={`badge ${author.region === '东方' ? 'badge-east' : 'badge-west'}`}>
-                {author.region}
-              </span>
-              {author.source && (
-                <span className="badge badge-available" style={{ fontSize: 10 }}>
-                  数据: {author.source === 'builtin_database' ? '内置库' :
-                         author.source === 'baidu_baike' ? '百度百科' :
-                         author.source === 'wikipedia' ? '维基百科' : '基础'}
+        {/* 姓名 */}
+        <h2 style={{ fontSize: 24, fontWeight: 500, marginBottom: 16, fontFamily: '"Playfair Display","PingFang SC",serif', letterSpacing: '0.03em' }}>
+          {author.name}
+        </h2>
+
+        {/* 标签 + 头像 横排 */}
+        <div style={{ display: 'flex', gap: 20, marginBottom: 20, alignItems: 'stretch', flexWrap: 'wrap' }}>
+          {/* 左侧：标签列 */}
+          <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 8, justifyContent: 'center' }}>
+            {/* 年代 + 国家 + 流派 标签 */}
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {author.era && (
+                <span style={{
+                  background: 'var(--ochre)', color: '#fff', padding: '4px 12px',
+                  borderRadius: 14, fontSize: 12, fontWeight: 500, whiteSpace: 'nowrap',
+                }}>{author.era}</span>
+              )}
+              {author.country && (
+                <span style={{
+                  background: 'var(--prussian)', color: '#fff', padding: '4px 12px',
+                  borderRadius: 14, fontSize: 12, fontWeight: 500, whiteSpace: 'nowrap',
+                }}>{author.country}</span>
+              )}
+              {author.school && author.school.split(/[/,，、]/).map((s, i) => (
+                <span key={i} style={{
+                  background: 'var(--secondary)', color: 'var(--ochre)', padding: '4px 12px',
+                  borderRadius: 14, fontSize: 12, fontWeight: 500, border: '1px solid rgba(145,118,71,0.15)',
+                  whiteSpace: 'nowrap',
+                }}>{s.trim()}</span>
+              ))}
+            </div>
+            {/* 收录作品 */}
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+              {author.book_count > 0 && (
+                <span style={{
+                  color: 'var(--text-dim)', fontSize: 12,
+                  display: 'flex', alignItems: 'center', gap: 4,
+                }}>
+                  <Icon name="nav-books" size={14} />
+                  {author.book_count} 部著作
+                </span>
+              )}
+              {author.region && (
+                <span style={{
+                  color: 'var(--text-dim)', fontSize: 11,
+                  background: author.region === '东方' ? 'rgba(59,90,150,0.08)' : 'rgba(145,118,71,0.08)',
+                  padding: '2px 8px', borderRadius: 10,
+                }}>
+                  {author.region}哲学
                 </span>
               )}
             </div>
           </div>
-        </div>
 
-        {/* 信息碎片 */}
-        <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 1fr',
-          gap: 8, marginBottom: 12,
-        }}>
-          {author.era && (
-            <div style={{ background: 'var(--secondary)', padding: '8px 12px', borderRadius: 8 }}>
-              <div style={{ fontSize: 10, color: 'var(--text-dim)', marginBottom: 2 }}>年代</div>
-              <div style={{ fontSize: 13 }}>{author.era}</div>
-            </div>
-          )}
-          {author.country && (
-            <div style={{ background: 'var(--secondary)', padding: '8px 12px', borderRadius: 8 }}>
-              <div style={{ fontSize: 10, color: 'var(--text-dim)', marginBottom: 2 }}>国家</div>
-              <div style={{ fontSize: 13 }}>{author.country}</div>
-            </div>
-          )}
-          {author.school && (
-            <div style={{ background: 'var(--secondary)', padding: '8px 12px', borderRadius: 8 }}>
-              <div style={{ fontSize: 10, color: 'var(--text-dim)', marginBottom: 2 }}>思想流派</div>
-              <div style={{ fontSize: 13 }}>{author.school}</div>
-            </div>
-          )}
-          {author.book_count > 0 && (
-            <div style={{ background: 'var(--secondary)', padding: '8px 12px', borderRadius: 8 }}>
-              <div style={{ fontSize: 10, color: 'var(--text-dim)', marginBottom: 2 }}>收录作品</div>
-              <div style={{ fontSize: 13 }}>{author.book_count} 部</div>
-            </div>
-          )}
+          {/* 右侧：头像（长椭圆框） */}
+          <div style={{
+            flexShrink: 0,
+            width: 140, height: 180,
+            borderRadius: '70px / 90px',
+            overflow: 'hidden',
+            background: 'var(--secondary)',
+            border: '2px solid rgba(145,118,71,0.12)',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <img
+              src={`/philosopher/${encodeURIComponent(author.name)}.jpg`}
+              alt={author.name}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement.innerHTML = '<span style=\"font-size:40px;opacity:0.3\">?</span>';
+              }}
+            />
+          </div>
         </div>
 
         {/* 生平简介 */}
-        <div style={{ lineHeight: 1.9, fontSize: 14, color: 'var(--text)', whiteSpace: 'pre-line' }}>
+        <div style={{ lineHeight: 1.9, fontSize: 14, color: 'var(--text)', whiteSpace: 'pre-line', clear: 'both' }}>
           {typeof author.bio === 'string' ? author.bio.replace(/\\n/g, '\n') : author.bio}
         </div>
 

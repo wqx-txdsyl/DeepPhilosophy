@@ -133,19 +133,70 @@ def add_author(name, folder_path=None):
     save_json(PHILOSOPHERS_FILE, philosophers)
     print(f"  ✓ 已保存到 philosophers.json")
 
-    # 5. 新标签
+    # 5. 爬取头像 + 人脸检测 + 缩略图
+    print(f"  📷 爬取头像...")
+    _fetch_author_image(name)
+
+    # 6. 新标签
     if new_tags:
         print(f"  ⚠ 新标签: {new_tags}")
         print(f"    请手动添加到: backend/main.py _normalize_tag()")
         print(f"                  app/src/pages/AuthorsPage.jsx normMap")
         print(f"                  app/src/pages/BooksPage.jsx normMap")
-        print(f"                  app/src/pages/HomePage.jsx normMap")
 
-    # 6. 更新统计提示
+    # 7. 更新统计提示
     total = len(philosophers)
     print(f"  当前哲人总数: {total}")
     print(f"  下一步: cd app && npm run build && 同步 && 推送")
-    # 如果前端计数硬编码，需手动更新 HomePage/Settings
+
+
+def _fetch_author_image(name):
+    """爬取头像 → 人脸检测 → 缩略图"""
+    import subprocess, cv2, numpy
+    from PIL import Image
+
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    FETCH_SCRIPT = os.path.join(SCRIPT_DIR, "fetch_philosopher_img.py")
+    PHILO_DIR = os.path.join(SCRIPT_DIR, "..", "app", "public", "philosopher")
+
+    safe = name.replace("/", "-").replace("\\", "-").replace(":", "：")
+    out_path = os.path.join(PHILO_DIR, safe + ".jpg")
+
+    # Step 1: 爬取
+    if os.path.exists(FETCH_SCRIPT):
+        result = subprocess.run(
+            [sys.executable, FETCH_SCRIPT, name],
+            cwd=SCRIPT_DIR, timeout=180,
+            capture_output=True, text=True
+        )
+        if result.returncode != 0 or not os.path.exists(out_path):
+            print(f"  ⚠ 图片爬取失败，请稍后手动获取: {out_path}")
+            return
+    else:
+        print(f"  ⚠ 未找到爬虫脚本，请手动准备图片")
+        return
+
+    # Step 2: 人脸检测
+    try:
+        pil_img = Image.open(out_path).convert("RGB")
+        img = cv2.cvtColor(numpy.array(pil_img), cv2.COLOR_RGB2BGR)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        fc = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+        faces = fc.detectMultiScale(gray, 1.1, 5, minSize=(60, 60))
+        if len(faces) == 0:
+            # 尝试宽松检测
+            faces = fc.detectMultiScale(gray, 1.05, 3, minSize=(40, 40))
+        if len(faces) > 0:
+            print(f"  ✓ 人脸检测通过 ({len(faces)}张人脸)")
+        else:
+            print(f"  ⚠ 未检测到人脸（可能是雕像/画像，如为现代人请手动更换）")
+    except Exception as e:
+        print(f"  ⚠ 人脸检测异常: {e}")
+
+    # Step 3: 缩略图已由 fetch 脚本生成
+    thumb_path = os.path.join(PHILO_DIR, "thumb", safe + ".jpg")
+    if os.path.exists(thumb_path):
+        print(f"  ✓ 缩略图已就绪")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
