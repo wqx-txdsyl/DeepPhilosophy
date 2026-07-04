@@ -171,24 +171,21 @@ function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/s
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Lazy thumbnail: only load when near viewport ───
+// ─── Thumbnail image with instant cache check for full-res ───
 function ProgImg({ name, style }) {
-  const ref = useRef(null);
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const o = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setShow(true); o.disconnect(); }
-    }, { rootMargin: '400px' });
-    o.observe(el);
-    return () => o.disconnect();
-  }, []);
-  const src = show ? thumbUrl(name) : '';
+  const full = fullUrl(name);
+  const thumb = thumbUrl(name);
+  // If full-res is already cached (e.g. from detail page), use it immediately
+  const [src, setSrc] = useState(() => {
+    const test = new Image(); test.src = full;
+    return test.complete && test.naturalWidth > 0 ? full : thumb;
+  });
+
   return (
-    <div ref={ref} style={{ ...style, background: show ? 'transparent' : '#E8E0D4', minHeight: style?.minHeight || 100 }}>
-      {show && <img src={src} alt={name} style={{ width: '100%', display: 'block' }} loading="lazy" />}
-    </div>
+    <img src={src} alt={name} loading="lazy"
+      style={{ ...style, display: 'block' }}
+      onError={(e) => { e.currentTarget.src = thumb; }}
+    />
   );
 }
 
