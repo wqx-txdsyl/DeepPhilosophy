@@ -77,27 +77,20 @@ app.add_middleware(
 # 初始化用户数据库（本地表立即可用，云端恢复后台进行）
 init_db()
 
-# 后台预热：提前扫描书籍，避免首次请求等待
+# 后台预热（定义在此处，在文件末尾启动线程以确保所有函数已定义）
 import threading
 def _warmup():
     try:
         scan_books(force=True)
-        _load_summaries_cache()  # 预热摘要
+        _load_summaries_cache()
         print("[warmup] Books cache pre-loaded")
     except Exception as e:
         print(f"[warmup] Books pre-load failed (non-fatal): {e}")
     try:
-        # 在后台线程中无法 await，用同步方式预计算
-        import asyncio
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        # 触发作者缓存构建（通过内部逻辑）
         from philosophers_db import NAME_ALIASES, PHILOSOPHERS
         print(f"[warmup] Authors ready: {len(PHILOSOPHERS)} philosophers loaded")
-        loop.close()
     except Exception as e:
         print(f"[warmup] Authors pre-load failed (non-fatal): {e}")
-threading.Thread(target=_warmup, daemon=True).start()
 
 # ============================================================
 # 工具函数
@@ -2009,6 +2002,9 @@ if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR,
 # ============================================================
 # 启动
 # ============================================================
+# 后台预热（延迟到所有函数定义完毕后启动，避免 race condition）
+threading.Thread(target=_warmup, daemon=True).start()
+
 if __name__ == "__main__":
     print("=" * 50)
     print("  DeepPhilosophy API Server v1.1.0")
