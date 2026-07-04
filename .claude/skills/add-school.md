@@ -22,7 +22,24 @@ python add_school.py "流派名"
 | 内联 DATA | 生成 JS const → 注入 SchoolDetailPage + ENG_NAMES |
 | 分页插入 | WorldPhilosophiesPage 按时间顺序插入 |
 | 谱系插入 | GenealogyPage ALL_SCHOOLS + IMG_MAP + PhilosophyTimeline |
-| 地图定位 | 地区性世界流派 → Agnes 识图定位 → WorldMap 添加光点 |
+| 地图定位 | **仅地区型世界流派** → Agnes 识图定位 → WorldMap 添加光点<br>**主题型流派自动跳过**（见下方规则） |
+
+## 世界地图规则 ⚠️
+
+**只有地区型流派才能加入世界地图**。主题型/概念型流派即使 `region` 为 "世界"，也不应出现在地图上。
+
+### 地区型（✅ 加入地图）
+有明确地理/文化起源地的流派：古埃及哲学、印加哲学、北欧哲学、萨满哲学、凯尔特哲学 等
+
+### 主题型（❌ 不加入地图）
+跨地域的概念/问题导向流派。脚本通过 `skip_keywords` 自动过滤：
+
+```
+环境 | 技术 | 伦理 | 政治 | 宗教 | 女性 | 社群 | 后现代 | 解构 | 批判
+人工智能 | 科学 | 知识 | 语言 | 心灵 | 逻辑 | 教育 | 美学 | 经济 | 法律 | 医学
+```
+
+> 如新增流派名包含以上任一关键词，`add_school.py` 会自动跳过地图定位步骤。
 | 计数更新 | HomePage/Settings/Genealogy 流派数自动更新 |
 
 ## 完成后手动

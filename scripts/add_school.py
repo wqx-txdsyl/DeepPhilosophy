@@ -295,7 +295,7 @@ def add_to_worldmap(name, data):
     """使用 AI 定位流派在地图上的坐标"""
     if data.get("region") != "世界": return
     # 跳过无法锁定地区的流派
-    skip_keywords = ["环境","技术","伦理","政治","宗教","女性","社群","后现代","解构","批判"]
+    skip_keywords = ["环境","技术","伦理","政治","宗教","女性","社群","后现代","解构","批判","人工智能","科学","知识","语言","心灵","逻辑","教育","美学","经济","法律","医学"]
     if any(k in name for k in skip_keywords):
         print("  - 非地区流派，跳过地图")
         return
