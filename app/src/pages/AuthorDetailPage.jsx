@@ -67,11 +67,19 @@ function AuthorDetailPage() {
         </h2>
 
         {/* 标签 + 头像 横排 */}
-        <div style={{ display: 'flex', gap: 20, marginBottom: 20, alignItems: 'stretch', flexWrap: 'wrap' }}>
-          {/* 左侧：标签列 */}
+        <div style={{ display: 'flex', gap: 20, marginBottom: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          {/* 左侧：标签 */}
           <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 8, justifyContent: 'center' }}>
-            {/* 年代 + 国家 + 流派 标签 */}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {/* 第一行：区域 + 年代 + 国家 + 流派 */}
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+              {author.region && (
+                <span style={{
+                  background: author.region === '东方' ? 'rgba(59,90,150,0.1)' : author.region === '世界' ? 'rgba(90,138,90,0.1)' : 'rgba(145,118,71,0.1)',
+                  color: author.region === '东方' ? 'var(--prussian)' : author.region === '世界' ? '#5A8A5A' : 'var(--ochre)',
+                  padding: '4px 12px', borderRadius: 14, fontSize: 12, fontWeight: 500, whiteSpace: 'nowrap',
+                  border: '1px solid ' + (author.region === '东方' ? 'rgba(59,90,150,0.2)' : author.region === '世界' ? 'rgba(90,138,90,0.2)' : 'rgba(145,118,71,0.2)'),
+                }}>{author.region}哲学</span>
+              )}
               {author.era && (
                 <span style={{
                   background: 'var(--ochre)', color: '#fff', padding: '4px 12px',
@@ -92,9 +100,9 @@ function AuthorDetailPage() {
                 }}>{s.trim()}</span>
               ))}
             </div>
-            {/* 收录作品 */}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-              {author.book_count > 0 && (
+            {/* 第二行：著作数 */}
+            {author.book_count > 0 && (
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <span style={{
                   color: 'var(--text-dim)', fontSize: 12,
                   display: 'flex', alignItems: 'center', gap: 4,
@@ -102,17 +110,13 @@ function AuthorDetailPage() {
                   <Icon name="nav-books" size={14} />
                   {author.book_count} 部著作
                 </span>
-              )}
-              {author.region && (
-                <span style={{
-                  color: 'var(--text-dim)', fontSize: 11,
-                  background: author.region === '东方' ? 'rgba(59,90,150,0.08)' : 'rgba(145,118,71,0.08)',
-                  padding: '2px 8px', borderRadius: 10,
-                }}>
-                  {author.region}哲学
-                </span>
-              )}
-            </div>
+                {author.source && (
+                  <span style={{ fontSize: 10, color: 'var(--text-dim)', opacity: 0.6 }}>
+                    · 数据: {author.source === 'builtin_database' ? '内置库' : author.source === 'baidu_baike' ? '百度百科' : author.source === 'wikipedia' ? '维基百科' : '基础'}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
           {/* 右侧：头像（长椭圆框） */}
