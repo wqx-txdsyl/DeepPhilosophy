@@ -285,7 +285,7 @@ function HomePage() {
   const navigate = useNavigate();
   const [authorCount, setAuthorCount] = useState(381);
   const [bookCount, setBookCount] = useState(305);
-  const [schoolCount, setSchoolCount] = useState(102);
+  const [schoolCount, setSchoolCount] = useState(103);
   const [schoolData, setSchoolData] = useState({});
   const loggedIn = !!localStorage.getItem('dp_token');
   const username = localStorage.getItem('dp_username') || '';
@@ -501,7 +501,7 @@ function HomePage() {
           {[
             { l: <><Icon name="region-west" size={14} /> 西方 41 流派</>, p:'/western-philosophies', c:'var(--ochre)' },
             { l: <><Icon name="region-east" size={14} /> 东方 24 流派</>, p:'/eastern-philosophies', c:'var(--prussian)' },
-            { l: <><Icon name="region-world" size={14} /> 世界 109 流派</>, p:'/world-philosophies', c:'#5A8A5A' },
+            { l: <><Icon name="region-world" size={14} /> 世界 38 流派</>, p:'/world-philosophies', c:'#5A8A5A' },
           ].map(b => (
             <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize:12, color:b.c, cursor:'pointer', borderBottom:'1px solid transparent', transition:'all 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}

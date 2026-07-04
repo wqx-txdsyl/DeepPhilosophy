@@ -2532,7 +2532,7 @@ const 人工智能哲学_DATA = {
   quote: "机器能够思考吗？",
   quoteAuthor: "艾伦·图灵",
   conclusion: "人工智能哲学在当代的意义远远超出了学院内的思辨，它直接参与塑造着人类文明的未来走向。当人工智能系统开始撰写论文、创作艺术、诊断疾病甚至制定法律建议时，哲学必须提供一套能够评估这些活动之合法性与价值的规范框架。理论贡献方面，人工智能哲学极大地丰富了心灵哲学，它使“意向性”和“体验”这些传统概念面对新的挑战：如果一台机器能够完美地模拟人类的情感表达，那么它是否真的拥有情感？这一问题倒逼哲学家更精细地区分“模拟”与“实例化”的差异，并催生了关于“弱人工智能”与“强人工智能”的经典二分。此外，人工智能哲学在认识论领域也做出了重要贡献，它揭示了知识获取过程中“理解”与“计算”之间的鸿沟，促使我们反思科学解释的充分条件。然而，这一流派也面临着严峻的挑战。首先是语言模型带来的“虚假理解”问题：当模型生成出看似深刻的哲学文本时，它是否仅仅是在进行高级的文本拼接？如果是，那么哲学话语本身是否也面临被算法解构的风险？其次是价值对齐问题：如何确保人工智能系统的目标与人类的价值体系保持一致？这不仅是一个技术难题，更是一个深刻的伦理与政治哲学问题，因为它涉及谁的价值应当被优先考虑、如何应对多元文化中的价值冲突。第三是人工意识的可能性：如果未来的强人工智能声称自己拥有主观体验，我们是否有可靠的判断标准？这直接触及了哲学中最棘手的“他心问题”。展望未来，人工智能哲学可能会走向几个方向。一是与认知科学和神经科学更紧密的融合，形成“计算现象学”，试图用数学工具描述意识的结构。二是发展出更具批判性的“算法批判理论”，揭示人工智能系统如何内嵌了权力关系、偏见和意识形态。三是探索“后人类主义”的伦理框架，不再以人类为中心，而是承认可能存在多种形式的智能与意识。最后，人工智能哲学还必须面对一个终极追问：如果人类最终制造出了比自己更聪明的智能体，那么哲学本身的理论权威是否也会随之转移？这或许不是危言耸听，而是对哲学自我反思能力的终极考验。无论如何，人工智能哲学已经并将继续是人类思想史上最激动人心的探险之一。",
-  closingQuote: "",
+  closingQuote: "我们正在建造的不是工具，而是伙伴。——雪莉·特克尔",
   region: "世界",
   bg: "url(/schools/人工智能哲学.jpg)",
   timeline: [
@@ -11596,9 +11596,10 @@ function SchoolDetailPage() {
   const { name } = useParams();
   const navigate = useNavigate();
     const SCHOOL_MAP = {
-      '前苏格拉底哲学': { data:前苏格拉底哲学_DATA, sub:{}, ci:[], bg:'url(/schools/前苏格拉底哲学.jpg)' },  '犬儒学派': { data:犬儒学派_DATA, sub:{}, ci:[], bg:'url(/schools/犬儒学派.jpg)' },  '古埃及哲学': { data:古埃及哲学_DATA, sub:{}, ci:[], bg:'url(/schools/古埃及哲学.jpg)' },
   '印加哲学': { data:印加哲学_DATA, sub:{}, ci:[], bg:'url(/schools/印加哲学.jpg)' },
 '古希腊哲学': { data:GREEK_DATA, sub:GREEK_SUB_SCHOOLS, ci:GREEK_CIHAI, bg:'url(/schools/古希腊哲学.jpg)' },
+    '伊壁鸠鲁学派': { _json:'school_伊壁鸠鲁学派.json', sub:{}, ci:[], bg:'url(/schools/伊壁鸠鲁学派.jpg)' },
+    '新柏拉图主义': { _json:'school_新柏拉图主义.json', sub:{}, ci:[], bg:'url(/schools/新柏拉图主义.jpg)' },
     '教父哲学': { data:PATRISTIC_DATA, sub:PATRISTIC_SUB_SCHOOLS, ci:PATRISTIC_CIHAI, bg:'url(/schools/教父哲学.jpg)' },
     '经院哲学': { data:SCHOLASTIC_DATA, sub:SCHOLASTIC_SUB_SCHOOLS, ci:SCHOLASTIC_CIHAI, bg:'url(/schools/经院哲学.jpg)' },
     '理性主义': { data:RATIONALISM_DATA, sub:RATIONALISM_SUB_SCHOOLS, ci:RATIONALISM_CIHAI, bg:'url(/schools/理性主义.jpg)' },
@@ -11634,8 +11635,6 @@ function SchoolDetailPage() {
     '基督教哲学': { data:CHRISTIAN_PHILOSOPHY_DATA, sub:CHRISTIAN_PHILOSOPHY_SUB_SCHOOLS, ci:CHRISTIAN_PHILOSOPHY_CIHAI, bg:'url(/schools/基督教哲学.jpg)' },
     '哲学诠释学': { data:HERMENEUTICS_DATA, sub:HERMENEUTICS_SUB_SCHOOLS, ci:HERMENEUTICS_CIHAI, bg:'url(/schools/哲学诠释学.jpg)' },
     '后现代主义': { data:POSTMODERNISM_DATA, sub:POSTMODERNISM_SUB_SCHOOLS, ci:POSTMODERNISM_CIHAI, bg:'url(/schools/后现代主义.jpg)' },
-    '斯多葛学派': { data:STOICISM_DATA, sub:STOICISM_SUB_SCHOOLS, ci:STOICISM_CIHAI, bg:'url(/schools/斯多葛学派.jpg)' },
-    '怀疑论': { data:SKEPTICISM_DATA, sub:SKEPTICISM_SUB_SCHOOLS, ci:SKEPTICISM_CIHAI, bg:'url(/schools/怀疑论.jpg)' },
     '唯名论': { data:NOMINALISM_DATA, sub:NOMINALISM_SUB_SCHOOLS, ci:NOMINALISM_CIHAI, bg:'url(/schools/唯名论.jpg)' },
     '批判理论': { data:CRITICAL_THEORY_DATA, sub:CRITICAL_THEORY_SUB_SCHOOLS, ci:CRITICAL_THEORY_CIHAI, bg:'url(/schools/批判理论.jpg)' },
     '社群主义': { data:COMMUNITARIANISM_DATA, sub:COMMUNITARIANISM_SUB_SCHOOLS, ci:COMMUNITARIANISM_CIHAI, bg:'url(/schools/社群主义.jpg)' },
@@ -11880,13 +11879,11 @@ const ENG_NAMES = {
   '实用主义': 'PRAGMATISM',
   '实证主义': 'POSITIVISM',
   '德国古典哲学': 'GERMAN IDEALISM',
-  '怀疑论': 'SKEPTICISM',
   '批判理论': 'CRITICAL THEORY',
   '技术哲学': 'PHILOSOPHY OF TECHNOLOGY',
   '拉丁美洲哲学': 'LATIN AMERICAN PHILOSOPHY',
   '政治哲学': 'POLITICAL PHILOSOPHY',
   '教父哲学': 'PATRISTIC PHILOSOPHY',
-  '斯多葛学派': 'STOICISM',
   '日本哲学': 'JAPANESE PHILOSOPHY',
   '明清实学': 'MING-QING PRAGMATISM',
   '毛泽东思想': 'MAO ZEDONG THOUGHT',

@@ -92,6 +92,15 @@ def load_school(name):
     content = re.sub(r'^```json\s*', '', content)
     content = re.sub(r'\s*```$', '', content)
     data = json.loads(content)
+    # 确保 closingQuote 不为空：若缺失或为空，则取 quotes 最后一条自动生成
+    if not data.get("closingQuote") or not data["closingQuote"].strip():
+        quotes = data.get("quotes", [])
+        if quotes:
+            last = quotes[-1]
+            data["closingQuote"] = f"{last.get('text','')}——{last.get('author','')}"
+        else:
+            data["closingQuote"] = f"{data.get('quote','')}——{data.get('quoteAuthor','')}"
+        print(f"  [FIX] closingQuote 缺失，已自动补全: {data['closingQuote'][:60]}...")
     os.makedirs(JSON_DIR, exist_ok=True)
     with open(jp, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -320,15 +329,20 @@ def update_counts():
 
     for fp in [HP_FILE, ST_FILE]:
         with open(fp, "r", encoding="utf-8") as f: c = f.read()
-        c = re.sub(r"(流派.*?)(\d+)(.*流派)", lambda m: m.group(1) + str(total) + m.group(3), c)
-        c = re.sub(r"(世界.*?)(\d+)(.*流派)", lambda m: m.group(1) + str(world) + m.group(3), c)
+        # 更新主页/设置页的流派总数
+        c = re.sub(r"(school(?:Count|s).*?)(\d{2,3})", lambda m: m.group(1) + str(total) if 'school' in m.group(1).lower() else m.group(1) + str(total), c)
+        # 更新各地区计数
+        c = re.sub(r"(西方\s*)(\d+)(\s*流派)", lambda m: m.group(1) + str(western) + m.group(3), c)
+        c = re.sub(r"(东方\s*)(\d+)(\s*流派)", lambda m: m.group(1) + str(eastern) + m.group(3), c)
+        c = re.sub(r"(世界\s*)(\d+)(\s*流派)", lambda m: m.group(1) + str(world) + m.group(3), c)
         with open(fp, "w", encoding="utf-8") as f: f.write(c)
     print(f"  [OK] 计数已更新: {total} 流派 (东{eastern}/西{western}/世{world})")
 
     # Genealogy 页脚
     with open(GEN_FILE, "r", encoding="utf-8") as f: gl = f.read()
-    cn_num = {96:"九十六",97:"九十七",98:"九十八",99:"九十九",100:"一百",101:"一百零一",102:"一百零二",103:"一百零三",104:"一百零四",105:"一百零五"}
-    gl = re.sub(r"(一百零二个哲学流派|九十六个哲学流派)", cn_num.get(total, f"{total}个") + "哲学流派", gl)
+    cn_num = {96:"九十六",97:"九十七",98:"九十八",99:"九十九",100:"一百",101:"一百零一",102:"一百零二",103:"一百零三",104:"一百零四",105:"一百零五",106:"一百零六",107:"一百零七",108:"一百零八",109:"一百零九",110:"一百一十"}
+    # 匹配阿拉伯数字或中文数字的流派数量描述
+    gl = re.sub(r"(\d+个哲学流派|一百零二个哲学流派|九十六个哲学流派|一百零三个哲学流派|一百零九个哲学流派)", cn_num.get(total, f"{total}个") + "哲学流派", gl)
     with open(GEN_FILE, "w", encoding="utf-8") as f: f.write(gl)
 
 # ═══════════════════════════════════════════════

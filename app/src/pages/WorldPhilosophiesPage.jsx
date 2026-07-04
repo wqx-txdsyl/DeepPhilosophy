@@ -78,7 +78,7 @@ const WORLD_PHILOSOPHIES = [
   { name: '高加索哲学', color: '#8B5A4A', desc: `山脊上的思想平衡——纳尔特史诗、亚美尼亚翻译运动与格鲁吉亚人文主义。欧亚交汇处的多元融合哲学，马马尔达什维利的'思想即存在'。` },
   { name: '高加索-草原哲学', color: '#7A8B4A', desc: '游牧伦理与马文化存在论——口头史诗《江格尔》的宝木巴理想国。草原上没有围墙的秩序，人与马的跨物种伙伴关系。' },
   { name: '太平洋原住民哲学', color: '#4A8B7A', desc: '岛屿的生存哲学——vanua土地人格、库拉圈礼物经济与修复性正义。海平面上升时代的哲学抵抗：我们不是难民，我们是航行者。' },
-  { name: '人工智能哲学', color: '#37e216', desc: '人工智能哲学是二十世纪中叶随着计算机科学兴起而诞生的一个哲学分支，它试图回答一个古老而尖锐的问题：机器能否拥有心智？这一' },
+  { name: '人工智能哲学', color: '#37e216', desc: '人工智能哲学是二十世纪中叶随着计算机科学兴起而诞生的一个哲学分支，它试图回答一个古老而尖锐的问题：机器能否拥有心智？这一追问从图灵测试到深度学习，不断挑战人类对智能、意识与伦理的根本理解。' },
 ];
 
 export default function WorldPhilosophiesPage() {
@@ -113,7 +113,7 @@ export default function WorldPhilosophiesPage() {
           color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto',
           textShadow: '0 0 40px rgba(244,240,235,0.8)'
         }}>
-          从古希腊到美索不达米亚，从印度到澳洲，<br />三十七大哲学传统覆盖了全球思想版图。
+          从古希腊到美索不达米亚，从印度到澳洲，<br />三十八大哲学传统覆盖了全球思想版图。
         </p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
       </section>

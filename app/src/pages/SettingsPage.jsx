@@ -13,7 +13,7 @@ function SettingsPage() {
   const [model, setModel] = useState('deepseek-chat');
   const [apiUrl, setApiUrl] = useState('');
   const [saved, setSaved] = useState(false);
-  const [stats, setStats] = useState({ books: 342, authors: 381, schools: 102 });
+  const [stats, setStats] = useState({ books: 342, authors: 381, schools: 103 });
 
   useEffect(() => {
     fetch(`${getApiBase()}/api/stats`, { signal: AbortSignal.timeout(5000) })
@@ -21,7 +21,7 @@ function SettingsPage() {
         setStats({
           books: d.books || 342,
           authors: d.authors || 381,
-          schools: Math.max(102, d.schools || 0),
+          schools: Math.max(103, d.schools || 0),
         });
       }).catch(() => {});
   }, []);
