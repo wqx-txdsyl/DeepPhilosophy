@@ -6,6 +6,7 @@
 """
 import sys, os, json, time, subprocess
 import cv2
+import numpy
 import requests
 from io import BytesIO
 from PIL import Image
@@ -21,9 +22,12 @@ PROFILE_CASCADE = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_pro
 
 def has_face(image_path):
     """检测图片是否包含人脸（正脸或侧脸）"""
-    img = cv2.imread(image_path)
-    if img is None:
-        return False, "无法读取"
+    # Use PIL to read (handles Unicode paths on Windows), convert to OpenCV format
+    try:
+        pil_img = Image.open(image_path).convert("RGB")
+        img = cv2.cvtColor(numpy.array(pil_img), cv2.COLOR_RGB2BGR)
+    except Exception as e:
+        return False, f"无法读取: {e}"
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -178,22 +182,22 @@ def main():
         if face_ok:
             ok += 1
             if i % 20 == 0:
-                print(f"  [{i}/{total}] ✓ {name} ({detail})  |  通过:{ok} 失败:{bad}")
+                print(f"  [{i}/{total}] OK {name} ({detail})  |  通过:{ok} 失败:{bad}")
         else:
             bad += 1
             bad_list.append(name)
-            print(f"  [{i}/{total}] ✗ {name} — {detail}")
+            print(f"  [{i}/{total}] NOFACE {name} - {detail}")
 
             if fix_mode:
                 print(f"    → 重爬...")
                 result = refetch_with_portrait_search(name)
                 if result and has_face(result)[0]:
-                    print(f"    → ✓ 修复成功")
+                    print(f"    -> FIXED")
                     bad -= 1
                     ok += 1
                     bad_list.remove(name)
                 else:
-                    print(f"    → ✗ 重爬仍无人脸，保留原文件")
+                    print(f"    -> STILL NO FACE, keeping original")
                 time.sleep(1)
 
     print(f"\n{'='*60}")
