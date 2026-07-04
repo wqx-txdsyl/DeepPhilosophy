@@ -1,5 +1,5 @@
 /**
- * Icon 组件 —— 替换 emoji，使用生成的 48px PNG 图标
+ * Icon 组件 —— PNG 图标（lazy load + 浏览器缓存）
  * <Icon name="nav-books" size={20} />
  */
 function Icon({ name, size = 20, style, className, ...props }) {
@@ -7,6 +7,7 @@ function Icon({ name, size = 20, style, className, ...props }) {
     <img
       src={`/icons/${name}.png`}
       alt=""
+      loading="lazy"
       {...props}
       className={className}
       style={{
@@ -14,7 +15,7 @@ function Icon({ name, size = 20, style, className, ...props }) {
         height: size,
         display: 'inline-block',
         verticalAlign: 'middle',
-        objectFit: 'contain',
+        flexShrink: 0,
         ...style,
       }}
     />

@@ -73,8 +73,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 初始化用户数据库（从OSS云端恢复）
+# 初始化用户数据库（本地表立即可用，云端恢复后台进行）
 init_db()
+
+# 后台预热：提前扫描书籍，避免首次请求等待
+import threading
+def _warmup():
+    try:
+        scan_books(force=True)
+        print("[warmup] Books cache pre-loaded")
+    except Exception as e:
+        print(f"[warmup] Books pre-load failed (non-fatal): {e}")
+threading.Thread(target=_warmup, daemon=True).start()
 
 # ============================================================
 # 工具函数
@@ -211,6 +221,7 @@ def _build_and_cache_keywords():
 # 内存缓存（避免每次请求都扫描）
 _BOOKS_CACHE_LIST = None
 _BOOKS_CACHE_TIME = 0
+_BOOKS_PRELOAD_DONE = False
 
 def scan_books(force=False) -> list[dict]:
     """扫描书籍目录 —— 自动切换本地 / OSS / R2 / GitHub（带缓存）"""
@@ -2027,7 +2038,7 @@ if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR,
     async def cache_static(request, call_next):
         response = await call_next(request)
         path = request.url.path
-        if path.startswith(("/gene/", "/schools/", "/assets/")) and not path.startswith("/api/"):
+        if path.startswith(("/gene/", "/schools/", "/assets/", "/icons/", "/philosopher/")) and not path.startswith("/api/"):
             response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
         return response
 
