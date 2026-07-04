@@ -82,10 +82,13 @@ def load_school(name):
   "meta": {{"中文名":"{name}","英文名":"ENGLISH NAME"}},
   "region": "世界",
   "bg": "url(/schools/{name}.jpg)",
-  "sub_schools": {{}}
+  "sub_schools": {{
+    "下属流派名1": {{"name":"下属流派名1","desc":"150字左右的连贯描述，涵盖该下属流派的起源、核心命题与代表人物"}},
+    "下属流派名2": {{"name":"下属流派名2","desc":"同上格式"}}
+  }}
 }}
 
-要求：timeline≥8条、thinkers≥8位、cihai≥20条、quotes≥20条、works数量不限。全部中文。"""}],
+要求：timeline≥8条、thinkers≥8位、cihai≥20条、quotes≥20条、works数量不限。sub_schools至少列出2-5个真实存在的下属流派，每个desc为150字左右的散文描述。如该流派确实没有下属分支，则返回空{{}}。全部中文。"""}],
         "temperature":0.7,"max_tokens":8000}, timeout=300)
     content = r.json()["choices"][0]["message"]["content"]
     # 清理可能的 markdown 包裹

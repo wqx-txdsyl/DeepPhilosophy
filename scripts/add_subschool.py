@@ -82,7 +82,7 @@ def load_school(name):
   "sub_schools": {{}}
 }}
 
-要求：timeline≥6条、thinkers≥6位、cihai≥12条、quotes≥12条、works数量不限。全部中文。"""}],
+要求：timeline≥6条、thinkers≥6位、cihai≥12条、quotes≥12条、works数量不限。sub_schools为空对象（下属流派通常不再细分）。全部中文。"""}],
         "temperature":0.7,"max_tokens":6000}, timeout=300)
     content = r.json()["choices"][0]["message"]["content"]
     content = re.sub(r'^```json\s*', '', content)

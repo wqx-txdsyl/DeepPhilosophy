@@ -17,7 +17,7 @@ python add_school.py "流派名"
 
 | 步骤 | 说明 |
 |------|------|
-| 数据生成 | 流派 JSON 不存在时，DeepSeek 自动生成全部内容（概述/结语/思想家/著作/术语/名言/时间轴） |
+| 数据生成 | 流派 JSON 不存在时，DeepSeek 自动生成全部内容（概述/结语/思想家/著作/术语/名言/时间轴/下属流派列表） |
 | 图片处理 | 中文→英文文件名，生成 200×280 缩略图 |
 | 内联 DATA | 生成 JS const → 注入 SchoolDetailPage + ENG_NAMES |
 | 分页插入 | WorldPhilosophiesPage 按时间顺序插入 |
