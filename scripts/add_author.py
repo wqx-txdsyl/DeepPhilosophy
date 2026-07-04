@@ -5,24 +5,11 @@
      python add_author.py "尼采" --folder "F:/philosophy/西方/尼采"
 """
 import sys, os, json, re, requests
+from _lib import (
+    ROOT, PHILOSOPHERS_FILE, ALIASES_FILE, get_deepseek_key, load_json, save_json
+)
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JSON_DIR = os.path.join(ROOT, "backend", "data")
-PHILOSOPHERS_FILE = os.path.join(JSON_DIR, "philosophers.json")
-ALIASES_FILE = os.path.join(JSON_DIR, "name_aliases.json")
-
-_keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
-_keys = {}
-if os.path.exists(_keys_path):
-    with open(_keys_path) as f: _keys = json.load(f)
-DEEPSEEK_KEY = _keys.get("deepseek", "")
-DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
-if not DEEPSEEK_KEY:
-    _east = os.path.join(ROOT, "_gen_east.py")
-    if os.path.exists(_east):
-        with open(_east, "r", encoding="utf-8") as f:
-            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
-            if m: DEEPSEEK_KEY = m.group(1)
+DEEPSEEK_KEY = get_deepseek_key()
 DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
 
 KNOWN_TAGS = [

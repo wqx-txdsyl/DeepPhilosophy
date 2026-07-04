@@ -637,6 +637,47 @@ def clear_book_chat(user_id: int, book_id: str):
 
 
 # ============================================================
+# 用户资料管理
+# ============================================================
+
+def update_username(user_id: int, new_username: str) -> bool:
+    """更新用户名，返回是否成功"""
+    conn = _get_conn()
+    try:
+        conn.execute("UPDATE users SET username=? WHERE id=?", (new_username, user_id))
+        conn.commit()
+        _sync_db()
+        return True
+    except Exception:
+        return False
+    finally:
+        conn.close()
+
+
+def change_password(user_id: int, old_password: str, new_password: str) -> tuple[bool, str]:
+    """修改密码，返回 (成功, 错误信息)"""
+    if len(new_password) < 4:
+        return False, "新密码至少4位"
+    conn = _get_conn()
+    try:
+        user = conn.execute("SELECT password_hash FROM users WHERE id=?", (user_id,)).fetchone()
+        if not user:
+            return False, "用户不存在"
+        old_hash = hashlib.sha256(old_password.encode()).hexdigest()
+        if old_hash != user["password_hash"]:
+            return False, "原密码错误"
+        new_hash = hashlib.sha256(new_password.encode()).hexdigest()
+        conn.execute("UPDATE users SET password_hash=? WHERE id=?", (new_hash, user_id))
+        conn.commit()
+        _sync_db()
+        return True, ""
+    except Exception as e:
+        return False, str(e)
+    finally:
+        conn.close()
+
+
+# ============================================================
 # 初始化
 # ============================================================
 init_db()

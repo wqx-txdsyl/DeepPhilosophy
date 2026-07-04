@@ -31,6 +31,7 @@ from auth import (
     save_chat_message, get_chat_history, clear_chat_history,
     save_book_note, get_book_note, get_all_book_notes,
     save_book_chat, get_book_chat, clear_book_chat,
+    update_username, change_password,
 )
 from philosophers_db import get_philosopher_info
 
@@ -1890,21 +1891,14 @@ class UpdateProfileRequest(BaseModel):
     username: str
 
 @app.put("/api/user/profile")
-async def update_profile(req: UpdateProfileRequest, authorization: str = Header(None)):
+async def api_update_profile(req: UpdateProfileRequest, authorization: str = Header(None)):
     token = (authorization or "").replace("Bearer ", "")
     user = get_user_by_token(token)
     if not user: raise HTTPException(status_code=401, detail="未登录")
     new_name = req.username.strip()
     if not new_name: raise HTTPException(status_code=400, detail="用户名不能为空")
-    init_db()
-    import sqlite3
-    db_path = os.path.join(os.path.dirname(__file__), "data", "users.db")
-    conn = sqlite3.connect(db_path)
-    try:
-        conn.execute("UPDATE users SET username=? WHERE id=?", (new_name, user["id"]))
-        conn.commit()
-    finally:
-        conn.close()
+    if not update_username(user["id"], new_name):
+        raise HTTPException(status_code=500, detail="更新失败")
     return {"status": "ok", "username": new_name}
 
 
@@ -1913,26 +1907,13 @@ class ChangePasswordRequest(BaseModel):
     new_password: str
 
 @app.put("/api/user/password")
-async def change_password(req: ChangePasswordRequest, authorization: str = Header(None)):
+async def api_change_password(req: ChangePasswordRequest, authorization: str = Header(None)):
     token = (authorization or "").replace("Bearer ", "")
     user = get_user_by_token(token)
     if not user: raise HTTPException(status_code=401, detail="未登录")
-    import hashlib
-    old_hash = hashlib.sha256(req.old_password.encode()).hexdigest()
-    if old_hash != user.get("password_hash", ""):
-        raise HTTPException(status_code=403, detail="原密码错误")
-    if len(req.new_password) < 4:
-        raise HTTPException(status_code=400, detail="新密码至少4位")
-    new_hash = hashlib.sha256(req.new_password.encode()).hexdigest()
-    init_db()
-    import sqlite3
-    db_path = os.path.join(os.path.dirname(__file__), "data", "users.db")
-    conn = sqlite3.connect(db_path)
-    try:
-        conn.execute("UPDATE users SET password_hash=? WHERE id=?", (new_hash, user["id"]))
-        conn.commit()
-    finally:
-        conn.close()
+    ok, err = change_password(user["id"], req.old_password, req.new_password)
+    if not ok:
+        raise HTTPException(status_code=403 if "原密码" in err else 400, detail=err)
     return {"status": "ok"}
 
 
@@ -1942,10 +1923,16 @@ async def change_password(req: ChangePasswordRequest, authorization: str = Heade
 import admin as admin_module
 
 @app.middleware("http")
-async def track_visits(request: Request, call_next):
+async def global_middleware(request: Request, call_next):
+    """统一中间件：访问统计 + 静态资源缓存"""
     response = await call_next(request)
-    if not request.url.path.startswith("/api/admin"):
-        admin_module.record_visit(request.url.path)
+    path = request.url.path
+    # 访问统计（跳过管理员路径）
+    if not path.startswith("/api/admin"):
+        admin_module.record_visit(path)
+    # 静态资源强缓存（1年）
+    if path.startswith(("/gene/", "/schools/", "/assets/", "/icons/", "/philosopher/")) and not path.startswith("/api/"):
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
     return response
 
 @app.get("/api/admin/stats")
@@ -1975,9 +1962,6 @@ async def get_stats():
         author = b.get("author", "")
         if author and "合集" not in author and "概述" not in author:
             authors_set.add(author)
-    # 哲人数 = 调用 /api/authors 的完整逻辑计数
-    from philosophers_db import PHILOSOPHERS
-    philosopher_count = max(len(authors_set), len(PHILOSOPHERS))
     # 补充空目录作者（与 list_all_authors 逻辑一致）
     knowledge_dir = config.KNOWLEDGE_DIR
     if os.path.isdir(knowledge_dir):
@@ -1988,7 +1972,10 @@ async def get_stats():
                     author_clean = author_dir.replace("###合集&概述###", "合集&概述")
                     if author_clean and "合集" not in author_clean and author_clean not in authors_set:
                         authors_set.add(author_clean)
-    philosopher_count = len(authors_set | set(PHILOSOPHERS.keys()))
+    # 哲人数 = max(书籍作者, 哲学家库)
+    from philosophers_db import PHILOSOPHER_COUNT, PHILOSOPHERS
+    philosopher_count = max(len(authors_set), PHILOSOPHER_COUNT)
+    philosopher_count = max(philosopher_count, len(authors_set | set(PHILOSOPHERS.keys())))
     # 统计流派
     base = os.path.dirname(__file__)
     school_names = set()
@@ -2033,14 +2020,6 @@ if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR,
     async def serve_index():
         return FileResponse(_os2.path.join(_STATIC_DIR, "index.html"))
 
-    # Add cache headers for static assets
-    @app.middleware("http")
-    async def cache_static(request, call_next):
-        response = await call_next(request)
-        path = request.url.path
-        if path.startswith(("/gene/", "/schools/", "/assets/", "/icons/", "/philosopher/")) and not path.startswith("/api/"):
-            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
-        return response
 
 
 # ============================================================

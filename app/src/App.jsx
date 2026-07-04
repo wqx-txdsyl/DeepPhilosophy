@@ -3,32 +3,41 @@
  * 开发者: @txdsyl_
  * 四个分区: 书籍 | 谱图 | 问答 | 我的
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useNavigationType } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
 import ErrorBoundary from './components/ErrorBoundary';
 import Icon from './components/Icon';
+// 首屏页面（eager）
 import BooksPage from './pages/BooksPage';
-import BookDetailPage from './pages/BookDetailPage';
 import AuthorsPage from './pages/AuthorsPage';
-import AuthorDetailPage from './pages/AuthorDetailPage';
 import GenealogyPage from './pages/GenealogyPage';
-import SchoolDetailPage from './pages/SchoolDetailPage';
 import QAPage from './pages/QAPage';
-import SettingsPage from './pages/SettingsPage';
-import DeveloperPage from './pages/DeveloperPage';
-import ReaderPage from './pages/ReaderPage';
-import ProfilePage from './pages/ProfilePage';
-import ProfileEditPage from './pages/ProfileEditPage';
-import GamesPage from './pages/GamesPage';
-import AnswerBookPage from './pages/AnswerBookPage';
-import PHTIPage from './pages/PHTIPage';
-import PHTISillyPage from './pages/PHTISillyPage';
 import HomePage from './pages/HomePage';
-import WorldPhilosophiesPage from './pages/WorldPhilosophiesPage';
-import WesternPhilosophiesPage from './pages/WesternPhilosophiesPage';
-import EasternPhilosophiesPage from './pages/EasternPhilosophiesPage';
+// 非首屏页面（lazy：点击才加载）
+const BookDetailPage = lazy(() => import('./pages/BookDetailPage'));
+const AuthorDetailPage = lazy(() => import('./pages/AuthorDetailPage'));
+const SchoolDetailPage = lazy(() => import('./pages/SchoolDetailPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const DeveloperPage = lazy(() => import('./pages/DeveloperPage'));
+const ReaderPage = lazy(() => import('./pages/ReaderPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
+const GamesPage = lazy(() => import('./pages/GamesPage'));
+const AnswerBookPage = lazy(() => import('./pages/AnswerBookPage'));
+const PHTIPage = lazy(() => import('./pages/PHTIPage'));
+const PHTISillyPage = lazy(() => import('./pages/PHTISillyPage'));
+const WorldPhilosophiesPage = lazy(() => import('./pages/WorldPhilosophiesPage'));
+const WesternPhilosophiesPage = lazy(() => import('./pages/WesternPhilosophiesPage'));
+const EasternPhilosophiesPage = lazy(() => import('./pages/EasternPhilosophiesPage'));
 import './App.css';
+
+// 懒加载后 Loading 占位
+const PageLoader = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', color: 'var(--ink-muted)' }}>
+    加载中...
+  </div>
+);
 
 export function getApiBase() {
   try {
@@ -176,6 +185,7 @@ function MainLayout() {
 
       <main className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}${isQA ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isQA) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <ErrorBoundary>
+        <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BooksPage />} />
@@ -198,6 +208,7 @@ function MainLayout() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
         </Routes>
+        </Suspense>
         </ErrorBoundary>
       </main>
 

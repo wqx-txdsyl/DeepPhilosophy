@@ -65,7 +65,7 @@ DeepPhilosophy/
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── HomePage.jsx                  # 首页：世界地图 + 金句 + 时间轴
-│   │   │   ├── GenealogyPage.jsx             # 哲学之河 V2 — 博物馆级谱系页
+│   │   │   ├── GenealogyPage.jsx             # 哲学掠影 — 博物馆级谱系页
 │   │   │   ├── SchoolDetailPage.jsx          # 流派详情页（103 流派数据内联）
 │   │   │   ├── WorldPhilosophiesPage.jsx     # 世界哲学 38 流派
 │   │   │   ├── WesternPhilosophiesPage.jsx   # 西方哲学 41 流派
@@ -127,12 +127,9 @@ DeepPhilosophy/
 
 ### 流派详情页
 ```
-school_*.json (backend/data/)
-  → gen_inline_schools.py 读取
-  → 生成 _new_schools_data.jsx (export const XXX_DATA = {...})
-  → fix_school_page.py 粘贴进 SchoolDetailPage.jsx
-  → Vite 编译进 JS bundle
-  → 浏览器直接渲染（无网络请求）
+school_*.json (app/public/schools/)
+  → SchoolDetailPage 运行时 fetch('/schools/school_XXX.json')
+  → 浏览器动态加载 + 内存缓存（按需加载，无 bundle 膨胀）
 ```
 
 ### 哲学家/哲人页
@@ -159,7 +156,7 @@ KNOWLEDGE_DIR (F:/philosophy/) 或 R2 云存储
 | 路由 | 页面 | 说明 |
 |------|------|------|
 | `/` | HomePage | Hero + 世界地图 + 每日金句 + 三列时间轴 |
-| `/genealogy` | GenealogyPage | 哲学之河（博物馆级谱系图录） |
+| `/genealogy` | GenealogyPage | 哲学掠影（博物馆级谱系图录） |
 | `/school/:name` | SchoolDetailPage | 流派详情（星丛+辞海+金句+时间轴） |
 | `/western-philosophies` | WesternPhilosophiesPage | 西方 41 流派 |
 | `/eastern-philosophies` | EasternPhilosophiesPage | 东方 24 流派 |
@@ -181,7 +178,7 @@ KNOWLEDGE_DIR (F:/philosophy/) 或 R2 云存储
 | `backend/main.py` | ~1900 行 | API 路由 + 标签系统 + 扫描 |
 | `app/src/components/WorldMap.jsx` | | 世界地图（45+ 热点） |
 | `app/src/components/PhilosophyTimeline.jsx` | | 三列时间轴 |
-| `app/src/pages/GenealogyPage.jsx` | ~800 行 | 哲学之河谱系页 |
+| `app/src/pages/GenealogyPage.jsx` | ~800 行 | 哲学掠影谱系页 |
 | `app/gen_inline_schools.py` | | JSON→JS DATA 转换器 |
 | `backend/auth.py` | | 用户认证（SQLite+GitHub备份） |
 | `backend/data/book_summaries.json` | | 书籍摘要+标签缓存 |
@@ -203,10 +200,8 @@ cp data/school_新流派.json ../app/public/schools/
 
 # 3. 复制背景图到 public/schools/（同名 JPG）
 
-# 4. 重新生成内联 DATA 并构建
+# 4. 重新构建（流派数据通过 JSON 动态加载，无需代码生成）
 cd ../app
-python gen_inline_schools.py    # 重新生成 _new_schools_data.jsx
-# 编辑 fix_school_page.py 添加新流派到 SCHOOL_MAP
 npm run build
 
 # 5. 同步到后端
@@ -618,19 +613,12 @@ USE_GITHUB=true python main.py
 # 1.3 生成缩略图：app/public/schools/thumb/english-name.jpg（200×280）
 ```
 
-### 步骤 2：生成内联 DATA 并注入 SchoolDetailPage
+### 步骤 2：流派数据 JSON 已就位
 
 ```bash
-cd app
-
-# 2.1 从 JSON 生成 _new_schools_data.jsx
-python gen_inline_schools.py
-
-# 2.2 注入到 SchoolDetailPage.jsx（自动添加 SCHOOL_MAP 条目 + ENG_NAMES + DATA 常量）
-python fix_school_page.py
-
-# ⚠️ 如果 fix_school_page.py 创建了重复条目，手动清理 SchoolDetailPage.jsx，
-#    然后用 scripts/build_6_schools.py 手动注入（参考该脚本的逻辑）
+# 流派 JSON 文件已在 app/public/schools/ 下
+# SchoolDetailPage 运行时通过 fetch('/schools/school_XXX.json') 动态加载
+# 无需额外代码生成步骤
 ```
 
 ### 步骤 3：更新谱系页和地图
