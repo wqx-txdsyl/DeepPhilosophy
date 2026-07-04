@@ -232,6 +232,7 @@ _AUTHORS_CACHE = None       # /api/authors 缓存
 _AUTHORS_CACHE_TIME = 0
 _SUMMARIES_MEM_CACHE = None # 摘要内存缓存
 _SUMMARIES_MEM_TIME = 0
+_AUTHOR_DETAIL_CACHE = {}    # 单个作者详情缓存
 
 def scan_books(force=False) -> list[dict]:
     """扫描书籍目录 —— 自动切换本地 / OSS / R2 / GitHub（带缓存）"""
@@ -1323,19 +1324,43 @@ async def get_author_filters():
 
 @app.get("/api/authors/{author_name}")
 async def get_author_info(author_name: str):
-    """获取作者详细信息（内置库 + 百度百科爬虫）"""
-    books = scan_books()
-    author_books = [
-        b for b in books
-        if b["author"] == author_name or author_name in b["author"]
-    ]
+    """获取作者详细信息（内置库优先，10分钟内存缓存）"""
+    # 0. 缓存检查
+    if author_name in _AUTHOR_DETAIL_CACHE:
+        cached, cache_time = _AUTHOR_DETAIL_CACHE[author_name]
+        if time.time() - cache_time < 600:
+            return cached
 
-    region = author_books[0]["region"] if author_books else "未知"
-    book_list = [{"id": b["id"], "title": b["title"], "file_type": b["file_type"]} for b in author_books]
-    book_count = len(book_list)
-
-    # 1. 先从内置数据库获取
+    # 1. 先从内置数据库获取（O(1)，瞬间）
     info = get_philosopher_info(author_name)
+
+    # 2. 书籍列表：用缓存扫描或从摘要缓存推断（避免每次都 scan_books）
+    book_list = []
+    book_count = 0
+    region = info.get("country", "未知") if info else "未知"
+    if "中国" in region:
+        region = "东方"
+    elif region in ("日本", "韩国", "朝鲜", "越南", "蒙古", "以色列", "伊朗", "土耳其", "埃及", "巴西", "阿根廷", "墨西哥", "泰国", "印度尼西亚", "巴基斯坦", "孟加拉", "印度"):
+        region = "世界"
+    else:
+        region = "西方"
+
+    # 快速获取书籍：从摘要缓存找
+    summaries = _load_summaries_cache()
+    for key, entry in summaries.items():
+        if "||" in key:
+            title, author = key.split("||", 1)
+            if author == author_name:
+                book_list.append({"id": hashlib.md5(key.encode()).hexdigest()[:12], "title": title, "file_type": "txt"})
+                book_count += 1
+
+    # 如果缓存没有，回退到完整扫描（仅此一次）
+    if book_count == 0:
+        books = scan_books()
+        author_books = [b for b in books if b["author"] == author_name]
+        region = author_books[0]["region"] if author_books else region
+        book_list = [{"id": b["id"], "title": b["title"], "file_type": b["file_type"]} for b in author_books]
+        book_count = len(book_list)
 
     def build_response(source, era="", country="", school="", bio="", wiki_url=None):
         return {
@@ -1352,7 +1377,7 @@ async def get_author_info(author_name: str):
         }
 
     if info:
-        return build_response(
+        resp = build_response(
             "builtin_database",
             era=info.get("era", ""),
             country=info.get("country", ""),
@@ -1360,22 +1385,25 @@ async def get_author_info(author_name: str):
             bio=info.get("bio", ""),
             wiki_url=info.get("wiki_url"),
         )
+    else:
+        # 2. 尝试从百度百科爬取
+        scraped = scrape_baidu_baike(author_name)
+        if scraped:
+            resp = build_response(
+                "baidu_baike",
+                bio=scraped["bio"],
+                wiki_url=scraped.get("wiki_url"),
+            )
+        else:
+            # 3. 兜底
+            book_titles = [b["title"] for b in book_list]
+            resp = build_response(
+                "fallback",
+                bio=f"{author_name}是{region}哲学史上的重要思想家。著有{'、'.join(book_titles[:5])}等作品。",
+            )
 
-    # 2. 尝试从百度百科爬取
-    scraped = scrape_baidu_baike(author_name)
-    if scraped:
-        return build_response(
-            "baidu_baike",
-            bio=scraped["bio"],
-            wiki_url=scraped.get("wiki_url"),
-        )
-
-    # 3. 兜底
-    book_titles = [b["title"] for b in author_books]
-    return build_response(
-        "fallback",
-        bio=f"{author_name}是{region}哲学史上的重要思想家。著有{'、'.join(book_titles[:5])}等作品。",
-    )
+    _AUTHOR_DETAIL_CACHE[author_name] = (resp, time.time())
+    return resp
 
 
 @app.get("/api/authors")
