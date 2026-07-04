@@ -91,14 +91,14 @@ function AuthorDetailPage() {
                   borderRadius: 14, fontSize: 12, fontWeight: 500, whiteSpace: 'nowrap',
                 }}>{author.era}</span>
               )}
-              {author.country && (
-                <span style={{
+              {author.country && author.country.split(/[/,，、]/).map((c, i) => (
+                <span key={'c'+i} style={{
                   background: 'var(--prussian)', color: '#fff', padding: '4px 12px',
                   borderRadius: 14, fontSize: 12, fontWeight: 500, whiteSpace: 'nowrap',
-                }}>{author.country}</span>
-              )}
+                }}>{c.trim()}</span>
+              ))}
               {author.school && author.school.split(/[/,，、]/).map((s, i) => (
-                <span key={i} style={{
+                <span key={'s'+i} style={{
                   background: 'var(--secondary)', color: 'var(--ochre)', padding: '4px 12px',
                   borderRadius: 14, fontSize: 12, fontWeight: 500, border: '1px solid rgba(145,118,71,0.15)',
                   whiteSpace: 'nowrap',
