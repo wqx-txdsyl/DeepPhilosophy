@@ -74,7 +74,7 @@ function AuthorDetailPage() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
               {(() => {
                 const r = author.region || '未知';
-                const display = r === '未知' ? (author.country && /中国|日本|韩国|朝鲜|越南|蒙古/.test(author.country) ? '东方哲学' : '西方哲学') : (r + '哲学');
+                const display = r === '未知' ? (author.country && /中国/.test(author.country) ? '东方哲学' : '西方哲学') : (r + '哲学');
                 const regionKey = display.startsWith('东方') ? '东方' : display.startsWith('世界') ? '世界' : '西方';
                 return (
                 <span style={{
