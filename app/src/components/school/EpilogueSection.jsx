@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { FONT, SPACE, WIDTH } from './tokens';
 
-export default function EpilogueSection({ conclusion, closingQuote }) {
+export default function EpilogueSection({ conclusion, closingQuote, closingQuoteAuthor }) {
   const navigate = useNavigate();
   return (
     <section style={{ padding: `${SPACE.hero}px ${SPACE.xl}px`, maxWidth: WIDTH.prose, margin: '0 auto', textAlign: 'center' }}>
@@ -25,6 +25,11 @@ export default function EpilogueSection({ conclusion, closingQuote }) {
           {closingQuote}
           <span style={{ color: 'var(--ochre)', fontSize: '2.5em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.4 }}>&#x201D;</span>
         </blockquote>
+      )}
+      {closingQuoteAuthor && (
+        <p style={{ fontSize: 13, color: 'var(--fade)', fontFamily: FONT.serif, fontStyle: 'italic', marginTop: -32, marginBottom: 48 }}>
+          —— {closingQuoteAuthor}
+        </p>
       )}
 
       {/* Ornamental end mark */}

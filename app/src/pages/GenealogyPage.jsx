@@ -166,6 +166,7 @@ function getEraIdx(c) {
 }
 
 const IMG_MAP = {
+   '人工智能哲学':'人工智能哲学_v2',
 };
 function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.jpg`; }
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
