@@ -1936,8 +1936,10 @@ async def global_middleware(request: Request, call_next):
     if not path.startswith("/api/admin"):
         admin_module.record_visit(path)
     # 静态资源强缓存（1年）
-    if path.startswith(("/gene/", "/schools/", "/assets/", "/icons/")) and not path.startswith("/api/"):
+    if path.startswith(("/gene/", "/assets/", "/icons/")) and not path.startswith("/api/"):
         response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    elif path.startswith("/schools/") and not path.startswith("/api/"):
+        response.headers["Cache-Control"] = "public, max-age=3600"
     elif path.startswith("/philosopher/") and not path.startswith("/api/"):
         response.headers["Cache-Control"] = "public, max-age=3600"  # 1 hour, not 1 year (portraits get updated)
     return response
