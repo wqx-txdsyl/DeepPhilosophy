@@ -81,8 +81,19 @@ init_db()
 # ============================================================
 SKIP_AUTHORS = {"合集&概述", "合集", "概述", "其他"}
 
+# 非人物条目（流派/宗教/学派名），在作者列表中直接过滤
+NON_PERSON_ENTRIES = {
+    "净土宗", "禅宗", "天台宗", "华严宗", "唯识宗", "密宗", "律宗", "三论宗",
+    "耆那教", "琐罗亚斯德教", "摩尼教",
+    "古文经学", "今文经学",
+    "犬儒学派", "斯多葛学派", "伊壁鸠鲁学派", "怀疑论", "新柏拉图主义",
+    "米利都学派", "埃利亚学派", "智者学派",
+}
+
 def is_valid_author(name: str) -> bool:
     """过滤非人物条目"""
+    if name in NON_PERSON_ENTRIES:
+        return False
     for skip in SKIP_AUTHORS:
         if skip in name:
             return False
@@ -1350,19 +1361,22 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
         author = b["author"]
         if not is_valid_author(author):
             continue
-        if author not in authors_map:
+        # 解析别名 → 规范名（去重：马克思→卡尔·马克思）
+        from philosophers_db import NAME_ALIASES
+        canonical = NAME_ALIASES.get(author, author)
+        if canonical not in authors_map:
             # 获取哲学家信息
-            info = get_philosopher_info(author)
-            authors_map[author] = {
-                "name": author,
+            info = get_philosopher_info(canonical)
+            authors_map[canonical] = {
+                "name": canonical,
                 "region": b["region"],
                 "books": [],
                 "era": info.get("era", "") if info else "",
                 "country": info.get("country", "") if info else "",
                 "school": info.get("school", "") if info else "",
             }
-        if b["title"] not in authors_map[author]["books"] and "待收录" not in b["title"]:
-            authors_map[author]["books"].append(b["title"])
+        if b["title"] not in authors_map[canonical]["books"] and "待收录" not in b["title"]:
+            authors_map[canonical]["books"].append(b["title"])
 
     # 补入只有空目录没有著作的哲学家
     knowledge_dir = config.KNOWLEDGE_DIR
@@ -1377,11 +1391,12 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
             author_clean = author_dir.replace("###合集&概述###", "合集&概述")
             if not is_valid_author(author_clean):
                 continue
-            if author_clean in authors_map:
+            canonical = NAME_ALIASES.get(author_clean, author_clean)
+            if canonical in authors_map:
                 continue
             info = get_philosopher_info(author_clean)
-            authors_map[author_clean] = {
-                "name": author_clean,
+            authors_map[canonical] = {
+                "name": canonical,
                 "region": region_name,
                 "books": [],
                 "era": info.get("era", "") if info else "",
