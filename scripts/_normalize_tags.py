@@ -64,13 +64,27 @@ def normalize_country(country_str):
     if not country_str:
         return ""
     s = country_str
-    # 去掉移居/移民/迁居/流亡/入籍等括号注释
-    s = re.sub(r'[（(][^)）]*?移居[^)）]*[)）]', '', s)
-    s = re.sub(r'[（(][^)）]*?移民[^)）]*[)）]', '', s)
-    s = re.sub(r'[（(][^)）]*?迁居[^)）]*[)）]', '', s)
-    s = re.sub(r'[（(][^)）]*?流亡[^)）]*[)）]', '', s)
-    s = re.sub(r'[（(][^)）]*?入籍[^)）]*[)）]', '', s)
-    s = re.sub(r'[（(][^)）]*?归化[^)）]*[)）]', '', s)
+
+    # "移居/移民/迁居" → 提取第二个国家名，保留双国籍
+    # e.g. "奥匈帝国（后移居英国）" → "奥匈帝国/英国"
+    def extract_migration(m):
+        inner = m.group(1)
+        # Try to find country names in the parenthetical
+        countries = re.findall(r'[移迁流][居民亡入归]?([\w一-鿿]{1,4}(?:国|帝国|王国|共和国|联邦))', inner)
+        if countries:
+            return '/' + '/'.join(countries)
+        return ''
+    s = re.sub(r'[（(]([^)）]*?移[居民][^)）]*?)[)）]', extract_migration, s)
+    s = re.sub(r'[（(]([^)）]*?[迁流][居亡入][^)）]*?)[)）]', extract_migration, s)
+    s = re.sub(r'[（(]([^)）]*?入籍[^)）]*?)[)）]', extract_migration, s)
+    s = re.sub(r'[（(]([^)）]*?归化[^)）]*?)[)）]', extract_migration, s)
+
+    # "今xxx/原名xxx" → 去掉整个括号
+    s = re.sub(r'[（(][^)）]*?今[^)）]*?[)）]', '', s)
+    s = re.sub(r'[（(][^)）]*?原[名称][^)）]*?[)）]', '', s)
+    # 残留的其他括号也去掉
+    s = re.sub(r'[（(][^)）]*[)）]', '', s)
+
     # 统一分隔符
     s = re.sub(r'\s*/\s*', '/', s)
     s = re.sub(r'\s*,\s*', '/', s)
