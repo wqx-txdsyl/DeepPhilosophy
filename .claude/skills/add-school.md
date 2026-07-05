@@ -17,9 +17,10 @@
 - [ ] 步骤 2：overview/conclusion 循环校验（>=500字）
 - [ ] 步骤 3：图片处理
 - [ ] 步骤 4：内联 DATA
-- [ ] 步骤 5：ESLint 语法检查
-- [ ] 步骤 6：计数更新
-- [ ] 步骤 7：构建验证
+- [ ] 步骤 5：星丛人物入库 — 所有 thinkers 逐一 add-author
+- [ ] 步骤 6：ESLint 语法检查
+- [ ] 步骤 7：计数更新
+- [ ] 步骤 8：构建验证
 
 ## 原子步骤
 
@@ -68,17 +69,57 @@ if os.path.exists(p):
 - **动作**：add_school.py 自动注入 SchoolDetailPage + GenealogyPage + WorldMap。
 - **门禁验证（Check）**：`python -c "import re; c=open('app/src/pages/SchoolDetailPage.jsx',encoding='utf-8').read(); assert 'ARG_NAME' in c; print('INLINE OK')"`
 
-### 步骤 5：ESLint 语法检查
+### 步骤 5：星丛人物入库
+- **动作**：提取 ARG_JSON 中所有 thinkers 的 name，对每个 name 执行 add-author：
+```bash
+cd scripts && python -c "
+import json, subprocess, sys, os
+
+# Load the school JSON
+with open('../app/public/schools/school_ARG_NAME.json',encoding='utf-8') as f:
+    school=json.load(f)
+
+thinkers=school.get('thinkers',[])
+print(f'Thinkers in constellation: {len(thinkers)}')
+
+# Load existing philosophers
+with open('../backend/data/philosophers.json',encoding='utf-8') as f:
+    philo=json.load(f)
+
+with open('../backend/data/name_aliases.json',encoding='utf-8') as f:
+    aliases=json.load(f)
+
+all_known=set(philo.keys())|set(aliases.keys())
+added=0; skipped=0
+for t in thinkers:
+    name=t.get('name','')
+    if not name: continue
+    if name in all_known:
+        skipped+=1; continue
+    # Run add_author for each unknown thinker
+    print(f'  Adding: {name}')
+    r=subprocess.run([sys.executable,'add_author.py',name],capture_output=True,text=True,timeout=120)
+    if '已保存' in (r.stdout or ''): added+=1
+    else: print(f'    [SKIPPED:ADD_FAILED] {r.stderr[-100:] if r.stderr else \"\"} ')
+
+print(f'Added: {added}, Skipped(existing): {skipped}, Total: {len(thinkers)}')
+"
+```
+- **门禁验证（Check）**：所有 thinkers 的 name 都存在于 `philosophers.json` 或 `name_aliases.json` 中。
+- **补全分支（Remediate）**：add_author 失败的 -> 重试 2 次，仍失败标记 `[SKIPPED:ADD_FAILED]`，手动补全。
+- **失败上限**：单个添加失败不阻塞整体流程。
+
+### 步骤 6：ESLint 语法检查
 - **动作**：`cd app && npx eslint src/pages/SchoolDetailPage.jsx --no-error-on-unmatched-pattern 2>&1 | tail -5`
 - **门禁验证（Check）**：无 `error` 输出（`warning` 可忽略）。
 - **补全分支（Remediate）**：若有 error -> 检查 JSX 中 `{` `}` 配对、引号转义、const 声明顺序。
 - **失败上限**：eslint 不可用时跳过，标记 `[SKIPPED:NO_ESLINT]`。
 
-### 步骤 6：计数更新
+### 步骤 7：计数更新
 - **动作**：`cd scripts && python add_school.py --update-counts-only`
 - **门禁验证（Check）**：`python -c "import re; c=open('app/src/pages/GenealogyPage.jsx',encoding='utf-8').read(); assert 'ARG_NAME' in c; print('COUNT OK')"`
 
-### 步骤 7：构建验证
+### 步骤 8：构建验证
 - **动作**：`cd app && npm run build`
 - **门禁验证（Check）**：`test -f app/dist/index.html && echo "BUILD OK"`
 
