@@ -1,20 +1,34 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FONT, SPACE } from './tokens';
 
+// 4 种连线样式
+// ── 师生/继承（实线）
+// - - 影响/再传（短虚线）
+// ··· 批判/对立（长虚线）
+// ··· 学术交流/合作（点线）
 const EDGE_STYLES = {
-  '师生': { stroke: 'rgba(58,90,124,0.5)', width: 2, dash: '' },
-  '继承': { stroke: 'rgba(58,90,124,0.35)', width: 1.4, dash: '' },
-  '影响': { stroke: 'rgba(196,149,106,0.4)', width: 1.2, dash: '' },
-  '再传': { stroke: 'rgba(58,90,124,0.3)', width: 1, dash: '4,3' },
-  '批判': { stroke: 'rgba(160,80,80,0.45)', width: 1.2, dash: '6,4' },
-  '对立': { stroke: 'rgba(160,80,80,0.4)', width: 1, dash: '6,4' },
-  '批判/超越': { stroke: 'rgba(160,80,80,0.45)', width: 1.2, dash: '6,4' },
-  '友谊': { stroke: 'rgba(196,149,106,0.3)', width: 0.8, dash: '3,5' },
-  '注释': { stroke: 'rgba(196,149,106,0.25)', width: 0.8, dash: '2,4' },
-  '合作': { stroke: 'rgba(196,149,106,0.3)', width: 0.8, dash: '3,5' },
-  '学术交流': { stroke: 'rgba(196,149,106,0.3)', width: 0.8, dash: '3,5' },
+  '师生':    { stroke: 'rgba(58,90,124,0.55)', width: 2.0, dash: '' },
+  '继承':    { stroke: 'rgba(58,90,124,0.40)', width: 1.6, dash: '' },
+  '影响':    { stroke: 'rgba(196,149,106,0.45)', width: 1.2, dash: '4,3' },
+  '再传':    { stroke: 'rgba(196,149,106,0.35)', width: 1.0, dash: '4,3' },
+  '批判':    { stroke: 'rgba(180,70,70,0.50)', width: 1.2, dash: '8,5' },
+  '对立':    { stroke: 'rgba(180,70,70,0.45)', width: 1.0, dash: '8,5' },
+  '批判/超越': { stroke: 'rgba(180,70,70,0.50)', width: 1.2, dash: '8,5' },
+  '学术交流': { stroke: 'rgba(120,140,160,0.35)', width: 0.8, dash: '2,4' },
+  '合作':    { stroke: 'rgba(120,140,160,0.35)', width: 0.8, dash: '2,4' },
+  '友谊':    { stroke: 'rgba(120,140,160,0.30)', width: 0.7, dash: '2,4' },
+  '注释':    { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
 };
+const DEFAULT_EDGE = EDGE_STYLES['影响'];
+
+// 4 种线型的 legend 分类
+function edgeCategory(type) {
+  if (type === '师生' || type === '继承') return 'solid';
+  if (type === '影响' || type === '再传') return 'dashed';
+  if (type === '批判' || type === '对立' || type === '批判/超越') return 'critical';
+  return 'dotted';
+}
 
 export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} }) {
   const [hovered, setHovered] = useState(null);
@@ -50,12 +64,19 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
         </p>
       </div>
 
-      {/* Legend */}
-      <div style={{ maxWidth: 900, margin: '0 auto 20px', display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap', fontFamily: FONT.sans, fontSize: 10, color: 'var(--fade)' }}>
-        <span>── 师生/继承</span>
-        <span>- - 再传/影响</span>
-        <span style={{ opacity: 0.7 }}>··· 批判/对立</span>
-        <span style={{ opacity: 0.5 }}>··· 学术交流</span>
+      {/* Legend — rendered as actual SVG lines */}
+      <div style={{ maxWidth: 900, margin: '0 auto 24px', display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', fontFamily: FONT.sans, fontSize: 10, color: 'var(--fade)', alignItems: 'center' }}>
+        {[
+          { label: '师生/继承', ds: '', sw: 2.0, sc: 'rgba(58,90,124,0.55)' },
+          { label: '影响/再传', ds: '4,3', sw: 1.2, sc: 'rgba(196,149,106,0.45)' },
+          { label: '批判/对立', ds: '8,5', sw: 1.2, sc: 'rgba(180,70,70,0.50)' },
+          { label: '学术交流', ds: '2,4', sw: 0.8, sc: 'rgba(120,140,160,0.35)' },
+        ].map((item, i) => (
+          <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, opacity: 0.65 }}>
+            <svg width={28} height={10}><line x1={2} y1={5} x2={24} y2={5} stroke={item.sc} strokeWidth={item.sw} strokeDasharray={item.ds} /></svg>
+            {item.label}
+          </span>
+        ))}
       </div>
 
       <div style={{ width: '100%', maxWidth: 1000, height: 640, margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
@@ -95,7 +116,12 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
                   markerEnd={style.dash ? undefined : 'url(#arrowhead)'}
                   style={{ transition: 'opacity 0.35s' }} />
                 {isRelevant && focusNode && (
-                  <text x={midX} y={midY - 6} textAnchor="middle" fontSize={8} fill="var(--ochre)" fontStyle="italic" opacity={0.7}>{r.type}</text>
+                  <g>
+                    <rect x={midX - 24} y={midY - 16} width={48} height={14} rx={3}
+                      fill="rgba(248,244,238,0.92)" stroke={style.stroke} strokeWidth={0.5} strokeOpacity={0.4} />
+                    <text x={midX} y={midY - 4} textAnchor="middle" fontSize={9} fill={style.stroke}
+                      fontFamily={FONT.sans} fontWeight={500}>{r.type || r.label || '影响'}</text>
+                  </g>
                 )}
               </g>
             );
@@ -148,11 +174,11 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
                   {t.name[0]}
                 </text>
 
-                {/* Name label — visible for large nodes or focused */}
-                {(baseSize >= 22 || isFoc) && (
+                {/* Name label — ONLY on focus (hover/click), never by default */}
+                {isFoc && (
                   <text x={t._x} y={t._y + baseSize + 14} textAnchor="middle"
-                    fill="var(--ink)" fontSize={isFoc ? 11 : 9} fontFamily={FONT.sans}
-                    fontWeight={isFoc ? 500 : 300} style={{ transition: 'all 0.3s' }}>
+                    fill="var(--ink)" fontSize={11} fontFamily={FONT.sans}
+                    fontWeight={500} style={{ transition: 'all 0.3s' }}>
                     {t.name}
                   </text>
                 )}
