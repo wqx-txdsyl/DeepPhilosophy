@@ -81,6 +81,7 @@ const ALL_SCHOOLS = [
   { century:'19世纪', name:'北欧哲学', region:'世界', desc:'克尔凯郭尔的信仰跳跃。', tier:'B' },
   { century:'19世纪', name:'东欧斯拉夫哲学', region:'世界', desc:'索洛维约夫、舍斯托夫——第三条道路。', tier:'B' },
   { century:'19世纪', name:'北美哲学', region:'世界', desc:'实用主义与超验主义。', tier:'B' },
+  { century:'1057', name:'哲学入词', region:'东方', desc:'哲学入词是中国古典哲学与文学深度融合的一种独特思想流派，其核心在于将深邃的哲学命题、宇宙观、人生论与道德学说，以词这种抒', tier:'B' },
   { century:'19世纪', name:'黑人哲学', region:'世界', desc:'从废奴运动到黑权运动——双重意识、种族批判与黑人存在主义的全球哲学传统。', tier:'B' },
 { century:'19世纪', name:'高加索哲学', region:'世界', desc:'纳尔特史诗·山地文明·欧亚交汇。', tier:'B' },
   { century:'19世纪末', name:'天演论', region:'东方', desc:'物竞天择，适者生存。', tier:'C' },
@@ -168,6 +169,7 @@ function getEraIdx(c) {
 }
 
 const IMG_MAP = {
+   '哲学入词':'哲学入词',
    '哲学入词':'哲学入词',
    '贝叶斯主义':'贝叶斯主义_bayes',
    '人工智能哲学':'人工智能哲学_v2', '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific',
