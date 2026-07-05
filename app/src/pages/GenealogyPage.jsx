@@ -80,7 +80,7 @@ const ALL_SCHOOLS = [
   { century:'19世纪', name:'北欧哲学', region:'世界', desc:'克尔凯郭尔的信仰跳跃。', tier:'B' },
   { century:'19世纪', name:'东欧斯拉夫哲学', region:'世界', desc:'索洛维约夫、舍斯托夫——第三条道路。', tier:'B' },
   { century:'19世纪', name:'北美哲学', region:'世界', desc:'实用主义与超验主义。', tier:'B' },
-  { century:'1763', name:'贝叶斯主义', region:'世界', desc:'贝叶斯主义是一种以概率论为核心工具，将信念、知识与决策纳入严格数学框架的哲学思潮。其源头可追溯至十八世纪英国数学家托马斯', tier:'B' },
+  { century:'18世纪', name:'贝叶斯主义', region:'西方', desc:'以概率论为核心，将信念与决策纳入数学框架——从贝叶斯定理到主观概率与因果推理。', tier:'B' },
   { century:'19世纪', name:'黑人哲学', region:'世界', desc:'从废奴运动到黑权运动——双重意识、种族批判与黑人存在主义的全球哲学传统。', tier:'B' },
 { century:'19世纪', name:'高加索哲学', region:'世界', desc:'纳尔特史诗·山地文明·欧亚交汇。', tier:'B' },
   { century:'19世纪末', name:'天演论', region:'东方', desc:'物竞天择，适者生存。', tier:'C' },
