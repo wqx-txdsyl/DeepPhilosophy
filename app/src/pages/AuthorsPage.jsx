@@ -110,6 +110,25 @@ function AuthorsPage() {
     "生态女性主义":["环境哲学","女性主义"],
   };
   const cntMap = {"苏格兰":"英国","英格兰":"英国","罗马帝国":"古罗马","北非":"古罗马","奥匈帝国（捷克）":"捷克","俄国":"俄罗斯"};
+  // 国家标签显示合并（筛选列表简化显示，详情页保持原名）
+  const countryDisplayMap = {
+    "巴比伦第一王朝":"巴比伦", "以色列王国":"以色列", "犹大王国":"犹太",
+    "罗马共和国":"古罗马", "罗马帝国":"古罗马",
+    "古埃及":"埃及", "古希腊":"希腊", "古印度":"印度",
+    "玛雅文明":"玛雅", "玛雅城邦帕伦克":"玛雅",
+    "阿兹特克帝国":"阿兹特克",
+    "朝鲜王朝":"朝鲜", "蒙古帝国":"蒙古", "后突厥汗国":"突厥",
+    "俄国":"俄罗斯", "中国等":"中国",
+    "印加帝国":"印加", "拜占庭帝国":"拜占庭",
+    "阿拉伯帝国":"阿拉伯", "奥匈帝国":"奥地利",
+    "苏美尔":"美索不达米亚",
+  };
+  // 反向展开：简化名 → 所有原始名（用于筛选匹配）
+  const countryExpandMap = {};
+  for (const [orig, display] of Object.entries(countryDisplayMap)) {
+    if (!countryExpandMap[display]) countryExpandMap[display] = [display];
+    if (!countryExpandMap[display].includes(orig)) countryExpandMap[display].push(orig);
+  }
 
   const toggleTag = (tag) => {
     setActiveTags(prev =>
@@ -165,8 +184,11 @@ function AuthorsPage() {
       const rawCountry = a.country || '';
       const countries = rawCountry.split(/[/,、，;；]/).map(c => c.trim());
       const normCountries = countries.map(c => cntMap[c] || c);
+      // Expand simplified country tags to match all variants
+      const expandedCountries = countryExpandMap[tag] || [tag];
       return matchTags.includes(tag) ||
-             countries.includes(tag) || normCountries.includes(tag) ||
+             countries.some(c => expandedCountries.includes(c)) ||
+             normCountries.some(c => expandedCountries.includes(c)) ||
              (a.centuries || []).includes(tag) || (a.era || '') === tag;
     });
   }
@@ -268,7 +290,7 @@ function AuthorsPage() {
                 国家/地区 ({filters.countries.length})
               </div>
               <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 10 }}>
-                {filters.countries.map(c => (
+                {Array.from(new Set(filters.countries.map(c => countryDisplayMap[c] || c))).sort().map(c => (
                   <span key={c} onClick={() => toggleTag(c)}
                     style={{
                       fontSize: 11, padding: '3px 10px', borderRadius: 12, cursor: 'pointer',
