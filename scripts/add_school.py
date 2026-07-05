@@ -42,7 +42,7 @@ def step(msg):
 # ═══════════════════════════════════════════════
 # Step 1: 读取数据
 # ═══════════════════════════════════════════════
-def load_school(name):
+def load_school(name, region="世界"):
     jp = os.path.join(JSON_DIR, f"school_{name}.json")
     if os.path.exists(jp):
         with open(jp, "r", encoding="utf-8") as f:
@@ -80,7 +80,7 @@ def load_school(name):
     {{"title":"书名","author":"作者","era":"年代","desc":"简介"}}
   ],
   "meta": {{"中文名":"{name}","英文名":"ENGLISH NAME"}},
-  "region": "世界",
+  "region": "{region}",
   "bg": "url(/schools/{name}.jpg)",
   "sub_schools": {{
     "下属流派名1": {{"name":"下属流派名1","desc":"150字左右的连贯描述，涵盖该下属流派的起源、核心命题与代表人物"}},
@@ -264,17 +264,24 @@ def get_century(data):
     return t[0].get("year","20世纪") if t else "20世纪"
 
 def inject_pages(name, data, school_century):
-    """世界哲学分页 + Genealogy + Timeline"""
+    """区域哲学分页 + Genealogy + Timeline"""
     desc = data.get("overview","")[:60].replace("\n","")
     century = get_century(data)
     region = data.get("region","世界")
-    # WorldPhilosophiesPage
+
+    # Pick correct region page
+    region_files = {
+        "西方": os.path.join(ROOT, "app", "src", "pages", "WesternPhilosophiesPage.jsx"),
+        "东方": os.path.join(ROOT, "app", "src", "pages", "EasternPhilosophiesPage.jsx"),
+        "世界": os.path.join(ROOT, "app", "src", "pages", "WorldPhilosophiesPage.jsx"),
+    }
+    region_page = region_files.get(region, region_files["世界"])
     color = hex(hash(name) % 0xFFFFFF)[2:].zfill(6)
-    wp_entry = f"  {{ name: '{name}', color: '#{color}', desc: '{desc}' }},\n];"
-    with open(WP_FILE, "r", encoding="utf-8") as f: wp = f.read()
-    wp = wp.replace("\n];", f"\n{wp_entry}", 1)
-    with open(WP_FILE, "w", encoding="utf-8") as f: f.write(wp)
-    print("  [OK] WorldPhilosophiesPage")
+    rp_entry = f"  {{ name: '{name}', color: '#{color}', desc: '{desc}' }},\n];"
+    with open(region_page, "r", encoding="utf-8") as f: rp = f.read()
+    rp = rp.replace("\n];", f"\n{rp_entry}", 1)
+    with open(region_page, "w", encoding="utf-8") as f: f.write(rp)
+    print(f"  [OK] {region}PhilosophiesPage")
 
     # GenealogyPage ALL_SCHOOLS
     gl_entry = f"  {{ century:'{century}', name:'{name}', region:'{region}', desc:'{desc}', tier:'B' }},"
@@ -364,12 +371,18 @@ def update_counts():
 # ═══════════════════════════════════════════════
 def main():
     if len(sys.argv) < 2:
-        print("用法: python add_school.py '流派名'")
+        print("用法: python add_school.py '流派名' [--region 西方|东方|世界]")
         sys.exit(1)
     name = sys.argv[1]
+    region = "世界"
+    if "--region" in sys.argv:
+        idx = sys.argv.index("--region")
+        if idx + 1 < len(sys.argv):
+            region = sys.argv[idx + 1]
+    print(f"区域: {region}")
 
     step("1/7 加载数据")
-    data = load_school(name)
+    data = load_school(name, region)
 
     step("2/7 处理图片")
     fix_image(name, data)
