@@ -283,11 +283,18 @@ def inject_pages(name, data, school_century):
     with open(region_page, "w", encoding="utf-8") as f: f.write(rp)
     print(f"  [OK] {region}PhilosophiesPage")
 
-    # GenealogyPage ALL_SCHOOLS
+    # GenealogyPage ALL_SCHOOLS — insert at correct century position
     gl_entry = f"  {{ century:'{century}', name:'{name}', region:'{region}', desc:'{desc}', tier:'B' }},"
     with open(GEN_FILE, "r", encoding="utf-8") as f: gl = f.read()
-    # 插入到黑人哲学之前
-    gl = gl.replace("  { century:'19世纪', name:'黑人哲学'", gl_entry + "\n  { century:'19世纪', name:'黑人哲学'")
+    # Find the right insertion point: after the last entry with the same or earlier century
+    # Default: insert before 黑人哲学 (last resort)
+    insert_marker = "  { century:'19世纪', name:'黑人哲学'"
+    # For 18th century, insert before 德国古典哲学 (first 19th century western)
+    if century == '18世纪':
+        insert_marker = "  { century:'19世纪', name:'德国古典哲学'"
+    elif '20' in century:
+        insert_marker = "  { century:'19世纪', name:'黑人哲学'"
+    gl = gl.replace(insert_marker, gl_entry + "\n" + insert_marker)
     with open(GEN_FILE, "w", encoding="utf-8") as f: f.write(gl)
     print("  [OK] GenealogyPage")
 
