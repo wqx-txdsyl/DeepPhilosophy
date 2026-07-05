@@ -34,7 +34,7 @@
 - **补全分支（Remediate）**：若 `len(bio) < 1000`，循环调用 DeepSeek 扩充（最多 2 次）：
 ```bash
 cd scripts && python -c "
-from _lib import get_deepseek_key, load_json, save_json, PHILOSOPHERS_FILE
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() else os.getcwd(), '..')); from _lib import get_deepseek_key, load_json, save_json, ROOT; PHILOSOPHERS_FILE = os.path.join(ROOT, 'backend', 'data', 'philosophers.json')
 from openai import OpenAI
 client=OpenAI(api_key=get_deepseek_key(),base_url='https://api.deepseek.com')
 philo=load_json(PHILOSOPHERS_FILE); name='ARG_NAME'

@@ -59,7 +59,7 @@ import os; from PIL import Image
 p='app/public/ARG_DIR/ARG_NAME.jpg'
 if not os.path.exists(p): print('[SKIPPED:NO_FILE]'); exit(0)
 img=Image.open(p); sz=os.path.getsize(p)
-min_w=512 if 'ARG_TYPE'=='portrait' else 1200
+min_w=512 if 'ARG_DIR'=='philosopher' else 1200
 assert img.size[0]>=min_w, f'[WARN:TOO_SMALL] {img.size}'
 assert sz>=20000, f'[WARN:TOO_SMALL_FILE] {sz}'
 print(f'{img.size[0]}x{img.size[1]}, {sz//1024}KB')
@@ -75,7 +75,7 @@ p='app/public/ARG_DIR/ARG_NAME.jpg'
 if not os.path.exists(p): print('[SKIPPED:NO_FILE]'); exit(0)
 os.makedirs('app/public/ARG_DIR/thumb',exist_ok=True)
 img=Image.open(p).convert('RGB'); t=img.copy()
-ts=(200,200) if 'ARG_TYPE'=='portrait' else (400,300)
+ts=(200,200) if 'ARG_DIR'=='philosopher' else (400,300)
 t.thumbnail(ts); t.save(f'app/public/ARG_DIR/thumb/ARG_NAME.jpg','JPEG',quality=75)
 print('THUMB OK')
 "
