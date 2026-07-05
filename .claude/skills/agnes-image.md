@@ -1,145 +1,49 @@
-# Agnes AI 图像生成与识别
+# Agnes AI Image
 
-## 概述
+## 核心执行协议（覆盖默认行为）
+- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
+- **遇缺失处理**：**禁止终止**。必须调用对应补全函数/脚本，补全后重新验证。补全失败则重试最多 2 次，仍失败才报错并**回滚/标记**（而非直接退出）。
 
-使用 Sapiens AI 的 Agnes 模型进行文生图和图像理解。API Key 存储在 `scripts/` 下的脚本中（已加入 `.gitignore`，不会提交）。
+## 状态初始化
+> 执行前必须先调用 `TodoWrite`，勾选状态实时更新：
+- [ ] 步骤 1：API Key 校验
+- [ ] 步骤 2：生成图片（gen_portrait / gen_school_bg）
+- [ ] 步骤 3：文件验证（存在 + 尺寸 + 大小）
+- [ ] 步骤 4：缩略图
 
----
+## 原子步骤
 
-## API 信息
-
-| 项目 | 值 |
-|------|-----|
-| Base URL | `https://apihub.agnes-ai.com` |
-| 图像生成模型 | `agnes-image-2.1-flash` |
-| 语言+视觉模型 | `agnes-2.0-flash` |
-| 生图端点 | `POST /v1/images/generations` |
-| 聊天/识图端点 | `POST /v1/chat/completions` |
-| 当前价格 | $0/张（生图），$0/1M tokens（语言） |
-
----
-
-## 脚本工具
-
-### 1. 本地文生图工具
-**文件**: `scripts/img_gen.html`
-- 浏览器打开即可使用
-- 输入 prompt 和尺寸 → 生成图片
-- API Key 已预填在密码框中
-- 历史记录自动保存到 localStorage
-
-### 2. 批量生成 icon
-**文件**: `scripts/generate_icons.py`
-- 从 CSV `emoji_inventory.csv` 读取 icon 列表
-- 批量调用 Agnes Image API 生成 78 个图标
-- 自动去除白色背景（PIL 泛洪填充）
-- 支持断点续传（已生成的跳过）
-
+### 步骤 1：API Key 校验
+- **动作**：
 ```bash
-cd scripts
-python generate_icons.py              # 生成全部 78 个
-python generate_icons.py nav-books    # 只生成指定
+cd scripts && python -c "
+import json,os,re; key=''
+if os.path.exists('api_keys.json'): key=json.load(open('api_keys.json')).get('agnes','')
+if not key:
+    with open('gen_school_bg.py') as f:
+        m=re.search(r'API_KEY\s*=\s*\"([^\"]+)\"',f.read())
+        if m: key=m.group(1)
+assert key, 'API KEY MISSING'; print('KEY OK')
+"
 ```
+- **门禁验证（Check）**：`KEY OK`。
+- **补全分支（Remediate）**：无 Key -> 检查 api_keys.json 或 gen_school_bg.py。
 
-### 3. 图像背景修复
-**文件**: `scripts/fix_bg.py`
-- 泛洪填充 + 像素阈值双重去背景
-- 阈值 r+g+b > 300，二遍扫描覆盖内部封闭区域
+### 步骤 2：生成图片
+- **动作**：`cd scripts && python gen_portrait.py "ARG_NAME"` 或 `python gen_school_bg.py "ARG_SCHOOL"`
+- **门禁验证（Check）**：`python -c "import os; assert os.path.exists('app/public/TARGET_DIR/ARG_NAME.jpg'); print(f'GEN OK: {os.path.getsize(\"app/public/TARGET_DIR/ARG_NAME.jpg\")//1024}KB')"`
+- **补全分支（Remediate）**：生成失败 -> 检查 API 余额/网络，重试最多 2 次。
 
+### 步骤 3：文件验证
+- **动作**：
 ```bash
-python fix_bg.py
+python -c "import os; from PIL import Image; p='app/public/TARGET_DIR/ARG_NAME.jpg'; img=Image.open(p); assert img.size[0]>=512; assert os.path.getsize(p)>=20000; print(f'{img.size[0]}x{img.size[1]}, {os.path.getsize(p)//1024}KB')"
 ```
+- **补全分支（Remediate）**：尺寸不足 -> 重新生成，指定更大 size 参数。
 
-### 4. AI 视觉定位世界地图坐标
-**文件**: `scripts/fix_map_coords.py`
-- 将世界地图图片发送给 Agnes 2.0 Flash
-- AI 分析图片并返回各地区的百分比坐标
-- 输出 `map_coords_fixed.json`
+### 步骤 4：缩略图
+- **动作**：标准 400x300 thumb 生成脚本。
+- **门禁验证（Check）**：`python -c "import os; assert os.path.exists('app/public/TARGET_DIR/thumb/ARG_NAME.jpg'); print('THUMB OK')"`
 
-### 5. AI 哲人头像验证
-**文件**: `scripts/_ai_verify_images.py`
-- 将每位哲人的头像 URL 发送给 Agnes 2.0 Flash
-- AI 判断图片是否为该哲人的肖像（照片/雕像/画像）
-- 标记错误图片（风景、建筑、错人、文字等）
-- 输出 `_ai_bad_images.txt` 供重爬
-
-```bash
-cd scripts
-python _ai_verify_images.py             # 验证全部头像
-# 输出: OK 320张, BAD 24张 -> _ai_bad_images.txt
-python _refetch_noface.py               # 重爬错误图片
-```
-
----
-
-## API 调用示例
-
-### 文生图（URL 输出）
-```python
-import requests
-
-r = requests.post(
-    "https://apihub.agnes-ai.com/v1/images/generations",
-    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-    json={
-        "model": "agnes-image-2.1-flash",
-        "prompt": "...",
-        "size": "1024x1024",
-        "extra_body": {"response_format": "url"}
-    }
-)
-url = r.json()["data"][0]["url"]
-```
-
-### 文生图（Base64 输出）
-```python
-json={
-    "model": "agnes-image-2.1-flash",
-    "prompt": "...",
-    "size": "1024x1024",
-    "return_base64": True
-}
-b64 = r.json()["data"][0]["b64_json"]
-```
-
-### 图像理解
-```python
-r = requests.post(
-    "https://apihub.agnes-ai.com/v1/chat/completions",
-    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-    json={
-        "model": "agnes-2.0-flash",
-        "messages": [{
-            "role": "user",
-            "content": [
-                {"type": "text", "text": "描述这张图片"},
-                {"type": "image_url", "image_url": {"url": "https://example.com/img.jpg"}}
-            ]
-        }],
-        "temperature": 0.1,
-        "max_tokens": 2048
-    }
-)
-result = r.json()["choices"][0]["message"]["content"]
-```
-
----
-
-## 注意事项
-
-1. **API Key 保密**：Key 存储在脚本文件中，通过 `.gitignore` 防止提交
-2. **`response_format` 必须在 `extra_body` 内**：不要放在请求顶层
-3. **中文 prompt 效果差**：icon 生成使用英文 prompt
-4. **生成图片有白底**：用 `fix_bg.py` 去背景，阈值 r+g+b > 300
-5. **URL 中的图片需公网可访问**：本地图片需先上传或用 data URI
-
----
-
-## 项目使用记录
-
-| 用途 | 脚本 | 结果 |
-|------|------|------|
-| 78 个 UI icon | `generate_icons.py` | `app/public/icons/` |
-| 世界地图坐标修正 | `fix_map_coords.py` | WorldMap.jsx 坐标 |
-| 本地测试生图 | `img_gen.html` | 浏览器工具 |
-| 背景清理 | `fix_bg.py` | 泛洪填充 + 阈值过滤 |
+## 执行报告（必须输出）
+- 成功项：X 条 | 补全项：Y 条 | 失败跳过项：Z 条

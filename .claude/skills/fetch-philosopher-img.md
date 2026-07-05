@@ -1,50 +1,79 @@
-# Fetch Philosopher Image Skill
+# Fetch Philosopher Image
 
-## 爬取哲学家无水印照片
+## 核心执行协议（覆盖默认行为）
+- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
+- **遇缺失处理**：**禁止终止**。必须调用对应补全函数/脚本，补全后重新验证。补全失败则重试最多 2 次，仍失败才报错并**回滚/标记**（而非直接退出）。
 
-输入哲学家名 → Wikipedia 信息框搜图 → Wikimedia Commons 备用 → 下载保存 + 缩略图
+## 状态初始化
+> 执行前必须先调用 `TodoWrite`，勾选状态实时更新：
+- [ ] 步骤 1：Wikipedia 搜图
+- [ ] 步骤 2：Commons 备用
+- [ ] 步骤 3：下载保存
+- [ ] 步骤 4：缩略图
+- [ ] 步骤 5：终局自检
 
-## 用法
+## 原子步骤
 
+### 步骤 1：Wikipedia 搜图
+- **动作**：
 ```bash
-cd scripts
-python fetch_philosopher_img.py "哲学家名"
+cd scripts && python fetch_philosopher_img.py "ARG_NAME"
+```
+- **门禁验证（Check）**：
+```bash
+python -c "import os; p='app/public/philosopher/ARG_NAME.jpg'; print('FOUND' if os.path.exists(p) else 'NOT FOUND')"
+```
+- **补全分支（Remediate）**：若 `NOT FOUND` → 进入步骤 2 Commons 备用。
+
+### 步骤 2：Commons 备用
+- **动作**：脚本内自动 fallback 到 Wikimedia Commons。
+- **门禁验证（Check）**：同上，检查文件是否已存在。
+- **补全分支（Remediate）**：Commons 也无图 → `python gen_portrait.py "ARG_NAME"` AI 生成兜底。
+- **失败上限**：AI 兜底也失败 → 标记 `WARN:NO_IMG`，继续。
+
+### 步骤 3：下载保存
+- **动作**：
+```bash
+python -c "
+import os; from PIL import Image
+p='app/public/philosopher/ARG_NAME.jpg'
+assert os.path.exists(p), 'NOT FOUND'
+img=Image.open(p); sz=os.path.getsize(p)
+assert sz>=20000, f'TOO SMALL: {sz}'
+print(f'OK: {img.size[0]}x{img.size[1]}, {sz//1024}KB')
+"
+```
+- **补全分支（Remediate）**：文件 < 20KB → 重新下载，最多 2 次。
+
+### 步骤 4：缩略图
+- **动作**：
+```bash
+python -c "
+from PIL import Image; import os
+os.makedirs('app/public/philosopher/thumb',exist_ok=True)
+img=Image.open('app/public/philosopher/ARG_NAME.jpg').convert('RGB')
+t=img.copy(); t.thumbnail((200,200))
+t.save('app/public/philosopher/thumb/ARG_NAME.jpg','JPEG',quality=75)
+"
+```
+- **门禁验证（Check）**：
+```bash
+python -c "import os; assert os.path.exists('app/public/philosopher/thumb/ARG_NAME.jpg'); print('THUMB OK')"
+```
+- **补全分支（Remediate）**：重试 2 次。
+
+### 步骤 5：终局自检
+- **动作**：
+```bash
+python -c "
+import os; p='app/public/philosopher/ARG_NAME.jpg'; t='app/public/philosopher/thumb/ARG_NAME.jpg'
+checks=[('image',os.path.exists(p) and os.path.getsize(p)>=20000),('thumb',os.path.exists(t))]
+for n,ok in checks: print(f'  [{\"PASS\" if ok else \"WARN\"}] {n}')
+"
 ```
 
-示例：
-```bash
-python fetch_philosopher_img.py "孔子"
-python fetch_philosopher_img.py "Immanuel Kant"
-python fetch_philosopher_img.py "亚里士多德"
+## 执行报告（必须输出）
 ```
-
-## 流程
-
-| 步骤 | 说明 |
-|------|------|
-| Wikipedia 搜图 | 通过 Wikipedia API 查找哲学家页面的信息框（infobox）主图 → 获取 800px 缩略图 URL |
-| Commons 备用 | 若 Wikipedia 无图，搜索 Wikimedia Commons → 筛选 JPG/PNG（>50KB, <10MB） → 优先竖版人像 |
-| 下载保存 | 下载原图 → 转 JPG 保存至 `app/public/philosopher/{name}.jpg` |
-| 缩略图 | 自动生成 200×280 缩略图 → `app/public/philosopher/thumb/{name}.jpg` |
-
-## 特点
-
-- **无水印**：Wikipedia/Commons 图片均为 CC/公有领域，无水印
-- **去重**：若图片已存在则跳过
-- **安全命名**：自动处理文件名中的特殊字符
-
-## 输出
-
-- `app/public/philosopher/{哲学家名}.jpg` — 原图（JPEG 92% 质量）
-- `app/public/philosopher/thumb/{哲学家名}.jpg` — 缩略图（200×280）
-
-## 依赖
-
-- Python: `requests`, `Pillow`
-- 无需 API Key（使用 Wikipedia / Wikimedia Commons 公开 API）
-
-## 注意事项
-
-- Wikipedia 中文站图片资源较少，英文名搜索命中率更高
-- 部分哲学家可能没有 CC-licensed 照片（尤其是 20 世纪以后仍在版权保护期的）
-- 如两个来源均无图，脚本会提示手动获取的 URL
+成功项: X 条 | 补全项: Y 条 | 失败跳过项: Z 条
+产物: app/public/philosopher/ARG_NAME.jpg, app/public/philosopher/thumb/ARG_NAME.jpg
+```

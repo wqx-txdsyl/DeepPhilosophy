@@ -1,57 +1,51 @@
-# Add School Skill
+# Add School
 
-## 一键新增哲学流派
+## 核心执行协议（覆盖默认行为）
+- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
+- **遇缺失处理**：**禁止终止**。必须调用对应补全函数/脚本，补全后重新验证。补全失败则重试最多 2 次，仍失败才报错并**回滚/标记**（而非直接退出）。
 
-```
-输入流派名 → DeepSeek生成数据 → 图片改名 → 内联DATA → 谱系页 → 地图定位 → 计数更新
-```
+## 状态初始化
+> 执行前必须先调用 `TodoWrite`，勾选状态实时更新：
+- [ ] 步骤 1：数据生成
+- [ ] 步骤 2：overview/conclusion 循环校验（>=500字）
+- [ ] 步骤 3：图片处理（背景图 + 缩略图，无图则 AI 生成）
+- [ ] 步骤 4：内联 DATA（SchoolDetailPage + GenealogyPage + WorldMap）
+- [ ] 步骤 5：计数更新（HomePage/Settings/Genealogy）
+- [ ] 步骤 6：构建验证
 
-## 用法
+## 原子步骤
 
+### 步骤 1：数据生成
+- **动作**：`cd scripts && python add_school.py "ARG_NAME"`
+- **门禁验证（Check）**：`python -c "import os; assert os.path.exists('app/public/schools/school_ARG_NAME.json'); print('JSON OK')"`
+- **补全分支（Remediate）**：生成失败 -> 重试 add_school.py，最多 2 次。检查 DeepSeek API Key。
+
+### 步骤 2：overview/conclusion 循环校验
+- **动作**：
 ```bash
-cd scripts
-python add_school.py "流派名"
+python -c "import json; d=json.load(open('app/public/schools/school_ARG_NAME.json')); assert len(d.get('overview',''))>=500; assert len(d.get('conclusion',''))>=500; print('TEXT OK')"
 ```
+- **补全分支（Remediate）**：不足 500 字 -> 调用 DeepSeek 扩充，循环最多 2 次。
 
-## 自动完成
+### 步骤 3：图片处理
+- **动作**：检查 `app/public/schools/ARG_NAME.jpg`，无则 `python gen_school_bg.py "ARG_NAME"` AI 生成。生成 400x300 缩略图。
+- **门禁验证（Check）**：`python -c "import os; assert os.path.exists('app/public/schools/ARG_NAME.jpg'); assert os.path.exists('app/public/schools/thumb/ARG_NAME.jpg'); print('IMG+THUMB OK')"`
+- **补全分支（Remediate）**：缺图 -> AI 生成，重试 2 次。
 
-| 步骤 | 说明 |
-|------|------|
-| 数据生成 | 流派 JSON 不存在时，DeepSeek 自动生成全部内容（概述/结语/思想家/著作/术语/名言/时间轴/下属流派列表） |
-| 图片处理 | 中文→英文文件名，生成 200×280 缩略图<br>**无图片时自动调用 `gen_school_bg.py` AI 生成** |
-| 内联 DATA | 生成 JS const → 注入 SchoolDetailPage + ENG_NAMES |
-| 分页插入 | WorldPhilosophiesPage 按时间顺序插入 |
-| 谱系插入 | GenealogyPage ALL_SCHOOLS + IMG_MAP + PhilosophyTimeline |
-| 地图定位 | **仅地区型世界流派** → Agnes 识图定位 → WorldMap 添加光点<br>**主题型流派自动跳过**（见下方规则） |
+### 步骤 4：内联 DATA
+- **动作**：add_school.py 自动注入 SchoolDetailPage + GenealogyPage + WorldMap。
+- **门禁验证（Check）**：`python -c "import re; c=open('app/src/pages/SchoolDetailPage.jsx',encoding='utf-8').read(); assert 'ARG_NAME' in c; print('INLINE OK')"`
 
-## 世界地图规则 ⚠️
+### 步骤 5：计数更新
+- **动作**：add_school.py 自动更新 HomePage/Settings/Genealogy。
+- **门禁验证（Check）**：`python -c "import re; c=open('app/src/pages/GenealogyPage.jsx',encoding='utf-8').read(); assert 'ARG_NAME' in c; print('COUNT OK')"`
 
-**只有地区型流派才能加入世界地图**。主题型/概念型流派即使 `region` 为 "世界"，也不应出现在地图上。
+### 步骤 6：构建验证
+- **动作**：`cd app && npm run build`
+- **门禁验证（Check）**：`test -f app/dist/index.html && echo "BUILD OK"`
 
-### 地区型（✅ 加入地图）
-有明确地理/文化起源地的流派：古埃及哲学、印加哲学、北欧哲学、萨满哲学、凯尔特哲学 等
-
-### 主题型（❌ 不加入地图）
-跨地域的概念/问题导向流派。脚本通过 `skip_keywords` 自动过滤：
-
-```
-环境 | 技术 | 伦理 | 政治 | 宗教 | 女性 | 社群 | 后现代 | 解构 | 批判
-人工智能 | 科学 | 知识 | 语言 | 心灵 | 逻辑 | 教育 | 美学 | 经济 | 法律 | 医学
-```
-
-> 如新增流派名包含以上任一关键词，`add_school.py` 会自动跳过地图定位步骤。
-| 计数更新 | HomePage/Settings/Genealogy 流派数自动更新 |
-
-## 完成后手动
-
-```bash
-cd app && npm run build
-rm -rf ../backend/app-dist ../backend/static && cp -r dist ../backend/app-dist && cp -r dist ../backend/static
-git add -A && git commit -m "feat: 新增流派" && git push
-```
-
-## 依赖
-
-- DeepSeek API（生成流派数据）：key 在 `scripts/api_keys.json`
-- Agnes API（图像识别定位）：key 同上
-- Python: `requests`, `Pillow`
+## 执行报告（必须输出）
+- 成功项：X 条
+- 补全项：Y 条（列出：{项目名} -> 补全动作 -> 最终状态）
+- 失败跳过项：Z 条（列出：{项目名} -> 失败原因）
+- 产物：app/public/schools/school_ARG_NAME.json, ARG_NAME.jpg, SchoolDetailPage.jsx（已更新）

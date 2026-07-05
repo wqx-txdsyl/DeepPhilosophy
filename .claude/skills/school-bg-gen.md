@@ -1,26 +1,32 @@
-# School Background Generator Skill
+# School Background Generator
 
-## 流派背景图生成
+## 核心执行协议（覆盖默认行为）
+- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
+- **遇缺失处理**：**禁止终止**。补全失败则重试最多 2 次，仍失败标记并继续。
 
-输入流派名 → 读预训练风格 → AI 生成内容 prompt → 合并生图
+## 状态初始化
+> 执行前必须先调用 `TodoWrite`：
+- [ ] 步骤 1：API Key 校验
+- [ ] 步骤 2：AI 生成背景图
+- [ ] 步骤 3：缩略图
+- [ ] 步骤 4：文件验证
 
-## 用法
+## 原子步骤
 
-```bash
-cd scripts
-python gen_school_bg.py "萨满哲学"
-```
+### 步骤 1：API Key 校验
+- **动作**：同 agnes-image 步骤 1。
+- **门禁验证（Check）**：`KEY OK`。
 
-## 流程
+### 步骤 2：生成
+- **动作**：`cd scripts && python gen_school_bg.py "ARG_SCHOOL"`
+- **门禁验证（Check）**：`python -c "import os; p='app/public/schools/ARG_SCHOOL.jpg'; assert os.path.exists(p); print(f'GEN OK: {os.path.getsize(p)//1024}KB')"`
+- **补全分支（Remediate）**：失败 -> 检查 API 余额，重试 2 次。
 
-1. 读 `backend/data/school_style_master.json`（预训练已完成，包含色板/纹理/光线/构图风格）
-2. 读 `backend/data/school_{流派名}.json` 的 overview 文本作为上下文
-3. 发送给 `agnes-2.0-flash` 生成该流派的视觉内容 prompt
-4. 合并 `master style + content prompt` → 最终 prompt
-5. `agnes-image-2.1-flash` 生成 1024×768 JPG
-6. 自动生成 200×280 缩略图
+### 步骤 3：缩略图
+- **动作**：标准 400x300 thumb。
 
-## 输出
+### 步骤 4：验证
+- **动作**：`python -c "from PIL import Image; img=Image.open('app/public/schools/ARG_SCHOOL.jpg'); assert img.size[0]>=1200; print(f'{img.size[0]}x{img.size[1]} OK')"`
 
-- `app/public/schools/{name}.jpg`
-- `app/public/schools/thumb/{name}.jpg`
+## 执行报告（必须输出）
+- 成功项：X 条 | 补全项：Y 条 | 失败跳过项：Z 条

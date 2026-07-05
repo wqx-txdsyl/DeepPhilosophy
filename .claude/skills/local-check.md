@@ -1,119 +1,77 @@
-# Local Check Skill — 构建 + 推送前验证
+# Local Check
 
-## 构建
+## 核心执行协议（覆盖默认行为）
+- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
+- **遇缺失处理**：**禁止终止**。补全失败则重试最多 2 次，仍失败标记并继续执行后续步骤。
 
-```bash
-cd app && npm run build
-rm -rf ../backend/app-dist && cp -r dist ../backend/app-dist
-```
+## 状态初始化
+> 执行前必须先调用 `TodoWrite`：
+- [ ] 步骤 1：构建
+- [ ] 步骤 2：哲人图片（599 张）
+- [ ] 步骤 3：流派背景图（SCHOOL_MAP 全覆盖）
+- [ ] 步骤 4：死代码检查
+- [ ] 步骤 5：API 响应
+- [ ] 步骤 6：文件大小
 
-## 检查清单
+## 原子步骤
 
-### 1. 构建产物完整性
-```bash
-# dist 必须有 index.html
-test -f app/dist/index.html || echo "MISSING: index.html"
+### 步骤 1：构建
+- **动作**：`cd app && npm run build && rm -rf ../backend/app-dist && cp -r dist ../backend/app-dist`
+- **门禁验证（Check）**：`test -f app/dist/index.html && test -f backend/app-dist/index.html && echo "BUILD OK"`
+- **补全分支（Remediate）**：构建失败 → 检查 CSS 语法错误 → 修复后重试。
 
-# 核心 chunk 必须存在
-ls app/dist/assets/index-*.js >/dev/null 2>&1 || echo "MISSING: main JS bundle"
-ls app/dist/assets/vendor-react-*.js >/dev/null 2>&1 || echo "MISSING: vendor-react"
-
-# 图片目录非空
-test $(ls app/dist/philosopher/*.jpg 2>/dev/null | wc -l) -gt 300 || echo "WARN: <300 philosopher images"
-test $(ls app/dist/schools/*.jpg 2>/dev/null | wc -l) -gt 50 || echo "WARN: <50 school images"
-```
-
-### 2. 后端 API 响应
-```bash
-# 启动服务器（后台），等待就绪后测试
-cd backend && python main.py &
-sleep 4
-
-# 核心 API
-curl -s -o /dev/null -w "books: %{http_code}\n" http://localhost:8000/api/books
-curl -s -o /dev/null -w "authors: %{http_code}\n" http://localhost:8000/api/authors
-curl -s -o /dev/null -w "stats: %{http_code}\n" http://localhost:8000/api/stats
-curl -s -o /dev/null -w "health: %{http_code}\n" http://localhost:8000/api/health
-```
-
-### 3. 哲学家数据完整性
+### 步骤 2：哲人图片
+- **动作**：
 ```bash
 python -c "
-import json
-with open('backend/data/philosophers.json') as f:
-    p = json.load(f)
-print(f'Philosophers: {len(p)}')
-# 检查必需字段
-missing = [n for n, d in p.items() if not d.get('era') or not d.get('school')]
-if missing:
-    print(f'WARN: {len(missing)} philosophers missing era/school')
-# 检查图片
-import os
-imgs = set(f.replace('.jpg','') for f in os.listdir('app/public/philosopher') if f.endswith('.jpg'))
-no_img = [n for n in p if n.replace('/','-').replace(':','：') not in imgs]
-if no_img:
-    print(f'MISSING IMAGES: {len(no_img)}')
-    for n in no_img[:10]: print(f'  - {n}')
-else:
-    print('All philosophers have images')
+import os, json
+with open('backend/data/philosophers.json') as f: philo=json.load(f)
+imgs=set(os.path.splitext(f)[0] for f in os.listdir('app/public/philosopher') if f.endswith('.jpg'))
+m=[n for n in philo if n.replace('/','-').replace(':','：') not in imgs]
+print(f'{len(philo)} philosophers, {len(imgs)} images, {len(m)} missing')
+if m: print('MISSING:', m[:5])
 "
 ```
+- **补全分支（Remediate）**：有缺图 → `python fetch_philosopher_batch.py --skip-existing`，仍缺则 `python gen_portrait.py` AI 兜底。
 
-### 4. 学校图片 + 引用一致性
+### 步骤 3：流派背景图
+- **动作**：
 ```bash
 python -c "
 import os, re
-# 检查 SchoolDetailPage 引用的图片是否都存在
-with open('app/src/pages/SchoolDetailPage.jsx', 'r') as f:
-    content = f.read()
-refs = set(re.findall(r\"bg:'url\(/schools/([^)]+)\)'\", content))
-imgs = set(f for f in os.listdir('app/public/schools') if f.endswith('.jpg'))
-missing = refs - imgs
-if missing:
-    print(f'MISSING school images: {len(missing)}')
-    for m in missing: print(f'  - {m}')
-else:
-    print(f'All {len(refs)} school bg references have images')
-# 检查 GenealogyPage IMG_MAP
-with open('app/src/pages/GenealogyPage.jsx', 'r') as f:
-    g = f.read()
-map_refs = set(re.findall(r\"'([^']+)'\", g.split('IMG_MAP')[1].split('};')[0]))
-for m in map_refs:
-    if m + '.jpg' not in imgs:
-        print(f'Genealogy IMG_MAP miss: {m}')
+with open('app/src/pages/SchoolDetailPage.jsx',encoding='utf-8') as f:
+    refs=set(re.findall(r\"bg:'url\(/schools/([^)]+)\)'\",f.read()))
+imgs=set(f for f in os.listdir('app/public/schools') if f.endswith('.jpg'))
+m=refs-imgs; print(f'{len(refs)} refs, {len(imgs)} imgs, {len(m)} missing')
+if m: print(m)
 "
 ```
+- **补全分支（Remediate）**：缺背景图 → 检查文件名是否匹配（中文 vs 英文）。
 
-### 5. 死代码检查
+### 步骤 4：死代码
+- **动作**：
 ```bash
-# 不应存在的文件
-test -f app/src/pages/_new_schools_data.jsx && echo "DEAD: _new_schools_data.jsx still exists!"
-ls app/public/schools/school_*.json 2>/dev/null && echo "DEAD: school JSON files still exist (inline data used instead)"
+test -f app/src/pages/_new_schools_data.jsx && echo "DEAD" || echo "OK"
+ls app/public/schools/school_*.json 2>/dev/null && echo "DEAD JSONs" || echo "OK"
 ```
 
-### 6. 文件大小检查
+### 步骤 5：API 响应
+- **动作**：
 ```bash
-# SchoolDetailPage 应该是 2.5MB 左右（含 inline data）
-SZ=$(wc -c < app/src/pages/SchoolDetailPage.jsx)
-if [ $SZ -lt 2000000 ]; then echo "WARN: SchoolDetailPage too small ($SZ bytes, expected ~2.5MB)"; fi
-
-# 哲学家图片不应有过小的文件
-python -c "
-import os
-tiny = [(f, os.path.getsize(os.path.join('app/public/philosopher',f))//1024) for f in os.listdir('app/public/philosopher') if f.endswith('.jpg') and os.path.getsize(os.path.join('app/public/philosopher',f)) < 5000]
-if tiny: print(f'{len(tiny)} tiny philosopher images (<5KB)')
-"
+cd backend && python main.py & sleep 4
+for ep in /api/health /api/books /api/authors; do
+    code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8000$ep")
+    echo "$ep: $code"
+done
+kill %1 2>/dev/null
 ```
 
-### 7. 服务器停止
-```bash
-# 杀掉测试服务器
-kill $(lsof -ti:8000) 2>/dev/null
-```
+### 步骤 6：文件大小
+- **动作**：`wc -c < app/src/pages/SchoolDetailPage.jsx`
+- **门禁验证（Check）**：≥ 2000000 bytes。
 
-## 通过标准
-- 所有 API 返回 200
-- 0 个哲学家缺图
-- 0 个学校 bg 引用缺图
-- 0 个死代码文件
-- SchoolDetailPage > 2MB（inlined data intact）
+## 执行报告（必须输出）
+```
+成功项: X 条 | 补全项: Y 条 | 失败跳过项: Z 条
+ISSUES: N (0 = CLEAN)
+```

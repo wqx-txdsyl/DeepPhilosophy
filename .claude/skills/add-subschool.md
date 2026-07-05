@@ -1,48 +1,34 @@
-# Add Sub-School Skill
+# Add Sub-School
 
-## 一键新增下属流派（sub-school）
+## 核心执行协议（覆盖默认行为）
+- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
+- **遇缺失处理**：**禁止终止**。必须调用对应补全函数/脚本，补全后重新验证。补全失败则重试最多 2 次，仍失败才报错并**回滚/标记**（而非直接退出）。
 
-```
-输入下属流派名 → DeepSeek生成数据 → 图片处理 → JSON复制到public → SCHOOL_MAP注入 → 更新父流派sub_schools
-```
+## 状态初始化
+> 执行前必须先调用 `TodoWrite`，勾选状态实时更新：
+- [ ] 步骤 1：数据生成
+- [ ] 步骤 2：父流派注册
+- [ ] 步骤 3：图片处理
+- [ ] 步骤 4：构建验证
 
-与 `add_school` 的区别：
-- **不插入** world-philosophies / genealogy / timeline / worldmap
-- **不更新** 主页流派计数（subschool 不计入总数）
-- SCHOOL_MAP 使用 `_json` 动态加载（不内联 DATA）
+## 原子步骤
 
-## 用法
+### 步骤 1：数据生成
+- **动作**：`cd scripts && python add_subschool.py "ARG_NAME" "PARENT_NAME"`
+- **门禁验证（Check）**：`python -c "import os,json; d=json.load(open('app/public/schools/school_ARG_NAME.json')); assert d.get('name'); print('JSON OK')"`
+- **补全分支（Remediate）**：失败 -> 重试 2 次。
 
-```bash
-cd scripts
-python add_subschool.py "下属流派名" "父流派名"
-```
+### 步骤 2：父流派注册
+- **门禁验证（Check）**：`python -c "import json; d=json.load(open('app/public/schools/school_PARENT_NAME.json')); assert 'ARG_NAME' in str(d.get('sub_schools',{})); print('REGISTERED OK')"`
+- **补全分支（Remediate）**：未注册 -> 手动添加 sub_schools 条目。
 
-示例：
-```bash
-python add_subschool.py "伊壁鸠鲁学派" "古希腊哲学"
-```
+### 步骤 3：图片处理
+- **门禁验证（Check）**：`python -c "import os; assert os.path.exists('app/public/schools/ARG_NAME.jpg'); print('IMG OK')"`
+- **补全分支（Remediate）**：缺图 -> AI 生成（python gen_school_bg.py "ARG_NAME"），重试 2 次。
 
-## 自动完成
+### 步骤 4：构建验证
+- **动作**：`cd app && npm run build`
+- **门禁验证（Check）**：`test -f app/dist/index.html && echo "BUILD OK"`
 
-| 步骤 | 说明 |
-|------|------|
-| 数据生成 | 流派 JSON 不存在时，DeepSeek 自动生成（概述/结语/思想家/著作/术语/名言/时间轴） |
-| closingQuote 补全 | 若 DeepSeek 遗漏 closingQuote，自动取 quotes 最后一条生成（格式：`名言。——作者`） |
-| 图片处理 | 生成 200×280 缩略图<br>**无图片时自动调用 `gen_school_bg.py` AI 生成** |
-| JSON 复制 | 将 JSON 复制到 `app/public/schools/` 供前端动态加载 |
-| SCHOOL_MAP 注入 | 在父流派条目后添加 `_json` 引用条目 |
-| 父流派更新 | 更新父流派的 `sub_schools` 字段及对应的 `_SUB_SCHOOLS` 数组 |
-
-## 完成后手动
-
-```bash
-cd app && npm run build
-rm -rf ../backend/app-dist ../backend/static && cp -r dist ../backend/app-dist && cp -r dist ../backend/static
-git add -A && git commit -m "feat: 新增下属流派" && git push
-```
-
-## 依赖
-
-- DeepSeek API（生成流派数据）：key 在 `scripts/api_keys.json`
-- Python: `requests`, `Pillow`
+## 执行报告（必须输出）
+- 成功项：X 条 | 补全项：Y 条 | 失败跳过项：Z 条

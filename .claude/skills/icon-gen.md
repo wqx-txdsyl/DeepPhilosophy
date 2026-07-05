@@ -1,29 +1,24 @@
-# Icon Generator Skill
+# Icon Generator
 
-## 一键从 emoji 生成 UI 图标
+## 核心执行协议（覆盖默认行为）
+- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
+- **遇缺失处理**：**禁止终止**。补全失败则重试最多 2 次，仍失败标记并继续。
 
-输入 emoji → 文字模型分析含义 → 自动生成生图 prompt → 生图 → 去背景
+## 状态初始化
+> 执行前必须先调用 `TodoWrite`：
+- [ ] 步骤 1：emoji -> AI 分析
+- [ ] 步骤 2：生成透明背景图标
+- [ ] 步骤 3：文件验证
 
-## 用法
+## 原子步骤
 
-```bash
-cd scripts
-python gen_icon_from_emoji.py "🔥"           # 生成 icon-flame.png
-python gen_icon_from_emoji.py "🧠" brain     # 指定输出文件名
-```
+### 步骤 1：生成
+- **动作**：`cd scripts && python gen_icon_from_emoji.py "ARG_EMOJI"`
+- **门禁验证（Check）**：`python -c "import os; assert os.path.exists('app/dist/icons/ARG_NAME.png'); print('ICON OK')"`
+- **补全分支（Remediate）**：失败 -> 检查 API Key，重试 2 次。
 
-## 流程
+### 步骤 2：验证
+- **动作**：`python -c "from PIL import Image; img=Image.open('app/dist/icons/ARG_NAME.png'); assert img.mode=='RGBA'; print(f'{img.size[0]}x{img.size[1]} RGBA')"`
 
-1. 将 emoji 发送给 `agnes-2.0-flash`（文字模型）
-2. AI 分析 emoji 含义，输出英文 prompt（line-art, monochrome, transparent bg）
-3. 将 prompt 发送给 `agnes-image-2.1-flash` 生成 1024×1024 PNG
-4. PIL 泛洪填充 + 阈值过滤去掉白色背景
-
-## 输出
-
-- `../icons/icon-{name}.png` — 透明背景的图标
-
-## 依赖
-
-- `requests`, `Pillow`
-- API Key 在脚本内（已加入 .gitignore）
+## 执行报告（必须输出）
+- 成功项：X 条 | 补全项：Y 条 | 失败跳过项：Z 条
