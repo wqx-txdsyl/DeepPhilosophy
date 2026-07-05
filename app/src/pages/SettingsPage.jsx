@@ -14,6 +14,17 @@ function SettingsPage() {
   const [apiUrl, setApiUrl] = useState('');
   const [saved, setSaved] = useState(false);
   const [stats, setStats] = useState({ books: 342, authors: 381, schools: 103 });
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState('');
+
+  const token = localStorage.getItem('dp_token');
+  const username = localStorage.getItem('dp_username');
+
+  const handleLogout = () => {
+    localStorage.removeItem('dp_token');
+    localStorage.removeItem('dp_username');
+    navigate('/profile');
+  };
 
   useEffect(() => {
     fetch(`${getApiBase()}/api/stats`, { signal: AbortSignal.timeout(5000) })
@@ -97,6 +108,48 @@ function SettingsPage() {
             答案之书 · PHTI 哲学人格测试 · AI 毒舌锐评
           </p>
         </div>
+
+        {token && (
+          <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
+            <h3 style={{ fontSize: 15, marginBottom: 12 }}><Icon name="btn-user" size={16} /> 账号</h3>
+            <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 12 }}>
+              当前登录：<strong>{username}</strong>
+            </p>
+            <button className="btn btn-secondary" style={{ marginRight: 8 }}
+              onClick={handleLogout}>
+              退出登录
+            </button>
+            {!showDelete ? (
+              <button className="btn btn-danger"
+                onClick={() => setShowDelete(true)}>
+                删除账号
+              </button>
+            ) : (
+              <div style={{ marginTop: 8 }}>
+                <p style={{ fontSize: 12, color: 'var(--danger)', marginBottom: 8 }}>
+                  输入用户名 <strong>{username}</strong> 确认删除，此操作不可撤销。
+                </p>
+                <input
+                  placeholder="输入用户名确认"
+                  value={deleteConfirm}
+                  onChange={e => setDeleteConfirm(e.target.value)}
+                  style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--card-bg)', color: 'var(--text)', fontSize: 13, marginRight: 8, width: 200 }}
+                />
+                <button className="btn btn-danger"
+                  disabled={deleteConfirm !== username}
+                  onClick={() => {
+                    if (deleteConfirm === username) {
+                      localStorage.removeItem('dp_token');
+                      localStorage.removeItem('dp_username');
+                      navigate('/profile');
+                    }
+                  }}>
+                  确认删除
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
