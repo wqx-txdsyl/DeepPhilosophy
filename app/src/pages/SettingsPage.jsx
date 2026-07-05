@@ -13,7 +13,7 @@ function SettingsPage() {
   const [model, setModel] = useState('deepseek-chat');
   const [apiUrl, setApiUrl] = useState('');
   const [saved, setSaved] = useState(false);
-  const [stats, setStats] = useState({ books: 342, authors: 381, schools: 104 });
+  const [stats, setStats] = useState({ books: 342, authors: 381, schools: 105 });
   const [showDelete, setShowDelete] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState('');
 
@@ -32,7 +32,7 @@ function SettingsPage() {
         setStats({
           books: d.books || 342,
           authors: d.authors || 381,
-          schools: Math.max(104, d.schools || 0),
+          schools: Math.max(105, d.schools || 0),
         });
       }).catch(() => {});
   }, []);
