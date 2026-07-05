@@ -421,92 +421,365 @@ function HomePage() {
         position: 'relative', overflow: 'hidden',
         backgroundImage: 'url(/schools/世界哲学总览.jpg)', backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
+        {/* 多层叠加深邃感 */}
         <div style={{ position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.5) 40%, rgba(244,240,235,0.2) 100%)' }} />
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 24px' }}>
-            Philosophical Genealogy
+          background: `
+            radial-gradient(ellipse at 30% 20%, rgba(218,165,32,0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 70% 80%, rgba(114,47,55,0.06) 0%, transparent 50%),
+            linear-gradient(to top, rgba(242,234,219,0.95) 0%, rgba(242,234,219,0.6) 35%, rgba(242,234,219,0.3) 65%, rgba(242,234,219,0.15) 100%)
+          ` }} />
+        {/* 装饰性边角 */}
+        <div style={{ position: 'absolute', top: '8%', left: '8%', width: '60px', height: '60px',
+          borderTop: '1px solid var(--gold)', borderLeft: '1px solid var(--gold)', opacity: 0.3 }} />
+        <div style={{ position: 'absolute', top: '8%', right: '8%', width: '60px', height: '60px',
+          borderTop: '1px solid var(--gold)', borderRight: '1px solid var(--gold)', opacity: 0.3 }} />
+        <div style={{ position: 'absolute', bottom: '12%', left: '8%', width: '60px', height: '60px',
+          borderBottom: '1px solid var(--gold)', borderLeft: '1px solid var(--gold)', opacity: 0.3 }} />
+        <div style={{ position: 'absolute', bottom: '12%', right: '8%', width: '60px', height: '60px',
+          borderBottom: '1px solid var(--gold)', borderRight: '1px solid var(--gold)', opacity: 0.3 }} />
+
+        <div style={{ position: 'relative', zIndex: 1, animation: 'heroFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) both' }}>
+          <p style={{
+            fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 500,
+            letterSpacing: '0.4em', textTransform: 'uppercase',
+            color: 'var(--gold)', margin: '0 0 28px', opacity: 0.9,
+            textShadow: '0 0 30px rgba(218,165,32,0.2)'
+          }}>
+            ✦ Philosophical Genealogy ✦
           </p>
-          <h1 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 'clamp(3rem, 9vw, 7rem)', fontWeight: 400, fontStyle: 'italic', color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.1, margin: '0 0 20px' }}>
+          <h1 style={{
+            fontFamily: 'var(--font-display)', fontSize: 'clamp(2.8rem, 8vw, 6.5rem)',
+            fontWeight: 700, color: 'var(--ink)', letterSpacing: '0.06em',
+            lineHeight: 1.05, margin: '0 0 24px',
+            background: 'linear-gradient(135deg, var(--ink) 0%, #4A3A28 40%, var(--gold) 50%, #4A3A28 60%, var(--ink) 100%)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text', backgroundSize: '200% auto',
+            animation: 'shimmer 5s ease-in-out infinite, heroTitle 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both'
+          }}>
             DeepPhilosophy
           </h1>
-          <div style={{ width: 60, height: 1.5, background: 'var(--ochre)', margin: '0 auto 24px', opacity: 0.7 }} />
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>
-            从公元前三十世纪至二十一世纪<br />一部横跨五千年的思想史长卷
+          {/* 装饰分隔线 */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', margin: '0 auto 28px' }}>
+            <div style={{ width: '80px', height: '1px',
+              background: 'linear-gradient(90deg, transparent, var(--gold))', opacity: 0.5 }} />
+            <span style={{ color: 'var(--gold)', fontSize: '18px', opacity: 0.7 }}>❦</span>
+            <div style={{ width: '80px', height: '1px',
+              background: 'linear-gradient(90deg, var(--gold), transparent)', opacity: 0.5 }} />
+          </div>
+          <p style={{
+            fontFamily: 'var(--font-serif)', fontSize: 'clamp(1rem, 1.6vw, 1.3rem)',
+            fontWeight: 400, fontStyle: 'italic', color: 'var(--text-soft)',
+            lineHeight: 2, maxWidth: 560, margin: '0 auto 44px',
+            opacity: 0.9, animation: 'heroFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both'
+          }}>
+            从公元前三十世纪至二十一世纪<br />
+            <span style={{ color: 'var(--gold)', fontWeight: 500 }}>一部横跨五千年的思想史长卷</span>
           </p>
-          <button onClick={scrollToDaily} style={{
-            fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, letterSpacing: '0.08em',
-            color: '#fff', background: 'var(--ink)', border: 'none', borderRadius: 4,
-            padding: '14px 36px', cursor: 'pointer', transition: 'all 0.25s'
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--ochre)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--ink)'; }}>
+          <button onClick={scrollToDaily}
+            style={{
+              fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600,
+              letterSpacing: '0.15em', textTransform: 'uppercase',
+              color: 'var(--parchment)',
+              background: 'linear-gradient(135deg, var(--burgundy), var(--burgundy-deep))',
+              border: '1px solid var(--burgundy-deep)', borderRadius: '2px',
+              padding: '16px 48px', cursor: 'pointer',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              boxShadow: '0 4px 24px rgba(114,47,55,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+              position: 'relative', overflow: 'hidden',
+              animation: 'heroFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.6s both'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 8px 36px rgba(114,47,55,0.45), inset 0 1px 0 rgba(255,255,255,0.15)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 24px rgba(114,47,55,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
+            }}>
             开始探索 ↓
           </button>
         </div>
-        <div style={{ position: 'absolute', bottom: 36, opacity: 0.4 }}>
-          <span style={{ fontSize: 20, color: 'var(--text-dim)' }}>↓</span>
+        {/* 底部滚动提示 */}
+        <div style={{
+          position: 'absolute', bottom: '40px', left: '50%', transform: 'translateX(-50%)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+          animation: 'bounce 2s ease-in-out infinite'
+        }}>
+          <span style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: '0.2em',
+            textTransform: 'uppercase', fontFamily: 'var(--font-display)' }}>Scroll</span>
+          <span style={{ fontSize: 20, color: 'var(--gold)', opacity: 0.6 }}>↓</span>
         </div>
+
+        <style>{`
+          @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes heroTitle {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+          }
+          @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+          }
+        `}</style>
       </section>
 
       {/* ══════════ DAILY QUOTE ══════════ */}
       <section id="daily-quote" onClick={() => { const q = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]; setDailyQuote(q); }}
-        style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%', cursor: 'pointer' }}>
-        <div style={{ maxWidth: 680, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', marginBottom: 20 }}>Daily Quote — 点击切换</p>
-          <p style={{ fontFamily: '"Playfair Display",serif', fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, margin: '0 0 16px', transition: 'opacity 0.15s' }}>
-            &ldquo;{dailyQuote.text}&rdquo;
+        style={{
+          padding: '100px 32px', textAlign: 'center',
+          background: `
+            radial-gradient(ellipse at center, rgba(218,165,32,0.04) 0%, transparent 60%),
+            var(--card-bg)
+          `,
+          maxWidth: '100%', cursor: 'pointer',
+          position: 'relative', overflow: 'hidden',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)'
+        }}>
+        {/* 装饰引号 */}
+        <div style={{ position: 'absolute', top: '40px', left: '10%', fontSize: '120px',
+          fontFamily: 'Georgia, serif', color: 'var(--gold)', opacity: 0.08, lineHeight: 1 }}>
+          "
+        </div>
+        <div style={{ position: 'absolute', bottom: '20px', right: '10%', fontSize: '120px',
+          fontFamily: 'Georgia, serif', color: 'var(--gold)', opacity: 0.08, lineHeight: 1,
+          transform: 'rotate(180deg)' }}>
+          "
+        </div>
+        <div style={{ maxWidth: 720, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          <p style={{
+            fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 500,
+            letterSpacing: '0.3em', textTransform: 'uppercase',
+            color: 'var(--gold)', marginBottom: 28, opacity: 0.8
+          }}>
+            ✦ Daily Quote · 每日金句 ✦
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>&mdash; {dailyQuote.author}</p>
+          <p style={{
+            fontFamily: 'var(--font-serif)', fontStyle: 'italic',
+            fontSize: 'clamp(1.3rem, 2.8vw, 2rem)',
+            color: 'var(--text-soft)', lineHeight: 2, fontWeight: 400,
+            margin: '0 0 24px', transition: 'all 0.5s ease',
+            textShadow: '0 0 40px rgba(218,165,32,0.05)'
+          }}>
+            <span style={{ color: 'var(--gold)', fontSize: '0.8em', verticalAlign: 'super', marginRight: '4px' }}>「</span>
+            {dailyQuote.text}
+            <span style={{ color: 'var(--gold)', fontSize: '0.8em', verticalAlign: 'super', marginLeft: '4px' }}>」</span>
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', marginTop: '28px' }}>
+            <div style={{ width: '40px', height: '1px', background: 'linear-gradient(90deg, transparent, var(--gold))' }} />
+            <p style={{ fontFamily: 'var(--font-display)', fontSize: 13, color: 'var(--gold)', fontWeight: 500, letterSpacing: '0.1em' }}>
+              — {dailyQuote.author} —
+            </p>
+            <div style={{ width: '40px', height: '1px', background: 'linear-gradient(90deg, var(--gold), transparent)' }} />
+          </div>
+          <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 20, opacity: 0.6, fontStyle: 'italic' }}>
+            点击切换下一条
+          </p>
         </div>
       </section>
 
       {/* ══════════ NUMBERS ══════════ */}
-      <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
-          {[{ num: String(bookCount), label: '哲学著作' }, { num: String(authorCount), label: '哲学家' }, { num: String(schoolCount), label: '哲学流派' }].map(s => (
-            <div key={s.label}>
-              <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
+      <section style={{ padding: '80px 32px', maxWidth: 1000, margin: '0 auto' }}>
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: 32, textAlign: 'center'
+        }}>
+          {[
+            { num: String(bookCount), label: '哲学著作', icon: '📚', sub: 'PDF · EPUB · TXT' },
+            { num: String(authorCount), label: '哲学家', icon: '✒️', sub: '东西方 · 世界哲学' },
+            { num: String(schoolCount), label: '哲学流派', icon: '🧬', sub: '103 个思想流派' }
+          ].map((s, i) => (
+            <div key={s.label} style={{
+              padding: '32px 24px',
+              background: 'var(--card-bg)',
+              border: '1px solid var(--card-border)',
+              borderRadius: '4px',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              position: 'relative',
+              overflow: 'hidden',
+              animation: `fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${i * 0.1}s both`
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = 'var(--card-shadow-hover)';
+              e.currentTarget.style.borderColor = 'var(--gold)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'var(--card-shadow)';
+              e.currentTarget.style.borderColor = 'var(--card-border)';
+            }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px',
+                background: 'var(--gold-shimmer)', backgroundSize: '200% auto', opacity: 0.6,
+                animation: 'shimmer 3s ease-in-out infinite' }} />
+              <div style={{ fontSize: 36, marginBottom: 8 }}>{s.icon}</div>
+              <p style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(2.2rem, 5vw, 3.2rem)',
+                fontWeight: 700,
+                background: 'var(--gold-shimmer)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                backgroundSize: '200% auto',
+                animation: 'shimmer 4s ease-in-out infinite',
+                margin: '0 0 4px',
+                lineHeight: 1
+              }}>{s.num}</p>
+              <p style={{
+                fontFamily: 'var(--font-serif)', fontSize: 16, color: 'var(--ink)',
+                fontWeight: 500, letterSpacing: '0.05em', margin: '0 0 4px'
+              }}>{s.label}</p>
+              <p style={{
+                fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)',
+                fontWeight: 400, letterSpacing: '0.02em', margin: 0, opacity: 0.7
+              }}>{s.sub}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ══════════ BOOKS + AUTHORS SHOWCASE ══════════ */}
-      <section style={{ padding: '48px 32px 64px', maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 32 }}>
-          <div onClick={() => navigate('/books')} style={{ cursor: 'pointer', padding: '28px 24px', borderBottom: '2px solid var(--border)', transition: 'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'var(--ochre)'; e.currentTarget.style.background = 'var(--card-bg)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ochre)' }}>Library</span>
-            <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 8px', letterSpacing: '0.03em' }}>305 部哲学著作</h2>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>PDF · EPUB · TXT 三格式，涵盖古希腊至当代的中西方哲学经典。支持在线阅读、AI批注与笔记。</p>
-          </div>
-          <div onClick={() => navigate('/authors')} style={{ cursor: 'pointer', padding: '28px 24px', borderBottom: '2px solid var(--border)', transition: 'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'var(--prussian)'; e.currentTarget.style.background = 'var(--card-bg)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--prussian)' }}>Philosophers</span>
-            <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 8px', letterSpacing: '0.03em' }}>{authorCount} 位哲学家</h2>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>从柏拉图到尼采，从孔子到牟宗三。每位哲学家配备千字思想剖析与Wikipedia链接。</p>
-          </div>
+      <section style={{ padding: '48px 32px 80px', maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 28 }}>
+          {[
+            {
+              onClick: () => navigate('/books'),
+              badge: 'Library',
+              badgeColor: 'var(--gold)',
+              title: `${bookCount} 部哲学著作`,
+              desc: 'PDF · EPUB · TXT 三格式，涵盖古希腊至当代的中西方哲学经典。支持在线阅读、AI批注与笔记。',
+              icon: '📖'
+            },
+            {
+              onClick: () => navigate('/authors'),
+              badge: 'Philosophers',
+              badgeColor: 'var(--prussian)',
+              title: `${authorCount} 位哲学家`,
+              desc: '从柏拉图到尼采，从孔子到牟宗三。每位哲学家配备千字思想剖析与 Wikipedia 链接。',
+              icon: '🏛️'
+            }
+          ].map((item, i) => (
+            <div key={i} onClick={item.onClick}
+              style={{
+                cursor: 'pointer',
+                padding: '36px 28px',
+                background: 'var(--card-bg)',
+                border: '1px solid var(--card-border)',
+                borderRadius: '4px',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                position: 'relative',
+                overflow: 'hidden',
+                animation: `fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${0.1 + i * 0.1}s both`
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-6px)';
+                e.currentTarget.style.boxShadow = 'var(--card-shadow-hover)';
+                e.currentTarget.style.borderColor = item.badgeColor;
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'var(--card-shadow)';
+                e.currentTarget.style.borderColor = 'var(--card-border)';
+              }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
+                background: `linear-gradient(90deg, ${item.badgeColor}, transparent)`, opacity: 0.6 }} />
+              <div style={{ fontSize: 48, marginBottom: 16 }}>{item.icon}</div>
+              <span style={{
+                fontFamily: 'var(--font-display)', fontSize: 11, fontWeight: 600,
+                letterSpacing: '0.2em', textTransform: 'uppercase',
+                color: item.badgeColor, display: 'inline-block',
+                marginBottom: 12
+              }}>✦ {item.badge}</span>
+              <h2 style={{
+                fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 600,
+                color: 'var(--ink)', margin: '0 0 12px', letterSpacing: '0.02em',
+                lineHeight: 1.3
+              }}>{item.title}</h2>
+              <p style={{
+                fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 400,
+                color: 'var(--text-dim)', lineHeight: 1.8, margin: 0
+              }}>{item.desc}</p>
+              <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 6,
+                color: item.badgeColor, fontSize: 13, fontWeight: 500,
+                fontFamily: 'var(--font-serif)' }}>
+                进入探索 <span style={{ transition: 'transform 0.3s' }}>→</span>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section style={{ padding: '48px 24px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
-        <WorldMap />
-        <div style={{ display:'flex', justifyContent:'center', gap:24, marginTop:20, flexWrap:'wrap' }}>
-          {[
-            { l: <><Icon name="region-west" size={14} /> 西方 41 流派</>, p:'/western-philosophies', c:'var(--ochre)' },
-            { l: <><Icon name="region-east" size={14} /> 东方 24 流派</>, p:'/eastern-philosophies', c:'var(--prussian)' },
-            { l: <><Icon name="region-world" size={14} /> 世界 38 流派</>, p:'/world-philosophies', c:'#5A8A5A' },
-          ].map(b => (
-            <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize:12, color:b.c, cursor:'pointer', borderBottom:'1px solid transparent', transition:'all 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}
-              onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>{b.l}</span>
-          ))}</div>
+      <section style={{
+        padding: '64px 24px 80px',
+        background: `
+          radial-gradient(ellipse at top, rgba(218,165,32,0.03) 0%, transparent 50%),
+          var(--bg)
+        `,
+        borderTop: '1px solid var(--border)',
+        maxWidth: '100%',
+        textAlign: 'center'
+      }}>
+        <div style={{ maxWidth: 1300, margin: '0 auto' }}>
+          <p style={{
+            fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 500,
+            letterSpacing: '0.3em', textTransform: 'uppercase',
+            color: 'var(--gold)', marginBottom: 12, opacity: 0.8
+          }}>✦ World Philosophy ✦</p>
+          <h2 style={{
+            fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+            fontWeight: 600, color: 'var(--ink)', marginBottom: 12,
+            letterSpacing: '0.04em'
+          }}>探索世界哲学</h2>
+          <p style={{ fontSize: 14, color: 'var(--text-dim)', marginBottom: 40, lineHeight: 1.8 }}>
+            悬停查看简介 · 点击进入详情
+          </p>
+          <div style={{
+            background: 'var(--card-bg)',
+            border: '1px solid var(--card-border)',
+            borderRadius: '8px',
+            padding: '24px',
+            boxShadow: 'var(--card-shadow)'
+          }}>
+            <WorldMap />
+          </div>
+          <div style={{ display:'flex', justifyContent:'center', gap:32, marginTop:36, flexWrap:'wrap' }}>
+            {[
+              { l: <><Icon name="region-west" size={14} /> 西方 41 流派</>, p:'/western-philosophies', c:'var(--gold)' },
+              { l: <><Icon name="region-east" size={14} /> 东方 24 流派</>, p:'/eastern-philosophies', c:'var(--prussian)' },
+              { l: <><Icon name="region-world" size={14} /> 世界 38 流派</>, p:'/world-philosophies', c:'var(--emerald)' },
+            ].map(b => (
+              <span key={b.p} onClick={() => navigate(b.p)}
+                style={{
+                  fontSize:13, color:b.c, cursor:'pointer',
+                  padding: '8px 20px',
+                  border: '1px solid transparent',
+                  borderRadius: '100px',
+                  transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  fontFamily: 'var(--font-serif)',
+                  fontWeight: 500,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  background: `linear-gradient(135deg, ${b.c}10, ${b.c}05)`,
+                  borderColor: `${b.c}30`
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = b.c;
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = `0 4px 16px ${b.c}20`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = `${b.c}30`;
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}>{b.l}</span>
+            ))}
+          </div>
+        </div>
       </section>
 
       
