@@ -43,8 +43,11 @@ const PageLoader = () => (
 export function getApiBase() {
   try {
     const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
-    if (config.apiUrl) return config.apiUrl;
+    // If user set a custom URL, use it (for local dev pointing to remote)
+    if (config.apiUrl && config.apiUrl !== window.location.origin) return config.apiUrl;
   } catch (e) { console.error('Failed to parse dp_api_config:', e); }
+  // Same-origin deployment: use relative URL (no CORS issues)
+  if (import.meta.env.PROD) return '';
   return import.meta.env.VITE_API_URL || 'http://localhost:8000';
 }
 
