@@ -51,14 +51,14 @@ def main():
             cwd=SCRIPT_DIR, timeout=180,
             capture_output=True, text=True
         )
+        out = (result.stdout or '') + (result.stderr or '')
         if result.returncode == 0:
             success += 1
-        elif "SKIP" in (result.stdout + result.stderr):
+        elif "SKIP" in out:
             skipped += 1
         else:
             fail += 1
-            # Print last line of stderr/stdout for debugging
-            lines = (result.stdout + result.stderr).strip().split("\n")
+            lines = out.strip().split("\n")
             print(f"  [FAIL] {lines[-1] if lines else 'unknown error'}")
 
         # Rate limit: 1 request per 2 seconds (Wikipedia API is lenient but be polite)
