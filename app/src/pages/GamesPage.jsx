@@ -7,6 +7,14 @@ import Icon from '../components/Icon';
 
 const games = [
   {
+    key: 'calculator',
+    icon: 'icon-calc',
+    title: '科学计算器',
+    desc: '全功能科学计算器，支持三角函数、阶乘、质因数分解等',
+    path: '/games/calculator',
+    disabled: false,
+  },
+  {
     key: 'answer-book',
     icon: 'icon-book-open',
     title: '答案之书',

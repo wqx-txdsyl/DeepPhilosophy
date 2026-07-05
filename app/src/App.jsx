@@ -31,6 +31,7 @@ const ReaderPage = lazy(() => import('./pages/ReaderPage'));
 const AnswerBookPage = lazy(() => import('./pages/AnswerBookPage'));
 const PHTIPage = lazy(() => import('./pages/PHTIPage'));
 const PHTISillyPage = lazy(() => import('./pages/PHTISillyPage'));
+const CalculatorPage = lazy(() => import('./pages/CalculatorPage'));
 import './App.css';
 
 // 懒加载后 Loading 占位
@@ -204,6 +205,7 @@ function MainLayout() {
           <Route path="/games/answer-book" element={<AnswerBookPage />} />
           <Route path="/games/phti" element={<PHTIPage />} />
           <Route path="/games/phti-silly" element={<PHTISillyPage />} />
+          <Route path="/games/calculator" element={<CalculatorPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/DEVELOPER_IS_TXDSYL" element={<DeveloperPage />} />
           <Route path="/profile" element={<ProfilePage />} />
