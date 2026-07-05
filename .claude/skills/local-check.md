@@ -1,6 +1,11 @@
-# Local Check Skill — 推送前本地验证
+# Local Check Skill — 构建 + 推送前验证
 
-每次 `npm run build` 后、`git push` 前执行。
+## 构建
+
+```bash
+cd app && npm run build
+rm -rf ../backend/app-dist && cp -r dist ../backend/app-dist
+```
 
 ## 检查清单
 
