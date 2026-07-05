@@ -11906,7 +11906,7 @@ function SchoolDetailPage() {
   '环境哲学': { data:环境哲学_DATA, sub:{}, ci:[], bg:'url(/schools/环境哲学.jpg)' },
   '解构主义': { data:解构主义_DATA, sub:{}, ci:[], bg:'url(/schools/解构主义.jpg)' },
   '黑人哲学': { data:黑人哲学_DATA, sub:{}, ci:[], bg:'url(/schools/黑人哲学.jpg)' },
-  '哲学入词': { data:哲学入词_DATA, sub:{}, ci:[], bg:'url(/schools/哲学入词.jpg)' },
+  '哲学入词': { data:哲学入词_DATA, sub:{}, ci:[], bg:'url(/schools/哲学入词.png)' },
   '贝叶斯主义': { data:贝叶斯主义_DATA, sub:{}, ci:[], bg:'url(/schools/贝叶斯主义_bayes.jpg)' },
   '人工智能哲学': { data:人工智能哲学_DATA, sub:{}, ci:[], bg:'url(/schools/人工智能哲学_v2.jpg)' },
   '萨满哲学': { data:萨满哲学_DATA, sub:{}, ci:[], bg:'url(/schools/shaman.jpg)' },
