@@ -25,7 +25,7 @@ const SCHOOLS = [
   { name: '现代新儒家', color: '#6A6A8B', desc: '返本开新，内圣外王——熊十力、牟宗三、唐君毅等以儒家心性之学为根基，与康德、黑格尔展开深度对话。' },
   { name: '马克思主义哲学的中国化与体系化', color: '#8B5A5A', desc: '从实践标准到特色社会主义理论体系的哲学基础——马克思主义哲学在中国制度实践与理论创新的双轮驱动下不断生成新的理论形态。' },
   { name: '习近平新时代中国特色社会主义思想', color: '#8B4A4A', desc: '以人民为中心的发展思想——将马克思主义基本原理与新时代中国具体实际相结合，系统回应重大时代课题。' },
-  { name: '哲学入词', color: '#582e01', desc: '哲学入词是中国古典哲学与文学深度融合的一种独特思想流派，其核心在于将深邃的哲学命题、宇宙观、人生论与道德学说，以词这种抒' },
+  { name: '哲学入词', color: '#582e01', desc: '从未在任何意义上被称为一个流派——林夕、黄伟文等以哲学入词，于粤语歌词中见存在主义、佛学与后现代的哲思。' },
 ];
 
 export default function EasternPhilosophiesPage() {
@@ -37,7 +37,7 @@ export default function EasternPhilosophiesPage() {
         <button onClick={() => navigate(-1)} style={{ position: 'relative', zIndex: 1, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.04em', marginBottom: 32, padding: 0 }}>← 返回</button>
         <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 16px' }}>Eastern Philosophy</p>
         <h1 style={{ position: 'relative', zIndex: 1, fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 400, color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.2, margin: '0 0 20px' }}>东方哲学</h1>
-        <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>从先秦诸子到当代，二十四个流派，<br />两千五百年不断的思想脉络。</p>
+        <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>从先秦诸子到当代，二十五个流派，<br />两千五百年不断的思想脉络。</p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
       </section>
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 32px 64px' }}>
