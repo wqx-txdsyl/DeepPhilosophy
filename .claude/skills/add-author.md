@@ -33,34 +33,37 @@ python add_author.py "尼采" --folder "F:/philosophy/西方/尼采"
 - `app/public/philosopher/{哲人名}.jpg` — 原图
 - `app/public/philosopher/thumb/{哲人名}.jpg` — 缩略图（200×280）
 
-## 标签规则（添加/修改哲学家时必须遵守）
+## 标签规则
+
+标签自动规范化由 `scripts/_normalize_tags.py` 处理，`add_author.py` 入库后自动调用。手动修改时注意：
 
 ### 流派标签 (school)
-- **禁止组合标签**：不能出现"存在主义女性主义"等拼接，应拆为"存在主义/女性主义"
-- **合并相似项**：如"希腊哲学"→"古希腊哲学"，"新儒家"→"现代新儒家"
-- **用 `/` 分隔**：多流派用 `/` 分割，不用 `,` `、` `;`
+- **X女性主义**（如"存在主义女性主义"）是独立合法流派，**不拆分**
+- **合并相似项**：`_normalize_tags.py` 的 `MERGE_MAP` 自动处理
+- **用 `/` 分隔**：多流派用 `/` 分割
 - **禁止非人条目**：流派名/书名/术语不能混入哲人列表
 
 ### 时代标签 (era)
 - **格式**：`YYYY-YYYY` 或 `约YYYY-YYYY年` 或 `YYYY-`
-- **跨越世纪筛选**：哲学家生活过的所有世纪都应能筛选到。如1889-1976应同时出现在"19世纪"和"20世纪"筛选中（通过 `_era_to_centuries` 自动计算）
+- 跨越世纪筛选由 `_era_to_centuries` 自动计算
 
 ### 国家标签 (country)
-- **禁止括号注释**：`英国（后移居美国）` → 应为 `英国/美国`（保留双国籍信息但去掉括号说明）
-- **筛选行为**：双国籍哲人在两个国家的筛选中都出现
+- **去掉所有括号注释**：`xxx（今yyy）` → `xxx`，以历史国名为准
+- **保留移居双国籍**：`xxx（后移居yyy）` → `xxx/yyy`
+- 由 `_normalize_tags.py` 的 `normalize_country()` 自动处理
 
 ### 头像
-- 爬取后必须通过人脸检测（`check_faces.py`）
-- 无人脸则自动重爬，重爬失败标记为"无人脸"
-- 古代哲人无现存画像 → `gen_portrait.py` AI 生成水墨肖像
+- 爬取：`fetch_philosopher_img.py`（Wikipedia → Commons）
+- 人脸检测：`check_faces.py --fix`
+- 批量爬取：`fetch_philosopher_batch.py --skip-existing`
+- AI 兜底：`gen_portrait.py`（古代哲人无现存画像时）
 
 ### 介绍 (bio)
-- ≥1000 字，中文
-- 包含：生平背景、核心思想、主要著作、历史影响
-- 不含 markdown `**` 标记（纯文本）
+- ≥1000 字，中文，纯文本（不含 `**` 标记）
 
-## 三处标签同步点（修改标签时必同步）
+## 批量入库
 
-- `backend/main.py` `_normalize_tag()`
-- `app/src/pages/AuthorsPage.jsx` `normMap`
-- `app/src/pages/BooksPage.jsx` `normMap`
+```bash
+cd scripts && python _batch_add.py --apply
+```
+从 `_not_in_db.txt` 读取名单，DeepSeek 批量生成信息，自动标签规范化。

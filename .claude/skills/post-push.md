@@ -27,8 +27,8 @@
 检查以下数字是否与实际一致：
 - [ ] 版本号
 - [ ] 流派总数（当前：103，subschool 不计入）
-- [ ] 哲人总数（当前：347）
-- [ ] 东西世三区域计数（西41 / 东24 / 世38）
+- [ ] 哲人总数（当前：599）
+- [ ] 东西世三区域计数
 - [ ] `philosophers.json` 条目数
 - [ ] `name_aliases.json` 条目数
 - [ ] 新增的页面/组件是否已列入架构图
@@ -50,7 +50,7 @@ ls *.log *.txt 2>/dev/null # 运行时日志/数据
 
 ### 4. 项目文件整理
 
-- [ ] `app/public/philosopher/` 头像数与哲人数一致（当前 344/347）
+- [ ] `app/public/philosopher/` 头像数与哲人数一致（当前 599/599）
 - [ ] `app/public/schools/` 流派背景图完整
 - [ ] `backend/data/` 无孤立 JSON 文件
 - [ ] `.gitignore` 排除临时文件（*.log, _*.txt 等）
@@ -60,7 +60,7 @@ ls *.log *.txt 2>/dev/null # 运行时日志/数据
 运行快速审计：
 ```bash
 # 流派计数
-grep -c "'[^']*': { data:" app/src/pages/SchoolDetailPage.jsx
+grep -c "'[^']*': {" app/src/pages/SchoolDetailPage.jsx
 
 # 哲人计数  
 python -c "import json; print(len(json.load(open('backend/data/philosophers.json'))))"
