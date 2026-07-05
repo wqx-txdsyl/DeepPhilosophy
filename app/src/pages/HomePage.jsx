@@ -499,7 +499,7 @@ function HomePage() {
         <WorldMap />
         <div style={{ display:'flex', justifyContent:'center', gap:24, marginTop:20, flexWrap:'wrap' }}>
           {[
-            { l: <><Icon name="region-west" size={14} /> 西方 41 流派</>, p:'/western-philosophies', c:'var(--ochre)' },
+            { l: <><Icon name="region-west" size={14} /> 西方 42 流派</>, p:'/western-philosophies', c:'var(--ochre)' },
             { l: <><Icon name="region-east" size={14} /> 东方 24 流派</>, p:'/eastern-philosophies', c:'var(--prussian)' },
             { l: <><Icon name="region-world" size={14} /> 世界 38 流派</>, p:'/world-philosophies', c:'#5A8A5A' },
           ].map(b => (
