@@ -1,4 +1,4 @@
-"""AI 补全缺失的星丛 relations"""
+"""AI 补全星丛 relations — v2: 支持 backtick 字符串和嵌套 JSON"""
 import re, json
 from _lib import get_deepseek_key
 from openai import OpenAI
@@ -6,48 +6,66 @@ from openai import OpenAI
 client = OpenAI(api_key=get_deepseek_key(), base_url='https://api.deepseek.com')
 
 with open('../app/src/pages/SchoolDetailPage.jsx', encoding='utf-8') as f:
-    content = f.read()
+    c = f.read()
 
-school_names = ['CONFUCIANISM','MILITARY_SCHOOL','NEW_DEMOCRACY','OLD_DEMOCRACY',
-                'POSTMODERNISM','伊壁鸠鲁学派','前苏格拉底哲学','印度哲学','犬儒学派']
+# Find ALL DATA blocks and count relations
+blocks = re.findall(r'const (\w+_DATA)\s*=', c)
+all_vars = [b for b in blocks]
 
-for school_name in school_names:
-    var = f'{school_name}_DATA'
-    pat = re.compile(rf'const {re.escape(var)}\s*=\s*(\{{.*?\}};)\s*$', re.MULTILINE | re.DOTALL)
-    m = pat.search(content)
-    if not m:
-        print(f'{school_name}: DATA NOT FOUND')
-        continue
-    block = m.group(1)
+for var in all_vars:
+    idx = c.find(f'const {var} =')
+    if idx < 0: continue
 
-    thinkers_block = re.search(r'thinkers:\s*\[(.*?)\]', block, re.DOTALL)
-    if not thinkers_block:
-        continue
-    names = re.findall(r'name:\s*"([^"]+)"', thinkers_block.group(1))
-    print(f'{school_name}: {len(names)} thinkers')
+    # Find relations block
+    rel_start = c.find('relations:', idx)
+    if rel_start < 0: continue
+    rel_end = c.find('],', rel_start)
+    rel_block = c[rel_start:rel_end+2]
+    rel_count = len(re.findall(r'from:', rel_block))
 
-    prompt = f'以下是哲学流派「{school_name}」的代表人物：\n' + '\n'.join(f'{i+1}. {n}' for i, n in enumerate(names)) + '\n\n请生成这些人物之间的思想关系（relations），每条关系指定type为以下之一：师生、继承、影响、批判、合作、学术交流。至少生成{len(names)}条关系，确保每位思想家至少有一条连线。返回纯JSON数组：\n[{{"from":"思想家A","to":"思想家B","type":"师生"}}, ...]'
+    if rel_count >= 3: continue  # Already has enough
 
-    resp = client.chat.completions.create(
-        model='deepseek-chat',
-        messages=[{'role': 'user', 'content': prompt}],
-        temperature=0.3, max_tokens=2000
-    )
-    text = resp.choices[0].message.content
-    json_match = re.search(r'\[[\s\S]*\]', text)
-    if json_match:
-        relations = json.loads(json_match.group(0))
-        js_rels = ',\n    '.join(
-            '{from: "' + r['from'] + '", to: "' + r['to'] + '", type: "' + r.get('type', '影响') + '"}'
-            for r in relations if r.get('from') and r.get('to')
+    # Extract thinkers: everything between const and relations
+    section = c[idx:rel_start]
+    # Match double-quoted AND backtick names
+    names_dq = re.findall(r'name:\s*"([^"]+)"', section)
+    names_bt = re.findall(r'name:\s*`([^`]+)`', section)
+    names = names_dq + names_bt
+    # Deduplicate
+    seen = set()
+    thinkers = []
+    for n in names:
+        if n not in seen:
+            seen.add(n)
+            thinkers.append(n)
+
+    sn = var.replace('_DATA', '')
+    print(f'{sn}: {len(thinkers)} thinkers, {rel_count} relations')
+
+    if len(thinkers) < 3: continue
+
+    prompt = f'为哲学流派「{sn}」的代表人物生成思想关系，type为以下之一：师生、继承、影响、批判、合作、学术交流。确保每人至少一条连线。返回纯JSON数组。\n\n' + '\n'.join(f'{i+1}. {n}' for i, n in enumerate(thinkers)) + '\n\n[{"from":"A","to":"B","type":"师生"}, ...]'
+
+    try:
+        resp = client.chat.completions.create(
+            model='deepseek-chat',
+            messages=[{'role': 'user', 'content': prompt}],
+            temperature=0.3, max_tokens=2000
         )
-        new_relations = f'relations: [\n    {js_rels}\n  ],'
-
-        old = re.search(r'relations:\s*\[.*?\]', block, re.DOTALL)
-        if old:
-            content = content.replace(old.group(0), new_relations)
-            print(f'  -> {len(relations)} relations generated')
+        text = resp.choices[0].message.content
+        m = re.search(r'\[[\s\S]*\]', text)
+        if m:
+            rels = json.loads(m.group(0))
+            js = ',\n    '.join(
+                '{from: "' + r['from'] + '", to: "' + r['to'] + '", type: "' + r.get('type', '影响') + '"}'
+                for r in rels if r.get('from') and r.get('to')
+            )
+            new = f'relations: [\n    {js}\n  ],'
+            c = c.replace(rel_block, new)
+            print(f'  -> {len(rels)} relations')
+    except Exception as e:
+        print(f'  ERROR: {e}')
 
 with open('../app/src/pages/SchoolDetailPage.jsx', 'w', encoding='utf-8') as f:
-    f.write(content)
+    f.write(c)
 print('Done')
