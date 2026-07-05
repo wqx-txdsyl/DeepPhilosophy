@@ -80,6 +80,7 @@ const ALL_SCHOOLS = [
   { century:'19世纪', name:'北欧哲学', region:'世界', desc:'克尔凯郭尔的信仰跳跃。', tier:'B' },
   { century:'19世纪', name:'东欧斯拉夫哲学', region:'世界', desc:'索洛维约夫、舍斯托夫——第三条道路。', tier:'B' },
   { century:'19世纪', name:'北美哲学', region:'世界', desc:'实用主义与超验主义。', tier:'B' },
+  { century:'1763', name:'贝叶斯主义', region:'世界', desc:'贝叶斯主义是一种以概率论为核心工具，将信念、知识与决策纳入严格数学框架的哲学思潮。其源头可追溯至十八世纪英国数学家托马斯', tier:'B' },
   { century:'19世纪', name:'黑人哲学', region:'世界', desc:'从废奴运动到黑权运动——双重意识、种族批判与黑人存在主义的全球哲学传统。', tier:'B' },
 { century:'19世纪', name:'高加索哲学', region:'世界', desc:'纳尔特史诗·山地文明·欧亚交汇。', tier:'B' },
   { century:'19世纪末', name:'天演论', region:'东方', desc:'物竞天择，适者生存。', tier:'C' },
@@ -166,6 +167,7 @@ function getEraIdx(c) {
 }
 
 const IMG_MAP = {
+   '贝叶斯主义':'贝叶斯主义',
    '人工智能哲学':'人工智能哲学_v2', '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific',
 };
 function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.jpg`; }
@@ -288,7 +290,7 @@ export default function GenealogyPage() {
         </div>
       ))}
       <div style={{ textAlign:'center', padding:'80px 32px', borderTop:'1px solid rgba(145,118,71,0.08)' }}>
-        <p style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-sans)', margin:0 }}>103个哲学流派 · 一部横跨五千年的人类思想史图录</p>
+        <p style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-sans)', margin:0 }}>一百零四哲学流派 · 一部横跨五千年的人类思想史图录</p>
         <div style={{ display:'flex', justifyContent:'center', gap:32, marginTop:32 }}>
           {[{ l:'西方哲学', p:'/western-philosophies' },{ l:'东方哲学', p:'/eastern-philosophies' },{ l:'世界哲学', p:'/world-philosophies' }].map(b => (
             <button key={b.p} onClick={() => nav(b.p)} style={{ background:'none', border:'1px solid rgba(145,118,71,0.10)', cursor:'pointer', fontFamily:'"Playfair Display",serif', fontSize:13, color:'var(--ochre)', padding:'6px 16px', borderRadius:4, transition:'all 300ms ease', opacity:0.7 }}

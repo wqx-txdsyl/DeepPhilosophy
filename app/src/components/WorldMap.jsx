@@ -49,6 +49,7 @@ const REGIONS = [
   { id: 'austronesian', name: '南岛', sub: '南岛哲学', desc: '海洋迁徙·Mana与Tapu·关系性自我。', x: 84, y: 48, r: 16, path: '/school/南岛哲学' },
   { id: 'pacific', name: '太平洋', sub: '太平洋原住民哲学', desc: '礼物经济·土地人格·修复性正义。', x: 94, y: 62, r: 18, path: '/school/太平洋原住民哲学' },
   { id: 'arctic', name: '北极', sub: '北极原住民哲学', desc: '冰雪智慧·动物能动性·Sila伦理。', x: 30, y: 5, r: 20, path: '/school/北极原住民哲学' },
+  { id: '贝叶斯主义', name: '贝叶斯主义', sub: '贝叶斯主义', desc: '贝叶斯主义是一种以概率论为核心工具，将信念、知识与决策纳入严格数学框架的哲学思潮', x: 50, y: 50, r: 16, path: '/school/贝叶斯主义' },
 ];
 
 function WorldMap() {
