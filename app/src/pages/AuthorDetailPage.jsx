@@ -7,12 +7,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getAuthorInfo } from '../data';
 import { getApiBase } from '../App';
+import { useSEO } from '../utils/seo';
 
 function AuthorDetailPage() {
   const { authorName } = useParams();
   const navigate = useNavigate();
   const [author, setAuthor] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useSEO(author?.name || authorName, author?.bio ? author.bio.slice(0, 160) : `${authorName}的哲学思想与著作`);
 
   useEffect(() => { fetchAuthor(); }, [authorName]);
 

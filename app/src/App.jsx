@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, useNavigationType } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
+import { getApiBase } from './utils/api';
 import ErrorBoundary from './components/ErrorBoundary';
 import Icon from './components/Icon';
 // 首屏+常用页面（eager：小文件，即时响应）
@@ -40,18 +41,10 @@ const PageLoader = () => (
   </div>
 );
 
-export function getApiBase() {
-  try {
-    const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
-    // If user set a custom URL, use it (for local dev pointing to remote)
-    if (config.apiUrl && config.apiUrl !== window.location.origin) return config.apiUrl;
-  } catch (e) { console.error('Failed to parse dp_api_config:', e); }
-  // Same-origin deployment: use relative URL (no CORS issues)
-  if (import.meta.env.PROD) return '';
-  return import.meta.env.VITE_API_URL || 'http://localhost:8000';
-}
+export { getApiBase } from './utils/api';
 
 const scrollMemory = new Map();
+const MAX_SCROLL_ENTRIES = 30;
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -71,7 +64,16 @@ function ScrollToTop() {
 
   // Save scroll position on scroll
   useEffect(() => {
-    const save = () => scrollMemory.set(pathname, window.scrollY);
+    const save = () => {
+      scrollMemory.set(pathname, window.scrollY);
+      // Prune old entries if exceeding limit
+      if (scrollMemory.size > MAX_SCROLL_ENTRIES) {
+        const keys = [...scrollMemory.keys()];
+        for (let i = 0; i < keys.length - MAX_SCROLL_ENTRIES; i++) {
+          scrollMemory.delete(keys[i]);
+        }
+      }
+    };
     window.addEventListener('scroll', save, { passive: true });
     return () => window.removeEventListener('scroll', save);
   }, [pathname]);

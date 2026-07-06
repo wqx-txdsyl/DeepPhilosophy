@@ -254,7 +254,7 @@ export default function GenealogyPage() {
   return (
     <div style={{ background:'var(--bg)', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'var(--ink)' }}>
       <section style={{ padding:'56px 32px 32px', textAlign:'center', position:'relative', overflow:'hidden' }}>
-        <img src="/gene/civilization_silhouette.jpg" alt="" style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
+        <img src="/gene/civilization_silhouette.jpg" alt="" loading="lazy" style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
         <p style={{ position:'relative', fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--ochre)', marginBottom:20, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
         <h1 style={{ position:'relative', fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'var(--ink)', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
         <div style={{ position:'relative', width:32, height:1, background:'var(--ochre)', margin:'14px auto', opacity:0.35 }} />

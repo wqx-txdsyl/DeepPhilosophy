@@ -1,5 +1,5 @@
 /**
- * Icon 组件 —— PNG 图标（lazy load + 浏览器缓存）
+ * Icon 组件 —— PNG 图标（lazy load + 浏览器缓存 + 尺寸提示防布局偏移）
  * <Icon name="nav-books" size={20} />
  */
 function Icon({ name, size = 20, style, className, ...props }) {
@@ -8,6 +8,8 @@ function Icon({ name, size = 20, style, className, ...props }) {
       src={`/icons/${name}.png`}
       alt=""
       loading="lazy"
+      width={size}
+      height={size}
       {...props}
       className={className}
       style={{

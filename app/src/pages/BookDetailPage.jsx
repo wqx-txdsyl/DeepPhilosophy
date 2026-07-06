@@ -7,12 +7,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getBookById } from '../data';
 import { getApiBase } from '../App';
+import { useSEO } from '../utils/seo';
 
 function BookDetailPage() {
   const { bookId } = useParams();
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useSEO(book?.title || '书籍详情', book?.author ? `${book.author} · ${book.title}` : '哲学经典著作详情');
 
   useEffect(() => {
     fetchBook();

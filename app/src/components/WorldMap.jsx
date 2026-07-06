@@ -58,7 +58,7 @@ function WorldMap() {
 
   return (
     <div style={{ position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
-      <img src="/schools/世界地图.png" alt="世界哲学地图"
+      <img src="/schools/世界地图.png" alt="世界哲学地图" loading="lazy"
         style={{ width: '100%', maxWidth: 1200, height: 'auto', borderRadius: 8, display: 'block' }} />
 
       {REGIONS.map(r => (

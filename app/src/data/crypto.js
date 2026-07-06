@@ -8,12 +8,11 @@ function getRawKey() {
   if (!crypto?.subtle) {
     throw new Error('Web Crypto API not available (requires HTTPS or localhost)');
   }
+  // Use stable device fingerprint: hardware + language (not screen dimensions which change)
   const seed = [
     navigator.hardwareConcurrency || 4,
     navigator.language || 'zh-CN',
-    screen.width || 1920,
-    screen.height || 1080,
-    'DeepPhilosophy',
+    'DeepPhilosophy-salt-v2',
   ].join('|');
   return crypto.subtle.digest('SHA-256', new TextEncoder().encode(seed));
 }
