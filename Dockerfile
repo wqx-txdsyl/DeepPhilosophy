@@ -1,7 +1,13 @@
 # DeepPhilosophy Backend Dockerfile
-# 用于 Render / 任意 Docker 云平台部署
-FROM python:3.11-slim
+# Multi-stage: Node.js builds frontend, Python runs backend
+FROM node:20-slim AS frontend
+WORKDIR /app
+COPY app/package.json app/package-lock.json ./
+RUN npm ci
+COPY app/ ./
+RUN npm run build
 
+FROM python:3.11-slim
 WORKDIR /app
 
 # 系统依赖
@@ -14,7 +20,7 @@ COPY backend/requirements.txt .
 RUN pip install --no-cache-dir --default-timeout=300 \
     -r requirements.txt
 
-# 复制应用代码（v2）
+# 复制应用代码
 COPY backend/config.py .
 COPY backend/main.py .
 COPY backend/auth.py .
@@ -22,7 +28,7 @@ COPY backend/philosophers_db.py .
 COPY backend/admin.py .
 COPY backend/modules/ ./modules/
 
-# 复制静态数据（摘要、标签、manifest — 不覆盖运行时用户数据）
+# 复制静态数据
 RUN mkdir -p /app/data
 COPY backend/data/book_summaries.json /app/data/
 COPY backend/data/books_cache.json /app/data/
@@ -30,8 +36,9 @@ COPY backend/data/github_manifest.json /app/data/
 COPY backend/data/oss_manifest.json /app/data/
 COPY backend/data/philosophers.json /app/data/
 COPY backend/data/name_aliases.json /app/data/
-# 复制前端构建产物（同源部署，避免 CORS）— v2.7.2
-COPY backend/app-dist/ ./static/
+
+# 复制前端构建产物（多阶段构建，无需 backend/app-dist）
+COPY --from=frontend /app/dist/ ./static/
 
 # 环境变量默认值（可在 Render 面板覆盖）
 ENV KNOWLEDGE_DIR=/app/data/books
@@ -45,5 +52,4 @@ ENV USE_OSS=true
 
 EXPOSE 8000
 
-# 启动命令
 CMD ["python", "main.py"]
