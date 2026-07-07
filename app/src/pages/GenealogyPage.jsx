@@ -172,8 +172,8 @@ const IMG_MAP = {
    '贝叶斯主义':'贝叶斯主义_bayes',
    '人工智能哲学':'人工智能哲学_v2', '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific',
 };
-function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.jpg`; }
-function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.jpg`; }
+function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.webp`; }
+function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.webp`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
 // ─── Card image: thumbnail by default, HD only if already cached ───
@@ -254,7 +254,7 @@ export default function GenealogyPage() {
   return (
     <div style={{ background:'var(--bg)', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'var(--ink)' }}>
       <section style={{ padding:'56px 32px 32px', textAlign:'center', position:'relative', overflow:'hidden' }}>
-        <img src="/gene/civilization_silhouette.jpg" alt="" loading="lazy" style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
+        <img src="/gene/civilization_silhouette.webp" alt="" loading="lazy" style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
         <p style={{ position:'relative', fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--ochre)', marginBottom:20, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
         <h1 style={{ position:'relative', fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'var(--ink)', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
         <div style={{ position:'relative', width:32, height:1, background:'var(--ochre)', margin:'14px auto', opacity:0.35 }} />
@@ -263,7 +263,7 @@ export default function GenealogyPage() {
       {chapters.map((ch, ci) => (
         <div key={ci}>
           <section style={{ padding:'80px 24px 40px', textAlign:'center', maxWidth:1000, margin:'0 auto' }}>
-            {ch.era.e && <LazyImg src={`/gene/${ch.era.e}.png`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />}
+            {ch.era.e && <LazyImg src={`/gene/${ch.era.e}.webp`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />}
             <div style={{ marginTop:40 }}>
               <div style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--ochre)', fontFamily:'var(--font-sans)', marginBottom:8 }}>{ch.era.n}</div>
               <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:400, color:'var(--ink)', margin:'0 0 8px', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{ch.era.t}</h2>
@@ -275,7 +275,7 @@ export default function GenealogyPage() {
             return (
               <FadeWrap key={ri}>
                 <section style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto' }}>
-                  <LazyImg src={`/gene/region/${region.key}.jpg`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} />
+                  <LazyImg src={`/gene/region/${region.key}.webp`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} />
                   <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'var(--ink)', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
                 </section>
                 <div style={{ maxWidth:900, margin:'0 auto', padding:'0 16px' }}>

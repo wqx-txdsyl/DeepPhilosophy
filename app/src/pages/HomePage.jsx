@@ -420,7 +420,7 @@ function HomePage() {
         minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center',
         alignItems: 'center', textAlign: 'center', padding: '80px 32px',
         position: 'relative', overflow: 'hidden',
-        backgroundImage: 'url(/schools/世界哲学总览.jpg)', backgroundSize: 'cover', backgroundPosition: 'center',
+        backgroundImage: 'url(/schools/世界哲学总览.webp)', backgroundSize: 'cover', backgroundPosition: 'center',
       }}>
         <div style={{ position: 'absolute', inset: 0,
           background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.5) 40%, rgba(244,240,235,0.2) 100%)' }} />

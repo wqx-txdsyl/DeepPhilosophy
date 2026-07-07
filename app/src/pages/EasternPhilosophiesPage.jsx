@@ -32,7 +32,7 @@ export default function EasternPhilosophiesPage() {
   const navigate = useNavigate();
   return (
     <div className="page-container" style={{ paddingBottom: 80 }}>
-      <section style={{ minHeight: '40vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '72px 32px 48px', position: 'relative', overflow: 'hidden', backgroundImage: 'url(/schools/东方哲学.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section style={{ minHeight: '40vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '72px 32px 48px', position: 'relative', overflow: 'hidden', backgroundImage: 'url(/schools/东方哲学.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.5) 40%, rgba(244,240,235,0.2) 100%)' }} />
         <button onClick={() => navigate(-1)} style={{ position: 'relative', zIndex: 1, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.04em', marginBottom: 32, padding: 0 }}>← 返回</button>
         <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 16px' }}>Eastern Philosophy</p>

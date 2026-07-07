@@ -88,7 +88,7 @@ export default function WorldPhilosophiesPage() {
     <div className="page-container" style={{ paddingBottom: 80 }}>
 
       {/* ══════════ HERO ══════════ */}
-      <section style={{ minHeight: '40vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '72px 32px 48px', position: 'relative', overflow: 'hidden', backgroundImage: 'url(/schools/世界哲学传统.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section style={{ minHeight: '40vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '72px 32px 48px', position: 'relative', overflow: 'hidden', backgroundImage: 'url(/schools/世界哲学传统.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.5) 40%, rgba(244,240,235,0.2) 100%)' }} />
         <button onClick={() => navigate('/genealogy')} style={{
           background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13,
