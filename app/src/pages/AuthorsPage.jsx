@@ -13,6 +13,7 @@ function AuthorsPage() {
   const navigate = useNavigate();
   const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [filter, setFilter] = useState('all');
   const [activeTags, setActiveTags] = useState([]);
   const [filters, setFilters] = useState({ eras: [], countries: [], schools: [] });
@@ -186,7 +187,7 @@ function AuthorsPage() {
   const loadAllAuthors = async () => {
     setLoading(true);
     // Check cache first (10 min TTL)
-    const cached = cacheGet('all_authors');
+    const cached = cacheGet('all_authors_v2');
     if (cached?.length) {
       const approxYear = (era) => {
         const centuries = eraToCenturies(era);
@@ -195,13 +196,13 @@ function AuthorsPage() {
         const n = parseInt(first.replace('前',''));
         return first.includes('前') ? -((n-1)*100+50) : (n-1)*100+50;
       };
-      cached.sort((a, b) => approxYear(a.era) - approxYear(b.era));
+      try { cached.sort((a, b) => approxYear(a.era) - approxYear(b.era)); } catch {}
       setAllAuthors(cached);
       setLoading(false);
       return;
     }
     try {
-      const resp = await fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(8000) });
+      const resp = await fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(20000) });
       if (resp.ok) {
         const data = await resp.json();
         const authors = data.authors || [];
@@ -214,8 +215,8 @@ function AuthorsPage() {
           const y = (n - 1) * 100 + 50; // midpoint of century
           return first.includes('前') ? -y : y;
         };
-        authors.sort((a, b) => approxYear(a) - approxYear(b));
-        cacheSet('all_authors', authors);
+        try { authors.sort((a, b) => approxYear(a.era) - approxYear(b.era)); } catch {}
+        cacheSet('all_authors_v2', authors);
         setAllAuthors(authors);
       }
     } catch (e) { console.error('Failed to load authors:', e); }
