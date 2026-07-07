@@ -172,13 +172,17 @@ const IMG_MAP = {
    '贝叶斯主义':'贝叶斯主义_bayes',
    '人工智能哲学':'人工智能哲学_v2', '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific',
 };
-function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.webp`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Card image: WebP thumbnail (~5-15KB), crisp at 200-400px card width. ───
-// Full-res WebP only loads when user clicks into SchoolDetailPage HeroSection.
+// ─── Card image: full-res WebP with lazy loading. ───
+// WebP at 200-800KB is small enough for modern connections. loading=lazy
+// ensures only visible cards trigger downloads, not all 100+ at once.
+function schoolImgUrl(name) {
+  const b = IMG_MAP[name] || encodeURI(name);
+  return `/schools/${b}.webp`;
+}
 function ProgImg({ name, style }) {
-  return <img src={thumbUrl(name)} alt={name} loading="lazy" style={{ ...style, display: 'block' }} />;
+  return <img src={schoolImgUrl(name)} alt={name} loading="lazy" style={{ ...style, display: 'block' }} />;
 }
 
 // ─── School Card ───
