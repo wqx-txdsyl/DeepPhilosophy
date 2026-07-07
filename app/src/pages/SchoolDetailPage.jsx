@@ -257,6 +257,7 @@ export default function SchoolDetailPage() {
   const m = SCHOOL_MAP[name] || {};
   const [dynamicData, setDynamicData] = useState(null);
   const [loadError, setLoadError] = useState(false);
+  const data = dynamicData || null;
 
   // SEO
   useSEO(data?.name || name, data?.subtitle || `探索${name}哲学流派的核心思想与代表人物`);
@@ -272,8 +273,6 @@ export default function SchoolDetailPage() {
         .catch(() => setLoadError(true));
     }
   }, [name]);
-
-  const data = dynamicData || null;
   const heroImage = m.bg || 'url(/schools/default.webp)';
 
   // Auto-generate subColors from thinkers
