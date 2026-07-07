@@ -173,22 +173,12 @@ const IMG_MAP = {
    '人工智能哲学':'人工智能哲学_v2', '萨满哲学':'shaman', '北极原住民哲学':'arctic', '南岛哲学':'austronesian', '高加索哲学':'caucasus', '高加索-草原哲学':'caucasus-steppe', '太平洋原住民哲学':'pacific',
 };
 function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/thumb/${b}.webp`; }
-function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.webp`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Card image: WebP thumbnail (10-30KB each, crisp at card size). ───
-// Full-res WebP (200-800KB) only loads when user clicks into SchoolDetailPage.
+// ─── Card image: WebP thumbnail (~5-15KB), crisp at 200-400px card width. ───
+// Full-res WebP only loads when user clicks into SchoolDetailPage HeroSection.
 function ProgImg({ name, style }) {
-  const thumb = thumbUrl(name);
-  const full = fullUrl(name);
-  const [src, setSrc] = useState(thumb);
-  // Upgrade to full-res once it's cached (e.g., after visiting detail page)
-  useEffect(() => {
-    const img = new Image();
-    img.onload = () => setSrc(full);
-    img.src = full;
-  }, []);
-  return <img src={src} alt={name} loading="lazy" style={{ ...style, display: 'block' }} />;
+  return <img src={thumbUrl(name)} alt={name} loading="lazy" style={{ ...style, display: 'block' }} />;
 }
 
 // ─── School Card ───
