@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getApiBase } from '../App';
 import { cacheGet, cacheSet } from '../data/cache';
+import RANKING from '../data/schoolRanking';
 
 function AuthorsPage() {
   const navigate = useNavigate();
@@ -182,13 +183,6 @@ function AuthorsPage() {
     return [];
   };
 
-  // Load AI ranking once
-  useEffect(() => {
-    fetch('/schools/school_ranking.json')
-      .then(r => r.json()).then(r => { window.__schoolRanking = r; })
-      .catch(() => {});
-  }, []);
-
   const loadAllAuthors = async () => {
     setLoading(true);
     // Check cache first (10 min TTL)
@@ -297,25 +291,13 @@ function AuthorsPage() {
       if (isNaN(n)) return false;
       return c.includes('前') ? n <= 100 : n <= 21;
     });
-    // Sort schools by AI influence ranking (fallback to philosopher count)
-    const ranked = (() => {
-      try {
-        // ranking is embedded at build time via Vite's ?raw import
-        return null; // loaded via fetch below
-      } catch { return null; }
-    })();
+    // Sort schools by AI influence ranking
+    const rankIndex = Object.fromEntries(RANKING.map((name, i) => [name, i]));
     const sortedSchools = [...schoolCount.entries()]
       .sort((a, b) => {
-        // Try AI ranking first
-        if (window.__schoolRanking) {
-          const ra = window.__schoolRanking.indexOf(a[0]);
-          const rb = window.__schoolRanking.indexOf(b[0]);
-          if (ra >= 0 && rb >= 0) return ra - rb;
-          if (ra >= 0) return -1;
-          if (rb >= 0) return 1;
-        }
-        // Fallback: philosopher count
-        return b[1] - a[1];
+        const ra = rankIndex[a[0]] ?? 9999;
+        const rb = rankIndex[b[0]] ?? 9999;
+        return ra - rb;
       })
       .map(([name]) => name);
 
