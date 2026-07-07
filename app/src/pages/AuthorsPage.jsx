@@ -133,7 +133,7 @@ function AuthorsPage() {
   // Parse era string to centuries. Handles: "20世纪", "421-611年", "约公元前6世纪", "1929-", etc.
   const eraToCenturies = (era) => {
     if (!era) return [];
-    let s = era.replace(/约|大約|左右|年/g, '').replace(/至今|迄今|现在/g, '2025').trim();
+    let s = era.replace(/约|大約|左右|年/g, '').replace(/至今|迄今|现在|-$/g, '2025').replace(/-$/, '-2025').trim();
     const results = [];
 
     // Fix implicit BC prefix: "公元前6-5世纪" -> both should be BC
