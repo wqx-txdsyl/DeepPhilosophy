@@ -138,7 +138,7 @@ function AuthorsPage() {
     let cm;
     while ((cm = centuryRe.exec(s)) !== null) {
       const c = parseInt(cm[2]);
-      if (cm[1] ? c <= 50 : c <= 21) // sanity: BC <= 50世纪, AD <= 21世纪
+      if (cm[1] ? c <= 100 : c <= 21) // BC up to 前100世纪 (10000 BC), AD up to 21世纪
         results.push((cm[1] || '') + c + '世纪');
     }
     if (results.length > 0) return [...new Set(results)];
@@ -156,7 +156,7 @@ function AuthorsPage() {
         if (y === 0) continue;
         const ay = Math.abs(y);
         const c = Math.floor((ay - 1) / 100) + 1;
-        if ((y < 0 && c > 50) || (y > 0 && c > 21)) continue; // sanity check
+        if ((y < 0 && c > 100) || (y > 0 && c > 21)) continue; // BC up to 10000BC, AD up to 2100
         set.add((y < 0 ? '前' : '') + c + '世纪');
       }
       return [...set];
@@ -177,6 +177,11 @@ function AuthorsPage() {
     // Check cache first (10 min TTL)
     const cached = cacheGet('all_authors');
     if (cached?.length) {
+      cached.sort((a, b) => {
+        const ya = parseInt((a.era || '0').match(/-?(\d+)/)?.[1] || '0');
+        const yb = parseInt((b.era || '0').match(/-?(\d+)/)?.[1] || '0');
+        return ((a.era||'').includes('前')?-1:1)*ya - ((b.era||'').includes('前')?-1:1)*yb;
+      });
       setAllAuthors(cached);
       setLoading(false);
       return;
@@ -186,6 +191,14 @@ function AuthorsPage() {
       if (resp.ok) {
         const data = await resp.json();
         const authors = data.authors || [];
+        // Sort by birth year (BC first, then AD chronologically)
+        authors.sort((a, b) => {
+          const ya = parseInt((a.era || '0').match(/-?(\d+)/)?.[1] || '0');
+          const yb = parseInt((b.era || '0').match(/-?(\d+)/)?.[1] || '0');
+          const bcA = (a.era || '').includes('前') ? -1 : 1;
+          const bcB = (b.era || '').includes('前') ? -1 : 1;
+          return (bcA * ya) - (bcB * yb);
+        });
         cacheSet('all_authors', authors);
         setAllAuthors(authors);
       }
