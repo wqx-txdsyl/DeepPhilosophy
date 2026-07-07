@@ -131,23 +131,33 @@ function AuthorsPage() {
   // Parse era string to centuries. Handles: "20世纪", "421-611年", "约公元前6世纪", "1929-", etc.
   const eraToCenturies = (era) => {
     if (!era) return [];
-    const s = era.replace(/约|大約|左右|年/g, '').replace(/至今|迄今|现在/g, '2025').trim();
+    let s = era.replace(/约|大約|左右|年/g, '').replace(/至今|迄今|现在/g, '2025').trim();
     const results = [];
+
+    // Fix implicit BC prefix: "公元前6-5世纪" -> both should be BC
+    // Extract the leading BC marker and apply to all century numbers
+    const bcPrefix = s.match(/^(公元前|前)/);
+    s = s.replace(/^(公元前|前)/, ''); // strip leading BC marker for parsing
+    const isBC = !!bcPrefix;
 
     const centuryRe = /(前)?\s*(\d+)\s*世纪/g;
     let cm;
     while ((cm = centuryRe.exec(s)) !== null) {
       const c = parseInt(cm[2]);
-      if (cm[1] ? c <= 100 : c <= 21) // BC up to 前100世纪 (10000 BC), AD up to 21世纪
-        results.push((cm[1] || '') + c + '世纪');
+      const prefix = cm[1] || (isBC ? '前' : ''); // inherit BC from context
+      if (prefix ? c <= 100 : c <= 21)
+        results.push(prefix + c + '世纪');
     }
     if (results.length > 0) return [...new Set(results)];
+
+    // Re-add BC prefix for year range parsing
+    s = (isBC ? '前' : '') + s;
 
     const rangeRe = /(前)?\s*(\d+)\s*[-–—]\s*(前)?\s*(\d+)/;
     const rm = s.match(rangeRe);
     if (rm) {
-      const bc1 = !!(rm[1] || s.startsWith('公元前'));
-      const bc2 = !!(rm[3] || (rm.index > 0 && s.includes('前')));
+      const bc1 = !!(rm[1] || isBC);
+      const bc2 = !!(rm[3] || isBC);
       let y1 = parseInt(rm[2]) * (bc1 ? -1 : 1);
       let y2 = parseInt(rm[4]) * (bc2 ? -1 : 1);
       if (y1 > y2) [y1, y2] = [y2, y1];
@@ -165,7 +175,7 @@ function AuthorsPage() {
     const singleRe = /(前)?\s*(\d{3,4})/;
     const sm = s.match(singleRe);
     if (sm) {
-      const y = parseInt(sm[2]) * (sm[1] ? -1 : 1);
+      const y = parseInt(sm[2]) * ((sm[1] || isBC) ? -1 : 1);
       const c = Math.floor((Math.abs(y) - 1) / 100) + 1;
       return [(y < 0 ? '前' : '') + c + '世纪'];
     }
