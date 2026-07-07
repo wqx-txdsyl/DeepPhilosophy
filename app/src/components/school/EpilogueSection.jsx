@@ -11,8 +11,10 @@ export default function EpilogueSection({ conclusion, closingQuote, closingQuote
 
       <h2 style={{ fontSize: 20, fontWeight: 400, color: 'var(--fade)', marginBottom: 40, fontFamily: FONT.serif, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Epilogue</h2>
 
-      <div style={{ fontSize: 16, lineHeight: 2.1, color: 'var(--text)', whiteSpace: 'pre-line', marginBottom: 56, fontFamily: FONT.sans, fontWeight: 300, textAlign: 'left' }}>
-        {conclusion}
+      <div style={{ fontSize: 16, lineHeight: 2.1, color: 'var(--text)', marginBottom: 56, fontFamily: FONT.sans, fontWeight: 300, textAlign: 'left' }}>
+        {(conclusion || '').split(/\n{2,}/).filter(Boolean).map((p, i) => (
+          <p key={i} style={{ margin: '0 0 1em' }}>{p.trim()}</p>
+        ))}
       </div>
 
       {closingQuote && (

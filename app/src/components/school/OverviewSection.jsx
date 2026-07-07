@@ -11,8 +11,10 @@ export default function OverviewSection({ overview, subSchools = [] }) {
         <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>核心思想与流派脉络</h2>
         <div style={{ width: 32, height: 1.5, background: 'var(--ochre)', marginTop: SPACE.md, opacity: 0.5 }} />
       </div>
-      <div style={{ fontSize: 16, lineHeight: 2.0, color: 'var(--text)', whiteSpace: 'pre-line', fontFamily: FONT.sans, fontWeight: 300 }}>
-        {overview}
+      <div style={{ fontSize: 16, lineHeight: 2.0, color: 'var(--text)', fontFamily: FONT.sans, fontWeight: 300 }}>
+        {(overview || '').split(/\n{2,}/).filter(Boolean).map((p, i) => (
+          <p key={i} style={{ margin: '0 0 1em' }}>{p.trim()}</p>
+        ))}
       </div>
 
       {subSchools.length > 0 && (
