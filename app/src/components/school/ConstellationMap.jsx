@@ -2,31 +2,77 @@ import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FONT, SPACE } from './tokens';
 
-// 4 种连线样式
-// ── 师生/继承（实线）
-// - - 影响/再传（短虚线）
-// ··· 批判/对立（长虚线）
-// ··· 学术交流/合作（点线）
+// ─── 4 大类连线样式（覆盖全部 939 条关系边） ───
+// ── 师生/继承（实线）      — 直接传承、创立、学派延续
+// - - 影响/再传（短虚线）   — 思想启发、间接传承、发展
+// —— 批判/对立（长虚线）   — 批评、反驳、对立、分裂
+// ··· 学术交流（点线）      — 合作、对话、注释、友谊
 const EDGE_STYLES = {
-  '师生':    { stroke: 'rgba(58,90,124,0.55)', width: 2.0, dash: '' },
-  '继承':    { stroke: 'rgba(58,90,124,0.40)', width: 1.6, dash: '' },
-  '影响':    { stroke: 'rgba(196,149,106,0.45)', width: 1.2, dash: '4,3' },
-  '再传':    { stroke: 'rgba(196,149,106,0.35)', width: 1.0, dash: '4,3' },
-  '批判':    { stroke: 'rgba(180,70,70,0.50)', width: 1.2, dash: '8,5' },
-  '对立':    { stroke: 'rgba(180,70,70,0.45)', width: 1.0, dash: '8,5' },
-  '批判/超越': { stroke: 'rgba(180,70,70,0.50)', width: 1.2, dash: '8,5' },
-  '学术交流': { stroke: 'rgba(120,140,160,0.35)', width: 0.8, dash: '2,4' },
-  '合作':    { stroke: 'rgba(120,140,160,0.35)', width: 0.8, dash: '2,4' },
-  '友谊':    { stroke: 'rgba(120,140,160,0.30)', width: 0.7, dash: '2,4' },
-  '注释':    { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
+  // ── 师生/继承（实线，蓝灰色）──
+  '师生':        { stroke: 'rgba(58,90,124,0.55)', width: 2.0, dash: '' },
+  '继承':        { stroke: 'rgba(58,90,124,0.40)', width: 1.6, dash: '' },
+  '再传':        { stroke: 'rgba(58,90,124,0.30)', width: 1.2, dash: '' },
+  '创立':        { stroke: 'rgba(58,90,124,0.50)', width: 1.8, dash: '' },
+  '开创':        { stroke: 'rgba(58,90,124,0.50)', width: 1.8, dash: '' },
+  '父子':        { stroke: 'rgba(58,90,124,0.50)', width: 1.8, dash: '' },
+  '同门':        { stroke: 'rgba(58,90,124,0.30)', width: 1.0, dash: '' },
+  '分化':        { stroke: 'rgba(58,90,124,0.30)', width: 1.0, dash: '' },
+  '继承/发展':   { stroke: 'rgba(58,90,124,0.35)', width: 1.4, dash: '' },
+  '继承/超越':   { stroke: 'rgba(58,90,124,0.35)', width: 1.4, dash: '' },
+  '领导/继承':   { stroke: 'rgba(58,90,124,0.45)', width: 1.6, dash: '' },
+  '领导/影响':   { stroke: 'rgba(58,90,124,0.45)', width: 1.6, dash: '' },
+  '领导与影响':  { stroke: 'rgba(58,90,124,0.40)', width: 1.6, dash: '' },
+  '学术传承':    { stroke: 'rgba(58,90,124,0.40)', width: 1.4, dash: '' },
+  '战略':        { stroke: 'rgba(58,90,124,0.40)', width: 1.4, dash: '' },
+
+  // ── 影响/再传（短虚线，金色）──
+  '影响':        { stroke: 'rgba(196,149,106,0.45)', width: 1.2, dash: '4,3' },
+  '发展':        { stroke: 'rgba(196,149,106,0.35)', width: 1.0, dash: '4,3' },
+  '先驱':        { stroke: 'rgba(196,149,106,0.40)', width: 1.0, dash: '4,3' },
+  '经学化':      { stroke: 'rgba(196,149,106,0.35)', width: 1.0, dash: '4,3' },
+  '影响/超越':   { stroke: 'rgba(196,149,106,0.40)', width: 1.2, dash: '4,3' },
+  '影响与发展':  { stroke: 'rgba(196,149,106,0.40)', width: 1.2, dash: '4,3' },
+  '影响与传承':  { stroke: 'rgba(196,149,106,0.40)', width: 1.2, dash: '4,3' },
+
+  // ── 批判/对立（长虚线，红褐色）──
+  '批判':        { stroke: 'rgba(180,70,70,0.50)', width: 1.2, dash: '8,5' },
+  '对立':        { stroke: 'rgba(180,70,70,0.45)', width: 1.0, dash: '8,5' },
+  '批判/超越':   { stroke: 'rgba(180,70,70,0.50)', width: 1.2, dash: '8,5' },
+  '批判继承':    { stroke: 'rgba(180,70,70,0.45)', width: 1.2, dash: '8,5' },
+  '对立批判':    { stroke: 'rgba(180,70,70,0.48)', width: 1.2, dash: '8,5' },
+  '学术对立':    { stroke: 'rgba(180,70,70,0.45)', width: 1.0, dash: '8,5' },
+  '学术争论':    { stroke: 'rgba(180,70,70,0.40)', width: 0.9, dash: '8,5' },
+  '学术争鸣':    { stroke: 'rgba(180,70,70,0.40)', width: 0.9, dash: '8,5' },
+  '分裂':        { stroke: 'rgba(180,70,70,0.50)', width: 1.4, dash: '8,5' },
+  '自我批判':    { stroke: 'rgba(180,70,70,0.35)', width: 0.9, dash: '8,5' },
+  '影响与批判':  { stroke: 'rgba(180,70,70,0.45)', width: 1.2, dash: '8,5' },
+  '友谊/对立':   { stroke: 'rgba(180,70,70,0.40)', width: 1.0, dash: '8,5' },
+  '顿渐之争':    { stroke: 'rgba(180,70,70,0.45)', width: 1.2, dash: '8,5' },
+
+  // ── 学术交流（点线，灰色）──
+  '学术交流':    { stroke: 'rgba(120,140,160,0.35)', width: 0.8, dash: '2,4' },
+  '合作':        { stroke: 'rgba(120,140,160,0.35)', width: 0.8, dash: '2,4' },
+  '友谊':        { stroke: 'rgba(120,140,160,0.30)', width: 0.7, dash: '2,4' },
+  '对话':        { stroke: 'rgba(120,140,160,0.33)', width: 0.8, dash: '2,4' },
+  '学术对话':    { stroke: 'rgba(120,140,160,0.33)', width: 0.8, dash: '2,4' },
+  '注释':        { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
+  '注释/阐发':   { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
+  '注释/改造':   { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
+  '注释/玄学化': { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
+  '战友':        { stroke: 'rgba(120,140,160,0.30)', width: 0.7, dash: '2,4' },
+  '领导与合作':  { stroke: 'rgba(120,140,160,0.33)', width: 0.8, dash: '2,4' },
+  '学术思想':    { stroke: 'rgba(120,140,160,0.28)', width: 0.7, dash: '2,4' },
 };
 const DEFAULT_EDGE = EDGE_STYLES['影响'];
 
-// 4 种线型的 legend 分类
+// ─── 将标签归类到 4 大类（legend 用） ───
 function edgeCategory(type) {
-  if (type === '师生' || type === '继承') return 'solid';
-  if (type === '影响' || type === '再传') return 'dashed';
-  if (type === '批判' || type === '对立' || type === '批判/超越') return 'critical';
+  if (!type) return 'dashed';
+  const t = EDGE_STYLES[type];
+  if (!t) return 'dashed';
+  if (!t.dash) return 'solid';
+  if (t.dash === '4,3') return 'dashed';
+  if (t.dash === '8,5') return 'critical';
   return 'dotted';
 }
 
