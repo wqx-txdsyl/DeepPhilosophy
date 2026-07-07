@@ -43,9 +43,9 @@ print('REGISTERED')
 "
 ```
 
-### 步骤 3：图片处理（WebP）
+### 步骤 3：图片处理（WebP，无缩略图）
 - **门禁验证（Check）**：`python -c "import os; p='app/public/schools/ARG_NAME.webp'; print('WEBP OK' if os.path.exists(p) else '[WARN:NO_WEBP]')"`
-- **补全分支（Remediate）**：生成 JPG 后转换为 WebP，重试 2 次。
+- **补全分支（Remediate）**：生成 JPG/PNG 后转为 WebP 并删除原文件，重试 2 次。
 
 ### 步骤 4：SCHOOL_MAP 注册
 - **动作**：在 `app/src/pages/SchoolDetailPage.jsx` 的 `SCHOOL_MAP` 中添加：

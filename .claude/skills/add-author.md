@@ -3,7 +3,7 @@
 ## 核心执行协议（覆盖默认行为）
 - **模式**：顺序执行，每步带"检查-补全-验证"闭环。
 - **遇缺失处理**：**禁止终止**。必须调用对应补全函数/脚本，补全后重新验证。补全失败则重试最多 2 次，仍失败标记 `[SKIPPED:reason]` 并继续后续非依赖步骤。
-- **变量替换规则**：`ARG_NAME` = 哲人名；`ARG_SAFE` = `ARG_NAME.replace('/','-').replace(':','：')`；`ARG_FILE` = `app/public/philosopher/ARG_SAFE.jpg`
+- **变量替换规则**：`ARG_NAME` = 哲人名；`ARG_SAFE` = `ARG_NAME.replace('/','-').replace(':','：')`；`ARG_FILE` = `app/public/philosopher/ARG_SAFE.webp`
 - **标记格式**：所有跳过/警告统一使用 `[SKIPPED:reason]` 或 `[WARN:reason]`，终局自检必须兼容这些标记。
 
 ## 前置依赖
@@ -61,14 +61,28 @@ print(f'FINAL: {final} chars')
 
 ### 步骤 5：爬取头像
 - **动作**：`cd scripts && python fetch_philosopher_img.py "ARG_NAME"`
-- **门禁验证（Check）**：`python -c "import os; p='app/public/philosopher/ARG_SAFE.jpg'; print(f'IMG OK: {os.path.getsize(p)//1024}KB' if os.path.exists(p) and os.path.getsize(p)>=20000 else '[WARN:NO_IMG]')"`
-- **补全分支（Remediate）**：`cd scripts && python fetch_philosopher_img.py "ARG_NAME" 2>/dev/null || python gen_portrait.py "ARG_NAME"`（重试 2 次）
+- **门禁验证（Check）**：`python -c "import os; p='app/public/philosopher/ARG_SAFE.webp'; j='app/public/philosopher/ARG_SAFE.jpg'; print(f'WEBP OK: {os.path.getsize(p)//1024}KB' if os.path.exists(p) else (f'JPG OK' if os.path.exists(j) else '[WARN:NO_IMG]'))"`
+- **补全分支（Remediate）**：`cd scripts && python fetch_philosopher_img.py "ARG_NAME" 2>/dev/null || python gen_portrait.py "ARG_NAME"`（重试 2 次）。成功后转 WebP 删原文件。
 
 ### 步骤 6：人脸检测
-- **动作**：`python -c "import os; p='app/public/philosopher/ARG_SAFE.jpg'; print('[SKIPPED:NO_IMG]' if not os.path.exists(p) else 'FACES: ok')"`
+- **动作**：`python -c "import os; p='app/public/philosopher/ARG_SAFE.webp'; print('[SKIPPED:NO_IMG]' if not os.path.exists(p) else 'FACES: ok')"`
 
-### 步骤 7：缩略图
-- **动作**：`python -c "from PIL import Image; import os; p='app/public/philosopher/ARG_SAFE.jpg'; os.path.exists(p) and (os.makedirs('app/public/philosopher/thumb',exist_ok=True), t:=Image.open(p).convert('RGB').copy(), t.thumbnail((200,200)), t.save('app/public/philosopher/thumb/ARG_SAFE.jpg','JPEG',quality=75), print('THUMB OK')) or print('[SKIPPED:NO_IMG]')"`
+### 步骤 7：转 WebP 并删除原文件
+- **动作**：
+```bash
+python -c "
+from PIL import Image; import os
+p='app/public/philosopher/ARG_SAFE.jpg'
+if os.path.exists(p):
+    img=Image.open(p).convert('RGB')
+    webp=p.replace('.jpg','.webp').replace('.png','.webp')
+    img.save(webp,'WEBP',quality=80)
+    os.remove(p)
+    print(f'WEBP OK: {os.path.getsize(webp)//1024}KB (jpg deleted)')
+else:
+    print('[SKIPPED:NO_IMG]')
+"
+```
 
 ### 步骤 8：终局自检
 - **动作**：汇总所有 PASS/WARN/SKIPPED 标记，输出执行报告。
@@ -77,4 +91,4 @@ print(f'FINAL: {final} chars')
 - 成功项：X 条
 - 补全项：Y 条（列出：{项目名} -> 补全动作 -> 最终状态）
 - 失败跳过项：Z 条（列出：{项目名} -> 失败原因，格式 `[SKIPPED:reason]`）
-- 产物：`backend/data/philosophers.json`(ARG_NAME) `app/public/philosopher/ARG_SAFE.jpg` `app/public/philosopher/thumb/ARG_SAFE.jpg`
+- 产物：`backend/data/philosophers.json`(ARG_NAME) `app/public/philosopher/ARG_SAFE.webp`

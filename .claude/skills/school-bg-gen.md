@@ -18,7 +18,18 @@
 1. **API Key 校验**：同 agnes-image 步骤 1
 2. **生成流派背景**：`cd scripts && python gen_school_bg.py "ARG_NAME"`
 3. **文件验证**：同 agnes-image 步骤 3（min_w=1200）
-4. **缩略图**：同 agnes-image 步骤 4（400x300）
+4. **转 WebP 并删除原文件**：
+```bash
+python -c "
+from PIL import Image; import os
+for ext in ['.jpg','.png']:
+    p=f'app/public/schools/ARG_NAME{ext}'
+    if os.path.exists(p):
+        img=Image.open(p).convert('RGB')
+        img.save(f'app/public/schools/ARG_NAME.webp','WEBP',quality=80)
+        os.remove(p); print(f'WEBP OK, {ext} deleted'); break
+"
+```
 
 ## 执行报告
 格式同 `agnes-image.md`

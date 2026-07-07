@@ -46,8 +46,18 @@
 - **动作**：检查 ARG_IMG 是否存在；无则生成
 - **门禁验证（Check）**：`python -c "import os; assert os.path.exists('app/public/schools/ARG_NAME.webp'); print('WEBP OK')"`
 - **补全分支（Remediate）**：
-  1. 先用 Agnes 生成 JPG
-  2. 再转为 WebP（`from PIL import Image; img=Image.open('...').convert('RGB'); img.save('...','WEBP',quality=80)`）
+  1. 先用 Agnes 生成 JPG/PNG
+  2. 转为 WebP 并删除原文件：
+```bash
+python -c "from PIL import Image; import os
+for ext in ['.jpg','.png']:
+    p=f'app/public/schools/ARG_NAME{ext}'
+    if os.path.exists(p):
+        img=Image.open(p).convert('RGB')
+        img.save(f'app/public/schools/ARG_NAME.webp','WEBP',quality=80)
+        os.remove(p); print('WEBP OK'); break
+"
+```
 
 ### 步骤 4：SCHOOL_MAP 注册
 - **动作**：在 `app/src/pages/SchoolDetailPage.jsx` 的 `SCHOOL_MAP` 对象中添加条目：
