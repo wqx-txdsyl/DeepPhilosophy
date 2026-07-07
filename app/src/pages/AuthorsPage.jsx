@@ -233,10 +233,11 @@ function AuthorsPage() {
       const rawSchool = a.school || '';
       const schools = rawSchool.split(/[/,、，;；]/).map(s => s.trim());
       const matchTags = schools.reduce((arr, s) => {
-        const all = [s];
+        const norm = normMap[s] || s;
+        const all = [s, norm];
         // Add display parent
-        const parent = normMap[s];
-        if (parent && parent !== s && !all.includes(parent)) all.push(parent);
+        const parent = normMap[norm];
+        if (parent && parent !== norm && !all.includes(parent)) all.push(parent);
         // Add multi-tag expansions
         const expanded = expandMap[s];
         if (expanded) expanded.forEach(t => { if (!all.includes(t)) all.push(t); });
@@ -259,13 +260,15 @@ function AuthorsPage() {
   // Compute filters client-side from allAuthors (instant, no extra API call)
   useEffect(() => {
     if (allAuthors.length === 0) return;
-    const schools = new Set();
+    const schoolCount = new Map(); // count philosophers per normalized school
     const centuries = new Set();
     const countries = new Set();
     for (const a of allAuthors) {
       if (a.school) for (const s of String(a.school).split(/[/,、，;；]/)) {
-        const t = s.trim();
-        if (t) schools.add(t.replace(/[（(].*[)）]/g, ''));
+        const t = s.trim().replace(/[（(].*[)）]/g, '');
+        if (!t) continue;
+        const norm = normMap[t] || t;
+        schoolCount.set(norm, (schoolCount.get(norm) || 0) + 1);
       }
       if (a.era) {
         const cs = eraToCenturies(a.era);
@@ -282,8 +285,13 @@ function AuthorsPage() {
       if (isNaN(n)) return false;
       return c.includes('前') ? n <= 100 : n <= 21;
     });
+    // Sort schools by philosopher count (most important first)
+    const sortedSchools = [...schoolCount.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([name]) => name);
+
     setFilters({
-      schools: [...schools].sort(),
+      schools: sortedSchools,
       eras: validEras.sort((a,b) => {
         const na = a.includes('前') ? -parseInt(a) : parseInt(a);
         const nb = b.includes('前') ? -parseInt(b) : parseInt(b);
