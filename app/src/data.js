@@ -1,11 +1,16 @@
 /**
- * 数据层 — 云端优先，本地嵌入式书目兜底
+ * 数据层 — 云端优先，sessionStorage缓存 + 本地兜底
  */
 import { getApiBase } from './App';
+import { cacheGet, cacheSet } from './data/cache';
 
-/** 加载书籍列表 — 服务器优先，本地兜底 */
+/** 加载书籍列表 — 缓存10分钟，服务器优先，本地兜底 */
 export async function loadBooks() {
-  // 1. 优先从服务器获取（保证ID与后端一致）
+  // 1. 检查缓存
+  const cached = cacheGet('books');
+  if (cached?.length) return cached;
+
+  // 2. 优先从服务器获取
   try {
     const resp = await fetch(`${getApiBase()}/api/books`, {
       signal: AbortSignal.timeout(5000),
@@ -13,6 +18,7 @@ export async function loadBooks() {
     if (resp.ok) {
       const data = await resp.json();
       if (data.books?.length) {
+        cacheSet('books', data.books);
         return data.books;
       }
     }
