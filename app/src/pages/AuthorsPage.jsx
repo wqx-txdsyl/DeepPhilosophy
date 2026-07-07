@@ -220,6 +220,20 @@ function AuthorsPage() {
         setAllAuthors(authors);
       }
     } catch (e) { console.error('Failed to load authors:', e); }
+    // Fallback: load from local philosophers.json
+    try {
+      const resp = await fetch('/philosophers.json');
+      if (resp.ok) {
+        const philo = await resp.json();
+        const authors = Object.values(philo).map(p => ({
+          name: p.name, region: p.region || '西方', era: p.era || '',
+          country: p.country || '', school: p.school || '',
+          book_count: (p.books || []).length, books: p.books || [],
+        }));
+        cacheSet('all_authors_v2', authors);
+        setAllAuthors(authors);
+      }
+    } catch (e2) { console.error('Local fallback also failed:', e2); }
     setLoading(false);
   };
 
