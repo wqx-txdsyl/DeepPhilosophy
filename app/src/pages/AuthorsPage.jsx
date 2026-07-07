@@ -189,21 +189,48 @@ function AuthorsPage() {
     });
   }
 
-  // Parse era string to centuries, e.g. "421-611年" -> ["5世纪","6世纪","7世纪"]
+  // Parse era string to centuries. Handles: "20世纪", "421-611年", "约公元前6世纪", "1929-", etc.
   const eraToCenturies = (era) => {
     if (!era) return [];
-    const m = era.match(/(\d+)\s*[-–—]\s*(\d+)/);
-    if (!m) return [era]; // can't parse, return as-is
-    let start = parseInt(m[1]), end = parseInt(m[2]);
-    // BC years
-    const isBC = era.includes('前') || era.includes('BC');
-    if (isBC) { start = -start; end = -end; }
-    const centuries = new Set();
-    for (let y = start; y <= end; y++) {
-      const c = Math.ceil(Math.abs(y) / 100);
-      centuries.add((isBC ? '前' : '') + c + '世纪');
+    const s = era.replace(/约|大約|左右|年/g, '').replace(/至今|迄今|现在/g, '2025').trim();
+    const results = [];
+
+    // 1. Already century format: "20世纪", "20世纪-21世纪", "公元前6世纪"
+    const centuryRe = /(前)?\s*(\d+)\s*世纪/g;
+    let cm;
+    while ((cm = centuryRe.exec(s)) !== null) {
+      const prefix = cm[1] || '';
+      results.push(prefix + cm[2] + '世纪');
     }
-    return [...centuries];
+    if (results.length > 0) return [...new Set(results)];
+
+    // 2. Year range: "421-611", "公元前427-前347"
+    const rangeRe = /(前)?\s*(\d+)\s*[-–—]\s*(前)?\s*(\d+)/;
+    const rm = s.match(rangeRe);
+    if (rm) {
+      const bc1 = rm[1] || s.includes('公元前');
+      const bc2 = rm[3] || (s.includes('前') && rm.index > 0);
+      let y1 = parseInt(rm[2]) * (bc1 ? -1 : 1);
+      let y2 = parseInt(rm[4]) * (bc2 ? -1 : 1);
+      if (y1 > y2) [y1, y2] = [y2, y1];
+      const set = new Set();
+      for (let y = y1; y <= y2; y++) {
+        const prefix = y < 0 ? '前' : '';
+        set.add(prefix + Math.ceil(Math.abs(y) / 100) + '世纪');
+      }
+      return [...set];
+    }
+
+    // 3. Single year: "前551" -> "前6世纪", "1929" -> "20世纪"
+    const singleRe = /(前)?\s*(\d{3,4})/;
+    const sm = s.match(singleRe);
+    if (sm) {
+      const y = parseInt(sm[2]) * (sm[1] ? -1 : 1);
+      const prefix = y < 0 ? '前' : '';
+      return [prefix + Math.ceil(Math.abs(y) / 100) + '世纪'];
+    }
+
+    return [];
   };
 
   // Compute filters client-side from allAuthors (instant, no extra API call)
