@@ -243,8 +243,8 @@ function AuthorsPage() {
         ))}
       </div>
 
-      {/* Tag/chip filters — always shown, loads from cache or API */}
-      {(
+      {/* Tag/chip filters */}
+      <div>
         <div style={{ marginBottom: 12 }}>
           {/* Section: schools/流派 */}
           <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 6 }}>
@@ -311,6 +311,7 @@ function AuthorsPage() {
             </>
           )}
         </div>
+      </div>
 
       {/* Active tag chips */}
       {activeTags.length > 0 && (
