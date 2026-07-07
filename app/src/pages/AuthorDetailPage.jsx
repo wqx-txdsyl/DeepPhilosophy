@@ -140,6 +140,7 @@ function AuthorDetailPage() {
           }}>
             <img
               src={`/philosopher/${encodeURIComponent(author.name)}.webp`}
+              onError={e => { e.target.src = `/philosopher/${encodeURIComponent(author.name)}.jpg`; }}
               alt={author.name}
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               onError={(e) => {

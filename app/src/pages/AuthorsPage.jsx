@@ -6,21 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getApiBase } from '../App';
-
-function FadeCard({ children, style }) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold:0.1, rootMargin:'-30px 0px' });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return (
-    <div ref={ref} style={{ opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(20px)',
-      transition:'opacity 0.55s ease, transform 0.55s ease', ...style }}>{children}</div>
-  );
-}
+import { cacheGet, cacheSet } from '../data/cache';
 
 function AuthorsPage() {
   const navigate = useNavigate();
@@ -145,11 +131,20 @@ function AuthorsPage() {
 
   const loadAllAuthors = async () => {
     setLoading(true);
+    // Check cache first (10 min TTL)
+    const cached = cacheGet('all_authors');
+    if (cached?.length) {
+      setAllAuthors(cached);
+      setLoading(false);
+      return;
+    }
     try {
-      const resp = await fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(5000) });
+      const resp = await fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(8000) });
       if (resp.ok) {
         const data = await resp.json();
-        setAllAuthors(data.authors || []);
+        const authors = data.authors || [];
+        cacheSet('all_authors', authors);
+        setAllAuthors(authors);
       }
     } catch (e) { console.error('Failed to load authors:', e); }
     setLoading(false);
@@ -328,10 +323,10 @@ function AuthorsPage() {
         </div>
       )}
 
-      {/* Author list */}
+      {/* Author list — CSS content-visibility for fast rendering */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {filtered.map((author) => (
-          <FadeCard key={author.name}>
+          <div key={author.name} style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 80px' }}>
           <div
             className="card"
             onClick={() => navigate(`/author/${encodeURIComponent(author.name)}`)}>
@@ -347,26 +342,14 @@ function AuthorsPage() {
                   </span>
                 </div>
                 <div style={{ fontSize: 12, color: 'var(--text-dim)', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  {author.era && <span><Icon name="icon-calendar" size={16} /> {author.era}</span>}
-                  {author.country && <span><Icon name="icon-pin" size={16} /> {author.country}</span>}
-                  {author.school && <span><Icon name="nav-books" size={16} /> {author.school}</span>}
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4, lineHeight: 1.5 }}>
-                  <Icon name="icon-book-open" size={16} /> 收录 {author.book_count} 部作品:
-                  {(author.books || []).slice(0, 5).map((b, i) => (
-                    <span key={i} style={{ color: 'var(--accent)' }}>
-                      《{b}》{i < Math.min(author.books.length, 5) - 1 ? '、' : ''}
-                    </span>
-                  ))}
-                  {(author.books || []).length > 5 && <span> 等</span>}
+                  {author.era && <span>{author.era}</span>}
+                  {author.country && <span>{author.country}</span>}
+                  {author.school && <span>{author.school}</span>}
                 </div>
               </div>
-              <span style={{ fontSize: 24, flexShrink: 0, marginLeft: 8 }}>
-                {author.region === '东方' ? <Icon name='region-east' size={14} /> : author.region === '世界' ? <Icon name='region-world' size={14} /> : <Icon name='region-west' size={14} />}
-              </span>
             </div>
           </div>
-          </FadeCard>
+          </div>
         ))}
       </div>
 
