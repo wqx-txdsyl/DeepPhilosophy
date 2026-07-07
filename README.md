@@ -1,6 +1,6 @@
 # DeepPhilosophy
 
-深哲 — 东西方及世界哲学的综合知识平台。React + Vite + FastAPI + DeepSeek AI。
+深度哲 — 东西方及世界哲学的综合知识平台。React + Vite + FastAPI + DeepSeek AI。
 
 **线上地址**：https://wqx-txdsyl.github.io/DeepPhilosophy/
 
