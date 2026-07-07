@@ -137,7 +137,9 @@ function AuthorsPage() {
     const centuryRe = /(前)?\s*(\d+)\s*世纪/g;
     let cm;
     while ((cm = centuryRe.exec(s)) !== null) {
-      results.push((cm[1] || '') + cm[2] + '世纪');
+      const c = parseInt(cm[2]);
+      if (cm[1] ? c <= 50 : c <= 21) // sanity: BC <= 50世纪, AD <= 21世纪
+        results.push((cm[1] || '') + c + '世纪');
     }
     if (results.length > 0) return [...new Set(results)];
 
@@ -151,9 +153,10 @@ function AuthorsPage() {
       if (y1 > y2) [y1, y2] = [y2, y1];
       const set = new Set();
       for (let y = y1; y <= y2; y++) {
-        if (y === 0) continue; // no year 0
+        if (y === 0) continue;
         const ay = Math.abs(y);
         const c = Math.floor((ay - 1) / 100) + 1;
+        if ((y < 0 && c > 50) || (y > 0 && c > 21)) continue; // sanity check
         set.add((y < 0 ? '前' : '') + c + '世纪');
       }
       return [...set];
