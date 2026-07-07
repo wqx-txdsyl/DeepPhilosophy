@@ -180,25 +180,47 @@ function AuthorsPage() {
       const normCountries = countries.map(c => cntMap[c] || c);
       // Expand simplified country tags to match all variants
       const expandedCountries = countryExpandMap[tag] || [tag];
+      // Century matching: philosopher spans that century
+      const authorCenturies = eraToCenturies(a.era);
       return matchTags.includes(tag) ||
              countries.some(c => expandedCountries.includes(c)) ||
              normCountries.some(c => expandedCountries.includes(c)) ||
-             (a.centuries || []).includes(tag) || (a.era || '') === tag;
+             authorCenturies.includes(tag);
     });
   }
+
+  // Parse era string to centuries, e.g. "421-611年" -> ["5世纪","6世纪","7世纪"]
+  const eraToCenturies = (era) => {
+    if (!era) return [];
+    const m = era.match(/(\d+)\s*[-–—]\s*(\d+)/);
+    if (!m) return [era]; // can't parse, return as-is
+    let start = parseInt(m[1]), end = parseInt(m[2]);
+    // BC years
+    const isBC = era.includes('前') || era.includes('BC');
+    if (isBC) { start = -start; end = -end; }
+    const centuries = new Set();
+    for (let y = start; y <= end; y++) {
+      const c = Math.ceil(Math.abs(y) / 100);
+      centuries.add((isBC ? '前' : '') + c + '世纪');
+    }
+    return [...centuries];
+  };
 
   // Compute filters client-side from allAuthors (instant, no extra API call)
   useEffect(() => {
     if (allAuthors.length === 0) return;
     const schools = new Set();
-    const eras = new Set();
+    const centuries = new Set();
     const countries = new Set();
     for (const a of allAuthors) {
       if (a.school) for (const s of String(a.school).split(/[/,、，;；]/)) {
         const t = s.trim();
         if (t) schools.add(t.replace(/[（(].*[)）]/g, ''));
       }
-      if (a.era) eras.add(a.era);
+      if (a.era) {
+        const cs = eraToCenturies(a.era);
+        cs.forEach(c => centuries.add(c));
+      }
       if (a.country) for (const c of String(a.country).split(/[/,、，;；]/)) {
         const t = c.trim();
         if (t) countries.add(countryDisplayMap[t] || cntMap[t] || t);
@@ -206,7 +228,11 @@ function AuthorsPage() {
     }
     setFilters({
       schools: [...schools].sort(),
-      eras: [...eras].sort(),
+      eras: [...centuries].sort((a,b) => {
+        const na = a.includes('前') ? -parseInt(a) : parseInt(a);
+        const nb = b.includes('前') ? -parseInt(b) : parseInt(b);
+        return na - nb;
+      }),
       countries: [...countries].sort(),
     });
   }, [allAuthors]);
