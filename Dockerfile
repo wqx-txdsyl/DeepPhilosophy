@@ -37,8 +37,14 @@ COPY backend/data/oss_manifest.json /app/data/
 COPY backend/data/philosophers.json /app/data/
 COPY backend/data/name_aliases.json /app/data/
 
-# 复制前端构建产物（多阶段构建，无需 backend/app-dist）
-COPY --from=frontend /app/dist/ ./static/
+# 复制前端构建产物 — 排除大型图片目录（图片走 GitHub Pages CDN，不占 Render 带宽）
+RUN mkdir -p ./static
+COPY --from=frontend /app/dist/index.html ./static/
+COPY --from=frontend /app/dist/config.json ./static/
+COPY --from=frontend /app/dist/favicon.png ./static/
+COPY --from=frontend /app/dist/assets/ ./static/assets/
+COPY --from=frontend /app/dist/icons/ ./static/icons/
+# schools/, gene/, philosopher/ 图片从 GitHub Pages CDN 加载，不复制到 Render
 
 # 环境变量默认值（可在 Render 面板覆盖）
 ENV KNOWLEDGE_DIR=/app/data/books
