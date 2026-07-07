@@ -182,16 +182,26 @@ function AuthorsPage() {
     return [];
   };
 
+  // Load AI ranking once
+  useEffect(() => {
+    fetch('/schools/school_ranking.json')
+      .then(r => r.json()).then(r => { window.__schoolRanking = r; })
+      .catch(() => {});
+  }, []);
+
   const loadAllAuthors = async () => {
     setLoading(true);
     // Check cache first (10 min TTL)
     const cached = cacheGet('all_authors');
     if (cached?.length) {
-      cached.sort((a, b) => {
-        const ya = parseInt((a.era || '0').match(/-?(\d+)/)?.[1] || '0');
-        const yb = parseInt((b.era || '0').match(/-?(\d+)/)?.[1] || '0');
-        return ((a.era||'').includes('前')?-1:1)*ya - ((b.era||'').includes('前')?-1:1)*yb;
-      });
+      const approxYear = (era) => {
+        const centuries = eraToCenturies(era);
+        if (!centuries.length) return 9999;
+        const first = centuries[0];
+        const n = parseInt(first.replace('前',''));
+        return first.includes('前') ? -((n-1)*100+50) : (n-1)*100+50;
+      };
+      cached.sort((a, b) => approxYear(a.era) - approxYear(b.era));
       setAllAuthors(cached);
       setLoading(false);
       return;
@@ -201,14 +211,16 @@ function AuthorsPage() {
       if (resp.ok) {
         const data = await resp.json();
         const authors = data.authors || [];
-        // Sort by birth year (BC first, then AD chronologically)
-        authors.sort((a, b) => {
-          const ya = parseInt((a.era || '0').match(/-?(\d+)/)?.[1] || '0');
-          const yb = parseInt((b.era || '0').match(/-?(\d+)/)?.[1] || '0');
-          const bcA = (a.era || '').includes('前') ? -1 : 1;
-          const bcB = (b.era || '').includes('前') ? -1 : 1;
-          return (bcA * ya) - (bcB * yb);
-        });
+        // Sort by approximate start year from century tags (BC first, then AD)
+        const approxYear = (era) => {
+          const centuries = eraToCenturies(era);
+          if (!centuries.length) return 9999; // unknown -> end
+          const first = centuries[0];
+          const n = parseInt(first.replace('前', ''));
+          const y = (n - 1) * 100 + 50; // midpoint of century
+          return first.includes('前') ? -y : y;
+        };
+        authors.sort((a, b) => approxYear(a) - approxYear(b));
         cacheSet('all_authors', authors);
         setAllAuthors(authors);
       }
@@ -285,9 +297,26 @@ function AuthorsPage() {
       if (isNaN(n)) return false;
       return c.includes('前') ? n <= 100 : n <= 21;
     });
-    // Sort schools by philosopher count (most important first)
+    // Sort schools by AI influence ranking (fallback to philosopher count)
+    const ranked = (() => {
+      try {
+        // ranking is embedded at build time via Vite's ?raw import
+        return null; // loaded via fetch below
+      } catch { return null; }
+    })();
     const sortedSchools = [...schoolCount.entries()]
-      .sort((a, b) => b[1] - a[1])
+      .sort((a, b) => {
+        // Try AI ranking first
+        if (window.__schoolRanking) {
+          const ra = window.__schoolRanking.indexOf(a[0]);
+          const rb = window.__schoolRanking.indexOf(b[0]);
+          if (ra >= 0 && rb >= 0) return ra - rb;
+          if (ra >= 0) return -1;
+          if (rb >= 0) return 1;
+        }
+        // Fallback: philosopher count
+        return b[1] - a[1];
+      })
       .map(([name]) => name);
 
     setFilters({
