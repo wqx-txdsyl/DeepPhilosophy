@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+const BASE = process.env.GH_PAGES ? '/DeepPhilosophy/' : '/';
+
 export default defineConfig({
   plugins: [react()],
-  base: process.env.GH_PAGES ? '/DeepPhilosophy/' : '/',
+  base: BASE,
   server: {
     port: 5173,
     host: true,
