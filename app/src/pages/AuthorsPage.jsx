@@ -126,7 +126,6 @@ function AuthorsPage() {
   const [allAuthors, setAllAuthors] = useState([]);
   useEffect(() => {
     loadAllAuthors();
-    loadFilters();
   }, []);
 
   const loadAllAuthors = async () => {
@@ -188,17 +187,29 @@ function AuthorsPage() {
     });
   }
 
-  const loadFilters = async () => {
-    try {
-      const resp = await fetch(`${getApiBase()}/api/authors/filters`, {
-        signal: AbortSignal.timeout(5000),
-      });
-      if (resp.ok) {
-        const data = await resp.json();
-        setFilters(data);
+  // Compute filters client-side from allAuthors (instant, no extra API call)
+  useEffect(() => {
+    if (allAuthors.length === 0) return;
+    const schools = new Set();
+    const eras = new Set();
+    const countries = new Set();
+    for (const a of allAuthors) {
+      if (a.school) for (const s of String(a.school).split(/[/,、，;；]/)) {
+        const t = s.trim();
+        if (t) schools.add(t.replace(/[（(].*[)）]/g, ''));
       }
-    } catch (e) {}
-  };
+      if (a.era) eras.add(a.era);
+      if (a.country) for (const c of String(a.country).split(/[/,、，;；]/)) {
+        const t = c.trim();
+        if (t) countries.add(countryDisplayMap[t] || cntMap[t] || t);
+      }
+    }
+    setFilters({
+      schools: [...schools].sort(),
+      eras: [...eras].sort(),
+      countries: [...countries].sort(),
+    });
+  }, [allAuthors]);
 
 
   if (loading) return <div className="loading">加载中...</div>;
@@ -232,8 +243,8 @@ function AuthorsPage() {
         ))}
       </div>
 
-      {/* Tag/chip filters — show all schools */}
-      {(filters.schools.length > 0 || filters.eras.length > 0) && (
+      {/* Tag/chip filters — always shown, loads from cache or API */}
+      {(
         <div style={{ marginBottom: 12 }}>
           {/* Section: schools/流派 */}
           <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 6 }}>
@@ -300,7 +311,6 @@ function AuthorsPage() {
             </>
           )}
         </div>
-      )}
 
       {/* Active tag chips */}
       {activeTags.length > 0 && (
