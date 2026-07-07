@@ -17,7 +17,7 @@ export default function TimelineSection({ timeline = [] }) {
           <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1, background: 'var(--border)', transform: 'translateX(-50%)' }} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-            {timeline.map((ev, i) => {
+            {(timeline || []).filter(Boolean).map((ev, i) => {
               const isLeft = i % 2 === 0;
               const color = TIMELINE_COLORS[ev.type] || '#C4956A';
               return (

@@ -13,7 +13,7 @@ export default function QuotesGallery({ quotes = [] }) {
         <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px auto 0', opacity: 0.5 }} />
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', alignItems: 'center' }}>
-        {quotes.map((q, i) => {
+        {(quotes || []).filter(Boolean).map((q, i) => {
           const hash = q.text.split('').reduce((s, c) => s + c.charCodeAt(0), 0);
           const sz = 14 + (hash % 14);
           const wt = 300 + (hash % 4) * 100;

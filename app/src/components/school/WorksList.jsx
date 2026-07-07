@@ -12,7 +12,7 @@ export default function WorksList({ works = [] }) {
         <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>重要著作</h2>
         <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px 0 0', opacity: 0.5 }} />
       </div>
-      {works.map((work, i) => {
+      {(works || []).filter(Boolean).map((work, i) => {
         const isOpen = hovered === i;
         return (
           <div key={i} style={{

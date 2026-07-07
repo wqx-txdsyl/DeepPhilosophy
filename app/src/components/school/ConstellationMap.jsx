@@ -136,7 +136,7 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
           </defs>
 
           {/* EDGES — typed by relationship */}
-          {relations.map((r, i) => {
+          {(relations || []).filter(Boolean).map((r, i) => {
             const from = thinkers.find(t => t.name === r.from);
             const to = thinkers.find(t => t.name === r.to);
             if (!from || !to) return null;
