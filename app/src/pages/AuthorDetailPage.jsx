@@ -8,6 +8,7 @@ import Icon from '../components/Icon';
 import { getAuthorInfo } from '../data';
 import { getApiBase } from '../App';
 import { useSEO } from '../utils/seo';
+import { cacheGet, cacheSet } from '../data/cache';
 
 function AuthorDetailPage() {
   const { authorName } = useParams();
@@ -20,17 +21,23 @@ function AuthorDetailPage() {
   useEffect(() => { fetchAuthor(); }, [authorName]);
 
   const fetchAuthor = async () => {
+    // Check cache first (author data changes rarely)
+    const cached = cacheGet('author_' + authorName);
+    if (cached) { setAuthor(cached); setLoading(false); return; }
+
     try {
-      // 尝试从服务器获取（含爬虫数据）
       const resp = await fetch(`${getApiBase()}/api/authors/${encodeURIComponent(authorName)}`);
       if (resp.ok) {
-        setAuthor(await resp.json());
+        const data = await resp.json();
+        cacheSet('author_' + authorName, data);
+        setAuthor(data);
         setLoading(false);
         return;
       }
     } catch (e) { console.error('Author API unavailable:', e); }
     // 本地兜底
     const data = await getAuthorInfo(authorName);
+    cacheSet('author_' + authorName, data);
     setAuthor(data);
     setLoading(false);
   };
@@ -140,12 +147,14 @@ function AuthorDetailPage() {
           }}>
             <img
               src={`/philosopher/${encodeURIComponent(author.name)}.webp`}
-              onError={e => { e.target.src = `/philosopher/${encodeURIComponent(author.name)}.jpg`; }}
               alt={author.name}
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.parentElement.innerHTML = '<span style=\"font-size:40px;opacity:0.3\">?</span>';
+                if (e.target.src.endsWith('.webp')) {
+                  e.target.src = `/philosopher/${encodeURIComponent(author.name)}.jpg`;
+                } else {
+                  e.currentTarget.style.display = 'none';
+                }
               }}
             />
           </div>
