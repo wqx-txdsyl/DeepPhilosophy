@@ -4,7 +4,15 @@ import react from '@vitejs/plugin-react'
 const BASE = process.env.GH_PAGES ? '/DeepPhilosophy/' : '/';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'inject-base-href',
+      transformIndexHtml(html) {
+        return html.replace('<base href="/" />', `<base href="${BASE}" />`);
+      },
+    },
+  ],
   base: BASE,
   server: {
     port: 5173,
