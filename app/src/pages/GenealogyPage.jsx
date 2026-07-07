@@ -176,15 +176,18 @@ function thumbUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/s
 function fullUrl(name) { const b = IMG_MAP[name] || encodeURI(name); return `/schools/${b}.webp`; }
 const tierW = (s) => s.tier === 'A' ? 400 : s.tier === 'B' ? 280 : 200;
 
-// ─── Card image: thumbnail by default, HD only if already cached ───
+// ─── Card image: WebP thumbnail (10-30KB each, crisp at card size). ───
+// Full-res WebP (200-800KB) only loads when user clicks into SchoolDetailPage.
 function ProgImg({ name, style }) {
-  const full = fullUrl(name);
   const thumb = thumbUrl(name);
-  // Check browser cache synchronously — no network request
-  const [src] = useState(() => {
-    const t = new Image(); t.src = full;
-    return (t.complete && t.naturalWidth > 0) ? full : thumb;
-  });
+  const full = fullUrl(name);
+  const [src, setSrc] = useState(thumb);
+  // Upgrade to full-res once it's cached (e.g., after visiting detail page)
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => setSrc(full);
+    img.src = full;
+  }, []);
   return <img src={src} alt={name} loading="lazy" style={{ ...style, display: 'block' }} />;
 }
 

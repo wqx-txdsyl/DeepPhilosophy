@@ -139,7 +139,7 @@ function AuthorDetailPage() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <img
-              src={`/philosopher/${encodeURIComponent(author.name)}.jpg?v=2`}
+              src={`/philosopher/${encodeURIComponent(author.name)}.webp`}
               alt={author.name}
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               onError={(e) => {
