@@ -7,7 +7,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { Document, Page, pdfjs } from 'react-pdf';
 import ePub from 'epubjs';
-import { Capacitor } from '@capacitor/core';
 import { getApiBase } from '../App';
 import { getBookById } from '../data';
 import { saveReadingProgress } from '../data/userData';
