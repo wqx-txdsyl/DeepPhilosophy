@@ -266,9 +266,15 @@ function AuthorsPage() {
         if (t) countries.add(countryDisplayMap[t] || cntMap[t] || t);
       }
     }
+    // Final sanity filter: reject impossible centuries
+    const validEras = [...centuries].filter(c => {
+      const n = parseInt(c.replace('前',''));
+      if (isNaN(n)) return false;
+      return c.includes('前') ? n <= 100 : n <= 21;
+    });
     setFilters({
       schools: [...schools].sort(),
-      eras: [...centuries].sort((a,b) => {
+      eras: validEras.sort((a,b) => {
         const na = a.includes('前') ? -parseInt(a) : parseInt(a);
         const nb = b.includes('前') ? -parseInt(b) : parseInt(b);
         return na - nb;
