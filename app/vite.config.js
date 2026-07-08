@@ -1,19 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const BASE = process.env.GH_PAGES ? '/DeepPhilosophy/' : '/';
-
 export default defineConfig({
-  plugins: [
-    react(),
-    {
-      name: 'inject-base-href',
-      transformIndexHtml(html) {
-        return html.replace('<base href="/" />', `<base href="${BASE}" />`);
-      },
-    },
-  ],
-  base: BASE,
+  plugins: [react()],
+  base: '/',
   server: {
     port: 5173,
     host: true,
