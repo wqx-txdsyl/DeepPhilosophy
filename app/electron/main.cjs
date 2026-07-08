@@ -28,7 +28,7 @@ function startServer(dir) {
 function createWindow() {
   mainWindow = new BrowserWindow({ width: 1280, height: 800,
     webPreferences: { nodeIntegration: false, contextIsolation: true } });
-  startServer(path.join(__dirname));
+  startServer(path.join(__dirname, '..'));
   mainWindow.on('closed', () => { mainWindow = null; if (server) server.close(); });
 }
 
