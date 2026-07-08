@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "electron:dev": "vite build && electron .",
-    "electron:build": "vite build && electron-packager . DeepPhilosophy --platform=win32 --arch=x64 --out=out --overwrite && electron-builder --win --prepackaged out/DeepPhilosophy-win32-x64",
+    "electron:build": "vite build && mkdir -p dist/electron && cp electron/main.cjs dist/electron/ && cp package.json dist/ && electron-packager ./dist DeepPhilosophy --platform=win32 --arch=x64 --out=out --overwrite --no-prune && electron-builder --win --prepackaged out/DeepPhilosophy-win32-x64",
     "lint": "eslint .",
     "preview": "vite preview"
   },
