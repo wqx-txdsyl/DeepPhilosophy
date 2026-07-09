@@ -1375,10 +1375,11 @@ async def get_author_info(author_name: str):
         if time.time() - cache_time < 600:
             return cached
 
-    # 1. 先从内置数据库获取（O(1)，瞬间）
+    # 1. 先从内置数据库获取（O(1)，瞬间），同时解析别名
     info = get_philosopher_info(author_name)
+    canonical_name = info.get("name", author_name) if info else author_name
 
-    # 2. 书籍列表：用缓存扫描或从摘要缓存推断（避免每次都 scan_books）
+    # 2. 书籍列表：用规范名匹配（别名→规范名）
     book_list = []
     book_count = 0
     region = info.get("country", "未知") if info else "未知"
@@ -1389,26 +1390,26 @@ async def get_author_info(author_name: str):
     else:
         region = "西方"
 
-    # 快速获取书籍：从摘要缓存找
+    # 快速获取书籍：用规范名和别名同时匹配
     summaries = _load_summaries_cache()
     for key, entry in summaries.items():
         if "||" in key:
             title, author = key.split("||", 1)
-            if author == author_name:
+            if author in (canonical_name, author_name):
                 book_list.append({"id": hashlib.md5(key.encode()).hexdigest()[:12], "title": title, "file_type": "txt"})
                 book_count += 1
 
-    # 如果缓存没有，回退到完整扫描（仅此一次）
+    # 如果缓存没有，回退到完整扫描
     if book_count == 0:
         books = scan_books()
-        author_books = [b for b in books if b["author"] == author_name]
+        author_books = [b for b in books if b["author"] in (canonical_name, author_name)]
         region = author_books[0]["region"] if author_books else region
         book_list = [{"id": b["id"], "title": b["title"], "file_type": b["file_type"]} for b in author_books]
         book_count = len(book_list)
 
     def build_response(source, era="", country="", school="", bio="", wiki_url=None):
         return {
-            "name": author_name,
+            "name": canonical_name,
             "region": region,
             "era": era,
             "country": country,
