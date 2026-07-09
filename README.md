@@ -2,20 +2,20 @@
 
 深度哲学 — 东西方及世界哲学的综合知识平台。React + Vite + FastAPI + DeepSeek AI。
 
-**线上地址**：https://wqx-txdsyl.github.io/DeepPhilosophy/
+**线上地址**：https://deepphilosophy.pages.dev
 
 ---
 
 ## 架构
 
 ```
-浏览器 ──→ GitHub Pages (前端) ── 全球 CDN ── HTML/JS/CSS/图片
+浏览器 ──→ Cloudflare Pages (前端) ── 全球 330 节点 CDN ── HTML/JS/CSS/图片
                 │
                 └── API 请求 ──→ Render (后端) ── FastAPI + SQLite + DeepSeek
 ```
 
-- **GitHub Pages**：前端静态资源，全球 CDN，170MB WebP 图片就近加载
-- **Render**：纯 API 服务器（`/api/*`），仅传 JSON 数据，不扛图片流量
+- **Cloudflare Pages**：前端静态资源，全球 CDN，推送即部署
+- **Render**：纯 API 服务器（`/api/*`），仅传 JSON 数据
 
 ---
 
@@ -64,9 +64,9 @@ cd app && npm run build   # 产物在 app/dist/
 
 | 组件 | 平台 | 部署方式 |
 |------|------|---------|
-| 前端 | GitHub Pages | 推送 master → Actions 自动部署到 `gh-pages` 分支 |
-| 后端 | Render | Docker 自动构建，仅包含 API + 最小静态文件 |
-| 图片 | GitHub Pages CDN | 170MB WebP 走全球 CDN，Render 不承载 |
+| 前端 | Cloudflare Pages | 推送 master → 自动部署，全球 330 节点 CDN |
+| 后端 | Render | Docker 自动构建，仅含 API |
+| 图片 | Cloudflare CDN | WebP 走边缘节点，秒加载 |
 
 ---
 
@@ -99,7 +99,7 @@ cd app && npm run build   # 产物在 app/dist/
 | 前端 | React 19, React Router, Vite 8 |
 | 后端 | FastAPI, SQLite, ChromaDB |
 | AI | DeepSeek API（流式对话） |
-| 部署 | GitHub Pages + Render (Docker) |
+| 部署 | Cloudflare Pages + Render (Docker) |
 
 ---
 
@@ -132,7 +132,7 @@ DeepPhilosophy/
 │   ├── gen_portrait.py           # AI 生成肖像
 │   └── ...
 ├── .claude/skills/               # 13 个自动化 Skill
-├── .github/workflows/            # CI/CD (pages.yml 等)
+├── .github/workflows/            # CI/CD
 ├── Dockerfile                    # 多阶段构建（Node + Python）
 └── render.yaml
 ```
