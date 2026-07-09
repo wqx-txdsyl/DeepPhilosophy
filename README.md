@@ -2,7 +2,14 @@
 
 深度哲学 — 东西方及世界哲学的综合知识平台。React + Vite + FastAPI + DeepSeek AI。
 
-**线上地址**：https://deepphilosophy.pages.dev
+## 访问方式
+
+| 地址 | 适用场景 |
+|------|---------|
+| https://deepphilosophy.top | 国内直连（Cloudflare Pages 自定义域名） |
+| https://deepphilosophy.pages.dev | 海外/CDN 加速（Cloudflare Pages） |
+| https://deepphilosophy.vercel.app | Vercel 备用 |
+| http://localhost:5173 | 本地开发 |
 
 ---
 
@@ -62,11 +69,12 @@ cd app && npm run build   # 产物在 app/dist/
 
 **部署方式**：
 
-| 组件 | 平台 | 部署方式 |
-|------|------|---------|
-| 前端 | Cloudflare Pages | 推送 master → 自动部署，全球 330 节点 CDN |
-| 后端 | Render | Docker 自动构建，仅含 API |
-| 图片 | Cloudflare CDN | WebP 走边缘节点，秒加载 |
+| 组件 | 平台 | 访问 |
+|------|------|------|
+| 前端 | Cloudflare Pages | `deepphilosophy.top` `deepphilosophy.pages.dev` |
+| 前端备用 | Vercel | `deepphilosophy.vercel.app` |
+| 后端 API | Render | `deepphilosophy-7g7m.onrender.com` |
+| 本地开发 | Vite | `localhost:5173` |
 
 ---
 
