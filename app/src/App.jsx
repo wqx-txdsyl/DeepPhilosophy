@@ -4,7 +4,7 @@
  * 四个分区: 书籍 | 谱图 | 问答 | 我的
  */
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { HashRouter, Routes, Route, useNavigate, useLocation, useNavigationType } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useNavigationType } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
 import { getApiBase } from './utils/api';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -83,12 +83,12 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ScrollToTop />
       <div className="app-container">
         <MainLayout />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
