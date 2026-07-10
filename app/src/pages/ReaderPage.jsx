@@ -433,13 +433,19 @@ ${textContext}
       }
     });
     rendition.display();
-    // Pre-scan: quickly flip through all chapters to discover page counts
+    // Pre-scan: flip through all chapters, wait for relocated to capture page counts
+    let relocatedResolve = null;
+    const origHandler = (loc) => {}; // placeholder
+    rendition.on('relocated', (loc) => {
+      // existing handler runs first (via closure)
+      if (relocatedResolve) { const r = relocatedResolve; relocatedResolve = null; r(); }
+    });
     bk.ready.then(async () => {
       const spine = bk.spine;
-      if (!spine?.length) return;
+      if (!spine?.length) { setEpubReady(true); return; }
       const startLoc = rendition.currentLocation();
       for (let i = 0; i < spine.length; i++) {
-        try { await rendition.display(i); } catch {}
+        await new Promise(resolve => { relocatedResolve = resolve; rendition.display(i); });
       }
       // Restore saved position
       try {
