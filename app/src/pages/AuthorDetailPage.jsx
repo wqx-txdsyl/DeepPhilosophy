@@ -28,7 +28,7 @@ function AuthorDetailPage() {
     const safe = authorName.replace('/', '-').replace(':', '：');
     try {
       const resp = await fetch(`/philosopher/data/${encodeURIComponent(safe)}.json`);
-      if (resp.ok) { const data = await resp.json(); data.name = authorName; cacheSet('author_' + authorName, data); setAuthor(data); setLoading(false); return; }
+      if (resp.ok) { const data = await resp.json(); cacheSet('author_' + authorName, data); setAuthor(data); setLoading(false); return; }
     } catch {}
     // 2. 回退 Render API
     try {
