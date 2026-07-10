@@ -133,7 +133,7 @@ const REGION_OF = {
   '两汉经学':'china','魏晋玄学':'china','隋唐佛学':'china','宋明理学':'china','明清实学':'china','乾嘉朴学':'china',
   '天演论':'china','维新派':'china','三民主义':'china','旧民主主义':'china','毛泽东思想':'china',
   '中国马克思主义哲学':'china','新民主主义':'china','现代新儒家':'china','中国实证哲学':'china',
-  '马克思主义哲学的中国化与体系化':'china','习近平新时代中国特色社会主义思想':'china','西藏哲学':'china',
+  '马克思主义哲学的中国化与体系化':'china','习近平新时代中国特色社会主义思想':'china','西藏哲学':'china','哲学入词':'china',
   '古希腊哲学':'greece','罗马哲学':'rome','拜占庭哲学':'rome',
   '教父哲学':'medieval_europe','经院哲学':'medieval_europe','唯名论':'medieval_europe','基督教哲学':'medieval_europe',
   '启蒙运动':'enlightenment','实在论':'enlightenment','政治哲学':'enlightenment','伦理学':'enlightenment','宗教哲学':'enlightenment',
