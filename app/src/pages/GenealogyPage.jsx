@@ -220,12 +220,12 @@ const $pad = (n) => ({paddingTop:n});
 
 function BlockA({s}){const[a,b,c]=s;return(<div style={$flex}>{a&&<SchoolImg school={a} w={tierW(a)}/>}<div style={$col}>{b&&<SchoolImg school={b} w={tierW(b)}/>}{c&&<SchoolImg school={c} w={tierW(c)}/>}</div></div>)}
 function BlockB({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockC({s}){return(<div style={$cen}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockC({s}){return(<div style={$cen}>{s.map((x,i)=><SchoolImg key={i} school={x} w={Math.min(tierW(x)*1.5,600)}/>)}</div>)}
 function BlockD({s}){return(<div style={$flex}>{s.slice(0,4).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
 function BlockE({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
 function BlockF({s}){const half=Math.ceil(s.length/2);return(<div style={$flex}><div style={$col}>{s.slice(0,half).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div><div style={$col}>{s.slice(half).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div></div>)}
 function BlockG({s}){return(<div style={$flex}><div style={$col}>{s.slice(0,2).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div><div style={$col}>{s.slice(2,4).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div></div>)}
-function BlockH({s}){return(<div style={$cen}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockH({s}){return(<div style={$cen}>{s.map((x,i)=><SchoolImg key={i} school={x} w={Math.min(tierW(x)*1.3,560)}/>)}</div>)}
 function BlockI({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
 function BlockJ({s}){return(<div style={$flex}>{s.map((x,i)=>(<div key={i} style={$pad(i*50)}><SchoolImg school={x} w={tierW(x)}/></div>))}</div>)}
 const BLOCKS=[BlockA,BlockB,BlockC,BlockD,BlockE,BlockF,BlockG,BlockH,BlockI,BlockJ];
