@@ -218,8 +218,16 @@ const $col = {display:'flex',flexDirection:'column',gap:10};
 const $cen = {display:'flex',justifyContent:'center'};
 const $pad = (n) => ({paddingTop:n});
 
-function renderAll(s){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-const BlockA=renderAll,BlockB=renderAll,BlockC=renderAll,BlockD=renderAll,BlockE=renderAll,BlockF=renderAll,BlockG=renderAll,BlockH=renderAll,BlockI=renderAll,BlockJ=renderAll;
+function BlockA({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockB({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockC({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockD({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockE({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockF({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockG({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockH({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockI({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockJ({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
 const BLOCKS=[BlockA,BlockB,BlockC,BlockD,BlockE,BlockF,BlockG,BlockH,BlockI,BlockJ];
 
 // ─── Chapter structure ───
