@@ -419,6 +419,14 @@ ${textContext}
       }
     });
     rendition.display();
+    // Pre-compute total pages for the entire book
+    bk.ready.then(() => {
+      return bk.locations.generate(1000);
+    }).then((locs) => {
+      if (locs && locs.length > 0) {
+        setEpubCumulativeTotal(locs.length);
+      }
+    }).catch(() => {});
     setEpubReady(true);
   };
 
