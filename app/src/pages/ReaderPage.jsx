@@ -53,12 +53,15 @@ function ReaderPage() {
   const epubViewerRef = useRef(null);
   const epubRenditionRef = useRef(null);
   const epubTocRef = useRef([]);
+  const chapterPagesRef = useRef({}); // track page counts per chapter
   const [showToc, setShowToc] = useState(false);
   const [epubReady, setEpubReady] = useState(false);
   const [epubChapter, setEpubChapter] = useState(0);
   const [epubPage, setEpubPage] = useState(0);
   const [epubTotalPages, setEpubTotalPages] = useState(0);
   const [epubTotalChapters, setEpubTotalChapters] = useState(0);
+  const [epubCumulativePage, setEpubCumulativePage] = useState(0);
+  const [epubCumulativeTotal, setEpubCumulativeTotal] = useState(0);
   // PDF state
 
   // Notes state
@@ -122,13 +125,12 @@ function ReaderPage() {
     };
   }, []);
 
-  // EPUB: save chapter + page as progress
+  // EPUB: save cumulative page as progress
   useEffect(() => {
-    if (fileType !== 'epub' || !book || epubChapter < 0) return;
-    const total = epubTotalChapters || 1;
-    const percent = Math.min(1, Math.max(0, epubChapter / total));
-    saveReadingProgress(bookId, book.title, book.author, epubChapter + 1, percent, 'epub');
-  }, [epubChapter, fileType, epubTotalChapters]);
+    if (fileType !== 'epub' || !book || epubCumulativeTotal <= 0) return;
+    const percent = epubCumulativeTotal > 0 ? Math.min(1, Math.max(0, epubCumulativePage / epubCumulativeTotal)) : 0;
+    saveReadingProgress(bookId, book.title, book.author, epubCumulativePage, percent, 'epub');
+  }, [epubCumulativePage, epubCumulativeTotal, fileType]);
 
   // Save progress on page change
   const goToPage = useCallback((n) => {
@@ -204,7 +206,7 @@ function ReaderPage() {
       apiKey = await decryptApiKey(apiKey);
     }
     const apiConfig = { ...config, apiKey };
-    const locInfo = fileType === 'epub' ? `章节 ${epubChapter + 1}/${epubTotalChapters || '?'}` : `第${pageNumber}页${numPages ? `（共${numPages}页）` : ''}`;
+    const locInfo = fileType === 'epub' ? `第${epubCumulativePage || epubPage + 1}页（共${epubCumulativeTotal || epubTotalPages || '?'}页）` : `第${pageNumber}页${numPages ? `（共${numPages}页）` : ''}`;
     const textContext = pageText ? `\n当前页面文字内容：\n"""\n${pageText}\n"""\n` : '';
     const systemPrompt = `你是一位博学的哲学导师。读者正在阅读哲学著作，需要你的帮助理解文本。
 
@@ -393,8 +395,27 @@ ${textContext}
     bk.loaded.spine.then(spine => { setEpubTotalChapters(spine?.length || 0); }).catch(() => {});
     rendition.on('relocated', (loc) => {
       if (loc?.start?.displayed) {
-        setEpubPage(loc.start.displayed.page);
-        setEpubTotalPages(loc.start.displayed.total);
+        const cp = loc.start.displayed.page;
+        const ct = loc.start.displayed.total;
+        setEpubPage(cp);
+        setEpubTotalPages(ct);
+        // Track chapter pages for cumulative count
+        const idx = loc.start.index;
+        if (idx !== undefined) {
+          chapterPagesRef.current[idx] = ct;
+          // Compute cumulative: sum of all known chapter pages
+          let cumTotal = 0;
+          for (let i = 0; i <= Math.max(idx, epubTotalChapters - 1); i++) {
+            cumTotal += (chapterPagesRef.current[i] || ct);
+          }
+          // Cumulative current page: sum previous chapters + current
+          let cumPage = cp;
+          for (let i = 0; i < idx; i++) {
+            cumPage += (chapterPagesRef.current[i] || ct);
+          }
+          setEpubCumulativePage(cumPage);
+          setEpubCumulativeTotal(cumTotal);
+        }
       }
     });
     rendition.display();
@@ -501,7 +522,7 @@ ${textContext}
                   ) : (
                     <span style={{ fontSize: 12, color: 'var(--text-dim)', cursor: 'pointer' }}
                       onClick={() => setShowJumpInput(true)}>
-                      {epubPage + 1}/{epubTotalPages || '?'}
+                      {epubCumulativePage || epubPage + 1}/{epubCumulativeTotal || epubTotalPages || '?'}
                     </span>
                   )}
                   <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
