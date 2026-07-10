@@ -21,21 +21,21 @@ function AuthorDetailPage() {
   useEffect(() => { fetchAuthor(); }, [authorName]);
 
   const fetchAuthor = async () => {
-    // Check cache first (author data changes rarely)
+    // Check cache first
     const cached = cacheGet('author_' + authorName);
     if (cached) { setAuthor(cached); setLoading(false); return; }
-
+    // 1. 优先本地 JSON（CDN 秒级加载）
+    const safe = authorName.replace('/', '-').replace(':', '：');
+    try {
+      const resp = await fetch(`/philosopher/data/${encodeURIComponent(safe)}.json`);
+      if (resp.ok) { const data = await resp.json(); data.name = authorName; cacheSet('author_' + authorName, data); setAuthor(data); setLoading(false); return; }
+    } catch {}
+    // 2. 回退 Render API
     try {
       const resp = await fetch(`${getApiBase()}/api/authors/${encodeURIComponent(authorName)}`);
-      if (resp.ok) {
-        const data = await resp.json();
-        cacheSet('author_' + authorName, data);
-        setAuthor(data);
-        setLoading(false);
-        return;
-      }
+      if (resp.ok) { const data = await resp.json(); cacheSet('author_' + authorName, data); setAuthor(data); setLoading(false); return; }
     } catch (e) { console.error('Author API unavailable:', e); }
-    // 本地兜底
+    // 3. 本地兜底
     const data = await getAuthorInfo(authorName);
     cacheSet('author_' + authorName, data);
     setAuthor(data);

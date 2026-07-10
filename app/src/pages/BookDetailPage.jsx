@@ -26,16 +26,17 @@ function BookDetailPage() {
     const ck = 'book_' + bookId;
     const cached = cacheGet(ck);
     if (cached) { setBook(cached); setLoading(false); return; }
+    // 1. 优先本地 JSON（CDN 秒级加载）
+    try {
+      const resp = await fetch(`/books/data/${bookId}.json`);
+      if (resp.ok) { const data = await resp.json(); cacheSet(ck, data); setBook(data); setLoading(false); return; }
+    } catch {}
+    // 2. 回退 Render API
     try {
       const resp = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(10000) });
-      if (resp.ok) {
-        const data = await resp.json();
-        cacheSet(ck, data);
-        setBook(data);
-        setLoading(false);
-        return;
-      }
+      if (resp.ok) { const data = await resp.json(); cacheSet(ck, data); setBook(data); setLoading(false); return; }
     } catch (e) { console.error('Book API unavailable:', e); }
+    // 3. 本地兜底
     const b = await getBookById(bookId);
     if (b) cacheSet(ck, b);
     setBook(b);
