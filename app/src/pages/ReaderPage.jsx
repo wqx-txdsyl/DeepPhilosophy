@@ -13,24 +13,7 @@ import { saveReadingProgress } from '../data/userData';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// PDF.js — import worker as blob for WebView compat
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-let _workerBlobUrl = null;
-(async () => {
-  try {
-    const resp = await fetch(pdfjsWorker);
-    const blob = await resp.blob();
-    _workerBlobUrl = URL.createObjectURL(blob);
-    pdfjs.GlobalWorkerOptions.workerSrc = _workerBlobUrl;
-  } catch {
-    pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-  }
-})();
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeunload', () => {
-    if (_workerBlobUrl) URL.revokeObjectURL(_workerBlobUrl);
-  });
-}
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs`;
 
 function ReaderPage() {
   const { bookId } = useParams();
