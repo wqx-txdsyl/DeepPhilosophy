@@ -125,11 +125,12 @@ function ReaderPage() {
     };
   }, []);
 
-  // EPUB: save percentage progress
+  // EPUB: save page/total as progress
   useEffect(() => {
-    if (fileType !== 'epub' || !book || epubPercent <= 0) return;
-    saveReadingProgress(bookId, book.title, book.author, epubPercent, epubPercent / 100, 'epub');
-  }, [epubPercent, fileType]);
+    if (fileType !== 'epub' || !book || epubBookTotal <= 0) return;
+    const pct = Math.min(1, Math.max(0, epubBookPage / epubBookTotal));
+    saveReadingProgress(bookId, book.title, book.author, epubBookPage, pct, 'epub');
+  }, [epubBookPage, epubBookTotal, fileType]);
 
   // Save progress on page change
   const goToPage = useCallback((n) => {
@@ -406,21 +407,53 @@ ${textContext}
     bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
     bk.loaded.spine.then(spine => { setEpubTotalChapters(spine?.length || 0); }).catch(() => {});
     const pageRef = { cur: 1, total: 0 };
+    const chapterPages = {};
+    let totalPages = 0;
+    let currentPage = 1;
     rendition.on('relocated', (loc) => {
       if (loc?.start?.displayed) {
         const cp = loc.start.displayed.page;
         const ct = loc.start.displayed.total;
-        setEpubBookPage(cp + 1);
-        setEpubBookTotal(ct);
+        const idx = loc.start.index;
+        if (idx !== undefined && ct > 0 && !chapterPages[idx]) {
+          chapterPages[idx] = ct;
+          // Recompute total
+          totalPages = 0;
+          for (const k in chapterPages) totalPages += chapterPages[k];
+          setEpubBookTotal(totalPages);
+        }
+        // Compute cumulative current page
+        let cum = cp + 1;
+        for (let i = 0; i < idx; i++) cum += (chapterPages[i] || ct);
+        currentPage = cum;
+        setEpubBookPage(cum);
         if (loc?.start?.percentage !== undefined) {
           setEpubPercent(Math.round(loc.start.percentage * 100));
         }
-        const idx = loc.start.index;
-        if (idx !== undefined && ct > 0) chapterPagesRef.current[idx] = ct;
       }
     });
     rendition.display();
-    setEpubReady(true);
+    // Pre-scan: quickly flip through all chapters to discover page counts
+    bk.ready.then(async () => {
+      const spine = bk.spine;
+      if (!spine?.length) return;
+      const startLoc = rendition.currentLocation();
+      for (let i = 0; i < spine.length; i++) {
+        try { await rendition.display(i); } catch {}
+      }
+      // Restore saved position
+      try {
+        const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+        const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
+        if (entry?.percent > 0 && bk.locations) {
+          const cfi = bk.locations.cfiFromPercentage(entry.percent);
+          if (cfi) { rendition.display(cfi); setEpubReady(true); return; }
+        }
+      } catch {}
+      if (startLoc?.start?.cfi) rendition.display(startLoc.start.cfi);
+      else rendition.display(0);
+      setEpubReady(true);
+    });
   };
 
   const goEpubChapter = (ch) => {
