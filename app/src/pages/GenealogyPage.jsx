@@ -219,9 +219,9 @@ const $cen = {display:'flex',justifyContent:'center'};
 const $pad = (n) => ({paddingTop:n});
 
 function BlockA({s}){const[a,b,c]=s;return(<div style={$flex}>{a&&<SchoolImg school={a} w={tierW(a)}/>}<div style={$col}>{b&&<SchoolImg school={b} w={tierW(b)}/>}{c&&<SchoolImg school={c} w={tierW(c)}/>}</div></div>)}
-function BlockB({s}){const[a,b]=s;const w=Math.max(tierW(a||{}),tierW(b||{}),280);return(<div style={$flex}>{a&&<SchoolImg school={a} w={w}/>}{b&&<SchoolImg school={b} w={w}/>}</div>)}
+function BlockB({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
 function BlockC({s}){const[a]=s;return(<div style={$cen}>{a&&<SchoolImg school={a} w={Math.min(tierW(a)*1.5,600)}/>}</div>)}
-function BlockD({s}){return(<div style={$flex}>{s.slice(0,3).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
+function BlockD({s}){return(<div style={$flex}>{s.slice(0,4).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
 function BlockE({s}){const[a,b]=s;return(<div style={$flex}>{a&&<SchoolImg school={a} w={tierW(a)}/>}{b&&<SchoolImg school={b} w={tierW(b)}/>}</div>)}
 function BlockF({s}){const[a,b,c]=s;return(<div style={$flex}><div style={$col}>{a&&<SchoolImg school={a} w={tierW(a)}/>}{b&&<SchoolImg school={b} w={tierW(b)}/>}</div>{c&&<SchoolImg school={c} w={tierW(c)}/>}</div>)}
 function BlockG({s}){return(<div style={$flex}><div style={$col}>{s.slice(0,2).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div><div style={$col}>{s.slice(2,4).map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div></div>)}
