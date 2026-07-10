@@ -12,7 +12,7 @@ export default function GlossaryCloud({ cihai = [] }) {
         <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px auto 0', opacity: 0.5 }} />
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline', gap: '2px 12px', padding: '20px 8px' }}>
-        {cihai.filter(Boolean).map((item, i) => {
+        {cihai.filter(item => item && item.word && item.def).map((item, i) => {
           const hash = item.word.split('').reduce((s, c) => s + c.charCodeAt(0), 0);
           const si = (hash * 7919 + i * 3571) % 53;
           const ss = [10, 28, 14, 20, 32, 11, 18, 34, 12, 15, 26, 10, 13, 30, 15, 22, 11, 17, 36, 12, 14, 24, 10, 27, 13, 19, 33, 11, 16, 29, 13, 15, 25, 10, 14, 21, 12, 15, 20, 11, 14, 26, 13, 17, 10, 16, 24, 12, 15, 18, 10, 28, 14];
