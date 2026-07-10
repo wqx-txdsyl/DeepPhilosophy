@@ -36,14 +36,20 @@ const ALL_SCHOOLS = [
   { century:'公元前6世纪', name:'道家', region:'东方', desc:'道法自然，无为而治。', tier:'A' },
   { century:'公元前6世纪', name:'儒家', region:'东方', desc:'以仁为核心，以礼为规范。', tier:'A' },
   { century:'公元前6世纪', name:'古希腊哲学', region:'世界', desc:'西方哲学总源——以理性思辨取代神话解释。', tier:'A' },
+  { century:'公元前6世纪', name:'前苏格拉底哲学', region:'西方', desc:'追问万物的本原——泰勒斯、赫拉克利特、巴门尼德、德谟克利特。', tier:'A' },
   { century:'公元前5世纪', name:'墨家', region:'东方', desc:'兼爱非攻，尚贤节用。', tier:'B' },
   { century:'公元前5世纪', name:'兵家', region:'东方', desc:'知己知彼，不战屈人。', tier:'B' },
   { century:'公元前4世纪', name:'法家', region:'东方', desc:'以法治国，不别亲疏。', tier:'B' },
   { century:'公元前4世纪', name:'名家', region:'东方', desc:'白马非马——中国最早的逻辑学。', tier:'C' },
   { century:'公元前4世纪', name:'阴阳家', region:'东方', desc:'阴阳消长，五德终始。', tier:'C' },
+  { century:'公元前4世纪', name:'犬儒学派', region:'西方', desc:'按自然生活，鄙视世俗——第欧根尼以桶为家。', tier:'B' },
+  { century:'公元前3世纪', name:'斯多葛学派', region:'西方', desc:'顺应自然，控制可控——芝诺、塞内卡、奥勒留。', tier:'A' },
+  { century:'公元前3世纪', name:'伊壁鸠鲁学派', region:'西方', desc:'快乐是至善，原子论为基——伊壁鸠鲁的花园。', tier:'A' },
+  { century:'公元前3世纪', name:'怀疑论', region:'西方', desc:'悬搁判断得心灵安宁——皮浪的不可知智慧。', tier:'B' },
   { century:'公元前1世纪', name:'罗马哲学', region:'世界', desc:'西塞罗、塞内卡、马可·奥勒留——斯多葛与伊壁鸠鲁在帝国的实践。', tier:'A' },
   { century:'公元前2世纪', name:'两汉经学', region:'东方', desc:'通经致用，以经为法。', tier:'B' },
   { century:'3世纪', name:'魏晋玄学', region:'东方', desc:'越名教而任自然。', tier:'B' },
+  { century:'3世纪', name:'新柏拉图主义', region:'西方', desc:'太一流溢万物——普罗提诺融合柏拉图与神秘主义。', tier:'A' },
   { century:'4世纪', name:'拜占庭哲学', region:'世界', desc:'东罗马帝国的神学哲学传统——伪狄奥尼修斯与拜占庭智慧。', tier:'B' },
   { century:'4世纪', name:'教父哲学', region:'西方', desc:'以希腊理性为基督教信仰奠基。', tier:'A' },
   { century:'6世纪', name:'隋唐佛学', region:'东方', desc:'八宗竞秀，会通中印。', tier:'A' },
@@ -289,7 +295,7 @@ export default function GenealogyPage() {
         </div>
       ))}
       <div style={{ textAlign:'center', padding:'80px 32px', borderTop:'1px solid rgba(145,118,71,0.08)' }}>
-        <p style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-sans)', margin:0 }}>一百零五哲学流派 · 一部横跨五千年的人类思想史图录</p>
+        <p style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-sans)', margin:0 }}>一百一十一哲学流派 · 一部横跨五千年的人类思想史图录</p>
         <div style={{ display:'flex', justifyContent:'center', gap:32, marginTop:32 }}>
           {[{ l:'西方哲学', p:'/western-philosophies' },{ l:'东方哲学', p:'/eastern-philosophies' },{ l:'世界哲学', p:'/world-philosophies' }].map(b => (
             <button key={b.p} onClick={() => nav(b.p)} style={{ background:'none', border:'1px solid rgba(145,118,71,0.10)', cursor:'pointer', fontFamily:'"Playfair Display",serif', fontSize:13, color:'var(--ochre)', padding:'6px 16px', borderRadius:4, transition:'all 300ms ease', opacity:0.7 }}
