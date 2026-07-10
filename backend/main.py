@@ -1966,6 +1966,34 @@ async def api_change_password(req: ChangePasswordRequest, authorization: str = H
         raise HTTPException(status_code=403 if "原密码" in err else 400, detail=err)
     return {"status": "ok"}
 
+# 用户头像的 Pydantic 模型
+class AvatarRequest(BaseModel):
+    avatar: str  # base64 data URL
+
+@app.get("/api/user/avatar")
+async def api_get_avatar(authorization: str = Header(None)):
+    """获取用户头像"""
+    token = (authorization or "").replace("Bearer ", "")
+    user = get_user_by_token(token)
+    if not user: raise HTTPException(status_code=401, detail="未登录")
+    conn = get_db_conn()
+    row = conn.execute("SELECT avatar FROM users WHERE id = ?", (user["id"],)).fetchone()
+    conn.close()
+    return {"avatar": row[0] if row and row[0] else ""}
+
+@app.post("/api/user/avatar")
+async def api_save_avatar(req: AvatarRequest, authorization: str = Header(None)):
+    """保存用户头像"""
+    token = (authorization or "").replace("Bearer ", "")
+    user = get_user_by_token(token)
+    if not user: raise HTTPException(status_code=401, detail="未登录")
+    conn = get_db_conn()
+    conn.execute("UPDATE users SET avatar = ? WHERE id = ?", (req.avatar, user["id"]))
+    conn.commit()
+    conn.close()
+    _sync_db()
+    return {"status": "ok"}
+
 
 # ============================================================
 # 开发者管理后台

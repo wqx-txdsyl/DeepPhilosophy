@@ -373,6 +373,9 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
     """)
+    # Migration: add avatar column (ignore error if already exists)
+    try: conn.execute("ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT ''"); conn.commit()
+    except: pass
     # 检查恢复后是否有用户数据
     user_count = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
     conn.commit()

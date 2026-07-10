@@ -191,6 +191,17 @@ function ProfilePage() {
           if (txt) localStorage.setItem(`dp_notes_${bid}`, txt);
         });
       }
+      // Pull avatar
+      try {
+        const ar = await fetch(`${getApiBase()}/api/user/avatar`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+          signal: AbortSignal.timeout(5000),
+        });
+        if (ar.ok) {
+          const ad = await ar.json();
+          if (ad.avatar) localStorage.setItem('dp_avatar', ad.avatar);
+        }
+      } catch {}
     } catch {}
     setSyncing(false);
   };
