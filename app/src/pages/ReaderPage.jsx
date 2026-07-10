@@ -53,14 +53,14 @@ function ReaderPage() {
   const epubViewerRef = useRef(null);
   const epubRenditionRef = useRef(null);
   const epubTocRef = useRef([]);
-  const chapterPagesRef = useRef([]); // array: page count per chapter
+  const chapterPagesRef = useRef([]);
+  const pageTotalFixed = useRef(false);
   const [showToc, setShowToc] = useState(false);
   const [epubReady, setEpubReady] = useState(false);
-  const [epubChapter, setEpubChapter] = useState(0);
-  const [epubPage, setEpubPage] = useState(0); // per-chapter display page
+  const [epubPage, setEpubPage] = useState(0);
   const [epubTotalChapters, setEpubTotalChapters] = useState(0);
-  const [epubBookPage, setEpubBookPage] = useState(1); // cumulative page across book
-  const [epubBookTotal, setEpubBookTotal] = useState(0); // total pages across book
+  const [epubBookPage, setEpubBookPage] = useState(1);
+  const [epubBookTotal, setEpubBookTotal] = useState(0);
   // PDF state
 
   // Notes state
@@ -405,31 +405,25 @@ ${textContext}
     epubRenditionRef.current = rendition;
     bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
     bk.loaded.spine.then(spine => { setEpubTotalChapters(spine?.length || 0); }).catch(() => {});
+    const pageRef = { cur: 1, total: 0 };
     rendition.on('relocated', (loc) => {
       if (loc?.start?.displayed) {
         const cp = loc.start.displayed.page;
         const ct = loc.start.displayed.total;
-        setEpubPage(cp);
-        // Track per-chapter page count
         const idx = loc.start.index;
         if (idx !== undefined && ct > 0) {
           chapterPagesRef.current[idx] = ct;
-          // Compute cumulative total from all known chapters
-          let total = 0;
-          for (let i = 0; i <= Math.max(idx, (chapterPagesRef.current.length - 1)); i++) {
-            total += (chapterPagesRef.current[i] || 0);
-          }
-          setEpubBookTotal(total > 0 ? total : ct);
-          // Cumulative current page
-          let cumPage = cp;
-          for (let i = 0; i < idx; i++) {
-            cumPage += (chapterPagesRef.current[i] || 0);
-          }
-          setEpubBookPage(cumPage);
+          let cum = cp;
+          for (let i = 0; i < idx; i++) cum += (chapterPagesRef.current[i] || 0);
+          pageRef.cur = cum;
+          setEpubBookPage(cum);
         }
       }
     });
     rendition.display();
+    bk.ready.then(() => bk.locations.generate(800)).then(locs => {
+      if (locs?.length > 0) setEpubBookTotal(locs.length);
+    }).catch(() => {});
     setEpubReady(true);
   };
 
