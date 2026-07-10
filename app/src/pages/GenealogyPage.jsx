@@ -168,7 +168,7 @@ const ERAS = [
   { n:'Contemporary', t:'当代', r:'20世纪末 — 21世纪', e:null },
 ];
 function getEraIdx(c) {
-  if (/公元前(30|15|10)/.test(c)) return 0; if (/公元前[65421]|^[34]世纪/.test(c)) return 1;
+  if (/公元前(30|15|10)/.test(c)) return 0; if (/公元前[654321]|^[34]世纪/.test(c)) return 1;
   if (/^[678]世纪$|^1[1-6]世纪$/.test(c)) return 2; if (/^1[78]世纪$/.test(c)) return 3;
   if (/19世纪|20世纪初|^20世纪$|20世纪中/.test(c)) return 4; return 5;
 }
