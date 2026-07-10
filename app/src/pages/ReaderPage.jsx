@@ -125,14 +125,12 @@ function ReaderPage() {
     };
   }, []);
 
-  // EPUB: save page as progress (use locations-generated total for %)
+  // EPUB: save percentage as progress
   useEffect(() => {
     if (fileType !== 'epub' || !book) return;
-    const currentPage = epubCumulativePage || epubPage + 1;
-    const total = epubCumulativeTotal || epubTotalPages || 1;
-    const percent = Math.min(1, Math.max(0, currentPage / total));
-    saveReadingProgress(bookId, book.title, book.author, currentPage, percent, 'epub');
-  }, [epubCumulativePage, epubCumulativeTotal, epubPage, epubTotalPages, fileType]);
+    const pct = epubCumulativePage > 0 ? epubCumulativePage : Math.round(((epubPage + 1) / Math.max(epubTotalPages, 1)) * 100);
+    saveReadingProgress(bookId, book.title, book.author, pct, pct / 100, 'epub');
+  }, [epubCumulativePage, epubPage, epubTotalPages, fileType]);
 
   // Save progress on page change
   const goToPage = useCallback((n) => {
@@ -337,27 +335,27 @@ ${textContext}
     setLoading(false);
   };
 
-  // Init EPUB — restore saved page on load via locations
+  // Init EPUB — restore saved page percentage on load
   const restoredRef = useRef(false);
   useEffect(() => {
-    if (!loading && fileType === 'epub' && !restoredRef.current && epubCumulativeTotal > 0) {
+    if (!loading && fileType === 'epub' && !restoredRef.current && epubRenditionRef.current) {
       try {
         const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
         const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
-        if (entry?.page > 0 && epubRenditionRef.current) {
+        if (entry?.page > 0) {
           restoredRef.current = true;
-          setEpubCumulativePage(entry.page);
-          // Navigate to the saved page using percentage-based CFI
-          const pct = Math.min(1, Math.max(0, entry.page / epubCumulativeTotal));
+          const pct = entry.page <= 1 ? entry.page : entry.page / 100; // old format: 0-1 decimal; new format: 0-100 integer
+          const targetPct = entry.page > 1 ? entry.page / 100 : entry.page;
+          setEpubCumulativePage(Math.round(targetPct * 100));
           const bk = epubRenditionRef.current.book;
           if (bk?.locations?.length > 0) {
-            const targetLoc = bk.locations.cfiFromPercentage(pct);
-            if (targetLoc) epubRenditionRef.current.display(targetLoc);
+            const targetLoc = bk.locations.cfiFromPercentage(targetPct);
+            if (targetLoc) setTimeout(() => epubRenditionRef.current.display(targetLoc), 300);
           }
         }
       } catch {}
     }
-  }, [loading, fileType, bookId, epubCumulativeTotal]);
+  }, [loading, fileType, bookId]);
 
   // PDF callbacks
   const onPdfLoadSuccess = ({ numPages: n }) => {
@@ -395,25 +393,13 @@ ${textContext}
         setEpubPage(loc.start.displayed.page);
         setEpubTotalPages(loc.start.displayed.total);
       }
-      // Update current page based on locations index
-      const bk = rendition.book;
-      if (bk?.locations?.length > 0 && loc?.start?.cfi) {
-        const pageIdx = bk.locations.locationFromCfi(loc.start.cfi);
-        if (pageIdx >= 0) {
-          setEpubCumulativePage(pageIdx + 1);
-          setEpubCumulativeTotal(bk.locations.length);
-        }
+      if (loc?.start?.percentage) {
+        const pct = Math.round(loc.start.percentage * 100);
+        setEpubCumulativePage(pct);
+        setEpubCumulativeTotal(100);
       }
     });
     rendition.display();
-    // Pre-compute total pages for the entire book
-    bk.ready.then(() => {
-      return bk.locations.generate(1000);
-    }).then((locs) => {
-      if (locs && locs.length > 0) {
-        setEpubCumulativeTotal(locs.length);
-      }
-    }).catch(() => {});
     setEpubReady(true);
   };
 
@@ -517,11 +503,7 @@ ${textContext}
                   ) : (
                     <span style={{ fontSize: 12, color: 'var(--text-dim)', cursor: 'pointer' }}
                       onClick={() => setShowJumpInput(true)}>
-                      {(() => {
-                        const p = epubCumulativePage || epubPage + 1;
-                        const t = epubCumulativeTotal || epubTotalPages;
-                        return t ? `${p}/${t}` : `${p}/?`;
-                      })()}
+                      {epubCumulativePage > 0 ? `${epubCumulativePage}%` : (epubPage + 1) + '/' + (epubTotalPages || '?')}
                     </span>
                   )}
                   <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
