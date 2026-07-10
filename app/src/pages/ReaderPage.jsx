@@ -395,6 +395,15 @@ ${textContext}
         setEpubPage(loc.start.displayed.page);
         setEpubTotalPages(loc.start.displayed.total);
       }
+      // Update current page based on locations index
+      const bk = rendition.book;
+      if (bk?.locations?.length > 0 && loc?.start?.cfi) {
+        const pageIdx = bk.locations.locationFromCfi(loc.start.cfi);
+        if (pageIdx >= 0) {
+          setEpubCumulativePage(pageIdx + 1);
+          setEpubCumulativeTotal(bk.locations.length);
+        }
+      }
     });
     rendition.display();
     // Pre-compute total pages for the entire book
