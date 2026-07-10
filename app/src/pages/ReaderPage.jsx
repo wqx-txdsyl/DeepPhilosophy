@@ -396,25 +396,19 @@ ${textContext}
     rendition.on('relocated', (loc) => {
       if (loc?.start?.displayed) {
         const cp = loc.start.displayed.page;
-        const ct = loc.start.displayed.total;
         setEpubPage(cp);
-        setEpubTotalPages(ct);
-        // Track chapter pages for cumulative count
+        // Track cumulative page with chapterPages, but total comes from locations.generate
         const idx = loc.start.index;
         if (idx !== undefined) {
-          chapterPagesRef.current[idx] = ct;
-          // Compute cumulative: sum of all known chapter pages
-          let cumTotal = 0;
-          for (let i = 0; i <= Math.max(idx, epubTotalChapters - 1); i++) {
-            cumTotal += (chapterPagesRef.current[i] || ct);
-          }
-          // Cumulative current page: sum previous chapters + current
+          chapterPagesRef.current[idx] = loc.start.displayed.total;
           let cumPage = cp;
           for (let i = 0; i < idx; i++) {
-            cumPage += (chapterPagesRef.current[i] || ct);
+            cumPage += (chapterPagesRef.current[i] || 0);
           }
           setEpubCumulativePage(cumPage);
-          setEpubCumulativeTotal(cumTotal);
+          if (epubCumulativeTotal <= 0) {
+            setEpubTotalPages(loc.start.displayed.total); // fallback display
+          }
         }
       }
     });
