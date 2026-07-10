@@ -61,6 +61,7 @@ function ReaderPage() {
   const [epubTotalChapters, setEpubTotalChapters] = useState(0);
   const [epubBookPage, setEpubBookPage] = useState(1);
   const [epubBookTotal, setEpubBookTotal] = useState(0);
+  const [epubPercent, setEpubPercent] = useState(0);
   // PDF state
 
   // Notes state
@@ -124,12 +125,11 @@ function ReaderPage() {
     };
   }, []);
 
-  // EPUB: save book-level page/total
+  // EPUB: save percentage progress
   useEffect(() => {
-    if (fileType !== 'epub' || !book || epubBookTotal <= 0) return;
-    const percent = Math.min(1, Math.max(0, epubBookPage / epubBookTotal));
-    saveReadingProgress(bookId, book.title, book.author, epubBookPage, percent, 'epub');
-  }, [epubBookPage, epubBookTotal, fileType]);
+    if (fileType !== 'epub' || !book || epubPercent <= 0) return;
+    saveReadingProgress(bookId, book.title, book.author, epubPercent, epubPercent / 100, 'epub');
+  }, [epubPercent, fileType]);
 
   // Save progress on page change
   const goToPage = useCallback((n) => {
@@ -410,20 +410,16 @@ ${textContext}
       if (loc?.start?.displayed) {
         const cp = loc.start.displayed.page;
         const ct = loc.start.displayed.total;
-        const idx = loc.start.index;
-        if (idx !== undefined && ct > 0) {
-          chapterPagesRef.current[idx] = ct;
-          let cum = cp;
-          for (let i = 0; i < idx; i++) cum += (chapterPagesRef.current[i] || 0);
-          pageRef.cur = cum;
-          setEpubBookPage(cum);
+        setEpubBookPage(cp + 1);
+        setEpubBookTotal(ct);
+        if (loc?.start?.percentage !== undefined) {
+          setEpubPercent(Math.round(loc.start.percentage * 100));
         }
+        const idx = loc.start.index;
+        if (idx !== undefined && ct > 0) chapterPagesRef.current[idx] = ct;
       }
     });
     rendition.display();
-    bk.ready.then(() => bk.locations.generate(800)).then(locs => {
-      if (locs?.length > 0) setEpubBookTotal(locs.length);
-    }).catch(() => {});
     setEpubReady(true);
   };
 
@@ -527,7 +523,7 @@ ${textContext}
                   ) : (
                     <span style={{ fontSize: 12, color: 'var(--text-dim)', cursor: 'pointer' }}
                       onClick={() => setShowJumpInput(true)}>
-                      {epubBookPage}/{epubBookTotal || '?'}
+                      {epubBookPage}/{epubBookTotal || '?'} {epubPercent > 0 ? `(${epubPercent}%)` : ''}
                     </span>
                   )}
                   <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
