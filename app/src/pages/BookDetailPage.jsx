@@ -8,6 +8,7 @@ import Icon from '../components/Icon';
 import { getBookById } from '../data';
 import { getApiBase } from '../App';
 import { useSEO } from '../utils/seo';
+import { cacheGet, cacheSet } from '../data/cache';
 
 function BookDetailPage() {
   const { bookId } = useParams();
@@ -22,16 +23,21 @@ function BookDetailPage() {
   }, [bookId]);
 
   const fetchBook = async () => {
+    const ck = 'book_' + bookId;
+    const cached = cacheGet(ck);
+    if (cached) { setBook(cached); setLoading(false); return; }
     try {
-      const resp = await fetch(`${getApiBase()}/api/books/${bookId}`);
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(10000) });
       if (resp.ok) {
         const data = await resp.json();
+        cacheSet(ck, data);
         setBook(data);
         setLoading(false);
         return;
       }
     } catch (e) { console.error('Book API unavailable:', e); }
     const b = await getBookById(bookId);
+    if (b) cacheSet(ck, b);
     setBook(b);
     setLoading(false);
   };
