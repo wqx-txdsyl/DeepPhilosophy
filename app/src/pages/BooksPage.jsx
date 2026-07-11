@@ -37,11 +37,22 @@ function BooksPage() {
   useEffect(() => { fetchBooks(); }, []);
 
   const fetchBooks = async () => {
+    // 1. 优先本地 JSON（CDN 秒级加载）
     try {
-      // 尝试从服务器获取（带标签），1.5s超时快速fallback
-      const resp = await fetch(`${getApiBase()}/api/books`, {
-        signal: AbortSignal.timeout(1500),
-      });
+      const resp = await fetch('/books.json');
+      if (resp.ok) {
+        const books = await resp.json();
+        setBooks(books);
+        const tags = new Set();
+        books.forEach(b => (b.tags || []).forEach(t => tags.add(t)));
+        setAllTags([...tags].sort());
+        setLoading(false);
+        return;
+      }
+    } catch {}
+    // 2. 回退 Render API
+    try {
+      const resp = await fetch(`${getApiBase()}/api/books`, { signal: AbortSignal.timeout(3000) });
       if (resp.ok) {
         const data = await resp.json();
         setBooks(data.books || []);
