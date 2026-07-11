@@ -20,7 +20,7 @@ function FadeCard({ children, style }) {
   );
 }
 import { useNavigate } from 'react-router-dom';
-import { getApiBase } from '../App';
+import { getApiBase } from '../utils/api';
 import { loadBooks } from '../data';
 
 function BooksPage() {

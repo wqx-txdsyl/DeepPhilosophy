@@ -34,10 +34,16 @@ const PHTIPage = lazy(() => import('./pages/PHTIPage'));
 const PHTISillyPage = lazy(() => import('./pages/PHTISillyPage'));
 import './App.css';
 
-// 懒加载后 Loading 占位
+// 懒加载骨架屏占位
 const PageLoader = () => (
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', color: 'var(--ink-muted)' }}>
-    加载中...
+  <div style={{ padding: '24px 16px', maxWidth: 800, margin: '0 auto' }}>
+    <div className="skeleton" style={{ width: '60%', height: 24, marginBottom: 16 }} />
+    <div className="skeleton" style={{ width: '40%', height: 16, marginBottom: 24 }} />
+    <div className="skeleton" style={{ width: '100%', height: 14, marginBottom: 10 }} />
+    <div className="skeleton" style={{ width: '100%', height: 14, marginBottom: 10 }} />
+    <div className="skeleton" style={{ width: '80%', height: 14, marginBottom: 10 }} />
+    <div className="skeleton" style={{ width: '90%', height: 14, marginBottom: 10 }} />
+    <div className="skeleton" style={{ width: '70%', height: 14 }} />
   </div>
 );
 

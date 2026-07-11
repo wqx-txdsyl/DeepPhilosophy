@@ -1,7 +1,9 @@
 """Regenerate bios with list/markdown formatting issues"""
 import json, requests, re, time, os
+from _lib import get_deepseek_key
 
-KEY = "sk-6529a0805c67431a90b5cb00608501d1"
+KEY = get_deepseek_key()
+if not KEY: raise SystemExit("错误: 未设置 DEEPSEEK_API_KEY 环境变量")
 API = "https://api.deepseek.com/v1/chat/completions"
 DB = os.path.join(os.path.dirname(__file__), "..", "backend", "data", "philosophers.json")
 LIST = os.path.join(os.path.dirname(__file__), "_regenerate_bios.txt")

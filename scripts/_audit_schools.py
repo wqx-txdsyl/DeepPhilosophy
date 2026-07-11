@@ -3,8 +3,11 @@ AI 流派标签审计 + 自动修正
 用 Agnes 2.0 Flash 核对每位哲人的 era+country → 推断正确 school 标签
 """
 import json, requests, time, os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _lib import get_agnes_key
 
-AGNES_KEY = "sk-tAli2tVgjAi5VG2zBG3oz4hUefyaqrD6UyjDaIpvhH6SKEAD"
+AGNES_KEY = get_agnes_key()
+if not AGNES_KEY: raise SystemExit("错误: 未设置 AGNES_API_KEY 环境变量")
 AGNES_API = "https://apihub.agnes-ai.com/v1/chat/completions"
 
 DB_FILE = os.path.join(os.path.dirname(__file__), "..", "backend", "data", "philosophers.json")

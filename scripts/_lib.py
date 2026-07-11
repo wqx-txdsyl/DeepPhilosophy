@@ -48,10 +48,10 @@ def save_json(path, data):
 
 
 # ============================================================
-# API Key 加载
+# API Key 加载 — 统一入口，优先环境变量
 # ============================================================
-def load_api_keys():
-    """加载 scripts/api_keys.json 中的 API Keys"""
+def _load_api_keys_json():
+    """加载 scripts/api_keys.json（仅本地开发回退，不提交到 Git）"""
     keys_path = os.path.join(SCRIPTS_DIR, "api_keys.json")
     if os.path.exists(keys_path):
         return load_json(keys_path)
@@ -59,20 +59,30 @@ def load_api_keys():
 
 
 def get_deepseek_key():
-    """获取 DeepSeek API Key（优先级: api_keys.json > 环境变量 > config.py）"""
-    keys = load_api_keys()
-    if keys.get("deepseek"):
-        return keys["deepseek"]
+    """获取 DeepSeek API Key（优先级: 环境变量 > api_keys.json 回退）"""
     env_key = os.getenv("DEEPSEEK_API_KEY", "")
     if env_key:
         return env_key
-    # 尝试从 config.py 读取
-    try:
-        sys.path.insert(0, BACKEND_DIR)
-        import config
-        return config.DEEPSEEK_API_KEY
-    except Exception:
-        return ""
+    # 回退：尝试从 api_keys.json（仅本地开发）
+    keys = _load_api_keys_json()
+    if keys.get("deepseek"):
+        return keys["deepseek"]
+    return ""
+
+
+def get_agnes_key():
+    """获取 Agnes AI API Key（优先级: 环境变量 > api_keys.json 回退）"""
+    env_key = os.getenv("AGNES_API_KEY", "")
+    if env_key:
+        return env_key
+    # 回退：尝试从 api_keys.json（仅本地开发）
+    keys = _load_api_keys_json()
+    return keys.get("agnes", "")
+
+
+def get_github_token():
+    """获取 GitHub Token"""
+    return os.getenv("GITHUB_TOKEN", "")
 
 
 # ============================================================
@@ -83,8 +93,24 @@ def create_deepseek_client(api_key=None):
     from openai import OpenAI
     key = api_key or get_deepseek_key()
     if not key:
-        raise ValueError("No DeepSeek API key found. Set DEEPSEEK_API_KEY env var or add to scripts/api_keys.json")
+        raise ValueError(
+            "未找到 DeepSeek API Key！请设置环境变量 DEEPSEEK_API_KEY，\n"
+            "或在 scripts/api_keys.json 中添加 {\"deepseek\": \"sk-xxx\"}（仅本地开发）")
     return OpenAI(api_key=key, base_url="https://api.deepseek.com")
+
+
+def create_agnes_client(api_key=None):
+    """创建 Agnes AI API 客户端（返回 (api_key, text_api, img_api, text_model, img_model)）"""
+    key = api_key or get_agnes_key()
+    if not key:
+        raise ValueError(
+            "未找到 Agnes AI API Key！请设置环境变量 AGNES_API_KEY，\n"
+            "或在 scripts/api_keys.json 中添加 {\"agnes\": \"sk-xxx\"}（仅本地开发）")
+    TEXT_API = "https://apihub.agnes-ai.com/v1/chat/completions"
+    IMG_API = "https://apihub.agnes-ai.com/v1/images/generations"
+    TEXT_MODEL = "agnes-2.0-flash"
+    IMG_MODEL = "agnes-image-2.1-flash"
+    return key, TEXT_API, IMG_API, TEXT_MODEL, IMG_MODEL
 
 
 def ask_deepseek(prompt, model="deepseek-chat", temperature=0.7, max_tokens=2048,

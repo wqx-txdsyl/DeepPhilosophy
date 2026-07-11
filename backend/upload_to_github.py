@@ -5,7 +5,7 @@
 import os, sys, json, time, io
 import urllib.request, urllib.error
 
-GITHUB_TOKEN = "PLACEHOLDER"  # 脚本接受命令行参数
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")  # 优先环境变量，也可命令行传入
 REPO = "wqx-txdsyl/DeepPhilosophy"
 BOOKS_DIR = "F:/philosophy"
 TAG = "books-v1"

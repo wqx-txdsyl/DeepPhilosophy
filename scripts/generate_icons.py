@@ -28,7 +28,10 @@ def remove_white_bg(img_bytes: bytes) -> bytes:
         return img_bytes  # PIL 未安装，原样保存
 
 API_URL  = "https://apihub.agnes-ai.com/v1/images/generations"
-API_KEY  = "sk-tAli2tVgjAi5VG2zBG3oz4hUefyaqrD6UyjDaIpvhH6SKEAD"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _lib import get_agnes_key
+API_KEY = get_agnes_key()
+if not API_KEY: raise SystemExit("错误: 未设置 AGNES_API_KEY 环境变量")
 MODEL    = "agnes-image-2.1-flash"
 OUT_DIR  = Path(__file__).parent.parent / "app" / "public" / "icons"
 DELAY_S  = 0.8  # 请求间隔，避免限流

@@ -26,6 +26,9 @@ COPY backend/main.py .
 COPY backend/auth.py .
 COPY backend/philosophers_db.py .
 COPY backend/admin.py .
+COPY backend/models/ ./models/
+COPY backend/services/ ./services/
+COPY backend/routes/ ./routes/
 COPY backend/modules/ ./modules/
 
 # 复制静态数据
@@ -36,6 +39,7 @@ COPY backend/data/github_manifest.json /app/data/
 COPY backend/data/oss_manifest.json /app/data/
 COPY backend/data/philosophers.json /app/data/
 COPY backend/data/name_aliases.json /app/data/
+COPY backend/data/tag_normalization.json /app/data/
 
 # 复制前端构建产物 — 排除大型图片目录（图片走 GitHub Pages CDN，不占 Render 带宽）
 RUN mkdir -p ./static
@@ -57,5 +61,8 @@ ENV SERVER_PORT=8000
 ENV USE_OSS=true
 
 EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')" || exit 1
 
 CMD ["python", "main.py"]

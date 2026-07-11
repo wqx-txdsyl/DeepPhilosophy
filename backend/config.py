@@ -10,17 +10,10 @@ load_dotenv()
 # ============================================================
 # DeepSeek API 配置
 # ============================================================
-# Try env var first, then fallback to _gen_east.py (local dev)
-_DEFAULT_KEY = ""
-try:
-    import re
-    _east_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '_gen_east.py')
-    if os.path.exists(_east_path):
-        with open(_east_path, 'r', encoding='utf-8') as f:
-            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
-            if m: _DEFAULT_KEY = m.group(1)
-except: pass
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", _DEFAULT_KEY)
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+if not DEEPSEEK_API_KEY:
+    print("⚠️ 警告: DEEPSEEK_API_KEY 环境变量未设置！AI 功能将不可用。")
+    print("   请在 backend/.env 中添加: DEEPSEEK_API_KEY=sk-xxx")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 DEEPSEEK_MODEL = "deepseek-chat"
 

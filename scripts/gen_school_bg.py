@@ -6,8 +6,11 @@
 """
 import sys, os, json, requests, base64, glob, io
 from PIL import Image
+from _lib import get_agnes_key
 
-API_KEY = "sk-tAli2tVgjAi5VG2zBG3oz4hUefyaqrD6UyjDaIpvhH6SKEAD"
+API_KEY = get_agnes_key()
+if not API_KEY:
+    raise SystemExit("错误: 未设置 AGNES_API_KEY 环境变量。请编辑 backend/.env 或设置环境变量后重试。")
 TEXT_API = "https://apihub.agnes-ai.com/v1/chat/completions"
 IMG_API  = "https://apihub.agnes-ai.com/v1/images/generations"
 TEXT_MODEL = "agnes-2.0-flash"

@@ -7,6 +7,7 @@ import sys
 import json
 import sqlite3
 import hashlib
+import base64
 import uuid
 import time
 import shutil
@@ -390,11 +391,39 @@ def init_db():
 
 
 def _hash_password(password: str, salt: Optional[str] = None) -> tuple[str, str]:
-    """密码哈希（SHA-256 + salt）"""
+    """密码哈希（scrypt — Python 3.6+ 内置，抗暴力破解）
+    格式: "scrypt:base64_salt:base64_hash"
+    旧格式（SHA-256）: 64 字符 hex 字符串，通过 _verify_password() 兼容
+    """
     if salt is None:
-        salt = uuid.uuid4().hex
+        salt = base64.b64encode(os.urandom(16)).decode()  # 128-bit random salt
+    key = hashlib.scrypt(
+        password=password.encode(),
+        salt=salt.encode(),
+        n=16384, r=8, p=1,
+        dklen=32,
+    )
+    return f"scrypt:{salt}:{base64.b64encode(key).decode()}", salt
+
+
+def _verify_password(stored_hash: str, password: str, salt: str) -> bool:
+    """验证密码，兼容旧 SHA-256 和新 scrypt 格式"""
+    # 新格式: scrypt:base64_salt:base64_hash
+    if stored_hash.startswith("scrypt:"):
+        try:
+            _, stored_salt, _ = stored_hash.split(":", 2)
+            computed, _ = _hash_password(password, stored_salt)
+            return computed == stored_hash
+        except (ValueError, IndexError):
+            return False
+    # 旧格式: 纯 SHA-256 hex (向后兼容)
     h = hashlib.sha256((password + salt).encode()).hexdigest()
-    return h, salt
+    return h == stored_hash
+
+
+def _needs_upgrade(stored_hash: str) -> bool:
+    """检查密码哈希是否需要升级到 scrypt"""
+    return not stored_hash.startswith("scrypt:")
 
 
 def register(username: str, password: str) -> dict:
@@ -403,8 +432,8 @@ def register(username: str, password: str) -> dict:
         return {"success": False, "error": "用户名和密码不能为空"}
     if len(username) < 2:
         return {"success": False, "error": "用户名至少2个字符"}
-    if len(password) < 4:
-        return {"success": False, "error": "密码至少4个字符"}
+    if len(password) < 8:
+        return {"success": False, "error": "密码至少8个字符"}
 
     conn = _get_conn()
     try:
@@ -434,9 +463,18 @@ def login(username: str, password: str) -> dict:
         if not row:
             return {"success": False, "error": "用户名或密码错误"}
 
-        pw_hash, _ = _hash_password(password, row["salt"])
-        if pw_hash != row["password_hash"]:
+        if not _verify_password(row["password_hash"], password, row["salt"]):
             return {"success": False, "error": "用户名或密码错误"}
+
+        # 自动升级旧 SHA-256 哈希到 scrypt
+        if _needs_upgrade(row["password_hash"]):
+            new_hash, new_salt = _hash_password(password)
+            conn.execute(
+                "UPDATE users SET password_hash = ?, salt = ? WHERE id = ?",
+                (new_hash, new_salt, row["id"]),
+            )
+            conn.commit()
+            _log.info(f"Upgraded password hash to scrypt for user {row['id']}")
 
         # 生成 token（30天有效）
         token = uuid.uuid4().hex + uuid.uuid4().hex
@@ -663,14 +701,16 @@ def change_password(user_id: int, old_password: str, new_password: str) -> tuple
         return False, "新密码至少4位"
     conn = _get_conn()
     try:
-        user = conn.execute("SELECT password_hash FROM users WHERE id=?", (user_id,)).fetchone()
+        user = conn.execute("SELECT password_hash, salt FROM users WHERE id=?", (user_id,)).fetchone()
         if not user:
             return False, "用户不存在"
-        old_hash = hashlib.sha256(old_password.encode()).hexdigest()
-        if old_hash != user["password_hash"]:
+        if not _verify_password(user["password_hash"], old_password, user["salt"]):
             return False, "原密码错误"
-        new_hash = hashlib.sha256(new_password.encode()).hexdigest()
-        conn.execute("UPDATE users SET password_hash=? WHERE id=?", (new_hash, user_id))
+        new_hash, new_salt = _hash_password(new_password)
+        conn.execute(
+            "UPDATE users SET password_hash = ?, salt = ? WHERE id = ?",
+            (new_hash, new_salt, user_id),
+        )
         conn.commit()
         _sync_db()
         return True, ""

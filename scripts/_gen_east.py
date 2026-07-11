@@ -1,7 +1,10 @@
 """Generate Eastern schools: API for cihai/quotes/works/timeline, inline overview/conclusion"""
-import re, json, urllib.request, time
+import re, json, urllib.request, time, os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _lib import get_deepseek_key
 
-API_KEY = "sk-6529a0805c67431a90b5cb00608501d1"
+API_KEY = get_deepseek_key()
+if not API_KEY: raise SystemExit("错误: 未设置 DEEPSEEK_API_KEY 环境变量")
 TARGET = r"C:\Users\wqx_0\PyCharmProjects\Q&ASystem\DeepPhilosophy\app\src\pages\SchoolDetailPage.jsx"
 
 with open(TARGET, "r", encoding="utf-8") as f:

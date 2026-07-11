@@ -7,7 +7,8 @@ from datetime import datetime
 _log = logging.getLogger("admin")
 
 STATS_FILE = os.path.join(os.path.dirname(__file__), "data", "admin_stats.json")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "wqx090915")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "")
+# 生产环境必须设置 ADMIN_PASSWORD 环境变量，否则管理后台不可用
 _GITHUB_REPO = os.getenv("GITHUB_REPO", "wqx-txdsyl/DeepPhilosophy")
 _GITHUB_TAG = "stats-v1"
 _GITHUB_ASSET = "admin_stats.json"

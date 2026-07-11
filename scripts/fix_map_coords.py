@@ -1,8 +1,11 @@
 """用 Agnes 2.0 Flash 图像理解重新定位世界地图坐标"""
-import requests, json, re, os
+import sys, requests, json, re, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _lib import get_agnes_key
 
 API = "https://apihub.agnes-ai.com/v1/chat/completions"
-KEY = "sk-tAli2tVgjAi5VG2zBG3oz4hUefyaqrD6UyjDaIpvhH6SKEAD"
+KEY = get_agnes_key()
+if not KEY: raise SystemExit("错误: 未设置 AGNES_API_KEY 环境变量")
 IMG = "https://deepphilosophy-7g7m.onrender.com/schools/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE.png"
 
 REGIONS = [

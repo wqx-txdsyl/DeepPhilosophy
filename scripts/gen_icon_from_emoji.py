@@ -9,7 +9,9 @@ from PIL import Image
 from collections import deque
 
 # ── API 配置 ──
-API_KEY = "sk-tAli2tVgjAi5VG2zBG3oz4hUefyaqrD6UyjDaIpvhH6SKEAD"
+from _lib import get_agnes_key
+API_KEY = get_agnes_key()
+if not API_KEY: raise SystemExit("错误: 未设置 AGNES_API_KEY 环境变量")
 TEXT_API = "https://apihub.agnes-ai.com/v1/chat/completions"
 IMG_API  = "https://apihub.agnes-ai.com/v1/images/generations"
 TEXT_MODEL = "agnes-2.0-flash"

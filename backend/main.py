@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 from typing import Optional
 from datetime import datetime
+from loguru import logger
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -34,29 +35,18 @@ from auth import (
     update_username, change_password,
 )
 from philosophers_db import get_philosopher_info
-
-# ============================================================
-# Cloudflare R2 客户端（懒加载）
-# ============================================================
-_r2_client = None
-
-def _get_r2_client():
-    """懒加载 R2 S3 兼容客户端"""
-    global _r2_client
-    if _r2_client is None and config.USE_R2:
-        import boto3
-        from botocore.config import Config as BotoConfig
-        _r2_client = boto3.client(
-            's3',
-            aws_access_key_id=config.R2_ACCESS_KEY,
-            aws_secret_access_key=config.R2_SECRET_KEY,
-            endpoint_url=config.R2_ENDPOINT,
-            config=BotoConfig(
-                region_name='auto',
-                signature_version='s3v4',
-            ),
-        )
-    return _r2_client
+from models import (
+    RegisterRequest, LoginRequest, ReadingProgressRequest,
+    ChatMessageRequest, ChatHistoryClearRequest, QARequest,
+    SyncDeleteRequest, NoteRequest, BookChatRequest,
+    UpdateProfileRequest, ChangePasswordRequest, AvatarRequest,
+)
+from services.book_scanner import scan_books, is_valid_author, _get_r2_client
+from services.summaries import load_summaries_cache, generate_summary, classify_book, book_sort_key
+from services.tag_utils import (
+    normalize_tag, norm_country, expand_tags,
+    era_to_century, era_to_centuries,
+)
 
 # ============================================================
 # FastAPI 应用
@@ -69,10 +59,35 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
+    allow_origins=[
+        "https://deepphilosophy.top",
+        "https://deepphilosophy.pages.dev",
+        "https://deepphilosophy.vercel.app",
+        "http://localhost:5173",
+        "http://localhost:8000",
+    ],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+# 速率限制（内存令牌桶，无需外部依赖）
+_rate_limits = {}
+
+@app.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    path = request.url.path
+    if path in ("/api/ai/stream", "/api/qa"):
+        ip = request.headers.get("X-Forwarded-For", request.client.host if request.client else "unknown")
+        ip = ip.split(",")[0].strip()
+        now = time.time()
+        bucket = _rate_limits.get(ip, (now, 10))  # 10 tokens capacity
+        last_time, tokens = bucket
+        elapsed = now - last_time
+        tokens = min(10, tokens + elapsed * (10 / 60))  # 10 req/min refill
+        if tokens < 1:
+            return JSONResponse({"error": "请求过于频繁，请稍后再试"}, status_code=429)
+        _rate_limits[ip] = (now, tokens - 1)
+    return await call_next(request)
 
 # 初始化用户数据库（本地表立即可用，云端恢复后台进行）
 init_db()
@@ -82,15 +97,15 @@ import threading
 def _warmup():
     try:
         scan_books(force=True)
-        _load_summaries_cache()
-        print("[warmup] Books cache pre-loaded")
+        load_summaries_cache()
+        logger.info("Books cache pre-loaded")
     except Exception as e:
-        print(f"[warmup] Books pre-load failed (non-fatal): {e}")
+        logger.warning(f"Books pre-load failed (non-fatal): {e}")
     try:
         from philosophers_db import NAME_ALIASES, PHILOSOPHERS
-        print(f"[warmup] Authors ready: {len(PHILOSOPHERS)} philosophers loaded")
+        logger.info(f"Authors ready: {len(PHILOSOPHERS)} philosophers loaded")
     except Exception as e:
-        print(f"[warmup] Authors pre-load failed (non-fatal): {e}")
+        logger.warning(f"Authors pre-load failed (non-fatal): {e}")
 
 # ============================================================
 # 工具函数
@@ -2019,6 +2034,8 @@ async def global_middleware(request: Request, call_next):
 
 @app.get("/api/admin/stats")
 async def admin_stats(password: str = Query("")):
+    if not admin_module.ADMIN_PASSWORD:
+        raise HTTPException(status_code=503, detail="管理后台未配置（请设置 ADMIN_PASSWORD 环境变量）")
     if password != admin_module.ADMIN_PASSWORD:
         raise HTTPException(status_code=403, detail="密码错误")
     stats = admin_module.load_stats()
@@ -2075,6 +2092,27 @@ async def get_stats():
 
 
 # ============================================================
+# 路由注册（从 routes/ 模块导入）
+# ============================================================
+from routes.health import router as health_router
+from routes.auth_routes import router as auth_router
+from routes.user import router as user_router
+from routes.admin_routes import router as admin_router
+from routes.sync import router as sync_router
+from routes.knowledge import router as knowledge_router
+from routes.ai import router as ai_router
+from routes.history import router as history_router
+
+app.include_router(health_router)
+app.include_router(auth_router)
+app.include_router(user_router)
+app.include_router(admin_router)
+app.include_router(sync_router)
+app.include_router(knowledge_router)
+app.include_router(ai_router)
+app.include_router(history_router)
+
+# ============================================================
 # 静态前端（同源部署，须在 API 路由之后注册）
 # ============================================================
 import os as _os2
@@ -2111,17 +2149,14 @@ if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR,
 threading.Thread(target=_warmup, daemon=True).start()
 
 if __name__ == "__main__":
-    print("=" * 50)
-    print("  DeepPhilosophy API Server v1.1.0")
-    print("=" * 50)
+    logger.info("=" * 50)
+    logger.info("  DeepPhilosophy API Server v2.0.0")
+    logger.info("=" * 50)
     books = scan_books()
-    print(f"  书籍总数: {len(books)}")
-    print(f"  数据目录: {config.KNOWLEDGE_DIR}")
-    print(f"  API: http://0.0.0.0:{config.SERVER_PORT}")
-    print(f"  文档: http://0.0.0.0:{config.SERVER_PORT}/docs")
-    # Pre-compute keywords in background (will be cached after first run)
-    if not os.path.exists(_BOOKS_CACHE_PATH):
-        _build_and_cache_keywords()
-    print("=" * 50)
+    logger.info(f"  Books: {len(books)}")
+    logger.info(f"  Data: {config.KNOWLEDGE_DIR}")
+    logger.info(f"  API: http://0.0.0.0:{config.SERVER_PORT}")
+    logger.info(f"  Docs: http://0.0.0.0:{config.SERVER_PORT}/docs")
+    logger.info("=" * 50)
     uvicorn.run(app, host=config.SERVER_HOST, port=config.SERVER_PORT)
 # force redeploy Sun Jun 14 18:39:51     2026
