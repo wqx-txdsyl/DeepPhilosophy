@@ -230,6 +230,8 @@ function AuthorsPage() {
           country: p.country || '', school: p.school || '',
           book_count: (p.books || []).length, books: p.books || [],
         }));
+        const approxYear = (era) => { const cs = eraToCenturies(era); if (!cs.length) return 9999; const n = parseInt(cs[0].replace('前','')); return cs[0].includes('前') ? -((n-1)*100+50) : (n-1)*100+50; };
+        try { authors.sort((a, b) => approxYear(a.era) - approxYear(b.era)); } catch {}
         cacheSet('all_authors_v2', authors);
         setAllAuthors(authors);
       }
