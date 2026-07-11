@@ -23,15 +23,6 @@ KNOWN_TAGS = [
     "印度哲学","日本哲学","韩国哲学","伊斯兰哲学","阿拉伯哲学","非洲哲学"
 ]
 
-def load_json(path, default={}):
-    try:
-        with open(path, "r", encoding="utf-8") as f: return json.load(f)
-    except: return default
-
-def save_json(path, data):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f: json.dump(data, f, ensure_ascii=False, indent=2)
-
 def normalize_tag(tag, norm_map):
     """标签归一化"""
     tag = tag.strip()
@@ -73,7 +64,7 @@ def add_author(name, folder_path=None):
     print(f"\n✒️ {name}")
 
     # 1. 检查是否已存在
-    philosophers = load_json(PHILOSOPHERS_FILE, {})
+    philosophers = load_json(PHILOSOPHERS_FILE)
     if name in philosophers:
         print(f"  - 已存在，跳过")
         return

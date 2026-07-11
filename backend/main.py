@@ -108,68 +108,6 @@ def _warmup():
         logger.warning(f"Authors pre-load failed (non-fatal): {e}")
 
 # ============================================================
-# 工具函数
-# ============================================================
-SKIP_AUTHORS = {"合集&概述", "合集", "概述", "其他"}
-
-# 非人物条目（流派/宗教/学派名），在作者列表中直接过滤
-NON_PERSON_ENTRIES = {
-    "净土宗", "禅宗", "天台宗", "华严宗", "唯识宗", "密宗", "律宗", "三论宗",
-    "耆那教", "琐罗亚斯德教", "摩尼教",
-    "古文经学", "今文经学",
-    "犬儒学派", "斯多葛学派", "伊壁鸠鲁学派", "怀疑论", "新柏拉图主义",
-    "米利都学派", "埃利亚学派", "智者学派",
-}
-
-def is_valid_author(name: str) -> bool:
-    """过滤非人物条目"""
-    if name in NON_PERSON_ENTRIES:
-        return False
-    for skip in SKIP_AUTHORS:
-        if skip in name:
-            return False
-    # 书名号通常表示这是一本书而非作者
-    if name.startswith("《") and name.endswith("》"):
-        return False
-    return True
-
-
-# ============================================================
-# 数据模型
-# ============================================================
-class RegisterRequest(BaseModel):
-    username: str
-    password: str
-
-class LoginRequest(BaseModel):
-    username: str
-    password: str
-
-class ReadingProgressRequest(BaseModel):
-    book_id: str
-    book_title: str
-    book_author: str = ""
-    page: int = 1
-    percent: float = 0
-
-class ChatMessageRequest(BaseModel):
-    role: str
-    content: str
-    sources: Optional[str] = None
-
-class ChatHistoryClearRequest(BaseModel):
-    pass
-
-class QARequest(BaseModel):
-    question: str
-    api_key: Optional[str] = None
-    model: Optional[str] = "deepseek-chat"
-
-class SyncDeleteRequest(BaseModel):
-    path: str
-
-
-# ============================================================
 # 认证依赖
 # ============================================================
 def auth_required(authorization: str = Header(None)) -> dict:

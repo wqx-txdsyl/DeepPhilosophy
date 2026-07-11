@@ -8,27 +8,20 @@ import sys, os, json, re, requests, shutil, hashlib
 from pathlib import Path
 from datetime import datetime
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _lib import load_json, save_json, get_deepseek_key
+
 # ── 路径 ──
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JSON_DIR = os.path.join(ROOT, "backend", "data")
 SUMMARIES_FILE = os.path.join(JSON_DIR, "book_summaries.json")
 CACHE_FILE = os.path.join(JSON_DIR, "books_cache.json")
 PHILOSOPHERS_FILE = os.path.join(JSON_DIR, "philosophers.json")
-KNOWLEDGE_DIR = "F:/philosophy"
+KNOWLEDGE_DIR = os.getenv("PHILOSOPHY_BOOKS_DIR", "F:/philosophy")
 
 # ── API ──
-_keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
-_keys = {}
-if os.path.exists(_keys_path):
-    with open(_keys_path) as f: _keys = json.load(f)
-DEEPSEEK_KEY = _keys.get("deepseek", "")
+DEEPSEEK_KEY = get_deepseek_key()
 DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
-if not DEEPSEEK_KEY:
-    _east = os.path.join(ROOT, "_gen_east.py")
-    if os.path.exists(_east):
-        with open(_east, "r", encoding="utf-8") as f:
-            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
-            if m: DEEPSEEK_KEY = m.group(1)
 DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
 
 KNOWN_TAGS = [
@@ -43,16 +36,6 @@ KNOWN_TAGS = [
     "天演论","维新派","三民主义","毛泽东思想","现代新儒家","印度哲学","日本哲学",
     "韩国哲学","伊斯兰哲学","阿拉伯哲学","非洲哲学","拉丁美洲哲学"
 ]
-
-# ══════════ 辅助 ══════════
-def load_json(path, default={}):
-    try:
-        with open(path, "r", encoding="utf-8") as f: return json.load(f)
-    except: return default
-
-def save_json(path, data):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f: json.dump(data, f, ensure_ascii=False, indent=2)
 
 # ══════════ 从文件名解析 ══════════
 def parse_path(filepath):

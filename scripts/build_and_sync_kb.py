@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 API = "https://deepphilosophy.onrender.com"
-BOOKS_DIR = "F:/philosophy"
+BOOKS_DIR = os.getenv("PHILOSOPHY_BOOKS_DIR", "F:/philosophy")
 VECTOR_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "vectordb")
 EXTRACTED_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "extracted")
 

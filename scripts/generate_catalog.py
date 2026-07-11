@@ -9,7 +9,7 @@ import json
 import hashlib
 from pathlib import Path
 
-PHILOSOPHY_DIR = "F:/philosophy"
+PHILOSOPHY_DIR = os.getenv("PHILOSOPHY_BOOKS_DIR", "F:/philosophy")
 OUTPUT_PATHS = [
     "app/src/assets/books.json",            # Android 内置数据
     "backend/data/books_catalog.json",       # 后端参考

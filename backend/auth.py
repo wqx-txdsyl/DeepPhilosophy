@@ -721,8 +721,5 @@ def change_password(user_id: int, old_password: str, new_password: str) -> tuple
 
 
 # ============================================================
-# 初始化
+# 初始化（由 main.py 统一调用 init_db()，避免模块导入时副作用）
 # ============================================================
-init_db()
-_sync_db_from_github()  # 从 GitHub Release 拉取最新用户数据
-_sync_db_from_cloud()   # 从 OSS 拉取最新用户数据
