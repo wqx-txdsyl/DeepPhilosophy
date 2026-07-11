@@ -206,7 +206,7 @@ function AuthorsPage() {
       if (a.school) for (const s of String(a.school).split(/[/,、，;；]/)) {
         const t = s.trim().replace(/[（(].*[)）]/g, '');
         if (!t) continue;
-        const norm = normMap[t] || t;
+        const norm = normalizeTag(t);
         schoolCount.set(norm, (schoolCount.get(norm) || 0) + 1);
       }
       if (a.era) {
