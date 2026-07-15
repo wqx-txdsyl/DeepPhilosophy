@@ -49,7 +49,44 @@ export async function decryptApiKey(encrypted) {
   } catch { return ''; }
 }
 
-/** Save config with encrypted API key */
+/** Encrypt API key with password for cross-device sync */
+async function getPasswordKey(password) {
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  const salt = enc.encode('DeepPhilosophy-sync-salt-v1');
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt, iterations: 200000, hash: 'SHA-256' },
+    keyMaterial,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['encrypt', 'decrypt']
+  );
+}
+
+export async function encryptWithPassword(plaintext, password) {
+  if (!plaintext || !password) return '';
+  try {
+    const key = await getPasswordKey(password);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const encoded = new TextEncoder().encode(plaintext);
+    const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+    return bufferToHex(iv) + ':' + bufferToHex(new Uint8Array(encrypted));
+  } catch { return ''; }
+}
+
+export async function decryptWithPassword(encrypted, password) {
+  if (!encrypted || !password || !encrypted.includes(':')) return '';
+  try {
+    const key = await getPasswordKey(password);
+    const [ivHex, dataHex] = encrypted.split(':');
+    const iv = hexToBuffer(ivHex);
+    const data = hexToBuffer(dataHex);
+    const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+    return new TextDecoder().decode(decrypted);
+  } catch { return ''; }
+}
+
+/** Save config with encrypted API key (local storage) */
 export async function saveConfig(apiKey, model, apiUrl) {
   const encrypted = await encryptApiKey(apiKey);
   const config = { apiKey: encrypted, model, apiUrl, _encrypted: true };

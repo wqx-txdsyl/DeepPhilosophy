@@ -26,6 +26,7 @@ import uvicorn
 
 import config
 from auth import (
+    _get_conn as get_db_conn,
     init_db,
     register, login, get_user_by_token,
     save_reading_progress, get_reading_history,

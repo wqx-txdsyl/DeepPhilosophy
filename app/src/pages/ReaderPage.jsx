@@ -526,7 +526,7 @@ ${textContext}
                     </span>
                   )}
                   <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => epubRenditionRef.current?.next()}>▶</button>
+                    onClick={() => epubRenditionRef.current?.next()}><Icon name="play" size={18} /></button>
                   <span style={{ width: 24 }} />
                 </div>
               </div>
@@ -610,7 +610,7 @@ ${textContext}
                     </span>
                   )}
                   <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => goToPage(pageNumber + (twoPage ? 2 : 1))} disabled={pageNumber >= numPages}>▶</button>
+                    onClick={() => goToPage(pageNumber + (twoPage ? 2 : 1))} disabled={pageNumber >= numPages}><Icon name="play" size={18} /></button>
                 </div>
               </div>
             </div>

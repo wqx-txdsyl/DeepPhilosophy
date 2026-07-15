@@ -3,6 +3,7 @@
  * 聊天历史本地自动保存
  */
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import Icon from '../components/Icon';
 import { useToast } from '../contexts/ToastContext';
@@ -10,17 +11,18 @@ import { saveChatMessage, getChatHistory, clearChatHistory } from '../data/userD
 
 const WELCOME_MSG = {
   role: 'assistant',
-  content: <>你好！我是 DeepPhilosophy 哲学助手。你可以向我提问任何哲学问题，我会基于知识库中的文献为你解答，并附上参考文献。{'\n\n'}<Icon name="icon-tip" size={14} /> 提示：在设置页面可以配置你自己的 API Key。</>,
+  content: <>你好！我是 DeepPhilosophy 哲学助手，由 DeepSeek 驱动。你可以向我提问任何哲学问题，我会基于知识库中的文献为你解答，并附上参考文献。{'\n\n'}<Icon name="icon-tip" size={14} /> 试试语音输入功能。如需更快响应速度，可在设置页绑定你自己的 API Key。</>,
 };
 
 function QAPage() {
+  const navigate = useNavigate();
   const toast = useToast();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [thinkingPhase, setThinkingPhase] = useState('');
   const [showConfirmClear, setShowConfirmClear] = useState(false);
-  const [recording, setRecording] = useState(false);
+  const [asrState, setAsrState] = useState('idle'); // idle | recording | processing
   const [asrSupported, setAsrSupported] = useState(false);
   const chatRef = useRef(null);
   const thinkingTimer = useRef(null);
@@ -95,7 +97,7 @@ function QAPage() {
       const source = audioCtx.createMediaStreamSource(stream);
 
       // 使用 ScriptProcessorNode 捕获原始 PCM（兼容所有浏览器）
-      const bufferSize = 4096;
+      const bufferSize = 1024;
       const processor = audioCtx.createScriptProcessor(bufferSize, 1, 1);
       const chunks = [];
       audioChunksRef.current = chunks;
@@ -133,7 +135,7 @@ function QAPage() {
         },
       };
 
-      setRecording(true);
+      setAsrState('recording');
       console.log('[ASR] Recording started (PCM 16kHz)');
     } catch (e) {
       console.error('[ASR] Mic access denied:', e);
@@ -145,12 +147,13 @@ function QAPage() {
   const stopRecording = () => {
     if (!mediaRecorderRef.current) return;
 
+    setAsrState('processing');
     const recorder = mediaRecorderRef.current;
     recorder.stop(); // cleanup audio context + merge PCM
 
     const pcmData = audioChunksRef.current;
     if (!pcmData || pcmData.length === 0) {
-      setRecording(false);
+      setAsrState('idle');
       toast.warning('未检测到声音，请重试');
       return;
     }
@@ -165,16 +168,16 @@ function QAPage() {
           setInput(prev => prev + text);
           toast.success('识别成功');
         }
-        setRecording(false);
+        setAsrState('idle');
       }).catch(e => {
         console.error('[ASR] Send error:', e);
         toast.error('语音识别失败: ' + (e.message || '网络错误'));
-        setRecording(false);
+        setAsrState('idle');
       });
     } catch (e) {
       console.error('[ASR] WAV encode error:', e);
       toast.error('语音处理失败: ' + (e.message || '未知错误'));
-      setRecording(false);
+      setAsrState('idle');
     }
   };
 
@@ -283,18 +286,14 @@ function QAPage() {
       stream: true,
     };
 
-    // 尝试 RAG 后端（非流式，快速获取检索来源）, then 直接流式 API
-    try {
-      const ragResp = await fetch(`${getApiBase()}/api/qa`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, api_key: apiConfig.apiKey || null }),
-        signal: AbortSignal.timeout(10000),
-      });
-      if (ragResp.ok) {
-        const d = await ragResp.json();
-        if (d.sources?.length > 0) sources = d.sources;
-      }
-    } catch (e) { console.error('RAG backend unavailable:', e.message); }
+    // RAG 检索：后台异步，不阻塞对话流
+    const ragPromise = fetch(`${getApiBase()}/api/qa`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, api_key: apiConfig.apiKey || null }),
+      signal: AbortSignal.timeout(8000),
+    }).then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.sources?.length > 0) sources = d.sources; })
+      .catch(() => {});
 
     // 流式调用 DeepSeek API（有用户Key直连，无Key走服务器代理）
     try {
@@ -361,6 +360,9 @@ function QAPage() {
       answer = '无法获取回答。\n\n请检查网络连接或在设置中配置 API Key。';
     }
 
+    // 等待 RAG 检索完成（不阻塞流式输出，仅补充参考文献）
+    await ragPromise;
+
     stopThinking();
     setLoading(false);
     // 最终更新，移除流式标记
@@ -414,6 +416,15 @@ function QAPage() {
           )
         )}
       </div>
+
+      {/* 未配置 API Key 时显示加速提示 */}
+      {!apiConfig.apiKey && (
+        <div style={{ flexShrink: 0, padding: '6px 14px', fontSize: 12, color: 'var(--ochre)', background: 'color-mix(in srgb, var(--ochre) 6%, var(--bg))', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
+          onClick={() => navigate('/settings')}>
+          <Icon name="icon-tip" size={14} />
+          当前使用服务器中转，响应较慢。点此配置你自己的 API Key 获得极速体验 →
+        </div>
+      )}
 
       <div className="chat-container" ref={chatRef} style={{ flex: 1, overflow: 'auto' }}>
         {messages.map((msg, i) => (
@@ -470,32 +481,53 @@ function QAPage() {
         <div ref={bottomRef} />
       </div>
 
-      <div className="chat-input-area" style={{ position: 'static', flexShrink: 0, padding: '6px 12px', paddingBottom: 12 }}>
+      <div className="chat-input-area" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', paddingBottom: 12, flexShrink: 0, background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
         <input
           className="chat-input"
-          placeholder={recording ? '正在聆听...' : '输入哲学问题...'}
+          placeholder={
+            asrState === 'recording' ? '正在聆听...' :
+            asrState === 'processing' ? '识别中...' :
+            '输入哲学问题...'
+          }
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          disabled={loading || recording}
+          disabled={loading || asrState !== 'idle'}
+          style={{ flex: 1, height: 42, lineHeight: '42px', padding: '0 16px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--card-bg)', color: 'var(--text)', fontSize: 14, fontFamily: 'inherit', outline: 'none' }}
         />
         {asrSupported && (
           <button
-            className={`chat-mic-btn${recording ? ' recording' : ''}`}
-            onClick={recording ? stopRecording : startRecording}
-            disabled={loading}
-            aria-label={recording ? '停止录音' : '语音输入'}
-            title={recording ? '点击停止' : '语音输入'}
+            className={`chat-mic-btn${asrState === 'recording' ? ' recording' : ''}${asrState === 'processing' ? ' loading' : ''}`}
+            onClick={asrState === 'recording' ? stopRecording : asrState === 'idle' ? startRecording : undefined}
+            disabled={loading || asrState === 'processing'}
+            style={{ width: 42, height: 42, minWidth: 42, maxWidth: 42, minHeight: 42, maxHeight: 42, borderRadius: '50%', border: '2px solid var(--border)', background: 'var(--card-bg)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: 0, overflow: 'hidden' }}
+            aria-label={
+              asrState === 'recording' ? '停止录音' :
+              asrState === 'processing' ? '识别中' :
+              '语音输入'
+            }
+            title={
+              asrState === 'recording' ? '点击停止' :
+              asrState === 'processing' ? '识别中...' :
+              '语音输入'
+            }
           >
-            {recording ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+            {asrState === 'processing' ? (
+              <span style={{ fontSize: 14, color: 'var(--ochre)', lineHeight: 1 }}>···</span>
+            ) : asrState === 'recording' ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ flexShrink: 0 }}><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
             ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
             )}
           </button>
         )}
-        <button className="chat-send-btn" onClick={sendMessage} disabled={loading} aria-label="发送">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        <button
+          className="chat-send-btn"
+          onClick={sendMessage} disabled={loading}
+          aria-label="发送"
+          style={{ width: 42, height: 42, minWidth: 42, maxWidth: 42, minHeight: 42, maxHeight: 42, borderRadius: '50%', border: 'none', background: 'var(--ink)', color: 'var(--bone)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: 0 }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
         </button>
       </div>
     </div>

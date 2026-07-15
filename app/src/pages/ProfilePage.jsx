@@ -255,7 +255,7 @@ function ProfilePage() {
               onClick={handleLogout}>退出登录</button>
             {loginUser === 'txdsyl_' && (
               <button className="btn btn-primary" style={{ marginTop: 6, padding: '6px 20px', fontSize: 12 }}
-                onClick={() => navigate('/DEVELOPER_IS_TXDSYL')}>🔧 开发者后台</button>
+                onClick={() => navigate('/DEVELOPER_IS_TXDSYL')}><Icon name="wrench" size={16} /> 开发者后台</button>
             )}
           </>
         ) : checking ? (
@@ -287,7 +287,7 @@ function ProfilePage() {
                     else { setLoggedIn(false); }
                   }).catch(() => { setChecking(false); setLoggedIn(true); });
                 } else { setChecking(false); }
-              }}>🔄 重试</button>
+              }}><Icon name="refresh" size={16} /> 重试</button>
             <button className="btn btn-danger" style={{ padding: '6px 20px', fontSize: 12 }}
               onClick={() => {
                 localStorage.removeItem('dp_token');
