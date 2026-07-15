@@ -204,9 +204,9 @@ function QAPage() {
     return new Blob([buffer], { type: 'audio/wav' });
   };
 
-  // 发送音频到后端 ASR
+  // 发送音频到后端 ASR（用相对路径，本地走 Vite 代理，线上同源）
   const sendAudioToASR = async (wavBlob) => {
-    const url = `${getApiBase()}/api/asr`;
+    const url = `/api/asr`;
     console.log('[ASR] Sending to:', url, 'size:', wavBlob.size);
     try {
       const resp = await fetch(url, {
