@@ -94,3 +94,9 @@ GITHUB_MANIFEST_PATH = os.path.join(os.path.dirname(__file__), "data", "github_m
 USE_OSS = os.getenv("USE_OSS", "False").lower() in ("true", "1", "yes")
 OSS_MANIFEST_PATH = os.path.join(os.path.dirname(__file__), "data", "oss_manifest.json")
 OSS_BUCKET_HOST = os.getenv("OSS_BUCKET_HOST", "deepphilosophy.oss-cn-shanghai.aliyuncs.com")
+
+# ============================================================
+# 百度语音识别配置（可选，用于 QA 页面语音输入）
+# ============================================================
+BAIDU_ASR_API_KEY = os.getenv("BAIDU_API_KEY", "")
+BAIDU_ASR_SECRET_KEY = os.getenv("BAIDU_SECRET_KEY", "")

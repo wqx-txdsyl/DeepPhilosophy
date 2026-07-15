@@ -1,5 +1,7 @@
-"""AI proxy and RAG QA routes"""
+"""AI proxy, RAG QA, and ASR routes"""
 import json
+import base64
+import requests as req_lib
 from fastapi import APIRouter, Request, Header
 from fastapi.responses import JSONResponse, StreamingResponse
 from typing import Optional
@@ -8,6 +10,27 @@ import config
 from auth import get_user_by_token, save_chat_message
 
 router = APIRouter()
+
+# ── Baidu ASR token cache ──────────────────────────────────
+_asr_token = None
+
+def _get_baidu_token():
+    global _asr_token
+    try:
+        resp = req_lib.post(
+            "https://aip.baidubce.com/oauth/2.0/token",
+            data={
+                "grant_type": "client_credentials",
+                "client_id": config.BAIDU_ASR_API_KEY,
+                "client_secret": config.BAIDU_ASR_SECRET_KEY,
+            },
+            timeout=10,
+        )
+        result = resp.json()
+        _asr_token = result.get("access_token")
+        return _asr_token
+    except Exception:
+        return None
 
 @router.post("/api/ai/stream")
 async def ai_stream_proxy(req: Request):
@@ -89,3 +112,53 @@ async def ask_question(req: QARequest, authorization: Optional[str] = Header(Non
         return result
     except Exception as e:
         return {"answer": f"问答服务暂时不可用: {str(e)}", "sources": [], "question": req.question}
+
+
+@router.post("/api/asr")
+async def speech_to_text(req: Request):
+    """语音识别：接收 WAV 音频，返回文本。需要配置百度 API Key。"""
+    if not config.BAIDU_ASR_API_KEY:
+        return JSONResponse({"error": "ASR not configured", "text": ""}, status_code=503)
+
+    # Ensure token
+    global _asr_token
+    if not _asr_token:
+        _asr_token = _get_baidu_token()
+    if not _asr_token:
+        return JSONResponse({"error": "Baidu token failed", "text": ""}, status_code=502)
+
+    # Read raw audio from request body
+    raw_audio = await req.body()
+    if not raw_audio or len(raw_audio) < 100:
+        return JSONResponse({"error": "Audio too short", "text": ""}, status_code=400)
+
+    # Call Baidu ASR
+    try:
+        payload = {
+            "format": "wav",
+            "rate": 16000,
+            "channel": 1,
+            "cuid": "deepphilosophy_web",
+            "token": _asr_token,
+            "speech": base64.b64encode(raw_audio).decode(),
+            "len": len(raw_audio),
+        }
+        resp = req_lib.post(
+            "https://vop.baidu.com/server_api",
+            json=payload,
+            timeout=10,
+        )
+        result = resp.json()
+        err_no = result.get("err_no")
+        if err_no == 0:
+            text = result.get("result", [""])[0]
+            return {"text": text}
+        elif err_no in (3301, 3302, 3303):
+            # Token expired, refresh and tell client to retry
+            _asr_token = _get_baidu_token()
+            return JSONResponse({"error": "Token expired, retry", "text": ""}, status_code=401)
+        else:
+            err_msg = result.get("err_msg", "unknown")
+            return JSONResponse({"error": err_msg, "text": ""}, status_code=502)
+    except Exception as e:
+        return JSONResponse({"error": str(e), "text": ""}, status_code=502)

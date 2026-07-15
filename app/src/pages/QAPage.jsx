@@ -5,6 +5,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { getApiBase } from '../App';
 import Icon from '../components/Icon';
+import { useToast } from '../contexts/ToastContext';
 import { saveChatMessage, getChatHistory, clearChatHistory } from '../data/userData';
 
 const WELCOME_MSG = {
@@ -13,13 +14,18 @@ const WELCOME_MSG = {
 };
 
 function QAPage() {
+  const toast = useToast();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [thinkingPhase, setThinkingPhase] = useState('');
   const [showConfirmClear, setShowConfirmClear] = useState(false);
+  const [recording, setRecording] = useState(false);
+  const [asrSupported, setAsrSupported] = useState(false);
   const chatRef = useRef(null);
   const thinkingTimer = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
 
   // 思考阶段动画
   const thinkingPhases = [
@@ -76,6 +82,162 @@ function QAPage() {
     import('../data/crypto').then(({ loadConfig }) => loadConfig().then(setApiConfig));
   }, []);
 
+  // 检测浏览器是否支持录音
+  useEffect(() => {
+    setAsrSupported(!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder));
+  }, []);
+
+  // 开始录音（直接捕获 PCM 16kHz mono，省去 WebM→WAV 转换）
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+      const source = audioCtx.createMediaStreamSource(stream);
+
+      // 使用 ScriptProcessorNode 捕获原始 PCM（兼容所有浏览器）
+      const bufferSize = 4096;
+      const processor = audioCtx.createScriptProcessor(bufferSize, 1, 1);
+      const chunks = [];
+      audioChunksRef.current = chunks;
+
+      processor.onaudioprocess = (e) => {
+        const input = e.inputBuffer.getChannelData(0);
+        // 复制 Float32Array 数据
+        const copy = new Float32Array(input.length);
+        copy.set(input);
+        chunks.push(copy);
+      };
+
+      source.connect(processor);
+      processor.connect(audioCtx.destination);
+
+      // 保存引用以便停止时清理
+      mediaRecorderRef.current = {
+        stop: () => {
+          processor.disconnect();
+          source.disconnect();
+          audioCtx.close();
+          stream.getTracks().forEach(t => t.stop());
+
+          // 将所有 PCM 块合并编码为 WAV
+          const totalLen = chunks.reduce((s, c) => s + c.length, 0);
+          if (totalLen === 0) return;
+
+          const pcmData = new Float32Array(totalLen);
+          let offset = 0;
+          for (const c of chunks) {
+            pcmData.set(c, offset);
+            offset += c.length;
+          }
+          audioChunksRef.current = pcmData;
+        },
+      };
+
+      setRecording(true);
+      console.log('[ASR] Recording started (PCM 16kHz)');
+    } catch (e) {
+      console.error('[ASR] Mic access denied:', e);
+      toast.error('无法访问麦克风，请检查浏览器权限');
+    }
+  };
+
+  // 停止录音 + 编码 WAV + 发送 ASR
+  const stopRecording = () => {
+    if (!mediaRecorderRef.current) return;
+
+    const recorder = mediaRecorderRef.current;
+    recorder.stop(); // cleanup audio context + merge PCM
+
+    const pcmData = audioChunksRef.current;
+    if (!pcmData || pcmData.length === 0) {
+      setRecording(false);
+      toast.warning('未检测到声音，请重试');
+      return;
+    }
+
+    console.log('[ASR] Recording stopped, samples:', pcmData.length);
+    try {
+      const wavBlob = encodeWav(pcmData, 16000);
+      console.log('[ASR] WAV encoded, size:', wavBlob.size);
+      sendAudioToASR(wavBlob).then(text => {
+        if (text) {
+          console.log('[ASR] Recognized:', text);
+          setInput(prev => prev + text);
+          toast.success('识别成功');
+        }
+        setRecording(false);
+      }).catch(e => {
+        console.error('[ASR] Send error:', e);
+        toast.error('语音识别失败: ' + (e.message || '网络错误'));
+        setRecording(false);
+      });
+    } catch (e) {
+      console.error('[ASR] WAV encode error:', e);
+      toast.error('语音处理失败: ' + (e.message || '未知错误'));
+      setRecording(false);
+    }
+  };
+
+  // Float32 PCM → WAV Blob (16-bit PCM, 16kHz, mono)
+  const encodeWav = (samples, sampleRate) => {
+    const numSamples = samples.length;
+    const buffer = new ArrayBuffer(44 + numSamples * 2);
+    const view = new DataView(buffer);
+    const w = (off, str) => { for (let i = 0; i < str.length; i++) view.setUint8(off + i, str.charCodeAt(i)); };
+    w(0, 'RIFF');
+    view.setUint32(4, 36 + numSamples * 2, true);
+    w(8, 'WAVE');
+    w(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, 1, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * 2, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    w(36, 'data');
+    view.setUint32(40, numSamples * 2, true);
+    for (let i = 0; i < numSamples; i++) {
+      const s = Math.max(-1, Math.min(1, samples[i]));
+      view.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    }
+    return new Blob([buffer], { type: 'audio/wav' });
+  };
+
+  // 发送音频到后端 ASR
+  const sendAudioToASR = async (wavBlob) => {
+    const url = `${getApiBase()}/api/asr`;
+    console.log('[ASR] Sending to:', url, 'size:', wavBlob.size);
+    try {
+      const resp = await fetch(url, {
+        method: 'POST',
+        body: wavBlob,
+        headers: { 'Content-Type': 'audio/wav' },
+        signal: AbortSignal.timeout(15000),
+      });
+      console.log('[ASR] Response status:', resp.status);
+      const data = await resp.json();
+      console.log('[ASR] Response body:', data);
+      if (resp.ok) {
+        return data.text || '';
+      } else if (resp.status === 503) {
+        toast.info('语音识别服务未配置，请使用文字输入');
+      } else if (resp.status === 404) {
+        toast.error('后端未部署语音接口，请重新部署 Render');
+      } else {
+        toast.warning(`语音识别失败 (${resp.status}): ${data.error || data.detail || '未知错误'}`);
+      }
+    } catch (e) {
+      console.error('[ASR] Request failed:', e);
+      if (e.name === 'AbortError') {
+        toast.warning('语音识别超时，请重试');
+      } else {
+        toast.warning('语音识别请求失败，请检查网络');
+      }
+    }
+    return '';
+  };
+
   // 自动滚动到底部（流式输出时逐字跟随）
   const bottomRef = useRef(null);
   useEffect(() => {
@@ -89,9 +251,22 @@ function QAPage() {
 
     const question = input.trim();
     setInput('');
+
+    // 先构建 API 消息（用当前 messages state + 新问题），再更新 UI
+    const historyMessages = messages
+      .filter(m => !m._streaming && m.role !== 'system')
+      .filter(m => typeof m.content === 'string' && m.content.trim().length > 0)
+      .slice(-30);
+
+    const apiMessages = [
+      { role: 'system', content: '你是一个哲学知识助手，精通中西方哲学。请用中文回答，回答要准确、有深度。如果用户询问特定著作或哲学家，请详细阐述其核心思想。' },
+      ...historyMessages.map(m => ({ role: m.role, content: m.content })),
+      { role: 'user', content: question },
+    ];
+
+    // 更新 UI
     const userMsg = { role: 'user', content: question };
     setMessages(prev => [...prev, userMsg]);
-    // 占位消息，后续流式更新
     setMessages(prev => [...prev, { role: 'assistant', content: '', sources: [], _streaming: true }]);
     setLoading(true);
     startThinking();
@@ -100,12 +275,10 @@ function QAPage() {
     let sources = [];
 
     const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
+
     const streamBody = {
       model: apiConfig.model || 'deepseek-chat',
-      messages: [
-        { role: 'system', content: '你是一个哲学知识助手，精通中西方哲学。请用中文回答，回答要准确、有深度。如果用户询问特定著作或哲学家，请详细阐述其核心思想。' },
-        { role: 'user', content: question },
-      ],
+      messages: apiMessages,
       temperature: 0.7, max_tokens: 1024,
       stream: true,
     };
@@ -300,14 +473,29 @@ function QAPage() {
       <div className="chat-input-area" style={{ position: 'static', flexShrink: 0, padding: '6px 12px', paddingBottom: 12 }}>
         <input
           className="chat-input"
-          placeholder="输入哲学问题..."
+          placeholder={recording ? '正在聆听...' : '输入哲学问题...'}
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          disabled={loading}
+          disabled={loading || recording}
         />
-        <button className="chat-send-btn" onClick={sendMessage} disabled={loading}>
-          ↑
+        {asrSupported && (
+          <button
+            className={`chat-mic-btn${recording ? ' recording' : ''}`}
+            onClick={recording ? stopRecording : startRecording}
+            disabled={loading}
+            aria-label={recording ? '停止录音' : '语音输入'}
+            title={recording ? '点击停止' : '语音输入'}
+          >
+            {recording ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+            )}
+          </button>
+        )}
+        <button className="chat-send-btn" onClick={sendMessage} disabled={loading} aria-label="发送">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
         </button>
       </div>
     </div>

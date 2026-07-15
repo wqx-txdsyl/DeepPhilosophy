@@ -54,6 +54,31 @@ const REGIONS = [
 function WorldMap() {
   const navigate = useNavigate();
   const [hover, setHover] = useState(null);
+  const [touchActive, setTouchActive] = useState(null); // tap once to show, tap again to go
+
+  const handleRegionClick = (r, e) => {
+    // Desktop: direct navigate (tooltip shown on hover)
+    // Touch: first tap shows tooltip, second tap navigates
+    if (touchActive && touchActive.id === r.id) {
+      navigate(r.path);
+      setTouchActive(null);
+      setHover(null);
+    } else {
+      setTouchActive(r);
+      setHover(r);
+      e.preventDefault();
+    }
+  };
+
+  const handleRegionMouseEnter = (r) => {
+    setHover(r);
+    setTouchActive(null);
+  };
+
+  const handleRegionMouseLeave = () => {
+    // Only clear on desktop; on touch, keep until user taps elsewhere
+    if (!touchActive) setHover(null);
+  };
 
   return (
     <div style={{ position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
@@ -64,12 +89,12 @@ function WorldMap() {
         <div key={r.id}
           role="button" tabIndex={0}
           aria-label={r.name + ' — ' + r.desc}
-          onMouseEnter={() => setHover(r)}
-          onMouseLeave={() => setHover(null)}
+          onMouseEnter={() => handleRegionMouseEnter(r)}
+          onMouseLeave={handleRegionMouseLeave}
           onFocus={() => setHover(r)}
-          onBlur={() => setHover(null)}
-          onClick={() => navigate(r.path)}
-          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(r.path); } }}
+          onBlur={() => { if (!touchActive) setHover(null); }}
+          onClick={(e) => handleRegionClick(r, e)}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleRegionClick(r, e); } }}
           title=""
           style={{
             position: 'absolute',

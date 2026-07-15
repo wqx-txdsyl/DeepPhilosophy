@@ -11,7 +11,7 @@ function Icon({ name, size = 20, style, className, ...props }) {
       width={size}
       height={size}
       {...props}
-      className={className}
+      className={`icon-img${className ? ' ' + className : ''}`}
       style={{
         width: size,
         height: size,

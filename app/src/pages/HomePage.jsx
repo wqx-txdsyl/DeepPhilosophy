@@ -7,6 +7,7 @@ import { getApiBase } from '../App';
 import DAILY_QUOTES from '../data/dailyQuotes';
 import { normalizeTag } from '../data/tagMaps';
 import WorldMap from '../components/WorldMap';
+import NavBar from '../components/NavBar';
 import Icon from '../components/Icon';
 
 const WESTERN_TIMELINE = [
@@ -339,55 +340,13 @@ function HomePage() {
   return (
     <div className="page-container" style={{ paddingBottom: 0, margin: 0 }}>
 
-      {/* Floating nav bar — matching header layout */}
-      <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-        display: 'flex', alignItems: 'center',
-        padding: '16px 20px',
-      }}>
-        <h1 onClick={() => navigate('/')} style={{
-          fontFamily: '"Playfair Display","PingFang SC",serif',
-          fontSize: 16, fontWeight: 400, fontStyle: 'italic',
-          color: 'var(--ink)', cursor: 'pointer',
-          margin: 0, marginRight: 4, letterSpacing: '0.03em',
-        }}>DeepPhilosophy</h1>
-        <span style={{ display: 'flex', gap: 0, marginRight: 'auto', marginLeft: -2 }}>
-          {[
-            { label: <Icon name="nav-books" size={16} />, text: '书籍', path: '/books' },
-            { label: <Icon name="nav-authors" size={16} />, text: '哲人', path: '/authors' },
-            { label: <Icon name="nav-genealogy" size={16} />, text: '谱系', path: '/genealogy' },
-            { label: <Icon name="nav-qa" size={16} />, text: '问答', path: '/qa' },
-            { label: <Icon name="nav-games" size={16} />, text: '游戏', path: '/games' },
-          ].map(item => (
-            <button key={item.path} onClick={() => navigate(item.path)}
-              className="nav-btn"
-              style={{ flexDirection: 'row', gap: 3, fontSize: 12, padding: '4px 8px' }}>
-              <span style={{ fontSize: 15 }}>{item.label}</span>
-              <span>{item.text}</span>
-            </button>
-          ))}
-        </span>
-      </nav>
-
-      {/* Floating login/user button — right side */}
-      <button onClick={() => navigate('/profile')} style={{
-        position: 'fixed', top: 18, right: 20, zIndex: 1000,
-        fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 500,
-        color: 'var(--ink)', background: 'color-mix(in srgb, var(--primary) 70%, transparent)', backdropFilter: 'blur(8px)',
-        border: '1px solid var(--border)', borderRadius: 4, padding: '8px 18px',
-        cursor: 'pointer', letterSpacing: '0.04em', transition: 'all 0.25s'
-      }}
-        onMouseEnter={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 90%, transparent)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 70%, transparent)'; e.currentTarget.style.borderColor = 'var(--border)'; }}>
-        {loggedIn && username ? <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            {userAvatar ? (
-              <img src={userAvatar} alt="" style={{ width: 24, height: 24, borderRadius: 6, objectFit: 'cover' }} />
-            ) : (
-              <Icon name="btn-user" size={16} />
-            )}
-            {username}
-          </span> : '登录 / 注册'}
-      </button>
+      {/* Floating nav bar — unified NavBar component */}
+      <NavBar
+        variant="floating"
+        loggedIn={loggedIn}
+        username={username}
+        userAvatar={userAvatar}
+      />
 
       {/* ══════════ HERO — full screen, world philosophy background ══════════ */}
       <section style={{

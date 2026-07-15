@@ -2,7 +2,7 @@
  * 书籍分区 —— 按东方/西方 → 作者层级浏览
  * 支持分类标签筛选、搜索、摘要预览
  */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Icon from '../components/Icon';
 
 function FadeCard({ children, style }) {
@@ -97,15 +97,18 @@ function BooksPage() {
     return true;
   });
 
-  // 分组
-  const grouped = {};
-  filtered.forEach(b => {
-    const region = b.region;
-    const author = b.author;
-    if (!grouped[region]) grouped[region] = {};
-    if (!grouped[region][author]) grouped[region][author] = [];
-    grouped[region][author].push(b);
-  });
+  // 分组（memoized 避免每次渲染重算）
+  const grouped = useMemo(() => {
+    const g = {};
+    filtered.forEach(b => {
+      const region = b.region;
+      const author = b.author;
+      if (!g[region]) g[region] = {};
+      if (!g[region][author]) g[region][author] = [];
+      g[region][author].push(b);
+    });
+    return g;
+  }, [filtered]);
 
   if (loading) return <div className="loading">加载中...</div>;
 
@@ -172,7 +175,7 @@ function BooksPage() {
         if (b === '东方') return 1;
         return a.localeCompare(b);
       }).map(region => (
-        <div key={region}>
+        <div key={region} className="books-author-group" role="list" aria-label={`${region}哲学作者列表`}>
           <h2 className="section-title">
             {region === '东方' ? <Icon name='region-east-pagoda' size={16} /> : <Icon name='region-west' size={16} />} {region}哲学
           </h2>
@@ -181,9 +184,12 @@ function BooksPage() {
             const isExpanded = expandedAuthor === `${region}-${author}`;
             return (
               <FadeCard key={author} style={{ marginBottom: 6 }}>
-                <div className="card"
+                <div className="card" role="listitem"
+                  tabIndex={0}
+                  aria-expanded={isExpanded}
                   style={{ marginBottom: isExpanded ? 4 : 8 }}
-                  onClick={() => setExpandedAuthor(isExpanded ? null : `${region}-${author}`)}>
+                  onClick={() => setExpandedAuthor(isExpanded ? null : `${region}-${author}`)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpandedAuthor(isExpanded ? null : `${region}-${author}`); } }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span className="card-title">{author}</span>
                     <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>

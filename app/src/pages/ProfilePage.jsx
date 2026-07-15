@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import Icon from '../components/Icon';
 import AvatarUpload from '../components/AvatarUpload';
+import { useToast } from '../contexts/ToastContext';
 import {
   getReadingHistory, getChatHistory, clearChatHistory,
   getAllUserData, relativeTime,
@@ -14,6 +15,7 @@ import {
 
 function ProfilePage() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [tab, setTab] = useState('reading');
   const [readingHistory, setReadingHistory] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
@@ -207,7 +209,8 @@ function ProfilePage() {
   };
 
   const handleClearChat = () => {
-    if (confirm('确定清空所有聊天历史？')) {
+    // Use browser confirm for destructive action (with toast feedback after)
+    if (window.confirm('确定清空所有聊天历史？此操作不可撤销。')) {
       clearChatHistory();
       if (loggedIn) {
         const token = localStorage.getItem('dp_token');
@@ -217,6 +220,7 @@ function ProfilePage() {
         }).catch(() => {});
       }
       setChatHistory([]);
+      toast.success('聊天历史已清空');
     }
   };
 
@@ -350,11 +354,12 @@ function ProfilePage() {
           <>
             <button className="btn btn-secondary" style={{ marginBottom: 8, padding: '4px 12px', fontSize: 12 }}
               onClick={() => {
-                if (!confirm('确定清空所有阅读记录？')) return;
+                if (!window.confirm('确定清空所有阅读记录？此操作不可撤销。')) return;
                 const d = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
                 d.readingHistory = [];
                 localStorage.setItem('dp_userdata', JSON.stringify(d));
                 setReadingHistory([]);
+                toast.success('阅读记录已清空');
               }}><Icon name="icon-trash" size={14} /> 清空阅读记录</button>
             {readingHistory.map((item, i) => (
             <div key={i} className="card" style={{ cursor: 'pointer' }}

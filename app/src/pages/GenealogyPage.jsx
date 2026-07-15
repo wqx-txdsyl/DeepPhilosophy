@@ -212,23 +212,18 @@ function SchoolImg({ school, w }) {
   );
 }
 
-// ─── Shared styles (avoids {{ JSX parse issues in compact blocks) ───
-const $flex = {display:'flex',gap:10,justifyContent:'center',alignItems:'flex-start'};
-const $col = {display:'flex',flexDirection:'column',gap:10};
-const $cen = {display:'flex',justifyContent:'center'};
-const $pad = (n) => ({paddingTop:n});
+// Shared row layout for school image grid
+const SCHOOL_ROW_STYLE = { display: 'flex', gap: 10, justifyContent: 'center', alignItems: 'flex-start' };
 
-function BlockA({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockB({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockC({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockD({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockE({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockF({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockG({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockH({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockI({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-function BlockJ({s}){return(<div style={$flex}>{s.map((x,i)=><SchoolImg key={i} school={x} w={tierW(x)}/>)}</div>)}
-const BLOCKS=[BlockA,BlockB,BlockC,BlockD,BlockE,BlockF,BlockG,BlockH,BlockI,BlockJ];
+function SchoolRow({ schools }) {
+  return (
+    <div style={SCHOOL_ROW_STYLE}>
+      {schools.map((school, i) => (
+        <SchoolImg key={i} school={school} w={tierW(school)} />
+      ))}
+    </div>
+  );
+}
 
 // ─── Chapter structure ───
 function buildChapters() {
@@ -282,10 +277,11 @@ export default function GenealogyPage() {
                   <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'var(--ink)', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
                 </section>
                 <div style={{ maxWidth:900, margin:'0 auto', padding:'0 16px' }}>
-                  {chunks.map((chunk, bi) => {
-                    const Block = BLOCKS[(ci*10+ri*5+bi) % BLOCKS.length];
-                    return <div key={bi} style={{ padding:'16px 0' }}><Block s={chunk} /></div>;
-                  })}
+                  {chunks.map((chunk, bi) => (
+                    <div key={bi} style={{ padding: '16px 0' }}>
+                      <SchoolRow schools={chunk} />
+                    </div>
+                  ))}
                 </div>
                 <div style={{ height:60 }} />
               </FadeWrap>

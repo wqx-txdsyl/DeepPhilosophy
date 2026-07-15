@@ -9,6 +9,10 @@ import { startAutoSave, stopAutoSave } from './data/userData';
 import { getApiBase } from './utils/api';
 import ErrorBoundary from './components/ErrorBoundary';
 import Icon from './components/Icon';
+import NavBar from './components/NavBar';
+import ScrollToTopButton from './components/ScrollToTop';
+import ReadingProgress from './components/ReadingProgress';
+import { ToastProvider } from './contexts/ToastContext';
 // 首屏+常用页面（eager：小文件，即时响应）
 import BooksPage from './pages/BooksPage';
 import AuthorsPage from './pages/AuthorsPage';
@@ -89,12 +93,14 @@ function ScrollToTop() {
 
 function App() {
   return (
+    <ToastProvider>
     <BrowserRouter>
       <ScrollToTop />
       <div className="app-container">
         <MainLayout />
       </div>
     </BrowserRouter>
+    </ToastProvider>
   );
 }
 
@@ -143,61 +149,32 @@ function MainLayout() {
     return () => { window.removeEventListener('scroll', onScroll); };
   }, [location.pathname]);
 
-  const tabs = [
-    { key: 'books', label: <Icon name="nav-books" size={16} />, text: '书籍', path: '/books' },
-    { key: 'authors', label: <Icon name="nav-authors" size={16} />, text: '哲人', path: '/authors' },
-    { key: 'genealogy', label: <Icon name="nav-genealogy" size={16} />, text: '谱系', path: '/genealogy' },
-    { key: 'qa', label: <Icon name="nav-qa" size={16} />, text: '问答', path: '/qa' },
-    { key: 'games', label: <Icon name="nav-games" size={16} />, text: '游戏', path: '/games' },
-  ];
-
-  const getActiveTab = () => {
-    const p = location.pathname;
-    if (p.startsWith('/authors') || p.startsWith('/author')) return 'authors';
-    if (p.startsWith('/genealogy')) return 'genealogy';
-    if (p.startsWith('/qa')) return 'qa';
-    if (p.startsWith('/games')) return 'games';
-    if (p.startsWith('/profile')) return 'profile';
-    if (p === '/' || p.startsWith('/school')) return 'genealogy';
-    return 'books';
-  };
-
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
   const isQA = location.pathname.startsWith('/qa');
   const hideHeader = isHome || isReader || isSchool;
-  const activeTab = getActiveTab();
 
   return (
     <>
-      {!hideHeader && (
-        <header className="app-header">
-          <h1 className="app-title" onClick={() => navigate('/')} style={{ marginRight: 4 }}>
-            DeepPhilosophy
-          </h1>
-          <span style={{ display: 'flex', gap: 0, marginRight: 'auto', marginLeft: -2 }}>
-            {tabs.map((tab) => (
-              <button key={tab.key} className={`nav-btn ${activeTab === tab.key ? 'active' : ''}`}
-                onClick={() => navigate(tab.path)}
-                style={{ flexDirection: 'row', gap: 3, fontSize: 12, padding: '4px 8px' }}>
-                {tab.label}
-                <span>{tab.text}</span>
-              </button>
-            ))}
-          </span>
-          <span style={{ display: 'flex', gap: 0, flexShrink: 0 }}>
-            <button className="settings-btn" onClick={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }} title="手机版"><Icon name={mobileMode ? 'mode-desktop' : 'mode-mobile'} size={18} /></button>
-            <button className="settings-btn" onClick={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}><Icon name={darkMode ? 'theme-light' : 'theme-dark'} size={18} /></button>
-            <button className="settings-btn" onClick={() => navigate('/settings')}><Icon name="btn-settings" size={18} /></button>
-            <button className="settings-btn" onClick={() => navigate('/profile')}><Icon name="btn-user" size={18} /></button>
-          </span>
-        </header>
-      )}
+      {/* 阅读进度条 */}
+      <ReadingProgress />
 
-      <main className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}${isQA ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isQA) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      {/* 跳过导航，直达内容（可访问性） */}
+      <a href="#main-content" className="skip-link">跳转到主要内容</a>
+
+      <NavBar
+        variant={hideHeader ? 'hidden' : 'sticky'}
+        darkMode={darkMode}
+        mobileMode={mobileMode}
+        onToggleDarkMode={() => { setDarkMode(!darkMode); localStorage.setItem('dp_dark_mode', !darkMode ? '1' : '0'); }}
+        onToggleMobileMode={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }}
+      />
+
+      <main id="main-content" className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}${isQA ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isQA) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
+        <div key={location.pathname} className="page-enter">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BooksPage />} />
@@ -220,9 +197,13 @@ function MainLayout() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
         </Routes>
+        </div>
         </Suspense>
         </ErrorBoundary>
       </main>
+
+      {/* 返回顶部浮动按钮 */}
+      <ScrollToTopButton />
 
     </>
   );
