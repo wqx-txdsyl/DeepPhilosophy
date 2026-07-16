@@ -84,12 +84,12 @@ def extract_txt_text(filepath):
 
 @router.get("/api/books/{book_id}/text")
 async def get_book_text(book_id: str):
-    """获取书籍纯文本 + 章节索引（缓存 1 小时）"""
+    """获取书籍纯文本 + 章节索引。首次提取后永久缓存到本地 + OSS/GitHub。"""
     os.makedirs(CACHE_DIR, exist_ok=True)
     cache_path = os.path.join(CACHE_DIR, f"{book_id}.json")
 
     # 读缓存
-    if os.path.exists(cache_path):
+    if os.path.exists(cache_path) and os.path.getsize(cache_path) > 100:
         with open(cache_path, 'r', encoding='utf-8') as f:
             return json.load(f)
 
