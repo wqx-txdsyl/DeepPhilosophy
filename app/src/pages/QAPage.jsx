@@ -7,7 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import Icon from '../components/Icon';
 import { useToast } from '../contexts/ToastContext';
-import { saveChatMessage, getChatHistory, clearChatHistory } from '../data/userData';
+import { ensureSession, updateSession, newConversation } from '../data/chatSessions';
+import { saveChatMessage } from '../data/userData';
 
 const WELCOME_MSG = {
   role: 'assistant',
@@ -24,6 +25,7 @@ function QAPage() {
   const [showConfirmClear, setShowConfirmClear] = useState(false);
   const [asrState, setAsrState] = useState('idle'); // idle | recording | processing
   const [asrSupported, setAsrSupported] = useState(false);
+  const sessionIdRef = useRef(null);
   const chatRef = useRef(null);
   const thinkingTimer = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -54,24 +56,28 @@ function QAPage() {
     setThinkingPhase('');
   };
 
-  // Load saved chat history on mount (behaves like all normal AI clients)
+  // 会话管理：保持对话不丢失
   useEffect(() => {
-    const history = getChatHistory();
-    if (history.length > 0) {
-      const msgs = history.map(m => {
-        let sources = m.sources || [];
-        // 云端同步时 sources 可能是 JSON 字符串，需要转回数组
-        if (typeof sources === 'string') {
-          try { sources = JSON.parse(sources); } catch { sources = []; }
-        }
-        if (!Array.isArray(sources)) sources = [];
-        return { role: m.role, content: m.content, sources };
-      });
-      setMessages(msgs);
+    const session = ensureSession();
+    sessionIdRef.current = session.id;
+    if (session.messages.length > 0) {
+      setMessages(session.messages);
     } else {
       setMessages([WELCOME_MSG]);
     }
   }, []);
+
+  // 消息变化时自动保存到当前会话（过滤 JSX 欢迎消息）
+  useEffect(() => {
+    if (sessionIdRef.current && messages.length > 1) {
+      const saveable = messages
+        .filter(m => typeof m.content === 'string')
+        .map(m => ({ role: m.role, content: m.content, sources: m.sources || [] }));
+      if (saveable.length > 0) {
+        updateSession(sessionIdRef.current, saveable);
+      }
+    }
+  }, [messages]);
 
   useEffect(() => {
     return () => {
@@ -209,7 +215,7 @@ function QAPage() {
 
   // 发送音频到后端 ASR（用相对路径，本地走 Vite 代理，线上同源）
   const sendAudioToASR = async (wavBlob) => {
-    const url = `/api/asr`;
+    const url = `${getApiBase()}/api/asr`;
     console.log('[ASR] Sending to:', url, 'size:', wavBlob.size);
     try {
       const resp = await fetch(url, {
@@ -376,13 +382,15 @@ function QAPage() {
       return updated;
     });
 
-    // Save history
+    // 云端同步（后台，不阻塞 UI）
     saveChatMessage('user', question);
     saveChatMessage('assistant', answer, sources);
+
   };
 
   const handleClearChat = () => {
-    clearChatHistory();
+    const session = newConversation();
+    sessionIdRef.current = session.id;
     setMessages([WELCOME_MSG]);
     setShowConfirmClear(false);
   };

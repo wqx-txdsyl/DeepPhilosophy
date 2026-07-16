@@ -9,9 +9,10 @@ import Icon from '../components/Icon';
 import AvatarUpload from '../components/AvatarUpload';
 import { useToast } from '../contexts/ToastContext';
 import {
-  getReadingHistory, getChatHistory, clearChatHistory,
+  getReadingHistory, clearChatHistory,
   getAllUserData, relativeTime,
 } from '../data/userData';
+import { getSessions, deleteSession } from '../data/chatSessions';
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function ProfilePage() {
   const [tab, setTab] = useState('reading');
   const [readingHistory, setReadingHistory] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
+  const [chatSessions, setChatSessions] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
@@ -58,11 +60,18 @@ function ProfilePage() {
       setChecking(false);
     }
     setReadingHistory(getReadingHistory());
-    setChatHistory(getChatHistory());
+    const sessions = getSessions();
+    setChatSessions(sessions);
+    // 兼容旧统计数据格式
+    const allMsgs = sessions.reduce((arr, s) => arr.concat(s.messages), []);
+    setChatHistory(allMsgs);
   }, []); // 只在挂载时运行，切换 tab 不重复请求
+
+  const refreshSessions = () => setChatSessions(getSessions());
 
   const switchTab = (t) => {
     setTab(t);
+    if (t === 'chat') refreshSessions();
     window.scrollTo(0, 0);
     const m = document.querySelector('.app-main');
     if (m) m.style.transform = 'translateY(0)';
@@ -363,7 +372,7 @@ function ProfilePage() {
               }}><Icon name="icon-trash" size={14} /> 清空阅读记录</button>
             {readingHistory.map((item, i) => (
             <div key={i} className="card" style={{ cursor: 'pointer' }}
-              onClick={() => navigate('/reader/' + item.bookId)}>
+              onClick={() => navigate(`/reader/${item.bookId}?type=${item.fileType || ''}`)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div className="card-title" style={{ fontSize: 14, flex: 1 }}>{item.bookTitle}</div>
                 {item.fileType && (
@@ -385,26 +394,56 @@ function ProfilePage() {
         )
       )}
 
-      {/* Chat History */}
+      {/* Chat History — 会话列表 */}
       {tab === 'chat' && (
         <div key="chat-tab">
-          {(Array.isArray(chatHistory) && chatHistory.length > 0) && (
-            <button className="btn btn-secondary" style={{ marginBottom: 8, padding: '4px 12px', fontSize: 12 }}
-              onClick={handleClearChat}><Icon name="icon-trash" size={14} /> 清空聊天</button>
-          )}
-          {(!Array.isArray(chatHistory) || chatHistory.length === 0) ? (
-            <div className="empty-state"><p>暂无聊天记录</p><p style={{fontSize:12,color:'var(--text-dim)'}}>在问答页面进行的对话会自动保存在这里</p></div>
-          ) : (
-            chatHistory.map((msg, i) => (
-              <div key={i} className={`chat-message ${msg.role}`}
-                style={{ maxWidth: '100%', marginBottom: 8, alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
-                <div style={{ whiteSpace: 'pre-wrap', fontSize: 13 }}>{msg.content}</div>
-                {Array.isArray(msg.sources) && msg.sources.length > 0 && (
-                  <div className="chat-sources"><Icon name="icon-link" size={14} /> {msg.sources.join(', ')}</div>
-                )}
-              </div>
-            ))
-          )}
+          {(() => {
+            const sessions = chatSessions.filter(s => s.messages.length > 0);
+            if (sessions.length === 0) {
+              return (
+                <div className="empty-state">
+                  <p>暂无聊天记录</p>
+                  <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4 }}>
+                    在问答页面进行的对话会自动保存在这里
+                  </p>
+                </div>
+              );
+            }
+            return sessions.map(s => {
+              const lastMsg = s.messages[s.messages.length - 1] || {};
+              const preview = typeof lastMsg.content === 'string'
+                ? lastMsg.content.replace(/\n/g, ' ').slice(0, 60)
+                : '';
+              return (
+                <div key={s.id} className="card"
+                  style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  onClick={() => {
+                    localStorage.setItem('dp_current_session', s.id);
+                    navigate('/qa');
+                  }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="card-title" style={{ fontSize: 14 }}>{s.title}</div>
+                    <div className="card-subtitle" style={{ fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {preview || '（空对话）'}
+                    </div>
+                    <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: 4 }}>
+                      {new Date(s.updatedAt).toLocaleString('zh-CN')} · {s.messages.length} 条消息
+                    </div>
+                  </div>
+                  <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 10, marginLeft: 8, flexShrink: 0 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (window.confirm('删除该对话？')) {
+                        deleteSession(s.id);
+                        refreshSessions();
+                      }
+                    }}>
+                    <Icon name="icon-trash" size={12} />
+                  </button>
+                </div>
+              );
+            });
+          })()}
         </div>
       )}
     </div>

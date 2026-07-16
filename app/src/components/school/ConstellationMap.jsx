@@ -1,80 +1,62 @@
-import { useState, useCallback } from 'react';
+/**
+ * 思想星丛 — Museum-grade philosopher relationship constellation
+ * 有机星图 · 贝塞尔连线 · 电影级视觉 · 智能聚焦
+ */
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FONT, SPACE } from './tokens';
 
-// ─── 4 大类连线样式（覆盖全部 939 条关系边） ───
-// ── 师生/继承（实线）      — 直接传承、创立、学派延续
-// - - 影响/再传（短虚线）   — 思想启发、间接传承、发展
-// —— 批判/对立（长虚线）   — 批评、反驳、对立、分裂
-// ··· 学术交流（点线）      — 合作、对话、注释、友谊
+// ─── 连线样式（保留原有分类） ───
 const EDGE_STYLES = {
-  // ── 师生/继承（实线，蓝灰色）──
-  '师生':        { stroke: 'rgba(58,90,124,0.55)', width: 2.0, dash: '' },
-  '继承':        { stroke: 'rgba(58,90,124,0.40)', width: 1.6, dash: '' },
-  '再传':        { stroke: 'rgba(58,90,124,0.30)', width: 1.2, dash: '' },
-  '创立':        { stroke: 'rgba(58,90,124,0.50)', width: 1.8, dash: '' },
-  '开创':        { stroke: 'rgba(58,90,124,0.50)', width: 1.8, dash: '' },
-  '父子':        { stroke: 'rgba(58,90,124,0.50)', width: 1.8, dash: '' },
-  '同门':        { stroke: 'rgba(58,90,124,0.30)', width: 1.0, dash: '' },
-  '分化':        { stroke: 'rgba(58,90,124,0.30)', width: 1.0, dash: '' },
-  '继承/发展':   { stroke: 'rgba(58,90,124,0.35)', width: 1.4, dash: '' },
-  '继承/超越':   { stroke: 'rgba(58,90,124,0.35)', width: 1.4, dash: '' },
-  '领导/继承':   { stroke: 'rgba(58,90,124,0.45)', width: 1.6, dash: '' },
-  '领导/影响':   { stroke: 'rgba(58,90,124,0.45)', width: 1.6, dash: '' },
-  '领导与影响':  { stroke: 'rgba(58,90,124,0.40)', width: 1.6, dash: '' },
-  '学术传承':    { stroke: 'rgba(58,90,124,0.40)', width: 1.4, dash: '' },
-  '战略':        { stroke: 'rgba(58,90,124,0.40)', width: 1.4, dash: '' },
-
-  // ── 影响/再传（短虚线，金色）──
-  '影响':        { stroke: 'rgba(196,149,106,0.45)', width: 1.2, dash: '4,3' },
-  '发展':        { stroke: 'rgba(196,149,106,0.35)', width: 1.0, dash: '4,3' },
-  '先驱':        { stroke: 'rgba(196,149,106,0.40)', width: 1.0, dash: '4,3' },
-  '经学化':      { stroke: 'rgba(196,149,106,0.35)', width: 1.0, dash: '4,3' },
-  '影响/超越':   { stroke: 'rgba(196,149,106,0.40)', width: 1.2, dash: '4,3' },
-  '影响与发展':  { stroke: 'rgba(196,149,106,0.40)', width: 1.2, dash: '4,3' },
-  '影响与传承':  { stroke: 'rgba(196,149,106,0.40)', width: 1.2, dash: '4,3' },
-
-  // ── 批判/对立（长虚线，红褐色）──
-  '批判':        { stroke: 'rgba(180,70,70,0.50)', width: 1.2, dash: '8,5' },
-  '对立':        { stroke: 'rgba(180,70,70,0.45)', width: 1.0, dash: '8,5' },
-  '批判/超越':   { stroke: 'rgba(180,70,70,0.50)', width: 1.2, dash: '8,5' },
-  '批判继承':    { stroke: 'rgba(180,70,70,0.45)', width: 1.2, dash: '8,5' },
-  '对立批判':    { stroke: 'rgba(180,70,70,0.48)', width: 1.2, dash: '8,5' },
-  '学术对立':    { stroke: 'rgba(180,70,70,0.45)', width: 1.0, dash: '8,5' },
-  '学术争论':    { stroke: 'rgba(180,70,70,0.40)', width: 0.9, dash: '8,5' },
-  '学术争鸣':    { stroke: 'rgba(180,70,70,0.40)', width: 0.9, dash: '8,5' },
-  '分裂':        { stroke: 'rgba(180,70,70,0.50)', width: 1.4, dash: '8,5' },
-  '自我批判':    { stroke: 'rgba(180,70,70,0.35)', width: 0.9, dash: '8,5' },
-  '影响与批判':  { stroke: 'rgba(180,70,70,0.45)', width: 1.2, dash: '8,5' },
-  '友谊/对立':   { stroke: 'rgba(180,70,70,0.40)', width: 1.0, dash: '8,5' },
-  '顿渐之争':    { stroke: 'rgba(180,70,70,0.45)', width: 1.2, dash: '8,5' },
-
-  // ── 学术交流（点线，灰色）──
-  '学术交流':    { stroke: 'rgba(120,140,160,0.35)', width: 0.8, dash: '2,4' },
-  '合作':        { stroke: 'rgba(120,140,160,0.35)', width: 0.8, dash: '2,4' },
-  '友谊':        { stroke: 'rgba(120,140,160,0.30)', width: 0.7, dash: '2,4' },
-  '对话':        { stroke: 'rgba(120,140,160,0.33)', width: 0.8, dash: '2,4' },
-  '学术对话':    { stroke: 'rgba(120,140,160,0.33)', width: 0.8, dash: '2,4' },
-  '注释':        { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
-  '注释/阐发':   { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
-  '注释/改造':   { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
-  '注释/玄学化': { stroke: 'rgba(150,140,120,0.25)', width: 0.7, dash: '2,4' },
-  '战友':        { stroke: 'rgba(120,140,160,0.30)', width: 0.7, dash: '2,4' },
-  '领导与合作':  { stroke: 'rgba(120,140,160,0.33)', width: 0.8, dash: '2,4' },
-  '学术思想':    { stroke: 'rgba(120,140,160,0.28)', width: 0.7, dash: '2,4' },
+  '师生':        { stroke: 'rgba(196,149,106,0.55)', width: 2.0, dash: '' },
+  '继承':        { stroke: 'rgba(196,149,106,0.40)', width: 1.6, dash: '' },
+  '再传':        { stroke: 'rgba(196,149,106,0.30)', width: 1.2, dash: '' },
+  '创立':        { stroke: 'rgba(196,149,106,0.50)', width: 1.8, dash: '' },
+  '开创':        { stroke: 'rgba(196,149,106,0.50)', width: 1.8, dash: '' },
+  '父子':        { stroke: 'rgba(196,149,106,0.50)', width: 1.8, dash: '' },
+  '同门':        { stroke: 'rgba(196,149,106,0.30)', width: 1.0, dash: '' },
+  '分化':        { stroke: 'rgba(196,149,106,0.30)', width: 1.0, dash: '' },
+  '继承/发展':   { stroke: 'rgba(196,149,106,0.35)', width: 1.4, dash: '' },
+  '继承/超越':   { stroke: 'rgba(196,149,106,0.35)', width: 1.4, dash: '' },
+  '领导/继承':   { stroke: 'rgba(196,149,106,0.45)', width: 1.6, dash: '' },
+  '领导/影响':   { stroke: 'rgba(196,149,106,0.45)', width: 1.6, dash: '' },
+  '领导与影响':  { stroke: 'rgba(196,149,106,0.40)', width: 1.6, dash: '' },
+  '学术传承':    { stroke: 'rgba(196,149,106,0.40)', width: 1.4, dash: '' },
+  '战略':        { stroke: 'rgba(196,149,106,0.40)', width: 1.4, dash: '' },
+  '影响':        { stroke: 'rgba(196,149,106,0.35)', width: 1.0, dash: '4,3' },
+  '发展':        { stroke: 'rgba(196,149,106,0.28)', width: 0.9, dash: '4,3' },
+  '先驱':        { stroke: 'rgba(196,149,106,0.32)', width: 0.9, dash: '4,3' },
+  '经学化':      { stroke: 'rgba(196,149,106,0.28)', width: 0.9, dash: '4,3' },
+  '影响/超越':   { stroke: 'rgba(196,149,106,0.33)', width: 1.0, dash: '4,3' },
+  '影响与发展':  { stroke: 'rgba(196,149,106,0.33)', width: 1.0, dash: '4,3' },
+  '影响与传承':  { stroke: 'rgba(196,149,106,0.33)', width: 1.0, dash: '4,3' },
+  '批判':        { stroke: 'rgba(180,70,70,0.45)', width: 1.0, dash: '8,5' },
+  '对立':        { stroke: 'rgba(180,70,70,0.40)', width: 0.9, dash: '8,5' },
+  '批判/超越':   { stroke: 'rgba(180,70,70,0.45)', width: 1.0, dash: '8,5' },
+  '批判继承':    { stroke: 'rgba(180,70,70,0.40)', width: 1.0, dash: '8,5' },
+  '对立批判':    { stroke: 'rgba(180,70,70,0.43)', width: 1.0, dash: '8,5' },
+  '学术对立':    { stroke: 'rgba(180,70,70,0.40)', width: 0.9, dash: '8,5' },
+  '学术争论':    { stroke: 'rgba(180,70,70,0.35)', width: 0.8, dash: '8,5' },
+  '学术争鸣':    { stroke: 'rgba(180,70,70,0.35)', width: 0.8, dash: '8,5' },
+  '分裂':        { stroke: 'rgba(180,70,70,0.45)', width: 1.2, dash: '8,5' },
+  '自我批判':    { stroke: 'rgba(180,70,70,0.30)', width: 0.8, dash: '8,5' },
+  '影响与批判':  { stroke: 'rgba(180,70,70,0.40)', width: 1.0, dash: '8,5' },
+  '友谊/对立':   { stroke: 'rgba(180,70,70,0.35)', width: 0.9, dash: '8,5' },
+  '顿渐之争':    { stroke: 'rgba(180,70,70,0.40)', width: 1.0, dash: '8,5' },
+  '学术交流':    { stroke: 'rgba(140,160,180,0.30)', width: 0.7, dash: '2,4' },
+  '合作':        { stroke: 'rgba(140,160,180,0.30)', width: 0.7, dash: '2,4' },
+  '友谊':        { stroke: 'rgba(140,160,180,0.25)', width: 0.6, dash: '2,4' },
+  '对话':        { stroke: 'rgba(140,160,180,0.28)', width: 0.7, dash: '2,4' },
+  '注释':        { stroke: 'rgba(150,140,120,0.22)', width: 0.6, dash: '2,4' },
+  '战友':        { stroke: 'rgba(140,160,180,0.28)', width: 0.7, dash: '2,4' },
 };
-const DEFAULT_EDGE = EDGE_STYLES['影响'];
+const DEFAULT_EDGE = EDGE_STYLES['影响'] || { stroke: 'rgba(196,149,106,0.35)', width: 1.0, dash: '4,3' };
 
-// ─── 将标签归类到 4 大类（legend 用） ───
-function edgeCategory(type) {
-  if (!type) return 'dashed';
-  const t = EDGE_STYLES[type];
-  if (!t) return 'dashed';
-  if (!t.dash) return 'solid';
-  if (t.dash === '4,3') return 'dashed';
-  if (t.dash === '8,5') return 'critical';
-  return 'dotted';
-}
+const BG_STARS = Array.from({ length: 40 }, () => ({
+  cx: Math.random() * 800, cy: Math.random() * 560,
+  r: Math.random() * 1.2 + 0.3,
+  opacity: Math.random() * 0.25 + 0.05,
+}));
 
 export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} }) {
   const [hovered, setHovered] = useState(null);
@@ -82,116 +64,105 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
   const navigate = useNavigate();
 
   const focusNode = selected || hovered;
-  const isFocused = (name) => !focusNode || name === focusNode;
   const isConnected = (name) => {
     if (!focusNode) return true;
-    const rels = relations.filter(r => r.from === focusNode || r.to === focusNode);
-    const connected = new Set(rels.flatMap(r => [r.from, r.to]));
+    const connected = new Set();
+    (relations || []).forEach(r => {
+      if (r.from === focusNode || r.to === focusNode) { connected.add(r.from); connected.add(r.to); }
+    });
     return connected.has(name) || name === focusNode;
   };
 
   const getNodeSize = (t) => {
     const inf = t.influence || 5;
-    if (inf >= 10) return 28;
-    if (inf >= 9) return 24;
-    if (inf >= 8) return 20;
-    if (inf >= 7) return 17;
-    return 14;
+    if (inf >= 10) return 26;
+    if (inf >= 9) return 22;
+    if (inf >= 8) return 18;
+    if (inf >= 7) return 15;
+    return 13;
+  };
+
+  // Bezier curve midpoint offset
+  const bezierMid = (x1, y1, x2, y2, curvature = 0.12) => {
+    const mx = (x1 + x2) / 2;
+    const my = (y1 + y2) / 2;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    return { cx: mx - (dy / len) * len * curvature, cy: my + (dx / len) * len * curvature };
   };
 
   return (
-    <section style={{ padding: `${SPACE.hero}px 20px`, background: 'var(--card-bg)', position: 'relative' }}>
-      <div style={{ textAlign: 'center', marginBottom: 48 }}>
-        <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', fontFamily: FONT.sans }}>Chapter 2</span>
-        <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>思想星丛</h2>
-        <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px auto 0', opacity: 0.5 }} />
-        <p style={{ fontSize: 11, color: 'var(--fade)', marginTop: 8, fontFamily: FONT.sans, fontWeight: 300 }}>
-          悬停探索思想谱系 · 点击固定焦点 · 再次点击跳转作者页
-        </p>
+    <section style={{ padding: `${SPACE.hero}px 20px 40px`, background: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
+      {/* Section header */}
+      <div style={{ textAlign: 'center', marginBottom: 36 }}>
+        <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.24em', textTransform: 'uppercase', color: 'var(--ochre)', fontFamily: FONT.sans }}>Intellectual Constellation</span>
+        <h2 style={{ fontSize: 28, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 0', fontFamily: FONT.serif, letterSpacing: '0.04em' }}>思想星丛</h2>
+        <div style={{ width: 28, height: 1, background: 'var(--ochre)', margin: '14px auto 0', opacity: 0.4 }} />
       </div>
 
-      {/* Legend — rendered as actual SVG lines */}
-      <div style={{ maxWidth: 900, margin: '0 auto 24px', display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', fontFamily: FONT.sans, fontSize: 10, color: 'var(--fade)', alignItems: 'center' }}>
+      {/* Legend */}
+      <div style={{ maxWidth: 700, margin: '0 auto 20px', display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap', fontFamily: FONT.sans, fontSize: 10, color: 'var(--fade)', alignItems: 'center' }}>
         {[
-          { label: '师生/继承', ds: '', sw: 2.0, sc: 'rgba(58,90,124,0.55)' },
-          { label: '影响/再传', ds: '4,3', sw: 1.2, sc: 'rgba(196,149,106,0.45)' },
-          { label: '批判/对立', ds: '8,5', sw: 1.2, sc: 'rgba(180,70,70,0.50)' },
-          { label: '学术交流', ds: '2,4', sw: 0.8, sc: 'rgba(120,140,160,0.35)' },
+          { label: '传承', ds: '', sw: 2.0, sc: 'rgba(196,149,106,0.55)' },
+          { label: '影响', ds: '4,3', sw: 1.2, sc: 'rgba(196,149,106,0.35)' },
+          { label: '批判', ds: '8,5', sw: 1.2, sc: 'rgba(180,70,70,0.45)' },
+          { label: '交流', ds: '2,4', sw: 0.8, sc: 'rgba(140,160,180,0.30)' },
         ].map((item, i) => (
-          <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, opacity: 0.65 }}>
-            <svg width={28} height={10}><line x1={2} y1={5} x2={24} y2={5} stroke={item.sc} strokeWidth={item.sw} strokeDasharray={item.ds} /></svg>
+          <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, opacity: 0.55 }}>
+            <svg width={24} height={8}><line x1={0} y1={4} x2={22} y2={4} stroke={item.sc} strokeWidth={item.sw} strokeDasharray={item.ds} /></svg>
             {item.label}
           </span>
         ))}
       </div>
 
-      <div style={{ width: '100%', maxWidth: 1000, height: 640, margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(196,149,106,0.05) 0%, transparent 65%)' }} />
+      {/* Constellation canvas */}
+      <div style={{ width: '100%', maxWidth: 960, height: 620, margin: '0 auto', position: 'relative', overflow: 'hidden', borderRadius: 12, border: '1px solid var(--border)' }}>
+        {/* Starfield background */}
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 45%, rgba(196,149,106,0.06) 0%, rgba(20,16,10,0.03) 50%, transparent 80%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 60%, rgba(58,90,124,0.04) 0%, transparent 50%)' }} />
 
-        <svg viewBox="0 0 800 560" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} onClick={() => { setSelected(null); setHovered(null); }}>
+        <svg viewBox="0 0 800 560" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+          onClick={() => { setSelected(null); setHovered(null); }}>
           <defs>
-            <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
-              <polygon points="0,0 6,2 0,4" fill="rgba(58,90,124,0.4)" />
-            </marker>
+            <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="rgba(255,220,160,0.15)"/>
+              <stop offset="100%" stopColor="rgba(255,220,160,0)"/>
+            </radialGradient>
+            <filter id="nodeGlow"><feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           </defs>
 
-          {/* EDGES — typed by relationship */}
+          {/* Background stars */}
+          {BG_STARS.map((s, i) => (
+            <circle key={`star-${i}`} cx={s.cx} cy={s.cy} r={s.r} fill="var(--ochre)" opacity={s.opacity} />
+          ))}
+
+          {/* EDGES — Bézier curves */}
           {(relations || []).filter(Boolean).map((r, i) => {
             const from = thinkers.find(t => t.name === r.from);
             const to = thinkers.find(t => t.name === r.to);
             if (!from || !to) return null;
-
-            const style = EDGE_STYLES[r.type] || EDGE_STYLES['影响'];
-            const isRelevant = focusNode
-              ? (r.from === focusNode || r.to === focusNode)
-              : true;
-            const opacity = focusNode ? (isRelevant ? 1 : 0.06) : 1;
-
-            const midX = (from._x + to._x) / 2, midY = (from._y + to._y) / 2;
+            const style = EDGE_STYLES[r.type] || DEFAULT_EDGE;
+            const isRelevant = focusNode ? (r.from === focusNode || r.to === focusNode) : true;
+            const opacity = focusNode ? (isRelevant ? 1 : 0.04) : 1;
+            const { cx, cy } = bezierMid(from._x, from._y, to._x, to._y);
 
             return (
-              <g key={i}>
+              <g key={`edge-${i}`}>
                 {isRelevant && focusNode && (
-                  <path d={`M${from._x},${from._y} L${to._x},${to._y}`}
-                    fill="none" stroke={style.stroke} strokeWidth={style.width + 3} opacity={0.15}
+                  <path d={`M${from._x},${from._y} Q${cx},${cy} ${to._x},${to._y}`}
+                    fill="none" stroke={style.stroke} strokeWidth={style.width + 3} opacity={0.12}
                     strokeDasharray={style.dash} />
                 )}
-                <path d={`M${from._x},${from._y} L${to._x},${to._y}`}
+                <path d={`M${from._x},${from._y} Q${cx},${cy} ${to._x},${to._y}`}
                   fill="none" stroke={style.stroke} strokeWidth={style.width}
                   strokeDasharray={style.dash} opacity={opacity}
-                  markerEnd={style.dash ? undefined : 'url(#arrowhead)'}
-                  style={{ transition: 'opacity 0.35s' }} />
-                {isRelevant && focusNode && (
-                  <g>
-                    <rect x={midX - 24} y={midY - 16} width={48} height={14} rx={3}
-                      fill="rgba(248,244,238,0.92)" stroke={style.stroke} strokeWidth={0.5} strokeOpacity={0.4} />
-                    <text x={midX} y={midY - 4} textAnchor="middle" fontSize={9} fill={style.stroke}
-                      fontFamily={FONT.sans} fontWeight={500}>{r.type || r.label || '影响'}</text>
-                  </g>
-                )}
+                  style={{ transition: 'opacity 0.4s ease' }} />
               </g>
             );
           })}
 
-          {/* Auto sub-school lines — even fainter */}
-          {(() => {
-            const existing = new Set(relations.map(r => `${r.from}||${r.to}`));
-            const lines = [];
-            const groups = {};
-            thinkers.forEach(t => { const g = t.sub || '__d__'; if (!groups[g]) groups[g] = []; groups[g].push(t); });
-            Object.values(groups).forEach(group => {
-              for (let a = 0; a < group.length; a++)
-                for (let b = a + 1; b < group.length; b++)
-                  if (!existing.has(`${group[a].name}||${group[b].name}`) && !existing.has(`${group[b].name}||${group[a].name}`))
-                    lines.push(<path key={`auto-${a}-${b}`}
-                      d={`M${group[a]._x},${group[a]._y} L${group[b]._x},${group[b]._y}`}
-                      fill="none" stroke="rgba(196,149,106,0.06)" strokeWidth="0.6" strokeDasharray="4,8"
-                      opacity={focusNode ? 0.02 : 1} style={{ transition: 'opacity 0.35s' }} />);
-            });
-            return lines;
-          })()}
-
-          {/* NODES — hierarchical sizing, focus mode */}
+          {/* NODES */}
           {thinkers.map((t, i) => {
             const baseSize = getNodeSize(t);
             const isFoc = t.name === focusNode;
@@ -200,69 +171,88 @@ export default function ConstellationMap({ thinkers, relations, SUB_COLORS = {} 
             const dimmed = focusNode && !isFoc && !isConn;
 
             return (
-              <g key={i} style={{ cursor: 'pointer', transition: 'opacity 0.35s' }}
-                opacity={dimmed ? 0.22 : 1}
-                onClick={(e) => { e.stopPropagation(); if (selected === t.name) { setSelected(null); navigate('/author/' + encodeURIComponent(t.name)); } else { setSelected(selected === t.name ? null : t.name); } }}
+              <g key={`node-${i}`} style={{ cursor: 'pointer' }}
+                opacity={dimmed ? 0.18 : 1}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (selected === t.name) { setSelected(null); navigate('/author/' + encodeURIComponent(t.name)); }
+                  else { setSelected(selected === t.name ? null : t.name); }
+                }}
                 onMouseEnter={() => setHovered(t.name)}
                 onMouseLeave={() => setHovered(null)}>
 
-                {/* Main circle — slight glow on selected */}
-                <circle cx={t._x} cy={t._y} r={isFoc ? baseSize * 1.15 : baseSize}
-                  fill="var(--bone)" stroke={color}
-                  strokeWidth={isFoc ? 2.5 : (t.influence >= 9 ? 1.8 : 1.2)}
-                  filter={isFoc ? `drop-shadow(0 0 6px ${color}40)` : 'none'}
-                  style={{ transition: 'all 0.4s cubic-bezier(0.22,1,0.36,1)' }} />
+                {/* Outer glow ring (focus only) */}
+                {isFoc && <circle cx={t._x} cy={t._y} r={baseSize + 10} fill="url(#starGlow)" opacity={0.6} />}
 
-                {/* Initial */}
-                <text x={t._x} y={t._y + (baseSize > 20 ? 5 : 3)} textAnchor="middle"
-                  fill={isFoc ? color : 'var(--ink)'} fontSize={baseSize > 22 ? 13 : 10}
-                  fontFamily={FONT.serif} fontWeight={600} style={{ transition: 'all 0.3s' }}>
+                {/* Main node circle */}
+                <circle cx={t._x} cy={t._y} r={isFoc ? baseSize * 1.2 : baseSize}
+                  fill={isFoc ? color : 'var(--bg)'}
+                  stroke={color}
+                  strokeWidth={isFoc ? 2 : 1.2}
+                  filter={isFoc ? 'url(#nodeGlow)' : 'none'}
+                  style={{ transition: 'all 0.5s cubic-bezier(0.22,1,0.36,1)' }} />
+
+                {/* Inner accent ring for high-influence nodes */}
+                {t.influence >= 9 && (
+                  <circle cx={t._x} cy={t._y} r={baseSize - 4} fill="none" stroke={color} strokeWidth={0.4} opacity={0.5} />
+                )}
+
+                {/* Initial letter */}
+                <text x={t._x} y={t._y + (baseSize > 18 ? 4.5 : 3)} textAnchor="middle"
+                  fill={isFoc ? '#fff' : 'var(--ink)'} fontSize={baseSize > 20 ? 12 : 9}
+                  fontFamily={FONT.serif} fontWeight={700}
+                  style={{ transition: 'all 0.3s', pointerEvents: 'none' }}>
                   {t.name[0]}
                 </text>
 
-                {/* Name label — ONLY on focus (hover/click), never by default */}
+                {/* Name label — hover/click only */}
                 {isFoc && (
-                  <text x={t._x} y={t._y + baseSize + 14} textAnchor="middle"
-                    fill="var(--ink)" fontSize={11} fontFamily={FONT.sans}
-                    fontWeight={500} style={{ transition: 'all 0.3s' }}>
-                    {t.name}
-                  </text>
+                  <g style={{ pointerEvents: 'none' }}>
+                    <text x={t._x} y={t._y + baseSize + 16} textAnchor="middle"
+                      fill="var(--ink)" fontSize={11} fontFamily={FONT.sans}
+                      fontWeight={500}>{t.name}</text>
+                    {t.sub && (
+                      <text x={t._x} y={t._y + baseSize + 29} textAnchor="middle"
+                        fill={color} fontSize={9} fontFamily={FONT.sans}
+                        fontWeight={400} opacity={0.8}>{t.sub}</text>
+                    )}
+                  </g>
                 )}
-
-                {/* Detail panel rendered in TOP LAYER below */}
               </g>
             );
           })}
-        
-          {/* TOP LAYER — focused node detail panel, renders above all nodes, positioned smartly */}
+
+          {/* Detail card — top layer */}
           {focusNode && thinkers.filter(t => t.name === focusNode).map(t => {
             const bs = getNodeSize(t);
             const co = SUB_COLORS[t.sub] || 'var(--ochre)';
-            const panelH = 82;
-            const panelW = 180;
-            const above = t._y - bs - panelH - 12;
-            const below = t._y + bs + 12;
-            const showBelow = above < 10;
-            const py = showBelow ? below : above;
-            const px = Math.max(panelW/2 + 4, Math.min(800 - panelW/2 - 4, t._x));
+            const panelH = 78, panelW = 170;
+            const aboveY = t._y - bs - panelH - 14;
+            const belowY = t._y + bs + 14;
+            const showBelow = aboveY < 12;
+            const py = showBelow ? belowY : aboveY;
+            const px = Math.max(panelW / 2 + 6, Math.min(800 - panelW / 2 - 6, t._x));
+            const key = `detail-${t.name}`;
             return (
-              <g key="top-detail">
-                <rect x={px - panelW/2} y={py} width={panelW} height={panelH} rx={6}
-                  fill="rgba(248,244,238,0.97)" stroke={co} strokeWidth="0.8" strokeOpacity="0.5"
-                  filter="drop-shadow(0 2px 12px rgba(0,0,0,0.08))" />
+              <g key={key} style={{ pointerEvents: 'none' }}>
+                <rect x={px - panelW / 2} y={py} width={panelW} height={panelH} rx={7}
+                  fill="var(--bg)" stroke={co} strokeWidth={0.6} strokeOpacity={0.35}
+                  filter="drop-shadow(0 4px 16px rgba(0,0,0,0.06))" />
                 <text x={px} y={py + 16} textAnchor="middle" fill="var(--ink)"
                   fontSize={12} fontFamily={FONT.serif} fontWeight={600}>{t.name}</text>
-                <foreignObject x={px - panelW/2 + 8} y={py + 24} width={panelW - 16} height={54}>
-                  <div style={{ fontFamily: FONT.sans, fontSize: 9, color: 'var(--text-dim)', lineHeight: 1.5, wordBreak: 'break-word', textAlign: 'center' }}>
-                    <span style={{ color: co, fontWeight: 500 }}>{t.sub}</span><br/>
-                    <span>{t.era}{t.key ? ' · ' + t.key : ''}</span>
-                    {Array.isArray(t.works) && t.works.length > 0 && <><br/><span style={{ color: 'var(--fade)', fontSize: 8 }}>{t.works.length} 部著作</span></>}
+                <foreignObject x={px - panelW / 2 + 10} y={py + 22} width={panelW - 20} height={50}>
+                  <div style={{ fontFamily: FONT.sans, fontSize: 9, color: 'var(--text-dim)', lineHeight: 1.55, textAlign: 'center' }}>
+                    <span style={{ color: co, fontWeight: 500 }}>{t.sub || ''}</span>
+                    <br/><span>{t.era || ''}{t.key ? ' · ' + t.key : ''}</span>
+                    {Array.isArray(t.works) && t.works.length > 0 && (
+                      <><br/><span style={{ color: 'var(--fade)', fontSize: 8 }}>{t.works.length} 部著作</span></>
+                    )}
                   </div>
                 </foreignObject>
               </g>
             );
           })}
-</svg>
+        </svg>
       </div>
     </section>
   );

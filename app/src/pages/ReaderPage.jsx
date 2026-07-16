@@ -3,7 +3,7 @@
  * 支持：页数跳转、批注笔记、阅读进度自动保存
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { Document, Page, pdfjs } from 'react-pdf';
 import ePub from 'epubjs';
@@ -17,13 +17,27 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/buil
 
 function ReaderPage() {
   const { bookId } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [book, setBook] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const pageCacheRef = useRef({});
   const [fileType, setFileType] = useState(null);
+  const cacheReadyRef = useRef(false);
+
+  // 预加载页数缓存（确保 initEpub 之前就绪）
+  useEffect(() => {
+    fetch('/epub_pages.json')
+      .then(r => r.json())
+      .then(d => {
+        pageCacheRef.current = d.byTitle || {};
+        cacheReadyRef.current = true;
+      })
+      .catch(() => { cacheReadyRef.current = true; });
+  }, []);
 
   // PDF state
   const [numPages, setNumPages] = useState(0);
@@ -108,12 +122,12 @@ function ReaderPage() {
     };
   }, []);
 
-  // EPUB: save page/total as progress
+  // EPUB: 用百分比保存进度（EPUB 无固定页码）
   useEffect(() => {
-    if (fileType !== 'epub' || !book || epubBookTotal <= 0) return;
-    const pct = Math.min(1, Math.max(0, epubBookPage / epubBookTotal));
-    saveReadingProgress(bookId, book.title, book.author, epubBookPage, pct, 'epub');
-  }, [epubBookPage, epubBookTotal, fileType]);
+    if (fileType !== 'epub' || !book) return;
+    const pct = epubPercent / 100;
+    if (pct > 0) saveReadingProgress(bookId, book.title, book.author, epubBookPage, pct, 'epub');
+  }, [epubBookPage, epubPercent, fileType]);
 
   // Save progress on page change
   const goToPage = useCallback((n) => {
@@ -306,6 +320,12 @@ ${textContext}
     }).catch(() => {});
   }, [bookId]);
 
+  // 从 URL 参数预填文件类型
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type) setFileType(type);
+  }, [searchParams]);
+
   const loadBook = async () => {
     setLoading(true); setError(null);
     const b = await getBookById(bookId);
@@ -318,44 +338,10 @@ ${textContext}
     setLoading(false);
   };
 
-  // Init EPUB — pre-scan all chapters for page counts, then restore
-  const preScannedRef = useRef(false);
+  // Init EPUB — locations.generate 在 initEpub 中已完成，此处无需额外处理
   useEffect(() => {
-    if (!epubReady || preScannedRef.current) return;
-    preScannedRef.current = true;
-    const rendition = epubRenditionRef.current;
-    if (!rendition) return;
-    const bk = rendition.book;
-    if (!bk?.spine) return;
-
-    // Pre-scan: flip through all chapters briefly to get page counts
-    const preScan = async () => {
-      const total = bk.spine.length;
-      // Save current position
-      const startLoc = rendition.currentLocation();
-      for (let i = 0; i < total; i++) {
-        try {
-          await rendition.display(i);
-          // Page count is captured by relocated handler -> chapterPagesRef
-        } catch {}
-      }
-      // Restore saved position
-      try {
-        const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
-        if (entry?.page > 0 && entry.percent > 0) {
-          const pct = entry.percent;
-          const cfi = bk.locations ? bk.locations.cfiFromPercentage(pct) : null;
-          if (cfi) { rendition.display(cfi); return; }
-          // Fallback: chapter-based navigation
-          const chapter = Math.floor(pct * total);
-          rendition.display(Math.min(chapter, total - 1));
-        } else {
-          rendition.display(startLoc?.start?.cfi || 0);
-        }
-      } catch { rendition.display(0); }
-    };
-    preScan();
+    if (!epubReady) return;
+    // 无需操作：initEpub 的 locations.generate 回调中已完成页面恢复
   }, [epubReady]);
 
   // PDF callbacks
@@ -389,36 +375,21 @@ ${textContext}
     epubRenditionRef.current = rendition;
     bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
     bk.loaded.spine.then(spine => { setEpubTotalChapters(spine?.length || 0); }).catch(() => {});
-    const pageRef = { cur: 1, total: 0 };
+    // —— 全书页码（跟 PDF 完全一样的逻辑）——
+    const cacheKey = `${book?.title||''}||${book?.author||''}`;
+    const cachedTotal = pageCacheRef.current?.[cacheKey] || 0;
+    const totalPages = cachedTotal > 0 ? cachedTotal : 1000;
+    setEpubBookTotal(totalPages);
+
     rendition.on('relocated', (loc) => {
-      if (loc?.start?.displayed) {
-        setEpubBookPage(loc.start.displayed.page + 1);
-        setEpubBookTotal(loc.start.displayed.total);
-        if (loc?.start?.percentage !== undefined)
-          setEpubPercent(Math.round(loc.start.percentage * 100));
+      const pct = loc?.start?.percentage;
+      if (pct !== undefined && pct !== null) {
+        setEpubPercent(Math.round(pct * 100));
+        setEpubBookPage(Math.max(1, Math.round(pct * totalPages)));
       }
     });
-    rendition.display();
-    // Generate locations for total page count
-    bk.ready.then(() => bk.locations.generate(800)).then(locs => {
-      if (locs?.length > 0) { setEpubBookTotal(locs.length); setEpubBookPage(1); }
-      // Update page from locations on each relocation
-      rendition.on('relocated', (loc) => {
-        if (loc?.start?.cfi && bk.locations?.length > 0) {
-          const idx = bk.locations.locationFromCfi(loc.start.cfi);
-          if (idx >= 0) setEpubBookPage(idx + 1);
-        }
-      });
-      // Restore
-      try {
-        const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
-        if (entry?.percent > 0) {
-          const cfi = bk.locations.cfiFromPercentage(entry.percent);
-          if (cfi) rendition.display(cfi);
-        }
-      } catch {}
-    }).catch(() => {});
+    // 直接显示首页（percentage 不依赖 locations.generate）
+    bk.ready.then(() => rendition.display(0));
     setEpubReady(true);
   };
 
@@ -526,7 +497,7 @@ ${textContext}
                     </span>
                   )}
                   <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => epubRenditionRef.current?.next()}><Icon name="play" size={18} /></button>
+                    onClick={() => epubRenditionRef.current?.next()}><span style={{ display: 'inline-block', transform: 'scaleX(-1)', fontSize: 14 }}>◀</span></button>
                   <span style={{ width: 24 }} />
                 </div>
               </div>
@@ -610,7 +581,7 @@ ${textContext}
                     </span>
                   )}
                   <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => goToPage(pageNumber + (twoPage ? 2 : 1))} disabled={pageNumber >= numPages}><Icon name="play" size={18} /></button>
+                    onClick={() => goToPage(pageNumber + (twoPage ? 2 : 1))} disabled={pageNumber >= numPages}><span style={{ display: 'inline-block', transform: 'scaleX(-1)', fontSize: 14 }}>◀</span></button>
                 </div>
               </div>
             </div>

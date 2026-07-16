@@ -9,6 +9,10 @@ import { normalizeTag } from '../data/tagMaps';
 import WorldMap from '../components/WorldMap';
 import NavBar from '../components/NavBar';
 import Icon from '../components/Icon';
+import CountUp from '../components/CountUp';
+import SectionReveal from '../components/SectionReveal';
+import Footer from '../components/Footer';
+import './HomePage.css';
 
 const WESTERN_TIMELINE = [
   { century: '公元前6世纪', schools: ['古希腊哲学'] },
@@ -339,113 +343,84 @@ function HomePage() {
 
   return (
     <div className="page-container" style={{ paddingBottom: 0, margin: 0 }}>
+      <NavBar variant="floating" loggedIn={loggedIn} username={username} userAvatar={userAvatar} />
 
-      {/* Floating nav bar — unified NavBar component */}
-      <NavBar
-        variant="floating"
-        loggedIn={loggedIn}
-        username={username}
-        userAvatar={userAvatar}
-      />
-
-      {/* ══════════ HERO — full screen, world philosophy background ══════════ */}
-      <section style={{
-        minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        alignItems: 'center', textAlign: 'center', padding: '80px 32px',
-        position: 'relative', overflow: 'hidden',
-        backgroundImage: 'url(/schools/世界哲学总览.webp)', backgroundSize: 'cover', backgroundPosition: 'center',
-      }}>
-        <div style={{ position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.5) 40%, rgba(244,240,235,0.2) 100%)' }} />
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 24px' }}>
-            Philosophical Genealogy
-          </p>
-          <h1 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 'clamp(3rem, 9vw, 7rem)', fontWeight: 400, fontStyle: 'italic', color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.1, margin: '0 0 20px' }}>
-            DeepPhilosophy
-          </h1>
-          <div style={{ width: 60, height: 1.5, background: 'var(--ochre)', margin: '0 auto 24px', opacity: 0.7 }} />
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto 36px', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>
-            从公元前三十世纪至二十一世纪<br />一部横跨五千年的思想史长卷
-          </p>
-          <button onClick={scrollToDaily} style={{
-            fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, letterSpacing: '0.08em',
-            color: '#fff', background: 'var(--ink)', border: 'none', borderRadius: 4,
-            padding: '14px 36px', cursor: 'pointer', transition: 'all 0.25s'
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--ochre)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--ink)'; }}>
-            开始探索 ↓
-          </button>
+      <section className="home-hero">
+        <div className="home-hero-bg" />
+        <div className="home-hero-overlay" />
+        <div className="home-hero-content">
+          <p className="home-hero-eyebrow">Philosophical Genealogy</p>
+          <h1 className="home-hero-title">DeepPhilosophy</h1>
+          <div className="home-hero-divider" />
+          <p className="home-hero-subtitle">从公元前三十世纪至二十一世纪<br />一部横跨五千年的思想史长卷</p>
+          <button className="home-hero-cta" onClick={scrollToDaily}>开始探索</button>
         </div>
-        <div style={{ position: 'absolute', bottom: 36, opacity: 0.4 }}>
-          <span style={{ fontSize: 20, color: 'var(--text-dim)' }}>↓</span>
+        <div className="home-hero-scroll-hint">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" strokeWidth="1.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 19 19 12"/></svg>
         </div>
       </section>
 
-      {/* ══════════ DAILY QUOTE ══════════ */}
-      <section id="daily-quote" onClick={() => { const q = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]; setDailyQuote(q); }}
-        style={{ padding: '80px 32px', textAlign: 'center', background: 'var(--card-bg)', maxWidth: '100%', cursor: 'pointer' }}>
-        <div style={{ maxWidth: 680, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', marginBottom: 20 }}>Daily Quote — 点击切换</p>
-          <p style={{ fontFamily: '"Playfair Display",serif', fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: 'var(--text-dim)', lineHeight: 1.8, fontWeight: 300, margin: '0 0 16px', transition: 'opacity 0.15s' }}>
-            &ldquo;{dailyQuote.text}&rdquo;
-          </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--ochre)', fontWeight: 500 }}>&mdash; {dailyQuote.author}</p>
-        </div>
-      </section>
-
-      {/* ══════════ NUMBERS ══════════ */}
-      <section style={{ padding: '48px 32px', maxWidth: 800, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 48, flexWrap: 'wrap', textAlign: 'center' }}>
-          {[{ num: String(bookCount), label: '哲学著作' }, { num: String(authorCount), label: '哲学家' }, { num: String(schoolCount), label: '哲学流派' }].map(s => (
+      <SectionReveal>
+      <section className="home-stats">
+        <div className="home-stats-grid">
+          {[{ end: bookCount, label: '哲学著作' }, { end: authorCount, label: '哲学家' }, { end: schoolCount, label: '哲学流派' }].map(s => (
             <div key={s.label}>
-              <p style={{ fontFamily: '"Playfair Display",serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: 'var(--ink)', margin: '0 0 4px' }}>{s.num}</p>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-dim)', fontWeight: 300, letterSpacing: '0.06em', margin: 0 }}>{s.label}</p>
+              <p className="home-stat-number"><CountUp end={s.end} /></p>
+              <p className="home-stat-label">{s.label}</p>
             </div>
           ))}
         </div>
       </section>
+      </SectionReveal>
 
-      {/* ══════════ BOOKS + AUTHORS SHOWCASE ══════════ */}
-      <section style={{ padding: '48px 32px 64px', maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 32 }}>
-          <div onClick={() => navigate('/books')} style={{ cursor: 'pointer', padding: '28px 24px', borderBottom: '2px solid var(--border)', transition: 'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'var(--ochre)'; e.currentTarget.style.background = 'var(--card-bg)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ochre)' }}>Library</span>
-            <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 8px', letterSpacing: '0.03em' }}>305 部哲学著作</h2>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>PDF · EPUB · TXT 三格式，涵盖古希腊至当代的中西方哲学经典。支持在线阅读、AI批注与笔记。</p>
+      <SectionReveal>
+      <section id="daily-quote" className="home-quote"
+        onClick={() => { const q = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]; setDailyQuote(q); }}>
+        <div style={{ maxWidth: 680, margin: '0 auto', position: 'relative' }}>
+          <p className="home-quote-eyebrow">Daily Quote — 点击切换</p>
+          <p className="home-quote-text">&ldquo;{dailyQuote.text}&rdquo;</p>
+          <p className="home-quote-author">&mdash; {dailyQuote.author}</p>
+        </div>
+      </section>
+      </SectionReveal>
+
+      <SectionReveal>
+      <section className="home-showcase">
+        <div className="home-showcase-grid">
+          <div className="home-showcase-card" onClick={() => navigate('/books')}>
+            <span className="home-showcase-eyebrow" style={{ color: 'var(--ochre)' }}>Library</span>
+            <h2 className="home-showcase-title">{bookCount} 部哲学著作</h2>
+            <p className="home-showcase-desc">PDF · EPUB · TXT 三格式，涵盖古希腊至当代的中西方哲学经典。支持在线阅读、AI批注与笔记。</p>
           </div>
-          <div onClick={() => navigate('/authors')} style={{ cursor: 'pointer', padding: '28px 24px', borderBottom: '2px solid var(--border)', transition: 'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderBottomColor = 'var(--prussian)'; e.currentTarget.style.background = 'var(--card-bg)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--prussian)' }}>Philosophers</span>
-            <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', margin: '6px 0 8px', letterSpacing: '0.03em' }}>{authorCount} 位哲学家</h2>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.7, margin: 0 }}>从柏拉图到尼采，从孔子到牟宗三。每位哲学家配备千字思想剖析与Wikipedia链接。</p>
+          <div className="home-showcase-card card-philosophers" onClick={() => navigate('/authors')}>
+            <span className="home-showcase-eyebrow" style={{ color: 'var(--prussian)' }}>Philosophers</span>
+            <h2 className="home-showcase-title">{authorCount} 位哲学家</h2>
+            <p className="home-showcase-desc">从柏拉图到尼采，从孔子到牟宗三。每位哲学家配备千字思想剖析与Wikipedia链接。</p>
           </div>
         </div>
       </section>
+      </SectionReveal>
 
-      <section style={{ padding: '48px 24px', maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ fontFamily: '"Playfair Display",serif', fontSize: 24, fontWeight: 400, color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.04em' }}>探索世界哲学</h2>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>悬停查看简介 · 点击进入详情</p>
+      <SectionReveal>
+      <section className="home-world-section">
+        <h2 className="home-world-title">探索世界哲学</h2>
+        <p className="home-world-subtitle">悬停查看简介 · 点击进入详情</p>
         <WorldMap />
-        <div style={{ display:'flex', justifyContent:'center', gap:24, marginTop:20, flexWrap:'wrap' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 24, flexWrap: 'wrap' }}>
           {[
-            { l: <><Icon name="region-west" size={14} /> 西方 42 流派</>, p:'/western-philosophies', c:'var(--ochre)' },
-            { l: <><Icon name="region-east" size={14} /> 东方 25 流派</>, p:'/eastern-philosophies', c:'var(--prussian)' },
-            { l: <><Icon name="region-world" size={14} /> 世界 38 流派</>, p:'/world-philosophies', c:'#5A8A5A' },
+            { l: <><Icon name="region-west" size={14} /> 西方 42 流派</>, p: '/western-philosophies', c: 'var(--ochre)' },
+            { l: <><Icon name="region-east" size={14} /> 东方 25 流派</>, p: '/eastern-philosophies', c: 'var(--prussian)' },
+            { l: <><Icon name="region-world" size={14} /> 世界 38 流派</>, p: '/world-philosophies', c: '#5A8A5A' },
           ].map(b => (
-            <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize:12, color:b.c, cursor:'pointer', borderBottom:'1px solid transparent', transition:'all 0.2s' }}
+            <span key={b.p} onClick={() => navigate(b.p)} style={{ fontSize: 12, color: b.c, cursor: 'pointer', borderBottom: '1px solid transparent', transition: 'all 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.borderBottomColor = b.c}
               onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'transparent'}>{b.l}</span>
-          ))}</div>
+          ))}
+        </div>
       </section>
+      </SectionReveal>
 
-      
-
-      
+      <Footer />
     </div>
   );
 }
