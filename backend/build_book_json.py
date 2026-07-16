@@ -5,7 +5,7 @@
 存到 data/book_json/ → 上传 GitHub/OSS → 前端直读
 用法: python build_book_json.py [--force]
 """
-import os, sys, json, re, zipfile, base64, io, hashlib
+import os, sys, json, re, zipfile, io, hashlib
 from pathlib import Path
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup  # pip install beautifulsoup4
@@ -21,42 +21,75 @@ IMG_EXTS = {'.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.
 def is_image(name):
     return Path(name).suffix.lower() in IMG_EXTS
 
-def img_to_base64(data, name):
-    """图片字节 → data:image/xxx;base64,..."""
-    ext = Path(name).suffix.lower()
-    mime = IMG_EXTS.get(ext, 'image/png')
-    b64 = base64.b64encode(data).decode()
-    return f"data:{mime};base64,{b64}"
+# 图片不嵌入 base64，提取为 WebP（更小更快）
+EXTRACTED_IMG_DIR = os.path.join(os.path.dirname(__file__), "data", "book_images")
+try:
+    from PIL import Image
+    HAS_PIL = True
+except ImportError:
+    HAS_PIL = False
+
+def save_as_webp(data, out_path, max_size=1200):
+    """保存图片为 WebP，限制最大尺寸"""
+    if not HAS_PIL:
+        with open(out_path, 'wb') as f: f.write(data)
+        return
+    try:
+        from io import BytesIO
+        img = Image.open(BytesIO(data))
+        if img.mode in ('RGBA', 'P', 'LA'): img = img.convert('RGBA')
+        else: img = img.convert('RGB')
+        w, h = img.size
+        if w > max_size or h > max_size:
+            img.thumbnail((max_size, max_size), Image.LANCZOS)
+        out_webp = os.path.splitext(out_path)[0] + '.webp'
+        img.save(out_webp, 'WEBP', quality=75)
+        return out_webp
+    except:
+        with open(out_path, 'wb') as f: f.write(data)
+        return out_path
 
 
 # ── EPUB 处理 ──
-def process_epub(filepath):
+def process_epub(filepath, book_id=None):
     """从 EPUB 提取：封面、目录、章节(文本+图片)"""
+    if not book_id:
+        import hashlib
+        book_id = hashlib.md5(filepath.encode()).hexdigest()[:12]
     book = {"type": "epub", "chapters": [], "toc": [], "cover": None, "images": {}}
     try:
         with zipfile.ZipFile(filepath) as z:
             namelist = z.namelist()
+            img_names = [n for n in namelist if is_image(n)]
+            if img_names:
+                pass  # debug
 
-            # 1. 收集所有图片（用文件名做 key）
+            # 1. 收集并提取所有图片 → WebP
+            os.makedirs(EXTRACTED_IMG_DIR, exist_ok=True)
             for name in namelist:
                 if is_image(name) and '__MACOSX' not in name:
-                    try:
-                        data = z.read(name)
-                        # 缩短 key 为文件名
-                        key = Path(name).name
-                        book["images"][key] = img_to_base64(data, name)
-                    except: pass
+                    data = z.read(name)
+                    fn = Path(name).name
+                    img_hash = hashlib.md5(data).hexdigest()[:10]
+                    out_fn = f"{book_id}_{img_hash}.webp"
+                    out_path = os.path.join(EXTRACTED_IMG_DIR, out_fn)
+                    if not os.path.exists(out_path):
+                        save_as_webp(data, out_path)
+                    book["images"][fn] = f"/api/books/{book_id}/image/{out_fn}"
 
-            # 2. 找封面
-            # 常见封面文件: cover.jpg, cover.png, 或以 cover 开头的图片
+            # 2. 找封面 → WebP
             for name in namelist:
                 bn = Path(name).name.lower()
-                if is_image(name) and ('cover' in bn or 'titlepage' in bn or 'front' in bn):
-                    if bn in book["images"]:
-                        book["cover"] = book["images"][bn]
+                if is_image(name) and ('cover' in bn or 'title' in bn or 'front' in bn):
+                    try:
+                        data = z.read(name)
+                        out_fn = f"{book_id}_cover.webp"
+                        out_path = os.path.join(EXTRACTED_IMG_DIR, out_fn)
+                        if not os.path.exists(out_path):
+                            save_as_webp(data, out_path)
+                        book["cover"] = f"/api/books/{book_id}/image/{out_fn}"
                         break
-            if not book["cover"] and book["images"]:
-                book["cover"] = list(book["images"].values())[0]  # 第一个图片当封面
+                    except: pass
 
             # 3. 找 OPF 获取 spine 阅读顺序
             container_xml = None
@@ -139,20 +172,17 @@ def process_epub(filepath):
                         if el.name == 'img':
                             src = el.get('src', '')
                             alt = el.get('alt', '')
-                            # 匹配图片
                             img_key = Path(src).name if src else ''
+                            # 用提取后的 URL 引用
                             if img_key in book["images"]:
                                 content_blocks.append({"type": "image", "src": book["images"][img_key], "alt": alt})
                             elif src:
-                                # 尝试模糊匹配
                                 found = None
                                 for k in book["images"]:
                                     if k.endswith(img_key) or img_key.endswith(k):
                                         found = k; break
                                 if found:
                                     content_blocks.append({"type": "image", "src": book["images"][found], "alt": alt})
-                                else:
-                                    content_blocks.append({"type": "image", "src": src, "alt": alt, "missing": True})
                             continue
                         if isinstance(el, str):
                             text = el.strip()
@@ -206,7 +236,7 @@ def main():
                 continue  # 跳过已缓存
 
             print(f"[{count+1}] {title} ({author})")
-            book = process_epub(filepath)
+            book = process_epub(filepath, book_id)
             if not book:
                 print(f"  ✗ 跳过")
                 continue

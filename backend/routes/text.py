@@ -160,3 +160,33 @@ async def get_book_text(book_id: str):
         json.dump(result, f, ensure_ascii=False)
 
     return result
+
+
+@router.get("/api/books/{book_id}/image/{img_name}")
+async def get_book_image(book_id: str, img_name: str):
+    """提供从 EPUB 提取的图片（本地缓存或从 OSS 代理）"""
+    # 1. 本地提取的图片
+    img_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_images")
+    local_path = os.path.join(img_dir, img_name)
+    if os.path.exists(local_path):
+        ext = Path(img_name).suffix.lower()
+        mime = IMG_EXTS.get(ext, 'image/png')
+        return FileResponse(local_path, media_type=mime)
+
+    # 2. OSS 代理
+    if config.USE_OSS:
+        import urllib.request
+        oss_url = f"https://{config.OSS_BUCKET_HOST}/book_images/{img_name}"
+        try:
+            req = urllib.request.Request(oss_url)
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = resp.read()
+            ext = Path(img_name).suffix.lower()
+            mime = IMG_EXTS.get(ext, 'image/png')
+            # 缓存到本地
+            os.makedirs(img_dir, exist_ok=True)
+            with open(local_path, 'wb') as f: f.write(data)
+            return Response(content=data, media_type=mime)
+        except: pass
+
+    raise HTTPException(status_code=404, detail="图片未找到")
