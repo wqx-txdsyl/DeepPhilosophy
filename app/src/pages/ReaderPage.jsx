@@ -10,6 +10,8 @@ import ePub from 'epubjs';
 import { getApiBase } from '../App';
 import { getBookById } from '../data';
 import { saveReadingProgress } from '../data/userData';
+import TextReader from '../components/TextReader';
+import { measurePageCapacity, paginateText } from '../utils/pagination';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -27,6 +29,12 @@ function ReaderPage() {
   const pageCacheRef = useRef({});
   const [fileType, setFileType] = useState(null);
   const cacheReadyRef = useRef(false);
+  // 新文本引擎状态
+  const [textPages, setTextPages] = useState([]);
+  const [textPage, setTextPage] = useState(0);
+  const [textChapters, setTextChapters] = useState([]);
+  const [textLoading, setTextLoading] = useState(false);
+  const [textReady, setTextReady] = useState(false);
 
   // 预加载页数缓存（确保 initEpub 之前就绪）
   useEffect(() => {
@@ -338,6 +346,45 @@ ${textContext}
     setLoading(false);
   };
 
+  // 新引擎：加载纯文本 + 分页（EPUB/TXT）
+  const loadTextBook = async () => {
+    if (fileType !== 'epub' && fileType !== 'txt') return;
+    setTextLoading(true);
+    try {
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/text`);
+      if (!resp.ok) throw new Error('Text API unavailable');
+      const data = await resp.json();
+      setTextChapters(data.chapters || []);
+      // 测量分页
+      const container = document.querySelector('.reader-text-container');
+      const w = container?.clientWidth || 700;
+      const h = container?.clientHeight || window.innerHeight - 160;
+      const charsPerPage = measurePageCapacity(w - 48, h - 40, 18, 1.9);
+      const fullText = data.chapters.map(c => c.text).join('\n\n');
+      const pages = paginateText(fullText, charsPerPage);
+      setTextPages(pages);
+      // 恢复位置
+      try {
+        const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+        const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
+        if (entry?.percent > 0) {
+          setTextPage(Math.floor(entry.percent * pages.length));
+        }
+      } catch {}
+      setTextReady(true);
+    } catch (e) {
+      console.error('Text loading failed:', e);
+      // 回退到原有 EPUB.js
+    }
+    setTextLoading(false);
+  };
+
+  useEffect(() => {
+    if (!loading && (fileType === 'epub' || fileType === 'txt') && book) {
+      loadTextBook();
+    }
+  }, [loading, fileType, book, bookId]);
+
   // Init EPUB — locations.generate 在 initEpub 中已完成，此处无需额外处理
   useEffect(() => {
     if (!epubReady) return;
@@ -470,52 +517,24 @@ ${textContext}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Reader */}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'auto', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
-          {fileType === 'epub' ? (
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
-              <div style={{ flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '2px 8px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 10 }}
-                    onClick={() => setShowToc(true)}><Icon name="icon-toc" size={16} /></button>
-                  <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => epubRenditionRef.current?.prev()}>◀</button>
-                  {showJumpInput ? (
-                    <form onSubmit={e => { e.preventDefault(); const p = parseInt(jumpPage, 10); if (p >= 1 && p <= epubTotalPages) { epubRenditionRef.current?.display(p - 1); setShowJumpInput(false); setJumpPage(''); } }}
-                      style={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                      <input type="number" min={1} max={epubTotalPages} value={jumpPage}
-                        onChange={e => setJumpPage(e.target.value)}
-                        style={{ width: 36, padding: '1px 4px', borderRadius: 4, border: '1px solid var(--accent)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 11, textAlign: 'center' }}
-                        autoFocus />
-                      <button type="submit" className="btn btn-primary" style={{ padding: '1px 6px', fontSize: 10 }}>跳</button>
-                      <button type="button" className="btn btn-secondary" style={{ padding: '1px 6px', fontSize: 10 }}
-                        onClick={() => { setShowJumpInput(false); setJumpPage(''); }}><Icon name="icon-close" size={16} /></button>
-                    </form>
-                  ) : (
-                    <span style={{ fontSize: 12, color: 'var(--text-dim)', cursor: 'pointer' }}
-                      onClick={() => setShowJumpInput(true)}>
-                      {epubBookPage}/{epubBookTotal || '?'} {epubPercent > 0 ? `(${epubPercent}%)` : ''}
-                    </span>
-                  )}
-                  <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => epubRenditionRef.current?.next()}><span style={{ display: 'inline-block', transform: 'scaleX(-1)', fontSize: 14 }}>◀</span></button>
-                  <span style={{ width: 24 }} />
-                </div>
-              </div>
-              {/* TOC overlay */}
-              {showToc && (
-                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', zIndex: 400 }}
-                  onClick={() => setShowToc(false)}>
-                  <div style={{ maxWidth: 600, margin: '50px auto 0', width: '90%', background: 'var(--primary)', borderRadius: 12, maxHeight: '70vh', overflow: 'auto', padding: 20 }}
-                    onClick={e => e.stopPropagation()}>
-                    <h3 style={{ color: 'var(--accent)', marginBottom: 12 }}><Icon name="icon-toc" size={16} /> 目录</h3>
-                    {epubTocRef.current.map((item, i) => (
-                      <div key={i} style={{ padding: '10px 12px', cursor: 'pointer', borderRadius: 8, borderBottom: '1px solid var(--border)', fontSize: 14, color: '#d4a574' }}
-                        onClick={() => { epubRenditionRef.current?.display(item.href); setShowToc(false); }}>
-                        {item.label}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+          {fileType === 'epub' || fileType === 'txt' ? (
+            <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+              {textLoading ? (
+                <div className="loading">正在排版...</div>
+              ) : textReady ? (
+                <TextReader
+                  pages={textPages}
+                  currentPage={textPage}
+                  onPageChange={(p) => {
+                    setTextPage(p);
+                    // 保存进度
+                    if (textPages.length > 0 && book) {
+                      saveReadingProgress(bookId, book.title, book.author, p, p / textPages.length, fileType);
+                    }
+                  }}
+                />
+              ) : (
+                <div className="loading">加载中...</div>
               )}
             </div>
           ) : (

@@ -2043,6 +2043,7 @@ from routes.sync import router as sync_router
 from routes.knowledge import router as knowledge_router
 from routes.ai import router as ai_router
 from routes.history import router as history_router
+from routes.text import router as text_router
 
 app.include_router(health_router)
 app.include_router(auth_router)
@@ -2052,6 +2053,7 @@ app.include_router(sync_router)
 app.include_router(knowledge_router)
 app.include_router(ai_router)
 app.include_router(history_router)
+app.include_router(text_router)
 
 # ============================================================
 # 静态前端（同源部署，须在 API 路由之后注册）
