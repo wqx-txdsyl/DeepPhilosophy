@@ -84,8 +84,20 @@ def extract_txt_text(filepath):
 
 @router.get("/api/books/{book_id}/text")
 async def get_book_text(book_id: str):
-    """获取预构建的书籍JSON（含文本+目录+封面+图片），若无则实时提取并缓存"""
-    # 1. 优先读预构建 JSON（永久缓存）
+    """获取预构建的书籍JSON（含文本+目录+封面+图片），优先 OSS → 本地 → 实时提取"""
+    import urllib.request
+
+    # 1. 优先从 OSS 读取
+    if config.USE_OSS:
+        oss_url = f"https://{config.OSS_BUCKET_HOST}/book_json/{book_id}.json"
+        try:
+            req = urllib.request.Request(oss_url)
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                if resp.status == 200:
+                    return json.loads(resp.read().decode('utf-8'))
+        except: pass
+
+    # 2. 本地预构建 JSON
     json_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_json")
     json_path = os.path.join(json_dir, f"{book_id}.json")
     if os.path.exists(json_path) and os.path.getsize(json_path) > 100:
