@@ -15,39 +15,16 @@ function getMeasureEl() {
 }
 
 /**
- * 测量在当前视口下一次能显示多少字符
- * @param {number} width - 容器宽度
- * @param {number} height - 容器高度
- * @param {number} fontSize - 字体大小 (px)
- * @param {number} lineHeight - 行高倍率
- * @returns {number} 每页字符数
+ * 估算每页字符数（公式计算，无需 DOM 测量，瞬间完成）
+ * 标准中文字符约 = 容器宽×高 / (字号×行高) × 填充率
  */
 export function measurePageCapacity(width, height, fontSize = 18, lineHeight = 1.9) {
-  const el = getMeasureEl();
-  el.style.width = width + 'px';
-  el.style.height = height + 'px';
-  el.style.fontSize = fontSize + 'px';
-  el.style.lineHeight = String(lineHeight);
-
-  // 填充足够多的文本
-  const sample = '测' + '试字。'.repeat(2000);
-  el.textContent = sample;
-
-  // 检查实际渲染了多少字符的高度
-  // 用 range 或 scrollHeight 判断溢出
-  let lo = 0, hi = sample.length;
-  while (lo < hi) {
-    const mid = Math.ceil((lo + hi) / 2);
-    el.textContent = sample.slice(0, mid);
-    // 如果内容高度超过容器高度，说明太多了
-    if (el.scrollHeight > height) {
-      hi = mid - 1;
-    } else {
-      lo = mid;
-    }
-  }
-  el.textContent = '';
-  return Math.max(100, lo);
+  const charWidth = fontSize;            // 中文等宽约等于字号
+  const lineH = fontSize * lineHeight;   // 实际行高
+  const cols = Math.floor(width / charWidth);
+  const rows = Math.floor(height / lineH);
+  // 0.75 填充率（标点、段落间距）
+  return Math.max(200, Math.floor(cols * rows * 0.75));
 }
 
 /**

@@ -35,6 +35,7 @@ function ReaderPage() {
   const [textChapters, setTextChapters] = useState([]);
   const [textLoading, setTextLoading] = useState(false);
   const [textReady, setTextReady] = useState(false);
+  const [useEpubFallback, setUseEpubFallback] = useState(false);
 
   // 预加载页数缓存（确保 initEpub 之前就绪）
   useEffect(() => {
@@ -373,8 +374,12 @@ ${textContext}
       } catch {}
       setTextReady(true);
     } catch (e) {
-      console.error('Text loading failed:', e);
-      // 回退到原有 EPUB.js
+      console.warn('Text API unavailable, using EPUB.js fallback:', e.message);
+      setTextLoading(false);
+      setUseEpubFallback(true);
+      // 延迟触发旧阅读器初始化
+      setTimeout(() => { if (fileUrl && epubViewerRef.current) initEpub(fileUrl); }, 200);
+      return;
     }
     setTextLoading(false);
   };
@@ -518,25 +523,33 @@ ${textContext}
         {/* Reader */}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'auto', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' || fileType === 'txt' ? (
-            <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
-              {textLoading ? (
-                <div className="loading">正在排版...</div>
-              ) : textReady ? (
-                <TextReader
-                  pages={textPages}
-                  currentPage={textPage}
-                  onPageChange={(p) => {
-                    setTextPage(p);
-                    // 保存进度
-                    if (textPages.length > 0 && book) {
-                      saveReadingProgress(bookId, book.title, book.author, p, p / textPages.length, fileType);
-                    }
-                  }}
-                />
-              ) : (
-                <div className="loading">加载中...</div>
-              )}
-            </div>
+            useEpubFallback ? (
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+                <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
+                <div style={{ flexShrink: 0, padding: '4px 8px', borderTop: '1px solid var(--border)', textAlign: 'center', fontSize: 11, color: 'var(--text-dim)' }}>
+                  使用旧版阅读器（文本引擎未部署）
+                </div>
+              </div>
+            ) : (
+              <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+                {textLoading ? (
+                  <div className="loading">正在排版...</div>
+                ) : textReady ? (
+                  <TextReader
+                    pages={textPages}
+                    currentPage={textPage}
+                    onPageChange={(p) => {
+                      setTextPage(p);
+                      if (textPages.length > 0 && book) {
+                        saveReadingProgress(bookId, book.title, book.author, p, p / textPages.length, fileType);
+                      }
+                    }}
+                  />
+                ) : (
+                  <div className="loading">加载中...</div>
+                )}
+              </div>
+            )
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
               <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0 8px' }}>

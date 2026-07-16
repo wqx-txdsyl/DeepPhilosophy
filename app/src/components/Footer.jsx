@@ -6,25 +6,25 @@ import Icon from './Icon';
 
 const columns = [
   {
-    title: '探索',
+    title: '知识库',
     links: [
       { label: '哲学著作', path: '/books' },
       { label: '哲学家', path: '/authors' },
       { label: '哲学谱系', path: '/genealogy' },
-      { label: '世界哲学', path: '/world-philosophies' },
+      { label: '世界哲学地图', path: '/world-philosophies' },
     ],
   },
   {
-    title: '工具',
+    title: '互动',
     links: [
       { label: 'AI 问答', path: '/qa' },
       { label: '答案之书', path: '/games/answer-book' },
       { label: 'PHTI 人格测试', path: '/games/phti' },
-      { label: '阅读器', path: '/books' },
+      { label: 'PHTI 沙雕版', path: '/games/phti-silly' },
     ],
   },
   {
-    title: '关于',
+    title: '更多',
     links: [
       { label: '个人中心', path: '/profile' },
       { label: '设置', path: '/settings' },
