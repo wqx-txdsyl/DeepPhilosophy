@@ -11,7 +11,7 @@ import { getApiBase } from '../App';
 import { getBookById } from '../data';
 import { saveReadingProgress } from '../data/userData';
 import TextReader from '../components/TextReader';
-import { measurePageCapacity, paginateText } from '../utils/pagination';
+import { measurePageCapacity, paginateContent } from '../utils/pagination';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -361,8 +361,16 @@ ${textContext}
       const w = container?.clientWidth || 700;
       const h = container?.clientHeight || window.innerHeight - 160;
       const charsPerPage = measurePageCapacity(w - 48, h - 40, 18, 1.9);
-      const fullText = data.chapters.map(c => c.text).join('\n\n');
-      const pages = paginateText(fullText, charsPerPage);
+      // 展平所有章节的内容块
+      const allBlocks = [];
+      for (const ch of data.chapters || []) {
+        if (ch.content && Array.isArray(ch.content)) {
+          allBlocks.push(...ch.content);
+        } else if (ch.text) {
+          allBlocks.push({ type: 'text', value: ch.text });
+        }
+      }
+      const pages = paginateContent(allBlocks, charsPerPage);
       setTextPages(pages);
       // 恢复位置
       try {

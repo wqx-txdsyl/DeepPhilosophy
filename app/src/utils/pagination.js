@@ -1,73 +1,61 @@
 /**
- * 番茄小说式分页引擎 —— 像素级测量 + 字符偏移分页
- * 不依赖 EPUB.js，自己控制页码
+ * 番茄小说式分页引擎 —— 公式计算 + 图文混排
  */
 
-// 隐形测量 DOM（单例，避免重复创建）
-let measureEl = null;
-function getMeasureEl() {
-  if (!measureEl) {
-    measureEl = document.createElement('div');
-    measureEl.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:800px;visibility:hidden;white-space:pre-wrap;word-break:break-all;font-family:serif;font-size:18px;line-height:1.9;padding:0;overflow:hidden;pointer-events:none;';
-    document.body.appendChild(measureEl);
-  }
-  return measureEl;
-}
-
-/**
- * 估算每页字符数（公式计算，无需 DOM 测量，瞬间完成）
- * 标准中文字符约 = 容器宽×高 / (字号×行高) × 填充率
- */
+/** 估算每页字符数（公式，瞬间） */
 export function measurePageCapacity(width, height, fontSize = 18, lineHeight = 1.9) {
-  const charWidth = fontSize;            // 中文等宽约等于字号
-  const lineH = fontSize * lineHeight;   // 实际行高
-  const cols = Math.floor(width / charWidth);
-  const rows = Math.floor(height / lineH);
-  // 0.75 填充率（标点、段落间距）
+  const cols = Math.floor(width / fontSize);
+  const rows = Math.floor(height / (fontSize * lineHeight));
   return Math.max(200, Math.floor(cols * rows * 0.75));
 }
 
-/**
- * 将文本按每页字符数分页
- * @param {string} text - 全书文本
- * @param {number} charsPerPage - 每页字符数
- * @returns {Array<{page: number, start: number, end: number, text: string}>}
- */
+/** 纯文本分页 */
 export function paginateText(text, charsPerPage) {
   const pages = [];
-  let offset = 0;
-  let pageNum = 1;
-
+  let offset = 0, pageNum = 1;
   while (offset < text.length) {
-    // 在 charsPerPage 附近寻找自然断点（段落/句号）
     let end = Math.min(offset + charsPerPage, text.length);
     if (end < text.length) {
-      // 往回找最近的段落分隔
-      const searchStart = Math.max(offset + Math.floor(charsPerPage * 0.7), offset);
-      const slice = text.slice(searchStart, end);
-      const breakIdx = slice.search(/[\n]{2,}|[。！？.!?\n]/);
-      if (breakIdx >= 0) {
-        end = searchStart + breakIdx + 1;
-      }
+      const s = text.slice(Math.max(offset + Math.floor(charsPerPage * 0.7), offset), end);
+      const bi = s.search(/[\n]{2,}|[。！？.!?\n]/);
+      if (bi >= 0) end = Math.max(offset + Math.floor(charsPerPage * 0.7), offset) + bi + 1;
     }
-    pages.push({
-      page: pageNum,
-      start: offset,
-      end: end,
-      text: text.slice(offset, end),
-    });
+    pages.push({ page: pageNum++, start: offset, end, text: text.slice(offset, end) });
     offset = end;
-    pageNum++;
   }
   return pages;
 }
 
-/**
- * 从字符偏移计算页码
- */
-export function getPageFromOffset(pageBreaks, charOffset) {
-  for (let i = 0; i < pageBreaks.length; i++) {
-    if (charOffset < pageBreaks[i].end) return i;
+/** 图文混排分页 */
+export function paginateContent(blocks, charsPerPage) {
+  const IMG_COST = Math.floor(charsPerPage * 0.45);
+  const pages = [];
+  let cur = { page: 1, blocks: [], chars: 0 };
+  for (const b of blocks) {
+    if (b.type === 'image') {
+      if (cur.chars + IMG_COST > charsPerPage && cur.blocks.length > 0) {
+        pages.push(cur); cur = { page: pages.length + 1, blocks: [], chars: 0 };
+      }
+      cur.blocks.push(b); cur.chars += IMG_COST;
+    } else {
+      let t = b.value || '';
+      while (t.length > 0) {
+        const space = charsPerPage - cur.chars;
+        if (space <= 8) { pages.push(cur); cur = { page: pages.length + 1, blocks: [], chars: 0 }; continue; }
+        const chunk = t.slice(0, space);
+        t = t.slice(space);
+        cur.blocks.push({ type: 'text', value: chunk }); cur.chars += chunk.length;
+        if (t.length > 0) { pages.push(cur); cur = { page: pages.length + 1, blocks: [], chars: 0 }; }
+      }
+    }
   }
+  if (cur.blocks.length > 0) pages.push(cur);
+  return pages;
+}
+
+/** 字符偏移 → 页码 */
+export function getPageFromOffset(pageBreaks, charOffset) {
+  for (let i = 0; i < pageBreaks.length; i++)
+    if (charOffset < pageBreaks[i].end) return i;
   return pageBreaks.length - 1;
 }
