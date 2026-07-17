@@ -1,6 +1,5 @@
 /**
- * 书籍详情页 — 内嵌阅读器入口
- * 离线可用（内置数据兜底）
+ * 书籍详情页 — 封面 + 章节列表 + 阅读入口
  */
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -14,32 +13,38 @@ function BookDetailPage() {
   const { bookId } = useParams();
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
+  const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useSEO(book?.title || '书籍详情', book?.author ? `${book.author} · ${book.title}` : '哲学经典著作详情');
 
-  useEffect(() => {
-    fetchBook();
-  }, [bookId]);
+  useEffect(() => { fetchBook(); }, [bookId]);
 
   const fetchBook = async () => {
     const ck = 'book_' + bookId;
     const cached = cacheGet(ck);
-    if (cached) { setBook(cached); setLoading(false); return; }
-    // 1. 优先本地 JSON（CDN 秒级加载）
-    try {
-      const resp = await fetch(`/books/data/${bookId}.json`);
-      if (resp.ok) { const data = await resp.json(); cacheSet(ck, data); setBook(data); setLoading(false); return; }
-    } catch {}
-    // 2. 回退 Render API
-    try {
-      const resp = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(10000) });
-      if (resp.ok) { const data = await resp.json(); cacheSet(ck, data); setBook(data); setLoading(false); return; }
-    } catch (e) { console.error('Book API unavailable:', e); }
-    // 3. 本地兜底
-    const b = await getBookById(bookId);
-    if (b) cacheSet(ck, b);
+    if (cached) { setBook(cached); setLoading(false); }
+
+    // 并行加载：书籍信息 + 元数据（封面/目录）
+    const bookPromise = cached ? Promise.resolve(cached) : (async () => {
+      try {
+        const resp = await fetch(`/books/data/${bookId}.json`);
+        if (resp.ok) return resp.json();
+      } catch {}
+      try {
+        const resp = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
+        if (resp.ok) return resp.json();
+      } catch {}
+      return await getBookById(bookId);
+    })();
+
+    const metaPromise = fetch(`${getApiBase()}/api/books/${bookId}/text?meta=1`)
+      .then(r => r.ok ? r.json() : null).catch(() => null);
+
+    const [b, m] = await Promise.all([bookPromise, metaPromise]);
+    if (!cached && b) cacheSet(ck, b);
     setBook(b);
+    setMeta(m);
     setLoading(false);
   };
 
@@ -52,82 +57,98 @@ function BookDetailPage() {
   );
 
   const isTxt = book.file_type === 'txt';
-  const regionBadge = book.region === '东方' ? 'badge-east' : 'badge-west';
-
-  const openReader = () => {
-    navigate(`/reader/${bookId}?type=${book.file_type}`);
-  };
+  const openReader = () => navigate(`/reader/${bookId}?type=${book.file_type}`);
+  const coverUrl = meta?.cover || null;
+  const chapterTitles = meta?.chapterTitles || [];
 
   return (
-    <div className="page-container">
-      <button className="btn btn-secondary" onClick={() => navigate(-1)}
-        style={{ marginBottom: 16 }}>
-        ← 返回
-      </button>
+    <div className="page-container" style={{ maxWidth: 800, margin: '0 auto', paddingBottom: 40 }}>
+      <button className="btn btn-secondary" onClick={() => navigate(-1)} style={{ marginBottom: 20 }}>← 返回</button>
 
-      <div className="card" style={{ cursor: 'default' }}>
-        <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-          <span className={`badge ${regionBadge}`}>{book.region}</span>
-          <span className="badge badge-available">{book.file_type.toUpperCase()}</span>
-          {isTxt && <span className="badge badge-pending">待收录</span>}
+      {/* 封面 + 基本信息 */}
+      <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: 28 }}>
+        {/* 封面 */}
+        <div style={{
+          width: 160, height: 220, flexShrink: 0,
+          borderRadius: 6, overflow: 'hidden',
+          background: 'var(--card-bg)', border: '1px solid var(--border)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          {coverUrl ? (
+            <img src={coverUrl} alt={book.title}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <Icon name="nav-books" size={48} />
+          )}
         </div>
 
-        <h2 style={{ fontSize: 20, marginBottom: 4 }}>{book.title}</h2>
-        <p className="card-subtitle" style={{ fontSize: 14, marginBottom: 8 }}>
-          {book.author}
-        </p>
-
-        {book.file_size > 0 && (
-          <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>
-            <Icon name="icon-file-size" size={16} /> {(book.file_size / 1024 / 1024).toFixed(1)} MB
+        {/* 信息 */}
+        <div style={{ flex: 1, minWidth: 240 }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+            <span className={`badge ${book.region === '东方' ? 'badge-east' : 'badge-west'}`}>{book.region}</span>
+            <span className="badge badge-available">{book.file_type?.toUpperCase()}</span>
           </div>
-        )}
+          <h1 style={{
+            fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 400,
+            color: 'var(--ink)', margin: '0 0 6px', letterSpacing: '0.03em',
+          }}>{book.title}</h1>
+          <p style={{ fontSize: 14, color: 'var(--text-dim)', margin: '0 0 12px' }}>
+            {book.author}
+          </p>
+          {book.file_size > 0 && (
+            <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>
+              {(book.file_size / 1024 / 1024).toFixed(1)} MB · {meta ? `${meta.estimatedPages || meta.chapterCount}页` : ''}
+            </p>
+          )}
+          {!isTxt && (
+            <button className="btn btn-primary" style={{ marginTop: 16, padding: '10px 28px', fontSize: 14 }}
+              onClick={openReader}>
+              <Icon name="icon-book-open" size={16} /> 开始阅读
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Keywords */}
-      {book.keywords && book.keywords.length > 0 && (
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 12 }}>
-          {book.keywords.map((kw, i) => (
-            <span key={i} className="tag" style={{
-              fontSize: 12, padding: '4px 10px',
-              background: 'var(--secondary)', color: 'var(--accent)',
-              borderRadius: 12, border: '1px solid var(--border)',
-            }}>
-              {kw.word || kw}
-            </span>
-          ))}
+      {/* 简介 */}
+      {book.summary && (
+        <div style={{
+          padding: '20px 0', borderTop: '1px solid var(--border)',
+          fontSize: 14, color: 'var(--text-dim)', lineHeight: 1.9,
+        }}>
+          {book.summary}
         </div>
       )}
 
-      {/* Summary */}
-      {book.summary && (
-        <div className="card" style={{ cursor: 'default', marginTop: 10 }}>
-          <div style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.7 }}>
-            {book.summary}
+      {/* 章节目录 */}
+      {chapterTitles.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <h2 style={{
+            fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 400,
+            color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.03em',
+          }}>目录</h2>
+          <div style={{ borderTop: '1px solid var(--border)' }}>
+            {chapterTitles.map((title, i) => (
+              <div key={i} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '10px 0', borderBottom: '1px solid var(--border)',
+                cursor: 'pointer', transition: 'background 0.2s',
+                fontSize: 13, color: 'var(--text)',
+              }} onClick={() => navigate(`/reader/${bookId}?type=${book.file_type}&ch=${i}`)}
+                onMouseEnter={e => e.currentTarget.style.background = 'var(--card-bg)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                <span style={{ flex: 1 }}>{title}</span>
+                <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>→</span>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
-      {isTxt ? (
-        <div className="pending-notice">
-          <p style={{ fontSize: 48 }}><Icon name="icon-edit" size={16} /></p>
-          <p>该书籍尚未收录</p>
-          <p style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 8 }}>
-            《{book.title}》的文件正在筹备中，<br />
-            当前仅有占位标记（.txt），敬请期待。
-          </p>
-        </div>
-      ) : (
-        <div style={{ marginTop: 16 }}>
-          <button className="btn btn-primary btn-block" onClick={openReader}>
-            <Icon name="icon-book-open" size={16} /> 打开阅读
-          </button>
-          <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 8, textAlign: 'center' }}>
-            文件类型: {book.file_type.toUpperCase()} · {(book.file_size / 1024 / 1024).toFixed(1)} MB
-          </p>
-          <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4, textAlign: 'center' }}>
-            <Icon name="icon-tip" size={16} /> 提示：在线阅读需要连接服务器
-          </p>
+      {/* 待收录提示 */}
+      {isTxt && (
+        <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-dim)' }}>
+          <p style={{ fontSize: 36, margin: 0 }}><Icon name="icon-edit" size={16} /></p>
+          <p style={{ marginTop: 12 }}>该书籍尚未收录，正在筹备中</p>
         </div>
       )}
     </div>
