@@ -22,25 +22,25 @@ function BookDetailPage() {
 
   const fetchBook = async () => {
     setLoading(true);
-    try {
-      // 1. 优先从 OSS 预构建详情（最快）
-      const dResp = await fetch(`${getApiBase()}/api/books/${bookId}/detail`);
-      if (dResp.ok) {
-        const d = await dResp.json();
-        setBook({ ...d, file_type: 'epub' });
-        setMeta(d);
-        setLoading(false);
-        return;
-      }
-    } catch {}
-    try {
-      // 2. 回退书单API
-      const resp = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
-      if (resp.ok) { setBook(await resp.json()); setLoading(false); return; }
-    } catch {}
-    // 3. 本地数据
-    const b = await getBookById(bookId);
-    setBook(b);
+    // 并行：书籍信息(含简介) + 元数据(封面/目录)
+    const [bookData, metaData] = await Promise.all([
+      (async () => {
+        try {
+          const r = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
+          if (r.ok) return r.json();
+        } catch {}
+        return await getBookById(bookId);
+      })(),
+      (async () => {
+        try {
+          const r = await fetch(`${getApiBase()}/api/books/${bookId}/detail`);
+          if (r.ok) return r.json();
+        } catch {}
+        return null;
+      })(),
+    ]);
+    setBook(bookData);
+    setMeta(metaData);
     setLoading(false);
   };
 
