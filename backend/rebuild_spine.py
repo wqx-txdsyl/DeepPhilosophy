@@ -89,7 +89,7 @@ def extract(fp,bid):
                 if ns is not None and ns > si: next_si = ns; break
             merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
                                      'anchor':ce['anchor'],'next_anchor':chapter_entries[ci+1]['anchor'] if ci+1<len(chapter_entries) and chapter_entries[ci+1]['spine_idx']==si else ''})
-        # 处理每个章节：完整 spine 文件内容，不切割
+        # 处理每个章节：按 <a href="...#anchor"> 锚点切割同文件内容
         for ch_idx, mc in enumerate(merged_chapters):
             all_html = []
             for si in mc['spine_range']:
@@ -102,7 +102,20 @@ def extract(fp,bid):
                     soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                     for t in soup(['script','style','nav','head']):t.decompose()
                     body=soup.find('body') or soup
-                    all_html.append(str(body))
+                    html = str(body)
+                    # 锚点切割：找 <a href="...#anchor"> 之间的内容
+                    if mc.get('anchor'):
+                        start_a = soup.find('a', href=lambda h: h and h.endswith('#' + mc['anchor']))
+                        if start_a:
+                            parts = [str(start_a)]
+                            for sib in start_a.find_all_next():
+                                # 遇到下一个锚点就停
+                                if mc.get('next_anchor'):
+                                    next_a = soup.find('a', href=lambda h: h and h.endswith('#' + mc['next_anchor']))
+                                    if next_a and sib is next_a: break
+                                parts.append(str(sib))
+                            html = ''.join(parts)
+                    all_html.append(html)
                 except:pass
             if all_html:
                 full = '\n'.join(all_html)
