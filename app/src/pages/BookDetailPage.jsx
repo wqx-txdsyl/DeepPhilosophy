@@ -21,28 +21,33 @@ function BookDetailPage() {
   useEffect(() => { fetchBook(); }, [bookId]);
 
   const fetchBook = async () => {
+    // 缓存优先
+    const ck = 'book_detail_' + bookId;
+    const cached = cacheGet(ck);
+    if (cached) { setBook(cached); setMeta(cached); setLoading(false); return; }
+
     setLoading(true);
-    // 1. 秒开：静态 JSON
+    // 1. 静态 JSON（毫秒级）
     try {
       const r = await fetch(`/book_detail/${bookId}.json`);
       if (r.ok) {
         const d = await r.json();
-        setBook({ ...d, file_type: 'epub', file_size: 0 });
+        const enriched = { ...d, file_type: 'epub', file_size: 0 };
+        cacheSet(ck, enriched);
+        setBook(enriched);
         setMeta(d);
         setLoading(false);
-        // 2. 后台补标签和简介（不阻塞）
-        fetch(`${getApiBase()}/api/books/${bookId}`).then(r => r.ok && r.json()).then(b => {
-          if (b) setBook(prev => ({ ...prev, summary: b.summary, tags: b.tags || b.keywords || [], file_size: b.file_size }));
-        }).catch(() => {});
         return;
       }
     } catch {}
-    // 回退
+    // 2. 回退书单API
     try {
       const r = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
-      if (r.ok) { setBook(await r.json()); setLoading(false); return; }
+      if (r.ok) { const d = await r.json(); cacheSet(ck, d); setBook(d); setLoading(false); return; }
     } catch {}
+    // 3. 本地
     const b = await getBookById(bookId);
+    cacheSet(ck, b);
     setBook(b);
     setLoading(false);
   };
