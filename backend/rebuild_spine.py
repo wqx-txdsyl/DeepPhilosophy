@@ -63,20 +63,30 @@ def extract(fp,bid):
                     break
         if not spine_hrefs:
             spine_hrefs=sorted([n for n in names if n.endswith(('.xhtml','.html','.htm')) and '/nav' not in n.lower()])
-        # 构建 TOC 标题映射（用于 spine 项命名）
-        toc_title_map = {}
+        # NCX 条目 → 章节（不按 spine 去重）
+        chapter_entries = []
         if toc:
             for t in toc:
                 src = t._src.split('#')[0] if hasattr(t,'_src') else ''
+                ch_title = t._text if hasattr(t,'_text') else ''
+                # 找对应的 spine 位置
+                spine_idx = None
                 for si, sh in enumerate(spine_hrefs):
                     if src and sh.endswith(src.split('/')[-1]):
-                        toc_title_map[si] = t._text if hasattr(t,'_text') else ''
-                        break
-        # 直接用 spine 每项作一章，TOC 标题仅用于命名
+                        spine_idx = si; break
+                chapter_entries.append({'title': ch_title, 'spine_idx': spine_idx})
+        if not chapter_entries:
+            chapter_entries = [{'title': f'第{i+1}章', 'spine_idx': i} for i in range(len(spine_hrefs))]
+        # 每章含从当前 spine_idx 到下一章 spine_idx-1 的内容
         merged_chapters = []
-        for si, href in enumerate(spine_hrefs):
-            ch_title = toc_title_map.get(si) or f'第{si+1}章'
-            merged_chapters.append({'title': ch_title, 'spine_range': [si]})
+        for ci, ce in enumerate(chapter_entries):
+            si = ce['spine_idx']
+            if si is None: continue
+            next_si = len(spine_hrefs)
+            for cj in range(ci+1, len(chapter_entries)):
+                ns = chapter_entries[cj]['spine_idx']
+                if ns is not None and ns > si: next_si = ns; break
+            merged_chapters.append({'title': ce['title'], 'spine_range': list(range(si, next_si))})
         # 处理每个合并章节
         for ch_idx, mc in enumerate(merged_chapters):
             all_text = []
