@@ -102,20 +102,7 @@ def extract(fp,bid):
                     soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                     for t in soup(['script','style','nav','head']):t.decompose()
                     body=soup.find('body') or soup
-                    html = str(body)
-                    # 锚点切割：找 <a href="...#anchor"> 之间的内容
-                    if mc.get('anchor'):
-                        start_a = soup.find('a', href=lambda h: h and h.endswith('#' + mc['anchor']))
-                        if start_a:
-                            parts = [str(start_a)]
-                            for sib in start_a.find_all_next():
-                                # 遇到下一个锚点就停
-                                if mc.get('next_anchor'):
-                                    next_a = soup.find('a', href=lambda h: h and h.endswith('#' + mc['next_anchor']))
-                                    if next_a and sib is next_a: break
-                                parts.append(str(sib))
-                            html = ''.join(parts)
-                    all_html.append(html)
+                    all_html.append(str(body))
                 except:pass
             if all_html:
                 full = '\n'.join(all_html)
