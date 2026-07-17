@@ -63,23 +63,20 @@ def extract(fp,bid):
                     break
         if not spine_hrefs:
             spine_hrefs=sorted([n for n in names if n.endswith(('.xhtml','.html','.htm')) and '/nav' not in n.lower()])
-        # 按 TOC 分组：找每个 TOC 条目对应的 spine 起始位置
-        chapter_boundaries = []  # [(spine_idx, toc_title)]
+        # 构建 TOC 标题映射（用于 spine 项命名）
+        toc_title_map = {}
         if toc:
-            for ti, t in enumerate(toc):
+            for t in toc:
                 src = t._src.split('#')[0] if hasattr(t,'_src') else ''
                 for si, sh in enumerate(spine_hrefs):
                     if src and sh.endswith(src.split('/')[-1]):
-                        chapter_boundaries.append((si, t._text if hasattr(t,'_text') else f'第{ti+1}章'))
+                        toc_title_map[si] = t._text if hasattr(t,'_text') else ''
                         break
-        if not chapter_boundaries:
-            chapter_boundaries = [(i, f'第{i+1}章') for i in range(len(spine_hrefs))]
-        # 合并：每章包含从 boundary[i] 到 boundary[i+1]-1 的 spine 项
+        # 直接用 spine 每项作一章，TOC 标题仅用于命名
         merged_chapters = []
-        for bi in range(len(chapter_boundaries)):
-            start_idx, ch_title = chapter_boundaries[bi]
-            end_idx = chapter_boundaries[bi+1][0] if bi+1 < len(chapter_boundaries) else len(spine_hrefs)
-            merged_chapters.append({'title': ch_title, 'spine_range': list(range(start_idx, end_idx))})
+        for si, href in enumerate(spine_hrefs):
+            ch_title = toc_title_map.get(si) or f'第{si+1}章'
+            merged_chapters.append({'title': ch_title, 'spine_range': [si]})
         # 处理每个合并章节
         for ch_idx, mc in enumerate(merged_chapters):
             all_text = []
@@ -138,28 +135,48 @@ def extract(fp,bid):
             except:pass
     return chs,toc,cover,images
 
+def process_non_epub(fp, rel, bid, ext):
+    """为 PDF/TXT 创建基础 detail JSON"""
+    title = Path(fp).stem
+    author = rel.split('/')[1].replace('###','').strip() if '/' in rel else ''
+    detail = {'bookId':bid,'title':title,'author':author,'cover':None,'toc':[],'chapterCount':0,'chapterTitles':[],
+              'region':'东方' if '东方' in rel else '西方','file_type':ext}
+    # 补标签和简介
+    for sk in [f'{title}||{author}',f'{title}||',title]:
+        if sk in summaries:
+            s=summaries[sk]
+            if s.get('summary'):detail['summary']=s['summary']
+            if s.get('tags'):detail['tags']=s['tags']
+            break
+    json.dump(detail,open(os.path.join(DDIR,f'{bid}.json'),'w',encoding='utf-8'),ensure_ascii=False)
+    return detail
+
 count=0
 for root,dirs,files in os.walk(BOOKS_DIR):
     for f in sorted(files):
-        if not f.lower().endswith('.epub'):continue
+        ext = Path(f).suffix.lower()
         fp=os.path.join(root,f);rel=os.path.relpath(fp,BOOKS_DIR).replace('\\','/');bid=hashlib.md5(rel.encode()).hexdigest()[:12]
-        bd=os.path.join(CDIR,bid);os.makedirs(bd,exist_ok=True)
-        chs,toc,cover,images=extract(fp,bid)
-        title=Path(f).stem;author=rel.split('/')[1].replace('###','').strip() if '/' in rel else ''
-        toc_titles = [t._text if hasattr(t,'_text') else str(t) for t in toc]
-        meta={'bookId':bid,'title':title,'author':author,'toc':toc_titles,'cover':cover,'chapterCount':len(chs),'chapterTitles':[c['title'] for c in chs]}
-        json.dump(meta,open(os.path.join(bd,'meta.json'),'w',encoding='utf-8'),ensure_ascii=False)
-        detail={k:meta[k] for k in ['bookId','title','author','cover','toc','chapterCount','chapterTitles']}
-        detail['toc']=toc_titles
-        detail['region']='东方' if '东方' in rel else '西方';detail['file_type']='epub'
-        for sk in [f'{title}||{author}',f'{title}||',title]:
-            if sk in summaries:
-                s=summaries[sk]
+        if ext == '.epub':
+            bd=os.path.join(CDIR,bid);os.makedirs(bd,exist_ok=True)
+            chs,toc_entries,cover,images=extract(fp,bid)
+            title=Path(f).stem;author=rel.split('/')[1].replace('###','').strip() if '/' in rel else ''
+            toc_titles = [t._text if hasattr(t,'_text') else str(t) for t in toc_entries]
+            meta={'bookId':bid,'title':title,'author':author,'toc':toc_titles,'cover':cover,'chapterCount':len(chs),'chapterTitles':[c['title'] for c in chs]}
+            json.dump(meta,open(os.path.join(bd,'meta.json'),'w',encoding='utf-8'),ensure_ascii=False)
+            detail={k:meta[k] for k in ['bookId','title','author','cover','toc','chapterCount','chapterTitles']}
+            detail['toc']=toc_titles;detail['region']='东方' if '东方' in rel else '西方';detail['file_type']='epub'
+            for sk in [f'{title}||{author}',f'{title}||',title]:
+                if sk in summaries:s=summaries[sk]
                 if s.get('summary'):detail['summary']=s['summary']
-                if s.get('tags'):detail['tags']=s['tags']
-                break
-        json.dump(detail,open(os.path.join(DDIR,f'{bid}.json'),'w',encoding='utf-8'),ensure_ascii=False)
-        sz=sum(os.path.getsize(os.path.join(bd,x)) for x in os.listdir(bd))
-        print(f'[{count+1}] {f[:40]}... spine:{len(chs)}章 {sz//1024}KB')
+                if s.get('tags'):detail['tags']=s['tags'];break
+            json.dump(detail,open(os.path.join(DDIR,f'{bid}.json'),'w',encoding='utf-8'),ensure_ascii=False)
+            sz=sum(os.path.getsize(os.path.join(bd,x)) for x in os.listdir(bd))
+            print(f'[{count+1}] {f[:40]}... spine:{len(chs)}章 {sz//1024}KB')
+        elif ext in ('.pdf','.txt'):
+            detail=process_non_epub(fp,rel,bid,ext.replace('.',''))
+            dp = os.path.join(DDIR, f'{bid}.json')
+            print(f'[{count+1}] {f[:40]}... {ext} detail:{os.path.getsize(dp)}B')
+        else:
+            continue
         count+=1
 print(f'Done: {count}')
