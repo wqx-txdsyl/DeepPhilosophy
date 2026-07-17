@@ -89,10 +89,10 @@ def extract(fp,bid):
                 if ns is not None and ns > si: next_si = ns; break
             merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
                                      'anchor':ce['anchor'],'next_anchor':chapter_entries[ci+1]['anchor'] if ci+1<len(chapter_entries) and chapter_entries[ci+1]['spine_idx']==si else ''})
-        # 处理每个合并章节（锚点切割）
+        # 处理每个章节：完整 spine 文件内容，不切割
         for ch_idx, mc in enumerate(merged_chapters):
             all_html = []
-            for ri, si in enumerate(mc['spine_range']):
+            for si in mc['spine_range']:
                 href = spine_hrefs[si]
                 if href not in names:
                     candidates=[n for n in names if n.endswith(href.split('/')[-1])]
@@ -102,18 +102,7 @@ def extract(fp,bid):
                     soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                     for t in soup(['script','style','nav','head']):t.decompose()
                     body=soup.find('body') or soup
-                    html = str(body)
-                    # 锚点切割：截取两锚点之间的内容
-                    if mc.get('anchor') and ri == 0:
-                        start_tag = soup.find(id=mc['anchor']) or soup.find(attrs={'name': mc['anchor']})
-                        if start_tag:
-                            parts = []
-                            for sib in start_tag.find_all_next():
-                                if mc.get('next_anchor') and sib.get('id') == mc['next_anchor']: break
-                                if mc.get('next_anchor') and sib.get('name') == mc['next_anchor']: break
-                                parts.append(str(sib))
-                            html = str(start_tag) + ''.join(parts)
-                    all_html.append(html)
+                    all_html.append(str(body))
                 except:pass
             if all_html:
                 full = '\n'.join(all_html)
