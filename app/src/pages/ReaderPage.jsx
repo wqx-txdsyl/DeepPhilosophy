@@ -366,9 +366,15 @@ ${textContext}
       const chapters = data.chapters || data.pages || [];
       setTextChapters(chapters);
       try {
-        const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
-        if (entry?.page > 0) setTextChapter(Math.min(entry.page - 1, chapters.length - 1));
+        // URL 参数优先（从目录跳转）
+        const urlCh = parseInt(searchParams.get('ch'));
+        if (urlCh >= 0 && urlCh < chapters.length) {
+          setTextChapter(urlCh);
+        } else {
+          const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+          const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
+          if (entry?.page > 0) setTextChapter(Math.min(entry.page - 1, chapters.length - 1));
+        }
       } catch {}
       setTextReady(true);
     } catch (e) {
