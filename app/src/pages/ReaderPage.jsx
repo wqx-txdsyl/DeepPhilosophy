@@ -352,7 +352,9 @@ ${textContext}
     if (fileType !== 'epub' && fileType !== 'txt') return;
     setTextLoading(true);
     try {
-      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/text`);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/text`, { signal: controller.signal });
       if (!resp.ok) throw new Error('Text API unavailable');
       const data = await resp.json();
       setTextChapters(data.chapters || []);
@@ -382,14 +384,13 @@ ${textContext}
       } catch {}
       setTextReady(true);
     } catch (e) {
-      console.warn('Text API unavailable, using EPUB.js fallback:', e.message);
-      setTextLoading(false);
+      console.warn('Text API failed, EPUB.js fallback:', e.name || e.message);
       setUseEpubFallback(true);
-      // 延迟触发旧阅读器初始化
       setTimeout(() => { if (fileUrl && epubViewerRef.current) initEpub(fileUrl); }, 200);
-      return;
+    } finally {
+      clearTimeout(timeout);
+      setTextLoading(false);
     }
-    setTextLoading(false);
   };
 
   useEffect(() => {
