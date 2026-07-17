@@ -555,29 +555,25 @@ ${textContext}
         {/* Reader */}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'auto', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           {fileType === 'epub' || fileType === 'txt' ? (
-            useEpubFallback ? (
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                <div ref={epubViewerRef} style={{ flex: 1, minHeight: 0 }} />
-                <div style={{ flexShrink: 0, padding: '4px 8px', borderTop: '1px solid var(--border)', textAlign: 'center', fontSize: 11, color: 'var(--text-dim)' }}>
-                  使用旧版阅读器（文本引擎未部署）
-                </div>
-              </div>
-            ) : (
-              <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
-                {textLoading ? (
-                  <div className="loading">加载中...</div>
-                ) : textReady ? (
-                  <ChapterReader
-                    chapters={textChapters}
-                    currentChapter={textChapter}
-                    onChapterChange={handleChapterChange}
-                    title={book?.title}
-                  />
-                ) : (
-                  <div className="loading">加载中...</div>
-                )}
-              </div>
-            )
+            <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+              {textLoading ? (
+                <div className="loading">加载中...</div>
+              ) : textReady ? (
+                <ChapterReader
+                  chapters={textChapters}
+                  currentChapter={textChapter}
+                  onChapterChange={(ch) => {
+                    setTextChapter(ch);
+                    loadChapter(ch);
+                    if (ch + 1 < textChapters.length) loadChapter(ch + 1);
+                    if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
+                  }}
+                  title={book?.title}
+                />
+              ) : (
+                <div className="loading">加载中...</div>
+              )}
+            </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
               <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0 8px' }}>
