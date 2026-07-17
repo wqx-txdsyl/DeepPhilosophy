@@ -346,52 +346,44 @@ ${textContext}
     setLoading(false);
   };
 
-  // 新引擎：加载纯文本 + 分页（EPUB/TXT）
+  // 直接加载 EPUB/TXT 文本（不依赖 loadBook）
   const loadTextBook = async () => {
-    if (fileType !== 'epub' && fileType !== 'txt') return;
     setTextLoading(true);
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    setLoading(false);
     try {
-      // 第一步：加载元数据（<5KB，毫秒级）
-      const metaResp = await fetch(`${getApiBase()}/api/books/${bookId}/text?meta=1`, { signal: controller.signal });
-      if (!metaResp.ok) throw new Error('Meta API failed');
-      const meta = await metaResp.json();
-      setTextToc(meta.toc || []);
-
-      // 第二步：加载全文
-      const fullResp = await fetch(`${getApiBase()}/api/books/${bookId}/text`, { signal: controller.signal });
-      if (!fullResp.ok) throw new Error('Full API failed');
-      const data = await fullResp.json();
-      const chapters = data.chapters || data.pages || [];
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 20000);
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/text`, { signal: ctrl.signal });
+      clearTimeout(t);
+      if (!resp.ok) throw new Error('API ' + resp.status);
+      const data = await resp.json();
+      // 临时 book 对象（用于标题显示）
+      setBook({ title: data.title || bookId, author: data.author || '', file_type: 'epub' });
+      setFileType('epub');
+      setTextToc(data.toc || []);
+      const chapters = data.chapters || [];
       setTextChapters(chapters);
-      try {
-        // URL 参数优先（从目录跳转）
-        const urlCh = parseInt(searchParams.get('ch'));
-        if (urlCh >= 0 && urlCh < chapters.length) {
-          setTextChapter(urlCh);
-        } else {
-          const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-          const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
-          if (entry?.page > 0) setTextChapter(Math.min(entry.page - 1, chapters.length - 1));
-        }
-      } catch {}
+      // 目录跳转
+      const urlCh = parseInt(searchParams.get('ch'));
+      if (urlCh >= 0 && urlCh < chapters.length) setTextChapter(urlCh);
       setTextReady(true);
     } catch (e) {
-      console.warn('Text API failed, EPUB.js fallback:', e.name || e.message);
-      setUseEpubFallback(true);
-      setTimeout(() => { if (fileUrl && epubViewerRef.current) initEpub(fileUrl); }, 200);
+      console.error('Text load failed:', e);
+      setError('加载失败: ' + (e.name || '网络错误'));
     } finally {
-      clearTimeout(timeout);
       setTextLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!loading && (fileType === 'epub' || fileType === 'txt') && book) {
+    const type = searchParams.get('type') || fileType;
+    if (type === 'epub' || type === 'txt' || fileType === 'epub' || fileType === 'txt') {
+      setFileType(type || 'epub');
       loadTextBook();
+    } else if (!loading && bookId) {
+      loadBook();
     }
-  }, [loading, fileType, book, bookId]);
+  }, [bookId]);
 
   // Init EPUB — locations.generate 在 initEpub 中已完成，此处无需额外处理
   useEffect(() => {
@@ -493,7 +485,7 @@ ${textContext}
       <div className="card"><p style={{ textAlign: 'center', fontSize: 40 }}><Icon name="icon-error" size={16} /></p><p style={{ textAlign: 'center' }}>{error}</p></div>
     </div>
   );
-  if (!book || !fileUrl) return <div className="loading">正在获取文件...</div>;
+  if (!book) return <div className="loading">正在获取文件...</div>;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden' }}>
