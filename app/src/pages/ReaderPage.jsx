@@ -351,8 +351,8 @@ ${textContext}
     setTextLoading(true);
     setLoading(false);
     try {
-      // 1. 加载元数据（<5KB，毫秒级）
-      const metaResp = await fetch(`${getApiBase()}/api/books/${bookId}/text?meta=1`);
+      // 1. 加载元数据（静态文件毫秒级）
+      const metaResp = await fetch(`/book_chapters/${bookId}/meta.json`);
       if (!metaResp.ok) throw new Error('API ' + metaResp.status);
       const meta = await metaResp.json();
       setBook({ title: meta.title || bookId, author: meta.author || '', file_type: 'epub' });
@@ -390,7 +390,7 @@ ${textContext}
     if (loadingRef.current[idx]) return;
     loadingRef.current[idx] = true;
     try {
-      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/chapter/${idx}`);
+      const resp = await fetch(`/book_chapters/${bookId}/${idx}.json`);
       if (resp.ok) {
         const ch = await resp.json();
         setTextChapters(prev => {

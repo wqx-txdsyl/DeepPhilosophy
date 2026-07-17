@@ -22,7 +22,7 @@ function BookDetailPage() {
 
   const fetchBook = async () => {
     setLoading(true);
-    // 1. 秒开：静态 JSON（public/book_detail/）
+    // 1. 秒开：静态 JSON
     try {
       const r = await fetch(`/book_detail/${bookId}.json`);
       if (r.ok) {
