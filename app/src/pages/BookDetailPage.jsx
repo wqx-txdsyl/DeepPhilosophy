@@ -21,12 +21,24 @@ function BookDetailPage() {
   useEffect(() => { fetchBook(); }, [bookId]);
 
   const fetchBook = async () => {
-    // 秒开：直接从 OSS 加载预构建的轻量详情 JSON（1-30KB）
+    setLoading(true);
     try {
-      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/detail`);
-      if (resp.ok) { const d = await resp.json(); setBook(d); setMeta(d); setLoading(false); return; }
+      // 1. 优先从 OSS 预构建详情（最快）
+      const dResp = await fetch(`${getApiBase()}/api/books/${bookId}/detail`);
+      if (dResp.ok) {
+        const d = await dResp.json();
+        setBook({ ...d, file_type: 'epub' });
+        setMeta(d);
+        setLoading(false);
+        return;
+      }
     } catch {}
-    // 回退
+    try {
+      // 2. 回退书单API
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
+      if (resp.ok) { setBook(await resp.json()); setLoading(false); return; }
+    } catch {}
+    // 3. 本地数据
     const b = await getBookById(bookId);
     setBook(b);
     setLoading(false);
