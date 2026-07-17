@@ -103,13 +103,16 @@ def extract(fp,bid):
                     for t in soup(['script','style','nav','head']):t.decompose()
                     body=soup.find('body') or soup
                     html = str(body)
-                    # 锚点切割
-                    if ri == 0 and mc.get('anchor'):
-                        tag = soup.find(id=mc['anchor']) or soup.find(attrs={'name': mc['anchor']})
-                        if tag: html = str(tag) + ''.join(str(s) for s in tag.find_all_next())
-                    if ri == len(mc['spine_range'])-1 and mc.get('next_anchor'):
-                        tag = soup.find(id=mc['next_anchor']) or soup.find(attrs={'name': mc['next_anchor']})
-                        if tag: html = ''.join(str(s) for s in tag.find_all_previous()) + str(tag)
+                    # 锚点切割：截取两锚点之间的内容
+                    if mc.get('anchor') and ri == 0:
+                        start_tag = soup.find(id=mc['anchor']) or soup.find(attrs={'name': mc['anchor']})
+                        if start_tag:
+                            parts = []
+                            for sib in start_tag.find_all_next():
+                                if mc.get('next_anchor') and sib.get('id') == mc['next_anchor']: break
+                                if mc.get('next_anchor') and sib.get('name') == mc['next_anchor']: break
+                                parts.append(str(sib))
+                            html = str(start_tag) + ''.join(parts)
                     all_html.append(html)
                 except:pass
             if all_html:
