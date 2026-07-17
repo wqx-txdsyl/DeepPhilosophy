@@ -63,6 +63,19 @@ def extract(fp,bid):
                     break
         if not spine_hrefs:
             spine_hrefs=sorted([n for n in names if n.endswith(('.xhtml','.html','.htm')) and '/nav' not in n.lower()])
+        # 用 TOC 条目作为章节（而非 spine 原始列表）
+        if toc:
+            # 收集 NCX 中每个条目对应的 spine href
+            chapter_hrefs = []
+            seen = set()
+            for t in toc:
+                src = t._src.split('#')[0] if hasattr(t,'_src') else ''
+                # 在 spine 中找匹配
+                for sh in spine_hrefs:
+                    if src and sh.endswith(src.split('/')[-1]) and sh not in seen:
+                        chapter_hrefs.append(sh); seen.add(sh); break
+            if chapter_hrefs:
+                spine_hrefs = chapter_hrefs
         for hi,href in enumerate(spine_hrefs):
             if href not in names:
                 candidates=[n for n in names if n.endswith(href.split('/')[-1])]
@@ -71,15 +84,11 @@ def extract(fp,bid):
             try:
                 soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                 for t in soup(['script','style','nav','head']):t.decompose()
-                title_el=soup.find(['h1','h2','h3','title'])
-                ch_title = title_el.get_text().strip()[:80] if title_el else None
+                # 优先用 TOC 标题
+                ch_title = toc[hi]._text if hi < len(toc) and hasattr(toc[hi], '_text') else None
                 if not ch_title:
-                    # 用 NCX 中匹配此 href 的标题
-                    for tp in toc:
-                        if hasattr(tp,'_src') and tp._src and href.endswith(tp._src.split('#')[0].split('/')[-1]):
-                            ch_title = tp._text; break
-                if not ch_title:
-                    ch_title = f'第{hi+1}章'
+                    title_el=soup.find(['h1','h2','h3','title'])
+                    ch_title = title_el.get_text().strip()[:80] if title_el else f'第{hi+1}章'
                 body=soup.find('body') or soup
                 blocks=[]
                 for child in body.children if body else []:
