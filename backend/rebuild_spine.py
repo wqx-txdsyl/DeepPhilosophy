@@ -63,20 +63,56 @@ def extract(fp,bid):
                     break
         if not spine_hrefs:
             spine_hrefs=sorted([n for n in names if n.endswith(('.xhtml','.html','.htm')) and '/nav' not in n.lower()])
-        # 用 TOC 条目作为章节（而非 spine 原始列表）
+        # 按 TOC 分组：找每个 TOC 条目对应的 spine 起始位置
+        chapter_boundaries = []  # [(spine_idx, toc_title)]
         if toc:
-            # 收集 NCX 中每个条目对应的 spine href
-            chapter_hrefs = []
-            seen = set()
-            for t in toc:
+            for ti, t in enumerate(toc):
                 src = t._src.split('#')[0] if hasattr(t,'_src') else ''
-                # 在 spine 中找匹配
-                for sh in spine_hrefs:
-                    if src and sh.endswith(src.split('/')[-1]) and sh not in seen:
-                        chapter_hrefs.append(sh); seen.add(sh); break
-            if chapter_hrefs:
-                spine_hrefs = chapter_hrefs
-        for hi,href in enumerate(spine_hrefs):
+                for si, sh in enumerate(spine_hrefs):
+                    if src and sh.endswith(src.split('/')[-1]):
+                        chapter_boundaries.append((si, t._text if hasattr(t,'_text') else f'第{ti+1}章'))
+                        break
+        if not chapter_boundaries:
+            chapter_boundaries = [(i, f'第{i+1}章') for i in range(len(spine_hrefs))]
+        # 合并：每章包含从 boundary[i] 到 boundary[i+1]-1 的 spine 项
+        merged_chapters = []
+        for bi in range(len(chapter_boundaries)):
+            start_idx, ch_title = chapter_boundaries[bi]
+            end_idx = chapter_boundaries[bi+1][0] if bi+1 < len(chapter_boundaries) else len(spine_hrefs)
+            merged_chapters.append({'title': ch_title, 'spine_range': list(range(start_idx, end_idx))})
+        # 处理每个合并章节
+        for ch_idx, mc in enumerate(merged_chapters):
+            all_blocks = []
+            for si in mc['spine_range']:
+                href = spine_hrefs[si]
+                if href not in names:
+                    candidates=[n for n in names if n.endswith(href.split('/')[-1])]
+                    if candidates:href=candidates[0]
+                    else:continue
+                try:
+                    soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
+                    for t in soup(['script','style','nav','head']):t.decompose()
+                    body=soup.find('body') or soup
+                    for child in body.children if body else []:
+                        if isinstance(child,NavigableString):
+                            t=str(child).strip()
+                            if t:all_blocks.append({'type':'text','value':t})
+                        elif hasattr(child,'name') and child.name in ('p','div','li','blockquote','h1','h2','h3','h4','h5','h6','pre'):
+                            t=child.get_text().strip()
+                            if t and len(t)>1:all_blocks.append({'type':'text','value':t})
+                        elif hasattr(child,'name') and child.name=='img':
+                            src=child.get('src','');fn=Path(src).name if src else ''
+                            for k in images:
+                                if k.endswith(fn):all_blocks.append({'type':'image','src':images[k]});break
+                except:pass
+            if all_blocks:
+                ch={'title':mc['title'],'index':ch_idx,'content':all_blocks}
+                chs.append(ch)
+                json.dump(ch,open(os.path.join(CDIR,bid,f'{len(chs)-1}.json'),'w',encoding='utf-8'),ensure_ascii=False)
+        return chs,toc,cover,images
+
+    # fallback: 无 TOC 时的原始逻辑
+    for hi,href in enumerate(spine_hrefs):
             if href not in names:
                 candidates=[n for n in names if n.endswith(href.split('/')[-1])]
                 if candidates:href=candidates[0]
