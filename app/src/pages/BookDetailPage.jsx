@@ -22,25 +22,28 @@ function BookDetailPage() {
 
   const fetchBook = async () => {
     setLoading(true);
-    // 并行：书籍信息(含简介) + 元数据(封面/目录)
-    const [bookData, metaData] = await Promise.all([
-      (async () => {
-        try {
-          const r = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
-          if (r.ok) return r.json();
-        } catch {}
-        return await getBookById(bookId);
-      })(),
-      (async () => {
-        try {
-          const r = await fetch(`${getApiBase()}/api/books/${bookId}/detail`);
-          if (r.ok) return r.json();
-        } catch {}
-        return null;
-      })(),
-    ]);
-    setBook(bookData);
-    setMeta(metaData);
+    // 1. 秒开：静态 JSON（public/book_detail/）
+    try {
+      const r = await fetch(`/book_detail/${bookId}.json`);
+      if (r.ok) {
+        const d = await r.json();
+        setBook({ ...d, file_type: 'epub', file_size: 0 });
+        setMeta(d);
+        setLoading(false);
+        // 2. 后台补标签和简介（不阻塞）
+        fetch(`${getApiBase()}/api/books/${bookId}`).then(r => r.ok && r.json()).then(b => {
+          if (b) setBook(prev => ({ ...prev, summary: b.summary, tags: b.tags || b.keywords || [], file_size: b.file_size }));
+        }).catch(() => {});
+        return;
+      }
+    } catch {}
+    // 回退
+    try {
+      const r = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
+      if (r.ok) { setBook(await r.json()); setLoading(false); return; }
+    } catch {}
+    const b = await getBookById(bookId);
+    setBook(b);
     setLoading(false);
   };
 
@@ -91,10 +94,17 @@ function BookDetailPage() {
           <p style={{ fontSize: 14, color: 'var(--text-dim)', margin: '0 0 12px' }}>
             {book.author}
           </p>
-          {book.file_size > 0 && (
-            <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>
-              {(book.file_size / 1024 / 1024).toFixed(1)} MB · {meta?.chapterCount ? `${meta.chapterCount}章` : ''}
-            </p>
+          <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>
+            {(book.file_size > 0) && `${(book.file_size / 1024 / 1024).toFixed(1)} MB · `}
+            {meta?.chapterCount ? `${meta.chapterCount}章` : ''}
+          </p>
+          {/* 标签 */}
+          {book.tags?.length > 0 && (
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
+              {book.tags.slice(0, 6).map((t, i) => (
+                <span key={i} className="tag" style={{ fontSize: 10, padding: '2px 8px' }}>{typeof t === 'string' ? t : t.word || t}</span>
+              ))}
+            </div>
           )}
           {!isTxt && (
             <button className="btn btn-primary" style={{ marginTop: 16, padding: '10px 28px', fontSize: 14 }}
@@ -105,13 +115,19 @@ function BookDetailPage() {
         </div>
       </div>
 
-      {/* 简介 */}
+      {/* 简介 + 标签 */}
       {book.summary && (
-        <div style={{
-          padding: '20px 0', borderTop: '1px solid var(--border)',
-          fontSize: 14, color: 'var(--text-dim)', lineHeight: 1.9,
-        }}>
+        <div style={{ padding: '20px 0', borderTop: '1px solid var(--border)', fontSize: 14, color: 'var(--text-dim)', lineHeight: 1.9 }}>
           {book.summary}
+        </div>
+      )}
+      {book.keywords?.length > 0 && (
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 12 }}>
+          {book.keywords.map((kw, i) => (
+            <span key={i} className="tag" style={{ fontSize: 12, padding: '4px 10px', background: 'var(--secondary)', color: 'var(--accent)', borderRadius: 12, border: '1px solid var(--border)' }}>
+              {kw.word || kw}
+            </span>
+          ))}
         </div>
       )}
 
