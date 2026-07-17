@@ -74,7 +74,9 @@ export default function ChapterReader({
         </h2>
 
         {/* 内容 */}
-        {ch.content ? (
+        {!ch.content && !ch._loaded ? (
+          <p style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>加载中...</p>
+        ) : ch.content ? (
           ch.content.map((block, i) => {
             if (block.type === 'image') {
               return (

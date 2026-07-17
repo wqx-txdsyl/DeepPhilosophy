@@ -346,7 +346,7 @@ ${textContext}
     setLoading(false);
   };
 
-  // 秒开策略：meta → 立即显示 + 首章 → 后台加载剩余
+  // 秒开：meta → 立即显示 → 按需加载章节
   const loadTextBook = async () => {
     setTextLoading(true);
     setLoading(false);
@@ -358,34 +358,53 @@ ${textContext}
       setBook({ title: meta.title || bookId, author: meta.author || '', file_type: 'epub' });
       setFileType('epub');
       setTextToc(meta.toc || []);
-      // 占位章节（立即显示 UI）
       const total = meta.chapterCount || 0;
-      const placeholders = Array.from({ length: total }, (_, i) => ({
+      const chapters = Array.from({ length: total }, (_, i) => ({
         title: meta.chapterTitles?.[i] || `第${i + 1}章`,
-        content: [{ type: 'text', value: '加载中...' }],
+        content: null, // 按需加载
+        _loaded: false,
       }));
-      setTextChapters(placeholders);
-      setTextReady(true);  // 立即显示 UI
+      setTextChapters(chapters);
+      setTextReady(true);
 
       // URL 跳转
       const urlCh = parseInt(searchParams.get('ch'));
-      if (urlCh >= 0) setTextChapter(urlCh);
+      const startCh = urlCh >= 0 && urlCh < total ? urlCh : 0;
+      setTextChapter(startCh);
 
-      // 2. 后台加载完整内容
-      const fullResp = await fetch(`${getApiBase()}/api/books/${bookId}/text`);
-      if (!fullResp.ok) throw new Error('Full load failed');
-      const data = await fullResp.json();
-      const chapters = data.chapters || [];
-      if (chapters.length > 0) {
-        setTextChapters(chapters);
-        if (urlCh >= 0 && urlCh < chapters.length) setTextChapter(urlCh);
-      }
+      // 2. 立即加载当前章节
+      await loadChapter(startCh, chapters, setTextChapters);
+      // 3. 预加载下一章
+      if (startCh + 1 < total) loadChapter(startCh + 1, chapters, setTextChapters);
     } catch (e) {
       console.error('Load error:', e);
-      if (!textReady) setError('加载失败: ' + (e.name || '网络错误'));
+      if (!textReady) setError('加载失败');
     } finally {
       setTextLoading(false);
     }
+  };
+
+  const loadChapter = async (idx, chapters, setChapters) => {
+    if (chapters[idx]?._loaded || chapters[idx]?.content) return;
+    try {
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/chapter/${idx}`);
+      if (resp.ok) {
+        const ch = await resp.json();
+        setChapters(prev => {
+          const next = [...prev];
+          next[idx] = { ...ch, index: idx, _loaded: true };
+          return next;
+        });
+      }
+    } catch {}
+  };
+
+  // 切章时加载 + 预加载下一章
+  const handleChapterChange = (ch) => {
+    setTextChapter(ch);
+    loadChapter(ch, textChapters, setTextChapters);
+    if (ch + 1 < textChapters.length) loadChapter(ch + 1, textChapters, setTextChapters);
+    if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
   };
 
   useEffect(() => {
@@ -545,10 +564,7 @@ ${textContext}
                   <ChapterReader
                     chapters={textChapters}
                     currentChapter={textChapter}
-                    onChapterChange={(ch) => {
-                      setTextChapter(ch);
-                      if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
-                    }}
+                    onChapterChange={handleChapterChange}
                     title={book?.title}
                   />
                 ) : (
