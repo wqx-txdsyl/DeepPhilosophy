@@ -84,17 +84,42 @@ def extract_txt_text(filepath):
 
 @router.get("/api/books/{book_id}/detail")
 async def get_book_detail(book_id: str):
-    """获取书籍详情（封面+目录+简介，<30KB秒开）"""
+    """获取书籍详情"""
     import urllib.request
+    # 本地优先
+    dd = os.path.join(os.path.dirname(__file__), "..", "data", "book_detail")
+    lp = os.path.join(dd, f"{book_id}.json")
+    if os.path.exists(lp):
+        with open(lp, 'r', encoding='utf-8') as f: return json.load(f)
+    # OSS
     if config.USE_OSS:
         url = f"https://{config.OSS_BUCKET_HOST}/book_detail/{book_id}.json"
         try:
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req, timeout=8) as resp:
-                if resp.status == 200:
-                    return json.loads(resp.read().decode('utf-8'))
+                if resp.status == 200: return json.loads(resp.read().decode('utf-8'))
         except: pass
     raise HTTPException(status_code=404, detail="详情未找到")
+
+
+@router.get("/api/books/{book_id}/chapter/{ch}")
+async def get_book_chapter(book_id: str, ch: int):
+    """获取单章内容（<200KB，按需秒加载）"""
+    import urllib.request
+    # 本地优先
+    cd = os.path.join(os.path.dirname(__file__), "..", "data", "book_chapters", book_id)
+    lp = os.path.join(cd, f"{ch}.json")
+    if os.path.exists(lp):
+        with open(lp, 'r', encoding='utf-8') as f: return json.load(f)
+    # OSS
+    if config.USE_OSS:
+        url = f"https://{config.OSS_BUCKET_HOST}/book_chapters/{book_id}/{ch}.json"
+        try:
+            req = urllib.request.Request(url)
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                if resp.status == 200: return json.loads(resp.read().decode('utf-8'))
+        except: pass
+    raise HTTPException(status_code=404, detail="章节未找到")
 
 
 @router.get("/api/books/{book_id}/text")
@@ -102,9 +127,14 @@ async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
     """获取预构建的书籍JSON。?meta=1 仅返回元数据(快速), ?chapter=N 仅返回第N章"""
     import urllib.request
 
-    # 加载完整 JSON
+    # 加载完整 JSON（本地优先，OSS兜底）
     data = None
-    if config.USE_OSS:
+    json_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_json")
+    json_path = os.path.join(json_dir, f"{book_id}.json")
+    if os.path.exists(json_path) and os.path.getsize(json_path) > 100:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    if not data and config.USE_OSS:
         oss_url = f"https://{config.OSS_BUCKET_HOST}/book_json/{book_id}.json"
         try:
             req = urllib.request.Request(oss_url)
@@ -112,12 +142,6 @@ async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
                 if resp.status == 200:
                     data = json.loads(resp.read().decode('utf-8'))
         except: pass
-    if not data:
-        json_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_json")
-        json_path = os.path.join(json_dir, f"{book_id}.json")
-        if os.path.exists(json_path) and os.path.getsize(json_path) > 100:
-            with open(json_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
     if not data:
         raise HTTPException(status_code=404, detail="书籍数据未找到")
 
