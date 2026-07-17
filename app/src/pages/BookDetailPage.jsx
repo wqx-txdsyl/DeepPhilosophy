@@ -55,7 +55,7 @@ function BookDetailPage() {
   const isTxt = book.file_type === 'txt';
   const openReader = () => navigate(`/reader/${bookId}?type=${book.file_type}`);
   const coverUrl = meta?.cover || null;
-  const chapterTitles = meta?.chapterTitles || [];
+  const chapterTitles = meta?.toc || meta?.chapterTitles || [];
 
   return (
     <div className="page-container" style={{ maxWidth: 800, margin: '0 auto', paddingBottom: 40 }}>
