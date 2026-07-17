@@ -73,7 +73,7 @@ export default function ChapterReader({
           {ch.title || `第${currentChapter + 1}章`}
         </h2>
 
-        {/* 内容 */}
+        {/* 内容 — HTML 保留原排版 */}
         {!ch.content && !ch._loaded ? (
           <p style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>加载中...</p>
         ) : ch.content ? (
@@ -83,9 +83,13 @@ export default function ChapterReader({
                 <div key={i} style={{ textAlign: 'center', margin: '16px 0' }}>
                   <img src={block.src} alt={block.alt || ''}
                     style={{ maxWidth: '100%', maxHeight: '50vh', objectFit: 'contain', borderRadius: 4 }} />
-                  {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
                 </div>
               );
+            }
+            // HTML 内容
+            if (block.type === 'html' || (block.value && block.value.startsWith('<') && block.value.includes('>'))) {
+              const html = block.value || block.html || '';
+              return <div key={i} className="chapter-html" dangerouslySetInnerHTML={{ __html: html }} />;
             }
             return <p key={i} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>{block.value}</p>;
           })

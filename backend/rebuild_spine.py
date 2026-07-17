@@ -93,15 +93,13 @@ def extract(fp,bid):
                     soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                     for t in soup(['script','style','nav','head']):t.decompose()
                     body=soup.find('body') or soup
-                    # 直接提取全部文本，用换行分隔段落
-                    text = body.get_text(separator='\n', strip=True)
-                    # 去掉多余空行
-                    lines = [l.strip() for l in text.split('\n') if l.strip()]
-                    all_text.append('\n'.join(lines))
+                    # 保留原始 HTML 结构（段落/换行/缩进全部保留）
+                    html = str(body)
+                    all_text.append(html)
                 except:pass
             if all_text:
                 full = '\n\n'.join(all_text)
-                ch={'title':mc['title'],'index':ch_idx,'content':[{'type':'text','value':full}]}
+                ch={'title':mc['title'],'index':ch_idx,'content':[{'type':'html','value':full}]}
                 chs.append(ch)
                 json.dump(ch,open(os.path.join(CDIR,bid,f'{len(chs)-1}.json'),'w',encoding='utf-8'),ensure_ascii=False)
         return chs,toc,cover,images
