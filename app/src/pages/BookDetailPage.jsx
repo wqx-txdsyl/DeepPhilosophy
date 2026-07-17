@@ -27,7 +27,7 @@ function BookDetailPage() {
     if (cached) { setBook(cached); setMeta(cached); setLoading(false); return; }
 
     setLoading(true);
-    // 1. 静态 JSON（毫秒级）
+    // 1. 静态 JSON（毫秒级，含目录/封面）
     try {
       const r = await fetch(`/book_detail/${bookId}.json`);
       if (r.ok) {
@@ -37,6 +37,10 @@ function BookDetailPage() {
         setBook(enriched);
         setMeta(d);
         setLoading(false);
+        // 2. 后台补标签和简介
+        fetch(`${getApiBase()}/api/books/${bookId}`).then(r => r.ok && r.json()).then(bd => {
+          if (bd) setBook(prev => ({ ...prev, summary: bd.summary, tags: bd.tags || bd.keywords || [], keywords: bd.keywords || [], file_size: bd.file_size || 0 }));
+        }).catch(() => {});
         return;
       }
     } catch {}
