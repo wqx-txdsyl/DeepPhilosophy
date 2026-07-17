@@ -358,10 +358,8 @@ ${textContext}
       if (!metaResp.ok) throw new Error('Meta API failed');
       const meta = await metaResp.json();
       setTextToc(meta.toc || []);
-      // 用估算页数预填总页数
-      if (meta.estimatedPages > 0) setTextPages(new Array(meta.estimatedPages).fill({ text: '' }));
 
-      // 第二步：加载全文（后台，不阻塞）
+      // 第二步：加载全文
       const fullResp = await fetch(`${getApiBase()}/api/books/${bookId}/text`, { signal: controller.signal });
       if (!fullResp.ok) throw new Error('Full API failed');
       const data = await fullResp.json();
