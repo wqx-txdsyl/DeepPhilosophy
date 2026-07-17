@@ -61,8 +61,12 @@ export default function Footer() {
       </div>
 
       {/* 底部版权 */}
-      <div className="home-footer-bottom">
-        <p className="home-footer-copy">© {new Date().getFullYear()} DeepPhilosophy · @txdsyl_</p>
+      <div className="home-footer-bottom" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
+        <p className="home-footer-copy" style={{ margin: 0 }}>© {new Date().getFullYear()} DeepPhilosophy · @txdsyl_</p>
+        <div style={{ display: 'flex', gap: 16 }}>
+          <span className="home-footer-link" onClick={() => navigate('/privacy')}>隐私政策</span>
+          <span className="home-footer-link" onClick={() => navigate('/terms')}>用户协议</span>
+        </div>
       </div>
     </footer>
   );

@@ -83,26 +83,55 @@ def extract_txt_text(filepath):
 
 
 @router.get("/api/books/{book_id}/text")
-async def get_book_text(book_id: str):
-    """获取预构建的书籍JSON（含文本+目录+封面+图片），优先 OSS → 本地 → 实时提取"""
+async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
+    """获取预构建的书籍JSON。?meta=1 仅返回元数据(快速), ?chapter=N 仅返回第N章"""
     import urllib.request
 
-    # 1. 优先从 OSS 读取
+    # 加载完整 JSON
+    data = None
     if config.USE_OSS:
         oss_url = f"https://{config.OSS_BUCKET_HOST}/book_json/{book_id}.json"
         try:
             req = urllib.request.Request(oss_url)
             with urllib.request.urlopen(req, timeout=10) as resp:
                 if resp.status == 200:
-                    return json.loads(resp.read().decode('utf-8'))
+                    data = json.loads(resp.read().decode('utf-8'))
         except: pass
+    if not data:
+        json_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_json")
+        json_path = os.path.join(json_dir, f"{book_id}.json")
+        if os.path.exists(json_path) and os.path.getsize(json_path) > 100:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+    if not data:
+        raise HTTPException(status_code=404, detail="书籍数据未找到")
 
-    # 2. 本地预构建 JSON
-    json_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_json")
-    json_path = os.path.join(json_dir, f"{book_id}.json")
-    if os.path.exists(json_path) and os.path.getsize(json_path) > 100:
-        with open(json_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+    # ?meta=1 → 仅返回元数据（快速加载，<5KB）
+    if meta == "1":
+        return {
+            "bookId": data.get("bookId", book_id),
+            "title": data.get("title", ""),
+            "author": data.get("author", ""),
+            "cover": data.get("cover"),
+            "toc": data.get("toc", []),
+            "totalChars": data.get("totalChars", 0),
+            "estimatedPages": data.get("estimatedPages", 0),
+            "chapterCount": len(data.get("chapters", [])),
+            "chapterTitles": [c.get("title", "") for c in data.get("chapters", [])],
+        }
+
+    # ?chapter=N → 仅返回第 N 章
+    if chapter:
+        try:
+            idx = int(chapter)
+            chs = data.get("chapters", [])
+            if 0 <= idx < len(chs):
+                return {"chapter": chs[idx], "index": idx, "totalChapters": len(chs)}
+            raise HTTPException(status_code=404, detail="章节不存在")
+        except ValueError:
+            pass
+
+    return data
 
     os.makedirs(CACHE_DIR, exist_ok=True)
     cache_path = os.path.join(CACHE_DIR, f"{book_id}.json")

@@ -27,6 +27,8 @@ const AuthorDetailPage = lazy(() => import('./pages/AuthorDetailPage'));
 const SchoolDetailPage = lazy(() => import('./pages/SchoolDetailPage'));
 const DeveloperPage = lazy(() => import('./pages/DeveloperPage'));
 const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
 const GamesPage = lazy(() => import('./pages/GamesPage'));
 const WorldPhilosophiesPage = lazy(() => import('./pages/WorldPhilosophiesPage'));
 const WesternPhilosophiesPage = lazy(() => import('./pages/WesternPhilosophiesPage'));
@@ -196,6 +198,8 @@ function MainLayout() {
           <Route path="/DEVELOPER_IS_TXDSYL" element={<DeveloperPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEditPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
         </Routes>
         </div>
         </Suspense>

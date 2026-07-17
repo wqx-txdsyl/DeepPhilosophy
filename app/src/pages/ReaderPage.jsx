@@ -36,6 +36,7 @@ function ReaderPage() {
   const [textLoading, setTextLoading] = useState(false);
   const [textReady, setTextReady] = useState(false);
   const [useEpubFallback, setUseEpubFallback] = useState(false);
+  const [textToc, setTextToc] = useState([]);
 
   // 预加载页数缓存（确保 initEpub 之前就绪）
   useEffect(() => {
@@ -351,36 +352,40 @@ ${textContext}
   const loadTextBook = async () => {
     if (fileType !== 'epub' && fileType !== 'txt') return;
     setTextLoading(true);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
-      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/text`, { signal: controller.signal });
-      if (!resp.ok) throw new Error('Text API unavailable');
-      const data = await resp.json();
+      // 第一步：加载元数据（<5KB，毫秒级）
+      const metaResp = await fetch(`${getApiBase()}/api/books/${bookId}/text?meta=1`, { signal: controller.signal });
+      if (!metaResp.ok) throw new Error('Meta API failed');
+      const meta = await metaResp.json();
+      setTextToc(meta.toc || []);
+      // 用估算页数预填总页数
+      if (meta.estimatedPages > 0) setTextPages(new Array(meta.estimatedPages).fill({ text: '' }));
+
+      // 第二步：加载全文（后台，不阻塞）
+      const fullResp = await fetch(`${getApiBase()}/api/books/${bookId}/text`, { signal: controller.signal });
+      if (!fullResp.ok) throw new Error('Full API failed');
+      const data = await fullResp.json();
       setTextChapters(data.chapters || []);
-      // 测量分页
-      const container = document.querySelector('.reader-text-container');
-      const w = container?.clientWidth || 700;
-      const h = container?.clientHeight || window.innerHeight - 160;
-      const charsPerPage = measurePageCapacity(w - 48, h - 40, 18, 1.9);
-      // 展平所有章节的内容块
-      const allBlocks = [];
-      for (const ch of data.chapters || []) {
-        if (ch.content && Array.isArray(ch.content)) {
-          allBlocks.push(...ch.content);
-        } else if (ch.text) {
-          allBlocks.push({ type: 'text', value: ch.text });
+
+      // 优先用预分页，无则客户端分页
+      let pages = data.pages || [];
+      if (pages.length === 0) {
+        const allBlocks = [];
+        for (const ch of data.chapters || []) {
+          if (ch.content && Array.isArray(ch.content)) allBlocks.push(...ch.content);
+          else if (ch.text) allBlocks.push({ type: 'text', value: ch.text });
         }
+        const w = document.querySelector('.reader-text-container')?.clientWidth || 700;
+        const h = document.querySelector('.reader-text-container')?.clientHeight || window.innerHeight - 160;
+        pages = paginateContent(allBlocks, measurePageCapacity(w, h, 18, 1.9));
       }
-      const pages = paginateContent(allBlocks, charsPerPage);
       setTextPages(pages);
-      // 恢复位置
       try {
         const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
         const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
-        if (entry?.percent > 0) {
-          setTextPage(Math.floor(entry.percent * pages.length));
-        }
+        if (entry?.percent > 0) setTextPage(Math.floor(entry.percent * pages.length));
       } catch {}
       setTextReady(true);
     } catch (e) {
@@ -512,11 +517,22 @@ ${textContext}
           onClick={() => navigate(-1)}>←</button>
         <span style={{ fontSize: 11, color: 'var(--text)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {book.title}
+          {(fileType === 'epub' || fileType === 'txt') && textReady && (
+            <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>{textPage + 1}/{textPages.length || '?'}</span>
+          )}
         </span>
-        <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 10 }}
-          onClick={() => setTwoPage(!twoPage)}>
-          {twoPage ? '单页' : '双页'}
-        </button>
+        {(fileType === 'epub' || fileType === 'txt') && (
+          <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 10 }}
+            onClick={() => setTwoPage(!twoPage)}>
+            {twoPage ? '单页' : '双页'}
+          </button>
+        )}
+        {(fileType === 'epub' || fileType === 'txt') && textToc.length > 0 && (
+          <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 10 }}
+            onClick={() => document.querySelector('.toc-overlay')?.classList.toggle('toc-visible')}>
+            ☰
+          </button>
+        )}
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowNotes(!showNotes); if (!showNotes) setShowAiChat(false); }}>
           <Icon name="icon-edit" size={16} />批注
@@ -547,6 +563,22 @@ ${textContext}
                   <TextReader
                     pages={textPages}
                     currentPage={textPage}
+                    toc={textToc}
+                    onTocNavigate={(item) => {
+                      // 根据 TOC 标题匹配章节，跳转到对应页
+                      const idx = textChapters.findIndex(c => c.title === item.title);
+                      if (idx >= 0 && textPages.length > 0) {
+                        const totalChars = textPages.reduce((s, p) => s + (p.chars || 0), 0);
+                        let charsBefore = 0;
+                        for (let i = 0; i < idx; i++) {
+                          const ch = textChapters[i];
+                          if (ch.content) charsBefore += ch.content.reduce((s, b) => s + (b.value || '').length, 0);
+                          else charsBefore += (ch.text || '').length;
+                        }
+                        const targetPage = Math.floor((charsBefore / totalChars) * textPages.length);
+                        setTextPage(Math.max(0, targetPage));
+                      }
+                    }}
                     onPageChange={(p) => {
                       setTextPage(p);
                       if (textPages.length > 0 && book) {

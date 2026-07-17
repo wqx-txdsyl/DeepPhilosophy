@@ -2,11 +2,11 @@
  * 番茄小说式分页引擎 —— 公式计算 + 图文混排
  */
 
-/** 估算每页字符数（公式，瞬间） */
+/** 估算每页字符数 */
 export function measurePageCapacity(width, height, fontSize = 18, lineHeight = 1.9) {
-  const cols = Math.floor(width / fontSize);
-  const rows = Math.floor(height / (fontSize * lineHeight));
-  return Math.max(200, Math.floor(cols * rows * 0.75));
+  const cols = Math.floor((width - 48) / fontSize);  // 减去左右padding
+  const rows = Math.floor((height - 40) / (fontSize * lineHeight)); // 减去上下padding
+  return Math.max(300, cols * rows);
 }
 
 /** 纯文本分页 */
