@@ -373,9 +373,9 @@ ${textContext}
       setTextChapter(startCh);
 
       // 2. 立即加载当前章节
-      await loadChapter(startCh);
+      await loadChapter(startCh, chapters);
       // 3. 预加载下一章
-      if (startCh + 1 < total) loadChapter(startCh + 1);
+      if (startCh + 1 < total) loadChapter(startCh + 1, chapters);
     } catch (e) {
       console.error('Load error:', e);
       if (!textReady) setError('加载失败');
@@ -385,8 +385,9 @@ ${textContext}
   };
 
   const loadingRef = useRef({});
-  const loadChapter = async (idx) => {
-    if (!textChapters[idx] || textChapters[idx]._loaded || textChapters[idx].content) return;
+  const loadChapter = async (idx, chaptersArr) => {
+    const chs = chaptersArr || textChapters;
+    if (!chs[idx] || chs[idx]._loaded || chs[idx].content) return;
     if (loadingRef.current[idx]) return;
     loadingRef.current[idx] = true;
     try {
