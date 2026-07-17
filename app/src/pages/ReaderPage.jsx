@@ -10,8 +10,7 @@ import ePub from 'epubjs';
 import { getApiBase } from '../App';
 import { getBookById } from '../data';
 import { saveReadingProgress } from '../data/userData';
-import TextReader from '../components/TextReader';
-import { measurePageCapacity, paginateContent } from '../utils/pagination';
+import ChapterReader from '../components/ChapterReader';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -29,14 +28,13 @@ function ReaderPage() {
   const pageCacheRef = useRef({});
   const [fileType, setFileType] = useState(null);
   const cacheReadyRef = useRef(false);
-  // 新文本引擎状态
-  const [textPages, setTextPages] = useState([]);
-  const [textPage, setTextPage] = useState(0);
+  // 章节阅读
   const [textChapters, setTextChapters] = useState([]);
+  const [textChapter, setTextChapter] = useState(0);
+  const [textToc, setTextToc] = useState([]);
   const [textLoading, setTextLoading] = useState(false);
   const [textReady, setTextReady] = useState(false);
   const [useEpubFallback, setUseEpubFallback] = useState(false);
-  const [textToc, setTextToc] = useState([]);
 
   // 预加载页数缓存（确保 initEpub 之前就绪）
   useEffect(() => {
@@ -367,25 +365,12 @@ ${textContext}
       const fullResp = await fetch(`${getApiBase()}/api/books/${bookId}/text`, { signal: controller.signal });
       if (!fullResp.ok) throw new Error('Full API failed');
       const data = await fullResp.json();
-      setTextChapters(data.chapters || []);
-
-      // 优先用预分页，无则客户端分页
-      let pages = data.pages || [];
-      if (pages.length === 0) {
-        const allBlocks = [];
-        for (const ch of data.chapters || []) {
-          if (ch.content && Array.isArray(ch.content)) allBlocks.push(...ch.content);
-          else if (ch.text) allBlocks.push({ type: 'text', value: ch.text });
-        }
-        const w = document.querySelector('.reader-text-container')?.clientWidth || 700;
-        const h = document.querySelector('.reader-text-container')?.clientHeight || window.innerHeight - 160;
-        pages = paginateContent(allBlocks, measurePageCapacity(w, h, 18, 1.9));
-      }
-      setTextPages(pages);
+      const chapters = data.chapters || data.pages || [];
+      setTextChapters(chapters);
       try {
         const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
         const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
-        if (entry?.percent > 0) setTextPage(Math.floor(entry.percent * pages.length));
+        if (entry?.page > 0) setTextChapter(Math.min(entry.page - 1, chapters.length - 1));
       } catch {}
       setTextReady(true);
     } catch (e) {
@@ -518,21 +503,9 @@ ${textContext}
         <span style={{ fontSize: 11, color: 'var(--text)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {book.title}
           {(fileType === 'epub' || fileType === 'txt') && textReady && (
-            <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>{textPage + 1}/{textPages.length || '?'}</span>
+            <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>第{textChapter + 1}章 / 共{textChapters.length}章</span>
           )}
         </span>
-        {(fileType === 'epub' || fileType === 'txt') && (
-          <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 10 }}
-            onClick={() => setTwoPage(!twoPage)}>
-            {twoPage ? '单页' : '双页'}
-          </button>
-        )}
-        {(fileType === 'epub' || fileType === 'txt') && textToc.length > 0 && (
-          <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 10 }}
-            onClick={() => document.querySelector('.toc-overlay')?.classList.toggle('toc-visible')}>
-            ☰
-          </button>
-        )}
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowNotes(!showNotes); if (!showNotes) setShowAiChat(false); }}>
           <Icon name="icon-edit" size={16} />批注
@@ -558,33 +531,16 @@ ${textContext}
             ) : (
               <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
                 {textLoading ? (
-                  <div className="loading">正在排版...</div>
+                  <div className="loading">加载中...</div>
                 ) : textReady ? (
-                  <TextReader
-                    pages={textPages}
-                    currentPage={textPage}
-                    toc={textToc}
-                    onTocNavigate={(item) => {
-                      // 根据 TOC 标题匹配章节，跳转到对应页
-                      const idx = textChapters.findIndex(c => c.title === item.title);
-                      if (idx >= 0 && textPages.length > 0) {
-                        const totalChars = textPages.reduce((s, p) => s + (p.chars || 0), 0);
-                        let charsBefore = 0;
-                        for (let i = 0; i < idx; i++) {
-                          const ch = textChapters[i];
-                          if (ch.content) charsBefore += ch.content.reduce((s, b) => s + (b.value || '').length, 0);
-                          else charsBefore += (ch.text || '').length;
-                        }
-                        const targetPage = Math.floor((charsBefore / totalChars) * textPages.length);
-                        setTextPage(Math.max(0, targetPage));
-                      }
+                  <ChapterReader
+                    chapters={textChapters}
+                    currentChapter={textChapter}
+                    onChapterChange={(ch) => {
+                      setTextChapter(ch);
+                      if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
                     }}
-                    onPageChange={(p) => {
-                      setTextPage(p);
-                      if (textPages.length > 0 && book) {
-                        saveReadingProgress(bookId, book.title, book.author, p, p / textPages.length, fileType);
-                      }
-                    }}
+                    title={book?.title}
                   />
                 ) : (
                   <div className="loading">加载中...</div>
