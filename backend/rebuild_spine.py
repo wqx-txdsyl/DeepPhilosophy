@@ -82,7 +82,7 @@ def extract(fp,bid):
             merged_chapters.append({'title': ch_title, 'spine_range': list(range(start_idx, end_idx))})
         # 处理每个合并章节
         for ch_idx, mc in enumerate(merged_chapters):
-            all_blocks = []
+            all_text = []
             for si in mc['spine_range']:
                 href = spine_hrefs[si]
                 if href not in names:
@@ -93,20 +93,15 @@ def extract(fp,bid):
                     soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                     for t in soup(['script','style','nav','head']):t.decompose()
                     body=soup.find('body') or soup
-                    for child in body.children if body else []:
-                        if isinstance(child,NavigableString):
-                            t=str(child).strip()
-                            if t:all_blocks.append({'type':'text','value':t})
-                        elif hasattr(child,'name') and child.name in ('p','div','li','blockquote','h1','h2','h3','h4','h5','h6','pre'):
-                            t=child.get_text().strip()
-                            if t and len(t)>1:all_blocks.append({'type':'text','value':t})
-                        elif hasattr(child,'name') and child.name=='img':
-                            src=child.get('src','');fn=Path(src).name if src else ''
-                            for k in images:
-                                if k.endswith(fn):all_blocks.append({'type':'image','src':images[k]});break
+                    # 直接提取全部文本，用换行分隔段落
+                    text = body.get_text(separator='\n', strip=True)
+                    # 去掉多余空行
+                    lines = [l.strip() for l in text.split('\n') if l.strip()]
+                    all_text.append('\n'.join(lines))
                 except:pass
-            if all_blocks:
-                ch={'title':mc['title'],'index':ch_idx,'content':all_blocks}
+            if all_text:
+                full = '\n\n'.join(all_text)
+                ch={'title':mc['title'],'index':ch_idx,'content':[{'type':'text','value':full}]}
                 chs.append(ch)
                 json.dump(ch,open(os.path.join(CDIR,bid,f'{len(chs)-1}.json'),'w',encoding='utf-8'),ensure_ascii=False)
         return chs,toc,cover,images
