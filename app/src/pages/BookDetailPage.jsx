@@ -21,11 +21,6 @@ function BookDetailPage() {
   useEffect(() => { fetchBook(); }, [bookId]);
 
   const fetchBook = async () => {
-    // 缓存优先
-    const ck = 'book_detail_' + bookId;
-    const cached = cacheGet(ck);
-    if (cached) { setBook(cached); setMeta(cached); setLoading(false); return; }
-
     setLoading(true);
     // 1. 静态 JSON（毫秒级，含目录/封面）
     try {
@@ -33,7 +28,6 @@ function BookDetailPage() {
       if (r.ok) {
         const d = await r.json();
         const enriched = { ...d, file_type: 'epub', file_size: 0 };
-        cacheSet(ck, enriched);
         setBook(enriched);
         setMeta(d);
         setLoading(false);
