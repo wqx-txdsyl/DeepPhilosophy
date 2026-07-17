@@ -63,21 +63,22 @@ def extract(fp,bid):
                     break
         if not spine_hrefs:
             spine_hrefs=sorted([n for n in names if n.endswith(('.xhtml','.html','.htm')) and '/nav' not in n.lower()])
-        # NCX 条目 → 章节（不按 spine 去重）
+        # NCX → 章节：记录每个条目的完整 src（含锚点）
         chapter_entries = []
         if toc:
             for t in toc:
-                src = t._src.split('#')[0] if hasattr(t,'_src') else ''
+                full_src = t._src if hasattr(t,'_src') else ''
+                src_file = full_src.split('#')[0] if full_src else ''
+                anchor = full_src.split('#')[1] if '#' in full_src else ''
                 ch_title = t._text if hasattr(t,'_text') else ''
-                # 找对应的 spine 位置
                 spine_idx = None
                 for si, sh in enumerate(spine_hrefs):
-                    if src and sh.endswith(src.split('/')[-1]):
+                    if src_file and sh.endswith(src_file.split('/')[-1]):
                         spine_idx = si; break
-                chapter_entries.append({'title': ch_title, 'spine_idx': spine_idx})
+                chapter_entries.append({'title':ch_title,'spine_idx':spine_idx,'anchor':anchor,'full_src':full_src})
         if not chapter_entries:
-            chapter_entries = [{'title': f'第{i+1}章', 'spine_idx': i} for i in range(len(spine_hrefs))]
-        # 每章含从当前 spine_idx 到下一章 spine_idx-1 的内容
+            chapter_entries = [{'title':f'第{i+1}章','spine_idx':i,'anchor':''} for i in range(len(spine_hrefs))]
+        # 每章内容：spine_range + 锚点切割
         merged_chapters = []
         for ci, ce in enumerate(chapter_entries):
             si = ce['spine_idx']
@@ -86,11 +87,12 @@ def extract(fp,bid):
             for cj in range(ci+1, len(chapter_entries)):
                 ns = chapter_entries[cj]['spine_idx']
                 if ns is not None and ns > si: next_si = ns; break
-            merged_chapters.append({'title': ce['title'], 'spine_range': list(range(si, next_si))})
-        # 处理每个合并章节
+            merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
+                                     'anchor':ce['anchor'],'next_anchor':chapter_entries[ci+1]['anchor'] if ci+1<len(chapter_entries) and chapter_entries[ci+1]['spine_idx']==si else ''})
+        # 处理每个合并章节（锚点切割）
         for ch_idx, mc in enumerate(merged_chapters):
-            all_text = []
-            for si in mc['spine_range']:
+            all_html = []
+            for ri, si in enumerate(mc['spine_range']):
                 href = spine_hrefs[si]
                 if href not in names:
                     candidates=[n for n in names if n.endswith(href.split('/')[-1])]
@@ -100,12 +102,18 @@ def extract(fp,bid):
                     soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                     for t in soup(['script','style','nav','head']):t.decompose()
                     body=soup.find('body') or soup
-                    # 保留原始 HTML 结构（段落/换行/缩进全部保留）
                     html = str(body)
-                    all_text.append(html)
+                    # 锚点切割
+                    if ri == 0 and mc.get('anchor'):
+                        tag = soup.find(id=mc['anchor']) or soup.find(attrs={'name': mc['anchor']})
+                        if tag: html = str(tag) + ''.join(str(s) for s in tag.find_all_next())
+                    if ri == len(mc['spine_range'])-1 and mc.get('next_anchor'):
+                        tag = soup.find(id=mc['next_anchor']) or soup.find(attrs={'name': mc['next_anchor']})
+                        if tag: html = ''.join(str(s) for s in tag.find_all_previous()) + str(tag)
+                    all_html.append(html)
                 except:pass
-            if all_text:
-                full = '\n\n'.join(all_text)
+            if all_html:
+                full = '\n'.join(all_html)
                 ch={'title':mc['title'],'index':ch_idx,'content':[{'type':'html','value':full}]}
                 chs.append(ch)
                 json.dump(ch,open(os.path.join(CDIR,bid,f'{len(chs)-1}.json'),'w',encoding='utf-8'),ensure_ascii=False)
