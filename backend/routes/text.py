@@ -82,6 +82,21 @@ def extract_txt_text(filepath):
     return chapters, text
 
 
+@router.get("/api/books/{book_id}/detail")
+async def get_book_detail(book_id: str):
+    """获取书籍详情（封面+目录+简介，<30KB秒开）"""
+    import urllib.request
+    if config.USE_OSS:
+        url = f"https://{config.OSS_BUCKET_HOST}/book_detail/{book_id}.json"
+        try:
+            req = urllib.request.Request(url)
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                if resp.status == 200:
+                    return json.loads(resp.read().decode('utf-8'))
+        except: pass
+    raise HTTPException(status_code=404, detail="详情未找到")
+
+
 @router.get("/api/books/{book_id}/text")
 async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
     """获取预构建的书籍JSON。?meta=1 仅返回元数据(快速), ?chapter=N 仅返回第N章"""

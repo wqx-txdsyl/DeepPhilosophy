@@ -21,30 +21,14 @@ function BookDetailPage() {
   useEffect(() => { fetchBook(); }, [bookId]);
 
   const fetchBook = async () => {
-    const ck = 'book_' + bookId;
-    const cached = cacheGet(ck);
-    if (cached) { setBook(cached); setLoading(false); }
-
-    // 并行加载：书籍信息 + 元数据（封面/目录）
-    const bookPromise = cached ? Promise.resolve(cached) : (async () => {
-      try {
-        const resp = await fetch(`/books/data/${bookId}.json`);
-        if (resp.ok) return resp.json();
-      } catch {}
-      try {
-        const resp = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
-        if (resp.ok) return resp.json();
-      } catch {}
-      return await getBookById(bookId);
-    })();
-
-    const metaPromise = fetch(`${getApiBase()}/api/books/${bookId}/text?meta=1`)
-      .then(r => r.ok ? r.json() : null).catch(() => null);
-
-    const [b, m] = await Promise.all([bookPromise, metaPromise]);
-    if (!cached && b) cacheSet(ck, b);
+    // 秒开：直接从 OSS 加载预构建的轻量详情 JSON（1-30KB）
+    try {
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/detail`);
+      if (resp.ok) { const d = await resp.json(); setBook(d); setMeta(d); setLoading(false); return; }
+    } catch {}
+    // 回退
+    const b = await getBookById(bookId);
     setBook(b);
-    setMeta(m);
     setLoading(false);
   };
 
