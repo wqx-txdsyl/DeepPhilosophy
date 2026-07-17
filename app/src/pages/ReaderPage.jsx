@@ -352,7 +352,7 @@ ${textContext}
     setLoading(false);
     try {
       // 1. 加载元数据（静态文件毫秒级）
-      const metaResp = await fetch(`/book_chapters/${bookId}/meta.json`);
+      const metaResp = await fetch(`/book_chapters/${bookId}/meta.json?v=2`);
       if (!metaResp.ok) throw new Error('API ' + metaResp.status);
       const meta = await metaResp.json();
       setBook({ title: meta.title || bookId, author: meta.author || '', file_type: 'epub' });

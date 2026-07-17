@@ -24,7 +24,7 @@ function BookDetailPage() {
     setLoading(true);
     // 1. 静态 JSON（毫秒级，含目录/封面）
     try {
-      const r = await fetch(`/book_detail/${bookId}.json`);
+      const r = await fetch(`/book_detail/${bookId}.json?v=2`);
       if (r.ok) {
         const d = await r.json();
         const enriched = { ...d, file_type: 'epub', file_size: 0 };
