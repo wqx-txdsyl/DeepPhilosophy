@@ -346,30 +346,43 @@ ${textContext}
     setLoading(false);
   };
 
-  // 直接加载 EPUB/TXT 文本（不依赖 loadBook）
+  // 秒开策略：meta → 立即显示 + 首章 → 后台加载剩余
   const loadTextBook = async () => {
     setTextLoading(true);
     setLoading(false);
     try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 20000);
-      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/text`, { signal: ctrl.signal });
-      clearTimeout(t);
-      if (!resp.ok) throw new Error('API ' + resp.status);
-      const data = await resp.json();
-      // 临时 book 对象（用于标题显示）
-      setBook({ title: data.title || bookId, author: data.author || '', file_type: 'epub' });
+      // 1. 加载元数据（<5KB，毫秒级）
+      const metaResp = await fetch(`${getApiBase()}/api/books/${bookId}/text?meta=1`);
+      if (!metaResp.ok) throw new Error('API ' + metaResp.status);
+      const meta = await metaResp.json();
+      setBook({ title: meta.title || bookId, author: meta.author || '', file_type: 'epub' });
       setFileType('epub');
-      setTextToc(data.toc || []);
-      const chapters = data.chapters || [];
-      setTextChapters(chapters);
-      // 目录跳转
+      setTextToc(meta.toc || []);
+      // 占位章节（立即显示 UI）
+      const total = meta.chapterCount || 0;
+      const placeholders = Array.from({ length: total }, (_, i) => ({
+        title: meta.chapterTitles?.[i] || `第${i + 1}章`,
+        content: [{ type: 'text', value: '加载中...' }],
+      }));
+      setTextChapters(placeholders);
+      setTextReady(true);  // 立即显示 UI
+
+      // URL 跳转
       const urlCh = parseInt(searchParams.get('ch'));
-      if (urlCh >= 0 && urlCh < chapters.length) setTextChapter(urlCh);
-      setTextReady(true);
+      if (urlCh >= 0) setTextChapter(urlCh);
+
+      // 2. 后台加载完整内容
+      const fullResp = await fetch(`${getApiBase()}/api/books/${bookId}/text`);
+      if (!fullResp.ok) throw new Error('Full load failed');
+      const data = await fullResp.json();
+      const chapters = data.chapters || [];
+      if (chapters.length > 0) {
+        setTextChapters(chapters);
+        if (urlCh >= 0 && urlCh < chapters.length) setTextChapter(urlCh);
+      }
     } catch (e) {
-      console.error('Text load failed:', e);
-      setError('加载失败: ' + (e.name || '网络错误'));
+      console.error('Load error:', e);
+      if (!textReady) setError('加载失败: ' + (e.name || '网络错误'));
     } finally {
       setTextLoading(false);
     }
