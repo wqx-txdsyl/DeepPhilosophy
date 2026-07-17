@@ -56,7 +56,9 @@ def extract(fp,bid):
                             ncx=BeautifulSoup(z.read(ncx_path).decode('utf-8','ignore'),'xml')
                             for np in ncx.find_all('navPoint'):
                                 lab=np.find('navLabel');c=np.find('content')
-                                if lab and c:toc.append(lab.text.strip())
+                                if lab and c:
+                                    src_val = c.get('src','')
+                                    toc.append(type('TocEntry',(),{'_text':lab.text.strip(),'_src':src_val})())
                         except:pass
                     break
         if not spine_hrefs:
@@ -70,7 +72,14 @@ def extract(fp,bid):
                 soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                 for t in soup(['script','style','nav','head']):t.decompose()
                 title_el=soup.find(['h1','h2','h3','title'])
-                ch_title=title_el.get_text().strip()[:80] if title_el else Path(href).stem
+                ch_title = title_el.get_text().strip()[:80] if title_el else None
+                if not ch_title:
+                    # 用 NCX 中匹配此 href 的标题
+                    for tp in toc:
+                        if hasattr(tp,'_src') and tp._src and href.endswith(tp._src.split('#')[0].split('/')[-1]):
+                            ch_title = tp._text; break
+                if not ch_title:
+                    ch_title = f'第{hi+1}章'
                 body=soup.find('body') or soup
                 blocks=[]
                 for child in body.children if body else []:
@@ -99,9 +108,11 @@ for root,dirs,files in os.walk(BOOKS_DIR):
         bd=os.path.join(CDIR,bid);os.makedirs(bd,exist_ok=True)
         chs,toc,cover,images=extract(fp,bid)
         title=Path(f).stem;author=rel.split('/')[1].replace('###','').strip() if '/' in rel else ''
-        meta={'bookId':bid,'title':title,'author':author,'toc':toc,'cover':cover,'chapterCount':len(chs),'chapterTitles':[c['title'] for c in chs]}
+        toc_titles = [t._text if hasattr(t,'_text') else str(t) for t in toc]
+        meta={'bookId':bid,'title':title,'author':author,'toc':toc_titles,'cover':cover,'chapterCount':len(chs),'chapterTitles':[c['title'] for c in chs]}
         json.dump(meta,open(os.path.join(bd,'meta.json'),'w',encoding='utf-8'),ensure_ascii=False)
         detail={k:meta[k] for k in ['bookId','title','author','cover','toc','chapterCount','chapterTitles']}
+        detail['toc']=toc_titles
         detail['region']='东方' if '东方' in rel else '西方';detail['file_type']='epub'
         for sk in [f'{title}||{author}',f'{title}||',title]:
             if sk in summaries:
