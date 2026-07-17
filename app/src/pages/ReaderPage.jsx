@@ -373,9 +373,9 @@ ${textContext}
       setTextChapter(startCh);
 
       // 2. 立即加载当前章节
-      await loadChapter(startCh, chapters, setTextChapters);
+      await loadChapter(startCh);
       // 3. 预加载下一章
-      if (startCh + 1 < total) loadChapter(startCh + 1, chapters, setTextChapters);
+      if (startCh + 1 < total) loadChapter(startCh + 1);
     } catch (e) {
       console.error('Load error:', e);
       if (!textReady) setError('加载失败');
@@ -384,26 +384,31 @@ ${textContext}
     }
   };
 
-  const loadChapter = async (idx, chapters, setChapters) => {
-    if (chapters[idx]?._loaded || chapters[idx]?.content) return;
+  const loadingRef = useRef({});
+  const loadChapter = async (idx) => {
+    if (!textChapters[idx] || textChapters[idx]._loaded || textChapters[idx].content) return;
+    if (loadingRef.current[idx]) return;
+    loadingRef.current[idx] = true;
     try {
       const resp = await fetch(`${getApiBase()}/api/books/${bookId}/chapter/${idx}`);
       if (resp.ok) {
         const ch = await resp.json();
-        setChapters(prev => {
+        setTextChapters(prev => {
           const next = [...prev];
-          next[idx] = { ...ch, index: idx, _loaded: true };
+          if (next[idx]) next[idx] = { ...ch, index: idx, _loaded: true };
           return next;
         });
       }
-    } catch {}
+    } catch {} finally {
+      loadingRef.current[idx] = false;
+    }
   };
 
-  // 切章时加载 + 预加载下一章
   const handleChapterChange = (ch) => {
+    if (ch === textChapter) return;
     setTextChapter(ch);
-    loadChapter(ch, textChapters, setTextChapters);
-    if (ch + 1 < textChapters.length) loadChapter(ch + 1, textChapters, setTextChapters);
+    loadChapter(ch);
+    if (ch + 1 < textChapters.length) loadChapter(ch + 1);
     if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
   };
 

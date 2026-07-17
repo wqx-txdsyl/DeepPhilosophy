@@ -93,7 +93,7 @@ function BookDetailPage() {
           </p>
           {book.file_size > 0 && (
             <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>
-              {(book.file_size / 1024 / 1024).toFixed(1)} MB · {meta ? `${meta.estimatedPages || meta.chapterCount}页` : ''}
+              {(book.file_size / 1024 / 1024).toFixed(1)} MB · {meta?.chapterCount ? `${meta.chapterCount}章` : ''}
             </p>
           )}
           {!isTxt && (
