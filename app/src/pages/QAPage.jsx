@@ -379,6 +379,8 @@ function QAPage() {
       answer = '无法获取回答。\n\n请检查网络连接或在设置中配置 API Key。';
     }
 
+    if (thinkingMode) console.log('[Thinking] model:', model, 'reasoning_len:', reasoning.length, 'answer_len:', answer.length);
+
     // 等待 RAG 检索完成（不阻塞流式输出，仅补充参考文献）
     await ragPromise;
 
@@ -389,6 +391,7 @@ function QAPage() {
       const updated = [...prev];
       const last = { ...updated[updated.length - 1] };
       last.content = answer;
+      last.reasoning = reasoning;
       last.sources = sources;
       delete last._streaming;
       updated[updated.length - 1] = last;
