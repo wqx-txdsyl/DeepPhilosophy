@@ -352,17 +352,19 @@ ${textContext}
     setTextLoading(true);
     setLoading(false);
     try {
-      // 1. 加载元数据（静态文件毫秒级）
-      const metaResp = await fetch(`/book_chapters/${bookId}/meta.json?v=2`);
-      if (!metaResp.ok) throw new Error('API ' + metaResp.status);
-      const meta = await metaResp.json();
-      setBook({ title: meta.title || bookId, author: meta.author || '', file_type: 'epub' });
+      // 1. 从 book_detail 获取元数据（在 git 中，始终可用）
+      const detailResp = await fetch(`/book_detail/${bookId}.json?v=2`);
+      if (!detailResp.ok) throw new Error('Detail ' + detailResp.status);
+      const detail = await detailResp.json();
+      const total = detail.chapterCount || 0;
+      if (total === 0) throw new Error('No chapters');
+
+      setBook({ title: detail.title || bookId, author: detail.author || '', file_type: 'epub' });
       setFileType('epub');
-      setTextToc(meta.toc || []);
-      const total = meta.chapterCount || 0;
+      setTextToc(detail.toc || []);
       const chapters = Array.from({ length: total }, (_, i) => ({
-        title: meta.chapterTitles?.[i] || `第${i + 1}章`,
-        content: null, // 按需加载
+        title: detail.chapterTitles?.[i] || `第${i + 1}章`,
+        content: null,
         _loaded: false,
       }));
       setTextChapters(chapters);
@@ -374,7 +376,6 @@ ${textContext}
       if (!isNaN(urlCh) && urlCh >= 0 && urlCh < total) {
         startCh = urlCh;
       } else {
-        // 尝试从历史记录恢复
         let histCh = -1;
         try {
           const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
@@ -391,7 +392,7 @@ ${textContext}
       if (startCh + 1 < total) loadChapter(startCh + 1, chapters);
     } catch (e) {
       console.error('Load error:', e);
-      if (!textReady) setError('无法阅读：该书籍章节数据暂未收录。EPUB书籍需先运行 build_book_json.py 生成章节。');
+      if (!textReady) setError('无法阅读：该书籍暂无章节数据（PDF请用其他应用打开，EPUB需先运行构建脚本生成章节）。');
     } finally {
       setTextLoading(false);
     }
@@ -404,7 +405,8 @@ ${textContext}
     if (loadingRef.current[idx]) return;
     loadingRef.current[idx] = true;
     try {
-      const resp = await fetch(`/book_chapters/${bookId}/${idx}.json`);
+      // 走 Render API 获取章节（避免 796 MB 本地数据推 git）
+      const resp = await fetch(`${getApiBase()}/api/books/${bookId}/chapter/${idx}`);
       if (resp.ok) {
         const ch = await resp.json();
         setTextChapters(prev => {
