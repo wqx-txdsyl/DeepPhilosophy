@@ -290,8 +290,8 @@ function HelixCurves({ items }) {
 
 function HomePage() {
   const navigate = useNavigate();
-  const [authorCount, setAuthorCount] = useState(759);
-  const [bookCount, setBookCount] = useState(305);
+  const [authorCount, setAuthorCount] = useState(743);
+  const [bookCount, setBookCount] = useState(293);
   const [schoolCount, setSchoolCount] = useState(111);
   const [schoolData, setSchoolData] = useState({});
   const loggedIn = !!localStorage.getItem('dp_token');
