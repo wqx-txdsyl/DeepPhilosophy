@@ -420,7 +420,7 @@ function QAPage() {
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => setThinkingMode(!thinkingMode)}
           title={thinkingMode ? '关闭深度思考' : '开启深度思考(v4-pro)'}>
-          {thinkingMode ? '🧠 思考中' : '💡 思考'}
+          {thinkingMode ? <><Icon name="brain" size={14} /> 思考中</> : <><Icon name="idea" size={14} /> 思考</>}
         </button>
         {messages.length > 1 && (
           showConfirmClear ? (
