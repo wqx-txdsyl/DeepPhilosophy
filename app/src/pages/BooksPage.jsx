@@ -3,17 +3,29 @@
  * 支持分类标签筛选、搜索、摘要预览
  */
 import { useState, useEffect, useRef, useMemo } from 'react';
+// useRef already imported
 import Icon from '../components/Icon';
 
+const coverCache = {};
 function BookCover({ bookId }) {
   const [src, setSrc] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
   useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { rootMargin: '200px' });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!visible) return;
+    if (coverCache[bookId]) { setSrc(coverCache[bookId]); return; }
     fetch(`/book_detail/${bookId}.json`).then(r => r.ok && r.json()).then(d => {
-      if (d?.cover) setSrc(d.cover);
+      if (d?.cover) { coverCache[bookId] = d.cover; setSrc(d.cover); }
     }).catch(() => {});
-  }, [bookId]);
-  if (!src) return <Icon name="nav-books" size={20} />;
-  return <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+  }, [bookId, visible]);
+  if (!src) return <div ref={ref} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="nav-books" size={20} /></div>;
+  return <img ref={ref} src={src} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
 }
 
 function FadeCard({ children, style }) {
