@@ -23,8 +23,9 @@ function QAPage() {
   const [loading, setLoading] = useState(false);
   const [thinkingPhase, setThinkingPhase] = useState('');
   const [showConfirmClear, setShowConfirmClear] = useState(false);
-  const [asrState, setAsrState] = useState('idle'); // idle | recording | processing
+  const [asrState, setAsrState] = useState('idle');
   const [asrSupported, setAsrSupported] = useState(false);
+  const [thinkingMode, setThinkingMode] = useState(false);
   const sessionIdRef = useRef(null);
   const chatRef = useRef(null);
   const thinkingTimer = useRef(null);
@@ -269,7 +270,7 @@ function QAPage() {
 
     const apiMessages = [
       { role: 'system', content: '你是一个哲学知识助手，精通中西方哲学。请用中文回答，回答要准确、有深度。如果用户询问特定著作或哲学家，请详细阐述其核心思想。' },
-      ...historyMessages.map(m => ({ role: m.role, content: m.content })),
+      ...historyMessages.map(m => ({ role: m.role, content: m.content })), // reasoning_content 不传入上下文
       { role: 'user', content: question },
     ];
 
@@ -281,14 +282,17 @@ function QAPage() {
     startThinking();
 
     let answer = '';
+    let reasoning = '';
     let sources = [];
 
     const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
 
+    const model = thinkingMode ? 'deepseek-v4-pro' : (apiConfig.model || 'deepseek-chat');
     const streamBody = {
-      model: apiConfig.model || 'deepseek-chat',
+      model,
       messages: apiMessages,
-      temperature: 0.7, max_tokens: 1024,
+      ...(thinkingMode ? { reasoning_effort: 'high', thinking: { type: 'enabled' } } : { temperature: 0.7 }),
+      max_tokens: thinkingMode ? 4096 : 1024,
       stream: true,
     };
 
@@ -343,13 +347,17 @@ function QAPage() {
               if (data === '[DONE]') continue;
               try {
                 const json = JSON.parse(data);
-                const delta = json.choices?.[0]?.delta?.content || '';
-                if (delta) {
-                  answer += delta;
+                const delta = json.choices?.[0]?.delta;
+                const textChunk = delta?.content || '';
+                const reasonChunk = delta?.reasoning_content || '';
+                if (textChunk) answer += textChunk;
+                if (reasonChunk) reasoning += reasonChunk;
+                if (textChunk || reasonChunk) {
                   setMessages(prev => {
                     const updated = [...prev];
                     const last = { ...updated[updated.length - 1] };
                     last.content = answer;
+                    last.reasoning = reasoning;
                     last.sources = sources;
                     updated[updated.length - 1] = last;
                     return updated;
@@ -409,6 +417,11 @@ function QAPage() {
         <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
           {messages.length > 1 ? `${messages.length} 条消息` : '新对话'}
         </span>
+        <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
+          onClick={() => setThinkingMode(!thinkingMode)}
+          title={thinkingMode ? '关闭深度思考' : '开启深度思考(v4-pro)'}>
+          {thinkingMode ? '🧠 思考中' : '💡 思考'}
+        </button>
         {messages.length > 1 && (
           showConfirmClear ? (
             <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
@@ -437,6 +450,16 @@ function QAPage() {
       <div className="chat-container" ref={chatRef} style={{ flex: 1, overflow: 'auto' }}>
         {messages.map((msg, i) => (
           <div key={i} className={`chat-message ${msg.role}`}>
+            {msg.reasoning && (
+              <details style={{ marginBottom: 8 }}>
+                <summary style={{ fontSize: 11, color: 'var(--ochre)', cursor: 'pointer', userSelect: 'none' }}>
+                  思考过程 {msg._streaming ? '...' : ''}
+                </summary>
+                <div style={{ fontSize: 11, color: 'var(--text-dim)', whiteSpace: 'pre-wrap', marginTop: 6, padding: '8px 10px', background: 'var(--bg)', borderRadius: 6, borderLeft: '2px solid var(--ochre)', maxHeight: 200, overflow: 'auto' }}>
+                  {msg.reasoning}
+                </div>
+              </details>
+            )}
             <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div>
             {Array.isArray(msg.sources) && msg.sources.length > 0 && (
               <div style={{
