@@ -5,6 +5,17 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import Icon from '../components/Icon';
 
+function BookCover({ bookId }) {
+  const [src, setSrc] = useState(null);
+  useEffect(() => {
+    fetch(`/book_detail/${bookId}.json`).then(r => r.ok && r.json()).then(d => {
+      if (d?.cover) setSrc(d.cover);
+    }).catch(() => {});
+  }, [bookId]);
+  if (!src) return <Icon name="nav-books" size={20} />;
+  return <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+}
+
 function FadeCard({ children, style }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -169,71 +180,51 @@ function BooksPage() {
         </div>
       )}
 
-      {/* 书籍列表（东方优先，区域内按时序） */}
-      {Object.keys(grouped).sort((a, b) => {
-        if (a === '东方') return -1;
-        if (b === '东方') return 1;
-        return a.localeCompare(b);
-      }).map(region => (
-        <div key={region} className="books-author-group" role="list" aria-label={`${region}哲学作者列表`}>
-          <h2 className="section-title">
-            {region === '东方' ? <Icon name='region-east-pagoda' size={16} /> : <Icon name='region-west' size={16} />} {region}哲学
+      {/* 书籍列表 — 笔趣阁风格网格 */}
+      {['东方', '西方'].filter(r => grouped[r]).map(region => (
+        <div key={region} style={{ marginBottom: 32 }}>
+          <h2 className="section-title" style={{ marginBottom: 16 }}>
+            {region === '东方' ? <Icon name='region-east-pagoda' size={18} /> : <Icon name='region-west' size={18} />} {region}哲学
           </h2>
-          {Object.keys(grouped[region]).map(author => {
-            const authorBooks = grouped[region][author];
-            const isExpanded = expandedAuthor === `${region}-${author}`;
-            return (
-              <FadeCard key={author} style={{ marginBottom: 6 }}>
-                <div className="card" role="listitem"
-                  tabIndex={0}
-                  aria-expanded={isExpanded}
-                  style={{ marginBottom: isExpanded ? 4 : 8 }}
-                  onClick={() => setExpandedAuthor(isExpanded ? null : `${region}-${author}`)}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpandedAuthor(isExpanded ? null : `${region}-${author}`); } }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span className="card-title">{author}</span>
-                    <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-                      {authorBooks.length} 部 {isExpanded ? '▲' : '▼'}
-                    </span>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: 10,
+          }}>
+            {Object.keys(grouped[region]).sort().map(author => (
+              Object.values(grouped[region][author]).flat().map(book => (
+                <div key={book.id} className="card" style={{
+                  padding: '12px 16px', cursor: 'pointer',
+                  display: 'flex', gap: 12, alignItems: 'flex-start',
+                }} onClick={() => navigate(`/book/${book.id}`)}>
+                  {/* 封面缩略图 */}
+                  <div style={{
+                    width: 48, height: 64, flexShrink: 0,
+                    borderRadius: 3, overflow: 'hidden',
+                    background: 'var(--bg)', border: '1px solid var(--border)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <BookCover bookId={book.id} />
+                  </div>
+                  {/* 信息 */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', fontFamily: 'var(--font-serif)', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {book.title}
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4 }}>{book.author}</div>
+                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                      <span className={`badge ${book.file_type === 'txt' ? 'badge-pending' : 'badge-available'}`} style={{ fontSize: 9, padding: '1px 6px' }}>
+                        {book.file_type?.toUpperCase()}
+                      </span>
+                      {(book.tags || []).slice(0, 2).map(t => (
+                        <span key={t} className="tag" style={{ fontSize: 9, padding: '1px 6px' }}>{t}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                {isExpanded && authorBooks.map(book => (
-                  <FadeCard key={book.id}>
-                  <div
-                    className="card"
-                    style={{ marginLeft: 16, padding: '10px 14px' }}
-                    onClick={() => navigate(`/book/${book.id}`)}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="card-title" style={{ fontSize: 14 }}>{book.title}</span>
-                      <span className={`badge ${book.status === 'pending' ? 'badge-pending' : 'badge-available'}`}>
-                        {book.file_type.toUpperCase()}
-                      </span>
-                    </div>
-                    {/* 标签 */}
-                    {(book.tags || []).length > 0 && (
-                      <div style={{ display: 'flex', gap: 4, marginTop: 4, flexWrap: 'wrap' }}>
-                        {book.tags.map(t => (
-                          <span key={t} className="tag" style={{ fontSize: 10, padding: '1px 6px' }}>{t}</span>
-                        ))}
-                      </div>
-                    )}
-                    {/* 摘要切换 */}
-                    {showSummary === book.id ? (
-                      <div className="summary-text" style={{ marginTop: 6, fontSize: 12, lineHeight: 1.5, color: 'var(--text-dim)' }}>
-                        {book.summary || `${book.author}的著作。${book.file_type.toUpperCase()}格式，${(book.file_size / 1024 / 1024).toFixed(1)}MB。`}
-                      </div>
-                    ) : (
-                      <div style={{ marginTop: 4, fontSize: 11, color: 'var(--accent)', cursor: 'pointer' }}
-                        onClick={(e) => { e.stopPropagation(); setShowSummary(book.id); }}>
-                        查看简介 →
-                      </div>
-                    )}
-                  </div>
-                  </FadeCard>
-                ))}
-              </FadeCard>
-            );
-          })}
+              ))
+            ))}
+          </div>
         </div>
       ))}
 
