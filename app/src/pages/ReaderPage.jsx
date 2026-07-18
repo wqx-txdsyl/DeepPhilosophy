@@ -405,7 +405,7 @@ ${textContext}
     if (loadingRef.current[idx]) return;
     loadingRef.current[idx] = true;
     try {
-      // 走 Render API 获取章节（避免 796 MB 本地数据推 git）
+      // 章节内容走 Render API（本地 771MB 无法推 git）
       const resp = await fetch(`${getApiBase()}/api/books/${bookId}/chapter/${idx}`);
       if (resp.ok) {
         const ch = await resp.json();
