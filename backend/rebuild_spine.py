@@ -48,9 +48,10 @@ def _body_to_blocks(body, images):
         # 文本叶子
         if isinstance(el, NavigableString):
             text = el.strip()
-            if text and len(text) > 1:
+            # 中文单字术语（心、虑、知）和引号（「」）都是核心内容，不能丢弃
+            if text:
                 if pending:
-                    pending += ' ' + text
+                    pending += text if text in '，。；：！？、' '「」『』""''（）' else ' ' + text
                 else:
                     pending = text
     _flush_text()
