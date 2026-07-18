@@ -287,16 +287,19 @@ function QAPage() {
 
     const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
 
-    const model = thinkingMode ? 'deepseek-r1' : (apiConfig.model || 'deepseek-chat');
+    // 官方文档: deepseek-v4-pro + thinking:{type:"enabled"} + reasoning_effort:"high"
+    const model = thinkingMode ? 'deepseek-v4-pro' : (apiConfig.model || 'deepseek-chat');
     const useProxy = !apiConfig.apiKey;
     const streamBody = {
-      model,
-      messages: apiMessages,
-      ...(thinkingMode ? {} : { temperature: 0.7 }),
+      model, messages: apiMessages, stream: true,
       max_tokens: thinkingMode ? 4096 : 1024,
-      stream: true,
     };
-    // deepseek-r1 自动推理，无需 extra params
+    if (thinkingMode) {
+      streamBody.thinking = { type: 'enabled' };
+      streamBody.reasoning_effort = 'high';
+    } else {
+      streamBody.temperature = 0.7;
+    }
 
     // RAG 检索：后台异步，不阻塞对话流
     const ragPromise = fetch(`${getApiBase()}/api/qa`, {
@@ -372,12 +375,7 @@ function QAPage() {
       }
     } catch (e) { console.error('QA stream failed:', e); }
 
-    if (!answer && thinkingMode) {
-      // 思考模式失败，回退普通模型重试
-      toast.warning('思考模型不可用，已切换普通模式');
-      setThinkingMode(false);
-      answer = '思考模式暂时不可用，请稍后重试或使用普通模式。';
-    } else if (!answer) {
+    if (!answer) {
       answer = '无法获取回答。\n\n请检查网络连接或在设置中配置 API Key。';
     }
 
