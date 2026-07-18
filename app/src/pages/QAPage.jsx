@@ -287,11 +287,11 @@ function QAPage() {
 
     const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
 
-    const model = thinkingMode ? 'deepseek-v4-pro' : (apiConfig.model || 'deepseek-chat');
+    const model = thinkingMode ? 'deepseek-reasoner' : (apiConfig.model || 'deepseek-chat');
     const streamBody = {
       model,
       messages: apiMessages,
-      ...(thinkingMode ? { reasoning_effort: 'high', thinking: { type: 'enabled' } } : { temperature: 0.7 }),
+      ...(thinkingMode ? {} : { temperature: 0.7 }),
       max_tokens: thinkingMode ? 4096 : 1024,
       stream: true,
     };
