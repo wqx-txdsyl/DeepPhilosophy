@@ -299,42 +299,35 @@ function HomePage() {
   const userAvatar = localStorage.getItem('dp_avatar') || '';
   const [dailyQuote, setDailyQuote] = useState(() => DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]);
 
+  // 从本地静态 JSON 加载准确数据（与 BooksPage/AuthorsPage 一致）
   useEffect(() => {
-    fetch(`${getApiBase()}/api/stats`, { signal: AbortSignal.timeout(5000) })
-      .then(r => r.json())
-      .then(d => {
-        if (d.books) setBookCount(d.books);
-        if (d.authors) setAuthorCount(d.authors);
-        if (d.schools) setSchoolCount(Math.max(105, d.schools));
-      }).catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(10000) })
-      .then(r => r.json())
-      .then(d => {
-        const authors = d.authors || [];
-        setAuthorCount(authors.length);
-        const map = {};
-        authors.forEach(a => {
-          const raw = a.school || '';
-          if (!raw) return;
-          raw.replace(/[、，,]/g, '/').split('/').forEach(s => {
-            s = s.trim();
-            if (!s || s.length < 2) return;
-            // Normalize to big schools (uses shared tagMaps.js)
-            const big = normalizeTag(s);
-            if (!map[big]) map[big] = { authors: [], keywords: new Set(), books: [] };
-            if (!map[big].authors.includes(a.name)) {
-              map[big].authors.push(a.name);
-              map[big].books.push(...(a.books || []));
-            }
-            if (a.era) map[big].keywords.add(a.era.split('-')[0].replace(/[^0-9]/g,'') + '年代');
-            if (a.country) map[big].keywords.add(a.country.split('/')[0]);
-          });
+    Promise.all([
+      fetch('/books.json').then(r => r.ok ? r.json() : []).catch(() => []),
+      fetch('/philosophers.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
+    ]).then(([books, philosophers]) => {
+      setBookCount(Array.isArray(books) ? books.length : 0);
+      const authors = Object.values(philosophers);
+      setAuthorCount(authors.length);
+      // 聚合流派数据
+      const map = {};
+      authors.forEach(a => {
+        const raw = a.school || '';
+        if (!raw) return;
+        raw.replace(/[、，,]/g, '/').split('/').forEach(s => {
+          s = s.trim();
+          if (!s || s.length < 2) return;
+          const big = normalizeTag(s);
+          if (!map[big]) map[big] = { authors: [], keywords: new Set(), books: [] };
+          if (!map[big].authors.includes(a.name)) {
+            map[big].authors.push(a.name);
+            map[big].books.push(...(a.books || []));
+          }
+          if (a.era) map[big].keywords.add(a.era.split('-')[0].replace(/[^0-9]/g,'') + '年代');
+          if (a.country) map[big].keywords.add(a.country.split('/')[0]);
         });
-        setSchoolData(map);
-      }).catch(() => {});
+      });
+      setSchoolData(map);
+    }).catch(() => {});
   }, []);
 
   const scrollToDaily = () => {
