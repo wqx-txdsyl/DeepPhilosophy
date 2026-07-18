@@ -372,11 +372,16 @@ function QAPage() {
       }
     } catch (e) { console.error('QA stream failed:', e); }
 
-    if (!answer) {
+    if (!answer && thinkingMode) {
+      // 思考模式失败，回退普通模型重试
+      toast.warning('思考模型不可用，已切换普通模式');
+      setThinkingMode(false);
+      answer = '思考模式暂时不可用，请稍后重试或使用普通模式。';
+    } else if (!answer) {
       answer = '无法获取回答。\n\n请检查网络连接或在设置中配置 API Key。';
     }
 
-    if (thinkingMode) toast.info(`思考模式: reasoning=${reasoning.length}字 answer=${answer.length}字`);
+    // 思考模式下，API 若返回 reasoning_content 会自动显示在折叠面板中
 
     // 等待 RAG 检索完成（不阻塞流式输出，仅补充参考文献）
     await ragPromise;
