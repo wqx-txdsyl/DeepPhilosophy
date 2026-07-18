@@ -588,12 +588,7 @@ ${textContext}
                 <ChapterReader
                   chapters={textChapters}
                   currentChapter={textChapter}
-                  onChapterChange={(ch) => {
-                    setTextChapter(ch);
-                    loadChapter(ch);
-                    if (ch + 1 < textChapters.length) loadChapter(ch + 1);
-                    if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
-                  }}
+                  onChapterChange={handleChapterChange}
                   title={book?.title}
                   showToc={showReaderToc}
                   onToggleToc={() => setShowReaderToc(!showReaderToc)}
