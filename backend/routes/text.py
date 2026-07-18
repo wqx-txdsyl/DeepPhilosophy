@@ -85,20 +85,23 @@ def extract_txt_text(filepath):
 
 @router.get("/api/books/{book_id}/detail")
 async def get_book_detail(book_id: str):
-    """获取书籍详情"""
+    """获取书籍详情 — 静态数据可缓存 1 小时"""
     import urllib.request
     # 本地优先
     dd = os.path.join(os.path.dirname(__file__), "..", "data", "book_detail")
     lp = os.path.join(dd, f"{book_id}.json")
+    headers = {"Cache-Control": "public, max-age=3600"}
     if os.path.exists(lp):
-        with open(lp, 'r', encoding='utf-8') as f: return json.load(f)
+        with open(lp, 'r', encoding='utf-8') as f:
+            return JSONResponse(content=json.load(f), headers=headers)
     # OSS
     if config.USE_OSS:
         url = f"https://{config.OSS_BUCKET_HOST}/book_detail/{book_id}.json"
         try:
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req, timeout=8) as resp:
-                if resp.status == 200: return json.loads(resp.read().decode('utf-8'))
+                if resp.status == 200:
+                    return JSONResponse(content=json.loads(resp.read().decode('utf-8')), headers=headers)
         except: pass
     raise HTTPException(status_code=404, detail="详情未找到")
 
@@ -233,15 +236,16 @@ async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
 
 @router.get("/api/books/{book_id}/image/{img_name}")
 async def get_book_image(book_id: str, img_name: str):
-    """提供从 EPUB 提取的图片（本地优先，OSS 兜底）"""
+    """提供从 EPUB 提取的图片（本地优先，OSS 兜底）—— 带强缓存"""
     import urllib.request
     img_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_images")
     local_path = os.path.join(img_dir, img_name)
+    headers = {"Cache-Control": "public, max-age=604800, immutable"}  # 7天强缓存
     if os.path.exists(local_path):
         ext = Path(img_name).suffix.lower()
         mime = IMG_EXTS.get(ext, 'image/png')
         with open(local_path, 'rb') as f:
-            return Response(content=f.read(), media_type=mime)
+            return Response(content=f.read(), media_type=mime, headers=headers)
     # OSS 兜底
     if config.USE_OSS:
         oss_url = f"https://{config.OSS_BUCKET_HOST}/book_images/{img_name}"
@@ -249,6 +253,6 @@ async def get_book_image(book_id: str, img_name: str):
             req = urllib.request.Request(oss_url)
             with urllib.request.urlopen(req, timeout=10) as resp:
                 if resp.status == 200:
-                    return Response(content=resp.read(), media_type='image/webp')
+                    return Response(content=resp.read(), media_type='image/webp', headers=headers)
         except: pass
     raise HTTPException(status_code=404, detail="图片未找到")

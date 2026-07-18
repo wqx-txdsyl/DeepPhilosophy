@@ -8,6 +8,7 @@ import { getBookById } from '../data';
 import { getApiBase } from '../App';
 import { useSEO } from '../utils/seo';
 import { cacheGet, cacheSet } from '../data/cache';
+import { getCoverUrl } from '../data/coverUrls';
 
 function BookDetailPage() {
   const { bookId } = useParams();
@@ -59,9 +60,20 @@ function BookDetailPage() {
   );
 
   const isTxt = book.file_type === 'txt';
-  const openReader = () => navigate(`/reader/${bookId}?type=${book.file_type}`);
-  const coverUrl = meta?.cover || null;
-  const chapterTitles = meta?.toc || meta?.chapterTitles || [];
+  const openReader = () => {
+    // 优先历史记录，无则 ch=0
+    let ch = 0;
+    try {
+      const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+      const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
+      if (entry?.page > 0) ch = entry.page - 1;
+    } catch {}
+    navigate(`/reader/${bookId}?type=${book.file_type}&ch=${ch}`);
+  };
+  // 封面：优先静态文件 /covers/，回退 API 路径
+  const coverUrl = getCoverUrl(bookId) || meta?.cover || null;
+  // 优先 chapterTitles（与实际章节文件索引一致），回退 toc（可能含无对应文件的条目）
+  const chapterTitles = meta?.chapterTitles?.length ? meta.chapterTitles : (meta?.toc || []);
 
   return (
     <div className="page-container" style={{ maxWidth: 800, margin: '0 auto', paddingBottom: 40 }}>
@@ -78,6 +90,7 @@ function BookDetailPage() {
         }}>
           {coverUrl ? (
             <img src={coverUrl} alt={book.title}
+              loading="lazy" decoding="async"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
             <Icon name="nav-books" size={48} />

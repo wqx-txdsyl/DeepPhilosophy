@@ -10,11 +10,12 @@ export default function ChapterReader({
   onChapterChange,
   cover,
   title,
+  showToc = false,
+  onToggleToc,
 }) {
   const scrollRef = useRef(null);
   const ch = chapters[currentChapter] || {};
   const total = chapters.length;
-  const [showToc, setShowToc] = useState(false);
 
   // 切章时滚到顶部
   useEffect(() => {
@@ -56,14 +57,6 @@ export default function ChapterReader({
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      {/* TOC 浮动按钮 */}
-      <button onClick={() => setShowToc(!showToc)} style={{
-        position: 'absolute', top: 8, right: 12, zIndex: 10,
-        background: 'var(--card-bg)', border: '1px solid var(--border)',
-        borderRadius: 4, padding: '2px 6px', fontSize: 11, cursor: 'pointer',
-        color: 'var(--text-dim)', opacity: 0.6,
-      }}>☰ 目录</button>
-
       {/* 章节内容 — 滚动区 */}
       <div ref={scrollRef} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
         style={{
@@ -90,6 +83,7 @@ export default function ChapterReader({
               return (
                 <div key={i} style={{ textAlign: 'center', margin: '16px 0' }}>
                   <img src={block.src} alt={block.alt || ''}
+                    loading="lazy" decoding="async"
                     style={{ maxWidth: '100%', maxHeight: '50vh', objectFit: 'contain', borderRadius: 4 }} />
                 </div>
               );
@@ -127,7 +121,7 @@ export default function ChapterReader({
       {/* TOC 浮层 */}
       {showToc && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 400 }}
-          onClick={() => setShowToc(false)}>
+          onClick={() => onToggleToc && onToggleToc()}>
           <div style={{ maxWidth: 450, margin: '60px auto 0', width: '90%', background: 'var(--bg)', borderRadius: 10, maxHeight: '70vh', overflow: 'auto', padding: 20 }}
             onClick={e => e.stopPropagation()}>
             <h3 style={{ fontFamily: 'var(--font-serif)', marginTop: 0 }}>目录</h3>
@@ -136,7 +130,7 @@ export default function ChapterReader({
                 padding: '8px 0', cursor: 'pointer', borderBottom: '1px solid var(--border)',
                 fontSize: 13, fontWeight: i === currentChapter ? 600 : 400,
                 color: i === currentChapter ? 'var(--ochre)' : 'var(--text)',
-              }} onClick={() => { setShowToc(false); onChapterChange(i); }}>
+              }} onClick={() => { onToggleToc && onToggleToc(); onChapterChange(i); }}>
                 {c.title}
               </div>
             ))}

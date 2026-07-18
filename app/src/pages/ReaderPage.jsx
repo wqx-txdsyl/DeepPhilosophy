@@ -368,9 +368,21 @@ ${textContext}
       setTextChapters(chapters);
       setTextReady(true);
 
-      // URL 跳转
+      // URL 跳转：优先 ch 参数，其次历史记录，最后默认 ch=0
       const urlCh = parseInt(searchParams.get('ch'));
-      const startCh = urlCh >= 0 && urlCh < total ? urlCh : 0;
+      let startCh;
+      if (!isNaN(urlCh) && urlCh >= 0 && urlCh < total) {
+        startCh = urlCh;
+      } else {
+        // 尝试从历史记录恢复
+        let histCh = -1;
+        try {
+          const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
+          const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
+          if (entry?.page > 0 && entry.page <= total) histCh = entry.page - 1;
+        } catch {}
+        startCh = histCh >= 0 ? histCh : 0;
+      }
       setTextChapter(startCh);
 
       // 2. 立即加载当前章节
@@ -541,6 +553,12 @@ ${textContext}
             <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>第{textChapter + 1}章 / 共{textChapters.length}章</span>
           )}
         </span>
+        {(fileType === 'epub' || fileType === 'txt') && textReady && (
+          <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
+            onClick={() => setShowReaderToc(!showReaderToc)}>
+            ☰ 目录
+          </button>
+        )}
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => { setShowNotes(!showNotes); if (!showNotes) setShowAiChat(false); }}>
           <Icon name="icon-edit" size={16} />批注
@@ -570,6 +588,8 @@ ${textContext}
                     if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
                   }}
                   title={book?.title}
+                  showToc={showReaderToc}
+                  onToggleToc={() => setShowReaderToc(!showReaderToc)}
                 />
               ) : (
                 <div className="loading">加载中...</div>

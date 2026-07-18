@@ -3,12 +3,12 @@
  * 支持分类标签筛选、搜索、摘要预览
  */
 import { useState, useEffect, useRef, useMemo } from 'react';
-// useRef already imported
 import Icon from '../components/Icon';
+import { getCoverUrl } from '../data/coverUrls';
 
-const coverCache = {};
+// BookCover — 纯同步渲染，和 genealogy 图片一样的直接 <img src> 模式
+// 封面路径在模块加载时已预取，渲染时零 fetch、零 useEffect
 function BookCover({ bookId }) {
-  const [src, setSrc] = useState(null);
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
@@ -17,15 +17,11 @@ function BookCover({ bookId }) {
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
-  useEffect(() => {
-    if (!visible) return;
-    if (coverCache[bookId]) { setSrc(coverCache[bookId]); return; }
-    fetch(`/book_detail/${bookId}.json`).then(r => r.ok && r.json()).then(d => {
-      if (d?.cover) { coverCache[bookId] = d.cover; setSrc(d.cover); }
-    }).catch(() => {});
-  }, [bookId, visible]);
+
+  const src = getCoverUrl(bookId); // 同步读取，模块级缓存
   if (!src) return <div ref={ref} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="nav-books" size={20} /></div>;
-  return <img ref={ref} src={src} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+  if (!visible) return <div ref={ref} style={{ width: '100%', height: '100%', background: 'var(--bg)' }} />;
+  return <img ref={ref} src={src} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
 }
 
 function FadeCard({ children, style }) {
@@ -120,16 +116,18 @@ function BooksPage() {
     return true;
   });
 
-  // 分组（memoized 避免每次渲染重算）
+  // 分组（memoized）：按地区 → 按 rank 降序，不再按作者字母排序
   const grouped = useMemo(() => {
     const g = {};
     filtered.forEach(b => {
       const region = b.region;
-      const author = b.author;
-      if (!g[region]) g[region] = {};
-      if (!g[region][author]) g[region][author] = [];
-      g[region][author].push(b);
+      if (!g[region]) g[region] = [];
+      g[region].push(b);
     });
+    // 每个地区内按 rank 降序（无 rank 的放末尾）
+    for (const r of Object.keys(g)) {
+      g[r].sort((a, b) => (b.rank || 0) - (a.rank || 0));
+    }
     return g;
   }, [filtered]);
 
@@ -139,7 +137,7 @@ function BooksPage() {
     <div className="page-container">
       {/* 统计 */}
       <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 10 }}>
-        <Icon name="nav-books" size={16} /> 共 {books.length} 本书，{Object.keys(grouped).reduce((s, r) => s + Object.keys(grouped[r]).filter(a => a !== '合集&概述').length, 0)} 位作者
+        <Icon name="nav-books" size={16} /> 共 {books.length} 本书，{new Set(books.map(b => b.author).filter(a => a !== '合集&概述')).size} 位作者
       </div>
 
       {/* 搜索 */}
@@ -203,8 +201,7 @@ function BooksPage() {
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
             gap: 10,
           }}>
-            {Object.keys(grouped[region]).sort().map(author => (
-              Object.values(grouped[region][author]).flat().map(book => (
+            {grouped[region].map(book => (
                 <div key={book.id} className="card" style={{
                   padding: '12px 16px', cursor: 'pointer',
                   display: 'flex', gap: 12, alignItems: 'flex-start',
@@ -234,8 +231,7 @@ function BooksPage() {
                     </div>
                   </div>
                 </div>
-              ))
-            ))}
+              ))}
           </div>
         </div>
       ))}

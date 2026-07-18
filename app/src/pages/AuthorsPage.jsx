@@ -2,13 +2,44 @@
  * 哲人页面 —— 东西方哲学家按时间排序，显示年代/国家/流派/简介/作品
  * 离线可用（内置数据库兜底）
  */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getApiBase } from '../App';
 import { cacheGet, cacheSet } from '../data/cache';
 import RANKING from '../data/schoolRanking';
 import { normalizeTag, expandTag, normalizeCountry } from '../data/tagMaps';
+
+// AuthorPortrait — 纯同步渲染，懒加载哲学家肖像
+function AuthorPortrait({ name }) {
+  const [visible, setVisible] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { rootMargin: '200px' });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  if (!visible) return <div ref={ref} style={{ width: '100%', height: '100%', background: 'var(--bg)' }} />;
+  const safe = encodeURIComponent(name);
+  if (failed) {
+    return <div ref={ref} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--card-bg)' }}><Icon name="nav-authors" size={18} /></div>;
+  }
+  return (
+    <img ref={ref} src={`/philosopher/${safe}.webp`} alt={name}
+      loading="lazy" decoding="async"
+      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+      onError={(e) => {
+        if (e.target.src.endsWith('.webp')) {
+          e.target.src = `/philosopher/${safe}.jpg`;
+        } else {
+          setFailed(true);
+        }
+      }} />
+  );
+}
 
 function AuthorsPage() {
   const navigate = useNavigate();
@@ -55,8 +86,13 @@ function AuthorsPage() {
   }, []);
 
   // Parse era string to centuries. Handles: "20世纪", "421-611年", "约公元前6世纪", "1929-", etc.
-  const eraToCenturies = (era) => {
+  // Memoized — same era string parsed only once
+  const _eraCache = useRef(new Map()).current;
+  const eraToCenturies = useCallback((era) => {
     if (!era) return [];
+    const cached = _eraCache.get(era);
+    if (cached) return cached;
+
     let s = era.replace(/约|大約|左右|年/g, '').replace(/至今|迄今|现在|-$/g, '2025').replace(/-$/, '-2025').trim();
     const results = [];
 
@@ -74,7 +110,11 @@ function AuthorsPage() {
       if (prefix ? c <= 100 : c <= 21)
         results.push(prefix + c + '世纪');
     }
-    if (results.length > 0) return [...new Set(results)];
+    if (results.length > 0) {
+      const out = [...new Set(results)];
+      _eraCache.set(era, out);
+      return out;
+    }
 
     // Re-add BC prefix for year range parsing
     s = (isBC ? '前' : '') + s;
@@ -95,7 +135,9 @@ function AuthorsPage() {
         if ((y < 0 && c > 100) || (y > 0 && c > 21)) continue; // BC up to 10000BC, AD up to 2100
         set.add((y < 0 ? '前' : '') + c + '世纪');
       }
-      return [...set];
+      const out = [...set];
+      _eraCache.set(era, out);
+      return out;
     }
 
     const singleRe = /(前)?\s*(\d{3,4})/;
@@ -103,98 +145,84 @@ function AuthorsPage() {
     if (sm) {
       const y = parseInt(sm[2]) * ((sm[1] || isBC) ? -1 : 1);
       const c = Math.floor((Math.abs(y) - 1) / 100) + 1;
-      return [(y < 0 ? '前' : '') + c + '世纪'];
+      const out = [(y < 0 ? '前' : '') + c + '世纪'];
+      _eraCache.set(era, out);
+      return out;
     }
+    _eraCache.set(era, []);
     return [];
-  };
+  }, []);
 
   const loadAllAuthors = async () => {
     setLoading(true);
-    // Check cache first (10 min TTL)
-    const cached = cacheGet('all_authors_v2');
-    if (cached?.length) {
-      const approxYear = (era) => {
-        const centuries = eraToCenturies(era);
-        if (!centuries.length) return 9999;
-        const first = centuries[0];
-        const n = parseInt(first.replace('前',''));
-        return first.includes('前') ? -((n-1)*100+50) : (n-1)*100+50;
-      };
-      try { cached.sort((a, b) => approxYear(a.era) - approxYear(b.era)); } catch {}
-      setAllAuthors(cached);
-      setLoading(false);
-      return;
-    }
+    // 1. 优先本地 JSON（毫秒级），和 BooksPage 一样的策略
     try {
-      const resp = await fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(20000) });
-      if (resp.ok) {
-        const data = await resp.json();
-        const authors = data.authors || [];
-        // Sort by approximate start year from century tags (BC first, then AD)
-        const approxYear = (era) => {
-          const centuries = eraToCenturies(era);
-          if (!centuries.length) return 9999; // unknown -> end
-          const first = centuries[0];
-          const n = parseInt(first.replace('前', ''));
-          const y = (n - 1) * 100 + 50; // midpoint of century
-          return first.includes('前') ? -y : y;
-        };
-        try { authors.sort((a, b) => approxYear(a.era) - approxYear(b.era)); } catch {}
-        cacheSet('all_authors_v2', authors);
-        setAllAuthors(authors);
-      }
-    } catch (e) { console.error('Failed to load authors:', e); }
-    // Fallback: load from local philosophers.json
-    try {
-      const resp = await fetch('/philosophers.json');
+      const resp = await fetch('/philosophers.json?v=2');
       if (resp.ok) {
         const philo = await resp.json();
         const authors = Object.values(philo).map(p => ({
           name: p.name, region: p.region || '西方', era: p.era || '',
           country: p.country || '', school: p.school || '',
           book_count: (p.books || []).length, books: p.books || [],
+          rank: p.rank || 0,
         }));
-        const approxYear = (era) => { const cs = eraToCenturies(era); if (!cs.length) return 9999; const n = parseInt(cs[0].replace('前','')); return cs[0].includes('前') ? -((n-1)*100+50) : (n-1)*100+50; };
-        try { authors.sort((a, b) => approxYear(a.era) - approxYear(b.era)); } catch {}
+        // 按 AI 综合评分降序（无评分的放末尾）
+        authors.sort((a, b) => (b.rank || 0) - (a.rank || 0));
+        cacheSet('all_authors_v2', authors);
+        setAllAuthors(authors);
+        setLoading(false);
+        return;
+      }
+    } catch (e) { console.error('Local authors load failed:', e); }
+    // 3. 回退 API
+    try {
+      const resp = await fetch(`${getApiBase()}/api/authors`, { signal: AbortSignal.timeout(8000) });
+      if (resp.ok) {
+        const data = await resp.json();
+        const authors = (data.authors || []).map(a => ({...a, book_count: a.book_count || (a.books||[]).length, rank: a.rank || 0}));
+        try { authors.sort((a, b) => (b.rank || 0) - (a.rank || 0)); } catch {}
         cacheSet('all_authors_v2', authors);
         setAllAuthors(authors);
       }
-    } catch (e2) { console.error('Local fallback also failed:', e2); }
+    } catch (e2) { console.error('API fallback also failed:', e2); }
     setLoading(false);
   };
 
-  // Client-side filtering (instant, no reload)
-  let filtered = allAuthors;
-  if (search) {
-    const q = search.toLowerCase();
-    filtered = filtered.filter(a =>
-      a.name.toLowerCase().includes(q) || (a.country||'').toLowerCase().includes(q) || (a.school||'').toLowerCase().includes(q)
-    );
-  }
-  if (filter === 'east') filtered = filtered.filter(a => a.region === '东方');
-  else if (filter === 'west') filtered = filtered.filter(a => a.region === '西方');
-  else if (filter === 'world') filtered = filtered.filter(a => a.region === '世界');
-  // Multi-tag filter (client-side, mirrored normalization)
-  for (const tag of activeTags) {
-    filtered = filtered.filter(a => {
-      const rawSchool = a.school || '';
-      const schools = rawSchool.split(/[/,、，;；]/).map(s => s.trim());
-      const matchTags = schools.reduce((arr, s) => {
-        return arr.concat(...expandTag(s));
-      }, []);
-      const rawCountry = a.country || '';
-      const countries = rawCountry.split(/[/,、，;；]/).map(c => c.trim());
-      const normCountries = countries.map(c => normalizeCountry(c));
-      // Expand simplified country tags to match all variants
-      const expandedCountries = countryExpandMap[tag] || [tag];
-      // Century matching: philosopher spans that century
-      const authorCenturies = eraToCenturies(a.era);
-      return matchTags.includes(tag) ||
-             countries.some(c => expandedCountries.includes(c)) ||
-             normCountries.some(c => expandedCountries.includes(c)) ||
-             authorCenturies.includes(tag);
-    });
-  }
+  // Client-side filtering — useMemo so heavy eraToCenturies doesn't re-run on every render
+  const filtered = useMemo(() => {
+    let result = allAuthors;
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(a =>
+        a.name.toLowerCase().includes(q) || (a.country||'').toLowerCase().includes(q) || (a.school||'').toLowerCase().includes(q)
+      );
+    }
+    if (filter === 'east') result = result.filter(a => a.region === '东方');
+    else if (filter === 'west') result = result.filter(a => a.region === '西方');
+    else if (filter === 'world') result = result.filter(a => a.region === '世界');
+    // Multi-tag filter (client-side, mirrored normalization)
+    for (const tag of activeTags) {
+      result = result.filter(a => {
+        const rawSchool = a.school || '';
+        const schools = rawSchool.split(/[/,、，;；]/).map(s => s.trim());
+        const matchTags = schools.reduce((arr, s) => {
+          return arr.concat(...expandTag(s));
+        }, []);
+        const rawCountry = a.country || '';
+        const countries = rawCountry.split(/[/,、，;；]/).map(c => c.trim());
+        const normCountries = countries.map(c => normalizeCountry(c));
+        // Expand simplified country tags to match all variants
+        const expandedCountries = countryExpandMap[tag] || [tag];
+        // Century matching: philosopher spans that century
+        const authorCenturies = eraToCenturies(a.era);
+        return matchTags.includes(tag) ||
+               countries.some(c => expandedCountries.includes(c)) ||
+               normCountries.some(c => expandedCountries.includes(c)) ||
+               authorCenturies.includes(tag);
+      });
+    }
+    return result;
+  }, [allAuthors, search, filter, activeTags, eraToCenturies]);
 
   // Compute filters client-side from allAuthors (instant, no extra API call)
   useEffect(() => {
@@ -368,32 +396,58 @@ function AuthorsPage() {
         </div>
       )}
 
-      {/* Author list — CSS content-visibility for fast rendering */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {/* Author grid — 带肖像的卡片网格 */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+        gap: 10,
+      }}>
         {filtered.map((author) => (
-          <div key={author.name} style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 80px' }}>
-          <div
+          <div key={author.name}
             className="card"
-            onClick={() => navigate(`/author/${encodeURIComponent(author.name)}`)}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <span className={`badge ${author.region === '东方' ? 'badge-east' : author.region === '世界' ? 'badge-world' : 'badge-west'}`}
-                    style={{ fontSize: 10, padding: '2px 8px' }}>
-                    {author.region}
+            onClick={() => navigate(`/author/${encodeURIComponent(author.name)}`)}
+            style={{
+              padding: '12px 16px', cursor: 'pointer', contentVisibility: 'auto', containIntrinsicSize: 'auto 80px',
+              display: 'flex', gap: 12, alignItems: 'flex-start',
+            }}>
+            {/* 肖像缩略图 */}
+            <div style={{
+              width: 48, height: 64, flexShrink: 0,
+              borderRadius: 4, overflow: 'hidden',
+              background: 'var(--bg)', border: '1px solid var(--border)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <AuthorPortrait name={author.name} />
+            </div>
+            {/* 信息 */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{
+                fontSize: 14, fontWeight: 500, color: 'var(--ink)',
+                fontFamily: 'var(--font-serif)', marginBottom: 2,
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <span className={`badge ${author.region === '东方' ? 'badge-east' : author.region === '世界' ? 'badge-world' : 'badge-west'}`}
+                  style={{ fontSize: 9, padding: '1px 6px', flexShrink: 0 }}>
+                  {author.region}
+                </span>
+                {author.name}
+              </div>
+              <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4 }}>
+                {[author.era, author.country].filter(Boolean).join(' · ')}
+              </div>
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', alignItems: 'center' }}>
+                {author.book_count > 0 && (
+                  <span style={{ fontSize: 10, color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 3 }}>
+                    <Icon name="nav-books" size={12} />{author.book_count}部
                   </span>
-                  <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)' }}>
-                    {author.name}
-                  </span>
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--text-dim)', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  {author.era && <span>{author.era}</span>}
-                  {author.country && <span>{author.country}</span>}
-                  {author.school && <span>{author.school}</span>}
-                </div>
+                )}
+                {author.school && author.school.split(/[/,，、;；]/).slice(0, 2).map((s, i) => {
+                  const t = s.trim().replace(/[（(].*[)）]/g, '');
+                  return t ? <span key={i} className="tag" style={{ fontSize: 9, padding: '1px 6px' }}>{t}</span> : null;
+                })}
               </div>
             </div>
-          </div>
           </div>
         ))}
       </div>

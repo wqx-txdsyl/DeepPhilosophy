@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
+import PhilosopherConstellation from '../components/PhilosopherConstellation';
 import { getAuthorInfo } from '../data';
 import { getApiBase } from '../App';
 import { useSEO } from '../utils/seo';
@@ -22,22 +23,22 @@ function AuthorDetailPage() {
 
   const fetchAuthor = async () => {
     // Check cache first
-    const cached = cacheGet('author_' + authorName);
+    const cached = cacheGet('author_v2_' + authorName);
     if (cached) { setAuthor(cached); setLoading(false); return; }
     // 1. 优先本地 JSON（CDN 秒级加载）
     const safe = authorName.replace('/', '-').replace(':', '：');
     try {
-      const resp = await fetch(`/philosopher/data/${encodeURIComponent(safe)}.json`);
-      if (resp.ok) { const data = await resp.json(); cacheSet('author_' + authorName, data); setAuthor(data); setLoading(false); return; }
+      const resp = await fetch(`/philosopher/data/${encodeURIComponent(safe)}.json?v=2`);
+      if (resp.ok) { const data = await resp.json(); cacheSet('author_v2_' + authorName, data); setAuthor(data); setLoading(false); return; }
     } catch {}
     // 2. 回退 Render API
     try {
       const resp = await fetch(`${getApiBase()}/api/authors/${encodeURIComponent(authorName)}`);
-      if (resp.ok) { const data = await resp.json(); cacheSet('author_' + authorName, data); setAuthor(data); setLoading(false); return; }
+      if (resp.ok) { const data = await resp.json(); cacheSet('author_v2_' + authorName, data); setAuthor(data); setLoading(false); return; }
     } catch (e) { console.error('Author API unavailable:', e); }
     // 3. 本地兜底
     const data = await getAuthorInfo(authorName);
-    cacheSet('author_' + authorName, data);
+    cacheSet('author_v2_' + authorName, data);
     setAuthor(data);
     setLoading(false);
   };
@@ -174,6 +175,9 @@ function AuthorDetailPage() {
             百度百科
           </button>
         </div>
+
+        {/* 思想星丛 */}
+        <PhilosopherConstellation name={author.name} region={author.region} />
       </div>
 
       {/* 作品列表 */}
@@ -190,17 +194,19 @@ function AuthorDetailPage() {
                     navigate(`/reader/${bookId}?type=${book.file_type}`);
                   }
                 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span className="card-title" style={{ fontSize: 14 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
+                  <span className="card-title" style={{ fontSize: 14, flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {bookTitle}
                   </span>
-                  {book.file_type && (
-                    <span className={`badge ${book.file_type === 'txt' ? 'badge-pending' : 'badge-available'}`}
-                      style={{ fontSize: 10 }}>
-                      {book.file_type.toUpperCase()}
-                    </span>
-                  )}
-                  <span style={{ color: 'var(--text-dim)', fontSize: 14 }}><Icon name="icon-book-open" size={16} /></span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                    {book.file_type && (
+                      <span className={`badge ${book.file_type === 'txt' ? 'badge-pending' : 'badge-available'}`}
+                        style={{ fontSize: 10, padding: '2px 8px', lineHeight: 1.4 }}>
+                        {book.file_type.toUpperCase()}
+                      </span>
+                    )}
+                    <Icon name="icon-book-open" size={14} />
+                  </div>
                 </div>
               </div>
             );

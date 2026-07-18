@@ -1,6 +1,9 @@
 import os,sys,hashlib,zipfile,json,re
 from pathlib import Path
 from bs4 import BeautifulSoup, NavigableString
+# 修复 Windows GBK 编码问题
+if sys.platform == 'win32':
+    import io; sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 sys.path.insert(0,os.path.dirname(__file__))
 from build_book_json import is_image, save_as_webp, EXTRACTED_IMG_DIR
 os.makedirs(EXTRACTED_IMG_DIR,exist_ok=True)
@@ -10,6 +13,63 @@ CDIR="data/book_chapters";DDIR="data/book_detail"
 os.makedirs(CDIR,exist_ok=True);os.makedirs(DDIR,exist_ok=True)
 SDIR="data/book_summaries.json"
 summaries=json.load(open(SDIR,'r',encoding='utf-8')) if os.path.exists(SDIR) else {}
+
+def _body_to_blocks(body, images):
+    """将 BeautifulSoup body 转为结构化块列表 [{type:'text'/'image', ...}]
+    遍历所有后代节点：文本叶子 → {type:'text'}，图片 → {type:'image'}
+    段落级标签 (<p><div><h1>...<li><br>) 之间自动切分为独立文本块。
+    """
+    BLOCK_TAGS = {'p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                  'li', 'blockquote', 'pre', 'section', 'article', 'br', 'hr'}
+    blocks = []
+    def _flush_text():
+        nonlocal pending
+        if pending:
+            blocks.append({'type': 'text', 'value': pending.strip()})
+            pending = ''
+    pending = ''
+    for el in body.descendants:
+        if el.name in ('script', 'style', 'nav', 'head', 'title'):
+            continue
+        # 段落级标签 → 切分文本块
+        if el.name in BLOCK_TAGS:
+            _flush_text()
+            continue
+        # 图片
+        if el.name in ('img', 'image'):
+            _flush_text()
+            src = ''
+            for attr in ('src', 'href', 'xlink:href', '{http://www.w3.org/1999/xlink}href'):
+                v = el.get(attr, '')
+                if v: src = v; break
+            if src:
+                blocks.append({'type': 'image', 'src': src, 'alt': el.get('alt', '') or ''})
+            continue
+        # 文本叶子
+        if isinstance(el, NavigableString):
+            text = el.strip()
+            if text and len(text) > 1:
+                if pending:
+                    pending += ' ' + text
+                else:
+                    pending = text
+    _flush_text()
+    return blocks
+
+def _rewrite_img_src(el, images):
+    """将元素的图片引用从 EPUB 内部路径替换为 API 路径。
+    支持 src / href / xlink:href 属性。
+    """
+    for attr in ('src', 'href', 'xlink:href', '{http://www.w3.org/1999/xlink}href'):
+        val = el.get(attr, '')
+        if not val or val.startswith(('/api/', '/covers/', 'http://', 'https://', 'data:', '#')):
+            continue
+        fn = Path(val).name
+        if fn in images:
+            el[attr] = images[fn]; return
+        for k in images:
+            if k.endswith(fn) or fn.endswith(k):
+                el[attr] = images[k]; return
 
 def extract(fp,bid):
     chs=[];toc=[];cover=None;images={};spine_hrefs=[]
@@ -89,9 +149,9 @@ def extract(fp,bid):
                 if ns is not None and ns > si: next_si = ns; break
             merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
                                      'anchor':ce['anchor'],'next_anchor':chapter_entries[ci+1]['anchor'] if ci+1<len(chapter_entries) and chapter_entries[ci+1]['spine_idx']==si else ''})
-        # 处理每个章节：按 <a href="...#anchor"> 锚点切割同文件内容
+        # 处理每个章节：提取为结构化 {type:'text'/'image'} 块
         for ch_idx, mc in enumerate(merged_chapters):
-            all_html = []
+            all_blocks = []
             for si in mc['spine_range']:
                 href = spine_hrefs[si]
                 if href not in names:
@@ -101,17 +161,22 @@ def extract(fp,bid):
                 try:
                     soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                     for t in soup(['script','style','nav','head']):t.decompose()
+                    # 重写图片引用：EPUB 内部路径 → API 路径（原地修改 soup）
+                    for tag in soup.find_all(['img','image']):
+                        _rewrite_img_src(tag, images)
+                    for tag in soup.find_all(attrs={'src': True}):
+                        if tag.name not in ('img','image'):
+                            _rewrite_img_src(tag, images)
                     body=soup.find('body') or soup
-                    all_html.append(str(body))
+                    all_blocks.extend(_body_to_blocks(body, images))
                 except:pass
-            if all_html:
-                full = '\n'.join(all_html)
-                ch={'title':mc['title'],'index':ch_idx,'content':[{'type':'html','value':full}]}
+            if all_blocks:
+                ch={'title':mc['title'],'index':ch_idx,'content':all_blocks}
                 chs.append(ch)
                 json.dump(ch,open(os.path.join(CDIR,bid,f'{len(chs)-1}.json'),'w',encoding='utf-8'),ensure_ascii=False)
         return chs,toc,cover,images
 
-    # fallback: 无 TOC 时的原始逻辑
+    # fallback: 无 TOC 时的原始逻辑（同样输出结构化块）
     for hi,href in enumerate(spine_hrefs):
             if href not in names:
                 candidates=[n for n in names if n.endswith(href.split('/')[-1])]
@@ -120,24 +185,14 @@ def extract(fp,bid):
             try:
                 soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
                 for t in soup(['script','style','nav','head']):t.decompose()
-                # 优先用 TOC 标题
+                for tag in soup.find_all(['img','image']):
+                    _rewrite_img_src(tag, images)
                 ch_title = toc[hi]._text if hi < len(toc) and hasattr(toc[hi], '_text') else None
                 if not ch_title:
                     title_el=soup.find(['h1','h2','h3','title'])
                     ch_title = title_el.get_text().strip()[:80] if title_el else f'第{hi+1}章'
                 body=soup.find('body') or soup
-                blocks=[]
-                for child in body.children if body else []:
-                    if isinstance(child,NavigableString):
-                        t=str(child).strip()
-                        if t:blocks.append({'type':'text','value':t})
-                    elif hasattr(child,'name') and child.name in ('p','div','li','blockquote','h1','h2','h3','h4','h5','h6','pre'):
-                        t=child.get_text().strip()
-                        if t and len(t)>1:blocks.append({'type':'text','value':t})
-                    elif hasattr(child,'name') and child.name=='img':
-                        src=child.get('src','');fn=Path(src).name if src else ''
-                        for k in images:
-                            if k.endswith(fn):blocks.append({'type':'image','src':images[k]});break
+                blocks=_body_to_blocks(body, images)
                 if blocks:
                     ch={'title':ch_title,'index':hi,'content':blocks}
                     chs.append(ch)
