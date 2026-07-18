@@ -287,7 +287,7 @@ function QAPage() {
 
     const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
 
-    const model = thinkingMode ? 'deepseek-v4-pro' : (apiConfig.model || 'deepseek-chat');
+    const model = thinkingMode ? 'deepseek-r1' : (apiConfig.model || 'deepseek-chat');
     const useProxy = !apiConfig.apiKey;
     const streamBody = {
       model,
@@ -296,9 +296,7 @@ function QAPage() {
       max_tokens: thinkingMode ? 4096 : 1024,
       stream: true,
     };
-    if (thinkingMode) {
-      streamBody.thinking = { type: 'enabled' };
-    }
+    // deepseek-r1 自动推理，无需 extra params
 
     // RAG 检索：后台异步，不阻塞对话流
     const ragPromise = fetch(`${getApiBase()}/api/qa`, {
@@ -378,7 +376,7 @@ function QAPage() {
       answer = '无法获取回答。\n\n请检查网络连接或在设置中配置 API Key。';
     }
 
-    if (thinkingMode) console.log('[Thinking] model:', model, 'reasoning_len:', reasoning.length, 'answer_len:', answer.length);
+    if (thinkingMode) toast.info(`思考模式: reasoning=${reasoning.length}字 answer=${answer.length}字`);
 
     // 等待 RAG 检索完成（不阻塞流式输出，仅补充参考文献）
     await ragPromise;
@@ -426,7 +424,7 @@ function QAPage() {
         </span>
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => setThinkingMode(!thinkingMode)}
-          title={thinkingMode ? '关闭思考模式' : '开启思考模式 (deepseek-v4-pro)'}>
+          title={thinkingMode ? '关闭思考模式' : '开启思考模式 (deepseek-r1)'}>
           {thinkingMode ? <><Icon name="brain" size={14} /> 思考中</> : <><Icon name="idea" size={14} /> 思考</>}
         </button>
         {messages.length > 1 && (
