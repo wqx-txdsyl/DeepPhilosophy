@@ -98,7 +98,7 @@ export default function ChapterReader({
         )}
       </div>
 
-      {/* 底部栏 — 章节切换 */}
+      {/* 底部栏 — 仅章节切换 */}
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         padding: '8px 16px', borderTop: '1px solid var(--border)',
@@ -109,18 +109,6 @@ export default function ChapterReader({
           disabled={currentChapter <= 0}>
           ◀ 上一章
         </button>
-
-        <span style={{ fontSize: 12, color: 'var(--text-dim)', fontFamily: 'var(--font-sans)', textAlign: 'center' }}>
-          {currentChapter + 1} / {total}
-        </span>
-
-        {total > 0 && (
-          <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 11 }}
-            onClick={() => setShowToc(!showToc)}>
-            ☰
-          </button>
-        )}
-
         <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: 12 }}
           onClick={() => currentChapter < total - 1 && onChapterChange(currentChapter + 1)}
           disabled={currentChapter >= total - 1}>

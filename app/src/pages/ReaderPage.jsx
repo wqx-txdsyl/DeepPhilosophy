@@ -35,6 +35,7 @@ function ReaderPage() {
   const [textLoading, setTextLoading] = useState(false);
   const [textReady, setTextReady] = useState(false);
   const [useEpubFallback, setUseEpubFallback] = useState(false);
+  const [showReaderToc, setShowReaderToc] = useState(false);
 
   // 预加载页数缓存（确保 initEpub 之前就绪）
   useEffect(() => {
