@@ -11,7 +11,7 @@ from auth import get_user_by_token, save_chat_message
 
 router = APIRouter()
 
-# ── Baidu ASR token cache ──────────────────────────────────
+# Baidu ASR token cache
 _asr_token = None
 
 def _get_baidu_token():
@@ -19,11 +19,7 @@ def _get_baidu_token():
     try:
         resp = req_lib.post(
             "https://aip.baidubce.com/oauth/2.0/token",
-            data={
-                "grant_type": "client_credentials",
-                "client_id": config.BAIDU_ASR_API_KEY,
-                "client_secret": config.BAIDU_ASR_SECRET_KEY,
-            },
+            data={"grant_type":"client_credentials","client_id":config.BAIDU_ASR_API_KEY,"client_secret":config.BAIDU_ASR_SECRET_KEY},
             timeout=10,
         )
         result = resp.json()
@@ -43,19 +39,30 @@ async def ai_stream_proxy(req: Request):
     client = OpenAI(api_key=key, base_url=config.DEEPSEEK_BASE_URL)
     def generate():
         try:
+            thinking_mode = body.get("thinking")
+            extra = {}
+            if thinking_mode:
+                extra["extra_body"] = {"thinking": thinking_mode}
+                extra["reasoning_effort"] = body.get("reasoning_effort", "high")
             stream = client.chat.completions.create(
                 model=body.get("model", config.DEEPSEEK_MODEL),
                 messages=body.get("messages", []),
                 temperature=body.get("temperature", 0.7),
                 max_tokens=body.get("max_tokens", 1024),
-                stream=True,
+                stream=True, **extra,
             )
             for chunk in stream:
-                if chunk.choices[0].delta.content:
-                    yield f"data: {json.dumps({'choices':[{'delta':{'content': chunk.choices[0].delta.content}}]})}\\n\\n"
-            yield "data: [DONE]\\n\\n"
+                delta = chunk.choices[0].delta
+                d = {}
+                if delta.content:
+                    d['content'] = delta.content
+                if hasattr(delta, 'reasoning_content') and delta.reasoning_content:
+                    d['reasoning_content'] = delta.reasoning_content
+                if d:
+                    yield f"data: {json.dumps({'choices':[{'delta':d}]})}\n\n"
+            yield "data: [DONE]\n\n"
         except Exception as e:
-            yield f"data: {json.dumps({'error': str(e)})}\\n\\n"
+            yield f"data: {json.dumps({'error': str(e)})}\n\n"
     return StreamingResponse(generate(), media_type="text/event-stream",
         headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"})
 
@@ -100,7 +107,7 @@ async def ask_question(req: QARequest, authorization: Optional[str] = Header(Non
                     {"role": "user", "content": req.question}])
                 result = {"answer": answer, "sources": [], "question": req.question}
             except Exception as e:
-                result = {"answer": f"问答服务暂不可用: {e}\\n\\n请确认已在设置中配置了有效的 API Key。", "sources": [], "question": req.question}
+                result = {"answer": f"问答服务暂不可用: {e}\n\n请确认已在设置中配置了有效的 API Key。", "sources": [], "question": req.question}
         if authorization and authorization.startswith("Bearer "):
             try:
                 user = get_user_by_token(authorization[7:])
@@ -119,46 +126,28 @@ async def speech_to_text(req: Request):
     """语音识别：接收 WAV 音频，返回文本。需要配置百度 API Key。"""
     if not config.BAIDU_ASR_API_KEY:
         return JSONResponse({"error": "ASR not configured", "text": ""}, status_code=503)
-
-    # Ensure token
     global _asr_token
     if not _asr_token:
         _asr_token = _get_baidu_token()
     if not _asr_token:
         return JSONResponse({"error": "Baidu token failed", "text": ""}, status_code=502)
-
-    # Read raw audio from request body
     raw_audio = await req.body()
     if not raw_audio or len(raw_audio) < 100:
         return JSONResponse({"error": "Audio too short", "text": ""}, status_code=400)
-
-    # Call Baidu ASR
     try:
         payload = {
-            "format": "wav",
-            "rate": 16000,
-            "channel": 1,
-            "cuid": "deepphilosophy_web",
-            "token": _asr_token,
-            "speech": base64.b64encode(raw_audio).decode(),
-            "len": len(raw_audio),
+            "format": "wav", "rate": 16000, "channel": 1, "cuid": "deepphilosophy_web",
+            "token": _asr_token, "speech": base64.b64encode(raw_audio).decode(), "len": len(raw_audio),
         }
-        resp = req_lib.post(
-            "https://vop.baidu.com/server_api",
-            json=payload,
-            timeout=10,
-        )
+        resp = req_lib.post("https://vop.baidu.com/server_api", json=payload, timeout=10)
         result = resp.json()
         err_no = result.get("err_no")
         if err_no == 0:
-            text = result.get("result", [""])[0]
-            return {"text": text}
+            return {"text": result.get("result", [""])[0]}
         elif err_no in (3301, 3302, 3303):
-            # Token expired, refresh and tell client to retry
             _asr_token = _get_baidu_token()
             return JSONResponse({"error": "Token expired, retry", "text": ""}, status_code=401)
         else:
-            err_msg = result.get("err_msg", "unknown")
-            return JSONResponse({"error": err_msg, "text": ""}, status_code=502)
+            return JSONResponse({"error": result.get("err_msg", "unknown"), "text": ""}, status_code=502)
     except Exception as e:
         return JSONResponse({"error": str(e), "text": ""}, status_code=502)
