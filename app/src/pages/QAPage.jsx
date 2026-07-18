@@ -296,8 +296,7 @@ function QAPage() {
       max_tokens: thinkingMode ? 4096 : 1024,
       stream: true,
     };
-    if (thinkingMode && !useProxy) {
-      streamBody.reasoning_effort = 'high';
+    if (thinkingMode) {
       streamBody.thinking = { type: 'enabled' };
     }
 
