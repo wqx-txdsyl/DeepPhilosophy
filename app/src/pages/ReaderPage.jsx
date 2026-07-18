@@ -426,6 +426,11 @@ ${textContext}
     loadChapter(ch);
     if (ch + 1 < textChapters.length) loadChapter(ch + 1);
     if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
+    // 更新 URL，刷新后保持当前章节
+    const params = new URLSearchParams(searchParams);
+    params.set('ch', ch);
+    params.set('type', fileType);
+    navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
   };
 
   useEffect(() => {

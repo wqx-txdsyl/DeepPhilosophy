@@ -232,9 +232,9 @@ for root,dirs,files in os.walk(BOOKS_DIR):
             detail={k:meta[k] for k in ['bookId','title','author','cover','toc','chapterCount','chapterTitles']}
             detail['toc']=toc_titles;detail['region']='东方' if '东方' in rel else '西方';detail['file_type']='epub'
             for sk in [f'{title}||{author}',f'{title}||',title]:
-                if sk in summaries:s=summaries[sk]
-                if s.get('summary'):detail['summary']=s['summary']
-                if s.get('tags'):detail['tags']=s['tags'];break
+                s = summaries.get(sk)
+                if s and s.get('summary'):detail['summary']=s['summary']
+                if s and s.get('tags'):detail['tags']=s['tags'];break
             json.dump(detail,open(os.path.join(DDIR,f'{bid}.json'),'w',encoding='utf-8'),ensure_ascii=False)
             sz=sum(os.path.getsize(os.path.join(bd,x)) for x in os.listdir(bd))
             print(f'[{count+1}] {f[:40]}... spine:{len(chs)}章 {sz//1024}KB')
