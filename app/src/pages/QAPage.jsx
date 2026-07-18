@@ -288,6 +288,7 @@ function QAPage() {
     const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
 
     const model = thinkingMode ? 'deepseek-reasoner' : (apiConfig.model || 'deepseek-chat');
+    const useProxy = !apiConfig.apiKey;
     const streamBody = {
       model,
       messages: apiMessages,
@@ -295,6 +296,10 @@ function QAPage() {
       max_tokens: thinkingMode ? 4096 : 1024,
       stream: true,
     };
+    if (thinkingMode && !useProxy) {
+      streamBody.reasoning_effort = 'high';
+      streamBody.thinking = { type: 'enabled' };
+    }
 
     // RAG 检索：后台异步，不阻塞对话流
     const ragPromise = fetch(`${getApiBase()}/api/qa`, {
