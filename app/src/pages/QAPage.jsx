@@ -287,7 +287,7 @@ function QAPage() {
 
     const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
 
-    const model = thinkingMode ? 'deepseek-reasoner' : (apiConfig.model || 'deepseek-chat');
+    const model = thinkingMode ? 'deepseek-v4-pro' : (apiConfig.model || 'deepseek-chat');
     const useProxy = !apiConfig.apiKey;
     const streamBody = {
       model,
@@ -426,7 +426,7 @@ function QAPage() {
         </span>
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
           onClick={() => setThinkingMode(!thinkingMode)}
-          title={thinkingMode ? '关闭深度思考' : '开启深度思考(v4-pro)'}>
+          title={thinkingMode ? '关闭思考模式' : '开启思考模式 (deepseek-v4-pro)'}>
           {thinkingMode ? <><Icon name="brain" size={14} /> 思考中</> : <><Icon name="idea" size={14} /> 思考</>}
         </button>
         {messages.length > 1 && (
