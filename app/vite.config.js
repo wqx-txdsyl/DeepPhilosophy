@@ -12,7 +12,7 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'https://deepphilosophy-7g7m.onrender.com',
         changeOrigin: true,
         secure: true,
       },
