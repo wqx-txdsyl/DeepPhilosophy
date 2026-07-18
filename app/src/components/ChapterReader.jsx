@@ -56,6 +56,14 @@ export default function ChapterReader({
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      {/* TOC 浮动按钮 */}
+      <button onClick={() => setShowToc(!showToc)} style={{
+        position: 'absolute', top: 8, right: 12, zIndex: 10,
+        background: 'var(--card-bg)', border: '1px solid var(--border)',
+        borderRadius: 4, padding: '2px 6px', fontSize: 11, cursor: 'pointer',
+        color: 'var(--text-dim)', opacity: 0.6,
+      }}>☰ 目录</button>
+
       {/* 章节内容 — 滚动区 */}
       <div ref={scrollRef} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
         style={{
