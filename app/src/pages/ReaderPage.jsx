@@ -391,7 +391,7 @@ ${textContext}
       if (startCh + 1 < total) loadChapter(startCh + 1, chapters);
     } catch (e) {
       console.error('Load error:', e);
-      if (!textReady) setError('加载失败');
+      if (!textReady) setError('无法阅读：该书籍章节数据暂未收录。EPUB书籍需先运行 build_book_json.py 生成章节。');
     } finally {
       setTextLoading(false);
     }
