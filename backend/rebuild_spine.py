@@ -9,7 +9,8 @@ from build_book_json import is_image, save_as_webp, EXTRACTED_IMG_DIR
 os.makedirs(EXTRACTED_IMG_DIR,exist_ok=True)
 
 BOOKS_DIR=r"F:/philosophy"
-CDIR="data/book_chapters";DDIR="data/book_detail"
+BASE_DIR=os.path.dirname(os.path.abspath(__file__))
+CDIR=os.path.join(BASE_DIR,"data/book_chapters");DDIR=os.path.join(BASE_DIR,"data/book_detail")
 os.makedirs(CDIR,exist_ok=True);os.makedirs(DDIR,exist_ok=True)
 SDIR="data/book_summaries.json"
 summaries=json.load(open(SDIR,'r',encoding='utf-8')) if os.path.exists(SDIR) else {}
