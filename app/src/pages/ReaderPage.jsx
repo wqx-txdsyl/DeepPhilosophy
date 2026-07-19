@@ -338,15 +338,9 @@ ${textContext}
   const loadBook = async () => {
     setLoading(true); setError(null);
     const b = await getBookById(bookId);
-    // 如果 EPUB/TXT 已经通过 loadTextBook 渲染好了，不要覆盖
-    if (!b) {
-      if (!textReady) setError('书籍未找到');
-      setLoading(false);
-      return;
-    }
+    if (!b) { setError('书籍未找到'); setLoading(false); return; }
     setBook(b);
     setFileType(b.file_type);
-
     const url = `${getApiBase()}/api/books/${bookId}/file`;
     setFileUrl(url);
     setLoading(false);
@@ -373,7 +367,7 @@ ${textContext}
         _loaded: false,
       }));
       setTextChapters(chapters);
-      setTextReady(true);
+      setError(null); setLoading(false); setTextReady(true);
 
       // URL 跳转：优先 ch 参数，其次历史记录，最后默认 ch=0
       const urlCh = parseInt(searchParams.get('ch'));
@@ -441,10 +435,14 @@ ${textContext}
   useEffect(() => {
     const type = searchParams.get('type') || fileType;
     if (type === 'epub' || type === 'txt' || fileType === 'epub' || fileType === 'txt') {
-      setFileType(type || 'epub');
+      setFileType(type || fileType || 'epub');
       loadTextBook();
-    } else if (!loading && bookId) {
+    } else if (type === 'pdf' || fileType === 'pdf') {
       loadBook();
+    } else if (!loading && bookId) {
+      // 未知类型：先试 EPUB（本地静态文件秒开），失败再走 loadBook
+      setFileType('epub');
+      loadTextBook();
     }
   }, [bookId]);
 
@@ -598,6 +596,11 @@ ${textContext}
                   showToc={showReaderToc}
                   onToggleToc={() => setShowReaderToc(!showReaderToc)}
                 />
+              ) : error ? (
+                <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-dim)' }}>
+                  <p style={{ fontSize: 36, margin: '0 0 12px' }}><Icon name="icon-error" size={16} /></p>
+                  <p>{error}</p>
+                </div>
               ) : (
                 <div className="loading">加载中...</div>
               )}
