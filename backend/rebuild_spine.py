@@ -140,7 +140,8 @@ def extract(fp,bid):
                 chapter_entries.append({'title':ch_title,'spine_idx':spine_idx,'anchor':anchor,'full_src':full_src})
         if not chapter_entries:
             chapter_entries = [{'title':f'第{i+1}章','spine_idx':i,'anchor':''} for i in range(len(spine_hrefs))]
-        # 每章内容：spine_range + 锚点切割
+        # 每章内容：spine_range + 锚点切割。先检测并标记分组标题
+        _strip_fn = lambda s: __import__('re').sub(r'[._](x?html?|htm)$', '', (s or '').split('/')[-1])
         merged_chapters = []
         for ci, ce in enumerate(chapter_entries):
             si = ce['spine_idx']
@@ -149,10 +150,24 @@ def extract(fp,bid):
             for cj in range(ci+1, len(chapter_entries)):
                 ns = chapter_entries[cj]['spine_idx']
                 if ns is not None and ns > si: next_si = ns; break
+            # 检测：当前 spine 文件名是下一章的前缀 → 分组标题
+            section = False
+            if ci+1 < len(chapter_entries):
+                ns = chapter_entries[ci+1].get('spine_idx')
+                if ns is not None and ns < len(spine_hrefs):
+                    curr_fn = _strip_fn(spine_hrefs[si]) if si < len(spine_hrefs) else ''
+                    next_fn = _strip_fn(spine_hrefs[ns])
+                    if next_fn.startswith(curr_fn) and next_fn != curr_fn:
+                        section = True
             merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
-                                     'anchor':ce['anchor']})
+                                     'anchor':ce['anchor'],'section':section})
         # 处理每个章节：提取为结构化 {type:'text'/'image'} 块
+        section_pending = ''  # 待合并的分组标题
         for ch_idx, mc in enumerate(merged_chapters):
+            if mc.get('section'):
+                # 分组标题 → 不单独提取，记录标题待合并
+                section_pending = mc['title']
+                continue
             all_blocks = []
             for si in mc['spine_range']:
                 href = spine_hrefs[si]
@@ -173,36 +188,19 @@ def extract(fp,bid):
                     all_blocks.extend(_body_to_blocks(body, images))
                 except:pass
             if all_blocks:
+                # 有前置分组标题 → 插入内容开头并合并标题
+                if section_pending:
+                    all_blocks.insert(0, {'type': 'text', 'value': section_pending})
+                    mc['title'] = section_pending + ' — ' + mc['title']
+                    section_pending = ''
                 first_spine = spine_hrefs[mc['spine_range'][0]] if mc['spine_range'] else ''
                 ch={'title':mc['title'],'index':ch_idx,'content':all_blocks,'_spine_file':first_spine}
                 chs.append(ch)
-        # 后处理：合并分组标题页（spine 文件名是下一章的前缀，如 _00003 → _00003_0001）
-        merged = []
-        i = 0
-        while i < len(chs):
-            ch = chs[i]
-            # 用 spine_range 的第一个 spine 文件名做前缀匹配
-            should_merge = False
-            if i+1 < len(chs) and ch.get('_spine_file') and chs[i+1].get('_spine_file'):
-                curr_fn = os.path.splitext(ch['_spine_file'])[0]  # 去掉扩展名
-                next_fn = os.path.splitext(chs[i+1]['_spine_file'])[0]
-                # 当前文件名是下一个的前缀（如 _00003 是 _00003_0001 的前缀）
-                if next_fn.startswith(curr_fn) and next_fn != curr_fn:
-                    should_merge = True
-            if should_merge:
-                next_ch = chs[i+1]
-                next_ch['title'] = ch['title'] + ' — ' + next_ch['title']
-                next_ch['content'] = ch['content'] + next_ch['content']
-                i += 1
-            else:
-                merged.append(ch)
-            i += 1
-        # 写入文件（重新编号 index 以匹配新顺序）
-        for new_idx, ch in enumerate(merged):
+        # 写入文件
+        for new_idx, ch in enumerate(chs):
             ch['index'] = new_idx
             ch.pop('_spine_file', None)
             json.dump(ch,open(os.path.join(CDIR,bid,f'{new_idx}.json'),'w',encoding='utf-8'),ensure_ascii=False)
-        chs = merged
         return chs,toc,cover,images
 
     # fallback: 无 TOC 时的原始逻辑（同样输出结构化块）
