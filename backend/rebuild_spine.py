@@ -239,7 +239,11 @@ for root,dirs,files in os.walk(BOOKS_DIR):
         ext = Path(f).suffix.lower()
         fp=os.path.join(root,f);rel=os.path.relpath(fp,BOOKS_DIR).replace('\\','/');bid=hashlib.md5(rel.encode()).hexdigest()[:12]
         if ext == '.epub':
-            bd=os.path.join(CDIR,bid);os.makedirs(bd,exist_ok=True)
+            bd=os.path.join(CDIR,bid)
+            # 清理旧章节文件，避免残留
+            if os.path.exists(bd):
+                import shutil; shutil.rmtree(bd)
+            os.makedirs(bd,exist_ok=True)
             chs,toc_entries,cover,images=extract(fp,bid)
             title=Path(f).stem;author=rel.split('/')[1].replace('###','').strip() if '/' in rel else ''
             toc_titles = [t._text if hasattr(t,'_text') else str(t) for t in toc_entries]
