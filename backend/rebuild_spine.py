@@ -139,17 +139,29 @@ def extract(fp,bid):
                 chapter_entries.append({'title':ch_title,'spine_idx':spine_idx,'anchor':anchor,'full_src':full_src})
         if not chapter_entries:
             chapter_entries = [{'title':f'第{i+1}章','spine_idx':i,'anchor':''} for i in range(len(spine_hrefs))]
-        # 每章内容：spine_range + 锚点切割
+        # 每章内容：spine_range + 锚点切割。检测章节标题（与下一项同 spine_idx）
         merged_chapters = []
+        skip_next = False
         for ci, ce in enumerate(chapter_entries):
+            if skip_next: skip_next = False; continue
             si = ce['spine_idx']
             if si is None: continue
+            # 检测纯章节标题：下一条目同 spine → 当前为分组标题
+            section_title = ''
+            if ci+1 < len(chapter_entries) and chapter_entries[ci+1].get('spine_idx') == si:
+                section_title = ce['title']
+                # 跳过，合并到下一条目
+                ci = ci+1
+                ce = chapter_entries[ci]
+                si = ce['spine_idx']
+                if si is None: continue
             next_si = len(spine_hrefs)
             for cj in range(ci+1, len(chapter_entries)):
                 ns = chapter_entries[cj]['spine_idx']
                 if ns is not None and ns > si: next_si = ns; break
-            merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
-                                     'anchor':ce['anchor'],'next_anchor':chapter_entries[ci+1]['anchor'] if ci+1<len(chapter_entries) and chapter_entries[ci+1]['spine_idx']==si else ''})
+            title = (section_title + ' — ' + ce['title']) if section_title else ce['title']
+            merged_chapters.append({'title':title,'spine_range':list(range(si,next_si)),
+                                     'anchor':ce['anchor'],'section':section_title})
         # 处理每个章节：提取为结构化 {type:'text'/'image'} 块
         for ch_idx, mc in enumerate(merged_chapters):
             all_blocks = []
@@ -172,6 +184,9 @@ def extract(fp,bid):
                     all_blocks.extend(_body_to_blocks(body, images))
                 except:pass
             if all_blocks:
+                # 章节标题作为小标题块插入内容开头
+                if mc.get('section'):
+                    all_blocks.insert(0, {'type': 'text', 'value': mc['section']})
                 ch={'title':mc['title'],'index':ch_idx,'content':all_blocks}
                 chs.append(ch)
                 json.dump(ch,open(os.path.join(CDIR,bid,f'{len(chs)-1}.json'),'w',encoding='utf-8'),ensure_ascii=False)

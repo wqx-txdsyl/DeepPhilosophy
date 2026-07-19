@@ -14,6 +14,8 @@ import ChapterReader from '../components/ChapterReader';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@master';
+
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs`;
 
 function ReaderPage() {
@@ -351,18 +353,18 @@ ${textContext}
     setTextLoading(true);
     setLoading(false);
     try {
-      // 1. 从 book_detail 获取元数据（在 git 中，始终可用）
-      const detailResp = await fetch(`/book_detail/${bookId}.json?v=2`);
-      if (!detailResp.ok) throw new Error('Detail ' + detailResp.status);
-      const detail = await detailResp.json();
-      const total = detail.chapterCount || 0;
+      // 1. 从 meta.json 获取正确的章节元数据（排除 TOC 纯标题条目）
+      const metaResp = await fetch(`${CDN_BASE}/backend/data/book_chapters/${bookId}/meta.json`);
+      if (!metaResp.ok) throw new Error('Meta ' + metaResp.status);
+      const meta = await metaResp.json();
+      const total = meta.chapterCount || 0;
       if (total === 0) throw new Error('No chapters');
 
-      setBook({ title: detail.title || bookId, author: detail.author || '', file_type: 'epub' });
+      setBook({ title: meta.title || bookId, author: meta.author || '', file_type: 'epub' });
       setFileType('epub');
-      setTextToc(detail.toc || []);
+      setTextToc(meta.toc || []);
       const chapters = Array.from({ length: total }, (_, i) => ({
-        title: detail.chapterTitles?.[i] || `第${i + 1}章`,
+        title: meta.chapterTitles?.[i] || `第${i + 1}章`,
         content: null,
         _loaded: false,
       }));
@@ -385,7 +387,7 @@ ${textContext}
       }
       setTextChapter(startCh);
 
-      // 2. 立即加载当前章节
+      // 2. 立即加载当前章节（通过章节 index 查找对应文件）
       await loadChapter(startCh, chapters);
       // 3. 预加载下一章
       if (startCh + 1 < total) loadChapter(startCh + 1, chapters);
@@ -404,13 +406,12 @@ ${textContext}
     if (loadingRef.current[idx]) return;
     loadingRef.current[idx] = true;
     try {
-      // 章节内容走 jsDelivr CDN（GitHub 直读，全球加速，免费）
-      const resp = await fetch(`https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@master/backend/data/book_chapters/${bookId}/${idx}.json`);
+      const resp = await fetch(`${CDN_BASE}/backend/data/book_chapters/${bookId}/${idx}.json`);
       if (resp.ok) {
         const ch = await resp.json();
         setTextChapters(prev => {
           const next = [...prev];
-          if (next[idx]) next[idx] = { ...ch, index: idx, _loaded: true };
+          if (next[idx]) next[idx] = { ...ch, _loaded: true };
           return next;
         });
       }
