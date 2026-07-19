@@ -17,9 +17,9 @@
 ### 步骤 1：数据计数一致性
 - **动作**：
 ```bash
-python -c "import json,os; p=json.load(open('backend/data/philosophers.json',encoding='utf-8')); imgs=len([f for f in os.listdir('app/public/philosopher') if f.endswith('.jpg')]); print(f'Philosophers:{len(p)} Images:{imgs}')"
+python -c "import json,os; p=json.load(open('app/public/philosophers.json',encoding='utf-8')); imgs=len([f for f in os.listdir('app/public/philosopher') if f.endswith('.webp')]); print(f'Philosophers:{len(p)} Images:{imgs}')"
 ```
-- **门禁验证（Check）**：哲人数与图片数一致。
+- **门禁验证（Check）**：哲人数（743）与图片数一致。
 
 ### 步骤 2：临时文件清理
 - **动作**：`cd scripts && ls _*.txt _*.log 2>/dev/null | wc -l`
