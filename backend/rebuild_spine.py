@@ -1,5 +1,6 @@
 import os,sys,hashlib,zipfile,json,re
 from pathlib import Path
+from urllib.parse import unquote
 from bs4 import BeautifulSoup, NavigableString
 # 修复 Windows GBK 编码问题
 if sys.platform == 'win32':
@@ -134,8 +135,9 @@ def extract(fp,bid):
                 anchor = full_src.split('#')[1] if '#' in full_src else ''
                 ch_title = t._text if hasattr(t,'_text') else ''
                 spine_idx = None
+                src_decoded = unquote(src_file)  # 处理 NCX 中的 %20 等 URL 编码
                 for si, sh in enumerate(spine_hrefs):
-                    if src_file and sh.endswith(src_file.split('/')[-1]):
+                    if src_file and (sh.endswith(src_file.split('/')[-1]) or sh.endswith(src_decoded.split('/')[-1])):
                         spine_idx = si; break
                 chapter_entries.append({'title':ch_title,'spine_idx':spine_idx,'anchor':anchor,'full_src':full_src})
         if not chapter_entries:
