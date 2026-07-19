@@ -1,7 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { execSync } from 'child_process'
+
+// 获取当前 git commit hash（用于 CDN 缓存自动刷新）
+let commitHash = 'master'
+try { commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim() } catch {}
 
 export default defineConfig({
+  define: {
+    __COMMIT_HASH__: JSON.stringify(commitHash),
+  },
   plugins: [react()],
   base: '/',
   server: {
