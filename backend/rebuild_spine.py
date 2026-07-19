@@ -140,29 +140,17 @@ def extract(fp,bid):
                 chapter_entries.append({'title':ch_title,'spine_idx':spine_idx,'anchor':anchor,'full_src':full_src})
         if not chapter_entries:
             chapter_entries = [{'title':f'第{i+1}章','spine_idx':i,'anchor':''} for i in range(len(spine_hrefs))]
-        # 每章内容：spine_range + 锚点切割。检测章节标题（与下一项同 spine_idx）
+        # 每章内容：spine_range + 锚点切割
         merged_chapters = []
-        skip_next = False
         for ci, ce in enumerate(chapter_entries):
-            if skip_next: skip_next = False; continue
             si = ce['spine_idx']
             if si is None: continue
-            # 检测纯章节标题：下一条目同 spine → 当前为分组标题
-            section_title = ''
-            if ci+1 < len(chapter_entries) and chapter_entries[ci+1].get('spine_idx') == si:
-                section_title = ce['title']
-                # 跳过，合并到下一条目
-                ci = ci+1
-                ce = chapter_entries[ci]
-                si = ce['spine_idx']
-                if si is None: continue
             next_si = len(spine_hrefs)
             for cj in range(ci+1, len(chapter_entries)):
                 ns = chapter_entries[cj]['spine_idx']
                 if ns is not None and ns > si: next_si = ns; break
-            title = (section_title + ' — ' + ce['title']) if section_title else ce['title']
-            merged_chapters.append({'title':title,'spine_range':list(range(si,next_si)),
-                                     'anchor':ce['anchor'],'section':section_title})
+            merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
+                                     'anchor':ce['anchor']})
         # 处理每个章节：提取为结构化 {type:'text'/'image'} 块
         for ch_idx, mc in enumerate(merged_chapters):
             all_blocks = []
@@ -185,12 +173,36 @@ def extract(fp,bid):
                     all_blocks.extend(_body_to_blocks(body, images))
                 except:pass
             if all_blocks:
-                # 章节标题作为小标题块插入内容开头
-                if mc.get('section'):
-                    all_blocks.insert(0, {'type': 'text', 'value': mc['section']})
-                ch={'title':mc['title'],'index':ch_idx,'content':all_blocks}
+                first_spine = spine_hrefs[mc['spine_range'][0]] if mc['spine_range'] else ''
+                ch={'title':mc['title'],'index':ch_idx,'content':all_blocks,'_spine_file':first_spine}
                 chs.append(ch)
-                json.dump(ch,open(os.path.join(CDIR,bid,f'{len(chs)-1}.json'),'w',encoding='utf-8'),ensure_ascii=False)
+        # 后处理：合并分组标题页（spine 文件名是下一章的前缀，如 _00003 → _00003_0001）
+        merged = []
+        i = 0
+        while i < len(chs):
+            ch = chs[i]
+            # 用 spine_range 的第一个 spine 文件名做前缀匹配
+            should_merge = False
+            if i+1 < len(chs) and ch.get('_spine_file') and chs[i+1].get('_spine_file'):
+                curr_fn = os.path.splitext(ch['_spine_file'])[0]  # 去掉扩展名
+                next_fn = os.path.splitext(chs[i+1]['_spine_file'])[0]
+                # 当前文件名是下一个的前缀（如 _00003 是 _00003_0001 的前缀）
+                if next_fn.startswith(curr_fn) and next_fn != curr_fn:
+                    should_merge = True
+            if should_merge:
+                next_ch = chs[i+1]
+                next_ch['title'] = ch['title'] + ' — ' + next_ch['title']
+                next_ch['content'] = ch['content'] + next_ch['content']
+                i += 1
+            else:
+                merged.append(ch)
+            i += 1
+        # 写入文件（重新编号 index 以匹配新顺序）
+        for new_idx, ch in enumerate(merged):
+            ch['index'] = new_idx
+            ch.pop('_spine_file', None)
+            json.dump(ch,open(os.path.join(CDIR,bid,f'{new_idx}.json'),'w',encoding='utf-8'),ensure_ascii=False)
+        chs = merged
         return chs,toc,cover,images
 
     # fallback: 无 TOC 时的原始逻辑（同样输出结构化块）
@@ -211,9 +223,10 @@ def extract(fp,bid):
                 body=soup.find('body') or soup
                 blocks=_body_to_blocks(body, images)
                 if blocks:
-                    ch={'title':ch_title,'index':hi,'content':blocks}
+                    idx = len(chs)
+                    ch={'title':ch_title,'index':idx,'content':blocks,'_spine_file':href}
                     chs.append(ch)
-                    json.dump(ch,open(os.path.join(CDIR,bid,f'{len(chs)-1}.json'),'w',encoding='utf-8'),ensure_ascii=False)
+                    json.dump(ch,open(os.path.join(CDIR,bid,f'{idx}.json'),'w',encoding='utf-8'),ensure_ascii=False)
             except:pass
     return chs,toc,cover,images
 
