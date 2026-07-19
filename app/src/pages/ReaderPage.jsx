@@ -14,7 +14,7 @@ import ChapterReader from '../components/ChapterReader';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-const CDN_BASE = 'https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@32949b4';
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@0131074';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs`;
 
