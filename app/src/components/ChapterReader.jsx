@@ -3,6 +3,16 @@
  * 每章一页，上下滑动，底部切换章节
  */
 import { useRef, useEffect, useState, useCallback } from 'react';
+import { getApiBase } from '../utils/api';
+
+// 解析图片 URL：相对路径 → dev 直接走，生产加 Render API 前缀
+function resolveImgSrc(src) {
+  if (!src) return '';
+  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) return src;
+  if (import.meta.env.DEV) return src; // Vite proxy 处理 /api/
+  const base = getApiBase();
+  return base ? base + src : src;
+}
 
 export default function ChapterReader({
   chapters = [],
@@ -17,22 +27,6 @@ export default function ChapterReader({
   const ch = chapters[currentChapter] || {};
   const total = chapters.length;
 
-  // 预处理：将夹在两个文本块之间的图片合并为行内图（修复生僻字 img 导致文本断裂）
-  const mergedContent = ch.content ? (() => {
-    const merged = [];
-    for (let i = 0; i < ch.content.length; i++) {
-      const block = ch.content[i];
-      if (block.type === 'image' && i > 0 && i + 1 < ch.content.length
-          && ch.content[i-1].type === 'text' && ch.content[i+1].type === 'text') {
-        const prev = merged[merged.length - 1];
-        prev._inlineImg = prev._inlineImg || [];
-        prev._inlineImg.push(block);
-      } else {
-        merged.push({...block});
-      }
-    }
-    return merged;
-  })() : null;
 
   // 切章时滚到顶部
   useEffect(() => {
@@ -105,29 +99,21 @@ export default function ChapterReader({
         {/* 内容 — HTML 保留原排版 */}
         {ch.type === 'section' ? null : !ch.content && !ch._loaded ? (
           <p style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>加载中...</p>
-        ) : mergedContent ? (
-          mergedContent.map((block, i) => {
+        ) : ch.content ? (
+          ch.content.map((block, i) => {
             if (block.type === 'image') {
               return (
                 <div key={i} style={{ textAlign: 'center', margin: '16px 0' }}>
-                  <img src={block.src} alt={block.alt || ''}
+                  <img src={resolveImgSrc(block.src)} alt={block.alt || ''}
                     loading="lazy" decoding="async"
-                    style={{ maxWidth: '100%', maxHeight: '50vh', objectFit: 'contain', borderRadius: 4 }} />
+                    style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
+                  {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
                 </div>
               );
             }
             if (block.type === 'html' || (block.value && block.value.startsWith('<') && block.value.includes('>'))) {
               const html = block.value || block.html || '';
               return <div key={i} className="chapter-html" dangerouslySetInnerHTML={{ __html: html }} />;
-            }
-            if (block._inlineImg) {
-              const parts = [<span key="t">{block.value || ''}</span>];
-              block._inlineImg.forEach((img, j) => {
-                parts.push(<img key={`img${j}`} src={img.src} alt={img.alt || ''}
-                  loading="lazy" decoding="async"
-                  style={{ height: '1.2em', verticalAlign: 'middle', display: 'inline' }} />);
-              });
-              return <p key={i} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>{parts}</p>;
             }
             return <p key={i} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>{block.value}</p>;
           })
