@@ -84,15 +84,26 @@ export default function ChapterReader({
           WebkitOverflowScrolling: 'touch',
         }}>
         {/* 章标题 */}
-        <h2 style={{
-          textAlign: 'center', fontSize: 22, fontWeight: 500, margin: '0 0 32px',
-          fontFamily: 'var(--font-serif)', letterSpacing: '0.04em',
-        }}>
-          {ch.title || `第${currentChapter + 1}章`}
-        </h2>
+        {ch.type === 'section' ? (
+          <h2 style={{
+            textAlign: 'center', fontSize: 20, fontWeight: 300, margin: '40px 0 48px',
+            fontFamily: 'var(--font-sans)', letterSpacing: '0.12em',
+            color: 'var(--ochre)', textTransform: 'uppercase',
+            borderBottom: '1px solid var(--border)', paddingBottom: 16,
+          }}>
+            {ch.title}
+          </h2>
+        ) : (
+          <h2 style={{
+            textAlign: 'center', fontSize: 22, fontWeight: 500, margin: '0 0 32px',
+            fontFamily: 'var(--font-serif)', letterSpacing: '0.04em',
+          }}>
+            {ch.title || `第${currentChapter + 1}章`}
+          </h2>
+        )}
 
         {/* 内容 — HTML 保留原排版 */}
-        {!ch.content && !ch._loaded ? (
+        {ch.type === 'section' ? null : !ch.content && !ch._loaded ? (
           <p style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>加载中...</p>
         ) : mergedContent ? (
           mergedContent.map((block, i) => {
@@ -152,10 +163,19 @@ export default function ChapterReader({
             <h3 style={{ fontFamily: 'var(--font-serif)', marginTop: 0 }}>目录</h3>
             {chapters.map((c, i) => (
               <div key={i} style={{
-                padding: '8px 0', cursor: 'pointer', borderBottom: '1px solid var(--border)',
-                fontSize: 13, fontWeight: i === currentChapter ? 600 : 400,
-                color: i === currentChapter ? 'var(--ochre)' : 'var(--text)',
-              }} onClick={() => { onToggleToc && onToggleToc(); onChapterChange(i); }}>
+                padding: c.type === 'section' ? '10px 0 6px' : '8px 0',
+                cursor: c.type === 'section' ? 'default' : 'pointer',
+                borderBottom: c.type === 'section' ? 'none' : '1px solid var(--border)',
+                fontSize: c.type === 'section' ? 11 : 13,
+                fontWeight: c.type === 'section' ? 300 : (i === currentChapter ? 600 : 400),
+                color: c.type === 'section' ? 'var(--ochre)' : (i === currentChapter ? 'var(--ochre)' : 'var(--text)'),
+                letterSpacing: c.type === 'section' ? '0.1em' : '0',
+                textTransform: c.type === 'section' ? 'uppercase' : 'none',
+              }} onClick={() => {
+                if (c.type === 'section') return;
+                onToggleToc && onToggleToc();
+                onChapterChange(i);
+              }}>
                 {c.title}
               </div>
             ))}

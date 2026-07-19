@@ -162,11 +162,13 @@ def extract(fp,bid):
             merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
                                      'anchor':ce['anchor'],'section':section})
         # 处理每个章节：提取为结构化 {type:'text'/'image'} 块
-        section_pending = ''  # 待合并的分组标题
         for ch_idx, mc in enumerate(merged_chapters):
             if mc.get('section'):
-                # 分组标题 → 不单独提取，记录标题待合并
-                section_pending = mc['title']
+                # 分组标题 → 创建纯标题章节（只展示，不跳转）
+                ch = {'title': mc['title'], 'type': 'section',
+                      'content': [{'type': 'text', 'value': mc['title']}],
+                      '_spine_file': spine_hrefs[mc['spine_range'][0]] if mc['spine_range'] else ''}
+                chs.append(ch)
                 continue
             all_blocks = []
             for si in mc['spine_range']:
@@ -188,13 +190,8 @@ def extract(fp,bid):
                     all_blocks.extend(_body_to_blocks(body, images))
                 except:pass
             if all_blocks:
-                # 有前置分组标题 → 插入内容开头并合并标题
-                if section_pending:
-                    all_blocks.insert(0, {'type': 'text', 'value': section_pending})
-                    mc['title'] = section_pending + ' — ' + mc['title']
-                    section_pending = ''
                 first_spine = spine_hrefs[mc['spine_range'][0]] if mc['spine_range'] else ''
-                ch={'title':mc['title'],'index':ch_idx,'content':all_blocks,'_spine_file':first_spine}
+                ch={'title':mc['title'],'content':all_blocks,'_spine_file':first_spine}
                 chs.append(ch)
         # 写入文件
         for new_idx, ch in enumerate(chs):

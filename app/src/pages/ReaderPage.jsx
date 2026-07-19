@@ -422,13 +422,18 @@ ${textContext}
 
   const handleChapterChange = (ch) => {
     if (ch === textChapter) return;
-    setTextChapter(ch);
-    loadChapter(ch);
-    if (ch + 1 < textChapters.length) loadChapter(ch + 1);
-    if (book) saveReadingProgress(bookId, book.title, book.author, ch + 1, (ch + 1) / textChapters.length, fileType);
-    // 更新 URL，刷新后保持当前章节
+    // 跳过 section 章节
+    let target = ch;
+    if (textChapters[target]?.type === 'section') {
+      target = ch > textChapter ? target + 1 : target - 1;
+      if (target < 0 || target >= textChapters.length) return;
+    }
+    setTextChapter(target);
+    loadChapter(target);
+    if (target + 1 < textChapters.length) loadChapter(target + 1);
+    if (book) saveReadingProgress(bookId, book.title, book.author, target + 1, (target + 1) / textChapters.length, fileType);
     const params = new URLSearchParams(searchParams);
-    params.set('ch', ch);
+    params.set('ch', target);
     params.set('type', fileType);
     navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
   };
