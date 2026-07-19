@@ -338,7 +338,12 @@ ${textContext}
   const loadBook = async () => {
     setLoading(true); setError(null);
     const b = await getBookById(bookId);
-    if (!b) { setError('书籍未找到'); setLoading(false); return; }
+    // 如果 EPUB/TXT 已经通过 loadTextBook 渲染好了，不要覆盖
+    if (!b) {
+      if (!textReady) setError('书籍未找到');
+      setLoading(false);
+      return;
+    }
     setBook(b);
     setFileType(b.file_type);
 
