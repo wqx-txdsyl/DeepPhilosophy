@@ -35,7 +35,7 @@ from auth import (
     save_book_chat, get_book_chat, clear_book_chat,
     update_username, change_password,
 )
-from philosophers_db import get_philosopher_info
+from db import get_philosopher_info
 from models import (
     RegisterRequest, LoginRequest, ReadingProgressRequest,
     ChatMessageRequest, ChatHistoryClearRequest, QARequest,
@@ -105,7 +105,7 @@ def _warmup():
     except Exception as e:
         logger.warning(f"Books pre-load failed (non-fatal): {e}")
     try:
-        from philosophers_db import NAME_ALIASES, PHILOSOPHERS
+        from db import NAME_ALIASES, PHILOSOPHERS
         logger.info(f"Authors ready: {len(PHILOSOPHERS)} philosophers loaded")
     except Exception as e:
         logger.warning(f"Authors pre-load failed (non-fatal): {e}")
@@ -1269,7 +1269,7 @@ async def get_author_filters():
     schools = set()
 
     # 扫描所有哲学家（不限于书籍作者）
-    from philosophers_db import PHILOSOPHERS
+    from db import PHILOSOPHERS
     for name, info in PHILOSOPHERS.items():
         if info.get("era"):
             for century in _era_to_centuries(info["era"]):
@@ -1417,7 +1417,7 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
     else:
         books = scan_books()
         authors_map = {}
-        from philosophers_db import NAME_ALIASES, PHILOSOPHERS
+        from db import NAME_ALIASES, PHILOSOPHERS
 
         # 预处理别名反向索引（一次性）
         _alias_to_canonical = dict(NAME_ALIASES)
@@ -1465,7 +1465,7 @@ async def list_all_authors(tag: Optional[str] = Query(None)):
         result = authors_map
 
     # 筛选 + 序列化
-    from philosophers_db import NAME_ALIASES
+    from db import NAME_ALIASES
     _alias_to_canonical = dict(NAME_ALIASES)
     output = []
     for name, info in result.items():
@@ -2013,7 +2013,7 @@ async def get_stats():
                     if author_clean and "合集" not in author_clean and author_clean not in authors_set:
                         authors_set.add(author_clean)
     # 哲人数 = max(书籍作者, 哲学家库)
-    from philosophers_db import PHILOSOPHER_COUNT, PHILOSOPHERS
+    from db import PHILOSOPHER_COUNT, PHILOSOPHERS
     philosopher_count = max(len(authors_set), PHILOSOPHER_COUNT)
     philosopher_count = max(philosopher_count, len(authors_set | set(PHILOSOPHERS.keys())))
     # 统计流派

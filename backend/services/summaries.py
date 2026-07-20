@@ -104,7 +104,7 @@ def book_sort_key(book: dict) -> int:
     author = book.get("author", "")
     if "合集" in author or "概述" in author:
         return -99999
-    from philosophers_db import get_philosopher_info
+    from db import get_philosopher_info
     info = get_philosopher_info(author)
     if info and info.get("era"):
         import re

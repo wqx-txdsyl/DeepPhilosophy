@@ -28,7 +28,7 @@ async def get_stats():
                     author_clean = author_dir.replace("###合集&概述###", "合集&概述")
                     if author_clean and "合集" not in author_clean and author_clean not in authors_set:
                         authors_set.add(author_clean)
-    from philosophers_db import PHILOSOPHER_COUNT, PHILOSOPHERS
+    from db import PHILOSOPHER_COUNT, PHILOSOPHERS
     philosopher_count = max(len(authors_set), PHILOSOPHER_COUNT)
     philosopher_count = max(philosopher_count, len(authors_set | set(PHILOSOPHERS.keys())))
     school_names = set()

@@ -7,7 +7,7 @@ from pathlib import Path
 from datetime import datetime
 from loguru import logger
 import config
-from philosophers_db import get_philosopher_info
+from db import get_philosopher_info
 from services.summaries import load_summaries_cache, classify_book, book_sort_key
 
 _r2_client = None

@@ -133,24 +133,30 @@ DeepPhilosophy/
 │   │   ├── gene/                     # 博物馆素材
 │   │   └── icons/                    # PNG 图标
 │   └── package.json
-├── backend/                          # FastAPI 后端 + 数据工具
+├── backend/                          # FastAPI 后端
 │   ├── main.py                       # API 入口
-│   ├── auth.py / admin.py            # 认证 + 管理
-│   ├── philosophers_db.py            # 哲学家数据库
 │   ├── config.py                     # 配置
-│   ├── routes/                       # API 路由
-│   ├── modules/                      # RAG 模块
-│   ├── data/                         # 运行时数据
-│   │   ├── book_chapters/            # 章节数据源（git 追踪）
-│   │   ├── book_detail/              # 书籍详情源
-│   │   └── ...                       # 其他缓存数据
-│   ├── rebuild_spine.py              # EPUB → 章节 JSON
-│   ├── build_book_json.py            # EPUB → 结构化 JSON
-│   ├── build_philosopher_network.py  # 哲学家星丛网络生成
-│   ├── build_covers_manifest.py      # 封面提取 + 清单
-│   ├── gen_summaries.py              # AI 批量生成摘要标签
-│   ├── download_gutenberg.py         # Gutenberg 公版书下载
-│   └── build_pdf_json.py             # PDF OCR → JSON（EasyOCR）
+│   ├── auth.py                       # 认证
+│   ├── admin.py                      # 管理后台
+│   ├── db.py                         # 哲学家数据库
+│   ├── routes/                       # API 路由（health/text/auth/ai...）
+│   ├── services/                     # 业务逻辑（summaries/book_scanner）
+│   ├── modules/                      # RAG 模块（embedding/vector_store/llm...）
+│   ├── models/                       # 数据模型
+│   ├── tools/                        # 数据构建工具
+│   │   ├── rebuild_spine.py          # EPUB → 章节 JSON
+│   │   ├── build_book_json.py        # EPUB → 结构化 JSON
+│   │   ├── build_philosopher_network.py  # 哲学家星丛网络
+│   │   ├── build_covers_manifest.py  # 封面提取
+│   │   ├── gen_summaries.py          # AI 批量生成摘要标签
+│   │   ├── download_gutenberg.py     # Gutenberg 公版书下载
+│   │   └── sync_to_cloud.py          # 云端同步
+│   ├── tests/                        # 测试
+│   └── data/                         # 数据存储
+│       ├── book_chapters/            # 章节 JSON
+│       ├── book_detail/              # 书籍详情
+│       ├── book_images/              # 书内插图（OSS 同步）
+│       └── ...
 ├── scripts/                          # 维护脚本
 │   ├── add_author.py                 # 添加哲学家
 │   ├── add_book.py                   # 添加书籍
