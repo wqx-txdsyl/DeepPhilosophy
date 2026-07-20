@@ -48,11 +48,7 @@ function AuthorDetailPage() {
       window.open(author.wiki_url, '_blank');
       return;
     }
-    // 中文用户优先百度百科，回落 Wikipedia
-    const baikeUrl = `https://baike.baidu.com/item/${encodeURIComponent(authorName)}`;
-    const wikiUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(authorName)}`;
-    const isZh = navigator.language?.startsWith('zh');
-    window.open(isZh ? baikeUrl : wikiUrl, '_blank');
+    window.open(`https://en.wikipedia.org/wiki/${encodeURIComponent(authorName)}`, '_blank');
   };
 
   if (loading) return <div className="loading">加载中...</div>;
