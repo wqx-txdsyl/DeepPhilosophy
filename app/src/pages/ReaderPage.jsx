@@ -443,14 +443,19 @@ ${textContext}
   };
 
   useEffect(() => {
-    const type = searchParams.get('type') || fileType;
-    if (type === 'epub' || type === 'txt' || fileType === 'epub' || fileType === 'txt') {
-      setFileType(type || fileType || 'epub');
+    const type = searchParams.get('type') || '';
+    // URL type 优先（用户明确点击），fileType 仅作兜底
+    if (type === 'epub' || type === 'txt') {
+      setFileType(type);
       loadTextBook();
-    } else if (type === 'pdf' || fileType === 'pdf') {
+    } else if (type === 'pdf') {
       loadBook();
-    } else if (!loading && bookId) {
-      // 未知类型：先试 EPUB（本地静态文件秒开），失败再走 loadBook
+    } else if (fileType === 'epub' || fileType === 'txt') {
+      loadTextBook();
+    } else if (fileType === 'pdf') {
+      loadBook();
+    } else {
+      // 未知 → 默认 EPUB
       setFileType('epub');
       loadTextBook();
     }
