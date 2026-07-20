@@ -9,7 +9,7 @@ OUT_PATH = os.path.join(BASE, "..", "app", "public", "philosopher_network.json")
 
 # ─── API 配置 ───
 def _load_env():
-    env_path = os.path.join(BASE, ".env")
+    env_path = os.path.join(os.path.dirname(BASE), ".env")
     if os.path.exists(env_path):
         for line in open(env_path, encoding="utf-8"):
             line = line.strip()
