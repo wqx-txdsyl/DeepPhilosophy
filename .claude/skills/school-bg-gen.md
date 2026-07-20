@@ -1,3 +1,7 @@
+---
+name: school-bg-gen
+description: School Background Generator（入口 -> agnes-image.md）
+---
 # School Background Generator（入口 -> agnes-image.md）
 
 > 此文件为瘦入口，共享逻辑见 `agnes-image.md`。

@@ -1,3 +1,7 @@
+---
+name: add-book
+description: Add Book
+---
 # Add Book
 
 ## 核心执行协议（覆盖默认行为）

@@ -1,3 +1,7 @@
+---
+name: local-check
+description: Local Check
+---
 # Local Check
 
 ## 核心执行协议

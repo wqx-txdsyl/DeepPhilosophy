@@ -1,3 +1,7 @@
+---
+name: post-push
+description: Post-Push Cleanup
+---
 # Post-Push Cleanup
 
 ## 核心执行协议（覆盖默认行为）

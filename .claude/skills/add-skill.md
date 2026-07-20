@@ -1,3 +1,7 @@
+---
+name: add-skill
+description: Add Skill — 创建新 Skill 的 Skill（元 Skill）
+---
 # Add Skill — 创建新 Skill 的 Skill（元 Skill）
 
 ## 核心执行协议（覆盖默认行为）

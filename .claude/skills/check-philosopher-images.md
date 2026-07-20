@@ -1,3 +1,7 @@
+---
+name: check-philosopher-images
+description: Check Philosopher Images — 全量哲人图片审计+修复
+---
 # Check Philosopher Images — 全量哲人图片审计+修复
 
 ## 核心执行协议（覆盖默认行为）

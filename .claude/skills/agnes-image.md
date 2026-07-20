@@ -1,3 +1,7 @@
+---
+name: agnes-image
+description: Agnes AI Image（共享：哲人肖像 + 流派背景图）
+---
 # Agnes AI Image（共享：哲人肖像 + 流派背景图）
 
 ## 核心执行协议（覆盖默认行为）

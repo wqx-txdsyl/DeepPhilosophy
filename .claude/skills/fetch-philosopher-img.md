@@ -1,3 +1,7 @@
+---
+name: fetch-philosopher-img
+description: Fetch Philosopher Image
+---
 # Fetch Philosopher Image
 
 ## 核心执行协议（覆盖默认行为）

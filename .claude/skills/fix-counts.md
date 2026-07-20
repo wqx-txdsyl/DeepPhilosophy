@@ -1,3 +1,7 @@
+---
+name: fix-counts
+description: Fix Counts
+---
 # Fix Counts
 
 ## 核心执行协议（覆盖默认行为）

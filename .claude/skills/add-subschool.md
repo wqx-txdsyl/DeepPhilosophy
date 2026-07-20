@@ -1,3 +1,7 @@
+---
+name: add-subschool
+description: Add Sub-School
+---
 # Add Sub-School
 
 ## 核心执行协议（覆盖默认行为）
