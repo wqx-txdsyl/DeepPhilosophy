@@ -340,7 +340,11 @@ ${textContext}
   const loadBook = async () => {
     setLoading(true); setError(null);
     const b = await getBookById(bookId);
-    if (!b) { setError('书籍未找到'); setLoading(false); return; }
+    if (!b) {
+      if (!textReady) setError('书籍未找到');
+      setLoading(false);
+      return;
+    }
     setBook(b);
     setFileType(b.file_type);
     const url = `${getApiBase()}/api/books/${bookId}/file`;
