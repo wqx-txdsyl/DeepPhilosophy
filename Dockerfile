@@ -41,7 +41,6 @@ COPY backend/data/philosophers.json /app/data/
 COPY backend/data/name_aliases.json /app/data/
 COPY backend/data/tag_normalization.json /app/data/
 COPY backend/data/book_chapters/ /app/data/book_chapters/
-COPY backend/data/book_images/ /app/data/book_images/
 
 # 复制前端构建产物 — 排除大型图片目录（图片走 GitHub Pages CDN，不占 Render 带宽）
 RUN mkdir -p ./static
