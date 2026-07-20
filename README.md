@@ -86,7 +86,7 @@ cd app && npm run build   # 产物在 app/dist/
 | 哲学掠影 | `/genealogy` | 六大时代 111 流派谱系，东方/西方/世界视角 |
 | 流派详情 | `/school/:name` | 八面内容：Hero/概述/星丛/时间轴/辞海/金句/著作/结语 |
 | 哲人 | `/authors` | 743 位哲学家，AI 评分排序，肖像卡片网格，地区/流派/时代筛选 |
-| 书籍 | `/books` | 170 本 EPUB 哲学经典，结构化 JSON 章节，jsDelivr CDN 加载 |
+| 书籍 | `/books` | 191 本（107 EPUB 可读 + 84 TXT 待收录），结构化 JSON 章节，jsDelivr CDN 加载 |
 | 问答 | `/qa` | DeepSeek AI 流式哲学对话 |
 | 游戏 | `/games` | 答案之书、PHTI 人格测试、沙雕版 |
 | 我的 | `/profile` | 登录/注册，云端同步阅读进度和对话历史 |
@@ -115,33 +115,51 @@ cd app && npm run build   # 产物在 app/dist/
 
 ```
 DeepPhilosophy/
-├── app/                          # React 前端 (Vite)
+├── app/                              # React 前端 (Vite)
 │   ├── src/
-│   │   ├── pages/                # 21 个页面组件
-│   │   ├── components/           # Icon, WorldMap, Timeline, school/ 等
-│   │   ├── data/                 # 数据层 + 缓存 + 金句/PHTI 题库
-│   │   └── utils/                # SEO, API 工具
+│   │   ├── pages/                    # 页面组件（Home,Books,Authors,Reader等）
+│   │   ├── components/               # Icon, WorldMap, ChapterReader 等
+│   │   ├── data/                     # 数据层 + 缓存 + 题库
+│   │   └── utils/                    # SEO, API 工具
 │   ├── public/
-│   │   ├── philosopher/          # 759 张哲人 WebP 头像
-│   │   ├── schools/              # 流派背景 WebP + data/ JSON
-│   │   ├── gene/                 # 博物馆素材 WebP
-│   │   └── icons/                # PNG 图标（仅此保留 PNG）
+│   │   ├── books.json                # 书籍目录（60KB，192本）
+│   │   ├── philosophers.json         # 哲学家数据（743位）
+│   │   ├── philosopher_network.json  # 思想星丛关系网络
+│   │   ├── book_detail/              # 每本书独立 JSON（摘要/标签）
+│   │   ├── book_chapters/            # 章节 JSON（CDN 加载）
+│   │   ├── covers/ + covers.json     # 书籍封面 WebP
+│   │   ├── philosopher/              # 哲学家肖像 WebP
+│   │   ├── schools/                  # 流派背景 WebP + data/
+│   │   ├── gene/                     # 博物馆素材
+│   │   └── icons/                    # PNG 图标
 │   └── package.json
-├── backend/                      # FastAPI 后端
-│   ├── main.py                   # API 入口 + 路由
-│   ├── auth.py                   # 用户认证
-│   ├── philosophers_db.py        # 哲学家数据库
-│   ├── modules/                  # RAG 模块
-│   └── data/                     # philosophers.json 等
-├── scripts/                      # 数据维护脚本
-│   ├── add_author.py             # 添加哲学家
-│   ├── add_school.py             # 添加流派
-│   ├── fetch_philosopher_img.py  # 爬取头像
-│   ├── gen_portrait.py           # AI 生成肖像
-│   └── ...
-├── .claude/skills/               # 13 个自动化 Skill
-├── .github/workflows/            # CI/CD
-├── Dockerfile                    # 多阶段构建（Node + Python）
+├── backend/                          # FastAPI 后端 + 数据工具
+│   ├── main.py                       # API 入口
+│   ├── auth.py / admin.py            # 认证 + 管理
+│   ├── philosophers_db.py            # 哲学家数据库
+│   ├── config.py                     # 配置
+│   ├── routes/                       # API 路由
+│   ├── modules/                      # RAG 模块
+│   ├── data/                         # 运行时数据
+│   │   ├── book_chapters/            # 章节数据源（git 追踪）
+│   │   ├── book_detail/              # 书籍详情源
+│   │   └── ...                       # 其他缓存数据
+│   ├── rebuild_spine.py              # EPUB → 章节 JSON
+│   ├── build_book_json.py            # EPUB → 结构化 JSON
+│   ├── build_philosopher_network.py  # 哲学家星丛网络生成
+│   ├── build_covers_manifest.py      # 封面提取 + 清单
+│   ├── gen_summaries.py              # AI 批量生成摘要标签
+│   ├── download_gutenberg.py         # Gutenberg 公版书下载
+│   └── build_pdf_json.py             # PDF OCR → JSON（EasyOCR）
+├── scripts/                          # 维护脚本
+│   ├── add_author.py                 # 添加哲学家
+│   ├── add_book.py                   # 添加书籍
+│   ├── add_school.py                 # 添加流派
+│   ├── fetch_philosopher_img.py       # 爬取哲学家头像
+│   └── gen_portrait.py               # AI 生成肖像
+├── .claude/skills/                   # 自动化 Skill
+├── .github/workflows/                # CI/CD
+├── Dockerfile                        # Render 部署
 └── render.yaml
 ```
 
