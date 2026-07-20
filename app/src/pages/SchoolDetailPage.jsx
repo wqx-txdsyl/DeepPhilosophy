@@ -233,14 +233,14 @@ const SCHOOL_MAP = {
   '解构主义':{_json:'school_解构主义.json',bg:'url(/schools/解构主义.webp)'},
   '黑人哲学':{_json:'school_黑人哲学.json',bg:'url(/schools/黑人哲学.webp)'},
   '哲学入词':{_json:'school_哲学入词.json',bg:'url(/schools/哲学入词.webp)'},
-  '贝叶斯主义':{_json:'school_贝叶斯主义.json',bg:'url(/schools/贝叶斯主义_bayes.webp)'},
-  '人工智能哲学':{_json:'school_人工智能哲学.json',bg:'url(/schools/人工智能哲学_v2.webp)'},
-  '萨满哲学':{_json:'school_萨满哲学.json',bg:'url(/schools/shaman.webp)'},
-  '北极原住民哲学':{_json:'school_北极原住民哲学.json',bg:'url(/schools/arctic.webp)'},
-  '南岛哲学':{_json:'school_南岛哲学.json',bg:'url(/schools/austronesian.webp)'},
-  '高加索哲学':{_json:'school_高加索哲学.json',bg:'url(/schools/caucasus.webp)'},
-  '高加索-草原哲学':{_json:'school_高加索草原哲学.json',bg:'url(/schools/caucasus-steppe.webp)'},
-  '太平洋原住民哲学':{_json:'school_太平洋原住民哲学.json',bg:'url(/schools/pacific.webp)'},
+  '贝叶斯主义':{_json:'school_贝叶斯主义.json',bg:'url(/schools/贝叶斯主义.webp)'},
+  '人工智能哲学':{_json:'school_人工智能哲学.json',bg:'url(/schools/人工智能哲学.webp)'},
+  '萨满哲学':{_json:'school_萨满哲学.json',bg:'url(/schools/萨满哲学.webp)'},
+  '北极原住民哲学':{_json:'school_北极原住民哲学.json',bg:'url(/schools/北极原住民哲学.webp)'},
+  '南岛哲学':{_json:'school_南岛哲学.json',bg:'url(/schools/南岛哲学.webp)'},
+  '高加索哲学':{_json:'school_高加索哲学.json',bg:'url(/schools/高加索哲学.webp)'},
+  '高加索-草原哲学':{_json:'school_高加索草原哲学.json',bg:'url(/schools/高加索-草原哲学.webp)'},
+  '太平洋原住民哲学':{_json:'school_太平洋原住民哲学.json',bg:'url(/schools/太平洋原住民哲学.webp)'},
 };
 
 // ─── 动画包裹 ───
