@@ -96,7 +96,11 @@ function ReaderPage() {
     }
   }, [aiHistory]);
 
-  useEffect(() => { loadBook(); }, [bookId]);
+  // PDF 才走 loadBook（EPUB/TXT 由下方 loadTextBook 处理）
+  useEffect(() => {
+    const type = searchParams.get('type') || '';
+    if (type === 'pdf') loadBook();
+  }, [bookId]);
 
   // Load saved notes on book change — cloud first, localStorage fallback
   useEffect(() => {
@@ -340,11 +344,7 @@ ${textContext}
   const loadBook = async () => {
     setLoading(true); setError(null);
     const b = await getBookById(bookId);
-    if (!b) {
-      if (!textReady) setError('书籍未找到');
-      setLoading(false);
-      return;
-    }
+    if (!b) { setError('书籍未找到'); setLoading(false); return; }
     setBook(b);
     setFileType(b.file_type);
     const url = `${getApiBase()}/api/books/${bookId}/file`;
