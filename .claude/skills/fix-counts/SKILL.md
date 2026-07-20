@@ -1,33 +1,32 @@
 ---
 name: fix-counts
-description: Fix Counts
+description: 修正统计数据——同步 HomePage + README + 各页面计数
 ---
-# Fix Counts
 
-## 核心执行协议（覆盖默认行为）
-- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
-- **遇缺失处理**：**禁止终止**。补全失败重试 2 次，仍失败标记 `[SKIPPED:reason]`。
-- **变量替换规则**：无（自动扫描 SCHOOL_MAP）
-- **标记格式**：`[SKIPPED:reason]` / `[WARN:reason]`
+## 检查项
 
-## 前置依赖
-- `scripts/add_school.py（如存在）`（含 `--update-counts-only` 模式）
+### 1. 实际数据统计
+```bash
+python -c "
+import json, os
+books=json.load(open('app/public/books.json','r',encoding='utf-8'))
+philo=json.load(open('app/public/philosophers.json','r',encoding='utf-8'))
+epubs=sum(1 for b in books if b.get('file_type')=='epub')
+txts=sum(1 for b in books if b.get('file_type')=='txt')
+east=sum(1 for p in philo.values() if p.get('region')=='东方')
+west=sum(1 for p in philo.values() if p.get('region')=='西方')
+world=sum(1 for p in philo.values() if p.get('region')=='世界')
+print(f'books:{len(books)}(EPUB:{epubs}+TXT:{txts}) philosophers:{len(philo)}(东{east}/西{west}/世{world})')
+"
+```
 
-## 状态初始化
-> TodoWrite: 步骤1扫描 步骤2更新 步骤3验证
+### 2. 更新 README.md 数据
+将步骤1的结果更新到 README 的统计数据
 
-## 原子步骤
+### 3. 更新 HomePage 默认值
+更新 `app/src/pages/HomePage.jsx` 中 `useState` 的默认数值
 
-### 步骤 1：扫描 SCHOOL_MAP
-- **动作**：`cd scripts && python add_school.py --update-counts-only`
-- **门禁验证（Check）**：检查 HomePage/Settings/Genealogy 计数一致。
-
-### 步骤 2：验证
-- **动作**：`python -c "import re; [print(f'{f}: OK') for f in ['HomePage','GenealogyPage','SettingsPage'] if '个流派' in open(f'app/src/pages/{f}.jsx',encoding='utf-8').read()]"`
-
-### 步骤 3：构建
-- **动作**：`cd app && npm run build`
-- **门禁验证（Check）**：`test -f app/dist/index.html && echo "BUILD OK"`
-
-## 执行报告（必须输出）
-- 成功项：X | 补全项：Y | 失败跳过项：Z
+### 4. 验证
+```bash
+cd app && npm run build
+```

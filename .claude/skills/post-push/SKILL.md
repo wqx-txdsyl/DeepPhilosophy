@@ -1,36 +1,31 @@
 ---
 name: post-push
-description: Post-Push Cleanup
+description: 推送后检查——数据计数→封面完整性→章节同步→books.json有效性
 ---
-# Post-Push Cleanup
 
-## 核心执行协议（覆盖默认行为）
-- **模式**：顺序执行，每步带"检查-补全-验证"闭环。
-- **遇缺失处理**：**禁止终止**。补全失败重试 2 次，仍失败标记 `[SKIPPED:reason]`。
-- **变量替换规则**：无
-- **标记格式**：`[SKIPPED:reason]`
+## 检查项
 
-## 前置依赖
-- Python 3、Git
-
-## 状态初始化
-> TodoWrite: 步骤1数据计数 步骤2临时文件 步骤3Git提交
-
-## 原子步骤
-
-### 步骤 1：数据计数一致性
-- **动作**：
+### 1. 数据计数
 ```bash
-python -c "import json,os; p=json.load(open('app/public/philosophers.json',encoding='utf-8')); imgs=len([f for f in os.listdir('app/public/philosopher') if f.endswith('.webp')]); print(f'Philosophers:{len(p)} Images:{imgs}')"
+python -c "import json;b=json.load(open('app/public/books.json','r',encoding='utf-8'));p=json.load(open('app/public/philosophers.json','r',encoding='utf-8'));print(f'books:{len(b)} philosophers:{len(p)}')"
 ```
-- **门禁验证（Check）**：哲人数（743）与图片数一致。
 
-### 步骤 2：临时文件清理
-- **动作**：`cd scripts && ls _*.txt _*.log 2>/dev/null | wc -l`
-- **补全分支（Remediate）**：列出供审查，手动决定删除。非阻塞。
+### 2. 封面完整性
+```bash
+python -c "import json,os;c=json.load(open('app/public/covers.json','r',encoding='utf-8'));missing=[bid for bid,url in c.items() if not os.path.exists('app/public/'+url.lstrip('/'))];print(f'covers_missing:{len(missing)}')"
+```
 
-### 步骤 3：Git 提交
-- **动作**：`git status --short | wc -l` -> 确认后手动 `git commit && git push`
+### 3. 哲学家头像
+```bash
+python -c "import os;p=json.load(open('app/public/philosophers.json','r',encoding='utf-8'));imgs=set(os.path.splitext(f)[0] for f in os.listdir('app/public/philosopher') if f.endswith('.webp'));m=[n for n in p if n.replace('/','-').replace(':','：') not in imgs];print(f'missing_imgs:{len(m)}')"
+```
 
-## 执行报告（必须输出）
-- 成功项：X | 补全项：Y | 失败跳过项：Z
+### 4. books.json 与 book_detail 一致性
+```bash
+python -c "import json,os;b=json.load(open('app/public/books.json','r',encoding='utf-8'));details=set(f.replace('.json','') for f in os.listdir('app/public/book_detail') if f.endswith('.json'));orphans=[x['id'] for x in b if x['id'] not in details];print(f'orphan_details:{len(orphans)}')"
+```
+
+### 5. 章节数据存在性
+```bash
+python -c "import os;chapters=os.listdir('backend/data/book_chapters');print(f'chapter_dirs:{len(chapters)}')"
+```
