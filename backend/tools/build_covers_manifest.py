@@ -5,7 +5,7 @@
 """
 import os, json, shutil
 
-BASE = os.path.dirname(__file__)
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DETAIL_DIR = os.path.join(BASE, "..", "app", "public", "book_detail")
 IMG_SRC_DIR = os.path.join(BASE, "data", "book_images")
 COVERS_OUT_DIR = os.path.join(BASE, "..", "app", "public", "covers")

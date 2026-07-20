@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import KNOWLEDGE_DIR as LOCAL_BOOKS_DIR
 
 API = "https://deepphilosophy.onrender.com"
-VECTOR_SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "vectordb")
+VECTOR_SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "vectordb")
 VECTOR_DST = "/tmp/deephilosophy_vectordb"  # temp dir for zipping
 
 print("=" * 60)

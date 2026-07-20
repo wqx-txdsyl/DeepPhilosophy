@@ -10,8 +10,8 @@ from pathlib import Path
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup  # pip install beautifulsoup4
 
-BOOKS_DIR = "F:/philosophy" if os.path.exists("F:/philosophy") else os.path.join(os.path.dirname(__file__), "data", "books")
-OUT_DIR = os.path.join(os.path.dirname(__file__), "data", "book_json")
+BOOKS_DIR = "F:/philosophy" if os.path.exists("F:/philosophy") else os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "books")
+OUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "book_json")
 CHARS_PER_PAGE = 1200  # 标准阅读页
 FORCE = "--force" in sys.argv
 
@@ -22,7 +22,7 @@ def is_image(name):
     return Path(name).suffix.lower() in IMG_EXTS
 
 # 图片不嵌入 base64，提取为 WebP（更小更快）
-EXTRACTED_IMG_DIR = os.path.join(os.path.dirname(__file__), "data", "book_images")
+EXTRACTED_IMG_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "book_images")
 try:
     from PIL import Image
     HAS_PIL = True

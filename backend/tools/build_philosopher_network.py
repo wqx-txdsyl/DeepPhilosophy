@@ -3,7 +3,7 @@ import json, os, sys, io, time, urllib.request
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
-BASE = os.path.dirname(__file__)
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PHILO_PATH = os.path.join(BASE, "..", "app", "public", "philosophers.json")
 OUT_PATH = os.path.join(BASE, "..", "app", "public", "philosopher_network.json")
 

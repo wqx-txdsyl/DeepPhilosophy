@@ -8,8 +8,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 API = "https://deepphilosophy.onrender.com"
 BOOKS_DIR = os.getenv("PHILOSOPHY_BOOKS_DIR", "F:/philosophy")
-VECTOR_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "vectordb")
-EXTRACTED_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "extracted")
+VECTOR_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "vectordb")
+EXTRACTED_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "extracted")
 
 print("=" * 60)
 print("Build Knowledge Base Locally + Upload to Render")
@@ -23,7 +23,7 @@ for d in [VECTOR_DIR, EXTRACTED_DIR]:
 # Override config paths to local dirs (matching Render's path structure)
 import config
 config.KNOWLEDGE_DIR = "/app/data/books"
-config.CHROMA_PERSIST_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "vectordb")
+config.CHROMA_PERSIST_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "vectordb")
 config.CHROMA_COLLECTION_NAME = "deephilosophy_knowledge"  # Match Render's config
 
 from modules.document_loader import DocumentLoader
