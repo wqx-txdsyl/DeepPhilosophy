@@ -11,7 +11,7 @@ description: Icon Generator
 - **标记格式**：`[SKIPPED:reason]`
 
 ## 前置依赖
-- `scripts/gen_icon_from_emoji.py`、Agnes API Key、Pillow
+- `N/A（已删除，改用 Icon 组件）`、Agnes API Key、Pillow
 
 ## 状态初始化
 > TodoWrite: 步骤1生成 步骤2验证

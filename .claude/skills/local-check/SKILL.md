@@ -29,7 +29,7 @@ description: Local Check
 - **动作**：python -c "import os,re; c=open("app/src/pages/SchoolDetailPage.jsx",encoding="utf-8").read(); refs=set(re.findall(r"bg:'url\(/schools/([^)]+)\)",c)); imgs=set(f for f in os.listdir("app/public/schools") if f.endswith(".jpg")); m=refs-imgs; print(f"[ISSUE:{len(m)}_MISSING_BG]" if m else "ALL OK")"
 
 ### 步骤 4：死代码
-- **动作**：test -f app/src/pages/_new_schools_data.jsx && echo [ISSUE:DEAD_FILE]; ls app/public/schools/school_*.json 2>/dev/null && echo [ISSUE:STALE_JSONS]
+- **动作**：test -f N/A（已删除） && echo [ISSUE:DEAD_FILE]; ls app/public/schools/data/school_*.json 2>/dev/null && echo [ISSUE:STALE_JSONS]
 
 ### 步骤 5：API 响应
 - **动作**：cd backend && python main.py & sleep 4; curl -s http://localhost:8000/api/health | grep -q ok && echo API_OK || echo [ISSUE:API_DOWN]; kill %1 2>/dev/null

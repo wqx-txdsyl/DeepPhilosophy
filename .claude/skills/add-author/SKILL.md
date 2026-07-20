@@ -11,8 +11,8 @@ description: Add Author
 - **标记格式**：所有跳过/警告统一使用 `[SKIPPED:reason]` 或 `[WARN:reason]`，终局自检必须兼容这些标记。
 
 ## 前置依赖
-- `scripts/add_author.py` `scripts/_normalize_tags.py` `scripts/fetch_philosopher_img.py` `scripts/gen_portrait.py` `scripts/_lib.py`
-- DeepSeek API Key (`scripts/api_keys.json`)、OpenCV (`cv2`)、Pillow (`PIL`)
+- `scripts/add_author.py` `N/A（已删除，标签规范化已内联）` `scripts/fetch_philosopher_img.py` `scripts/gen_portrait.py` `scripts/_lib.py`
+- DeepSeek API Key (`根目录 .env`)、OpenCV (`cv2`)、Pillow (`PIL`)
 
 ## 状态初始化
 > 执行前必须先调用 `TodoWrite`，勾选状态实时更新：
@@ -65,7 +65,7 @@ print(f'FINAL: {final} chars')
 
 ### 步骤 5：爬取头像
 - **动作**：`cd scripts && python fetch_philosopher_img.py "ARG_NAME"`
-- **门禁验证（Check）**：`python -c "import os; p='app/public/philosopher/ARG_SAFE.webp'; j='app/public/philosopher/ARG_SAFE.jpg'; print(f'WEBP OK: {os.path.getsize(p)//1024}KB' if os.path.exists(p) else (f'JPG OK' if os.path.exists(j) else '[WARN:NO_IMG]'))"`
+- **门禁验证（Check）**：`python -c "import os; p='app/public/philosopher/ARG_SAFE.webp'; j='app/public/philosopher/ARG_SAFE.webp'; print(f'WEBP OK: {os.path.getsize(p)//1024}KB' if os.path.exists(p) else (f'JPG OK' if os.path.exists(j) else '[WARN:NO_IMG]'))"`
 - **补全分支（Remediate）**：`cd scripts && python fetch_philosopher_img.py "ARG_NAME" 2>/dev/null || python gen_portrait.py "ARG_NAME"`（重试 2 次）。成功后转 WebP 删原文件。
 
 ### 步骤 6：人脸检测
@@ -76,7 +76,7 @@ print(f'FINAL: {final} chars')
 ```bash
 python -c "
 from PIL import Image; import os
-p='app/public/philosopher/ARG_SAFE.jpg'
+p='app/public/philosopher/ARG_SAFE.webp'
 if os.path.exists(p):
     img=Image.open(p).convert('RGB')
     webp=p.replace('.jpg','.webp').replace('.png','.webp')

@@ -55,7 +55,7 @@ save_json(SUMMARIES_FILE, summaries)
 print(f'INLINE OK: {len(data[\"tags\"])} tags, {len(data[\"summary\"])} chars')
 "
 ```
-- **门禁验证（Check）**：`python -c "import json; d=json.load(open('backend/data/book_summaries.json')); k='ARG_TITLE||ARG_AUTHOR'; assert k in d; print('SAVED')"`
+- **门禁验证（Check）**：`python -c "import json; d=json.load(open('backend/data/book_summaries.json（如存在）')); k='ARG_TITLE||ARG_AUTHOR'; assert k in d; print('SAVED')"`
 
 ### 步骤 3：摘要循环校验（>=300字）
 - **补全分支（Remediate）**：若 `len(summary) < 300`，DeepSeek 扩充（参考 add-author.md 步骤 2 补全分支结构），最多 2 次：
@@ -88,7 +88,7 @@ print(f'FINAL: {len(s[key][\"summary\"])} chars')
 - **失败上限**：2 次后 -> `[WARN:SHORT_SUMMARY]`
 
 ### 步骤 4：写入验证
-- **动作**：`python -c "import json; d=json.load(open('backend/data/book_summaries.json')); k='ARG_TITLE||ARG_AUTHOR'; e=d[k]; assert len(e.get('tags',[]))>=2; assert len(e.get('summary',''))>=300; print('SAVED OK')"`
+- **动作**：`python -c "import json; d=json.load(open('backend/data/book_summaries.json（如存在）')); k='ARG_TITLE||ARG_AUTHOR'; e=d[k]; assert len(e.get('tags',[]))>=2; assert len(e.get('summary',''))>=300; print('SAVED OK')"`
 
 ## 执行报告（必须输出）
 - 成功项：X | 补全项：Y | 失败跳过项：Z（格式 `[SKIPPED:reason]`）

@@ -11,7 +11,7 @@ description: Fix Counts
 - **标记格式**：`[SKIPPED:reason]` / `[WARN:reason]`
 
 ## 前置依赖
-- `scripts/add_school.py`（含 `--update-counts-only` 模式）
+- `scripts/add_school.py（如存在）`（含 `--update-counts-only` 模式）
 
 ## 状态初始化
 > TodoWrite: 步骤1扫描 步骤2更新 步骤3验证

@@ -11,7 +11,7 @@ description: Agnes AI Image（共享：哲人肖像 + 流派背景图）
 - **标记格式**：`[SKIPPED:reason]` / `[WARN:reason]`
 
 ## 前置依赖
-- Agnes API Key（`scripts/api_keys.json` 的 `agnes` 字段，或 `scripts/gen_school_bg.py` 中硬编码）
+- Agnes API Key（`根目录 .env` 的 `agnes` 字段，或 `scripts/gen_school_bg.py` 中硬编码）
 - `scripts/gen_portrait.py`（哲人肖像入口）
 - `scripts/gen_school_bg.py`（流派背景图入口）
 - `scripts/_lib.py`、Pillow

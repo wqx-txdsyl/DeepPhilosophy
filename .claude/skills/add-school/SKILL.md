@@ -24,7 +24,7 @@ description: Add School
 
 ## 前置依赖
 - `scripts/add_school.py`
-- DeepSeek API Key、Agnes API Key (`scripts/api_keys.json`)
+- DeepSeek API Key、Agnes API Key (`根目录 .env`)
 
 ## 状态初始化
 > 执行前必须先调用 `TodoWrite`：
