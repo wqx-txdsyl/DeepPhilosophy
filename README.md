@@ -16,13 +16,15 @@
 ## 架构
 
 ```
-浏览器 ──→ Cloudflare Pages (前端) ── 全球 330 节点 CDN ── HTML/JS/CSS/图片
-                │
-                └── API 请求 ──→ Render (后端) ── FastAPI + SQLite + DeepSeek
+浏览器 ──→ Cloudflare Pages（前端静态）── jsDelivr CDN（章节 JSON）
+          │                              └── OSS CDN（书内图片）
+          └── API 请求 ──→ Render ── FastAPI（仅 AI/认证/笔记）
 ```
 
-- **Cloudflare Pages**：前端静态资源，全球 CDN，推送即部署
-- **Render**：纯 API 服务器（`/api/*`），仅传 JSON 数据
+- **Cloudflare Pages**：前端 HTML/JS/CSS/封面/肖像，推送即部署
+- **jsDelivr CDN**：章节 JSON（免费全球加速，读取 GitHub master）
+- **OSS CDN**：书内插图（阿里云 5814 张 WebP）
+- **Render**：仅处理 AI 对话、用户认证、笔记同步
 
 ---
 
@@ -50,7 +52,7 @@ cd DeepPhilosophy
 cd app && npm install && npm run dev
 
 # 后端（新终端，localhost:8000）
-cd backend && pip install -r requirements.txt
+pip install -r requirements.txt
 python main.py
 ```
 
@@ -108,6 +110,7 @@ cd app && npm run build   # 产物在 app/dist/
 | 后端 | FastAPI, SQLite, ChromaDB |
 | AI | DeepSeek API（流式对话） |
 | 部署 | Cloudflare Pages + Render (Docker) |
+| CDN | jsDelivr（章节 JSON）+ 阿里云 OSS（书内图） |
 
 ---
 
@@ -115,58 +118,69 @@ cd app && npm run build   # 产物在 app/dist/
 
 ```
 DeepPhilosophy/
-├── app/                              # React 前端 (Vite)
+├── .gitignore
+├── .env                    # 全局环境变量（API keys）
+├── .dockerignore
+├── Dockerfile              # Render 部署
+├── requirements.txt        # Python 依赖
+├── render.yaml
+├── vercel.json
+├── README.md
+├── REMOVED_PDFS.txt        # 待替换 PDF 清单（123本）
+├── .claude/                # Claude Code 配置
+│   ├── CLAUDE.md           # 项目规范（AI 严格执行）
+│   ├── settings.local.json
+│   └── skills/             # 15 个自动化 Skill
+├── app/                    # React 前端 (Vite)
 │   ├── src/
-│   │   ├── pages/                    # 页面组件（Home,Books,Authors,Reader等）
-│   │   ├── components/               # Icon, WorldMap, ChapterReader 等
-│   │   ├── data/                     # 数据层 + 缓存 + 题库
-│   │   └── utils/                    # SEO, API 工具
-│   ├── public/
-│   │   ├── books.json                # 书籍目录（60KB，191本）
-│   │   ├── philosophers.json         # 哲学家数据（743位）
-│   │   ├── philosopher_network.json  # 思想星丛关系网络
-│   │   ├── book_detail/              # 每本书独立 JSON（摘要/标签）
-│   │   ├── book_chapters/            # 章节 JSON（CDN 加载）
-│   │   ├── covers/ + covers.json     # 书籍封面 WebP
-│   │   ├── philosopher/              # 哲学家肖像 WebP
-│   │   ├── schools/                  # 流派背景 WebP + data/
-│   │   ├── gene/                     # 博物馆素材
-│   │   └── icons/                    # PNG 图标
+│   │   ├── pages/          # 22 个页面组件
+│   │   ├── components/     # 22 个 UI 组件
+│   │   ├── data/           # 数据层（缓存/题库/封面查找）
+│   │   ├── utils/          # API/SEO 工具
+│   │   └── contexts/       # Toast 通知系统
+│   ├── public/             # 静态资源（切勿改路径！）
+│   │   ├── books.json      # 书籍目录（60KB，191本）
+│   │   ├── philosophers.json  # 哲学家（743位，AI评分排序）
+│   │   ├── philosopher_network.json  # 星丛关系网络
+│   │   ├── book_detail/    # 191 个独立书籍详情 JSON
+│   │   ├── covers/         # 99 张书籍封面 WebP
+│   │   ├── philosopher/    # 758 张肖像 + data/ 详情
+│   │   ├── schools/        # 111 张流派图 + data/ JSON
+│   │   ├── gene/           # 13 张谱系素材
+│   │   └── icons/          # 86 个 PNG 图标
+│   ├── electron/           # Electron 桌面端入口
+│   ├── vite.config.js
 │   └── package.json
-├── backend/                          # FastAPI 后端
-│   ├── main.py                       # API 入口
-│   ├── config.py                     # 配置
-│   ├── auth.py                       # 认证
-│   ├── admin.py                      # 管理后台
-│   ├── db.py                         # 哲学家数据库
-│   ├── routes/                       # API 路由（health/text/auth/ai...）
-│   ├── services/                     # 业务逻辑（summaries/book_scanner）
-│   ├── modules/                      # RAG 模块（embedding/vector_store/llm...）
-│   ├── models/                       # 数据模型
-│   ├── tools/                        # 数据构建工具
-│   │   ├── rebuild_spine.py          # EPUB → 章节 JSON
-│   │   ├── build_book_json.py        # EPUB → 结构化 JSON
+├── backend/                # FastAPI + 数据工具
+│   ├── main.py             # API 入口
+│   ├── config.py           # 配置
+│   ├── auth.py             # 认证 + OSS 同步
+│   ├── admin.py            # 管理后台
+│   ├── db.py               # 哲学家数据库
+│   ├── routes/             # 10 个 API 路由
+│   ├── services/           # 3 个业务模块
+│   ├── modules/            # 7 个 RAG 模块
+│   ├── models/             # Pydantic 请求模型
+│   ├── tools/              # 11 个数据构建脚本
+│   │   ├── rebuild_spine.py           # EPUB → 章节 JSON
+│   │   ├── build_book_json.py         # EPUB → 结构化 JSON
 │   │   ├── build_philosopher_network.py  # 哲学家星丛网络
-│   │   ├── build_covers_manifest.py  # 封面提取
-│   │   ├── gen_summaries.py          # AI 批量生成摘要标签
-│   │   ├── download_gutenberg.py     # Gutenberg 公版书下载
-│   │   └── sync_to_cloud.py          # 云端同步
-│   ├── tests/                        # 测试
-│   └── data/                         # 数据存储
-│       ├── book_chapters/            # 章节 JSON
-│       ├── book_detail/              # 书籍详情
-│       ├── book_images/              # 书内插图（OSS 同步）
+│   │   ├── build_covers_manifest.py   # 封面提取
+│   │   ├── gen_summaries.py           # AI 批量生成摘要
+│   │   ├── download_gutenberg.py      # Gutenberg 下载
+│   │   └── sync_to_cloud.py           # 云端数据同步
+│   ├── tests/              # 3 个测试文件
+│   └── data/               # 运行时数据
+│       ├── book_chapters/  # 章节 JSON（git 追踪，CDN 加载）
+│       ├── book_images/    # 书内插图（5814 张，OSS 同步）
 │       └── ...
-├── scripts/                          # 维护脚本
-│   ├── add_author.py                 # 添加哲学家
-│   ├── add_book.py                   # 添加书籍
-│   ├── add_school.py                 # 添加流派
-│   ├── fetch_philosopher_img.py       # 爬取哲学家头像
-│   └── gen_portrait.py               # AI 生成肖像
-├── .claude/skills/                   # 自动化 Skill
-├── .github/workflows/                # CI/CD
-├── Dockerfile                        # Render 部署
-└── render.yaml
+├── scripts/                # 9 个维护脚本
+│   ├── add_author.py       # 添加哲学家
+│   ├── add_book.py         # 添加书籍
+│   ├── add_school.py       # 添加流派
+│   ├── fetch_philosopher_img.py  # 爬取头像
+│   └── gen_portrait.py     # AI 生成肖像
+└── .github/workflows/      # keepalive + pages CI
 ```
 
 ---
