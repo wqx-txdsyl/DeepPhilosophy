@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Python 依赖（分层缓存）
-COPY backend/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir --default-timeout=300 \
     -r requirements.txt
 
@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir --default-timeout=300 \
 COPY backend/config.py .
 COPY backend/main.py .
 COPY backend/auth.py .
-COPY backend/philosophers_db.py .
+COPY backend/db.py .
 COPY backend/admin.py .
 COPY backend/models/ ./models/
 COPY backend/services/ ./services/
