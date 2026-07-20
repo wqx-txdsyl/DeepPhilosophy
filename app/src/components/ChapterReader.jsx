@@ -3,16 +3,6 @@
  * 每章一页，上下滑动，底部切换章节
  */
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { getApiBase } from '../utils/api';
-
-// 解析图片 URL：相对路径 → dev 直接走，生产加 Render API 前缀
-function resolveImgSrc(src) {
-  if (!src) return '';
-  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) return src;
-  if (import.meta.env.DEV) return src; // Vite proxy 处理 /api/
-  const base = getApiBase();
-  return base ? base + src : src;
-}
 
 export default function ChapterReader({
   chapters = [],
@@ -104,7 +94,7 @@ export default function ChapterReader({
             if (block.type === 'image') {
               return (
                 <div key={i} style={{ textAlign: 'center', margin: '16px 0' }}>
-                  <img src={resolveImgSrc(block.src)} alt={block.alt || ''}
+                  <img src={block.src} alt={block.alt || ''}
                     loading="lazy" decoding="async"
                     style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
                   {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}

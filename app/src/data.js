@@ -4,34 +4,19 @@
 import { getApiBase } from './App';
 import { cacheGet, cacheSet } from './data/cache';
 
-/** 加载书籍列表 — 缓存10分钟，服务器优先，本地兜底 */
+/** 加载书籍列表 — 本地 JSON 优先（秒开），API 不再使用 */
 export async function loadBooks() {
-  // 1. 检查缓存
   const cached = cacheGet('books');
   if (cached?.length) return cached;
-
-  // 2. 优先从服务器获取
   try {
-    const resp = await fetch(`${getApiBase()}/api/books`, {
-      signal: AbortSignal.timeout(5000),
-    });
-    if (resp.ok) {
-      const data = await resp.json();
-      if (data.books?.length) {
-        cacheSet('books', data.books);
-        return data.books;
-      }
-    }
-  } catch (e) { console.error('Books API unavailable, using local fallback:', e.message); }
-
-  // 2. 兜底：嵌入式本地书目（离线可用）
+    const resp = await fetch('/books.json');
+    if (resp.ok) { const data = await resp.json(); cacheSet('books', data); return data; }
+  } catch {}
   try {
     const local = await import('./assets/books.json');
-    return local.default?.books || local.books || [];
-  } catch (e) {
-    console.error('Local books fallback failed:', e);
-    return [];
-  }
+    const data = local.default?.books || local.books || [];
+    cacheSet('books', data); return data;
+  } catch (e) { return []; }
 }
 
 /** 根据ID获取书籍 */
