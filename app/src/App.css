@@ -566,31 +566,42 @@ html.mobile-mode .school-row > div {
   flex: 1 1 100% !important;
 }
 
-/* BooksPage: mobile 2-3 column vertical cover cards */
+/* BooksPage: mobile 3-column vertical cover cards */
 html.mobile-mode .books-grid-mobile {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 12px !important;
+  gap: 10px !important;
   padding: 8px !important;
+}
+html.mobile-mode .books-grid-mobile > * {
+  min-width: 0 !important;
+  width: 100% !important;
 }
 html.mobile-mode .book-card-mobile {
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
-  padding: 8px !important;
-  gap: 6px !important;
+  padding: 8px 4px !important;
+  gap: 4px !important;
+  border: none !important;
 }
-html.mobile-mode .book-card-mobile [style*="width:48px"] {
+html.mobile-mode .book-card-mobile > div:first-child {
   width: 100% !important;
-  height: auto !important;
   aspect-ratio: 3/4 !important;
+  height: auto !important;
   border-radius: 6px !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
 }
-html.mobile-mode .book-card-mobile [style*="font-size:14px"] {
+html.mobile-mode .book-card-mobile [style*=\"font-size:14px\"] {
   font-size: 12px !important;
-  margin-top: 4px !important;
+  margin-top: 2px !important;
+  white-space: normal !important;
+  overflow: visible !important;
 }
-html.mobile-mode .book-card-mobile [style*="font-size:11px"] {
+html.mobile-mode .book-card-mobile [style*=\"font-size:11px\"] {
   font-size: 10px !important;
+}
+html.mobile-mode .book-card-mobile .badge,
+html.mobile-mode .book-card-mobile .tag {
+  display: none !important;
 }
