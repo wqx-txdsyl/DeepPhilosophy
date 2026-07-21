@@ -217,7 +217,7 @@ const SCHOOL_ROW_STYLE = { display: 'flex', gap: 10, justifyContent: 'center', a
 
 function SchoolRow({ schools }) {
   return (
-    <div style={SCHOOL_ROW_STYLE}>
+    <div className="school-row" style={SCHOOL_ROW_STYLE}>
       {schools.map((school, i) => (
         <SchoolImg key={i} school={school} w={tierW(school)} />
       ))}

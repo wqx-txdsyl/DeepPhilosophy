@@ -196,13 +196,13 @@ function BooksPage() {
           <h2 className="section-title" style={{ marginBottom: 16 }}>
             {region === '东方' ? <Icon name='region-east-pagoda' size={18} /> : <Icon name='region-west' size={18} />} {region}哲学
           </h2>
-          <div style={{
+          <div className="books-grid-mobile" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
             gap: 10,
           }}>
             {grouped[region].map(book => (
-                <div key={book.id} className="card" style={{
+                <div key={book.id} className="card book-card-mobile" style={{
                   padding: '12px 16px', cursor: 'pointer',
                   display: 'flex', gap: 12, alignItems: 'flex-start',
                 }} onClick={() => navigate(`/book/${book.id}`)}>

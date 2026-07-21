@@ -555,3 +555,55 @@ html.dark-mode .icon-img {
   .philosophy-timeline [style*="display:flex"] { flex-direction: column !important; }
   .philosophy-timeline [style*="width:110px"] { width: 60px !important; padding-right: 10px !important; }
 }
+
+/* Genealogy: mobile single-column school rows */
+@media (max-width: 768px) {
+  .school-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  .school-row > div {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+}
+
+/* BooksPage: mobile flip-page cover style */
+@media (max-width: 768px) {
+  .books-grid-mobile {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 0 !important;
+    grid-template-columns: none !important;
+    padding: 0 !important;
+  }
+  .books-grid-mobile > * {
+    flex: 0 0 85vw !important;
+    scroll-snap-align: center !important;
+    max-width: 85vw !important;
+  }
+  .book-card-mobile {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 0 !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .book-card-mobile [style*="width:48px"] {
+    width: 60vw !important;
+    height: 80vw !important;
+    max-width: 280px !important;
+    max-height: 380px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+  }
+  .book-card-mobile [style*="font-size:14px"] {
+    font-size: 16px !important;
+    margin-top: 12px !important;
+  }
+}
