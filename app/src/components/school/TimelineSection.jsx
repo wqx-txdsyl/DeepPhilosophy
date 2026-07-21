@@ -51,19 +51,20 @@ export default function TimelineSection({ timeline = [] }) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           {(timeline || []).filter(Boolean).map((ev, i) => {
-            const isLeft = i % 2 === 0;
+            const isMobile = typeof document !== 'undefined' && document.documentElement.classList.contains('mobile-mode');
+            const isLeft = isMobile ? false : i % 2 === 0;
             const era = getEra(ev.year);
             const icon = TYPE_ICONS[ev.type] || '●';
 
             return (
               <div key={i} className="school-timeline-row" style={{ display: 'flex', alignItems: 'flex-start', position: 'relative' }}>
-                {/* Left column */}
-                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: 36 }}>
+                {/* Left column — hidden on mobile */}
+                <div className="timeline-left-col" style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: 36 }}>
                   {isLeft && <TimelineCard ev={ev} era={era} icon={icon} />}
                 </div>
 
                 {/* Center node — era dot on the river */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 80, flexShrink: 0, paddingTop: 10 }}>
+                <div className="timeline-dot-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 80, flexShrink: 0, paddingTop: 10 }}>
                   <div style={{
                     width: 12, height: 12, borderRadius: '50%',
                     background: era.dot, border: '2px solid var(--bg)',
