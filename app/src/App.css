@@ -443,8 +443,12 @@ body::before {
 .epub-container { background: var(--bone) !important; max-width: 800px !important; margin: 0 auto !important; }
 
 /* ——— Mobile Mode (强制手机布局) ——— */
-html.mobile-mode .app-container { max-width: 480px !important; margin: 0 auto !important; }
-html.mobile-mode .app-main { padding: 16px 12px !important; padding-bottom: 20px !important; }
+html.mobile-mode .app-container { max-width: 480px !important; margin: 0 auto !important; overflow-x: hidden !important; }
+html.mobile-mode .app-main { padding: 16px 8px !important; padding-bottom: 20px !important; overflow-x: hidden !important; }
+html.mobile-mode .home-hero-content { padding: 40px 16px !important; }
+html.mobile-mode .home-hero-title { font-size: 28px !important; }
+html.mobile-mode .home-stats-grid { gap: 12px !important; }
+html.mobile-mode .home-showcase-grid { grid-template-columns: 1fr !important; }
 html.mobile-mode .app-header { padding: 0 12px !important; }
 html.mobile-mode .app-title { font-size: 14px !important; }
 html.mobile-mode .app-header { padding: 0 8px !important; gap: 0 !important; }
