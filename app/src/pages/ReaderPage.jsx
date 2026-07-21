@@ -96,9 +96,10 @@ function ReaderPage() {
     }
   }, [aiHistory]);
 
-  // 所有可读书籍统一走 loadTextBook
+  // PDF 才走 loadBook（EPUB/TXT 由下方 loadTextBook 处理）
   useEffect(() => {
-    loadTextBook();
+    const type = searchParams.get('type') || '';
+    if (type === 'pdf') loadBook();
   }, [bookId]);
 
   // Load saved notes on book change — cloud first, localStorage fallback
@@ -340,7 +341,18 @@ ${textContext}
     if (type) setFileType(type);
   }, [searchParams]);
 
-  // 从 book_detail 获取元数据 → CDN 加载章节
+  const loadBook = async () => {
+    setLoading(true); setError(null);
+    const b = await getBookById(bookId);
+    if (!b) { setError('书籍未找到'); setLoading(false); return; }
+    setBook(b);
+    setFileType(b.file_type);
+    const url = `${getApiBase()}/api/books/${bookId}/file`;
+    setFileUrl(url);
+    setLoading(false);
+  };
+
+  // 秒开：meta → 立即显示 → 按需加载章节
   const loadTextBook = async () => {
     setTextLoading(true);
     setLoading(false);
@@ -430,6 +442,24 @@ ${textContext}
     navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
   };
 
+  useEffect(() => {
+    const type = searchParams.get('type') || '';
+    // URL type 优先（用户明确点击），fileType 仅作兜底
+    if (type === 'epub' || type === 'txt') {
+      setFileType(type);
+      loadTextBook();
+    } else if (type === 'pdf') {
+      loadBook();
+    } else if (fileType === 'epub' || fileType === 'txt') {
+      loadTextBook();
+    } else if (fileType === 'pdf') {
+      loadBook();
+    } else {
+      // 未知 → 默认 EPUB
+      setFileType('epub');
+      loadTextBook();
+    }
+  }, [bookId]);
 
   // Init EPUB — locations.generate 在 initEpub 中已完成，此处无需额外处理
   useEffect(() => {
