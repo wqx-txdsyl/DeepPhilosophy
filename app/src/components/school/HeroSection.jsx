@@ -4,7 +4,7 @@ import { FONT, SPACE } from './tokens';
 export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroImage, englishName }) {
   const navigate = useNavigate();
   return (
-    <section style={{
+    <section className="school-hero-section" style={{
       minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center',
       alignItems: 'center', textAlign: 'center', padding: `${SPACE.xxxl}px ${SPACE.xl}px`,
       position: 'relative', overflow: 'hidden',

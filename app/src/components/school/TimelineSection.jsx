@@ -56,7 +56,7 @@ export default function TimelineSection({ timeline = [] }) {
             const icon = TYPE_ICONS[ev.type] || '●';
 
             return (
-              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', position: 'relative' }}>
+              <div key={i} className="school-timeline-row" style={{ display: 'flex', alignItems: 'flex-start', position: 'relative' }}>
                 {/* Left column */}
                 <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: 36 }}>
                   {isLeft && <TimelineCard ev={ev} era={era} icon={icon} />}
