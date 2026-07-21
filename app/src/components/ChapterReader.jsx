@@ -60,6 +60,7 @@ export default function ChapterReader({
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* 章节内容 — 滚动区 */}
       <div ref={scrollRef} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
+        className="reader-content"
         style={{
           flex: 1, overflow: 'auto', padding: '24px max(24px, 12vw) 32px',
           fontFamily: 'var(--font-serif, "Playfair Display", serif)',
