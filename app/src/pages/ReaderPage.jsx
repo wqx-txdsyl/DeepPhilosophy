@@ -564,7 +564,7 @@ ${textContext}
   if (!book) return <div className="loading">正在获取文件...</div>;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden' }}>
+    <div className="reader-page-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden' }}>
       {/* Top bar — compact */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0,
