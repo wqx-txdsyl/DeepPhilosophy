@@ -217,10 +217,10 @@ function BooksPage() {
                   </div>
                   {/* 信息 */}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', fontFamily: 'var(--font-serif)', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div className="book-title-mobile" style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', fontFamily: 'var(--font-serif)', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {book.title}
                     </div>
-                    <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4 }}>{book.author}</div>
+                    <div className="book-author-mobile" style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4 }}>{book.author}</div>
                     <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                       <span className={`badge ${book.file_type === 'txt' ? 'badge-pending' : 'badge-available'}`} style={{ fontSize: 9, padding: '1px 6px' }}>
                         {book.file_type?.toUpperCase()}
