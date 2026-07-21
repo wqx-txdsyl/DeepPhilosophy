@@ -583,13 +583,23 @@ html.mobile-mode .school-hero-section p {
   font-size: 13px !important;
   max-width: 100% !important;
 }
+/* Timeline: axis left, cards right */
 html.mobile-mode .school-timeline-row {
-  flex-direction: column !important;
+  align-items: flex-start !important;
 }
-html.mobile-mode .school-timeline-row > div {
-  width: 100% !important;
-  max-width: 100% !important;
-  padding: 12px !important;
+html.mobile-mode .school-timeline-row > div:first-child {
+  display: none !important;
+}
+html.mobile-mode .school-timeline-row > div:nth-child(2) {
+  width: 32px !important;
+  flex-shrink: 0 !important;
+  padding-top: 8px !important;
+}
+html.mobile-mode .school-timeline-row > div:last-child {
+  flex: 1 !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  max-width: calc(100% - 32px) !important;
 }
 
 /* BooksPage: mobile 3-column vertical cover cards */
