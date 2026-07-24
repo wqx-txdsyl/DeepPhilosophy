@@ -85,7 +85,7 @@ app.get('/api/auth/profile', async (c) => {
     const payload = await verifyJWT(token, c.env.JWT_SECRET);
     if (!payload) return c.json({ error: '未登录' }, 401);
     const db = c.env.deepphilosophy_db;
-    const user = await db.prepare('SELECT username, avatar, created_at FROM users WHERE username = ?').bind(payload.username).first();
+    const user = await db.prepare('SELECT username, avatar FROM users WHERE username = ?').bind(payload.username).first();
     return c.json(user || { error: '用户不存在' }, 404);
   } catch (e) { return c.json({ error: e.message }, 500); }
 });

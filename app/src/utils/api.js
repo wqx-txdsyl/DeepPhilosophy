@@ -5,7 +5,7 @@
  * In dev, uses localhost.
  */
 const RENDER_URL = 'https://deepphilosophy-7g7m.onrender.com';
-const AUTH_URL = 'https://deepphilosophy-auth.wqx090915.workers.dev';
+const AUTH_URL = 'https://deepphilosophy.top';
 
 export function getApiBase() {
   try {
