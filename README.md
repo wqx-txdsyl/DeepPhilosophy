@@ -18,13 +18,15 @@
 ```
 浏览器 ──→ Cloudflare Pages（前端静态）── jsDelivr CDN（章节 JSON）
           │                              └── OSS CDN（书内图片）
-          └── API 请求 ──→ Render ── FastAPI（仅 AI/认证/笔记）
+          ├── 认证 ──→ Cloudflare Worker ── D1 数据库（毫秒级）
+          └── AI/笔记 ──→ Render ── FastAPI（备用）
 ```
 
 - **Cloudflare Pages**：前端 HTML/JS/CSS/封面/肖像，推送即部署
+- **Cloudflare Worker**：登录/注册（D1 数据库，零冷启动，全球边缘）
 - **jsDelivr CDN**：章节 JSON（免费全球加速，读取 GitHub master）
 - **OSS CDN**：书内插图（阿里云 5814 张 WebP）
-- **Render**：仅处理 AI 对话、用户认证、笔记同步
+- **Render**：AI 对话 + 笔记同步（备用，计划迁至 Worker）
 
 ---
 
