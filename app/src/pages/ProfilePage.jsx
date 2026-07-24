@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
+import { getAuthBase } from '../utils/api';
 import Icon from '../components/Icon';
 import AvatarUpload from '../components/AvatarUpload';
 import { useToast } from '../contexts/ToastContext';
@@ -35,7 +36,7 @@ function ProfilePage() {
     const user = localStorage.getItem('dp_username');
     if (token && user) {
       // 先验证 token 是否仍然有效
-      fetch(`${getApiBase()}/api/auth/profile`, {
+      fetch(`${getAuthBase()}/api/auth/profile`, {
         headers: { 'Authorization': `Bearer ${token}` },
         signal: AbortSignal.timeout(6000),
       }).then(r => {
@@ -287,7 +288,7 @@ function ProfilePage() {
                 setChecking(true);
                 const t = localStorage.getItem('dp_token');
                 if (t) {
-                  fetch(`${getApiBase()}/api/auth/profile`, {
+                  fetch(`${getAuthBase()}/api/auth/profile`, {
                     headers: { 'Authorization': `Bearer ${t}` },
                     signal: AbortSignal.timeout(6000),
                   }).then(r => {
