@@ -324,6 +324,62 @@ class AgentChatResponse(BaseModel):
     citations: List[dict] = []
     tool_calls: List[dict] = []
 
+# ═══════════════════════════════════════════════════════
+# 作文工具: /api/agent/essay（面向学生——根据题目写哲学作文）
+# ═══════════════════════════════════════════════════════
+class EssayRequest(BaseModel):
+    topic: str                      # 作文题目（如: 论自由 / 尼采超人学说评析）
+    genre: str = "议论文"            # 议论文 / 读后感 / 论述
+    word_count: int = 800            # 目标字数
+    extra: str = ""                  # 附加要求（如: 结合现实生活举例）
+
+ESSAY_PROMPT = """你是一位资深的哲学教师与写作导师，为学生撰写一篇高质量的{genre}。
+题目: {topic}
+目标字数: 约{word_count}字
+附加要求: {extra}
+
+写作要求:
+1. 结构完整: 引言（引出题目、亮明中心论点）→ 主体（2-3 个分论点，每个分论点引用原典原文支撑）→ 结论（升华、呼应开头）。
+2. 引用真实原典: 使用下方"原典检索结果"中的原文，引用标注【《书名》· 章节】，引用原文用引号——禁止编造引文。
+3. 语言: 议论文风格，清晰有层次，适合学生借鉴学习；避免空洞口号。
+4. 结尾可适度提出值得思考的问题，体现思辨深度。
+5. 只输出作文正文（含标题），不要额外说明。
+
+原典检索结果:
+{retrieval}
+"""
+
+@router.post("/api/agent/essay")
+async def agent_essay(req: EssayRequest):
+    if not API_KEY:
+        return AgentChatResponse(reply="服务端未配置 DEEPSEEK_API_KEY", citations=[], tool_calls=[])
+    tool_calls_log = []
+    try:
+        # ① 检索题目相关原典（确定性）
+        query = re.sub(r"[？?！!。，,、\s]+", " ", req.topic)[:50]
+        result = TOOLS["search_books"]["execute"]({"query": query, "limit": 6})
+        tool_calls_log.append({"name": "search_books", "args": {"query": query},
+                               "result_summary": str(result)[:200], "result_full": result})
+        retrieval = json.dumps(result, ensure_ascii=False)[:6000]
+        prompt = ESSAY_PROMPT.format(genre=req.genre, topic=req.topic,
+                                     word_count=req.word_count, extra=req.extra or "无",
+                                     retrieval=retrieval)
+        messages = [{"role": "user", "content": prompt}]
+        resp = llm_chat(messages, temperature=0.75, max_tokens=min(req.word_count * 2 + 500, 4000))
+        reply = (resp["choices"][0]["message"].get("content") or "").strip()
+        if not reply:
+            reply = "（生成失败，请重试）"
+        # 引用
+        citations = []
+        for item in result.get("results", [])[:4]:
+            citations.append({"book": item.get("book_title"), "chapter": item.get("chapter_title"),
+                              "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx")})
+        for tc in tool_calls_log:
+            tc.pop("result_full", None)
+        return AgentChatResponse(reply=reply, citations=citations, tool_calls=tool_calls_log)
+    except Exception as e:
+        return AgentChatResponse(reply=f"作文生成失败: {e}", citations=[], tool_calls=tool_calls_log)
+
 @router.post("/api/agent/chat")
 async def agent_chat(req: AgentChatRequest):
     if not API_KEY:
@@ -362,45 +418,46 @@ async def agent_chat(req: AgentChatRequest):
 
     tool_calls_log = []
     try:
+        # ① 确定性检索（后端直调, 不依赖 LLM 工具决策——LLM 的 TOOL 协议输出不稳定）
+        query = re.sub(r"[？?！!。，,、\s]+", " ", req.message)[:50]
+        result = TOOLS["search_books"]["execute"]({"query": query, "limit": 6})
+        tool_calls_log.append({"name": "search_books", "args": {"query": query},
+                               "result_summary": str(result)[:200], "result_full": result,
+                               "thought": f"检索「{query}」相关原典"})
+        recommend = any(w in req.message for w in ["推荐", "入门", "书目", "读什么", "书单", "哪些书"])
+        if recommend:
+            r2 = TOOLS["list_books"]["execute"]({"region": "西方"})
+            tool_calls_log.append({"name": "list_books", "args": {"region": "西方"},
+                                   "result_summary": str(r2)[:200], "result_full": r2})
+        else:
+            r2 = None
+        # ② 注入检索结果 → LLM 生成
+        retrieval_note = (f"系统已检索到以下原典片段:\n{json.dumps(result, ensure_ascii=False)[:5000]}"
+                          + (f"\n\n书目数据:\n{json.dumps(r2, ensure_ascii=False)[:2500]}" if r2 else "")
+                          + "\n请基于检索到的原典回答。引用标注【《书名》· 章节】, 引用原文用引号。"
+                            "推荐/书目类问题给出具体书名与推荐理由。")
+        messages.append({"role": "system", "content": retrieval_note})
         resp = llm_chat(messages)
         msg = resp["choices"][0]["message"]
-        for _ in range(4):
+        # ③ 可选增强: LLM 若输出 TOOL（读章节深入）→ 执行 → 再生成（最多 2 轮）
+        for _ in range(2):
             content = msg.get("content") or ""
             call, rest = extract_tool_call(content)
             if call is None:
                 break
+            thought = content[:content.find("{TOOL:")].strip() or f"需要调用工具获取更多信息"
             name = call.get("name", "")
             args = call.get("args", {})
             tool = TOOLS.get(name)
-            if not tool:
-                result = {"error": f"未知工具 {name}"}
-            else:
-                try:
-                    result = tool["execute"](args)
-                except Exception as e:
-                    result = {"error": str(e)}
-            tool_calls_log.append({"name": name, "args": args, "result_summary": str(result)[:200], "result_full": result})
-            # 回填: assistant 消息（清理后的内容）+ 工具结果（系统消息）, 让 LLM 继续
-            messages.append({"role": "assistant", "content": rest[:5000]})
-            tool_hint = '{TOOL:{"name":"...","args":{...}}}'
+            result2 = tool["execute"](args) if tool else {"error": f"未知工具 {name}"}
+            tool_calls_log.append({"name": name, "args": args, "result_summary": str(result2)[:200],
+                                   "result_full": result2, "thought": thought[:300]})
+            messages.append({"role": "assistant", "content": rest[:3000]})
             messages.append({"role": "system",
-                             "content": f"工具「{name}」返回: {json.dumps(result, ensure_ascii=False)[:4000]}\n"
-                                        f"请基于此继续回答。若还需调用工具, 输出 {tool_hint}; 否则直接给出最终回答。"})
+                             "content": f"工具「{name}」返回: {json.dumps(result2, ensure_ascii=False)[:3000]}\n请直接给出最终回答（不要输出任何工具标记）。"})
             resp = llm_chat(messages)
             msg = resp["choices"][0]["message"]
         reply = (msg.get("content") or "").strip()
-        # 兜底: LLM 未调用工具直接回答（概念题）→ 自动检索注入原文, 防编造引文
-        if not tool_calls_log and len(req.message) >= 4:
-            query = re.sub(r"[？?！!。，,、\s]+", " ", req.message)[:50]
-            result = TOOLS["search_books"]["execute"]({"query": query, "limit": 5})
-            tool_calls_log.append({"name": "search_books", "args": {"query": query},
-                                   "result_summary": str(result)[:200], "result_full": result})
-            messages.append({"role": "system",
-                             "content": f"系统自动检索「{query}」结果: {json.dumps(result, ensure_ascii=False)[:4000]}\n"
-                                        f"请基于检索到的原典回答, 引用标注【《书名》· 章节】, 引用原文用引号。"})
-            resp = llm_chat(messages)
-            msg = resp["choices"][0]["message"]
-            reply = (msg.get("content") or "").strip()
         # 清理残留 TOOL 标记
         _, reply = extract_tool_call(reply)
         reply = reply.strip()

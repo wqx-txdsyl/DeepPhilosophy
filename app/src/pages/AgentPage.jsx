@@ -4,7 +4,8 @@ import { getApiBase } from '../utils/api';
 import Icon from '../components/Icon';
 
 /**
- * AgentPage — 哲学智能体"深哲"（Claude Code 风格: 工具调用可视化 + 思考过程时间线）
+ * AgentPage — 哲学智能体"深哲"（ReAct 架构: 思考→行动→观察 循环可视化）
+ * 工具页签: 对话 / 作文 / 生图
  * 图标规范: 全部使用 /icons/*.png（Icon 组件）, 禁用 emoji
  */
 const TOOL_META = {
@@ -16,43 +17,117 @@ const TOOL_META = {
   list_books: { icon: 'nav-books', label: '筛选书目' },
 };
 
+const TABS = [
+  { key: 'chat', icon: 'nav-qa', label: '对话' },
+  { key: 'essay', icon: 'icon-clipboard', label: '作文' },
+  { key: 'image', icon: 'icon-candle', label: '生图' },
+];
+
+/* ── 工具调用卡片（ReAct: 思考 → 行动） ── */
 function ToolCard({ tc, index }) {
   const [open, setOpen] = useState(false);
-  const meta = TOOL_META[tc.name] || { icon: '🔧', label: tc.name };
+  const meta = TOOL_META[tc.name] || { icon: 'icon-cog', label: tc.name };
   return (
-    <div style={{
-      border: '1px solid var(--border)', borderRadius: 8, margin: '6px 0',
-      background: 'var(--card-bg)', overflow: 'hidden',
-    }}>
-      <div onClick={() => setOpen(!open)}
-        style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px',
-                 cursor: 'pointer', userSelect: 'none' }}>
-        <span style={{ fontSize: 11, color: 'var(--text-dim)', fontFamily: 'monospace', minWidth: 22 }}>
-          {String(index + 1).padStart(2, '0')}
-        </span>
-        <Icon name={meta.icon} size={16} />
-        <span style={{ fontSize: 13, fontWeight: 600 }}>{meta.label}</span>
-        <span style={{ flex: 1 }} />
-        <span style={{ fontSize: 12, color: 'var(--text-dim)', fontFamily: 'monospace' }}>
-          {Object.values(tc.args || {}).filter(v => typeof v === 'string').join(' ').slice(0, 40) || '—'}
-        </span>
-        <span style={{ fontSize: 10, color: 'var(--text-dim)', transform: open ? 'rotate(90deg)' : 'none', transition: 'transform .15s' }}>▶</span>
-      </div>
-      {open && (
-        <div style={{ padding: '8px 12px', borderTop: '1px solid var(--border)', fontSize: 12 }}>
-          <div style={{ color: 'var(--text-dim)', marginBottom: 4, fontFamily: 'monospace' }}>
-            {JSON.stringify(tc.args, null, 2)}
-          </div>
-          <div style={{ color: 'var(--text-dim)', whiteSpace: 'pre-wrap', maxHeight: 160, overflow: 'auto' }}>
-            {tc.result_summary}
-          </div>
+    <div style={{ margin: '4px 0' }}>
+      {/* 思考（Thought） */}
+      {tc.thought && (
+        <div style={{ fontSize: 12.5, color: 'var(--text-dim)', fontStyle: 'italic',
+                      padding: '2px 4px 4px', lineHeight: 1.6 }}>
+          {tc.thought}
         </div>
       )}
+      {/* 行动（Action） */}
+      <div style={{
+        border: '1px solid var(--border)', borderRadius: 8,
+        background: 'var(--card-bg)', overflow: 'hidden',
+      }}>
+        <div onClick={() => setOpen(!open)}
+          style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px',
+                   cursor: 'pointer', userSelect: 'none' }}>
+          <span style={{ fontSize: 11, color: 'var(--text-dim)', fontFamily: 'monospace', minWidth: 22 }}>
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <Icon name={meta.icon} size={16} />
+          <span style={{ fontSize: 13, fontWeight: 600 }}>{meta.label}</span>
+          <span style={{ flex: 1 }} />
+          <span style={{ fontSize: 12, color: 'var(--text-dim)', fontFamily: 'monospace' }}>
+            {Object.values(tc.args || {}).filter(v => typeof v === 'string').join(' ').slice(0, 40) || '—'}
+          </span>
+          <span style={{ fontSize: 10, color: 'var(--text-dim)', transform: open ? 'rotate(90deg)' : 'none', transition: 'transform .15s' }}>▶</span>
+        </div>
+        {open && (
+          <div style={{ padding: '8px 12px', borderTop: '1px solid var(--border)', fontSize: 12 }}>
+            <div style={{ color: 'var(--text-dim)', marginBottom: 4, fontFamily: 'monospace' }}>
+              {JSON.stringify(tc.args, null, 2)}
+            </div>
+            <div style={{ color: 'var(--text-dim)', whiteSpace: 'pre-wrap', maxHeight: 160, overflow: 'auto' }}>
+              {tc.result_summary}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-export default function AgentPage() {
+/* ── markdown 简易渲染 ── */
+function renderInline(text) {
+  const parts = (text || '').split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  return parts.map((p, i) => {
+    if (p.startsWith('**') && p.endsWith('**')) return <strong key={i}>{p.slice(2, -2)}</strong>;
+    if (p.startsWith('`') && p.endsWith('`')) return <code key={i} style={{ background: 'rgba(120,140,255,.1)', padding: '1px 5px', borderRadius: 4, fontSize: '0.92em' }}>{p.slice(1, -1)}</code>;
+    return p;
+  });
+}
+
+function renderMarkdown(text) {
+  const lines = (text || '').split('\n');
+  const out = [];
+  lines.forEach((line, i) => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('> ')) {
+      out.push(<blockquote key={i} style={{ margin: '8px 0', padding: '6px 12px', borderLeft: '3px solid var(--border)', color: 'var(--text-dim)', background: 'rgba(120,140,255,.06)', borderRadius: 4 }}>{renderInline(trimmed.slice(2))}</blockquote>);
+    } else if (/^[-*] |^\d+\. /.test(trimmed)) {
+      out.push(<div key={i} style={{ paddingLeft: '1.2em', margin: '2px 0' }}>· {renderInline(trimmed.replace(/^[-*] |^\d+\. /, ''))}</div>);
+    } else if (trimmed.startsWith('## ')) {
+      out.push(<div key={i} style={{ fontWeight: 700, fontSize: 15, margin: '10px 0 4px' }}>{renderInline(trimmed.slice(3))}</div>);
+    } else if (trimmed.startsWith('# ')) {
+      out.push(<div key={i} style={{ fontWeight: 700, fontSize: 17, margin: '12px 0 6px' }}>{renderInline(trimmed.slice(2))}</div>);
+    } else if (!trimmed) {
+      out.push(<div key={i} style={{ height: 6 }} />);
+    } else {
+      out.push(<div key={i} style={{ margin: '2px 0' }}>{renderInline(trimmed)}</div>);
+    }
+  });
+  return out;
+}
+
+/* ── 引用来源 ── */
+function Citations({ citations, navigate }) {
+  if (!citations?.length) return null;
+  return (
+    <div style={{ marginTop: 12, fontSize: 12 }}>
+      <div style={{ color: 'var(--text-dim)', marginBottom: 6, letterSpacing: '.5px', display: 'flex', alignItems: 'center', gap: 5 }}>
+        <Icon name="nav-books" size={13} /> 引用来源
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {citations.map((c, i) => (
+          <div key={i}
+            onClick={() => c.book_id && navigate(`/reader/${c.book_id}?ch=${c.chapter_idx || 0}`)}
+            style={{ cursor: 'pointer', padding: '6px 10px', borderRadius: 6,
+                     background: 'rgba(120,140,255,.06)', border: '1px solid var(--border)',
+                     display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center' }}>
+            <span>《{c.book}》· {c.chapter || '正文'}</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>阅读 →</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── 对话页签 ── */
+function ChatTab() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -68,8 +143,7 @@ export default function AgentPage() {
     if (!text || loading) return;
     setInput('');
     const history = messages.slice(-6).map(m => ({ role: m.role, content: m.content }));
-    const userMsg = { role: 'user', content: text };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages(prev => [...prev, { role: 'user', content: text }]);
     setLoading(true);
     try {
       const resp = await fetch(`${getApiBase()}/api/agent/chat`, {
@@ -90,102 +164,36 @@ export default function AgentPage() {
     setLoading(false);
   };
 
-  const renderMarkdown = (text) => {
-    // 简易渲染: 引用块 / 列表 / 加粗 / 换行
-    const lines = (text || '').split('\n');
-    const out = [];
-    let inQuote = false;
-    let inList = false;
-    lines.forEach((line, i) => {
-      const trimmed = line.trim();
-      if (trimmed.startsWith('> ')) {
-        if (!inQuote) { inQuote = true; out.push(<blockquote key={i} style={{ margin: '8px 0', padding: '6px 12px', borderLeft: '3px solid var(--border)', color: 'var(--text-dim)', background: 'rgba(120,140,255,.06)', borderRadius: 4 }}>{[]}</blockquote>); }
-        out[out.length - 1] = <blockquote key={i} style={{ margin: '8px 0', padding: '6px 12px', borderLeft: '3px solid var(--border)', color: 'var(--text-dim)', background: 'rgba(120,140,255,.06)', borderRadius: 4 }}>{renderInline(trimmed.slice(2))}</blockquote>;
-      } else {
-        inQuote = false;
-        if (/^[-*] |^\d+\. /.test(trimmed)) {
-          out.push(<div key={i} style={{ paddingLeft: '1.2em', margin: '2px 0' }}>· {renderInline(trimmed.replace(/^[-*] |^\d+\. /, ''))}</div>);
-        } else if (trimmed.startsWith('## ')) {
-          out.push(<div key={i} style={{ fontWeight: 700, fontSize: 15, margin: '10px 0 4px' }}>{renderInline(trimmed.slice(3))}</div>);
-        } else if (trimmed.startsWith('# ')) {
-          out.push(<div key={i} style={{ fontWeight: 700, fontSize: 17, margin: '12px 0 6px' }}>{renderInline(trimmed.slice(2))}</div>);
-        } else if (!trimmed) {
-          out.push(<div key={i} style={{ height: 6 }} />);
-        } else {
-          out.push(<div key={i} style={{ margin: '2px 0' }}>{renderInline(trimmed)}</div>);
-        }
-      }
-    });
-    return out;
-  };
-
-  const renderInline = (text) => {
-    // **加粗** 和 `代码`
-    const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
-    return parts.map((p, i) => {
-      if (p.startsWith('**') && p.endsWith('**')) return <strong key={i}>{p.slice(2, -2)}</strong>;
-      if (p.startsWith('`') && p.endsWith('`')) return <code key={i} style={{ background: 'rgba(120,140,255,.1)', padding: '1px 5px', borderRadius: 4, fontSize: '0.92em' }}>{p.slice(1, -1)}</code>;
-      return p;
-    });
-  };
-
   const renderContent = (m) => {
     if (m.role === 'user') return <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{m.content}</div>;
     return (
       <div>
-        {/* 思考过程（工具调用时间线） */}
         {m.toolCalls?.length > 0 && (
           <div style={{ marginBottom: 10 }}>
             <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4, letterSpacing: '.5px' }}>
-              ── 思考过程 · {m.toolCalls.length} 次工具调用 ──
+              ── 思考与行动 · {m.toolCalls.length} 步 ──
             </div>
             {m.toolCalls.map((tc, i) => <ToolCard key={i} tc={tc} index={i} />)}
           </div>
         )}
-        {/* 回答 */}
         <div style={{ lineHeight: 1.8, fontSize: 14 }}>{renderMarkdown(m.content)}</div>
-        {/* 引用来源 */}
-        {m.citations?.length > 0 && (
-          <div style={{ marginTop: 12, fontSize: 12 }}>
-            <div style={{ color: 'var(--text-dim)', marginBottom: 6, letterSpacing: '.5px', display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Icon name="nav-books" size={13} /> 引用来源</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {m.citations.map((c, i) => (
-                <div key={i}
-                  onClick={() => c.book_id && navigate(`/reader/${c.book_id}?ch=${c.chapter_idx || 0}`)}
-                  style={{ cursor: 'pointer', padding: '6px 10px', borderRadius: 6,
-                           background: 'rgba(120,140,255,.06)', border: '1px solid var(--border)',
-                           display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center' }}>
-                  <span>《{c.book}》· {c.chapter || '正文'}</span>
-                  <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>阅读 →</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <Citations citations={m.citations} navigate={navigate} />
       </div>
     );
   };
 
   return (
-    <div style={{ maxWidth: 860, margin: '0 auto', padding: '16px 20px 130px', minHeight: '70vh' }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 4 }}>
-        <h1 style={{ fontSize: 22, margin: 0 }}>深哲</h1>
-        <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>哲学智能体 · 基于 403 本原典检索回答</span>
-      </div>
+    <>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {messages.length === 0 && (
-          <div style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '48px 0', fontSize: 14 }}>
-            <div style={{ marginBottom: 12 }}><Icon name="icon-brain" size={44} /></div>
+          <div style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0', fontSize: 14 }}>
+            <div style={{ marginBottom: 12 }}><Icon name="icon-brain" size={40} /></div>
             试着问：
-            <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+            <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
               {['永恒轮回是什么意思？尼采怎么说的', '休谟和康德对因果的看法有何不同？', '海德格尔受谁影响？', '推荐几本存在主义入门书'].map((q, i) => (
                 <button key={i} onClick={() => send(q)}
                   style={{ padding: '8px 18px', borderRadius: 18, border: '1px solid var(--border)',
-                           background: 'var(--card-bg)', cursor: 'pointer', fontSize: 13,
-                           transition: 'all .15s' }}
-                  onMouseEnter={e => e.target.style.borderColor = '#8b9bff'}
-                  onMouseLeave={e => e.target.style.borderColor = 'var(--border)'}>
+                           background: 'var(--card-bg)', cursor: 'pointer', fontSize: 13 }}>
                   {q}
                 </button>
               ))}
@@ -211,7 +219,6 @@ export default function AgentPage() {
         )}
         <div ref={bottomRef} />
       </div>
-      {/* 输入区 */}
       <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding: '12px 20px',
                     background: 'var(--bg)', borderTop: '1px solid var(--border)', backdropFilter: 'blur(8px)' }}>
         <div style={{ maxWidth: 860, margin: '0 auto', display: 'flex', gap: 8 }}>
@@ -231,6 +238,117 @@ export default function AgentPage() {
           </button>
         </div>
       </div>
+    </>
+  );
+}
+
+/* ── 作文页签（面向学生） ── */
+function EssayTab() {
+  const [topic, setTopic] = useState('');
+  const [genre, setGenre] = useState('议论文');
+  const [wordCount, setWordCount] = useState(800);
+  const [extra, setExtra] = useState('');
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const generate = async () => {
+    if (!topic.trim() || loading) return;
+    setLoading(true);
+    setResult(null);
+    try {
+      const resp = await fetch(`${getApiBase()}/api/agent/essay`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic: topic.trim(), genre, word_count: wordCount, extra }),
+      });
+      const d = await resp.json();
+      setResult({ content: d.reply, citations: d.citations || [], toolCalls: d.tool_calls || [] });
+    } catch (e) {
+      setResult({ content: `生成失败: ${e.message}`, citations: [] });
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div style={{ padding: '8px 0 120px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 12, padding: 18 }}>
+        <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>哲学作文助手——输入题目，基于 403 本原典生成带引用的作文</div>
+        <input value={topic} onChange={e => setTopic(e.target.value)}
+          placeholder="作文题目（如: 论自由 / 尼采超人学说评析 / 谈谈你对'存在先于本质'的理解）"
+          style={{ padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 14, outline: 'none' }} />
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+          <select value={genre} onChange={e => setGenre(e.target.value)}
+            style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 13 }}>
+            {['议论文', '读后感', '论述'].map(g => <option key={g} value={g}>{g}</option>)}
+          </select>
+          <select value={wordCount} onChange={e => setWordCount(Number(e.target.value))}
+            style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 13 }}>
+            {[600, 800, 1000, 1500].map(n => <option key={n} value={n}>{n} 字</option>)}
+          </select>
+          <input value={extra} onChange={e => setExtra(e.target.value)}
+            placeholder="附加要求（可选: 如'结合现实生活举例'）"
+            style={{ flex: 1, minWidth: 200, padding: '8px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 13, outline: 'none' }} />
+          <button onClick={generate} disabled={loading || !topic.trim()}
+            style={{ padding: '9px 22px', borderRadius: 10, border: 'none', cursor: 'pointer',
+                     background: 'linear-gradient(135deg,#6a7bff,#8b5cf6)', color: '#fff', fontSize: 13,
+                     opacity: loading || !topic.trim() ? 0.5 : 1 }}>
+            {loading ? '生成中…' : '生成作文'}
+          </button>
+        </div>
+      </div>
+      {result && (
+        <div style={{ marginTop: 14, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 12, padding: '18px 22px' }}>
+          {result.toolCalls?.length > 0 && (
+            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 8, letterSpacing: '.5px' }}>
+              ── 检索过程 · {result.toolCalls.length} 步 ──
+            </div>
+          )}
+          <div style={{ lineHeight: 2, fontSize: 15 }}>{renderMarkdown(result.content)}</div>
+          <Citations citations={result.citations} navigate={navigate} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── 生图页签（Agnes 接入中, 占位） ── */
+function ImageTab() {
+  return (
+    <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-dim)' }}>
+      <div style={{ marginBottom: 14 }}><Icon name="icon-candle" size={40} /></div>
+      <div style={{ fontSize: 15, marginBottom: 6 }}>哲学概念生图</div>
+      <div style={{ fontSize: 13 }}>即将上线——Agnes 视觉 API 接入中（网络恢复后启用）<br />可生成概念可视化图（如"洞穴比喻""永恒轮回"）</div>
+    </div>
+  );
+}
+
+/* ── 主页面 ── */
+export default function AgentPage() {
+  const [tab, setTab] = useState('chat');
+  return (
+    <div style={{ maxWidth: 860, margin: '0 auto', padding: '16px 20px 0', minHeight: '70vh' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 4 }}>
+        <h1 style={{ fontSize: 22, margin: 0 }}>深哲</h1>
+        <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>哲学智能体 · 基于 403 本原典</span>
+      </div>
+      {/* 页签 */}
+      <div style={{ display: 'flex', gap: 4, margin: '10px 0 14px', borderBottom: '1px solid var(--border)', paddingBottom: 0 }}>
+        {TABS.map(t => (
+          <button key={t.key} onClick={() => setTab(t.key)}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px',
+                     border: 'none', background: 'none', cursor: 'pointer', fontSize: 14,
+                     color: tab === t.key ? '#8b9bff' : 'var(--text-dim)',
+                     borderBottom: tab === t.key ? '2px solid #8b9bff' : '2px solid transparent',
+                     fontWeight: tab === t.key ? 600 : 400 }}>
+            <Icon name={t.icon} size={15} />
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {tab === 'chat' && <ChatTab />}
+      {tab === 'essay' && <EssayTab />}
+      {tab === 'image' && <ImageTab />}
     </div>
   );
 }
