@@ -93,8 +93,10 @@ export default function ChapterReader({
         ) : ch.content ? (
           ch.content.map((block, i) => {
             if (block.type === 'image') {
-              // 生僻字小图（<100px, 数据层 w/h）→ 内联文字大小; 插图保持大图
-              const isSmall = block.w && block.h && block.w < 100 && block.h < 100;
+              // 生僻字单字图（<300px 且宽高比 0.3-3 近似方形, 数据层 w/h）→ 内联文字大小; 插图保持大图
+              const isSmall = block.w && block.h
+                && Math.max(block.w, block.h) < 300
+                && (block.w / block.h) > 0.3 && (block.w / block.h) < 3;
               return (
                 <div key={i} style={isSmall
                   ? { display: 'inline', margin: '0 1px' }
