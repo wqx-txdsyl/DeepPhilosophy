@@ -96,13 +96,16 @@ export default function ChapterReader({
             const isSmall = b => b.w && b.h
               && Math.max(b.w, b.h) < 300
               && (b.w / b.h) > 0.3 && (b.w / b.h) < 3;
+            // ⚠️ 必须复制: 直接改 ch.content 原对象会在重渲染时 imgs 累积 → 图多次复制
             const merged = [];
             let prevWasSmallImg = false;
-            for (const blk of ch.content) {
+            for (const src of ch.content) {
+              const blk = { ...src };
               if (blk.type === 'image' && isSmall(blk)) {
-                // 小图: 并入前一个文本块（嵌句尾）
+                // 小图: 并入前一个文本块（嵌句内）
                 if (merged.length && merged[merged.length - 1].type === 'text') {
-                  merged[merged.length - 1].imgs = [...(merged[merged.length - 1].imgs || []), blk];
+                  const last = merged[merged.length - 1];
+                  merged[merged.length - 1] = { ...last, imgs: [...(last.imgs || []), blk] };
                 } else {
                   merged.push({ type: 'text', value: '', imgs: [blk] });
                 }
@@ -110,7 +113,8 @@ export default function ChapterReader({
               } else if (blk.type === 'text') {
                 // 小图后的后半句: 拼回同一段（原文被图拆成两段, 如注释"⑦ 羁[图]：络首曰"）
                 if (prevWasSmallImg && merged.length && merged[merged.length - 1].type === 'text') {
-                  merged[merged.length - 1].value += blk.value;
+                  const last = merged[merged.length - 1];
+                  merged[merged.length - 1] = { ...last, value: last.value + blk.value };
                 } else {
                   merged.push(blk);
                 }
