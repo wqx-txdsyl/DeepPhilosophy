@@ -91,22 +91,32 @@ export default function ChapterReader({
         {ch.type === 'section' ? null : !ch.content && !ch._loaded ? (
           <p style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>加载中...</p>
         ) : ch.content ? (
-          ch.content.map((block, i) => {
+          // 预处理: 生僻字小图合并进前一个文本块（嵌入段落, 不再独立一行）
+          (() => {
+            const isSmall = b => b.w && b.h
+              && Math.max(b.w, b.h) < 300
+              && (b.w / b.h) > 0.3 && (b.w / b.h) < 3;
+            const merged = [];
+            for (const blk of ch.content) {
+              if (blk.type === 'image' && isSmall(blk)) {
+                if (merged.length && merged[merged.length - 1].type === 'text') {
+                  merged[merged.length - 1].imgs = [...(merged[merged.length - 1].imgs || []), blk];
+                } else {
+                  merged.push({ type: 'text', value: '', imgs: [blk] });
+                }
+              } else {
+                merged.push(blk);
+              }
+            }
+            return merged.map((block, i) => {
             if (block.type === 'image') {
-              // 生僻字单字图（<300px 且宽高比 0.3-3 近似方形, 数据层 w/h）→ 内联文字大小; 插图保持大图
-              const isSmall = block.w && block.h
-                && Math.max(block.w, block.h) < 300
-                && (block.w / block.h) > 0.3 && (block.w / block.h) < 3;
+              // 大图（插图）保持整行
               return (
-                <div key={i} style={isSmall
-                  ? { display: 'inline', margin: '0 1px' }
-                  : { textAlign: 'center', margin: '8px 0' }}>
+                <div key={i} style={{ textAlign: 'center', margin: '8px 0' }}>
                   <img src={block.src} alt={block.alt || ''}
                     loading="lazy" decoding="async"
-                    style={isSmall
-                      ? { maxWidth: '1.6em', maxHeight: '1.6em', verticalAlign: 'middle', borderRadius: 2 }
-                      : { maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
-                  {!isSmall && block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
+                    style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
+                  {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
                 </div>
               );
             }
@@ -114,8 +124,18 @@ export default function ChapterReader({
               const html = block.value || block.html || '';
               return <div key={i} className="chapter-html" dangerouslySetInnerHTML={{ __html: html }} />;
             }
-            return <p key={i} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>{block.value}</p>;
-          })
+            // 文本块（含嵌入的生僻字小图）
+            return (
+              <p key={i} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
+                {block.value}
+                {block.imgs?.map((img, j) => (
+                  <img key={j} src={img.src} alt=""
+                    style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
+                ))}
+              </p>
+            );
+          });
+          })()
         ) : (
           <p>{ch.text || ''}</p>
         )}
