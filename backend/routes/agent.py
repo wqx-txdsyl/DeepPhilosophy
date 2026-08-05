@@ -295,8 +295,19 @@ register_tool(
 # ═══════════════════════════════════════════════════════
 SYSTEM_PROMPT = """你是"深哲"——一个哲学智能体，基于 403 本哲学原著（柏拉图到德里达）回答问题。
 
+可用工具（需要时通过工具协议调用）:
+- search_books: 全文检索（参数: query 关键词, limit 可选）——查概念/原文/出处
+- get_book_detail: 查书详情（book_id）
+- get_chapter: 读章节全文（book_id, chapter_idx）——深入引用原文
+- query_graph: 哲学家星丛（philosopher 姓名）——师承/影响/论敌
+- get_philosopher: 哲人生平（name）
+- list_books: 书单筛选（author/region/school 可选）
+
+工具协议: 需要工具时, 输出且只输出一行: {TOOL:{"name":"工具名","args":{...}}}
+收到工具结果后继续思考, 可多次调用; 信息足够后输出最终回答。
+
 铁律:
-1. 凡涉及具体哲学主张/概念/出处，必须先调用工具检索原文（search_books / get_chapter），用真实原文支撑，不得凭记忆编造引文。
+1. 凡涉及具体哲学主张/概念/出处，必须先调用 search_books / get_chapter 检索原文，用真实原文支撑，不得凭记忆编造引文。
 2. 回答标注引用来源: 【《书名》· 章节名】。
 3. 涉及哲学家关系（师承/影响/论敌）时调用 query_graph。
 4. 回答使用中文，严谨、清晰、有层次。可适度苏格拉底式反问，但不回避问题。
@@ -327,58 +338,85 @@ async def agent_chat(req: AgentChatRequest):
             messages.append({"role": "system", "content": f"用户正在阅读《{b.get('title')}》（{b.get('author')}），回答可优先结合此书。"})
     messages.append({"role": "user", "content": req.message})
 
-    # 工具 schema
-    tools = []
-    for name, t in TOOLS.items():
-        tools.append({"type": "function", "function": {
-            "name": name, "description": t["description"], "parameters": t["parameters"]}})
+    # 纯 JSON 工具协议（不传 tools 参数, 提示词驱动——DeepSeek 原生 function calling 多轮后不稳定）
+    def extract_tool_call(content):
+        """括号平衡解析 {TOOL:{...}}（嵌套 JSON 的 } 不能用非贪婪正则）"""
+        start = content.find("{TOOL:")
+        if start < 0:
+            return None, content
+        i = content.find("{", start + 6)  # 跳过 "TOOL:" 前缀, 从真实 JSON 的 { 开始
+        if i < 0:
+            return None, content
+        depth = 0
+        for j in range(i, len(content)):
+            if content[j] == "{":
+                depth += 1
+            elif content[j] == "}":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        return json.loads(content[i:j + 1]), content[:start] + content[j + 1:]
+                    except Exception:
+                        return None, content
+        return None, content
 
     tool_calls_log = []
     try:
-        resp = llm_chat(messages, tools=tools)
+        resp = llm_chat(messages)
         msg = resp["choices"][0]["message"]
-        # 工具调用循环（最多 4 轮）
         for _ in range(4):
-            if not msg.get("tool_calls"):
+            content = msg.get("content") or ""
+            call, rest = extract_tool_call(content)
+            if call is None:
                 break
-            messages.append(msg)  # ⚠️ assistant(tool_calls) 必须先入 messages, tool 消息才能跟随
-            for tc in msg["tool_calls"]:
-                fn = tc.get("function", {})
-                name = fn.get("name", "")
+            name = call.get("name", "")
+            args = call.get("args", {})
+            tool = TOOLS.get(name)
+            if not tool:
+                result = {"error": f"未知工具 {name}"}
+            else:
                 try:
-                    args = json.loads(fn.get("arguments") or "{}")
-                except Exception:
-                    args = {}
-                tool = TOOLS.get(name)
-                if not tool:
-                    result = {"error": f"未知工具 {name}"}
-                else:
-                    try:
-                        result = tool["execute"](args)
-                    except Exception as e:
-                        result = {"error": str(e)}
-                tool_calls_log.append({"name": name, "args": args, "result_summary": str(result)[:200]})
-                messages.append({"role": "tool", "tool_call_id": tc.get("id", f"call_{len(tool_calls_log)}"),
-                                 "content": json.dumps(result, ensure_ascii=False)[:4000]})
-            resp = llm_chat(messages, tools=tools)
-            msg = resp["choices"][0]["message"]
-        # 循环截断后若仍有 tool_calls → 强制无工具总结（不 append 截断消息, 避免 tool 消息缺失 400）
-        if msg.get("tool_calls"):
+                    result = tool["execute"](args)
+                except Exception as e:
+                    result = {"error": str(e)}
+            tool_calls_log.append({"name": name, "args": args, "result_summary": str(result)[:200], "result_full": result})
+            # 回填: assistant 消息（清理后的内容）+ 工具结果（系统消息）, 让 LLM 继续
+            messages.append({"role": "assistant", "content": rest[:5000]})
+            tool_hint = '{TOOL:{"name":"...","args":{...}}}'
+            messages.append({"role": "system",
+                             "content": f"工具「{name}」返回: {json.dumps(result, ensure_ascii=False)[:4000]}\n"
+                                        f"请基于此继续回答。若还需调用工具, 输出 {tool_hint}; 否则直接给出最终回答。"})
             resp = llm_chat(messages)
             msg = resp["choices"][0]["message"]
-        reply = msg.get("content") or "（无回答）"
-        # 提取引用
+        reply = (msg.get("content") or "").strip()
+        # 兜底: LLM 未调用工具直接回答（概念题）→ 自动检索注入原文, 防编造引文
+        if not tool_calls_log and len(req.message) >= 4:
+            query = re.sub(r"[？?！!。，,、\s]+", " ", req.message)[:50]
+            result = TOOLS["search_books"]["execute"]({"query": query, "limit": 5})
+            tool_calls_log.append({"name": "search_books", "args": {"query": query},
+                                   "result_summary": str(result)[:200], "result_full": result})
+            messages.append({"role": "system",
+                             "content": f"系统自动检索「{query}」结果: {json.dumps(result, ensure_ascii=False)[:4000]}\n"
+                                        f"请基于检索到的原典回答, 引用标注【《书名》· 章节】, 引用原文用引号。"})
+            resp = llm_chat(messages)
+            msg = resp["choices"][0]["message"]
+            reply = (msg.get("content") or "").strip()
+        # 清理残留 TOOL 标记
+        _, reply = extract_tool_call(reply)
+        reply = reply.strip()
+        if not reply:
+            reply = "（无回答）"
+        # 提取引用（用完整结果, 非截断摘要）
         citations = []
         for tc in tool_calls_log:
-            if tc["name"] == "search_books":
+            if tc["name"] == "search_books" and tc.get("result_full"):
                 try:
-                    r = tc.get("result_summary")
-                    if r and "book_title" in r:
-                        for item in json.loads(r).get("results", [])[:3]:
-                            citations.append({"book": item.get("book_title"), "chapter": item.get("chapter_title"),
-                                              "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx")})
+                    for item in tc["result_full"].get("results", [])[:3]:
+                        citations.append({"book": item.get("book_title"), "chapter": item.get("chapter_title"),
+                                          "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx")})
                 except Exception:
                     pass
+            tc.pop("result_full", None)  # 大字段不入响应
         return AgentChatResponse(reply=reply, citations=citations, tool_calls=tool_calls_log)
     except Exception as e:
         return AgentChatResponse(reply=f"智能体出错: {e}", citations=[], tool_calls=tool_calls_log)
