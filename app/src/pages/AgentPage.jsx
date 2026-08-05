@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../utils/api';
+import Icon from '../components/Icon';
 
 /**
  * AgentPage — 哲学智能体"深哲"（Claude Code 风格: 工具调用可视化 + 思考过程时间线）
+ * 图标规范: 全部使用 /icons/*.png（Icon 组件）, 禁用 emoji
  */
 const TOOL_META = {
-  search_books: { icon: '🔎', label: '检索原典' },
-  get_chapter: { icon: '📖', label: '读取章节' },
-  get_book_detail: { icon: '📚', label: '查书详情' },
-  query_graph: { icon: '🕸️', label: '查询星丛' },
-  get_philosopher: { icon: '👤', label: '查哲人资料' },
-  list_books: { icon: '🗂️', label: '筛选书目' },
+  search_books: { icon: 'icon-search', label: '检索原典' },
+  get_chapter: { icon: 'icon-book-open', label: '读取章节' },
+  get_book_detail: { icon: 'nav-books', label: '查书详情' },
+  query_graph: { icon: 'nav-genealogy', label: '查询星丛' },
+  get_philosopher: { icon: 'nav-authors', label: '查哲人资料' },
+  list_books: { icon: 'nav-books', label: '筛选书目' },
 };
 
 function ToolCard({ tc, index }) {
@@ -28,7 +30,7 @@ function ToolCard({ tc, index }) {
         <span style={{ fontSize: 11, color: 'var(--text-dim)', fontFamily: 'monospace', minWidth: 22 }}>
           {String(index + 1).padStart(2, '0')}
         </span>
-        <span style={{ fontSize: 14 }}>{meta.icon}</span>
+        <Icon name={meta.icon} size={16} />
         <span style={{ fontSize: 13, fontWeight: 600 }}>{meta.label}</span>
         <span style={{ flex: 1 }} />
         <span style={{ fontSize: 12, color: 'var(--text-dim)', fontFamily: 'monospace' }}>
@@ -145,7 +147,8 @@ export default function AgentPage() {
         {/* 引用来源 */}
         {m.citations?.length > 0 && (
           <div style={{ marginTop: 12, fontSize: 12 }}>
-            <div style={{ color: 'var(--text-dim)', marginBottom: 6, letterSpacing: '.5px' }}>📚 引用来源</div>
+            <div style={{ color: 'var(--text-dim)', marginBottom: 6, letterSpacing: '.5px', display: 'flex', alignItems: 'center', gap: 5 }}>
+              <Icon name="nav-books" size={13} /> 引用来源</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               {m.citations.map((c, i) => (
                 <div key={i}
@@ -173,7 +176,7 @@ export default function AgentPage() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {messages.length === 0 && (
           <div style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '48px 0', fontSize: 14 }}>
-            <div style={{ fontSize: 34, marginBottom: 12 }}>🏛️</div>
+            <div style={{ marginBottom: 12 }}><Icon name="icon-brain" size={44} /></div>
             试着问：
             <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
               {['永恒轮回是什么意思？尼采怎么说的', '休谟和康德对因果的看法有何不同？', '海德格尔受谁影响？', '推荐几本存在主义入门书'].map((q, i) => (
