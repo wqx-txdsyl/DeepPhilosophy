@@ -453,11 +453,18 @@ ${textContext}
       setFileType(type);
       loadTextBook();
     } else if (type === 'pdf') {
-      loadBook();
+      // OCR 完成的 pdf（有章节）→ 章节阅读; 无章节 → PDF 渲染
+      getBookById(bookId).then(b => {
+        if (b && b.chapterCount > 0) loadTextBook();
+        else loadBook();
+      });
     } else if (fileType === 'epub' || fileType === 'txt') {
       loadTextBook();
     } else if (fileType === 'pdf') {
-      loadBook();
+      getBookById(bookId).then(b => {
+        if (b && b.chapterCount > 0) loadTextBook();
+        else loadBook();
+      });
     } else {
       // 未知 → 默认 EPUB
       setFileType('epub');
