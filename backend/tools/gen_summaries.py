@@ -1,15 +1,15 @@
 """批量生成书籍摘要和标签（DeepSeek API）"""
 import json, os, sys, io, time, urllib.request
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace', line_buffering=True)
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # backend/
 BOOKS_PATH = os.path.join(BASE, '..', 'app', 'public', 'books.json')
 DETAIL_DIR = os.path.join(BASE, 'data', 'book_detail')
 
 # API config
 def _load_env():
-    env_path = os.path.join(os.path.dirname(os.path.dirname(BASE)), '.env')
+    env_path = os.path.join(os.path.dirname(BASE), '.env')
     if os.path.exists(env_path):
         for line in open(env_path, encoding='utf-8'):
             line = line.strip()
@@ -27,13 +27,15 @@ if not API_KEY:
 books = json.load(open(BOOKS_PATH, 'r', encoding='utf-8'))
 
 # Only process books without summary in detail
+# 过滤: 内容已就绪（有章节 / epub / txt）才生成——OCR 中的 pdf 留到完成后补跑（避免占坑）
 to_process = []
 for b in books:
     dp = os.path.join(DETAIL_DIR, f'{b["id"]}.json')
     if os.path.exists(dp):
         d = json.load(open(dp, 'r', encoding='utf-8'))
         if not d.get('summary') or len(d.get('summary', '')) < 50:
-            to_process.append(b)
+            if d.get('chapterCount', 0) > 0 or d.get('file_type') in ('epub', 'txt'):
+                to_process.append(b)
     else:
         to_process.append(b)
 

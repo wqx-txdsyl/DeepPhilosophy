@@ -59,6 +59,40 @@ def _body_to_blocks(body, images):
     _flush_text()
     return blocks
 
+
+def _segment_to_blocks(seg, images):
+    """对 descendants 片段应用块规则（锚点切割用, 规则同 _body_to_blocks）"""
+    BLOCK_TAGS = {'p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                  'li', 'blockquote', 'pre', 'section', 'article', 'br', 'hr'}
+    blocks = []
+    def _flush_text():
+        nonlocal pending
+        if pending:
+            blocks.append({'type': 'text', 'value': pending.strip()})
+            pending = ''
+    pending = ''
+    for el in seg:
+        if getattr(el, 'name', None) in ('script', 'style', 'nav', 'head', 'title'):
+            continue
+        if getattr(el, 'name', None) in BLOCK_TAGS:
+            _flush_text()
+            continue
+        if getattr(el, 'name', None) in ('img', 'image'):
+            _flush_text()
+            src = el.get('src', '') or ''
+            if src:
+                blocks.append({'type': 'image', 'src': src, 'alt': el.get('alt', '') or ''})
+            continue
+        if isinstance(el, NavigableString):
+            text = el.strip()
+            if text:
+                if pending:
+                    pending += text if text in '，。；：！？、' '「」『』""''（）' else ' ' + text
+                else:
+                    pending = text
+    _flush_text()
+    return blocks
+
 def _rewrite_img_src(el, images):
     """将元素的图片引用从 EPUB 内部路径替换为 API 路径。
     支持 src / href / xlink:href 属性。
@@ -163,7 +197,60 @@ def extract(fp,bid):
                         section = True
             merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
                                      'anchor':ce['anchor'],'section':section})
-        # 处理每个章节：提取为结构化 {type:'text'/'image'} 块
+        # 按 spine 文件分组章节（同文件多锚点 → 锚点切割, 避免内容重复粘连）
+        from collections import defaultdict
+        file_group = defaultdict(list)  # spine_idx -> [ch_idx 按出现顺序]
+        for ci, mc in enumerate(merged_chapters):
+            if mc.get('section'):
+                continue
+            for si in mc['spine_range']:
+                file_group[si].append(ci)
+        ch_blocks = defaultdict(list)  # ch_idx -> blocks
+        for si, ci_list in file_group.items():
+            href = spine_hrefs[si]
+            if href not in names:
+                candidates = [n for n in names if n.endswith(href.split('/')[-1])]
+                if candidates:
+                    href = candidates[0]
+                else:
+                    continue
+            try:
+                soup = BeautifulSoup(z.read(href).decode('utf-8', 'ignore'), 'html.parser')
+                for t in soup(['script', 'style', 'nav', 'head']):
+                    t.decompose()
+                # 重写图片引用：EPUB 内部路径 → API 路径（原地修改 soup）
+                for tag in soup.find_all(['img', 'image']):
+                    _rewrite_img_src(tag, images)
+                for tag in soup.find_all(attrs={'src': True}):
+                    if tag.name not in ('img', 'image'):
+                        _rewrite_img_src(tag, images)
+                body = soup.find('body') or soup
+                if len(ci_list) == 1:
+                    ch_blocks[ci_list[0]].extend(_body_to_blocks(body, images))
+                else:
+                    # 多章节同文件：按 anchor 切割（锚点缺失的章并入前一章, 不重复）
+                    desc = list(body.descendants)
+                    pos = {id(el): i for i, el in enumerate(desc)}
+                    for k, ci in enumerate(ci_list):
+                        anchor = merged_chapters[ci].get('anchor', '')
+                        start_el = body.find(id=anchor) if anchor else None
+                        if start_el is None:
+                            if k == 0:
+                                start_i = 0  # 文件首章锚点缺失 → 从开头
+                            else:
+                                continue  # 后续章锚点缺失 → 并入前一章
+                        else:
+                            start_i = pos.get(id(start_el), 0)
+                        end_i = len(desc)
+                        if k + 1 < len(ci_list):
+                            nxt = merged_chapters[ci_list[k + 1]].get('anchor', '')
+                            end_el = body.find(id=nxt) if nxt else None
+                            if end_el is not None:
+                                end_i = pos.get(id(end_el), len(desc))
+                        ch_blocks[ci].extend(_segment_to_blocks(desc[start_i:end_i], images))
+            except Exception:
+                pass
+        # 组装章节（保持 toc 顺序）
         for ch_idx, mc in enumerate(merged_chapters):
             if mc.get('section'):
                 # 分组标题 → 创建纯标题章节（只展示，不跳转）
@@ -172,28 +259,10 @@ def extract(fp,bid):
                       '_spine_file': spine_hrefs[mc['spine_range'][0]] if mc['spine_range'] else ''}
                 chs.append(ch)
                 continue
-            all_blocks = []
-            for si in mc['spine_range']:
-                href = spine_hrefs[si]
-                if href not in names:
-                    candidates=[n for n in names if n.endswith(href.split('/')[-1])]
-                    if candidates:href=candidates[0]
-                    else:continue
-                try:
-                    soup=BeautifulSoup(z.read(href).decode('utf-8','ignore'),'html.parser')
-                    for t in soup(['script','style','nav','head']):t.decompose()
-                    # 重写图片引用：EPUB 内部路径 → API 路径（原地修改 soup）
-                    for tag in soup.find_all(['img','image']):
-                        _rewrite_img_src(tag, images)
-                    for tag in soup.find_all(attrs={'src': True}):
-                        if tag.name not in ('img','image'):
-                            _rewrite_img_src(tag, images)
-                    body=soup.find('body') or soup
-                    all_blocks.extend(_body_to_blocks(body, images))
-                except:pass
+            all_blocks = ch_blocks.get(ch_idx, [])
             if all_blocks:
                 first_spine = spine_hrefs[mc['spine_range'][0]] if mc['spine_range'] else ''
-                ch={'title':mc['title'],'content':all_blocks,'_spine_file':first_spine}
+                ch = {'title': mc['title'], 'content': all_blocks, '_spine_file': first_spine}
                 chs.append(ch)
         # 写入文件
         for new_idx, ch in enumerate(chs):

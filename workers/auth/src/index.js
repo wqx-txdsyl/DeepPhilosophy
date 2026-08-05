@@ -5,8 +5,8 @@ const app = new Hono();
 app.use('*', cors({ origin: '*' }));
 
 function buf2hex(buf) { return Array.from(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join(''); }
-function buf2b64(buf) { return btoa(String.fromCharCode(...new Uint8Array(buf))); }
-function b642buf(str) { return Uint8Array.from(atob(str), c => c.charCodeAt(0)); }
+function buf2b64url(buf) { return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,''); }
+function b64url2buf(str) { return Uint8Array.from(atob(str.replace(/-/g,'+').replace(/_/g,'/')), c => c.charCodeAt(0)); }
 
 // 简单 SHA-256 哈希密码
 async function hashPw(password, salt) {
@@ -21,19 +21,19 @@ async function checkPw(password, stored) {
 
 // JWT
 async function signJWT(payload, secret) {
-  const h = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-  const b = btoa(JSON.stringify({ ...payload, iat: Math.floor(Date.now()/1000), exp: Math.floor(Date.now()/1000)+2592000 }));
+  const h = buf2b64url(new TextEncoder().encode(JSON.stringify({ alg: 'HS256', typ: 'JWT' })));
+  const b = buf2b64url(new TextEncoder().encode(JSON.stringify({ ...payload, iat: Math.floor(Date.now()/1000), exp: Math.floor(Date.now()/1000)+2592000 })));
   const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
-  const s = buf2b64(await crypto.subtle.sign('HMAC', k, new TextEncoder().encode(`${h}.${b}`)));
+  const s = buf2b64url(await crypto.subtle.sign('HMAC', k, new TextEncoder().encode(`${h}.${b}`)));
   return `${h}.${b}.${s}`;
 }
 async function verifyJWT(token, secret) {
   try {
     const [h, b, s] = token.split('.');
     const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
-    const ok = await crypto.subtle.verify('HMAC', k, b642buf(s), new TextEncoder().encode(`${h}.${b}`));
+    const ok = await crypto.subtle.verify('HMAC', k, b64url2buf(s), new TextEncoder().encode(`${h}.${b}`));
     if (!ok) return null;
-    const p = JSON.parse(atob(b));
+    const p = JSON.parse(new TextDecoder().decode(b64url2buf(b)));
     if (p.exp < Math.floor(Date.now()/1000)) return null;
     return p;
   } catch { return null; }
