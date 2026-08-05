@@ -93,24 +93,18 @@ export default function ChapterReader({
         ) : ch.content ? (
           ch.content.map((block, i) => {
             if (block.type === 'image') {
-              // 生僻字图（<100px 小图）→ 缩小为内联文字大小; 插图保持大图
-              const shrinkSmall = (e) => {
-                const el = e.target;
-                if (el.naturalWidth && el.naturalWidth < 100 && el.naturalHeight < 100) {
-                  el.style.maxWidth = '1.6em';
-                  el.style.maxHeight = '1.6em';
-                  el.style.verticalAlign = 'middle';
-                  el.style.display = 'inline';
-                  el.style.margin = '0 2px';
-                }
-              };
+              // 生僻字小图（<100px, 数据层 w/h）→ 内联文字大小; 插图保持大图
+              const isSmall = block.w && block.h && block.w < 100 && block.h < 100;
               return (
-                <div key={i} style={{ textAlign: 'center', margin: '8px 0' }}>
+                <div key={i} style={isSmall
+                  ? { display: 'inline', margin: '0 1px' }
+                  : { textAlign: 'center', margin: '8px 0' }}>
                   <img src={block.src} alt={block.alt || ''}
                     loading="lazy" decoding="async"
-                    onLoad={shrinkSmall}
-                    style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
-                  {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
+                    style={isSmall
+                      ? { maxWidth: '1.6em', maxHeight: '1.6em', verticalAlign: 'middle', borderRadius: 2 }
+                      : { maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
+                  {!isSmall && block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
                 </div>
               );
             }
