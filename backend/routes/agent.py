@@ -290,6 +290,105 @@ register_tool(
     _exec_list_books,
 )
 
+# ── 工具 7: write_essay（学生作文——注册为工具, 对话流意图触发）──
+def _exec_write_essay(args):
+    topic = args.get("topic") or args.get("query") or ""
+    if not topic:
+        return {"error": "缺少作文题目"}
+    try:
+        word_count = int(args.get("word_count", 800))
+    except Exception:
+        word_count = 800
+    reply, citations, tcl = _essay_pipeline(topic, args.get("genre", "议论文"),
+                                            word_count, args.get("extra", ""))
+    return {"essay": reply, "citations": citations, "steps": tcl}
+
+register_tool(
+    "write_essay",
+    "根据题目写一篇哲学作文（议论文/读后感等）。自动检索原典原文支撑论据, 带引用标注。用于学生作文场景。",
+    {"type": "object", "properties": {
+        "topic": {"type": "string", "description": "作文题目"},
+        "genre": {"type": "string", "description": "文体: 议论文/读后感/论述"},
+        "word_count": {"type": "integer", "description": "目标字数"},
+        "extra": {"type": "string", "description": "附加要求"}},
+     "required": ["topic"]},
+    _exec_write_essay,
+)
+
+# ── 工具 8: generate_image（生图——Agnes 接入中, 占位）──
+def _exec_generate_image(args):
+    return {"status": "pending", "message": "Agnes 视觉 API 接入中（网络恢复后启用）"}
+
+register_tool(
+    "generate_image",
+    "生成哲学概念图像（如洞穴比喻/永恒轮回的可视化图）。",
+    {"type": "object", "properties": {"prompt": {"type": "string", "description": "图像描述"}}, "required": ["prompt"]},
+    _exec_generate_image,
+)
+
+# ── 工具 9: get_school（哲学流派/谱系详情）──
+SCHOOLS_DIR = PUBLIC / "schools" / "data"
+def _exec_school(args):
+    name = args.get("name", "").strip()
+    if not SCHOOLS_DIR.exists():
+        return {"error": "流派数据不存在"}
+    files = os.listdir(SCHOOLS_DIR)
+    hit = None
+    for f in files:
+        if f.endswith(".json"):
+            try:
+                d = json.load(open(SCHOOLS_DIR / f, encoding="utf-8"))
+                if name in d.get("name", "") or d.get("name", "") in name:
+                    hit = d
+                    break
+            except Exception:
+                continue
+    if not hit:
+        return {"error": f"未找到流派: {name}", "hint": "可尝试: 存在主义/儒家/分析哲学/现象学/斯多葛"}
+    return {"name": hit.get("name"), "region": hit.get("region", ""),
+            "quote": hit.get("quote", ""), "quoteAuthor": hit.get("quoteAuthor", ""),
+            "subtitle": hit.get("subtitle", ""), "overview": (hit.get("overview") or "")[:800],
+            "thinkers": (hit.get("thinkers") or [])[:10],
+            "timeline": (hit.get("timeline") or [])[:10]}
+
+register_tool(
+    "get_school",
+    "查询哲学流派/学派详情（流派介绍/代表哲人/思想时间线）。用于回答'存在主义是什么''儒家思想'类问题。",
+    {"type": "object", "properties": {"name": {"type": "string", "description": "流派名（如: 存在主义/儒家/分析哲学）"}}, "required": ["name"]},
+    _exec_school,
+)
+
+# ── 工具 10: phti_test（哲学人格测试——游戏化, 对话中触发）──
+PHTI_QUESTIONS = None
+def _load_phti():
+    global PHTI_QUESTIONS
+    if PHTI_QUESTIONS is None:
+        p = PUBLIC.parent / "src" / "data" / "phti_questions.json"
+        if p.exists():
+            PHTI_QUESTIONS = json.load(open(p, encoding="utf-8"))
+        else:
+            PHTI_QUESTIONS = []
+    return PHTI_QUESTIONS
+
+def _exec_phti_test(args):
+    import random
+    qs = _load_phti()
+    if not qs:
+        return {"error": "题库缺失"}
+    picked = random.sample(qs, min(5, len(qs)))
+    out = []
+    for i, q in enumerate(picked):
+        out.append({"no": i + 1, "text": q.get("text", ""),
+                    "dimension": q.get("dimension", ""), "direction": q.get("direction", "")})
+    return {"questions": out, "instruction": "请依次回答每题的倾向（A=非常同意 B=同意 C=中立 D=不同意 E=非常不同意）"}
+
+register_tool(
+    "phti_test",
+    "哲学人格测试（PHTI）——出 5 道维度题, 用于判断用户哲学倾向（斯多葛/存在主义/功利主义等）。",
+    {"type": "object", "properties": {}, "required": []},
+    _exec_phti_test,
+)
+
 # ═══════════════════════════════════════════════════════
 # 编排: /api/agent/chat
 # ═══════════════════════════════════════════════════════
@@ -380,10 +479,134 @@ async def agent_essay(req: EssayRequest):
     except Exception as e:
         return AgentChatResponse(reply=f"作文生成失败: {e}", citations=[], tool_calls=tool_calls_log)
 
+# ── 意图检测: 对话流中自然触发各工具（确定性规则, 不依赖 LLM 自律） ──
+def detect_intent(msg):
+    if any(w in msg for w in ["写作文", "写一篇", "写个", "作文", "读后感", "议论文", "论述文", "帮我写"]):
+        return "essay"
+    if any(w in msg for w in ["画一张", "画个", "生成图片", "生成图像", "画一下", "配图", "可视化一下", "画图", "画一幅"]):
+        return "image"
+    if any(w in msg for w in ["影响了", "师承", "论敌", "关系", "受谁", "继承", "思想渊源", "师从", "反对谁", "批判谁", "受谁影响", "影响谁"]):
+        return "graph"
+    if any(w in msg for w in ["是谁", "生平", "哪个流派", "代表作", "介绍下", "介绍一下", "资料", "哪个时期"]):
+        return "philosopher"
+    if re.search(r"\d\s*[A-E]", msg) and len(msg) < 60:
+        return "phti_score"  # 测试答案格式（1A2B3C...）
+    if any(w in msg for w in ["测试", "人格测试", "测一测", "哲学人格", "我是哪种哲学", "16型", "答题", "做个测试"]):
+        return "phti"
+    if any(w in msg for w in ["流派", "学派", "主义", "谱系", "思想传统", "思想脉络"]):
+        return "school"
+    return "chat"
+
+
+def _essay_pipeline(topic, genre="议论文", word_count=800, extra=""):
+    """作文生成（检索原典 + DeepSeek 撰写）——返回 (reply, citations, tool_calls_log)"""
+    tool_calls_log = []
+    query = re.sub(r"[？?！!。，,、\s]+", " ", topic)[:50]
+    result = TOOLS["search_books"]["execute"]({"query": query, "limit": 6})
+    tool_calls_log.append({"name": "search_books", "args": {"query": query},
+                           "result_summary": str(result)[:200], "result_full": result,
+                           "thought": f"作文需原典支撑, 检索「{query}」"})
+    retrieval = json.dumps(result, ensure_ascii=False)[:6000]
+    prompt = ESSAY_PROMPT.format(genre=genre, topic=topic, word_count=word_count,
+                                 extra=extra or "无", retrieval=retrieval)
+    messages = [{"role": "user", "content": prompt}]
+    resp = llm_chat(messages, temperature=0.75, max_tokens=min(word_count * 2 + 500, 4000))
+    reply = (resp["choices"][0]["message"].get("content") or "").strip() or "（生成失败，请重试）"
+    citations = [{"book": item.get("book_title"), "chapter": item.get("chapter_title"),
+                  "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx")}
+                 for item in result.get("results", [])[:4]]
+    for tc in tool_calls_log:
+        tc.pop("result_full", None)
+    return reply, citations, tool_calls_log
+
+
 @router.post("/api/agent/chat")
 async def agent_chat(req: AgentChatRequest):
     if not API_KEY:
         return AgentChatResponse(reply="服务端未配置 DEEPSEEK_API_KEY", citations=[], tool_calls=[])
+    # 意图分派: 作文/生图在对话流中自然触发（统一走注册工具）
+    intent = detect_intent(req.message)
+    if intent == "essay":
+        result = TOOLS["write_essay"]["execute"]({"topic": req.message, "genre": "议论文", "word_count": 800})
+        reply = result.get("essay") or "（作文生成失败）"
+        tcl = result.get("steps") or []
+        tcl.insert(0, {"name": "write_essay", "args": {"topic": req.message},
+                       "result_summary": f"已生成作文 {len(reply)} 字", "thought": "识别到作文需求, 调用作文工具"})
+        return AgentChatResponse(reply=reply, citations=result.get("citations", []), tool_calls=tcl)
+    if intent == "image":
+        result = TOOLS["generate_image"]["execute"]({"prompt": req.message[:80]})
+        return AgentChatResponse(
+            reply="生图工具正在接入（Agnes 视觉 API 网络恢复后启用）。当前可尝试: 作文、原典问答、哲学家关系查询。",
+            citations=[], tool_calls=[{"name": "generate_image", "args": {"prompt": req.message[:80]},
+                                       "result_summary": str(result)[:150], "thought": "识别到生图需求"}])
+    if intent in ("graph", "philosopher"):
+        # 图谱/哲人: 确定性调用 + 结果注入 → LLM 组织回答
+        tool_name = "query_graph" if intent == "graph" else "get_philosopher"
+        name_arg = req.message.replace("尼采", "尼采").strip()
+        # 提取人名（常见哲人匹配, 子串双向: "海德格尔" 匹配 key "马丁·海德格尔"）
+        import re as _re
+        clean_name = _re.sub(r"(的生平|介绍一下|介绍下|是谁|的资料|的代表作|是哪个流派|的简介|的生平资料)", "", req.message).strip()
+        if intent == "graph":
+            cands = [k for k in get_network() if clean_name and (clean_name in k or k in clean_name)]
+        else:
+            phils = get_philosophers()
+            cands = [k for k in phils if clean_name and (clean_name in k or k in clean_name)] if isinstance(phils, dict) else \
+                    [p.get("name") for p in phils if isinstance(p, dict) and (clean_name in p.get("name", "") or p.get("name", "") in clean_name)]
+        target = max(cands, key=len) if cands else None
+        if not target:
+            # 无匹配人名 → 走普通对话
+            intent = "chat"
+        else:
+            args = {"philosopher": target} if intent == "graph" else {"name": target}
+            result = TOOLS[tool_name]["execute"](args)
+            tcl = [{"name": tool_name, "args": args, "result_summary": str(result)[:200],
+                    "result_full": result, "thought": f"识别到{'关系' if intent=='graph' else '人物'}查询, 调用{tool_name}"}]
+            messages = [{"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "user", "content": req.message},
+                        {"role": "system", "content": f"工具「{tool_name}」返回: {json.dumps(result, ensure_ascii=False)[:4000]}\n请基于此回答。"}]
+            resp = llm_chat(messages)
+            reply = (resp["choices"][0]["message"].get("content") or "").strip()
+            for tc in tcl:
+                tc.pop("result_full", None)
+            return AgentChatResponse(reply=reply, citations=[], tool_calls=tcl)
+    if intent == "school":
+        # 流派: 提取流派名 → get_school → 注入回答
+        m = re.search(r"([一-鿿]{2,8}(?:主义|哲学|学派|学))", req.message)
+        name = m.group(1) if m else req.message[:12]
+        result = TOOLS["get_school"]["execute"]({"name": name})
+        if "error" in result:
+            intent = "chat"  # 流派未命中 → 走普通对话
+        else:
+            tcl = [{"name": "get_school", "args": {"name": name}, "result_summary": str(result)[:200],
+                    "result_full": result, "thought": f"识别到流派查询, 调用 get_school({name})"}]
+            messages = [{"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "user", "content": req.message},
+                        {"role": "system", "content": f"工具「get_school」返回: {json.dumps(result, ensure_ascii=False)[:4000]}\n请基于流派资料回答。"}]
+            resp = llm_chat(messages)
+            reply = (resp["choices"][0]["message"].get("content") or "").strip()
+            for tc in tcl:
+                tc.pop("result_full", None)
+            return AgentChatResponse(reply=reply, citations=[], tool_calls=tcl)
+    if intent == "phti":
+        # 哲学人格测试: 出题 → LLM 引导答题
+        result = TOOLS["phti_test"]["execute"]({})
+        tcl = [{"name": "phti_test", "args": {}, "result_summary": str(result)[:200],
+                "result_full": result, "thought": "识别到测试需求, 生成哲学人格测试题"}]
+        q_text = "\n".join(f"{q['no']}. {q['text']}" for q in result.get("questions", []))
+        messages = [{"role": "system", "content": "你是'深哲'——哲学人格测试主持者。请用温暖有趣的风格展示下面 5 道题，并引导用户依次回答（A=非常同意 B=同意 C=中立 D=不同意 E=非常不同意）。提示用户可用格式回复: 1A 2B 3C 4D 5E。\n\n题目:\n" + q_text}]
+        resp = llm_chat(messages)
+        reply = (resp["choices"][0]["message"].get("content") or "").strip()
+        for tc in tcl:
+            tc.pop("result_full", None)
+        return AgentChatResponse(reply=reply, citations=[], tool_calls=tcl)
+    if intent == "phti_score":
+        # 测试判型: 基于答案推断哲学倾向
+        messages = [{"role": "system", "content": "你是'深哲'——哲学人格测试评分者。用户给出了测试答案（数字+字母格式）。请基于答案推断其哲学倾向（如: 斯多葛/存在主义/功利主义/犬儒/理想主义等），给出: ① 匹配类型 ② 类型说明（100字内） ③ 一句有趣的点评。用中文。"},
+                    {"role": "user", "content": f"我的答案是: {req.message}"}]
+        resp = llm_chat(messages)
+        reply = (resp["choices"][0]["message"].get("content") or "").strip()
+        return AgentChatResponse(reply=reply, citations=[], tool_calls=[{"name": "phti_score", "args": {"answers": req.message},
+                                                                          "result_summary": "已判型", "thought": "识别到测试答案, 进行哲学人格判型"}])
     # 组装消息
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     for h in req.history[-6:]:
