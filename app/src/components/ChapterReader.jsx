@@ -2,7 +2,7 @@
  * ChapterReader — 章节滚动式阅读器
  * 每章一页，上下滑动，底部切换章节
  */
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { Fragment, useRef, useEffect, useState, useCallback } from 'react';
 
 export default function ChapterReader({
   chapters = [],
@@ -97,17 +97,18 @@ export default function ChapterReader({
               && Math.max(b.w, b.h) < 300
               && (b.w / b.h) > 0.3 && (b.w / b.h) < 3;
             // ⚠️ 必须复制: 直接改 ch.content 原对象会在重渲染时 imgs 累积 → 图多次复制
+            // 图位置用 [IMG] 占位符标记（text1[IMG]text2 → 渲染时图插在拼接点, 而非段尾）
             const merged = [];
             let prevWasSmallImg = false;
             for (const src of ch.content) {
               const blk = { ...src };
               if (blk.type === 'image' && isSmall(blk)) {
-                // 小图: 并入前一个文本块（嵌句内）
+                // 小图: 并入前一个文本块, 位置标记在 [IMG]（图在 text1 与后半句之间）
                 if (merged.length && merged[merged.length - 1].type === 'text') {
                   const last = merged[merged.length - 1];
-                  merged[merged.length - 1] = { ...last, imgs: [...(last.imgs || []), blk] };
+                  merged[merged.length - 1] = { ...last, value: last.value + '[IMG]', imgs: [...(last.imgs || []), blk] };
                 } else {
-                  merged.push({ type: 'text', value: '', imgs: [blk] });
+                  merged.push({ type: 'text', value: '[IMG]', imgs: [blk] });
                 }
                 prevWasSmallImg = true;
               } else if (blk.type === 'text') {
@@ -140,13 +141,17 @@ export default function ChapterReader({
               const html = block.value || block.html || '';
               return <div key={i} className="chapter-html" dangerouslySetInnerHTML={{ __html: html }} />;
             }
-            // 文本块（含嵌入的生僻字小图）
+            // 文本块（含嵌入的生僻字小图, [IMG] 占位符位置交替渲染）
+            const parts = (block.value || '').split('[IMG]');
             return (
               <p key={i} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
-                {block.value}
+                {parts[0]}
                 {block.imgs?.map((img, j) => (
-                  <img key={j} src={img.src} alt=""
-                    style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
+                  <Fragment key={j}>
+                    <img src={img.src} alt=""
+                      style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
+                    {parts[j + 1] || ''}
+                  </Fragment>
                 ))}
               </p>
             );
