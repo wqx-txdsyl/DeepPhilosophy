@@ -21,9 +21,9 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'https://deepphilosophy-7g7m.onrender.com',
+        // 本地开发指向本地后端（book_images 313MB 在本地; 线上 Render 无图片）
+        target: 'http://localhost:8000',
         changeOrigin: true,
-        secure: true,
       },
     },
   },

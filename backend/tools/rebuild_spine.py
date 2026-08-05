@@ -45,7 +45,11 @@ def _body_to_blocks(body, images):
                 v = el.get(attr, '')
                 if v: src = v; break
             if src:
-                blocks.append({'type': 'image', 'src': src, 'alt': el.get('alt', '') or ''})
+                # alt 清洗: 转换器占位 alt（"alt"/"image"/"Image"）→ 空, 避免前端渲染出文字
+                _alt = (el.get('alt', '') or '').strip()
+                if _alt.lower() in ('alt', 'image'):
+                    _alt = ''
+                blocks.append({'type': 'image', 'src': src, 'alt': _alt})
             continue
         # 文本叶子
         if isinstance(el, NavigableString):
