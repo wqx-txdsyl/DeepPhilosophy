@@ -65,6 +65,17 @@ MERGE_RULES = {
 }
 # 大问题（epub 两份）: 留 mtime 最新的（在扫描时处理）
 
+# ── FORCE_OCR: 文本层质量差（乱码率检测 2026-08-05, 见全检记录）→ 强制 OCR 重提 ──
+FORCE_OCR = {
+    "西方/路易·阿尔都塞/读《资本论》.pdf",        # 79% 乱码
+    "西方/埃德蒙德·胡塞尔/纯粹现象学通论.pdf",    # 11% 乱码 + 碎章
+    "西方/雅克·朗西埃/美学中的不满.pdf",           # 9%
+    "西方/弗里德里希·尼采/悲剧的诞生.pdf",         # 8% + 整本1章
+    "西方/亚里士多德/政治学.pdf",                  # 6% + 仅2章
+    "西方/索伦·克尔凯郭尔/恐惧与战栗.pdf",         # 6%
+    "西方/让·鲍德里亚/擬仿物與擬像.pdf",           # 5%
+}
+
 ZOOM = 1.2
 RESTART_EVERY = 100  # 每 100 页重建 OCR（模型重启 ~30s, 25 页/次太频繁）
 _ocr, _ocr_pages = None, 0
@@ -242,8 +253,8 @@ def main():
                 if fn.lower().endswith(".pdf"):
                     pdfs.append({"rel": rel, "fp": fp, "region": region, "author": author, "file": fn})
 
-    # 文本层优先（快）, OCR 殿后（慢）
-    pdfs.sort(key=lambda b: not has_text_layer(b["fp"]))
+    # 文本层优先（快）, OCR 殿后（慢）; FORCE_OCR 名单强制走 OCR
+    pdfs.sort(key=lambda b: not (has_text_layer(b["fp"]) and b["rel"] not in FORCE_OCR))
     print(f"PDF 待处理: {len(pdfs)}（已应用合并规则, 文本层优先）", flush=True)
     for i, b in enumerate(pdfs):
         if SHARD_TOTAL > 1 and i % SHARD_TOTAL != SHARD:

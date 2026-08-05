@@ -883,6 +883,15 @@ async def render_epub_chapter(book_id: str, chapter: int = Query(0)):
     return HTMLResponse(content=html)
 
 
+@app.get("/api/books/{book_id}/image/{img_name}")
+async def book_image(book_id: str, img_name: str):
+    """epub 提取图片（backend/data/book_images 静态读取, rebuild_spine 生成的 src）"""
+    img_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "book_images", img_name)
+    if not os.path.exists(img_path):
+        raise HTTPException(404, "image not found")
+    return FileResponse(img_path, media_type="image/webp")
+
+
 @app.get("/api/books/{book_id}/file")
 async def download_book(book_id: str, request: Request):
     """下载/流式传输书籍文件 —— R2 模式返回预签名 URL，本地模式返回文件流"""

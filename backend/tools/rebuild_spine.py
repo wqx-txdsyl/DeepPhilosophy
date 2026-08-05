@@ -197,59 +197,83 @@ def extract(fp,bid):
                         section = True
             merged_chapters.append({'title':ce['title'],'spine_range':list(range(si,next_si)),
                                      'anchor':ce['anchor'],'section':section})
-        # 按 spine 文件分组章节（同文件多锚点 → 锚点切割, 避免内容重复粘连）
+        # 跨文件锚点切分（2026-08-05 重写）: 每章内容 = [本章锚点 → 下一章锚点) 的全局文档流
+        # 修复: 锚点在文件尾部而正文在下一文件开头（filepos 型 NCX 错位, 如红书沙漠章）
         from collections import defaultdict
-        file_group = defaultdict(list)  # spine_idx -> [ch_idx 按出现顺序]
-        for ci, mc in enumerate(merged_chapters):
-            if mc.get('section'):
-                continue
-            for si in mc['spine_range']:
-                file_group[si].append(ci)
         ch_blocks = defaultdict(list)  # ch_idx -> blocks
-        for si, ci_list in file_group.items():
-            href = spine_hrefs[si]
-            if href not in names:
-                candidates = [n for n in names if n.endswith(href.split('/')[-1])]
-                if candidates:
-                    href = candidates[0]
-                else:
-                    continue
+        file_cache = {}  # href -> {'soup': body, 'desc': [...], 'pos': {id->idx}}
+        def _get_file(href):
+            if href in file_cache:
+                return file_cache[href]
+            fhref = href
+            if fhref not in names:
+                cand = [n for n in names if n.endswith(fhref.split('/')[-1])]
+                fhref = cand[0] if cand else None
+            if fhref is None:
+                file_cache[href] = None
+                return None
             try:
-                soup = BeautifulSoup(z.read(href).decode('utf-8', 'ignore'), 'html.parser')
+                soup = BeautifulSoup(z.read(fhref).decode('utf-8', 'ignore'), 'html.parser')
                 for t in soup(['script', 'style', 'nav', 'head']):
                     t.decompose()
-                # 重写图片引用：EPUB 内部路径 → API 路径（原地修改 soup）
                 for tag in soup.find_all(['img', 'image']):
                     _rewrite_img_src(tag, images)
                 for tag in soup.find_all(attrs={'src': True}):
                     if tag.name not in ('img', 'image'):
                         _rewrite_img_src(tag, images)
                 body = soup.find('body') or soup
-                if len(ci_list) == 1:
-                    ch_blocks[ci_list[0]].extend(_body_to_blocks(body, images))
-                else:
-                    # 多章节同文件：按 anchor 切割（锚点缺失的章并入前一章, 不重复）
-                    desc = list(body.descendants)
-                    pos = {id(el): i for i, el in enumerate(desc)}
-                    for k, ci in enumerate(ci_list):
-                        anchor = merged_chapters[ci].get('anchor', '')
-                        start_el = body.find(id=anchor) if anchor else None
-                        if start_el is None:
-                            if k == 0:
-                                start_i = 0  # 文件首章锚点缺失 → 从开头
-                            else:
-                                continue  # 后续章锚点缺失 → 并入前一章
-                        else:
-                            start_i = pos.get(id(start_el), 0)
-                        end_i = len(desc)
-                        if k + 1 < len(ci_list):
-                            nxt = merged_chapters[ci_list[k + 1]].get('anchor', '')
-                            end_el = body.find(id=nxt) if nxt else None
-                            if end_el is not None:
-                                end_i = pos.get(id(end_el), len(desc))
-                        ch_blocks[ci].extend(_segment_to_blocks(desc[start_i:end_i], images))
+                desc = list(body.descendants)
+                pos = {id(el): i for i, el in enumerate(desc)}
             except Exception:
-                pass
+                file_cache[href] = None
+                return None
+            file_cache[href] = {'soup': body, 'desc': desc, 'pos': pos}
+            return file_cache[href]
+        # 定位每章锚点（找不到锚点的章 skip——内容并入前一章, 由"到下一锚点"截断保证不重复）
+        anchors = []  # (ci, href, start_desc_idx)
+        for ci, mc in enumerate(merged_chapters):
+            if mc.get('section'):
+                continue
+            anchor = mc.get('anchor', '')
+            found = None
+            for si in mc['spine_range']:
+                f = _get_file(spine_hrefs[si])
+                if f is None:
+                    continue
+                if anchor:
+                    el = f['soup'].find(id=anchor)
+                    if el is not None:
+                        found = (spine_hrefs[si], f['pos'].get(id(el), 0))
+                        break
+                elif found is None:
+                    found = (spine_hrefs[si], 0)
+            if found is not None:
+                anchors.append((ci, found[0], found[1]))
+        # 拼接: 章 k = file[href_k][p1:] + 中间文件全量 + file[href_next][:p2]
+        spine_idx_of = {h: i for i, h in enumerate(spine_hrefs)}
+        for k, (ci, h1, p1) in enumerate(anchors):
+            h2 = p2 = None
+            if k + 1 < len(anchors):
+                ci2, h2, p2 = anchors[k + 1]
+            f1 = _get_file(h1)
+            if f1 is None:
+                continue
+            if h2 is not None and h2 != h1:
+                seg = f1['desc'][p1:]
+                i1 = spine_idx_of.get(h1, 0)
+                i2 = spine_idx_of.get(h2, 0)
+                for si in range(i1 + 1, i2):
+                    fm = _get_file(spine_hrefs[si])
+                    if fm is not None:
+                        seg.extend(fm['desc'])
+                f2 = _get_file(h2)
+                if f2 is not None:
+                    seg.extend(f2['desc'][:p2])
+            elif h2 == h1:
+                seg = f1['desc'][p1:p2]
+            else:
+                seg = f1['desc'][p1:]
+            ch_blocks[ci].extend(_segment_to_blocks(seg, images))
         # 组装章节（保持 toc 顺序）
         for ch_idx, mc in enumerate(merged_chapters):
             if mc.get('section'):

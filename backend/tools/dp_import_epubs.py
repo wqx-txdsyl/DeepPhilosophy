@@ -124,6 +124,8 @@ def main():
             # detail（迁移 summary/tags）
             detail = {k: meta[k] for k in ["bookId", "title", "author", "cover", "toc",
                                            "chapterCount", "chapterTitles"]}
+            if not detail.get("cover") and old_det.get("cover"):
+                detail["cover"] = old_det["cover"]  # 重导未提取到封面时保留旧封面
             detail["region"] = rel.split("/")[0]
             detail["file_type"] = "epub"
             if old_det.get("summary"):
