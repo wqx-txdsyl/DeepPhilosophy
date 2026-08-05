@@ -28,7 +28,8 @@ function BookDetailPage() {
       const r = await fetch(`/book_detail/${bookId}.json?v=3`);
       if (r.ok) {
         const d = await r.json();
-        const enriched = { ...d, file_type: 'epub', file_size: 0 };
+        // file_type 以 detail 为准（修复: 曾写死 epub, 导致 pdf/txt 书详情页显示 EPUB）
+        const enriched = { ...d, file_type: d.file_type || 'epub', file_size: d.file_size || 0 };
         setBook(enriched);
         setMeta(d);
         setLoading(false);

@@ -150,30 +150,54 @@ def extract(fp,bid):
                     ncx_path=str(Path(opf_dir)/ncx_href).replace('\\','/') if opf_dir else ncx_href
                     if ncx_path in names:
                         try:
+                            _LVL_PAT = re.compile(r'(第[一二三四五六七八九十百\d]+[部卷编篇章节回讲])')
+                            def _clean_title(t):
+                                """超长标题（嵌套 navPoint 目录级联, 如康德文集 244 字）截断为首层级"""
+                                if len(t) <= 60:
+                                    return t
+                                m = list(_LVL_PAT.finditer(t))
+                                if not m:
+                                    return t[:40] + ('…' if len(t) > 40 else '')
+                                end = m[1].start() if len(m) > 1 else min(len(t), m[0].start() + 30)
+                                return t[:end].strip()
                             ncx=BeautifulSoup(z.read(ncx_path).decode('utf-8','ignore'),'xml')
                             for np in ncx.find_all('navPoint'):
                                 lab=np.find('navLabel');c=np.find('content')
                                 if lab and c:
                                     src_val = c.get('src','')
-                                    toc.append(type('TocEntry',(),{'_text':lab.text.strip(),'_src':src_val})())
+                                    # 嵌套 navPoint（有子节点）= 分组标题, 不进内容章（如康德文集"第一部先验要素论..."）
+                                    is_sec = np.find('navPoint') is not None
+                                    toc.append(type('TocEntry',(),{'_text':_clean_title(lab.text.strip()),'_src':src_val,
+                                                                    '_section': is_sec})())
                         except:pass
                     break
         if not spine_hrefs:
             spine_hrefs=sorted([n for n in names if n.endswith(('.xhtml','.html','.htm')) and '/nav' not in n.lower()])
         # NCX → 章节：记录每个条目的完整 src（含锚点）
+        _LVL_PAT = re.compile(r'(第[一二三四五六七八九十百\d]+[部卷编篇章节回讲])')
+        def _clean_title(t):
+            """超长标题（嵌套 navPoint 目录级联, 如康德文集 244 字）截断为首层级"""
+            if len(t) <= 60:
+                return t
+            m = list(_LVL_PAT.finditer(t))
+            if not m:
+                return t[:40] + ('…' if len(t) > 40 else '')
+            end = m[1].start() if len(m) > 1 else min(len(t), m[0].start() + 30)
+            return t[:end].strip()
         chapter_entries = []
         if toc:
             for t in toc:
                 full_src = t._src if hasattr(t,'_src') else ''
                 src_file = full_src.split('#')[0] if full_src else ''
                 anchor = full_src.split('#')[1] if '#' in full_src else ''
-                ch_title = t._text if hasattr(t,'_text') else ''
+                ch_title = _clean_title(t._text if hasattr(t,'_text') else '')
                 spine_idx = None
                 src_decoded = unquote(src_file)  # 处理 NCX 中的 %20 等 URL 编码
                 for si, sh in enumerate(spine_hrefs):
                     if src_file and (sh.endswith(src_file.split('/')[-1]) or sh.endswith(src_decoded.split('/')[-1])):
                         spine_idx = si; break
-                chapter_entries.append({'title':ch_title,'spine_idx':spine_idx,'anchor':anchor,'full_src':full_src})
+                chapter_entries.append({'title':ch_title,'spine_idx':spine_idx,'anchor':anchor,'full_src':full_src,
+                                        'ncx_section': bool(getattr(t, '_section', False))})
         if not chapter_entries:
             chapter_entries = [{'title':f'第{i+1}章','spine_idx':i,'anchor':''} for i in range(len(spine_hrefs))]
         # 每章内容：spine_range + 锚点切割。先检测并标记分组标题
@@ -186,8 +210,8 @@ def extract(fp,bid):
             for cj in range(ci+1, len(chapter_entries)):
                 ns = chapter_entries[cj]['spine_idx']
                 if ns is not None and ns > si: next_si = ns; break
-            # 检测：当前 spine 文件名是下一章的前缀 → 分组标题
-            section = False
+            # 检测：当前 spine 文件名是下一章的前缀 → 分组标题; NCX 嵌套 navPoint → 分组标题
+            section = bool(ce.get('ncx_section'))
             if ci+1 < len(chapter_entries):
                 ns = chapter_entries[ci+1].get('spine_idx')
                 if ns is not None and ns < len(spine_hrefs):

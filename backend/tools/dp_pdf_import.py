@@ -253,8 +253,8 @@ def main():
                 if fn.lower().endswith(".pdf"):
                     pdfs.append({"rel": rel, "fp": fp, "region": region, "author": author, "file": fn})
 
-    # 文本层优先（快）, OCR 殿后（慢）; FORCE_OCR 名单强制走 OCR
-    pdfs.sort(key=lambda b: not (has_text_layer(b["fp"]) and b["rel"] not in FORCE_OCR))
+    # 文本层优先（快）, OCR 殿后（慢）; FORCE_OCR 名单强制走 OCR 且排最前（用户关注书）
+    pdfs.sort(key=lambda b: (0 if b["rel"] in FORCE_OCR else 1 if not (has_text_layer(b["fp"]) and b["rel"] not in FORCE_OCR) else 2, b["rel"]))
     print(f"PDF 待处理: {len(pdfs)}（已应用合并规则, 文本层优先）", flush=True)
     for i, b in enumerate(pdfs):
         if SHARD_TOTAL > 1 and i % SHARD_TOTAL != SHARD:

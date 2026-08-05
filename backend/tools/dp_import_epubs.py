@@ -66,9 +66,13 @@ def main():
     books = json.load(open(BOOKS_FILE, encoding="utf-8"))
     epubs = find_epubs()
     _log(f"epub 文件: {len(epubs)}")
-    # 目标: --all 全量重入库（锚点切割后重跑）; 默认只补 ch<=1
-    targets = [b for b in books if b.get("file_type") == "epub" and (ALL or (b.get("chapterCount") or 0) <= 1)]
-    _log(f"目标: {len(targets)} ({'全量重入库' if ALL else 'ch<=1'})")
+    # 目标: --all 全量重入库（锚点切割后重跑）; --only 书名 单本重导; 默认只补 ch<=1
+    if "--only" in sys.argv:
+        only = sys.argv[sys.argv.index("--only") + 1]
+        targets = [b for b in books if b.get("file_type") == "epub" and only in b.get("title", "")]
+    else:
+        targets = [b for b in books if b.get("file_type") == "epub" and (ALL or (b.get("chapterCount") or 0) <= 1)]
+    _log(f"目标: {len(targets)} ({'全量重入库' if ALL else ('--only' if '--only' in sys.argv else 'ch<=1')})")
     ok, fail = 0, 0
     for b in targets:
         bid = b["id"]
@@ -82,9 +86,9 @@ def main():
             _log(f"  !! 文件未找到: {b['title']} (bid {bid})")
             fail += 1
             continue
-        # 幂等: 已有章节且 >0 章（--all 模式全量重跑, 不跳过）
+        # 幂等: 已有章节且 >0 章（--all / --only 模式全量重跑, 不跳过）
         bd = os.path.join(CDIR, bid)
-        if not ALL and os.path.exists(os.path.join(bd, "meta.json")):
+        if not ALL and "--only" not in sys.argv and os.path.exists(os.path.join(bd, "meta.json")):
             try:
                 m = json.load(open(os.path.join(bd, "meta.json"), encoding="utf-8"))
                 if m.get("chapterCount", 0) > 0:
