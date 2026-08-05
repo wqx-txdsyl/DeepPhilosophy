@@ -472,7 +472,8 @@ def _scan_books_local() -> list[dict]:
 
             full_path = os.path.join(root, f)
             rel_path = os.path.relpath(full_path, knowledge_dir)
-            parts = rel_path.replace("\\", "/").split("/")
+            rel_slash = rel_path.replace("\\", "/")  # ⚠️ id 必须用正斜杠（与 books.json 一致, 否则 file API 404）
+            parts = rel_slash.split("/")
 
             region = parts[0] if len(parts) > 0 else "西方"
             author = parts[1] if len(parts) > 1 else "未知"
@@ -480,7 +481,7 @@ def _scan_books_local() -> list[dict]:
             title = Path(f).stem
             title = TITLE_FIXES.get(title, title)  # 修正文件名限制导致的显示问题
 
-            file_id = hashlib.md5(rel_path.encode()).hexdigest()[:12]
+            file_id = hashlib.md5(rel_slash.encode()).hexdigest()[:12]
 
             # 书籍分类标签
             tags = _classify_book(title, author_clean, region)
@@ -537,6 +538,8 @@ def _scan_books_local() -> list[dict]:
         try:
             with open(_BOOKS_CACHE_PATH, "r", encoding="utf-8") as f:
                 kw_cache = json.load(f)
+            if not isinstance(kw_cache, dict):
+                kw_cache = {}  # 缓存文件可能是 list（旧格式）→ 防御
         except Exception:
             pass
     summary_cache = _load_summaries_cache()
