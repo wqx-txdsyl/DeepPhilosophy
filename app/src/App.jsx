@@ -154,8 +154,10 @@ function MainLayout() {
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
-  const isAgent = location.pathname.startsWith('/qa') || location.pathname.startsWith('/agent');
-  const hideHeader = isHome || isReader || isSchool;
+  // 5200 独立端口 = Agent 平台入口（首页直接进入深哲）
+  const isAgentPort = location.port === '5200';
+  const isAgent = isAgentPort || location.pathname.startsWith('/qa') || location.pathname.startsWith('/agent');
+  const hideHeader = isHome || isReader || isSchool || isAgent;
 
   return (
     <>
@@ -178,7 +180,7 @@ function MainLayout() {
         <Suspense fallback={<PageLoader />}>
         <div key={location.pathname} className="page-enter">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={isAgentPort ? <AgentPage /> : <HomePage />} />
           <Route path="/books" element={<BooksPage />} />
           <Route path="/book/:bookId" element={<BookDetailPage />} />
           <Route path="/reader/:bookId" element={<ReaderPage />} />

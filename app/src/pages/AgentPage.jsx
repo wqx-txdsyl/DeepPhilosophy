@@ -242,113 +242,15 @@ function ChatTab() {
   );
 }
 
-/* ── 作文页签（面向学生） ── */
-function EssayTab() {
-  const [topic, setTopic] = useState('');
-  const [genre, setGenre] = useState('议论文');
-  const [wordCount, setWordCount] = useState(800);
-  const [extra, setExtra] = useState('');
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const generate = async () => {
-    if (!topic.trim() || loading) return;
-    setLoading(true);
-    setResult(null);
-    try {
-      const resp = await fetch(`${getApiBase()}/api/agent/essay`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic: topic.trim(), genre, word_count: wordCount, extra }),
-      });
-      const d = await resp.json();
-      setResult({ content: d.reply, citations: d.citations || [], toolCalls: d.tool_calls || [] });
-    } catch (e) {
-      setResult({ content: `生成失败: ${e.message}`, citations: [] });
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div style={{ padding: '8px 0 120px' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 12, padding: 18 }}>
-        <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>哲学作文助手——输入题目，基于 403 本原典生成带引用的作文</div>
-        <input value={topic} onChange={e => setTopic(e.target.value)}
-          placeholder="作文题目（如: 论自由 / 尼采超人学说评析 / 谈谈你对'存在先于本质'的理解）"
-          style={{ padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 14, outline: 'none' }} />
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-          <select value={genre} onChange={e => setGenre(e.target.value)}
-            style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 13 }}>
-            {['议论文', '读后感', '论述'].map(g => <option key={g} value={g}>{g}</option>)}
-          </select>
-          <select value={wordCount} onChange={e => setWordCount(Number(e.target.value))}
-            style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 13 }}>
-            {[600, 800, 1000, 1500].map(n => <option key={n} value={n}>{n} 字</option>)}
-          </select>
-          <input value={extra} onChange={e => setExtra(e.target.value)}
-            placeholder="附加要求（可选: 如'结合现实生活举例'）"
-            style={{ flex: 1, minWidth: 200, padding: '8px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: 13, outline: 'none' }} />
-          <button onClick={generate} disabled={loading || !topic.trim()}
-            style={{ padding: '9px 22px', borderRadius: 10, border: 'none', cursor: 'pointer',
-                     background: 'linear-gradient(135deg,#6a7bff,#8b5cf6)', color: '#fff', fontSize: 13,
-                     opacity: loading || !topic.trim() ? 0.5 : 1 }}>
-            {loading ? '生成中…' : '生成作文'}
-          </button>
-        </div>
-      </div>
-      {result && (
-        <div style={{ marginTop: 14, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 12, padding: '18px 22px' }}>
-          {result.toolCalls?.length > 0 && (
-            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 8, letterSpacing: '.5px' }}>
-              ── 检索过程 · {result.toolCalls.length} 步 ──
-            </div>
-          )}
-          <div style={{ lineHeight: 2, fontSize: 15 }}>{renderMarkdown(result.content)}</div>
-          <Citations citations={result.citations} navigate={navigate} />
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ── 生图页签（Agnes 接入中, 占位） ── */
-function ImageTab() {
-  return (
-    <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-dim)' }}>
-      <div style={{ marginBottom: 14 }}><Icon name="icon-candle" size={40} /></div>
-      <div style={{ fontSize: 15, marginBottom: 6 }}>哲学概念生图</div>
-      <div style={{ fontSize: 13 }}>即将上线——Agnes 视觉 API 接入中（网络恢复后启用）<br />可生成概念可视化图（如"洞穴比喻""永恒轮回"）</div>
-    </div>
-  );
-}
-
-/* ── 主页面 ── */
+/* ── 主页面（单一对话流: 作文/生图在对话中自然触发） ── */
 export default function AgentPage() {
-  const [tab, setTab] = useState('chat');
   return (
     <div style={{ maxWidth: 860, margin: '0 auto', padding: '16px 20px 0', minHeight: '70vh' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 4 }}>
         <h1 style={{ fontSize: 22, margin: 0 }}>深哲</h1>
         <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>哲学智能体 · 基于 403 本原典</span>
       </div>
-      {/* 页签 */}
-      <div style={{ display: 'flex', gap: 4, margin: '10px 0 14px', borderBottom: '1px solid var(--border)', paddingBottom: 0 }}>
-        {TABS.map(t => (
-          <button key={t.key} onClick={() => setTab(t.key)}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px',
-                     border: 'none', background: 'none', cursor: 'pointer', fontSize: 14,
-                     color: tab === t.key ? '#8b9bff' : 'var(--text-dim)',
-                     borderBottom: tab === t.key ? '2px solid #8b9bff' : '2px solid transparent',
-                     fontWeight: tab === t.key ? 600 : 400 }}>
-            <Icon name={t.icon} size={15} />
-            {t.label}
-          </button>
-        ))}
-      </div>
-      {tab === 'chat' && <ChatTab />}
-      {tab === 'essay' && <EssayTab />}
-      {tab === 'image' && <ImageTab />}
+      <ChatTab />
     </div>
   );
 }
