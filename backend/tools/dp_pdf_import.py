@@ -14,7 +14,10 @@ import sys, io, os, json, re, time, hashlib, shutil
 from pathlib import Path
 
 if sys.platform == "win32":
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    try:
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace", line_buffering=True)
+    except Exception:
+        pass  # pythonw/管道下 buffer 可能为 None 或已关闭, 保留默认
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_book_json import save_as_webp
 
@@ -29,7 +32,7 @@ IMG_DIR = os.path.join(BASE_DIR, "data/book_images")
 COVERS_DIR = os.path.join(BASE_DIR, "../app/public/covers")
 SDIR = os.path.join(BASE_DIR, "data/book_summaries.json")
 # 书名修复: 文件名(stem) → 显示名（Windows 不允许 / 等字符, 如 S/Z）
-TITLE_FIX = {"SZ": "S/Z"}
+TITLE_FIX = {"SZ": "S/Z", "哲学与人生 (1)": "哲学与人生"}
 # 并行分片: python dp_pdf_import.py [shard] [total]（shard 0-based, total 默认 1）
 # shard 0 用主 ckpt（保留既有进度）; shard>0 用独立 ckpt 文件, 全部完成后用 dp_merge_ckpt.py 合并
 SHARD = int(sys.argv[1]) if len(sys.argv) > 1 else 0
@@ -55,6 +58,10 @@ MERGE_RULES = {
         ("西方/卡尔·马克思/马克思恩格斯文集.epub", "卡尔·马克思、弗里德里希·恩格斯"),
     "西方/波爱修斯/哲学规劝录 哲学的慰藉.pdf":
         ("西方/扬布里柯/哲学规劝录 哲学的慰藉.pdf", "扬布里柯、波爱修斯"),
+    # epub 版已在库: pdf 版跳过, 避免书架重复
+    # 存在与虚无: epub 版入库, pdf 版仅借其首页渲染做封面（epub 源无内置封面）
+    "西方/让-保罗·萨特/存在与虚无.pdf": None,
+    "西方/柏拉图/理想国.pdf": None,
 }
 # 大问题（epub 两份）: 留 mtime 最新的（在扫描时处理）
 

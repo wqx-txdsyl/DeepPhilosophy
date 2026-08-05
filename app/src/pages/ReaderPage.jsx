@@ -14,7 +14,11 @@ import ChapterReader from '../components/ChapterReader';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-const CDN_BASE = `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${__COMMIT_HASH__}`;
+// 章节 CDN 基址: 本地开发（localhost）→ 本地静态目录（vite dev 服务 public/backend/data/book_chapters junction）;
+// 生产（GitHub Pages/Cloudflare 域名）→ jsDelivr（GitHub 自动刷新）
+// 本地为空串（拼接 /backend/... 为同源相对路径; "/" 会拼出 //backend 协议相对 URL 被当主机名）
+const CDN_BASE = (typeof location !== 'undefined' && ['localhost', '127.0.0.1'].includes(location.hostname))
+  ? '' : `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${__COMMIT_HASH__}`;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs`;
 

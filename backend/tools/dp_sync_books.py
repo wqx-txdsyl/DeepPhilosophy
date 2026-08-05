@@ -25,7 +25,7 @@ CATALOG_FILE = os.path.join(BASE, "backend", "data", "books_catalog.json")
 RANK_FILE = os.path.join(BASE, "backend", "data", "book_rankings.json")
 
 # 书名修复: 文件名(stem) → 显示名（Windows 不允许 / 等字符, 如 S/Z）
-TITLE_FIX = {"SZ": "S/Z"}
+TITLE_FIX = {"SZ": "S/Z", "哲学与人生 (1)": "哲学与人生"}
 
 # rank 按 (title, author) 匹配（score_item 输出 + git 备份兜底, 比 detail.rank 权威）
 _ranks = {}
@@ -63,6 +63,12 @@ MERGE_RULES = {
         ("西方/卡尔·马克思/马克思恩格斯文集.epub", "卡尔·马克思、弗里德里希·恩格斯"),
     "西方/波爱修斯/哲学规劝录 哲学的慰藉.pdf":
         ("西方/扬布里柯/哲学规劝录 哲学的慰藉.pdf", "扬布里柯、波爱修斯"),
+    # epub 版已在库: pdf 版跳过, 避免书架重复
+    # 存在与虚无: epub 版入库, pdf 版仅借其首页渲染做封面（epub 源无内置封面）
+    "西方/让-保罗·萨特/存在与虚无.pdf": None,
+    "西方/柏拉图/理想国.pdf": None,
+    # 神圣家族 txt 两份（马克思/恩格斯文件夹各一, 合著内容相同）: 只留马克思版
+    "西方/弗里德里希·恩格斯/神圣家族.txt": None,
 }
 # 大问题 epub 两份: 留 mtime 新的（旧的跳过）
 DUP_GROUP = ["西方/合集&概述/大问题.epub", "西方/罗伯特•所罗门/大问题.epub"]
@@ -98,7 +104,10 @@ def main():
                     continue
                 bid = hashlib.md5(rel.encode()).hexdigest()[:12]
                 author_name = author
-                for sub, (main, merged_author) in MERGE_RULES.items():
+                for sub, val in MERGE_RULES.items():
+                    if not val:
+                        continue  # None = 纯跳过（如理想国.pdf 副版）
+                    main, merged_author = val
                     if rel == main:
                         author_name = merged_author
                         break
@@ -124,6 +133,9 @@ def main():
                         entry["tags"] = det.get("tags", [])
                         entry["cover"] = det.get("cover")
                         entry["summary"] = det.get("summary", "")
+                        # author 以 detail 为准（合著/合并作者在 detail 里权威, 文件夹名只是来源）
+                        if det.get("author"):
+                            entry["author"] = det["author"]
                     except Exception:
                         pass
                 # 书名: TITLE_FIX → detail.title（权威, 重建后为正确名）→ 文件名

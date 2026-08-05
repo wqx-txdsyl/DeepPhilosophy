@@ -16,7 +16,8 @@ export default defineConfig({
     port: 5173,
     host: true,
     headers: {
-      'Cache-Control': 'public, max-age=3600',
+      // dev 必须 no-cache: max-age=3600 会让浏览器缓存模块 1 小时（改代码后 F5 拿旧代码）
+      'Cache-Control': 'no-cache',
     },
     proxy: {
       '/api': {
