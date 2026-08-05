@@ -35,6 +35,7 @@ const WesternPhilosophiesPage = lazy(() => import('./pages/WesternPhilosophiesPa
 const EasternPhilosophiesPage = lazy(() => import('./pages/EasternPhilosophiesPage'));
 // 重型页面（lazy：PDF/EPUB reader + 游戏）
 const ReaderPage = lazy(() => import('./pages/ReaderPage'));
+const AgentPage = lazy(() => import('./pages/AgentPage'));
 const AnswerBookPage = lazy(() => import('./pages/AnswerBookPage'));
 const PHTIPage = lazy(() => import('./pages/PHTIPage'));
 const PHTISillyPage = lazy(() => import('./pages/PHTISillyPage'));
@@ -190,6 +191,7 @@ function MainLayout() {
           <Route path="/western-philosophies" element={<WesternPhilosophiesPage />} />
           <Route path="/eastern-philosophies" element={<EasternPhilosophiesPage />} />
           <Route path="/qa" element={<QAPage />} />
+          <Route path="/agent" element={<AgentPage />} />
           <Route path="/games" element={<GamesPage />} />
           <Route path="/games/answer-book" element={<AnswerBookPage />} />
           <Route path="/games/phti" element={<PHTIPage />} />

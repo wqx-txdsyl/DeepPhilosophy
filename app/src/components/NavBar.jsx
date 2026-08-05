@@ -10,6 +10,7 @@ const TABS = [
   { key: 'authors', icon: 'nav-authors', text: '哲人', path: '/authors' },
   { key: 'genealogy', icon: 'nav-genealogy', text: '谱系', path: '/genealogy' },
   { key: 'qa', icon: 'nav-qa', text: '问答', path: '/qa' },
+  { key: 'agent', icon: 'nav-qa', text: '深哲', path: '/agent' },
   { key: 'games', icon: 'nav-games', text: '游戏', path: '/games' },
 ];
 
@@ -18,6 +19,7 @@ function getActiveTab(pathname) {
   if (pathname.startsWith('/authors') || pathname.startsWith('/author')) return 'authors';
   if (pathname.startsWith('/genealogy')) return 'genealogy';
   if (pathname.startsWith('/qa')) return 'qa';
+  if (pathname.startsWith('/agent')) return 'agent';
   if (pathname.startsWith('/games')) return 'games';
   if (pathname.startsWith('/school')) return 'genealogy';
   if (pathname.startsWith('/book') || pathname === '/books') return 'books';
