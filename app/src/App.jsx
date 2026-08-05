@@ -180,7 +180,8 @@ function MainLayout() {
         <Suspense fallback={<PageLoader />}>
         <div key={location.pathname} className="page-enter">
         <Routes>
-          <Route path="/" element={isAgentPort ? <AgentPage /> : <HomePage />} />
+          {isAgentPort && <Route path="*" element={<AgentPage />} />}
+          <Route path="/" element={<HomePage />} />
           <Route path="/books" element={<BooksPage />} />
           <Route path="/book/:bookId" element={<BookDetailPage />} />
           <Route path="/reader/:bookId" element={<ReaderPage />} />
