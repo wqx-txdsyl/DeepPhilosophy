@@ -29,12 +29,16 @@ def log(msg):
 
 def main():
     started = []
+    # --only 书名: 单本试跑（质量验证后再放量）
+    only_args = []
+    if "--only" in sys.argv:
+        only_args = ["--only", sys.argv[sys.argv.index("--only") + 1]]
     # 单分片: dp_pdf_import.py 0 1（主 ckpt 断点续传, CPU 1 路慢跑）
     so = open(os.path.join(DATA, "ocr_s0.log"), "a", encoding="utf-8")
     se = open(os.path.join(DATA, "ocr_s0_err.log"), "a", encoding="utf-8")
-    p = subprocess.Popen([PYW, SCRIPT, "0", "1"], stdout=so, stderr=se)
+    p = subprocess.Popen([PYW, SCRIPT, "0", "1"] + only_args, stdout=so, stderr=se)
     started.append(("shard", 0, p.pid))
-    log(f"started shard 0 pid {p.pid}")
+    log(f"started shard 0 pid {p.pid} {'--only ' + only_args[1] if only_args else ''}")
     so = open(os.path.join(DATA, "ocr_watchdog.log"), "a", encoding="utf-8")
     se = open(os.path.join(DATA, "ocr_watchdog_err.log"), "a", encoding="utf-8")
     p = subprocess.Popen([PYW, WATCHDOG], stdout=so, stderr=se)

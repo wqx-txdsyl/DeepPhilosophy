@@ -34,9 +34,13 @@ SDIR = os.path.join(BASE_DIR, "data/book_summaries.json")
 # 书名修复: 文件名(stem) → 显示名（Windows 不允许 / 等字符, 如 S/Z）
 TITLE_FIX = {"SZ": "S/Z", "哲学与人生 (1)": "哲学与人生"}
 # 并行分片: python dp_pdf_import.py [shard] [total]（shard 0-based, total 默认 1）
+# --only 书名: 只处理匹配的书（单本试跑, 质量验证后再放量）
 # shard 0 用主 ckpt（保留既有进度）; shard>0 用独立 ckpt 文件, 全部完成后用 dp_merge_ckpt.py 合并
 SHARD = int(sys.argv[1]) if len(sys.argv) > 1 else 0
 SHARD_TOTAL = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+ONLY = None
+if "--only" in sys.argv:
+    ONLY = sys.argv[sys.argv.index("--only") + 1]
 CKPT_FILE = os.path.join(BASE_DIR, "data",
                          f"dp_pdf_import_ckpt_s{SHARD}.json" if SHARD_TOTAL > 1 and SHARD > 0
                          else "dp_pdf_import_ckpt.json")
@@ -255,6 +259,8 @@ def main():
 
     # 文本层优先（快）, OCR 殿后（慢）; FORCE_OCR 名单强制走 OCR 且排最前（用户关注书）
     pdfs.sort(key=lambda b: (0 if b["rel"] in FORCE_OCR else 1 if not (has_text_layer(b["fp"]) and b["rel"] not in FORCE_OCR) else 2, b["rel"]))
+    if ONLY:
+        pdfs = [b for b in pdfs if ONLY in b["rel"]]
     print(f"PDF 待处理: {len(pdfs)}（已应用合并规则, 文本层优先）", flush=True)
     for i, b in enumerate(pdfs):
         if SHARD_TOTAL > 1 and i % SHARD_TOTAL != SHARD:
@@ -268,7 +274,8 @@ def main():
         t0 = time.time()
         print(f"[{i+1}/{len(pdfs)}] {rel}", flush=True)
         try:
-            if has_text_layer(b["fp"]):
+            # FORCE_OCR 名单强制 OCR（文本层质量差, 抽样页判定会漏——如纯粹现象学通论全书乱码但 30 页正常）
+            if has_text_layer(b["fp"]) and rel not in FORCE_OCR:
                 text = extract_text_layer(b["fp"])
                 src = "text-layer"
             else:
@@ -279,7 +286,10 @@ def main():
             continue
         # 合并作者（主文件时）
         author = b["author"]
-        for sub, (main, merged_author) in MERGE_RULES.items():
+        for sub, val in MERGE_RULES.items():
+            if not val:
+                continue  # None = 纯跳过
+            main, merged_author = val
             if rel == main:
                 author = merged_author
                 break
