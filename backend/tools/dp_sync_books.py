@@ -24,6 +24,9 @@ PUBLIC_DETAIL_DIR = os.path.join(BASE, "app", "public", "book_detail")
 CATALOG_FILE = os.path.join(BASE, "backend", "data", "books_catalog.json")
 RANK_FILE = os.path.join(BASE, "backend", "data", "book_rankings.json")
 
+# 书名修复: 文件名(stem) → 显示名（Windows 不允许 / 等字符, 如 S/Z）
+TITLE_FIX = {"SZ": "S/Z"}
+
 # rank 按 (title, author) 匹配（score_item 输出 + git 备份兜底, 比 detail.rank 权威）
 _ranks = {}
 _ranks_title_only = {}
@@ -123,9 +126,13 @@ def main():
                         entry["summary"] = det.get("summary", "")
                     except Exception:
                         pass
-                # rank: book_rankings.json (title,author) → title → detail
+                # 书名: TITLE_FIX → detail.title（权威, 重建后为正确名）→ 文件名
+                entry["title"] = TITLE_FIX.get(entry["title"]) or det.get("title") or entry["title"]
+                # rank: book_rankings.json (title,author) → title → 原文件名 stem → detail
+                stem = os.path.splitext(fn)[0].strip()
                 entry["rank"] = _ranks.get((entry["title"], entry["author"])) or \
-                    _ranks_title_only.get(entry["title"]) or det.get("rank")
+                    _ranks.get((stem, entry["author"])) or \
+                    _ranks_title_only.get(entry["title"]) or _ranks_title_only.get(stem) or det.get("rank")
                 entries.append(entry)
 
     # 排序: rank 降序（无 rank 排最后）; 同 rank 按 title

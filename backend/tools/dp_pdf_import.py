@@ -28,6 +28,8 @@ DDIR = os.path.join(BASE_DIR, "data/book_detail")
 IMG_DIR = os.path.join(BASE_DIR, "data/book_images")
 COVERS_DIR = os.path.join(BASE_DIR, "../app/public/covers")
 SDIR = os.path.join(BASE_DIR, "data/book_summaries.json")
+# 书名修复: 文件名(stem) → 显示名（Windows 不允许 / 等字符, 如 S/Z）
+TITLE_FIX = {"SZ": "S/Z"}
 # 并行分片: python dp_pdf_import.py [shard] [total]（shard 0-based, total 默认 1）
 # shard 0 用主 ckpt（保留既有进度）; shard>0 用独立 ckpt 文件, 全部完成后用 dp_merge_ckpt.py 合并
 SHARD = int(sys.argv[1]) if len(sys.argv) > 1 else 0
@@ -274,7 +276,7 @@ def main():
             ch["index"] = idx
             json.dump(ch, open(os.path.join(bd, f"{idx}.json"), "w", encoding="utf-8"), ensure_ascii=False)
         toc_titles = [c["title"] for c in blocks_chs]
-        meta = {"bookId": bid, "title": Path(b["file"]).stem, "author": author, "toc": toc_titles,
+        meta = {"bookId": bid, "title": TITLE_FIX.get(Path(b["file"]).stem, Path(b["file"]).stem), "author": author, "toc": toc_titles,
                 "cover": None, "chapterCount": len(blocks_chs), "chapterTitles": toc_titles}
         json.dump(meta, open(os.path.join(bd, "meta.json"), "w", encoding="utf-8"), ensure_ascii=False)
         # 封面
@@ -282,7 +284,7 @@ def main():
         meta["cover"] = cover
         json.dump(meta, open(os.path.join(bd, "meta.json"), "w", encoding="utf-8"), ensure_ascii=False)
         # detail
-        title = Path(b["file"]).stem
+        title = TITLE_FIX.get(Path(b["file"]).stem, Path(b["file"]).stem)
         detail = {k: meta[k] for k in ["bookId", "title", "author", "cover", "toc", "chapterCount", "chapterTitles"]}
         detail["region"] = b["region"]; detail["file_type"] = "pdf"; detail["extract"] = src
         for sk in [f"{title}||{author}", f"{title}||", title]:
