@@ -97,15 +97,27 @@ export default function ChapterReader({
               && Math.max(b.w, b.h) < 300
               && (b.w / b.h) > 0.3 && (b.w / b.h) < 3;
             const merged = [];
+            let prevWasSmallImg = false;
             for (const blk of ch.content) {
               if (blk.type === 'image' && isSmall(blk)) {
+                // 小图: 并入前一个文本块（嵌句尾）
                 if (merged.length && merged[merged.length - 1].type === 'text') {
                   merged[merged.length - 1].imgs = [...(merged[merged.length - 1].imgs || []), blk];
                 } else {
                   merged.push({ type: 'text', value: '', imgs: [blk] });
                 }
+                prevWasSmallImg = true;
+              } else if (blk.type === 'text') {
+                // 小图后的后半句: 拼回同一段（原文被图拆成两段, 如注释"⑦ 羁[图]：络首曰"）
+                if (prevWasSmallImg && merged.length && merged[merged.length - 1].type === 'text') {
+                  merged[merged.length - 1].value += blk.value;
+                } else {
+                  merged.push(blk);
+                }
+                prevWasSmallImg = false;
               } else {
                 merged.push(blk);
+                prevWasSmallImg = false;
               }
             }
             return merged.map((block, i) => {
