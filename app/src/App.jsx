@@ -17,7 +17,6 @@ import { ToastProvider } from './contexts/ToastContext';
 import BooksPage from './pages/BooksPage';
 import AuthorsPage from './pages/AuthorsPage';
 import GenealogyPage from './pages/GenealogyPage';
-import QAPage from './pages/QAPage';
 import HomePage from './pages/HomePage';
 import SettingsPage from './pages/SettingsPage';       // 3.5KB, 常用
 import ProfilePage from './pages/ProfilePage';         // 9KB, 常用
@@ -155,7 +154,7 @@ function MainLayout() {
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
-  const isQA = location.pathname.startsWith('/qa');
+  const isAgent = location.pathname.startsWith('/qa') || location.pathname.startsWith('/agent');
   const hideHeader = isHome || isReader || isSchool;
 
   return (
@@ -174,7 +173,7 @@ function MainLayout() {
         onToggleMobileMode={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }}
       />
 
-      <main id="main-content" className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}${isQA ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isQA) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      <main id="main-content" className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}${isAgent ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isAgent) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
         <div key={location.pathname} className="page-enter">
@@ -190,7 +189,7 @@ function MainLayout() {
           <Route path="/world-philosophies" element={<WorldPhilosophiesPage />} />
           <Route path="/western-philosophies" element={<WesternPhilosophiesPage />} />
           <Route path="/eastern-philosophies" element={<EasternPhilosophiesPage />} />
-          <Route path="/qa" element={<QAPage />} />
+          <Route path="/qa" element={<AgentPage />} />
           <Route path="/agent" element={<AgentPage />} />
           <Route path="/games" element={<GamesPage />} />
           <Route path="/games/answer-book" element={<AnswerBookPage />} />
