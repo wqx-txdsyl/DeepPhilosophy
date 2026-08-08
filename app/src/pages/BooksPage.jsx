@@ -222,9 +222,6 @@ function BooksPage() {
                     </div>
                     <div className="book-author-mobile" style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 4 }}>{book.author}</div>
                     <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                      <span className={`badge ${book.file_type === 'txt' ? 'badge-pending' : 'badge-available'}`} style={{ fontSize: 9, padding: '1px 6px' }}>
-                        {book.file_type?.toUpperCase()}
-                      </span>
                       {(book.tags || []).slice(0, 2).map(t => (
                         <span key={t} className="tag" style={{ fontSize: 9, padding: '1px 6px' }}>{t}</span>
                       ))}

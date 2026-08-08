@@ -15,6 +15,19 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    watch: {
+      // 排除 public 海量数据目录（book_chapters 数万小文件），防止批量同步时 watcher 卡死
+      // 数据变更只需 F5 刷新（public 静态文件直读磁盘，不走 HMR）
+      ignored: [
+        '**/public/backend/**',
+        '**/public/book_detail/**',
+        '**/public/covers/**',
+        '**/public/philosopher/**',
+        '**/public/schools/**',
+        '**/public/gene/**',
+        '**/public/icons/**',
+      ],
+    },
     headers: {
       // dev 必须 no-cache: max-age=3600 会让浏览器缓存模块 1 小时（改代码后 F5 拿旧代码）
       'Cache-Control': 'no-cache',

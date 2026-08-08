@@ -74,7 +74,13 @@ function BookDetailPage() {
   // 封面：优先静态文件 /covers/，回退 API 路径
   const coverUrl = getCoverUrl(bookId) || meta?.cover || null;
   // 优先 chapterTitles（与实际章节文件索引一致），回退 toc（可能含无对应文件的条目）
-  const chapterTitles = meta?.chapterTitles?.length ? meta.chapterTitles : (meta?.toc || []);
+  // 防御: 过滤非字符串条目（历史数据可能把层级 toc 对象混入 chapterTitles）
+  const chapterTitles = (meta?.chapterTitles?.length ? meta.chapterTitles : (meta?.toc || []))
+    .filter(t => typeof t === 'string');
+  // 层级目录（编级 part 分组 + 章级跳转）; 无 toc 层级时退化为 chapterTitles 平铺
+  const tocList = (meta?.toc?.length && typeof meta.toc[0] === 'object')
+    ? meta.toc
+    : chapterTitles.map((t, i) => ({ type: 'chapter', title: t, index: i }));
 
   return (
     <div className="page-container" style={{ maxWidth: 800, margin: '0 auto', paddingBottom: 40 }}>
@@ -102,7 +108,6 @@ function BookDetailPage() {
         <div style={{ flex: 1, minWidth: 240 }}>
           <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
             <span className={`badge ${book.region === '东方' ? 'badge-east' : 'badge-west'}`}>{book.region}</span>
-            <span className="badge badge-available">{book.file_type?.toUpperCase()}</span>
           </div>
           <h1 style={{
             fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 400,
@@ -149,26 +154,42 @@ function BookDetailPage() {
       )}
 
       {/* 章节目录 */}
-      {chapterTitles.length > 0 && (
+      {tocList.length > 0 && (
         <div style={{ marginTop: 24 }}>
           <h2 style={{
             fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 400,
             color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.03em',
           }}>目录</h2>
           <div style={{ borderTop: '1px solid var(--border)' }}>
-            {chapterTitles.map((title, i) => (
-              <div key={i} style={{
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '10px 0', borderBottom: '1px solid var(--border)',
-                cursor: 'pointer', transition: 'background 0.2s',
-                fontSize: 13, color: 'var(--text)',
-              }} onClick={() => navigate(`/reader/${bookId}?type=${book.file_type}&ch=${i}`)}
-                onMouseEnter={e => e.currentTarget.style.background = 'var(--card-bg)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                <span style={{ flex: 1 }}>{title}</span>
-                <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>→</span>
-              </div>
-            ))}
+            {tocList.map((item, i) => {
+              const isPart = item.type === 'part';
+              const isSection = item.type === 'section';
+              const isSub = isPart && item.level === 1;   // 部/集/卷/篇级（书内分组）
+              // 目录规则: 章/节名可点击（箭头/光标/悬停变色）; 篇名/书名一律不可点击（即使带锚点 index）
+              return (
+                <div key={i} style={{
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                  padding: isPart ? (isSub ? '8px 0 4px' : '12px 0 6px') : (isSection ? '5px 0' : '10px 0'),
+                  borderBottom: '1px solid var(--border)',
+                  cursor: isPart ? 'default' : 'pointer', transition: 'background 0.2s',
+                  fontSize: isPart ? (isSub ? 11 : 12) : (isSection ? 11.5 : 13),
+                  fontWeight: isPart ? 700 : 400,
+                  color: isPart ? 'var(--ochre)' : (isSection ? 'var(--text-dim)' : 'var(--text)'),
+                  letterSpacing: isPart ? '0.15em' : '0',
+                }}
+                  onClick={() => {
+                    if (isPart) return;
+                    navigate(`/reader/${bookId}?type=${book.file_type}&ch=${item.index}${isSection ? `&sec=${item.sec}` : ''}`);
+                  }}
+                  onMouseEnter={e => { if (!isPart) e.currentTarget.style.background = 'var(--card-bg)'; }}
+                  onMouseLeave={e => { if (!isPart) e.currentTarget.style.background = 'transparent'; }}>
+                  <span style={{ flex: 1, paddingLeft: isPart ? (isSub ? 28 : 0) : (isSection ? 42 : 14) }}>
+                    {isPart ? `— ${item.title} —` : item.title}
+                  </span>
+                  {!isPart && <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>→</span>}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

@@ -42,6 +42,9 @@ function ReaderPage() {
   const [textReady, setTextReady] = useState(false);
   const [useEpubFallback, setUseEpubFallback] = useState(false);
   const [showReaderToc, setShowReaderToc] = useState(false);
+  // URL 直达节(第X节): 详情页目录 section 跳转
+  const secParam = searchParams.get('sec');
+  const initialSec = secParam ? parseInt(secParam, 10) : null;
 
   // 预加载页数缓存（确保 initEpub 之前就绪）
   useEffect(() => {
@@ -616,11 +619,13 @@ ${textContext}
               ) : textReady ? (
                 <ChapterReader
                   chapters={textChapters}
+                  toc={textToc}
                   currentChapter={textChapter}
                   onChapterChange={handleChapterChange}
                   title={book?.title}
                   showToc={showReaderToc}
                   onToggleToc={() => setShowReaderToc(!showReaderToc)}
+                  initialSec={initialSec}
                 />
               ) : error ? (
                 <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-dim)' }}>
