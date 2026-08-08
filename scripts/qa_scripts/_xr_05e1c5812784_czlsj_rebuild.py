@@ -36,6 +36,8 @@ CKPT = r"f:\program\Python\PhiAgent\backend\data\dp_pdf_import_ckpt.json"
 SAFE = "西方_卡尔_雅斯贝尔斯_生存哲学.pdf"
 SRC = f"f:/program/Python/PhiAgent/backend/data/book_chapters/{BID}"
 DST = f"f:/program/Python/DeepPhilosophy/DeepPhilosophy/backend/data/book_chapters/{BID}"
+# ⚠ 2026-08-08 事故修正：前端本地 dev 读 app/public/backend/data/book_chapters（原为 junction，已改真实副本），必须双写
+DST2 = f"f:/program/Python/DeepPhilosophy/DeepPhilosophy/app/public/backend/data/book_chapters/{BID}"
 DETAIL_SRC = f"f:/program/Python/PhiAgent/backend/data/book_detail/{BID}.json"
 DETAIL_DST = f"f:/program/Python/DeepPhilosophy/DeepPhilosophy/app/public/book_detail/{BID}.json"
 BOOKS_JSON = "f:/program/Python/DeepPhilosophy/DeepPhilosophy/app/public/books.json"
@@ -172,7 +174,10 @@ print(f"✓ 写入 {SRC}: 6 章 + meta.json")
 
 shutil.rmtree(DST, ignore_errors=True)
 shutil.copytree(SRC, DST)
-print("✓ 同步 DP chapters")
+print("✓ 同步 DP backend chapters")
+shutil.rmtree(DST2, ignore_errors=True)
+shutil.copytree(SRC, DST2)
+print("✓ 同步 DP app/public chapters（前端 dev 实际读取路径）")
 
 for p in (DETAIL_SRC, DETAIL_DST):
     if os.path.exists(p):
