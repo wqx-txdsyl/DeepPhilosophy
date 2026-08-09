@@ -207,18 +207,25 @@ export default function ChapterReader({
               return <div key={i} className="chapter-html" dangerouslySetInnerHTML={{ __html: html }} />;
             }
             const parts = (block.value || '').split('[IMG]');
+            // 单 block 内 \n\n 切分多段渲染（OCR 重建书整章一个 block，不切分会被折叠成一大段）
+            const segs = parts.map(p => p.split(/\n{2,}/));
             return (
-              <p key={i} id={block.type === 'text' ? `b-${block._i}` : undefined}
-                style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
-                {parts[0]}
-                {block.imgs?.map((img, j) => (
+              <Fragment key={i}>
+                {segs.map((ps, j) => (
                   <Fragment key={j}>
-                    <img src={img.src} alt=""
-                      style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
-                    {parts[j + 1] || ''}
+                    {ps.map((para, k) => (
+                      <p key={k} id={block.type === 'text' && j === 0 && k === 0 ? `b-${block._i}` : undefined}
+                        style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
+                        {para}
+                        {k === ps.length - 1 && j < parts.length - 1 && block.imgs?.[j] && (
+                          <img src={block.imgs[j].src} alt=""
+                            style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
+                        )}
+                      </p>
+                    ))}
                   </Fragment>
                 ))}
-              </p>
+              </Fragment>
             );
           });
           })()
