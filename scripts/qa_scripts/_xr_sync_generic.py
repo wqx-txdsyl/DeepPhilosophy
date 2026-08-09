@@ -50,7 +50,7 @@ for bid in sys.argv[1:]:
     bad = []
     files = [f for f in os.listdir(os.path.join(PA_BC, bid)) if f.endswith('.json') and f != 'meta.json']
     for t in meta['toc']:
-        if t['type'] == 'chapter':
+        if isinstance(t, dict) and t.get('type') == 'chapter':
             fn = str(t['index']) + '.json'
             if fn not in files:
                 bad.append(fn)
