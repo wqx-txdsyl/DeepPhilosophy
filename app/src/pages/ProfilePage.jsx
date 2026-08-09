@@ -373,7 +373,7 @@ function ProfilePage() {
               }}><Icon name="icon-trash" size={14} /> 清空阅读记录</button>
             {readingHistory.map((item, i) => (
             <div key={i} className="card" style={{ cursor: 'pointer' }}
-              onClick={() => navigate(`/reader/${item.bookId}?type=${item.fileType || ''}`)}>
+              onClick={() => navigate(`/reader/${item.bookId}`)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div className="card-title" style={{ fontSize: 14, flex: 1 }}>{item.bookTitle}</div>
                 {item.fileType && (

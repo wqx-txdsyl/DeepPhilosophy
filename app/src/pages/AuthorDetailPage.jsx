@@ -187,7 +187,7 @@ function AuthorDetailPage() {
               <div key={i} className="card" style={{ padding: '10px 14px' }}
                 onClick={() => {
                   if (bookId && book.file_type) {
-                    navigate(`/reader/${bookId}?type=${book.file_type}&ch=0`);
+                    navigate(`/reader/${bookId}?ch=0`);
                   } else if (bookId) {
                     navigate(`/book/${bookId}`);
                   }

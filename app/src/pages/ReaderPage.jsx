@@ -1,18 +1,14 @@
 /**
- * 阅读器 — PDF (react-pdf) + EPUB (epubjs)
- * 支持：页数跳转、批注笔记、阅读进度自动保存
+ * 阅读器 — 章节文本阅读（所有书统一方式，PDF/EPUB 原始渲染已移除）
+ * 支持：章跳转、目录、批注笔记、AI 问答、阅读进度自动保存
+ * URL 参数：ch（章）、sec（详情页目录节跳转）
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
-import { Document, Page, pdfjs } from 'react-pdf';
-import ePub from 'epubjs';
 import { getApiBase } from '../App';
-import { getBookById } from '../data';
 import { saveReadingProgress } from '../data/userData';
 import ChapterReader from '../components/ChapterReader';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
 
 // 章节 CDN 基址: 本地开发（localhost）→ 本地静态目录（vite dev 服务 public/backend/data/book_chapters junction）;
 // 生产（GitHub Pages/Cloudflare 域名）→ jsDelivr（GitHub 自动刷新）
@@ -20,72 +16,28 @@ import 'react-pdf/dist/Page/TextLayer.css';
 const CDN_BASE = (typeof location !== 'undefined' && ['localhost', '127.0.0.1'].includes(location.hostname))
   ? '' : `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${__COMMIT_HASH__}`;
 
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs`;
-
 function ReaderPage() {
   const { bookId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [book, setBook] = useState(null);
-  const [fileUrl, setFileUrl] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const pageCacheRef = useRef({});
-  const [fileType, setFileType] = useState(null);
-  const cacheReadyRef = useRef(false);
   // 章节阅读
   const [textChapters, setTextChapters] = useState([]);
   const [textChapter, setTextChapter] = useState(0);
   const [textToc, setTextToc] = useState([]);
   const [textLoading, setTextLoading] = useState(false);
   const [textReady, setTextReady] = useState(false);
-  const [useEpubFallback, setUseEpubFallback] = useState(false);
   const [showReaderToc, setShowReaderToc] = useState(false);
   // URL 直达节(第X节): 详情页目录 section 跳转
   const secParam = searchParams.get('sec');
   const initialSec = secParam ? parseInt(secParam, 10) : null;
 
-  // 预加载页数缓存（确保 initEpub 之前就绪）
-  useEffect(() => {
-    fetch('/epub_pages.json')
-      .then(r => r.json())
-      .then(d => {
-        pageCacheRef.current = d.byTitle || {};
-        cacheReadyRef.current = true;
-      })
-      .catch(() => { cacheReadyRef.current = true; });
-  }, []);
-
-  // PDF state
-  const [numPages, setNumPages] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pdfScale, setPdfScale] = useState(0.99); // 略低于1.0避免亚像素渲染伪影
-  const [jumpPage, setJumpPage] = useState('');
-  const [showJumpInput, setShowJumpInput] = useState(false);
-
-  // EPUB state
-  const epubViewerRef = useRef(null);
-  const epubRenditionRef = useRef(null);
-  const epubTocRef = useRef([]);
-  const chapterPagesRef = useRef([]);
-  const pageTotalFixed = useRef(false);
-  const [showToc, setShowToc] = useState(false);
-  const [epubReady, setEpubReady] = useState(false);
-  const [epubPage, setEpubPage] = useState(0);
-  const [epubTotalChapters, setEpubTotalChapters] = useState(0);
-  const [epubBookPage, setEpubBookPage] = useState(1);
-  const [epubBookTotal, setEpubBookTotal] = useState(0);
-  const [epubPercent, setEpubPercent] = useState(0);
-  // PDF state
-
   // Notes state
   const [showNotes, setShowNotes] = useState(false);
   const [noteText, setNoteText] = useState('');
   const notesKey = `dp_notes_${bookId}`;
-
-  // Two-page view toggle (default single for mobile)
-  const [twoPage, setTwoPage] = useState(true);
 
   // AI Chat state
   const [showAiChat, setShowAiChat] = useState(false);
@@ -102,12 +54,6 @@ function ReaderPage() {
       aiBottomRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [aiHistory]);
-
-  // PDF 才走 loadBook（EPUB/TXT 由下方 loadTextBook 处理）
-  useEffect(() => {
-    const type = searchParams.get('type') || '';
-    if (type === 'pdf') loadBook();
-  }, [bookId]);
 
   // Load saved notes on book change — cloud first, localStorage fallback
   useEffect(() => {
@@ -134,43 +80,19 @@ function ReaderPage() {
     loadNotes();
   }, [bookId]);
 
-  // Save on unmount (PDF)
-  const pdfSaveRef = useRef({ bookId: '', title: '', author: '', page: 0, total: 0 });
-  useEffect(() => { if (book && numPages > 0) { pdfSaveRef.current = { bookId, title: book.title, author: book.author, page: pageNumber, total: numPages }; } }, [bookId, book?.title, pageNumber, numPages]);
+  // Save progress on unmount（章节阅读统一 'text' 类型）
+  const chapterPosRef = useRef({ bookId: '', title: '', author: '', ch: 0, total: 0 });
+  useEffect(() => {
+    if (textReady && book) {
+      chapterPosRef.current = { bookId, title: book.title, author: book.author, ch: textChapter, total: textChapters.length };
+    }
+  }, [bookId, textChapter, textReady, book, textChapters.length]);
   useEffect(() => {
     return () => {
-      const s = pdfSaveRef.current;
-      if (s.total > 0) saveReadingProgress(s.bookId, s.title, s.author, s.page, s.page / s.total, 'pdf');
+      const s = chapterPosRef.current;
+      if (s.total > 0) saveReadingProgress(s.bookId, s.title, s.author, s.ch + 1, (s.ch + 1) / s.total, 'text');
     };
   }, []);
-
-  // EPUB: 用百分比保存进度（EPUB 无固定页码）
-  useEffect(() => {
-    if (fileType !== 'epub' || !book) return;
-    const pct = epubPercent / 100;
-    if (pct > 0) saveReadingProgress(bookId, book.title, book.author, epubBookPage, pct, 'epub');
-  }, [epubBookPage, epubPercent, fileType]);
-
-  // Save progress on page change
-  const goToPage = useCallback((n) => {
-    const step = (twoPage && numPages > 1) ? 2 : 1;
-    const p = Math.max(1, Math.min(numPages, n));
-    // snap to odd page in two-page mode
-    const finalP = twoPage ? (p % 2 === 0 ? p - 1 : p) : p;
-    setPageNumber(finalP);
-    if (book) {
-      saveReadingProgress(bookId, book.title, book.author, finalP, (finalP / numPages));
-    }
-  }, [book, bookId, numPages, twoPage]);
-
-  const handleJump = () => {
-    const p = parseInt(jumpPage, 10);
-    if (p >= 1 && p <= numPages) {
-      goToPage(p);
-      setJumpPage('');
-      setShowJumpInput(false);
-    }
-  };
 
   // Save notes — local + cloud
   const saveNotes = () => {
@@ -189,21 +111,11 @@ function ReaderPage() {
     } catch {}
   };
 
-  // 获取当前页文字
+  // 获取当前页文字（从已加载章节内容提取）
   const getCurrentPageText = async () => {
-    if (fileType === 'epub') {
-      try {
-        const contents = epubRenditionRef.current?.getContents?.();
-        if (contents?.[0]?.document?.body) {
-          return contents[0].document.body.innerText?.trim()?.substring(0, 3000) || '';
-        }
-      } catch {}
-      return '';
-    }
-    if (fileType === 'pdf') {
-      // 从 TextLayer DOM 提取
-      const layers = document.querySelectorAll('.react-pdf__Page__textContent');
-      return Array.from(layers).map(l => l.textContent).join(' ').substring(0, 3000);
+    const ch = textChapters[textChapter];
+    if (ch?.content) {
+      return String(ch.content).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 3000);
     }
     return '';
   };
@@ -225,8 +137,8 @@ function ReaderPage() {
       apiKey = await decryptApiKey(apiKey);
     }
     const apiConfig = { ...config, apiKey };
-    const locInfo = fileType === 'epub' ? `第${epubCumulativePage || epubPage + 1}页（共${epubCumulativeTotal || epubTotalPages || '?'}页）` : `第${pageNumber}页${numPages ? `（共${numPages}页）` : ''}`;
-    const textContext = pageText ? `\n当前页面文字内容：\n"""\n${pageText}\n"""\n` : '';
+    const locInfo = textReady ? `第${textChapter + 1}章（共${textChapters.length}章）` : '';
+    const textContext = pageText ? `\n当前章节文字内容（节选）：\n"""\n${pageText}\n"""\n` : '';
     const systemPrompt = `你是一位博学的哲学导师。读者正在阅读哲学著作，需要你的帮助理解文本。
 
 当前阅读上下文：
@@ -235,7 +147,7 @@ function ReaderPage() {
 - ${locInfo}
 ${book?.region ? `- 所属传统：${book.region}哲学` : ''}
 ${textContext}
-请根据读者的问题，结合你看到的页面内容以及对这本书和该作者哲学思想的了解，给出深入浅出的解答。`;
+请根据读者的问题，结合你看到的章节内容以及对这本书和该作者哲学思想的了解，给出深入浅出的解答。`;
 
     let answer = '';
     try {
@@ -342,27 +254,10 @@ ${textContext}
     }).catch(() => {});
   }, [bookId]);
 
-  // 从 URL 参数预填文件类型
-  useEffect(() => {
-    const type = searchParams.get('type');
-    if (type) setFileType(type);
-  }, [searchParams]);
-
-  const loadBook = async () => {
-    setLoading(true); setError(null);
-    const b = await getBookById(bookId);
-    if (!b) { setError('书籍未找到'); setLoading(false); return; }
-    setBook(b);
-    setFileType(b.file_type);
-    const url = `${getApiBase()}/api/books/${bookId}/file`;
-    setFileUrl(url);
-    setLoading(false);
-  };
-
-  // 秒开：meta → 立即显示 → 按需加载章节
+  // 秒开：meta → 立即显示 → 按需加载章节（所有书统一章节阅读，不再有 PDF/EPUB 原始渲染）
   const loadTextBook = async () => {
     setTextLoading(true);
-    setLoading(false);
+    setError(null);
     try {
       // 1. 从 meta.json 获取正确的章节元数据（排除 TOC 纯标题条目）
       const metaResp = await fetch(`${CDN_BASE}/backend/data/book_chapters/${bookId}/meta.json`);
@@ -371,8 +266,7 @@ ${textContext}
       const total = meta.chapterCount || 0;
       if (total === 0) throw new Error('No chapters');
 
-      setBook({ title: meta.title || bookId, author: meta.author || '', file_type: 'epub' });
-      setFileType('epub');
+      setBook({ title: meta.title || bookId, author: meta.author || '', region: meta.region, file_type: 'text' });
       setTextToc(meta.toc || []);
       const chapters = Array.from({ length: total }, (_, i) => ({
         title: meta.chapterTitles?.[i] || `第${i + 1}章`,
@@ -380,7 +274,7 @@ ${textContext}
         _loaded: false,
       }));
       setTextChapters(chapters);
-      setError(null); setLoading(false); setTextReady(true);
+      setError(null); setTextReady(true);
 
       // URL 跳转：优先 ch 参数，其次历史记录，最后默认 ch=0
       const urlCh = parseInt(searchParams.get('ch'));
@@ -404,11 +298,15 @@ ${textContext}
       if (startCh + 1 < total) loadChapter(startCh + 1, chapters);
     } catch (e) {
       console.error('Load error:', e);
-      if (!textReady) setError('无法阅读：该书籍暂无章节数据（PDF请用其他应用打开，EPUB需先运行构建脚本生成章节）。');
+      if (!textReady) setError('无法阅读：该书籍暂无章节数据。');
     } finally {
       setTextLoading(false);
     }
   };
+
+  useEffect(() => {
+    loadTextBook();
+  }, [bookId]);
 
   const loadingRef = useRef({});
   const loadChapter = async (idx, chaptersArr) => {
@@ -431,7 +329,7 @@ ${textContext}
     }
   };
 
-  const handleChapterChange = (ch) => {
+  const handleChapterChange = useCallback((ch) => {
     if (ch === textChapter) return;
     // 跳过 section 章节
     let target = ch;
@@ -442,140 +340,36 @@ ${textContext}
     setTextChapter(target);
     loadChapter(target);
     if (target + 1 < textChapters.length) loadChapter(target + 1);
-    if (book) saveReadingProgress(bookId, book.title, book.author, target + 1, (target + 1) / textChapters.length, fileType);
+    if (book) saveReadingProgress(bookId, book.title, book.author, target + 1, (target + 1) / textChapters.length, 'text');
+    // URL 只保留 ch/sec，不再写 type
     const params = new URLSearchParams(searchParams);
+    params.delete('type');
     params.set('ch', target);
-    params.set('type', fileType);
     navigate(`/reader/${bookId}?${params.toString()}`, { replace: true });
-  };
+  }, [textChapter, textChapters, book, bookId, searchParams, navigate]);
 
-  useEffect(() => {
-    const type = searchParams.get('type') || '';
-    // URL type 优先（用户明确点击），fileType 仅作兜底
-    if (type === 'epub' || type === 'txt') {
-      setFileType(type);
-      loadTextBook();
-    } else if (type === 'pdf') {
-      // OCR 完成的 pdf（有章节）→ 章节阅读; 无章节 → PDF 渲染
-      getBookById(bookId).then(b => {
-        if (b && b.chapterCount > 0) loadTextBook();
-        else loadBook();
-      });
-    } else if (fileType === 'epub' || fileType === 'txt') {
-      loadTextBook();
-    } else if (fileType === 'pdf') {
-      getBookById(bookId).then(b => {
-        if (b && b.chapterCount > 0) loadTextBook();
-        else loadBook();
-      });
-    } else {
-      // 未知 → 默认 EPUB
-      setFileType('epub');
-      loadTextBook();
-    }
-  }, [bookId]);
-
-  // Init EPUB — locations.generate 在 initEpub 中已完成，此处无需额外处理
-  useEffect(() => {
-    if (!epubReady) return;
-    // 无需操作：initEpub 的 locations.generate 回调中已完成页面恢复
-  }, [epubReady]);
-
-  // PDF callbacks
-  const onPdfLoadSuccess = ({ numPages: n }) => {
-    setNumPages(n);
-    // Restore saved position directly (more reliable than useEffect timing)
-    try {
-      const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-      const entry = (data.readingHistory || []).find(r => r.bookId === bookId);
-      if (entry && entry.page > 0 && entry.page <= n) {
-        setPageNumber(entry.page);
-        saveReadingProgress(bookId, book.title, book.author, entry.page, entry.page / n, 'pdf');
-        return;
-      }
-    } catch {}
-    setPageNumber(1);
-  };
-  const onPdfLoadError = (err) => {
-    console.error('PDF load error:', err);
-    setError('PDF 加载失败：' + (err?.message || err?.toString?.() || '未知错误'));
-  };
-
-  // EPUB init
-  const initEpub = (url) => {
-    if (!epubViewerRef.current) return;
-    const bk = ePub(url, { openAs: 'epub' });
-    const vh = epubViewerRef.current.clientHeight || window.innerHeight - 180;
-    const rendition = bk.renderTo(epubViewerRef.current, {
-      width: '100%', height: vh, flow: 'paginated', spread: 'none',
-    });
-    epubRenditionRef.current = rendition;
-    bk.loaded.navigation.then(nav => { epubTocRef.current = nav.toc || []; }).catch(() => {});
-    bk.loaded.spine.then(spine => { setEpubTotalChapters(spine?.length || 0); }).catch(() => {});
-    // —— 全书页码（跟 PDF 完全一样的逻辑）——
-    const cacheKey = `${book?.title||''}||${book?.author||''}`;
-    const cachedTotal = pageCacheRef.current?.[cacheKey] || 0;
-    const totalPages = cachedTotal > 0 ? cachedTotal : 1000;
-    setEpubBookTotal(totalPages);
-
-    rendition.on('relocated', (loc) => {
-      const pct = loc?.start?.percentage;
-      if (pct !== undefined && pct !== null) {
-        setEpubPercent(Math.round(pct * 100));
-        setEpubBookPage(Math.max(1, Math.round(pct * totalPages)));
-      }
-    });
-    // 直接显示首页（percentage 不依赖 locations.generate）
-    bk.ready.then(() => rendition.display(0));
-    setEpubReady(true);
-  };
-
-  const goEpubChapter = (ch) => {
-    const idx = Math.max(0, ch);
-    setEpubChapter(idx);
-    const bk = epubRenditionRef.current?.book;
-    if (bk?.spine && bk.spine.length > 0) {
-      const section = bk.spine.get(Math.min(bk.spine.length - 1, idx));
-      if (section?.href) epubRenditionRef.current.display(section.href);
-    }
-  };
-
-  useEffect(() => {
-    if (!loading && fileType === 'epub' && fileUrl && epubViewerRef.current) {
-      initEpub(fileUrl);
-    }
-  }, [loading, fileType, fileUrl]);
-
-  // Keyboard navigation: left/right arrow to turn pages
+  // Keyboard navigation: left/right arrow to switch chapters
   useEffect(() => {
     const handler = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (!textReady) return;
       if (e.key === 'ArrowLeft') {
-        if (fileType === 'pdf') goToPage(pageNumber - (twoPage ? 2 : 1));
-        else epubRenditionRef.current?.prev();
+        if (textChapter > 0) handleChapterChange(textChapter - 1);
       } else if (e.key === 'ArrowRight') {
-        if (fileType === 'pdf') goToPage(pageNumber + (twoPage ? 2 : 1));
-        else epubRenditionRef.current?.next();
+        if (textChapter < textChapters.length - 1) handleChapterChange(textChapter + 1);
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [fileType, pageNumber, numPages, twoPage, goToPage]);
+  }, [textReady, textChapter, textChapters.length, handleChapterChange]);
 
-  // Two-page toggle for EPUB
-  useEffect(() => {
-    const r = epubRenditionRef.current;
-    if (r && fileType === 'epub') r.spread(twoPage ? 'auto' : 'none');
-  }, [twoPage, fileType]);
-
-  if (loading) return <div className="loading">加载中...</div>;
+  if (textLoading && !textReady) return <div className="loading">加载中...</div>;
   if (error) return (
     <div className="page-container">
       <button className="btn btn-secondary" onClick={() => navigate(-1)} style={{ marginBottom: 16 }}>← 返回</button>
       <div className="card"><p style={{ textAlign: 'center', fontSize: 40 }}><Icon name="icon-error" size={16} /></p><p style={{ textAlign: 'center' }}>{error}</p></div>
     </div>
   );
-  if (!book) return <div className="loading">正在获取文件...</div>;
 
   return (
     <div className="reader-page-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100dvh', maxHeight: '100dvh', overflow: 'hidden', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
@@ -587,12 +381,12 @@ ${textContext}
         <button className="btn btn-secondary" style={{ padding: '2px 6px', fontSize: 11 }}
           onClick={() => navigate(-1)}>←</button>
         <span style={{ fontSize: 11, color: 'var(--text)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {book.title}
-          {(fileType === 'epub' || fileType === 'txt') && textReady && (
+          {book?.title}
+          {textReady && (
             <span style={{ color: 'var(--text-dim)', marginLeft: 8 }}>第{textChapter + 1}章 / 共{textChapters.length}章</span>
           )}
         </span>
-        {(fileType === 'epub' || fileType === 'txt') && textReady && (
+        {textReady && (
           <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
             onClick={() => setShowReaderToc(!showReaderToc)}>
             ☰ 目录
@@ -612,98 +406,29 @@ ${textContext}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Reader */}
         <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'auto', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
-          {fileType === 'epub' || fileType === 'txt' ? (
-            <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
-              {textLoading ? (
-                <div className="loading">加载中...</div>
-              ) : textReady ? (
-                <ChapterReader
-                  chapters={textChapters}
-                  toc={textToc}
-                  currentChapter={textChapter}
-                  onChapterChange={handleChapterChange}
-                  title={book?.title}
-                  showToc={showReaderToc}
-                  onToggleToc={() => setShowReaderToc(!showReaderToc)}
-                  initialSec={initialSec}
-                />
-              ) : error ? (
-                <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-dim)' }}>
-                  <p style={{ fontSize: 36, margin: '0 0 12px' }}><Icon name="icon-error" size={16} /></p>
-                  <p>{error}</p>
-                </div>
-              ) : (
-                <div className="loading">加载中...</div>
-              )}
-            </div>
-          ) : (
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-              <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0 8px' }}>
-                <Document file={fileUrl} onLoadSuccess={onPdfLoadSuccess} onLoadError={onPdfLoadError}
-                  loading={<div className="loading">加载PDF中...</div>}
-                  error={<div className="loading">PDF加载失败</div>}>
-                  {twoPage ? (
-                    <div style={{
-                      display: 'flex', justifyContent: 'center', alignItems: 'flex-start',
-                      gap: 0, background: 'var(--card-bg)',
-                      boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
-                      borderRadius: 2,
-                    }}>
-                      <div style={{
-                        borderRight: pageNumber < numPages ? '1px solid rgba(0,0,0,0.15)' : 'none',
-                        boxShadow: pageNumber < numPages ? '2px 0 8px rgba(0,0,0,0.1)' : 'none',
-                      }}>
-                        <Page pageNumber={pageNumber} scale={pdfScale}
-                          renderTextLayer={true} renderAnnotationLayer={false}
-                          width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / (pageNumber < numPages ? 2 : 1) - 8, pageNumber < numPages ? 500 : 800)} />
-                      </div>
-                      {pageNumber < numPages && (
-                      <div style={{
-                        boxShadow: '-2px 0 8px rgba(0,0,0,0.1)',
-                      }}>
-                        <Page pageNumber={pageNumber + 1} scale={pdfScale}
-                          renderTextLayer={true} renderAnnotationLayer={false}
-                          width={Math.min((window.innerWidth - ((showNotes || showAiChat) ? 260 : 40)) / 2 - 8, 500)} />
-                      </div>
-                      )}
-                    </div>
-                  ) : (
-                    <Page pageNumber={pageNumber} scale={pdfScale}
-                      renderTextLayer={true} renderAnnotationLayer={false}
-                      width={Math.min(window.innerWidth - ((showNotes || showAiChat) ? 260 : 32), 800)} />
-                  )}
-                </Document>
+          <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+            {textLoading ? (
+              <div className="loading">加载中...</div>
+            ) : textReady ? (
+              <ChapterReader
+                chapters={textChapters}
+                toc={textToc}
+                currentChapter={textChapter}
+                onChapterChange={handleChapterChange}
+                title={book?.title}
+                showToc={showReaderToc}
+                onToggleToc={() => setShowReaderToc(!showReaderToc)}
+                initialSec={initialSec}
+              />
+            ) : error ? (
+              <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-dim)' }}>
+                <p style={{ fontSize: 36, margin: '0 0 12px' }}><Icon name="icon-error" size={16} /></p>
+                <p>{error}</p>
               </div>
-              {/* PDF controls — single row */}
-              <div style={{
-                flexShrink: 0, background: 'var(--primary)', borderTop: '1px solid var(--border)', padding: '2px 8px',
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => goToPage(pageNumber - (twoPage ? 2 : 1))} disabled={pageNumber <= 1}>◀</button>
-                  {showJumpInput ? (
-                    <form onSubmit={e => { e.preventDefault(); handleJump(); }}
-                      style={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                      <input type="number" min={1} max={numPages} value={jumpPage}
-                        onChange={e => setJumpPage(e.target.value)}
-                        style={{ width: 36, padding: '1px 4px', borderRadius: 4, border: '1px solid var(--accent)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 11, textAlign: 'center' }}
-                        autoFocus />
-                      <button type="submit" className="btn btn-primary" style={{ padding: '1px 6px', fontSize: 10 }}>跳</button>
-                      <button type="button" className="btn btn-secondary" style={{ padding: '1px 6px', fontSize: 10 }}
-                        onClick={() => { setShowJumpInput(false); setJumpPage(''); }}><Icon name="icon-close" size={16} /></button>
-                    </form>
-                  ) : (
-                    <span style={{ fontSize: 12, color: 'var(--text-dim)', cursor: 'pointer' }}
-                      onClick={() => setShowJumpInput(true)}>
-                      {pageNumber}/{numPages}
-                    </span>
-                  )}
-                  <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => goToPage(pageNumber + (twoPage ? 2 : 1))} disabled={pageNumber >= numPages}><span style={{ display: 'inline-block', transform: 'scaleX(-1)', fontSize: 14 }}>◀</span></button>
-                </div>
-              </div>
-            </div>
-          )}
+            ) : (
+              <div className="loading">加载中...</div>
+            )}
+          </div>
         </div>
 
         {/* Notes sidebar */}
@@ -714,7 +439,7 @@ ${textContext}
             display: 'flex', flexDirection: 'column', overflow: 'auto',
           }}>
             <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 6 }}>
-              <Icon name="icon-edit" size={16} /> 阅读批注 · 第{pageNumber}页
+              <Icon name="icon-edit" size={16} /> 阅读批注 · 第{textChapter + 1}章
             </div>
             <textarea
               value={noteText}

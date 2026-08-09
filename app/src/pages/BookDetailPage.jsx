@@ -69,7 +69,7 @@ function BookDetailPage() {
       const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
       if (entry?.page > 0) ch = entry.page - 1;
     } catch {}
-    navigate(`/reader/${bookId}?type=${book.file_type}&ch=${ch}`);
+    navigate(`/reader/${bookId}?ch=${ch}`);
   };
   // 封面：优先静态文件 /covers/，回退 API 路径
   const coverUrl = getCoverUrl(bookId) || meta?.cover || null;
@@ -179,7 +179,7 @@ function BookDetailPage() {
                 }}
                   onClick={() => {
                     if (isPart) return;
-                    navigate(`/reader/${bookId}?type=${book.file_type}&ch=${item.index}${isSection ? `&sec=${item.sec}` : ''}`);
+                    navigate(`/reader/${bookId}?ch=${item.index}${isSection ? `&sec=${item.sec}` : ''}`);
                   }}
                   onMouseEnter={e => { if (!isPart) e.currentTarget.style.background = 'var(--card-bg)'; }}
                   onMouseLeave={e => { if (!isPart) e.currentTarget.style.background = 'transparent'; }}>

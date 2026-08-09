@@ -115,9 +115,13 @@ def main():
             for fn in os.listdir(bd):
                 os.remove(os.path.join(bd, fn))
             toc_titles = [t._text if hasattr(t, "_text") else str(t) for t in toc_entries]
+            # toc 用对象数组(与 pdf 通道/人工重建一致): 前端 ChapterReader 按 item.title/item.index 渲染;
+            # 章节文件标题最可靠(与 toc_titles 可能错位——epub 目录含"目录"等非章条目)
+            toc_obj = [{"type": "chapter", "title": (c.get("title") or toc_titles[i] if i < len(toc_titles) else c.get("title") or f"第{i+1}章"), "index": i}
+                       for i, c in enumerate(chs)]
             meta = {"bookId": bid, "title": os.path.splitext(os.path.basename(rel))[0],
                     "author": rel.split("/")[1].replace("###", "").strip(),
-                    "toc": toc_titles, "cover": cover, "chapterCount": len(chs),
+                    "toc": toc_obj, "cover": cover, "chapterCount": len(chs),
                     "chapterTitles": [c.get("title") for c in chs]}
             json.dump(meta, open(os.path.join(bd, "meta.json"), "w", encoding="utf-8"),
                       ensure_ascii=False)
@@ -125,9 +129,19 @@ def main():
                 c["index"] = i
                 json.dump(c, open(os.path.join(bd, f"{i}.json"), "w", encoding="utf-8"),
                           ensure_ascii=False)
+            # public 双写（前端读取链; 与 pdf 通道一致, 避免 detail 同步时 public 章节过期）
+            pub = os.path.join(BASE, "..", "app", "public", "backend", "data", "book_chapters", bid)
+            os.makedirs(pub, exist_ok=True)
+            for fn in os.listdir(pub):
+                os.remove(os.path.join(pub, fn))
+            for fn in os.listdir(bd):
+                if fn.endswith(".json"):
+                    import shutil
+                    shutil.copy2(os.path.join(bd, fn), os.path.join(pub, fn))
             # detail（迁移 summary/tags）
             detail = {k: meta[k] for k in ["bookId", "title", "author", "cover", "toc",
                                            "chapterCount", "chapterTitles"]}
+            detail["toc"] = toc_obj  # 确保 detail 也用对象 toc
             if not detail.get("cover") and old_det.get("cover"):
                 detail["cover"] = old_det["cover"]  # 重导未提取到封面时保留旧封面
             detail["region"] = rel.split("/")[0]
@@ -138,6 +152,9 @@ def main():
                 detail["tags"] = old_det["tags"]
             json.dump(detail, open(os.path.join(DDIR, f"{bid}.json"), "w", encoding="utf-8"),
                       ensure_ascii=False, indent=2)
+            json.dump(detail, open(os.path.join(
+                BASE, "..", "app", "public", "book_detail", f"{bid}.json"), "w", encoding="utf-8"),
+                ensure_ascii=False, indent=2)
             _log(f"    ✓ {len(chs)}章 toc{len(toc_titles)} 摘要{'迁移' if detail.get('summary') else '缺'}")
             ok += 1
         except Exception as e:

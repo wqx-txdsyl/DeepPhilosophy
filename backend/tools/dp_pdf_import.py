@@ -69,6 +69,19 @@ MERGE_RULES = {
 }
 # 大问题（epub 两份）: 留 mtime 最新的（在扫描时处理）
 
+# ── AUTHOR_FIX: 书名页作者 ≠ 目录名（系列书/导读类, 书名页 OCR 确认 2026-08-09）──
+# "最伟大的思想家"系列: 作者是各国学者写的思想家传记, 不是哲学家本人
+AUTHOR_FIX = {
+    "西方/布莱兹·帕斯卡尔/最伟大的思想家 - 帕斯卡尔.pdf": "道格拉斯·格鲁秀斯",
+    "西方/戈特弗里德·威廉·莱布尼茨/最伟大的思想家 - 莱布尼茨.pdf": "加勒特·汤姆森",
+    "西方/索伦·克尔凯郭尔/最伟大的思想家 - 克尔恺廓尔.pdf": "苏珊·李·安德森",
+    "西方/苏格拉底/最伟大的思想家 - 苏格拉底.pdf": "霍普·梅",
+    "西方/弗里德里希·尼采/最伟大的思想家 - 尼采.pdf": "埃里克·斯坦哈特",
+    "西方/莫里斯·梅洛-庞蒂/最伟大的思想家 - 梅洛-庞蒂.pdf": "丹尼尔·托马斯·普里莫兹克",
+    "西方/米歇尔·福柯/导读福柯《规训与惩罚》.pdf": "安妮·施沃恩、史蒂芬·夏皮罗",
+    "西方/吉尔·德勒兹/导读德勒兹《差异与重复》.pdf": "亨利·萨默斯-霍尔",
+}
+
 # ── FORCE_OCR: 文本层质量差（乱码率检测 2026-08-05, 见全检记录）→ 强制 OCR 重提 ──
 FORCE_OCR = {
     "西方/路易·阿尔都塞/读《资本论》.pdf",        # 79% 乱码
@@ -104,13 +117,22 @@ def ocr_page(img_path):
     return ""
 
 def has_text_layer(fp):
-    """\u6587\u672c\u5c42\u53ef\u7528\u5224\u5b9a: \u4e2d\u6587\u91cf >100 \u4e14 \u4e2d\u6587\u5360\u6bd4 >60%\uff08\u4e71\u7801\u7387\u9ad8\u5219\u89c6\u4e3a\u574f\u6587\u672c\u5c42, \u8d70 OCR\uff09"""
+    """\u6587\u672c\u5c42\u53ef\u7528\u5224\u5b9a: \u4e2d\u6587\u91cf >100 \u4e14 \u4e2d\u6587\u5360\u6bd4 >60%\uff08\u4e71\u7801\u7387\u9ad8\u5219\u89c6\u4e3a\u574f\u6587\u672c\u5c42, \u8d70 OCR\uff09
+    2026-08-09 \u4fee: \u5355\u9875(\u7b2c 30 \u9875)\u62bd\u6837\u4f1a\u88ab\u76ee\u5f55\u9875/\u7a7a\u767d\u9875\u8bf1\u5bfc(\u56fe\u65af\u5e93\u5170\u8bba\u8fa9\u96c6\u9047\u5230) -> \u591a\u9875 1/10/20/30 \u62bd\u6837\u53d6\u4e2d\u6587\u5360\u6bd4\u6700\u9ad8\u9875"""
     doc = fitz.open(fp)
-    t = doc[min(30, doc.page_count - 1)].get_text()
+    n = doc.page_count
+    cands = [i for i in (1, 10, 20, 30) if i < n] or [0]
+    best = (0, 0.0)  # (zh, ratio)
+    for i in cands:
+        t = doc[i].get_text()
+        zh = len(re.findall(r"[\u4e00-\u9fff]", t))
+        total = len(re.sub(r"\s+", "", t))
+        if total > 0:
+            r = zh / total
+            if r > best[1]:
+                best = (zh, r)
     doc.close()
-    zh = len(re.findall(r"[\u4e00-\u9fff]", t))
-    total = len(re.sub(r"\s+", "", t))
-    return zh > 100 and total > 0 and zh / total > 0.6
+    return best[0] > 100 and best[1] > 0.6
 
 def extract_text_layer(fp):
     doc = fitz.open(fp)
@@ -293,6 +315,7 @@ def main():
             if rel == main:
                 author = merged_author
                 break
+        author = AUTHOR_FIX.get(rel, author)  # 书名页作者覆盖（系列书/导读类）
         chapters = chapterize(text)
         blocks_chs = [{"title": c["title"], "content": to_blocks(c["text"])} for c in chapters]
         # 写入章节
@@ -304,7 +327,9 @@ def main():
             ch["index"] = idx
             json.dump(ch, open(os.path.join(bd, f"{idx}.json"), "w", encoding="utf-8"), ensure_ascii=False)
         toc_titles = [c["title"] for c in blocks_chs]
-        meta = {"bookId": bid, "title": TITLE_FIX.get(Path(b["file"]).stem, Path(b["file"]).stem), "author": author, "toc": toc_titles,
+        # toc 用对象数组(与人工重建书一致): 前端 ChapterReader 按 item.title/item.index 渲染
+        toc_obj = [{"type": "chapter", "title": t, "index": i} for i, t in enumerate(toc_titles)]
+        meta = {"bookId": bid, "title": TITLE_FIX.get(Path(b["file"]).stem, Path(b["file"]).stem), "author": author, "toc": toc_obj,
                 "cover": None, "chapterCount": len(blocks_chs), "chapterTitles": toc_titles}
         json.dump(meta, open(os.path.join(bd, "meta.json"), "w", encoding="utf-8"), ensure_ascii=False)
         # 封面

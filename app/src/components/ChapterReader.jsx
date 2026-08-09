@@ -191,7 +191,62 @@ export default function ChapterReader({
                 prevWasSmallImg = false;
               }
             }
-            return merged.map((block, i) => {
+            // ── 段落重建 ──
+            // OCR 每页一个 text block 且段间无空行(段落结构已丢), 靠"行尾句末标点=段边界"重建:
+            // 原书折行行尾几乎从不落在句中, 段尾行恰以句号结束 → 可靠边界(页内行内句号不切)。
+            // 段长 300 字上限强切兜底(OCR 标点缺失时防超长段)。
+            const END_SENT = /[。！？…"”』」）〉\.!?]$/;
+            const splitPageParas = (text) => {
+              const paras = [];
+              let cur = '';
+              let curLen = 0;
+              for (const ln of (text || '').split('\n')) {
+                const s = ln.trim();
+                if (!s) continue;
+                cur += s; curLen += s.length;
+                if (END_SENT.test(s)) { paras.push(cur); cur = ''; curLen = 0; }
+                else if (curLen >= 300) {
+                  // 超长无句末标点 → 在行内最后一个句末标点处强切(太近则整段切)
+                  const m = cur.match(/.*[。！？…"”』」）〉\.!?]/);
+                  if (m && m[0].length > 50) {
+                    paras.push(m[0]); cur = cur.slice(m[0].length); curLen = cur.length;
+                  } else { paras.push(cur); cur = ''; curLen = 0; }
+                }
+              }
+              if (cur) paras.push(cur);
+              return paras;
+            };
+            // ── 跨块连续段落: 页边界若断句(前块尾段未以句末标点结尾) → 拼接为连续段落 ──
+            const paras = [];
+            let tail = null;   // 尾段(可能被下一页首段拼接)
+            for (const blk of merged) {
+              if (blk.type !== 'text') {
+                if (tail) { paras.push(tail); tail = null; }
+                paras.push(blk);
+                continue;
+              }
+              const parts = (blk.value || '').split('[IMG]');
+              const imgs = blk.imgs || [];
+              parts.forEach((p, j) => {
+                const segs = splitPageParas(p);
+                segs.forEach((seg, k) => {
+                  if (!seg.trim()) return;   // 空段跳过
+                  const segImgs = (j < parts.length - 1 && k === segs.length - 1 && imgs[j]) ? [imgs[j]] : [];
+                  const isBlockFirst = (j === 0 && k === 0);
+                  if (isBlockFirst && tail && !END_SENT.test(tail.text.trim().slice(-1))) {
+                    // 页边界断句 → 拼接到前块尾段; 锚点给当前块(跳转落在本块内容开头)
+                    tail.text += seg;
+                    tail.imgs = tail.imgs.concat(segImgs);
+                    tail.id = `b-${blk._i}`;
+                  } else {
+                    if (tail) paras.push(tail);
+                    tail = { text: seg, id: isBlockFirst ? `b-${blk._i}` : undefined, imgs: segImgs };
+                  }
+                });
+              });
+            }
+            if (tail) paras.push(tail);
+            return paras.map((block, i) => {
             if (block.type === 'image') {
               return (
                 <div key={i} style={{ textAlign: 'center', margin: '8px 0' }}>
@@ -206,26 +261,14 @@ export default function ChapterReader({
               const html = block.value || block.html || '';
               return <div key={i} className="chapter-html" dangerouslySetInnerHTML={{ __html: html }} />;
             }
-            const parts = (block.value || '').split('[IMG]');
-            // 单 block 内 \n\n 切分多段渲染（OCR 重建书整章一个 block，不切分会被折叠成一大段）
-            const segs = parts.map(p => p.split(/\n{2,}/));
             return (
-              <Fragment key={i}>
-                {segs.map((ps, j) => (
-                  <Fragment key={j}>
-                    {ps.map((para, k) => (
-                      <p key={k} id={block.type === 'text' && j === 0 && k === 0 ? `b-${block._i}` : undefined}
-                        style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
-                        {para}
-                        {k === ps.length - 1 && j < parts.length - 1 && block.imgs?.[j] && (
-                          <img src={block.imgs[j].src} alt=""
-                            style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
-                        )}
-                      </p>
-                    ))}
-                  </Fragment>
+              <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
+                {block.text}
+                {block.imgs && block.imgs.map((img, j) => (
+                  <img key={j} src={img.src} alt=""
+                    style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
                 ))}
-              </Fragment>
+              </p>
             );
           });
           })()
@@ -359,7 +402,7 @@ export default function ChapterReader({
             <h3 style={{ fontFamily: 'var(--font-serif)', marginTop: 0 }}>目录</h3>
             {(() => {
               const list = (toc && toc.length)
-                ? toc
+                ? toc.map((item, i) => typeof item === 'string' ? { type: 'chapter', title: item, index: i } : item)
                 : chapters.map((c, i) => ({ type: 'chapter', title: c.title, index: i }));
               return list.map((item, i) => {
                 const isPart = item.type === 'part';

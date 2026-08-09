@@ -182,9 +182,18 @@ def main():
         for bid in sorted(os.listdir(CHAPTER_DIR)):
             src = os.path.join(CHAPTER_DIR, bid)
             dst = os.path.join(PUBLIC_CHAPTER_DIR, bid)
-            if os.path.isdir(src) and not os.path.isdir(dst):
+            if not os.path.isdir(src):
+                continue
+            if not os.path.isdir(dst):
                 shutil.copytree(src, dst)
                 n += 1
+                continue
+            # 文件级补齐（2026-08-09: 目录存在但文件不全——如重导后 public 部分过期/缺失）
+            for fn in os.listdir(src):
+                s, d = os.path.join(src, fn), os.path.join(dst, fn)
+                if not os.path.exists(d):
+                    shutil.copy2(s, d)
+                    n += 1
         print(f"public 章节副本双写: {n} 个新增（缺才补, 不覆盖）", flush=True)
     print("  有 rank:", sum(1 for e in entries if e["rank"]), flush=True)
 

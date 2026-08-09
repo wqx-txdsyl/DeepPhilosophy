@@ -52,12 +52,6 @@ export default defineConfig({
               id.includes('node_modules/scheduler/')) {
             return 'vendor-react';
           }
-          // PDF + EPUB 重型阅读器 → reader chunk (~2MB, 仅阅读页加载)
-          if (id.includes('node_modules/pdfjs-dist/') ||
-              id.includes('node_modules/react-pdf/') ||
-              id.includes('node_modules/epubjs/')) {
-            return 'vendor-reader';
-          }
           // 其他 node_modules → common vendor
           if (id.includes('node_modules/')) {
             return 'vendor-common';
