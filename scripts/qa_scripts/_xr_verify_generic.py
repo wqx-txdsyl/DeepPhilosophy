@@ -71,10 +71,12 @@ def verify(bid):
         ch_dir = os.path.dirname(meta_path)
         if os.path.isdir(ch_dir):
             files = {int(f[:-5]) for f in os.listdir(ch_dir) if f.endswith('.json') and f != 'meta.json'}
-            tidx = {t.get('index') for t in m.get('toc', [])}
+            toc = m.get('toc', [])
+            is_obj = toc and isinstance(toc[0], dict)  # 重建书=对象; 引擎直出=字符串
+            tidx = {t.get('index') for t in toc} if is_obj else set(range(len(toc)))
             st = '✓' if tidx == files else f'✗ toc({len(tidx)}) vs files({len(files)})'
             if tidx != files: ok = False
-            print(f'  ④ toc index 集合 == 文件编号: {st}')
+            print(f'  ④ toc index 集合 == 文件编号 ({len(files)}): {st}')
             if tidx != files:
                 print(f'     toc-only: {sorted(tidx - files)}  file-only: {sorted(files - tidx)[:8]}')
             # index < chapterCount
@@ -83,10 +85,25 @@ def verify(bid):
             b = next((x for x in bk if x.get('id') == bid), None)
             cc = b.get('chapterCount') if b else None
             if cc is not None:
-                over = [t for t in m.get('toc', []) if t.get('index') >= cc]
+                over = [t for t in toc if (t.get('index') if is_obj else toc.index(t)) >= cc]
                 st = '✓' if not over else f'✗ {len(over)} 个 index >= cc'
                 if over: ok = False
                 print(f'  index < chapterCount({cc}): {st}')
+
+    # ⑤ detail.toc == meta.toc（事故二/三：只同步 meta 忘 detail） + meta 内部 chapterCount 自洽
+    if metas and os.path.exists(dp_detail):
+        d = json.load(open(dp_detail, encoding='utf-8'))
+        st = '✓' if d.get('toc') == m.get('toc') else f"✗ detail.toc={len(d.get('toc', []))} meta.toc={len(m.get('toc', []))}"
+        if d.get('toc') != m.get('toc'): ok = False
+        print(f'  ⑤ detail.toc == meta.toc: {st}')
+        st = '✓' if d.get('chapterCount') == m.get('chapterCount') else f"✗ detail.cc={d.get('chapterCount')} meta.cc={m.get('chapterCount')}"
+        if d.get('chapterCount') != m.get('chapterCount'): ok = False
+        print(f'  detail.cc == meta.cc: {st}')
+        dt = d.get('chapterTitles') or []
+        mt = m.get('chapterTitles') or []
+        st = '✓' if dt == mt else f'✗ detail.ct={len(dt)} meta.ct={len(mt)}'
+        if dt != mt: ok = False
+        print(f'  chapterTitles 双端一致: {st}')
 
     print('=== 结果:', '全部通过 ✓' if ok else '存在问题 ✗', '===')
     return ok
