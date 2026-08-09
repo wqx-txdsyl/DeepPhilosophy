@@ -5,7 +5,9 @@
 结构: 2 part（上编 伊壁鸠鲁文存 index=3 / 下编 万物本性论 index=12）+ 19 章 + 88 节。
 前置(顶层): 2016年再版序/2004年译丛总序/中译者导言; 译名对照表顶层（同 CPR 索引章）。
 上编: 9 篇（3 书信 18 节数字.格式 + 遗嘱/临终书信 + 4 格言条目章）。
-下编: 6 卷卢克莱修诗体, 每卷 大节(一~四,汉字数字)+数字小节 全做 section; 行级拆段。
+下编: 6 卷卢克莱修诗体, 每卷 大节(一~四,汉字数字)+数字小节 全做 section; 散文断段
+（2026-08-09 修复: 源页为 20-32 字窄栏行, 行级拆段导致读者端每段半行宽右半空白）,
+对照表行级拆段。
 页眉: 偶页=书名+部分名（自然与快乐：伊壁鸠鲁的哲学1上编伊壁鸠鲁文存）, 奇页=章名（可带篇序号前缀）。
 OCR 无段落空行 → 散文行尾句号(。！？…)断段+脚注标记(①…)强制断段; 格言编号行(^\d+[.．])断段。
 孤立单字一~九行: 诗体删; 散文仅当紧邻标题块删（p18"一"篇序号）, 正文保留（p11 导言"二"）。
@@ -403,8 +405,11 @@ for ch_title, pg_s, pg_e, mode, secs in CHS:
     elif mode == "items":
         text = split_items(text)
         blocks = blocks_from_text(text, ch_title)
-    else:  # poem / table
+    elif mode == "table":  # 对照表: 行级拆段（每行独立成段）
         blocks = line_paras(text)
+    else:  # poem: 窄栏散文行 → 散文断段（2026-08-09 修复行级拆段右半空白）
+        text = split_prose(text)
+        blocks = blocks_from_text(text, ch_title)
     sec_anchors = {}
     for kind, sec_title, exp_pg in secs:
         tn = norm(sec_title)
