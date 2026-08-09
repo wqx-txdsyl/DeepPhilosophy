@@ -206,10 +206,8 @@ app.get('/api/books/:id/file', async (c) => {
   const book = booksData[c.req.param('id')];
   if (!book) return c.json({ error: '书籍未找到', detail: '书籍未找到' }, 404);
 
-  // OSS 直链 → 302，零 Worker 流量
-  if (book.oss) return c.redirect(book.oss, 302);
-
-  // 仅 GitHub 源
+  // GitHub 优先：OSS bucket 现处于 UserDisable（阿里云账号停用，403 全部直链），
+  // GitHub Release 公开下载无防盗链，Range 代理可覆盖 PDF 逐页加载
   if (book.github) {
     const ext = '.' + (book.ext || '');
     const mime = MIME[ext] || 'application/octet-stream';

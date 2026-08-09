@@ -107,7 +107,8 @@ app.get('/api/auth/profile', async (c) => {
     if (!payload) return c.json({ error: '未登录' }, 401);
     const db = c.env.deepphilosophy_db;
     const user = await db.prepare('SELECT username, avatar FROM users WHERE username = ?').bind(payload.username).first();
-    return c.json(user || { error: '用户不存在' }, 404);
+    if (!user) return c.json({ error: '用户不存在' }, 404);
+    return c.json(user);  // 注意：不能写 c.json(user || {...}, 404) —— user 存在时也会返回 404（历史 bug）
   } catch (e) { return c.json({ error: e.message }, 500); }
 });
 
