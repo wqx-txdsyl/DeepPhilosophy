@@ -638,6 +638,11 @@ html.mobile-mode .reader-content {
   font-size: 16px !important;
   line-height: 1.8 !important;
 }
+/* 阅读器全屏：mobile-mode 下 .app-main 的 padding(16px 8px+20px !important) 不适用
+   —— 否则 wrapper 100dvh + padding 36px 超出一屏 → 页面级右侧滚动条出现 */
+html.mobile-mode .app-main.reader-mode {
+  padding: 0 !important;
+}
 html.mobile-mode .reader-page-wrapper {
-  height: calc(100dvh - 24px) !important;
+  height: 100dvh !important;
 }
