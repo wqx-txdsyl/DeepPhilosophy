@@ -1,3 +1,5 @@
+# DEPRECATED (2026-08-09): Render 已退役，后端全量迁移 Cloudflare Workers（deepphilosophy-api/deepphilosophy-auth）
+# 此文件仅存档，勿再部署
 # DeepPhilosophy Backend Dockerfile
 # Multi-stage: Node.js builds frontend, Python runs backend
 FROM node:20-slim AS frontend
