@@ -28,6 +28,17 @@ SECTIONS = [
 
 FOOT_RE = re.compile(r'^\d{1,4}$')           # 页脚页码
 GUTTER_RE = re.compile(r'^[一-龥]{1,2}$')    # 中缝竖排残字（1-2 字纯汉字行）
+NOTE_RE = re.compile(r'^[①②③④⑤⑥⑦⑧⑨]')  # 页尾脚注行（含 OCR 把②识别成@的变体, 由续行规则兜底）
+
+def is_note_line(ln):
+    """脚注续行特征: 含译者注 | 行首编号 | (≤120字 且以句读结尾)"""
+    if '译者注' in ln:
+        return True
+    if NOTE_RE.match(ln):
+        return True
+    if len(ln) <= 120 and ln.endswith(('。', '？', '！', '.', ',', '，')):
+        return True
+    return False
 
 def main():
     ckpt = json.load(open(CKPT, encoding='utf-8'))
@@ -56,13 +67,31 @@ def main():
                 lines = lines[start_line:]
             if p == pe and end_n is not None:
                 lines = lines[:end_n]
-            kept = []
-            for ln in lines:
+            body, notes = [], []
+            i = 0
+            while i < len(lines):
+                ln = lines[i]
                 if FOOT_RE.match(ln) or GUTTER_RE.match(ln):
+                    i += 1
                     continue
-                kept.append(ln)
-            if kept:
-                paras.append('\n'.join(kept))
+                if NOTE_RE.match(ln):
+                    # 页尾脚注: ①行 + 紧邻续行合成 1 条注释（规则与干跑验证一致）
+                    note = [ln]
+                    j = i + 1
+                    while j < len(lines) and not FOOT_RE.match(lines[j]) and not NOTE_RE.match(lines[j]):
+                        if is_note_line(lines[j]):
+                            note.append(lines[j])
+                            j += 1
+                        else:
+                            break
+                    notes.append('\n'.join(note))
+                    i = j
+                    continue
+                body.append(ln)
+                i += 1
+            if body:
+                paras.append('\n'.join(body))
+            paras.extend(notes)
         text = '\n\n'.join(paras)
         ch = {'index': idx, 'title': title, 'content': to_blocks(text)}
         json.dump(ch, open(os.path.join(D, f'{idx}.json'), 'w', encoding='utf-8'), ensure_ascii=False)
