@@ -273,7 +273,9 @@ def extract(fp,bid):
                     if el is not None:
                         found = (spine_hrefs[si], f['pos'].get(id(el), 0))
                         break
-                elif found is None:
+                # 锚点缺失（calibre filepos 型 NCX 常见）→ 回退到该章 spine 起始文件开头,
+                # 而不是跳过该章（跳过会让内容并入前一章直至下一个可找锚点, 造成整卷内容错位）
+                if found is None:
                     found = (spine_hrefs[si], 0)
             if found is not None:
                 anchors.append((ci, found[0], found[1]))
