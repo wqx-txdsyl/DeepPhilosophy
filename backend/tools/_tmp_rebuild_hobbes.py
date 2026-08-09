@@ -35,16 +35,10 @@ def main():
     pages = {int(k): v for k, v in ocr.items() if v and v != '__FAILED__'}
     print('ckpt 页数:', len(pages), '| 覆盖范围: %d-%d' % (min(pages), max(pages)))
 
-    sys.path.insert(0, os.path.join(BASE, 'tools'))
-    import importlib.util
-    spec = importlib.util.spec_from_file_location('dpp', os.path.join(BASE, 'tools', 'dp_pdf_import.py'))
-    dpp = importlib.util.module_from_spec(spec)
-    _save = sys.argv
-    sys.argv = ['dp_pdf_import.py']
-    try:
-        spec.loader.exec_module(dpp)
-    finally:
-        sys.argv = _save
+    def to_blocks(ch_text):
+        """与 dp_pdf_import.py 一致: 按空行切块"""
+        paras = [p.strip() for p in re.split(r'\n\s*\n', ch_text) if p.strip()]
+        return [{'type': 'text', 'value': p} for p in paras]
 
     D = os.path.join(BASE, 'data', 'book_chapters', bid)
     if os.path.isdir(D):
@@ -52,7 +46,7 @@ def main():
     os.makedirs(D)
     toc = []
     for idx, (title, ps, pe, start_line, end_n) in enumerate(SECTIONS):
-        out = []
+        paras = []  # 每页 1 段（页间 \n\n 分隔 → to_blocks 切出每页 1 块，与全库 _xr_nl_fix 终态一致）
         for p in range(ps, pe + 1):
             txt = pages.get(p, '')
             if not txt:
@@ -62,12 +56,15 @@ def main():
                 lines = lines[start_line:]
             if p == pe and end_n is not None:
                 lines = lines[:end_n]
+            kept = []
             for ln in lines:
                 if FOOT_RE.match(ln) or GUTTER_RE.match(ln):
                     continue
-                out.append(ln)
-        text = '\n'.join(out)
-        ch = {'index': idx, 'title': title, 'content': dpp.to_blocks(text)}
+                kept.append(ln)
+            if kept:
+                paras.append('\n'.join(kept))
+        text = '\n\n'.join(paras)
+        ch = {'index': idx, 'title': title, 'content': to_blocks(text)}
         json.dump(ch, open(os.path.join(D, f'{idx}.json'), 'w', encoding='utf-8'), ensure_ascii=False)
         toc.append(title)
         print(f'  [{idx}] {title} ({len(text):>7} 字符)', flush=True)
