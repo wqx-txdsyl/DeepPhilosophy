@@ -58,6 +58,7 @@ def main():
     toc = []
     for idx, (title, ps, pe, start_line, end_n) in enumerate(SECTIONS):
         paras = []  # 每页 1 段（页间 \n\n 分隔 → to_blocks 切出每页 1 块，与全库 _xr_nl_fix 终态一致）
+        ch_notes = []  # 章内全部脚注: 统一放章尾, 避免插在页间切断正文阅读流
         for p in range(ps, pe + 1):
             txt = pages.get(p, '')
             if not txt:
@@ -91,7 +92,8 @@ def main():
                 i += 1
             if body:
                 paras.append('\n'.join(body))
-            paras.extend(notes)
+            ch_notes.extend(notes)
+        paras.extend(ch_notes)  # 章尾注释区（按页序累积）
         text = '\n\n'.join(paras)
         ch = {'index': idx, 'title': title, 'content': to_blocks(text)}
         json.dump(ch, open(os.path.join(D, f'{idx}.json'), 'w', encoding='utf-8'), ensure_ascii=False)
