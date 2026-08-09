@@ -9,7 +9,8 @@ st_by_bid = {r[2]: (int(r[0]), r[1].strip()) for r in rows}
 
 books = ck['books']
 def safe_of(rel):
-    return re.sub(r'[^A-Za-z0-9一-鿿.]', '_', rel)
+    # 引擎规则：保留 A-Za-z0-9/中文/.-，其余（含空格、·、/）→ _（- 保留！）
+    return re.sub(r'[^A-Za-z0-9一-鿿.\-]', '_', rel)
 rel_by_safe = {safe_of(rel): rel for rel in books}
 
 ocr = ck['ocr']
