@@ -156,7 +156,7 @@ def ocr_pdf(fp, ckpt, safe):
         time.sleep(0.1)
     ckpt.setdefault("ocr", {})[safe] = done
     json.dump(ckpt, open(CKPT_FILE, "w", encoding="utf-8"), ensure_ascii=False)
-    texts = [pages_map.get(i, "") for i in range(total)]
+    texts = [done.get(str(i), "") if done.get(str(i), "") != "__FAILED__" else "" for i in range(total)]
     return "\n\n".join(t for t in texts if t)
 
 # ── 文本规范化 + 章节化

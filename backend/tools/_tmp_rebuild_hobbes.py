@@ -28,17 +28,10 @@ SECTIONS = [
 
 FOOT_RE = re.compile(r'^\d{1,4}$')           # 页脚页码
 GUTTER_RE = re.compile(r'^[一-龥]{1,2}$')    # 中缝竖排残字（1-2 字纯汉字行）
-NOTE_RE = re.compile(r'^[①②③④⑤⑥⑦⑧⑨]')  # 页尾脚注行（含 OCR 把②识别成@的变体, 由续行规则兜底）
-
-def is_note_line(ln):
-    """脚注续行特征: 含译者注 | 行首编号 | (≤120字 且以句读结尾)"""
-    if '译者注' in ln:
-        return True
-    if NOTE_RE.match(ln):
-        return True
-    if len(ln) <= 120 and ln.endswith(('。', '？', '！', '.', ',', '，')):
-        return True
-    return False
+NOTE_RE = re.compile(r'^[①②③④⑤⑥⑦⑧⑨]')  # 页尾脚注行
+ANCHOR_RE = re.compile(r'[①②③④⑤⑥⑦⑧⑨]+$')  # 行尾脚注锚点（OCR 把锚点并到正文行尾, 应删）
+NOISE_RE = re.compile(r'^[\s+·•.,;:，。、~—…·]+$')  # 孤立符号噪声行（如 "+"）
+END_PARA_RE = re.compile(r'[\d。！？；：…~"”』」）】%.,;:!?]$')  # 段尾终止标点/数字 → 不跨页合并
 
 def main():
     ckpt = json.load(open(CKPT, encoding='utf-8'))
@@ -76,25 +69,36 @@ def main():
                     i += 1
                     continue
                 if NOTE_RE.match(ln):
-                    # 页尾脚注: ①行 + 紧邻续行合成 1 条注释（规则与干跑验证一致）
+                    # 页尾脚注: ①行 + 其后所有非脚注行合成 1 条注释。
+                    # 续行无条件吸收（原书脚注行内断行无句读, 以"的/在"等结尾,
+                    # 句读判定会断链把脚注后半残留正文——页70 脚注②即因此漏过）
                     note = [ln]
                     j = i + 1
-                    while j < len(lines) and not FOOT_RE.match(lines[j]) and not NOTE_RE.match(lines[j]):
-                        if is_note_line(lines[j]):
-                            note.append(lines[j])
-                            j += 1
-                        else:
-                            break
+                    while j < len(lines) and not FOOT_RE.match(lines[j]) and not GUTTER_RE.match(lines[j]) and not NOTE_RE.match(lines[j]):
+                        note.append(lines[j])
+                        j += 1
                     notes.append('\n'.join(note))
                     i = j
+                    continue
+                ln = ANCHOR_RE.sub('', ln)   # 行尾脚注锚点(②①)删除——注释已移章尾
+                if NOISE_RE.match(ln) or not ln:
+                    i += 1
                     continue
                 body.append(ln)
                 i += 1
             if body:
                 paras.append('\n'.join(body))
             ch_notes.extend(notes)
-        paras.extend(ch_notes)  # 章尾注释区（按页序累积）
-        text = '\n\n'.join(paras)
+        # 跨页段落合并: 段尾非终止标点(跨页断词, 如"…非后"+"者。"→"非后者。")
+        # → 与下段拼接; 仅正文段参与, 脚注段不合并
+        merged = []
+        for seg in paras:
+            if merged and not END_PARA_RE.search(merged[-1]):
+                merged[-1] += seg
+            else:
+                merged.append(seg)
+        merged.extend(ch_notes)  # 章尾注释区（按页序累积, 逐条独立段）
+        text = '\n\n'.join(merged)
         ch = {'index': idx, 'title': title, 'content': to_blocks(text)}
         json.dump(ch, open(os.path.join(D, f'{idx}.json'), 'w', encoding='utf-8'), ensure_ascii=False)
         toc.append(title)
