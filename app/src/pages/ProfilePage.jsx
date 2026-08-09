@@ -85,7 +85,7 @@ function ProfilePage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
       signal: AbortSignal.timeout(10000),
-    }).then(r => r.ok ? r.json() : r.json().then(e => { throw new Error(e.detail || '失败'); }));
+    }).then(r => r.ok ? r.json() : r.json().then(e => { throw new Error(e.detail || e.error || '失败'); }));
 
   const handleRegister = async () => {
     if (!username.trim() || !password.trim()) { setAuthMsg('请填写用户名和密码'); return; }
