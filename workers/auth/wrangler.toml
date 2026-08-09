@@ -8,9 +8,8 @@ binding = "deepphilosophy_db"
 database_name = "deepphilosophy-db"
 database_id = "7db39390-6088-4cf5-a283-4697fc876091"
 
-[vars]
-JWT_SECRET = "dph-v1-auth-secret-key-2025"
-
+# JWT_SECRET 已从 vars 移除（明文进过 git 属泄露），现为 wrangler secret：
+#   cd workers/auth && wrangler secret put JWT_SECRET   （api worker 需同值）
 [[routes]]
 pattern = "deepphilosophy.top/api/auth/*"
 zone_name = "deepphilosophy.top"

@@ -14,7 +14,21 @@ async function hashPw(password, salt) {
   const hash = await crypto.subtle.digest('SHA-256', data);
   return salt + ':' + buf2hex(hash);
 }
+// 密码校验，支持三种格式：
+//   "{salt}:{sha256hex}"        原生格式（新注册/重置后）
+//   "sha256:{salt}:{hash}"      迁移自旧 Render 库的 SHA-256 用户（原密码继续可用）
+//   "scrypt:{salt}:{hash}"      旧 scrypt 用户 — 免费版无法验证（JS scrypt 超 CPU 上限），
+//                               路径 B 提示重置；将来 Workers Paid + verifyScrypt 开关可自动登录
 async function checkPw(password, stored) {
+  if (stored.startsWith('sha256:')) {
+    const [, salt, hash] = stored.split(':');
+    const data = new TextEncoder().encode(password + salt);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return hash.toLowerCase() === buf2hex(digest);
+  }
+  if (stored.startsWith('scrypt:')) {
+    return 'SCRYPT_LEGACY';  // 特殊标记：登录处转 401 提示重置
+  }
   const [salt] = stored.split(':');
   return stored === await hashPw(password, salt);
 }
@@ -56,8 +70,8 @@ app.post('/api/auth/register', async (c) => {
     const existing = await db.prepare('SELECT id FROM users WHERE username = ?').bind(username).first();
     if (existing) return c.json({ error: '用户名已存在' }, 409);
     const hash = await hashPw(password, crypto.randomUUID());
-    await db.prepare('INSERT INTO users (username, password_hash) VALUES (?, ?)').bind(username, hash).run();
-    const token = await signJWT({ username }, c.env.JWT_SECRET);
+    const ins = await db.prepare('INSERT INTO users (username, password_hash) VALUES (?, ?)').bind(username, hash).run();
+    const token = await signJWT({ username, user_id: ins.meta.last_row_id }, c.env.JWT_SECRET);
     return c.json({ token, username });
   } catch (e) { return c.json({ error: e.message }, 500); }
 });
@@ -69,10 +83,17 @@ app.post('/api/auth/login', async (c) => {
     await initDB(db);
     const { username, password } = await c.req.json();
     const user = await db.prepare('SELECT * FROM users WHERE username = ?').bind(username).first();
-    if (!user || !(await checkPw(password, user.password_hash))) {
+    if (!user) {
       return c.json({ error: '用户名或密码错误' }, 401);
     }
-    const token = await signJWT({ username }, c.env.JWT_SECRET);
+    const pw = await checkPw(password, user.password_hash);
+    if (pw === 'SCRYPT_LEGACY') {
+      return c.json({ error: '该账号由旧系统迁移而来，密码体系已升级，请联系管理员重置密码后再登录' }, 401);
+    }
+    if (!pw) {
+      return c.json({ error: '用户名或密码错误' }, 401);
+    }
+    const token = await signJWT({ username, user_id: user.id }, c.env.JWT_SECRET);
     return c.json({ token, username, avatar: user.avatar || '' });
   } catch (e) { return c.json({ error: e.message }, 500); }
 });

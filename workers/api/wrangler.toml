@@ -1,0 +1,21 @@
+name = "deepphilosophy-api"
+main = "src/index.js"
+compatibility_date = "2025-07-21"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "deepphilosophy_db"
+database_name = "deepphilosophy-db"
+database_id = "7db39390-6088-4cf5-a283-4697fc876091"
+
+[vars]
+# 明文可公开的配置；密钥一律 wrangler secret put：
+#   cd workers/api && wrangler secret put DEEPSEEK_API_KEY
+#   cd workers/api && wrangler secret put ADMIN_PASSWORD
+#   cd workers/api && wrangler secret put JWT_SECRET   （必须与 auth worker 同值）
+DEEPSEEK_BASE_URL = "https://api.deepseek.com"
+DEFAULT_MODEL = "deepseek-chat"
+
+[[routes]]
+pattern = "deepphilosophy.top/api/*"
+zone_name = "deepphilosophy.top"
