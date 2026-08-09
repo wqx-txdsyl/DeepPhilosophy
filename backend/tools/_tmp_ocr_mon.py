@@ -18,9 +18,9 @@ last_act = ''
 with open(LOG, encoding='utf-8', errors='replace') as f:
     lines = f.readlines()
 for ln in reversed(lines):
-    m = re.search(r'\[(\d+)/(\d+)\] (\S+)', ln)
+    m = re.search(r'\[(\d+)/(\d+)\] (.+?)(?:\r?\n)?$', ln)
     if m:
-        cur = m.group(3)
+        cur = m.group(3).strip()
         break
 for ln in reversed(lines):
     m = re.search(r'\[(20\d\d/\d\d/\d\d \d\d:\d\d:\d\d)\]', ln)

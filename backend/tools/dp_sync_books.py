@@ -172,6 +172,20 @@ def main():
     if os.path.isdir(os.path.dirname(assets)):
         shutil.copy2(BOOKS_FILE, assets)
         print(f"src/assets/books.json 更新", flush=True)
+    # 章节副本双写（2026-08-09 修复: 前端本地 dev 读 app/public/backend/data/book_chapters,
+    # 2026-08-08 事故后 junction 改真实副本, 每本新入库都必须双写, 否则 dev 阅读 404）
+    CHAPTER_DIR = os.path.join(BASE, "backend", "data", "book_chapters")
+    PUBLIC_CHAPTER_DIR = os.path.join(BASE, "app", "public", "backend", "data", "book_chapters")
+    if os.path.isdir(CHAPTER_DIR):
+        os.makedirs(PUBLIC_CHAPTER_DIR, exist_ok=True)
+        n = 0
+        for bid in sorted(os.listdir(CHAPTER_DIR)):
+            src = os.path.join(CHAPTER_DIR, bid)
+            dst = os.path.join(PUBLIC_CHAPTER_DIR, bid)
+            if os.path.isdir(src) and not os.path.isdir(dst):
+                shutil.copytree(src, dst)
+                n += 1
+        print(f"public 章节副本双写: {n} 个新增（缺才补, 不覆盖）", flush=True)
     print("  有 rank:", sum(1 for e in entries if e["rank"]), flush=True)
 
 
