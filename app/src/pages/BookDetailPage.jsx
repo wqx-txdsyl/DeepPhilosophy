@@ -179,7 +179,9 @@ function BookDetailPage() {
                 }}
                   onClick={() => {
                     if (isPart) return;
-                    navigate(`/reader/${bookId}?ch=${item.index}${isSection ? `&sec=${item.sec}` : ''}`);
+                    // 节跳转: 传 toc 数组下标(标题锚点 sec-{tocIdx} 用), 不依赖 sec 数字
+                    // —— 缺 sec 字段的书(25本)也能精确跳节
+                    navigate(`/reader/${bookId}?ch=${item.index}${isSection ? `&toc=${i}` : ''}`);
                   }}
                   onMouseEnter={e => { if (!isPart) e.currentTarget.style.background = 'var(--card-bg)'; }}
                   onMouseLeave={e => { if (!isPart) e.currentTarget.style.background = 'transparent'; }}>

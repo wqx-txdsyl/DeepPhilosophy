@@ -31,8 +31,14 @@ function ReaderPage() {
   const [textReady, setTextReady] = useState(false);
   const [showReaderToc, setShowReaderToc] = useState(false);
   // URL 直达节(第X节): 详情页目录 section 跳转
+  // 主路径: &toc={toc数组下标} → 标题锚点 sec-{tocIdx}，不依赖 sec 字段（缺 sec 的书也准）
+  // 兼容旧 URL: &sec={章内块下标}（防御: 缺 sec 字段的书旧 URL 带 "sec=undefined" → NaN → 置 null）
+  const tocParam = searchParams.get('toc');
+  const tocNum = tocParam ? parseInt(tocParam, 10) : NaN;
+  const initialTocIdx = !isNaN(tocNum) ? tocNum : null;
   const secParam = searchParams.get('sec');
-  const initialSec = secParam ? parseInt(secParam, 10) : null;
+  const secNum = secParam ? parseInt(secParam, 10) : NaN;
+  const initialSec = !isNaN(secNum) ? secNum : null;
 
   // Notes state
   const [showNotes, setShowNotes] = useState(false);
@@ -418,6 +424,7 @@ ${textContext}
                 title={book?.title}
                 showToc={showReaderToc}
                 onToggleToc={() => setShowReaderToc(!showReaderToc)}
+                initialTocIdx={initialTocIdx}
                 initialSec={initialSec}
               />
             ) : error ? (
