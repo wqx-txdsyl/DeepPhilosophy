@@ -258,8 +258,18 @@ export default function ChapterReader({
             // ── 段落重建 ──
             // OCR 每页一个 text block 且段间无空行(段落结构已丢), 靠"行尾句末标点=段边界"重建:
             // 原书折行行尾几乎从不落在句中, 段尾行恰以句号结束 → 可靠边界(页内行内句号不切)。
+            // 句末判定 = 行尾先剥掉成对闭合符(”』」）〉“), 再看剩尾是否句子终结符(。！？….!?):
+            // 「…在一起”，」行尾是逗号 → 续行; 「…不干净的"。」行尾是句号 → 切段;
+            // 「…。」"」引号收尾 → 剥引号后句号 → 切段。否则「…放置在一起"，」长段会在
+            // 引号处被切段, 下一段以逗号开头。
             // 段长 300 字上限强切兜底(OCR 标点缺失时防超长段)。
-            const END_SENT = /[。！？…"”』」）〉\.!?]$/;
+            const END_SENT_RE = /[。！？…\.!?]$/;
+            const END_CLOSE = '”』」）〉"';
+            const isEndSent = (s) => {
+              let t = String(s).trim();
+              while (t && END_CLOSE.includes(t[t.length - 1])) t = t.slice(0, -1);
+              return END_SENT_RE.test(t);
+            };
             const splitPageParas = (text) => {
               const paras = [];
               let cur = '';
@@ -268,10 +278,11 @@ export default function ChapterReader({
                 const s = ln.trim();
                 if (!s) continue;
                 cur += s; curLen += s.length;
-                if (END_SENT.test(s)) { paras.push(cur); cur = ''; curLen = 0; }
+                if (isEndSent(s)) { paras.push(cur); cur = ''; curLen = 0; }
                 else if (curLen >= 300) {
                   // 超长无句末标点 → 在行内最后一个句末标点处强切(太近则整段切)
-                  const m = cur.match(/.*[。！？…"”』」）〉\.!?]/);
+                  // 句末标点后可选跟闭合符(。「」"等), 一并带走避免下段以引号开头
+                  const m = cur.match(/.*[。！？…\.!?][”』」）〉"]?/);
                   if (m && m[0].length > 50) {
                     paras.push(m[0]); cur = cur.slice(m[0].length); curLen = cur.length;
                   } else { paras.push(cur); cur = ''; curLen = 0; }
@@ -297,7 +308,7 @@ export default function ChapterReader({
                   if (!seg.trim()) return;   // 空段跳过
                   const segImgs = (j < parts.length - 1 && k === segs.length - 1 && imgs[j]) ? [imgs[j]] : [];
                   const isBlockFirst = (j === 0 && k === 0);
-                  if (isBlockFirst && tail && !END_SENT.test(tail.text.trim().slice(-1))) {
+                  if (isBlockFirst && tail && !isEndSent(tail.text.trim().slice(-2))) {
                     // 页边界断句 → 拼接到前块尾段。段首内容仍是原块(常是标题块),
                     // 必须保留 tail 的 id/_block —— b-{sec} 回退与 blockAnchors
                     // 按 _block 匹配都依赖它; 被拼入的本块内容位于段中, 由标题级
