@@ -197,12 +197,6 @@ function AuthorDetailPage() {
                     {bookTitle}
                   </span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-                    {book.file_type && (
-                      <span className={`badge ${book.file_type === 'txt' ? 'badge-pending' : 'badge-available'}`}
-                        style={{ fontSize: 10, padding: '2px 8px', lineHeight: 1.4 }}>
-                        {book.file_type.toUpperCase()}
-                      </span>
-                    )}
                     <Icon name="icon-book-open" size={14} />
                   </div>
                 </div>

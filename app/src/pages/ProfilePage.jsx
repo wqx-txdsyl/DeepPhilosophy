@@ -376,12 +376,6 @@ function ProfilePage() {
               onClick={() => navigate(`/reader/${item.bookId}`)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div className="card-title" style={{ fontSize: 14, flex: 1 }}>{item.bookTitle}</div>
-                {item.fileType && (
-                  <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 8,
-                    background: item.fileType === 'pdf' ? 'var(--accent)' : 'var(--secondary)',
-                    color: item.fileType === 'pdf' ? '#fff' : 'var(--text-dim)',
-                  }}>{item.fileType.toUpperCase()}</span>
-                )}
               </div>
               <div className="card-subtitle">
                 {item.bookAuthor} 进度: {Math.round((item.percent || 0) * 100)}%

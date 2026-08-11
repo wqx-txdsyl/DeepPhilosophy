@@ -1,6 +1,42 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { execSync } from 'child_process'
+import fs from 'node:fs'
+import path from 'node:path'
+
+// vite 启动时对 public 目录做预索引（publicFiles Set），启动后新增/新建目录的文件
+// 不在索引 → servePublic 跳过 → SPA fallback 返回 HTML（Reader 拿到的 meta 解析失败）
+// 本插件在中间件链最前面实时查盘，public 下真实存在的文件直接 serve，新增章节无需重启 vite
+const PUBLIC_MIME = {
+  '.json': 'application/json', '.webp': 'image/webp', '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml',
+  '.gif': 'image/gif', '.ico': 'image/x-icon', '.pdf': 'application/pdf',
+  '.txt': 'text/plain; charset=utf-8', '.html': 'text/html; charset=utf-8',
+  '.woff2': 'font/woff2', '.css': 'text/css', '.js': 'application/javascript',
+}
+function publicLive() {
+  return {
+    name: 'public-live',
+    configureServer(server) {
+      // publicDir 是正斜杠（vite normalize），path.join 在 Windows 产生反斜杠 —— normalize 统一后比较
+      const base = path.normalize(server.config.publicDir || '')
+      server.middlewares.use((req, res, next) => {
+        if (!base) return next()
+        const url = decodeURIComponent((req.url || '').split('?')[0])
+        // 只补 public 目录下真实文件；vite 内部路径/目录请求一律放行
+        if (!url.startsWith('/') || url.includes('..') || url.startsWith('/@')) return next()
+        const fp = path.normalize(path.join(base, url.replace(/^\//, '')))
+        if (!fp.startsWith(base + path.sep)) return next()
+        let st
+        try { st = fs.statSync(fp) } catch { return next() }
+        if (!st.isFile()) return next()
+        res.setHeader('Content-Type', PUBLIC_MIME[path.extname(fp).toLowerCase()] || 'application/octet-stream')
+        res.setHeader('Cache-Control', 'no-cache')
+        res.end(fs.readFileSync(fp))
+      })
+    },
+  }
+}
 
 // 获取当前 git commit hash（用于 CDN 缓存自动刷新）
 let commitHash = 'master'
@@ -10,7 +46,7 @@ export default defineConfig({
   define: {
     __COMMIT_HASH__: JSON.stringify(commitHash),
   },
-  plugins: [react()],
+  plugins: [react(), publicLive()],
   base: '/',
   server: {
     port: 5173,
