@@ -23,6 +23,10 @@ const toOssImage = (src) => {
   const m = src.match(/\/api\/books\/[^/]+\/image\/([^/]+)$/);
   return m ? `${OSS_IMAGE_BASE}/${m[1]}` : src;
 };
+// EPUB 打不出的字符（ä/ö/ü/ß/λ/ς/' 等）在转换时被映射为私用区占位符（U+E000–F8FF）。
+// 浏览器把私用区字符当独立断行单元，会在它和后一字之间断行 → 占位符孤悬行尾、后字换行。
+// 在占位符后补 word-joiner（U+2060，零宽不可见）：禁止其两侧断行，与后字绑定同行。
+const gluePua = (t) => t.replace(/[-]/g, (c) => c + '⁠');
 
 const loadSettings = () => {
   try {
@@ -447,12 +451,12 @@ export default function ChapterReader({
               hits.sort((a, b) => a.off - b.off);
               for (const h of hits) {
                 if (h.off < cursor) continue;
-                parts.push(block.text.slice(cursor, h.off));
+                parts.push(gluePua(block.text.slice(cursor, h.off)));
                 parts.push(<span key={`a${h.tocIdx}`} id={`sec-${h.tocIdx}`} />);
                 cursor = h.off;
               }
             }
-            parts.push(block.text.slice(cursor));
+            parts.push(gluePua(block.text.slice(cursor)));
             return (
               <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
                 {parts}
