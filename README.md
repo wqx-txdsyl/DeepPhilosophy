@@ -87,7 +87,7 @@ cd app && npm run build   # 产物在 app/dist/
 | 哲学掠影 | `/genealogy` | 六大时代 111 流派谱系，东方/西方/世界视角 |
 | 流派详情 | `/school/:name` | 八面内容：Hero/概述/星丛/时间轴/辞海/金句/著作/结语 |
 | 哲人 | `/authors` | 743 位哲学家，AI 评分排序，肖像卡片网格，地区/流派/时代筛选 |
-| 书籍 | `/books` | 191 本（107 EPUB 可读 + 84 TXT 待收录），结构化 JSON 章节，jsDelivr CDN 加载 |
+| 书籍 | `/books` | 402 本（312 本可读 + 90 TXT 占位待收录），结构化 JSON 章节，jsDelivr CDN 加载 |
 | 问答 | `/qa` | DeepSeek AI 流式哲学对话 |
 | 游戏 | `/games` | 答案之书、PHTI 人格测试、沙雕版 |
 | 我的 | `/profile` | 登录/注册，云端同步阅读进度和对话历史 |
@@ -144,7 +144,7 @@ DeepPhilosophy/
 │   ├── vite.config.js
 │   └── package.json
 ├── backend/                # 数据目录 + 运维工具
-│   ├── tools/              # 6 个运维脚本（verify_book / worker 资产 / D1 迁移 / catalog 校准 / README）
+│   ├── tools/              # 6 个运维脚本（verify_book / worker 资产 / D1 迁移 / catalog 校准 / README；书库构建/修复/同步在 PhiAgent 侧，两边不重复）
 │   ├── data/               # 运行时数据
 │   │   ├── book_chapters/  # 章节 JSON（git 追踪，CDN 加载）
 │   │   ├── book_detail/    # 本地 detail 镜像（git 追踪 79 个历史 + 本地 402）
