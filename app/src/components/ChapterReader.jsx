@@ -500,7 +500,8 @@ export default function ChapterReader({
             // （图是行内原子, 行尾放不下时图+首字整体换行, 不再孤悬行尾后字下移）
             let imgCursor = 0;
             const renderText = (s) => {
-              if (!s.includes('[IMG]')) return s;
+              // parts 中可能混有锚点 <span> React 元素, 只处理字符串
+              if (typeof s !== 'string' || !s.includes('[IMG]')) return s;
               const segs = s.split('[IMG]');
               return segs.map((seg, j) => {
                 if (j === 0) return seg;
