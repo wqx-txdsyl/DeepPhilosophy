@@ -42,12 +42,16 @@ function publicLive() {
 let commitHash = 'master'
 try { commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim() } catch {}
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   define: {
     __COMMIT_HASH__: JSON.stringify(commitHash),
   },
   plugins: [react(), publicLive()],
-  base: '/',
+  // 2026-08-11 书架提速: 生产构建产物走 OSS（用户网络对同源 CF 边缘 4-5s/220KB, OSS 0.1s）
+  // base 为 app/ 根, vite 拼出 .../app/assets/index-xxx.js; 构建后需同步 dist/assets → OSS app/assets/
+  // （dp_sync_oss_static.py, 本地/CF 构建 hash 一致已验证）
+  // dev 保持相对路径; public 数据(/books.json 等)不经 base, 运行时仍同源 fetch
+  base: mode === 'production' ? 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/' : '/',
   server: {
     port: 5173,
     host: true,
@@ -96,4 +100,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))
