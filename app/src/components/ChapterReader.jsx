@@ -315,22 +315,45 @@ export default function ChapterReader({
               }
               const parts = (blk.value || '').split('[IMG]');
               const imgs = blk.imgs || [];
+              // [IMG] 拼接点 = 图中位置（text1[IMG]text2 → 图渲染在句中）。
+              // text1 尾段建段时在段尾留 [IMG] 标记 + 挂图；text2 首段拼回同段 →
+              // 图与前字同段、与后字同行（渲染时图+后字 nowrap 绑定, 不孤悬行尾）。
+              // 块首 [IMG]（value 以 [IMG] 开头, 图前无文本）→ 图插在首段段首。
+              let leadImg = (blk.value || '').startsWith('[IMG]') ? imgs[0] : null;
+              let leadUsed = false;
               parts.forEach((p, j) => {
                 const segs = splitPageParas(p);
                 segs.forEach((seg, k) => {
                   if (!seg.trim()) return;   // 空段跳过
-                  const segImgs = (j < parts.length - 1 && k === segs.length - 1 && imgs[j]) ? [imgs[j]] : [];
+                  const hasImg = (j < parts.length - 1 && k === segs.length - 1 && imgs[j]);
                   const isBlockFirst = (j === 0 && k === 0);
-                  if (isBlockFirst && tail && !isEndSent(tail.text.trim().slice(-2))) {
+                  let segText = seg, segImgs = [];
+                  if (leadImg && !leadUsed) { segText = '[IMG]' + seg; segImgs = [leadImg]; leadUsed = true; }
+                  if (hasImg) { segText += '[IMG]'; segImgs = segImgs.concat(imgs[j]); }
+                  if (tail && tail.text.endsWith('[IMG]')) {
+                    // text2 首段: 拼回图段（图在句中）
+                    tail.text += segText;
+                    tail.imgs = tail.imgs.concat(segImgs);
+                  } else if (hasImg || segImgs.length) {
+                    // 段尾留 [IMG] 标记 + 挂图, 等 text2 首段拼入
+                    if (isBlockFirst && tail && !isEndSent(tail.text.trim().slice(-2))) {
+                      // 页边界断句拼接优先（跨块拼接段）
+                      tail.text += segText;
+                      tail.imgs = tail.imgs.concat(segImgs);
+                    } else {
+                      if (tail) paras.push(tail);
+                      tail = { text: segText, id: isBlockFirst ? `b-${blk._i}` : undefined,
+                               imgs: segImgs, _block: blk._i, _blockFirst: isBlockFirst };
+                    }
+                  } else if (isBlockFirst && tail && !isEndSent(tail.text.trim().slice(-2))) {
                     // 页边界断句 → 拼接到前块尾段。段首内容仍是原块(常是标题块),
                     // 必须保留 tail 的 id/_block —— b-{sec} 回退与 blockAnchors
                     // 按 _block 匹配都依赖它; 被拼入的本块内容位于段中, 由标题级
                     // sec-{tocIdx} 锚点按文本位置精确定位。
-                    tail.text += seg;
-                    tail.imgs = tail.imgs.concat(segImgs);
+                    tail.text += segText;
                   } else {
                     if (tail) paras.push(tail);
-                    tail = { text: seg, id: isBlockFirst ? `b-${blk._i}` : undefined, imgs: segImgs,
+                    tail = { text: segText, id: isBlockFirst ? `b-${blk._i}` : undefined, imgs: segImgs,
                              _block: blk._i, _blockFirst: isBlockFirst };
                   }
                 });
@@ -430,6 +453,15 @@ export default function ChapterReader({
             }
             const parts = [];
             let cursor = 0;
+            // [IMG] 是原子单元: 锚点切点若落在标记内/中间, 推到标记后(防切碎标记)
+            const safeOff = (t, off) => {
+              while (off < t.length) {
+                if (t.slice(off, off + 5) === '[IMG]') { off += 5; continue; }
+                if (off >= 2 && t.slice(off - 2, off + 3) === '[IMG]') { off += 3; continue; }
+                break;
+              }
+              return off;
+            };
             if ((secList.length || blockAnchors.size || ratioAnchors.size) && block.text) {
               // 锚点: ① 文本匹配 → 标题起始处(精确到标题行);
               //       ② 块级兜底/比例级兜底 → 目标块块首
@@ -451,16 +483,40 @@ export default function ChapterReader({
               hits.sort((a, b) => a.off - b.off);
               for (const h of hits) {
                 if (h.off < cursor) continue;
-                parts.push(gluePua(block.text.slice(cursor, h.off)));
+                parts.push(gluePua(block.text.slice(cursor, safeOff(block.text, h.off))));
                 parts.push(<span key={`a${h.tocIdx}`} id={`sec-${h.tocIdx}`} />);
-                cursor = h.off;
+                cursor = safeOff(block.text, h.off);
               }
             }
             parts.push(gluePua(block.text.slice(cursor)));
+            // [IMG] 拼接点渲染: 图插在标记处, 图+后字首字 nowrap 绑定
+            // （图是行内原子, 行尾放不下时图+首字整体换行, 不再孤悬行尾后字下移）
+            let imgCursor = 0;
+            const renderText = (s) => {
+              if (!s.includes('[IMG]')) return s;
+              const segs = s.split('[IMG]');
+              return segs.map((seg, j) => {
+                if (j === 0) return seg;
+                const img = block.imgs && block.imgs[imgCursor++];
+                const first = Array.from(seg)[0] || '';
+                return (
+                  <Fragment key={`i${j}`}>
+                    {img ? (
+                      <span style={{ whiteSpace: 'nowrap' }}>
+                        <img src={toOssImage(img.src)} alt=""
+                          style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
+                        {first}
+                      </span>
+                    ) : null}
+                    {seg.slice(first.length)}
+                  </Fragment>
+                );
+              });
+            };
             return (
               <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
-                {parts}
-                {block.imgs && block.imgs.map((img, j) => (
+                {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderText(p)}</Fragment>)}
+                {(block.imgs || []).slice(imgCursor).map((img, j) => (
                   <img key={j} src={toOssImage(img.src)} alt=""
                     style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
                 ))}
