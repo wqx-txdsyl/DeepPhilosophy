@@ -42,7 +42,7 @@ export default function Footer() {
         {/* 品牌区 */}
         <div className="home-footer-brand">
           <p className="home-footer-logo" onClick={() => navigate('/')}>DeepPhilosophy</p>
-          <p className="home-footer-brand-desc">一部横跨五千年的人类思想史长卷。111 个哲学流派，759 位哲学家，305 部经典著作。</p>
+          <p className="home-footer-brand-desc">一部横跨五千年的人类思想史长卷。111 个哲学流派，744 位哲学家，402 部经典著作。</p>
         </div>
 
         {/* 链接列 */}
