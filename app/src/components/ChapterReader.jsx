@@ -15,6 +15,15 @@ const BG_THEMES = {
 const AUTO_SPEEDS = { slow: 45, medium: 80, fast: 130 };   // px/s
 const SPEED_LABEL = { slow: '慢', medium: '中', fast: '快' };
 
+// 章内图片直连 OSS（跳过 worker 302 两跳：worker 响应 ~1.8s + 重定向，直连单跳 ~0.2s）
+// 章节 JSON 里的 src 为 /api/books/{bid}/image/{name}.webp → https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images/{name}
+const OSS_IMAGE_BASE = 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images';
+const toOssImage = (src) => {
+  if (!src) return src;
+  const m = src.match(/\/api\/books\/[^/]+\/image\/([^/]+)$/);
+  return m ? `${OSS_IMAGE_BASE}/${m[1]}` : src;
+};
+
 const loadSettings = () => {
   try {
     const s = JSON.parse(localStorage.getItem('dp_reader_settings') || '{}');
@@ -404,7 +413,7 @@ export default function ChapterReader({
             if (block.type === 'image') {
               return (
                 <div key={i} style={{ textAlign: 'center', margin: '8px 0' }}>
-                  <img src={block.src} alt={block.alt || ''}
+                  <img src={toOssImage(block.src)} alt={block.alt || ''}
                     loading="lazy" decoding="async"
                     style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
                   {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
@@ -448,7 +457,7 @@ export default function ChapterReader({
               <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
                 {parts}
                 {block.imgs && block.imgs.map((img, j) => (
-                  <img key={j} src={img.src} alt=""
+                  <img key={j} src={toOssImage(img.src)} alt=""
                     style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
                 ))}
               </p>
