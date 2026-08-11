@@ -241,6 +241,15 @@ app.get('/api/books/:id/file', async (c) => {
   return c.json({ error: '书籍未找到', detail: '书籍未找到' }, 404);
 });
 
+// ============ 章内图片 — 302 直链 OSS（Render 迁移遗漏补回 2026-08-11） ============
+app.get('/api/books/:id/image/:name', (c) => {
+  const name = c.req.param('name');
+  if (!/^[A-Za-z0-9_\-\.]+$/.test(name) || !/\.(webp|png|jpg|jpeg)$/i.test(name)) {
+    return c.json({ error: '非法的图片名', detail: '非法的图片名' }, 400);
+  }
+  return c.redirect(`https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images/${name}`, 302);
+});
+
 // ============ 统计 ============
 app.get('/api/stats', (c) => {
   c.header('Cache-Control', 'max-age=300');
