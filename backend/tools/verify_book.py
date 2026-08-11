@@ -14,7 +14,7 @@
 """
 import json, hashlib, os, sys, urllib.request
 
-BASE = r'F:/program/Python/DeepPhilosophy/DeepPhilosophy'
+BASE = r'F:/program/Python/DeepPhilosophy'
 BID = sys.argv[1] if len(sys.argv) > 1 else ''
 VITE = '--vite-check' in sys.argv
 if not BID:

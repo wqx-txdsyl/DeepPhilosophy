@@ -3,7 +3,7 @@
 仅修复/盘点用; 无章节目录的书(txt 等)保持原值"""
 import json, os
 
-B = r'F:\program\Python\DeepPhilosophy\DeepPhilosophy'
+B = r'F:\program\Python\DeepPhilosophy'
 CP = B + r'\backend\data\books_catalog.json'
 CD = B + r'\backend\data\book_chapters'
 
