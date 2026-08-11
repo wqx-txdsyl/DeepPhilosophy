@@ -192,6 +192,33 @@ function ProfilePage() {
         }
         localStorage.setItem('dp_userdata', JSON.stringify(local));
         setChatHistory(local.chatHistory || localChat);
+        // 2026-08-12: 云端消息重建本地会话——聊天历史 tab 读的是 chatSessions,
+        // 换设备/清过本地时列表空但统计(云端消息数)非 0 → 按天分组重建, 历史可见
+        const sessions = JSON.parse(localStorage.getItem('dp_chat_sessions') || '[]');
+        if (sessions.length === 0 && cloudChat.length > 0) {
+          const byDay = {};
+          for (const m of cloudChat) {
+            const day = (m.created_at || '').slice(0, 10) || 'unknown';
+            if (!byDay[day]) byDay[day] = [];
+            byDay[day].push(m);
+          }
+          const rebuilt = Object.entries(byDay)
+            .sort((a, b) => (a[0] < b[0] ? 1 : -1))
+            .map(([day, msgs]) => {
+              const first = msgs.find(m => m.role === 'user') || msgs[0] || {};
+              const text = typeof first.content === 'string' ? first.content : '';
+              const t0 = msgs[0]?.created_at ? new Date(msgs[0].created_at).getTime() : Date.now();
+              const t1 = msgs[msgs.length - 1]?.created_at ? new Date(msgs[msgs.length - 1].created_at).getTime() : t0;
+              return {
+                id: 'cloud_' + day.replace(/[^0-9]/g, ''),
+                title: text.replace(/\n/g, ' ').slice(0, 30) || '历史对话 · ' + day,
+                messages: msgs.map(m => ({ role: m.role, content: m.content, sources: m.sources || [] })),
+                createdAt: t0,
+                updatedAt: t1,
+              };
+            });
+          localStorage.setItem('dp_chat_sessions', JSON.stringify(rebuilt));
+        }
       }
       // Pull book notes
       const notes = await fetch(`${getApiBase()}/api/notes`, {
@@ -371,6 +398,15 @@ function ProfilePage() {
                 d.readingHistory = [];
                 localStorage.setItem('dp_userdata', JSON.stringify(d));
                 setReadingHistory([]);
+                // 2026-08-12: 云端同步清空——否则 sync 会把云端旧记录合并回来"复活"
+                const token = localStorage.getItem('dp_token');
+                if (token) {
+                  fetch(`${getApiBase()}/api/history/reading`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    signal: AbortSignal.timeout(10000),
+                  }).catch(() => {});
+                }
                 toast.success('阅读记录已清空');
               }}><Icon name="icon-trash" size={14} /> 清空阅读记录</button>
             {readingHistory.map((item, i) => (

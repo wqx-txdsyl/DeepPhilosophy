@@ -290,6 +290,12 @@ app.post('/api/history/reading', requireAuth, async (c) => {
   return c.json({ success: true });
 });
 
+// 清空阅读记录（2026-08-12: 前端"清空"按钮曾只清本地 → 云端残留 → sync 合并复活）
+app.delete('/api/history/reading', requireAuth, async (c) => {
+  await c.env.deepphilosophy_db.prepare('DELETE FROM reading_history WHERE user_id = ?').bind(c.get('uid')).run();
+  return c.json({ success: true });
+});
+
 // ============ 聊天历史 ============
 app.get('/api/history/chat', requireAuth, async (c) => {
   const uid = c.get('uid');
