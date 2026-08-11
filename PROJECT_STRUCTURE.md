@@ -1,6 +1,6 @@
 # DeepPhilosophy 全文件结构图
 
-> 生成时间: 2026-08-11 19:30 · 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
+> 生成时间: 2026-08-11 19:53 · 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
 > 大数据目录 (章节库 / 向量库 / 封面 / ai_author) 折叠为计数摘要
 
 ## 二、DeepPhilosophy 仓库 — 生产真身 (git push GitHub / CDN / Vite 5173)
@@ -291,6 +291,7 @@ F:\program\Python\DeepPhilosophy
 ├─ .dockerignore  (226 B)
 ├─ .env  (1,005 B)
 ├─ .gitignore  (1,794 B)
+├─ PROJECT_STRUCTURE.md  (18,697 B)
 ├─ README.md  (6,562 B)
 ├─ requirements.lock  (4,642 B)
 ├─ requirements.txt  (833 B)
