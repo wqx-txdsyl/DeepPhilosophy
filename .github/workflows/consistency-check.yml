@@ -1,0 +1,15 @@
+name: consistency-check
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check metadata consistency
+        run: python backend/tools/dp_consistency_check.py
