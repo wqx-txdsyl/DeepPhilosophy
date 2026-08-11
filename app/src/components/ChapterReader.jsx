@@ -18,10 +18,15 @@ const SPEED_LABEL = { slow: '慢', medium: '中', fast: '快' };
 // 章内图片直连 OSS（跳过 worker 302 两跳：worker 响应 ~1.8s + 重定向，直连单跳 ~0.2s）
 // 章节 JSON 里的 src 为 /api/books/{bid}/image/{name}.webp → https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images/{name}
 const OSS_IMAGE_BASE = 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_images';
-const toOssImage = (src) => {
-  if (!src) return src;
+// 章内图转 OSS 直链; resize 传宽度时走 OSS 图片处理按需缩放(显示 1.1em 的行内图
+// 不必下载原图: 300KB → ~24KB)。不匹配 /api/ 路径的历史坏数据返回 null → 不渲染。
+const toOssImage = (src, resize) => {
+  if (!src) return null;
   const m = src.match(/\/api\/books\/[^/]+\/image\/([^/]+)$/);
-  return m ? `${OSS_IMAGE_BASE}/${m[1]}` : src;
+  if (!m) return null;
+  let u = `${OSS_IMAGE_BASE}/${m[1]}`;
+  if (resize) u += `?x-oss-process=image/resize,w_${resize}`;
+  return u;
 };
 // EPUB 打不出的字符（ä/ö/ü/ß/λ/ς/' 等）在转换时被映射为私用区占位符（U+E000–F8FF）。
 // 浏览器把私用区字符当独立断行单元，会在它和后一字之间断行 → 占位符孤悬行尾、后字换行。
@@ -438,9 +443,11 @@ export default function ChapterReader({
             }
             return paras.map((block, i) => {
             if (block.type === 'image') {
+              const src = toOssImage(block.src);   // 块级图原图直链(库内最大 ~330KB, 70vh 显示够用)
+              if (!src) return null;   // 历史坏数据(本地/OSS 均无) → 不渲染破图
               return (
                 <div key={i} style={{ textAlign: 'center', margin: '8px 0' }}>
-                  <img src={toOssImage(block.src)} alt={block.alt || ''}
+                  <img src={src} alt={block.alt || ''}
                     loading="lazy" decoding="async"
                     style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 4 }} />
                   {block.alt && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>{block.alt}</div>}
@@ -499,11 +506,12 @@ export default function ChapterReader({
                 if (j === 0) return seg;
                 const img = block.imgs && block.imgs[imgCursor++];
                 const first = Array.from(seg)[0] || '';
+                const isrc = img && toOssImage(img.src, 200);   // 行内图 1.1em, 200 宽足够
                 return (
                   <Fragment key={`i${j}`}>
-                    {img ? (
+                    {isrc ? (
                       <span style={{ whiteSpace: 'nowrap' }}>
-                        <img src={toOssImage(img.src)} alt=""
+                        <img src={isrc} alt="" loading="lazy" decoding="async"
                           style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
                         {first}
                       </span>
@@ -516,10 +524,11 @@ export default function ChapterReader({
             return (
               <p key={i} id={block.id} style={{ margin: '0 0 0.5em', textIndent: '2em' }}>
                 {parts.map((p, pi) => <Fragment key={`p${pi}`}>{renderText(p)}</Fragment>)}
-                {(block.imgs || []).slice(imgCursor).map((img, j) => (
-                  <img key={j} src={toOssImage(img.src)} alt=""
-                    style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} />
-                ))}
+                {(block.imgs || []).slice(imgCursor).map((img, j) => {
+                  const isrc = toOssImage(img.src, 200);
+                  return isrc ? <img key={j} src={isrc} alt="" loading="lazy" decoding="async"
+                    style={{ height: '1.1em', verticalAlign: 'middle', margin: '0 1px', display: 'inline' }} /> : null;
+                })}
               </p>
             );
           });
