@@ -1,48 +1,79 @@
-# DeepPhilosophy
+# DeepPhilosophy「深哲」
 
-深度哲学 — 东西方及世界哲学的综合知识平台。React + Vite + Cloudflare Workers + DeepSeek AI。
+> 横跨五千年的人类思想史长卷 —— 402 部哲学经典 · 744 位哲学家 · 111 个哲学流派
 
-## 访问方式
+**DeepPhilosophy（深哲）** 是一个开放的哲学知识平台：从古埃及到当代，从东方到西方，我们把人类思想史上最重要的原典、人物与流派组织成一个可以**阅读、探索、对话**的数字世界。全部内容免费开放，无需注册即可阅读。
 
-| 地址 | 适用场景 |
-|------|---------|
-| https://deepphilosophy.top | 国内直连（Cloudflare Pages 自定义域名） |
-| https://deepphilosophy.pages.dev | 海外/CDN 加速（Cloudflare Pages） |
-| https://deepphilosophy.vercel.app | Vercel 备用 |
-| http://localhost:5173 | 本地开发 |
+👉 **立即访问：[deepphilosophy.top](https://deepphilosophy.top)**
 
 ---
 
-## 架构
+## 📖 你能在这里做什么
+
+### 1. 在线阅读 402 部哲学经典
+
+- **402 部经典著作**：312 本可直接在线阅读（结构化章节 + 书内插图），90 本 TXT 占位待收录
+- 收录范围横跨中西：柏拉图、亚里士多德、康德、尼采、萨特、马克思…以及中国哲学诸子与东方思想
+- **秒开级加载**：章节数据走全球 CDN 双轨加速（OSS + jsDelivr 自动切换），翻页几乎零等待
+- **AI 批注**：阅读中随时选中提问、写批注，与书对话
+
+### 2. 探索 744 位哲学家与 111 个流派
+
+- **哲学家画廊**：744 位哲学家肖像与生平，支持地区/流派/时代筛选，AI 评分排序
+- **流派谱系**：111 个哲学流派的完整谱系——六大时代时间轴（博物馆级视觉），每个流派含概述、代表哲人、时间线、著作
+- **思想星丛**：哲学家之间的师承/影响/论敌关系网络，看思想如何在人与人之间流动
+- **概念溯源**：一个概念的跨书演变轨迹
+
+### 3. 与 AI 讨论哲学
+
+- **流式哲学问答**：基于 DeepSeek 的实时流式对话，思考过程可见
+- **深度思考模式**：复杂问题开启更长推理链
+- 支持**自配 API Key**（设置页）直连，随时可用
+
+### 4. 思想游戏
+
+- **答案之书**：随手一翻，哲人箴言回应你的问题
+- **PHTI 哲学人格测试**：5 题维度，测出你的哲学人格画像
+
+### 5. 账号与云端同步（可选）
+
+- 注册登录后，**阅读进度、对话历史、AI 批注**全部云端同步，换设备不丢
+- 登录即用，无需付费
+
+### 6. 安装为桌面/手机应用（PWA）
+
+浏览器打开网站即可"安装"成独立应用——有专属图标（金色哲学徽章）、独立窗口、离线可用外壳。Chrome/Edge 地址栏右侧安装按钮，或菜单 →「安装 DeepPhilosophy」。
+
+---
+
+## 📊 数据规模（2026-08 实测快照）
+
+| 类别 | 数量 |
+|---|---|
+| 经典著作 | 402 部（312 可读 + 90 TXT 占位） |
+| 哲学家 | 744 位 |
+| 哲学流派 | 111 个 |
+| 书内插图 | 数千张（WebP 优化） |
+
+---
+
+## 🏗 技术架构（简要）
 
 ```
-浏览器 ──→ Cloudflare Pages（前端静态）── jsDelivr CDN（章节 JSON）
-          │                              └── OSS CDN（书内图片）
-          └── API ──→ Cloudflare Workers ── D1 数据库（认证/历史/笔记）
+浏览器 ──→ Cloudflare Pages（静态前端）── 章节：OSS CDN 优先 + jsDelivr 兜底
+                                        └── 图片：阿里云 OSS CDN
+                                        └── API：Cloudflare Workers（Hono + D1）
 ```
 
-- **Cloudflare Pages**：前端 HTML/JS/CSS/封面/肖像，推送即部署
-- **Cloudflare Workers**：`/api/auth/*`（登录注册）+ `/api/*`（AI 流式/问答/历史/笔记/文件 302），D1 数据库，零冷启动
-- **jsDelivr CDN**：章节 JSON（免费全球加速，读取 GitHub master）
-- **OSS CDN**：书内插图（阿里云 WebP）
+- **前端**：React 19 + Vite，全静态托管于 Cloudflare Pages，推送即部署
+- **API**：Cloudflare Workers 双 worker（auth 认证 + api 业务），D1 数据库，零冷启动
+- **章节**：结构化 JSON + OSS/jsDelivr 双轨 CDN（2s 超时自动切换）
+- **AI**：DeepSeek 流式（服务器中转 + 用户自配 key 直连双路径）
+- **零传统服务器**：无 VPS，无订阅成本，CDN 全免费层级
 
 ---
 
-## 项目简介
-
-DeepPhilosophy 汇集了 **743 位哲学家、111 个哲学流派、400+ 部著作**（EPUB + PDF 可读, TXT 待收录），通过现代化的 Web 界面呈现哲学思想的脉络与深度。
-
-核心功能：
-- **哲学地图** — 45+ 世界哲学热点可视化
-- **流派谱系** — 博物馆级的哲学史时间轴，六大时代 111 流派
-- **AI 问答** — 基于 DeepSeek 的流式哲学对话
-- **阅读系统** — EPUB 在线阅读（结构化 JSON 章节 + jsDelivr CDN）+ AI 批注
-- **哲学游戏** — 答案之书、PHTI 人格测试
-- **哲人系统** — 743 位哲学家（东方122/西方479/世界142），AI 评分排序 + 思想星丛关系网络
-
----
-
-## 本地开发
+## 🛠 本地开发
 
 ```bash
 git clone git@github.com:wqx-txdsyl/DeepPhilosophy.git
@@ -51,114 +82,38 @@ cd DeepPhilosophy
 # 前端（localhost:5173）
 cd app && npm install && npm run dev
 
-# 后端 API 由 Cloudflare Workers 提供（workers/ 目录）
-cd workers/auth && npm install && npx wrangler dev   # 本地调试
+# Workers API 本地调试（需 wrangler 登录）
+cd workers/auth && npm install && npx wrangler dev
+cd workers/api && npm install && npx wrangler dev
 ```
 
-前端默认连接 `http://localhost:8000` 的 API。可在设置页面或 `app/.env` 中修改 `VITE_API_URL`。
+生产构建：`cd app && npm run build`（产物在 `app/dist/`，推送 master 即触发 Cloudflare Pages 自动部署）。
 
-- 网站入口：http://localhost:5173
-- API 文档：http://localhost:8000/docs
-
----
-
-## 生产构建
-
-```bash
-cd app && npm run build   # 产物在 app/dist/
-```
-
-**部署方式**：
-
-| 组件 | 平台 | 访问 |
-|------|------|------|
-| 前端 | Cloudflare Pages | `deepphilosophy.top` `deepphilosophy.pages.dev` |
-| 前端备用 | Vercel | `deepphilosophy.vercel.app` |
-| 后端 API | Cloudflare Workers | `deepphilosophy.top/api/*`（auth + api 两个 worker，D1） |
-| 本地开发 | Vite | `localhost:5173` |
+**数据侧说明**：书籍/哲学家/流派数据以 `app/public/` 为唯一数据源（git 全量跟踪）；章节数据 `backend/data/book_chapters/` 为 git 跟踪源，经 CDN 分发；书库构建/修复/OCR 流水线在 [PhiAgent](https://github.com/wqx-txdsyl/PhiAgent) 仓库。
 
 ---
 
-## 页面导览
-
-| 页面 | 路由 | 说明 |
-|------|------|------|
-| 首页 | `/` | 世界哲学地图、每日金句、统计数据 |
-| 哲学掠影 | `/genealogy` | 六大时代 111 流派谱系，东方/西方/世界视角 |
-| 流派详情 | `/school/:name` | 八面内容：Hero/概述/星丛/时间轴/辞海/金句/著作/结语 |
-| 哲人 | `/authors` | 743 位哲学家，AI 评分排序，肖像卡片网格，地区/流派/时代筛选 |
-| 书籍 | `/books` | 402 本（312 本可读 + 90 TXT 占位待收录），结构化 JSON 章节，jsDelivr CDN 加载 |
-| 问答 | `/qa` | DeepSeek AI 流式哲学对话 |
-| 游戏 | `/games` | 答案之书、PHTI 人格测试、沙雕版 |
-| 我的 | `/profile` | 登录/注册，云端同步阅读进度和对话历史 |
-| 设置 | `/settings` | API Key、模型配置、移动版/暗色模式 |
-
----
-
-## 图片格式
-
-全部图片已迁移至 **WebP**，无 JPG/PNG 残留（icons 除外）。无缩略图——WebP 足够小，`loading="lazy"` 确保仅可见区域加载。
-
----
-
-## 技术栈
-
-| 层 | 技术 |
-|------|------|
-| 前端 | React 19, React Router, Vite 8 |
-| 后端 | Cloudflare Workers (Hono) + D1 |
-| AI | DeepSeek API（流式对话） |
-| 部署 | Cloudflare Pages + Workers |
-| CDN | jsDelivr（章节 JSON）+ 阿里云 OSS（书内图） |
-
----
-
-## 项目结构
+## 📁 项目结构（概览）
 
 ```
 DeepPhilosophy/
-├── .gitignore
-├── .env                    # 全局环境变量（API keys）
-├── vercel.json
-├── README.md
-├── .claude/                # Claude Code 配置
-│   └── CLAUDE.md           # 项目规范（AI 严格执行）
-├── app/                    # React 前端 (Vite)
-│   ├── src/
-│   │   ├── pages/          # 页面组件
-│   │   ├── components/     # UI 组件
-│   │   ├── data/           # 数据层（缓存/题库/封面查找）
-│   │   ├── utils/          # API/SEO 工具
-│   │   └── contexts/       # Toast 通知系统
-│   ├── public/             # 静态资源（切勿改路径！）
-│   │   ├── books.json      # 书籍目录（402 本）
-│   │   ├── philosophers.json  # 哲学家（AI评分排序）
-│   │   ├── philosopher_network.json  # 星丛关系网络
-│   │   ├── book_detail/    # 402 个独立书籍详情 JSON
-│   │   ├── covers/         # 402 张书籍封面 WebP
-│   │   ├── philosopher/    # 肖像 + data/ 详情
-│   │   ├── schools/        # 流派图 + data/ JSON
-│   │   ├── gene/           # 谱系素材
-│   │   └── icons/          # PNG 图标
-│   ├── electron/           # Electron 桌面端入口
-│   ├── vite.config.js
-│   └── package.json
-├── backend/                # 数据目录 + 运维工具
-│   ├── tools/              # 6 个运维脚本（verify_book / worker 资产 / D1 迁移 / catalog 校准 / README；书库构建/修复/同步在 PhiAgent 侧，两边不重复）
-│   ├── data/               # 运行时数据
-│   │   ├── book_chapters/  # 章节 JSON（git 追踪，CDN 加载）
-│   │   ├── book_detail/    # 本地 detail 镜像（git 追踪 79 个历史 + 本地 402）
-│   │   ├── book_images/    # 书内插图（OSS 同步）
-│   │   └── ...
-├── workers/                # Cloudflare Workers API（Hono + D1）
-│   ├── auth/               # /api/auth/* 登录注册 JWT
-│   └── api/                # /api/* AI 流式/问答/历史/笔记/文件 302
-├── scripts/                # 内容运营 + 历史运维（38 个，详见 PROJECT_STRUCTURE.md）
-└── .github/workflows/      # pages CI
+├── app/                    # React 前端
+│   ├── src/                # 页面/组件/数据层/工具
+│   └── public/             # 数据与静态资源（books.json、philosophers.json、book_detail/、covers/、philosopher/、schools/…）
+├── backend/
+│   ├── tools/              # 生产运维脚本（一致性校验、worker 资产生成、D1 迁移、catalog 校准）
+│   └── data/               # 章节等运行时数据
+├── workers/                # Cloudflare Workers API（auth + api，Hono + D1）
+├── scripts/                # 内容运营工具
+└── .github/workflows/      # CI（Pages 构建 + 数据一致性检查）
 ```
+
+完整技术细节见 [.claude/CLAUDE.md](.claude/CLAUDE.md)（项目规范）与 [PhiAgent](https://github.com/wqx-txdsyl/PhiAgent)（书库构建引擎）。
 
 ---
 
 ## 开发者
 
 [@txdsyl_](https://github.com/wqx-txdsyl) · MIT License
+
+<p align="center"><i>从古埃及到当代，人类一直在追问——现在，这些追问都在这里。</i></p>
