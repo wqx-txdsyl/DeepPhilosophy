@@ -29,6 +29,7 @@ function ProfilePage() {
   const [authMsg, setAuthMsg] = useState('');
   const [syncing, setSyncing] = useState(false);
   const [checking, setChecking] = useState(true);  // 正在验证登录状态
+  const [cloudAvatar, setCloudAvatar] = useState('');  // 云端头像（换设备登录后 sync 拉到）
 
   // Restore login from token — verify with backend (只执行一次)
   useEffect(() => {
@@ -211,7 +212,8 @@ function ProfilePage() {
         });
         if (ar.ok) {
           const ad = await ar.json();
-          if (ad.avatar) localStorage.setItem('dp_avatar', ad.avatar);
+          if (ad.avatar) { localStorage.setItem('dp_avatar', ad.avatar); setCloudAvatar(ad.avatar); }
+          else { localStorage.removeItem('dp_avatar'); setCloudAvatar(''); }
         }
       } catch {}
     } catch {}
@@ -242,7 +244,7 @@ function ProfilePage() {
       <div className="card" style={{ cursor: 'default', textAlign: 'center' }}>
         {loggedIn ? (
           <>
-            <AvatarUpload size={72} onSave={(dataUrl) => {
+            <AvatarUpload size={72} avatar={cloudAvatar} onSave={(dataUrl) => {
             // 云端同步头像
             const token = localStorage.getItem('dp_token');
             if (token) {

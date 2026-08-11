@@ -7,8 +7,10 @@ import Icon from './Icon';
 
 const CROP_SIZE = 300;
 
-function AvatarUpload({ size = 72, onSave }) {
-  const [avatar, setAvatar] = useState(() => localStorage.getItem('dp_avatar') || '');
+function AvatarUpload({ size = 72, avatar: cloudAvatar = '', onSave }) {
+  const [avatar, setAvatar] = useState(() => cloudAvatar || localStorage.getItem('dp_avatar') || '');
+  // 云端同步拉到的头像（换设备登录后）→ 受控更新 UI
+  useEffect(() => { if (cloudAvatar) setAvatar(cloudAvatar); }, [cloudAvatar]);
   const [showEditor, setShowEditor] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [srcImg, setSrcImg] = useState(null);
@@ -66,7 +68,7 @@ function AvatarUpload({ size = 72, onSave }) {
       {showMenu && (
         <div style={{ position: 'absolute', top: size + 8, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.12)', zIndex: 100, overflow: 'hidden', minWidth: 140 }}>
           <div onClick={e => { e.stopPropagation(); setShowMenu(false); fileRef.current?.click(); }} style={{ padding: '10px 16px', cursor: 'pointer', fontSize: 13, color: 'var(--text)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 8 }}><Icon name="icon-edit" size={14} /> 替换头像</div>
-          {avatar && <div onClick={e => { e.stopPropagation(); setShowMenu(false); setAvatar(''); localStorage.removeItem('dp_avatar'); }} style={{ padding: '10px 16px', cursor: 'pointer', fontSize: 13, color: 'var(--text)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 8 }}><Icon name="icon-refresh" size={14} /> 恢复默认</div>}
+          {avatar && <div onClick={e => { e.stopPropagation(); setShowMenu(false); setAvatar(''); localStorage.removeItem('dp_avatar'); if (onSave) onSave(''); }} style={{ padding: '10px 16px', cursor: 'pointer', fontSize: 13, color: 'var(--text)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 8 }}><Icon name="icon-refresh" size={14} /> 恢复默认</div>}
           <div onClick={e => { e.stopPropagation(); setShowMenu(false); }} style={{ padding: '10px 16px', cursor: 'pointer', fontSize: 13, color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 8 }}><Icon name="icon-close" size={14} /> 取消</div>
         </div>
       )}

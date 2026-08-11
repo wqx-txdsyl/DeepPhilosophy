@@ -261,12 +261,27 @@ body::before {
 .scroll-top-btn:hover { border-color: var(--ochre); color: var(--ink); transform: translateY(-2px); }
 .scroll-top-btn:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
 
-/* Page transition animation */
+/* Page transition animation — 2026-08-11 增强: 模糊浮现 + 区块错落 stagger */
 @keyframes page-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
-.page-enter { animation: page-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+/* 父容器整体淡入打底（覆盖无 stagger 的部分, 如第 9+ 区块） */
+.page-enter { animation: page-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+/* 直接子区块错落浮现: 首屏 1-8 个区块每 60ms 递增（shorthand 在前, delay 规则在其后覆盖） */
+.page-enter > *:nth-child(-n+8) { animation: page-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.page-enter > *:nth-child(1) { animation-delay: 0.05s; }
+.page-enter > *:nth-child(2) { animation-delay: 0.11s; }
+.page-enter > *:nth-child(3) { animation-delay: 0.17s; }
+.page-enter > *:nth-child(4) { animation-delay: 0.23s; }
+.page-enter > *:nth-child(5) { animation-delay: 0.29s; }
+.page-enter > *:nth-child(6) { animation-delay: 0.35s; }
+.page-enter > *:nth-child(7) { animation-delay: 0.41s; }
+.page-enter > *:nth-child(8) { animation-delay: 0.47s; }
+/* 尊重系统减弱动态偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .page-enter, .page-enter > * { animation: none !important; }
+}
 
 /* Reading progress bar */
 .reading-progress {
@@ -283,7 +298,7 @@ body::before {
   cursor: pointer; transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
   position: relative;
 }
-.card:hover { border-color: var(--ochre); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.card:hover { border-color: var(--ochre); transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .card:active { transform: scale(0.99); }
 .card:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
 .card-title { font-size: 16px; font-weight: 500; margin-bottom: 4px; color: var(--ink); font-family: var(--font-serif); }
