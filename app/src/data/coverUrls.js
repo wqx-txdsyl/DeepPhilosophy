@@ -11,6 +11,18 @@ const OSS_COVER_BASE = 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com';
 
 let manifest = null;
 let loaded = false;
+const readyListeners = [];
+
+// manifest 就绪后通知订阅者（首屏封面在就绪前渲染 → 需重渲染拿 src）
+function emitReady() {
+  readyListeners.forEach(fn => { try { fn(); } catch {} });
+}
+
+/** 订阅 manifest 就绪（已就绪则立即回调）— BookCover 用它触发重渲染 */
+export function onCoverManifestReady(fn) {
+  if (loaded) fn();
+  else readyListeners.push(fn);
+}
 
 // 立即发起加载（不阻塞渲染）— OSS 优先, 同源兜底
 if (typeof window !== 'undefined') {
@@ -20,6 +32,7 @@ if (typeof window !== 'undefined') {
       if (resp.ok) {
         manifest = await resp.json();
         loaded = true;
+        emitReady();
         return;
       }
     } catch {}
@@ -28,9 +41,10 @@ if (typeof window !== 'undefined') {
       if (resp.ok) {
         manifest = await resp.json();
         loaded = true;
+        emitReady();
       }
     } catch {}
-    if (!loaded) { manifest = {}; loaded = true; }
+    if (!loaded) { manifest = {}; loaded = true; emitReady(); }
   };
   load();
 }

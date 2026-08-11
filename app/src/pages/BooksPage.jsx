@@ -4,13 +4,15 @@
  */
 import { useState, useEffect, useRef, useMemo } from 'react';
 import Icon from '../components/Icon';
-import { getCoverOssUrl, getCoverUrl } from '../data/coverUrls';
+import { getCoverOssUrl, getCoverUrl, onCoverManifestReady } from '../data/coverUrls';
 
 // BookCover — 纯同步渲染，和 genealogy 图片一样的直接 <img src> 模式
 // 封面路径在模块加载时已预取，渲染时零 fetch、零 useEffect
 // 2026-08-11: OSS 直链优先（用户网络对 OSS 实测快）, 失败自动回退同源相对路径
+// covers.json 就绪事件触发重渲染（首屏在就绪前渲染 → 不重渲染就永远图标占位）
 function BookCover({ bookId }) {
   const [visible, setVisible] = useState(false);
+  const [manifestReady, setManifestReady] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current; if (!el) return;
@@ -18,8 +20,9 @@ function BookCover({ bookId }) {
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
+  useEffect(() => onCoverManifestReady(() => setManifestReady(true)), []);
 
-  const rel = getCoverUrl(bookId); // 同步读取，模块级缓存
+  const rel = manifestReady ? getCoverUrl(bookId) : null; // 同步读取，模块级缓存
   if (!rel) return <div ref={ref} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="nav-books" size={20} /></div>;
   if (!visible) return <div ref={ref} style={{ width: '100%', height: '100%', background: 'var(--bg)' }} />;
   const ossSrc = getCoverOssUrl(bookId);
