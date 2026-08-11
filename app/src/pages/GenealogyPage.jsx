@@ -3,6 +3,7 @@
  */
 import { useMemo, useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ossImg, ossFallback } from '../data/ossUrls';
 
 function useFade() {
   const ref = useRef(null); const [on, setOn] = useState(false);
@@ -15,7 +16,8 @@ function LazyImg({ src, alt, style, ph }) {
   const ref = useRef(null); const [loaded, setLoaded] = useState(false);
   useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setLoaded(true); o.disconnect(); } }, { rootMargin: '200px' }); o.observe(el); return () => o.disconnect(); }, []);
   if (!loaded) { const h = ph || 150; return <div ref={ref} style={{...style, height:h, minHeight:h, background:'#E8E0D4'}} />; }
-  return <img ref={ref} src={src} alt={alt} style={style} />;
+  // OSS 双轨: src 为 OSS 直链, onError 回退同源（ossFallback 只换一次）
+  return <img ref={ref} src={ossImg(src, { w: 800 })} alt={alt} onError={ossFallback} style={style} />;
 }
 function FadeWrap({ children, style }) {
   const [ref, on] = useFade();
@@ -188,7 +190,8 @@ function schoolImgUrl(name) {
   return `/schools/${b}.webp`;
 }
 function ProgImg({ name, style }) {
-  return <img src={schoolImgUrl(name)} alt={name} loading="lazy" style={{ ...style, display: 'block' }} />;
+  // OSS 双轨: 直链 + resize 300 宽 + onError 回退同源
+  return <img src={ossImg(schoolImgUrl(name), { w: 300 })} alt={name} loading="lazy" onError={ossFallback} style={{ ...style, display: 'block' }} />;
 }
 
 // ─── School Card ───
@@ -252,7 +255,7 @@ export default function GenealogyPage() {
   return (
     <div style={{ background:'var(--bg)', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'var(--ink)' }}>
       <section style={{ padding:'56px 32px 32px', textAlign:'center', position:'relative', overflow:'hidden' }}>
-        <img src="/gene/civilization_silhouette.webp" alt="" loading="lazy" style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
+        <img src={ossImg('/gene/civilization_silhouette.webp', { w: 900 })} alt="" loading="lazy" onError={ossFallback} style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
         <p style={{ position:'relative', fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--ochre)', marginBottom:20, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
         <h1 style={{ position:'relative', fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'var(--ink)', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
         <div style={{ position:'relative', width:32, height:1, background:'var(--ochre)', margin:'14px auto', opacity:0.35 }} />

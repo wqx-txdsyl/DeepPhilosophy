@@ -273,7 +273,8 @@ export default function SchoolDetailPage() {
         .catch(() => setLoadError(true));
     }
   }, [name]);
-  const heroImage = m.bg || 'url(/schools/default.webp)';
+  // 2026-08-11: 背景图走 OSS 直链（同源 CF 边缘 3-6s → OSS 0.1s）, resize 压缩到 1280 宽
+  const heroImage = (m.bg || 'url(/schools/default.webp)').replace(/url\(\/schools\//g, 'url(https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/schools/').replace(/\.webp\)/, '.webp?x-oss-process=image/resize,w_1280)');
 
   // Auto-generate subColors from thinkers
   const subColors = (() => {

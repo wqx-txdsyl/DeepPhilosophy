@@ -3,6 +3,7 @@
  */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ossImg, ossFallback } from '../data/ossUrls';
 
 const REGIONS = [
   // 东亚
@@ -82,7 +83,7 @@ function WorldMap() {
 
   return (
     <div style={{ position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
-      <img src="/schools/世界地图.webp" alt="世界哲学地图" loading="lazy"
+      <img src={ossImg('/schools/世界地图.webp', { w: 1200 })} alt="世界哲学地图" loading="lazy" onError={ossFallback}
         style={{ width: '100%', maxWidth: 1200, height: 'auto', borderRadius: 8, display: 'block' }} />
 
       {REGIONS.map(r => (
