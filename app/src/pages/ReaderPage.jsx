@@ -10,11 +10,29 @@ import { getApiBase } from '../App';
 import { saveReadingProgress } from '../data/userData';
 import ChapterReader from '../components/ChapterReader';
 
-// 章节 CDN 基址: 本地开发（localhost）→ 本地静态目录（vite dev 服务 public/backend/data/book_chapters junction）;
-// 生产（GitHub Pages/Cloudflare 域名）→ jsDelivr（GitHub 自动刷新）
-// 本地为空串（拼接 /backend/... 为同源相对路径; "/" 会拼出 //backend 协议相对 URL 被当主机名）
-const CDN_BASE = (typeof location !== 'undefined' && ['localhost', '127.0.0.1'].includes(location.hostname))
-  ? '' : `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${__COMMIT_HASH__}`;
+// 章节 CDN 双轨（2026-08-11 提速）:
+//   OSS 优先 — 上海直连 ~80ms（backend/data/book_chapters 由 dp_sync_oss_chapters.py 增量同步到 bucket）
+//   jsDelivr 兜底 — GitHub 自动刷新（OSS 超时/缺文件时切换, 国内 ~0.9s 但可用）
+// 本地开发（localhost）→ 本地静态目录（vite dev 服务 public/backend/data/book_chapters junction, 空串拼接同源相对路径）
+const CDN_BASES = (typeof location !== 'undefined' && ['localhost', '127.0.0.1'].includes(location.hostname))
+  ? ['']
+  : [
+      'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com',
+      `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${__COMMIT_HASH__}`,
+    ];
+
+// 依次尝试各 CDN, 每个 2s 超时; 全部失败抛最后错误
+async function fetchChapter(path) {
+  let lastErr;
+  for (const base of CDN_BASES) {
+    try {
+      const resp = await fetch(`${base}/backend/data/book_chapters${path}`, { signal: AbortSignal.timeout(2000) });
+      if (resp.ok) return resp;
+      lastErr = new Error('HTTP ' + resp.status);
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr;
+}
 
 function ReaderPage() {
   const { bookId } = useParams();
@@ -266,7 +284,7 @@ ${textContext}
     setError(null);
     try {
       // 1. 从 meta.json 获取正确的章节元数据（排除 TOC 纯标题条目）
-      const metaResp = await fetch(`${CDN_BASE}/backend/data/book_chapters/${bookId}/meta.json`);
+      const metaResp = await fetchChapter(`/${bookId}/meta.json`);
       if (!metaResp.ok) throw new Error('Meta ' + metaResp.status);
       const meta = await metaResp.json();
       const total = meta.chapterCount || 0;
@@ -321,7 +339,7 @@ ${textContext}
     if (loadingRef.current[idx]) return;
     loadingRef.current[idx] = true;
     try {
-      const resp = await fetch(`${CDN_BASE}/backend/data/book_chapters/${bookId}/${idx}.json`);
+      const resp = await fetchChapter(`/${bookId}/${idx}.json`);
       if (resp.ok) {
         const ch = await resp.json();
         setTextChapters(prev => {
