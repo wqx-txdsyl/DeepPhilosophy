@@ -4,18 +4,24 @@
 import { getApiBase } from './App';
 import { cacheGet, cacheSet } from './data/cache';
 
-/** 加载书籍列表 — 本地 JSON 优先（秒开），API 不再使用 */
+/** 加载书籍列表 — OSS 双轨优先（用户网络对 OSS 实测快, 同源 CF 边缘 3-6s），API 不再使用 */
 export async function loadBooks() {
   const cached = cacheGet('books');
   if (cached?.length) return cached;
-  try {
-    const resp = await fetch('/books.json');
-    if (resp.ok) { const data = await resp.json(); cacheSet('books', data); return data; }
-  } catch {}
+  const tryFetch = async (url, timeout) => {
+    try {
+      const resp = await fetch(url, timeout ? { signal: AbortSignal.timeout(timeout) } : undefined);
+      if (resp.ok) return await resp.json();
+    } catch {}
+    return null;
+  };
+  const data = (await tryFetch('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/books.json', 2500))
+    || await tryFetch('/books.json');
+  if (data && data.length) { cacheSet('books', data); return data; }
   try {
     const local = await import('./assets/books.json');
-    const data = local.default?.books || local.books || [];
-    cacheSet('books', data); return data;
+    const ldata = local.default?.books || local.books || [];
+    cacheSet('books', ldata); return ldata;
   } catch (e) { return []; }
 }
 

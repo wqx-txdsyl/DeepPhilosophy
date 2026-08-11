@@ -4,10 +4,11 @@
  */
 import { useState, useEffect, useRef, useMemo } from 'react';
 import Icon from '../components/Icon';
-import { getCoverUrl } from '../data/coverUrls';
+import { getCoverOssUrl, getCoverUrl } from '../data/coverUrls';
 
 // BookCover — 纯同步渲染，和 genealogy 图片一样的直接 <img src> 模式
 // 封面路径在模块加载时已预取，渲染时零 fetch、零 useEffect
+// 2026-08-11: OSS 直链优先（用户网络对 OSS 实测快）, 失败自动回退同源相对路径
 function BookCover({ bookId }) {
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
@@ -18,10 +19,13 @@ function BookCover({ bookId }) {
     return () => obs.disconnect();
   }, []);
 
-  const src = getCoverUrl(bookId); // 同步读取，模块级缓存
-  if (!src) return <div ref={ref} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="nav-books" size={20} /></div>;
+  const rel = getCoverUrl(bookId); // 同步读取，模块级缓存
+  if (!rel) return <div ref={ref} style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="nav-books" size={20} /></div>;
   if (!visible) return <div ref={ref} style={{ width: '100%', height: '100%', background: 'var(--bg)' }} />;
-  return <img ref={ref} src={src} alt="" loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
+  const ossSrc = getCoverOssUrl(bookId);
+  return <img ref={ref} src={ossSrc || rel} alt="" loading="lazy" decoding="async"
+    onError={(e) => { if (e.target.src.startsWith('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com')) e.target.src = rel; }}
+    style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
 }
 
 function FadeCard({ children, style }) {
@@ -56,19 +60,24 @@ function BooksPage() {
   useEffect(() => { fetchBooks(); }, []);
 
   const fetchBooks = async () => {
-    // 1. 优先本地 JSON（CDN 秒级加载）
-    try {
-      const resp = await fetch('/books.json');
-      if (resp.ok) {
-        const books = await resp.json();
-        setBooks(books);
-        const tags = new Set();
-        books.forEach(b => (b.tags || []).forEach(t => tags.add(t)));
-        setAllTags([...tags].sort());
-        setLoading(false);
-        return;
-      }
-    } catch {}
+    // 1. 双轨: OSS 上海优先（用户网络实测快, 同源 CF 边缘 3-6s）→ 同源兜底
+    const tryFetch = async (url, timeout) => {
+      try {
+        const resp = await fetch(url, timeout ? { signal: AbortSignal.timeout(timeout) } : undefined);
+        if (resp.ok) return await resp.json();
+      } catch {}
+      return null;
+    };
+    const books = (await tryFetch('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/books.json', 2500))
+      || await tryFetch('/books.json');
+    if (books && books.length) {
+      setBooks(books);
+      const tags = new Set();
+      books.forEach(b => (b.tags || []).forEach(t => tags.add(t)));
+      setAllTags([...tags].sort());
+      setLoading(false);
+      return;
+    }
     // 2. 回退 Render API
     try {
       const resp = await fetch(`${getApiBase()}/api/books`, { signal: AbortSignal.timeout(3000) });
