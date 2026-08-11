@@ -3,8 +3,8 @@
  * 不拦截: 跨域（OSS/jsDelivr 章节、Google 字体）、/api/*
  * 离线兜底: 已缓存资源直接返回; SPA 导航失败 → index.html
  */
-const VERSION = 'dp-sw-v1';
-const SHELL = ['/', '/index.html', '/manifest.json', '/favicon.png', '/icons/pwa-192.png', '/icons/pwa-512.png'];
+const VERSION = 'dp-sw-v2';
+const SHELL = ['/', '/index.html', '/manifest.json', '/favicon.png', '/icons/pwa-192.png', '/icons/pwa-512.png', '/icons/pwa-512-maskable.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
