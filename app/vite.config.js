@@ -48,10 +48,10 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [react(), publicLive()],
   // 2026-08-11 书架提速: 生产构建产物走 OSS（用户网络对同源 CF 边缘 4-5s/220KB, OSS 0.1s）
-  // base 为 app/ 根, vite 拼出 .../app/assets/index-xxx.js; 构建后需同步 dist/assets → OSS app/assets/
-  // （dp_sync_oss_static.py, 本地/CF 构建 hash 一致已验证）
-  // dev 保持相对路径; public 数据(/books.json 等)不经 base, 运行时仍同源 fetch
-  base: mode === 'production' ? 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/' : '/',
+  // 注意: vite base 会连带重写 index.html 的 public 引用（favicon/manifest/icons → OSS 404）,
+  //       故 base 保持 '/', 改用 postbuild.mjs 构建后只替换 dist/index.html 的 assets 引用为 OSS URL
+  //       （public 资源保持同源; 懒加载 chunk 经 mapDeps 递归, hash 以 CF 线上构建为准 → 同步走"抓 CF 产物"）
+  base: '/',
   server: {
     port: 5173,
     host: true,
