@@ -1,6 +1,6 @@
 # DeepPhilosophy
 
-深度哲学 — 东西方及世界哲学的综合知识平台。React + Vite + FastAPI + DeepSeek AI。
+深度哲学 — 东西方及世界哲学的综合知识平台。React + Vite + Cloudflare Workers + DeepSeek AI。
 
 ## 访问方式
 
@@ -18,15 +18,13 @@
 ```
 浏览器 ──→ Cloudflare Pages（前端静态）── jsDelivr CDN（章节 JSON）
           │                              └── OSS CDN（书内图片）
-          ├── 认证 ──→ Cloudflare Worker ── D1 数据库（毫秒级）
-          └── AI/笔记 ──→ Render ── FastAPI（备用）
+          └── API ──→ Cloudflare Workers ── D1 数据库（认证/历史/笔记）
 ```
 
 - **Cloudflare Pages**：前端 HTML/JS/CSS/封面/肖像，推送即部署
-- **Cloudflare Worker**：登录/注册（D1 数据库，零冷启动，全球边缘）
+- **Cloudflare Workers**：`/api/auth/*`（登录注册）+ `/api/*`（AI 流式/问答/历史/笔记/文件 302），D1 数据库，零冷启动
 - **jsDelivr CDN**：章节 JSON（免费全球加速，读取 GitHub master）
-- **OSS CDN**：书内插图（阿里云 5814 张 WebP）
-- **Render**：AI 对话 + 笔记同步（备用，计划迁至 Worker）
+- **OSS CDN**：书内插图（阿里云 WebP）
 
 ---
 
@@ -53,9 +51,8 @@ cd DeepPhilosophy
 # 前端（localhost:5173）
 cd app && npm install && npm run dev
 
-# 后端（新终端，localhost:8000）
-pip install -r requirements.txt
-python main.py
+# 后端 API 由 Cloudflare Workers 提供（workers/ 目录）
+cd workers/auth && npm install && npx wrangler dev   # 本地调试
 ```
 
 前端默认连接 `http://localhost:8000` 的 API。可在设置页面或 `app/.env` 中修改 `VITE_API_URL`。
@@ -77,7 +74,7 @@ cd app && npm run build   # 产物在 app/dist/
 |------|------|------|
 | 前端 | Cloudflare Pages | `deepphilosophy.top` `deepphilosophy.pages.dev` |
 | 前端备用 | Vercel | `deepphilosophy.vercel.app` |
-| 后端 API | Render | `deepphilosophy-7g7m.onrender.com` |
+| 后端 API | Cloudflare Workers | `deepphilosophy.top/api/*`（auth + api 两个 worker，D1） |
 | 本地开发 | Vite | `localhost:5173` |
 
 ---
@@ -109,9 +106,9 @@ cd app && npm run build   # 产物在 app/dist/
 | 层 | 技术 |
 |------|------|
 | 前端 | React 19, React Router, Vite 8 |
-| 后端 | FastAPI, SQLite, ChromaDB |
+| 后端 | Cloudflare Workers (Hono) + D1 |
 | AI | DeepSeek API（流式对话） |
-| 部署 | Cloudflare Pages + Render (Docker) |
+| 部署 | Cloudflare Pages + Workers |
 | CDN | jsDelivr（章节 JSON）+ 阿里云 OSS（书内图） |
 
 ---
@@ -122,67 +119,42 @@ cd app && npm run build   # 产物在 app/dist/
 DeepPhilosophy/
 ├── .gitignore
 ├── .env                    # 全局环境变量（API keys）
-├── .dockerignore
-├── Dockerfile              # Render 部署
-├── requirements.txt        # Python 依赖
-├── render.yaml
 ├── vercel.json
 ├── README.md
-├── REMOVED_PDFS.txt        # 待替换 PDF 清单（123本）
 ├── .claude/                # Claude Code 配置
-│   ├── CLAUDE.md           # 项目规范（AI 严格执行）
-│   ├── settings.local.json
-│   └── skills/             # 15 个自动化 Skill
+│   └── CLAUDE.md           # 项目规范（AI 严格执行）
 ├── app/                    # React 前端 (Vite)
 │   ├── src/
-│   │   ├── pages/          # 22 个页面组件
-│   │   ├── components/     # 22 个 UI 组件
+│   │   ├── pages/          # 页面组件
+│   │   ├── components/     # UI 组件
 │   │   ├── data/           # 数据层（缓存/题库/封面查找）
 │   │   ├── utils/          # API/SEO 工具
 │   │   └── contexts/       # Toast 通知系统
 │   ├── public/             # 静态资源（切勿改路径！）
-│   │   ├── books.json      # 书籍目录（60KB，191本）
-│   │   ├── philosophers.json  # 哲学家（743位，AI评分排序）
+│   │   ├── books.json      # 书籍目录（402 本）
+│   │   ├── philosophers.json  # 哲学家（AI评分排序）
 │   │   ├── philosopher_network.json  # 星丛关系网络
-│   │   ├── book_detail/    # 191 个独立书籍详情 JSON
-│   │   ├── covers/         # 99 张书籍封面 WebP
-│   │   ├── philosopher/    # 758 张肖像 + data/ 详情
-│   │   ├── schools/        # 111 张流派图 + data/ JSON
-│   │   ├── gene/           # 13 张谱系素材
-│   │   └── icons/          # 86 个 PNG 图标
+│   │   ├── book_detail/    # 402 个独立书籍详情 JSON
+│   │   ├── covers/         # 402 张书籍封面 WebP
+│   │   ├── philosopher/    # 肖像 + data/ 详情
+│   │   ├── schools/        # 流派图 + data/ JSON
+│   │   ├── gene/           # 谱系素材
+│   │   └── icons/          # PNG 图标
 │   ├── electron/           # Electron 桌面端入口
 │   ├── vite.config.js
 │   └── package.json
-├── backend/                # FastAPI + 数据工具
-│   ├── main.py             # API 入口
-│   ├── config.py           # 配置
-│   ├── auth.py             # 认证 + OSS 同步
-│   ├── admin.py            # 管理后台
-│   ├── db.py               # 哲学家数据库
-│   ├── routes/             # 10 个 API 路由
-│   ├── services/           # 3 个业务模块
-│   ├── modules/            # 7 个 RAG 模块
-│   ├── models/             # Pydantic 请求模型
-│   ├── tools/              # 11 个数据构建脚本
-│   │   ├── rebuild_spine.py           # EPUB → 章节 JSON
-│   │   ├── build_book_json.py         # EPUB → 结构化 JSON
-│   │   ├── build_philosopher_network.py  # 哲学家星丛网络
-│   │   ├── build_covers_manifest.py   # 封面提取
-│   │   ├── gen_summaries.py           # AI 批量生成摘要
-│   │   ├── download_gutenberg.py      # Gutenberg 下载
-│   │   └── sync_to_cloud.py           # 云端数据同步
-│   ├── tests/              # 3 个测试文件
-│   └── data/               # 运行时数据
-│       ├── book_chapters/  # 章节 JSON（git 追踪，CDN 加载）
-│       ├── book_images/    # 书内插图（5814 张，OSS 同步）
-│       └── ...
-├── scripts/                # 9 个维护脚本
-│   ├── add_author.py       # 添加哲学家
-│   ├── add_book.py         # 添加书籍
-│   ├── add_school.py       # 添加流派
-│   ├── fetch_philosopher_img.py  # 爬取头像
-│   └── gen_portrait.py     # AI 生成肖像
-└── .github/workflows/      # keepalive + pages CI
+├── backend/                # 数据目录 + 运维工具
+│   ├── tools/              # 6 个运维脚本（verify_book / worker 资产 / D1 迁移 / catalog 校准 / README）
+│   ├── data/               # 运行时数据
+│   │   ├── book_chapters/  # 章节 JSON（git 追踪，CDN 加载）
+│   │   ├── book_detail/    # 本地 detail 镜像（git 追踪 79 个历史 + 本地 402）
+│   │   ├── book_images/    # 书内插图（OSS 同步）
+│   │   └── ...
+├── workers/                # Cloudflare Workers API（Hono + D1）
+│   ├── auth/               # /api/auth/* 登录注册 JWT
+│   └── api/                # /api/* AI 流式/问答/历史/笔记/文件 302
+├── scripts/                # 内容运营 + 历史运维（38 个，详见 PROJECT_STRUCTURE.md）
+└── .github/workflows/      # pages CI
 ```
 
 ---

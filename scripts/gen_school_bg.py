@@ -30,7 +30,7 @@ def save_master_style(data):
 
 def get_school_images():
     """获取所有流派背景图 URL"""
-    base = "https://deepphilosophy-7g7m.onrender.com/schools"
+    base = "https://deepphilosophy.top/schools"
     images = []
     for f in sorted(os.listdir(SCHOOLS_DIR)):
         if f.endswith(('.jpg', '.png')) and 'school_' not in f and 'thumb' not in f:
@@ -43,7 +43,7 @@ def train():
     if not images:
         print("没有找到学校背景图，使用缓存 URL")
         images = [
-            f"https://deepphilosophy-7g7m.onrender.com/schools/{n}.jpg"
+            f"https://deepphilosophy.top/schools/{n}.jpg"
             for n in ['caucasus.jpg','shaman.jpg','arctic.jpg','austronesian.jpg','pacific.jpg']
         ]
 
