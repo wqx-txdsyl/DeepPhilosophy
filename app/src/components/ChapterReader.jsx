@@ -84,6 +84,7 @@ export default function ChapterReader({
   toc = null,
   currentChapter,
   onChapterChange,
+  onRetryChapter,   // 章节加载失败后的重试回调（ReaderPage 提供）
   cover,
   title,
   showToc = false,
@@ -241,7 +242,17 @@ export default function ChapterReader({
 
         {/* 内容 — HTML 保留原排版 */}
         {ch.type === 'section' ? null : !ch.content && !ch._loaded ? (
-          <p style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>加载中...</p>
+          ch._error ? (
+            <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-dim)' }}>
+              <p style={{ margin: '0 0 12px' }}>章节加载失败（网络或 CDN 异常）</p>
+              <button className="btn btn-primary" style={{ padding: '4px 20px' }}
+                onClick={() => onRetryChapter && onRetryChapter(currentChapter)}>
+                点击重试
+              </button>
+            </div>
+          ) : (
+            <p style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '40px 0' }}>加载中...</p>
+          )
         ) : ch.content ? (
           (() => {
             const isSmall = b => b.w && b.h

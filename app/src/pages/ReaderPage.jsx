@@ -21,12 +21,18 @@ const CDN_BASES = (typeof location !== 'undefined' && ['localhost', '127.0.0.1']
       `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${__COMMIT_HASH__}`,
     ];
 
-// 依次尝试各 CDN, 每个 2s 超时; 全部失败抛最后错误
+// 依次尝试各 CDN; 全部失败抛最后错误
+// 超时: OSS 2s 快超时（直连上海 ~80ms, 抖动瞬时, 失败立刻重试 1 次）;
+//       jsDelivr 10s（兜底路径, 首次回源实测 6.5s, 2s 必然超时 → 曾致"永久加载中"）
+const CDN_TIMEOUTS = [2000, 2000, 10000];
 async function fetchChapter(path) {
   let lastErr;
-  for (const base of CDN_BASES) {
+  const tries = CDN_BASES.length > 1
+    ? [CDN_BASES[0], CDN_BASES[0], CDN_BASES[1]]   // OSS → OSS 重试 → jsDelivr
+    : CDN_BASES;                                    // 本地 dev 单 base
+  for (let i = 0; i < tries.length; i++) {
     try {
-      const resp = await fetch(`${base}/backend/data/book_chapters${path}`, { signal: AbortSignal.timeout(2000) });
+      const resp = await fetch(`${tries[i]}/backend/data/book_chapters${path}`, { signal: AbortSignal.timeout(CDN_TIMEOUTS[i] || 2000) });
       if (resp.ok) return resp;
       lastErr = new Error('HTTP ' + resp.status);
     } catch (e) { lastErr = e; }
@@ -333,6 +339,13 @@ ${textContext}
   }, [bookId]);
 
   const loadingRef = useRef({});
+  const markChapterError = (idx) => {
+    setTextChapters(prev => {
+      const next = [...prev];
+      if (next[idx]) next[idx] = { ...next[idx], _error: true };
+      return next;
+    });
+  };
   const loadChapter = async (idx, chaptersArr) => {
     const chs = chaptersArr || textChapters;
     if (!chs[idx] || chs[idx]._loaded || chs[idx].content) return;
@@ -344,13 +357,24 @@ ${textContext}
         const ch = await resp.json();
         setTextChapters(prev => {
           const next = [...prev];
-          if (next[idx]) next[idx] = { ...ch, _loaded: true };
+          if (next[idx]) next[idx] = { ...ch, _loaded: true, _error: false };
           return next;
         });
+      } else {
+        markChapterError(idx);
       }
-    } catch {} finally {
+    } catch { markChapterError(idx); } finally {
       loadingRef.current[idx] = false;
     }
+  };
+  // 失败后重试: 清错误标记重新加载（失败态不再永久卡"加载中"）
+  const retryChapter = (idx) => {
+    setTextChapters(prev => {
+      const next = [...prev];
+      if (next[idx]) next[idx] = { ...next[idx], _error: false };
+      return next;
+    });
+    loadChapter(idx);
   };
 
   const handleChapterChange = useCallback((ch) => {
@@ -444,6 +468,7 @@ ${textContext}
                 onToggleToc={() => setShowReaderToc(!showReaderToc)}
                 initialTocIdx={initialTocIdx}
                 initialSec={initialSec}
+                onRetryChapter={retryChapter}
               />
             ) : error ? (
               <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-dim)' }}>
