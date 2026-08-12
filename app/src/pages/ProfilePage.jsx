@@ -15,6 +15,35 @@ import {
 } from '../data/userData';
 import { getSessions, deleteSession } from '../data/chatSessions';
 
+/**
+ * 2026-08-12: 按天分组重建会话 —— 聊天历史 tab 读 chatSessions(本地),
+ * 统计读 dp_userdata.chatHistory(本地+云端同步)。两源不一致时列表空但统计有数。
+ * 传入任一来源的消息数组, 按天分组生成会话(仅保留 user 首条做标题)。
+ */
+function rebuildSessions(msgs) {
+  const byDay = {};
+  for (const m of msgs) {
+    const day = (m.created_at || '').slice(0, 10) || 'unknown';
+    if (!byDay[day]) byDay[day] = [];
+    byDay[day].push(m);
+  }
+  return Object.entries(byDay)
+    .sort((a, b) => (a[0] < b[0] ? 1 : -1))
+    .map(([day, msgsOfDay]) => {
+      const first = msgsOfDay.find(m => m.role === 'user') || msgsOfDay[0] || {};
+      const text = typeof first.content === 'string' ? first.content : '';
+      const t0 = msgsOfDay[0]?.created_at ? new Date(msgsOfDay[0].created_at).getTime() : Date.now();
+      const t1 = msgsOfDay[msgsOfDay.length - 1]?.created_at ? new Date(msgsOfDay[msgsOfDay.length - 1].created_at).getTime() : t0;
+      return {
+        id: 'cloud_' + day.replace(/[^0-9]/g, ''),
+        title: text.replace(/\n/g, ' ').slice(0, 30) || '历史对话 · ' + day,
+        messages: msgsOfDay.map(m => ({ role: m.role, content: m.content, sources: m.sources || [] })),
+        createdAt: t0,
+        updatedAt: t1,
+      };
+    });
+}
+
 function ProfilePage() {
   const navigate = useNavigate();
   const toast = useToast();
@@ -62,7 +91,16 @@ function ProfilePage() {
       setChecking(false);
     }
     setReadingHistory(getReadingHistory());
-    const sessions = getSessions();
+    let sessions = getSessions();
+    // 2026-08-12: 聊天历史 tab 读 chatSessions(本地), 统计读 dp_userdata.chatHistory(本地+云端同步) —
+    // 两源不一致时列表空但统计有数。挂载时若本地会话为空但消息存在 → 按天分组重建会话
+    if (sessions.length === 0) {
+      const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
+      if (msgs.length > 0) {
+        sessions = rebuildSessions(msgs);
+        localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
+      }
+    }
     setChatSessions(sessions);
     // 兼容旧统计数据格式
     const allMsgs = sessions.reduce((arr, s) => arr.concat(s.messages), []);
@@ -196,27 +234,7 @@ function ProfilePage() {
         // 换设备/清过本地时列表空但统计(云端消息数)非 0 → 按天分组重建, 历史可见
         const sessions = JSON.parse(localStorage.getItem('dp_chat_sessions') || '[]');
         if (sessions.length === 0 && cloudChat.length > 0) {
-          const byDay = {};
-          for (const m of cloudChat) {
-            const day = (m.created_at || '').slice(0, 10) || 'unknown';
-            if (!byDay[day]) byDay[day] = [];
-            byDay[day].push(m);
-          }
-          const rebuilt = Object.entries(byDay)
-            .sort((a, b) => (a[0] < b[0] ? 1 : -1))
-            .map(([day, msgs]) => {
-              const first = msgs.find(m => m.role === 'user') || msgs[0] || {};
-              const text = typeof first.content === 'string' ? first.content : '';
-              const t0 = msgs[0]?.created_at ? new Date(msgs[0].created_at).getTime() : Date.now();
-              const t1 = msgs[msgs.length - 1]?.created_at ? new Date(msgs[msgs.length - 1].created_at).getTime() : t0;
-              return {
-                id: 'cloud_' + day.replace(/[^0-9]/g, ''),
-                title: text.replace(/\n/g, ' ').slice(0, 30) || '历史对话 · ' + day,
-                messages: msgs.map(m => ({ role: m.role, content: m.content, sources: m.sources || [] })),
-                createdAt: t0,
-                updatedAt: t1,
-              };
-            });
+          const rebuilt = rebuildSessions(cloudChat);
           localStorage.setItem('dp_chat_sessions', JSON.stringify(rebuilt));
         }
       }
