@@ -1,0 +1,12 @@
+# Cloudflare Pages headers — 2026-08-11 书架提速
+# 背景: 用户网络对同源 CF 边缘 3-6s/请求, books.json 555KB 每次 max-age=0 回源 → /book 首访卡加载中
+# 双管齐下: ① 数据走 OSS 上海双轨(前端代码) ② 同源兜底加边缘缓存, 二次命中秒开
+# 2026-08-12: s-maxage 604800→3600 — 早期 SPA fallback 的 HTML 曾按此 TTL 缓存 7 天(封面裂图), 封面更新需及时生效
+/covers/*
+  Cache-Control: public, max-age=3600, s-maxage=3600
+/books.json
+  Cache-Control: public, max-age=300, s-maxage=3600
+/covers.json
+  Cache-Control: public, max-age=300, s-maxage=3600
+/philosophers.json
+  Cache-Control: public, max-age=300, s-maxage=3600

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#F7F5F0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="DeepPhilosophy" />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/pwa-192.png" />
+    <link rel="canonical" href="https://deepphilosophy.top" />
+
+    <!-- SEO -->
+    <title>DeepPhilosophy</title>
+    <meta name="description" content="DeepPhilosophy 是一个哲学知识平台，收录 111 个哲学流派、744 位哲学家、402 部经典著作。从古埃及到当代，探索世界哲学谱系。" />
+    <meta name="keywords" content="哲学,哲学家,哲学著作,哲学流派,西方哲学,东方哲学,世界哲学,思想史,哲学知识库" />
+    <meta name="author" content="@txdsyl_" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://deepphilosophy.top" />
+    <meta property="og:title" content="DeepPhilosophy" />
+    <meta property="og:description" content="111 个哲学流派 · 744 位哲学家 · 402 部经典著作。从古埃及到当代，探索世界哲学谱系。" />
+    <meta property="og:image" content="https://deepphilosophy.top/favicon.png" />
+    <meta property="og:site_name" content="DeepPhilosophy" />
+    <meta property="og:locale" content="zh_CN" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="DeepPhilosophy" />
+    <meta name="twitter:description" content="111 个哲学流派 · 744 位哲学家 · 402 部经典著作。探索世界哲学谱系。" />
+    <meta name="twitter:image" content="https://deepphilosophy.top/favicon.png" />
+
+    <!-- JSON-LD 结构化数据 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "DeepPhilosophy",
+      "url": "https://deepphilosophy.top",
+      "description": "哲学知识平台：111个哲学流派、744位哲学家、402部经典著作",
+      "author": {"@type": "Person", "name": "@txdsyl_"},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://deepphilosophy.top/books?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- 2026-08-11: 移除 Google Fonts link — 国内网络不可达, head stylesheet 阻塞 load 事件 → tab 一直转圈; 字体回退链在 App.css -->
+    <!-- 2026-08-11: 构建产物/books.json/covers.json/封面走 OSS 双轨, 提前建立连接 -->
+    <link rel="preconnect" href="https://deepphilosophy.oss-cn-shanghai.aliyuncs.com" crossorigin>
+    <script type="module" crossorigin src="https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/assets/index-BOBo3bPl.js"></script>
+    <link rel="modulepreload" crossorigin href="https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/assets/rolldown-runtime-QTnfLwEv.js">
+    <link rel="modulepreload" crossorigin href="https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/assets/vendor-react-DorUf_JJ.js">
+    <link rel="stylesheet" crossorigin href="https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/assets/index-CvYJtQ6p.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- 启动时从 config.json 加载 API 地址，写入 localStorage（优先级低于用户手动设置） -->
+    <script>
+      (function(){
+        var stored = localStorage.getItem('dp_api_config');
+        if (stored) { try { var c = JSON.parse(stored); if (c.apiUrl) return; } catch(e){} }
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/config.json', true);
+        xhr.timeout = 3000;
+        xhr.onload = function(){
+          if (xhr.status === 200) {
+            try {
+              var cfg = JSON.parse(xhr.responseText);
+              if (cfg.apiUrl && !cfg.apiUrl.includes('YOUR_BACKEND_URL')) {
+                var prev = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
+                if (!prev.apiUrl) {
+                  prev.apiUrl = cfg.apiUrl;
+                  localStorage.setItem('dp_api_config', JSON.stringify(prev));
+                }
+              }
+            } catch(e){}
+          }
+        };
+        xhr.send();
+      })();
+    </script>
+  </body>
+</html>
