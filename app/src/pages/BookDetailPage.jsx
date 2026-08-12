@@ -8,7 +8,7 @@ import { getBookById } from '../data';
 import { getApiBase } from '../App';
 import { useSEO } from '../utils/seo';
 import { cacheGet, cacheSet } from '../data/cache';
-import { getCoverUrl } from '../data/coverUrls';
+import { getCoverUrl, getCoverOssUrl } from '../data/coverUrls';
 
 function BookDetailPage() {
   const { bookId } = useParams();
@@ -16,6 +16,7 @@ function BookDetailPage() {
   const [book, setBook] = useState(null);
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [coverOss, setCoverOss] = useState(false);  // 同源封面失败 → 回退 OSS 直链 (CF 边缘缓存旧 HTML 场景)
 
   useSEO(book?.title || '书籍详情', book?.author ? `${book.author} · ${book.title}` : '哲学经典著作详情');
 
@@ -77,8 +78,9 @@ function BookDetailPage() {
     } catch {}
     navigate(`/reader/${bookId}?ch=${ch}`);
   };
-  // 封面：优先静态文件 /covers/，回退 API 路径
-  const coverUrl = getCoverUrl(bookId) || meta?.cover || null;
+  // 封面：优先静态文件 /covers/；同源加载失败(CF 边缘缓存旧 HTML) → onError 回退 OSS 直链
+  const coverUrl = coverOss ? (getCoverOssUrl(bookId) || meta?.cover || null) : (getCoverUrl(bookId) || meta?.cover || null);
+  const coverOnError = () => { if (!coverOss) setCoverOss(true); };
   // 优先 chapterTitles（与实际章节文件索引一致），回退 toc（可能含无对应文件的条目）
   // 防御: 过滤非字符串条目（历史数据可能把层级 toc 对象混入 chapterTitles）
   const chapterTitles = (meta?.chapterTitles?.length ? meta.chapterTitles : (meta?.toc || []))
@@ -103,7 +105,7 @@ function BookDetailPage() {
         }}>
           {coverUrl ? (
             <img src={coverUrl} alt={book.title}
-              loading="lazy" decoding="async"
+              loading="lazy" decoding="async" onError={coverOnError}
               style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
             <Icon name="nav-books" size={48} />
