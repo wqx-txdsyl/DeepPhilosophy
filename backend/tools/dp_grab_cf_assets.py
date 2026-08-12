@@ -43,6 +43,12 @@ def grab(url, name, seen):
     except Exception as e:
         print(f"  ⚠ 抓取失败 {url}: {e}")
         return b""
+    # 2026-08-12 教训: CF Pages 部署中间态, /assets/{新hash}.js 未就绪 → SPA fallback 返回 index.html。
+    # 若把 HTML 当 JS 存盘并上传 OSS → 线上 JS 变 HTML → 白屏。检测到即丢弃（不覆盖已有真文件）。
+    head = data[:200].lstrip().lower()
+    if head.startswith(b"<!doctype") or b"<html" in head:
+        print(f"  ⚠ {name} 响应为 HTML（部署中间态/SPA fallback）, 已丢弃")
+        return b""
     os.makedirs(DIST_ASSETS, exist_ok=True)
     with open(os.path.join(DIST_ASSETS, name), "wb") as f:
         f.write(data)
