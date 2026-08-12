@@ -95,11 +95,13 @@ function ProfilePage() {
     // 2026-08-12: 聊天历史 tab 读 chatSessions(本地), 统计读 dp_userdata.chatHistory(本地+云端同步) —
     // 两源不一致时列表空但统计有数。挂载时若本地会话为空但消息存在 → 按天分组重建会话
     if (sessions.length === 0) {
-      const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
-      if (msgs.length > 0) {
-        sessions = rebuildSessions(msgs);
-        localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
-      }
+      try {
+        const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
+        if (msgs.length > 0) {
+          sessions = rebuildSessions(msgs);
+          localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
+        }
+      } catch {}
     }
     setChatSessions(sessions);
     // 兼容旧统计数据格式
@@ -107,7 +109,20 @@ function ProfilePage() {
     setChatHistory(allMsgs);
   }, []); // 只在挂载时运行，切换 tab 不重复请求
 
-  const refreshSessions = () => setChatSessions(getSessions());
+  // 刷新会话 state；本地会话为空但消息存在(dp_userdata.chatHistory) → 现场重建兜底
+  const refreshSessions = () => {
+    let sessions = getSessions();
+    if (sessions.length === 0) {
+      try {
+        const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
+        if (msgs.length > 0) {
+          sessions = rebuildSessions(msgs);
+          localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
+        }
+      } catch {}
+    }
+    setChatSessions(sessions);
+  };
 
   const switchTab = (t) => {
     setTab(t);
@@ -232,10 +247,12 @@ function ProfilePage() {
         setChatHistory(local.chatHistory || localChat);
         // 2026-08-12: 云端消息重建本地会话——聊天历史 tab 读的是 chatSessions,
         // 换设备/清过本地时列表空但统计(云端消息数)非 0 → 按天分组重建, 历史可见
+        // 重建后必须 setChatSessions 刷新 UI state（只写 localStorage 不刷新 state 是上版漏掉的）
         const sessions = JSON.parse(localStorage.getItem('dp_chat_sessions') || '[]');
         if (sessions.length === 0 && cloudChat.length > 0) {
           const rebuilt = rebuildSessions(cloudChat);
           localStorage.setItem('dp_chat_sessions', JSON.stringify(rebuilt));
+          setChatSessions(rebuilt);
         }
       }
       // Pull book notes
@@ -277,6 +294,7 @@ function ProfilePage() {
         }).catch(() => {});
       }
       setChatHistory([]);
+      setChatSessions([]);
       toast.success('聊天历史已清空');
     }
   };
@@ -449,7 +467,17 @@ function ProfilePage() {
       {tab === 'chat' && (
         <div key="chat-tab">
           {(() => {
-            const sessions = chatSessions.filter(s => s.messages.length > 0);
+            // 渲染兜底: state 为空但消息存在 → 现场重建展示并写回 localStorage（下次 getSessions 生效）
+            let sessions = chatSessions.filter(s => s.messages.length > 0);
+            if (sessions.length === 0) {
+              try {
+                const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
+                if (msgs.length > 0) {
+                  sessions = rebuildSessions(msgs);
+                  localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
+                }
+              } catch {}
+            }
             if (sessions.length === 0) {
               return (
                 <div className="empty-state">

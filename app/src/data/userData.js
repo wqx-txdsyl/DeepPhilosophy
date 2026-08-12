@@ -155,6 +155,8 @@ export function clearChatHistory() {
   const data = loadUserData();
   data.chatHistory = [];
   saveUserData(data);
+  // 2026-08-12: 会话列表与消息同源清空（否则列表读 dp_chat_sessions 复活）
+  localStorage.removeItem('dp_chat_sessions');
 }
 
 // ============================================================
