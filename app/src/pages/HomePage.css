@@ -154,7 +154,9 @@ html.dark-mode .home-hero-cta:hover { background: var(--ink); }
   font-family: var(--font-serif);
   font-size: clamp(2.4rem, 5vw, 3.6rem);
   font-weight: 400; color: var(--ink);
-  margin: 0 0 6px; font-variant-numeric: tabular-nums;
+  margin: 0 0 6px;
+  /* 2026-08-12: 移除 tabular-nums — Playfair 默认旧式数字(onum)高低错落是原版观感,
+     2026-07-16 重设计为 CountUp 滚动对齐引入等高压制; 旧式数字才是用户记忆中的样子 */
 }
 .home-stat-label {
   font-family: var(--font-sans);
