@@ -300,10 +300,20 @@ function HomePage() {
   const [dailyQuote, setDailyQuote] = useState(() => DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)]);
 
   // 从本地静态 JSON 加载准确数据（与 BooksPage/AuthorsPage 一致）
+  // OSS 上海双轨: 先试 OSS（~80ms）, 2.5s 超时回退同源（同源兜底边缘缓存, 二次命中秒开）
   useEffect(() => {
+    const tryFetch = async (url, timeout) => {
+      try {
+        const resp = await fetch(url, timeout ? { signal: AbortSignal.timeout(timeout) } : undefined);
+        return resp.ok ? resp.json() : null;
+      } catch { return null; }
+    };
     Promise.all([
-      fetch('/books.json').then(r => r.ok ? r.json() : []).catch(() => []),
-      fetch('/philosophers.json').then(r => r.ok ? r.json() : {}).catch(() => ({})),
+      tryFetch('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/books.json', 2500)
+        .then(r => r || fetch('/books.json').then(x => x.ok ? x.json() : []).catch(() => [])),
+      tryFetch('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/philosophers.json', 2500)
+        .then(r => r || fetch('/philosophers.json').then(x => x.ok ? x.json() : {}).catch(() => ({})),
+      ),
     ]).then(([books, philosophers]) => {
       setBookCount(Array.isArray(books) ? books.length : 0);
       const authors = Object.values(philosophers);

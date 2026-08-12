@@ -23,11 +23,17 @@ function BookDetailPage() {
 
   const fetchBook = async () => {
     setLoading(true);
-    // 1. 静态 JSON（毫秒级，含目录/封面）
+    // 1. 静态 JSON（毫秒级，含目录/封面）— OSS 上海双轨: 先试 OSS（~80ms）, 2.5s 超时回退同源
     try {
-      const r = await fetch(`/book_detail/${bookId}.json?v=3`);
-      if (r.ok) {
-        const d = await r.json();
+      const tryFetch = async (url, timeout) => {
+        try {
+          const resp = await fetch(url, timeout ? { signal: AbortSignal.timeout(timeout) } : undefined);
+          return resp.ok ? resp.json() : null;
+        } catch { return null; }
+      };
+      const d = await tryFetch(`https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_detail/${bookId}.json`, 2500)
+        || await fetch(`/book_detail/${bookId}.json?v=3`).then(r => r.ok ? r.json() : null);
+      if (d) {
         // file_type 以 detail 为准（修复: 曾写死 epub, 导致 pdf/txt 书详情页显示 EPUB）
         const enriched = { ...d, file_type: d.file_type || 'epub', file_size: d.file_size || 0 };
         setBook(enriched);
