@@ -34,7 +34,7 @@ RE_LAZY_ABS = re.compile(r'import\(\s*[`\'"]/assets/([A-Za-z0-9_-]+\.js)[`\'"]\s
 RE_MAPDEPS = re.compile(r'"assets/([A-Za-z0-9_-]+\.js)"')
 
 
-def grab(url, name, seen):
+def grab(url, name, seen, allow_html=False):
     """下载 url 指向的部署文件到本地; 返回文件内容(用于解析懒加载)"""
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "dp-grab"})
@@ -45,10 +45,12 @@ def grab(url, name, seen):
         return b""
     # 2026-08-12 教训: CF Pages 部署中间态, /assets/{新hash}.js 未就绪 → SPA fallback 返回 index.html。
     # 若把 HTML 当 JS 存盘并上传 OSS → 线上 JS 变 HTML → 白屏。检测到即丢弃（不覆盖已有真文件）。
-    head = data[:200].lstrip().lower()
-    if head.startswith(b"<!doctype") or b"<html" in head:
-        print(f"  ⚠ {name} 响应为 HTML（部署中间态/SPA fallback）, 已丢弃")
-        return b""
+    # 仅 assets 启用检测——index.html 本身是 HTML（65cee451f 曾误伤, 导致抓取永远失败）。
+    if not allow_html:
+        head = data[:200].lstrip().lower()
+        if head.startswith(b"<!doctype") or b"<html" in head:
+            print(f"  ⚠ {name} 响应为 HTML（部署中间态/SPA fallback）, 已丢弃")
+            return b""
     os.makedirs(DIST_ASSETS, exist_ok=True)
     with open(os.path.join(DIST_ASSETS, name), "wb") as f:
         f.write(data)
@@ -66,7 +68,7 @@ def main():
 
     os.makedirs(DIST_ASSETS, exist_ok=True)
     seen, queue = set(), []
-    html = grab(f"{deploy_url}/", "index.html", seen)
+    html = grab(f"{deploy_url}/", "index.html", seen, allow_html=True)
     if not html:
         print("❌ index.html 抓取失败")
         sys.exit(1)
