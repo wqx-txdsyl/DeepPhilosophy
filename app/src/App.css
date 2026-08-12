@@ -2,8 +2,51 @@
    DeepPhilosophy — Editorial Philosophy Atlas
    羊皮纸手稿 × 极简编辑排版 × 温暖单色
    ============================================================ */
-/* 2026-08-11: 移除 Google Fonts @import — 国内网络不可达, CSS @import 阻塞渲染 → 页面一直转圈
-   fallback 链完整: 'Playfair Display' → 'Times New Roman' → 'PingFang SC' → serif, 视觉无感 */
+/* 2026-08-12: Playfair Display 自托管（latin woff2 放 src/assets/fonts, vite 构建打进 assets → OSS 直链）
+   替代 2026-08-11 移除的 Google Fonts 外链（国内不可达阻塞渲染 → 转圈）;
+   font-display: swap 异步加载不阻塞, 加载前回退 Times New Roman, OSS 直连 <0.1s 基本无感 */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/playfair-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./assets/fonts/playfair-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./assets/fonts/playfair-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./assets/fonts/playfair-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/playfair-latin-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./assets/fonts/playfair-latin-500-italic.woff2') format('woff2');
+}
 
 /* ——— Content-visibility for long scrollable lists ——— */
 .books-author-group,

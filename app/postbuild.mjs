@@ -10,8 +10,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const OSS_ASSETS = 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/assets/'
-const dist = path.join(import.meta.dirname, 'dist', 'index.html')
-const html = fs.readFileSync(dist, 'utf-8')
+const distDir = path.join(import.meta.dirname, 'dist')
+
+// 1) 改写 index.html 的 assets 引用
+const htmlPath = path.join(distDir, 'index.html')
+const html = fs.readFileSync(htmlPath, 'utf-8')
 
 const replaced = html
   // 只替换 /assets/ 前缀引用（vite 默认 assets 目录；public 资源引用保持 /favicon.png 等原样）
@@ -23,8 +26,25 @@ if (replaced === html) {
   console.warn('[postbuild] dist/index.html 未发现 /assets/ 引用, 未做任何替换')
 } else {
   const n = (html.match(/(src|href)="\/assets\//g) || []).length
-  fs.writeFileSync(dist, replaced)
+  fs.writeFileSync(htmlPath, replaced)
   console.log(`[postbuild] 已改写 ${n} 处 assets 引用 → ${OSS_ASSETS}`)
+}
+
+// 2) 改写构建 CSS 内部 url(/assets/...) — 2026-08-12 自托管字体 @font-face 走这条路,
+//    vite 产物里 url() 是绝对路径 /assets/xxx.woff2, 不同源则走 CF 边缘(慢)
+let cssReplaced = 0
+for (const f of fs.readdirSync(path.join(distDir, 'assets'))) {
+  if (!f.endsWith('.css')) continue
+  const p = path.join(distDir, 'assets', f)
+  const css = fs.readFileSync(p, 'utf-8')
+  const out = css.replace(/url\(\/assets\//g, `url(${OSS_ASSETS}`)
+  if (out !== css) {
+    fs.writeFileSync(p, out)
+    cssReplaced += (css.match(/url\(\/assets\//g) || []).length
+  }
+}
+if (cssReplaced > 0) {
+  console.log(`[postbuild] 已改写 ${cssReplaced} 处 CSS url() 引用 → ${OSS_ASSETS}`)
 }
 
 // 断言 public 资源引用未被改写（回归保护: 若 vite base 再次指向 OSS 会改坏这两处）
