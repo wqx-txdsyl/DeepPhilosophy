@@ -245,11 +245,10 @@ function ProfilePage() {
         }
         localStorage.setItem('dp_userdata', JSON.stringify(local));
         setChatHistory(local.chatHistory || localChat);
-        // 2026-08-12: 云端消息重建本地会话——聊天历史 tab 读的是 chatSessions,
-        // 换设备/清过本地时列表空但统计(云端消息数)非 0 → 按天分组重建, 历史可见
-        // 重建后必须 setChatSessions 刷新 UI state（只写 localStorage 不刷新 state 是上版漏掉的）
-        const sessions = JSON.parse(localStorage.getItem('dp_chat_sessions') || '[]');
-        if (sessions.length === 0 && cloudChat.length > 0) {
+        // 2026-08-12: 云端消息重建本地会话——云端权威: 只要有云端消息就重建覆盖本地,
+        // 列表与统计(云端消息数)同源一致。若仅在本地区会话为空时重建,
+        // 本地测试残留(如 PhiAgent 对话)会占住列表而云端真实对话只进统计, 两源脱节
+        if (cloudChat.length > 0) {
           const rebuilt = rebuildSessions(cloudChat);
           localStorage.setItem('dp_chat_sessions', JSON.stringify(rebuilt));
           setChatSessions(rebuilt);
