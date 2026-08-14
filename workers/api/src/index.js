@@ -44,8 +44,25 @@ async function hashPw(password, salt) {
   const hash = await crypto.subtle.digest('SHA-256', data);
   return salt + ':' + buf2hex(hash);
 }
-// 三格式：原生 {salt}:{hex} / sha256:{salt}:{hash}（迁移库）/ scrypt:{salt}:{hash}（旧库，返回标记）
+// PBKDF2（2026-08-14 加固: 与 auth worker 同格式 pbkdf2:{iter}:{salt}:{hex}）
+const PBKDF2_ITER = 100000;
+async function hashPwPBKDF2(password, salt) {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt: new TextEncoder().encode(salt), iterations: PBKDF2_ITER, hash: 'SHA-256' },
+    key, 256);
+  return `pbkdf2:${PBKDF2_ITER}:${salt}:` + buf2hex(bits);
+}
+// 四格式：pbkdf2:{iter}:{salt}:{hex} / {salt}:{hex} / sha256:{salt}:{hash}（迁移库）/ scrypt:{salt}:{hash}（旧库，返回标记）
 async function checkPw(password, stored) {
+  if (stored.startsWith('pbkdf2:')) {
+    const [, iter, salt, hex] = stored.split(':');
+    const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt: new TextEncoder().encode(salt), iterations: parseInt(iter, 10) || PBKDF2_ITER, hash: 'SHA-256' },
+      key, 256);
+    return buf2hex(bits) === hex.toLowerCase();
+  }
   if (stored.startsWith('sha256:')) {
     const [, salt, hash] = stored.split(':');
     const data = new TextEncoder().encode(password + salt);
@@ -55,6 +72,16 @@ async function checkPw(password, stored) {
   if (stored.startsWith('scrypt:')) return 'SCRYPT_LEGACY';
   const [salt] = stored.split(':');
   return stored === await hashPw(password, salt);
+}
+
+// 恒定时间比较（2026-08-14: admin 密码校验改用, 防时序侧信道）
+async function safeEqual(a, b) {
+  const ha = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(a)));
+  const hb = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(b)));
+  if (ha.length !== hb.length) return false;
+  let d = 0;
+  for (let i = 0; i < ha.length; i++) d |= ha[i] ^ hb[i];
+  return d === 0;
 }
 
 async function verifyJWT(token, secret) {
@@ -257,9 +284,10 @@ app.get('/api/stats', (c) => {
 });
 
 app.get('/api/admin/stats', async (c) => {
-  const pw = c.req.query('password') || '';
+  // 2026-08-14: 密码从 query 参数改为 X-Admin-Password header（不进日志/历史）+ 恒定时间比较
+  const pw = c.req.header('X-Admin-Password') || '';
   if (!c.env.ADMIN_PASSWORD) return c.json({ error: '管理后台未配置（请设置 ADMIN_PASSWORD 环境变量）', detail: '管理后台未配置' }, 503);
-  if (pw !== c.env.ADMIN_PASSWORD) return c.json({ error: '密码错误', detail: '密码错误' }, 403);
+  if (!(await safeEqual(pw, c.env.ADMIN_PASSWORD))) return c.json({ error: '密码错误', detail: '密码错误' }, 403);
   const { results } = await c.env.deepphilosophy_db.prepare('SELECT id, username, created_at FROM users ORDER BY id').all();
   const users = results.map(u => ({ id: u.id, username: u.username, created_at: u.created_at || '' }));
   return c.json({ stats: adminStatsData, users, user_count: users.length });
@@ -414,7 +442,7 @@ app.put('/api/user/password', requireAuth, async (c) => {
     return c.json({ error: '该账号由旧系统迁移而来，密码体系已升级，请联系管理员重置密码后再登录', detail: '该账号由旧系统迁移而来，密码体系已升级，请联系管理员重置密码后再登录' }, 403);
   }
   if (!pw) return c.json({ error: '原密码错误', detail: '原密码错误' }, 403);
-  const hash = await hashPw(b.new_password, crypto.randomUUID());
+  const hash = await hashPwPBKDF2(b.new_password, crypto.randomUUID());   // PBKDF2 加固
   await db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').bind(hash, uid).run();
   return c.json({ status: 'ok' });
 });

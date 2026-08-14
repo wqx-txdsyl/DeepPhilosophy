@@ -17,7 +17,9 @@ function DeveloperPage() {
   const fetchData = async (pw) => {
     setLoading(true);
     try {
-      const r = await fetch(`${getApiBase()}/api/admin/stats?password=${encodeURIComponent(pw)}`);
+      const r = await fetch(`${getApiBase()}/api/admin/stats`, {
+        headers: { 'X-Admin-Password': pw },   // 2026-08-14: 密码改 header（不再进 URL/日志）
+      });
       if (r.ok) {
         const d = await r.json();
         setData(d);

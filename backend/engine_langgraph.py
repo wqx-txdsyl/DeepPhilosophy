@@ -194,7 +194,7 @@ class AgentState(TypedDict):
     agent: str     # 当前智能体（general / 哲学家 key）
     language: str  # zh/en——中文模式下每轮强化语言提醒（防思考偶发英文）
 
-def agent_node(state):
+async def agent_node(state):
     msgs = list(state["messages"])
     agent = state.get("agent", "general")
     # 中文模式每轮强化: 内部思考与回答都必须中文（DeepSeek 偶发英文思考的防线）
@@ -207,13 +207,14 @@ def agent_node(state):
         msgs.append(SystemMessage(
             content="（检索已达上限。现在进入最终回答: 禁止调用任何工具, 禁止输出任何 XML/工具调用标记（如 <invoke>、{TOOL:}）。"
                     "请直接输出最终回答正文, 引用标注【《书名》· 章节】。只输出回答文本。）"))
-        resp = get_llm().bind_tools(get_tools(agent)).invoke(msgs)
+        resp = await asyncio.to_thread(get_llm().bind_tools(get_tools(agent)).invoke, msgs)
         return {"messages": [resp], "forced": True}
     if state.get("retrieval_count", 0) >= RETRIEVAL_LIMIT:
         # 柔性提示（不强制停止）: 提示 LLM 评估材料充分性, 由 LLM 判断是否需要补检索
         msgs.append(SystemMessage(
             content="（已进行多次检索。请评估现有材料是否足以回答: 充分则停止检索直接作答; 确有必要再用新关键词补充检索, 但避免无意义重复。）"))
-    resp = get_llm().bind_tools(get_tools(agent)).invoke(msgs)
+    # 2026-08-14: 同步 LLM 调用移入线程池, 防阻塞事件循环（并发会话卡死）
+    resp = await asyncio.to_thread(get_llm().bind_tools(get_tools(agent)).invoke, msgs)
     return {"messages": [resp]}
 
 # 工具失败备选映射（自愈: 失败后提示可换用的工具）

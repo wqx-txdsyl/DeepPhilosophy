@@ -25,6 +25,7 @@ from pydantic import BaseModel
 import uvicorn
 
 import config
+import guard
 from auth import (
     _get_conn as get_db_conn,
     init_db,
@@ -2073,8 +2074,15 @@ if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR,
 
     @app.get("/{full_path:path}")
     async def serve_spa(full_path: str):
-        """SPA fallback: 非 API 路径返回 index.html"""
-        fp = _os2.path.join(_STATIC_DIR, full_path) if full_path else _os2.path.join(_STATIC_DIR, "index.html")
+        """SPA fallback: 非 API 路径返回 index.html
+        2026-08-14 加固（P0）: 防路径遍历——resolve 后必须仍位于 _STATIC_DIR 内, 否则回退 index.html"""
+        static_root = _os2.path.abspath(_STATIC_DIR)
+        if full_path:
+            fp = _os2.path.abspath(_os2.path.join(_STATIC_DIR, full_path))
+            if not (fp == _os2.path.join(static_root, "index.html") or fp.startswith(static_root + _os2.sep)):
+                fp = _os2.path.join(_STATIC_DIR, "index.html")
+        else:
+            fp = _os2.path.join(_STATIC_DIR, "index.html")
         if _os2.path.isfile(fp):
             return FileResponse(fp)
         return FileResponse(_os2.path.join(_STATIC_DIR, "index.html"))
@@ -2097,11 +2105,12 @@ threading.Thread(target=_warmup, daemon=True).start()
 import shutil as _shutil
 
 @app.post("/api/upload")
-async def api_upload(file: UploadFile = File(...)):
+async def api_upload(file: UploadFile = File(...), _g: dict = Depends(upload_guard)):
     """上传附件 → 文本内容（供对话上下文使用）
-    .md/.txt → 直接读; 其他文档 → markitdown 转 md; 图片 → Agnes 视觉识图"""
+    .md/.txt → 直接读; 其他文档 → markitdown 转 md; 图片 → Agnes 视觉识图
+    2026-08-14 加固: 限流（guard.upload_guard）+ 文件名消毒（防路径穿越写临时目录）"""
     try:
-        fname = file.filename or "attachment"
+        fname = Path(file.filename or "attachment").name   # 消毒: 仅取文件名, 剥路径分隔符
         ext = Path(fname).suffix.lower()
         raw = await file.read()
         max_bytes = 20 * 1024 * 1024

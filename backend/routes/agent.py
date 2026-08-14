@@ -5,9 +5,11 @@ V1 工具: search_books / get_book_detail / get_chapter / query_graph / get_phil
 import json, os, re, time, hashlib, urllib.request, threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Depends, Header
 from pydantic import BaseModel
 from typing import Optional, List
+
+import guard
 
 router = APIRouter()
 
@@ -100,13 +102,31 @@ def book_by_id(bid):
             return b
     return None
 
+def _safe_bid(bid):
+    """bid 白名单校验（2026-08-14 安全加固: 防 LLM 注入 bid 拼路径读任意 JSON）"""
+    if not isinstance(bid, str) or not re.fullmatch(r"[0-9a-f]{10,16}", bid):
+        return None
+    return bid if book_by_id(bid) else None
+
 def chapter_meta(bid):
+    bid = _safe_bid(bid)
+    if not bid:
+        return None
     mp = CHAPTERS_DIR / bid / "meta.json"
     if mp.exists():
         return json.load(open(mp, encoding="utf-8"))
     return None
 
 def read_chapter(bid, idx):
+    bid = _safe_bid(bid)
+    if not bid:
+        return None
+    try:
+        idx = int(idx)
+    except Exception:
+        return None
+    if idx < 0:
+        return None
     cp = CHAPTERS_DIR / bid / f"{idx}.json"
     if cp.exists():
         ch = json.load(open(cp, encoding="utf-8"))
@@ -358,31 +378,43 @@ register_tool(
 
 # ── 工具 7: write_essay（学生作文——注册为工具, 对话流意图触发; 支持多轮修改）──
 # 多轮修改记忆: 持久化到文件（进程重启不丢）; 作文按题目记忆（避免跨主题串味）
+# 2026-08-14 per-user 加固（P0）: 记忆按用户隔离（guard.user_memory_key）,
+#   原子写（tmp+rename）防并发损坏; 旧单用户格式自动迁移到 default 槽
 MEM_FILE = DATA / "agent_memory.json"
-_last_essays = {}   # topic → {"text", "genre", "word_count"}
-_last_image = None   # 记忆上次生成图: {"prompt", "local"}（最近一张, 修改指"刚才的图"）
-_last_experiment = None   # 记忆上次思想实验: {"base", "text"}（变体迭代用）
+_mem_lock = threading.Lock()
+_mem_all = None   # 全量缓存: {user_key: {"essays":{}, "image":None, "experiment":None, "debate":None}}
 
-def _load_agent_memory():
-    global _last_essays, _last_image, _last_experiment, _debate_session
-    try:
-        mem = json.load(open(MEM_FILE, encoding="utf-8"))
-        _last_essays = mem.get("essays") or {}
-        _last_image = mem.get("image")
-        _last_experiment = mem.get("experiment")
-        _debate_session = mem.get("debate")
-    except Exception:
-        pass
+def _mem_slot():
+    """当前用户的记忆槽 dict（懒加载全量缓存）"""
+    global _mem_all
+    if _mem_all is None:
+        _mem_all = {}
+        try:
+            raw = json.load(open(MEM_FILE, encoding="utf-8"))
+            if isinstance(raw, dict):
+                if raw and any(str(k).startswith(("u", "ip")) for k in raw):
+                    _mem_all = raw
+                else:
+                    _mem_all["default"] = raw   # 兼容旧单用户格式 → default 槽
+        except Exception:
+            _mem_all = {}
+    key = guard.user_memory_key()
+    if key not in _mem_all:
+        _mem_all[key] = {"essays": {}, "image": None, "experiment": None, "debate": None}
+    return _mem_all[key]
 
 def _save_agent_memory():
-    try:
-        json.dump({"essays": _last_essays, "image": _last_image, "experiment": _last_experiment,
-                   "debate": _debate_session},
-                  open(MEM_FILE, "w", encoding="utf-8"), ensure_ascii=False)
-    except Exception:
-        pass
-
-_load_agent_memory()
+    """原子写全量记忆（tmp+rename; 失败静默——记忆非关键数据）"""
+    global _mem_all
+    if _mem_all is None:
+        return
+    with _mem_lock:
+        try:
+            tmp = MEM_FILE.with_suffix(".tmp")
+            tmp.write_text(json.dumps(_mem_all, ensure_ascii=False), encoding="utf-8")
+            tmp.replace(MEM_FILE)
+        except Exception:
+            pass
 
 def _exec_write_essay(args):
     topic = args.get("topic") or args.get("query") or ""
@@ -524,7 +556,7 @@ def _detect_reference(prompt):
     return None
 
 def _exec_generate_image(args):
-    global _last_image
+    slot = _mem_slot()
     prompt = (args.get("prompt") or "").strip()
     if not prompt:
         return {"error": "缺少图像描述 prompt"}
@@ -540,8 +572,8 @@ def _exec_generate_image(args):
     # 多轮修改: 修改意图词 + 存在上次生成图 → 图生图修改（直接对上一轮结果改）
     MODIFY_HINTS = ("修改", "改成", "换成", "调整", "重画", "美化", "换个", "加上", "去掉",
                     "放大", "缩小", "夜景", "日景", "换个角度", "重新画", "优化", "调色", "改一下")
-    if _last_image and any(w in prompt for w in MODIFY_HINTS):
-        prev_path = PUBLIC / _last_image["local"].lstrip("/")
+    if slot["image"] and any(w in prompt for w in MODIFY_HINTS):
+        prev_path = PUBLIC / slot["image"]["local"].lstrip("/")
         if prev_path.exists():
             try:
                 with open(prev_path, "rb") as f:
@@ -549,8 +581,8 @@ def _exec_generate_image(args):
                 if prev_data and len(prev_data) < 8 * 1024 * 1024:
                     import base64
                     body["extra_body"]["image"] = ["data:image/jpeg;base64," + base64.b64encode(prev_data).decode()]
-                    reference = {"used": True, "query": f"修改上一张图（{_last_image['local']}）",
-                                 "source": _last_image["local"]}
+                    reference = {"used": True, "query": f"修改上一张图（{slot['image']['local']}）",
+                                 "source": slot["image"]["local"]}
             except Exception:
                 pass  # 读取上次图失败 → 降级文生图
     # 参考图绑定: 哲学家肖像/参考意图 → 本地肖像优先, 维基百科兜底 → Agnes 图生图（形象准确）
@@ -605,8 +637,8 @@ def _exec_generate_image(args):
     except Exception as e:
         return {"error": f"图像下载失败: {str(e)[:120]}", "remote_url": url}
     local = f"/agent_images/{fn}"
-    _last_image = {"prompt": prompt, "local": local}
-    _save_agent_memory()   # 持久化多轮修改记忆
+    slot["image"] = {"prompt": prompt, "local": local}
+    _save_agent_memory()   # 持久化多轮修改记忆（per-user）
     return {"image_url": local, "prompt": prompt, "size": f"{size} {ratio}", "bytes": size_bytes,
             "reference": reference,
             "note": f"生成成功。回答中请以 ![{prompt[:20]}]({local}) 引用该图"}
@@ -776,7 +808,7 @@ ESSAY_PROMPT = """你是一位资深的哲学教师与写作导师，为学生�
 """
 
 @router.post("/api/agent/essay")
-async def agent_essay(req: EssayRequest):
+async def agent_essay(req: EssayRequest, _g: dict = Depends(guard.agent_guard)):
     if not API_KEY:
         return AgentChatResponse(reply="服务端未配置 DEEPSEEK_API_KEY", citations=[], tool_calls=[])
     tool_calls_log = []
@@ -869,7 +901,7 @@ def llm_detect_intent(message):
 
 def _find_essay_topic(text):
     """在按题目记忆中找与修改请求相关的作文（题目包含匹配）"""
-    for t in _last_essays:
+    for t in _mem_slot()["essays"]:
         if not t:
             continue
         if t in text or (text[:10] and text[:10] in t):
@@ -880,7 +912,8 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
     """作文生成/修改——返回 (reply, citations, tool_calls_log)
     多轮修改: modify 非空且存在对应题目记忆 → 基于上次文本改写（沿用原论点与原典引用, 不重新检索）"""
     tool_calls_log = []
-    prev = _last_essays.get(topic)
+    slot = _mem_slot()
+    prev = slot["essays"].get(topic)
     if modify and prev:
         prompt = (f"用户要求修改作文。修改要求: {modify}\n\n"
                   f"上次作文题目: {topic}\n"
@@ -890,7 +923,7 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
         resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.75,
                         max_tokens=min(word_count * 2 + 500, 4000))
         reply = (resp["choices"][0]["message"].get("content") or "").strip() or "（修改失败，请重试）"
-        _last_essays[topic] = {"text": reply, "genre": genre, "word_count": word_count}
+        slot["essays"][topic] = {"text": reply, "genre": genre, "word_count": word_count}
         return reply, [], tool_calls_log
     query = re.sub(r"[？?！!。，,、\s]+", " ", topic)[:50]
     result = TOOLS["search_books"]["execute"]({"query": query, "limit": 6})
@@ -922,7 +955,7 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
                  for item in result.get("results", [])[:4]]
     for tc in tool_calls_log:
         tc.pop("result_full", None)
-    _last_essays[topic] = {"text": reply, "genre": genre, "word_count": word_count}
+    slot["essays"][topic] = {"text": reply, "genre": genre, "word_count": word_count}
     return reply, citations, tool_calls_log
 
 
@@ -943,7 +976,7 @@ def parse_tool_calls(msg):
 
 
 @router.post("/api/agent/chat")
-async def agent_chat(req: AgentChatRequest):
+async def agent_chat(req: AgentChatRequest, _g: dict = Depends(guard.agent_guard)):
     if not API_KEY:
         return AgentChatResponse(reply="服务端未配置 DEEPSEEK_API_KEY", citations=[], tool_calls=[])
     # ── 组装消息（标准 ReAct: system + history + user）──
@@ -1169,7 +1202,7 @@ def _philosopher_profile(name):
     return None
 
 # ── 交互式辩论: auto（一次性）/ step（逐轮, 用户触发）/ vs_user（用户参与）──
-_debate_session = None   # {"topic","speakers","mode","rounds_done","history":[...]}
+# 会话状态 per-user 化（2026-08-14 P0）: 存 _mem_slot()["debate"], 不再全局共享
 
 def _debate_map_text(d_text):
     """辩论 → mermaid 观点演变图"""
@@ -1208,7 +1241,7 @@ def _debate_round(sp_list, topic, ctx, round_no, user_speech=None):
     return round_out
 
 def _exec_debate(args):
-    global _debate_session
+    slot = _mem_slot()
     topic = (args.get("topic") or "").strip()
     speakers = args.get("speakers") or "尼采、柏拉图"
     sp_list = [s.strip() for s in speakers.replace("和", "、").replace("与", "、").split("、") if s.strip()][:3] or ["尼采", "柏拉图"]
@@ -1222,20 +1255,20 @@ def _exec_debate(args):
         elif any(w in topic for w in ("继续", "下一轮", "接着", "再来", "加一轮", "第二轮", "第三轮")):
             action = "continue"
     # ── 结束辩论: 总结 + 演变图 ──
-    if action == "summary" and _debate_session:
-        sess = _debate_session
+    if action == "summary" and slot["debate"]:
+        sess = slot["debate"]
         d_text = "\n".join(sess["history"])
         prompt = (f"辩论结束, 请总结（400字内）: ①各方核心立场 ②最强交锋点（谁对谁的哪一点构成实质威胁）"
                   f"③是否达成共识/合题（明确标注'体系内'还是'后康德综合'视角）。\n\n辩论记录:\n{d_text[:4000]}")
         resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
         summary = (resp["choices"][0]["message"].get("content") or "").strip()
-        _debate_session = None
+        slot["debate"] = None
         _save_agent_memory()
         return {"debate_summary": summary, "map_text": _debate_map_text(d_text),
                 "note": "辩论已结束。可发起新辩论。"}
     # ── 用户参与模式: 用户发言 → 哲学家回应 ──
-    if user_speech and _debate_session and _debate_session.get("mode") == "vs_user":
-        sess = _debate_session
+    if user_speech and slot["debate"] and slot["debate"].get("mode") == "vs_user":
+        sess = slot["debate"]
         ctx = "\n".join(sess["history"][-4:])
         round_out = _debate_round(sess["speakers"], sess["topic"], ctx, sess["rounds_done"] + 1, user_speech)
         sess["history"] += [f"用户: {user_speech}"] + round_out
@@ -1243,8 +1276,8 @@ def _exec_debate(args):
         _save_agent_memory()
         return {"debate": round_out, "note": "你可以继续反驳或提问, 或说'结束辩论'让我总结。"}
     # ── 逐轮模式: 继续下一轮 ──
-    if action == "continue" and _debate_session:
-        sess = _debate_session
+    if action == "continue" and slot["debate"]:
+        sess = slot["debate"]
         ctx = "\n".join(sess["history"][-4:])
         round_out = _debate_round(sess["speakers"], sess["topic"], ctx, sess["rounds_done"] + 1)
         sess["history"] += round_out
@@ -1253,10 +1286,10 @@ def _exec_debate(args):
         return {"debate": round_out, "note": f"第{sess['rounds_done']}轮结束。说'继续'进入下一轮, '结束辩论'总结。"}
     # ── step / vs_user: 初始化会话 + 第一轮 ──
     if mode in ("step", "vs_user"):
-        _debate_session = {"topic": topic, "speakers": sp_list, "mode": mode,
+        slot["debate"] = {"topic": topic, "speakers": sp_list, "mode": mode,
                            "rounds_done": 1, "history": []}
         round_out = _debate_round(sp_list, topic, "", 1)
-        _debate_session["history"] = round_out
+        slot["debate"]["history"] = round_out
         _save_agent_memory()
         note = ("辩论开始（逐轮模式）。说'继续'进入下一轮, '结束辩论'总结。" if mode == "step"
                 else "辩论开始（你参与）。请反驳或提问, 哲学家会回应你。")
@@ -1286,25 +1319,25 @@ register_tool("philosopher_debate",
     _exec_debate)
 
 def _exec_thought_exp(args):
-    global _last_experiment
+    slot = _mem_slot()
     base = (args.get("base") or "").strip()
     if not base:
         return {"error": "缺少思想实验基础设定"}
     # 变体迭代: 修改词 + 存在上次实验 → 基于上次重推演, 对比立场变化
-    if _last_experiment and any(w in base for w in ("改", "换成", "变体", "如果", "假设", "变化", "不同", "加", "减")):
+    if slot["experiment"] and any(w in base for w in ("改", "换成", "变体", "如果", "假设", "变化", "不同", "加", "减")):
         prompt = (f"用户对上次思想实验提出变体: 「{base}」\n"
-                  f"上次实验:\n{_last_experiment['text'][:1500]}\n\n"
+                  f"上次实验:\n{slot['experiment']['text'][:1500]}\n\n"
                   f"请重新推演该变体（600字内）: ①新设定（100字内）②3 个哲学立场的推演（各 50 字）"
                   f"③与上次实验相比, 各立场结论发生了哪些变化。用中文。")
         resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=1000)
         reply = (resp["choices"][0]["message"].get("content") or "").strip()
-        _last_experiment = {"base": base, "text": reply}
+        slot["experiment"] = {"base": base, "text": reply}
         _save_agent_memory()
         return {"experiment": reply}
     prompt = (f"基于「{base}」设计一个哲学思想实验或推演变体。输出: ① 实验设定（100字内）② 3 个哲学立场的推演（各 50 字）③ 它揭示的哲学问题。用中文。")
     resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=800)
     reply = (resp["choices"][0]["message"].get("content") or "").strip()
-    _last_experiment = {"base": base, "text": reply}
+    slot["experiment"] = {"base": base, "text": reply}
     _save_agent_memory()
     return {"experiment": reply}
 
@@ -1502,7 +1535,7 @@ def llm_stream(messages, temperature=0.7, max_tokens=2000, thinking=False):
                     continue
 
 @router.post("/api/agent/stream")
-async def agent_stream(req: AgentChatRequest):
+async def agent_stream(req: AgentChatRequest, _g: dict = Depends(guard.agent_guard)):
     """流式 agent: 思考模式（思维链实时）+ JSON 工具协议（{TOOL:...}, 无 function calling 格式 400 风险）"""
     def extract_tool_call(content):
         """解析工具调用: {TOOL:JSON} 优先, XML <invoke> 兼容（DeepSeek 习惯 XML）"""
@@ -2012,7 +2045,8 @@ register_tool(
 # Claude Code 风格: 思考 → 工具（并行）→ 最终回答; 前端协议不变
 # ═══════════════════════════════════════════════════════
 @router.post("/api/agent/stream_lg")
-async def agent_stream_lg(req: AgentChatRequest, authorization: str = Header(None)):
+async def agent_stream_lg(req: AgentChatRequest, authorization: str = Header(None),
+                          _g: dict = Depends(guard.agent_guard)):
     async def gen():
         import engine_langgraph as elg
         if not API_KEY:
