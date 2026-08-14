@@ -54,7 +54,7 @@
 
 **遗留待办**：
 - [ ] OSS 566 个孤儿对象清理（破坏性，需确认）
-- [ ] 日志统一（loguru 清理残留 `print`）
+- [x] 日志统一（loguru 清理残留 `print`）—— 2026-08-15 核心服务代码已清，`tools/` CLI 脚本 print 属正常用法保留
 - [ ] 前端 TOOL_META 图标覆盖补齐（现有通用回退）
 - [ ] 端到端 UI 回归（沙箱已验协议层，交互层待人工）
 - [ ] "原典模式" UI 开关（提示词版「📖 原典路径」已上线）
@@ -83,6 +83,17 @@
 - 安全 P0 全套落地（见 §5）
 - 旧引擎删除 + 引擎补执行修复 + 话题建议注入主题 + 对话 localStorage 持久化
 - 提示词升级：证据分级 / 原典路径 / 层次区分 / 跨哲人关联
+
+### 8.1 代码质量与一致性修复（2026-08-15）
+
+- **安全**：admin 密码比较改 `hmac.compare_digest`（main.py + routes/admin_routes.py）；auth/api worker CORS 从 `*` 收紧为域名白名单；electron 静态服务加路径穿越防护
+- **密码哈希统一**：本地 SQLite 从 scrypt 改为 PBKDF2（10 万次，与 Workers 生产一致），旧 scrypt / SHA-256 登录时自动升级（`backend/auth.py`）
+- **凭据**：`scripts/ai_verify_portraits.py` 硬编码 Agnes Key → 从根 `.env` 读取
+- **日志**：核心服务代码 print 残留 → loguru（auth/config/engine_langgraph/routes.agent/routes.ai/routes.text/mcp_client/llm_client）；裸 `except: pass` 补日志
+- **前端真 bug**：`BookDetailPage.jsx` 缓存键 `ck` 未定义（本地回退路径卡 loading）→ 修复为 `book_v2_{bookId}`；`tagMaps.js` 6 处重复键清理
+- **标签映射同步**：`app/src/data/tagMaps.js` 与 `backend/data/tag_normalization.json` 合并统一（194/28/17 键零差异），消除前后端筛选/分类不一致
+- **数据一致性**：补 2 本 txt 占位书缺的 `book_detail`，同步 `src/assets/books.json`，`dp_consistency_check.py` 本地 PASS
+- **`.gitignore` 编码修复**（乱码行清理，UTF-8）
 
 ## 9. 文档索引
 

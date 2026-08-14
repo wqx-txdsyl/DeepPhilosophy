@@ -81,7 +81,7 @@ _rate_limits = {}
 async def rate_limit_middleware(request: Request, call_next):
     t0 = time.time()
     resp = await call_next(request)
-    print(f"[timer] {request.url.path} {time.time() - t0:.2f}s", flush=True)
+    logger.debug(f"[timer] {request.url.path} {time.time() - t0:.2f}s")
     return resp
 
 # 初始化用户数据库（本地表立即可用，云端恢复后台进行）
@@ -161,15 +161,16 @@ def _build_and_cache_keywords():
                             title = os.path.splitext(f)[0]
                             author = os.path.basename(os.path.dirname(fp))
                             cache[title + "||" + author] = [kw for kw, w in kws]
-                    except: pass
+                    except Exception:
+                        logger.warning(f"  Keyword extract failed for {f}")
                     if idx % 10 == 0:
-                        print(f"  Keywords: {idx}/{total}")
+                        logger.info(f"  Keywords: {idx}/{total}")
             os.makedirs(os.path.dirname(_BOOKS_CACHE_PATH), exist_ok=True)
             with open(_BOOKS_CACHE_PATH, "w", encoding="utf-8") as f:
                 json.dump(cache, f, ensure_ascii=False)
-            print(f"  Keywords cached: {idx} books")
+            logger.info(f"  Keywords cached: {idx} books")
         except Exception as e:
-            print(f"  Keywords cache error: {e}")
+            logger.warning(f"  Keywords cache error: {e}")
     threading.Thread(target=_build, daemon=True).start()
 
 # 内存缓存（避免每次请求都扫描）
@@ -1974,9 +1975,10 @@ async def global_middleware(request: Request, call_next):
 
 @app.get("/api/admin/stats")
 async def admin_stats(password: str = Query("")):
+    import hmac as _hmac
     if not admin_module.ADMIN_PASSWORD:
         raise HTTPException(status_code=503, detail="管理后台未配置（请设置 ADMIN_PASSWORD 环境变量）")
-    if password != admin_module.ADMIN_PASSWORD:
+    if not _hmac.compare_digest(password, admin_module.ADMIN_PASSWORD):
         raise HTTPException(status_code=403, detail="密码错误")
     stats = admin_module.load_stats()
     users = admin_module.get_users()

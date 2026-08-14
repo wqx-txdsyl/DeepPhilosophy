@@ -11,6 +11,7 @@ import asyncio, json, sys, os
 from pathlib import Path
 from typing import Any, Optional
 
+from loguru import logger
 from langchain_core.tools import StructuredTool
 from pydantic import create_model, Field
 
@@ -91,7 +92,7 @@ async def _load_mcp_tools():
                     description=f"[MCP·{cfg['name']}] {t.description or t.name}",
                     args_schema=schema))
         except Exception as e:
-            print(f"[mcp] 服务器 {cfg['name']} 连接失败: {e}", flush=True)
+            logger.warning(f"[mcp] 服务器 {cfg['name']} 连接失败: {e}")
     return tools
 
 

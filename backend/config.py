@@ -4,6 +4,7 @@
 """
 import os
 from dotenv import load_dotenv
+from loguru import logger
 
 load_dotenv()
 
@@ -12,8 +13,8 @@ load_dotenv()
 # ============================================================
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 if not DEEPSEEK_API_KEY:
-    print("⚠️ 警告: DEEPSEEK_API_KEY 环境变量未设置！AI 功能将不可用。")
-    print("   请在 backend/.env 中添加: DEEPSEEK_API_KEY=sk-xxx")
+    logger.warning("⚠️ DEEPSEEK_API_KEY 环境变量未设置！AI 功能将不可用。")
+    logger.warning("   请在 backend/.env 中添加: DEEPSEEK_API_KEY=sk-xxx")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 DEEPSEEK_MODEL = "deepseek-chat"
 

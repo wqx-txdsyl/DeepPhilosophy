@@ -7,8 +7,18 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMG_DIR = os.path.join(BASE, 'app', 'public', 'philosopher')
 PHIL_FILE = os.path.join(BASE, 'app', 'public', 'philosophers.json')
 
-# API config — same as vision.py
-API_KEY = "sk-tAli2tVgjAi5VG2zBG3oz4hUefyaqrD6UyjDaIpvhH6SKEAD"
+# ── 从根 .env 读 API 凭证（勿硬编码）──
+def _load_env():
+    env_path = os.path.join(BASE, '.env')
+    if os.path.exists(env_path):
+        for line in open(env_path, encoding='utf-8'):
+            line = line.strip()
+            if line and not line.startswith('#') and '=' in line:
+                k, v = line.split('=', 1)
+                os.environ.setdefault(k.strip(), v.strip())
+_load_env()
+
+API_KEY = os.environ.get("AGNES_API_KEY", "")
 MODEL = "agnes-2.5-flash"
 API_URL = "https://apihub.agnes-ai.com/v1/chat/completions"
 
@@ -50,6 +60,9 @@ def check_image(name, img_path, era, region, school):
 
 
 def main():
+    if not API_KEY:
+        print('⚠️  AGNES_API_KEY 未设置（请在根 .env 中配置）')
+        sys.exit(1)
     with open(PHIL_FILE, 'r', encoding='utf-8') as f:
         philosophers = json.load(f)
 

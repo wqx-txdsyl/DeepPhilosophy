@@ -7,6 +7,7 @@ import sys
 import json
 import sqlite3
 import hashlib
+import hmac
 import base64
 import uuid
 import time
@@ -237,15 +238,12 @@ def _sync_db_to_github():
             db_data = f.read()
         if _gh_upload_asset(release_id, _GITHUB_ASSET, db_data):
             _log.info(f"GitHub backup OK: {len(db_data)} bytes, {user_count} users")
-            print(f"[auth] GitHub backup OK ({len(db_data)} bytes, {user_count} users)")
             return True
         else:
             _log.warning("GitHub upload returned non-201 status")
-            print("[auth] WARNING: GitHub upload failed (non-201 response)")
             return False
     except Exception as e:
         _log.warning(f"GitHub sync upload error: {e}")
-        print(f"[auth] WARNING: GitHub upload error: {e}")
         return False
 
 
@@ -269,14 +267,13 @@ def _sync_db_from_github():
                 break
         if not asset_url:
             _log.info("No users.db backup found on GitHub Release")
-            print("[auth] No GitHub backup found (fresh start)")
             return False
         # 大小相同则跳过
         if os.path.exists(DB_PATH) and os.path.getsize(DB_PATH) == remote_size:
             _log.info("Local users.db matches GitHub backup, skip restore")
             return True
         # 下载
-        print(f"[auth] Restoring users.db from GitHub Release ({remote_size} bytes)...")
+        _log.info(f"Restoring users.db from GitHub Release ({remote_size} bytes)...")
         cloud_data = _gh_download_asset(asset_url)
         if not cloud_data or len(cloud_data) == 0:
             _log.warning("GitHub download returned empty data")
@@ -288,14 +285,12 @@ def _sync_db_from_github():
         if os.path.getsize(tmp_path) > 0:
             shutil.move(tmp_path, DB_PATH)
             _log.info(f"Restored users.db from GitHub Release ({len(cloud_data)} bytes)")
-            print(f"[auth] GitHub restore OK ({len(cloud_data)} bytes)")
             return True
         else:
             os.remove(tmp_path)
             return False
     except Exception as e:
         _log.warning(f"GitHub sync download error: {e}")
-        print(f"[auth] WARNING: GitHub restore error: {e}")
         return False
 
 
@@ -391,8 +386,10 @@ def init_db():
         );
     """)
     # Migration: add avatar column (ignore error if already exists)
-    try: conn.execute("ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT ''"); conn.commit()
-    except: pass
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT ''"); conn.commit()
+    except Exception:
+        _log.debug("avatar column already exists, skip migration")
     # 检查恢复后是否有用户数据
     user_count = conn.execute("SELECT COUNT(*) FROM users").fetchone()[0]
     conn.commit()
@@ -407,39 +404,61 @@ def init_db():
 
 
 def _hash_password(password: str, salt: Optional[str] = None) -> tuple[str, str]:
-    """密码哈希（scrypt — Python 3.6+ 内置，抗暴力破解）
-    格式: "scrypt:base64_salt:base64_hash"
-    旧格式（SHA-256）: 64 字符 hex 字符串，通过 _verify_password() 兼容
+    """密码哈希（PBKDF2 — 与 Workers 生产对齐, 10 万次迭代）
+
+    格式: "pbkdf2:{iter}:{salt}:{hex}"
+    兼容旧格式（验证时处理）:
+      - "scrypt:{salt}:{base64_hash}"  旧本地用户（scrypt 仍可验证, 登录时自动升级为 PBKDF2）
+      - 纯 SHA-256 hex                 更早的遗留格式（salt 字段提供）
     """
     if salt is None:
         salt = base64.b64encode(os.urandom(16)).decode()  # 128-bit random salt
-    key = hashlib.scrypt(
+    iterations = 100000
+    key = hashlib.pbkdf2_hmac(
+        "sha256",
         password=password.encode(),
         salt=salt.encode(),
-        n=16384, r=8, p=1,
+        iterations=iterations,
         dklen=32,
     )
-    return f"scrypt:{salt}:{base64.b64encode(key).decode()}", salt
+    return f"pbkdf2:{iterations}:{salt}:{key.hex()}", salt
 
 
 def _verify_password(stored_hash: str, password: str, salt: str) -> bool:
-    """验证密码，兼容旧 SHA-256 和新 scrypt 格式"""
-    # 新格式: scrypt:base64_salt:base64_hash
-    if stored_hash.startswith("scrypt:"):
+    """验证密码，兼容三种格式: pbkdf2 / scrypt / 旧 SHA-256"""
+    # 新格式: pbkdf2:{iter}:{salt}:{hex}
+    if stored_hash.startswith("pbkdf2:"):
         try:
-            _, stored_salt, _ = stored_hash.split(":", 2)
-            computed, _ = _hash_password(password, stored_salt)
-            return computed == stored_hash
+            _, iter_str, stored_salt, hex_hash = stored_hash.split(":", 3)
+            iterations = int(iter_str)
+            key = hashlib.pbkdf2_hmac(
+                "sha256", password.encode(), stored_salt.encode(),
+                iterations=iterations, dklen=32,
+            )
+            return hmac.compare_digest(key.hex(), hex_hash.lower())
         except (ValueError, IndexError):
             return False
-    # 旧格式: 纯 SHA-256 hex (向后兼容)
+    # 旧本地格式: scrypt:{salt}:{base64_hash}
+    if stored_hash.startswith("scrypt:"):
+        try:
+            _, stored_salt, b64_hash = stored_hash.split(":", 2)
+            key = hashlib.scrypt(
+                password=password.encode(), salt=stored_salt.encode(),
+                n=16384, r=8, p=1, dklen=32,
+            )
+            return hmac.compare_digest(
+                base64.b64encode(key).decode(), b64_hash
+            )
+        except (ValueError, IndexError):
+            return False
+    # 更早的遗留: 纯 SHA-256 hex (salt 来自 users.salt 列)
     h = hashlib.sha256((password + salt).encode()).hexdigest()
-    return h == stored_hash
+    return hmac.compare_digest(h, stored_hash)
 
 
 def _needs_upgrade(stored_hash: str) -> bool:
-    """检查密码哈希是否需要升级到 scrypt"""
-    return not stored_hash.startswith("scrypt:")
+    """检查密码哈希是否需要升级到 PBKDF2（scrypt 和旧 SHA-256 都需要升级）"""
+    return not stored_hash.startswith("pbkdf2:")
 
 
 def register(username: str, password: str) -> dict:
@@ -490,7 +509,7 @@ def login(username: str, password: str) -> dict:
                 (new_hash, new_salt, row["id"]),
             )
             conn.commit()
-            _log.info(f"Upgraded password hash to scrypt for user {row['id']}")
+            _log.info(f"Upgraded password hash to PBKDF2 for user {row['id']}")
 
         # 生成 token（30天有效）
         token = uuid.uuid4().hex + uuid.uuid4().hex

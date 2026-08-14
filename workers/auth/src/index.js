@@ -1,8 +1,23 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 
+const ALLOWED_ORIGINS = [
+  'https://deepphilosophy.top',
+  'https://deepphilosophy.pages.dev',
+  'https://deepphilosophy.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:5201',
+];
+
 const app = new Hono();
-app.use('*', cors({ origin: '*' }));
+app.use('*', cors({
+  origin: (origin) => ALLOWED_ORIGINS.includes(origin) ? origin : null,
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Authorization', 'Content-Type'],
+  credentials: false,
+}));
 
 function buf2hex(buf) { return Array.from(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join(''); }
 function buf2b64url(buf) { return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,''); }

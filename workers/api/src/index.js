@@ -31,8 +31,23 @@ import booksData from './books.json';
 import statsData from './stats.json';
 import adminStatsData from './admin_stats.json';
 
+const ALLOWED_ORIGINS = [
+  'https://deepphilosophy.top',
+  'https://deepphilosophy.pages.dev',
+  'https://deepphilosophy.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:5201',
+];
+
 const app = new Hono();
-app.use('*', cors({ origin: '*' }));
+app.use('*', cors({
+  origin: (origin) => ALLOWED_ORIGINS.includes(origin) ? origin : null,
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Authorization', 'Content-Type'],
+  credentials: false,
+}));
 
 // ============ crypto 工具（与 auth worker 同源逻辑） ============
 function buf2hex(buf) { return Array.from(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join(''); }

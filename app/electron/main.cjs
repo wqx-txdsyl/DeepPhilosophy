@@ -10,8 +10,11 @@ function startServer(dir) {
   const mime = { '.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json',
     '.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.ico':'image/x-icon' };
   server = http.createServer((req, res) => {
-    let filePath = path.join(dir, req.url.split('?')[0]);
-    if (filePath.endsWith('/')) filePath = path.join(filePath, 'index.html');
+    // 路径消毒: 仅服务 dir 内的文件（防 /../ 越界读任意路径）
+    const urlPath = decodeURIComponent(req.url.split('?')[0]).replace(/\\/g, '/');
+    let filePath = path.normalize(path.join(dir, urlPath));
+    if (!filePath.startsWith(dir)) { res.writeHead(403); res.end('Forbidden'); return; }
+    if (filePath.endsWith('/') || filePath.endsWith('\\')) filePath = path.join(filePath, 'index.html');
     const ext = path.extname(filePath);
     fs.readFile(filePath, (err, data) => {
       if (err) { res.writeHead(404); res.end('Not found'); return; }

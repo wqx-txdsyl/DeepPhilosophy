@@ -4,6 +4,7 @@ DeepSeek API 客户端 —— 通过 OpenAI 兼容接口调用 DeepSeek 大模�
 import time
 from openai import OpenAI
 
+from loguru import logger
 from config import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL, DEEPSEEK_MODEL
 
 
@@ -65,8 +66,8 @@ class DeepSeekClient:
             except Exception as e:
                 if attempt < max_retries - 1:
                     wait_time = 2 ** attempt  # 指数退避：1s, 2s, 4s
-                    print(f"  ⚠️ API调用失败 (尝试 {attempt+1}/{max_retries}): {e}")
-                    print(f"  🔄 {wait_time}秒后重试...")
+                    logger.warning(f"API 调用失败 (尝试 {attempt+1}/{max_retries}): {e}")
+                    logger.info(f"{wait_time} 秒后重试...")
                     time.sleep(wait_time)
                 else:
                     raise RuntimeError(

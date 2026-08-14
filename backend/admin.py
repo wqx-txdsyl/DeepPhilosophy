@@ -94,8 +94,8 @@ def load_stats():
     try:
         with open(STATS_FILE, "r") as f:
             return json.load(f)
-    except:
-        pass
+    except Exception as e:
+        _log.warning(f"Stats local load failed: {e}")
     # 2. Try GitHub backup
     restored = _gh_restore_stats()
     if restored:
@@ -126,8 +126,8 @@ def save_stats(stats):
         _last_backup_ts = now
     try:
         _gh_backup_stats(json.dumps(stats, ensure_ascii=False).encode("utf-8"))
-    except:
-        pass
+    except Exception as e:
+        _log.warning(f"Stats GitHub backup failed: {e}")
 
 def record_visit(path="/"):
     stats = load_stats()

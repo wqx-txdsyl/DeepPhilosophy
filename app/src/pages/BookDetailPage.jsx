@@ -50,11 +50,11 @@ function BookDetailPage() {
     // 2. 回退书单API
     try {
       const r = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
-      if (r.ok) { const d = await r.json(); cacheSet(ck, d); setBook(d); setLoading(false); return; }
+      if (r.ok) { const d = await r.json(); cacheSet('book_v2_' + bookId, d); setBook(d); setLoading(false); return; }
     } catch {}
     // 3. 本地
     const b = await getBookById(bookId);
-    cacheSet(ck, b);
+    cacheSet('book_v2_' + bookId, b);
     setBook(b);
     setLoading(false);
   };

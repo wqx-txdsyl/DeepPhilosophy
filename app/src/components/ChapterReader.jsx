@@ -292,7 +292,7 @@ export default function ChapterReader({
             // 「…。」"」引号收尾 → 剥引号后句号 → 切段。否则「…放置在一起"，」长段会在
             // 引号处被切段, 下一段以逗号开头。
             // 段长 300 字上限强切兜底(OCR 标点缺失时防超长段)。
-            const END_SENT_RE = /[。！？…\.!?]$/;
+            const END_SENT_RE = /[。！？….!?]$/;
             const END_CLOSE = '”』」）〉"';
             const isEndSent = (s) => {
               let t = String(s).trim();
@@ -311,7 +311,7 @@ export default function ChapterReader({
                 else if (curLen >= 300) {
                   // 超长无句末标点 → 在行内最后一个句末标点处强切(太近则整段切)
                   // 句末标点后可选跟闭合符(。「」"等), 一并带走避免下段以引号开头
-                  const m = cur.match(/.*[。！？…\.!?][”』」）〉"]?/);
+                  const m = cur.match(/.*[。！？….!?][”』」）〉"]?/);
                   if (m && m[0].length > 50) {
                     paras.push(m[0]); cur = cur.slice(m[0].length); curLen = cur.length;
                   } else { paras.push(cur); cur = ''; curLen = 0; }
@@ -396,7 +396,7 @@ export default function ChapterReader({
               const candidates = [];
               (ch.content || []).forEach((b, bi) => {
                 const v = (b && (b.value || '')) || '';
-                if (v && v.length <= 60 && !/[。！？…\.!?]$/.test(v.trim())) candidates.push(bi);
+                if (v && v.length <= 60 && !/[。！？….!?]$/.test(v.trim())) candidates.push(bi);
               });
               const M = (ch.content || []).length;
               const orderOf = new Map(secList.map((s, o) => [s.tocIdx, o]));  // tocIdx → 章内序

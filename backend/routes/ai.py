@@ -5,6 +5,7 @@ import requests as req_lib
 from fastapi import APIRouter, Request, Header
 from fastapi.responses import JSONResponse, StreamingResponse
 from typing import Optional
+from loguru import logger
 from models import QARequest
 import config
 from auth import get_user_by_token, save_chat_message
@@ -115,7 +116,8 @@ async def ask_question(req: QARequest, authorization: Optional[str] = Header(Non
                     save_chat_message(user["id"], "user", req.question)
                     save_chat_message(user["id"], "assistant", result["answer"],
                         json.dumps(result.get("sources", []), ensure_ascii=False))
-            except Exception: pass
+            except Exception as e:
+                logger.warning(f"保存聊天记录失败（不阻断回答）: {e}")
         return result
     except Exception as e:
         return {"answer": f"问答服务暂时不可用: {str(e)}", "sources": [], "question": req.question}

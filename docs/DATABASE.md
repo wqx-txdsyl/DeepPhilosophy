@@ -12,7 +12,7 @@
 |---|---|---|
 | id | INTEGER PK AUTOINCREMENT | |
 | username | TEXT UNIQUE NOT NULL | |
-| password_hash | TEXT NOT NULL | `pbkdf2:{iter}:{salt}:{hex}`（2026-08-14 起）；旧格式 `{salt}:{sha256}` / `sha256:...` / `scrypt:...` 登录时自动升级 |
+| password_hash | TEXT NOT NULL | `pbkdf2:{iter}:{salt}:{hex}`（2026-08-14 起，本地 SQLite 与 Workers 生产统一）；旧格式 `scrypt:...` / 裸 SHA-256 登录时自动升级为 PBKDF2 |
 | avatar | TEXT DEFAULT '' | |
 | created_at | TEXT | 补列命令见 001_schema.sql 头注释 |
 

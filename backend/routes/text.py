@@ -4,6 +4,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse, FileResponse, Response
+from loguru import logger
 import config
 
 router = APIRouter()
@@ -46,7 +47,8 @@ def extract_epub_text(filepath):
                         title = Path(name).stem.replace('_', ' ').replace('-', ' ')
                         chapters.append({"title": title, "text": text})
                         full_text += text + '\n\n'
-                except: pass
+                except Exception as e:
+                    logger.debug(f"EPUB 章节解析跳过 {name}: {e}")
     except Exception as e:
         return None, str(e)
     return chapters, full_text
@@ -57,7 +59,8 @@ def extract_txt_text(filepath):
     try:
         with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
             text = f.read()
-    except:
+    except Exception:
+        # UTF-8 读取失败 → GBK 回退（旧 TXT 常见编码）
         try:
             with open(filepath, 'r', encoding='gbk', errors='ignore') as f:
                 text = f.read()
@@ -102,7 +105,8 @@ async def get_book_detail(book_id: str):
             with urllib.request.urlopen(req, timeout=8) as resp:
                 if resp.status == 200:
                     return JSONResponse(content=json.loads(resp.read().decode('utf-8')), headers=headers)
-        except: pass
+        except Exception as e:
+            logger.debug(f"OSS detail 兜底失败 {book_id}: {e}")
     raise HTTPException(status_code=404, detail="详情未找到")
 
 
@@ -122,7 +126,8 @@ async def get_book_chapter(book_id: str, ch: int):
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req, timeout=8) as resp:
                 if resp.status == 200: return json.loads(resp.read().decode('utf-8'))
-        except: pass
+        except Exception as e:
+            logger.debug(f"OSS chapter 兜底失败 {book_id}/{ch}: {e}")
     raise HTTPException(status_code=404, detail="章节未找到")
 
 
@@ -145,7 +150,8 @@ async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
             with urllib.request.urlopen(req, timeout=10) as resp:
                 if resp.status == 200:
                     data = json.loads(resp.read().decode('utf-8'))
-        except: pass
+        except Exception as e:
+            logger.debug(f"OSS book_json 兜底失败 {book_id}: {e}")
     if not data:
         raise HTTPException(status_code=404, detail="书籍数据未找到")
 
@@ -254,5 +260,6 @@ async def get_book_image(book_id: str, img_name: str):
             with urllib.request.urlopen(req, timeout=10) as resp:
                 if resp.status == 200:
                     return Response(content=resp.read(), media_type='image/webp', headers=headers)
-        except: pass
+        except Exception as e:
+            logger.debug(f"OSS 图片兜底失败 {img_name}: {e}")
     raise HTTPException(status_code=404, detail="图片未找到")

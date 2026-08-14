@@ -8,6 +8,7 @@ Claude Code 风格: 思考 → 工具调用（多工具并行）→ 观察 → �
 import asyncio, json, re, time, inspect
 from typing import Annotated, TypedDict
 
+from loguru import logger
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage, ToolMessage
@@ -663,7 +664,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         yield {"type": "token", "content": reply[i:i + 60]}
                         await asyncio.sleep(0.008)
             except Exception as e:
-                print(f"[fallback-fail] {str(e)[:200]}", flush=True)
+                logger.warning(f"[fallback-fail] {str(e)[:200]}")
                 if "Insufficient Balance" in str(e) or "402" in str(e):
                     yield {"type": "token",
                            "content": "（API 余额不足——请充值 DeepSeek API 后重试）" if language != "en"
@@ -729,7 +730,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                    else "DeepSeek API balance insufficient—please top up and retry"}
         else:
             # 2026-08-14: 错误脱敏——客户端只给通用提示, 细节写日志（异常文本可能含 API 细节）
-            print(f"[agent-error] {str(e)[:300]}", flush=True)
+            logger.error(f"[agent-error] {str(e)[:300]}")
             yield {"type": "error",
                    "content": "智能体暂时出错，请重试或换个问法" if language != "en"
                    else "Agent error—please retry or rephrase"}
