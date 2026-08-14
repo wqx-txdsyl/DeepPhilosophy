@@ -29,4 +29,7 @@ async def api_login(req: LoginRequest):
 
 @router.get("/api/auth/profile")
 async def api_profile(user: dict = Depends(auth_required)):
-    return {"username": user["username"], "id": user["id"]}
+    """获取用户信息 + 个性化资料"""
+    from auth import get_profile
+    return {"username": user["username"], "id": user["id"],
+            "profile": get_profile(user["id"])}

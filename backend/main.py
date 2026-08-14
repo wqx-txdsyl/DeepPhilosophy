@@ -78,19 +78,10 @@ _rate_limits = {}
 
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
-    path = request.url.path
-    if path in ("/api/ai/stream", "/api/qa"):
-        ip = request.headers.get("X-Forwarded-For", request.client.host if request.client else "unknown")
-        ip = ip.split(",")[0].strip()
-        now = time.time()
-        bucket = _rate_limits.get(ip, (now, 10))  # 10 tokens capacity
-        last_time, tokens = bucket
-        elapsed = now - last_time
-        tokens = min(10, tokens + elapsed * (10 / 60))  # 10 req/min refill
-        if tokens < 1:
-            return JSONResponse({"error": "请求过于频繁，请稍后再试"}, status_code=429)
-        _rate_limits[ip] = (now, tokens - 1)
-    return await call_next(request)
+    t0 = time.time()
+    resp = await call_next(request)
+    print(f"[timer] {request.url.path} {time.time() - t0:.2f}s", flush=True)
+    return resp
 
 # 初始化用户数据库（本地表立即可用，云端恢复后台进行）
 init_db()
@@ -1557,12 +1548,6 @@ async def api_login(req: LoginRequest):
     return result
 
 
-@app.get("/api/auth/profile")
-async def api_profile(user: dict = Depends(auth_required)):
-    """获取用户信息"""
-    return {"username": user["username"], "id": user["id"]}
-
-
 # ============================================================
 # 阅读历史 API
 # ============================================================
@@ -1905,9 +1890,6 @@ async def sync_delete(req: SyncDeleteRequest):
 # 用户资料编辑
 # ============================================================
 
-class UpdateProfileRequest(BaseModel):
-    username: str
-
 @app.put("/api/user/profile")
 async def api_update_profile(req: UpdateProfileRequest, authorization: str = Header(None)):
     token = (authorization or "").replace("Bearer ", "")
@@ -1973,9 +1955,13 @@ async def global_middleware(request: Request, call_next):
     """统一中间件：访问统计 + 静态资源缓存"""
     response = await call_next(request)
     path = request.url.path
-    # 访问统计（跳过管理员路径）
+    # 访问统计（跳过管理员路径; 后台线程执行, 不阻塞事件循环）
     if not path.startswith("/api/admin"):
-        admin_module.record_visit(path)
+        try:
+            import asyncio as _asyncio
+            _asyncio.get_running_loop().run_in_executor(None, admin_module.record_visit, path)
+        except Exception:
+            pass
     # 静态资源强缓存（1年）
     if path.startswith(("/gene/", "/assets/", "/icons/")) and not path.startswith("/api/"):
         response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
@@ -2055,6 +2041,7 @@ from routes.sync import router as sync_router
 from routes.knowledge import router as knowledge_router
 from routes.ai import router as ai_router
 from routes.history import router as history_router
+from routes.agent import router as agent_router
 from routes.text import router as text_router
 
 app.include_router(health_router)
@@ -2066,6 +2053,7 @@ app.include_router(knowledge_router)
 app.include_router(ai_router)
 app.include_router(history_router)
 app.include_router(text_router)
+app.include_router(agent_router)
 
 # ============================================================
 # 静态前端（同源部署，须在 API 路由之后注册）
@@ -2102,6 +2090,100 @@ if _os2.path.isdir(_STATIC_DIR) and _os2.path.isfile(_os2.path.join(_STATIC_DIR,
 # ============================================================
 # 后台预热（延迟到所有函数定义完毕后启动，避免 race condition）
 threading.Thread(target=_warmup, daemon=True).start()
+
+# ============================================================
+# 附件上传 API（md 直读 / 其他格式 markitdown 转 md / 图片 Agnes 识图）
+# ============================================================
+import shutil as _shutil
+
+@app.post("/api/upload")
+async def api_upload(file: UploadFile = File(...)):
+    """上传附件 → 文本内容（供对话上下文使用）
+    .md/.txt → 直接读; 其他文档 → markitdown 转 md; 图片 → Agnes 视觉识图"""
+    try:
+        fname = file.filename or "attachment"
+        ext = Path(fname).suffix.lower()
+        raw = await file.read()
+        max_bytes = 20 * 1024 * 1024
+        if len(raw) > max_bytes:
+            return JSONResponse({"error": "文件超过 20MB 限制"}, status_code=413)
+        # 1) md/txt 直读
+        if ext in (".md", ".txt", ".markdown"):
+            text = raw.decode("utf-8", errors="replace")
+            return {"filename": fname, "kind": "md", "content": text[:20000],
+                    "truncated": len(text) > 20000}
+        # 2) 图片 → Agnes 视觉识图
+        if ext in (".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp"):
+            desc = _agnes_vision(raw)
+            if desc is None:
+                return JSONResponse({"error": "识图失败（Agnes 视觉 API 需网络代理）"}, status_code=502)
+            return {"filename": fname, "kind": "image", "content": desc, "truncated": False}
+        # 3) 其他文档 → markitdown 转 md
+        try:
+            from markitdown import MarkItDown
+            tmp = Path(os.environ.get("TEMP", ".")) / f"dp_upload_{int(time.time())}_{fname}"
+            tmp.write_bytes(raw)
+            try:
+                result = MarkItDown().convert(str(tmp))
+                text = result.text_content or ""
+            finally:
+                tmp.unlink(missing_ok=True)
+            if not text.strip():
+                return JSONResponse({"error": "文档转换后无内容（格式不支持）"}, status_code=400)
+            return {"filename": fname, "kind": "md", "content": text[:20000],
+                    "truncated": len(text) > 20000}
+        except Exception as e:
+            return JSONResponse({"error": f"文档转换失败: {str(e)[:120]}"}, status_code=400)
+    except Exception as e:
+        return JSONResponse({"error": f"上传处理失败: {str(e)[:120]}"}, status_code=400)
+
+
+def _agnes_vision(image_bytes: bytes, prompt: str = "请详细描述这张图片的内容（哲学/文字/图表场景: 提取其中的文字与要点）") -> Optional[str]:
+    """Agnes 视觉识图（agnes-2.5-flash, 免费）——图片经 base64 传入"""
+    import base64 as _b64
+    api_key = os.environ.get("AGNES_API_KEY", "")
+    if not api_key:
+        return None
+    body = {"model": "agnes-2.5-flash", "messages": [{"role": "user", "content": [
+        {"type": "text", "text": prompt},
+        {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + _b64.b64encode(image_bytes).decode()}},
+    ]}], "max_tokens": 1500}
+    req = urllib.request.Request("https://apihub.agnes-ai.com/v1/chat/completions",
+                                 data=json.dumps(body).encode(),
+                                 headers={"Content-Type": "application/json",
+                                          "Authorization": f"Bearer {api_key}"})
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:   # 走系统代理（Agnes 需代理）
+            resp = json.loads(r.read().decode())
+        return (resp.get("choices") or [{}])[0].get("message", {}).get("content") or None
+    except Exception:
+        return None
+
+
+# ============================================================
+# 用户资料 / 删除账户 API（个性化 + 数据管理）
+# ============================================================
+@app.put("/api/auth/profile")
+async def api_update_profile(req: UpdateProfileRequest, user: dict = Depends(auth_required)):
+    """更新个性化资料（昵称/职业/关于我/自定义指令）"""
+    from auth import update_profile, get_profile
+    fields = {"nickname": req.nickname, "occupation": req.occupation,
+              "about": req.about, "custom_instructions": req.custom_instructions,
+              "language": req.language}
+    fields = {k: v for k, v in fields.items() if v is not None}
+    if req.username:
+        update_username(user["id"], req.username)
+    update_profile(user["id"], fields)
+    return {"success": True, "profile": get_profile(user["id"])}
+
+
+@app.delete("/api/auth/account")
+async def api_delete_account(user: dict = Depends(auth_required)):
+    """删除账户及全部数据"""
+    from auth import delete_account
+    delete_account(user["id"])
+    return {"success": True, "message": "账户已删除"}
+
 
 if __name__ == "__main__":
     logger.info("=" * 50)

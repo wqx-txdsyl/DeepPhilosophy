@@ -1,44 +1,41 @@
-# DeepPhilosophy 云端 API —— 精简依赖（Render 免费版兼容）
+# DeepPhilosophy × PhiAgent 统一后端依赖（Python 3.12+）
+# 安装: python -m pip install -r requirements.txt
+# OCR（可选，体积大）: python -m pip install paddlepaddle paddleocr
 
-# Web Server
+# Web
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 python-multipart>=0.0.12
-pydantic>=2.0.0
-
-# Core
+pydantic>=2.6.0
 python-dotenv>=1.0.0
 
-# Document Processing
+# 智能体（PhiAgent v2 / LangGraph）
+langgraph>=0.2.0
+langchain-core>=0.3.0
+langchain-deepseek>=0.1.0
+openai>=1.30.0
+mcp>=1.2.0
+
+# 文档处理
 pdfplumber>=0.10.0
 ebooklib>=0.18
 beautifulsoup4>=4.12
 html2text>=2024.2
+markitdown>=0.1.0
+
+# 向量/嵌入
+chromadb>=0.5.0
+numpy>=1.26.0
 
 # NLP
 jieba>=0.42.1
-langchain>=0.3.0
-langchain-community>=0.3.0
-langchain-text-splitters>=0.3.0
 
-# Embedding & Vector Database
-chromadb>=0.5.0
-# sentence-transformers removed for Render free tier (too heavy)
-# TF-IDF embedding is used instead (lighter, no GPU needed)
-
-# LLM API
-openai>=1.30.0
-
-# Utilities
-tqdm>=4.66.0
-loguru>=0.7.0
-
-# HTTP
+# HTTP / 存储
 requests>=2.31.0
 httpx>=0.27.0
-
-# Cloud Storage
 boto3>=1.34.0
+oss2>=2.18.0
 
-# Note: paddlepaddle/paddleocr removed (too large for free tier)
-# OCR features gracefully disabled when packages not installed
+# 工具
+loguru>=0.7.0
+tqdm>=4.66.0

@@ -93,20 +93,27 @@ cd workers/api && npm install && npx wrangler dev
 
 ---
 
-## 📁 项目结构（概览）
+## 📁 项目结构（2026-08-14 合并 PhiAgent 后）
 
 ```
 DeepPhilosophy/
-├── app/                    # React 前端
+├── app/                    # React 前端（平台，Cloudflare Pages 构建根）
 │   ├── src/                # 页面/组件/数据层/工具
 │   └── public/             # 数据与静态资源（books.json、philosophers.json、book_detail/、covers/、philosopher/、schools/…）
-├── backend/
-│   ├── tools/              # 生产运维脚本（一致性校验、worker 资产生成、D1 迁移、catalog 校准）
-│   └── data/               # 章节等运行时数据
+├── agent-app/              # PhiAgent 智能体前端（本地 Vite :5201，public/ 为本地工作副本不入库）
+├── backend/                # ★ 统一 Python 后端（FastAPI :8011，智能体 + 平台 API）
+│   ├── main.py             # 入口（智能体路由 + 书库 API + SPA）
+│   ├── routes/agent.py     # 智能体工具集 + SSE（29 工具 + 尼采人格）
+│   ├── engine_langgraph.py # LangGraph 流式引擎
+│   ├── agents.py           # 智能体注册表（深哲 / 尼采）
+│   ├── tools/              # 书库构建/修复/同步/OCR/向量全套工具（34+）
+│   └── data/               # 章节源（git 跟踪，CDN 读这份）+ 运行时数据（gitignore）
+├── data/ai_author/         # AIAuthor 六库数字人格数据（1.6GB，不入库）
 ├── workers/                # Cloudflare Workers API（auth + api，Hono + D1）
-├── scripts/                # 内容运营工具
 └── .github/workflows/      # CI（Pages 构建 + 数据一致性检查）
 ```
+
+**数据流（单向）**：`backend/tools/` 构建/修复 → `backend/data/book_chapters`（git 跟踪，唯一章节源）→ jsDelivr/OSS CDN 分发 → `app/` 与 `agent-app/` 前端只读。生产 API 走 Cloudflare Workers（D1）；Python 后端服务智能体与本地开发。
 
 完整技术细节见 [.claude/CLAUDE.md](.claude/CLAUDE.md)（项目规范）与 [PhiAgent](https://github.com/wqx-txdsyl/PhiAgent)（书库构建引擎）。
 

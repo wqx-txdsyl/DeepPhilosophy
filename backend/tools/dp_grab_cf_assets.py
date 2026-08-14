@@ -93,7 +93,7 @@ def main():
 
     print(f"\n共抓取 {len(seen)} 个文件 → {DIST_ASSETS}")
     if do_upload:
-        sync = os.path.join(ROOT, "..", "PhiAgent", "backend", "tools", "dp_sync_oss_static.py")
+        sync = os.path.join(BASE, "tools", "dp_sync_oss_static.py")
         os.system(f'"{sys.executable}" "{sync}"')
 
 

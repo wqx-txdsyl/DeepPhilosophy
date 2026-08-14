@@ -10,6 +10,7 @@ import hashlib
 import base64
 import uuid
 import time
+import threading
 import shutil
 import logging
 import urllib.request
@@ -107,6 +108,8 @@ def _sync_db_from_cloud():
 # GitHub Release 备份（纯 stdlib，零新依赖）
 # ============================================================
 
+_GH_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))  # 无代理: 避免 getfqdn 反向 DNS 11s 超时
+
 def _gh_request(method, api_path, body=None, json_body=True, host=None):
     """GitHub API 通用请求，返回 (status, data_or_dict) 或 (0, None)"""
     if not _GH_TOKEN:
@@ -130,7 +133,7 @@ def _gh_request(method, api_path, body=None, json_body=True, host=None):
                 data = body
                 headers["Content-Type"] = "application/octet-stream"
         req = urllib.request.Request(url, data=data, headers=headers, method=method)
-        with urllib.request.urlopen(req, timeout=60) as resp:
+        with _GH_OPENER.open(req, timeout=60) as resp:
             raw = resp.read()
             if raw:
                 return resp.status, json.loads(raw)
@@ -171,7 +174,7 @@ def _gh_download_asset(download_url):
                 "User-Agent": "DeepPhilosophy/1.2",
             },
         )
-        with urllib.request.urlopen(req, timeout=60) as resp:
+        with _GH_OPENER.open(req, timeout=60) as resp:
             return resp.read()
     except Exception as e:
         _log.warning(f"GitHub download error: {e}")
@@ -302,6 +305,13 @@ def _sync_db():
     _sync_db_to_cloud()
 
 
+def _ensure_profile_col(conn):
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN profile TEXT DEFAULT '{}'")
+        conn.commit()
+    except Exception:
+        pass  # 列已存在
+
 def _get_conn() -> sqlite3.Connection:
     """获取数据库连接"""
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
@@ -315,6 +325,7 @@ def init_db():
     restored_github = _sync_db_from_github()  # 尝试从 GitHub Release 恢复
     restored_oss = _sync_db_from_cloud()      # 尝试从 OSS 恢复
     conn = _get_conn()
+    _ensure_profile_col(conn)   # 兼容旧库: 补 profile 列
     conn.executescript("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -723,3 +734,53 @@ def change_password(user_id: int, old_password: str, new_password: str) -> tuple
 # ============================================================
 # 初始化（由 main.py 统一调用 init_db()，避免模块导入时副作用）
 # ============================================================
+
+
+# ═══════════════════════════════════════════════════════
+# 用户资料（个性化: 昵称/职业/关于我/自定义指令）+ 删除账户
+# ═══════════════════════════════════════════════════════
+def get_profile(user_id: int) -> dict:
+    """读取用户资料（profile JSON 字段）"""
+    conn = _get_conn()
+    try:
+        row = conn.execute("SELECT profile FROM users WHERE id = ?", (user_id,)).fetchone()
+        if not row or not row["profile"]:
+            return {}
+        try:
+            return json.loads(row["profile"])
+        except Exception:
+            return {}
+    finally:
+        conn.close()
+
+
+def update_profile(user_id: int, fields: dict) -> bool:
+    """更新用户资料字段（nickname/occupation/about/custom_instructions 等）"""
+    conn = _get_conn()
+    try:
+        cur = get_profile(user_id)
+        cur.update({k: v for k, v in fields.items() if v is not None})
+        conn.execute("UPDATE users SET profile = ? WHERE id = ?",
+                     (json.dumps(cur, ensure_ascii=False), user_id))
+        conn.commit()
+        threading.Thread(target=_sync_db, daemon=True).start()
+        return True
+    finally:
+        conn.close()
+
+
+def delete_account(user_id: int) -> bool:
+    """删除账户及全部关联数据"""
+    conn = _get_conn()
+    try:
+        for table in ("chat_history", "reading_history", "book_notes", "book_chat", "tokens"):
+            try:
+                conn.execute(f"DELETE FROM {table} WHERE user_id = ?", (user_id,))
+            except Exception:
+                pass
+        conn.execute("DELETE FROM users WHERE id = ?", (user_id,))
+        conn.commit()
+        threading.Thread(target=_sync_db, daemon=True).start()
+        return True
+    finally:
+        conn.close()

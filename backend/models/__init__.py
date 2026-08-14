@@ -55,7 +55,12 @@ class BookChatRequest(BaseModel):
 
 
 class UpdateProfileRequest(BaseModel):
-    username: str
+    username: Optional[str] = None
+    nickname: Optional[str] = None
+    occupation: Optional[str] = None
+    about: Optional[str] = None
+    custom_instructions: Optional[str] = None
+    language: Optional[str] = None
 
 
 class ChangePasswordRequest(BaseModel):

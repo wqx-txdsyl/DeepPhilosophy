@@ -1,7 +1,7 @@
 """
 开发者管理后台 —— 访问统计 + 用户管理（GitHub Release 持久化）
 """
-import os, json, time, sqlite3, urllib.request, urllib.parse, logging
+import os, json, time, sqlite3, urllib.request, urllib.parse, logging, threading
 from datetime import datetime
 
 _log = logging.getLogger("admin")
@@ -13,6 +13,11 @@ _GITHUB_REPO = os.getenv("GITHUB_REPO", "wqx-txdsyl/DeepPhilosophy")
 _GITHUB_TAG = "stats-v1"
 _GITHUB_ASSET = "admin_stats.json"
 _GH_TOKEN = os.getenv("GITHUB_TOKEN", "")
+# 无代理 opener（跳过 urllib 代理检测: proxy_bypass_registry → socket.getfqdn 反向 DNS 可达 11s 超时）
+_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+# GitHub 备份节流（避免每次访问都打 GitHub API, 也防限流）
+_last_backup_ts = 0.0
+_backup_lock = threading.Lock()
 
 
 def _gh_request(method, path, body=None, json_body=True, host="api.github.com"):
@@ -28,7 +33,7 @@ def _gh_request(method, path, body=None, json_body=True, host="api.github.com"):
             headers["Content-Type"] = "application/octet-stream"
     req = urllib.request.Request(url, data=data, headers=headers, method=method)
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
+        with _OPENER.open(req, timeout=60) as resp:
             raw = resp.read()
             if raw: return resp.status, json.loads(raw)
             return resp.status, None
@@ -112,7 +117,13 @@ def save_stats(stats):
     os.makedirs(os.path.dirname(STATS_FILE), exist_ok=True)
     with open(STATS_FILE, "w") as f:
         json.dump(stats, f, ensure_ascii=False, indent=2)
-    # Async backup to GitHub (best-effort)
+    # GitHub 备份（60s 节流, best-effort）
+    global _last_backup_ts
+    with _backup_lock:
+        now = time.time()
+        if now - _last_backup_ts < 60:
+            return
+        _last_backup_ts = now
     try:
         _gh_backup_stats(json.dumps(stats, ensure_ascii=False).encode("utf-8"))
     except:
