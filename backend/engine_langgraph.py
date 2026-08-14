@@ -191,6 +191,7 @@ class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
     retrieval_count: int
     forced: bool   # 已注入"强制回答"提示（达到硬上限后, 确保最终轮产出回答而非被掐断）
+    forced_tools_done: bool   # 硬上限后已补跑过一轮工具（防死循环烧钱; 2026-08-14）
     agent: str     # 当前智能体（general / 哲学家 key）
     language: str  # zh/en——中文模式下每轮强化语言提醒（防思考偶发英文）
 
@@ -276,15 +277,21 @@ async def tools_node(state):
                            additional_kwargs={"_args": args, "_result_full": res})
 
     results = await asyncio.gather(*[run_one(c) for c in calls])   # 全部执行（截断会导致 tool_call_id 无响应 → DeepSeek 400）
-    return {"messages": results, "retrieval_count": state.get("retrieval_count", 0) + inc}
+    return {"messages": results, "retrieval_count": state.get("retrieval_count", 0) + inc,
+            "forced_tools_done": state.get("forced", False)}
 
 def should_continue(state):
     last = state["messages"][-1]
     if not getattr(last, "tool_calls", None):
         return "end"
-    # 硬上限: 仅当已注入"强制回答"（工具已解绑）仍异常出现 tool_calls 时才硬结束
     if state.get("retrieval_count", 0) >= RETRIEVAL_HARD and state.get("forced"):
-        return "end"
+        # 硬上限强制回答, 模型仍调工具（DeepSeek 常见"任务规划残留"）:
+        # 已补跑过一轮 → 截断（防死循环烧钱）; 未补跑过 → 再执行一轮, 把已宣告的
+        # 工具调用跑完并回传结果, 下一轮强制结束（2026-08-14 修复: 此前直接丢弃,
+        # 导致"工具调用未完成就回答/凭记忆作答"）
+        if state.get("forced_tools_done"):
+            return "end"
+        return "tools"
     return "tools"
 
 _builder = StateGraph(AgentState)
@@ -457,6 +464,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     tool_log = []
     config = {"recursion_limit": 18}
     pending = {"text": "", "has_tools": False, "reasoned": False, "started": set()}   # 当前 agent 轮缓冲
+    tools_announced = False   # 本轮已发 tool_start（2026-08-14: 跟踪"宣告但未执行"的截断调用）
+    tools_executed = False    # 本轮工具已实际执行
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
     reasoning_text = ""   # 累积推理链（o1 风格摘要用）
     async def flush_agent():
@@ -485,6 +494,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # 工具调用帧（content 为空）→ 标记本轮有工具, 并立即发"调用中"事件（CC 风格: 先显示再执行）
                 if chunk.tool_call_chunks:
                     pending["has_tools"] = True
+                    tools_announced = True
                     for tcc in chunk.tool_call_chunks:
                         nm = tcc.get("name")
                         if nm and nm not in pending.get("started", ()):
@@ -525,10 +535,19 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                  "thought": f"执行 {name}"})
                 yield {"type": "tool", "name": name, "args": args,
                        "result": str(result)[:300], "thought": f"执行 {name}"}
+                # 本轮工具已处理完 → 重置宣告标记（下一 agent 轮重新计; 2026-08-14）
+                tools_announced = False
+                tools_executed = False
         # 最终 flush: 最后一轮 agent 输出（最终回答）在 done 前以打字机发出（XML 标记已剥离）
         async for ev in flush_agent():
             yield ev
         pending = {"text": "", "has_tools": False, "reasoned": False}
+        # 硬上限截断的已宣告工具调用（宣告了 tool_start 但最终被丢弃未执行）→ 补发说明事件,
+        # 避免前端停留在"调用中"且用户误以为工具会返回结果（2026-08-14）
+        if tools_announced and not tools_executed:
+            yield {"type": "tool", "name": "（检索上限）", "args": {},
+                   "result": "已达检索上限：本次宣告但未执行的调用已跳过，已基于已有材料直接回答。",
+                   "thought": "检索上限"}
         # 最终回答校验: 剥离工具标记后为空 → 强制兜底生成正文（硬上限轮 LLM 可能只输出标记无正文）
         if not _strip_markers(full_answer):
             try:
