@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { execSync } from 'child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -38,14 +37,10 @@ function publicLive() {
   }
 }
 
-// 获取当前 git commit hash（用于 CDN 缓存自动刷新）
-let commitHash = 'master'
-try { commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim() } catch {}
+// 部署 commit hash 不再在此内联（2026-08-14 解耦: 由 postbuild.mjs 注入 index.html <meta name="dp-commit">,
+// 前端运行时读取; 否则每次 push 都改变 JS 包内容 → 资产 hash 变化 → OSS 未同步即白屏）
 
 export default defineConfig(({ mode }) => ({
-  define: {
-    __COMMIT_HASH__: JSON.stringify(commitHash),
-  },
   plugins: [react(), publicLive()],
   // 2026-08-11 书架提速: 生产构建产物走 OSS（用户网络对同源 CF 边缘 4-5s/220KB, OSS 0.1s）
   // 注意: vite base 会连带重写 index.html 的 public 引用（favicon/manifest/icons → OSS 404）,

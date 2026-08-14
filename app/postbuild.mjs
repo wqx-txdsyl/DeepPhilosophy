@@ -8,11 +8,19 @@
 //       见 _tmp_grab_cf.py 流程 / dp_sync_oss_static.py（本地构建 hash ≠ CF 构建 hash 的坑在记忆 oss-static-dual-track）。
 import fs from 'node:fs'
 import path from 'node:path'
+import { execSync } from 'node:child_process'
 
 const OSS_ASSETS = 'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/assets/'
 const distDir = path.join(import.meta.dirname, 'dist')
 
-// 1) 改写 index.html 的 assets 引用
+// 部署 commit hash（章节 CDN 引脚）——注入 index.html 的 <meta>, 前端运行时读取,
+// 不再内联进 JS 包（2026-08-14: 内联导致每次 push 都换 JS hash → OSS 资产失配 → 白屏）
+let commitHash = 'master'
+try {
+  commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim() || 'master'
+} catch {}
+
+// 1) 改写 index.html 的 assets 引用 + 注入 commit meta
 const htmlPath = path.join(distDir, 'index.html')
 const html = fs.readFileSync(htmlPath, 'utf-8')
 
@@ -21,6 +29,7 @@ const replaced = html
   .replace(/(src|href)="\/assets\//g, `$1="${OSS_ASSETS}`)
   // 顺带兜底相对引用形式（不应出现, 防御）
   .replace(/(src|href)="(\.\/)?assets\//g, `$1="${OSS_ASSETS}`)
+  .replace(/<\/head>/, `  <meta name="dp-commit" content="${commitHash}" />\n</head>`)
 
 if (replaced === html) {
   console.warn('[postbuild] dist/index.html 未发现 /assets/ 引用, 未做任何替换')

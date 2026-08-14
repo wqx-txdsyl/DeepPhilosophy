@@ -14,11 +14,16 @@ import ChapterReader from '../components/ChapterReader';
 //   OSS 优先 — 上海直连 ~80ms（backend/data/book_chapters 由 dp_sync_oss_chapters.py 增量同步到 bucket）
 //   jsDelivr 兜底 — GitHub 自动刷新（OSS 超时/缺文件时切换, 国内 ~0.9s 但可用）
 // 本地开发（localhost）→ 本地静态目录（vite dev 服务 public/backend/data/book_chapters junction, 空串拼接同源相对路径）
+// 章节 CDN 引脚: 部署 commit hash 由 index.html 的 <meta name="dp-commit"> 运行时提供
+// （2026-08-14 解耦: 不再内联 __COMMIT_HASH__ 进 JS 包——否则每次 push 都换资产 hash,
+//   OSS 未同步即白屏; 现 meta 由 postbuild.mjs 每次构建注入, JS 包内容跨 commit 稳定）
+const DP_COMMIT =
+  (typeof document !== 'undefined' && document.querySelector('meta[name="dp-commit"]')?.content) || 'master';
 const CDN_BASES = (typeof location !== 'undefined' && ['localhost', '127.0.0.1'].includes(location.hostname))
   ? ['']
   : [
       'https://deepphilosophy.oss-cn-shanghai.aliyuncs.com',
-      `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${__COMMIT_HASH__}`,
+      `https://cdn.jsdelivr.net/gh/wqx-txdsyl/DeepPhilosophy@${DP_COMMIT}`,
     ];
 
 // 依次尝试各 CDN; 全部失败抛最后错误
