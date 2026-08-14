@@ -300,9 +300,14 @@ def _sync_db_from_github():
 
 
 def _sync_db():
-    """同步 users.db 到所有已配置的云端后端"""
-    _sync_db_to_github()
-    _sync_db_to_cloud()
+    """同步 users.db 到云端后端。
+    2026-08-14 禁用（安全加固 P0）: 整库上传 GitHub Release/OSS 是 last-writer-wins 数据丢失源,
+    且把含密码哈希的用户库散落到第三方存储。生产用户数据唯一源 = Cloudflare D1;
+    本地 SQLite 仅开发用, 备份走 migrate_users_to_d1.py 单向导出。"""
+    return
+    # 以下为历史实现, 保留作参考（勿再启用）
+    # _sync_db_to_github()
+    # _sync_db_to_cloud()
 
 
 def _ensure_profile_col(conn):

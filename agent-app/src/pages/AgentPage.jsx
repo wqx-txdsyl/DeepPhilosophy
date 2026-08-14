@@ -95,7 +95,7 @@ function CiteLink({ book, chapter }) {
       .then(r => r.json())
       .then(d => {
         setLoading(false);
-        if (d.error) { setFailed(true); return; }
+        if (d.error || d.matched === false) { setFailed(true); return; }   // 2026-08-14: 未匹配章节不再静默跳第 0 章
         // 跳转 DeepPhilosophy 阅读器（同源数据: book_id/chapter_idx 一致）
         window.open(`${DP_READER}/${d.book_id}?ch=${d.chapter_idx || 0}`, '_blank');
       })

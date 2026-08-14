@@ -144,6 +144,18 @@ TOOLS = {}  # name -> {"description", "parameters", "execute"}
 def register_tool(name, description, parameters, execute):
     TOOLS[name] = {"description": description, "parameters": parameters, "execute": execute}
 
+def _int_arg(args, key, default, lo=None, hi=None):
+    """统一 int 解析（2026-08-14: LLM 传非数字/越界不再抛 ValueError 或产生怪结果）"""
+    try:
+        v = int(args.get(key, default))
+    except (TypeError, ValueError):
+        v = default
+    if lo is not None and v < lo:
+        v = lo
+    if hi is not None and v > hi:
+        v = hi
+    return v
+
 # ── 工具 1: search_books（书级过滤 + 章级关键词扫描）──
 def _match_score(text, terms):
     """简单关键词评分: 命中数 + 位置权重"""
@@ -182,7 +194,7 @@ def _embed_query(q):
 
 def _exec_search_books(args):
     query = args.get("query", "")
-    limit = min(int(args.get("limit", 5)), 10)
+    limit = _int_arg(args, "limit", 5, 1, 10)
     # 向量优先（索引就绪时）
     vec = _embed_query(query)
     if vec is not None:
@@ -291,7 +303,7 @@ register_tool(
 # ── 工具 3: get_chapter ──────────────────────────────
 def _exec_chapter(args):
     bid = args.get("book_id", "")
-    idx = int(args.get("chapter_idx", 0))
+    idx = _int_arg(args, "chapter_idx", 0, 0)
     ch = read_chapter(bid, idx)
     if not ch:
         return {"error": f"章节不存在 {bid}/{idx}"}
@@ -423,7 +435,7 @@ def _exec_write_essay(args):
     if not topic:
         return {"error": "缺少作文题目"}
     try:
-        word_count = int(args.get("word_count", 800))
+        word_count = _int_arg(args, "word_count", 800, 100, 3000)
     except Exception:
         word_count = 800
     modify = (args.get("modify") or "").strip()
@@ -792,6 +804,8 @@ async def agent_essay(req: EssayRequest, _g: dict = Depends(guard.agent_guard)):
         return AgentChatResponse(reply="服务端未配置 DEEPSEEK_API_KEY", citations=[], tool_calls=[])
     tool_calls_log = []
     try:
+        # 2026-08-14: word_count 钳制上限（防 max_tokens/成本失控）
+        wc = min(max(req.word_count or 800, 100), 3000)
         # ① 检索题目相关原典（确定性）
         query = re.sub(r"[？?！!。，,、\s]+", " ", req.topic)[:50]
         result = TOOLS["search_books"]["execute"]({"query": query, "limit": 6})
@@ -799,10 +813,10 @@ async def agent_essay(req: EssayRequest, _g: dict = Depends(guard.agent_guard)):
                                "result_summary": str(result)[:200], "result_full": result})
         retrieval = json.dumps(result, ensure_ascii=False)[:6000]
         prompt = ESSAY_PROMPT.format(genre=req.genre, topic=req.topic,
-                                     word_count=req.word_count, extra=req.extra or "无",
+                                     word_count=wc, extra=req.extra or "无",
                                      retrieval=retrieval)
         messages = [{"role": "user", "content": prompt}]
-        resp = llm_chat(messages, temperature=0.75, max_tokens=min(req.word_count * 2 + 500, 4000))
+        resp = llm_chat(messages, temperature=0.75, max_tokens=min(wc * 2 + 500, 4000))
         reply = (resp["choices"][0]["message"].get("content") or "").strip()
         if not reply:
             reply = "（生成失败，请重试）"
@@ -1124,7 +1138,7 @@ SOCRATIC_PROMPT = """你是苏格拉底（Socrates）——只提问, 不直接�
 
 def _exec_socratic(args):
     topic = args.get("topic", "").strip()
-    rounds = min(int(args.get("rounds", 4)), 6)
+    rounds = _int_arg(args, "rounds", 4, 1, 6)
     if not topic:
         return {"error": "缺少话题"}
     result = TOOLS["search_books"]["execute"]({"query": topic[:50], "limit": 3})
@@ -1276,7 +1290,7 @@ def _exec_debate(args):
                 else "辩论开始（你参与）。请反驳或提问, 哲学家会回应你。")
         return {"debate": round_out, "note": note}
     # ── auto: 一次性生成全部轮次（默认, 原逻辑）──
-    rounds = min(int(args.get("rounds", 2)), 3)
+    rounds = _int_arg(args, "rounds", 2, 1, 3)
     debate = []
     for r in range(rounds):
         debate.extend(_debate_round(sp_list, topic, "\n".join(debate[-3:]), r + 1))
@@ -1791,10 +1805,30 @@ async def agent_stream(req: AgentChatRequest, _g: dict = Depends(guard.agent_gua
 
 # ── 工具 17: websearch（Wikipedia 中文——免费无需 key, 上网补充）──
 def _exec_websearch(args):
-    """联网搜索: Bing 优先（中文结果+真实链接, 国内可达）→ 英文维基 → 中文维基"""
+    """联网搜索: Bing 优先（中文结果+真实链接, 国内可达）→ 英文维基 → 中文维基
+    2026-08-14: 加 TTL 缓存（同 query 10 分钟内不重复联网, 防 Bing 反爬/重复抓取）"""
     query = args.get("query", "")
     if not query:
         return {"error": "缺少查询词"}
+    qkey = query.strip()[:80]
+    now = time.time()
+    with _web_cache_lock:
+        hit = _web_cache.get(qkey)
+        if hit and now - hit[0] < _WEB_TTL:
+            return hit[1]
+    result = _websearch_inner(query)
+    with _web_cache_lock:
+        if len(_web_cache) > 200:   # 防无限增长
+            for k in list(_web_cache.keys())[:100]:
+                _web_cache.pop(k, None)
+        _web_cache[qkey] = (time.time(), result)
+    return result
+
+_web_cache = {}
+_web_cache_lock = threading.Lock()
+_WEB_TTL = 600   # 10 分钟
+
+def _websearch_inner(query):
     import urllib.parse
     import re as _re
     import html as _html
@@ -1866,7 +1900,7 @@ register_tool(
 def _exec_query_db(args):
     table = args.get("table", "")
     key = args.get("key", "")
-    limit = min(int(args.get("limit", 5)), 10)
+    limit = _int_arg(args, "limit", 5, 1, 10)
     if table == "books":
         data = get_books()
         hits = [b for b in data if (not key or key in f"{b.get('title','')} {b.get('author','')}")]
@@ -2299,6 +2333,7 @@ async def api_cite(book: str = "", chapter: str = ""):
     cname = (chapter or "").strip()
     idx = -1
     hit_title = ""
+    matched = False   # 2026-08-14: 未匹配章节时不再静默跳第 0 章, 前端据此不渲染跳转
     base = cname.split("·")[0].strip() if cname else ""
     part_fb = -1  # part(编/卷)标题命中时的兜底: part 后第一个可索引章节
     for pos, t in enumerate(toc):
@@ -2315,16 +2350,18 @@ async def api_cite(book: str = "", chapter: str = ""):
             # 层级 toc: 块 index 是条目自带 index（数组位置 ≠ 块序号, part 占位会错位）
             idx = t.get("index", 0) if isinstance(t, dict) else toc.index(t)
             hit_title = title
+            matched = True
             break
     if idx < 0 and part_fb >= 0:
         idx = part_fb
         hit_title = f"{cname}（首章）"
+        matched = True
     if idx < 0:
         idx = 0
         hit_title = toc[0].get("title") if isinstance(toc[0], dict) else toc[0]
     ch = read_chapter(hit["id"], idx)
     return {"book_id": hit["id"], "book": hit["title"], "author": hit.get("author", ""),
-            "chapter": hit_title, "chapter_idx": idx,
+            "chapter": hit_title, "chapter_idx": idx, "matched": matched,
             "text": (ch.get("text") or "")[:2500] if ch else ""}
 
 # ═══════════════════════════════════════════════════════

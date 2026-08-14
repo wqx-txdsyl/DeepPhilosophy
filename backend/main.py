@@ -2196,7 +2196,7 @@ async def api_delete_account(user: dict = Depends(auth_required)):
 
 if __name__ == "__main__":
     logger.info("=" * 50)
-    logger.info("  DeepPhilosophy API Server v2.0.0")
+    logger.info("  DeepPhilosophy × PhiAgent 统一后端（智能体 + 平台 API）")
     logger.info("=" * 50)
     books = scan_books()
     logger.info(f"  Books: {len(books)}")
@@ -2205,4 +2205,3 @@ if __name__ == "__main__":
     logger.info(f"  Docs: http://0.0.0.0:{config.SERVER_PORT}/docs")
     logger.info("=" * 50)
     uvicorn.run(app, host=config.SERVER_HOST, port=config.SERVER_PORT)
-# force redeploy Sun Jun 14 18:39:51     2026
