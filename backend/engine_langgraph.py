@@ -343,41 +343,71 @@ def _log_stats(agent, message, duration, tool_names, tool_failures, error, answe
         pass
 
 def _suggest_next(tool_log, message, agent="general", language="zh"):
-    """话题延续建议: 按本轮工具调用痕迹推断用户可能感兴趣的下一步（规则化, 不额外调 LLM; 双语）"""
+    """话题延续建议: 按本轮工具调用痕迹 + 对话主题生成（规则化, 不额外调 LLM; 双语）
+    2026-08-14 优化: 建议文案注入对话主题（取自检索词/概念/哲人/用户消息）,
+    不再是与对话无关的固定文案"""
     names = {t["name"] for t in tool_log}
+    # ── 提取对话主题: 优先取最近的检索/查询参数, 兜底取用户消息 ──
+    topic = ""
+    for tc in reversed(tool_log):
+        a = tc.get("args") or {}
+        q = a.get("query") or a.get("concept") or a.get("name") or a.get("philosopher") or ""
+        if isinstance(q, str) and q.strip():
+            topic = q.strip()
+            break
+    if not topic:
+        topic = (message or "").strip()
+    topic = topic[:24].rstrip("？?！!。，,、 ")
+    if len(topic) < 4:
+        topic = "这个话题"
+    t = f"「{topic}」"
     en = language == "en"
     if en:
         sugg = []
         if "philosopher_debate" in names or "school_arena" in names or "confrontation" in names:
-            sugg += ["Debate again with another philosopher or topic", "Turn this exchange into a concept map"]
+            sugg += [f"Debate {t} with another philosopher or angle",
+                     f"Turn this exchange on {t} into a concept map"]
         if "concept_trace" in names or "conceptual_map" in names:
-            sugg += ["Compare two related concepts (e.g. Hume vs Kant)", "Trace this concept's timeline in philosophical history"]
+            sugg += [f"Compare two related concepts within {t}",
+                     f"Trace {t} through philosophical history as a timeline"]
         if "write_essay" in names or "essay_outline" in names:
-            sugg += ["Analyze the argument structure of this essay", "Revise it: change the angle or length"]
+            sugg += [f"Analyze the argument structure of this essay on {t}",
+                     f"Revise the essay on {t}: change the angle or length"]
         if "life_coach" in names or "advisor_council" in names:
-            sugg += ["Let different schools keep advising you", "Turn this question into a thought experiment"]
+            sugg += [f"Let different schools keep advising on {t}",
+                     f"Turn {t} into a thought experiment"]
         if "generate_image" in names:
-            sugg += ["Revise this image (change style or composition)", "Have the image's protagonist debate this topic"]
+            sugg += [f"Revise this image with a focus on {t}",
+                     f"Have the image's protagonist debate {t}"]
         if agent != "general":
             sugg += ["Answer from another period (early/middle/late)", "Share the relevant passages from The Gay Science"]
         if not sugg:
-            sugg = ["Have two philosophers debate this topic", "Map this concept as a mind map", "Write a related philosophical essay"]
+            sugg = [f"Have two philosophers debate {t}",
+                    f"Map {t} as a concept mind map",
+                    f"Write a philosophical essay on {t}"]
     else:
         sugg = []
         if "philosopher_debate" in names or "school_arena" in names or "confrontation" in names:
-            sugg += ["换个哲学家或议题再辩一场", "把这场交锋的观点整理成概念脑图"]
+            sugg += [f"换个哲学家或角度再辩 {t}",
+                     f"把这场关于 {t} 的交锋整理成概念脑图"]
         if "concept_trace" in names or "conceptual_map" in names:
-            sugg += ["对比两个相关概念（如休谟 vs 康德）", "追溯这个概念在哲学史中的时间线"]
+            sugg += [f"对比 {t} 内两个相关概念",
+                     f"追溯 {t} 在哲学史中的时间线"]
         if "write_essay" in names or "essay_outline" in names:
-            sugg += ["对这篇作文做论证结构分析", "继续修改：换个角度或调整篇幅"]
+            sugg += [f"对这篇关于 {t} 的作文做论证结构分析",
+                     f"继续修改这篇关于 {t} 的作文：换个角度或调整篇幅"]
         if "life_coach" in names or "advisor_council" in names:
-            sugg += ["让不同流派继续给你建议", "把这个问题做成思想实验推演"]
+            sugg += [f"让不同流派继续就 {t} 给你建议",
+                     f"把 {t} 做成思想实验推演"]
         if "generate_image" in names:
-            sugg += ["修改这张图（换个风格或构图）", "让生成图的主角辩论这个话题"]
+            sugg += [f"围绕 {t} 修改这张图（换个风格或构图）",
+                     f"让生成图的主角就 {t} 辩论"]
         if agent != "general":
             sugg += ["让我从另一个时期的角度回答（早/中/晚期）", "把《快乐的科学》相关原文给我"]
         if not sugg:
-            sugg = ["让两位哲学家辩论这个话题", "把这个概念画成思维导图", "写一篇相关的哲学作文"]
+            sugg = [f"让两位哲学家就 {t} 辩论",
+                    f"把 {t} 相关的概念画成思维导图",
+                    f"围绕 {t} 写一篇哲学作文"]
     seen, out = set(), []
     for s in sugg:
         if s not in seen:
