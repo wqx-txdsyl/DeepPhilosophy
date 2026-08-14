@@ -381,25 +381,10 @@ function ChatTab({ agent = 'general', questions = [] }) {
     setUploading(false);
   };
 
-  // 登录后加载服务器端聊天历史（后端返回 {"messages": [...]}）
-  // 2026-08-14: 未登录不再 setMessages([])——改为本地缓存兜底, 否则重启/刷新即丢对话
-  useEffect(() => {
-    if (token) {
-      authFetch('/api/history/chat').then(d => {
-        const list = d.messages || d.history || [];
-        if (list.length) {
-          const msgs = list.map(h => ({ role: h.role === 'user' ? 'user' : 'assistant', content: h.content }));
-          setMessages(msgs);
-          try { localStorage.setItem(msgKey(agent), JSON.stringify(msgs)); } catch {}
-        }
-      }).catch(() => {});
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
-
-  // ── 对话本地持久化（2026-08-14: 此前仅内存态, 后端重启/页面刷新即丢; 按智能体分开存）──
+  // ── 对话本地持久化（2026-08-14: 本地为主; 不再加载/写入平台 /api/history/chat——那会
+  //    用平台最早一批历史覆盖当前会话, 且把 agent 对话污染进平台聊天流）──
   const msgKey = (a) => `dp_agent_msgs_${a}`;
-  // 恢复: 从 localStorage 恢复最近会话（云端历史优先, 见上方 token 效果）
+  // 恢复: 从 localStorage 恢复该智能体的最近会话
   useEffect(() => {
     try {
       const saved = localStorage.getItem(msgKey(agent));
@@ -542,13 +527,8 @@ function ChatTab({ agent = 'general', questions = [] }) {
     }
     abortRef.current = null;
     setLoading(false);
-    // 登录后持久化本轮对话（user + assistant）
-    if (token) {
-      authFetch('/api/history/chat', { method: 'POST', body: JSON.stringify({ role: 'user', content: text }) }).catch(() => {});
-      if (finalContent) {
-        authFetch('/api/history/chat', { method: 'POST', body: JSON.stringify({ role: 'assistant', content: finalContent }) }).catch(() => {});
-      }
-    }
+    // 2026-08-14: 移除向平台 /api/history/chat 的 POST——agent 对话只存本地 localStorage
+    //（历史错乱根因: 平台接口按最早-100 返回并覆盖本地, 且 agent 消息污染平台聊天流）
   };
 
   const stopGenerating = () => {
