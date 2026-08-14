@@ -610,4 +610,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                    "content": "DeepSeek API 余额不足——请充值后重试" if language != "en"
                    else "DeepSeek API balance insufficient—please top up and retry"}
         else:
-            yield {"type": "error", "content": f"智能体出错: {e}" if language != "en" else f"Agent error: {e}"}
+            # 2026-08-14: 错误脱敏——客户端只给通用提示, 细节写日志（异常文本可能含 API 细节）
+            print(f"[agent-error] {str(e)[:300]}", flush=True)
+            yield {"type": "error",
+                   "content": "智能体暂时出错，请重试或换个问法" if language != "en"
+                   else "Agent error—please retry or rephrase"}

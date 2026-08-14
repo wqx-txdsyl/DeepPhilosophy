@@ -58,8 +58,10 @@ def llm_chat(messages, tools=None, temperature=0.7, max_tokens=2000, thinking=Fa
                 return json.loads(r.read().decode())
         except urllib.error.HTTPError as e:
             err_body = e.read().decode("utf-8", "ignore")[:500]
+            print(f"[llm] HTTP {e.code}: {err_body[:200]}", flush=True)   # 细节只进日志
             if attempt == 2:
-                raise Exception(f"HTTP {e.code}: {err_body}")
+                # 2026-08-14 脱敏: 客户端不携带上游响应体（可能含请求/密钥细节）
+                raise Exception(f"DeepSeek API HTTP {e.code}")
             time.sleep(wait)
         except Exception:
             if attempt == 2:
