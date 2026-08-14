@@ -448,6 +448,41 @@ def _suggest_next(tool_log, message, agent="general", language="zh"):
             break
     return out
 
+def _llm_suggest(question, answer, agent, language):
+    """LLM 生成用户可能想继续探索的方向（2026-08-14: 基于 问题+回答 推断, 替代规则模板）
+    轻量: thinking 关闭, max_tokens 180; 失败/回答太短返回 None（调用方回退规则版）"""
+    if not answer or len(answer) < 40:
+        return None
+    en = language == "en"
+    sys_p = (
+        "You are a philosophy companion agent. Based on the user's last question and your answer, "
+        "infer 2-3 likely next questions the USER would want to ask. Each must be a short, natural, "
+        "self-contained user question in English — no numbering, no markdown, no explanations; one per line."
+        if en else
+        "你是哲学伴读助手。根据用户上一个问题和你刚给出的回答，推断用户接下来最可能想问的 2~3 个问题。"
+        "每条必须是一句简短、自然、独立完整的用户问句（不要编号、不要 markdown、不要解释），每行一条，用中文。"
+        "可以从这些方向自然延伸（但不要生硬套模板，要紧贴刚才的话题）: 让哲学家辩论/对比、概念溯源、原典深入、"
+        "思想实验、写作文、思维导图。")
+    user_p = (
+        f"User's last question: {question[:300]}\n\nYour answer (abridged): {answer[:2200]}"
+        if en else
+        f"用户上一个问题: {question[:300]}\n\n你的回答（节选）: {answer[:2200]}")
+    try:
+        resp = AG.llm_chat([{"role": "system", "content": sys_p}, {"role": "user", "content": user_p}],
+                           temperature=0.8, max_tokens=180)
+        text = (resp["choices"][0]["message"].get("content") or "").strip()
+        lines = []
+        for ln in text.splitlines():
+            ln = ln.strip().lstrip("-•*0123456789.、)） ").strip()
+            if len(ln) >= 4:
+                lines.append(ln)
+            if len(lines) >= 3:
+                break
+        return lines or None
+    except Exception:
+        return None
+
+
 def _filter_xml_chars(text):
     """剥离 <tool_calls>/<invoke> 工具标记及其中间内容（字符级扫描, 防跨 chunk 标记; 标记不闭合则丢弃其后全部）"""
     if not text:
@@ -621,7 +656,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 fb_msgs.append(SystemMessage(
                     content="请直接输出最终回答正文。禁止任何工具调用标记/XML/JSON 格式。只输出回答文本。"))
                 fb_dicts = [d for d in (_lc_to_dict(m) for m in fb_msgs) if d]
-                resp = AG.llm_chat(fb_dicts, thinking=False, max_tokens=2000)
+                resp = await asyncio.to_thread(AG.llm_chat, fb_dicts, thinking=False, max_tokens=2000)
                 reply = _strip_markers(resp["choices"][0]["message"].get("content") or "")
                 if reply:
                     for i in range(0, len(reply), 60):
@@ -658,7 +693,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                f"each formatted 'N. action: point' (≤30 words each, ≤160 total):\n\n" if language == "en"
                                else f"将以下推理过程浓缩为 3-5 步结构化摘要, 每步格式'数字. 动作: 要点'（每步 ≤30 字, 总计 ≤160 字）:\n\n")
                               + reasoning_text[:2500])
-                sresp = AG.llm_chat([{"role": "user", "content": sum_prompt}], temperature=0.3, max_tokens=300)
+                sresp = await asyncio.to_thread(AG.llm_chat,
+                    [{"role": "user", "content": sum_prompt}], temperature=0.3, max_tokens=300)
                 reasoning_summary = (sresp["choices"][0]["message"].get("content") or "").strip() or None
             except Exception:
                 reasoning_summary = None
@@ -671,8 +707,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             safety_flag = "blocked"
         elif _safety:
             safety_flag = "warning"
-        # 话题延续建议（规则化, 零 LLM 成本——按工具调用痕迹推断下一步）
-        suggestions = _suggest_next(tool_log, req_message, agent, language)
+        # 话题延续建议（2026-08-14: LLM 按 问题+回答 推断用户接下来可能问什么; 失败回退规则版）
+        suggestions = None
+        try:
+            suggestions = await asyncio.to_thread(_llm_suggest, req_message, full_answer, agent, language)
+        except Exception:
+            suggestions = None
+        if not suggestions:
+            suggestions = _suggest_next(tool_log, req_message, agent, language)
         _fail = sum(1 for tc in tool_log if isinstance(tc.get("result_full"), dict) and tc["result_full"].get("error"))
         _log_stats(agent, req_message, time.time() - _t_start, [t["name"] for t in tool_log],
                    _fail, None, len(full_answer))
