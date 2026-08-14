@@ -1824,28 +1824,34 @@ def _exec_agent_council(args):
     if not topic:
         return {"error": "缺少议题"}
     # ① 深哲发言（通用视角 + 原典检索）
-    deep_speech = ""
-    try:
+    def _deep_speech():
         from engine_langgraph import get_system_prompt
         r = TOOLS["search_books"]["execute"]({"query": topic[:50], "limit": 4})
         mat = json.dumps(r, ensure_ascii=False)[:2500]
         r1 = llm_chat([{"role": "system", "content": get_system_prompt("general")},
                        {"role": "user", "content": f"议题: 「{topic}」。基于以下检索材料给出你的分析立场（250字内, 引用标注出处）:\n{mat}"}],
                       temperature=0.7, max_tokens=600)
-        deep_speech = (r1["choices"][0]["message"].get("content") or "").strip()
-    except Exception as e:
-        deep_speech = f"（深哲发言失败: {e}）"
+        return (r1["choices"][0]["message"].get("content") or "").strip()
     # ② 尼采发言（人格视角）
-    nietzsche_speech = ""
-    try:
+    def _nietzsche_speech():
         import agents as agents_mod
         r2 = llm_chat([{"role": "system", "content": agents_mod.AGENT_PROMPTS.get("nietzsche", "")},
                        {"role": "user", "content": f"议题: 「{topic}」。以你的人格回应（250字内, 格言式, 不贴出处标注）"}],
                       temperature=0.85, max_tokens=600)
-        nietzsche_speech = (r2["choices"][0]["message"].get("content") or "").strip()
-    except Exception as e:
-        nietzsche_speech = f"（尼采发言失败: {e}）"
-    # ③ 综合（第三方视角的交汇与分歧）
+        return (r2["choices"][0]["message"].get("content") or "").strip()
+    # ①② 并行执行（2026-08-14: 两次独立 LLM 调用并发, 总延迟减半）
+    deep_speech = nietzsche_speech = ""
+    with ThreadPoolExecutor(max_workers=2) as ex:
+        f1, f2 = ex.submit(_deep_speech), ex.submit(_nietzsche_speech)
+        try:
+            deep_speech = f1.result()
+        except Exception as e:
+            deep_speech = f"（深哲发言失败: {e}）"
+        try:
+            nietzsche_speech = f2.result()
+        except Exception as e:
+            nietzsche_speech = f"（尼采发言失败: {e}）"
+    # ③ 综合（第三方视角的交汇与分歧; 依赖①②, 串行）
     synthesis = ""
     try:
         r3 = llm_chat([{"role": "user", "content": f"两位智能体就「{topic}」发言如下, 请综合（300字内）: ①各自立场 ②分歧的本质 ③可互补处。\n\n深哲: {deep_speech[:800]}\n\n尼采: {nietzsche_speech[:800]}"}],
