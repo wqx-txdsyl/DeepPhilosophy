@@ -32,7 +32,7 @@
 - **平台生产**：React 19 + Vite → Cloudflare Pages；API 全在 Workers（Hono + D1），零传统服务器
 - **智能体**：LangGraph 流式编排（`backend/engine_langgraph.py`）+ DeepSeek thinking 模式
 - **数据流（单向）**：`backend/tools/` 构建/修复 → `backend/data/book_chapters`（git 跟踪，唯一章节源）→ CDN 分发 → 前端只读
-- **数据库**：生产 = D1（`deepphilosophy-db`）；本地开发 = SQLite（同 schema，见 `backend/DATABASE.md`）
+- **数据库**：生产 = D1（`deepphilosophy-db`）；本地开发 = SQLite（同 schema，见 [docs/DATABASE.md](docs/DATABASE.md)）
 
 ## 🛠 本地开发
 
@@ -78,9 +78,9 @@ DeepPhilosophy/
 │   ├── agents.py           # 智能体注册表（nietzsche 人格包 → data/ai_author）
 │   ├── guard.py            # 端点鉴权/限流/每日配额 + per-user 上下文
 │   ├── tools/              # 书库构建/修复/同步/OCR/向量全套工具（含部署管线）
-│   ├── data/               # 章节源（git 跟踪，CDN 读这份）+ 运行时数据（gitignore）
-│   └── DATABASE.md         # 数据库规范（D1 = 生产唯一源）
+│   └── data/               # 章节源（git 跟踪，CDN 读这份）+ 运行时数据（gitignore）
 ├── data/ai_author/         # AIAuthor 六库数字人格数据（1.6GB，不入库，仅本地）
+├── docs/                   # 项目文档（NOWSTATE 现状快照 / DATABASE 数据库规范）
 ├── workers/                # Cloudflare Workers API（auth + api，Hono + D1）
 └── .github/workflows/      # CI
 ```

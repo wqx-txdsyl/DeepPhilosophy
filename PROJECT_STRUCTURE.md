@@ -1,6 +1,6 @@
 # DeepPhilosophy 全文件结构图
 
-> 生成时间: 2026-08-14 21:25 · 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
+> 生成时间: 2026-08-14 22:11 · 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
 > 大数据目录 (章节库 / 向量库 / 封面 / ai_author) 折叠为计数摘要
 
 ## DeepPhilosophy × PhiAgent 合并后单仓库（2026-08-14: 平台 + 智能体 + 书库工具）
@@ -34,7 +34,7 @@ F:\program\Python\DeepPhilosophy
 │  │  │  ├─ tagMaps.js  (7,928 B)
 │  │  │  └─ userData.js  (6,463 B)
 │  │  ├─ pages/
-│  │  │  └─ AgentPage.jsx  (38,866 B)
+│  │  │  └─ AgentPage.jsx  (40,108 B)
 │  │  ├─ utils/
 │  │  │  ├─ api.js  (87 B)
 │  │  │  ├─ i18n.jsx  (11,710 B)
@@ -210,7 +210,7 @@ F:\program\Python\DeepPhilosophy
 │  ├─ vercel.json  (72 B)
 │  ├─ vite-debug.err.log  (179,124 B)
 │  ├─ vite-debug.log  (6,437 B)
-│  └─ vite.config.js  (4,396 B)
+│  └─ vite.config.js  (4,375 B)
 ├─ backend/
 │  ├─ data/  — 运行数据（章节库/向量库/catalog）
 │  │  ├─ book_chapters/  # 319 本书 × 12548 个章节 json (按 bid 分目录, 顶层 dict 禁 list)
@@ -218,9 +218,9 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ book_images/  # 11498 个封面图片文件
 │  │  ├─ embeddings/  # 向量库: index.json (12111 条 {bid,idx,title,hash}) + vectors.npy (float32 12111×1024)
 │  │  ├─ __init__.py  (0 B)
-│  │  ├─ admin_stats.json  (202 B)
+│  │  ├─ admin_stats.json  (269 B)
 │  │  ├─ agent_memory.json  (30,991 B)
-│  │  ├─ agent_stats.jsonl  (12,414 B)
+│  │  ├─ agent_stats.jsonl  (13,337 B)
 │  │  ├─ book_checklist.json  (99,220 B)
 │  │  ├─ book_checklist.md  (39,296 B)
 │  │  ├─ book_rankings.json  (46,911 B)
@@ -326,7 +326,6 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ sync_full.py  (4,157 B)  — 全库三端内容同步
 │  │  ├─ verify_book.py  (5,691 B)  — 书修复完成验证（模拟前端完整读取链）
 │  │  └─ 分章标准规范.md  (7,223 B)
-│  ├─ DATABASE.md  (1,860 B)
 │  ├─ __init__.py  (25 B)
 │  ├─ admin.py  (5,671 B)  — 开发者管理后台（访问统计 + 用户管理）
 │  ├─ agents.py  (19,501 B)  — 智能体注册表（智能体广场）
@@ -334,7 +333,7 @@ F:\program\Python\DeepPhilosophy
 │  ├─ config.py  (4,500 B)  — 云端部署配置（全部路径走环境变量）
 │  ├─ db.py  (2,243 B)  — 哲学家信息库（JSON 加载 O(1) 查找）
 │  ├─ drawio_convert.py  (4,977 B)  — mermaid → draw.io XML 转换器
-│  ├─ engine_langgraph.py  (39,495 B)  — LangGraph 引擎（PhiAgent v2 流式编排）
+│  ├─ engine_langgraph.py  (43,949 B)  — LangGraph 引擎（PhiAgent v2 流式编排）
 │  ├─ eval_agent.py  (5,011 B)  — PhiAgent 评估基准 v1（四维评估）
 │  ├─ fix_bios.py  (2,418 B)  — 批量修复 <1000 字的哲学家 bio
 │  ├─ guard.py  (4,674 B)
@@ -342,6 +341,9 @@ F:\program\Python\DeepPhilosophy
 │  └─ mcp_client.py  (4,193 B)  — MCP 客户端（外部工具生态接入）
 ├─ data/
 │  └─ ai_author/  # 尼采 LoRA 生产数据 (6 子目录, 207 文件, 约 1.6G — 保留)
+├─ docs/
+│  ├─ DATABASE.md  (1,860 B)
+│  └─ NOWSTATE.md  (6,854 B)
 ├─ scripts/  — 内容运营与历史运维脚本（38 个, 多数一次性已完成）
 │  ├─ _lib.py  (5,675 B)  — 共享工具模块（load/save JSON + DeepSeek/Agnes 客户端）
 │  ├─ add_author.py  (7,914 B)  — 一键新增哲人（DeepSeek 生成信息 → public JSON）
@@ -407,8 +409,8 @@ F:\program\Python\DeepPhilosophy
 ├─ .dockerignore  (226 B)
 ├─ .env  (1,113 B)
 ├─ .gitignore  (2,253 B)
-├─ PROJECT_STRUCTURE.md  (18,738 B)
-├─ README.md  (6,191 B)
+├─ PROJECT_STRUCTURE.md  (26,026 B)
+├─ README.md  (5,995 B)
 ├─ requirements.txt  (726 B)
 └─ vercel.json  (62 B)
 ```
