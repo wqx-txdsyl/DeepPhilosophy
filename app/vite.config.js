@@ -69,8 +69,8 @@ export default defineConfig(({ mode }) => ({
     },
     proxy: {
       '/api': {
-        // 本地开发指向本地后端（book_images 313MB 在本地; 线上 Render 无图片）
-        target: 'http://localhost:8000',
+        // 2026-08-14: 统一后端端口 8011（原 8000 为 Render 遗留）
+        target: 'http://localhost:8011',
         changeOrigin: true,
       },
     },
