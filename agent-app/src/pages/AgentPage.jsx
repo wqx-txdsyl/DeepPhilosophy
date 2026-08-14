@@ -383,7 +383,16 @@ function ChatTab({ agent = 'general', questions = [] }) {
 
   // ── 对话本地持久化（2026-08-14: 本地为主; 不再加载/写入平台 /api/history/chat——那会
   //    用平台最早一批历史覆盖当前会话, 且把 agent 对话污染进平台聊天流）──
-  const msgKey = (a) => `dp_agent_msgs_${a}`;
+  // v2: 键升级, 避开曾被云端旧历史污染的 v1 缓存; 加载时自动清理旧键
+  const msgKey = (a) => `dp_agent_msgs_v2_${a}`;
+  useEffect(() => {
+    try {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('dp_agent_msgs_') && !k.includes('_v2_')) localStorage.removeItem(k);
+      }
+    } catch {}
+  }, []);
   // 恢复: 从 localStorage 恢复该智能体的最近会话
   useEffect(() => {
     try {
