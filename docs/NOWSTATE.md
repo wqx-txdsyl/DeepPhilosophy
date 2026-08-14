@@ -1,7 +1,7 @@
 # DeepPhilosophy × PhiAgent NOWSTATE（当前状态快照）
 
 > 生成：2026-08-14 · 单仓库双应用（平台 + 智能体 + 书库工具链）
-> 完整文件树见 [PROJECT_STRUCTURE.md](../PROJECT_STRUCTURE.md)，项目总览见 [README.md](../README.md)
+> 完整文件树见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，项目总览见 [README.md](../README.md)
 
 ---
 
@@ -89,7 +89,7 @@
 | 文档 | 位置 | 内容 |
 |---|---|---|
 | 项目总览 | [README.md](../README.md) | 功能/架构/开发/部署 |
-| 全文件结构 | [PROJECT_STRUCTURE.md](../PROJECT_STRUCTURE.md) | 完整文件树（gen_structure.py 生成） |
+| 全文件结构 | [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) | 完整文件树（gen_structure.py 生成） |
 | 数据库规范 | [docs/DATABASE.md](DATABASE.md) | D1/SQLite schema、迁移流程 |
 | 工具索引 | [backend/tools/TOOLS_INDEX.md](../backend/tools/TOOLS_INDEX.md) | 书库工具分类与状态 |
 | 书库台账 | [backend/tools/CHKLIST.md](../backend/tools/CHKLIST.md) | 402 本逐本验收 |

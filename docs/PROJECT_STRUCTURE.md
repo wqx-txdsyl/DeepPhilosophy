@@ -1,6 +1,6 @@
 # DeepPhilosophy 全文件结构图
 
-> 生成时间: 2026-08-14 22:11 · 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
+> 生成时间: 2026-08-14 22:13 · 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
 > 大数据目录 (章节库 / 向量库 / 封面 / ai_author) 折叠为计数摘要
 
 ## DeepPhilosophy × PhiAgent 合并后单仓库（2026-08-14: 平台 + 智能体 + 书库工具）
@@ -218,9 +218,9 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ book_images/  # 11498 个封面图片文件
 │  │  ├─ embeddings/  # 向量库: index.json (12111 条 {bid,idx,title,hash}) + vectors.npy (float32 12111×1024)
 │  │  ├─ __init__.py  (0 B)
-│  │  ├─ admin_stats.json  (269 B)
+│  │  ├─ admin_stats.json  (403 B)
 │  │  ├─ agent_memory.json  (30,991 B)
-│  │  ├─ agent_stats.jsonl  (13,337 B)
+│  │  ├─ agent_stats.jsonl  (13,490 B)
 │  │  ├─ book_checklist.json  (99,220 B)
 │  │  ├─ book_checklist.md  (39,296 B)
 │  │  ├─ book_rankings.json  (46,911 B)
@@ -239,7 +239,7 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ philosopher_rankings.json  (123,166 B)
 │  │  ├─ philosophers.json  (2,305,015 B)
 │  │  ├─ tag_normalization.json  (9,849 B)
-│  │  └─ users.db  (90,112 B)
+│  │  └─ users.db  (94,208 B)
 │  ├─ mcp_servers/  — MCP 服务器（外部工具）
 │  │  └─ demo_server.py  (655 B)
 │  ├─ models/  — Pydantic 模型
@@ -316,7 +316,7 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ dp_sync_oss_static.py  (7,042 B)
 │  │  ├─ dp_toc_parts.py  (3,421 B)  — 扁平 toc → 层级 toc（part 分组）
 │  │  ├─ dp_verify_dual.py  (4,952 B)  — 双端入库一致性校验
-│  │  ├─ gen_structure.py  (20,625 B)  — 生成全文件结构图（本脚本）
+│  │  ├─ gen_structure.py  (20,777 B)  — 生成全文件结构图（本脚本）
 │  │  ├─ gen_summaries.py  (4,869 B)  — 批量生成书籍摘要和标签（DeepSeek）
 │  │  ├─ generate_catalog.py  (4,121 B)  — 生成书籍目录 JSON（离线兜底）
 │  │  ├─ generate_worker_assets.py  (3,935 B)  — 生成 Cloudflare api worker 静态资产
@@ -343,7 +343,8 @@ F:\program\Python\DeepPhilosophy
 │  └─ ai_author/  # 尼采 LoRA 生产数据 (6 子目录, 207 文件, 约 1.6G — 保留)
 ├─ docs/
 │  ├─ DATABASE.md  (1,860 B)
-│  └─ NOWSTATE.md  (6,854 B)
+│  ├─ NOWSTATE.md  (6,854 B)
+│  └─ PROJECT_STRUCTURE.md  (26,076 B)
 ├─ scripts/  — 内容运营与历史运维脚本（38 个, 多数一次性已完成）
 │  ├─ _lib.py  (5,675 B)  — 共享工具模块（load/save JSON + DeepSeek/Agnes 客户端）
 │  ├─ add_author.py  (7,914 B)  — 一键新增哲人（DeepSeek 生成信息 → public JSON）
@@ -408,8 +409,7 @@ F:\program\Python\DeepPhilosophy
 │     └─ wrangler.toml  (524 B)  — auth worker 配置
 ├─ .dockerignore  (226 B)
 ├─ .env  (1,113 B)
-├─ .gitignore  (2,253 B)
-├─ PROJECT_STRUCTURE.md  (26,026 B)
+├─ .gitignore  (2,328 B)
 ├─ README.md  (5,995 B)
 ├─ requirements.txt  (726 B)
 └─ vercel.json  (62 B)

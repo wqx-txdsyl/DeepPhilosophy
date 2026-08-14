@@ -354,7 +354,10 @@ def main():
         ]
         render(root, root, '', lines)
         lines += ['```', '']
-        out_path = os.path.join(root, 'PROJECT_STRUCTURE.md')
+        # 2026-08-14: 结构图移入 docs/ 统一管理
+        docs_dir = os.path.join(root, 'docs')
+        os.makedirs(docs_dir, exist_ok=True)
+        out_path = os.path.join(docs_dir, 'PROJECT_STRUCTURE.md')
         io.open(out_path, 'w', encoding='utf-8').write('\n'.join(lines))
         size_b = len('\n'.join(lines).encode('utf-8'))
         print(f'已生成: {out_path} ({size_b:,} B)')

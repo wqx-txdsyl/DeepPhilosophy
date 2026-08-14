@@ -63,7 +63,7 @@ cd agent-app && npm install && npm run dev
 
 ## 📁 项目结构
 
-完整文件树见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)（由 `backend/tools/gen_structure.py` 生成）。
+完整文件树见 [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)（由 `backend/tools/gen_structure.py` 生成）。
 
 ```
 DeepPhilosophy/
