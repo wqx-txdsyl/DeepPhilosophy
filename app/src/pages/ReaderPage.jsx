@@ -27,12 +27,19 @@ const CDN_BASES = (typeof location !== 'undefined' && ['localhost', '127.0.0.1']
 const CDN_TIMEOUTS = [2000, 2000, 10000];
 async function fetchChapter(path) {
   let lastErr;
+  const rel = path.startsWith('/') ? path.slice(1) : path;   // {bid}/{idx}.json
+  // 基地址与路径成对：OSS bucket 前缀 book_chapters/（dp_sync_oss_chapters 上传，无 backend/data）；
+  // jsDelivr 镜像 git 仓库 → 保留 backend/data/book_chapters/ 前缀；本地 dev 走 vite public junction
   const tries = CDN_BASES.length > 1
-    ? [CDN_BASES[0], CDN_BASES[0], CDN_BASES[1]]   // OSS → OSS 重试 → jsDelivr
-    : CDN_BASES;                                    // 本地 dev 单 base
+    ? [
+        `${CDN_BASES[0]}/book_chapters/${rel}`,            // OSS
+        `${CDN_BASES[0]}/book_chapters/${rel}`,            // OSS 重试
+        `${CDN_BASES[1]}/backend/data/book_chapters/${rel}`,  // jsDelivr 兜底
+      ]
+    : [`${CDN_BASES[0]}/backend/data/book_chapters${path}`];   // 本地 dev 单 base
   for (let i = 0; i < tries.length; i++) {
     try {
-      const resp = await fetch(`${tries[i]}/backend/data/book_chapters${path}`, { signal: AbortSignal.timeout(CDN_TIMEOUTS[i] || 2000) });
+      const resp = await fetch(tries[i], { signal: AbortSignal.timeout(CDN_TIMEOUTS[i] || 2000) });
       if (resp.ok) return resp;
       lastErr = new Error('HTTP ' + resp.status);
     } catch (e) { lastErr = e; }
