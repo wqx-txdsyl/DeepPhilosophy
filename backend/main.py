@@ -2105,7 +2105,7 @@ threading.Thread(target=_warmup, daemon=True).start()
 import shutil as _shutil
 
 @app.post("/api/upload")
-async def api_upload(file: UploadFile = File(...), _g: dict = Depends(upload_guard)):
+async def api_upload(file: UploadFile = File(...), _g: dict = Depends(guard.upload_guard)):
     """上传附件 → 文本内容（供对话上下文使用）
     .md/.txt → 直接读; 其他文档 → markitdown 转 md; 图片 → Agnes 视觉识图
     2026-08-14 加固: 限流（guard.upload_guard）+ 文件名消毒（防路径穿越写临时目录）"""

@@ -46,12 +46,13 @@ _buckets = {}
 _buckets_lock = threading.Lock()
 
 
-def _bucket(key, rate, burst):
+def _bucket(name, key, rate, burst):
+    """按 (名称, key) 隔离的令牌桶——agent 与 upload 各自的额度互不挤占"""
     with _buckets_lock:
-        b = _buckets.get(key)
+        b = _buckets.get((name, key))
         if b is None:
             b = _Bucket(rate, burst)
-            _buckets[key] = b
+            _buckets[(name, key)] = b
         return b
 
 
@@ -105,7 +106,7 @@ def agent_guard(request: Request, authorization: str = Header(None)):
     user = resolve_user(authorization)
     current_user.set({"id": user["id"] if user else None, "ip": ip})
     key = f"u{user['id']}" if user else f"ip:{ip}"
-    if not _bucket(key, AGENT_RATE, AGENT_BURST).consume():
+    if not _bucket("agent", key, AGENT_RATE, AGENT_BURST).consume():
         raise HTTPException(status_code=429, detail="请求过于频繁，请稍后再试")
     if not _quota_ok(key, AGENT_QUOTA_USER if user else AGENT_QUOTA_ANON):
         raise HTTPException(status_code=429, detail="今日对话额度已用完，请明日再试")
@@ -118,7 +119,7 @@ def upload_guard(request: Request, authorization: str = Header(None)):
     user = resolve_user(authorization)
     current_user.set({"id": user["id"] if user else None, "ip": ip})
     key = f"u{user['id']}" if user else f"ip:{ip}"
-    if not _bucket(key, UPLOAD_RATE, UPLOAD_BURST).consume():
+    if not _bucket("upload", key, UPLOAD_RATE, UPLOAD_BURST).consume():
         raise HTTPException(status_code=429, detail="上传过于频繁，请稍后再试")
     return user
 

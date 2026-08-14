@@ -507,8 +507,8 @@ def login(username: str, password: str) -> dict:
             (row["id"],),
         )
         conn.commit()
-        # 备份DB到GitHub（保留登录状态）
-        _sync_db_to_github()
+        # 备份DB到GitHub已禁用（2026-08-14 P0: 整库上传第三方存储 + last-writer-wins 丢数据）;
+        # 原 _sync_db_to_github() 保留作历史参考, 勿再启用
         conn.commit()
 
         return {

@@ -29,9 +29,9 @@ if sys.platform == "win32":
 
 import oss2
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))            # PhiAgent/backend
-ROOT = os.path.dirname(BASE)                                                   # PhiAgent
-DP_IMG = os.path.join(ROOT, "..", "DeepPhilosophy", "backend", "data", "book_images")  # 源（生产真身）
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))            # backend/
+ROOT = os.path.dirname(BASE)                                                   # 仓库根（2026-08-14 合并后即 DeepPhilosophy）
+DP_IMG = os.path.join(ROOT, "backend", "data", "book_images")                  # 源（生产真身）
 
 
 def load_env(path):
