@@ -372,8 +372,17 @@ def _suggest_next(tool_log, message, agent="general", language="zh"):
             break
     if not topic:
         topic = (message or "").strip()
-    topic = topic[:24].rstrip("？?！!。，,、 ")
-    if len(topic) < 4:
+    topic = topic.strip('""''""「」《》【】()（） 　')   # 剥引号/括号/空白
+    # 2026-08-14: 主题过长时在自然断点截断——长句主题会让建议模板感过强
+    if len(topic) > 12:
+        cut = None
+        for sep in ("，", "、", " ", "的", "是", "和", "与", "在", "：", ":"):
+            idx = topic.find(sep)
+            if 4 <= idx <= 14:
+                cut = idx
+                break
+        topic = topic[:cut] if cut is not None else topic[:12]
+    if len(topic) < 2:
         topic = "这个话题"
     t = f"「{topic}」"
     en = language == "en"
@@ -420,9 +429,16 @@ def _suggest_next(tool_log, message, agent="general", language="zh"):
         if agent != "general":
             sugg += ["让我从另一个时期的角度回答（早/中/晚期）", "把《快乐的科学》相关原文给我"]
         if not sugg:
-            sugg = [f"让两位哲学家就 {t} 辩论",
-                    f"把 {t} 相关的概念画成思维导图",
-                    f"围绕 {t} 写一篇哲学作文"]
+            # 默认池按主题哈希轮换, 避免每次都是同一组模板（2026-08-14）
+            seed = sum(ord(c) for c in topic) % 2
+            if seed == 0:
+                sugg = [f"让两位哲学家就 {t} 辩论",
+                        f"把 {t} 相关的概念画成思维导图",
+                        f"围绕 {t} 写一篇哲学作文"]
+            else:
+                sugg = [f"就 {t} 与另一位哲学家隔空对质",
+                        f"追溯 {t} 在哲学史中的时间线",
+                        f"对 {t} 做一次论证结构分析"]
     seen, out = set(), []
     for s in sugg:
         if s not in seen:
@@ -509,8 +525,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     tool_log = []
     config = {"recursion_limit": 18}
     pending = {"text": "", "has_tools": False, "reasoned": False, "started": set()}   # 当前 agent 轮缓冲
-    tools_announced = False   # 本轮已发 tool_start（2026-08-14: 跟踪"宣告但未执行"的截断调用）
-    tools_executed = False    # 本轮工具已实际执行
+    pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具名（2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
     reasoning_text = ""   # 累积推理链（o1 风格摘要用）
     async def flush_agent():
@@ -539,11 +554,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # 工具调用帧（content 为空）→ 标记本轮有工具, 并立即发"调用中"事件（CC 风格: 先显示再执行）
                 if chunk.tool_call_chunks:
                     pending["has_tools"] = True
-                    tools_announced = True
                     for tcc in chunk.tool_call_chunks:
                         nm = tcc.get("name")
                         if nm and nm not in pending.get("started", ()):
                             pending.setdefault("started", set()).add(nm)
+                            pending_tools.add(nm)
                             yield {"type": "tool_start", "name": nm}
                 elif chunk.content:
                     # 只累积本轮文本——归属（思考 or 回答）在轮结束 flush 时决定:
@@ -580,19 +595,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                  "thought": f"执行 {name}"})
                 yield {"type": "tool", "name": name, "args": args,
                        "result": str(result)[:300], "thought": f"执行 {name}"}
-                # 本轮工具已处理完 → 重置宣告标记（下一 agent 轮重新计; 2026-08-14）
-                tools_announced = False
-                tools_executed = False
+                # 本轮工具已处理完 → 清空待执行标记（下一 agent 轮重新计; 2026-08-14）
+                pending_tools.clear()
         # 最终 flush: 最后一轮 agent 输出（最终回答）在 done 前以打字机发出（XML 标记已剥离）
         async for ev in flush_agent():
             yield ev
         pending = {"text": "", "has_tools": False, "reasoned": False}
-        # 硬上限截断的已宣告工具调用（宣告了 tool_start 但最终被丢弃未执行）→ 补发说明事件,
-        # 避免前端停留在"调用中"且用户误以为工具会返回结果（2026-08-14）
-        if tools_announced and not tools_executed:
-            yield {"type": "tool", "name": "（检索上限）", "args": {},
-                   "result": "已达检索上限：本次宣告但未执行的调用已跳过，已基于已有材料直接回答。",
-                   "thought": "检索上限"}
+        # 被截断的已宣告工具调用（宣告了 tool_start 但最终未执行, 如硬检索上限二次强制轮）:
+        # 逐名发 tool_cancel, 前端据此解除对应"调用中"卡片（2026-08-14）
+        for nm in sorted(pending_tools):
+            yield {"type": "tool_cancel", "name": nm, "reason": "检索已达上限，该调用未执行"}
         # 最终回答校验: 剥离工具标记后为空 → 强制兜底生成正文（硬上限轮 LLM 可能只输出标记无正文）
         if not _strip_markers(full_answer):
             try:

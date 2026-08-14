@@ -490,6 +490,13 @@ function ChatTab({ agent = 'general', questions = [] }) {
             events: m.events.map(ev =>
               ev.t === 'tool_start' && ev.name === evt.name ? { t: 'tool', tc: { name: evt.name, args: evt.args, result_summary: evt.result, thought: evt.thought } } : ev),
           } : m));
+        } else if (evt.type === 'tool_cancel') {
+          // 工具调用被截断未执行（如检索上限）→ 解除对应"调用中"卡片（2026-08-14）
+          setMessages(prev => prev.map(m => m.msgId === msgId ? {
+            ...m,
+            events: m.events.map(ev =>
+              ev.t === 'tool_start' && ev.name === evt.name ? { t: 'tool_cancel', name: evt.name, reason: evt.reason || '未执行，已跳过' } : ev),
+          } : m));
         } else if (evt.type === 'token') {
           finalContent += evt.content;
           // 回答开始: 未固化的思考先入时间线, 再追加回答文本
@@ -505,7 +512,8 @@ function ChatTab({ agent = 'general', questions = [] }) {
             suggestions: evt.suggestions || [],
             safety: evt.safety || null,
             content: evt.safety === 'blocked' && evt.safety_reply ? evt.safety_reply : m.content,
-            events: m.curThought ? [...m.events, { t: 'thought', text: m.curThought }] : m.events,
+            events: (m.curThought ? [...m.events, { t: 'thought', text: m.curThought }] : m.events).map(ev =>
+              ev.t === 'tool_start' ? { t: 'tool_cancel', name: ev.name, reason: '未执行，已跳过' } : ev),   // 兜底解除残留"调用中"卡片
             curThought: null, streaming: false,
           } : m));
         } else if (evt.type === 'error') {
@@ -601,6 +609,15 @@ function ChatTab({ agent = 'general', questions = [] }) {
               <span style={{ width: 13, height: 13, borderRadius: '50%', border: '2px solid var(--border)',
                              borderTopColor: 'var(--accent)', animation: 'spin 0.8s linear infinite' }} />
               {t('calling')} {toolLabel(ev.name)}…
+            </div>
+          </div>
+        ) : ev.t === 'tool_cancel' ? (
+          <div key={i} style={{ margin: '6px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px',
+                          border: '1px dashed var(--border)', borderRadius: 8, background: 'var(--card-bg)',
+                          fontSize: 12.5, color: 'var(--text-dim)' }}>
+              <span style={{ color: 'var(--accent)', fontSize: 14 }}>⊗</span>
+              {toolLabel(ev.name)} — {ev.reason || '未执行，已跳过'}
             </div>
           </div>
         ) : (
