@@ -61,7 +61,14 @@ export default defineConfig(({ mode }) => ({
         '**/public/schools/**',
         '**/public/gene/**',
         '**/public/icons/**',
+        // 2026-08-14: 忽略编辑器原子写临时文件（.tmpdir/*.tmp）——否则 Windows 原生
+        // watcher 对锁定中的临时文件报 EBUSY 直接崩溃 dev server
+        '**/.tmpdir/**',
+        '**/*.tmp',
+        '**/.*.tmp*',
       ],
+      // Windows 稳定性兜底: 轮询模式绕开原生 fs.watch 的 EBUSY 崩溃（被忽略目录不轮询, 开销小）
+      usePolling: true,
     },
     headers: {
       // dev 必须 no-cache: max-age=3600 会让浏览器缓存模块 1 小时（改代码后 F5 拿旧代码）
