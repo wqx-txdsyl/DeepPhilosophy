@@ -403,7 +403,7 @@ function ChatTab({ agent = 'general', questions = [] }) {
     if (nodes.length) {
       import('mermaid').then((mod) => {
         const mermaid = mod.default || mod;
-        mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
+        mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'strict' });   // 2026-08-14: loose→strict 防 mermaid XSS（LLM 生成代码可含 HTML/javascript:）
         return mermaid.run({ nodes });
       }).catch(() => {});
     }

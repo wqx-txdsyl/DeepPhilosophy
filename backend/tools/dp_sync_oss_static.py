@@ -33,9 +33,9 @@ if sys.platform == "win32":
 
 import oss2
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))            # PhiAgent/backend
-ROOT = os.path.dirname(BASE)                                                   # PhiAgent
-DP_PUBLIC = os.path.join(ROOT, "..", "DeepPhilosophy", "app", "public")        # 源（生产真身）
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))            # backend/
+ROOT = os.path.dirname(BASE)                                                   # 仓库根（2026-08-14 合并后即 DeepPhilosophy）
+DP_PUBLIC = os.path.join(ROOT, "app", "public")                                # 源（生产真身）
 
 # 同步清单: (本地相对路径, OSS key)
 SOURCES = [
@@ -54,7 +54,7 @@ DIRS = [
     ("schools", "schools"),
     ("gene", "gene"),
     # 构建产物（vite base 生产指向 OSS app/assets/, 构建后必须同步, 否则 JS 404）
-    (os.path.join(ROOT, "..", "DeepPhilosophy", "app", "dist", "assets"), "app/assets"),
+    (os.path.join(ROOT, "app", "dist", "assets"), "app/assets"),
     # 书籍详情 JSON（2026-08-12 详情页提速: 前端双轨 OSS 优先 → 同源回退）
     ("book_detail", "book_detail"),
 ]

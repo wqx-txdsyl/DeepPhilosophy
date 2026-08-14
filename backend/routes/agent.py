@@ -731,31 +731,8 @@ SYSTEM_PROMPT = """你是"深哲"（PhiAgent）——一个严谨的哲学智能
 3. 观察：根据工具返回结果继续思考，直到信息充分。
 4. 最终：输出完整回答。信息不足时继续调用工具，绝不凭记忆编造。
 
-## 可用工具（23 个）
-- search_books: 全书全文检索（query 关键词, limit 可选）——查概念/原文/出处，命中返回书名+章节+片段
-- get_chapter: 读指定书某章全文（book_id, chapter_idx）——深入引用原文（chapter_idx 范围 0~chapterCount-1，先用 get_book_detail 查章节数）
-- get_book_detail: 查书详情（book_id: 简介/作者/目录/章节数）
-- list_books: 书单筛选（author/region/school 可选）——推荐阅读
-- query_graph: 哲学家星丛（philosopher 姓名）——师承/影响/论敌/思想关联
-- get_philosopher: 哲人生平（name: 时期/流派/代表作/简介）
-- get_school: 哲学流派详情（name: 如 存在主义/儒家/分析哲学）——流派介绍/代表哲人/时间线
-- compare_views: 对比两位哲学家/概念的观点（a, b）——检索双方原典后分析异同, 自动配对比图
-- write_essay: 根据题目写哲学作文（topic, genre 议论文/读后感, word_count, extra）——检索原典带引用
-- phti_test: 哲学人格测试（出 5 道维度题）——判断哲学倾向
-- philosopher_debate: 组织多位哲学家就一个论题进行多轮辩论（topic, speakers, rounds）——自动配辩论图
-- thought_experiment: 设计/推演思想实验（base: 如 电车难题/洞穴比喻）
-- advisor_council: 智者内阁（question）——亚里士多德/斯多葛/存在主义多视角建议
-- paper_review: 评审作文/论文（text）——论点/论证/引用/改进建议
-- socratic_tutor: 苏格拉底式追问（topic, rounds）——不直接给答案, 多轮追问挑战假设
-- analyze_argument: 论证结构分析（text）——拆结论/前提/隐含假设/谬误/强化建议
-- concept_trace: 概念溯源（concept）——概念在 403 本原典中的出现分布与原文片段
-- profile: 个性化哲学画像（question）——分析倾向, 推荐真实书目与下一步方向
-- conceptual_map: 概念脑图（concept）——概念与哲学家/流派/著作的 ASCII 关联树
-- generate_image: 生成哲学概念图像（prompt: 中文描述即可, size/ratio 可选）——生成后以 ![](/agent_images/xxx.png) 引用图片
-- websearch: 上网搜索（维基百科中文摘要）——补充原典库之外的信息
-- query_database: 通用数据库查询（books/philosophers/network/schools）——查结构化数据
-- role_play: 扮演哲学家（当前仅尼采, 人格/记忆层）——以尼采第一人称回答, 自动召回相关生平记忆
-- 读操作工具无副作用，可放心调用。
+## 可用工具
+（工具清单由 TOOLS 注册表在模块加载时自动生成, 见文件末尾——不再手写, 防清单漂移）
 
 ## 铁律
 1. 凡涉及具体哲学主张/概念/出处，必须先调用 search_books 或 get_chapter 检索原文，用真实原文支撑，不得凭记忆编造引文。
@@ -976,6 +953,8 @@ def parse_tool_calls(msg):
 
 
 @router.post("/api/agent/chat")
+# DEPRECATED（2026-08-14 标记）: 旧同步 ReAct 引擎, 前端已只用 /api/agent/stream_lg（LangGraph）。
+# 保留作回滚备胎; 确认 stream_lg 稳定后删除（含 agent_stream 与同步循环助手, 仅保留 llm_chat/TOOLS）。
 async def agent_chat(req: AgentChatRequest, _g: dict = Depends(guard.agent_guard)):
     if not API_KEY:
         return AgentChatResponse(reply="服务端未配置 DEEPSEEK_API_KEY", citations=[], tool_calls=[])
@@ -1535,6 +1514,8 @@ def llm_stream(messages, temperature=0.7, max_tokens=2000, thinking=False):
                     continue
 
 @router.post("/api/agent/stream")
+# DEPRECATED（2026-08-14 标记）: 旧自研流式引擎（{TOOL:} JSON 协议）, 前端已只用 stream_lg。
+# 与 agent_chat 一起在确认 stream_lg 稳定后删除。
 async def agent_stream(req: AgentChatRequest, _g: dict = Depends(guard.agent_guard)):
     """流式 agent: 思考模式（思维链实时）+ JSON 工具协议（{TOOL:...}, 无 function calling 格式 400 风险）"""
     def extract_tool_call(content):
@@ -2404,3 +2385,11 @@ async def api_drawio(req: dict):
     if not xml:
         return {"error": "无法转换为 draw.io 格式"}
     return {"xml": xml}
+
+# ═══════════════════════════════════════════════════════
+# 工具清单程序化生成（2026-08-14: 消除手写清单漂移——曾"23 个" vs 注册表 30 个）
+# ═══════════════════════════════════════════════════════
+_SYS_TOOL_LIST = "\n".join(f"- {n}: {TOOLS[n]['description'][:90]}" for n in TOOLS)
+SYSTEM_PROMPT = SYSTEM_PROMPT.replace(
+    "## 可用工具\n（工具清单由 TOOLS 注册表在模块加载时自动生成, 见文件末尾——不再手写, 防清单漂移）",
+    f"## 可用工具（{len(TOOLS)} 个）\n{_SYS_TOOL_LIST}\n- 读操作工具无副作用，可放心调用。")
