@@ -382,19 +382,43 @@ function ChatTab({ agent = 'general', questions = [] }) {
   };
 
   // 登录后加载服务器端聊天历史（后端返回 {"messages": [...]}）
+  // 2026-08-14: 未登录不再 setMessages([])——改为本地缓存兜底, 否则重启/刷新即丢对话
   useEffect(() => {
     if (token) {
       authFetch('/api/history/chat').then(d => {
         const list = d.messages || d.history || [];
         if (list.length) {
-          setMessages(list.map(h => ({ role: h.role === 'user' ? 'user' : 'assistant', content: h.content })));
+          const msgs = list.map(h => ({ role: h.role === 'user' ? 'user' : 'assistant', content: h.content }));
+          setMessages(msgs);
+          try { localStorage.setItem(msgKey(agent), JSON.stringify(msgs)); } catch {}
         }
       }).catch(() => {});
-    } else {
-      setMessages([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
+
+  // ── 对话本地持久化（2026-08-14: 此前仅内存态, 后端重启/页面刷新即丢; 按智能体分开存）──
+  const msgKey = (a) => `dp_agent_msgs_${a}`;
+  // 恢复: 从 localStorage 恢复最近会话（云端历史优先, 见上方 token 效果）
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(msgKey(agent));
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length) setMessages(parsed);
+      }
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [agent]);
+  // 保存: 流式结束后落盘（只存 role/content, 事件时间线不存, 防 localStorage 膨胀）
+  useEffect(() => {
+    if (!messages.length) return;
+    if (messages.some(m => m.streaming)) return;
+    try {
+      localStorage.setItem(msgKey(agent), JSON.stringify(messages.map(m => ({ role: m.role, content: m.content }))));
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
