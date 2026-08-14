@@ -1,77 +1,38 @@
-# DeepPhilosophy「深哲」
+# DeepPhilosophy「深哲」× PhiAgent
 
-> 横跨五千年的人类思想史长卷 —— 402 部哲学经典 · 744 位哲学家 · 111 个哲学流派
+> 横跨五千年的人类思想史长卷 —— 402 部哲学经典 · 744 位哲学家 · 111 个哲学流派 · 一个能对话、思辨、创作的哲学智能体
 
-**DeepPhilosophy（深哲）** 是一个开放的哲学知识平台：从古埃及到当代，从东方到西方，我们把人类思想史上最重要的原典、人物与流派组织成一个可以**阅读、探索、对话**的数字世界。全部内容免费开放，无需注册即可阅读。
-
-👉 **立即访问：[deepphilosophy.top](https://deepphilosophy.top)**
+**单仓库双应用**（2026-08-14 合并）：`app/` 是开放的哲学知识平台（阅读/探索/问答，生产部署在 [deepphilosophy.top](https://deepphilosophy.top)）；`agent-app/` + `backend/` 是哲学智能体平台（LangGraph 驱动的「深哲」与由 AIAuthor 六库数字人格构建的「尼采」）；`backend/tools/` 承载 402 部原典的数字化工序（导入/OCR/章节重建/向量化/同步）。
 
 ---
 
-## 📖 你能在这里做什么
+## 📖 平台功能（deepphilosophy.top）
 
-### 1. 在线阅读 402 部哲学经典
+- **402 部哲学经典在线阅读**：312 本结构化章节 + 书内插图，章节走 OSS/jsDelivr 双轨 CDN（秒开级加载），阅读中可 AI 批注、与书对话
+- **744 位哲学家 / 111 个流派**：肖像画廊（地区/流派/时代筛选）、流派谱系时间轴、思想星丛关系网络、概念跨书溯源
+- **AI 问答**：DeepSeek 流式对话（思考过程可见）、深度思考模式、支持自配 API Key 直连
+- **思想游戏**：答案之书、PHTI 哲学人格测试
+- **账号云同步（可选）**：阅读进度/对话/批注跨设备；PWA 可安装为桌面应用
 
-- **402 部经典著作**：312 本可直接在线阅读（结构化章节 + 书内插图），90 本 TXT 占位待收录
-- 收录范围横跨中西：柏拉图、亚里士多德、康德、尼采、萨特、马克思…以及中国哲学诸子与东方思想
-- **秒开级加载**：章节数据走全球 CDN 双轨加速（OSS + jsDelivr 自动切换），翻页几乎零等待
-- **AI 批注**：阅读中随时选中提问、写批注，与书对话
+## 🤖 智能体平台（PhiAgent）
 
-### 2. 探索 744 位哲学家与 111 个流派
+- **深哲（通用）**：29 工具全量——原典检索/思辨（苏格拉底追问、辩论、流派 PK）/写作/疏导/生图/概念脑图
+- **尼采（哲学家）**：AIAuthor 六库数字人格（23 本著作 6488 chunks 语料、1296 实体知识图谱、564 条记忆、早/中/晚期人格快照）——以本人人格思考作答，引文全部来自真实原典
+- **流式体验**：思考流逐字流出 → 并行工具调用卡片 → o1 风格推理摘要 → 出处【《书名》·章节】点击跳转原典阅读器
+- **评估与护栏**：四维评估基准、安全护栏（拦教唆不拦批判）、请求监控 JSONL、话题延续建议
 
-- **哲学家画廊**：744 位哲学家肖像与生平，支持地区/流派/时代筛选，AI 评分排序
-- **流派谱系**：111 个哲学流派的完整谱系——六大时代时间轴（博物馆级视觉），每个流派含概述、代表哲人、时间线、著作
-- **思想星丛**：哲学家之间的师承/影响/论敌关系网络，看思想如何在人与人之间流动
-- **概念溯源**：一个概念的跨书演变轨迹
-
-### 3. 与 AI 讨论哲学
-
-- **流式哲学问答**：基于 DeepSeek 的实时流式对话，思考过程可见
-- **深度思考模式**：复杂问题开启更长推理链
-- 支持**自配 API Key**（设置页）直连，随时可用
-
-### 4. 思想游戏
-
-- **答案之书**：随手一翻，哲人箴言回应你的问题
-- **PHTI 哲学人格测试**：5 题维度，测出你的哲学人格画像
-
-### 5. 账号与云端同步（可选）
-
-- 注册登录后，**阅读进度、对话历史、AI 批注**全部云端同步，换设备不丢
-- 登录即用，无需付费
-
-### 6. 安装为桌面/手机应用（PWA）
-
-浏览器打开网站即可"安装"成独立应用——有专属图标（金色哲学徽章）、独立窗口、离线可用外壳。Chrome/Edge 地址栏右侧安装按钮，或菜单 →「安装 DeepPhilosophy」。
-
----
-
-## 📊 数据规模（2026-08 实测快照）
-
-| 类别 | 数量 |
-|---|---|
-| 经典著作 | 402 部（312 可读 + 90 TXT 占位） |
-| 哲学家 | 744 位 |
-| 哲学流派 | 111 个 |
-| 书内插图 | 数千张（WebP 优化） |
-
----
-
-## 🏗 技术架构（简要）
+## 🏗 技术架构
 
 ```
-浏览器 ──→ Cloudflare Pages（静态前端）── 章节：OSS CDN 优先 + jsDelivr 兜底
-                                        └── 图片：阿里云 OSS CDN
-                                        └── API：Cloudflare Workers（Hono + D1）
+浏览器 ──→ Cloudflare Pages（平台前端）── 章节：OSS CDN 优先 + jsDelivr 兜底
+                                      └── API：Cloudflare Workers（auth + api，D1）
+本地 ──→ agent-app（Vite :5201）── backend（FastAPI :8011，智能体 + 书库工具）
 ```
 
-- **前端**：React 19 + Vite，全静态托管于 Cloudflare Pages，推送即部署
-- **API**：Cloudflare Workers 双 worker（auth 认证 + api 业务），D1 数据库，零冷启动
-- **章节**：结构化 JSON + OSS/jsDelivr 双轨 CDN（2s 超时自动切换）
-- **AI**：DeepSeek 流式（服务器中转 + 用户自配 key 直连双路径）
-- **零传统服务器**：无 VPS，无订阅成本，CDN 全免费层级
-
----
+- **平台生产**：React 19 + Vite → Cloudflare Pages；API 全在 Workers（Hono + D1），零传统服务器
+- **智能体**：LangGraph 流式编排（`backend/engine_langgraph.py`）+ DeepSeek thinking 模式
+- **数据流（单向）**：`backend/tools/` 构建/修复 → `backend/data/book_chapters`（git 跟踪，唯一章节源）→ CDN 分发 → 前端只读
+- **数据库**：生产 = D1（`deepphilosophy-db`）；本地开发 = SQLite（同 schema，见 `backend/DATABASE.md`）
 
 ## 🛠 本地开发
 
@@ -79,45 +40,60 @@
 git clone git@github.com:wqx-txdsyl/DeepPhilosophy.git
 cd DeepPhilosophy
 
-# 前端（localhost:5173）
+# 后端（智能体 + 平台 API，端口 8011；Python 3.12+，依赖见 requirements.txt）
+python -m pip install -r requirements.txt
+cd backend && python main.py
+
+# 平台前端（localhost:5173）
 cd app && npm install && npm run dev
 
-# Workers API 本地调试（需 wrangler 登录）
-cd workers/auth && npm install && npx wrangler dev
-cd workers/api && npm install && npx wrangler dev
+# 智能体前端（localhost:5201）
+cd agent-app && npm install && npm run dev
 ```
 
-生产构建：`cd app && npm run build`（产物在 `app/dist/`，推送 master 即触发 Cloudflare Pages 自动部署）。
+## 🚀 部署（平台生产）
 
-**数据侧说明**：书籍/哲学家/流派数据以 `app/public/` 为唯一数据源（git 全量跟踪）；章节数据 `backend/data/book_chapters/` 为 git 跟踪源，经 CDN 分发；书库构建/修复/OCR 流水线在 [PhiAgent](https://github.com/wqx-txdsyl/PhiAgent) 仓库。
+1. `git push origin master` → Cloudflare Pages 自动构建 `app/`
+2. CF 构建完成后同步构建产物到 OSS（**每次改了 `app/` 源码都需要**）：
+   ```bash
+   python backend/tools/dp_grab_cf_assets.py https://deepphilosophy.pages.dev --upload
+   ```
+   管线自带完整性校验（抓取重试 + 上传后逐引用校验，缺失即报错）。
+3. 纯 `backend/`、`data/`、`tools/` 改动**无需**同步 OSS（commit hash 已解耦，仅影响章节 CDN 引脚，随构建自动更新）。
 
----
+## 📁 项目结构
 
-## 📁 项目结构（2026-08-14 合并 PhiAgent 后）
+完整文件树见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)（由 `backend/tools/gen_structure.py` 生成）。
 
 ```
 DeepPhilosophy/
-├── app/                    # React 前端（平台，Cloudflare Pages 构建根）
+├── app/                    # 平台前端（React + Vite，Cloudflare Pages 构建根）
 │   ├── src/                # 页面/组件/数据层/工具
-│   └── public/             # 数据与静态资源（books.json、philosophers.json、book_detail/、covers/、philosopher/、schools/…）
-├── agent-app/              # PhiAgent 智能体前端（本地 Vite :5201，public/ 为本地工作副本不入库）
-├── backend/                # ★ 统一 Python 后端（FastAPI :8011，智能体 + 平台 API）
-│   ├── main.py             # 入口（智能体路由 + 书库 API + SPA）
-│   ├── routes/agent.py     # 智能体工具集 + SSE（29 工具 + 尼采人格）
-│   ├── engine_langgraph.py # LangGraph 流式引擎
-│   ├── agents.py           # 智能体注册表（深哲 / 尼采）
-│   ├── tools/              # 书库构建/修复/同步/OCR/向量全套工具（34+）
-│   └── data/               # 章节源（git 跟踪，CDN 读这份）+ 运行时数据（gitignore）
-├── data/ai_author/         # AIAuthor 六库数字人格数据（1.6GB，不入库）
+│   └── public/             # 数据与静态资源（git 全跟踪，前端唯一数据源）
+├── agent-app/              # 智能体前端（本地 Vite :5201；public/ 为工作副本不入库）
+├── backend/                # ★ 统一 Python 后端（FastAPI :8011）
+│   ├── main.py             # 入口（智能体路由 + 书库 API + 上传 + SPA）
+│   ├── routes/agent.py     # 29 工具注册表 + stream_lg(LangGraph) + cite（旧引擎已删）
+│   ├── engine_langgraph.py # LangGraph 流式编排（深哲/尼采）
+│   ├── agents.py           # 智能体注册表（nietzsche 人格包 → data/ai_author）
+│   ├── guard.py            # 端点鉴权/限流/每日配额 + per-user 上下文
+│   ├── tools/              # 书库构建/修复/同步/OCR/向量全套工具（含部署管线）
+│   ├── data/               # 章节源（git 跟踪，CDN 读这份）+ 运行时数据（gitignore）
+│   └── DATABASE.md         # 数据库规范（D1 = 生产唯一源）
+├── data/ai_author/         # AIAuthor 六库数字人格数据（1.6GB，不入库，仅本地）
 ├── workers/                # Cloudflare Workers API（auth + api，Hono + D1）
-└── .github/workflows/      # CI（Pages 构建 + 数据一致性检查）
+└── .github/workflows/      # CI
 ```
 
-**数据流（单向）**：`backend/tools/` 构建/修复 → `backend/data/book_chapters`（git 跟踪，唯一章节源）→ jsDelivr/OSS CDN 分发 → `app/` 与 `agent-app/` 前端只读。生产 API 走 Cloudflare Workers（D1）；Python 后端服务智能体与本地开发。
+## 📊 数据规模（2026-08 快照）
 
-完整技术细节见 [.claude/CLAUDE.md](.claude/CLAUDE.md)（项目规范）与 [PhiAgent](https://github.com/wqx-txdsyl/PhiAgent)（书库构建引擎）。
-
----
+| 类别 | 数量 |
+|---|---|
+| 经典著作 | 402 部（312 可读 + 90 TXT 占位） |
+| 哲学家 | 744 位 |
+| 哲学流派 | 111 个 |
+| 章节 | 12210 个（312 本书） |
+| AIAuthor 尼采语料 | 23 本著作 · 6488 chunks · 1296 实体图谱 · 564 条记忆 |
 
 ## 开发者
 

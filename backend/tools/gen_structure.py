@@ -16,12 +16,10 @@ FOLD = 30                     # 目录直接子条目超过此数折叠为计数
 ALWAYS_EXPAND = {'tools', 'scripts'}     # 脚本清单强制全列
 ALWAYS_FOLD = {'ai_author', 'book_chapters', 'book_detail', 'book_images', 'embeddings', '_tmp'}  # 数据大目录强制折叠
 
-# (仓库名, 根路径, 段标题) — 各自生成独立 PROJECT_STRUCTURE.md
+# (仓库名, 根路径, 段标题) — 2026-08-14 PhiAgent 已并入, 单仓库一份结构图
 REPOS = [
-    ('PhiAgent', r'F:\program\Python\PhiAgent',
-     '一、PhiAgent 仓库 — 本地工作侧 (backend/data 与 app/public 不入库; 2026-08-11 新建私有远端)'),
     ('DeepPhilosophy', r'F:\program\Python\DeepPhilosophy',
-     '二、DeepPhilosophy 仓库 — 生产真身 (git push GitHub / CDN / Vite 5173)'),
+     'DeepPhilosophy × PhiAgent 合并后单仓库（2026-08-14: 平台 + 智能体 + 书库工具）'),
 ]
 
 
@@ -31,7 +29,7 @@ FILE_NOTES = {
     'backend/main.py': '云端 API 服务器（书籍/文件/RAG/作者/用户/历史）',
     'backend/admin.py': '开发者管理后台（访问统计 + 用户管理）',
     'backend/agents.py': '智能体注册表（智能体广场）',
-    'backend/auth.py': '用户认证（SQLite + OSS + GitHub Release 备份）',
+    'backend/auth.py': '用户认证（SQLite dev / D1 prod; 整库云备份已禁用 2026-08-14）',
     'backend/config.py': '云端部署配置（全部路径走环境变量）',
     'backend/db.py': '哲学家信息库（JSON 加载 O(1) 查找）',
     'backend/drawio_convert.py': 'mermaid → draw.io XML 转换器',
@@ -49,7 +47,7 @@ FILE_NOTES = {
     'backend/modules/text_processor.py': '文本处理（分词/关键词/摘要）',
     'backend/modules/vector_store.py': '向量库存储与检索（ChromaDB）',
     # backend/routes
-    'backend/routes/agent.py': '哲学智能体核心：工具集 + DeepSeek 编排 + cite 引用定位',
+    'backend/routes/agent.py': '智能体核心：29 工具注册表 + stream_lg(LangGraph) + cite（旧引擎已删）',
     'backend/routes/ai.py': 'AI proxy / RAG QA / ASR 路由',
     'backend/routes/text.py': '文本提取 API（章节索引 + 单章读取，本地优先 OSS 兜底）',
     'backend/routes/health.py': '健康检查与统计',
@@ -313,10 +311,13 @@ def render(path, root, prefix, out):
         rel = os.path.relpath(e.path, root).replace('\\', '/')
         if e.is_dir():
             n = len(list(os.scandir(e.path)))
-            fold = e.name in ALWAYS_FOLD or (n > FOLD and e.name not in ALWAYS_EXPAND)
+            fold = e.name in ALWAYS_FOLD or (n > FOLD and e.name not in ALWAYS_EXPAND) or rel.startswith('agent-app/public')
             line = prefix + conn + e.name + '/'
             if fold:
-                line += '  # ' + fold_comment(e.name, e.path, n)
+                if rel.startswith('agent-app/public'):
+                    line += '  # agent 前端静态数据（本地工作副本, 不入库）'
+                else:
+                    line += '  # ' + fold_comment(e.name, e.path, n)
             else:
                 note = note_for(rel, e.name, True)
                 if note:
