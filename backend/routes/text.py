@@ -191,7 +191,7 @@ async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
             return json.load(f)
 
     # 从书籍列表获取路径
-    from main import scan_books
+    from services.book_scanner import scan_books
     books = scan_books()
     book = next((b for b in books if b["id"] == book_id), None)
     if not book:

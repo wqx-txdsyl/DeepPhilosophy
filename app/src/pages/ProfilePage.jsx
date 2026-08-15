@@ -10,7 +10,7 @@ import Icon from '../components/Icon';
 import AvatarUpload from '../components/AvatarUpload';
 import { useToast } from '../contexts/ToastContext';
 import {
-  getReadingHistory, clearChatHistory,
+  getReadingHistory,
   getAllUserData, relativeTime,
 } from '../data/userData';
 import { getSessions, deleteSession } from '../data/chatSessions';
@@ -49,7 +49,7 @@ function ProfilePage() {
   const toast = useToast();
   const [tab, setTab] = useState('reading');
   const [readingHistory, setReadingHistory] = useState([]);
-  const [chatHistory, setChatHistory] = useState([]);
+  const [, setChatHistory] = useState([]);
   const [chatSessions, setChatSessions] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -279,23 +279,6 @@ function ProfilePage() {
       } catch {}
     } catch {}
     setSyncing(false);
-  };
-
-  const handleClearChat = () => {
-    // Use browser confirm for destructive action (with toast feedback after)
-    if (window.confirm('确定清空所有聊天历史？此操作不可撤销。')) {
-      clearChatHistory();
-      if (loggedIn) {
-        const token = localStorage.getItem('dp_token');
-        fetch(`${getApiBase()}/api/history/chat`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` },
-        }).catch(() => {});
-      }
-      setChatHistory([]);
-      setChatSessions([]);
-      toast.success('聊天历史已清空');
-    }
   };
 
   const userData = getAllUserData();

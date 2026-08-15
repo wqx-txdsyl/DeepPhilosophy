@@ -1,6 +1,6 @@
 """用 Agnes 2.0 Flash 图像理解重新定位世界地图坐标"""
 import sys, requests, json, re, os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # scripts/（_lib.py 所在）
 from _lib import get_agnes_key
 
 API = "https://apihub.agnes-ai.com/v1/chat/completions"

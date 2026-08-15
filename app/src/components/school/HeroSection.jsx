@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { FONT, SPACE } from './tokens';
 
-export default function HeroSection({ name, subtitle, quote, quoteAuthor, heroImage, englishName }) {
+export default function HeroSection({ name, quote, quoteAuthor, heroImage, englishName }) {
   const navigate = useNavigate();
   return (
     <section className="school-hero-section" style={{

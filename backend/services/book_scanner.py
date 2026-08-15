@@ -67,7 +67,7 @@ def _scan_books_local() -> list[dict]:
             file_id = hashlib.md5(rel_path.encode()).hexdigest()[:12]
 
             # 书籍分类标签
-            tags = _classify_book(title, author_clean, region)
+            tags = classify_book(title, author_clean, region)
 
             books.append({
                 "id": file_id,
@@ -123,7 +123,7 @@ def _scan_books_local() -> list[dict]:
                 kw_cache = json.load(f)
         except Exception:
             pass
-    summary_cache = _load_summaries_cache()
+    summary_cache = load_summaries_cache()
     for b in books:
         key = b["title"] + "||" + b["author"]
         b["keywords"] = kw_cache.get(key, [])
@@ -134,7 +134,7 @@ def _scan_books_local() -> list[dict]:
             for t in cached_tags:
                 if t not in b["tags"]:
                     b["tags"].append(t)
-    return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
+    return sorted(books, key=lambda b: (book_sort_key(b), b["region"], b["author"], b["title"]))
 
 def _scan_books_oss() -> list[dict]:
     """从阿里云 OSS manifest 重建书籍列表"""
@@ -153,7 +153,7 @@ def _scan_books_oss() -> list[dict]:
         title = TITLE_FIXES.get(title, title)
         ext = os.path.splitext(parts[-1])[1].lower().replace(".", "")
         file_id = hashlib.md5(rel_path.encode()).hexdigest()[:12]
-        tags = _classify_book(title, author, region)
+        tags = classify_book(title, author, region)
         url = entry["url"] if isinstance(entry, dict) else entry
         size = entry.get("size", 0) if isinstance(entry, dict) else 0
         books.append({
@@ -165,7 +165,7 @@ def _scan_books_oss() -> list[dict]:
             "_download_url": url,
         })
     # 附加缓存标签 + TXT 占位
-    summary_cache = _load_summaries_cache()
+    summary_cache = load_summaries_cache()
     for b in books:
         key = b["title"] + "||" + b["author"]
         if key in summary_cache and summary_cache[key].get("tags"):
@@ -186,7 +186,7 @@ def _scan_books_oss() -> list[dict]:
             "tags": entry.get("tags", []),
             "updated_at": datetime.now().isoformat(),
         })
-    return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
+    return sorted(books, key=lambda b: (book_sort_key(b), b["region"], b["author"], b["title"]))
 
 def _scan_books_github() -> list[dict]:
     """从 GitHub Release manifest 重建书籍列表"""
@@ -223,7 +223,7 @@ def _scan_books_github() -> list[dict]:
             download_url = entry
             file_size = 0
 
-        tags = _classify_book(title, author, region)
+        tags = classify_book(title, author, region)
         books.append({
             "id": file_id,
             "title": title,
@@ -239,7 +239,7 @@ def _scan_books_github() -> list[dict]:
         })
 
     # 附加缓存标签
-    summary_cache = _load_summaries_cache()
+    summary_cache = load_summaries_cache()
     for b in books:
         key = b["title"] + "||" + b["author"]
         if key in summary_cache and summary_cache[key].get("tags"):
@@ -274,7 +274,7 @@ def _scan_books_github() -> list[dict]:
             "updated_at": datetime.now().isoformat(),
         })
 
-    return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
+    return sorted(books, key=lambda b: (book_sort_key(b), b["region"], b["author"], b["title"]))
 
 def _scan_books_r2() -> list[dict]:
     """从 Cloudflare R2 列出所有书籍"""
@@ -307,7 +307,7 @@ def _scan_books_r2() -> list[dict]:
             file_id = hashlib.md5(key.encode()).hexdigest()[:12]
             seen_authors.add(author)
 
-            tags = _classify_book(title, author, region)
+            tags = classify_book(title, author, region)
             books.append({
                 "id": file_id,
                 "title": title,
@@ -366,7 +366,7 @@ def _scan_books_r2() -> list[dict]:
                 kw_cache = json.load(f)
         except Exception:
             pass
-    summary_cache = _load_summaries_cache()
+    summary_cache = load_summaries_cache()
     for b in books:
         key = b["title"] + "||" + b["author"]
         b["keywords"] = kw_cache.get(key, [])
@@ -375,7 +375,7 @@ def _scan_books_r2() -> list[dict]:
                 if t not in b["tags"]:
                     b["tags"].append(t)
 
-    return sorted(books, key=lambda b: (_book_sort_key(b), b["region"], b["author"], b["title"]))
+    return sorted(books, key=lambda b: (book_sort_key(b), b["region"], b["author"], b["title"]))
 
 
 def _normalize_books(raw_books):

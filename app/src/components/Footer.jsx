@@ -2,7 +2,6 @@
  * Footer — Apple 式多列布局
  */
 import { useNavigate } from 'react-router-dom';
-import Icon from './Icon';
 
 const columns = [
   {

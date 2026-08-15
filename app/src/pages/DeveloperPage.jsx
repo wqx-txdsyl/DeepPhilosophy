@@ -2,12 +2,9 @@
  * 开发者管理后台 — 访问统计 + 用户管理
  */
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
-import Icon from '../components/Icon';
 
 function DeveloperPage() {
-  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [authed, setAuthed] = useState(false);
   const [loading, setLoading] = useState(false);

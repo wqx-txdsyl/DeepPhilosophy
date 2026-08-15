@@ -1,13 +1,13 @@
 /**
  * 书籍详情页 — 封面 + 章节列表 + 阅读入口
  */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getBookById } from '../data';
 import { getApiBase } from '../App';
 import { useSEO } from '../utils/seo';
-import { cacheGet, cacheSet } from '../data/cache';
+import { cacheSet } from '../data/cache';
 import { getCoverUrl, getCoverOssUrl } from '../data/coverUrls';
 
 function BookDetailPage() {

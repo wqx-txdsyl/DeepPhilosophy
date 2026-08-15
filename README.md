@@ -16,7 +16,7 @@
 
 ## 🤖 智能体平台（PhiAgent）
 
-- **深哲（通用）**：29 工具全量——原典检索/思辨（苏格拉底追问、辩论、流派 PK）/写作/疏导/生图/概念脑图
+- **深哲（通用）**：30 工具全量——原典检索/思辨（苏格拉底追问、辩论、流派 PK）/写作/疏导/生图/概念脑图
 - **尼采（哲学家）**：AIAuthor 六库数字人格（23 本著作 6488 chunks 语料、1296 实体知识图谱、564 条记忆、早/中/晚期人格快照）——以本人人格思考作答，引文全部来自真实原典
 - **流式体验**：思考流逐字流出 → 并行工具调用卡片 → o1 风格推理摘要 → 出处【《书名》·章节】点击跳转原典阅读器
 - **评估与护栏**：四维评估基准、安全护栏（拦教唆不拦批判）、请求监控 JSONL、话题延续建议
@@ -73,7 +73,7 @@ DeepPhilosophy/
 ├── agent-app/              # 智能体前端（本地 Vite :5201；public/ 为工作副本不入库）
 ├── backend/                # ★ 统一 Python 后端（FastAPI :8011）
 │   ├── main.py             # 入口（智能体路由 + 书库 API + 上传 + SPA）
-│   ├── routes/agent.py     # 29 工具注册表 + stream_lg(LangGraph) + cite（旧引擎已删）
+│   ├── routes/agent.py     # 30 工具注册表 + stream_lg(LangGraph) + cite（旧引擎已删）
 │   ├── engine_langgraph.py # LangGraph 流式编排（深哲/尼采）
 │   ├── agents.py           # 智能体注册表（nietzsche 人格包 → data/ai_author）
 │   ├── guard.py            # 端点鉴权/限流/每日配额 + per-user 上下文

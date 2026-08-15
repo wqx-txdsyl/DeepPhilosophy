@@ -1,0 +1,11 @@
+# Git LFS 规则（2026-08-15 起生效）
+# 仅对【新增/后续修改】的文件启用 LFS；已跟踪文件不自动迁移（如需迁移: git lfs migrate import --include=...）
+# 注意: 章节文件 book_chapters/*.json 刻意不走 LFS —— 工具链频繁重写, LFS 会放大提交成本
+
+# 大型静态数据文件（前端唯一数据源 + 后端权威 JSON）
+app/public/philosophers.json          filter=lfs diff=lfs merge=lfs -text
+app/public/books.json                 filter=lfs diff=lfs merge=lfs -text
+app/public/philosopher_network.json   filter=lfs diff=lfs merge=lfs -text
+app/public/book_summaries.json        filter=lfs diff=lfs merge=lfs -text
+backend/data/philosophers.json        filter=lfs diff=lfs merge=lfs -text
+backend/data/book_summaries.json      filter=lfs diff=lfs merge=lfs -text

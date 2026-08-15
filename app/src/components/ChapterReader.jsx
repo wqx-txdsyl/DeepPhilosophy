@@ -85,8 +85,6 @@ export default function ChapterReader({
   currentChapter,
   onChapterChange,
   onRetryChapter,   // 章节加载失败后的重试回调（ReaderPage 提供）
-  cover,
-  title,
   showToc = false,
   onToggleToc,
   initialTocIdx = null,  // URL 直达节: toc 数组下标(标题锚点 sec-{tocIdx}，主路径)

@@ -84,7 +84,6 @@ function ReaderPage() {
   // AI Chat state
   const [showAiChat, setShowAiChat] = useState(false);
   const [aiQuestion, setAiQuestion] = useState('');
-  const [aiAnswer, setAiAnswer] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
   const [aiHistory, setAiHistory] = useState([]);
   const aiChatRef = useRef(null);
@@ -242,7 +241,9 @@ ${textContext}
           }
         }
       }
-    } catch (e) {}
+    } catch {
+      // 静默：回答失败时走兜底文案
+    }
 
     if (!answer) answer = '无法获取回答。请检查网络连接或在设置中配置 API Key。';
     setAiLoading(false);

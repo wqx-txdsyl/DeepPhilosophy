@@ -4,11 +4,9 @@
  * 四个分区: 书籍 | 谱图 | 问答 | 我的
  */
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation, useNavigationType } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
-import { getApiBase } from './utils/api';
 import ErrorBoundary from './components/ErrorBoundary';
-import Icon from './components/Icon';
 import NavBar from './components/NavBar';
 import ScrollToTopButton from './components/ScrollToTop';
 import ReadingProgress from './components/ReadingProgress';
@@ -107,7 +105,6 @@ function App() {
 }
 
 function MainLayout() {
-  const navigate = useNavigate();
   const location = useLocation();
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('dp_dark_mode') === '1');
   const [mobileMode, setMobileMode] = useState(() => localStorage.getItem('dp_mobile_mode') === '1');

@@ -1,6 +1,6 @@
 # DeepPhilosophy 全文件结构图
 
-> 生成时间: 2026-08-14 23:07 · 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
+> 生成时间: 2026-08-15 08:09 · 排除 .git / node_modules / .venv / __pycache__ / .wrangler / dist
 > 大数据目录 (章节库 / 向量库 / 封面 / ai_author) 折叠为计数摘要
 
 ## DeepPhilosophy × PhiAgent 合并后单仓库（2026-08-14: 平台 + 智能体 + 书库工具）
@@ -13,6 +13,7 @@ F:\program\Python\DeepPhilosophy
 ├─ .pytest_cache/
 │  ├─ v/
 │  │  └─ cache/
+│  │     ├─ lastfailed  (2 B)
 │  │     └─ nodeids  (533 B)
 │  ├─ .gitignore  (39 B)
 │  ├─ CACHEDIR.TAG  (191 B)
@@ -41,7 +42,7 @@ F:\program\Python\DeepPhilosophy
 │  │  │  ├─ tagMaps.js  (7,928 B)
 │  │  │  └─ userData.js  (6,463 B)
 │  │  ├─ pages/
-│  │  │  └─ AgentPage.jsx  (40,847 B)
+│  │  │  └─ AgentPage.jsx  (41,809 B)
 │  │  ├─ utils/
 │  │  │  ├─ api.js  (87 B)
 │  │  │  ├─ i18n.jsx  (11,710 B)
@@ -51,7 +52,7 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ index.css  (1,022 B)
 │  │  └─ main.jsx  (235 B)
 │  ├─ index.html  (350 B)
-│  ├─ package-lock.json  (101,898 B)
+│  ├─ package-lock.json  (101,326 B)
 │  ├─ package.json  (449 B)
 │  └─ vite.config.js  (310 B)
 ├─ app/
@@ -141,17 +142,17 @@ F:\program\Python\DeepPhilosophy
 │  │  │  │  ├─ ConstellationMap.jsx  (14,062 B)
 │  │  │  │  ├─ EpilogueSection.jsx  (2,831 B)
 │  │  │  │  ├─ GlossaryCloud.jsx  (3,663 B)
-│  │  │  │  ├─ HeroSection.jsx  (4,030 B)
+│  │  │  │  ├─ HeroSection.jsx  (4,020 B)
 │  │  │  │  ├─ OverviewSection.jsx  (2,673 B)
 │  │  │  │  ├─ QuotesGallery.jsx  (3,052 B)
 │  │  │  │  ├─ TimelineSection.jsx  (6,129 B)
 │  │  │  │  ├─ WorksList.jsx  (2,149 B)
 │  │  │  │  └─ tokens.js  (735 B)
 │  │  │  ├─ AvatarUpload.jsx  (6,779 B)  — 头像上传
-│  │  │  ├─ ChapterReader.jsx  (37,642 B)  — 章节阅读器
+│  │  │  ├─ ChapterReader.jsx  (37,624 B)  — 章节阅读器
 │  │  │  ├─ CountUp.jsx  (1,268 B)  — 数字滚动动画
 │  │  │  ├─ ErrorBoundary.jsx  (1,489 B)  — 错误边界
-│  │  │  ├─ Footer.jsx  (2,493 B)  — 页脚
+│  │  │  ├─ Footer.jsx  (2,466 B)  — 页脚
 │  │  │  ├─ Icon.jsx  (625 B)  — 图标组件
 │  │  │  ├─ NavBar.jsx  (4,356 B)  — 顶部导航
 │  │  │  ├─ PhilosopherConstellation.jsx  (9,510 B)  — 哲学家星丛图
@@ -178,23 +179,23 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ pages/  — 前端页面
 │  │  │  ├─ AnswerBookPage.jsx  (3,891 B)  — 答案之书
 │  │  │  ├─ AuthorDetailPage.jsx  (10,113 B)  — 哲学家详情
-│  │  │  ├─ AuthorsPage.jsx  (19,760 B)  — 哲学家列表
-│  │  │  ├─ BookDetailPage.jsx  (10,550 B)  — 书籍详情
-│  │  │  ├─ BooksPage.jsx  (11,552 B)  — 书库列表
-│  │  │  ├─ DeveloperPage.jsx  (5,443 B)  — 开发者后台（访问统计）
+│  │  │  ├─ AuthorsPage.jsx  (19,659 B)  — 哲学家列表
+│  │  │  ├─ BookDetailPage.jsx  (10,533 B)  — 书籍详情
+│  │  │  ├─ BooksPage.jsx  (10,850 B)  — 书库列表
+│  │  │  ├─ DeveloperPage.jsx  (5,322 B)  — 开发者后台（访问统计）
 │  │  │  ├─ EasternPhilosophiesPage.jsx  (8,090 B)  — 东方哲学
 │  │  │  ├─ GamesPage.jsx  (2,167 B)  — 小游戏
 │  │  │  ├─ GenealogyPage.jsx  (29,041 B)  — 思想谱系图
 │  │  │  ├─ HomePage.css  (10,048 B)
-│  │  │  ├─ HomePage.jsx  (30,737 B)  — 首页
-│  │  │  ├─ PHTIPage.jsx  (15,920 B)  — PHTI 哲学类型测试
+│  │  │  ├─ HomePage.jsx  (7,597 B)  — 首页
+│  │  │  ├─ PHTIPage.jsx  (15,901 B)  — PHTI 哲学类型测试
 │  │  │  ├─ PHTISillyPage.jsx  (15,252 B)  — PHTI 离谱版测试
 │  │  │  ├─ PrivacyPage.jsx  (2,276 B)  — 隐私政策
-│  │  │  ├─ ProfileEditPage.jsx  (6,348 B)  — 个人资料编辑
-│  │  │  ├─ ProfilePage.jsx  (23,928 B)  — 个人中心
-│  │  │  ├─ QAPage.jsx  (16,242 B)  — AI 问答（流式 + 自配 key 直连）
-│  │  │  ├─ ReaderPage.jsx  (26,497 B)  — 阅读器（PDF/章节 + 批注/书聊）
-│  │  │  ├─ SchoolDetailPage.jsx  (35,342 B)  — 学派详情
+│  │  │  ├─ ProfileEditPage.jsx  (6,337 B)  — 个人资料编辑
+│  │  │  ├─ ProfilePage.jsx  (23,310 B)  — 个人中心
+│  │  │  ├─ QAPage.jsx  (16,201 B)  — AI 问答（流式 + 自配 key 直连）
+│  │  │  ├─ ReaderPage.jsx  (26,499 B)  — 阅读器（PDF/章节 + 批注/书聊）
+│  │  │  ├─ SchoolDetailPage.jsx  (35,256 B)  — 学派详情
 │  │  │  ├─ SettingsPage.jsx  (6,580 B)  — 设置
 │  │  │  ├─ TermsPage.jsx  (1,730 B)  — 服务条款
 │  │  │  ├─ WesternPhilosophiesPage.jsx  (9,551 B)  — 西方哲学
@@ -203,29 +204,27 @@ F:\program\Python\DeepPhilosophy
 │  │  │  ├─ api.js  (701 B)  — API 封装（生产同源/兜底链）
 │  │  │  └─ seo.js  (1,280 B)  — SEO 工具
 │  │  ├─ App.css  (29,495 B)
-│  │  ├─ App.jsx  (9,762 B)  — 应用入口/路由
-│  │  ├─ data.js  (2,635 B)  — 前端全局数据
+│  │  ├─ App.jsx  (9,632 B)  — 应用入口/路由
+│  │  ├─ data.js  (2,644 B)  — 前端全局数据
 │  │  ├─ index.css  (1,070 B)
 │  │  └─ main.jsx  (527 B)  — 入口挂载
 │  ├─ .env  (286 B)
-│  ├─ eslint.config.js  (568 B)
+│  ├─ eslint.config.js  (750 B)
 │  ├─ index.html  (4,279 B)
 │  ├─ package-lock.json  (238,775 B)
 │  ├─ package.json  (1,266 B)
 │  ├─ postbuild.mjs  (3,429 B)
 │  ├─ skills-lock.json  (3,268 B)
 │  ├─ vercel.json  (72 B)
-│  ├─ vite-debug.err.log  (179,124 B)
-│  ├─ vite-debug.log  (6,437 B)
-│  └─ vite.config.js  (4,375 B)
+│  └─ vite.config.js  (4,785 B)
 ├─ backend/
 │  ├─ data/  — 运行数据（章节库/向量库/catalog）
-│  │  ├─ book_chapters/  # 319 本书 × 12548 个章节 json (按 bid 分目录, 顶层 dict 禁 list)
+│  │  ├─ book_chapters/  # 319 本书 × 12524 个章节 json (按 bid 分目录, 顶层 dict 禁 list)
 │  │  ├─ book_detail/  # 409 个 detail json (三处同步规则: PHA/DP/app public)
 │  │  ├─ book_images/  # 11498 个封面图片文件
 │  │  ├─ embeddings/  # 向量库: index.json (12111 条 {bid,idx,title,hash}) + vectors.npy (float32 12111×1024)
 │  │  ├─ __init__.py  (0 B)
-│  │  ├─ admin_stats.json  (247 B)
+│  │  ├─ admin_stats.json  (411 B)
 │  │  ├─ agent_memory.json  (30,991 B)
 │  │  ├─ agent_stats.jsonl  (14,568 B)
 │  │  ├─ book_checklist.json  (99,220 B)
@@ -237,11 +236,6 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ dp_pdf_import_ckpt.json  (22,798,457 B)
 │  │  ├─ github_manifest.json  (42,431 B)
 │  │  ├─ name_aliases.json  (5,933 B)
-│  │  ├─ ocr_launch.log  (193 B)
-│  │  ├─ ocr_s0.log  (8,511,386 B)
-│  │  ├─ ocr_s0_err.log  (0 B)
-│  │  ├─ ocr_watchdog.log  (191,211 B)
-│  │  ├─ ocr_watchdog_err.log  (0 B)
 │  │  ├─ oss_manifest.json  (65,292 B)
 │  │  ├─ philosopher_rankings.json  (123,166 B)
 │  │  ├─ philosophers.json  (2,305,015 B)
@@ -262,19 +256,23 @@ F:\program\Python\DeepPhilosophy
 │  │  └─ vector_store.py  (6,849 B)  — 向量库存储与检索（ChromaDB）
 │  ├─ routes/  — 后端 API 路由
 │  │  ├─ __init__.py  (0 B)
+│  │  ├─ account.py  (1,654 B)
 │  │  ├─ admin_routes.py  (642 B)  — 管理路由
 │  │  ├─ agent.py  (110,849 B)  — 智能体核心：29 工具注册表 + stream_lg(LangGraph) + cite（旧引擎已删）
 │  │  ├─ ai.py  (7,257 B)  — AI proxy / RAG QA / ASR 路由
 │  │  ├─ auth_routes.py  (1,341 B)  — 认证路由
+│  │  ├─ authors.py  (12,314 B)
+│  │  ├─ books.py  (9,996 B)
 │  │  ├─ health.py  (1,787 B)  — 健康检查与统计
 │  │  ├─ history.py  (3,251 B)  — 阅读历史/聊天记录/笔记/书聊
 │  │  ├─ knowledge.py  (2,933 B)  — 知识库路由
 │  │  ├─ sync.py  (1,637 B)  — 同步路由
-│  │  ├─ text.py  (11,298 B)  — 文本提取 API（章节索引 + 单章读取，本地优先 OSS 兜底）
+│  │  ├─ text.py  (11,315 B)  — 文本提取 API（章节索引 + 单章读取，本地优先 OSS 兜底）
+│  │  ├─ upload.py  (3,922 B)
 │  │  └─ user.py  (2,578 B)  — 用户路由
 │  ├─ services/  — 业务服务
 │  │  ├─ __init__.py  (0 B)
-│  │  ├─ book_scanner.py  (17,285 B)  — 书库扫描（本地/OSS/GitHub/R2 统一接口）
+│  │  ├─ book_scanner.py  (17,273 B)  — 书库扫描（本地/OSS/GitHub/R2 统一接口）
 │  │  ├─ summaries.py  (4,644 B)  — 书籍摘要缓存加载/生成
 │  │  └─ tag_utils.py  (5,013 B)  — 标签归一化工具
 │  ├─ tests/  — 冒烟测试
@@ -303,7 +301,6 @@ F:\program\Python\DeepPhilosophy
 │  │  ├─ dp_gen_pdf_covers.py  (4,073 B)  — pdf 封面抓取（fitz 渲染首页）
 │  │  ├─ dp_gen_txt_covers.py  (3,847 B)  — txt 占位书生成文字封面
 │  │  ├─ dp_grab_cf_assets.py  (8,191 B)
-│  │  ├─ dp_import_epubs.log  (348 B)
 │  │  ├─ dp_import_epubs.py  (7,080 B)  — epub 补入库（chapterCount<=1 的书）
 │  │  ├─ dp_import_txt.py  (6,985 B)  — ⚠️ 勿运行：txt 占位符（无内容仅证明存在）
 │  │  ├─ dp_launch_ocr.py  (2,016 B)  — 启动 OCR 单分片 + 看门狗（pythonw 独立进程）
@@ -344,52 +341,53 @@ F:\program\Python\DeepPhilosophy
 │  ├─ eval_agent.py  (5,011 B)  — PhiAgent 评估基准 v1（四维评估）
 │  ├─ fix_bios.py  (2,418 B)  — 批量修复 <1000 字的哲学家 bio
 │  ├─ guard.py  (4,674 B)
-│  ├─ main.py  (97,273 B)  — 云端 API 服务器（书籍/文件/RAG/作者/用户/历史）
+│  ├─ main.py  (7,707 B)  — 云端 API 服务器（书籍/文件/RAG/作者/用户/历史）
 │  └─ mcp_client.py  (4,216 B)  — MCP 客户端（外部工具生态接入）
 ├─ data/
 │  └─ ai_author/  # 尼采 LoRA 生产数据 (6 子目录, 209 文件, 约 1.6G — 保留)
 ├─ docs/
 │  ├─ DATABASE.md  (1,890 B)
-│  ├─ NOWSTATE.md  (8,193 B)
-│  └─ PROJECT_STRUCTURE.md  (26,081 B)
+│  ├─ NOWSTATE.md  (10,030 B)
+│  └─ PROJECT_STRUCTURE.md  (26,283 B)
 ├─ scripts/  — 内容运营与历史运维脚本（38 个, 多数一次性已完成）
+│  ├─ archive/
+│  │  ├─ agnes_direct_test.py  (1,902 B)
+│  │  ├─ agnes_quick_test.py  (2,628 B)
+│  │  ├─ ai_verify_all.py  (4,904 B)
+│  │  ├─ ai_verify_batch.py  (8,395 B)
+│  │  ├─ ai_verify_portraits.py  (5,350 B)
+│  │  ├─ audit_all_chapters.py  (3,571 B)
+│  │  ├─ batch_extract.py  (2,375 B)
+│  │  ├─ batch_import_books.py  (10,185 B)
+│  │  ├─ check_all_books.py  (3,527 B)
+│  │  ├─ check_portraits.py  (7,919 B)
+│  │  ├─ cleanup_portraits.py  (6,082 B)
+│  │  ├─ dedup_philosophers.py  (4,644 B)
+│  │  ├─ delete_wrong_images.py  (2,318 B)
+│  │  ├─ expand_bios.py  (3,667 B)
+│  │  ├─ extract_one.py  (5,774 B)
+│  │  ├─ fetch_bing_portraits.py  (6,154 B)
+│  │  ├─ fetch_philosopher_batch.py  (2,632 B)
+│  │  ├─ fetch_wiki_zh.py  (6,413 B)
+│  │  ├─ fix_bad_chapters.py  (2,732 B)
+│  │  ├─ fix_book_ids.py  (5,334 B)
+│  │  ├─ fix_english_names.py  (3,753 B)
+│  │  ├─ fix_map_coords.py  (2,647 B)
+│  │  ├─ test_extract.py  (837 B)
+│  │  └─ verify_all_portraits.py  (14,919 B)
 │  ├─ _lib.py  (5,675 B)  — 共享工具模块（load/save JSON + DeepSeek/Agnes 客户端）
 │  ├─ add_author.py  (7,914 B)  — 一键新增哲人（DeepSeek 生成信息 → public JSON）
 │  ├─ add_book.py  (7,554 B)  — 一键新增书籍（本地扫描 → 标签摘要 → 入库）
 │  ├─ add_school.py  (21,501 B)  — 一键新增流派（全流程自动化）
 │  ├─ add_subschool.py  (13,133 B)  — 一键新增下属流派（轻量版）
-│  ├─ agnes_direct_test.py  (1,902 B)  — 测试 Agnes AI（DNS 替换）  [已归档]
-│  ├─ agnes_quick_test.py  (2,628 B)  — 快速测试 Agnes AI + 代理  [已归档]
-│  ├─ ai_verify_all.py  (4,904 B)  — Agnes AI 全量肖像验证（需代理）  [已归档]
-│  ├─ ai_verify_batch.py  (8,395 B)  — Agnes AI 分批肖像验证（可断点续跑）  [已归档]
-│  ├─ ai_verify_portraits.py  (5,350 B)  — Agnes AI 视觉验证肖像抽查  [已归档]
-│  ├─ audit_all_chapters.py  (3,571 B)  — 逐本审查章节标题质量（旧体系）  [已归档]
-│  ├─ batch_extract.py  (2,375 B)  — 批量提取缺失章节的 EPUB（旧体系）  [已归档]
-│  ├─ batch_import_books.py  (10,185 B)  — 批量导入哲学书两阶段（旧体系）  [已归档]
-│  ├─ check_all_books.py  (3,527 B)  — 全面检查所有书（封面/目录/章节/简介, 旧体系）  [已归档]
-│  ├─ check_portraits.py  (7,919 B)  — 哲学家肖像校验（图像属性检测）  [已归档]
-│  ├─ cleanup_portraits.py  (6,082 B)  — 清理肖像（MD5 相同对）  [已归档]
-│  ├─ dedup_philosophers.py  (4,644 B)  — 哲学家去重（括号别名/姓氏）  [已归档]
-│  ├─ delete_wrong_images.py  (2,318 B)  — 删除已确认错图  [已归档]
-│  ├─ expand_bios.py  (3,667 B)  — 哲学家 bio 批量扩充至 1000+ 字  [已归档]
-│  ├─ extract_one.py  (5,774 B)  — 从 EPUB 提取章节（旧体系）  [已归档]
-│  ├─ fetch_bing_portraits.py  (6,154 B)  — Bing 图片搜索 → 下载 → WebP  [已归档]
-│  ├─ fetch_philosopher_batch.py  (2,632 B)  — 批量爬取哲学家头像  [已归档]
 │  ├─ fetch_philosopher_img.py  (7,769 B)  — 哲学家头像爬取（Wikipedia/Wikimedia）  [已归档]
 │  ├─ fetch_portraits.py  (10,485 B)  — 哲学家肖像自动爬取 + AI 验证
-│  ├─ fetch_wiki_zh.py  (6,413 B)  — 中文维基百科图片爬取（走代理）  [已归档]
 │  ├─ find_translations.py  (5,014 B)  — 分析书籍找缺中译本的西哲著作
-│  ├─ fix_bad_chapters.py  (2,732 B)  — 子进程调 rebuild_spine 修复章节（旧体系）  [已归档]
-│  ├─ fix_book_ids.py  (5,334 B)  — books.json ID 对齐修复（旧体系）  [已归档]
-│  ├─ fix_english_names.py  (3,753 B)  — 翻译英文 bio + 改中文名  [已归档]
-│  ├─ fix_map_coords.py  (2,598 B)  — Agnes 图像理解重新定位地图坐标  [已归档]
 │  ├─ gen_portrait.py  (7,028 B)  — AI 生成哲学家肖像（Wikipedia 无画像的古代哲人）  [已归档]
 │  ├─ gen_school_bg.py  (7,895 B)  — 流派背景图生成器（两阶段）
 │  ├─ gen_tags_batch.py  (4,696 B)  — 为新书批量生成标签 + 摘要
 │  ├─ list_missing.py  (957 B)  — 列出缺图哲学家
-│  ├─ score_item.py  (2,904 B)  — 哲学家/书籍五维度 AI 评分
-│  ├─ test_extract.py  (837 B)  — 测试单个 EPUB 提取（旧体系）  [已归档]
-│  └─ verify_all_portraits.py  (14,919 B)  — 哲学家肖像全方位验证算法  [已归档]
+│  └─ score_item.py  (2,904 B)  — 哲学家/书籍五维度 AI 评分
 ├─ workers/
 │  ├─ api/
 │  │  ├─ dist-check/
@@ -416,6 +414,7 @@ F:\program\Python\DeepPhilosophy
 │     └─ wrangler.toml  (524 B)  — auth worker 配置
 ├─ .dockerignore  (226 B)
 ├─ .env  (1,113 B)
+├─ .gitattributes  (821 B)
 ├─ .gitignore  (2,320 B)
 ├─ README.md  (6,005 B)
 ├─ requirements.txt  (726 B)

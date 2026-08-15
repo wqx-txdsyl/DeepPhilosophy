@@ -126,7 +126,6 @@ function QAPage() {
 
     // 官方文档: deepseek-v4-pro + thinking:{type:"enabled"} + reasoning_effort:"high"
     const model = thinkingMode ? 'deepseek-v4-pro' : (apiConfig.model || 'deepseek-chat');
-    const useProxy = !apiConfig.apiKey;
     const streamBody = {
       model, messages: apiMessages, stream: true,
       max_tokens: thinkingMode ? 4096 : 1024,

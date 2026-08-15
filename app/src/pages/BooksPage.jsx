@@ -31,20 +31,6 @@ function BookCover({ bookId }) {
     style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
 }
 
-function FadeCard({ children, style }) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold:0.1, rootMargin:'-30px 0px' });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return (
-    <div ref={ref} style={{ opacity:visible?1:0, transform:visible?'translateY(0)':'translateY(20px)',
-      transition:'opacity 0.55s ease, transform 0.55s ease', ...style }}>{children}</div>
-  );
-}
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../utils/api';
 import { loadBooks } from '../data';
@@ -55,8 +41,6 @@ function BooksPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [activeTag, setActiveTag] = useState(null);
-  const [expandedAuthor, setExpandedAuthor] = useState(null);
-  const [showSummary, setShowSummary] = useState(null);
   const [showAllTags, setShowAllTags] = useState(false);
   const navigate = useNavigate();
 

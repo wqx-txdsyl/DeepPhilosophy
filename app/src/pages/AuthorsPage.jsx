@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getApiBase } from '../App';
-import { cacheGet, cacheSet } from '../data/cache';
+import { cacheSet } from '../data/cache';
 import RANKING from '../data/schoolRanking';
 import { normalizeTag, expandTag, normalizeCountry } from '../data/tagMaps';
 
@@ -43,9 +43,7 @@ function AuthorPortrait({ name }) {
 
 function AuthorsPage() {
   const navigate = useNavigate();
-  const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [filter, setFilter] = useState('all');
   const [activeTags, setActiveTags] = useState([]);
   const [filters, setFilters] = useState({ eras: [], countries: [], schools: [] });

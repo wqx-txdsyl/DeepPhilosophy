@@ -30,6 +30,20 @@ const TOOL_META = {
   generate_image: { icon: 'icon-candle', label: '概念生图' },
   websearch: { icon: 'icon-search', label: '上网搜索' },
   query_database: { icon: 'icon-clipboard', label: '数据库查询' },
+  // 2026-08-15 补齐: 覆盖全部后端 TOOLS 注册表（此前这些工具走 icon-cog 通用回退）
+  socratic_tutor: { icon: 'icon-thinking', label: '苏格拉底追问' },
+  analyze_argument: { icon: 'icon-calc', label: '论证分析' },
+  concept_trace: { icon: 'icon-link', label: '概念溯源' },
+  conceptual_map: { icon: 'nav-genealogy', label: '概念脑图' },
+  confrontation: { icon: 'icon-handshake', label: '原文对质' },
+  dialectic: { icon: 'icon-target', label: '辩证分析' },
+  essay_outline: { icon: 'icon-clipboard', label: '论文大纲' },
+  history_timeline: { icon: 'icon-calendar', label: '历史脉络' },
+  life_coach: { icon: 'icon-tip', label: '人生疏导' },
+  profile: { icon: 'nav-authors', label: '人格档案' },
+  role_play: { icon: 'icon-drama', label: '角色扮演' },
+  school_arena: { icon: 'icon-crazy', label: '流派PK' },
+  agent_council: { icon: 'icon-bot', label: '智能体协作' },
 };
 
 /* ── 工具调用卡片（ReAct: 思考 → 行动） ── */

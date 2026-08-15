@@ -3,8 +3,7 @@
  * 所有流派数据存储在 /public/schools/data/school_*.json
  */
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getApiBase } from '../App';
+import { useParams } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
 import HeroSection from '../components/school/HeroSection';
 import OverviewSection from '../components/school/OverviewSection';
@@ -252,7 +251,6 @@ function FadeSection({ children, style }) {
 
 export default function SchoolDetailPage() {
   const { name } = useParams();
-  const navigate = useNavigate();
 
   const m = SCHOOL_MAP[name] || {};
   const [dynamicData, setDynamicData] = useState(null);

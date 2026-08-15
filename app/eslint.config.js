@@ -17,5 +17,9 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // 空 catch 块 = 刻意容错（localStorage 不可用/解析失败时静默降级），非遗漏
+      'no-empty': ['error', { allowEmptyCatch: true }],
+    },
   },
 ])

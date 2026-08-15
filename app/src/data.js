@@ -12,8 +12,9 @@ export async function loadBooks() {
     try {
       const resp = await fetch(url, timeout ? { signal: AbortSignal.timeout(timeout) } : undefined);
       if (resp.ok) return await resp.json();
-    } catch {}
-    return null;
+    } catch {
+      return null;
+    }
   };
   const data = (await tryFetch('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/books.json', 2500))
     || await tryFetch('/books.json');
@@ -22,7 +23,9 @@ export async function loadBooks() {
     const local = await import('./assets/books.json');
     const ldata = local.default?.books || local.books || [];
     cacheSet('books', ldata); return ldata;
-  } catch (e) { return []; }
+  } catch {
+    return [];
+  }
 }
 
 /** 根据ID获取书籍 */

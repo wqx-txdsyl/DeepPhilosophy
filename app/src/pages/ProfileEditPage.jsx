@@ -1,7 +1,7 @@
 /**
  * 编辑个人信息 —— 用户名、头像、密码
  */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
 import Icon from '../components/Icon';

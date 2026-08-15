@@ -2,7 +2,7 @@
  * PHTI — Philosophical Turing Intelligence
  * 哲学人格测试：50题 → 维度计分 → 16型匹配 → AI毒舌锐评
  */
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getApiBase } from '../App';
