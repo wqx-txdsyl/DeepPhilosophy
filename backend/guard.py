@@ -124,6 +124,39 @@ def upload_guard(request: Request, authorization: str = Header(None)):
     return user
 
 
+# AI 流式代理（/api/ai/stream）限流配置 — 与 agent 同机制、独立预算
+AI_RATE, AI_BURST = 10, 20       # 每分钟 10 次, 突发 20
+AI_QUOTA_ANON = 60               # 匿名每 IP 每日 60 次
+AI_QUOTA_USER = 300              # 登录用户每日 300 次
+
+
+def ai_guard(request: Request, authorization: str = Header(None)):
+    """/api/ai/stream 依赖: 限流 + 每日配额（同 agent_guard 机制, 独立额度）
+    加固（审计 S1）: 付费 LLM 代理此前无任何限制, 脚本可刷爆服务端余额"""
+    ip = client_ip(request)
+    user = resolve_user(authorization)
+    current_user.set({"id": user["id"] if user else None, "ip": ip})
+    key = f"ai:u{user['id']}" if user else f"ai:ip:{ip}"
+    if not _bucket("ai", key, AI_RATE, AI_BURST).consume():
+        raise HTTPException(status_code=429, detail="请求过于频繁，请稍后再试")
+    if not _quota_ok(key, AI_QUOTA_USER if user else AI_QUOTA_ANON):
+        raise HTTPException(status_code=429, detail="今日 AI 额度已用完，请明日再试")
+    return user
+
+
+def require_admin(request: Request, x_admin_password: str = Header(None)):
+    """管理写操作端点依赖: 复用 ADMIN_PASSWORD 管理口令（fail-closed）
+    未配置 ADMIN_PASSWORD → 503（生产默认关）; 口令不符 → 403
+    加固（审计 S3/S4）: sync/knowledge 写端点原无鉴权, 匿名可写/删/重建"""
+    from admin import ADMIN_PASSWORD
+    if not ADMIN_PASSWORD:
+        raise HTTPException(status_code=503, detail="管理功能未配置（请设置 ADMIN_PASSWORD 环境变量）")
+    import hmac
+    if not x_admin_password or not hmac.compare_digest(x_admin_password, ADMIN_PASSWORD):
+        raise HTTPException(status_code=403, detail="密码错误")
+    return True
+
+
 def user_memory_key() -> str:
     """per-user 记忆槽 key: 登录按用户, 匿名按 IP, 兜底 default"""
     u = current_user.get()

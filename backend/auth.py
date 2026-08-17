@@ -322,8 +322,13 @@ def _get_conn() -> sqlite3.Connection:
 
 def init_db():
     """初始化用户数据库表，先从云端恢复"""
-    restored_github = _sync_db_from_github()  # 尝试从 GitHub Release 恢复
-    restored_oss = _sync_db_from_cloud()      # 尝试从 OSS 恢复
+    # S7（audit 2026-08-17）：GitHub Release 下载恢复默认禁用（上传已禁、下载仍开；
+    # users.db 含密码哈希，资产若公开即可被下载）。需要时显式设 DP_ALLOW_GH_RESTORE=1。
+    if os.getenv("DP_ALLOW_GH_RESTORE", "0") == "1":
+        restored_github = _sync_db_from_github()
+    else:
+        restored_github = False
+    restored_oss = _sync_db_from_cloud()      # 尝试从 OSS 恢复（需 AK/SK 签名，非公开）
     conn = _get_conn()
     _ensure_profile_col(conn)   # 兼容旧库: 补 profile 列
     conn.executescript("""
@@ -501,7 +506,7 @@ def login(username: str, password: str) -> dict:
         if not _verify_password(row["password_hash"], password, row["salt"]):
             return {"success": False, "error": "用户名或密码错误"}
 
-        # 自动升级旧 SHA-256 哈希到 scrypt
+        # 自动升级旧 SHA-256 / scrypt 哈希到 PBKDF2（老用户弱密码不强制改密）
         if _needs_upgrade(row["password_hash"]):
             new_hash, new_salt = _hash_password(password)
             conn.execute(
@@ -732,8 +737,9 @@ def update_username(user_id: int, new_username: str) -> bool:
 
 def change_password(user_id: int, old_password: str, new_password: str) -> tuple[bool, str]:
     """修改密码，返回 (成功, 错误信息)"""
-    if len(new_password) < 4:
-        return False, "新密码至少4位"
+    # 与 register() 一致：新密码 ≥8 位（S5/S10）
+    if len(new_password) < 8:
+        return False, "新密码至少8个字符"
     conn = _get_conn()
     try:
         user = conn.execute("SELECT password_hash, salt FROM users WHERE id=?", (user_id,)).fetchone()

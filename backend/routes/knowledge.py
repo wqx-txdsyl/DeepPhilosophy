@@ -1,13 +1,36 @@
 import os, threading
 from pathlib import Path
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 import config
+import guard
 
 router = APIRouter()
 
+# 重建互斥锁（审计 S4 加固: 防并发重复触发全量重建 = DoS; 配合 require_admin 鉴权）
+_building = False
+_building_lock = threading.Lock()
+
+# 鉴权说明（审计 S4 加固）: /api/knowledge/init 原无鉴权, POST 即删库重建。
+# 现复用 ADMIN_PASSWORD 管理口令（X-Admin-Password 请求头, 与 admin 端点同源）:
+#   - 未配置 ADMIN_PASSWORD → 503 拒绝（生产默认关, 端点不可用）
+#   - 本地开发: 在 backend/.env 设置 ADMIN_PASSWORD=你的口令 后, 请求带该头即可启用
+
 @router.post("/api/knowledge/init")
-async def init_knowledge_base():
+async def init_knowledge_base(_g: dict = Depends(guard.require_admin)):
+    global _building
+    with _building_lock:
+        if _building:
+            raise HTTPException(status_code=409, detail="知识库正在重建中，请稍后再试")
+        _building = True
     def _build():
+        global _building
+        try:
+            _do_build()
+        finally:
+            with _building_lock:
+                _building = False
+
+    def _do_build():
         from modules.document_loader import DocumentLoader
         from modules.text_processor import TextProcessor
         from modules.embedding import EmbeddingManager

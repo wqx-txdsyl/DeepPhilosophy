@@ -132,11 +132,50 @@ app.get('/api/health', (c) => c.json({
 }));
 
 // ============ AI 流式代理 — 纯透传（免费版 10ms CPU 够用：不解析、不 TransformStream） ============
+// ── /api/ai/stream 限流（2026-08-17 审计 S1 加固: 同 auth worker 的 _rateLimit 滑窗风格; 防匿名刷爆余额）──
+const AI_STREAM_LIMIT = 60, AI_WINDOW_MS = 15 * 60 * 1000;
+const _aiCalls = new Map();   // ip -> {count, start}
+function _rateLimit(ip, limit) {
+  const now = Date.now();
+  // 顺带清理过期条目, 防 Map 无限增长
+  if (_aiCalls.size > 500) {
+    for (const [k, v] of _aiCalls) if (now - v.start > AI_WINDOW_MS) _aiCalls.delete(k);
+  }
+  const rec = _aiCalls.get(ip);
+  if (!rec || now - rec.start > AI_WINDOW_MS) {
+    _aiCalls.set(ip, { count: 1, start: now });
+    return true;
+  }
+  rec.count += 1;
+  return rec.count <= limit;
+}
+function _clientIp(c) {
+  const ff = c.req.header('x-forwarded-for') || '';
+  if (ff) return ff.split(',')[0].trim();
+  const cf = c.req.header('cf-connecting-ip');
+  if (cf) return cf.trim();
+  return c.req.header('x-real-ip') || 'unknown';
+}
+// model 白名单 + max_tokens 钳制（与 backend config.AI_ALLOWED_MODELS / AI_MAX_TOKENS_CAP 同规格）
+const AI_ALLOWED_MODELS = ['deepseek-chat', 'deepseek-v4-pro'];
+const AI_MAX_TOKENS_CAP = 4096;
+
 app.post('/api/ai/stream', async (c) => {
+  const ip = _clientIp(c);
+  if (!_rateLimit(ip, AI_STREAM_LIMIT)) {
+    return c.json({ error: '请求过于频繁，请稍后再试', detail: '请求过于频繁，请稍后再试' }, 429);
+  }
   const key = c.env.DEEPSEEK_API_KEY;
   if (!key) return c.json({ error: 'Server API key not configured', detail: 'Server API key not configured' }, 500);
   try {
     const body = await c.req.json();
+    const model = body.model || c.env.DEFAULT_MODEL || 'deepseek-chat';
+    if (!AI_ALLOWED_MODELS.includes(model)) {
+      return c.json({ error: `不支持的模型: ${model}`, detail: `不支持的模型: ${model}` }, 400);
+    }
+    let maxTokens = parseInt(body.max_tokens, 10);
+    if (!Number.isFinite(maxTokens) || maxTokens < 1) maxTokens = 1024;
+    maxTokens = Math.min(maxTokens, AI_MAX_TOKENS_CAP);
     const base = (c.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com').replace(/\/+$/, '');
     const upstream = await fetch(`${base}/v1/chat/completions`, {
       method: 'POST',
@@ -146,7 +185,8 @@ app.post('/api/ai/stream', async (c) => {
       },
       body: JSON.stringify({
         ...body,
-        model: body.model || c.env.DEFAULT_MODEL || 'deepseek-chat',
+        model,
+        max_tokens: maxTokens,
       }),
       signal: AbortSignal.timeout(120000),
     });
@@ -446,8 +486,8 @@ app.put('/api/user/profile', requireAuth, async (c) => {
 app.put('/api/user/password', requireAuth, async (c) => {
   const uid = c.get('uid');
   const b = await c.req.json();
-  if (!b.new_password || String(b.new_password).length < 4) {
-    return c.json({ error: '新密码至少4位', detail: '新密码至少4位' }, 400);
+  if (!b.new_password || String(b.new_password).length < 8) {
+    return c.json({ error: '新密码至少8位', detail: '新密码至少8位' }, 400);
   }
   const db = c.env.deepphilosophy_db;
   const user = await db.prepare('SELECT password_hash FROM users WHERE id = ?').bind(uid).first();

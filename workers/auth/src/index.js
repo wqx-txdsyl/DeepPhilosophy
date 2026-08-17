@@ -129,8 +129,9 @@ app.post('/api/auth/register', async (c) => {
     const db = c.env.deepphilosophy_db;
     await initDB(db);
     const { username, password } = await c.req.json();
-    if (!username || !password || username.length < 2 || password.length < 4) {
-      return c.json({ error: '用户名2+，密码4+' }, 400);
+    // 密码策略与本地后端统一：注册 ≥8 位（S5/S10）。老用户弱密码不强制改密，仅在其主动改密时按 ≥8 位校验
+    if (!username || !password || username.length < 2 || password.length < 8) {
+      return c.json({ error: '用户名2+，密码8+' }, 400);
     }
     const existing = await db.prepare('SELECT id FROM users WHERE username = ?').bind(username).first();
     if (existing) return c.json({ error: '用户名已存在' }, 409);

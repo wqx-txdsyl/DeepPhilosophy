@@ -43,7 +43,7 @@ function ProfileEditPage() {
 
   const handleChangePw = async () => {
     if (!oldPw) return showMsg('请输入原密码', 'error');
-    if (!newPw || newPw.length < 4) return showMsg('新密码至少4位', 'error');
+    if (!newPw || newPw.length < 8) return showMsg('新密码至少8位', 'error');
     if (newPw !== confirmPw) return showMsg('两次密码不一致', 'error');
     if (!token) return showMsg('请先登录', 'error');
     try {
@@ -97,7 +97,7 @@ function ProfileEditPage() {
             <input type="password" value={oldPw} onChange={e => setOldPw(e.target.value)}
               placeholder="原密码" style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
             <input type="password" value={newPw} onChange={e => setNewPw(e.target.value)}
-              placeholder="新密码（至少4位）" style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
+              placeholder="新密码（至少8位）" style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
             <input type="password" value={confirmPw} onChange={e => setConfirmPw(e.target.value)}
               placeholder="确认新密码" style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
             <button className="btn btn-primary" onClick={handleChangePw} style={{ padding: '8px 16px', fontSize: 13 }}>修改密码</button>

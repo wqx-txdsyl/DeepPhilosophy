@@ -43,6 +43,9 @@ cd DeepPhilosophy
 # 后端（智能体 + 平台 API，端口 8011；Python 3.12+，依赖见 requirements.txt）
 python -m pip install -r requirements.txt
 cd backend && python main.py
+#   管理写操作端点（/api/sync/upload、/api/sync/delete、/api/knowledge/init）鉴权:
+#   在 backend/.env 设置 ADMIN_PASSWORD=你的口令（未设置时这些端点默认 503 拒绝），
+#   请求时带请求头 X-Admin-Password: 你的口令 即可启用（与 /api/admin/stats 同源口令）。
 
 # 平台前端（localhost:5173）
 cd app && npm install && npm run dev

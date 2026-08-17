@@ -2,12 +2,13 @@
 import json
 import base64
 import requests as req_lib
-from fastapi import APIRouter, Request, Header
+from fastapi import APIRouter, Request, Header, Depends
 from fastapi.responses import JSONResponse, StreamingResponse
 from typing import Optional
 from loguru import logger
 from models import QARequest
 import config
+import guard
 from auth import get_user_by_token, save_chat_message
 
 router = APIRouter()
@@ -30,13 +31,24 @@ def _get_baidu_token():
         return None
 
 @router.post("/api/ai/stream")
-async def ai_stream_proxy(req: Request):
-    """Stream proxy for DeepSeek API using server default key"""
+async def ai_stream_proxy(req: Request, authorization: str = Header(None),
+                          _g: dict = Depends(guard.ai_guard)):
+    """Stream proxy for DeepSeek API using server default key
+    加固（审计 S1）: guard.ai_guard 限流/每日配额（与 agent 同机制）;
+    model 白名单（config.AI_ALLOWED_MODELS）+ max_tokens 钳制（≤4096）"""
     from openai import OpenAI
     key = config.DEEPSEEK_API_KEY
     if not key:
         return JSONResponse({"error": "Server API key not configured"}, status_code=500)
     body = await req.json()
+    model = body.get("model", config.DEEPSEEK_MODEL)
+    if model not in config.AI_ALLOWED_MODELS:
+        return JSONResponse({"error": f"不支持的模型: {model}"}, status_code=400)
+    try:
+        max_tokens = int(body.get("max_tokens", 1024))
+    except (TypeError, ValueError):
+        max_tokens = 1024
+    max_tokens = max(1, min(max_tokens, config.AI_MAX_TOKENS_CAP))
     client = OpenAI(api_key=key, base_url=config.DEEPSEEK_BASE_URL)
     def generate():
         try:
@@ -46,10 +58,10 @@ async def ai_stream_proxy(req: Request):
                 extra["extra_body"] = {"thinking": thinking_mode}
                 extra["reasoning_effort"] = body.get("reasoning_effort", "high")
             stream = client.chat.completions.create(
-                model=body.get("model", config.DEEPSEEK_MODEL),
+                model=model,
                 messages=body.get("messages", []),
                 temperature=body.get("temperature", 0.7),
-                max_tokens=body.get("max_tokens", 1024),
+                max_tokens=max_tokens,
                 stream=True, **extra,
             )
             for chunk in stream:

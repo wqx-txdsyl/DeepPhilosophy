@@ -10,6 +10,26 @@ import config
 router = APIRouter()
 IMG_EXTS = {'.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.bmp': 'image/bmp'}
 
+# 路径参数白名单（审计 S2 加固: 防路径穿越任意文件读取, 与 workers/api 图片名规则一致）
+# 仅允许 [A-Za-z0-9_.-]（不含路径分隔符）; "." / ".." 显式拒绝
+_NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
+
+
+def _safe_name(name: str) -> bool:
+    """路径参数白名单: 仅字母数字 _ . -; 不含 / \\ 与空串; 拒绝 . .."""
+    return bool(name) and name not in (".", "..") and bool(_NAME_RE.match(name))
+
+
+def _safe_join(base_dir: str, *parts: str):
+    """白名单拼接 + abspath/startswith 双保险: 解析后必须位于 base_dir 内, 否则返回 None"""
+    if any(not _safe_name(p) for p in parts):
+        return None
+    base = os.path.abspath(base_dir)
+    joined = os.path.abspath(os.path.join(base, *parts))
+    if joined != base and not joined.startswith(base + os.sep):
+        return None
+    return joined
+
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "book_text")
 TXT_BOOKS_DIR = os.path.join(config.KNOWLEDGE_DIR, "..", "books") if os.path.exists(config.KNOWLEDGE_DIR) else config.KNOWLEDGE_DIR
 
@@ -92,7 +112,9 @@ async def get_book_detail(book_id: str):
     import urllib.request
     # 本地优先
     dd = os.path.join(os.path.dirname(__file__), "..", "data", "book_detail")
-    lp = os.path.join(dd, f"{book_id}.json")
+    lp = _safe_join(dd, f"{book_id}.json")
+    if lp is None:
+        raise HTTPException(status_code=400, detail="非法的 book_id")
     headers = {"Cache-Control": "public, max-age=3600"}
     if os.path.exists(lp):
         with open(lp, 'r', encoding='utf-8') as f:
@@ -115,8 +137,10 @@ async def get_book_chapter(book_id: str, ch: int):
     """获取单章内容（<200KB，按需秒加载）"""
     import urllib.request
     # 本地优先
-    cd = os.path.join(os.path.dirname(__file__), "..", "data", "book_chapters", book_id)
-    lp = os.path.join(cd, f"{ch}.json")
+    cd_root = os.path.join(os.path.dirname(__file__), "..", "data", "book_chapters")
+    lp = _safe_join(cd_root, book_id, f"{ch}.json")
+    if lp is None:
+        raise HTTPException(status_code=400, detail="非法的 book_id")
     if os.path.exists(lp):
         with open(lp, 'r', encoding='utf-8') as f: return json.load(f)
     # OSS
@@ -139,7 +163,9 @@ async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
     # 加载完整 JSON（本地优先，OSS兜底）
     data = None
     json_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_json")
-    json_path = os.path.join(json_dir, f"{book_id}.json")
+    json_path = _safe_join(json_dir, f"{book_id}.json")
+    if json_path is None:
+        raise HTTPException(status_code=400, detail="非法的 book_id")
     if os.path.exists(json_path) and os.path.getsize(json_path) > 100:
         with open(json_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -244,8 +270,12 @@ async def get_book_text(book_id: str, meta: str = "", chapter: str = ""):
 async def get_book_image(book_id: str, img_name: str):
     """提供从 EPUB 提取的图片（本地优先，OSS 兜底）—— 带强缓存"""
     import urllib.request
+    if not _safe_name(book_id):
+        raise HTTPException(status_code=400, detail="非法的 book_id")
     img_dir = os.path.join(os.path.dirname(__file__), "..", "data", "book_images")
-    local_path = os.path.join(img_dir, img_name)
+    local_path = _safe_join(img_dir, img_name)
+    if local_path is None:
+        raise HTTPException(status_code=400, detail="非法的 img_name")
     headers = {"Cache-Control": "public, max-age=604800, immutable"}  # 7天强缓存
     if os.path.exists(local_path):
         ext = Path(img_name).suffix.lower()

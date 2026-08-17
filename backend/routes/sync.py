@@ -1,12 +1,18 @@
 import os
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File, Depends
 from models import SyncDeleteRequest
 import config
+import guard
 
 router = APIRouter()
 
+# 鉴权说明（审计 S3 加固）: upload/delete 原无鉴权, 匿名可写/删知识库文件。
+# 现复用 ADMIN_PASSWORD 管理口令（X-Admin-Password 请求头, 与 admin 端点同源）:
+#   - 未配置 ADMIN_PASSWORD → 503 拒绝（生产默认关, 端点不可用）
+#   - 本地开发: 在 backend/.env 设置 ADMIN_PASSWORD=你的口令 后, 请求带该头即可启用
+
 @router.post("/api/sync/upload")
-async def sync_upload(file: UploadFile = File(...)):
+async def sync_upload(file: UploadFile = File(...), _g: dict = Depends(guard.require_admin)):
     if not file.filename:
         raise HTTPException(status_code=400, detail="文件名不能为空")
     safe_name = file.filename.replace("\\", "/")
@@ -25,7 +31,7 @@ async def sync_upload(file: UploadFile = File(...)):
     return {"status": "ok", "path": safe_name, "size": len(content)}
 
 @router.post("/api/sync/delete")
-async def sync_delete(req: SyncDeleteRequest):
+async def sync_delete(req: SyncDeleteRequest, _g: dict = Depends(guard.require_admin)):
     safe_path = req.path.replace("\\", "/")
     if safe_path.startswith("/") or ".." in safe_path:
         raise HTTPException(status_code=400, detail="非法文件路径")
