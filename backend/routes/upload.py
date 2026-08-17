@@ -2,12 +2,15 @@
 从 main.py 拆分（2026-08-15）
 """
 import os, json, time, urllib.request
+import logging
 from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, UploadFile, File, Depends
 from fastapi.responses import JSONResponse
 
 import guard
+
+logger = logging.getLogger("routes.upload")  # S25: 错误详情只写服务端日志，不原样回传
 
 router = APIRouter()
 
@@ -72,6 +75,8 @@ async def api_upload(file: UploadFile = File(...), _g: dict = Depends(guard.uplo
             return {"filename": fname, "kind": "md", "content": text[:20000],
                     "truncated": len(text) > 20000}
         except Exception as e:
-            return JSONResponse({"error": f"文档转换失败: {str(e)[:120]}"}, status_code=400)
+            logger.warning("文档转换失败: %s", e)
+            return JSONResponse({"error": "文档转换失败，请检查文件格式"}, status_code=400)
     except Exception as e:
-        return JSONResponse({"error": f"上传处理失败: {str(e)[:120]}"}, status_code=400)
+        logger.warning("上传处理失败: %s", e)
+        return JSONResponse({"error": "上传处理失败，请稍后重试"}, status_code=400)

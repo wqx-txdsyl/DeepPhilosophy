@@ -1,4 +1,6 @@
 import os,sys,hashlib,zipfile,json,re,posixpath
+import logging
+logger = logging.getLogger("rebuild_spine")  # S22: 裸 except 改 Exception + 日志，避免失败静默
 from pathlib import Path
 from urllib.parse import unquote
 from bs4 import BeautifulSoup, NavigableString
@@ -124,7 +126,7 @@ def extract(fp,bid):
                     if not os.path.exists(op):save_as_webp(data,op)
                     images[fn]=f'/api/books/{bid}/image/{ofn}'
                     if 'cover' in fn.lower() and not cover:cover=images[fn]
-                except:pass
+                except Exception as e: logger.debug("spine 图片解析跳过: %s", e)
         rootfile=None
         for n in names:
             if n.endswith('container.xml'):
@@ -175,7 +177,7 @@ def extract(fp,bid):
                                     is_sec = np.find('navPoint') is not None
                                     toc.append(type('TocEntry',(),{'_text':_clean_title(lab.text.strip()),'_src':src_val,
                                                                     '_section': is_sec})())
-                        except:pass
+                        except Exception as e: logger.debug("toc 解析跳过: %s", e)
                     break
         if not spine_hrefs:
             spine_hrefs=sorted([n for n in names if n.endswith(('.xhtml','.html','.htm')) and '/nav' not in n.lower()])
@@ -349,7 +351,7 @@ def extract(fp,bid):
                     ch={'title':ch_title,'index':idx,'content':blocks,'_spine_file':href}
                     chs.append(ch)
                     json.dump(ch,open(os.path.join(CDIR,bid,f'{idx}.json'),'w',encoding='utf-8'),ensure_ascii=False)
-            except:pass
+            except Exception as e: logger.debug("章节重建跳过: %s", e)
     return chs,toc,cover,images
 
 def process_non_epub(fp, rel, bid, ext):
