@@ -44,11 +44,14 @@ class _Bucket:
 
 _buckets = {}
 _buckets_lock = threading.Lock()
+_MAX_BUCKETS = 5000  # S24: 限流字典上限，超过即整体清空（优雅降级），防长运行内存无限增长
 
 
 def _bucket(name, key, rate, burst):
     """按 (名称, key) 隔离的令牌桶——agent 与 upload 各自的额度互不挤占"""
     with _buckets_lock:
+        if len(_buckets) > _MAX_BUCKETS:
+            _buckets.clear()
         b = _buckets.get((name, key))
         if b is None:
             b = _Bucket(rate, burst)
@@ -64,6 +67,8 @@ _quota_lock = threading.Lock()
 def _quota_ok(key, day_limit):
     today = time.strftime("%Y-%m-%d")
     with _quota_lock:
+        if len(_quota) > _MAX_BUCKETS:  # S24: 同上，防无限增长
+            _quota.clear()
         k = (today, key)
         n = _quota.get(k, 0)
         if n >= day_limit:
@@ -82,9 +87,11 @@ UPLOAD_RATE, UPLOAD_BURST = 20, 40
 
 
 def client_ip(request: Request) -> str:
-    ff = request.headers.get("x-forwarded-for")
-    if ff:
-        return ff.split(",")[0].strip()
+    # S8（audit 2026-08-17）：不再信任 x-forwarded-for 首段（客户端可伪造，绕过限流）。
+    # 优先取 Cloudflare 注入的 cf-connecting-ip（不可由客户端伪造），否则用直连对端地址。
+    cf = request.headers.get("cf-connecting-ip")
+    if cf:
+        return cf.strip()
     return request.client.host if request.client else "0.0.0.0"
 
 
