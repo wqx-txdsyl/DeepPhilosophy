@@ -4,40 +4,20 @@
  * 阅读体验: 背景色 4 档 / 字号 A-/A+ / 行距 3 档 / 自动阅读(速度可调, 交互即暂停, localStorage 持久化)
  */
 import { Fragment, useRef, useEffect, useState, useCallback, useMemo } from 'react';
+import DOMPurify from 'dompurify';
 
-// S9（audit 2026-08-17）：章节 HTML 渲染前净化——白名单标签/属性，剥离 script/on*/javascript:
-// 章节内容为策展 HTML，仍按"不可信输入"处理（防存储型 XSS）。
-const SAFE_TAGS = new Set(['p','br','b','strong','i','em','u','s','sub','sup','h1','h2','h3','h4',
-  'ul','ol','li','blockquote','pre','code','hr','table','thead','tbody','tr','td','th','a','span','div','img','figure','figcaption']);
-const SAFE_ATTRS = new Set(['href','title','alt','src','width','height','align','colspan','rowspan','class','id','style','target','rel']);
-const DANGEROUS_PROTO = /^(javascript|vbscript|data):/i;
+// S9（audit 2026-08-17）：章节 HTML 渲染前用 DOMPurify 净化（防存储型 XSS）。
+// 章节内容为策展 HTML，仍按"不可信输入"处理。
+const SANITIZE_CONFIG = {
+  ALLOWED_TAGS: ['p','br','b','strong','i','em','u','s','sub','sup','h1','h2','h3','h4',
+    'ul','ol','li','blockquote','pre','code','hr','table','thead','tbody','tr','td','th',
+    'a','span','div','img','figure','figcaption'],
+  ALLOWED_ATTR: ['href','title','alt','src','width','height','align','colspan','rowspan','class','id','style'],
+  ALLOW_DATA_ATTR: false,
+};
 
 export function sanitizeChapterHtml(html) {
-  if (typeof DOMParser === 'undefined') return '';
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  const walk = (node) => {
-    Array.from(node.children || []).forEach((el) => {
-      const tag = el.tagName.toLowerCase();
-      if (!SAFE_TAGS.has(tag)) {
-        // 剥离危险/未知标签：保留其文本内容，丢弃标签本身
-        el.replaceWith(...Array.from(el.childNodes));
-        return;
-      }
-      Array.from(el.attributes).forEach((attr) => {
-        const name = attr.name.toLowerCase();
-        if (!SAFE_ATTRS.has(name) || name.startsWith('on')) {
-          el.removeAttribute(attr.name);
-        } else if (name === 'href' || name === 'src') {
-          const v = (attr.value || '').trim().toLowerCase();
-          if (DANGEROUS_PROTO.test(v) || v.startsWith('//')) el.removeAttribute(attr.name);
-        }
-      });
-      if (tag === 'a') { el.setAttribute('rel', 'nofollow noopener noreferrer'); }
-      walk(el);
-    });
-  };
-  walk(doc.body);
-  return doc.body.innerHTML;
+  return DOMPurify.sanitize(html || '', SANITIZE_CONFIG);
 }
 
 // 阅读背景主题

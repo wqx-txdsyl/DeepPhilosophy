@@ -19,13 +19,9 @@ export async function loadBooks() {
   const data = (await tryFetch('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/books.json', 2500))
     || await tryFetch('/books.json');
   if (data && data.length) { cacheSet('books', data); return data; }
-  try {
-    const local = await import('./assets/books.json');
-    const ldata = local.default?.books || local.books || [];
-    cacheSet('books', ldata); return ldata;
-  } catch {
-    return [];
-  }
+  // S19（audit 2026-08-17）：books.json 单一来源 = app/public/books.json（构建时复制进 dist，
+  // 与 OSS 双轨）；不再维护 src/assets 本地副本，避免三份元数据漂移。
+  return [];
 }
 
 /** 根据ID获取书籍 */
