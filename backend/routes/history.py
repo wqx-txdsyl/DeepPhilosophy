@@ -1,27 +1,16 @@
 """Reading history, chat history, notes, and book-chat routes"""
 import json
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 from models import ReadingProgressRequest, ChatMessageRequest, ChatHistoryClearRequest, NoteRequest, BookChatRequest
 from auth import (
-    get_user_by_token,
     save_reading_progress, get_reading_history,
     save_chat_message, get_chat_history, clear_chat_history,
     save_book_note, get_book_note, get_all_book_notes,
     save_book_chat, get_book_chat, clear_book_chat,
 )
+from auth_deps import auth_required  # S15: 统一鉴权依赖
 
 router = APIRouter()
-
-def auth_required(authorization: str = Header(None)) -> dict:
-    if not authorization or not authorization.startswith("Bearer "):
-        from fastapi import HTTPException
-        raise HTTPException(status_code=401, detail="请先登录")
-    token = authorization[7:]
-    user = get_user_by_token(token)
-    if not user:
-        from fastapi import HTTPException
-        raise HTTPException(status_code=401, detail="登录已过期，请重新登录")
-    return user
 
 @router.post("/api/history/reading")
 async def save_reading(req: ReadingProgressRequest,

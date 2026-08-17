@@ -37,16 +37,19 @@ CDIR = os.path.join(BASE, "data", "book_chapters")
 DDIR = os.path.join(BASE, "data", "book_detail")
 BOOKS_FILE = os.path.join(BASE, "..", "app", "public", "books.json")
 
-# exec rebuild_spine 函数定义段（主循环在 'count=0' 之后, 不执行）
-_src = open(os.path.join(TOOLS, "rebuild_spine.py"), encoding="utf-8").read()
-_ns = {"__file__": os.path.join(TOOLS, "rebuild_spine.py")}
-exec(_src.split("count=0")[0], _ns)
-# 重定向 rebuild_spine 的路径常量到正确位置（其 BASE_DIR 基于注入的 __file__）
-_ns["BASE_DIR"] = BASE
-_ns["CDIR"] = CDIR
-_ns["DDIR"] = DDIR
-_ns["EXTRACTED_IMG_DIR"] = os.path.join(BASE, "data", "book_images")
-extract = _ns["extract"]
+# S12（audit 2026-08-17）: 不再按字面量 "count=0" 切片后 exec 源码——
+# rebuild_spine 主循环已包进 if __name__ == "__main__"（可安全 import 且只加载函数定义）,
+# 这里用 importlib 显式加载该已知文件并只调用 extract()。
+import importlib.util as _ilu
+_spec = _ilu.spec_from_file_location("rebuild_spine", os.path.join(TOOLS, "rebuild_spine.py"))
+_spine_mod = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_spine_mod)
+# 路径重定向到 backend/ 数据目录（rebuild_spine 自身常量基于其文件位置, 修正为仓库实际布局）
+_spine_mod.BASE_DIR = BASE
+_spine_mod.CDIR = CDIR
+_spine_mod.DDIR = DDIR
+_spine_mod.EXTRACTED_IMG_DIR = os.path.join(BASE, "data", "book_images")
+extract = _spine_mod.extract
 
 
 def find_epubs():

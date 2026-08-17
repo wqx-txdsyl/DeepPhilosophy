@@ -89,34 +89,89 @@ def _gh_restore_stats():
     return None
 
 
-def load_stats():
+# ── 访问统计（S14, audit 2026-08-17）────────────────────────
+# 原实现每请求整文件读改写（load_stats→record_visit→save_stats, 无锁, 并发计数丢失 + 磁盘写）。
+# 改为: 内存聚合（单锁保护, O(1)）+ 定时落盘（daemon 线程周期 flush, 有变化才写盘）。
+STATS_LOCK = threading.Lock()
+_stats = None          # 内存统计 dict（首次访问时从本地文件 / GitHub 恢复）
+_stats_loaded = False
+_stats_dirty = False
+STATS_FLUSH_SECONDS = float(os.getenv("ADMIN_STATS_FLUSH_SECONDS", "60"))
+
+
+def _ensure_loaded_locked():
+    """内存统计初始化（调用方须持有 STATS_LOCK）: 本地文件 → GitHub 恢复 → 全新"""
+    global _stats, _stats_loaded, _stats_dirty
+    if _stats_loaded:
+        return
+    _stats = None
     # 1. Try local file first
     try:
         with open(STATS_FILE, "r") as f:
-            return json.load(f)
+            _stats = json.load(f)
     except Exception as e:
         _log.warning(f"Stats local load failed: {e}")
     # 2. Try GitHub backup
-    restored = _gh_restore_stats()
-    if restored:
-        os.makedirs(os.path.dirname(STATS_FILE), exist_ok=True)
-        with open(STATS_FILE, "w") as f:
-            json.dump(restored, f, ensure_ascii=False, indent=2)
-        _log.info("Stats restored from GitHub Release")
-        return restored
+    if _stats is None:
+        restored = _gh_restore_stats()
+        if restored:
+            _stats = restored
+            _stats_dirty = True  # 恢复值随首次 flush 落盘本地
+            _log.info("Stats restored from GitHub Release")
     # 3. Fresh start
-    return {
-        "total_visits": 0,
-        "daily_visits": {},
-        "page_views": {},
-        "started_at": datetime.now().isoformat(),
-    }
+    if _stats is None:
+        _stats = {
+            "total_visits": 0,
+            "daily_visits": {},
+            "page_views": {},
+            "started_at": datetime.now().isoformat(),
+        }
+    _stats_loaded = True
+
+
+def load_stats():
+    """返回统计深拷贝（管理后台读取; 内存聚合版, 不再每请求读盘）"""
+    with STATS_LOCK:
+        _ensure_loaded_locked()
+        return json.loads(json.dumps(_stats, ensure_ascii=False))
 
 
 def save_stats(stats):
-    os.makedirs(os.path.dirname(STATS_FILE), exist_ok=True)
-    with open(STATS_FILE, "w") as f:
-        json.dump(stats, f, ensure_ascii=False, indent=2)
+    """兼容入口: 整份写入统计（替换内存并标记落盘; 旧版直写磁盘行为由 flush 承接）"""
+    global _stats, _stats_loaded, _stats_dirty
+    with STATS_LOCK:
+        _stats = stats
+        _stats_loaded = True
+        _stats_dirty = True
+
+
+def record_visit(path="/"):
+    """内存聚合访问计数（单锁保护; 标记 dirty, 由定时线程落盘, 请求路径零磁盘 IO）"""
+    global _stats_dirty
+    with STATS_LOCK:
+        _ensure_loaded_locked()
+        _stats["total_visits"] += 1
+        today = datetime.now().strftime("%Y-%m-%d")
+        _stats["daily_visits"][today] = _stats["daily_visits"].get(today, 0) + 1
+        _stats["page_views"][path] = _stats["page_views"].get(path, 0) + 1
+        _stats_dirty = True
+
+
+def flush_stats():
+    """内存统计 → 本地文件（+ GitHub 备份, 60s 节流）; 无变化不写盘"""
+    global _stats_dirty
+    with STATS_LOCK:
+        _ensure_loaded_locked()
+        if not _stats_dirty:
+            return
+        snap = json.dumps(_stats, ensure_ascii=False, indent=2)
+        _stats_dirty = False
+    try:
+        os.makedirs(os.path.dirname(STATS_FILE), exist_ok=True)
+        with open(STATS_FILE, "w") as f:
+            f.write(snap)
+    except Exception as e:
+        _log.warning(f"Stats local save failed: {e}")
     # GitHub 备份（60s 节流, best-effort）
     global _last_backup_ts
     with _backup_lock:
@@ -125,17 +180,22 @@ def save_stats(stats):
             return
         _last_backup_ts = now
     try:
-        _gh_backup_stats(json.dumps(stats, ensure_ascii=False).encode("utf-8"))
+        _gh_backup_stats(snap.encode("utf-8"))
     except Exception as e:
         _log.warning(f"Stats GitHub backup failed: {e}")
 
-def record_visit(path="/"):
-    stats = load_stats()
-    stats["total_visits"] += 1
-    today = datetime.now().strftime("%Y-%m-%d")
-    stats["daily_visits"][today] = stats["daily_visits"].get(today, 0) + 1
-    stats["page_views"][path] = stats["page_views"].get(path, 0) + 1
-    save_stats(stats)
+
+def _flush_loop():
+    """定时落盘线程（daemon）: 每 STATS_FLUSH_SECONDS 秒 flush 一次"""
+    while True:
+        time.sleep(STATS_FLUSH_SECONDS)
+        try:
+            flush_stats()
+        except Exception:
+            _log.warning("Stats flush failed", exc_info=True)
+
+
+threading.Thread(target=_flush_loop, daemon=True).start()
 
 def get_users():
     db_path = os.path.join(os.path.dirname(__file__), "data", "users.db")

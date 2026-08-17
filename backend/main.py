@@ -63,17 +63,29 @@ async def request_timer_middleware(request: Request, call_next):
 
 @app.middleware("http")
 async def global_middleware(request: Request, call_next):
-    """统一中间件：访问统计 + 静态资源缓存"""
+    """统一中间件：访问统计 + 静态资源缓存 + CSP（S9）"""
     import admin as admin_module
     response = await call_next(request)
     path = request.url.path
-    # 访问统计（跳过管理员路径; 后台线程执行, 不阻塞事件循环）
+    # 访问统计（跳过管理员路径; S14 已改内存聚合, 直接调用不阻塞事件循环）
     if not path.startswith("/api/admin"):
         try:
-            import asyncio as _asyncio
-            _asyncio.get_running_loop().run_in_executor(None, admin_module.record_visit, path)
+            admin_module.record_visit(path)
         except Exception:
             pass
+    # S9（audit 2026-08-17）: 全站 CSP——HTML 响应补安全头（覆盖同源 FastAPI 静态托管;
+    # 若生产走 OSS/CF Pages 需在托管层配置同等 header）。/docs /redoc 排除, 避免破坏 Swagger UI
+    if ((response.headers.get("content-type") or "").startswith("text/html")
+            and not path.startswith(("/docs", "/redoc"))):
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "script-src 'self' 'unsafe-inline' https://deepphilosophy.oss-cn-shanghai.aliyuncs.com; "
+            "style-src 'self' 'unsafe-inline' https://deepphilosophy.oss-cn-shanghai.aliyuncs.com; "
+            "img-src 'self' data: blob: https://deepphilosophy.oss-cn-shanghai.aliyuncs.com; "
+            "connect-src 'self' https:; "
+            "font-src 'self' data: https://deepphilosophy.oss-cn-shanghai.aliyuncs.com; "
+            "object-src 'none'; base-uri 'self'; frame-src 'none'; form-action 'self'"
+        )
     # 静态资源强缓存（1年）
     if path.startswith(("/gene/", "/assets/", "/icons/")) and not path.startswith("/api/"):
         response.headers["Cache-Control"] = "public, max-age=31536000, immutable"

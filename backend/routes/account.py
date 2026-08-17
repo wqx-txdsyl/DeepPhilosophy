@@ -1,22 +1,11 @@
 """用户账户 API 路由 — 个性化资料更新 / 删除账户
 从 main.py 拆分（2026-08-15）
 """
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 from models import UpdateProfileRequest
+from auth_deps import auth_required  # S15: 统一鉴权依赖
 
 router = APIRouter()
-
-
-def auth_required(authorization: str = Header(None)) -> dict:
-    from fastapi import HTTPException
-    from auth import get_user_by_token
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="请先登录")
-    token = authorization[7:]
-    user = get_user_by_token(token)
-    if not user:
-        raise HTTPException(status_code=401, detail="登录已过期，请重新登录")
-    return user
 
 
 @router.put("/api/auth/profile")

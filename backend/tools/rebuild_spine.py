@@ -370,36 +370,40 @@ def process_non_epub(fp, rel, bid, ext):
     json.dump(detail,open(os.path.join(DDIR,f'{bid}.json'),'w',encoding='utf-8'),ensure_ascii=False)
     return detail
 
-count=0
-for root,dirs,files in os.walk(BOOKS_DIR):
-    for f in sorted(files):
-        ext = Path(f).suffix.lower()
-        fp=os.path.join(root,f);rel=os.path.relpath(fp,BOOKS_DIR).replace('\\','/');bid=hashlib.md5(rel.encode()).hexdigest()[:12]
-        if ext == '.epub':
-            bd=os.path.join(CDIR,bid)
-            # 清理旧章节文件，避免残留
-            if os.path.exists(bd):
-                import shutil; shutil.rmtree(bd)
-            os.makedirs(bd,exist_ok=True)
-            chs,toc_entries,cover,images=extract(fp,bid)
-            title=Path(f).stem;author=rel.split('/')[1].replace('###','').strip() if '/' in rel else ''
-            toc_titles = [t._text if hasattr(t,'_text') else str(t) for t in toc_entries]
-            meta={'bookId':bid,'title':title,'author':author,'toc':toc_titles,'cover':cover,'chapterCount':len(chs),'chapterTitles':[c['title'] for c in chs]}
-            json.dump(meta,open(os.path.join(bd,'meta.json'),'w',encoding='utf-8'),ensure_ascii=False)
-            detail={k:meta[k] for k in ['bookId','title','author','cover','toc','chapterCount','chapterTitles']}
-            detail['toc']=toc_titles;detail['region']='东方' if '东方' in rel else '西方';detail['file_type']='epub'
-            for sk in [f'{title}||{author}',f'{title}||',title]:
-                s = summaries.get(sk)
-                if s and s.get('summary'):detail['summary']=s['summary']
-                if s and s.get('tags'):detail['tags']=s['tags'];break
-            json.dump(detail,open(os.path.join(DDIR,f'{bid}.json'),'w',encoding='utf-8'),ensure_ascii=False)
-            sz=sum(os.path.getsize(os.path.join(bd,x)) for x in os.listdir(bd))
-            print(f'[{count+1}] {f[:40]}... spine:{len(chs)}章 {sz//1024}KB')
-        elif ext in ('.pdf','.txt'):
-            detail=process_non_epub(fp,rel,bid,ext.replace('.',''))
-            dp = os.path.join(DDIR, f'{bid}.json')
-            print(f'[{count+1}] {f[:40]}... {ext} detail:{os.path.getsize(dp)}B')
-        else:
-            continue
-        count+=1
-print(f'Done: {count}')
+# S12（audit 2026-08-17）: 主循环包进 __main__ 守卫——本文件可被安全 import（dp_import_epubs
+# 等工具直接复用 extract()/process_non_epub(), 不再按 "count=0" 字面量切片 exec 源码）。
+# 直接运行 python rebuild_spine.py 行为不变（全库重建主循环）。
+if __name__ == "__main__":
+    count=0
+    for root,dirs,files in os.walk(BOOKS_DIR):
+        for f in sorted(files):
+            ext = Path(f).suffix.lower()
+            fp=os.path.join(root,f);rel=os.path.relpath(fp,BOOKS_DIR).replace('\\','/');bid=hashlib.md5(rel.encode()).hexdigest()[:12]
+            if ext == '.epub':
+                bd=os.path.join(CDIR,bid)
+                # 清理旧章节文件，避免残留
+                if os.path.exists(bd):
+                    import shutil; shutil.rmtree(bd)
+                os.makedirs(bd,exist_ok=True)
+                chs,toc_entries,cover,images=extract(fp,bid)
+                title=Path(f).stem;author=rel.split('/')[1].replace('###','').strip() if '/' in rel else ''
+                toc_titles = [t._text if hasattr(t,'_text') else str(t) for t in toc_entries]
+                meta={'bookId':bid,'title':title,'author':author,'toc':toc_titles,'cover':cover,'chapterCount':len(chs),'chapterTitles':[c['title'] for c in chs]}
+                json.dump(meta,open(os.path.join(bd,'meta.json'),'w',encoding='utf-8'),ensure_ascii=False)
+                detail={k:meta[k] for k in ['bookId','title','author','cover','toc','chapterCount','chapterTitles']}
+                detail['toc']=toc_titles;detail['region']='东方' if '东方' in rel else '西方';detail['file_type']='epub'
+                for sk in [f'{title}||{author}',f'{title}||',title]:
+                    s = summaries.get(sk)
+                    if s and s.get('summary'):detail['summary']=s['summary']
+                    if s and s.get('tags'):detail['tags']=s['tags'];break
+                json.dump(detail,open(os.path.join(DDIR,f'{bid}.json'),'w',encoding='utf-8'),ensure_ascii=False)
+                sz=sum(os.path.getsize(os.path.join(bd,x)) for x in os.listdir(bd))
+                print(f'[{count+1}] {f[:40]}... spine:{len(chs)}章 {sz//1024}KB')
+            elif ext in ('.pdf','.txt'):
+                detail=process_non_epub(fp,rel,bid,ext.replace('.',''))
+                dp = os.path.join(DDIR, f'{bid}.json')
+                print(f'[{count+1}] {f[:40]}... {ext} detail:{os.path.getsize(dp)}B')
+            else:
+                continue
+            count+=1
+    print(f'Done: {count}')

@@ -1,17 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends, Header
+from fastapi import APIRouter, HTTPException, Depends
 from models import RegisterRequest, LoginRequest
-from auth import register, login, get_user_by_token
+from auth import register, login
+from auth_deps import auth_required  # S15: 统一鉴权依赖（原 4 处复制实现收敛为单一来源）
 
 router = APIRouter()
-
-def auth_required(authorization: str = Header(None)) -> dict:
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="请先登录")
-    token = authorization[7:]
-    user = get_user_by_token(token)
-    if not user:
-        raise HTTPException(status_code=401, detail="登录已过期，请重新登录")
-    return user
 
 @router.post("/api/auth/register")
 async def api_register(req: RegisterRequest):

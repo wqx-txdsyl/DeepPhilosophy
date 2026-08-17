@@ -18,6 +18,9 @@ from contextvars import ContextVar
 
 from fastapi import Header, HTTPException, Request
 
+# S15（audit 2026-08-17）: token 解析收敛到 auth_deps（唯一实现, 与 auth_required 同源）
+from auth_deps import resolve_user
+
 current_user: ContextVar = ContextVar("dp_user", default=None)  # {"id":..,"ip":..} 或 None
 
 # ── 内存令牌桶（单进程; 多副本/生产 VPS 可换 Redis 实现）──
@@ -95,16 +98,7 @@ def client_ip(request: Request) -> str:
     return request.client.host if request.client else "0.0.0.0"
 
 
-def resolve_user(authorization):
-    if authorization and authorization.startswith("Bearer "):
-        try:
-            from auth import get_user_by_token
-            u = get_user_by_token(authorization[7:])
-            if u:
-                return u
-        except Exception:
-            return None
-    return None
+# resolve_user 已收敛至 auth_deps（S15）: 本模块保留同名引用仅为兼容外部导入
 
 
 def agent_guard(request: Request, authorization: str = Header(None)):

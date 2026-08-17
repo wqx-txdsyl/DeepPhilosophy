@@ -3,6 +3,7 @@
 V1 工具: search_books / get_book_detail / get_chapter / query_graph / get_philosopher / list_books
 """
 import json, os, re, time, hashlib, urllib.request, threading
+from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from fastapi import APIRouter, Depends, Header
@@ -183,13 +184,81 @@ def _load_vectors():
                 pass
     return _vectors, _vector_index
 
+# ── S13: 检索索引 + 缓存（audit 2026-08-17）────────────────
+# 关键词兜底原实现每请求: 读 meta.json + 逐章读 JSON（最多 300 文件/书）;
+# embedding 每次外部 HTTP。改为:
+#   _CHAPTER_INDEX  书 → 章节文件路径索引（惰性构建一次, 后续请求零磁盘扫描/meta 读取）
+#   _CHAPTER_TEXTS  书 → [(idx, title, text)] LRU 文本缓存（128MB 上限, 淘汰最久未用书, 防长运行内存无限增长）
+#   _EMBED_CACHE    query md5 → embedding 向量（外部 HTTP 结果按文本 hash 缓存）
+_CHAPTER_INDEX = {}                     # bid -> {"chapterCount": n, "paths": [(idx, Path), ...]}
+_CHAPTER_TEXTS = OrderedDict()          # bid -> [(idx, title, text), ...]
+_CHAPTER_TEXTS_BYTES = 0
+_CHAPTER_TEXTS_MAX = 128 * 1024 * 1024  # 128MB 文本缓存上限
+_EMBED_CACHE = {}                       # md5(query) -> embedding
+_INDEX_LOCK = threading.RLock()         # RLock: _book_chapter_texts 内会再调 _chapter_index
+_EMBED_CACHE_MAX = 2048
+
+
+def _chapter_index(bid):
+    """构建/取回 章节文件索引（惰性; 一次构建后复用, 不再每请求读 meta.json/扫目录）"""
+    with _INDEX_LOCK:
+        idx = _CHAPTER_INDEX.get(bid)
+        if idx is not None:
+            return idx
+        meta = chapter_meta(bid)
+        n = (meta or {}).get("chapterCount") or 0
+        paths = []
+        for i in range(min(n, 300)):
+            p = CHAPTERS_DIR / bid / f"{i}.json"
+            if p.exists():
+                paths.append((i, p))
+        idx = {"chapterCount": n, "paths": paths}
+        _CHAPTER_INDEX[bid] = idx
+        return idx
+
+
+def _book_chapter_texts(bid):
+    """按需加载章节文本 [(idx, title, text), ...]（LRU; 超 128MB 淘汰最久未用书）"""
+    global _CHAPTER_TEXTS_BYTES
+    with _INDEX_LOCK:
+        cached = _CHAPTER_TEXTS.get(bid)
+        if cached is not None:
+            _CHAPTER_TEXTS.move_to_end(bid)
+            return cached
+        entries, size = [], 0
+        for i, p in _chapter_index(bid)["paths"]:
+            try:
+                ch = json.load(open(p, encoding="utf-8"))
+                title = ch.get("title", "")
+                text = "\n".join(b.get("value", "") for b in ch.get("content", [])
+                                 if b.get("type") == "text")
+            except Exception:
+                title, text = "", ""
+            entries.append((i, title, text))
+            size += len(text) * 2 + 128
+        _CHAPTER_TEXTS[bid] = entries
+        _CHAPTER_TEXTS_BYTES += size
+        while _CHAPTER_TEXTS_BYTES > _CHAPTER_TEXTS_MAX and len(_CHAPTER_TEXTS) > 1:
+            _old_bid, old = _CHAPTER_TEXTS.popitem(last=False)
+            _CHAPTER_TEXTS_BYTES -= sum(len(t) * 2 + 128 for _, _, t in old)
+        return entries
+
+
 def _embed_query(q):
+    key = hashlib.md5(q.encode("utf-8", "ignore")).hexdigest()
+    cached = _EMBED_CACHE.get(key)
+    if cached is not None:
+        return cached
     try:
         from openai import OpenAI
         cli = OpenAI(api_key=os.environ.get("ZHIPU_API_KEY", ""),
                      base_url="https://open.bigmodel.cn/api/paas/v4/", timeout=15)
         r = cli.embeddings.create(model="embedding-2", input=[q[:500]])
-        return r.data[0].embedding
+        vec = r.data[0].embedding
+        if len(_EMBED_CACHE) > _EMBED_CACHE_MAX:  # S13: 缓存上限, 防长运行内存无限增长
+            _EMBED_CACHE.clear()
+        _EMBED_CACHE[key] = vec
+        return vec
     except Exception:
         return None
 
@@ -240,39 +309,36 @@ def _exec_search_books(args):
         if s > 0:
             hits.append((s, b))
     hits.sort(key=lambda x: -x[0])
-    # 2) 章级扫描（前 limit 本书的章节）
+    # 2) 章级扫描（前 limit 本书的章节; S13: 走内存索引+文本缓存, 不再每请求逐章读 JSON）
     results = []
     for s, b in hits[:limit]:
-        meta = chapter_meta(b["id"])
-        if not meta or not meta.get("chapterCount"):
-            continue
         best = []
-        for i in range(min(meta["chapterCount"], 300)):
-            ch = read_chapter(b["id"], i)
-            if not ch or not ch.get("text"):
+        for i, title, text in _book_chapter_texts(b["id"]):
+            if not text:
                 continue
-            cs = _match_score(ch["text"][:2000] + ch.get("title", ""), terms)
+            cs = _match_score(text[:2000] + title, terms)
             if cs > 0:
-                best.append((cs, i, ch))
+                best.append((s + cs, i, b, title, text))
         best.sort(key=lambda x: -x[0])
-        for cs, i, ch in best[:3]:
-            text = ch["text"]
-            # 提取命中片段
-            pos = 0
-            low = text.lower()
-            for t in terms:
-                p = low.find(t)
-                if p >= 0:
-                    pos = p
-                    break
-            snippet = text[max(0, pos - 80): pos + 180].replace("\n", " ")
-            results.append({
-                "book_id": b["id"], "book_title": b.get("title"), "author": b.get("author"),
-                "chapter_idx": i, "chapter_title": ch.get("title", ""),
-                "snippet": snippet, "score": s + cs,
-            })
-    results.sort(key=lambda x: -x["score"])
-    return {"results": results[:limit * 3], "query": query}
+        results.extend(best[:3])
+    results.sort(key=lambda x: -x[0])
+    clean = []
+    for score, i, b, title, text in results[:limit * 3]:
+        # 提取命中片段
+        pos = 0
+        low = text.lower()
+        for t in terms:
+            p = low.find(t)
+            if p >= 0:
+                pos = p
+                break
+        snippet = text[max(0, pos - 80): pos + 180].replace("\n", " ")
+        clean.append({
+            "book_id": b["id"], "book_title": b.get("title"), "author": b.get("author"),
+            "chapter_idx": i, "chapter_title": title,
+            "snippet": snippet, "score": score,
+        })
+    return {"results": clean[:limit * 3], "query": query}
 
 register_tool(
     "search_books",
