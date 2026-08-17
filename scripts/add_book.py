@@ -22,7 +22,6 @@ KNOWLEDGE_DIR = os.getenv("PHILOSOPHY_BOOKS_DIR", "F:/philosophy")
 # ── API ──
 DEEPSEEK_KEY = get_deepseek_key()
 DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
-DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
 
 KNOWN_TAGS = [
     "古希腊哲学","教父哲学","经院哲学","唯名论","理性主义","经验主义","启蒙运动",

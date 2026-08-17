@@ -10,24 +10,20 @@ from io import BytesIO
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Load API key — try api_keys.json first, then gen_school_bg.py fallback
-API_KEY = ""
+# Load API key — .env（根目录）优先，api_keys.json 兼容（S16：不再从其他脚本源码正则提取，脆弱且已失效）
+from dotenv import load_dotenv
+load_dotenv(os.path.join(SCRIPT_DIR, "..", ".env"))
+API_KEY = os.getenv("AGNES_API_KEY") or os.getenv("DEEPSEEK_API_KEY") or ""
 _keys_path = os.path.join(SCRIPT_DIR, "api_keys.json")
-if os.path.exists(_keys_path):
+if not API_KEY and os.path.exists(_keys_path):
     with open(_keys_path, "r", encoding="utf-8") as f:
         try:
             _keys = json.load(f)
             API_KEY = _keys.get("agnes", _keys.get("deepseek", ""))
-        except:
+        except Exception:
             pass
 if not API_KEY:
-    # Fallback: extract from gen_school_bg.py
-    import re
-    _bg_path = os.path.join(SCRIPT_DIR, "gen_school_bg.py")
-    if os.path.exists(_bg_path):
-        with open(_bg_path, "r", encoding="utf-8") as f:
-            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
-            if m: API_KEY = m.group(1)
+    raise SystemExit("未配置 AGNES_API_KEY / DEEPSEEK_API_KEY（请在项目根 .env 或环境变量中设置）")
 IMG_API = "https://apihub.agnes-ai.com/v1/images/generations"
 TEXT_API = "https://apihub.agnes-ai.com/v1/chat/completions"
 TEXT_MODEL = "agnes-2.0-flash"
