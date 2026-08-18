@@ -62,6 +62,12 @@ def _bucket(name, key, rate, burst):
         return b
 
 
+def _bucket_reset(name, key):
+    """清空指定令牌桶（N4: require_admin 口令校验成功后复位该 IP 的失败计数）"""
+    with _buckets_lock:
+        _buckets.pop((name, key), None)
+
+
 # ── 每日配额（内存计数, 按 (日期, key); 重启清零）──
 _quota = {}
 _quota_lock = threading.Lock()
@@ -145,16 +151,29 @@ def ai_guard(request: Request, authorization: str = Header(None)):
     return user
 
 
+# ── require_admin 爆破限流配置（N4, audit 2026-08-18）──────────────
+# 口令校验失败按 IP 计桶: 10 次/分钟、突发 10 —— 桶耗尽即该 IP 锁定（返回 429,
+# 与口令是否正确无关）; 校验成功即清桶复位。复用上方令牌桶机制（滑动窗口近似）。
+ADMIN_FAIL_RATE, ADMIN_FAIL_BURST = 10 / 60.0, 10
+
+
 def require_admin(request: Request, x_admin_password: str = Header(None)):
     """管理写操作端点依赖: 复用 ADMIN_PASSWORD 管理口令（fail-closed）
     未配置 ADMIN_PASSWORD → 503（生产默认关）; 口令不符 → 403
+    爆破限流（N4, audit 2026-08-18）: 失败按 IP 计桶（10 次/分钟）——
+    桶耗尽返回 429 锁定; 校验成功清桶复位（见 test_security.py 限流用例）。
     加固（审计 S3/S4）: sync/knowledge 写端点原无鉴权, 匿名可写/删/重建"""
     from admin import ADMIN_PASSWORD
     if not ADMIN_PASSWORD:
         raise HTTPException(status_code=503, detail="管理功能未配置（请设置 ADMIN_PASSWORD 环境变量）")
     import hmac
     if not x_admin_password or not hmac.compare_digest(x_admin_password, ADMIN_PASSWORD):
+        # 失败计数（按 IP）: 先取桶 token; 桶空 = 该 IP 已超限 → 429 锁定
+        if not _bucket("adminfail", client_ip(request), ADMIN_FAIL_RATE, ADMIN_FAIL_BURST).consume():
+            raise HTTPException(status_code=429, detail="失败次数过多，请稍后再试")
         raise HTTPException(status_code=403, detail="密码错误")
+    # 校验成功 → 复位该 IP 的失败计数
+    _bucket_reset("adminfail", client_ip(request))
     return True
 
 

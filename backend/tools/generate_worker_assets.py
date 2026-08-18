@@ -9,6 +9,14 @@
         app/public/books.json（book 数）、philosophers.json（作者数）、schools/data/school_*.json（流派数）
         backend/data/admin_stats.json（访问统计）
 id 规则与 Render scan_books_oss 一致: hashlib.md5(rel_path.encode()).hexdigest()[:12]
+
+N7（audit 2026-08-18）— 与 app/public/books.json 的关系（非重复副本, 勿混淆）:
+  · app/public/books.json  = 前端「书单」: 每本书的标题/作者/chapterCount/封面等元数据列表（list),
+      由 backend/tools/dp_sync_books.py 从 backend/data/book_detail 汇总生成, 前端列表/详情页读取;
+  · 本脚本生成的 workers/api/src/books.json = 「CDN manifest」: 书 id → OSS/GitHub 文件直链映射（dict),
+      由本脚本从 backend/data/oss_manifest.json + github_manifest.json 生成, Worker 直链跳转用。
+  两者结构不同（list vs dict）、来源不同（book_detail vs oss/github manifest）、用途不同（书单 vs 直链）。
+  改书库后需分别重新生成（dp_sync_books.py + 本脚本）, 互相不覆盖。
 """
 import json, hashlib, os, sys
 sys.stdout.reconfigure(encoding='utf-8')

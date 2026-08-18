@@ -29,6 +29,10 @@ async def init_knowledge_base(_g: dict = Depends(guard.require_admin)):
         finally:
             with _building_lock:
                 _building = False
+            # N6（audit 2026-08-18）: 重建完成后失效 agent 进程内缓存
+            # （重建是后台线程, 故在完成点而非端点内调用）
+            from routes.agent import invalidate_agent_cache
+            invalidate_agent_cache()
 
     def _do_build():
         from modules.document_loader import DocumentLoader

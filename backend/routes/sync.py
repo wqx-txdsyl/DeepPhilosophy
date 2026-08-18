@@ -28,6 +28,9 @@ async def sync_upload(file: UploadFile = File(...), _g: dict = Depends(guard.req
     content = await file.read()
     with open(target_path, "wb") as f:
         f.write(content)
+    # N6（audit 2026-08-18）: 书库变更 → 失效 agent 进程内缓存（books.json/章节/embedding）
+    from routes.agent import invalidate_agent_cache
+    invalidate_agent_cache()
     return {"status": "ok", "path": safe_name, "size": len(content)}
 
 @router.post("/api/sync/delete")
@@ -44,5 +47,8 @@ async def sync_delete(req: SyncDeleteRequest, _g: dict = Depends(guard.require_a
                 os.rmdir(parent)
         except Exception:
             pass
+        # N6（audit 2026-08-18）: 书库变更 → 失效 agent 进程内缓存
+        from routes.agent import invalidate_agent_cache
+        invalidate_agent_cache()
         return {"status": "ok", "deleted": safe_path}
     return {"status": "not_found", "path": safe_path}

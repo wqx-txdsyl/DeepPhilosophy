@@ -54,34 +54,20 @@
     <!-- 2026-08-11: 移除 Google Fonts link — 国内网络不可达, head stylesheet 阻塞 load 事件 → tab 一直转圈; 字体回退链在 App.css -->
     <!-- 2026-08-11: 构建产物/books.json/covers.json/封面走 OSS 双轨, 提前建立连接 -->
     <link rel="preconnect" href="https://deepphilosophy.oss-cn-shanghai.aliyuncs.com" crossorigin>
+
+    <!-- N5（audit 2026-08-18）: CSP 收紧 —— 生产部署在 Cloudflare Pages, 无后端响应头,
+         meta CSP 由 vite.config.js 在「生产构建时」注入（本文件不常驻, 避免 dev 被拦:
+         vite HMR WebSocket ws://localhost:5173 与用户自配 http://localhost:8000 后端会被 connect-src 拦）。
+         策略与 backend/main.py 中间件同源, 修改需两处同步。script-src 无 'unsafe-inline':
+         启动脚本已外置 public/config-bootstrap.js（同源 'self'）; JSON-LD 为 data block 不受 script-src 限制;
+         'unsafe-eval' 从未启用, 构建产物无 eval/new Function。style-src 保留 'unsafe-inline'（React 内联样式）。 -->
   </head>
   <body>
     <div id="root"></div>
-    <!-- 启动时从 config.json 加载 API 地址，写入 localStorage（优先级低于用户手动设置） -->
-    <script>
-      (function(){
-        var stored = localStorage.getItem('dp_api_config');
-        if (stored) { try { var c = JSON.parse(stored); if (c.apiUrl) return; } catch(e){} }
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/config.json', true);
-        xhr.timeout = 3000;
-        xhr.onload = function(){
-          if (xhr.status === 200) {
-            try {
-              var cfg = JSON.parse(xhr.responseText);
-              if (cfg.apiUrl && !cfg.apiUrl.includes('YOUR_BACKEND_URL')) {
-                var prev = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
-                if (!prev.apiUrl) {
-                  prev.apiUrl = cfg.apiUrl;
-                  localStorage.setItem('dp_api_config', JSON.stringify(prev));
-                }
-              }
-            } catch(e){}
-          }
-        };
-        xhr.send();
-      })();
-    </script>
+    <!-- 启动时从 config.json 加载 API 地址，写入 localStorage（优先级低于用户手动设置）
+         N5（audit 2026-08-18）: 由内联改为外置 public/config-bootstrap.js（同源 'self'），
+         使 script-src 可去掉 'unsafe-inline'。 -->
+    <script src="/config-bootstrap.js"></script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

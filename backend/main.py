@@ -75,11 +75,14 @@ async def global_middleware(request: Request, call_next):
             pass
     # S9（audit 2026-08-17）: 全站 CSP——HTML 响应补安全头（覆盖同源 FastAPI 静态托管;
     # 若生产走 OSS/CF Pages 需在托管层配置同等 header）。/docs /redoc 排除, 避免破坏 Swagger UI
+    # N5（audit 2026-08-18）: script-src 去掉 'unsafe-inline'（启动脚本已外置 app/public/config-bootstrap.js;
+    # JSON-LD 为 data block 不受 script-src 限制; 'unsafe-eval' 从未启用, 构建产物无 eval）。style-src 保留
+    # 'unsafe-inline'（React 内联样式, 最小可行取舍）。此策略与 app/index.html 的 meta CSP 同源, 修改需两处同步。
     if ((response.headers.get("content-type") or "").startswith("text/html")
             and not path.startswith(("/docs", "/redoc"))):
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' https://deepphilosophy.oss-cn-shanghai.aliyuncs.com; "
+            "script-src 'self' https://deepphilosophy.oss-cn-shanghai.aliyuncs.com; "
             "style-src 'self' 'unsafe-inline' https://deepphilosophy.oss-cn-shanghai.aliyuncs.com; "
             "img-src 'self' data: blob: https://deepphilosophy.oss-cn-shanghai.aliyuncs.com; "
             "connect-src 'self' https:; "

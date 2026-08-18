@@ -40,8 +40,35 @@ function publicLive() {
 // 部署 commit hash 不再在此内联（2026-08-14 解耦: 由 postbuild.mjs 注入 index.html <meta name="dp-commit">,
 // 前端运行时读取; 否则每次 push 都改变 JS 包内容 → 资产 hash 变化 → OSS 未同步即白屏）
 
+// N5（audit 2026-08-18）: 生产构建注入 meta CSP —— Cloudflare Pages 部署无后端响应头,
+// meta CSP 是生产强制手段（策略与 backend/main.py 中间件同源, 修改需两处同步）。
+// 仅在 build 时注入（apply:'build'）: dev 注入会拦 vite HMR WebSocket(ws://localhost:5173)
+// 与用户自配 http://localhost:8000 后端（PHTI 页引用）。script-src 无 'unsafe-inline':
+// 启动脚本已外置 public/config-bootstrap.js（同源 'self' 加载）; JSON-LD 为 data block（非可执行脚本,
+// CSP3 不拦截, 不占 script-src 额度）; 'unsafe-eval' 从未启用, 构建产物无 eval/new Function
+// （2026-08-18 核查 dist assets 0 命中）。style-src 保留 'unsafe-inline'（React 内联 style 属性,
+// 组件级限制收益低, 最小可行取舍）。OSS 域保留: 构建脚本/CSS 资产经 postbuild.mjs 改写从 OSS CDN 加载。
+function cspMeta() {
+  const CSP = [
+    "default-src 'self'",
+    "script-src 'self' https://deepphilosophy.oss-cn-shanghai.aliyuncs.com",
+    "style-src 'self' 'unsafe-inline' https://deepphilosophy.oss-cn-shanghai.aliyuncs.com",
+    "img-src 'self' data: blob: https://deepphilosophy.oss-cn-shanghai.aliyuncs.com",
+    "connect-src 'self' https:",
+    "font-src 'self' data: https://deepphilosophy.oss-cn-shanghai.aliyuncs.com",
+    "object-src 'none'; base-uri 'self'; frame-src 'none'; form-action 'self'",
+  ].join('; ')
+  return {
+    name: 'inject-csp-meta',
+    apply: 'build',
+    transformIndexHtml(html) {
+      return html.replace('</head>', `    <meta http-equiv="Content-Security-Policy" content="${CSP}" />\n  </head>`)
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), publicLive()],
+  plugins: [react(), publicLive(), cspMeta()],
   // 2026-08-11 书架提速: 生产构建产物走 OSS（用户网络对同源 CF 边缘 4-5s/220KB, OSS 0.1s）
   // 注意: vite base 会连带重写 index.html 的 public 引用（favicon/manifest/icons → OSS 404）,
   //       故 base 保持 '/', 改用 postbuild.mjs 构建后只替换 dist/index.html 的 assets 引用为 OSS URL

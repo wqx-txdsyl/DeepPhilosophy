@@ -199,6 +199,35 @@ _INDEX_LOCK = threading.RLock()         # RLock: _book_chapter_texts 内会再�
 _EMBED_CACHE_MAX = 2048
 
 
+def invalidate_agent_cache():
+    """书库更新后失效进程内缓存（N6, audit 2026-08-18）:
+    在 sync/upload、sync/delete、knowledge/init 成功后调用——否则 books.json /
+    章节文本 LRU / query embedding / 向量索引会缓存到进程重启, 更新不生效。
+    覆盖: 三个全量数据缓存（books/network/philosophers）、章节索引与文本 LRU、
+    embedding 缓存与向量索引、book_scanner 列表缓存（300s TTL 兜底提前清）。
+    不触碰 _tools_cache / _web_cache（工具集与网页缓存与书库内容无关）。"""
+    global _books_cache, _network_cache, _philosophers_cache
+    global _vectors, _vector_index
+    global _CHAPTER_TEXTS_BYTES
+    with _cache_lock:
+        _books_cache = None
+        _network_cache = None
+        _philosophers_cache = None
+    with _INDEX_LOCK:
+        _CHAPTER_INDEX.clear()
+        _CHAPTER_TEXTS.clear()
+        _CHAPTER_TEXTS_BYTES = 0
+        _EMBED_CACHE.clear()
+        _vectors = None
+        _vector_index = None
+    try:  # book_scanner 进程内列表缓存（懒 import 防启动耦合; 用模块属性赋值才生效）
+        import services.book_scanner as _bs
+        _bs._BOOKS_CACHE_LIST = None
+        _bs._BOOKS_CACHE_TIME = 0
+    except Exception:
+        pass
+
+
 def _chapter_index(bid):
     """构建/取回 章节文件索引（惰性; 一次构建后复用, 不再每请求读 meta.json/扫目录）"""
     with _INDEX_LOCK:
