@@ -150,8 +150,8 @@ function _rateLimit(ip, limit) {
   return rec.count <= limit;
 }
 function _clientIp(c) {
-  const ff = c.req.header('x-forwarded-for') || '';
-  if (ff) return ff.split(',')[0].trim();
+  // N1（audit 2026-08-18）：与后端 guard.py 一致——cf-connecting-ip 优先（CF 注入不可伪造），
+  // 其次 x-real-ip；不再信任 x-forwarded-for 首段（客户端可伪造绕过限流）
   const cf = c.req.header('cf-connecting-ip');
   if (cf) return cf.trim();
   return c.req.header('x-real-ip') || 'unknown';
