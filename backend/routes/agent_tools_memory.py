@@ -15,6 +15,15 @@ from routes.agent_core import (
 )
 from routes.agent_llm import llm_chat
 
+# ESSAY_PROMPT（2026-08-18 修复：原定义缺失，write_essay 新作文路径会 NameError；
+# 占位符与 _essay_pipeline 的 format 调用一致）
+ESSAY_PROMPT = (
+    "请以「{genre}」体裁写一篇关于「{topic}」的作文（约 {word_count} 字）。\n"
+    "参考素材（retrieval）：{retrieval}\n"
+    "补充要求：{extra}\n"
+    "要求：结构清晰、论据充分、有独到见解，直接输出正文。"
+)
+
 # ── 工具 7: write_essay（学生作文——注册为工具, 对话流意图触发; 支持多轮修改）──
 # 多轮修改记忆: 持久化到文件（进程重启不丢）; 作文按题目记忆（避免跨主题串味）
 # 2026-08-14 per-user 加固（P0）: 记忆按用户隔离（guard.user_memory_key）,
@@ -89,6 +98,7 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
                                    "thought": f"联网补充「{query}」的当代论据与背景"})
     except Exception:
         web_text = ""
+    # ESSAY_PROMPT（2026-08-18 修复：拆分前即无定义，write_essay 新作文路径会 NameError）
     prompt = ESSAY_PROMPT.format(genre=genre, topic=topic, word_count=word_count,
                                  extra=extra or "无", retrieval=retrieval)
     if web_text:
