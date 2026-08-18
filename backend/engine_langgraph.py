@@ -36,6 +36,7 @@ RETRIEVAL_TOOLS = {"search_books", "get_chapter", "get_philosopher", "query_grap
 RETRIEVAL_LIMIT = 5   # 柔性提示阈值（检索达到后提示评估材料充分性）
 RETRIEVAL_HARD = 8    # 硬上限（达到后强制转入最终回答, 防检索地狱）
 
+# 哲学家数以 backend/data/philosophers.json 实际条目数为准（N3 2026-08-18: 737，勿手写漂移值）
 SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智能体，基于 403 本哲学原著（柏拉图到德里达）与 737 位哲学家资料库工作。
 
 【语言要求】所有输出必须使用中文——包括内部思维过程（thinking/reasoning 推理链）、工具调用与回答。禁止用英文思考或输出。

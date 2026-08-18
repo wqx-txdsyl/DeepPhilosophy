@@ -17,18 +17,18 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SD_FILE = os.path.join(ROOT, "app", "src", "pages", "SchoolDetailPage.jsx")
 JSON_DIR = os.path.join(ROOT, "backend", "data")
 SCHOOLS_DIR = os.path.join(ROOT, "app", "public", "schools")
-_keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
-_keys = {}
-if os.path.exists(_keys_path):
-    with open(_keys_path) as f: _keys = json.load(f)
-DEEPSEEK_KEY = _keys.get("deepseek", "")
+# S16（2026-08-18）: 不再从其他脚本源码正则挖 key；.env → 环境变量 → api_keys.json 回退（同 gen_portrait.py）
+from dotenv import load_dotenv
+load_dotenv(os.path.join(ROOT, ".env"))
 DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
-if not DEEPSEEK_KEY:
-    _east = os.path.join(ROOT, "_gen_east.py")
-    if os.path.exists(_east):
-        with open(_east, "r", encoding="utf-8") as f:
-            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
-            if m: DEEPSEEK_KEY = m.group(1)
+DEEPSEEK_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+_keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
+if not DEEPSEEK_KEY and os.path.exists(_keys_path):
+    try:
+        with open(_keys_path, "r", encoding="utf-8") as f:
+            DEEPSEEK_KEY = json.load(f).get("deepseek", "")
+    except Exception:
+        pass
 
 def esc(s):
     return json.dumps(s, ensure_ascii=False)

@@ -48,7 +48,8 @@ def build_books():
 def build_stats():
     books = json.load(open(os.path.join(REPO, 'app', 'public', 'books.json'), encoding='utf-8'))
     n_books = len(books) if isinstance(books, list) else len(books.get('books', []))
-    phis = json.load(open(os.path.join(REPO, 'app', 'public', 'philosophers.json'), encoding='utf-8'))
+    # N3（2026-08-18）: 哲学家数统一取 backend/data/philosophers.json（规范源），不再取 app/public 副本
+    phis = json.load(open(os.path.join(HERE, 'data', 'philosophers.json'), encoding='utf-8'))
     n_authors = len(phis) if isinstance(phis, list) else len(phis.get('philosophers', phis))
     school_dir = os.path.join(REPO, 'app', 'public', 'schools', 'data')
     n_schools = len([f for f in os.listdir(school_dir) if f.startswith('school_') and f.endswith('.json')])

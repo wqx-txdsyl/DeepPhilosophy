@@ -9,7 +9,7 @@
 
 | 组成部分 | 说明 | 运行方式 |
 |---|---|---|
-| **平台**（`app/`） | 哲学知识平台：402 部原典在线阅读 / 744 哲人 / 111 流派 / AI 问答 | 生产：Cloudflare Pages（deepphilosophy.top）；本地：Vite :5173 |
+| **平台**（`app/`） | 哲学知识平台：402 部原典在线阅读 / 737 哲人（以 backend/data/philosophers.json 为准）/ 111 流派 / AI 问答 | 生产：Cloudflare Pages（deepphilosophy.top）；本地：Vite :5173 |
 | **智能体**（`agent-app/` + `backend/`） | LangGraph 哲学智能体：深哲（30 工具）+ 尼采（AIAuthor 六库数字人格） | 本地：后端 FastAPI :8011 + Vite :5201 |
 | **书库工具链**（`backend/tools/`） | 402 部原典数字化：导入/OCR/章节重建/向量化/同步/部署管线 | 命令行，`.venv` 运行 |
 | **生产 API**（`workers/`） | Cloudflare Workers（auth + api，Hono + D1），零传统服务器 | 云端 |

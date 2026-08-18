@@ -18,20 +18,23 @@ HP_FILE = os.path.join(ROOT, "app", "src", "pages", "HomePage.jsx")
 ST_FILE = os.path.join(ROOT, "app", "src", "pages", "SettingsPage.jsx")
 JSON_DIR = os.path.join(ROOT, "backend", "data")
 SCHOOLS_DIR = os.path.join(ROOT, "app", "public", "schools")
-_keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
-_keys = {}
-if os.path.exists(_keys_path):
-    with open(_keys_path) as f: _keys = json.load(f)
-DEEPSEEK_KEY = _keys.get("deepseek", "")
-# fallback: 从 _gen_east.py 读取（同 backend/config.py 逻辑）
+# S16（2026-08-18）: 不再从其他脚本源码正则挖 key；.env → 环境变量 → api_keys.json 回退（同 gen_portrait.py）
+from dotenv import load_dotenv
+load_dotenv(os.path.join(ROOT, ".env"))
 DEEPSEEK_API = "https://api.deepseek.com/v1/chat/completions"
-if not DEEPSEEK_KEY:
-    _east = os.path.join(ROOT, "_gen_east.py")
-    if os.path.exists(_east):
-        with open(_east, "r", encoding="utf-8") as f:
-            m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
-            if m: DEEPSEEK_KEY = m.group(1)
-AGNES_KEY = _keys.get("agnes", "")
+DEEPSEEK_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+AGNES_KEY = os.getenv("AGNES_API_KEY", "")
+_keys_path = os.path.join(os.path.dirname(__file__), "api_keys.json")
+if (not DEEPSEEK_KEY or not AGNES_KEY) and os.path.exists(_keys_path):
+    try:
+        with open(_keys_path, "r", encoding="utf-8") as f:
+            _keys = json.load(f)
+        if not DEEPSEEK_KEY:
+            DEEPSEEK_KEY = _keys.get("deepseek", "")
+        if not AGNES_KEY:
+            AGNES_KEY = _keys.get("agnes", "")
+    except Exception:
+        pass
 
 def esc(s):
     return json.dumps(s, ensure_ascii=False)

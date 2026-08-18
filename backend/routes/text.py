@@ -1,9 +1,8 @@
 """文本提取 API — 借鉴番茄小说：提取纯文本 + 章节索引 + 字符偏移"""
-import os, json, re, zipfile
+import os, json, re
 from pathlib import Path
-from html.parser import HTMLParser
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import JSONResponse, FileResponse, Response
+from fastapi.responses import JSONResponse, Response
 from loguru import logger
 import config
 

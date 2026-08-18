@@ -12,7 +12,7 @@
   --replace  替换现有图片（默认只补缺失的）
   --limit N  只处理 N 张
 """
-import os, sys, json, io, re, time, base64, urllib.request, urllib.parse
+import os, sys, json, io, time, base64, urllib.request, urllib.parse
 from collections import defaultdict
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
@@ -23,13 +23,17 @@ IMG_DIR = os.path.join(BASE, 'app', 'public', 'philosopher')
 PHIL_FILE = os.path.join(BASE, 'app', 'public', 'philosophers.json')
 LOG_FILE = os.path.join(BASE, 'scripts', '_fetch_portraits_log.json')
 
-# Agnes AI
-_key_path = os.path.join(os.path.expanduser("~"), ".claude", "skills", "image", "scripts", "vision.py")
-AGNES_KEY = None
-if os.path.exists(_key_path):
-    with open(_key_path, "r", encoding="utf-8") as f:
-        m = re.search(r'API_KEY\s*=\s*"([^"]+)"', f.read())
-        if m: AGNES_KEY = m.group(1)
+# Agnes AI（S16 2026-08-18: 不再从 ~/.claude 下脚本源码正则挖 key；.env → 环境变量 → api_keys.json 回退）
+from dotenv import load_dotenv
+load_dotenv(os.path.join(BASE, '.env'))
+AGNES_KEY = os.getenv('AGNES_API_KEY', '')
+_keys_path = os.path.join(BASE, 'scripts', 'api_keys.json')
+if not AGNES_KEY and os.path.exists(_keys_path):
+    try:
+        with open(_keys_path, 'r', encoding='utf-8') as f:
+            AGNES_KEY = json.load(f).get('agnes', '')
+    except Exception:
+        pass
 
 REPLACE = '--replace' in sys.argv
 LIMIT = None

@@ -6,9 +6,12 @@
 用法: python build_book_json.py [--force]
 """
 import os, sys, json, re, zipfile, io, hashlib
+import logging
 from pathlib import Path
 from html.parser import HTMLParser
 from bs4 import BeautifulSoup  # pip install beautifulsoup4
+
+logger = logging.getLogger("build_book_json")  # S22: 裸 except 改 Exception + 日志，避免失败静默
 
 BOOKS_DIR = "F:/philosophy" if os.path.exists("F:/philosophy") else os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "books")
 OUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "book_json")
@@ -45,7 +48,8 @@ def save_as_webp(data, out_path, max_size=1200):
         out_webp = os.path.splitext(out_path)[0] + '.webp'
         img.save(out_webp, 'WEBP', quality=75)
         return out_webp
-    except:
+    except Exception as e:
+        logger.debug("webp 转换失败，回退原图: %s", e)
         with open(out_path, 'wb') as f: f.write(data)
         return out_path
 
@@ -89,7 +93,8 @@ def process_epub(filepath, book_id=None):
                             save_as_webp(data, out_path)
                         book["cover"] = f"/api/books/{book_id}/image/{out_fn}"
                         break
-                    except: pass
+                    except Exception as e:
+                        logger.debug("封面提取跳过 %s: %s", name, e)
 
             # 3. 找 OPF 获取 spine 阅读顺序
             container_xml = None
@@ -143,7 +148,8 @@ def process_epub(filepath, book_id=None):
                                             "title": label.text.strip(),
                                             "src": content.get('src', ''),
                                         })
-                            except: pass
+                            except Exception as e:
+                                logger.debug("NCX 目录解析跳过 %s: %s", ncx_path, e)
                 except Exception as e:
                     print(f"  ⚠ OPF parse error: {e}")
 
