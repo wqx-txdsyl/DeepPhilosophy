@@ -28,7 +28,7 @@ from routes.agent_core import (
     TOOLS, register_tool,
     get_books, get_network, get_philosophers, book_by_id,
     _safe_bid, chapter_meta, read_chapter, invalidate_agent_cache,
-    _int_arg, _embed_query,
+    _int_arg, _embed_query, _embed_status,
     _mem_slot, _save_agent_memory, _find_essay_topic,
     BASE, DATA, PUBLIC, BOOKS_FILE, CHAPTERS_DIR, NETWORK_FILE, PHILOSOPHERS_FILE,
     SCHOOLS_DIR, PHILOSOPHER_DIR, AGNES_IMG_DIR, AI_DIR,

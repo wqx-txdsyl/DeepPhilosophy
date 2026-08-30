@@ -150,6 +150,8 @@ app.include_router(books_router)
 app.include_router(authors_router)
 app.include_router(upload_router)
 app.include_router(account_router)
+from routes.openai_compat import router as openai_compat_router
+app.include_router(openai_compat_router)
 
 # ============================================================
 # 静态前端（同源部署，须在 API 路由之后注册）

@@ -34,7 +34,20 @@ RETRIEVAL_TOOLS = {"search_books", "get_chapter", "get_philosopher", "query_grap
                    "get_school", "get_book_detail", "list_books", "query_database", "compare_views",
                    "role_play", "concept_trace"}
 RETRIEVAL_LIMIT = 5   # 柔性提示阈值（检索达到后提示评估材料充分性）
-RETRIEVAL_HARD = 8    # 硬上限（达到后强制转入最终回答, 防检索地狱）
+# 硬上限已取消（2026-08-28）: 不再强制截断检索/取消工具调用（此前"读取章节"在第 8 次
+# 检索后被 tool_cancel——"检索已达上限,该调用未执行"）。防失控交给 recursion_limit 兜底。
+RETRIEVAL_HARD = 1000
+
+# 实时流式回答阈值（2026-08-29）: agent 轮 content 缓冲超过该字符数且本轮未见工具调用 →
+# 判定为最终回答, 缓冲文本与后续分块立即实时流出。替代原"整轮缓冲→graph 结束后 8ms/字
+# 打字机重放"的假流式（思考结束后到回答出现之间空窗数十秒）。工具轮规划文字通常极短,
+# 达不到阈值; 超阈值的少数情况由 answer_retract 事件撤回为思考兜底
+STREAM_ANSWER_DELAY = 48
+# 回答逐字流出节奏（2026-08-29）: DeepSeek 分块大且生成快, 直接转发会"秒出"而非流式——
+# 每字 12ms ≈ 83 字/秒, 生成与显示同速推进（显示慢于生成, 多余生成由 API 连接自然缓冲）
+# 2026-08-29 提速: 前端打字机已改自适应批量渲染并接管视觉节奏, 后端限速降为 2ms/字
+# （仅防"整块刷出"兜底, 上限约 500 字/s, 实际速度由 LLM 生成速率决定）
+TOKEN_INTERVAL = 0.002
 
 # 哲学家数以 backend/data/philosophers.json 实际条目数为准（N3 2026-08-18: 737，勿手写漂移值）
 SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智能体，基于 403 本哲学原著（柏拉图到德里达）与 737 位哲学家资料库工作。
@@ -559,16 +572,83 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     if any(h in req_message for h in MAP_HINTS):
         messages.append(SystemMessage(
             content="用户明确要求概念脑图。第一轮必须调用 conceptual_map 工具获取 mermaid 图形代码, 禁止跳过工具直接手写文本。"))
+    # ── Epistemic Guard（Phase 1, 2026-08-30）──────────────────────────
+    # 结构级认识论护栏（backend/epistemic_guard.py, 纯规则）:
+    #   前置: PremiseVerifier 事实前提校正 / Claim 认知层级 / Counterfactual 反事实边界
+    #   后置: scan_answer 校验答案是否落实（反事实边界缺失 → 尾补, 确定性兜底）
+    # 护栏尽力而为——任何异常只降级为跳过, 绝不影响主流程（与 MAP_HINTS 同机制）
+    _epistemic_verdict = None
+    try:
+        from epistemic_guard import run_epistemic_guards, scan_answer
+        _epistemic_verdict = run_epistemic_guards(req_message, agent, language)
+        for _inj in _epistemic_verdict.get("injections", []):
+            if _inj:
+                messages.append(SystemMessage(content=_inj))
+    except Exception as _e:
+        logger.warning(f"[epistemic-guard pre] skipped: {str(_e)[:200]}")
+    # ── Interpretation Engine（Phase 2, 2026-08-30）───────────────────────
+    # 解释挑战者 + 置信度校准（backend/interpretation_engine.py, 纯规则）:
+    #   前置: 解释型问题（文学/哲学解读/跨作者比较/模糊历史）→ 多候选解读强制 +
+    #         支持/挑战证据分离 + 类比≠等同 + 深度惩罚 + 四档确定性语言
+    #   后置: scan_interpretation 校验答案（越级断言/缺多候选 → 措辞级补正, 不展示数字）
+    # 尽力而为——任何异常只降级为跳过, 绝不影响主流程（与 epistemic_guard 同机制）
+    _interpretation_verdict = None
+    try:
+        from interpretation_engine import run_interpretation_engine, scan_interpretation
+        _interpretation_verdict = run_interpretation_engine(req_message, agent, language)
+        for _inj in _interpretation_verdict.get("injections", []):
+            if _inj:
+                messages.append(SystemMessage(content=_inj))
+    except Exception as _e:
+        logger.warning(f"[interpretation-engine pre] skipped: {str(_e)[:200]}")
+    # ── Answer Composer（Phase 4, 2026-08-30）─────────────────────────────
+    # 回答结构收口（backend/answer_composer.py, 纯规则）:
+    #   前置: 默认回答结构（直接判断 → 2~4 核心理由 → 关键文本证据 → 反方/限定 → 结论）+
+    #         禁止默认骨架（材料说明/工具说明/检索过程/五层报告/原典路径/再总结）+
+    #         隐藏 raw reasoning（过程叙述不进正文, 用户只看推理摘要）+
+    #         DeepSeek 优点吸收但禁用未经证据支持的强化措辞（完全正确/毫无疑问/绝不会/本质就是）
+    #   后置: scan_composition 校验（结构信号/强化措辞/推理噪音 → 措辞级补正）;
+    #         reasoning_summary 兜底（LLM 摘要缺席时由裁决生成确定性摘要）
+    # 生成类请求（写作文/生图/辩论等）不注入——成品形态由各自工具决定
+    # 尽力而为——任何异常只降级为跳过, 绝不影响主流程（与 Phase 1/2 同机制）
+    _composition_verdict = None
+    try:
+        from answer_composer import run_answer_composer
+        _composition_verdict = run_answer_composer(req_message, agent, language)
+        for _inj in _composition_verdict.get("injections", []):
+            if _inj:
+                messages.append(SystemMessage(content=_inj))
+    except Exception as _e:
+        logger.warning(f"[answer-composer pre] skipped: {str(_e)[:200]}")
     tool_log = []
-    config = {"recursion_limit": 18}
-    pending = {"text": "", "has_tools": False, "reasoned": False, "started": set()}   # 当前 agent 轮缓冲
+    # 2026-08-28: 递归上限 18 → 60（检索硬上限已取消, 需给足长会话空间——~29 轮工具;
+    # 仍是有界兜底, 防失控烧钱）
+    config = {"recursion_limit": 60}
+    # 当前 agent 轮缓冲（live: 已进入实时流式回答; live_text: 已作为 token 流出的文本——
+    # 若本轮后续宣告了工具调用, 需以 answer_retract 事件撤回为思考）
+    pending = {"text": "", "has_tools": False, "reasoned": False, "started": set(),
+               "live": False, "live_text": ""}
     pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具名（2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
     reasoning_text = ""   # 累积推理链（o1 风格摘要用）
-    async def flush_agent():
-        """agent 轮结束定归属: 有工具调用 → 文本降级为思考（防"让我补充检索…"规划文字泄漏为回答）;
-        无工具（最终回答轮）→ 文本作为回答逐字打字机输出（含 XML 标记剥离）"""
+    async def emit_append(text):
+        """尾部补发（token 事件）: 追加到 full_answer——补正文本计入最终可见正文,
+        证据契约/安全审查/审计均以补正后的完整正文为准（Phase S）"""
         nonlocal full_answer
+        if not text:
+            return
+        full_answer += "\n\n" + text
+        for ch in "\n\n" + text:
+            yield {"type": "token", "content": ch}
+            await asyncio.sleep(0.002)
+
+    async def flush_agent():
+        """agent 轮结束定归属: 已实时流出（live）→ 文本已在回答区, 直接返回;
+        有工具调用 → 缓冲文本降级为思考（防"让我补充检索…"规划文字泄漏为回答）;
+        无工具且未达实时阈值（短回答）→ 缓冲文本作为回答打字机输出（含 XML 标记剥离）"""
+        nonlocal full_answer
+        if pending.get("live"):
+            return
         text = pending["text"]
         if not text:
             return
@@ -579,7 +659,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         for ch in _filter_xml_chars(text):
             full_answer += ch
             yield {"type": "token", "content": ch}
-            await asyncio.sleep(0.008)
+            await asyncio.sleep(0.002)
     try:
         async for chunk, metadata in APP.astream(
                 {"messages": messages, "retrieval_count": 0, "agent": agent, "language": language},
@@ -591,6 +671,20 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # 工具调用帧（content 为空）→ 标记本轮有工具, 并立即发"调用中"事件（CC 风格: 先显示再执行）
                 if chunk.tool_call_chunks:
                     pending["has_tools"] = True
+                    # 乐观流出的撤回: 本轮已实时流入回答区的文本实为工具规划文字
+                    # （规划文字超过实时阈值的少数情况）→ 先撤回为思考, 再发工具卡片
+                    # Phase S (S2): answer_retract 只撤销已流出的 draft text——
+                    # 已建立的结构化 epistemic findings（_epistemic_verdict 中的前提
+                    # 校正/反事实边界/义务状态）不随撤回消失; 最终回答若缺失校正,
+                    # 由应答后收口阶段（build_missing_correction_appends）重新消费补发。
+                    if pending.get("live"):
+                        sent = pending.get("live_text", "")
+                        if sent:
+                            yield {"type": "answer_retract", "content": sent}
+                            if full_answer.endswith(sent):
+                                full_answer = full_answer[:len(full_answer) - len(sent)]
+                        pending["live"] = False
+                        pending["live_text"] = ""
                     for tcc in chunk.tool_call_chunks:
                         nm = tcc.get("name")
                         if nm and nm not in pending.get("started", ()):
@@ -602,6 +696,24 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     # 有工具调用 → 降级为思考; 无工具（最终回答轮）→ 打字机输出。
                     # 防止 LLM 在工具轮输出的规划文字（"让我补充检索…"）泄漏为回答。
                     pending["text"] += chunk.content
+                    # 实时流式回答: 缓冲超过阈值仍未见工具调用 → 本轮大概率是最终回答,
+                    # 立即流出缓冲文本, 后续分块实时转发（2026-08-29: 替代假流式——
+                    # 此前整轮缓冲到 graph 结束才一次性重放, 思考结束后长时间空窗）
+                    if pending.get("live"):
+                        full_answer += chunk.content
+                        pending["live_text"] += chunk.content
+                        # 逐字流出: 不直接转发大分块, 保证打字机节奏（生成快的部分由连接缓冲）
+                        for ch in chunk.content:
+                            yield {"type": "token", "content": ch}
+                            await asyncio.sleep(TOKEN_INTERVAL)
+                    elif not pending["has_tools"] and len(pending["text"]) >= STREAM_ANSWER_DELAY:
+                        pending["live"] = True
+                        pending["live_text"] = pending["text"]
+                        full_answer += pending["text"]
+                        # 已缓冲的文本同样逐字流出（避免首块一次性涌入）
+                        for ch in pending["text"]:
+                            yield {"type": "token", "content": ch}
+                            await asyncio.sleep(TOKEN_INTERVAL)
                 # DeepSeek reasoning（thinking 模式）→ 思维链分片节流, 实时流出; 同时累积供 o1 风格摘要
                 rc = (chunk.additional_kwargs or {}).get("reasoning_content")
                 if rc:
@@ -609,19 +721,20 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     reasoning_text += rc
                     for i in range(0, len(rc), 40):
                         yield {"type": "thought_stream", "content": rc[i:i + 40]}
-                        await asyncio.sleep(0.02)
+                        await asyncio.sleep(0.005)
             elif node == "tools":
                 # agent 输出结束 → flush（thought 在工具卡片之前发出, 形成穿插节奏）
                 async for ev in flush_agent():
                     yield ev
-                pending = {"text": "", "has_tools": False, "reasoned": False}
+                pending = {"text": "", "has_tools": False, "reasoned": False, "live": False, "live_text": ""}
                 extra = chunk.additional_kwargs or {}
                 name = chunk.name or ""
                 args = extra.get("_args", {})
                 result = extra.get("_result_full", {})
                 if name == "search_books" and isinstance(result, dict) and not result.get("results"):
-                    # 原典库无命中 → 自动 websearch 补充
-                    ws = AG.TOOLS["websearch"]["execute"]({"query": str(args.get("query", ""))[:80]})
+                    # 原典库无命中 → 自动 websearch 补充（to_thread: 同步 urllib 跑在事件循环上会冻结整条 SSE 流）
+                    ws = await asyncio.to_thread(AG.TOOLS["websearch"]["execute"],
+                                                 {"query": str(args.get("query", ""))[:80]})
                     tool_log.append({"name": "websearch", "args": {"query": str(args.get("query", ""))[:80]},
                                      "result_summary": str(ws)[:200],
                                      "thought": "原典库检索不足, 自动上网搜索补充"})
@@ -637,7 +750,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         # 最终 flush: 最后一轮 agent 输出（最终回答）在 done 前以打字机发出（XML 标记已剥离）
         async for ev in flush_agent():
             yield ev
-        pending = {"text": "", "has_tools": False, "reasoned": False}
+        pending = {"text": "", "has_tools": False, "reasoned": False, "live": False, "live_text": ""}
         # 被截断的已宣告工具调用（宣告了 tool_start 但最终未执行, 如硬检索上限二次强制轮）:
         # 逐名发 tool_cancel, 前端据此解除对应"调用中"卡片（2026-08-14）
         for nm in sorted(pending_tools):
@@ -663,7 +776,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 if reply:
                     for i in range(0, len(reply), 60):
                         yield {"type": "token", "content": reply[i:i + 60]}
-                        await asyncio.sleep(0.008)
+                        await asyncio.sleep(0.002)
             except Exception as e:
                 logger.warning(f"[fallback-fail] {str(e)[:200]}")
                 if "Insufficient Balance" in str(e) or "402" in str(e):
@@ -674,32 +787,118 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     yield {"type": "token",
                            "content": "（未能生成回答，请重试或换一种问法）" if language != "en"
                            else "(Failed to generate a response—please retry or rephrase your question)"}
-        # 引用来源（从 search_books 工具结果提取; 按相关度排序; 哲学家智能体只保留该作者的著作）
-        citations = []
+        # ══ Phase S (S2): Epistemic findings 重消费——answer_retract 不撤销 findings ══
+        # 前提校正/反事实边界是结构化 epistemic state; 若最终可见正文未落实
+        # （校正随 draft 被撤回 / LLM 忽略注入 / 回答被工具轮打断）→ 此处尾补,
+        # 使 high-importance 校正必然出现在最终正文。
+        _epistemic_state = None
+        try:
+            if _epistemic_verdict:
+                from epistemic_guard import build_missing_correction_appends
+                _esc = scan_answer(_epistemic_verdict, full_answer, language)
+                for _cor in build_missing_correction_appends(_epistemic_verdict, full_answer, language):
+                    async for _ev in emit_append(_cor):
+                        yield _ev
+                if _esc.get("boundary_applied"):
+                    _cv = _epistemic_verdict.get("counterfactual") or {}
+                    _boundary = (_cv.get("boundary_text_en") if language == "en"
+                                 else _cv.get("boundary_text")) or ""
+                    if _boundary:
+                        async for _ev in emit_append(_boundary):
+                            yield _ev
+                # 状态反映补发后的最终正文（重扫一次——correction_present 以最终可见文本为准）
+                _esc_final = scan_answer(_epistemic_verdict, full_answer, language)
+                _epistemic_state = {
+                    "premise_checks": [
+                        {"rule_id": c.get("rule_id"), "status": c.get("status"),
+                         "referent_mode": c.get("referent_mode") or "current",
+                         "correction_present": r.get("correction_present")}
+                        for c, r in zip(_epistemic_verdict.get("premise_checks") or [],
+                                        _esc_final.get("premise_checks") or [])],
+                    "counterfactual": {k: (_epistemic_verdict.get("counterfactual") or {}).get(k)
+                                       for k in ("mode", "author", "requires_guard")},
+                }
+        except Exception as _e:
+            logger.warning(f"[epistemic-guard post] skipped: {str(_e)[:200]}")
+        # ══ Phase S (S5): 预算扫描（先于 composer 扫描——超预算时抑制非必要结构提示）══
+        _budget_scan = None
+        try:
+            if _composition_verdict:
+                from answer_composer import scan_budget
+                _budget_scan = scan_budget(_composition_verdict, full_answer)
+        except Exception as _e:
+            logger.warning(f"[answer-budget scan] skipped: {str(_e)[:200]}")
+        # Interpretation Engine 应答后校验: 解释型回答缺多候选/越级断言 → 措辞级补正
+        # （确定性兜底, 仍是 token 事件; 置信度数字仅内部记录, 不发送给前端）
+        _interpretation_scan = None
+        try:
+            if _interpretation_verdict:
+                _interpretation_scan = scan_interpretation(_interpretation_verdict, full_answer, language, tool_log)
+                for _ins in _interpretation_scan.get("appends", []):
+                    if _ins:
+                        async for _ev in emit_append(_ins):
+                            yield _ev
+        except Exception as _e:
+            logger.warning(f"[interpretation-engine post] skipped: {str(_e)[:200]}")
+        # Answer Composer 应答后校验: 结构信号 / 强化措辞 / 推理噪音 → 措辞级补正
+        # （解释型问题已由 interpretation_scan 补正过则不再重复; 仍是 token 事件）
+        _composition_scan = None
+        try:
+            if _composition_verdict:
+                from answer_composer import scan_composition
+                _composition_scan = scan_composition(_composition_verdict, full_answer, language,
+                                                     interpretation_scan=_interpretation_scan,
+                                                     budget_scan=_budget_scan)
+                for _ins in _composition_scan.get("appends", []):
+                    if _ins:
+                        async for _ev in emit_append(_ins):
+                            yield _ev
+        except Exception as _e:
+            logger.warning(f"[answer-composer post] skipped: {str(_e)[:200]}")
+        # ── Phase 3: Evidence Contract（2026-08-30）────────────────────────────
+        # 检索命中了什么 ≠ 回答用了什么。此前引用面板直接取 search_books 前 4 条命中
+        # （retrieval candidates), 用户会误读为 answer evidence。现在统一抽取:
+        #   retrieved_evidence（检索候选全集）→ used_evidence（回答实际引用/对齐的）
+        #   → citations 只投影 used_evidence（引用面板新协议）; claims 携带知识论
+        #   分级与证据绑定（SPECULATION 不绑定 DIRECT evidence）。
+        # 尽力而为——任何异常只降级为空引用面板, 绝不影响主流程。
+        evidence_payload = None
+        try:
+            from evidence_contract import build_evidence_contract
+            evidence_payload = build_evidence_contract(tool_log, full_answer, agent, language)
+            citations = evidence_payload["citations"]
+        except Exception as _e:
+            logger.warning(f"[evidence-contract] skipped: {str(_e)[:200]}")
+            citations = []
+        # ══ Phase S (S4): Citation Sanitizer——最终输出硬约束 ══
+        # visible formal citations ⊆ verified used_evidence citations:
+        #   未核验 → ①存在可靠 evidence 可重新绑定（书级引用）; ②否则移除正式引用
+        #   格式/降级为解释性陈述（正文可见披露, 由 done 携带净化报告）。
+        _citation_sanitize = None
+        try:
+            if evidence_payload is not None:
+                from evidence_contract import sanitize_citations, build_citation_disclosure
+                _citation_sanitize = sanitize_citations(full_answer, contract=evidence_payload)
+                for _dis in build_citation_disclosure(_citation_sanitize, language):
+                    if _dis:
+                        async for _ev in emit_append(_dis):
+                            yield _ev
+        except Exception as _e:
+            logger.warning(f"[citation-sanitizer] skipped: {str(_e)[:200]}")
+        # ══ Phase S (S3): Semantic Obligations——最终义务履行状态 ══
+        # 同一认识论义务只履行一次: 已由正文表达（如"不是一回事/不能等同"）的义务
+        # 不得再因措辞不同被追加补正; 状态随 done 输出供审计/前端。
+        _obligations_state = None
+        try:
+            from semantic_obligations import derive_obligations, assess_obligations
+            _obligations_state = assess_obligations(
+                derive_obligations(_epistemic_verdict, _interpretation_verdict), full_answer)
+        except Exception as _e:
+            logger.warning(f"[obligations] skipped: {str(_e)[:200]}")
+        # 工具失败统计须在 result_full 剥离前取值（2026-08-30: 旧代码在弹掉后才计数, 恒为 0）
+        _fail = sum(1 for tc in tool_log if isinstance(tc.get("result_full"), dict) and tc["result_full"].get("error"))
         for tc in tool_log:
-            if tc["name"] == "search_books" and isinstance(tc.get("result_full"), dict):
-                results = sorted(tc["result_full"].get("results", []), key=lambda r: -r.get("score", 0))
-                for item in results[:4]:
-                    if agent != "general":
-                        aname = AGENTS.agent_name_of(agent)
-                        if aname and aname not in (item.get("author") or ""):
-                            continue
-                    citations.append({"book": item.get("book_title"), "chapter": item.get("chapter_title"),
-                                      "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx")})
             tc.pop("result_full", None)
-        # 推理链摘要（o1 风格）: 完整思考浓缩为结构化步骤
-        reasoning_summary = None
-        if reasoning_text and len(reasoning_text) > 40:
-            try:
-                sum_prompt = ((f"Condense the following reasoning into 3-5 structured steps, "
-                               f"each formatted 'N. action: point' (≤30 words each, ≤160 total):\n\n" if language == "en"
-                               else f"将以下推理过程浓缩为 3-5 步结构化摘要, 每步格式'数字. 动作: 要点'（每步 ≤30 字, 总计 ≤160 字）:\n\n")
-                              + reasoning_text[:2500])
-                sresp = await asyncio.to_thread(AG.llm_chat,
-                    [{"role": "user", "content": sum_prompt}], temperature=0.3, max_tokens=300)
-                reasoning_summary = (sresp["choices"][0]["message"].get("content") or "").strip() or None
-            except Exception:
-                reasoning_summary = None
         # 安全审查（done 前）
         _safety = _safety_check(full_answer)
         safety_flag = None
@@ -707,22 +906,69 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # 高危（自伤教唆）→ 替换回答为安全回应（按语言）
             full_answer = SAFETY_REPLY_EN if language == "en" else SAFETY_REPLY
             safety_flag = "blocked"
+            # 回答被替换为固定安全回应——原引用全部失效, 引用面板与证据清零
+            citations = []
+            if evidence_payload:
+                evidence_payload["used_evidence"] = []
+                evidence_payload["citations"] = []
+                evidence_payload["used_count"] = 0
         elif _safety:
             safety_flag = "warning"
-        # 话题延续建议（2026-08-14: LLM 按 问题+回答 推断用户接下来可能问什么; 失败回退规则版）
-        suggestions = None
-        try:
-            suggestions = await asyncio.to_thread(_llm_suggest, req_message, full_answer, agent, language)
-        except Exception:
-            suggestions = None
-        if not suggestions:
-            suggestions = _suggest_next(tool_log, req_message, agent, language)
-        _fail = sum(1 for tc in tool_log if isinstance(tc.get("result_full"), dict) and tc["result_full"].get("error"))
+        # done 立即发出（引用/工具/安全/规则建议——均为纯内存计算, 不调 LLM）:
+        # 2026-08-29 修复: 此前"推理链摘要 + 话题建议"两个 LLM 调用串行阻塞在 done 之前,
+        # 回答结束后 UI 还要空等 5-15s 才出现"可继续探索"。现在 done 先行解锁 UI,
+        # 两个 LLM 后处理并行执行, 完成后以增量事件补发（前端增量替换）
+        suggestions = _suggest_next(tool_log, req_message, agent, language)
         _log_stats(agent, req_message, time.time() - _t_start, [t["name"] for t in tool_log],
                    _fail, None, len(full_answer))
-        yield {"type": "done", "citations": citations, "tool_calls": tool_log,
-               "reasoning_summary": reasoning_summary, "suggestions": suggestions, "safety": safety_flag,
+        yield {"type": "done", "citations": citations, "evidence": evidence_payload,
+               "tool_calls": tool_log,
+               "suggestions": suggestions, "safety": safety_flag,
+               "composition": _composition_scan,
+               # Phase S: 结构化状态随 done 输出（审计/前端可用, 不改变主协议）
+               "epistemic": _epistemic_state,
+               "obligations": _obligations_state,
+               "budget": _budget_scan,
+               "citation_sanitize": ({k: _citation_sanitize.get(k) for k in
+                                      ("verified_citations", "unverified_before", "actions")}
+                                     if _citation_sanitize else None),
                "safety_reply": (SAFETY_REPLY_EN if language == "en" else SAFETY_REPLY) if safety_flag == "blocked" else None}
+        # 后处理（两个 LLM 调用并行）: 推理链摘要（o1 风格）+ LLM 话题建议 → 增量事件补发
+        async def _post_reasoning_summary():
+            if not (reasoning_text and len(reasoning_text) > 40):
+                return None
+            try:
+                sum_prompt = ((f"Condense the following reasoning into 3-5 structured steps, "
+                               f"each formatted 'N. action: point' (≤30 words each, ≤160 total):\n\n" if language == "en"
+                               else f"将以下推理过程浓缩为 3-5 步结构化摘要, 每步格式'数字. 动作: 要点'（每步 ≤30 字, 总计 ≤160 字）:\n\n")
+                              + reasoning_text[:2500])
+                sresp = await asyncio.to_thread(AG.llm_chat,
+                    [{"role": "user", "content": sum_prompt}], temperature=0.3, max_tokens=300)
+                return (sresp["choices"][0]["message"].get("content") or "").strip() or None
+            except Exception:
+                return None
+        async def _post_llm_suggest():
+            try:
+                return await asyncio.to_thread(_llm_suggest, req_message, full_answer, agent, language)
+            except Exception:
+                return None
+        reasoning_summary, llm_suggestions = await asyncio.gather(
+            _post_reasoning_summary(), _post_llm_suggest())
+        # Phase 4: LLM 摘要缺席（无思考流/调用失败）→ 确定性推理摘要兜底
+        # （由 epistemic/interpretation/evidence 裁决生成, 如"1. 核验文本事实 2. 检索原典…"）
+        if not reasoning_summary:
+            try:
+                from answer_composer import build_reasoning_summary
+                reasoning_summary = build_reasoning_summary(
+                    _epistemic_verdict, _interpretation_verdict, _interpretation_scan,
+                    evidence_payload, tool_log, language)
+            except Exception as _e:
+                logger.warning(f"[reasoning-summary fallback] skipped: {str(_e)[:200]}")
+                reasoning_summary = None
+        if llm_suggestions:
+            yield {"type": "suggestions", "suggestions": llm_suggestions}
+        if reasoning_summary:
+            yield {"type": "reasoning_summary", "content": reasoning_summary}
     except Exception as e:
         _log_stats(agent, req_message, time.time() - _t_start, [], 0, str(e)[:200], 0)
         if "Insufficient Balance" in str(e) or "402" in str(e):

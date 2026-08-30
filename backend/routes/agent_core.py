@@ -5,7 +5,7 @@
 S13 检索索引与文本 LRU / embedding 缓存与向量索引。
 全部代码从 routes/agent.py 原样搬移（不改逻辑），供各工具域模块与 agent.py 共用。
 """
-import json, os, re, hashlib, threading
+import json, os, re, time, hashlib, threading
 from collections import OrderedDict
 from pathlib import Path
 
@@ -221,19 +221,88 @@ def _embed_query(q):
     key = hashlib.md5(q.encode("utf-8", "ignore")).hexdigest()
     cached = _EMBED_CACHE.get(key)
     if cached is not None:
+        _embed_status["mode"] = "vector"
+        _embed_status["degraded_reason"] = ""
         return cached
+    # Phase S (S6): 限流熔断——429 双失败后打开 circuit breaker,
+    # 冷却期内后续 embedding 调用不再撞同一限流 API, 直接走关键词/词法兜底。
+    now = time.time()
+    with _EMBED_CIRCUIT_LOCK:
+        if _EMBED_CIRCUIT["open"]:
+            if now - _EMBED_CIRCUIT["opened_at"] < _EMBED_CIRCUIT_COOLDOWN:
+                _embed_status["mode"] = "lexical"
+                _embed_status["degraded_reason"] = _EMBED_CIRCUIT["reason"]
+                return None
+            _EMBED_CIRCUIT["open"] = False     # 冷却期结束, 允许试探一次
     try:
         from openai import OpenAI
+        # max_retries=0: 关闭 SDK 默认的 429 重试链（默认 2 次指数退避重试——正是
+        # "429 多轮重试拖慢真实回答"的来源）。限流重试由本函数显式控制: 最多 1 次短退避。
         cli = OpenAI(api_key=os.environ.get("ZHIPU_API_KEY", ""),
-                     base_url="https://open.bigmodel.cn/api/paas/v4/", timeout=15)
-        r = cli.embeddings.create(model="embedding-2", input=[q[:500]])
+                     base_url="https://open.bigmodel.cn/api/paas/v4/", timeout=15,
+                     max_retries=0)
+        try:
+            r = cli.embeddings.create(model="embedding-2", input=[q[:500]])
+        except Exception as e:
+            if _is_rate_limit(e):
+                # ① 首次 429 立即开闸（并发 search_books 在 gather 中共享熔断器——
+                #    先开闸, 同轮其他查询直接跳过, 不再撞同一限流 API）
+                with _EMBED_CIRCUIT_LOCK:
+                    _EMBED_CIRCUIT["open"] = True
+                    _EMBED_CIRCUIT["opened_at"] = time.time()
+                    _EMBED_CIRCUIT["reason"] = "embedding_429_retry_exhausted"
+                time.sleep(_EMBED_429_BACKOFF)     # ② 最多 1 次短退避重试
+                r = cli.embeddings.create(model="embedding-2", input=[q[:500]])
+                with _EMBED_CIRCUIT_LOCK:
+                    _EMBED_CIRCUIT["open"] = False     # 重试成功 → 解除熔断（限流是瞬时的）
+            else:
+                raise
         vec = r.data[0].embedding
         if len(_EMBED_CACHE) > _EMBED_CACHE_MAX:  # S13: 缓存上限, 防长运行内存无限增长
             _EMBED_CACHE.clear()
         _EMBED_CACHE[key] = vec
+        _embed_status["mode"] = "vector"
+        _embed_status["degraded_reason"] = ""
         return vec
-    except Exception:
+    except Exception as e:
+        reason = "embedding_429_retry_exhausted" if _is_rate_limit(e) else "embedding_error"
+        with _EMBED_CIRCUIT_LOCK:
+            _EMBED_CIRCUIT["open"] = True
+            _EMBED_CIRCUIT["opened_at"] = time.time()
+            _EMBED_CIRCUIT["reason"] = reason
+        _embed_status["mode"] = "lexical"
+        _embed_status["degraded_reason"] = reason
+        _log_embed_degraded(reason)
         return None
+
+# ── S6: 请求级熔断 + 降级状态（进程级, 冷却期内全局生效）──
+_EMBED_CIRCUIT = {"open": False, "opened_at": 0.0, "reason": ""}
+_EMBED_CIRCUIT_LOCK = threading.Lock()
+_EMBED_CIRCUIT_COOLDOWN = 120.0     # 冷却期: 熔断后 120s 内不再调用 embedding API
+_EMBED_429_BACKOFF = 0.5            # 429 后单次短退避时长（秒）
+_EMBED_LOG_FILE = DATA / "embedding_guard.jsonl"   # 运行时记录（gitignore）
+_embed_status = {"mode": "vector", "degraded_reason": ""}   # 最近一次 embedding 状态（检索工具读取）
+
+
+def _is_rate_limit(exc):
+    """429 / 限流判定（openai SDK 异常带 status_code; 兜底文本匹配）"""
+    sc = getattr(exc, "status_code", None)
+    if sc is None:
+        sc = getattr(getattr(exc, "response", None), "status_code", None)
+    if sc == 429:
+        return True
+    s = str(exc).lower()
+    return "429" in s or "rate limit" in s or "too many requests" in s or "请求过于频繁" in s
+
+
+def _log_embed_degraded(reason):
+    try:
+        with open(_EMBED_LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"ts": time.strftime("%Y-%m-%d %H:%M:%S"), "reason": reason,
+                                "circuit_open": _EMBED_CIRCUIT["open"]},
+                               ensure_ascii=False) + "\n")
+    except Exception:
+        pass
 
 # ── per-user 记忆槽（write_essay/generate_image/thought_experiment/philosopher_debate 共用）──
 # 多轮修改记忆: 持久化到文件（进程重启不丢）; 作文按题目记忆（避免跨主题串味）

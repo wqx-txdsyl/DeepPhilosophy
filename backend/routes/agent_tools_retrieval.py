@@ -29,7 +29,7 @@ def _exec_search_books(args):
     limit = _int_arg(args, "limit", 5, 1, 10)
     # 向量优先（索引就绪时）; 经 routes.agent 门面运行时取回 _embed_query——
     # 保持拆分前的 monkeypatch 契约（tests/test_agent.py 以 agent._embed_query 强制走关键词兜底路径）
-    from routes.agent import _embed_query
+    from routes.agent import _embed_query, _embed_status
     vec = _embed_query(query)
     if vec is not None:
         _vectors, _vector_index = _load_vectors()
@@ -60,7 +60,7 @@ def _exec_search_books(args):
                     })
                 if results:
                     return {"results": results[:limit * 3], "query": query, "method": "vector"}
-    # 关键词兜底
+    # 关键词兜底（S6: embedding 不可用/熔断 → 词法检索; 记录 retrieval_mode 与 degraded_reason）
     terms = [t for t in re.split(r"[\s,，。；;：:、]+", query) if len(t) >= 2]
     if not terms:
         return {"error": "查询词过短"}
@@ -102,7 +102,8 @@ def _exec_search_books(args):
             "chapter_idx": i, "chapter_title": title,
             "snippet": snippet, "score": score,
         })
-    return {"results": clean[:limit * 3], "query": query}
+    return {"results": clean[:limit * 3], "query": query, "method": "lexical",
+            "degraded_reason": _embed_status.get("degraded_reason") or "embedding_unavailable"}
 
 register_tool(
     "search_books",
