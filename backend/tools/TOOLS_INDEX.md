@@ -59,6 +59,7 @@
 |---|---|---|
 | `build_embeddings.py` | 保留 | 全量向量构建（智谱 embedding-2） |
 | `dp_embed_missing.py` | 保留 | 增量嵌入缺失章节（text_hash 去重） |
+| `dp_build_nietzsche_index.py` | 保留 | AIAuthor 尼采语料运行时检索索引（all_chunks.json → vectors.npy/meta/chunks.jsonl, 源文件只读不动; Phase R2/R3） |
 
 ## 7. 资产与数据构建
 
@@ -94,6 +95,8 @@
 | `dp_fix_catalog_chapters.py` | 保留 | books_catalog.json chapterCount 从 meta.json 校准 |
 | `dp_grab_cf_assets.py` | 保留 | 从 CF Pages 部署 URL 抓取构建产物（含懒加载 chunk）→ dist/assets；`--upload` 调 `dp_sync_oss_static.py` 传 OSS |
 | `dp_consistency_check.py` | 保留 | 双端数据一致性校验 |
+| `dp_perf_phase_r.py` | 保留 | Phase R 性能回归测量（冷启动/persona-only/语料检索/10轮会话/旧基线对比, 结果落 data/phase_r_perf.json） |
+| `dp_uat_phase_r.py` | 保留 | Phase R 真实 retrieval UAT（新检索 vs 旧 term-count 基线 + 存量向量 dense 管线锚点, 结果落 data/phase_r_uat.json） |
 | `README.md` | 保留 | tools 运维手册（含双写规则/已知坑） |
 | `__init__.py` | 保留 | 包标记 |
 

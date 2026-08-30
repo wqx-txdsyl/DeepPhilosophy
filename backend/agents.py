@@ -43,27 +43,124 @@ PHILO_AGENTS = {
     },
 }
 
-# ── 人格包加载（按 agent 缓存）──────────────────────
-_bundles = {}
-_bundle_lock = threading.Lock()
+# ── 人格包数据域加载（Phase R1 lazy bundle, 2026-08-30）──────────────
+# 旧行为: 首次 philosopher_* 调用一次性 json.load 全部 bundle（corpus 453MB / graph / … 全进内存）。
+# 新行为: 按数据域（persona/memory/graph/corpus/user_model）独立懒加载——
+#   每域独立缓存 + 独立锁（域间加载互不阻塞）, 已加载域复用, 不重复读盘, 无界外缓存。
+# bundle key → 数据域映射:
+_KEY_DOMAIN = {
+    "persona": "persona", "style": "persona", "snapshots": "persona", "rules": "persona",
+    "memories": "memory", "anecdotes": "memory",
+    "graph": "graph",
+    "corpus": "corpus",
+    "misconceptions": "user_model", "difficulty": "user_model",
+}
+BUNDLE_DOMAINS = ("persona", "memory", "graph", "corpus", "user_model")
+
+_domain_data = {}        # agent -> {domain: {bundle_key: data}}（仅已加载的域）
+_domain_locks = {}       # (agent, domain) -> threading.Lock
+_registry_lock = threading.Lock()
+_MISSING = object()
+
+def _domain_lock(agent, domain):
+    key = (agent, domain)
+    with _registry_lock:
+        if key not in _domain_locks:
+            _domain_locks[key] = threading.Lock()
+        return _domain_locks[key]
+
+def load_bundle_domain(agent, domain):
+    """加载某智能体的单个数据域（懒加载 + 每域缓存 + 缺文件容错, 双检锁线程安全）"""
+    cached = _domain_data.get(agent, {}).get(domain)
+    if cached is not None:
+        return cached
+    spec = PHILO_AGENTS.get(agent) or {}
+    files = {k: p for k, p in (spec.get("bundle") or {}).items()
+             if _KEY_DOMAIN.get(k) == domain}
+    with _domain_lock(agent, domain):
+        cached = _domain_data.get(agent, {}).get(domain)
+        if cached is not None:
+            return cached
+        loaded = {}
+        for key, path in files.items():
+            if path and Path(path).exists():
+                try:
+                    loaded[key] = json.load(open(path, encoding="utf-8"))
+                except Exception:
+                    loaded[key] = {}
+        _domain_data.setdefault(agent, {})[domain] = loaded
+        return loaded
+
+class LazyBundleView:
+    """load_bundle 的懒加载视图: .get(key) 只触发 key 所属数据域的加载。
+    兼容旧 dict 读取语义（get/__getitem__/__contains__/__len__）; keys/items/values
+    这类遍历访问需加载全部域（全量兜底语义, 工具代码只用 .get）。"""
+    __slots__ = ("_agent",)
+
+    def __init__(self, agent):
+        self._agent = agent
+
+    def get(self, key, default=None):
+        domain = _KEY_DOMAIN.get(key)
+        if domain is None:
+            return default
+        return load_bundle_domain(self._agent, domain).get(key, default)
+
+    def __getitem__(self, key):
+        v = self.get(key, _MISSING)
+        if v is _MISSING:
+            raise KeyError(key)
+        return v
+
+    def __contains__(self, key):
+        spec = PHILO_AGENTS.get(self._agent) or {}
+        return key in (spec.get("bundle") or {})
+
+    def __len__(self):
+        spec = PHILO_AGENTS.get(self._agent) or {}
+        return sum(1 for p in (spec.get("bundle") or {}).values() if p and Path(p).exists())
+
+    def keys(self):
+        return list((PHILO_AGENTS.get(self._agent, {}).get("bundle") or {}).keys())
+
+    def items(self):
+        # 与旧 dict 一致: 文件缺失的 key 不出现（不凭空造 None 值）
+        spec = PHILO_AGENTS.get(self._agent) or {}
+        out = []
+        for k in (spec.get("bundle") or {}):
+            domain = _KEY_DOMAIN.get(k)
+            if domain is None:
+                continue
+            d = load_bundle_domain(self._agent, domain)
+            if k in d:
+                out.append((k, d[k]))
+        return out
+
+    def values(self):
+        return [v for _, v in self.items()]
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __repr__(self):
+        return f"<LazyBundleView agent={self._agent} domains_loaded={loaded_domains(self._agent)}>"
 
 def load_bundle(agent):
-    """加载某哲学家智能体的人格包（带缓存, 缺文件容错）"""
-    global _bundles
-    if agent not in _bundles:
-        with _bundle_lock:
-            if agent not in _bundles:
-                spec = PHILO_AGENTS.get(agent)
-                b = {}
-                if spec:
-                    for key, path in spec.get("bundle", {}).items():
-                        if path and Path(path).exists():
-                            try:
-                                b[key] = json.load(open(path, encoding="utf-8"))
-                            except Exception:
-                                b[key] = {}
-                _bundles[agent] = b
-    return _bundles[agent]
+    """兼容旧 API: 返回懒加载视图——首次 philosopher_* 调用不再一次性加载全部 bundle。
+    .get(key) 语义与旧 dict 一致, 但只加载 key 所属的数据域（R1）。"""
+    return LazyBundleView(agent)
+
+def loaded_domains(agent):
+    """某智能体已加载数据域（测试/诊断用, Phase R1）"""
+    return sorted(_domain_data.get(agent, {}).keys())
+
+def reset_bundle_cache(agent=None):
+    """清空域缓存（测试/诊断用, 运行时主流程不调用）"""
+    with _registry_lock:
+        if agent is None:
+            _domain_data.clear()
+        else:
+            _domain_data.pop(agent, None)
 
 # ── 四件套工具执行器（绑定 agent 数据包）─────────────
 def _recall(bundle, query, limit=6):
@@ -167,9 +264,31 @@ def make_philo_tool(agent, tool_name):
                 return {"error": f"图谱查询失败: {e}"}
         if tool_name == "philosopher_corpus":
             # 语料回响: 从我的著作 chunk 检索"我说过的话"
+            # Phase R2/R3: dense+lexical 混合检索（philo_retrieval, 精确 chunk 取文）,
+            # 不再以全量 term-count 扫描 453MB 语料为主路径; 输出形状不变（echoes 列表,
+            # book/chapter/tier/text）, 新增 period/source_type/scores/chunk_row 元数据。
             q = (args.get("query") or args.get("topic") or "").strip()[:50]
             if not q:
                 return {"error": "缺少检索主题"}
+            try:
+                from philo_retrieval import retrieve
+                res = retrieve(q, k=3)
+            except Exception:
+                res = None
+            if res is not None:
+                out = {"echoes": res.get("echoes") or [],
+                       "retrieval": {"mode": res.get("mode") or "",
+                                     "lex_scope": res.get("lex_scope") or "",
+                                     "candidates": res.get("candidates") or 0,
+                                     "degraded_reason": res.get("degraded_reason") or ""}}
+                if res.get("echoes"):
+                    out["note"] = "这是我在自己著作中说过的原话（语料库 6488 chunks, dense+lexical 混合检索）, 引用时标注书名/章节"
+                else:
+                    out["note"] = "语料库中未检索到相关原话（dense+lexical 均无命中）, 请如实告知或换用 philosopher_quote 查证"
+                    if res.get("degraded_reason"):
+                        out["retrieval"]["degraded_reason"] = res["degraded_reason"]
+                return out
+            # 兜底: 检索索引 artifact 缺失/构建失败 → 旧 bundle 全量词法路径（懒加载 corpus 域）
             try:
                 chunks = load_bundle(agent).get("corpus") or []
                 terms = [t for t in re.split(r"[\s,，。；;：:、]+", q) if len(t) >= 2]
@@ -183,6 +302,8 @@ def make_philo_tool(agent, tool_name):
                 top = scored[:3]
                 return {"echoes": [{"book": c.get("book"), "chapter": c.get("chapter"),
                                     "tier": c.get("tier"), "text": (c.get("text") or "")[:220]} for _, c in top],
+                        "retrieval": {"mode": "lexical_legacy", "lex_scope": "corpus",
+                                      "candidates": len(scored), "degraded_reason": "index_artifacts_missing"},
                         "note": "这是我在自己著作中说过的原话（语料库 6488 chunks 检索）, 引用时标注书名/章节"}
             except Exception as e:
                 return {"error": f"语料检索失败: {e}"}
