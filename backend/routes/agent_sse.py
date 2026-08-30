@@ -26,6 +26,8 @@ class AgentChatRequest(BaseModel):
     book_id: Optional[str] = None  # 阅读语境（来自阅读器的提问）
     agent: str = "general"         # 智能体广场: general=深哲; nietzsche 等=哲学家智能体
     language: Optional[str] = None # zh/en——前端语言偏好（匿名用户也能生效; 登录用户以 profile 为准）
+    conversation_id: Optional[str] = None  # Phase A (A1): tool loop 观测上下文（可选）
+    message_id: Optional[str] = None       # Phase A (A1): 单条消息 id（可选, 缺省自动生成）
 
 # ═══════════════════════════════════════════════════════
 # LangGraph 引擎路由（v2）: /api/agent/stream_lg
@@ -53,7 +55,8 @@ async def agent_stream_lg(req: AgentChatRequest, authorization: str = Header(Non
                         language = prof["language"]
             except Exception:
                 pass
-        async for ev in elg.stream_agent(req.message, req.history or [], req.agent or "general", custom, language):
+        async for ev in elg.stream_agent(req.message, req.history or [], req.agent or "general", custom, language,
+                                          conversation_id=req.conversation_id, message_id=req.message_id):
             yield _sse(ev)
     return StreamingResponse(gen(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})

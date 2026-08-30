@@ -6,7 +6,7 @@ Claude Code 风格: 思考 → 工具调用（多工具并行）→ 观察 → �
 工具: 复用 routes.agent 的 TOOLS 注册表（23 个工具平移为 StructuredTool, 零逻辑改动）
 """
 import asyncio, json, re, time, inspect
-from typing import Annotated, TypedDict
+from typing import Annotated, Any, TypedDict
 
 from loguru import logger
 from langgraph.graph import StateGraph, START, END
@@ -17,6 +17,7 @@ from pydantic import create_model, Field
 
 import routes.agent as AG   # 复用 TOOLS 注册表 / SYSTEM_PROMPT 铁律 / API 配置
 import agents as AGENTS     # 智能体注册表（智能体广场: 通用 + 哲学家）
+import agent_runtime as AR  # Phase A: tool loop 治理（观测/去重/预算/重试/终止）单一真源
 
 # ── LLM（DeepSeek, OpenAI 兼容）─────────────────────────
 _llm = None
@@ -29,14 +30,16 @@ def get_llm():
                             extra_body={"thinking": {"type": "enabled"}, "reasoning_effort": "low"})
     return _llm
 
-# ── 检索纪律（柔性: 不设死规矩, 靠 recursion_limit 防死循环）──
+# ── 检索纪律（Phase A: 预算与终止条件收编到 agent_runtime, 本处只保留引用）──
 RETRIEVAL_TOOLS = {"search_books", "get_chapter", "get_philosopher", "query_graph", "websearch",
                    "get_school", "get_book_detail", "list_books", "query_database", "compare_views",
                    "role_play", "concept_trace"}
-RETRIEVAL_LIMIT = 5   # 柔性提示阈值（检索达到后提示评估材料充分性）
-# 硬上限已取消（2026-08-28）: 不再强制截断检索/取消工具调用（此前"读取章节"在第 8 次
-# 检索后被 tool_cancel——"检索已达上限,该调用未执行"）。防失控交给 recursion_limit 兜底。
-RETRIEVAL_HARD = 1000
+# 柔性提示阈值（soft 预算, 检索达到后提示评估材料充分性）——Phase A 起由 agent_runtime 配置驱动
+RETRIEVAL_LIMIT = AR.TOOL_BUDGET["soft_retrieval"]
+# 硬上限已取消（2026-08-28）→ Phase A 恢复为"有界 hard 预算"（agent_runtime 配置, 默认 20）:
+# 不再是"静默取消检索调用"（旧 8 次硬截断的信息丢失问题）, 而是预算用尽后强制进入
+# graceful answer completion（模型先被告知再作答, 已取得 evidence 全部保留）。
+RETRIEVAL_HARD = AR.TOOL_BUDGET["hard_retrieval"]
 
 # 实时流式回答阈值（2026-08-29）: agent 轮 content 缓冲超过该字符数且本轮未见工具调用 →
 # 判定为最终回答, 缓冲文本与后续分块立即实时流出。替代原"整轮缓冲→graph 结束后 8ms/字
@@ -220,10 +223,17 @@ def get_system_prompt(agent):
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
     retrieval_count: int
-    forced: bool   # 已注入"强制回答"提示（达到硬上限后, 确保最终轮产出回答而非被掐断）
-    forced_tools_done: bool   # 硬上限后已补跑过一轮工具（防死循环烧钱; 2026-08-14）
+    forced: bool   # 已注入"强制回答"提示（达到 hard 预算/连续无增益后, 确保最终轮产出回答）
+    forced_tools_done: bool   # 强制回答后已补跑过一轮工具（防死循环烧钱; 2026-08-14）
     agent: str     # 当前智能体（general / 哲学家 key）
     language: str  # zh/en——中文模式下每轮强化语言提醒（防思考偶发英文）
+    # ── Phase A: tool loop 治理状态（对象经内存态传递, 无 checkpointer 序列化）──
+    guard: Any            # DuplicateGuard（A2, 单轮生命周期）
+    budget: Any           # ToolBudget（A3）
+    trace: Any            # ToolLoopTrace（A1）
+    tool_count: int       # 本轮已执行工具调用总数（A3 total 预算口径）
+    no_gain_streak: int   # 连续无信息增益检索轮数（A5）
+    model_retries: int    # 本轮模型 API 重试累计（A1/A4）
 
 async def agent_node(state):
     msgs = list(state["messages"])
@@ -232,21 +242,47 @@ async def agent_node(state):
     if state.get("language", "zh") != "en":
         msgs.append(SystemMessage(
             content="（语言提醒：你的内部思考过程（thinking/reasoning）与最终回答都必须使用中文。禁止用英文思考。"))
-    hard_limit = state.get("retrieval_count", 0) >= RETRIEVAL_HARD
-    if hard_limit:
-        # 硬上限: 强制回答（保留工具绑定——解绑会导致 LLM 退化为写 XML 文本调用; 硬提示让 LLM 直接回答）
-        msgs.append(SystemMessage(
-            content="（检索已达上限。现在进入最终回答: 禁止调用任何工具, 禁止输出任何 XML/工具调用标记（如 <invoke>、{TOOL:}）。"
-                    "请直接输出最终回答正文, 引用标注【《书名》· 章节】。只输出回答文本。）"))
-        resp = await asyncio.to_thread(get_llm().bind_tools(get_tools(agent)).invoke, msgs)
-        return {"messages": [resp], "forced": True}
-    if state.get("retrieval_count", 0) >= RETRIEVAL_LIMIT:
-        # 柔性提示（不强制停止）: 提示 LLM 评估材料充分性, 由 LLM 判断是否需要补检索
+    # ── Phase A: 预算与终止条件（A3/A5——替代原 RETRIEVAL_LIMIT/RETRIEVAL_HARD 就地判断）──
+    budget = state.get("budget")
+    forced = False
+    if budget is not None and budget.hard_reached():
+        # hard 预算（A3/T5）: 终止工具循环 → graceful answer completion。
+        # 保留工具绑定（解绑会导致 LLM 退化为写 XML 文本调用）; 硬提示让 LLM 直接回答。
+        msgs.append(SystemMessage(content=AR.HARD_BUDGET_DIRECTIVE))
+        forced = True
+    elif budget is not None and budget.soft_reached():
+        # soft 预算（A3/T2）: 柔性提示, 由 LLM 判断材料是否充分（不强制停止）
+        msgs.append(SystemMessage(content=AR.SOFT_BUDGET_HINT))
+    streak = state.get("no_gain_streak", 0)
+    verdict = AR.no_gain_verdict(streak)
+    if verdict == "force":
+        # A5/T3: 连续无增益轮 → 强制收口（比总数 hard 预算更早拦截原地打转）
+        msgs.append(SystemMessage(content=AR.NO_GAIN_FORCE_DIRECTIVE))
+        forced = True
+    elif verdict == "warn" and not (budget is not None and budget.soft_reached()):
+        msgs.append(SystemMessage(content=AR.NO_GAIN_WARN_HINT))
+    if state.get("retrieval_count", 0) >= RETRIEVAL_LIMIT and not forced and not (
+            budget is not None and budget.soft_reached()):
+        # 既有柔性检索提示（预算未达 soft 时的等效提示, 保留原文案以最小化行为变化）
         msgs.append(SystemMessage(
             content="（已进行多次检索。请评估现有材料是否足以回答: 充分则停止检索直接作答; 确有必要再用新关键词补充检索, 但避免无意义重复。）"))
     # 2026-08-14: 同步 LLM 调用移入线程池, 防阻塞事件循环（并发会话卡死）
-    resp = await asyncio.to_thread(get_llm().bind_tools(get_tools(agent)).invoke, msgs)
-    return {"messages": [resp]}
+    # Phase A (A4): 有限重试——可恢复错误（连接中断/超时/429/5xx）按配置退避重试;
+    # 耗尽抛 ModelCallError → stream_agent 的 graceful completion（用已取得 evidence 收口）
+    resp, retries = await _agent_llm_invoke(agent, msgs, trace=state.get("trace"))
+    return {"messages": [resp], "forced": forced,
+            "model_retries": state.get("model_retries", 0) + retries}
+
+async def _agent_llm_invoke(agent, msgs, trace=None):
+    """agent 轮 LLM 调用（线程池防阻塞）+ A4 有限重试。返回 (resp, retry_count)。"""
+    def _call(m):
+        return get_llm().bind_tools(get_tools(agent)).invoke(m)
+    def _on_retry(attempt, exc):
+        # A1: model retry 计数入 trace（trace 经 state 共享引用, 单轮生命周期内安全）
+        if trace is not None:
+            trace.model_retries += 1
+        logger.warning(f"[model-retry {attempt + 1}/{AR.MODEL_RETRY['attempts']}] {str(exc)[:160]}")
+    return await asyncio.to_thread(AR.invoke_llm_with_retry, _call, msgs, _on_retry)
 
 # 工具失败备选映射（自愈: 失败后提示可换用的工具）
 FALLBACK_MAP = {
@@ -262,22 +298,50 @@ FALLBACK_MAP = {
 async def tools_node(state):
     """多工具并行执行（asyncio.gather + 线程池）; 结果以 ToolMessage 回传
     按当前智能体的工具集查找（哲学家专属工具不在全局 TOOLS_BY_NAME 里）;
-    自愈: 失败工具自动重试 1 次, 仍失败附备选工具提示"""
+    自愈: 失败工具按 TOOL_RETRY 配置重试, 仍失败附备选工具提示。
+    Phase A: A2 重复调用防护（同参只读工具 → 复用结果, 不再执行）;
+             A3 预算分类计数（useful/retry/duplicate/no_gain）;
+             A1 逐调用观测（时长/成败/结果 hash/info gain）;
+             A5 连续无增益轮统计（no_gain_streak）。"""
     last = state["messages"][-1]
     calls = last.tool_calls or []
-    # 检索计数: 深哲检索工具 + 哲学家专属工具（防"反复检索不回答"死循环）
-    inc = sum(1 for c in calls if c.get("name") in RETRIEVAL_TOOLS or c.get("name") in AGENTS.PHILO_EXTRA_TOOLS)
     agent = state.get("agent", "general")
     tools_map = {t.name: t for t in get_tools(agent)}
+    guard = state.get("guard")
+    budget = state.get("budget")
+    trace = state.get("trace")
+    retrieval_set = set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS)
+    TOOL_TIMEOUT = AR.TOOL_TIMEOUT   # 工具执行超时（防挂起; Phase A 收编为配置）
 
-    TOOL_TIMEOUT = 90   # 工具执行超时（防挂起导致工具"未完成"就进入下一轮）
-
-    async def run_one(call):
+    async def run_one(call, call_index):
         name = call.get("name", "")
         args = call.get("args", {}) or {}
         tool = tools_map.get(name)
+        thought_label = f"执行 {name}"
+        # ── A2: 重复调用防护 ──
+        decision = guard.decide(name, args) if guard else {"action": "execute", "cls": "unique", "reason": ""}
+        if decision["action"] == "reuse":
+            prev = decision.get("prev")
+            if budget:
+                budget.count(name, "duplicate", executed=False)
+            if trace:
+                trace.record_call(call_index, name, args, 0.0, True, None,
+                                  json.dumps(prev, ensure_ascii=False)[:200] if prev is not None else "",
+                                  AR.result_hash(prev), "duplicate", "repeat", 0,
+                                  executed=False, thought="复用本轮早前结果")
+            content = json.dumps(prev, ensure_ascii=False) if isinstance(prev, (dict, list)) else str(prev)
+            return ToolMessage(content=content[:4000], name=name,
+                               tool_call_id=call.get("id", ""),
+                               additional_kwargs={"_args": args, "_result_full": prev,
+                                                  "_budget_class": "duplicate", "_reused": True,
+                                                  "_info_gain": "repeat"})
+        # ── A3/A1: 执行（带预算口径的轮内重试）──
         res = None
-        for attempt in range(2):   # 失败自动重试 1 次
+        inner_attempts = AR.TOOL_RETRY["attempts"]
+        attempts_used = 0
+        t0 = time.time()
+        for attempt in range(inner_attempts + 1):
+            attempts_used = attempt + 1
             try:
                 if tool is None:
                     res = {"error": f"未知工具 {name}"}
@@ -285,40 +349,93 @@ async def tools_node(state):
                     res = await asyncio.wait_for(tool.func(**args), timeout=TOOL_TIMEOUT)   # async 工具（MCP 等）
                 else:
                     res = await asyncio.wait_for(asyncio.to_thread(tool.func, **args), timeout=TOOL_TIMEOUT)
-                if isinstance(res, dict) and res.get("error") and attempt == 0:
+                if isinstance(res, dict) and res.get("error") and attempt < inner_attempts:
                     continue
                 break
             except asyncio.TimeoutError:
                 res = {"error": f"工具 {name} 执行超时（>{TOOL_TIMEOUT}s）"}
-                if attempt == 0:
+                if attempt < inner_attempts:
                     continue
             except Exception as e:
                 res = {"error": str(e)}
-                if attempt == 0:
+                if attempt < inner_attempts:
                     continue
+        duration_ms = (time.time() - t0) * 1000
+        is_err = isinstance(res, dict) and res.get("error")
         # 仍失败 → 附备选工具提示（LLM 可据此换工具）
-        if isinstance(res, dict) and res.get("error"):
+        if is_err:
             fb = FALLBACK_MAP.get(name)
             if fb:
                 res["fallback_hint"] = f"此工具失败, 可改用 {fb} 查询"
+        if budget and attempts_used > 1:
+            budget.inner_retries += attempts_used - 1   # A1/A3: 轮内自愈重试计入观测
+        # ── A2 记录结果（成功可复用; 失败放行跨轮重试）──
+        if guard:
+            guard.record(name, args, not is_err, res)
+        # ── A1 information gain / A3 预算分类（可靠实现: 结果 hash + 空命中判定）──
+        rh = AR.result_hash(res)
+        info_gain = ""
+        if not is_err and name in retrieval_set:
+            info_gain = "empty" if AR.result_is_empty(res) else "new"
+        cls = decision.get("cls", "unique")
+        if budget:
+            budget.count(name, cls, executed=True, info_gain=info_gain)
+        if trace:
+            ev_items = _evidence_item_count(name, res)
+            trace.record_call(call_index, name, args, duration_ms, not is_err,
+                              (res or {}).get("error") if isinstance(res, dict) else None,
+                              json.dumps(res, ensure_ascii=False)[:200] if isinstance(res, (dict, list)) else str(res)[:200],
+                              rh, cls, info_gain, ev_items, executed=True,
+                              thought=thought_label)
         content = json.dumps(res, ensure_ascii=False) if isinstance(res, (dict, list)) else str(res)
         return ToolMessage(content=content[:4000], name=name,
                            tool_call_id=call.get("id", ""),
-                           additional_kwargs={"_args": args, "_result_full": res})
+                           additional_kwargs={"_args": args, "_result_full": res,
+                                              "_budget_class": cls, "_info_gain": info_gain})
 
-    results = await asyncio.gather(*[run_one(c) for c in calls])   # 全部执行（截断会导致 tool_call_id 无响应 → DeepSeek 400）
+    base_index = state.get("tool_count", 0)
+    results = await asyncio.gather(*[run_one(c, base_index + i) for i, c in enumerate(calls)])   # 全部执行（截断会导致 tool_call_id 无响应 → DeepSeek 400）
+    # ── A5: 连续无增益轮统计（本轮全部检索调用均 repeat/empty/duplicate → streak+1）──
+    round_gains = [(getattr(r, "additional_kwargs", {}) or {}).get("_info_gain", "") for r in results]
+    retrieval_round = [g for g, c in zip(round_gains, calls) if c.get("name") in retrieval_set]
+    dup_round = [(getattr(r, "additional_kwargs", {}) or {}).get("_budget_class") == "duplicate" for r in results]
+    all_retrieval_barren = bool(retrieval_round) and all(g in ("repeat", "empty") for g in retrieval_round)
+    all_dup = calls and all(dup_round)
+    if all_retrieval_barren or all_dup:
+        streak = state.get("no_gain_streak", 0) + 1
+    else:
+        streak = 0
+    inc = sum(1 for c in calls if c.get("name") in retrieval_set)
+    executed = sum(1 for r in results
+                   if (getattr(r, "additional_kwargs", {}) or {}).get("_budget_class") != "duplicate")
     return {"messages": results, "retrieval_count": state.get("retrieval_count", 0) + inc,
+            "tool_count": base_index + executed,
+            "no_gain_streak": streak,
             "forced_tools_done": state.get("forced", False)}
+
+def _evidence_item_count(tool_name, res):
+    """单次调用的证据候选数（可靠口径: evidence_contract 白名单工具的结果条目数）"""
+    try:
+        from evidence_contract import PRIMARY_TOOLS
+        if tool_name not in PRIMARY_TOOLS or not isinstance(res, dict):
+            return 0
+        for k in ("results", "echoes", "quotes", "hits"):
+            v = res.get(k)
+            if isinstance(v, list):
+                return len(v)
+        return 1 if res else 0
+    except Exception:
+        return 0
 
 def should_continue(state):
     last = state["messages"][-1]
     if not getattr(last, "tool_calls", None):
         return "end"
-    if state.get("retrieval_count", 0) >= RETRIEVAL_HARD and state.get("forced"):
-        # 硬上限强制回答, 模型仍调工具（DeepSeek 常见"任务规划残留"）:
-        # 已补跑过一轮 → 截断（防死循环烧钱）; 未补跑过 → 再执行一轮, 把已宣告的
-        # 工具调用跑完并回传结果, 下一轮强制结束（2026-08-14 修复: 此前直接丢弃,
-        # 导致"工具调用未完成就回答/凭记忆作答"）
+    # A5/T5-T6: 强制回答轮（hard 预算或连续无增益触发）——模型仍宣告工具调用
+    # （DeepSeek 常见"任务规划残留"）: 已补跑过一轮 → 截断（防死循环烧钱）; 未补跑过 →
+    # 再执行一轮, 把已宣告的工具调用跑完并回传结果, 下一轮强制结束
+    # （2026-08-14 修复: 此前直接丢弃, 导致"工具调用未完成就回答/凭记忆作答"）
+    if state.get("forced"):
         if state.get("forced_tools_done"):
             return "end"
         return "tools"
@@ -534,11 +651,40 @@ def _strip_markers(text):
     t = re.sub(r"\{TOOL:.*?\}", "", t, flags=re.S)
     return t.strip()
 
-async def stream_agent(req_message, history, agent="general", custom_instructions=None, language="zh"):
+# ── Phase A (A4): graceful completion 辅助 ──────────────
+def _lc_to_dict(m):
+    """LangChain 消息 → dict（llm_chat 期望 dict; 含 tool_calls 的 assistant 帧剔除）"""
+    if isinstance(m, SystemMessage):
+        return {"role": "system", "content": m.content}
+    if isinstance(m, HumanMessage):
+        return {"role": "user", "content": m.content}
+    if isinstance(m, AIMessage):
+        return {"role": "assistant", "content": m.content or ""}
+    return None
+
+def _evidence_digest(tool_log, max_items=12):
+    """已取得 evidence 的有界摘要（graceful completion 用; 防恢复请求上下文膨胀）"""
+    lines = []
+    for t in (tool_log or [])[-max_items:]:
+        a = t.get("args") or {}
+        q = a.get("query") or a.get("concept") or a.get("topic") or a.get("question") or ""
+        lines.append(f"- {t.get('name', '')}（{str(q)[:60]}）: {(t.get('result_summary') or '')[:150]}")
+    return "\n".join(lines)
+
+def _build_recovery_dicts(messages, tool_log, directive):
+    """恢复调用消息: 原对话（去工具帧）+ 指令 + 已取得 evidence 摘要（有界）"""
+    fb_msgs = [m for m in messages if not (isinstance(m, AIMessage) and m.tool_calls)]
+    digest = _evidence_digest(tool_log)
+    fb_msgs.append(SystemMessage(content=directive + ("\n\n【已取得的检索材料】\n" + digest if digest else "")))
+    return [d for d in (_lc_to_dict(m) for m in fb_msgs) if d]
+
+async def stream_agent(req_message, history, agent="general", custom_instructions=None, language="zh",
+                       conversation_id=None, message_id=None):
     """LangGraph 引擎 SSE 事件流（async generator, 事件协议与自研版一致）
     agent: general=通用深哲; 其他=哲学家智能体（提示词+工具集按注册表切换）
     custom_instructions: 用户自定义指令（个性化, 追加到 system prompt）
-    language: zh/en——输出与思考流语言（覆盖 system 内的语言要求）"""
+    language: zh/en——输出与思考流语言（覆盖 system 内的语言要求）
+    conversation_id/message_id: Phase A (A1) 观测上下文（可选, 缺省自动生成）"""
     yield {"type": "status", "content": "开始思考" if language != "en" else "Thinking"}
     _t_start = time.time()
     # 预热 MCP 工具（加载完成后 get_tools 才能拿到; MCP_SERVERS 空时秒返回）
@@ -621,9 +767,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     except Exception as _e:
         logger.warning(f"[answer-composer pre] skipped: {str(_e)[:200]}")
     tool_log = []
+    # ── Phase A: tool loop 治理状态（A1 观测 / A2 去重 / A3 预算——单轮生命周期对象）──
+    guard = AR.DuplicateGuard()
+    budget = AR.ToolBudget(retrieval_tools=set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS))
+    trace = AR.ToolLoopTrace(conversation_id, message_id, agent, question_chars=len(req_message or ""))
     # 2026-08-28: 递归上限 18 → 60（检索硬上限已取消, 需给足长会话空间——~29 轮工具;
-    # 仍是有界兜底, 防失控烧钱）
-    config = {"recursion_limit": 60}
+    # 仍是有界兜底, 防失控烧钱）。Phase A: 数值收编 agent_runtime.RECURSION_LIMIT 配置
+    config = {"recursion_limit": AR.RECURSION_LIMIT}
     # 当前 agent 轮缓冲（live: 已进入实时流式回答; live_text: 已作为 token 流出的文本——
     # 若本轮后续宣告了工具调用, 需以 answer_retract 事件撤回为思考）
     pending = {"text": "", "has_tools": False, "reasoned": False, "started": set(),
@@ -660,16 +810,28 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             full_answer += ch
             yield {"type": "token", "content": ch}
             await asyncio.sleep(0.002)
+    # ══ Phase A (A4/A5): 图流执行与异常恢复分离 ══
+    # 此前整轮（图流 + 收口 + done）包在同一个 try 里, 图流中任何异常（如模型侧
+    # 流式连接中断"peer closed connection..."）直接以 error 事件终止整轮——已完成的
+    # 全部工具调用取得的 evidence 一并丢弃（RAM audit 第 9 轮"约 13 次工具调用后
+    # 模型侧 error"的真实路径）。现在: 图流异常先走 graceful completion（用已取得
+    # evidence 完成回答）, 恢复成功/已有部分正文 → 继续正常收口（citations/done 照常）。
+    stream_error = None
     try:
         async for chunk, metadata in APP.astream(
-                {"messages": messages, "retrieval_count": 0, "agent": agent, "language": language},
+                {"messages": messages, "retrieval_count": 0, "agent": agent, "language": language,
+                 "guard": guard, "budget": budget, "trace": trace,
+                 "tool_count": 0, "no_gain_streak": 0, "model_retries": 0},
                 config, stream_mode="messages"):
             node = metadata.get("langgraph_node", "")
             if node == "agent":
                 if not chunk:
                     continue
                 # 工具调用帧（content 为空）→ 标记本轮有工具, 并立即发"调用中"事件（CC 风格: 先显示再执行）
-                if chunk.tool_call_chunks:
+                # 防御（2026-08-30 三连错误修复）: stream_mode="messages" 下偶发完整 AIMessage
+                # （无 tool_call_chunks 属性）——一律 getattr 取, 非工具帧按文本处理
+                tool_call_chunks = getattr(chunk, "tool_call_chunks", None)
+                if tool_call_chunks:
                     pending["has_tools"] = True
                     # 乐观流出的撤回: 本轮已实时流入回答区的文本实为工具规划文字
                     # （规划文字超过实时阈值的少数情况）→ 先撤回为思考, 再发工具卡片
@@ -685,7 +847,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                 full_answer = full_answer[:len(full_answer) - len(sent)]
                         pending["live"] = False
                         pending["live_text"] = ""
-                    for tcc in chunk.tool_call_chunks:
+                    for tcc in tool_call_chunks:
                         nm = tcc.get("name")
                         if nm and nm not in pending.get("started", ()):
                             pending.setdefault("started", set()).add(nm)
@@ -715,7 +877,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                             yield {"type": "token", "content": ch}
                             await asyncio.sleep(TOKEN_INTERVAL)
                 # DeepSeek reasoning（thinking 模式）→ 思维链分片节流, 实时流出; 同时累积供 o1 风格摘要
-                rc = (chunk.additional_kwargs or {}).get("reasoning_content")
+                # （只节流转发给前端展示, 不落盘——A1: 禁止记录原始 chain-of-thought）
+                rc = (getattr(chunk, "additional_kwargs", None) or {}).get("reasoning_content")
                 if rc:
                     pending["reasoned"] = True
                     reasoning_text += rc
@@ -731,46 +894,95 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 name = chunk.name or ""
                 args = extra.get("_args", {})
                 result = extra.get("_result_full", {})
+                reused = extra.get("_reused", False)
+                # A1: 自动 websearch 补充也计入预算与观测（引擎发起的调用不游离在治理外）
                 if name == "search_books" and isinstance(result, dict) and not result.get("results"):
                     # 原典库无命中 → 自动 websearch 补充（to_thread: 同步 urllib 跑在事件循环上会冻结整条 SSE 流）
                     ws = await asyncio.to_thread(AG.TOOLS["websearch"]["execute"],
                                                  {"query": str(args.get("query", ""))[:80]})
-                    tool_log.append({"name": "websearch", "args": {"query": str(args.get("query", ""))[:80]},
+                    ws_args = {"query": str(args.get("query", ""))[:80]}
+                    ws_gain = "empty" if AR.result_is_empty(ws) else "new"
+                    if budget:
+                        budget.count("websearch", "unique", executed=True, info_gain=ws_gain)
+                    if trace:
+                        trace.record_call(len(trace.calls), "websearch", ws_args, 0.0, True, None,
+                                          str(ws)[:200], AR.result_hash(ws), "unique", ws_gain,
+                                          0, executed=True, thought="原典库检索不足, 自动上网搜索补充")
+                    tool_log.append({"name": "websearch", "args": ws_args,
                                      "result_summary": str(ws)[:200],
                                      "thought": "原典库检索不足, 自动上网搜索补充"})
-                    yield {"type": "tool", "name": "websearch", "args": {"query": str(args.get("query", ""))[:80]},
+                    yield {"type": "tool", "name": "websearch", "args": ws_args,
                            "result": str(ws)[:300], "thought": "原典库检索不足, 自动上网搜索补充"}
+                _thought = "复用本轮早前结果（重复调用已拦截）" if reused else f"执行 {name}"
                 tool_log.append({"name": name, "args": args,
                                  "result_summary": str(result)[:200], "result_full": result,
-                                 "thought": f"执行 {name}"})
+                                 "thought": _thought})
                 yield {"type": "tool", "name": name, "args": args,
-                       "result": str(result)[:300], "thought": f"执行 {name}"}
+                       "result": str(result)[:300], "thought": _thought}
                 # 本轮工具已处理完 → 清空待执行标记（下一 agent 轮重新计; 2026-08-14）
                 pending_tools.clear()
+    except Exception as e:
+        # A4/A5: 图流异常（模型侧流式连接中断/重试耗尽/递归上限/工具帧异常）不再直接终止整轮
+        stream_error = e
+        logger.error(f"[agent-stream-error] {type(e).__name__}: {str(e)[:300]}")
+
+    # ══ Phase A (A4): graceful recovery ══
+    #   ① 无正文 → 用已取得 evidence（工具结果摘要, 有界）调一次无工具 LLM 完成回答
+    #   ② 已有部分正文（中断发生在最终回答流中）→ 保留, 直接继续收口
+    #   ③ 恢复也失败且无任何 evidence → 友好错误（不暴露内部细节/stack trace）
+    # 恢复成功 → 落到正常收口: 已取得 evidence 不丢, citations/done 照常发出。
+    if stream_error is not None:
+        _recovered = False
+        if not _strip_markers(full_answer):
+            try:
+                fb_dicts = _build_recovery_dicts(messages, tool_log, AR.RECOVERY_SYSTEM_DIRECTIVE)
+                resp = await asyncio.to_thread(AG.llm_chat, fb_dicts, thinking=False, max_tokens=2000)
+                reply = _strip_markers(resp["choices"][0]["message"].get("content") or "")
+                if reply:
+                    note = AR.RECOVERY_NOTE_EN if language == "en" else AR.RECOVERY_NOTE_ZH
+                    for piece in (note, reply):
+                        for i in range(0, len(piece), 60):
+                            seg = piece[i:i + 60]
+                            full_answer += seg
+                            yield {"type": "token", "content": seg}
+                            await asyncio.sleep(0.002)
+                    _recovered = True
+            except Exception as _re:
+                logger.warning(f"[graceful-completion] failed: {str(_re)[:200]}")
+        if not _recovered and not _strip_markers(full_answer):
+            _fail_ct = sum(1 for tc in tool_log
+                           if isinstance(tc.get("result_full"), dict) and tc["result_full"].get("error"))
+            _log_stats(agent, req_message, time.time() - _t_start, [t["name"] for t in tool_log],
+                       _fail_ct, str(stream_error)[:200], 0)
+            if trace:
+                trace.finalize(time.time() - _t_start, error=stream_error, answer_chars=0,
+                               budget_snapshot=budget.snapshot() if budget else {})
+            if "Insufficient Balance" in str(stream_error) or "402" in str(stream_error):
+                yield {"type": "error",
+                       "content": "DeepSeek API 余额不足——请充值后重试" if language != "en"
+                       else "DeepSeek API balance insufficient—please top up and retry"}
+            else:
+                # 脱敏: 客户端只给通用提示, 细节写日志（异常文本可能含 API 细节）
+                yield {"type": "error",
+                       "content": "智能体暂时出错，请重试或换个问法" if language != "en"
+                       else "Agent error—please retry or rephrase"}
+            return
+    try:
         # 最终 flush: 最后一轮 agent 输出（最终回答）在 done 前以打字机发出（XML 标记已剥离）
         async for ev in flush_agent():
             yield ev
         pending = {"text": "", "has_tools": False, "reasoned": False, "live": False, "live_text": ""}
-        # 被截断的已宣告工具调用（宣告了 tool_start 但最终未执行, 如硬检索上限二次强制轮）:
-        # 逐名发 tool_cancel, 前端据此解除对应"调用中"卡片（2026-08-14）
+        # 被截断的已宣告工具调用（宣告了 tool_start 但最终未执行, 如 hard 预算强制轮的
+        # 二次残留宣告）: 逐名发 tool_cancel, 前端据此解除对应"调用中"卡片（2026-08-14）
         for nm in sorted(pending_tools):
-            yield {"type": "tool_cancel", "name": nm, "reason": "检索已达上限，该调用未执行"}
+            yield {"type": "tool_cancel", "name": nm, "reason": "工具预算已达上限，该调用未执行"}
         # 最终回答校验: 剥离工具标记后为空 → 强制兜底生成正文（硬上限轮 LLM 可能只输出标记无正文）
+        # Phase A: 兜底调用同样携带已取得 evidence 摘要（与 graceful completion 同机制）
         if not _strip_markers(full_answer):
             try:
-                # 裁剪: 去掉含 tool_calls 的 assistant 消息; LangChain 消息转 dict（自研 llm_chat 期望 dict）
-                def _lc_to_dict(m):
-                    if isinstance(m, SystemMessage):
-                        return {"role": "system", "content": m.content}
-                    if isinstance(m, HumanMessage):
-                        return {"role": "user", "content": m.content}
-                    if isinstance(m, AIMessage):
-                        return {"role": "assistant", "content": m.content or ""}
-                    return None
-                fb_msgs = [m for m in messages if not (isinstance(m, AIMessage) and m.tool_calls)]
-                fb_msgs.append(SystemMessage(
-                    content="请直接输出最终回答正文。禁止任何工具调用标记/XML/JSON 格式。只输出回答文本。"))
-                fb_dicts = [d for d in (_lc_to_dict(m) for m in fb_msgs) if d]
+                fb_dicts = _build_recovery_dicts(
+                    messages, tool_log,
+                    "请直接输出最终回答正文。禁止任何工具调用标记/XML/JSON 格式。只输出回答文本。")
                 resp = await asyncio.to_thread(AG.llm_chat, fb_dicts, thinking=False, max_tokens=2000)
                 reply = _strip_markers(resp["choices"][0]["message"].get("content") or "")
                 if reply:
@@ -921,10 +1133,30 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         suggestions = _suggest_next(tool_log, req_message, agent, language)
         _log_stats(agent, req_message, time.time() - _t_start, [t["name"] for t in tool_log],
                    _fail, None, len(full_answer))
+        # ══ Phase A (A1): 单轮 invocation 轨迹汇总落盘（evidence ids 关联证据契约）══
+        _evidence_ids = []
+        if evidence_payload:
+            _evidence_ids = [ev.get("evidence_id") for ev in (evidence_payload.get("used_evidence") or [])
+                             if ev.get("evidence_id")]
+        if trace:
+            if stream_error is not None:
+                trace.finalize(time.time() - _t_start, error=stream_error,
+                               answer_chars=len(full_answer), evidence_ids=_evidence_ids,
+                               budget_snapshot=budget.snapshot() if budget else {})
+            else:
+                trace.finalize(time.time() - _t_start, error=None,
+                               answer_chars=len(full_answer), evidence_ids=_evidence_ids,
+                               budget_snapshot=budget.snapshot() if budget else {})
         yield {"type": "done", "citations": citations, "evidence": evidence_payload,
                "tool_calls": tool_log,
                "suggestions": suggestions, "safety": safety_flag,
                "composition": _composition_scan,
+               # Phase A: tool loop 治理状态（UAT/审计断言用; 前端可忽略）
+               "tool_loop": {"invocation_id": trace.invocation_id if trace else None,
+                              "budget": budget.snapshot() if budget else None,
+                              "model_retries": trace.model_retries if trace else 0,
+                              "recovered_after_error": bool(stream_error),
+                              "no_gain_calls": budget.no_gain if budget else 0},
                # Phase S: 结构化状态随 done 输出（审计/前端可用, 不改变主协议）
                "epistemic": _epistemic_state,
                "obligations": _obligations_state,
@@ -970,7 +1202,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         if reasoning_summary:
             yield {"type": "reasoning_summary", "content": reasoning_summary}
     except Exception as e:
-        _log_stats(agent, req_message, time.time() - _t_start, [], 0, str(e)[:200], 0)
+        # 收口阶段异常（图流异常已在上方恢复处理; 此处兜底不丢观测）——
+        # 2026-08-30 修复: 旧代码 error 路径把工具数硬编码记 0, 掩盖了"13 次调用后 error"的真实形态
+        _fail_ct = sum(1 for tc in tool_log
+                       if isinstance(tc.get("result_full"), dict) and tc["result_full"].get("error"))
+        _log_stats(agent, req_message, time.time() - _t_start, [t["name"] for t in tool_log],
+                   _fail_ct, str(e)[:200], len(full_answer))
+        if trace:
+            trace.finalize(time.time() - _t_start, error=e, answer_chars=len(full_answer),
+                           budget_snapshot=budget.snapshot() if budget else {})
         if "Insufficient Balance" in str(e) or "402" in str(e):
             yield {"type": "error",
                    "content": "DeepSeek API 余额不足——请充值后重试" if language != "en"
