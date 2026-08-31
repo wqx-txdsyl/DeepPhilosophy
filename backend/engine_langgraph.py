@@ -887,12 +887,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
 
     async def _think_before_tool(name):
         """安全 thinking 片段（非 raw CoT）: 用户可见的执行意图——为什么发起这一步。
-        确定性模板, 不引用内部思维/提示词/隐藏状态。"""
+        确定性模板, 不引用内部思维/提示词/隐藏状态。
+        （2026-08-31 修复: 引用正确的分语言常量 _INTENT_THINKING_ZH/_EN——
+        此前误用 _INTENT_THINKING 导致 NameError 抛入流式生成器, 每个请求
+        主循环提前中断并误触发 graceful recovery "服务连接中断" 说明。）"""
         nonlocal _thinking_opened
         if _thinking_opened:
             return
         _thinking_opened = True
-        text = _INTENT_THINKING.get(name) or _INTENT_THINKING.get("_default") or ""
+        src = _INTENT_THINKING_ZH if language == "zh" else _INTENT_THINKING_EN
+        text = src.get(name) or src.get("_default") or ""
         if text:
             yield {"type": "thinking", "content": text}
     
@@ -967,8 +971,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         if nm and nm not in pending.get("started", ()):
                             pending.setdefault("started", set()).add(nm)
                             pending_tools.add(nm)
-                            async for _th in _think_before_tool(nm):
-                                yield _th
+                            try:   # thinking 事件尽力而为, 绝不影响主流程（与 Phase 1/2/4 同机制）
+                                async for _th in _think_before_tool(nm):
+                                    yield _th
+                            except Exception as _e:
+                                logger.warning(f"[thinking-intent] skipped: {str(_e)[:120]}")
                             yield {"type": "tool_start", "name": nm}
                 elif chunk.content:
                     # 只累积本轮文本——归属（思考 or 回答）在轮结束 flush 时决定:
