@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, memo } from 'react';
 import {
   Check, Loader2, XCircle, ChevronRight, ChevronDown, ArrowDown, Image as ImageIcon,
-  FileText, FileType, File as FileIcon, CornerDownRight, Search, Quote,
+  FileText, FileType, File as FileIcon, CornerDownRight, Search, Quote, ListTree,
 } from 'lucide-react';
 import Icon from '../Icon';
 import { useLang } from '../../utils/i18n';
@@ -10,7 +10,7 @@ import { DP_READER, resolveCite, resolvePortrait } from '../../utils/api';
 import { pickUsedEvidence } from '../../utils/evidence';
 import {
   resolveIdentityVisible, toolShortSummary, toolShortArgs, toolHumanSummary,
-  isRetrievalTool, retrievalGroupSummary,
+  isRetrievalTool, retrievalGroupSummary, cleanUserMessageForRender,
 } from '../../data/conversationLogic';
 import { getPref } from '../../data/localPrefs';
 
@@ -260,22 +260,31 @@ const EVIDENCE_PREVIEW = 5;   // 低干扰: 默认最多 5 个 chip（§21 Evide
 function EvidenceChips({ citations, evidence }) {
   const { t } = useLang();
   const used = pickUsedEvidence(citations);
-  const [expanded, setExpanded] = useState(false);
+  // 单一 source of truth（P0-2）: citationExpanded 控制 collapsed/expanded 两态
+  const [citationExpanded, setCitationExpanded] = useState(false);
   if (!used.length) return null;
   const rCount = evidence?.retrieved_count;
-  const shown = expanded ? used : used.slice(0, EVIDENCE_PREVIEW);
+  const shown = citationExpanded ? used : used.slice(0, EVIDENCE_PREVIEW);
   const rest = used.length - EVIDENCE_PREVIEW;
   return (
     <div className="cw-evidence">
       <span className="cw-evidence-cap">
         <Quote size={11} /> {t('citations')}
-        {rCount != null && rCount !== used.length ? ` · ${t('verifiedCount', { a: used.length, b: rCount })}` : ` · ${used.length}`}
+        {rCount != null && rCount !== used.length
+          ? ` · ${t('verifiedCount', { a: used.length, b: rCount })}`
+          : ` · ${used.length}`}
       </span>
       {shown.map((c, i) => <CiteChip key={c.evidence_id || i} c={c} />)}
-      {rest > 0 && (
-        <button className="cw-cite-chip" onClick={() => setExpanded(true)}
+      {!citationExpanded && rest > 0 && (
+        <button className="cw-cite-more" onClick={() => setCitationExpanded(true)}
           aria-label={t('expandCitations', { a: used.length })}>
           +{rest}
+        </button>
+      )}
+      {citationExpanded && rest > 0 && (
+        <button className="cw-cite-more" onClick={() => setCitationExpanded(false)}
+          aria-label={t('citationCollapse')}>
+          {t('citationCollapse')}
         </button>
       )}
     </div>
@@ -333,44 +342,75 @@ function AgentIdentity({ agentId, agents }) {
   );
 }
 
+/* ── Work Panel（P0-1: Work Summary + Tool Trace 同一 compact panel） ──
+ * 用户可见的 structured work summary / execution rationale（非 raw CoT）:
+ * - streaming 时: status（正在理解/正在检索…）+ tool run 行实时更新, panel 默认展开
+ * - final 后: 默认折叠为一行「工作摘要」, 展开可见 reasoning bullets + tool trace
+ * 无工具且无 reasoning 时整个 panel 不渲染（不造假, T2）。
+ */
+function WorkPanel({ m, prefsTick }) {
+  const { t } = useLang();
+  const [open, setOpen] = useState(() => !!m.streaming);   // streaming 展示; final 折叠
+  useEffect(() => { if (m.streaming) setOpen(true); }, [m.streaming]);
+  const events = (m.events ?? m.tool_events ?? []).filter(ev => ev?.t !== 'thought');   // §18 无 raw CoT
+  const toolRows = events.filter(ev => ev.t === 'tool' || ev.t === 'tool_start' || ev.t === 'tool_cancel').length;
+  const reasoning = m.reasoning_summary ? String(m.reasoning_summary).split('\n').filter(Boolean) : [];
+  if (!toolRows && !reasoning.length) return null;
+  const thinking = m.streaming && !m.content;
+  return (
+    <div className="cw-work-panel">
+      <button className="cw-work-panel-head" aria-expanded={open}
+        onClick={() => setOpen(o => !o)}>
+        <ListTree size={13} aria-hidden />
+        <span className="cw-work-panel-title">{t('workSummary')}</span>
+        {toolRows > 0 && <span className="cw-work-panel-badge">{toolRows}</span>}
+        <span style={{ flex: 1 }} />
+        {open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
+      </button>
+      {open && (
+        <div className="cw-work-panel-body">
+          {thinking && (
+            <div className="cw-status-line" style={{ margin: 0, padding: '0 2px 8px' }}>
+              <Loader2 size={12} className="cw-spinner" aria-hidden />
+              {m.status ? m.status : t('startThinking')}…
+            </div>
+          )}
+          {reasoning.length > 0 && (
+            <div className="cw-work-reasoning">
+              {reasoning.map((s, i) => <div key={i} className="cw-work-reasoning-line">{s}</div>)}
+            </div>
+          )}
+          <ToolTrace events={events} streaming={!!m.streaming} key={prefsTick} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── 单条消息（memo: 流式 tick 只重渲变化消息） ── */
 const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, prefsTick, onDrawioEdit, onSend }) {
   const { t } = useLang();
 
   if (m.role === 'user') {
+    // P0-3: visible content = structured attachment cards + 用户文本（legacy serialization 前缀保守 dedupe）
+    const visibleText = cleanUserMessageForRender(m.content, m.attachments);
     return (
       <div className="cw-user-row">
         <div className="cw-user-bubble">
           <MessageAttachmentCards attachments={m.attachments} />
-          {renderMarkdown(m.content, null, null, t)}
+          {visibleText && renderMarkdown(visibleText, null, null, t)}
         </div>
       </div>
     );
   }
 
-  const events = (m.events ?? m.tool_events ?? []).filter(ev => ev?.t !== 'thought');   // §18 无 raw CoT
-  const hasThinkingState = m.streaming && !m.content && !events.length;
   return (
     <div className="cw-assistant">
       {showIdentity && <AgentIdentity agentId={m.agent_id} agents={agents} />}
-      {m.reasoning_summary && (
-        <div className="cw-reasoning">
-          <div className="cw-reasoning-cap">{t('reasoningSummary')}</div>
-          {m.reasoning_summary.split('\n').filter(Boolean).map((s, i) => (
-            <div key={i} style={{ margin: '2px 0', color: 'var(--text-dim)' }}>{s}</div>
-          ))}
-        </div>
-      )}
       {m.safety === 'warning' && (
         <div className="cw-reasoning" style={{ marginTop: 0, color: 'var(--text-dim)' }}>{t('warning')}</div>
       )}
-      {hasThinkingState && (
-        <div className="cw-status-line">
-          <Loader2 size={12} className="cw-spinner" aria-hidden />
-          {m.status ? m.status : t('startThinking')}…
-        </div>
-      )}
-      <ToolTrace events={events} streaming={!!m.streaming} key={prefsTick} />
+      <WorkPanel m={m} prefsTick={prefsTick} />
       <div style={{ lineHeight: 'var(--cw-line-body)', fontSize: 14.5 }}>
         {renderMarkdown(cleanContent(m.content), (code) => onDrawioEdit(m.message_id, code), m.drawioXml, t)}
         {m.streaming && m.content && (

@@ -227,6 +227,24 @@ export function toolHumanSummary(name, args, shortResult) {
 export const retrievalGroupSummary = (n) => `已查阅了 ${n} 项资料`;
 
 /**
+ * User 消息可见文本清洗（P0-3 Attachment 重复渲染）:
+ * 新数据 content 已是纯用户文本; 旧历史数据若存在系统生成的附件 serialization 前缀
+ * （[附件：《x》] / 【附件《x》】 / 附件：），在做渲染前保守剥离——
+ * 仅当该消息存在同名 structured attachments 时才 dedupe，绝不删除用户手写普通文本。
+ */
+export function cleanUserMessageForRender(content, attachments) {
+  if (!Array.isArray(attachments) || !attachments.length) return content;
+  let c = String(content || '');
+  // [附件：《a》·《b》]\n（系统 display 前缀）
+  c = c.replace(/^\[附件[^\]]*\]\s*\n?/, '');
+  // 【附件《a》】 行内标记前缀（旧 attachText 头）
+  c = c.replace(/^【附件《[^】]*》】\s*\n?/, '');
+  // 附件： / Attached file: 前缀
+  c = c.replace(/^(附件|Attached file|附件文件)[：:]\s*\n?/, '');
+  return c;
+}
+
+/**
  * Agent Identity 显示规则（§10, 纯函数可测; 与全局 currentAgent 无关）:
  * 同一会话出现 ≥2 种回答者 → 每条 assistant 都显示身份;
  * 单回答者会话但与前一条 assistant 不同（切换回来）→ 显示;

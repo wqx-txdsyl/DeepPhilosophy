@@ -205,8 +205,9 @@ export default function AgentWorkspace() {
     const agent = agentOverride || composerAgentRef.current;
     const text = typeof message === 'string' ? message : String(message || '');
     const shown = typeof display === 'string' ? display : text;
+    const hasAttach = Array.isArray(attachments) && attachments.length > 0;
 
-    if (!shown.trim()) return;
+    if (!shown.trim() && !hasAttach) return;   // 仅附件发送允许空文本（T6）
     // 同步锁（streamsRef 是同步结构; streamingIds 状态更新是异步的, 防双击产生双会话/双流）
     if (!localOnly && streamsRef.current.has(scopeKey)) return;
 

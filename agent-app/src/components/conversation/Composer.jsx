@@ -110,12 +110,12 @@ export default function Composer({
     const text = input.trim();
     const ready = attachments.filter(a => a.status === 'ready');
     if ((!text && !ready.length) || streaming || unavailable || isUploading) return;
+    // P0-3: message（模型上下文）保留附件内联描述; display（可见 user message）
+    // = 纯用户文本, 系统生成的附件 serialization 绝不进入 persisted visible content。
     const attachText = ready.length
       ? ready.map(a => `【附件《${a.filename}》】\n${a.content || ''}`).join('\n\n') + '\n\n'
       : '';
-    const display = ready.length
-      ? `[${t('attachmentNote')}：${ready.map(a => `《${a.filename}》`).join('、')}]\n${text}`
-      : text;
+    const display = text;   // 附件一律由 structured attachments 渲染
     // 发送瞬间 snapshot draft → immutable metadata; draft 清空（§12/§14）
     const snapshot = ready.map(a => ({ filename: a.filename, kind: a.kind, size: a.size }));
     setAttachments([]);

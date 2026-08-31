@@ -10,7 +10,7 @@ import {
   genConversationTitle, resolveComposerAgent, resolveFollowupAgent, resolveFinalSuggestions,
   groupConversationsByDay, legacyMessagesToConversations, toPersistedMessage, normalizeMessage,
   resolveIdentityVisible, normalizeAttachments, toolShortSummary, toolShortArgs,
-  toolHumanSummary, isRetrievalTool, retrievalGroupSummary,
+  toolHumanSummary, isRetrievalTool, retrievalGroupSummary, cleanUserMessageForRender,
 } from '../src/data/conversationLogic.js';
 import { LocalConversationStore } from '../src/data/conversationStore.js';
 import { pickUsedEvidence } from '../src/utils/evidence.js';
@@ -273,6 +273,30 @@ ok('P0: toolShortSummary 不泄露 book_id/chapter_idx（raw 隐藏回归）', (
   assert.equal(s4, '');
   // toolShortArgs 跳过 dict 形值
   assert.equal(toolShortArgs({ role: "{'a': 1}" }), '');
+});
+
+ok('P0-3: cleanUserMessageForRender（附件 serialization 前缀保守 dedupe, 不删用户文本）', () => {
+  // 新数据: 纯用户文本
+  assert.equal(cleanUserMessageForRender('帮我检查这个规范', [{ filename: 'a.md', kind: 'markdown' }]), '帮我检查这个规范');
+  // 旧数据: [附件：《a》《b》] 前缀 + 用户文本 → 剥离前缀
+  assert.equal(
+    cleanUserMessageForRender('[附件：《分章标准规范.md》·《b.md》]\n帮我检查这个规范',
+      [{ filename: '分章标准规范.md', kind: 'markdown' }]),
+    '帮我检查这个规范');
+  // 旧数据: 【附件《a》】 前缀
+  assert.equal(
+    cleanUserMessageForRender('【附件《a.md》】\n你好', [{ filename: 'a.md', kind: 'markdown' }]),
+    '你好');
+  // 附件： 前缀
+  assert.equal(
+    cleanUserMessageForRender('附件：\n仅附件', [{ filename: 'b.png', kind: 'image' }]),
+    '仅附件');
+  // 无 attachments → 原样返回（绝不误删用户普通文本）
+  assert.equal(cleanUserMessageForRender('[附件：《a》]\n我的笔记', null), '[附件：《a》]\n我的笔记');
+  // 用户在手写里提到附件字样 → 不删除（仅前缀模式）
+  assert.equal(
+    cleanUserMessageForRender('我觉得 [附件：《a》] 这个词有意思', [{ filename: 'a', kind: 'text' }]),
+    '我觉得 [附件：《a》] 这个词有意思');
 });
 
 ok('Codex-Parity: user 消息 attachments 持久化往返（发送瞬间 snapshot, §12）', () => {
