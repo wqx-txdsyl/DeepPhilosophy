@@ -227,6 +227,7 @@ export default function AgentWorkspace() {
     }
 
     const nowIso = new Date().toISOString();
+    const _sendT0 = performance.now();   // Thinking UI: 最终「思考了 X 秒」用
     // 发送瞬间 snapshot attachments → immutable metadata（§12）; draft 由 Composer 清空
     const attachMeta = (attachments || []).filter(a => a && a.filename);
     const userMsg = {
@@ -308,6 +309,7 @@ export default function AgentWorkspace() {
         evidence: snap.evidence,
         suggestions: snap.suggestions, reasoning_summary: snap.reasoning_summary,
         safety: snap.safety, created_at: nowIso,
+        duration_seconds: Math.max(1, Math.round((performance.now() - _sendT0) / 1000)),
       };
       if (!deletedRef.current.has(convId)) {
         // 持久化写入最终值; UI 的引用/建议/摘要由 flushMeta(正文打字机完成)显示,

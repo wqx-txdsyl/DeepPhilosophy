@@ -80,10 +80,10 @@ function MessageAttachmentCards({ attachments }) {
   );
 }
 
-/* ── 工具轨迹（P0 三级披露; 无 raw CoT; 生产默认禁止 raw JSON/dict） ──
- * Level 1 默认: 用户可理解的动作摘要（检索类连续合并「已查阅了 N 项资料」）。
- * Level 2 展开: friendly name + concise result summary + evidence/source + status。
- * Level 3 Debug: raw args/result 仅开发/debug 模式（?debug=1）显示。
+/* ── Inline Tool Activity（P0: 时间流中的工具行; 无卡/无边框; raw 仅 dev） ──
+ * Level 1 默认: 行动名 + 简短结果（检索类连续合并「查阅了 N 项资料」）。
+ * Level 2 展开: friendly name + concise result + evidence/source + status。
+ * Level 3 Debug: raw args/result 仅 dev / ?debug=1。
  */
 const CAN_DEBUG = import.meta.env.DEV || /[?&]debug(?:=1)?([#&]|$)/.test(window.location.search);
 
@@ -97,22 +97,24 @@ function ToolTrace({ events, streaming }) {
   const toggle = (i) => setOpenSet(prev => { const n = new Set(prev); if (n.has(i)) n.delete(i); else n.add(i); return n; });
   if (!events.length) return null;
 
+  // 时间流: thinking 行与 tool 行按 event 顺序交错（P0; 连续检索且 final 时聚合）
   const rows = events
-    .map((ev, i) => (ev.t !== 'tool' && ev.t !== 'tool_start' && ev.t !== 'tool_cancel' ? null : { ev, i }))
+    .map((ev, i) => (
+      ev.t === 'thinking' ? { ev, i }
+        : (ev.t !== 'tool' && ev.t !== 'tool_start' && ev.t !== 'tool_cancel') ? null
+          : { ev, i }
+    ))
     .filter(Boolean);
   if (!rows.length) return null;
 
-  /* 工具名位置: tool_start/tool_cancel 在 ev.name; 完成的 tool 事件在 ev.tc.name */
   const toolName = (ev) => ev.tc?.name || ev.name;
-
-  /* 分组: 仅消息 final 时把相邻检索类工具合并为 Level 1 摘要行;
-     streaming 期间逐行渲染, tool 状态实时更新（回归 3）。 */
   const finalize = !streaming;
   const groups = [];
   let pending = null;
   const flushPending = () => { if (pending) { groups.push(pending); pending = null; } };
   for (const row of rows) {
     const { ev } = row;
+    if (ev.t === 'thinking') { flushPending(); groups.push({ key: ev.i, kind: 'think', items: [row] }); continue; }
     if (ev.t !== 'tool') { flushPending(); groups.push({ key: ev.i, kind: ev.t, items: [row] }); continue; }
     if (finalize && isRetrievalTool(toolName(ev))) {
       if (pending && pending.kind === 'merged') { pending.items.push(row); continue; }
@@ -125,7 +127,6 @@ function ToolTrace({ events, streaming }) {
   }
   flushPending();
 
-  /* Level 2 展开行（friendly name + concise summary + evidence + status; raw 仅 Debug） */
   const renderDetail = (row, idx) => {
     const { ev } = row;
     const tc = ev.tc || {};
@@ -134,25 +135,17 @@ function ToolTrace({ events, streaming }) {
     const evidence = _toolEvidence(tc.args);
     const isErr = /错误|失败|error|fail/i.test(tc.result_summary || '');
     return (
-      <div key={ev.i} style={{ borderTop: '1px solid var(--border)', padding: '8px 12px' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-          <span style={{ fontSize: 10.5, color: 'var(--text-dim)', fontFamily: 'ui-monospace, monospace', flexShrink: 0 }}>
-            {String(idx + 1).padStart(2, '0')}
-          </span>
-          <span style={{ fontWeight: 600, fontSize: 12.5 }}>{label}</span>
+      <div key={ev.i} className="cw-tool-detail">
+        <div className="cw-tool-detail-head">
+          <span>{label}</span>
           <span className="cw-tool-status">
             {isErr
-              ? <span style={{ color: '#b4544a', display: 'inline-flex', alignItems: 'center', gap: 4 }}><XCircle size={11} /> {t('toolError')}</span>
-              : <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text-dim)' }}><Check size={11} /> {t('toolDone')}</span>}
+              ? <span className="cw-tool-err"><XCircle size={11} /> {t('toolError')}</span>
+              : <span className="cw-tool-ok"><Check size={11} /> {t('toolDone')}</span>}
           </span>
         </div>
-        {short && <div className="cw-tool-summary" style={{ marginTop: 4, whiteSpace: 'normal' }}>{short}</div>}
-        {evidence && (
-          <div style={{ marginTop: 3, fontSize: 11.5, color: 'var(--text-dim)', display: 'flex', alignItems: 'center', gap: 4 }}>
-            <Icon name="nav-books" size={11} /> {evidence}
-          </div>
-        )}
-        {/* Level 3 Debug（仅 dev / ?debug=1）: raw args/result */}
+        {short && <div className="cw-tool-detail-text">{short}</div>}
+        {evidence && <div className="cw-tool-detail-src"><Icon name="nav-books" size={11} /> {evidence}</div>}
         {CAN_DEBUG && (Object.keys(tc.args || {}).length > 0 || tc.result_summary) && (
           <details style={{ marginTop: 6 }}>
             <summary style={{ fontSize: 11, color: 'var(--text-dim)', cursor: 'pointer', userSelect: 'none' }}>
@@ -168,26 +161,27 @@ function ToolTrace({ events, streaming }) {
 
   let count = 0;
   return (
-    <div className="cw-tool-trace">
+    <>
       {groups.map((g) => {
+        if (g.kind === 'think') {
+          return <div key={g.key} className="cw-think-line">{String(g.items[0].ev.text || '')}</div>;
+        }
         const { ev: rEv } = g.items[0];
         const rName = toolName(rEv);
-        const meta = TOOL_META[rName] || null;
         const label = toolLabel(rName) || rName;
         if (g.kind === 'tool_start') {
           return (
-            <div key={rEv.i} className="cw-tool-run-row">
-              <Loader2 size={13} className="cw-spinner" aria-hidden />
-              <Icon name={meta?.icon || 'icon-cog'} size={14} />
+            <div key={rEv.i} className="cw-tool-line">
+              <Loader2 size={12} className="cw-spinner" aria-hidden />
+              <span className="cw-tool-line-icon">⌕</span>
               <span>{t('calling')} {label}…</span>
             </div>
           );
         }
         if (g.kind === 'tool_cancel') {
           return (
-            <div key={rEv.i} className="cw-tool-run-row" style={{ borderTop: 'none' }}>
-              <XCircle size={13} aria-hidden />
-              <Icon name={meta?.icon || 'icon-cog'} size={14} />
+            <div key={rEv.i} className="cw-tool-line cw-tool-line-cancel">
+              <XCircle size={12} aria-hidden />
               <span>{label} — {rEv.reason || t('toolSkipped')}</span>
             </div>
           );
@@ -198,50 +192,45 @@ function ToolTrace({ events, streaming }) {
           count += g.items.length;
           return (
             <div key={g.key}>
-              <div className="cw-tool-trace-head" role="button" tabIndex={0}
+              <div className="cw-tool-line" role="button" tabIndex={0}
                 aria-expanded={isOpen}
                 onClick={() => toggle(g.key)}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(g.key); } }}>
-                <Icon name="icon-search" size={15} />
-                <span className="cw-tool-name" style={{ fontWeight: 500 }}>{retrievalGroupSummary(g.items.length)}</span>
-                <span className="cw-tool-summary" />
-                <span className="cw-tool-status">
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--text-dim)' }}><Check size={11} /> {t('toolDone')}</span>
-                </span>
-                {isOpen ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
+                {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
+                <span className="cw-tool-line-icon">⌕</span>
+                <span>{retrievalGroupSummary(g.items.length)}</span>
+                <span className="cw-tool-line-done"><Check size={11} /> {t('toolDone')}</span>
               </div>
               {isOpen && g.items.map((r) => renderDetail(r, idx + 1))}
             </div>
           );
         }
-        // 单工具（Level 1 人话摘要 + 可展开 Level 2）
         const isOpen = openSet.has(rEv.i);
         const tc = rEv.tc || {};
-        const human = toolHumanSummary(toolName(rEv), tc.args, toolShortSummary(tc));
+        const human = toolHumanSummary(rName, tc.args, toolShortSummary(tc));
         const isErr = /错误|失败|error|fail/i.test(tc.result_summary || '');
         const idx = count++;
         return (
           <div key={rEv.i}>
-            <div className="cw-tool-trace-head" role="button" tabIndex={0}
+            <div className="cw-tool-line" role="button" tabIndex={0}
               aria-expanded={isOpen}
               onClick={() => toggle(rEv.i)}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(rEv.i); } }}>
-              <span className="cw-tool-idx">{String(idx + 1).padStart(2, '0')}</span>
-              <Icon name={meta?.icon || 'icon-cog'} size={15} />
-              <span className="cw-tool-name">{human || label}</span>
-              <span className="cw-tool-summary">{human ? '' : (toolShortSummary(tc) || '—')}</span>
-              <span className="cw-tool-status">
+              {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
+              <span className="cw-tool-line-icon">⌕</span>
+              <span className="cw-tool-line-label">{human || label}</span>
+              <span className="cw-tool-line-summ">{human ? '' : (toolShortSummary(tc) || '')}</span>
+              <span className="cw-tool-line-status">
                 {isErr
-                  ? <span style={{ color: '#b4544a' }}><XCircle size={11} /> {t('toolError')}</span>
-                  : <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><Check size={11} /> {t('toolDone')}</span>}
+                  ? <span className="cw-tool-err"><XCircle size={11} /> {t('toolError')}</span>
+                  : <span className="cw-tool-ok"><Check size={11} /> {t('toolDone')}</span>}
               </span>
-              {isOpen ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
             </div>
             {isOpen && renderDetail(rEv, idx)}
           </div>
         );
       })}
-    </div>
+    </>
   );
 }
 
@@ -254,7 +243,7 @@ function _toolEvidence(args) {
   return book ? `《${book}${chapter ? `·${String(chapter).slice(0, 12)}` : ''}》` : '';
 }
 
-/* ── 引用来源 chips（§20/§21: 仅 used_evidence; 可点击跳阅读器; 低干扰） ── */
+
 const EVIDENCE_PREVIEW = 5;   // 低干扰: 默认最多 5 个 chip（§21 Evidence Without Noise）
 
 function EvidenceChips({ citations, evidence }) {
@@ -342,45 +331,51 @@ function AgentIdentity({ agentId, agents }) {
   );
 }
 
-/* ── Work Panel（P0-1: Work Summary + Tool Trace 同一 compact panel） ──
- * 用户可见的 structured work summary / execution rationale（非 raw CoT）:
- * - streaming 时: status（正在理解/正在检索…）+ tool run 行实时更新, panel 默认展开
- * - final 后: 默认折叠为一行「工作摘要」, 展开可见 reasoning bullets + tool trace
- * 无工具且无 reasoning 时整个 panel 不渲染（不造假, T2）。
+/* ── Agent Activity（P0: Thinking + inline Tool Activity 同一时间流; 无 card container） ──
+ * 语义: “Agent 当前如何理解问题、为什么下一步这样做”（用户可见的安全 thinking 流,
+ * 由后端 thinking 事件提供——绝非 raw chain-of-thought / scratchpad / system prompt）。
+ * - streaming: 折叠头实时更新（正在思考 · 已查阅 N 项资料）, 展开显示时间流
+ * - final: 折叠为「思考了 X 秒 · 查阅 N 项资料」; 用户可再展开
+ * - 无 thinking 且无 tool 且无 reasoning 时不渲染（不造假）
+ * - 历史回退: 无 thinking 事件但存在 reasoning_summary（旧实现）时, 仅作为弱化「总结」段
  */
-function WorkPanel({ m, prefsTick }) {
+function AgentActivity({ m, prefsTick }) {
   const { t } = useLang();
-  const [open, setOpen] = useState(() => !!m.streaming);   // streaming 展示; final 折叠
+  const [open, setOpen] = useState(() => !!m.streaming);
   useEffect(() => { if (m.streaming) setOpen(true); }, [m.streaming]);
-  const events = (m.events ?? m.tool_events ?? []).filter(ev => ev?.t !== 'thought');   // §18 无 raw CoT
-  const toolRows = events.filter(ev => ev.t === 'tool' || ev.t === 'tool_start' || ev.t === 'tool_cancel').length;
+  const events = (m.events ?? m.tool_events ?? []).filter(ev => ev?.t !== 'thought');
+  const thinkLines = events.filter(ev => ev?.t === 'thinking' && String(ev.text || '').trim());
+  const toolRows = events.filter(ev => ev.t === 'tool' || ev.t === 'tool_start' || ev.t === 'tool_cancel');
   const reasoning = m.reasoning_summary ? String(m.reasoning_summary).split('\n').filter(Boolean) : [];
-  if (!toolRows && !reasoning.length) return null;
-  const thinking = m.streaming && !m.content;
+  if (!thinkLines.length && !toolRows.length && !reasoning.length) return null;
+
+  const secs = Number(m.duration_seconds) || null;
+  const nTool = toolRows.filter(r => r.t === 'tool').length;
+  const head = m.streaming
+    ? `${t('agentThinking')}${nTool > 0 ? ` · ${t('checkedItems', { a: nTool })}` : ''}`
+    : [secs ? t('thoughtFor', { a: secs }) : t('agentWork'), nTool > 0 ? t('checkedItems', { a: nTool }) : null]
+        .filter(Boolean).join(' · ');
+
   return (
-    <div className="cw-work-panel">
-      <button className="cw-work-panel-head" aria-expanded={open}
-        onClick={() => setOpen(o => !o)}>
-        <ListTree size={13} aria-hidden />
-        <span className="cw-work-panel-title">{t('workSummary')}</span>
-        {toolRows > 0 && <span className="cw-work-panel-badge">{toolRows}</span>}
-        <span style={{ flex: 1 }} />
-        {open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
+    <div className="cw-activity">
+      <button className="cw-activity-head" aria-expanded={open} onClick={() => setOpen(o => !o)}>
+        {m.streaming
+          ? <Loader2 size={12} className="cw-spinner" aria-hidden />
+          : (open ? <ChevronDown size={12} /> : <ChevronRight size={12} />)}
+        <span className="cw-activity-head-text">{head}</span>
       </button>
       {open && (
-        <div className="cw-work-panel-body">
-          {thinking && (
-            <div className="cw-status-line" style={{ margin: 0, padding: '0 2px 8px' }}>
-              <Loader2 size={12} className="cw-spinner" aria-hidden />
-              {m.status ? m.status : t('startThinking')}…
-            </div>
+        <div className="cw-activity-body">
+          {m.streaming && !m.content && !toolRows.length && (
+            <div className="cw-think-line">{m.status ? m.status : t('startThinking')}…</div>
           )}
-          {reasoning.length > 0 && (
-            <div className="cw-work-reasoning">
-              {reasoning.map((s, i) => <div key={i} className="cw-work-reasoning-line">{s}</div>)}
-            </div>
-          )}
+          {/* 单流: thinking 与 tool 行已按 event 顺序在 ToolTrace 内交错渲染 */}
           <ToolTrace events={events} streaming={!!m.streaming} key={prefsTick} />
+          {thinkLines.length === 0 && reasoning.length > 0 && (
+            <div className="cw-activity-summary">
+              {reasoning.map((s, i) => <div key={i} className="cw-think-line cw-think-line-weak">{s}</div>)}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -410,7 +405,7 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
       {m.safety === 'warning' && (
         <div className="cw-reasoning" style={{ marginTop: 0, color: 'var(--text-dim)' }}>{t('warning')}</div>
       )}
-      <WorkPanel m={m} prefsTick={prefsTick} />
+      <AgentActivity m={m} prefsTick={prefsTick} />
       <div style={{ lineHeight: 'var(--cw-line-body)', fontSize: 14.5 }}>
         {renderMarkdown(cleanContent(m.content), (code) => onDrawioEdit(m.message_id, code), m.drawioXml, t)}
         {m.streaming && m.content && (
@@ -522,3 +517,5 @@ export const QUESTION_BANK = {
          'How would you judge this age?', 'What does eternal recurrence mean?'],
   },
 };
+
+

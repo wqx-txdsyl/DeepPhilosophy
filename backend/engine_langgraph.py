@@ -19,15 +19,21 @@ import routes.agent as AG   # 复用 TOOLS 注册表 / SYSTEM_PROMPT 铁律 / AP
 import agents as AGENTS     # 智能体注册表（智能体广场: 通用 + 哲学家）
 import agent_runtime as AR  # Phase A: tool loop 治理（观测/去重/预算/重试/终止）单一真源
 
-# ── LLM（DeepSeek, OpenAI 兼容）─────────────────────────
+# ── LLM（OpenAI 兼容; 智谱 glm-4-flash 免费 / DeepSeek 思考模式）──
 _llm = None
 def get_llm():
     global _llm
     if _llm is None:
-        from langchain_deepseek import ChatDeepSeek
-        _llm = ChatDeepSeek(model=AG.MODEL, api_key=AG.API_KEY, base_url=AG.API_URL,
-                            temperature=0.7, max_tokens=4000,
-                            extra_body={"thinking": {"type": "enabled"}, "reasoning_effort": "low"})
+        if "bigmodel.cn" in AG.API_URL or "glm" in AG.MODEL.lower():
+            # 智谱 glm-4-flash（免费）: 无 thinking 模式, extra_body 不传 DeepSeek 专属参数
+            from langchain_openai import ChatOpenAI
+            _llm = ChatOpenAI(model=AG.MODEL, api_key=AG.API_KEY, base_url=AG.API_URL,
+                              temperature=0.7, max_tokens=4000)
+        else:
+            from langchain_deepseek import ChatDeepSeek
+            _llm = ChatDeepSeek(model=AG.MODEL, api_key=AG.API_KEY, base_url=AG.API_URL,
+                                temperature=0.7, max_tokens=4000,
+                                extra_body={"thinking": {"type": "enabled"}, "reasoning_effort": "low"})
     return _llm
 
 # ── 检索纪律（Phase A: 预算与终止条件收编到 agent_runtime, 本处只保留引用）──
@@ -81,7 +87,13 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
 5. 检索纪律: 避免无意义重复——同一关键词不重复查; 检索覆盖不足时换新关键词补充; 材料充分后停止检索直接回答。检索次数不受限制, 以回答质量为准。
 5'. 生成类工具（write_essay/philosopher_debate/thought_experiment/advisor_council/essay_outline/life_coach/dialectic/compare_views/concept_trace/profile 等）的结果已是完整成品——调用一次拿到结果后**直接向用户展示**, 不要继续检索补充（除非结果明显不完整或缺引用）。
 5''. 输出 mermaid 图（mindmap/flowchart）的规范: ①每个节点一行, 不写一行式图（mindmap 用缩进层级, flowchart 每行一条边）; ②节点文本内换行用 <br/> 而非换行符; ③节点文本含特殊字符（括号/引号/斜杠）时用双引号包裹; ④全图节点 ≤ 15 个。
-6. 若检索无结果, 如实说明"库中未检索到", 不硬答、不编造。
+6. 若原典库检索无结果或覆盖不足, **先调用 websearch 上网补充（1~2 次, 换关键词重试）**, 仍无结果才如实说明"库中未检索到"——不硬答、不编造。
+6'. 【主动上网搜索】websearch 不是兜底摆设, 遇到以下情形**应当主动调用**:
+   ① 问题超出 403 本原典库范围（现当代哲学研究、其他文化传统、跨学科内容、时事引用）;
+   ② 库内检索多轮仍找不到关键事实（著作年代/版本/学界共识/人物生平细节）;
+   ③ 对自己的记忆有怀疑、需要交叉验证的论断。
+   但 websearch 结果只作背景语境与事实参考——**不得**把网上内容包装成【《书名》·章节】原典引用
+   （引用标注仍只给库内实际检索到并核验的原文, 见规则 9）。
 7. 回答使用中文, 严谨、清晰、有层次; 适度苏格拉底式反问, 但不回避问题。
 8. 避免"哲学废话": 每个论断要么有原文依据, 要么明确标注为分析/推测。
 9. 【证据分级·引用可信度】只有实际检索到、能在库中定位的原文, 才用【《书名》· 章节】标注;
@@ -678,6 +690,96 @@ def _build_recovery_dicts(messages, tool_log, directive):
     fb_msgs.append(SystemMessage(content=directive + ("\n\n【已取得的检索材料】\n" + digest if digest else "")))
     return [d for d in (_lc_to_dict(m) for m in fb_msgs) if d]
 
+# ── Thinking UI（2026-08-31）: 安全 thinking 片段（非 raw CoT）──
+# 用户可见的执行意图与结果解读, 完全确定性模板——
+# 绝不引用内部思维链/system prompt/隐藏状态; 绝不输出内部字段（book_id 等）与结果正文。
+_INTENT_THINKING_ZH = {
+    "search_books": "这个问题需要先回到原典——检索书中关于它的直接论述。",
+    "get_chapter": "先调取对应章节原文，用原典上下文核对相关表述。",
+    "get_philosopher": "先确认哲人的基本信息与背景，再进入论证。",
+    "get_book_detail": "先查证相关著作的基本信息与版本。",
+    "query_graph": "先查思想星丛，确认概念之间的关联与源流。",
+    "websearch": "原典库没有直接材料，改为上网检索补充。",
+    "_default": "先核实相关材料，再给出判断。",
+}
+_INTENT_THINKING_EN = {
+    "search_books": "Start with the primary texts—search their direct claims about this.",
+    "get_chapter": "Pull the corresponding chapter to check the exact wording in context.",
+    "get_philosopher": "Confirm the philosopher's basic information and background first.",
+    "get_book_detail": "Verify the basic facts and editions of the work first.",
+    "query_graph": "Query the thought constellation to trace concept connections.",
+    "websearch": "No direct material in the library—fall back to web search.",
+    "_default": "Verify the relevant material first, then judge.",
+}
+_RETRIEVAL_THINK_TOOLS = {"search_books", "get_chapter", "get_philosopher", "get_book_detail",
+                          "query_graph", "list_books", "websearch"}
+
+
+def _count_result(result):
+    """安全计数: 只取结果列表长度/命中标记, 不读取内部字段与正文内容。"""
+    if isinstance(result, list):
+        return len(result)
+    if isinstance(result, dict):
+        for k in ("results", "items", "data", "books", "sources", "matches"):
+            v = result.get(k)
+            if isinstance(v, list):
+                return len(v)
+        for k in ("content", "text", "snippet", "body", "chapter"):
+            if result.get(k):
+                return 1
+    return 0
+
+
+def _safe_args(args):
+    args = args or {}
+    for k in ("book", "book_title", "query", "q", "name", "philosopher", "topic", "question", "keyword"):
+        v = args.get(k)
+        if isinstance(v, str) and v.strip():
+            return str(v).strip()[:40]
+    return ""
+
+
+def interpret_thinking(name, args, result, language):
+    """工具完成后的安全 thinking 片段（结果如何影响下一步）; 无内容返回 None。"""
+    if name not in _RETRIEVAL_THINK_TOOLS:
+        return None
+    zh = language != "en"
+    ent = _safe_args(args)
+    n = _count_result(result)
+    if n == 0:
+        if name == "websearch":
+            return ("原典库仍无直接材料，需要换个检索方向。" if zh
+                    else "Still no direct material—try another angle.")
+        return ("这一步没有检索到直接材料，需要换个方向核实。" if zh
+                else "No direct material here—will verify from another angle.")
+    if name == "search_books":
+        return (f"原典检索命中 {n} 项相关资料，先看与问题直接相关的部分。" if zh
+                else f"Found {n} relevant passages—focus on the ones closest to the question.")
+    if name == "get_chapter":
+        if ent:
+            return (f"已调取《{ent}》对应章节原文，用于核对语境。" if zh
+                    else f"Chapter {ent} retrieved to check the wording in context.")
+        return ("已调取对应章节原文，用于核对语境。" if zh
+                else "Chapter text retrieved for context.")
+    if name == "get_philosopher":
+        return (f"已确认「{ent}」的基本信息。" if ent
+                else "已确认哲人基本信息。" if zh
+                else "Philosopher info confirmed.")
+    if name == "get_book_detail":
+        return (f"已核对《{ent}》的基本信息。" if ent
+                else "已核对著作基本信息。" if zh
+                else "Book details checked.")
+    if name == "query_graph":
+        return (f"星丛查询返回 {n} 项关联，用于第二字核对概念源流。" if zh
+                else f"Constellation query returned {n} links for cross-checking.")
+    if name == "list_books":
+        return (f"书目筛选返回 {n} 项。" if zh else f"Book list filtered to {n} items.")
+    if name == "websearch":
+        return (f"网上检索返回 {n} 项材料，作为补充证据核验。" if zh
+                else f"Web search returned {n} items for cross-checking.")
+    return None
+
+
 async def stream_agent(req_message, history, agent="general", custom_instructions=None, language="zh",
                        conversation_id=None, message_id=None):
     """LangGraph 引擎 SSE 事件流（async generator, 事件协议与自研版一致）
@@ -781,6 +883,19 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具名（2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
     reasoning_text = ""   # 累积推理链（o1 风格摘要用）
+    _thinking_opened = False   # 仅首个检索工具前发一次"为何调用"（防碎念噪音, 2026-08-31 Thinking UI）
+
+    async def _think_before_tool(name):
+        """安全 thinking 片段（非 raw CoT）: 用户可见的执行意图——为什么发起这一步。
+        确定性模板, 不引用内部思维/提示词/隐藏状态。"""
+        nonlocal _thinking_opened
+        if _thinking_opened:
+            return
+        _thinking_opened = True
+        text = _INTENT_THINKING.get(name) or _INTENT_THINKING.get("_default") or ""
+        if text:
+            yield {"type": "thinking", "content": text}
+    
     async def emit_append(text):
         """尾部补发（token 事件）: 追加到 full_answer——补正文本计入最终可见正文,
         证据契约/安全审查/审计均以补正后的完整正文为准（Phase S）"""
@@ -852,6 +967,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         if nm and nm not in pending.get("started", ()):
                             pending.setdefault("started", set()).add(nm)
                             pending_tools.add(nm)
+                            async for _th in _think_before_tool(nm):
+                                yield _th
                             yield {"type": "tool_start", "name": nm}
                 elif chunk.content:
                     # 只累积本轮文本——归属（思考 or 回答）在轮结束 flush 时决定:
@@ -919,6 +1036,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                  "thought": _thought})
                 yield {"type": "tool", "name": name, "args": args,
                        "result": str(result)[:300], "thought": _thought}
+                # Thinking UI: 工具结果解读（安全片段, 非 raw CoT; 不确定时静默）
+                try:
+                    _th_line = interpret_thinking(name, args, result, language)
+                    if _th_line:
+                        yield {"type": "thinking", "content": _th_line}
+                except Exception as _e:
+                    logger.warning(f"[thinking-event] skipped: {str(_e)[:120]}")
                 # 本轮工具已处理完 → 清空待执行标记（下一 agent 轮重新计; 2026-08-14）
                 pending_tools.clear()
     except Exception as e:

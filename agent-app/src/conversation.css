@@ -256,32 +256,63 @@
 .cw-cite-inline-fail { color: var(--text-dim); text-decoration: line-through dotted; cursor: default; }
 .cw-cite-inline-loading { color: var(--accent); }
 
-/* ── Work Panel（P0-1: Work Summary + Tool Trace 同一 compact panel; 无 raw CoT） ── */
-.cw-work-panel {
-  margin: 8px 0 12px; border: 1px solid var(--border); border-radius: 10px;
-  background: var(--card-bg); overflow: hidden;
+/* ── Agent Activity（P0-2: Thinking + inline Tool Activity 时间流; 无 card/无边框） ── */
+.cw-activity {
+  margin: 8px 0 14px;    /* 与最终回答之间留自然 vertical spacing */
+  font-size: 12.5px;
 }
-.cw-work-panel-head {
-  width: 100%; display: flex; align-items: center; gap: 7px;
-  padding: 8px 12px; cursor: pointer; border: none;
-  background: var(--card-bg); color: var(--text-dim); font-size: 12.5px;
-  transition: background .12s;
+.cw-activity-head {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 4px; margin-left: -4px; cursor: pointer;
+  border: none; background: transparent; color: var(--text-dim);
+  font-size: 12px; letter-spacing: .2px;
+  transition: color .12s;
 }
-.cw-work-panel-head:hover { background: var(--soft); color: var(--text); }
-.cw-work-panel-title { font-weight: 600; }
-.cw-work-panel-badge {
-  font-size: 10px; padding: 0 6px; border-radius: 8px;
-  background: var(--soft); color: var(--text-dim); line-height: 16px;
+.cw-activity-head:hover { color: var(--text); }
+.cw-activity-head-text { font-weight: 500; }
+.cw-activity-body {
+  margin-top: 6px; padding-left: 14px;
+  border-left: 2px solid var(--border);          /* 极淡 guide line */
+  display: flex; flex-direction: column; gap: 6px;
 }
-.cw-work-panel-body { border-top: 1px solid var(--border); padding: 10px 12px; }
-/* panel 内 ToolTrace 去外壳（由 panel 统一承担边界） */
-.cw-work-panel .cw-tool-trace {
-  border: none; border-radius: 0; background: transparent;
+/* Thinking 行（secondary, 比正文弱一级） */
+.cw-think-line {
+  color: var(--text-dim); font-size: 12.5px; line-height: 1.65;
+  padding: 1px 0; white-space: pre-wrap;
 }
-.cw-work-panel .cw-tool-trace .cw-tool-trace-head { border-radius: 8px; }
-.cw-work-reasoning { font-size: 12.5px; line-height: 1.7; color: var(--text-dim); }
-.cw-work-reasoning-line { margin: 2px 0; }
-.cw-work-reasoning-line::before { content: '· '; color: var(--text-dim); }
+.cw-think-line-weak { opacity: .75; }
+/* Tool activity 行（再弱一级; 无边框行） */
+.cw-tool-line {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-dim); font-size: 12px; line-height: 1.5;
+  padding: 2px 0; cursor: pointer; border-radius: 6px;
+  opacity: .9;
+}
+.cw-tool-line:hover { color: var(--text); opacity: 1; }
+.cw-tool-line-icon { flex-shrink: 0; }
+.cw-tool-line-label { flex-shrink: 0; }
+.cw-tool-line-summ {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  opacity: .8;
+}
+.cw-tool-line-status { margin-left: auto; flex-shrink: 0; }
+.cw-tool-ok { display: inline-flex; align-items: center; gap: 4px; }
+.cw-tool-err { display: inline-flex; align-items: center; gap: 4px; color: #b4544a; }
+.cw-tool-line-cancel { cursor: default; opacity: .7; }
+/* tool detail（展开; 轻量内嵌, 非卡片） */
+.cw-tool-detail {
+  margin: 2px 0 4px 18px; padding: 6px 10px;
+  border-left: 1px dashed var(--border);
+  color: var(--text-dim); font-size: 12px; line-height: 1.6;
+}
+.cw-tool-detail-head { display: flex; align-items: baseline; gap: 8px; font-weight: 600; color: var(--text); }
+.cw-tool-detail-text { margin-top: 3px; white-space: pre-wrap; word-break: break-word; }
+.cw-tool-detail-src { margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+.cw-tool-detail-pre {
+  font-family: ui-monospace, monospace; font-size: 11px; color: var(--text-dim);
+  white-space: pre-wrap; max-height: 180px; overflow: auto;
+  margin: 4px 0 0; word-break: break-all;
+}
 
 /* ── Citation / Evidence（§20/§21: 低干扰 chips, 非按钮墙） ── */
 .cw-evidence {

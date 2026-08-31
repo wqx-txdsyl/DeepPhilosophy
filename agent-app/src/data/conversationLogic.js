@@ -111,6 +111,7 @@ export function normalizeMessage(raw, fallbackAgentId = GENERAL_AGENT) {
         }
       : {}),
     created_at: raw.created_at || new Date().toISOString(),
+    ...(Number.isFinite(raw.duration_seconds) ? { duration_seconds: raw.duration_seconds } : {}),
   };
 }
 
