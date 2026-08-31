@@ -375,14 +375,19 @@ body.dark-mode .cw-composer-dragover-hint { background: rgba(255,255,255,.05); }
   text-decoration: underline; padding: 0 2px; flex-shrink: 0;
 }
 
-/* textarea 自身彻底无框: 唯一 surface 是 .cw-composer（P1） */
+/* textarea 自身彻底无框: 唯一 surface 是 .cw-composer（P1）
+   :focus-visible 豁免——全局 ring 会画在聚焦的 textarea 上形成“第二层内框”（用户指出的双层 bug）,
+   focus ring 100% 由 .cw-composer:focus-within 承担。 */
 .cw-composer-input {
-  width: 100%; border: 0; background: transparent; outline: none; resize: none;
-  box-shadow: none; appearance: none; -webkit-appearance: none;
+  width: 100%; border: 0 !important; background: transparent !important;
+  outline: 0 !important; box-shadow: none !important;
+  appearance: none; -webkit-appearance: none;
+  border-radius: 0 !important;
   font-size: 15px; line-height: 1.6; color: var(--text); padding: 2px 2px 2px 4px;
   max-height: 200px; min-height: 26px; overflow-y: auto; font-family: inherit;
   display: block;
 }
+.cw-composer-input:focus-visible { outline: none !important; box-shadow: none !important; }
 .cw-composer-input::placeholder { color: var(--text-dim); }
 
 .cw-composer-controls { display: flex; align-items: center; gap: 6px; padding-top: 6px; }
