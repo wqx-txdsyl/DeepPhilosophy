@@ -1012,7 +1012,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     async def _gen_summary(phase):
         """Agent node 级 rationale 生成（节流: 每 ≤ 3 个工具一次 + 最终一次）"""
         nonlocal _SUMMARY_SENT
-        if _SUMMARY_SENT >= 4:
+        if _SUMMARY_SENT >= 8:
             return
         try:
             ctx = _summary_context(req_message, tool_log, language)
@@ -1231,7 +1231,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # 本轮工具已处理完 → 清空待执行标记（下一 agent 轮重新计; 2026-08-14）
                 _rat_tools_done += 1
                 pending_tools.clear()
-                if _rat_tools_done % 2 == 0:   # 节流: 每 2 个工具一次
+                # 流式感: 每个工具完成后生成一条 evidence rationale（上限 8 条）
+                if True:
                     async for _g in _gen_summary("evidence"):
                         yield _g
     except Exception as e:

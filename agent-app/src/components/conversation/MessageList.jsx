@@ -129,6 +129,35 @@ function ToolTrace({ events, streaming }) {
   }
   flushPending();
 
+  const renderCallRow = (row, idx) => {
+    const { ev } = row;
+    const tc = ev.tc || {};
+    const rName = toolName(ev);
+    const label = toolLabel(rName) || rName;
+    const short = toolShortSummary(tc) || toolShortArgs(tc.args);
+    const isErr = /错误|失败|error|fail/i.test(tc.result_summary || '');
+    const isOpen = openSet.has(ev.i);
+    return (
+      <div key={ev.i}>
+        <div className="cw-tool-line" role="button" tabIndex={0}
+          aria-expanded={isOpen}
+          onClick={() => toggle(ev.i)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(ev.i); } }}>
+          {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
+          <span className="cw-tool-line-icon">⌕</span>
+          <span className="cw-tool-line-label">{label}</span>
+          <span className="cw-tool-line-summ">{short}</span>
+          <span className="cw-tool-line-status">
+            {isErr
+              ? <span className="cw-tool-err"><XCircle size={11} /> {t('toolError')}</span>
+              : <span className="cw-tool-ok"><Check size={11} /> {t('toolDone')}</span>}
+          </span>
+        </div>
+        {isOpen && renderDetail(row, idx)}
+      </div>
+    );
+  };
+
   const renderDetail = (row, idx) => {
     const { ev } = row;
     const tc = ev.tc || {};
@@ -208,13 +237,13 @@ function ToolTrace({ events, streaming }) {
               </div>
             );
           }
-          // 展开态: 仅明细（去除与折叠头重复的计数行; 顶部提供轻量"收起"链）
+          // 展开态: 逐调用独立折叠（点一个展开一个; 去除与折叠头重复的计数行）
           return (
             <div key={g.key}>
               <button className="cw-collapse-link" onClick={() => toggle(g.key)}>
                 {t('citationCollapse')} ↑
               </button>
-              {g.items.map((r) => renderDetail(r, idx + 1))}
+              {g.items.map((r, ii) => renderCallRow(r, idx + ii))}
             </div>
           );
         }
@@ -358,6 +387,13 @@ function AgentActivity({ m, prefsTick }) {
   const { t } = useLang();
   const [open, setOpen] = useState(() => !!m.streaming);
   useEffect(() => { if (m.streaming) setOpen(true); }, [m.streaming]);
+  // 思考期间展开; 开始输出答案时自动折叠（折叠头保持可见, 可再展开）
+  const answering = !!m.content;
+  const answeringRef = useRef(answering);
+  useEffect(() => {
+    if (answering && !answeringRef.current) setOpen(false);
+    answeringRef.current = answering;
+  }, [answering]);
   const events = (m.events ?? m.tool_events ?? []).filter(ev => ev?.t !== 'thought');
   const thinkLines = events.filter(ev => (ev?.t === 'thinking_summary') && String(ev.content || ev.text || '').trim());
   const toolRows = events.filter(ev => ev.t === 'tool' || ev.t === 'tool_start' || ev.t === 'tool_cancel');
@@ -367,16 +403,18 @@ function AgentActivity({ m, prefsTick }) {
 
   const secs = Number(m.duration_seconds) || null;
   const nTool = toolRows.filter(r => r.t === 'tool').length;
-  const head = m.streaming
+  // 头文案: 思考中 → "正在思考 · 已查阅 N 项资料"(dots);
+  //        回答中/完成 → "思考了 X 秒 · 已查阅 N 项资料"（进行中未计时则仅计数）
+  const head = (m.streaming && !answering && !secs)
     ? `${t('agentThinking')}${nTool > 0 ? ` · ${t('checkedItems', { a: nTool })}` : ''}`
-    : [secs ? t('thoughtFor', { a: secs }) : t('agentWork'), nTool > 0 ? t('checkedItems', { a: nTool }) : null]
-        .filter(Boolean).join(' · ');
+    : ([secs ? t('thoughtFor', { a: secs }) : null, nTool > 0 ? t('checkedItems', { a: nTool }) : null]
+        .filter(Boolean).join(' · ') || t('agentWork'));
 
   return (
     <div className="cw-activity">
       <button className="cw-activity-head" aria-expanded={open} onClick={() => setOpen(o => !o)}>
-        {m.streaming
-          ? <Loader2 size={12} className="cw-spinner" aria-hidden />
+        {m.streaming && !answering && !secs
+          ? <span className="cw-dots" aria-hidden><span /><span /><span /></span>
           : (open ? <ChevronDown size={12} /> : <ChevronRight size={12} />)}
         <span className="cw-activity-head-text">{head}</span>
       </button>
