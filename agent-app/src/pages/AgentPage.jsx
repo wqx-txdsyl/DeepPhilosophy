@@ -55,6 +55,8 @@ export default function AgentWorkspace() {
   const [drawio, setDrawio] = useState(null);             // {xml, convId, messageId}
 
   const streamsRef = useRef(new Map());   // convId → {controller, messageId}
+  const thinkQueueRef = useRef(new Map());   // convId → {list:[text]}: 思考打字机队列（逐字, 与回答同节奏）
+  const thinkPlayingRef = useRef(new Set()); // convId → 正在播放
   const deletedRef = useRef(new Set());   // 已删除会话: late event 一律丢弃
   const composerAgentRef = useRef(composerAgent);
   composerAgentRef.current = composerAgent;
@@ -332,6 +334,36 @@ export default function AgentWorkspace() {
       let buf = '';
       // 事件: status / thought_stream / thought / tool_start / tool / tool_cancel /
       //        token / answer_retract / done / suggestions / reasoning_summary / error
+      /* 思考打字机泵: 队列串行播放（下一条等上一条打完）; 逐字流写入 UI 占位行 */
+      const pumpThinkQueue = (convId, mid) => {
+        if (thinkPlayingRef.current.has(convId)) return;
+        const q = thinkQueueRef.current.get(convId);
+        if (!q || !q.list.length) return;
+        thinkPlayingRef.current.add(convId);
+        let text = q.list.shift();
+        let i = 0;
+        const timer = setInterval(() => {
+          if (deletedRef.current.has(convId)) { clearInterval(timer); thinkPlayingRef.current.delete(convId); return; }
+          i += Math.max(1, Math.min(8, Math.ceil((text.length - i) / 40)));
+          const slice = text.slice(0, Math.min(i, text.length));
+          patchMessageLocal(convId, mid, m => {
+            const evs = (m.events || []).slice();
+            let idx = -1;
+            for (let k = evs.length - 1; k >= 0; k--) {
+              if (evs[k] && evs[k].t === 'thinking_summary' && evs[k].content === '') { idx = k; break; }
+            }
+            if (idx < 0) return m;
+            evs[idx] = { t: 'thinking_summary', content: slice, phase: evs[idx].phase };
+            return { ...m, events: evs };
+          });
+          if (i >= text.length) {
+            clearInterval(timer);
+            thinkPlayingRef.current.delete(convId);
+            setTimeout(() => pumpThinkQueue(convId, mid), 0);
+          }
+        }, 16);
+      };
+
       const handleEvent = (evt) => {
         if (evt.type === 'status') {
           snap.status = evt.content;
@@ -409,10 +441,27 @@ export default function AgentWorkspace() {
           snap.reasoning_summary = evt.content || null;
           if (metaFlushed) renderMeta();
         } else if (evt.type === 'thinking_summary') {
-          // Thinking 数据源（安全通道 rationale）: 按到达顺序进入消息 events, 前端渲染主思考行
-          const line = { t: 'thinking_summary', phase: evt.phase || undefined, content: evt.content };
+          // 开条（后端流式首事件; content 可能为空占位, 后续 delta 逐字填充）
+          const line = { t: 'thinking_summary', phase: evt.phase || undefined, content: String(evt.content || '') };
           snap.events = [...snap.events, line];
           patchMessageLocal(convId, mid, m => ({ ...m, curThought: null, events: [...m.events, line] }));
+        } else if (evt.type === 'thinking_summary_delta') {
+          // 逐字增量: 追加到最后一条 thinking_summary（与回答打字机同节奏流式流入）
+          const delta = String(evt.content || '');
+          if (!delta) return;
+          snap.events = snap.events.map((e, k, arr) => {
+            let li = -1;
+            for (let j = arr.length - 1; j >= 0; j--) if (arr[j] && arr[j].t === 'thinking_summary') { li = j; break; }
+            return (k === li) ? { ...e, content: (e.content || '') + delta } : e;
+          });
+          patchMessageLocal(convId, mid, m => {
+            const evs = (m.events || []).slice();
+            let li = -1;
+            for (let j = evs.length - 1; j >= 0; j--) if (evs[j] && evs[j].t === 'thinking_summary') { li = j; break; }
+            if (li < 0) return m;
+            evs[li] = { ...evs[li], content: (evs[li].content || '') + delta };
+            return { ...m, events: evs };
+          });
         } else if (evt.type === 'tool_note') {
           // 工具动作弱级注记（确定性意图/结果解读; 非 thinking 冒充）
           const line = { t: 'tool_note', text: evt.content };

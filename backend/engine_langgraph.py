@@ -1010,7 +1010,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         return "evidence" if pending_tools else "synthesis"
 
     async def _gen_summary(phase):
-        """Agent node 级 rationale 生成（节流: 每 ≤ 3 个工具一次 + 最终一次）"""
+        """Agent node 级 rationale（DeepSeek 原生流式, 逐字产出 thinking_summary_delta）:
+        先发开条事件（空 content 占位）, 随后经线程桥逐 delta 流入——与回答打字机同节奏;
+        失败静默跳过（不伪造）。"""
         nonlocal _SUMMARY_SENT
         if _SUMMARY_SENT >= 8:
             return
@@ -1018,16 +1020,35 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             ctx = _summary_context(req_message, tool_log, language)
             msgs = [{"role": "system", "content": SUMMARY_DIRECTIVE_EN if language == "en" else SUMMARY_DIRECTIVE_ZH},
                     {"role": "user", "content": ctx}]
-            resp = await asyncio.to_thread(AG.llm_chat, msgs, thinking=False, max_tokens=220)
-            txt = (resp["choices"][0]["message"].get("content") or "").strip()
-            if not txt:
-                return
-            from datetime import datetime, timezone
-            if phase == "synthesis":
-                yield _rat_event(txt[:280], phase)
-            else:
-                yield _rat_event(txt[:280], phase)
-            _SUMMARY_SENT += 1
+            # 开条（UI 占位, 前端按 delta 追加）
+            yield {"type": "thinking_summary", "content": "", "phase": phase,
+                   "conversation_id": conversation_id, "message_id": message_id,
+                   "invocation_id": f"{conversation_id}:{message_id}"}
+            from routes.agent_llm import llm_stream as _ls
+            loop = asyncio.get_running_loop()
+            queue = asyncio.Queue()
+            SENTINEL = object()
+            def _producer():
+                try:
+                    for piece in _ls(msgs, thinking=False, max_tokens=160):
+                        loop.call_soon_threadsafe(queue.put_nowait, piece)
+                except Exception as e:
+                    logger.warning(f"[thinking-gen stream] {str(e)[:120]}")
+                finally:
+                    loop.call_soon_threadsafe(queue.put_nowait, SENTINEL)
+            task = asyncio.get_running_loop().run_in_executor(None, _producer)
+            buf = ""
+            while True:
+                piece = await queue.get()
+                if piece is SENTINEL:
+                    break
+                buf += piece
+                yield {"type": "thinking_summary_delta", "content": piece,
+                       "conversation_id": conversation_id, "message_id": message_id,
+                       "invocation_id": f"{conversation_id}:{message_id}"}
+            await task
+            if buf.strip():
+                _SUMMARY_SENT += 1
         except Exception as _e:
             logger.warning(f"[thinking-gen] skipped: {str(_e)[:120]}")
         return
