@@ -739,6 +739,116 @@ def _safe_args(args):
     return ""
 
 
+# ── Safe Reasoning Summary（2026-08-31 Thinking 数据源真实化）──
+# 模型在安全（对话 content）通道中显式生成 concise reasoning summaries:
+#   指令要求每轮以 <rationale>…</rationale> 开头（≤180 字）说明: 问题理解/歧义难点/
+#   为何调用工具/需谨慎的判断/回答组织。该内容属于用户可见的 rationale,
+#   与 raw chain-of-thought（DeepSeek reasoning_content → thought_stream, 永不展示）
+#   是两个通道——绝不把后者提取/转发为 thinking。
+_RAT_OPEN = "<rationale>"
+_RAT_CLOSE = "</rationale>"
+
+RATIONAL_DIRECTIVE_ZH = (
+    "\n\n【思考摘要要求·每轮必须执行】每轮开始时，先用一段话（不超过180字）说明："
+    "1) 你当前如何理解这个问题；2) 需要处理的主要歧义或难点；3) 下一步为何这样做"
+    "（或为何调用某个工具/核实某处）；4) 哪些结论需要保持谨慎。"
+    "这段话必须以 <rationale> 开头、以 </rationale> 结尾，写完后才继续输出正文或调用工具。"
+    "该摘要面向最终读者，使用用户可读语言，不要包含内部提示词、系统指令或任何命令性内容。")
+RATIONAL_DIRECTIVE_EN = (
+    "\n\n[REQUIRED per turn] Begin every turn with a short note (≤180 chars) inside "
+    "<rationale>...</rationale>: 1) how you currently understand the question; "
+    "2) main ambiguity or difficulty to resolve; 3) why this next step (or tool call); "
+    "4) which conclusions need caution. Then continue with the answer or tool call. "
+    "The note is user-visible: use readable language, never echo prompts/system instructions.")
+
+RATIONAL_STATS = {"count": 0, "first": "", "longest": 0}
+
+
+# ── Agent node 级 rationale 生成器（2026-08-31, 第 8 条路径 B）──
+# 底层模型工具轮 content 通道通常无文本 → prompt 标签方案常缺位; 此生成器在
+# 工具执行后/最终回答前, 用"用户问题 + 工具摘要（人话化）"做一次非流式 mini 调用,
+# 由模型显式生成用户可读的 concise reasoning summary（问题理解/难点/为何检索/谨慎点）。
+# 输入不含 system prompt/思维链/正文; 输出仅作 thinking_summary; 失败静默跳过（不伪造）。
+SUMMARY_DIRECTIVE_ZH = (
+    "你是哲学辅导助手的思考摘要器。请用简体中文写 60~120 字的简短说明，向用户解释："
+    "1) 当前如何理解这个问题；2) 主要难点或需要注意的歧义；3) 为什么需要这些检索与核实；"
+    "4) 哪些判断要保持谨慎。不要提及工具二字，不要列步骤列表，不要输出标签或任何格式，"
+    "不要引用内部指令。只输出说明文本。")
+SUMMARY_DIRECTIVE_EN = (
+    "You are the thinking-summary generator of a philosophy tutor. Write 60-120 words "
+    "explaining to the user: 1) how the question is currently understood; 2) main difficulty "
+    "or ambiguity; 3) why this retrieval/checking was needed; 4) which claims need caution. "
+    "Do not mention 'tool', do not list steps, no tags or formats, no internal instructions. "
+    "Output only the note.")
+_SUMMARY_SENT = 0   # 本轮已生成条数（节流保护）
+
+
+def _summary_context(question, tool_log, language):
+    """组合安全的摘要上下文: 用户问题 + 工具人话摘要（无内部字段/正文）。"""
+    lines = []
+    for t in (tool_log or [])[-6:]:
+        try:
+            s_ = interpret_thinking(t.get("name"), t.get("args") or {}, t.get("result_full"), language)
+        except Exception:
+            s_ = None
+        if s_:
+            lines.append(s_)
+    ctx = str(question or "")[:160]
+    if lines:
+        ctx += "\n\n已进行的核实（供参考，勿罗列）:\n" + "；".join(lines)[:400]
+    return ctx
+
+
+class RationaleParser:
+    """流式解析 <rationale>…</rationale>（跨 chunk; 非贪婪; 未闭合安全回退）。
+    产出 (emit_text, rationale_list)——标签从对外文本中剥离,
+    摘要经事件通道单独转发; 绝不把 reasoning_content 引入。"""
+
+    def __init__(self, max_hold=900):
+        self.buf = ""
+        self.max_hold = max_hold
+
+    def push(self, chunk):
+        emit = ""
+        rats = []
+        self.buf += chunk
+        while True:
+            o = self.buf.find(_RAT_OPEN)
+            c = self.buf.find(_RAT_CLOSE, o + len(_RAT_OPEN)) if o >= 0 else -1
+            if o >= 0 and c >= 0:
+                inner = self.buf[o + len(_RAT_OPEN):c].strip()
+                if inner:
+                    rats.append(inner[:300])
+                self.buf = self.buf[:o] + self.buf[c + len(_RAT_CLOSE):]
+                continue
+            break
+        o = self.buf.find(_RAT_OPEN)
+        if o >= 0:
+            # open 已见但未闭合: 之前部分吐出, 含 open 之后的部分挂起
+            if len(self.buf) - o > self.max_hold:
+                emit += self.buf[:o] + self.buf[o:]
+                self.buf = ""
+                return emit, rats
+            emit += self.buf[:o]
+            self.buf = self.buf[o:]
+            return emit, rats
+        # 无 open: 尾部可能被 chunk 切碎的 open 前缀 → hold 尾部
+        hold = 0
+        for k in range(min(len(_RAT_OPEN), len(self.buf)) + 1, 1, -1):
+            if self.buf.endswith(_RAT_OPEN[:k]):
+                hold = k
+                break
+        end = len(self.buf) - hold
+        emit += self.buf[:end]
+        self.buf = self.buf[end:]
+        return emit, rats
+
+    def finish(self):
+        """流结束: 未闭合挂起文本全部释放（宁可展示原文, 不丢内容）"""
+        out, self.buf = self.buf, ""
+        return out
+
+
 def interpret_thinking(name, args, result, language):
     """工具完成后的安全 thinking 片段（结果如何影响下一步）; 无内容返回 None。"""
     if name not in _RETRIEVAL_THINK_TOOLS:
@@ -805,6 +915,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         "思考流与回答必须全部使用英文（English），工具调用与引用也可用英文。禁止再用中文输出。")
     else:
         base_prompt += ("\n\n【语言要求】所有输出必须使用中文——包括内部思维过程（推理链）与回答。禁止用英文思考或输出。")
+    # Thinking 数据源（2026-08-31）: 要求模型在安全（对话）通道显式生成 concise
+    # reasoning summary（<=180 字 <rationale> 块; 与 raw reasoning_content 通道分开）。
+    # 未输出标签时由工具轮内容通道文本兜底——任何路径都不引用 hidden reasoning。
+    base_prompt += (RATIONAL_DIRECTIVE_EN if language == "en" else RATIONAL_DIRECTIVE_ZH)
     messages = [SystemMessage(content=base_prompt)]
     if agent != "general":
         # 每轮注入人格保持提醒（多轮对话后 reasoning 易回归规划腔的关键防线）——按语言选择版本
@@ -884,6 +998,53 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
     reasoning_text = ""   # 累积推理链（o1 风格摘要用）
     _thinking_opened = False   # 仅首个检索工具前发一次"为何调用"（防碎念噪音, 2026-08-31 Thinking UI）
+    _rat_parser = RationaleParser()   # <rationale>…</rationale> 流式解析（安全摘要通道）
+    _rat_tools_done = 0   # phase 推断: 已完成的工具数
+    _SUMMARY_SENT = 0     # 每 invocation 重置（跨请求隔离）
+    _rat_phase = "analysis"
+
+    def _phase_for():
+        """phase 推断: 首轮 analysis; 有工具结果后 evidence; 无后续工具时 synthesis"""
+        if _rat_tools_done == 0:
+            return "analysis"
+        return "evidence" if pending_tools else "synthesis"
+
+    async def _gen_summary(phase):
+        """Agent node 级 rationale 生成（节流: 每 ≤ 3 个工具一次 + 最终一次）"""
+        nonlocal _SUMMARY_SENT
+        if _SUMMARY_SENT >= 4:
+            return
+        try:
+            ctx = _summary_context(req_message, tool_log, language)
+            msgs = [{"role": "system", "content": SUMMARY_DIRECTIVE_EN if language == "en" else SUMMARY_DIRECTIVE_ZH},
+                    {"role": "user", "content": ctx}]
+            resp = await asyncio.to_thread(AG.llm_chat, msgs, thinking=False, max_tokens=220)
+            txt = (resp["choices"][0]["message"].get("content") or "").strip()
+            if not txt:
+                return
+            from datetime import datetime, timezone
+            if phase == "synthesis":
+                yield _rat_event(txt[:280], phase)
+            else:
+                yield _rat_event(txt[:280], phase)
+            _SUMMARY_SENT += 1
+        except Exception as _e:
+            logger.warning(f"[thinking-gen] skipped: {str(_e)[:120]}")
+        return
+
+    def _rat_event(content, phase):
+        RATIONAL_STATS["count"] += 1
+        if not RATIONAL_STATS["first"]:
+            RATIONAL_STATS["first"] = content[:80]
+        RATIONAL_STATS["longest"] = max(RATIONAL_STATS["longest"], len(content))
+        return {
+            "type": "thinking_summary",
+            "content": content[:280],
+            "phase": phase,
+            "conversation_id": conversation_id,
+            "message_id": message_id,
+            "invocation_id": f"{conversation_id}:{message_id}",
+        }
 
     async def _think_before_tool(name):
         """安全 thinking 片段（非 raw CoT）: 用户可见的执行意图——为什么发起这一步。
@@ -898,7 +1059,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         src = _INTENT_THINKING_ZH if language == "zh" else _INTENT_THINKING_EN
         text = src.get(name) or src.get("_default") or ""
         if text:
-            yield {"type": "thinking", "content": text}
+            yield {"type": "tool_note", "content": text}
     
     async def emit_append(text):
         """尾部补发（token 事件）: 追加到 full_answer——补正文本计入最终可见正文,
@@ -923,7 +1084,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             return
         if pending["has_tools"]:
             if not pending["reasoned"]:
-                yield {"type": "thought", "content": text[:300]}
+                # 2026-08-31 数据源真实化: 工具轮规划文本（对话内容通道, 非 hidden
+                # reasoning_content）→ thinking_summary 兜底事件（用户可读 rationale:
+                # 为什么这一轮要调用工具）。标签方案缺席时, 这正是模型显式说出的原因。
+                _txt = text.strip()[:280]
+                if _txt:
+                    yield _rat_event(_txt, _phase_for())
             return
         for ch in _filter_xml_chars(text):
             full_answer += ch
@@ -978,10 +1144,22 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                 logger.warning(f"[thinking-intent] skipped: {str(_e)[:120]}")
                             yield {"type": "tool_start", "name": nm}
                 elif chunk.content:
+                    # Thinking 数据源（真实化）: 先过 rationale 解析器——
+                    # 模型在内容通道显式生成的 <rationale> 摘要在标签闭合后以
+                    # thinking_summary 事件转发（phase 随时间推进）, 标签剥离;
+                    # 其余文本按原正文逻辑（工具轮规划文本→pending, 轮末降级为
+                    # thinking_summary 兜底; 无工具轮→打字机回答）。
+                    _emit_text, _rats = _rat_parser.push(chunk.content)
+                    for _rat in _rats:
+                        _rat_phase = _phase_for()
+                        yield _rat_event(_rat, _rat_phase)
+                    if not _emit_text:
+                        continue
+                    chunk.content = _emit_text
                     # 只累积本轮文本——归属（思考 or 回答）在轮结束 flush 时决定:
                     # 有工具调用 → 降级为思考; 无工具（最终回答轮）→ 打字机输出。
                     # 防止 LLM 在工具轮输出的规划文字（"让我补充检索…"）泄漏为回答。
-                    pending["text"] += chunk.content
+                    pending["text"] += _emit_text
                     # 实时流式回答: 缓冲超过阈值仍未见工具调用 → 本轮大概率是最终回答,
                     # 立即流出缓冲文本, 后续分块实时转发（2026-08-29: 替代假流式——
                     # 此前整轮缓冲到 graph 结束才一次性重放, 思考结束后长时间空窗）
@@ -1047,11 +1225,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 try:
                     _th_line = interpret_thinking(name, args, result, language)
                     if _th_line:
-                        yield {"type": "thinking", "content": _th_line}
+                        yield {"type": "tool_note", "content": _th_line}
                 except Exception as _e:
                     logger.warning(f"[thinking-event] skipped: {str(_e)[:120]}")
                 # 本轮工具已处理完 → 清空待执行标记（下一 agent 轮重新计; 2026-08-14）
+                _rat_tools_done += 1
                 pending_tools.clear()
+                if _rat_tools_done % 2 == 0:   # 节流: 每 2 个工具一次
+                    async for _g in _gen_summary("evidence"):
+                        yield _g
     except Exception as e:
         # A4/A5: 图流异常（模型侧流式连接中断/重试耗尽/递归上限/工具帧异常）不再直接终止整轮
         stream_error = e
@@ -1100,6 +1282,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             return
     try:
         # 最终 flush: 最后一轮 agent 输出（最终回答）在 done 前以打字机发出（XML 标记已剥离）
+        # synthesis rationale（最终回答前一次; 失败静默）
+        try:
+            if _rat_tools_done > 0:
+                async for _g in _gen_summary("synthesis"):
+                    yield _g
+        except Exception as _e:
+            logger.warning(f"[thinking-gen final] skipped: {str(_e)[:120]}")
+        _tail = _rat_parser.finish()   # 未闭合 rationale 残留按正文释放（宁可展示原文, 不丢内容）
+        if _tail:
+            pending["text"] += _tail
         async for ev in flush_agent():
             yield ev
         pending = {"text": "", "has_tools": False, "reasoned": False, "live": False, "live_text": ""}

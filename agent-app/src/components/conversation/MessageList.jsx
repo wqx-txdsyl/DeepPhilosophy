@@ -100,9 +100,10 @@ function ToolTrace({ events, streaming }) {
   // 时间流: thinking 行与 tool 行按 event 顺序交错（P0; 连续检索且 final 时聚合）
   const rows = events
     .map((ev, i) => (
-      ev.t === 'thinking' ? { ev, i }
-        : (ev.t !== 'tool' && ev.t !== 'tool_start' && ev.t !== 'tool_cancel') ? null
-          : { ev, i }
+      (ev.t === 'thinking_summary' || ev.t === 'thinking') ? { ev, i }
+        : ev.t === 'tool_note' ? { ev, i }
+          : (ev.t !== 'tool' && ev.t !== 'tool_start' && ev.t !== 'tool_cancel') ? null
+            : { ev, i }
     ))
     .filter(Boolean);
   if (!rows.length) return null;
@@ -114,7 +115,8 @@ function ToolTrace({ events, streaming }) {
   const flushPending = () => { if (pending) { groups.push(pending); pending = null; } };
   for (const row of rows) {
     const { ev } = row;
-    if (ev.t === 'thinking') { flushPending(); groups.push({ key: ev.i, kind: 'think', items: [row] }); continue; }
+    if (ev.t === 'thinking_summary' || ev.t === 'thinking') { flushPending(); groups.push({ key: ev.i, kind: 'think', items: [row] }); continue; }
+    if (ev.t === 'tool_note') { flushPending(); groups.push({ key: ev.i, kind: 'note', items: [row] }); continue; }
     if (ev.t !== 'tool') { flushPending(); groups.push({ key: ev.i, kind: ev.t, items: [row] }); continue; }
     if (finalize && isRetrievalTool(toolName(ev))) {
       if (pending && pending.kind === 'merged') { pending.items.push(row); continue; }
@@ -164,7 +166,10 @@ function ToolTrace({ events, streaming }) {
     <>
       {groups.map((g) => {
         if (g.kind === 'think') {
-          return <div key={g.key} className="cw-think-line">{String(g.items[0].ev.text || '')}</div>;
+          return <div key={g.key} className="cw-think-line">{String(g.items[0].ev.text || g.items[0].ev.content || '')}</div>;
+        }
+        if (g.kind === 'note') {
+          return <div key={g.key} className="cw-tool-line cw-tool-note"><span className="cw-tool-line-icon">◦</span><span>{String(g.items[0].ev.text || g.items[0].ev.content || '')}</span></div>;
         }
         const { ev: rEv } = g.items[0];
         const rName = toolName(rEv);
@@ -344,10 +349,11 @@ function AgentActivity({ m, prefsTick }) {
   const [open, setOpen] = useState(() => !!m.streaming);
   useEffect(() => { if (m.streaming) setOpen(true); }, [m.streaming]);
   const events = (m.events ?? m.tool_events ?? []).filter(ev => ev?.t !== 'thought');
-  const thinkLines = events.filter(ev => ev?.t === 'thinking' && String(ev.text || '').trim());
+  const thinkLines = events.filter(ev => (ev?.t === 'thinking_summary') && String(ev.content || ev.text || '').trim());
   const toolRows = events.filter(ev => ev.t === 'tool' || ev.t === 'tool_start' || ev.t === 'tool_cancel');
   const reasoning = m.reasoning_summary ? String(m.reasoning_summary).split('\n').filter(Boolean) : [];
-  if (!thinkLines.length && !toolRows.length && !reasoning.length) return null;
+  // 仅 thinking_summary 或工具活动存在时渲染; 事后 reasoning_summary 不参与（不再冒充 Thinking）
+  if (!thinkLines.length && !toolRows.length) return null;
 
   const secs = Number(m.duration_seconds) || null;
   const nTool = toolRows.filter(r => r.t === 'tool').length;
@@ -371,11 +377,7 @@ function AgentActivity({ m, prefsTick }) {
           )}
           {/* 单流: thinking 与 tool 行已按 event 顺序在 ToolTrace 内交错渲染 */}
           <ToolTrace events={events} streaming={!!m.streaming} key={prefsTick} />
-          {thinkLines.length === 0 && reasoning.length > 0 && (
-            <div className="cw-activity-summary">
-              {reasoning.map((s, i) => <div key={i} className="cw-think-line cw-think-line-weak">{s}</div>)}
-            </div>
-          )}
+          {/* 事后 reasoning_summary（五步 outline）不再冒充 Thinking——仅数据保留, 不渲染 */}
         </div>
       )}
     </div>
