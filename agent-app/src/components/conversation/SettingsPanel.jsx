@@ -87,8 +87,7 @@ export default function SettingsPanel({ open, onClose, conversation }) {
   return createPortal(
     <>
       <div className="cw-settings-scrim" onClick={onClose} />
-      <div className="cw-settings" role="dialog" aria-modal="true" aria-label={t('settings')} tabIndex={-1} ref={dialogRef}
-        style={{ flexDirection: 'column' }}>
+      <div className="cw-settings" role="dialog" aria-modal="true" aria-label={t('settings')} tabIndex={-1} ref={dialogRef}>
         <div className="cw-settings-head">
           <span className="cw-settings-head-title">{t('settings')}</span>
           <button onClick={onClose} className="cw-icon-btn" aria-label={t('back')} title={t('back')}>

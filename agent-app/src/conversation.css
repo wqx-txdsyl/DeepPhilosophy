@@ -362,13 +362,15 @@ body.dark-mode .cw-composer-dragover-hint { background: rgba(255,255,255,.05); }
 .cw-control-icon:hover { background: var(--soft); color: var(--text); }
 .cw-control-icon:disabled { opacity: .35; cursor: default; }
 
+/* Agent Selector: 弱化边界重量——无边框, 仅 hover/聚焦时淡灰底（B） */
 .cw-responder {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 11px; border-radius: 999px; cursor: pointer; font-size: 12.5px; font-weight: 600;
-  border: 1px solid var(--border); background: transparent; color: var(--text);
+  border: 1px solid transparent; background: transparent; color: var(--text);
   transition: background .15s; max-width: 190px; position: relative;
 }
 .cw-responder:hover { background: var(--soft); }
+.cw-responder:focus-visible { background: var(--soft); border-color: transparent; }
 .cw-responder-label { color: var(--text-dim); font-weight: 400; }
 .cw-responder-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cw-responder.cw-responder-disabled { color: #b45f5f; border-color: #d8a0a0; cursor: not-allowed; }
@@ -429,12 +431,30 @@ body.dark-mode .cw-composer-dragover-hint { background: rgba(255,255,255,.05); }
 
 /* ── Settings（§24/§25: Codex 式面板, 内容为真实能力） ── */
 .cw-settings-scrim { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 1200; }
+/* Settings shell（A: 桌面 = 完整 Settings Workspace 体量; shell 尺寸固定不随 section 变） */
 .cw-settings {
   position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 1210;
-  width: min(760px, calc(100vw - 32px)); max-height: min(84vh, 720px);
+  width: min(calc(100vw - 40px), 1200px); max-width: calc(100vw - 40px);
+  height: min(80vh, 760px); max-height: calc(100vh - 48px);
+  min-width: min(640px, calc(100vw - 40px)); min-height: 420px;
   background: var(--bg); border: 1px solid var(--border); border-radius: 18px;
   box-shadow: 0 24px 80px var(--ring); display: flex; overflow: hidden;
   outline: none;
+  flex-direction: column;
+}
+/* 桌面宽屏: 舒展的 72–78vw × 72–80vh, max 1440×880（1025px 起生效; 1024 走下方 viewport-aware） */
+@media (min-width: 1025px) {
+  .cw-settings {
+    width: 75vw; max-width: 1440px; min-width: 900px;
+    height: 78vh; max-height: 880px; min-height: 560px;
+  }
+}
+/* 1024 等中窄窗口: viewport-aware fallback, 禁止溢出屏幕 */
+@media (max-width: 1024px) {
+  .cw-settings {
+    width: calc(100vw - 40px); height: min(88vh, calc(100vh - 48px));
+    min-width: 0; min-height: 0;
+  }
 }
 .cw-settings-head {
   display: flex; align-items: center; justify-content: space-between;
