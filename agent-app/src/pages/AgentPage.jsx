@@ -408,6 +408,16 @@ export default function AgentWorkspace() {
         } else if (evt.type === 'reasoning_summary') {
           snap.reasoning_summary = evt.content || null;
           if (metaFlushed) renderMeta();
+        } else if (evt.type === 'thinking_summary') {
+          // Thinking 数据源（安全通道 rationale）: 按到达顺序进入消息 events, 前端渲染主思考行
+          const line = { t: 'thinking_summary', phase: evt.phase || undefined, content: evt.content };
+          snap.events = [...snap.events, line];
+          patchMessageLocal(convId, mid, m => ({ ...m, curThought: null, events: [...m.events, line] }));
+        } else if (evt.type === 'tool_note') {
+          // 工具动作弱级注记（确定性意图/结果解读; 非 thinking 冒充）
+          const line = { t: 'tool_note', text: evt.content };
+          snap.events = [...snap.events, line];
+          patchMessageLocal(convId, mid, m => ({ ...m, curThought: null, events: [...m.events, line] }));
         } else if (evt.type === 'error') {
           snap.content = evt.content;
           patchMessageLocal(convId, mid, m => ({ ...m, content: evt.content, streaming: false }));

@@ -161,16 +161,17 @@ export function toolShortSummary(tc) {
 }
 
 /** args 摘要: 优先人类可读字段（query/q/title/…）, 否则首个 string 值;
- *  跳过 dict/JSON 字形（P0 禁止 raw 形状泄漏） */
+ *  跳过 dict/JSON 字形与内部 ID 形态（P0: 禁止 raw 形状/ book_id 泄漏） */
 const _looksLikeDict = (s) => /^\{|^\[|^\[?\{/.test(String(s).trim()) || /^\{\s*['"]?\w+['"]?\s*:/.test(String(s).trim());
+const _looksLikeId = (s) => /^[0-9a-f]{10,}$/i.test(String(s).trim());
 export function toolShortArgs(args) {
   const a = args || {};
-  const keys = ['query', 'q', 'title', 'prompt', 'topic', 'book', 'question', 'skill', 'instruction', 'command', 'name', 'id'];
+  const keys = ['query', 'q', 'title', 'prompt', 'topic', 'book', 'question', 'skill', 'instruction', 'command', 'name'];
   for (const k of keys) {
     const v = a[k];
-    if (typeof v === 'string' && v && !_looksLikeDict(v)) return v.replace(/\s+/g, ' ').slice(0, 40);
+    if (typeof v === 'string' && v && !_looksLikeDict(v) && !_looksLikeId(v)) return v.replace(/\s+/g, ' ').slice(0, 40);
   }
-  const first = Object.values(a).find((v) => typeof v === 'string' && v && !_looksLikeDict(v));
+  const first = Object.values(a).find((v) => typeof v === 'string' && v && !_looksLikeDict(v) && !_looksLikeId(v));
   return first ? first.replace(/\s+/g, ' ').slice(0, 40) : '';
 }
 

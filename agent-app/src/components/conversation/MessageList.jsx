@@ -195,18 +195,26 @@ function ToolTrace({ events, streaming }) {
           const isOpen = openSet.has(g.key);
           const idx = count;
           count += g.items.length;
-          return (
-            <div key={g.key}>
-              <div className="cw-tool-line" role="button" tabIndex={0}
-                aria-expanded={isOpen}
+          if (!isOpen) {
+            return (
+              <div key={g.key} className="cw-tool-line" role="button" tabIndex={0}
+                aria-expanded={false}
                 onClick={() => toggle(g.key)}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(g.key); } }}>
-                {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
+                <ChevronRight size={11} />
                 <span className="cw-tool-line-icon">⌕</span>
                 <span>{retrievalGroupSummary(g.items.length)}</span>
                 <span className="cw-tool-line-done"><Check size={11} /> {t('toolDone')}</span>
               </div>
-              {isOpen && g.items.map((r) => renderDetail(r, idx + 1))}
+            );
+          }
+          // 展开态: 仅明细（去除与折叠头重复的计数行; 顶部提供轻量"收起"链）
+          return (
+            <div key={g.key}>
+              <button className="cw-collapse-link" onClick={() => toggle(g.key)}>
+                {t('citationCollapse')} ↑
+              </button>
+              {g.items.map((r) => renderDetail(r, idx + 1))}
             </div>
           );
         }
@@ -242,8 +250,10 @@ function ToolTrace({ events, streaming }) {
 /* Level 2 evidence/source（仅实体字段; 禁止 book_id/chapter_idx 等内部字段） */
 function _toolEvidence(args) {
   const a = args || {};
-  const book = typeof a.book === 'string' && a.book ? a.book
+  let book = typeof a.book === 'string' && a.book ? a.book
     : (typeof a.book_title === 'string' ? a.book_title : '');
+  // 内部字段防护: 纯十六进制 ID（book_id 形态, 如 f08c1ead3164）绝不作为书名展示（P0 raw）
+  if (/^[0-9a-f]{10,}$/i.test(book)) book = '';
   const chapter = typeof a.chapter === 'string' ? a.chapter : '';
   return book ? `《${book}${chapter ? `·${String(chapter).slice(0, 12)}` : ''}》` : '';
 }
