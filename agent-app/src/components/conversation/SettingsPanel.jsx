@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { useLang, LANGS, AGENT_NAMES } from '../../utils/i18n';
@@ -38,13 +38,20 @@ export default function SettingsPanel({ open, onClose, conversation }) {
   const [confirmClear, setConfirmClear] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [notice, setNotice] = useState('');
+  const dialogRef = useRef(null);
 
-  // Escape 关闭（§32）; 打开/关闭不丢 draft（由 Composer 保持 mounted 保证, §24）
+  // Escape 关闭（§32）; 打开/关闭不丢 draft（由 Composer 保持 mounted 保证, §24）;
+  // focus 管理: 打开时焦点移到 dialog, 关闭时还原到触发前的焦点（P2）
   useEffect(() => {
     if (!open) return;
+    const prev = document.activeElement;
+    requestAnimationFrame(() => dialogRef.current?.focus());
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      if (prev && prev.focus && typeof prev.focus === 'function') prev.focus();
+    };
   }, [open, onClose]);
 
   if (!open) return null;
@@ -80,23 +87,24 @@ export default function SettingsPanel({ open, onClose, conversation }) {
   return createPortal(
     <>
       <div className="cw-settings-scrim" onClick={onClose} />
-      <div className="cw-settings" role="dialog" aria-modal="true" aria-label={t('settings')}>
+      <div className="cw-settings" role="dialog" aria-modal="true" aria-label={t('settings')} tabIndex={-1} ref={dialogRef}
+        style={{ flexDirection: 'column' }}>
+        <div className="cw-settings-head">
+          <span className="cw-settings-head-title">{t('settings')}</span>
+          <button onClick={onClose} className="cw-icon-btn" aria-label={t('back')} title={t('back')}>
+            <X size={15} />
+          </button>
+        </div>
+        <div className="cw-settings-inner" style={{ flex: 1, minHeight: 0, display: 'flex' }}>
         <div className="cw-settings-nav">
-          <div className="cw-settings-nav-title">{t('settings')}</div>
           {SECTIONS.map(([key]) => (
             <button key={key} className={`cw-settings-nav-btn${section === key ? ' cw-settings-active' : ''}`}
               onClick={() => setSection(key)}>
               {t(key)}
             </button>
           ))}
-          <button onClick={onClose} className="cw-settings-nav-btn" style={{ marginTop: 'auto', color: 'var(--text-dim)' }}>
-            {t('back')}
-          </button>
         </div>
         <div className="cw-settings-body">
-          <button onClick={onClose} className="cw-icon-btn" style={{ position: 'absolute' }} aria-label={t('back')}>
-            <X size={15} />
-          </button>
           {notice && <div className="cw-settings-notice" style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 8 }}>{notice}</div>}
 
           {section === 'settingsGeneral' && (
@@ -248,6 +256,7 @@ export default function SettingsPanel({ open, onClose, conversation }) {
               </button>
             </div>
           )}
+        </div>
         </div>
       </div>
       {confirmClear && (

@@ -32,8 +32,8 @@ export function CiteLink({ book, chapter }) {
   };
   return (
     <span onClick={openCite} title={failed ? t('citeFail') : t('citeOpen')}
-      style={{ color: 'var(--accent)', textDecoration: 'underline dotted', cursor: 'pointer',
-               textUnderlineOffset: '3px', whiteSpace: 'nowrap' }}>
+      className={`cw-cite-inline${failed ? ' cw-cite-inline-fail' : ''}${loading ? ' cw-cite-inline-loading' : ''}`}
+      style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
       【《{book}》{chapter ? `·${chapter}` : ''}】{loading ? '…' : ''}
     </span>
   );
@@ -217,13 +217,13 @@ export function renderMarkdown(text, onEdit, drawioXml, t) {
       // 水平分割线 --- *** ___
       out.push(<hr key={i} style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '12px 0' }} />);
     } else if (trimmed.startsWith('#### ')) {
-      out.push(<div key={i} style={{ fontWeight: 700, fontSize: 13, margin: '6px 0 2px', color: 'var(--text-dim)' }}>{renderInline(trimmed.slice(5))}</div>);
+      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 12.5, margin: '8px 0 3px', color: 'var(--text-dim)' }}>{renderInline(trimmed.slice(5))}</div>);
     } else if (trimmed.startsWith('### ')) {
-      out.push(<div key={i} style={{ fontWeight: 700, fontSize: 13.5, margin: '8px 0 3px', color: 'var(--text-dim)' }}>{renderInline(trimmed.slice(4))}</div>);
+      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 13.5, margin: '10px 0 4px', color: 'var(--text-dim)' }}>{renderInline(trimmed.slice(4))}</div>);
     } else if (trimmed.startsWith('## ')) {
-      out.push(<div key={i} style={{ fontWeight: 700, fontSize: 15, margin: '10px 0 4px' }}>{renderInline(trimmed.slice(3))}</div>);
+      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 14.5, margin: '12px 0 4px' }}>{renderInline(trimmed.slice(3))}</div>);
     } else if (trimmed.startsWith('# ')) {
-      out.push(<div key={i} style={{ fontWeight: 700, fontSize: 17, margin: '12px 0 6px' }}>{renderInline(trimmed.slice(2))}</div>);
+      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 16, margin: '14px 0 6px' }}>{renderInline(trimmed.slice(2))}</div>);
     } else if (!trimmed) {
       out.push(<div key={i} style={{ height: '6px' }} />);
     } else {

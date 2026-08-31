@@ -10,6 +10,7 @@ import {
   genConversationTitle, resolveComposerAgent, resolveFollowupAgent, resolveFinalSuggestions,
   groupConversationsByDay, legacyMessagesToConversations, toPersistedMessage, normalizeMessage,
   resolveIdentityVisible, normalizeAttachments, toolShortSummary, toolShortArgs,
+  toolHumanSummary, isRetrievalTool, retrievalGroupSummary,
 } from '../src/data/conversationLogic.js';
 import { LocalConversationStore } from '../src/data/conversationStore.js';
 import { pickUsedEvidence } from '../src/utils/evidence.js';
@@ -238,6 +239,40 @@ ok('Codex-Parity: toolShortSummary/toolShortArgs（§18 紧凑 trace, 无 JSON �
   assert.equal(toolShortSummary({ result_summary: 'x'.repeat(300) }).length <= 60, true);
   assert.equal(toolShortArgs({ role: 'x', instruction: '用户要求以尼采第一人称回答' }), '用户要求以尼采第一人称回答');
   assert.equal(toolShortArgs({}), '');
+});
+
+ok('P0: toolHumanSummary 人话摘要（Level 1, 无内部字段）', () => {
+  assert.equal(toolHumanSummary('search_books', { query: '永恒轮回' }, '1 results'), '已检索《永恒轮回》');
+  assert.equal(toolHumanSummary('get_chapter', { book: '判断力批判', chapter: '序言' }, '—'), '已读取《判断力批判·序言》');
+  assert.equal(toolHumanSummary('get_philosopher', { name: '尼采' }, ''), '已确认尼采人物信息');
+  assert.equal(toolHumanSummary('list_books', {}, '4 results'), '已筛选书目 4 项');
+  assert.equal(toolHumanSummary('get_book_detail', { book: '纯粹理性批判' }, ''), '已查书详情《纯粹理性批判》');
+  assert.equal(toolHumanSummary('get_chapter', { book_id: 'x' }, ''), '已定位相关章节');   // 仅内部字段 → 人话回退（无 book_id 暴露）
+  assert.equal(toolHumanSummary('write_essay', { topic: '自由' }, ''), '');  // 非检索类 → 回退动作名
+});
+
+ok('P0: isRetrievalTool / retrievalGroupSummary（连续检索合并文案）', () => {
+  assert.equal(isRetrievalTool('search_books'), true);
+  assert.equal(isRetrievalTool('get_chapter'), true);
+  assert.equal(isRetrievalTool('write_essay'), false);
+  assert.equal(isRetrievalTool('philosopher_debate'), false);
+  assert.equal(retrievalGroupSummary(4), '已查阅了 4 项资料');
+});
+
+ok('P0: toolShortSummary 不泄露 book_id/chapter_idx（raw 隐藏回归）', () => {
+  const s = toolShortSummary({ result_summary: JSON.stringify({ results: [{ book_id: 'X', chapter_idx: 1 }], summary: '找到 2 本' }) });
+  assert.equal(s, '找到 2 本');
+  assert.ok(!s.includes('book_id') && !s.includes('chapter_idx'), s);
+  const s2 = toolShortSummary({ result_summary: JSON.stringify({ results: [{ book_id: 'X' }] }) });
+  assert.equal(s2, '1 results');
+  assert.ok(!s2.includes('book_id'));
+  // Python dict repr（单引号, 非法 JSON）→ 绝不回退 raw 显示（P0 BLOCKER 回归）
+  const s3 = toolShortSummary({ result_summary: "{'role': '扮演人格包（弗里德里希·尼采）', 'instruction': '用户要求以尼采第一人称回答'}" });
+  assert.equal(s3, '');
+  const s4 = toolShortSummary({ result_summary: "    {'results': [{'book_id': 'x'}]}" });
+  assert.equal(s4, '');
+  // toolShortArgs 跳过 dict 形值
+  assert.equal(toolShortArgs({ role: "{'a': 1}" }), '');
 });
 
 ok('Codex-Parity: user 消息 attachments 持久化往返（发送瞬间 snapshot, §12）', () => {

@@ -102,7 +102,6 @@ export default function ConversationSidebar({
                 <CircleUserRound size={15} aria-hidden /> {t('login')}
               </button>
             )}
-            <div className="cw-side-note">{t('agentNote')}</div>
           </div>
         </div>
       </div>

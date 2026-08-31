@@ -240,6 +240,22 @@
   animation: spin .8s linear infinite;
 }
 
+/* ── 正文行内引用（P1: secondary treatment; 无持续下划线; hover/focus 强化） ── */
+.cw-cite-inline {
+  color: var(--text-dim);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  transition: color .12s;
+  border-radius: 3px;
+}
+.cw-cite-inline:hover, .cw-cite-inline:focus-visible {
+  color: var(--accent);
+  text-decoration: underline dotted;
+  background: var(--soft);
+}
+.cw-cite-inline-fail { color: var(--text-dim); text-decoration: line-through dotted; cursor: default; }
+.cw-cite-inline-loading { color: var(--accent); }
+
 /* ── Citation / Evidence（§20/§21: 低干扰 chips, 非按钮墙） ── */
 .cw-evidence {
   margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
@@ -282,12 +298,16 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--cw-radius-lg);
-  box-shadow: 0 2px 16px var(--ring);
-  padding: 10px 12px 8px;
+  box-shadow: 0 1px 10px var(--ring);
+  padding: 10px 14px 8px;
   transition: border-color .15s, box-shadow .15s;
   position: relative;
 }
-.cw-composer:focus-within { border-color: var(--text-dim); box-shadow: 0 2px 20px var(--ring); }
+/* 单一 surface: 焦点 ring 统一由 composer container 承担（textarea 本身无框无 ring） */
+.cw-composer:focus-within {
+  border-color: var(--text-dim);
+  box-shadow: 0 0 0 2px var(--ring), 0 2px 14px var(--ring);
+}
 .cw-composer.cw-composer-drag {
   border-color: var(--accent);
   outline: 2px dashed var(--accent); outline-offset: 3px; border-radius: var(--cw-radius-lg);
@@ -322,9 +342,11 @@ body.dark-mode .cw-composer-dragover-hint { background: rgba(255,255,255,.05); }
   text-decoration: underline; padding: 0 2px; flex-shrink: 0;
 }
 
+/* textarea 自身彻底无框: 唯一 surface 是 .cw-composer（P1） */
 .cw-composer-input {
-  width: 100%; border: none; background: transparent; outline: none; resize: none;
-  font-size: 15px; line-height: 1.6; color: var(--text); padding: 4px 4px 2px;
+  width: 100%; border: 0; background: transparent; outline: none; resize: none;
+  box-shadow: none; appearance: none; -webkit-appearance: none;
+  font-size: 15px; line-height: 1.6; color: var(--text); padding: 2px 2px 2px 4px;
   max-height: 200px; min-height: 26px; overflow-y: auto; font-family: inherit;
   display: block;
 }
@@ -412,7 +434,13 @@ body.dark-mode .cw-composer-dragover-hint { background: rgba(255,255,255,.05); }
   width: min(760px, calc(100vw - 32px)); max-height: min(84vh, 720px);
   background: var(--bg); border: 1px solid var(--border); border-radius: 18px;
   box-shadow: 0 24px 80px var(--ring); display: flex; overflow: hidden;
+  outline: none;
 }
+.cw-settings-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+}
+.cw-settings-head-title { font-size: 15px; font-weight: 700; }
 .cw-settings-nav {
   width: 176px; flex-shrink: 0; border-right: 1px solid var(--border);
   padding: 18px 10px; display: flex; flex-direction: column; gap: 2px;
@@ -472,6 +500,7 @@ body.dark-mode .cw-danger-btn:hover { background: #2c1d1d; }
 
 /* ── 窄屏（≤860px）: Sidebar → Drawer, Composer 全宽 ── */
 @media (max-width: 860px) {
+  .cw-settings-inner { flex-direction: column; }
   .cw-sidebar {
     position: fixed; left: 0; top: 0; bottom: 0; height: 100vh;
     transform: translateX(-100%); transition: transform .2s ease;
