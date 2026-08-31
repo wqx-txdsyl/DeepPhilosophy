@@ -7,6 +7,18 @@
   --accent: #0d0d0d;      /* ChatGPT 式深色强调（发送按钮/链接/选中） */
   --soft: #f4f4f5;        /* 浅灰块（气泡/引用/代码底） */
   --ring: rgba(13, 13, 13, 0.08);
+
+  /* ── Conversation Workspace Design Tokens（spec §27） ── */
+  --cw-sidebar-w: 264px;              /* Codex 视觉密度: 264 (~260) */
+  --cw-sidebar-rail-w: 56px;          /* 收起后窄栏 */
+  --cw-content-w: 768px;              /* 消息 + Composer 最大宽（Content First §2.2） */
+  --cw-radius-lg: 24px;               /* Composer */
+  --cw-radius-md: 12px;               /* 卡片/面板 */
+  --cw-radius-sm: 8px;                /* chips/行内 */
+  --cw-gap: 10px;                     /* 基础间距 */
+  --cw-font-ui: 13px;
+  --cw-font-body: 15px;
+  --cw-line-body: 1.8;
 }
 body.dark-mode {
   --bg: #17181a;
@@ -31,3 +43,12 @@ body {
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 /* 深色模式: PNG 工具图标反色（黑色图标 → 白色） */
 body.dark-mode .icon-img { filter: invert(1); }
+
+/* ── Accessibility: 键盘可聚焦控件统一 focus ring（§32; 状态不只靠颜色） ── */
+:focus-visible {
+  outline: 2px solid var(--text-dim);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button, [role="button"] { touch-action: manipulation; }
+button { font-family: inherit; }

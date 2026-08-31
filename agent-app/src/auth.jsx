@@ -68,6 +68,17 @@ export function AuthProvider({ children }) {
     setToken(null); setUsername(null); setProfile(null);
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    // 隐私（2026-08-30）: 登出即清空本机对话痕迹（会话/草稿/legacy 键）,
+    // 并广播给工作区重置内存态——退出后同浏览器他人不可见对话记录
+    try {
+      localStorage.removeItem('phiagent_conversations_v1');
+      localStorage.removeItem('dp_chat_sessions');
+      localStorage.removeItem('dp_current_session');
+      Object.keys(localStorage)
+        .filter((k) => k.startsWith('dp_agent_msgs_v2_'))
+        .forEach((k) => localStorage.removeItem(k));
+    } catch (e) { /* 隐私清理由 auth 保证, 存储异常不阻塞登出 */ }
+    window.dispatchEvent(new Event('phiagent-logout'));
   }
 
   return (

@@ -24,7 +24,7 @@ const UI = {
     updatePassword: '更新密码', deleteAccount: '删除账户', personal: '个性化（Agent 据此定制回答）',
     nickname: '昵称', occupation: '职业', about: '关于你', customInstr: '自定义指令',
     save: '保存', dataMgmt: '数据管理', chatHistory: '对话历史', chatHistoryDesc: '登录后自动保存，支持跨设备同步',
-    clearHistory: '清除全部对话历史', settings: '设置',
+    clearHistory: '清除全部对话历史',
     calling: '正在调用', tryAsk: '试着问：', stopGenerating: '停止生成',
     uploadFail: '上传失败', reqFail: '请求失败', bodyText: '正文', philoAgent: '哲学家智能体',
     citeFail: '无法定位出处', citeOpen: '阅读原文', attachmentNote: '附件',
@@ -43,6 +43,40 @@ const UI = {
     regAutoLoginFail: '注册成功，自动登录失败，请手动登录',
     signIn: '登录', register: '注册', usernamePh: '用户名（≥2 字符）', passwordPh: '密码（≥8 字符）',
     drawioTitle: 'draw.io 图表编辑器', drawioDone: '完成编辑',
+    /* ── 2026-08-29 Conversation Workspace 重构新增 ── */
+    newChat: '新对话', exploreAgents: '探索智能体',
+    grp_today: '今天', grp_yesterday: '昨天', grp_last7: '过去 7 天', grp_earlier: '更早',
+    untitled: '新对话', convMenu: '会话菜单', rename: '重命名', del: '删除',
+    renamePrompt: '重命名会话：', delConvConfirm: '删除该会话？此操作不可撤销。',
+    cancel: '取消', confirm: '确定',
+    agentSelector: '选择智能体', secAuthors: '作者', exploreMore: '探索更多智能体',
+    plazaTitle: '智能体广场', plazaSub: '选择一位智能体开始对话', startChat: '开始对话',
+    loadingAgents: '加载智能体列表', streaming: '回答中',
+    retry: '重试', loadFail: '加载失败', convNotFound: '会话不存在',
+    agentUnavailable: '该智能体当前不可用，请换一个智能体',
+    emptyGreeting: '今天想探索什么？',
+    emptyConcept: '一个哲学概念', emptyBook: '一本正在阅读的书', emptyCompare: '比较两位哲学家',
+    conversations: '会话历史',
+    /* ── 2026-08-31 Codex-Parity 重构新增 ── */
+    responder: '回答者',
+    toolDone: '完成', toolError: '失败', toolSkipped: '未执行，已跳过',
+    toolArgs: '参数摘要', toolResult: '结果摘要', reasoningLine: '推理',
+    backToBottom: '回到底部', dropHint: '松开以上传文件', chooseFiles: '选择文件',
+    uploading: '上传中', uploadRetry: '重试', removeFile: '移除附件',
+    attachmentSize: '大小', kindImage: '图片', kindMarkdown: 'Markdown', kindText: '文本', kindDocument: '文档',
+    verifiedCount: '已核验 {a}/{b}',
+    expandCitations: '展开 {a} 条引用',
+    filterKinds: '支持 md / 文本 / 图片 / 常见文档（经转换）',
+    settingsGeneral: '通用', settingsAgent: '回答者', settingsReading: '阅读',
+    settingsEvidence: '证据', settingsData: '会话与数据', settingsAccount: '账户',
+    defaultResponder: '默认回答者', defaultResponderDesc: '新对话开始时使用的回答者',
+    citationShow: '显示引用来源', citationShowDesc: '在回答下方展示「引用来源」chips',
+    toolTraceExpand: '工具轨迹默认展开', toolTraceExpandDesc: '默认展开工具参数与结果摘要（关闭则需手动点开）',
+    readingContext: '阅读上下文', readingContextDesc: '从阅读器进入时自动携带书籍与章节位置',
+    readingContextNone: '当前会话未注入阅读上下文',
+    readingContextBook: '书籍', readingContextChapter: '章节', readingContextSel: '选中文本',
+    clearLocalHistory: '清除本机对话历史', clearLocalHistoryDesc: '本地存储中的全部会话与草稿（影响当前浏览器）',
+    collapseSidebar: '收起侧栏', expandSidebar: '展开侧栏',
   },
   en: {
     sidebarTitle: 'Agent Plaza', agentNote: 'Philosopher agents built from their corpus & persona data',
@@ -62,7 +96,7 @@ const UI = {
     personal: 'Personalization (agent customizes answers)', nickname: 'Nickname', occupation: 'Occupation',
     about: 'About you', customInstr: 'Custom Instructions', save: 'Save',
     dataMgmt: 'Data Management', chatHistory: 'Chat History', chatHistoryDesc: 'Saved automatically when signed in, synced across devices',
-    clearHistory: 'Clear all chat history', settings: 'Settings',
+    clearHistory: 'Clear all chat history',
     calling: 'Calling', tryAsk: 'Try asking:', stopGenerating: 'Stop generating',
     uploadFail: 'Upload failed', reqFail: 'Request failed', bodyText: 'Main text', philoAgent: 'Philosopher Agent',
     citeFail: 'Source not found', citeOpen: 'Read source', attachmentNote: 'Attachment',
@@ -82,6 +116,40 @@ const UI = {
     regAutoLoginFail: 'Registered, auto sign-in failed—sign in manually',
     signIn: 'Sign in', register: 'Register', usernamePh: 'Username (≥2 chars)', passwordPh: 'Password (≥8 chars)',
     drawioTitle: 'draw.io Diagram Editor', drawioDone: 'Done editing',
+    /* ── 2026-08-29 Conversation Workspace refactor additions ── */
+    newChat: 'New chat', exploreAgents: 'Explore agents',
+    grp_today: 'Today', grp_yesterday: 'Yesterday', grp_last7: 'Past 7 days', grp_earlier: 'Earlier',
+    untitled: 'New chat', convMenu: 'Conversation menu', rename: 'Rename', del: 'Delete',
+    renamePrompt: 'Rename conversation:', delConvConfirm: 'Delete this conversation? This cannot be undone.',
+    cancel: 'Cancel', confirm: 'Confirm',
+    agentSelector: 'Select an agent', secAuthors: 'Authors', exploreMore: 'Explore more agents',
+    plazaTitle: 'Agent Plaza', plazaSub: 'Pick an agent to start a conversation', startChat: 'Start chat',
+    loadingAgents: 'Loading agents', streaming: 'Streaming',
+    retry: 'Retry', loadFail: 'Failed to load', convNotFound: 'Conversation not found',
+    agentUnavailable: 'This agent is currently unavailable — pick another one',
+    emptyGreeting: 'What shall we explore today?',
+    emptyConcept: 'A philosophical concept', emptyBook: 'A book you are reading', emptyCompare: 'Compare two philosophers',
+    conversations: 'Conversations',
+    /* ── 2026-08-31 Codex-Parity refactor additions ── */
+    responder: 'Responder',
+    toolDone: 'Done', toolError: 'Failed', toolSkipped: 'Skipped',
+    toolArgs: 'Args', toolResult: 'Result', reasoningLine: 'Reasoning',
+    backToBottom: 'Back to bottom', dropHint: 'Drop to attach', chooseFiles: 'Choose files',
+    uploading: 'Uploading', uploadRetry: 'Retry', removeFile: 'Remove attachment',
+    attachmentSize: 'Size', kindImage: 'Image', kindMarkdown: 'Markdown', kindText: 'Text', kindDocument: 'Document',
+    verifiedCount: '{a}/{b} verified',
+    expandCitations: 'Show {a} more sources',
+    filterKinds: 'md / text / image / common docs (converted)',
+    settingsGeneral: 'General', settingsAgent: 'Responder', settingsReading: 'Reading',
+    settingsEvidence: 'Evidence', settingsData: 'Conversations', settingsAccount: 'Account',
+    defaultResponder: 'Default responder', defaultResponderDesc: 'Responder used when starting a new conversation',
+    citationShow: 'Show sources', citationShowDesc: 'Show the sources chips under answers',
+    toolTraceExpand: 'Expand tool traces by default', toolTraceExpandDesc: 'Expand tool args & result by default (otherwise click to expand)',
+    readingContext: 'Reading context', readingContextDesc: 'Injected automatically when arriving from the reader',
+    readingContextNone: 'No reading context in this conversation',
+    readingContextBook: 'Book', readingContextChapter: 'Chapter', readingContextSel: 'Selection',
+    clearLocalHistory: 'Clear local history', clearLocalHistoryDesc: 'All conversations & drafts stored in this browser',
+    collapseSidebar: 'Collapse sidebar', expandSidebar: 'Expand sidebar',
   },
 };
 
@@ -166,7 +234,11 @@ export function LangProvider({ children }) {
     }
   }, [profile?.language]);   // eslint-disable-line react-hooks/exhaustive-deps
 
-  const t = useCallback((key) => (UI[lang] || UI.zh)[key] || UI.zh[key] || key, [lang]);
+  const t = useCallback((key, params) => {
+    let s = (UI[lang] || UI.zh)[key] || UI.zh[key] || key;
+    if (params) for (const [k2, v2] of Object.entries(params)) s = s.replaceAll(`{${k2}}`, String(v2));
+    return s;
+  }, [lang]);
   const agentName = useCallback((key) => (AGENT_NAMES[key] || {})[lang] || key, [lang]);
   const agentSub = useCallback((key) => (AGENT_SUBS[key] || {})[lang] || '', [lang]);
   const toolLabel = useCallback((key) => (TOOL_LABELS[key] || {})[lang] || key, [lang]);
