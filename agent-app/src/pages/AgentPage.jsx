@@ -314,7 +314,7 @@ export default function AgentWorkspace() {
       if (!deletedRef.current.has(convId)) {
         // 持久化写入最终值; UI 的引用/建议/摘要由 flushMeta(正文打字机完成)显示,
         // 不以连接关闭时刻为准(后处理 LLM 快慢不定 => "提前跳出, 时有时无"根因)
-        patchMessageLocal(convId, mid, m => ({ ...m, ...extra, typing: false, streaming: false, curThought: null }));
+        patchMessageLocal(convId, mid, m => ({ ...m, ...extra, typing: false, streaming: false, curThought: null, duration_seconds: finalMsg.duration_seconds }));
         conversationStore.appendMessage(convId, finalMsg);
         if (metaFlushed) renderMeta();   // 正文已打完: 最终值(含规则版兜底)同步到 UI, 与持久化一致
       }

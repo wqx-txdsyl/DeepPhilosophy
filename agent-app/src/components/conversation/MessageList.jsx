@@ -91,7 +91,7 @@ function ToolTrace({ events, streaming }) {
   const { t, toolLabel } = useLang();
   const [openSet, setOpenSet] = useState(() => {
     const s = new Set();
-    if (getPref('toolTraceOpen')) (events || []).forEach((ev, i) => { if (ev?.t === 'tool') s.add(i); });
+    if (getPref('toolTraceOpen')) (events || []).forEach((ev, i) => { if (ev?.t === 'tool') { s.add('c' + i); s.add('t' + i); } });
     return s;
   });
   const toggle = (i) => setOpenSet(prev => { const n = new Set(prev); if (n.has(i)) n.delete(i); else n.add(i); return n; });
@@ -136,13 +136,13 @@ function ToolTrace({ events, streaming }) {
     const label = toolLabel(rName) || rName;
     const short = toolShortSummary(tc) || toolShortArgs(tc.args);
     const isErr = /错误|失败|error|fail/i.test(tc.result_summary || '');
-    const isOpen = openSet.has(ev.i);
+    const isOpen = openSet.has('c' + ev.i);
     return (
       <div key={ev.i}>
         <div className="cw-tool-line" role="button" tabIndex={0}
           aria-expanded={isOpen}
-          onClick={() => toggle(ev.i)}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(ev.i); } }}>
+          onClick={() => toggle('c' + ev.i)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('c' + ev.i); } }}>
           {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
           <span className="cw-tool-line-icon">⌕</span>
           <span className="cw-tool-line-label">{label}</span>
@@ -228,8 +228,8 @@ function ToolTrace({ events, streaming }) {
             return (
               <div key={g.key} className="cw-tool-line" role="button" tabIndex={0}
                 aria-expanded={false}
-                onClick={() => toggle(g.key)}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(g.key); } }}>
+                onClick={() => toggle('m' + g.key)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('m' + g.key); } }}>
                 <ChevronRight size={11} />
                 <span className="cw-tool-line-icon">⌕</span>
                 <span>{retrievalGroupSummary(g.items.length)}</span>
@@ -240,14 +240,14 @@ function ToolTrace({ events, streaming }) {
           // 展开态: 逐调用独立折叠（点一个展开一个; 去除与折叠头重复的计数行）
           return (
             <div key={g.key}>
-              <button className="cw-collapse-link" onClick={() => toggle(g.key)}>
+              <button className="cw-collapse-link" onClick={() => toggle('m' + g.key)}>
                 {t('citationCollapse')} ↑
               </button>
               {g.items.map((r, ii) => renderCallRow(r, idx + ii))}
             </div>
           );
         }
-        const isOpen = openSet.has(rEv.i);
+        const isOpen = openSet.has('t' + rEv.i);
         const tc = rEv.tc || {};
         const human = toolHumanSummary(rName, tc.args, toolShortSummary(tc));
         const isErr = /错误|失败|error|fail/i.test(tc.result_summary || '');
@@ -256,8 +256,8 @@ function ToolTrace({ events, streaming }) {
           <div key={rEv.i}>
             <div className="cw-tool-line" role="button" tabIndex={0}
               aria-expanded={isOpen}
-              onClick={() => toggle(rEv.i)}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(rEv.i); } }}>
+              onClick={() => toggle('t' + rEv.i)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('t' + rEv.i); } }}>
               {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
               <span className="cw-tool-line-icon">⌕</span>
               <span className="cw-tool-line-label">{human || label}</span>
