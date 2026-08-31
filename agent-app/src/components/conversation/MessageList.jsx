@@ -221,7 +221,7 @@ function ToolTrace({ events, streaming }) {
           );
         }
         if (g.kind === 'merged') {
-          const isOpen = openSet.has(g.key);
+          const isOpen = openSet.has('m' + g.key);
           const idx = count;
           count += g.items.length;
           if (!isOpen) {
