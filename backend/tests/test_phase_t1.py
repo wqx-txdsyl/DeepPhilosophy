@@ -5,14 +5,14 @@
 "未经库中核验" 免责 + "如果你需要我可以再读"反模式。
 
 本文件只测确定性规则层（不调 LLM）:
-  T1.1-A  SOURCE_ATTRIBUTION 检测（裸「X出处」词型/term 兜底）+ 事实三态分层
-          （O4: 义务满足总闸已删——只剩 LOCATED/READ/QUOTE_VERIFIED 执行事实）
-  T1.1-B  locate_exact_phrase 逐字定位 + _ensure_primary_read 兜底读取
+  T1.1-A  事实三态分层（O4: 义务满足总闸已删——只剩 LOCATED/READ/QUOTE_VERIFIED 执行事实;
+          O4-RP1: 意图检测/术语核验链已随旧 planner 模块删除——理解用户问题归 Main Agent）
+  T1.1-B  locate_exact_phrase 逐字定位
   T1.1-D  Quote Bound: 提取/核验状态（O2: 流式渲染转写已删——audit + validator issue）
   T1.1-E  MEMORY_HINT ≠ EVIDENCE（检索命中不置位 primary_text_read）
   T1.1-F  相邻章句拼接防护（跨 span 连续性校验）
-  T1.1-G/H 收口一致性（O2: 强确定性降调已删; verify-later 矛盾 → validator issue;
-          O4: 仅由 primary_text_read 事实触发）
+O4-RP1: T1.1-G/H（verify-later 矛盾 → validator issue）已随 check_consistency 删除
+（task-intent discipline; evidence-consistency 类检查如后续需要再立项）。
 O4: T1.1-C（read 配额/准入拒绝措辞）已随检索准入机制删除。
 """
 import asyncio
@@ -24,45 +24,12 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import agent_runtime as AR
 import quote_bound as QB
 import final_validator as FV
-import reasoning_plan as RP
 
 
 # ═══════════════════════════════════════════════════════
-# T1.1-A 检测
+# T1.1-A 执行事实分层（意图检测已删——LOCATED/READ/QUOTE_VERIFIED 只由工具执行事实置位）
 # ═══════════════════════════════════════════════════════
-class TestT11ADetection:
-    def test_r1_bare_chuchu(self):
-        # 真实回归句: 旧正则不命中 → vi=None → 核验路径整体缺席
-        vi = RP.detect_verification_intent("言必有中出处")
-        assert vi is not None
-        assert vi["kind"] in ("SOURCE_ATTRIBUTION", "EXACT_WORDING")
-        assert vi["term"] == "言必有中"
-
-    def test_r2_r3_r4_r5_r6(self):
-        vi2 = RP.detect_verification_intent("“过犹不及”出自哪里？给原文上下文。")
-        assert vi2 and vi2["term"] == "过犹不及"
-        vi3 = RP.detect_verification_intent("“己所不欲，勿施于人”在《论语》哪一篇？原文是什么？")
-        assert vi3 and vi3["kind"] == "EXACT_WORDING"
-        vi4 = RP.detect_verification_intent("“天行健，君子以自强不息”是不是《论语》里的？")
-        assert vi4 and vi4["kind"] == "SOURCE_ATTRIBUTION"
-        assert vi4["term"] == "天行健，君子以自强不息"
-        vi5 = RP.detect_verification_intent("“知我者谓我心忧，不知我者谓我何求”出处")
-        assert vi5 and "知我者谓我心忧" in vi5["term"]
-        vi6 = RP.detect_verification_intent("“民为贵，社稷次之，君为轻”是不是孟子原话？")
-        assert vi6 and vi6["kind"] == "EXACT_WORDING"
-
-    def test_non_verification_untouched(self):
-        assert RP.detect_verification_intent("比较康德和黑格尔的美学") is None
-        assert RP.detect_verification_intent("什么是休谟的归纳问题？") is None
-
-    def test_plan_routed_to_verification_family(self):
-        plan = RP.build_plan("言必有中出处")
-        # O4: problem_type/complexity 认知分类已删——plan 只剩核验意图元数据
-        assert "problem_type" not in plan and "complexity" not in plan
-        assert plan["verification_intent"]["term"] == "言必有中"
-        # T1.1-B/E/H: 核验纪律注入必须存在
-        assert any("出处核验纪律" in inj for inj in plan["injections"])
-
+class TestT11AExecutionFacts:
     def test_ledger_three_state_layering(self):
         led = AR.ObligationLedger(term="言必有中")
         # 检索命中 → 只置位 SOURCE_CANDIDATE_FOUND（MEMORY_HINT, T1.1-E）
@@ -121,7 +88,6 @@ class TestT11BLocate:
         import engine_langgraph as ELG
         assert not hasattr(ELG, "_ensure_primary_read")
         assert not hasattr(ELG, "AUTO_READ_THOUGHT")
-        plan = RP.build_plan("言必有中出处")
         led = AR.ObligationLedger()
         assert not hasattr(led, "auto_primary_read")
         snap = led.snapshot()["verification_states"]
@@ -230,29 +196,21 @@ class TestT11FStitching:
 
 
 # ═══════════════════════════════════════════════════════
-# T1.1-G/H 收口一致性（O2 改写: scan_final_consistency 已拆分——
-#   G 分支强确定性降调彻底删除（certainty 归 Agent 认知, 机械层不得治理）;
-#   H 分支 verify-later 矛盾转为 final_validator.check_consistency 结构化 issue）
+# T1.1-G/H (O4-RP1 删除确认): check_consistency / VERIFY_LATER_MISSTATEMENT
+# 已随 final_validator 瘦身删除（task-intent discipline——runtime 不判断
+# "这道题本来就该现在查"; evidence-consistency 类检查如后续需要再立项）
 # ═══════════════════════════════════════════════════════
-class TestT11GHConsistency:
-    def test_strong_certainty_no_longer_governed(self):
-        ans = "其作为成语来源的判断是可靠的——学界与通行注本一致。"
-        assert FV.check_consistency(ans, primary_text_read=False) == [], \
-            "强确定性 + 未核验不再被机械降调（validator 无 certainty 职权）"
-
-    def test_no_issue_when_verified(self):
-        ans = "原文已逐字核验，可以确认出处。"
-        assert FV.check_consistency(ans, primary_text_read=True) == []
-
-    def test_verify_later_contradiction_flagged_after_read(self):
-        # O4: 仅由 primary_text_read 事实触发——台账显示本次已读原文,
-        # 正文却称"可再读" → 机械可判定的自相矛盾 → issue
-        for ans in ("若你需要，我可以再去读取《论语·先进》的章节全文。",
-                    "你若需要，我可再作针对性逐字核验。"):
-            issues = FV.check_consistency(ans, primary_text_read=True)
-            assert [i.code for i in issues] == [FV.VERIFY_LATER_MISSTATEMENT], ans
-
-    def test_verify_later_honest_boundary_when_unread(self):
-        # 未读过原文时"可再核实"是诚实边界, 不是矛盾 → 零 issue
-        ans = "需要的话我可以进一步核实原文。"
-        assert FV.check_consistency(ans, primary_text_read=False) == []
+class TestT11GHConsistencyRemoved:
+    def test_no_consistency_governance_symbols(self):
+        assert not hasattr(FV, "check_consistency")
+        assert not hasattr(FV, "VERIFY_LATER_MISSTATEMENT")
+        # validate_final_candidate 签名收窄: 无 primary_text_read / 意图分类参数
+        import inspect
+        sig = inspect.signature(FV.validate_final_candidate)
+        for gone in ("primary_text_read", "source_constraint", "subject_authors",
+                     "verification_intent"):
+            assert gone not in sig.parameters, gone
+        # verify-later 措辞不再是发布拦截对象——候选原样通过 validator（quote/citation 除外）
+        ans = "若你需要，我可以再去读取《论语·先进》的章节全文。"
+        res = FV.validate_final_candidate(ans, raw_tool_log=[], fallback_log=[])
+        assert res.ok is True

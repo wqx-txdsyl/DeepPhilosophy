@@ -391,6 +391,70 @@ AGENT_PROMPTS = {
     "nietzsche": NIETZSCHE_PROMPT,
 }
 
+# ── 时期人格上下文（Persona/Context layer, O4-RP1 §7）──────────────
+# 自旧 planner 模块迁入人格层: 时期检测/路由只决定 persona/context snapshot
+# （时期上下文注入 + 年份→时期映射审计）, 不决定研究策略/工具/回答形态/证据充分性。
+# 纯规则 + 数据驱动, 不调 LLM。
+_YEAR_RE = re.compile(r"(1[6-9]\d{2}|20\d{2})")
+_PERIOD_WORDS = ["早期", "中期", "晚期", "早年的", "晚年的", "当时的你", "后来的你", "年轻时",
+                 "晚年", "为什么改变", "转变", "时期", "两个时期", "不同时期", "几年后的你",
+                 "青年", "壮年", "暮年", "后来为什么"]
+
+# 已知哲学家的年份→时期映射（运行时路由用; 不重构 Persona Evolution, 只接入已有 period 能力）
+_AGENT_PERIOD_YEARS = {
+    "nietzsche": {"early": (1844, 1876), "middle": (1877, 1882), "late": (1883, 1900)},
+}
+
+
+def detect_temporal(message):
+    """B5: 时期维度检测 → {detected, years, words}"""
+    msg = message or ""
+    years = [int(y) for y in _YEAR_RE.findall(msg)]
+    words = [w for w in _PERIOD_WORDS if w in msg]
+    return {"detected": bool(years) or bool(words), "years": years, "words": words}
+
+
+def year_to_period(agent, year):
+    """年份 → 时期（该智能体已知则映射, 未知返回 None）"""
+    table = _AGENT_PERIOD_YEARS.get(agent)
+    if not table or not year:
+        return None
+    for period, (lo, hi) in table.items():
+        if lo <= year <= hi:
+            return period
+    return None
+
+
+def temporal_directive(agent, detected, language="zh"):
+    """B5: 时期人格上下文注入（仅哲学家智能体 + 检测到时期维度时使用）"""
+    years = (detected or {}).get("years") or []
+    mapped = {y: year_to_period(agent, y) for y in years}
+    period_hint = ""
+    if any(mapped.values()):
+        period_hint = "（年份→时期: " + "；".join(f"{y}年→{mapped[y]}" for y in years if mapped.get(y)) + "）"
+    time_desc = "、".join(f"{y}年" for y in years) if years else "早期/中期/晚期"
+    if language == "en":
+        return (
+            f"[Period requirement] This question has an explicit temporal dimension ({time_desc}). "
+            "Your answer must rest on the actual state of your thought in each period, not on one "
+            "uniform late-period voice: 1) first resolve each period with philosopher_period"
+            f"{period_hint}, and gather evidence per period (use the period as context when "
+            "retrieving corpus/quotes); 2) distinguish clearly what was actually written/held in "
+            "that period (needs corpus or primary-text support) from inferences you draw from that "
+            "period's thought (mark those explicitly, e.g. 'were I then'); 3) do not attribute later "
+            "positions to the earlier period as things actually said, and do not simulate period "
+            "difference by style alone; 4) do not dodge with 'an assistant has no personal historical "
+            "perspective' — resolve the periods and answer.")
+    return (
+        f"【时期要求】这个问题包含明确的时间维度（{time_desc}）。"
+        "你的回答必须建立在该时期的真实思想状态上，不得用统一的后期视角回答所有时期：\n"
+        "1) 先调用 philosopher_period 分别解析问题涉及的各个时期" + period_hint + "，"
+        "并据各时期语料分别取证（philosopher_corpus/philosopher_quote 检索时把时期作为背景）；\n"
+        "2) 明确区分：哪些是该时期历史上真实写下的文本/立场（需有语料或原典依据），"
+        "哪些是你依据该时期思想所做的推演（推演必须显式标注，如“若当时的我”）；\n"
+        "3) 不得把后期立场写成前期实际说过的话，也不得只靠改变文风来模拟时期差异；\n"
+        "4) 不要用“作为助手没有个人历史视角”这类说法回避问题——按上述时期解析直接作答。")
+
 # 哲学家智能体的通用工具子集（与深哲共享的原典检索类）
 PHILO_SHARED_TOOLS = {"search_books", "get_chapter", "get_book_detail", "query_graph",
                       "get_philosopher", "query_database", "websearch"}

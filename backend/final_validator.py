@@ -8,29 +8,32 @@
 
 Runtime 只保留三种权力: VALIDATE / REJECT / mechanical FORMAT。
 本模块把原 LiveCitationSanitizer（未核验引用流式降级）、QuoteBoundSanitizer
-（MEMORY_ONLY 引文转写 paraphrase / NEAR 自动加注）、scan_final_consistency
-（VERIFY_LATER 更正尾补）的"检测能力"保留为结构化 ValidationIssue，
-彻底删除它们对正文文本的一切改写与追加——修复由同一个 Main Agent 自主完成
-（它可以继续调用工具研究，也可以改写、标注、删除引文或重写答案）。
+（MEMORY_ONLY 引文转写 paraphrase / NEAR 自动加注）的"检测能力"保留为
+结构化 ValidationIssue，彻底删除它们对正文文本的一切改写与追加——修复由
+同一个 Main Agent 自主完成（它可以继续调用工具研究，也可以改写、标注、删除
+引文或重写答案）。
 
 允许的 issue code 全部限于"可用本次 evidence 机械判断的对象"，
 禁止出现 SOURCE_ATTRIBUTION_REQUIRED / CLAIM_TOO_STRONG 等认知治理维度
 （那是 Agent 的认识论义务，不是 deterministic validation）。
+
+O4-RP1: validator 只依赖 candidate + evidence（FINAL_VALIDATOR_GENERAL_INTENT_DEPENDENCY = 0）
+—— 不接收任何用户意图分类（来源约束/提问对象/核验状态）参数: 无论用户是否在问"出处",
+只要正文出现引用/引文, 一律按证据校验。
+原 check_consistency（VERIFY_LATER_MISSTATEMENT, task-intent discipline）已删除——
+evidence/action consistency 类检查如后续需要再立项。
 """
-import re
 from dataclasses import dataclass, field, asdict
 
 import quote_bound as QB
 from evidence_contract import (_CITE_RE, _CITE_AUTHOR_WORK_RE, _split_book_chapter,
-                               _dedup, _extract_candidates, _admissible,
-                               _book_match, _chapter_match)
+                               _dedup, _extract_candidates, _book_match, _chapter_match)
 
 # ── 机械可验证 issue code（封闭集合）──────────────────────────────
 UNVERIFIED_CITATION = "UNVERIFIED_CITATION"        # formal citation 无本次 evidence 支持
 UNSUPPORTED_EXACT_QUOTE = "UNSUPPORTED_EXACT_QUOTE"  # 以逐字形态呈现、库中无原文（含 leadin 未披露）
 NEAR_QUOTE_NOT_MARKED = "NEAR_QUOTE_NOT_MARKED"    # 仅近似命中却被当作逐字且未自行标注
 STITCHED_QUOTE = "STITCHED_QUOTE"                  # 跨段落拼接引文
-VERIFY_LATER_MISSTATEMENT = "VERIFY_LATER_MISSTATEMENT"  # 声称"可再读原文"但台账显示本次已读
 EMPTY_FINAL = "EMPTY_FINAL"                        # 候选为空/纯空白（机械异常，非"太短"）
 
 # 修复上限（O2 §10）——纯机械 ceiling, 不是语义判断; 达到后宁可如实以
@@ -76,23 +79,20 @@ def format_feedback(result: ValidationResult) -> str:
 # ═══════════════════════════════════════════════════════
 # 1. formal citation 校验（原 LiveCitationSanitizer 的检测核心，纯函数化）
 # ═══════════════════════════════════════════════════════
-def _primary_sources(tool_log, fallback_log=None, source_constraint=None, subject_authors=None):
+def _primary_sources(tool_log, fallback_log=None):
     """本次调用取得的 primary 证据池 → [(book, chapter)] 归一化候选"""
     merged = list(tool_log) if tool_log else []
     if fallback_log:
         merged += [t for t in fallback_log if t not in merged]
     try:
         cands = _dedup(_extract_candidates(merged))
-        # PRIMARY_ONLY/AUTHOR_ONLY 约束下，二手来源的正式引用同样不算已核验
         return [(c["book"], c.get("chapter") or "") for c in cands
-                if c.get("source_type") == "primary" and c.get("book")
-                and _admissible(c, source_constraint, subject_authors)[0]]
+                if c.get("source_type") == "primary" and c.get("book")]
     except Exception:
         return []
 
 
-def check_citations(answer, tool_log, fallback_log=None,
-                    source_constraint=None, subject_authors=None):
+def check_citations(answer, tool_log, fallback_log=None):
     """正文中的 formal citation 标记逐个对照 evidence 池（只检测，绝不改写）。
     返回 (verified_count, issues)。citation 的 markdown 渲染格式问题属机械
     formatter 职责，不在此处理。
@@ -100,7 +100,7 @@ def check_citations(answer, tool_log, fallback_log=None,
     引用主张，机械跳过（不算已核验, 也不打回）。"""
     issues = []
     verified = 0
-    sources = _primary_sources(tool_log, fallback_log, source_constraint, subject_authors)
+    sources = _primary_sources(tool_log, fallback_log)
     ans = answer or ""
     buf = ans
     while True:
@@ -167,59 +167,25 @@ def check_quotes(answer, raw_tool_log):
 
 
 # ═══════════════════════════════════════════════════════
-# 3. 收口一致性检测（原 scan_final_consistency 的确定性残留）
-# ═══════════════════════════════════════════════════════
-# 否定语境护栏: "无法再读取/不再承诺下次再查"是对推诿的拒绝, 不是推诿——
-# 命中片段附近出现否定词时不判 VERIFY_LATER_MISSTATEMENT（纯机械过滤）
-_VERIFY_LATER_NEGATION_RE = re.compile(r"(无法|不能|不再|未能|没有|难以|何须|并非)")
-
-
-def check_consistency(answer, primary_text_read=None):
-    """verify-later 矛盾: 台账显示本次已读取原文，正文却说"如果你需要我可以再读"。
-    这是可机械判定的事实性自相矛盾（conversation-state contradiction）→ issue。
-    仅由 primary_text_read 触发（O4: obligations_satisfied 语义义务总闸已随
-    ObligationLedger 瘦身删除——"已读原文"是机械事实, 不是义务判定）。
-    原 G 分支（强确定性措辞 + 证据不足 → 降调尾补）属确定性/语义 hedge——按 O2 §7 删除，
-    不转 validator（certainty 归 Agent 认知，机械层不得治理）。"""
-    issues = []
-    if not primary_text_read:
-        return issues
-    ans = answer or ""
-    m = QB.VERIFY_LATER_RE.search(ans)
-    while m:
-        ctx = ans[max(0, m.start() - 16):m.end()]
-        if not _VERIFY_LATER_NEGATION_RE.search(ctx):
-            issues.append(ValidationIssue(
-                code=VERIFY_LATER_MISSTATEMENT, locator=m.group(0)[:40],
-                detail="answer offers to look up the original text later, "
-                       "but the obligation ledger records it as already read this turn"))
-            break
-        m = QB.VERIFY_LATER_RE.search(ans, m.end())
-    return issues
-
-
-# ═══════════════════════════════════════════════════════
-# 4. 总入口
+# 3. 总入口
 # ═══════════════════════════════════════════════════════
 def validate_final_candidate(answer, *, raw_tool_log, fallback_log=None,
-                             primary_text_read=None,
-                             language="zh", source_constraint=None,
-                             subject_authors=None) -> ValidationResult:
+                             language="zh") -> ValidationResult:
     """对 Final Candidate 做一次性确定性校验（candidate 此刻只在内部缓冲，尚未公开）。
     纯函数式检测: 不改写、不追加、不重试——FAIL 时由调用方把结构化 issues 反馈给
-    同一个 Main Agent 进入 repair。"""
+    同一个 Main Agent 进入 repair。
+    输入只有 candidate + evidence（raw_tool_log/fallback_log）——没有用户意图分类、
+    问题类型或来源约束: 同一候选无论配什么问题, 校验结果一致。"""
     ans = answer or ""
     if not ans.strip():
         return ValidationResult(ok=False, issues=[ValidationIssue(
             code=EMPTY_FINAL, detail="candidate is empty or whitespace-only")])
     issues = []
     verified_citations, cite_issues = check_citations(
-        ans, raw_tool_log, fallback_log=fallback_log,
-        source_constraint=source_constraint, subject_authors=subject_authors)
+        ans, raw_tool_log, fallback_log=fallback_log)
     issues.extend(cite_issues)
     audit, quote_issues = check_quotes(ans, raw_tool_log)
     issues.extend(quote_issues)
-    issues.extend(check_consistency(ans, primary_text_read))
     result = ValidationResult(ok=not issues, issues=issues,
                               verified_citations=verified_citations, quote_audit=audit)
     return result

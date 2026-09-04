@@ -8,6 +8,11 @@ semantic_obligations.py 是 runtime 内的第二套认知裁决层（Shadow Agen
 （O4 任务书: "把这两个函数 MOVE 进 evaluation_suite（自带副本）"）——它们不再对
 任何运行时行为产生注入/补正/改写效果。
 
+O4-RP1 注: 原生产前提核对模块已删除——PremiseVerifier（前提错误检出, 评分用）
+以自带数据副本形式保留在本文件（离线评分, 不在请求路径上, 无注入效果）;
+EpistemicClaimClassifier / _match_philosopher / PHILOSOPHER_ALIASES 迁入
+evidence_contract（生产单源）, 本文件经 import 复用。
+
 五个评分器都是确定性规则:
 
   evaluate_premise_accuracy    前提准确性: 错误数字 / 错误作者 / 错误书名 / 错误年代 /
@@ -25,10 +30,507 @@ semantic_obligations.py 是 runtime 内的第二套认知裁决层（Shadow Agen
   report = evaluate_answer(question, answer, tool_log=..., language="zh")
   每个维度返回 {score: 0..1, passed: bool, metrics: {...}, findings: [...]}
 """
+import json
 import re
+from pathlib import Path
 
-from epistemic_guard import PremiseVerifier, EpistemicClaimClassifier, _match_philosopher
-from evidence_contract import build_evidence_contract
+from evidence_contract import (build_evidence_contract, EpistemicClaimClassifier,
+                               _match_philosopher, _norm_author, _strip_marks,
+                               _load_philosophers, PHILOSOPHER_ALIASES)
+
+BASE = Path(__file__).resolve().parent          # backend/
+
+
+# ═══════════════════════════════════════════════════════
+# 0. PremiseVerifier 离线评分副本（O4-RP1: 原生产版本随 guard 模块删除,
+#    评分 API 面不变——只用于离线检出"回答是否落实了前提校正", 不注入不拦截）
+# ═══════════════════════════════════════════════════════
+def _load_books():
+    """app/public/books.json（唯一正式书目, 409 本）→ {书名: {作者, 作者短名, id}}"""
+    try:
+        raw = json.load(open(BASE.parent / "app" / "public" / "books.json", encoding="utf-8"))
+        out = {}
+        for b in raw:
+            t = _strip_marks(b.get("title") or "")
+            a = b.get("author") or ""
+            if t:
+                out[t] = {"author": a, "author_short": _norm_author(a), "id": b.get("id")}
+        return out
+    except Exception:
+        return {}
+
+
+# 手工精配的"作品→作者"表（books.json 之外的经典异名/译名, 优先级最高）
+CURATED_WORK_AUTHORS = {
+    "存在与时间": ["马丁·海德格尔", "海德格尔"],
+    "存在与虚无": ["让-保罗·萨特", "萨特"],
+    "查拉图斯特拉如是说": ["弗里德里希·尼采", "尼采"],
+    "快乐的科学": ["弗里德里希·尼采", "尼采"],
+    "反基督": ["弗里德里希·尼采", "尼采"],
+    "西西弗斯神话": ["阿尔贝·加缪", "加缪"],
+    "反抗者": ["阿尔贝·加缪", "加缪"],
+    "局外人": ["阿尔贝·加缪", "加缪"],
+    "鼠疫": ["阿尔贝·加缪", "加缪"],
+    "理想国": ["柏拉图"],
+    "纯粹理性批判": ["伊曼努尔·康德", "康德"],
+    "实践理性批判": ["伊曼努尔·康德", "康德"],
+    "判断力批判": ["伊曼努尔·康德", "康德"],
+    "作为意志和表象的世界": ["亚瑟·叔本华", "叔本华"],
+    "哲学研究": ["路德维希·维特根斯坦", "维特根斯坦"],
+    "逻辑哲学论": ["路德维希·维特根斯坦", "维特根斯坦"],
+    "存在主义是一种人道主义": ["让-保罗·萨特", "萨特"],
+    "共产党宣言": ["卡尔·马克思", "马克思"],
+    "资本论": ["卡尔·马克思", "马克思"],
+    "尼各马可伦理学": ["亚里士多德"],
+    "形而上学": ["亚里士多德"],
+    "忏悔录": ["奥古斯丁"],
+    "上帝之城": ["奥古斯丁"],
+    "人是机器": ["拉美特利"],
+}
+
+# 归属误判语境动词（"《作品》里作者X 认为/写了…" → 判归属; 无动词不判）
+_ATTRIB_VERBS = "认为|提出|写道|写到|说|主张|论证|指出|论述|表示|谈论|讨论|说过"
+
+# 可验证事实前提规则（手工精配, 只收"显著影响答案且必改"的常见错误;
+# 每例: 主题词 + 错误数字 + 语境动词; 缺失其一即不触发——宁漏勿误）
+PREMISE_RULES = [
+    {
+        "id": "oldman_84_days",
+        "topic_keywords": ["老人与海", "圣地亚哥", "桑地亚哥", "老渔夫", "老人"],
+        "number": {"wrong": "87", "right": "84", "unit": "天"},
+        # 语境词覆盖"87天的执念"类表述（T3 回归题）, 不再只认"捕/鱼";
+        # "困境"覆盖"从87天的困境到最后…"类无渔获动词的抽象指称
+        "context_words": ["捕", "钓", "没有捕到", "鱼", "执念", "出海", "一无所获", "空手", "没捕", "困境"],
+        "exclude_words": [],
+        # 87 天必须判断用户所指事件, 不做简单数字替换——
+        #   小说开篇当前这次连续未捕到鱼 = 84 天; 老人回忆中过去那次 = 87 天。
+        #   84 与 87 都可能正确, 语境词只判定"所指", 不再直接判定"对错"。
+        "referent_current": ["开头", "开篇", "小说开头", "一开始", "刚开始", "现在", "目前",
+                             "当前", "这次", "已经", "这轮"],
+        "referent_historical": ["以前", "曾经", "有过", "曾", "早年", "上次", "过去", "之前",
+                                "此前", "那时", "那段", "回忆", "记得", "想起", "年轻", "历史上"],
+        # 歧义语境: 时间指向不明（"从…到…"叙事弧/困境/执念等抽象指称）
+        "referent_ambiguous": [r"从.{0,8}87.{0,8}(到|开始)", "困境", "执念", "那件事", "那段日子"],
+        "claim": "圣地亚哥在小说开篇连续87天没有捕到鱼",
+        "claim_type": "textual_fact",
+        "corrected_value": "84天",
+        "evidence": [{"book": "老人与海", "chapter": "开篇",
+                      "quote": "他已经连续八十四天没有捕到一条鱼了（第85天钓上大马林鱼）"}],
+        "correction_note": "《老人与海》开篇写的是连续84天没有捕到鱼; 随后第85天圣地亚哥才钓到那条大马林鱼。",
+    },
+    {
+        "id": "antichrist_1888",
+        "topic_keywords": ["反基督", "反基督徒", "anti-christ", "敌基督"],
+        "number": {"wrong": "1889", "right": "1888", "unit": "年"},
+        "context_words": ["写", "创作", "完成", "著完", "写毕"],
+        "exclude_words": ["出版", "刊发", "面世", "发表"],
+        "claim": "尼采在1889年写《反基督》",
+        "claim_type": "textual_fact",
+        "corrected_value": "1888年写成（1889年出版）",
+        "evidence": [{"book": "反基督", "chapter": "创作背景",
+                      "quote": "《反基督》写于1888年, 1889年出版"}],
+        "correction_note": "《反基督》写于1888年（1889年出版）——写与出版是两个时间点。",
+    },
+    {
+        "id": "rebel_1951",
+        "topic_keywords": ["《反抗者》"],
+        "number": {"wrong": "1942", "right": "1951", "unit": "年"},
+        "context_words": ["写", "创作", "完成", "著完", "写毕", "出版", "发表"],
+        "exclude_words": [],
+        "claim": "加缪在1942年写《反抗者》",
+        "claim_type": "textual_fact",
+        "corrected_value": "1951年（《西西弗斯神话》《局外人》才是1942年）",
+        "evidence": [{"book": "反抗者", "chapter": "作品信息",
+                      "quote": "《反抗者》出版于1951年"}],
+        "correction_note": "《反抗者》写于1951年（1942年是《西西弗斯神话》《局外人》的年代）。",
+    },
+]
+
+# 错误书名规则（用户以《》包裹的缩写书名 → 全名校正; 仅在《错名》成对出现时触发, 宁漏勿误）
+BOOK_TITLE_RULES = [
+    {
+        "id": "book_sisyphus_full_title",
+        "wrong": "西西弗斯", "right": "西西弗斯神话",
+        "topic_keywords": ["加缪", "荒诞", "西西弗斯神话"],
+        "claim": "加缪在《西西弗斯》中…",
+        "claim_type": "textual_fact",
+        "corrected_value": "《西西弗斯神话》（全名）",
+        "evidence": [{"book": "西西弗斯神话", "chapter": "作品信息",
+                      "quote": "加缪的哲学随笔全名为《西西弗斯神话》"}],
+        "correction_note": "加缪这部随笔的全名是《西西弗斯神话》——《西西弗斯》是缩略说法。",
+    },
+    {
+        "id": "book_zarathustra_full_title",
+        "wrong": "查拉图斯特拉", "right": "查拉图斯特拉如是说",
+        "topic_keywords": ["尼采", "查拉图斯特拉如是说"],
+        "claim": "尼采在《查拉图斯特拉》中…",
+        "claim_type": "textual_fact",
+        "corrected_value": "《查拉图斯特拉如是说》（全名）",
+        "evidence": [{"book": "查拉图斯特拉如是说", "chapter": "作品信息",
+                      "quote": "尼采此书全名为《查拉图斯特拉如是说》"}],
+        "correction_note": "尼采此书全名是《查拉图斯特拉如是说》——《查拉图斯特拉》是缩略说法。",
+    },
+]
+
+# 错误概念归属规则（X 提出/主张/创造了 concept, 而 concept 实属 real_owner;
+# 仅在"已知哲学家 ≠ 真实归属"且带归属动词时触发, 宁漏勿误）
+CONCEPT_OWNER_RULES = [
+    {
+        "id": "concept_will_to_power",
+        "concept": "权力意志", "real_owner": "尼采",
+        "wrong_owners": ["叔本华", "康德", "黑格尔", "马克思", "弗洛伊德", "斯宾诺莎"],
+        "context_words": ["提出", "认为", "主张", "的概念", "的学说", "创立", "发明", "属于"],
+        "claim": "权力意志是叔本华提出的概念",
+        "claim_type": "textual_fact",
+        "corrected_value": "权力意志是尼采的核心概念",
+        "evidence": [{"book": "查拉图斯特拉如是说", "chapter": "概念信息",
+                      "quote": "权力意志（Wille zur Macht）是尼采思想的核心概念"}],
+        "correction_note": "权力意志是尼采的概念（《权力意志》为其遗稿整理）——归属他人是常见误记。",
+    },
+    {
+        "id": "concept_eternal_return",
+        "concept": "永恒轮回", "real_owner": "尼采",
+        # 赫拉克利特/斯多葛的循环说属可辩护的前史表述, 不触发（宁漏勿误）
+        "wrong_owners": ["叔本华", "柏拉图", "黑格尔"],
+        "context_words": ["提出", "认为", "主张", "的概念", "的学说", "创立", "发明", "属于", "最早"],
+        "claim": "永恒轮回是叔本华提出的概念",
+        "claim_type": "textual_fact",
+        "corrected_value": "永恒轮回是尼采的核心思想（有其古希腊前史）",
+        "evidence": [{"book": "快乐的科学", "chapter": "第341节",
+                      "quote": "尼采在《快乐的科学》第341节提出永恒轮回的思想实验"}],
+        "correction_note": "永恒轮回作为哲学命题由尼采在《快乐的科学》第341节明确提出（古希腊有轮回观念的先行形态）。",
+    },
+    {
+        "id": "concept_ubermensch",
+        "concept": "超人", "real_owner": "尼采",
+        "wrong_owners": ["叔本华", "康德", "黑格尔"],
+        "context_words": ["提出", "认为", "主张", "的概念", "的学说", "创立", "发明", "属于"],
+        "claim": "超人是叔本华提出的概念",
+        "claim_type": "textual_fact",
+        "corrected_value": "超人是尼采的概念",
+        "evidence": [{"book": "查拉图斯特拉如是说", "chapter": "前言",
+                      "quote": "查拉图斯特拉宣称：人是应当被超越的——超人"}],
+        "correction_note": "超人是尼采在《查拉图斯特拉如是说》中提出的概念。",
+    },
+    {
+        "id": "concept_absolute_spirit",
+        "concept": "绝对精神", "real_owner": "黑格尔",
+        "wrong_owners": ["康德", "谢林", "费希特", "柏拉图", "亚里士多德", "斯宾诺莎"],
+        "context_words": ["提出", "认为", "主张", "的概念", "的学说", "创立", "发明", "属于"],
+        "claim": "绝对精神是康德提出的概念",
+        "claim_type": "textual_fact",
+        "corrected_value": "绝对精神是黑格尔的概念",
+        "evidence": [{"book": "精神现象学", "chapter": "序言",
+                      "quote": "绝对精神是黑格尔《精神现象学》的核心概念"}],
+        "correction_note": "绝对精神（der absolute Geist）是黑格尔《精神现象学》的核心概念。",
+    },
+    {
+        "id": "concept_being_toward_death",
+        "concept": "向死而生", "real_owner": "海德格尔",
+        "wrong_owners": ["尼采", "萨特", "雅斯贝尔斯", "克尔凯郭尔"],
+        "context_words": ["提出", "认为", "主张", "的概念", "的学说", "创立", "发明", "属于"],
+        "claim": "向死而生是尼采提出的概念",
+        "claim_type": "textual_fact",
+        "corrected_value": "向死而生是海德格尔的概念（《存在与时间》）",
+        "evidence": [{"book": "存在与时间", "chapter": "第2篇",
+                      "quote": "海德格尔在《存在与时间》中以向死而生（Sein zum Tode）刻画此在"}],
+        "correction_note": "向死而生（Sein zum Tode）是海德格尔《存在与时间》中的概念。",
+    },
+    {
+        "id": "concept_dasein",
+        "concept": "此在", "real_owner": "海德格尔",
+        "wrong_owners": ["萨特", "尼采", "胡塞尔", "雅斯贝尔斯"],
+        "context_words": ["提出", "认为", "主张", "的概念", "的学说", "创立", "发明", "属于"],
+        "claim": "此在是萨特提出的概念",
+        "claim_type": "textual_fact",
+        "corrected_value": "此在是海德格尔的概念（《存在与时间》）",
+        "evidence": [{"book": "存在与时间", "chapter": "导论",
+                      "quote": "海德格尔以 Dasein（此在）称呼人之存在方式"}],
+        "correction_note": "此在（Dasein）是海德格尔《存在与时间》中的基础概念。",
+    },
+    {
+        "id": "concept_hell_is_others",
+        "concept": "他人即地狱", "real_owner": "萨特",
+        "wrong_owners": ["加缪", "海德格尔", "尼采", "波伏娃"],
+        "context_words": ["提出", "认为", "主张", "的名言", "的话", "说过", "属于", "说"],
+        "claim": "他人即地狱是加缪提出的说法",
+        "claim_type": "textual_fact",
+        "corrected_value": "他人即地狱是萨特《禁闭》中的台词",
+        "evidence": [{"book": "禁闭", "chapter": "剧中",
+                      "quote": "《禁闭》结尾台词：他人即地狱"}],
+        "correction_note": "“他人即地狱”出自萨特的剧作《禁闭》，不是加缪。",
+    },
+    {
+        "id": "concept_theory_of_ideas",
+        "concept": "理念论", "real_owner": "柏拉图",
+        "wrong_owners": ["亚里士多德", "康德", "苏格拉底", "黑格尔"],
+        "context_words": ["提出", "认为", "主张", "的概念", "的学说", "创立", "发明", "属于"],
+        "claim": "理念论是亚里士多德提出的学说",
+        "claim_type": "textual_fact",
+        "corrected_value": "理念论（理式论）是柏拉图的核心学说",
+        "evidence": [{"book": "理想国", "chapter": "卷六至卷七",
+                      "quote": "柏拉图的理念论（理式论）在《理想国》中系统展开"}],
+        "correction_note": "理念论（理式论）是柏拉图的核心学说，亚里士多德恰是它的批评者。",
+    },
+]
+
+
+class PremiseVerifier:
+    """用户事实前提核对（离线评分用副本; 只检出, 不注入不拒绝）"""
+
+    def __init__(self, rules=None, work_authors=None):
+        self.rules = rules if rules is not None else PREMISE_RULES
+        self.work_authors = work_authors if work_authors is not None else None   # 懒加载覆盖
+
+    # ── 作品→作者全表（curated + books.json, 惰性合并）──
+    def _work_author_map(self):
+        if self.work_authors is not None:
+            return self.work_authors
+        m = dict(CURATED_WORK_AUTHORS)
+        for title, info in _load_books().items():
+            if title not in m and info.get("author"):
+                m[title] = [info["author"], info.get("author_short") or info["author"]]
+        self.work_authors = m
+        return m
+
+    def check(self, message):
+        """返回前提核验结果列表（[]=无事实矛盾）
+
+        每条: {status, claim, claim_type, verification_required, corrected_value,
+               evidence, evidence_ids, nonblocking, rule_id, correction_note}
+        """
+        msg = message or ""
+        out = []
+        if not msg.strip():
+            return out
+
+        # ── 数字/日期前提规则 ──
+        numbers = set(re.findall(r"(\d+)", msg))
+        for rule in self.rules:
+            num = rule["number"]
+            if num["wrong"] not in numbers:
+                continue
+            if not any(k in msg for k in rule["topic_keywords"]):
+                continue
+            if not any(c in msg for c in rule["context_words"]):
+                continue
+            if any(e in msg for e in rule.get("exclude_words", [])):
+                continue
+            # 触发: 错误数字 + 主题词 + 语境动词 同现（数字须贴近主题词, 防"1889年"误伤无关句）
+            if not self._near_num(msg, rule):
+                continue
+            # 语义判定"87天"所指事件, 而非简单数字替换。
+            #   84 与 87 都可能正确: 开篇当前这次=84天, 过去那次=87天。
+            #   historical → 87 属实, 只确认不纠正（防 LLM 反向误纠）;
+            #   ambiguous → 只辨析, 不机械纠错。
+            if rule.get("referent_current") or rule.get("referent_historical"):
+                mode = self._classify_referent(msg, rule)
+                if mode == "historical":
+                    c = self._build_contradiction(rule, num, msg)
+                    c["status"] = "confirmed"
+                    c["referent_mode"] = "historical"
+                    c["claim"] = "老人过去曾有87天没捕到鱼的经历"
+                    c["corrected_value"] = "87天（历史经历, 属实）"
+                    c["correction_note"] = (
+                        "《老人与海》中男孩确实提到老人曾连续87天没有捕到鱼（这是过去那次经历）；"
+                        "开篇当前这次才是连续84天。用户说的'87天'若指过去那次则无需纠正。")
+                    out.append(c)
+                    continue
+                c = self._build_contradiction(rule, num, msg)
+                c["referent_mode"] = mode
+                if mode == "ambiguous":
+                    c["claim"] = "老人'87天'未捕到鱼（未指明是开篇当前这次还是过去那次经历）"
+                    c["corrected_value"] = "84天（开篇当前这次）/ 87天（他此前的经历）"
+                    c["correction_note"] = (
+                        "《老人与海》需要区分两个数字：开篇的当前这次是连续84天没有捕到鱼；"
+                        "老人回忆中的过去那次才是87天。你提到的'87天'若指开篇这次则应是84天——"
+                        "请按你实际所指区分这两段经历，不要混淆。")
+                out.append(c)
+                continue
+            out.append(self._build_contradiction(rule, num, msg))
+
+        # ── 作品归属规则（数据驱动: 用户把某作品误归于别的哲学家）──
+        attr = self._check_attribution(msg)
+        out.extend(attr)
+        # ── 错误书名规则（《西西弗斯》→《西西弗斯神话》）──
+        titles = self._check_book_titles(msg)
+        out.extend(titles)
+        # ── 错误概念归属规则（权力意志→尼采 等）──
+        concepts = self._check_concept_owners(msg)
+        out.extend(concepts)
+        return out
+
+    def _check_book_titles(self, msg):
+        """错误书名: 《缩写名》成对出现 + 主题词邻近（宁漏勿误——只认《》包裹的书名形态）"""
+        out = []
+        for rule in BOOK_TITLE_RULES:
+            marker = f"《{rule['wrong']}》"
+            if marker not in msg:
+                continue
+            if not any(k in msg for k in rule["topic_keywords"]):
+                continue
+            if not self._near_str(msg, marker, rule["topic_keywords"]):
+                continue
+            out.append(self._build_str_contradiction(rule, marker, msg, f"title:{rule['id']}"))
+        return out
+
+    def _check_concept_owners(self, msg):
+        """错误概念归属: concept 与 已知哲学家（≠ 真实归属）邻近 + 归属动词同现"""
+        out = []
+        for rule in CONCEPT_OWNER_RULES:
+            concept = rule["concept"]
+            if concept not in msg:
+                continue
+            if not any(c in msg for c in rule["context_words"]):
+                continue
+            i = msg.find(concept)
+            for owner in rule["wrong_owners"]:
+                j = msg.find(owner)
+                if j >= 0 and abs(i - j) <= 40:
+                    out.append(self._build_str_contradiction(
+                        rule, f"{owner}·{concept}", msg, f"concept:{rule['id']}"))
+                    break
+        return out
+
+    @staticmethod
+    def _near_str(msg, marker, keywords):
+        """标记（《错名》/概念）须与任一主题词邻近（±40 字符窗口）——防全句偶然同现"""
+        i = msg.find(marker)
+        if i < 0:
+            return False
+        for kw in keywords:
+            j = msg.find(kw)
+            if j >= 0 and abs(i - j) <= 40:
+                return True
+        return False
+
+    def _build_str_contradiction(self, rule, matched, msg, rule_id):
+        """字符串规则（书名/概念）的裁决——与数字规则同构"""
+        return {
+            "status": "contradicted",
+            "claim": rule["claim"],
+            "claim_type": rule["claim_type"],
+            "verification_required": True,
+            "corrected_value": rule["corrected_value"],
+            "evidence": rule["evidence"],
+            "evidence_ids": [f"{rule_id}:evidence:{i}" for i in range(len(rule["evidence"]))],
+            "nonblocking": True,
+            "rule_id": rule_id,
+            "correction_note": rule["correction_note"],
+            "matched": matched,
+        }
+
+    def _near_num(self, msg, rule):
+        """错误数字须出现在任一主题词附近（±30 字符窗口内）——防全句偶然同现"""
+        for kw in rule["topic_keywords"]:
+            i = msg.find(kw)
+            while i >= 0:
+                window = msg[max(0, i - 30): i + len(kw) + 30]
+                if rule["number"]["wrong"] in window:
+                    return True
+                i = msg.find(kw, i + 1)
+        return False
+
+    @staticmethod
+    def _classify_referent(msg, rule):
+        """判定错误数字所指事件（供 84/87 类双事实规则使用）
+
+        current     指开篇当前这次（→ 数字错误, 校正为 84 天）
+        historical  指过去那次经历（→ 87 天本身正确, 不得纠正）
+        ambiguous   时间指向不明（→ 只辨析两个事实, 不机械纠错）
+
+        判据: 数字 ±20 字符窗口内的语境词; 历史语境词单独出现 → historical;
+        当前语境词出现（无论是否混有历史词）→ current（当前语境更具体, 优先）;
+        仅"从…到…/困境/执念"等抽象指称 → ambiguous; 裸陈述默认 current
+        （最常见误记: 把开篇 84 天记成 87 天）。
+        """
+        num = rule["number"]["wrong"]
+        windows, start = [], 0
+        while True:
+            i = msg.find(num, start)
+            if i < 0:
+                break
+            windows.append(msg[max(0, i - 20): i + len(num) + 20])
+            start = i + len(num)
+        if not windows:
+            return "ambiguous"
+        hist = any(any(c in w for c in rule.get("referent_historical", [])) for w in windows)
+        if hist and not any(any(c in w for c in rule.get("referent_current", [])) for w in windows):
+            return "historical"
+        if any(any(c in w for c in rule.get("referent_current", [])) for w in windows):
+            return "current"
+        for w in windows:
+            for pat in rule.get("referent_ambiguous", []):
+                if pat.startswith("从") and re.search(pat, w):
+                    return "ambiguous"
+                if pat in w:
+                    return "ambiguous"
+        return "current"
+
+    def _build_contradiction(self, rule, num, msg):
+        return {
+            "status": "contradicted",
+            "claim": rule["claim"],
+            "claim_type": rule["claim_type"],
+            "verification_required": True,
+            "corrected_value": rule["corrected_value"],
+            "evidence": rule["evidence"],
+            "evidence_ids": [f"{rule['id']}:evidence:{i}" for i in range(len(rule["evidence"]))],
+            "nonblocking": True,
+            "rule_id": rule["id"],
+            "correction_note": rule["correction_note"],
+            "matched": num["wrong"],
+        }
+
+    def _check_attribution(self, msg):
+        """作品作者归属检查: 'X写的《Y》'、'《Y》里X认为/写到/论述' 且 X≠真实作者 → 检出"""
+        out = []
+        authors_known = set()
+        authors_known |= set(PHILOSOPHER_ALIASES.keys())
+        authors_known |= set(_load_philosophers())
+        wam = self._work_author_map()
+        for work, real_authors in wam.items():
+            if work not in msg:
+                continue
+            real_short = {_norm_author(a) for a in real_authors}
+            # 模式1: 作者名 + 的 + 《作品》 → "尼采的《存在与时间》"
+            for m in re.finditer(rf"([\w·\-—\u4e00-\u9fff]{{1,12}})的《{re.escape(work)}》", msg):
+                claimed = _norm_author(m.group(1))
+                if claimed in real_short:
+                    continue
+                if claimed in authors_known or self._is_common_name(claimed, msg):
+                    out.append(self._attr_contradiction(work, claimed, real_authors, msg, "owner"))
+                    break
+            # 模式2: 《作品》里/中/内 作者名 + 断言动词 → "《存在与时间》里尼采认为"
+            for m in re.finditer(rf"《{re.escape(work)}》(里|中|内|里面|当中)([\w·\u4e00-\u9fff]{{1,12}}?)(?:的|(?:{_ATTRIB_VERBS}))", msg):
+                claimed = _norm_author(m.group(2))
+                if claimed in real_short:
+                    continue
+                if claimed in authors_known:
+                    out.append(self._attr_contradiction(work, claimed, real_authors, msg, "intext"))
+                    break
+        return out
+
+    @staticmethod
+    def _is_common_name(s, msg):
+        """未入名单的疑似人名兜底: 常见姓氏 + 出现在'的《作品》'前, 仍可判（如'张'）"""
+        return len(s) >= 2 and s[-1] in ("尔", "斯", "尼", "尔", "克", "夫", "德") and (s in msg)
+
+    def _attr_contradiction(self, work, claimed, real_authors, msg, pattern):
+        real = real_authors[0]
+        return {
+            "status": "contradicted",
+            "claim": f"《{work}》的作者是{claimed}",
+            "claim_type": "textual_fact",
+            "verification_required": True,
+            "corrected_value": f"《{work}》的作者是{real}",
+            "evidence": [{"book": work, "chapter": "作品信息", "quote": f"《{work}》由{real}著"}],
+            "evidence_ids": [f"attr:{work}:evidence:0"],
+            "nonblocking": True,
+            "rule_id": f"attribution:{work}",
+            "correction_note": f"《{work}》的作者是{real}而非{claimed}。",
+            "matched": f"{claimed}的《{work}》",
+        }
 
 # ═══════════════════════════════════════════════════════
 # 1. Premise Accuracy —— 错误数字/作者/书名/年代/概念归属
@@ -324,7 +826,7 @@ def evaluate_answer(question, answer, tool_log=None, language="zh"):
     return report
 
 
-# 供 epistemic 评分复用的强模态（与 epistemic_guard 保持单一真源, 局部兜底）
+# 供 epistemic 评分复用的强模态（局部兜底, 与生产无耦合）
 _STRONG_MODAL = re.compile(r"一定|必然|肯定|必定|毫无疑问|绝对")
 
 

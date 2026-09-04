@@ -188,6 +188,82 @@ claim_role/composer/interpretation 注入, 每请求曾固定 4-10 条 SystemMes
    构成下限）; 语义判断部分已删尽。
 4. tools/dp_uat_phase_a.py（运营脚本）残留 soft 键 update——无害冗余, 未动 tools/。
 
+## 13. O4-RP1 — Remove the Last Cognitive Injection Paths
+
+> Reviewer 指出回执矛盾：SEMANTIC_RUNTIME_DIRECTIVE_SITES=0 与保留 VERIFY_NOW/
+> 来源约束/PremiseVerifier 注入不能同时为真。O4_CORE_COLLAPSE = ACCEPTED,
+> O4-RP1 = 窄修复。BASE = 946e9abc7。
+
+### 13.1 删除与迁移
+
+| 处置 | 内容 |
+|---|---|
+| 整文件删除 | `reasoning_plan.py`（verification_intent 分类/VERIFY_NOW 纪律/来源约束注入/术语核验机制——全部属 task-intent discipline）；`epistemic_guard.py`（PremiseVerifier 事前事实校正 = PRE_LLM_FACTUAL_CORRECTION_AUTHORITY 归零；runtime 不得替 Agent 下"用户前提错了"的结论） |
+| 迁移 | temporal 三件套 → `agents.py`（TEMPORAL_PERSONA_OWNER = Persona/Context layer）；`EpistemicClaimClassifier` + `_match_philosopher` → `evidence_contract.py`（确定性证据绑定分类, 本地单源） |
+| 签名收窄 | `validate_final_candidate(answer, *, raw_tool_log, fallback_log, language)`——FINAL_VALIDATOR_GENERAL_INTENT_DEPENDENCY = 0（只看 candidate + evidence, 不看用户意图分类）；build_evidence_contract 同步去 source_constraint/subject_authors |
+| 新增 | 单源 Context Builder `_build_context_messages()`（主提示+persona+语言+时期上下文合并为一条）；hard 预算指令保留为机械状态位 |
+| 工具描述 | search_books/get_book_detail 补编号型作品定位指引（§10 capability guidance, 无 MUST 式措辞） |
+
+VERIFY_LATER_MISSTATEMENT 随 RP1 删除——其"措辞 regex + 台账"判定属 task-intent
+discipline 而非 evidence/action consistency（§4 原则的裁定）。
+
+### 13.2 注入点终态
+
+| BEFORE（O4 主阶段后 7 处） | AFTER |
+|---|---|
+| 主提示 / persona / PremiseVerifier / plan(VERIFY_NOW+constraint+temporal) / 语言 / 术语核验 / hard 预算 | **单源 Context Builder 1 处**（主提示+persona+语言+时期合并一条）+ hard 预算机械状态 1 处 |
+
+```
+COGNITIVE_POLICY_INJECTION_SITES = 1（+1 机械预算位）
+SEMANTIC_RUNTIME_DIRECTIVE_SITES = 0
+GENERAL_COGNITIVE_CLASSIFIER = 0
+PRE_LLM_FACTUAL_CORRECTION_AUTHORITY = 0
+FINAL_VALIDATOR_GENERAL_INTENT_DEPENDENCY = 0
+TEMPORAL_PERSONA_OWNER = Persona/Context layer（agents.py）
+```
+
+### 13.3 测试与 LOC
+
+- pytest backend/tests -q: **331 passed / 0 failed**（350 → 331 = 删 27 个意图/
+  核验/一致性治理用例 + 新增 8 个 RP1 用例 R1–R8）
+- 单跑：O1 causal 17 ✓ / O2 ownership 23 ✓ / O3 authority 15 ✓ / O4 collapse 20 ✓
+- engine 剥注释 grep：verification_intent / VERIFY_NOW / source_constraint /
+  run_epistemic_guards / PremiseVerifier / verif_box / reasoning_plan 全部 False；
+  reasoning_plan / epistemic_guard 全仓引用 = 0
+- LOC：engine 1719→1694；agents 399→463（temporal 迁入）；final_validator 225→191；
+  evidence_contract 601→731（classifier 迁入）；请求路径净 -495 行（两轮 RP 累计）
+- done payload：删 plan / verification 字段；其余不变（前端消费面无破坏）
+
+#### 13.5 O4-RP1 Live UAT（真实模型, O4-RP1 build）
+
+| 用例 | 结果 | validator | tools | 时长 |
+|---|---|---|---|---|
+| U1 言必有中出处 | 耗尽零发布（repairs=2） | ok=false: 模型将**小结段落误用 blockquote 格式**（整段被当逐字引文主张）×2 轮 | 14 | 42.5s |
+| U2 康德vs密尔 | 耗尽零发布（repairs=2） | ok=false: 【《快乐的科学》· 第五部 §343】章节号未在证据池（28 调用未成功定位该章） | 28 | 134.2s |
+| U3 尼采 persona | **PASS**（repairs=2 后第三轮发布 3324 字） | ok | 23 | 184.5s |
+| U4 本地未命中 | **PASS**（诚实降级） | ok | 4 | 36.8s |
+| U5 zero-tool | **PASS** | ok | 0 | 13.0s |
+| U6 宰予昼寝 | **PASS**（一次通过——O3 build 同题曾需 repair） | ok, repairs=0 | 7 | 27.6s |
+| U7 研究密集 | **PASS**（repairs=1 后发布 1537 字, 含自愿 compare_views） | ok | 23 | 120.0s |
+
+全部用例: semantic_rejects=0、answer_retract=0、**无效内容零发布**（U1/U2 耗尽路径
+干净收口, validation_failed+error 事件）。
+
+U1/U2 两个耗尽均为**真阳性拒绝**（误用 blockquote 的评注段 / 证据池无该章节号的
+正式引用）, 非 validator 误报。按 O3-Review 既有裁定: 不以 runtime semantic gate
+修复, 记录为 Main-Agent 研究策略/markdown 使用质量问题（模型把评注句排成 blockquote
+= 逐字主张; 修复轮未改正）——后续可在工具/格式指引层（prompt）优化, 不属 runtime。
+
+## 13.4 已知残留（记录, 不阻塞）
+
+1. ObligationLedger.term 保留但失去生产喂入口（verification 分类器已删）——
+   纯事实登记器、零控制效果, O5 可坍缩进 Evidence Store
+2. quote_bound.VERIFY_LATER_RE 无生产消费者（quote_bound 属保留区未触碰）
+3. evaluation_suite 的 PremiseVerifier 为离线自带副本（评分 API 不变）
+4. RP1 后出处题修复轮失败率上升（U1/U2 耗尽）——VERIFY_NOW 脚手架移除的预期代价：
+   模型研究/排版质量裸露（§13.5 两个耗尽均真阳性）; 按 Reviewer 裁定不加回 gate,
+   走 prompt 层格式指引与模型迭代
+
 ## 12. Metrics & FINAL RECEIPT
 
 ```

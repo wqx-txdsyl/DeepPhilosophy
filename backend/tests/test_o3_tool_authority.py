@@ -29,7 +29,6 @@ import pytest
 
 import agent_runtime as AR
 import engine_langgraph as EG
-import reasoning_plan as RP
 import routes.agent as AG
 import agents as AGENTS
 
@@ -68,21 +67,17 @@ def _stub_tools():
     ]
 
 
-def _mk_state(calls, *, plan=None, budget=None, ledger=None,
+def _mk_state(calls, *, budget=None, ledger=None,
               tool_count=0, forced=False):
-    question = "「言必有中」的出处是什么？"
-    if plan is None:
-        plan = RP.build_plan(question, "general", "zh")
     retrievals = set(EG.RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS)
-    # O4: retrieval_state / reentry / no_gain_streak / retrieval_count / user_message
-    # 字段已随 Shadow cognition 删除——state 只含机械治理与核验事实对象。
+    # O4/O4-RP1: retrieval_state / reentry / no_gain_streak / retrieval_count / user_message
+    # / plan / verif_box 字段已随 Shadow cognition 删除——state 只含机械治理与执行事实对象。
     st = {"messages": [AIMessage(content="", tool_calls=calls)],
           "guard": AR.DuplicateGuard(), "budget": budget or AR.ToolBudget(retrieval_tools=retrievals),
           "trace": AR.ToolLoopTrace("c-o3", "m-o3", "general"),
           "obligation_ledger": ledger if ledger is not None else AR.ObligationLedger(),
-          "verif_box": {"state": None, "term": "", "computed": False},
           "raw_tool_log": [], "agent": "general", "language": "zh",
-          "tool_count": tool_count, "plan": plan, "forced": forced}
+          "tool_count": tool_count, "forced": forced}
     return st
 
 
@@ -206,7 +201,6 @@ def test_t1_third_distinct_search_executes():
 # T2 — sufficiency telemetry 为"满足"后, Main Agent 仍可读取
 # ═══════════════════════════════════════════════════════
 def test_t2_read_after_sufficiency_telemetry():
-    plan = RP.build_plan("「言必有中」的出处是什么？", "general", "zh")
     ledger = AR.ObligationLedger()
     st, msgs = _run_node([("get_chapter", {"book_id": "d9272a80942a", "chapter_idx": 13})],
                          ledger=ledger)

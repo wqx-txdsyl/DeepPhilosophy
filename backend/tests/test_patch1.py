@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """Patch 1 纯规则单元测试（Backend Reliability Patch 1: B1/B3/B4/B5/B7）
 
-覆盖: 术语核验与措辞约束（B3）、时期检测与路由（B5）、
+覆盖: 时期检测与路由（B5, O4-RP1 起归 agents 人格层）、
 引用核验（B4, O2 后为 final_validator 结构化校验）与内部控制标签剥离、RationaleParser 防泄漏。
 O4 Cognitive Layer Collapse: 问题类型分类（B7）/复杂度档位（B1）/RetrievalState 语义增益/
 sufficiency 收敛已随 Shadow planner 删除——相关用例移除, 行为契约由 test_o4_cognitive_collapse 覆盖。
+O4-RP1: 术语核验/措辞约束注入（B3）已随旧 planner 模块整体删除——
+"这个词是否逐字出现"由 Main Agent 自己读取原文后判断, runtime 不再先行核验再注入措辞约束。
 不联网、不调 LLM、不改任何数据。
 """
 import sys
@@ -15,75 +17,45 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import pytest  # noqa: E402
 
-import reasoning_plan as RP  # noqa: E402
-import agent_runtime as AR   # noqa: E402
+import agents as AGENTS  # noqa: E402
 import final_validator as FV  # noqa: E402
 from engine_langgraph import RationaleParser, _strip_control_tags, _visible_text  # noqa: E402
 
 
 # ═══════════════════════════════════════════════════════
-# B3: 术语核验
-# ═══════════════════════════════════════════════════════
-class TestTermVerification:
-    def test_detect(self):
-        assert RP.detect_term_presence("是否明确提出了“无目的的合目的性”这个完整术语？")["term"] == "无目的的合目的性"
-        assert RP.detect_term_presence("“共通感”是不是民主投票？") is None  # 无术语核验线索
-
-    def test_exact(self):
-        log = [{"name": "get_chapter", "result_full": {"book_id": "x", "text": "……无目的的合目的性……"}}]
-        v = RP.verify_term_presence("无目的的合目的性", log)
-        assert v["state"] == "VERIFIED_EXACT"
-
-    def test_semantic(self):
-        log = [{"name": "get_chapter",
-                "result_full": {"book_id": "x", "text": "……无目的的愉悦与合目的性的形式……"}}]
-        v = RP.verify_term_presence("无目的的合目的性", log)
-        assert v["state"] == "VERIFIED_SEMANTIC"
-
-    def test_not_found(self):
-        log = [{"name": "search_books",
-                "result_full": {"results": [{"book_title": "书", "snippet": "合目的性是反思判断力的原则"}]}}]
-        v = RP.verify_term_presence("无目的的合目的性", log)
-        assert v["state"] == "NOT_FOUND"
-
-    def test_unverified_wording_constrained_at_prompt_layer(self):
-        # O2 改写: 旧 constrain_unconditional_claim（runtime 句界改写）已删除——
-        # NOT_FOUND 状态改为 prompt 层措辞约束注入, 由 Main Agent 自己如实表述
-        assert not hasattr(RP, "constrain_unconditional_claim"), "runtime 句子改写不得回归"
-        inj = RP.verification_injection({"state": "NOT_FOUND", "term": "无目的的合目的性"})
-        assert inj and "不得无条件肯定" in inj and "不能确认" in inj
-        # EXACT 状态允许明确措辞（不约束）
-        inj_ok = RP.verification_injection({"state": "VERIFIED_EXACT", "term": "无目的的合目的性"})
-        assert "逐字命中" in inj_ok and "不得" not in inj_ok
-
-    def test_term_claim_gate_removed_not_runtime(self):
-        # O2 改写: 旧 TermClaimGate（流式句界改写门）已删除——未核验对象的措辞
-        # 约束只能经 prompt 注入, 引擎正文通道零改写
-        assert not hasattr(RP, "TermClaimGate"), "流式句子改写门不得回归"
-        # 正文通道仅做机械净化（控制标签/内部措辞剥离）, 不改写术语句
-        s = "可以确认——康德已经完整提出了无目的的合目的性。"
-        assert _visible_text(s) == s
-
-
-# ═══════════════════════════════════════════════════════
-# B5: 时期检测与路由
+# B5: 时期检测与路由（Persona/Context layer, agents 层持有）
 # ═══════════════════════════════════════════════════════
 class TestTemporal:
     def test_detect(self):
-        t = RP.detect_temporal("1872年的你和1888年的你，会怎样分别评价康德的“无利害审美”？")
+        t = AGENTS.detect_temporal("1872年的你和1888年的你，会怎样分别评价康德的“无利害审美”？")
         assert t["detected"] and t["years"] == [1872, 1888]
 
     def test_detect_words(self):
-        assert RP.detect_temporal("你早期的想法和晚期有什么不同？")["detected"]
+        assert AGENTS.detect_temporal("你早期的想法和晚期有什么不同？")["detected"]
 
     def test_year_to_period(self):
-        assert RP.year_to_period("nietzsche", 1872) == "early"
-        assert RP.year_to_period("nietzsche", 1888) == "late"
-        assert RP.year_to_period("nietzsche", 1880) == "middle"
+        assert AGENTS.year_to_period("nietzsche", 1872) == "early"
+        assert AGENTS.year_to_period("nietzsche", 1888) == "late"
+        assert AGENTS.year_to_period("nietzsche", 1880) == "middle"
 
     def test_directive_requires_period_tool(self):
-        d = RP.temporal_directive("nietzsche", {"years": [1872, 1888]}, "zh")
+        d = AGENTS.temporal_directive("nietzsche", {"years": [1872, 1888]}, "zh")
         assert "philosopher_period" in d and "1872年→early" in d and "1888年→late" in d
+
+
+# ═══════════════════════════════════════════════════════
+# B3 (O4-RP1 删除确认): 术语核验链不得回归
+# ═══════════════════════════════════════════════════════
+class TestTermVerificationRemoved:
+    def test_no_term_verification_symbols(self):
+        import sys as _sys
+        assert not any(m.endswith("plan") and m.startswith("reasoning") for m in _sys.modules), "旧 planner 模块不得回归"
+        assert not hasattr(AGENTS, "detect_term_presence")
+        assert not hasattr(AGENTS, "verify_term_presence")
+        assert not hasattr(AGENTS, "verification_injection")
+        # 引擎正文通道仅做机械净化（控制标签/内部措辞剥离）, 不改写术语句
+        s = "可以确认——康德已经完整提出了无目的的合目的性。"
+        assert _visible_text(s) == s
 
 
 # ═══════════════════════════════════════════════════════

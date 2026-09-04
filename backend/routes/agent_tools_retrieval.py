@@ -107,7 +107,9 @@ def _exec_search_books(args):
 
 register_tool(
     "search_books",
-    "在 403 本哲学原著中全文检索（书名/作者/章节内容关键词命中）。用于回答哲学问题时找原文依据、引言、概念出处。",
+    "在 403 本哲学原著中全文检索（书名/作者/章节内容关键词命中）。用于回答哲学问题时找原文依据、引言、概念出处。"
+    "对于按格言号/节号/篇章编号组织的作品（如尼采《快乐的科学》、马基雅维利《君主论》），"
+    "若检索结果无法直接定位编号，可先查询作品详情/目录确认章节结构再读取。",
     {"type": "object", "properties": {"query": {"type": "string", "description": "检索关键词（哲学概念/人名/书名/句子片段）"}, "limit": {"type": "integer", "description": "返回结果数上限"}}, "required": ["query"]},
     _exec_search_books,
 )
@@ -160,7 +162,8 @@ def _exec_book_detail(args):
 
 register_tool(
     "get_book_detail",
-    "获取一本书的详情（简介/作者/目录/章节数）。",
+    "获取一本书的详情（简介/作者/目录/章节数）。对于按格言号/节号/篇章编号组织的作品（如尼采《快乐的科学》、"
+    "马基雅维利《君主论》），若检索结果无法直接定位编号，可先查询作品详情/目录确认章节结构再读取。",
     {"type": "object", "properties": {"book_id": {"type": "string", "description": "书名或 search_books 返回的 book_id"}}, "required": ["book_id"]},
     _exec_book_detail,
 )

@@ -30,7 +30,7 @@ import quote_bound as QB
 import routes.agent as AG
 import final_validator as FV
 from final_validator import (ValidationResult, ValidationIssue, validate_final_candidate,
-                             check_citations, check_quotes, check_consistency,
+                             check_citations, check_quotes,
                              MAX_VALIDATION_REPAIRS)
 
 
@@ -478,16 +478,19 @@ class TestT10RepairExhaustionNeverPublishes:
 
 
 # ═══════════════════════════════════════════════════════
-# O2 附带: verify-later 矛盾 → validator issue（机械 conversation-state 矛盾）
+# O2 附带 (O4-RP1 删除确认): verify-later 一致性治理已随 task-intent discipline
+# 删除——validator 只依赖 candidate + evidence, 无会话状态/意图参数
 # ═══════════════════════════════════════════════════════
 class TestConsistencyValidator:
-    def test_verify_later_misstatement_when_already_read(self):
+    def test_verify_later_governance_removed(self):
+        assert not hasattr(FV, "check_consistency")
+        assert not hasattr(FV, "VERIFY_LATER_MISSTATEMENT")
         ans = "如果你需要原文，我可以进一步读取《论语》原文核验。"
-        issues = check_consistency(ans, primary_text_read=True)
-        assert len(issues) == 1 and issues[0].code == FV.VERIFY_LATER_MISSTATEMENT
+        res = validate_final_candidate(ans, raw_tool_log=[], fallback_log=[])
+        assert res.ok is True, "verify-later 措辞不再被打回（certainty/时机归 Agent 认知）"
 
     def test_strong_certainty_no_longer_governed(self):
-        """强确定性措辞 + 证据不足 → 不再产生任何 validator issue（certainty 归 Agent 认知）"""
+        """强确定性措辞 + 证据不足 → 不产生任何 validator issue（certainty 归 Agent 认知）"""
         ans = "可以毫无疑问地确认，这句话就是《论语》原文。"
-        issues = check_consistency(ans, primary_text_read=False)
-        assert issues == []
+        res = validate_final_candidate(ans, raw_tool_log=[], fallback_log=[])
+        assert res.ok is True

@@ -22,18 +22,19 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pytest
 from langchain_core.messages import AIMessageChunk, ToolMessage
 
-import epistemic_guard as eg
+from evaluation_suite import PremiseVerifier   # O4-RP1: 离线评分自带副本（原 guard 模块已删）
 import evidence_contract as ec
 from routes import agent as AG
 import routes.agent_core as agent_core
 
 
 # ═══════════════════════════════════════════════════════
-# S1 — 84/87 Premise Benchmark（语义: proposition + context, 非数字替换）
+# S1 — 84/87 Premise Benchmark（语义: proposition + context, 非数字替换;
+#      检出能力只在离线评分副本——runtime 不再据此注入）
 # ═══════════════════════════════════════════════════════
 def test_s1_a_opening_87_corrected_to_84():
     # A. "小说开头老人已经87天没捕到鱼" → 当前这次是 84 天, 必须纠正
-    checks = eg.PremiseVerifier().check("小说开头老人已经87天没捕到鱼")
+    checks = PremiseVerifier().check("小说开头老人已经87天没捕到鱼")
     c = next((x for x in checks if x.get("rule_id") == "oldman_84_days"), None)
     assert c is not None, "开篇当前这次 87 → 必须检出"
     assert c["referent_mode"] == "current"
@@ -43,36 +44,37 @@ def test_s1_a_opening_87_corrected_to_84():
 
 def test_s1_b_historical_87_not_corrected():
     # B. "老人以前有过87天没捕到鱼的经历" → 历史 87 天本身正确: 只确认, 不得纠正
-    checks = eg.PremiseVerifier().check("老人以前有过87天没捕到鱼的经历")
+    checks = PremiseVerifier().check("老人以前有过87天没捕到鱼的经历")
     assert checks, "历史 87 天应产生确认项"
     c = checks[0]
     assert c["status"] == "confirmed", "历史 87 天不得标为 contradicted"
     assert c["referent_mode"] == "historical"
     assert "87" in c["corrected_value"]
     assert not any(x["status"] == "contradicted" for x in checks), "不得误纠"
-    inj = "\n".join(eg.run_epistemic_guards("老人以前有过87天没捕到鱼的经历")["injections"])
-    assert "不要纠正" in inj, "确认注入必须要求不纠正"
-    assert "87天" in inj
+    # O4-RP1: 确认/辨析只存在于评分副本——runtime 无任何"不要纠正"directive 注入
+    import engine_langgraph as elg
+    import inspect
+    code_only = "\n".join(ln for ln in inspect.getsource(elg).splitlines()
+                          if not ln.strip().startswith("#"))
+    assert "不要纠正" not in code_only and "前提确认" not in code_only
 
 
 def test_s1_c_ambiguous_distinguished_not_mechanical():
     # C. "老人从87天的困境到最后……" → 歧义: 区分当前 84 与历史 87, 不得机械纠错
-    checks = eg.PremiseVerifier().check("老人从87天的困境到最后安然睡觉，梦见狮子")
+    checks = PremiseVerifier().check("老人从87天的困境到最后安然睡觉，梦见狮子")
     c = next((x for x in checks if x.get("rule_id") == "oldman_84_days"), None)
     assert c is not None
     assert c["referent_mode"] == "ambiguous"
     assert "84天" in c["corrected_value"] and "87天" in c["corrected_value"]
     assert "区分" in c["correction_note"]
-    # 注入必须要求辨析而非武断纠错
-    v = eg.run_epistemic_guards("老人从87天的困境到最后安然睡觉")
-    inj = "\n".join(v["injections"])
-    assert "存在歧义" in inj or "需要区分" in inj
-    assert "不要武断断言" in inj
+    # O4-RP1: 辨析结论不注入——"84/87 该如何区分"由 Main Agent 自主判断
+    v = PremiseVerifier().check("老人从87天的困境到最后安然睡觉")
+    assert any(x.get("referent_mode") == "ambiguous" for x in v)
 
 
 def test_s1_both_facts_can_be_correct():
     # 84 与 87 都可能正确——判定的是"所指事件"而非数字本身
-    pv = eg.PremiseVerifier()
+    pv = PremiseVerifier()
     assert pv.check("小说开头老人已经84天没捕到鱼") == []       # 84 当前正确 → 无矛盾
     h = pv.check("老人以前有过87天没捕到鱼的经历")
     assert h and h[0]["status"] == "confirmed", "87 历史正确 → 只确认不纠正"
@@ -81,7 +83,7 @@ def test_s1_both_facts_can_be_correct():
 
 def test_s1_proposition_plus_context_not_token_only():
     # 同一数字、同一主题词, 仅语境不同 → 判定不同（证明不是简单数字替换）
-    pv = eg.PremiseVerifier()
+    pv = PremiseVerifier()
     a = pv.check("小说开头老人已经87天没捕到鱼")[0]
     b = pv.check("老人以前有过87天没捕到鱼的经历")[0]
     assert a["referent_mode"] == "current" and a["status"] == "contradicted"
@@ -92,10 +94,16 @@ def test_s1_proposition_plus_context_not_token_only():
 # S2 — O2 改写: answer_retract 已不发、runtime 校正尾补已删（如实审计）
 # ═══════════════════════════════════════════════════════
 def test_s2_scan_answer_removed_with_shadow_runtime():
-    # O4: scan_answer / done.epistemic 审计块已删除——runtime 不再检测/记录
-    # "校正是否落实"的语义状态, 落实由 Main Agent 自己负责
-    assert not hasattr(eg, "scan_answer")
-    assert not hasattr(eg, "build_missing_correction_appends"), "runtime 代写校正不得回归"
+    # O4/O4-RP1: scan_answer / 校正补写与 premise 审计随生产 guard 模块整体删除——
+    # production 引擎不得再引用任何此类语义检测路径
+    import inspect
+    import engine_langgraph as elg
+    code_only = "\n".join(ln for ln in inspect.getsource(elg).splitlines()
+                          if not ln.strip().startswith("#"))
+    for gone in ("scan_answer", "build_missing_correction_appends", "run_guards", "build_guard_injections"):
+        assert gone not in code_only, gone
+    assert not hasattr(elg, "scan_answer")
+    assert not hasattr(elg, "build_missing_correction_appends")
 
 
 class _FakeAppRetract:
@@ -423,20 +431,21 @@ def test_uat_t2_superman_xiaoyao_not_equivalent_once(monkeypatch):
 
 
 def test_uat_t3_84_87_three_classes():
-    # A 当前 84 → 纠正; B 历史 87 → 确认不纠正; C 歧义 → 辨析不机械纠错
-    pv = eg.PremiseVerifier()
+    # A 当前 84 → 评分副本检出纠正; B 历史 87 → 确认不纠正; C 歧义 → 辨析不机械纠错
+    # （O4-RP1: 全部为离线评分知识——runtime 零 premise directive）
+    pv = PremiseVerifier()
     a = pv.check("小说开头老人已经87天没捕到鱼")
     assert a and a[0]["referent_mode"] == "current" and "84" in a[0]["corrected_value"]
     b = pv.check("老人以前有过87天没捕到鱼的经历")
     assert b and b[0]["status"] == "confirmed" and b[0]["referent_mode"] == "historical"
     c = pv.check("老人从87天的困境到最后安然睡觉")
     assert c and c[0]["referent_mode"] == "ambiguous"
-    inj = "\n".join(eg.run_epistemic_guards("老人从87天的困境到最后安然睡觉")["injections"])
-    assert "不要武断断言" in inj
-    # 引擎级: T3 注入顺序不变量——先校正再回答
-    v = eg.run_epistemic_guards("老人从一开始87天的执念到了最后安然睡觉，是不是恰是他不再向世界索取意义？")
-    inj3 = "\n".join(v["injections"])
-    assert "先简短纠正" in inj3 and "84" in inj3
+    # 引擎级: 旧 T3 注入顺序不变量已删除——runtime 零前提注入（契约见 TestRP1.R4）
+    import engine_langgraph as elg
+    import inspect
+    code_only = "\n".join(ln for ln in inspect.getsource(elg).splitlines()
+                          if not ln.strip().startswith("#"))
+    assert "先简短纠正" not in code_only and "前提校验" not in code_only
 
 
 def test_uat_t4_nietzsche_ai_boundary_and_citations_verified(monkeypatch):

@@ -13,7 +13,9 @@
       （先校正一两句, 然后继续完整回答; 校正不得吞掉分析、不得拒绝问题）
 
 覆盖 2026-08-30 Phase 4 验收项（O4 瘦身后仍适用部分）:
-  校正:     T3 检出 87→84（"执念"语境）; 注入先纠正再回答; 校正不破坏主体分析
+  校正:     T3 检出 87→84（"执念"语境）; 校正不破坏主体分析
+            （O4-RP1: PremiseVerifier 随生产 guard 模块删除——检出能力只保留在
+            evaluation_suite 离线评分副本; runtime 不再注入"先纠正再回答"directive）
   所有权:   T1/T2/T3 回答由 Main Agent 原样发布——runtime 零注入结构/零补正/零改写
             （O4: interpretation_engine/answer_composer Shadow planner 已删除;
             五维评估中的解释/结构启发式只存在于 evaluation_suite 离线评分器）
@@ -26,8 +28,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from langchain_core.messages import AIMessageChunk
 
-import epistemic_guard as eg
 import evaluation_suite as ev
+from evaluation_suite import PremiseVerifier
 from routes import agent as AG
 
 T1 = "从《老人与海》看加缪的荒谬主义。"
@@ -147,20 +149,24 @@ def test_t2_good_answer_passes_interpretation_evaluation():
 # T3 —— 87 天执念: 必须纠正 84 天, 且不破坏主体分析
 # ═══════════════════════════════════════════════════════
 def test_t3_premise_87_days_detected():
-    checks = eg.PremiseVerifier().check(T3)
+    checks = PremiseVerifier().check(T3)
     ids = [c.get("rule_id") for c in checks]
     assert "oldman_84_days" in ids, f"T3 的 87 天前提必须检出, 实际: {ids}"
     c = next(c for c in checks if c.get("rule_id") == "oldman_84_days")
     assert "84" in c["corrected_value"]
-    assert c["nonblocking"] is True   # 先校正, 不拒绝问题
+    assert c["nonblocking"] is True   # 检出是事实, 不是拒绝
 
 
-def test_t3_injection_orders_correction_before_answer():
-    v = eg.run_epistemic_guards(T3)
-    inj = "\n".join(v["injections"])
-    assert "87天" in inj and "84" in inj
-    assert "先简短纠正" in inj, "注入必须要求先纠正再继续回答"
-    assert "不要因此拒绝回答" in inj, "校正不得破坏主体分析（不拒绝、不纠缠）"
+def test_t3_no_runtime_correction_directive(monkeypatch):
+    # O4-RP1: 旧 guard 会对 T3 注入"先简短纠正再继续回答"directive——已删除。
+    # 事实由 Main Agent 自主检索核验后自行纠正; runtime 零认知注入
+    good = "先纠正一个小事实：《老人与海》开篇写的是连续84天没有捕到鱼，不是87天。其余如常。"
+    evs, fake = asyncio.run(_run_stream(monkeypatch, T3, good))
+    injected = [m.content for m in fake.captured_messages
+                if m.type == "system" and "前提" in (m.content or "")]
+    assert injected == [], "runtime 不得替 Agent 下'用户前提错了'的结论（PRE_LLM_FACTUAL_CORRECTION_AUTHORITY=0）"
+    text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
+    assert "84天" in text
 
 
 def test_t3_good_answer_corrects_and_keeps_analysis(monkeypatch):
@@ -201,7 +207,7 @@ def test_t3_correction_only_answer_flagged_disruptive():
 # ═══════════════════════════════════════════════════════
 def test_phase_s_a_opening_87_corrected():
     # A. 开篇当前这次 → 必须纠正为 84 天
-    checks = eg.PremiseVerifier().check("小说开头老人已经87天没捕到鱼")
+    checks = PremiseVerifier().check("小说开头老人已经87天没捕到鱼")
     c = next((x for x in checks if x.get("rule_id") == "oldman_84_days"), None)
     assert c is not None and c["referent_mode"] == "current"
     assert "84" in c["corrected_value"]
@@ -209,26 +215,29 @@ def test_phase_s_a_opening_87_corrected():
 
 def test_phase_s_b_historical_87_not_corrected():
     # B. 过去那次经历 → 87 天属实: 只确认, 不得纠正（防 LLM 反向误纠）
-    checks = eg.PremiseVerifier().check("老人以前有过87天没捕到鱼的经历")
+    checks = PremiseVerifier().check("老人以前有过87天没捕到鱼的经历")
     assert checks and checks[0]["status"] == "confirmed"
     assert not any(c["status"] == "contradicted" for c in checks)
 
 
 def test_phase_s_c_ambiguous_distinguished_not_mechanical():
     # C. 歧义 → 区分当前 84 与历史 87, 不得机械纠错
-    checks = eg.PremiseVerifier().check("老人从87天的困境到最后安然睡觉，梦见狮子")
+    checks = PremiseVerifier().check("老人从87天的困境到最后安然睡觉，梦见狮子")
     c = next((x for x in checks if x.get("rule_id") == "oldman_84_days"), None)
     assert c is not None and c["referent_mode"] == "ambiguous"
     assert "84天" in c["corrected_value"] and "87天" in c["corrected_value"]
-    inj = "\n".join(eg.run_epistemic_guards(
-        "老人从87天的困境到最后安然睡觉")["injections"])
-    assert "存在歧义" in inj or "需要区分" in inj
-    assert "不要武断断言" in inj
+    # O4-RP1: 歧义辨析是评分层的知识, runtime 不再注入辨析 directive——
+    # 由 Main Agent 自主判断并区分（行为契约见 test_o4_cognitive_collapse.TestRP1.R4）
+    import engine_langgraph as elg
+    import inspect
+    code_only = "\n".join(ln for ln in inspect.getsource(elg).splitlines()
+                          if not ln.strip().startswith("#"))
+    assert "存在歧义" not in code_only and "不要武断断言" not in code_only
 
 
 def test_phase_s_t3_still_current_correction():
     # 既有 T3（"从一开始87天的执念"）语义仍为当前这次 → 纠正不回归
-    checks = eg.PremiseVerifier().check(T3)
+    checks = PremiseVerifier().check(T3)
     c = next((x for x in checks if x.get("rule_id") == "oldman_84_days"), None)
     assert c is not None and c["referent_mode"] == "current"
     assert "84" in c["corrected_value"]

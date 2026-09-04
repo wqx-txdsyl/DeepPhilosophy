@@ -16,7 +16,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import evaluation_suite as ev
-from epistemic_guard import PremiseVerifier
+from evaluation_suite import PremiseVerifier   # O4-RP1: 离线评分自带副本（原 guard 模块已删）
 
 
 # ═══════════════════════════════════════════════════════

@@ -2,10 +2,12 @@
 """Patch 1.1 纯规则单元测试（Final Gate Closure: P1-P7）
 
 P1 execution fact ledger（O4: 纯事实登记器——检索准入/配额/义务总闸已删）/
-P2 核验意图分类 / P3 evidence contract candidate-used 语义与二手排除 /
 P5 短答与空候选零第二 writer（O2: 兜底回答指令与 AG.llm_chat 兜底生成已删）/
 P6 claim role（evidence_contract 内部分级）。
 O4: P4 反事实 guard / P7 原典路径条件已随 Shadow cognition 删除。
+O4-RP1: P2 核验意图分类（含来源约束注入）已随旧 planner 模块整体删除;
+P3 的来源约束二手排除（source_constraint/subject_authors）一并移除——
+evidence contract 只描述 检索候选 ↔ 回答使用 的确定性关系。
 不联网、不调 LLM、不改任何数据。
 """
 import asyncio
@@ -17,81 +19,31 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import pytest  # noqa: E402
 from langchain_core.messages import AIMessageChunk  # noqa: E402
 
-import reasoning_plan as RP    # noqa: E402
 import agent_runtime as AR     # noqa: E402
 import evidence_contract as EC  # noqa: E402
 
 
 # ═══════════════════════════════════════════════════════
-# P2: 核验意图分类
+# P2 (O4-RP1 删除确认): 核验意图分类不得回归
 # ═══════════════════════════════════════════════════════
-class TestVerificationIntent:
-    def test_f12_exact_wording_primary_only(self):
-        vi = RP.detect_verification_intent(
-            "只用亚里士多德自己的原典回答：“人是政治的动物”是不是他的原话？"
-            "如果库里不能精确确认，就直接说不能确认，不要拿二手书替代。")
-        assert vi["kind"] == "EXACT_WORDING"
-        assert vi["constraint"] == "PRIMARY_ONLY"
-        assert vi["term"] == "人是政治的动物"
-        assert vi["subject_author"] == "亚里士多德"
-
-    def test_g2_primary_only_exact_wording(self):
-        vi = RP.detect_verification_intent(
-            "只用斯宾诺莎自己的文本告诉我，“自由就是认识必然”是不是他的原话。")
-        assert vi["kind"] == "EXACT_WORDING" and vi["constraint"] == "PRIMARY_ONLY"
-        assert vi["term"] == "自由就是认识必然" and vi["subject_author"] == "斯宾诺莎"
-
-    def test_g1_source_attribution(self):
-        vi = RP.detect_verification_intent(
-            "“认识你自己”真的是苏格拉底本人说的吗？如果只是德尔斐箴言请直接纠正。")
-        assert vi["kind"] == "SOURCE_ATTRIBUTION"
-        assert vi["term"] == "认识你自己" and vi["subject_author"] == "苏格拉底"
-
-    def test_f02_exact_wording_translation_layer(self):
-        vi = RP.detect_verification_intent(
-            "维特根斯坦在《逻辑哲学论》里是不是逐字写过“语言的界限就是世界的界限”？"
-            "我要确认的是这句中文表述本身，不只是思想大意。")
-        assert vi["kind"] == "EXACT_WORDING"
-        assert vi["term"] == "语言的界限就是世界的界限"
-
-    def test_f03_attribution_book_only(self):
-        vi = RP.detect_verification_intent(
-            "尼采是不是在《查拉图斯特拉如是说》里写过“当你凝视深渊时，深渊也凝视你”？请告诉我具体章节。")
-        assert vi["kind"] == "SOURCE_ATTRIBUTION" and vi["constraint"] == "BOOK_ONLY"
-
-    def test_non_verification_untouched(self):
-        # 普通概念/比较问题不得误判为核验
-        assert RP.detect_verification_intent("比较一下康德和黑格尔对美的看法有什么异同？") is None
-        assert RP.detect_verification_intent("什么是休谟的归纳问题？") is None
-        # G3: 历史批评问题不是措辞/出处核验
-        assert RP.detect_verification_intent(
-            "为什么黑格尔会批评康德的物自体？我问历史上的批评，不要做假想对话。") is None
-
-    def test_f12_plan_carries_verification_intent(self):
-        # O4: plan 不再有 problem_type/complexity（认知分类已删）——
-        # 核验意图与来源约束注入是仅存的机械上下文
-        p = RP.build_plan("只用亚里士多德自己的原典回答：“人是政治的动物”是不是他的原话？"
-                          "如果库里不能精确确认，就直接说不能确认，不要拿二手书替代。")
-        assert "problem_type" not in p and "complexity" not in p
-        assert p["verification_intent"]["constraint"] == "PRIMARY_ONLY"
-        # 来源约束注入存在
-        assert any("原典" in inj for inj in p["injections"])
-
-    def test_f02_f03_enter_verification_path(self):
-        for q in ("维特根斯坦在《逻辑哲学论》里是不是逐字写过“语言的界限就是世界的界限”？我要确认的是这句中文表述本身。",
-                  "尼采是不是在《查拉图斯特拉如是说》里写过“当你凝视深渊时，深渊也凝视你”？请告诉我具体章节。"):
-            p = RP.build_plan(q)
-            assert p["verification_intent"]
+class TestVerificationIntentRemoved:
+    def test_no_intent_classifier_symbols(self):
+        import sys as _sys
+        assert not any(m.endswith("plan") and m.startswith("reasoning") for m in _sys.modules), "旧 planner 模块不得回归"
+        import engine_langgraph as elg
+        assert not hasattr(elg, "detect_verification_intent")
+        assert not hasattr(elg, "verification_constraint_directive")
+        # 引擎源码（剥注释）无意图分类/约束注入引用（行为级审计见 test_o4.TestRP1）
+        import inspect
+        code_only = "\n".join(ln for ln in inspect.getsource(elg).splitlines()
+                              if not ln.strip().startswith("#"))
+        for gone in ("build_plan", "injections"):
+            assert gone not in code_only, gone
 
 
 # ═══════════════════════════════════════════════════════
 # P1: evidence obligation 台账（检索准入）
 # ═══════════════════════════════════════════════════════
-def _f12_vi():
-    return {"kind": "EXACT_WORDING", "term": "人是政治的动物", "quoted": True,
-            "constraint": "PRIMARY_ONLY", "subject_author": "亚里士多德"}
-
-
 class TestObligationLedger:
     """O4: 纯事实登记器——record 后 snapshot 含执行事实; 无 admit/配额/义务总闸"""
 
@@ -143,7 +95,9 @@ class TestObligationLedger:
 
 
 # ═══════════════════════════════════════════════════════
-# P3: evidence contract — retrieved/candidate/used 语义 + 二手排除
+# P3: evidence contract — retrieved/candidate/used 语义
+# （O4-RP1: source_constraint/subject_authors 二手排除已删除——契约层无意图过滤;
+#   二手是否被引用由 Main Agent 自主判断, O2 validator 只校验引用可核验性）
 # ═══════════════════════════════════════════════════════
 def _f12_tool_log():
     return [
@@ -162,38 +116,18 @@ def _f12_tool_log():
 
 
 class TestEvidenceUsedSemantics:
-    def test_f12_secondary_excluded_from_used(self):
-        ans = ("结论：这一命题确实出自《政治学》卷一第二章，但不是逐字原话。\n"
-               "原句是“人类自然是趋向于城邦生活的动物”【《政治学》· 第二章】。\n"
-               "普莱希特写道：“人是政治的动物——亚里士多德的这一命题”，这是意译。")
-        c = EC.build_evidence_contract(_f12_tool_log(), ans, "general", "zh",
-                                       source_constraint="PRIMARY_ONLY",
-                                       subject_authors=["亚里士多德"])
-        used_books = {e["book"] for e in c["used_evidence"]}
-        assert "政治学" in used_books
-        assert all("普莱希特" not in (e.get("author") or "") for e in c["used_evidence"])
-        assert all("普莱希特" not in (e.get("book") or "") for e in c["citations"])
-        # 二手可存在于 retrieved/candidate（正文对齐）, 但 used=false 且带排除原因
-        sec = [e for e in c["retrieved_evidence"] if "普莱希特" in (e.get("author") or "")]
-        assert sec and sec[0]["candidate"] is True
-        assert sec[0]["used"] is False
-        assert sec[0].get("excluded_reason") == "secondary_source"
-        assert c["secondary_excluded"] and all("普莱希特" in (e.get("author") or "")
-                                               for e in c["secondary_excluded"])
-
     def test_no_constraint_keeps_current_semantics(self):
         ans = "原句见【《政治学》· 第二章】。普莱希特的概括见《认识世界：古代与中世纪哲学》。"
         c = EC.build_evidence_contract(_f12_tool_log(), ans, "general", "zh")
         assert c["used_count"] >= 1
-        # 未加约束时二手不被排除（向后兼容）
 
-    def test_subject_unknown_no_overblocking(self):
-        # subject 未知时不做排除（防过度排除）
-        ans = "普莱希特认为是意译【《认识世界：古代与中世纪哲学》· 在民主政治与寡头政治之间】。"
-        c = EC.build_evidence_contract(_f12_tool_log(), ans, "general", "zh",
-                                       source_constraint="PRIMARY_ONLY", subject_authors=[])
-        assert any("普莱希特" in (e.get("book") or "") or "普莱希特" in (e.get("author") or "")
-                   for e in c["used_evidence"])
+    def test_contract_signature_has_no_intent_params(self):
+        # validator/契约不依赖用户意图分类（O4-RP1 §3）:
+        # build_evidence_contract 签名中不得再有 source_constraint/subject_authors
+        import inspect
+        sig = inspect.signature(EC.build_evidence_contract)
+        for gone in ("source_constraint", "subject_authors"):
+            assert gone not in sig.parameters, gone
 
     def test_candidate_flag(self):
         ans = "原句是“人类自然是趋向于城邦生活的动物”【《政治学》· 第二章】。"

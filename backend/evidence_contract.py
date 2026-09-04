@@ -12,8 +12,10 @@ retrieval candidates 误解为 answer evidence。
                              websearch 等 secondary 仅审计, 不进引用面板）
   EvidenceUsageVerifier    回答正文 ↔ 证据的确定性对齐（引用标注精确匹配 + 片段
                             shingle 重叠）→ used_evidence（retrieved 且 used）
-  ClaimEvidenceBinder      Claim 抽取与知识论定级（复用 epistemic_guard 分级线索）+
-                            claim → evidence 绑定; SPECULATION 绝不绑定 DIRECT evidence
+  EpistemicClaimClassifier Claim 知识论分级（9 类, O4-RP1 起由本文件本地定义
+                            本文件——只做 claim → quote/citation/source-bound claim 的
+                            deterministic evidence binding 分类, 无 runtime 控制效果）
+  ClaimEvidenceBinder      Claim 抽取与证据绑定; SPECULATION 绝不绑定 DIRECT evidence
   CitationValidity         引用【《书名》·章节】必须能映射到 used_evidence;
                             仅"检索过"没有资格进入引用面板; 未核验引用单列
                             unverified_citations（不入面板）
@@ -22,6 +24,9 @@ Phase 3 边界（见任务书）:
   - 不改 Graph / Memory / Persona Snapshot / 矢量库 / 工具注册表 / 流式协议
   - done 事件新增 evidence 字段; citations 字段改投影 used_evidence（面板向后兼容）
   - 纯规则生效, 异常只降级为跳过, 绝不影响主流程（与 Phase 1/2 同机制）
+
+O4-RP1: build_evidence_contract 不再接收 source_constraint/subject_authors——
+契约只描述"检索到的 ↔ 回答用的"确定性关系, 不按用户意图分类排除证据。
 
 用法（engine_langgraph.stream_agent 内, 应答完成后）:
   contract = build_evidence_contract(tool_log, full_answer, agent, language)
@@ -33,10 +38,9 @@ import threading
 import time
 from pathlib import Path
 
-from epistemic_guard import EpistemicClaimClassifier   # 复用 Claim 知识论分级线索（单一真源）
-
 BASE = Path(__file__).resolve().parent
 LOG_FILE = BASE / "data" / "evidence_contract.jsonl"   # 运行时记录（backend/data 已 gitignore）
+PHILOSOPHERS_FILE = BASE / "data" / "philosophers.json"
 
 # 引用标注提取（Phase T/T13-A: 统一覆盖 canonical + 全部已知变体）:
 #   canonical   【《书名》·章节】 / 【《书名》】 / 【《书名》 · 章节】
@@ -253,13 +257,13 @@ def _dedup(cands):
 # ═══════════════════════════════════════════════════════
 # 3. EvidenceUsageVerifier —— 回答正文 ↔ 证据的确定性对齐
 # ═══════════════════════════════════════════════════════
-# Patch 1.1 (P3) 语义重定义:
+# 语义定义:
 #   retrieved_evidence  = 检索到（候选全集）
 #   candidate_evidence  = 可能支持 claim（正文对齐: 引用标注/片段重叠命中）
-#   used_evidence       = 最终可见 claim 实际依赖（candidate ∩ 来源约束可admissible）
+#   used_evidence       = 最终可见 claim 实际依赖（candidate 且可核验）
 #   visible_citation    ⊆ used_evidence（引用面板/正式引用只从 used 投影）
-#   请求 PRIMARY_ONLY / AUTHOR_ONLY 时: 二手研究可存在于 retrieved/candidate,
-#   但 used=false / visible=false——不是靠 renderer 隐藏, 而是契约层排除。
+# O4-RP1: 来源约束排除（PRIMARY_ONLY/AUTHOR_ONLY 二手过滤）已删除——
+# "该用哪些来源"由 Main Agent 自主判断, 契约只登记确定性使用事实。
 def _evidence_used(ev, ans_norm, markers, ans_raw):
     """used = ①回答含该证据的引用标注【《书》·章】 ②回答摘引了检索片段（shingle 重叠）;
     引号内短引文（10 字以上连续摘引）也计入"""
@@ -278,34 +282,177 @@ def _evidence_used(ev, ans_norm, markers, ans_raw):
     return False
 
 
-# 作者不明/集体署名（无法建立二手性 → 保留可admissible, 防过度排除）
-_UNKNOWN_AUTHOR_RE = re.compile(r"^\s*(佚名|无名氏|匿名|unknown|compiled|编)\s*$", re.I)
+# ═══════════════════════════════════════════════════════
+# 3.5 Claim 知识论分级（O4-RP1 起由本文件本地定义——
+#     evidence provenance taxonomy: claim → quote/citation/source-bound 分类,
+#     只服务 deterministic evidence binding, 无任何 runtime 控制效果）
+# ═══════════════════════════════════════════════════════
+def _strip_marks(s):
+    return (s or "").replace("《", "").replace("》", "").replace(" ", "").strip()
 
 
-def _author_matches_subject(author, subject_authors):
-    """证据作者是否为提问对象本人 → True(本人) / False(确定非本人=二手) / None(无法判定)"""
-    a = _norm(author)
-    if not a or _UNKNOWN_AUTHOR_RE.match(author or ""):
-        return None
-    for s in subject_authors or []:
-        sn = _norm(s)
-        if sn and (sn in a or a in sn):
-            return True
-    return False
+def _norm_author(s):
+    """作者名归一化: 去中间点变体/全名, 留短名（海德格尔 / 马丁·海德格尔 → 海德格尔）"""
+    t = (s or "").strip()
+    for sep in ("·", ".", "·"):
+        t = t.replace(sep, "·")
+    if "·" in t and t.split("·")[-1]:
+        return t.split("·")[-1].strip()
+    return t
 
 
-def _admissible(ev, source_constraint, subject_authors):
-    """P3: 来源约束下的 used 准入。PRIMARY_ONLY/AUTHOR_ONLY 时, 已知作者与提问对象
-    不符的证据 = 二手研究 → 不得进入 used_evidence（retrieved/candidate 可保留）。
-    提问对象未知（subject_authors 为空）时不做排除——无法建立二手性, 防过度排除。"""
-    if source_constraint not in ("PRIMARY_ONLY", "AUTHOR_ONLY"):
-        return True, ""
-    if not subject_authors:
-        return True, ""
-    m = _author_matches_subject(ev.get("author") or "", subject_authors)
-    if m is False:
-        return False, "secondary_source"
-    return True, ""
+_philos_cache = None
+_philos_lock = threading.Lock()
+
+
+def _load_philosophers():
+    """backend/data/philosophers.json（id→记录）→ {短名: 原名} + 原始短名集合"""
+    global _philos_cache
+    if _philos_cache is None:
+        with _philos_lock:
+            if _philos_cache is None:
+                try:
+                    raw = json.load(open(PHILOSOPHERS_FILE, encoding="utf-8"))
+                    vals = list(raw.values()) if isinstance(raw, dict) else raw
+                    names = set()
+                    for v in vals:
+                        n = (v.get("name") or "").strip()
+                        if n:
+                            names.add(n)
+                            names.add(_norm_author(n))
+                    _philos_cache = names
+                except Exception:
+                    _philos_cache = set()
+    return _philos_cache
+
+
+# 常见别称: 哲学家短名 ↔ 全名/拉丁名（用户口语常用短名, 需匹配到）
+PHILOSOPHER_ALIASES = {
+    "尼采": "尼采", "弗里德里希·尼采": "尼采", "f·尼采": "尼采",
+    "加缪": "加缪", "阿尔贝·加缪": "加缪",
+    "叔本华": "叔本华", "亚瑟·叔本华": "叔本华",
+    "康德": "康德", "伊曼努尔·康德": "康德",
+    "黑格尔": "黑格尔", "格奥尔格·黑格尔": "黑格尔",
+    "萨特": "萨特", "让-保罗·萨特": "萨特",
+    "海德格尔": "海德格尔", "马丁·海德格尔": "海德格尔",
+    "维特根斯坦": "维特根斯坦", "路德维希·维特根斯坦": "维特根斯坦",
+    "柏拉图": "柏拉图", "苏格拉底": "苏格拉底", "亚里士多德": "亚里士多德",
+    "马克思": "马克思", "卡尔·马克思": "马克思",
+    "庄子": "庄子", "老子": "老子", "孔子": "孔子", "释迦牟尼": "释迦牟尼", "佛陀": "释迦牟尼",
+}
+
+
+def _match_philosopher(text):
+    """在文本中查找已知哲学家名（返回规范短名列表, 按出现顺序, 去重）"""
+    pool = set()
+    pool |= set(PHILOSOPHER_ALIASES.keys())
+    pool |= _load_philosophers()
+    found = []
+    seen = set()
+    # 长名优先（"弗里德里希·尼采" 先于 "尼采", 防短名吞长名）
+    for name in sorted(pool, key=len, reverse=True):
+        n = _norm_author(name)
+        if n and n in text and n not in seen:
+            seen.add(n)
+            found.append(PHILOSOPHER_ALIASES.get(n) or PHILOSOPHER_ALIASES.get(name) or n)
+    # 去重保序
+    out = []
+    for f in found:
+        if f not in out:
+            out.append(f)
+    return out
+
+
+EPISTEMIC_TYPES = [
+    "SOURCE_FACT",                # 文本明确写到的事实（带可核验出处）
+    "DIRECT_QUOTE",              # 原文直接引语
+    "TEXTUAL_INFERENCE",         # 对文本的解释性推断（文学/哲学解读）
+    "CROSS_TEXT_INTERPRETATION", # 借用另一思想家框架的跨文本解读
+    "SCHOLARLY_INTERPRETATION",  # 学界/研究界的解释
+    "AUTHOR_COUNTERFACTUAL",     # 关于作者本人会怎么想的反事实推演
+    "USER_PREMISE",              # 用户提出的前提/假设
+    "SPECULATION",               # 推测（作者未表、亦无研究共识）
+    "UNKNOWN",                   # 现有材料不足以判断
+]
+
+# 语言约束: 不同类型绑定不同表达强度（分级时引用）
+EPISTEMIC_LANGUAGE = {
+    "SOURCE_FACT": "文本明确写道……",
+    "DIRECT_QUOTE": "原文写道……",
+    "TEXTUAL_INFERENCE": "这可以理解为……",
+    "CROSS_TEXT_INTERPRETATION": "若采用加缪的框架，可以把它读作……",
+    "SCHOLARLY_INTERPRETATION": "某种研究解释认为……",
+    "AUTHOR_COUNTERFACTUAL": "我们无法知道作者本人会如何评价；依据其现有思想……",
+    "SPECULATION": "一种可能的解释是……",
+    "UNKNOWN": "现有材料不足以判断……",
+    "USER_PREMISE": "基于你提出的这个前提……",
+}
+
+# 具体 → 一般 顺序匹配（首个命中即定级; 全部未中 → UNKNOWN）
+_CLAIM_CUES = [
+    ("DIRECT_QUOTE", r"原文写道|原文说|书上原话|引文\s*[\"“]|直接引用|原文是|今引|原话是"),
+    ("SOURCE_FACT", r"文本明确写道|明确记载|书中明确|文本明确|原文明确|史料记载|史实是"),
+    ("CROSS_TEXT_INTERPRETATION", r"若采用.{0,12}的框架|以.{0,10}的(视角|框架|立场).{0,8}(读作|来解|看)|用.{0,10}的框架"),
+    ("SCHOLARLY_INTERPRETATION", r"某种研究解释认为|有研究(表明|认为|指出)|学界(普遍|一般认为|认为)|有学者(认为|指出)|学术研究认为"),
+    ("AUTHOR_COUNTERFACTUAL", r"会(怎么|如何|怎样)(看|想|评价|说)|如果.{0,10}(活到|活在|来到|穿越|见到).{0,8}(今天|今日|现代|当世|当代|现在)|活到今天|想必会|一定会认为|绝不会认为"),
+    ("USER_PREMISE", r"你(提出|提到|说|认为|假设|的前提|说的前提)|正如你(所说|认为|提到)|你问的是"),
+    ("SPECULATION", r"一种可能的解释是|或许是|也许|可能|大概|猜测|推测|不妨设想"),
+    ("UNKNOWN", r"无法(确定|判断|知道)|现有材料(不足|无法)|尚无定论|没有证据表明|不清楚|无从判断"),
+]
+
+# 文本意义类解读词（"意味着/象征/隐喻/转变" 等 → 解释性推断, 不是文本事实）
+_INTERPRETIVE_RE = re.compile(r"意味着|象征着|隐喻|象征|暗示|反映出|体现了|代表了|说明了|表明|表达了|完成了(?=.*转变)|转变|寓意|读作|解读为|可以理解为")
+# 强模态（"一定/必然/毫无疑问" → 即便涉及文本, 也降级为解释/推测, 禁止 SOURCE_FACT）
+_STRONG_MODAL_IN_TEXT = re.compile(r"一定|必然|毫无疑问|绝对|无疑|显然是")
+
+
+class EpistemicClaimClassifier:
+    """Claim 分级器（规则版; confidence 恒 None）
+
+    classify(text) → {"claim", "epistemic_type", "confidence": None, "evidence_ids": []}
+    """
+
+    def classify(self, text, extra=False):
+        t = (text or "").strip()
+        ctype = self._cue_match(t)
+        strong_modal = bool(_STRONG_MODAL_IN_TEXT.search(t)) and bool(_INTERPRETIVE_RE.search(t))
+        # 强模态的文本解读 → 解释性判断, 而非文本事实（"一定完成了转变" ≠ 原文所说）
+        if ctype in ("TEXTUAL_INFERENCE",) and strong_modal:
+            ctype = "TEXTUAL_INFERENCE"
+        evidence_ids = self._evidence_ids(t)
+        out = {"claim": t, "epistemic_type": ctype, "confidence": None, "evidence_ids": evidence_ids}
+        if extra:
+            out["strong_modal"] = strong_modal
+        return out
+
+    def _cue_match(self, t):
+        if not t:
+            return "UNKNOWN"
+        for ctype, pat in _CLAIM_CUES:
+            if re.search(pat, t):
+                return ctype
+        # 文本意义类解读（无引文/出处标记, 但有"意味着/隐喻/象征…"）→ 解释性推断
+        if _INTERPRETIVE_RE.search(t):
+            return "TEXTUAL_INFERENCE"
+        return "UNKNOWN"
+
+    def _evidence_ids(self, t):
+        """从文本提取可核验出处锚点（《书名》/章节引号块）"""
+        ids = []
+        for m in re.finditer(r"《([^》]{1,40})》", t):
+            ids.append(f"book:{_strip_marks(m.group(1))}")
+        for m in re.finditer(r"[“\"]([^”\"]{4,80})[”\"]", t):
+            ids.append(f"quote:{m.group(1)[:20]}")
+        return ids[:8]
+
+    @staticmethod
+    def language_bound(ctype):
+        """类型 → 表达强度模板（语言约束的落地形式）"""
+        return EPISTEMIC_LANGUAGE.get(ctype, EPISTEMIC_LANGUAGE["UNKNOWN"])
+
+    def split_sentences(self, text):
+        """按句末切分（供遍历文本中的每个断言）"""
+        return [s for s in re.split(r"[。！？；!?;\n]", text or "") if s.strip()]
 
 
 # ═══════════════════════════════════════════════════════
@@ -429,17 +576,15 @@ def _project(ev):
     }
 
 
-def build_evidence_contract(tool_log, answer, agent="general", language="zh",
-                            source_constraint=None, subject_authors=None):
+def build_evidence_contract(tool_log, answer, agent="general", language="zh"):
     """构建 Evidence Contract（纯计算, 不调 LLM）
 
-    Patch 1.1 (P3) 语义: retrieved ⊇ candidate ⊇ used; visible_citation ⊆ used。
+    语义: retrieved ⊇ candidate ⊇ used; visible_citation ⊆ used。
       retrieved_evidence: 检索候选全集（含 used=False 的未用候选）
       candidate_evidence: 与回答正文对齐、可能支持 claim 的候选
-      used_evidence:      最终可见 claim 实际依赖（candidate ∩ 来源约束可admissible）
+      used_evidence:      最终可见 claim 实际依赖的候选
       claims:             Claim 列表（知识论分级 + claim role + evidence_ids 绑定）
       citations:          引用面板内容 = used_evidence 投影（前端只消费这里）
-      secondary_excluded: PRIMARY_ONLY/AUTHOR_ONLY 约束下被排除的二手证据（审计用）
       unverified_citations: 回答中出现但检索池无法定位的引用（单列, 不入面板）
       retrieved_count / used_count
     """
@@ -447,16 +592,10 @@ def build_evidence_contract(tool_log, answer, agent="general", language="zh",
     ans_norm = _norm(ans)
     markers = _cite_markers(ans)
     retrieved = _dedup(_extract_candidates(tool_log))
-    secondary_excluded = []
     for ev in retrieved:
         cand = _evidence_used(ev, ans_norm, markers, ans)
         ev["candidate"] = cand
-        ok, reason = _admissible(ev, source_constraint, subject_authors)
-        ev["used"] = bool(cand and ok)
-        if cand and not ok:
-            ev["excluded_reason"] = reason
-            ev["used"] = False
-            secondary_excluded.append(ev)
+        ev["used"] = cand
     used = [e for e in retrieved if e["used"]]
     claims = _claims_from_answer(ans, retrieved)
     evmap = {e["evidence_id"]: e for e in retrieved}
@@ -465,19 +604,11 @@ def build_evidence_contract(tool_log, answer, agent="general", language="zh",
             ev = evmap.get(eid)
             if ev is not None:
                 ev["supports_claim_ids"].append(c["claim_id"])
-    # P3: 二手证据不得绑定任何 claim 的 direct evidence（used=false → 不作支撑）
-    excluded_ids = {e["evidence_id"] for e in secondary_excluded}
-    for c in claims:
-        if excluded_ids:
-            c["evidence_ids"] = [i for i in c["evidence_ids"] if i not in excluded_ids]
-            c["direct_evidence"] = bool(c["evidence_ids"])
     citations = [_project(e) for e in used]
     unverified = _unverified_citations(ans, retrieved)
     _log_record({"phase": "post", "agent": agent, "language": language,
                  "retrieved_count": len(retrieved), "used_count": len(used),
                  "candidate_count": sum(1 for e in retrieved if e.get("candidate")),
-                 "secondary_excluded": len(secondary_excluded),
-                 "source_constraint": source_constraint or "NONE",
                  "claim_count": len(claims),
                  "claim_roles": {r: sum(1 for c in claims if c["role"] == r)
                                  for r in ("TEXTUAL_CLAIM", "RECONSTRUCTION",
@@ -492,7 +623,6 @@ def build_evidence_contract(tool_log, answer, agent="general", language="zh",
         "used_evidence": used,
         "claims": claims,
         "citations": citations,
-        "secondary_excluded": secondary_excluded,
         "unverified_citations": unverified,
         "retrieved_count": len(retrieved),
         "used_count": len(used),

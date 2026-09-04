@@ -20,7 +20,6 @@ from pydantic import create_model, Field
 import routes.agent as AG   # 复用 TOOLS 注册表 / SYSTEM_PROMPT 铁律 / API 配置
 import agents as AGENTS     # 智能体注册表（智能体广场: 通用 + 哲学家）
 import agent_runtime as AR  # Phase A: tool loop 治理（观测/去重/预算/重试/终止）单一真源
-import reasoning_plan as RP  # Patch 1: 问题结构规划（B1/B3/B5/B6/B7 纯规则）
 import tool_contracts as TC  # Phase T: 工具架构（taxonomy/重入/mermaid/措辞净化/所有权审计）
 import quote_bound as QB     # Phase T.1: 逐字引文绑定（Quote Bound / T1.1-D~H）
 
@@ -269,6 +268,53 @@ def get_tools(agent):
 def get_system_prompt(agent):
     return AGENTS.AGENT_PROMPTS.get(agent, SYSTEM_PROMPT_LG)
 
+
+# ── O4-RP1 §8: 单源 Context Builder ──────────────────────────────
+# Main Agent 上下文的唯一组装点: 主系统提示（SYSTEM_PROMPT_LG / AGENT_PROMPTS）
+# + 用户个性化指令 + 语言覆盖 + 人格强化提醒 + 时期人格上下文（agents 层）
+# 组装为一条合并 SystemMessage——runtime 不再有任何分段认知注入
+# （问题分类/核验纪律/来源约束/核验状态等注入源已随 Shadow cognition 删除）。
+# 请求路径的 SystemMessage 注入点 = builder（本函数）+ hard 预算（机械状态, 允许）。
+def _build_context_messages(agent, language, custom_instructions=None,
+                            user_message=None, reinforce=False):
+    """构建 Main Agent 上下文消息（返回 list, 恒为一条 SystemMessage; 无内容时为空）。
+
+    reinforce=False  完整上下文（每请求一次, 置于消息列表头部）
+    reinforce=True   每轮强化消息: 人格 + 语言合并为一条, 不再分段（agent_node 用）
+    时期上下文只随完整上下文注入（persona/context snapshot, 不逐轮重复）。"""
+    if reinforce:
+        parts = []
+        if agent != "general":
+            parts.append(PERSONA_THINK_REMINDER_EN if language == "en" else PERSONA_THINK_REMINDER)
+        if language != "en":
+            # 中文模式每轮强化: 内部思考与回答都必须中文（DeepSeek 偶发英文思考的防线）
+            parts.append("（语言提醒：你的内部思考过程（thinking/reasoning）与最终回答都必须使用中文。禁止用英文思考。")
+        return [SystemMessage(content="\n\n".join(parts))] if parts else []
+    prompt = get_system_prompt(agent)
+    if custom_instructions and custom_instructions.strip():
+        prompt = (prompt.rstrip() +
+                  f"\n\n## 用户的个性化指令（必须遵守）\n{custom_instructions.strip()}")
+    # 语言切换（zh/en）: 覆盖 system 内的语言要求（思考流 + 回答）——"覆盖"语义, 防止与旧中文要求冲突
+    if language == "en":
+        prompt += ("\n\n【语言设置·重要】用户已切换到英文模式。以上（包括系统提示中）所有'使用中文'的指示一律作废。"
+                   "思考流与回答必须全部使用英文（English），工具调用与引用也可用英文。禁止再用中文输出。")
+    else:
+        prompt += ("\n\n【语言要求】所有输出必须使用中文——包括内部思维过程（推理链）与回答。禁止用英文思考或输出。")
+    if agent != "general":
+        # 人格保持提醒（多轮对话后 reasoning 易回归任务规划腔的关键防线）——并入同一条消息
+        prompt += ("\n\n" + (PERSONA_THINK_REMINDER_EN if language == "en" else PERSONA_THINK_REMINDER))
+        # 时期人格上下文（Persona/Context layer, agents 层持有）——仅哲学家智能体 + 检测到时期维度
+        if user_message:
+            try:
+                _temporal = AGENTS.detect_temporal(user_message)
+                if _temporal.get("detected"):
+                    _td = AGENTS.temporal_directive(agent, _temporal, language)
+                    if _td:
+                        prompt += "\n\n" + _td
+            except Exception as _e:
+                logger.warning(f"[temporal-context] skipped: {str(_e)[:120]}")
+    return [SystemMessage(content=prompt)]
+
 # ── StateGraph ─────────────────────────────────────────
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
@@ -282,22 +328,21 @@ class AgentState(TypedDict):
     trace: Any            # ToolLoopTrace（A1）
     tool_count: int       # 本轮已执行工具调用总数（A3 total 预算口径）
     model_retries: int    # 本轮模型 API 重试累计（A1/A4）
-    # ── Patch 1 (B3/B4): 核验与引用核验状态（对象/引用经内存态传递）──
-    # O4 删除的 state 字段: retrieval_count / no_gain_streak / round_all_low /
+    # ── O4: 执行事实台账（对象经内存态传递）──
+    # O4/O4-RP1 删除的 state 字段: retrieval_count / no_gain_streak / round_all_low /
     # round_any_low / retrieval_state / reentry / user_message（Shadow cognition
-    # 遥测与重入治理——控制效果自 O3 起为 0, O4 连同产生与消费一并删除）。
-    plan: Any             # RP.build_plan 结果（temporal/verification_question/verification_intent）
+    # 遥测与重入治理）+ plan / verif_box（Python 先解释用户问题再下认知指令的
+    # 最后残余——问题分类/核验意图/术语核验状态链已整体移除）。
     obligation_ledger: Any  # ExecutionFactLedger（ObligationLedger 瘦身: 纯执行事实登记器）
-    verif_box: Any        # {"state":…, "term":…, "computed":…}（B3 核验状态, 引用传递）
-    raw_tool_log: Any     # 共享 raw 工具记录列表（tools_node 写入, 引擎消费; B4 引用核验用）
+    raw_tool_log: Any     # 共享 raw 工具记录列表（tools_node 写入, 引擎消费; 引用核验用）
 
 async def agent_node(state):
     msgs = list(state["messages"])
     agent = state.get("agent", "general")
-    # 中文模式每轮强化: 内部思考与回答都必须中文（DeepSeek 偶发英文思考的防线）
-    if state.get("language", "zh") != "en":
-        msgs.append(SystemMessage(
-            content="（语言提醒：你的内部思考过程（thinking/reasoning）与最终回答都必须使用中文。禁止用英文思考。"))
+    # ── O4-RP1 §8: 单源 Context Builder——每轮强化消息由 builder 产出
+    # （人格 + 语言合并为一条, 不再分段; 无核验状态/意图类注入）──
+    for _m in _build_context_messages(agent, state.get("language", "zh"), reinforce=True):
+        msgs.append(_m)
     # ── Phase A: 预算与终止条件 ──
     # ══ O3 §5/§8: 停止权威归还 Main Agent——runtime 仅在机械约束下停止循环 ══
     # 保留: hard 全局资源上限（硬上限到达 → 注入机械指令 + forced 补跑一轮已宣告调用）。
@@ -316,16 +361,6 @@ async def agent_node(state):
     # ── O1: 引擎不再代执行任何认知性工具（原 _ensure_primary_read auto-read 已删除）。
     # 主文本读取由 Main Agent 自己宣告; 引擎只保留确定性校验（quote/citation validator,
     # 见收口阶段）。──
-    # ── Patch 1 (B3): 术语核验措辞约束（核验状态已知后每轮注入）──
-    # （这是给模型的核验状态上下文, 不是工具控制——O3 保留 prompt 层注入）
-    try:
-        vbox = state.get("verif_box")
-        if vbox and vbox.get("state"):
-            vtext = RP.verification_injection(vbox, state.get("language", "zh"))
-            if vtext:
-                msgs.append(SystemMessage(content=vtext))
-    except Exception as _e:
-        logger.warning(f"[verification-inject] skipped: {str(_e)[:120]}")
     # 2026-08-14: 同步 LLM 调用移入线程池, 防阻塞事件循环（并发会话卡死）
     # Phase A (A4): 有限重试——可恢复错误（连接中断/超时/429/5xx）按配置退避重试;
     # 耗尽抛 ModelCallError → stream_agent 的 graceful completion（用已取得 evidence 收口）
@@ -614,8 +649,8 @@ def should_continue(state):
     return "tools"
 
 # O4: _ROUTING_PHRASE_RE / _is_routing_injection 已删除——语义路由注入源
-# （interpretation/composer/MAP_HINTS/COMPARISON 路由）已整体移除,
-# plan 注入只剩核验纪律/来源约束/时期要求（本就不含路由措辞）, 无需过滤。
+# （interpretation/composer/MAP_HINTS/COMPARISON 路由）已整体移除;
+# O4-RP1 后上下文唯一来源是 _build_context_messages（本就不含路由措辞）, 无需过滤。
 
 _builder = StateGraph(AgentState)
 _builder.add_node("agent", agent_node)
@@ -1051,23 +1086,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         await _mcp.get_mcp_tools()
     except Exception:
         pass
-    base_prompt = get_system_prompt(agent)
-    if custom_instructions and custom_instructions.strip():
-        base_prompt = (base_prompt.rstrip() +
-                       f"\n\n## 用户的个性化指令（必须遵守）\n{custom_instructions.strip()}")
-    # 语言切换（zh/en）: 覆盖 system 内的语言要求（思考流 + 回答）——"覆盖"语义, 防止与旧中文要求冲突
-    if language == "en":
-        base_prompt += ("\n\n【语言设置·重要】用户已切换到英文模式。以上（包括系统提示中）所有'使用中文'的指示一律作废。"
-                        "思考流与回答必须全部使用英文（English），工具调用与引用也可用英文。禁止再用中文输出。")
-    else:
-        base_prompt += ("\n\n【语言要求】所有输出必须使用中文——包括内部思维过程（推理链）与回答。禁止用英文思考或输出。")
-    # Patch 1 (B2/B4-A): 不再要求模型在内容通道写 <rationale> 标签（该指令是泄漏压力源）——
-    # 思考摘要由引擎侧生成器（安全通道）产出; 模型若自行写出 <rationale> 仍会被解析转发/剥离。
-    messages = [SystemMessage(content=base_prompt)]
-    if agent != "general":
-        # 每轮注入人格保持提醒（多轮对话后 reasoning 易回归规划腔的关键防线）——按语言选择版本
-        messages.append(SystemMessage(
-            content=PERSONA_THINK_REMINDER_EN if language == "en" else PERSONA_THINK_REMINDER))
+    # ── O4-RP1 §8: 单源 Context Builder——主系统提示 + 个性化指令 + 语言覆盖 +
+    # 人格强化 + 时期人格上下文（agents 层）合并为一条 SystemMessage。
+    # 已删除的注入源: PremiseVerifier 事实校正注入（runtime 不得替 Agent 下
+    # "用户前提错了"的结论——事实由 Main Agent 自主检索核验后自行纠正）、
+    # 核验纪律 / 来源约束 / 术语核验状态注入（Python 先解释用户问题再教模型
+    # 怎么认识它的认知层——全部移除, 任务理解归还 Main Agent）。
+    messages = _build_context_messages(agent, language, custom_instructions, req_message)
     for h in (history or [])[-20:]:
         role = h.get("role", "user")
         content = h.get("content", "")
@@ -1077,26 +1102,6 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 原 MAP_HINTS（"必须调用 conceptual_map, 禁止手写"）与 COMPARISON 路由注入
     # （"优先调用 compare_views, 不要自行多路检索"）删除——工具选择权归还 Main Agent;
     # 各工具的 capability 描述（工具 schema description）已说明适用场景, 由模型自主选择。
-    # ── Epistemic Guard（O4 收窄: 只保留 PremiseVerifier 事实校正注入）──
-    # 原前置含 CounterfactualAuthorGuard 反事实边界与认知层级 hedge 注入——语义判断
-    # 随 O4 删除; 剩余的只有"用户问题含可机械核验的事实前提错误"的校正注入。
-    # 护栏尽力而为——任何异常只降级为跳过, 绝不影响主流程
-    try:
-        from epistemic_guard import run_epistemic_guards
-        _epistemic_verdict = run_epistemic_guards(req_message, agent, language)
-        for _inj in _epistemic_verdict.get("injections", []):
-            if _inj:
-                messages.append(SystemMessage(content=_inj))
-    except Exception as _e:
-        logger.warning(f"[epistemic-guard pre] skipped: {str(_e)[:200]}")
-    # O4: interpretation_engine / answer_composer 前置注入块已删除——
-    # 解释多候选强制 / 回答结构指令 / 篇幅软预算均为 runtime 认知治理
-    # （Shadow planner）, 回答形态与解释深度由 Main Agent 自主承担。
-    # ── Patch 1（O4 瘦身版）: plan 只产核验纪律/来源约束/时期要求（无路由类注入）──
-    plan = RP.build_plan(req_message, agent, language)
-    for _inj in plan.get("injections", []):
-        if _inj:
-            messages.append(SystemMessage(content=_inj))
     tool_log = []
     # ── Phase A: tool loop 治理状态（A1 观测 / A2 去重 / A3 hard 预算——单轮生命周期对象）──
     guard = AR.DuplicateGuard()
@@ -1105,23 +1110,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # ── O4: ExecutionFactLedger（纯事实登记器; 原 RetrievalState 语义增益统计已删）──
     obligation_ledger = AR.ObligationLedger()
     raw_tool_log = []   # 共享 raw 工具记录（tools_node 写入; 引用核验/证据契约消费; result_full 保留到收口）
-    verif_box = {"state": None, "term": "", "computed": False}
-    _vq = plan.get("verification_question") or {}
-    if not _vq.get("term") and (plan.get("verification_intent") or {}).get("term"):
-        # P2: 核验意图携带的待核验表述（引号句）→ 术语核验机制复用
-        _vq = {"term": plan["verification_intent"]["term"], "quoted": True}
-    if _vq.get("term"):
-        verif_box["term"] = _vq["term"]
-        obligation_ledger.term = verif_box["term"]
     # ══ O2: Final Answer Ownership——runtime 只保留 VALIDATE / REJECT / mechanical FORMAT ══
     # 流式改写链（LiveCitationSanitizer 引用降级 / QuoteBoundSanitizer 引文转写 /
     # TermClaimGate 句子改写）整体删除: 未核验对象不再被 runtime 改写, 而是作为
     # 结构化 ValidationIssue 打回同一个 Main Agent 修复（final_validator.py）。
+    # O4-RP1: validator 只依赖 candidate + evidence——不再接收任何来源约束/
+    # 提问对象/意图分类参数（FINAL_VALIDATOR_GENERAL_INTENT_DEPENDENCY = 0）。
     from final_validator import (validate_final_candidate, format_feedback,
                                  MAX_VALIDATION_REPAIRS)
-    _vi = plan.get("verification_intent") or {}
-    _sc = _vi.get("constraint") if _vi.get("constraint") in ("PRIMARY_ONLY", "AUTHOR_ONLY") else None
-    _subjects = [_vi["subject_author"]] if _vi.get("subject_author") else []
     # Phase T (T13-B): 运行时措辞净化器——内部治理语言（"检索已被收口/预算已达上限/…"）
     # 不得进入 Final prose; 流式安全（跨 chunk 缓冲）。机械净化, 不改变语义内容。
     _phrase_scr = TC.RuntimePhraseScrubber()
@@ -1221,8 +1217,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 {"messages": msgs, "agent": agent, "language": language,
                  "guard": guard, "budget": budget, "trace": trace,
                  "tool_count": 0, "model_retries": 0,
-                 "plan": plan, "obligation_ledger": obligation_ledger,
-                 "verif_box": verif_box, "raw_tool_log": raw_tool_log},
+                 "obligation_ledger": obligation_ledger,
+                 "raw_tool_log": raw_tool_log},
                 config, stream_mode="messages"):
             node = metadata.get("langgraph_node", "")
             # O1 因果观测: tools→agent 回到 agent 节点 = 一次新的 Main Agent invocation
@@ -1343,18 +1339,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # 本轮工具已处理完 → 清空待执行标记（下一 agent 轮重新计; 2026-08-14）
                 _rat_tools_done += 1
                 pending_tools.clear()
-                # Patch 1 (B3): 术语核验状态计算（首个工具轮后一次性完成; 结果经 verif_box
-                # 引用传递, 下一 agent 轮注入措辞约束）——不再逐工具生成 evidence 摘要
-                # （工具结果解读已由 interpret_thinking 的 tool_note 覆盖, 避免空卡片噪音）
-                if verif_box.get("term") and not verif_box.get("computed"):
-                    try:
-                        _v = RP.verify_term_presence(verif_box.get("term"), raw_tool_log)
-                        verif_box["state"] = _v["state"]
-                        verif_box["computed"] = True
-                        logger.info(f"[verify-term] '{verif_box.get('term')}' → {_v['state']} "
-                                    f"(texts={_v.get('texts_searched')}, exact={_v.get('exact_hits')})")
-                    except Exception as _e:
-                        logger.warning(f"[verify-term] skipped: {str(_e)[:120]}")
+                # O4-RP1: 术语核验状态计算块已删除——"这个词是否逐字出现"的判定
+                # 由 Main Agent 自己读取原文后给出, runtime 不再先行核验再注入措辞约束。
 
     try:
         async for _ev in _stream_graph(messages):
@@ -1425,11 +1411,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         pending["text"] = ""
         repairs_used = 0
         while True:
-            _ledger_snap = obligation_ledger.snapshot() if obligation_ledger is not None else {}
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
-                primary_text_read=bool(_ledger_snap.get("primary_text_read")),
-                language=language, source_constraint=_sc, subject_authors=_subjects)
+                language=language)
             if validation.ok or repairs_used >= MAX_VALIDATION_REPAIRS:
                 break
             repairs_used += 1
@@ -1490,8 +1474,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         #    （含核验声明）; 核验状态经 done.obligation_ledger / done.quote_bound 审计输出。
         # ② postloop drain（净化链残留释放）——净化链已不存在。
         # ③ scan_final_consistency 尾补——G（确定性降调）属语义 hedge, 按 §7 删除不转 validator;
-        #    H（verify-later 矛盾）为机械可判定矛盾, 已转为 ValidationIssue
-        #    （VERIFY_LATER_MISSTATEMENT, 见 final_validator.check_consistency）。
+        #    H（verify-later 矛盾）曾转为 ValidationIssue, O4-RP1 随 task-intent discipline
+        #    一并移除（evidence-consistency 类检查如后续需要再立项）。
         # ══ Phase T.1: Quote Bound 审计（纯检测, 供 done payload; 不产生任何文本）══
         _quote_audit = None
         _vt0 = time.time()
@@ -1513,11 +1497,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         _vt0 = time.time()
         try:
             from evidence_contract import build_evidence_contract
-            # Patch 1.1 (P3): 来源约束传递——PRIMARY_ONLY/AUTHOR_ONLY 时二手不得进入
-            # used_evidence/citations（retrieved/candidate 保留, excluded 单列审计）
-            evidence_payload = build_evidence_contract(
-                tool_log, full_answer, agent, language,
-                source_constraint=_sc, subject_authors=_subjects)
+            # O4-RP1: 来源约束参数已删——契约只描述 检索候选 ↔ 回答使用的确定性关系,
+            # 不再按用户意图分类排除二手证据。
+            evidence_payload = build_evidence_contract(tool_log, full_answer, agent, language)
             citations = evidence_payload["citations"]
         except Exception as _e:
             logger.warning(f"[evidence-contract] skipped: {str(_e)[:200]}")
@@ -1590,27 +1572,29 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 trace.finalize(time.time() - _t_start, error=None,
                                answer_chars=len(full_answer), evidence_ids=_evidence_ids,
                                budget_snapshot=budget.snapshot() if budget else {})
-        # ══ Patch 1 (B5): 时期路由状态（哲学家智能体 + 时序问题; 审计/回归断言用）══
+        # ══ 时期人格状态（Persona/Context layer, agents 层; 审计/回归断言用）══
         _temporal_state = None
         try:
-            if agent != "general" and plan.get("temporal", {}).get("detected"):
-                _names = [t.get("name") for t in tool_log]
-                _period_used = {y: RP.year_to_period(agent, y)
-                                for y in (plan["temporal"].get("years") or [])}
-                _corpus_periods = []
-                for tc in raw_tool_log:
-                    rf = tc.get("result_full") or {}
-                    for e in (rf.get("echoes") or []):
-                        if isinstance(e, dict) and e.get("period") and e["period"] not in _corpus_periods:
-                            _corpus_periods.append(str(e["period"]))
-                _temporal_state = {
-                    "detected": True,
-                    "years": plan["temporal"].get("years") or [],
-                    "words": plan["temporal"].get("words") or [],
-                    "periods_mapped": {str(y): p for y, p in _period_used.items() if p},
-                    "period_tool_called": "philosopher_period" in _names,
-                    "corpus_periods": _corpus_periods,
-                }
+            if agent != "general":
+                _temporal = AGENTS.detect_temporal(req_message)
+                if _temporal.get("detected"):
+                    _names = [t.get("name") for t in tool_log]
+                    _period_used = {y: AGENTS.year_to_period(agent, y)
+                                    for y in (_temporal.get("years") or [])}
+                    _corpus_periods = []
+                    for tc in raw_tool_log:
+                        rf = tc.get("result_full") or {}
+                        for e in (rf.get("echoes") or []):
+                            if isinstance(e, dict) and e.get("period") and e["period"] not in _corpus_periods:
+                                _corpus_periods.append(str(e["period"]))
+                    _temporal_state = {
+                        "detected": True,
+                        "years": _temporal.get("years") or [],
+                        "words": _temporal.get("words") or [],
+                        "periods_mapped": {str(y): p for y, p in _period_used.items() if p},
+                        "period_tool_called": "philosopher_period" in _names,
+                        "corpus_periods": _corpus_periods,
+                    }
         except Exception as _e:
             logger.warning(f"[temporal-state] skipped: {str(_e)[:120]}")
         yield {"type": "done", "citations": citations, "evidence": evidence_payload,
@@ -1655,17 +1639,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                "citation_sanitize": ({k: _citation_sanitize.get(k) for k in
                                       ("verified_citations", "unverified_before", "actions")}
                                      if _citation_sanitize else None),
-               # O4: plan 审计块瘦身为 verification_intent（problem_type/complexity/
-               # relations/form_directive/chain_directive/source_navigation 已随
-               # reasoning_plan 瘦身删除——Main Agent 不需要 Python 的问题分类）
-               "plan": {"verification_intent": ({"kind": _vi.get("kind"),
-                                                 "constraint": _vi.get("constraint"),
-                                                 "term": _vi.get("term")}
-                                                if _vi else None)},
-               "verification": ({"term": verif_box.get("term"),
-                                 "state": verif_box.get("state"),
-                                 "computed": verif_box.get("computed")}
-                                if verif_box.get("term") else None),
+               # O4-RP1 删除的 done 字段: plan（verification_intent 意图分类审计块）/
+               # verification（术语核验状态）——Python 对用户问题的认知解释不再存在。
                # O4 瘦身后: 纯执行事实台账（read_chapters/primary_text_read/exact_quote_verified/计数）
                "obligation_ledger": (obligation_ledger.snapshot()
                                      if obligation_ledger is not None else None),
