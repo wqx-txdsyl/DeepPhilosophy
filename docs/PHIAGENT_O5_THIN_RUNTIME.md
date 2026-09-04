@@ -203,9 +203,9 @@ O5 FINAL RECEIPT — Thin Runtime / Mechanical Core Consolidation
 ================================================================
 O5 = READY_FOR_REVIEW
 BASE_SHA = 2de12b4ecbd5372ecba6258f99a7f3ca5ded14e1
-CODE_SHA = （随本提交回填）
-HEAD_SHA = （= REMOTE_SHA, push 后回填）
-REMOTE_SHA = （push 后回填）
+CODE_SHA = e3692ec1de5b860787a5093a889de159cb0f10d7
+HEAD_SHA = e3692ec1de5b860787a5093a889de159cb0f10d7
+REMOTE_SHA = e3692ec1de5b860787a5093a889de159cb0f10d7（已 push: 2de12b4ec..e3692ec1；doc 与代码同 commit, 无回填后继）
 CHANGED_FILES = engine_langgraph.py / agent_runtime.py / quote_bound.py /
   evidence_contract.py / routes/agent.py / routes/openai_compat.py /
   routes/agent_tools_retrieval.py(描述) / agents.py(铁律 9)/ evaluation_suite.py(离线副本)
