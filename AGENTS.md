@@ -77,6 +77,7 @@ DeepPhilosophy/
 - 新 EPUB/PDF 源文件放 `F:/philosophy/{区域}/{作者}/`，用 `dp_pdf_import.py` / `rebuild_spine.py` 处理
 - 导入/修复后：`dp_sync_books.py` 汇总生成 `app/public/books.json` + 双写章节 + 同步 detail，最后 `verify_book.py <bid> --vite-check` 全绿
 - **部署管线**：`dp_grab_cf_assets.py <部署URL> --upload` 抓 CF 产物 → `dp_sync_oss_static.py` 传 OSS（含懒加载 chunk，抓取后须确认完整性）
+- **章节上线（2026-09-04 事故教训）**：新增/更新章节后生产阅读器国内直连走 OSS（jsDelivr 兜底），必须再跑 `dp_sync_oss_chapters.py [bid]`，否则阅读器 404；books.json/detail 在 CF Pages 构建产物与 OSS 双轨，改动后两条管线都要跑
 
 ### 4. 脚本规范
 - `backend/tools/` — 书库构建/修复/同步/OCR/向量全套工具（单一目录，勿拆）
