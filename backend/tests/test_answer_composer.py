@@ -297,8 +297,8 @@ def test_stream_agent_reasoning_noise_detected_no_nudge(monkeypatch):
 def test_stream_agent_well_composed_no_append(monkeypatch):
     good = ("我的判断是：加缪的荒谬主义可以在《老人与海》中得到印证，但这是借来的框架。"
             "首先，圣地亚哥对抗大马林鱼却不求占有，接近西西弗斯的反抗"
-            "【《西西弗斯神话》·荒诞的自由】。其次，狮子是生命力的延续而非来世许诺"
-            "【《老人与海》·结尾】。但也要指出，海明威未必接受'荒诞'这个标签。"
+            "（《西西弗斯神话》）。其次，狮子是生命力的延续而非来世许诺"
+            "（《老人与海》）。但也要指出，海明威未必接受'荒诞'这个标签。"
             "结论：这是一种有解释力的读法，但并非唯一。")
     evs, fake = asyncio.run(_run_stream(monkeypatch,
                                         question="从《老人与海》看加缪的荒谬主义。", answer=good))

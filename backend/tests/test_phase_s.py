@@ -271,8 +271,8 @@ def test_s3_phase2_no_duplicate_append_when_body_satisfied(monkeypatch):
     # 引擎级: 正文已表达"不是一回事" → Phase 2 不得追加同义补正
     import engine_langgraph as elg
     good = ("我的判断是：超人和逍遥不是一回事，不能等同。"
-            "理由一：超人要求自我超越、创造价值【《查拉图斯特拉如是说》·前言】；"
-            "逍遥则是顺应自然、无所待的境地【《逍遥游》·开篇】。"
+            "理由一：超人要求自我超越、创造价值（《查拉图斯特拉如是说》）；"
+            "逍遥则是顺应自然、无所待的境地（《逍遥游》）。"
             "理由二：二者的前提与目标不同，只是形式上都有自由的气质。"
             "结论：相似不意味着同一，只能作为类比来理解；这也只是一种读法，并非唯一。")
     evs, fake = _run_stream(monkeypatch, "超人和逍遥是不是一回事？", good)
@@ -324,9 +324,8 @@ def test_s4_rebind_when_reliable_evidence_exists():
 
 
 def test_s4_unverified_citation_rejected_not_downgraded(monkeypatch):
-    # O2 改写: 未核验 formal citation 不再被流式降级改写——候选在发布前被
-    # validator 以 UNVERIFIED_CITATION 拒绝 → same-agent repair;
-    # fake 每轮回答相同 → 达修复上限后正文原样发布 + done 如实披露（ok=false）
+    # O2-RP1 改写: 未核验 formal citation 被 validator 拒绝 → same-agent repair;
+    # fake 恒同答 → repair 耗尽 → 无效候选绝不发布（零 token）, 状态事件干净收口
     import engine_langgraph as elg
     answer = ("尼采在《查拉图斯特拉如是说》中提出超人【《查拉图斯特拉如是说》·前言】。"
               "另据《不存在之书》记载【《不存在之书》·第三章】，超人概念另有来源。")
@@ -334,19 +333,19 @@ def test_s4_unverified_citation_rejected_not_downgraded(monkeypatch):
     evs, fake = _run_stream_tools(monkeypatch, "尼采的超人是什么？", answer, tl)
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
     assert "未能通过原典库核验" not in text, "禁止补丁式尾注（依旧有效）"
-    assert "【《不存在之书》·第三章】" in text, "runtime 不再改写正文——未核验引用原样保留（ceiling 后如实发布）"
-    assert "【《查拉图斯特拉如是说》·前言】" in text, "verified 引用原样保留"
-    assert "《不存在之书》" in text, "书名提及原样（不再有降级转写）"
+    # O2-RP1: 无效候选零公开——含未核验引用的候选从未到达用户
+    assert text == "", "repair 耗尽后不得发布无效候选"
+    assert "不存在之书" not in text
     done = next(ev for ev in evs if ev["type"] == "done")
     v = done["validation"]
-    assert v["result"]["ok"] is False, "正文含未核验引用 → validator 必须判 FAIL"
+    assert v["result"]["ok"] is False, "候选含未核验引用 → validator 判 FAIL"
     assert any(i["code"] == "UNVERIFIED_CITATION" and "不存在之书" in i["locator"]
                for i in v["result"]["issues"])
     assert v["repairs_used"] == v["max_validation_repairs"] == 2, "repair 打回同一个 Main Agent, 有机械上限"
     assert v["repair_protocol"] == "same_main_agent"
-    assert done["citations"], "引用面板只展示 used_evidence"
-    for cit in done["citations"]:
-        assert cit["book"] != "不存在之书", "未核验引用不得进入引用面板"
+    # 干净失败收口: 非语义 status 事件（validation_failed）, 零语义 retract
+    assert any(e["type"] == "validation_failed" for e in evs)
+    assert not any(e["type"] == "answer_retract" for e in evs)
     lcs = done.get("live_citation_sanitize") or {}
     assert lcs.get("verified") == 1 and lcs.get("downgraded") == 0
     assert lcs.get("mode") == "o2_validate_reject_no_rewrite"
@@ -510,7 +509,7 @@ def test_s6_engine_level_429_fast_fallback_answer_completes(monkeypatch):
     # 引擎级 T6: 模拟限流 → 快速降级 → 最终回答成功完成（无长重试链）
     import engine_langgraph as elg
     _FAKE_EMBED["mode"] = "429_twice"
-    answer = ("尼采的超人要求自我超越，创造自己的价值【《查拉图斯特拉如是说》·前言】。"
+    answer = ("尼采的超人要求自我超越，创造自己的价值（《查拉图斯特拉如是说》）。"
               "这是一种有解释力的读法，但并非唯一。")
     evs, fake = _run_stream(monkeypatch, "尼采的超人是什么？", answer)
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
@@ -606,8 +605,8 @@ def test_uat_t1_oldman_explanation_reasonable_no_fake_citation(monkeypatch):
 def test_uat_t2_superman_xiaoyao_not_equivalent_once(monkeypatch):
     q = "超人和逍遥是不是一回事？"
     ans = ("我的判断是：超人和逍遥不是一回事，不能等同。"
-           "理由一：超人要求自我超越、创造新价值，指向未来的行动【《查拉图斯特拉如是说》·前言】；"
-           "逍遥则是顺任自然、无所依赖的心境【《逍遥游》·开篇】。"
+           "理由一：超人要求自我超越、创造新价值，指向未来的行动（《查拉图斯特拉如是说》）；"
+           "逍遥则是顺任自然、无所依赖的心境（《逍遥游》）。"
            "理由二：二者只是形式上都有'自由'的气质，前提与目标并不相同。"
            "结论：相似不意味着同一，二者有本质区别，只能作为类比来理解；这也只是一种读法，并非唯一。")
     evs, fake = _run_stream(monkeypatch, q, ans)
@@ -658,8 +657,8 @@ def test_uat_t4_nietzsche_ai_boundary_and_citations_verified(monkeypatch):
 
 
 def test_uat_t5_citation_integrity_unverified_honestly_audited(monkeypatch):
-    # O2 改写: 假引用不再被 runtime 降级消失——validator FAIL（UNVERIFIED_CITATION）
-    # → repair（fake 重试同答仍 FAIL）→ 达上限后正文原样发布 + done 如实审计
+    # O2-RP1 改写: 假引用被 validator 拒绝（UNVERIFIED_CITATION）→ repair（fake 恒同答
+    # 仍 FAIL）→ 耗尽上限 → 无效候选零发布; done.validation 如实审计全部 issues
     import engine_langgraph as elg
     q = "加缪的荒诞哲学是什么？"
     ans = ("加缪的荒诞在于理性与世界之间的裂隙【《西西弗斯神话》·荒诞的推理】。"
@@ -669,17 +668,19 @@ def test_uat_t5_citation_integrity_unverified_honestly_audited(monkeypatch):
     evs, fake = _run_stream_tools(monkeypatch, q, ans, tl, query="荒诞 裂隙")
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
     assert "未能通过原典库核验" not in text, "禁止补丁式尾注"
-    assert "【《某某秘传》·卷一】" in text, "runtime 不再改写/隐藏未核验引用（如实发布, 不代写修复）"
-    assert "【《西西弗斯神话》·荒诞的推理】" in text, "verified 引用必须保留"
+    # O2-RP1: 无效候选零公开
+    assert text == "", "repair 耗尽后不得发布无效候选"
+    assert "某某秘传" not in text
+    assert any(e["type"] == "validation_failed" for e in evs), "非语义 status 事件干净收口"
     done = next(ev for ev in evs if ev["type"] == "done")
     v = done["validation"]
     assert v["result"]["ok"] is False
     assert any(i["code"] == "UNVERIFIED_CITATION" and "某某秘传" in i["locator"]
                for i in v["result"]["issues"])
     assert v["repairs_used"] == 2, "repair 打回同一个 Main Agent（fake 恒同答 → 耗尽上限）"
+    # 发布文本为空 → final-output 断言层无残留可披露; 引用面板自然为空
     san = done.get("citation_sanitize") or {}
-    assert [u["book"] for u in (san.get("unverified_before") or [])] == ["某某秘传"], \
-        "最终正文残留未核验引用 → final-output 断言层如实披露"
+    assert not (san.get("unverified_before") or []), "零发布 → 无未核验引用残留"
     assert (done.get("live_citation_sanitize") or {}).get("downgraded") == 0, "零降级改写"
     assert all(c["book"] != "某某秘传" for c in done["citations"]), "引用面板不得含未核验引用"
 

@@ -281,13 +281,84 @@ KNOWN_ISSUES = 6 条（见 §10: final 首字延迟 / ceiling 透明收口 / 跨
 STOP —— O2 边界内工作完成, 未开始 O3。最终 PASS 由独立 Reviewer（GPT-5.6 Sol）签发。
 ```
 
-## 10. Known Issues
+## 10. O2-RP1 — Exhaustion Safety / Git Closure / Regression-Gate Integrity
+
+> Reviewer: GPT-5.6 Sol ｜ O2_REVIEW = PATCH_REQUIRED → RP1 ｜ PRE_PATCH_SHA = ad1ee8ce8
+
+### 10.1 P0: Repair 耗尽后绝不允许发布无效候选
+
+原 KNOWN_ISSUES #2（ceiling 后发布最后候选 + ok=false）**违反 O2 核心合同，已删除**。
+
+新 exhaustion 政策:
+
+    candidate invalid → repair #1 → invalid → repair #2 → invalid
+    → NO INVALID ANSWER PUBLICATION
+    → validation_failed 事件（initiated_by=validator, 携带全部 issues, 非语义 status）
+    → error 事件（机械提示"未通过证据一致性校验, 请重试"）
+    → done.validation 如实审计（ok=false, repairs_used=2）
+
+三条路径统一不变量: INVALID_FINAL_PUBLICLY_STREAMED = false
+（normal / repair / repair-exhausted）。Runtime 不写任何哲学/事实 fallback。
+
+Kill test 证据（test_o2_final_ownership.py::TestT10RepairExhaustionNeverPublishes）:
+同一 unsupported-quote sentinel 连续 3 个候选。PRE_PATCH（ad1ee8ce8）实测
+assert _answer_text(evs) == "" 失败——旧实现将第三候选原样流出（sentinel 泄漏）;
+RP1 后 sentinel 在全部公开事件中出现 0 次、最终语义发布 = 0、repairs = 2、
+零 ghostwriting、零 retract、validation_failed/error 干净收口。
+
+### 10.2 Citation Placeholder 豁免审计（C1/C2/C3）
+
+- 豁免边界收紧为机械双条件: 书名与章节均为模板词（或章节缺省）才算格式回显。
+- C1 真实书名 + 空证据池【《论语》·先进篇】→ UNVERIFIED_CITATION（测试覆盖）
+- C2 模板字面量【《书名》·章节】→ 不计入 verified_citations、不产生 issue、
+  不计入 citation integrity 通过数（它不是 citation）（测试覆盖）
+- C3 真实书名 + 占位章节【《论语》·章节】→ 不豁免，照常打回（测试覆盖，
+  堵住"把真实引用稍微模板化"的绕过路径）
+
+### 10.3 SHA Provenance
+
+    WHAT_IS_496132 = O2 代码提交（validator + 引擎改造 + 测试重写 + 文档, 20 文件）
+    WHAT_IS_AD1EE8 = O2 receipt 文档 SHA 回填提交（仅 docs 2 行, report-only 合法后继）
+    IS_AD1EE8_DESCENDANT_OF_496132 = YES（merge-base --is-ancestor 通过）
+    FINAL_SHA = REMOTE_SHA = 分支实际 HEAD（不再混称"代码 SHA / 报告 SHA"）
+
+### 10.4 Legacy 测试迁移审计（9 文件）
+
+原则核验: 全部替换遵循 OLD（runtime 改写/追加）→ NEW（validator 拒绝 + 无效文本
+永不公开 + same-agent repair）; 无"仅 assert 模块不存在"式空替换。
+
+| 文件 | 旧断言/行为 | 为何过时 | 新行为断言 | 覆盖 |
+|---|---|---|---|---|
+| test_phase_t.py（2 用例） | LiveCitationSanitizer verified 保留/未核验降级 | 降级 = runtime 改写，类已删 | check_citations: verified 计数 + UNVERIFIED_CITATION + 文本零改写 | 保持+更强 |
+| test_patch1.py（引用净化用例） | 引用降级/无尾注/未闭合缓冲 | 同上 | validator PASS/FAIL 门 + format_feedback 结构化 + 未核验引用原样保留 | 保持+更强 |
+| test_patch1.py（B3 三用例） | TermClaimGate 句界改写 | 语义 guard 删除（O2 §6） | prompt 层 verification_injection 存在 + not-hasaname 防 runtime 改写回归 + _visible_text 不改写 | 保持（防线移 prompt 层） |
+| test_patch1_1.py（P5 兜底→NoSecondWriter） | <60 字第二 LLM 兜底 | 第二 writer 删除（O2 §8） | 短答零 llm_chat 原样发布; 空候选 EMPTY_FINAL→repair≤2、same_main_agent | 保持+更强 |
+| test_phase_t1.py（3 渲染用例） | QuoteBoundSanitizer 转写/保留/stitched 替换 | 转写 = ghostwriting，类已删 | audit_quotes: unverified_blockquote 如实计数 + 两类 quote code + 文本零转写 | 保持+更强 |
+| test_phase_t1.py（4 一致性用例） | scan_final_consistency G 降调/H 更正尾补 | G 属语义 hedge 删除; H 转 validator | check_consistency: VERIFY_LATER_MISSTATEMENT（已读+肯定语气）; 强确定性不再治理 | 保持+边界精化 |
+| test_phase_s.py（S2 两用例） | retract 撤回 draft + 缺失校正尾补 | retract 语义通道封死（O2 §12） | answer_retract 不再发出 + draft 降级 thinking + done.epistemic 如实 | 保持+更强（零 retract） |
+| test_phase_s.py（S3/S4/UAT-T5） | 未核验引用降级消失/hedge 补正/ceiling 发布 | 降级/补正/无效发布 = runtime 代写 | UNVERIFIED_CITATION + 耗尽零发布（RP1）+ citation_sanitize 如实 + 零降级 | 保持+更强 |
+| test_phase_s.py（UAT-T2/T3 等）、test_epistemic_guard.py、test_interpretation_engine.py、test_answer_composer.py | 纠正/边界/hedge 尾补断言 | 尾补 = runtime 代写（O2 §7） | 检测信号保留（overclaim/boundary/appends==[]）+ 正文零追加 + done 审计 | 保持（删的只是代写） |
+| test_phase_a.py（2 用例） | graceful recovery 调 AG.llm_chat 独立生成 | 第二 writer 删除 | 图原样重跑一次恢复（invocations==2、正文来自主图、AG.llm_chat 零调用） | 保持+更强 |
+| test_o1_causal_loop.py（witness 3 用例） | QuoteBoundSanitizer 跨 chunk 渲染/MEMORY_ONLY 转写 | 渲染类删除，完整性由提取层保证 | audit_quotes 提取完整 + unverified 如实 + 引擎流零裂块 | 保持（witness 迁移校验层） |
+
+UNREPLACED_BEHAVIOR_GATES = 0。
+
+### 10.5 RP1 后回归门
+
+    FULL_TEST_COMMAND = pytest backend/tests -q
+    COLLECTED = 446  PASSED = 446  FAILED = 0  SKIPPED = 0
+    增量解释: 443 → 446（+C1/C2/C3 占位符审计测试; T10 原地重写为 kill test, 数量不变）
+    O1_CAUSAL_TESTS = 13/13   O1_THINKING_SAFETY_TESTS = 4/4   O2_OWNERSHIP_TESTS = 23/23
+
+## 11. Known Issues
+
+> RP1 后: 原 #2（ceiling 发布 ok=false 候选）**已关闭**——耗尽路径零发布, 见 §10.1。
+
 
 1. **final 首字延迟**: 缓冲发布使 final 首 token 晚于旧 live 模式（旧模式首字≈240 字符
    缓冲即出, 但错误候选会先曝光再撤回）。thinking/tool 活动保持实时, 空窗感可控;
    实测 P50 46.5s（n=6, 其中 U1/U2 含 1 次 repair 轮）, 低于 O1 P95。
-2. **ceiling 收口会公开无效候选**: 2 次修复仍 FAIL 时, 按 §10 发布最后候选 +
-   done.validation 如实标注（宁透明, 不 ghostwrite; 概率低——机械 issue 均可简单修复）。
+2. ~~ceiling 收口会公开无效候选~~ **RP1 已关闭**: 耗尽路径零发布（§10.1）。
 3. **跨 chunk 工具标记**: `<invoke>` 标记被 chunk 边界劈开时, 机械剥离可能漏检
    （BASE 既有行为, 非本阶段引入; T9 单测覆盖单 chunk 路径）。
 4. **INVALID_SOURCE_BINDING 预留未启用**: 引用↔引文交叉绑定检查留待后续阶段

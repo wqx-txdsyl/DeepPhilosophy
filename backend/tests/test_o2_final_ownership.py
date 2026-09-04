@@ -271,6 +271,26 @@ class TestT3UnverifiedCitation:
         verified, issues = check_citations("标注格式为【《书名》·章节】，如【《论语》·先进篇】。", raw_log)
         assert verified == 1 and issues == []
 
+    def test_citation_placeholder_audit_C1_real_but_unbound(self):
+        """C1: 真实书名但证据池未绑定的引用 → 仍必须 UNVERIFIED_CITATION"""
+        verified, issues = check_citations("出自【《论语》·先进篇】。", [])
+        assert verified == 0
+        assert len(issues) == 1 and issues[0].code == FV.UNVERIFIED_CITATION
+
+    def test_citation_placeholder_audit_C2_template_not_counted(self):
+        """C2: 模板字面量既不计入 verified_citations, 也不产生 issue——它不是 citation"""
+        raw_log = [{"name": "search_books", "args": {}, "result_summary": "",
+                    "result_full": {"results": [{"book_title": "论语", "chapter_title": "先进篇",
+                                                 "snippet": _LUNYU_PASSAGE}]}}]
+        verified, issues = check_citations("格式见【《书名》·章节】。", raw_log)
+        assert verified == 0 and issues == []   # 豁免=不算核验通过, 也不算违规
+
+    def test_citation_placeholder_audit_C3_no_template_bypass(self):
+        """C3: 真实书名 + 占位章节（【《论语》·章节】）不得借模板化绕过——照常打回"""
+        verified, issues = check_citations("出自【《论语》·章节】。", [])
+        assert verified == 0
+        assert len(issues) == 1 and issues[0].code == FV.UNVERIFIED_CITATION
+
 
 # ═══════════════════════════════════════════════════════
 # T4 Stitched quote → validator 捕获（结构性）; 候选从不公开
@@ -426,24 +446,35 @@ class TestT9MechanicalFormatter:
 # ═══════════════════════════════════════════════════════
 # T10 Repair ceiling → ≤2 次修复, 无无限循环, 无 ghostwriting, 如实收口
 # ═══════════════════════════════════════════════════════
-class TestT10RepairCeiling:
-    def test_ceiling_two_repairs_then_honest_publish(self):
-        bad1 = "> 「伪引文第一版完全不在库中的原文内容足够长」"
-        bad2 = "> 「伪引文第二版完全不在库中的原文内容足够长」"
-        bad3 = "> 「伪引文第三版完全不在库中的原文内容足够长」"
+class TestT10RepairExhaustionNeverPublishes:
+    """O2-RP1 Kill Test: repair 耗尽后绝不允许发布无效候选（P0 合同）。
+    在 RP1 之前的实现上本测试必须失败（旧 ceiling-publish 会把 sentinel 流出）——
+    这就是"旧实现被击杀"的证据。"""
+
+    def test_exhausted_repairs_kill_publication(self):
+        sentinel = "UNSUPPORTED_QUOTE_SENTINEL_APQMWK"
+        bad1 = "结论：原文如下——\n\n> 「" + sentinel + "」\n（第一次作答）"
+        bad2 = "结论：原文如下——\n\n> 「" + sentinel + "」\n（第二次作答）"
+        bad3 = "结论：原文如下——\n\n> 「" + sentinel + "」\n（第三次作答）"
         script = [_msg(bad1), _msg(bad2), _msg(bad3)]
         evs = _run_stream("言必有中出处", script)
         done = _done(evs)
+        # 修复次数 = 机械上限, validator 仍 FAIL
         assert done["validation"]["repairs_used"] == MAX_VALIDATION_REPAIRS
-        assert done["validation"]["result"]["ok"] is False      # 如实以 validation failure 收口
-        assert done["validation"]["max_validation_repairs"] == 2
-        # 最后发布的仍是 Main Agent 自己的最后候选（不是 runtime 拼的"正确答案"）
-        assert bad3 in _answer_text(evs)
+        assert done["validation"]["result"]["ok"] is False
+        # 公开 answer 事件: sentinel 计数 = 0, 最终语义发布 = 0
+        assert _answer_text(evs) == ""
+        public_text = "".join(str(e.get("content", "")) for e in evs
+                              if e.get("type") in ("token", "thinking_summary",
+                                                   "thinking_summary_delta"))
+        assert sentinel not in public_text
+        # 干净失败收口: validation_failed / error 状态事件存在（非语义事件）
+        assert _of(evs, "validation_failed") or _of(evs, "error")
+        # 零语义 retract, 零 runtime 代写
+        assert _of(evs, "answer_retract") == []
         for e in evs:
             for mark in ("据通行理解", "（与库中原文近似，非逐字）"):
                 assert mark not in str(e.get("content", ""))
-        # 无 answer_retract 语义使用
-        assert _of(evs, "answer_retract") == []
 
 
 # ═══════════════════════════════════════════════════════

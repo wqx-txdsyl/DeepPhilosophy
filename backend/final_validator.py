@@ -113,7 +113,12 @@ def check_citations(answer, tool_log, fallback_log=None,
             _author, book, chapter = m.group(1), m.group(2), ""
         else:
             _author, book, chapter = "", *_split_book_chapter(m.group(1), m.group(2))
-        if book in _PLACEHOLDER_BOOKS or chapter in _PLACEHOLDER_CHAPTERS:
+        # 占位符豁免（机械边界, 防绕过）: 仅当书名与章节都是模板词（或章节缺省）时,
+        # 该标记才是格式示例回显, 不构成引用主张。真实书名 + 占位章节（如【《论语》·章节】）
+        # 不豁免——照常进入证据校验（C3: 不得通过"把真实书名稍微模板化"绕过 validator）。
+        book_is_template = book in _PLACEHOLDER_BOOKS
+        chapter_is_template = chapter == "" or chapter in _PLACEHOLDER_CHAPTERS
+        if book_is_template and chapter_is_template:
             buf = buf[m.end():]
             continue
         if book and any(_book_match(ev_b, book) and _chapter_match(ev_c, chapter)

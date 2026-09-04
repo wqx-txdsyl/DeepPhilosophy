@@ -1638,19 +1638,25 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 pending["text"] = ""
             candidate = (_ptail2 + _tail2) + pending["text"]
             pending["text"] = ""
-        # 发布（§11: BUFFER FINAL UNTIL VALIDATED）: 候选文本此刻才首次公开——
-        # validator PASS, 或达 ceiling 后如实以 validation failure 收口
-        # （done.validation 携带 ok=false + issues; runtime 绝不代写"正确答案"）。
-        if candidate.strip():
+        # 发布（§11: BUFFER FINAL UNTIL VALIDATED）: 只有 validator PASS 的候选才允许
+        # 公开。O2-RP1 (P0): repair 耗尽后绝不允许发布无效候选（含 ok=false 透传发布）——
+        # validator 有权拒绝答案, 但 runtime 不会因此获得"替你把错误答案发出去"的权力。
+        # 耗尽路径以非语义 failure/status 事件干净收口; done.validation 携带全部 issues。
+        if candidate.strip() and validation.ok:
             full_answer = candidate
             for ch in candidate:
                 yield {"type": "token", "content": ch}
                 await asyncio.sleep(TOKEN_INTERVAL)
         else:
-            # 纯 transport 级失败提示（不计入 full_answer, 不参与审计正文）
-            yield {"type": "token",
-                   "content": "（未能生成回答，请重试或换一种问法）" if language != "en"
-                   else "(Failed to generate a response—please retry or rephrase your question)"}
+            yield {"type": "validation_failed",
+                   "content": "回答未通过确定性证据校验",
+                   "issues": validation.as_dict()["issues"],
+                   "repairs_used": repairs_used,
+                   "initiated_by": "validator",
+                   "decision_group_id": _dg()}
+            yield {"type": "error",
+                   "content": "本轮回答未通过证据一致性校验，请重试或换一种问法" if language != "en"
+                   else "This response failed deterministic evidence validation—please retry or rephrase"}
         pending = {"text": "", "has_tools": False, "reasoned": False, "note_emitted": False}
         # ══ O1: 引擎兜底读取的回放与终局安全网已删除 ══
         # 原此处的 ① auto-read tool 事件回放 + "已完成主文本核验读取" 注记
