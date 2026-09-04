@@ -32,7 +32,7 @@ function BookDetailPage() {
           return resp.ok ? resp.json() : null;
         } catch { return null; }
       };
-      const d = await tryFetch(`https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_detail/${bookId}.json`, 2500)
+      const d = await tryFetch(`https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_detail/${bookId}.json?v=4`, 2500)
         || await fetch(`/book_detail/${bookId}.json?v=3`).then(r => r.ok ? r.json() : null);
       if (d) {
         // file_type 以 detail 为准（修复: 曾写死 epub, 导致 pdf/txt 书详情页显示 EPUB）
