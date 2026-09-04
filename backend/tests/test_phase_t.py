@@ -25,6 +25,7 @@ import pytest  # noqa: E402
 import tool_contracts as TC  # noqa: E402
 import semantic_obligations as SO  # noqa: E402
 import evidence_contract as EC  # noqa: E402
+import final_validator as FV  # noqa: E402
 from routes import agent as AG  # noqa: E402
 from routes import agent_tools_eval as EV  # noqa: E402
 from routes import agent_tools_memory as MEM  # noqa: E402
@@ -482,19 +483,25 @@ class TestCitationVariants:
         markers = EC._cite_markers(text)
         assert len(markers) == 5
 
-    def test_live_sanitizer_verifies_author_work(self):
+    def test_citation_validation_verifies_author_work(self):
+        # O2 改写: LiveCitationSanitizer 已删——check_citations 只检测不改写
         log = [{"name": "search_books", "args": {"query": "x"},
                 "result_full": {"results": [{"book_title": "未来语文学！", "chapter_title": "",
                                              "author": "维拉莫维茨", "snippet": "反语文学的檄文"}]}}]
-        s = EC.LiveCitationSanitizer(log)
-        out = s.push("他说这是【维拉莫维茨·《未来语文学！》】中的立场。")
-        assert "【维拉莫维茨·《未来语文学！》】" in out and s.verified == 1
+        ans = "他说这是【维拉莫维茨·《未来语文学！》】中的立场。"
+        verified, issues = FV.check_citations(ans, log)
+        assert verified == 1 and issues == []
+        assert "【维拉莫维茨·《未来语文学！》】" in ans, "verified 引用原样保留在文本中"
 
-    def test_live_sanitizer_downgrades_author_work(self):
-        s = EC.LiveCitationSanitizer([])
-        out = s.push("他说这是【维拉莫维茨·《未来语文学！》】中的立场。")
-        assert "【" not in out and "《未来语文学！》" in out and "维拉莫维茨" in out
-        assert s.downgraded == 1
+    def test_citation_validation_reports_author_work_not_downgrade(self):
+        # 旧契约（未核验 author-work 引用降级为一般提及）已废除——
+        # 返回 UNVERIFIED_CITATION issue, 正文零改动
+        ans = "他说这是【维拉莫维茨·《未来语文学！》】中的立场。"
+        verified, issues = FV.check_citations(ans, [])
+        assert verified == 0
+        assert [i.code for i in issues] == [FV.UNVERIFIED_CITATION]
+        assert issues[0].locator == "【维拉莫维茨·《未来语文学！》】"
+        assert "【维拉莫维茨·《未来语文学！》】" in ans and "维拉莫维茨" in ans, "文本不被改写"
 
     def test_sanitize_citations_covers_variants(self):
         tool_log = [{"name": "search_books", "args": {"query": "x"},

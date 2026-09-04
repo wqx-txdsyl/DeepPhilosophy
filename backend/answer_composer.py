@@ -93,16 +93,9 @@ GENERATIVE_SKIP = ["写一篇", "写作文", "帮我写", "作文：", "写首�
 
 # 冗余判据（评估套件用）
 _CONCLUSION_STACK = ["综上", "总之", "总而言之", "总结", "结论是", "说到底"]
-_STRONG_HEDGE_ZH = ("（补充：回答中的强化措辞（如“完全正确”“毫无疑问”“本质就是”）超出了现有证据所能"
-                    "支持的程度。更稳妥的表述是：这是一种有依据的判断/解读，但未必是唯一或确定的结论。）")
-_STRONG_HEDGE_EN = ("(Note: emphatic wording such as \"completely correct\", \"without a doubt\" or "
-                    "\"essentially\" goes beyond what the evidence supports. The safer formulation is: this is "
-                    "a well-grounded judgment/reading, but not necessarily the only or final one.)")
-_DIRECTNESS_NUDGE_ZH = ("（补充：建议先给出直接判断——第一句就亮明你对这个问题的立场，再展开理由与证据；"
-                        "检索与阅读过程不必写进正文。）")
-_DIRECTNESS_NUDGE_EN = ("(Note: lead with your direct judgment — state your position on the question in the "
-                        "first sentence, then develop reasons and evidence; the retrieval/reading process need "
-                        "not appear in the answer.)")
+# ══ O2 §7: _STRONG_HEDGE / _DIRECTNESS_NUDGE（确定性措辞补正文本）已删除——
+# runtime 不得向用户正文追加"（补充：……）"式句子。强化措辞 / 结构噪音的检测
+# 信号仍随 scan_composition 结果进入 done payload 供审计（appends 恒空）。
 
 
 # ═══════════════════════════════════════════════════════
@@ -446,16 +439,8 @@ def scan_composition(verdict, answer, language="zh", interpretation_scan=None, b
     res["strong_wording"] = _strong_hits(ans)
     res["reasoning_noise"] = _noise_hits(ans)
     res["redundancy"] = _redundancy_findings(ans)
-    # 补正 1: 强化措辞（解释型问题已由 interpretation_scan 补正过 → 不重复）
-    isc = interpretation_scan or {}
-    if res["strong_wording"] and not isc.get("appends"):
-        res["appends"].append(_STRONG_HEDGE_EN if language == "en" else _STRONG_HEDGE_ZH)
-    # 补正 2: 开头即过程叙述/材料说明（≥120 字才提示, 防短答误伤）——纯结构提示, 不编造内容
-    # Phase S (S5): 已超预算的回答跳过结构提示（避免给冗长回答再续字数）
-    bsc = budget_scan or {}
-    if (not res["direct_judgment"] and (res["reasoning_noise"] or res["banned_blocks"])
-            and len(ans) >= 120 and not bsc.get("over_budget")):
-        res["appends"].append(_DIRECTNESS_NUDGE_EN if language == "en" else _DIRECTNESS_NUDGE_ZH)
+    # O2 §7: 措辞/结构补正文本生成已删除——appends 恒空（engine 不再尾补任何句子）,
+    # strong_wording / direct_judgment / noise 检测信号保留在结果中供 done 审计。
     _log_record({"phase": "post", "language": language,
                  "activated": res["activated"],
                  "direct_judgment": res["direct_judgment"],

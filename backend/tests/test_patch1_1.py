@@ -2,22 +2,24 @@
 """Patch 1.1 纯规则单元测试（Final Gate Closure: P1-P7）
 
 P1 evidence obligation 台账与检索准入 / P2 核验意图分类 / P3 evidence contract
-candidate-used 语义与二手排除 / P4 反事实 guard 非侵入 / P5 兜底回答指令 /
+candidate-used 语义与二手排除 / P4 反事实 guard 非侵入 / P5 短答与空候选零第二 writer
+（O2: 兜底回答指令与 AG.llm_chat 兜底生成已删）/
 P6 claim role / P7 原典路径条件。
 不联网、不调 LLM、不改任何数据。
 """
+import asyncio
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import pytest  # noqa: E402
+from langchain_core.messages import AIMessageChunk  # noqa: E402
 
 import reasoning_plan as RP    # noqa: E402
 import agent_runtime as AR     # noqa: E402
 import evidence_contract as EC  # noqa: E402
 from epistemic_guard import CounterfactualAuthorGuard  # noqa: E402
-from engine_langgraph import _final_answer_directive   # noqa: E402
 
 
 # ═══════════════════════════════════════════════════════
@@ -333,25 +335,63 @@ class TestGuardNonIntrusion:
 
 
 # ═══════════════════════════════════════════════════════
-# P5: 兜底回答指令（核验义务四要素）
+# P5 (O2 改写): 短答/空候选零第二 writer——兜底回答指令
+# （_final_answer_directive）与 AG.llm_chat 兜底生成已删除:
+# 空候选 → validator EMPTY_FINAL → same-agent repair; 短答 → 原样发布。
 # ═══════════════════════════════════════════════════════
-class TestFallbackDirective:
-    def test_verification_directive_keeps_obligations(self):
-        plan = {"verification_intent": {"kind": "EXACT_WORDING", "term": "语言的界限就是世界的界限",
-                                        "constraint": "NONE", "subject_author": ""}}
-        d = _final_answer_directive(plan, {"state": "NOT_FOUND", "term": "语言的界限就是世界的界限"}, "zh")
-        assert "核验结论" in d and "层次区分" in d and "确定性边界" in d and "原句" in d
-        assert "语言的界限就是世界的界限" in d and "NOT_FOUND" in d
+class _FakeApp:
+    """替换 LangGraph APP.astream: 单 agent 轮回一个 AIMessageChunk（最终回答候选）"""
 
-    def test_generic_directive_unchanged(self):
-        d = _final_answer_directive({"verification_intent": None}, None, "zh")
-        assert "只输出回答文本" in d and "核验结论" not in d
+    def __init__(self, answer):
+        self.answer = answer
+        self.captured_messages = []
 
-    def test_en_directive(self):
-        plan = {"verification_intent": {"kind": "EXACT_WORDING", "term": "x",
-                                        "constraint": "NONE", "subject_author": ""}}
-        d = _final_answer_directive(plan, {"state": "NOT_FOUND", "term": "x"}, "en")
-        assert "Verdict" in d and "Confidence boundary" in d
+    async def astream(self, inputs, config, stream_mode="messages"):
+        self.captured_messages.extend(inputs.get("messages") or [])
+        yield AIMessageChunk(content=self.answer), {"langgraph_node": "agent"}
+
+
+class TestNoSecondWriterForShortOrEmptyAnswers:
+    async def _run(self, monkeypatch, answer):
+        import engine_langgraph as elg
+        from routes import agent as AG
+        llm_calls = []
+
+        def _forbidden_llm_chat(*a, **k):
+            llm_calls.append(a)
+            return {"choices": [{"message": {"content": ""}}]}
+        fake = _FakeApp(answer)
+        monkeypatch.setattr(elg, "APP", fake)
+        monkeypatch.setattr(AG, "llm_chat", _forbidden_llm_chat, raising=False)
+        evs = [ev async for ev in elg.stream_agent("什么是荒诞？", [], "general", None, "zh")]
+        return evs, llm_calls
+
+    def test_short_answer_published_without_second_llm(self, monkeypatch):
+        # 短答（<60 字符）不再触发第二 LLM 兜底生成——validator PASS → 原样发布
+        short = "荒诞是理性与世界的裂隙。"
+        evs, llm_calls = asyncio.run(self._run(monkeypatch, short))
+        text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
+        assert text == short, "短答原样发布, 无兜底改写/追加"
+        assert llm_calls == [], "短答不得触发第二 LLM（AG.llm_chat 兜底生成已删）"
+        done = next(ev for ev in evs if ev["type"] == "done")
+        assert done["validation"]["result"]["ok"] is True
+        assert done["validation"]["repairs_used"] == 0
+
+    def test_empty_candidate_repairs_same_agent_never_llm_chat(self, monkeypatch):
+        # 空候选 → validator EMPTY_FINAL → 中性反馈打回同一个 Main Agent
+        # （图重跑, 绝不调 AG.llm_chat 独立生成）; 达上限后如实收口
+        evs, llm_calls = asyncio.run(self._run(monkeypatch, ""))
+        assert llm_calls == [], "空候选兜底不得调用第二 LLM"
+        done = next(ev for ev in evs if ev["type"] == "done")
+        v = done["validation"]
+        assert v["result"]["ok"] is False
+        assert any(i["code"] == "EMPTY_FINAL" for i in v["result"]["issues"])
+        assert v["repairs_used"] == v["max_validation_repairs"] == 2
+        assert v["repair_protocol"] == "same_main_agent"
+        fo = done["final_ownership"]
+        assert fo["final_text_owner"] == "main_agent"
+        assert fo["invalid_final_publicly_streamed"] is False
+        assert fo["validator_repair_invocations"] == 2
 
 
 # ═══════════════════════════════════════════════════════

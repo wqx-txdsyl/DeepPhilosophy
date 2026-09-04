@@ -4,7 +4,7 @@
 覆盖 2026-08-30 Phase 2 验收项:
   Candidate:   梦狮等解释型问题 → 多候选强制（H1/H2…）; 非解释型问题不启用
   Evidence:    supporting_evidence / challenging_evidence 分离; 无反证允许 [] 且不得伪造
-  Bias:        "老人梦狮=荒诞幸福" 单候选择案 → 补正"并非唯一"; 越级断言扣置信度
+  Bias:        "老人梦狮=荒诞幸福" 单候选择案 → 检出（O2: 不再尾补"并非唯一"）; 越级断言扣置信度
   Calibrator:  0.85+/0.65-0.85/0.4-0.65/<0.4 四档语言; 数字不出现在回答里
   Depth:       跨体系跳转越多 confidence 只降不升; "海明威→加缪→庄子→佛教→斯多葛"链条被惩罚
   Analogy:     "尼采超人/庄子逍遥 是不是一回事" → 类比≠等同强制
@@ -148,7 +148,7 @@ def test_four_jump_chain_detected_and_penalized():
 
 
 # ═══════════════════════════════════════════════════════
-# 5. scan_interpretation —— 单候选/越级断言 → 措辞级补正（数字不展示）
+# 5. scan_interpretation —— 单候选/越级断言检测（O2: appends 恒空, 不再尾补 hedge）
 # ═══════════════════════════════════════════════════════
 def test_dream_lion_correct_answer_no_append():
     # 多候选 + 明确"并非唯一" → 引擎不干预（验证的是期望中的正确作答形态）
@@ -160,24 +160,24 @@ def test_dream_lion_correct_answer_no_append():
     assert r["appends"] == []
 
 
-def test_single_hypothesis_overclaim_gets_hedged():
-    # 单解 + 越级断言 → 补正"并非唯一"（对应任务书: 不是"完全正确"）
+def test_single_hypothesis_overclaim_detected_not_hedged():
+    # 单解 + 越级断言 → 检测信号保留（overclaim/alternatives_offered 供 done 审计）,
+    # runtime 不再代写"并非唯一"hedge 文本
     v = ie.run_interpretation_engine("老人梦狮是不是不再向世界索取意义？")
     r = ie.scan_interpretation(v, "老人梦狮就是彻底摆脱外部意义的证明，这完全正确。")
     assert r["overclaim"] is True
     assert r["alternatives_offered"] is False
-    appends = "\n".join(r["appends"])
-    assert "并非唯一" in appends
-    assert not any(ch.isdigit() for ch in appends), "置信度数字默认不展示"
+    assert r["appends"] == [], "O2: runtime 不得再追加任何 hedge 文本"
 
 
-def test_equivalence_overclaim_gets_analogy_hedge():
-    # 尼采/庄子: "本质完全一样" → 必须识别类比≠等同
+def test_equivalence_overclaim_signals_kept_no_append():
+    # 尼采/庄子: "本质完全一样" → 越级断言检出 + 低置信（内部审计）,
+    # 类比≠等同义务的落实由 Main Agent 自己完成（runtime 零尾补）
     v = ie.run_interpretation_engine("尼采的超人和庄子的逍遥是不是一回事？")
     r = ie.scan_interpretation(v, "超人和逍遥本质上完全一样，都是对无限自由的向往。")
-    appends = "\n".join(r["appends"])
-    assert "类比" in appends and "等同" in appends
-    assert r["confidence"] < 0.5  # 越级断言 + 框架链 → 低置信
+    assert r["overclaim"] is True, "越级断言仍须检出（审计用）"
+    assert r["confidence"] < 0.5  # 越级断言 + 框架链 → 低置信（内部记录, 不展示）
+    assert r["appends"] == [], "O2: runtime 不得再追加类比≠等同补句"
 
 
 def test_scan_not_activated_returns_empty():
@@ -236,22 +236,34 @@ def test_stream_agent_injects_interpretation_guard(monkeypatch):
                        if m.type == "system" and "解释型问题" in (m.content or ""))
     assert "至少提出两种" in injected and "challenging_evidence" in injected
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "并非唯一" in text, "单候选越级答案必须尾部补正"
+    # O2: 候选先经 validator 校验后原样发布——runtime 不再尾补"并非唯一";
+    # 越级断言的修复由 Main Agent 在 validator repair 轮自主完成（本文本无引用问题 → 原样发布）
+    assert "唯一正确的解读" in text, "正文原样发布, runtime 零尾补"
+    assert "（补充：" not in text
+    done = next(ev for ev in evs if ev["type"] == "done")
+    assert done["final_ownership"]["runtime_factual_appends"] == 0
     done_i = next(i for i, e in enumerate(evs) if e["type"] == "done")
     tok_i = [i for i, e in enumerate(evs) if e["type"] == "token"]
     assert not tok_i or done_i > max(tok_i), "流式协议不变: token 之后才 done（done 后可跟增量 reasoning_summary/suggestions）"
 
 
-def test_stream_agent_analogy_guard_net(monkeypatch):
+def test_stream_agent_analogy_guard_injection_not_rewrite(monkeypatch):
     evs, fake = asyncio.run(_run_stream(
         monkeypatch,
         question="尼采的超人和庄子的逍遥是不是一回事？",
         answer="超人和逍遥本质上完全一样，都是对无限自由的向往。"))
     injected = "".join(m.content for m in fake.captured_messages
                        if m.type == "system" and "类比≠等同" in (m.content or ""))
-    assert "等同" in injected
+    assert "等同" in injected, "前置注入（prompt 层要求）保留"
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "类比" in text and "等同" in text, "等同断言必须被类比≠等同补正"
+    # O2: runtime 不再代写类比≠等同补句——等同断言原样保留在正文,
+    # 义务状态经 done.obligations 审计
+    assert "本质上完全一样" in text, "正文原样发布, runtime 零改写"
+    assert "（补充：" not in text and "需要补充一句" not in text
+    done = next(ev for ev in evs if ev["type"] == "done")
+    obls = {o["type"]: o["status"] for o in (done.get("obligations") or [])}
+    assert obls.get("analogy_boundary") in ("UNKNOWN", "UNSATISFIED"), \
+        "义务未落实必须如实审计（不得由 runtime 代为履行）"
     done_i = next(i for i, e in enumerate(evs) if e["type"] == "done")
     tok_i = [i for i, e in enumerate(evs) if e["type"] == "token"]
     assert not tok_i or done_i > max(tok_i), "流式协议不变: token 之后才 done（done 后可跟增量 reasoning_summary/suggestions）"
@@ -313,14 +325,14 @@ def test_graph_structure_unchanged():
 
 
 def test_stream_protocol_unchanged_event_types():
-    # 流式协议: 补正只走已有 token 事件, 无新事件类型
+    # 流式协议: O2 后 scan_interpretation 不再产出补正文本（appends 恒空）——
+    # 检测信号只进 done payload, 无新事件类型
     import engine_langgraph as elg
     assert hasattr(elg, "_sse")
     allowed = {"status", "thought", "thought_stream", "token", "tool", "tool_start",
                "tool_cancel", "answer_retract", "done", "suggestions",
                "reasoning_summary", "error"}
-    # scan_interpretation 的补正通过 token 事件发出（已在 wire 测试覆盖事件序列）
     r = ie.scan_interpretation(ie.run_interpretation_engine("老人梦狮是不是不再向世界索取意义？"),
                                "老人梦狮就是摆脱外部意义的证明，完全正确。")
-    for a in r["appends"]:
-        assert "\n\n" in ("\n\n" + a)  # 以现有 token 事件承载, 无协议扩展
+    assert r["appends"] == [], "O2: 解释引擎不再生成任何尾补文本（无协议扩展的基础）"
+    assert r["overclaim"] is True, "检测信号保留（随 done 审计）"

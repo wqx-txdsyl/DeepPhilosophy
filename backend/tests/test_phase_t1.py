@@ -8,10 +8,10 @@
   T1.1-A  SOURCE_ATTRIBUTION 检测（裸「X出处」词型/term 兜底）+ 义务三态分层
   T1.1-B  locate_exact_phrase 逐字定位 + _ensure_primary_read 兜底读取
   T1.1-C  read 配额独立 + ADMISSION_REJECTED ≠ SOURCE_NOT_FOUND（拒绝理由措辞）
-  T1.1-D  Quote Bound: 提取/核验状态/流式渲染规则
+  T1.1-D  Quote Bound: 提取/核验状态（O2: 流式渲染转写已删——audit + validator issue）
   T1.1-E  MEMORY_HINT ≠ EVIDENCE（检索命中不置位 primary_text_read）
   T1.1-F  相邻章句拼接防护（跨 span 连续性校验）
-  T1.1-G/H 收口一致性扫描（置信升级 / verify-later 反模式）
+  T1.1-G/H 收口一致性（O2: 强确定性降调已删; verify-later 矛盾 → validator issue）
 """
 import asyncio
 import os
@@ -21,6 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import agent_runtime as AR
 import quote_bound as QB
+import final_validator as FV
 import reasoning_plan as RP
 
 
@@ -183,25 +184,30 @@ class TestT11DQuoteBound:
         v4 = QB.verify_quote("短句", _SPANS)
         assert v4["state"] == "SHORT"
 
-    def test_sanitizer_converts_memory_blockquote(self):
-        s = QB.QuoteBoundSanitizer([], "zh")
-        src = "回答开始\n> 这是一段凭记忆给出的所谓原文引文并没有任何证据支撑\n回答结束"
-        out = s.push(src) + s.flush()
-        assert "> " not in out.split("回答开始")[1].split("回答结束")[0]
-        assert "据通行理解，" in out
-        assert "尚未在当前原典库中逐字核验" in out
-        assert s.snapshot()["converted"] == 1
+    def test_memory_blockquote_audited_not_converted(self):
+        # O2 改写: QuoteBoundSanitizer（MEMORY_ONLY blockquote 转写"据通行理解"）已删除——
+        # audit_quotes 如实标记 unverified_blockquote, 正文零转写;
+        # 修复由 validator issue（UNSUPPORTED_EXACT_QUOTE）打回 same-agent 完成
+        src = "回答开始\n> 这是一段未核验而直接给出的原文引文形态内容完全没有证据支撑\n回答结束"
+        audit = QB.audit_quotes(src, [])
+        assert audit["summary"]["unverified_blockquote"] == 1
+        assert "> 这是一段未核验而直接给出的原文引文形态内容完全没有证据支撑" in src, "blockquote 原样保留（不转写）"
+        assert "据通行理解，" not in src and "尚未在当前原典库中逐字核验" not in src
+        _, issues = FV.check_quotes(src, [])
+        assert any(i.code == FV.UNSUPPORTED_EXACT_QUOTE for i in issues), "结构化 issue 打回 repair"
 
-    def test_sanitizer_keeps_verified_blockquote(self):
-        s = QB.QuoteBoundSanitizer(
-            [{"name": "get_chapter", "result_full": {"book_id": "d927", "chapter_idx": 12,
+    def test_verified_blockquote_kept_verbatim(self):
+        # VERIFIED_EXACT blockquote 原样保留在正文, validator 零 issue
+        tool_log = [{"name": "get_chapter", "result_full": {"book_id": "d927", "chapter_idx": 12,
                                                      "title": "先进篇", "text": _PASSAGE_B,
-                                                     "book_title": "论语"}}], "zh")
+                                                     "book_title": "论语"}}]
         src = f"结论如下\n> {_PASSAGE_B}\n以上。"
-        out = s.push(src) + s.flush()
-        assert "> 鲁人为长府" in out
-        assert "据通行理解" not in out
-        assert s.snapshot()["verified_exact"] == 1
+        audit, issues = FV.check_quotes(src, tool_log)
+        assert audit["summary"]["verified_exact"] >= 1 and issues == []
+        assert audit["entries"][0]["kind"] == "blockquote"
+        assert audit["entries"][0]["verification_state"] == "VERIFIED_EXACT"
+        assert f"> {_PASSAGE_B}" in src, "verified 引文原样保留"
+        assert "据通行理解" not in src
 
     def test_audit_flags_unverified_blockquote(self):
         ans = "根据记忆：\n> 这是一段未核验的记忆引文完全没有证据支撑其逐字性\n以上"
@@ -237,44 +243,45 @@ class TestT11FStitching:
         v2 = QB.verify_quote(_PASSAGE_B, spans)
         assert v2["state"] == "VERIFIED_EXACT"   # 真引文不受影响
 
-    def test_sanitizer_converts_stitched(self):
+    def test_stitched_audited_not_converted(self):
+        # O2 改写: QuoteBoundSanitizer（拼接引文转写）已删除——
+        # 拼接经 audit/validator 结构化暴露（STITCHED_QUOTE）, 正文零改写
         spans_units = [{"name": "get_chapter", "result_full": {
             "book_id": "d927", "chapter_idx": 12, "title": "先进篇", "book_title": "论语",
             "text": self.PASSAGE_A + "\n" + _PASSAGE_B}}]
-        s = QB.QuoteBoundSanitizer(spans_units, "zh")
         src = "\n> 闵子侍侧，訚訚如也。夫人不言，言必有中。\n"
-        out = s.push(src) + s.flush()
-        assert "据通行理解，" in out
-        assert s.snapshot()["stitched"] >= 1
+        audit, issues = FV.check_quotes(src, spans_units)
+        assert audit["summary"]["stitched"] >= 1
+        assert any(i.code == FV.STITCHED_QUOTE for i in issues), "拼接引文 → 结构化 issue 打回 repair"
+        assert "> 闵子侍侧，訚訚如也。夫人不言，言必有中。" in src, "正文原样（不转写）"
+        assert "据通行理解，" not in src
 
 
 # ═══════════════════════════════════════════════════════
-# T1.1-G/H 收口一致性
+# T1.1-G/H 收口一致性（O2 改写: scan_final_consistency 已拆分——
+#   G 分支强确定性降调彻底删除（certainty 归 Agent 认知, 机械层不得治理）;
+#   H 分支 verify-later 矛盾转为 final_validator.check_consistency 结构化 issue）
 # ═══════════════════════════════════════════════════════
 class TestT11GHConsistency:
-    def test_strong_certainty_downgraded_when_unverified(self):
+    def test_strong_certainty_no_longer_governed(self):
         ans = "其作为成语来源的判断是可靠的——学界与通行注本一致。"
-        audit = QB.audit_quotes(ans, [])
-        appends = QB.scan_final_consistency(ans, audit, obligations_satisfied=False)
-        assert any("确定性边界" in a for a in appends)
+        assert FV.check_consistency(ans, obligations_satisfied=False) == [], \
+            "强确定性 + 未核验不再被机械降调（validator 无 certainty 职权）"
 
-    def test_no_downgrade_when_verified(self):
+    def test_no_issue_when_verified(self):
         ans = "原文已逐字核验，可以确认出处。"
-        audit = QB.audit_quotes(ans, [])
-        appends = QB.scan_final_consistency(ans, audit, obligations_satisfied=True,
-                                            primary_text_read=True)
-        assert not appends
+        assert FV.check_consistency(ans, obligations_satisfied=True,
+                                    primary_text_read=True) == []
 
-    def test_verify_later_neutralized_after_read(self):
+    def test_verify_later_contradiction_flagged_after_read(self):
+        # 台账显示本次已读原文, 正文却称"可再读" → 机械可判定的自相矛盾 → issue
         for ans in ("若你需要，我可以再去读取《论语·先进》的章节全文。",
                     "你若需要，我可再作针对性逐字核验。"):
-            audit = QB.audit_quotes(ans, [])
-            appends = QB.scan_final_consistency(ans, audit, obligations_satisfied=True,
-                                                primary_text_read=True)
-            assert any("更正" in a for a in appends), ans
+            issues = FV.check_consistency(ans, obligations_satisfied=True,
+                                          primary_text_read=True)
+            assert [i.code for i in issues] == [FV.VERIFY_LATER_MISSTATEMENT], ans
 
-    def test_verify_later_boundary_when_unverified(self):
+    def test_verify_later_honest_boundary_when_unread(self):
+        # 未读过原文时"可再核实"是诚实边界, 不是矛盾 → 零 issue
         ans = "需要的话我可以进一步核实原文。"
-        audit = QB.audit_quotes(ans, [])
-        appends = QB.scan_final_consistency(ans, audit, obligations_satisfied=False)
-        assert any("核验边界" in a for a in appends)
+        assert FV.check_consistency(ans, obligations_satisfied=False) == []

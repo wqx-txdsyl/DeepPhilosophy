@@ -2,7 +2,7 @@
 """Patch 1 纯规则单元测试（Backend Reliability Patch 1: B1/B3/B4/B5/B7）
 
 覆盖: 问题分类/复杂度（B7/B1）、术语核验与措辞约束（B3）、时期检测与路由（B5）、
-检索语义状态与充分性（B1）、引用实时核验与内部控制标签剥离（B4）、RationaleParser 防泄漏。
+引用核验（B4, O2 后为 final_validator 结构化校验）与内部控制标签剥离、RationaleParser 防泄漏。
 不联网、不调 LLM、不改任何数据。
 """
 import sys
@@ -15,7 +15,7 @@ import pytest  # noqa: E402
 
 import reasoning_plan as RP  # noqa: E402
 import agent_runtime as AR   # noqa: E402
-from evidence_contract import LiveCitationSanitizer  # noqa: E402
+import final_validator as FV  # noqa: E402
 from engine_langgraph import RationaleParser, _strip_control_tags, _visible_text  # noqa: E402
 
 
@@ -164,31 +164,23 @@ class TestTermVerification:
         v = RP.verify_term_presence("无目的的合目的性", log)
         assert v["state"] == "NOT_FOUND"
 
-    def test_constrain_unconditional(self):
-        s = "可以确认——康德已经完整提出了这一命题。"
-        out = RP.constrain_unconditional_claim(s, "NOT_FOUND")
-        assert "未能核验" in out and "完整提出" not in out
-        # EXACT 状态不改写
-        assert RP.constrain_unconditional_claim(s, "VERIFIED_EXACT") == s
+    def test_unverified_wording_constrained_at_prompt_layer(self):
+        # O2 改写: 旧 constrain_unconditional_claim（runtime 句界改写）已删除——
+        # NOT_FOUND 状态改为 prompt 层措辞约束注入, 由 Main Agent 自己如实表述
+        assert not hasattr(RP, "constrain_unconditional_claim"), "runtime 句子改写不得回归"
+        inj = RP.verification_injection({"state": "NOT_FOUND", "term": "无目的的合目的性"})
+        assert inj and "不得无条件肯定" in inj and "不能确认" in inj
+        # EXACT 状态允许明确措辞（不约束）
+        inj_ok = RP.verification_injection({"state": "VERIFIED_EXACT", "term": "无目的的合目的性"})
+        assert "逐字命中" in inj_ok and "不得" not in inj_ok
 
-    def test_gate_holds_only_term_sentence(self):
-        gate = RP.TermClaimGate("术语X", lambda s: RP.constrain_unconditional_claim(s, "NOT_FOUND"))
-        assert gate.push("不含术语的句子。") == "不含术语的句子。"
-        # 含术语但句界未到 → 缓冲（不返回）
-        assert gate.push("这里说“已经完整提出了术语X”然后继续") == ""
-        # 句界到达 → 受约束改写, 此后全部放行
-        out = gate.push("。")
-        assert "未能核验" in out and "完整提出" not in out
-        assert gate.push("第二句。") == "第二句。"
-        # 约束只发生一次（激活即关闭）
-        gate2 = RP.TermClaimGate("术语X", lambda s: RP.constrain_unconditional_claim(s, "NOT_FOUND"))
-        assert gate2.push("已经完整提出了术语X。") != ""
-        assert gate2.push("又已经完整提出了术语X。") == "又已经完整提出了术语X。"
-
-    def test_constrain_absorbs_object(self):
-        out = RP.constrain_unconditional_claim(
-            "可以确认——康德已经完整提出了“无目的的合目的性”这一完整命题。", "NOT_FOUND")
-        assert "完整提出" not in out and "未能核验" in out and "这一完整命题" not in out
+    def test_term_claim_gate_removed_not_runtime(self):
+        # O2 改写: 旧 TermClaimGate（流式句界改写门）已删除——未核验对象的措辞
+        # 约束只能经 prompt 注入, 引擎正文通道零改写
+        assert not hasattr(RP, "TermClaimGate"), "流式句子改写门不得回归"
+        # 正文通道仅做机械净化（控制标签/内部措辞剥离）, 不改写术语句
+        s = "可以确认——康德已经完整提出了无目的的合目的性。"
+        assert _visible_text(s) == s
 
 
 # ═══════════════════════════════════════════════════════
@@ -213,9 +205,10 @@ class TestTemporal:
 
 
 # ═══════════════════════════════════════════════════════
-# B4: 引用实时核验 + 控制标签剥离
+# B4 (O2 改写): 引用核验——LiveCitationSanitizer 流式降级已删除,
+# 替代为 final_validator.check_citations 结构化校验（检测, 绝不改写）
 # ═══════════════════════════════════════════════════════
-class TestLiveCitationSanitizer:
+class TestFinalCitationValidation:
     def _log(self):
         return [{"name": "search_books", "args": {"query": "x"},
                  "result_full": {"results": [
@@ -226,30 +219,49 @@ class TestLiveCitationSanitizer:
                     "book_id": "f08c1ead3164", "chapter_idx": 4, "title": "第二卷 审美判断力的辩证论",
                     "text": "55.鉴赏的二律背反"}}]
 
-    def test_verified_kept(self):
-        s = LiveCitationSanitizer(self._log())
-        out = s.push("康德说【《判断力批判》· 第一卷 审美判断力的分析论】如此。")
-        assert "【《判断力批判》· 第一卷 审美判断力的分析论】" in out
-        assert s.verified == 1 and s.downgraded == 0
+    def test_verified_counted_no_issue_text_untouched(self):
+        ans = "康德说【《判断力批判》· 第一卷 审美判断力的分析论】如此。"
+        verified, issues = FV.check_citations(ans, self._log())
+        assert verified == 1 and issues == []
+        # validator 只检测——正文原样（verified 引用保留在文本中）
+        assert "【《判断力批判》· 第一卷 审美判断力的分析论】" in ans
 
-    def test_unverified_downgraded(self):
-        s = LiveCitationSanitizer(self._log())
-        out = s.push("康德说【《判断力批判》·§55】如此。")
-        assert "【" not in out and "《判断力批判》" in out and s.downgraded == 1
+    def test_unverified_reported_not_downgraded(self):
+        # 旧契约（未核验引用流式降级为《书》一般提及）已废除——
+        # 现在返回 UNVERIFIED_CITATION issue, 正文文本绝不被修改
+        ans = "康德说【《判断力批判》·§55】如此。"
+        verified, issues = FV.check_citations(ans, self._log())
+        assert verified == 0
+        assert [i.code for i in issues] == [FV.UNVERIFIED_CITATION]
+        assert issues[0].locator == "【《判断力批判》·§55】"
+        assert "【《判断力批判》·§55】" in ans and "【" in ans
 
-    def test_partial_marker_held(self):
-        s = LiveCitationSanitizer(self._log())
-        assert s.push("开头【《判断力批判》") == "开头"      # 未闭合标记缓冲
-        out = s.push("· 第二卷 审美判断力的辩证论】正文")
-        assert "【《判断力批判》· 第二卷 审美判断力的辩证论】" in out
-        assert out.endswith("正文")
-        assert s.flush() == ""
+    def test_partial_marker_held_no_longer_streaming_concern(self):
+        # 旧"未闭合标记流式缓冲"属 sanitizer 渲染职责, 已随类删除——
+        # validator 只对完整候选工作, 半截标记不再是特殊对象（机械原样检测）
+        ans = "开头【《判断力批判"
+        verified, issues = FV.check_citations(ans, self._log())
+        assert ans == "开头【《判断力批判"   # 文本零改动
 
-    def test_no_disclosure_footnote(self):
-        # B4-B: 净化不得产生"引用核验说明"补丁尾注
-        s = LiveCitationSanitizer(self._log())
-        out = s.push("正文【《不存在的书》·第1章】内容。")
-        assert "引用核验说明" not in out and "【" not in out
+    def test_feedback_is_structured_not_text_patch(self):
+        # B4-B 回归（新契约）: 未核验引用处理 = 结构化 issue 反馈给 Main Agent,
+        # 绝不产生"引用核验说明"式补丁尾注追加进正文
+        ans = "正文【《不存在的书》·第1章】内容。"
+        verified, issues = FV.check_citations(ans, self._log())
+        assert verified == 0 and issues
+        fb = FV.format_feedback(FV.ValidationResult(ok=False, issues=issues))
+        assert FV.UNVERIFIED_CITATION in fb and "引用核验说明" not in fb
+        assert ans.endswith("内容。")   # 原文原样——无尾注追加
+
+    def test_validate_final_candidate_gate(self):
+        # 总入口: 全部引用已核验 → PASS; 含未核验引用 → FAIL（发布前拦截）
+        log = self._log()
+        ok_ans = "康德说【《判断力批判》· 第一卷 审美判断力的分析论】如此。"
+        assert FV.validate_final_candidate(ok_ans, raw_tool_log=log).ok is True
+        bad_ans = "康德说【《判断力批判》·§55】如此。"
+        res = FV.validate_final_candidate(bad_ans, raw_tool_log=log)
+        assert res.ok is False
+        assert any(i.code == FV.UNVERIFIED_CITATION for i in res.issues)
 
 
 class TestControlTags:

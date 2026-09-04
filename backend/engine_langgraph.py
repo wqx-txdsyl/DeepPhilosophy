@@ -52,11 +52,8 @@ RETRIEVAL_LIMIT = AR.TOOL_BUDGET["soft_retrieval"]
 # graceful answer completion（模型先被告知再作答, 已取得 evidence 全部保留）。
 RETRIEVAL_HARD = AR.TOOL_BUDGET["hard_retrieval"]
 
-# 实时流式回答阈值（2026-08-29）: agent 轮 content 缓冲超过该字符数且本轮未见工具调用 →
-# 判定为最终回答, 缓冲文本与后续分块立即实时流出。替代原"整轮缓冲→graph 结束后 8ms/字
-# 打字机重放"的假流式（思考结束后到回答出现之间空窗数十秒）。
-# O1: 48 → 240——铁律 0 要求工具轮先写 1~4 句公开工作笔记（Main Agent 自己的
-# thinking_summary 数据源）, 阈值必须高于常规笔记长度, 否则笔记会先以回答形态流出再撤回。
+# O2 弃用: agent 轮文本不再按阈值实时流出——final candidate 一律缓冲到确定性校验
+# 通过后才发布（BUFFER FINAL UNTIL VALIDATED, §11）。常量保留仅为兼容旧测试导入。
 STREAM_ANSWER_DELAY = 240
 # 回答逐字流出节奏（2026-08-29）: DeepSeek 分块大且生成快, 直接转发会"秒出"而非流式——
 # 每字 12ms ≈ 83 字/秒, 生成与显示同速推进（显示慢于生成, 多余生成由 API 连接自然缓冲）
@@ -972,64 +969,9 @@ def _visible_text(text):
 
 
 # ── Patch 1.1 (P5): 最终兜底回答指令——兜底不要求长, 但必须保留 question obligations ──
-# 核验类问题至少输出: ①verdict ②verified exact text / closest text
-# ③edition/translation distinction（若相关）④confidence boundary。
-# 不能让 reasoning plan 已满足的关键义务全部消失在 final answer（F02 四层区分）。
-def _final_answer_directive(plan=None, verif_box=None, language="zh"):
-    generic = "请直接输出最终回答正文。禁止任何工具调用标记/XML/JSON 格式。只输出回答文本。"
-    vi = (plan or {}).get("verification_intent") or {}
-    if not vi:
-        return generic
-    state = (verif_box or {}).get("state") or "UNKNOWN"
-    term = (verif_box or {}).get("term") or vi.get("term") or "该表述"
-    if language == "en":
-        return (
-            "Output the final verification answer now (concise, but ALL verification obligations "
-            f"must survive into the final answer; no tool-call markers, answer text only):\n"
-            f"1) Verdict for \"{term}\" (verification state: {state}): yes / no / cannot confirm;\n"
-            "2) Verified text: the closest original passage from the retrieved material "
-            "(with 【《Book》· chapter】; if no verbatim hit, give the nearest proposition/section and its location);\n"
-            "3) Layer distinction: the user's phrasing vs the original text (original-language / proposition number) "
-            "vs the Chinese translation or popular paraphrase — say which layer each belongs to;\n"
-            "4) Confidence boundary: what can be confirmed and what cannot (edition/translation/verbatim).\n"
-            "Do not reduce the answer to a one-line verdict.")
-    return (
-        "请直接输出最终核验回答（简洁，但问题的全部核验义务必须保留在最终回答里；"
-        "禁止任何工具调用标记/XML/JSON 格式，只输出回答文本）：\n"
-        f"1) 核验结论：基于「{term}」的核验状态（{state}）给出 是/否/不能确认；\n"
-        "2) 已核验原文：给出检索材料中最接近的原句（带【《书》·章节】标注；"
-        "若未逐字命中，给出最接近的命题/段落及其在书中的位置）；\n"
-        "3) 层次区分：明确 用户所给表述 vs 原著文本（原著语言措辞/命题编号） vs 中文翻译或通俗概括 "
-        "——各自属于哪一层，不得混同；\n"
-        "4) 确定性边界：哪些层面能确认、哪些不能（版本/译本/逐字层面如实说明）。\n"
-        "不得只输出一行结论而丢掉上述义务。")
-
-# ── Phase A (A4): graceful completion 辅助 ──────────────
-def _lc_to_dict(m):
-    """LangChain 消息 → dict（llm_chat 期望 dict; 含 tool_calls 的 assistant 帧剔除）"""
-    if isinstance(m, SystemMessage):
-        return {"role": "system", "content": m.content}
-    if isinstance(m, HumanMessage):
-        return {"role": "user", "content": m.content}
-    if isinstance(m, AIMessage):
-        return {"role": "assistant", "content": m.content or ""}
-    return None
-
-def _evidence_digest(tool_log, max_items=12):
-    """已取得 evidence 的有界摘要（graceful completion 用; 防恢复请求上下文膨胀）"""
-    lines = []
-    for t in (tool_log or [])[-max_items:]:
-        a = t.get("args") or {}
-        q = a.get("query") or a.get("concept") or a.get("topic") or a.get("question") or ""
-        lines.append(f"- {t.get('name', '')}（{str(q)[:60]}）: {(t.get('result_summary') or '')[:150]}")
-    return "\n".join(lines)
-
-def _build_recovery_dicts(messages, tool_log, directive):
-    """恢复调用消息: 原对话（去工具帧）+ 指令 + 已取得 evidence 摘要（有界）"""
-    fb_msgs = [m for m in messages if not (isinstance(m, AIMessage) and m.tool_calls)]
-    digest = _evidence_digest(tool_log)
-    fb_msgs.append(SystemMessage(content=directive + ("\n\n【已取得的检索材料】\n" + digest if digest else "")))
-    return [d for d in (_lc_to_dict(m) for m in fb_msgs) if d]
+# ══ O2: 原 _final_answer_directive / _build_recovery_dicts（第二 writer 的指令与
+# 消息装配器）已删除——runtime 不再持有独立的"答案生成通道"。transport 异常的恢复
+# 改为同一个 Main Agent 的原样重试（见 stream_agent 内 graceful 路径）。
 
 # ── Thinking UI（2026-08-31; O1 收敛）──
 # 工具结果解读 = ACTIVITY 通道（tool_note 事件, initiated_by=runtime_mechanical）:
@@ -1344,34 +1286,28 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         obligation_ledger.vi = dict(plan.get("verification_intent") or {}) or None
         if obligation_ledger.vi:
             obligation_ledger._term_norm = re.sub(r"[的是之其所\s]", "", verif_box["term"])
-    from evidence_contract import LiveCitationSanitizer
-    # Patch 1.1 (P3): PRIMARY_ONLY/AUTHOR_ONLY 约束下, 二手书的正式引用同样被流式降级
-    # （visible_citation ⊆ used_evidence 的流式侧保证; 契约层再做终检）
+    # ══ O2: Final Answer Ownership——runtime 只保留 VALIDATE / REJECT / mechanical FORMAT ══
+    # 流式改写链（LiveCitationSanitizer 引用降级 / QuoteBoundSanitizer 引文转写 /
+    # TermClaimGate 句子改写）整体删除: 未核验对象不再被 runtime 改写, 而是作为
+    # 结构化 ValidationIssue 打回同一个 Main Agent 修复（final_validator.py）。
+    from final_validator import (validate_final_candidate, format_feedback,
+                                 MAX_VALIDATION_REPAIRS)
     _vi = plan.get("verification_intent") or {}
     _sc = _vi.get("constraint") if _vi.get("constraint") in ("PRIMARY_ONLY", "AUTHOR_ONLY") else None
     _subjects = [_vi["subject_author"]] if _vi.get("subject_author") else []
-    _citation_san = LiveCitationSanitizer(raw_tool_log, language, fallback_log=tool_log,
-                                          source_constraint=_sc, subject_authors=_subjects)
-    # Phase T.1 (T1.1-D): Quote Bound 流式净化器——verbatim blockquote/引导词引文
-    # 绑定 evidence 核验; MEMORY_ONLY 不得渲染为原文（转 paraphrase + 核验边界）。
-    _quote_san = QB.QuoteBoundSanitizer(raw_tool_log, language)
-    _term_gate = RP.TermClaimGate(
-        verif_box.get("term"),
-        (lambda s: RP.constrain_unconditional_claim(s, verif_box.get("state")))
-        if verif_box.get("term") else None)
     # Phase T (T13-B): 运行时措辞净化器——内部治理语言（"检索已被收口/预算已达上限/…"）
-    # 不得进入 Final prose; 流式安全（跨 chunk 缓冲）。
+    # 不得进入 Final prose; 流式安全（跨 chunk 缓冲）。机械净化, 不改变语义内容。
     _phrase_scr = TC.RuntimePhraseScrubber()
     # Phase T (T7): invocation 级 skill 重入治理器
     _reentry_tracker = TC.SkillReentryTracker()
     # 2026-08-28: 递归上限 18 → 60（检索硬上限已取消, 需给足长会话空间——~29 轮工具;
     # 仍是有界兜底, 防失控烧钱）。Phase A: 数值收编 agent_runtime.RECURSION_LIMIT 配置
     config = {"recursion_limit": AR.RECURSION_LIMIT}
-    # 当前 agent 轮缓冲（live: 已进入实时流式回答; live_text: 已作为 token 流出的文本——
-    # 若本轮后续宣告了工具调用, 需以 answer_retract 事件撤回为思考;
+    # 当前 agent 轮缓冲（O2: 轮文本一律只缓冲, 不再实时流出——
+    # 有工具 → 轮末降级为 thinking_summary; 无工具 → Final Candidate, 校验后发布;
     # note_emitted: 本轮公开工作笔记已作为 thinking_summary 发出, flush 不再重复）
     pending = {"text": "", "has_tools": False, "reasoned": False, "started": set(),
-               "live": False, "live_text": "", "note_emitted": False}
+               "note_emitted": False}
     pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具名（2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
     _rat_parser = RationaleParser()   # <rationale>…</rationale> 流式解析（安全摘要通道）
@@ -1415,53 +1351,30 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         MAIN_AGENT_INVOCATION → thinking → tool declaration → tool_start）。"""
         evs = []
         txt = pending.get("text", "").strip()
-        if txt and not pending.get("note_emitted") and not pending.get("live"):
+        if txt and not pending.get("note_emitted"):
             evs.append(_note_event(txt, _phase_for()))
             pending["note_emitted"] = True
         return evs
-    
-    async def emit_append(text):
-        """尾部补发（token 事件）: 追加到 full_answer——补正文本计入最终可见正文,
-        证据契约/安全审查/审计均以补正后的完整正文为准（Phase S）。
-        Patch 1 (B4): 补发文本同样经过 控制标签剥离 + 引用实时核验 + 术语断言门。
-        Phase T (T13-B): 补发文本同样经过运行时措辞净化。"""
-        nonlocal full_answer
-        if not text:
-            return
-        vis = _visible_text(text)
-        vis = _phrase_scr.push(vis)
-        vis = _citation_san.push(vis)
-        vis = _quote_san.push(vis)
-        vis = _term_gate.push(vis)
-        if not vis:
-            return
-        full_answer += "\n\n" + vis
-        for ch in "\n\n" + vis:
-            yield {"type": "token", "content": ch}
-            await asyncio.sleep(0.002)
+
+    # ══ O2: emit_append 已删除——runtime 不再向正文追加任何文本 ══
+    # （原通道承载: 原典核验补发 / scan_final_consistency 尾补 / epistemic 纠正与
+    #  反事实边界 / interpretation·composition hedge——全部为 runtime 代写, 按 O2 §7 删除。）
 
     async def flush_agent():
-        """agent 轮结束定归属: 已实时流出（live）→ 文本已在回答区, 直接返回;
-        有工具调用 → 缓冲文本降级为思考（防"让我补充检索…"规划文字泄漏为回答）;
-        无工具且未达实时阈值（短回答）→ 缓冲文本作为回答打字机输出（含 XML 标记剥离）"""
-        nonlocal full_answer
-        if pending.get("live"):
+        """agent 轮结束定归属（O2）: 有工具调用 → 缓冲文本降级为思考
+        （防"让我补充检索…"规划文字泄漏为回答）; 无工具 → 缓冲保留为 Final Candidate,
+        由调用方在图流结束后统一校验 + 发布（未验证候选绝不先于 validator 公开）。"""
+        if not pending["has_tools"]:
             return
         text = pending["text"]
         if not text:
             return
-        if pending["has_tools"]:
-            # O1: 工具轮公开工作笔记（模型内容通道原文）→ thinking_summary。
-            # 这是 Main Agent 自己写给用户的工作判断——不是 runtime 代笔。
-            _txt = text.strip()[:280]
-            if _txt and not pending.get("note_emitted"):
-                yield _note_event(_txt, _phase_for())
-                pending["note_emitted"] = True
-            return
-        for ch in _filter_xml_chars(text):
-            full_answer += ch
-            yield {"type": "token", "content": ch}
-            await asyncio.sleep(0.002)
+        # O1: 工具轮公开工作笔记（模型内容通道原文）→ thinking_summary。
+        # 这是 Main Agent 自己写给用户的工作判断——不是 runtime 代笔。
+        _txt = text.strip()[:280]
+        if _txt and not pending.get("note_emitted"):
+            yield _note_event(_txt, _phase_for())
+            pending["note_emitted"] = True
     # ══ Phase A (A4/A5): 图流执行与异常恢复分离 ══
     # 此前整轮（图流 + 收口 + done）包在同一个 try 里, 图流中任何异常（如模型侧
     # 流式连接中断"peer closed connection..."）直接以 error 事件终止整轮——已完成的
@@ -1469,9 +1382,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 模型侧 error"的真实路径）。现在: 图流异常先走 graceful completion（用已取得
     # evidence 完成回答）, 恢复成功/已有部分正文 → 继续正常收口（citations/done 照常）。
     stream_error = None
-    try:
+
+    async def _stream_graph(msgs):
+        """跑一遍图流（一组 Main Agent invocation 序列）——O2: 首次运行与 validator
+        repair 运行共用同一条路径（repair 绑定完整 tool set, 遵守 O1 causal contract）。
+        thinking/tool 活动实时 yield; 候选正文只进缓冲, 绝不提前公开。
+        共享状态经闭包更新（nonlocal）。"""
+        nonlocal pending, _agent_invocations, _saw_tools_result
+        nonlocal _main_agent_tool_decisions, _rat_tools_done, _rat_phase
         async for chunk, metadata in APP.astream(
-                {"messages": messages, "retrieval_count": 0, "agent": agent, "language": language,
+                {"messages": msgs, "retrieval_count": 0, "agent": agent, "language": language,
                  "guard": guard, "budget": budget, "trace": trace,
                  "tool_count": 0, "no_gain_streak": 0, "model_retries": 0,
                  "plan": plan, "retrieval_state": retrieval_state,
@@ -1500,20 +1420,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     # （thinking_summary, initiated_by=main_agent）必须先于 tool_start 事件。
                     for _nv in _flush_working_note():
                         yield _nv
-                    # 乐观流出的撤回: 本轮已实时流入回答区的文本实为工具规划文字
-                    # （规划文字超过实时阈值的少数情况）→ 先撤回为思考, 再发工具卡片
-                    # Phase S (S2): answer_retract 只撤销已流出的 draft text——
-                    # 已建立的结构化 epistemic findings（_epistemic_verdict 中的前提
-                    # 校正/反事实边界/义务状态）不随撤回消失; 最终回答若缺失校正,
-                    # 由应答后收口阶段（build_missing_correction_appends）重新消费补发。
-                    if pending.get("live"):
-                        sent = pending.get("live_text", "")
-                        if sent:
-                            yield {"type": "answer_retract", "content": sent}
-                            if full_answer.endswith(sent):
-                                full_answer = full_answer[:len(full_answer) - len(sent)]
-                        pending["live"] = False
-                        pending["live_text"] = ""
+                    # O2 §12: answer_retract 的语义用途随"先流出后撤回"模式一并删除——
+                    # 候选文本从不提前公开, 无需撤回（FINAL_RETRACT_SEMANTIC_USE=0;
+                    # 事件类型保留给纯 transport/rendering 恢复场景）。
                     for tcc in tool_call_chunks:
                         nm = tcc.get("name")
                         if nm and nm not in pending.get("started", ()):
@@ -1547,36 +1456,17 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         yield _note_event(_rat, _rat_phase)
                     if not _emit_text:
                         continue
+                    # O2: 机械净化（控制标签/内部治理措辞剥离）后只累积——
+                    # 引用/引文的资格判断移到 final validator（结构化反馈）, 流式阶段不改写。
                     _vis = _visible_text(_emit_text)
                     _vis = _phrase_scr.push(_vis)
-                    _vis = _citation_san.push(_vis)
-                    _vis = _quote_san.push(_vis)
-                    _vis = _term_gate.push(_vis)
                     if not _vis:
                         continue
                     chunk.content = _vis
-                    # 只累积本轮文本——归属（思考 or 回答）在轮结束 flush 时决定:
-                    # 有工具调用 → 降级为思考; 无工具（最终回答轮）→ 打字机输出。
-                    # 防止 LLM 在工具轮输出的规划文字（"让我补充检索…"）泄漏为回答。
+                    # 只累积本轮文本——归属（思考 or Final Candidate）在轮结束 flush 时决定;
+                    # 未经验证的候选文本绝不先于 validator 到达用户
+                    # （O2 §11: INVALID_FINAL_PUBLICLY_STREAMED = false）。
                     pending["text"] += _vis
-                    # 实时流式回答: 缓冲超过阈值仍未见工具调用 → 本轮大概率是最终回答,
-                    # 立即流出缓冲文本, 后续分块实时转发（2026-08-29: 替代假流式——
-                    # 此前整轮缓冲到 graph 结束才一次性重放, 思考结束后长时间空窗）
-                    if pending.get("live"):
-                        full_answer += _vis
-                        pending["live_text"] += _vis
-                        # 逐字流出: 不直接转发大分块, 保证打字机节奏（生成快的部分由连接缓冲）
-                        for ch in _vis:
-                            yield {"type": "token", "content": ch}
-                            await asyncio.sleep(TOKEN_INTERVAL)
-                    elif not pending["has_tools"] and len(pending["text"]) >= STREAM_ANSWER_DELAY:
-                        pending["live"] = True
-                        pending["live_text"] = pending["text"]
-                        full_answer += pending["text"]
-                        # 已缓冲的文本同样逐字流出（避免首块一次性涌入）
-                        for ch in pending["text"]:
-                            yield {"type": "token", "content": ch}
-                            await asyncio.sleep(TOKEN_INTERVAL)
                 # Provider 私有推理（DeepSeek reasoning_content）→ RP1 (O1-RP1) 一律内部丢弃:
                 # raw chain-of-thought 是 provider-private 数据, 绝不进入用户可见 SSE（thought_stream
                 # 不再承载任何 raw 透传）; public Thinking 只能来自模型自己写的 <rationale>/
@@ -1587,8 +1477,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # agent 输出结束 → flush（工作笔记/工具卡片穿插节奏; O1: 笔记已在宣告前归位）
                 async for ev in flush_agent():
                     yield ev
-                pending = {"text": "", "has_tools": False, "reasoned": False, "live": False,
-                           "live_text": "", "note_emitted": False}
+                pending = {"text": "", "has_tools": False, "reasoned": False,
+                           "note_emitted": False}
                 extra = chunk.additional_kwargs or {}
                 name = chunk.name or ""
                 args = extra.get("_args", {})
@@ -1643,6 +1533,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                     f"(texts={_v.get('texts_searched')}, exact={_v.get('exact_hits')})")
                     except Exception as _e:
                         logger.warning(f"[verify-term] skipped: {str(_e)[:120]}")
+
+    try:
+        async for _ev in _stream_graph(messages):
+            yield _ev
     except Exception as e:
         # A4/A5: 图流异常（模型侧流式连接中断/重试耗尽/递归上限/工具帧异常）不再直接终止整轮
         stream_error = e
@@ -1654,29 +1548,20 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     #   ③ 恢复也失败且无任何 evidence → 友好错误（不暴露内部细节/stack trace）
     # 恢复成功 → 落到正常收口: 已取得 evidence 不丢, citations/done 照常发出。
     if stream_error is not None:
+        # ══ Phase A (A4) + O2 §8: graceful 恢复 = 同一个 Main Agent 原样重试一次 ══
+        # 原"用 RECOVERY_SYSTEM_DIRECTIVE 调 AG.llm_chat 独立生成答案"是第二 writer——
+        # 已删除。transport 异常后: 无候选正文 → 图重跑一次（evidence 全保留, 工具不重烧）;
+        # 已有部分正文 → 保留, 走正常校验/收口; 重试仍无 → 如实 error。
         _recovered = False
-        if not _strip_markers(full_answer):
+        if not _strip_markers(pending["text"]):
             try:
-                fb_dicts = _build_recovery_dicts(messages, tool_log, AR.RECOVERY_SYSTEM_DIRECTIVE)
-                resp = await asyncio.to_thread(AG.llm_chat, fb_dicts, thinking=False, max_tokens=2000)
-                reply = _visible_text(_strip_markers(resp["choices"][0]["message"].get("content") or ""))
-                if reply:
-                    note = AR.RECOVERY_NOTE_EN if language == "en" else AR.RECOVERY_NOTE_ZH
-                    for piece in (note, reply):
-                        # Patch 1 (B4): 恢复回答同样经 措辞净化 + 引用实时核验 + quote bound + 术语断言门
-                        _vis = _phrase_scr.push(piece)
-                        _vis = _citation_san.push(_vis)
-                        _vis = _quote_san.push(_vis)
-                        _vis = _term_gate.push(_vis)
-                        for i in range(0, len(_vis), 60):
-                            seg = _vis[i:i + 60]
-                            full_answer += seg
-                            yield {"type": "token", "content": seg}
-                            await asyncio.sleep(0.002)
-                    _recovered = True
+                logger.info("[graceful-completion] stream error → retrying main agent once")
+                async for _ev in _stream_graph(messages):
+                    yield _ev
+                _recovered = True
             except Exception as _re:
-                logger.warning(f"[graceful-completion] failed: {str(_re)[:200]}")
-        if not _recovered and not _strip_markers(full_answer):
+                logger.warning(f"[graceful-completion] retry failed: {str(_re)[:200]}")
+        if not _recovered and not _strip_markers(pending["text"]):
             _fail_ct = sum(1 for tc in tool_log
                            if isinstance(tc.get("result_full"), dict) and tc["result_full"].get("error"))
             _log_stats(agent, req_message, time.time() - _t_start, [t["name"] for t in tool_log],
@@ -1695,150 +1580,110 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                        else "Agent error—please retry or rephrase"}
             return
     try:
-        # 最终 flush: 最后一轮 agent 输出（最终回答）在 done 前以打字机发出（XML 标记已剥离）
-        # O1: 原 synthesis 摘要生成器（runtime mini-LLM 代笔 thinking）已删除——
-        # 最终回答前的 thinking 只能是模型自己在内容通道写下的工作笔记。
-        _gtail = _term_gate.flush()
-        _stail = _citation_san.flush()
-        _qtail = _quote_san.flush()
+        # ══ O2 §9/§10: Final Candidate → Deterministic Validator → same-agent repair loop ══
+        # 图流结束 → 尾部残留释放 → 候选组装 → 确定性校验; FAIL → 结构化 issues 以中性反馈
+        # 打回同一个 Main Agent（repair invocation 绑定完整工具集, 可继续研究——仍遵守
+        # O1 causal contract）; 机械上限 MAX_VALIDATION_REPAIRS 次, 绝不无限循环。
         _ptail = _phrase_scr.flush()
-        _tail = _visible_text(_rat_parser.finish())   # Patch 1 (B4-A): 未闭合 rationale 残留剥离标签后释放
-        # Patch 1 (B4): 尾部释放——运行时措辞净化 → 术语断言门 → 引用核验器 → quote bound
-        #   → rationale 残留, 全部净化后补发; 门/缓冲器持有的都是流的后缀,
-        #   前置到 pending 可保持顺序（live 模式直接流出）
-        _tails = _ptail + _gtail + _stail + _qtail + _tail
+        _tail = _visible_text(_rat_parser.finish())   # 未闭合 rationale 残留剥离标签后释放
+        _tails = _ptail + _tail
         if _tails:
-            if pending.get("live"):
-                for ch in _tails:
-                    full_answer += ch
-                    yield {"type": "token", "content": ch}
-                    await asyncio.sleep(0.002)
-            else:
-                pending["text"] = _tails + pending["text"]
-        async for ev in flush_agent():
-            yield ev
-        pending = {"text": "", "has_tools": False, "reasoned": False, "live": False, "live_text": ""}
+            pending["text"] = _tails + pending["text"]
+        # 预算强制收尾的残留工具轮: 文本降级为工作笔记, 不进入候选
+        if pending["has_tools"]:
+            async for ev in flush_agent():
+                yield ev
+            pending["text"] = ""
         # 被截断的已宣告工具调用（宣告了 tool_start 但最终未执行, 如 hard 预算强制轮的
         # 二次残留宣告）: 逐名发 tool_cancel, 前端据此解除对应"调用中"卡片（2026-08-14）
         for nm in sorted(pending_tools):
             yield {"type": "tool_cancel", "name": nm, "reason": "工具预算已达上限，该调用未执行"}
-        # 最终回答校验: 剥离工具标记后为空或过短 → 强制兜底生成正文（硬上限轮 LLM 可能
-        # 只输出标记或半句标题就停——真实回归: F02 final 仅 12 字符的截断标题, 兜底因
-        # "非空"未触发）。Phase A: 兜底调用同样携带已取得 evidence 摘要（与 graceful 同机制）
-        # Patch 1.1 (P5): 核验类问题兜底指令携带四要素（verdict/最近原文/层次区分/确定性边界）
-        if len(_strip_markers(full_answer).strip()) < 60:
+
+        candidate = pending["text"]
+        pending["text"] = ""
+        repairs_used = 0
+        while True:
+            _ledger_snap = obligation_ledger.snapshot() if obligation_ledger is not None else {}
+            validation = validate_final_candidate(
+                candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
+                obligations_satisfied=bool(_ledger_snap.get("obligations_satisfied", True)),
+                primary_text_read=_ledger_snap.get("primary_text_read"),
+                language=language, source_constraint=_sc, subject_authors=_subjects)
+            if validation.ok or repairs_used >= MAX_VALIDATION_REPAIRS:
+                break
+            repairs_used += 1
+            logger.info(f"[o2-validator] candidate FAIL ({len(validation.issues)} issues) → "
+                        f"main-agent repair {repairs_used}/{MAX_VALIDATION_REPAIRS}")
+            yield {"type": "tool_note",
+                   "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）",
+                   "initiated_by": "validator", "activity": True,
+                   "decision_group_id": _dg()}
+            # O2 §9: 中性反馈——只列机械 issue, 不命令具体修复动作（改写/标注/删引文/
+            # 补研究由 Agent 自主决定）; validator 自身绝不调用工具。
+            _fb = format_feedback(validation)
+            _repair_msgs = list(messages) + [AIMessage(content=candidate),
+                                             HumanMessage(content=_fb)]
             try:
-                fb_dicts = _build_recovery_dicts(
-                    messages, tool_log, _final_answer_directive(plan, verif_box, language))
-                resp = await asyncio.to_thread(AG.llm_chat, fb_dicts, thinking=False, max_tokens=2000)
-                reply = _visible_text(_strip_markers(resp["choices"][0]["message"].get("content") or ""))
-                if reply:
-                    # Patch 1 (B4): 兜底回答同样经 措辞净化 + 引用实时核验 + quote bound + 术语断言门;
-                    # 并计入 full_answer（证据契约/安全审查/审计以最终可见正文为准）
-                    reply = _phrase_scr.push(reply)
-                    reply = _citation_san.push(reply)
-                    reply = _quote_san.push(reply)
-                    reply = _term_gate.push(reply)
-                    for i in range(0, len(reply), 60):
-                        full_answer += reply[i:i + 60]
-                        yield {"type": "token", "content": reply[i:i + 60]}
-                        await asyncio.sleep(0.002)
-            except Exception as e:
-                logger.warning(f"[fallback-fail] {str(e)[:200]}")
-                if "Insufficient Balance" in str(e) or "402" in str(e):
-                    yield {"type": "token",
-                           "content": "（API 余额不足——请充值 DeepSeek API 后重试）" if language != "en"
-                           else "(Insufficient API balance—please top up DeepSeek API and retry)"}
-                else:
-                    yield {"type": "token",
-                           "content": "（未能生成回答，请重试或换一种问法）" if language != "en"
-                           else "(Failed to generate a response—please retry or rephrase your question)"}
+                async for _ev in _stream_graph(_repair_msgs):
+                    yield _ev
+            except Exception as _re:
+                logger.warning(f"[o2-repair] stream failed: {str(_re)[:200]}")
+                break
+            # repair 轮的尾部残留 / 残留工具轮处理（与首次运行同规则）
+            _ptail2 = _phrase_scr.flush()
+            _tail2 = _visible_text(_rat_parser.finish())
+            if pending["has_tools"]:
+                async for ev in flush_agent():
+                    yield ev
+                pending["text"] = ""
+            candidate = (_ptail2 + _tail2) + pending["text"]
+            pending["text"] = ""
+        # 发布（§11: BUFFER FINAL UNTIL VALIDATED）: 候选文本此刻才首次公开——
+        # validator PASS, 或达 ceiling 后如实以 validation failure 收口
+        # （done.validation 携带 ok=false + issues; runtime 绝不代写"正确答案"）。
+        if candidate.strip():
+            full_answer = candidate
+            for ch in candidate:
+                yield {"type": "token", "content": ch}
+                await asyncio.sleep(TOKEN_INTERVAL)
+        else:
+            # 纯 transport 级失败提示（不计入 full_answer, 不参与审计正文）
+            yield {"type": "token",
+                   "content": "（未能生成回答，请重试或换一种问法）" if language != "en"
+                   else "(Failed to generate a response—please retry or rephrase your question)"}
+        pending = {"text": "", "has_tools": False, "reasoned": False, "note_emitted": False}
         # ══ O1: 引擎兜底读取的回放与终局安全网已删除 ══
         # 原此处的 ① auto-read tool 事件回放 + "已完成主文本核验读取" 注记
         # 和 ② 收口前 _ensure_primary_read 终局补读（含"原典核验补正"正文补发）
         # 均为 runtime 代执行认知工具 / runtime 文本冒充 Agent 核验行为——按 O1 契约删除。
         # 主文本读取现在只能来自 Main Agent 宣告; 核验不足时模型会在收口轮收到
         # "最后核验机会"读章提示（prompt 层）, 由模型自己决定是否补读。
-        # ══ Phase T.1 (T1.1-A): 已核验引用可见性保障（确定性 validator, 不依赖模型自觉）══
-        # 义务满足 + 逐字命中（只能由模型自己的 get_chapter 达成）, 但最终正文没有任何
-        # 指向已读章节的正式引用 → 补发一条带原文与【《书》·章】标注的核验说明。
-        # validator 行为: initiated_by=runtime_mechanical（校验补正, 非 Agent 认知动作）。
-        try:
-            _vi_check = (plan.get("verification_intent") or {})
-            if _vi_check.get("kind") and obligation_ledger is not None \
-                    and obligation_ledger.obligations_satisfied \
-                    and obligation_ledger.exact_quote_verified:
-                _info = getattr(obligation_ledger, "primary_read_info", None) \
-                    or _derive_read_info(raw_tool_log, verif_box.get("term") or _vi_check.get("term"))
-                if _info and _info.get("passage"):
-                    from evidence_contract import iter_citation_markers, _book_match, _chapter_match
-                    _has_cite = any(_book_match(_info.get("book") or "", b)
-                                    and _chapter_match(_info.get("chapter") or "", ch)
-                                    for b, ch in iter_citation_markers(full_answer))
-                    if not _has_cite:
-                        _bk, _ch = _info.get("book") or "", _info.get("chapter") or ""
-                        _cite_note = (f"（原典核验：「{_info['passage']}」——已读取"
-                                      f"《{_bk}》·{_ch}原文完成逐字核验【《{_bk}》·{_ch}】。）")
-                        async for _ev in emit_append(_cite_note):
-                            yield _ev
-        except Exception as _e:
-            logger.warning(f"[verified-citation append] skipped: {str(_e)[:160]}")
-        # ══ Phase T.1: 收口补正文本经净化链后的残留释放 ══
-        # emit_append 的补正文本可能被 citation/quote/term 门持有后缀（如引句中的句读
-        # 触发 term gate 缓冲）——真实回归: 引用补发只流出了前半句。此处按链序二次放行。
-        try:
-            _d1 = _citation_san.flush()          # citation 持有后缀（已过 phrase; 未过 quote/term）
-            _d1 = _quote_san.push(_d1)
-            _d1 += _quote_san.flush()            # quote 持有后缀（已过 phrase+citation; 未过 term）
-            _d1 = _term_gate.push(_d1)
-            _d3 = _term_gate.flush()             # term 持有后缀
-            _resid = (_d1 or "") + (_d3 or "")
-            if _resid:
-                for i in range(0, len(_resid), 60):
-                    _seg = _resid[i:i + 60]
-                    full_answer += _seg
-                    yield {"type": "token", "content": _seg}
-                    await asyncio.sleep(0.002)
-        except Exception as _e:
-            logger.warning(f"[postloop drain] skipped: {str(_e)[:160]}")
-        # ══ Phase T.1 (T1.1-D/G/H): Quote Bound 审计 + 收口一致性扫描 ══
+        # ══ O2 §7: 以下 runtime 代写通道已整体删除 ══
+        # ① 原典核验补发（verified quote visibility append）——runtime 不得替 Agent 写正文
+        #    （含核验声明）; 核验状态经 done.obligation_ledger / done.quote_bound 审计输出。
+        # ② postloop drain（净化链残留释放）——净化链已不存在。
+        # ③ scan_final_consistency 尾补——G（确定性降调）属语义 hedge, 按 §7 删除不转 validator;
+        #    H（verify-later 矛盾）为机械可判定矛盾, 已转为 ValidationIssue
+        #    （VERIFY_LATER_MISSTATEMENT, 见 final_validator.check_consistency）。
+        # ══ Phase T.1: Quote Bound 审计（纯检测, 供 done payload; 不产生任何文本）══
         _quote_audit = None
         _vt0 = time.time()
         try:
             _quote_audit = QB.audit_quotes(full_answer, raw_tool_log)
-            _q_satisfied = bool(obligation_ledger is None or obligation_ledger.obligations_satisfied)
-            _q_read = bool(obligation_ledger is None or obligation_ledger.primary_text_read)
-            for _qs in QB.scan_final_consistency(full_answer, _quote_audit, _q_satisfied,
-                                                 primary_text_read=_q_read, language=language):
-                async for _ev in emit_append(_qs):
-                    yield _ev
-            _quote_audit = QB.audit_quotes(full_answer, raw_tool_log)   # 补正后终态
         except Exception as _e:
             logger.warning(f"[quote-bound post] skipped: {str(_e)[:160]}")
         finally:
             if trace:
                 trace.record_phase("validator_quote_bound", _vt0)
-        # ══ Phase S (S2): Epistemic findings 重消费——answer_retract 不撤销 findings ══
-        # 前提校正/反事实边界是结构化 epistemic state; 若最终可见正文未落实
-        # （校正随 draft 被撤回 / LLM 忽略注入 / 回答被工具轮打断）→ 此处尾补,
-        # 使 high-importance 校正必然出现在最终正文。
+        # ══ Phase S (S2) → O2 §7: Epistemic findings 审计 ══
+        # 前提校正/反事实边界是结构化 epistemic state——原"正文未落实 → runtime 尾补"
+        # 的 build_missing_correction_appends / boundary_text 补发已删除（runtime 不得给
+        # 用户补句子）。检测结果仍入 done.epistemic 供审计; 是否在正文中落实由
+        # Main Agent 自己完成（结构性义务, 非 deterministic validator 职权）。
         _epistemic_state = None
         _vt0 = time.time()
         try:
             if _epistemic_verdict:
-                from epistemic_guard import build_missing_correction_appends
-                _esc = scan_answer(_epistemic_verdict, full_answer, language)
-                for _cor in build_missing_correction_appends(_epistemic_verdict, full_answer, language):
-                    async for _ev in emit_append(_cor):
-                        yield _ev
-                if _esc.get("boundary_applied"):
-                    _cv = _epistemic_verdict.get("counterfactual") or {}
-                    _boundary = (_cv.get("boundary_text_en") if language == "en"
-                                 else _cv.get("boundary_text")) or ""
-                    if _boundary:
-                        async for _ev in emit_append(_boundary):
-                            yield _ev
-                # 状态反映补发后的最终正文（重扫一次——correction_present 以最终可见文本为准）
                 _esc_final = scan_answer(_epistemic_verdict, full_answer, language)
                 _epistemic_state = {
                     "premise_checks": [
@@ -1867,24 +1712,20 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         finally:
             if trace:
                 trace.record_phase("validator_budget_scan", _vt0)
-        # Interpretation Engine 应答后校验: 解释型回答缺多候选/越级断言 → 措辞级补正
-        # （确定性兜底, 仍是 token 事件; 置信度数字仅内部记录, 不发送给前端）
+        # Interpretation Engine 应答后检测（O2 §7: hedge append 已删除——检测结果只入
+        # done payload 供审计; 解释型措辞由 Main Agent 自己负责）
         _interpretation_scan = None
         _vt0 = time.time()
         try:
             if _interpretation_verdict:
                 _interpretation_scan = scan_interpretation(_interpretation_verdict, full_answer, language, tool_log)
-                for _ins in _interpretation_scan.get("appends", []):
-                    if _ins:
-                        async for _ev in emit_append(_ins):
-                            yield _ev
         except Exception as _e:
             logger.warning(f"[interpretation-engine post] skipped: {str(_e)[:200]}")
         finally:
             if trace:
                 trace.record_phase("validator_interpretation", _vt0)
-        # Answer Composer 应答后校验: 结构信号 / 强化措辞 / 推理噪音 → 措辞级补正
-        # （解释型问题已由 interpretation_scan 补正过则不再重复; 仍是 token 事件）
+        # Answer Composer 应答后检测（O2 §7: 强化措辞 hedge / 直接性 nudge 补正已删除——
+        # 检测结果只入 done payload 供审计）
         _composition_scan = None
         _vt0 = time.time()
         try:
@@ -1893,10 +1734,6 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 _composition_scan = scan_composition(_composition_verdict, full_answer, language,
                                                      interpretation_scan=_interpretation_scan,
                                                      budget_scan=_budget_scan)
-                for _ins in _composition_scan.get("appends", []):
-                    if _ins:
-                        async for _ev in emit_append(_ins):
-                            yield _ev
         except Exception as _e:
             logger.warning(f"[answer-composer post] skipped: {str(_e)[:200]}")
         finally:
@@ -1925,10 +1762,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         finally:
             if trace:
                 trace.record_phase("validator_evidence_contract", _vt0)
-        # ══ Patch 1 (B4-B): Citation Sanitizer——最终输出硬约束的断言层 ══
-        # 未核验 formal citation 已在流式阶段被 LiveCitationSanitizer 降级为一般书名提及
-        # （正文里不存在未验证的【《书》·章】）; 此处 sanitize_citations 仅作 final-output
-        # assertion——unverified_before 应为 0, 命中则记日志; 不再追加"引用核验说明"补丁尾注。
+        # ══ Patch 1 (B4-B) → O2: Citation Sanitizer——最终输出硬约束的断言层 ══
+        # O2 后未核验 formal citation 不再被流式降级——候选带着原样标记进入 validator,
+        # 以 UNVERIFIED_CITATION 打回 same-agent repair; 此处 sanitize_citations 仅作
+        # final-output assertion——发布文本若仍有未核验引用即为 ceiling 收口的失败披露,
+        # 记日志; 不改写、不追加任何文本。
         _citation_sanitize = None
         _vt0 = time.time()
         try:
@@ -2049,6 +1887,22 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                           "main_agent_tool_decisions": _main_agent_tool_decisions,
                           "agent_invocations": _agent_invocations,
                           "thinking_sources": "main_agent_only"},
+               # O2: Final Answer Ownership 审计块——
+               # 最终可见正文的自然语言只能由 Main Agent 生成（validator FAIL 时经
+               # same-agent repair 重新生成; runtime 零改写/零追加/零语义 retract）。
+               "final_ownership": {"provenance": "o2",
+                                   "final_text_owner": "main_agent",
+                                   "semantic_mutators": 0,
+                                   "runtime_factual_appends": 0,
+                                   "final_retract_semantic_use": 0,
+                                   "invalid_final_publicly_streamed": False,
+                                   "validator_repair_invocations": repairs_used,
+                                   "main_agent_final_ownership_rate": 1.0},
+               # O2: 确定性校验结果（final candidate 发布前的唯一守门人）
+               "validation": {"result": validation.as_dict(),
+                              "repairs_used": repairs_used,
+                              "max_validation_repairs": MAX_VALIDATION_REPAIRS,
+                              "repair_protocol": "same_main_agent"},
                # O1 (§13): 机械 timing observability（llm_invocation / validator_* 阶段时长;
                # 工具级时长见 trace.calls 与 tool 事件, 此处为阶段汇总）
                "timing": {"phases": (list(trace.phases) if trace else []),
@@ -2085,7 +1939,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                    if retrieval_state is not None else None),
                # Phase T (T12): 工具结果所有权审计（tool_value/final_use + anomaly 计数）
                "tool_ownership": _tool_ownership,
-               "live_citation_sanitize": _citation_san.snapshot(),
+               # O2: LiveCitationSanitizer 已删除——正式引用不再被 runtime 降级改写,
+               # 未核验引用走 validator UNVERIFIED_CITATION → same-agent repair。
+               "live_citation_sanitize": {"verified": validation.verified_citations,
+                                          "downgraded": 0,
+                                          "mode": "o2_validate_reject_no_rewrite"},
+               # O2 §13: safety 属安全执行层（safety_runtime）, 不计入普通 semantic mutator
+               "safety_enforcement": {"initiated_by": "safety_runtime",
+                                      "action": "blocked" if safety_flag == "blocked"
+                                      else ("warning" if safety_flag == "warning" else "none")},
                "safety_reply": (SAFETY_REPLY_EN if language == "en" else SAFETY_REPLY) if safety_flag == "blocked" else None}
         # RP1 (O1-RP1): 事后推理摘要通道整体删除——
         #   旧 _post_reasoning_summary（mini-LLM 浓缩 raw reasoning_text）= runtime 摘录

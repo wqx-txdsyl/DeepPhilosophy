@@ -156,43 +156,37 @@ def _group_num(ev):
 
 
 # ═══════════════════════════════════════════════════════
-# Streaming Blockquote Split Behavior（O0 S5 witness 转正式 behavior test）
+# Blockquote 行为保障（O0 S5 witness → O2 迁移为校验层）
+# O2: QuoteBoundSanitizer 流式改写类已删除——blockquote 完整性改由
+# extract_quotes/audit_quotes 在 Final Candidate 上保证（不改写、只核验）。
 # ═══════════════════════════════════════════════════════
 class TestBlockquoteSplitBehavior:
-    def _san(self):
-        raw_log = [{"name": "get_chapter", "args": {"book_id": "lunyu", "chapter_idx": 13},
-                    "result_summary": "", "result_full": {"book_id": "lunyu", "title": "先进篇",
-                                                          "text": "先进篇正文。" + _LUNYU_PASSAGE}}]
-        return QB.QuoteBoundSanitizer(raw_log, "zh")
+    def _raw_log(self):
+        return [{"name": "get_chapter", "args": {"book_id": "lunyu", "chapter_idx": 13},
+                 "result_summary": "", "result_full": {"book_id": "lunyu", "title": "先进篇",
+                                                       "text": "先进篇正文。" + _LUNYU_PASSAGE}}]
 
-    def test_split_quote_across_chunks_stays_blockquote(self):
-        """witness: chunk A = '> 「', chunk B = '鲁人为长府……' → 完整 blockquote 保留"""
-        san = self._san()
-        out = san.push("> 「")
-        out += san.push("鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”"
-                        "子曰：“夫人不言，言必有中。”**\n")
-        out += san.push("\n后续正文。\n")
-        out += san.flush()
-        assert "> 「鲁人为长府" in out                    # 引用块完整（含前引号, 未被腰斩）
-        assert "\n鲁人为长府" not in out                  # 正文没有掉出引用块
-        assert QB._PARAPHRASE_HEAD_ZH not in out          # 已核验原文不得被降级改写
-        assert "（与库中原文近似" not in out
+    def test_verified_blockquote_extracts_whole(self):
+        """已核验 blockquote 在完整候选文本上被完整提取并判 VERIFIED_EXACT"""
+        final = "核验如下：\n\n> 「" + _LUNYU_PASSAGE + "」\n\n以上为《论语·先进篇》原文。"
+        audit = QB.audit_quotes(final, self._raw_log())
+        bq = [e for e in audit["entries"] if e["kind"] == "blockquote"]
+        assert len(bq) == 1 and bq[0]["verification_state"] == "VERIFIED_EXACT"
+        assert audit["summary"]["unverified_blockquote"] == 0
 
-    def test_split_quote_memory_only_converted_whole(self):
-        """跨 chunk 的 MEMORY_ONLY 引用整块转 paraphrase——绝不渲染未核验原文"""
-        san = QB.QuoteBoundSanitizer([{"name": "search_books", "args": {}, "result_full": {"results": []}}], "zh")
-        out = san.push("> 「")
-        out += san.push("这是一段完全凭记忆给出且库中不存在的引用文字足够长。\n")
-        out += san.flush()
-        assert "> " not in out
-        assert "凭记忆给出" in out
+    def test_memory_only_blockquote_flagged_not_rewritten(self):
+        """MEMORY_ONLY 引用: runtime 绝不改写为 paraphrase——审计如实标 unverified"""
+        final = "引用如下：\n\n> 「这是一段完全虚构且库中不存在的引用文字足够长。」\n"
+        audit = QB.audit_quotes(final, [{"name": "search_books", "args": {}, "result_full": {"results": []}}])
+        assert audit["summary"]["unverified_blockquote"] == 1
+        assert "据通行理解" not in final   # runtime paraphrase 头已不存在于任何路径
 
     def test_stream_answer_path_keeps_split_blockquote(self):
         """production 流: 最终回答把 blockquote 从「前劈开（两个 content 分片）→ 完整保留"""
         final = ("核验如下：\n\n> 「" + _LUNYU_PASSAGE + "」\n\n以上为《论语·先进篇》原文。")
         script = [_msg("", [{"name": "search_books", "args": {"query": "言必有中"}, "id": "c1"}]),
                   _msg(final)]
-        # 单 chunk 一次性给整段; 分片行为由 sanitizer 单测覆盖, 此处验证整链不裂
+        # 单 chunk 一次性给整段; 提取完整性由 extract_quotes 单测覆盖, 此处验证整链不裂
         evs = _run_stream("言必有中出处", script)
         answer = "".join(e.get("content", "") for e in _of(evs, "token"))
         assert "> 「" + _LUNYU_PASSAGE in answer

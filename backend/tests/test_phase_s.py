@@ -2,9 +2,9 @@
 """Phase S（2026-08-30）—— Final Stabilization 回归集
 
 S1  84/87 Premise Benchmark 语义化（当前84 / 历史87 / 歧义辨析）
-S2  answer_retract 保留 Epistemic Findings（校正尾补, 不随撤回消失）
+S2  Epistemic Findings 审计（O2: 校正尾补/answer_retract 已删, 缺口如实上报）
 S3  Semantic Obligation 去重（同一 analogy boundary 只履行一次）
-S4  Citation Sanitizer（visible formal citations ⊆ verified used_evidence）
+S4  Citation integrity（O2: 未核验引用不再降级改写——validator 拒绝 + 如实审计）
 S5  Answer Budget（复杂度→软预算; 段落职责冗余检测）
 S6  Embedding 429 快速降级（1 次短退避 + circuit breaker + 词法兜底）
 
@@ -91,24 +91,33 @@ def test_s1_proposition_plus_context_not_token_only():
 
 
 # ═══════════════════════════════════════════════════════
-# S2 — answer_retract 保留 Epistemic Findings（Composer 重消费）
+# S2 — O2 改写: answer_retract 已不发、runtime 校正尾补已删（如实审计）
 # ═══════════════════════════════════════════════════════
-def test_s2_missing_correction_appends_built():
+def test_s2_missing_correction_detected_not_appended():
+    # O2: build_missing_correction_appends（runtime 代写校正句）已删除——
+    # 落实状态由 scan_answer 检测, 随 done.epistemic 审计; 落实由 Main Agent 自己负责
+    assert not hasattr(eg, "build_missing_correction_appends"), "runtime 代写校正不得回归"
     verdict = {"premise_checks": [
         {"status": "contradicted", "rule_id": "oldman_84_days",
          "corrected_value": "84天", "referent_mode": "current",
          "correction_note": "《老人与海》开篇写的是连续84天没有捕到鱼。"}]}
-    assert eg.build_missing_correction_appends(verdict, "老人梦狮的寓意") != []
-    assert eg.build_missing_correction_appends(verdict, "开篇是84天，老人梦狮") == []
-    # 歧义义务: 回答须体现区分才算落实
+    missed = eg.scan_answer(verdict, "老人梦狮的寓意")
+    assert missed["premise_checks"][0]["correction_present"] is False
+    done_ = eg.scan_answer(verdict, "开篇是84天，老人梦狮")
+    assert done_["premise_checks"][0]["correction_present"] is True
+    # 歧义义务: 回答体现任一数字才算落实（双值逐数字匹配）
     amb = {"status": "contradicted", "referent_mode": "ambiguous",
            "corrected_value": "84天（开篇当前这次）/ 87天（他此前的经历）",
            "correction_note": "需要区分两个数字。"}
-    assert eg.build_missing_correction_appends({"premise_checks": [amb]}, "老人梦狮") != []
+    amb_missed = eg.scan_answer({"premise_checks": [amb]}, "老人梦狮")
+    assert amb_missed["premise_checks"][0]["correction_present"] is False
+    amb_done = eg.scan_answer({"premise_checks": [amb]}, "开篇当前是84天，此前他有过87天的经历。")
+    assert amb_done["premise_checks"][0]["correction_present"] is True
 
 
 class _FakeAppRetract:
-    """模拟: 校正文本已实时流出 → 宣告工具调用（answer_retract 撤回）→ 工具轮 → 最终回答缺校正"""
+    """模拟: 校正文本先流出 → 宣告工具调用 → 工具轮 → 最终回答缺校正。
+    O2 后: draft 不再实时流出/撤回——引擎缓冲为工作笔记, final 校验后发布。"""
 
     def __init__(self, final_answer, tool_result):
         self.final_answer = final_answer
@@ -144,7 +153,10 @@ class _FakeAppRetract:
 _RETRACT_QUESTION = "老人从一开始87天的执念到了最后安然睡觉，是不是恰是他不再向世界索取意义？"
 
 
-def test_s2_retract_then_final_answer_missing_correction_reappended(monkeypatch):
+def test_s2_no_retract_draft_becomes_note_correction_not_reappended(monkeypatch):
+    # O2 改写: final 候选不再提前公开 → 无需撤回, answer_retract 不再发出;
+    # 工具轮 draft（含校正）降级为 Main Agent 公开工作笔记;
+    # 最终回答缺校正时 runtime 不再尾补——正文原样, 缺口如实记入 done.epistemic
     import engine_langgraph as elg
     fake = _FakeAppRetract(
         final_answer="回到你的问题：老人梦见狮子，可以读作他不再向世界索取意义，但并非唯一读法。",
@@ -153,13 +165,17 @@ def test_s2_retract_then_final_answer_missing_correction_reappended(monkeypatch)
     monkeypatch.setattr(AG, "llm_chat", lambda *a, **k: {"choices": [{"message": {"content": ""}}]})
     evs = asyncio.run(_collect_stream(elg, _RETRACT_QUESTION))
     types = [ev["type"] for ev in evs]
-    assert "answer_retract" in types, "模拟撤回必须发生"
+    assert "answer_retract" not in types, "final 不提前公开 → answer_retract 不得再发出"
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "84天" in text, "校正随 draft 被撤回后, Final Answer Composer 必须重新消费 findings 尾补"
+    assert "84天" not in text, "draft 已降级为工作笔记; runtime 不得把校正重新补发进正文"
+    assert "（补充：" not in text, "runtime 零代写"
+    notes = [ev.get("content") or "" for ev in evs if ev["type"] == "thinking_summary"]
+    assert any("84" in n for n in notes), "draft 中的校正降级为 Main Agent 公开工作笔记（不丢失）"
     done = next(ev for ev in evs if ev["type"] == "done")
     epi = done.get("epistemic") or {}
     checks = epi.get("premise_checks") or []
-    assert any(c.get("rule_id") == "oldman_84_days" and c.get("correction_present") for c in checks)
+    assert any(c.get("rule_id") == "oldman_84_days" and c.get("correction_present") is False
+               for c in checks), "校正缺口必须如实审计（不得谎报已落实）"
 
 
 def test_s2_retract_does_not_touch_epistemic_state(monkeypatch):
@@ -214,17 +230,15 @@ def test_s3_full_answer_with_alternatives_zero_append():
     assert scan["appends"] == [], f"全部义务已履行 → 零补正: {scan['appends']}"
 
 
-def test_s3_equivalence_claim_still_hedged():
-    # 声称"本质完全一样"→ 补正一次
-    # Phase T (T13-C): analogy_boundary 关键词未命中现在记 UNKNOWN（不再错报 UNSATISFIED）,
-    # 但补正仍由结构性信号 overclaim（越级断言检出）驱动——补正行为不变
+def test_s3_equivalence_claim_detected_not_appended():
+    # 声称"本质完全一样"→ 越级断言检出（O2: 不再 runtime 补正——检测信号入 done 审计）
+    # Phase T (T13-C): analogy_boundary 关键词未命中现在记 UNKNOWN（不再错报 UNSATISFIED）
     v = ie.run_interpretation_engine("尼采的超人和庄子的逍遥是不是一回事？")
     scan = ie.scan_interpretation(v, "超人和逍遥本质上完全一样，都是对无限自由的向往。")
     obls = {o["type"]: o["status"] for o in (scan.get("obligations") or [])}
     assert obls.get("analogy_boundary") in ("UNKNOWN", "UNSATISFIED")
-    assert scan["appends"], "越级断言必须补正（overclaim 驱动）"
-    appends = "\n".join(scan["appends"])
-    assert "类比" in appends and "等同" in appends
+    assert scan["overclaim"] is True, "越级断言必须检出（审计用）"
+    assert scan["appends"] == [], "O2: runtime 不再代写类比≠等同补句——落实归 Main Agent"
 
 
 def test_s3_obligation_states_and_only_required_unsatisfied_append():
@@ -309,27 +323,33 @@ def test_s4_rebind_when_reliable_evidence_exists():
     assert report["actions"][0]["action"] == "rebound_book_level"
 
 
-def test_s4_engine_disclosure_note_and_panel_clean(monkeypatch):
+def test_s4_unverified_citation_rejected_not_downgraded(monkeypatch):
+    # O2 改写: 未核验 formal citation 不再被流式降级改写——候选在发布前被
+    # validator 以 UNVERIFIED_CITATION 拒绝 → same-agent repair;
+    # fake 每轮回答相同 → 达修复上限后正文原样发布 + done 如实披露（ok=false）
     import engine_langgraph as elg
     answer = ("尼采在《查拉图斯特拉如是说》中提出超人【《查拉图斯特拉如是说》·前言】。"
               "另据《不存在之书》记载【《不存在之书》·第三章】，超人概念另有来源。")
     tl = {"results": [_hit("查拉图斯特拉如是说", "前言", "b1")], "query": "超人 尼采", "method": "vector"}
     evs, fake = _run_stream_tools(monkeypatch, "尼采的超人是什么？", answer, tl)
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    # Patch 1 (B4-B): 未核验引用在 final render 前即被降级——正文不出现【《不存在之书》·第三章】,
-    # 也不追加"引用核验说明"补丁尾注
-    assert "未能通过原典库核验" not in text, "禁止补丁式尾注"
-    assert "【《不存在之书》·第三章】" not in text, "未核验 formal citation 不得出现在正文"
-    assert "【《查拉图斯特拉如是说》·前言】" in text, "verified 引用必须保留"
-    assert "《不存在之书》" in text, "保留必要 paraphrase（一般书名提及）"
+    assert "未能通过原典库核验" not in text, "禁止补丁式尾注（依旧有效）"
+    assert "【《不存在之书》·第三章】" in text, "runtime 不再改写正文——未核验引用原样保留（ceiling 后如实发布）"
+    assert "【《查拉图斯特拉如是说》·前言】" in text, "verified 引用原样保留"
+    assert "《不存在之书》" in text, "书名提及原样（不再有降级转写）"
     done = next(ev for ev in evs if ev["type"] == "done")
+    v = done["validation"]
+    assert v["result"]["ok"] is False, "正文含未核验引用 → validator 必须判 FAIL"
+    assert any(i["code"] == "UNVERIFIED_CITATION" and "不存在之书" in i["locator"]
+               for i in v["result"]["issues"])
+    assert v["repairs_used"] == v["max_validation_repairs"] == 2, "repair 打回同一个 Main Agent, 有机械上限"
+    assert v["repair_protocol"] == "same_main_agent"
     assert done["citations"], "引用面板只展示 used_evidence"
     for cit in done["citations"]:
         assert cit["book"] != "不存在之书", "未核验引用不得进入引用面板"
-    san = done.get("citation_sanitize") or {}
-    # Patch 1 (B4-B): 未核验引用在渲染前已被降级——最终正文中不存在未核验 formal citation
-    assert san.get("unverified_before") == []
-    assert (done.get("live_citation_sanitize") or {}).get("downgraded") == 1
+    lcs = done.get("live_citation_sanitize") or {}
+    assert lcs.get("verified") == 1 and lcs.get("downgraded") == 0
+    assert lcs.get("mode") == "o2_validate_reject_no_rewrite"
 
 
 # ═══════════════════════════════════════════════════════
@@ -637,8 +657,9 @@ def test_uat_t4_nietzsche_ai_boundary_and_citations_verified(monkeypatch):
     assert done["citations"] and all(c["book"] == "查拉图斯特拉如是说" for c in done["citations"])
 
 
-def test_uat_t5_citation_integrity_no_unverified_left(monkeypatch):
-    # 正文带一个假引用 → 净化后: 正式引用 ⊆ used_evidence; 假引用在渲染前被降级为一般提及
+def test_uat_t5_citation_integrity_unverified_honestly_audited(monkeypatch):
+    # O2 改写: 假引用不再被 runtime 降级消失——validator FAIL（UNVERIFIED_CITATION）
+    # → repair（fake 重试同答仍 FAIL）→ 达上限后正文原样发布 + done 如实审计
     import engine_langgraph as elg
     q = "加缪的荒诞哲学是什么？"
     ans = ("加缪的荒诞在于理性与世界之间的裂隙【《西西弗斯神话》·荒诞的推理】。"
@@ -647,15 +668,19 @@ def test_uat_t5_citation_integrity_no_unverified_left(monkeypatch):
           "method": "vector"}
     evs, fake = _run_stream_tools(monkeypatch, q, ans, tl, query="荒诞 裂隙")
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    # Patch 1 (B4-B): 未核验引用不在正文出现正式格式, 也不追加补丁尾注
-    assert "未能通过原典库核验" not in text
-    assert "【《某某秘传》·卷一】" not in text, "未核验 formal citation 不得出现在正文"
+    assert "未能通过原典库核验" not in text, "禁止补丁式尾注"
+    assert "【《某某秘传》·卷一】" in text, "runtime 不再改写/隐藏未核验引用（如实发布, 不代写修复）"
     assert "【《西西弗斯神话》·荒诞的推理】" in text, "verified 引用必须保留"
     done = next(ev for ev in evs if ev["type"] == "done")
+    v = done["validation"]
+    assert v["result"]["ok"] is False
+    assert any(i["code"] == "UNVERIFIED_CITATION" and "某某秘传" in i["locator"]
+               for i in v["result"]["issues"])
+    assert v["repairs_used"] == 2, "repair 打回同一个 Main Agent（fake 恒同答 → 耗尽上限）"
     san = done.get("citation_sanitize") or {}
-    # Patch 1 (B4-B): 假引用在渲染前被降级——最终正文中不存在未核验 formal citation
-    assert san.get("unverified_before") == []
-    assert (done.get("live_citation_sanitize") or {}).get("downgraded") == 1
+    assert [u["book"] for u in (san.get("unverified_before") or [])] == ["某某秘传"], \
+        "最终正文残留未核验引用 → final-output 断言层如实披露"
+    assert (done.get("live_citation_sanitize") or {}).get("downgraded") == 0, "零降级改写"
     assert all(c["book"] != "某某秘传" for c in done["citations"]), "引用面板不得含未核验引用"
 
 

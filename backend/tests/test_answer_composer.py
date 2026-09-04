@@ -7,7 +7,8 @@
   隐藏推理: 过程叙述（"让我检索…""我已经有材料了"）检出; 用户只看推理摘要（✦）
   风格吸收: 允许快给中心论点/概念压缩/比喻/自然段落/有力结尾;
             禁止未经 epistemic state 支持的强化措辞（完全正确/毫无疑问/绝不会/本质就是）
-  后置:     强化措辞/推理噪音/骨架残留 → 措辞级补正; 解释型问题不重复补正（防双补）
+  后置:     强化措辞/推理噪音/骨架残留 → 只检测不补正（O2: appends 恒空, 信号随 done 审计）;
+            解释型问题不重复补正（防双补）
   摘要兜底: LLM 摘要缺席 → 确定性推理摘要（核验文本事实/检索原典/比较解释/结论置信度）
   回归:     工具注册表 / 流式事件序列（mock APP, 不调 LLM）
 """
@@ -150,15 +151,15 @@ def test_structure_signals():
 
 
 # ═══════════════════════════════════════════════════════
-# 3. 后置补正——强化措辞 / 过程开头; 防双补
+# 3. 后置检测（O2 改写）——检测信号保留, runtime 补正文本已删除（appends 恒空）
 # ═══════════════════════════════════════════════════════
-def test_strong_wording_gets_hedge_appended():
+def test_strong_wording_detected_appends_never_appended():
+    # 旧契约: 强化措辞 → runtime 尾补 hedge; 新契约: 只检测（供 done 审计）,
+    # 措辞责任归 Main Agent 自己（repair 反馈/正文由其自主产出）
     v = ac.run_answer_composer("什么是荒诞？")
     scan = ac.scan_composition(v, "荒诞是理性与世界的裂隙，这完全正确。")
-    assert scan["strong_wording"]
-    appends = "\n".join(scan["appends"])
-    assert "强化措辞" in appends or "完全正确" in appends
-    assert not any(ch.isdigit() for ch in appends), "补正只做措辞级, 不展示置信度数字"
+    assert scan["strong_wording"], "检测信号必须保留（审计用）"
+    assert scan["appends"] == [], "runtime 不得再追加任何 hedge 文本"
 
 
 def test_no_double_hedge_when_interpretation_scan_appended():
@@ -261,29 +262,35 @@ def test_stream_agent_injects_composer_structure(monkeypatch):
     assert next(ev for ev in evs if ev["type"] == "done")["type"] == "done"
 
 
-def test_stream_agent_strong_wording_gets_hedge(monkeypatch):
+def test_stream_agent_strong_wording_detected_not_rewritten(monkeypatch):
+    # O2: 引擎不再尾补"强化措辞"说明——正文原样发布（validator 只做引用/引文机械校验）,
+    # 检测信号随 done.composition 审计输出
     evs, fake = asyncio.run(_run_stream(monkeypatch,
                                         question="什么是荒诞？",
                                         answer="荒诞是理性与世界的裂隙，这完全正确。"))
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "强化措辞" in text, "非解释型问题的强化措辞必须由 composer 补正"
+    assert "强化措辞" not in text, "runtime 不得再追加措辞补正"
+    assert "完全正确" in text, "正文由 Main Agent 负责, 原样发布（不代写降调）"
     done = next(ev for ev in evs if ev["type"] == "done")
-    assert done["type"] == "done"
     assert done.get("composition") is not None, "done 事件携带 composition 扫描结果"
     assert done["composition"]["strong_wording"] == ["完全正确"]
+    assert done["composition"]["appends"] == []
+    assert done["validation"]["result"]["ok"] is True
+    assert done["final_ownership"]["runtime_factual_appends"] == 0
 
 
-def test_stream_agent_reasoning_noise_gets_nudge(monkeypatch):
+def test_stream_agent_reasoning_noise_detected_no_nudge(monkeypatch):
     bad = ("让我先检索一下《老人与海》和《西西弗斯神话》的材料。现在我已经有材料了，"
            "让我读取第一章的内容，把两个文本都读一遍。材料说明：我找到了三本书，"
            "其中两本直接相关。检索过程：先查了《西西弗斯神话》的开篇，"
            "又查了《老人与海》的结尾。再总结：以上就是全部检索结果，下面进入正题。")
     evs, fake = asyncio.run(_run_stream(monkeypatch, question="什么是荒诞？", answer=bad))
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "直接判断" in text, "过程叙述开头必须补'结论先行'提示"
+    assert "直接判断" not in text, "runtime 不得再补'结论先行'提示（正文原样发布）"
     done = next(ev for ev in evs if ev["type"] == "done")
-    assert done["composition"]["direct_judgment"] is False
+    assert done["composition"]["direct_judgment"] is False, "检测信号保留（审计用）"
     assert done["composition"]["banned_blocks"]
+    assert done["composition"]["appends"] == []
     assert next(ev for ev in evs if ev["type"] == "done")["type"] == "done"
 
 

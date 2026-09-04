@@ -428,12 +428,23 @@ def test_engine_agent_node_model_retry_exhausted_raises(monkeypatch):
 # 根因回归: 图流中断 → graceful recovery（13 calls → error 的防护）
 # ═══════════════════════════════════════════════════════
 class _FakeAppMidTurnCrash:
-    """模拟: 13 次工具调用后模型侧流式连接中断（peer closed connection）"""
+    """模拟: 工具调用后模型侧流式连接中断（peer closed connection）。
 
-    def __init__(self, tool_result):
+    O2/Phase A 改写: graceful recovery = 同一个图原样重跑一次（不再调 AG.llm_chat
+    独立生成）。recovery_answer 给定时, 第二次 invocation（重跑）返回恢复轮正文;
+    给 None 时重跑继续崩溃（恢复失败 → 友好 error 路径）。"""
+
+    def __init__(self, tool_result, recovery_answer=None):
         self.tool_result = tool_result
+        self.recovery_answer = recovery_answer
+        self.invocations = 0
 
     async def astream(self, inputs, config, stream_mode="messages"):
+        self.invocations += 1
+        if self.recovery_answer and self.invocations >= 2:
+            # 恢复轮: 同一个 Main Agent 图重跑, 直接产出最终回答（evidence 已在上轮取得）
+            yield (AIMessageChunk(content=self.recovery_answer), {"langgraph_node": "agent"})
+            return
         yield (AIMessageChunk(content="", tool_call_chunks=[
             {"name": "search_books", "args": "{\"query\": \"尼采 永恒轮回\"}", "id": "c1", "index": 0}]),
                {"langgraph_node": "agent"})
@@ -456,18 +467,27 @@ def test_root_cause_13_calls_mid_turn_crash_recovers_with_evidence(monkeypatch, 
     stats_rec = []
     monkeypatch.setattr(elg, "_log_stats", lambda *a, **k: stats_rec.append(a))
     _stub_auto_websearch(monkeypatch)
-    monkeypatch.setattr(elg, "APP", _FakeAppMidTurnCrash(
+    _recovery = "永恒轮回是权力意志的试金石：一切价值重估的极端形式。"
+    fake_app = _FakeAppMidTurnCrash(
         tool_result={"results": [{"book_title": "查拉图斯特拉如是说", "chapter_title": "夜歌",
-                                   "snippet": "我是光", "author": "弗里德里希·尼采"}]}))
-    monkeypatch.setattr(AG, "llm_chat", lambda *a, **k:
-                        {"choices": [{"message": {"content": "永恒轮回是试金石——我在《查拉图斯特拉如是说》写过'我是光'【《查拉图斯特拉如是说》·夜歌】。"}}]})
+                                   "snippet": "我是光", "author": "弗里德里希·尼采"}]},
+        recovery_answer=_recovery)
+    monkeypatch.setattr(elg, "APP", fake_app)
+    llm_calls = []
+
+    def _forbidden_llm_chat(*a, **k):
+        llm_calls.append(a)
+        return {"choices": [{"message": {"content": ""}}]}
+    monkeypatch.setattr(AG, "llm_chat", _forbidden_llm_chat)
     evs = asyncio.run(_collect_stream("永恒轮回是什么意思？"))
     types = [ev["type"] for ev in evs]
     assert "error" not in types, "图流中断必须 graceful recovery, 不得以 error 终止"
+    assert fake_app.invocations == 2, "恢复 = 同一个图原样重跑一次"
     done = next(ev for ev in evs if ev["type"] == "done")
     assert done["tool_loop"]["recovered_after_error"] is True
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "已检索到的材料" in text or "永恒轮回" in text
+    assert text == _recovery, "恢复后正文来自主图重跑 invocation, 非第二 writer 代写"
+    assert llm_calls == [], "O2/Phase A: 恢复不得再调 AG.llm_chat 独立生成答案"
     assert done["tool_calls"], "已完成的工具调用证据必须保留在 done 中"
     # 观测: turn 汇总落盘且 error 有记录（不再把工具数记 0——stats 记录真实工具名）
     turns = [r for r in _trace_lines() if r["type"] == "turn"]
@@ -538,13 +558,15 @@ def test_stream_agent_signature_backward_compatible():
 
 def test_done_event_carries_tool_loop_state(monkeypatch):
     monkeypatch.setattr(elg, "APP", _FakeAppMidTurnCrash(
-        tool_result={"results": [{"book_title": "查", "chapter_title": "夜歌", "snippet": "我是光"}]}))
+        tool_result={"results": [{"book_title": "查", "chapter_title": "夜歌", "snippet": "我是光"}]},
+        recovery_answer="回答正文：权力意志是自我克服的冲动。"))
     monkeypatch.setattr(AG, "llm_chat", lambda *a, **k:
-                        {"choices": [{"message": {"content": "回答正文【《查》·夜歌】"}}]})
+                        {"choices": [{"message": {"content": ""}}]})
     evs = asyncio.run(_collect_stream("测试", conversation_id="conv-x", message_id="msg-y"))
     done = next(ev for ev in evs if ev["type"] == "done")
     tl = done["tool_loop"]
     assert tl["invocation_id"] and tl["budget"]["cfg"]["hard_total"] == AR.TOOL_BUDGET["hard_total"]
     assert tl["budget"]["total_executed"] >= 0
+    assert tl["recovered_after_error"] == True  # stream_error 已发生 → 如实审计
     turns = [r for r in _trace_lines() if r["type"] == "turn"]
     assert turns[-1]["conversation_id"] == "conv-x" and turns[-1]["message_id"] == "msg-y"

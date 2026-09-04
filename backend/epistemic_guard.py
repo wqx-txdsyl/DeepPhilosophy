@@ -979,26 +979,9 @@ def _correction_present_in_answer(check, answer):
     return bool(fixed and fixed[:6] in ans)
 
 
-def build_missing_correction_appends(verdict, answer, language="zh"):
-    """Phase S (S2): Final Answer Composer 重新消费 epistemic findings
-
-    answer_retract 只撤销已流出的 draft text, 不得撤销已经建立的 epistemic findings。
-    前提校正义务若在最终可见正文中未落实（可能因为: 校正随 draft 被撤回 / LLM 忽略注入 /
-    回答被工具轮打断）→ 返回应补发的校正文本; engine 以 token 事件尾补, 计入最终正文。
-    """
-    out = []
-    for c in (verdict or {}).get("premise_checks") or []:
-        if c.get("status") != "contradicted":
-            continue
-        if _correction_present_in_answer(c, answer or ""):
-            continue
-        note = c.get("correction_note") or f"实际是{c.get('corrected_value')}"
-        if language == "en":
-            out.append(f"(Note: correcting a premise in your question — {note})")
-        else:
-            out.append(f"（补充：先纠正一个前提——{note}）")
-    return out
-
+# ══ O2 §7: build_missing_correction_appends（前提校正 runtime 尾补）已删除——
+# runtime 不得给用户补写纠正句。contradicted 前提的落实状态仍由 scan_answer 检测
+# 并随 done.epistemic 输出; 是否在正文中落实由 Main Agent 自己负责。
 
 def scan_answer(verdict, answer, language="zh"):
     """应答后校验: 是否落实校正/边界（只记录, 返回补正文本——engine 决定是否补发）"""

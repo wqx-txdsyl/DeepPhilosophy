@@ -726,61 +726,10 @@ def verification_injection(verification, language="zh"):
                       parts="、".join(verification.get("semantic_parts") or []))
 
 
-# B3 后置: 无条件断言改写（仅在 state != VERIFIED_EXACT 时启用）
-# 目标短语 → 受约束替换（吸收宾语到句内边界, 避免"…这一命题"悬空）; 不改变句子其余部分
-_UNCONDITIONAL_CONFIRM = [
-    (re.compile(r"(?:已经|已)(?:完整|明确)地?提出了[^，。；;]{0,24}"),
-     "已经完整阐述了这一思想（该固定措辞是否逐字出现，未能核验）"),
-    (re.compile(r"(?:完整|明确)地?提出了[^，。；;]{0,24}"),
-     "完整阐述了这一思想（该固定措辞是否逐字出现，未能核验）"),
-    (re.compile(r"原文明确写道"), "原文明确阐述了这一思想（该固定措辞是否逐字出现，未能核验）"),
-]
-
-
-def constrain_unconditional_claim(sentence, verification_state):
-    """B3: 若核验状态非 EXACT, 将句中无条件“已提出该术语”类断言改写为受约束表述。
-    不命中任何模式时原句不变。"""
-    if not sentence or verification_state in (None, "VERIFIED_EXACT"):
-        return sentence
-    out = sentence
-    for rx, repl in _UNCONDITIONAL_CONFIRM:
-        out = rx.sub(repl, out)
-    return out
-
-
-class TermClaimGate:
-    """B3: 最终回答流中的术语断言约束门。
-
-    仅当目标术语出现时缓冲（含术语的句子在句界处做无条件断言改写）;
-    不含术语的文本立即放行（不增加逐句延迟）。约束一次后自动放行后续文本。
-    """
-
-    def __init__(self, term, constrain):
-        self._term = term or ""
-        self._constrain = constrain
-        self._buf = ""
-        self._active = bool(term)
-
-    def push(self, text):
-        if not self._active or not text:
-            return text
-        self._buf += text
-        if self._term not in self._buf:
-            out, self._buf = self._buf, ""
-            return out
-        m = re.search(r"[。！？!?;\n]", self._buf)
-        if not m:
-            return ""
-        head, self._buf = self._buf[:m.end()], self._buf[m.end():]
-        self._active = False
-        return self._constrain(head) if self._constrain else head
-
-    def flush(self):
-        out, self._buf = self._buf, ""
-        if self._active and out and self._constrain:
-            self._active = False
-            return self._constrain(out)
-        return out
+# ══ O2: 原 B3 无条件断言改写（_UNCONDITIONAL_CONFIRM / constrain_unconditional_claim /
+# TermClaimGate 句界改写门）已删除——runtime 不得改写模型的句子、不得代为追加
+# "该固定措辞未核验"式披露。术语核验状态（verify_term_presence）仍保留并经 prompt
+# 层注入, 由 Main Agent 自己在正文中如实表述核验边界。
 
 
 # ═══════════════════════════════════════════════════════

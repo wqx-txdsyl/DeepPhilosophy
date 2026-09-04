@@ -423,30 +423,9 @@ def run_interpretation_engine(message, agent="general", language="zh"):
 
 
 # 后置补正措辞（措辞级, 不含置信度数字; 永不编造具体反方材料）
-AVE_HEDGE_ZH = ("需要补充一句：这里应当区分类比(analogy)与等同(equivalence)——两个思想家的概念即便在结构上"
-                "相近，其论证前提、语境归属与文本证据也各不相同。'相似'不等于'本质相同'；更稳妥的表述是："
-                "两者之间存在可资借鉴的类比，而非概念等同。")
-AVE_HEDGE_EN = ("One clarification: analogy should be distinguished from equivalence — even when two thinkers' "
-                "concepts are structurally close, their argumentative premises, contexts, and textual evidence "
-                "differ. 'Similar' does not mean 'essentially the same'; the safer formulation is that there is "
-                "a valuable analogy, not conceptual equivalence.")
-_TIER_HEDGE_ZH = {
-    "strong": "（补充：这是一种有很强文本依据的解释；但它仍是一种读法，文本中的其他线索也可能支持不同理解。）",
-    "moderate": "（补充：这是一个相当有力的解释，但并非唯一——文本中的其他线索也可能支持另一条读法。）",
-    "tentative": "（补充：这是一种可成立但并非唯一的解释——它的强度依赖于所采用的框架，换个框架会呈现不同的面貌。）",
-    "analogical": "（补充：这种联系更适合作为启发性类比，而非思想等同或直接文本依据。）",
-}
-_TIER_HEDGE_EN = {
-    "strong": "(One note: this interpretation has very strong textual support, yet it remains one reading — "
-              "other clues may support a different understanding.)",
-    "moderate": "(One note: this is a fairly forceful interpretation, but not the only one — other clues in the "
-                 "text may support another reading.)",
-    "tentative": "(One note: this is a defensible but not the only interpretation — its strength depends on the "
-                  "framework chosen; another framework would yield a different picture.)",
-    "analogical": "(One note: this connection is better treated as a heuristic analogy than as conceptual "
-                   "equivalence or direct textual evidence.)",
-}
-
+# ══ O2 §7: AVE_HEDGE / _TIER_HEDGE（确定性措辞 hedge 文本）已删除——
+# runtime 不得给用户的解释追加"这是一 种读法"式措辞。检测信号（overclaim /
+# 缺多候选 / 校准档位）仍随 scan_interpretation 结果进入 done payload 供审计。
 
 def scan_interpretation(verdict, answer, language="zh", tool_log=None):
     """应答后校验: 解释型回答是否给出候选读法/有没有越级断言; 需要时返回措辞级补正
@@ -503,10 +482,9 @@ def scan_interpretation(verdict, answer, language="zh", tool_log=None):
         if "cross_author_comparison" in res["categories"] and (
                 sig["overclaim"] or "analogy_boundary" in unsat_types):
             # 类比≠等同义务未履行（含正文声称"本质完全一样"的越级断言）→ 补一次
-            res["appends"].append(AVE_HEDGE_EN if language == "en" else AVE_HEDGE_ZH)
+            pass  # O2: hedge 文本已删——仅保留检测信号（appends 恒空, engine 不再尾补）
         elif not res["alternatives_offered"]:
-            hedge = (_TIER_HEDGE_EN if language == "en" else _TIER_HEDGE_ZH)
-            res["appends"].append(hedge.get(calib["tier"], hedge["tentative"]))
+            pass  # O2: hedge 文本已删——仅保留检测信号（appends 恒空, engine 不再尾补）
     _log_record({"phase": "post", "agent": "scan", "language": language,
                  "activated": res["activated"], "categories": res["categories"],
                  "confidence": res["confidence"], "tier": res["tier"],

@@ -201,19 +201,24 @@ def test_stream_agent_injects_premise_correction(monkeypatch):
     assert not tok_i or done_i > max(tok_i), "流式协议不变: token 之后才 done（done 后可跟增量 reasoning_summary/suggestions）"
 
 
-def test_stream_agent_counterfactual_boundary_net(monkeypatch):
-    # LLM 未写边界 → 后置校验自动补发（确定性兜底）
+def test_stream_agent_counterfactual_boundary_state_audited(monkeypatch):
+    # O2 改写: LLM 未写边界 → runtime 不再尾补边界句（正文零代写）;
+    # 反事实状态如实随 done.epistemic 审计输出, 由 Main Agent 自主落实
     evs, fake = asyncio.run(_run_stream(monkeypatch,
                                         question="尼采怎么看AI？",
                                         answer="尼采会拥抱这个新时代。"))
     injected = "".join(m.content for m in fake.captured_messages
                        if m.type == "system" and "反事实边界" in (m.content or ""))
-    assert "尼采" in injected
+    assert "尼采" in injected, "前置注入（prompt 层要求）保留"
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "没有证据表明尼采" in text, "反事实问题缺边界时必须补发"
-    done_i = next(i for i, e in enumerate(evs) if e["type"] == "done")
-    tok_i = [i for i, e in enumerate(evs) if e["type"] == "token"]
-    assert not tok_i or done_i > max(tok_i), "流式协议不变: token 之后才 done（done 后可跟增量 reasoning_summary/suggestions）"
+    assert "没有证据表明尼采" not in text, "runtime 不得再代写边界句——正文原样发布"
+    assert "尼采会拥抱这个新时代。" in text
+    done = next(ev for ev in evs if ev["type"] == "done")
+    epi = done.get("epistemic") or {}
+    cf = epi.get("counterfactual") or {}
+    assert cf.get("requires_guard") is True and cf.get("author") == "尼采", \
+        "反事实 guard 状态随 done.epistemic 如实输出"
+    assert done["final_ownership"]["runtime_factual_appends"] == 0
 
 
 def test_stream_agent_normal_flow_no_guard(monkeypatch):
