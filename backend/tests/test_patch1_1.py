@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """Patch 1.1 纯规则单元测试（Final Gate Closure: P1-P7）
 
-P1 evidence obligation 台账与检索准入 / P2 核验意图分类 / P3 evidence contract
-candidate-used 语义与二手排除 / P4 反事实 guard 非侵入 / P5 短答与空候选零第二 writer
-（O2: 兜底回答指令与 AG.llm_chat 兜底生成已删）/
-P6 claim role / P7 原典路径条件。
+P1 execution fact ledger（O4: 纯事实登记器——检索准入/配额/义务总闸已删）/
+P2 核验意图分类 / P3 evidence contract candidate-used 语义与二手排除 /
+P5 短答与空候选零第二 writer（O2: 兜底回答指令与 AG.llm_chat 兜底生成已删）/
+P6 claim role（evidence_contract 内部分级）。
+O4: P4 反事实 guard / P7 原典路径条件已随 Shadow cognition 删除。
 不联网、不调 LLM、不改任何数据。
 """
 import asyncio
@@ -19,7 +20,6 @@ from langchain_core.messages import AIMessageChunk  # noqa: E402
 import reasoning_plan as RP    # noqa: E402
 import agent_runtime as AR     # noqa: E402
 import evidence_contract as EC  # noqa: E402
-from epistemic_guard import CounterfactualAuthorGuard  # noqa: E402
 
 
 # ═══════════════════════════════════════════════════════
@@ -67,21 +67,21 @@ class TestVerificationIntent:
         assert RP.detect_verification_intent(
             "为什么黑格尔会批评康德的物自体？我问历史上的批评，不要做假想对话。") is None
 
-    def test_f12_plan_routed_to_verification(self):
-        # P2 硬要求: F12 不得因句长被分类为 DEEP_SYNTHESIS, 必须进 verification-aware path
+    def test_f12_plan_carries_verification_intent(self):
+        # O4: plan 不再有 problem_type/complexity（认知分类已删）——
+        # 核验意图与来源约束注入是仅存的机械上下文
         p = RP.build_plan("只用亚里士多德自己的原典回答：“人是政治的动物”是不是他的原话？"
                           "如果库里不能精确确认，就直接说不能确认，不要拿二手书替代。")
-        assert p["problem_type"] == "FACT_VERIFICATION"
-        assert p["complexity"] == "NARROW_FACTUAL"
+        assert "problem_type" not in p and "complexity" not in p
         assert p["verification_intent"]["constraint"] == "PRIMARY_ONLY"
         # 来源约束注入存在
-        assert any("PRIMARY_ONLY" or "原典" in inj for inj in p["injections"])
+        assert any("原典" in inj for inj in p["injections"])
 
     def test_f02_f03_enter_verification_path(self):
         for q in ("维特根斯坦在《逻辑哲学论》里是不是逐字写过“语言的界限就是世界的界限”？我要确认的是这句中文表述本身。",
                   "尼采是不是在《查拉图斯特拉如是说》里写过“当你凝视深渊时，深渊也凝视你”？请告诉我具体章节。"):
             p = RP.build_plan(q)
-            assert p["problem_type"] == "FACT_VERIFICATION" and p["verification_intent"]
+            assert p["verification_intent"]
 
 
 # ═══════════════════════════════════════════════════════
@@ -93,146 +93,53 @@ def _f12_vi():
 
 
 class TestObligationLedger:
-    def test_f12_scenario_end_to_end(self):
-        led = AR.ObligationLedger({"complexity": "NARROW_FACTUAL"}, _f12_vi())
-        cx = "NARROW_FACTUAL"
-        # 首轮: 2 个 search 准入
-        assert led.admit("search_books", {"query": "人 政治动物 城邦 亚里士多德"}, cx, False)[0]
-        assert led.admit("search_books", {"query": "亚里士多德 政治学 城邦 自然 本性"}, cx, False)[0]
-        # 同族高相似改写被族规则拒绝（Jaccard ≥0.45）
-        led.record("search_books", {"query": "人 政治动物 城邦 亚里士多德"}, True,
-                   {"results": [{"book_id": "x", "chapter_idx": 1}]})
-        led.mark_result("search_books", {"query": "人 政治动物 城邦 亚里士多德"}, low_gain=True)
-        ok, why = led.admit("search_books", {"query": "亚里士多德 政治动物"}, cx, False)
-        assert not ok and "query_family_exhausted" in why
-        # 收口轮: 只准未读章节; search/websearch 一律拒绝
-        assert led.admit("get_chapter", {"book_id": "53b0", "chapter_idx": 1}, cx, True)[0]
-        ok, why = led.admit("search_books", {"query": "城邦 目的 论证"}, cx, True)
-        assert not ok and "forced" in why
-        # 读取命中措辞证据 → 义务满足
-        led.record("get_chapter", {"book_id": "53b0", "chapter_idx": 2}, True,
-                   {"book_id": "53b0", "chapter_idx": 2,
-                    "text": "人类自然是趋向于城邦生活的动物（人类在本性上，也正是一个政治动物）"})
-        assert led.obligations_satisfied
-        # 义务满足后: 新 search / 重复 get_chapter / 书目类 一律拒绝（F12 回归核心）
-        ok, _ = led.admit("search_books", {"query": "非野兽 即神 完全新的查询词"}, cx, False)
-        assert not ok
-        ok, why = led.admit("get_chapter", {"book_id": "53b0", "chapter_idx": 2}, cx, True)
-        assert not ok and "已读取" in why
-        ok, _ = led.admit("get_book_detail", {"book_id": "53b0"}, cx, False)
-        assert not ok
+    """O4: 纯事实登记器——record 后 snapshot 含执行事实; 无 admit/配额/义务总闸"""
 
-    def test_lunyu_case_different_families_allowed(self):
-        # 真实事故回归（《论语》案例）: 核验义务未满足时, 不同关键词的定位检索必须放行;
-        # 且"读原文"不与 search 抢额度（read 独立配额）——read 排后面也能执行
-        led = AR.ObligationLedger({"complexity": "NARROW_FACTUAL"},
-                                  {"kind": "SOURCE_ATTRIBUTION", "term": "言必有中",
-                                   "constraint": "BOOK_ONLY", "subject_author": ""})
-        cx = "NARROW_FACTUAL"
-        assert led.admit("search_books", {"query": "言必有中"}, cx, False)[0]
-        assert led.admit("search_books", {"query": "夫人不言 言必有中"}, cx, False)[0]
-        # 书目查询合法（确认《论语》在库）
-        assert led.admit("query_database", {"table": "books", "key": "论语"}, cx, False)[0]
-        # 第 3 个 search: 核验 search 配额满 → 拒（引导模型转入阅读原文; 措辞澄清"非库中无此书"）
-        ok, why = led.admit("search_books", {"query": "闵子骞 仍旧贯 鲁人为长府"}, cx, False)
-        assert not ok and "search_cap" in why and "get_chapter" in why and "非库中无此书" in why
-        # 读原文: 独立配额, 不受 search 占用影响
-        assert led.admit("get_chapter", {"book_id": "d927", "chapter_idx": 12}, cx, False)[0]
+    def _led(self, term=""):
+        return AR.ObligationLedger(term=term)
+
+    def test_search_hit_registers_candidate_found_and_counter(self):
+        led = self._led(term="言必有中")
+        led.record("search_books", {"query": "言必有中"}, True,
+                   {"results": [{"book_id": "d927", "chapter_idx": 12}]})
+        snap = led.snapshot()
+        assert snap["verification_states"]["source_candidate_found"] is True
+        # MEMORY_HINT 永远不置位 READ（T1.1-E 不变量保留）
+        assert snap["verification_states"]["primary_text_read"] is False
+        assert snap["search_execs"] == 1 and snap["read_execs"] == 0
+
+    def test_read_registers_primary_text_and_exact_hit(self):
+        led = self._led(term="言必有中")
         led.record("get_chapter", {"book_id": "d927", "chapter_idx": 12}, True,
-                   {"book_id": "d927", "chapter_idx": 12, "text": "夫人不言，言必有中"})
-        assert led.obligations_satisfied
-        # 第 2 个 read 也允许（配额 2）
-        assert led.admit("get_chapter", {"book_id": "d927", "chapter_idx": 11}, cx, False)[0]
-        # 第 3 个 read: read 配额满
-        ok, why = led.admit("get_chapter", {"book_id": "d927", "chapter_idx": 10}, cx, False)
-        assert not ok and "read_cap" in why
+                   {"book_id": "d927", "chapter_idx": 12,
+                    "text": "鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”子曰：“夫人不言，言必有中。”"})
+        snap = led.snapshot()
+        assert snap["read_chapters"] == ["d927#12"]
+        assert snap["verification_states"]["primary_text_read"] is True
+        assert snap["verification_states"]["exact_quote_verified"] is True
+        assert snap["read_execs"] == 1
 
-    def test_websearch_budget(self):
-        # websearch: 核验路径 ≤1（从严）, 非核验 ≤2; forced 一律拒
-        led_v = AR.ObligationLedger({"complexity": "NARROW_FACTUAL"}, _f12_vi())
-        cx = "NARROW_FACTUAL"
-        assert led_v.admit("websearch", {"query": "x"}, cx, False)[0]
-        ok, why = led_v.admit("websearch", {"query": "y"}, cx, False)
-        assert not ok and "websearch_cap" in why
-        ok, why = led_v.admit("websearch", {"query": "z"}, cx, True)
-        assert not ok and "forced" in why
-        led_n = AR.ObligationLedger({"complexity": "DEEP_SYNTHESIS"}, None)
-        assert led_n.admit("websearch", {"query": "a"}, "DEEP_SYNTHESIS", False)[0]
-        assert led_n.admit("websearch", {"query": "b"}, "DEEP_SYNTHESIS", False)[0]
-        ok, why = led_n.admit("websearch", {"query": "c"}, "DEEP_SYNTHESIS", False)
-        assert not ok and "websearch_cap" in why
+    def test_read_without_term_hit_stays_unverified(self):
+        # R7 型: 读到了章节但表述不在其中 → 已读但未逐字命中（诚实 NOT_FOUND 路径）
+        led = self._led(term="青天揽月寸心如磐")
+        led.record("get_chapter", {"book_id": "x", "chapter_idx": 1}, True,
+                   {"book_id": "x", "chapter_idx": 1, "text": "子曰：学而时习之，不亦说乎。"})
+        vs = led.snapshot()["verification_states"]
+        assert vs["primary_text_read"] is True and vs["exact_quote_verified"] is False
 
-    def test_meta_book_lookup_not_blocked_by_searches(self):
-        # 真实事故回归: 模型查"《论语》在不在库里"是合法动作, 不因已有检索被拒
-        # （非核验路径——核验路径 meta 另有 ≤1 独立配额）
-        led = AR.ObligationLedger({"complexity": "NARROW_FACTUAL"}, None)
-        cx = "NARROW_FACTUAL"
-        assert led.admit("search_books", {"query": "言必有中"}, cx, False)[0]
-        assert led.admit("query_database", {"table": "books", "key": "论语"}, cx, False)[0]
-        # 同对象第二次查 → 族规则拒绝
-        ok, why = led.admit("query_database", {"table": "books", "key": "论语"}, cx, False)
-        assert not ok and "query_family_exhausted" in why
+    def test_failed_read_not_registered_as_read(self):
+        led = self._led()
+        led.record("get_chapter", {"book_id": "b", "chapter_idx": 3}, False, {"error": "x"})
+        snap = led.snapshot()
+        assert snap["read_chapters"] == [] and snap["read_execs"] == 0
+        assert snap["verification_states"]["primary_text_read"] is False
 
-    def test_verification_meta_cap(self):
-        # 核验路径 meta ≤1（防"查目录→查详情"连环占用 gate 额度）, 措辞澄清"非库中无此书"
-        led = AR.ObligationLedger({"complexity": "NARROW_FACTUAL"}, _f12_vi())
-        cx = "NARROW_FACTUAL"
-        assert led.admit("list_books", {"author": "亚里士多德"}, cx, False)[0]
-        ok, why = led.admit("get_book_detail", {"book_id": "53b0"}, cx, False)
-        assert not ok and "meta_cap" in why and "非库中无此书" in why
-        # 非核验路径不受此限
-        led2 = AR.ObligationLedger({"complexity": "NORMAL_EXPLANATION"}, None)
-        cx2 = "NORMAL_EXPLANATION"
-        assert led2.admit("list_books", {"author": "康德"}, cx2, False)[0]
-        assert led2.admit("get_philosopher", {"name": "康德"}, cx2, False)[0]
-
-    def test_wording_evidence_variants(self):
-        led = AR.ObligationLedger({}, _f12_vi())
-        assert led._wording_evidence_in("……人类在本性上，也正是一个政治动物……")
-        assert not led._wording_evidence_in("城邦出于自然的演化，先有家庭后有村落。")
-        # F02: 德文式接近句（去虚词归一后 4 字成分命中）
-        led2 = AR.ObligationLedger({}, {"kind": "EXACT_WORDING", "term": "语言的界限就是世界的界限",
-                                        "constraint": "NONE", "subject_author": ""})
-        assert led2._wording_evidence_in("我的语言的界限意味着我的世界的界限。")
-
-    def test_query_family_paraphrase_blocked(self):
-        led = AR.ObligationLedger({"complexity": "DEEP_SYNTHESIS"}, None)
-        cx = "DEEP_SYNTHESIS"
-        q1 = {"query": "休谟 因果 必然性 习惯 联想"}
-        assert led.admit("search_books", q1, cx, False)[0]
-        led.record("search_books", q1, True, {"results": [{"book_id": "a", "chapter_idx": 1}]})
-        led.mark_result("search_books", q1, low_gain=True, relevant_new=0)
-        # 同族低增益后: 改写检索被拒（含"非库中无此书"澄清）
-        ok, why = led.admit("search_books", {"query": "休谟 因果 必然联系 习惯性 联想"}, cx, False)
-        assert not ok and "query_family_exhausted" in why and "非库中无此书" in why
-        # 不同族仍可准入
-        assert led.admit("search_books", {"query": "康德 先验演绎 范畴 统觉"}, cx, False)[0]
-
-    def test_reject_streak_counter(self):
-        # 拒绝累计计数（引擎消费: 达阈值强制收口, 防思考流卡住的空转循环）
-        led = AR.ObligationLedger({"complexity": "NARROW_FACTUAL"}, _f12_vi())
-        cx = "NARROW_FACTUAL"
-        for _ in range(5):
-            led.admit("search_books", {"query": f"随机查询词{_}"}, cx, False)   # 包络 5 → 依次被拒
-        assert led.rejected >= AR.ADMISSION_REJECT_FORCE
-
-    def test_read_failure_retry_allowed(self):
-        led = AR.ObligationLedger({}, None)
-        cx = "NORMAL_EXPLANATION"
-        assert led.admit("get_chapter", {"book_id": "b", "chapter_idx": 3}, cx, False)[0]
-        led.record("get_chapter", {"book_id": "b", "chapter_idx": 3}, False, None)
-        assert led.admit("get_chapter", {"book_id": "b", "chapter_idx": 3}, cx, False)[0]
-        led.record("get_chapter", {"book_id": "b", "chapter_idx": 3}, True, {"book_id": "b", "chapter_idx": 3, "text": "正文"})
-        ok, why = led.admit("get_chapter", {"book_id": "b", "chapter_idx": 3}, cx, False)
-        assert not ok and "已读取" in why
-
-    def test_forced_read_cap(self):
-        led = AR.ObligationLedger({"complexity": "DEEP_SYNTHESIS"}, None)
-        cx = "DEEP_SYNTHESIS"
-        assert led.admit("get_chapter", {"book_id": "b1", "chapter_idx": 1}, cx, True)[0]
-        assert led.admit("get_chapter", {"book_id": "b2", "chapter_idx": 2}, cx, True)[0]
-        ok, why = led.admit("get_chapter", {"book_id": "b3", "chapter_idx": 3}, cx, True)
-        assert not ok and "forced_cap" in why
+    def test_no_admission_quota_api_remains(self):
+        # O4 删除的准入/配额/义务面: 不得回归
+        led = self._led()
+        for gone in ("admit", "mark_result", "_reject", "family_key", "obligations_satisfied",
+                     "rejected", "forced_reads", "_wording_evidence_in"):
+            assert not hasattr(led, gone), gone
 
 
 # ═══════════════════════════════════════════════════════
@@ -293,45 +200,6 @@ class TestEvidenceUsedSemantics:
         c = EC.build_evidence_contract(_f12_tool_log(), ans, "general", "zh")
         assert all(e.get("candidate") is not None for e in c["retrieved_evidence"])
         assert all(e["used"] <= e["candidate"] for e in c["retrieved_evidence"])  # used ⊆ candidate
-
-
-# ═══════════════════════════════════════════════════════
-# P4: counterfactual guard 非侵入
-# ═══════════════════════════════════════════════════════
-class TestGuardNonIntrusion:
-    def test_f06_not_counterfactual(self):
-        # F06 误触发根因: 引文"必然性"命中强模态词 → 模态单独不得触发
-        v = CounterfactualAuthorGuard().check(
-            "休谟和康德都从“经验不能给出必然性”这个困难出发，但为什么康德不是简单地“反驳休谟”？")
-        assert v["mode"] == "historical" and not v["requires_guard"]
-
-    def test_g3_historical_criticism_not_counterfactual(self):
-        v = CounterfactualAuthorGuard().check(
-            "为什么黑格尔会批评康德的物自体？我问历史上的批评，不要做假想对话。")
-        assert v["mode"] == "historical" and not v["requires_guard"]
-
-    def test_normal_relations_silent(self):
-        for q in ("康德会如何回应休谟的怀疑论？",
-                  "休谟和康德的理论差异在哪里？",
-                  "黑格尔受到康德什么影响？",
-                  "亚里士多德是否反驳了柏拉图的理念论？"):
-            v = CounterfactualAuthorGuard().check(q)
-            assert v["mode"] == "historical" and not v["requires_guard"], q
-
-    def test_true_counterfactual_still_fires(self):
-        # 当代对象
-        v = CounterfactualAuthorGuard().check("尼采会怎么看短视频算法？")
-        assert v["mode"] == "counterfactual" and v["requires_guard"]
-        # 活到今天
-        v = CounterfactualAuthorGuard().check("如果康德活到今天看到人工智能会怎么想？")
-        assert v["mode"] == "counterfactual" and v["requires_guard"]
-        # 单哲人 + 无史料话题的"会怎么看"
-        v = CounterfactualAuthorGuard().check("笛卡尔会怎么看精神分析？")
-        assert v["mode"] == "counterfactual" and v["requires_guard"]
-
-    def test_documented_topic_still_historical(self):
-        v = CounterfactualAuthorGuard().check("尼采会如何评价瓦格纳的音乐？")
-        assert v["mode"] == "historical" and not v["requires_guard"]
 
 
 # ═══════════════════════════════════════════════════════
@@ -413,44 +281,3 @@ class TestClaimRole:
         assert "INTERPRETIVE_CLAIM" in roles
         assert "LATER_CRITICISM" in roles
         assert "AGENT_SYNTHESIS" in roles
-
-    def test_role_not_visible_title_material(self):
-        # role 是内部语义——不在 CLAIM_ROLES 之外的正文映射里出现
-        for r in EC._CLAIM_ROLE_CUES:
-            assert r[0] in RP.CLAIM_ROLES
-
-    def test_deep_question_gets_role_directive(self):
-        p = RP.build_plan("深入分析：休谟为什么会走向怀疑，而康德为什么会走向先验哲学？"
-                          "请说明康德为了保住必然性付出了什么哲学代价。")
-        assert p["claim_role_directive"] and "主张层级" in p["claim_role_directive"]
-        # 普通概念解释不注入（不扩大范围）
-        p2 = RP.build_plan("什么是洞穴寓言？")
-        assert p2["claim_role_directive"] is None
-
-
-# ═══════════════════════════════════════════════════════
-# P7: 原典路径按价值条件出现（确定性）
-# ═══════════════════════════════════════════════════════
-class TestSourceNavigation:
-    def test_deep_and_genealogy_allowed(self):
-        assert RP.source_navigation_allowed("DEEP_SYNTHESIS", "深入分析……")
-        assert RP.source_navigation_allowed("HISTORICAL_GENEALOGY", "概念如何演变……")
-        assert RP.source_navigation_allowed("TEXTUAL_INTERPRETATION", "如何理解……")
-
-    def test_concept_and_verification_suppressed(self):
-        assert not RP.source_navigation_allowed("FACT_VERIFICATION", "是不是原话？")
-        assert not RP.source_navigation_allowed("CONCEPT_EXPLANATION", "什么是X？")
-        assert not RP.source_navigation_allowed("ARGUMENT_ANALYSIS", "分析这个论证。")
-        assert not RP.source_navigation_allowed("COMPARISON", "比较A与B。")
-
-    def test_explicit_reading_path_request_allowed(self):
-        assert RP.source_navigation_allowed("CONCEPT_EXPLANATION", "我想按顺序读柏拉图，应该先读哪一本？")
-        assert RP.source_navigation_allowed("FACT_VERIFICATION", "给一份亚里士多德的书单/阅读路径。")
-
-    def test_suppression_injection_present(self):
-        p = RP.build_plan("什么是洞穴寓言？")
-        assert not p["source_navigation"]
-        assert any("原典路径" in inj for inj in p["injections"])
-        p2 = RP.build_plan("深入分析：休谟为什么会走向怀疑，而康德为什么会走向先验哲学？")
-        assert p2["source_navigation"]
-        assert not any("不需要「原典路径」" in inj for inj in p2["injections"])

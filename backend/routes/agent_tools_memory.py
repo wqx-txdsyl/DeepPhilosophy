@@ -591,9 +591,9 @@ register_tool("philosopher_debate",
      "required": ["topic"]},
     _exec_debate)
 
-# Phase T（T7/T2）: thought_experiment 产物结构化（设定/多立场推演/揭示的问题）,
-# 且受 invocation 级重入策略约束（engine 侧 SkillReentryTracker）——同一实验的
-# 退化重复调用（无用户迭代要求/前次未失败/无新义务）会被拦截。
+# Phase T（T7/T2）: thought_experiment 产物结构化（设定/多立场推演/揭示的问题）。
+# O4: engine 侧重入治理（SkillReentryTracker）已删除——同一实验是否值得再次调用
+# 由 Main Agent 依系统提示的技能重入纪律自主判断。
 def _exec_thought_exp(args):
     from tool_contracts import scaffold_result, extract_json
     slot = _mem_slot()

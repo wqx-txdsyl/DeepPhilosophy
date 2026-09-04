@@ -483,11 +483,11 @@ class TestT10RepairExhaustionNeverPublishes:
 class TestConsistencyValidator:
     def test_verify_later_misstatement_when_already_read(self):
         ans = "如果你需要原文，我可以进一步读取《论语》原文核验。"
-        issues = check_consistency(ans, obligations_satisfied=True, primary_text_read=True)
+        issues = check_consistency(ans, primary_text_read=True)
         assert len(issues) == 1 and issues[0].code == FV.VERIFY_LATER_MISSTATEMENT
 
     def test_strong_certainty_no_longer_governed(self):
         """强确定性措辞 + 证据不足 → 不再产生任何 validator issue（certainty 归 Agent 认知）"""
         ans = "可以毫无疑问地确认，这句话就是《论语》原文。"
-        issues = check_consistency(ans, obligations_satisfied=False, primary_text_read=False)
+        issues = check_consistency(ans, primary_text_read=False)
         assert issues == []

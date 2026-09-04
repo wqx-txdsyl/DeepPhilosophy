@@ -12,11 +12,11 @@
       特别要求: 必须纠正 84 天（87→84）, 且不能因此破坏主体分析
       （先校正一两句, 然后继续完整回答; 校正不得吞掉分析、不得拒绝问题）
 
-覆盖 2026-08-30 Phase 4 验收项:
-  结构:     T1/T2/T3 的好回答 → scan_composition 零补正、五维评估全过
+覆盖 2026-08-30 Phase 4 验收项（O4 瘦身后仍适用部分）:
   校正:     T3 检出 87→84（"执念"语境）; 注入先纠正再回答; 校正不破坏主体分析
-  双补防护: T2 越级断言只补正一次（interpretation 补了 composer 不再补）
-  摘要兜底: T3 无 LLM 摘要 → 确定性推理摘要（核验文本事实…）
+  所有权:   T1/T2/T3 回答由 Main Agent 原样发布——runtime 零注入结构/零补正/零改写
+            （O4: interpretation_engine/answer_composer Shadow planner 已删除;
+            五维评估中的解释/结构启发式只存在于 evaluation_suite 离线评分器）
 """
 import os
 import sys
@@ -27,8 +27,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from langchain_core.messages import AIMessageChunk
 
 import epistemic_guard as eg
-import interpretation_engine as ie
-import answer_composer as ac
 import evaluation_suite as ev
 from routes import agent as AG
 
@@ -73,14 +71,6 @@ async def _run_stream(monkeypatch, question, answer, agent="general"):
 # ═══════════════════════════════════════════════════════
 # T1 —— 从《老人与海》看加缪的荒谬主义
 # ═══════════════════════════════════════════════════════
-def test_t1_framed_reading_triggers_interpretation():
-    v = ie.run_interpretation_engine(T1)
-    assert v["activated"] is True, "「从《》看」框架读法必须触发解释机制"
-    assert "literary_interpretation" in v["categories"]
-    assert "philosophical_interpretation" in v["categories"]
-    assert v["hypothesis_min"] >= 2
-
-
 def test_t1_good_answer_passes_evaluation():
     ans = ("我的判断是：加缪的荒谬主义在《老人与海》中可以得到印证，但这是借来的框架，"
            "不是海明威明写的主题。首先，圣地亚哥对抗大马林鱼却不求占有，接近西西弗斯的反抗"
@@ -102,6 +92,8 @@ def test_t1_good_answer_passes_evaluation():
 
 
 def test_t1_wire_well_composed_no_append(monkeypatch):
+    # O4/T5: 回答结构由 Main Agent 自主决定——runtime 不注入"回答结构"指令、
+    # 不做结构扫描补正; 结构完整的回答原样发布
     good = ("我的判断是：加缪的荒谬主义在《老人与海》中可以得到印证，但这是借来的框架。"
             "首先，圣地亚哥对抗大马林鱼却不求占有，接近西西弗斯的反抗"
             "【《西西弗斯神话》·荒诞的自由】。其次，狮子是生命力的延续而非来世许诺"
@@ -110,44 +102,31 @@ def test_t1_wire_well_composed_no_append(monkeypatch):
     evs, fake = asyncio.run(_run_stream(monkeypatch, T1, good))
     injected = "".join(m.content for m in fake.captured_messages
                        if m.type == "system" and "回答结构" in (m.content or ""))
-    assert "直接判断" in injected
+    assert injected == "", "composer 结构注入不得回归"
     done = next(ev for ev in evs if ev["type"] == "done")
     assert done["type"] == "done"
-    assert done["composition"]["direct_judgment"] is True
-    assert done["composition"]["appends"] == [], "结构完整的好回答不得补正"
-    assert done["composition"]["strong_wording"] == []
+    assert "composition" not in done, "O4: done.composition 已删除"
+    text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
+    assert "（补充：" not in text and "需要补充一句" not in text, "零 runtime 补正"
 
 
-def test_t1_wire_unhedged_assertion_hedged(monkeypatch):
+def test_t1_wire_strong_wording_published_as_is(monkeypatch):
+    # O2/O4/T5: 强化措辞的确定性归 Main Agent——runtime 不 hedge/不改写/不追加;
+    # 候选通过机械 validator（引用/引文）即原样发布
     bad = ("加缪的荒谬主义本质就是海明威的主题。但并非唯一。"
            "让我先检索一下材料，现在我已经有材料了。")
     evs, fake = asyncio.run(_run_stream(monkeypatch, T1, bad))
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "强化措辞" in text, "未经证据支持的'本质就是'必须被 composer 补正"
+    assert "本质就是" in text, "措辞强度归 Main Agent——正文原样发布"
+    assert "（补充：" not in text and "强化措辞" not in text, "零 runtime 补正"
     done = next(ev for ev in evs if ev["type"] == "done")
-    assert done["composition"]["strong_wording"] == ["本质就是"]
-    assert done["composition"]["appends"]
+    assert "composition" not in done
+    assert done["final_ownership"]["semantic_mutators"] == 0
 
 
 # ═══════════════════════════════════════════════════════
 # T2 —— 逃避式希望 vs 荒诞幸福
 # ═══════════════════════════════════════════════════════
-def test_t2_either_or_triggers_interpretation():
-    v = ie.run_interpretation_engine(T2)
-    assert v["activated"] is True, "「是A还是B」二选一读法必须触发解释机制"
-    assert "literary_interpretation" in v["categories"]
-    assert "philosophical_interpretation" in v["categories"]
-    assert v["evidence_requirement"] == {"supporting": True, "challenging": True}
-
-
-def test_t2_camus_guard_verdict_sane():
-    # 荒诞属已载史料主题 → historical（边界非强制）; 但作者必须是加缪
-    v = eg.CounterfactualAuthorGuard().check(T2)
-    assert v["author"] == "加缪"
-    assert v["mode"] in ("historical", "counterfactual")
-    assert "question" in v["cues"]
-
-
 def test_t2_good_answer_passes_interpretation_evaluation():
     ans = ("没有证据表明加缪本人评论过《老人与海》，以下是借其思想框架的推演。"
            "直接判断：两种读法都能成立，但第二种更贴合加缪的文本。"
@@ -162,21 +141,6 @@ def test_t2_good_answer_passes_interpretation_evaluation():
     assert r["passed"] is True
     r2 = ev.evaluate_epistemic_accuracy(ans)
     assert r2["passed"] is True, r2["findings"]
-
-
-def test_t2_wire_overclaim_hedged_exactly_once(monkeypatch):
-    # 越级断言只补正一次: interpretation 补了, composer 不重复补
-    evs, fake = asyncio.run(_run_stream(monkeypatch, T2,
-                                        answer="加缪一定会认为这是荒诞幸福，这毫无疑问。"))
-    injected = "".join(m.content for m in fake.captured_messages
-                       if m.type == "system" and "解释型问题" in (m.content or ""))
-    assert "至少提出两种" in injected, "T2 必须注入多候选解读要求"
-    text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "并非唯一" in text, "越级断言必须被补正"
-    assert "强化措辞" not in text, "interpretation 已补正, composer 不得重复补（防双补）"
-    done = next(ev for ev in evs if ev["type"] == "done")
-    assert done["composition"]["strong_wording"], "强化措辞仍须检出（审计用）"
-    assert done["composition"]["appends"] == [], "解释型问题已补正 → composer 零补正"
 
 
 # ═══════════════════════════════════════════════════════
@@ -199,15 +163,12 @@ def test_t3_injection_orders_correction_before_answer():
     assert "不要因此拒绝回答" in inj, "校正不得破坏主体分析（不拒绝、不纠缠）"
 
 
-def test_t3_interpretation_also_activated():
-    v = ie.run_interpretation_engine(T3)
-    assert v["activated"] is True
-    assert "philosophical_interpretation" in v["categories"]
-
-
 def test_t3_good_answer_corrects_and_keeps_analysis(monkeypatch):
-    good = ("先纠正一个小事实：《老人与海》开篇写的是连续84天没有捕到鱼，不是87天"
-            "【《老人与海》·开篇】。回到你的问题：是的，这可以读作他不再向世界索取意义。"
+    # 注意: 本 harness 无工具轮（raw_tool_log 为空）——正式引用【《书》·章】会被
+    # O2 validator 判 UNVERIFIED_CITATION 并拒绝发布（零发布契约, 见 test_phase_s.S4）。
+    # 此处用一般提及（不带【】标注）承载同一校正内容。
+    good = ("先纠正一个小事实：《老人与海》开篇写的是连续84天没有捕到鱼，不是87天。"
+            "回到你的问题：是的，这可以读作他不再向世界索取意义。"
             "首先，老人安然入睡、梦见狮子，是把狮子当作青春的延续而非战利品。"
             "其次，这与加缪的荒诞幸福相通，但也可以质疑，海明威未必接受这一标签。"
             "结论：这是一种有解释力的读法，但并非唯一。")
@@ -218,33 +179,20 @@ def test_t3_good_answer_corrects_and_keeps_analysis(monkeypatch):
     # 主体分析完整: 直接判断 + 理由 + 反方 + 结论都在
     assert "并非唯一" in text and "质疑" in text
     done = next(ev for ev in evs if ev["type"] == "done")
-    assert done["composition"]["direct_judgment"] is True
-    assert done["composition"]["appends"] == [], "纠正并完整分析的回答不得补正"
+    assert "composition" not in done, "O4: 零结构扫描/补正"
     # 五维评估: 前提校正落实且不破坏分析
     r = ev.evaluate_premise_accuracy(T3, good)
     assert r["metrics"]["corrected"] == 1 and r["metrics"]["disruptive"] == 0
     assert r["passed"] is True
 
 
-def test_t3_correction_only_answer_flagged_disruptive(monkeypatch):
-    # 只纠正 84 天、丢掉主体分析 → 破坏主体（违反 T3 特别要求）
+def test_t3_correction_only_answer_flagged_disruptive():
+    # 只纠正 84 天、丢掉主体分析 → 破坏主体（违反 T3 特别要求）; O4: 纯离线评估
     bad = "《老人与海》写的是84天。至于梦狮，我不确定。"
-    evs, fake = asyncio.run(_run_stream(monkeypatch, T3, bad))
-    done = next(ev for ev in evs if ev["type"] == "done")
-    assert done["composition"]["direct_judgment"] is True
     r = ev.evaluate_premise_accuracy(T3, bad)
     assert r["metrics"]["corrected"] == 1
     assert r["metrics"]["disruptive"] == 1
     assert any(f.startswith("correction_disrupted_analysis") for f in r["findings"])
-
-
-def test_t3_reasoning_summary_mentions_premise_check(monkeypatch):
-    # 无 LLM 摘要 → 确定性推理摘要兜底, 且包含"核验文本事实"（前提校正步骤）
-    evs, fake = asyncio.run(_run_stream(monkeypatch, T3,
-                                        answer="先纠正：《老人与海》写的是84天。回到问题："
-                                               "这可以读作不再向世界索取意义，但并非唯一读法。"))
-    summaries = [ev["content"] for ev in evs if ev["type"] == "reasoning_summary"]
-    assert summaries and "核验文本事实" in summaries[0]
 
 
 # ═══════════════════════════════════════════════════════

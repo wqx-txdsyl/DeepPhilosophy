@@ -5,13 +5,15 @@
 "未经库中核验" 免责 + "如果你需要我可以再读"反模式。
 
 本文件只测确定性规则层（不调 LLM）:
-  T1.1-A  SOURCE_ATTRIBUTION 检测（裸「X出处」词型/term 兜底）+ 义务三态分层
+  T1.1-A  SOURCE_ATTRIBUTION 检测（裸「X出处」词型/term 兜底）+ 事实三态分层
+          （O4: 义务满足总闸已删——只剩 LOCATED/READ/QUOTE_VERIFIED 执行事实）
   T1.1-B  locate_exact_phrase 逐字定位 + _ensure_primary_read 兜底读取
-  T1.1-C  read 配额独立 + ADMISSION_REJECTED ≠ SOURCE_NOT_FOUND（拒绝理由措辞）
   T1.1-D  Quote Bound: 提取/核验状态（O2: 流式渲染转写已删——audit + validator issue）
   T1.1-E  MEMORY_HINT ≠ EVIDENCE（检索命中不置位 primary_text_read）
   T1.1-F  相邻章句拼接防护（跨 span 连续性校验）
-  T1.1-G/H 收口一致性（O2: 强确定性降调已删; verify-later 矛盾 → validator issue）
+  T1.1-G/H 收口一致性（O2: 强确定性降调已删; verify-later 矛盾 → validator issue;
+          O4: 仅由 primary_text_read 事实触发）
+O4: T1.1-C（read 配额/准入拒绝措辞）已随检索准入机制删除。
 """
 import asyncio
 import os
@@ -55,66 +57,36 @@ class TestT11ADetection:
 
     def test_plan_routed_to_verification_family(self):
         plan = RP.build_plan("言必有中出处")
-        assert plan["problem_type"] == "FACT_VERIFICATION"
-        assert plan["complexity"] == "NARROW_FACTUAL"
+        # O4: problem_type/complexity 认知分类已删——plan 只剩核验意图元数据
+        assert "problem_type" not in plan and "complexity" not in plan
         assert plan["verification_intent"]["term"] == "言必有中"
         # T1.1-B/E/H: 核验纪律注入必须存在
         assert any("出处核验纪律" in inj for inj in plan["injections"])
 
     def test_ledger_three_state_layering(self):
-        led = AR.ObligationLedger({}, {"kind": "SOURCE_ATTRIBUTION", "term": "言必有中",
-                                       "constraint": "NONE", "subject_author": ""})
+        led = AR.ObligationLedger(term="言必有中")
         # 检索命中 → 只置位 SOURCE_CANDIDATE_FOUND（MEMORY_HINT, T1.1-E）
         led.record("search_books", {"query": "言必有中"}, True,
                    {"results": [{"book_id": "d927", "chapter_idx": 12}]})
         assert led.source_candidate_found
         assert not led.primary_text_read
-        assert not led.obligations_satisfied
-        # get_chapter 全文命中 → READ + EXACT + 满足
+        # get_chapter 全文命中 → READ + EXACT
         led.record("get_chapter", {"book_id": "d927", "chapter_idx": 12}, True,
                    {"book_id": "d927", "chapter_idx": 12,
                     "text": "鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”子曰：“夫人不言，言必有中。”"})
         assert led.primary_text_read
         assert led.exact_quote_verified
-        assert led.obligations_satisfied
         snap = led.snapshot()["verification_states"]
         assert snap["source_candidate_found"] and snap["primary_text_read"]
         assert snap["exact_quote_verified"]
 
-    def test_read_without_term_hit_stays_unsatisfied(self):
-        # R7 型: 读到了章节但表述不在其中 → 已读但不满足（诚实 NOT_FOUND 路径）
-        led = AR.ObligationLedger({}, {"kind": "SOURCE_ATTRIBUTION", "term": "青天揽月寸心如磐",
-                                       "constraint": "NONE", "subject_author": ""})
+    def test_read_without_term_hit_stays_unverified(self):
+        # R7 型: 读到了章节但表述不在其中 → 已读但未逐字命中（诚实 NOT_FOUND 路径）
+        led = AR.ObligationLedger(term="青天揽月寸心如磐")
         led.record("get_chapter", {"book_id": "x", "chapter_idx": 1}, True,
                    {"book_id": "x", "chapter_idx": 1, "text": "子曰：学而时习之，不亦说乎。"})
         assert led.primary_text_read
         assert not led.exact_quote_verified
-        assert not led.obligations_satisfied
-
-
-# ═══════════════════════════════════════════════════════
-# T1.1-C 分项预算与拒绝理由措辞
-# ═══════════════════════════════════════════════════════
-class TestT11CBudget:
-    def test_search_exhaustion_does_not_block_read(self):
-        led = AR.ObligationLedger({}, {"kind": "SOURCE_ATTRIBUTION", "term": "言必有中",
-                                       "constraint": "NONE", "subject_author": ""})
-        cx = "NARROW_FACTUAL"
-        assert led.admit("search_books", {"query": "言必有中"}, cx, False)[0]
-        assert led.admit("search_books", {"query": "夫人不言 言必有中"}, cx, False)[0]
-        ok, why = led.admit("search_books", {"query": "闵子骞 长府"}, cx, False)
-        assert not ok and "search_cap" in why
-        # search 用尽不影响 read（独立配额, T1.1-C 核心）
-        assert led.admit("get_chapter", {"book_id": "d927", "chapter_idx": 12}, cx, False)[0]
-
-    def test_admission_rejected_is_not_source_not_found(self):
-        led = AR.ObligationLedger({}, None)
-        cx = "NORMAL_EXPLANATION"
-        led.admit("search_books", {"query": "a"}, cx, True)   # forced 轮
-        ok, why = led.admit("search_books", {"query": "b"}, cx, True)
-        assert not ok
-        # 拒绝理由必须防止模型把"未执行"误读为"库中无此书"
-        assert "非库中无此书" in why or "不得向用户声称库中未收录" in why
 
 
 # ═══════════════════════════════════════════════════════
@@ -150,12 +122,12 @@ class TestT11BLocate:
         assert not hasattr(ELG, "_ensure_primary_read")
         assert not hasattr(ELG, "AUTO_READ_THOUGHT")
         plan = RP.build_plan("言必有中出处")
-        led = AR.ObligationLedger(plan)
+        led = AR.ObligationLedger()
         assert not hasattr(led, "auto_primary_read")
         snap = led.snapshot()["verification_states"]
         assert "auto_primary_read" not in snap
-        # 未读取时台账保持未满足——收口引导改为 prompt 层"最后核验机会"提示
-        assert led.obligations_satisfied is False and led.primary_text_read is False
+        # 未读取时台账保持"未读"事实——是否补读由 Main Agent 自主决定
+        assert led.primary_text_read is False
 
 
 # ═══════════════════════════════════════════════════════
@@ -265,23 +237,22 @@ class TestT11FStitching:
 class TestT11GHConsistency:
     def test_strong_certainty_no_longer_governed(self):
         ans = "其作为成语来源的判断是可靠的——学界与通行注本一致。"
-        assert FV.check_consistency(ans, obligations_satisfied=False) == [], \
+        assert FV.check_consistency(ans, primary_text_read=False) == [], \
             "强确定性 + 未核验不再被机械降调（validator 无 certainty 职权）"
 
     def test_no_issue_when_verified(self):
         ans = "原文已逐字核验，可以确认出处。"
-        assert FV.check_consistency(ans, obligations_satisfied=True,
-                                    primary_text_read=True) == []
+        assert FV.check_consistency(ans, primary_text_read=True) == []
 
     def test_verify_later_contradiction_flagged_after_read(self):
-        # 台账显示本次已读原文, 正文却称"可再读" → 机械可判定的自相矛盾 → issue
+        # O4: 仅由 primary_text_read 事实触发——台账显示本次已读原文,
+        # 正文却称"可再读" → 机械可判定的自相矛盾 → issue
         for ans in ("若你需要，我可以再去读取《论语·先进》的章节全文。",
                     "你若需要，我可再作针对性逐字核验。"):
-            issues = FV.check_consistency(ans, obligations_satisfied=True,
-                                          primary_text_read=True)
+            issues = FV.check_consistency(ans, primary_text_read=True)
             assert [i.code for i in issues] == [FV.VERIFY_LATER_MISSTATEMENT], ans
 
     def test_verify_later_honest_boundary_when_unread(self):
         # 未读过原文时"可再核实"是诚实边界, 不是矛盾 → 零 issue
         ans = "需要的话我可以进一步核实原文。"
-        assert FV.check_consistency(ans, obligations_satisfied=False) == []
+        assert FV.check_consistency(ans, primary_text_read=False) == []

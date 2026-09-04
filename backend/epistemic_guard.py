@@ -1,21 +1,25 @@
 # -*- coding: utf-8 -*-
-"""Epistemic Guard（Phase 1）——结构级认识论护栏
+"""Epistemic Guard（Phase 1; O4 Cognitive Layer Collapse 后瘦身）——机械事实层护栏
 
-三个 P0 组件（确定性规则 + 数据驱动, 不联网、不调 LLM、不新增工具）:
+O4 后本模块只剩两类东西（语义判断已删除——runtime 不再替 Main Agent 判断
+"解释过强/需要 hedge/反事实边界缺失"; 那些 epistemic 语义治理维度随
+CounterfactualAuthorGuard / scan_answer / 认知层级 hedge 注入一并删除）:
 
-  PremiseVerifier           用户事实前提抽取与校正（非阻塞: 先校正, 再回答）
-  EpistemicClaimClassifier  Claim 知识论分级（9 类, 每类绑定表达强度模板）
-  CounterfactualAuthorGuard 作者反事实识别: 历史证据 vs 反事实推演分离
+  PremiseVerifier           用户事实前提校正（非阻塞: 先校正, 再回答; 只查"显著影响
+                            答案且必改"的可验证事实——宁漏勿误）
+  EpistemicClaimClassifier  Claim 知识论分级（9 类; evidence_contract 生产依赖——
+                            claims 分级接口名保持不变）
+  run_epistemic_guards      编排: 只产 premise 事实校正 injections + premise_checks
+                            （反事实/认知层级注入分支已删除）
 
 Phase 1 边界（见任务书）:
   - confidence 恒为 null（完整 confidence engine 留 Phase 2）
   - 不改 Graph / Memory / Persona Snapshot / 矢量库 / 工具注册表 / 流式协议
-  - 护栏以"前置系统消息注入 + 应答后校验补正"的结构生效, 失败绝不影响主流程
+  - 护栏尽力而为——任何异常只降级为跳过, 绝不影响主流程
 
 用法（engine_langgraph.stream_agent 内）:
   verdict = run_epistemic_guards(req_message, agent, language)
   for inj in verdict["injections"]: messages.append(SystemMessage(content=inj))
-  ... 应答完成后: scan_answer(verdict, full_answer) → 校验/补正/记录
 """
 import json
 import re
@@ -42,7 +46,7 @@ EPISTEMIC_TYPES = [
     "UNKNOWN",                   # 现有材料不足以判断
 ]
 
-# 语言约束: 不同类型绑定不同表达强度（Phase 1 直接以模板绑定, 注入时引用）
+# 语言约束: 不同类型绑定不同表达强度（注入/分级时引用）
 EPISTEMIC_LANGUAGE = {
     "SOURCE_FACT": "文本明确写道……",
     "DIRECT_QUOTE": "原文写道……",
@@ -54,11 +58,6 @@ EPISTEMIC_LANGUAGE = {
     "UNKNOWN": "现有材料不足以判断……",
     "USER_PREMISE": "基于你提出的这个前提……",
 }
-
-# 反事实禁语（"作者一定/绝不会……"除非存在直接可靠史料）
-COUNTERFACTUAL_FORBIDDEN = ["绝不会", "一定会", "肯定会", "必定会", "必然认为",
-                            "他肯定会", "她肯定会", "一定会激动", "绝不会是"]
-_STRONG_MODAL_RE = re.compile(r"(一定|必然|肯定|必定|想必|无疑|显然|绝不会|绝无可能)")
 
 
 # ═══════════════════════════════════════════════════════
@@ -123,7 +122,7 @@ def _load_philosophers():
     return _philos_cache
 
 
-# 常见别称: 哲学家短名 ↔ 全名/拉丁名（用户口语常用短名, 需匹配到")
+# 常见别称: 哲学家短名 ↔ 全名/拉丁名（用户口语常用短名, 需匹配到）
 PHILOSOPHER_ALIASES = {
     "尼采": "尼采", "弗里德里希·尼采": "尼采", "f·尼采": "尼采",
     "加缪": "加缪", "阿尔贝·加缪": "加缪",
@@ -455,10 +454,10 @@ class PremiseVerifier:
         # ── 作品归属规则（数据驱动: 用户把某作品误归于别的哲学家）──
         attr = self._check_attribution(msg)
         out.extend(attr)
-        # ── 错误书名规则（《西西弗斯》→《西西弗斯神话》; Phase 4 新增规则类）──
+        # ── 错误书名规则（《西西弗斯》→《西西弗斯神话》）──
         titles = self._check_book_titles(msg)
         out.extend(titles)
-        # ── 错误概念归属规则（权力意志→尼采 等; Phase 4 新增规则类）──
+        # ── 错误概念归属规则（权力意志→尼采 等）──
         concepts = self._check_concept_owners(msg)
         out.extend(concepts)
         return out
@@ -508,7 +507,7 @@ class PremiseVerifier:
         return False
 
     def _build_str_contradiction(self, rule, matched, msg, rule_id):
-        """字符串规则（书名/概念）的裁决——与数字规则同构（build_guard_injections 无需改动）"""
+        """字符串规则（书名/概念）的裁决——与数字规则同构"""
         return {
             "status": "contradicted",
             "claim": rule["claim"],
@@ -638,6 +637,7 @@ class PremiseVerifier:
 
 # ═══════════════════════════════════════════════════════
 # 4. EpistemicClaimClassifier —— Claim 知识论分级
+# （evidence_contract 生产依赖: claims 分级消费本类的接口名保持不变）
 # ═══════════════════════════════════════════════════════
 # 具体 → 一般 顺序匹配（首个命中即定级; 全部未中 → UNKNOWN）
 _CLAIM_CUES = [
@@ -707,184 +707,34 @@ class EpistemicClaimClassifier:
 
 
 # ═══════════════════════════════════════════════════════
-# 5. CounterfactualAuthorGuard —— 作者反事实识别与历史/反事实分离
-# ═══════════════════════════════════════════════════════
-# 作者生平/思想覆盖的**当代对象**（无直接史料 → 一律按反事实处理）
-_CONTEMPORARY_OBJECT_RE = re.compile(r"\b(AI|人工智能|互联网|智能手机|短视频|元宇宙|区块链|比特币|推特|微博|抖音|微信|电脑|手机|社交媒体|VR|元宇宙)\b|AI|人工智能|互联网|智能手机|短视频|元宇宙|区块链|大语言模型")
-
-# 反事实提问句式（"会怎么看/会如何评价/如果活到今天"等——不具备历史答案的时态）
-_CQ_QUESTION = re.compile(r"会\s*(怎么|如何|怎样)(看待|看|想|评价|说)|会不会(认为|觉得)|会\s*怎么\s*说|怎么\s*看|怎么\s*说来|如何(看待|评价)|怎么看待")
-_CQ_LIVENESS = re.compile(r"如果(?:他|她)?.{0,14}(活到|活在|来到|穿越到|身处|出生在|生在|生活在|看到|看见|接触|知道).{0,10}(今天|今日|现代|当世|当代|现在|信息时代|这个时代)|活到今天|若(是)?(今天|活在今天)|穿越到(今天|现代)")
-_CQ_MODAL = re.compile(r"一定|必然|肯定会|绝不会|必定|想必|无疑会|显然会|一定会")
-
-# 已载入史料的主题（有直接史料 → 可按 TEXTUAL_INFERENCE / SOURCE_FACT 正常回答）
-DOCUMENTED_TOPICS = {
-    "尼采": ["瓦格纳", "苏格拉底", "基督教", "耶稣", "上帝", "叔本华", "康德", "虚无主义",
-             "道德", "艺术", "悲剧", "查拉图斯特拉", "权力意志", "永恒轮回", "超人", "启蒙",
-             "科学", "女人", "犹太人", "历史", "国家", "格言"],
-    "加缪": ["荒诞", "自杀", "西西弗斯", "反抗", "正义", "死刑", "阿尔及利亚", "孤独", "鼠疫",
-             "共产主义", "暴力"],
-    "叔本华": ["意志", "表象", "音乐", "艺术", "悲观主义", "痛苦", "生存", "佛教", "康德"],
-    "萨特": ["自由", "存在主义", "他者", "虚无", "二战", "责任", "意识", "肮脏说", "共产主义"],
-    "黑格尔": ["辩证法", "绝对精神", "历史", "自我意识", "国家", "精神", "宗教", "艺术"],
-    "康德": ["理性", "道德", "先验", "自由", "审美", "义务", "物自体", "判断力", "国际联盟"],
-    "马克思": ["资本主义", "异化", "劳动", "共产主义", "阶级斗争", "历史唯物主义", "费尔巴哈"],
-    "维特根斯坦": ["语言", "逻辑", "意义", "沉默", "私人语言", "逻辑哲学论", "数学", "日常语言"],
-    "海德格尔": ["存在", "死亡", "沉沦", "此在", "技术", "语言", "梵高", "荷尔德林", "纳粹"],
-    "柏拉图": ["理想国", "洞穴", "理念", "灵魂", "苏格拉底", "正义", "诗", "回忆"],
-    "亚里士多德": ["逻辑", "四因", "伦理学", "中庸", "幸福", "形而上学", "实体", "悲剧", "城邦"],
-    "奥古斯丁": ["时间", "自我", "上帝之城", "忏悔", "自由意志", "三位一体"],
-    "休谟": ["经验", "因果", "自我", "道德", "宗教", "怀疑"],
-    "庄子": ["逍遥", "齐物", "生死", "自然", "蝴蝶梦", "无用"],
-    "老子": ["道", "无为", "自然", "阴阳", "道德经"],
-    "孔子": ["仁", "礼", "君子", "孝", "中庸", "学而"],
-    "释迦牟尼": ["苦", "无常", "涅槃", "八正道", "缘起", "空"],
-}
-
-
-class CounterfactualAuthorGuard:
-    """识别'作者会怎么看'类问题; 有直接史料 → historical（正常回答）;
-    无 → counterfactual（注入反事实边界, 禁止'X 一定/绝不会'断言）"""
-
-    def check(self, message):
-        msg = (message or "").strip()
-        result = {
-            "mode": "historical", "authors": [], "author": None, "object": "",
-            "direct_evidence": [], "requires_guard": False,
-            "boundary_text": "", "claim": msg,
-            "epistemic_type": "TEXTUAL_INFERENCE",
-            "cues": [],
-        }
-        if not msg:
-            return result
-        authors = _match_philosopher(msg)
-        if not authors:
-            return result
-        author = authors[0]
-        result["authors"] = authors
-        result["author"] = author
-        # ── 反事实信号采集（question/liveness/modal 仅作观测 cue）──
-        cues = []
-        if _CQ_QUESTION.search(msg):
-            cues.append("question")
-        if _CQ_LIVENESS.search(msg):
-            cues.append("liveness")
-        if _CQ_MODAL.search(msg):
-            cues.append("modal")
-        contemporary = bool(_CONTEMPORARY_OBJECT_RE.search(msg))
-        if contemporary:
-            cues.append("contemporary_object")
-        result["cues"] = cues
-
-        # ── 直接史料判定 ──
-        evidence = []
-        wam = self._work_author_map()
-        real_short = set()
-        for work, real_authors in wam.items():
-            if f"《{work}》" in msg and any(_norm_author(a) == author for a in real_authors):
-                real_short.add(work)
-        if real_short:
-            evidence.append({"kind": "own_work", "work": sorted(real_short)})
-        # 作者自己的思想/哲学/学说 → 本身即有史料
-        if re.search(rf"{author}的(哲学|思想|学说|著作|观点|立场)", msg):
-            evidence.append({"kind": "own_thought"})
-        # 已载入史料的主题
-        topics = DOCUMENTED_TOPICS.get(author, [])
-        hit_topics = [t for t in topics if t in msg]
-        if hit_topics:
-            evidence.append({"kind": "documented_topic", "topics": hit_topics})
-        # 当代对象（作者生前不存在的对象 → 即便句式属"看"也按反事实）
-        if contemporary:
-            evidence = [e for e in evidence if e["kind"] != "documented_topic"]
-
-        result["direct_evidence"] = evidence
-
-        # ── Patch 1.1 (P4): 反事实边界非侵入收紧 ──
-        # 仅当问题真正"无历史文本事实可直接回答"时才触发:
-        #   ① 哲学家面对其死后对象（当代对象: AI/算法/互联网…）
-        #   ② 未实际发生的会面/事件（活到今天/穿越/如果看到今天）
-        #   ③ "X 会怎么评价 Y"且 Y 既非已载史料话题、也非另一位已知哲学家
-        #      （另一位哲学家在场 → 是思想史关系问题, 有文本事实可答）
-        # 普通 "A 如何回应 B / A 与 B 理论差异 / B 受到 A 什么影响 / A 是否反驳 B"
-        # → 一律 historical, guard 完全静默（不注入、不尾补）。
-        # 单独的强模态词（引文/概念表述中的"必然性/一定"）绝不构成触发——
-        # F06 误触发根因: "经验不能给出必然性" 命中 _CQ_MODAL。
-        multi_author = len(authors) >= 2
-        triggered = (
-            "liveness" in cues
-            or (contemporary and cues)
-            or ("question" in cues and not evidence and not multi_author)
-        )
-        if triggered:
-            result["mode"] = "counterfactual"
-            result["requires_guard"] = True
-            result["epistemic_type"] = "AUTHOR_COUNTERFACTUAL"
-            result["boundary_text"] = (
-                f"没有证据表明{author}本人评论过这一对象；以下是依据其已知思想框架进行的反事实推演。")
-            result["boundary_text_en"] = (
-                f"There is no evidence that {author} personally commented on this object; the following is a "
-                f"counterfactual extrapolation based on his known intellectual framework.")
-        else:
-            result["mode"] = "historical"
-            result["epistemic_type"] = "TEXTUAL_INFERENCE"
-        return result
-
-    def _work_author_map(self):
-        return PremiseVerifier()._work_author_map()
-
-    @staticmethod
-    def boundary_present(answer, author):
-        """应答后校验: 答案是否已含反事实边界（'没有证据表明' + 作者名）"""
-        if not answer:
-            return False
-        return "没有证据表明" in answer and author in answer
-
-
-# ═══════════════════════════════════════════════════════
-# 6. 编排：run_epistemic_guards / build_guard_injections / scan_answer / 日志
+# 5. 编排：run_epistemic_guards / premise 注入 / 日志
+# （O4: CounterfactualAuthorGuard 反事实边界注入 / 认知层级 hedge 注入 /
+#   scan_answer 应答后校验已删除——语义判断归 Main Agent, runtime 只留事实校正）
 # ═══════════════════════════════════════════════════════
 def run_epistemic_guards(message, agent="general", language="zh"):
-    """汇总三个组件的裁决（纯计算, 不调 LLM）
+    """汇总前提事实校正（纯计算, 不调 LLM; 只产 premise injections + premise_checks）
 
     返回:
       premise_checks: PremiseVerifier.check(...)
-      counterfactual: CounterfactualAuthorGuard.check(...)
-      claim_annotations: 用户消息中的断言标注（启用 EpistemicClaimClassifier 的证据）
-      injections: 应注入到消息列表的系统提示（字符串列表）
+      injections: 应注入到消息列表的系统提示（字符串列表; 仅事实校正）
     """
     checks = PremiseVerifier().check(message)
-    counterfactual = CounterfactualAuthorGuard().check(message)
-    classifier = EpistemicClaimClassifier()
-
-    annotations = []
-    for sent in classifier.split_sentences(message):
-        c = classifier.classify(sent, extra=True)
-        if c["epistemic_type"] in ("USER_PREMISE", "TEXTUAL_INFERENCE") or c.get("strong_modal"):
-            if sent.strip():
-                annotations.append(c)
-
-    injections = build_guard_injections(checks, counterfactual, annotations, language)
+    injections = build_guard_injections(checks, language)
     verdict = {
         "premise_checks": checks,
-        "counterfactual": counterfactual,
-        "claim_annotations": annotations,
         "injections": injections,
     }
     _log_record({"phase": "pre", "agent": agent, "language": language,
                  "message": (message or "")[:500],
                  "premise_checks": [{"id": c.get("rule_id"), "status": c.get("status"),
                                      "corrected_value": c.get("corrected_value")} for c in checks],
-                 "counterfactual": {k: counterfactual.get(k) for k in
-                                    ("mode", "author", "requires_guard", "direct_evidence", "cues")},
-                 "claim_types": [a["epistemic_type"] for a in annotations],
                  "injections": len(injections)})
     return verdict
 
 
-def build_guard_injections(checks, counterfactual, annotations, language="zh"):
-    """由裁决生成系统提示注入（每句为一条 SystemMessage; 任何一类失败都不影响他类）"""
+def build_guard_injections(checks, language="zh"):
+    """由前提校正裁决生成系统提示注入（每句为一条 SystemMessage; 事实校正, 非语义 hedge）"""
     inj = []
-    # ── 1. 前提校正（非阻塞: 先简短校正, 再回答用户真正的问题）──
     for c in checks:
         if c.get("status") == "confirmed":
             # S1 历史类: 87 天属实（过去那次经历）——只确认, 不纠正（防 LLM 反向误纠）
@@ -937,71 +787,7 @@ def build_guard_injections(checks, counterfactual, annotations, language="zh"):
                     f"{evidence}. 回答的第一句必须先简短纠正这一错误（一两句话说明正确事实即可, 给出出处）；"
                     f"然后继续回答用户真正的问题，不要因此拒绝回答，也不要反复纠缠这个细节。" +
                     f"正确表述: {c.get('correction_note') or ''}")
-    # ── 2. 反事实边界 ──
-    if counterfactual.get("requires_guard"):
-        author = counterfactual.get("author") or ""
-        if language == "en":
-            inj.append(
-                f"[System counterfactual boundary] The user's question is a counterfactual hypothesis about "
-                f"{author}. There is no evidence that {author} personally commented on this object. "
-                f"Begin the answer with: 'There is no evidence that {author} personally commented on this object; "
-                f"the following is a counterfactual extrapolation based on his known intellectual framework.' "
-                f"Do NOT use assertions like '{author} would definitely / would never …'.")
-        else:
-            inj.append(
-                f"【反事实边界（系统）】用户的问题是反事实假设（{author} 本人对这一对象并无直接史料）。"
-                f"回答必须开头写入: '没有证据表明{author}本人评论过这一对象；以下是依据其已知思想框架进行的反事实推演。'"
-                f"并禁止使用'{author}绝不会/一定会/肯定会……'这类零证据断言。")
-    # ── 3. 用户强断言解释性声明（不得当文本事实）──
-    for a in annotations:
-        if a.get("strong_modal") and a.get("epistemic_type") in ("TEXTUAL_INFERENCE", "USER_PREMISE"):
-            bound = EPISTEMIC_LANGUAGE["TEXTUAL_INFERENCE"]
-            if language == "en":
-                inj.append(
-                    f"[System epistemic level] The user asserts: \"{a['claim'][:80]}\" — this is an interpretation "
-                    f"of the text, not an explicit textual fact. When addressing it, distinguish 'the text clearly "
-                    f"states…' from '{bound}'; do not treat this interpretation as a source fact.")
-            else:
-                inj.append(
-                    f"【认知层级（系统）】用户断言『{a['claim'][:80]}』——这是对文本的解释性解读（相当于'"
-                    f"{bound}'），并非原文明确写的文本事实。回答涉及这一判断时，请区分'文本明确写道'与'"
-                    f"{bound}'，不要把这一解读当作原典事实引用。")
     return inj
-
-
-def _correction_present_in_answer(check, answer):
-    """校正落实: 回答包含 corrected_value 中任一数字或前缀（多数字值逐个匹配, 防"19511942"拼接误判）"""
-    fixed = check.get("corrected_value") or ""
-    ans = answer or ""
-    nums = re.findall(r"\d+", fixed)
-    if nums and any(n in ans for n in nums):
-        return True
-    return bool(fixed and fixed[:6] in ans)
-
-
-# ══ O2 §7: build_missing_correction_appends（前提校正 runtime 尾补）已删除——
-# runtime 不得给用户补写纠正句。contradicted 前提的落实状态仍由 scan_answer 检测
-# 并随 done.epistemic 输出; 是否在正文中落实由 Main Agent 自己负责。
-
-def scan_answer(verdict, answer, language="zh"):
-    """应答后校验: 是否落实校正/边界（只记录, 返回补正文本——engine 决定是否补发）"""
-    result = {"premise_checks": [], "counterfactual_boundary": None, "boundary_applied": False}
-    checks = verdict.get("premise_checks") or []
-    ans = answer or ""
-    for c in checks:
-        # S1: 双值 corrected_value（"84天（当前）/ 87天（历史）"）按逐数字匹配落实判定
-        present = _correction_present_in_answer(c, ans)
-        result["premise_checks"].append({"rule_id": c.get("rule_id"), "correction_present": present})
-    cv = verdict.get("counterfactual") or {}
-    if cv.get("requires_guard"):
-        author = cv.get("author") or ""
-        if CounterfactualAuthorGuard.boundary_present(ans, author):
-            result["counterfactual_boundary"] = "present"
-        else:
-            result["counterfactual_boundary"] = "missing"
-            result["boundary_applied"] = True
-    _log_record({"phase": "post", "author_scan": result})
-    return result
 
 
 # ── 运行时记录（backend/data/ 已 gitignore, 纯观察/审计用; 失败静默）──

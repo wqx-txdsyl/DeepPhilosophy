@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """Patch 1 纯规则单元测试（Backend Reliability Patch 1: B1/B3/B4/B5/B7）
 
-覆盖: 问题分类/复杂度（B7/B1）、术语核验与措辞约束（B3）、时期检测与路由（B5）、
+覆盖: 术语核验与措辞约束（B3）、时期检测与路由（B5）、
 引用核验（B4, O2 后为 final_validator 结构化校验）与内部控制标签剥离、RationaleParser 防泄漏。
+O4 Cognitive Layer Collapse: 问题类型分类（B7）/复杂度档位（B1）/RetrievalState 语义增益/
+sufficiency 收敛已随 Shadow planner 删除——相关用例移除, 行为契约由 test_o4_cognitive_collapse 覆盖。
 不联网、不调 LLM、不改任何数据。
 """
 import sys
@@ -17,126 +19,6 @@ import reasoning_plan as RP  # noqa: E402
 import agent_runtime as AR   # noqa: E402
 import final_validator as FV  # noqa: E402
 from engine_langgraph import RationaleParser, _strip_control_tags, _visible_text  # noqa: E402
-
-
-# ═══════════════════════════════════════════════════════
-# B7: 问题类型分类
-# ═══════════════════════════════════════════════════════
-class TestProblemType:
-    def test_t5_term_presence(self):
-        assert RP.classify_problem(
-            "康德在《判断力批判》里是不是已经明确提出了“无目的的合目的性”这个完整术语？"
-        ) == "FACT_VERIFICATION"
-
-    def test_t11_narrow_yesno(self):
-        assert RP.classify_problem(
-            "只回答一个问题：康德所谓“共通感”是不是民主投票式的多数意见？"
-        ) == "FACT_VERIFICATION"
-
-    def test_t12_deep(self):
-        assert RP.classify_problem(
-            "请做一次深入分析：从“特殊如何归入普遍”这个问题出发，解释为什么《判断力批判》"
-            "既是认识论问题，也是美学和目的论问题，并说明黑格尔为什么会认为康德仍没有真正解决这个问题。"
-        ) == "DEEP_SYNTHESIS"
-
-    def test_t7_argument(self):
-        assert RP.classify_problem(
-            "“审美判断人人都可以各有喜好，所以康德所谓审美判断的普遍性是自相矛盾的。”分析这个论证。"
-        ) == "ARGUMENT_ANALYSIS"
-
-    def test_t8_socratic(self):
-        assert RP.classify_problem(
-            "不要直接告诉我答案。用苏格拉底式提问带我自己想明白：为什么康德会认为审美判断既主观又要求普遍同意？"
-        ) == "SOCRATIC"
-
-    def test_persona(self):
-        assert RP.classify_problem("你怎么看康德？", agent="nietzsche") == "PERSONA_RESPONSE"
-
-    def test_t1_system_question_normal(self):
-        # 单解释型体系问题 → 一般解释（深度综合需显式深度线索或长问+多关键词）
-        assert RP.classify_problem("《判断力批判》在康德三大批判体系里到底解决了什么问题？") \
-            == "CONCEPT_EXPLANATION"
-
-    def test_comparison(self):
-        assert RP.classify_problem("比较一下康德和黑格尔对美的看法有什么异同？") == "COMPARISON"
-
-    def test_form_directives_do_not_prescribe_fixed_sections(self):
-        # B7: 形态注入不得规定固定编号标题（①②③）或固定五段骨架
-        for ptype in ("FACT_VERIFICATION", "CONCEPT_EXPLANATION", "ARGUMENT_ANALYSIS",
-                      "COMPARISON", "DEEP_SYNTHESIS", "HISTORICAL_GENEALOGY"):
-            d = RP.get_form_directive(ptype, "zh") or ""
-            assert "①" not in d and "②" not in d and "③" not in d
-            assert "直接判断" not in d.replace("先直接给出", "")
-
-
-# ═══════════════════════════════════════════════════════
-# B1: 复杂度分类 + 检索状态 + 充分性
-# ═══════════════════════════════════════════════════════
-class TestComplexity:
-    def test_narrow(self):
-        assert RP.classify_complexity("FACT_VERIFICATION", "是不是这样？") == "NARROW_FACTUAL"
-
-    def test_deep(self):
-        assert RP.classify_complexity("DEEP_SYNTHESIS", "深入分析……") == "DEEP_SYNTHESIS"
-
-    def test_comparison(self):
-        assert RP.classify_complexity("COMPARISON", "比较A与B") == "COMPARISON"
-
-
-class TestRetrievalState:
-    def _search_result(self, book_ids, chapter=0):
-        return {"results": [{"book_title": f"书{i}", "book_id": bid, "chapter_idx": chapter,
-                             "snippet": f"片段{i}含关键词"} for i, bid in enumerate(book_ids)]}
-
-    def test_new_and_low_gain(self):
-        rs = AR.RetrievalState()
-        r1 = rs.register("search_books", {"query": "共通感"}, self._search_result(["a", "b", "c"]))
-        assert r1["low_gain"] is False and r1["new"] == 3
-        # 完全同源 → low_gain
-        r2 = rs.register("search_books", {"query": "共通感 审美"}, self._search_result(["a", "b", "c"]))
-        assert r2["low_gain"] is True and r2["new"] == 0
-        # 高度重合（4 源中仅 1 新）→ low_gain
-        r3 = rs.register("search_books", {"query": "共通感 判断力"}, self._search_result(["a", "b", "c", "d"]))
-        assert r3["low_gain"] is True and r3["new"] == 1
-
-    def test_relevant_sources(self):
-        rs = AR.RetrievalState()
-        rs.register("search_books", {"query": "共通感"}, self._search_result(["a"]), key_terms=["关键词"])
-        assert len(rs.relevant_ids) == 1
-        # 无关键术语命中 → 检索无信息增益（low_gain）
-        rs2 = AR.RetrievalState()
-        r = rs2.register("search_books", {"query": "共通感"}, self._search_result(["a", "b"]),
-                         key_terms=["不存在的词"])
-        assert r["low_gain"] is True
-
-    def test_get_chapter_never_low_gain(self):
-        rs = AR.RetrievalState()
-        r = rs.register("get_chapter", {"book_id": "x", "chapter_idx": 1},
-                        {"book_id": "x", "chapter_idx": 1, "text": "正文"}, key_terms=["关键词"])
-        assert r["low_gain"] is False  # 阅读类工具豁免（逐字核验途径）
-
-
-class TestSufficiency:
-    def test_narrow_factual_force_after_hi(self):
-        # 窄事实: 期望 1-3——收口点 max(1, 3-2)=1, 首个工具轮后即收口
-        assert AR.sufficiency_verdict("NARROW_FACTUAL", 3, True, 1, True) == "force"
-        assert AR.sufficiency_verdict("NARROW_FACTUAL", 2, True, 1, True) == "force"
-        assert AR.sufficiency_verdict("NARROW_FACTUAL", 1, True, 0, False) == "force"
-        assert AR.sufficiency_verdict("NARROW_FACTUAL", 2, False, 1, True,
-                                      round_any_low=True) == "force"
-        assert AR.sufficiency_verdict("NARROW_FACTUAL", 2, False, 1, True) == "force"
-        assert AR.sufficiency_verdict("NARROW_FACTUAL", 0, False, 0, False) == "none"
-
-    def test_deep_allows_more(self):
-        # 深度综合: 期望 5-10——收口点 max(5, 8)=8; 低增益不提前收口
-        assert AR.sufficiency_verdict("DEEP_SYNTHESIS", 5, True, 2, False, round_any_low=True) == "none"
-        assert AR.sufficiency_verdict("DEEP_SYNTHESIS", 7, True, 2, False) == "none"
-        assert AR.sufficiency_verdict("DEEP_SYNTHESIS", 8, True, 2, False) == "force"
-        assert AR.sufficiency_verdict("DEEP_SYNTHESIS", 11, False, 2, False) == "force"
-
-    def test_hint_text(self):
-        h = AR.sufficiency_hint("force", "NARROW_FACTUAL", "zh")
-        assert h and "检索已充分" in h and "禁止调用任何工具" in h
 
 
 # ═══════════════════════════════════════════════════════

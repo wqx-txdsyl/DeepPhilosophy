@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
-"""Tool Architecture（Phase T）——工具职责契约单一真源
+"""Tool Architecture（Phase T; O4 Cognitive Layer Collapse 后瘦身）——工具能力契约单一真源
 
 QG2 结论: 专用工具的"成品化"设计与主 Agent 的 reasoning-first 纪律存在结构性张力
 （Q08 compare_views 自述"结果即成品"被绕开 / Q10 dialectic 内部 prompt 强制正反合
 无视用户约束 / Q13 conceptual_map 只会"概念→哲学家"图被整体架空 / Q14 socratic_tutor
 一次齐发 4 轮与单问题合同冲突 / Q11 thought_experiment 退化迭代三连调）。
 
-本模块是 Phase T 的单一真源（纯规则, 不联网, 不调 LLM, 异常只降级为跳过）:
+本模块是工具的 CAPABILITY CONTRACT（纯规则, 不联网, 不调 LLM, 异常只降级为跳过）,
+不是 cognitive policy engine（O4: 重入治理 SkillReentryTracker 与所有权审计
+tool_ownership_audit 已删除——工具选择与重入判断归 Main Agent）:
 
   TOOL_TAXONOMY            38 项生产工具的分类与契约字段（T1 审计的机器可读形态;
                            30 项通用 TOOLS + 8 项哲学家专属 PHILO_EXTRA_TOOLS）
   REASONING_AUTHORITY      主 Agent 最终答案权原则（T2）
   scaffold_result()        统一 ToolResult 构建器——结构化中间产物, 非 ready-to-render 成品
-  SkillReentryTracker      reasoning/generation skill 的 invocation 级重入策略（T7）
   infer_map_type()         用户请求 → MAP_TYPE 预判（T5 路由辅助）
   render_mermaid()         graph structure → Mermaid 确定性渲染器（T5:
                            quote/括号 escaping、节点 id、label、edge syntax 全部确定性处理）
   validate_mermaid()       Mermaid 文本解析回结构并与 graph 对账（Q13 回归的 parse 验证）
   strip_runtime_phrases() / RuntimePhraseScrubber  内部运行时措辞不得进入 Final（T13-B）
-  tool_ownership_audit()   tool_value / final_use 审计（T12; REDUNDANT/BYPASSED → anomaly）
 """
-import os
 import re
 
 # ═══════════════════════════════════════════════════════
@@ -109,150 +108,10 @@ TOOL_TAXONOMY = {
     "philosopher_user":     _T("READ",            USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=False, USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True),
 }
 
-# 专用工具集（tool_value/final_use 审计与重入策略的作用域）
-SPECIALIZED_TOOL_CLASSES = {"GENERATION", "REASONING_SKILL", "INTERACTION_MODE",
-                            "PRESENTATION", "EXTERNAL_ACTION", "PERSONA_DATA"}
-SPECIALIZED_TOOLS = {n for n, t in TOOL_TAXONOMY.items()
-                     if t["TOOL_CLASS"] in SPECIALIZED_TOOL_CLASSES}
-
 
 # ═══════════════════════════════════════════════════════
-# T7: Skill Reentry Policy（invocation 级）
+# T5: 通用关系图 + 确定性 Mermaid
 # ═══════════════════════════════════════════════════════
-def _env_int(name, default):
-    try:
-        return int(os.environ.get(name, "") or default)
-    except (TypeError, ValueError):
-        return default
-
-
-# 同一 purpose 默认最多重入 1 次（即同 purpose 至多 2 次调用）
-MAX_SAME_SKILL_REENTRY = _env_int("AGENT_SKILL_REENTRY", 1)
-
-# 受重入策略约束的 reasoning/generation skill（交互类 philosopher_debate/
-# generate_image/confrontation/socratic_tutor 的继续语义是合法重入, 不在内;
-# phti_test 无内部 LLM）
-SKILL_REENTRY_TOOLS = {
-    "thought_experiment", "dialectic", "compare_views", "paper_review",
-    "analyze_argument", "advisor_council", "essay_outline", "life_coach",
-    "history_timeline", "school_arena", "agent_council", "conceptual_map", "profile",
-}
-
-# 用户要求迭代/变体的标志词（出现在工具参数或用户消息中 → USER_REQUESTED_ITERATION）
-_ITERATION_MARKS = ("改", "换成", "变体", "如果", "假设", "变化", "再来", "重推",
-                    "调整", "重新", "另一个版本", "换一个", "更深", "更强")
-
-_REENTRY_SHINGLE = 2
-
-
-def _purpose_shingles(text):
-    t = re.sub(r"[\s，,。；;：:、？！?？()（）\"“”'‘’·《》【】]", "", text or "")
-    if len(t) < _REENTRY_SHINGLE:
-        return frozenset([t]) if t else frozenset()
-    return frozenset(t[i:i + _REENTRY_SHINGLE] for i in range(len(t) - _REENTRY_SHINGLE + 1))
-
-
-def _jaccard(a, b):
-    if not a or not b:
-        return 0.0
-    return len(a & b) / len(a | b)
-
-
-class SkillReentryTracker:
-    """invocation 级 skill 重入治理（生命周期 = 单次请求, engine 持有）。
-
-    规则（T7）:
-      - 首次调用一律放行;
-      - 同 purpose 重入默认 MAX_SAME_SKILL_REENTRY=1 次, 且必须满足 justification:
-        USER_REQUESTED_ITERATION（参数/用户消息含迭代标志词）
-        或 FIRST_RESULT_INVALID（上次调用失败）
-        或 NEW_OBLIGATION（purpose 实质变化: jaccard < 0.45 且非退化包含）;
-      - 退化迭代（新 purpose 文本极短且其 shingle 几乎全部被先前 purpose 包含,
-        如 Q11 第三次仅传 base="全知之镜"）→ 视为同一 purpose, 不算 NEW_OBLIGATION;
-      - 同工具调用总量硬上限 = 2 + MAX_SAME_SKILL_REENTRY（防换purpose刷调用）。
-    """
-
-    def __init__(self):
-        self.calls = {}          # tool -> [{"purpose": str, "sh": frozenset, "ok": bool}]
-
-    @staticmethod
-    def purpose_text(args):
-        """参数 → purpose 文本（字符串值拼接; 列表/字典序列化）"""
-        parts = []
-        for k in sorted(args or {}):
-            v = (args or {})[k]
-            if isinstance(v, str) and v.strip():
-                parts.append(v)
-            elif isinstance(v, (list, tuple)):
-                parts.append(" ".join(str(x) for x in v))
-            elif isinstance(v, dict):
-                parts.append(json_s(v))
-        return " ".join(parts)[:400]
-
-    def admit(self, tool, args, user_message=""):
-        """执行前判定。返回 (admitted, reason)。
-        user_message: 原始用户消息——含迭代标志词时视为 USER_REQUESTED_ITERATION。
-        ok_history: 可选 bool 列表（该工具此前调用的成败; 缺省取内部记录）"""
-        if tool not in SKILL_REENTRY_TOOLS:
-            return True, ""
-        args = args or {}
-        purpose = self.purpose_text(args)
-        hist = self.calls.get(tool, [])
-        if not hist:
-            return True, ""
-        total_cap = 2 + MAX_SAME_SKILL_REENTRY
-        if len(hist) >= total_cap:
-            # 绝对上限（防御深度）: 同工具调用总数超限一律拒绝——
-            # 用户迭代意图已由下方 same_chain ≤ MAX_SAME_SKILL_REENTRY 管控, 不在此二次解锁
-            return self._reject(tool, "skill_total_cap: 同一技能本请求调用总数已达上限, 请基于已有结果综合")
-        # FIRST_RESULT_INVALID: 上次失败 → 重试合理
-        prev_ok = hist[-1]["ok"]
-        if not prev_ok:
-            return True, ""
-        sh = _purpose_shingles(purpose)
-        # NEW_OBLIGATION: 与所有先前 purpose 实质不同（且非退化包含）
-        degenerate_or_same = False
-        new_purpose = True
-        for h in hist:
-            j = _jaccard(sh, h["sh"])
-            if j >= 0.45:
-                degenerate_or_same, new_purpose = True, False
-                break
-            # 退化包含: 新 purpose 极短且 shingle 几乎全被先前包含（Q11 形态）
-            if sh and len(sh) <= 6 and len(sh & h["sh"]) / len(sh) >= 0.8:
-                degenerate_or_same, new_purpose = True, False
-                break
-        user_iter = bool(user_message and any(m in user_message for m in _ITERATION_MARKS)) \
-            or any(m in purpose for m in _ITERATION_MARKS)
-        if new_purpose and not degenerate_or_same:
-            return True, ""
-        # 同 purpose: 需 justification 且重入未超限
-        same_chain = sum(1 for h in hist if _jaccard(sh, h["sh"]) >= 0.45
-                         or (sh and len(sh) <= 6 and len(sh & h["sh"]) / len(sh) >= 0.8))
-        if user_iter:
-            if same_chain <= MAX_SAME_SKILL_REENTRY:
-                return True, ""
-            return self._reject(tool, f"skill_reentry_cap: 同一 purpose 的用户要求迭代已达上限（≤{MAX_SAME_SKILL_REENTRY}）, 请基于已有结果综合")
-        # 无 justification 的同 purpose 重入 = 退化迭代（Q11 形态）→ 拒绝
-        return self._reject(tool, "skill_reentry_undeclared: 同 purpose 重入缺少依据（无用户迭代要求/前次无效/实质新义务）, "
-                                 "请基于已有结果综合; 如用户确要求变体请在参数中体现迭代意图")
-
-    def _reject(self, tool, reason):
-        return False, reason
-
-    def record(self, tool, args, ok):
-        if tool not in SKILL_REENTRY_TOOLS:
-            return
-        self.calls.setdefault(tool, []).append(
-            {"purpose": self.purpose_text(args), "sh": _purpose_shingles(self.purpose_text(args)),
-             "ok": bool(ok)})
-
-
-def json_s(obj):
-    import json
-    return json.dumps(obj, ensure_ascii=False)
-
-
 def extract_json(text):
     """从 LLM 回复中稳健提取 JSON 对象（剥 ``` 围栏 / 前后杂文字; 截断 JSON 括号配平修复;
     失败返回 None）"""
@@ -516,139 +375,3 @@ class RuntimePhraseScrubber:
         out, self._buf = strip_runtime_phrases(self._buf, cleanup=True), ""
         return out
 
-
-# ═══════════════════════════════════════════════════════
-# T12: Tool Result Ownership 审计
-# ═══════════════════════════════════════════════════════
-# tool_value: 该调用给主 Agent 带来了什么（NEW_EVIDENCE/NEW_STATE/NEW_STRUCTURE/
-#             NEW_ARTIFACT/PRESENTATION/REDUNDANT）
-# final_use : 主 Agent 最终怎么用了它（USED/PARTIALLY_USED/BYPASSED）
-# tool_value=REDUNDANT 或 final_use=BYPASSED → observability anomaly
-#（目标不是禁止, 而是自动识别 Q13 式"合规性调用"）
-_VALUE_BY_TOOL = {
-    "search_books": "NEW_EVIDENCE", "get_chapter": "NEW_EVIDENCE", "concept_trace": "NEW_EVIDENCE",
-    "websearch": "NEW_EVIDENCE", "philosopher_corpus": "NEW_EVIDENCE", "philosopher_quote": "NEW_EVIDENCE",
-    "get_book_detail": "NEW_EVIDENCE", "get_philosopher": "NEW_EVIDENCE", "get_school": "NEW_EVIDENCE",
-    "list_books": "NEW_EVIDENCE", "query_graph": "NEW_EVIDENCE", "query_database": "NEW_EVIDENCE",
-    "philosopher_memory": "NEW_STATE", "philosopher_period": "NEW_STATE", "philosopher_style": "NEW_STATE",
-    "philosopher_concepts": "NEW_EVIDENCE", "philosopher_user": "NEW_STATE", "philosopher_graph": "NEW_EVIDENCE",
-    "role_play": "NEW_STATE", "phti_test": "NEW_STATE",
-    "socratic_tutor": "NEW_STATE",
-    "compare_views": "NEW_STRUCTURE", "dialectic": "NEW_STRUCTURE", "analyze_argument": "NEW_STRUCTURE",
-    "paper_review": "NEW_STRUCTURE", "advisor_council": "NEW_STRUCTURE", "thought_experiment": "NEW_STRUCTURE",
-    "profile": "NEW_STRUCTURE", "life_coach": "NEW_STRUCTURE",
-    "conceptual_map": "PRESENTATION", "history_timeline": "PRESENTATION",
-    "school_arena": "PRESENTATION", "agent_council": "PRESENTATION", "philosopher_debate": "PRESENTATION",
-    "confrontation": "NEW_STRUCTURE",
-    "essay_outline": "NEW_ARTIFACT", "write_essay": "NEW_ARTIFACT", "generate_image": "NEW_ARTIFACT",
-}
-
-# 结果文本中抽取指纹的最短长度与采样上限（final_use 判定的确定性口径）
-_FINGER_LEN = 8
-_FINGER_SAMPLES = 24
-_FINGER_GRAM = 6          # 采样 n-gram 长度（paraphrase 感知: 模型转述时逐字长串不再,
-_FINGER_STEP = 10         # 但关键 6 字片段大概率保留）
-# 指纹提取排除的元字段（summary/hint 常被提示词复述, 计入会高估 usage）
-_AUDIT_EXCLUDE_KEYS = {"summary", "presentation_hint", "reasoning_authority", "confidence", "kind"}
-_AUDIT_ANS_NORM_RE = re.compile(r"[\s，,。；;：:、？！?？()（）\"“”'‘’·《》【】\*\#\-—_>]")
-
-
-def _distinctive_grams(result_full):
-    """工具结果 → 指纹 n-gram 集合（CJK 长串的滑窗采样; 排除元字段）"""
-    import json as _json
-    payload = result_full
-    if isinstance(result_full, dict):
-        payload = {k: v for k, v in result_full.items() if k not in _AUDIT_EXCLUDE_KEYS}
-    try:
-        blob = _json.dumps(payload, ensure_ascii=False) if not isinstance(payload, str) else payload
-    except Exception:
-        blob = str(payload or "")
-    frags = []
-    for m in re.finditer(r"[\u4e00-\u9fff\u3000-\u303f]{%d,}" % _FINGER_LEN, blob):
-        frags.append(m.group(0))
-        if len(frags) >= _FINGER_SAMPLES:
-            break
-    grams = set()
-    for f in frags:
-        if len(f) <= _FINGER_GRAM:
-            grams.add(f)
-            continue
-        for i in range(0, min(len(f) - _FINGER_GRAM + 1, 60), _FINGER_STEP):
-            grams.add(f[i:i + _FINGER_GRAM])
-    return grams
-
-
-def _norm_answer(text):
-    return _AUDIT_ANS_NORM_RE.sub("", text or "")
-
-
-def _payload_cjk_len(result_full):
-    """排除元字段后的载荷 CJK 字符数（实质产物判定）"""
-    import json as _json
-    payload = result_full
-    if isinstance(result_full, dict):
-        payload = {k: v for k, v in result_full.items() if k not in _AUDIT_EXCLUDE_KEYS}
-    try:
-        blob = _json.dumps(payload, ensure_ascii=False) if not isinstance(payload, str) else payload
-    except Exception:
-        blob = str(payload or "")
-    return sum(1 for ch in blob if '\u4e00' <= ch <= '\u9fff')
-
-
-def tool_ownership_audit(tool_log, answer, language="zh"):
-    """tool_log（含 result_full,须在 pop 前调用）→ T12 审计:
-    {"entries": [{tool, executed, tool_value, final_use, reason}],
-     "bypassed_specialized_tools": n, "redundant_specialized_tools": n}
-    final_use 判定为 paraphrase 感知: 6 字片段采样与归一化正文重叠。
-    hits=0 时区分两种形态——实质产物（载荷 ≥60 CJK 字）被模型转述式综合 →
-    PARTIALLY_USED(no_literal_overlap_but_substantive); 空薄产物被无视 → BYPASSED
-    （Q13 式合规性调用的可检测形态: 产物不含用户所需结构/为空/模型完全未采纳其节点词）。"""
-    ans = _norm_answer(answer)
-    entries = []
-    for tc in tool_log or []:
-        name = tc.get("name") or ""
-        rf = tc.get("result_full")
-        thought = tc.get("thought") or ""
-        not_admitted = "准入未通过" in thought or "执行前取消" in thought or "重入" in thought
-        is_spec = name in SPECIALIZED_TOOLS
-        failed = isinstance(rf, dict) and bool(rf.get("error"))
-        reused = "复用本轮早前结果" in thought
-        if not_admitted or reused:
-            entries.append({"tool": name, "executed": False,
-                            "tool_value": "REDUNDANT",
-                            "final_use": "BYPASSED" if is_spec else "—",
-                            "reason": thought[:60] or "not_executed"})
-            continue
-        if failed:
-            entries.append({"tool": name, "executed": True,
-                            "tool_value": "REDUNDANT", "final_use": "—",
-                            "reason": "tool_error"})
-            continue
-        value = _VALUE_BY_TOOL.get(name, "NEW_EVIDENCE")
-        if not is_spec:
-            entries.append({"tool": name, "executed": True,
-                            "tool_value": value, "final_use": "—",
-                            "reason": "retrieval_read_data"})
-            continue
-        # 专用工具: 指纹重叠 → USED / PARTIALLY_USED / BYPASSED
-        grams = _distinctive_grams(rf)
-        hits = sum(1 for g in grams if g and g in ans)
-        if not grams:
-            final_use, reason = "PARTIALLY_USED", "no_fingerprint_extractable"
-        elif hits == 0 and _payload_cjk_len(rf) >= 60:
-            final_use, reason = "PARTIALLY_USED", "no_literal_overlap_but_substantive"
-        elif hits == 0:
-            final_use, reason = "BYPASSED", "thin_result_unused"
-        elif hits >= 3 and hits >= len(grams) * 0.2:
-            final_use, reason = "USED", f"grams={hits}/{len(grams)}"
-        else:
-            final_use, reason = "PARTIALLY_USED", f"grams={hits}/{len(grams)}"
-        entries.append({"tool": name, "executed": True, "tool_value": value,
-                        "final_use": final_use, "reason": reason})
-    bypassed = sum(1 for e in entries if e["tool_value"] != "REDUNDANT"
-                   and e["final_use"] == "BYPASSED")
-    redundant = sum(1 for e in entries if e["tool_value"] == "REDUNDANT"
-                    and e.get("tool") in SPECIALIZED_TOOLS)
-    return {"entries": entries,
-            "bypassed_specialized_tools": bypassed,
-            "redundant_specialized_tools": redundant}

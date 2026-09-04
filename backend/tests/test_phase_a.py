@@ -6,11 +6,13 @@ A1 Tool Loop Observability: 单轮 invocation 轨迹（conversation/message/agen
     model retry、总时长）→ JSONL; 禁止记录原始 chain-of-thought
 A2 Duplicate Tool Call Guard: 同 turn same tool + effectively same args → 复用/拦截;
     参数实质变化/范围变化/失败重试/生成类工具一律放行
-A3 Tool Budget: soft（提醒收敛）/hard（graceful answer completion）配置化,
-    区分 useful/retry/duplicate/no-information-gain
+A3 Tool Budget: hard（graceful answer completion）配置化,
+    区分 useful/retry/duplicate/no-gain 计数（O4: 纯遥测, 无 soft 提示分支）
 A4 Model/Tool Error Recovery: 可恢复错误有限重试 → 耗尽后用已取得 evidence graceful
     completion; 不暴露 stack trace; 不丢 evidence
-A5 Termination: 显式结束条件 + 连续无增益轮守卫 + 防御性流帧处理
+A5 Termination: 显式结束条件 + 防御性流帧处理
+O4 Cognitive Layer Collapse: soft 预算提示 / no_gain 守卫 / RetrievalState 语义增益 /
+    no_gain_streak 状态链已删除——停止权威只在 Main Agent 宣告 + hard 机械上限。
 根因回归: "约 13 次工具调用后模型侧 error"（DeepSeek 流式连接中断）→ graceful recovery
 
 确定性单测: LLM 一律 mock（不依赖网络）; 真实 retrieval UAT 见 tools/dp_uat_phase_a.py。
@@ -50,8 +52,7 @@ async def _collect_stream(question, agent="general", language="zh", **kw):
     return [ev async for ev in elg.stream_agent(question, [], agent, None, language, **kw)]
 
 
-def _run_tools_node(calls, guard=None, budget=None, trace=None, tools=None, tool_count=0,
-                    no_gain_streak=0, retrieval_count=0):
+def _run_tools_node(calls, guard=None, budget=None, trace=None, tools=None, tool_count=0):
     """直接驱动 tools_node（mock 工具集, 不触网）"""
     if tools is None:
         tools = []
@@ -63,8 +64,7 @@ def _run_tools_node(calls, guard=None, budget=None, trace=None, tools=None, tool
                  "guard": guard or AR.DuplicateGuard(),
                  "budget": budget or AR.ToolBudget(retrieval_tools=set(elg.RETRIEVAL_TOOLS) | {"philosopher_memory"}),
                  "trace": trace or AR.ToolLoopTrace("conv-t", "msg-t", "general"),
-                 "agent": "general", "tool_count": tool_count,
-                 "no_gain_streak": no_gain_streak, "retrieval_count": retrieval_count}
+                 "agent": "general", "tool_count": tool_count}
         return asyncio.run(elg.tools_node(state))
     finally:
         elg.get_tools = orig_get_tools
@@ -136,35 +136,35 @@ def test_a3_budget_classification_useful_retry_duplicate_no_gain():
     assert (b.useful, b.no_gain, b.duplicate_reused, b.retry, b.total_executed) == (1, 2, 1, 1, 4)
 
 
-def test_a3_soft_and_hard_thresholds_from_config():
+def test_a3_hard_thresholds_from_config():
+    # O4: 只剩硬资源上限（soft 提示机制已删）
     b = AR.ToolBudget(retrieval_tools={"search_books"},
-                      cfg={"soft_retrieval": 8, "soft_total": 10, "hard_retrieval": 20, "hard_total": 24})
-    for _ in range(7):
+                      cfg={"hard_retrieval": 20, "hard_total": 24})
+    for _ in range(19):
         b.count("search_books", "unique", True, "new")
-    assert not b.soft_reached() and not b.hard_reached()
-    b.count("search_books", "unique", True, "new")            # 检索第 8 次
-    assert b.soft_reached() and not b.hard_reached()
-    for _ in range(12):
-        b.count("search_books", "unique", True, "new")
+    assert not b.hard_reached()
+    b.count("search_books", "unique", True, "new")            # 检索第 20 次
     assert b.hard_reached()
 
 
 def test_a3_engine_reads_budget_from_config_not_magic_numbers():
-    assert elg.RETRIEVAL_LIMIT == AR.TOOL_BUDGET["soft_retrieval"]
-    assert elg.RETRIEVAL_HARD == AR.TOOL_BUDGET["hard_retrieval"]
+    # O4: 引擎不再持有 RETRIEVAL_LIMIT/RETRIEVAL_HARD 别名——预算单一真源在 TOOL_BUDGET
+    assert not hasattr(elg, "RETRIEVAL_LIMIT") and not hasattr(elg, "RETRIEVAL_HARD")
+    assert AR.TOOL_BUDGET["hard_retrieval"] == AR._env_int("AGENT_HARD_RETRIEVAL", 20)
+    assert AR.TOOL_BUDGET["hard_total"] == AR._env_int("AGENT_HARD_TOTAL", 24)
     assert AR.RECURSION_LIMIT >= AR.TOOL_BUDGET["hard_total"] // 2 + 4   # 递归兜底必须高于 hard 预算轮数
     assert AR.TOOL_TIMEOUT == AR._env_int("AGENT_TOOL_TIMEOUT", 90)
 
 
 def test_a3_env_override(tmp_path, monkeypatch):
-    monkeypatch.setenv("AGENT_SOFT_TOTAL", "3")
+    monkeypatch.setenv("AGENT_HARD_TOTAL", "30")
     monkeypatch.setattr(AR, "TRACE_FILE", tmp_path / "t.jsonl")
     import importlib
     ar2 = importlib.reload(AR)
     try:
-        assert ar2.TOOL_BUDGET["soft_total"] == 3
+        assert ar2.TOOL_BUDGET["hard_total"] == 30
     finally:
-        monkeypatch.delenv("AGENT_SOFT_TOTAL", raising=False)
+        monkeypatch.delenv("AGENT_HARD_TOTAL", raising=False)
         importlib.reload(AR)   # 复位默认配置（env 已清, reload 恢复默认值）
 
 
@@ -214,13 +214,6 @@ def test_a4_retry_budget_exhausted_raises_model_call_error():
 # ═══════════════════════════════════════════════════════
 # A5 终止条件
 # ═══════════════════════════════════════════════════════
-def test_a5_no_gain_streak_verdict():
-    assert AR.no_gain_verdict(0) == "none"
-    assert AR.no_gain_verdict(1) == "none"
-    assert AR.no_gain_verdict(AR.NO_GAIN_WARN_STREAK) == "warn"
-    assert AR.no_gain_verdict(AR.NO_GAIN_FORCE_STREAK) == "force"
-
-
 def test_a5_should_continue_forced_rounds():
     state = {"messages": [AIMessage(content="", tool_calls=[{"name": "search_books", "args": {}, "id": "c"}])],
              "forced": True, "forced_tools_done": False}
@@ -287,7 +280,7 @@ def test_engine_tools_node_reuses_duplicate_without_execution():
     assert exec_counter["n"] == 0, "同参重复调用必须复用结果, 不再执行"
     assert msg.additional_kwargs["_reused"] is True and msg.additional_kwargs["_budget_class"] == "duplicate"
     assert msg.tool_call_id == "c1"
-    assert out["tool_count"] == 0 and out["no_gain_streak"] == 1
+    assert out["tool_count"] == 0
 
 
 def test_engine_tools_node_executes_unique_and_counts():
@@ -300,19 +293,16 @@ def test_engine_tools_node_executes_unique_and_counts():
          {"name": "get_chapter", "args": {"book_id": "b", "idx": 1}, "id": "c2"}],
         tools=[_fake_tool("search_books", _search), _fake_tool("get_chapter", lambda **kw: {"text": "段落"})])
     assert exec_counter["n"] == 1
-    assert out["tool_count"] == 2 and out["no_gain_streak"] == 0
+    assert out["tool_count"] == 2
     assert out["messages"][0].additional_kwargs["_info_gain"] == "new"
 
 
-def test_engine_tools_node_counts_no_gain_streak_for_empty_results():
+def test_engine_tools_node_marks_empty_results_as_no_gain_telemetry():
+    # O4: 空命中只计入遥测（info_gain/budget.no_gain）——不再产生 streak/守卫控制
     out = _run_tools_node([{"name": "search_books", "args": {"query": "生僻词xyz"}, "id": "c1"}],
                           tools=[_fake_tool("search_books", lambda **kw: {"results": []})])
     assert out["messages"][0].additional_kwargs["_info_gain"] == "empty"
-    assert out["no_gain_streak"] == 1
-    out2 = _run_tools_node([{"name": "search_books", "args": {"query": "另一生僻词abc"}, "id": "c2"}],
-                           tools=[_fake_tool("search_books", lambda **kw: {"results": []})],
-                           no_gain_streak=out["no_gain_streak"])
-    assert out2["no_gain_streak"] == 2   # 连续空命中 → warn/force 守卫接管
+    assert "no_gain_streak" not in out
 
 
 def test_engine_tools_node_failed_tool_retry_then_fallback_hint():
@@ -368,15 +358,15 @@ def _patch_llm(monkeypatch, fake, tools=None):
 
 
 def test_engine_agent_node_soft_budget_no_control_effect(monkeypatch):
-    # O3 §5/§8: soft 预算不再产生任何 prompt 注入/控制效果——"证据是否充分"由 Main Agent 自判
+    # O3 §5/§8 + O4: soft 机制已整体删除——工具计数不影响 prompt/forced
     fake = _FakeLLM([AIMessage(content="回答")])
     _patch_llm(monkeypatch, fake)
     budget = AR.ToolBudget(retrieval_tools={"search_books"},
-                           cfg={"soft_retrieval": 8, "soft_total": 10, "hard_retrieval": 20, "hard_total": 24})
+                           cfg={"hard_retrieval": 20, "hard_total": 24})
     for _ in range(8):
         budget.count("search_books", "unique", True, "new")
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": budget, "no_gain_streak": 0, "model_retries": 0}
+             "budget": budget, "model_retries": 0}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is False
     assert not any("预算提示" in m.content or "材料是否足以回答" in m.content
@@ -387,22 +377,23 @@ def test_engine_agent_node_hard_budget_forces_answer(monkeypatch):
     fake = _FakeLLM([AIMessage(content="最终回答")])
     _patch_llm(monkeypatch, fake)
     budget = AR.ToolBudget(retrieval_tools={"search_books"},
-                           cfg={"soft_retrieval": 8, "soft_total": 10, "hard_retrieval": 20, "hard_total": 24})
+                           cfg={"hard_retrieval": 20, "hard_total": 24})
     for _ in range(24):
         budget.count("search_books", "unique", True, "new")
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": budget, "no_gain_streak": 0, "model_retries": 0}
+             "budget": budget, "model_retries": 0}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is True
     assert any("禁止调用任何工具" in m.content for m in fake.prompts[0] if isinstance(m, SystemMessage))
 
 
 def test_engine_agent_node_no_gain_streak_no_control_effect(monkeypatch):
-    # O3 §4/§8: no_gain streak 只剩 telemetry——不再 force 收口、不注入任何指令
+    # O3 §4/§8 + O4: no_gain 状态字段已删除——即便按旧字面 streak 语义（连续 3 轮无增益）
+    # 也不再有 force 收口/注入任何指令; 行为只取决于 Main Agent 宣告。
     fake = _FakeLLM([AIMessage(content="最终回答")])
     _patch_llm(monkeypatch, fake)
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "no_gain_streak": AR.NO_GAIN_FORCE_STREAK, "model_retries": 0}
+             "budget": AR.ToolBudget(), "model_retries": 0}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is False
     assert not any("无增益" in m.content or "不再检索" in m.content
@@ -414,7 +405,7 @@ def test_engine_agent_node_model_retry_then_success(monkeypatch):
                      AIMessage(content="回答")])
     _patch_llm(monkeypatch, fake)
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "no_gain_streak": 0, "model_retries": 0}
+             "budget": AR.ToolBudget(), "model_retries": 0}
     out = asyncio.run(elg.agent_node(state))
     assert out["model_retries"] == 1 and out["messages"][0].content == "回答"
 
@@ -423,7 +414,7 @@ def test_engine_agent_node_model_retry_exhausted_raises(monkeypatch):
     fake = _FakeLLM([Exception("peer closed connection")] * (AR.MODEL_RETRY["attempts"] + 1))
     _patch_llm(monkeypatch, fake)
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "no_gain_streak": 0, "model_retries": 0}
+             "budget": AR.ToolBudget(), "model_retries": 0}
     with pytest.raises(AR.ModelCallError):
         asyncio.run(elg.agent_node(state))
 

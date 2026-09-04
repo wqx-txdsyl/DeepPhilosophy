@@ -2,11 +2,12 @@
 """Phase S（2026-08-30）—— Final Stabilization 回归集
 
 S1  84/87 Premise Benchmark 语义化（当前84 / 历史87 / 歧义辨析）
-S2  Epistemic Findings 审计（O2: 校正尾补/answer_retract 已删, 缺口如实上报）
-S3  Semantic Obligation 去重（同一 analogy boundary 只履行一次）
+S2  O2/O4: 校正尾补/answer_retract 已删; done.epistemic 审计块已删（O4）——
+    草稿降级为工作笔记、runtime 零代写的不变量保留
 S4  Citation integrity（O2: 未核验引用不再降级改写——validator 拒绝 + 如实审计）
-S5  Answer Budget（复杂度→软预算; 段落职责冗余检测）
 S6  Embedding 429 快速降级（1 次短退避 + circuit breaker + 词法兜底）
+O4: S3（semantic obligations）/S5（answer budget）已随生产模块删除; 解释型/结构类
+    检测启发式只保留在 evaluation_suite（离线评分器）, 不再注入/补正 runtime。
 
 UAT: T1《老人与海》解释 / T2 超人与逍遥 / T3 84-87 三类 / T4 尼采×AI /
      T5 Citation integrity / T6 Embedding 429（引擎级, mock APP 不调 LLM）
@@ -22,10 +23,7 @@ import pytest
 from langchain_core.messages import AIMessageChunk, ToolMessage
 
 import epistemic_guard as eg
-import interpretation_engine as ie
-import answer_composer as ac
 import evidence_contract as ec
-import semantic_obligations as so
 from routes import agent as AG
 import routes.agent_core as agent_core
 
@@ -93,26 +91,11 @@ def test_s1_proposition_plus_context_not_token_only():
 # ═══════════════════════════════════════════════════════
 # S2 — O2 改写: answer_retract 已不发、runtime 校正尾补已删（如实审计）
 # ═══════════════════════════════════════════════════════
-def test_s2_missing_correction_detected_not_appended():
-    # O2: build_missing_correction_appends（runtime 代写校正句）已删除——
-    # 落实状态由 scan_answer 检测, 随 done.epistemic 审计; 落实由 Main Agent 自己负责
+def test_s2_scan_answer_removed_with_shadow_runtime():
+    # O4: scan_answer / done.epistemic 审计块已删除——runtime 不再检测/记录
+    # "校正是否落实"的语义状态, 落实由 Main Agent 自己负责
+    assert not hasattr(eg, "scan_answer")
     assert not hasattr(eg, "build_missing_correction_appends"), "runtime 代写校正不得回归"
-    verdict = {"premise_checks": [
-        {"status": "contradicted", "rule_id": "oldman_84_days",
-         "corrected_value": "84天", "referent_mode": "current",
-         "correction_note": "《老人与海》开篇写的是连续84天没有捕到鱼。"}]}
-    missed = eg.scan_answer(verdict, "老人梦狮的寓意")
-    assert missed["premise_checks"][0]["correction_present"] is False
-    done_ = eg.scan_answer(verdict, "开篇是84天，老人梦狮")
-    assert done_["premise_checks"][0]["correction_present"] is True
-    # 歧义义务: 回答体现任一数字才算落实（双值逐数字匹配）
-    amb = {"status": "contradicted", "referent_mode": "ambiguous",
-           "corrected_value": "84天（开篇当前这次）/ 87天（他此前的经历）",
-           "correction_note": "需要区分两个数字。"}
-    amb_missed = eg.scan_answer({"premise_checks": [amb]}, "老人梦狮")
-    assert amb_missed["premise_checks"][0]["correction_present"] is False
-    amb_done = eg.scan_answer({"premise_checks": [amb]}, "开篇当前是84天，此前他有过87天的经历。")
-    assert amb_done["premise_checks"][0]["correction_present"] is True
 
 
 class _FakeAppRetract:
@@ -133,10 +116,7 @@ class _FakeAppRetract:
                  "这个细节很多人记错，我先把话说清楚。")
         _filler = ("老人出海前的准备、与男孩的告别、他对自己身体的怀疑、萨罗渔夫们的怜悯"
                    "与嘲笑、棒球贤人迪马吉的形象、四十天不拉网的执念，这些铺垫层层叠叠；")
-        _draft = _core + _filler
-        import engine_langgraph as _o1_elg
-        while len(_draft) <= _o1_elg.STREAM_ANSWER_DELAY + 10:
-            _draft += _filler
+        _draft = _core + _filler * 3
         yield (AIMessageChunk(content=_draft), {"langgraph_node": "agent"})
         # ② 宣告工具调用 → live 文本被 answer_retract 撤回为思考
         yield (AIMessageChunk(content="", tool_call_chunks=[
@@ -172,117 +152,7 @@ def test_s2_no_retract_draft_becomes_note_correction_not_reappended(monkeypatch)
     notes = [ev.get("content") or "" for ev in evs if ev["type"] == "thinking_summary"]
     assert any("84" in n for n in notes), "draft 中的校正降级为 Main Agent 公开工作笔记（不丢失）"
     done = next(ev for ev in evs if ev["type"] == "done")
-    epi = done.get("epistemic") or {}
-    checks = epi.get("premise_checks") or []
-    assert any(c.get("rule_id") == "oldman_84_days" and c.get("correction_present") is False
-               for c in checks), "校正缺口必须如实审计（不得谎报已落实）"
-
-
-def test_s2_retract_does_not_touch_epistemic_state(monkeypatch):
-    # 撤回只撤销 draft text; epistemic state 在 done 中完整保留
-    import engine_langgraph as elg
-    fake = _FakeAppRetract(final_answer="回到问题：可以读作不再向世界索取意义，但并非唯一读法。",
-                           tool_result={"results": [], "query": "老人 狮子", "method": "lexical"})
-    monkeypatch.setattr(elg, "APP", fake)
-    monkeypatch.setattr(AG, "llm_chat", lambda *a, **k: {"choices": [{"message": {"content": ""}}]})
-    evs = asyncio.run(_collect_stream(elg, _RETRACT_QUESTION))
-    done = next(ev for ev in evs if ev["type"] == "done")
-    assert done["epistemic"]["premise_checks"], "结构化 epistemic state 不随 retract 撤销"
-    assert done["obligations"] and any(o["type"] == "premise_correction" for o in done["obligations"])
-
-
-# ═══════════════════════════════════════════════════════
-# S3 — Semantic Obligation 去重（同一义务只履行一次）
-# ═══════════════════════════════════════════════════════
-def test_s3_equivalent_phrasings_satisfy_analogy_boundary():
-    # 同一 analogy boundary 的不同措辞 → 全部视为已履行（不再追加类比≠等同补句）
-    equivalents = [
-        "超人和逍遥不是一回事。",
-        "超人和逍遥不能等同。",
-        "超人和逍遥二者有本质区别。",
-        "两者只能类比，不能画等号。",
-        "相似不意味着同一。",
-        "超人与逍遥并非等同，只是结构上有相通之处。",
-        "They are not equivalent; the similarity is only an analogy.",
-    ]
-    verdict = {"activated": True, "categories": ["cross_author_comparison"],
-               "question": "尼采的超人和庄子的逍遥是不是一回事？"}
-    for ans in equivalents:
-        scan = ie.scan_interpretation(verdict, ans)
-        obls = {o["type"]: o["status"] for o in (scan.get("obligations") or [])}
-        assert obls.get("analogy_boundary") == "SATISFIED", f"应视为已履行: {ans}"
-        appends = "\n".join(scan["appends"])
-        assert "需要补充一句" not in appends, f"analogy boundary 已履行, 不得再补类比≠等同: {ans}"
-
-
-def test_s3_full_answer_with_alternatives_zero_append():
-    # 同时满足 analogy + alternative + uncertainty 三类义务 → 零补正
-    verdict = {"activated": True, "categories": ["cross_author_comparison"],
-               "question": "尼采的超人和庄子的逍遥是不是一回事？"}
-    ans = ("超人和逍遥不是一回事，不能等同。理由一：超人指向自我超越与创造"
-           "【《查拉图斯特拉如是说》·前言】；逍遥指向顺任自然【《逍遥游》·开篇】。"
-           "也可以看作两种不同的自由观。结论：相似不意味着同一，这也只是一种读法，并非唯一。")
-    scan = ie.scan_interpretation(verdict, ans)
-    obls = {o["type"]: o["status"] for o in (scan.get("obligations") or [])}
-    assert obls["analogy_boundary"] == "SATISFIED"
-    assert obls["alternative_interpretation"] == "SATISFIED"
-    assert obls["uncertainty_disclosure"] == "SATISFIED"
-    assert scan["appends"] == [], f"全部义务已履行 → 零补正: {scan['appends']}"
-
-
-def test_s3_equivalence_claim_detected_not_appended():
-    # 声称"本质完全一样"→ 越级断言检出（O2: 不再 runtime 补正——检测信号入 done 审计）
-    # Phase T (T13-C): analogy_boundary 关键词未命中现在记 UNKNOWN（不再错报 UNSATISFIED）
-    v = ie.run_interpretation_engine("尼采的超人和庄子的逍遥是不是一回事？")
-    scan = ie.scan_interpretation(v, "超人和逍遥本质上完全一样，都是对无限自由的向往。")
-    obls = {o["type"]: o["status"] for o in (scan.get("obligations") or [])}
-    assert obls.get("analogy_boundary") in ("UNKNOWN", "UNSATISFIED")
-    assert scan["overclaim"] is True, "越级断言必须检出（审计用）"
-    assert scan["appends"] == [], "O2: runtime 不再代写类比≠等同补句——落实归 Main Agent"
-
-
-def test_s3_obligation_states_and_only_required_unsatisfied_append():
-    obls = [{"type": "analogy_boundary", "status": "REQUIRED"},
-            {"type": "uncertainty_disclosure", "status": "REQUIRED"},
-            {"type": "alternative_interpretation", "status": "REQUIRED"}]
-    assessed = so.assess_obligations(obls, "超人和逍遥不能等同。这并非唯一解释。")
-    sm = {o["type"]: o["status"] for o in assessed}
-    assert sm["analogy_boundary"] == "SATISFIED"
-    assert sm["uncertainty_disclosure"] == "SATISFIED"
-    # Phase T (T13-C): 高层义务关键词未命中 → UNKNOWN（宁可未知, 不错误 UNSATISFIED）
-    assert sm["alternative_interpretation"] == "UNKNOWN"
-    # 无显式表达 = 无"可靠判定的未履行"——关键词误判的 UNSATISFIED 补正项不再产生
-    assert so.unsatisfied(obls, "超人和逍遥不能等同。这并非唯一解释。") == []
-
-
-def test_s3_derive_obligations_from_verdicts():
-    epi = {"premise_checks": [{"status": "contradicted", "rule_id": "oldman_84_days",
-                               "corrected_value": "84天", "referent_mode": "current"}],
-           "counterfactual": {"requires_guard": True, "author": "尼采"}}
-    iv = {"activated": True, "categories": ["cross_author_comparison"]}
-    obls = so.derive_obligations(epi, iv)
-    types = {o["type"] for o in obls}
-    assert types == {"premise_correction", "counterfactual_boundary",
-                     "analogy_boundary", "alternative_interpretation", "uncertainty_disclosure"}
-    assert all(o["status"] == "REQUIRED" for o in obls)
-
-
-def test_s3_phase2_no_duplicate_append_when_body_satisfied(monkeypatch):
-    # 引擎级: 正文已表达"不是一回事" → Phase 2 不得追加同义补正
-    import engine_langgraph as elg
-    good = ("我的判断是：超人和逍遥不是一回事，不能等同。"
-            "理由一：超人要求自我超越、创造价值（《查拉图斯特拉如是说》）；"
-            "逍遥则是顺应自然、无所待的境地（《逍遥游》）。"
-            "理由二：二者的前提与目标不同，只是形式上都有自由的气质。"
-            "结论：相似不意味着同一，只能作为类比来理解；这也只是一种读法，并非唯一。")
-    evs, fake = _run_stream(monkeypatch, "超人和逍遥是不是一回事？", good)
-    text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "不是一回事" in text
-    assert "（补充：" not in text and "需要补充一句" not in text, "已履行义务不得追加补正"
-    done = next(ev for ev in evs if ev["type"] == "done")
-    obls = {o["type"]: o["status"] for o in (done.get("obligations") or [])}
-    assert obls.get("analogy_boundary") == "SATISFIED"
-    assert not (done.get("composition") or {}).get("appends"), "无 Phase 2 重复补正"
+    assert "epistemic" not in done, "O4: done.epistemic 审计块已删除（零语义检测状态）"
 
 
 # ═══════════════════════════════════════════════════════
@@ -349,69 +219,6 @@ def test_s4_unverified_citation_rejected_not_downgraded(monkeypatch):
     lcs = done.get("live_citation_sanitize") or {}
     assert lcs.get("verified") == 1 and lcs.get("downgraded") == 0
     assert lcs.get("mode") == "o2_validate_reject_no_rewrite"
-
-
-# ═══════════════════════════════════════════════════════
-# S5 — Answer Budget（复杂度分类 + 软预算 + 段落职责冗余）
-# ═══════════════════════════════════════════════════════
-def test_s5_complexity_classification():
-    assert ac.classify_complexity("尼采哪一年出生？") == "factual"
-    assert ac.classify_complexity("《老人与海》写了多少天？") == "factual"
-    assert ac.classify_complexity("什么是虚无主义？") == "simple_explanation"
-    assert ac.classify_complexity("老人梦见狮子意味着什么？") == "interpretation"
-    assert ac.classify_complexity("尼采的超人和庄子的逍遥是不是一回事？") == "comparison"
-    assert ac.classify_complexity("请深入分析尼采的永恒轮回思想") == "explicit_deep_analysis"
-    assert ac.classify_complexity("详细说说加缪的荒诞哲学") == "explicit_deep_analysis"
-
-
-def test_s5_budget_injection_soft_not_truncation():
-    v = ac.run_answer_composer("尼采的超人和庄子的逍遥是不是一回事？")
-    inj = "\n".join(v["injections"])
-    assert "篇幅预算" in inj and "500" in inj and "900" in inj
-    assert "软预算" in inj and "不是硬截断" in inj
-    assert "没有明显新增信息" in inj and "合并" in inj, "必须引导合并/删除较弱段"
-
-
-def test_s5_deep_analysis_budget_relaxed():
-    v = ac.run_answer_composer("请深入分析尼采的永恒轮回思想")
-    inj = "\n".join(v["injections"])
-    assert "上限放宽" in inj, "显式深度要求 → 上限放宽"
-
-
-def test_s5_over_budget_and_role_duplication_detected():
-    q = "老人梦见狮子意味着什么？"
-    base = (
-        "我的判断是：狮子意味着生命力。首先，狮子是老人青春的象征，代表力量的延续，"
-        "这可以从他在海上与大鱼搏斗时的坚韧看出，也可以从他回忆年轻时在非洲海岸的经历中看出。"
-        "其次，狮子也是勇气的体现，象征着不屈服的精神，老人敢于独自出海，敢于与大鱼较量，"
-        "这正是勇气的最好证明，也是他一生品格的写照。再者，狮子还是尊严的化身，"
-        "意味着老者最后的骄傲，他不肯承认失败，不肯向命运低头，始终保持着渔夫的尊严，"
-        "即使连续多日没有收获也不改本色。然后，狮子更是希望的寄托，象征着未来的可能性，"
-        "老人梦见狮子，说明他的内心仍然充满对未来的期待，并没有被现实的困境击垮。"
-        "另外，狮子同样代表回忆，象征着过去的美好时光，那些与狮子有关的记忆，"
-        "是他晚年最珍贵的财富，也是他精神力量的来源。还有，狮子也意味着自然的伟力，"
-        "是万物生灵的象征，老人敬畏自然，也敬畏狮子，这种敬畏让他与自然和谐相处。"
-        "狮子还意味着野性与自由的结合，象征着不受束缚的生命意志，老人虽然年迈，"
-        "但内心深处依然保持着对自由生活的向往。综上，狮子意味着很多东西，"
-        "这些意义相互交织，共同构成了这部作品丰富的象征体系。")
-    verbose = base + "\n\n" + base   # 同职责段落重复 → 超预算 + 低信息增益
-    scan = ac.scan_budget(ac.run_answer_composer(q), verbose)
-    assert scan["complexity"] == "interpretation"
-    assert scan["over_budget"] is True, "超预算必须检出（soft: 只审计不截断）"
-    assert any(f.startswith("over_budget") for f in scan["findings"])
-    assert scan["argument_role_duplication"], "多段同职责且低信息增益必须检出"
-
-
-def test_s5_good_answer_within_budget():
-    q = "从《老人与海》看加缪的荒谬主义。"
-    good = ("我的判断是：加缪的荒谬主义可以在《老人与海》中得到印证，但这是借来的框架，不是海明威明写的主题。"
-            "首先，圣地亚哥对抗大马林鱼却不求占有，接近西西弗斯的反抗【《西西弗斯神话》·荒诞的自由】。"
-            "其次，梦中的狮子是生命力的延续而非来世许诺【《老人与海》·结尾】。"
-            "但也可以质疑：海明威未必接受'荒诞'这个标签，这更像一种现代读法。"
-            "结论：这是一种有解释力的读法，但并非唯一。")
-    scan = ac.scan_budget(ac.run_answer_composer(q), good)
-    assert scan["over_budget"] is False
-    assert scan["findings"] == [], f"好回答不得有预算 findings: {scan['findings']}"
 
 
 # ═══════════════════════════════════════════════════════
@@ -589,11 +396,8 @@ def test_uat_t1_oldman_explanation_reasonable_no_fake_citation(monkeypatch):
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
     # 事实/解释边界明确（"借来的框架" + "并非唯一"）
     assert "借来的框架" in text and "并非唯一" in text
-    # 回答长度合理（interpretation 软预算 350–700; 不硬截断, 只审计超上限）
-    budget = next(ev for ev in evs if ev["type"] == "done")["budget"]
-    assert budget["complexity"] == "interpretation"
-    assert budget["over_budget"] is False
-    assert budget["length"] >= 150, "UAT 回答应有实质篇幅"
+    # O4: done["budget"]（篇幅软预算扫描）已删除——篇幅由 Main Agent 自主把握
+    assert "借来的框架" in text and len(text) >= 150, "UAT 回答应有实质篇幅"
     # 无伪 citation: 全部正式引用均经 Evidence Contract 核验
     done = next(ev for ev in evs if ev["type"] == "done")
     san = done.get("citation_sanitize") or {}
@@ -612,11 +416,10 @@ def test_uat_t2_superman_xiaoyao_not_equivalent_once(monkeypatch):
     evs, fake = _run_stream(monkeypatch, q, ans)
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
     assert "不是一回事" in text and "不能等同" in text
-    assert "需要补充一句" not in text and "（补充：" not in text, "analogy boundary 已履行, 不得 Phase 2 重复补句"
+    # O4/T5: 正文零 runtime 补正——"不是一回事"由 Main Agent 自己写出并原样发布
+    assert "需要补充一句" not in text and "（补充：" not in text, "runtime 零补正"
     done = next(ev for ev in evs if ev["type"] == "done")
-    obls = {o["type"]: o["status"] for o in (done.get("obligations") or [])}
-    assert obls.get("analogy_boundary") == "SATISFIED"
-    assert not (done.get("composition") or {}).get("appends"), "无 Phase 2 重复补正"
+    assert "obligations" not in done and "composition" not in done
 
 
 def test_uat_t3_84_87_three_classes():
@@ -649,8 +452,7 @@ def test_uat_t4_nietzsche_ai_boundary_and_citations_verified(monkeypatch):
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
     assert "没有证据表明尼采" in text, "counterfactual boundary 必须出现"
     done = next(ev for ev in evs if ev["type"] == "done")
-    obls = {o["type"]: o["status"] for o in (done.get("obligations") or [])}
-    assert obls.get("counterfactual_boundary") == "SATISFIED"
+    assert "obligations" not in done, "O4: 语义义务台账已删除"
     san = done.get("citation_sanitize") or {}
     assert san.get("unverified_before") == [], "所有正式正文 citation 均须经过 Evidence Contract"
     assert done["citations"] and all(c["book"] == "查拉图斯特拉如是说" for c in done["citations"])

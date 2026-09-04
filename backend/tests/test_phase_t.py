@@ -10,7 +10,9 @@
   paper_review/analyze_argument 仲裁（短论证 vs 完整论文）
   citation variants  全部识别/净化
   final runtime phrase 零泄漏
-另: taxonomy 覆盖（38 项）/ scaffold 契约 / 重入策略单元 / 所有权审计 / 义务 UNKNOWN。
+另: taxonomy 覆盖（38 项）/ scaffold 契约。
+O4: 重入策略（SkillReentryTracker）/ 所有权审计（tool_ownership_audit）/ 义务 UNKNOWN
+（semantic_obligations）已随 Shadow cognition 删除——对应用例移除。
 
 纯规则测试: LLM 全部 mock, 不联网（search_books 走库内词法/向量检索）。
 """
@@ -23,7 +25,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import pytest  # noqa: E402
 
 import tool_contracts as TC  # noqa: E402
-import semantic_obligations as SO  # noqa: E402
 import evidence_contract as EC  # noqa: E402
 import final_validator as FV  # noqa: E402
 from routes import agent as AG  # noqa: E402
@@ -337,66 +338,6 @@ class TestSocraticTutor:
 
 
 # ═══════════════════════════════════════════════════════
-# T7: skill reentry
-# ═══════════════════════════════════════════════════════
-class TestReentry:
-    def test_first_call_free(self):
-        t = TC.SkillReentryTracker()
-        ok, _ = t.admit("thought_experiment", {"base": "全知之镜：AI 预测你的一切选择"})
-        assert ok
-
-    def test_degenerate_reentry_rejected(self):
-        t = TC.SkillReentryTracker()
-        long_base = "全知之镜思想实验：一台超级AI能百分百预测你的一切选择。变体A你不知情照常生活；变体B你知情并当众挑战它"
-        t.record("thought_experiment", {"base": long_base}, ok=True)
-        ok, why = t.admit("thought_experiment", {"base": "全知之镜"})
-        assert not ok and "重入" in why
-
-    def test_user_iteration_allowed(self):
-        t = TC.SkillReentryTracker()
-        base = "电车难题：五个人绑在轨道上"
-        t.record("thought_experiment", {"base": base}, ok=True)
-        ok, _ = t.admit("thought_experiment", {"base": f"{base} 改成电车司机亲手扳道岔"},
-                        user_message="再来一个变体")
-        assert ok
-
-    def test_user_iteration_cap(self):
-        t = TC.SkillReentryTracker()
-        base = "电车难题：五个人绑在轨道上"
-        t.record("thought_experiment", {"base": base}, ok=True)
-        t.record("thought_experiment", {"base": base + " 改成司机扳道岔"}, ok=True)
-        t.record("thought_experiment", {"base": base + " 改成天桥推人"}, ok=True)
-        ok, why = t.admit("thought_experiment", {"base": base + " 改成牺牲一人救五人"},
-                          user_message="再来一个变体")
-        assert not ok and "上限" in why
-
-    def test_first_result_invalid_allows_retry(self):
-        t = TC.SkillReentryTracker()
-        base = "缸中之脑"
-        t.record("thought_experiment", {"base": base}, ok=False)
-        ok, _ = t.admit("thought_experiment", {"base": base})
-        assert ok
-
-    def test_new_purpose_allowed(self):
-        t = TC.SkillReentryTracker()
-        t.record("dialectic", {"topic": "自由与规则"}, ok=True)
-        ok, _ = t.admit("dialectic", {"topic": "宽容的悖论"})
-        assert ok
-
-    def test_non_skill_tools_unaffected(self):
-        t = TC.SkillReentryTracker()
-        ok, _ = t.admit("philosopher_debate", {"topic": "x"})
-        assert ok
-
-    def test_total_cap(self):
-        t = TC.SkillReentryTracker()
-        for i in range(4):
-            t.record("essay_outline", {"topic": f"完全不同的话题{i}甲乙丙丁"}, ok=True)
-        ok, why = t.admit("essay_outline", {"topic": "又一个全新话题丙丁戊己"})
-        assert not ok and "上限" in why
-
-
-# ═══════════════════════════════════════════════════════
 # T8: paper_review / analyze_argument 仲裁
 # ═══════════════════════════════════════════════════════
 class TestArbitration:
@@ -542,83 +483,6 @@ class TestRuntimePhrases:
     def test_clean_text_untouched(self):
         text = "康德认为范畴是经验可能性的条件。"
         assert TC.strip_runtime_phrases(text) == text
-
-
-# ═══════════════════════════════════════════════════════
-# T13-C: 高层义务 UNKNOWN
-# ═══════════════════════════════════════════════════════
-class TestObligationUnknown:
-    OB = [{"type": "alternative_interpretation", "status": "REQUIRED", "source": "t"},
-          {"type": "uncertainty_disclosure", "status": "REQUIRED", "source": "t"},
-          {"type": "counterfactual_boundary", "status": "REQUIRED", "source": "t"}]
-
-    def test_high_level_miss_is_unknown(self):
-        res = SO.assess_obligations(self.OB, "这是一个不含任何限定语的直接断言回答。")
-        by_type = {o["type"]: o["status"] for o in res}
-        assert by_type["alternative_interpretation"] == "UNKNOWN"
-        assert by_type["uncertainty_disclosure"] == "UNKNOWN"
-
-    def test_hit_still_satisfied(self):
-        res = SO.assess_obligations(self.OB, "另一种读法是把它理解为自我规定，且这并非唯一的解释。")
-        by_type = {o["type"]: o["status"] for o in res}
-        assert by_type["alternative_interpretation"] == "SATISFIED"
-
-    def test_factual_obligation_remains_two_state(self):
-        res = SO.assess_obligations(self.OB, "直接断言。")
-        by_type = {o["type"]: o["status"] for o in res}
-        assert by_type["counterfactual_boundary"] in ("UNSATISFIED", "SATISFIED")
-        assert by_type["counterfactual_boundary"] != "UNKNOWN"
-
-    def test_unknown_never_appends(self):
-        assert SO.unsatisfied(self.OB, "断言回答。") == [] or all(
-            o["status"] == "UNSATISFIED" for o in SO.unsatisfied(self.OB, "断言回答。"))
-
-
-# ═══════════════════════════════════════════════════════
-# T12: ownership audit
-# ═══════════════════════════════════════════════════════
-class TestOwnershipAudit:
-    def test_bypassed_specialized_detected(self):
-        tool_log = [
-            {"name": "search_books", "args": {"query": "x"}, "thought": "执行 search_books",
-             "result_full": {"results": [{"book_title": "理想国", "chapter_title": "第十卷",
-                                          "snippet": "拒绝模仿的诗人应当被逐出城邦"}]}},
-            {"name": "conceptual_map", "args": {"concept": "康德认识论"}, "thought": "执行 conceptual_map",
-             "result_full": {"kind": "graph_map", "summary": "一张与答案毫无关系的图",
-                             "graph": {"nodes": [{"id": "a", "label": "某个完全没被使用的节点标签甲乙丙丁"}], "edges": []}}},
-        ]
-        ans = "最终回答完全自写, 与图无关。"
-        audit = TC.tool_ownership_audit(tool_log, ans)
-        entry = [e for e in audit["entries"] if e["tool"] == "conceptual_map"][0]
-        assert entry["final_use"] == "BYPASSED"
-        assert audit["bypassed_specialized_tools"] == 1
-
-    def test_used_scaffold(self):
-        frag = "比较轴线之一是欲望的处置方式这条轴线非常关键"
-        tool_log = [{"name": "compare_views", "args": {"a": "a", "b": "b"}, "thought": "执行 compare_views",
-                     "result_full": {"kind": "comparison_scaffold",
-                                     "comparison_axes": [{"axis": frag}]}}]
-        ans = f"回答中引用了 {frag} 作为骨架。"
-        audit = TC.tool_ownership_audit(tool_log, ans)
-        entry = [e for e in audit["entries"] if e["tool"] == "compare_views"][0]
-        assert entry["final_use"] in ("USED", "PARTIALLY_USED")
-        assert audit["bypassed_specialized_tools"] == 0
-
-    def test_not_admitted_specialized_redundant(self):
-        tool_log = [{"name": "thought_experiment", "args": {"base": "x"},
-                     "thought": "检索准入未通过，执行前取消",
-                     "result_full": {"error": "重入拦截"}}]
-        audit = TC.tool_ownership_audit(tool_log, "回答")
-        entry = audit["entries"][0]
-        assert entry["tool_value"] == "REDUNDANT"
-        assert audit["redundant_specialized_tools"] == 1
-
-    def test_retrieval_not_counted_as_specialized(self):
-        tool_log = [{"name": "search_books", "args": {"query": "x"}, "thought": "执行 search_books",
-                     "result_full": {"results": []}}]
-        audit = TC.tool_ownership_audit(tool_log, "回答")
-        assert audit["redundant_specialized_tools"] == 0
-        assert audit["entries"][0]["tool_value"] == "NEW_EVIDENCE"
 
 
 # ═══════════════════════════════════════════════════════

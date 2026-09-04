@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """Epistemic Guard（Phase 1）用例——前提校正 / Claim 认知分级 / 反事实边界 / 引擎接线回归
 
-覆盖 2026-08-30 Phase 1 验收项:
+覆盖 2026-08-30 Phase 1 验收项（O4 瘦身后仍适用部分）:
   Premise:    87天→84 / 尼采1889写反基督→1888 / 《存在与时间》里尼采→海德格尔 / 价值判断不核验
   Claim Type: 狮子意味着生命力→TEXTUAL_INFERENCE / "一定完成转变"→ 不得 SOURCE_FACT
-  Counterfactual: 加缪怎么看《老人与海》→ COUNTERFACTUAL / 尼采怎么看AI→ COUNTERFACTUAL
+              （evidence_contract 生产依赖, 接口不变）
+  O4: CounterfactualAuthorGuard / scan_answer / 反事实与认知层级 hedge 注入已删除——
+      runtime 不再对哲学陈述做"应该更谨慎"的语义判断（EPISTEMIC_GUARD_SEMANTIC_JUDGMENT=0）;
+      引擎只保留 PremiseVerifier 事实校正注入。行为契约见 test_o4_cognitive_collapse.T4。
   回归: 工具注册表 / 人格提示词 / 流式事件序列（mock APP, 不调 LLM）
 """
 import os
@@ -119,50 +122,6 @@ def test_classify_canonical_shape():
 
 
 # ═══════════════════════════════════════════════════════
-# 3. CounterfactualAuthorGuard —— 反事实识别与历史/反事实分离
-# ═══════════════════════════════════════════════════════
-def test_camus_on_oldman_is_counterfactual():
-    v = eg.CounterfactualAuthorGuard().check("加缪怎么看《老人与海》？")
-    assert v["mode"] == "counterfactual"
-    assert v["requires_guard"] is True
-    assert v["author"] == "加缪"
-    assert "没有证据表明加缪" in v["boundary_text"]
-
-
-def test_nietzsche_on_ai_is_counterfactual():
-    v = eg.CounterfactualAuthorGuard().check("尼采怎么看AI？")
-    assert v["mode"] == "counterfactual"
-    assert v["requires_guard"] is True
-    assert v["epistemic_type"] == "AUTHOR_COUNTERFACTUAL"
-    assert "没有证据表明尼采" in v["boundary_text"]
-
-
-def test_liveness_counterfactual():
-    v = eg.CounterfactualAuthorGuard().check("叔本华如果活到今天会怎么看智能手机？")
-    assert v["mode"] == "counterfactual"
-    assert v["requires_guard"] is True
-
-
-def test_historical_vs_counterfactual_separated():
-    # 作者自己的作品/已载史料的主题 → historical（正常回答）, 不插边界
-    v1 = eg.CounterfactualAuthorGuard().check("加缪在《西西弗斯神话》中对自杀的论证")
-    assert v1["mode"] == "historical"
-    assert v1["requires_guard"] is False
-    v2 = eg.CounterfactualAuthorGuard().check("尼采如何看待瓦格纳？")
-    assert v2["mode"] == "historical"
-    assert v2["requires_guard"] is False
-    v3 = eg.CounterfactualAuthorGuard().check("康德在《纯粹理性批判》中如何论证先验")
-    assert v3["mode"] == "historical"
-
-
-def test_boundary_present_check():
-    a = "加缪反对自杀，认为反抗才有出路。"
-    assert eg.CounterfactualAuthorGuard.boundary_present(a, "加缪") is False
-    b = "没有证据表明加缪本人评论过这一对象；以下是依据其已知思想框架进行的反事实推演。"
-    assert eg.CounterfactualAuthorGuard.boundary_present(b, "加缪") is True
-
-
-# ═══════════════════════════════════════════════════════
 # 4. 引擎接线（结构级: 前置注入 + 后置补正; mock APP, 不调 LLM）
 # ═══════════════════════════════════════════════════════
 class _FakeApp:
@@ -201,23 +160,20 @@ def test_stream_agent_injects_premise_correction(monkeypatch):
     assert not tok_i or done_i > max(tok_i), "流式协议不变: token 之后才 done（done 后可跟增量 reasoning_summary/suggestions）"
 
 
-def test_stream_agent_counterfactual_boundary_state_audited(monkeypatch):
-    # O2 改写: LLM 未写边界 → runtime 不再尾补边界句（正文零代写）;
-    # 反事实状态如实随 done.epistemic 审计输出, 由 Main Agent 自主落实
+def test_stream_agent_counterfactual_no_runtime_hedge(monkeypatch):
+    # O4: 反事实语义判断已删除——无边界注入、无 done.epistemic 审计块;
+    # 解释性/反事实文本由 Main Agent 自己负责, runtime 零改写零追加（T4 契约）
     evs, fake = asyncio.run(_run_stream(monkeypatch,
                                         question="尼采怎么看AI？",
                                         answer="尼采会拥抱这个新时代。"))
     injected = "".join(m.content for m in fake.captured_messages
                        if m.type == "system" and "反事实边界" in (m.content or ""))
-    assert "尼采" in injected, "前置注入（prompt 层要求）保留"
+    assert injected == "", "反事实边界注入不得回归"
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "没有证据表明尼采" not in text, "runtime 不得再代写边界句——正文原样发布"
+    assert "没有证据表明尼采" not in text, "runtime 不得代写边界句——正文原样发布"
     assert "尼采会拥抱这个新时代。" in text
     done = next(ev for ev in evs if ev["type"] == "done")
-    epi = done.get("epistemic") or {}
-    cf = epi.get("counterfactual") or {}
-    assert cf.get("requires_guard") is True and cf.get("author") == "尼采", \
-        "反事实 guard 状态随 done.epistemic 如实输出"
+    assert "epistemic" not in done, "O4: done.epistemic 审计块已删除"
     assert done["final_ownership"]["runtime_factual_appends"] == 0
 
 

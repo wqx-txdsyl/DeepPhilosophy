@@ -30,7 +30,6 @@ import pytest
 import agent_runtime as AR
 import engine_langgraph as EG
 import reasoning_plan as RP
-import tool_contracts as TC
 import routes.agent as AG
 import agents as AGENTS
 
@@ -69,22 +68,21 @@ def _stub_tools():
     ]
 
 
-def _mk_state(calls, *, plan=None, budget=None, ledger=None, no_gain_streak=0,
+def _mk_state(calls, *, plan=None, budget=None, ledger=None,
               tool_count=0, forced=False):
     question = "「言必有中」的出处是什么？"
     if plan is None:
         plan = RP.build_plan(question, "general", "zh")
     retrievals = set(EG.RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS)
+    # O4: retrieval_state / reentry / no_gain_streak / retrieval_count / user_message
+    # 字段已随 Shadow cognition 删除——state 只含机械治理与核验事实对象。
     st = {"messages": [AIMessage(content="", tool_calls=calls)],
           "guard": AR.DuplicateGuard(), "budget": budget or AR.ToolBudget(retrieval_tools=retrievals),
           "trace": AR.ToolLoopTrace("c-o3", "m-o3", "general"),
-          "retrieval_state": AR.RetrievalState(),
-          "obligation_ledger": ledger if ledger is not None else AR.ObligationLedger(plan),
+          "obligation_ledger": ledger if ledger is not None else AR.ObligationLedger(),
           "verif_box": {"state": None, "term": "", "computed": False},
           "raw_tool_log": [], "agent": "general", "language": "zh",
-          "tool_count": tool_count, "no_gain_streak": no_gain_streak,
-          "retrieval_count": 0, "plan": plan, "user_message": question,
-          "reentry": TC.SkillReentryTracker(), "forced": forced}
+          "tool_count": tool_count, "plan": plan, "forced": forced}
     return st
 
 
@@ -209,11 +207,10 @@ def test_t1_third_distinct_search_executes():
 # ═══════════════════════════════════════════════════════
 def test_t2_read_after_sufficiency_telemetry():
     plan = RP.build_plan("「言必有中」的出处是什么？", "general", "zh")
-    ledger = AR.ObligationLedger(plan)
-    ledger.obligations_satisfied = True          # telemetry: 义务已满足
+    ledger = AR.ObligationLedger()
     st, msgs = _run_node([("get_chapter", {"book_id": "d9272a80942a", "chapter_idx": 13})],
                          ledger=ledger)
-    assert len(_STUB_CALLS["get_chapter"]) == 1   # 照常执行
+    assert len(_STUB_CALLS["get_chapter"]) == 1   # 照常执行（O4: 义务总闸已不存在）
     assert "obligation_satisfied" not in _msg_text(msgs[0])
 
 
@@ -221,7 +218,7 @@ def test_t2_read_after_sufficiency_telemetry():
 # T3 — no_gain streak 之后换工具仍执行
 # ═══════════════════════════════════════════════════════
 def test_t3_continue_after_no_gain():
-    st, msgs = _run_node([("query_graph", {"philosopher": "孔子"})], no_gain_streak=5)
+    st, msgs = _run_node([("query_graph", {"philosopher": "孔子"})])
     assert len(_STUB_CALLS["query_graph"]) == 1
     assert "无增益" not in _msg_text(msgs[0]) and "no_gain" not in _msg_text(msgs[0])
 
@@ -323,11 +320,9 @@ def test_t10_repair_research_executes():
     # 轮 1: 常规检索（建立 family/no_gain 历史）
     _run_node([("search_books", {"query": "言必有中"})])
     # 轮 2（repair 语境: 高 no_gain + 义务已满足 telemetry）: 宣告新 get_chapter
-    plan = RP.build_plan("「言必有中」的出处是什么？", "general", "zh")
-    ledger = AR.ObligationLedger(plan)
-    ledger.obligations_satisfied = True
+    ledger = AR.ObligationLedger()
     st, msgs = _run_node([("get_chapter", {"book_id": "d9272a80942a", "chapter_idx": 13})],
-                         ledger=ledger, no_gain_streak=3)
+                         ledger=ledger)
     assert len(_STUB_CALLS["get_chapter"]) == 1
     assert "obligation_satisfied" not in _msg_text(msgs[0])
 

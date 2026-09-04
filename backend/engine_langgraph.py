@@ -45,16 +45,9 @@ def get_llm():
 RETRIEVAL_TOOLS = {"search_books", "get_chapter", "get_philosopher", "query_graph", "websearch",
                    "get_school", "get_book_detail", "list_books", "query_database", "compare_views",
                    "role_play", "concept_trace"}
-# 柔性提示阈值（soft 预算, 检索达到后提示评估材料充分性）——Phase A 起由 agent_runtime 配置驱动
-RETRIEVAL_LIMIT = AR.TOOL_BUDGET["soft_retrieval"]
-# 硬上限已取消（2026-08-28）→ Phase A 恢复为"有界 hard 预算"（agent_runtime 配置, 默认 20）:
-# 不再是"静默取消检索调用"（旧 8 次硬截断的信息丢失问题）, 而是预算用尽后强制进入
-# graceful answer completion（模型先被告知再作答, 已取得 evidence 全部保留）。
-RETRIEVAL_HARD = AR.TOOL_BUDGET["hard_retrieval"]
-
-# O2 弃用: agent 轮文本不再按阈值实时流出——final candidate 一律缓冲到确定性校验
-# 通过后才发布（BUFFER FINAL UNTIL VALIDATED, §11）。常量保留仅为兼容旧测试导入。
-STREAM_ANSWER_DELAY = 240
+# O4 Cognitive Layer Collapse: soft 预算提示 / no-gain 提醒与强制 / 充分性收敛 /
+# STREAM_ANSWER_DELAY（O2 起即仅作兼容常量）全部删除——"证据是否充分/是否该收口"
+# 由 Main Agent 自主判断; runtime 只保留 hard 机械资源上限（AR.HARD_BUDGET_DIRECTIVE）。
 # 回答逐字流出节奏（2026-08-29）: DeepSeek 分块大且生成快, 直接转发会"秒出"而非流式——
 # 每字 12ms ≈ 83 字/秒, 生成与显示同速推进（显示慢于生成, 多余生成由 API 连接自然缓冲）
 # 2026-08-29 提速: 前端打字机已改自适应批量渲染并接管视觉节奏, 后端限速降为 2ms/字
@@ -137,7 +130,7 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
    ④综合判断（Agent 自己的结论, 用"我认为/综合来看"标注）。四层不得混同。
 11. 【原典路径】「📖 原典路径」不是默认结构——仅当来源导航本身对用户有价值时才附:
    深度文本分析、用户明确要求阅读路径/书单、或多个原典之间存在明确递进关系。
-   普通概念解释、出处核验类问题不要附加原典路径（系统会按问题类型明确提示是否允许）。
+   普通概念解释、出处核验类问题不要附加原典路径。
    附时按论证顺序列出 3~6 个关键原文段落（每个都带【《书名》·章节】可跳转标注），
    并用一两句话说明各段落之间的关系。仅当确实检索到这些段落时才列出; 未核验的段落不得放入原典路径。
 12. 【跨哲人关联】当问题涉及一个概念在不同哲学家/流派中的处理差异时, 优先调用
@@ -279,29 +272,24 @@ def get_system_prompt(agent):
 # ── StateGraph ─────────────────────────────────────────
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
-    retrieval_count: int
-    forced: bool   # 已注入"强制回答"提示（达到 hard 预算/连续无增益后, 确保最终轮产出回答）
+    forced: bool   # 已注入"强制回答"提示（hard 预算后, 确保最终轮产出回答）
     forced_tools_done: bool   # 强制回答后已补跑过一轮工具（防死循环烧钱; 2026-08-14）
     agent: str     # 当前智能体（general / 哲学家 key）
     language: str  # zh/en——中文模式下每轮强化语言提醒（防思考偶发英文）
     # ── Phase A: tool loop 治理状态（对象经内存态传递, 无 checkpointer 序列化）──
     guard: Any            # DuplicateGuard（A2, 单轮生命周期）
-    budget: Any           # ToolBudget（A3）
+    budget: Any           # ToolBudget（A3; O4 后只剩 hard 资源上限 + 遥测计数）
     trace: Any            # ToolLoopTrace（A1）
     tool_count: int       # 本轮已执行工具调用总数（A3 total 预算口径）
-    no_gain_streak: int   # 连续无信息增益检索轮数（A5）
     model_retries: int    # 本轮模型 API 重试累计（A1/A4）
-    # ── Patch 1 (B1/B3): 问题计划与检索状态（对象/引用经内存态传递）──
-    plan: Any             # RP.build_plan 结果（problem_type/complexity/注入/时序/核验问题）
-    retrieval_state: Any  # AR.RetrievalState（B1: 语义重复/相关证据/充分性）
-    obligation_ledger: Any  # Patch 1.1 (P1): evidence obligation 台账（检索准入单一真源）
+    # ── Patch 1 (B3/B4): 核验与引用核验状态（对象/引用经内存态传递）──
+    # O4 删除的 state 字段: retrieval_count / no_gain_streak / round_all_low /
+    # round_any_low / retrieval_state / reentry / user_message（Shadow cognition
+    # 遥测与重入治理——控制效果自 O3 起为 0, O4 连同产生与消费一并删除）。
+    plan: Any             # RP.build_plan 结果（temporal/verification_question/verification_intent）
+    obligation_ledger: Any  # ExecutionFactLedger（ObligationLedger 瘦身: 纯执行事实登记器）
     verif_box: Any        # {"state":…, "term":…, "computed":…}（B3 核验状态, 引用传递）
     raw_tool_log: Any     # 共享 raw 工具记录列表（tools_node 写入, 引擎消费; B4 引用核验用）
-    round_all_low: bool   # 上一工具轮是否全部低增益（B1 sufficiency 消费）
-    round_any_low: bool   # 上一工具轮是否出现低增益调用（B1 sufficiency 消费）
-    # ── Phase T: 工具架构治理状态 ──
-    user_message: str     # 原始用户消息（重入策略 USER_REQUESTED_ITERATION 判定用）
-    reentry: Any          # TC.SkillReentryTracker（invocation 级 skill 重入治理）
 
 async def agent_node(state):
     msgs = list(state["messages"])
@@ -313,9 +301,9 @@ async def agent_node(state):
     # ── Phase A: 预算与终止条件 ──
     # ══ O3 §5/§8: 停止权威归还 Main Agent——runtime 仅在机械约束下停止循环 ══
     # 保留: hard 全局资源上限（硬上限到达 → 注入机械指令 + forced 补跑一轮已宣告调用）。
-    # 移除（CONTROL_EFFECT = 0, 检测器留作 telemetry）:
-    #   soft 预算提示 / no_gain warn+force / sufficiency force（含"最后核验机会"引导）/
-    #   ledger.rejected 空转防护 / RETRIEVAL_LIMIT 多次检索提示。
+    # 移除（O3 降级为 telemetry, O4 整体删除——检测器与状态链不复存在）:
+    #   soft 预算提示 / no-gain 提醒与强制 / 充分性强制收口（含"最后核验机会"引导）/
+    #   ledger 拒绝空转防护 / 检索次数提示。
     # "证据是否充分/是否该收口/该不该换工具"自 O3 起由 Main Agent 自主判断。
     budget = state.get("budget")
     forced = False
@@ -428,12 +416,11 @@ async def tools_node(state):
     按当前智能体的工具集查找（哲学家专属工具不在全局 TOOLS_BY_NAME 里）;
     自愈: 失败工具按 TOOL_RETRY 配置重试, 仍失败附备选工具提示。
     Phase A: A2 重复调用防护（同参只读工具 → 复用结果, 不再执行）;
-             A3 预算分类计数（useful/retry/duplicate/no_gain）;
-             A1 逐调用观测（时长/成败/结果 hash/info gain）;
-             A5 连续无增益轮统计（no_gain_streak）。
-    Patch 1.1 (P1): 检索准入（obligation admission）——每个 retrieval 在真正执行前
-    按宣告顺序判定: 义务是否已满足 / query_family 是否已有充分证据 / 是否预计产生
-    新证据类 / 是否同义改写。无新义务 → 执行前取消（非 hard max_tools）。"""
+             A3 预算分类计数（useful/retry/duplicate/no_gain——纯遥测）;
+             A1 逐调用观测（时长/成败/结果 hash/info gain）。
+    O3/O4: 工具权威归还 Main Agent——runtime 只保留机械门（schema/未知工具、
+    精确重复复用、硬资源上限、安全/取消）; 语义准入（obligation admission）、
+    skill 重入治理、RetrievalState 语义增益统计已全部删除。"""
     last = state["messages"][-1]
     calls = last.tool_calls or []
     agent = state.get("agent", "general")
@@ -441,53 +428,19 @@ async def tools_node(state):
     guard = state.get("guard")
     budget = state.get("budget")
     trace = state.get("trace")
-    retrieval_state = state.get("retrieval_state")
-    plan = state.get("plan") or {}
     raw_log = state.get("raw_tool_log")
     ledger = state.get("obligation_ledger")
     retrieval_set = set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS)
     TOOL_TIMEOUT = AR.TOOL_TIMEOUT   # 工具执行超时（防挂起; Phase A 收编为配置）
     forced = bool(state.get("forced"))
-    complexity = plan.get("complexity") or "NORMAL_EXPLANATION"
 
-    # ══ O3: 工具权威归还 Main Agent——runtime 只保留机械门 ══
-    # （schema/未知工具、精确重复复用、硬资源上限、安全/取消；见 run_one）
-    # 原 Patch1.1 义务准入（ledger.admit）与 Phase T 重入准入（reentry.admit）的
-    # "执行前取消"控制效果移除：二者降级为 telemetry 记录器——义务计数/查询族/重入历史
-    # 仍然维护并随 done 输出供审计, 但配额（SEARCH_CAP/FAMILY_EXEC/包络）、
-    # obligations_satisfied 总闸、语义相似判族、purpose 重入相似等一律不再拒绝任何宣告。
-    # 语义类拒绝（"已经查够/信息增益低/该题不该用此工具"）自 O3 起不属于 runtime。
-    def _is_retrieval(name):
-        return name in retrieval_set
-
-    reentry = state.get("reentry")
-    user_message = state.get("user_message", "") or ""
-
-    admissions = []
-    for c in calls:
-        name = c.get("name", "")
-        cargs = c.get("args", {}) or {}
-        # telemetry 登记（不消费判定结果——CONTROL_EFFECT = 0）
-        if ledger is not None and _is_retrieval(name):
-            try:
-                ledger.admit(name, cargs, complexity, forced)
-            except Exception:
-                pass
-        if reentry is not None and name in TC.SKILL_REENTRY_TOOLS:
-            try:
-                reentry.admit(name, cargs, user_message=user_message)
-            except Exception:
-                pass
-        admissions.append((True, "", ""))
-
-    async def run_one(call, call_index, admitted, admit_reason="", admit_kind=""):
+    async def run_one(call, call_index):
         name = call.get("name", "")
         args = call.get("args", {}) or {}
         tool = tools_map.get(name)
         thought_label = f"执行 {name}"
         # ── O3 §5/§8: 全局硬资源上限——唯一保留的机械拒绝门 ──
         # 只表达 RESOURCE_CEILING_REACHED（资源约束）, 绝不暗含"证据已充分/库中无此书"。
-        # （admitted 参数保留兼容签名, O3 起恒为 True——语义准入已移除）
         if budget is not None and budget.hard_reached():
             skip_res = {"error": "RESOURCE_CEILING_REACHED: 全局工具执行硬上限已达"
                                  f"（本调用未执行——这是机械资源约束, 不代表库中无相关内容; "
@@ -561,30 +514,17 @@ async def tools_node(state):
         # ── A2 记录结果（成功可复用; 失败放行跨轮重试）──
         if guard:
             guard.record(name, args, not is_err, res)
-        # ── Phase T (T7): 重入治理登记（成败都登记——失败后重试合理）──
-        if reentry is not None and name in TC.SKILL_REENTRY_TOOLS:
-            try:
-                reentry.record(name, args, not is_err)
-            except Exception:
-                pass
-        # ── A1 information gain / A3 预算分类（可靠实现: 结果 hash + 空命中判定）──
-        # Patch 1 (B1): 语义重复判定（query 改写但结果高度重合 → low_gain）——检索状态登记
+        # ── A1 information gain / A3 预算分类（可靠实现: 空命中判定;
+        #     O4: RetrievalState 语义 low_gain 统计已删——只留 empty/new 机械判定）──
         rh = AR.result_hash(res)
         info_gain = ""
-        rec = None
         if not is_err and name in retrieval_set:
             info_gain = "empty" if AR.result_is_empty(res) else "new"
-            if retrieval_state is not None and isinstance(res, dict) and not res.get("error"):
-                rec = retrieval_state.register(name, args, res, plan.get("key_terms") or [])
-                if rec["low_gain"] and info_gain == "new":
-                    info_gain = "low_gain"
-        # ── Patch 1.1 (P1): obligation 台账登记（成败都登记——失败释放 pending-read, 同章可重试）──
+        # ── O4: ExecutionFactLedger 登记（纯事实: 已读章节/主文本已读/逐字命中/
+        #     定位线索命中——成败都登记, 无任何准入/配额/义务判定）──
         if ledger is not None and name in retrieval_set:
             try:
-                ledger.record(name, args, not is_err, res, plan.get("key_terms") or [])
-                if rec is not None:
-                    ledger.mark_result(name, args, low_gain=bool(rec.get("low_gain")),
-                                       relevant_new=int(rec.get("new_relevant") or 0))
+                ledger.record(name, args, not is_err, res)
             except Exception as _le:
                 logger.warning(f"[obligation-ledger] skipped: {str(_le)[:120]}")
         cls = decision.get("cls", "unique")
@@ -637,32 +577,13 @@ async def tools_node(state):
                                               "_dg": getattr(trace, "current_group", None)})
 
     base_index = state.get("tool_count", 0)
-    results = await asyncio.gather(*[run_one(c, base_index + i, admissions[i][0], admissions[i][1],
-                                             admissions[i][2])
-                                     for i, c in enumerate(calls)])
-    # ── A5: 连续无增益轮统计（本轮全部检索调用均 repeat/empty/low_gain/duplicate → streak+1）──
-    round_gains = [(getattr(r, "additional_kwargs", {}) or {}).get("_info_gain", "") for r in results]
-    retrieval_round = [g for g, c in zip(round_gains, calls) if c.get("name") in retrieval_set]
-    dup_round = [(getattr(r, "additional_kwargs", {}) or {}).get("_budget_class") == "duplicate" for r in results]
-    all_retrieval_barren = bool(retrieval_round) and all(g in ("repeat", "empty", "low_gain") for g in retrieval_round)
-    all_dup = calls and all(dup_round)
-    if all_retrieval_barren or all_dup:
-        streak = state.get("no_gain_streak", 0) + 1
-    else:
-        streak = 0
-    inc = sum(1 for c in calls if c.get("name") in retrieval_set)
+    results = await asyncio.gather(*[run_one(c, base_index + i) for i, c in enumerate(calls)])
     executed = sum(1 for r in results
                    if (getattr(r, "additional_kwargs", {}) or {}).get("_budget_class") != "duplicate")
-    # ── Patch 1 (B1): 记录本轮低增益状态（agent_node sufficiency 消费）──
-    round_all_low = bool(retrieval_round) and all(
-        g in ("repeat", "empty", "low_gain") for g in retrieval_round)
-    round_any_low = bool(retrieval_round) and any(
-        g in ("repeat", "empty", "low_gain") for g in retrieval_round)
-    return {"messages": results, "retrieval_count": state.get("retrieval_count", 0) + inc,
+    # O4: no_gain_streak / round_all_low / round_any_low / retrieval_count 状态链已删——
+    # 预算快照内的 no_gain 计数（遥测）保留。
+    return {"messages": results,
             "tool_count": base_index + executed,
-            "no_gain_streak": streak,
-            "round_all_low": round_all_low,
-            "round_any_low": round_any_low,
             "forced_tools_done": state.get("forced", False)}
 
 def _evidence_item_count(tool_name, res):
@@ -692,15 +613,9 @@ def should_continue(state):
         return "tools"
     return "tools"
 
-# ── O3 §14/§19: 工具路由注入静态过滤 ──
-# plan/引擎产生的 prompt 注入若含"工具偏好/配额"措辞, 不进入消息流（ROUTING_CONTROL_EFFECT=0）。
-# 认识论义务类注入（核验纪律/来源约束/形态指令）不含这些短语, 不受影响。
-_ROUTING_PHRASE_RE = re.compile(
-    r"(必须调用|禁止跳过工具|优先直接调用|首选直接调用|不要先自行|核验配额|检索次数已达|不再放行)")
-
-
-def _is_routing_injection(text):
-    return bool(_ROUTING_PHRASE_RE.search(text or ""))
+# O4: _ROUTING_PHRASE_RE / _is_routing_injection 已删除——语义路由注入源
+# （interpretation/composer/MAP_HINTS/COMPARISON 路由）已整体移除,
+# plan 注入只剩核验纪律/来源约束/时期要求（本就不含路由措辞）, 无需过滤。
 
 _builder = StateGraph(AgentState)
 _builder.add_node("agent", agent_node)
@@ -1162,72 +1077,33 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 原 MAP_HINTS（"必须调用 conceptual_map, 禁止手写"）与 COMPARISON 路由注入
     # （"优先调用 compare_views, 不要自行多路检索"）删除——工具选择权归还 Main Agent;
     # 各工具的 capability 描述（工具 schema description）已说明适用场景, 由模型自主选择。
-    # reasoning_plan 仍可计算 problem_type/complexity 供 telemetry（O4 决定去留）。
-    # ── Epistemic Guard（Phase 1, 2026-08-30）──────────────────────────
-    # 结构级认识论护栏（backend/epistemic_guard.py, 纯规则）:
-    #   前置: PremiseVerifier 事实前提校正 / Claim 认知层级 / Counterfactual 反事实边界
-    #   后置: scan_answer 校验答案是否落实（反事实边界缺失 → 尾补, 确定性兜底）
-    # 护栏尽力而为——任何异常只降级为跳过, 绝不影响主流程（与 MAP_HINTS 同机制）
-    _epistemic_verdict = None
+    # ── Epistemic Guard（O4 收窄: 只保留 PremiseVerifier 事实校正注入）──
+    # 原前置含 CounterfactualAuthorGuard 反事实边界与认知层级 hedge 注入——语义判断
+    # 随 O4 删除; 剩余的只有"用户问题含可机械核验的事实前提错误"的校正注入。
+    # 护栏尽力而为——任何异常只降级为跳过, 绝不影响主流程
     try:
-        from epistemic_guard import run_epistemic_guards, scan_answer
+        from epistemic_guard import run_epistemic_guards
         _epistemic_verdict = run_epistemic_guards(req_message, agent, language)
         for _inj in _epistemic_verdict.get("injections", []):
             if _inj:
                 messages.append(SystemMessage(content=_inj))
     except Exception as _e:
         logger.warning(f"[epistemic-guard pre] skipped: {str(_e)[:200]}")
-    # ── Interpretation Engine（Phase 2, 2026-08-30）───────────────────────
-    # 解释挑战者 + 置信度校准（backend/interpretation_engine.py, 纯规则）:
-    #   前置: 解释型问题（文学/哲学解读/跨作者比较/模糊历史）→ 多候选解读强制 +
-    #         支持/挑战证据分离 + 类比≠等同 + 深度惩罚 + 四档确定性语言
-    #   后置: scan_interpretation 校验答案（越级断言/缺多候选 → 措辞级补正, 不展示数字）
-    # 尽力而为——任何异常只降级为跳过, 绝不影响主流程（与 epistemic_guard 同机制）
-    _interpretation_verdict = None
-    try:
-        from interpretation_engine import run_interpretation_engine, scan_interpretation
-        _interpretation_verdict = run_interpretation_engine(req_message, agent, language)
-        for _inj in _interpretation_verdict.get("injections", []):
-            if _inj:
-                messages.append(SystemMessage(content=_inj))
-    except Exception as _e:
-        logger.warning(f"[interpretation-engine pre] skipped: {str(_e)[:200]}")
-    # ── Answer Composer（Phase 4, 2026-08-30）─────────────────────────────
-    # 回答结构收口（backend/answer_composer.py, 纯规则）:
-    #   前置: 默认回答结构（直接判断 → 2~4 核心理由 → 关键文本证据 → 反方/限定 → 结论）+
-    #         禁止默认骨架（材料说明/工具说明/检索过程/五层报告/原典路径/再总结）+
-    #         隐藏 raw reasoning（过程叙述不进正文, 用户只看推理摘要）+
-    #         DeepSeek 优点吸收但禁用未经证据支持的强化措辞（完全正确/毫无疑问/绝不会/本质就是）
-    #   后置: scan_composition 校验（结构信号/强化措辞/推理噪音 → 措辞级补正）
-    #   （RP1: reasoning_summary 确定性兜底已随事后摘要通道一并删除——不编造思考）
-    # 生成类请求（写作文/生图/辩论等）不注入——成品形态由各自工具决定
-    # 尽力而为——任何异常只降级为跳过, 绝不影响主流程（与 Phase 1/2 同机制）
-    _composition_verdict = None
-    try:
-        from answer_composer import run_answer_composer
-        _composition_verdict = run_answer_composer(req_message, agent, language)
-        for _inj in _composition_verdict.get("injections", []):
-            if _inj:
-                messages.append(SystemMessage(content=_inj))
-    except Exception as _e:
-        logger.warning(f"[answer-composer pre] skipped: {str(_e)[:200]}")
-    # ── Patch 1: 问题结构规划（B1/B3/B5/B6/B7）——类型/复杂度/形态/依赖链/时序/核验问题 ──
-    # O3 §14: plan 仍计算 problem_type/complexity/verification_intent 供 telemetry 与
-    # 引用资格判定（final_validator source_constraint）, 但其 routing 注入已移除——
-    # plan.injections 里若有"首选某工具/限制检索次数"类路由指令, 不再注入消息。
+    # O4: interpretation_engine / answer_composer 前置注入块已删除——
+    # 解释多候选强制 / 回答结构指令 / 篇幅软预算均为 runtime 认知治理
+    # （Shadow planner）, 回答形态与解释深度由 Main Agent 自主承担。
+    # ── Patch 1（O4 瘦身版）: plan 只产核验纪律/来源约束/时期要求（无路由类注入）──
     plan = RP.build_plan(req_message, agent, language)
     for _inj in plan.get("injections", []):
-        if _inj and not _is_routing_injection(_inj):
+        if _inj:
             messages.append(SystemMessage(content=_inj))
     tool_log = []
-    # ── Phase A: tool loop 治理状态（A1 观测 / A2 去重 / A3 预算——单轮生命周期对象）──
+    # ── Phase A: tool loop 治理状态（A1 观测 / A2 去重 / A3 hard 预算——单轮生命周期对象）──
     guard = AR.DuplicateGuard()
     budget = AR.ToolBudget(retrieval_tools=set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS))
     trace = AR.ToolLoopTrace(conversation_id, message_id, agent, question_chars=len(req_message or ""))
-    # ── Patch 1: B1 检索状态 / B3 核验盒 / B4 引用核验器 + 术语断言门 ──
-    retrieval_state = AR.RetrievalState()
-    # ── Patch 1.1 (P1): evidence obligation 台账（检索准入; P2 意图驱动核验义务）──
-    obligation_ledger = AR.ObligationLedger(plan)
+    # ── O4: ExecutionFactLedger（纯事实登记器; 原 RetrievalState 语义增益统计已删）──
+    obligation_ledger = AR.ObligationLedger()
     raw_tool_log = []   # 共享 raw 工具记录（tools_node 写入; 引用核验/证据契约消费; result_full 保留到收口）
     verif_box = {"state": None, "term": "", "computed": False}
     _vq = plan.get("verification_question") or {}
@@ -1236,9 +1112,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         _vq = {"term": plan["verification_intent"]["term"], "quoted": True}
     if _vq.get("term"):
         verif_box["term"] = _vq["term"]
-        obligation_ledger.vi = dict(plan.get("verification_intent") or {}) or None
-        if obligation_ledger.vi:
-            obligation_ledger._term_norm = re.sub(r"[的是之其所\s]", "", verif_box["term"])
+        obligation_ledger.term = verif_box["term"]
     # ══ O2: Final Answer Ownership——runtime 只保留 VALIDATE / REJECT / mechanical FORMAT ══
     # 流式改写链（LiveCitationSanitizer 引用降级 / QuoteBoundSanitizer 引文转写 /
     # TermClaimGate 句子改写）整体删除: 未核验对象不再被 runtime 改写, 而是作为
@@ -1251,8 +1125,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # Phase T (T13-B): 运行时措辞净化器——内部治理语言（"检索已被收口/预算已达上限/…"）
     # 不得进入 Final prose; 流式安全（跨 chunk 缓冲）。机械净化, 不改变语义内容。
     _phrase_scr = TC.RuntimePhraseScrubber()
-    # Phase T (T7): invocation 级 skill 重入治理器
-    _reentry_tracker = TC.SkillReentryTracker()
+    # O4: _reentry_tracker（SkillReentryTracker）已随 tool_contracts 瘦身删除——
+    # skill 重入治理属语义控制, 工具选择/迭代判断归 Main Agent。
     # 2026-08-28: 递归上限 18 → 60（检索硬上限已取消, 需给足长会话空间——~29 轮工具;
     # 仍是有界兜底, 防失控烧钱）。Phase A: 数值收编 agent_runtime.RECURSION_LIMIT 配置
     config = {"recursion_limit": AR.RECURSION_LIMIT}
@@ -1344,13 +1218,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         nonlocal pending, _agent_invocations, _saw_tools_result
         nonlocal _main_agent_tool_decisions, _rat_tools_done, _rat_phase
         async for chunk, metadata in APP.astream(
-                {"messages": msgs, "retrieval_count": 0, "agent": agent, "language": language,
+                {"messages": msgs, "agent": agent, "language": language,
                  "guard": guard, "budget": budget, "trace": trace,
-                 "tool_count": 0, "no_gain_streak": 0, "model_retries": 0,
-                 "plan": plan, "retrieval_state": retrieval_state,
-                 "obligation_ledger": obligation_ledger, "verif_box": verif_box,
-                 "raw_tool_log": raw_tool_log, "round_all_low": False, "round_any_low": False,
-                 "user_message": req_message, "reentry": _reentry_tracker},
+                 "tool_count": 0, "model_retries": 0,
+                 "plan": plan, "obligation_ledger": obligation_ledger,
+                 "verif_box": verif_box, "raw_tool_log": raw_tool_log},
                 config, stream_mode="messages"):
             node = metadata.get("langgraph_node", "")
             # O1 因果观测: tools→agent 回到 agent 节点 = 一次新的 Main Agent invocation
@@ -1556,8 +1428,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             _ledger_snap = obligation_ledger.snapshot() if obligation_ledger is not None else {}
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
-                obligations_satisfied=bool(_ledger_snap.get("obligations_satisfied", True)),
-                primary_text_read=_ledger_snap.get("primary_text_read"),
+                primary_text_read=bool(_ledger_snap.get("primary_text_read")),
                 language=language, source_constraint=_sc, subject_authors=_subjects)
             if validation.ok or repairs_used >= MAX_VALIDATION_REPAIRS:
                 break
@@ -1631,70 +1502,6 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         finally:
             if trace:
                 trace.record_phase("validator_quote_bound", _vt0)
-        # ══ Phase S (S2) → O2 §7: Epistemic findings 审计 ══
-        # 前提校正/反事实边界是结构化 epistemic state——原"正文未落实 → runtime 尾补"
-        # 的 build_missing_correction_appends / boundary_text 补发已删除（runtime 不得给
-        # 用户补句子）。检测结果仍入 done.epistemic 供审计; 是否在正文中落实由
-        # Main Agent 自己完成（结构性义务, 非 deterministic validator 职权）。
-        _epistemic_state = None
-        _vt0 = time.time()
-        try:
-            if _epistemic_verdict:
-                _esc_final = scan_answer(_epistemic_verdict, full_answer, language)
-                _epistemic_state = {
-                    "premise_checks": [
-                        {"rule_id": c.get("rule_id"), "status": c.get("status"),
-                         "referent_mode": c.get("referent_mode") or "current",
-                         "correction_present": r.get("correction_present")}
-                        for c, r in zip(_epistemic_verdict.get("premise_checks") or [],
-                                        _esc_final.get("premise_checks") or [])],
-                    "counterfactual": {k: (_epistemic_verdict.get("counterfactual") or {}).get(k)
-                                       for k in ("mode", "author", "requires_guard")},
-                }
-        except Exception as _e:
-            logger.warning(f"[epistemic-guard post] skipped: {str(_e)[:200]}")
-        finally:
-            if trace:
-                trace.record_phase("validator_epistemic", _vt0)
-        # ══ Phase S (S5): 预算扫描（先于 composer 扫描——超预算时抑制非必要结构提示）══
-        _budget_scan = None
-        _vt0 = time.time()
-        try:
-            if _composition_verdict:
-                from answer_composer import scan_budget
-                _budget_scan = scan_budget(_composition_verdict, full_answer)
-        except Exception as _e:
-            logger.warning(f"[answer-budget scan] skipped: {str(_e)[:200]}")
-        finally:
-            if trace:
-                trace.record_phase("validator_budget_scan", _vt0)
-        # Interpretation Engine 应答后检测（O2 §7: hedge append 已删除——检测结果只入
-        # done payload 供审计; 解释型措辞由 Main Agent 自己负责）
-        _interpretation_scan = None
-        _vt0 = time.time()
-        try:
-            if _interpretation_verdict:
-                _interpretation_scan = scan_interpretation(_interpretation_verdict, full_answer, language, tool_log)
-        except Exception as _e:
-            logger.warning(f"[interpretation-engine post] skipped: {str(_e)[:200]}")
-        finally:
-            if trace:
-                trace.record_phase("validator_interpretation", _vt0)
-        # Answer Composer 应答后检测（O2 §7: 强化措辞 hedge / 直接性 nudge 补正已删除——
-        # 检测结果只入 done payload 供审计）
-        _composition_scan = None
-        _vt0 = time.time()
-        try:
-            if _composition_verdict:
-                from answer_composer import scan_composition
-                _composition_scan = scan_composition(_composition_verdict, full_answer, language,
-                                                     interpretation_scan=_interpretation_scan,
-                                                     budget_scan=_budget_scan)
-        except Exception as _e:
-            logger.warning(f"[answer-composer post] skipped: {str(_e)[:200]}")
-        finally:
-            if trace:
-                trace.record_phase("validator_composer", _vt0)
         # ── Phase 3: Evidence Contract（2026-08-30）────────────────────────────
         # 检索命中了什么 ≠ 回答用了什么。此前引用面板直接取 search_books 前 4 条命中
         # （retrieval candidates), 用户会误读为 answer evidence。现在统一抽取:
@@ -1739,31 +1546,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         finally:
             if trace:
                 trace.record_phase("validator_citation_sanitize", _vt0)
-        # ══ Phase S (S3): Semantic Obligations——最终义务履行状态 ══
-        # 同一认识论义务只履行一次: 已由正文表达（如"不是一回事/不能等同"）的义务
-        # 不得再因措辞不同被追加补正; 状态随 done 输出供审计/前端。
-        _obligations_state = None
-        try:
-            from semantic_obligations import derive_obligations, assess_obligations
-            _obligations_state = assess_obligations(
-                derive_obligations(_epistemic_verdict, _interpretation_verdict), full_answer)
-        except Exception as _e:
-            logger.warning(f"[obligations] skipped: {str(_e)[:200]}")
+        # O4: semantic_obligations（derive/assess obligations）已删除——
+        # "同一义务只履行一次"的语义义务台账属 Shadow cognition; done.obligations 字段随之移除。
         # 工具失败统计须在 result_full 剥离前取值（2026-08-30: 旧代码在弹掉后才计数, 恒为 0）
         _fail = sum(1 for tc in tool_log if isinstance(tc.get("result_full"), dict) and tc["result_full"].get("error"))
-        # ══ Phase T (T12): Tool Result Ownership 审计（须在 result_full 剥离前）══
-        # tool_value: NEW_EVIDENCE/NEW_STATE/NEW_STRUCTURE/NEW_ARTIFACT/PRESENTATION/REDUNDANT
-        # final_use : USED/PARTIALLY_USED/BYPASSED——REDUNDANT/BYPASSED 进入 observability anomaly
-        _tool_ownership = None
-        try:
-            _tool_ownership = TC.tool_ownership_audit(tool_log, full_answer)
-            if _tool_ownership and (_tool_ownership.get("bypassed_specialized_tools")
-                                    or _tool_ownership.get("redundant_specialized_tools")):
-                logger.info(f"[tool-ownership] bypassed={_tool_ownership['bypassed_specialized_tools']} "
-                            f"redundant={_tool_ownership['redundant_specialized_tools']} "
-                            f"detail={[e for e in _tool_ownership['entries'] if e['final_use'] == 'BYPASSED' or e['tool_value'] == 'REDUNDANT'][:4]}")
-        except Exception as _e:
-            logger.warning(f"[tool-ownership] skipped: {str(_e)[:160]}")
+        # O4: tool_ownership_audit（tool_value/final_use 审计）已随 tool_contracts 瘦身删除——
+        # "专用工具是否被绕过/冗余"的语义审计不改变任何行为, done.tool_ownership 字段随之移除。
         for tc in tool_log:
             tc.pop("result_full", None)
         # 安全审查（done 前）
@@ -1828,7 +1616,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         yield {"type": "done", "citations": citations, "evidence": evidence_payload,
                "tool_calls": tool_log,
                "suggestions": suggestions, "safety": safety_flag,
-               "composition": _composition_scan,
+               # O4 删除的 done 字段: composition / epistemic / obligations / budget（扫描）/
+               # retrieval_state / tool_ownership——Shadow cognition 审计块随生产代码一并移除。
                # Phase A: tool loop 治理状态（UAT/审计断言用; 前端可忽略）
                "tool_loop": {"invocation_id": trace.invocation_id if trace else None,
                               "budget": budget.snapshot() if budget else None,
@@ -1863,38 +1652,26 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                # 工具级时长见 trace.calls 与 tool 事件, 此处为阶段汇总）
                "timing": {"phases": (list(trace.phases) if trace else []),
                           "total_ms": round((time.time() - _t_start) * 1000, 1)},
-               # Phase S: 结构化状态随 done 输出（审计/前端可用, 不改变主协议）
-               "epistemic": _epistemic_state,
-               "obligations": _obligations_state,
-               "budget": _budget_scan,
                "citation_sanitize": ({k: _citation_sanitize.get(k) for k in
                                       ("verified_citations", "unverified_before", "actions")}
                                      if _citation_sanitize else None),
-               # Patch 1: 问题计划 / 核验状态 / 时期路由 / 检索充分性 / 引用净化统计
-               # Patch 1.1: verification_intent / source_navigation / obligation 台账随 done 输出（审计）
-               "plan": {"problem_type": plan.get("problem_type"),
-                        "complexity": plan.get("complexity"),
-                        "relations": plan.get("relations"),
-                        "form_directive": bool(plan.get("form_directive")),
-                        "chain_directive": bool(plan.get("chain_directive")),
-                        "verification_intent": ({"kind": _vi.get("kind"),
+               # O4: plan 审计块瘦身为 verification_intent（problem_type/complexity/
+               # relations/form_directive/chain_directive/source_navigation 已随
+               # reasoning_plan 瘦身删除——Main Agent 不需要 Python 的问题分类）
+               "plan": {"verification_intent": ({"kind": _vi.get("kind"),
                                                  "constraint": _vi.get("constraint"),
                                                  "term": _vi.get("term")}
-                                                if _vi else None),
-                        "source_navigation": bool(plan.get("source_navigation"))},
+                                                if _vi else None)},
                "verification": ({"term": verif_box.get("term"),
                                  "state": verif_box.get("state"),
                                  "computed": verif_box.get("computed")}
                                 if verif_box.get("term") else None),
+               # O4 瘦身后: 纯执行事实台账（read_chapters/primary_text_read/exact_quote_verified/计数）
                "obligation_ledger": (obligation_ledger.snapshot()
                                      if obligation_ledger is not None else None),
                # Phase T.1: Quote Bound 审计（引文核验状态 / 拼接检测 / 未核验 blockquote 计数）
                "quote_bound": (_quote_audit or {}),
                "temporal": _temporal_state,
-               "retrieval_state": (retrieval_state.snapshot()
-                                   if retrieval_state is not None else None),
-               # Phase T (T12): 工具结果所有权审计（tool_value/final_use + anomaly 计数）
-               "tool_ownership": _tool_ownership,
                # O2: LiveCitationSanitizer 已删除——正式引用不再被 runtime 降级改写,
                # 未核验引用走 validator UNVERIFIED_CITATION → same-agent repair。
                "live_citation_sanitize": {"verified": validation.verified_citations,
