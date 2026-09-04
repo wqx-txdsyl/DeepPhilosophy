@@ -41,12 +41,14 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://deepphilosophy.top",
+        "https://agent.deepphilosophy.top",   # PhiAgent 前端（本地 8011 经隧道暴露）
         "https://deepphilosophy.pages.dev",
         "https://deepphilosophy.vercel.app",
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
         "http://localhost:8000",
+        "http://localhost:5201",              # phiagent 本地 dev
     ],
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],

@@ -377,7 +377,7 @@ export default function SchoolDetailPage() {
     return (
       <div style={{ background:'var(--bg)', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
         <p style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--ochre)', marginBottom:24, fontFamily:'var(--font-sans)' }}>Coming Soon</p>
-        <h1 style={{ fontSize:'clamp(2rem,5vw,3rem)', fontWeight:400, color:'var(--ink)', letterSpacing:'0.04em', marginBottom:16, fontFamily:'"Playfair Display","PingFang SC",serif' }}>{name}</h1>
+        <h1 style={{ fontSize:'clamp(2rem,5vw,3rem)', fontWeight:400, color:'var(--ink)', letterSpacing:'0.04em', marginBottom:16, fontFamily:'var(--font-serif)' }}>{name}</h1>
         <div style={{ width:32, height:1.5, background:'var(--ochre)', marginBottom:20, opacity:0.4 }} />
         <p style={{ fontSize:'1rem', fontWeight:300, color:'var(--text-dim)', lineHeight:2.0, maxWidth:500, fontFamily:'var(--font-sans)' }}>该流派详情页正在建设中，敬请期待。</p>
         <button onClick={() => window.history.back()} style={{ marginTop:32, background:'none', border:'1px solid rgba(145,118,71,0.2)', borderRadius:6, padding:'10px 28px', fontSize:13, color:'var(--ochre)', cursor:'pointer', letterSpacing:'0.06em', fontFamily:'var(--font-sans)' }}>← 返回</button>
@@ -389,7 +389,7 @@ export default function SchoolDetailPage() {
   const cihai = data.cihai || [];
 
   return (
-    <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
+    <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: 'var(--font-serif)' }}>
       <HeroSection name={data.name} subtitle={data.subtitle} quote={data.quote} quoteAuthor={data.quoteAuthor} heroImage={heroImage} englishName={ENG_NAMES[data.name]} />
       <div id="school-content">
       <FadeSection><OverviewSection overview={data.overview} subSchools={subSchools} /></FadeSection>

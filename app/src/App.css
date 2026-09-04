@@ -93,17 +93,19 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-  /* Stripe 式多层阴影：真实材质深度 */
-  --shadow-xs: 0 1px 2px rgba(0,0,0,0.03);
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04),
-               0 2px 4px rgba(0,0,0,0.04);
-  --shadow-md: 0 1px 2px rgba(0,0,0,0.04),
-               0 2px 4px rgba(0,0,0,0.04),
-               0 4px 8px rgba(0,0,0,0.04);
-  --shadow-lg: 0 1px 2px rgba(0,0,0,0.04),
-               0 2px 4px rgba(0,0,0,0.04),
-               0 4px 8px rgba(0,0,0,0.04),
-               0 8px 16px rgba(0,0,0,0.04);
+  /* Stripe 式多层阴影 —— 暖调墨色（呼应羊皮纸），避免纯黑冷影 */
+  --shadow-xs: 0 1px 2px rgba(74, 58, 40, 0.05);
+  --shadow-sm: 0 1px 2px rgba(74, 58, 40, 0.05),
+               0 2px 4px rgba(74, 58, 40, 0.05);
+  --shadow-md: 0 1px 2px rgba(74, 58, 40, 0.05),
+               0 2px 4px rgba(74, 58, 40, 0.06),
+               0 4px 8px rgba(74, 58, 40, 0.06);
+  --shadow-lg: 0 1px 2px rgba(74, 58, 40, 0.05),
+               0 2px 4px rgba(74, 58, 40, 0.06),
+               0 4px 8px rgba(74, 58, 40, 0.06),
+               0 8px 16px rgba(74, 58, 40, 0.07);
+  --shadow-gold: 0 1px 2px rgba(184, 149, 106, 0.14),
+                 0 4px 12px rgba(184, 149, 106, 0.18);
   --transition: 200ms cubic-bezier(0.2, 0, 0, 1);
 
   /* ——— Spacing scale ——— */
@@ -134,6 +136,9 @@
 
   /* ——— Smooth color transition for dark mode ——— */
   --color-transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+
+  /* ——— Hero scrim（页面背景色 RGB 三元组，随明暗模式切换）—— */
+  --scrim-rgb: 244, 240, 235;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -149,8 +154,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none;
   cursor: default;
-  line-height: 1.6;
+  line-height: 1.7;
+  text-rendering: optimizeLegibility;
   transition: var(--color-transition);
+}
+
+/* ——— 全局隐藏滚动条（2026-08-18）—— —
+   所有界面统一隐藏滚动条, 滚动功能保留（滚轮/触摸/键盘正常）。
+   WebKit（Chrome/Safari/Edge）用 ::-webkit-scrollbar;
+   Firefox 用 scrollbar-width / scrollbar-color。 */
+* {
+  scrollbar-width: none;              /* Firefox */
+  -ms-overflow-style: none;           /* IE / 旧 Edge */
+}
+*::-webkit-scrollbar {
+  display: none;                      /* WebKit: 完全隐藏 */
+  width: 0; height: 0;
+}
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 
 /* ——— Background noise texture ——— */
@@ -186,9 +209,11 @@ body::before {
   position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 24px; height: var(--header-height);
-  background: linear-gradient(to bottom, var(--bone), rgba(244,240,235,0.95));
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(to bottom, var(--bone), color-mix(in srgb, var(--bone) 88%, transparent));
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset;
   transition: var(--color-transition);
 }
 .app-title {
@@ -217,16 +242,19 @@ body::before {
   color: var(--ink);
   background: color-mix(in srgb, var(--primary) 70%, transparent);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 8px 18px;
   cursor: pointer;
   letter-spacing: 0.04em;
   transition: all 0.25s, var(--color-transition);
+  box-shadow: var(--shadow-xs);
 }
 .navbar-login-btn:hover {
   background: color-mix(in srgb, var(--primary) 90%, transparent);
   border-color: var(--ochre);
+  box-shadow: var(--shadow-gold);
 }
 
 .app-main {
@@ -241,10 +269,10 @@ body::before {
   align-items: center; justify-content: center;
   border: none; background: none;
   color: var(--text-dim); font-size: 11px;
-  cursor: pointer; transition: color var(--transition); gap: 2px;
+  cursor: pointer; transition: color var(--transition), background-color var(--transition); gap: 2px;
   border-radius: var(--radius-sm);
 }
-.nav-btn:hover { color: var(--ink); }
+.nav-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--border) 28%, transparent); }
 .nav-btn:active { transform: scale(0.97); }
 .nav-btn.active { color: var(--accent); font-weight: 600; }
 .nav-btn:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
@@ -297,11 +325,13 @@ body::before {
   position: fixed; bottom: var(--space-xl); right: var(--space-xl); z-index: var(--z-overlay);
   width: 40px; height: 40px; border-radius: 50%;
   border: 1px solid var(--border); background: var(--card-bg); color: var(--text-dim);
-  font-size: 18px; cursor: pointer; transition: var(--color-transition), opacity 0.3s, transform 0.3s;
+  font-size: 18px; cursor: pointer; transition: var(--color-transition), opacity 0.3s, transform 0.3s, box-shadow 0.3s;
   display: flex; align-items: center; justify-content: center;
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
 }
-.scroll-top-btn:hover { border-color: var(--ochre); color: var(--ink); transform: translateY(-2px); }
+.scroll-top-btn:hover { border-color: var(--ochre); color: var(--ink); transform: translateY(-2px); box-shadow: var(--shadow-gold); }
 .scroll-top-btn:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
 
 /* Page transition animation — 2026-08-11 增强: 模糊浮现 + 区块错落 stagger */
@@ -326,6 +356,22 @@ body::before {
   .page-enter, .page-enter > * { animation: none !important; }
 }
 
+/* ——— 全屏布局禁用 page-enter 位移（2026-08-18）—— —
+   page-in 的 translateY(18px) 起始位移动画会让严格 100dvh 的全屏容器
+   （阅读器/问答页）在加载瞬间整体下移 → 底部超出视口 → 浏览器创建
+   临时页面级滚动条（"刚开始溢出，动画结束又不溢出"）。
+   阅读器/问答模式仅保留淡入（opacity），无 transform 即无滚动溢出。 */
+.app-main.reader-mode .page-enter,
+.app-main.reader-mode .page-enter > *,
+.app-main.qa-mode .page-enter,
+.app-main.qa-mode .page-enter > * {
+  animation: page-fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+@keyframes page-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* Reading progress bar */
 .reading-progress {
   position: fixed; top: 0; left: 0; height: 2px;
@@ -341,10 +387,10 @@ body::before {
   cursor: pointer; transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
   position: relative;
 }
-.card:hover { border-color: var(--ochre); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.card:hover { border-color: color-mix(in srgb, var(--ochre) 55%, var(--border)); transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .card:active { transform: scale(0.99); }
 .card:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
-.card-title { font-size: 16px; font-weight: 500; margin-bottom: 4px; color: var(--ink); font-family: var(--font-serif); }
+.card-title { font-size: 16px; font-weight: 500; margin-bottom: 4px; color: var(--ink); font-family: var(--font-serif); letter-spacing: 0.01em; }
 .card-subtitle { font-size: 13px; color: var(--text-dim); font-weight: 400; }
 
 /* ——— Skeleton loading ——— */
@@ -357,7 +403,7 @@ body::before {
 }
 
 .tag {
-  display: inline-block; padding: 3px 10px; border-radius: 9999px;
+  display: inline-block; padding: 3px 10px; border-radius: 4px;
   font-size: 11px; margin: 2px; letter-spacing: 0.04em; text-transform: uppercase;
   background: transparent; color: var(--fade);
   border: 1px solid var(--border);
@@ -366,7 +412,7 @@ body::before {
 .tag:hover { border-color: var(--ochre); color: var(--ochre); }
 
 .badge {
-  display: inline-block; padding: 3px 10px; border-radius: 9999px;
+  display: inline-block; padding: 3px 10px; border-radius: 4px;
   font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
 }
 .badge-east { background: rgba(58,90,124,0.06); color: var(--prussian); border: 1px solid rgba(58,90,124,0.15); }
@@ -379,11 +425,10 @@ body::before {
 .btn {
   padding: 8px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border);
   font-size: 13px; font-weight: 500; font-family: var(--font-sans);
-  cursor: pointer; transition: all var(--transition); background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all var(--transition), var(--color-transition); background: transparent; color: var(--text-dim);
   letter-spacing: 0.03em;
-  transition: all var(--transition), var(--color-transition);
 }
-.btn:hover { transform: translateY(-1px); }
+.btn:hover { transform: translateY(-1px); color: var(--ink); border-color: var(--ochre); }
 .btn:active { transform: scale(0.97); }
 .btn:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
 .btn-primary { border-color: var(--ink); color: var(--ink); }
@@ -400,15 +445,17 @@ body::before {
   background: var(--card-bg); color: var(--text); font-size: 15px;
   font-family: var(--font-sans); font-weight: 400;
   outline: none; margin-bottom: 18px;
-  transition: border-color var(--transition), var(--color-transition);
+  transition: border-color var(--transition), box-shadow var(--transition), var(--color-transition);
 }
-.search-box:focus { border-color: var(--ochre); }
+.search-box::placeholder { color: color-mix(in srgb, var(--text-dim) 75%, transparent); }
+.search-box:focus { border-color: var(--ochre); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ochre) 14%, transparent); }
 .search-box:focus { border-bottom-color: var(--ochre); }
 
 /* ——— Loading / Empty ——— */
-.loading { display: flex; align-items: center; justify-content: center; padding: 80px 20px; color: var(--text-dim); font-size: 15px; }
+.loading { display: flex; align-items: center; justify-content: center; padding: 80px 20px; color: var(--text-dim); font-size: 15px; letter-spacing: 0.02em; }
 .empty-state { text-align: center; padding: 60px 20px; color: var(--text-dim); }
-.section-title { font-size: 20px; font-weight: 400; margin: 20px 0 12px; color: var(--ink); font-family: var(--font-serif); letter-spacing: 0.03em; }
+.empty-state p:last-child { font-size: 14px; letter-spacing: 0.02em; }
+.section-title { font-size: 20px; font-weight: 500; margin: 20px 0 12px; color: var(--ink); font-family: var(--font-serif); letter-spacing: 0.02em; text-wrap: balance; }
 
 /* ——— Page container ——— */
 .page-container { padding: 0; }
@@ -547,9 +594,10 @@ html.dark-mode {
   --accent2: #C9A96E;
   --primary: var(--bone);
   --secondary: var(--card-bg);
+  --scrim-rgb: 15, 14, 12;
 }
 html.dark-mode body { background: var(--bg); color: var(--text); }
-html.dark-mode .app-header { background: linear-gradient(to bottom, #1A1816, rgba(26,24,22,0.95)); }
+html.dark-mode .app-header { background: linear-gradient(to bottom, #1A1816, rgba(26,24,22,0.92)); box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset; }
 html.dark-mode .candle-glow { background: radial-gradient(circle, rgba(201,169,110,0.04) 0%, rgba(201,169,110,0.01) 40%, transparent 70%); }
 html.dark-mode .card:hover { border-bottom-color: var(--ochre); }
 html.dark-mode .btn-primary { border-color: var(--ink); color: var(--ink); }
@@ -704,4 +752,39 @@ html.mobile-mode .app-main.reader-mode {
 }
 html.mobile-mode .reader-page-wrapper {
   height: 100dvh !important;
+}
+
+/* ——— Reader 布局加固（2026-08-18）—— —
+   目标: 上下工具栏固定 + 中间内容内部滚动, 任何时刻不产生页面级纵向溢出。
+   高度链: wrapper(100dvh) > topbar(fs0) + main(flex1,minH0) > reader-col(flex1,minH0)
+           > reader-text-container(flex1,minH0) > ChapterReader(flex1,minH0)
+           > .reader-content(flex1, overflow:auto 唯一滚动) + bottom-bar(fs0) */
+.reader-page-wrapper {
+  height: 100vh;  /* dvh 兜底（旧浏览器不支持 dvh 时回退 vh） */
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  min-height: 0;
+}
+.reader-page-wrapper > div:first-child {
+  flex-shrink: 0;
+  z-index: 2;   /* 顶栏浮于滚动内容之上 */
+}
+.reader-page-wrapper > div:nth-child(2) {
+  min-height: 0;
+}
+.reader-text-container {
+  min-height: 0;
+}
+.reader-text-container > div {
+  min-height: 0;
+}
+.reader-content {
+  min-height: 0;
+}
+/* ChapterReader 底部工具栏：固定不随内容滚动 */
+.reader-content + div {
+  flex-shrink: 0;
+  z-index: 2;
+  position: relative;
 }

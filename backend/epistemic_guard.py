@@ -763,7 +763,7 @@ class CounterfactualAuthorGuard:
         author = authors[0]
         result["authors"] = authors
         result["author"] = author
-        # 命中反问句式 / 活到今天 / 强模态断言 → 反事实信号
+        # ── 反事实信号采集（question/liveness/modal 仅作观测 cue）──
         cues = []
         if _CQ_QUESTION.search(msg):
             cues.append("question")
@@ -771,6 +771,9 @@ class CounterfactualAuthorGuard:
             cues.append("liveness")
         if _CQ_MODAL.search(msg):
             cues.append("modal")
+        contemporary = bool(_CONTEMPORARY_OBJECT_RE.search(msg))
+        if contemporary:
+            cues.append("contemporary_object")
         result["cues"] = cues
 
         # ── 直接史料判定 ──
@@ -791,11 +794,28 @@ class CounterfactualAuthorGuard:
         if hit_topics:
             evidence.append({"kind": "documented_topic", "topics": hit_topics})
         # 当代对象（作者生前不存在的对象 → 即便句式属"看"也按反事实）
-        if _CONTEMPORARY_OBJECT_RE.search(msg):
+        if contemporary:
             evidence = [e for e in evidence if e["kind"] != "documented_topic"]
 
         result["direct_evidence"] = evidence
-        if cues and not evidence:
+
+        # ── Patch 1.1 (P4): 反事实边界非侵入收紧 ──
+        # 仅当问题真正"无历史文本事实可直接回答"时才触发:
+        #   ① 哲学家面对其死后对象（当代对象: AI/算法/互联网…）
+        #   ② 未实际发生的会面/事件（活到今天/穿越/如果看到今天）
+        #   ③ "X 会怎么评价 Y"且 Y 既非已载史料话题、也非另一位已知哲学家
+        #      （另一位哲学家在场 → 是思想史关系问题, 有文本事实可答）
+        # 普通 "A 如何回应 B / A 与 B 理论差异 / B 受到 A 什么影响 / A 是否反驳 B"
+        # → 一律 historical, guard 完全静默（不注入、不尾补）。
+        # 单独的强模态词（引文/概念表述中的"必然性/一定"）绝不构成触发——
+        # F06 误触发根因: "经验不能给出必然性" 命中 _CQ_MODAL。
+        multi_author = len(authors) >= 2
+        triggered = (
+            "liveness" in cues
+            or (contemporary and cues)
+            or ("question" in cues and not evidence and not multi_author)
+        )
+        if triggered:
             result["mode"] = "counterfactual"
             result["requires_guard"] = True
             result["epistemic_type"] = "AUTHOR_COUNTERFACTUAL"
@@ -804,7 +824,7 @@ class CounterfactualAuthorGuard:
             result["boundary_text_en"] = (
                 f"There is no evidence that {author} personally commented on this object; the following is a "
                 f"counterfactual extrapolation based on his known intellectual framework.")
-        elif evidence:
+        else:
             result["mode"] = "historical"
             result["epistemic_type"] = "TEXTUAL_INFERENCE"
         return result

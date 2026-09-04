@@ -113,11 +113,44 @@ register_tool(
 )
 
 # ── 工具 2: get_book_detail ──────────────────────────
+def _resolve_book_by_name(name):
+    """书名/作者模糊解析 → 最佳匹配 book 或 None。
+    背景（2026-08-30）: 轻量模型（glm-4-flash）常无视"先搜后查"纪律, 直接把书名当
+    book_id 传入——工具层自愈解析, 不依赖模型自觉, 对所有供应商模型生效。
+    2026-09-01: "书名·篇名"变体回退（模型常传"论语·先进"式参数）——整体解析失败时
+    取 ·/（ 前的主书名部分重试一次。"""
+    name = (name or "").strip().strip("《》\"'“”　 ")
+    if len(name) < 2:
+        return None
+    terms = [t for t in re.split(r"[\s,，。；;：:、]+", name) if len(t) >= 2] or [name]
+    hits = []
+    for b in get_books():
+        hay = f"{b.get('title', '')} {b.get('author', '')}"
+        s = _match_score(hay, terms)
+        if s > 0:
+            hits.append((s, b))
+    if not hits:
+        for sep in ("·", "（", "("):
+            if sep in name:
+                main = name.split(sep, 1)[0].strip()
+                if len(main) >= 2:
+                    alt = _resolve_book_by_name(main)
+                    if alt:
+                        return alt
+        return None
+    hits.sort(key=lambda x: -x[0])
+    return hits[0][1]
+
+
 def _exec_book_detail(args):
     bid = args.get("book_id", "")
     b = book_by_id(bid)
     if not b:
-        return {"error": f"未找到书籍 {bid}"}
+        alt = _resolve_book_by_name(bid)          # 书名宽容解析
+        if alt:
+            b, bid = alt, alt.get("id", bid)
+    if not b:
+        return {"error": f"未找到书籍 {bid}（提示: 先用 search_books 检索获取 book_id）"}
     meta = chapter_meta(bid)
     return {"id": b.get("id"), "title": b.get("title"), "author": b.get("author"),
             "region": b.get("region"), "file_type": b.get("file_type"),
@@ -128,7 +161,7 @@ def _exec_book_detail(args):
 register_tool(
     "get_book_detail",
     "获取一本书的详情（简介/作者/目录/章节数）。",
-    {"type": "object", "properties": {"book_id": {"type": "string"}}, "required": ["book_id"]},
+    {"type": "object", "properties": {"book_id": {"type": "string", "description": "书名或 search_books 返回的 book_id"}}, "required": ["book_id"]},
     _exec_book_detail,
 )
 
@@ -138,14 +171,19 @@ def _exec_chapter(args):
     idx = _int_arg(args, "chapter_idx", 0, 0)
     ch = read_chapter(bid, idx)
     if not ch:
-        return {"error": f"章节不存在 {bid}/{idx}"}
+        alt = _resolve_book_by_name(bid)          # 书名宽容解析（同 get_book_detail）
+        if alt:
+            bid = alt.get("id", bid)
+            ch = read_chapter(bid, idx)
+    if not ch:
+        return {"error": f"章节不存在 {bid}/{idx}（提示: 先用 search_books 检索获取 book_id）"}
     return {"book_id": bid, "chapter_idx": idx, "title": ch["title"],
             "text": ch["text"][:6000]}
 
 register_tool(
     "get_chapter",
     "读取某本书指定章节的全文（用于深入引用原文、分析论证）。",
-    {"type": "object", "properties": {"book_id": {"type": "string"}, "chapter_idx": {"type": "integer"}}, "required": ["book_id", "chapter_idx"]},
+    {"type": "object", "properties": {"book_id": {"type": "string", "description": "书名或 search_books 返回的 book_id"}, "chapter_idx": {"type": "integer"}}, "required": ["book_id", "chapter_idx"]},
     _exec_chapter,
 )
 
@@ -425,3 +463,152 @@ register_tool(
     {"type": "object", "properties": {"table": {"type": "string", "enum": ["books", "philosophers", "network", "schools"]}, "key": {"type": "string"}, "limit": {"type": "integer"}}, "required": ["table"]},
     _exec_query_db,
 )
+
+
+# ═══════════════════════════════════════════════════════
+# Phase T.1 (T1.1-B): 全库逐字定位（出处核验 search→read 升级的确定性原语）
+#   - 不改 search_books 的向量/排序路径（DO NOT TOUCH: embedding/ranking 原样）
+#   - 只服务于出处核验: 定位候选篇章 → get_chapter 读取原文 → 逐字核验
+#   - 词法精确匹配（norm 连续包含）, 命中即真; 原典经典优先于研究汇编
+# ═══════════════════════════════════════════════════════
+_LOCATE_NORM_RE = re.compile(r"[^\w\u4e00-\u9fff]+")
+# 经典原典书名（同为逐字命中时排序加权——「论语」应排在「南怀瑾经典合集」前面）
+_CANONICAL_TITLES = {
+    "论语", "孟子", "大学", "中庸", "老子", "道德经", "庄子", "周易", "易经",
+    "诗经", "尚书", "礼记", "春秋", "左传", "荀子", "墨子", "韩非子", "管子",
+    "理想国", "会饮篇", "斐多", "形而上学", "尼各马可伦理学", "忏悔录",
+}
+# 研究/汇编/合集体裁（命中优先级降低——它们只是转述或引用原典）
+_LOCATE_PENALTY_RE = re.compile(
+    r"合集|全集|套装|大全集|著作集|文集|文选|辞典|词典|简史|史|讲|课|教程|答案|"
+    r"底层逻辑|进化论|导论|入门|读本|选读|漫话|图解|一本就懂|极简")
+
+_locate_norm_cache = {}      # bid -> [(idx, ntext)]
+_locate_cache_built = set()
+_locate_lock = threading.Lock()
+
+
+def _locate_norm(s):
+    return _LOCATE_NORM_RE.sub("", s or "")
+
+
+def _canon_score(book_title):
+    t = (book_title or "").strip()
+    score = 0
+    if 0 < len(t) <= 6:
+        score += 3
+    if t in _CANONICAL_TITLES:
+        score += 6
+    if _LOCATE_PENALTY_RE.search(t):
+        score -= 5
+    return score
+
+
+def _locate_passage(raw_text, term):
+    """命中章内提取可读原文片段（行=章段单位优先; 长段落按句界取窗口）"""
+    tn = _locate_norm(term)
+    best_line = ""
+    for ln in (raw_text or "").split("\n"):
+        s = ln.strip()
+        if not s:
+            continue
+        if term in s or (len(tn) >= 4 and tn in _locate_norm(s)):
+            best_line = s
+            break
+    if not best_line:
+        return ""
+    if len(best_line) <= 360:
+        return best_line
+    pos = best_line.find(term)
+    if pos < 0:
+        pos = max(0, len(best_line) // 4)
+    left = max(best_line.rfind("。", 0, pos), best_line.rfind("！", 0, pos),
+               best_line.rfind("？", 0, pos), best_line.rfind("；", 0, pos))
+    right = len(best_line)
+    for punct in ("。", "！", "？", "；"):
+        p = best_line.find(punct, pos + len(term) if pos >= 0 else 0)
+        if 0 < p < right:
+            right = p + 1
+    return best_line[max(0, left + 1 if left >= 0 else 0):right].strip()[:360]
+
+
+def locate_exact_phrase(term, prefer_title=None, max_hits=6):
+    """全库逐字定位（T1.1-B; 同步函数——调用方放线程池）
+
+    返回 {"term", "found", "prefer_found", "prefer_absent", "prefer_unreadable",
+          "hits": [{book_id, book_title, author, chapter_idx, chapter_title,
+                    passage, canonical}], "scanned_books"}
+    - 词法连续包含（norm 后）, 不经 embedding; 进程级缓存 norm 文本（首扫 ~9s, 后续 ~0.2s）
+    - prefer_title: 用户提到的《书》——优先在该书内定位; 明确不在时 prefer_absent=True
+      （R4 类"是不是《X》里的"纠错的事实依据）; 该书文本不可读时 prefer_unreadable=True
+    """
+    t = (term or "").strip()
+    tn = _locate_norm(t)
+    out = {"term": t, "found": False, "prefer_found": None, "prefer_absent": False,
+           "prefer_unreadable": False, "hits": [], "scanned_books": 0}
+    if len(tn) < 2:
+        return out
+    books = get_books()
+    by_title = {}
+    for b in books:
+        bt = (b.get("title") or "").replace("《", "").replace("》", "").strip()
+        if bt and bt not in by_title:
+            by_title[bt] = b
+    prefer_book = None
+    if prefer_title:
+        pref_key = prefer_title.replace("《", "").replace("》", "").strip()
+        prefer_book = by_title.get(pref_key) or by_title.get(_locate_norm(pref_key))
+        if prefer_book is None:
+            for bt, b in by_title.items():
+                if pref_key and (pref_key in bt or bt in pref_key):
+                    prefer_book = b
+                    break
+
+    def _scan_book(b):
+        bid = b.get("id")
+        if not bid:
+            return []
+        with _locate_lock:
+            if bid not in _locate_cache_built:
+                try:
+                    _locate_norm_cache[bid] = [
+                        (i, _locate_norm(text)) for i, _t, text in _book_chapter_texts(bid)]
+                except Exception:
+                    _locate_norm_cache[bid] = []
+                _locate_cache_built.add(bid)
+        norms = _locate_norm_cache.get(bid) or []
+        hits = []
+        for i, ntext in norms:
+            if ntext and tn in ntext:
+                # 命中才读原文（避免全库 raw 文本反复进出 LRU——实测 4s 抖动根因）
+                ch = read_chapter(bid, i) or {}
+                hits.append({"book_id": bid, "book_title": b.get("title") or "",
+                             "author": b.get("author") or "", "chapter_idx": i,
+                             "chapter_title": ch.get("title", ""),
+                             "passage": _locate_passage(ch.get("text", ""), t),
+                             "canonical": _canon_score(b.get("title"))})
+        return hits
+
+    hits = []
+    # ① 用户提到的书优先（明确在该书内找不到 → prefer_absent, 纠错依据）
+    if prefer_book is not None:
+        out["scanned_books"] += 1
+        ph = _scan_book(prefer_book)
+        total_text = sum(len(x) for _i, x in _locate_norm_cache.get(prefer_book.get("id"), []))
+        if total_text < 100:
+            out["prefer_unreadable"] = True
+        if ph:
+            out["prefer_found"] = prefer_book.get("title")
+            hits.extend(ph)
+        else:
+            out["prefer_absent"] = True
+    # ② 全库扫描（命中按原典经典度排序; 稳定次序）
+    for b in books:
+        if prefer_book is not None and b.get("id") == prefer_book.get("id"):
+            continue
+        out["scanned_books"] += 1
+        hits.extend(_scan_book(b))
+    hits.sort(key=lambda h: -h["canonical"])
+    out["hits"] = hits[:max_hits]
+    out["found"] = bool(out["hits"])
+    return out

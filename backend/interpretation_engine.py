@@ -493,15 +493,18 @@ def scan_interpretation(verdict, answer, language="zh", tool_log=None):
     from semantic_obligations import derive_obligations, assess_obligations
     obligations = assess_obligations(derive_obligations(None, verdict), ans)
     res["obligations"] = obligations
+    # Phase T (T13-C): 高层语义义务（alternative_interpretation/uncertainty_disclosure/
+    # analogy_boundary）未命中关键词现在记 UNKNOWN 而非 UNSATISFIED——补正触发相应改为
+    # 只依赖结构性信号（overclaim = 越级断言检出; alternatives_offered = 替代解读缺席）,
+    # 不再用关键词命中与否决定追加, 也不新增正文 Guard。
     unsat_types = {o["type"] for o in obligations if o["status"] == "UNSATISFIED"}
     interpretive = any(m in ans for m in _INTERPRETIVE_ANSWER)
     if interpretive or sig["overclaim"]:
-        if "analogy_boundary" in unsat_types and "cross_author_comparison" in res["categories"]:
+        if "cross_author_comparison" in res["categories"] and (
+                sig["overclaim"] or "analogy_boundary" in unsat_types):
             # 类比≠等同义务未履行（含正文声称"本质完全一样"的越级断言）→ 补一次
             res["appends"].append(AVE_HEDGE_EN if language == "en" else AVE_HEDGE_ZH)
-        elif not res["alternatives_offered"] and (
-                "alternative_interpretation" in unsat_types
-                or "uncertainty_disclosure" in unsat_types):
+        elif not res["alternatives_offered"]:
             hedge = (_TIER_HEDGE_EN if language == "en" else _TIER_HEDGE_ZH)
             res["appends"].append(hedge.get(calib["tier"], hedge["tentative"]))
     _log_record({"phase": "post", "agent": "scan", "language": language,

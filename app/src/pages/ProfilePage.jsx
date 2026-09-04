@@ -133,13 +133,34 @@ function ProfilePage() {
   };
 
   // ========== Auth ==========
-  const api = (path, body) =>
-    fetch(`${getApiBase()}${path}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(10000),
-    }).then(r => r.ok ? r.json() : r.json().then(e => { throw new Error(e.detail || e.error || '失败'); }));
+  // 2026-08-18: 空 body 防御 —— 后端未启动/网关返回空响应时,
+  // 直接 r.json() 会抛 "Unexpected end of JSON input"（原始解析异常）。
+  // 改为先取文本, 空 body 走友好错误; 非 JSON 响应不再崩溃。
+  const api = async (path, body) => {
+    let r;
+    try {
+      r = await fetch(`${getApiBase()}${path}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(10000),
+      });
+    } catch (e) {
+      if (e.name === 'AbortError') throw new Error('请求超时，请稍后重试');
+      throw new Error('无法连接服务器，请检查网络或稍后重试');
+    }
+    const text = await r.text();
+    let data = null;
+    try { data = text ? JSON.parse(text) : null; } catch { data = null; }
+    if (!r.ok) {
+      const msg = data && (data.detail || data.error);
+      if (msg) throw new Error(msg);
+      if (r.status === 401) throw new Error('用户名或密码错误');
+      if (r.status === 429) throw new Error('请求过于频繁，请稍后再试');
+      throw new Error(`请求失败（${r.status}），请稍后重试`);
+    }
+    return data;
+  };
 
   const handleRegister = async () => {
     if (!username.trim() || !password.trim()) { setAuthMsg('请填写用户名和密码'); return; }

@@ -7,6 +7,7 @@ S13 检索索引与文本 LRU / embedding 缓存与向量索引。
 """
 import json, os, re, time, hashlib, threading
 from collections import OrderedDict
+from functools import lru_cache
 from pathlib import Path
 
 import guard
@@ -74,6 +75,35 @@ def chapter_meta(bid):
     if mp.exists():
         return json.load(open(mp, encoding="utf-8"))
     return None
+
+@lru_cache(maxsize=128)
+def block_titles(bid):
+    """块文件标题索引 {idx: title}（lru 缓存; 2026-08-31 引用跳转兜底用）
+    背景: 部分书 toc 粒度细于块文件（多个 toc 条目共用一个合并块）, 证据章节名取的是
+    块标题, 在 toc 里无同名条目 → resolveCite 落空。反查块标题即可定位回 toc index。"""
+    bid = _safe_bid(bid)
+    if not bid:
+        return {}
+    out = {}
+    d = CHAPTERS_DIR / bid
+    if not d.is_dir():
+        return out
+    for cp in d.glob("*.json"):
+        if cp.name == "meta.json":
+            continue
+        try:
+            n = int(cp.stem)
+        except ValueError:
+            continue
+        try:
+            blk = json.load(open(cp, encoding="utf-8"))
+        except Exception:
+            continue
+        t = (blk.get("title") or "").strip()
+        if t:
+            out[n] = t
+    return out
+
 
 def read_chapter(bid, idx):
     bid = _safe_bid(bid)
@@ -313,7 +343,9 @@ _mem_lock = threading.Lock()
 _mem_all = None   # 全量缓存: {user_key: {"essays":{}, "image":None, "experiment":None, "debate":None}}
 
 def _mem_slot():
-    """当前用户的记忆槽 dict（懒加载全量缓存）"""
+    """当前用户的记忆槽 dict（懒加载全量缓存）
+    Phase T 加固: 逐键 setdefault 兜底——历史文件/迁移嵌套可能缺新增状态键（如 socratic）,
+    工具侧不再假设槽键齐全。"""
     global _mem_all
     if _mem_all is None:
         _mem_all = {}
@@ -327,9 +359,11 @@ def _mem_slot():
         except Exception:
             _mem_all = {}
     key = guard.user_memory_key()
-    if key not in _mem_all:
-        _mem_all[key] = {"essays": {}, "image": None, "experiment": None, "debate": None}
-    return _mem_all[key]
+    slot = _mem_all.setdefault(key, {})
+    for _k, _v in (("essays", {}), ("image", None), ("experiment", None),
+                   ("debate", None), ("socratic", None)):
+        slot.setdefault(_k, _v)
+    return slot
 
 def _save_agent_memory():
     """原子写全量记忆（tmp+rename; 失败静默——记忆非关键数据）"""

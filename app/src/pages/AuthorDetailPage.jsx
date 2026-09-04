@@ -69,7 +69,7 @@ function AuthorDetailPage() {
       {/* 人物信息卡片 */}
       <div className="card" style={{ cursor: 'default' }}>
         {/* 姓名 */}
-        <h2 style={{ fontSize: 24, fontWeight: 500, marginBottom: 16, fontFamily: '"Playfair Display","PingFang SC",serif', letterSpacing: '0.03em' }}>
+        <h2 style={{ fontSize: 24, fontWeight: 500, marginBottom: 16, fontFamily: 'var(--font-serif)', letterSpacing: '0.03em' }}>
           {author.name}
         </h2>
 

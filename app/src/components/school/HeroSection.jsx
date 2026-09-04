@@ -10,18 +10,18 @@ export default function HeroSection({ name, quote, quoteAuthor, heroImage, engli
       position: 'relative', overflow: 'hidden',
       backgroundImage: heroImage, backgroundSize: 'cover', backgroundPosition: 'center',
     }}>
-      {/* Lighter overlay — let the architecture breathe */}
+      {/* Lighter overlay — let the architecture breathe (scrim 随明暗模式) */}
       <div style={{ position: 'absolute', inset: 0,
-        background: 'linear-gradient(to top, rgba(244,240,235,0.82) 0%, rgba(244,240,235,0.45) 35%, rgba(244,240,235,0.15) 100%)' }} />
+        background: 'linear-gradient(to top, rgba(var(--scrim-rgb), 0.82) 0%, rgba(var(--scrim-rgb), 0.45) 35%, rgba(var(--scrim-rgb), 0.15) 100%)' }} />
 
       <button onClick={() => navigate(-1)} style={{
         position: 'absolute', top: SPACE.lg, left: SPACE.lg, zIndex: 10,
-        fontFamily: FONT.sans, fontSize: 13, color: 'var(--ochre)', background: 'rgba(244,240,235,0.5)',
+        fontFamily: FONT.sans, fontSize: 13, color: 'var(--ochre)', background: 'rgba(var(--scrim-rgb), 0.5)',
         border: '1px solid rgba(196,149,106,0.3)', borderRadius: 4,
         cursor: 'pointer', letterSpacing: '0.04em', transition: 'all 0.25s', padding: '6px 14px'
       }}
-        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.8)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244,240,235,0.5)'; e.currentTarget.style.borderColor = 'rgba(196,149,106,0.3)'; }}
+        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(var(--scrim-rgb), 0.8)'; e.currentTarget.style.borderColor = 'var(--ochre)'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(var(--scrim-rgb), 0.5)'; e.currentTarget.style.borderColor = 'rgba(196,149,106,0.3)'; }}
       >← 谱系</button>
 
       {/* Editorial kicker */}
@@ -45,7 +45,7 @@ export default function HeroSection({ name, quote, quoteAuthor, heroImage, engli
       <blockquote style={{
         fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontStyle: 'italic', color: 'var(--ink)',
         maxWidth: 680, lineHeight: 1.7, margin: '0 0 16px', position: 'relative', fontWeight: 500,
-        textShadow: '0 0 40px rgba(244,240,235,0.8)',
+        textShadow: '0 0 40px rgba(var(--scrim-rgb), 0.8)',
         fontFamily: FONT.serif, letterSpacing: '0.01em'
       }}>
         <span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.7, marginRight: 6 }}>&#x201C;</span>{quote}<span style={{ color: 'var(--ochre)', fontSize: '2em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.7, marginLeft: 6 }}>&#x201D;</span>

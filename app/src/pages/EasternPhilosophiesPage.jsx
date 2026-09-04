@@ -33,11 +33,11 @@ export default function EasternPhilosophiesPage() {
   return (
     <div className="page-container" style={{ paddingBottom: 80 }}>
       <section style={{ minHeight: '40vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '72px 32px 48px', position: 'relative', overflow: 'hidden', backgroundImage: 'url(https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/schools/东方哲学.webp?x-oss-process=image/resize,w_1280)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(244,240,235,0.88) 0%, rgba(244,240,235,0.5) 40%, rgba(244,240,235,0.2) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(var(--scrim-rgb), 0.88) 0%, rgba(var(--scrim-rgb), 0.5) 40%, rgba(var(--scrim-rgb), 0.2) 100%)' }} />
         <button onClick={() => navigate(-1)} style={{ position: 'relative', zIndex: 1, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.04em', marginBottom: 32, padding: 0 }}>← 返回</button>
         <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--ochre)', margin: '0 0 16px' }}>Eastern Philosophy</p>
-        <h1 style={{ position: 'relative', zIndex: 1, fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 400, color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.2, margin: '0 0 20px' }}>东方哲学</h1>
-        <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto', textShadow: '0 0 40px rgba(244,240,235,0.8)' }}>从先秦诸子到当代，二十五个流派，<br />两千五百年不断的思想脉络。</p>
+        <h1 style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-serif)', fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 400, color: 'var(--ink)', letterSpacing: '0.04em', lineHeight: 1.2, margin: '0 0 20px' }}>东方哲学</h1>
+        <p style={{ position: 'relative', zIndex: 1, fontFamily: 'var(--font-sans)', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.8, maxWidth: 520, margin: '0 auto', textShadow: '0 0 40px rgba(var(--scrim-rgb), 0.8)' }}>从先秦诸子到当代，二十五个流派，<br />两千五百年不断的思想脉络。</p>
         <div style={{ width: 40, height: 1, background: 'var(--ochre)', margin: '28px auto 0', opacity: 0.4 }} />
       </section>
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 32px 64px' }}>
@@ -47,7 +47,7 @@ export default function EasternPhilosophiesPage() {
               style={{ padding: '24px 0', cursor: 'pointer', borderBottom: '1px solid var(--border)', transition: 'all 0.25s', background: 'transparent' }}
               onMouseEnter={e => { e.currentTarget.style.borderBottomColor = s.color; }}
               onMouseLeave={e => { e.currentTarget.style.borderBottomColor = 'var(--border)'; }}>
-              <h3 style={{ fontFamily: '"Playfair Display","PingFang SC",serif', fontSize: 22, fontWeight: 400, color: 'var(--ink)', letterSpacing: '0.03em', margin: '0 0 8px' }}>{s.name}</h3>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)', letterSpacing: '0.03em', margin: '0 0 8px' }}>{s.name}</h3>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.8, margin: 0 }}>{s.desc}</p>
             </div>
           ))}

@@ -464,9 +464,10 @@ ${textContext}
       </div>
 
       {/* Main area: reader + optional notes panel */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-        {/* Reader */}
-        <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'auto', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
+        {/* Reader — 唯一滚动容器是内部 .reader-content；本列 overflow:hidden 防止
+            某层高度链未就绪时接管滚动（会导致底部工具栏被内容顶出视口） */}
+        <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minHeight: 0, background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
             {textLoading ? (
               <div className="loading">加载中...</div>

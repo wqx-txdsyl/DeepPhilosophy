@@ -68,6 +68,13 @@ def _bucket_reset(name, key):
         _buckets.pop((name, key), None)
 
 
+def _quota_reset(key):
+    """清空指定 key 的今日配额计数（测试用例复位用，与 _bucket_reset 对称）"""
+    today = time.strftime("%Y-%m-%d")
+    with _quota_lock:
+        _quota.pop((today, key), None)
+
+
 # ── 每日配额（内存计数, 按 (日期, key); 重启清零）──
 _quota = {}
 _quota_lock = threading.Lock()
@@ -175,6 +182,26 @@ def require_admin(request: Request, x_admin_password: str = Header(None)):
     # 校验成功 → 复位该 IP 的失败计数
     _bucket_reset("adminfail", client_ip(request))
     return True
+
+
+# ── 注册/登录防刷限流（P0, 2026-08-30: agent.deepphilosophy.top 公开后新增）────────
+# 注册与登录此前完全无频率限制, 公开后可被脚本刷爆用户表 / 暴力破解口令。
+# 按 IP 令牌桶 + 每日配额（与 agent/ai 机制同源, 独立 key 前缀避免互挤）。
+AUTH_RATE, AUTH_BURST = 10, 20          # 每分钟 10 次, 突发 20
+AUTH_QUOTA = 30                         # 每 IP 每日最多 30 次（注册+登录合计）
+
+
+def auth_guard(request: Request):
+    """注册/登录端点依赖: 防暴力破解 + 防注册垃圾（按 IP 限流 + 每日配额）
+    不校验 token（注册/登录本身无 token）；仅做频率控制，不影响正常用户。
+    """
+    ip = client_ip(request)
+    key = f"auth:ip:{ip}"
+    if not _bucket("auth", key, AUTH_RATE, AUTH_BURST).consume():
+        raise HTTPException(status_code=429, detail="操作过于频繁，请稍后再试")
+    if not _quota_ok(key, AUTH_QUOTA):
+        raise HTTPException(status_code=429, detail="今日操作次数已达到上限，请明日再试")
+    return ip
 
 
 def user_memory_key() -> str:

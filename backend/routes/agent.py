@@ -20,6 +20,8 @@ main.py 的 router 引用不变（from routes.agent import router）。
 agents（TOOLS）、sync/knowledge（invalidate_agent_cache）、tests（_safe_bid/_int_arg/
 _embed_query/_exec_search_books/_exec_query_db…）均经本模块 re-export。
 """
+import re
+
 from fastapi import APIRouter
 
 # ── 聚合 import（顺序即加载顺序: env → 核心 → 工具域 → SSE）──
@@ -121,11 +123,19 @@ async def list_agents():
 @router.get("/api/cite")
 async def api_cite(book: str = "", chapter: str = ""):
     from routes.agent import get_books, chapter_meta, read_chapter
+    from evidence_contract import _split_book_chapter
+
+    # 《书·章》变体归一: 模型常写【《康德著作集·序言》】（·在《》内）, 不拆分则书名查不到
+    book, chapter = _split_book_chapter(book, chapter)
 
     def _norm(s):
-        # 书名归一化: 去《》/括号(全角转半角后剥除)/去空白 (AI 引用全半角不定;
-        # 书名"从《理想国》到《正义论》"剥《》后无括号, 输入"(理想国)"带半角括号须同样剥除)
-        return (s or "").replace("《", "").replace("》", "").replace("（", "(").replace("）", ")").replace("(", "").replace(")", "").replace(" ", "").strip()
+        # 书名归一化: 去《》/括号(全角转半角后剥除)/去空白/破折号变体归一 (AI 引用全半角不定;
+        # 书名"从《理想国》到《正义论》"剥《》后无括号, 输入"(理想国)"带半角括号须同样剥除;
+        # 语料章节"第108—275节"(全角破折号) 与书库 toc"第108-275节"(连字符) 须对齐, 否则永不命中)
+        return ((s or "").replace("《", "").replace("》", "")
+                .replace("（", "(").replace("）", ")").replace("(", "").replace(")", "")
+                .replace("—", "-").replace("–", "-").replace("‐", "-").replace("－", "-")
+                .replace(" ", "").strip())
 
     bname = _norm(book)
     if not bname:
@@ -143,7 +153,7 @@ async def api_cite(book: str = "", chapter: str = ""):
     if not meta:
         return {"error": "该书无章节数据"}
     toc = meta.get("toc") or []
-    cname = (chapter or "").strip()
+    cname = _norm(chapter)   # 2026-08-30: 章节参数同样归一化（此前只 strip, 括号/破折号变体永不与 toc 对齐）
     idx = -1
     hit_title = ""
     matched = False   # 2026-08-14: 未匹配章节时不再静默跳第 0 章, 前端据此不渲染跳转
@@ -152,19 +162,46 @@ async def api_cite(book: str = "", chapter: str = ""):
     for pos, t in enumerate(toc):
         if isinstance(t, dict) and t.get("type") == "part":
             title = t.get("title")
-            if title and cname and (cname in title or title in cname or (base and base in title)) and part_fb < 0:
+            t_norm = _norm(title)
+            if title and cname and (cname in t_norm or t_norm in cname or (base and base in t_norm)) and part_fb < 0:
                 for t2 in toc[pos + 1:]:
                     if not (isinstance(t2, dict) and t2.get("type") == "part"):
                         part_fb = t2.get("index", 0) if isinstance(t2, dict) else toc.index(t2)
                         break
             continue  # 编/卷分组标题不可索引（无块文件）
         title = t.get("title") if isinstance(t, dict) else t
-        if cname and (cname in title or title in cname or (base and base in title)):
+        t_norm = _norm(title)
+        # 2026-08-30: 目录标题同样归一化（书库 toc 存全角破折号"第108—275节",
+        # 语料引用为"—"变体/半角混杂, 只归一化 cname 不归一化 title 则永不相等）
+        # 节数区间: 格言体著作 toc 无逐节条目, 引用【·125】落在"第108-275节"块内即命中
+        # （注意 toc 脏数据: 破折号有"-"/"—"/汉字"一"三种写法, 区间正则一并覆盖）
+        m_rng = re.search(r"第\s*(\d{1,4})\s*[-—–‐－一]\s*(\d{1,4})\s*节", str(title) or "")
+        if (not matched and m_rng and re.fullmatch(r"\d{1,4}", cname)
+                and int(m_rng.group(1)) <= int(cname) <= int(m_rng.group(2))):
+            idx = t.get("index", 0) if isinstance(t, dict) else toc.index(t)
+            hit_title = title
+            matched = True
+            break
+        if cname and (cname in t_norm or t_norm in cname or (base and base in t_norm)):
             # 层级 toc: 块 index 是条目自带 index（数组位置 ≠ 块序号, part 占位会错位）
             idx = t.get("index", 0) if isinstance(t, dict) else toc.index(t)
             hit_title = title
             matched = True
             break
+    if idx < 0 and cname:
+        # 2026-08-31: 合并块兜底——部分书 toc 粒度细于块文件（多目录条目共用一块）,
+        # 证据章节名是块标题（如"第一部分 希腊哲学"）, toc 无同名条目 → 反查块标题定位
+        try:
+            from routes.agent_core import block_titles
+            for n, bt in block_titles(hit["id"]).items():
+                btn = _norm(bt)
+                if btn and (btn in cname or cname in btn):
+                    idx = n
+                    hit_title = bt
+                    matched = True
+                    break
+        except Exception:
+            pass
     if idx < 0 and part_fb >= 0:
         idx = part_fb
         hit_title = f"{cname}（首章）"

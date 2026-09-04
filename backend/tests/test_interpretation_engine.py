@@ -213,8 +213,16 @@ class _FakeApp:
 
 async def _run_stream(monkeypatch, question, answer, agent="general", language="zh"):
     import engine_langgraph as elg
+    import routes.agent_llm as allm
     fake = _FakeApp(answer)
     monkeypatch.setattr(elg, "APP", fake)
+    # 密封化（Phase T 回归修复）: 兜底回答/thinking 摘要路径此前走真实 DeepSeek API,
+    # 输出不确定导致本文件用例偶发失败（两次全量跑失败用例不同即此因）——
+    # 结构断言只关心引擎侧补正/注入, 不关心 LLM 措辞, stub 为确定性输出。
+    _stub_chat = lambda *a, **k: {"choices": [{"message": {"content": "（兜底）这并非唯一的解读。"}}]}  # noqa: E731
+    monkeypatch.setattr(elg.AG, "llm_chat", _stub_chat, raising=False)
+    monkeypatch.setattr(allm, "llm_chat", _stub_chat, raising=False)
+    monkeypatch.setattr(allm, "llm_stream", lambda *a, **k: iter([]), raising=False)
     evs = [ev async for ev in elg.stream_agent(question, [], agent, None, language)]
     return evs, fake
 

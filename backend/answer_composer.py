@@ -182,16 +182,17 @@ def build_budget_injection(verdict, language="zh"):
         return (
             f"[System answer budget] This is a {BUDGET_LABEL_EN[complexity]} question. "
             f"Target length: {lo}–{hi_txt} Chinese characters (soft budget — never truncate). "
-            "Keep the argument compact: each paragraph carries one role (judgment / reason / evidence / "
-            "counterpoint / qualification / conclusion). If a paragraph shares the same role as an earlier "
-            "one and adds no new information (no new evidence, no new argument, no new qualification), "
-            "merge it into the neighboring paragraph or drop the weaker one. Never restate the same point "
-            "in different words just to fill space.")
+            "Keep the argument compact and non-redundant: each paragraph must carry a NEW reasoning "
+            "duty (new evidence, new argument, new qualification, or a further step of the chain). "
+            "If a paragraph adds no new information beyond an earlier one (no new evidence, no new "
+            "point, no further step), merge it into the neighboring paragraph or drop the weaker "
+            "one. Never restate the same point in different words just to fill space.")
     hi_txt = f"{hi}" if hi else "上限放宽（用户明确要求深度）"
     return (
         f"【篇幅预算（系统）】本题属于{BUDGET_LABEL_ZH[complexity]}类问题，建议篇幅 {lo}–{hi_txt} 中文字"
-        f"（软预算，不是硬截断）。论证要紧凑：每段只承担一个职责（判断/理由/证据/反方/限定/结论）；"
-        f"若某段与前面段落职责相同且没有明显新增信息（新证据、新论点、新限定），把它合并进相邻段或删去"
+        f"（软预算，不是硬截断）。论证要紧凑且不冗余：每段必须承担一个新的论证职责"
+        f"（新证据、新论点、新限定，或论证链上更进一步）；"
+        f"若某段相对前面段落没有明显新增信息（新证据、新论点、新推进），把它合并进相邻段或删去"
         f"较弱的一段；同一论点不要换种说法重复陈述凑字数。若你预计成稿会明显超过上限，在动笔前先压缩"
         f"合并——宁可少一个理由，也不要堆叠同职责段落。")
 
@@ -290,45 +291,51 @@ def scan_budget(verdict, answer):
 # ═══════════════════════════════════════════════════════
 # 2. 前置注入（build_composer_injections）
 # ═══════════════════════════════════════════════════════
+# Patch 1 (B7): 回答结构由 problem type + 论证结构决定（reasoning_plan 自适应形态注入）——
+# 不再注入固定"直接判断→理由一二三→反方→结论"五段骨架。
+# 此处保留的通用约束均为质量要求（隐藏推理过程/禁止过程叙述/强化措辞与证据匹配/
+# 禁止材料-工具-检索-五层-原典路径-再总结骨架/原典路径可选附录）, 不规定可见标题与顺序。
 def build_composer_injections(verdict, language="zh"):
-    """默认回答结构 + 隐藏推理过程 + DeepSeek 优点吸收 + 强化措辞禁令（生成类请求返回 []）"""
+    """自适应回答形态 + 通用质量约束注入（生成类请求返回 []）"""
     if not verdict.get("activated"):
         return []
     en = language == "en"
+    # Patch 1 (B7): 按问题类型取形态注入（形态由 problem type + 论证结构决定）
+    form = None
+    try:
+        from reasoning_plan import get_form_directive
+        form = get_form_directive(verdict.get("problem_type"), language)
+    except Exception:
+        form = None
     if en:
-        return [(
-            "[System answer structure] Compose your answer with this default shape, conclusion first:\n"
-            "① direct judgment — state your judgment/position on the question in the FIRST sentence "
-            "(one sentence, no preamble);\n"
-            "② 2-4 core reasons — one sentence each, marked 'first/second/third' or 'reason 1/2';\n"
-            "③ key textual evidence — the 1-3 strongest passages, cited as 【《Book》· chapter】, placed "
-            "right after the reason it supports;\n"
-            "④ necessary counter-view/qualification — actively note another reading, a limitation, or the "
-            "weakest link of your own answer (one or two sentences);\n"
-            "⑤ conclusion — close the judgment with one forceful sentence.\n"
-            "NEVER build the answer around this skeleton: material overview → tool explanation → retrieval "
-            "process → five-layer report → original-text path → re-summary. Do not narrate retrieval/reading "
-            "in the answer body ('let me search…', 'now I have the material…' are forbidden); tool cards are "
-            "shown by the UI and the user only sees a reasoning summary, so do not restate your thinking in "
-            "the answer. Absorb these strengths: reach the central thesis faster, compress concepts forcefully, "
-            "use apt metaphors, natural paragraph rhythm, a strong ending. But determinacy of wording must "
-            "match the evidence: emphatic claims unsupported by evidence ('completely correct', 'without a "
-            "doubt', 'he would never…', 'essentially is') are forbidden. The original-text path may appear only "
-            "as a brief optional appendix when the question has a clear textual lineage and the passages were "
-            "actually retrieved.")]
-    return [(
-        "【回答结构（系统）】你的回答默认采用以下结构，让结论先于过程：\n"
-        "① 直接判断——第一句就给出你对问题的判断/立场（一句话，不铺垫）；\n"
-        "② 2~4 个核心理由——每一条一句话说清，用“首先/其次/第三”或“理由一/理由二”标注；\n"
-        "③ 关键文本证据——挑最有力的 1~3 处原文，用【《书名》· 章节】标注，跟在它支撑的理由后面；\n"
-        "④ 必要的反方/限定——主动点出另一种读法、局限或你回答中较弱的一环（一两句即可）；\n"
-        "⑤ 结论——收束判断，一句有力的话结束。\n"
-        "禁止把以下内容当作回答骨架：材料说明 → 工具说明 → 检索过程 → 五层报告 → 原典路径 → 再总结。\n"
-        "检索/阅读的过程一律不写进回答正文（“让我检索……”“现在我已经有材料了”这类过程叙述禁止出现）；"
-        "工具调用卡片由界面展示，用户只看到推理摘要，思考过程不需要你在正文里复述。\n"
-        "风格上吸收：更快给出中心论点、有力的概念压缩、恰当的比喻、自然的段落节奏、有力量的结尾；"
-        "但确定性措辞必须与证据强度匹配，禁止未经证据支持的强化措辞（如“完全正确”“毫无疑问”“绝不会”“本质就是”）。\n"
-        "原典路径仅在问题确有文本脉络且检索到位时，作为简短附录附在结论之后，不作为默认结构。")]
+        parts = [
+            ("[Answer composition] Do not narrate retrieval/reading in the answer body "
+             "('let me search…', 'now I have the material…' are forbidden); tool cards are shown "
+             "by the UI and the user only sees a reasoning summary, so do not restate your "
+             "thinking in the answer. Absorb these strengths: reach the central thesis faster, "
+             "compress concepts forcefully, use apt metaphors, natural paragraph rhythm, a strong "
+             "ending. But determinacy of wording must match the evidence: emphatic claims "
+             "unsupported by evidence ('completely correct', 'without a doubt', 'essentially is') "
+             "are forbidden."),
+            ("[Answer composition] Never build the answer around this skeleton: material overview "
+             "→ tool explanation → retrieval process → five-layer report → original-text path → "
+             "re-summary. The original-text path may appear only as a brief optional appendix when "
+             "the question has a clear textual lineage and the passages were actually retrieved."),
+        ]
+        if form:
+            parts.insert(0, form)
+        return parts
+    parts = [
+        ("【回答结构（系统）】检索/阅读的过程一律不写进回答正文（“让我检索……”“现在我已经有材料了”"
+         "这类过程叙述禁止出现）；工具调用卡片由界面展示，用户只看到推理摘要，思考过程不需要你在正文里复述。\n"
+         "风格上吸收：更快给出中心论点、有力的概念压缩、恰当的比喻、自然的段落节奏、有力量的结尾；"
+         "但确定性措辞必须与证据强度匹配，禁止未经证据支持的强化措辞（如“完全正确”“毫无疑问”“绝不会”“本质就是”）。"),
+        ("【回答结构（系统）】禁止把以下内容当作回答骨架：材料说明 → 工具说明 → 检索过程 → 五层报告 → "
+         "原典路径 → 再总结。原典路径仅在问题确有文本脉络且检索到位时，作为简短附录附在结论之后，不作为默认结构。"),
+    ]
+    if form:
+        parts.insert(0, form)
+    return parts
 
 
 # ═══════════════════════════════════════════════════════
@@ -517,15 +524,24 @@ def build_reasoning_summary(epistemic_verdict=None, interpretation_verdict=None,
 # 5. 编排: run_answer_composer / 日志
 # ═══════════════════════════════════════════════════════
 def run_answer_composer(message, agent="general", language="zh"):
-    """前置: 生成默认回答结构注入（生成类请求跳过; 纯计算, 不调 LLM）
+    """前置: 自适应回答形态注入（Patch 1/B7: 结构由 problem type 决定; 生成类请求跳过;
+    纯计算, 不调 LLM）
 
-    返回: {activated, structure, injections}
+    返回: {activated, structure, problem_type, injections}
     """
     msg = message or ""
     activated = bool(msg.strip()) and not any(re.search(k, msg) for k in GENERATIVE_SKIP)
+    # Patch 1 (B7): 问题类型（reasoning_plan 单一真源; 形态注入按类型自适应）
+    problem_type = None
+    try:
+        from reasoning_plan import classify_problem
+        problem_type = classify_problem(msg, agent)
+    except Exception:
+        problem_type = None
     verdict = {
         "activated": activated,
         "structure": ANSWER_STRUCTURE,
+        "problem_type": problem_type,
         "question": msg,     # Phase S (S5): 预算注入/扫描按问题复杂度分类
         "injections": [],
     }
@@ -539,6 +555,7 @@ def run_answer_composer(message, agent="general", language="zh"):
     _log_record({"phase": "pre", "agent": agent, "language": language,
                  "message": msg[:300],
                  "activated": activated,
+                 "problem_type": problem_type,
                  "injections": len(verdict["injections"])})
     return verdict
 

@@ -25,21 +25,24 @@ from routes import agent as AG
 
 
 # ═══════════════════════════════════════════════════════
-# 1. 前置注入——默认回答结构 + 禁止默认骨架 + 隐藏推理 + 风格吸收
+# 1. 前置注入——自适应回答形态（B7）+ 禁止默认骨架 + 隐藏推理 + 风格吸收
 # ═══════════════════════════════════════════════════════
 def test_composer_always_activated_for_plain_question():
     v = ac.run_answer_composer("从《老人与海》看加缪的荒谬主义。")
     assert v["activated"] is True
-    assert len(v["injections"]) == 2, "结构注入 + Phase S 篇幅预算注入"
-    assert "回答结构" in v["injections"][0]
-    assert "篇幅预算" in v["injections"][1]
+    # Patch 1 (B7): 自适应形态注入 + 通用质量约束 + Phase S 篇幅预算注入
+    assert len(v["injections"]) >= 2
+    assert "回答形态" in v["injections"][0]
+    assert "篇幅预算" in v["injections"][-1]
 
 
 def test_injection_contains_full_structure():
     inj = "\n".join(ac.run_answer_composer("什么是荒诞？")["injections"])
-    for part in ("直接判断", "2~4 个核心理由", "关键文本证据", "反方/限定", "结论"):
-        assert part in inj, f"结构缺 {part}"
-    # 五段定义完整
+    # Patch 1 (B7): 形态由 problem type 决定（CONCEPT_EXPLANATION → 概念层次推进）
+    assert "回答形态" in inj and "先直接界定概念" in inj
+    # 不再规定固定编号标题/固定五段骨架
+    assert "① 直接判断" not in inj and "② 2~4 个核心理由" not in inj
+    # 五段定义仅保留为内部元数据（不进入注入）
     assert [s[0] for s in ac.ANSWER_STRUCTURE] == [
         "direct_judgment", "core_reasons", "text_evidence",
         "counter_qualification", "conclusion"]
@@ -78,7 +81,8 @@ def test_generative_requests_skip_composer():
 
 def test_english_injection():
     inj = "\n".join(ac.run_answer_composer("What is absurdity?", language="en")["injections"])
-    assert "direct judgment" in inj and "essentially" in inj
+    # Patch 1 (B7): 英文形态注入（自适应 form + 质量约束）
+    assert "[Answer form]" in inj and "essentially" in inj
 
 
 # ═══════════════════════════════════════════════════════
@@ -248,9 +252,11 @@ def test_stream_agent_injects_composer_structure(monkeypatch):
     evs, fake = asyncio.run(_run_stream(monkeypatch,
                                         question="什么是荒诞？",
                                         answer="荒诞是理性与世界的裂隙。"))
+    # Patch 1 (B7): 注入按问题类型自适应的回答形态（"什么是X" → CONCEPT_EXPLANATION）
     injected = "".join(m.content for m in fake.captured_messages
-                       if m.type == "system" and "回答结构" in (m.content or ""))
-    assert "直接判断" in injected and "材料说明" in injected
+                       if m.type == "system" and ("回答形态" in (m.content or "") or "回答结构" in (m.content or "")))
+    assert "先直接界定概念" in injected
+    assert "材料说明" in injected  # 禁止默认骨架的通用约束仍在
     assert "让我检索" in injected or "过程叙述" in injected
     assert next(ev for ev in evs if ev["type"] == "done")["type"] == "done"
 

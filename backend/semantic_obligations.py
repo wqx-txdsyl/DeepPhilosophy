@@ -14,10 +14,19 @@ analogy boundary 义务的不同措辞，应当视为已履行。
                            uncertainty_disclosure      不确定性披露（结论非唯一）
                            alternative_interpretation  替代解读呈现（解释型问题）
                            source_limitation           来源局限披露（未核验出处）
-  ObligationState        REQUIRED / SATISFIED / UNSATISFIED
+  ObligationState        REQUIRED / SATISFIED / UNSATISFIED / UNKNOWN（Phase T/T13-C）
   derive_obligations()   由前置裁决（epistemic / interpretation）推导本请求的义务集
-  assess_obligations()   用最终回答校验每项义务 → 逐项标注 SATISFIED / UNSATISFIED
-  unsatisfied()          只返回 REQUIRED 且未履行的义务（唯一允许追加补正的集合）
+  assess_obligations()   用最终回答校验每项义务 → 逐项标注状态
+  unsatisfied()          只返回 REQUIRED 且 UNSATISFIED 的义务（唯一允许追加补正的集合）
+
+Phase T（T13-C）: 高层语义义务（alternative_interpretation / uncertainty_disclosure /
+analogy_boundary）不再用"关键词未命中 → UNSATISFIED"的错判路径——关键词命中仍可靠地
+判 SATISFIED（显式表达即履行）, 未命中时宁可标 UNKNOWN（无法可靠结构化判定）,
+不得错误地报 UNSATISFIED（QG2: Q01 答案含"并非唯一"却记 UNSATISFIED、Q16 大纲含
+完整反方节仍记 UNSATISFIED 的台账错位）。事实类义务（premise_correction /
+counterfactual_boundary / source_limitation）的判定模式是结构性的, 保留两态。
+本 Phase 不为此新增任何正文 Guard——UNSATISFIED 补正路径的消费方（interpretation_engine）
+已同步改为只依赖结构性信号（overclaim / alternatives_offered）。
 
 规则: 只有 REQUIRED + UNSATISFIED 才允许追加补正; 同一义务一旦 SATISFIED,
 任何 Phase 不得因措辞不同重复追加。履行判定基于语义等价表达（见各义务的
@@ -36,7 +45,11 @@ OBLIGATION_TYPES = [
     "alternative_interpretation",
     "source_limitation",
 ]
-OBLIGATION_STATES = ["REQUIRED", "SATISFIED", "UNSATISFIED"]
+OBLIGATION_STATES = ["REQUIRED", "SATISFIED", "UNSATISFIED", "UNKNOWN"]
+
+# T13-C: 高层语义义务——关键词未命中时标 UNKNOWN 而非 UNSATISFIED
+#（命中仍判 SATISFIED: 显式等价表达即履行, 无误判方向）
+_HIGH_LEVEL_OBLIGATIONS = {"analogy_boundary", "uncertainty_disclosure", "alternative_interpretation"}
 
 
 # ═══════════════════════════════════════════════════════
@@ -177,13 +190,21 @@ def _hits(ob, answer):
 
 
 def assess_obligations(obligations, answer):
-    """逐项判定: REQUIRED → SATISFIED / UNSATISFIED（附命中片段, 审计用）"""
+    """逐项判定: REQUIRED → SATISFIED / UNSATISFIED / UNKNOWN（附命中片段, 审计用）
+    T13-C: 高层语义义务未命中关键词 → UNKNOWN（不可靠判 UNSATISFIED）"""
     ans = answer or ""
     out = []
     for ob in obligations or []:
+        satisfied = _satisfied(ob, ans)
+        if satisfied:
+            status = "SATISFIED"
+        elif ob.get("type") in _HIGH_LEVEL_OBLIGATIONS:
+            status = "UNKNOWN"
+        else:
+            status = "UNSATISFIED"
         out.append({
             **ob,
-            "status": "SATISFIED" if _satisfied(ob, ans) else "UNSATISFIED",
+            "status": status,
             "hits": _hits(ob, ans),
         })
     return out

@@ -295,6 +295,16 @@ def reset_state():
         _STATE["tiers"] = None
 
 
+def _clean_chapter(raw):
+    """章节元数据清洗（2026-08-30）: nietzsche_meta.json 部分行把正文溢出进了 chapter 字段
+    （如 '（第108—275节）\\n\\n108\\n(1) 新的斗争…'）——取首个非空行作章节名。
+    同时修复 Evidence Contract 章节匹配与前端引用跳转（污染串无法与平台书库 toc 对齐）。"""
+    s = (raw or "").strip()
+    if not s:
+        return s
+    return re.split(r"\r?\n", s, 1)[0].strip()
+
+
 def retrieve(query, k=3):
     """混合检索入口。返回 {"echoes": [...], "mode": str, "lex_scope": str, "candidates": int,
     "degraded_reason": str, "latency_ms": float} 或 None（artifact 缺失 → 调用方走旧路径兜底）。
@@ -376,7 +386,7 @@ def _retrieve_inner(query, k):
     for final, rrf, phrase, row, text in reranked[:max(1, k)]:
         r = meta_rows[row]
         echoes.append({
-            "book": r[0], "chapter": r[1], "tier": r[2],
+            "book": r[0], "chapter": _clean_chapter(r[1]), "tier": r[2],
             "source_type": r[3], "source": r[4],
             "period": r[5], "year": r[6],
             "text": (text or "")[:_ECHO_TEXT_LEN],

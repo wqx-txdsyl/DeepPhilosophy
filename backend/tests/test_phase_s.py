@@ -206,12 +206,14 @@ def test_s3_full_answer_with_alternatives_zero_append():
 
 
 def test_s3_equivalence_claim_still_hedged():
-    # 声称"本质完全一样"→ analogy boundary 未履行 → 补正一次
+    # 声称"本质完全一样"→ 补正一次
+    # Phase T (T13-C): analogy_boundary 关键词未命中现在记 UNKNOWN（不再错报 UNSATISFIED）,
+    # 但补正仍由结构性信号 overclaim（越级断言检出）驱动——补正行为不变
     v = ie.run_interpretation_engine("尼采的超人和庄子的逍遥是不是一回事？")
     scan = ie.scan_interpretation(v, "超人和逍遥本质上完全一样，都是对无限自由的向往。")
     obls = {o["type"]: o["status"] for o in (scan.get("obligations") or [])}
-    assert obls.get("analogy_boundary") == "UNSATISFIED"
-    assert scan["appends"], "未履行义务必须补正"
+    assert obls.get("analogy_boundary") in ("UNKNOWN", "UNSATISFIED")
+    assert scan["appends"], "越级断言必须补正（overclaim 驱动）"
     appends = "\n".join(scan["appends"])
     assert "类比" in appends and "等同" in appends
 
@@ -224,9 +226,10 @@ def test_s3_obligation_states_and_only_required_unsatisfied_append():
     sm = {o["type"]: o["status"] for o in assessed}
     assert sm["analogy_boundary"] == "SATISFIED"
     assert sm["uncertainty_disclosure"] == "SATISFIED"
-    assert sm["alternative_interpretation"] == "UNSATISFIED"
-    unsat = so.unsatisfied(obls, "超人和逍遥不能等同。这并非唯一解释。")
-    assert [o["type"] for o in unsat] == ["alternative_interpretation"], "只有 REQUIRED+UNSATISFIED 允许追加"
+    # Phase T (T13-C): 高层义务关键词未命中 → UNKNOWN（宁可未知, 不错误 UNSATISFIED）
+    assert sm["alternative_interpretation"] == "UNKNOWN"
+    # 无显式表达 = 无"可靠判定的未履行"——关键词误判的 UNSATISFIED 补正项不再产生
+    assert so.unsatisfied(obls, "超人和逍遥不能等同。这并非唯一解释。") == []
 
 
 def test_s3_derive_obligations_from_verdicts():
@@ -304,13 +307,20 @@ def test_s4_engine_disclosure_note_and_panel_clean(monkeypatch):
     tl = {"results": [_hit("查拉图斯特拉如是说", "前言", "b1")], "query": "超人 尼采", "method": "vector"}
     evs, fake = _run_stream_tools(monkeypatch, "尼采的超人是什么？", answer, tl)
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "未能通过原典库核验" in text, "未核验引用必须降级披露（正文可见）"
+    # Patch 1 (B4-B): 未核验引用在 final render 前即被降级——正文不出现【《不存在之书》·第三章】,
+    # 也不追加"引用核验说明"补丁尾注
+    assert "未能通过原典库核验" not in text, "禁止补丁式尾注"
+    assert "【《不存在之书》·第三章】" not in text, "未核验 formal citation 不得出现在正文"
+    assert "【《查拉图斯特拉如是说》·前言】" in text, "verified 引用必须保留"
+    assert "《不存在之书》" in text, "保留必要 paraphrase（一般书名提及）"
     done = next(ev for ev in evs if ev["type"] == "done")
     assert done["citations"], "引用面板只展示 used_evidence"
     for cit in done["citations"]:
         assert cit["book"] != "不存在之书", "未核验引用不得进入引用面板"
     san = done.get("citation_sanitize") or {}
-    assert [u["book"] for u in san.get("unverified_before", [])] == ["不存在之书"]
+    # Patch 1 (B4-B): 未核验引用在渲染前已被降级——最终正文中不存在未核验 formal citation
+    assert san.get("unverified_before") == []
+    assert (done.get("live_citation_sanitize") or {}).get("downgraded") == 1
 
 
 # ═══════════════════════════════════════════════════════
@@ -331,7 +341,7 @@ def test_s5_budget_injection_soft_not_truncation():
     inj = "\n".join(v["injections"])
     assert "篇幅预算" in inj and "500" in inj and "900" in inj
     assert "软预算" in inj and "不是硬截断" in inj
-    assert "职责相同" in inj and "合并" in inj, "必须引导合并/删除较弱段"
+    assert "没有明显新增信息" in inj and "合并" in inj, "必须引导合并/删除较弱段"
 
 
 def test_s5_deep_analysis_budget_relaxed():
@@ -619,7 +629,7 @@ def test_uat_t4_nietzsche_ai_boundary_and_citations_verified(monkeypatch):
 
 
 def test_uat_t5_citation_integrity_no_unverified_left(monkeypatch):
-    # 正文带一个假引用 → 净化后: 正式引用 ⊆ used_evidence; 假引用被降级披露
+    # 正文带一个假引用 → 净化后: 正式引用 ⊆ used_evidence; 假引用在渲染前被降级为一般提及
     import engine_langgraph as elg
     q = "加缪的荒诞哲学是什么？"
     ans = ("加缪的荒诞在于理性与世界之间的裂隙【《西西弗斯神话》·荒诞的推理】。"
@@ -628,10 +638,15 @@ def test_uat_t5_citation_integrity_no_unverified_left(monkeypatch):
           "method": "vector"}
     evs, fake = _run_stream_tools(monkeypatch, q, ans, tl, query="荒诞 裂隙")
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "未能通过原典库核验" in text, "未核验引用必须降级为解释性陈述"
+    # Patch 1 (B4-B): 未核验引用不在正文出现正式格式, 也不追加补丁尾注
+    assert "未能通过原典库核验" not in text
+    assert "【《某某秘传》·卷一】" not in text, "未核验 formal citation 不得出现在正文"
+    assert "【《西西弗斯神话》·荒诞的推理】" in text, "verified 引用必须保留"
     done = next(ev for ev in evs if ev["type"] == "done")
     san = done.get("citation_sanitize") or {}
-    assert [u["book"] for u in san.get("unverified_before", [])] == ["某某秘传"]
+    # Patch 1 (B4-B): 假引用在渲染前被降级——最终正文中不存在未核验 formal citation
+    assert san.get("unverified_before") == []
+    assert (done.get("live_citation_sanitize") or {}).get("downgraded") == 1
     assert all(c["book"] != "某某秘传" for c in done["citations"]), "引用面板不得含未核验引用"
 
 

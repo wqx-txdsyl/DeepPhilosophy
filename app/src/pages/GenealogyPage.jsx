@@ -208,7 +208,7 @@ function SchoolImg({ school, w }) {
       <div style={{ position:'absolute', bottom:0, left:0, right:0,
         background:'linear-gradient(transparent 30%, rgba(0,0,0,0.65))', padding:'24px 12px 8px' }}>
         <div style={{ fontSize:12, fontWeight:600, color:'#fff', lineHeight:1.2,
-          fontFamily:'"Playfair Display","PingFang SC",serif' }}>{school.name}</div>
+          fontFamily:'var(--font-serif)' }}>{school.name}</div>
         <div style={{ fontSize:9, color:'rgba(255,255,255,0.7)', marginTop:2, fontFamily:'var(--font-sans)' }}>{school.century}</div>
       </div>
     </div>
@@ -253,11 +253,11 @@ export default function GenealogyPage() {
   const chapters = useMemo(() => buildChapters(), []);
 
   return (
-    <div style={{ background:'var(--bg)', minHeight:'100vh', fontFamily:'"Playfair Display","PingFang SC",serif', color:'var(--ink)' }}>
+    <div style={{ background:'var(--bg)', minHeight:'100vh', fontFamily:'var(--font-serif)', color:'var(--ink)' }}>
       <section style={{ padding:'56px 32px 32px', textAlign:'center', position:'relative', overflow:'hidden' }}>
         <img src={ossImg('/gene/civilization_silhouette.webp', { w: 900 })} alt="" loading="lazy" onError={ossFallback} style={{ position:'absolute', bottom:0, left:'50%', transform:'translateX(-50%)', width:'90%', maxWidth:900, opacity:0.12, pointerEvents:'none', objectFit:'contain' }} />
         <p style={{ position:'relative', fontSize:10, letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--ochre)', marginBottom:20, fontFamily:'var(--font-sans)' }}>Museum of Philosophy</p>
-        <h1 style={{ position:'relative', fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'var(--ink)', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'"Playfair Display","PingFang SC",serif' }}>哲学掠影</h1>
+        <h1 style={{ position:'relative', fontSize:'clamp(2rem,5vw,3.2rem)', fontWeight:400, fontStyle:'italic', color:'var(--ink)', letterSpacing:'0.06em', lineHeight:1.15, fontFamily:'var(--font-serif)' }}>哲学掠影</h1>
         <div style={{ position:'relative', width:32, height:1, background:'var(--ochre)', margin:'14px auto', opacity:0.35 }} />
         <p style={{ position:'relative', fontSize:'0.85rem', fontWeight:300, color:'var(--text-dim)', fontFamily:'var(--font-sans)' }}>思想如河流，起源、分流、汇合、消失、复兴——五千年人类追问的视觉编年史</p>
       </section>
@@ -267,7 +267,7 @@ export default function GenealogyPage() {
             {ch.era.e && <LazyImg src={`/gene/${ch.era.e}.webp`} alt="" style={{ height:100, width:'auto', opacity:0.55, marginBottom:8 }} />}
             <div style={{ marginTop:40 }}>
               <div style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--ochre)', fontFamily:'var(--font-sans)', marginBottom:8 }}>{ch.era.n}</div>
-              <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:400, color:'var(--ink)', margin:'0 0 8px', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{ch.era.t}</h2>
+              <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:400, color:'var(--ink)', margin:'0 0 8px', fontFamily:'var(--font-serif)' }}>{ch.era.t}</h2>
               <div style={{ fontSize:13, color:'var(--text-dim)', fontFamily:'var(--font-sans)' }}>{ch.era.r}</div>
             </div>
           </section>
@@ -277,7 +277,7 @@ export default function GenealogyPage() {
               <FadeWrap key={ri}>
                 <section style={{ padding:'60px 24px 20px', textAlign:'center', maxWidth:800, margin:'0 auto' }}>
                   <LazyImg src={`/gene/region/${region.key}.webp`} alt="" style={{ width:'100%', maxHeight:320, objectFit:'cover', borderRadius:4, opacity:0.85 }} />
-                  <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'var(--ink)', fontFamily:'"Playfair Display","PingFang SC",serif' }}>{region.name}</h3>
+                  <h3 style={{ marginTop:28, fontSize:20, fontWeight:400, color:'var(--ink)', fontFamily:'var(--font-serif)' }}>{region.name}</h3>
                 </section>
                 <div style={{ maxWidth:900, margin:'0 auto', padding:'0 16px' }}>
                   {chunks.map((chunk, bi) => (

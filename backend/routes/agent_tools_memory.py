@@ -591,30 +591,56 @@ register_tool("philosopher_debate",
      "required": ["topic"]},
     _exec_debate)
 
+# Phase T（T7/T2）: thought_experiment 产物结构化（设定/多立场推演/揭示的问题）,
+# 且受 invocation 级重入策略约束（engine 侧 SkillReentryTracker）——同一实验的
+# 退化重复调用（无用户迭代要求/前次未失败/无新义务）会被拦截。
 def _exec_thought_exp(args):
+    from tool_contracts import scaffold_result, extract_json
     slot = _mem_slot()
     base = (args.get("base") or "").strip()
     if not base:
         return {"error": "缺少思想实验基础设定"}
-    # 变体迭代: 修改词 + 存在上次实验 → 基于上次重推演, 对比立场变化
-    if slot["experiment"] and any(w in base for w in ("改", "换成", "变体", "如果", "假设", "变化", "不同", "加", "减")):
+    prev_exp = slot.get("experiment")
+    # 变体迭代: 用户明确要求变体（修改词）+ 存在上次实验 → 基于上次重推演, 对比立场变化
+    if prev_exp and any(w in base for w in ("改", "换成", "变体", "如果", "假设", "变化", "不同", "加", "减")):
         prompt = (f"用户对上次思想实验提出变体: 「{base}」\n"
-                  f"上次实验:\n{slot['experiment']['text'][:1500]}\n\n"
-                  f"请重新推演该变体（600字内）: ①新设定（100字内）②3 个哲学立场的推演（各 50 字）"
-                  f"③与上次实验相比, 各立场结论发生了哪些变化。用中文。")
+                  f"上次实验:\n{str(prev_exp.get('text', ''))[:1500]}\n\n"
+                  f"请重新推演该变体, 只输出 JSON（不要围栏）:\n"
+                  f'{{"setting": "新设定（100字内）",\n'
+                  f' "stance_projections": [{{"stance": "哲学立场名", "projection": "该立场在此变体下的推演（50字）", "shift": "与上次实验相比结论的变化"}}],\n'
+                  f' "revealed_problem": "变体揭示的哲学问题（1-2句）"}}')
         resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=1000)
-        reply = (resp["choices"][0]["message"].get("content") or "").strip()
-        slot["experiment"] = {"base": base, "text": reply}
+        data = extract_json(resp["choices"][0]["message"].get("content"))
+        if not isinstance(data, dict) or not data.get("setting"):
+            data = {"setting": (resp["choices"][0]["message"].get("content") or "").strip()[:600],
+                    "stance_projections": [], "revealed_problem": ""}
+        reply = data.get("setting", "")
+        slot["experiment"] = {"base": base, "text": json.dumps(data, ensure_ascii=False)[:1500]}
         _save_agent_memory()
-        return {"experiment": reply}
-    prompt = (f"基于「{base}」设计一个哲学思想实验或推演变体。输出: ① 实验设定（100字内）② 3 个哲学立场的推演（各 50 字）③ 它揭示的哲学问题。用中文。")
+        return scaffold_result("thought_experiment_scaffold",
+                               "变体推演脚手架: 新设定 + 多立场推演对比 + 揭示的问题",
+                               confidence=0.7,
+                               presentation_hint="主 Agent 以连续叙述呈现实验场景, 不逐条罗列 JSON 字段",
+                               **data)
+    prompt = (f"基于「{base}」设计一个哲学思想实验, 只输出 JSON（不要围栏）:\n"
+              f'{{"setting": "实验设定（100字内, 场景具体可想象）",\n'
+              f' "stance_projections": [{{"stance": "哲学立场名", "projection": "该立场下的推演（50字）"}}],\n'
+              f' "revealed_problem": "它揭示的哲学问题（1-2句）"}}\n'
+              f"3 个立场推演。用中文。")
     resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=800)
-    reply = (resp["choices"][0]["message"].get("content") or "").strip()
-    slot["experiment"] = {"base": base, "text": reply}
+    data = extract_json(resp["choices"][0]["message"].get("content"))
+    if not isinstance(data, dict) or not data.get("setting"):
+        raw = (resp["choices"][0]["message"].get("content") or "").strip()
+        data = {"setting": raw[:600] or base, "stance_projections": [], "revealed_problem": ""}
+    slot["experiment"] = {"base": base, "text": json.dumps(data, ensure_ascii=False)[:1500]}
     _save_agent_memory()
-    return {"experiment": reply}
+    return scaffold_result("thought_experiment_scaffold",
+                           "思想实验脚手架: 设定 + 多立场推演 + 揭示的问题——场景叙述与判断由主 Agent 完成",
+                           confidence=0.7,
+                           presentation_hint="主 Agent 以连续叙述呈现实验场景并回答用户之问, 不逐条罗列 JSON 字段",
+                           **data)
 
 register_tool("thought_experiment",
-    "设计/推演哲学思想实验（电车难题变体/洞穴比喻现代版）——生成设定、多立场推演与启示; 用户说'改/换成/如果'时基于上次实验做变体迭代。",
-    {"type": "object", "properties": {"base": {"type": "string"}}, "required": ["base"]},
+    "设计/推演哲学思想实验（电车难题变体/洞穴比喻现代版）——返回设定/多立场推演/揭示问题的结构化脚手架; 用户明确要求变体时（'改成/换成/如果'）基于上次实验迭代。同一实验的重复调用受重入策略约束——除非用户要求迭代或前次结果不可用。",
+    {"type": "object", "properties": {"base": {"type": "string", "description": "思想实验基础设定（变体迭代时描述变化点）"}}, "required": ["base"]},
     _exec_thought_exp)
