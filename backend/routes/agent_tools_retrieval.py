@@ -182,7 +182,9 @@ def _exec_chapter(args):
 
 register_tool(
     "get_chapter",
-    "读取某本书指定章节的全文（用于深入引用原文、分析论证）。",
+    "读取某本书指定章节的全文（用于深入引用原文、分析论证）。出处/原话核验的必经步骤: "
+    "search_books 只提供片段定位线索, 确认出处、措辞与上下文必须读取对应章节原文——"
+    "检索命中候选后应读取该章再下结论, 不得仅凭检索片段或记忆给出原文引用。",
     {"type": "object", "properties": {"book_id": {"type": "string", "description": "书名或 search_books 返回的 book_id"}, "chapter_idx": {"type": "integer"}}, "required": ["book_id", "chapter_idx"]},
     _exec_chapter,
 )

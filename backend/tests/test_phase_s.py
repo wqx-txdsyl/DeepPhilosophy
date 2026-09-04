@@ -118,8 +118,17 @@ class _FakeAppRetract:
     async def astream(self, inputs, config, stream_mode="messages"):
         self.captured_messages.extend(inputs.get("messages") or [])
         # ① 长文本实时流出（超实时阈值, 触发 live）
-        yield (AIMessageChunk(content="先纠正一个小事实：《老人与海》开篇写的是连续84天没有捕到鱼，不是87天；"
-                                      "这个细节很多人记错，我先把话说清楚。"), {"langgraph_node": "agent"})
+        # O1: STREAM_ANSWER_DELAY 48→240（工具轮公开工作笔记保护）——
+        # 撤回场景的 draft 文本必须仍超阈值, 才能复现"live 流出→宣告工具→撤回"
+        _core = ("先纠正一个小事实：《老人与海》开篇写的是连续84天没有捕到鱼，不是87天；"
+                 "这个细节很多人记错，我先把话说清楚。")
+        _filler = ("老人出海前的准备、与男孩的告别、他对自己身体的怀疑、萨罗渔夫们的怜悯"
+                   "与嘲笑、棒球贤人迪马吉的形象、四十天不拉网的执念，这些铺垫层层叠叠；")
+        _draft = _core + _filler
+        import engine_langgraph as _o1_elg
+        while len(_draft) <= _o1_elg.STREAM_ANSWER_DELAY + 10:
+            _draft += _filler
+        yield (AIMessageChunk(content=_draft), {"langgraph_node": "agent"})
         # ② 宣告工具调用 → live 文本被 answer_retract 撤回为思考
         yield (AIMessageChunk(content="", tool_call_chunks=[
             {"name": "search_books", "args": "{\"query\": \"老人 狮子\"}", "id": "c1", "index": 0}]),

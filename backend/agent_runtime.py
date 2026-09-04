@@ -297,18 +297,24 @@ class ToolLoopTrace:
         self.agent_id = agent_id or "general"
         self.question_chars = int(question_chars or 0)
         self.calls = []
+        self.phases = []   # O1: 机械 timing observability（llm/tool/validator 阶段时长）
         self.model_retries = 0
         self._started = time.time()
 
     def record_call(self, call_index, tool, args, duration_ms, success, error,
                     result_summary, rh, budget_cls, info_gain, evidence_items,
-                    executed=True, thought=""):
+                    executed=True, thought="", initiated_by="main_agent",
+                    decision_group=None, tool_call_id=None):
         rec = {
             "type": "call", "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
             "conversation_id": self.conversation_id, "message_id": self.message_id,
             "agent_id": self.agent_id, "invocation_id": self.invocation_id,
             "call_index": call_index, "tool": tool,
             "args_normalized": normalize_args(args), "args_hash": call_fingerprint(tool, args)[0],
+            # O1 provenance: 谁发起? main_agent=模型宣告 / runtime_mechanical=引擎机械动作 /
+            # tool_internal=工具内部实现细节（引擎层不再产生认知性代执行）
+            "initiated_by": initiated_by, "decision_group": decision_group,
+            "tool_call_id": tool_call_id,
             "executed": bool(executed), "duration_ms": round(duration_ms or 0, 1),
             "success": bool(success), "error": (str(error)[:160] if error else None),
             "result_hash": rh, "result_summary": (result_summary or "")[:200],
@@ -318,6 +324,25 @@ class ToolLoopTrace:
         }
         self.calls.append(rec)
         _trace_write(rec)
+
+    def record_phase(self, phase, t_start, **extra):
+        """O1: 机械阶段计时（llm_invocation / validator_* 等）。duration_ms 记录, 不展示思考。"""
+        rec = {"type": "phase", "phase": phase,
+               "duration_ms": round((time.time() - t_start) * 1000, 1), **extra}
+        self.phases.append(rec)
+        _trace_write(rec)
+        return rec
+
+    # ── O1: Main Agent decision group（因果归属: 每次模型 invocation = 一组工具决定）──
+    def begin_group(self):
+        """agent_node 在每次 Main Agent LLM invocation 前调用 → 组号 +1, 返回组标识"""
+        self._groups = getattr(self, "_groups", 0) + 1
+        self._current_group = f"inv-{self._groups}"
+        return self._current_group
+
+    @property
+    def current_group(self):
+        return getattr(self, "_current_group", "inv-1")
 
     def finalize(self, total_duration_s, error=None, answer_chars=0, evidence_ids=None,
                  budget_snapshot=None):
@@ -724,7 +749,8 @@ class ObligationLedger:
         self.exact_quote_verified = False
         self.require_exact = bool(
             self.vi and self.vi.get("kind") == "EXACT_WORDING")
-        self.auto_primary_read = False       # 引擎兜底读取已执行（T1.1-B）
+        # O1: auto_primary_read 标志已随引擎 auto-read 一并删除——主文本读取只能由
+        # Main Agent 宣告产生（primary_text_read 仅由模型自己的 get_chapter 置位）。
         self._term_norm = ""
         if self.vi and self.vi.get("term"):
             self._term_norm = re.sub(r"[的是之其所\s]", "", self.vi["term"])
@@ -947,7 +973,6 @@ class ObligationLedger:
                 "primary_text_read": self.primary_text_read,
                 "exact_quote_verified": self.exact_quote_verified,
                 "require_exact": self.require_exact,
-                "auto_primary_read": self.auto_primary_read,
             },
         }
 

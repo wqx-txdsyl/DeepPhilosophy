@@ -52,9 +52,10 @@ RETRIEVAL_HARD = AR.TOOL_BUDGET["hard_retrieval"]
 
 # 实时流式回答阈值（2026-08-29）: agent 轮 content 缓冲超过该字符数且本轮未见工具调用 →
 # 判定为最终回答, 缓冲文本与后续分块立即实时流出。替代原"整轮缓冲→graph 结束后 8ms/字
-# 打字机重放"的假流式（思考结束后到回答出现之间空窗数十秒）。工具轮规划文字通常极短,
-# 达不到阈值; 超阈值的少数情况由 answer_retract 事件撤回为思考兜底
-STREAM_ANSWER_DELAY = 48
+# 打字机重放"的假流式（思考结束后到回答出现之间空窗数十秒）。
+# O1: 48 → 240——铁律 0 要求工具轮先写 1~4 句公开工作笔记（Main Agent 自己的
+# thinking_summary 数据源）, 阈值必须高于常规笔记长度, 否则笔记会先以回答形态流出再撤回。
+STREAM_ANSWER_DELAY = 240
 # 回答逐字流出节奏（2026-08-29）: DeepSeek 分块大且生成快, 直接转发会"秒出"而非流式——
 # 每字 12ms ≈ 83 字/秒, 生成与显示同速推进（显示慢于生成, 多余生成由 API 连接自然缓冲）
 # 2026-08-29 提速: 前端打字机已改自适应批量渲染并接管视觉节奏, 后端限速降为 2ms/字
@@ -71,8 +72,20 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
 工具会并行执行, 一次可以同时调用多个独立工具。
 
 ## 铁律
-0. 调用工具时不要输出任何说明文字——直接进行工具调用; 推理与计划放在思维中（回答文本只出现在最终答案）。
-1. 凡涉及具体哲学主张/概念/出处, 必须先调用 search_books 检索原文, 用真实原文支撑, 不得凭记忆编造引文。
+0. 【公开工作笔记（每轮工具调用前必须）】凡是还要调用工具的轮次, 先用 1~4 个自然句写下
+   给用户看的工作判断: ①当前暂时知道什么; ②还有什么不确定; ③为什么下一步做这个动作;
+   ④（若有）新证据改变了之前的哪个假设。尚未核验的内容用"可能/我记得/待核验"的口吻表述,
+   不得把记忆当作已确认事实。写完工作笔记后再宣告本轮工具调用。这段笔记不是最终答案——
+   不得在此提前输出完整回答或结论; 不再调用工具的那一轮直接输出最终回答, 无需工作笔记。
+1. 【研究纪律: 检索—阅读闭环】凡涉及具体哲学主张/概念/出处/原话, 必须以真实的检索与阅读
+   支撑结论, 不得凭记忆作答:
+   - 先 search_books 定位; 命中候选后, 下一步就是 get_chapter 读取对应篇章原文,
+     确认措辞与上下文, 然后才下结论——检索片段只是定位线索, 不是核验本身;
+   - 不因"自己已经知道一个看似合理的答案"就停止研究; 记忆只是工作假设,
+     未经原文核验前不得以确定口吻陈述;
+   - 若原文核验修正了你的工作假设（如记忆中出处/对象有误、与相邻章句混淆）,
+     最终回答必须明确指出修正了什么;
+   - 重要不确定性未解决时继续检索研究; 避免重复检索, 但不追求最少工具——以核验完成为准。
 2. 回答标注引用来源: 【《书名》· 章节名】。
 3. 涉及哲学家关系用 query_graph; 流派用 get_school; 哲人资料用 get_philosopher; 概念溯源用 concept_trace。
 4. 用户要求对比可用 compare_views; 写作文用 write_essay; 辩论用 philosopher_debate; 决策求助用 advisor_council;
@@ -321,15 +334,9 @@ async def agent_node(state):
         forced = True
     elif verdict == "warn" and not (budget is not None and budget.soft_reached()):
         msgs.append(SystemMessage(content=AR.NO_GAIN_WARN_HINT))
-    # ── Phase T.1 (T1.1-B): 主文本读取保障——核验意图下, 定位发生后必须读原文。
-    # 在充分性收敛计算之前执行: 读取若满足义务, 本轮即按"核验完成"收口,
-    # 模型带着已读原文直接给出最终核验回答（消灭"检索到了却说可以再读"）。──
-    try:
-        _auto_read = await _ensure_primary_read(state, msgs)
-        if _auto_read and _auto_read.get("injection"):
-            msgs.append(SystemMessage(content=_auto_read["injection"]))
-    except Exception as _e:
-        logger.warning(f"[primary-read] skipped: {str(_e)[:160]}")
+    # ── O1: 引擎不再代执行任何认知性工具（原 _ensure_primary_read auto-read 已删除）。
+    # 主文本读取由 Main Agent 自己宣告; 引擎只保留 prompt 层引导（下方"最后核验机会"提示）
+    # 与确定性校验（quote/citation validator, 见收口阶段）。──
     # ── Patch 1 (B1): 证据充分性收敛（复杂度期望 + 信息增益; 非硬上限）──
     try:
         plan = state.get("plan") or {}
@@ -387,7 +394,21 @@ async def agent_node(state):
     # 2026-08-14: 同步 LLM 调用移入线程池, 防阻塞事件循环（并发会话卡死）
     # Phase A (A4): 有限重试——可恢复错误（连接中断/超时/429/5xx）按配置退避重试;
     # 耗尽抛 ModelCallError → stream_agent 的 graceful completion（用已取得 evidence 收口）
-    resp, retries = await _agent_llm_invoke(agent, msgs, trace=state.get("trace"))
+    # O1: 机械 timing observability——Main Agent invocation 的起止时长入 trace;
+    # 每次模型调用开启一个新的 decision group（本组内宣告的工具归属该组）。
+    _trace_ref = state.get("trace")
+    _llm_t0 = time.time()
+    if _trace_ref is not None:
+        try:
+            _trace_ref.begin_group()
+        except Exception:
+            pass
+    resp, retries = await _agent_llm_invoke(agent, msgs, trace=_trace_ref)
+    if _trace_ref is not None:
+        try:
+            _trace_ref.record_phase("llm_invocation", _llm_t0, msgs_len=len(msgs))
+        except Exception:
+            pass
     return {"messages": [resp], "forced": forced,
             "model_retries": state.get("model_retries", 0) + retries}
 
@@ -403,17 +424,14 @@ async def _agent_llm_invoke(agent, msgs, trace=None):
     return await asyncio.to_thread(AR.invoke_llm_with_retry, _call, msgs, _on_retry)
 
 
-# ── Phase T.1 (T1.1-B): 主文本读取保障（引擎兜底 auto-read）──────────────
-# 根因（ROOT_CAUSE_T1）: 出处核验请求若模型只检索不读取（或收口轮被 forced 拦截）,
-# 义务没有任何机制兜底——模型最后凭记忆给出 blockquote（"言必有中出处"事故）。
-# 规则: Tool available + verification requested = DO IT NOW。核验意图存在、
-# 至少一轮定位已发生、且尚无任何 get_chapter 时, 引擎代为执行一次主文本读取:
-#   ① locate_exact_phrase 全库逐字定位（确定性词法, 不改 search_books 排序）
-#   ② get_chapter 读取候选篇章 → 记入 raw_tool_log/ledger/trace/budget
-#   ③ 向模型注入定位结果与核验规则（EXACT→引用; 近似→说明; NOT_FOUND→如实说）
-# 返回 {"injection": 给模型的注入文本, "user_note": 给用户的确定性补正文本(可 None)}。
-AUTO_READ_THOUGHT = "出处核验：定位并读取候选篇章原文（search→read 升级）"
-
+# ── O1: 主文本读取保障改策 ─────────────────────────────────────────────
+# 原 Phase T.1 (T1.1-B) 的引擎兜底 auto-read（_ensure_primary_read）已整体删除:
+# 它绕过 Main Agent 直接 locate_exact_phrase → get_chapter, 并注入"这就是你自己的
+# 核验动作"式归因倒置——runtime 决定了认知动作却表现为 Agent 的行为（AUDIT-01/R1 反例）。
+# O1 后的等价能力全部在合法层:
+#   ① prompt 层: 铁律 1（检索—阅读闭环）+ 收口轮"最后核验机会"读章提示（模型仍自主宣告）;
+#   ② 确定性校验层: 收口阶段 quote/citation validator 保留（只校验与补正措辞,
+#      不再代执行任何工具, 也不产生 Main Agent thinking）。
 
 def _derive_read_info(raw_tool_log, term):
     """模型自主 get_chapter 读取后, 从 raw_tool_log 推导已读章节信息（含含 term 的原文段）"""
@@ -446,148 +464,6 @@ def _derive_read_info(raw_tool_log, term):
                     "chapter_idx": rf.get("chapter_idx"), "passage": passage}
             break
     return best
-
-
-async def _ensure_primary_read(state, msgs=None):
-    plan = state.get("plan") or {}
-    vi = plan.get("verification_intent") or {}
-    ledger = state.get("obligation_ledger")
-    if not vi or not vi.get("kind") or ledger is None:
-        return None
-    if getattr(ledger, "obligations_satisfied", False) or getattr(ledger, "auto_primary_read", False):
-        return None
-    if getattr(ledger, "read_execs", 0) > 0 or getattr(ledger, "_pending_reads", None):
-        return None
-    budget = state.get("budget")
-    located_once = getattr(ledger, "search_execs", 0) >= 1 or (
-        budget is not None and budget.total_executed >= 1) or bool(state.get("forced"))
-    if not located_once:
-        return None   # 模型尚未获得一次定位机会——不抢跑
-    ledger.auto_primary_read = True
-    language = state.get("language", "zh")
-    lang_en = language == "en"
-    term = (vi.get("term") or "").strip()
-    user_message = state.get("user_message", "") or ""
-    mention = None
-    m = re.search(r"《([^》]{1,24})》", user_message)
-    if m:
-        mention = m.group(1).strip()
-    if not mention and vi.get("subject_author"):
-        mention = vi["subject_author"]
-    loc = {"found": False, "hits": [], "prefer_absent": False,
-           "prefer_unreadable": False, "prefer_found": None}
-    try:
-        from routes.agent_tools_retrieval import locate_exact_phrase
-        loc = await asyncio.to_thread(locate_exact_phrase, term, mention)
-    except Exception as e:
-        logger.warning(f"[primary-read locate] skipped: {str(e)[:160]}")
-    preface = ""
-    if loc.get("prefer_absent"):
-        preface = (f"「{term}」未在《{mention}》任何篇章逐字出现——用户假设的出处不成立，"
-                   "回答必须先纠正这一归属。" if not lang_en else
-                   f"'{term}' does NOT appear verbatim anywhere in {mention} — "
-                   "the user's assumed source is wrong and must be corrected first.")
-    elif loc.get("prefer_unreadable") and not loc.get("found"):
-        preface = (f"《{mention}》在本库无可读原文（占位文本），核验只能基于库内文献中的引用——"
-                   "回答必须如实注明这一层级。" if not lang_en else
-                   f"{mention} has no readable text in the corpus (placeholder); verification can "
-                   "only rely on citations found in corpus works — state this layer honestly.")
-    trace = state.get("trace")
-    verif_box = state.get("verif_box")
-    raw_log = state.get("raw_tool_log")
-    hits = loc.get("hits") or []
-    if hits:
-        top = hits[0]
-        args = {"book_id": top["book_id"], "chapter_idx": int(top["chapter_idx"])}
-        try:
-            res = await asyncio.to_thread(AG.TOOLS["get_chapter"]["execute"], dict(args))
-        except Exception as e:
-            res = {"error": str(e)}
-        is_err = isinstance(res, dict) and res.get("error")
-        entry = {"name": "get_chapter", "args": args, "result_summary": str(res)[:200],
-                 "result_full": res, "thought": AUTO_READ_THOUGHT, "_auto": True}
-        if isinstance(raw_log, list) and not is_err:
-            raw_log.append(entry)
-        try:
-            ledger.record("get_chapter", args, not is_err, res)
-        except Exception:
-            pass
-        if trace:
-            try:
-                trace.record_call(len(trace.calls), "get_chapter", args, 0.0, not is_err, None,
-                                  str(res)[:200], AR.result_hash(res), "unique",
-                                  "empty" if is_err else "new",
-                                  _evidence_item_count("get_chapter", res), executed=True,
-                                  thought=AUTO_READ_THOUGHT)
-            except Exception:
-                pass
-        if budget and not is_err:
-            budget.count("get_chapter", "unique", executed=True, info_gain="new")
-        if verif_box and verif_box.get("term") and not is_err and isinstance(raw_log, list):
-            try:
-                _v = RP.verify_term_presence(verif_box.get("term"), raw_log)
-                verif_box["state"] = _v["state"]
-                verif_box["computed"] = True
-            except Exception:
-                pass
-        book, chapter = top.get("book_title") or "", top.get("chapter_title") or ""
-        passage = (top.get("passage") or "").strip()
-        try:
-            ledger.primary_read_info = {"book": book, "chapter": chapter,
-                                        "book_id": top.get("book_id"),
-                                        "chapter_idx": top.get("chapter_idx"),
-                                        "passage": passage}
-        except Exception:
-            pass
-        if lang_en:
-            inj = (f"[Primary text read] You have now located and read 《{book}》·{chapter} — "
-                   "this is YOUR OWN verification step this turn; the text below is verified "
-                   "evidence in hand. "
-                   + (f"Relevant passage:\n\"{passage}\"\n" if passage else "")
-                   + "Rules: if the user's wording matches this text verbatim, quote it with "
-                     f"【《{book}》·{chapter}】; if not exact, give the closest passage and state "
-                     "the difference; if the hit sits inside a secondary work, label that layer — "
-                     "never present it as the primary text. Finish the final verification answer "
-                     "now; never say you could not read the text, and never defer reading to later. "
-                     "Describe the verification in first person, without mentioning system messages "
-                     "or internal mechanisms.")
-            note = (f"(Primary-source check: read and verified 《{book}》·{chapter} — relevant "
-                    f"passage: \"{passage}\" 【《{book}》·{chapter}】.)") if passage else \
-                   (f"(Primary-source check: read 《{book}》·{chapter}; no verbatim passage for "
-                    f"'{term}' was found there.)")
-        else:
-            inj = (f"【主文本读取完成（系统）】你已在本轮完成定位并读取《{book}》·{chapter}——"
-                   "这就是你自己的核验动作，以下原文是你手中已核验的证据。"
-                   + (f"与「{term}」直接相关的原文段落：\n「{passage}」\n" if passage else "")
-                   + "核验规则：用户所给表述与该原文逐字一致→直接引用并标注"
-                     f"【《{book}》·{chapter}】；不完全一致→给出最接近原文并说明差异；"
-                     "若该命中位于研究著作（转述/引用），必须注明这一层级，不得冒充原典逐字引用。"
-                     "现在直接完成最终核验回答；绝对不得声称'未能读取/未能调取该章全文'"
-                     "（原文就在上面），也不得以'可以再读'推延。"
-                     "以第一人称陈述你的核验过程，不得提及系统消息或内部机制。")
-            note = (f"（原典核验补正：已读取并核验《{book}》·{chapter}——相关原文：「{passage}」"
-                    f"【《{book}》·{chapter}】。）") if passage else \
-                   (f"（原典核验补正：已读取《{book}》·{chapter}，其中未找到与「{term}」逐字一致的原文。）")
-        if preface:
-            inj = preface + "\n" + inj
-        return {"injection": inj, "user_note": note, "located": True}
-    # 未定位到（R7 型）: 明确 NOT_FOUND 指引
-    if lang_en:
-        inj = ("[Corpus locate result] A verbatim scan of the whole corpus found no occurrence of "
-               f"'{term}'. " + (preface + " " if preface else "")
-               + "The final answer must state plainly that the expression could not be located in "
-                 "the corpus (NOT_FOUND); no verbatim-looking quotation may be presented, and no "
-                 "blockquote of 'the original text' is allowed.")
-    else:
-        inj = ("【原典定位结果（系统）】全部原典库逐字扫描未找到「" + term + "」。"
-               + (preface + "\n" if preface else "")
-               + "最终回答必须明确说明该表述未能在库中定位（NOT_FOUND）；"
-                 "任何看似原文的引用都未经核验，不得输出 blockquote 原文，不得声称已核验。")
-    note = (f"（原典核验补正：全库逐字扫描未找到「{term}」——该表述未能定位，"
-            "任何原文引用均未经过核验。）") if not lang_en else \
-           (f"(Primary-source check: a full-corpus verbatim scan found no occurrence of '{term}' "
-            "— NOT_FOUND; no quotation of it can be verified.)")
-    return {"injection": inj, "user_note": note, "located": False}
 
 # 工具失败备选映射（自愈: 失败后提示可换用的工具）
 FALLBACK_MAP = {
@@ -671,12 +547,15 @@ async def tools_node(state):
                 trace.record_call(call_index, name, args, 0.0, False, None,
                                   json.dumps(skip_res, ensure_ascii=False)[:200],
                                   AR.result_hash(skip_res), "duplicate", "repeat", 0,
-                                  executed=False, thought=(admit_reason or "")[:40])
+                                  executed=False, thought=(admit_reason or "")[:40],
+                                  decision_group=getattr(trace, "current_group", None),
+                                  tool_call_id=call.get("id"))
             return ToolMessage(content=json.dumps(skip_res, ensure_ascii=False)[:4000], name=name,
                                tool_call_id=call.get("id", ""),
                                additional_kwargs={"_args": args, "_result_full": skip_res,
                                                   "_budget_class": "duplicate", "_info_gain": "repeat",
-                                                  "_admitted": False})
+                                                  "_admitted": False,
+                                                  "_dg": getattr(trace, "current_group", None)})
         # ── A2: 重复调用防护 ──
         decision = guard.decide(name, args) if guard else {"action": "execute", "cls": "unique", "reason": ""}
         if decision["action"] == "reuse":
@@ -687,13 +566,16 @@ async def tools_node(state):
                 trace.record_call(call_index, name, args, 0.0, True, None,
                                   json.dumps(prev, ensure_ascii=False)[:200] if prev is not None else "",
                                   AR.result_hash(prev), "duplicate", "repeat", 0,
-                                  executed=False, thought="复用本轮早前结果")
+                                  executed=False, thought="复用本轮早前结果",
+                                  decision_group=getattr(trace, "current_group", None),
+                                  tool_call_id=call.get("id"))
             content = json.dumps(prev, ensure_ascii=False) if isinstance(prev, (dict, list)) else str(prev)
             return ToolMessage(content=content[:4000], name=name,
                                tool_call_id=call.get("id", ""),
                                additional_kwargs={"_args": args, "_result_full": prev,
                                                   "_budget_class": "duplicate", "_reused": True,
-                                                  "_info_gain": "repeat"})
+                                                  "_info_gain": "repeat",
+                                                  "_dg": getattr(trace, "current_group", None)})
         # ── A3/A1: 执行（带预算口径的轮内重试）──
         res = None
         inner_attempts = AR.TOOL_RETRY["attempts"]
@@ -766,7 +648,9 @@ async def tools_node(state):
                               (res or {}).get("error") if isinstance(res, dict) else None,
                               json.dumps(res, ensure_ascii=False)[:200] if isinstance(res, (dict, list)) else str(res)[:200],
                               rh, cls, info_gain, ev_items, executed=True,
-                              thought=thought_label)
+                              thought=thought_label,
+                              decision_group=getattr(trace, "current_group", None),
+                              tool_call_id=call.get("id"))
         # ── Patch 1 (B4): 共享 raw 工具记录（LiveCitationSanitizer 引用核验 / 证据契约用）──
         if isinstance(raw_log, list) and name in retrieval_set and not is_err:
             raw_log.append({"name": name, "args": args,
@@ -795,7 +679,8 @@ async def tools_node(state):
         return ToolMessage(content=content[:4000], name=name,
                            tool_call_id=call.get("id", ""),
                            additional_kwargs={"_args": args, "_result_full": res,
-                                              "_budget_class": cls, "_info_gain": info_gain})
+                                              "_budget_class": cls, "_info_gain": info_gain,
+                                              "_dg": getattr(trace, "current_group", None)})
 
     base_index = state.get("tool_count", 0)
     results = await asyncio.gather(*[run_one(c, base_index + i, admissions[i][0], admissions[i][1],
@@ -1144,27 +1029,12 @@ def _build_recovery_dicts(messages, tool_log, directive):
     fb_msgs.append(SystemMessage(content=directive + ("\n\n【已取得的检索材料】\n" + digest if digest else "")))
     return [d for d in (_lc_to_dict(m) for m in fb_msgs) if d]
 
-# ── Thinking UI（2026-08-31）: 安全 thinking 片段（非 raw CoT）──
-# 用户可见的执行意图与结果解读, 完全确定性模板——
-# 绝不引用内部思维链/system prompt/隐藏状态; 绝不输出内部字段（book_id 等）与结果正文。
-_INTENT_THINKING_ZH = {
-    "search_books": "这个问题需要先回到原典——检索书中关于它的直接论述。",
-    "get_chapter": "先调取对应章节原文，用原典上下文核对相关表述。",
-    "get_philosopher": "先确认哲人的基本信息与背景，再进入论证。",
-    "get_book_detail": "先查证相关著作的基本信息与版本。",
-    "query_graph": "先查思想星丛，确认概念之间的关联与源流。",
-    "websearch": "原典库没有直接材料，改为上网检索补充。",
-    "_default": "先核实相关材料，再给出判断。",
-}
-_INTENT_THINKING_EN = {
-    "search_books": "Start with the primary texts—search their direct claims about this.",
-    "get_chapter": "Pull the corresponding chapter to check the exact wording in context.",
-    "get_philosopher": "Confirm the philosopher's basic information and background first.",
-    "get_book_detail": "Verify the basic facts and editions of the work first.",
-    "query_graph": "Query the thought constellation to trace concept connections.",
-    "websearch": "No direct material in the library—fall back to web search.",
-    "_default": "Verify the relevant material first, then judge.",
-}
+# ── Thinking UI（2026-08-31; O1 收敛）──
+# 工具结果解读 = ACTIVITY 通道（tool_note 事件, initiated_by=runtime_mechanical）:
+# 完全确定性模板, 描述"这一步结果如何影响下一步核实"——绝不引用内部思维链/system prompt/
+# 隐藏状态; 绝不输出内部字段（book_id 等）与结果正文; 不冒充 Main Agent thinking
+# （O1: 原 _INTENT_THINKING 意图模板——以第一人称宣称 Agent 意图——已删除,
+#  意图只能由模型自己的公开工作笔记表达, 空窗由 _activity_line 机械注记填补）。
 _RETRIEVAL_THINK_TOOLS = {"search_books", "get_chapter", "get_philosopher", "get_book_detail",
                           "query_graph", "list_books", "websearch"}
 
@@ -1194,77 +1064,62 @@ def _safe_args(args):
     return ""
 
 
-# ── Safe Reasoning Summary（2026-08-31 Thinking 数据源真实化）──
-# 模型在安全（对话 content）通道中显式生成 concise reasoning summaries:
-#   指令要求每轮以 <rationale>…</rationale> 开头（≤180 字）说明: 问题理解/歧义难点/
-#   为何调用工具/需谨慎的判断/回答组织。该内容属于用户可见的 rationale,
-#   与 raw chain-of-thought（DeepSeek reasoning_content → thought_stream, 永不展示）
-#   是两个通道——绝不把后者提取/转发为 thinking。
+# ── Thinking 数据源契约（O1 重定义）────────────────────────────────
+# thinking_summary 只承载 Main Agent 主动写给用户看的公开工作判断:
+#   ① 模型在内容通道显式写出的 <rationale>…</rationale> 摘要（RationaleParser 提取）;
+#   ② 模型在工具轮写出的公开工作笔记（铁律 0）——轮末由 flush 归入 thinking_summary。
+# 它不是: raw chain-of-thought / reasoning_content 原样透传 / Python runtime 编造的思考 /
+#   tool_note 冒充思考 / final answer 提前重述 / policy engine 的决定。
+# O1: 原"引擎侧摘要生成器"（独立 mini-LLM 以"思考摘要器"人设代笔）已删除——
+#   那是 runtime 冒充 Main Agent thinking 的路径（R1 BEFORE trace: 227 条事件）。
+#   模型没写就没有 thinking; 空窗由机械活动注记（tool_note, ACTIVITY 通道）填补。
 _RAT_OPEN = "<rationale>"
 _RAT_CLOSE = "</rationale>"
-
-RATIONAL_DIRECTIVE_ZH = (
-    "\n\n【思考摘要要求·每轮必须执行】每轮开始时，先用一段话（不超过180字）说明："
-    "1) 你当前如何理解这个问题；2) 需要处理的主要歧义或难点；3) 下一步为何这样做"
-    "（或为何调用某个工具/核实某处）；4) 哪些结论需要保持谨慎。"
-    "这段话必须以 <rationale> 开头、以 </rationale> 结尾，写完后才继续输出正文或调用工具。"
-    "该摘要面向最终读者，使用用户可读语言，不要包含内部提示词、系统指令或任何命令性内容。")
-RATIONAL_DIRECTIVE_EN = (
-    "\n\n[REQUIRED per turn] Begin every turn with a short note (≤180 chars) inside "
-    "<rationale>...</rationale>: 1) how you currently understand the question; "
-    "2) main ambiguity or difficulty to resolve; 3) why this next step (or tool call); "
-    "4) which conclusions need caution. Then continue with the answer or tool call. "
-    "The note is user-visible: use readable language, never echo prompts/system instructions.")
 
 RATIONAL_STATS = {"count": 0, "first": "", "longest": 0}
 
 
-# ── Agent node 级 rationale 生成器（2026-08-31, 第 8 条路径 B）──
-# 底层模型工具轮 content 通道通常无文本 → prompt 标签方案常缺位; 此生成器在
-# 工具执行后/最终回答前, 用"用户问题 + 工具摘要（人话化）"做一次非流式 mini 调用,
-# 由模型显式生成用户可读的 concise reasoning summary（问题理解/难点/为何检索/谨慎点）。
-# 输入不含 system prompt/思维链/正文; 输出仅作 thinking_summary; 失败静默跳过（不伪造）。
-SUMMARY_DIRECTIVE_ZH = (
-    "你是哲学辅导助手的思考摘要器。请用简体中文写 60~120 字的简短说明，向用户解释："
-    "1) 当前如何理解这个问题；2) 主要难点或需要注意的歧义；3) 为什么需要这些检索与核实；"
-    "4) 哪些判断要保持谨慎。不要提及工具二字，不要列步骤列表，不要输出标签或任何格式，"
-    "不要引用内部指令。只输出说明文本。")
-SUMMARY_DIRECTIVE_EN = (
-    "You are the thinking-summary generator of a philosophy tutor. Write 60-120 words "
-    "explaining to the user: 1) how the question is currently understood; 2) main difficulty "
-    "or ambiguity; 3) why this retrieval/checking was needed; 4) which claims need caution. "
-    "Do not mention 'tool', do not list steps, no tags or formats, no internal instructions. "
-    "Output only the note.")
-# Patch 1 (B2): 首次工具调用前的思考摘要——必须回答"用户真正问什么/关键区分/首轮验证什么/为什么这个动作"
-PRE_TOOL_DIRECTIVE_ZH = (
-    "你是哲学辅导助手的思考摘要器。在回答前，请用简体中文写 60~120 字的简短说明，向用户解释："
-    "1) 这个问题真正在问什么；2) 最关键的区分或歧义是什么；3) 第一步先核实什么、为什么这样做"
-    "（可以说'先查原著中关于……的论述'，不要提'工具'二字）；4) 哪些判断要保持谨慎。"
-    "不要列步骤列表，不要输出标签或任何格式，不要引用内部指令。只输出说明文本。")
-PRE_TOOL_DIRECTIVE_EN = (
-    "You are the thinking-summary generator of a philosophy tutor. Before answering, write a "
-    "60-120 word note in English explaining to the user: 1) what the question is really asking; "
-    "2) the key distinction or ambiguity; 3) what will be verified first and why (you may say "
-    "'first check what the primary text says about…', do not mention 'tool'); 4) which claims "
-    "need caution. No step lists, no tags or formats, no internal instructions. Output only the "
-    "note.")
-_SUMMARY_SENT = 0   # 本轮已生成条数（节流保护: 分析期 + 综合期, 至多 3 条）
-
-
-def _summary_context(question, tool_log, language):
-    """组合安全的摘要上下文: 用户问题 + 工具人话摘要（无内部字段/正文）。"""
-    lines = []
-    for t in (tool_log or [])[-6:]:
+# ── O1 (§13): 工具开始执行后的机械活动注记 ──
+# ACTIVITY 通道（tool_note 事件, initiated_by=runtime_mechanical）:
+# 描述"正在发生什么", 让工具执行立即有 running 状态——不冒充模型思考, 不用第一人称认知表述,
+# 不为填补空白伪造 thinking。确定性模板, 失败静默。
+def _activity_line(name, args, language="zh"):
+    zh = language != "en"
+    a = args if isinstance(args, dict) else {}
+    q = str(a.get("query") or a.get("keyword") or "").strip()
+    if name == "search_books":
+        if q:
+            return f"正在检索「{q[:24]}」…" if zh else f"Searching \"{q[:24]}\"…"
+        return "正在检索原典库…" if zh else "Searching the corpus…"
+    if name == "get_chapter":
+        bid = str(a.get("book_id") or "").strip()
+        title = ""
         try:
-            s_ = interpret_thinking(t.get("name"), t.get("args") or {}, t.get("result_full"), language)
+            from routes.agent import book_by_id as _bbi
+            title = ((_bbi(a.get("book_id")) or {}).get("title")) or ""
         except Exception:
-            s_ = None
-        if s_:
-            lines.append(s_)
-    ctx = str(question or "")[:160]
-    if lines:
-        ctx += "\n\n已进行的核实（供参考，勿罗列）:\n" + "；".join(lines)[:400]
-    return ctx
+            title = ""
+        if not title and bid:
+            title = bid[:20]
+        if title:
+            return f"正在读取《{title}》章节原文…" if zh else f"Reading {title} chapter…"
+        return "正在读取章节原文…" if zh else "Reading the chapter…"
+    if name == "websearch":
+        if q:
+            return f"正在上网搜索「{q[:24]}」…" if zh else f"Searching the web for \"{q[:24]}\"…"
+        return "正在上网搜索…" if zh else "Searching the web…"
+    if name == "query_graph":
+        e = str(a.get("philosopher") or a.get("concept") or "").strip()
+        if e:
+            return f"正在查询思想星丛「{e[:20]}」…" if zh else f"Querying the constellation of {e[:20]}…"
+        return "正在查询思想星丛…" if zh else "Querying the constellation…"
+    if name == "get_philosopher":
+        ent = _safe_args(a)
+        return f"正在查证「{ent}」资料…" if ent and zh else ("正在查证哲人资料…" if zh else "Looking up philosopher info…")
+    if name == "get_book_detail":
+        ent = _safe_args(a)
+        return f"正在核对《{ent}》书目信息…" if ent and zh else ("正在核对书目信息…" if zh else "Checking book details…")
+    return "正在核实相关材料…" if zh else "Verifying relevant material…"
 
 
 class RationaleParser:
@@ -1511,17 +1366,20 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 仍是有界兜底, 防失控烧钱）。Phase A: 数值收编 agent_runtime.RECURSION_LIMIT 配置
     config = {"recursion_limit": AR.RECURSION_LIMIT}
     # 当前 agent 轮缓冲（live: 已进入实时流式回答; live_text: 已作为 token 流出的文本——
-    # 若本轮后续宣告了工具调用, 需以 answer_retract 事件撤回为思考）
+    # 若本轮后续宣告了工具调用, 需以 answer_retract 事件撤回为思考;
+    # note_emitted: 本轮公开工作笔记已作为 thinking_summary 发出, flush 不再重复）
     pending = {"text": "", "has_tools": False, "reasoned": False, "started": set(),
-               "live": False, "live_text": ""}
+               "live": False, "live_text": "", "note_emitted": False}
     pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具名（2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
     reasoning_text = ""   # 累积推理链（o1 风格摘要用）
-    _thinking_opened = False   # 仅首个检索工具前发一次"为何调用"（防碎念噪音, 2026-08-31 Thinking UI）
     _rat_parser = RationaleParser()   # <rationale>…</rationale> 流式解析（安全摘要通道）
     _rat_tools_done = 0   # phase 推断: 已完成的工具数
-    _SUMMARY_SENT = 0     # 每 invocation 重置（跨请求隔离）
     _rat_phase = "analysis"
+    # O1 因果观测: Main Agent invocation 组计数（tools→agent 每次回到 agent 节点 +1）
+    _agent_invocations = 1
+    _saw_tools_result = False
+    _main_agent_tool_decisions = 0
 
     def _phase_for():
         """phase 推断: 首轮 analysis; 有工具结果后 evidence; 无后续工具时 synthesis"""
@@ -1529,105 +1387,37 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             return "analysis"
         return "evidence" if pending_tools else "synthesis"
 
-    async def _gen_summary(phase, pre_tool=False, tool_name=None, tool_args=None):
-        """思考摘要生成（Patch 1: 分析期 pre-tool / 综合期 synthesis）:
-        - 不先发空开条——首个 delta 到达时才发 open+delta（杜绝"只开条无内容"的空卡片）
-        - 失败静默跳过（pre_tool 失败由调用方回退确定性意图模板）
-        - 每 invocation 至多 3 条"""
-        nonlocal _SUMMARY_SENT
-        if _SUMMARY_SENT >= 3:
-            return
-        try:
-            if pre_tool:
-                q = (req_message or "")[:160]
-                tname = tool_name or ""
-                targs = _safe_args(tool_args or {})
-                if targs:
-                    q += f"\n\n计划的第一步动作: 核实「{targs}」相关内容。"
-                msgs_ = [{"role": "system",
-                          "content": PRE_TOOL_DIRECTIVE_EN if language == "en" else PRE_TOOL_DIRECTIVE_ZH},
-                         {"role": "user", "content": q}]
-            else:
-                ctx = _summary_context(req_message, tool_log, language)
-                msgs_ = [{"role": "system",
-                          "content": SUMMARY_DIRECTIVE_EN if language == "en" else SUMMARY_DIRECTIVE_ZH},
-                         {"role": "user", "content": ctx}]
-            from routes.agent_llm import llm_stream as _ls
-            loop = asyncio.get_running_loop()
-            queue = asyncio.Queue()
-            SENTINEL = object()
+    def _dg():
+        """当前 decision group 标识（O1 provenance: 本组工具由该次 Main Agent invocation 宣告）"""
+        return f"inv-{_agent_invocations}"
 
-            def _producer():
-                try:
-                    for piece in _ls(msgs_, thinking=False, max_tokens=160):
-                        loop.call_soon_threadsafe(queue.put_nowait, piece)
-                except Exception as e:
-                    logger.warning(f"[thinking-gen stream] {str(e)[:120]}")
-                finally:
-                    loop.call_soon_threadsafe(queue.put_nowait, SENTINEL)
-            task = asyncio.get_running_loop().run_in_executor(None, _producer)
-            buf = ""
-            opened = False
-            while True:
-                piece = await queue.get()
-                if piece is SENTINEL:
-                    break
-                buf += piece
-                if not opened:
-                    # 首个 delta 到达 → 才开条（内容随第一个 delta 一起给, 前端立即可渲染）
-                    yield {"type": "thinking_summary", "content": piece, "phase": phase,
-                           "conversation_id": conversation_id, "message_id": message_id,
-                           "invocation_id": f"{conversation_id}:{message_id}"}
-                    opened = True
-                else:
-                    yield {"type": "thinking_summary_delta", "content": piece,
-                           "conversation_id": conversation_id, "message_id": message_id,
-                           "invocation_id": f"{conversation_id}:{message_id}"}
-            await task
-            if buf.strip():
-                _SUMMARY_SENT += 1
-        except Exception as _e:
-            logger.warning(f"[thinking-gen] skipped: {str(_e)[:120]}")
-        return
+    def _note_event(content, phase, delta=False):
+        """Main Agent 公开工作笔记事件（thinking_summary / thinking_summary_delta）。
+        initiated_by=main_agent: 内容只能来自模型自己的输出（rationale 标签 / 工作笔记）。"""
+        if not delta:
+            RATIONAL_STATS["count"] += 1
+            if not RATIONAL_STATS["first"]:
+                RATIONAL_STATS["first"] = content[:80]
+            RATIONAL_STATS["longest"] = max(RATIONAL_STATS["longest"], len(content))
+        return {"type": "thinking_summary_delta" if delta else "thinking_summary",
+                "content": content if delta else content[:280],
+                "phase": phase,
+                "initiated_by": "main_agent",
+                "decision_group_id": _dg(),
+                "conversation_id": conversation_id,
+                "message_id": message_id,
+                "invocation_id": f"{conversation_id}:{message_id}"}
 
-    def _rat_event(content, phase):
-        RATIONAL_STATS["count"] += 1
-        if not RATIONAL_STATS["first"]:
-            RATIONAL_STATS["first"] = content[:80]
-        RATIONAL_STATS["longest"] = max(RATIONAL_STATS["longest"], len(content))
-        return {
-            "type": "thinking_summary",
-            "content": content[:280],
-            "phase": phase,
-            "conversation_id": conversation_id,
-            "message_id": message_id,
-            "invocation_id": f"{conversation_id}:{message_id}",
-        }
-
-    async def _think_before_tool(name, args):
-        """Patch 1 (B2): 首次非平凡工具调用前的实质思考摘要（用户可见 thinking_summary）。
-
-        - 仅首个工具触发一次（此后不再发 pre-tool 思考, 避免碎念）
-        - 先尝试 LLM 生成（回答: 用户真正问什么/关键区分/首轮验证什么/为什么这个动作）;
-          失败回退确定性意图模板（保证 thinking before first tool 恒为 true）
-        """
-        nonlocal _thinking_opened
-        if _thinking_opened:
-            return
-        _thinking_opened = True
-        # 真正生成（分析期, pre_tool）; 失败/空 → 确定性模板兜底
-        produced = False
-        try:
-            async for _g in _gen_summary("analysis", pre_tool=True, tool_name=name, tool_args=args):
-                yield _g
-                produced = True
-        except Exception as _e:
-            logger.warning(f"[thinking-pre-tool] skipped: {str(_e)[:120]}")
-        if not produced:
-            src = _INTENT_THINKING_ZH if language == "zh" else _INTENT_THINKING_EN
-            text = src.get(name) or src.get("_default") or ""
-            if text:
-                yield {"type": "tool_note", "content": text}
+    def _flush_working_note():
+        """O1 (§5): 工具宣告前的公开工作笔记归位——模型本轮写在内容通道的工作判断
+        在首个工具宣告出现时立即转为 thinking_summary（causal order:
+        MAIN_AGENT_INVOCATION → thinking → tool declaration → tool_start）。"""
+        evs = []
+        txt = pending.get("text", "").strip()
+        if txt and not pending.get("note_emitted") and not pending.get("live"):
+            evs.append(_note_event(txt, _phase_for()))
+            pending["note_emitted"] = True
+        return evs
     
     async def emit_append(text):
         """尾部补发（token 事件）: 追加到 full_answer——补正文本计入最终可见正文,
@@ -1660,13 +1450,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         if not text:
             return
         if pending["has_tools"]:
-            if not pending["reasoned"]:
-                # 2026-08-31 数据源真实化: 工具轮规划文本（对话内容通道, 非 hidden
-                # reasoning_content）→ thinking_summary 兜底事件（用户可读 rationale:
-                # 为什么这一轮要调用工具）。标签方案缺席时, 这正是模型显式说出的原因。
-                _txt = text.strip()[:280]
-                if _txt:
-                    yield _rat_event(_txt, _phase_for())
+            # O1: 工具轮公开工作笔记（模型内容通道原文）→ thinking_summary。
+            # 这是 Main Agent 自己写给用户的工作判断——不是 runtime 代笔。
+            _txt = text.strip()[:280]
+            if _txt and not pending.get("note_emitted"):
+                yield _note_event(_txt, _phase_for())
+                pending["note_emitted"] = True
             return
         for ch in _filter_xml_chars(text):
             full_answer += ch
@@ -1690,6 +1479,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                  "user_message": req_message, "reentry": _reentry_tracker},
                 config, stream_mode="messages"):
             node = metadata.get("langgraph_node", "")
+            # O1 因果观测: tools→agent 回到 agent 节点 = 一次新的 Main Agent invocation
+            # （tool batch 结束后若再有认知工具, 必须由这次新 invocation 宣告——T3 断言依据）
+            if node == "agent" and _saw_tools_result:
+                _agent_invocations += 1
+                _saw_tools_result = False
+            if node == "tools":
+                _saw_tools_result = True
             if node == "agent":
                 if not chunk:
                     continue
@@ -1699,6 +1495,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 tool_call_chunks = getattr(chunk, "tool_call_chunks", None)
                 if tool_call_chunks:
                     pending["has_tools"] = True
+                    # O1 (§5) causal order: 模型本轮写在内容通道的公开工作笔记
+                    # （thinking_summary, initiated_by=main_agent）必须先于 tool_start 事件。
+                    for _nv in _flush_working_note():
+                        yield _nv
                     # 乐观流出的撤回: 本轮已实时流入回答区的文本实为工具规划文字
                     # （规划文字超过实时阈值的少数情况）→ 先撤回为思考, 再发工具卡片
                     # Phase S (S2): answer_retract 只撤销已流出的 draft text——
@@ -1718,12 +1518,19 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         if nm and nm not in pending.get("started", ()):
                             pending.setdefault("started", set()).add(nm)
                             pending_tools.add(nm)
-                            try:   # thinking 事件尽力而为, 绝不影响主流程（与 Phase 1/2/4 同机制）
-                                async for _th in _think_before_tool(nm, tcc.get("args") or {}):
-                                    yield _th
-                            except Exception as _e:
-                                logger.warning(f"[thinking-intent] skipped: {str(_e)[:120]}")
-                            yield {"type": "tool_start", "name": nm}
+                            _main_agent_tool_decisions += 1
+                            # O1 provenance: 工具宣告来自 Main Agent 本轮 invocation
+                            yield {"type": "tool_start", "name": nm,
+                                   "initiated_by": "main_agent", "decision_group_id": _dg(),
+                                   "tool_call_id": tcc.get("id") or None}
+                            # O1 (§13): 宣告后立即给机械活动注记（ACTIVITY, 非 thinking）
+                            try:
+                                yield {"type": "tool_note",
+                                       "content": _activity_line(nm, tcc.get("args") or {}, language),
+                                       "initiated_by": "runtime_mechanical", "activity": True,
+                                       "decision_group_id": _dg()}
+                            except Exception:
+                                pass
                 elif chunk.content:
                     # Thinking 数据源（真实化）: 先过 rationale 解析器——
                     # 模型在内容通道显式生成的 <rationale> 摘要在标签闭合后以
@@ -1736,7 +1543,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     _emit_text, _rats = _rat_parser.push(chunk.content)
                     for _rat in _rats:
                         _rat_phase = _phase_for()
-                        yield _rat_event(_rat, _rat_phase)
+                        yield _note_event(_rat, _rat_phase)
                     if not _emit_text:
                         continue
                     _vis = _visible_text(_emit_text)
@@ -1779,70 +1586,48 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         yield {"type": "thought_stream", "content": rc[i:i + 40]}
                         await asyncio.sleep(0.005)
             elif node == "tools":
-                # agent 输出结束 → flush（thought 在工具卡片之前发出, 形成穿插节奏）
+                # agent 输出结束 → flush（工作笔记/工具卡片穿插节奏; O1: 笔记已在宣告前归位）
                 async for ev in flush_agent():
                     yield ev
-                pending = {"text": "", "has_tools": False, "reasoned": False, "live": False, "live_text": ""}
+                pending = {"text": "", "has_tools": False, "reasoned": False, "live": False,
+                           "live_text": "", "note_emitted": False}
                 extra = chunk.additional_kwargs or {}
                 name = chunk.name or ""
                 args = extra.get("_args", {})
                 result = extra.get("_result_full", {})
                 reused = extra.get("_reused", False)
                 admitted = extra.get("_admitted", True)
-                # A1: 自动 websearch 补充也计入预算与观测（引擎发起的调用不游离在治理外）
-                # Patch 1.1 (P1): 引擎自动补充同样受检索准入约束（义务已满足/包络已满 → 不再自动上网）
-                if name == "search_books" and isinstance(result, dict) and not result.get("results"):
-                    ws_args = {"query": str(args.get("query", ""))[:80]}
-                    _ws_ok = True
-                    if obligation_ledger is not None:
-                        try:
-                            _ws_ok, _ws_why = obligation_ledger.admit(
-                                "websearch", ws_args, plan.get("complexity") or "NORMAL_EXPLANATION", False)
-                        except Exception:
-                            _ws_ok, _ws_why = True, ""
-                    if _ws_ok:
-                        # 原典库无命中 → 自动 websearch 补充（to_thread: 同步 urllib 跑在事件循环上会冻结整条 SSE 流）
-                        ws = await asyncio.to_thread(AG.TOOLS["websearch"]["execute"],
-                                                     {"query": str(args.get("query", ""))[:80]})
-                        ws_gain = "empty" if AR.result_is_empty(ws) else "new"
-                        if budget:
-                            budget.count("websearch", "unique", executed=True, info_gain=ws_gain)
-                        if trace:
-                            trace.record_call(len(trace.calls), "websearch", ws_args, 0.0, True, None,
-                                              str(ws)[:200], AR.result_hash(ws), "unique", ws_gain,
-                                              0, executed=True, thought="原典库检索不足, 自动上网搜索补充")
-                        if obligation_ledger is not None:
-                            try:
-                                obligation_ledger.record("websearch", ws_args,
-                                                         not isinstance(ws, dict) or not ws.get("error"), ws)
-                            except Exception:
-                                pass
-                        tool_log.append({"name": "websearch", "args": ws_args,
-                                         "result_summary": str(ws)[:200],
-                                         "thought": "原典库检索不足, 自动上网搜索补充"})
-                        yield {"type": "tool", "name": "websearch", "args": ws_args,
-                               "result": str(ws)[:300], "thought": "原典库检索不足, 自动上网搜索补充"}
-                    else:
-                        logger.info(f"[auto-websearch] skipped by admission: {_ws_why}")
+                # O1: 引擎 auto-websearch 已删除——search_books 空结果后是否上网补充
+                # 由 Main Agent 下一轮自主宣告（websearch 对模型可用且不受隐性配额挤压）,
+                # runtime 不再代执行认知性工具（T7 断言依据）。
                 _thought = ("复用本轮早前结果（重复调用已拦截）" if reused
                             else "检索准入未通过，执行前取消" if not admitted
                             else f"执行 {name}")
                 tool_log.append({"name": name, "args": args,
                                  "result_summary": str(result)[:200], "result_full": result,
                                  "thought": _thought})
+                # O1 provenance: 工具执行结果——决定（宣告）来自 Main Agent;
+                # 执行/复用/准入拦截属机械层, 不改变发起者归属。
                 yield {"type": "tool", "name": name, "args": args,
-                       "result": str(result)[:300], "thought": _thought}
-                # Thinking UI: 工具结果解读（安全片段, 非 raw CoT; 不确定时静默）。
+                       "result": str(result)[:300], "thought": _thought,
+                       "initiated_by": "main_agent",
+                       "decision_group_id": extra.get("_dg") or _dg(),
+                       "tool_call_id": getattr(chunk, "tool_call_id", None)}
+                # Thinking UI: 工具结果解读（ACTIVITY 注记, runtime_mechanical; 不确定时静默）。
                 # Patch 1.1: 准入拒绝的调用不发"没有检索到直接材料"式解读——
                 # 那会让用户/模型误读为"库中无此书"（真实事故: 《论语》案例）, 改发中性说明。
                 try:
                     if not admitted:
                         yield {"type": "tool_note",
-                               "content": "（检索收敛）该调用与已有检索重合或超出预算，未执行——这不代表库中无相关内容。"}
+                               "content": "（检索收敛）该调用与已有检索重合或超出预算，未执行——这不代表库中无相关内容。",
+                               "initiated_by": "runtime_mechanical",
+                               "decision_group_id": extra.get("_dg") or _dg()}
                     else:
                         _th_line = interpret_thinking(name, args, result, language)
                         if _th_line:
-                            yield {"type": "tool_note", "content": _th_line}
+                            yield {"type": "tool_note", "content": _th_line,
+                                   "initiated_by": "runtime_mechanical",
+                                   "decision_group_id": extra.get("_dg") or _dg()}
                 except Exception as _e:
                     logger.warning(f"[thinking-event] skipped: {str(_e)[:120]}")
                 # 本轮工具已处理完 → 清空待执行标记（下一 agent 轮重新计; 2026-08-14）
@@ -1913,13 +1698,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             return
     try:
         # 最终 flush: 最后一轮 agent 输出（最终回答）在 done 前以打字机发出（XML 标记已剥离）
-        # synthesis rationale（最终回答前一次; 失败静默）
-        try:
-            if _rat_tools_done > 0:
-                async for _g in _gen_summary("synthesis"):
-                    yield _g
-        except Exception as _e:
-            logger.warning(f"[thinking-gen final] skipped: {str(_e)[:120]}")
+        # O1: 原 synthesis 摘要生成器（runtime mini-LLM 代笔 thinking）已删除——
+        # 最终回答前的 thinking 只能是模型自己在内容通道写下的工作笔记。
         _gtail = _term_gate.flush()
         _stail = _citation_san.flush()
         _qtail = _quote_san.flush()
@@ -1975,47 +1755,21 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     yield {"type": "token",
                            "content": "（未能生成回答，请重试或换一种问法）" if language != "en"
                            else "(Failed to generate a response—please retry or rephrase your question)"}
-        # ══ Phase T.1 (T1.1-B): 引擎兜底读取的事件回放 + 终局安全网 ══
-        # ① 图流内 agent_node 已执行的 auto-read: 此处补发 tool 事件（前端可见卡片）
-        for _e in list(raw_tool_log):
-            if isinstance(_e, dict) and _e.get("_auto") and not _e.get("_emitted"):
-                _e["_emitted"] = True
-                tool_log.append({"name": _e.get("name"), "args": _e.get("args"),
-                                 "result_summary": _e.get("result_summary"),
-                                 "result_full": _e.get("result_full"),
-                                 "thought": _e.get("thought")})
-                yield {"type": "tool", "name": _e.get("name"), "args": _e.get("args"),
-                       "result": (_e.get("result_summary") or "")[:300],
-                       "thought": _e.get("thought")}
-                yield {"type": "tool_note",
-                       "content": "已完成主文本核验读取：候选篇章原文已读取并在全文中核对措辞。"}
-        # ② 终局安全网: 模型零工具直接作答（或读取从未发生）→ 收口前补一次主文本读取,
-        #    并以确定性补正文本进入最终正文（R1 型"记忆 blockquote"的结构性兜底）。
+        # ══ O1: 引擎兜底读取的回放与终局安全网已删除 ══
+        # 原此处的 ① auto-read tool 事件回放 + "已完成主文本核验读取" 注记
+        # 和 ② 收口前 _ensure_primary_read 终局补读（含"原典核验补正"正文补发）
+        # 均为 runtime 代执行认知工具 / runtime 文本冒充 Agent 核验行为——按 O1 契约删除。
+        # 主文本读取现在只能来自 Main Agent 宣告; 核验不足时模型会在收口轮收到
+        # "最后核验机会"读章提示（prompt 层）, 由模型自己决定是否补读。
+        # ══ Phase T.1 (T1.1-A): 已核验引用可见性保障（确定性 validator, 不依赖模型自觉）══
+        # 义务满足 + 逐字命中（只能由模型自己的 get_chapter 达成）, 但最终正文没有任何
+        # 指向已读章节的正式引用 → 补发一条带原文与【《书》·章】标注的核验说明。
+        # validator 行为: initiated_by=runtime_mechanical（校验补正, 非 Agent 认知动作）。
         try:
             _vi_check = (plan.get("verification_intent") or {})
-            _ledger_check = obligation_ledger
-            _late_note_sent = False
-            if _vi_check.get("kind") and _ledger_check is not None \
-                    and not _ledger_check.obligations_satisfied \
-                    and _ledger_check.read_execs == 0 and not _ledger_check.auto_primary_read:
-                _late = await _ensure_primary_read({"plan": plan, "obligation_ledger": _ledger_check,
-                                                    "verif_box": verif_box, "raw_tool_log": raw_tool_log,
-                                                    "budget": budget, "trace": trace,
-                                                    "user_message": req_message, "language": language})
-                if _late and _late.get("user_note"):
-                    _late_note_sent = True
-                    async for _ev in emit_append(_late["user_note"]):
-                        yield _ev
-        except Exception as _e:
-            logger.warning(f"[primary-read postloop] skipped: {str(_e)[:160]}")
-        # ══ Phase T.1 (T1.1-A): 已核验引用可见性保障（确定性, 不依赖模型自觉）══
-        # 义务满足 + 逐字命中, 但最终正文没有任何指向已读章节的正式引用 → 补发一条
-        # 带原文与【《书》·章】标注的核验说明（R1 hard-pass: verified citation visible）。
-        try:
             if _vi_check.get("kind") and obligation_ledger is not None \
                     and obligation_ledger.obligations_satisfied \
-                    and obligation_ledger.exact_quote_verified \
-                    and not _late_note_sent:
+                    and obligation_ledger.exact_quote_verified:
                 _info = getattr(obligation_ledger, "primary_read_info", None) \
                     or _derive_read_info(raw_tool_log, verif_box.get("term") or _vi_check.get("term"))
                 if _info and _info.get("passage"):
@@ -2051,6 +1805,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             logger.warning(f"[postloop drain] skipped: {str(_e)[:160]}")
         # ══ Phase T.1 (T1.1-D/G/H): Quote Bound 审计 + 收口一致性扫描 ══
         _quote_audit = None
+        _vt0 = time.time()
         try:
             _quote_audit = QB.audit_quotes(full_answer, raw_tool_log)
             _q_satisfied = bool(obligation_ledger is None or obligation_ledger.obligations_satisfied)
@@ -2062,11 +1817,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             _quote_audit = QB.audit_quotes(full_answer, raw_tool_log)   # 补正后终态
         except Exception as _e:
             logger.warning(f"[quote-bound post] skipped: {str(_e)[:160]}")
+        finally:
+            if trace:
+                trace.record_phase("validator_quote_bound", _vt0)
         # ══ Phase S (S2): Epistemic findings 重消费——answer_retract 不撤销 findings ══
         # 前提校正/反事实边界是结构化 epistemic state; 若最终可见正文未落实
         # （校正随 draft 被撤回 / LLM 忽略注入 / 回答被工具轮打断）→ 此处尾补,
         # 使 high-importance 校正必然出现在最终正文。
         _epistemic_state = None
+        _vt0 = time.time()
         try:
             if _epistemic_verdict:
                 from epistemic_guard import build_missing_correction_appends
@@ -2095,17 +1854,25 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 }
         except Exception as _e:
             logger.warning(f"[epistemic-guard post] skipped: {str(_e)[:200]}")
+        finally:
+            if trace:
+                trace.record_phase("validator_epistemic", _vt0)
         # ══ Phase S (S5): 预算扫描（先于 composer 扫描——超预算时抑制非必要结构提示）══
         _budget_scan = None
+        _vt0 = time.time()
         try:
             if _composition_verdict:
                 from answer_composer import scan_budget
                 _budget_scan = scan_budget(_composition_verdict, full_answer)
         except Exception as _e:
             logger.warning(f"[answer-budget scan] skipped: {str(_e)[:200]}")
+        finally:
+            if trace:
+                trace.record_phase("validator_budget_scan", _vt0)
         # Interpretation Engine 应答后校验: 解释型回答缺多候选/越级断言 → 措辞级补正
         # （确定性兜底, 仍是 token 事件; 置信度数字仅内部记录, 不发送给前端）
         _interpretation_scan = None
+        _vt0 = time.time()
         try:
             if _interpretation_verdict:
                 _interpretation_scan = scan_interpretation(_interpretation_verdict, full_answer, language, tool_log)
@@ -2115,9 +1882,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                             yield _ev
         except Exception as _e:
             logger.warning(f"[interpretation-engine post] skipped: {str(_e)[:200]}")
+        finally:
+            if trace:
+                trace.record_phase("validator_interpretation", _vt0)
         # Answer Composer 应答后校验: 结构信号 / 强化措辞 / 推理噪音 → 措辞级补正
         # （解释型问题已由 interpretation_scan 补正过则不再重复; 仍是 token 事件）
         _composition_scan = None
+        _vt0 = time.time()
         try:
             if _composition_verdict:
                 from answer_composer import scan_composition
@@ -2130,6 +1901,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                             yield _ev
         except Exception as _e:
             logger.warning(f"[answer-composer post] skipped: {str(_e)[:200]}")
+        finally:
+            if trace:
+                trace.record_phase("validator_composer", _vt0)
         # ── Phase 3: Evidence Contract（2026-08-30）────────────────────────────
         # 检索命中了什么 ≠ 回答用了什么。此前引用面板直接取 search_books 前 4 条命中
         # （retrieval candidates), 用户会误读为 answer evidence。现在统一抽取:
@@ -2138,6 +1912,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         #   分级与证据绑定（SPECULATION 不绑定 DIRECT evidence）。
         # 尽力而为——任何异常只降级为空引用面板, 绝不影响主流程。
         evidence_payload = None
+        _vt0 = time.time()
         try:
             from evidence_contract import build_evidence_contract
             # Patch 1.1 (P3): 来源约束传递——PRIMARY_ONLY/AUTHOR_ONLY 时二手不得进入
@@ -2149,11 +1924,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         except Exception as _e:
             logger.warning(f"[evidence-contract] skipped: {str(_e)[:200]}")
             citations = []
+        finally:
+            if trace:
+                trace.record_phase("validator_evidence_contract", _vt0)
         # ══ Patch 1 (B4-B): Citation Sanitizer——最终输出硬约束的断言层 ══
         # 未核验 formal citation 已在流式阶段被 LiveCitationSanitizer 降级为一般书名提及
         # （正文里不存在未验证的【《书》·章】）; 此处 sanitize_citations 仅作 final-output
         # assertion——unverified_before 应为 0, 命中则记日志; 不再追加"引用核验说明"补丁尾注。
         _citation_sanitize = None
+        _vt0 = time.time()
         try:
             if evidence_payload is not None:
                 from evidence_contract import sanitize_citations
@@ -2165,6 +1944,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         f"{_citation_sanitize.get('unverified_before')[:3]}")
         except Exception as _e:
             logger.warning(f"[citation-sanitizer] skipped: {str(_e)[:200]}")
+        finally:
+            if trace:
+                trace.record_phase("validator_citation_sanitize", _vt0)
         # ══ Phase S (S3): Semantic Obligations——最终义务履行状态 ══
         # 同一认识论义务只履行一次: 已由正文表达（如"不是一回事/不能等同"）的义务
         # 不得再因措辞不同被追加补正; 状态随 done 输出供审计/前端。
@@ -2261,6 +2043,18 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                               "model_retries": trace.model_retries if trace else 0,
                               "recovered_after_error": bool(stream_error),
                               "no_gain_calls": budget.no_gain if budget else 0},
+               # O1: 单智能体因果链审计块——
+               # engine_cognitive_auto_tools 恒为 0（引擎不再代执行任何认知性工具;
+               # 全部 top-level 工具由 Main Agent 宣告, UAT/回归断言用）。
+               "causal": {"provenance": "o1",
+                          "engine_cognitive_auto_tools": 0,
+                          "main_agent_tool_decisions": _main_agent_tool_decisions,
+                          "agent_invocations": _agent_invocations,
+                          "thinking_sources": "main_agent_only"},
+               # O1 (§13): 机械 timing observability（llm_invocation / validator_* 阶段时长;
+               # 工具级时长见 trace.calls 与 tool 事件, 此处为阶段汇总）
+               "timing": {"phases": (list(trace.phases) if trace else []),
+                          "total_ms": round((time.time() - _t_start) * 1000, 1)},
                # Phase S: 结构化状态随 done 输出（审计/前端可用, 不改变主协议）
                "epistemic": _epistemic_state,
                "obligations": _obligations_state,

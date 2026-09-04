@@ -141,28 +141,20 @@ class TestT11BLocate:
         r = locate_exact_phrase("青天揽月，寸心如磐")
         assert not r["found"]
 
-    def test_ensure_primary_read_triggers_and_satisfies(self):
+    def test_ensure_primary_read_removed_engine_no_longer_executes_reads(self):
+        """O1: 引擎兜底 auto-read 已删除——主文本读取只能由 Main Agent 宣告。
+        引擎层不再存在 _ensure_primary_read / AUTO_READ_THOUGHT; 台账不再有
+        auto_primary_read 标志（防运行时认知代执行回归; 行为级断言见 test_o1_causal_loop.T1/T8）。"""
         import engine_langgraph as ELG
+        assert not hasattr(ELG, "_ensure_primary_read")
+        assert not hasattr(ELG, "AUTO_READ_THOUGHT")
         plan = RP.build_plan("言必有中出处")
         led = AR.ObligationLedger(plan)
-        led.search_execs = 2   # 模拟已发生定位
-        raw_log = []
-        state = {"plan": plan, "obligation_ledger": led, "verif_box": {"state": None, "term": "言必有中", "computed": False},
-                 "raw_tool_log": raw_log, "budget": None, "trace": None,
-                 "user_message": "言必有中出处", "language": "zh"}
-
-        async def run():
-            return await ELG._ensure_primary_read(state)
-
-        out = asyncio.run(run())
-        assert out and out["located"]
-        assert "论语" in out["injection"]
-        assert raw_log and raw_log[-1]["name"] == "get_chapter"
-        assert led.primary_text_read and led.obligations_satisfied
-        assert led.auto_primary_read
-        # 幂等: 第二次不再触发
-        out2 = asyncio.run(run())
-        assert out2 is None
+        assert not hasattr(led, "auto_primary_read")
+        snap = led.snapshot()["verification_states"]
+        assert "auto_primary_read" not in snap
+        # 未读取时台账保持未满足——收口引导改为 prompt 层"最后核验机会"提示
+        assert led.obligations_satisfied is False and led.primary_text_read is False
 
 
 # ═══════════════════════════════════════════════════════
