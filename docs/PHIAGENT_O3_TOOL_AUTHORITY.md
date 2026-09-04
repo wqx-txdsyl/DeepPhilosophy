@@ -216,8 +216,8 @@ O3 FINAL RECEIPT — Tool Authority / Main-Agent-Owned Research Control
 ================================================================
 O3 = READY_FOR_REVIEW
 BASE_SHA = 7757452e92fb23230faaa2f7a2adee96cd8f423f
-FINAL_SHA = （随本提交回填）
-REMOTE_SHA = （push 后回填）
+FINAL_SHA = e54a7f7c38dd83394390763bd1684485935e61f0
+REMOTE_SHA = e54a7f7c38dd83394390763bd1684485935e61f0（已 push: 7757452e9..e54a7f7c3）
 CHANGED_FILES = backend/engine_langgraph.py（机械门改造: 准入/强制收口/路由注入移除,
   硬上限机械拒绝, 伪条目溯源, Evidence Appetite 铁律）; backend/tests/（新增
   test_o3_tool_authority.py 15 用例 + test_phase_a.py 2 用例按新契约改写）;
