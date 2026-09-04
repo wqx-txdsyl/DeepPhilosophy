@@ -196,8 +196,8 @@ O4 FINAL RECEIPT — Cognitive Layer Collapse / Delete the Shadow Agent
 ================================================================
 O4 = READY_FOR_REVIEW
 BASE_SHA = e54a7f7c38dd83394390763bd1684485935e61f0
-FINAL_SHA = （随本提交回填）
-REMOTE_SHA = （push 后回填）
+FINAL_SHA = 946e9abc783d086b998f5e6bab30f5dbeb9dae15
+REMOTE_SHA = 946e9abc783d086b998f5e6bab30f5dbeb9dae15（已 push: 950be0a7e..946e9abc7）
 CHANGED_FILES = 删除 backend/semantic_obligations.py / interpretation_engine.py /
   answer_composer.py 及 2 个对应测试文件; 瘦身 engine_langgraph.py /
   agent_runtime.py / reasoning_plan.py / epistemic_guard.py / tool_contracts.py /
