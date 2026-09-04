@@ -154,7 +154,13 @@ def main():
                 fp = os.path.join(DP_PUBLIC, key)  # 根 json 或 covers/schools/gene 下文件
             for attempt in range(3):
                 try:
-                    bucket.put_object_from_file(key, fp)
+                    # 2026-09-04: book_detail 不带 Cache-Control 时浏览器启发式缓存旧详情,
+                    # 数据更新后用户侧长期不刷新 → 详情类短缓存, 其余维持原行为
+                    _headers = {"Cache-Control": "max-age=300"} if key.startswith("book_detail/") else None
+                    if _headers:
+                        bucket.put_object_from_file(key, fp, headers=_headers)
+                    else:
+                        bucket.put_object_from_file(key, fp)
                     with lock:
                         ok.append(key)
                     break
