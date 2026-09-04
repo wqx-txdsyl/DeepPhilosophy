@@ -303,17 +303,21 @@ def test_stream_agent_well_composed_no_append(monkeypatch):
     assert done["composition"]["strong_wording"] == []
 
 
-def test_stream_agent_reasoning_summary_fallback_event(monkeypatch):
-    # LLM 摘要缺席（llm_chat stub 返回空）→ 确定性推理摘要兜底事件
+def test_stream_agent_no_runtime_reasoning_summary_event(monkeypatch):
+    # RP1 (O1-RP1): 事后推理摘要通道已整体删除——runtime 不得摘要 raw CoT 冒充 Agent
+    # （mini-LLM），也不得用 Python 编造确定性摘要（旧兜底）。
+    # reasoning_summary 事件不得再出现在生产流; public Thinking 唯一来源 =
+    # thinking_summary(_delta)（模型自己写的 rationale / 公开工作笔记）。
     evs, fake = asyncio.run(_run_stream(monkeypatch,
                                         question="老人从一开始87天的执念到了最后安然睡觉，梦见狮子，"
                                                  "是不是恰是他不再向世界索取意义？",
                                         answer="先纠正：《老人与海》开篇写的是连续84天没有捕到鱼。"
                                                "回到问题：这可以读作不再向世界索取意义，但并非唯一读法。"))
-    summaries = [ev["content"] for ev in evs if ev["type"] == "reasoning_summary"]
-    assert summaries, "LLM 摘要缺席时必须补发确定性推理摘要"
-    assert "核验文本事实" in summaries[0]
-    assert summaries[0].startswith("1.")
+    assert [ev for ev in evs if ev["type"] == "reasoning_summary"] == [], \
+        "runtime 生成的 reasoning_summary 事件已废除, 不得回流"
+    # 回答正文不受影响, 照常流出
+    answer = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
+    assert "84" in answer
 
 
 def test_stream_agent_generative_no_composer(monkeypatch):

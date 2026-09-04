@@ -2,7 +2,9 @@
 """LangGraph 引擎（PhiAgent v2）——替代自研流式 ReAct 循环
 
 Claude Code 风格: 思考 → 工具调用（多工具并行）→ 观察 → 最终回答
-前端协议不变: SSE 事件 thought_stream / token / tool / done
+SSE 事件: token / tool / tool_start / tool_note / thinking_summary(_delta) / done
+（RP1, O1-RP1: thought_stream 不再由引擎发出——provider 私有推理一律内部丢弃,
+ public Thinking 唯一事实来源 = thinking_summary(_delta)）
 工具: 复用 routes.agent 的 TOOLS 注册表（23 个工具平移为 StructuredTool, 零逻辑改动）
 """
 import asyncio, json, re, time, inspect
@@ -1295,8 +1297,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     #         禁止默认骨架（材料说明/工具说明/检索过程/五层报告/原典路径/再总结）+
     #         隐藏 raw reasoning（过程叙述不进正文, 用户只看推理摘要）+
     #         DeepSeek 优点吸收但禁用未经证据支持的强化措辞（完全正确/毫无疑问/绝不会/本质就是）
-    #   后置: scan_composition 校验（结构信号/强化措辞/推理噪音 → 措辞级补正）;
-    #         reasoning_summary 兜底（LLM 摘要缺席时由裁决生成确定性摘要）
+    #   后置: scan_composition 校验（结构信号/强化措辞/推理噪音 → 措辞级补正）
+    #   （RP1: reasoning_summary 确定性兜底已随事后摘要通道一并删除——不编造思考）
     # 生成类请求（写作文/生图/辩论等）不注入——成品形态由各自工具决定
     # 尽力而为——任何异常只降级为跳过, 绝不影响主流程（与 Phase 1/2 同机制）
     _composition_verdict = None
@@ -1372,7 +1374,6 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                "live": False, "live_text": "", "note_emitted": False}
     pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具名（2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
-    reasoning_text = ""   # 累积推理链（o1 风格摘要用）
     _rat_parser = RationaleParser()   # <rationale>…</rationale> 流式解析（安全摘要通道）
     _rat_tools_done = 0   # phase 推断: 已完成的工具数
     _rat_phase = "analysis"
@@ -1576,15 +1577,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         for ch in pending["text"]:
                             yield {"type": "token", "content": ch}
                             await asyncio.sleep(TOKEN_INTERVAL)
-                # DeepSeek reasoning（thinking 模式）→ 思维链分片节流, 实时流出; 同时累积供 o1 风格摘要
-                # （只节流转发给前端展示, 不落盘——A1: 禁止记录原始 chain-of-thought）
-                rc = (getattr(chunk, "additional_kwargs", None) or {}).get("reasoning_content")
-                if rc:
+                # Provider 私有推理（DeepSeek reasoning_content）→ RP1 (O1-RP1) 一律内部丢弃:
+                # raw chain-of-thought 是 provider-private 数据, 绝不进入用户可见 SSE（thought_stream
+                # 不再承载任何 raw 透传）; public Thinking 只能来自模型自己写的 <rationale>/
+                # 公开工作笔记（thinking_summary）。不转发、不累积、不落盘（A1）、不摘要冒充。
+                if (getattr(chunk, "additional_kwargs", None) or {}).get("reasoning_content"):
                     pending["reasoned"] = True
-                    reasoning_text += rc
-                    for i in range(0, len(rc), 40):
-                        yield {"type": "thought_stream", "content": rc[i:i + 40]}
-                        await asyncio.sleep(0.005)
             elif node == "tools":
                 # agent 输出结束 → flush（工作笔记/工具卡片穿插节奏; O1: 笔记已在宣告前归位）
                 async for ev in flush_agent():
@@ -2089,42 +2087,21 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                "tool_ownership": _tool_ownership,
                "live_citation_sanitize": _citation_san.snapshot(),
                "safety_reply": (SAFETY_REPLY_EN if language == "en" else SAFETY_REPLY) if safety_flag == "blocked" else None}
-        # 后处理（两个 LLM 调用并行）: 推理链摘要（o1 风格）+ LLM 话题建议 → 增量事件补发
-        async def _post_reasoning_summary():
-            if not (reasoning_text and len(reasoning_text) > 40):
-                return None
-            try:
-                sum_prompt = ((f"Condense the following reasoning into 3-5 structured steps, "
-                               f"each formatted 'N. action: point' (≤30 words each, ≤160 total):\n\n" if language == "en"
-                               else f"将以下推理过程浓缩为 3-5 步结构化摘要, 每步格式'数字. 动作: 要点'（每步 ≤30 字, 总计 ≤160 字）:\n\n")
-                              + reasoning_text[:2500])
-                sresp = await asyncio.to_thread(AG.llm_chat,
-                    [{"role": "user", "content": sum_prompt}], temperature=0.3, max_tokens=300)
-                return (sresp["choices"][0]["message"].get("content") or "").strip() or None
-            except Exception:
-                return None
+        # RP1 (O1-RP1): 事后推理摘要通道整体删除——
+        #   旧 _post_reasoning_summary（mini-LLM 浓缩 raw reasoning_text）= runtime 摘录
+        #   provider 私有 CoT 后冒充 Agent 思考（被禁的 _gen_summary 变体）;
+        #   确定性 build_reasoning_summary 兜底 = Python 编造伪思考。两者都不再出现在
+        #   生产用户流。public Thinking 唯一事实来源 = thinking_summary(_delta)
+        #   （模型自己写的 <rationale> / 公开工作笔记）。
+        #   话题建议（suggestions）非思考内容, 保留。
         async def _post_llm_suggest():
             try:
                 return await asyncio.to_thread(_llm_suggest, req_message, full_answer, agent, language)
             except Exception:
                 return None
-        reasoning_summary, llm_suggestions = await asyncio.gather(
-            _post_reasoning_summary(), _post_llm_suggest())
-        # Phase 4: LLM 摘要缺席（无思考流/调用失败）→ 确定性推理摘要兜底
-        # （由 epistemic/interpretation/evidence 裁决生成, 如"1. 核验文本事实 2. 检索原典…"）
-        if not reasoning_summary:
-            try:
-                from answer_composer import build_reasoning_summary
-                reasoning_summary = build_reasoning_summary(
-                    _epistemic_verdict, _interpretation_verdict, _interpretation_scan,
-                    evidence_payload, tool_log, language)
-            except Exception as _e:
-                logger.warning(f"[reasoning-summary fallback] skipped: {str(_e)[:200]}")
-                reasoning_summary = None
+        llm_suggestions = await _post_llm_suggest()
         if llm_suggestions:
             yield {"type": "suggestions", "suggestions": llm_suggestions}
-        if reasoning_summary:
-            yield {"type": "reasoning_summary", "content": reasoning_summary}
     except Exception as e:
         # 收口阶段异常（图流异常已在上方恢复处理; 此处兜底不丢观测）——
         # 2026-08-30 修复: 旧代码 error 路径把工具数硬编码记 0, 掩盖了"13 次调用后 error"的真实形态

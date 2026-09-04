@@ -3,7 +3,8 @@
 Phase: **O1**（Orchestration Reset 第 1 阶段）
 Branch: `refactor/phiagent-main-agent-orchestration`
 Baseline: `phiagent-pre-orchestration-reset`（PRESERVATION_SHA = `a69149b7288766f43fcc4be1bc822da2f59027bd`）
-状态: **READY_FOR_REVIEW**（最终 PASS 由独立 Reviewer 签发）
+状态: **READY_FOR_REVIEW**（O1 架构已获 ACCEPTED; §10 为 RP1 thinking-safety 闭合记录,
+最终 PASS 由独立 Reviewer 签发）
 
 ---
 
@@ -132,6 +133,11 @@ decision_group / tool_call_id`; 新增 `record_phase()` 记录 `llm_invocation` 
 `causal`（engine_cognitive_auto_tools=0 / main_agent_tool_decisions / agent_invocations）
 与 `timing`（阶段汇总）块。
 
+RP1 (O1-RP1) 修订: `thought_stream`（raw reasoning 透传通道）与 `reasoning_summary`
+（runtime 摘要通道, mini-LLM 与确定性兜底两路）事件不再由引擎发出——用户可见
+Thinking 事件只剩 `thinking_summary(_delta)`（main_agent）与 `tool_note`
+（runtime_mechanical, ACTIVITY）。
+
 ---
 
 ## 4. Thinking contract（PUBLIC THINKING 定义）
@@ -145,9 +151,17 @@ decision_group / tool_call_id`; 新增 `record_phase()` 记录 `llm_invocation` 
    尚未核验的内容用"可能/我记得/待核验"口吻。该笔记在首个工具宣告出现时归位为
    thinking_summary（causal order: invocation → thinking → declaration → tool_start）。
 
-禁止: raw chain-of-thought（provider reasoning_content 只走 `thought_stream` 展示通道,
-原样透传, 不进入 thinking_summary）、Python runtime 编造的思考、tool_note 冒充思考、
-final answer 提前重述、policy engine 的决定。
+**provider 私有推理 ≠ public Thinking（RP1, O1-RP1 修订）**: provider reasoning_content
+（raw chain-of-thought）是 provider-private 数据——引擎一律**内部丢弃**（不转发 / 不累积 /
+不落盘 / 不摘要冒充）。O1 旧文「reasoning_content 只走 `thought_stream` 展示通道, 原样透传,
+不进入 thinking_summary」**已废除**: `thought_stream` 不再由引擎发出（前端按事件类型分发,
+该类型缺席即无此通道）; public Thinking 统一以 `thinking_summary(_delta)` 为唯一事实来源。
+
+禁止: raw CoT / provider reasoning_content 的任何形式公开（原样展示、runtime 总结 raw CoT
+后展示、mini-LLM 转写后展示——已删除的 `_post_reasoning_summary` 即 `_gen_summary` 变体,
+确定性 `build_reasoning_summary` 兜底属 Python 编造, `reasoning_summary` 事件随之废除）、
+Python runtime 编造的思考、tool_note 冒充思考、final answer 提前重述、policy engine 的决定。
+模型没写公开内容时就允许没有 Thinking（只有 tool activity）——不伪造。
 
 配套流式阈值调整: `STREAM_ANSWER_DELAY` 48 → 240——工作笔记（1~4 句）不再超过
 实时回答阈值而以回答形态泄出再撤回; 撤回机制保留为超长规划文字的兜底。
@@ -242,10 +256,98 @@ n 小取最大值）。
 
 ---
 
-## 10. Git
+## 10. RP1 — Public Thinking Safety + Baseline Gate Closure（O1 Review Patch 1）
+
+Reviewer 判定: O1_CORE_ARCHITECTURE=**ACCEPTED**, O1_REVIEW=**PATCH_REQUIRED**
+（P0: raw provider reasoning 不得进入用户可见 SSE）。本节为 patch 1 的闭合记录。
+
+### 10.0 Base SHA provenance（只读记录, 未改历史 / 未 rebase / 未 force push）
+
+```text
+PRESERVATION_SHA = a69149b7288766f43fcc4be1bc822da2f59027bd  # chore(phiagent): freeze pre-orchestration-reset baseline
+O1_BASE          = 10ecef4effef38a019b1d46c81bd3c9d9cdd6506  # feat: 补齐空壳书《爱弥儿》全译本 + 分章规范入库
+O1_COMMIT        = c7566730a96b99e9841b7c2965196829302218f9  # refactor(phiagent): restore single-agent causal tool loop
+PRE_PATCH_SHA    = 4454c5b36bb0472e701bdaac6a967537eaa44bbd  # O1 之后 2 个 OSS 同步无关 commit 之后的 HEAD
+```
+
+- WHAT_IS_10ECEF: **书籍内容导入 commit**（《爱弥儿》全译本 32e4ebd33ddc 入库 + 分章规范）,
+  是 preservation 的直接子代, 与编排/引擎无关。
+- COMMITS_BETWEEN_PRESERVATION_AND_O1_BASE: **1**（即 10ecef4 本身）。
+- FILES_CHANGED_BEFORE_O1_BASE: **13 个文件, 零代码**——`app/public/books.json`、
+  `app/public/book_detail/32e4ebd33ddc.json`、`backend/data/book_chapters/32e4ebd33ddc/*`（8）、
+  `docs/BOOK_SHELL_INVENTORY.md`、`AGENTS.md`。引擎/路由/工具/前端代码 diff 为空。
+- WITHIN_O1_SCOPE: **true**（O1 基线代码与 preservation 代码完全一致, 差异仅为书籍数据与文档）。
+
+### 10.1 P0 修复（结构性移除, 非字符串过滤）
+
+`backend/engine_langgraph.py`:
+
+1. **raw 透传删除**: agent 块中 `additional_kwargs.reasoning_content` → `thought_stream`
+   逐片公开发射路径删除, 改为内部丢弃（不转发 / 不累积 / 不落盘 / 不摘要）。
+2. **事后摘要通道删除**: `_post_reasoning_summary`（mini-LLM 浓缩 raw reasoning_text——
+   被禁的 `_gen_summary` 变体）与确定性 `build_reasoning_summary` 兜底（Python 编造伪思考）
+   一并删除; `reasoning_summary` 事件随之废除。话题建议（`suggestions`）非思考内容, 保留。
+
+公开 Thinking 事实来源收敛为: `thinking_summary(_delta)`（仅 模型 rationale / 公开工作笔记）。
+
+### 10.2 RP1 行为测试（backend/tests/test_o1_rp1_thinking_safety.py, 4 项全绿）
+
+Scripted provider 在 `AIMessageChunk.additional_kwargs` 上按 DeepSeek 流形注入
+`reasoning_content = PRIVATE_REASONING_SENTINEL_7F31`（sentinel 只用于测试, 不参与生产逻辑）,
+断言用户可见 SSE 两个口径（按事件序拼接 + 全字段收集）sentinel 出现次数 = 0:
+
+| 测试 | 内容 |
+| --- | --- |
+| T1 私有推理+公开笔记并存 | sentinel=0; 工作笔记进 thinking_summary（main_agent）; thought_stream=0; reasoning_summary=0 |
+| T2 仅有 reasoning_content 无笔记 | sentinel=0; 零伪造 Thinking（thinking_summary/delta = 0）; 允许只有 tool activity; 回答照常 |
+| T3 rationale 通道（来源 B） | sentinel=0; rationale 照常进 thinking_summary; `<rationale>` 标签零泄漏 |
+| T4（U4 口径）zero-tool | tools=0; 不凭空 Thinking; sentinel=0; done.causal 引擎代执行=0 |
+
+**杀伤力验证**: 在 PRE_PATCH 引擎上同套测试 **4/4 失败**（sentinel 按序拼接口径命中
+thought_stream 泄漏; 注意 sentinel 按 10 字符分片注入, 整串计数式断言抓不到劈开泄漏——
+必须按用户阅读顺序拼接后断言）。另按 RP1 契约反转改写
+`test_answer_composer.py::test_stream_agent_no_runtime_reasoning_summary_event`
+（原断言"必须补发确定性推理摘要"与 RP1 禁令相反）。
+
+### 10.3 Exact baseline test gate（patch 后 FINAL SHA, 未排除任何文件）
+
+```text
+FULL_TEST_COMMAND = pytest backend/tests -q
+COLLECTED = 424    PASSED = 424    FAILED = 0    SKIPPED = 0    DURATION = 176.01s
+pytest backend/tests/test_o1_causal_loop.py -q
+CAUSAL = 13 passed in 25.59s
+```
+
+（过程记录: 首轮全量 423 passed + 1 failed, 唯一失败即上述 composer 旧契约测试,
+改写为 RP1 契约后全绿; 无文件排除、无 collection 操纵。）
+
+### 10.4 LIVE UAT 重跑（真实 DeepSeek, 采集器同 O1）
+
+| # | 场景 | 结果 | 关键证据 |
+| --- | --- | --- | --- |
+| U1 | 言必有中出处 | **PASS** | trace `o1_rp1_after_u1.json`（600 事件, 29.6s）: thought_stream=**0**; reasoning_summary=**0**; thinking_summary×3 全部 MAIN_AGENT（笔记示范:「我先核实…能否定位到原文」）; tool×5 / tool_start×3 全部 MAIN_AGENT（search×3+get_book_detail+get_chapter）; tool_note×8 全部 RUNTIME; done.causal: engine_cognitive_auto_tools=0, main_agent_tool_decisions=3, agent_invocations=4; 引用/引文完整性保持（正式引用《论语·先进篇》已核验） |
+| U4 | zero-tool（思想实验直接解释） | **PASS** | trace `o1_rp1_after_u4.json`: tools=0; thought_stream=0; reasoning_summary=0; thinking_summary=0（模型未写笔记 → 无任何伪造思考, 仅 token×190 + 机械事件）; engine_cognitive_auto_tools=0; main_agent_tool_decisions=0; 回答正常流出 |
+
+### 10.5 Event source audit（最终生产用户可见）
+
+```text
+PUBLIC_THINKING_SOURCES = thinking_summary(_delta): initiated_by=main_agent
+                          （仅两个来源: 模型 <rationale> / 工具轮公开工作笔记）
+                          tool_note: initiated_by=runtime_mechanical（ACTIVITY, 非思考）
+                          tool/tool_start: initiated_by=main_agent（top-level 认知工具）
+RAW_PROVIDER_REASONING_PUBLIC = 0   # thought_stream 事件=0（U1/U4 活体实测）; 发射路径已结构性删除
+RUNTIME_GENERATED_THINKING    = 0   # reasoning_summary 事件=0; mini-LLM/Python 兜底两路已删除
+ENGINE_COGNITIVE_AUTO_TOOLS   = 0   # done.causal（U1/U4 活体 + T1/T4 脚本断言）
+TOP_LEVEL_TOOL_WITHOUT_AGENT_DECISION = 0
+```
+
+---
+
+## 11. Git
 
 - Branch: `refactor/phiagent-main-agent-orchestration`（仅此分支; 未 merge master;
   未动 preservation tag/branch）
-- Suggested commit: `refactor(phiagent): restore single-agent causal tool loop`
+- O1 commit: `refactor(phiagent): restore single-agent causal tool loop`（c7566730a）
+- RP1 commit: `fix(phiagent): close O1 thinking safety review`
 
-STOP — O1 边界内工作完成, 未开始 O2。最终 PASS 由独立 Reviewer 签发。
+STOP — O1 与 RP1 边界内工作完成, 未开始 O2。最终 PASS 由独立 Reviewer 签发。
