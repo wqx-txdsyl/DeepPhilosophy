@@ -84,16 +84,21 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
      未经原文核验前不得以确定口吻陈述;
    - 若原文核验修正了你的工作假设（如记忆中出处/对象有误、与相邻章句混淆）,
      最终回答必须明确指出修正了什么;
-   - 重要不确定性未解决时继续检索研究; 避免重复检索, 但不追求最少工具——以核验完成为准。
+   - 工具是你主动使用的研究手段, 不存在配额管制: 只要 additional 检索/阅读可能实质
+     提升可靠性、深度或出处根基, 就主动去做——对可外部验证的主张、引文、出处与史实,
+     优先直接证据而非记忆; 对解读类问题, 应收集足以呈现最强相关解读的证据, 而不是
+     停留在第一个貌似可行的读法; 只要还有证据可能实质改善回答, 就继续研究;
+   - 避免冗余调用与不产生新理解的机械检索（同一查询的原样重复会被机械判重并复用旧结果）;
+     但注意: 未执行≠库中无此书; 检索无命中也不代表结论不成立, 如实陈述即可。
 2. 回答标注引用来源: 【《书名》· 章节名】。
 3. 涉及哲学家关系用 query_graph; 流派用 get_school; 哲人资料用 get_philosopher; 概念溯源用 concept_trace。
 4. 用户要求对比可用 compare_views; 写作文用 write_essay; 辩论用 philosopher_debate; 决策求助用 advisor_council;
    扮演/以哲学家口吻回答用 role_play; 苏格拉底式追问用 socratic_tutor; 论证分析用 analyze_argument;
    用户要求"画脑图/思维地图/概念地图/概念图/关系图/梳理XX的概念关联/画图展示论证链条"时调用 conceptual_map
    （它返回结构化 graph 与已验证的 mermaid 图形——直接采用, 不要自己手写 ASCII 树或改写节点）。
-   对比两位哲学家/两个流派在同一问题上的立场差异时, **首选直接调用 compare_views**——它内部已检索
-   双方材料并返回比较脚手架（共同问题/比较轴线/双方主张/证据需求）; 不要先自行多轮手工检索再补一个
-   compare_views（那是重复劳动）; 调用后按需补 ≤2 次针对性检索即可。
+   对比两位哲学家/两个流派在同一问题上的立场差异时可用 compare_views——它内部已检索
+   双方材料并返回比较脚手架（共同问题/比较轴线/双方主张/证据需求）; 是否使用它、
+   还是自行多路检索对比, 由你根据问题自行判断。
 4''. 论文大纲/骨架用 essay_outline; 焦虑/迷茫/人生困惑疏导用 life_coach; 辩证分析/矛盾分析用 dialectic
    （用户对形式的约束——如"不要用正反合标签"——必须经 constraints 参数原样传入工具）;
    流派/概念的历史脉络与时间线用 history_timeline; 思想实验用 thought_experiment（仅用户明确要求变体时才迭代传变化点）;
@@ -305,78 +310,26 @@ async def agent_node(state):
     if state.get("language", "zh") != "en":
         msgs.append(SystemMessage(
             content="（语言提醒：你的内部思考过程（thinking/reasoning）与最终回答都必须使用中文。禁止用英文思考。"))
-    # ── Phase A: 预算与终止条件（A3/A5——替代原 RETRIEVAL_LIMIT/RETRIEVAL_HARD 就地判断）──
+    # ── Phase A: 预算与终止条件 ──
+    # ══ O3 §5/§8: 停止权威归还 Main Agent——runtime 仅在机械约束下停止循环 ══
+    # 保留: hard 全局资源上限（硬上限到达 → 注入机械指令 + forced 补跑一轮已宣告调用）。
+    # 移除（CONTROL_EFFECT = 0, 检测器留作 telemetry）:
+    #   soft 预算提示 / no_gain warn+force / sufficiency force（含"最后核验机会"引导）/
+    #   ledger.rejected 空转防护 / RETRIEVAL_LIMIT 多次检索提示。
+    # "证据是否充分/是否该收口/该不该换工具"自 O3 起由 Main Agent 自主判断。
     budget = state.get("budget")
     forced = False
     if budget is not None and budget.hard_reached():
-        # hard 预算（A3/T5）: 终止工具循环 → graceful answer completion。
+        # hard 预算（机械资源上限）: 终止工具循环 → graceful answer completion。
         # 保留工具绑定（解绑会导致 LLM 退化为写 XML 文本调用）; 硬提示让 LLM 直接回答。
+        # 后续 tools 轮中新宣告的调用将被机械拒绝（RESOURCE_CEILING_REACHED）。
         msgs.append(SystemMessage(content=AR.HARD_BUDGET_DIRECTIVE))
         forced = True
-    elif budget is not None and budget.soft_reached():
-        # soft 预算（A3/T2）: 柔性提示, 由 LLM 判断材料是否充分（不强制停止）
-        msgs.append(SystemMessage(content=AR.SOFT_BUDGET_HINT))
-    streak = state.get("no_gain_streak", 0)
-    verdict = AR.no_gain_verdict(streak)
-    # ── Patch 1.1 (P1): 准入拒绝空转防护——模型宣告→被拒→再宣告的循环会让思考流
-    # 长时间无可见进展（用户观感"卡住"）; 拒绝累计达阈值 → 强制收口直接作答。
-    _ledger_for_rejects = state.get("obligation_ledger")
-    if _ledger_for_rejects is not None and getattr(_ledger_for_rejects, "rejected", 0) >= AR.ADMISSION_REJECT_FORCE:
-        msgs.append(SystemMessage(content=(
-            "（系统检索收敛）多次检索调用已被收敛机制取消。请立即基于已取得的检索结果输出最终回答——"
-            "注意：未执行≠库中无此书，请勿向用户声称'库中未收录/未检索到该书'，"
-            "只能基于已成功执行的检索结果陈述库内覆盖情况。")))
-        forced = True
-    if verdict == "force":
-        # A5/T3: 连续无增益轮 → 强制收口（比总数 hard 预算更早拦截原地打转）
-        msgs.append(SystemMessage(content=AR.NO_GAIN_FORCE_DIRECTIVE))
-        forced = True
-    elif verdict == "warn" and not (budget is not None and budget.soft_reached()):
-        msgs.append(SystemMessage(content=AR.NO_GAIN_WARN_HINT))
     # ── O1: 引擎不再代执行任何认知性工具（原 _ensure_primary_read auto-read 已删除）。
-    # 主文本读取由 Main Agent 自己宣告; 引擎只保留 prompt 层引导（下方"最后核验机会"提示）
-    # 与确定性校验（quote/citation validator, 见收口阶段）。──
-    # ── Patch 1 (B1): 证据充分性收敛（复杂度期望 + 信息增益; 非硬上限）──
-    try:
-        plan = state.get("plan") or {}
-        rstate = state.get("retrieval_state")
-        ledger = state.get("obligation_ledger")
-        if plan and rstate is not None and budget is not None:
-            complexity = plan.get("complexity") or "NORMAL_EXPLANATION"
-            key_terms = plan.get("key_terms") or []
-            rel_met = bool(rstate.relevant_ids) and any(
-                t and any(t in (c.get("query") or "") for c in rstate.calls)
-                for t in key_terms[:2])
-            if plan.get("verification_intent") and ledger is not None:
-                # ── Patch 1.1 (P2): 核验路径收口由 obligation 台账驱动 ──
-                # 分项配额（search≤2/read≤2/web≤1/meta≤1）是真正的执行上限; 达 4 或义务
-                # 满足 → force。force 时若尚未读任何原文, 额外引导模型补跑一次 get_chapter
-                # （forced 轮 read 放行）——避免"检索到位却没读原文就作答"（真实回归: F12）。
-                if ledger.obligations_satisfied or budget.total_executed >= 4:
-                    suff = "force"
-                    if (not ledger.obligations_satisfied and ledger.read_execs == 0
-                            and not getattr(ledger, "_read_hint_sent", False)):
-                        ledger._read_hint_sent = True
-                        msgs.append(SystemMessage(content=(
-                            "（检索收敛·最后核验机会）你现在仍允许补跑最多 1 次 get_chapter，"
-                            "直接阅读上面检索结果中已定位到的章节原文（用它返回的 book_id），"
-                            "以完成措辞级核验；其余一切检索/书目查询均已禁止。读完或放弃后，"
-                            "立即基于已有材料输出最终核验回答。")))
-                else:
-                    suff = "none"
-            else:
-                suff = AR.sufficiency_verdict(
-                    complexity, budget.total_executed, bool(state.get("round_all_low")),
-                    len(rstate.relevant_ids), rel_met,
-                    round_any_low=bool(state.get("round_any_low")))
-            hint = AR.sufficiency_hint(suff, complexity, state.get("language", "zh"))
-            if hint:
-                msgs.append(SystemMessage(content=hint))
-            if suff == "force":
-                forced = True
-    except Exception as _e:
-        logger.warning(f"[sufficiency] skipped: {str(_e)[:120]}")
+    # 主文本读取由 Main Agent 自己宣告; 引擎只保留确定性校验（quote/citation validator,
+    # 见收口阶段）。──
     # ── Patch 1 (B3): 术语核验措辞约束（核验状态已知后每轮注入）──
+    # （这是给模型的核验状态上下文, 不是工具控制——O3 保留 prompt 层注入）
     try:
         vbox = state.get("verif_box")
         if vbox and vbox.get("state"):
@@ -385,11 +338,6 @@ async def agent_node(state):
                 msgs.append(SystemMessage(content=vtext))
     except Exception as _e:
         logger.warning(f"[verification-inject] skipped: {str(_e)[:120]}")
-    if state.get("retrieval_count", 0) >= RETRIEVAL_LIMIT and not forced and not (
-            budget is not None and budget.soft_reached()):
-        # 既有柔性检索提示（预算未达 soft 时的等效提示, 保留原文案以最小化行为变化）
-        msgs.append(SystemMessage(
-            content="（已进行多次检索。请评估现有材料是否足以回答: 充分则停止检索直接作答; 确有必要再用新关键词补充检索, 但避免无意义重复。）"))
     # 2026-08-14: 同步 LLM 调用移入线程池, 防阻塞事件循环（并发会话卡死）
     # Phase A (A4): 有限重试——可恢复错误（连接中断/超时/429/5xx）按配置退避重试;
     # 耗尽抛 ModelCallError → stream_agent 的 graceful completion（用已取得 evidence 收口）
@@ -502,9 +450,13 @@ async def tools_node(state):
     forced = bool(state.get("forced"))
     complexity = plan.get("complexity") or "NORMAL_EXPLANATION"
 
-    # ── Patch 1.1 (P1): 批前准入——按宣告顺序逐个判定（同批内后面的调用可见前面的宣告）──
-    # Phase T (T7): reasoning/generation skill 追加 invocation 级重入准入——
-    # 同 purpose 无依据（用户迭代要求/前次失败/实质新议题）的重复调用在执行前取消。
+    # ══ O3: 工具权威归还 Main Agent——runtime 只保留机械门 ══
+    # （schema/未知工具、精确重复复用、硬资源上限、安全/取消；见 run_one）
+    # 原 Patch1.1 义务准入（ledger.admit）与 Phase T 重入准入（reentry.admit）的
+    # "执行前取消"控制效果移除：二者降级为 telemetry 记录器——义务计数/查询族/重入历史
+    # 仍然维护并随 done 输出供审计, 但配额（SEARCH_CAP/FAMILY_EXEC/包络）、
+    # obligations_satisfied 总闸、语义相似判族、purpose 重入相似等一律不再拒绝任何宣告。
+    # 语义类拒绝（"已经查够/信息增益低/该题不该用此工具"）自 O3 起不属于 runtime。
     def _is_retrieval(name):
         return name in retrieval_set
 
@@ -515,47 +467,44 @@ async def tools_node(state):
     for c in calls:
         name = c.get("name", "")
         cargs = c.get("args", {}) or {}
-        ok, reason, kind = True, "", ""
+        # telemetry 登记（不消费判定结果——CONTROL_EFFECT = 0）
         if ledger is not None and _is_retrieval(name):
-            ok, reason = ledger.admit(name, cargs, complexity, forced)
-            kind = "retrieval"
-        if ok and reentry is not None and name in TC.SKILL_REENTRY_TOOLS:
-            # USER_REQUESTED_ITERATION 可来自工具参数或用户消息本身（如"再来一个变体"）;
-            # 工具真实入参不改写, 用户消息单独传入判定
-            rok, rreason = reentry.admit(name, cargs, user_message=user_message)
-            if not rok:
-                ok, reason, kind = False, rreason, "reentry"
-        admissions.append((ok, reason, kind))
+            try:
+                ledger.admit(name, cargs, complexity, forced)
+            except Exception:
+                pass
+        if reentry is not None and name in TC.SKILL_REENTRY_TOOLS:
+            try:
+                reentry.admit(name, cargs, user_message=user_message)
+            except Exception:
+                pass
+        admissions.append((True, "", ""))
 
     async def run_one(call, call_index, admitted, admit_reason="", admit_kind=""):
         name = call.get("name", "")
         args = call.get("args", {}) or {}
         tool = tools_map.get(name)
         thought_label = f"执行 {name}"
-        # ── Patch 1.1 (P1) / Phase T (T7): 准入/重入拒绝 → 执行前取消 ──
-        # （仍回 ToolMessage, DeepSeek 要求每个 id 有响应）
-        if not admitted:
-            if admit_kind == "reentry":
-                skip_res = {"error": f"技能重入被拦截（{admit_reason}）。"
-                                     "请基于该工具此前返回的结构化结果直接综合作答;"
-                                     "若用户确实要求新变体, 请在参数中体现具体迭代意图。"}
-            else:
-                skip_res = {"error": f"检索准入未通过（{admit_reason}），此调用在执行前取消。"
-                                     "请基于已有材料作答，或宣告实质不同的检索。"}
+        # ── O3 §5/§8: 全局硬资源上限——唯一保留的机械拒绝门 ──
+        # 只表达 RESOURCE_CEILING_REACHED（资源约束）, 绝不暗含"证据已充分/库中无此书"。
+        # （admitted 参数保留兼容签名, O3 起恒为 True——语义准入已移除）
+        if budget is not None and budget.hard_reached():
+            skip_res = {"error": "RESOURCE_CEILING_REACHED: 全局工具执行硬上限已达"
+                                 f"（本调用未执行——这是机械资源约束, 不代表库中无相关内容; "
+                                 f"请立即基于已取得的材料输出最终回答）。"}
             if trace:
                 trace.record_call(call_index, name, args, 0.0, False, None,
                                   json.dumps(skip_res, ensure_ascii=False)[:200],
-                                  AR.result_hash(skip_res), "duplicate", "repeat", 0,
-                                  executed=False, thought=(admit_reason or "")[:40],
+                                  AR.result_hash(skip_res), "ceiling", "", 0,
+                                  executed=False, thought="RESOURCE_CEILING_REACHED",
                                   decision_group=getattr(trace, "current_group", None),
                                   tool_call_id=call.get("id"))
             return ToolMessage(content=json.dumps(skip_res, ensure_ascii=False)[:4000], name=name,
                                tool_call_id=call.get("id", ""),
                                additional_kwargs={"_args": args, "_result_full": skip_res,
-                                                  "_budget_class": "duplicate", "_info_gain": "repeat",
-                                                  "_admitted": False,
+                                                  "_budget_class": "ceiling", "_info_gain": "",
                                                   "_dg": getattr(trace, "current_group", None)})
-        # ── A2: 重复调用防护 ──
+        # ── O3 §3: 精确重复复用（机械判重: 同工具 + 归一化后完全相同参数）──
         decision = guard.decide(name, args) if guard else {"action": "execute", "cls": "unique", "reason": ""}
         if decision["action"] == "reuse":
             prev = decision.get("prev")
@@ -655,10 +604,12 @@ async def tools_node(state):
             raw_log.append({"name": name, "args": args,
                             "result_summary": str(res)[:200], "result_full": res,
                             "thought": thought_label})
-        # ── Phase T (T9): 专用工具自带的原典证据进入 Evidence Contract 查证池 ──
+        # ── Phase T (T9) + O3 §16: 专用工具自带的原典证据进入 Evidence Contract 查证池 ──
         #（confrontation/compare_views 等内部检索的结构化 citations/evidence——最小接口适配:
         #  只进 raw_log（引用核验/证据契约池, 使主 Agent 的正式引用可被核验）,
-        #  不进 tool_log/预算/trace, 不改变检索口径）
+        #  不进 tool_log/预算/trace, 不改变检索口径。
+        #  O3 §16: 内部检索必须如实溯源——initiated_by=tool_internal + parent_tool_call_id,
+        #  不得伪装成 Main Agent 亲自宣告的 search_books（FAKE_TOP_LEVEL_TOOL_LOGS=0）。）
         if isinstance(raw_log, list) and isinstance(res, dict) and not is_err:
             _ev_items = res.get("citations") or res.get("evidence")
             if isinstance(_ev_items, list) and _ev_items:
@@ -673,7 +624,11 @@ async def tools_node(state):
                                     "args": {"query": f"[{name} 内部检索证据]"},
                                     "result_summary": f"{name} 内部检索证据 x{len(_pseudo)}",
                                     "result_full": {"results": _pseudo},
-                                    "thought": f"{name} 结构化证据入池（契约核验用）"})
+                                    "thought": f"{name} 结构化证据入池（契约核验用）",
+                                    "initiated_by": "tool_internal",
+                                    "parent_tool_call_id": call.get("id"),
+                                    "parent_tool": name,
+                                    "pseudo": True})
         content = json.dumps(res, ensure_ascii=False) if isinstance(res, (dict, list)) else str(res)
         return ToolMessage(content=content[:4000], name=name,
                            tool_call_id=call.get("id", ""),
@@ -728,15 +683,24 @@ def should_continue(state):
     last = state["messages"][-1]
     if not getattr(last, "tool_calls", None):
         return "end"
-    # A5/T5-T6: 强制回答轮（hard 预算或连续无增益触发）——模型仍宣告工具调用
-    # （DeepSeek 常见"任务规划残留"）: 已补跑过一轮 → 截断（防死循环烧钱）; 未补跑过 →
-    # 再执行一轮, 把已宣告的工具调用跑完并回传结果, 下一轮强制结束
-    # （2026-08-14 修复: 此前直接丢弃, 导致"工具调用未完成就回答/凭记忆作答"）
+    # O3 §5/§8: forced 仅剩机械硬上限一个触发源（agent_node）。强制回答轮里模型仍宣告
+    # 工具（DeepSeek 常见"任务规划残留"）→ 补跑一轮: 新宣告调用在 tools_node 被机械拒绝
+    # （RESOURCE_CEILING_REACHED）并回传结果, 下一轮强制结束（§17 结果完整性）。
     if state.get("forced"):
         if state.get("forced_tools_done"):
             return "end"
         return "tools"
     return "tools"
+
+# ── O3 §14/§19: 工具路由注入静态过滤 ──
+# plan/引擎产生的 prompt 注入若含"工具偏好/配额"措辞, 不进入消息流（ROUTING_CONTROL_EFFECT=0）。
+# 认识论义务类注入（核验纪律/来源约束/形态指令）不含这些短语, 不受影响。
+_ROUTING_PHRASE_RE = re.compile(
+    r"(必须调用|禁止跳过工具|优先直接调用|首选直接调用|不要先自行|核验配额|检索次数已达|不再放行)")
+
+
+def _is_routing_injection(text):
+    return bool(_ROUTING_PHRASE_RE.search(text or ""))
 
 _builder = StateGraph(AgentState)
 _builder.add_node("agent", agent_node)
@@ -1194,16 +1158,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         content = h.get("content", "")
         messages.append(HumanMessage(content=content) if role == "user" else AIMessage(content=content))
     messages.append(HumanMessage(content=req_message))
-    # 确定性预判: 图/关系图请求走 conceptual_map（LLM 常跳过工具直接手写）——
-    # Phase T (T5): 注入 MAP_TYPE 预判; 用户已给节点链条时要求经 nodes/relations 传入
-    MAP_HINTS = ["脑图", "思维地图", "概念地图", "概念关联", "思维导图", "mindmap",
-                 "概念图谱", "概念图", "关系图", "画图", "图展示", "论证依赖", "依赖图"]
-    if any(h in req_message for h in MAP_HINTS):
-        _mt = TC.infer_map_type(req_message)
-        messages.append(SystemMessage(
-            content=f"用户明确要求图/关系图。第一轮必须调用 conceptual_map 工具获取结构化 graph 与已验证的 mermaid, 禁止跳过工具直接手写图形文本。"
-                    f"根据请求选择最贴合的 map_type（当前判断: {_mt}）; 若用户已给出明确的节点链条（如 A→B→C）, "
-                    f"把节点与关系作为 nodes/relations 参数传入。工具返回的 mermaid 已经过渲染验证——直接采用, 不要自行改写节点/连线。"))
+    # ══ O3 §14: 强制专用工具路由已移除（ROUTING_CONTROL_EFFECT = 0）══
+    # 原 MAP_HINTS（"必须调用 conceptual_map, 禁止手写"）与 COMPARISON 路由注入
+    # （"优先调用 compare_views, 不要自行多路检索"）删除——工具选择权归还 Main Agent;
+    # 各工具的 capability 描述（工具 schema description）已说明适用场景, 由模型自主选择。
+    # reasoning_plan 仍可计算 problem_type/complexity 供 telemetry（O4 决定去留）。
     # ── Epistemic Guard（Phase 1, 2026-08-30）──────────────────────────
     # 结构级认识论护栏（backend/epistemic_guard.py, 纯规则）:
     #   前置: PremiseVerifier 事实前提校正 / Claim 认知层级 / Counterfactual 反事实边界
@@ -1253,19 +1212,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     except Exception as _e:
         logger.warning(f"[answer-composer pre] skipped: {str(_e)[:200]}")
     # ── Patch 1: 问题结构规划（B1/B3/B5/B6/B7）——类型/复杂度/形态/依赖链/时序/核验问题 ──
+    # O3 §14: plan 仍计算 problem_type/complexity/verification_intent 供 telemetry 与
+    # 引用资格判定（final_validator source_constraint）, 但其 routing 注入已移除——
+    # plan.injections 里若有"首选某工具/限制检索次数"类路由指令, 不再注入消息。
     plan = RP.build_plan(req_message, agent, language)
     for _inj in plan.get("injections", []):
-        if _inj:
+        if _inj and not _is_routing_injection(_inj):
             messages.append(SystemMessage(content=_inj))
-    # Phase T (T11): 比较类问题的确定性路由提示（与 MAP_HINTS 同机制的轻量注入, 非强制）——
-    # QG2/Q08 教训: 模型倾向先手工多路检索再自己写对比（或调用沦为合规动作）。
-    # compare_views 内部自带双方检索与比较脚手架——首选直接调用, 避免重复劳动。
-    if plan.get("problem_type") == "COMPARISON":
-        messages.append(SystemMessage(
-            content="（比较类问题路由）优先直接调用 compare_views 获取比较脚手架"
-                    "（它内部已检索双方材料, 返回共同问题/比较轴线/双方候选主张/证据需求）——"
-                    "不要先自行多路手工检索再写对比; 拿到脚手架后按需补 ≤2 次针对性检索, "
-                    "再结合证据做你的二次综合（脚手架不是最终答案）。"))
     tool_log = []
     # ── Phase A: tool loop 治理状态（A1 观测 / A2 去重 / A3 预算——单轮生命周期对象）──
     guard = AR.DuplicateGuard()
@@ -1484,30 +1437,27 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 args = extra.get("_args", {})
                 result = extra.get("_result_full", {})
                 reused = extra.get("_reused", False)
-                admitted = extra.get("_admitted", True)
                 # O1: 引擎 auto-websearch 已删除——search_books 空结果后是否上网补充
                 # 由 Main Agent 下一轮自主宣告（websearch 对模型可用且不受隐性配额挤压）,
                 # runtime 不再代执行认知性工具（T7 断言依据）。
-                _thought = ("复用本轮早前结果（重复调用已拦截）" if reused
-                            else "检索准入未通过，执行前取消" if not admitted
+                # O3: 准入拒绝已不存在——reused 为唯一非执行路径（机械精确判重复用）。
+                _thought = ("EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）" if reused
                             else f"执行 {name}")
                 tool_log.append({"name": name, "args": args,
                                  "result_summary": str(result)[:200], "result_full": result,
                                  "thought": _thought})
                 # O1 provenance: 工具执行结果——决定（宣告）来自 Main Agent;
-                # 执行/复用/准入拦截属机械层, 不改变发起者归属。
+                # 执行/复用属机械层, 不改变发起者归属。
                 yield {"type": "tool", "name": name, "args": args,
                        "result": str(result)[:300], "thought": _thought,
                        "initiated_by": "main_agent",
                        "decision_group_id": extra.get("_dg") or _dg(),
                        "tool_call_id": getattr(chunk, "tool_call_id", None)}
                 # Thinking UI: 工具结果解读（ACTIVITY 注记, runtime_mechanical; 不确定时静默）。
-                # Patch 1.1: 准入拒绝的调用不发"没有检索到直接材料"式解读——
-                # 那会让用户/模型误读为"库中无此书"（真实事故: 《论语》案例）, 改发中性说明。
                 try:
-                    if not admitted:
+                    if reused:
                         yield {"type": "tool_note",
-                               "content": "（检索收敛）该调用与已有检索重合或超出预算，未执行——这不代表库中无相关内容。",
+                               "content": "（EXACT_DUPLICATE_REUSED）同一工具与完全相同的参数此前已执行——直接复用此前结果（机械判重, 不涉及证据充分性判断）。",
                                "initiated_by": "runtime_mechanical",
                                "decision_group_id": extra.get("_dg") or _dg()}
                     else:

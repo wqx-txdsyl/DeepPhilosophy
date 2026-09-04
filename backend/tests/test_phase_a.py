@@ -367,7 +367,8 @@ def _patch_llm(monkeypatch, fake, tools=None):
     monkeypatch.setattr(elg, "get_tools", lambda agent: tools or [])
 
 
-def test_engine_agent_node_soft_budget_hint_injected(monkeypatch):
+def test_engine_agent_node_soft_budget_no_control_effect(monkeypatch):
+    # O3 §5/§8: soft 预算不再产生任何 prompt 注入/控制效果——"证据是否充分"由 Main Agent 自判
     fake = _FakeLLM([AIMessage(content="回答")])
     _patch_llm(monkeypatch, fake)
     budget = AR.ToolBudget(retrieval_tools={"search_books"},
@@ -378,8 +379,8 @@ def test_engine_agent_node_soft_budget_hint_injected(monkeypatch):
              "budget": budget, "no_gain_streak": 0, "model_retries": 0}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is False
-    assert any("预算提示" in m.content or "材料是否足以回答" in m.content
-               for m in fake.prompts[0] if isinstance(m, SystemMessage))
+    assert not any("预算提示" in m.content or "材料是否足以回答" in m.content
+                   for m in fake.prompts[0] if isinstance(m, SystemMessage))
 
 
 def test_engine_agent_node_hard_budget_forces_answer(monkeypatch):
@@ -396,13 +397,16 @@ def test_engine_agent_node_hard_budget_forces_answer(monkeypatch):
     assert any("禁止调用任何工具" in m.content for m in fake.prompts[0] if isinstance(m, SystemMessage))
 
 
-def test_engine_agent_node_no_gain_streak_forces_answer(monkeypatch):
+def test_engine_agent_node_no_gain_streak_no_control_effect(monkeypatch):
+    # O3 §4/§8: no_gain streak 只剩 telemetry——不再 force 收口、不注入任何指令
     fake = _FakeLLM([AIMessage(content="最终回答")])
     _patch_llm(monkeypatch, fake)
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
              "budget": AR.ToolBudget(), "no_gain_streak": AR.NO_GAIN_FORCE_STREAK, "model_retries": 0}
     out = asyncio.run(elg.agent_node(state))
-    assert out["forced"] is True
+    assert out["forced"] is False
+    assert not any("无增益" in m.content or "不再检索" in m.content
+                   for m in fake.prompts[0] if isinstance(m, SystemMessage))
 
 
 def test_engine_agent_node_model_retry_then_success(monkeypatch):
