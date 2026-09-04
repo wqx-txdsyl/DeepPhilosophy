@@ -215,7 +215,7 @@ O2 FINAL RECEIPT — Final Answer Ownership / Validator→Repair Loop
 ================================================================
 O2 = READY_FOR_REVIEW
 BASE_SHA = c7dc4c7c940d5af2fcb0909b5e66fd8fe7c882f4
-FINAL_SHA = （随本提交）
+FINAL_SHA = 49613291c9948b6d51a3016e16f2ed526002f310
 CHANGED_FILES = backend/final_validator.py（新增: 确定性 validator）
   backend/engine_langgraph.py（缓冲发布 + validator→repair loop + 代写链删除）
   backend/evidence_contract.py（删 LiveCitationSanitizer/build_citation_disclosure）
@@ -272,7 +272,7 @@ O1_THINKING_SAFETY_TESTS = 4/4 PASS
 O2_OWNERSHIP_TESTS = 20/20 PASS
 FULL_TEST_COMMAND = pytest backend/tests -q
 COLLECTED = 443  PASSED = 443  FAILED = 0  SKIPPED = 0
-REMOTE_SHA = （push 后回填）
+REMOTE_SHA = 49613291c9948b6d51a3016e16f2ed526002f310（已 push: 281c8ff40..49613291c）
 REPORT = docs/PHIAGENT_O2_FINAL_ANSWER_OWNERSHIP.md
 KNOWN_ISSUES = 6 条（见 §10: final 首字延迟 / ceiling 透明收口 / 跨 chunk 标记
   既有局限 / INVALID_SOURCE_BINDING 预留 / repair 轮受既有检索准入约束 /
