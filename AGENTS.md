@@ -23,9 +23,9 @@ DeepPhilosophy/
 │   │   ├── data/           # 数据层（缓存/题库/工具函数）
 │   │   └── utils/          # API/SEO 工具
 │   └── public/             # 静态资源（切勿改路径！前端引用死依赖）
-│       ├── books.json      # 书籍目录（402 本）
+│       ├── books.json      # 书籍目录（409 本）
 │       ├── philosophers.json  # 哲学家数据
-│       ├── book_detail/    # 每书独立 JSON（402 个，git 全跟踪，正式源）
+│       ├── book_detail/    # 每书独立 JSON（409 个，git 全跟踪，正式源）
 │       ├── philosopher/    # 肖像 + data/ 详情 JSON
 │       ├── schools/        # 流派图片 + data/ JSON
 │       ├── covers/         # 封面 WebP
@@ -110,7 +110,7 @@ DeepPhilosophy/
 
 ## 2026-08-14 现状快照（PhiAgent 并入后）
 
-- **书库**：402 本（312 本可读 + 90 TXT 占位），detail 正式源 = `app/public/book_detail/`
+- **书库**：409 本（320 本可读 + 89 TXT 占位；2026-09-04 补齐《爱弥儿》后快照），detail 正式源 = `app/public/book_detail/`
 - **章节 git 跟踪**：`backend/data/book_chapters/`（唯一）；`app/public/backend/data/book_chapters/`（vite 镜像）已解除跟踪
 - **统一后端**：`backend/` = FastAPI :8011（智能体 + 平台 API）；生产 API 仍走 Cloudflare Workers（auth + api 双 worker + D1 `deepphilosophy-db`），`https://deepphilosophy.top/api/health` 可验证
 - **AIAuthor**：`data/ai_author/`（1.6GB，gitignore，仅本地；agents.py 的 bundle 指向此处）
