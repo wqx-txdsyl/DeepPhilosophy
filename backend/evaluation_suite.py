@@ -10,8 +10,11 @@ semantic_obligations.py 是 runtime 内的第二套认知裁决层（Shadow Agen
 
 O4-RP1 注: 原生产前提核对模块已删除——PremiseVerifier（前提错误检出, 评分用）
 以自带数据副本形式保留在本文件（离线评分, 不在请求路径上, 无注入效果）;
-EpistemicClaimClassifier / _match_philosopher / PHILOSOPHER_ALIASES 迁入
-evidence_contract（生产单源）, 本文件经 import 复用。
+EpistemicClaimClassifier 迁入 evidence_contract（生产单源）, 本文件经 import 复用。
+O5 注: 哲学家名匹配（_match_philosopher/PHILOSOPHER_ALIASES/_norm_author/
+_load_philosophers）与表达强度模板（EPISTEMIC_LANGUAGE/language_bound）自
+evidence_contract 迁回本文件自带副本——生产模块内部零调用, 运行时不再持有
+哲学家名匹配层与语言约束层; 仅离线评分消费。
 
 五个评分器都是确定性规则:
 
@@ -32,13 +35,109 @@ evidence_contract（生产单源）, 本文件经 import 复用。
 """
 import json
 import re
+import threading
 from pathlib import Path
 
 from evidence_contract import (build_evidence_contract, EpistemicClaimClassifier,
-                               _match_philosopher, _norm_author, _strip_marks,
-                               _load_philosophers, PHILOSOPHER_ALIASES)
+                               _strip_marks, _split_sentences)
 
 BASE = Path(__file__).resolve().parent          # backend/
+PHILOSOPHERS_FILE = BASE / "data" / "philosophers.json"
+
+
+# ═══════════════════════════════════════════════════════
+# 0.5 哲学家名匹配与表达强度模板（O5 MOVE 自带副本——原 evidence_contract 持有,
+#     生产模块内部零调用后迁回离线评估套件; 只被本文件的评分器消费）
+# ═══════════════════════════════════════════════════════
+def _norm_author(s):
+    """作者名归一化: 去中间点变体/全名, 留短名（海德格尔 / 马丁·海德格尔 → 海德格尔）"""
+    t = (s or "").strip()
+    for sep in ("·", ".", "·"):
+        t = t.replace(sep, "·")
+    if "·" in t and t.split("·")[-1]:
+        return t.split("·")[-1].strip()
+    return t
+
+
+_philos_cache = None
+_philos_lock = threading.Lock()
+
+
+def _load_philosophers():
+    """backend/data/philosophers.json（id→记录）→ {短名: 原名} + 原始短名集合"""
+    global _philos_cache
+    if _philos_cache is None:
+        with _philos_lock:
+            if _philos_cache is None:
+                try:
+                    raw = json.load(open(PHILOSOPHERS_FILE, encoding="utf-8"))
+                    vals = list(raw.values()) if isinstance(raw, dict) else raw
+                    names = set()
+                    for v in vals:
+                        n = (v.get("name") or "").strip()
+                        if n:
+                            names.add(n)
+                            names.add(_norm_author(n))
+                    _philos_cache = names
+                except Exception:
+                    _philos_cache = set()
+    return _philos_cache
+
+
+# 常见别称: 哲学家短名 ↔ 全名/拉丁名（用户口语常用短名, 需匹配到）
+PHILOSOPHER_ALIASES = {
+    "尼采": "尼采", "弗里德里希·尼采": "尼采", "f·尼采": "尼采",
+    "加缪": "加缪", "阿尔贝·加缪": "加缪",
+    "叔本华": "叔本华", "亚瑟·叔本华": "叔本华",
+    "康德": "康德", "伊曼努尔·康德": "康德",
+    "黑格尔": "黑格尔", "格奥尔格·黑格尔": "黑格尔",
+    "萨特": "萨特", "让-保罗·萨特": "萨特",
+    "海德格尔": "海德格尔", "马丁·海德格尔": "海德格尔",
+    "维特根斯坦": "维特根斯坦", "路德维希·维特根斯坦": "维特根斯坦",
+    "柏拉图": "柏拉图", "苏格拉底": "苏格拉底", "亚里士多德": "亚里士多德",
+    "马克思": "马克思", "卡尔·马克思": "马克思",
+    "庄子": "庄子", "老子": "老子", "孔子": "孔子", "释迦牟尼": "释迦牟尼", "佛陀": "释迦牟尼",
+}
+
+
+def _match_philosopher(text):
+    """在文本中查找已知哲学家名（返回规范短名列表, 按出现顺序, 去重）"""
+    pool = set()
+    pool |= set(PHILOSOPHER_ALIASES.keys())
+    pool |= _load_philosophers()
+    found = []
+    seen = set()
+    # 长名优先（"弗里德里希·尼采" 先于 "尼采", 防短名吞长名）
+    for name in sorted(pool, key=len, reverse=True):
+        n = _norm_author(name)
+        if n and n in text and n not in seen:
+            seen.add(n)
+            found.append(PHILOSOPHER_ALIASES.get(n) or PHILOSOPHER_ALIASES.get(name) or n)
+    # 去重保序
+    out = []
+    for f in found:
+        if f not in out:
+            out.append(f)
+    return out
+
+
+# 语言约束: 不同 claim 类型绑定的表达强度模板（评分参照, 不注入运行时）
+EPISTEMIC_LANGUAGE = {
+    "SOURCE_FACT": "文本明确写道……",
+    "DIRECT_QUOTE": "原文写道……",
+    "TEXTUAL_INFERENCE": "这可以理解为……",
+    "CROSS_TEXT_INTERPRETATION": "若采用加缪的框架，可以把它读作……",
+    "SCHOLARLY_INTERPRETATION": "某种研究解释认为……",
+    "AUTHOR_COUNTERFACTUAL": "我们无法知道作者本人会如何评价；依据其现有思想……",
+    "SPECULATION": "一种可能的解释是……",
+    "UNKNOWN": "现有材料不足以判断……",
+    "USER_PREMISE": "基于你提出的这个前提……",
+}
+
+
+def language_bound(ctype):
+    """类型 → 表达强度模板（评分参照用）"""
+    return EPISTEMIC_LANGUAGE.get(ctype, EPISTEMIC_LANGUAGE["UNKNOWN"])
 
 
 # ═══════════════════════════════════════════════════════
@@ -637,7 +736,8 @@ def evaluate_epistemic_accuracy(answer, language="zh"):
     metrics: claim_types 计数（六类区分）; overclaim / unbounded / unlocatable
     """
     cl = EpistemicClaimClassifier()
-    sents = cl.split_sentences(answer or "")
+    # O5 (D6): 句子切分用 evidence_contract 模块级 _split_sentences（分类器方法已删）
+    sents = _split_sentences(answer or "")
     claims = [cl.classify(s, extra=True) for s in sents if len(s.strip()) >= 8]
     findings = []
     # 未经证据支持的强化措辞（原 answer_composer 检测真源, O4 后为本文件自带副本）

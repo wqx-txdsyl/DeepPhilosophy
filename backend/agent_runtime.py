@@ -19,13 +19,15 @@ O4 后本模块只保留两类东西（Shadow cognition 已删除——runtime �
      错误分类            模型 API 错误可恢复性判定 + agent_node 有限重试（引擎接线）;
                          重试耗尽 → ModelCallError（引擎 graceful completion）
      RECURSION_LIMIT     graph 步数兜底
-  2. ExecutionFactLedger（ObligationLedger 瘦身后的纯事实登记器）:
-     只登记已发生的检索/阅读事实（读了哪些章节 / 是否读到主文本 / 是否逐字命中 /
-     search-read 执行计数）——不做任何准入拒绝、配额、义务满足判定。
+
+  执行事实登记（EvidenceState）已并入 evidence_contract.py（O5 MERGE: agent_runtime
+  旧义务台账整类删除——只记 WHAT HAPPENED, 无义务/准入语义, 现归 Evidence Store）。
 
 已删除（O4, CONTROL_EFFECT=0 且无独立数据价值）:
   soft 预算提示 / no_gain warn+force / sufficiency 期望与收敛 / 检索准入（admission）/
   查询族判重 / 义务满足总闸 / RECOVERY_* 第二 writer 文案 / RetrievalState 语义增益统计。
+已删除（O5）: 义务台账类（含 term / exact_quote_verified 死字段与 _QUOTE_NORM
+  归一重复——归一真源 = quote_bound.norm_q）。
 
 ────────────────────────────────────────────────────────────────────
 预算取值依据（agent_stats.jsonl 665 条真实记录, 2026-08-06 ~ 08-30）:
@@ -384,85 +386,6 @@ HARD_BUDGET_DIRECTIVE = ("（工具预算已达上限。现在进入最终回答
                          "材料不足的部分明确说明尚未核验。只输出回答文本。）")
 
 
-# ═══════════════════════════════════════════════════════
-# O4: ExecutionFactLedger（原 ObligationLedger 瘦身）——纯事实登记器
-# ═══════════════════════════════════════════════════════
-# 只登记已发生的执行事实（Evidence Store 观测元数据）:
-#   read_chapters           get_chapter 成功读取过的 (book_id, chapter_idx)
-#   primary_text_read       本次是否实际读到过章节全文（出处核验的最低完成线;
-#                           只能由 get_chapter 的全文置位——检索片段/书目永远不算）
-#   exact_quote_verified    待核验表述（term）在已读原文中逐字命中（简单精确匹配/归一包含）
-#   source_candidate_found  search/meta 类命中过非空结果（只是定位线索 MEMORY_HINT）
-#   search_execs/read_execs 执行计数（遥测）
-# 无 admit / 无配额 / 无义务满足判定 / 无查询族判重——是否继续检索、何时收口,
-# 全部由 Main Agent 自主决定。
-def _QUOTE_NORM(s):
-    """逐字比对的归一口径——只保留文字与数字, 剥全部标点/空白/括号引号。
-    归一后必须『连续包含』才算逐字命中（拼接/跳字在此即失败）。"""
-    return re.sub(r"[^\w\u4e00-\u9fff]+", "", s or "")
-
-
-class ObligationLedger:
-    """O4 瘦身: invocation 级执行事实台账（生命周期 = 单次请求; 纯登记, 零控制效果）
-
-    record(tool, args, ok, result)
-      → 执行后登记事实: 已读章节 / 主文本已读 / 逐字命中 / 定位线索命中 / 执行计数。
-    snapshot()
-      → 这些事实字段 + search/read 计数（随 done 输出供审计; validator 只消费
-        primary_text_read——VERIFY_LATER_MISSTATEMENT 的唯一触发依据）。
-    """
-
-    def __init__(self, plan=None, term=None):
-        self.term = term or ""       # 待核验表述（verif_box 术语核验共用; 无则为空）
-        self.read_chapters = set()   # (book_id, chapter_idx) 已成功读取
-        self.search_execs = 0
-        self.read_execs = 0
-        # 出处核验事实分层: LOCATED（定位线索）≠ READ（读到全文）≠ QUOTE_VERIFIED（逐字命中）
-        self.source_candidate_found = False
-        self.primary_text_read = False
-        self.exact_quote_verified = False
-
-    def record(self, tool, args, ok, result):
-        """执行后登记事实（成败都登记——失败是事实; 但只有成功读取才置位 READ 状态）"""
-        if tool == "get_chapter":
-            if not ok:
-                return
-            a = args or {}
-            key = (str(a.get("book_id") or ""), a.get("chapter_idx") if isinstance(a.get("chapter_idx"), int) else -1)
-            self.read_execs += 1
-            self.read_chapters.add(key)
-            # PRIMARY_TEXT_READ 只有 get_chapter 全文能置位——MEMORY_HINT
-            # （检索片段/书目/记忆）永远不算。
-            self.primary_text_read = True
-            if not self.exact_quote_verified and self.term:
-                text = str((result or {}).get("text") or "")
-                if text:
-                    if self.term in text:
-                        self.exact_quote_verified = True
-                    else:
-                        tn = _QUOTE_NORM(self.term)
-                        if len(tn) >= 4 and tn in _QUOTE_NORM(text):
-                            self.exact_quote_verified = True
-            return
-        # search/meta 类: 命中非空结果 → SOURCE_CANDIDATE_FOUND（只是定位线索）
-        self.search_execs += 1
-        if not self.source_candidate_found and isinstance(result, dict) \
-                and not result.get("error"):
-            for k in ("results", "books", "items", "hits", "records"):
-                v = result.get(k)
-                if isinstance(v, list) and v:
-                    self.source_candidate_found = True
-                    break
-
-    def snapshot(self):
-        return {
-            "read_chapters": sorted(f"{b}#{c}" for b, c in self.read_chapters),
-            "search_execs": self.search_execs,
-            "read_execs": self.read_execs,
-            # 出处核验事实分层（审计/回归断言用; primary_text_read 为 validator 唯一消费项）
-            "verification_states": {
-                "source_candidate_found": self.source_candidate_found,
-                "primary_text_read": self.primary_text_read,
-                "exact_quote_verified": self.exact_quote_verified,
-            },
-        }
+# O5: 执行事实登记已整体并入 evidence_contract.EvidenceState
+# ——执行事实归 Evidence Store（done.evidence.facts 输出）, 本模块只剩机械执行状态
+# （trace / guard / budget / 重试; 旧义务台账类已整体删除）。

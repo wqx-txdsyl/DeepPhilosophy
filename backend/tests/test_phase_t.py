@@ -445,6 +445,7 @@ class TestCitationVariants:
         assert "【维拉莫维茨·《未来语文学！》】" in ans and "维拉莫维茨" in ans, "文本不被改写"
 
     def test_sanitize_citations_covers_variants(self):
+        # O5: sanitize 只读 audit——canonical 与 作者·《作品》变体都被覆盖审计, 零改写
         tool_log = [{"name": "search_books", "args": {"query": "x"},
                      "result_full": {"results": [{"book_title": "理想国", "chapter_title": "第十卷",
                                                   "author": "柏拉图", "snippet": "拒绝模仿"}]}}]
@@ -452,8 +453,9 @@ class TestCitationVariants:
         rep = EC.sanitize_citations(ans, tool_log=tool_log)
         kinds = {a["book"] for a in rep["actions"] if a["action"] == "verified"}
         assert "理想国" in kinds
-        assert any(a["action"] == "downgraded_plain_mention" and a["book"] == "未来语文学！"
-                   for a in rep["actions"])
+        assert {a["book"] for a in rep["unverified_before"]} == {"未来语文学！"}
+        assert {a["action"] for a in rep["actions"]} <= {"verified", "unverified"},             "rebind/downgrade 改写动作不得回归"
+        assert "sanitized_text" not in rep
 
     def test_unverified_citations_variant(self):
         out = EC._unverified_citations("引用了【《不存在的书·某章》】和【某人·《不存在作品》】", [])

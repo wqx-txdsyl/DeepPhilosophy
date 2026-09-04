@@ -9,7 +9,9 @@ retrieval candidates 误解为 answer evidence。
 
   EvidenceExtractor        从 tool_log 提取证据候选 → retrieved_evidence
                             （search_books 命中 / get_chapter 阅读 / 语料回响 入池;
-                             websearch 等 secondary 仅审计, 不进引用面板）
+                             websearch 等 secondary 仅审计, 不进引用面板; 字段映射
+                             单一真源 = build_evidence_pool, quote_bound 经它做
+                             逐字核验 span 池的形状适配）
   EvidenceUsageVerifier    回答正文 ↔ 证据的确定性对齐（引用标注精确匹配 + 片段
                             shingle 重叠）→ used_evidence（retrieved 且 used）
   EpistemicClaimClassifier Claim 知识论分级（9 类, O4-RP1 起由本文件本地定义
@@ -19,6 +21,8 @@ retrieval candidates 误解为 answer evidence。
   CitationValidity         引用【《书名》·章节】必须能映射到 used_evidence;
                             仅"检索过"没有资格进入引用面板; 未核验引用单列
                             unverified_citations（不入面板）
+  EvidenceState            执行事实登记（O5 并入 agent_runtime 旧义务台账: 只记
+                            WHAT HAPPENED, 随 done.evidence.facts 输出; 无任何义务/准入判定）
 
 Phase 3 边界（见任务书）:
   - 不改 Graph / Memory / Persona Snapshot / 矢量库 / 工具注册表 / 流式协议
@@ -34,13 +38,11 @@ O4-RP1: build_evidence_contract 不再接收 source_constraint/subject_authors�
 """
 import json
 import re
-import threading
 import time
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
 LOG_FILE = BASE / "data" / "evidence_contract.jsonl"   # 运行时记录（backend/data 已 gitignore）
-PHILOSOPHERS_FILE = BASE / "data" / "philosophers.json"
 
 # 引用标注提取（Phase T/T13-A: 统一覆盖 canonical + 全部已知变体）:
 #   canonical   【《书名》·章节】 / 【《书名》】 / 【《书名》 · 章节】
@@ -76,6 +78,55 @@ SECONDARY_TOOLS = {"websearch"}
 
 _SHINGLE_LEN = 8          # 片段 shingle 长度（≥8 连续字符命中 → 视为回答摘引了该片段）
 _MIN_CLAIM_LEN = 12       # 短句不作为 Claim
+
+
+# ═══════════════════════════════════════════════════════
+# 0. EvidenceState（O5: 执行事实登记, agent_runtime 旧义务台账并入 Evidence Store）
+# ═══════════════════════════════════════════════════════
+# 只登记"已发生什么"（WHAT HAPPENED）, 不判定"还必须做什么"（WHAT MUST HAPPEN）:
+#   read_chapters / read_execs        get_chapter 成功读取过的章节与计数
+#   primary_text_read                 是否实际读到过章节全文（只能由 get_chapter 置位;
+#                                     检索片段/书目永远不算）
+#   source_candidate_found / search_execs
+#                                     检索/查询类命中过非空结果（定位线索 MEMORY_HINT）与计数
+# 无 term / 无 exact_quote_verified（O5 删除: 失去生产喂入口; 逐字核验真源 =
+# quote_bound.verify_quote + final_validator）/ 无 admit / 无义务满足判定——
+# 是否继续检索、何时收口, 全部由 Main Agent 自主决定。
+class EvidenceState:
+    """invocation 级执行事实登记（生命周期 = 单次请求; 纯登记, 零控制效果）"""
+
+    def __init__(self):
+        self.read_chapters = []      # ["{book_id}#{chapter_idx}", ...] 已成功读取
+        self.search_execs = 0
+        self.read_execs = 0
+        self.source_candidate_found = False
+        self.primary_text_read = False
+
+    def record_search(self, ok, result=None):
+        """检索/查询类工具执行后登记事实（成败都计数; 命中非空结果才算定位线索成立）"""
+        self.search_execs += 1
+        if not self.source_candidate_found and ok and isinstance(result, dict):
+            for k in ("results", "books", "items", "hits", "records"):
+                v = result.get(k)
+                if isinstance(v, list) and v:
+                    self.source_candidate_found = True
+                    break
+
+    def record_read(self, book_id, chapter_idx):
+        """get_chapter 成功读取后登记事实（失败读取不是 READ 事实——不计数;
+        PRIMARY_TEXT_READ 只有 get_chapter 全文能置位, MEMORY_HINT 永远不算）"""
+        self.read_execs += 1
+        key = f"{book_id or ''}#{chapter_idx if isinstance(chapter_idx, int) else -1}"
+        if key not in self.read_chapters:
+            self.read_chapters.append(key)
+        self.primary_text_read = True
+
+    def snapshot(self):
+        return {"read_chapters": list(self.read_chapters),
+                "search_execs": self.search_execs,
+                "read_execs": self.read_execs,
+                "source_candidate_found": self.source_candidate_found,
+                "primary_text_read": self.primary_text_read}
 
 # 跳过行: mermaid/流程图代码与分隔线（不是论证性 Claim）
 _SKIP_CLAIM_RE = re.compile(
@@ -173,68 +224,114 @@ def _base_evidence(seq, source_id, source_type="primary"):
     }
 
 
-def _extract_candidates(tool_log):
-    """tool_log → 证据候选列表（保持检索顺序; 仅白名单工具的结果入池）"""
-    cands = []
-    for i, tc in enumerate(tool_log or []):
+def build_evidence_pool(raw_tool_log):
+    """raw_tool_log → 全保真证据池（D4 单一真源: raw_tool_log 字段映射只维护一份）。
+
+    每条 = 一个可核验文本来源（保持检索顺序）:
+      {entry_index, kind, book, chapter, book_id, chapter_idx, author,
+       text（全保真, 不截断）, score, source_type}
+    kind/source_type: chapter→primary_read（get_chapter 全文）/ search→snippet
+                      （检索片段）/ corpus（语料回响）/ web→secondary（仅审计）
+    消费方在此池上做形状适配:
+      _extract_candidates        → 证据契约候选池（snippet 截断 220; 各自准入条件）
+      quote_bound.evidence_spans → 逐字核验 span 池（chapter 按行分段 units）
+    """
+    pool = []
+    for i, tc in enumerate(raw_tool_log or []):
         name = tc.get("name") or ""
         rf = tc.get("result_full")
-        if name not in PRIMARY_TOOLS and name not in SECONDARY_TOOLS:
-            continue
-        if not isinstance(rf, dict):
+        if not isinstance(rf, dict) or rf.get("error"):
             continue
         if name == "search_books":
             for item in rf.get("results") or []:
-                if not isinstance(item, dict) or not item.get("book_title"):
+                if not isinstance(item, dict):
                     continue
-                ev = _base_evidence(len(cands) + 1, f"src_search_{i}")
-                ev.update({
+                pool.append({
+                    "entry_index": i, "kind": "search", "source_type": "snippet",
                     "book": item.get("book_title") or "",
                     "chapter": item.get("chapter_title") or "",
                     "book_id": item.get("book_id") or "",
                     "chapter_idx": item.get("chapter_idx", -1),
                     "author": item.get("author") or "",
-                    "snippet": (item.get("snippet") or "")[:220],
+                    "text": item.get("snippet") or "",
                     "score": float(item.get("score") or 0),
                 })
-                cands.append(ev)
-        elif name == "get_chapter" and rf.get("book_id"):
-            try:
-                from routes.agent import book_by_id
-                b = book_by_id(rf.get("book_id")) or {}
-            except Exception:
-                b = {}
-            ev = _base_evidence(len(cands) + 1, f"src_chapter_{i}")
-            ev.update({
+        elif name == "get_chapter":
+            b = {}
+            if rf.get("book_id"):
+                try:
+                    from routes.agent import book_by_id
+                    b = book_by_id(rf.get("book_id")) or {}
+                except Exception:
+                    b = {}
+            pool.append({
+                "entry_index": i, "kind": "chapter", "source_type": "primary_read",
+                # 契约口径: 目录题名优先, 回退结果自带 book_title;
+                # quote_bound 逐字核验口径沿用结果自带原始字段（book_title_raw/chapter_title_raw）
                 "book": b.get("title", "") or rf.get("book_title") or "",
+                "book_title_raw": rf.get("book_title") or "",
                 "chapter": rf.get("title") or rf.get("chapter_title") or "",
+                "chapter_title_raw": rf.get("title") or "",
                 "book_id": rf.get("book_id", ""),
                 "chapter_idx": rf.get("chapter_idx", -1),
                 "author": b.get("author", ""),
-                "snippet": (rf.get("text") or "")[:220],
+                "text": rf.get("text") or "",
                 "score": 1.0,
             })
-            cands.append(ev)
         elif name in ("philosopher_corpus", "philosopher_quote"):
             for echo in (rf.get("echoes") or rf.get("quotes") or []):
-                if not isinstance(echo, dict) or not echo.get("book"):
+                if not isinstance(echo, dict):
                     continue
-                ev = _base_evidence(len(cands) + 1, f"src_corpus_{i}")
-                ev.update({
+                pool.append({
+                    "entry_index": i, "kind": "corpus", "source_type": "corpus",
                     "book": echo.get("book") or "",
                     "chapter": echo.get("chapter") or "",
-                    "author": "",
-                    "snippet": (echo.get("text") or echo.get("snippet") or "")[:220],
+                    "book_id": "", "chapter_idx": -1, "author": "",
+                    "text": echo.get("text") or echo.get("snippet") or "",
                     "score": float(echo.get("score") or 0),
                 })
-                cands.append(ev)
         elif name in SECONDARY_TOOLS:
             # 外网结果仅审计: 无《书名》定位能力, 永远不进引用面板
-            ev = _base_evidence(len(cands) + 1, f"src_web_{i}", source_type="secondary")
-            ev.update({
-                "snippet": (rf.get("content") or rf.get("text") or str(rf))[:220],
+            pool.append({
+                "entry_index": i, "kind": "web", "source_type": "secondary",
+                "book": "", "chapter": "", "book_id": "", "chapter_idx": -1, "author": "",
+                "text": rf.get("content") or rf.get("text") or str(rf),
+                "score": 0.0,
             })
-            cands.append(ev)
+    return pool
+
+
+def _extract_candidates(tool_log):
+    """（D4 薄适配）证据池 → 证据契约候选列表（保持检索顺序; 各白名单准入条件不变:
+    检索项需 book_title, 章节项需 book_id, 语料项需 book; snippet 截断 220）"""
+    cands = []
+    for e in build_evidence_pool(tool_log):
+        kind = e["kind"]
+        if kind == "search":
+            if not e["book"]:
+                continue
+            ev = _base_evidence(len(cands) + 1, f"src_search_{e['entry_index']}")
+            ev.update({"book": e["book"], "chapter": e["chapter"], "book_id": e["book_id"],
+                       "chapter_idx": e["chapter_idx"], "author": e["author"],
+                       "snippet": e["text"][:220], "score": e["score"]})
+        elif kind == "chapter":
+            if not e["book_id"]:
+                continue
+            ev = _base_evidence(len(cands) + 1, f"src_chapter_{e['entry_index']}")
+            ev.update({"book": e["book"], "chapter": e["chapter"], "book_id": e["book_id"],
+                       "chapter_idx": e["chapter_idx"], "author": e["author"],
+                       "snippet": e["text"][:220], "score": 1.0})
+        elif kind == "corpus":
+            if not e["book"]:
+                continue
+            ev = _base_evidence(len(cands) + 1, f"src_corpus_{e['entry_index']}")
+            ev.update({"book": e["book"], "chapter": e["chapter"], "author": "",
+                       "snippet": e["text"][:220], "score": e["score"]})
+        else:   # web
+            ev = _base_evidence(len(cands) + 1, f"src_web_{e['entry_index']}",
+                                source_type="secondary")
+            ev.update({"snippet": e["text"][:220]})
+        cands.append(ev)
     return cands
 
 
@@ -291,76 +388,9 @@ def _strip_marks(s):
     return (s or "").replace("《", "").replace("》", "").replace(" ", "").strip()
 
 
-def _norm_author(s):
-    """作者名归一化: 去中间点变体/全名, 留短名（海德格尔 / 马丁·海德格尔 → 海德格尔）"""
-    t = (s or "").strip()
-    for sep in ("·", ".", "·"):
-        t = t.replace(sep, "·")
-    if "·" in t and t.split("·")[-1]:
-        return t.split("·")[-1].strip()
-    return t
-
-
-_philos_cache = None
-_philos_lock = threading.Lock()
-
-
-def _load_philosophers():
-    """backend/data/philosophers.json（id→记录）→ {短名: 原名} + 原始短名集合"""
-    global _philos_cache
-    if _philos_cache is None:
-        with _philos_lock:
-            if _philos_cache is None:
-                try:
-                    raw = json.load(open(PHILOSOPHERS_FILE, encoding="utf-8"))
-                    vals = list(raw.values()) if isinstance(raw, dict) else raw
-                    names = set()
-                    for v in vals:
-                        n = (v.get("name") or "").strip()
-                        if n:
-                            names.add(n)
-                            names.add(_norm_author(n))
-                    _philos_cache = names
-                except Exception:
-                    _philos_cache = set()
-    return _philos_cache
-
-
-# 常见别称: 哲学家短名 ↔ 全名/拉丁名（用户口语常用短名, 需匹配到）
-PHILOSOPHER_ALIASES = {
-    "尼采": "尼采", "弗里德里希·尼采": "尼采", "f·尼采": "尼采",
-    "加缪": "加缪", "阿尔贝·加缪": "加缪",
-    "叔本华": "叔本华", "亚瑟·叔本华": "叔本华",
-    "康德": "康德", "伊曼努尔·康德": "康德",
-    "黑格尔": "黑格尔", "格奥尔格·黑格尔": "黑格尔",
-    "萨特": "萨特", "让-保罗·萨特": "萨特",
-    "海德格尔": "海德格尔", "马丁·海德格尔": "海德格尔",
-    "维特根斯坦": "维特根斯坦", "路德维希·维特根斯坦": "维特根斯坦",
-    "柏拉图": "柏拉图", "苏格拉底": "苏格拉底", "亚里士多德": "亚里士多德",
-    "马克思": "马克思", "卡尔·马克思": "马克思",
-    "庄子": "庄子", "老子": "老子", "孔子": "孔子", "释迦牟尼": "释迦牟尼", "佛陀": "释迦牟尼",
-}
-
-
-def _match_philosopher(text):
-    """在文本中查找已知哲学家名（返回规范短名列表, 按出现顺序, 去重）"""
-    pool = set()
-    pool |= set(PHILOSOPHER_ALIASES.keys())
-    pool |= _load_philosophers()
-    found = []
-    seen = set()
-    # 长名优先（"弗里德里希·尼采" 先于 "尼采", 防短名吞长名）
-    for name in sorted(pool, key=len, reverse=True):
-        n = _norm_author(name)
-        if n and n in text and n not in seen:
-            seen.add(n)
-            found.append(PHILOSOPHER_ALIASES.get(n) or PHILOSOPHER_ALIASES.get(name) or n)
-    # 去重保序
-    out = []
-    for f in found:
-        if f not in out:
-            out.append(f)
-    return out
+# O5 MOVE: _norm_author / _load_philosophers / PHILOSOPHER_ALIASES / _match_philosopher
+# 与 EPISTEMIC_LANGUAGE / language_bound 已迁至 evaluation_suite（离线评估自带副本——
+# 本模块内部零调用; 运行时不再持有哲学家名匹配与表达强度模板层）。
 
 
 EPISTEMIC_TYPES = [
@@ -374,19 +404,6 @@ EPISTEMIC_TYPES = [
     "SPECULATION",               # 推测（作者未表、亦无研究共识）
     "UNKNOWN",                   # 现有材料不足以判断
 ]
-
-# 语言约束: 不同类型绑定不同表达强度（分级时引用）
-EPISTEMIC_LANGUAGE = {
-    "SOURCE_FACT": "文本明确写道……",
-    "DIRECT_QUOTE": "原文写道……",
-    "TEXTUAL_INFERENCE": "这可以理解为……",
-    "CROSS_TEXT_INTERPRETATION": "若采用加缪的框架，可以把它读作……",
-    "SCHOLARLY_INTERPRETATION": "某种研究解释认为……",
-    "AUTHOR_COUNTERFACTUAL": "我们无法知道作者本人会如何评价；依据其现有思想……",
-    "SPECULATION": "一种可能的解释是……",
-    "UNKNOWN": "现有材料不足以判断……",
-    "USER_PREMISE": "基于你提出的这个前提……",
-}
 
 # 具体 → 一般 顺序匹配（首个命中即定级; 全部未中 → UNKNOWN）
 _CLAIM_CUES = [
@@ -444,15 +461,8 @@ class EpistemicClaimClassifier:
         for m in re.finditer(r"[“\"]([^”\"]{4,80})[”\"]", t):
             ids.append(f"quote:{m.group(1)[:20]}")
         return ids[:8]
-
-    @staticmethod
-    def language_bound(ctype):
-        """类型 → 表达强度模板（语言约束的落地形式）"""
-        return EPISTEMIC_LANGUAGE.get(ctype, EPISTEMIC_LANGUAGE["UNKNOWN"])
-
-    def split_sentences(self, text):
-        """按句末切分（供遍历文本中的每个断言）"""
-        return [s for s in re.split(r"[。！？；!?;\n]", text or "") if s.strip()]
+    # O5 (D6): split_sentences method 已删——与模块级 _split_sentences 重复,
+    # 唯一消费者 evaluation_suite 改用模块函数。
 
 
 # ═══════════════════════════════════════════════════════
@@ -630,86 +640,36 @@ def build_evidence_contract(tool_log, answer, agent="general", language="zh"):
 
 
 # ═══════════════════════════════════════════════════════
-# 7. Phase S (S4): Citation Sanitizer —— 最终输出硬约束
-#    visible formal citations ⊆ verified used_evidence citations
+# 7. Citation Sanitizer（O5 裁剪: 只读 audit 断言——零改写零降级零追加）
 # ═══════════════════════════════════════════════════════
-_CITE_REPLACE_ZH = "（引用核验说明：上文标注【《{}》·{}】的出处未能通过原典库核验，已按一般提及处理，不作为正式引用。）"
-_CITE_REPLACE_EN = ("(Citation note: the passage marked 【《{b}》· {c}】 above could not be verified against "
-                    "the corpus; it is treated as a general mention, not a formal citation.)")
-
-
-def _sentence_around(text, pos, radius=60):
-    """引用标注所在句（含引号摘引的判定窗口）"""
-    lo = max(0, pos - radius)
-    hi = min(len(text), pos + radius)
-    return text[lo:hi]
 
 
 def sanitize_citations(answer, contract=None, tool_log=None):
-    """对回答正文执行引用净化（最终输出硬约束）:
-
-    流程: 提取正文正式引用 → 与 Evidence Contract / used_evidence 对齐
-      verified（used_evidence 命中）           → 保留
-      未 verified:
-        ① 存在可靠 evidence（同书检索片段 + 句中引号摘引命中）→ 重新绑定为书级引用
-        ② 否则 → 移除正式引用格式（【】剥除, 降级为一般书名提及）
-
-    返回:
-      sanitized_text:        净化后的正文（正式引用 ⊆ verified）
-      verified_citations:    保留的正式引用
-      unverified_before:     净化前未核验的引用
-      actions:               逐条动作（verified / rebound_book_level / downgraded_plain_mention）
-    """
+    """对最终可见正文执行引用核验断言（只读——不改写正文）:
+      verified_citations   used_evidence 命中的正式引用
+      unverified_before    未命中的正式引用（发布前残留披露——正常路径下 validator 已把
+                           未核验引用以 UNVERIFIED_CITATION 打回 same-agent repair,
+                           此处仅断言并记日志, 供 done.citation_sanitize 审计）
+      actions              逐条动作（verified / unverified）
+    原 rebind/downgrade 文本改写分支已删——sanitized_text 自 O2 起即被丢弃, 无消费者;
+    未核验引用的处置权在 final_validator（结构化 issue）, 不在改写器。"""
     ans = answer or ""
     if contract is None:
         contract = build_evidence_contract(tool_log or [], ans)
     used = contract.get("used_evidence") or []
-    retrieved = contract.get("retrieved_evidence") or []
-    spans = iter_cite_spans(ans)   # T13-A: canonical + 作者·《作品》变体统一覆盖
     actions, verified, unverified = [], [], []
-    new_text = ans
-    for start, end, book, chapter, kind in reversed(spans):   # 从后往前替换, 保索引稳定
-        ok = any(_book_match(ev["book"], book) and _chapter_match(ev["chapter"], chapter)
-                 for ev in used)
-        if ok:
+    for _start, _end, book, chapter, _kind in iter_cite_spans(ans):
+        if any(_book_match(ev["book"], book) and _chapter_match(ev["chapter"], chapter)
+               for ev in used):
             actions.append({"book": book, "chapter": chapter, "action": "verified"})
             verified.append({"book": book, "chapter": chapter})
-            continue
-        unverified.append({"book": book, "chapter": chapter})
-        # ① 重新绑定: 同书检索片段 + 句中引号摘引命中 → 降级为书级引用【《书》】(仍可核验)
-        sent = _sentence_around(ans, start)
-        rebound = False
-        for ev in retrieved:
-            if ev.get("source_type") != "primary" or not ev.get("book"):
-                continue
-            if not _book_match(ev["book"], book):
-                continue
-            sn = _norm(ev.get("snippet") or "")
-            if len(sn) < 10:
-                continue
-            quotes = re.findall(r"[“\"]([^”\"]{10,80})[”\"]", sent)
-            if any(_norm(q) and _norm(q) in sn for q in quotes):
-                new_text = new_text[:start] + f"【《{book}》】" + new_text[end:]
-                actions.append({"book": book, "chapter": chapter,
-                                "action": "rebound_book_level", "reason": "quote_matches_retrieved_snippet"})
-                rebound = True
-                break
-        if rebound:
-            continue
-        # ② 移除正式引用格式（降级为一般书名提及; 作者·《作品》变体保留作者署名）
-        plain = f"《{book}》"
-        if kind == "author_work":
-            # 还原作者名（原文【作者·《作品》】→ 作者《作品》）
-            am = _CITE_AUTHOR_WORK_RE.match(ans[start:end])
-            plain = f"{am.group(1)}《{book}》" if am else f"《{book}》"
-        new_text = new_text[:start] + plain + new_text[end:]
-        actions.append({"book": book, "chapter": chapter,
-                        "action": "downgraded_plain_mention", "reason": "no_reliable_evidence"})
+        else:
+            actions.append({"book": book, "chapter": chapter, "action": "unverified"})
+            unverified.append({"book": book, "chapter": chapter})
     _log_record({"phase": "sanitize", "answer_len": len(ans),
                  "verified": len(verified), "unverified_before": len(unverified),
                  "actions": [a["action"] for a in actions]})
     return {
-        "sanitized_text": new_text,
         "verified_citations": verified,
         "unverified_before": unverified,
         "actions": actions,

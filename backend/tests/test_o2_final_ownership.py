@@ -252,7 +252,9 @@ class TestT3UnverifiedCitation:
         # runtime 不降级: 不存在降级说明文本, 也未把《韩非子》改为"一般提及"保留
         for mark in _GHOSTWRITING_MARKS:
             assert mark not in answer
-        assert done["live_citation_sanitize"]["downgraded"] == 0
+        # O5: done.live_citation_sanitize 死审计字段已删除; 零改写由 final_ownership 承载
+        assert "live_citation_sanitize" not in done
+        assert done["final_ownership"]["semantic_mutators"] == 0
 
     def test_check_citations_codes(self):
         raw_log = [{"name": "search_books", "args": {}, "result_summary": "",

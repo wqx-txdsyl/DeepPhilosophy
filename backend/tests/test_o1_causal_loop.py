@@ -219,7 +219,9 @@ class TestT1NoHiddenPrimaryRead:
     def test_primary_read_by_agent_satisfies_ledger(self):
         evs = _run_stream("言必有中出处", _R1_SCRIPT)
         done = [e for e in evs if e.get("type") == "done"][-1]
-        vs = done["obligation_ledger"]["verification_states"]
+        # O5: 执行事实并入 Evidence Store——done.evidence.facts（obligation_ledger 字段已删）
+        assert "obligation_ledger" not in done
+        vs = done["evidence"]["facts"]
         assert vs["primary_text_read"] is True          # 模型自己的 get_chapter 置位
         assert "auto_primary_read" not in vs            # 引擎代读标志已删除
 
@@ -320,7 +322,7 @@ class TestT8NoAutoRead:
         assert all(t["name"] != "get_chapter" for t in _of(evs, "tool"))
         assert _STUB_CALLS["locate_exact_phrase"] == []  # 引擎未暗中定位
         done = [e for e in evs if e.get("type") == "done"][-1]
-        vs = done["obligation_ledger"]["verification_states"]
+        vs = done["evidence"]["facts"]                   # O5: 事实位 = done.evidence.facts
         assert vs["primary_text_read"] is False          # 未经模型读取, 不得置位
 
 

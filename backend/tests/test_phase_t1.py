@@ -5,7 +5,8 @@
 "未经库中核验" 免责 + "如果你需要我可以再读"反模式。
 
 本文件只测确定性规则层（不调 LLM）:
-  T1.1-A  事实三态分层（O4: 义务满足总闸已删——只剩 LOCATED/READ/QUOTE_VERIFIED 执行事实;
+  T1.1-A  事实分层（O4: 义务满足总闸已删; O5: 台账并入 evidence_contract.EvidenceState——
+          只剩 LOCATED/READ 执行事实, 逐字命中判定归 quote_bound/validator;
           O4-RP1: 意图检测/术语核验链已随旧 planner 模块删除——理解用户问题归 Main Agent）
   T1.1-B  locate_exact_phrase 逐字定位
   T1.1-D  Quote Bound: 提取/核验状态（O2: 流式渲染转写已删——audit + validator issue）
@@ -21,39 +22,49 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import agent_runtime as AR
 import quote_bound as QB
 import final_validator as FV
 
 
 # ═══════════════════════════════════════════════════════
-# T1.1-A 执行事实分层（意图检测已删——LOCATED/READ/QUOTE_VERIFIED 只由工具执行事实置位）
+# T1.1-A 执行事实分层（O5: 旧义务台账整类并入 evidence_contract.EvidenceState——
+# 只记 LOCATED/READ 执行事实; term/exact_quote_verified 失去生产喂入口随之删除,
+# 逐字核验真源 = quote_bound.verify_quote + final_validator, 见 TestT11D/F）
 # ═══════════════════════════════════════════════════════
 class TestT11AExecutionFacts:
-    def test_ledger_three_state_layering(self):
-        led = AR.ObligationLedger(term="言必有中")
-        # 检索命中 → 只置位 SOURCE_CANDIDATE_FOUND（MEMORY_HINT, T1.1-E）
-        led.record("search_books", {"query": "言必有中"}, True,
-                   {"results": [{"book_id": "d927", "chapter_idx": 12}]})
-        assert led.source_candidate_found
-        assert not led.primary_text_read
-        # get_chapter 全文命中 → READ + EXACT
-        led.record("get_chapter", {"book_id": "d927", "chapter_idx": 12}, True,
-                   {"book_id": "d927", "chapter_idx": 12,
-                    "text": "鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”子曰：“夫人不言，言必有中。”"})
-        assert led.primary_text_read
-        assert led.exact_quote_verified
-        snap = led.snapshot()["verification_states"]
+    def test_evidence_state_located_vs_read_layering(self):
+        from evidence_contract import EvidenceState
+        ev = EvidenceState()
+        # 检索命中 → 只置位 source_candidate_found（MEMORY_HINT, T1.1-E）
+        ev.record_search(True, {"results": [{"book_id": "d927", "chapter_idx": 12}]})
+        assert ev.source_candidate_found
+        assert not ev.primary_text_read
+        # get_chapter 成功读取 → READ（主文本已读）
+        ev.record_read("d927", 12)
+        assert ev.primary_text_read
+        snap = ev.snapshot()
         assert snap["source_candidate_found"] and snap["primary_text_read"]
-        assert snap["exact_quote_verified"]
+        assert snap["read_chapters"] == ["d927#12"]
+        assert snap["search_execs"] == 1 and snap["read_execs"] == 1
 
-    def test_read_without_term_hit_stays_unverified(self):
-        # R7 型: 读到了章节但表述不在其中 → 已读但未逐字命中（诚实 NOT_FOUND 路径）
-        led = AR.ObligationLedger(term="青天揽月寸心如磐")
-        led.record("get_chapter", {"book_id": "x", "chapter_idx": 1}, True,
-                   {"book_id": "x", "chapter_idx": 1, "text": "子曰：学而时习之，不亦说乎。"})
-        assert led.primary_text_read
-        assert not led.exact_quote_verified
+    def test_read_registers_fact_without_verdict(self):
+        # R7 型: 读到章节 ≠ 逐字核验通过——EvidenceState 只记"已读"事实,
+        # "表述是否逐字命中原文"由 quote_bound/validator 判定（O5: 台账不再裁决）
+        from evidence_contract import EvidenceState
+        ev = EvidenceState()
+        ev.record_read("x", 1)
+        snap = ev.snapshot()
+        assert snap["primary_text_read"] is True
+        assert "exact_quote_verified" not in snap        # 死字段不得回归
+        assert "verification_states" not in snap         # 旧嵌套形态不再存在
+
+    def test_failed_read_and_failed_search_facts(self):
+        from evidence_contract import EvidenceState
+        ev = EvidenceState()
+        ev.record_search(False, {"error": "x"})          # 失败检索也计数（事实）
+        assert ev.search_execs == 1 and not ev.source_candidate_found
+        ev.record_search(True, {"results": [{"book_id": "d"}]})
+        assert ev.source_candidate_found
 
 
 # ═══════════════════════════════════════════════════════
@@ -83,17 +94,18 @@ class TestT11BLocate:
 
     def test_ensure_primary_read_removed_engine_no_longer_executes_reads(self):
         """O1: 引擎兜底 auto-read 已删除——主文本读取只能由 Main Agent 宣告。
-        引擎层不再存在 _ensure_primary_read / AUTO_READ_THOUGHT; 台账不再有
-        auto_primary_read 标志（防运行时认知代执行回归; 行为级断言见 test_o1_causal_loop.T1/T8）。"""
+        引擎层不再存在 _ensure_primary_read / AUTO_READ_THOUGHT; O5 后事实登记器 =
+        evidence_contract.EvidenceState（agent_runtime 旧义务台账整类已删,
+        防运行时认知代执行回归; 行为级断言见 test_o1_causal_loop.T1/T8）。"""
         import engine_langgraph as ELG
         assert not hasattr(ELG, "_ensure_primary_read")
         assert not hasattr(ELG, "AUTO_READ_THOUGHT")
-        led = AR.ObligationLedger()
-        assert not hasattr(led, "auto_primary_read")
-        snap = led.snapshot()["verification_states"]
-        assert "auto_primary_read" not in snap
+        from evidence_contract import EvidenceState
+        ev = EvidenceState()
+        assert not hasattr(ev, "auto_primary_read")
+        assert "auto_primary_read" not in ev.snapshot()
         # 未读取时台账保持"未读"事实——是否补读由 Main Agent 自主决定
-        assert led.primary_text_read is False
+        assert ev.primary_text_read is False
 
 
 # ═══════════════════════════════════════════════════════

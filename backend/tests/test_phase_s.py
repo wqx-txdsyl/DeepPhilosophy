@@ -177,28 +177,34 @@ def _hit(book, chapter, bid, idx=0, snippet="文本片段。"):
 
 
 def test_s4_verified_citation_kept_fake_removed():
+    # O5: sanitize_citations 裁剪为只读 audit 断言（零改写——rebind/downgrade 分支已删,
+    # sanitized_text 自 O2 起即被丢弃）; 未核验引用的处置 = validator UNVERIFIED_CITATION
+    # → same-agent repair（见 test_s4_unverified_citation_rejected_not_downgraded）
     answer = ("尼采在《查拉图斯特拉如是说》中提出超人【《查拉图斯特拉如是说》·前言】。"
               "另据《不存在之书》的记载【《不存在之书》·第三章】，超人思想另有来源。")
     tl = [_search_tool([_hit("查拉图斯特拉如是说", "前言", "b1")])]
     report = ec.sanitize_citations(answer, tool_log=tl)
-    assert "【《查拉图斯特拉如是说》·前言】" in report["sanitized_text"], "verified 引用必须保留"
-    assert "【《不存在之书》·第三章】" not in report["sanitized_text"], "未核验引用必须移除正式格式"
-    assert "《不存在之书》" in report["sanitized_text"], "降级为一般书名提及"
+    assert "sanitized_text" not in report, "O5: 只读审计——不再产出改写文本"
+    assert "【《查拉图斯特拉如是说》·前言】" in answer, "verified 引用原样保留（文本不被触碰）"
+    assert "【《不存在之书》·第三章】" in answer, "runtime 零降级——正文原样（处置权在 validator）"
     actions = {a["book"]: a["action"] for a in report["actions"]}
     assert actions["查拉图斯特拉如是说"] == "verified"
-    assert actions["不存在之书"] == "downgraded_plain_mention"
+    assert actions["不存在之书"] == "unverified"
     assert [u["book"] for u in report["unverified_before"]] == ["不存在之书"]
+    assert len(report["verified_citations"]) == 1
 
 
-def test_s4_rebind_when_reliable_evidence_exists():
-    # 句内引号摘引（≥10 字）命中同书检索片段, 但标注章节未被检索 → 重新绑定为书级引用
+def test_s4_no_rebind_rewrite_branch_readonly_audit():
+    # OLD: 句内引号摘引命中同书片段 → sanitize 重新绑定为书级引用（改写）。
+    # 该改写分支已删——quote 资格判断在 final_validator（结构化 issue）, 审计只如实披露。
     answer = ("老人梦见狮子是生命力延续的证明【《老人与海》·第10章】。"
               "原文写道：“老人正梦见狮子，狮子是青春的记忆。”")
     tl = [_search_tool([_hit("老人与海", "结尾", "b2", idx=3,
                              snippet="老人正梦见狮子，狮子是青春的记忆。")])]
     report = ec.sanitize_citations(answer, tool_log=tl)
-    assert "【《老人与海》】" in report["sanitized_text"], "可重绑定的引用降级为书级引用"
-    assert report["actions"][0]["action"] == "rebound_book_level"
+    assert "【《老人与海》·第10章】" in answer, "正文不被改写"
+    assert all(a["action"] in ("verified", "unverified") for a in report["actions"]),         "rebind/downgrade 动作不得再出现"
+    assert report["unverified_before"][0]["book"] == "老人与海"
 
 
 def test_s4_unverified_citation_rejected_not_downgraded(monkeypatch):
@@ -224,9 +230,11 @@ def test_s4_unverified_citation_rejected_not_downgraded(monkeypatch):
     # 干净失败收口: 非语义 status 事件（validation_failed）, 零语义 retract
     assert any(e["type"] == "validation_failed" for e in evs)
     assert not any(e["type"] == "answer_retract" for e in evs)
-    lcs = done.get("live_citation_sanitize") or {}
-    assert lcs.get("verified") == 1 and lcs.get("downgraded") == 0
-    assert lcs.get("mode") == "o2_validate_reject_no_rewrite"
+    # O5: done.live_citation_sanitize 静态审计 dict 已删除（前端零消费;
+    # "零降级改写"行为真源 = final_ownership.semantic_mutators == 0）
+    assert "live_citation_sanitize" not in done
+    assert done["final_ownership"]["semantic_mutators"] == 0
+    assert done["final_ownership"]["runtime_factual_appends"] == 0
 
 
 # ═══════════════════════════════════════════════════════
@@ -492,7 +500,7 @@ def test_uat_t5_citation_integrity_unverified_honestly_audited(monkeypatch):
     # 发布文本为空 → final-output 断言层无残留可披露; 引用面板自然为空
     san = done.get("citation_sanitize") or {}
     assert not (san.get("unverified_before") or []), "零发布 → 无未核验引用残留"
-    assert (done.get("live_citation_sanitize") or {}).get("downgraded") == 0, "零降级改写"
+    assert "live_citation_sanitize" not in done, "O5: 死审计字段已删除（零降级改写）"
     assert all(c["book"] != "某某秘传" for c in done["citations"]), "引用面板不得含未核验引用"
 
 

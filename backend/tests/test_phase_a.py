@@ -366,7 +366,7 @@ def test_engine_agent_node_soft_budget_no_control_effect(monkeypatch):
     for _ in range(8):
         budget.count("search_books", "unique", True, "new")
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": budget, "model_retries": 0}
+             "budget": budget}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is False
     assert not any("预算提示" in m.content or "材料是否足以回答" in m.content
@@ -381,7 +381,7 @@ def test_engine_agent_node_hard_budget_forces_answer(monkeypatch):
     for _ in range(24):
         budget.count("search_books", "unique", True, "new")
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": budget, "model_retries": 0}
+             "budget": budget}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is True
     assert any("禁止调用任何工具" in m.content for m in fake.prompts[0] if isinstance(m, SystemMessage))
@@ -393,7 +393,7 @@ def test_engine_agent_node_no_gain_streak_no_control_effect(monkeypatch):
     fake = _FakeLLM([AIMessage(content="最终回答")])
     _patch_llm(monkeypatch, fake)
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "model_retries": 0}
+             "budget": AR.ToolBudget()}
     out = asyncio.run(elg.agent_node(state))
     assert out["forced"] is False
     assert not any("无增益" in m.content or "不再检索" in m.content
@@ -404,17 +404,20 @@ def test_engine_agent_node_model_retry_then_success(monkeypatch):
     fake = _FakeLLM([Exception("peer closed connection without sending complete message body"),
                      AIMessage(content="回答")])
     _patch_llm(monkeypatch, fake)
+    trace = AR.ToolLoopTrace("c", "m", "general")
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "model_retries": 0}
+             "budget": AR.ToolBudget(), "trace": trace}
     out = asyncio.run(elg.agent_node(state))
-    assert out["model_retries"] == 1 and out["messages"][0].content == "回答"
+    # O5 字段级适配: model_retries state 字段已删（write-only）——计数真源 = trace.model_retries
+    assert "model_retries" not in out
+    assert trace.model_retries == 1 and out["messages"][0].content == "回答"
 
 
 def test_engine_agent_node_model_retry_exhausted_raises(monkeypatch):
     fake = _FakeLLM([Exception("peer closed connection")] * (AR.MODEL_RETRY["attempts"] + 1))
     _patch_llm(monkeypatch, fake)
     state = {"messages": [HumanMessage(content="问")], "agent": "general", "language": "zh",
-             "budget": AR.ToolBudget(), "model_retries": 0}
+             "budget": AR.ToolBudget()}
     with pytest.raises(AR.ModelCallError):
         asyncio.run(elg.agent_node(state))
 

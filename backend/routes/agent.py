@@ -13,12 +13,14 @@
                                advisor_council/conceptual_map/school_arena/agent_council…）
   agent_sse.py                 SSE 流式路由（/api/agent/stream_lg）
 
-本文件职责: 聚合 import（工具模块 import 即注册到 TOOLS）→ 路由注册 → 
-SYSTEM_PROMPT 程序化生成 → 边缘路由（/api/agents /api/cite /api/drawio）。
+本文件职责: 聚合 import（工具模块 import 即注册到 TOOLS）→ 路由注册 →
+边缘路由（/api/agents /api/cite /api/drawio）。
 main.py 的 router 引用不变（from routes.agent import router）。
 外部消费者保持兼容: engine_langgraph（AG.TOOLS/llm_chat/MODEL/API_KEY/API_URL/DATA）、
 agents（TOOLS）、sync/knowledge（invalidate_agent_cache）、tests（_safe_bid/_int_arg/
 _embed_query/_exec_search_books/_exec_query_db…）均经本模块 re-export。
+（O5: SYSTEM_PROMPT / _SYS_TOOL_LIST 死常量已删除——引擎唯一主策略真源 =
+engine_langgraph.SYSTEM_PROMPT_LG, 经 AGENTS.AGENT_PROMPTS / get_system_prompt 分发。）
 """
 import re
 
@@ -48,8 +50,8 @@ from routes.agent_sse import router as _sse_router, AgentChatRequest  # noqa: F4
 router = APIRouter()
 router.include_router(_sse_router)
 
-# 保持 TOOLS 注册顺序与拆分前一致（SYSTEM_PROMPT 工具清单顺序不变;
-# 拆分后按域分组注册, 顺序变为分组序, 此处按原始注册序重建）
+# 保持 TOOLS 注册顺序与拆分前一致（拆分前按域分组注册会打乱顺序;
+# 此处按原始注册序重建, 消费方依赖注册序稳定）
 _TOOL_REGISTER_ORDER = [
     "search_books", "get_book_detail", "get_chapter", "query_graph", "get_philosopher",
     "list_books", "write_essay", "generate_image", "get_school", "phti_test",
@@ -71,38 +73,8 @@ del _TOOLS_BY_NAME, _TOOL_REGISTER_ORDER
 
 # ═══════════════════════════════════════════════════════
 # 编排: /api/agent/stream_lg（LangGraph 引擎, engine_langgraph.py; 旧 chat/stream 已删除 2026-08-14）
-# ═══════════════════════════════════════════════════════
-# 哲学家数以 backend/data/philosophers.json 实际条目数为准（N3 2026-08-18: 737，勿手写漂移值）
-SYSTEM_PROMPT = """你是"深哲"（PhiAgent）——一个严谨的哲学智能体，基于 403 本哲学原著（柏拉图到德里达）与 737 位哲学家资料库工作。
-
-## 工具调用格式（重要）
-需要调用工具时，在输出中嵌入工具标记（二选一）:
-- JSON 格式: {TOOL:{"name":"search_books","args":{"query":"..."}}}
-- XML 格式: <invoke name="search_books"><parameter name="query">...</parameter></invoke>
-禁止同时输出多个标记混淆; 工具结果返回后继续思考。
-
-## 工作方式（ReAct）
-按「思考 → 行动 → 观察」循环工作：
-1. 先思考：判断需要什么信息、该调用哪个工具。
-2. 行动：通过 function calling 调用工具（可并行调用多个）。
-3. 观察：根据工具返回结果继续思考，直到信息充分。
-4. 最终：输出完整回答。信息不足时继续调用工具，绝不凭记忆编造。
-
-## 可用工具
-（工具清单由 TOOLS 注册表在模块加载时自动生成, 见文件末尾——不再手写, 防清单漂移）
-
-## 铁律
-1. 凡涉及具体哲学主张/概念/出处，必须先调用 search_books 或 get_chapter 检索原文，用真实原文支撑，不得凭记忆编造引文。
-2. 回答必须标注引用来源: 【《书名》· 章节名】。
-3. 涉及哲学家关系（师承/影响/论敌）时调用 query_graph；涉及流派时调用 get_school；涉及哲人资料时调用 get_philosopher。
-4. 用户要求对比时调用 compare_views；写作文时调用 write_essay；辩论时调用 philosopher_debate；决策求助时调用 advisor_council。
-5. 引用原文时用引号，并说明是原典原文还是概括。
-6. 若检索无结果，如实说明"库中未检索到"，不硬答、不编造。
-7. 回答使用中文，严谨、清晰、有层次；适度苏格拉底式反问，但不回避问题。
-8. 避免"哲学废话"：每个论断要么有原文依据，要么明确标注为分析/推测。
-9. 用户要求扮演/以某哲学家口吻回答时调用 role_play（人格包返回后以其第一人称作答, 不必再检索原典）。
-10. 工具调用纪律: 同一检索工具不要连续重复调用; 累计检索 ≥3 次或材料已足够时, 必须停止调用工具, 直接基于已有材料输出最终回答（输出 {TOOL:...} 只用于确有必要的新检索, 禁止无意义重复）。"""
-
+# 主策略提示词唯一真源 = engine_langgraph.SYSTEM_PROMPT_LG（O5: 本文件旧
+# SYSTEM_PROMPT 死常量已删除——自研 ReAct 循环退役后即无任何消费者）。
 # ═══════════════════════════════════════════════════════
 # 智能体广场: 列出可用智能体（通用深哲 + 哲学家注册表）
 # ═══════════════════════════════════════════════════════
@@ -227,11 +199,3 @@ async def api_drawio(req: dict):
     if not xml:
         return {"error": "无法转换为 draw.io 格式"}
     return {"xml": xml}
-
-# ═══════════════════════════════════════════════════════
-# 工具清单程序化生成（2026-08-14: 消除手写清单漂移——曾"23 个" vs 注册表 30 个）
-# ═══════════════════════════════════════════════════════
-_SYS_TOOL_LIST = "\n".join(f"- {n}: {TOOLS[n]['description'][:90]}" for n in TOOLS)
-SYSTEM_PROMPT = SYSTEM_PROMPT.replace(
-    "## 可用工具\n（工具清单由 TOOLS 注册表在模块加载时自动生成, 见文件末尾——不再手写, 防清单漂移）",
-    f"## 可用工具（{len(TOOLS)} 个）\n{_SYS_TOOL_LIST}\n- 读操作工具无副作用，可放心调用。")

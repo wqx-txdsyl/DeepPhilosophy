@@ -2,10 +2,13 @@
 """LangGraph 引擎（PhiAgent v2）——替代自研流式 ReAct 循环
 
 Claude Code 风格: 思考 → 工具调用（多工具并行）→ 观察 → 最终回答
-SSE 事件: token / tool / tool_start / tool_note / thinking_summary(_delta) / done
+SSE 事件词表（O5 收敛, 实际发射 12 类）: status / thinking_summary /
+thinking_summary_delta / tool_start / tool_note / tool / tool_cancel / token /
+validation_failed / error / done / suggestions
 （RP1, O1-RP1: thought_stream 不再由引擎发出——provider 私有推理一律内部丢弃,
- public Thinking 唯一事实来源 = thinking_summary(_delta)）
-工具: 复用 routes.agent 的 TOOLS 注册表（23 个工具平移为 StructuredTool, 零逻辑改动）
+ public Thinking 唯一事实来源 = thinking_summary(_delta);
+ answer_retract / reasoning_summary / auto_read 同为已删词表外事件）
+工具: 复用 routes.agent 的 TOOLS 注册表（30 个工具平移为 StructuredTool, 零逻辑改动）
 """
 import asyncio, json, re, time, inspect
 from typing import Annotated, Any, TypedDict
@@ -17,11 +20,12 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage, Tool
 from langchain_core.tools import StructuredTool
 from pydantic import create_model, Field
 
-import routes.agent as AG   # 复用 TOOLS 注册表 / SYSTEM_PROMPT 铁律 / API 配置
+import routes.agent as AG   # 复用 TOOLS 注册表 / API 配置
 import agents as AGENTS     # 智能体注册表（智能体广场: 通用 + 哲学家）
 import agent_runtime as AR  # Phase A: tool loop 治理（观测/去重/预算/重试/终止）单一真源
-import tool_contracts as TC  # Phase T: 工具架构（taxonomy/重入/mermaid/措辞净化/所有权审计）
+import tool_contracts as TC  # Phase T: 工具架构（taxonomy/mermaid/措辞净化/所有权审计）
 import quote_bound as QB     # Phase T.1: 逐字引文绑定（Quote Bound / T1.1-D~H）
+from evidence_contract import EvidenceState  # O5: 执行事实登记（Evidence Store）
 
 # ── LLM（OpenAI 兼容; 智谱 glm-4-flash 免费 / DeepSeek 思考模式）──
 _llm = None
@@ -83,6 +87,9 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
    - 避免冗余调用与不产生新理解的机械检索（同一查询的原样重复会被机械判重并复用旧结果）;
      但注意: 未执行≠库中无此书; 检索无命中也不代表结论不成立, 如实陈述即可。
 2. 回答标注引用来源: 【《书名》· 章节名】。
+   引用块格式纪律: blockquote（> 引用块）只用于你打算作为**原文/出处文本**呈现的内容;
+   你自己的分析、转述或小结一律用普通正文排版, 不要排成引用块——引用块里的每句话
+   都会被当作逐字原文来核对。凭记忆给出的措辞不得作为逐字原文呈现, 除非有检索支撑。
 3. 涉及哲学家关系用 query_graph; 流派用 get_school; 哲人资料用 get_philosopher; 概念溯源用 concept_trace。
 4. 用户要求对比可用 compare_views; 写作文用 write_essay; 辩论用 philosopher_debate; 决策求助用 advisor_council;
    扮演/以哲学家口吻回答用 role_play; 苏格拉底式追问用 socratic_tutor; 论证分析用 analyze_argument;
@@ -141,9 +148,9 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
     ③ 用户要的输出是否就是该工具的原生产物? ④ 工具的约束是否兼容用户的约束?
     若调用只会重复生成你自己也能生成的成品 prose, 且不带来新证据/结构/状态/产物——允许不调用。
     专用工具的"调用量"不是目标, **有效**专用工具率才是。
-14. 【技能重入纪律（Phase T）】同一 reasoning/generation 技能对同一议题的重入受治理:
-    只有用户明确要求迭代（参数体现变化点）/上次调用失败/出现实质新议题时才可再次调用,
-    退化重复（只把上次输入缩短再调一次）会被系统拦截。socratic_tutor 一次只返回一个问题——
+14. 【技能重入纪律】同一 reasoning/generation 技能对同一议题避免退化重复
+    （只把上次输入缩短/微调再调一次没有意义）: 只有用户明确要求迭代（参数体现变化点）/
+    上次调用失败/出现实质新议题时才再次调用。socratic_tutor 一次只返回一个问题——
     用户回答后再次调用并传 user_reply=用户的回答, 绝不预生成后续轮次;
     向用户展示时只呈现该 next_question（至多加一句铺垫）, **不得在它之外再追加你自己的新问题**。
 15. 【运行时措辞】不要在最终回答中出现内部过程措辞（如"检索已收口/预算已达上限/准入未通过/系统收敛"）——
@@ -179,7 +186,6 @@ def _build_tools():
     return tools
 
 TOOLS_LG = _build_tools()
-TOOLS_BY_NAME = {t.name: t for t in TOOLS_LG}
 
 # 哲学家智能体的人格保持提醒（每轮注入——多轮对话后 reasoning 易回归任务规划腔）
 PERSONA_THINK_REMINDER = (
@@ -327,13 +333,14 @@ class AgentState(TypedDict):
     budget: Any           # ToolBudget（A3; O4 后只剩 hard 资源上限 + 遥测计数）
     trace: Any            # ToolLoopTrace（A1）
     tool_count: int       # 本轮已执行工具调用总数（A3 total 预算口径）
-    model_retries: int    # 本轮模型 API 重试累计（A1/A4）
-    # ── O4: 执行事实台账（对象经内存态传递）──
+    # ── O5: 执行事实与共享工具记录（对象经内存态传递）──
     # O4/O4-RP1 删除的 state 字段: retrieval_count / no_gain_streak / round_all_low /
     # round_any_low / retrieval_state / reentry / user_message（Shadow cognition
     # 遥测与重入治理）+ plan / verif_box（Python 先解释用户问题再下认知指令的
     # 最后残余——问题分类/核验意图/术语核验状态链已整体移除）。
-    obligation_ledger: Any  # ExecutionFactLedger（ObligationLedger 瘦身: 纯执行事实登记器）
+    # O5 删除: model_retries（write-only; 重试计数真源 = trace.model_retries）/
+    # obligation_ledger（→ evidence_state, EvidenceState 纯事实登记）。
+    evidence_state: Any   # EvidenceState（evidence_contract; 纯事实登记器）
     raw_tool_log: Any     # 共享 raw 工具记录列表（tools_node 写入, 引擎消费; 引用核验用）
 
 async def agent_node(state):
@@ -379,8 +386,8 @@ async def agent_node(state):
             _trace_ref.record_phase("llm_invocation", _llm_t0, msgs_len=len(msgs))
         except Exception:
             pass
-    return {"messages": [resp], "forced": forced,
-            "model_retries": state.get("model_retries", 0) + retries}
+    # O5: model_retries state 字段已删（write-only）——重试计数真源 = trace.model_retries
+    return {"messages": [resp], "forced": forced}
 
 async def _agent_llm_invoke(agent, msgs, trace=None):
     """agent 轮 LLM 调用（线程池防阻塞）+ A4 有限重试。返回 (resp, retry_count)。"""
@@ -402,38 +409,8 @@ async def _agent_llm_invoke(agent, msgs, trace=None):
 #   ① prompt 层: 铁律 1（检索—阅读闭环）+ 收口轮"最后核验机会"读章提示（模型仍自主宣告）;
 #   ② 确定性校验层: 收口阶段 quote/citation validator 保留（只校验与补正措辞,
 #      不再代执行任何工具, 也不产生 Main Agent thinking）。
-
-def _derive_read_info(raw_tool_log, term):
-    """模型自主 get_chapter 读取后, 从 raw_tool_log 推导已读章节信息（含含 term 的原文段）"""
-    tn = re.sub(r"[^\w\u4e00-\u9fff]+", "", term or "")
-    best = None
-    for tc in raw_tool_log or []:
-        if (tc.get("name") or "") != "get_chapter":
-            continue
-        rf = tc.get("result_full") or {}
-        text = str(rf.get("text") or "")
-        if not text:
-            continue
-        passage = ""
-        for ln in text.split("\n"):
-            s = ln.strip()
-            if not s:
-                continue
-            sn = re.sub(r"[^\w\u4e00-\u9fff]+", "", s)
-            if (term and term in s) or (len(tn) >= 4 and tn in sn):
-                passage = s[:360]
-                break
-        if passage:
-            try:
-                from routes.agent import book_by_id
-                b = book_by_id(rf.get("book_id")) or {}
-            except Exception:
-                b = {}
-            best = {"book": b.get("title") or rf.get("book_title") or "",
-                    "chapter": rf.get("title") or "", "book_id": rf.get("book_id"),
-                    "chapter_idx": rf.get("chapter_idx"), "passage": passage}
-            break
-    return best
+# O5: 引擎侧"从 raw_tool_log 推导已读章节"的函数已删除（零消费者——term 术语
+#   核验状态链随 O4-RP1 移除后再无调用方; 已读章节事实现由 EvidenceState 登记）。
 
 # 工具失败备选映射（自愈: 失败后提示可换用的工具）
 FALLBACK_MAP = {
@@ -448,14 +425,15 @@ FALLBACK_MAP = {
 
 async def tools_node(state):
     """多工具并行执行（asyncio.gather + 线程池）; 结果以 ToolMessage 回传
-    按当前智能体的工具集查找（哲学家专属工具不在全局 TOOLS_BY_NAME 里）;
+    按当前智能体的工具集查找（哲学家专属工具不在全局注册表里）;
     自愈: 失败工具按 TOOL_RETRY 配置重试, 仍失败附备选工具提示。
     Phase A: A2 重复调用防护（同参只读工具 → 复用结果, 不再执行）;
              A3 预算分类计数（useful/retry/duplicate/no_gain——纯遥测）;
              A1 逐调用观测（时长/成败/结果 hash/info gain）。
-    O3/O4: 工具权威归还 Main Agent——runtime 只保留机械门（schema/未知工具、
-    精确重复复用、硬资源上限、安全/取消）; 语义准入（obligation admission）、
-    skill 重入治理、RetrievalState 语义增益统计已全部删除。"""
+    O3/O4: 工具权威归还 Main Agent——本节点只保留机械门（未知工具/参数错误、
+    精确重复复用、硬资源上限）; 语义准入（obligation admission）、
+    skill 重入治理、RetrievalState 语义增益统计已全部删除。
+    （安全审查在收口阶段 _safety_check; 截断取消在收口阶段 tool_cancel——均不在本节点。）"""
     last = state["messages"][-1]
     calls = last.tool_calls or []
     agent = state.get("agent", "general")
@@ -464,7 +442,7 @@ async def tools_node(state):
     budget = state.get("budget")
     trace = state.get("trace")
     raw_log = state.get("raw_tool_log")
-    ledger = state.get("obligation_ledger")
+    ev_state = state.get("evidence_state")
     retrieval_set = set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS)
     TOOL_TIMEOUT = AR.TOOL_TIMEOUT   # 工具执行超时（防挂起; Phase A 收编为配置）
     forced = bool(state.get("forced"))
@@ -555,13 +533,18 @@ async def tools_node(state):
         info_gain = ""
         if not is_err and name in retrieval_set:
             info_gain = "empty" if AR.result_is_empty(res) else "new"
-        # ── O4: ExecutionFactLedger 登记（纯事实: 已读章节/主文本已读/逐字命中/
-        #     定位线索命中——成败都登记, 无任何准入/配额/义务判定）──
-        if ledger is not None and name in retrieval_set:
+        # ── O5: EvidenceState 事实登记（纯事实: 已读章节/主文本已读/定位线索命中/
+        #     执行计数——成败都登记检索计数, 只有成功读取才置位 READ; 无任何
+        #     准入/配额/义务判定）──
+        if ev_state is not None and name in retrieval_set:
             try:
-                ledger.record(name, args, not is_err, res)
+                if name == "get_chapter":
+                    if not is_err:
+                        ev_state.record_read(args.get("book_id"), args.get("chapter_idx"))
+                else:
+                    ev_state.record_search(not is_err, res)
             except Exception as _le:
-                logger.warning(f"[obligation-ledger] skipped: {str(_le)[:120]}")
+                logger.warning(f"[evidence-state] skipped: {str(_le)[:120]}")
         cls = decision.get("cls", "unique")
         if budget:
             budget.count(name, cls, executed=True, info_gain=info_gain)
@@ -660,9 +643,7 @@ _builder.add_conditional_edges("agent", should_continue, {"tools": "tools", "end
 _builder.add_edge("tools", "agent")
 APP = _builder.compile()
 
-# ── SSE 流式入口 ────────────────────────────────────────
-def _sse(ev):
-    return f"data: {json.dumps(ev, ensure_ascii=False)}\n\n"
+# ── SSE 流式入口: stream_agent 产事件 dict, 序列化在 routes/agent_sse ──
 
 # ── 安全护栏（哲学语境平衡: 拦"教唆", 不拦"批判"） ────────
 SAFETY_PATTERNS = {
@@ -934,8 +915,6 @@ def _safe_args(args):
 _RAT_OPEN = "<rationale>"
 _RAT_CLOSE = "</rationale>"
 
-RATIONAL_STATS = {"count": 0, "first": "", "longest": 0}
-
 
 # ── O1 (§13): 工具开始执行后的机械活动注记 ──
 # ACTIVITY 通道（tool_note 事件, initiated_by=runtime_mechanical）:
@@ -1107,8 +1086,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     guard = AR.DuplicateGuard()
     budget = AR.ToolBudget(retrieval_tools=set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS))
     trace = AR.ToolLoopTrace(conversation_id, message_id, agent, question_chars=len(req_message or ""))
-    # ── O4: ExecutionFactLedger（纯事实登记器; 原 RetrievalState 语义增益统计已删）──
-    obligation_ledger = AR.ObligationLedger()
+    # ── O5: EvidenceState（纯事实登记器; 旧义务台账 / RetrievalState 语义统计已删）──
+    evidence_state = EvidenceState()
     raw_tool_log = []   # 共享 raw 工具记录（tools_node 写入; 引用核验/证据契约消费; result_full 保留到收口）
     # ══ O2: Final Answer Ownership——runtime 只保留 VALIDATE / REJECT / mechanical FORMAT ══
     # 流式改写链（LiveCitationSanitizer 引用降级 / QuoteBoundSanitizer 引文转写 /
@@ -1129,7 +1108,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 当前 agent 轮缓冲（O2: 轮文本一律只缓冲, 不再实时流出——
     # 有工具 → 轮末降级为 thinking_summary; 无工具 → Final Candidate, 校验后发布;
     # note_emitted: 本轮公开工作笔记已作为 thinking_summary 发出, flush 不再重复）
-    pending = {"text": "", "has_tools": False, "reasoned": False, "started": set(),
+    # O5: reasoned 标志已删（只写不读——provider reasoning 一律内部丢弃, 无观察消费方）
+    pending = {"text": "", "has_tools": False, "started": set(),
                "note_emitted": False}
     pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具名（2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
@@ -1154,11 +1134,6 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     def _note_event(content, phase, delta=False):
         """Main Agent 公开工作笔记事件（thinking_summary / thinking_summary_delta）。
         initiated_by=main_agent: 内容只能来自模型自己的输出（rationale 标签 / 工作笔记）。"""
-        if not delta:
-            RATIONAL_STATS["count"] += 1
-            if not RATIONAL_STATS["first"]:
-                RATIONAL_STATS["first"] = content[:80]
-            RATIONAL_STATS["longest"] = max(RATIONAL_STATS["longest"], len(content))
         return {"type": "thinking_summary_delta" if delta else "thinking_summary",
                 "content": content if delta else content[:280],
                 "phase": phase,
@@ -1184,8 +1159,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     #  反事实边界 / interpretation·composition hedge——全部为 runtime 代写, 按 O2 §7 删除。）
 
     async def flush_agent():
-        """agent 轮结束定归属（O2）: 有工具调用 → 缓冲文本降级为思考
-        （防"让我补充检索…"规划文字泄漏为回答）; 无工具 → 缓冲保留为 Final Candidate,
+        """agent 轮结束定归属（O2）: 有工具调用 → 本轮缓冲文本只作公开工作笔记
+        （O1: 笔记已在首个工具宣告前经 _flush_working_note 归位, 此处仅兜底补发
+        未发过的部分, 防规划文字泄漏为回答）; 无工具 → 缓冲保留为 Final Candidate,
         由调用方在图流结束后统一校验 + 发布（未验证候选绝不先于 validator 公开）。"""
         if not pending["has_tools"]:
             return
@@ -1216,8 +1192,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         async for chunk, metadata in APP.astream(
                 {"messages": msgs, "agent": agent, "language": language,
                  "guard": guard, "budget": budget, "trace": trace,
-                 "tool_count": 0, "model_retries": 0,
-                 "obligation_ledger": obligation_ledger,
+                 "tool_count": 0,
+                 "evidence_state": evidence_state,
                  "raw_tool_log": raw_tool_log},
                 config, stream_mode="messages"):
             node = metadata.get("langgraph_node", "")
@@ -1292,13 +1268,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # raw chain-of-thought 是 provider-private 数据, 绝不进入用户可见 SSE（thought_stream
                 # 不再承载任何 raw 透传）; public Thinking 只能来自模型自己写的 <rationale>/
                 # 公开工作笔记（thinking_summary）。不转发、不累积、不落盘（A1）、不摘要冒充。
-                if (getattr(chunk, "additional_kwargs", None) or {}).get("reasoning_content"):
-                    pending["reasoned"] = True
+                # （O5: 原 pending["reasoned"] 标志已删——只写不读, 无观察消费方。）
             elif node == "tools":
                 # agent 输出结束 → flush（工作笔记/工具卡片穿插节奏; O1: 笔记已在宣告前归位）
                 async for ev in flush_agent():
                     yield ev
-                pending = {"text": "", "has_tools": False, "reasoned": False,
+                pending = {"text": "", "has_tools": False,
                            "note_emitted": False}
                 extra = chunk.additional_kwargs or {}
                 name = chunk.name or ""
@@ -1462,7 +1437,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             yield {"type": "error",
                    "content": "本轮回答未通过证据一致性校验，请重试或换一种问法" if language != "en"
                    else "This response failed deterministic evidence validation—please retry or rephrase"}
-        pending = {"text": "", "has_tools": False, "reasoned": False, "note_emitted": False}
+        pending = {"text": "", "has_tools": False, "note_emitted": False}
         # ══ O1: 引擎兜底读取的回放与终局安全网已删除 ══
         # 原此处的 ① auto-read tool 事件回放 + "已完成主文本核验读取" 注记
         # 和 ② 收口前 _ensure_primary_read 终局补读（含"原典核验补正"正文补发）
@@ -1471,7 +1446,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         # "最后核验机会"读章提示（prompt 层）, 由模型自己决定是否补读。
         # ══ O2 §7: 以下 runtime 代写通道已整体删除 ══
         # ① 原典核验补发（verified quote visibility append）——runtime 不得替 Agent 写正文
-        #    （含核验声明）; 核验状态经 done.obligation_ledger / done.quote_bound 审计输出。
+        #    （含核验声明）; 核验状态经 done.evidence.facts / done.quote_bound 审计输出。
         # ② postloop drain（净化链残留释放）——净化链已不存在。
         # ③ scan_final_consistency 尾补——G（确定性降调）属语义 hedge, 按 §7 删除不转 validator;
         #    H（verify-later 矛盾）曾转为 ValidationIssue, O4-RP1 随 task-intent discipline
@@ -1597,11 +1572,18 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     }
         except Exception as _e:
             logger.warning(f"[temporal-state] skipped: {str(_e)[:120]}")
+        if evidence_payload is not None:
+            # O5 (MERGE): 执行事实并入 Evidence Store——done.evidence.facts 承载
+            # EvidenceState snapshot（前端只读 evidence.retrieved_count, 加键安全;
+            # done.obligation_ledger 字段已删除）。
+            evidence_payload["facts"] = evidence_state.snapshot()
         yield {"type": "done", "citations": citations, "evidence": evidence_payload,
                "tool_calls": tool_log,
                "suggestions": suggestions, "safety": safety_flag,
                # O4 删除的 done 字段: composition / epistemic / obligations / budget（扫描）/
                # retrieval_state / tool_ownership——Shadow cognition 审计块随生产代码一并移除。
+               # O5 删除: obligation_ledger（并入 evidence.facts）/ 引用降级静态审计 dict
+               # （前端零消费; validator 审计见 validation/citation_sanitize）。
                # Phase A: tool loop 治理状态（UAT/审计断言用; 前端可忽略）
                "tool_loop": {"invocation_id": trace.invocation_id if trace else None,
                               "budget": budget.snapshot() if budget else None,
@@ -1641,17 +1623,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                      if _citation_sanitize else None),
                # O4-RP1 删除的 done 字段: plan（verification_intent 意图分类审计块）/
                # verification（术语核验状态）——Python 对用户问题的认知解释不再存在。
-               # O4 瘦身后: 纯执行事实台账（read_chapters/primary_text_read/exact_quote_verified/计数）
-               "obligation_ledger": (obligation_ledger.snapshot()
-                                     if obligation_ledger is not None else None),
+               # O5: 执行事实见 done.evidence.facts（obligation_ledger 字段已并入删除）。
                # Phase T.1: Quote Bound 审计（引文核验状态 / 拼接检测 / 未核验 blockquote 计数）
                "quote_bound": (_quote_audit or {}),
                "temporal": _temporal_state,
                # O2: LiveCitationSanitizer 已删除——正式引用不再被 runtime 降级改写,
-               # 未核验引用走 validator UNVERIFIED_CITATION → same-agent repair。
-               "live_citation_sanitize": {"verified": validation.verified_citations,
-                                          "downgraded": 0,
-                                          "mode": "o2_validate_reject_no_rewrite"},
+               # 未核验引用走 validator UNVERIFIED_CITATION → same-agent repair
+               # （O5: done 的引用降级静态审计 dict 已删, 前端零消费）。
                # O2 §13: safety 属安全执行层（safety_runtime）, 不计入普通 semantic mutator
                "safety_enforcement": {"initiated_by": "safety_runtime",
                                       "action": "blocked" if safety_flag == "blocked"

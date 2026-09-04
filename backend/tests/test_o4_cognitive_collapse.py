@@ -9,7 +9,7 @@
 O4 删除的 Shadow cognition:
   旧 planner 问题分类/复杂度/形态指令（problem_type/complexity/form/chain/relations）
   semantic_obligations.py / interpretation_engine.py / answer_composer.py（整文件）
-  ObligationLedger 检索准入与义务总闸 → ExecutionFactLedger（纯事实）
+  义务台账的检索准入与义务总闸 → 纯事实登记器（O5 起为 evidence_contract.EvidenceState）
   RetrievalState 语义增益 / no_gain_streak / sufficiency / soft 预算
   CounterfactualAuthorGuard / scan_answer / 认知层级 hedge
 
@@ -33,6 +33,7 @@ import agent_runtime as AR
 import engine_langgraph as EG
 import routes.agent as AG
 import agents as AGENTS
+from evidence_contract import EvidenceState
 
 
 # ═══════════════════════════════════════════════════════
@@ -61,13 +62,14 @@ def _stub_tools():
     ]
 
 
-def _mk_state(calls, *, budget=None, ledger=None, tool_count=0, forced=False):
+def _mk_state(calls, *, budget=None, evidence=None, tool_count=0, forced=False):
     retrievals = set(EG.RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS)
+    # O5 字段级适配: obligation_ledger → evidence_state（EvidenceState）
     st = {"messages": [AIMessage(content="", tool_calls=calls)],
           "guard": AR.DuplicateGuard(),
           "budget": budget or AR.ToolBudget(retrieval_tools=retrievals),
           "trace": AR.ToolLoopTrace("c-o4", "m-o4", "general"),
-          "obligation_ledger": ledger if ledger is not None else AR.ObligationLedger(),
+          "evidence_state": evidence if evidence is not None else EvidenceState(),
           "raw_tool_log": [], "agent": "general", "language": "zh",
           "tool_count": tool_count, "forced": forced}
     return st
@@ -210,20 +212,21 @@ def test_t1_no_planner_decision_dependency():
 # T2 — No Obligation control dependency
 # ═══════════════════════════════════════════════════════
 def test_t2_no_obligation_control_dependency():
-    # ledger 事实状态"已满"（多次检索/已读章/逐字命中）后, Main Agent 的新宣告照常执行
-    ledger = AR.ObligationLedger(term="言必有中")
+    # 事实登记器状态"已满"（多次检索/已读章）后, Main Agent 的新宣告照常执行
+    evidence = EvidenceState()
     for i in range(10):
-        ledger.record("search_books", {"query": f"历史检索{i}"}, True, {"results": [{"x": 1}]})
-    ledger.record("get_chapter", {"book_id": "z", "chapter_idx": 1}, True, {"text": "言必有中"})
+        evidence.record_search(True, {"results": [{"x": 1}]})
+    evidence.record_read("z", 1)
     st, out, msgs = _run_node(
         [("search_books", {"query": "全新查询"}), ("get_chapter", {"book_id": "d9272a80942a", "chapter_idx": 13})],
-        ledger=ledger)
+        evidence=evidence)
     assert len(_STUB_CALLS["search_books"]) == 1 and len(_STUB_CALLS["get_chapter"]) == 1
     for m in msgs:
         assert "义务" not in _msg_text(m) and "配额" not in _msg_text(m)
-    # ledger 只是事实登记器: 无准入/义务 API 面
+    # EvidenceState 只是事实登记器: 无准入/义务 API 面（O5: 旧台账类整体不存在）
+    assert not any("Obligation" in n for n in dir(AR))
     for gone in ("admit", "mark_result", "obligations_satisfied"):
-        assert not hasattr(AR.ObligationLedger(), gone), gone
+        assert not hasattr(EvidenceState(), gone), gone
 
 
 # ═══════════════════════════════════════════════════════

@@ -20,13 +20,12 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pytest
 from langchain_core.messages import AIMessageChunk
 
-from evidence_contract import (EpistemicClaimClassifier, EPISTEMIC_TYPES,
-                               EPISTEMIC_LANGUAGE)
+from evidence_contract import EpistemicClaimClassifier, EPISTEMIC_TYPES
 from routes import agent as AG
 
 
 # ═══════════════════════════════════════════════════════
-# 1. EpistemicClaimClassifier —— Claim 认知分级 + 语言约束
+# 1. EpistemicClaimClassifier —— Claim 认知分级
 #    （O4-RP1: 自已删除的 guard 模块迁入 evidence_contract; 接口/classify 行为不变）
 # ═══════════════════════════════════════════════════════
 def test_lion_dream_is_textual_inference():
@@ -40,19 +39,21 @@ def test_strong_modal_interpretation_not_source_fact():
     assert c["epistemic_type"] in ("TEXTUAL_INFERENCE", "SPECULATION")
 
 
-def test_all_types_defined_with_language_bounds():
+def test_types_schema_intact_language_layer_moved_out():
+    # O5 §7: 存储/展示层仍有价值的 claim taxonomy schema 保留在 evidence_contract;
+    # 表达强度模板（EPISTEMIC_LANGUAGE/language_bound）已迁离生产模块
+    # （离线评估套件 evaluation_suite 自带副本）——运行时不再持有语言约束层。
     required = {"SOURCE_FACT", "DIRECT_QUOTE", "TEXTUAL_INFERENCE", "CROSS_TEXT_INTERPRETATION",
                 "SCHOLARLY_INTERPRETATION", "AUTHOR_COUNTERFACTUAL", "USER_PREMISE",
                 "SPECULATION", "UNKNOWN"}
     assert required <= set(EPISTEMIC_TYPES), f"缺类型: {required - set(EPISTEMIC_TYPES)}"
-    for t in EPISTEMIC_TYPES:
-        assert t in EPISTEMIC_LANGUAGE, f"{t} 缺表达强度模板"
-        assert EPISTEMIC_LANGUAGE[t].strip(), f"{t} 模板为空"
-    # 关键模板内容（语言约束）
-    assert "文本明确写道" in EPISTEMIC_LANGUAGE["SOURCE_FACT"]
-    assert "原文写道" in EPISTEMIC_LANGUAGE["DIRECT_QUOTE"]
-    assert "可以理解为" in EPISTEMIC_LANGUAGE["TEXTUAL_INFERENCE"]
-    assert "无法知道" in EPISTEMIC_LANGUAGE["AUTHOR_COUNTERFACTUAL"]
+    import evidence_contract as EC
+    assert not hasattr(EC, "EPISTEMIC_LANGUAGE"), "语言模板层不得回归生产 evidence_contract"
+    assert not hasattr(EC.EpistemicClaimClassifier, "language_bound")
+    assert not hasattr(EC.EpistemicClaimClassifier, "split_sentences"), "D6: 方法级重复已删"
+    import evaluation_suite as EV   # 副本迁入离线评估套件（不丢能力）
+    assert set(EV.EPISTEMIC_LANGUAGE) >= required
+    assert EV.language_bound("SOURCE_FACT").strip()
 
 
 def test_classify_variants():
@@ -154,8 +155,8 @@ def test_stream_agent_normal_flow_no_guard(monkeypatch):
 def test_tool_registry_unchanged():
     before = dict(AG.TOOLS)
     import engine_langgraph as elg
-    # 工具数/名称不得变化（分级器不注册任何工具）
-    assert set(before) == set(elg.TOOLS_BY_NAME)
+    # 工具数/名称不得变化（分级器不注册任何工具）; O5: 经 TOOLS_LG 断言（TOOLS_BY_NAME 已删）
+    assert set(before) == {t.name for t in elg.TOOLS_LG}
     assert len(before) == 30
     assert "search_books" in before and "philosopher_debate" in before
     # 哲学家专属四件套不变

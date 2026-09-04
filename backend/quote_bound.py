@@ -10,22 +10,25 @@
   extract_quotes         用户可见文本 → verbatim-like 引文清单
                          （markdown blockquote / 引导词引文「原文是/写道/原话…」/
                           中文引号长文本）
-  evidence_spans         raw_tool_log → 可核验证据 span 池
-                         （get_chapter 全文按行分段; search snippet; 语料回响）
+  evidence_spans         raw_tool_log → 可核验证据 span 池（D4: 薄委托
+                         evidence_contract.build_evidence_pool——raw_tool_log
+                         字段映射单一真源; 此处只组装 quote 核验需要的
+                         units/source_type 形状: get_chapter 全文按行分段）
   verify_quote           引文 ↔ 证据 span 逐字核验:
                            VERIFIED_EXACT   归一后连续出现在单一 span（拼接在此即失败）
                            VERIFIED_NEAR    覆盖率 ≥ NEAR_THRESHOLD（近似措辞）
                            MEMORY_ONLY      无证据支撑（不得渲染为原文 blockquote）
                          + stitched 标志: 前半/后半分别命中不同 span（T1.1-F 跨段拼接）
-  QuoteBoundSanitizer    流式渲染约束: MEMORY_ONLY blockquote → 转换为 paraphrase +
-                         核验边界声明; NEAR → 标注"近似，非逐字"; EXACT → 原样保留
   audit_quotes           最终正文审计（done 事件 + 回归断言用）
-  scan_final_consistency T1.1-G/H 收口扫描: 置信度升级与 verify-later 反模式补正
 
 边界: MEMORY_HINT 不是 EVIDENCE（T1.1-E）——检索片段命中只能定位，不能支撑逐字引用；
 span 池里 get_chapter 全文与片段同池，但逐字核验天然由连续包含判定兜底。
+O5: verify-later 反模式检测正则已删除（生产零消费者——该检查随 O4-RP1
+check_consistency 一并移除）。
 """
 import re
+
+import evidence_contract as EC
 
 # ── 归一化（逐字比对口径: 只保留文字/数字, 剥全部标点空白——连续性是硬条件）──
 _PUNCT_RE = re.compile(r"[^\w\u4e00-\u9fff]+")
@@ -47,15 +50,6 @@ LEADIN_RE = re.compile(
     r"(原文(?:是|为|如下)|原句(?:是|为|如下)|原话(?:是|为)|写道|写道：|说道|他说|她说道?)\s*[:：]?\s*[“\"]")
 # 可见的核验披露标记（已声明未核验的引文 → 记为 DISCLOSED 而非隐瞒）
 DISCLOSED_RE = re.compile(r"未经.{0,10}(核验|核对)|未在.{0,12}库.{0,6}(核验|定位|找到)|凭记忆|根据记忆|记忆引述|未逐字核验|NOT_FOUND")
-
-# T1.1-H: verify-later 反模式（把核验推给后续轮次, 替代本次应完成的核验）
-# 开场词型需覆盖: 如果你需要 / 若你需要 / 你若需要 / 如果您需要 / 需要的话 / 如需…
-VERIFY_LATER_OPEN_RE = re.compile(r"(?:如果|若是?|要是|倘若|如)?(?:你|您)?(?:若是?|的话)?需要")
-VERIFY_LATER_RE = re.compile(
-    VERIFY_LATER_OPEN_RE.pattern + r"[^。！？\n]{0,24}"
-    r"(读取|查阅|查一下|检索|核实|查证|核验|读原文|读取原文|再作|再查)"
-    r"|(我可以|让我|我可)(再去?|进一步|接着|再作)?[^。！？\n]{0,10}"
-    r"(读取|读|查阅|核实|检索|查证|核验)[^。！？\n]{0,10}(原文|章节|全文|《|逐字)")
 
 
 # ═══════════════════════════════════════════════════════
@@ -104,40 +98,40 @@ def extract_quotes(text):
 # ═══════════════════════════════════════════════════════
 def evidence_spans(raw_tool_log):
     """tool_log → span 池: [{evidence_id, book, chapter, book_id, chapter_idx,
-    source_type, units: [完整原文单元（行=章段）]}]"""
+    source_type, units: [完整原文单元（行=章段）]}]
+
+    D4 薄委托: raw_tool_log 字段映射单一真源 = evidence_contract.build_evidence_pool;
+    本函数只做 quote 核验需要的形状适配——chapter 全文按行分段 units,
+    检索片段/语料回响为单单元; secondary（websearch）不进逐字核验池;
+    核验算法（连续包含/覆盖率/拼接检测）不变。"""
     spans = []
-    for i, tc in enumerate(raw_tool_log or []):
-        name = tc.get("name") or ""
-        rf = tc.get("result_full")
-        if not isinstance(rf, dict) or rf.get("error"):
-            continue
-        if name == "get_chapter":
-            text = rf.get("text") or ""
+    for e in EC.build_evidence_pool(raw_tool_log):
+        kind = e["kind"]
+        text = e["text"]
+        if kind == "chapter":
             if not text:
                 continue
             units = [ln.strip() for ln in text.split("\n") if ln.strip()]
-            spans.append({"evidence_id": f"qb_read_{i}", "book": rf.get("book_title") or "",
-                          "chapter": rf.get("title") or "", "book_id": rf.get("book_id", ""),
-                          "chapter_idx": rf.get("chapter_idx", -1), "source_type": "primary_read",
+            spans.append({"evidence_id": f"qb_read_{e['entry_index']}",
+                          "book": e.get("book_title_raw", ""),
+                          "chapter": e.get("chapter_title_raw", ""),
+                          "book_id": e["book_id"], "chapter_idx": e["chapter_idx"],
+                          "source_type": "primary_read",
                           "units": units or [text]})
-        elif name == "search_books":
-            for item in rf.get("results") or []:
-                if isinstance(item, dict) and item.get("snippet"):
-                    spans.append({"evidence_id": f"qb_snip_{i}_{len(spans)}",
-                                  "book": item.get("book_title") or "",
-                                  "chapter": item.get("chapter_title") or "",
-                                  "book_id": item.get("book_id", ""),
-                                  "chapter_idx": item.get("chapter_idx", -1),
-                                  "source_type": "snippet",
-                                  "units": [item["snippet"]]})
-        elif name in ("philosopher_corpus", "philosopher_quote"):
-            for e in (rf.get("echoes") or rf.get("quotes") or []):
-                if isinstance(e, dict) and (e.get("text") or e.get("snippet")):
-                    spans.append({"evidence_id": f"qb_corp_{i}_{len(spans)}",
-                                  "book": e.get("book") or "",
-                                  "chapter": e.get("chapter") or "", "book_id": "",
-                                  "chapter_idx": -1, "source_type": "corpus",
-                                  "units": [e.get("text") or e.get("snippet")]})
+        elif kind == "search":
+            if not text:
+                continue
+            spans.append({"evidence_id": f"qb_snip_{e['entry_index']}_{len(spans)}",
+                          "book": e["book"], "chapter": e["chapter"],
+                          "book_id": e["book_id"], "chapter_idx": e["chapter_idx"],
+                          "source_type": "snippet", "units": [text]})
+        elif kind == "corpus":
+            if not text:
+                continue
+            spans.append({"evidence_id": f"qb_corp_{e['entry_index']}_{len(spans)}",
+                          "book": e["book"], "chapter": e["chapter"], "book_id": "",
+                          "chapter_idx": -1, "source_type": "corpus",
+                          "units": [text]})
     return spans
 
 

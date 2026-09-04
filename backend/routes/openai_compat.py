@@ -5,8 +5,8 @@
   切换后，用户的每条消息直接进入 stream_agent 引擎——LangGraph 编排、
   工具调用（原典检索/思辨/脑图…）、DeepSeek 推理全程引擎原生。
 
-事件映射（对齐 Hermes 渲染）:
-  - thought_stream / thought  → delta.reasoning_content（思考过程渲染）
+事件映射（对齐 Hermes 渲染; O5: thought_stream/thought 死映射分支已删——
+引擎不再发出该类型, public thinking 走 thinking_summary 通道由客户端按需处理）:
   - token                    → delta.content
   - 【《书名》·章节】引用      → markdown 链接 [【《书》·章】](/cite/<书>/<章>)，
     点击经 302 跳转 DeepPhilosophy 阅读器（deepphilosophy.top/reader/<id>?ch=<idx>）
@@ -160,15 +160,13 @@ async def chat_completions(req: ChatRequest):
             "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
         }
 
-    # ── 流式：思考 → reasoning_content；回答 → content（引用转链接） ──
+    # ── 流式：回答 → content（引用转链接） ──
     async def gen():
         buf = ""
         async for ev in events():
             t = ev.get("type")
             c = ev.get("content") or ""
-            if t in ("thought_stream", "thought") and c:
-                yield _chunk(cid, {"reasoning_content": c})
-            elif t == "token" and c:
+            if t == "token" and c:
                 out, buf = _convert_buffered(buf + c)
                 for ch in out:
                     yield _chunk(cid, {"content": ch})

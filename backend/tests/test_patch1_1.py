@@ -42,56 +42,53 @@ class TestVerificationIntentRemoved:
 
 
 # ═══════════════════════════════════════════════════════
-# P1: evidence obligation 台账（检索准入）
+# P1: 执行事实登记（O5 MERGE: agent_runtime 旧义务台账整类删除, 并入
+#     evidence_contract.EvidenceState——纯事实登记器, 检索准入/配额/义务总闸随 O4 删除）
 # ═══════════════════════════════════════════════════════
-class TestObligationLedger:
-    """O4: 纯事实登记器——record 后 snapshot 含执行事实; 无 admit/配额/义务总闸"""
+class TestEvidenceState:
+    """record 后 snapshot 含执行事实; 无 admit/配额/义务总闸/term 死字段"""
 
-    def _led(self, term=""):
-        return AR.ObligationLedger(term=term)
+    def _ev(self):
+        return EC.EvidenceState()
 
     def test_search_hit_registers_candidate_found_and_counter(self):
-        led = self._led(term="言必有中")
-        led.record("search_books", {"query": "言必有中"}, True,
-                   {"results": [{"book_id": "d927", "chapter_idx": 12}]})
-        snap = led.snapshot()
-        assert snap["verification_states"]["source_candidate_found"] is True
+        ev = self._ev()
+        ev.record_search(True, {"results": [{"book_id": "d927", "chapter_idx": 12}]})
+        snap = ev.snapshot()
+        assert snap["source_candidate_found"] is True
         # MEMORY_HINT 永远不置位 READ（T1.1-E 不变量保留）
-        assert snap["verification_states"]["primary_text_read"] is False
+        assert snap["primary_text_read"] is False
         assert snap["search_execs"] == 1 and snap["read_execs"] == 0
 
-    def test_read_registers_primary_text_and_exact_hit(self):
-        led = self._led(term="言必有中")
-        led.record("get_chapter", {"book_id": "d927", "chapter_idx": 12}, True,
-                   {"book_id": "d927", "chapter_idx": 12,
-                    "text": "鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”子曰：“夫人不言，言必有中。”"})
-        snap = led.snapshot()
+    def test_read_registers_primary_text_fact(self):
+        ev = self._ev()
+        ev.record_read("d927", 12)
+        snap = ev.snapshot()
         assert snap["read_chapters"] == ["d927#12"]
-        assert snap["verification_states"]["primary_text_read"] is True
-        assert snap["verification_states"]["exact_quote_verified"] is True
+        assert snap["primary_text_read"] is True
         assert snap["read_execs"] == 1
 
-    def test_read_without_term_hit_stays_unverified(self):
-        # R7 型: 读到了章节但表述不在其中 → 已读但未逐字命中（诚实 NOT_FOUND 路径）
-        led = self._led(term="青天揽月寸心如磐")
-        led.record("get_chapter", {"book_id": "x", "chapter_idx": 1}, True,
-                   {"book_id": "x", "chapter_idx": 1, "text": "子曰：学而时习之，不亦说乎。"})
-        vs = led.snapshot()["verification_states"]
-        assert vs["primary_text_read"] is True and vs["exact_quote_verified"] is False
+    def test_read_fact_carries_no_verification_verdict(self):
+        # R7 型: "已读"是事实, "表述是否逐字命中"不是台账的判断（quote_bound/validator 职责）
+        ev = self._ev()
+        ev.record_read("x", 1)
+        vs = ev.snapshot()
+        assert vs["primary_text_read"] is True
+        assert "exact_quote_verified" not in vs and "term" not in vs
 
     def test_failed_read_not_registered_as_read(self):
-        led = self._led()
-        led.record("get_chapter", {"book_id": "b", "chapter_idx": 3}, False, {"error": "x"})
-        snap = led.snapshot()
-        assert snap["read_chapters"] == [] and snap["read_execs"] == 0
-        assert snap["verification_states"]["primary_text_read"] is False
+        # 失败读取不是 READ 事实——工具失败时引擎不调用 record_read（O3 判据沿用）
+        ev = self._ev()
+        assert ev.snapshot()["read_chapters"] == [] and ev.snapshot()["read_execs"] == 0
+        assert ev.snapshot()["primary_text_read"] is False
 
     def test_no_admission_quota_api_remains(self):
-        # O4 删除的准入/配额/义务面: 不得回归
-        led = self._led()
+        # O4 删除的准入/配额/义务面 + O5 删除的 term/exact_quote_verified: 不得回归
+        ev = self._ev()
         for gone in ("admit", "mark_result", "_reject", "family_key", "obligations_satisfied",
-                     "rejected", "forced_reads", "_wording_evidence_in"):
-            assert not hasattr(led, gone), gone
+                     "rejected", "forced_reads", "_wording_evidence_in",
+                     "term", "exact_quote_verified", "record"):
+            assert not hasattr(ev, gone), gone
 
 
 # ═══════════════════════════════════════════════════════

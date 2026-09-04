@@ -110,7 +110,7 @@ async def main(skip_endurance=False):
             raise RuntimeError("模拟: 检索索引临时不可用")
         return real_search(args)
     from langchain_core.tools import StructuredTool as _ST
-    _real_st = elg.TOOLS_BY_NAME["search_books"]
+    _real_st = next(t for t in elg.TOOLS_LG if t.name == "search_books")   # O5: TOOLS_BY_NAME 已删
     _flaky_st = _ST.from_function(func=lambda **kw: _flaky_search(kw), name="search_books",
                                   description=_real_st.description, args_schema=_real_st.args_schema)
     def _patched_get_tools(agent):

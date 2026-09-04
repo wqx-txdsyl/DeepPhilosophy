@@ -31,10 +31,11 @@ import agent_runtime as AR
 import engine_langgraph as EG
 import routes.agent as AG
 import agents as AGENTS
+from evidence_contract import EvidenceState
 
 
 # ═══════════════════════════════════════════════════════
-# tools_node 直驱 harness（带完整治理状态: ledger/budget/guard/rstate/reentry/raw_log）
+# tools_node 直驱 harness（带完整治理状态: evidence_state/budget/guard/raw_log; O5 字段级适配）
 # ═══════════════════════════════════════════════════════
 _STUB_CALLS = {}
 
@@ -67,15 +68,16 @@ def _stub_tools():
     ]
 
 
-def _mk_state(calls, *, budget=None, ledger=None,
+def _mk_state(calls, *, budget=None, evidence=None,
               tool_count=0, forced=False):
     retrievals = set(EG.RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS)
     # O4/O4-RP1: retrieval_state / reentry / no_gain_streak / retrieval_count / user_message
     # / plan / verif_box 字段已随 Shadow cognition 删除——state 只含机械治理与执行事实对象。
+    # O5 字段级适配: obligation_ledger → evidence_state（EvidenceState）。
     st = {"messages": [AIMessage(content="", tool_calls=calls)],
           "guard": AR.DuplicateGuard(), "budget": budget or AR.ToolBudget(retrieval_tools=retrievals),
           "trace": AR.ToolLoopTrace("c-o3", "m-o3", "general"),
-          "obligation_ledger": ledger if ledger is not None else AR.ObligationLedger(),
+          "evidence_state": evidence if evidence is not None else EvidenceState(),
           "raw_tool_log": [], "agent": "general", "language": "zh",
           "tool_count": tool_count, "forced": forced}
     return st
@@ -201,9 +203,8 @@ def test_t1_third_distinct_search_executes():
 # T2 — sufficiency telemetry 为"满足"后, Main Agent 仍可读取
 # ═══════════════════════════════════════════════════════
 def test_t2_read_after_sufficiency_telemetry():
-    ledger = AR.ObligationLedger()
     st, msgs = _run_node([("get_chapter", {"book_id": "d9272a80942a", "chapter_idx": 13})],
-                         ledger=ledger)
+                         evidence=EvidenceState())
     assert len(_STUB_CALLS["get_chapter"]) == 1   # 照常执行（O4: 义务总闸已不存在）
     assert "obligation_satisfied" not in _msg_text(msgs[0])
 
@@ -314,9 +315,8 @@ def test_t10_repair_research_executes():
     # 轮 1: 常规检索（建立 family/no_gain 历史）
     _run_node([("search_books", {"query": "言必有中"})])
     # 轮 2（repair 语境: 高 no_gain + 义务已满足 telemetry）: 宣告新 get_chapter
-    ledger = AR.ObligationLedger()
     st, msgs = _run_node([("get_chapter", {"book_id": "d9272a80942a", "chapter_idx": 13})],
-                         ledger=ledger)
+                         evidence=EvidenceState())
     assert len(_STUB_CALLS["get_chapter"]) == 1
     assert "obligation_satisfied" not in _msg_text(msgs[0])
 
