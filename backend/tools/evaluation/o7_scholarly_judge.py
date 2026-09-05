@@ -120,6 +120,8 @@ JUDGE_SYSTEM_PROMPT = """你是哲学学术质量评审器（measurement instrum
 1. 五维各 0-4 分: textual_grounding / argument_reconstruction / interpretive_plurality /
    historical_discipline / literature_orientation。每维先判 applicability
    (REQUIRED/OPTIONAL/NOT_APPLICABLE)。NOT_APPLICABLE 的维 score=null, 绝不计 0。
+   REQUIRED 维必须给 0-4 整数分; OPTIONAL 维在回答实质涉及该维时必须打分,
+   仅当回答完全不涉及该维时才允许 null。整份评审至少要有三维给出整数分。
 2. interpretive_plurality 与 historical_discipline、literature_orientation 允许 NOT_APPLICABLE;
    禁止因为回答"没有列两派/没有学者名"而在不适用时扣分——争议模板不是万能格式。
 3. 反风格偏置: 更长、引用更多、外语更多、学者名更多、语气更像论文, 本身不得加分。
