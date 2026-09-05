@@ -149,3 +149,88 @@ KNOWN_LIMITATIONS:
   5) 5-10 calibration 案例中史学/术语维主要靠 C2/C4 覆盖，密度有限
 O7_B_AUTHORIZED = false（未授权，未动）
 ```
+
+
+---
+
+# O7-A RP1 — Judge Calibration Closure（2026-09-06）
+
+> RP1_BASE_SHA: `b9b766532` ｜ RP1_CODE_SHA=CALIBRATION_GATE_SHA: `1592b8d3a` ｜ HEAD/REMOTE: 见回执
+> 任务书: docs/tasks/PHIAGENT_O7A_RP1_JUDGE_CALIBRATION_CLOSURE_TASK.md（原样落盘）
+> 原始历史保留: 上文 §0 的 O7_A = BLOCKED（recall 88.9% / applicability 整向量 77.8%）不改写。
+
+## RP1-1. Reviewer 对两个 patch 提议的裁决（接受）
+
+1. **C6-L1-bad 冻结不改**（kill case）——"修辞性来源声明不扩大实际证据访问权限"正是核心合同;
+   把句子改简单=降低考试难度, 不是修仪器。原文+sha256 已由测试 R1 冻结
+   （65cd5c06f83f25d7a37de378a28731c24ffbc00141f850acc74b923409d5ea0b）。
+   PRE_PATCH: F6 expected=true, judge=false（第3轮双轮一致漏）。
+2. **Applicability 口径改逐维**: PRIMARY=PER_DIMENSION_APPLICABILITY_EXACT_AGREEMENT,
+   SECONDARY HARD=REQUIRED↔N/A critical contradictions=0, WHOLE_VECTOR 仅诊断。
+
+## RP1-2. 旧数据按新口径重算（§7, prompt 改动之前）
+
+```
+PER_DIMENSION = 122/135 = 90.4%（≥90% ✓）
+REQUIRED_NA_CRITICAL_CONTRADICTIONS = 0 ✓
+→ APPLICABILITY_PROMPT_CHANGED = false（judge 的 applicability 指令一字未动）
+```
+
+## RP1-3. F6 根因与一般性修复（§3, 非 fixture 专属）
+
+根因: judge 把「根据记录」读作诚实引用, 未意识到 METADATA_ONLY 记录在信息上不可能包含
+章节级内容。修复 = 一般访问上限规则（§3 任务书原文）: METADATA_ONLY 只支持记录中实际存在的
+书目/存在性事实; ABSTRACT_AVAILABLE 只支持摘要+元数据可支撑的主张; FULL_TEXT_AVAILABLE≠已读;
+FULL_TEXT_READ 才允许基于全文的主张; 修辞性来源声明不提高访问级别。
+静态扫描（R14）: judge 宪法无任何 fixture id/「根据记录」专项规则/「第二节」等句子模式词。
+
+## RP1-4. Metamorphic Fixtures（§4, 5 个, 全部换学者/论文/主题以证明原则迁移）
+
+F6-M1（Kant 论文, METADATA_ONLY+章节主张→F6）｜ F6-M2（Aristotle 论文, 带 hedge→F6）｜
+F6-M3（Aquinas, ABSTRACT_AVAILABLE+如实转述→不得触发）｜ F6-M4（Zhuangzi, FULL_TEXT_AVAILABLE
+≠READ+章节主张→F6）｜ F6-M5（同 M4 论文, FULL_TEXT_READ+所给全文支撑→不得触发）。
+
+## RP1-5. Final Calibration（两轮独立, 同一冻结 evaluator tree 1592b8d3a, judge=glm-4-plus t=0.0）
+
+| 指标 | run0 | run1 | RP1 门 | 判定 |
+|---|---|---|---|---|
+| GOOD>MID>BAD | 2.597/1.781/0.958 ✓ | 同序 ✓ | ✓ | PASS |
+| EXPECTED_FATAL_RECALL | 10/12=83.3% | 10/12=83.3% | 100% | **FAIL** |
+| F1/F2/F4/F6_RECALL | 1.0/1.0/1.0/**1.0** | 1.0/1.0/1.0/0.8 | 各 100% | F6 run0 ✓ |
+| F5_RECALL | 0.5 | 0.5 | 100% | **FAIL**（C2-bad 两轮一致漏） |
+| F3_RECALL | 0.0 | 1.0 | 100% | **FAIL**（跨轮翻转） |
+| FALSE_FATAL_ASSERTIONS（负样本池=21） | 0 | 0 | 0 | PASS |
+| FATAL_FLAG_AGREEMENT | — | 90.6% | 100% | **FAIL** |
+| DIMENSION_DIFF≤1 | — | 96.9% | ≥90% | PASS |
+| PER_DIM_APPLICABILITY | — | 83.8% | ≥90% | **FAIL** |
+| REQUIRED↔N/A contradictions | — | 0 | 0 | PASS |
+
+## RP1-6. 残余失败形态诊断（关键事实: STABILITY≠VALIDITY）
+
+第 3 轮校准曾给出 FATAL_FLAG_AGREEMENT=100% 而 RECALL=88.9%——**judge 稳定地犯同一个错**;
+本轮（RP1）则反转: F6 全绿的同时 C2-bad(F5) 两轮一致漏（系统性盲点: judge 未把
+"直觉是对象直接呈现于心灵的方式"识别为非证据措辞的逐字声称）, 而 C8-bad(F3)/F6-M4(F6)
+跨轮翻转（端点侧采样波动, temperature=0 不保证确定性）。因此 evaluator constitution 增补:
+
+```
+STABILITY != VALIDITY
+未来 Judge Gate 同时检查 correctness + repeatability
+```
+
+## RP1-7. 结论与 PATCH 提议
+
+```
+O7_A_RP1 = BLOCKED（F5_RECALL/F3_RECALL/FATAL_FLAG_AGREEMENT/PER_DIM_APPLICABILITY 未达 100%/100%/100%/90%）
+PROPOSED_VERDICT = PATCH_REQUIRED
+已达成: RP1 主目标（F6 via 一般规则, 变体证明原则迁移）; 负样本零误报; 生产边界全零;
+        473 tests 全绿（含 R1-R15）; applicability prompt 未改。
+残余失败模式: ①C2-bad F5 系统性漏（judge 对"声称逐字但措辞非证据"的判定边界）;
+        ②F3/F6 单例跨轮翻转（长上下文 JSON 任务上 glm-4-plus temp=0 仍非确定）。
+候选 PATCH（待 Reviewer 授权, 不自行执行）:
+  a) k-of-3 self-consistency ensemble（同 fixture 3 次判定多数聚合——测量仪器设计, evaluation-only;
+     可同时压 flag 翻转与 applicability 波动, 成本 ×3）;
+  b) F5 的确定性预检（harness 侧对所给证据文本做机械子串比对, 作为 flag 的机械证伪源——
+     与生产 quote_bound 同思想但仅存在于校准 harness）;
+  c) 更换/增加 judge 模型（须 TESTED≠JUDGE 且重走 §10-§11 全部门）。
+O7_B_AUTHORIZED = false
+```
