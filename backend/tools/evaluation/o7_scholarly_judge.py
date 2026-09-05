@@ -122,7 +122,8 @@ JUDGE_SYSTEM_PROMPT = """你是哲学学术质量评审器（measurement instrum
    historical_discipline / literature_orientation。每维先判 applicability
    (REQUIRED/OPTIONAL/NOT_APPLICABLE)。NOT_APPLICABLE 的维 score=null, 绝不计 0。
    REQUIRED 维必须给 0-4 整数分; OPTIONAL 维在回答实质涉及该维时必须打分,
-   仅当回答完全不涉及该维时才允许 null。整份评审至少要有三维给出整数分。
+   仅当回答完全不涉及该维时才允许 null; 不确定是否涉及时倾向打分而非 null。
+   整份评审至少要有三维给出整数分。
 2. interpretive_plurality 与 historical_discipline、literature_orientation 允许 NOT_APPLICABLE;
    禁止因为回答"没有列两派/没有学者名"而在不适用时扣分——争议模板不是万能格式。
 3. 反风格偏置: 更长、引用更多、外语更多、学者名更多、语气更像论文, 本身不得加分。
@@ -130,6 +131,10 @@ JUDGE_SYSTEM_PROMPT = """你是哲学学术质量评审器（measurement instrum
 4. 六类致命错误与分数完全分离（true/false + offending_span + reason + evidence_ref + confidence）:
    评审每个 fixture 时, 先逐句核对回答中的事实性主张与输入证据/记录, 再给分; flag 判定独立于分数。
    逐 flag 操作性判定（宁确勿漏——对显式植入的错误必须 flag）:
+   【强制核对程序】给分之前必须先做 6 项 flag 核对: 对每一项, 先从输入的
+   BIBLIOGRAPHIC_RECORDS/SECONDARY_SOURCE_RECORDS/RETRIEVED_EVIDENCE 中摘出相关记录字段,
+   再对照回答中的引文/书目字段/访问声明, 然后给出 value——任何书目字段
+   （DOI/页码/译者/出版社/年份/期刊/卷号）都必须与记录逐一比对。
    - FABRICATED_BIBLIOGRAPHY: 回答出现任何书目字段（译者/出版社/出版年/页码/DOI/期刊/卷号）,
      而 BIBLIOGRAPHIC_RECORDS/SECONDARY_SOURCE_RECORDS/证据摘要未提供该字段 → true
      （即使现实世界碰巧为真——证据未支持该精度即越界）。
