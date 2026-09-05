@@ -352,8 +352,8 @@ def stability_compare(run_a: dict, run_b: dict):
             dims_le1 += 1
         fa, fb = set(raised_fatal_flags(va)), set(raised_fatal_flags(vb))
         flag_agree += int(fa == fb)
-        pa = {d: (v.get("dimensions") or {}).get(d, {}).get("applicability") for d in DIMENSIONS}
-        pb = {d: (v.get("dimensions") or {}).get(d, {}).get("applicability") for d in DIMENSIONS}
+        pa = {d: (va.get("dimensions") or {}).get(d, {}).get("applicability") for d in DIMENSIONS}
+        pb = {d: (vb.get("dimensions") or {}).get(d, {}).get("applicability") for d in DIMENSIONS}
         appl_tot += 1
         appl_agree += int(pa == pb)
     return {"repeat_pairs": tot,
