@@ -17,6 +17,7 @@ import os
 import random
 import re
 import urllib.request
+import urllib.error
 from dataclasses import dataclass, field, asdict
 
 # ── 常量宪法（§22-§26/§25 规范记录; 只定义, 不实施）──────────────────
@@ -155,10 +156,37 @@ def render_judge_prompt(inp: dict) -> str:
 
 
 def _extract_json(text: str):
-    m = re.search(r"\{.*\}", text, re.S)
-    if not m:
-        raise ValueError("judge 返回中未找到 JSON 对象")
-    return json.loads(m.group(0))
+    m = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.S)
+    if m:
+        try:
+            return json.loads(m.group(1))
+        except json.JSONDecodeError:
+            pass
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    start = text.find('{')
+    if start >= 0:
+        depth = in_str = esc = 0
+        for i in range(start, len(text)):
+            ch = text[i]
+            if in_str:
+                if esc:
+                    esc = False
+                elif ch == '\\':
+                    esc = True
+                elif ch == '"':
+                    in_str = 0
+            elif ch == '"':
+                in_str = 1
+            elif ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0:
+                    return json.loads(text[start:i + 1])
+    raise ValueError("未找到可解析的 JSON 对象")
 
 
 def validate_verdict(v: dict) -> list:
@@ -208,11 +236,13 @@ def run_judge(inp: dict, transport=None, attempts: int = 3) -> dict:
     last_err = None
     for _ in range(attempts):
         if transport is None:
-            body = json.dumps({
+            payload = {
                 "model": JUDGE_MODEL, "temperature": JUDGE_TEMPERATURE,
+                "response_format": {"type": "json_object"},
                 "messages": [{"role": "system", "content": JUDGE_SYSTEM_PROMPT},
                              {"role": "user", "content": prompt + feedback}],
-            }).encode()
+            }
+            body = json.dumps(payload).encode()
             key = None
             for line in open(os.path.join(os.path.dirname(os.path.dirname(
                     os.path.dirname(os.path.abspath(__file__)))), "..", ".env"),
@@ -221,8 +251,19 @@ def run_judge(inp: dict, transport=None, attempts: int = 3) -> dict:
                     key = line.split("=", 1)[1].strip().strip('"').strip("'")
             req = urllib.request.Request(JUDGE_BASE_URL, data=body, headers={
                 "Content-Type": "application/json", "Authorization": "Bearer " + (key or "")})
-            with urllib.request.urlopen(req, timeout=300) as r:
-                data = json.loads(r.read())
+            try:
+                with urllib.request.urlopen(req, timeout=300) as r:
+                    data = json.loads(r.read())
+            except urllib.error.HTTPError as e:
+                if e.code == 400:   # 端点不支持 response_format → 去掉重试一次
+                    payload.pop("response_format")
+                    body = json.dumps(payload).encode()
+                    req = urllib.request.Request(JUDGE_BASE_URL, data=body, headers={
+                        "Content-Type": "application/json", "Authorization": "Bearer " + (key or "")})
+                    with urllib.request.urlopen(req, timeout=300) as r:
+                        data = json.loads(r.read())
+                else:
+                    raise
             raw = data["choices"][0]["message"]["content"] or ""
             try:
                 verdict = _extract_json(raw)
