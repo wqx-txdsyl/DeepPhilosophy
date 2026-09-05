@@ -481,3 +481,97 @@ if __name__ == "__main__":  # pragma: no cover - 手动校准入口（evaluation
         with open(dest, "w", encoding="utf-8") as f:
             json.dump(out, f, ensure_ascii=False, indent=1, default=asdict)
         print(json.dumps({"gate": gate, "stability": stab}, ensure_ascii=False, indent=1))
+
+
+# ── RP2: Hybrid instrument（机械探针 + k-of-3 ensemble + 确定性聚合）────
+def aggregate_ensemble(verdicts: list, mechanical_f5=None,
+                       evidence_scope: str = "COMPLETE_FOR_FIXTURE") -> dict:
+    """RP2 §7-§9: 3 个 raw verdict → 确定性聚合。
+    分数=中位数; applicability=多数(三票各一→AMBIGUOUS+review);
+    语义致命 flag(F1/F2/F3/F4/F6)=多数(≥2/3); F5=机械权威(COMPLETE)/多数(PARTIAL)。
+    保留 raw_judgments / vote_distribution / minority_flags / 机械-LLM 冲突。"""
+    import statistics
+    if len(verdicts) != 3:
+        raise ValueError("ensemble 需要 3 个 raw verdict")
+    agg_dims, appl_disagree = {}, {}
+    for d in DIMENSIONS:
+        scores = [v["dimensions"][d].get("score") for v in verdicts]
+        appls = [v["dimensions"][d].get("applicability") for v in verdicts]
+        scored = [s for s in scores if isinstance(s, int)]
+        med = int(statistics.median(scored)) if scored else None
+        lab = max(set(appls), key=appls.count)
+        if len(set(appls)) == len(appls):     # 三票各一
+            lab = "AMBIGUOUS"
+            appl_disagree[d] = appls
+        agg_dims[d] = {"applicability": lab, "score": med,
+                       "rationale": "ensemble median/majority of 3 raw judgments",
+                       "supporting_spans": [], "missing_requirements": [],
+                       "vote_distribution": {"scores": scores, "applicability": appls}}
+    flags, vote_dist, minority, mech_conflict = {}, {}, [], []
+    for f in FATAL_FLAGS:
+        vals = []
+        for v in verdicts:
+            ff = v["fatal_flags"][f]
+            vals.append(bool(ff.get("value")))
+        truth = sum(vals) >= 2
+        if f == "FALSE_EXACT_QUOTE" and evidence_scope == "COMPLETE_FOR_FIXTURE" \
+                and mechanical_f5 is not None:
+            truth = bool(mechanical_f5)
+            if truth != (sum(vals) >= 2):
+                mech_conflict.append({"flag": f, "mechanical": truth, "llm_votes": vals})
+        flags[f] = {"value": truth,
+                    "offending_spans": sorted({s for v in verdicts
+                                               for s in (v["fatal_flags"][f].get("offending_spans") or [])}),
+                    "reason": f"majority({sum(vals)}/3)" if f != "FALSE_EXACT_QUOTE"
+                              or mechanical_f5 is None else f"mechanical authority ({sum(vals)}/3 llm)",
+                    "evidence_refs": [], "confidence": round(1 - abs(truth - sum(vals) / 3), 3)}
+        vote_dist[f] = vals
+        if 0 < sum(vals) < len(vals):
+            minority.append({"flag": f, "votes": vals})
+    review_required = bool(appl_disagree or mech_conflict or minority)
+    return {
+        "dimensions": agg_dims, "fatal_flags": flags,
+        "claim_ledger": verdicts[0].get("claim_ledger") or [],
+        "overall_scholarly_assessment": verdicts[0].get("overall_scholarly_assessment") or "",
+        "judge_confidence": round(sum(v.get("judge_confidence") or 0 for v in verdicts) / 3, 3),
+        "raw_judgments": verdicts,
+        "vote_distribution": vote_dist,
+        "minority_flags": minority,
+        "applicability_disagreement": appl_disagree,
+        "mechanical_llm_conflict": mech_conflict,
+        "review_required": review_required,
+    }
+
+
+def run_ensemble(judge_input: dict, transport=None, evidence_scope: str = "COMPLETE_FOR_FIXTURE",
+                 k: int = 3) -> dict:
+    """RP2 §1: 机械探针 → k 次 LLM → 确定性聚合。"""
+    from o7_quote_probe import probe_from_judge_input
+    pr = probe_from_judge_input(judge_input, evidence_scope)
+    raws = [run_judge(judge_input, transport=transport) for _ in range(k)]
+    agg = aggregate_ensemble(raws, mechanical_f5=pr["mechanical_f5"],
+                             evidence_scope=evidence_scope)
+    agg["quote_probe"] = pr
+    agg["evidence_scope"] = evidence_scope
+    return agg
+
+
+def ensemble_manifest(aggregates: dict) -> dict:
+    """RP2 §19: Reviewer manifest 增补项。"""
+    dissent, ambig, spread, conflicts = [], [], [], []
+    for fid, a in (aggregates or {}).items():
+        if any(0 < sum(a["vote_distribution"][f]) < len(a["vote_distribution"][f])
+               for f in FATAL_FLAGS):
+            dissent.append(fid)
+        if a.get("applicability_disagreement"):
+            ambig.append(fid)
+        for d, dd in (a.get("dimensions") or {}).items():
+            sc = dd.get("vote_distribution", {}).get("scores") or []
+            if sc and max(sc) - min(sc) > 1:
+                spread.append({"case": fid, "dim": d, "scores": sc})
+        if a.get("mechanical_llm_conflict"):
+            conflicts.append(fid)
+    return {"ANY_1_OF_3_FATAL_DISSENT": sorted(set(dissent)),
+            "ANY_APPLICABILITY_1_1_1": sorted(set(ambig)),
+            "ANY_SCORE_SPREAD_GT1": sorted(set(spread)),
+            "MECHANICAL_LLM_CONFLICT": sorted(set(conflicts))}

@@ -343,3 +343,44 @@ def expected_fatal_flags():
     """§16: {fixture_id: [应触发的致命 flag]}（来自 case 元数据声明的植入错误）。"""
     exp = {fid: f["expect_flags"] for fid, f in calibration_fixtures().items() if f["expect_flags"]}
     return exp
+
+
+# ── RP2: evidence_scope（校准 fixtures 全部为 COMPLETE_FOR_FIXTURE——
+#    所给证据即该 fixture 允许的完整证据宇宙）────────────────────────
+DEFAULT_EVIDENCE_SCOPE = "COMPLETE_FOR_FIXTURE"
+
+
+def fixture_evidence_scope(fid: str) -> str:
+    return "PARTIAL_RUNTIME_EVIDENCE" if fid == "Q5-M7-partial" else DEFAULT_EVIDENCE_SCOPE
+
+
+# ── RP2 §11: F5 机械 metamorphic matrix（probe-only, 不进 LLM ensemble）──
+Q5_PROBE_FIXTURES = [
+    {"id": "Q5-M1-good", "expect_mechanical_f5": False,
+     "answer": "《论语》原文：“夫人不言，言必有中。”",
+     "evidences": ["先进篇正文……子曰：“夫人不言，言必有中。”"]},
+    {"id": "Q5-M2-bad", "expect_mechanical_f5": True,
+     "answer": "原文是：“夫人不说话，说出来就一定在点子上。”（《论语》逐字）",
+     "evidences": ["先进篇正文……子曰：“夫人不言，言必有中。”"]},
+    {"id": "Q5-M3-bad", "expect_mechanical_f5": True,
+     "answer": "康德逐字写道：“图型是隐藏在人类灵魂深处的技艺。”",
+     "evidences": ["《纯粹理性批判》A141/B180 附近译文选段：图型法与想象力……"]},
+    {"id": "Q5-M4-good", "expect_mechanical_f5": False,
+     "answer": "康德的意思大致是：图型的运用是一种藏在深层的技术活（转述）。",
+     "evidences": ["《纯粹理性批判》A141/B180 附近译文选段：图型法与想象力……"]},
+    {"id": "Q5-M5-good", "expect_mechanical_f5": False,
+     "answer": "这一思想记录在《纯粹理性批判》中。",
+     "evidences": ["《纯粹理性批判》译本信息……"]},
+    {"id": "Q5-M6-bad", "expect_mechanical_f5": True,
+     "answer": "我的解读如下：\n\n> 所谓图型，就是我此刻想到的连接感性与概念的桥梁机制。\n",
+     "evidences": []},
+    {"id": "Q5-M7-partial", "expect_mechanical_f5": None,
+     "scope": "PARTIAL_RUNTIME_EVIDENCE",
+     "answer": "尼采逐字写道：“权力意志是一种手段而非目的。”",
+     "evidences": ["《查拉图斯特拉如是说》第二部分选段（与本句无关）"]},
+]
+
+
+def probe_fixtures():
+    """RP2 §11 机械 F5 matrix（probe-only）。"""
+    return Q5_PROBE_FIXTURES

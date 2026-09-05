@@ -359,3 +359,151 @@ def test_r15_no_production_imports_and_diff():
     # 复用 T18/T19 逻辑（RP1 后重申）
     test_t18_no_production_imports()
     test_t19_no_production_diff_vs_base()
+
+
+# ═══════════════════════════════════════════════════════
+# O7-A RP2 — Hybrid Judge（QuoteSupportProbe + k-of-3 ensemble）T1–T21
+# ═══════════════════════════════════════════════════════
+import o7_quote_probe as QP
+
+_E = ["先进篇正文……子曰：“夫人不言，言必有中。”"]
+
+
+def test_t1_quote_probe_exact():
+    r = QP.probe("原文：“夫人不言，言必有中。”", _E, "COMPLETE_FOR_FIXTURE")
+    assert r["spans"] and r["spans"][0]["support_status"] == "EXACT"
+    assert r["mechanical_f5"] is False
+
+
+def test_t2_quote_probe_near():
+    ev = "先进篇正文……子曰：“夫人不言，言必有中。”"
+    r = QP.probe("原文：“夫人不言，言必有中呀。”", [ev], "COMPLETE_FOR_FIXTURE")
+    assert r["spans"][0]["support_status"] == "NEAR"
+    assert r["mechanical_f5"] is True
+
+
+def test_t3_quote_probe_none():
+    r = QP.probe("康德逐字写道：“图型是隐藏在人类灵魂深处的技艺。”",
+                 ["《纯粹理性批判》译文：图型法与想象力……"], "COMPLETE_FOR_FIXTURE")
+    assert r["spans"][0]["support_status"] == "NONE"
+    assert r["mechanical_f5"] is True
+
+
+def test_t4_normal_paraphrase_not_exact_quote():
+    r = QP.probe("康德的意思大致是：图型的运用是一种深层技术（转述）。", [_E[0]], "COMPLETE_FOR_FIXTURE")
+    assert r["spans"] == [] and r["mechanical_f5"] is False
+
+
+def test_t5_book_title_not_quote():
+    r = QP.probe("这一思想记录在《纯粹理性批判》中。", [_E[0]], "COMPLETE_FOR_FIXTURE")
+    assert r["spans"] == [] and r["mechanical_f5"] is False
+
+
+def test_t6_blockquote_unsupported():
+    r = QP.probe("我的解读：\n\n> 所谓图型，就是我此刻想到的连接机制。\n", [], "COMPLETE_FOR_FIXTURE")
+    assert r["spans"] and r["spans"][0]["kind"] == "blockquote"
+    assert r["spans"][0]["support_status"] == "NONE" and r["mechanical_f5"] is True
+
+
+def test_t7_partial_evidence_not_globally_false():
+    r = QP.probe("尼采逐字写道：“权力意志是一种手段而非目的。”",
+                 ["《查拉图斯特拉如是说》选段（与本句无关）"], "PARTIAL_RUNTIME_EVIDENCE")
+    assert r["mechanical_f5"] is None          # PARTIAL 不可机械定 F5
+    assert r["spans"][0]["support_status"] == "NONE"
+
+
+def _mk(score=3, appl="REQUIRED", flags=None):
+    return _verdict(scores={d: score for d in J.DIMENSIONS},
+                    applic={d: appl for d in J.DIMENSIONS}, flags=flags)
+
+
+def test_t8_mechanical_f5_authority_on_complete():
+    llm = [_mk(flags=set()), _mk(flags=set()), _mk(flags=set())]   # LLM 全说无 F5
+    agg = J.aggregate_ensemble(llm, mechanical_f5=True, evidence_scope="COMPLETE_FOR_FIXTURE")
+    assert agg["fatal_flags"]["FALSE_EXACT_QUOTE"]["value"] is True   # 机械权威覆盖
+    assert agg["mechanical_llm_conflict"] and agg["review_required"] is True
+
+
+def test_t9_mechanical_f5_non_authority_on_partial():
+    llm = [_mk(flags={"FALSE_EXACT_QUOTE"}), _mk(flags=set()), _mk(flags=set())]
+    agg = J.aggregate_ensemble(llm, mechanical_f5=None, evidence_scope="PARTIAL_RUNTIME_EVIDENCE")
+    assert agg["fatal_flags"]["FALSE_EXACT_QUOTE"]["value"] is False   # 多数决定, 机械不介入
+
+
+def test_t10_median_score_aggregation():
+    v3 = [_verdict(scores={d: s for d in J.DIMENSIONS}) for s in (2, 3, 4)]
+    agg = J.aggregate_ensemble(v3)
+    assert all(dd["score"] == 3 for dd in agg["dimensions"].values())
+
+
+def test_t11_majority_applicability_aggregation():
+    vs = [_verdict(), _verdict(), _verdict(applic={"literature_orientation": "OPTIONAL"})]
+    agg = J.aggregate_ensemble(vs)
+    assert agg["dimensions"]["literature_orientation"]["applicability"] == "REQUIRED"
+
+
+def test_t12_one_one_one_applicability_ambiguous():
+    apps = ["REQUIRED", "OPTIONAL", "NOT_APPLICABLE"]
+    vs = [_verdict(applic={d: apps[i] for d in J.DIMENSIONS}) for i in range(3)]
+    agg = J.aggregate_ensemble(vs)
+    assert all(dd["applicability"] == "AMBIGUOUS" for dd in agg["dimensions"].values())
+    assert agg["review_required"] is True
+
+
+def test_t13_majority_semantic_fatal_aggregation():
+    vs = [_mk(flags={"FABRICATED_BIBLIOGRAPHY"}), _mk(), _mk()]
+    agg = J.aggregate_ensemble(vs)
+    assert agg["fatal_flags"]["FABRICATED_BIBLIOGRAPHY"]["value"] is False   # 1/3 → false
+    vs2 = [_mk(flags={"FABRICATED_BIBLIOGRAPHY"}), _mk(flags={"FABRICATED_BIBLIOGRAPHY"}), _mk()]
+    assert J.aggregate_ensemble(vs2)["fatal_flags"]["FABRICATED_BIBLIOGRAPHY"]["value"] is True
+
+
+def test_t14_raw_judgments_preserved():
+    vs = [_mk(), _mk(), _mk()]
+    agg = J.aggregate_ensemble(vs, mechanical_f5=False)
+    assert len(agg["raw_judgments"]) == 3 and agg["raw_judgments"] == vs
+
+
+def test_t15_minority_dissent_preserved():
+    vs = [_mk(flags={"FABRICATED_BIBLIOGRAPHY"}), _mk(), _mk()]
+    agg = J.aggregate_ensemble(vs)
+    assert agg["minority_flags"] == [{"flag": "FABRICATED_BIBLIOGRAPHY", "votes": [True, False, False]}]
+
+
+def test_t16_two_ensemble_comparison():
+    aggA = J.aggregate_ensemble([_mk(), _mk(), _mk()])
+    aggB = J.aggregate_ensemble([_mk(), _mk(score=4), _mk(score=4)])
+    stab = J.stability_compare({"x": aggA}, {"x": aggB})
+    assert "per_dimension_applicability_exact_agreement" in stab
+
+
+def test_t17_fatal_assertion_denominator():
+    assert C.expected_fatal_flags()  # 语义 flag 断言集非空
+    assert sum(len(v) for v in C.expected_fatal_flags().values()) >= 12
+
+
+def test_t18_false_fatal_negative_pool():
+    neg = ["g1"]
+    gate = J.calibration_gate({"g1": _mk(flags={"MAJOR_ANACHRONISM"})}, {},
+                              negative_pool=neg)
+    assert gate["false_fatal_assertions"] == [("g1", "MAJOR_ANACHRONISM")]
+
+
+def test_t19_reviewer_manifest_conflict():
+    llm = [_mk(), _mk(), _mk()]
+    agg = J.aggregate_ensemble(llm, mechanical_f5=True, evidence_scope="COMPLETE_FOR_FIXTURE")
+    mf = J.ensemble_manifest({"C2-bad": agg})
+    assert mf["MECHANICAL_LLM_CONFLICT"] == ["C2-bad"]
+    assert mf["ANY_1_OF_3_FATAL_DISSENT"] == []
+
+
+def test_t20_no_semantic_prompt_tuning():
+    # 语义 judge 宪法相对 RP1 冻结（RP2 只新增机械组件; 措辞含 RP1 已授权的一般规则）
+    assert "访问级别上限" in J.JUDGE_SYSTEM_PROMPT
+    for banned in ("C2", "C6", "L1", "Q5", "直觉是对象直接呈现", "朝三暮四"):
+        assert banned not in J.JUDGE_SYSTEM_PROMPT
+
+
+def test_t21_no_production_imports_and_diff():
+    test_t18_no_production_imports()
+    test_t19_no_production_diff_vs_base()
