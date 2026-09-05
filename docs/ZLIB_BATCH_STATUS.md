@@ -8,8 +8,8 @@
 | 书 | 扫描页数 | OCR 产物 | 状态 |
 |---|---|---|---|
 | 正义论 | 624 | _tmp/mia_batch/zhengyi_ocr.txt | ✅ 已入库上线 |
-| 逻辑研究（第二卷） | 435 | _tmp/mia_batch/luoji_ocr.txt | ⏳ OCR 队列跑中 |
-| 人类理解论 | 750 | _tmp/mia_batch/renlei_ocr.txt | ⏳ OCR 队列排队 |
+| 逻辑研究（第二卷, 部分内容 §65+） | 435 | _tmp/mia_batch/luoji_ocr.txt | ⚠️ 挂起：z-lib 此份非全本，待完整版 |
+| 人类理解论 | 750 | _tmp/mia_batch/renlei_ocr.txt | ⏳ OCR 跑中（~10:10 完成） |
 | 语词和对象 | ? | 未 OCR | 📋 待 OCR |
 | 狱中札记 | ? | 未 OCR | 📋 待 OCR |
 | 文集（拉康） | epub 文本 | 无需 OCR | 📋 待构建（EPUB 管线参照 law_build.py） |
