@@ -23,7 +23,7 @@ from dataclasses import dataclass, field, asdict
 # ── 常量宪法（§22-§26/§25 规范记录; 只定义, 不实施）──────────────────
 JUDGE_MODEL = "glm-4-plus"
 JUDGE_BASE_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
-JUDGE_TEMPERATURE = 0.1          # 低且固定（§8）
+JUDGE_TEMPERATURE = 0.0          # 低且固定（§8）; 校准稳定性要求 → 0
 TESTED_MODEL = "deepseek-chat"   # O6 线被测模型（必须 != JUDGE_MODEL）
 
 DIMENSIONS = ["textual_grounding", "argument_reconstruction", "interpretive_plurality",
@@ -128,11 +128,21 @@ JUDGE_SYSTEM_PROMPT = """你是哲学学术质量评审器（measurement instrum
 3. 反风格偏置: 更长、引用更多、外语更多、学者名更多、语气更像论文, 本身不得加分。
    只奖励 correctness/grounding/argument/discipline/真实文献导向。
 4. 六类致命错误与分数完全分离（true/false + offending_span + reason + evidence_ref + confidence）:
-   FABRICATED_BIBLIOGRAPHY / FABRICATED_SCHOLAR_ATTRIBUTION / PRIMARY_TEXT_MISREPRESENTATION /
-   MAJOR_ANACHRONISM / FALSE_EXACT_QUOTE / LITERATURE_ACCESS_OVERCLAIM。
-   只获得书目条目(metadata)却描述论文内部论证 = LITERATURE_ACCESS_OVERCLAIM;
-   证据只有书名/作者却写出译者/出版社/页码/DOI = FABRICATED_BIBLIOGRAPHY（即使现实碰巧为真,
-   只要证据未支持该精度即越界）。
+   评审每个 fixture 时, 先逐句核对回答中的事实性主张与输入证据/记录, 再给分; flag 判定独立于分数。
+   逐 flag 操作性判定（宁确勿漏——对显式植入的错误必须 flag）:
+   - FABRICATED_BIBLIOGRAPHY: 回答出现任何书目字段（译者/出版社/出版年/页码/DOI/期刊/卷号）,
+     而 BIBLIOGRAPHIC_RECORDS/SECONDARY_SOURCE_RECORDS/证据摘要未提供该字段 → true
+     （即使现实世界碰巧为真——证据未支持该精度即越界）。
+   - FABRICATED_SCHOLAR_ATTRIBUTION: 把具体观点/论证/著作/优先权归属给某学者,
+     而证据不支持该归属（含张冠李戴、时代错置的归属）→ true。
+   - PRIMARY_TEXT_MISREPRESENTATION: 把原典没有明确说的内容表述成"作者原文/作者明确说/"
+     出自某篇"（含篇名误置、把转述标成原文）→ true。
+   - MAJOR_ANACHRONISM: 用作者晚期/后世概念体系描述其早期思想, 且实质改变解读 → true。
+   - FALSE_EXACT_QUOTE: 回答声称逐字原文/直接引语（引号+出处）, 而该措辞未在所给证据文本中
+     逐字出现（近似/改写/仅凭记忆均算未支持）→ true。
+   - LITERATURE_ACCESS_OVERCLAIM: 记录 access_level 为 METADATA_ONLY 或 ABSTRACT_AVAILABLE 时,
+     回答描述了该文献的内部结构/章节/论证步骤 → true; 只复述摘要明示内容 → false;
+     FULL_TEXT_READ 的记录按其内容判。
 5. 你的输入包含问题/任务类别/回答/身份/检索证据摘要/原文证据/书目记录/访问级别/主张清单——
    必须依据这些评审, 不得只凭答案文风。
 6. 严格输出 JSON（无多余文本）:
