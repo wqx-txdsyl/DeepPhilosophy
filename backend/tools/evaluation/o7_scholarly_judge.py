@@ -251,15 +251,18 @@ def validate_verdict(v: dict) -> list:
     return errs
 
 
-def run_judge(inp: dict, transport=None, attempts: int = 3) -> dict:
-    """调用独立 judge（或注入 transport 以便离线测试）; 解析/校验失败带反馈重试; 返回已校验 verdict。"""
+def run_judge(inp: dict, transport=None, attempts: int = 3, model: str = None,
+              temperature: float = None) -> dict:
+    """调用独立 judge（或注入 transport 以便离线测试）; 解析/校验失败带反馈重试; 返回已校验 verdict。
+    model/temperature 仅作为 provider invocation adapter（JR1 bakeoff）, 语义 prompt 不变。"""
     prompt = render_judge_prompt(inp)
     feedback = ""
     last_err = None
     for _ in range(attempts):
         if transport is None:
             payload = {
-                "model": JUDGE_MODEL, "temperature": JUDGE_TEMPERATURE,
+                "model": model or JUDGE_MODEL, "temperature": JUDGE_TEMPERATURE
+                if temperature is None else temperature,
                 "response_format": {"type": "json_object"},
                 "messages": [{"role": "system", "content": JUDGE_SYSTEM_PROMPT},
                              {"role": "user", "content": prompt + feedback}],
