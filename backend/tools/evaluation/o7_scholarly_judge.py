@@ -566,7 +566,8 @@ def ensemble_manifest(aggregates: dict) -> dict:
         if a.get("applicability_disagreement"):
             ambig.append(fid)
         for d, dd in (a.get("dimensions") or {}).items():
-            sc = dd.get("vote_distribution", {}).get("scores") or []
+            sc = [x for x in (dd.get("vote_distribution", {}).get("scores") or [])
+                  if isinstance(x, int)]
             if sc and max(sc) - min(sc) > 1:
                 spread.append({"case": fid, "dim": d, "scores": sc})
         if a.get("mechanical_llm_conflict"):
