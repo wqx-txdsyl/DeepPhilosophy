@@ -174,11 +174,16 @@ def validate_verdict(v: dict) -> list:
         if dd.get("applicability") == "NOT_APPLICABLE":
             if sc is not None:
                 errs.append(f"{d}: N/A 必须 score=null")
+        elif sc is None:
+            if dd.get("applicability") == "REQUIRED":
+                errs.append(f"{d}: REQUIRED 维缺 score")
         elif not isinstance(sc, int) or not 0 <= sc <= 4:
             errs.append(f"{d}: score 必须 0-4 整数, got {sc!r}")
         if not str(dd.get("rationale") or "").strip():
             errs.append(f"{d}: 缺 rationale")
     flags = v.get("fatal_flags") or {}
+    if not any(isinstance((dims.get(d) or {}).get("score"), int) for d in DIMENSIONS):
+        errs.append("至少一维需要 0-4 整数分（全 null 视为无效测量）")
     for f in FATAL_FLAGS:
         ff = flags.get(f)
         if not isinstance(ff, dict) or not isinstance(ff.get("value"), bool):
@@ -187,7 +192,10 @@ def validate_verdict(v: dict) -> list:
         if banned in json.dumps(v).lower():
             errs.append(f"judge 输出含越权字段 {banned!r}（judge 无权签 PASS）")
     for e in (v.get("claim_ledger") or []):
-        errs.extend(validate_ledger_entry(e))
+        # judge 输出的 ledger 枚举为建议词表（§7 "建议 claim types"）——只强制身份字段;
+        # 规范枚举由 validate_ledger_entry 在 fixture/authoring 层强制。
+        if not str(e.get("claim_id") or "").strip() or not str(e.get("claim_span") or "").strip():
+            errs.append("ledger entry 缺 claim_id/claim_span")
     return errs
 
 
