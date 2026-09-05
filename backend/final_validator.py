@@ -73,21 +73,61 @@ def format_feedback(result: ValidationResult) -> str:
              + (f": {i.detail}" if i.detail else "") for i in result.issues]
     return ("The candidate response failed deterministic evidence validation. Issues:\n"
             + "\n".join(lines)
-            + "\nRevise the answer or gather additional evidence as needed.")
+            + "\nRevise the candidate or gather more evidence as appropriate.")
+
+
+# ── O6-Q1 §7: 修复反馈的机械事实细节 ──────────────────────────────
+# 原则: issue 尽量自带 (offending span 已在 locator) + match 状态 + 可机械关联的
+# 证据出处——模型不需要反推 validator 判定; 反馈仍然只给事实, 不指令认知动作。
+def _quote_detail(why, match, coverage=None, evidence_id=None, book=None, chapter=None):
+    """quote 类 issue detail: match 状态 +（机械已知时）最佳证据出处"""
+    parts = [f"match={match}"]
+    if coverage is not None:
+        parts.append(f"coverage={coverage}")
+    if evidence_id:
+        parts.append(f"evidence={evidence_id}")
+    if book:
+        label = f"【《{book}》·{chapter}】" if chapter else f"【《{book}》】"
+        parts.append(f"best_evidence={label}")
+    return f"{why} ({', '.join(parts)})"
+
+
+def _citation_evidence_ref(sources, book):
+    """书名命中时给出第一条同书证据 id（机械关联, 供修复反馈溯源）"""
+    for ev in sources:
+        if _book_match(ev.get("book"), book):
+            return ev.get("evidence_id")
+    return None
+
+
+def _citation_issue_detail(sources, book, chapter):
+    """UNVERIFIED_CITATION 的机械事实细节: 什么没命中 + 该书已检索到的章节（如有）。
+    只列事实数据（该书证据池中的章节名）, 不指令动作——标签修成什么由 Agent 决定。"""
+    detail = (f"formal citation not supported by retrieved evidence "
+              f"(book={book!r}, chapter={chapter!r})")
+    chapters = sorted({(ev.get("chapter") or "").strip() for ev in sources
+                       if _book_match(ev.get("book"), book) and (ev.get("chapter") or "").strip()})
+    if chapters:
+        shown = "、".join(chapters[:8]) + ("…" if len(chapters) > 8 else "")
+        detail += (f"; book matches retrieved evidence, but the cited chapter is not among the "
+                   f"retrieved chapters for this book: {shown}")
+    else:
+        detail += "; book not found in retrieved evidence"
+    return detail
 
 
 # ═══════════════════════════════════════════════════════
 # 1. formal citation 校验（原 LiveCitationSanitizer 的检测核心，纯函数化）
 # ═══════════════════════════════════════════════════════
 def _primary_sources(tool_log, fallback_log=None):
-    """本次调用取得的 primary 证据池 → [(book, chapter)] 归一化候选"""
+    """本次调用取得的 primary 证据池 → 归一化候选列表
+    （O6-Q1: 保留完整候选 dict——book/chapter/evidence_id, 供修复反馈机械溯源）"""
     merged = list(tool_log) if tool_log else []
     if fallback_log:
         merged += [t for t in fallback_log if t not in merged]
     try:
         cands = _dedup(_extract_candidates(merged))
-        return [(c["book"], c.get("chapter") or "") for c in cands
-                if c.get("source_type") == "primary" and c.get("book")]
+        return [c for c in cands if c.get("source_type") == "primary" and c.get("book")]
     except Exception:
         return []
 
@@ -121,13 +161,14 @@ def check_citations(answer, tool_log, fallback_log=None):
         if book_is_template and chapter_is_template:
             buf = buf[m.end():]
             continue
-        if book and any(_book_match(ev_b, book) and _chapter_match(ev_c, chapter)
-                        for ev_b, ev_c in sources):
+        if book and any(_book_match(ev["book"], book) and _chapter_match(ev.get("chapter") or "", chapter)
+                        for ev in sources):
             verified += 1
         else:
             issues.append(ValidationIssue(
                 code=UNVERIFIED_CITATION, locator=m.group(0),
-                detail=f"formal citation not supported by retrieved evidence (book={book!r}, chapter={chapter!r})"))
+                evidence_ref=_citation_evidence_ref(sources, book),
+                detail=_citation_issue_detail(sources, book, chapter)))
         buf = buf[m.end():]
     return verified, issues
 
@@ -148,21 +189,32 @@ def check_quotes(answer, raw_tool_log):
         if st == "VERIFIED_NEAR" and not e.get("disclosed") and kind in ("blockquote", "leadin"):
             issues.append(ValidationIssue(
                 code=NEAR_QUOTE_NOT_MARKED, locator=loc, evidence_ref=ev,
-                detail=f"quote only approximates the retrieved text (coverage={e.get('coverage')}) "
-                       f"but is presented as verbatim without an approximation note"))
+                detail=_quote_detail(
+                    "quote only approximates the retrieved text but is presented as verbatim "
+                    "without an approximation note",
+                    match="NEAR", coverage=e.get("coverage"), evidence_id=ev,
+                    book=e.get("source_book"), chapter=e.get("source_chapter"))))
         elif st == "MEMORY_ONLY" and kind == "blockquote":
             if e.get("stitched"):
                 issues.append(ValidationIssue(
                     code=STITCHED_QUOTE, locator=loc, evidence_ref=ev,
-                    detail="blockquote assembles non-adjacent passages; not a continuous verbatim source"))
+                    detail=_quote_detail(
+                        "blockquote assembles non-adjacent passages; not a continuous "
+                        "verbatim source",
+                        match="NONE", evidence_id=ev)))
             else:
                 issues.append(ValidationIssue(
                     code=UNSUPPORTED_EXACT_QUOTE, locator=loc, evidence_ref=ev,
-                    detail="blockquote not found verbatim in retrieved evidence"))
+                    detail=_quote_detail(
+                        "blockquote not found verbatim in retrieved evidence",
+                        match="NONE", evidence_id=ev)))
         elif st == "MEMORY_ONLY" and kind == "leadin" and not e.get("disclosed"):
             issues.append(ValidationIssue(
                 code=UNSUPPORTED_EXACT_QUOTE, locator=loc, evidence_ref=ev,
-                detail="in-line verbatim quote not found in retrieved evidence and not disclosed as recalled"))
+                detail=_quote_detail(
+                    "in-line verbatim quote not found in retrieved evidence and not "
+                    "disclosed as recalled",
+                    match="NONE", evidence_id=ev)))
     return audit, issues
 
 

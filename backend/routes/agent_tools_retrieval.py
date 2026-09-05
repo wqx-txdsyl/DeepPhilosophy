@@ -14,6 +14,16 @@ from routes.agent_core import (
     PUBLIC, SCHOOLS_DIR,
 )
 
+# ── O6-Q1 §5: canonical 引用标签——由结果字段机械派生, 模型无需逆向 validator
+# 的标注语法（无任何"应引用这个"类语义文案）。章节缺失时只给书级标签, 不发明位置。
+def _cite_label(book_title, chapter_title):
+    bt = (book_title or "").strip()
+    ct = (chapter_title or "").strip()
+    if not bt:
+        return ""
+    return f"【《{bt}》·{ct}】" if ct else f"【《{bt}》】"
+
+
 # ── 工具 1: search_books（书级过滤 + 章级关键词扫描）──
 def _match_score(text, terms):
     """简单关键词评分: 命中数 + 位置权重"""
@@ -52,10 +62,14 @@ def _exec_search_books(args):
                         continue
                     b = book_by_id(it["bid"])
                     text = ch["text"]
+                    _bt = b.get("title") if b else it["bid"]
+                    _ct = ch.get("title", "")
                     results.append({
-                        "book_id": it["bid"], "book_title": b.get("title") if b else it["bid"],
+                        "book_id": it["bid"], "book_title": _bt,
                         "author": b.get("author", "") if b else "",
-                        "chapter_idx": it["idx"], "chapter_title": ch.get("title", ""),
+                        "chapter_idx": it["idx"], "chapter_title": _ct,
+                        # O6-Q1 §5: canonical 引用标签（机械派生, 见 _cite_label）
+                        "citation_label": _cite_label(_bt, _ct),
                         "snippet": text[:220].replace(chr(10), " "), "score": round(float(sims[ti]), 3),
                     })
                 if results:
@@ -100,6 +114,8 @@ def _exec_search_books(args):
         clean.append({
             "book_id": b["id"], "book_title": b.get("title"), "author": b.get("author"),
             "chapter_idx": i, "chapter_title": title,
+            # O6-Q1 §5: canonical 引用标签（机械派生自本条结果的 书名/章节 字段）
+            "citation_label": _cite_label(b.get("title"), title),
             "snippet": snippet, "score": score,
         })
     return {"results": clean[:limit * 3], "query": query, "method": "lexical",
@@ -180,7 +196,13 @@ def _exec_chapter(args):
             ch = read_chapter(bid, idx)
     if not ch:
         return {"error": f"章节不存在 {bid}/{idx}（提示: 先用 search_books 检索获取 book_id）"}
+    # O6-Q1 §5: canonical 引用标签——由读取结果的 书名/章节 机械派生
+    # （置于 text 之前, 防 ToolMessage 截断丢失; 无语义文案）
+    _b = book_by_id(bid) or {}
+    _bt = _b.get("title") or bid
     return {"book_id": bid, "chapter_idx": idx, "title": ch["title"],
+            "book_title": _bt,
+            "citation_label": _cite_label(_bt, ch["title"]),
             "text": ch["text"][:6000]}
 
 register_tool(

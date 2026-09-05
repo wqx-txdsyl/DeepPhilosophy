@@ -407,7 +407,8 @@ def test_t10_repair_feedback_returns_to_same_main_agent():
     feedback_blob = "\n".join(
         str(m.content) for prompts in chat.prompts for m in prompts)
     assert "UNVERIFIED_CITATION" in feedback_blob
-    assert "Revise the answer or gather additional evidence" in feedback_blob
+    # O6-Q1 §7: 中性结尾措辞更新（仍无任何命令式动作指令）
+    assert "Revise the candidate or gather more evidence as appropriate" in feedback_blob
 
 
 # ═══════════════════════════════════════════════════════

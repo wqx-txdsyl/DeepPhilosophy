@@ -84,12 +84,20 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
      提升可靠性、深度或出处根基, 就主动去做——对可外部验证的主张、引文、出处与史实,
      优先直接证据而非记忆; 对解读类问题, 应收集足以呈现最强相关解读的证据, 而不是
      停留在第一个貌似可行的读法; 只要还有证据可能实质改善回答, 就继续研究;
+   - 研究校准: 获得实质证据后更新你的研究问题——后续检索应指向尚存的不确定性、
+     缺失来源或冲突解读, 不要因为"还能再搜"就对同一问题反复发同义词变体检索;
+     重要主张已充分落地、继续研究不太可能实质改善回答时, 就综合作答;
    - 避免冗余调用与不产生新理解的机械检索（同一查询的原样重复会被机械判重并复用旧结果）;
      但注意: 未执行≠库中无此书; 检索无命中也不代表结论不成立, 如实陈述即可。
 2. 回答标注引用来源: 【《书名》· 章节名】。
-   引用块格式纪律: blockquote（> 引用块）只用于你打算作为**原文/出处文本**呈现的内容;
-   你自己的分析、转述或小结一律用普通正文排版, 不要排成引用块——引用块里的每句话
-   都会被当作逐字原文来核对。凭记忆给出的措辞不得作为逐字原文呈现, 除非有检索支撑。
+   引文表达纪律: 引用块（markdown blockquote, > 引用块）与逐字引号都在向读者声明
+   "以下措辞是原文"——只有当检索证据确实支撑该措辞时才这样呈现; 转述、你自己的解读与综合、
+   记忆中的措辞、译文变体一律写成普通正文, 并在有用时明确说明是转述/大意——
+   不要把自己的解释、综合或诚实声明排成引用块, 近似措辞不得当作逐字原文呈现,
+   凭记忆给出的措辞不得作为逐字原文呈现, 除非有检索支撑。
+   引用标签纪律: 正式引用里的书名/章节/卷号/节号标签必须取自检索证据给出的书目信息
+   （工具结果中的书名/章节字段）, 不得凭记忆补造章节号或格言号; 若只核验到书级,
+   就只标书级（【《书名》】）或不给正式引用, 而不是补一个未经核验的精确位置。
 3. 涉及哲学家关系用 query_graph; 流派用 get_school; 哲人资料用 get_philosopher; 概念溯源用 concept_trace。
 4. 用户要求对比可用 compare_views; 写作文用 write_essay; 辩论用 philosopher_debate; 决策求助用 advisor_council;
    扮演/以哲学家口吻回答用 role_play; 苏格拉底式追问用 socratic_tutor; 论证分析用 analyze_argument;
@@ -154,7 +162,15 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
     用户回答后再次调用并传 user_reply=用户的回答, 绝不预生成后续轮次;
     向用户展示时只呈现该 next_question（至多加一句铺垫）, **不得在它之外再追加你自己的新问题**。
 15. 【运行时措辞】不要在最终回答中出现内部过程措辞（如"检索已收口/预算已达上限/准入未通过/系统收敛"）——
-    那是系统内部治理语言。材料是否充分、哪些未能核验, 用第一人称的确定性边界表述。"""
+    那是系统内部治理语言。材料是否充分、哪些未能核验, 用第一人称的确定性边界表述。
+16. 【多轮证据边界】会话历史（包括你此前轮次的回答）是对话语境, 不是证据——逐字引用与
+    正式引用必须落在本次会话检索到的证据上, 不能只靠"我前几轮说过"。已检索过的合法
+    证据不会丢: 续谈需要精确措辞时, 对已知出处做一次定点重读即可, 无需把此前的检索
+    链条全部重跑; 不需要逐字原文时, 用转述自然衔接即可。
+17. 【修复策略】回答被确定性校验打回时, 不要原样重复同样措辞——先读校验反馈指出的
+    具体问题（哪个片段/哪条引用/何种不匹配）: 若证据支持你的观点但不支持精确措辞或
+    引用标签, 修改表达; 若主张本身缺乏支撑且对回答重要, 补做针对性研究, 或删除/弱化
+    该主张。"""
 
 # ── 工具平移: TOOLS 注册表 → StructuredTool（execute(args) → func(**kwargs)）──
 def _build_tools():
@@ -281,6 +297,29 @@ def get_system_prompt(agent):
 # 组装为一条合并 SystemMessage——runtime 不再有任何分段认知注入
 # （问题分类/核验纪律/来源约束/核验状态等注入源已随 Shadow cognition 删除）。
 # 请求路径的 SystemMessage 注入点 = builder（本函数）+ hard 预算（机械状态, 允许）。
+# ── O6-Q1 §10/§11: 当前 responder 身份事实（机械上下文, 非语义解析）──
+# General ↔ 哲学家人格切换时, 明确"本轮谁在回答"; 会话历史消息可能出自不同 responder,
+# 历史对话内容不改变当前人格, 也不自动成为证据（证据边界见铁律 16——policy 层）。
+# 只包装结构化事实（当前 responder 是谁/历史可能含其他角色）, 不做指代解析。
+def _identity_context(agent, language="zh"):
+    if language == "en":
+        if agent == "general":
+            return ("[Responder identity] You are DeepPhilosophy (the general agent). "
+                    "Earlier turns in this conversation may contain replies from a philosopher persona or "
+                    "another role—that is conversation history: it does not change who is answering now, "
+                    "and it is not evidence by itself.")
+        name = (AGENTS.PHILO_AGENTS.get(agent) or {}).get("name") or agent
+        return (f"[Responder identity] You are {name} (philosopher persona). Earlier turns may contain "
+                "replies from the general agent or other roles—that is conversation history: it does not "
+                "change your current persona, and it is not evidence by itself.")
+    if agent == "general":
+        return ("（本轮回答者身份：你是深哲——通用哲学智能体。会话历史中可能出现哲学家人格或其他角色的"
+                "回复：那是对话历史，不改变本轮由谁回答，也不自动成为证据。）")
+    name = (AGENTS.PHILO_AGENTS.get(agent) or {}).get("name") or agent
+    return (f"（本轮回答者身份：你是{name}——哲学家人格。会话历史中可能出现通用深哲或其他角色的回复："
+            "那是对话历史，不改变你当前的人格，也不自动成为证据。）")
+
+
 def _build_context_messages(agent, language, custom_instructions=None,
                             user_message=None, reinforce=False):
     """构建 Main Agent 上下文消息（返回 list, 恒为一条 SystemMessage; 无内容时为空）。
@@ -306,6 +345,8 @@ def _build_context_messages(agent, language, custom_instructions=None,
                    "思考流与回答必须全部使用英文（English），工具调用与引用也可用英文。禁止再用中文输出。")
     else:
         prompt += ("\n\n【语言要求】所有输出必须使用中文——包括内部思维过程（推理链）与回答。禁止用英文思考或输出。")
+    # O6-Q1 §10/§11: 当前 responder 身份事实——并入同一条 SystemMessage（builder 单源）
+    prompt += "\n\n" + _identity_context(agent, language)
     if agent != "general":
         # 人格保持提醒（多轮对话后 reasoning 易回归任务规划腔的关键防线）——并入同一条消息
         prompt += ("\n\n" + (PERSONA_THINK_REMINDER_EN if language == "en" else PERSONA_THINK_REMINDER))
