@@ -86,17 +86,19 @@ CALIBRATION_CASES = {
 }
 
 # ── Fixtures（§15: GOOD/MID/BAD ×8 + L1-L3）────────────────────────
-_E_C1 = "RETRIEVED_EVIDENCE: book_title=《孟子》, author=孟子（无译者/出版社/页码字段）"
+_E_C1 = ("RETRIEVED_EVIDENCE: book_title=《孟子》, author=孟子（无译者/出版社/页码字段）; "
+         "检索片段（《尽心下》）: 民为贵，社稷次之，君为轻。")
 _E_C2 = ("RETRIEVED_EVIDENCE: 《纯粹理性批判》选段（中译）: “……感性通过直观被给予……"
          "对象通过知性被思维……”")
 _E_C3 = "RETRIEVED_EVIDENCE: 《第一哲学沉思集》第一、二沉思选段（中译, 无逐字引文要求）"
-_E_C4 = "RETRIEVED_EVIDENCE: 《悲剧的诞生》与《查拉图斯特拉如是说》章节选段（中译）"
+_E_C4 = ("RETRIEVED_EVIDENCE: 《悲剧的诞生》章节选段（中译）: 日神与酒神的二元冲动……; "
+         "《查拉图斯特拉如是说》章节选段（中译）: ……权力意志……")
 _E_C5 = "RETRIEVED_EVIDENCE: 《纯粹理性批判》B 系译文选段; 无二手研究记录（无网络层）"
 _E_C6 = ("SECONDARY_SOURCE_RECORDS: [{title:'Wittgenstein on Language Games', author:'A. Scholar', "
          "year:2018, journal:'Philosophical Review', access_level:'METADATA_ONLY'}]; "
          "PRIMARY: 《哲学研究》选段")
 _E_C7 = "RETRIEVED_EVIDENCE: 《偶像的黄昏》前言选段（中译）: “……这条箴言如何。”"
-_E_C8 = "RETRIEVED_EVIDENCE: 《孙子兵法·计篇》选段（原文）"
+_E_C8 = "RETRIEVED_EVIDENCE: 《孙子兵法·计篇》原文选段: 兵者，国之大事，死生之地，存亡之道，不可不察也。……兵者，诡道也。"
 
 F = {}
 
