@@ -1111,7 +1111,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # O5: reasoned 标志已删（只写不读——provider reasoning 一律内部丢弃, 无观察消费方）
     pending = {"text": "", "has_tools": False, "started": set(),
                "note_emitted": False}
-    pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具名（2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片）
+    pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具 (name, tool_call_id)
+                            # （2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片;
+                            #  O6-RP1 F2/F3: 携带 tool_call_id, 终态取消逐 id 绑定）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
     _rat_parser = RationaleParser()   # <rationale>…</rationale> 流式解析（安全摘要通道）
     _rat_tools_done = 0   # phase 推断: 已完成的工具数
@@ -1189,6 +1191,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         共享状态经闭包更新（nonlocal）。"""
         nonlocal pending, _agent_invocations, _saw_tools_result
         nonlocal _main_agent_tool_decisions, _rat_tools_done, _rat_phase
+        # O6-RP1 (F2): 每次新 Main Agent invocation 从确定性干净 pending 起步——
+        # 上一 invocation 的工具宣告状态必须已在其终态闭合中清除, 不跨轮泄漏
+        # （repair/恢复轮的新候选不得被上一轮残留宣告的 has_tools 卡 True 丢弃）。
+        pending = {"text": "", "has_tools": False, "started": set(), "note_emitted": False}
+        pending_tools.clear()
         async for chunk, metadata in APP.astream(
                 {"messages": msgs, "agent": agent, "language": language,
                  "guard": guard, "budget": budget, "trace": trace,
@@ -1222,22 +1229,32 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     # 事件类型保留给纯 transport/rendering 恢复场景）。
                     for tcc in tool_call_chunks:
                         nm = tcc.get("name")
-                        if nm and nm not in pending.get("started", ()):
-                            pending.setdefault("started", set()).add(nm)
-                            pending_tools.add(nm)
-                            _main_agent_tool_decisions += 1
-                            # O1 provenance: 工具宣告来自 Main Agent 本轮 invocation
-                            yield {"type": "tool_start", "name": nm,
-                                   "initiated_by": "main_agent", "decision_group_id": _dg(),
-                                   "tool_call_id": tcc.get("id") or None}
-                            # O1 (§13): 宣告后立即给机械活动注记（ACTIVITY, 非 thinking）
-                            try:
-                                yield {"type": "tool_note",
-                                       "content": _activity_line(nm, tcc.get("args") or {}, language),
-                                       "initiated_by": "runtime_mechanical", "activity": True,
-                                       "decision_group_id": _dg()}
-                            except Exception:
-                                pass
+                        if not nm:
+                            continue
+                        # O6-RP1 (F3): 去重键 = tool_call_id（缺失时退回 chunk index）——
+                        # 每个真实宣告的 tool_call_id 恰发一个 tool_start。旧实现按
+                        # 工具名去重: 并行同名调用（各有独立 id）只发一个 start, 其余
+                        # 结果事件无可见父级（UNPARENTED_TOOL_RESULTS 根因）。
+                        # 同批共享 decision_group_id, 不共享 tool_call_id。
+                        _started = pending.setdefault("started", set())
+                        call_key = tcc.get("id") or f"idx:{tcc.get('index')}"
+                        if call_key in _started:
+                            continue
+                        _started.add(call_key)
+                        pending_tools.add((nm, tcc.get("id")))
+                        _main_agent_tool_decisions += 1
+                        # O1 provenance: 工具宣告来自 Main Agent 本轮 invocation
+                        yield {"type": "tool_start", "name": nm,
+                               "initiated_by": "main_agent", "decision_group_id": _dg(),
+                               "tool_call_id": tcc.get("id") or None}
+                        # O1 (§13): 宣告后立即给机械活动注记（ACTIVITY, 非 thinking）
+                        try:
+                            yield {"type": "tool_note",
+                                   "content": _activity_line(nm, tcc.get("args") or {}, language),
+                                   "initiated_by": "runtime_mechanical", "activity": True,
+                                   "decision_group_id": _dg()}
+                        except Exception:
+                            pass
                 elif chunk.content:
                     # Thinking 数据源（真实化）: 先过 rationale 解析器——
                     # 模型在内容通道显式生成的 <rationale> 摘要在标签闭合后以
@@ -1316,6 +1333,24 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 pending_tools.clear()
                 # O4-RP1: 术语核验状态计算块已删除——"这个词是否逐字出现"的判定
                 # 由 Main Agent 自己读取原文后给出, runtime 不再先行核验再注入措辞约束。
+        # ── O6-RP1 (F2): 工具宣告生命周期终态闭合 ──────────────────────
+        # invocation 正常结束时, 任何仍处"已宣告未执行"的工具就地到达终态
+        # （机械取消, 逐 id 绑定 tool_call_id）, pending 工具状态确定性清除。
+        # 悬挂宣告的典型来源: 硬上限 forced 轮 forced_tools_done 已置位后模型仍
+        # 宣告工具（should_continue → end, 不再进 tools 节点）——旧实现把
+        # has_tools=True 留到收口区, 下一轮 repair 的 Main Agent 新文本会被当
+        # 残留丢弃（O6-RP1 F2 根因: pending 状态泄漏进下一次 invocation）。
+        if pending["has_tools"] or pending_tools:
+            async for ev in flush_agent():
+                yield ev
+            for nm, tcid in sorted(pending_tools, key=lambda t: (t[0], str(t[1]))):
+                yield {"type": "tool_cancel", "name": nm, "tool_call_id": tcid,
+                       "reason": "工具预算已达上限，该调用未执行",
+                       "initiated_by": "runtime_mechanical",
+                       "decision_group_id": _dg()}
+            pending = {"text": "", "has_tools": False, "started": set(),
+                       "note_emitted": False}
+            pending_tools.clear()
 
     try:
         async for _ev in _stream_graph(messages):
@@ -1378,9 +1413,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 yield ev
             pending["text"] = ""
         # 被截断的已宣告工具调用（宣告了 tool_start 但最终未执行, 如 hard 预算强制轮的
-        # 二次残留宣告）: 逐名发 tool_cancel, 前端据此解除对应"调用中"卡片（2026-08-14）
-        for nm in sorted(pending_tools):
-            yield {"type": "tool_cancel", "name": nm, "reason": "工具预算已达上限，该调用未执行"}
+        # 二次残留宣告）: 逐 id 发 tool_cancel, 前端据此解除对应"调用中"卡片（2026-08-14）。
+        # O6-RP1 (F2/F3): 正常路径下悬挂宣告已在 _stream_graph 的 invocation 终态闭合中
+        # 清除（此处为防御性兜底, 仅在异常中断后仍残留时触发）; 事件逐 tool_call_id 绑定。
+        for nm, tcid in sorted(pending_tools, key=lambda t: (t[0], str(t[1]))):
+            yield {"type": "tool_cancel", "name": nm, "tool_call_id": tcid,
+                   "reason": "工具预算已达上限，该调用未执行",
+                   "initiated_by": "runtime_mechanical",
+                   "decision_group_id": _dg()}
 
         candidate = pending["text"]
         pending["text"] = ""

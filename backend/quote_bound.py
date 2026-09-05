@@ -45,9 +45,31 @@ NEAR_THRESHOLD = 0.62
 _SHINGLE = 7
 
 BLOCKQ_LINE_RE = re.compile(r"^\s{0,3}>\s?")
-# 引导词: 明确把后文标为"原文"的措辞
+# ── 引文意图边界（O6-RP1 F1 单一真源）──────────────────────────────
+# blockquote 逐字 / 行内逐字 / lead-in 逐字（中英文引号形式）共享同一套边界:
+# 引号前紧邻的是"把后文标为原文/言语"的引导语（通用句法结构判定）——
+#   ① 原文指示词（原文/原句/原话/原言, 可后接 是/为/如下/中）;
+#   ② 言说/书写动词（写道/说道/曾说/曰/云/所言/引述… 及 他/她/它/其/又/曾/所+说）;
+#   ③ 英文言语动词与 original 指示语（says/said/writes/states/put it/reads/quoted…）,
+# 可带冒号, 且必须紧邻开引号（$ 锚定）。
+# 不做用户任务意图推断——边界只由候选文本自身的句法结构决定;
+# 也不依赖"原文是"这类单一措辞黑名单。副词性固定短语（一般来说/换句话说/
+# In general）以"说"结尾但无言语主体, 不构成边界（E 类不误伤护栏）。
 LEADIN_RE = re.compile(
-    r"(原文(?:是|为|如下)|原句(?:是|为|如下)|原话(?:是|为)|写道|写道：|说道|他说|她说道?)\s*[:：]?\s*[“\"]")
+    r"(?:"
+    r"原文|原句|原话|原言"                                   # 原文指示词
+    r"|(?:他|她|它|其|又|曾|所)说(?:道)?"                     # 言说动词（限定主体, 防"来说"误命中）
+    r"|写道|说道|曾言|有言|所言|所云|所写|所记"
+    r"|引述|引作|记作|云|曰"
+    r"|答曰|答道|问道|叹道|喊道|念道|吟道|提道|反驳道|补充道|解释道|回答道"
+    r"|\bthe\s+original(?:\s+(?:text|passage|source|version|wording))?\b"
+    r"|\boriginal\s+(?:text|passage|source|version|wording)\b"
+    r"|\b(?:says|said|writes|wrote|written|states|stated|notes|noted|puts\s+it|put\s+it"
+    r"|reads|quotes|quoted|asks|asked|replies|replied|declares|declared"
+    r"|affirms|asserts|asserted|proclaims|proclaimed)\b"
+    r"|\bquote\b"
+    r")(?:是|为|如下|中)?\s*[:：]?\s*$",
+    re.IGNORECASE)
 # 可见的核验披露标记（已声明未核验的引文 → 记为 DISCLOSED 而非隐瞒）
 DISCLOSED_RE = re.compile(r"未经.{0,10}(核验|核对)|未在.{0,12}库.{0,6}(核验|定位|找到)|凭记忆|根据记忆|记忆引述|未逐字核验|NOT_FOUND")
 
@@ -57,8 +79,16 @@ DISCLOSED_RE = re.compile(r"未经.{0,10}(核验|核对)|未在.{0,12}库.{0,6}(
 # ═══════════════════════════════════════════════════════
 def extract_quotes(text):
     """用户可见文本 → verbatim-like 引文清单
-    kind: blockquote（markdown 引用块）| leadin（引导词+引号）| quoted（中文引号长文本）
-    每条: {quote_claim_id, kind, text, line_count}"""
+    kind: blockquote（markdown 引用块）| leadin（引导词+引号, 逐字主张）|
+          quoted（中文引号长文本, 无引导词——scare-quote 契约豁免类）
+    每条: {quote_claim_id, kind, text, line_count}
+
+    O6-RP1 F1: 行内扫描同时覆盖弯引号（“ ”）与直引号（" "）形态——
+    直引号此前完全不被提取, `原文是："…"` 式行内逐字引文整体逃过校验（FN）;
+    且旧 LEADIN_RE 要求引导语自带结尾引号字符, 与 head 截取口径互斥,
+    leadin 分类从未触发。现在两种引号形式共用 LEADIN_RE 同一意图边界:
+    引导词命中 → leadin（逐字主张, validator 强制核验）; 弯引号无引导词 →
+    quoted（既有豁免）; 直引号无引导词 → 不提取（scare quotes 契约不变）。"""
     out = []
     seq = 0
     lines = (text or "").split("\n")
@@ -76,19 +106,35 @@ def extract_quotes(text):
                             "text": body, "line_count": len(buf)})
             continue
         i += 1
-    # 引导词引文 + 中文引号长文本（同一行内闭合才取; 跨行由 blockquote 覆盖）
-    # 口径: 弯引号 “ ” 内的长文本即视为 verbatim-like; 直引号 " 只在引导词后才是引文
-    #（模型大量用直引号做 scare quotes（讨论"言"的文本）——逐对直引号之间的正文
-    #  会被误捕获为假引文, 真实回归: R1 审计出现 3 条 MEMORY_ONLY 噪声）
-    for m in re.finditer(r"[“]([^“”]{10,240})[”]", text or ""):
+    src = text or ""
+    taken = []   # 已捕获区间（弯/直两次扫描防重复捕获同一闭合域）
+    # 弯引号长文本: 引导词命中 → leadin; 否则 quoted（契约豁免）
+    # 口径: 弯引号 “ ” 内的长文本即视为 verbatim-like——模型大量用弯引号做
+    # 提及/强调（讨论"某个概念"）, 无引导词时不作逐字承诺（E 类不误伤）。
+    for m in re.finditer(r"[“]([^“”]{10,240})[”]", src):
         body = m.group(1).strip()
         if len(norm_q(body)) < QUOTE_MIN_NORM:
             continue
-        head = (text or "")[:m.start()]
+        head = src[:m.start()]
         leadin = bool(LEADIN_RE.search(head[-40:]))
         seq += 1
         out.append({"quote_claim_id": f"quote_{seq}",
                     "kind": "leadin" if leadin else "quoted",
+                    "text": body, "line_count": 1})
+        taken.append((m.start(), m.end()))
+    # 直引号长文本: 仅引导词命中才提取（无引导词的成对直引号多为 scare quotes,
+    # 逐对直引号之间的正文曾被误捕获为假引文——真实回归 R1 的 3 条 MEMORY_ONLY 噪声）
+    for m in re.finditer(r"[\"]([^\"]{10,240})[\"]", src):
+        if any(s <= m.start() < e for s, e in taken):
+            continue
+        body = m.group(1).strip()
+        if len(norm_q(body)) < QUOTE_MIN_NORM:
+            continue
+        head = src[:m.start()]
+        if not LEADIN_RE.search(head[-40:]):
+            continue
+        seq += 1
+        out.append({"quote_claim_id": f"quote_{seq}", "kind": "leadin",
                     "text": body, "line_count": 1})
     return out
 
