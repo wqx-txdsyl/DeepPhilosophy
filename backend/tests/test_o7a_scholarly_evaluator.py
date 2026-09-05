@@ -120,7 +120,7 @@ def test_t5_to_t10_seeded_fatal_fixtures_detected_and_gate_full_recall():
     assert gate["expected_fatal_total"] == sum(len(v) for v in expected.values())
     assert gate["expected_fatal_detected"] == gate["expected_fatal_total"]
     assert gate["expected_fatal_recall"] == 1.0      # T5-T10: 全部植入 flag 可被检出
-    assert gate["false_fatal_on_goodmid_count"] == 0  # GOOD/MID fixture 零误报
+    assert gate["false_fatal_assertions"] == []       # 无预期 flag 的 fixture 零误报
 
 
 def test_t11_metadata_only_is_not_full_text_read():
@@ -237,3 +237,125 @@ def test_t20_q2_reliability_baseline_frozen():
     assert b["REPAIR_EXHAUSTION_SINGLE"] == "10/25 = 40%"
     assert b["FRESH_PUBLICATION"] == "13/16 = 81.25%"
     assert b["VALIDATOR_FN"] == 0 and b["VALIDATOR_FP"] == 0 and b["INVALID_FINAL_PUBLIC"] == 0
+
+
+# ═══════════════════════════════════════════════════════
+# O7-A RP1（Judge Calibration Closure）R1–R15
+# ═══════════════════════════════════════════════════════
+import hashlib
+
+_ORIG_C6_L1_ANSWER = ("根据记录，该文第二节提出了语用转向论证，第三节给出对定义主义的三个反驳——"
+                      "作者的结论是语言游戏不可定义。")
+
+
+def test_r1_original_c6_l1_bad_unchanged():
+    fx = C.ACCESS_FIXTURES["C6-L1-bad"]
+    ans = fx["judge_input"]["ANSWER"]
+    assert ans == _ORIG_C6_L1_ANSWER, "kill case 文本被改动（必须原样冻结）"
+    assert hashlib.sha256(ans.encode("utf-8")).hexdigest() == (
+        "65cd5c06f83f25d7a37de378a28731c24ffbc00141f850acc74b923409d5ea0b")
+    assert fx["expect_flags"] == ["LITERATURE_ACCESS_OVERCLAIM"]
+    rec = fx["judge_input"]["SECONDARY_SOURCE_RECORDS"][0]
+    assert rec["access_level"] == "METADATA_ONLY"
+
+
+def test_r2_metadata_only_internal_section_overclaim_is_f6():
+    # F6-M1: METADATA_ONLY + 章节级主张 → 唯一正确的 flag 是 F6（一般规则可覆盖）
+    assert C.ACCESS_FIXTURES["F6-M1-bad"]["expect_flags"] == ["LITERATURE_ACCESS_OVERCLAIM"]
+
+
+def test_r3_hedge_does_not_elevate_access():
+    # F6-M2: "根据数据库记录，作者最终证明……"（带 hedge）仍然 F6 —— 一般规则明示
+    # 修辞性来源声明不提高访问级别; 该规则必须以一般形式存在
+    assert C.ACCESS_FIXTURES["F6-M2-bad"]["expect_flags"] == ["LITERATURE_ACCESS_OVERCLAIM"]
+    assert "不提高实际访问级别" in J.JUDGE_SYSTEM_PROMPT
+
+
+def test_r4_metadata_existence_claim_alone_no_f6():
+    # C6-good/mid 只转述书目条目 → 设计上无致命错误（negative pool）
+    for fid in ("C6-good", "C6-mid"):
+        assert C.calibration_fixtures()[fid]["expect_flags"] == []
+
+
+def test_r5_abstract_supported_claim_no_f6():
+    assert C.ACCESS_FIXTURES["F6-M3-good"]["expect_flags"] == []
+    assert C.ACCESS_FIXTURES["C6-L2-good"]["expect_flags"] == []
+
+
+def test_r6_abstract_beyond_supplied_content_is_f6():
+    # L1（摘要外章节内容）与 M4（FULL_TEXT_AVAILABLE≠READ）都是越界
+    assert C.ACCESS_FIXTURES["C6-L1-bad"]["expect_flags"] == ["LITERATURE_ACCESS_OVERCLAIM"]
+    assert C.ACCESS_FIXTURES["F6-M4-bad"]["expect_flags"] == ["LITERATURE_ACCESS_OVERCLAIM"]
+
+
+def test_r7_full_text_available_is_not_full_text_read():
+    rec = C.ACCESS_FIXTURES["F6-M4-bad"]["judge_input"]["SECONDARY_SOURCE_RECORDS"][0]
+    assert rec["access_level"] == "FULL_TEXT_AVAILABLE"
+    assert "FULL_TEXT_AVAILABLE" in J.ACCESS_LEVELS and "FULL_TEXT_READ" in J.ACCESS_LEVELS
+    # judge 宪法必须包含"可获取≠已读"的一般规则
+    assert "不等于已读" in J.JUDGE_SYSTEM_PROMPT
+
+
+def test_r8_full_text_read_supported_claim_no_f6():
+    assert C.ACCESS_FIXTURES["F6-M5-good"]["expect_flags"] == []
+    assert C.ACCESS_FIXTURES["C6-L3-good"]["expect_flags"] == []
+
+
+def test_r9_fatal_recall_denominator_uses_flag_assertions():
+    # C6-bad 植入 F1+F6 两个断言 → 分母按 flag 计数=+2, 不是按 fixture 计数=+1
+    results = {"C6-bad": _verdict(flags={"FABRICATED_BIBLIOGRAPHY"})}
+    gate = J.calibration_gate(results, {"C6-bad": ["FABRICATED_BIBLIOGRAPHY",
+                                                   "LITERATURE_ACCESS_OVERCLAIM"]})
+    assert gate["expected_fatal_total"] == 2
+    assert gate["expected_fatal_detected"] == 1
+    assert gate["expected_fatal_recall"] == 0.5
+    assert gate["per_flag_recall"]["FABRICATED_BIBLIOGRAPHY"] == 1.0
+    assert gate["per_flag_recall"]["LITERATURE_ACCESS_OVERCLAIM"] == 0.0
+
+
+def test_r10_per_dimension_applicability_agreement_calculation():
+    va = _verdict(applic={"literature_orientation": "OPTIONAL"})
+    vb = _verdict(applic={"literature_orientation": "REQUIRED"})   # 1/5 不同
+    m = J.applicability_metrics({"x": va}, {"x": vb})
+    assert m["per_dimension_applicability_exact_agreement"] == 0.8
+    assert m["required_na_critical_contradictions"] == 0
+    assert m["whole_vector_exact_agreement"] == 0.0
+
+
+def test_r11_whole_vector_metric_is_diagnostic_only():
+    # 门指标 = per-dimension; 整向量仅诊断记录（键名与角色固定）
+    va = _verdict(applic={"interpretive_plurality": "NOT_APPLICABLE"})
+    vb = _verdict(applic={"interpretive_plurality": "NOT_APPLICABLE"})
+    m = J.applicability_metrics({"x": va}, {"x": vb})
+    assert m["whole_vector_exact_agreement"] == 1.0   # 诊断值可以=1, 但不作为硬门键
+    assert "per_dimension_applicability_exact_agreement" in m
+    assert J.PRODUCTION_AUTHORITY == 0                # 聚合层无任何生产权限语义
+
+
+def test_r12_required_na_critical_contradiction_counted():
+    va = _verdict(applic={"historical_discipline": "REQUIRED"})
+    vb = _verdict(applic={"historical_discipline": "NOT_APPLICABLE"})
+    m = J.applicability_metrics({"x": va}, {"x": vb})
+    assert m["required_na_critical_contradictions"] == 1
+    assert m["per_dimension_applicability_exact_agreement"] == 0.8
+
+
+def test_r13_optional_instability_still_visible():
+    va = _verdict(applic={"textual_grounding": "OPTIONAL"})
+    vb = _verdict(applic={"textual_grounding": "REQUIRED"})   # OPTIONAL↔REQUIRED: 非临界, 但降一致率
+    m = J.applicability_metrics({"x": va}, {"x": vb})
+    assert m["per_dimension_applicability_exact_agreement"] == 0.8
+    assert m["required_na_critical_contradictions"] == 0
+
+
+def test_r14_no_fixture_specific_judge_rule():
+    prompt = J.JUDGE_SYSTEM_PROMPT
+    for banned in ("C6", "L1", "M1", "第二节", "语用转向", "图型", "朝三暮四",
+                   "Wittgenstein", "Becker", "Ivanov", "Park", "语言游戏"):
+        assert banned not in prompt, f"judge 宪法含 fixture 专属规则: {banned}"
+
+
+def test_r15_no_production_imports_and_diff():
+    # 复用 T18/T19 逻辑（RP1 后重申）
+    test_t18_no_production_imports()
+    test_t19_no_production_diff_vs_base()

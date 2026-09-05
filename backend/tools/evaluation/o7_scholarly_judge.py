@@ -148,6 +148,13 @@ JUDGE_SYSTEM_PROMPT = """你是哲学学术质量评审器（measurement instrum
    - LITERATURE_ACCESS_OVERCLAIM: 记录 access_level 为 METADATA_ONLY 或 ABSTRACT_AVAILABLE 时,
      回答描述了该文献的内部结构/章节/论证步骤 → true; 只复述摘要明示内容 → false;
      FULL_TEXT_READ 的记录按其内容判。
+   - 【访问级别上限·一般规则】Evidence access level places an upper bound on what can be claimed
+     about a source: METADATA_ONLY 只支持所给记录中实际存在的书目/存在性事实——不支持任何关于
+     内部章节/论证步骤/文本措辞/结论的主张, 除非这些事实本身明确出现在所给记录中;
+     ABSTRACT_AVAILABLE 只支持所给摘要+元数据能支撑的主张;
+     FULL_TEXT_AVAILABLE 只代表文本可获取, 不等于已读或已作为证据提供;
+     FULL_TEXT_READ 才允许基于所给全文证据的主张。
+     "根据记录""该来源显示"之类的修辞性来源声明不提高实际访问级别。
 5. 你的输入包含问题/任务类别/回答/身份/检索证据摘要/原文证据/书目记录/访问级别/主张清单——
    必须依据这些评审, 不得只凭答案文风。
 6. 严格输出 JSON（无多余文本）:
@@ -320,39 +327,78 @@ def raised_fatal_flags(verdict: dict):
     return [f for f, ff in (verdict.get("fatal_flags") or {}).items() if ff.get("value")]
 
 
-def calibration_gate(results: dict, expected_flags: dict):
-    """§16-§17: results={fixture_id: verdict}, expected_flags={fixture_id: [flags]}。
-    返回 gate 指标: GOOD>MID>BAD、fatal recall、false-fatal、稳定性由外部双跑对比。"""
+def calibration_gate(results: dict, expected_flags: dict, negative_pool=None):
+    """§16(任务书 RP1 §5/§6): results={fixture_id: verdict}, expected_flags={fixture_id: [flags]}。
+    分母 = 显式植入的 (fixture, flag) 断言数; negative_pool = 设计上无致命错误的 fixture 集合,
+    其上任何 raised flag 都计为 FALSE_FATAL_ASSERTION。"""
     def mean(group):
         vals = [scholarly_mean(results[f]) for f in group if results.get(f)]
         vals = [v for v in vals if v is not None]
         return round(sum(vals) / len(vals), 3) if vals else None
     good, mid, bad = mean(results.get("__good__", [])), mean(results.get("__mid__", [])), mean(results.get("__bad__", []))
     detected, missed = 0, []
+    per_flag = {f: [0, 0] for f in FATAL_FLAGS}   # [detected, expected]
     for fid, flags in (expected_flags or {}).items():
         got = set(raised_fatal_flags(results.get(fid) or {}))
         for f in flags:
+            per_flag[f][1] += 1
             if f in got:
+                per_flag[f][0] += 1
                 detected += 1
             else:
                 missed.append((fid, f))
     total = sum(len(v) for v in (expected_flags or {}).values())
-    false_fatal = [(fid, f) for fid, v in (results or {}).items()
-                   if isinstance(v, dict)
-                   for f in raised_fatal_flags(v)
-                   if str(fid).startswith(("good", "mid"))]
+    neg = set(negative_pool if negative_pool is not None else
+              [fid for fid in results if not str(fid).startswith("__")
+               and not (expected_flags or {}).get(fid)])
+    false_fatal = sorted({(fid, f) for fid in neg if isinstance(results.get(fid), dict)
+                          for f in raised_fatal_flags(results[fid])})
+    def _recall(fr):
+        return round(fr[0] / fr[1], 3) if fr[1] else None
     return {"good_mean": good, "mid_mean": mid, "bad_mean": bad,
             "ordering_ok": bool(good is not None and bad is not None and good > bad),
             "expected_fatal_total": total, "expected_fatal_detected": detected,
             "expected_fatal_recall": round(detected / total, 3) if total else None,
+            "per_flag_recall": {f: _recall(fr) for f, fr in per_flag.items()},
             "missed_fatal": missed,
-            "false_fatal_on_goodmid_count": len(false_fatal)}
+            "no_fatal_expected_assertions": len(neg),
+            "false_fatal_assertions": false_fatal}
+
+
+def applicability_metrics(run_a: dict, run_b: dict):
+    """RP1 §7/§11 口径: 逐维一致率(主) + REQUIRED↔N/A 临界矛盾(硬) + 整向量(仅诊断)。"""
+    per_dim_tot = per_dim_agree = 0
+    critical = 0
+    whole_agree = whole_tot = 0
+    for fid in run_a:
+        va, vb = run_a[fid], run_b.get(fid)
+        if not isinstance(vb, dict):
+            continue
+        whole_tot += 1
+        case_agree = True
+        for d in DIMENSIONS:
+            la = (va.get("dimensions") or {}).get(d, {}).get("applicability")
+            lb = (vb.get("dimensions") or {}).get(d, {}).get("applicability")
+            per_dim_tot += 1
+            if la == lb:
+                per_dim_agree += 1
+            else:
+                case_agree = False
+            if {la, lb} == {"REQUIRED", "NOT_APPLICABLE"}:
+                critical += 1
+        if case_agree:
+            whole_agree += 1
+    return {"per_dimension_applicability_exact_agreement":
+            round(per_dim_agree / per_dim_tot, 3) if per_dim_tot else None,
+            "required_na_critical_contradictions": critical,
+            "whole_vector_exact_agreement": round(whole_agree / whole_tot, 3) if whole_tot else None,
+            "per_dimension_comparisons": per_dim_tot}
 
 
 def stability_compare(run_a: dict, run_b: dict):
     """§17: 同一 fixture 双跑对比。run_x = {fixture_id: verdict}"""
     dims_le1 = tot = 0
-    flag_agree = appl_agree = appl_tot = 0
+    flag_agree = 0
     diffs = []
     for fid, va in run_a.items():
         vb = run_b.get(fid)
@@ -367,15 +413,17 @@ def stability_compare(run_a: dict, run_b: dict):
             dims_le1 += 1
         fa, fb = set(raised_fatal_flags(va)), set(raised_fatal_flags(vb))
         flag_agree += int(fa == fb)
-        pa = {d: (va.get("dimensions") or {}).get(d, {}).get("applicability") for d in DIMENSIONS}
-        pb = {d: (vb.get("dimensions") or {}).get(d, {}).get("applicability") for d in DIMENSIONS}
-        appl_tot += 1
-        appl_agree += int(pa == pb)
+    appl = applicability_metrics(run_a, run_b)
     return {"repeat_pairs": tot,
             "dimension_diff_le1_rate": round(dims_le1 / tot, 3) if tot else None,
             "fatal_flag_agreement": round(flag_agree / tot, 3) if tot else None,
-            "applicability_agreement": round(appl_agree / tot, 3) if tot else None,
-            "per_fixture": diffs}
+            "dimension_diff_le1_rate_detail": diffs,
+            "per_dimension_applicability_exact_agreement":
+                appl["per_dimension_applicability_exact_agreement"],
+            "required_na_critical_contradictions":
+                appl["required_na_critical_contradictions"],
+            "whole_vector_exact_agreement_diagnostic":
+                appl["whole_vector_exact_agreement"]}
 
 
 def review_manifest(verdicts: dict, threshold: float = 2.0, sample_rate: float = 0.2,
