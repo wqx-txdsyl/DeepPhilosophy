@@ -574,5 +574,5 @@ def ensemble_manifest(aggregates: dict) -> dict:
             conflicts.append(fid)
     return {"ANY_1_OF_3_FATAL_DISSENT": sorted(set(dissent)),
             "ANY_APPLICABILITY_1_1_1": sorted(set(ambig)),
-            "ANY_SCORE_SPREAD_GT1": sorted(set(spread)),
+            "ANY_SCORE_SPREAD_GT1": sorted({(c["case"], c["dim"]) for c in spread}),
             "MECHANICAL_LLM_CONFLICT": sorted(set(conflicts))}
