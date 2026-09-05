@@ -199,32 +199,46 @@ def validate_verdict(v: dict) -> list:
     return errs
 
 
-def run_judge(inp: dict, transport=None) -> dict:
-    """调用独立 judge（或注入 transport 以便离线测试）; 返回已校验 verdict。"""
-    if transport is None:
-        body = json.dumps({
-            "model": JUDGE_MODEL, "temperature": JUDGE_TEMPERATURE,
-            "messages": [{"role": "system", "content": JUDGE_SYSTEM_PROMPT},
-                         {"role": "user", "content": render_judge_prompt(inp)}],
-        }).encode()
-        key = None
-        for line in open(os.path.join(os.path.dirname(os.path.dirname(
-                os.path.dirname(os.path.abspath(__file__)))), "..", ".env"),
-                encoding="utf-8", errors="replace"):
-            if line.strip().startswith("ZHIPU_API_KEY="):
-                key = line.split("=", 1)[1].strip().strip('"').strip("'")
-        req = urllib.request.Request(JUDGE_BASE_URL, data=body, headers={
-            "Content-Type": "application/json", "Authorization": "Bearer " + (key or "")})
-        with urllib.request.urlopen(req, timeout=300) as r:
-            data = json.loads(r.read())
-        raw = data["choices"][0]["message"]["content"] or ""
-        verdict = _extract_json(raw)
-    else:
-        verdict = _extract_json(transport(render_judge_prompt(inp)))
-    errs = validate_verdict(verdict)
-    if errs:
-        raise ValueError("judge verdict 校验失败: " + "; ".join(errs[:6]))
-    return verdict
+def run_judge(inp: dict, transport=None, attempts: int = 3) -> dict:
+    """调用独立 judge（或注入 transport 以便离线测试）; 解析/校验失败带反馈重试; 返回已校验 verdict。"""
+    prompt = render_judge_prompt(inp)
+    feedback = ""
+    last_err = None
+    for _ in range(attempts):
+        if transport is None:
+            body = json.dumps({
+                "model": JUDGE_MODEL, "temperature": JUDGE_TEMPERATURE,
+                "messages": [{"role": "system", "content": JUDGE_SYSTEM_PROMPT},
+                             {"role": "user", "content": prompt + feedback}],
+            }).encode()
+            key = None
+            for line in open(os.path.join(os.path.dirname(os.path.dirname(
+                    os.path.dirname(os.path.abspath(__file__)))), "..", ".env"),
+                    encoding="utf-8", errors="replace"):
+                if line.strip().startswith("ZHIPU_API_KEY="):
+                    key = line.split("=", 1)[1].strip().strip('"').strip("'")
+            req = urllib.request.Request(JUDGE_BASE_URL, data=body, headers={
+                "Content-Type": "application/json", "Authorization": "Bearer " + (key or "")})
+            with urllib.request.urlopen(req, timeout=300) as r:
+                data = json.loads(r.read())
+            raw = data["choices"][0]["message"]["content"] or ""
+            try:
+                verdict = _extract_json(raw)
+            except json.JSONDecodeError as e:
+                last_err = e
+                feedback = ("\n\n你上一次输出无法解析为 JSON（" + str(e) +
+                            "）。请只输出一个严格合法的 JSON 对象: 字符串内不得使用未转义的英文双引号"
+                            "（引用原文请用中文引号“”）；不要输出 JSON 以外的任何文字。")
+                continue
+        else:
+            verdict = _extract_json(transport(prompt + feedback))
+        errs = validate_verdict(verdict)
+        if not errs:
+            return verdict
+        last_err = ValueError("judge verdict 校验失败: " + "; ".join(errs[:6]))
+        feedback = ("\n\n你上一次输出不合规: " + str(last_err) +
+                    "。请修正后重新只输出严格合法 JSON。")
+    raise last_err
 
 
 # ── 聚合 / 校准 / 抽样 ────────────────────────────────────────────
@@ -337,9 +351,16 @@ if __name__ == "__main__":  # pragma: no cover - 手动校准入口（evaluation
     a = ap.parse_args()
     if a.calibrate:
         fixtures = calibration_fixtures()
+        dest = a.out or os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                     "..", "_tmp", "o7a_calibration.json")
         runs = []
         for i in range(a.repeat):
-            res = {fid: run_judge(f["judge_input"]) for fid, f in sorted(fixtures.items())}
+            res = {}
+            for fid, f in sorted(fixtures.items()):
+                res[fid] = run_judge(f["judge_input"])
+                with open(dest, "w", encoding="utf-8") as fh:   # 增量落盘, 防中途丢失
+                    json.dump({"run": i, "partial": res}, fh, ensure_ascii=False, indent=1, default=str)
+                print(f"[run{i}] {fid} ok", flush=True)
             runs.append(res)
         gate = calibration_gate(
             {**runs[0], "__good__": [k for k, f in fixtures.items() if f["tier"] == "GOOD"],
