@@ -234,3 +234,70 @@ PROPOSED_VERDICT = PATCH_REQUIRED
   c) 更换/增加 judge 模型（须 TESTED≠JUDGE 且重走 §10-§11 全部门）。
 O7_B_AUTHORIZED = false
 ```
+
+
+---
+
+# O7-A RP2 — Hybrid Judge Calibration（2026-09-06）
+
+> BASE: `d1d281902` ｜ RP2_CODE_SHA: `a1062203a` ｜ 校准数据修正 commit: `3f0049577`（§20 作废首次混合运行后 re-freeze）
+> HYBRID_CALIBRATION_GATE_SHA（两轮最终校准所用完全固定 evaluator tree）: `3f0049577`
+> HEAD/REMOTE: 见回执 ｜ 任务书: docs/tasks/PHIAGENT_O7A_RP2_HYBRID_JUDGE_FINAL_CALIBRATION_CLOSURE_TASK.md
+
+## RP2-1. 宪法增补（Reviewer 裁决落地）
+
+```
+Mechanical Evidence Checks + Independent LLM Scholarly Judge → Deterministic Aggregator → Reviewer
+STABILITY != VALIDITY（correctness + repeatability 同时检查）
+MECHANICAL AUTHORITY 与 SEMANTIC JUDGMENT 有意分离
+Ensembling reduces variance; it does not repair systematic semantic blindness
+```
+
+- QuoteSupportProbe（o7_quote_probe.py, evaluation-only, 零生产导入）: 机械提取 quote-like span
+  （中文/ASCII 双引号、blockquote、lead-in），对所给证据文本判 EXACT/NEAR/NONE;
+  作品名《》不当引文; EVIDENCE_SCOPE=COMPLETE_FOR_FIXTURE 时 F5=机械权威,
+  PARTIAL_RUNTIME_EVIDENCE 时 NONE 只能报 UNSUPPORTED_BY_SUPPLIED_EVIDENCE。
+- k-of-3 ensemble + 确定性聚合: 分数=中位数; applicability=多数(三票各一→AMBIGUOUS→review);
+  语义 flag(F1/F2/F3/F4/F6)=≥2/3; F5=机械; raw_judgments/vote_distribution/minority_flags/
+  mechanical_llm_conflict 全保留（§9 个体失败可见性）。
+- SEMANTIC_JUDGE_PROMPT_CHANGED=false（RP2 未动 judge 语义宪法; SHA before=after）。
+
+## RP2-2. 机械 F5 矩阵（probe-only, 确定性）
+
+Q5-M1..M7 全部按预期: MECHANICAL_F5_FALSE_POSITIVE=0, 植入漏报=0（两次运行一致）。
+
+## RP2-3. Final Calibration（2×k3=192 调用, tree=3f0049577, judge=glm-4-plus t=0.0）
+
+| 指标 | Ensemble A | Ensemble B | RP2 门 | 判定 |
+|---|---|---|---|---|
+| GOOD>MID>BAD | 2.631/2.323/0.953 | 2.786/2.344/0.900 | ✓ | PASS |
+| **F5_RECALL（机械权威）** | **1.0** | **1.0** | 100% | **PASS** |
+| F2/F4_RECALL | 1.0/1.0 | 1.0/1.0 | 100% | PASS |
+| F1_RECALL | 0.5 | 0.5 | 100% | **FAIL** |
+| F3_RECALL | 1.0 | 0.0 | 100% | **FAIL** |
+| F6_RECALL | 0.8 | 0.8 | 100% | **FAIL** |
+| ENSEMBLE_FALSE_FATAL（负样本 21） | 0 | 0 | 0 | PASS |
+| ENSEMBLE_FATAL_FLAG_AGREEMENT | — | 96.9% | 100% | **FAIL** |
+| DIMENSION_DIFF≤1 | — | 100% | ≥90% | PASS |
+| PER_DIM_APPLICABILITY | — | 90.6% | ≥90% | PASS |
+| REQUIRED↔N/A contradictions | — | 0 | 0 | PASS |
+| MECHANICAL_F5_FALSE_POSITIVE | 0 | 0 | 0 | PASS |
+| PRODUCTION_DIFF / FULL_TESTS | 0 / 494 passed | 同 | 0/0 | PASS |
+
+manifest（§19）: ANY_1_OF_3_FATAL_DISSENT=[C2-bad, C3-bad, C8-bad];
+MECHANICAL_LLM_CONFLICT=[C2-bad]（机械 F5=true, LLM 三票 false——judge 系统盲点被探针暴露并纠正）。
+
+## RP2-4. 判定
+
+```
+O7_A_RP2 = BLOCKED_JUDGE_MODEL（§22: 语义 flag F1/F3/F6 在两个 k=3 ensemble 间无法稳定,
+           且 §0 禁止 RP3 prompt patch）
+证据链（5 轮完整校准）: F1 在 4 轮中 100% 命中后于本轮双 ensemble 一致漏报;
+  C8-bad F3 与 F6-M4 F6 跨轮翻转; temperature=0.0 不消除长上下文 JSON 任务上的
+  采样不确定性——限制因子是 judge 模型本身, 不是仪器设计。
+机械层结论: F5 经机械权威后完美稳定（两轮 12/12 中 F5 全中、负样本零误报、矩阵零误报）——
+  证明 hybrid 架构方向正确: 机械事实用机械测量, 语义判断才交给 LLM。
+O7_B_AUTHORIZED = false
+下一步（待 Reviewer）: JUDGE_MODEL_REPLACEMENT_EVALUATION（候选须 TESTED≠JUDGE,
+  更换后重走 §10-§11 全部门; 现有 32 fixtures + 机械矩阵可直接复用, 边际成本仅 judge 调用）。
+```
