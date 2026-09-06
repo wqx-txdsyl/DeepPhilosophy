@@ -40,6 +40,7 @@ from routes.agent_core import (
 # 工具域模块（import 即注册到 TOOLS; 下划线符号仅测试/内部使用, 显式 re-export）
 from routes.agent_tools_retrieval import _exec_search_books, _exec_query_db
 import routes.agent_tools_retrieval  # noqa: F401  注册检索域工具
+import routes.agent_tools_scholarly  # noqa: F401  注册 O7-C 二手文献检索域（2 工具）
 import routes.agent_tools_memory     # noqa: F401  注册记忆/创作域工具
 import routes.agent_tools_eval       # noqa: F401  注册评估/分析域工具
 from routes.agent_sse import router as _sse_router, AgentChatRequest  # noqa: F401
