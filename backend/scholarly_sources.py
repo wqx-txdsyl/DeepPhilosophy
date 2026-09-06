@@ -16,6 +16,7 @@ Providers: Crossref + OpenAlex（官方公开 API, 无鉴权; feasibility audit 
 docs/PHIAGENT_O7C_SCHOLARLY_RETRIEVAL.md）。SEP/PhilPapers = NOT_IMPLEMENTED。
 """
 import hashlib
+import http.client
 import ipaddress
 import json
 import os
@@ -28,8 +29,9 @@ import urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE_PATH = os.path.join(ROOT, "backend", "data", "scholarly_cache.json")
 
-CONNECT_TIMEOUT = 8
-READ_TIMEOUT = 20
+# RP2 §4 Option B: 单一真实 socket timeout（作用于实际 connection 的全部
+# blocking 操作）; 不做「probe 一条连接、声称约束另一条」的假分离。
+NETWORK_SOCKET_TIMEOUT = 20
 MAX_REDIRECTS = 4
 MAX_BYTES = 5 * 1024 * 1024   # full text 不无界下载
 USER_AGENT = "DeepPhilosophy-PhiAgent/0.7 (scholarly metadata; contact: site-admin)"
@@ -71,57 +73,121 @@ def _url_guard(url):
     return True, "ok"
 
 
-class _GuardedRedirectHandler(urllib.request.HTTPRedirectHandler):
-    """O7-C RP1 §7: 每一跳 redirect target 都过 SSRF guard; >MAX_REDIRECTS 拒绝。"""
-    hops = 0
-
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        if _GuardedRedirectHandler.hops >= MAX_REDIRECTS:
-            raise ProviderError("REDIRECT_LIMIT",
-                                f">{MAX_REDIRECTS} redirects: {newurl}")
-        ok, why = _url_guard(newurl)
-        if not ok:
-            raise ProviderError("URL_BLOCKED", f"redirect target {why}: {newurl}")
-        _GuardedRedirectHandler.hops += 1
-        return super().redirect_request(req, fp, code, msg, headers, newurl)
-
-
-def _connect_probe(url):
-    """Option A 连接阶段硬上限: DNS+TCP connect 单独受 CONNECT_TIMEOUT 约束。"""
-    u = urllib.parse.urlsplit(url)
-    host, port = u.hostname, u.port or (443 if u.scheme == "https" else 80)
-    infos = socket.getaddrinfo(host, port, proto=socket.IPPROTO_TCP)
-    s = socket.create_connection(infos[0][4], timeout=CONNECT_TIMEOUT)
-    s.close()
-
-
-def _http_get(url, accept="application/json"):
-    """带硬上限的 GET。返回 (status, bytes)；错误抛 ProviderError。
-
-    timeout 语义（RP1 §9 Option A）: 连接阶段 = CONNECT_TIMEOUT（_connect_probe）,
-    读阶段 = READ_TIMEOUT（urlopen timeout 覆盖 read; urlopen 内部 connect 复用
-    同一 socket 已建立, 故连接上限由 probe 单独强制）。"""
-    ok, why = _url_guard(url)
-    if not ok:
-        raise ProviderError("URL_BLOCKED", why)
-    _connect_probe(url)
-    req = urllib.request.Request(url, headers={
-        "User-Agent": USER_AGENT, "Accept": accept,
-        "Accept-Encoding": "identity"})
-    _GuardedRedirectHandler.hops = 0
-    opener = urllib.request.build_opener(_GuardedRedirectHandler)
-    with opener.open(req, timeout=READ_TIMEOUT) as r:
-        data = r.read(MAX_BYTES + 1)
-        if len(data) > MAX_BYTES:
-            raise ProviderError("RESPONSE_TOO_LARGE", url)
-        return r.status, data
-
-
 class ProviderError(Exception):
     def __init__(self, kind, detail=""):
         super().__init__(f"{kind}: {detail}")
-        self.kind = kind          # PROVIDER_TIMEOUT / PROVIDER_RATE_LIMIT /
-        self.detail = detail      # PROVIDER_UNAVAILABLE / MALFORMED / URL_BLOCKED …
+        self.kind = kind
+        self.detail = detail
+
+
+class _PinnedHTTP(http.client.HTTPConnection):
+    """DNS-pinned 连接: 实际 connect 目标 = SSRF guard 校验过的公网地址。
+
+    覆盖 _create_connection（HTTP/HTTPS 共用入口）→ 消除 guard 与真实连接
+    之间的 DNS TOCTOU（RP2 §7 Option A: pin one validated public IP）。"""
+    _pinned_addr = None
+
+    def __init__(self, *a, **kw):
+        super().__init__(*a, **kw)
+        if self._pinned_addr is not None:
+            addr = self._pinned_addr
+
+            def _cc(host, port, timeout=None, source_address=None, sockopts=None):
+                return socket.create_connection(addr, timeout=NETWORK_SOCKET_TIMEOUT)
+
+            self._create_connection = _cc
+        self.timeout = NETWORK_SOCKET_TIMEOUT
+
+
+class _PinnedHTTPS(_PinnedHTTP, http.client.HTTPSConnection):
+    pass
+
+
+class _GuardedRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """RP2 §5: redirect 计数为 handler 实例级（每请求新建 opener/handler）,
+    并发请求不共享 hop counter; 每一跳 target 过 SSRF guard。"""
+
+    def __init__(self, *a, **kw):
+        super().__init__(*a, **kw)
+        self.hops = 0
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if self.hops >= MAX_REDIRECTS:
+            raise ProviderError("REDIRECT_LIMIT", f">{MAX_REDIRECTS} redirects: {newurl}")
+        ok, why = _url_guard(newurl)
+        if not ok:
+            raise ProviderError("URL_BLOCKED", f"redirect target {why}: {newurl}")
+        self.hops += 1
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _pinned_addr_for(url):
+    """解析并校验目标地址; 返回第一个通过 guard 的 (family, sockaddr) 或抛错。"""
+    u = urllib.parse.urlsplit(url)
+    host, port = u.hostname, u.port or (443 if u.scheme == "https" else 80)
+    infos = socket.getaddrinfo(host, port, proto=socket.IPPROTO_TCP)
+    for info in infos:
+        ip = ipaddress.ip_address(info[4][0])
+        if ip in ipaddress.ip_network("198.18.0.0/15"):
+            continue   # 本机 VPN fake-IP 映射段
+        if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
+            raise ProviderError("URL_BLOCKED", f"private/reserved ip {ip}")
+        return info[4]
+    raise ProviderError("URL_BLOCKED", f"no valid address for {host}")
+
+
+class _PinnedHTTPHandler(urllib.request.HTTPHandler):
+    addr = None
+
+    def do_open(self, http_class, req, **kw):
+        class _C(_PinnedHTTP):
+            _pinned_addr = self.addr
+        return super().do_open(_C, req, **kw)
+
+
+class _PinnedHTTPSHandler(urllib.request.HTTPSHandler):
+    addr = None
+
+    def do_open(self, http_class, req, **kw):
+        class _C(_PinnedHTTPS):
+            _pinned_addr = self.addr
+        return super().do_open(_C, req, **kw)
+
+
+class _Resp:
+    __slots__ = ("status", "body", "final_url", "content_type", "redirect_count")
+
+
+def _http_get(url, accept="application/json"):
+    """带硬上限与完整 provenance 的 GET。
+
+    返回 _Resp(status, body, final_url, content_type, redirect_count)。
+    timeout 语义（RP2 §4 Option B）: NETWORK_SOCKET_TIMEOUT=20 作用于实际
+    connection/socket 的全部 blocking 操作（connect+read 同一 socket）。
+    DNS pinning（RP2 §7）: guard 校验过的地址直接作为 connect 目标。"""
+    ok, why = _url_guard(url)
+    if not ok:
+        raise ProviderError("URL_BLOCKED", why)
+    addr = _pinned_addr_for(url)          # 校验与连接使用同一解析结果（pin）
+    req = urllib.request.Request(url, headers={
+        "User-Agent": USER_AGENT, "Accept": accept,
+        "Accept-Encoding": "identity"})
+    rh = _GuardedRedirectHandler()
+    hh = _PinnedHTTPHandler(); hh.addr = addr
+    hs = _PinnedHTTPSHandler(); hs.addr = addr
+    opener = urllib.request.build_opener(hs, hh, rh)
+    with opener.open(req, timeout=NETWORK_SOCKET_TIMEOUT) as r:
+        data = r.read(MAX_BYTES + 1)
+        if len(data) > MAX_BYTES:
+            raise ProviderError("RESPONSE_TOO_LARGE", url)
+        resp = _Resp()
+        resp.status = r.status
+        resp.body = data
+        resp.final_url = r.geturl()
+        resp.content_type = (r.headers.get("Content-Type") or "").split(";")[0].strip()
+        resp.redirect_count = rh.hops
+        return resp
+
 
 
 def _get_json(url):
@@ -141,7 +207,7 @@ def _get_json(url):
     except socket.timeout:
         raise ProviderError("PROVIDER_TIMEOUT", url)
     try:
-        return json.loads(data.decode("utf-8", "replace"))
+        return json.loads(resp.body.decode("utf-8", "replace"))
     except json.JSONDecodeError:
         raise ProviderError("MALFORMED_PROVIDER_RESPONSE", url)
 
@@ -262,6 +328,8 @@ def search_openalex(query, limit=8, year_from=None, year_to=None):
             "abstract_source": "OPENALEX_INVERTED_INDEX" if it.get("abstract_inverted_index") else None,
             "open_access": oa,
             "oa_pdf_url": loc.get("pdf_url") or oa.get("oa_url"),
+            "oa_candidate_kind": ("DIRECT_PDF" if loc.get("pdf_url")
+                                  else "OA_LOCATION"),
             "provider": "openalex",
             "provider_record_id": (it.get("id") or "").rsplit("/", 1)[-1] or None,
             "cited_by": it.get("cited_by_count"),
@@ -390,16 +458,23 @@ def _mk_canonical(provider_records):
     # O7-C RP1 §1: provider OA URL 只是机械候选, 不自动升级 access level
     #   provider says OA != URL verified reachable
     rec["full_text_candidates"] = [
-        {"url": u, "provider": r["provider"], "access_claim": "OPEN_ACCESS"}
+        {"url": r["oa_pdf_url"], "provider": r["provider"],
+         "access_claim": "OPEN_ACCESS",
+         "candidate_kind": r.get("oa_candidate_kind") or "OA_LOCATION"}
         for r in provider_records
-        if (r.get("oa_pdf_url") or "").startswith(("https://", "http://"))
-        for u in [r["oa_pdf_url"]]]
+        if (r.get("oa_pdf_url") or "").startswith(("https://", "http://"))]
     return rec
 
 
 # ── Access state machine（§13-§18）───────────────────────────────
-def _record_access(rec, level, evidence, url=None, chash=None, extra=None):
-    rec["access"] = {"level": level, "evidence": evidence,
+def _promote_access(rec, candidate_level, evidence, url=None, chash=None, extra=None):
+    """RP2 §1: 单调晋升——new = max(current, candidate); 任何路径不得降级。"""
+    cur = _LEVEL_ORDER[rec["access"]["level"]]
+    cand = _LEVEL_ORDER[candidate_level]
+    if cand < cur:
+        return  # 历史证据仍然成立, 不因后续失败撤销（RP2 M1-M3）
+    rec["access"] = {"level": candidate_level if cand >= cur else rec["access"]["level"],
+                     "evidence": evidence,
                      "checked_at": int(time.time()),
                      "full_text_url": url, "content_hash": chash}
     if extra:
@@ -407,20 +482,18 @@ def _record_access(rec, level, evidence, url=None, chash=None, extra=None):
 
 
 def get_evidence(rec, requested_access):
-    """O7-C RP1 §2-§6: 严格单调访问状态机 + returned_evidence_level 与状态分离。
+    """RP2: 单调状态机 + candidate_kind READ 真实性 + 逐候选尝试记账。
 
-    - FULL_TEXT_AVAILABLE = 实际 network attempt 已证明 URL 可达且 body 可取得
-    - FULL_TEXT_READ = body 取得 + 解析出有意义正文（+content hash）
-    - 请求 ABSTRACT 不得降低状态字段（可返回摘要内容, 但 after 不降）
-    """
+    READ 只可能来自 DIRECT_PDF: HTTP 2xx + PDF magic + 解析出正文。
+    HTML OA_LOCATION 至多 FULL_TEXT_AVAILABLE（landing page ≠ 论文正文）。"""
     before = rec["access"]["level"]
     info = {"source_record_id": rec["source_record_id"],
             "access_level_before": before,
             "access_level_after": before,          # 单调: 只升不降
-            "returned_evidence_level": None,       # 本次实际返回的证据层级（机械字段）
+            "returned_evidence_level": None,
             "full_text_status": None, "evidence_passages": [],
             "passage_locators": [], "source_url": None, "content_hash": None,
-            "access_notes": ""}
+            "access_notes": "", "full_text_attempts": []}
     if rec["abstract"]["text"]:
         info["abstract"] = dict(rec["abstract"])
 
@@ -435,54 +508,76 @@ def get_evidence(rec, requested_access):
                                     "状态保持不变")
         return rec, info
 
-    # FULL_TEXT_IF_LEGALLY_AVAILABLE: 逐个尝试机械候选（不要求先有 abstract）
     cands = rec.get("full_text_candidates") or []
-    info["full_text_attempts"] = 0
     if not cands:
-        info["access_notes"] = ("无 OA 全文候选（provider record 未提供 OA 位置）; "
-                                "DOI landing page 不构成全文可用")
+        info["access_notes"] = ("无 OA 全文候选; DOI landing page 不构成全文可用")
         return rec, info
     last_err = None
     for cand in cands[:3]:
         url = cand["url"]
-        info["full_text_attempts"] += 1
         info["source_url"] = url
+        attempt = {"candidate_url": url,
+                   "candidate_kind": cand.get("candidate_kind"),
+                   "result": None, "http_status": None}
         try:
-            status, data = _http_get(url, accept="application/pdf,text/html,*/*")
+            resp = _http_get(url, accept="application/pdf,text/html,*/*")
         except ProviderError as e:
-            last_err = f"{e.kind}"
+            last_err = e.kind
+            attempt["result"] = "BLOCKED" if e.kind == "URL_BLOCKED" else "HTTP_FAILURE"
+            info["full_text_attempts"].append(attempt)
             continue
         except urllib.error.HTTPError as e:
             last_err = f"HTTP_{e.code}"
+            attempt.update(result="HTTP_FAILURE", http_status=e.code)
+            info["full_text_attempts"].append(attempt)
             continue
-        except (urllib.error.URLError, OSError) as e:
+        except (urllib.error.URLError, OSError):
             last_err = "NETWORK"
+            attempt["result"] = "HTTP_FAILURE"
+            info["full_text_attempts"].append(attempt)
             continue
-        # body 实际取得 → 至少 FULL_TEXT_AVAILABLE（已证明可取得, RP1 §2）
-        text = _extract_text(data, url)
-        if not text or len(text.strip()) < 200:
-            # RP1 §2: 2xx + body 取得但 parser 未读懂 → AVAILABLE 合理
-            _record_access(rec, "FULL_TEXT_AVAILABLE",
-                           f"body retrievable (HTTP {status}) but parser produced "
-                           f"no meaningful text", url=url)
-            info.update({"access_level_after": "FULL_TEXT_AVAILABLE",
-                         "full_text_status": "AVAILABLE_PARSE_FAILED",
-                         "access_notes": "全文位置已验证可达, 但当前解析器未产出正文"})
+        attempt["http_status"] = resp.status
+        is_pdf = (resp.body[:4] == b"%PDF"
+                  or "pdf" in (resp.content_type or "").lower()
+                  or url.lower().endswith(".pdf"))
+        text = _extract_text(resp.body, url) if is_pdf else None
+        if is_pdf and text and len(text.strip()) >= 200 and cand.get("candidate_kind") == "DIRECT_PDF":
+            # RP2 §9: DIRECT_PDF + 解析成功 → READ
+            chash = hashlib.sha256(resp.body).hexdigest()
+            _promote_access(rec, "FULL_TEXT_READ", "direct PDF fetched+parsed",
+                            url=resp.final_url, chash=chash,
+                            extra={"content_length": len(text),
+                                   "parser": "pdftotext",
+                                   "content_type": resp.content_type,
+                                   "redirect_count": resp.redirect_count,
+                                   "candidate_kind": "DIRECT_PDF"})
+            info.update({"access_level_after": rec["access"]["level"],
+                         "full_text_status": "READ",
+                         "content_hash": chash,
+                         "evidence_passages": _top_passages(text, None),
+                         "access_notes": "DIRECT_PDF 已解析; 返回节选段落"})
+            attempt["result"] = "READ"
+            info["full_text_attempts"].append(attempt)
             return rec, info
-        chash = hashlib.sha256(data).hexdigest()
-        _record_access(rec, "FULL_TEXT_READ",
-                       "fetched+parsed body obtained", url=url, chash=chash,
-                       extra={"content_length": len(text),
-                              "parser": "plain-text-heuristic"})
-        info.update({"access_level_after": "FULL_TEXT_READ",
-                     "full_text_status": "READ",
-                     "content_hash": chash,
-                     "evidence_passages": _top_passages(text, None),
-                     "access_notes": "全文已内部解析; 返回节选段落而非整篇复制"})
+        # PDF 解析失败 或 HTML OA_LOCATION → 至多 AVAILABLE（RP2 §10）
+        _promote_access(rec, "FULL_TEXT_AVAILABLE",
+                        f"verified retrievable (HTTP {resp.status}, "
+                        f"{resp.content_type}, final={resp.final_url}, "
+                        f"redirects={resp.redirect_count})",
+                        url=resp.final_url,
+                        extra={"content_type": resp.content_type,
+                               "final_url": resp.final_url,
+                               "redirect_count": resp.redirect_count,
+                               "candidate_kind": cand.get("candidate_kind")})
+        info.update({"access_level_after": rec["access"]["level"],
+                     "full_text_status": "AVAILABLE_ONLY",
+                     "access_notes": ("HTML OA_LOCATION/PDF 解析未成功 → AVAILABLE"
+                                      "（landing page 不冒充论文正文）")})
+        attempt["result"] = "AVAILABLE"
+        info["full_text_attempts"].append(attempt)
         return rec, info
-    # 全部候选失败 → 状态保持原级（broken 候选不虚报, RP1 §3）
     info["full_text_status"] = f"FETCH_FAILED:{last_err}"
-    info["access_notes"] = (f"OA 候选获取失败（{last_err}）; 状态保持 {before}, "
+    info["access_notes"] = (f"OA 候选全部失败（{last_err}）; 状态保持 {before}, "
                             "不虚报全文可用")
     return rec, info
 
