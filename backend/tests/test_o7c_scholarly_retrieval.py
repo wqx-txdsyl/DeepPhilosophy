@@ -573,3 +573,51 @@ def test_t33_metrics_distinguish_available_only():
     assert "FULLTEXT_AVAILABLE_ONLY_SUCCESS" in src
     assert "DIRECT_PDF_PARSE_FAILURES" in src
     assert '"FULLTEXT_PARSE_FAILURES"' not in src
+
+
+# ══ Final Gate Patch 2: 显式禁代理（P1-P5 真行为测试）═══════
+def _opener_proxy_maps(opener):
+    return [h.proxies for h in opener.handlers
+            if isinstance(h, urllib.request.ProxyHandler)]
+
+
+def test_p1_auto_with_http_proxy_not_used(monkeypatch):
+    monkeypatch.setenv("HTTP_PROXY", "http://untrusted.example:8080")
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+    maps = _opener_proxy_maps(SS._build_network_opener())
+    assert all(m == {} for m in maps), maps   # 无任何非空 proxy map=环境代理被禁用
+
+
+def test_p2_direct_with_https_proxy_not_used(monkeypatch):
+    monkeypatch.setenv("HTTPS_PROXY", "http://untrusted.example:8080")
+    monkeypatch.setenv("SCHOLARLY_NETWORK_MODE", "DIRECT_PINNED")
+    assert all(m == {} for m in _opener_proxy_maps(SS._build_network_opener()))
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+
+
+def test_p3_trusted_proxy_delegation_enabled(monkeypatch):
+    monkeypatch.setenv("HTTPS_PROXY", "http://trusted.local:8080")
+    monkeypatch.setenv("SCHOLARLY_NETWORK_MODE", "TRUSTED_PROXY")
+    opener = SS._build_network_opener()
+    # TRUSTED_PROXY 分支未显式注入空 ProxyHandler → 环境代理可用（委托）
+    empty = [h for h in opener.handlers
+             if isinstance(h, urllib.request.ProxyHandler) and h.proxies == {}]
+    assert not empty
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+
+
+def test_p4_auto_env_proxy_private_target_blocked(monkeypatch):
+    monkeypatch.setenv("HTTP_PROXY", "http://untrusted.example:8080")
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+    monkeypatch.setattr(SS.socket, "getaddrinfo",
+                        lambda h, p, proto=None: [(2, 1, 6, "", ("192.168.0.9", p or 443))])
+    with pytest.raises(SS.ProviderError):
+        SS._pinned_addr_for("https://private.example/x")
+
+
+def test_p5_auto_env_proxy_public_target_pinned(monkeypatch):
+    monkeypatch.setenv("HTTP_PROXY", "http://untrusted.example:8080")
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+    monkeypatch.setattr(SS.socket, "getaddrinfo",
+                        lambda h, p, proto=None: [(2, 1, 6, "", ("93.184.216.34", p or 443))])
+    assert SS._pinned_addr_for("https://public.example/x")[0] == "93.184.216.34"

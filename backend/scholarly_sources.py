@@ -181,6 +181,22 @@ class _Resp:
     __slots__ = ("status", "body", "final_url", "content_type", "redirect_count")
 
 
+def _build_network_opener():
+    """薄 transport helper（Patch 2 §2）: 按显式网络模式构造 opener。
+
+    - TRUSTED_PROXY: 允许系统代理配置（DNS/出网边界委托, DELEGATED 如实上报）
+    - DIRECT_PINNED / AUTO: ProxyHandler({}) 显式禁用环境代理——
+      build_opener 默认自动装载 env proxy, 不显式替换时 direct 路径会被悄悄接管。
+    """
+    rh = _GuardedRedirectHandler()
+    if _network_mode() == "TRUSTED_PROXY":
+        return urllib.request.build_opener(rh)
+    hh = _PinnedHTTPHandler()
+    hs = _PinnedHTTPSHandler()
+    return urllib.request.build_opener(
+        urllib.request.ProxyHandler({}), hs, hh, rh)
+
+
 def _http_get(url, accept="application/json"):
     """带硬上限与完整 provenance 的 GET。
 
@@ -194,15 +210,7 @@ def _http_get(url, accept="application/json"):
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT, "Accept": accept,
         "Accept-Encoding": "identity"})
-    rh = _GuardedRedirectHandler()
-    if _network_mode() == "TRUSTED_PROXY":
-        # 显式信任代理: DNS 解析与出网边界委托给代理（DELEGATED, 如实上报）
-        opener = urllib.request.build_opener(rh)
-    else:
-        # DIRECT_PINNED / AUTO: 检测到系统代理也不静默信任——安全直连 + 逐跳 pin
-        hh = _PinnedHTTPHandler()
-        hs = _PinnedHTTPSHandler()
-        opener = urllib.request.build_opener(hs, hh, rh)
+    opener = _build_network_opener()
     with opener.open(req, timeout=NETWORK_SOCKET_TIMEOUT) as r:
         data = r.read(MAX_BYTES + 1)
         if len(data) > MAX_BYTES:
