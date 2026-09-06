@@ -214,7 +214,7 @@ T1-T21（M1-M3 单调 kill / 无 detached probe / timeout 真值 / redirect 实�
 # O7-C Final Gate Patch — Network Trust Boundary & Verified Document Body（2026-09-06）
 
 > BASE_SHA=fd7ca8709 ｜ CODE_SHA=6ef2c1bcc
-> O7C_FINAL_CAPABILITY_GATE_SHA= 本节 gate 产物 commit
+> O7C_FINAL_CAPABILITY_GATE_SHA=84dd11019（本 gate 产物 commit）
 
 ## 修复对照
 
@@ -254,3 +254,36 @@ F: LITERATURE_ACCESS_OVERCLAIM_RECALL=100%, FALSE=0（12 fixtures k3 复跑）
 ```
 
 ## 测试: T22-T33 新增; 全量 607 passed / FAILED=0 / SKIPPED=0
+
+
+---
+
+# O7-C Final Gate Patch 2 — Explicit Proxy Disable + Closeout SHA（2026-09-06）
+
+> BASE_SHA=42d88fc19 ｜ CODE_SHA=2c0170d59（+悬空引用修复 dd08e4911）
+> O7C_FINAL_CAPABILITY_GATE_SHA=84dd11019
+> **CLOSEOUT_SHA= 本 docs-only 收口 commit（=HEAD_SHA, ≠GATE_SHA——正确分离, 不追求 gate commit 自引用）**
+
+## 修复
+
+1. **Direct opener 显式禁代理**: `_build_network_opener()`（薄 transport helper）在
+   DIRECT_PINNED/AUTO 分支注入 `ProxyHandler({})`——build_opener 默认会自动装载
+   环境代理, 不显式替换时 direct 路径会被悄悄接管（Reviewer 抓到的暗道）。
+   仅 `SCHOLARLY_NETWORK_MODE=TRUSTED_PROXY` 允许系统代理配置。
+2. **P1-P5 真行为测试**取代 T28 源码字符串断言: AUTO+HTTP_PROXY → proxy map 全空;
+   DIRECT_PINNED+HTTPS_PROXY → 不用代理; TRUSTED_PROXY → 委托启用;
+   AUTO+env proxy+私网目标 → 仍 URL_BLOCKED; AUTO+env proxy+公网目标 → pin 已验证 IP。
+3. **SHA 收口纪律**: code freeze（CODE_SHA）→ 完整 live gate → GATE_SHA →
+   docs-only closeout（CLOSEOUT_SHA=HEAD, 写入 GATE）。
+
+## 冻结后完整重跑（TRUSTED_PROXY）
+
+A: 16 queries 错误=0 ｜ B: 25×4 FABRICATED=0 ｜ C: DOI INVALID=0
+D: 分层 34/37/2/2（ACCESS_STATE_DELTA=0）; attempts 12=8 HTTP+0 BLOCKED+4 SUCCESS
+（delta=0; SUCCESS 4=READ 2+AVAILABLE_ONLY 2; DIRECT_PDF_PARSE_FAILURES=0）;
+**VERIFIED_PDF_READ_COUNT=2**（全带 body 签名）; WITHOUT_VERIFIED_BODY=0;
+A1-A8 执行式全真。
+E: TOP5_RELEVANCE_MEAN=3.385; SUBSTANTIVE 13/13=100%; NEGATIVE FP=0 PASS。
+F: LITERATURE_ACCESS_OVERCLAIM_RECALL=100%, FALSE=0。
+
+## 测试: 全量 611 passed / FAILED=0 / SKIPPED=0（+P1-P5）
