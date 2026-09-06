@@ -400,6 +400,14 @@ def get_evidence(rec, requested_access):
         info["full_text_status"] = f"FETCH_FAILED:{e.kind}"
         info["access_notes"] = f"full text 获取失败（{e.kind}）; 保持 FULL_TEXT_AVAILABLE 不虚报已读"
         return rec, info
+    except urllib.error.HTTPError as e:
+        info["full_text_status"] = f"FETCH_FAILED:HTTP_{e.code}"
+        info["access_notes"] = f"full text HTTP {e.code}; 保持 FULL_TEXT_AVAILABLE 不虚报已读"
+        return rec, info
+    except (urllib.error.URLError, OSError) as e:
+        info["full_text_status"] = "FETCH_FAILED:NETWORK"
+        info["access_notes"] = f"full text 网络失败（{e}）; 保持 FULL_TEXT_AVAILABLE 不虚报已读"
+        return rec, info
     text = _extract_text(data, url)
     if not text or len(text.strip()) < 200:
         info["full_text_status"] = "PARSE_FAILED"
