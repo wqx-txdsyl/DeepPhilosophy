@@ -157,3 +157,19 @@ O7-D initial gate 曾索引 discovery-only records, RP1 修正了 curated-corpus
 语义（旧数字不改写, 见上文 §8 原值）。
 
 ## 测试: R1-R19 19 项; 全量 648 passed / FAILED=0 / SKIPPED=0
+
+---
+
+# O7-D Final Micro Patch — Local Provenance Closure（2026-09-06）
+
+> BASE_SHA=05c660adf ｜ CODE_SHA=345ef12a6 ｜ 本 patch 仅两个 provenance 表达统一;
+> registry/evidence hash 不变（29c50cdb…/f6c7bfca…）; 不重跑 discovery/curation/DOI/judge。
+
+1. get_record() 的 registry fallback 返回 dict(r, retrieval_origin="LOCAL_CURATED")
+   （cache miss + registry hit 全路径 LOCAL_CURATED; 持久数据零改动; source_providers
+   保持原 Crossref/OpenAlex）。
+2. 全部真实取得的 abstract 返回（inline + persisted）统一携带
+   evidence_origin=ABSTRACT_METADATA; persisted passages 仍为
+   PERSISTED_VERIFIED_READ; 当前/历史读语义不变。
+
+测试: F1-F6 真行为（含工具路径）; 全量 651 passed / FAILED=0 / SKIPPED=0。
