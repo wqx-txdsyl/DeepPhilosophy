@@ -214,7 +214,7 @@ def test_d24_tool_authorory_unchanged():
 
 
 def test_d25_d26_primary_and_o7b_unchanged():
-    r = subprocess.run(["git", "diff", "--quiet", "e71f4a696", "--",
+    r = subprocess.run(["git", "diff", "--quiet", "e71f4a696", "HEAD", "--",
                         "backend/routes/agent_tools_retrieval.py"],
                        cwd=ROOT, capture_output=True)
     assert r.returncode == 0

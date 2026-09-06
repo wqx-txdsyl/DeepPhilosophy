@@ -192,7 +192,7 @@ def test_c28_cache_mechanical(monkeypatch, tmp_path):
 
 
 def test_c29_primary_retrieval_unchanged():
-    r = subprocess.run(["git", "diff", "--quiet", "e71f4a696", "--",
+    r = subprocess.run(["git", "diff", "--quiet", "e71f4a696", "HEAD", "--",
                         "backend/routes/agent_tools_retrieval.py",
                         "backend/data/book_bibliography.json"],
                        cwd=ROOT, capture_output=True)
