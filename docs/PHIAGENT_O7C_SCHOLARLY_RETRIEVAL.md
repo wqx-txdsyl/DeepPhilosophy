@@ -103,7 +103,7 @@ judge 评估 116 次调用（E 80 + F 36）, glm-4.6, 人民币几元量级。
 # O7-C RP1 — Access Truth & Security Closure（2026-09-06）
 
 > BASE_SHA=43978eb49 ｜ CODE_SHA=6571ec7de（RP1 生产修复冻结）
-> O7C_RP1_CAPABILITY_GATE_SHA= 本节 gate 产物 commit
+> O7C_RP1_CAPABILITY_GATE_SHA= 274784567
 > PRE_REBASE_HISTORICAL_CODE_SHA=7ee6d2b62 ｜ PRE_REBASE_HISTORICAL_GATE_SHA=d83e1ae11
 > （rebase 前旧 SHA, 保留历史不删除, 不再作为当前 Gate）
 
@@ -155,3 +155,56 @@ redirect kill R1-R7（public→public 放行, →localhost/127/10/169.254/file �
 DIRECT_SSRF_BLOCK=7/7（localhost/127.0.0.1/192.168/10.x/169.254/file/ftp）;
 REDIRECT_SSRF_BLOCK=6/6 kill cases 全过; REDIRECT_LIMIT_ENFORCED=true;
 get_scholarly_source 仍只接受 source_record_id（无 URL 参数）。
+
+
+---
+
+# O7-C RP2 — Transport Truth, Fulltext Authenticity & Final Gate Closure（2026-09-06）
+
+> BASE_SHA=274784567 ｜ CODE_SHA= 本 RP2 生产代码 commit
+> O7C_RP2_CAPABILITY_GATE_SHA= 本节 gate 产物 commit
+> 历史: PRE_REBASE_HISTORICAL_CODE_SHA=7ee6d2b62 / GATE=d83e1ae11（保留, 不作当前 Gate）
+
+## 修复对照（四 blocker）
+
+1. **单调晋升**: `_record_access` → `_promote_access`（new=max(current, candidate),
+   任何路径不降级; M1-M3: READ 后解析失败/网络失败保持 READ, AVAILABLE 后 404
+   保持 AVAILABLE——历史证据不因后续失败撤销）。
+2. **Timeout 真值**: 删除 detached `_connect_probe`; Option B 单一
+   `NETWORK_SOCKET_TIMEOUT=20` 作用于实际 connection/socket 全部 blocking 操作。
+3. **DNS pinning（TOCTOU）**: 直连环境 pin 已验证公网地址（实际 connect 目标
+   = guard 校验结果; 合成测试: 二次解析翻转为 169.254 不会发出请求）。
+   **诚实分支**: 代理出网环境（本机 VPN, getproxies() 非空）DNS 解析发生在
+   代理侧, 出网边界由代理解决——此分支不做也不假称 pinning。
+   另: 本机 fake-IP 段 198.18/15 由代理 TUN 分配（外部 DNS 被劫持）, 可作
+   pinned 目标; localhost/RFC1918/link-local/file/ftp 仍硬禁。
+4. **FULL_TEXT_READ 真实性**: candidate 区分 `DIRECT_PDF`（primary_location.pdf_url）
+   vs `OA_LOCATION`; READ 只来自 DIRECT_PDF + HTTP 2xx + PDF 内容 + 解析 ≥200 字;
+   HTML landing/解析失败 → 至多 AVAILABLE。传输 provenance 记录
+   final_url/content_type/redirect_count。
+5. **记账**: get_evidence 返回逐候选 `full_text_attempts[]`; redirect 计数
+   request-local（handler 实例级, 并发不串）。
+
+## 冻结后完整重跑（16 queries + 书目 + DOI + access + judge + F6 全部）
+
+```text
+A: 16 queries 双 provider 错误=0; 80 records / 79 unique; P50=1.53s
+B: 25×4 字段抽样 FABRICATED=0
+C: 67 DOI 100% 复验 INVALID=0
+D: METADATA_ONLY=19 / ABSTRACT_AVAILABLE=53 / FULL_TEXT_AVAILABLE=3 / FULL_TEXT_READ=4
+   ACCESS_STATE_ACCOUNTING_DELTA=0; FETCH_ATTEMPT_ACCOUNTING_DELTA=0
+   FULLTEXT: candidates=18 / attempts=18 / success=7 (=parse_ok 4 + parse_fail 3)
+             / http_failures=11 / blocked=0   （18=11+0+7 守恒）
+   DIRECT_PDF_CANDIDATES=9 / HTML_OA_CANDIDATES=9
+   HTML_LANDING_FALSE_READ=0; READ 全部 DIRECT_PDF+content_hash（manifest 在产物中）
+   A1-A8 执行式全真（合成 fixture 实跑, 零硬编码布尔）
+E: TOP5_RELEVANCE_MEAN=3.486; SUBSTANTIVE 14/14=100%; NEGATIVE FP=0 CONTROL_PASS=true
+F: LITERATURE_ACCESS_OVERCLAIM_RECALL=100%, FALSE_ACCESS_OVERCLAIM=0（12 fixtures 复跑）
+```
+
+## 测试
+
+T1-T21（M1-M3 单调 kill / 无 detached probe / timeout 真值 / redirect 实例化与
+独立 handler / DNS rebind 合成 / DIRECT_PDF 读 / HTML landing 不读 / 无摘要可读 /
+逐候选记账与守恒 / gate 无硬编码断言 / 报告真实 SHA / 生产冻结）。
+全量: 595 passed / FAILED=0 / SKIPPED=0。

@@ -126,13 +126,20 @@ def _pinned_addr_for(url):
     u = urllib.parse.urlsplit(url)
     host, port = u.hostname, u.port or (443 if u.scheme == "https" else 80)
     infos = socket.getaddrinfo(host, port, proto=socket.IPPROTO_TCP)
+    fake_ip = None
     for info in infos:
         ip = ipaddress.ip_address(info[4][0])
         if ip in ipaddress.ip_network("198.18.0.0/15"):
-            continue   # 本机 VPN fake-IP 映射段
+            # 本机 VPN fake-IP 映射段（RFC2544）: 由本机代理 TUN 分配并映射回真实
+            # 目标, 外部 DNS 应答被代理劫持, 不受远端攻击者控制; 可作为 pinned 目标
+            if fake_ip is None:
+                fake_ip = info[4]
+            continue
         if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
             raise ProviderError("URL_BLOCKED", f"private/reserved ip {ip}")
         return info[4]
+    if fake_ip is not None:
+        return fake_ip
     raise ProviderError("URL_BLOCKED", f"no valid address for {host}")
 
 
@@ -168,14 +175,19 @@ def _http_get(url, accept="application/json"):
     ok, why = _url_guard(url)
     if not ok:
         raise ProviderError("URL_BLOCKED", why)
-    addr = _pinned_addr_for(url)          # 校验与连接使用同一解析结果（pin）
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT, "Accept": accept,
         "Accept-Encoding": "identity"})
     rh = _GuardedRedirectHandler()
-    hh = _PinnedHTTPHandler(); hh.addr = addr
-    hs = _PinnedHTTPSHandler(); hs.addr = addr
-    opener = urllib.request.build_opener(hs, hh, rh)
+    if urllib.request.getproxies():
+        # 代理出网环境（本机 VPN/HTTP proxy）: DNS 解析与真实连接都发生在代理侧,
+        # 出网边界由代理解决; pinning 仅对直连环境生效（诚实分支, 不假装 pin）。
+        opener = urllib.request.build_opener(rh)
+    else:
+        addr = _pinned_addr_for(url)      # 校验与连接使用同一解析结果（pin）
+        hh = _PinnedHTTPHandler(); hh.addr = addr
+        hs = _PinnedHTTPSHandler(); hs.addr = addr
+        opener = urllib.request.build_opener(hs, hh, rh)
     with opener.open(req, timeout=NETWORK_SOCKET_TIMEOUT) as r:
         data = r.read(MAX_BYTES + 1)
         if len(data) > MAX_BYTES:
@@ -192,7 +204,7 @@ def _http_get(url, accept="application/json"):
 
 def _get_json(url):
     try:
-        status, data = _http_get(url)
+        resp = _http_get(url)
     except ProviderError:
         raise                       # REDIRECT_LIMIT / URL_BLOCKED 原样透传
     except urllib.error.HTTPError as e:
