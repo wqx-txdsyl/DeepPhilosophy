@@ -110,3 +110,50 @@ D1（o7c 套件）+ D2-D30 共 29 项新测试; 全量 **635 passed / FAILED=0 /
 证据基础设施齐备: 原典语料（O6）+ 书目（O7-B）+ 真实文献检索与访问真值（O7-C）+
 可持续本地语料层（O7-D）。O7-E（Scholarly Quality Gate 双轴 + Scholarly Policy
 activation）所需的生产 prompt 解冻在 O7-E 任务书授权后进行。
+
+
+---
+
+# O7-D RP1 — Curated-Corpus Truth & Local Evidence Runtime Closure（2026-09-06）
+
+> BASE_SHA=75a980672 ｜ CODE_SHA=898359db7（基线回填 deedb7747）
+> O7D_RP1_CORPUS_GATE_SHA=27331fe01 ｜ CLOSEOUT_SHA= 本 docs-only commit（=HEAD, ≠GATE）
+
+## 修复对照（五项）
+
+1. **association_status 真值**: CURATED=276（cluster_ids_accepted 非空）/
+   DISCOVERY_ONLY=34; primary-work links 仅从 accepted（relevance≥3）关系派生
+   （discovery-only 记录 curated primary links=0）。
+2. **默认索引=curated corpus**: build_index 只索引 accepted（276）;
+   search_local 默认排除 discovery-only; cluster_ids_accepted 实际进入 FTS
+   （含引号短语精确命中, 修掉不存在的 cluster_ids 字段——此前 gate 3.66 只是
+   title 强度的 false-green）。
+3. **retrieval_origin 与 source provenance 分离**: 本地=LOCAL_CURATED /
+   live=LIVE_CROSSREF|LIVE_OPENALEX|LIVE_COMBINED / 合并命中=LOCAL_CURATED+LIVE;
+   model_view 暴露 retrieval_origin + source_providers（保留旧 provider 兼容字段）;
+   bibliographic origin（Crossref/OpenAlex）不丢。
+4. **持久证据走真实工具路径**: get_scholarly_source 对 registry 记录回退
+   SR.evidence_for——persisted abstract（ABSTRACT_METADATA）与 persisted passages
+   （PERSISTED_VERIFIED_READ, 附「此前验证读取并持久化…本轮未重新获取全文」）
+   经 _exec_get_scholarly_source 真实返回（R11-R15 工具路径测试, 非仅 SR 层）;
+   historical_evidence_level 与当前 access 分离, 历史读不虚构当前读。
+5. **书目审计五字段**: title/authors/year/venue/DOI——authors 归一化结构比较
+   [(name, orcid)]; 50×5=250 字段, WRONG=0。
+
+## 冻结后重跑（复用 frozen snapshot+ curation; D 阶段 DOI 集确定性复用）
+
+R: dup id/doi/silent=0/0/0, accepted 276 / discovery 34 ｜
+B: 50 records×5=250 字段 WRONG=0 ｜
+E: 26 abstract 证据, ORPHAN=0 ｜
+D: DOI 集 hash 36a10440… 未变 → 复用 310/INVALID=0 ｜
+**L: 20/20=100%, mean 3.79**（原 3.66——过滤 discovery-only 后上升）｜
+**C: 20/20, mean 3.82 ≥ 3.79-0.1** ｜ dup=0, negatives 0 FP。
+
+## 报告口径修正（§16）
+
+旧「LOCAL_CURATED 是 provider」精确化为: retrieval_origin=LOCAL_CURATED（取到
+证据的渠道）+ bibliographic source providers=Crossref（记录来源）。历史保留:
+O7-D initial gate 曾索引 discovery-only records, RP1 修正了 curated-corpus 暴露
+语义（旧数字不改写, 见上文 §8 原值）。
+
+## 测试: R1-R19 19 项; 全量 648 passed / FAILED=0 / SKIPPED=0
