@@ -458,9 +458,7 @@ def temporal_directive(agent, detected, language="zh"):
         "4) 不要用“作为助手没有个人历史视角”这类说法回避问题——按上述时期解析直接作答。")
 
 # 哲学家智能体的通用工具子集（与深哲共享的原典检索类）
-# O7-E §45/§16: persona 与 general 共享同一 scholarly 证据基础设施（source truth 不因人格分叉）
 PHILO_SHARED_TOOLS = {"search_books", "get_chapter", "get_book_detail", "query_graph",
-                      "search_scholarship", "get_scholarly_source",
                       "get_philosopher", "query_database", "websearch"}
 
 PHILO_EXTRA_TOOLS = ["philosopher_memory", "philosopher_period", "philosopher_style", "philosopher_quote",

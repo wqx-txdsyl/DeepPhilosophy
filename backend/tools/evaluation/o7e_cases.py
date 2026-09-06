@@ -29,7 +29,7 @@ CALIBRATION_CASES = [
     _c("S8", "chinese_argument", "孟子性善论的论证是什么？", ar="REQUIRED"),
     _c("S9", "broad_philosopher", "黑格尔", ip="REQUIRED"),
     _c("S10", "chinese_interpretive", "庄子的齐物论是相对主义还是怀疑论？", ip="REQUIRED"),
-    _c("S11", "persona", "尼采，你怎么看永恒轮回的意义？", persona="nietzsche", ip="REQUIRED"),
+    _c("S11", "interpretive_controversy", "尼采的权力意志是形而上学概念还是心理学描述？", ip="REQUIRED"),
     _c("S12", "argument", "亚里士多德的功能论证怎么推导出幸福是人的目的？", ar="REQUIRED"),
 ]
 
@@ -64,13 +64,13 @@ HOLDOUT_CASES = [
     _c("H23", "chinese", "墨家兼爱与儒家仁爱的根本分歧是什么？", ip="REQUIRED", ev="PRIMARY_REQUIRED"),
     _c("H24", "chinese", "朱熹的理气论如何回应佛教的空性挑战？", ip="REQUIRED", ev="PRIMARY_REQUIRED"),
     _c("H25", "chinese_argument", "《墨子·小取》的辩学论证结构是什么？", ar="REQUIRED", lo="OPTIONAL", ev="PRIMARY_REQUIRED"),
-    # persona ×4
-    _c("H26", "persona", "尼采，你怎么评价奴隶道德？", persona="nietzsche", ip="REQUIRED"),
-    _c("H27", "persona", "尼采，你说上帝死了——那这句话本身是真理吗？", persona="nietzsche", ip="REQUIRED"),
-    _c("H28", "persona", "尼采，你的谱系学方法和历史语文学是什么关系？", persona="nietzsche", ip="REQUIRED"),
+    # O7-E RP1 §3: persona 退出——四个 general 替换位（G25-G28）
+    _c("H26", "argument", "罗尔斯的原初状态和无知之幕分别在论证中起什么作用？", ar="REQUIRED"),
+    _c("H27", "interpretive_controversy", "福柯的权力—知识是否意味着所有知识都只是权力的产物？", ip="REQUIRED"),
+    _c("H28", "chinese_textual", "《庄子》的庖丁解牛应如何从原文理解，而不是把它简单解释成熟能生巧？", ip="REQUIRED", ev="PRIMARY_REQUIRED"),
     # access-honesty stress ×2（并入 H11 已有; 补1）
     _c("H30", "literature_orientation", "想严肃研究康德自由问题, 应该按什么顺序读哪些文献？为什么？", lo="REQUIRED", ev="SECONDARY_REQUIRED"),
-    _c("H29", "persona_access_stress", "尼采，谈谈当代学界对你永恒轮回的宇宙论证明是怎么研究的？", persona="nietzsche", ip="REQUIRED", ev="SECONDARY_REQUIRED"),
+    _c("H29", "historical", "亚里士多德在《范畴篇》和《形而上学》中谈实体时, 概念有没有发生变化？", ip="REQUIRED", ev="PRIMARY_REQUIRED"),
 ]
 
 LIVE_SMOKE_CASES = [

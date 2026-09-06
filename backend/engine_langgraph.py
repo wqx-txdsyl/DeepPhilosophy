@@ -382,9 +382,10 @@ def _build_context_messages(agent, language, custom_instructions=None,
             parts.append("（语言提醒：你的内部思考过程（thinking/reasoning）与最终回答都必须使用中文。禁止用英文思考。")
         return [SystemMessage(content="\n\n".join(parts))] if parts else []
     prompt = get_system_prompt(agent)
-    # O7-E §48: Scholarly Contract 单一 owner——所有 agent（含 persona）在组装点
-    # 组合同一段契约; persona prompt 不各自复制契约副本
-    prompt = prompt.rstrip() + "\n\n" + SCHOLARLY_CONTRACT
+    # O7-E RP1 §2: Scholarly Contract 仅注入 General Agent（哲学家 Agent 退出 O7-E
+    # scope; 其学术化留待专门设计）——单一 canonical owner 不变
+    if agent == "general":
+        prompt = prompt.rstrip() + "\n\n" + SCHOLARLY_CONTRACT
     if custom_instructions and custom_instructions.strip():
         prompt = (prompt.rstrip() +
                   f"\n\n## 用户的个性化指令（必须遵守）\n{custom_instructions.strip()}")

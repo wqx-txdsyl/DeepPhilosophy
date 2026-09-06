@@ -1,5 +1,5 @@
 {
- "stage": "B",
+ "stage": "B-RP1-GENERAL-ONLY",
  "cases": [
   {
    "case_id": "H01",
@@ -325,13 +325,13 @@
   },
   {
    "case_id": "H26",
-   "category": "persona",
-   "question": "尼采，你怎么评价奴隶道德？",
-   "persona": "nietzsche",
+   "category": "argument",
+   "question": "罗尔斯的原初状态和无知之幕分别在论证中起什么作用？",
+   "persona": "general",
    "applicability": {
     "TEXTUAL_GROUNDING": "REQUIRED",
-    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
-    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
     "HISTORICAL_DISCIPLINE": "REQUIRED",
     "LITERATURE_ORIENTATION": "REQUIRED"
    },
@@ -339,9 +339,9 @@
   },
   {
    "case_id": "H27",
-   "category": "persona",
-   "question": "尼采，你说上帝死了——那这句话本身是真理吗？",
-   "persona": "nietzsche",
+   "category": "interpretive_controversy",
+   "question": "福柯的权力—知识是否意味着所有知识都只是权力的产物？",
+   "persona": "general",
    "applicability": {
     "TEXTUAL_GROUNDING": "REQUIRED",
     "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
@@ -353,9 +353,9 @@
   },
   {
    "case_id": "H28",
-   "category": "persona",
-   "question": "尼采，你的谱系学方法和历史语文学是什么关系？",
-   "persona": "nietzsche",
+   "category": "chinese_textual",
+   "question": "《庄子》的庖丁解牛应如何从原文理解，而不是把它简单解释成熟能生巧？",
+   "persona": "general",
    "applicability": {
     "TEXTUAL_GROUNDING": "REQUIRED",
     "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
@@ -381,9 +381,9 @@
   },
   {
    "case_id": "H29",
-   "category": "persona_access_stress",
-   "question": "尼采，谈谈当代学界对你永恒轮回的宇宙论证明是怎么研究的？",
-   "persona": "nietzsche",
+   "category": "historical",
+   "question": "亚里士多德在《范畴篇》和《形而上学》中谈实体时, 概念有没有发生变化？",
+   "persona": "general",
    "applicability": {
     "TEXTUAL_GROUNDING": "REQUIRED",
     "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
@@ -391,10 +391,10 @@
     "HISTORICAL_DISCIPLINE": "REQUIRED",
     "LITERATURE_ORIENTATION": "REQUIRED"
    },
-   "evidence_expectation": "SECONDARY_REQUIRED"
+   "evidence_expectation": "PRIMARY_REQUIRED"
   }
  ],
- "holdout_case_universe_hash": "135ef3b7e40d46df9dcaf687fe78b96e99795db3a2804a17d90ffc9ac8a64c2a",
+ "holdout_case_universe_hash": "9a0e2ec6ddf54e51e543db627d12aca25311f1a80d830ca07c9536e1770f30ff",
  "live_smoke_cases": [
   {
    "case_id": "L1",
@@ -509,5 +509,177 @@
    "evidence_expectation": "SECONDARY_REQUIRED"
   }
  ],
- "locked": true
+ "locked": true,
+ "supersedes": "135ef3b7e40d46df（STAGE_B_FIRST_RUN 宇宙, 结果 19/28 永久保存不重写）",
+ "calibration_cases": [
+  {
+   "case_id": "S1",
+   "category": "broad_philosopher",
+   "question": "康德",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S2",
+   "category": "argument",
+   "question": "康德为什么认为经验知识不能解释先天综合判断？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S3",
+   "category": "interpretive_controversy",
+   "question": "康德的物自身到底是另一个世界里的对象，还是同一个对象的另一种考察方式？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S4",
+   "category": "interpretive_controversy",
+   "question": "尼采反对真理吗？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S5",
+   "category": "argument",
+   "question": "维特根斯坦私人语言论证到底证明了什么？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S6",
+   "category": "argument",
+   "question": "柏拉图第三人论证为什么会产生无限倒退？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S7",
+   "category": "chinese",
+   "question": "孔子的仁与礼是什么关系？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S8",
+   "category": "chinese_argument",
+   "question": "孟子性善论的论证是什么？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S9",
+   "category": "broad_philosopher",
+   "question": "黑格尔",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S10",
+   "category": "chinese_interpretive",
+   "question": "庄子的齐物论是相对主义还是怀疑论？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S11",
+   "category": "interpretive_controversy",
+   "question": "尼采的权力意志是形而上学概念还是心理学描述？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  },
+  {
+   "case_id": "S12",
+   "category": "argument",
+   "question": "亚里士多德的功能论证怎么推导出幸福是人的目的？",
+   "persona": "general",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "evidence_expectation": "PRIMARY_REQUIRED"
+  }
+ ],
+ "calibration_universe_hash": "a755776a80aafca300af6842d220ed743088fd023d209b83ba019c8aa2204447"
 }
