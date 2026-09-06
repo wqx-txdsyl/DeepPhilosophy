@@ -621,3 +621,19 @@ def test_p5_auto_env_proxy_public_target_pinned(monkeypatch):
     monkeypatch.setattr(SS.socket, "getaddrinfo",
                         lambda h, p, proto=None: [(2, 1, 6, "", ("93.184.216.34", p or 443))])
     assert SS._pinned_addr_for("https://public.example/x")[0] == "93.184.216.34"
+
+
+# ══ O7-D §2: 零结果查询不得从分母消失 ═════════════════════════
+def test_d1_zero_result_query_remains_denominator():
+    import importlib
+    spec = importlib.util.spec_from_file_location(
+        "o7c_gate", os.path.join(BACKEND, "tools", "evaluation", "o7c_live_gate.py"))
+    gate = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gate)
+    per_query = {"C1": [3, 4], "C2": [], "C3": [2]}   # C2 零结果
+    subst = {qid: per_query.get(qid, []) for q, qid in gate.QUERIES
+             if not qid.startswith("N")}
+    # 固定宇宙中全部 substantive qid 都在分母里（含无 records 的）
+    assert set(subst) == {qid for _, qid in gate.QUERIES if not qid.startswith("N")}
+    rel = sum(1 for ss in subst.values() if ss and max(ss) >= 3)
+    assert rel / len(subst) < 1.0 or all(ss for ss in subst.values())

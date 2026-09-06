@@ -362,7 +362,8 @@ def phase_e(g):
     valid = [s for q, ss in per_query.items() if not q.startswith("N")
              for s in ss if s is not None]
     # RP1 §15: 实质性/负面 分母拆分, 不得合成
-    subst = {q: ss for q, ss in per_query.items() if not q.startswith("N")}
+    # O7-D §2/§41: 分母 = 固定查询宇宙（QUERIES）, 零结果查询不得从样本消失
+    subst = {qid: per_query.get(qid, []) for q, qid in QUERIES if not qid.startswith("N")}
     neg = {q: ss for q, ss in per_query.items() if q.startswith("N")}
     subst_relevant = sum(1 for ss in subst.values()
                          if ss and max(s for s in ss if s is not None) >= 3)
