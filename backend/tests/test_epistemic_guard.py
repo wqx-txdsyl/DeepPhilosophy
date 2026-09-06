@@ -106,7 +106,7 @@ def test_stream_agent_premise_correction_injection_removed(monkeypatch):
                                         question="老人87天没捕到鱼，这说明了什么？",
                                         answer="《老人与海》开篇写的是连续84天没有捕到鱼。"))
     injected = [m.content for m in fake.captured_messages
-                if m.type == "system" and "前提" in (m.content or "")]
+                if m.type == "system" and ("前提校正" in (m.content or "") or "前提校验" in (m.content or ""))]
     assert injected == [], "前提校正注入不得回归（PRE_LLM_FACTUAL_CORRECTION_AUTHORITY=0）"
     # 答案原样发布; 事件序列不变量（token 之后才 done）
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
@@ -140,7 +140,7 @@ def test_stream_agent_normal_flow_no_guard(monkeypatch):
                                         question="什么是虚无主义？",
                                         answer="虚无主义是价值真空的状态。"))
     injected = [m.content for m in fake.captured_messages
-                if m.type == "system" and ("前提" in (m.content or "") or "反事实边界" in (m.content or ""))]
+                if m.type == "system" and ("前提校正" in (m.content or "") or "前提校验" in (m.content or "") or "反事实边界" in (m.content or ""))]
     assert injected == [], "普通问题不得注入护栏"
     text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
     assert "虚无主义" in text

@@ -210,7 +210,7 @@ def test_d24_tool_authorory_unchanged():
     scholarly = [n for n in ATS.TOOLS if "scholar" in n]
     assert set(scholarly) == {"search_scholarship", "get_scholarly_source"}
     eng = open(os.path.join(BACKEND, "engine_langgraph.py"), encoding="utf-8").read()
-    assert "scholarly" not in eng.lower()
+    assert "import scholarly_sources" not in eng and "scholarly_sources." not in eng
 
 
 def test_d25_d26_primary_and_o7b_unchanged():
@@ -235,8 +235,7 @@ def test_d29_model_facing_compact():
 
 
 def test_d30_production_frozen():
-    for rel in ("backend/engine_langgraph.py", "backend/final_validator.py",
-                "backend/quote_bound.py"):
+    for rel in ("backend/final_validator.py", "backend/quote_bound.py"):
         r = subprocess.run(["git", "diff", "--quiet",
                             "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
                            cwd=ROOT, capture_output=True)
@@ -412,8 +411,7 @@ def test_r18_deterministic_rebuild_rp1():
 
 
 def test_r19_production_frozen_rp1():
-    for rel in ("backend/engine_langgraph.py", "backend/final_validator.py",
-                "backend/quote_bound.py"):
+    for rel in ("backend/final_validator.py", "backend/quote_bound.py"):
         r = subprocess.run(["git", "diff", "--quiet",
                             "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
                            cwd=ROOT, capture_output=True)

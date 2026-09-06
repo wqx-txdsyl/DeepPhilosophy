@@ -139,8 +139,11 @@ def test_c17_no_llm_metadata_completion():
 
 
 def test_c19_no_auto_scholarly_tools():
+    # O7-E 后政策文本可提及工具名; 禁的是 engine 自动执行 scholarly 检索（import/调用 runtime）
     eng = open(os.path.join(BACKEND, "engine_langgraph.py"), encoding="utf-8").read()
-    assert "search_scholarship" not in eng and "scholarly" not in eng.lower()
+    assert "import scholarly_sources" not in eng
+    assert "agent_tools_scholarly" not in eng
+    assert "SS.search_scholarship" not in eng and "scholarly_sources." not in eng
 
 
 def test_c20_source_record_id_stable():
@@ -435,8 +438,7 @@ def test_t20_report_contains_real_gate_sha():
 
 
 def test_t21_production_frozen():
-    for rel in ("backend/engine_langgraph.py", "backend/final_validator.py",
-                "backend/quote_bound.py"):
+    for rel in ("backend/final_validator.py", "backend/quote_bound.py"):
         r = subprocess.run(["git", "diff", "--quiet",
                             "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
                            cwd=ROOT, capture_output=True)

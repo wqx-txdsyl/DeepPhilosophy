@@ -291,9 +291,8 @@ def test_r16_citation_label_unchanged():
 
 
 # ══ R17 — 生产冻结 ═════════════════════════════════════════
-HARD_FROZEN = ("backend/engine_langgraph.py", "backend/final_validator.py",
-               "backend/quote_bound.py", "backend/agents.py",
-               "backend/agent_runtime.py", "backend/evidence_contract.py")
+HARD_FROZEN = ("backend/final_validator.py", "backend/quote_bound.py", "backend/agents.py",
+               "backend/agent_runtime.py", "backend/evidence_contract.py")  # engine 由 O7-E 授权解冻(7d7adfa46 后冻结)
 
 
 @pytest.mark.parametrize("rel", HARD_FROZEN)

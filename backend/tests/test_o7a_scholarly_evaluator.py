@@ -224,7 +224,7 @@ def test_t19_no_production_diff_vs_base():
     # 书目元数据暴露 → backend/routes 的冻结基线改对照 O7-B BASE；认知/校验/引文
     # 核心文件仍硬冻结于 O7-A BASE，O7-B §24 四项 PRODUCTION_POLICY DIFF=0 不变。
     O7B_BASE = "898359db7"  # O7-C §59 授权的工具注册/执行器改动落地 commit
-    hard = ("backend/engine_langgraph.py", "backend/final_validator.py",
+    hard = ("backend/final_validator.py",
             "backend/quote_bound.py", "backend/agents.py", "backend/agent_runtime.py",
             "backend/evidence_contract.py")
     for rel in hard:
@@ -234,6 +234,10 @@ def test_t19_no_production_diff_vs_base():
     r = subprocess.run(["git", "diff", "--quiet", O7B_BASE, "--", "backend/routes"],
                        cwd=REPO, capture_output=True)
     assert r.returncode == 0, "backend/routes 相对 O7-B BASE 有未授权改动"
+    # O7-E 解冻: engine prompt 授权改动落地 commit 之后冻结
+    r = subprocess.run(["git", "diff", "--quiet", "7d7adfa46", "--", "backend/engine_langgraph.py"],
+                       cwd=REPO, capture_output=True)
+    assert r.returncode == 0, "engine 相对 O7-E POLICY commit 有未授权改动"
 
 
 # ── T20 — Q2 交付基线冻结正确（§25）─────────────────────────────
