@@ -1,5 +1,9 @@
 # PhiAgent → agent.deepphilosophy.top 部署说明（本地后端 + CF 隧道）
 
+> ⚠️ **本文档已过时（2026-09-06 起归档）**：agent 后端已从旧 Windows 机器迁至本机 Mac（新隧道
+> `phiagent-mac`，CNAME 已切换）。现行部署架构、launchd 自启、发布管线见
+> **[DEPLOYMENT.md](DEPLOYMENT.md)**，本文仅作 Windows 时期的历史参考。
+
 > 状态：**已上线** ✅（2026-08-30 实测 `https://agent.deepphilosophy.top` 前端 + API 全通）。
 > 隧道已创建（tunnel id `bbc08110-b3ff-45cc-9902-147bdc612e3f`，CNAME 已绑定），本机直连可用。
 > 唯一遗留：Windows 服务安装需管理员权限（见下）。
