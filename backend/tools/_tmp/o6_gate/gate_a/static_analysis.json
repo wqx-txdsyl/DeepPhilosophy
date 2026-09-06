@@ -1,0 +1,727 @@
+{
+ "G1_forbidden_comment_stripped": {
+  "backend/engine_langgraph.py": {
+   "SemanticAdmission": [
+    {
+     "line": 434,
+     "text": "精确重复复用、硬资源上限）; 语义准入（obligation admission）、"
+    }
+   ],
+   "AutoRead": [
+    {
+     "line": 10,
+     "text": "answer_retract / reasoning_summary / auto_read 同为已删词表外事件）"
+    }
+   ]
+  },
+  "backend/agent_runtime.py": {
+   "SemanticAdmission": [
+    {
+     "line": 27,
+     "text": "soft 预算提示 / no_gain warn+force / sufficiency 期望与收敛 / 检索准入（admission）/"
+    }
+   ]
+  },
+  "backend/evaluation_suite.py": {
+   "InterpretationJudge": [
+    {
+     "line": 4,
+     "text": "O4 Cognitive Layer Collapse 注: 原 interpretation_engine.py / answer_composer.py /"
+    },
+    {
+     "line": 799,
+     "text": "scan = scan_interpretation(verdict, answer, language, tool_log)"
+    },
+    {
+     "line": 1336,
+     "text": "def scan_interpretation(verdict, answer, language=\"zh\", tool_log=None):"
+    }
+   ],
+   "AnswerComposer": [
+    {
+     "line": 4,
+     "text": "O4 Cognitive Layer Collapse 注: 原 interpretation_engine.py / answer_composer.py /"
+    }
+   ],
+   "PremiseVerifier": [
+    {
+     "line": 11,
+     "text": "O4-RP1 注: 原生产前提核对模块已删除——PremiseVerifier（前提错误检出, 评分用）"
+    },
+    {
+     "line": 377,
+     "text": "class PremiseVerifier:"
+    },
+    {
+     "line": 684,
+     "text": "checks = checks if checks is not None else PremiseVerifier().check(question)"
+    }
+   ]
+  }
+ },
+ "G1_forbidden_raw": {
+  "backend/engine_langgraph.py": {
+   "Planner": [
+    {
+     "line": 339,
+     "text": "# 遥测与重入治理）+ plan / verif_box（Python 先解释用户问题再下认知指令的"
+    }
+   ],
+   "ObligationSystem": [
+    {
+     "line": 342,
+     "text": "# obligation_ledger（→ evidence_state, EvidenceState 纯事实登记）。"
+    },
+    {
+     "line": 1578,
+     "text": "# done.obligation_ledger 字段已删除）。"
+    },
+    {
+     "line": 1585,
+     "text": "# O5 删除: obligation_ledger（并入 evidence.facts）/ 引用降级静态审计 dict"
+    },
+    {
+     "line": 1626,
+     "text": "# O5: 执行事实见 done.evidence.facts（obligation_ledger 字段已并入删除）。"
+    }
+   ],
+   "NoGainController": [
+    {
+     "line": 337,
+     "text": "# O4/O4-RP1 删除的 state 字段: retrieval_count / no_gain_streak / round_all_low /"
+    },
+    {
+     "line": 601,
+     "text": "# O4: no_gain_streak / round_all_low / round_any_low / retrieval_count 状态链已删——"
+    }
+   ],
+   "SemanticAdmission": [
+    {
+     "line": 434,
+     "text": "精确重复复用、硬资源上限）; 语义准入（obligation admission）、"
+    }
+   ],
+   "PremiseVerifier": [
+    {
+     "line": 1070,
+     "text": "# 已删除的注入源: PremiseVerifier 事实校正注入（runtime 不得替 Agent 下"
+    }
+   ],
+   "RuntimeFinalWriter": [
+    {
+     "line": 867,
+     "text": "# ══ O2: 原 _final_answer_directive / _build_recovery_dicts（第二 writer 的指令与"
+    },
+    {
+     "line": 1157,
+     "text": "# ══ O2: emit_append 已删除——runtime 不再向正文追加任何文本 ══"
+    },
+    {
+     "line": 1158,
+     "text": "# （原通道承载: 原典核验补发 / scan_final_consistency 尾补 / epistemic 纠正与"
+    },
+    {
+     "line": 1335,
+     "text": "# 原\"用 RECOVERY_SYSTEM_DIRECTIVE 调 AG.llm_chat 独立生成答案\"是第二 writer——"
+    },
+    {
+     "line": 1451,
+     "text": "# ③ scan_final_consistency 尾补——G（确定性降调）属语义 hedge, 按 §7 删除不转 validator;"
+    }
+   ],
+   "AutoRead": [
+    {
+     "line": 10,
+     "text": "answer_retract / reasoning_summary / auto_read 同为已删词表外事件）"
+    },
+    {
+     "line": 368,
+     "text": "# ── O1: 引擎不再代执行任何认知性工具（原 _ensure_primary_read auto-read 已删除）。"
+    },
+    {
+     "line": 405,
+     "text": "# 原 Phase T.1 (T1.1-B) 的引擎兜底 auto-read（_ensure_primary_read）已整体删除:"
+    },
+    {
+     "line": 1443,
+     "text": "# 和 ② 收口前 _ensure_primary_read 终局补读（含\"原典核验补正\"正文补发）"
+    }
+   ],
+   "AutoWebsearch": [
+    {
+     "line": 1283,
+     "text": "# O1: 引擎 auto-websearch 已删除——search_books 空结果后是否上网补充"
+    }
+   ]
+  },
+  "backend/agent_runtime.py": {
+   "SemanticAdmission": [
+    {
+     "line": 27,
+     "text": "soft 预算提示 / no_gain warn+force / sufficiency 期望与收敛 / 检索准入（admission）/"
+    }
+   ]
+  },
+  "backend/evaluation_suite.py": {
+   "InterpretationJudge": [
+    {
+     "line": 4,
+     "text": "O4 Cognitive Layer Collapse 注: 原 interpretation_engine.py / answer_composer.py /"
+    },
+    {
+     "line": 799,
+     "text": "scan = scan_interpretation(verdict, answer, language, tool_log)"
+    },
+    {
+     "line": 935,
+     "text": "# 原 answer_composer.py / interpretation_engine.py / semantic_obligations.py 已删除,"
+    },
+    {
+     "line": 1074,
+     "text": "# ── 副本 B（原 interpretation_engine）: 解释型问题识别 / 越级断言 / 多候选检测 ──"
+    },
+    {
+     "line": 1336,
+     "text": "def scan_interpretation(verdict, answer, language=\"zh\", tool_log=None):"
+    }
+   ],
+   "AnswerComposer": [
+    {
+     "line": 4,
+     "text": "O4 Cognitive Layer Collapse 注: 原 interpretation_engine.py / answer_composer.py /"
+    },
+    {
+     "line": 743,
+     "text": "# 未经证据支持的强化措辞（原 answer_composer 检测真源, O4 后为本文件自带副本）"
+    },
+    {
+     "line": 935,
+     "text": "# 原 answer_composer.py / interpretation_engine.py / semantic_obligations.py 已删除,"
+    },
+    {
+     "line": 940,
+     "text": "# ── 副本 A（原 answer_composer）: 强化措辞 / 回答结构 / 推理噪音检测 ──"
+    }
+   ],
+   "PremiseVerifier": [
+    {
+     "line": 11,
+     "text": "O4-RP1 注: 原生产前提核对模块已删除——PremiseVerifier（前提错误检出, 评分用）"
+    },
+    {
+     "line": 144,
+     "text": "# 0. PremiseVerifier 离线评分副本（O4-RP1: 原生产版本随 guard 模块删除,"
+    },
+    {
+     "line": 377,
+     "text": "class PremiseVerifier:"
+    },
+    {
+     "line": 684,
+     "text": "checks = checks if checks is not None else PremiseVerifier().check(question)"
+    }
+   ]
+  }
+ },
+ "S26_regression_scan_comment_stripped": {
+  "backend/engine_langgraph.py": {
+   "semantic_admission": [
+    {
+     "line": 156,
+     "text": "15. 【运行时措辞】不要在最终回答中出现内部过程措辞（如\"检索已收口/预算已达上限/准入未通过/系统收敛\"）——"
+    },
+    {
+     "line": 434,
+     "text": "精确重复复用、硬资源上限）; 语义准入（obligation admission）、"
+    }
+   ],
+   "sufficiency_force": [
+    {
+     "line": 1303,
+     "text": "\"content\": \"（EXACT_DUPLICATE_REUSED）同一工具与完全相同的参数此前已执行——直接复用此前结果（机械判重, 不涉及证据充分性判断）。\","
+    }
+   ],
+   "auto_read": [
+    {
+     "line": 10,
+     "text": "answer_retract / reasoning_summary / auto_read 同为已删词表外事件）"
+    }
+   ],
+   "runtime_answer_rewrite": [
+    {
+     "line": 1490,
+     "text": "_citation_sanitize = None"
+    },
+    {
+     "line": 1494,
+     "text": "from evidence_contract import sanitize_citations"
+    },
+    {
+     "line": 1495,
+     "text": "_citation_sanitize = sanitize_citations(full_answer, contract=evidence_payload)"
+    },
+    {
+     "line": 1496,
+     "text": "if _citation_sanitize and _citation_sanitize.get(\"unverified_before\"):"
+    },
+    {
+     "line": 1498,
+     "text": "f\"[citation-sanitizer] {len(_citation_sanitize.get('unverified_before'))} \""
+    },
+    {
+     "line": 1500,
+     "text": "f\"{_citation_sanitize.get('unverified_before')[:3]}\")"
+    },
+    {
+     "line": 1502,
+     "text": "logger.warning(f\"[citation-sanitizer] skipped: {str(_e)[:200]}\")"
+    },
+    {
+     "line": 1505,
+     "text": "trace.record_phase(\"validator_citation_sanitize\", _vt0)"
+    },
+    {
+     "line": 1621,
+     "text": "\"citation_sanitize\": ({k: _citation_sanitize.get(k) for k in"
+    },
+    {
+     "line": 1623,
+     "text": "if _citation_sanitize else None),"
+    }
+   ],
+   "runtime_cognitive_prose": [
+    {
+     "line": 156,
+     "text": "15. 【运行时措辞】不要在最终回答中出现内部过程措辞（如\"检索已收口/预算已达上限/准入未通过/系统收敛\"）——"
+    },
+    {
+     "line": 1383,
+     "text": "yield {\"type\": \"tool_cancel\", \"name\": nm, \"reason\": \"工具预算已达上限，该调用未执行\"}"
+    }
+   ],
+   "raw_reasoning_passthrough": [
+    {
+     "line": 8,
+     "text": "（RP1, O1-RP1: thought_stream 不再由引擎发出——provider 私有推理一律内部丢弃,"
+    },
+    {
+     "line": 965,
+     "text": "摘要经事件通道单独转发; 绝不把 reasoning_content 引入。\"\"\""
+    }
+   ]
+  },
+  "backend/agent_runtime.py": {
+   "semantic_admission": [
+    {
+     "line": 24,
+     "text": "旧义务台账整类删除——只记 WHAT HAPPENED, 无义务/准入语义, 现归 Evidence Store）。"
+    },
+    {
+     "line": 27,
+     "text": "soft 预算提示 / no_gain warn+force / sufficiency 期望与收敛 / 检索准入（admission）/"
+    }
+   ],
+   "sufficiency_force": [
+    {
+     "line": 27,
+     "text": "soft 预算提示 / no_gain warn+force / sufficiency 期望与收敛 / 检索准入（admission）/"
+    },
+    {
+     "line": 163,
+     "text": "决策规则（纯机械, 与证据充分性无关）:"
+    }
+   ],
+   "runtime_cognitive_prose": [
+    {
+     "line": 383,
+     "text": "HARD_BUDGET_DIRECTIVE = (\"（工具预算已达上限。现在进入最终回答: 禁止调用任何工具, \""
+    }
+   ],
+   "raw_reasoning_passthrough": [
+    {
+     "line": 261,
+     "text": "明确不记录: 原始 chain-of-thought / reasoning_content / 思考流文本。"
+    }
+   ]
+  },
+  "backend/final_validator.py": {
+   "runtime_answer_rewrite": [
+    {
+     "line": 10,
+     "text": "本模块把原 LiveCitationSanitizer（未核验引用流式降级）、QuoteBoundSanitizer"
+    }
+   ]
+  },
+  "backend/evidence_contract.py": {
+   "semantic_admission": [
+    {
+     "line": 25,
+     "text": "WHAT HAPPENED, 随 done.evidence.facts 输出; 无任何义务/准入判定）"
+    },
+    {
+     "line": 236,
+     "text": "_extract_candidates        → 证据契约候选池（snippet 截断 220; 各自准入条件）"
+    },
+    {
+     "line": 305,
+     "text": "\"\"\"（D4 薄适配）证据池 → 证据契约候选列表（保持检索顺序; 各白名单准入条件不变:"
+    }
+   ],
+   "runtime_answer_rewrite": [
+    {
+     "line": 647,
+     "text": "def sanitize_citations(answer, contract=None, tool_log=None):"
+    },
+    {
+     "line": 652,
+     "text": "此处仅断言并记日志, 供 done.citation_sanitize 审计）"
+    },
+    {
+     "line": 654,
+     "text": "原 rebind/downgrade 文本改写分支已删——sanitized_text 自 O2 起即被丢弃, 无消费者;"
+    },
+    {
+     "line": 669,
+     "text": "_log_record({\"phase\": \"sanitize\", \"answer_len\": len(ans),"
+    }
+   ]
+  },
+  "backend/quote_bound.py": {
+   "runtime_answer_rewrite": [
+    {
+     "line": 4,
+     "text": "真实回归（Phase T 后）: Citation Sanitizer 只约束 formal citation（【《书》·章】）,"
+    }
+   ]
+  },
+  "backend/tool_contracts.py": {
+   "semantic_admission": [
+    {
+     "line": 322,
+     "text": "\"检索已被收口\", \"工具预算已达上限\", \"系统收敛\", \"系统检索收敛\", \"准入未通过\","
+    },
+    {
+     "line": 323,
+     "text": "\"检索收敛\", \"检索准入\", \"收口轮\", \"检索总量包络\", \"核验配额\", \"强制收口\","
+    }
+   ],
+   "runtime_cognitive_prose": [
+    {
+     "line": 322,
+     "text": "\"检索已被收口\", \"工具预算已达上限\", \"系统收敛\", \"系统检索收敛\", \"准入未通过\","
+    }
+   ]
+  },
+  "backend/eval_agent.py": {
+   "raw_reasoning_passthrough": [
+    {
+     "line": 28,
+     "text": "elif t == \"thought_stream\":"
+    }
+   ]
+  },
+  "backend/evaluation_suite.py": {
+   "auto_read": [
+    {
+     "line": 794,
+     "text": "confirmation_bias          解释型问题只给单候选（无替代读法/无反证痕迹）"
+    }
+   ],
+   "premise_verifier": [
+    {
+     "line": 21,
+     "text": "evaluate_premise_accuracy    前提准确性: 错误数字 / 错误作者 / 错误书名 / 错误年代 /"
+    },
+    {
+     "line": 396,
+     "text": "\"\"\"返回前提核验结果列表（[]=无事实矛盾）"
+    },
+    {
+     "line": 637,
+     "text": "def _premise_category(rule_id):"
+    },
+    {
+     "line": 679,
+     "text": "def evaluate_premise_accuracy(question, answer, checks=None, language=\"zh\"):"
+    },
+    {
+     "line": 688,
+     "text": "cat = _premise_category(c.get(\"rule_id\") or \"\")"
+    },
+    {
+     "line": 913,
+     "text": "返回: {premise, epistemic, interpretation, evidence, ux, overall, passed_all}"
+    },
+    {
+     "line": 916,
+     "text": "\"premise\": evaluate_premise_accuracy(question, answer, language=language),"
+    },
+    {
+     "line": 922,
+     "text": "dims = (\"premise\", \"epistemic\", \"interpretation\", \"evidence\", \"ux\")"
+    }
+   ],
+   "answer_composer": [
+    {
+     "line": 4,
+     "text": "O4 Cognitive Layer Collapse 注: 原 interpretation_engine.py / answer_composer.py /"
+    }
+   ],
+   "interpretation_judge": [
+    {
+     "line": 4,
+     "text": "O4 Cognitive Layer Collapse 注: 原 interpretation_engine.py / answer_composer.py /"
+    }
+   ]
+  },
+  "backend/routes/agent_llm.py": {
+   "raw_reasoning_passthrough": [
+    {
+     "line": 48,
+     "text": "思考模式: reasoning_content 思维链 + 工具调用必须完整回传 reasoning_content（否则 400）"
+    }
+   ]
+  },
+  "backend/routes/agent_tools_eval.py": {
+   "premise_verifier": [
+    {
+     "line": 318,
+     "text": "f' \"premises\": [{{\"premise\": \"前提内容\", \"kind\": \"explicit/implicit\"}}],\\n'"
+    },
+    {
+     "line": 331,
+     "text": "data = {\"conclusion\": \"\", \"premises\": [], \"hidden_assumptions\": [], \"fallacies\": [],"
+    }
+   ]
+  }
+ },
+ "S27_loc_head": {
+  "backend/engine_langgraph.py": 1672,
+  "backend/agent_runtime.py": 391,
+  "backend/final_validator.py": 191,
+  "backend/evidence_contract.py": 691,
+  "backend/quote_bound.py": 251,
+  "backend/tool_contracts.py": 377,
+  "backend/agents.py": 465,
+  "backend/guard.py": 216,
+  "backend/mcp_client.py": 106,
+  "backend/philo_retrieval.py": 401,
+  "backend/admin.py": 209,
+  "backend/auth.py": 816,
+  "backend/auth_deps.py": 32,
+  "backend/config.py": 111,
+  "backend/db.py": 60,
+  "backend/eval_agent.py": 119,
+  "backend/evaluation_suite.py": 1366,
+  "backend/fix_bios.py": 52,
+  "backend/drawio_convert.py": 130,
+  "backend/routes/agent.py": 201,
+  "backend/routes/agent_core.py": 388,
+  "backend/routes/agent_llm.py": 110,
+  "backend/routes/agent_sse.py": 62,
+  "backend/routes/agent_tools_eval.py": 822,
+  "backend/routes/agent_tools_memory.py": 646,
+  "backend/routes/agent_tools_retrieval.py": 619
+ },
+ "S27_loc_o0": {
+  "backend/engine_langgraph.py": 2353,
+  "backend/agent_runtime.py": 961,
+  "backend/evidence_contract.py": 707,
+  "backend/quote_bound.py": 432,
+  "backend/tool_contracts.py": 654,
+  "backend/agents.py": 399,
+  "backend/guard.py": 216,
+  "backend/mcp_client.py": 106,
+  "backend/philo_retrieval.py": 401,
+  "backend/admin.py": 209,
+  "backend/auth.py": 816,
+  "backend/auth_deps.py": 32,
+  "backend/config.py": 111,
+  "backend/db.py": 60,
+  "backend/eval_agent.py": 119,
+  "backend/evaluation_suite.py": 324,
+  "backend/fix_bios.py": 52,
+  "backend/drawio_convert.py": 130,
+  "backend/answer_composer.py": 575,
+  "backend/interpretation_engine.py": 547,
+  "backend/epistemic_guard.py": 1036,
+  "backend/reasoning_plan.py": 868,
+  "backend/routes/agent.py": 237,
+  "backend/routes/agent_core.py": 388,
+  "backend/routes/agent_llm.py": 110,
+  "backend/routes/agent_sse.py": 62,
+  "backend/routes/agent_tools_eval.py": 822,
+  "backend/routes/agent_tools_memory.py": 646,
+  "backend/routes/agent_tools_retrieval.py": 614
+ },
+ "S27_loc_totals": {
+  "head_total": 10504,
+  "o0_total": 13987,
+  "o0_semantic_policy_LOC": 3026,
+  "head_semantic_policy_LOC": 0,
+  "engine_langgraph": {
+   "O0": 2353,
+   "O6": 1672
+  },
+  "agent_runtime": {
+   "O0": 961,
+   "O6": 391
+  }
+ },
+ "S27_semantic_regex": {
+  "O0_semantic_modules": 35,
+  "O6_mechanical_validator_modules": 18,
+  "O6_sites": [
+   "backend/quote_bound.py:34",
+   "backend/quote_bound.py:47",
+   "backend/quote_bound.py:49",
+   "backend/quote_bound.py:52",
+   "backend/evidence_contract.py:52",
+   "backend/evidence_contract.py:53",
+   "backend/evidence_contract.py:56",
+   "backend/evidence_contract.py:73",
+   "backend/evidence_contract.py:132",
+   "backend/evidence_contract.py:163",
+   "backend/evidence_contract.py:421",
+   "backend/evidence_contract.py:423",
+   "backend/evidence_contract.py:449",
+   "backend/evidence_contract.py:527",
+   "backend/evidence_contract.py:530",
+   "backend/evidence_contract.py:533",
+   "backend/evidence_contract.py:536",
+   "backend/tool_contracts.py:255",
+   "backend/tool_contracts.py:256",
+   "backend/tool_contracts.py:272",
+   "backend/tool_contracts.py:287",
+   "backend/tool_contracts.py:297"
+  ]
+ },
+ "S27_runtime_semantic_mutator_sites": {
+  "O0": {
+   "backend/engine_langgraph.py": 21,
+   "backend/quote_bound.py": 4,
+   "backend/evidence_contract.py": 2
+  },
+  "O6": {
+   "backend/final_validator.py": 2
+  }
+ },
+ "S27_hidden_cognitive_and_raw_reasoning": {
+  "O0": {
+   "auto_read__ensure_primary_read": 3,
+   "auto_websearch": 1,
+   "thought_stream_yields": 1
+  },
+  "O6": {
+   "auto_read__ensure_primary_read": 0,
+   "auto_websearch": 0,
+   "thought_stream_yields": 0
+  }
+ },
+ "S27_tests": {
+  "O0": {
+   "test_files": 18,
+   "test_functions": 407,
+   "per_file": {
+    "backend/tests/test_agent.py": 7,
+    "backend/tests/test_answer_composer.py": 28,
+    "backend/tests/test_config.py": 3,
+    "backend/tests/test_epistemic_guard.py": 22,
+    "backend/tests/test_evaluation_suite.py": 28,
+    "backend/tests/test_evidence_contract.py": 12,
+    "backend/tests/test_health.py": 2,
+    "backend/tests/test_interpretation_engine.py": 25,
+    "backend/tests/test_patch1.py": 38,
+    "backend/tests/test_patch1_1.py": 37,
+    "backend/tests/test_phase_a.py": 35,
+    "backend/tests/test_phase_r.py": 19,
+    "backend/tests/test_phase_s.py": 33,
+    "backend/tests/test_phase_t.py": 68,
+    "backend/tests/test_phase_t1.py": 24,
+    "backend/tests/test_philosophers.py": 4,
+    "backend/tests/test_security.py": 10,
+    "backend/tests/test_thinking_events.py": 12
+   },
+   "non_test_named": [
+    "backend/tests/regression_oldman_sea.py"
+   ]
+  },
+  "O6_worktree": {
+   "test_files": 22,
+   "test_functions": 350,
+   "per_file": {
+    "test_agent.py": 7,
+    "test_config.py": 3,
+    "test_epistemic_guard.py": 10,
+    "test_evaluation_suite.py": 28,
+    "test_evidence_contract.py": 12,
+    "test_health.py": 2,
+    "test_o1_causal_loop.py": 13,
+    "test_o1_rp1_thinking_safety.py": 4,
+    "test_o2_final_ownership.py": 23,
+    "test_o3_tool_authority.py": 15,
+    "test_o4_cognitive_collapse.py": 20,
+    "test_o5_thin_runtime.py": 18,
+    "test_patch1.py": 15,
+    "test_patch1_1.py": 12,
+    "test_phase_a.py": 34,
+    "test_phase_r.py": 19,
+    "test_phase_s.py": 21,
+    "test_phase_t.py": 52,
+    "test_phase_t1.py": 16,
+    "test_philosophers.py": 4,
+    "test_security.py": 10,
+    "test_thinking_events.py": 12
+   },
+   "non_test_named": [
+    "regression_oldman_sea.py"
+   ]
+  }
+ },
+ "S27_tool_registry": {
+  "O0_routes_agent": [
+   "search_books",
+   "get_book_detail",
+   "get_chapter",
+   "query_graph",
+   "get_philosopher",
+   "list_books",
+   "write_essay",
+   "generate_image",
+   "get_school",
+   "phti_test",
+   "compare_views",
+   "socratic_tutor",
+   "philosopher_debate",
+   "thought_experiment",
+   "advisor_council",
+   "paper_review",
+   "analyze_argument",
+   "concept_trace",
+   "profile",
+   "conceptual_map",
+   "websearch",
+   "query_database",
+   "role_play",
+   "essay_outline",
+   "life_coach",
+   "dialectic",
+   "history_timeline",
+   "confrontation",
+   "school_arena",
+   "agent_council"
+  ],
+  "O6_current": "see runtime_tool_surface.json (get_tools live dump)"
+ },
+ "zero_metric_code_anchors_engine": {
+  "ENGINE_COGNITIVE_AUTO_TOOLS": "0",
+  "RUNTIME_SEMANTIC_MUTATORS": "0",
+  "RUNTIME_FACTUAL_APPENDS": "0",
+  "FINAL_RETRACT_SEMANTIC_USE": "0",
+  "INVALID_FINAL_PUBLICLY_STREAMED": "False",
+  "MAIN_AGENT_FINAL_OWNERSHIP_RATE": "1.0",
+  "FINAL_TEXT_OWNER": "main_agent",
+  "THINKING_SOURCES": "main_agent_only",
+  "PROVENANCE_CAUSAL": "o1"
+ }
+}

@@ -1,0 +1,128 @@
+O6 终门取证完毕，回执如下（REPORT: docs/PHIAGENT_O6_GATE.md，已随提交 a2e744a9；原始数据 backend/tools/_tmp/o6_gate/）。
+取证双线：Gate A（自动化/静态/脚本化）+ Gate B（Live 32 题 + 5 会话多轮）。全程 EVIDENCE-ONLY：零生产/测试/提示词改动。
+GATE 冻结 = b6e656bd9（LOCAL==REMOTE）；Gate 中用户并行推入书籍数据 b323a3efb/0186e6ae2 引擎 diff 为空，非生产漂移。
+CODE_SHA = HEAD_SHA = REMOTE_SHA = a2e744a92b108edc7b07ffe731a9214bc2c67365（终门报告 + 补入 O5 漏提交的 test_o5_thin_runtime.py）
+
+# PhiAgent O6 — Integrated Final Quality Gate / Architecture Reset Closeout
+
+> GATE_SHA（冻结）: `b6e656bd9858137eabd0d30510a269038440bef0`（工作区干净, LOCAL==REMOTE）
+> Gate 中用户并行推入书籍数据提交 b323a3efb / 0186e6ae2（**引擎 diff 为空**, 非生产漂移）
+> Gate 结束 HEAD: `0186e6ae2` ｜ 取证: Gate A（自动化/静态/脚本化）+ Gate B（Live 32 题 + 5 会话多轮）
+> 报告: 本文档 ｜ 原始数据: `backend/tools/_tmp/o6_gate/`（GATE_A_REPORT.md / GATE_B_REPORT.md + 全事件流 JSON）
+
+---
+
+## 0. 终局裁定建议
+
+```
+ARCHITECTURE RESET = PASS（O1–O5 全部达成, 权威矩阵单一 owner, 零 invalid 泄漏）
+PRODUCT QUALITY CLOSEOUT = REQUIRED（引文纪律/轻重校准/多轮发布率——Main-Agent policy 层）
+另报 Material 窄补丁候选 2 项（F1 validator FN / F2 forced+cancel 边界）→ 由 Reviewer 裁决
+```
+
+---
+
+## G1 Architecture Ownership — **PASS**
+被禁控制者（Planner/Obligation/Sufficiency/No-gain/Semantic admission/Interpretation
+judge/Composer/Premise verifier/Runtime final writer/Auto-read/Auto-websearch）
+剥注释代码级命中 **0**；8 项零指标（ENGINE_COGNITIVE_AUTO_TOOLS/
+SEMANTIC_TOOL_CONTROL_EFFECTS/RUNTIME_SEMANTIC_MUTATORS/RUNTIME_FACTUAL_APPENDS/
+RAW_REASONING_PUBLIC/RUNTIME_GENERATED_THINKING/INVALID_FINAL_PUBLIC/
+FAKE_TOP_LEVEL_TOOL_RECORDS）代码锚点 + 44 处 O1–O5 套件断言双证全 0。
+Authority Matrix（§3 15 行）单一 owner 无重复（重复 = FAIL 条款未触发）。
+
+## G2 Tool Authority — **PASS**
+General 30 工具与 O0 注册表逐一比对零缺失零多余；Nietzsche 15 = 7 共享 + 8 专属零泄漏；
+runtime 仅 3 机械门（未知工具/精确判重/硬上限），E3/E4/E5 实测正确。
+
+## G3 Final Ownership — **PASS**
+语义改写/事实追加 = 0（O0 的 27 处改写点归零）；候选缓冲 → validator → 逐字发布；
+repair = 同一 Main Agent；无效候选零发布（O4-RP1 耗尽合同）三重复证。
+Gate B §16 抽样 10 case: **MAIN_AGENT_FINAL_OWNERSHIP_RATE = 100%**（指纹 0）。
+
+## G4 Thinking Truth — **PASS**
+thinking 因果真值 ≈100%（笔记先于宣告、反映证据状态、非 mini-final）；
+RAW_COT_PUBLIC = 0；RUNTIME_THINKING = 0。
+
+## G5 Validator Integrity — **FAIL (narrow, Material F1)**
+Scripted 10正+10负: TP=9 / **FN=1** / TN=10 / FP=0。硬门要求 FN=0。
+- **F1（Material）**: 行内引导词引文 `原文是："…"` 因 quote_bound LEADIN_RE 与
+  head 口径互斥被误判为 quoted 豁免 → 伪逐字行内引文可零 issue 发布
+  （blockquote 主通道不受影响）。窄补丁可行。
+- **F2（Material, 边缘）**: forced+cancel 边界 pending.has_tools 卡 True →
+  repair 轮新文本被当残留丢弃（触发条件窄: 硬上限+残留宣告+空首候选; 收口仍安全）。
+- Live 32 题零 unverified 泄漏（validator 在真实分布上行为正确）。
+按 O6 铁律未修——**由 Reviewer 裁决窄补丁**。
+
+## G6 Source Verification — **PASS_WITH_NOTE**
+三硬门: UNVERIFIED_QUOTE / UNVERIFIED_CITATION / STITCHED 公开率 **全 0** ✅。
+A 类发布 2/3（1 例 SAFE_REJECT）。PRIMARY_READ 在全部 source-sensitive case 达成。
+
+## G7 Research Quality — **PASS_WITH_NOTE**
+工具 avg 18.5 / p95 26; 精确复用 6.4%; churn 仅 1 例; **硬上限命中 67%（工具题）**——
+研究自由（O3）与机械预算（O5 保持）的真实张力, chains 本身 locate→inspect→read→answer
+高效（EPISTEMIC_GAIN: HIGH 为主）。
+
+## G8 Deep Answer Quality — **PASS**
+深度评分 mean **3.92** / median 4（0–4 制）; ≥3 分 13/13——发布即深度达标,
+无一失败出在答案质量（全部在发布环节）。≈11 种答案结构, FORMAT_COLLAPSE = false。
+
+## G9 Persona/Temporal — **PASS_WITH_NOTE**
+尼采早/中/晚期内容真实分化（非仅语气）; 无 General↔Nietzsche 串人格;
+H3 控制组被 SAFE_REJECT（发布环节问题, 非 persona 问题）。
+
+## G10 Multi-Turn — **PASS_WITH_REQUIRED_QUALITY_PATCH**
+M1 渐进细化 **5/5**、M4 来源追问 **4/4** 优秀; **M2 用户纠错 0/5、M5 模糊指代 2/5、
+M3 agent 切换 2/5**——引文密集话题的轮级发布塌陷（52%）, 与 G5/G6 同根
+（模型引文纪律）。按 §29: 架构 PASS, 产品质量收口 REQUIRED。
+
+## G11 SSE/Provenance — **PASS_WITH_NOTE**
+12 类事件词表收敛; 白名单违规 0; provenance 违规 0; thought_stream/answer_retract
+零发射。**UNPARENTED_TOOL_RESULTS = 187**（并行同名工具只发 1 个 tool_start 的
+契约缺口——一对多补发待窄补丁, 与 F2 同属机械层）。
+
+## G12 Error Behavior — **PASS_WITH_NOTE**
+8/8 受控场景（超时/执行错误/未知工具/缺参/硬上限/provider 429/validator 耗尽/取消）:
+无 stack trace 泄漏、无伪造事实、无 ghostwritten final、干净 done/error 收口
+（provider 429 → 脱敏 error 实测）。
+
+## G13 Latency — **PASS_WITH_NOTE**
+zero-tool 16s / light 30s / deep p50 142s / repair 场景最高——均为真实研究延迟
+（非 runtime 开销）; 阶段对照: O2 46.5/68.6 → O3 32.9/128.9 → O4 35.9/184.4 → O5 30.7–197.6。
+
+## G14 RAM/Resource — **PASS**
+idle 266.7MB → general 首请 365.6 → nietzsche 365.7 → 12 连轮
+**slope 0.0 MB/轮, drift 0.0 MB**, 无单调泄漏。
+
+## G15 Tool/Specialized Capabilities — **PASS**
+7/7 专用工具（compare_views/dialectic/thought_experiment/conceptual_map/
+analyze_argument/essay_outline/socratic_tutor）真实调用返回结构化产物;
+socratic 冒烟: 恰 1 问、零 runtime 路由; UI 契约（done.citations/evidence/
+suggestions/safety/safety_reply）在 O5 删键后完好。
+
+## G16 Regression Suite — **PASS**
+全量 `pytest backend/tests -q`: **350/350, 0 failed, 0 skipped, 71.8s**;
+六套件单跑 13/4/23/15/20/18 全绿; regression_oldman_sea 13/13（双跑）。
+
+---
+
+## 发布失败分类学（§7, O5 暴露问题的系统统计）
+
+Q1 BLOCKQUOTE_MISUSE（评注段排成引用块）、Q2 MEMORY_WORDING_AS_EXACT（记忆措辞
+当逐字）、Q3 NEAR_TRANSLATION_NOT_MARKED（译本差异未标注）为主要类别;
+Q5 SEARCH_LOCALIZATION_FAILURE（编号体著作定位）次之。
+SAFE_REJECT 全部干净收口（validation_failed + error, 无效内容零公开）。
+**这些属 Main-Agent policy / 格式纪律 / 工具描述层——§29 允许的后续 patch 面;
+禁止以 runtime semantic gate 修复。**
+
+## §22 O6 Preparation 冻结指标
+
+见 O5 文档 §11（架构 graph / churn 基线 / 完整性口径 / 延迟对照 / thinking UX）。
+
+## §23 O6 后续（Reviewer 裁决项）
+
+1. **F1**: validator 行内引导词口径互斥窄补丁（quote_bound LEADIN/head 判定合一）
+2. **F2**: forced+cancel 边界 pending 状态清理（engine 机械层）
+3. **G10/G5-联动**: Main-Agent 引文纪律 prompt 迭代 + 简单题轻重校准（policy 层）
+4. **G11**: 并行同名工具 tool_start 一对多补发（协议层）
+以上均不在 O6 内执行。

@@ -1,0 +1,185 @@
+{
+ "stats": {
+  "REPAIR_SUCCESS_FIRST": 6,
+  "REPAIR_SUCCESS_SECOND": 1,
+  "REPAIR_EXHAUSTED": 1,
+  "REPAIR_RESEARCH_USED": 1
+ },
+ "cases": [
+  {
+   "id": "R1_quote_fail_success_first_repair_no_research",
+   "expected_fail_code": "UNSUPPORTED_EXACT_QUOTE",
+   "repairs_used": 1,
+   "published": true,
+   "validation_ok": true,
+   "expected": {
+    "repairs": 1,
+    "published": true,
+    "research_in_repair": false
+   },
+   "research_in_repair_detected": false,
+   "feedback_count": 1,
+   "feedback_neutral": true,
+   "feedback_lists_issue_codes": true,
+   "feedback_sample": "The candidate response failed deterministic evidence validation. Issues:\n- UNSUPPORTED_EXACT_QUOTE at \"言必有中者，以其德之至也，闵子骞斯可谓恭俭庄敬矣\": blockquote not found verbatim in retrieved evidence\nRevise the answer or gather additional evidence as needed.",
+   "runtime_prescribes_action": false,
+   "exhaust_no_leak_clean_close": null,
+   "answer_preview": "经重新整理：逐字核验后确认，「言必有中」出自孔子对闵子骞的评价，出自《论语·先进篇》。"
+  },
+  {
+   "id": "R2_quote_fail_repair_with_research",
+   "expected_fail_code": "UNSUPPORTED_EXACT_QUOTE",
+   "repairs_used": 1,
+   "published": true,
+   "validation_ok": true,
+   "expected": {
+    "repairs": 1,
+    "published": true,
+    "research_in_repair": true
+   },
+   "research_in_repair_detected": true,
+   "feedback_count": 2,
+   "feedback_neutral": true,
+   "feedback_lists_issue_codes": true,
+   "feedback_sample": "The candidate response failed deterministic evidence validation. Issues:\n- UNSUPPORTED_EXACT_QUOTE at \"言必有中者，以其德之至也，闵子骞斯可谓恭俭庄敬矣\": blockquote not found verbatim in retrieved evidence\nRevise the answer or gather additional evidence as needed.",
+   "runtime_prescribes_action": false,
+   "exhaust_no_leak_clean_close": null,
+   "answer_preview": "「言必有中」出自《论语·先进篇》，孔子评价闵子骞时所说【《论语》·先进篇】。"
+  },
+  {
+   "id": "R3_citation_fail_success_first",
+   "expected_fail_code": "UNVERIFIED_CITATION",
+   "repairs_used": 1,
+   "published": true,
+   "validation_ok": true,
+   "expected": {
+    "repairs": 1,
+    "published": true,
+    "research_in_repair": false
+   },
+   "research_in_repair_detected": false,
+   "feedback_count": 1,
+   "feedback_neutral": true,
+   "feedback_lists_issue_codes": true,
+   "feedback_sample": "The candidate response failed deterministic evidence validation. Issues:\n- UNVERIFIED_CITATION at \"【《韩非子·五蠹》】\": formal citation not supported by retrieved evidence (book='韩非子·五蠹', chapter='')\nRevise the answer or gather additional evidence as needed.",
+   "runtime_prescribes_action": false,
+   "exhaust_no_leak_clean_close": null,
+   "answer_preview": "「言必有中」出自《论语·先进篇》，孔子评价闵子骞时所说【《论语》·先进篇】。"
+  },
+  {
+   "id": "R4_citation_fail_success_second",
+   "expected_fail_code": "UNVERIFIED_CITATION",
+   "repairs_used": 2,
+   "published": true,
+   "validation_ok": true,
+   "expected": {
+    "repairs": 2,
+    "published": true,
+    "research_in_repair": false
+   },
+   "research_in_repair_detected": false,
+   "feedback_count": 2,
+   "feedback_neutral": true,
+   "feedback_lists_issue_codes": true,
+   "feedback_sample": "The candidate response failed deterministic evidence validation. Issues:\n- UNVERIFIED_CITATION at \"【《韩非子·五蠹》】\": formal citation not supported by retrieved evidence (book='韩非子·五蠹', chapter='')\nRevise the answer or gather additional evidence as needed.",
+   "runtime_prescribes_action": false,
+   "exhaust_no_leak_clean_close": null,
+   "answer_preview": "「言必有中」出自《论语·先进篇》，孔子评价闵子骞时所说【《论语》·先进篇】。"
+  },
+  {
+   "id": "R5_near_fail_self_marks",
+   "expected_fail_code": "NEAR_QUOTE_NOT_MARKED",
+   "repairs_used": 1,
+   "published": true,
+   "validation_ok": true,
+   "expected": {
+    "repairs": 1,
+    "published": true,
+    "research_in_repair": false
+   },
+   "research_in_repair_detected": false,
+   "feedback_count": 1,
+   "feedback_neutral": true,
+   "feedback_lists_issue_codes": true,
+   "feedback_sample": "The candidate response failed deterministic evidence validation. Issues:\n- NEAR_QUOTE_NOT_MARKED at \"鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”子曰：“其人不言，言必有中。”\": quote only approximates the retrieved text (coverage=0.7) but is presented as verbatim without an approximation note",
+   "runtime_prescribes_action": false,
+   "exhaust_no_leak_clean_close": null,
+   "answer_preview": "说明：上一条引文与库中原文相近但未逐字核验，按近似转述处理——「言必有中」确出自《论语·先进篇》。"
+  },
+  {
+   "id": "R6_near_fail_exhausted",
+   "expected_fail_code": "NEAR_QUOTE_NOT_MARKED",
+   "repairs_used": 2,
+   "published": false,
+   "validation_ok": false,
+   "expected": {
+    "repairs": 2,
+    "published": false,
+    "research_in_repair": false
+   },
+   "research_in_repair_detected": false,
+   "feedback_count": 2,
+   "feedback_neutral": true,
+   "feedback_lists_issue_codes": true,
+   "feedback_sample": "The candidate response failed deterministic evidence validation. Issues:\n- NEAR_QUOTE_NOT_MARKED at \"鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”子曰：“其人不言，言必有中。”\": quote only approximates the retrieved text (coverage=0.7) but is presented as verbatim without an approximation note",
+   "runtime_prescribes_action": false,
+   "exhaust_no_leak_clean_close": true,
+   "answer_preview": ""
+  },
+  {
+   "id": "R7_stitched_success_first",
+   "expected_fail_code": "UNSUPPORTED_EXACT_QUOTE|STITCHED_QUOTE",
+   "repairs_used": 1,
+   "published": true,
+   "validation_ok": true,
+   "expected": {
+    "repairs": 1,
+    "published": true,
+    "research_in_repair": false
+   },
+   "research_in_repair_detected": false,
+   "feedback_count": 1,
+   "feedback_neutral": true,
+   "feedback_lists_issue_codes": true,
+   "feedback_sample": "The candidate response failed deterministic evidence validation. Issues:\n- UNSUPPORTED_EXACT_QUOTE at \"夫人不言言必有中季氏富于周公而求也为之聚敛而附益之\": blockquote not found verbatim in retrieved evidence\nRevise the answer or gather additional evidence as needed.",
+   "runtime_prescribes_action": false,
+   "exhaust_no_leak_clean_close": null,
+   "answer_preview": "最终回答：该拼接引文不成立，逐字原文应以库中核验为准。"
+  },
+  {
+   "id": "R8_whitespace_only_then_good",
+   "expected_fail_code": "EMPTY_FINAL",
+   "repairs_used": 1,
+   "published": true,
+   "validation_ok": true,
+   "expected": {
+    "repairs": 1,
+    "published": true,
+    "research_in_repair": false
+   },
+   "research_in_repair_detected": false,
+   "feedback_count": 1,
+   "feedback_neutral": true,
+   "feedback_lists_issue_codes": true,
+   "feedback_sample": "The candidate response failed deterministic evidence validation. Issues:\n- EMPTY_FINAL: candidate is empty or whitespace-only\nRevise the answer or gather additional evidence as needed.",
+   "runtime_prescribes_action": false,
+   "exhaust_no_leak_clean_close": null,
+   "answer_preview": "经重新整理：逐字核验后确认，「言必有中」出自孔子对闵子骞的评价，出自《论语·先进篇》。"
+  }
+ ],
+ "asserts": {
+  "repair_feedback_neutral": true,
+  "runtime_never_prescribes_cognitive_action": true,
+  "all_tools_initiated_by_main_agent": true
+ },
+ "per_case_tools": {
+  "R1_quote_fail_success_first_repair_no_research": null,
+  "R2_quote_fail_repair_with_research": null,
+  "R3_citation_fail_success_first": null,
+  "R4_citation_fail_success_second": null,
+  "R5_near_fail_self_marks": null,
+  "R6_near_fail_exhausted": null,
+  "R7_stitched_success_first": null,
+  "R8_whitespace_only_then_good": null
+ }
+}

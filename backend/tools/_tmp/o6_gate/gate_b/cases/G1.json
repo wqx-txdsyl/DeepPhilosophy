@@ -1,0 +1,2783 @@
+{
+ "result": {
+  "id": "G1",
+  "category": "G",
+  "fresh": true,
+  "question": "康德的“哥白尼式革命”如何重构了认识论？请综合分析其内容与后续影响。",
+  "agent": "general",
+  "attempt": 1,
+  "tag": "ok",
+  "duration_s": 106.5,
+  "answer_chars": 0,
+  "answer": "",
+  "published": false,
+  "validation": {
+   "result": {
+    "ok": false,
+    "issues": [
+     {
+      "code": "NEAR_QUOTE_NOT_MARKED",
+      "locator": "\"迄今为止，人们假定，我们的一切知识都必须遵照对象；但是，关于对象先天地通过概念来澄清某种东西以扩展我们的知识的一切尝试",
+      "evidence_ref": "qb_read_13",
+      "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.81, evidence=qb_read_13, best_evidence=【《纯粹理性批判(注释本)》·第二版前言】)"
+     },
+     {
+      "code": "NEAR_QUOTE_NOT_MARKED",
+      "locator": "\"这里的情况与哥白尼最初的思想是相同的。哥白尼在假定整个星群都围绕观察者旋转，对天体运动的解释就无法顺利进行之后，试一试",
+      "evidence_ref": "qb_read_13",
+      "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.83, evidence=qb_read_13, best_evidence=【《纯粹理性批判(注释本)》·第二版前言】)"
+     },
+     {
+      "code": "NEAR_QUOTE_NOT_MARKED",
+      "locator": "\"如果有一个命题与它的必然性一同被思维，那么它就是一个先天判断。\"……\"必然性和严格的普遍性是一种先天知识的可靠标志，而",
+      "evidence_ref": "qb_read_15",
+      "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.75, evidence=qb_read_15, best_evidence=【《纯粹理性批判(注释本)》·导论】)"
+     }
+    ]
+   },
+   "repairs_used": 2,
+   "max_validation_repairs": 2,
+   "repair_protocol": "same_main_agent"
+  },
+  "validation_failed_payload": {
+   "type": "validation_failed",
+   "content": "回答未通过确定性证据校验",
+   "issues": [
+    {
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator": "\"迄今为止，人们假定，我们的一切知识都必须遵照对象；但是，关于对象先天地通过概念来澄清某种东西以扩展我们的知识的一切尝试",
+     "evidence_ref": "qb_read_13",
+     "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.81, evidence=qb_read_13, best_evidence=【《纯粹理性批判(注释本)》·第二版前言】)"
+    },
+    {
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator": "\"这里的情况与哥白尼最初的思想是相同的。哥白尼在假定整个星群都围绕观察者旋转，对天体运动的解释就无法顺利进行之后，试一试",
+     "evidence_ref": "qb_read_13",
+     "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.83, evidence=qb_read_13, best_evidence=【《纯粹理性批判(注释本)》·第二版前言】)"
+    },
+    {
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator": "\"如果有一个命题与它的必然性一同被思维，那么它就是一个先天判断。\"……\"必然性和严格的普遍性是一种先天知识的可靠标志，而",
+     "evidence_ref": "qb_read_15",
+     "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.75, evidence=qb_read_15, best_evidence=【《纯粹理性批判(注释本)》·导论】)"
+    }
+   ],
+   "repairs_used": 2,
+   "initiated_by": "validator",
+   "decision_group_id": "inv-12"
+  },
+  "error_payload": {
+   "type": "error",
+   "content": "本轮回答未通过证据一致性校验，请重试或换一种问法"
+  },
+  "tool_calls": [
+   {
+    "name": "search_books",
+    "args": {
+     "query": "哥白尼 革命 对象 符合 认识"
+    },
+    "result_summary": "{'results': [{'book_id': '9c9e77918c07', 'book_title': '自然宗教对话录', 'author': '大卫·休谟', 'chapter_idx': 14, 'chapter_title': '第十二篇', 'citation_label': '【《自然宗教对话录》·第十二篇】', 'snippet': '第美亚离开之后，克里安提斯和斐罗继续下面的",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "纯粹理性批判 二版 序 哥白尼"
+    },
+    "result_summary": "{'results': [{'book_id': '8c0c6955c793', 'book_title': '纯粹理性批判', 'author': '伊曼努尔·康德', 'chapter_idx': 14, 'chapter_title': '第四章纯粹理性的历史', 'citation_label': '【《纯粹理性批判》·第四章纯粹理性的历史】', 'snippet': '第四章纯粹理性的历",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_philosopher",
+    "args": {
+     "name": "康德"
+    },
+    "result_summary": "{'name': '伊曼努尔·康德', 'period': '', 'century': '', 'school': '德国古典哲学', 'region': '西方', 'works': [], 'bio': '伊曼努尔·康德，这位1724年生于东普鲁士柯尼斯堡（今俄罗斯加里宁格勒）的德国哲学家，一生几乎未曾离开过这座小城，却以其深邃的思想撬动了整个西方哲学的根基。他出身于一个虔诚的皮匠家庭，自幼",
+    "thought": "执行 get_philosopher"
+   },
+   {
+    "name": "get_book_detail",
+    "args": {
+     "book_id": "8c0c6955c793"
+    },
+    "result_summary": "{'id': '8c0c6955c793', 'title': '纯粹理性批判', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'pdf', 'summary': '《纯粹理性批判》是康德批判哲学体系的奠基之作，核心主题在于考察人类理性的界限与能力。康德通过“先天综合判断”概念，调和了理性主义与经验主义，提出“人为自然立法”的哥白尼式革命。该",
+    "thought": "执行 get_book_detail"
+   },
+   {
+    "name": "get_book_detail",
+    "args": {
+     "book_id": "eca1899561c4"
+    },
+    "result_summary": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分",
+    "thought": "执行 get_book_detail"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "eca1899561c4",
+     "chapter_idx": 5
+    },
+    "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 5, 'title': '第一章 论空间', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第一章 论空间】', 'text': '第2节 空间概念的形而上学阐明\\n（标题为第二版所加。——译者注）\\n借助于外感官（我们心灵的一种属性",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "8c0c6955c793",
+     "chapter_idx": 4
+    },
+    "result_summary": "{'book_id': '8c0c6955c793', 'chapter_idx': 4, 'title': '第二版序', 'book_title': '纯粹理性批判', 'citation_label': '【《纯粹理性批判》·第二版序】', 'text': '第二版序\\n对属于理性的工作的那些知识所作的探讨是否在一门科学的可靠道路上进行，这可以马上从它的后果中作出评判。如果这门科学在做了大量",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "8c0c6955c793",
+     "chapter_idx": 5
+    },
+    "result_summary": "{'book_id': '8c0c6955c793', 'chapter_idx': 5, 'title': '导言', 'book_title': '纯粹理性批判', 'citation_label': '【《纯粹理性批判》·导言】', 'text': '导言\\nⅠ.纯粹知识和经验性知识的区别\\n我们的一切知识都从经验开始，这是没有任何怀疑的；因为，如果不是通过对象激动我们的感官，一则由它们自己",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "query_graph",
+    "args": {
+     "philosopher": "康德"
+    },
+    "result_summary": "{'philosopher': '伊曼努尔·康德', 'region': '西方', 'rank': 49.6, 'relations': [{'relation': '影响', 'other': '柏拉图', 'note': '康德受柏拉图理念论影响'}, {'relation': '影响', 'other': '大卫·休谟', 'note': '休谟的怀疑论唤醒康德的批判哲学'}, {'rel",
+    "thought": "执行 query_graph"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "康德 哥白尼式革命 认识论 主体性转向"
+    },
+    "result_summary": "{'results': [{'book_id': 'd3bebffb6a05', 'book_title': '否定的辩证法', 'author': '西奥多·阿多诺', 'chapter_idx': 5, 'chapter_title': '第二章 存在与实存', 'citation_label': '【《否定的辩证法》·第二章 存在与实存】', 'snippet': '对本体论的内在批判对本体",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "物自体 现象 黑格尔 扬弃 康德"
+    },
+    "result_summary": "{'results': [{'book_id': 'd3bebffb6a05', 'book_title': '否定的辩证法', 'author': '西奥多·阿多诺', 'chapter_idx': 8, 'chapter_title': '第二章 世界精神与自然历史', 'citation_label': '【《否定的辩证法》·第二章 世界精神与自然历史】', 'snippet': '趋势与事",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_book_detail",
+    "args": {
+     "book_id": "纯粹理性批判"
+    },
+    "result_summary": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分",
+    "thought": "执行 get_book_detail"
+   },
+   {
+    "name": "get_book_detail",
+    "args": {
+     "book_id": "哲学和我们的时代"
+    },
+    "result_summary": "{'id': '87b26c6b10e6', 'title': '哲学和我们的时代', 'author': '周龙辉', 'region': '西方', 'file_type': 'epub', 'summary': '《哲学和我们的时代》是周龙辉对当代社会进行哲学反思的著作。作者认为，哲学不应脱离时代，而应回应时代的重大问题。书中分析了现代社会的种种困境，如技术异化、消费主义、精神空虚、生态危机",
+    "thought": "执行 get_book_detail"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)",
+     "chapter_idx": 3
+    },
+    "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 3, 'title': '第二版前言', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第二版前言】', 'text': '对属于理性工作的知识所做的探讨是否在一门科学的可靠道路上进行，很快就可以从结果出发作出评判。如果这种探讨在作出",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "哲学和我们的时代",
+     "chapter_idx": 7
+    },
+    "result_summary": "{'book_id': '87b26c6b10e6', 'chapter_idx': 7, 'title': '康德与休谟从同一个地方出发走了相反的道路', 'book_title': '哲学和我们的时代', 'citation_label': '【《哲学和我们的时代》·康德与休谟从同一个地方出发走了相反的道路】', 'text': '[第40～42节]\\n因为旧形而上学漫不经心地未经思想考验便接",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)",
+     "chapter_idx": 4
+    },
+    "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 4, 'title': '导论', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·导论】', 'text': '一、论纯粹知识与经验性知识的区别\\n我们的一切知识都以经验开始，这是无可置疑的；因为认识能力受到激发而行动，如果这不是由于",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "get_book_detail",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)"
+    },
+    "result_summary": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分",
+    "thought": "执行 get_book_detail"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)",
+     "chapter_idx": 3
+    },
+    "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 3, 'title': '第二版前言', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第二版前言】', 'text': '对属于理性工作的知识所做的探讨是否在一门科学的可靠道路上进行，很快就可以从结果出发作出评判。如果这种探讨在作出",
+    "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)",
+     "chapter_idx": 4
+    },
+    "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 4, 'title': '导论', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·导论】', 'text': '一、论纯粹知识与经验性知识的区别\\n我们的一切知识都以经验开始，这是无可置疑的；因为认识能力受到激发而行动，如果这不是由于",
+    "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）"
+   }
+  ],
+  "tool_seq": [
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "哥白尼 革命 对象 符合 认识"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "纯粹理性批判 二版 序 哥白尼"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_philosopher",
+    "cls": "read",
+    "args": {
+     "name": "康德"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_book_detail",
+    "cls": "read",
+    "args": {
+     "book_id": "8c0c6955c793"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_book_detail",
+    "cls": "read",
+    "args": {
+     "book_id": "eca1899561c4"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "eca1899561c4",
+     "chapter_idx": 5
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "8c0c6955c793",
+     "chapter_idx": 4
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "8c0c6955c793",
+     "chapter_idx": 5
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "query_graph",
+    "cls": "search",
+    "args": {
+     "philosopher": "康德"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "康德 哥白尼式革命 认识论 主体性转向"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "物自体 现象 黑格尔 扬弃 康德"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_book_detail",
+    "cls": "read",
+    "args": {
+     "book_id": "纯粹理性批判"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_book_detail",
+    "cls": "read",
+    "args": {
+     "book_id": "哲学和我们的时代"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)",
+     "chapter_idx": 3
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "哲学和我们的时代",
+     "chapter_idx": 7
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)",
+     "chapter_idx": 4
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_book_detail",
+    "cls": "read",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)",
+     "chapter_idx": 3
+    },
+    "reused": true,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "纯粹理性批判(注释本)",
+     "chapter_idx": 4
+    },
+    "reused": true,
+    "err": false
+   }
+  ],
+  "tool_count": 19,
+  "search_calls": 5,
+  "read_calls": 14,
+  "budget": {
+   "useful": 17,
+   "retry": 0,
+   "inner_retries": 0,
+   "duplicate_reused": 2,
+   "no_gain": 0,
+   "total_executed": 17,
+   "retrieval_executed": 17,
+   "hard": false,
+   "cfg": {
+    "hard_retrieval": 20,
+    "hard_total": 24
+   }
+  },
+  "quote_bound": {
+   "entries": [],
+   "summary": {
+    "quotes": 0,
+    "verified_exact": 0,
+    "verified_near": 0,
+    "memory_only": 0,
+    "stitched": 0,
+    "unverified_blockquote": 0,
+    "memory_only_exact_claim": 0
+   }
+  },
+  "citations": [],
+  "citation_sanitize": {
+   "verified_citations": [],
+   "unverified_before": [],
+   "actions": []
+  },
+  "causal": {
+   "provenance": "o1",
+   "engine_cognitive_auto_tools": 0,
+   "main_agent_tool_decisions": 19,
+   "agent_invocations": 12,
+   "thinking_sources": "main_agent_only"
+  },
+  "final_ownership": {
+   "provenance": "o2",
+   "final_text_owner": "main_agent",
+   "semantic_mutators": 0,
+   "runtime_factual_appends": 0,
+   "final_retract_semantic_use": 0,
+   "invalid_final_publicly_streamed": false,
+   "validator_repair_invocations": 2,
+   "main_agent_final_ownership_rate": 1.0
+  },
+  "temporal": null,
+  "timing": {
+   "phases": [
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 3077.4,
+     "msgs_len": 3
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 2172.1,
+     "msgs_len": 7
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 1117.7,
+     "msgs_len": 10
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 2533.1,
+     "msgs_len": 12
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 1143.2,
+     "msgs_len": 14
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 5777.9,
+     "msgs_len": 16
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 26813.6,
+     "msgs_len": 20
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 2856.7,
+     "msgs_len": 5
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 2921.0,
+     "msgs_len": 8
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 11855.4,
+     "msgs_len": 11
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 27350.5,
+     "msgs_len": 13
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 1823.2,
+     "msgs_len": 5
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 1661.9,
+     "msgs_len": 7
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 14293.0,
+     "msgs_len": 10
+    },
+    {
+     "type": "phase",
+     "phase": "validator_quote_bound",
+     "duration_ms": 1.0
+    },
+    {
+     "type": "phase",
+     "phase": "validator_evidence_contract",
+     "duration_ms": 4.0
+    },
+    {
+     "type": "phase",
+     "phase": "validator_citation_sanitize",
+     "duration_ms": 0.0
+    }
+   ],
+   "total_ms": 106444.1
+  },
+  "event_audit": {
+   "n_events": 92,
+   "type_counts": {
+    "status": 1,
+    "thinking_summary": 10,
+    "tool_start": 19,
+    "tool_note": 40,
+    "tool": 19,
+    "validation_failed": 1,
+    "error": 1,
+    "done": 1
+   },
+   "unknown_event_types": [],
+   "thinking_events": 10,
+   "thinking_by_initiator": {
+    "main_agent": 10
+   },
+   "thinking_phase_seq": [
+    "analysis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis"
+   ],
+   "runtime_thinking_events": 0,
+   "raw_cot_marker_hits": [],
+   "tool_start": 19,
+   "tool_exec": 19,
+   "tool_cancel": 0,
+   "unparented_tool_results": 0,
+   "duplicate_visible_events": 0,
+   "duplicate_examples": [],
+   "validation_failed_events": 1,
+   "error_events": 1,
+   "decision_group_missing": 0,
+   "initiated_by_missing": 0,
+   "tool_call_id_missing_on_start": 0,
+   "tool_exec_unbound_ids": 0
+  },
+  "ownership_fingerprints": [],
+  "status": "SAFE_REJECT"
+ },
+ "events_compact": [
+  {
+   "type": "status",
+   "content": "开始思考"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "我来研究康德\"哥白尼式革命\"如何重构认识论。先检索原典库中相关原文，再综合其内容与后续影响。\n\n工作判断：①当前已知这是康德《纯粹理性批判》第二版序言提出的核心方法论转折（从\"知识须符合对象\"转向\"对象须符合认识主体的先天形式\"）；②尚不确定原典库中该表述的具体措辞与上下文，需核验原文；③后续影响涉及德国观念论（费希特、黑格尔）、现象学（胡塞尔）乃至整个现代哲学的\"主体性转向\"，其中一些需要查阅思想关联。\n\n先并行检索康德相关原文与思想脉络。",
+   "phase": "analysis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_5KXSGRye5CUhtY6MaE8K4764"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_52rPcOPR66kAjxm7BIp38826"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_philosopher",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_I9ZDHsCjzK6dONAvrpAe7548"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在查证哲人资料…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "哥白尼 革命 对象 符合 认识"
+   },
+   "result": "{'results': [{'book_id': '9c9e77918c07', 'book_title': '自然宗教对话录', 'author': '大卫·休谟', 'chapter_idx': 14, 'chapter_title': '第十二篇', 'citation_label': '【《自然宗教对话录》·第十二篇】', 'snippet': '第美亚离开之后，克里安提斯和斐罗继续下面的谈话。克里安提斯说，我恐怕，我们的朋友当你在场时将再也不愿重提这个讨论的题目了；并且，斐罗，实在说来，我也宁愿和你们两人分别地讨论这样崇高、这样有趣的一个论题。你的争辩的精神，加上你对于常人的迷信的痛",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_5KXSGRye5CUhtY6MaE8K4764"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "纯粹理性批判 二版 序 哥白尼"
+   },
+   "result": "{'results': [{'book_id': '8c0c6955c793', 'book_title': '纯粹理性批判', 'author': '伊曼努尔·康德', 'chapter_idx': 14, 'chapter_title': '第四章纯粹理性的历史', 'citation_label': '【《纯粹理性批判》·第四章纯粹理性的历史】', 'snippet': '第四章纯粹理性的历史 这个标题放在这里只是为了表示一个在系统中保留下来必须在将来加以填充的位置。我则满足于从一个单纯先验的观点、即纯粹理性的本性的观点出发来对迄今为止对纯粹理性所做的全部探讨作匆匆一警，这固然在我的眼前",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_52rPcOPR66kAjxm7BIp38826"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "get_philosopher",
+   "args": {
+    "name": "康德"
+   },
+   "result": "{'name': '伊曼努尔·康德', 'period': '', 'century': '', 'school': '德国古典哲学', 'region': '西方', 'works': [], 'bio': '伊曼努尔·康德，这位1724年生于东普鲁士柯尼斯堡（今俄罗斯加里宁格勒）的德国哲学家，一生几乎未曾离开过这座小城，却以其深邃的思想撬动了整个西方哲学的根基。他出身于一个虔诚的皮匠家庭，自幼接受严格的宗教教育，后在柯尼斯堡大学学习哲学、数学与物理学，毕业后长期担任家庭教师，直至三十一岁才重返母校任教，历任讲师、逻辑学与形而上学教授，直至1797年退休。他的一生如同钟表般规律，每日下午三点",
+   "thought": "执行 get_philosopher",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_I9ZDHsCjzK6dONAvrpAe7548"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "初步命中了康德原著，但\"哥白尼式革命\"的关键原文在《纯粹理性批判》第二版序言中，需读取原文核验措辞。我先获取该书目录以定位序言章节。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_fNnimOl9100PXC4rHMjK7850"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_tC4NNYaBmt6CqXjIsEXA8278"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "8c0c6955c793"
+   },
+   "result": "{'id': '8c0c6955c793', 'title': '纯粹理性批判', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'pdf', 'summary': '《纯粹理性批判》是康德批判哲学体系的奠基之作，核心主题在于考察人类理性的界限与能力。康德通过“先天综合判断”概念，调和了理性主义与经验主义，提出“人为自然立法”的哥白尼式革命。该书深刻揭示了现象与物自体的区分，论证了时空与范畴的先验性，为科学知识奠定基础，同时为信仰与自由留出空间，开创了德国古典哲学的新纪元。康德在书中追问一个根本问题：先天综合判断如何可能？即不依赖经验却又能",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_fNnimOl9100PXC4rHMjK7850"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "eca1899561c4"
+   },
+   "result": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分，系统阐述了人类认识能力的界限和条件。康德提出“物自体”与“现象”的区分，认为我们只能认识现象，而不能认识物自体。他通过“先验范畴”和“先验图型”等概念，说明知性如何将感性直观综合为知识。在“先验辩证",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_tC4NNYaBmt6CqXjIsEXA8278"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "两版《纯粹理性批判》都有第二版序/前言。读取第二版序言原文以核验\"哥白尼式革命\"的表述。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_ET_AVO9UmFlkxqiRXwze9O59504"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "eca1899561c4",
+    "chapter_idx": 5
+   },
+   "result": "{'book_id': 'eca1899561c4', 'chapter_idx': 5, 'title': '第一章 论空间', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第一章 论空间】', 'text': '第2节 空间概念的形而上学阐明\\n（标题为第二版所加。——译者注）\\n借助于外感官（我们心灵的一种属性），我们把对象表象为外在于我们的，它们全都在空间之中。在空间中，它们的形状、大小和相互之间的关系得到规定，或者是可规定的。借助于内感官，心灵直观自己本身或者其内在状态；虽然内感官并不提供关于灵魂自身作",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_ET_AVO9UmFlkxqiRXwze9O59504"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "定位到另一本书的第二版序。读取《纯粹理性批判》(8c0c6955c793) 第二版序章节（索引4）核验核验哥白尼式革命的原文。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_adF8o1HY0TObpMuUw8Ol7312"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "8c0c6955c793",
+    "chapter_idx": 4
+   },
+   "result": "{'book_id': '8c0c6955c793', 'chapter_idx': 4, 'title': '第二版序', 'book_title': '纯粹理性批判', 'citation_label': '【《纯粹理性批判》·第二版序】', 'text': '第二版序\\n对属于理性的工作的那些知识所作的探讨是否在一门科学的可靠道路上进行，这可以马上从它的后果中作出评判。如果这门科学在做了大量的筹备和准备工作之后，一且要达到目的，就陷人僵局，或者，经常为了达到自的而不得不重新回头去另选条路；又比如，如果那些各不相同的合作者不能像遵守这个共同的目标所应当的那样协调一致：那么我们总是可以确信，",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_adF8o1HY0TObpMuUw8Ol7312"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "已核验验核到原文关键段落。继续读取第二版序的下文，以获得完整的\"哥白尼\"转折表述。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_ET_NpCGW0aJ7GlH7JhlJovW7949"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "8c0c6955c793",
+    "chapter_idx": 5
+   },
+   "result": "{'book_id': '8c0c6955c793', 'chapter_idx': 5, 'title': '导言', 'book_title': '纯粹理性批判', 'citation_label': '【《纯粹理性批判》·导言】', 'text': '导言\\nⅠ.纯粹知识和经验性知识的区别\\n我们的一切知识都从经验开始，这是没有任何怀疑的；因为，如果不是通过对象激动我们的感官，一则由它们自己引起表象，一则使我们的知性活动运作起来，对这些表象加以比较，把它们连结或分开，这样把感性印象的原始素材加工.成称之为经验的对象知识，那么知识能力又该由什么来唤起活动呢？所以按照时间，我们没有任何知识是",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_ET_NpCGW0aJ7GlH7JhlJovW7949"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "核心原文已核验验核。为充分支撑\"后续影响\"部分，我并行查询康德的思想关联星丛，并在库内检索德国观念论、现象学对康德\"哥白尼式革命/人为自然立法\"的回应与批判。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "query_graph",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_nFXhoyiDPQ8rqwFJETrj8629"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在查询思想星丛…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_Q5zURBQndIeX7nLFlM9y5254"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_02_19Bb2R1eOUtURRR3p9Zr2698"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool",
+   "name": "query_graph",
+   "args": {
+    "philosopher": "康德"
+   },
+   "result": "{'philosopher': '伊曼努尔·康德', 'region': '西方', 'rank': 49.6, 'relations': [{'relation': '影响', 'other': '柏拉图', 'note': '康德受柏拉图理念论影响'}, {'relation': '影响', 'other': '大卫·休谟', 'note': '休谟的怀疑论唤醒康德的批判哲学'}, {'relation': '影响', 'other': '勒内·笛卡尔', 'note': '笛卡尔的理性主义影响康德'}, {'relation': '影响', 'other': '马丁·海德格尔', 'no",
+   "thought": "执行 query_graph",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_nFXhoyiDPQ8rqwFJETrj8629"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "康德 哥白尼式革命 认识论 主体性转向"
+   },
+   "result": "{'results': [{'book_id': 'd3bebffb6a05', 'book_title': '否定的辩证法', 'author': '西奥多·阿多诺', 'chapter_idx': 5, 'chapter_title': '第二章 存在与实存', 'citation_label': '【《否定的辩证法》·第二章 存在与实存】', 'snippet': '对本体论的内在批判对本体论的需要的批判使我们来到了对本体论本身的内在批判。如果我们只是一般地从外部来反对存在哲学，而不是把它摆在它自身的结构中，按照黑格尔的要求，用它自己的力量来反对它，那么我们就没有权力支配它。海德格尔的思",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_Q5zURBQndIeX7nLFlM9y5254"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "物自体 现象 黑格尔 扬弃 康德"
+   },
+   "result": "{'results': [{'book_id': 'd3bebffb6a05', 'book_title': '否定的辩证法', 'author': '西奥多·阿多诺', 'chapter_idx': 8, 'chapter_title': '第二章 世界精神与自然历史', 'citation_label': '【《否定的辩证法》·第二章 世界精神与自然历史】', 'snippet': '趋势与事实不论是在个人的意识中还是在个人的共同生存中，客观的事物都具有支配个人的优先地位。但这种优先地位受到了人类“常识”、健全的精神（这种健全性是病态的东西）的最强烈抵制。这种优先地位是人们每天都能明显体验",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_02_19Bb2R1eOUtURRR3p9Zr2698"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool_note",
+   "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）",
+   "initiated_by": "validator",
+   "activity": true,
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "两处需修正：一是引用标签中的章节名与实际章节标题不符；二是\"哥白尼类比\"引文与原文措辞存在近似偏离，需核读原文。我先定点重读相关篇章。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_12qzpQvtqmitbfXzW68w4646"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_cKBcZ0RaY2UMcHZLCLcb3775"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "纯粹理性批判"
+   },
+   "result": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分，系统阐述了人类认识能力的界限和条件。康德提出“物自体”与“现象”的区分，认为我们只能认识现象，而不能认识物自体。他通过“先验范畴”和“先验图型”等概念，说明知性如何将感性直观综合为知识。在“先验辩证",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_12qzpQvtqmitbfXzW68w4646"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-8"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "哲学和我们的时代"
+   },
+   "result": "{'id': '87b26c6b10e6', 'title': '哲学和我们的时代', 'author': '周龙辉', 'region': '西方', 'file_type': 'epub', 'summary': '《哲学和我们的时代》是周龙辉对当代社会进行哲学反思的著作。作者认为，哲学不应脱离时代，而应回应时代的重大问题。书中分析了现代社会的种种困境，如技术异化、消费主义、精神空虚、生态危机等，并运用马克思主义、存在主义、批判理论等哲学资源进行剖析。周龙辉指出，哲学的任务在于揭示这些现象背后的深层逻辑，并寻找超越的可能。他呼吁人们重新思考生活的意义、价值的根基以及人与世界的关系，以哲学的",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_01_cKBcZ0RaY2UMcHZLCLcb3775"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-8"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "我需要读第二版前言原文确认哥白尼类比的精确措辞，并核对《哲学和我们的时代》那章的标题位置。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-8",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_rycxnFe7FCQM4vx9TTdR2430"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-8"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_01_zvecA6TKm0VC31wcyh5c8259"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-8"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "纯粹理性批判(注释本)",
+    "chapter_idx": 3
+   },
+   "result": "{'book_id': 'eca1899561c4', 'chapter_idx': 3, 'title': '第二版前言', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第二版前言】', 'text': '对属于理性工作的知识所做的探讨是否在一门科学的可靠道路上进行，很快就可以从结果出发作出评判。如果这种探讨在作出许多部署和准备之后，一旦要达到目的就陷入停滞，或者，为了达到目的而常常不得不重新返回、选择另一条道路；此外，如果不可能使不同的合作者就为实现共同的目的所应当采取的方式取得一致；那么，人们就总是可以确信",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-9",
+   "tool_call_id": "call_00_rycxnFe7FCQM4vx9TTdR2430"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-9"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "哲学和我们的时代",
+    "chapter_idx": 7
+   },
+   "result": "{'book_id': '87b26c6b10e6', 'chapter_idx': 7, 'title': '康德与休谟从同一个地方出发走了相反的道路', 'book_title': '哲学和我们的时代', 'citation_label': '【《哲学和我们的时代》·康德与休谟从同一个地方出发走了相反的道路】', 'text': '[第40～42节]\\n因为旧形而上学漫不经心地未经思想考验便接受其范畴，把它们当作先在的或先天的前提。而批判哲学正与此相反，其主要课题是考察在什么限度内，思想的形式能够得到关于真理的知识。\\n——黑格尔：《小逻辑》，第118页\\n1.康德与休谟从同一个地方出发走",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-9",
+   "tool_call_id": "call_01_zvecA6TKm0VC31wcyh5c8259"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-9"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "原文已核验。我注意到库内对应章节标签为\"第二版前言\"（非\"第二版序\"），《哲学和我们的时代》对应章节标题完整为\"康德与休谟从同一个地方出发走了相反的道路\"。再读导论确认先天判断的标准句措辞与标签。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-9",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-9",
+   "tool_call_id": "call_00_DvinE94ijsJKJS5grAic5640"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-9"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "纯粹理性批判(注释本)",
+    "chapter_idx": 4
+   },
+   "result": "{'book_id': 'eca1899561c4', 'chapter_idx': 4, 'title': '导论', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·导论】', 'text': '一、论纯粹知识与经验性知识的区别\\n我们的一切知识都以经验开始，这是无可置疑的；因为认识能力受到激发而行动，如果这不是由于对象激动我们的感官，一方面由自己造成表象，另一方面使我们的知性行动运作起来，对这些表象加以比较，把它们联结起来或者分离开来，并这样把感性印象的原始材料加工成叫做经验的对象的知识，那又是由于什么呢？因此",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-10",
+   "tool_call_id": "call_00_DvinE94ijsJKJS5grAic5640"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-10"
+  },
+  {
+   "type": "tool_note",
+   "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）",
+   "initiated_by": "validator",
+   "activity": true,
+   "decision_group_id": "inv-10"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "三处引文被校验为\"近似而非逐字\"。我需重读原文章节获取精确措辞后再修正。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-10",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-10",
+   "tool_call_id": "call_00_1zTPNfLILhtS5zcDly3W3434"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-10"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "纯粹理性批判(注释本)"
+   },
+   "result": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分，系统阐述了人类认识能力的界限和条件。康德提出“物自体”与“现象”的区分，认为我们只能认识现象，而不能认识物自体。他通过“先验范畴”和“先验图型”等概念，说明知性如何将感性直观综合为知识。在“先验辩证",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-12",
+   "tool_call_id": "call_00_1zTPNfLILhtS5zcDly3W3434"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-12"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-11",
+   "tool_call_id": "call_00_3tKQWzQNyjpNP1m9NpPX2102"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-11"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-11",
+   "tool_call_id": "call_01_v5KXTdGXW0F6M9lb3Nz34879"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-11"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "纯粹理性批判(注释本)",
+    "chapter_idx": 3
+   },
+   "result": "{'book_id': 'eca1899561c4', 'chapter_idx': 3, 'title': '第二版前言', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第二版前言】', 'text': '对属于理性工作的知识所做的探讨是否在一门科学的可靠道路上进行，很快就可以从结果出发作出评判。如果这种探讨在作出许多部署和准备之后，一旦要达到目的就陷入停滞，或者，为了达到目的而常常不得不重新返回、选择另一条道路；此外，如果不可能使不同的合作者就为实现共同的目的所应当采取的方式取得一致；那么，人们就总是可以确信",
+   "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-13",
+   "tool_call_id": "call_00_3tKQWzQNyjpNP1m9NpPX2102"
+  },
+  {
+   "type": "tool_note",
+   "content": "（EXACT_DUPLICATE_REUSED）同一工具与完全相同的参数此前已执行——直接复用此前结果（机械判重, 不涉及证据充分性判断）。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-13"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "纯粹理性批判(注释本)",
+    "chapter_idx": 4
+   },
+   "result": "{'book_id': 'eca1899561c4', 'chapter_idx': 4, 'title': '导论', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·导论】', 'text': '一、论纯粹知识与经验性知识的区别\\n我们的一切知识都以经验开始，这是无可置疑的；因为认识能力受到激发而行动，如果这不是由于对象激动我们的感官，一方面由自己造成表象，另一方面使我们的知性行动运作起来，对这些表象加以比较，把它们联结起来或者分离开来，并这样把感性印象的原始材料加工成叫做经验的对象的知识，那又是由于什么呢？因此",
+   "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-13",
+   "tool_call_id": "call_01_v5KXTdGXW0F6M9lb3Nz34879"
+  },
+  {
+   "type": "tool_note",
+   "content": "（EXACT_DUPLICATE_REUSED）同一工具与完全相同的参数此前已执行——直接复用此前结果（机械判重, 不涉及证据充分性判断）。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-13"
+  },
+  {
+   "type": "validation_failed",
+   "content": "回答未通过确定性证据校验",
+   "issues": [
+    {
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator": "\"迄今为止，人们假定，我们的一切知识都必须遵照对象；但是，关于对象先天地通过概念来澄清某种东西以扩展我们的知识的一切尝试",
+     "evidence_ref": "qb_read_13",
+     "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.81, evidence=qb_read_13, best_evidence=【《纯粹理性批判(注释本)》·第二版前言】)"
+    },
+    {
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator": "\"这里的情况与哥白尼最初的思想是相同的。哥白尼在假定整个星群都围绕观察者旋转，对天体运动的解释就无法顺利进行之后，试一试",
+     "evidence_ref": "qb_read_13",
+     "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.83, evidence=qb_read_13, best_evidence=【《纯粹理性批判(注释本)》·第二版前言】)"
+    },
+    {
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator": "\"如果有一个命题与它的必然性一同被思维，那么它就是一个先天判断。\"……\"必然性和严格的普遍性是一种先天知识的可靠标志，而",
+     "evidence_ref": "qb_read_15",
+     "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.75, evidence=qb_read_15, best_evidence=【《纯粹理性批判(注释本)》·导论】)"
+    }
+   ],
+   "repairs_used": 2,
+   "initiated_by": "validator",
+   "decision_group_id": "inv-12"
+  },
+  {
+   "type": "error",
+   "content": "本轮回答未通过证据一致性校验，请重试或换一种问法"
+  },
+  {
+   "type": "done",
+   "citations": [],
+   "evidence": {
+    "retrieved_evidence": [
+     {
+      "evidence_id": "ev_1",
+      "source_id": "src_search_0",
+      "book": "自然宗教对话录",
+      "chapter": "第十二篇",
+      "book_id": "9c9e77918c07",
+      "chapter_idx": 14,
+      "author": "大卫·休谟",
+      "snippet": "第美亚离开之后，克里安提斯和斐罗继续下面的谈话。克里安提斯说，我恐怕，我们的朋友当你在场时将再也不愿重提这个讨论的题目了；并且，斐罗，实在说来，我也宁愿和你们两人分别地讨论这样崇高、这样有趣的一个论题。你的争辩的精神，加上你对于常人的迷信的痛恶，使你在辩论时趋向极端；而且，没有一个即使在你自己看来也是十分神圣而可崇敬的事物，你在那种时机里面不加攻击的。斐罗答道，我得承认，我对于自然宗教这个论题比对于任何其他论题都来得大胆而不经意；这一方",
+      "score": 0.51,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_2",
+      "source_id": "src_search_0",
+      "book": "打开：周濂的100堂西方哲学课",
+      "chapter": "答问8 黑格尔为什么说雅各宾派暴政是必然的和正义的？",
+      "book_id": "b220d9690317",
+      "chapter_idx": 89,
+      "author": "周濂",
+      "snippet": "在第79讲的结尾处，我给大家提了一个问题：为什么黑格尔说雅各宾派的暴政“是纯粹的恐怖统治，但这种恐怖统治却是必然的和正义的……”？ 学友小松给出了非常棒的回答，他说：“首先，法国大革命之所以走到自身的反面，内因是根本原因。革命的本性都是对秩序的仇恨以及对破坏的痴迷，希望与野心并存，贪婪和恐惧齐飞。雅各宾派的恐怖，正是革命与生俱来的本性自我发展的结果。其次，道路是曲折的，前途是光明的。法国大革命的结果是失败的、血腥的，但是它的影响却是不容",
+      "score": 0.508,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_3",
+      "source_id": "src_search_0",
+      "book": "德意志意识形态（节选本）",
+      "chapter": "青年黑格尔派的唯心主义历史观",
+      "book_id": "ae97dec227b6",
+      "chapter_idx": 5,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "黑格尔用以歪曲现实冲突的那种抽象的和神秘的词句，在这个“批判的”头脑看来就是现实冲突。布鲁诺接受了思辨的矛盾，并肯定这个矛盾的一部分而否定另一部分。在他看来，关于现实问题的哲学词句就是现实问题本身。因此，一方面，他无视现实的人和他们关于自已的貌似独立并和他们对立的社会关系的现实意识，只知道自我意识这个空洞的抽象的字眼，正如他无视现实的生产，只知道这种自我意识的独立化的活动一样；另一方面，他无视现实的自然界和现实存在的社会关系，只知道把这",
+      "score": 0.496,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_4",
+      "source_id": "src_search_0",
+      "book": "有限与无限的游戏：一个哲学家眼中的竞技世界",
+      "chapter": "第七章　神话激发解释，但不接受任何解释",
+      "book_id": "f7dccd020213",
+      "chapter_idx": 11,
+      "author": "詹姆斯·卡斯",
+      "snippet": "CHAPTER 7 第七章 ┇ 神话激发解释，但不接受任何解释  神话激发解释，但不接受任何解释。解释将不可说之物吸收进可说之物，神话则再度引入沉默，这使原创的话语成为可能。 解释建立起秩序与可预测性的岛屿，甚至大陆。但是这些地区是由冒险家首先测绘出来的，他们的人生是种种探险故事。他们发现唯有通过神秘的旅程，才能进入无路的开阔地。后来，当冒险精神稍逊的定居者来到这里，制定出种种细节，将这些区域家园化之后，他们很容易丢失这一感知力，即所有",
+      "score": 0.496,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_5",
+      "source_id": "src_search_0",
+      "book": "历史与阶级意识",
+      "chapter": "合法性和非法性",
+      "book_id": "5bdec4dbde50",
+      "chapter_idx": 8,
+      "author": "格奥尔格·卢卡奇",
+      "snippet": "有一种唯物主义学说，认为人是环境和教育的产物，因而认为改变了的人是另一种环境和改变了的教育的产物，——这种学说忘记了：环境正是由人来改变的，而教育者本人一定是受教育的。 马克思：《关于费尔巴哈的提纲》正像在任何涉及行动方式的问题中一样，对研究无产阶级阶级斗争的合法性和非法性说来，动机及其所产生的倾向往往比单纯的事实更加重要和更能说明问题。因为工人运动一部分处于合法或非法状态的单纯事实如此取决于历史的“偶然事件”，以致分析它并不总能保证得",
+      "score": 0.493,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_6",
+      "source_id": "src_search_0",
+      "book": "开放社会及其敌人",
+      "chapter": "第十章 开放社会及其敌人",
+      "book_id": "67d0b7e3c795",
+      "chapter_idx": 11,
+      "author": "卡尔·波普尔",
+      "snippet": "柏拉图攻击的背景 他将使我们恢复最初的本性，治疗我们，使我们快乐和幸福。 ——柏拉图 我们的分析仍有一些疏漏之处。认为柏拉图的政治纲领纯属极权主义的看法，以及第６章对这个看法所提出的异议，引导我们去考察正义、智慧、真理和美之类的道德观念在这个纲领所发挥的作用。这个考察结果一直是没有什么区别的。我们发现这些观念的作用是重要的，但它们不能促使柏拉图超越极权主义和种族主义。这些观念中有一个还有待继续考察，即幸福的观念。人们可能会记得，我们引用",
+      "score": 0.486,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_7",
+      "source_id": "src_search_0",
+      "book": "马克思恩格斯文集",
+      "chapter": "路德维希·费尔巴哈和德国古典哲学的终结",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 114,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "一 我们面前的这部著作(1)使我们返回到一个时期，这个时期就时间来说离我们不过一代之久，但是它对德国现在的一代人却如此陌生，似乎已经相隔整整一个世纪了。然而这终究是德国准备1848年革命的时期；那以后我国所发生的一切，仅仅是1848年的继续，仅仅是革命遗嘱的执行罢了。 正像在18世纪的法国一样，在19世纪的德国，哲学革命也作了政治变革的前导。但是这两个哲学革命看起来是多么不同啊！法国人同整个官方科学，同教会，常常也同国家进行公开的斗争；",
+      "score": 0.486,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_8",
+      "source_id": "src_search_0",
+      "book": "西方哲学史（下卷）",
+      "chapter": "第二十三章拜伦",
+      "book_id": "f8d52df0f555",
+      "chapter_idx": 22,
+      "author": "伯特兰·罗素",
+      "snippet": "十九世纪和现在的时代比较起来，显得理性、进步而满足；然而当代的一些和这相反的性质，在自由主义的乐观时期也是许多最出色的人物所具有的。如果我们不把人作为艺术家或发现者来看，不作为投合或不投合自己的口味的人来看，而是当作一种力量，当作社会结构、价值判断或理智见解的变化原因来考察，便觉 得由于最近的事态发展，我们的评价不得不重新大大调整一番，有些人不如已往看来重要了，而有些人却比已往看来重要了。在比已往看来重要的人当中，拜伦应有一个崇高的位置",
+      "score": 0.485,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_9",
+      "source_id": "src_search_0",
+      "book": "德意志意识形态（节选本）",
+      "chapter": "共产主义是用实践手段来追求实践目标的最具有实践性的运动",
+      "book_id": "ae97dec227b6",
+      "chapter_idx": 17,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "在“施蒂纳”那里，“共产主义”是从寻找“本质”开始的；他作为善良的“青年”，又想只“洞察事物的底蕴”。而共产主义是用实践手段来追求实践目标的最具有实践性的运动，只是在德国，面对德国的哲学家，这个运动才会稍为研究一下“本质”问题，一一对于这一点，我们的圣者当然是不予考虑的。因此，这种渴慕“本质”的施蒂纳式的“共产主义”只能导致一个哲学范畴，即“彼此相互依存”，而这个范畴后来借助于几个牵强的等式稍稍接近了经验世界，这几个等式就是：彼此相互依",
+      "score": 0.484,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_10",
+      "source_id": "src_search_0",
+      "book": "利维坦",
+      "chapter": "第四十七章 论这种黑暗产生的利益及其归属的问题",
+      "book_id": "65dbe55d66df",
+      "chapter_idx": 48,
+      "author": "托马斯·霍布斯",
+      "snippet": "第 四 十 七 章 论 这 种 黑 暗 产 生 的 利 益 及 其 归 属 的 问 题 西塞罗极为推崇地讲到，罗马人里有位姓卡西的严厉法官制定了一项有关刑事案件的习惯法，即当证人的证据不充分时，询问原告这样一个问题，“能为你带来什么利益”，也就是他在这一事务中能获得的或企图获得的利益、荣誉或其他方面的满足。因为，在任何推论中，能清楚地表明行为者所处情形的，莫过于行为能够产生的利益。我在这里准备依据相同的准则来考量一二，到底是什么人在我们",
+      "score": 0.48,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_11",
+      "source_id": "src_search_0",
+      "book": "西方百年学术经典著作",
+      "chapter": "我们常常需要回溯到第一规约",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 101,
+      "author": "佚名",
+      "snippet": "即便，对于我所驳斥的东西我都照单全部认同，封建主义的支持者也好不到哪儿去。在服从于大多数人的意愿与统治一个社会之间，总是存在着巨大的差异性。即便，零散的个体持续地为一个人所奴役。除了看到他们人数众多之外，我见到的情形也不过是一个主人加上他的一群奴隶而已，而不是一群人和这群人的统治者。我看到的是一个聚集体，而不是一个联合体。当然也不存在良好的公众或政治实体。我们谈论的这个人，即使他已经奴役了半个地球的人口，也只是一个个体而已。他的利益与其",
+      "score": 0.479,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_12",
+      "source_id": "src_search_0",
+      "book": "德意志意识形态（节选本）",
+      "chapter": "无产者的阶级地位和历史使命",
+      "book_id": "ae97dec227b6",
+      "chapter_idx": 21,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "在现实中，个人有各种需要，正因为如此，他们已经有了某种 职责和某种任务，至于他们是否也在观念中把这种职责当作自己的职责，这在一开始还是无关紧要的。但是，不言而喻，由于个人都是具有意识的，他们对于自己的经验生活所赋予他们的这种职责也会形成一种观念，因而就使得圣桑乔能够抓住“职责”这个字眼，即抓住他们的现实生活条件在观念中的表现，而把这些生活条件本身置于视野之外。譬如说无产者吧，他的职责就是要像其他任何人一样满足自己的需要；而他连那些和其他",
+      "score": 0.479,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_13",
+      "source_id": "src_search_0",
+      "book": "最伟大的思想家 - 莱布尼茨",
+      "chapter": "政治学",
+      "book_id": "75efcbb151b7",
+      "chapter_idx": 12,
+      "author": "加勒特·汤姆森",
+      "snippet": "K为外交官和欧洲贵族阶级的顾广问，莱布尼茨在政治学领域非常活跃。然而，他的主要关注点是人们的福利。他提出许多改善大众生活的观念，诸如兴建更好的排水系统，改进教育和卫生体系。例如，他鼓励在德国和法国出版医疗统计数字。1691年，当他得知在法国使用的一种治疗痢疾的新疗法时，使力主把这种治疗方法引进德国。他提倡使用预防性药物，提议建立永久性的卫生委员会，以便在贫民中降低那些危险的传染病。他提出建立经济委员会和进行经济调查的观念，以便改进制造业",
+      "score": 0.475,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_14",
+      "source_id": "src_search_0",
+      "book": "西方百年学术经典著作",
+      "chapter": "Ⅱ　对道德的批判",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 693,
+      "author": "佚名",
+      "snippet": "253．（1885—1886） 给黎明的前言。 尝试思考道德性而不陷入其中，怀疑那些举止优雅的诱惑。我们所尊敬是世界足够我们去崇拜——不断地证明自己——通过特定的和普通的人的指导——：我们从中成长起来的基督教的观点。 通过敏锐、怀疑、科学性的增加（也是通过对精确性更有野心的本能，因此在反基督教的影响下），这种解释变得越来越不被允许。 最好的逃避方法：康德的批判主义。理智否认它在那种方式上的解释权，同时排斥那种方式的解释。人们满足于自己的",
+      "score": 0.472,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_15",
+      "source_id": "src_search_0",
+      "book": "反对方法",
+      "chapter": "第9章",
+      "book_id": "744757b853eb",
+      "chapter_idx": 10,
+      "author": "保罗·费耶阿本德",
+      "snippet": "除了自然解释之外，侧利略还改变了似乎危 及哥白尼的那些感觉。他承认有这种感觉存在； 他赞扬哥白尼置它们于不顾：他宣称已借助望远 镜排除了它们。然而，他没有提出理论上的理由， 说明为什么应当期望望远镜给出一幅真确的天 空图景。 我现在重复地扼述一下。提出一个论证，它用观察反驳哥白 尼。为了发现造成这矛盾的自然解释，论证被倒了过来。讨厌的 解释被别的东西取代：利用宣传以及诉诸常识的各个隐约的和高 度理论性的部分，来革除旧习惯，宏扬薪习惯。那",
+      "score": 0.472,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_16",
+      "source_id": "src_search_1",
+      "book": "纯粹理性批判",
+      "chapter": "第四章纯粹理性的历史",
+      "book_id": "8c0c6955c793",
+      "chapter_idx": 14,
+      "author": "伊曼努尔·康德",
+      "snippet": "第四章纯粹理性的历史 这个标题放在这里只是为了表示一个在系统中保留下来必须在将来加以填充的位置。我则满足于从一个单纯先验的观点、即纯粹理性的本性的观点出发来对迄今为止对纯粹理性所做的全部探讨作匆匆一警，这固然在我的眼前整立起-一些大厦，但却只是一些废墟。人类在哲学的童年是从我们今天更愿意在那里结束的地方开始的，就是说，首先探讨对上帝的知识，以及探讨来世的希望乃至于来世的性状，这件事是够奇怪的了，尽管当时理所当然地不可能走另外的路。不论那",
+      "score": 0.603,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_17",
+      "source_id": "src_search_1",
+      "book": "纯粹理性批判",
+      "chapter": "第二章纯粹理性的法规",
+      "book_id": "8c0c6955c793",
+      "chapter_idx": 12,
+      "author": "伊曼努尔·康德",
+      "snippet": "第二章纯粹理性的法规 对于人类理性来说，令人感到耻辱的是，它在其纯粹的运用中一事无成，甚至还需要一种训练来抑制它的放纵，并防止由此而给它带来的错觉。但另一方面，使它重新振奋并给它以自信的是，理性能够且必须自已实行这一训练，面不充许别的检察官来检查自巴；并且，它不得不为目己的思辨运用所设定的那些界限，同时也限制着每个对手的玄想的偕妄，因而能保障从它以前的过分要求中还可以为它保留下来的一切东西免遭任何攻击。所以，纯粹理性的-一切哲学最大的、",
+      "score": 0.6,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_18",
+      "source_id": "src_search_1",
+      "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "chapter": "序",
+      "book_id": "309de54e4392",
+      "chapter_idx": 31,
+      "author": "伊曼努尔·康德",
+      "snippet": "序 第一版——1790年 人们可以把基于先验原理的认识能力唤作纯粹理性，而对于它的可能性及界限的研究，一般称作 纯粹理性批判 ：尽管人们对于这项能力只理解为理性在它的理论的运用里，像在第一部批判著作里在这个名义下所做的那样。而这理性的机能作为实践理性，按照它的特殊诸原理来研究，还不是我们现在所要做的事。因此前者仅是从事于研究我们的先验的认识能力，排除掉它和愉快及不快情绪以及欲求机能的混和；并且在认识能力里面只研究 悟性 ，探究这悟性的先",
+      "score": 0.598,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_19",
+      "source_id": "src_search_1",
+      "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "chapter": "序言",
+      "book_id": "309de54e4392",
+      "chapter_idx": 10,
+      "author": "伊曼努尔·康德",
+      "snippet": "序　言 这个批判为什么不题名为 纯粹 实践理性批判，而是简单地题名为一般实践理性批判，虽然它与思辨理性批判的对应关系看起来需要前一个名称，对此这部著作做出了充分的说明。这个批判应当单单阐明 纯粹实践理性是存在的 ，并且出于这个意图批判理性的全部 实践能力 。如果它在这一方面成功了，它就无需批判 纯粹能力本身 ，以发现理性是否以这样一个过分僭越的要求， 超越 了自己（一如发生在思辨理性那里的情况）。因为如果它作为纯粹理性是现实地实践的，那",
+      "score": 0.593,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_20",
+      "source_id": "src_search_1",
+      "book": "康德文集",
+      "chapter": "科学院版《纯粹理性批判》第二版编者导言",
+      "book_id": "390398aff8d0",
+      "chapter_idx": 3,
+      "author": "伊曼努尔·康德",
+      "snippet": "科学院版《纯粹理性批判》第二版编者导言 本诺·埃德曼（Benno Erdmann） 康德在新的、最终的修订版的前言中，开诚布公地谈到在他修改第一版时引导他的根据和目标，以及这番修改的规模和意义。 根据康德的猜测，出版商［在1 7 8 6年4月初之前］就已经把这本书的全部印量销售一空了。他的催促为新的修订提供了契机。 (1) 康德在写下这几行字的时间里，忙于构思这件工作。 (2) 关于这番构思的内容，我们只知道，康德在根本之处不打算做任何",
+      "score": 0.592,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_21",
+      "source_id": "src_search_1",
+      "book": "康德三大批判合集（上下）",
+      "chapter": "序言",
+      "book_id": "10e1874c2255",
+      "chapter_idx": 1,
+      "author": "伊曼努尔·康德",
+      "snippet": "序言 称作一般的实践理性批判，尽管实践理性与思辨理性的平行关系似乎需要前一个名称①，对此这部著作给予了充分的解释。它应当阐明的只是有纯粹实践理性，并为此而批判理性的全部实践能力。如果它在这一点上成功了，那么它就不需要批判这个纯粹能力本身，以便看看理性是否用这样一种能力作为不过是僧妄的要求而超出了自身（正如在思辨理性那里曾发生的）。因为，如果理性作为纯粹理性现实地是实践的，那么它就通过这个事实而证明了它及其概念的实在性，而反对它存在的可能",
+      "score": 0.592,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_22",
+      "source_id": "src_search_1",
+      "book": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "chapter": "怀疑（理性）的一些理由",
+      "book_id": "86759652897c",
+      "chapter_idx": 18,
+      "author": "罗伯特·所罗门",
+      "snippet": "赤裸裸的暴力我还受得了，可是赤裸裸的明智我完全不能忍受。这样运用头脑不够光明正大。这是对理性的暗算。 ——奥斯卡·王尔德， 《道林·格雷的画像》（ The Picture of Dorian Gray） 我能勉强算是个存在主义者，所以向来怀疑关于理性的哲学谈论。“理性”是哲学中闪光的语词之一，被赋予神学的意蕴和解释。一些哲学家坚持认为，上帝本身就是“理性”（由此回避了信上帝是否是理性的这个问题）。其他哲学家则显得温和些，把理性描述为“上",
+      "score": 0.587,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_23",
+      "source_id": "src_search_1",
+      "book": "康德三大批判合集（上下）",
+      "chapter": "中译本序",
+      "book_id": "10e1874c2255",
+      "chapter_idx": 0,
+      "author": "伊曼努尔·康德",
+      "snippet": "中译本序 分为纯粹实践理性的“要素论”和“方法论”两部分，外加一个“结论”。 “要素论”里面又分为纯粹实践理性的“分析论”和“辩证论”。这一套结构与《纯粹理性批判》的大体结构完全相同，但在划分的细节上却有很大的差别，甚至完全相反。这是由于两个批判的任务、对象和要达到的目标不同所决定的。 康德在“序言”中一开始就指出，本书的任务并不是批判“纯粹实践理性”，而是立足于无人可以怀疑的“纯粹实践理性”去批判理性的“全部实践能力”；即不是像《纯粹",
+      "score": 0.581,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_24",
+      "source_id": "src_search_1",
+      "book": "纯粹理性批判(注释本)",
+      "chapter": "第二篇 纯粹理性的二论背反",
+      "book_id": "eca1899561c4",
+      "chapter_idx": 28,
+      "author": "伊曼努尔·康德",
+      "snippet": "我们在本书这一部分的导论中已经指明，纯粹理性的一切先验幻相都基于辩证的推理，逻辑学在一般理性推理的三种形式中提供了辩证推理的图型，就像各范畴在一切判断的四种功能中发现自己的逻辑图型一样。这些玄想推理的第一种关涉（主体或者灵魂的）一切一般表象之主观条件的无条件的统一性，与定言理性推理相应，其大前提作为原则而表述一个谓词与一个主体的关系。因此，辩证论证的第二种按照与假言理性推理的类比，以显象中的客观条件的无条件的统一性为内容，而下一篇将出现",
+      "score": 0.579,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_25",
+      "source_id": "src_search_1",
+      "book": "单向度的人",
+      "chapter": "第五章　否定性的思维：被击败了的抗议逻辑",
+      "book_id": "2c1a4c7d17a4",
+      "chapter_idx": 9,
+      "author": "赫伯特·马尔库塞",
+      "snippet": "第五章 否定性的思维： 被击败了的抗议逻辑 “……现存的不可能是真实的。”对于我们受过很好训练的耳朵和眼睛来说，这个陈述是轻率和好笑的；就像“现实的就是合理的”这一似乎与其相反的命题一样，是荒谬绝伦的。但是，在西方的思想传统中，二者都以引起争议的凝练公式来揭示一直支配其逻辑的理性概念。二者还都表达了同样的概念，就是说，表达了现实和试图把握现实的思想的对立结构。直接经验的世界——我们发现自己生活于其中的世界——必须被理解、改变甚至颠覆，以",
+      "score": 0.576,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_26",
+      "source_id": "src_search_1",
+      "book": "康德三大批判合集（上下）",
+      "chapter": "序言",
+      "book_id": "10e1874c2255",
+      "chapter_idx": 10,
+      "author": "伊曼努尔·康德",
+      "snippet": "序言 1790年我们可以把出自先天原则的认识能力称之为纯粹理性，而把对它的可能性和界限所作的一般研究称之为纯粹理性批判：尽管我们所理解的这种能力只是在其理论运用中的理性，如同在第一部著作中也已经以那种命名出现过的那样，那时还没有打算把理性能力作为实践理性并按照其特殊原则来加以研究。于是那种批判就只是指向我们先天地认识事物的能力，所以只是讨论认识能力，而排除愉快和不愉快的情感和欲求能力；而在诸认识能力中则根据其先天原则来讨论知性，而排除（",
+      "score": 0.575,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_27",
+      "source_id": "src_search_1",
+      "book": "纯粹理性批判(注释本)",
+      "chapter": "第一章 论知性的一般逻辑应用",
+      "book_id": "eca1899561c4",
+      "chapter_idx": 8,
+      "author": "伊曼努尔·康德",
+      "snippet": "知性在上面只是得到消极的解释（第一版前面的文本没有提供对知性的这样一种消极的解释。毋宁说，知性在那里，如在第二版中那样，一开始就是用如下的积极规定来描绘的：作为凭借概念的认识，作为思维的能力，作为自发性。至于对感性认识的否定就在所有那些积极的规定之中，而且有时（B89）是与其他规定并列表述的，对此自然没有任何改变。回顾康德1772年（《康德全集》，第Ⅹ卷，125页［参见《康德书信百封》，33~34页。——译者注］）对包含在1770年的教",
+      "score": 0.574,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_28",
+      "source_id": "src_search_1",
+      "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "chapter": "第二部　纯粹实践理性方法论",
+      "book_id": "309de54e4392",
+      "chapter_idx": 13,
+      "author": "伊曼努尔·康德",
+      "snippet": "第二部 纯粹实践理性方法论 所谓 纯粹实践 理性的 方法论 ，我指的不是为了纯粹实践原理的科学认识而（不仅在思考时而且也在陈述时）措置这种原理的方式，只有这种措置原本在 理论 理性里面称为方法（因为通俗的认识需要一种 手法 ，但科学需要一种方法，亦即依照理性原则的措置，认识的杂多只有借此才能成为一个 体系 ）。相反，在这里方法论是指：我们如何能够裁成纯粹实践理性的法则 进入 人类的心灵，以及裁成它们对于这种心灵的准则的 影响 ，亦即如何",
+      "score": 0.573,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_29",
+      "source_id": "src_search_1",
+      "book": "逻辑哲学论",
+      "chapter": "英译者前言",
+      "book_id": "5d906139d1b2",
+      "chapter_idx": 0,
+      "author": "维特根斯坦",
+      "snippet": "本书是1921年最早发表在德文期刊Annalen der Naturphilosophie（《自然哲学年鉴》）上面的路德维希・维特根斯坦的Logisch-Philosophische Abhandlung（《逻辑哲学论》）的一个英译本。较早一些的一个英译本是由C.K.奥格登在F.P.雷姆塞的协助下完成的，它以并列刊印出德文原文的形式发表于1922年。现在这个译本于1961年出版，也附有德文原文。这次进行的修改参照了维特根斯坦本人在他同C",
+      "score": 0.568,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_30",
+      "source_id": "src_search_1",
+      "book": "康德文集",
+      "chapter": "科学院版《纯粹理性批判》第一版编者导言",
+      "book_id": "390398aff8d0",
+      "chapter_idx": 2,
+      "author": "伊曼努尔·康德",
+      "snippet": "纯粹理性批判 科学院版《纯粹理性批判》第一版编者导言 本诺·埃德曼（Benno Erdmann） 我们关于《纯粹理性批判》的历史之外在事实的知识，单独来看无关紧要。因为对于这种外在说明的意义的一种理解，惟有在这种说明与康德———特别是对他的学生马库斯·赫茨（Marcus Herz）———谈论自己工作进展的无数评注放在一起加以对照的情况下，才能够获得。然而，这些评注中几乎没有一个是不对其内容及其对于批判学说的总体内容的态度进行一种批判性的",
+      "score": 0.567,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_31",
+      "source_id": "src_chapter_5",
+      "book": "纯粹理性批判(注释本)",
+      "chapter": "第一章 论空间",
+      "book_id": "eca1899561c4",
+      "chapter_idx": 5,
+      "author": "伊曼努尔·康德",
+      "snippet": "第2节 空间概念的形而上学阐明\n（标题为第二版所加。——译者注）\n借助于外感官（我们心灵的一种属性），我们把对象表象为外在于我们的，它们全都在空间之中。在空间中，它们的形状、大小和相互之间的关系得到规定，或者是可规定的。借助于内感官，心灵直观自己本身或者其内在状态；虽然内感官并不提供关于灵魂自身作为一个客体的任何直观，但毕竟有一种确定的形式，惟有在这形式下灵魂内部状态的直观才有可能，以至于一切属于内部规定的东西都在时间的关系中被表象出来",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_32",
+      "source_id": "src_chapter_6",
+      "book": "纯粹理性批判",
+      "chapter": "第二版序",
+      "book_id": "8c0c6955c793",
+      "chapter_idx": 4,
+      "author": "伊曼努尔·康德",
+      "snippet": "第二版序\n对属于理性的工作的那些知识所作的探讨是否在一门科学的可靠道路上进行，这可以马上从它的后果中作出评判。如果这门科学在做了大量的筹备和准备工作之后，一且要达到目的，就陷人僵局，或者，经常为了达到自的而不得不重新回头去另选条路；又比如，如果那些各不相同的合作者不能像遵守这个共同的目标所应当的那样协调一致：那么我们总是可以确信，这样一种研究还远远没有走上一门科学的可靠的道路，而只是在来回摸索。而尽可能地找到这条道路，即便有些包含在事先",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_33",
+      "source_id": "src_chapter_7",
+      "book": "纯粹理性批判",
+      "chapter": "导言",
+      "book_id": "8c0c6955c793",
+      "chapter_idx": 5,
+      "author": "伊曼努尔·康德",
+      "snippet": "导言\nⅠ.纯粹知识和经验性知识的区别\n我们的一切知识都从经验开始，这是没有任何怀疑的；因为，如果不是通过对象激动我们的感官，一则由它们自己引起表象，一则使我们的知性活动运作起来，对这些表象加以比较，把它们连结或分开，这样把感性印象的原始素材加工.成称之为经验的对象知识，那么知识能力又该由什么来唤起活动呢？所以按照时间，我们没有任何知识是先行于经验的，一切知识都是从经验开始的。但尽管我们的一切知识都是以经验开始的，它们却并不因此就都是从经",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_34",
+      "source_id": "src_search_9",
+      "book": "否定的辩证法",
+      "chapter": "第二章 存在与实存",
+      "book_id": "d3bebffb6a05",
+      "chapter_idx": 5,
+      "author": "西奥多·阿多诺",
+      "snippet": "对本体论的内在批判对本体论的需要的批判使我们来到了对本体论本身的内在批判。如果我们只是一般地从外部来反对存在哲学，而不是把它摆在它自身的结构中，按照黑格尔的要求，用它自己的力量来反对它，那么我们就没有权力支配它。海德格尔的思想运动的动机和效果甚至在它们没有被表达出来的地方也能得到分析。在整个功能联系中，他几乎每一句话都带有立场价值。在这种意义上说，他是演绎体系的继承人。演绎体系的历史已经充满了思维进步所生育的概念，尽管我们不能视地谈论与",
+      "score": 0.592,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_35",
+      "source_id": "src_search_9",
+      "book": "哲学和我们的时代",
+      "chapter": "康德与休谟从同一个地方出发走了相反的道路",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 7,
+      "author": "周龙辉",
+      "snippet": "[第40～42节]\n因为旧形而上学漫不经心地未经思想考验便接受其范畴，把它们当作先在的或先天的前提。而批判哲学正与此相反，其主要课题是考察在什么限度内，思想的形式能够得到关于真理的知识。\n——黑格尔：《小逻辑》，第118页\n1.康德与休谟从同一个地方出发走了相反的道路\n黑格尔谈到了怀疑论者休谟，紧接着就是对批判哲学的阐释。这并非偶然，批判哲学的诞生在相当程度上可视为康德对怀疑论的回应。在《纯粹理性批判》的序言中，康德将怀疑论比拟为哲学领",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_36",
+      "source_id": "src_search_9",
+      "book": "哲学和我们的时代",
+      "chapter": "万物一体之境界达到了最高的自由",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 33,
+      "author": "周龙辉",
+      "snippet": "[第154～159节] 一般讲来，当一个人自己知道他是完全为绝对理念所决定时，他便达到了人的最高的独立性。斯宾诺莎所谓对神的理智的爱也就是指这种心境和行为而言。 ——黑格尔：《小逻辑》，第325页 1.真理只能是一个体系 实体关系、因果关系和相互作用，这三个范畴在我们的感性与知性思维中是不相干的、并列的三个范畴，它们在康德十二范畴表里也没有内在的关联，但是在黑格尔哲学体系中，这三个范畴并不是孤立静止的，也不是独断列举的，而是有机的整体，",
+      "score": 0.576,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_37",
+      "source_id": "src_search_9",
+      "book": "从《理想国》到《正义论》",
+      "chapter": "康德：《纯粹理性批判》",
+      "book_id": "f15e7fd89491",
+      "chapter_idx": 12,
+      "author": "奈杰尔·沃伯顿",
+      "snippet": "伊曼努尔·康德（Immanuel Kant）把自己的研究方法描述为哲学上的“哥白尼式的革命”（Copernican Revolution）。哥白尼提出了“日心说”的理论，他认为地球围绕太阳转，而不是太阳围绕地球转。康德的革命性理论是，我们所居住的、认识到的这个世界取决于认识者的思想的特点，而不仅仅是这个世界独立于我们存在。如果我们通过粉色眼镜看这个世界，那么整个世界会显示为粉红色的。在康德以前，很多哲学家们认定我们在绝大多数情况下是世界",
+      "score": 0.576,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_38",
+      "source_id": "src_search_9",
+      "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "chapter": "译序",
+      "book_id": "309de54e4392",
+      "chapter_idx": 63,
+      "author": "伊曼努尔·康德",
+      "snippet": "译　　序 本书收录康德于1784—1797年间（60岁至73岁）所写的论文8篇，包括康德有关历史哲学和政治哲学的全部主要著作在内。 18世纪末的德国比起同时期的西方先进国家来，仍然是个分裂、落后的国家；资本主义生产关系虽然已在发展，但仍苦于封建制度的严重束缚。这就决定了德国中产阶级的特殊软弱性。当英国已经和法国正在采取革命行动推翻封建制度的时候，德国还只采取理论的形式。因此在论及由康德奠基的德国古典哲学时，经典作家指出：“在法国发生政治",
+      "score": 0.575,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_39",
+      "source_id": "src_search_9",
+      "book": "哲学和自然之镜",
+      "chapter": "第四章 特殊表象",
+      "book_id": "ad8775173020",
+      "chapter_idx": 12,
+      "author": "理查德·罗蒂",
+      "snippet": "1.必然真理，特殊表象和分析哲学 在十九世纪末，哲学家们不无道理地对哲学这门学科的前途 感到担忧。一方面，经验心理学的兴起提出了这样的问题：“我们 需要知道心理学不能告诉我们的哪些知识？\"自从笛卡尔企图通 过明晰的观念来保证世界的可靠性和康德企图通过先天综合真理 来保证世界的可靠性以来，本体论一直为认识论所支配。于是认 识论被心理学所“自然化”就意味着，一种简单而不严格的物理主 义可能是唯一所需要的那种本体观。另一方面，德国唯心主义传 ",
+      "score": 0.568,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_40",
+      "source_id": "src_search_9",
+      "book": "哲学和我们的时代",
+      "chapter": "莫把对真理的无知当作良知",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 1,
+      "author": "周龙辉",
+      "snippet": "这些工作占据了精神上的一切能力，各阶层人民的一切力量，以及外在的手段，致使我们精神上的内心生活不能赢得宁静。世界精神太忙碌于现实，太驰骛于外界，而不遑回到内心，转回自身，以徜徉自怡于自己原有的家园中。 ——黑格尔1818年在柏林大学的开讲辞 在1817年的第一篇序言中，黑格尔发表了他对那个时代的哲学潮流的看法，黑格尔发现当时有两种趋势，一种是旧形而上学，或者说是理智形而上学，这种哲学极其狂妄，属于被康德批判的独断论。康德以前的形而上学具",
+      "score": 0.568,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_41",
+      "source_id": "src_search_9",
+      "book": "西方哲学史（下卷）",
+      "chapter": "第二十章康德",
+      "book_id": "f8d52df0f555",
+      "chapter_idx": 19,
+      "author": "伯特兰·罗素",
+      "snippet": "一般十八世纪的哲学处于英国经验主义派的支配之下，洛克、贝克莱和休谟可以看成是这派的代表人物。在这些人身上存在着一种他们自已似乎一向不知道的矛盾，即他们的精神气质和他们的理论学说的倾向之间的矛盾。按精神气质来讲，他们是有社会心的公民，决不一意孤行，不过分渴望权势，赞成在刑法许可的范围内人人可以为所欲为的宽容社会。他们都和可亲，是通达世故的人，温文尔雅、仁慈厚道。但是，虽然他们的性情是社会化的，他们的理论哲学却走向主①黑格尔选中了总意志与全",
+      "score": 0.568,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_42",
+      "source_id": "src_search_9",
+      "book": "读《资本论》",
+      "chapter": "《资本论》的认识论命题",
+      "book_id": "b3219ec260ed",
+      "chapter_idx": 9,
+      "author": "路易·阿尔都塞",
+      "snippet": "六、（马克思、恩格斯）《资本论》的认识论命题我们讲了许多题外话，现在我们来确定分析的对象，即研究马克思的对象本身。第一步，我们阅读了马克思论述他自已的发现的文章。我们已经确认价值和剩余价值的概念是这种发现的承担者。但是，我们必须指出，这些概念恰恰是对马克思主义政治经济学理论的对象本身产生误解的地方。不仅经济学家们有这种误解，甚至许多马克思主义者也有这种误解。第二步，我们又阅读了马克思对于他的先驱者，古典政治经济学的创始人的评述，以期通过",
+      "score": 0.568,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_43",
+      "source_id": "src_search_9",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "三、 费希特",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 441,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "1． 费希特哲学的基本原理 康德哲学中缺乏思想性和一贯性的地方使得他的整个系统缺乏思辨的统一性，这一缺点为费希特所克服了。费希特掌握的是绝对的形式，换言之，绝对形式就是绝对的自为存在，绝对的否定性，它不是个别性，而是个别性的概念，因而也就是现实性的概念。费希特的哲学是形式在自身内的发展（是理性在自身内得到综合、是概念和现实性的综合），特别是康德哲学的一贯的发挥。它没有超出康德哲学的基本内容，他特别称他的哲学为 知识学。 [144] 他的",
+      "score": 0.56,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_44",
+      "source_id": "src_search_9",
+      "book": "美学理论",
+      "chapter": "第九章　主体—客体",
+      "book_id": "17fda3378628",
+      "chapter_idx": 11,
+      "author": "西奥多·阿多诺",
+      "snippet": "一、主客体二分法的歧义性与美感的观念 现代美学有主观主义与客观主义之别。这些术语需要得到澄清。第一个人心目中会有对艺术的（主观）反应和（客观）意向这样的二分法，这在认识论中据说是一种朴素的现实主义立场。第二个人会用这些术语来示意艺术品自身中主观契机或客观契机的优先地位，譬如在谈论古典主义与浪漫主义的差异性方面就是如此。第三个人会追问审美鉴赏力判断会有什么客观性。这些形形色色的内涵，务必保持相互有别。以黑格尔的美学为例。依据第一层意义，我",
+      "score": 0.56,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_45",
+      "source_id": "src_search_9",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "B．从历史演绎出艺术的真正概念",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 183,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "1．康德哲学 康德哲学不仅早就感觉到这种统一观点的需要，而且对这观点有明确的认识，把它阐明了出来。一般地说，康德无论是对于理智，还是对于意志，都把自相融贯的合理性，自由，以及自己认识自己为无限的那种自意识看作基础。尽管康德哲学还有些缺陷，这种对理性本身绝对性的认识——这是近代哲学的转折点——这种绝对出发点，却是应该承认而不容批驳的。但是因为康德依旧把主观思维与客观事物之间的对立以及意志的抽象的普遍性与意志的感性的特殊性之间的对立看成是固",
+      "score": 0.556,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_46",
+      "source_id": "src_search_9",
+      "book": "过程与实在",
+      "chapter": "第七章　主体性原则",
+      "book_id": "08bc692fb974",
+      "chapter_idx": 10,
+      "author": "阿尔弗雷德·诺思·怀特海",
+      "snippet": "体性原则不断产生的严重后果的历史。休谟和康德的巨大功绩就在于以极大的明确性面对这种困难。 主体性原则就是认为对经验活动中的材料可以完全通过普遍性质加以恰当地分析。 感觉主义的原则就是认为经验活动中的基本活动就是纯粹主体性地接纳材料而没有任何接受的主体形式。这就是纯粹感觉理论。 主体性原则来自以下三个前提：（1)接受“实体一属性”概念作为对最终本体论原则的表达。（2)接受亚里士多德对第一实体的定义，总是把它作为主体而绝不作为谓词。（3）关",
+      "score": 0.553,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_47",
+      "source_id": "src_search_9",
+      "book": "哲学和自然之镜",
+      "chapter": "第八章 无镜的哲学",
+      "book_id": "ad8775173020",
+      "chapter_idx": 16,
+      "author": "理查德·罗蒂",
+      "snippet": "1，解释学和教化 我们目前对于哲学家应当是什么形象的观念，与康德使一切 知识论断成为彼此可公度的企图联系得如此密切，以至于难以想 象，不含认识论的哲学会是什么样子。更一般地说，很难想象任何 一种活动如果与知识毫无关系，如果在某种意义上不是一种知识 论，一种获得知识的方法，或至少是有关在何处可找到某种最重要 知识的暗示的话，能有资格承当“哲学”的美名。这一困难来自柏 拉图主义者、康德主义者和实证主义者共同具有的一个概念：人具 有一个本质，",
+      "score": 0.553,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_48",
+      "source_id": "src_search_9",
+      "book": "哲学的故事",
+      "chapter": "第六章 伊曼努尔·康德 和德国唯心主义",
+      "book_id": "d56e17acb59b",
+      "chapter_idx": 10,
+      "author": "威尔·杜兰特",
+      "snippet": "第六章 伊曼努尔·康德 和德国唯心主义 一、通向康德之路 伊曼努尔·康德的哲学统治了整个十九世纪的思想，在这之前没有一个思想体系可以做到这一点。经过近六十年沉寂而隔绝的发展之后，这位哥尼斯堡神秘的苏格兰后裔在1781年凭借他著名的《纯粹理性批判》一书将世界从“独断论的迷梦”中唤醒。从那时起直到现在，“批判哲学”统治了欧洲的哲学思想。浪漫主义的浪潮在1848年革命中迅速衰退，叔本华的哲学思想成为一时权威；1859年后，进化论横扫一切成为主",
+      "score": 0.551,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_49",
+      "source_id": "src_search_10",
+      "book": "否定的辩证法",
+      "chapter": "第二章 世界精神与自然历史",
+      "book_id": "d3bebffb6a05",
+      "chapter_idx": 8,
+      "author": "西奥多·阿多诺",
+      "snippet": "趋势与事实不论是在个人的意识中还是在个人的共同生存中，客观的事物都具有支配个人的优先地位。但这种优先地位受到了人类“常识”、健全的精神（这种健全性是病态的东西）的最强烈抵制。这种优先地位是人们每天都能明显体验到的，可是，人们却把它当作一种无根据的思辨来压制，以此使个入继续自以为他们的标准化的观念是双倍无条件的真理，以此使他们的幻想不致被怀疑不是这么回事，以此使他们的生活不致被怀疑成命中注定的。我们的时代曾被认为是一个脱了客观唯心主义体系",
+      "score": 0.535,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_50",
+      "source_id": "src_search_10",
+      "book": "哲学和我们的时代",
+      "chapter": "判断是事物的演进",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 35,
+      "author": "周龙辉",
+      "snippet": "[第166～176节] 当我们进行判断或评判一个对象时，那并不是根据我们的主观活动去加给对象以这个谓词或那个谓词。而是我们在观察由对象的概念自身所发挥出来的规定性。 ——黑格尔：《小逻辑》，第341页 1.判断是事物的演进 “概念本身”是原始的全体，“判断”是原始全体的分裂。从“概念本身”到“判断”，犹如混沌体自身产生分化，特殊的东西产生了。黑格尔说，“判断是概念在它的特殊性中” [1] ，判断并非一种主观的外在设定，而是概念自身的特殊",
+      "score": 0.53,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_51",
+      "source_id": "src_search_10",
+      "book": "哲学和我们的时代",
+      "chapter": "割断下来的胳膊不再是胳膊",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 27,
+      "author": "周龙辉",
+      "snippet": "[第132～137节] 一个活的有机体的官能和肢体并不能仅视作那个有机体的各部分，因为这些肢体器官只有在它们的统一体里，它们才是肢体和器官，它们对于那有机的统一体是有联系的，绝非毫不相干。 ——黑格尔：《小逻辑》，第283页 1.散漫自由的落叶是秋天的征兆 现象是本质的展现，现象不站在自身的脚跟上，现象不是独立自足的，现象的真理不在自身，而在他物。现象（Die Erscheinung）的三个环节，第一是现象（世）界，第二是内容与形式，第",
+      "score": 0.528,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_53",
+      "source_id": "src_search_10",
+      "book": "哲学和我们的时代",
+      "chapter": "个体生命的死亡是民族精神的前进",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 41,
+      "author": "周龙辉",
+      "snippet": "[第213～222节] 在死亡里，族类表明其自身为支配那直接的个体的力量。就动物来说，族类的过程乃是它的生命力的顶点。 ——黑格尔：《小逻辑》，第410页 1.理念是绝对否定性 绝对是理念，理念之前的环节成了绝对者自我客观化的环节，也可以说是绝对者自我认识的阶段。理念既是前面一切环节发展的结果，也是前面一切环节以及一切现实事物的根据。黑格尔说，理念就是真理。一切事物，只要是真实的存在，它们就一定是理念；现实事物的真理性依赖于理念。这个论",
+      "score": 0.514,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_54",
+      "source_id": "src_search_10",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "第一篇 力学",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 131,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "1 .康德：《纯粹理性批判》，第I部分第1节；参看蓝公武译本，北京1965年，第49页以下。——第41页 2 .牛顿在其《自然哲学的数学原理》“附说”II中说：“绝对空间按其本性，与任何外在对象无关，永远保持不变，并且不动。”黑格尔批评了他把空间形式与物质运动割裂开的观点。——第42页 3 .莱布尼茨认为空间绝不是物质性的，而是一种依赖于单子关系的秩序。见《人类理智新论》第II部分第13章第17节以及他同克拉尔克（S.Clarke）的有",
+      "score": 0.514,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_56",
+      "source_id": "src_search_10",
+      "book": "哲学和我们的时代",
+      "chapter": "透过现象看本质",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 21,
+      "author": "周龙辉",
+      "snippet": "[第112～114节] 事物的直接存在，依此说来，就好像是一个表皮或一个帷幕，在这里面或后面，还蕴藏着本质。 ——黑格尔：《小逻辑》，第243页 1.本质论是对一切直接事物的扬弃 本质论者认为，我们必须把世界在本质上如何与看起来如何加以区分。从存在论到本质论，其转变幅度之大不啻一个不谙世事的少年摇身一变，成为一个世事洞明的老者，不再从表面如此去认识这个世界，不再把直接的存在当作世界的真理，而是透过现象看本质；不再把直接的社会规则当作真理",
+      "score": 0.511,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_57",
+      "source_id": "src_search_10",
+      "book": "哲学科学全书纲要",
+      "chapter": "第二部分. 物理学.",
+      "book_id": "497b0228c3a6",
+      "chapter_idx": 16,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "§ . 205. 物质通过它的否定性环节，通过它的差异性或抽象的 个别化 环节，在它自身内把自己分隔开来。物质具有 排斥 。但物质的相互外在也同样是本质性的，因为这些有差异的东西是同一的东西，是这种相互外在存在的自为存在的否定的统一性，因而是连续的。因此物质具有 吸引 。这些环节的统一性是 重力。 康德除其他一些功绩外，还有一项功绩：在他的 自然科学的形而上学基础 中，通过他的一种所谓 构造 物质的尝试，在物质起先仅仅作为知性的一种僵死",
+      "score": 0.51,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_58",
+      "source_id": "src_search_10",
+      "book": "哲学和我们的时代",
+      "chapter": "纯粹的光明就是纯粹的黑暗",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 6,
+      "author": "周龙辉",
+      "snippet": "[第37～39节] 他不仅不是最丰富最充实的存在，由于这种抽象的看法，反而成为最贫乏最空虚的东西……因为如果没有规定性，也就不可能有知识。纯粹的光明就是纯粹的黑暗。 ——黑格尔：《小逻辑》，第108页 1.缺乏坚实据点的知性形而上学 黑格尔在思想对客观性的第一态度中论述了知性形而上学。知性形而上学试图通过有限的思维规定去认识一切，不断地把有限的谓词加到对象上，并以抽象的同一性为最高原则。黑格尔说： 旧形而上学的主要兴趣，即在于研究刚才所",
+      "score": 0.509,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_59",
+      "source_id": "src_search_10",
+      "book": "哲学和我们的时代",
+      "chapter": "主观的东西不永远是主观的",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 40,
+      "author": "周龙辉",
+      "snippet": "[第204～212节] 对那些大谈有限事物以及主观事物和客观事物固定性和不可克服性的人来说，每一个意欲的活动都可以提供相反的例证。意欲可以说是一种确信，即确信主观性同客观事物一样，也并不仅仅是片面的，没有真理的。 ——黑格尔：《小逻辑》，第391页 1.主观的东西不永远是主观的 目的最初确实只是一个主观性质的东西，它与客体之间是对立的。练出八块腹肌的目的与作为客体的身体上的赘肉之间最初是对立的，主观与客观之间存在一条鸿沟，目的与客体之间",
+      "score": 0.507,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_60",
+      "source_id": "src_search_10",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "甲、现象的规律",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 54,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "1. 现象是那由于其 否定 而有中介的存在物，它的否定构成它在 长在 。它的这个否定诚然是 另 一个独立物；但这独立物在本质上同样是一个被扬弃的。因此，存在物是通过它的否定并通过它的这个否定的否定而 回归 到自身；所以它具有本质的 独立性 ；正如它直接就全然是 建立起来之有 那样，这个建立起来之有也以一个 根据 和一个他物为其组成。——所以，现象首先是存在连同它的本质性，建立起来之有连同它的根据；但这个根据是 否定 ，而另一独立物，即前",
+      "score": 0.504,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_61",
+      "source_id": "src_search_10",
+      "book": "自然辩证法",
+      "chapter": "［札记和片断］",
+      "book_id": "aa21ac425e87",
+      "chapter_idx": 15,
+      "author": "弗里德里希·恩格斯",
+      "snippet": "吸引和重力。整个重力论是建立在吸引是物质的本质这种说法的基础上的。这当然是不对的。凡是有吸引的地方，它都必定被排斥所补充。所以黑格尔说得完全正确：物质的本质是吸引和排斥。 事实上，我们越来越不得不承认：物质的离散有一个界限，达到这个界限，吸引就转变成排斥；反之，被排斥的物质的凝缩也有一个界限，达到这个界限，排斥就转变成吸引。 吸引转变成排斥和排斥转变成吸引，这在黑格尔那里是神秘的，但是，事实上他在这里预言了以后自然科学上的发现。就是在气",
+      "score": 0.503,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_62",
+      "source_id": "src_search_10",
+      "book": "50堂经典哲学思维课",
+      "chapter": "11 黑格尔《精神现象学》 存在即合理吗？",
+      "book_id": "327e5a1db152",
+      "chapter_idx": 11,
+      "author": "郁喆隽",
+      "snippet": "阅读挑战 黑格尔 黑格尔的《精神现象学》追踪了意识的不同形式，就好像从内部考察每一种形式，并且表明较为有限的意识形式是如何必然发展成更完善的形式的。黑格尔本人则把他的任务称为“对作为一种现象的知识的阐述”。\r\r ——彼得·辛格《黑格尔》 引言 + 在中国，人们最熟悉的哲学命题大概就是“存在即合理”了。这句话出自德国古典哲学家黑格尔。然而，绝大多数人引用这句话的时候，却是在以讹传讹。他们会认为，这句话就是对存在的一切现象的辩护，认为所有现",
+      "score": 0.501,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_63",
+      "source_id": "src_search_10",
+      "book": "自由及其背叛：人类自由的六个敌人 (人文与社会译丛)",
+      "chapter": "黑格尔",
+      "book_id": "cd6a424a1654",
+      "chapter_idx": 7,
+      "author": "以赛亚·伯林",
+      "snippet": "在我探讨的这个时期萌生的各种思想当中，黑格尔的体系或许对当代思想影响最大。它是一套庞杂的神学体系，同其他许多神学一样，它具有巨大的启迪力量，还有巨大的、遮蔽它所接触的东西的力量。它既倾泻光明，又倾泻黑暗——也许它倾泻的黑暗多于光明，不过在这一点上，不会有共识。不管怎么说，它就像一片黑森林，偶尔步入其中的人，很少回来告诉我们他们的所见所闻。或者，即使他们告诉我，就像迷恋瓦格纳音乐的那些人，他们的耳朵愿意听见的声音，完全不同于他们过去常常谛",
+      "score": 0.501,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_64",
+      "source_id": "src_chapter_13",
+      "book": "纯粹理性批判(注释本)",
+      "chapter": "第二版前言",
+      "book_id": "eca1899561c4",
+      "chapter_idx": 3,
+      "author": "伊曼努尔·康德",
+      "snippet": "对属于理性工作的知识所做的探讨是否在一门科学的可靠道路上进行，很快就可以从结果出发作出评判。如果这种探讨在作出许多部署和准备之后，一旦要达到目的就陷入停滞，或者，为了达到目的而常常不得不重新返回、选择另一条道路；此外，如果不可能使不同的合作者就为实现共同的目的所应当采取的方式取得一致；那么，人们就总是可以确信，这样一种研究还远远没有选取一门科学的可靠道路，而只是在来回摸索。而尽可能地找到这条道路，哪怕是不得不把事先未加思索就接受的目的所",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_66",
+      "source_id": "src_chapter_15",
+      "book": "纯粹理性批判(注释本)",
+      "chapter": "导论",
+      "book_id": "eca1899561c4",
+      "chapter_idx": 4,
+      "author": "伊曼努尔·康德",
+      "snippet": "一、论纯粹知识与经验性知识的区别\n我们的一切知识都以经验开始，这是无可置疑的；因为认识能力受到激发而行动，如果这不是由于对象激动我们的感官，一方面由自己造成表象，另一方面使我们的知性行动运作起来，对这些表象加以比较，把它们联结起来或者分离开来，并这样把感性印象的原始材料加工成叫做经验的对象的知识，那又是由于什么呢？因此在时间上，我们没有任何知识先行于经验，一切知识都从经验开始。\n但是，尽管我们的一切知识都以经验开始，它们却并不因此就都产",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     }
+    ],
+    "candidate_evidence": [],
+    "used_evidence": [],
+    "claims": [],
+    "citations": [],
+    "unverified_citations": [],
+    "retrieved_count": 63,
+    "used_count": 0,
+    "facts": {
+     "read_chapters": [
+      "eca1899561c4#5",
+      "8c0c6955c793#4",
+      "8c0c6955c793#5",
+      "纯粹理性批判(注释本)#3",
+      "哲学和我们的时代#7",
+      "纯粹理性批判(注释本)#4"
+     ],
+     "search_execs": 11,
+     "read_execs": 6,
+     "source_candidate_found": true,
+     "primary_text_read": true
+    }
+   },
+   "tool_calls": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "哥白尼 革命 对象 符合 认识"
+     },
+     "result_summary": "{'results': [{'book_id': '9c9e77918c07', 'book_title': '自然宗教对话录', 'author': '大卫·休谟', 'chapter_idx': 14, 'chapter_title': '第十二篇', 'citation_label': '【《自然宗教对话录》·第十二篇】', 'snippet': '第美亚离开之后，克里安提斯和斐罗继续下面的",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "纯粹理性批判 二版 序 哥白尼"
+     },
+     "result_summary": "{'results': [{'book_id': '8c0c6955c793', 'book_title': '纯粹理性批判', 'author': '伊曼努尔·康德', 'chapter_idx': 14, 'chapter_title': '第四章纯粹理性的历史', 'citation_label': '【《纯粹理性批判》·第四章纯粹理性的历史】', 'snippet': '第四章纯粹理性的历",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_philosopher",
+     "args": {
+      "name": "康德"
+     },
+     "result_summary": "{'name': '伊曼努尔·康德', 'period': '', 'century': '', 'school': '德国古典哲学', 'region': '西方', 'works': [], 'bio': '伊曼努尔·康德，这位1724年生于东普鲁士柯尼斯堡（今俄罗斯加里宁格勒）的德国哲学家，一生几乎未曾离开过这座小城，却以其深邃的思想撬动了整个西方哲学的根基。他出身于一个虔诚的皮匠家庭，自幼",
+     "thought": "执行 get_philosopher"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "8c0c6955c793"
+     },
+     "result_summary": "{'id': '8c0c6955c793', 'title': '纯粹理性批判', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'pdf', 'summary': '《纯粹理性批判》是康德批判哲学体系的奠基之作，核心主题在于考察人类理性的界限与能力。康德通过“先天综合判断”概念，调和了理性主义与经验主义，提出“人为自然立法”的哥白尼式革命。该",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "eca1899561c4"
+     },
+     "result_summary": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "eca1899561c4",
+      "chapter_idx": 5
+     },
+     "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 5, 'title': '第一章 论空间', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第一章 论空间】', 'text': '第2节 空间概念的形而上学阐明\\n（标题为第二版所加。——译者注）\\n借助于外感官（我们心灵的一种属性",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "8c0c6955c793",
+      "chapter_idx": 4
+     },
+     "result_summary": "{'book_id': '8c0c6955c793', 'chapter_idx': 4, 'title': '第二版序', 'book_title': '纯粹理性批判', 'citation_label': '【《纯粹理性批判》·第二版序】', 'text': '第二版序\\n对属于理性的工作的那些知识所作的探讨是否在一门科学的可靠道路上进行，这可以马上从它的后果中作出评判。如果这门科学在做了大量",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "8c0c6955c793",
+      "chapter_idx": 5
+     },
+     "result_summary": "{'book_id': '8c0c6955c793', 'chapter_idx': 5, 'title': '导言', 'book_title': '纯粹理性批判', 'citation_label': '【《纯粹理性批判》·导言】', 'text': '导言\\nⅠ.纯粹知识和经验性知识的区别\\n我们的一切知识都从经验开始，这是没有任何怀疑的；因为，如果不是通过对象激动我们的感官，一则由它们自己",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "query_graph",
+     "args": {
+      "philosopher": "康德"
+     },
+     "result_summary": "{'philosopher': '伊曼努尔·康德', 'region': '西方', 'rank': 49.6, 'relations': [{'relation': '影响', 'other': '柏拉图', 'note': '康德受柏拉图理念论影响'}, {'relation': '影响', 'other': '大卫·休谟', 'note': '休谟的怀疑论唤醒康德的批判哲学'}, {'rel",
+     "thought": "执行 query_graph"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "康德 哥白尼式革命 认识论 主体性转向"
+     },
+     "result_summary": "{'results': [{'book_id': 'd3bebffb6a05', 'book_title': '否定的辩证法', 'author': '西奥多·阿多诺', 'chapter_idx': 5, 'chapter_title': '第二章 存在与实存', 'citation_label': '【《否定的辩证法》·第二章 存在与实存】', 'snippet': '对本体论的内在批判对本体",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "物自体 现象 黑格尔 扬弃 康德"
+     },
+     "result_summary": "{'results': [{'book_id': 'd3bebffb6a05', 'book_title': '否定的辩证法', 'author': '西奥多·阿多诺', 'chapter_idx': 8, 'chapter_title': '第二章 世界精神与自然历史', 'citation_label': '【《否定的辩证法》·第二章 世界精神与自然历史】', 'snippet': '趋势与事",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "纯粹理性批判"
+     },
+     "result_summary": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "哲学和我们的时代"
+     },
+     "result_summary": "{'id': '87b26c6b10e6', 'title': '哲学和我们的时代', 'author': '周龙辉', 'region': '西方', 'file_type': 'epub', 'summary': '《哲学和我们的时代》是周龙辉对当代社会进行哲学反思的著作。作者认为，哲学不应脱离时代，而应回应时代的重大问题。书中分析了现代社会的种种困境，如技术异化、消费主义、精神空虚、生态危机",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "纯粹理性批判(注释本)",
+      "chapter_idx": 3
+     },
+     "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 3, 'title': '第二版前言', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第二版前言】', 'text': '对属于理性工作的知识所做的探讨是否在一门科学的可靠道路上进行，很快就可以从结果出发作出评判。如果这种探讨在作出",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "哲学和我们的时代",
+      "chapter_idx": 7
+     },
+     "result_summary": "{'book_id': '87b26c6b10e6', 'chapter_idx': 7, 'title': '康德与休谟从同一个地方出发走了相反的道路', 'book_title': '哲学和我们的时代', 'citation_label': '【《哲学和我们的时代》·康德与休谟从同一个地方出发走了相反的道路】', 'text': '[第40～42节]\\n因为旧形而上学漫不经心地未经思想考验便接",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "纯粹理性批判(注释本)",
+      "chapter_idx": 4
+     },
+     "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 4, 'title': '导论', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·导论】', 'text': '一、论纯粹知识与经验性知识的区别\\n我们的一切知识都以经验开始，这是无可置疑的；因为认识能力受到激发而行动，如果这不是由于",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "纯粹理性批判(注释本)"
+     },
+     "result_summary": "{'id': 'eca1899561c4', 'title': '纯粹理性批判(注释本)', 'author': '伊曼努尔·康德', 'region': '西方', 'file_type': 'epub', 'summary': '《纯粹理性批判》是康德哲学的核心著作，也是西方哲学史上的里程碑。本书旨在解决“先天综合判断如何可能”的问题，通过“先验感性论”、“先验分析论”和“先验辩证论”三个部分",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "纯粹理性批判(注释本)",
+      "chapter_idx": 3
+     },
+     "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 3, 'title': '第二版前言', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·第二版前言】', 'text': '对属于理性工作的知识所做的探讨是否在一门科学的可靠道路上进行，很快就可以从结果出发作出评判。如果这种探讨在作出",
+     "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "纯粹理性批判(注释本)",
+      "chapter_idx": 4
+     },
+     "result_summary": "{'book_id': 'eca1899561c4', 'chapter_idx': 4, 'title': '导论', 'book_title': '纯粹理性批判(注释本)', 'citation_label': '【《纯粹理性批判(注释本)》·导论】', 'text': '一、论纯粹知识与经验性知识的区别\\n我们的一切知识都以经验开始，这是无可置疑的；因为认识能力受到激发而行动，如果这不是由于",
+     "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）"
+    }
+   ],
+   "suggestions": [
+    "让两位哲学家就 「物自体 现象 黑格尔 扬」 辩论",
+    "把 「物自体 现象 黑格尔 扬」 相关的概念画成思维导图"
+   ],
+   "safety": null,
+   "tool_loop": {
+    "invocation_id": "e51c0f5a48de",
+    "budget": {
+     "useful": 17,
+     "retry": 0,
+     "inner_retries": 0,
+     "duplicate_reused": 2,
+     "no_gain": 0,
+     "total_executed": 17,
+     "retrieval_executed": 17,
+     "hard": false,
+     "cfg": {
+      "hard_retrieval": 20,
+      "hard_total": 24
+     }
+    },
+    "model_retries": 0,
+    "recovered_after_error": false,
+    "no_gain_calls": 0
+   },
+   "causal": {
+    "provenance": "o1",
+    "engine_cognitive_auto_tools": 0,
+    "main_agent_tool_decisions": 19,
+    "agent_invocations": 12,
+    "thinking_sources": "main_agent_only"
+   },
+   "final_ownership": {
+    "provenance": "o2",
+    "final_text_owner": "main_agent",
+    "semantic_mutators": 0,
+    "runtime_factual_appends": 0,
+    "final_retract_semantic_use": 0,
+    "invalid_final_publicly_streamed": false,
+    "validator_repair_invocations": 2,
+    "main_agent_final_ownership_rate": 1.0
+   },
+   "validation": {
+    "result": {
+     "ok": false,
+     "issues": [
+      {
+       "code": "NEAR_QUOTE_NOT_MARKED",
+       "locator": "\"迄今为止，人们假定，我们的一切知识都必须遵照对象；但是，关于对象先天地通过概念来澄清某种东西以扩展我们的知识的一切尝试",
+       "evidence_ref": "qb_read_13",
+       "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.81, evidence=qb_read_13, best_evidence=【《纯粹理性批判(注释本)》·第二版前言】)"
+      },
+      {
+       "code": "NEAR_QUOTE_NOT_MARKED",
+       "locator": "\"这里的情况与哥白尼最初的思想是相同的。哥白尼在假定整个星群都围绕观察者旋转，对天体运动的解释就无法顺利进行之后，试一试",
+       "evidence_ref": "qb_read_13",
+       "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.83, evidence=qb_read_13, best_evidence=【《纯粹理性批判(注释本)》·第二版前言】)"
+      },
+      {
+       "code": "NEAR_QUOTE_NOT_MARKED",
+       "locator": "\"如果有一个命题与它的必然性一同被思维，那么它就是一个先天判断。\"……\"必然性和严格的普遍性是一种先天知识的可靠标志，而",
+       "evidence_ref": "qb_read_15",
+       "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.75, evidence=qb_read_15, best_evidence=【《纯粹理性批判(注释本)》·导论】)"
+      }
+     ]
+    },
+    "repairs_used": 2,
+    "max_validation_repairs": 2,
+    "repair_protocol": "same_main_agent"
+   },
+   "timing": {
+    "phases": [
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 3077.4,
+      "msgs_len": 3
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 2172.1,
+      "msgs_len": 7
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 1117.7,
+      "msgs_len": 10
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 2533.1,
+      "msgs_len": 12
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 1143.2,
+      "msgs_len": 14
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 5777.9,
+      "msgs_len": 16
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 26813.6,
+      "msgs_len": 20
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 2856.7,
+      "msgs_len": 5
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 2921.0,
+      "msgs_len": 8
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 11855.4,
+      "msgs_len": 11
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 27350.5,
+      "msgs_len": 13
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 1823.2,
+      "msgs_len": 5
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 1661.9,
+      "msgs_len": 7
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 14293.0,
+      "msgs_len": 10
+     },
+     {
+      "type": "phase",
+      "phase": "validator_quote_bound",
+      "duration_ms": 1.0
+     },
+     {
+      "type": "phase",
+      "phase": "validator_evidence_contract",
+      "duration_ms": 4.0
+     },
+     {
+      "type": "phase",
+      "phase": "validator_citation_sanitize",
+      "duration_ms": 0.0
+     }
+    ],
+    "total_ms": 106444.1
+   },
+   "citation_sanitize": {
+    "verified_citations": [],
+    "unverified_before": [],
+    "actions": []
+   },
+   "quote_bound": {
+    "entries": [],
+    "summary": {
+     "quotes": 0,
+     "verified_exact": 0,
+     "verified_near": 0,
+     "memory_only": 0,
+     "stitched": 0,
+     "unverified_blockquote": 0,
+     "memory_only_exact_claim": 0
+    }
+   },
+   "temporal": null,
+   "safety_enforcement": {
+    "initiated_by": "safety_runtime",
+    "action": "none"
+   },
+   "safety_reply": null
+  }
+ ]
+}

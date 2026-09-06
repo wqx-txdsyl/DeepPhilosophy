@@ -1,0 +1,250 @@
+# O6-RP1 TASK BRIEF（从 ChatGPT 抓取）
+
+裁定：ARCHITECTURE_RESET=PASS / O6 GATE=FAIL / F1+F2+F3=PATCH NOW / 下一步只做 O6-RP1
+
+TOOL_RESULTS must become 0 GATE_REPRODUCIBILITY = REQUIRED RECONCILIATION freeze one actual committed tree and re-run O6
+  - paragraph:
+    - text: G10 的 52% 多轮发布率属于
+    - strong: 后续 Main-Agent Quality Closeout
+    - text: ，不是本轮机械 patch。不要把它和 F1/F2/F3 混在一起，也禁止用 semantic runtime gate 修。
+  - heading "TASK — O6-RP1" [level=1]
+  - heading "Material Mechanical Blockers + Reproducible Re-Gate" [level=2]
+  - button "复制":
+  - code: "MODEL = GLM-5.3-Flash REASONING = MAX REVIEWER = GPT-5.6 Sol BRANCH = refactor/phiagent-main-agent-orchestration STATUS: O6_FINAL_REVIEW = FAIL ARCHITECTURE_RESET_O1_O5 = ACCEPTED OBJECTIVE: Close exactly: F1 validator false-negative F2 forced+cancel pending-state bug F3 unparented parallel tool events Gate reproducibility DO NOT: - start Main-Agent quality tuning - change Evidence Appetite - add source-attribution classifier - add semantic gate - add sufficiency/no_gain control - weaken validator - modify retrieval/ranking - merge master"
+  - heading "0. Reconcile the Actual Branch First" [level=2]
+  - paragraph: "Before changing code, record:"
+  - button "复制":
+  - code: git status --short git rev-parse HEAD git rev-parse origin/refactor/phiagent-main-agent-orchestration git log --oneline -15
+  - paragraph: "Audit the chain from:"
+  - button "复制":
+  - code: e3692ec1de5b860787a5093a889de159cb0f10d7
+  - paragraph: to current HEAD.
+  - paragraph: "Explicitly list:"
+  - button "复制":
+  - code: O6 gate/docs commits book/corpus commits test commits other commits
+  - paragraph: "Confirm the previously missing:"
+  - button "复制":
+  - code: backend/tests/test_o5_thin_runtime.py
+  - paragraph: is now tracked.
+  - paragraph: Do not rewrite history.
+  - paragraph: "Define:"
+  - button "复制":
+  - code: PRE_PATCH_HEAD = current remote branch HEAD
+  - paragraph: RP1 proceeds from that real committed state.
+  - separator
+  - heading "1. F1 — Inline Lead-In Exact Quote False Negative" [level=2]
+  - paragraph: "Known reproducer:"
+  - button "复制":
+  - code: 原文是："UNSUPPORTED_EXACT_QUOTE"
+  - paragraph: "Current bug:"
+  - button "复制":
+  - code: inline lead-in → LEADIN_RE/head classification disagreement → exact quote treated as exempt/quoted context → validator issues = 0 → invalid exact quote can publish
+  - paragraph: This is a deterministic quote-parser bug.
+  - paragraph: "Fix the parser/classification so:"
+  - button "复制":
+  - code: blockquote exact quote inline exact quote lead-in exact quote Chinese/English quote forms
+  - paragraph: share one coherent quote-intent boundary.
+  - paragraph: Do NOT infer user task intent.
+  - paragraph: "Validator only examines:"
+  - button "复制":
+  - code: final candidate + retrieved evidence
+  - paragraph: "Required:"
+  - button "复制":
+  - code: unsupported inline exact quote → UNSUPPORTED_EXACT_QUOTE → candidate blocked
+  - paragraph:
+    - text: Do not solve by blacklisting
+    - code: "\"原文是\""
+    - text: only.
+  - paragraph: The fix must operate on general syntactic quote structure.
+  - separator
+  - heading "2. F1 Kill Tests" [level=2]
+  - paragraph: Add deterministic matrix.
+  - paragraph: "At minimum:"
+  - button "复制":
+  - code: "A. 原文是：\"fake quote\" B. 原文是：“fake quote” C. The original says: \"fake quote\" D. > \"fake quote\" E. 普通分析里提到“某个概念”但并非原文主张 F. supported inline exact quote G. supported blockquote"
+  - paragraph: "Expected:"
+  - button "复制":
+  - code: A-D unsupported → validator rejects E ordinary mention → no false exact-quote rejection F-G supported → PASS
+  - paragraph: Use the exact O6 F1 case unchanged as one test.
+  - paragraph: "Prove:"
+  - button "复制":
+  - code: PRE_PATCH = FAIL POST_PATCH = PASS
+  - paragraph: "Re-run scripted validator matrix:"
+  - button "复制":
+  - code: 10 positive invalid 10 negative valid
+  - paragraph: "Target:"
+  - button "复制":
+  - code: TP = 10 FN = 0 TN = 10 FP = 0
+  - paragraph: "If any FP/FN:"
+  - paragraph: STOP.
+  - separator
+  - heading "3. F2 — forced + cancel Pending-State Boundary" [level=2]
+  - paragraph: "Known narrow trigger:"
+  - button "复制":
+  - code: hard ceiling + residual tool declaration + empty first candidate + forced/cancel transition
+  - paragraph: "Current failure:"
+  - button "复制":
+  - code: pending.has_tools remains true → later repair Main-Agent text interpreted as stale residual → valid new repair content discarded
+  - paragraph: Fix only lifecycle/state mechanics.
+  - paragraph: "Correct contract:"
+  - button "复制":
+  - code: tool declaration lifecycle reaches terminal state → pending tool state clears deterministically cancel/ceiling/error → terminal tool outcome → pending state cannot leak into next Main-Agent invocation
+  - paragraph: "Do not change:"
+  - button "复制":
+  - code: hard ceiling values semantic routing repair ceiling tool authority
+  - paragraph: No semantic closeout.
+  - separator
+  - heading "4. F2 Tests" [level=2]
+  - paragraph: "Controlled harness:"
+  - button "复制":
+  - code: "Invocation 1: declares tool that reaches hard ceiling/cancel boundary Runtime: returns mechanical terminal outcome Invocation 2 / repair: Main Agent emits valid new candidate"
+  - paragraph: "Assert:"
+  - button "复制":
+  - code: pending.has_tools = false before new invocation processing new candidate preserved validator sees it if valid → publishes no stale tool fragments replay no ghostwritten final
+  - paragraph: "Also cover:"
+  - button "复制":
+  - code: cancel hard ceiling tool error normal tool completion
+  - paragraph: No cross-invocation pending leakage.
+  - separator
+  - heading "5. F3 — Parallel Tool Event Parentage" [level=2]
+  - paragraph: "O6 observed:"
+  - button "复制":
+  - code: UNPARENTED_TOOL_RESULTS = 187
+  - paragraph: "Root noted:"
+  - button "复制":
+  - code: parallel same-name tool calls → only one tool_start emitted → multiple results → some result events have no matching visible start/parent
+  - paragraph: This violates O1 causal/provenance contract.
+  - paragraph: "Fix mechanically:"
+  - paragraph:
+    - text: For every actual Main-Agent declared
+    - code: tool_call_id
+    - text: ":"
+  - button "复制":
+  - code: one tool_call_id → one truthful tool_start → one terminal tool outcome
+  - paragraph: "A batch may share:"
+  - button "复制":
+  - code: decision_group_id
+  - paragraph:
+    - text: but MUST NOT share
+    - code: tool_call_id
+    - text: .
+  - paragraph: "Example:"
+  - button "复制":
+  - code: search_books("A") id=call_1 search_books("B") id=call_2 search_books("C") id=call_3
+  - paragraph: "must produce:"
+  - button "复制":
+  - code: tool_start(call_1) tool_start(call_2) tool_start(call_3) tool(call_1) tool(call_2) tool(call_3)
+  - paragraph: Order of completion may vary.
+  - paragraph: Do not fabricate starts for internal helpers.
+  - paragraph:
+    - code: tool_internal
+    - text: remains separately parented.
+  - separator
+  - heading "6. F3 Tests" [level=2]
+  - paragraph: "At minimum:"
+  - button "复制":
+  - code: P1 parallel different tools P2 parallel same-name tools with different args P3 parallel same-name exact duplicate P4 one success + one schema error P5 one success + one cancel/error
+  - paragraph: "Assert:"
+  - button "复制":
+  - code: DECLARED_TOOL_CALL_IDS == TERMINAL_OUTCOME_TOOL_CALL_IDS each declared id has exactly one logical start UNPARENTED_TOOL_RESULTS = 0 UNKNOWN_PROVENANCE_TOOL_EVENTS = 0
+  - paragraph: Exact duplicate reuse still gets a terminal outcome tied to its own call id.
+  - separator
+  - heading "7. Do Not Mix Product Quality Patch" [level=2]
+  - paragraph: Do NOT change Main-Agent policy in this RP1 except if strictly necessary for test harness plumbing.
+  - paragraph: "Specifically do not attempt to fix:"
+  - button "复制":
+  - code: G10 multi-turn publication 52% memory wording as exact quote NEAR translation discipline search churn light/heavy research calibration
+  - paragraph: "Those belong to:"
+  - button "复制":
+  - code: O6-Q1 Main-Agent Quality Closeout
+  - paragraph: only after material mechanical blockers pass.
+  - separator
+  - heading "8. Full Regression" [level=2]
+  - paragraph: "Run:"
+  - button "复制":
+  - code: pytest backend/tests -q
+  - paragraph: No exclusions.
+  - paragraph: "Separately:"
+  - button "复制":
+  - code: O1 causal O1 thinking safety O2 ownership O3 tool authority O4 collapse O5 thin runtime O6-RP1 F1/F2/F3
+  - paragraph: "Also:"
+  - button "复制":
+  - code: regression_oldman_sea
+  - paragraph: Require zero failures.
+  - separator
+  - heading "9. Freeze a Reproducible Re-Gate SHA" [level=2]
+  - paragraph: "After F1/F2/F3 code + tests are committed:"
+  - button "复制":
+  - code: git status --short
+  - paragraph: must show no intended source/test/data changes.
+  - paragraph: All intended book/corpus changes currently on the branch must already be committed.
+  - paragraph: "Create:"
+  - button "复制":
+  - code: O6_REGATE_SHA = exact committed HEAD
+  - paragraph: "Record SHA256/file manifest or at minimum:"
+  - button "复制":
+  - code: git rev-parse HEAD git status --short git diff HEAD
+  - paragraph: No untracked production tests.
+  - paragraph: No parallel corpus commits during re-gate.
+  - paragraph: "If user/another agent needs to modify corpus:"
+  - button "复制":
+  - code: STOP THE GATE commit changes choose a NEW O6_REGATE_SHA restart evidence collection
+  - paragraph: Do not call corpus changes “non-production drift” during a product-quality gate.
+  - paragraph: Corpus is part of retrieval behavior.
+  - separator
+  - heading "10. O6 Re-Gate" [level=2]
+  - paragraph:
+    - text: After patch, re-run O6 on exactly
+    - code: O6_REGATE_SHA
+    - text: .
+  - paragraph: You do NOT need to rewrite O1–O5 evidence.
+  - paragraph: But O6 live quality evidence must be collected from one frozen product state.
+  - paragraph: "Required again:"
+  - button "复制":
+  - code: 24 single-turn >=12 fresh 5 multi-turn conversations validator 10+10 matrix repair matrix source verification research/depth persona thinking/SSE error paths latency/RAM tool surfaces
+  - paragraph: No cherry-picking.
+  - paragraph: No prompt tuning during run.
+  - separator
+  - heading "11. Hard Re-Gate Requirements" [level=2]
+  - paragraph: "Must be:"
+  - button "复制":
+  - code: VALIDATOR_FALSE_NEGATIVE = 0 VALIDATOR_FALSE_POSITIVE = 0 UNVERIFIED_QUOTE_PUBLIC_RATE = 0 UNVERIFIED_CITATION_PUBLIC_RATE = 0 STITCHED_QUOTE_PUBLIC_RATE = 0 INVALID_FINAL_PUBLIC = 0 UNPARENTED_TOOL_RESULTS = 0 UNKNOWN_PROVENANCE_TOOL_EVENTS = 0 DUPLICATE_VISIBLE_EVENTS = 0 ENGINE_COGNITIVE_AUTO_TOOLS = 0 SEMANTIC_TOOL_CONTROL_EFFECTS = 0 RUNTIME_SEMANTIC_MUTATORS = 0 RAW_REASONING_PUBLIC = 0
+  - separator
+  - heading "12. Expected Verdict After RP1" [level=2]
+  - paragraph: Do not self-sign.
+  - paragraph: "If hard gates close but quality remains approximately:"
+  - button "复制":
+  - code: multi-turn publication ~52% safe reject rate elevated repair exhaustion elevated
+  - paragraph: "then propose:"
+  - button "复制":
+  - code: ARCHITECTURE_RESET = PASS O6 = PASS_WITH_REQUIRED_QUALITY_PATCH
+  - paragraph: and Reviewer will issue the Main-Agent-only quality closeout.
+  - paragraph: "If hard gates still fail:"
+  - button "复制":
+  - code: O6 = FAIL
+  - separator
+  - heading "13. Documentation" [level=2]
+  - paragraph: "Update/create:"
+  - button "复制":
+  - code: docs/PHIAGENT_O6_INTEGRATED_FINAL_QUALITY_GATE.md
+  - paragraph: It must actually exist on the remote refactor branch.
+  - paragraph: "Include:"
+  - button "复制":
+  - code: original O6 failure F1/F2/F3 root causes patch evidence PRE_PATCH kill tests POST_PATCH results original invalidated/mixed gate note new frozen O6_REGATE_SHA complete re-gate results G1-G16 matrix
+  - paragraph: Keep original evidence; do not rewrite history as though first O6 passed.
+  - separator
+  - heading "14. Git Discipline" [level=2]
+  - paragraph: "Use:"
+  - button "复制":
+  - code: BASE_SHA= CODE_SHA= GATE_SHA= HEAD_SHA= REMOTE_SHA=
+  - paragraph: "Definitions:"
+  - button "复制":
+  - code: BASE_SHA = RP1 starting committed head CODE_SHA = F1/F2/F3 implementation commit GATE_SHA = exact frozen commit tested by O6 re-gate HEAD_SHA = final branch head after evidence docs REMOTE_SHA = remote branch head
+  - paragraph:
+    - text: Do not overload
+    - code: FINAL_SHA
+    - text: .
+  - separator
+  - heading "RECEIPT" [level=1]
+  - button "复制":
+  - code: O6_RP1 = READY_FOR_FINAL_REVIEW / BLOCKED BASE_SHA= CODE_SHA= GATE_SHA= HEAD_SHA= REMOTE_SHA= F1_INLINE_QUOTE_FN_BEFORE= F1_INLINE_QUOTE_FN_AFTER= VALIDAT

@@ -1,0 +1,1849 @@
+{
+ "result": {
+  "id": "A3",
+  "category": "A",
+  "fresh": true,
+  "question": "《道德经》“道可道，非常道”出自哪一章？请检索原典逐字核验其原文表述后回答。",
+  "agent": "general",
+  "attempt": 1,
+  "tag": "ok",
+  "duration_s": 30.4,
+  "answer_chars": 0,
+  "answer": "",
+  "published": false,
+  "validation": {
+   "result": {
+    "ok": false,
+    "issues": [
+     {
+      "code": "NEAR_QUOTE_NOT_MARKED",
+      "locator": "道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄",
+      "evidence_ref": "qb_snip_0_7",
+      "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.9, evidence=qb_snip_0_7, best_evidence=【《南怀瑾经典合集（共24册）》·第一章】)"
+     }
+    ]
+   },
+   "repairs_used": 2,
+   "max_validation_repairs": 2,
+   "repair_protocol": "same_main_agent"
+  },
+  "validation_failed_payload": {
+   "type": "validation_failed",
+   "content": "回答未通过确定性证据校验",
+   "issues": [
+    {
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator": "道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄",
+     "evidence_ref": "qb_snip_0_7",
+     "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.9, evidence=qb_snip_0_7, best_evidence=【《南怀瑾经典合集（共24册）》·第一章】)"
+    }
+   ],
+   "repairs_used": 2,
+   "initiated_by": "validator",
+   "decision_group_id": "inv-6"
+  },
+  "error_payload": {
+   "type": "error",
+   "content": "本轮回答未通过证据一致性校验，请重试或换一种问法"
+  },
+  "tool_calls": [
+   {
+    "name": "search_books",
+    "args": {
+     "query": "道可道 非常道 名可名 非常名"
+    },
+    "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "道德经 老子"
+    },
+    "result_summary": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 578, 'chapter_title': '出版说明', 'citation_label': '【《南怀瑾经典合集（共24册）》·出版说明】', 'snippet': '《老子》，又名《道德",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "6ef2f18cfdc9",
+     "chapter_idx": 0
+    },
+    "result_summary": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 0, 'title': '第一章', 'book_title': '道德经', 'citation_label': '【《道德经》·第一章】', 'text': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。'}",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "dd8853676655",
+     "chapter_idx": 1
+    },
+    "result_summary": "{'book_id': 'dd8853676655', 'chapter_idx': 1, 'title': '第一章 众妙之门', 'book_title': '老子道德经', 'citation_label': '【《老子道德经》·第一章 众妙之门】', 'text': '【原文】\\n道可道[1]，非常道[2]；名可名，非常名[3]。无名，万物之始[4]；有名，万物之母\\n[5]。故常无欲，以",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "道可道，非常道；名可名，非常名"
+    },
+    "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "众妙之门 无名 天地之始 有名 万物之母"
+    },
+    "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "道可道 非常道 名可名 非常名 无名天地之始",
+     "limit": 10
+    },
+    "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "6ef2f18cfdc9",
+     "chapter_idx": 0
+    },
+    "result_summary": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 0, 'title': '第一章', 'book_title': '道德经', 'citation_label': '【《道德经》·第一章】', 'text': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。'}",
+    "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）"
+   }
+  ],
+  "tool_seq": [
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "道可道 非常道 名可名 非常名"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "道德经 老子"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "6ef2f18cfdc9",
+     "chapter_idx": 0
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "dd8853676655",
+     "chapter_idx": 1
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "道可道，非常道；名可名，非常名"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "众妙之门 无名 天地之始 有名 万物之母"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "道可道 非常道 名可名 非常名 无名天地之始",
+     "limit": 10
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "6ef2f18cfdc9",
+     "chapter_idx": 0
+    },
+    "reused": true,
+    "err": false
+   }
+  ],
+  "tool_count": 8,
+  "search_calls": 5,
+  "read_calls": 3,
+  "budget": {
+   "useful": 7,
+   "retry": 0,
+   "inner_retries": 0,
+   "duplicate_reused": 1,
+   "no_gain": 0,
+   "total_executed": 7,
+   "retrieval_executed": 7,
+   "hard": false,
+   "cfg": {
+    "hard_retrieval": 20,
+    "hard_total": 24
+   }
+  },
+  "quote_bound": {
+   "entries": [],
+   "summary": {
+    "quotes": 0,
+    "verified_exact": 0,
+    "verified_near": 0,
+    "memory_only": 0,
+    "stitched": 0,
+    "unverified_blockquote": 0,
+    "memory_only_exact_claim": 0
+   }
+  },
+  "citations": [],
+  "citation_sanitize": {
+   "verified_citations": [],
+   "unverified_before": [],
+   "actions": []
+  },
+  "causal": {
+   "provenance": "o1",
+   "engine_cognitive_auto_tools": 0,
+   "main_agent_tool_decisions": 8,
+   "agent_invocations": 6,
+   "thinking_sources": "main_agent_only"
+  },
+  "final_ownership": {
+   "provenance": "o2",
+   "final_text_owner": "main_agent",
+   "semantic_mutators": 0,
+   "runtime_factual_appends": 0,
+   "final_retract_semantic_use": 0,
+   "invalid_final_publicly_streamed": false,
+   "validator_repair_invocations": 2,
+   "main_agent_final_ownership_rate": 1.0
+  },
+  "temporal": null,
+  "timing": {
+   "phases": [
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 1249.5,
+     "msgs_len": 3
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 1511.2,
+     "msgs_len": 6
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 6582.8,
+     "msgs_len": 9
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 2555.2,
+     "msgs_len": 5
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 9474.7,
+     "msgs_len": 8
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 2644.3,
+     "msgs_len": 5
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 1823.1,
+     "msgs_len": 7
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 3587.2,
+     "msgs_len": 9
+    },
+    {
+     "type": "phase",
+     "phase": "validator_quote_bound",
+     "duration_ms": 0.0
+    },
+    {
+     "type": "phase",
+     "phase": "validator_evidence_contract",
+     "duration_ms": 1.0
+    },
+    {
+     "type": "phase",
+     "phase": "validator_citation_sanitize",
+     "duration_ms": 0.0
+    }
+   ],
+   "total_ms": 30407.1
+  },
+  "event_audit": {
+   "n_events": 43,
+   "type_counts": {
+    "status": 1,
+    "thinking_summary": 5,
+    "tool_start": 8,
+    "tool_note": 18,
+    "tool": 8,
+    "validation_failed": 1,
+    "error": 1,
+    "done": 1
+   },
+   "unknown_event_types": [],
+   "thinking_events": 5,
+   "thinking_by_initiator": {
+    "main_agent": 5
+   },
+   "thinking_phase_seq": [
+    "analysis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis"
+   ],
+   "runtime_thinking_events": 0,
+   "raw_cot_marker_hits": [],
+   "tool_start": 8,
+   "tool_exec": 8,
+   "tool_cancel": 0,
+   "unparented_tool_results": 0,
+   "duplicate_visible_events": 0,
+   "duplicate_examples": [],
+   "validation_failed_events": 1,
+   "error_events": 1,
+   "decision_group_missing": 0,
+   "initiated_by_missing": 0,
+   "tool_call_id_missing_on_start": 0,
+   "tool_exec_unbound_ids": 0
+  },
+  "ownership_fingerprints": [],
+  "status": "SAFE_REJECT"
+ },
+ "events_compact": [
+  {
+   "type": "status",
+   "content": "开始思考"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "用户要求逐字核验原文，我先检索原典库确认《道德经》的存在与相关章节。",
+   "phase": "analysis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_d2xLOZmFbPPKR4iWhV0V0419"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_WHo64P42hDmtWsJtvIjB3800"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "道可道 非常道 名可名 非常名"
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。', 'score': 0.581}, {'book_id': 'dd8853676655', 'book_title': '老",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_d2xLOZmFbPPKR4iWhV0V0419"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "道德经 老子"
+   },
+   "result": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 578, 'chapter_title': '出版说明', 'citation_label': '【《南怀瑾经典合集（共24册）》·出版说明】', 'snippet': '《老子》，又名《道德经》，是我国道家学派和道教最著名的一部经典。它综罗百代，广博精微，短短的五千文，以“道”为核心，建构了上至帝王御世，下至隐士修身，蕴涵无比丰富的哲理体系。本书是著名学者南怀瑾先生关于《老子》的讲记。作",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_WHo64P42hDmtWsJtvIjB3800"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "两本《道德经》版本都明确将这段置于第一章。为逐字核验原文，我读取《道德经》第一章全文确认措辞。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_ET_ca4cZVOJ9GkyGFe9Slor0041"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_ET_gGCKsD4WA4i8fHvWPlag5281"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "6ef2f18cfdc9",
+    "chapter_idx": 0
+   },
+   "result": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 0, 'title': '第一章', 'book_title': '道德经', 'citation_label': '【《道德经》·第一章】', 'text': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。'}",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_ET_ca4cZVOJ9GkyGFe9Slor0041"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 1
+   },
+   "result": "{'book_id': 'dd8853676655', 'chapter_idx': 1, 'title': '第一章 众妙之门', 'book_title': '老子道德经', 'citation_label': '【《老子道德经》·第一章 众妙之门】', 'text': '【原文】\\n道可道[1]，非常道[2]；名可名，非常名[3]。无名，万物之始[4]；有名，万物之母\\n[5]。故常无欲，以观其妙；常有欲，以观其徼[6]。此两者，同出而异名，同谓之玄\\n[7]。玄之又玄，众妙之门。\\n【译文】\\n可以用语言表达出来的道，就不是永恒不变的“道”；可以用语言表达出来的名，就不是永恒不变的“名",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_ET_gGCKsD4WA4i8fHvWPlag5281"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool_note",
+   "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）",
+   "initiated_by": "validator",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "校验提示我的版本二引用存在近似（NEAR）而非逐字匹配，且实际命中证据指向的是《南怀瑾经典合集·第一章》。我先定点重读该章真实原文，校正引用措辞。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_FvCzRybJdD4ypJGtfc4V7667"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_CFj1e3ynoxZBTvCNNvRq3832"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "道可道，非常道；名可名，非常名"
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。', 'score': 0.641}, {'book_id': 'dd8853676655', 'book_title': '老",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_FvCzRybJdD4ypJGtfc4V7667"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "众妙之门 无名 天地之始 有名 万物之母"
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。', 'score': 0.709}, {'book_id': '6ef2f18cfdc9', 'book_title': '道",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_CFj1e3ynoxZBTvCNNvRq3832"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool_note",
+   "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）",
+   "initiated_by": "validator",
+   "activity": true,
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "校验反馈提示我此前引用的完整段落并非任一库藏原文的逐字文本，而只是近似。我需要重新定位真正的逐字原文片段，再做精准引用。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_3HupmkEj1OAMoJXgUfiI2274"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "道可道 非常道 名可名 非常名 无名天地之始",
+    "limit": 10
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。', 'score': 0.721}, {'book_id': '6ef2f18cfdc9', 'book_title': '道",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_3HupmkEj1OAMoJXgUfiI2274"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 30 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "校验反馈让我明白问题所在：完整段落并非我引用的那个书版的逐字文本。现在检索到《道德经》（老子）第一章的片段正是整段文字，我读取该章原文做最终确认。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_xiUVkrINrmp1JkzLe2rQ5430"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "6ef2f18cfdc9",
+    "chapter_idx": 0
+   },
+   "result": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 0, 'title': '第一章', 'book_title': '道德经', 'citation_label': '【《道德经》·第一章】', 'text': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。'}",
+   "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_xiUVkrINrmp1JkzLe2rQ5430"
+  },
+  {
+   "type": "tool_note",
+   "content": "（EXACT_DUPLICATE_REUSED）同一工具与完全相同的参数此前已执行——直接复用此前结果（机械判重, 不涉及证据充分性判断）。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "validation_failed",
+   "content": "回答未通过确定性证据校验",
+   "issues": [
+    {
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator": "道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄",
+     "evidence_ref": "qb_snip_0_7",
+     "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.9, evidence=qb_snip_0_7, best_evidence=【《南怀瑾经典合集（共24册）》·第一章】)"
+    }
+   ],
+   "repairs_used": 2,
+   "initiated_by": "validator",
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "error",
+   "content": "本轮回答未通过证据一致性校验，请重试或换一种问法"
+  },
+  {
+   "type": "done",
+   "citations": [],
+   "evidence": {
+    "retrieved_evidence": [
+     {
+      "evidence_id": "ev_1",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "第一章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 0,
+      "author": "老子",
+      "snippet": "道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_2",
+      "source_id": "src_search_0",
+      "book": "老子道德经",
+      "chapter": "第一章 众妙之门",
+      "book_id": "dd8853676655",
+      "chapter_idx": 1,
+      "author": "老子",
+      "snippet": "【原文】\n道可道[1]，非常道[2]；名可名，非常名[3]。无名，万物之始[4]；有名，万物之母\n[5]。故常无欲，以观其妙；常有欲，以观其徼[6]。此两者，同出而异名，同谓之玄\n[7]。玄之又玄，众妙之门。\n【译文】\n可以用语言表达出来的道，就不是永恒不变的“道”；可以用语言表达出来的名，就不是永恒不变的“名”。无名，是天地的开端，有名，是万物的根源。所以，常从“无”中观察天地的奥妙；常从“有”中寻找万物的踪迹。有和无，只不过是同一来",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_3",
+      "source_id": "src_search_0",
+      "book": "哲学导论",
+      "chapter": "1.3 东方的终极实在：印度、波斯和中国 老子，《道德经》",
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 41,
+      "author": "罗伯特·所罗门",
+      "snippet": "第1章 道可道，非常道；名可名，非常名。 第38章 故失道而后德，失德而后仁，失仁而后义，失义而后礼。 因此，这些神秘主义者是一元论者。他们相信，实在的本性是一，而且在某种意义上，这个一是活生生的，或有意识的。但是，他们没有走上古希腊的科学和万物有灵论之路。《道德经》的诗哲主张，这个一，这个活生生的实在，完全在我们日常经验的可见可感世界之外。无疑，它不是一种物质元素，也无法通过我们祖先设定的法则来认识。 第14章 视之不见，名曰“夷”；",
+      "score": 0.607,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_4",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "第三十二章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 31,
+      "author": "老子",
+      "snippet": "道常无名，朴。虽小，天下莫能臣。侯王若能守之，万物将自宾。天地相合，以降甘露，民莫之令而自均。始制有名，名亦既有，夫亦将知止，知止可以不殆。譬道之在天下，犹川谷之於江海。",
+      "score": 0.608,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_5",
+      "source_id": "src_search_0",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "第一章",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 592,
+      "author": "南怀瑾",
+      "snippet": "道可道，非常道。名可名，非常名。无，名天地之始。有，名万物之母。故常无，欲以观其妙。常有，欲以观其徼。此两者，同出而异名，同谓之玄。玄之又玄，众妙之门。 本文第一章，首先提出老子《道德经》的“道”与“名”两个关键名词，也是连串贯通全书八十一章脉络的线索。而且也是千古以来，研究老子学术的争端之所在。 头头是道 现在我们也来凑热闹，讲《老子》，首先要不怕老子笑掉他的长眉，更要向研究老子的学者们，道歉万分，以外行人妄说内行话，滥竽充数，不足为",
+      "score": 0.562,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_6",
+      "source_id": "src_search_0",
+      "book": "中国哲学辞典",
+      "chapter": "书尾笔画索引",
+      "book_id": "e5a8abe31f07",
+      "chapter_idx": 19,
+      "author": "韦政通",
+      "snippet": "封面 书名 版权 前言 目录 一以贯之 一本 一曲之士 二程 十七世纪思想 十义 十六字传心 十伦 十翼 七去（七出） 七教 七情 卜签 八卦 人 人口论 人文 人文化成 人为万物之灵 人心 人本 人师 人伦 人极 人的形成 人性论 人定胜天 人理 人禽之辨 人道 人爵 入官 几 九惠之教 九畴 三才 三不去 三从 三世 三代与汉唐 三达德 三至 三年之丧 三纲 三表 三事 三教合一 士 大一统 大丈夫 大义灭亲 大心 大同 大学之道 ",
+      "score": 0.58,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_7",
+      "source_id": "src_search_0",
+      "book": "庄子",
+      "chapter": "目录",
+      "book_id": "84adfb4d0c0b",
+      "chapter_idx": 1,
+      "author": "庄子",
+      "snippet": "Cover Page 目录 逍遥游 齐物论 养生主 人间世 德充符 大宗师 应帝王 骈拇 马蹄 胠箧 在宥 天地 天道 天运 刻意 缮性 秋水 至乐 达生 山木 田子方 知北游 庚桑楚 徐无鬼 则阳 外物 寓言 让王 盗跖 说剑 渔父",
+      "score": 0.571,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_8",
+      "source_id": "src_search_0",
+      "book": "荀子",
+      "chapter": "目录",
+      "book_id": "795658cafeab",
+      "chapter_idx": 1,
+      "author": "荀子",
+      "snippet": "Cover Page 目录 劝学 修身 不苟 荣辱 非相 非十二子 仲尼 儒效 王制 富国 王霸 君道 臣道 致士 议兵 强国 天论 正论 礼论 乐论 解蔽 正名 性恶 君子 成相 赋 大略 宥坐 子道 法行",
+      "score": 0.526,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_9",
+      "source_id": "src_search_0",
+      "book": "尼采文集（合集）",
+      "chapter": "189",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 306,
+      "author": "弗里德里希·尼采",
+      "snippet": " 思想家 。——他是一个思想家：意思就是说，他善于把事物弄得更简单。",
+      "score": 0.454,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_10",
+      "source_id": "src_search_0",
+      "book": "中庸",
+      "chapter": "第二十七章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 28,
+      "author": "子思",
+      "snippet": "大哉圣人之道！ 洋洋乎，发育万物，峻极于天。 优优大哉，礼仪三百威仪三千。 待其人而後行。 故曰：“苟不至德，至道不凝焉。” 故君子尊德性，而道问学，致广大，而尽精微，极高明，而道中庸。温故，而知新，敦厚以崇礼。 是故居上不骄，为下不倍。国有道，其言足以兴；国无道，其默足以容。诗曰：“既明且哲，以保其身。”其此之谓与？",
+      "score": 0.539,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_11",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "德经·第四十一章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 40,
+      "author": "老子",
+      "snippet": "德经·第四十一章 上士闻道，勤而行之；中士闻道，若存若亡；下士闻道，大笑之。不笑不足以为道。故建言有之：明道若昧，进道若退，夷道若纇。上德若谷；广德若不足；建德若偷；质真若渝。大白若辱；大方无隅；大器免成；大音希声；大象无形；道隐无名。夫唯道，善贷且成。",
+      "score": 0.483,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_12",
+      "source_id": "src_search_0",
+      "book": "庄子说什么",
+      "chapter": "注释",
+      "book_id": "c3c401982587",
+      "chapter_idx": 17,
+      "author": "韩鹏杰",
+      "snippet": "[1] 冥：通“溟”，指广阔幽深的大海。 [2] 鲲：本指鱼卵，此处借用为表大鱼之名。 [3] 鹏：乃古“凤”字，《逍遥游》借用为表大鸟之名。 [4] 海运：海水运动、涨潮。 [5] 《齐谐》：志怪类书。 [6] 抟（tuán）：盘旋上升。 [7] 扶摇：旋风。 [8] 息：气息，这里指风。 [9] 野马：云雾之气变化腾涌成野马的模样。 [10] 坳（ào）堂：屋前地上的洼坑。 [11] 胶：粘住。 [12] 而后乃今：“今而后乃”的倒",
+      "score": 0.418,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_13",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "第三十三章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 32,
+      "author": "老子",
+      "snippet": "知人者智，自知者明。胜人者有力，自胜者强。知足者富。强行者有志。不失其所者久。死而不亡者寿。",
+      "score": 0.519,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_14",
+      "source_id": "src_search_0",
+      "book": "启蒙辩证法",
+      "chapter": "人名对照表",
+      "book_id": "21d51965ccbb",
+      "chapter_idx": 8,
+      "author": "马克斯·霍克海默",
+      "snippet": "Achilles　阿喀琉斯 Adler　阿德勒 Adorno Gretel　阿多诺 Adorno Theodor W.　阿多诺 Ahlwardt　阿尔瓦德 Antinous　安提诺俄斯 Antisthnes　安底斯泰纳 Apel，Paul　阿佩尔 Apollo　阿波罗 Aquinas　阿奎那 Araminthe　阿拉敏特 Ariadne　阿里阿德涅 Aristoteles　亚里士多德 Auerbach　奥尔巴赫 Bacon Franci",
+      "score": 0.414,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_15",
+      "source_id": "src_search_0",
+      "book": "中国哲学辞典",
+      "chapter": "目录",
+      "book_id": "e5a8abe31f07",
+      "chapter_idx": 2,
+      "author": "韦政通",
+      "snippet": "目 录 25 人心 人本.…. 26 1 人师 27 3 人伦. 27 以贯之 3 人极 28 5 一曲之士 人的形成· 29 6 人性论 7 29 二画..·· 人定胜天 二程 39 7 十七世纪思想 8 人理. 39 十义 人禽之辨· 12 40 +++ 十六字传心 12 41 人爵· 十伦 13 42 人官. 14 43 七去(七出).… 15 44 九惠之教 15 45 七教. 七情... 九畴 15 45 16 46 八卦 三",
+      "score": 0.551,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_16",
+      "source_id": "src_search_1",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "出版说明",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 578,
+      "author": "南怀瑾",
+      "snippet": "《老子》，又名《道德经》，是我国道家学派和道教最著名的一部经典。它综罗百代，广博精微，短短的五千文，以“道”为核心，建构了上至帝王御世，下至隐士修身，蕴涵无比丰富的哲理体系。本书是著名学者南怀瑾先生关于《老子》的讲记。作者以深厚的文史功底，敏锐的社会洞察力，对《老子》的内涵做了充分的阐释、辨正和引述。具有深入浅出、明白通畅的特点。在普及中国传统文化、使深奥的古籍通俗化、专门的学术大众化方面，做了有益的探索。书末还附有历代《老子》研究书目",
+      "score": 0.64,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_17",
+      "source_id": "src_search_1",
+      "book": "哲学导论",
+      "chapter": "1.3 东方的终极实在：印度、波斯和中国 老子，或《道德经》的诗哲",
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 40,
+      "author": "罗伯特·所罗门",
+      "snippet": "在孔子生活的时代，或者据传说，中国有一位宗教神秘主义者，名叫老子，他所信奉的，是一种非议当权的中国王朝以及孔子所尊敬的上古英雄的学说。这种后来发展为道教的激进学说，也拒斥了孔子对于礼或道德之仁的外在表达的信仰。很可能，归于老子名下的那些被称作《道德经》的诗，是好几个人共同创作的，他们与孔子一样，有感于当时的不义行为和政治腐败，但作出回应的方式与孔子完全不同。他们是些神秘的隐士，认为实在的本性乃是道，但他们对于道的理解与孔子完全不同。他们",
+      "score": 0.606,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_18",
+      "source_id": "src_search_1",
+      "book": "中国哲学简史",
+      "chapter": "第九章 道家第二阶段：老子",
+      "book_id": "32093eed6ff1",
+      "chapter_idx": 10,
+      "author": "冯友兰",
+      "snippet": "传统的说法是，老子是楚国（今河南省南部）人，与孔子同时代而比孔子年长，孔子曾问礼于老子，很称赞老子。以“老子”为名的书，后来也叫做《道德经》，因而也被当做中国历史上第一部哲学著作。现代的学术研究，使我们改变了这个看法，认为《老子》的年代晚于孔子很久。 老子其人和《老子》其书 在这方面有两个问题：一个是老子其人的年代问题，另一个是《老子》其书的年代问题。两者并没有必然联系，因为完全有可能是，的确有个名叫“老聃”的人年长于孔子，但《老子》这",
+      "score": 0.599,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_19",
+      "source_id": "src_search_1",
+      "book": "老子道德经",
+      "chapter": "前言",
+      "book_id": "dd8853676655",
+      "chapter_idx": 0,
+      "author": "老子",
+      "snippet": "《道德经》的作者是老子。老子又称老聃，名李耳，春秋时期楚国人，曾担任东周王室的柱下史。相传，东周末年，老子归隐，在途经函谷关时，遇到了守关的长官尹喜。尹喜向老子问道。老子遂留下这五千余字的《道德经》。该书原分为上下两篇，上篇为《德经》、下篇《道经》，后改为上篇《道经》，下篇《德经》。 虽然只有短短五千多字，却不妨碍《道德经》成为中国历史上最重要的著作之一。它是中国第一部完整的哲学著作，是道家思想的重要来源，开创了中国古代哲学本体论的学说",
+      "score": 0.583,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_20",
+      "source_id": "src_search_1",
+      "book": "道家与道教思想简史",
+      "chapter": "一 老子与中国哲学的突破",
+      "book_id": "219b862077e1",
+      "chapter_idx": 1,
+      "author": "王卡",
+      "snippet": "1老子及其学术思想要点 老子是道家学说公认的创始人。据《史记·老子列传》等书记载，老子姓李名耳，字伯阳（一字），史称“老”。楚国苦县（今属河南鹿邑）人。他曾作过周王朝的柱下史，是管理王室藏书的官吏。 其年岁略长于孔子，相传孔子曾去周朝向老子请教有关礼制的问题。 老子生活的春秋末年，天下战乱频繁，社会制度正发生急剧变革。他看到王室日益衰败，遂离周隐去。传说他西游至函谷关（今河南灵宝，一说散关），遇见关令尹喜，请为著书立说。 老子遂著书上下",
+      "score": 0.567,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_21",
+      "source_id": "src_search_1",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "汉文帝善用老子的法宝",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 584,
+      "author": "南怀瑾",
+      "snippet": "老子《道德经》，自唐代开始，加上由皇帝的提倡，因此更被重视，而流行，而风行，而盛行。但《道德经》的“道”与“德”二字的正确含义是什么？等讨论到原文时再申述。 现在来看一个历史故事，以了解黄老之学在中国历史上所以占有重要地位的原因，使研究黄老的人，掌握到研究的正确方向，然后，再由黄老之学的应用方面，进入到形而上的个人自己修养的“养生之道”，以及与孔孟学说的汇流。 道家在中国历史上，最初产生最大影响的，是在汉朝汉高祖刘邦的创业之初，所用建立",
+      "score": 0.563,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_22",
+      "source_id": "src_search_1",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "附录",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 618,
+      "author": "南怀瑾",
+      "snippet": "历代《老子》研究书目 有关《老子》之版本及研究《老子》之专书论述，几过千种有余，本篇所辑自两汉以迄明、清，仅止于各图书馆及藏书家目录中之较常见到而有登录者，是故遗漏之处颇多，尤其有关近代学者及日、英、德、法等诸国学者之著述，一概从略，或俟他日收集完全，另行增刊补足，敬请涵谅（此篇目录，大多选录自王有三先生编著《老子考》一书，欲求详审，请另参阅之）。 老子《道德经》 老子《道德经》载于《隋书·经籍志》。按：此书《汉志》不载，而载邻氏、傅氏",
+      "score": 0.549,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_24",
+      "source_id": "src_search_1",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "由老子到孙子",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 579,
+      "author": "南怀瑾",
+      "snippet": "《老子》一书，原著不过五千言，可以说，几乎是一字就涵盖一个观念的好文章，一句就涵盖有三玄三要的妙义。它告诉了我们许多法则。几千年来，大家都在研究老子，而有研究著作流传下来的，古今名家的著作，有数十家之多，如果搜罗广泛一点，也许可达到百家以上；其文字也达到了数百万字，好像一直研究不完，解释不尽；而各人的说法，又各不相同，似乎有了“各家老子”或“老学的各家”。例如：某某研究老子的著作，便成了“某老子”；某某解释老子的著作，又成为“某家老子”",
+      "score": 0.542,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_25",
+      "source_id": "src_search_1",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "拨乱反正的趣谈",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 582,
+      "author": "南怀瑾",
+      "snippet": "《老子》这本只有五千字的书，从文字表面上看来，似乎很容易读懂，如果也用“综罗百代，广博精微”的眼光去读，那就够我们去探讨，去阐述了。 也有人说，提到我们的历史文化，所谓魏晋南北朝这一阶段，正是《易经》、《老子》、《庄子》“三玄”之学最流行的时代。但是，这个时代的历史背景，是一个变动不安、非常混乱，社会政治、经济、文化最衰败的三百多年。可是在哲学思想方面，由于知识分子的高谈阔论，也提升到极点，于是有人说，“三玄”之学，是衰乱之书，因为每到",
+      "score": 0.525,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_26",
+      "source_id": "src_search_1",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "老子还他老样子",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 590,
+      "author": "南怀瑾",
+      "snippet": "《老子》一书的章节划分，各章的句法排列，每句的句读，是千古以来被人怀疑的问题，而且很难下一个确切不移的答案。因为秦汉以前的书籍，到秦汉以后，都重新整理过。秦汉以前，纸、墨、笔、砚还未流行，当时的书籍，连牛皮、羊皮写字也没有，更谈不上线装书，大多数都是刻在竹片上的所谓“竹简”，放置时，东一堆，西一堆，很不方便。如果因为搬动、毁坏等等事件，后来加以整理，就难免章节上的前后倒置，文字上的讹误遗漏，希望整理得和原来一样，丝毫不变，实在相当困难，",
+      "score": 0.519,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_27",
+      "source_id": "src_search_1",
+      "book": "道德经",
+      "chapter": "德经·第五十五章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 54,
+      "author": "老子",
+      "snippet": "德经·第五十五章 含德之厚，比于赤子。毒虫不螫，猛兽不据，攫鸟不搏。骨弱筋柔而握固，未知牝牡之合而朘作，精之至也。终日号而不嗄，和之至也。知和曰常，知常曰明，益生曰祥，心使气曰强。物壮则老，谓之不道，不道早已。",
+      "score": 0.518,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_28",
+      "source_id": "src_search_1",
+      "book": "庄子说什么",
+      "chapter": "序章",
+      "book_id": "c3c401982587",
+      "chapter_idx": 2,
+      "author": "韩鹏杰",
+      "snippet": "各位读者好，自《道德经说什么》之后，我们又见面了。 这本书要给大家讲什么呢？我先来给大家排列几个成语：鲲鹏展翅、鹏程万里、凌云之志、扶摇直上、螳臂当车、坐井观天、蜗角虚名、蝇头微利、窃国者侯窃钩者诛、相濡以沫、相忘于江湖……这些成语大家都很熟吧？而这些，都出自我们这本书要讲的这个人：先秦道家的第二号人物——庄周。 我们尊称他为庄子。 说到庄子，我们对他有这样一个印象：如果在中国文化中选一个真正热爱自由的人，首选便是庄子；如果在我们的文化",
+      "score": 0.514,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_29",
+      "source_id": "src_search_1",
+      "book": "道家与道教思想简史",
+      "chapter": "五 黄老道家学说的变化",
+      "book_id": "219b862077e1",
+      "chapter_idx": 5,
+      "author": "王卡",
+      "snippet": "黄老学派虽失去官学地位，但仍在某些学者和民间人士中传习。据考证，汉代学者注释（老子）的著作有10多家，他们开启了以“老学”为主体的道家经学历史。另有一些学者（王充、王符、仲长统等）的著作则开启了另一历史传统，即用道家的立场和观点来批评矫正官方儒学治世之弊。嗣后道家经学及批判思想遂与儒家学说并列，共同构成中国学术思想“儒道互补”的格局。法家、墨家及阴阳家等学派也逐渐被融进了儒、道两家。 总起来看，汉武帝之后的道家思想沿着两条路径发展。其一",
+      "score": 0.509,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_30",
+      "source_id": "src_search_1",
+      "book": "老子道德经",
+      "chapter": "第二部分——《德经》的开篇。前面的章节是《道经》部分，《道经》阐释的是天",
+      "book_id": "dd8853676655",
+      "chapter_idx": 39,
+      "author": "老子",
+      "snippet": "道，也就是自然规律。而《德经》阐释的则是人德，也就是人生的行为准则。在老子看来，“道”的属性表现为“德”，只要是合于道的行为，就是“有德”；只要是不合于道的行为，就是“失德”。道与德是不可分割的统一整体，但是两者也有区别：德可以分为上德和下德，只有上德才合乎道的精神。德是道在人类社会的具体体现。道指的是客观规律，而德指的是人们把道运用于人类社会产生的功能。天道和人德一起构成了老子哲学的思想体系。 作为《德经》的开篇，本章首先揭示了上德与",
+      "score": 0.508,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_40",
+      "source_id": "src_search_4",
+      "book": "中国哲学辞典",
+      "chapter": "五画",
+      "book_id": "e5a8abe31f07",
+      "chapter_idx": 7,
+      "author": "韦政通",
+      "snippet": "分别制名以指实；上以明贵贱，下以别同异。贵贱明，同异别，如是，则志无不喻 之患，事无困废之祸，此所为有名也。” （2）同名异名之所由起《葡子·正名》：“然则何缘而以同异？日：缘天官。 凡同类同情者，其天官之意物也同，故比方之疑似而通。是所以共其约名以相 期也，…心有征知。征知，则缘耳而知声可也，缘目而知形可也。然而征知必 将待天官之当簿其类然后可也。五官簿之而不知，心征之而无说，则人莫不谓 之不知。此所缘而以同异也。” （3）制名的要点",
+      "score": 0.476,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_42",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "德经·第四十五章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 44,
+      "author": "老子",
+      "snippet": "德经·第四十五章 大成若缺，其用不弊。大盈若冲，其用不穷。大直若屈，大巧若拙，大辩若讷。躁胜寒，静胜热。清静为天下正。",
+      "score": 0.456,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_43",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "第三十章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 29,
+      "author": "老子",
+      "snippet": "以道佐人主者，不以兵强天下。其事好还。师之所处，荆棘生焉。大军之后，必有凶年。善者果而已，不敢以取强。果而勿矜，果而勿伐，果而勿骄。果而不得已，果而勿强。物壮则老，是谓不道，不道早已。",
+      "score": 0.456,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_45",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "第二十四章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 23,
+      "author": "老子",
+      "snippet": "企者不立；跨者不行；自见者不明；自是者不彰；自伐者无功；自矜者不长。其在道也，曰余食赘形，物或恶之，故有道者不处。",
+      "score": 0.537,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_46",
+      "source_id": "src_search_4",
+      "book": "老子道德经",
+      "chapter": "第三十二章 知止不殆",
+      "book_id": "dd8853676655",
+      "chapter_idx": 32,
+      "author": "老子",
+      "snippet": "【原文】 道常无名，朴虽小，天下莫能臣[155]。侯王若能守之，万物将自宾[156]。天地相合，以降甘露，民莫之令而自均。始制有名，名亦既有，夫亦将知止，知止可以不殆。譬道之在天下，犹川谷之于江海。 【译文】 “道”始终都是无名而质朴的状态。它虽然小得无法分辨，可是天下却没有谁能使它臣服的。诸侯君王若能遵守道的原则来治理天下，万物将会自然归从于他。 天地间阴阳之气相合，就会降下润泽万物的甘露，人们不须指使命令它，它就能自然分布均匀。万物",
+      "score": 0.447,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_47",
+      "source_id": "src_search_4",
+      "book": "中庸",
+      "chapter": "第四章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 5,
+      "author": "子思",
+      "snippet": "子曰：“道之不行也，我知之矣：知者过之；愚者不及也。道之不明也，我知之矣：贤者过之；不肖者不及也。” “人莫不饮食也。鲜能知味也。”",
+      "score": 0.444,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_49",
+      "source_id": "src_search_5",
+      "book": "道德经",
+      "chapter": "第二十五章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 24,
+      "author": "老子",
+      "snippet": "有物混成，先天地生，寂兮寥兮，独立而不改，周行而不殆，可以为天地母。吾不知其名，强字之曰道，强为之名曰大。大曰逝，逝曰远，远曰反。故道大，天大，地大，人亦大。域中有四大，而人居其一焉。人法地，地法天，天法道，道法自然。",
+      "score": 0.598,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_50",
+      "source_id": "src_search_5",
+      "book": "道德经",
+      "chapter": "第三十四章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 33,
+      "author": "老子",
+      "snippet": "大道泛兮，其可左右。万物恃之以生而不辞，功成而不有。衣养万物而不为主。常无欲，可名于小；万物归焉而不为主，可名为大。以其终不自为大，故能成其大。",
+      "score": 0.571,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_53",
+      "source_id": "src_search_5",
+      "book": "道德经",
+      "chapter": "第六章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 5,
+      "author": "老子",
+      "snippet": "谷神不死，是谓玄牝。玄牝之门，是谓天地根。绵绵若存，用之不勤。",
+      "score": 0.546,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_54",
+      "source_id": "src_search_5",
+      "book": "中庸",
+      "chapter": "第二十六章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 27,
+      "author": "子思",
+      "snippet": "故至诚无息。 不息则久，久则征。 征则悠远。悠远，则博厚。博厚，则高明。 博厚，所以载物也。高明，所以覆物也。悠久，所以成物也。 博厚，配地。高明，配天。悠久，无疆。 如此者，不见而章，不动而变，无为而成。 天地之道，可一言而尽也。其为物不贰，则其生物不测。 天地之道，博也、厚也、高也、明也、悠也、久也。 今夫天斯昭昭之多，及其无穷也，日月星辰系焉，万物覆焉。今夫地一撮土之多，及其广厚载华岳而不重，振河海而不洩，万物载焉。今夫山一卷石之",
+      "score": 0.555,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_55",
+      "source_id": "src_search_5",
+      "book": "庄子今注今译",
+      "chapter": "上册目录",
+      "book_id": "ea6f47b169f0",
+      "chapter_idx": 3,
+      "author": "陈鼓应",
+      "snippet": "作者简介 北京商务重排版说明 修订版序 前言 内篇 逍遥游 齐物论 养生主 人间世 德充符 大宗师 应帝王 外篇 骈拇 马蹄 胠箧 在宥 天地 天道 天运 刻意 缮性 秋水 至乐 返回总目录",
+      "score": 0.554,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_56",
+      "source_id": "src_search_5",
+      "book": "鬼谷子",
+      "chapter": "符言",
+      "book_id": "1f6fe151032b",
+      "chapter_idx": 11,
+      "author": "鬼谷子",
+      "snippet": "安徐正静，其被节先肉。善与而不静，虚心平意以待倾损。右主位。 目贵明，耳贵聪，心贵智。以天下之目视者，则无不见；以天下之耳听者，则无不闻；以天下之心思虑者，则无不知；辐辏并进，则明不可塞。右主明。 德之术曰勿坚而拒之，许之则防守，拒之则闭塞。高山仰之可极，深渊度之可测，神明之德术正静，其莫之极。右主德。 用赏贵信，用刑贵正。赏赐贵信，必验而目之所闻见，其所不闻见者，莫不谙化矣。诚畅于天下神明，而况奸者干君。右主赏。 一曰天之，二曰地之，",
+      "score": 0.533,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_57",
+      "source_id": "src_search_5",
+      "book": "道德经",
+      "chapter": "第七章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 6,
+      "author": "老子",
+      "snippet": "天长地久。天地所以能长且久者，以其不自生，故能长生。是以圣人后其身而身先，外其身而身存。非以其无私耶？故能成其私。(后其身 一作：退其身)",
+      "score": 0.529,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_59",
+      "source_id": "src_search_5",
+      "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "chapter": "索引",
+      "book_id": "309de54e4392",
+      "chapter_idx": 15,
+      "author": "伊曼努尔·康德",
+      "snippet": "索　引 （本索引按汉语拼音字母顺序排列） A 阿那克萨克拉（Anaxagoras）。 爱（Liebe）禀好的本能的爱和敬重的实践的爱。 爱邻人（Naechstenliebe）。 傲慢（Arroganz）。 B 柏拉图（Plato）。 榜样（Urbild）。 被造物/创造（Schoepfung）被造物/创造的概念。 本能（Instinkt）与理性相对。 本能的（pathologische[与实践的相对]）；本能的情感；本能的法则；本能的爱",
+      "score": 0.523,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_60",
+      "source_id": "src_search_5",
+      "book": "中庸",
+      "chapter": "第三十二章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 33,
+      "author": "子思",
+      "snippet": "唯天下至诚，为能经纶天下之大经，立天下之大本，知天地之化育。夫焉有所倚？ 肫肫其仁！渊渊其渊！浩浩其天！ 苟不固聪明圣知，达天德者，其孰能知之？",
+      "score": 0.521,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_61",
+      "source_id": "src_search_5",
+      "book": "中庸",
+      "chapter": "第三十章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 31,
+      "author": "子思",
+      "snippet": "仲尼祖述尧舜，宪章文武。上律天时，下袭水土。 辟如天地之无不持载，无不覆帱。辟如四时之错行，如日月之代明。 万物并育而不相害。道并行而不相悖。小德川流；大德敦化。此天地之所以为大也。",
+      "score": 0.543,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_76",
+      "source_id": "src_search_6",
+      "book": "庄子今注今译",
+      "chapter": "知北游",
+      "book_id": "ea6f47b169f0",
+      "chapter_idx": 30,
+      "author": "陈鼓应",
+      "snippet": "〈知北游〉篇，主旨在谈道。“知北游”，知向北方游历。知，音智，这里是寓言，托为人名。取篇首三字作为篇名。 本篇由十一个寓言组合而成。第一章，首段写“知者不言，言者不知”。次写“通天下一气耳”，认为气是自然界的基本物质粒子，人的生死，就是气的聚散。第二章，说：“天地有大美而不言，四时有明法而不议，万物有成理而不说。”从这些名句中可看出庄子的自然观。第三章，啮缺问道于被衣，被衣告以使思虑专一，精神凝聚。第四章，舜问丞，写天地万物的变化及气的",
+      "score": 0.54,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_78",
+      "source_id": "src_search_6",
+      "book": "道德经",
+      "chapter": "第三十七章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 36,
+      "author": "老子",
+      "snippet": "道常无为而无不为。侯王若能守之，万物将自化。化而欲作，吾将镇之以无名之朴。镇之以无名之朴，夫将不欲。不欲以静，天下将自正。",
+      "score": 0.538,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_80",
+      "source_id": "src_search_6",
+      "book": "道德经",
+      "chapter": "第十四章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 13,
+      "author": "老子",
+      "snippet": "视之不见，名曰夷；听之不闻，名曰希；搏之不得，名曰微。此三者，不可致诘，故混而为一。其上不皦，其下不昧，绳绳兮不可名，复归於无物。是谓无状之状，无物之象，是谓惚恍。迎之不见其首，随之不见其后。执古之道，以御今之有。能知古始，是谓道纪。",
+      "score": 0.529,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_81",
+      "source_id": "src_search_6",
+      "book": "庄子今注今译",
+      "chapter": "天道",
+      "book_id": "ea6f47b169f0",
+      "chapter_idx": 19,
+      "author": "陈鼓应",
+      "snippet": "〈天道〉篇，以阐述自然之义为主，由八章文字杂纂而成。各章意义不相关联，属于杂记体裁。“天道”，即自然的规律。取篇首二字为篇名。 本篇各本第三章自“夫帝王之德”至“非上之所以畜下也”，与庄周之旨不相侔，自王船山以来学者多人指出属黄老派之作，姑予存留，但不作译释。本篇其他各章的要义依次如下：第一章，写自然规律运行而不辍；自然界中，万物自动自为。圣人法自然的规律，以明静之心观照万物。第二章，写“天乐”，体会天乐的人，能顺自然而行，与万化同流。",
+      "score": 0.527,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_83",
+      "source_id": "src_search_6",
+      "book": "中庸",
+      "chapter": "第一章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 2,
+      "author": "子思",
+      "snippet": "天命之谓性；率性之谓道；修道之谓教。 道也者，不可须臾离也；可离，非道也。是故君子戒慎乎其所不睹，恐惧乎其所不闻。 莫见乎隐，莫显乎微。故君子慎其独也。 喜、怒、哀、乐之未发，谓之中。发而皆中节，谓之和。中也者，天下之大本也。和也者，天下之达道也。 致中和，天地位焉，万物育焉。",
+      "score": 0.523,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_87",
+      "source_id": "src_search_6",
+      "book": "周易",
+      "chapter": "大有卦",
+      "book_id": "1aaee7b6bdfe",
+      "chapter_idx": 14,
+      "author": "佚名",
+      "snippet": "大有：元亨。 初九：无交害，匪咎；艰则无咎。 九二：大车以载，有攸往，无咎。 九三：公用亨于天子。小人弗克。 九四：匪其彭，无咎。 六五：厥孚交如，威如，吉。 上九：自天祐之，吉无不利。",
+      "score": 0.516,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_88",
+      "source_id": "src_search_6",
+      "book": "周易",
+      "chapter": "恒卦",
+      "book_id": "1aaee7b6bdfe",
+      "chapter_idx": 32,
+      "author": "佚名",
+      "snippet": "《恒》：亨，无咎，利贞，利有攸往。 初六：浚恒，贞凶，无攸利。 九二：悔亡。 九三：不恒其德，或承之羞，贞吝。 九四：田无禽。 六五：恒其德，贞，妇人吉，夫子凶。 上六：振恒，凶。",
+      "score": 0.515,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_89",
+      "source_id": "src_search_6",
+      "book": "道德经",
+      "chapter": "第二十三章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 22,
+      "author": "老子",
+      "snippet": "希言自然。故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况於人乎？故从事於道者，同於道；德者，同於德；失者，同於失。同於道者，道亦乐得之；同於德者，德亦乐得之；同於失者，失亦乐得之。信不足焉，有不信焉。",
+      "score": 0.512,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_90",
+      "source_id": "src_search_6",
+      "book": "中庸",
+      "chapter": "第三十一章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 32,
+      "author": "子思",
+      "snippet": "唯天下至圣，为能聪、明、睿知、足以有临也；宽、裕、温、柔、足以有容也；发、强、刚、毅、足以有执也；齐、庄、中、正、足以有敬也；文、理、密、察、足以有别也。 溥博，渊泉，而时出之。 溥博如天；渊泉如渊。见而民莫不敬；言而民莫不信；行而民莫不说。 是以声名洋溢乎中国，施及蛮貊。舟车所至，人力所通，天之所覆，地之所载，日月所照，霜露所队：凡有血气者莫不尊亲。故曰，「配天」。",
+      "score": 0.512,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_91",
+      "source_id": "src_search_6",
+      "book": "道德经",
+      "chapter": "第八章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 7,
+      "author": "老子",
+      "snippet": "上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。",
+      "score": 0.512,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_92",
+      "source_id": "src_search_6",
+      "book": "道德经",
+      "chapter": "第十五章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 14,
+      "author": "老子",
+      "snippet": "古之善为道者，微妙玄通，深不可识。夫唯不可识，故强为之容；豫兮若冬涉川；犹兮若畏四邻；俨兮其若客；涣兮若冰之将释；敦兮其若朴；旷兮其若谷；混兮其若浊；孰能浊以止，静之徐清？孰能安以久，动之徐生？保此道者，不欲盈。夫唯不盈，故能蔽而新成。",
+      "score": 0.511,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     }
+    ],
+    "candidate_evidence": [],
+    "used_evidence": [],
+    "claims": [],
+    "citations": [],
+    "unverified_citations": [],
+    "retrieved_count": 56,
+    "used_count": 0,
+    "facts": {
+     "read_chapters": [
+      "6ef2f18cfdc9#0",
+      "dd8853676655#1"
+     ],
+     "search_execs": 5,
+     "read_execs": 2,
+     "source_candidate_found": true,
+     "primary_text_read": true
+    }
+   },
+   "tool_calls": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "道可道 非常道 名可名 非常名"
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "道德经 老子"
+     },
+     "result_summary": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 578, 'chapter_title': '出版说明', 'citation_label': '【《南怀瑾经典合集（共24册）》·出版说明】', 'snippet': '《老子》，又名《道德",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 0
+     },
+     "result_summary": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 0, 'title': '第一章', 'book_title': '道德经', 'citation_label': '【《道德经》·第一章】', 'text': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。'}",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "dd8853676655",
+      "chapter_idx": 1
+     },
+     "result_summary": "{'book_id': 'dd8853676655', 'chapter_idx': 1, 'title': '第一章 众妙之门', 'book_title': '老子道德经', 'citation_label': '【《老子道德经》·第一章 众妙之门】', 'text': '【原文】\\n道可道[1]，非常道[2]；名可名，非常名[3]。无名，万物之始[4]；有名，万物之母\\n[5]。故常无欲，以",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "道可道，非常道；名可名，非常名"
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "众妙之门 无名 天地之始 有名 万物之母"
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "道可道 非常道 名可名 非常名 无名天地之始",
+      "limit": 10
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '第一章', 'citation_label': '【《道德经》·第一章】', 'snippet': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 0
+     },
+     "result_summary": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 0, 'title': '第一章', 'book_title': '道德经', 'citation_label': '【《道德经》·第一章】', 'text': '道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。'}",
+     "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）"
+    }
+   ],
+   "suggestions": [
+    "就 「道可道 非常道 名可名 」 与另一位哲学家隔空对质",
+    "追溯 「道可道 非常道 名可名 」 在哲学史中的时间线"
+   ],
+   "safety": null,
+   "tool_loop": {
+    "invocation_id": "2b19f0b92930",
+    "budget": {
+     "useful": 7,
+     "retry": 0,
+     "inner_retries": 0,
+     "duplicate_reused": 1,
+     "no_gain": 0,
+     "total_executed": 7,
+     "retrieval_executed": 7,
+     "hard": false,
+     "cfg": {
+      "hard_retrieval": 20,
+      "hard_total": 24
+     }
+    },
+    "model_retries": 0,
+    "recovered_after_error": false,
+    "no_gain_calls": 0
+   },
+   "causal": {
+    "provenance": "o1",
+    "engine_cognitive_auto_tools": 0,
+    "main_agent_tool_decisions": 8,
+    "agent_invocations": 6,
+    "thinking_sources": "main_agent_only"
+   },
+   "final_ownership": {
+    "provenance": "o2",
+    "final_text_owner": "main_agent",
+    "semantic_mutators": 0,
+    "runtime_factual_appends": 0,
+    "final_retract_semantic_use": 0,
+    "invalid_final_publicly_streamed": false,
+    "validator_repair_invocations": 2,
+    "main_agent_final_ownership_rate": 1.0
+   },
+   "validation": {
+    "result": {
+     "ok": false,
+     "issues": [
+      {
+       "code": "NEAR_QUOTE_NOT_MARKED",
+       "locator": "道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄",
+       "evidence_ref": "qb_snip_0_7",
+       "detail": "quote only approximates the retrieved text but is presented as verbatim without an approximation note (match=NEAR, coverage=0.9, evidence=qb_snip_0_7, best_evidence=【《南怀瑾经典合集（共24册）》·第一章】)"
+      }
+     ]
+    },
+    "repairs_used": 2,
+    "max_validation_repairs": 2,
+    "repair_protocol": "same_main_agent"
+   },
+   "timing": {
+    "phases": [
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 1249.5,
+      "msgs_len": 3
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 1511.2,
+      "msgs_len": 6
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 6582.8,
+      "msgs_len": 9
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 2555.2,
+      "msgs_len": 5
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 9474.7,
+      "msgs_len": 8
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 2644.3,
+      "msgs_len": 5
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 1823.1,
+      "msgs_len": 7
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 3587.2,
+      "msgs_len": 9
+     },
+     {
+      "type": "phase",
+      "phase": "validator_quote_bound",
+      "duration_ms": 0.0
+     },
+     {
+      "type": "phase",
+      "phase": "validator_evidence_contract",
+      "duration_ms": 1.0
+     },
+     {
+      "type": "phase",
+      "phase": "validator_citation_sanitize",
+      "duration_ms": 0.0
+     }
+    ],
+    "total_ms": 30407.1
+   },
+   "citation_sanitize": {
+    "verified_citations": [],
+    "unverified_before": [],
+    "actions": []
+   },
+   "quote_bound": {
+    "entries": [],
+    "summary": {
+     "quotes": 0,
+     "verified_exact": 0,
+     "verified_near": 0,
+     "memory_only": 0,
+     "stitched": 0,
+     "unverified_blockquote": 0,
+     "memory_only_exact_claim": 0
+    }
+   },
+   "temporal": null,
+   "safety_enforcement": {
+    "initiated_by": "safety_runtime",
+    "action": "none"
+   },
+   "safety_reply": null
+  }
+ ]
+}

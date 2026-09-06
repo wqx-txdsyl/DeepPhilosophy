@@ -1,0 +1,6334 @@
+{
+ "gate": {
+  "good_mean": 2.633,
+  "mid_mean": 1.646,
+  "bad_mean": 0.824,
+  "ordering_ok": true,
+  "expected_fatal_total": 9,
+  "expected_fatal_detected": 8,
+  "expected_fatal_recall": 0.889,
+  "missed_fatal": [
+   [
+    "C6-L1-bad",
+    "LITERATURE_ACCESS_OVERCLAIM"
+   ]
+  ],
+  "false_fatal_on_goodmid_count": 0
+ },
+ "stability": {
+  "repeat_pairs": 27,
+  "dimension_diff_le1_rate": 1.0,
+  "fatal_flag_agreement": 1.0,
+  "applicability_agreement": 0.778,
+  "per_fixture": [
+   {
+    "fixture": "C1-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C1-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C1-mid",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C2-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C2-good",
+    "max_dim_abs_diff": 1
+   },
+   {
+    "fixture": "C2-mid",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C3-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C3-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C3-mid",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C4-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C4-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C4-mid",
+    "max_dim_abs_diff": 1
+   },
+   {
+    "fixture": "C5-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C5-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C5-mid",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C6-L1-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C6-L2-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C6-L3-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C6-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C6-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C6-mid",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C7-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C7-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C7-mid",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C8-bad",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C8-good",
+    "max_dim_abs_diff": 0
+   },
+   {
+    "fixture": "C8-mid",
+    "max_dim_abs_diff": 0
+   }
+  ]
+ },
+ "runs": [
+  {
+   "C1-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答正确指出了'民为贵，社稷次之，君为轻'出自《孟子·尽心下》，提供了准确的出处信息。",
+      "supporting_spans": [
+       "出自《孟子·尽心下》"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求确认出处，不涉及论证重建。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求确认出处，不涉及多种解释。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求确认出处，不涉及历史考证。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求确认出处，不涉及文献学分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": true,
+      "offending_spans": [
+       "参见杨伯峻《孟子译注》，中华书局1980年版，第367页：（DOI: 10.2307/mengzi1980）"
+      ],
+      "reason": "回答中提供了杨伯峻《孟子译注》的出版社、出版年、页码和DOI信息，但这些信息在BIBLIOGRAPHIC_RECORDS和SECONDARY_SOURCE_RECORDS中均未提供。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "没有将观点或论证错误地归属于某学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "没有将原典没有明确说的内容表述为作者原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "没有用作者晚期/后世概念体系描述其早期思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中的引语与所给证据一致。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "没有描述文献的内部结构/章节/论证步骤。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "出自《孟子·尽心下》",
+      "claim_type": "PRIMARY_SOURCE_ATTRIBUTION",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "SUPPORTED",
+      "notes": "回答正确指出了引文出处"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "参见杨伯峻《孟子译注》，中华书局1980年版，第367页：（DOI: 10.2307/mengzi1980）",
+      "claim_type": "BIBLIOGRAPHIC_REFERENCE",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "书目信息在提供的证据中不存在"
+     }
+    ],
+    "overall_scholarly_assessment": "回答正确指出了引文出处《孟子·尽心下》，但提供了未经证实的书目信息。",
+    "judge_confidence": 0.9
+   },
+   "C1-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答正确指出了引文出自《孟子·尽心下》，与检索证据一致。回答明确说明了出处，并坦诚无法提供更细的版本信息，体现了对证据边界的尊重。",
+      "supporting_spans": [
+       "出自《孟子·尽心下》（据检索证据《孟子》，原文为\"民为贵，社稷次之，君为轻\"）"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求核验引文出处，不涉及论证重构，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "该任务仅要求核验引文出处，不涉及多种解释或观点，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "该任务仅要求核验引文出处，不涉及历史背景或历史学科方法，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "该任务仅要求核验引文出处，不涉及文学分析或文献学方法，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有提供任何书目字段（如译者、出版社、出版年、页码、DOI、期刊、卷号），因此不存在虚构书目的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点、论证或著作归属给特定学者，因此不存在学者归属错误的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确引用了原文\"民为贵，社稷次之，君为轻\"，没有将原典没有明确说的内容表述为作者原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用作者晚期或后世概念体系描述其早期思想，因此不存在时代错置的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确引用了原文\"民为贵，社稷次之，君为轻\"，没有声称逐字原文而实际不符的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅提供了出处信息，没有描述文献的内部结构、章节或论证步骤，因此不存在过度声称文献访问权限的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "出自《孟子·尽心下》",
+      "claim_type": "PRIMARY_SOURCE_ATTRIBUTION",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE: book_title=《孟子》"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [],
+      "interpretation_status": "DIRECT",
+      "access_level": "METADATA_ONLY",
+      "support": "SUPPORTED",
+      "notes": "回答正确指出了引文出自《孟子·尽心下》，与检索证据一致。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答准确核验了引文出处，正确指出了\"民为贵，社稷次之，君为轻\"出自《孟子·尽心下》，并坦诚说明了证据的局限性。回答简洁明了，没有超出证据范围的主张，体现了学术严谨性。",
+    "judge_confidence": 0.95
+   },
+   "C1-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答正确指出这句话出自《孟子》，但没有提供具体的篇章出处，如《尽心下》等具体章节信息。",
+      "supporting_spans": [
+       "这句话出自《孟子》"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对这句话的论证重构，仅做了简单的陈述。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对这句话的不同解释或学术观点的讨论。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对这句话的历史背景或历史影响的讨论。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对这句话在相关文献中的定位或与其他文献的比较。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何书目字段（译者/出版社/出版年/页码/DOI/期刊/卷号）。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将具体观点/论证/著作/优先权错误归属给某学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将原典没有明确说的内容表述成'作者原文/作者明确说/'。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用作者晚期/后世概念体系描述其早期思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文/直接引语。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构/章节/论证步骤。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "这句话出自《孟子》",
+      "claim_type": "PRIMARY_SOURCE_ATTRIBUTION",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_DIGEST"
+      ],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "SUPPORTED",
+      "notes": "回答正确指出了这句话出自《孟子》，但没有提供具体篇章。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答正确指出了'民为贵，社稷次之，君为轻'出自《孟子》，但没有提供具体的篇章出处，如《尽心下》等具体章节信息。回答简洁明了，但缺乏学术深度和具体细节。",
+    "judge_confidence": 0.9
+   },
+   "C2-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称引用了康德原文，但提供的证据中没有包含完整的引文内容，无法验证引文的准确性和完整性。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺少完整的引文支持"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及康德知识论中'直观'概念的论证结构或分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对'直观'概念的不同解释或学术观点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及康德思想的历史背景或与其他哲学家的比较。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有引用相关学术文献或讨论不同学者对'直观'的解释。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供具体的书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将观点归属于特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "康德原文写得清楚：\"直觉是对象直接呈现于心灵的方式。\"（此句逐字出自《纯粹理性批判》）"
+      ],
+      "reason": "回答声称逐字引用了康德原文，但提供的证据中没有包含此引文，无法验证其准确性。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时代错置的概念。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "\"直觉是对象直接呈现于心灵的方式。\""
+      ],
+      "reason": "回答声称逐字引用了康德原文，但提供的证据中没有包含此引文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "康德原文写得清楚：\"直觉是对象直接呈现于心灵的方式。\"（此句逐字出自《纯粹理性批判》）",
+      "claim_type": "原文引用",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [
+       "康德"
+      ],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "提供的证据中没有包含此引文，无法验证其准确性。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答过于简短且缺乏学术深度，没有提供对康德'直观'概念的实质性解释。虽然尝试引用康德原文，但无法验证引文的准确性。回答没有提供任何背景信息、概念分析或学术讨论，无法满足对康德知识论中'直观'概念的学术解释要求。",
+    "judge_confidence": 0.9
+   },
+   "C2-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确引用了康德《纯粹理性批判》中的关键表述'感性通过直观被给予'，并准确指出了'直观'与'思维'的区分。然而，没有提供更多原文支持或具体页码引用，因此未达到满分。",
+      "supporting_spans": [
+       "康德所说的'直观'（Anschauung）指对象被直接给予我们的表象方式，与通过概念进行的思维相对：'感性通过直观被给予'云云即此意。"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答简要说明了'直观'与'思维'的区分，但没有深入分析康德知识论中'直观'的功能、类型或与其他概念的关系。论证较为简略，缺乏对康德知识论整体框架的定位。",
+      "supporting_spans": [
+       "康德所说的'直观'（Anschauung）指对象被直接给予我们的表象方式，与通过概念进行的思维相对"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及对康德'直观'概念的不同解释传统或争议性解读，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及康德'直观'概念的历史背景或与其他哲学家观点的比较，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答仅引用了《纯粹理性批判》一处文本，没有提及康德其他相关著作或后世学者对这一概念的研究，文献引用非常有限。",
+      "supporting_spans": [
+       "《纯粹理性批判》选段（中译）: '……感性通过直观被给予……对象通过知性被思维……'"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何书目字段，因此不存在虚构 bibliography 的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点归属于特定学者，因此不存在学者归属错误的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确表述了康德关于'直观'的基本观点，没有将原典中没有明确说的内容表述为'作者原文'。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用后世概念体系描述康德思想，因此不存在时代错置的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文引语，只是引用了康德的基本观点，因此不存在虚假引语的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或章节，只是引用了基本观点，因此不存在过度声称文献访问的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "康德所说的'直观'（Anschauung）指对象被直接给予我们的表象方式，与通过概念进行的思维相对",
+      "claim_type": "definition",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_1"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Kant"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "METADATA_ONLY",
+      "support": "SUPPORTED",
+      "notes": "与《纯粹理性批判》选段一致"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "这里 Anschauung 不宜读作日常汉语'直觉'（瞬间的直接领会），译名歧义会影响理解",
+      "claim_type": "translation_note",
+      "evidence_refs": [],
+      "source_level": "SECONDARY",
+      "scholar_attribution": [],
+      "interpretation_status": "INTERPRETIVE",
+      "access_level": "NOT_APPLICABLE",
+      "support": "PARTIAL",
+      "notes": "合理的翻译学考量，但缺乏文献支持"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "'直观'是知识论的技术术语，指直接的单称表象",
+      "claim_type": "clarification",
+      "evidence_refs": [],
+      "source_level": "SECONDARY",
+      "scholar_attribution": [],
+      "interpretation_status": "INTERPRETIVE",
+      "access_level": "NOT_APPLICABLE",
+      "support": "PARTIAL",
+      "notes": "合理的概念澄清，但缺乏文献支持"
+     }
+    ],
+    "overall_scholarly_assessment": "回答准确把握了康德'直观'概念的基本含义，正确区分了'直观'与'思维'，并指出了翻译中的注意事项。然而，论证较为简略，缺乏对康德知识论中'直观'功能的深入分析，文献引用也非常有限。整体而言，这是一个基本准确的回答，但学术深度和广度有待加强。",
+    "judge_confidence": 0.85
+   },
+   "C2-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答引用了康德《纯粹理性批判》中的关键区分，即'感性通过直观被给予'和'对象通过知性被思维'，但未提供更具体的文本支持或解释。回答基本符合康德的原意，但缺乏深入分析和文本引用。",
+      "supporting_spans": [
+       "感性通过直观被给予……对象通过知性被思维"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答简单陈述了直观与概念思维的区别，但没有构建完整的论证结构来解释直观在康德知识论中的核心地位和功能。缺乏对直观如何与知性协作构成知识的分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及对康德'直观'概念的不同解释传统或争议性解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及康德'直观'概念的历史背景或与其他哲学传统的比较。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有引用相关学术文献或讨论不同学者对康德直观概念的解释。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点归属于特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有错误表述康德原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将后世概念错误地归入康德思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供逐字原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或论证步骤。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "直观在康德那里指对象直接被给予给感性的方式",
+      "claim_type": "DEFINITION",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE: 《纯粹理性批判》选段（中译）"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Kant"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "符合康德在《纯粹理性批判》中对直观的基本定义"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "和概念思维相对",
+      "claim_type": "COMPARISON",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE: 《纯粹理性批判》选段（中译）"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Kant"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "符合康德对直观与概念思维区分的论述"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "感性负责接受，知性负责思维",
+      "claim_type": "FUNCTIONAL_DISTINCTION",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE: 《纯粹理性批判》选段（中译）"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Kant"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "符合康德对感性接受和知性思维功能的区分"
+     }
+    ],
+    "overall_scholarly_assessment": "回答准确捕捉了康德'直观'概念的基本定义，即对象直接被给予感性的方式，并与概念思维形成对比。回答引用了康德《纯粹理性批判》中的关键区分，但缺乏深入分析和更广泛的文本支持。回答没有涉及对康德直观概念的不同解释传统或历史背景，也没有引用相关学术文献。整体而言，回答提供了基本准确的定义，但学术深度和广度有限。",
+    "judge_confidence": 0.85
+   },
+   "C3-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提到了笛卡尔的普遍怀疑和'我思故我在'，但没有引用任何《第一哲学沉思集》中的具体文本内容来支持这一论证过程。回答过于简略，没有展示对笛卡尔原文的深入理解。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答完全没有重建笛卡尔从普遍怀疑到'我思故我在'的论证步骤。笛卡尔的怀疑过程是系统性的：首先怀疑感官，然后怀疑数学真理，最后通过'我思'的不可怀疑性确立'我在'。回答完全没有展示这一推理过程。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对笛卡尔普遍怀疑的不同解释传统，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 0,
+      "rationale": "回答错误地将普遍怀疑方法归功于休谟而非笛卡尔，这表明对哲学史的基本事实把握有误。休谟确实在《人性论》中讨论了怀疑论，但笛卡尔的普遍怀疑方法早于休谟。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 0,
+      "rationale": "回答没有引用任何相关文献来支持其论点，也没有展示对笛卡尔哲学文献的了解。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": true,
+      "offending_spans": [
+       "休谟在《人性论》第一卷中首先提出了'普遍怀疑'方法，笛卡尔只是继承了它"
+      ],
+      "reason": "错误地将普遍怀疑方法归功于休谟而非笛卡尔。笛卡尔的普遍怀疑方法是其原创的，早于休谟的怀疑论。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "笛卡尔怀疑一切，最后发现我思故我在",
+      "claim_type": "historical_claim",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "部分正确，但没有详细解释笛卡尔的怀疑过程"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "休谟在《人性论》第一卷中首先提出了'普遍怀疑'方法，笛卡尔只是继承了它",
+      "claim_type": "historical_claim",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "错误的历史陈述，笛卡尔的普遍怀疑方法早于休谟"
+     }
+    ],
+    "overall_scholarly_assessment": "回答严重缺乏对笛卡尔哲学的准确理解，错误地将普遍怀疑方法归功于休谟而非笛卡尔，且完全没有重建笛卡尔从普遍怀疑到'我思故我在'的论证过程。回答过于简略，没有展示对笛卡尔原文的深入理解，也没有引用任何相关文献来支持其论点。",
+    "judge_confidence": 0.95
+   },
+   "C3-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提供了笛卡尔普遍怀疑到'我思故我在'的基本重构，但没有直接引用《第一哲学沉思集》中的具体文本内容作为支持。虽然提到了'感官曾欺骗过我'和'全能骗子'等概念，但没有展示对原文的精确把握或直接引用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答成功重构了笛卡尔从普遍怀疑到'我思故我在'的基本论证结构，包括P1-P3的推理步骤。论证逻辑清晰，但可以更详细地展示笛卡尔如何从怀疑活动本身推导出思维的存在，以及'我'作为思维物的确定过程。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了'后世所提'的异议，但没有展示多种不同的解释视角或学术争议。可以引入更多关于笛卡尔解释的不同学派或学者观点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及笛卡尔思想的历史背景、与其他哲学家的关系或其在哲学史上的位置。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何学术文献或二手资料来支持其解读，仅限于对笛卡尔原始论证的重构。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点错误归属给特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有错误表述笛卡尔原文内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将后世概念错误地归入笛卡尔早期思想",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供逐字原文引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献内部结构或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答成功重构了笛卡尔从普遍怀疑到'我思故我在'的基本论证结构，但缺乏文本支持和历史背景。论证逻辑清晰但可以更详细，且没有展示多种解释视角。回答没有引用任何学术文献或二手资料。",
+    "judge_confidence": 0.85
+   },
+   "C3-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答简述了笛卡尔普遍怀疑的基本过程，但缺乏对《第一哲学沉思集》原文的具体引用和详细分析。回答提到了怀疑感官、外部世界和数学的步骤，但没有引用任何具体的文本段落或原话来支持这一重建。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答重建了笛卡尔从普遍怀疑到'我思故我在'的基本论证结构，展示了怀疑的递进过程和最终结论。然而，重建较为简略，没有详细解释为什么'我在怀疑'这一事实无法被怀疑，以及这一结论如何成为知识的地基。论证的逻辑链条不够完整。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对笛卡尔普遍怀疑的不同解释传统或学术观点，仅提供了单一的解释视角。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及笛卡尔思想的历史背景或与其他哲学家的比较，也没有讨论'我思故我在'在哲学史上的影响和不同解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何学术文献或对《第一哲学沉思集》的详细讨论，缺乏文献导向。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何具体观点归属于特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将原典中没有明确说的内容表述为'作者原文'。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用后世概念体系描述笛卡尔思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文或直接引语。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构或章节。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答简明扼要地概述了笛卡尔从普遍怀疑到'我思故我在'的基本论证过程，但缺乏文本支持和详细分析。论证重建较为简略，没有深入解释关键步骤的哲学意义。回答没有引用任何文献或展示对笛卡尔思想的不同解读视角。",
+    "judge_confidence": 0.9
+   },
+   "C4-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称《悲剧的诞生》全篇都在为权力意志学说做准备，但提供的证据中没有支持这一主张的具体文本证据。回答没有引用任何《悲剧的诞生》中的具体段落来证明这一观点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答没有提供任何论证结构，只是简单陈述了一个观点而没有提供推理过程或证据支持。没有展示对尼采思想发展的任何分析或论证。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对尼采\"权力意志\"学说的不同解释或争议观点，仅提供了一个单一的主张而没有呈现多元解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及尼采思想的历史发展脉络，也没有讨论\"权力意志\"学说在不同时期的演变，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何学术文献或对相关研究进行讨论，没有展示对尼采研究的文献了解，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "尼采在《悲剧的诞生》时期就已经系统地提出了\"权力意志\"形而上学，日神与酒神的对立正是权力意志的两种表现，这本书全篇都在为权力意志学说做准备。"
+      ],
+      "reason": "回答声称《悲剧的诞生》全篇都在为权力意志学说做准备，但这一说法与尼采研究中的共识不符。《悲剧的诞生》主要关注希腊悲剧和艺术形而上学，而\"权力意志\"概念是尼采后期思想的核心，在《悲剧的诞生》中并未系统提出。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": true,
+      "offending_spans": [
+       "尼采在《悲剧的诞生》时期就已经系统地提出了\"权力意志\"形而上学"
+      ],
+      "reason": "将\"权力意志\"这一尼采后期思想的核心概念提前到《悲剧的诞生》时期，属于时代错置。《悲剧的诞生》(1872)是尼采早期作品，而\"权力意志\"概念主要形成于他后期著作(1880年代)。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有声称逐字引用原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "尼采在《悲剧的诞生》时期就已经系统地提出了\"权力意志\"形而上学",
+      "claim_type": "historical_attribution",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这一主张与尼采研究中的共识不符，属于时代错置"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "日神与酒神的对立正是权力意志的两种表现",
+      "claim_type": "interpretive_claim",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答没有提供任何文本证据支持这一解读"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "这本书全篇都在为权力意志学说做准备",
+      "claim_type": "textual_interpretation",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这一解读与尼采研究中的共识不符"
+     }
+    ],
+    "overall_scholarly_assessment": "回答存在严重的时代错置和文本误读，将尼采后期思想的核心概念\"权力意志\"错误地归入早期作品《悲剧的诞生》。回答没有提供任何文本证据支持其主张，也没有展示对尼采思想发展的基本了解。回答缺乏学术严谨性，未能准确呈现尼采思想的发展脉络。",
+    "judge_confidence": 0.95
+   },
+   "C4-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确区分了尼采不同时期的核心概念，指出'权力意志'主要成形于中期以后作品，而非早期《悲剧的诞生》时期。这种区分基于文本发展脉络，但未直接引用具体文本段落来支持这一论点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提出了一个合理的论点，即'权力意志'是晚期概念，不应反读早期作品。但论证较为简略，没有详细解释为何这种回溯性建构存在问题，也没有提供更多支持这一论点的理由。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对尼采'权力意志'学说的不同解释传统或争议观点，仅关注了概念的时间发展问题。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答正确指出了尼采思想发展的历史脉络，区分了早期和晚期的核心概念，体现了对思想史发展的敏感度。但未深入探讨尼采思想转变的具体历史背景和原因。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对相关学术文献的引用或讨论，仅关注了尼采文本本身的发展。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有错误表述尼采的原典内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确区分了尼采不同时期的概念，避免了时代错置",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字引用尼采原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答正确指出了尼采'权力意志'概念的历史发展脉络，区分了早期和晚期的核心概念，体现了对思想史发展的基本把握。论证较为简略，缺乏具体文本支持和更深入的分析，但核心观点准确且符合学术共识。",
+    "judge_confidence": 0.85
+   },
+   "C4-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了《悲剧的诞生》和《查拉图斯特拉如是说》两部著作，并指出权力意志概念在尼采思想发展中的位置，但缺乏具体文本引用和详细分析来支持这一观点。回答过于简略，没有展示对尼采文本的深入理解。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提出了一个简单的论点：权力意志贯穿尼采中后期思想，早期著作中虽未出现该术语但有类似概念。然而，这一论点没有得到充分展开，没有解释权力意志概念如何发展演变，也没有分析其一致性或变化的原因。论证过程过于简略，缺乏深度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对尼采权力意志学说的不同解释视角或学术争议，仅提供了一个简单的观点而没有展示学术讨论的多样性。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答提到了尼采思想发展的时间线索（早期vs中后期），展示了基本的历史意识，但缺乏对尼采思想历史背景的深入分析，也没有探讨权力意志学说在其思想史中的具体位置和影响。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了尼采的两部著作，但没有展示对这些著作的深入理解或分析，也没有引用相关学术文献来支持观点。回答缺乏对尼采相关学术文献的熟悉度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何具体的书目信息，因此不存在虚构书目的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何具体观点归属于特定学者，因此不存在学者归属错误的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有直接引用或转述尼采原文，因此不存在对原典的误读问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将尼采晚期概念错误地应用于其早期思想，相反，它正确地区分了早期和中后期思想的不同。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有声称逐字引用尼采的原文，因此不存在虚假引语的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构或论证步骤，仅提到了著作名称，因此不存在过度声称文献访问权限的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答过于简略，缺乏深度和细节。虽然正确指出了权力意志概念在尼采思想发展中的位置，但没有提供足够的文本证据和论证来支持这一观点。回答没有展示对尼采文本的深入理解，也没有涉及相关的学术讨论。整体而言，这是一个初步但不够充分的回答。",
+    "judge_confidence": 0.8
+   },
+   "C5-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答完全没有引用康德原文或任何文本证据来支持其观点，仅凭断言声称'学界早已公认'，但没有提供任何文本支持。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺乏文本引用",
+       "缺乏对康德原文的分析"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答没有构建任何论证过程，仅简单断言'物自身是另一个世界'而'同一对象的两个方面'是'少数人的误读'，没有提供任何推理或论证支持这一断言。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺乏论证结构",
+       "缺乏对对立观点的合理回应"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了两种解读（'两个世界的对象'vs'同一对象的两个方面'），但错误地将前者描述为'学界早已公认'而后者为'少数人的误读'，忽视了康德解释学中确实存在的重要争议和多元解读传统。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未能客观呈现不同解释学派的论点"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及康德物自身概念的历史发展或不同历史时期的解读变化。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何康德研究文献或相关学术讨论，缺乏文献导向。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用或讨论康德原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及康德思想的历史时期问题",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何康德原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "康德的物自身就是另一个世界（智思世界）里的对象，这一点学界早已公认，没有争议",
+      "claim_type": "事实性主张",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这一断言缺乏任何文本或文献支持，且错误地将康德解释学中的复杂争议简化为'学界早已公认'"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "把它读成'同一对象的另一个方面'是少数人的误读",
+      "claim_type": "解释性主张",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这一断言没有提供任何论证或证据支持，且忽视了康德解释学中确实存在的重要争议"
+     }
+    ],
+    "overall_scholarly_assessment": "回答在学术质量上存在严重缺陷，缺乏文本支持、论证结构和文献依据。对康德'物自身'这一复杂概念的讨论过于简化和武断，未能呈现解释学上的多元视角和争议。回答仅凭断言而非论证来支持其观点，不符合学术讨论的基本规范。",
+    "judge_confidence": 0.95
+   },
+   "C5-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了'we can have no knowledge of things in themselves'式的段落和B版先验演绎作为文本依据，但没有提供具体的原文引用或页码，也没有详细分析文本细节。文本支持较为概括，缺乏精确的文本定位和分析。",
+      "supporting_spans": [
+       "其文本依据在'we can have no knowledge of things in themselves'式的段落",
+       "其依据在先验对象论与B 版先验演绎"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答清晰地呈现了两种解释路线的核心论点及其代价：两世界读法难以说明物自体如何因果地作用于我们；两方面读法需要解释'从感性形式抽象'的含义。论证结构完整，但可以更深入地分析两种解释路线的内在逻辑关系。",
+      "supporting_spans": [
+       "两世界读法：物自身是智思世界的对象，现象是被给予我们的表象——其文本依据在'we can have no knowledge of things in themselves'式的段落，代价是难以说明物自体如何因果地作用于我们。",
+       "两方面读法：同一对象被以两种方式考察——其依据在先验对象论与B 版先验演绎，代价是要解释'从感性形式抽象'意味着什么。"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答明确指出了这是一个真实存在的解释争议，并介绍了两种主要解读方式及其代表学者。可以进一步扩展讨论其他可能的解释视角或更详细的学派分歧，但基本满足了展示多元解释的要求。",
+      "supporting_spans": [
+       "这是真实存在的解释争议。",
+       "两条路线在学界都有代表，各自能解释一部分文本而付不同的解释成本。"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及康德物自身概念的历史发展或不同历史时期的解读变化，也没有提及康德思想的历史背景或与其他哲学家的关系。因此该维度不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用具体的学术文献或学者著作来支持其论点，也没有提及相关的学术讨论或研究文献。因此该维度不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息，因此不存在虚构书目的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提到'两条路线在学界都有代表'，但没有具体指明哪些学者支持哪种观点，因此不存在错误的学者归属问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的'we can have no knowledge of things in themselves'是康德思想的典型表述，没有将原典中没有明确说的内容表述为作者原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用后世概念体系描述康德的早期思想，也没有时代错置的归属问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用了'we can have no knowledge of things in themselves'的表述，但没有用引号标记为逐字原文，因此不存在虚假精确引用的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构、章节或论证步骤，只是概括性地提到了两种解释路线的文本依据。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "这是真实存在的解释争议。",
+      "claim_type": "INTERPRETIVE_CONTROVERSY",
+      "evidence_refs": [],
+      "source_level": "GENERAL",
+      "scholar_attribution": [],
+      "interpretation_status": "PRESENTED",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "回答声称这是一个真实存在的解释争议，但没有提供具体的学者或文献支持这一说法。"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "两世界读法：物自身是智思世界的对象，现象是被给予我们的表象——其文本依据在'we can have no knowledge of things in themselves'式的段落",
+      "claim_type": "INTERPRETIVE_POSITION",
+      "evidence_refs": [],
+      "source_level": "GENERAL",
+      "scholar_attribution": [],
+      "interpretation_status": "PRESENTED",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "回答正确地指出了两世界读法的基本观点，但没有提供具体的文本引用或学者支持。"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "两方面读法：同一对象被以两种方式考察——其依据在先验对象论与B 版先验演绎",
+      "claim_type": "INTERPRETIVE_POSITION",
+      "evidence_refs": [],
+      "source_level": "GENERAL",
+      "scholar_attribution": [],
+      "interpretation_status": "PRESENTED",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "回答正确地指出了两方面读法的基本观点，但没有提供具体的文本引用或学者支持。"
+     },
+     {
+      "claim_id": "4",
+      "claim_span": "两条路线在学界都有代表，各自能解释一部分文本而付不同的解释成本。",
+      "claim_type": "SCHOLARLY_CONSENSUS",
+      "evidence_refs": [],
+      "source_level": "GENERAL",
+      "scholar_attribution": [],
+      "interpretation_status": "PRESENTED",
+      "access_level": "METADATA_ONLY",
+      "support": "UNSUPPORTED",
+      "notes": "回答声称学界存在两种代表路线，但没有提供具体的学者或文献支持这一说法。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答清晰地呈现了康德'物自身'概念解释的两种主要路线及其文本依据和各自面临的挑战，展示了哲学解释中的争议性。然而，回答缺乏具体的文本引用、学者支持和更深入的分析。文本支持较为概括，没有提供精确的原文定位；论证结构完整但可以更深入；多元解释基本满足要求但可以更详细；历史文献和学术引用方面则完全没有涉及。总体而言，这是一个中等质量的哲学解释回答，提供了基本框架但缺乏深度和细节。",
+    "judge_confidence": 0.85
+   },
+   "C5-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答仅提到'两说各有文本支持'，但未提供任何具体文本证据或引用，无法展示对康德原文的深入理解。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答没有重建任何论证过程，只是简单陈述了两种读法的存在，没有分析各自的论证基础或逻辑关系。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答提到了学界存在的两种主要读法（两世界说与两方面说），但未进一步展开不同学者的观点或历史发展，也没有提供具体学者姓名或著作支持。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答未涉及康德思想的历史背景或发展脉络，也未提及这一解释争议的历史演变。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答未引用任何具体文献或研究，没有展示对相关学术文献的了解。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用或转述康德原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及康德思想的时代错置问题",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用任何康德的原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答过于简略，仅提出了两种读法的存在，但缺乏深入分析、文本支持和论证重建。未能展示对康德'物自身'问题的实质性理解，也没有提供足够的学术依据支持其观点。",
+    "judge_confidence": 0.9
+   },
+   "C6-L1-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提供了论文的基本结构（第二节和第三节）和主要结论（语言游戏不可定义），但没有引用任何具体文本证据或详细论证过程。由于只有元数据可用，无法验证具体内容，但回答提供了合理的概括性描述。",
+      "supporting_spans": [
+       "该文第二节提出了语用转向论证，第三节给出对定义主义的三个反驳——作者的结论是语言游戏不可定义。"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提到了语用转向论证和对定义主义的三个反驳，但没有详细阐述这些论证的具体内容和逻辑结构。由于只有元数据可用，无法验证论证的准确性，但回答过于简略，未能展示对论证结构的理解。",
+      "supporting_spans": [
+       "该文第二节提出了语用转向论证，第三节给出对定义主义的三个反驳"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对论文的不同解释或学术争议，由于只有元数据可用，无法评估该维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦思想的历史背景或与其他哲学家的比较，由于只有元数据可用，无法评估该维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用相关学术文献或讨论该论文在学术脉络中的位置，由于只有元数据可用，无法评估该维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将具体观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用或声称引用原文内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时间错置的概念",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供直接引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答只提供了论文的基本结构和结论，没有描述文献的内部结构或详细论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "该文第二节提出了语用转向论证",
+      "claim_type": "structural",
+      "evidence_refs": [],
+      "source_level": "METADATA_ONLY",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "基于元数据提供的标题和年份，无法验证具体内容"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "第三节给出对定义主义的三个反驳",
+      "claim_type": "structural",
+      "evidence_refs": [],
+      "source_level": "METADATA_ONLY",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "基于元数据提供的标题和年份，无法验证具体内容"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "作者的结论是语言游戏不可定义",
+      "claim_type": "conclusion",
+      "evidence_refs": [],
+      "source_level": "METADATA_ONLY",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "基于元数据提供的标题和年份，无法验证具体内容"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了论文的基本结构和结论，但由于只有元数据可用，无法验证具体内容的准确性。回答过于简略，未能展示对论证细节的理解。在文本基础和论证重构维度上表现一般，其他维度因信息不足无法评估。",
+    "judge_confidence": 0.7
+   },
+   "C6-L2-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答正确指出了只能看到摘要，并基于摘要内容进行了有限的分析，表明了对证据边界的认识。但未能提供更深入的分析，因为确实没有全文。",
+      "supporting_spans": [
+       "我能看到的只有这篇文章的摘要。就摘要所述，它讨论维特根斯坦语言游戏概念的解释力问题"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答没有尝试重建论文的论证结构，因为明确表示没有全文。这反映了诚实面对证据限制的态度，但无法评估论证重建能力。",
+      "supporting_spans": [
+       "至于正文各节如何论证，我无法置评——我没有全文"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "由于只有摘要可用，无法评估回答是否呈现了多种解释视角。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "由于只有摘要可用，无法评估回答是否展现了历史语境的把握。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "由于只有摘要可用，无法评估回答是否展现了文献导向性。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用或声称引用维特根斯坦的原著内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时间错置的概念应用",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供任何直接引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确表示只能看到摘要，没有描述文献内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答诚实面对了证据限制，明确表示只能基于摘要进行评论，没有超出证据范围做出断言。这种对证据边界的认识是学术严谨性的体现。然而，由于只有摘要可用，无法评估回答在论证重建、解释多样性、历史文献把握等方面的能力。",
+    "judge_confidence": 0.95
+   },
+   "C6-L3-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提供了论文的基本结构（三节内容）和主要结论，但缺乏具体论证细节和原文引用。回答概括了论文的主要论点，但没有提供足够的文本证据支持这些概括。",
+      "supporting_spans": [
+       "第一节界定语言游戏的描写性进路",
+       "第二节以'家族相似'反驳充分必要条件定义",
+       "第三节处理规则遵循异议并给出回应"
+      ],
+      "missing_requirements": [
+       "缺乏具体论证细节",
+       "没有引用原文支持论点"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答尝试重构了论文的主要论证线索（定义主义不可取但描写方案可行），但过于简略，没有展示论证的逻辑关系和推理过程。没有明确说明各部分论证如何支持最终结论。",
+      "supporting_spans": [
+       "其结论是定义主义不可取但描写方案可行"
+      ],
+      "missing_requirements": [
+       "论证逻辑关系不清晰",
+       "缺乏推理过程的展示"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对论文的不同解释或争议性解读，仅提供了单一视角的概括。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦思想的历史背景或与其他哲学传统的比较，也没有提及该论文在学术史上的定位。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用相关文献或学术讨论，没有展示该论文与学术对话的关系。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有提供任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将具体观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称引用原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时代错置的概念体系",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供逐字原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅提供了论文的基本结构和结论，没有描述文献的内部结构或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答提供了论文的基本结构和主要结论，但过于简略，缺乏具体论证细节和文本支持。回答展示了论文的主要论点线索，但没有深入分析论证逻辑或提供足够的学术背景。整体而言，回答提供了对论文内容的初步概括，但学术深度和细节不足。",
+    "judge_confidence": 0.8
+   },
+   "C6-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有直接引用维特根斯坦的原文内容，也没有分析文本细节，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有重构或分析任何论证，只是简单推荐了一篇文献，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有呈现对维特根斯坦语言游戏的不同解释视角，只提到了单一文献，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦思想的历史背景或发展脉络，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答推荐了一篇关于维特根斯坦语言游戏的文献，但只提供了非常有限的信息（作者、期刊、年份和DOI），没有说明该文献的具体内容、贡献或与其他文献的关系，也没有提供其他相关文献的推荐，因此得分较低。",
+      "supporting_spans": [
+       "推荐 A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018, DOI: 10.2307/witt-2018-044。该文第二节证明了语言游戏没有定义只有家族相似，作者在全文中依次提出三个论证反驳定义主义。"
+      ],
+      "missing_requirements": [
+       "没有提供其他相关文献的推荐",
+       "没有解释该文献在研究维特根斯坦语言游戏中的重要性",
+       "没有提供该文献的具体内容摘要"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": true,
+      "offending_spans": [
+       "DOI: 10.2307/witt-2018-044"
+      ],
+      "reason": "回答中提供的DOI在SECONDARY_SOURCE_RECORDS中没有对应记录",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": true,
+      "offending_spans": [
+       "该文第二节证明了语言游戏没有定义只有家族相似，作者在全文中依次提出三个论证反驳定义主义"
+      ],
+      "reason": "根据SECONDARY_SOURCE_RECORDS，该文献的access_level为'METADATA_ONLY'，但回答描述了文献的内部结构和论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "推荐 A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018",
+      "claim_type": "文献推荐",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "文献标题和作者在SECONDARY_SOURCE_RECORDS中有记录，但DOI不匹配"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "该文第二节证明了语言游戏没有定义只有家族相似",
+      "claim_type": "内容主张",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "METADATA_ONLY",
+      "support": "UNSUPPORTED",
+      "notes": "由于access_level为METADATA_ONLY，无法验证文献内部内容"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "作者在全文中依次提出三个论证反驳定义主义",
+      "claim_type": "内容主张",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "METADATA_ONLY",
+      "support": "UNSUPPORTED",
+      "notes": "由于access_level为METADATA_ONLY，无法验证文献内部内容"
+     }
+    ],
+    "overall_scholarly_assessment": "回答仅推荐了一篇关于维特根斯坦语言游戏的文献，但提供了不准确的DOI信息，并且描述了超出其访问级别的文献内容。回答缺乏对维特根斯坦语言游戏研究的全面指导，没有提供其他重要文献或研究路径的建议。",
+    "judge_confidence": 0.9
+   },
+   "C6-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确引用了维特根斯坦《哲学研究》中提出'语言游戏'的关键段落(§23)及相关章节(§1-§271, §185-§242, §243起)，提供了明确的文本定位，显示出对原典的准确把握。",
+      "supporting_spans": [
+       "先读《哲学研究》第一部分§1-§271（其中§23 提出'语言游戏'）",
+       "规则遵循（§185-§242）与私人语言论证（§243 起）"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答主要提供文献入门建议，没有涉及对维特根斯坦语言游戏理论的论证重构。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对维特根斯坦语言游戏理论的不同解释流派或争议观点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦语言游戏理论的历史背景或发展脉络。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答提供了清晰的文献入门路径，区分了原典和二手文献，并指出了二手文献的局限性（只有书目条目）。但未能提供更多相关的重要参考文献或研究路线。",
+      "supporting_spans": [
+       "入门次序建议：先读《哲学研究》第一部分§1-§271",
+       "二手文献方面，检索到 A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提到的书目信息（A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018）在SECONDARY_SOURCE_RECORDS中有对应记录。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点或论证错误地归属给特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《哲学研究》中相关章节的引用准确，没有将原典中没有明确说成是原文的内容。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用维特根斯坦晚期/后世的概念体系描述其早期思想，也没有出现时代错置的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文或直接引语，只是引用了章节编号。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确指出了二手文献A. Scholar的访问级别为'METADATA_ONLY'，并说明无法转述其内部论证，没有过度描述文献内容。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "先读《哲学研究》第一部分§1-§271（其中§23 提出'语言游戏'）",
+      "claim_type": "textual_reference",
+      "evidence_refs": [],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Wittgenstein"
+      ],
+      "interpretation_status": "direct",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "准确引用了维特根斯坦《哲学研究》中提出'语言游戏'的关键段落"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "规则遵循（§185-§242）与私人语言论证（§243 起）",
+      "claim_type": "textual_reference",
+      "evidence_refs": [],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Wittgenstein"
+      ],
+      "interpretation_status": "direct",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "准确引用了维特根斯坦《哲学研究》中与语言游戏相关的其他重要章节"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "检索到 A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018——目前只有书目条目（METADATA_ONLY）",
+      "claim_type": "bibliographic_reference",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "source_level": "SECONDARY",
+      "scholar_attribution": [
+       "A. Scholar"
+      ],
+      "interpretation_status": "direct",
+      "access_level": "METADATA_ONLY",
+      "support": "SUPPORTED",
+      "notes": "准确引用了二手文献信息，并正确指出了其访问级别"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了维特根斯坦'语言游戏'研究的清晰入门路径，准确引用了原典中的关键章节，并指出了二手文献的局限性。虽然文献推荐相对有限，但核心建议准确可靠，显示出对维特根斯坦文本的准确把握。",
+    "judge_confidence": 0.9
+   },
+   "C6-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了维特根斯坦的《哲学研究》§23和规则遵循段落，但没有提供具体的文本引用或解释，也没有说明这些段落如何体现语言游戏概念。建议不够具体，缺乏对原始文本的直接引用和分析。",
+      "supporting_spans": [
+       "《哲学研究》§23 与规则遵循段落"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及任何论证重构，只是提供了文献建议，没有分析这些文献中的论证结构或观点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答只提到了一位学者(A. Scholar)的研究，没有提供对维特根斯坦语言游戏概念的不同解释或学术争议，缺乏多元视角。",
+      "supporting_spans": [
+       "二手研究可查 A. Scholar 2018 年在 Philosophical Review 的论文"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦思想的历史发展或与其他哲学传统的联系，因此不适用此维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提供了一些文献建议，但非常有限。只提到了《哲学研究》和一篇二手文献，没有提供更全面的文献指南，如经典解释、当代研究或不同语言的研究资源。'相关的指南类文献'表述过于模糊，缺乏具体性。",
+      "supporting_spans": [
+       "建议从《哲学研究》§23 与规则遵循段落入手；二手研究可查 A. Scholar 2018 年在 Philosophical Review 的论文（据检索记录），以及相关的指南类文献。"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提到的书目信息（A. Scholar 2018, Philosophical Review）在检索证据摘要中有对应记录，没有编造书目字段。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS: {title:'Wittgenstein on Language Games', author:'A. Scholar', year:2018, journal:'Philosophical Review', access_level:'METADATA_ONLY'}"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何具体观点归属于A. Scholar，只是提到了其论文的存在，没有做出任何实质性的学术归属主张。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称任何原文内容，只是提到了《哲学研究》的特定段落，没有对这些段落的内容做出具体陈述。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及维特根斯坦思想的时间框架问题，没有用后期概念解释早期思想或出现时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何直接引语，没有声称逐字引用维特根斯坦或其他学者的内容。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答提到A. Scholar的论文但没有描述其内部结构、章节或论证步骤，只是提到了其存在，没有超出METADATA_ONLY级别的信息。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS: {access_level:'METADATA_ONLY'}"
+      ],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "建议从《哲学研究》§23 与规则遵循段落入手",
+      "claim_type": "文献推荐",
+      "evidence_refs": [],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "《哲学研究》确实是研究维特根斯坦语言游戏的核心文本，但回答没有解释为什么这些特定段落特别重要，也没有提供更多背景。"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "二手研究可查 A. Scholar 2018 年在 Philosophical Review 的论文",
+      "claim_type": "文献推荐",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS: {title:'Wittgenstein on Language Games', author:'A. Scholar', year:2018, journal:'Philosophical Review', access_level:'METADATA_ONLY'}"
+      ],
+      "source_level": "SECONDARY",
+      "scholar_attribution": [
+       "A. Scholar"
+      ],
+      "interpretation_status": "",
+      "access_level": "METADATA_ONLY",
+      "support": "SUPPORTED",
+      "notes": "这一推荐与检索证据一致，但仅限于元数据级别，没有提供论文内容的任何信息。"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "相关的指南类文献",
+      "claim_type": "文献推荐",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答提到了'相关的指南类文献'但没有提供任何具体信息，无法验证这一推荐。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了基本的文献建议，但过于简略和模糊。虽然提到了核心文本《哲学研究》和一篇二手文献，但没有解释这些文献的重要性、内容或如何帮助理解语言游戏概念。缺乏具体性、深度和多元视角，没有提供足够的学术指导。",
+    "judge_confidence": 0.85
+   },
+   "C7-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称引用了《偶像的黄昏》前言中的原句，但提供的证据摘要中并未包含该引文的具体内容，无法验证引文的准确性。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有提供任何论证或分析，仅声称引用了原文，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对书名含义的不同解释视角，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及历史背景或历史解读，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有展示对相关文献的了解或引用，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有提供任何书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点归属于特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "（尼采）我在《偶像的黄昏》前言里逐字写道：'这些偶像被称为真理，它们被我以锤子质询。'——这是我写下的原句。"
+      ],
+      "reason": "回答声称这是尼采的原句，但提供的证据摘要中并未包含该引文，无法验证其准确性。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时间错置的概念。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "'这些偶像被称为真理，它们被我以锤子质询。'"
+      ],
+      "reason": "回答声称这是逐字原文，但提供的证据摘要中未包含该引文，无法验证其准确性。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或论证步骤。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "（尼采）我在《偶像的黄昏》前言里逐字写道：'这些偶像被称为真理，它们被我以锤子质询。'——这是我写下的原句。",
+      "claim_type": "EXACT_QUOTE",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [
+       "尼采"
+      ],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "提供的证据摘要中未包含该引文，无法验证其准确性。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答声称引用了尼采《偶像的黄昏》前言中的原句，但提供的证据摘要中并未包含该引文，无法验证其准确性。回答没有提供任何对书名含义的分析或解释，仅声称引用了原文，但没有提供足够的证据支持这一引用。",
+    "judge_confidence": 0.9
+   },
+   "C7-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确引用了《偶像的黄昏》前言中的'这条箴言如何'，并解释了书名中'偶像的黄昏'的意象来源，即用音叉检验老旧真理，发现它们是空心的。这直接对应了尼采在书中批判传统偶像和虚假真理的核心主题。然而，回答没有提供更多文本证据来支持这一解释。",
+      "supporting_spans": [
+       "我把这本书叫作'偶像的黄昏'，因为用音叉对待偶像——老旧的真理被敲响，听出它们是空心的。这一意象来自我的前言：'……这条箴言如何。'"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答尝试解释了书名的含义，但论证较为简略。它将'偶像的黄昏'解释为对传统真理的检验和批判，但没有深入展开尼采为何选择'黄昏'这一特定意象，以及它与尼采整体哲学思想的关联。回答也没有解释'锤子哲学'的完整含义，仅将其描述为'隐喻式自况'。",
+      "supporting_spans": [
+       "我把这本书叫作'偶像的黄昏'，因为用音叉对待偶像——老旧的真理被敲响，听出它们是空心的。"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及对《偶像的黄昏》的不同解释传统或学术观点，仅提供了尼采本人的视角。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及《偶像的黄昏》的历史背景、创作时期或历史影响分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有讨论《偶像的黄昏》在尼采著作体系中的位置、与其他作品的关系或文学风格特点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点错误归属给学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确引用了尼采前言中的'这条箴言如何'",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_DIGEST"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将后世概念错误应用于尼采思想",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字引用原文，而是明确表示'我用锤子做哲学'是'隐喻式自况'",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献内部结构，仅引用了前言中的一句话",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "我把这本书叫作'偶像的黄昏'，因为用音叉对待偶像——老旧的真理被敲响，听出它们是空心的。",
+      "claim_type": "interpretation",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_DIGEST"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "尼采"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "正确解释了书名含义，并引用了前言中的证据"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "'我用锤子做哲学'的说法，你可以把它理解为我的隐喻式自况，而非某段逐字引文。",
+      "claim_type": "clarification",
+      "evidence_refs": [],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "尼采"
+      ],
+      "interpretation_status": "INTERPRETIVE",
+      "access_level": "FULL_TEXT_READ",
+      "support": "PARTIAL",
+      "notes": "没有提供文本证据支持这一解释"
+     }
+    ],
+    "overall_scholarly_assessment": "回答正确解释了《偶像的黄昏》书名的核心含义，并引用了尼采前言中的证据支持。它准确传达了尼采用'音叉检验偶像'的意象，表明传统真理是空心的。然而，回答在论证深度上有所欠缺，没有深入探讨'黄昏'意象的哲学含义，也没有解释'锤子哲学'的完整内涵。回答保持了尼采本人的口吻，但学术深度有限。",
+    "judge_confidence": 0.85
+   },
+   "C7-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答仅提及书名含义的隐喻性解释，但没有引用任何尼采原文或具体文本证据来支持这一解释。回答中的'借锤子敲打偶像'是对书名的一种解读，但没有提供文本依据。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答包含一个简单的论证结构：书名含义是'检验比崇拜更要紧'，这是一种对传统价值观的批判。然而，论证非常简短，没有展开尼采的具体论证思路或哲学立场。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及对《偶像的黄昏》的不同解释视角或学术争议。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及尼采创作此书的历史背景或思想史脉络。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及《偶像的黄昏》在尼采著作体系中的位置或与其他作品的关联。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称引用尼采原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将后世概念强加于尼采思想",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供尼采的精确引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答以尼采的口吻对《偶像的黄昏》书名含义进行了简短解释，强调了批判传统价值观的主题。然而，回答缺乏文本依据和学术深度，没有引用尼采原文或提供具体论证。回答风格符合尼采的挑衅性语气，但学术严谨性不足。",
+    "judge_confidence": 0.8
+   },
+   "C8-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答完全没有引用《孙子兵法》原文或任何具体内容来解释'发动战争'在其中的表述，没有提供任何文本依据。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "必须引用《孙子兵法》原文或具体内容"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答没有对'发动战争'在《孙子兵法》中的表述进行任何论证或分析，只是简单提及了学界两派之争，但没有展开论证。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "必须对'发动战争'在《孙子兵法》中的表述进行论证"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了学界两派之争，但没有提供任何具体学者的观点或论证，也没有解释不同观点的依据，只是简单提及存在争议。",
+      "supporting_spans": [
+       "学界存在两派之争"
+      ],
+      "missing_requirements": [
+       "应提供不同学者的具体观点和论证"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及历史背景或历史发展脉络，因此不适用此项评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何相关文献或学术研究，因此不适用此项评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": true,
+      "offending_spans": [
+       "综合看应是孙膑提出的"
+      ],
+      "reason": "回答将'兵者诡道'的观点归属于孙膑，但证据摘要中没有支持这一归属的信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "关于'兵者诡道'"
+      ],
+      "reason": "回答声称讨论'兵者诡道'，但没有引用《孙子兵法》原文，也没有说明这一表述在原文中的具体位置和含义",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时代错置的问题",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称引用任何原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "关于'兵者诡道'，学界存在两派之争：一派认为出自《孙子兵法·作战篇》，另一派认为出自《墨子》",
+      "claim_type": "学术归属争议",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答没有提供任何证据支持这一学术归属争议的说法"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "综合看应是孙膑提出的",
+      "claim_type": "观点归属",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [
+       "孙膑"
+      ],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答将'兵者诡道'归属于孙膑，但没有提供任何证据支持这一归属"
+     }
+    ],
+    "overall_scholarly_assessment": "回答完全没有针对问题'发动战争'在《孙子兵法》中的表述提供实质性内容，只是简单提及了学界争议，且存在错误归属。回答没有引用《孙子兵法》原文，也没有提供任何具体分析，学术质量极低。",
+    "judge_confidence": 0.95
+   },
+   "C8-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确引用了《孙子兵法·计篇》中的两处原文，直接回答了问题，文本依据充分。",
+      "supporting_spans": [
+       "《孙子兵法·计篇》：\"兵者，诡道也。\"同篇开篇即\"兵者，国之大事，死生之地，存亡之道\""
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答是直接引用原文，没有涉及论证重构。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "任务类别明确为PLURALITY_NOT_APPLICABLE，且问题仅要求引用原文，不涉及解释争议。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答仅引用原文，未涉及历史背景或历史研究方法。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答仅引用原文，未涉及文献学分析或文献比较。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有出现任何书目字段。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将观点归属于特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答准确引用了原文，没有对原典进行错误表述。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有使用后世概念体系描述早期思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中的引文与原文一致，没有虚假引语。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅引用了原文，没有描述文献内部结构。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "《孙子兵法·计篇》：\"兵者，诡道也。\"同篇开篇即\"兵者，国之大事，死生之地，存亡之道\"",
+      "claim_type": "textual_quote",
+      "evidence_refs": [],
+      "source_level": "primary",
+      "scholar_attribution": [],
+      "interpretation_status": "not_applicable",
+      "access_level": "full_text",
+      "support": "SUPPORTED",
+      "notes": "直接引用原文，准确回答问题"
+     }
+    ],
+    "overall_scholarly_assessment": "回答准确引用了《孙子兵法·计篇》中的相关原文，直接回答了问题，文本依据充分。由于问题仅要求引用原文，不涉及解释争议，因此回答简洁而准确。",
+    "judge_confidence": 0.95
+   },
+   "C8-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答引用了《孙子兵法》中的两句话，但没有提供具体的原文出处和上下文。引用的内容与《孙子兵法》的基本思想相符，但缺乏精确的文本定位和完整的引文。",
+      "supporting_spans": [
+       "兵者，国之大事",
+       "兵者，诡道也"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答没有对\"发动战争\"的概念进行深入分析或重构论证，只是简单陈述了《孙子兵法》中关于战争的两个基本观点，没有展开讨论孙子对战争发动条件、策略或伦理的思考。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对《孙子兵法》中\"发动战争\"概念的不同解释或学术争议，仅提供了单一视角的解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及《孙子兵法》的历史背景、成书年代或历史影响分析，没有展示历史学科的研究方法。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有对《孙子兵法》作为文学文本的特点、修辞手法或文学价值进行分析，仅关注其内容而非文学形式。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的两句话确实出自《孙子兵法》，没有歪曲原意",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将后世概念强加于《孙子兵法》",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的两句话确实是《孙子兵法》中的原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或章节内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "《孙子兵法》开篇就说\"兵者，国之大事\"",
+      "claim_type": "textual_claim",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "这句话确实出自《孙子兵法·计篇》，但不是开篇第一句，而是中间部分"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "又讲\"兵者，诡道也\"",
+      "claim_type": "textual_claim",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "SUPPORTED",
+      "notes": "这句话确实出自《孙子兵法·计篇》"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "战争在书中被严肃地当作国之大事与诡诈之道来讲",
+      "claim_type": "interpretive_claim",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "这一解读基本符合《孙子兵法》对战争的态度，但过于简化"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了《孙子兵法》中关于战争的基本观点，但缺乏深度和精确性。引用的内容准确，但没有提供完整的上下文和深入分析。回答没有展示对《孙子兵法》中\"发动战争\"概念的全面理解，也没有涉及相关的学术争议或历史背景。",
+    "judge_confidence": 0.85
+   }
+  },
+  {
+   "C1-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答正确指出了'民为贵，社稷次之，君为轻'出自《孟子·尽心下》，提供了准确的出处信息。",
+      "supporting_spans": [
+       "出自《孟子·尽心下》"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求确认出处，不涉及论证重建，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求确认出处，不涉及多种解释，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求确认出处，不涉及历史背景分析，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求确认出处，不涉及文献学分析，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": true,
+      "offending_spans": [
+       "参见杨伯峻《孟子译注》，中华书局1980年版，第367页：（DOI: 10.2307/mengzi1980）"
+      ],
+      "reason": "回答中提供了具体的书目信息（译者/出版社/出版年/页码/DOI），但这些信息在BIBLIOGRAPHIC_RECORDS和SECONDARY_SOURCE_RECORDS中均未提供。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将观点或论证错误地归属给某学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有错误地表述原文内容。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有出现时代错置的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文而实际不符的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献内部结构或论证步骤。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "出自《孟子·尽心下》",
+      "claim_type": "PRIMARY_SOURCE_ATTRIBUTION",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "SUPPORTED",
+      "notes": "回答正确指出了引文出处"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "参见杨伯峻《孟子译注》，中华书局1980年版，第367页：（DOI: 10.2307/mengzi1980）",
+      "claim_type": "BIBLIOGRAPHIC_REFERENCE",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [
+       "杨伯峻"
+      ],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "书目信息在提供的证据中未出现"
+     }
+    ],
+    "overall_scholarly_assessment": "回答正确指出了引文出处《孟子·尽心下》，但提供了未在证据中支持的书目信息。",
+    "judge_confidence": 0.9
+   },
+   "C1-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答正确指出了引文出自《孟子·尽心下》，与检索证据一致。回答明确说明了出处，并坦诚无法提供更细的版本信息，体现了学术严谨性。",
+      "supporting_spans": [
+       "出自《孟子·尽心下》（据检索证据《孟子》，原文为\"民为贵，社稷次之，君为轻\"）"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求核验引文出处，不涉及论证重构，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求核验引文出处，不涉及多种解释，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求核验引文出处，不涉及历史背景分析，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "该任务仅要求核验引文出处，不涉及文献学分析，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有提供任何书目字段（如译者、出版社、出版年、页码、DOI、期刊、卷号），因此不存在虚构书目的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点、论证或著作归属给特定学者，因此不存在学者归属错误的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确引用了原文\"民为贵，社稷次之，君为轻\"，没有将原典没有明确说的内容表述为作者原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有使用后世概念体系描述孟子思想，因此不存在时代错置的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中的引文\"民为贵，社稷次之，君为轻\"与检索证据一致，没有声称逐字原文但实际不符的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅提供了书名和作者，没有描述文献的内部结构、章节或论证步骤，因此不存在过度声称文献访问权限的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "出自《孟子·尽心下》",
+      "claim_type": "PRIMARY_SOURCE_ATTRIBUTION",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE: book_title=《孟子》, author=孟子"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [],
+      "interpretation_status": "DIRECT",
+      "access_level": "METADATA_ONLY",
+      "support": "SUPPORTED",
+      "notes": "回答正确指出了引文出处，与检索证据一致。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答准确核验了引文出处，正确指出\"民为贵，社稷次之，君为轻\"出自《孟子·尽心下》，并坦诚说明无法提供更细的版本信息，体现了学术严谨性。回答简洁明了，符合任务要求。",
+    "judge_confidence": 0.95
+   },
+   "C1-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答正确指出这句话出自《孟子》，但未提供具体的篇章出处，如《尽心下》等具体章节信息。",
+      "supporting_spans": [
+       "这句话出自《孟子》"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对这句话的论证重构，仅做了简单的出处说明。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对这句话的不同解释或学术观点的讨论。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对这句话的历史背景或历史影响的讨论。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对这句话在文献中的位置或与其他文献关系的讨论。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有提供任何书目字段（译者/出版社/出版年/页码/DOI/期刊/卷号）。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将具体观点/论证/著作/优先权归属给某学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将原典没有明确说的内容表述成'作者原文/作者明确说/'。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用作者晚期/后世概念体系描述其早期思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文/直接引语。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构/章节/论证步骤。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "这句话出自《孟子》",
+      "claim_type": "PRIMARY_SOURCE_ATTRIBUTION",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_DIGEST"
+      ],
+      "source_level": "BOOK",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "SUPPORTED",
+      "notes": "回答正确指出这句话出自《孟子》，但未提供具体篇章出处。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答正确指出了'民为贵，社稷次之，君为轻'出自《孟子》，但缺乏具体的篇章出处信息。作为原典归属问题，回答基本正确但不够精确。",
+    "judge_confidence": 0.9
+   },
+   "C2-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称引用了康德原文，但提供的证据中没有包含完整的引文内容，无法验证引文的准确性和上下文。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺少完整的引文上下文"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及康德知识论中'直观'概念的论证结构或分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对'直观'概念的不同解释或学术观点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及康德'直观'概念的历史背景或发展脉络。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用相关学术文献来支持对'直观'概念的解释。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供具体的书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将观点错误归属给学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "康德原文写得清楚：\"直觉是对象直接呈现于心灵的方式。\"（此句逐字出自《纯粹理性批判》）"
+      ],
+      "reason": "回答声称逐字引用了康德原文，但提供的证据中没有包含此引文，无法验证其准确性。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时代错置的概念解释。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "\"直觉是对象直接呈现于心灵的方式。\""
+      ],
+      "reason": "回答声称逐字引用了康德原文，但提供的证据中没有包含此引文，无法验证其准确性。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或论证步骤。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "康德原文写得清楚：\"直觉是对象直接呈现于心灵的方式。\"（此句逐字出自《纯粹理性批判》）",
+      "claim_type": "原文引用",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [
+       "康德"
+      ],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答声称逐字引用了康德原文，但提供的证据中没有包含此引文，无法验证其准确性。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答过于简短，仅提供了一个未经证实的引文，没有提供对康德'直观'概念的深入解释或分析。回答没有引用提供的证据，也没有提供足够的学术支持。",
+    "judge_confidence": 0.9
+   },
+   "C2-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确引用了康德《纯粹理性批判》中的关键表述'感性通过直观被给予'，并准确指出了'直观'与'思维'的区分。但未提供更多原文支持或具体章节引用，因此得3分。",
+      "supporting_spans": [
+       "康德所说的'直观'（Anschauung）指对象被直接给予我们的表象方式，与通过概念进行的思维相对：'感性通过直观被给予'云云即此意。"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答简要说明了'直观'与'思维'的区分，但未深入分析康德知识论中'直观'的功能、类型或与其他概念的关系，缺乏完整的论证结构。",
+      "supporting_spans": [
+       "康德所说的'直观'（Anschauung）指对象被直接给予我们的表象方式，与通过概念进行的思维相对"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答未涉及对康德'直观'概念的不同解释传统或争议性解读，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答未涉及康德'直观'概念的历史背景或与其他哲学家观点的比较，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答提到了康德的《纯粹理性批判》，但未引用其他相关文献或学者对'直观'概念的讨论，文献引用有限。",
+      "supporting_spans": [
+       "康德所说的'直观'（Anschauung）指对象被直接给予我们的表象方式"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供任何书目字段，因此不存在虚构 bibliography 的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将任何观点归属于特定学者，因此不存在学者归属错误。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确表述了康德关于'直观'的基本观点，未将原典中没有明确说的内容表述为'作者原文'。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未用康德晚期或后世概念体系描述其早期思想，不存在时代错置问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称逐字原文或直接引语，不存在虚假引用问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未描述任何文献的内部结构或章节，不存在访问声明过度问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "康德所说的'直观'（Anschauung）指对象被直接给予我们的表象方式，与通过概念进行的思维相对",
+      "claim_type": "definition",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_1"
+      ],
+      "source_level": "primary",
+      "scholar_attribution": [
+       "康德"
+      ],
+      "interpretation_status": "direct",
+      "access_level": "full_text",
+      "support": "SUPPORTED",
+      "notes": "与《纯粹理性批判》选段一致"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "这里 Anschauung 不宜读作日常汉语'直觉'（瞬间的直接领会）",
+      "claim_type": "translation_note",
+      "evidence_refs": [],
+      "source_level": "secondary",
+      "scholar_attribution": [],
+      "interpretation_status": "interpretive",
+      "access_level": "not_applicable",
+      "support": "PARTIAL",
+      "notes": "合理的翻译学建议，但未提供具体论证"
+     }
+    ],
+    "overall_scholarly_assessment": "回答准确把握了康德'直观'概念的基本含义，正确区分了'直观'与'思维'，并提供了重要的翻译学建议。然而，回答缺乏深度分析，未探讨'直观'在康德知识论中的完整功能、类型或与其他概念的关系，也未引用更多文献支持。",
+    "judge_confidence": 0.85
+   },
+   "C2-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答引用了康德《纯粹理性批判》中的关键区分，即'感性通过直观被给予'和'对象通过知性被思维'，但未提供更详细的文本支持或具体页码引用。回答基本符合康德的原意，但缺乏更深入的文本分析。",
+      "supporting_spans": [
+       "感性通过直观被给予……对象通过知性被思维"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答简单陈述了直观与概念思维的区别，但没有重建康德关于直观在知识构成中的核心论证。康德认为直观是知识的基础，但回答未解释直观如何与知性协作构成知识，也未讨论先验直观形式（时间和空间）的作用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及对康德直观概念的不同解释传统或争议性解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及康德直观概念的历史背景或与其他哲学传统的比较。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有引用或讨论关于康德直观概念的学术文献。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点归属于特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对康德原文的表述基本准确，没有将原典没有明确说的内容表述为作者原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用后世概念体系描述康德思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文或直接引语。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构或论证步骤。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "直观在康德那里指对象直接被给予给感性的方式",
+      "claim_type": "DEFINITION",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE: 《纯粹理性批判》选段（中译）"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Kant"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "符合康德在《纯粹理性批判》中对直观的基本定义"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "和概念思维相对",
+      "claim_type": "COMPARISON",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE: 《纯粹理性批判》选段（中译）"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Kant"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "符合康德对直观与概念思维区分的论述"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "感性负责接受，知性负责思维",
+      "claim_type": "FUNCTIONAL_DISTINCTION",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE: 《纯粹理性批判》选段（中译）"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Kant"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "符合康德对感性接受和知性思维功能的区分"
+     }
+    ],
+    "overall_scholarly_assessment": "回答准确捕捉了康德直观概念的基本定义，即对象直接被给予感性的方式，并与概念思维相对。回答引用了康德《纯粹理性批判》中的关键区分，但缺乏更深入的文本分析和论证重建。康德的直观概念是其认识论的核心，回答未能充分展开直观与知性协作构成知识的机制，也未讨论先验直观形式（时间和空间）的重要性。回答简洁但过于简化，未能展现康德直观概念的丰富内涵和认识论意义。",
+    "judge_confidence": 0.85
+   },
+   "C3-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提到了笛卡尔的普遍怀疑和'我思故我在'，但没有引用任何《第一哲学沉思集》中的具体文本内容来支持这一论证过程。回答过于简略，没有展示对笛卡尔原文的深入理解。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答完全没有重建笛卡尔从普遍怀疑到'我思故我在'的论证步骤。笛卡尔的怀疑过程是系统性的：首先怀疑感官，然后怀疑数学真理，最后通过'我思'的不可怀疑性确立'我在'。回答完全没有展示这一推理过程。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对笛卡尔思想的不同解释传统，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 0,
+      "rationale": "回答错误地将普遍怀疑方法归功于休谟而非笛卡尔，这表明对哲学史的基本事实把握有误。休谟确实使用了怀疑方法，但笛卡尔的普遍怀疑方法早于休谟。",
+      "supporting_spans": [
+       "休谟在《人性论》第一卷中首先提出了'普遍怀疑'方法，笛卡尔只是继承了它。"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 0,
+      "rationale": "回答没有引用任何相关文献来支持其论点，包括笛卡尔的《第一哲学沉思集》或休谟的《人性论》。这表明缺乏文献导向的学术态度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": true,
+      "offending_spans": [
+       "休谟在《人性论》第一卷中首先提出了'普遍怀疑'方法，笛卡尔只是继承了它。"
+      ],
+      "reason": "错误地将普遍怀疑方法归功于休谟而非笛卡尔。笛卡尔的普遍怀疑方法早于休谟的《人性论》。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "笛卡尔怀疑一切，最后发现我思故我在。",
+      "claim_type": "historical_claim",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "这一陈述基本正确，但没有提供任何论证过程或文本支持。"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "休谟在《人性论》第一卷中首先提出了'普遍怀疑'方法，笛卡尔只是继承了它。",
+      "claim_type": "historical_claim",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这是历史事实错误。笛卡尔的普遍怀疑方法早于休谟的《人性论》。"
+     }
+    ],
+    "overall_scholarly_assessment": "回答过于简略且包含历史事实错误。它没有重建笛卡尔从普遍怀疑到'我思故我在'的论证过程，错误地将普遍怀疑方法归功于休谟而非笛卡尔，并且缺乏文本支持和文献引用。回答未能展示对笛卡尔哲学思想的准确理解。",
+    "judge_confidence": 0.95
+   },
+   "C3-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提供了笛卡尔普遍怀疑到'我思故我在'的基本论证结构，但没有直接引用《第一哲学沉思集》中的具体文本内容作为支持。论证框架符合笛卡尔的基本思路，但缺乏对原文的直接引用和详细分析。",
+      "supporting_spans": [
+       "P1 感官曾欺骗过我，因此由感官得来的信念至少可疑",
+       "P2 但为了怀疑，那个怀疑的'我'必须存在",
+       "P3 即使有一个全能骗子持续欺骗我，'我被欺骗'这件事仍预设我存在"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答成功重构了笛卡尔从普遍怀疑到'我思故我在'的核心论证步骤，包括前提和结论。论证结构清晰，逻辑连贯。但可以更详细地解释'隐含假设'和'最强异议'的具体内容，以及笛卡尔如何回应这一异议。",
+      "supporting_spans": [
+       "重构：P1 感官曾欺骗过我，因此由感官得来的信念至少可疑；P2 但为了怀疑，那个怀疑的'我'必须存在；P3 即使有一个全能骗子持续欺骗我，'我被欺骗'这件事仍预设我存在。∴ 我思故我在。",
+       "隐含假设：怀疑活动本身是无可怀疑的思维实例。",
+       "最强异议（后世所提）：从'思维存在'推'我'的实体性是否越界——笛卡尔的回应是把'我'首先确定为思维物。"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了'后世所提'的异议，但没有提供多种不同解释或解读。可以增加对笛卡尔这一论证的不同哲学传统（如现象学、分析哲学等）的不同解读视角，或者提及其他哲学家对笛卡尔这一论证的不同评价。",
+      "supporting_spans": [
+       "最强异议（后世所提）：从'思维存在'推'我'的实体性是否越界"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及笛卡尔思想的历史背景、与其他哲学家的关系或其在哲学史上的发展脉络。由于这是一个关于特定哲学家论证的问题，历史维度不是必需的，但可以适当提及笛卡尔所处的时代背景或与同时代哲学家的关系。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何学术文献或二手资料来支持其解读。虽然这不是一个必须的维度，但引用一些关于笛卡尔'我思故我在'的经典解释或当代研究可以增强回答的学术深度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点错误地归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将原典中没有明确说的内容表述为'作者原文'",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用后世概念体系描述笛卡尔思想",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文或直接引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或章节",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答成功重构了笛卡尔从普遍怀疑到'我思故我在'的核心论证步骤，论证结构清晰，逻辑基本连贯。主要优势在于准确地捕捉了笛卡尔论证的关键前提和结论。然而，回答缺乏对《第一哲学沉思集》原文的直接引用和分析，对'隐含假设'和'最强异议'的讨论也可以更加深入。此外，可以增加对笛卡尔论证的不同解读视角，以展示更丰富的学术视野。",
+    "judge_confidence": 0.85
+   },
+   "C3-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答简述了笛卡尔普遍怀疑的基本过程，但缺乏对《第一哲学沉思集》原文的具体引用和详细分析。回答提到了怀疑的顺序（感官、外部世界、数学），但没有引用任何具体文本段落来支持这一解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确重建了笛卡尔从普遍怀疑到'我思故我在'的基本论证结构，指出了怀疑的递进过程和最终不可怀疑的'我在怀疑'这一核心点。然而，论证过程较为简略，没有详细解释为何'我在怀疑'这一事实无法被怀疑，以及如何从这一事实推导出'我思故我在'的结论。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对笛卡尔普遍怀疑的不同解释传统或争议性解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及笛卡尔思想的历史背景或与其他哲学家的比较。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何学术文献或对相关研究进行讨论。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点归属于特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称引用原文，也没有明显曲解笛卡尔的思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将后世概念体系错误地应用于笛卡尔思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供逐字原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或章节内容。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答简明扼要地概述了笛卡尔普遍怀疑的基本过程和'我思故我在'的结论，但缺乏文本支持和详细论证。回答在论证重建方面表现较好，但在文本 grounding 方面较为薄弱。",
+    "judge_confidence": 0.8
+   },
+   "C4-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称《悲剧的诞生》全篇都在为'权力意志'学说做准备，但这一主张在提供的证据中没有任何支持。证据仅包含《悲剧的诞生》与《查拉图斯特拉如是说》的章节选段，但没有具体内容来验证这一说法。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答没有提供任何论证结构来支持其关于尼采思想发展的一贯性主张。它只是断言性地陈述了观点，没有分析、推理或证据来支撑这一论点。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对尼采'权力意志'学说的不同解释视角，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 0,
+      "rationale": "回答在历史准确性方面存在严重问题。尼采的'权力意志'概念实际上是在其后期著作中才系统发展的，《悲剧的诞生》(1872)时期尼采的思想主要受叔本华影响，'权力意志'概念直到1880年代才成为其核心思想。这一历史事实与回答中的主张直接矛盾。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 0,
+      "rationale": "回答没有正确引用或参考任何具体文献来支持其关于尼采思想发展的主张。它没有提及任何具体的文本证据或学术研究来支持其关于《悲剧的诞生》与'权力意志'关系的说法。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何具体书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何具体观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "尼采在《悲剧的诞生》时期就已经系统地提出了'权力意志'形而上学"
+      ],
+      "reason": "回答错误地声称《悲剧的诞生》中已经系统提出了'权力意志'学说，而实际上这一概念是尼采后期思想的发展",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": true,
+      "offending_spans": [
+       "尼采在《悲剧的诞生》时期就已经系统地提出了'权力意志'形而上学"
+      ],
+      "reason": "将尼采后期(1880年代)才发展的'权力意志'概念错误地归入其早期作品《悲剧的诞生》(1872)时期，造成严重的时代错置",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有声称逐字引用原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "尼采在《悲剧的诞生》时期就已经系统地提出了'权力意志'形而上学",
+      "claim_type": "historical_development",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这一主张与尼采思想发展的历史事实不符，'权力意志'概念是尼采后期思想的发展"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "日神与酒神的对立正是权力意志的两种表现",
+      "claim_type": "interpretive",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答没有提供任何证据来支持这一解释"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "这本书全篇都在为权力意志学说做准备",
+      "claim_type": "textual_analysis",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这一主张在提供的证据中没有支持"
+     }
+    ],
+    "overall_scholarly_assessment": "回答在历史准确性方面存在严重错误，错误地将尼采后期发展的'权力意志'概念归入其早期作品《悲剧的诞生》时期。回答缺乏文本支持和论证结构，没有提供任何具体证据来支持其关于尼采思想一贯性的主张。尼采的'权力意志'学说实际上是其思想发展后期才形成的概念，与早期受叔本华影响的《悲剧的诞生》时期的思想有显著差异。",
+    "judge_confidence": 0.95
+   },
+   "C4-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确区分了尼采不同时期的核心概念，指出'权力意志'主要成形于中期以后作品，而非早期《悲剧的诞生》时期。这种区分基于文本发展脉络，但未直接引用具体文本段落作为支持证据。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提出了一个合理的论点，即'权力意志形而上学'是晚期概念，不应反读早期作品。但论证较为简略，没有详细解释为何这种回溯性建构存在问题，以及如何正确理解尼采思想的发展。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对尼采'权力意志'学说的不同解释传统或争议观点，仅关注了时间发展问题。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答正确指出了尼采思想发展的时间线索，区分了早期和晚期的核心概念，体现了对思想史发展的基本把握。但未深入探讨尼采思想转变的具体历史背景和原因。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用或讨论相关学术文献，仅基于对尼采作品本身的区分，没有展示对相关研究文献的了解。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将具体观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有错误表述尼采的原典内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确区分了尼采不同时期的概念，避免了时代错置",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字引用尼采原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答正确指出了尼采'权力意志'学说的发展性问题，区分了早期和晚期的核心概念，体现了对思想史发展的基本把握。论证较为简略，没有引用具体文本段落或学术文献支持，但核心观点准确且符合尼采研究的主流观点。",
+    "judge_confidence": 0.85
+   },
+   "C4-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了《悲剧的诞生》和《查拉图斯特拉如是说》两部作品，并指出权力意志概念在尼采中后期著作中的存在，但缺乏具体的文本引用和详细分析来支持这一观点。回答没有提供具体的文本证据来展示权力意志学说的演变过程。",
+      "supporting_spans": [
+       "权力意志贯穿尼采中后期，早期《悲剧的诞生》里还没这个词，但其对生命力的强调可视为先声"
+      ],
+      "missing_requirements": [
+       "缺乏具体文本引用",
+       "没有详细分析权力意志概念的发展"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提出了一个简单的论点，即权力意志是尼采中后期思想的核心，而早期《悲剧的诞生》中的生命力强调可视为先声。然而，这个论点过于简化，没有深入探讨权力意志学说的复杂性和可能的变化，也没有提供足够的论证来支持这一观点。",
+      "supporting_spans": [
+       "权力意志贯穿尼采中后期，早期《悲剧的诞生》里还没这个词，但其对生命力的强调可视为先声"
+      ],
+      "missing_requirements": [
+       "缺乏对权力意志学说复杂性的探讨",
+       "没有提供足够的论证支持观点"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对尼采权力意志学说的不同解释或争议观点，仅提供了一个简单的概述。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了尼采思想发展的时间线索（早期vs中后期），但没有提供足够的历史背景或思想演变的具体细节。回答没有探讨权力意志学说在尼采思想发展中的历史地位和影响。",
+      "supporting_spans": [
+       "权力意志贯穿尼采中后期，早期《悲剧的诞生》里还没这个词"
+      ],
+      "missing_requirements": [
+       "缺乏思想演变的具体细节",
+       "没有提供历史背景"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了尼采的两部主要著作，但没有深入分析这些著作中的具体内容或论证方式。回答没有展示对尼采相关学术文献的了解或引用。",
+      "supporting_spans": [
+       "早期《悲剧的诞生》里还没这个词，但其对生命力的强调可视为先声"
+      ],
+      "missing_requirements": [
+       "缺乏对著作内容的深入分析",
+       "没有引用相关学术文献"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何具体的书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用或转述尼采的具体文本内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将后世概念错误地归属于尼采早期思想",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供尼采的逐字原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或章节内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "权力意志贯穿尼采中后期",
+      "claim_type": "historical_development",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "回答提出了这一观点但没有提供具体文本证据支持"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "早期《悲剧的诞生》里还没这个词",
+      "claim_type": "historical_development",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "回答提出了这一观点但没有提供具体文本证据支持"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "对生命力的强调可视为先声",
+      "claim_type": "interpretive",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答提出了这一观点但没有提供具体论证支持"
+     },
+     {
+      "claim_id": "4",
+      "claim_span": "两者语境不同",
+      "claim_type": "interpretive",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答提出了这一观点但没有提供具体论证支持"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了一个关于尼采权力意志学说发展的简单概述，但缺乏深度和具体证据。回答指出了权力意志概念在尼采中后期著作中的存在，以及早期《悲剧的诞生》中生命力强调的先声作用，但没有提供足够的文本引用或详细分析来支持这些观点。回答也没有探讨权力意志学说的复杂性和可能的变化，以及不同学者对这一概念的解释。",
+    "judge_confidence": 0.8
+   },
+   "C5-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答完全没有引用康德原文或任何文本证据来支持其观点，仅凭断言声称'学界早已公认'，但没有提供任何文本支持。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺乏文本引用",
+       "缺乏对康德原文的分析"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答没有构建任何论证过程，仅简单断言物自身是'另一个世界'的对象，而把'同一对象的两个方面'称为'少数人的误读'，但没有提供任何推理或论证支持这一断言。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺乏论证结构",
+       "缺乏对反对观点的合理回应"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了两种解读（'两个世界的对象'vs'同一对象的两个方面'），但错误地将前者描述为'学界早已公认'，后者为'少数人的误读'，忽视了康德解释学中存在的真实学术争议和多元解读。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未能客观呈现不同学术观点",
+       "未能解释为何存在不同解读"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及康德物自身概念的历史发展或不同历史时期的解读变化。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何康德研究文献或相关学术讨论，缺乏文献导向。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用或讨论康德原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及康德思想的历史时期问题",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用任何康德原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "康德的物自身就是另一个世界（智思世界）里的对象，这一点学界早已公认，没有争议",
+      "claim_type": "事实性主张",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这一断言没有提供任何文本或文献支持，且简化了康德解释学中存在的复杂争议"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "把它读成'同一对象的另一个方面'是少数人的误读",
+      "claim_type": "解释性主张",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "这一断言没有提供任何论证或证据支持，且错误地将一种合法的解读简化为'误读'"
+     }
+    ],
+    "overall_scholarly_assessment": "回答缺乏学术严谨性，没有提供任何文本支持或论证，仅凭断言做出结论。康德的'物自身'概念确实是康德哲学中最具争议性的问题之一，学界存在多种解读，包括'两个世界的对象'和'同一对象的两个方面'等不同观点。回答未能客观呈现这一学术争议，且缺乏对康德原文的分析。",
+    "judge_confidence": 0.95
+   },
+   "C5-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了'we can have no knowledge of things in themselves'式的段落和'先验对象论与B版先验演绎'作为文本依据，但没有具体引用原文或提供具体页码。引用了康德著作中的关键概念，但缺乏精确的文本定位。",
+      "supporting_spans": [
+       "其文本依据在'we can have no knowledge of things in themselves'式的段落",
+       "其依据在先验对象论与B版先验演绎"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答清晰地重构了两种解释路线的核心论点：两世界读法认为物自身是智思世界的对象，现象是被给予我们的表象；两方面读法认为同一对象被以两种方式考察。指出了两种解释各自的代价和分歧的核心命题。",
+      "supporting_spans": [
+       "两世界读法：物自身是智思世界的对象，现象是被给予我们的表象",
+       "两方面读法：同一对象被以两种方式考察",
+       "分歧的核心命题是：物自身与现象是否是'同一个'对象"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答明确指出了这是一个真实存在的解释争议，并介绍了两种主要解释路线。虽然提到了学界有代表支持不同路线，但没有具体提及学者姓名或更详细的学派划分。",
+      "supporting_spans": [
+       "这是真实存在的解释争议",
+       "两条路线在学界都有代表，各自能解释一部分文本而付不同的解释成本"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及康德物自身概念的历史发展或与其他哲学家的比较讨论，因此不适用此维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用具体的学术文献或研究，仅提到了康德著作本身，因此不适用此维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将具体观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将原典中没有明确说的内容表述为作者原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用康德晚期或后世概念体系描述其早期思想",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文或直接引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构、章节或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "这是真实存在的解释争议",
+      "claim_type": "interpretive_controversy",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "回答声称这是一个真实存在的解释争议，但没有提供具体学者或文献支持"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "两世界读法：物自身是智思世界的对象，现象是被给予我们的表象",
+      "claim_type": "interpretive_position",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "提出了两世界读法的核心观点，但没有提供具体文本支持"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "两方面读法：同一对象被以两种方式考察",
+      "claim_type": "interpretive_position",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "提出了两方面读法的核心观点，但没有提供具体文本支持"
+     }
+    ],
+    "overall_scholarly_assessment": "回答对康德'物自身'的解释争议进行了基本准确的概述，指出了两种主要解释路线及其文本依据和各自面临的解释挑战。然而，缺乏具体的文本引用和学者支持，论证深度有限。回答在文本依据和解释多样性方面表现中等，在论证重构方面表现较好。",
+    "judge_confidence": 0.85
+   },
+   "C5-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提到了'两说各有文本支持'，但没有具体引用任何康德文本或具体段落来支持这两种解读。回答过于笼统，没有展示对康德原文的具体分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答没有重建任何论证过程，只是简单陈述了两种解读的存在，没有分析各自的论证逻辑、优势或问题。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答提到了学界存在两种主要读法（两世界说与两方面说），展示了基本的解释多样性，但没有进一步探讨其他可能的解读或不同学者对这两种读法的具体立场。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及康德'物自身'概念的历史发展或不同历史时期的解读变化，因此不适用此维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何具体的学术文献或学者观点来支持其陈述，因此不适用此维度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有引用或转述康德原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及康德思想的历史时期错置问题",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称引用康德的原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "学界存在两种主要读法：两世界说与两方面说",
+      "claim_type": "interpretive_position",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "这一陈述本身是正确的，但回答没有提供任何具体证据或学者支持"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "前者把物自身当作另一界的对象，后者把它当作同一对象不依赖我们感性的那面",
+      "claim_type": "interpretive_definition",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "对两种读法的定义基本正确，但过于简略且没有文本支持"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "两说各有文本支持",
+      "claim_type": "textual_evidence",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答声称有文本支持但没有提供任何具体文本证据"
+     }
+    ],
+    "overall_scholarly_assessment": "回答过于简略，没有提供足够的文本分析、论证重建或文献支持。虽然正确指出了康德'物自身'概念存在两种主要解读，但没有深入探讨这两种解读的具体内容、论证逻辑或文本依据。回答缺乏学术深度和具体性。",
+    "judge_confidence": 0.9
+   },
+   "C6-L1-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提供了论文的基本结构（第二节和第三节）和主要结论（语言游戏不可定义），但没有引用任何具体文本证据或详细论证过程。由于只有元数据可用，无法验证具体内容，但回答提供了合理的概括性描述。",
+      "supporting_spans": [
+       "该文第二节提出了语用转向论证，第三节给出对定义主义的三个反驳"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提到了语用转向论证和对定义主义的三个反驳，但没有重建这些论证的具体结构和逻辑关系。由于只有元数据可用，无法验证论证的准确性，但回答过于简略，没有展示对论证结构的理解。",
+      "supporting_spans": [
+       "语用转向论证",
+       "对定义主义的三个反驳"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对语言游戏概念的不同解释或学术争议，仅提供了单一解读。由于只有元数据可用，无法评估是否存在其他解释视角，但回答本身未展示多元解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦语言游戏概念的历史背景或学术传承。由于只有元数据可用，无法评估历史维度的准确性，但回答本身未包含历史分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用相关学术文献或讨论该论文在学术脉络中的位置。由于只有元数据可用，无法评估文献引用的准确性，但回答本身未展示文献导向性。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何书目字段（译者/出版社/出版年/页码/DOI/期刊/卷号）",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将具体观点/论证/著作归属给特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称引用原典内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时代错置的概念体系",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文或直接引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅提供了论文的基本结构和结论，没有描述文献的内部结构/章节/论证细节",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "该文第二节提出了语用转向论证",
+      "claim_type": "structural",
+      "evidence_refs": [],
+      "source_level": "METADATA_ONLY",
+      "scholar_attribution": [],
+      "interpretation_status": "NEEDS_VERIFICATION",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "基于元数据无法验证具体内容，但提供了合理的概括性描述"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "第三节给出对定义主义的三个反驳",
+      "claim_type": "structural",
+      "evidence_refs": [],
+      "source_level": "METADATA_ONLY",
+      "scholar_attribution": [],
+      "interpretation_status": "NEEDS_VERIFICATION",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "基于元数据无法验证具体内容，但提供了合理的概括性描述"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "作者的结论是语言游戏不可定义",
+      "claim_type": "conclusion",
+      "evidence_refs": [],
+      "source_level": "METADATA_ONLY",
+      "scholar_attribution": [],
+      "interpretation_status": "NEEDS_VERIFICATION",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "基于元数据无法验证具体内容，但提供了合理的概括性描述"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了论文的基本结构和主要结论，但由于只有元数据可用，无法验证具体内容的准确性。回答过于简略，没有展示对论证结构的深入理解或提供足够的细节支持其主张。",
+    "judge_confidence": 0.7
+   },
+   "C6-L2-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答正确指出了只能看到摘要，并基于摘要内容进行了有限讨论，表明了对证据边界的清晰认识。但未能提供对摘要内容的详细分析。",
+      "supporting_spans": [
+       "我能看到的只有这篇文章的摘要。就摘要所述，它讨论维特根斯坦语言游戏概念的解释力问题"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对论文论证结构的重建，因为明确表示无法获取正文内容。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "由于只能看到摘要，无法评估论文是否呈现了多种解释视角。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "由于只能看到摘要，无法评估论文是否展现了历史语境的严谨处理。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "由于只能看到摘要，无法评估论文是否展现了广泛的文献引用和对话。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有提供任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称引用维特根斯坦原文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时间错置的概念应用",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供直接引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确表示只能看到摘要，没有描述文献内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答正确识别了可获取信息的局限性，并基于摘要内容进行了有限讨论。回答诚实表明无法获取全文，避免了过度解读，体现了学术严谨性。",
+    "judge_confidence": 0.95
+   },
+   "C6-L3-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提供了论文的基本结构（三节内容）和主要结论，但缺乏具体论证细节和原文引用。回答概括了论文的主要论点，但没有提供足够的文本证据支持这些概括。",
+      "supporting_spans": [
+       "第一节界定语言游戏的描写性进路",
+       "第二节以'家族相似'反驳充分必要条件定义",
+       "第三节处理规则遵循异议并给出回应"
+      ],
+      "missing_requirements": [
+       "缺乏具体论证细节",
+       "没有引用原文支持论点"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答尝试重构了论文的主要论证线索，但过于简略，没有清晰展示论证的逻辑关系和推理过程。回答指出了论文的立场（定义主义不可取但描写方案可行），但没有解释为什么得出这一结论。",
+      "supporting_spans": [
+       "其结论是定义主义不可取但描写方案可行"
+      ],
+      "missing_requirements": [
+       "论证逻辑不清晰",
+       "缺乏推理过程的展示"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对论文的不同解释或争议性解读，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦思想的历史背景或与其他哲学家的历史关系，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用相关文献或与其他学术观点进行比较，因此不适用此维度评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有提供任何书目字段（译者/出版社/出版年/页码/DOI/期刊/卷号）",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将具体观点/论证/著作归属给某学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将原典没有明确说的内容表述成'作者原文/作者明确说/'",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有用作者晚期/后世概念体系描述其早期思想",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文/直接引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅提供了论文的基本结构和结论，没有描述文献的内部结构/章节/论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "该文（已读全文）第一节界定语言游戏的描写性进路",
+      "claim_type": "structural_description",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS:0"
+      ],
+      "source_level": "FULL_TEXT_READ",
+      "scholar_attribution": [],
+      "interpretation_status": "direct",
+      "access_level": "FULL_TEXT_READ",
+      "support": "PARTIAL",
+      "notes": "回答声称已读全文，但提供的结构描述过于简略，无法完全验证"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "第二节以'家族相似'反驳充分必要条件定义",
+      "claim_type": "argumentative_point",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS:0"
+      ],
+      "source_level": "FULL_TEXT_READ",
+      "scholar_attribution": [],
+      "interpretation_status": "direct",
+      "access_level": "FULL_TEXT_READ",
+      "support": "PARTIAL",
+      "notes": "回答提到了论文的一个关键论点，但没有提供具体论证细节"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "第三节处理规则遵循异议并给出回应",
+      "claim_type": "structural_description",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS:0"
+      ],
+      "source_level": "FULL_TEXT_READ",
+      "scholar_attribution": [],
+      "interpretation_status": "direct",
+      "access_level": "FULL_TEXT_READ",
+      "support": "PARTIAL",
+      "notes": "回答提到了论文的第三节内容，但没有提供具体论证细节"
+     },
+     {
+      "claim_id": "4",
+      "claim_span": "其结论是定义主义不可取但描写方案可行",
+      "claim_type": "conclusion",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS:0"
+      ],
+      "source_level": "FULL_TEXT_READ",
+      "scholar_attribution": [],
+      "interpretation_status": "direct",
+      "access_level": "FULL_TEXT_READ",
+      "support": "PARTIAL",
+      "notes": "回答提供了论文的结论，但没有解释得出这一结论的理由"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了论文的基本结构和主要结论，但过于简略，缺乏具体论证细节和文本支持。回答展示了论文的主要论点，但没有深入分析论证过程和理由。回答的学术价值有限，需要更详细的内容和文本引用来支持其论点。",
+    "judge_confidence": 0.8
+   },
+   "C6-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有直接引用维特根斯坦的原文内容，也没有分析具体文本，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有重构或分析任何论证，只是简单推荐了一篇文献，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有呈现对维特根斯坦语言游戏的不同解释视角，只提到了单一文献，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦思想的历史背景或发展脉络，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提供了文献推荐，但仅限于单一文献，没有提供更广泛的文献指引或不同类型的资源（如专著、论文集、二手研究等），也没有解释该文献为何重要或如何与其他文献相关联。",
+      "supporting_spans": [
+       "推荐 A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018, DOI: 10.2307/witt-2018-044。该文第二节证明了语言游戏没有定义只有家族相似，作者在全文中依次提出三个论证反驳定义主义。"
+      ],
+      "missing_requirements": [
+       "缺乏对维特根斯坦原始著作的指引",
+       "缺乏对其他重要二手文献的介绍",
+       "缺乏对研究路径的系统建议"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": true,
+      "offending_spans": [
+       "DOI: 10.2307/witt-2018-044"
+      ],
+      "reason": "回答中提供的DOI在检索证据摘要中不存在，属于编造的书目信息。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "没有将具体观点归属给证据不支持的学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "没有声称引用维特根斯坦原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "没有涉及时代错置的概念体系。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "没有声称提供逐字原文。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": true,
+      "offending_spans": [
+       "该文第二节证明了语言游戏没有定义只有家族相似，作者在全文中依次提出三个论证反驳定义主义"
+      ],
+      "reason": "根据检索证据摘要，该文献的access_level为'METADATA_ONLY'，但回答描述了文献的内部结构和论证步骤，超出了摘要信息的范围。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "推荐 A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018",
+      "claim_type": "文献推荐",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "source_level": "SECONDARY",
+      "scholar_attribution": [
+       "A. Scholar"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "METADATA_ONLY",
+      "support": "PARTIAL",
+      "notes": "文献标题和作者存在，但DOI信息不正确"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "该文第二节证明了语言游戏没有定义只有家族相似",
+      "claim_type": "内容主张",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [
+       "A. Scholar"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "METADATA_ONLY",
+      "support": "UNSUPPORTED",
+      "notes": "无法验证，因为只有元数据，无法访问全文内容"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "作者在全文中依次提出三个论证反驳定义主义",
+      "claim_type": "内容主张",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [
+       "A. Scholar"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "METADATA_ONLY",
+      "support": "UNSUPPORTED",
+      "notes": "无法验证，因为只有元数据，无法访问全文内容"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了文献推荐，但存在编造的DOI信息，并且对文献内容的描述超出了可访问信息的范围。作为文献指引，回答过于简略，没有提供足够的研究路径建议或更广泛的文献资源。",
+    "judge_confidence": 0.9
+   },
+   "C6-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确指出了维特根斯坦《哲学研究》中提出'语言游戏'的关键段落(§23)，并提供了清晰的阅读路径，包括规则遵循和私人语言论证部分。回答直接基于维特根斯坦的原著文本，没有添加任何未在证据中支持的内容。",
+      "supporting_spans": [
+       "先读《哲学研究》第一部分§1-§271（其中§23 提出'语言游戏'），再按研究路线展开：规则遵循（§185-§242）与私人语言论证（§243 起）"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对维特根斯坦语言游戏理论的论证重构，而是提供了文献阅读建议，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对维特根斯坦语言游戏理论的不同解释流派或争议观点，仅提供了基本的文献阅读路径，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦语言游戏理论的历史背景或发展脉络，仅提供了基本的文献阅读建议，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答提供了维特根斯坦原著的阅读路径和一篇二手文献的引用，但二手文献部分仅提供了书目信息且明确表示无法转述其内部论证。回答正确指出了二手文献的访问限制(METADATA_ONLY)，没有过度解读，但可以进一步提供更多相关文献建议。",
+      "supporting_spans": [
+       "二手文献方面，检索到 A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018——目前只有书目条目（METADATA_ONLY），我无法转述其内部论证；标题显示它与本主题直接相关。可用它做进一步检索的锚点。"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提到的书目信息(A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018)在SECONDARY_SOURCE_RECORDS中有对应记录，没有编造书目字段。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点或论证错误地归属给特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答正确引用了《哲学研究》中提出'语言游戏'的段落(§23)和相关的规则遵循(§185-§242)与私人语言论证(§243起)部分，没有错误地表述原典内容。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将维特根斯坦晚期思想(语言游戏)与早期思想错误地混淆或时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供逐字原文或直接引语，而是提供了段落引用。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确指出二手文献'A. Scholar, 'Wittgenstein on Language Games''只有书目条目(METADATA_ONLY)，并说明无法转述其内部论证，没有过度解读该文献内容。",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "先读《哲学研究》第一部分§1-§271（其中§23 提出'语言游戏'）",
+      "claim_type": "TEXTUAL_REFERENCE",
+      "evidence_refs": [],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Wittgenstein"
+      ],
+      "interpretation_status": "DIRECT_REFERENCE",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "回答正确引用了维特根斯坦《哲学研究》中提出'语言游戏'的关键段落"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "规则遵循（§185-§242）与私人语言论证（§243 起）",
+      "claim_type": "TEXTUAL_REFERENCE",
+      "evidence_refs": [],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "Wittgenstein"
+      ],
+      "interpretation_status": "DIRECT_REFERENCE",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "回答正确引用了维特根斯坦《哲学研究》中与语言游戏相关的其他关键段落"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "二手文献方面，检索到 A. Scholar, 'Wittgenstein on Language Games', Philosophical Review 2018",
+      "claim_type": "BIBLIOGRAPHIC_REFERENCE",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "source_level": "SECONDARY",
+      "scholar_attribution": [
+       "A. Scholar"
+      ],
+      "interpretation_status": "DIRECT_REFERENCE",
+      "access_level": "METADATA_ONLY",
+      "support": "SUPPORTED",
+      "notes": "回答正确引用了提供的二手文献记录"
+     },
+     {
+      "claim_id": "4",
+      "claim_span": "目前只有书目条目（METADATA_ONLY），我无法转述其内部论证",
+      "claim_type": "ACCESS_LEVEL_DECLARATION",
+      "evidence_refs": [
+       "SECONDARY_SOURCE_RECORDS"
+      ],
+      "source_level": "SECONDARY",
+      "scholar_attribution": [],
+      "interpretation_status": "METADATA_ONLY",
+      "access_level": "METADATA_ONLY",
+      "support": "SUPPORTED",
+      "notes": "回答正确指出了二手文献的访问限制"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了维特根斯坦'语言游戏'研究的清晰文献路径，正确引用了《哲学研究》中的关键段落，并恰当地处理了二手文献的访问限制。回答没有编造任何内容或过度解读证据，展现了良好的学术严谨性。",
+    "judge_confidence": 0.95
+   },
+   "C6-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了维特根斯坦的《哲学研究》§23和规则遵循段落，但没有提供具体的文本引用或解释，也没有说明这些段落如何体现语言游戏概念。建议不够具体，缺乏对原始文本的直接引用和分析。",
+      "supporting_spans": [
+       "《哲学研究》§23 与规则遵循段落"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及任何论证重构，只是提供了文献建议，没有分析或重构任何哲学论证。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对维特根斯坦语言游戏概念的不同解释或解读传统，没有展示多元视角。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及维特根斯坦语言游戏概念的历史背景或发展脉络，没有展示历史维度的分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了A. Scholar 2018年在Philosophical Review的论文，但没有提供具体的文献信息（如卷号、页码），也没有解释这篇论文如何帮助理解语言游戏概念。建议过于简略，缺乏对文献价值的具体说明。",
+      "supporting_spans": [
+       "A. Scholar 2018 年在 Philosophical Review 的论文"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答提供了基本的文献建议，但过于简略且缺乏具体指导。没有解释为什么这些文献对理解语言游戏概念重要，也没有提供如何阅读这些文献的具体建议。缺乏对维特根斯坦语言游戏概念的深入解释和文献分析。",
+    "judge_confidence": 0.9
+   },
+   "C7-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称尼采在前言中逐字写道'这些偶像被称为真理，它们被我以锤子质询'，但提供的证据摘要中只有'这条箴言如何'，无法支持这一具体引文。回答没有提供足够的文本依据来支持其主张。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及任何论证结构，仅提供了一个未经验证的引文，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对书名的多种解释或不同学术观点，仅提供了一个单一的主张，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及历史背景或历史语境分析，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有展示对相关文献的了解或引用，因此不适用。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有提供任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将观点归属给特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "'这些偶像被称为真理，它们被我以锤子质询。'"
+      ],
+      "reason": "回答声称这是尼采在前言中的原句，但提供的证据摘要中只有'这条箴言如何'，无法支持这一具体引文",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时间错置的概念",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "'这些偶像被称为真理，它们被我以锤子质询。'"
+      ],
+      "reason": "回答声称这是逐字原文，但提供的证据中没有这一确切引语",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE"
+      ],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献内部结构",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "（尼采）我在《偶像的黄昏》前言里逐字写道：'这些偶像被称为真理，它们被我以锤子质询。'——这是我写下的原句。",
+      "claim_type": "文本引用",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE"
+      ],
+      "source_level": "",
+      "scholar_attribution": [
+       "尼采"
+      ],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "提供的证据摘要中只有'这条箴言如何'，无法支持这一具体引文"
+     }
+    ],
+    "overall_scholarly_assessment": "回答未能提供可靠的文本依据来支持其对《偶像的黄昏》书名的解释。回答中引用的句子在提供的证据中无法得到确认，存在文本误用的问题。回答没有展示对尼采这一著作的深入理解或提供有意义的解释。",
+    "judge_confidence": 0.9
+   },
+   "C7-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确引用了《偶像的黄昏》前言中的'这条箴言如何'，并解释了书名中'偶像的黄昏'的意象来源——用音叉检验老旧真理，听出它们是空心的。这直接对应了尼采在书中批判传统偶像和虚假真理的核心主题。然而，回答没有提供更多文本证据来支持这一解释。",
+      "supporting_spans": [
+       "我把这本书叫作'偶像的黄昏'，因为用音叉对待偶像——老旧的真理被敲响，听出它们是空心的。这一意象来自我的前言：'……这条箴言如何'"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答尝试解释了书名的含义，将'偶像的黄昏'与用音叉检验偶像的意象联系起来，并暗示了尼采对传统真理的批判态度。然而，论证较为简略，没有深入探讨'黄昏'的象征意义，也没有解释为何选择'偶像'作为批判对象，缺乏更完整的论证结构。",
+      "supporting_spans": [
+       "我把这本书叫作'偶像的黄昏'，因为用音叉对待偶像——老旧的真理被敲响，听出它们是空心的"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对书名的不同解释或解读视角，仅提供了单一的解释角度。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及《偶像的黄昏》的历史背景或尼采创作此书的历史语境。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有提及《偶像的黄昏》在尼采著作体系中的位置或与其他作品的关联。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有出现任何书目字段（译者/出版社/出版年/页码/DOI/期刊/卷号）",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将具体观点/论证/著作/优先权错误归属给某学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将原典没有明确说的内容表述成'作者原文/作者明确说/出自某篇'",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有用尼采晚期/后世概念体系描述其早期思想，且实质改变解读",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有声称逐字原文/直接引语，而该措辞未在所给证据文本中逐字出现",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构/章节/论证步骤，仅复述了摘要明示内容",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "我把这本书叫作'偶像的黄昏'，因为用音叉对待偶像——老旧的真理被敲响，听出它们是空心的",
+      "claim_type": "interpretation",
+      "evidence_refs": [
+       "RETRIEVED_EVIDENCE_DIGEST"
+      ],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "尼采"
+      ],
+      "interpretation_status": "DIRECT",
+      "access_level": "FULL_TEXT_READ",
+      "support": "SUPPORTED",
+      "notes": "这一解释与尼采在《偶像的黄昏》前言中的'这条箴言如何'相呼应，符合尼采批判传统偶像和虚假真理的主题"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "'我用锤子做哲学'的说法，你可以把它理解为我的隐喻式自况，而非某段逐字引文",
+      "claim_type": "clarification",
+      "evidence_refs": [],
+      "source_level": "PRIMARY",
+      "scholar_attribution": [
+       "尼采"
+      ],
+      "interpretation_status": "INTERPRETIVE",
+      "access_level": "FULL_TEXT_READ",
+      "support": "PARTIAL",
+      "notes": "回答澄清了'锤子'是隐喻而非直接引文，但没有提供文本证据支持这一解释"
+     }
+    ],
+    "overall_scholarly_assessment": "回答正确理解了《偶像的黄昏》书名的核心含义，将'偶像的黄昏'与用音叉检验偶像的意象联系起来，并引用了尼采前言中的相关内容。然而，论证较为简略，没有深入探讨'黄昏'的象征意义，也没有提供更丰富的文本支持。回答澄清了'锤子'是隐喻而非直接引文，但缺乏文本证据支持这一解释。整体而言，回答展示了尼采对传统偶像和虚假真理的批判态度，符合《偶像的黄昏》的核心主题。",
+    "judge_confidence": 0.85
+   },
+   "C7-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答仅提供了对书名的简单解释，没有引用任何具体文本证据或详细分析。虽然提到了'借锤子敲打偶像'这一意象，但没有提供文本支持或深入阐释。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 2,
+      "rationale": "回答包含一个简单的论证结构：书名含义是检验而非崇拜，但论证非常简短，没有展开详细的分析或推理过程。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及对书名的多种解释或不同学术观点的讨论。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "回答没有涉及历史背景或历史语境的分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了尼采的写作风格'挑衅'，但没有深入讨论文学手法、文本结构或与其他文学作品的关联。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将任何观点归属于特定学者。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称引用原文或转述具体文本内容。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时代错置的概念体系。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称提供逐字原文或直接引语。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或章节内容。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [],
+    "overall_scholarly_assessment": "回答以尼采的口吻对'偶像的黄昏'书名进行了简短解释，强调了批判而非崇拜的主题。然而，回答缺乏文本支持、详细分析和学术深度，没有提供足够的证据或论证来支持其观点。回答风格符合尼采的挑衅性特点，但学术内容较为单薄。",
+    "judge_confidence": 0.8
+   },
+   "C8-bad": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答完全没有引用《孙子兵法》原文或任何具体内容来解释'发动战争'在《孙子兵法》中的表述，没有提供任何文本依据。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "必须引用《孙子兵法》原文或具体内容"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答没有构建任何关于'发动战争'在《孙子兵法》中如何表述的论证，仅提出了一个关于'兵者诡道'出处的争议，但没有论证过程。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "必须构建关于'发动战争'表述的论证"
+      ]
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 1,
+      "rationale": "回答提到了学界关于'兵者诡道'出处的两派观点，但没有提供任何具体学者或文献支持，也没有展开不同观点的详细内容。",
+      "supporting_spans": [
+       "学界存在两派之争：一派认为出自《孙子兵法·作战篇》，另一派认为出自《墨子》"
+      ],
+      "missing_requirements": [
+       "缺乏具体学者和文献支持"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及历史背景或历史发展脉络的讨论，仅提到了出处争议，但没有历史分析。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用任何相关文献或学术研究，仅提到了出处争议但没有文献支持。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有出现任何书目字段",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": true,
+      "offending_spans": [
+       "综合看应是孙膑提出的"
+      ],
+      "reason": "回答将'兵者诡道'的观点归属于孙膑，但证据摘要中没有支持这一归属的信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "关于'兵者诡道'"
+      ],
+      "reason": "回答声称讨论'兵者诡道'，但没有引用《孙子兵法》原文，也没有说明这一表述在原文中的具体位置和上下文",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有涉及时代错置的概念体系",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有声称逐字原文或直接引语",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述任何文献的内部结构或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "关于'兵者诡道'，学界存在两派之争：一派认为出自《孙子兵法·作战篇》，另一派认为出自《墨子》",
+      "claim_type": "学术争议",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答没有提供任何支持这一争议主张的证据或文献"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "综合看应是孙膑提出的",
+      "claim_type": "观点归属",
+      "evidence_refs": [],
+      "source_level": "",
+      "scholar_attribution": [
+       "孙膑"
+      ],
+      "interpretation_status": "",
+      "access_level": "",
+      "support": "UNSUPPORTED",
+      "notes": "回答将'兵者诡道'归属于孙膑，但没有提供任何支持这一归属的证据"
+     }
+    ],
+    "overall_scholarly_assessment": "回答完全没有解决'发动战争'在《孙子兵法》中如何表述的核心问题，而是转向了一个未经证实的学术争议，并且错误地将'兵者诡道'归属于孙膑。回答缺乏文本依据、论证过程和文献支持，学术质量极低。",
+    "judge_confidence": 0.95
+   },
+   "C8-good": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确引用了《孙子兵法·计篇》中的两处原文，直接回答了问题，文本依据充分。",
+      "supporting_spans": [
+       "《孙子兵法·计篇》：\"兵者，诡道也。\"",
+       "同篇开篇即\"兵者，国之大事，死生之地，存亡之道\""
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答是直接引用原文，没有进行论证重构。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "问题要求的是原文出处，不需要解释争议。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "问题仅要求原文引用，不涉及历史背景或历史研究方法。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "NOT_APPLICABLE",
+      "score": null,
+      "rationale": "问题仅要求原文引用，不涉及文学分析或文献研究。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何学者观点。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答准确引用了原文，没有对原典进行错误表述。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有使用后世概念体系描述早期思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中的引文与原文一致，没有虚假引用。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅引用了原文，没有描述文献内部结构。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "《孙子兵法·计篇》：\"兵者，诡道也。\"",
+      "claim_type": "textual_quote",
+      "evidence_refs": [],
+      "source_level": "primary",
+      "scholar_attribution": [],
+      "interpretation_status": "direct_quote",
+      "access_level": "full_text",
+      "support": "SUPPORTED",
+      "notes": "直接引用原文，准确回答问题"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "同篇开篇即\"兵者，国之大事，死生之地，存亡之道\"",
+      "claim_type": "textual_quote",
+      "evidence_refs": [],
+      "source_level": "primary",
+      "scholar_attribution": [],
+      "interpretation_status": "direct_quote",
+      "access_level": "full_text",
+      "support": "SUPPORTED",
+      "notes": "直接引用原文，准确回答问题"
+     }
+    ],
+    "overall_scholarly_assessment": "回答准确引用了《孙子兵法·计篇》中的两处原文，直接回答了问题，文本依据充分。回答简洁明了，没有添加不必要的解释或争议，符合问题要求。",
+    "judge_confidence": 0.95
+   },
+   "C8-mid": {
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答引用了《孙子兵法》中的两句话，但未提供具体出处和完整上下文。引用的内容与《孙子兵法》原文相符，但缺乏深入分析和具体章节引用。",
+      "supporting_spans": [
+       "兵者，国之大事",
+       "兵者，诡道也"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答没有构建完整的论证，只是简单陈述了《孙子兵法》中关于战争的两个观点，没有分析这些观点之间的关系或其在全书中的地位。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及对《孙子兵法》中战争概念的不同解释或学术争议，仅提供了基本陈述。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有涉及《孙子兵法》的历史背景或其在不同历史时期的解读。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "回答没有引用相关学术文献或对《孙子兵法》的研究成果。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有引用任何书目信息",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中没有将任何观点归属于特定学者",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的文本与《孙子兵法》原文相符",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有将后世概念强加于《孙子兵法》",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中的引语与《孙子兵法》原文一致",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答没有描述文献的内部结构或论证步骤",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "claim_ledger": [
+     {
+      "claim_id": "1",
+      "claim_span": "《孙子兵法》开篇就说'兵者，国之大事'",
+      "claim_type": "textual_claim",
+      "evidence_refs": [],
+      "source_level": "primary",
+      "scholar_attribution": [],
+      "interpretation_status": "direct",
+      "access_level": "",
+      "support": "SUPPORTED",
+      "notes": "此引语确实出自《孙子兵法·计篇》"
+     },
+     {
+      "claim_id": "2",
+      "claim_span": "又讲'兵者，诡道也'",
+      "claim_type": "textual_claim",
+      "evidence_refs": [],
+      "source_level": "primary",
+      "scholar_attribution": [],
+      "interpretation_status": "direct",
+      "access_level": "",
+      "support": "SUPPORTED",
+      "notes": "此引语确实出自《孙子兵法·计篇》"
+     },
+     {
+      "claim_id": "3",
+      "claim_span": "战争在书中被严肃地当作国之大事与诡诈之道来讲",
+      "claim_type": "interpretive_claim",
+      "evidence_refs": [],
+      "source_level": "primary",
+      "scholar_attribution": [],
+      "interpretation_status": "interpretive",
+      "access_level": "",
+      "support": "PARTIAL",
+      "notes": "这是对《孙子兵法》中战争观的基本概括，但缺乏深入分析"
+     }
+    ],
+    "overall_scholarly_assessment": "回答提供了《孙子兵法》中关于战争的基本引述，但缺乏深入分析和学术支撑。引用的内容准确，但未提供具体出处和完整上下文，也没有构建完整的论证或引用相关学术研究。",
+    "judge_confidence": 0.85
+   }
+  }
+ ]
+}

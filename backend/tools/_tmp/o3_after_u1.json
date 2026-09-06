@@ -1,0 +1,3718 @@
+{
+ "result": {
+  "case": "u1",
+  "question": "「言必有中」的出处是什么？请检索并读取原典核验后回答。",
+  "agent": "general",
+  "duration_s": 30.7,
+  "answer_chars": 592,
+  "answer": "已在《论语·先进篇》原典中直接核验到核验到这句原文。以下是我的回答。\n\n---\n\n## 「言必有中」的出处与核验\n\n### 出处\n这句成语出自**《论语·先进篇》**，原句是：\n\n> 鲁人为长府，闵子骞曰：\"仍旧贯如之何？何必改作？\"子曰：\"夫人不言，言必有中。\"\n\n【《论语》·先进篇】\n\n这是孔子对其弟子**闵子骞**的一句称赞。\n\n### 语境解读\n- **背景**：鲁国当政者要改建藏财货的府库（长府），闵子骞发表意见说：照着旧例沿袭下去不就行了吗，何必改建？意思是反对大兴土木、劳民伤财。\n- **孔子的评价**：他说\"那个人（闵子骞）平时不轻易说话，一开口必定切中要害。\"\n\n**\"言必有中\"字面义**：说话必定击中事物的关键、正中（zhòng）要害。后世引申为形容人措辞精当、说到点子上。成语在流传中简化了原句\"夫人不言，言必有中\"的前半段，取后半段\"言必有中\"而成。\n\n### 一点提示\n需注意两处细节，避免混记：\n1. 这句的完整语境含\"仍旧贯\"，后世\"萧规曹随\"式的循旧思想与之相近，但它核心褒扬的是闵子骞**慎言而精**的品质，而非仅\"保守\"。\n2. 若只看检索片段容易误认为该句位于\"公冶长\"等篇——经我读取《先进篇》原文核验，确在先进篇，且成语由\"夫人不言\"一语的省略演化而来。核验后我对出处为先进篇这一点没有疑义。\n\n若需对照其他版本或解读，可继续告诉我。",
+  "tool_seq": [
+   "search_books",
+   "search_books",
+   "get_book_detail",
+   "search_books",
+   "get_chapter"
+  ],
+  "validation": {
+   "result": {
+    "ok": true,
+    "issues": []
+   },
+   "repairs_used": 0,
+   "max_validation_repairs": 2,
+   "repair_protocol": "same_main_agent"
+  },
+  "causal": {
+   "provenance": "o1",
+   "engine_cognitive_auto_tools": 0,
+   "main_agent_tool_decisions": 4,
+   "agent_invocations": 4,
+   "thinking_sources": "main_agent_only"
+  },
+  "budget": {
+   "useful": 5,
+   "retry": 0,
+   "inner_retries": 0,
+   "duplicate_reused": 0,
+   "no_gain": 0,
+   "total_executed": 5,
+   "retrieval_executed": 5,
+   "hard": false,
+   "cfg": {
+    "hard_retrieval": 20,
+    "hard_total": 24
+   }
+  },
+  "semantic_reject_marks": [],
+  "retract_events": 0,
+  "validation_failed_events": 0
+ },
+ "events": [
+  {
+   "type": "status",
+   "content": "开始思考"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "「言必有中」这条成语我记忆中出自《论语·先进篇》——孔子评价闵子骞\"夫(wū)人不言，言必有中\"。但我需要检索原典库核验确切措辞与上下文再回答。\n\n让我先在库中检索。",
+   "phase": "analysis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_aWXRVrkV8ppnRTOlSx5O9108"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "言必有中"
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 69, 'chapter_title': '德经·第七十章', 'snippet': '德经·第七十章 吾言甚易知，甚易行。天下莫能知，莫能行。言有宗，事有君。夫唯无知，是以不我知。知我者希，则我者贵。是以圣人被褐而怀玉。', 'score': 0.534}, {'book_id': '4c5aaf145298', 'book_title': '大学章句集注', 'author': '朱熹', 'chapter",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_aWXRVrkV8ppnRTOlSx5O9108"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "夫人不言"
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 36, 'chapter_title': '第三十七章', 'snippet': '道常无为而无不为。侯王若能守之，万物将自化。化而欲作，吾将镇之以无名之朴。镇之以无名之朴，夫将不欲。不欲以静，天下将自正。', 'score': 0.445}, {'book_id': '855b28458491', 'book_title': '世说新语', 'author': '刘义庆', 'chapter_idx': 36",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_55H8t4YpkVtX4qzMz49y9050"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "初步检索命中了《论语》库本,但向量检索未直接定位到\"言必有中\"那句原话。《论语》中的这句出自**先进篇**,而命中显示的第6章是公冶长篇。我需要读取《论语》相关章节核验确切原文。先查书目章节结构与\"先进\"篇定位。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_2jYY4xgRc969ynP41ONe4621"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_BCKHCDfUdTPWKSpm0I227676"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "d9272a80942a"
+   },
+   "result": "{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'file_type': 'epub', 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不欲，勿施于人”，并倡导“克己复礼为仁”。在政治方面，他提出“为政以德”，主张德治与礼治，反对苛政。在教育上，他提倡“有教无类”，注重因材施教。该书是儒家学派的经典，对中国乃至东亚文化圈的价值观念、社会",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_2jYY4xgRc969ynP41ONe4621"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "闵子骞 鲁人为长府"
+   },
+   "result": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 669, 'chapter_title': '雍也第六', 'snippet': '上一篇《公冶长》，是对前四篇整个学问系统，做一对话式讨论的前半集，本篇第六篇《雍也》是和第五篇的性质相衔接起来的，也就是讨论印证的后半集。 闲置帝王才 这里就讲到一个人。 子曰：雍也，可使南面。仲弓问子桑伯子。子曰：可也，简。仲弓曰：居敬而行简，以临其民，不亦可乎？居简而行简，无乃大简乎？子曰：雍之言然。 ",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_BCKHCDfUdTPWKSpm0I227676"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "先进篇定位到了(chapter_idx 12)。片段里没直接展示\"夫人不言，言必有中\"这句,我读取先进篇完整原文核验确切措辞。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_3a9a1zV0RwDMNnzjfILq3258"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 12
+   },
+   "result": "{'book_id': 'd9272a80942a', 'chapter_idx': 12, 'title': '先进篇', 'text': '子曰：“先进于礼乐，野人也；后进于礼乐，君子也。如用之，则吾从先进。”\\n子曰：“从我于陈、蔡者，皆不及门也。”\\n德行：颜渊，闵子骞，冉伯牛，仲弓。言语：宰我，子贡。政事：冉有，季路。文学：子游，子夏。\\n子曰：“回也非助我者也，于吾言无所不说。”\\n子曰：“孝哉闵子骞！人不间于其父母昆弟之言。”\\n南容三复白圭，孔子以其兄之子妻之。\\n季康子问：“弟子孰为好学？”孔子对曰：“有颜回者好学，不幸短命死矣，今也则亡。”\\n颜渊死，颜路请子之车以为之椁。",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_3a9a1zV0RwDMNnzjfILq3258"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "token",
+   "content": "已"
+  },
+  {
+   "type": "token",
+   "content": "在"
+  },
+  {
+   "type": "token",
+   "content": "《"
+  },
+  {
+   "type": "token",
+   "content": "论"
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "·"
+  },
+  {
+   "type": "token",
+   "content": "先"
+  },
+  {
+   "type": "token",
+   "content": "进"
+  },
+  {
+   "type": "token",
+   "content": "篇"
+  },
+  {
+   "type": "token",
+   "content": "》"
+  },
+  {
+   "type": "token",
+   "content": "原"
+  },
+  {
+   "type": "token",
+   "content": "典"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "直"
+  },
+  {
+   "type": "token",
+   "content": "接"
+  },
+  {
+   "type": "token",
+   "content": "核"
+  },
+  {
+   "type": "token",
+   "content": "验"
+  },
+  {
+   "type": "token",
+   "content": "到"
+  },
+  {
+   "type": "token",
+   "content": "核"
+  },
+  {
+   "type": "token",
+   "content": "验"
+  },
+  {
+   "type": "token",
+   "content": "到"
+  },
+  {
+   "type": "token",
+   "content": "这"
+  },
+  {
+   "type": "token",
+   "content": "句"
+  },
+  {
+   "type": "token",
+   "content": "原"
+  },
+  {
+   "type": "token",
+   "content": "文"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "以"
+  },
+  {
+   "type": "token",
+   "content": "下"
+  },
+  {
+   "type": "token",
+   "content": "是"
+  },
+  {
+   "type": "token",
+   "content": "我"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "回"
+  },
+  {
+   "type": "token",
+   "content": "答"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "-"
+  },
+  {
+   "type": "token",
+   "content": "-"
+  },
+  {
+   "type": "token",
+   "content": "-"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "「"
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "有"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "」"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "出"
+  },
+  {
+   "type": "token",
+   "content": "处"
+  },
+  {
+   "type": "token",
+   "content": "与"
+  },
+  {
+   "type": "token",
+   "content": "核"
+  },
+  {
+   "type": "token",
+   "content": "验"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "出"
+  },
+  {
+   "type": "token",
+   "content": "处"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "这"
+  },
+  {
+   "type": "token",
+   "content": "句"
+  },
+  {
+   "type": "token",
+   "content": "成"
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "出"
+  },
+  {
+   "type": "token",
+   "content": "自"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "《"
+  },
+  {
+   "type": "token",
+   "content": "论"
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "·"
+  },
+  {
+   "type": "token",
+   "content": "先"
+  },
+  {
+   "type": "token",
+   "content": "进"
+  },
+  {
+   "type": "token",
+   "content": "篇"
+  },
+  {
+   "type": "token",
+   "content": "》"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "原"
+  },
+  {
+   "type": "token",
+   "content": "句"
+  },
+  {
+   "type": "token",
+   "content": "是"
+  },
+  {
+   "type": "token",
+   "content": "："
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": ">"
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "鲁"
+  },
+  {
+   "type": "token",
+   "content": "人"
+  },
+  {
+   "type": "token",
+   "content": "为"
+  },
+  {
+   "type": "token",
+   "content": "长"
+  },
+  {
+   "type": "token",
+   "content": "府"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "闵"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "骞"
+  },
+  {
+   "type": "token",
+   "content": "曰"
+  },
+  {
+   "type": "token",
+   "content": "："
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "仍"
+  },
+  {
+   "type": "token",
+   "content": "旧"
+  },
+  {
+   "type": "token",
+   "content": "贯"
+  },
+  {
+   "type": "token",
+   "content": "如"
+  },
+  {
+   "type": "token",
+   "content": "之"
+  },
+  {
+   "type": "token",
+   "content": "何"
+  },
+  {
+   "type": "token",
+   "content": "？"
+  },
+  {
+   "type": "token",
+   "content": "何"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "改"
+  },
+  {
+   "type": "token",
+   "content": "作"
+  },
+  {
+   "type": "token",
+   "content": "？"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "曰"
+  },
+  {
+   "type": "token",
+   "content": "："
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "夫"
+  },
+  {
+   "type": "token",
+   "content": "人"
+  },
+  {
+   "type": "token",
+   "content": "不"
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "有"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "【"
+  },
+  {
+   "type": "token",
+   "content": "《"
+  },
+  {
+   "type": "token",
+   "content": "论"
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "》"
+  },
+  {
+   "type": "token",
+   "content": "·"
+  },
+  {
+   "type": "token",
+   "content": "先"
+  },
+  {
+   "type": "token",
+   "content": "进"
+  },
+  {
+   "type": "token",
+   "content": "篇"
+  },
+  {
+   "type": "token",
+   "content": "】"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "这"
+  },
+  {
+   "type": "token",
+   "content": "是"
+  },
+  {
+   "type": "token",
+   "content": "孔"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "对"
+  },
+  {
+   "type": "token",
+   "content": "其"
+  },
+  {
+   "type": "token",
+   "content": "弟"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "闵"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "骞"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "一"
+  },
+  {
+   "type": "token",
+   "content": "句"
+  },
+  {
+   "type": "token",
+   "content": "称"
+  },
+  {
+   "type": "token",
+   "content": "赞"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "境"
+  },
+  {
+   "type": "token",
+   "content": "解"
+  },
+  {
+   "type": "token",
+   "content": "读"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "-"
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "背"
+  },
+  {
+   "type": "token",
+   "content": "景"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "："
+  },
+  {
+   "type": "token",
+   "content": "鲁"
+  },
+  {
+   "type": "token",
+   "content": "国"
+  },
+  {
+   "type": "token",
+   "content": "当"
+  },
+  {
+   "type": "token",
+   "content": "政"
+  },
+  {
+   "type": "token",
+   "content": "者"
+  },
+  {
+   "type": "token",
+   "content": "要"
+  },
+  {
+   "type": "token",
+   "content": "改"
+  },
+  {
+   "type": "token",
+   "content": "建"
+  },
+  {
+   "type": "token",
+   "content": "藏"
+  },
+  {
+   "type": "token",
+   "content": "财"
+  },
+  {
+   "type": "token",
+   "content": "货"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "府"
+  },
+  {
+   "type": "token",
+   "content": "库"
+  },
+  {
+   "type": "token",
+   "content": "（"
+  },
+  {
+   "type": "token",
+   "content": "长"
+  },
+  {
+   "type": "token",
+   "content": "府"
+  },
+  {
+   "type": "token",
+   "content": "）"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "闵"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "骞"
+  },
+  {
+   "type": "token",
+   "content": "发"
+  },
+  {
+   "type": "token",
+   "content": "表"
+  },
+  {
+   "type": "token",
+   "content": "意"
+  },
+  {
+   "type": "token",
+   "content": "见"
+  },
+  {
+   "type": "token",
+   "content": "说"
+  },
+  {
+   "type": "token",
+   "content": "："
+  },
+  {
+   "type": "token",
+   "content": "照"
+  },
+  {
+   "type": "token",
+   "content": "着"
+  },
+  {
+   "type": "token",
+   "content": "旧"
+  },
+  {
+   "type": "token",
+   "content": "例"
+  },
+  {
+   "type": "token",
+   "content": "沿"
+  },
+  {
+   "type": "token",
+   "content": "袭"
+  },
+  {
+   "type": "token",
+   "content": "下"
+  },
+  {
+   "type": "token",
+   "content": "去"
+  },
+  {
+   "type": "token",
+   "content": "不"
+  },
+  {
+   "type": "token",
+   "content": "就"
+  },
+  {
+   "type": "token",
+   "content": "行"
+  },
+  {
+   "type": "token",
+   "content": "了"
+  },
+  {
+   "type": "token",
+   "content": "吗"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "何"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "改"
+  },
+  {
+   "type": "token",
+   "content": "建"
+  },
+  {
+   "type": "token",
+   "content": "？"
+  },
+  {
+   "type": "token",
+   "content": "意"
+  },
+  {
+   "type": "token",
+   "content": "思"
+  },
+  {
+   "type": "token",
+   "content": "是"
+  },
+  {
+   "type": "token",
+   "content": "反"
+  },
+  {
+   "type": "token",
+   "content": "对"
+  },
+  {
+   "type": "token",
+   "content": "大"
+  },
+  {
+   "type": "token",
+   "content": "兴"
+  },
+  {
+   "type": "token",
+   "content": "土"
+  },
+  {
+   "type": "token",
+   "content": "木"
+  },
+  {
+   "type": "token",
+   "content": "、"
+  },
+  {
+   "type": "token",
+   "content": "劳"
+  },
+  {
+   "type": "token",
+   "content": "民"
+  },
+  {
+   "type": "token",
+   "content": "伤"
+  },
+  {
+   "type": "token",
+   "content": "财"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "-"
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "孔"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "评"
+  },
+  {
+   "type": "token",
+   "content": "价"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "："
+  },
+  {
+   "type": "token",
+   "content": "他"
+  },
+  {
+   "type": "token",
+   "content": "说"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "那"
+  },
+  {
+   "type": "token",
+   "content": "个"
+  },
+  {
+   "type": "token",
+   "content": "人"
+  },
+  {
+   "type": "token",
+   "content": "（"
+  },
+  {
+   "type": "token",
+   "content": "闵"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "骞"
+  },
+  {
+   "type": "token",
+   "content": "）"
+  },
+  {
+   "type": "token",
+   "content": "平"
+  },
+  {
+   "type": "token",
+   "content": "时"
+  },
+  {
+   "type": "token",
+   "content": "不"
+  },
+  {
+   "type": "token",
+   "content": "轻"
+  },
+  {
+   "type": "token",
+   "content": "易"
+  },
+  {
+   "type": "token",
+   "content": "说"
+  },
+  {
+   "type": "token",
+   "content": "话"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "一"
+  },
+  {
+   "type": "token",
+   "content": "开"
+  },
+  {
+   "type": "token",
+   "content": "口"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "定"
+  },
+  {
+   "type": "token",
+   "content": "切"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "要"
+  },
+  {
+   "type": "token",
+   "content": "害"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "有"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "字"
+  },
+  {
+   "type": "token",
+   "content": "面"
+  },
+  {
+   "type": "token",
+   "content": "义"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "："
+  },
+  {
+   "type": "token",
+   "content": "说"
+  },
+  {
+   "type": "token",
+   "content": "话"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "定"
+  },
+  {
+   "type": "token",
+   "content": "击"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "事"
+  },
+  {
+   "type": "token",
+   "content": "物"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "关"
+  },
+  {
+   "type": "token",
+   "content": "键"
+  },
+  {
+   "type": "token",
+   "content": "、"
+  },
+  {
+   "type": "token",
+   "content": "正"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "（"
+  },
+  {
+   "type": "token",
+   "content": "z"
+  },
+  {
+   "type": "token",
+   "content": "h"
+  },
+  {
+   "type": "token",
+   "content": "ò"
+  },
+  {
+   "type": "token",
+   "content": "n"
+  },
+  {
+   "type": "token",
+   "content": "g"
+  },
+  {
+   "type": "token",
+   "content": "）"
+  },
+  {
+   "type": "token",
+   "content": "要"
+  },
+  {
+   "type": "token",
+   "content": "害"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "后"
+  },
+  {
+   "type": "token",
+   "content": "世"
+  },
+  {
+   "type": "token",
+   "content": "引"
+  },
+  {
+   "type": "token",
+   "content": "申"
+  },
+  {
+   "type": "token",
+   "content": "为"
+  },
+  {
+   "type": "token",
+   "content": "形"
+  },
+  {
+   "type": "token",
+   "content": "容"
+  },
+  {
+   "type": "token",
+   "content": "人"
+  },
+  {
+   "type": "token",
+   "content": "措"
+  },
+  {
+   "type": "token",
+   "content": "辞"
+  },
+  {
+   "type": "token",
+   "content": "精"
+  },
+  {
+   "type": "token",
+   "content": "当"
+  },
+  {
+   "type": "token",
+   "content": "、"
+  },
+  {
+   "type": "token",
+   "content": "说"
+  },
+  {
+   "type": "token",
+   "content": "到"
+  },
+  {
+   "type": "token",
+   "content": "点"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "上"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "成"
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "在"
+  },
+  {
+   "type": "token",
+   "content": "流"
+  },
+  {
+   "type": "token",
+   "content": "传"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "简"
+  },
+  {
+   "type": "token",
+   "content": "化"
+  },
+  {
+   "type": "token",
+   "content": "了"
+  },
+  {
+   "type": "token",
+   "content": "原"
+  },
+  {
+   "type": "token",
+   "content": "句"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "夫"
+  },
+  {
+   "type": "token",
+   "content": "人"
+  },
+  {
+   "type": "token",
+   "content": "不"
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "有"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "前"
+  },
+  {
+   "type": "token",
+   "content": "半"
+  },
+  {
+   "type": "token",
+   "content": "段"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "取"
+  },
+  {
+   "type": "token",
+   "content": "后"
+  },
+  {
+   "type": "token",
+   "content": "半"
+  },
+  {
+   "type": "token",
+   "content": "段"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "必"
+  },
+  {
+   "type": "token",
+   "content": "有"
+  },
+  {
+   "type": "token",
+   "content": "中"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "而"
+  },
+  {
+   "type": "token",
+   "content": "成"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": "#"
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "一"
+  },
+  {
+   "type": "token",
+   "content": "点"
+  },
+  {
+   "type": "token",
+   "content": "提"
+  },
+  {
+   "type": "token",
+   "content": "示"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "需"
+  },
+  {
+   "type": "token",
+   "content": "注"
+  },
+  {
+   "type": "token",
+   "content": "意"
+  },
+  {
+   "type": "token",
+   "content": "两"
+  },
+  {
+   "type": "token",
+   "content": "处"
+  },
+  {
+   "type": "token",
+   "content": "细"
+  },
+  {
+   "type": "token",
+   "content": "节"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "避"
+  },
+  {
+   "type": "token",
+   "content": "免"
+  },
+  {
+   "type": "token",
+   "content": "混"
+  },
+  {
+   "type": "token",
+   "content": "记"
+  },
+  {
+   "type": "token",
+   "content": "："
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "1"
+  },
+  {
+   "type": "token",
+   "content": "."
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "这"
+  },
+  {
+   "type": "token",
+   "content": "句"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "完"
+  },
+  {
+   "type": "token",
+   "content": "整"
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "境"
+  },
+  {
+   "type": "token",
+   "content": "含"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "仍"
+  },
+  {
+   "type": "token",
+   "content": "旧"
+  },
+  {
+   "type": "token",
+   "content": "贯"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "后"
+  },
+  {
+   "type": "token",
+   "content": "世"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "萧"
+  },
+  {
+   "type": "token",
+   "content": "规"
+  },
+  {
+   "type": "token",
+   "content": "曹"
+  },
+  {
+   "type": "token",
+   "content": "随"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "式"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "循"
+  },
+  {
+   "type": "token",
+   "content": "旧"
+  },
+  {
+   "type": "token",
+   "content": "思"
+  },
+  {
+   "type": "token",
+   "content": "想"
+  },
+  {
+   "type": "token",
+   "content": "与"
+  },
+  {
+   "type": "token",
+   "content": "之"
+  },
+  {
+   "type": "token",
+   "content": "相"
+  },
+  {
+   "type": "token",
+   "content": "近"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "但"
+  },
+  {
+   "type": "token",
+   "content": "它"
+  },
+  {
+   "type": "token",
+   "content": "核"
+  },
+  {
+   "type": "token",
+   "content": "心"
+  },
+  {
+   "type": "token",
+   "content": "褒"
+  },
+  {
+   "type": "token",
+   "content": "扬"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "是"
+  },
+  {
+   "type": "token",
+   "content": "闵"
+  },
+  {
+   "type": "token",
+   "content": "子"
+  },
+  {
+   "type": "token",
+   "content": "骞"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "慎"
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "而"
+  },
+  {
+   "type": "token",
+   "content": "精"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "*"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "品"
+  },
+  {
+   "type": "token",
+   "content": "质"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "而"
+  },
+  {
+   "type": "token",
+   "content": "非"
+  },
+  {
+   "type": "token",
+   "content": "仅"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "保"
+  },
+  {
+   "type": "token",
+   "content": "守"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "2"
+  },
+  {
+   "type": "token",
+   "content": "."
+  },
+  {
+   "type": "token",
+   "content": " "
+  },
+  {
+   "type": "token",
+   "content": "若"
+  },
+  {
+   "type": "token",
+   "content": "只"
+  },
+  {
+   "type": "token",
+   "content": "看"
+  },
+  {
+   "type": "token",
+   "content": "检"
+  },
+  {
+   "type": "token",
+   "content": "索"
+  },
+  {
+   "type": "token",
+   "content": "片"
+  },
+  {
+   "type": "token",
+   "content": "段"
+  },
+  {
+   "type": "token",
+   "content": "容"
+  },
+  {
+   "type": "token",
+   "content": "易"
+  },
+  {
+   "type": "token",
+   "content": "误"
+  },
+  {
+   "type": "token",
+   "content": "认"
+  },
+  {
+   "type": "token",
+   "content": "为"
+  },
+  {
+   "type": "token",
+   "content": "该"
+  },
+  {
+   "type": "token",
+   "content": "句"
+  },
+  {
+   "type": "token",
+   "content": "位"
+  },
+  {
+   "type": "token",
+   "content": "于"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "公"
+  },
+  {
+   "type": "token",
+   "content": "冶"
+  },
+  {
+   "type": "token",
+   "content": "长"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "等"
+  },
+  {
+   "type": "token",
+   "content": "篇"
+  },
+  {
+   "type": "token",
+   "content": "—"
+  },
+  {
+   "type": "token",
+   "content": "—"
+  },
+  {
+   "type": "token",
+   "content": "经"
+  },
+  {
+   "type": "token",
+   "content": "我"
+  },
+  {
+   "type": "token",
+   "content": "读"
+  },
+  {
+   "type": "token",
+   "content": "取"
+  },
+  {
+   "type": "token",
+   "content": "《"
+  },
+  {
+   "type": "token",
+   "content": "先"
+  },
+  {
+   "type": "token",
+   "content": "进"
+  },
+  {
+   "type": "token",
+   "content": "篇"
+  },
+  {
+   "type": "token",
+   "content": "》"
+  },
+  {
+   "type": "token",
+   "content": "原"
+  },
+  {
+   "type": "token",
+   "content": "文"
+  },
+  {
+   "type": "token",
+   "content": "核"
+  },
+  {
+   "type": "token",
+   "content": "验"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "确"
+  },
+  {
+   "type": "token",
+   "content": "在"
+  },
+  {
+   "type": "token",
+   "content": "先"
+  },
+  {
+   "type": "token",
+   "content": "进"
+  },
+  {
+   "type": "token",
+   "content": "篇"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "且"
+  },
+  {
+   "type": "token",
+   "content": "成"
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "由"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "夫"
+  },
+  {
+   "type": "token",
+   "content": "人"
+  },
+  {
+   "type": "token",
+   "content": "不"
+  },
+  {
+   "type": "token",
+   "content": "言"
+  },
+  {
+   "type": "token",
+   "content": "\""
+  },
+  {
+   "type": "token",
+   "content": "一"
+  },
+  {
+   "type": "token",
+   "content": "语"
+  },
+  {
+   "type": "token",
+   "content": "的"
+  },
+  {
+   "type": "token",
+   "content": "省"
+  },
+  {
+   "type": "token",
+   "content": "略"
+  },
+  {
+   "type": "token",
+   "content": "演"
+  },
+  {
+   "type": "token",
+   "content": "化"
+  },
+  {
+   "type": "token",
+   "content": "而"
+  },
+  {
+   "type": "token",
+   "content": "来"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "核"
+  },
+  {
+   "type": "token",
+   "content": "验"
+  },
+  {
+   "type": "token",
+   "content": "后"
+  },
+  {
+   "type": "token",
+   "content": "我"
+  },
+  {
+   "type": "token",
+   "content": "对"
+  },
+  {
+   "type": "token",
+   "content": "出"
+  },
+  {
+   "type": "token",
+   "content": "处"
+  },
+  {
+   "type": "token",
+   "content": "为"
+  },
+  {
+   "type": "token",
+   "content": "先"
+  },
+  {
+   "type": "token",
+   "content": "进"
+  },
+  {
+   "type": "token",
+   "content": "篇"
+  },
+  {
+   "type": "token",
+   "content": "这"
+  },
+  {
+   "type": "token",
+   "content": "一"
+  },
+  {
+   "type": "token",
+   "content": "点"
+  },
+  {
+   "type": "token",
+   "content": "没"
+  },
+  {
+   "type": "token",
+   "content": "有"
+  },
+  {
+   "type": "token",
+   "content": "疑"
+  },
+  {
+   "type": "token",
+   "content": "义"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "\n"
+  },
+  {
+   "type": "token",
+   "content": "若"
+  },
+  {
+   "type": "token",
+   "content": "需"
+  },
+  {
+   "type": "token",
+   "content": "对"
+  },
+  {
+   "type": "token",
+   "content": "照"
+  },
+  {
+   "type": "token",
+   "content": "其"
+  },
+  {
+   "type": "token",
+   "content": "他"
+  },
+  {
+   "type": "token",
+   "content": "版"
+  },
+  {
+   "type": "token",
+   "content": "本"
+  },
+  {
+   "type": "token",
+   "content": "或"
+  },
+  {
+   "type": "token",
+   "content": "解"
+  },
+  {
+   "type": "token",
+   "content": "读"
+  },
+  {
+   "type": "token",
+   "content": "，"
+  },
+  {
+   "type": "token",
+   "content": "可"
+  },
+  {
+   "type": "token",
+   "content": "继"
+  },
+  {
+   "type": "token",
+   "content": "续"
+  },
+  {
+   "type": "token",
+   "content": "告"
+  },
+  {
+   "type": "token",
+   "content": "诉"
+  },
+  {
+   "type": "token",
+   "content": "我"
+  },
+  {
+   "type": "token",
+   "content": "。"
+  },
+  {
+   "type": "done",
+   "citations": [
+    {
+     "evidence_id": "ev_32",
+     "book": "论语",
+     "chapter": "先进篇",
+     "book_id": "d9272a80942a",
+     "chapter_idx": 12,
+     "author": "孔子",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": []
+    }
+   ],
+   "evidence": {
+    "retrieved_evidence": [
+     {
+      "evidence_id": "ev_1",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "德经·第七十章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 69,
+      "author": "老子",
+      "snippet": "德经·第七十章 吾言甚易知，甚易行。天下莫能知，莫能行。言有宗，事有君。夫唯无知，是以不我知。知我者希，则我者贵。是以圣人被褐而怀玉。",
+      "score": 0.534,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_2",
+      "source_id": "src_search_0",
+      "book": "大学章句集注",
+      "chapter": "第五章",
+      "book_id": "4c5aaf145298",
+      "chapter_idx": 6,
+      "author": "朱熹",
+      "snippet": "子曰：“听讼，吾犹人也。必也使无讼乎！”无情者不得尽其辞。大畏民志，此谓知本。 此谓知本，此谓知之至也。",
+      "score": 0.532,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_3",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "德经·第五十六章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 55,
+      "author": "老子",
+      "snippet": "德经·第五十六章 知者不言，言者不知。塞其兑，闭其门；挫其锐，解其纷；和其光，同其尘，是谓玄同。故不可得而亲，不可得而疏；不可得而利，不可得而害；不可得而贵，不可得而贱；故为天下贵。",
+      "score": 0.512,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_4",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "德经·第四十三章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 42,
+      "author": "老子",
+      "snippet": "德经·第四十三章 天下之至柔，驰骋天下之至坚。无有入无间，吾是以知无为之有益。不言之教，无为之益，天下希及之。",
+      "score": 0.51,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_5",
+      "source_id": "src_search_0",
+      "book": "韩非子",
+      "chapter": "说难",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 13,
+      "author": "韩非",
+      "snippet": "凡说之难：非吾知之有以说之之难也，又非吾辩之能明吾意之难也，又非吾敢横失而能尽之难也。凡说之难：在知所说之心，可以吾说当之。所说出于为名高者也，而说之以厚利，则见下节而遇卑贱，必弃远矣。所说出于厚利者也，而说之以名高，则见无心而远事情，必不收矣。所说阴为厚利而显为名高者也，而说之以名高，则阳收其身而实疏之；说之以厚利，则阴用其言显弃其身矣。此不可不察也。 夫事以密成，语以泄败。未必其身泄之也，而语及所匿之事，如此者身危。彼显有所出事，而",
+      "score": 0.508,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_6",
+      "source_id": "src_search_0",
+      "book": "王阳明全集：简体注释版",
+      "chapter": "说",
+      "book_id": "909e887aac01",
+      "chapter_idx": 45,
+      "author": "王阳明",
+      "snippet": "梁仲用默斋说 （辛未） 仲用识高而气豪，既举进士，锐然有志天下之务。一旦责其志曰：“於呼！予乃太早。乌有己之弗治而能治人者！”于是专心为己之学，深思其气质之偏 [1] ，而病其言之易也，以“默”名庵，过予而请其方。予亦天下之多言人也，岂足以知默之道！然予尝自验之，气浮则多言，志轻则多言。气浮者耀于外，志轻者放其中。予请诵古之训而仲用自取之。 夫默有四伪：疑而不知问，蔽而不知辩，冥然以自罔，谓之默之愚；以不言 人者，谓之默之狡；虑人之觇其",
+      "score": 0.506,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_7",
+      "source_id": "src_search_0",
+      "book": "中庸",
+      "chapter": "第七章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 8,
+      "author": "子思",
+      "snippet": "子曰：“人皆曰‘予知’，驱而纳诸罟擭陷阱之中，而莫之知辟也。人皆曰‘予知’，择乎中庸，而不能期月守也。”",
+      "score": 0.499,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_8",
+      "source_id": "src_search_0",
+      "book": "韩非子",
+      "chapter": "问辩",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 42,
+      "author": "韩非",
+      "snippet": "或问曰：“辩安生乎？” 对曰：“生于上之不明也。” 问者曰：“上之不明因生辩也，何哉？” 对曰：“明主之国，令者，言最贵者也；法者，事最适者也。言无二贵，法不两适，故言行而不轨于法令者必禁。若其无法令而可以接诈、应变、生利、揣事者，上必采其言而责其实。言当，则有大利；不当，则有重罪。是以愚者畏罪而不敢言，智者无以讼。此所以无辩之故也。乱世则不然：主有令，而民以文学非之；官府有法，民以私行矫之。人主顾渐其法令而尊学者之智行，此世之所以多文",
+      "score": 0.499,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_9",
+      "source_id": "src_search_0",
+      "book": "中庸",
+      "chapter": "第二十一章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 22,
+      "author": "子思",
+      "snippet": "“自诚明，谓之性；自明诚，谓之教。诚则明矣；明则诚矣。”",
+      "score": 0.498,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_10",
+      "source_id": "src_search_0",
+      "book": "荀子",
+      "chapter": "非十二子",
+      "book_id": "795658cafeab",
+      "chapter_idx": 7,
+      "author": "荀子",
+      "snippet": "假今之世，饰邪说，文奸言，以枭乱天下，矞宇嵬琐，使天下混然不知是非治乱之所在者有人矣。 纵情性，安恣睢，禽兽行，不足以合文通治；然而其持之有故，其言之成理，足以欺惑愚众；是它嚣、魏牟也。 忍情性，綦谿利跂，苟以分异人为高，不足以合大众、明大分；然而其持之有故，其言之成理，足以欺惑愚众，是陈仲史鰌也。 不知壹天下、建国家之权称，上功用、大俭约而僈差等，曾不足以容辨异，县君臣；然而其持之有故，其言之成理，足以欺惑愚众，是墨翟、宋钘也。 尚法",
+      "score": 0.497,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_11",
+      "source_id": "src_search_0",
+      "book": "中庸",
+      "chapter": "第二十五章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 26,
+      "author": "子思",
+      "snippet": "诚者自成也，而道自道也。 诚者，物之终始，不诚无物。是故君子诚之为贵。 诚者，非自成己而已也。所以成物也。成己仁也。成物知也。性之德也，合外内之道也。故时措之宜也。",
+      "score": 0.494,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_12",
+      "source_id": "src_search_0",
+      "book": "三十六计",
+      "chapter": "指桑骂槐",
+      "book_id": "23026c516292",
+      "chapter_idx": 26,
+      "author": "佚名",
+      "snippet": "大凌小者，警以诱之。刚中而应，行险而顺。",
+      "score": 0.494,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_13",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "第三十七章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 36,
+      "author": "老子",
+      "snippet": "道常无为而无不为。侯王若能守之，万物将自化。化而欲作，吾将镇之以无名之朴。镇之以无名之朴，夫将不欲。不欲以静，天下将自正。",
+      "score": 0.487,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_14",
+      "source_id": "src_search_0",
+      "book": "中庸",
+      "chapter": "第八章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 9,
+      "author": "子思",
+      "snippet": "子曰：“回之为人也：择乎中庸，得一善，则拳拳服膺而弗失之矣。”",
+      "score": 0.485,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_15",
+      "source_id": "src_search_0",
+      "book": "鬼谷子",
+      "chapter": "权篇",
+      "book_id": "1f6fe151032b",
+      "chapter_idx": 8,
+      "author": "鬼谷子",
+      "snippet": "说者，说之也；说之者，资之也，饰言者，假之也；假之者，益损也。应对者，利辞也；利辞者，轻论也。成义者，明之也；明之者，符验也。难言者，却论也；却论者，钓几也。佞言者，谄而于忠：谀言者，博而于智；平言者，决而于勇；戚言者，权而于信；静言者，反而于胜。先意承欲者，谄也；繁种文辞者，博也；策选进谋者，权也。纵舍不疑者，决也；先分不足而窒非者，反也。 故口者机关也，所以关闭情意也。耳目者，心之佐助也，所以窥间见奸邪。故曰：“参调而应，利道而动。",
+      "score": 0.481,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_17",
+      "source_id": "src_search_1",
+      "book": "世说新语",
+      "chapter": "惑溺",
+      "book_id": "855b28458491",
+      "chapter_idx": 36,
+      "author": "刘义庆",
+      "snippet": "魏甄后惠而有色，先为袁熙妻，甚获宠。曹公之屠邺也，令疾召甄，左右白：“五官中郎已将去。”公曰：“今年破贼正为奴。” 荀奉倩与妇至笃，冬月妇病热，乃出中庭自取冷，还以身熨之。妇亡，奉倩后少时亦卒。以是获讥于世。奉倩曰：“妇人德不足称，当以色为主。”裴令闻之曰：“此乃是兴到之事，非盛德言，冀后人未昧此语。” 贾公闾后妻郭氏酷妒，有男儿名黎民，生载周，充自外还，乳母抱儿在中庭，儿见充喜踊，充就乳母手中呜之。郭遥望见，谓充爱乳母，即杀之。儿悲思",
+      "score": 0.427,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_18",
+      "source_id": "src_search_1",
+      "book": "中庸",
+      "chapter": "第十二章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 13,
+      "author": "子思",
+      "snippet": "君子之道，费而隐。 夫妇之愚，可以与知焉，及其至也，虽圣人亦有所不知焉。夫妇之不肖，可以能行焉，及其至也，虽圣人亦有所不能焉。天地之大也，人犹有所憾。故君子语大，天下莫能载焉，语小，天下莫能破焉。 诗云：“鸢飞戾天；鱼跃于渊。”言其上下察也。 君子之道，造端乎夫妇；及其至也，察乎天地。",
+      "score": 0.421,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_19",
+      "source_id": "src_search_1",
+      "book": "论语",
+      "chapter": "公冶长篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 6,
+      "author": "孔子",
+      "snippet": "子谓公冶长：“可妻也，虽在缧绁之中，非其罪也！”以其子妻之。 子谓南容：“邦有道不废；邦无道免于刑戮。”以其兄之子妻之。 子谓子贱：“君子哉若人！鲁无君子者，斯焉取斯？” 子贡问曰：“赐也何如？”子曰：“女器也。”曰：“何器也？”曰：“瑚琏也。” 或曰：“雍也仁而不佞。”子曰：“焉用佞？御人以口给，屡憎于人。不知其仁，焉用佞？” 子使漆雕开仕，对曰：“吾斯之未能信。”子说。 子曰：“道不行，乘桴浮于海，从我者其由与？”子路闻之喜，子曰：",
+      "score": 0.42,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_20",
+      "source_id": "src_search_1",
+      "book": "韩非子",
+      "chapter": "备内",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 18,
+      "author": "韩非",
+      "snippet": "人主之患在于信人，信人，则制于人。人臣之于其君，非有骨肉之亲也，缚于势而不得不事也。故为人臣者，窥觇其君心也，无须臾之休，而人主怠傲处上，此世所以有劫君杀主也。为人主而大信其子，则奸臣得乘于子以成其私，故李兑传赵王而饿主父。为人主而大信其妻，则奸臣得乘于妻以成其私，故优施传丽姬杀申生而立奚齐。夫以妻之近与子之亲而犹不可信，则其余无可信者矣。 且万乘之主，千乘之君，后妃夫人、适子为太子者，或有欲其君之蚤死者。何以知其然，夫妻者，非有骨肉之",
+      "score": 0.417,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_21",
+      "source_id": "src_search_1",
+      "book": "韩非子",
+      "chapter": "难言",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 4,
+      "author": "韩非",
+      "snippet": "臣非非难言也，所以难言者：言顺比滑泽，洋洋纚纚然，则见以 为华而不实。敦祗恭厚，鲠固慎完，则见以为掘而不伦。多言繁称， 连类比物，则见以为虚而无用。捴微说约，径省而不饰，则见以为刿 而不辩。激急亲近，探知人情，则见以为谮而不让。闳大广博，妙远不测，则见以为夸而无用。家计小谈，以具数言，则见以为陋。言而近世，辞不悖逆，则见以为贪生而谀上。言而远俗，诡躁人间，则见以为诞。捷敏辩给，繁于文采，则见以为史。殊释文学，以质信言，则见以为鄙。时称诗",
+      "score": 0.409,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_22",
+      "source_id": "src_search_1",
+      "book": "老子道德经",
+      "chapter": "第七十章 被褐怀玉",
+      "book_id": "dd8853676655",
+      "chapter_idx": 70,
+      "author": "老子",
+      "snippet": "【原文】 吾言甚易知，甚易行。天下莫能知，莫能行。言有宗，事有君。夫惟无知，是以不我知[127]。知我者希[128]，则我者贵矣[129]。是以圣人被褐而怀玉[130]。 【译文】 我的话很容易懂，很容易实行。可是天下却没有人懂得我的话，没有人照着去实行。说话是有宗旨的，做事是有根据的。可正是由于人们不理解这个道理，所以不了解我。懂得我的人很少，能取法于我的人就更难得了。所以有道的人总是外表披着粗布衣服，而怀里却揣着美玉。 【解析】 在",
+      "score": 0.407,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_23",
+      "source_id": "src_search_1",
+      "book": "颜氏家训",
+      "chapter": "兄弟篇",
+      "book_id": "b7959caca36d",
+      "chapter_idx": 4,
+      "author": "颜之推",
+      "snippet": "夫有人民而后有夫妇，有夫妇而后有父子，有父子而后有兄弟：一家之亲，此三而已矣。自兹以往，至于九族，皆本于三亲焉，故于人伦为重者也，不可不笃。兄弟者，分形连气之人也，方其幼也，父母左提右挈，前襟后裾，食则同案，衣则传服，学则连业，游则共方，虽有悖乱之人，不能不相爱也。及其壮也，各妻其妻，各子其子，虽有笃厚之人，不能不少衰也。娣姒之比兄弟，则疏薄矣；今使疏薄之人，而节量亲厚之恩，犹方底而圆盖，必不合矣。惟友悌深至，不为旁人之所移者，免夫！ ",
+      "score": 0.404,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_24",
+      "source_id": "src_search_1",
+      "book": "庄子",
+      "chapter": "寓言",
+      "book_id": "84adfb4d0c0b",
+      "chapter_idx": 28,
+      "author": "庄子",
+      "snippet": "寓言十九，重言十七，卮言日出，和以天倪。寓言十九，藉外论之 。亲父不为其子媒。亲父誉之，不若非其父者也。非吾罪也，人之罪 也。与己同则应，不与己同则反。同于己为是之，异于己为非之。重 言十七，所以己言也。是为耆艾，年先矣，而无经纬本末以期年耆者 ，是非先也。人而无以先人，无人道也。人而无人道，是之谓陈人。 卮言日出，和以天倪，因以曼衍，所以穷年。不言则齐，齐与言不齐 ，言与齐不齐也。故曰：“言无言。”言无言：终身言，未尝言；终 身不言，",
+      "score": 0.402,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_25",
+      "source_id": "src_search_1",
+      "book": "韩非子",
+      "chapter": "外储说左上",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 33,
+      "author": "韩非",
+      "snippet": "△经一 明主之道，如有若之应密子也。明主之听言也，美其辩；其观行也，贤其远。故群臣士民之道言者迂弘，其行身也离世。其说在田鸠对荆王也。故墨子为木鸢，讴癸筑武宫。夫药酒忠言，明君圣主之以独知也。 △经二 人主之听言也，不以功用为的，则说者多“棘刺“、“白马“之说；不以仪的为关，则射者皆如羿也。人主于说也，皆如燕王学道也；而长说者，皆如郑人争年也。是以言有纤察微难而非务也。故季、惠、宋、墨皆画策也；论有迂深闳大，非用也。故畏震胆车言而拂难坚",
+      "score": 0.4,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_26",
+      "source_id": "src_search_1",
+      "book": "卡拉马佐夫兄弟",
+      "chapter": "三　续弦与续弦所出",
+      "book_id": "1325746d6f46",
+      "chapter_idx": 3,
+      "author": "费奥多尔·陀思妥耶夫斯基",
+      "snippet": "费尧多尔·巴甫洛维奇在甩掉了四岁的米嘉之后，很快便续了弦。第二次婚姻持续约有八年。这第二位太太也很年轻，名叫索菲娅·伊万诺夫娜，来自别的省份，费尧多尔·巴甫洛维奇曾经为一注小买卖与一个犹太人结伴去过那里。费尧多尔·巴甫洛维奇尽管酗酒好色、纵欲无度，但从不停止投资牟利，而且买卖总是很得法，当然差不多每次都要做些手脚。索菲娅·伊万诺夫娜是一名品行可疑的教堂执事之女，自幼失去怙恃，在一户富贵人家长大，收养抚育她的是沃洛霍夫将军的遗孀，这位老太",
+      "score": 0.398,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_27",
+      "source_id": "src_search_1",
+      "book": "道德经",
+      "chapter": "德经·第五十二章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 51,
+      "author": "老子",
+      "snippet": "德经·第五十二章 天下有始，以为天下母。既得其母，以知其子，复守其母，没身不殆。塞其兑，闭其门，终身不勤。开其兑，济其事，终身不救。见小曰明，守柔曰强。用其光，复归其明，无遗身殃；是为袭常。",
+      "score": 0.394,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_28",
+      "source_id": "src_search_1",
+      "book": "吕氏春秋",
+      "chapter": "不苟论",
+      "book_id": "78687dc8052a",
+      "chapter_idx": 23,
+      "author": "吕不韦",
+      "snippet": "【不苟】 一曰：贤者之事也，虽贵不苟为，虽听不自阿，必中理然後动，必当义然後举。此忠臣之行也，贤主之所说，而不肖主之所不说。非恶其声也。人主虽不肖，其说忠臣之声与贤主同，行其实则与贤主有异。异，故其功名祸福亦异。异，故子胥见说於阖闾，而恶乎夫差；比干生而恶於商，死而见说乎周。武王至殷郊，系堕。五人御於前，莫肯之为，曰：“吾所以事君者，非系也。”武王左释白羽，右释黄钺，勉而自为系。孔子闻之曰：“此五人者之所以为王者佐也，不肖主之所弗安也。",
+      "score": 0.393,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_29",
+      "source_id": "src_search_1",
+      "book": "呻吟语",
+      "chapter": "伦理",
+      "book_id": "4e213cf57480",
+      "chapter_idx": 5,
+      "author": "吕坤",
+      "snippet": "宇宙内大情种，男女居其第一。圣王不欲裁割而矫拂之，亦不能裁割矫拂也。故通之以不可已之情，约之以不可犯之礼，绳之以必不赦之法，使纵之而相安相久也。圣人亦不若是之亟也，故五伦中父子、君臣、兄弟、朋友，笃了又笃，厚了又厚，惟恐情意之薄。惟男女一伦，是圣人苦心处，故有别先自夫妇始。本与之以无别也，而又教之以有别，况有别者，而肯使之混乎？圣人之用意深矣！是死生之衢而大乱之首也，不可以不慎也。 亲母之爱子也，无心于用爱，亦不知其为用爱，若渴饮饥食然",
+      "score": 0.393,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_30",
+      "source_id": "src_search_1",
+      "book": "周易",
+      "chapter": "家人卦",
+      "book_id": "1aaee7b6bdfe",
+      "chapter_idx": 37,
+      "author": "佚名",
+      "snippet": "《家人》：利女贞。 初九：闲有家，悔亡。 六二：无攸遂，在中馈，贞吉。 九三：家人嗃嗃，悔厉吉；妇子嘻嘻，终吝。 六四：富家，大吉。 九五：王假有家，勿恤，吉。 上九：有孚威如，终吉。",
+      "score": 0.392,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_31",
+      "source_id": "src_search_3",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "雍也第六",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 669,
+      "author": "南怀瑾",
+      "snippet": "上一篇《公冶长》，是对前四篇整个学问系统，做一对话式讨论的前半集，本篇第六篇《雍也》是和第五篇的性质相衔接起来的，也就是讨论印证的后半集。 闲置帝王才 这里就讲到一个人。 子曰：雍也，可使南面。仲弓问子桑伯子。子曰：可也，简。仲弓曰：居敬而行简，以临其民，不亦可乎？居简而行简，无乃大简乎？子曰：雍之言然。 这篇书，同上篇以公冶长的名字来作篇名一样的，也是以学生“雍”的名字来作篇名。《公冶长》代表修德之体；《雍也》代表进业之用。雍是孔子学",
+      "score": 0.423,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_32",
+      "source_id": "src_search_3",
+      "book": "论语",
+      "chapter": "先进篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 12,
+      "author": "孔子",
+      "snippet": "子曰：“先进于礼乐，野人也；后进于礼乐，君子也。如用之，则吾从先进。”\n子曰：“从我于陈、蔡者，皆不及门也。”\n德行：颜渊，闵子骞，冉伯牛，仲弓。言语：宰我，子贡。政事：冉有，季路。文学：子游，子夏。\n子曰：“回也非助我者也，于吾言无所不说。”\n子曰：“孝哉闵子骞！人不间于其父母昆弟之言。”\n南容三复白圭，孔子以其兄之子妻之。\n季康子问：“弟子孰为好学？”孔子对曰：“有颜回者好学，不幸短命死矣，今也则亡。”\n颜渊死，颜路请子之车以为之椁",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": true,
+      "supports_claim_ids": [],
+      "candidate": true
+     },
+     {
+      "evidence_id": "ev_33",
+      "source_id": "src_search_3",
+      "book": "道德经",
+      "chapter": "第十七章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 16,
+      "author": "老子",
+      "snippet": "太上，不知有之；其次，亲而誉之；其次，畏之；其次，侮之。信不足焉，有不信焉。悠兮，其贵言。功成事遂，百姓皆谓：“我自然”。",
+      "score": 0.418,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_34",
+      "source_id": "src_search_3",
+      "book": "孟子",
+      "chapter": "公孙丑章句上",
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 2,
+      "author": "孟子",
+      "snippet": "公孙丑章句上·第一节 公孙丑问曰：“夫子当路于齐，管仲、晏子之功，可复许乎？” 孟子曰：“子诚齐人也，知管仲、晏子而已矣。或问乎曾西曰；‘吾子与子路孰贤？’曾西蹙然曰：‘吾先子之所畏也。’曰：‘然则吾子与管仲孰贤？’曾西艴然不悦，曰：‘尔何曾比予于管仲？管仲得君，如彼其专也；行乎国政，如彼其久也；功烈，如彼其卑也。尔何曾比予于是？’” 曰：“管仲，曾西之所不为也，而子为我愿之乎？” 曰：“管仲以其君霸，晏子以其君显。管仲、晏子犹不足为与",
+      "score": 0.395,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_35",
+      "source_id": "src_search_3",
+      "book": "论语",
+      "chapter": "雍也篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 7,
+      "author": "孔子",
+      "snippet": "子曰：“雍也可使南面。” 仲弓问子桑伯子，子曰：“可也，简。”仲弓曰：“居敬而行简，以临其民，不亦可乎？居简而行简，无乃大简乎？”子曰：“雍之言然。” 哀公问：“弟子孰为好学？”孔子对曰：“有颜回者好学，不迁怒，不贰过，不幸短命死矣，今也则亡，未闻好学者也。” 子华使于齐，冉子为其母请粟，子曰：“与之釜。”请益，曰：“与之庾。”冉子与之粟五秉。子曰：“赤之适齐也，乘肥马，衣轻裘。吾闻之也，君子周急不继富。” 原思为之宰，与之粟九百，辞。",
+      "score": 0.394,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_36",
+      "source_id": "src_search_3",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "校订版说明",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 648,
+      "author": "南怀瑾",
+      "snippet": "这本书是在十年前出版的，三年前又授权在大陆印行简体字版，出书后广受读者欢迎，得到很大的回响。 后有北京陈四益先生，为文指出本书中有关《晏子论权》一节，讲解似有偏差之处，南师怀瑾先生获悉后，除立即致函陈君，感谢其热心纠正外，并立嘱编辑部重新校订全书，修正疏失。为此也要向读者致歉。 开始参加这次校订工作的人，有阎修篆、周勋男、吴琼恩及杜忠诰等诸先生。但最后独挑大梁者，却是杜忠诰先生一人了。 杜先生是在大学时代由《论语别裁》一书，开始与南师结",
+      "score": 0.391,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_37",
+      "source_id": "src_search_3",
+      "book": "让孩子像哲学家一样会思考",
+      "chapter": "第九章 普罗塔哥拉——“人”是万物的尺度",
+      "book_id": "8331c039d11a",
+      "chapter_idx": 10,
+      "author": "张玮",
+      "snippet": "上一章，我们介绍了芝诺，也介绍了他那两个最著名的悖论。 有人说，芝诺可以称得上一个诡辩家了。什么是诡辩？诡辩是一种看似正确、实际错误的辩论，巧妙地利用人们看不出的漏洞来证明自己的观点。 今天我们要讲的这位哲学家也很善于辩论，这个人就是智者学派的代表人物，名字叫普罗塔哥拉。  其实，“智者”这个词原来是个褒义词。 在古希腊的早些时候，“智者”不分行业，可以指各行各业的聪明人：造船工人、铁匠、雕刻大师都可以被称为“智者”。后来“智者”慢慢变",
+      "score": 0.381,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_38",
+      "source_id": "src_search_3",
+      "book": "中国哲学简史",
+      "chapter": "第五章 墨子：孔子的第一个反对者",
+      "book_id": "32093eed6ff1",
+      "chapter_idx": 6,
+      "author": "冯友兰",
+      "snippet": "孔子之后，下一个主要的哲学家是墨子。他姓墨名翟。《史记》上没有说他是哪国人，关于他的生平也说得很少，实际上等于没有说。因而关于墨子是哪国人历来有意见分歧。有些学者说他是宋（今豫东鲁西）人，另一些学者说他是鲁人。他的生卒也不能肯定是哪年，大概是在公元前479年至前381年以内。研究墨子思想，主要资料是《墨子》一书，共五十三篇，是墨子本人及其后学的著作总集。 墨子创立的学派名为墨家。在古代，墨子与孔子享有同等的盛名，墨学的影响也不亚于孔学。",
+      "score": 0.378,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_39",
+      "source_id": "src_search_3",
+      "book": "论语",
+      "chapter": "子路篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 14,
+      "author": "孔子",
+      "snippet": "子路问政，子曰：“先之，劳之。”请益，曰：“无倦。” 仲弓为季氏宰，问政，子曰：“先有司，赦小过，举贤才。”曰：“焉知贤才而举之？”曰：“举尔所知。尔所不知，人其舍诸？” 子路曰：“卫君待子而为政，子将奚先？”子曰：“必也正名乎！”子路曰：“有是哉，子之迂也！奚其正？”子曰：“野哉由也！君子于其所不知，盖阙如也。名不正，则言不顺；言不顺，则事不成；事不成，则礼乐不兴；礼乐不兴，则刑罚不中；刑罚不中，则民无所措手足。故君子名之必可言也，言",
+      "score": 0.377,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_40",
+      "source_id": "src_search_3",
+      "book": "中国哲学简史",
+      "chapter": "第六章 道家第一阶段：杨朱",
+      "book_id": "32093eed6ff1",
+      "chapter_idx": 7,
+      "author": "冯友兰",
+      "snippet": "《论语》记载，孔子周游列国时遇到一些他称为“隐者”（《微子》）的“避世”（《宪问》）的人。这些隐者嘲笑孔子，认为孔子救世的努力都是徒劳。有一位隐者把孔子说成“是知其不可而为之者”（《宪问》）。孔子的弟子子路，有一次回答了这些攻击，说：“不仕无义。长幼之节，不可废也。君臣之义，如之何其废之，欲洁其身，而乱大伦？君子之仕也，行其义也。道之不行，已知之矣。”（《微子》） 早期道家和隐者 隐者正是这样的“欲洁其身”的个人主义者。在某种意义上，他",
+      "score": 0.369,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_41",
+      "source_id": "src_search_3",
+      "book": "论语",
+      "chapter": "季氏篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 17,
+      "author": "孔子",
+      "snippet": "季氏将伐颛臾，冉有、季路见于孔子，曰：“季氏将有事于颛臾。”孔子曰：“求，无乃尔是过与？夫颛臾，昔者先王以为东蒙主，且在邦域之中矣，是社稷之臣也。何以伐为？”冉有曰：“夫子欲之，吾二臣者皆不欲也。”孔子曰：“求，周任有言曰：‘陈力就列，不能者止。’危而不持，颠而不扶，则将焉用彼相矣？且尔言过矣，虎兕出于柙，龟玉毁于椟中，是谁之过与？”冉有曰：“今夫颛臾固而近于费，今不取，后世必为子孙忧。”孔子曰：“求，君子疾夫舍曰欲之而必为之辞。丘也闻",
+      "score": 0.367,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_42",
+      "source_id": "src_search_3",
+      "book": "韩非子",
+      "chapter": "难三",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 39,
+      "author": "韩非",
+      "snippet": "一 鲁穆公问于子思曰：“吾闻庞氏之子不孝，其行奚如？”子思对曰：“君子尊贤以崇德，举善以观民。若夫过行，是细人之所识也，臣不知也。”子思出。子服厉伯入见，问庞氏子，子服厉伯对曰：“其过三。”皆君之所未尝闻。自是这后，君贵子思而贱子服厉伯也。 或曰：鲁之公室，三世劫于季氏，不亦宜乎？明君求善而赏之，求奸而诛之，其得之一也。故以善闻之者，以说善同于上者也；以奸闻之者，以恶奸同于上者也：此宜赏誉之所及也。不以奸闻，是异于上而下比周于奸者也，此",
+      "score": 0.366,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_43",
+      "source_id": "src_search_3",
+      "book": "庄子",
+      "chapter": "德充符",
+      "book_id": "84adfb4d0c0b",
+      "chapter_idx": 6,
+      "author": "庄子",
+      "snippet": "鲁有兀者王骀，从之游者与仲尼相若。常季问于仲尼曰：“王骀， 兀者也，从之游者与夫子中分鲁。立不教，坐不议。虚而往，实而归 。固有不言之教，无形而心成者邪？是何人也？”仲尼曰：“夫子， 圣人也，丘也直后而未往耳！丘将以为师，而况不若丘者乎！奚假鲁 国，丘将引天下而与从之。” 常季曰：“彼兀者也，而王先生，其与庸亦远矣。若然者，其用心 也，独若之何？”仲尼曰：“死生亦大矣，而不得与之变；虽天地覆 坠，亦将不与之遗；审乎无假而不与物迁，命物之",
+      "score": 0.365,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_44",
+      "source_id": "src_search_3",
+      "book": "论语",
+      "chapter": "微子篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 19,
+      "author": "孔子",
+      "snippet": "微子去之，箕子为之奴，比干谏而死。孔子曰：“殷有三仁焉。” 柳下惠为士师，三黜。人曰：“子未可以去乎？”曰：“直道而事人，焉往而不三黜？枉道而事人，何必去父母之邦？” 齐景公待孔子曰：“若季氏，则吾不能。”以季、孟之间待之，曰：“吾老矣，不能用也。”孔子行。 齐人归女乐，季桓子受之，三日不朝，孔子行。” 楚狂接舆歌而过孔子曰：“凤兮凤兮，何德之衰？往者不可谏，来者犹可追。已而已而，今之从政者殆而！”孔子下，欲与之言，趋而辟之，不得与之言",
+      "score": 0.363,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_45",
+      "source_id": "src_search_3",
+      "book": "大学章句集注",
+      "chapter": "第三章",
+      "book_id": "4c5aaf145298",
+      "chapter_idx": 4,
+      "author": "朱熹",
+      "snippet": "汤之《盘铭》曰：“苟日新，日日新，又日新。”《康诰》曰：“作新民。”《诗》曰：“周虽旧邦，其命维新。”是故君子无所不用其极。",
+      "score": 0.363,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     }
+    ],
+    "candidate_evidence": [
+     {
+      "evidence_id": "ev_32",
+      "source_id": "src_search_3",
+      "book": "论语",
+      "chapter": "先进篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 12,
+      "author": "孔子",
+      "snippet": "子曰：“先进于礼乐，野人也；后进于礼乐，君子也。如用之，则吾从先进。”\n子曰：“从我于陈、蔡者，皆不及门也。”\n德行：颜渊，闵子骞，冉伯牛，仲弓。言语：宰我，子贡。政事：冉有，季路。文学：子游，子夏。\n子曰：“回也非助我者也，于吾言无所不说。”\n子曰：“孝哉闵子骞！人不间于其父母昆弟之言。”\n南容三复白圭，孔子以其兄之子妻之。\n季康子问：“弟子孰为好学？”孔子对曰：“有颜回者好学，不幸短命死矣，今也则亡。”\n颜渊死，颜路请子之车以为之椁",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": true,
+      "supports_claim_ids": [],
+      "candidate": true
+     }
+    ],
+    "used_evidence": [
+     {
+      "evidence_id": "ev_32",
+      "source_id": "src_search_3",
+      "book": "论语",
+      "chapter": "先进篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 12,
+      "author": "孔子",
+      "snippet": "子曰：“先进于礼乐，野人也；后进于礼乐，君子也。如用之，则吾从先进。”\n子曰：“从我于陈、蔡者，皆不及门也。”\n德行：颜渊，闵子骞，冉伯牛，仲弓。言语：宰我，子贡。政事：冉有，季路。文学：子游，子夏。\n子曰：“回也非助我者也，于吾言无所不说。”\n子曰：“孝哉闵子骞！人不间于其父母昆弟之言。”\n南容三复白圭，孔子以其兄之子妻之。\n季康子问：“弟子孰为好学？”孔子对曰：“有颜回者好学，不幸短命死矣，今也则亡。”\n颜渊死，颜路请子之车以为之椁",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": true,
+      "supports_claim_ids": [],
+      "candidate": true
+     }
+    ],
+    "claims": [
+     {
+      "claim_id": "claim_1",
+      "text": "已在《论语·先进篇》原典中直接核验到核验到这句原文",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_2",
+      "text": "## 「言必有中」的出处与核验",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_3",
+      "text": "这句成语出自**《论语·先进篇》**，原句是：",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_4",
+      "text": "> 鲁人为长府，闵子骞曰：\"仍旧贯如之何",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_5",
+      "text": "\"子曰：\"夫人不言，言必有中",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_6",
+      "text": "这是孔子对其弟子**闵子骞**的一句称赞",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_7",
+      "text": "- **背景**：鲁国当政者要改建藏财货的府库（长府），闵子骞发表意见说：照着旧例沿袭下去不就行了吗，何必改建",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_8",
+      "text": "意思是反对大兴土木、劳民伤财",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_9",
+      "text": "- **孔子的评价**：他说\"那个人（闵子骞）平时不轻易说话，一开口必定切中要害",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_10",
+      "text": "**\"言必有中\"字面义**：说话必定击中事物的关键、正中（zhòng）要害",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_11",
+      "text": "后世引申为形容人措辞精当、说到点子上",
+      "epistemic_type": "UNKNOWN",
+      "role": "LATER_CRITICISM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_12",
+      "text": "成语在流传中简化了原句\"夫人不言，言必有中\"的前半段，取后半段\"言必有中\"而成",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_13",
+      "text": "需注意两处细节，避免混记：",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_14",
+      "text": "1. 这句的完整语境含\"仍旧贯\"，后世\"萧规曹随\"式的循旧思想与之相近，但它核心褒扬的是闵子骞**慎言而精**的品质，而非仅\"保守\"",
+      "epistemic_type": "UNKNOWN",
+      "role": "LATER_CRITICISM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_15",
+      "text": "2. 若只看检索片段容易误认为该句位于\"公冶长\"等篇——经我读取《先进篇》原文核验，确在先进篇，且成语由\"夫人不言\"一语的省略演化而来",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_16",
+      "text": "核验后我对出处为先进篇这一点没有疑义",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_17",
+      "text": "若需对照其他版本或解读，可继续告诉我",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     }
+    ],
+    "citations": [
+     {
+      "evidence_id": "ev_32",
+      "book": "论语",
+      "chapter": "先进篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 12,
+      "author": "孔子",
+      "source_type": "primary",
+      "used": true,
+      "supports_claim_ids": []
+     }
+    ],
+    "unverified_citations": [],
+    "retrieved_count": 44,
+    "used_count": 1,
+    "facts": {
+     "read_chapters": [
+      "d9272a80942a#12"
+     ],
+     "search_execs": 4,
+     "read_execs": 1,
+     "source_candidate_found": true,
+     "primary_text_read": true
+    }
+   },
+   "tool_calls": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "言必有中"
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 69, 'chapter_title': '德经·第七十章', 'snippet': '德经·第七十章 吾言甚易知，甚易行。天下莫能知，莫能行。言有宗，事有君。夫唯无知，是以不我知。知我者希，则我者贵。是以圣人被褐",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "夫人不言"
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 36, 'chapter_title': '第三十七章', 'snippet': '道常无为而无不为。侯王若能守之，万物将自化。化而欲作，吾将镇之以无名之朴。镇之以无名之朴，夫将不欲。不欲以静，天下将自正。', '",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "d9272a80942a"
+     },
+     "result_summary": "{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'file_type': 'epub', 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "闵子骞 鲁人为长府"
+     },
+     "result_summary": "{'results': [{'book_id': 'a26240ee8f45', 'book_title': '南怀瑾经典合集（共24册）', 'author': '南怀瑾', 'chapter_idx': 669, 'chapter_title': '雍也第六', 'snippet': '上一篇《公冶长》，是对前四篇整个学问系统，做一对话式讨论的前半集，本篇第六篇《雍也》是和第五篇的性质相衔接起",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "d9272a80942a",
+      "chapter_idx": 12
+     },
+     "result_summary": "{'book_id': 'd9272a80942a', 'chapter_idx': 12, 'title': '先进篇', 'text': '子曰：“先进于礼乐，野人也；后进于礼乐，君子也。如用之，则吾从先进。”\\n子曰：“从我于陈、蔡者，皆不及门也。”\\n德行：颜渊，闵子骞，冉伯牛，仲弓。言语：宰我，子贡。政事：冉有，季路。文学：子游，子夏。\\n子曰：“回也非助我者也，于吾言无所不说。”\\n子",
+     "thought": "执行 get_chapter"
+    }
+   ],
+   "suggestions": [
+    "就 「闵子骞 鲁人为长府」 与另一位哲学家隔空对质",
+    "追溯 「闵子骞 鲁人为长府」 在哲学史中的时间线"
+   ],
+   "safety": null,
+   "tool_loop": {
+    "invocation_id": "783070359216",
+    "budget": {
+     "useful": 5,
+     "retry": 0,
+     "inner_retries": 0,
+     "duplicate_reused": 0,
+     "no_gain": 0,
+     "total_executed": 5,
+     "retrieval_executed": 5,
+     "hard": false,
+     "cfg": {
+      "hard_retrieval": 20,
+      "hard_total": 24
+     }
+    },
+    "model_retries": 0,
+    "recovered_after_error": false,
+    "no_gain_calls": 0
+   },
+   "causal": {
+    "provenance": "o1",
+    "engine_cognitive_auto_tools": 0,
+    "main_agent_tool_decisions": 4,
+    "agent_invocations": 4,
+    "thinking_sources": "main_agent_only"
+   },
+   "final_ownership": {
+    "provenance": "o2",
+    "final_text_owner": "main_agent",
+    "semantic_mutators": 0,
+    "runtime_factual_appends": 0,
+    "final_retract_semantic_use": 0,
+    "invalid_final_publicly_streamed": false,
+    "validator_repair_invocations": 0,
+    "main_agent_final_ownership_rate": 1.0
+   },
+   "validation": {
+    "result": {
+     "ok": true,
+     "issues": []
+    },
+    "repairs_used": 0,
+    "max_validation_repairs": 2,
+    "repair_protocol": "same_main_agent"
+   },
+   "timing": {
+    "phases": [
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 6191.4,
+      "msgs_len": 3
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 3057.8,
+      "msgs_len": 6
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 1686.5,
+      "msgs_len": 9
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 4252.2,
+      "msgs_len": 11
+     },
+     {
+      "type": "phase",
+      "phase": "validator_quote_bound",
+      "duration_ms": 1.0
+     },
+     {
+      "type": "phase",
+      "phase": "validator_evidence_contract",
+      "duration_ms": 31.4
+     },
+     {
+      "type": "phase",
+      "phase": "validator_citation_sanitize",
+      "duration_ms": 0.0
+     }
+    ],
+    "total_ms": 25103.4
+   },
+   "citation_sanitize": {
+    "verified_citations": [
+     {
+      "book": "论语",
+      "chapter": "先进篇"
+     }
+    ],
+    "unverified_before": [],
+    "actions": [
+     {
+      "book": "论语",
+      "chapter": "先进篇",
+      "action": "verified"
+     }
+    ]
+   },
+   "quote_bound": {
+    "entries": [
+     {
+      "quote_claim_id": "quote_1",
+      "kind": "blockquote",
+      "preview": "鲁人为长府，闵子骞曰：\"仍旧贯如之何？何必改作？\"子曰：\"夫人不言，言必有中。\"",
+      "verification_state": "VERIFIED_EXACT",
+      "source_evidence_id": "qb_read_4",
+      "source_book": "",
+      "source_chapter": "先进篇",
+      "stitched": false,
+      "coverage": 1.0,
+      "disclosed": false,
+      "unverified_blockquote": false
+     }
+    ],
+    "summary": {
+     "quotes": 1,
+     "verified_exact": 1,
+     "verified_near": 0,
+     "memory_only": 0,
+     "stitched": 0,
+     "unverified_blockquote": 0,
+     "memory_only_exact_claim": 0
+    }
+   },
+   "temporal": null,
+   "safety_enforcement": {
+    "initiated_by": "safety_runtime",
+    "action": "none"
+   },
+   "safety_reply": null
+  },
+  {
+   "type": "suggestions",
+   "suggestions": [
+    "闵子骞为什么平时不爱说话，孔子却特别欣赏他这种性格？",
+    "孔子称赞“言必有中”，那他自己说话是不是也奉行“慎言”的原则？",
+    "“仍旧贯”和后来汉初的“萧规曹随”在思想上一脉相承吗？"
+   ]
+  }
+ ]
+}

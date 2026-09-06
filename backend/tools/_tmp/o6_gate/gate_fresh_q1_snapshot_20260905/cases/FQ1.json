@@ -1,0 +1,2665 @@
+{
+ "result": {
+  "id": "FQ1",
+  "category": "A",
+  "fresh": true,
+  "question": "《孟子》中“民为贵，社稷次之，君为轻”出自哪一篇？请检索原典逐字核验后回答。",
+  "agent": "general",
+  "attempt": 1,
+  "tag": "ok",
+  "duration_s": 96.1,
+  "answer_chars": 889,
+  "answer": "我已经完成了对原典库和外部来源的检索与核验。下面如实汇报。\n\n## 核验结论\n\n**关于出处（篇名）**\n\n这句名言出自《孟子》的**《尽心下》一篇**（即\"尽心章句下\"）。这是我掌握的传统知识，且经原典库结构核验得到间接支持：库内《孟子》第13章即《尽心章句下》，其中我逐字读到的**第十三节**为——\n\n> \"不仁而得国者，有之矣；不仁而得天下，未之有也。\"\n\n按传世《孟子》的分章次序，紧接其后的**第十四章**正应是\"民为贵，社稷次之，君为轻\"这一章。\n\n**关于逐字核验（必须坦白的局限）**\n\n我未能做到对这句话本身的**逐字原文核验**，原因是：\n\n1. 原典库收录的《孟子》（共14章，第13章为《尽心章句下》）在正文中，**\"第十四节\"至\"第十八节\"的内容段为空缺**——从\"第十三节\"直接跳到了\"第十九节\"。而\"民为贵\"恰落在这段空缺区间内，因此对该书反复检索\"民为贵\"\"社稷次之\"\"得乎丘民而为天子\"等均无法命中。\n2. 上网补充检索也只返回书目页与工具书词条，未能取回该章可据以逐字核验的可靠原文片段。\n\n因此，关于这句话在《孟子·尽心下》中的完整原文措辞（我记忆中的通行本为\"民为贵，社稷次之，君为轻。是故得乎丘民而为天子……\"以及后文\"诸侯危社稷，则变置\"等句），**属于记忆，未经库中原文核验**，我不以确定口吻逐字引用。\n\n## 分层次总结\n\n| 层面 | 结论 |\n|---|---|\n| 原文事实 | 出处为《孟子·**尽心下**》（库内该书第13章《尽心章句下》）。原典库该章此段正文缺失，未能逐字核验原句措辞 |\n| 已核验的旁证 | 库内《尽心章句下》第十三节原文为\"不仁而得国者……\"，按传世分章其下一章即\"民为贵\"章【《孟子》·尽心章句下】 |\n| 待核验 | \"民为贵……\"一段的精确逐字文本及\"第十四节\"章节编号（凭记忆，未在库中定位到该节原文） |\n\n如果你需要的是可用于正式引用的逐字原文，建议另行核对善本（如朱熹《孟子集注》或中华书局点校本）；若你希望我以**外部权威版本**为目标再做一轮核验，我可以进一步尝试定向取文。",
+  "published": true,
+  "validation": {
+   "result": {
+    "ok": true,
+    "issues": []
+   },
+   "repairs_used": 0,
+   "max_validation_repairs": 2,
+   "repair_protocol": "same_main_agent"
+  },
+  "validation_failed_payload": null,
+  "error_payload": null,
+  "tool_calls": [
+   {
+    "name": "search_books",
+    "args": {
+     "query": "民为贵 社稷次之 君为轻"
+    },
+    "result_summary": "{'results': [{'book_id': '4d187a31575a', 'book_title': '中庸', 'author': '子思', 'chapter_idx': 15, 'chapter_title': '第十四章', 'citation_label': '【《中庸》·第十四章】', 'snippet': '君子素其位而行，不愿乎其外。 素富贵，行乎富贵；素贫贱，行乎贫贱；素",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "孟子 民为贵"
+    },
+    "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "query_database",
+    "args": {
+     "table": "books",
+     "key": "孟子"
+    },
+    "result_summary": "{'results': [{'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'chapterCount': 14, 'rank': 40.8, 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的思想，提出“性善论”，认为人性",
+    "thought": "执行 query_database"
+   },
+   {
+    "name": "get_book_detail",
+    "args": {
+     "book_id": "孟子"
+    },
+    "result_summary": "{'id': 'dd03ec6572e7', 'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的思想，提出“性善论”，认为人性本善，具有恻隐、羞恶、辞让、是非四端，通过扩充这些",
+    "thought": "执行 get_book_detail"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "社稷 君为轻 尽心",
+     "limit": 10
+    },
+    "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 25, 'chapter_title': '第二十六章', 'citation_label': '【《道德经》·第二十六章】', 'snippet': '重为轻根，静为躁君。是以君子终日行不离輜重，虽有荣观，燕处超",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "孟子",
+     "chapter_idx": 13
+    },
+    "result_summary": "{'book_id': 'dd03ec6572e7', 'chapter_idx': 13, 'title': '尽心章句下', 'book_title': '孟子', 'citation_label': '【《孟子》·尽心章句下】', 'text': '尽心章句下·第一节孟子曰：“不仁哉，梁惠王也！仁者以其所爱及其所不爱，不仁者以其所不爱及其所爱。”公孙丑曰：“何谓也？”\\n“梁惠王以土地之故，",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "limit": 10,
+     "query": "民为贵"
+    },
+    "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "limit": 10,
+     "query": "得乎丘民而为天子"
+    },
+    "result_summary": "{'results': [{'book_id': '4d187a31575a', 'book_title': '中庸', 'author': '子思', 'chapter_idx': 18, 'chapter_title': '第十七章', 'citation_label': '【《中庸》·第十七章】', 'snippet': '子曰：“舜其大孝也与！德为圣人，尊为天子，富有四海之内。宗庙飨之，子",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "list_books",
+    "args": {
+     "author": "朱熹"
+    },
+    "result_summary": "{'books': [{'id': '4c5aaf145298', 'title': '大学章句集注', 'author': '朱熹', 'region': '东方', 'rank': 37.6, 'summary': '《大学章句集注》是南宋理学家朱熹对《大学》的注释和阐发，是《四书章句集注》之一。朱熹将《大学》从《礼记》中抽出，分为经一章和传十章，认为经是孔子之言而曾子述之，传是曾子之意而门人",
+    "thought": "执行 list_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "limit": 8,
+     "query": "民为贵 社稷次之"
+    },
+    "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "websearch",
+    "args": {
+     "query": "孟子 民为贵 社稷次之 君为轻 出自哪一篇 尽心"
+    },
+    "result_summary": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 孟子', 'snippet': '2000年11月11日\\u2002·\\u2002孟子（公元前372年-公元前289年），姬姓，孟氏，名轲，字子舆（待考，一说字子车、子居），与孔子并称“孔 …', 'url': 'https://baike.baidu.com/ite",
+    "thought": "执行 websearch"
+   },
+   {
+    "name": "websearch",
+    "args": {
+     "query": "孟子 尽心下 \"民为贵，社稷次之，君为轻\" 原文 \"得乎丘民而为天子\""
+    },
+    "result_summary": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 孟子', 'snippet': '2000年11月11日\\u2002·\\u2002孟子（公元前372年-公元前289年），姬姓，孟氏，名轲，字子舆（待考，一说字子车、子居），与孔子并称“孔 …', 'url': 'https://baike.baidu.com/ite",
+    "thought": "执行 websearch"
+   },
+   {
+    "name": "websearch",
+    "args": {
+     "query": "\"得乎丘民而为天子\" 孟子 尽心 章句 原文 逐字"
+    },
+    "result_summary": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 得', 'snippet': '得（拼音：dé、děi、de）为汉语一级通用规范汉字（常用字）。此字始见于商代甲骨文及商代金文，其古字形由又和贝组合而成，表 …', 'url': 'https://baike.baidu.com/item/%E5%BE%97/4547",
+    "thought": "执行 websearch"
+   }
+  ],
+  "tool_seq": [
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "民为贵 社稷次之 君为轻"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "孟子 民为贵"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "query_database",
+    "cls": "search",
+    "args": {
+     "table": "books",
+     "key": "孟子"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_book_detail",
+    "cls": "read",
+    "args": {
+     "book_id": "孟子"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "社稷 君为轻 尽心",
+     "limit": 10
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "孟子",
+     "chapter_idx": 13
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "limit": 10,
+     "query": "民为贵"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "limit": 10,
+     "query": "得乎丘民而为天子"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "list_books",
+    "cls": "other",
+    "args": {
+     "author": "朱熹"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "limit": 8,
+     "query": "民为贵 社稷次之"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "websearch",
+    "cls": "search",
+    "args": {
+     "query": "孟子 民为贵 社稷次之 君为轻 出自哪一篇 尽心"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "websearch",
+    "cls": "search",
+    "args": {
+     "query": "孟子 尽心下 \"民为贵，社稷次之，君为轻\" 原文 \"得乎丘民而为天子\""
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "websearch",
+    "cls": "search",
+    "args": {
+     "query": "\"得乎丘民而为天子\" 孟子 尽心 章句 原文 逐字"
+    },
+    "reused": false,
+    "err": false
+   }
+  ],
+  "tool_count": 13,
+  "search_calls": 10,
+  "read_calls": 2,
+  "budget": {
+   "useful": 13,
+   "retry": 0,
+   "inner_retries": 0,
+   "duplicate_reused": 0,
+   "no_gain": 0,
+   "total_executed": 13,
+   "retrieval_executed": 13,
+   "hard": false,
+   "cfg": {
+    "hard_retrieval": 20,
+    "hard_total": 24
+   }
+  },
+  "quote_bound": {
+   "entries": [
+    {
+     "quote_claim_id": "quote_1",
+     "kind": "blockquote",
+     "preview": "\"不仁而得国者，有之矣；不仁而得天下，未之有也。\"",
+     "verification_state": "VERIFIED_EXACT",
+     "source_evidence_id": "qb_read_4",
+     "source_book": "孟子",
+     "source_chapter": "尽心章句下",
+     "stitched": false,
+     "coverage": 1.0,
+     "disclosed": false,
+     "unverified_blockquote": false
+    }
+   ],
+   "summary": {
+    "quotes": 1,
+    "verified_exact": 1,
+    "verified_near": 0,
+    "memory_only": 0,
+    "stitched": 0,
+    "unverified_blockquote": 0,
+    "memory_only_exact_claim": 0
+   }
+  },
+  "citations": [
+   {
+    "evidence_id": "ev_61",
+    "book": "孟子",
+    "chapter": "尽心章句下",
+    "book_id": "dd03ec6572e7",
+    "chapter_idx": 13,
+    "author": "孟子",
+    "source_type": "primary",
+    "used": true,
+    "supports_claim_ids": [
+     "claim_16"
+    ]
+   }
+  ],
+  "citation_sanitize": {
+   "verified_citations": [
+    {
+     "book": "孟子",
+     "chapter": "尽心章句下"
+    }
+   ],
+   "unverified_before": [],
+   "actions": [
+    {
+     "book": "孟子",
+     "chapter": "尽心章句下",
+     "action": "verified"
+    }
+   ]
+  },
+  "causal": {
+   "provenance": "o1",
+   "engine_cognitive_auto_tools": 0,
+   "main_agent_tool_decisions": 13,
+   "agent_invocations": 8,
+   "thinking_sources": "main_agent_only"
+  },
+  "final_ownership": {
+   "provenance": "o2",
+   "final_text_owner": "main_agent",
+   "semantic_mutators": 0,
+   "runtime_factual_appends": 0,
+   "final_retract_semantic_use": 0,
+   "invalid_final_publicly_streamed": false,
+   "validator_repair_invocations": 0,
+   "main_agent_final_ownership_rate": 1.0
+  },
+  "temporal": null,
+  "timing": {
+   "phases": [
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 7875.4,
+     "msgs_len": 3
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 2468.8,
+     "msgs_len": 6
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 7950.2,
+     "msgs_len": 9
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 5553.6,
+     "msgs_len": 12
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 10442.8,
+     "msgs_len": 15
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 7342.5,
+     "msgs_len": 19
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 5920.3,
+     "msgs_len": 21
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 12688.2,
+     "msgs_len": 23
+    },
+    {
+     "type": "phase",
+     "phase": "validator_quote_bound",
+     "duration_ms": 2.0
+    },
+    {
+     "type": "phase",
+     "phase": "validator_evidence_contract",
+     "duration_ms": 48.6
+    },
+    {
+     "type": "phase",
+     "phase": "validator_citation_sanitize",
+     "duration_ms": 0.0
+    }
+   ],
+   "total_ms": 89740.1
+  },
+  "event_audit": {
+   "n_events": 950,
+   "type_counts": {
+    "status": 1,
+    "thinking_summary": 7,
+    "tool_start": 13,
+    "tool_note": 25,
+    "tool": 13,
+    "token": 889,
+    "done": 1,
+    "suggestions": 1
+   },
+   "unknown_event_types": [],
+   "thinking_events": 7,
+   "thinking_by_initiator": {
+    "main_agent": 7
+   },
+   "thinking_phase_seq": [
+    "analysis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis"
+   ],
+   "runtime_thinking_events": 0,
+   "raw_cot_marker_hits": [],
+   "tool_start": 13,
+   "tool_exec": 13,
+   "tool_cancel": 0,
+   "unparented_tool_results": 0,
+   "duplicate_visible_events": 0,
+   "duplicate_examples": [],
+   "validation_failed_events": 0,
+   "error_events": 0,
+   "decision_group_missing": 0,
+   "initiated_by_missing": 0,
+   "tool_call_id_missing_on_start": 0,
+   "tool_exec_unbound_ids": 0
+  },
+  "ownership_fingerprints": [],
+  "status": "PUBLISHED"
+ },
+ "events_compact": [
+  {
+   "type": "status",
+   "content": "开始思考"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "我来检索原典库，定位这句名言的出处。",
+   "phase": "analysis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_23Pb6C8pVzsAI08At1MQ9003"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_NRQxrQXalymkIjLg2rYG1895"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "民为贵 社稷次之 君为轻"
+   },
+   "result": "{'results': [{'book_id': '4d187a31575a', 'book_title': '中庸', 'author': '子思', 'chapter_idx': 15, 'chapter_title': '第十四章', 'citation_label': '【《中庸》·第十四章】', 'snippet': '君子素其位而行，不愿乎其外。 素富贵，行乎富贵；素贫贱，行乎贫贱；素夷狄，行乎夷狄；素患难，行乎患难。君子无入而不自得焉。 在上位，不陵下；在下位，不援上；正己而不求于人则无怨。上不怨天，下不尤人。 故君子居易以俟命，小人行险以徼幸。 子曰：“射有似乎君子。失诸正鹄，",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_23Pb6C8pVzsAI08At1MQ9003"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "孟子 民为贵"
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥。民之难治，以其上之有为，是以难治。民之轻死，以其上求生之厚，是以轻死。夫唯无以生为者，是贤於贵生。', 'score': 0.575}, {'book_id': '6ef2f18cfdc9', 'b",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_NRQxrQXalymkIjLg2rYG1895"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "第一轮检索没有直接命中这句话——返回的多是《道德经》《荀子》等带\"民\"\"社稷\"字样的内容。可能库内《孟子》文本的用字或切分方式与我检索词不完全一致。我先确认原典库是否收录《孟子》、结构如何，再定点核验。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "query_database",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_kq8BRSrcWPhHyizCOXzm2475"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核实相关材料…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_0tuzMkHw85057Kq7IMvd6703"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "query_database",
+   "args": {
+    "table": "books",
+    "key": "孟子"
+   },
+   "result": "{'results': [{'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'chapterCount': 14, 'rank': 40.8, 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的思想，提出“性善论”，认为人性本善，具有恻隐、羞恶、辞让、是非四端，通过扩充这些善端，人可以达到道德的完善。在政治方面，孟子主张“仁政”和“王道”，强调民贵君轻，认为君主应以德治国，施行仁政，减轻刑罚和赋税，使百姓安居乐业。他还提",
+   "thought": "执行 query_database",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_kq8BRSrcWPhHyizCOXzm2475"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "孟子"
+   },
+   "result": "{'id': 'dd03ec6572e7', 'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的思想，提出“性善论”，认为人性本善，具有恻隐、羞恶、辞让、是非四端，通过扩充这些善端，人可以达到道德的完善。在政治方面，孟子主张“仁政”和“王道”，强调民贵君轻，认为君主应以德治国，施行仁政，减轻刑罚和赋税，使百姓安居乐业。他还提出了“劳心者治人，劳力者治于人”的社会分工观点，以",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_0tuzMkHw85057Kq7IMvd6703"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "《孟子》在库中，且摘要明确提到\"民贵君轻\"。之前检索未命中应是分词/切分差异。原句出自《孟子·尽心下》。我先定位《尽心下》这一篇在库内的章节索引，再读取原文逐字核验。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_1id8LEhyGEHrc8CnoOoQ6099"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_RG6jBS5UgZLBX9JP1GAx5968"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "社稷 君为轻 尽心",
+    "limit": 10
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 25, 'chapter_title': '第二十六章', 'citation_label': '【《道德经》·第二十六章】', 'snippet': '重为轻根，静为躁君。是以君子终日行不离輜重，虽有荣观，燕处超然，奈何万乘之主，而以身轻天下？轻则失根，躁则失君。', 'score': 0.599}, {'book_id': '4d187a31575a', 'book_title': '中庸', 'autho",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_1id8LEhyGEHrc8CnoOoQ6099"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 30 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "孟子",
+    "chapter_idx": 13
+   },
+   "result": "{'book_id': 'dd03ec6572e7', 'chapter_idx': 13, 'title': '尽心章句下', 'book_title': '孟子', 'citation_label': '【《孟子》·尽心章句下】', 'text': '尽心章句下·第一节孟子曰：“不仁哉，梁惠王也！仁者以其所爱及其所不爱，不仁者以其所不爱及其所爱。”公孙丑曰：“何谓也？”\\n“梁惠王以土地之故，糜烂其民而战之，大败，将复之，恐不能胜，故驱其所爱子弟以殉之，是之谓以其所不爱及其所爱也。”\\n尽心章句下·第二节孟子曰：“春秋无义战。彼善于此，则有之矣。征者上伐下也，敌国不相征也。”\\n尽心章句下",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_RG6jBS5UgZLBX9JP1GAx5968"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "已确认《孟子》库内共 14 章，第 13 章即《尽心章句下》。但该章文本中\"第十四节\"到\"第十八节\"的内容段为空缺——恰好\"民为贵\"这一章（传统分章为《尽心下》第十四章）正落在这段缺口中，这解释了为何初始检索未命中。我先换检索词尝试定位该句在其他收录版本/文本中的原文。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_q7SieCyQEJMUe1CjR4Kc9214"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_1lA5aXQuZpm86gybagdM0776"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "limit": 10,
+    "query": "民为贵"
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥。民之难治，以其上之有为，是以难治。民之轻死，以其上求生之厚，是以轻死。夫唯无以生为者，是贤於贵生。', 'score': 0.558}, {'book_id': 'dd8853676655', 'b",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_q7SieCyQEJMUe1CjR4Kc9214"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 30 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "limit": 10,
+    "query": "得乎丘民而为天子"
+   },
+   "result": "{'results': [{'book_id': '4d187a31575a', 'book_title': '中庸', 'author': '子思', 'chapter_idx': 18, 'chapter_title': '第十七章', 'citation_label': '【《中庸》·第十七章】', 'snippet': '子曰：“舜其大孝也与！德为圣人，尊为天子，富有四海之内。宗庙飨之，子孙保之。” 故大德，必得其位，必得其禄，必得其名，必得其寿。 故天之生物必因其材而笃焉。故栽者培之，倾者覆之。 诗曰：‘嘉乐君子，宪宪令德，宜民宜人。受禄于天。保佑命之，自天申之。’ 故大德者必受命。",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_1lA5aXQuZpm86gybagdM0776"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 30 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "我注意到关键线索：《孟子》库内这本（共14章，第13章即《尽心章句下》）的文本中，\"第十四节\"至\"第十八节\"内容段缺失——而\"民为贵\"一段（传世本《尽心下》第十四章）恰落在这段空缺里。这解释了为何多次检索检索都命中不到这句。我再确认库内是否有其他《孟子》注释版本收录此句，并同步上网核对传世本出处。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "list_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_Q98Wb9EDfkOAldf9muEf9394"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核实相关材料…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_S7YjKWcKLYBVz1JmjxL11364"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool_start",
+   "name": "websearch",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_oRc7IVXsWT8MH6EbIaE14811"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在上网搜索…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool",
+   "name": "list_books",
+   "args": {
+    "author": "朱熹"
+   },
+   "result": "{'books': [{'id': '4c5aaf145298', 'title': '大学章句集注', 'author': '朱熹', 'region': '东方', 'rank': 37.6, 'summary': '《大学章句集注》是南宋理学家朱熹对《大学》的注释和阐发，是《四书章句集注》之一。朱熹将《大学》从《礼记》中抽出，分为经一章和传十章，认为经是孔子之言而曾子述之，传是曾子之意而门人记之。他通过注释，系统阐述了“三纲领”（明明德、亲民、止于至善）和“八条目”（格物、致知、诚意、正心、修身、齐家、治国、平'}], 'total': 1}",
+   "thought": "执行 list_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_Q98Wb9EDfkOAldf9muEf9394"
+  },
+  {
+   "type": "tool_note",
+   "content": "书目筛选返回 1 项。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "limit": 8,
+    "query": "民为贵 社稷次之"
+   },
+   "result": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥。民之难治，以其上之有为，是以难治。民之轻死，以其上求生之厚，是以轻死。夫唯无以生为者，是贤於贵生。', 'score': 0.578}, {'book_id': '4c5aaf145298', 'b",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_S7YjKWcKLYBVz1JmjxL11364"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 24 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool",
+   "name": "websearch",
+   "args": {
+    "query": "孟子 民为贵 社稷次之 君为轻 出自哪一篇 尽心"
+   },
+   "result": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 孟子', 'snippet': '2000年11月11日\\u2002·\\u2002孟子（公元前372年-公元前289年），姬姓，孟氏，名轲，字子舆（待考，一说字子车、子居），与孔子并称“孔 …', 'url': 'https://baike.baidu.com/item/%E5%AD%9F%E5%AD%90/126'}, {'title': 'gushiwen.cnhttps://www.gushiwen.cn › guwen › book.aspx', 'sni",
+   "thought": "执行 websearch",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_oRc7IVXsWT8MH6EbIaE14811"
+  },
+  {
+   "type": "tool_note",
+   "content": "网上检索返回 5 项材料，作为补充证据核验。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "我已查明一个关键事实：原典库内《孟子》（共14章）第13章即《尽心章句下》，但在读取全文时发现其\"第十四节\"至\"第十八节\"的正文内容为空缺——而\"民为贵\"一段正落在传世本《尽心下》第十四章这段区间内，故检索无法命中。我再上网核对传世本《孟子》该章的完整原文措辞，以判断用户所引是否精确。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "websearch",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_E66Rd8D3O7mwi2mwd5Tj2803"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在上网搜索…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool",
+   "name": "websearch",
+   "args": {
+    "query": "孟子 尽心下 \"民为贵，社稷次之，君为轻\" 原文 \"得乎丘民而为天子\""
+   },
+   "result": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 孟子', 'snippet': '2000年11月11日\\u2002·\\u2002孟子（公元前372年-公元前289年），姬姓，孟氏，名轲，字子舆（待考，一说字子车、子居），与孔子并称“孔 …', 'url': 'https://baike.baidu.com/item/%E5%AD%9F%E5%AD%90/126'}, {'title': 'gushiwen.cnhttps://www.gushiwen.cn › guwen › book.aspx', 'sni",
+   "thought": "执行 websearch",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_E66Rd8D3O7mwi2mwd5Tj2803"
+  },
+  {
+   "type": "tool_note",
+   "content": "网上检索返回 5 项材料，作为补充证据核验。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "网页摘要只返回书目页，未直接给出该章逐字原文。我再尝试一次检索检索获取可核验的原文措辞。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "websearch",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_AdHje5UHa6OkrP6Dv2sK5358"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在上网搜索…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "tool",
+   "name": "websearch",
+   "args": {
+    "query": "\"得乎丘民而为天子\" 孟子 尽心 章句 原文 逐字"
+   },
+   "result": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 得', 'snippet': '得（拼音：dé、děi、de）为汉语一级通用规范汉字（常用字）。此字始见于商代甲骨文及商代金文，其古字形由又和贝组合而成，表 …', 'url': 'https://baike.baidu.com/item/%E5%BE%97/454754'}, {'title': 'toutiao.comhttps://www.toutiao.com › article', 'snippet': '2025年2月6日\\u2002·\\u2002动作",
+   "thought": "执行 websearch",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_AdHje5UHa6OkrP6Dv2sK5358"
+  },
+  {
+   "type": "tool_note",
+   "content": "网上检索返回 5 项材料，作为补充证据核验。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "__tokens__",
+   "n": 889,
+   "chars": 889
+  },
+  {
+   "type": "done",
+   "citations": [
+    {
+     "evidence_id": "ev_61",
+     "book": "孟子",
+     "chapter": "尽心章句下",
+     "book_id": "dd03ec6572e7",
+     "chapter_idx": 13,
+     "author": "孟子",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_16"
+     ]
+    }
+   ],
+   "evidence": {
+    "retrieved_evidence": [
+     {
+      "evidence_id": "ev_1",
+      "source_id": "src_search_0",
+      "book": "中庸",
+      "chapter": "第十四章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 15,
+      "author": "子思",
+      "snippet": "君子素其位而行，不愿乎其外。 素富贵，行乎富贵；素贫贱，行乎贫贱；素夷狄，行乎夷狄；素患难，行乎患难。君子无入而不自得焉。 在上位，不陵下；在下位，不援上；正己而不求于人则无怨。上不怨天，下不尤人。 故君子居易以俟命，小人行险以徼幸。 子曰：“射有似乎君子。失诸正鹄，反求诸其身。”",
+      "score": 0.595,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_2",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "德经·第七十五章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 74,
+      "author": "老子",
+      "snippet": "德经·第七十五章 民之饥，以其上食税之多，是以饥。民之难治，以其上之有为，是以难治。民之轻死，以其上求生之厚，是以轻死。夫唯无以生为者，是贤於贵生。",
+      "score": 0.586,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_3",
+      "source_id": "src_search_0",
+      "book": "大学章句集注",
+      "chapter": "第十一章",
+      "book_id": "4c5aaf145298",
+      "chapter_idx": 12,
+      "author": "朱熹",
+      "snippet": "所谓平天下在治其国者，上老老而民兴孝，上长长而民兴悌，上恤孤而民不倍，是以君子有絜矩之道也。 所恶于上，毋以使下，所恶于下，毋以事上；所恶于前，毋以先后；所恶于后，毋以从前；所恶于右，毋以交于左；所恶于左，毋以交于右；此之谓絜矩之道。 《诗》云：“乐只君子，民之父母。”民之所好好之，民之所恶恶之，此之谓民之父母。《诗》云：“节彼南山，维石岩岩。赫赫师尹，民具尔瞻。”有国者不可以不慎，辟，则为天下僇矣。《诗》云：“殷之未丧师，克配上帝。仪",
+      "score": 0.575,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_4",
+      "source_id": "src_search_0",
+      "book": "论语",
+      "chapter": "尧曰篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 21,
+      "author": "孔子",
+      "snippet": "尧曰：“咨！尔舜，天之历数在尔躬，允执其中。四海困穷，天禄永终。”舜亦以命禹。曰：“予小子履，敢用玄牡，敢昭告于皇皇后帝：有罪不敢赦，帝臣不蔽，简在帝心。朕躬有罪，无以万方；万方有罪，罪在朕躬。”周有大赉，善人是富。“虽有周亲，不如仁人。百姓有过，在予一人。”谨权量，审法度，修废官，四方之政行焉。兴灭国，继绝世，举逸民，天下之民归心焉。所重：民、食、丧、祭。宽则得众，信则民任焉，敏则有功，公则说。 子张问于孔子曰：“何如斯可以从政矣？”",
+      "score": 0.574,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_5",
+      "source_id": "src_search_0",
+      "book": "韩非子",
+      "chapter": "爱臣",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 5,
+      "author": "韩非",
+      "snippet": "爱臣太亲，必危其身；人臣太贵，必易主位；主妾无等，必危嫡子；兄弟不服，必危社稷；臣闻千乘之君无备，必有百乘之臣在其侧，以徙其民而倾其国；万乘之君无备，必有千乘之家在其侧，以徒其威而倾其国。是以奸臣蕃息，主道衰亡。是故诸候之博大，天子之害也；群臣之太富，君主之败也。将相之管主而隆家，此君人者所外也。万物莫如身之至贵也，位之至尊也，主威之重，主势之隆也。此四美者，不求诸外，不请于人，议之而得之矣。故曰：人主不能用其富，则终于外也。此君人者之",
+      "score": 0.57,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_6",
+      "source_id": "src_search_0",
+      "book": "论语",
+      "chapter": "泰伯篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 9,
+      "author": "孔子",
+      "snippet": "子曰：“泰伯，其可谓至德也已矣。三以天下让，民无得而称焉。” 子曰：“恭而无礼则劳；慎而无礼则葸；勇而无礼则乱；直而无礼则绞。君子笃于亲，则民兴于仁；故旧不遗，则民不偷。” 曾子有疾，召门弟子曰：“启予足，启予手。《诗》云：‘战战兢兢，如临深渊，如履薄冰。’而今而后，吾知免夫，小子！” 曾子有疾，孟敬子问之。曾子言曰：“鸟之将死，其鸣也哀；人之将死，其言也善。君子所贵乎道者三：动容貌，斯远暴慢矣；正颜色，斯近信矣；出辞气，斯远鄙倍矣。笾",
+      "score": 0.569,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_7",
+      "source_id": "src_search_0",
+      "book": "荀子",
+      "chapter": "法行",
+      "book_id": "795658cafeab",
+      "chapter_idx": 31,
+      "author": "荀子",
+      "snippet": "公输不能加于绳墨，圣人不能加于礼。礼者，众人法而不知，圣人法而知之。 曾子曰：“无内人之疏而外人之亲，无身不善而怨人，无刑己至而呼天。内人 之疏而外人之亲，不亦反乎！身不善而怨人，不亦远乎！刑己至而呼天，不亦晚乎！ 诗曰：‘涓涓源水，不雝不塞。毂已破碎，乃大其辐。事已败矣，乃重太息。’其 云益乎！” 曾子病，曾元持足，曾子曰：“元！志之！吾语汝。夫鱼鳖鼋鼍犹以渊为浅而 堀其中，鹰鸢犹以山为卑而增巢其上，及其得也必以饵。故君子能无以利害义",
+      "score": 0.569,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_8",
+      "source_id": "src_search_0",
+      "book": "韩非子",
+      "chapter": "八说",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 48,
+      "author": "韩非",
+      "snippet": "为故人行私谓之“不弃”，以公财分施谓之“仁人”，轻禄重身谓之“君子”，枉法曲亲谓之“有行”，弃官宠交谓之“有侠”，离世遁上谓之“高傲”，交争逆令谓之“刚材”，行惠取众谓之“得民”。不弃者，吏有奸也；仁人者，公财损也；君子者，民难使也；有行者，法制毁也；有侠者，官职旷也；高傲者，民不事也；刚材者，令不行也；得民者，君上孤也。此八者，匹夫之私誉，人主之大败也。反此八者，匹夫之私毁，人主之公利也。人主不察社稷之利害，而用匹夫之私毁，索国之无危",
+      "score": 0.567,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_9",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "德经·第七十八章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 77,
+      "author": "老子",
+      "snippet": "德经·第七十八章 天下莫柔弱於水，而攻坚强者莫之能胜，以其无以易之。弱之胜强，柔之胜刚，天下莫不知，莫能行。是以圣人云：「受国之垢，是谓社稷主；受国不祥，是为天下王。」正言若反。",
+      "score": 0.564,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_10",
+      "source_id": "src_search_0",
+      "book": "韩非子",
+      "chapter": "六反",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 47,
+      "author": "韩非",
+      "snippet": "畏死远难，降北之民也，而世尊之曰“贵生之士”。学道立方，离法之民也，而世尊之曰“文学之士”游居厚养，牟食之民也，而世尊之曰“有能之士”。语曲牟知，伪诈之民也。而世尊之曰“辩智之士”。行剑攻杀，暴憿之民也，而世尊之曰“磏勇之士”。活贼匿奸，当死之民也，而世尊之曰“任誉之士”。此六民者，世之所誉也。赴险殉诚，死节之民，而世少之曰“失计之民”也。寡闻从令，全法之民也，而世少之曰“朴陋之民”也。力作而食，生利之民也，而世少之曰“寡能之民”也，嘉",
+      "score": 0.562,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_11",
+      "source_id": "src_search_0",
+      "book": "韩非子",
+      "chapter": "有度",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 7,
+      "author": "韩非",
+      "snippet": "国无常强，无常弱。奉法者强，则国强；奉法者弱，则国弱。荆庄王并国二十六，开地三千里；庄王之氓社稷也，而荆以亡。齐桓公并国三十，启地三千里；桓公之氓社稷也，而齐以亡。燕襄王以河为境，以蓟为国，袭涿、方城，残齐，平中山，有燕者重，无燕者轻；襄王之氓社稷也，而燕以亡。魏安釐王攻燕救赵，取地河东；攻尽陶、魏之地；加兵于齐，私平陆之都；攻韩拔管，胜于淇下；睢阳之事，荆军老而走；蔡、召陵之事，荆军破；兵四布于天下，威行于冠带之国；安釐王死而魏以亡。",
+      "score": 0.561,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_12",
+      "source_id": "src_search_0",
+      "book": "荀子",
+      "chapter": "君道",
+      "book_id": "795658cafeab",
+      "chapter_idx": 13,
+      "author": "荀子",
+      "snippet": "有乱君，无乱国；有治人，无治法，羿之法非亡也，而羿不世中；禹之法犹存，而夏不世王。故法不能独立，类不能自行；得其人则存，失其人则亡。法者、治之端也；君子者、法之原也。故有君子，则法虽省，足以遍矣；无君子，则法虽具，失先后之施，不能应事之变，足以乱矣。不知法之义，而正法之数者，虽博临事必乱。故明主急得其人，而闇主急得其埶。急得其人，则身佚而国治，功大而名美，上可以王，下可以霸；不急得其人，而急得其埶，则身劳而国乱，功废而名辱，社稷必危。故",
+      "score": 0.556,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_13",
+      "source_id": "src_search_0",
+      "book": "荀子",
+      "chapter": "富国",
+      "book_id": "795658cafeab",
+      "chapter_idx": 11,
+      "author": "荀子",
+      "snippet": "万物同宇而异体，无宜而有用为人，数也。人伦并处，同求而异道，同欲而异 知，生也。皆有可也，知愚同；所可异也，知愚分。埶同而知异，行私而无祸，纵 欲而不穷，则民心奋而不可说也。如是，则知者未得治也；知者未得治，则功名未 成也；功名未成，则群众未县也；群众未县，则君臣未立也。无君以制臣，无上以 制下，天下害生纵欲。欲恶同物，欲多而物寡，寡则必争矣。故百技所成，所以养 一人也。而能不能兼技，人不能兼官。离居不相待则穷，群居而无分则争；穷者患也",
+      "score": 0.556,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_14",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "德经·第六十一章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 60,
+      "author": "老子",
+      "snippet": "德经·第六十一章 大邦者下流，天下之牝，天下之交也。牝常以静胜牡，以静为下。故大邦以下小邦，则取小邦；小邦以下大邦，则取大邦。故或下以取，或下而取。大邦不过欲兼畜人，小邦不过欲入事人。夫两者各得所欲，大者宜为下。",
+      "score": 0.553,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_15",
+      "source_id": "src_search_0",
+      "book": "道德经",
+      "chapter": "第二十六章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 25,
+      "author": "老子",
+      "snippet": "重为轻根，静为躁君。是以君子终日行不离輜重，虽有荣观，燕处超然，奈何万乘之主，而以身轻天下？轻则失根，躁则失君。",
+      "score": 0.599,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_17",
+      "source_id": "src_search_1",
+      "book": "道德经",
+      "chapter": "德经·第五十七章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 56,
+      "author": "老子",
+      "snippet": "德经·第五十七章 以正治国，以奇用兵，以无事取天下。吾何以知其然哉？以此：天下多忌讳，而民弥贫；民多利器，国家滋昏；人多伎巧，奇物滋起；法令滋彰，盗贼多有。故圣人云：“我无为，而民自化；我好静，而民自正；我无事，而民自富；我无欲，而民自朴。”",
+      "score": 0.537,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_18",
+      "source_id": "src_search_1",
+      "book": "大学章句集注",
+      "chapter": "第五章",
+      "book_id": "4c5aaf145298",
+      "chapter_idx": 6,
+      "author": "朱熹",
+      "snippet": "子曰：“听讼，吾犹人也。必也使无讼乎！”无情者不得尽其辞。大畏民志，此谓知本。 此谓知本，此谓知之至也。",
+      "score": 0.535,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_19",
+      "source_id": "src_search_1",
+      "book": "道德经",
+      "chapter": "第三章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 2,
+      "author": "老子",
+      "snippet": "不尚贤，使民不争；不贵难得之货，使民不为盗；不见可欲，使民心不乱。是以圣人之治，虚其心，实其腹；弱其志，强其骨。常使民无知无欲。使夫知者不敢为也。为无为，则无不治。",
+      "score": 0.528,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_20",
+      "source_id": "src_search_1",
+      "book": "老子道德经",
+      "chapter": "第七十五章 民之轻死",
+      "book_id": "dd8853676655",
+      "chapter_idx": 75,
+      "author": "老子",
+      "snippet": "【原文】 民之饥，以其上食税之多[146]，是以饥。民之难治，以其上之有为，是以难治。 民之轻死，以其求生之厚[147]，是以轻死。夫唯无以生为者，是贤于贵生。 【译文】 人民之所以会遭受饥饿，是因为统治者榨取吞食赋税过多，因此才遭受饥饿。 人民之所以难以统治，是因为统治者政令繁苛、强作妄为，所以人民才难于统治。 人民之所以不惜轻生冒死去触犯法律，是因为统治者为了奉养自己，把民脂民膏都搜刮净了，所以人民求生太厚。只有那些不去追求生活享受",
+      "score": 0.529,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_21",
+      "source_id": "src_search_1",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "第三章",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 594,
+      "author": "南怀瑾",
+      "snippet": "不尚贤，使民不争；不贵难得之货，使民不为盗；不见可欲，使民心不乱。 是以圣人之治，虚其心，实其腹，弱其志，强其骨。常使民无知、无欲。使夫智者不敢为也，为无为，则无不治。 老子薄视时贤 第三章是将天地自然的法则，引申应用到人世间的治道的发挥。这章的文字，明白畅晓，都很容易懂得，很好解释。但其中有三个要点，须特别注意，那便是“不尚贤，使民不争；不贵难得之货，使民不为盗；不见可欲，使民心不乱”。 读秦汉以上的书，有关于这个“民”字，要小心求解",
+      "score": 0.527,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_22",
+      "source_id": "src_search_1",
+      "book": "中国哲学简史",
+      "chapter": "第七章 儒家的理想主义派：孟子",
+      "book_id": "32093eed6ff1",
+      "chapter_idx": 8,
+      "author": "冯友兰",
+      "snippet": "《史记》记载，孟子（约公元前371—约前289）是邹（今山东省南部）人。他从孔子的孙子子思的门人学习儒家学说。当时的齐国（也在今山东省）是个大国，有几代齐王很爱好学术。他们在齐国首都西门——稷门附近，建立一个学术中心，名叫“稷下”。稷下学者“皆命曰列大夫，为开第康庄之衢，高门大屋，尊宠之。览天下诸侯宾客，言齐能致天下贤士也”（《史记·孟子荀卿列传》）。 孟子一度是稷下的著名学者之一。他也曾游说各国诸侯，但是他们都不听信他的学说。他最后只",
+      "score": 0.504,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_23",
+      "source_id": "src_search_1",
+      "book": "道德经",
+      "chapter": "德经·第八十章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 79,
+      "author": "老子",
+      "snippet": "德经·第八十章 小国寡民。使有什伯之器而不用；使民重死而不远徙；虽有舟舆，无所乘之；虽有甲兵，无所陈之。使人复结绳而用之。至治之极。甘其食，美其服，安其居，乐其俗，邻国相望，鸡犬之声相闻，民至老死不相往来。",
+      "score": 0.507,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_24",
+      "source_id": "src_search_1",
+      "book": "论语",
+      "chapter": "颜渊篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 13,
+      "author": "孔子",
+      "snippet": "颜渊问仁，子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。为仁由己，而由人乎哉？”颜渊曰：“请问其目？”子曰：“非礼勿视，非礼勿听，非礼勿言，非礼勿动。”颜渊曰：“回虽不敏，请事斯语矣。” 仲弓问仁，子曰：“出门如见大宾，使民如承大祭。己所不欲，勿施于人。在邦无怨，在家无怨。”仲弓曰：“雍虽不敏，请事斯语矣。” 司马牛问仁，子曰：“仁者，其言也讱。”曰：“其言也讱，斯谓之仁已乎？”子曰：“为之难，言之得无讱乎？” 司马牛问君子，子曰：“",
+      "score": 0.497,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_25",
+      "source_id": "src_search_1",
+      "book": "荀子",
+      "chapter": "哀公",
+      "book_id": "795658cafeab",
+      "chapter_idx": 32,
+      "author": "荀子",
+      "snippet": "鲁哀公问于孔子曰：“吾欲论吾国之士，与之治国，敢问如何取之邪？”孔子对曰：“生今之世，志古之道：居今之俗，服古之服；舍此而为非者，不亦鲜乎！”哀公曰：“然则夫章甫絇屦，绅带而搢笏者，此贤乎？”孔子对曰：“不必然，夫端衣玄裳，絻而乘路者，志不在于食荤；斩衰菅屦，杖而啜粥者，志不在于酒肉。生今之世，志古之道；居今之俗，服古之服；舍此而为非者，虽有，不亦鲜乎！”哀公曰：“善！” 孔子曰：“人有五仪：有庸人，有士，有君子，有贤人，有大圣。”哀公",
+      "score": 0.514,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_28",
+      "source_id": "src_search_1",
+      "book": "论语",
+      "chapter": "卫灵公篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 16,
+      "author": "孔子",
+      "snippet": "卫灵公问陈于孔子，孔子对曰：“俎豆之事，则尝闻之矣；军旅之事，未之学也。”明日遂行。 在陈绝粮，从者病莫能兴。子路愠见曰：“君子亦有穷乎？”子曰：“君子固穷，小人穷斯滥矣。” 子曰：“赐也，女以予为多学而识之者与？”对曰：“然，非与？”曰：“非也，予一以贯之。” 子曰：“由，知德者鲜矣。” 子曰：“无为而治者其舜也与！夫何为哉？恭己正南面而已矣。” 子张问行，子曰：“言忠信，行笃敬，虽蛮貊之邦行矣；言不忠信，行不笃敬，虽州里行乎哉？立则",
+      "score": 0.487,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_30",
+      "source_id": "src_search_1",
+      "book": "道德经",
+      "chapter": "德经·第六十二章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 61,
+      "author": "老子",
+      "snippet": "德经·第六十二章 道者万物之奥。善人之宝，不善人之所保。美言可以市尊，美行可以加人。人之不善，何弃之有？故立天子，置三公，虽有拱璧以先駟马，不如坐进此道。古之所以贵此道者何？不曰：求以得，有罪以免邪？故为天下贵。",
+      "score": 0.5,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_32",
+      "source_id": "src_search_4",
+      "book": "中庸",
+      "chapter": "第二十二章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 23,
+      "author": "子思",
+      "snippet": "唯天下至诚，为能尽其性；能尽其性，则能尽人之性；能尽人之性，则能尽物之性；能尽物之性，则可以赞天地之化育；可以赞天地之化育，则可以与天地参矣。",
+      "score": 0.555,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_36",
+      "source_id": "src_search_4",
+      "book": "韩非子",
+      "chapter": "喻老",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 22,
+      "author": "韩非",
+      "snippet": "天下有道，无急患，则曰静，遽传不用。故曰：\"却走马以粪。\"天下无道，攻击不休，相守数年不已，甲胄生虮虱，燕雀处帷幄，而兵不归。故曰：\"戎马生于郊。\" 翟人有献丰狐、玄豹之皮于晋文公。文公受客皮而叹曰：\"此以皮之美自为罪。\"夫治国者以名号为罪，徐偃王是也；以城与地为罪，虞、虢是也。故曰：\"罪莫大于可欲。\" 智伯兼范、中行而攻赵不已，韩、魏反之，军败晋阳，身死高梁之东，遂卒被分，漆其首以为溲器。故曰：\"祸莫大于不知足。\" 虞君欲屈产之乘与垂",
+      "score": 0.545,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_38",
+      "source_id": "src_search_4",
+      "book": "中庸",
+      "chapter": "第三十三章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 34,
+      "author": "子思",
+      "snippet": "诗曰：“衣锦尚絅”，恶其文之著也。故君子之道，暗然而日章；小人之道，的然而日亡。君子之道，淡而不厌、简而文、温而理。知远之近，知风之自，知微之显。可与入德矣。 诗云：“潜虽伏矣，亦孔之昭。”故君子内省不疚，无恶于志。君子之所不可及者，其唯人之所不见乎。 诗云：“相在尔室，尚不愧于屋漏。”故君子不动而敬，不言而信。 诗曰：“奏假无言，时靡有争。”是故君子不赏而民劝，不怒而民威于鈇钺。 诗曰：“不显惟德，百辟其刑之。”是故君子笃恭而天下平。",
+      "score": 0.543,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_39",
+      "source_id": "src_search_4",
+      "book": "吕氏春秋",
+      "chapter": "恃君览",
+      "book_id": "78687dc8052a",
+      "chapter_idx": 19,
+      "author": "吕不韦",
+      "snippet": "【恃君】 一曰：凡人之性，爪牙不足以自守卫，肌肤不足以捍寒暑，筋骨不足以从利辟害，勇敢不足以却猛禁悍。然且犹裁万物，制禽兽，服狡虫，寒暑燥湿弗能害，不唯先有其备，而以群聚邪！群之可聚也，相与利之也。利之出於群也，君道立也。故君道立则利出於群，而人备可完矣。昔太古尝无君矣，其民聚生群处，知母不知父，无亲戚兄弟夫妻男女之别，无上下长幼之道，无进退揖让之礼，无衣服履带宫室畜积之便，无器械舟车城郭险阻之备。此无君之患。故君臣之义，不可不明也。自",
+      "score": 0.542,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_40",
+      "source_id": "src_search_4",
+      "book": "韩非子",
+      "chapter": "亡征",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 16,
+      "author": "韩非",
+      "snippet": "凡人主之国小而家大，权轻而臣重者，可亡也。简法禁而务谋虑，荒封内而恃交援者，可亡也。群臣为学，门子好辩，商贾外积，小民内困者，可亡也。好宫室台榭陂池，事车服器玩，好罢露百姓，煎靡货财者，可亡也。用时日，事鬼神，信卜筮而好祭祀者，可亡也。听以爵不以众言参验，用一人为门户者，可亡也。官职可以重求，爵禄可以货得者，可亡也。缓心而无成，柔茹而寡断，好恶无决而无所定立者，可亡也。饕贪而无厌，近利而好得者，可亡也。喜淫辞而不周于法，好辩说而不求其用",
+      "score": 0.542,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_41",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "第九章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 8,
+      "author": "老子",
+      "snippet": "持而盈之，不如其已。揣而锐之，不可长保。金玉满堂，莫之能守。富贵而骄，自遗其咎。功遂身退，天之道也。",
+      "score": 0.539,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_43",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "德经·第五十九章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 58,
+      "author": "老子",
+      "snippet": "德经·第五十九章 治人事天，莫若嗇。夫为嗇，是谓早服；早服谓之重积德；重积德则无不克；无不克则莫知其极；莫知其极，可以有国；有国之母，可以长久；是谓深根固柢，长生久视之道。",
+      "score": 0.535,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_45",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "第十九章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 18,
+      "author": "老子",
+      "snippet": "绝圣弃智，民利百倍；绝仁弃义，民复孝慈；绝巧弃利，盗贼无有。此三者，以为文不足，故令有所属。见素抱朴，少私寡欲，绝学无忧。",
+      "score": 0.531,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_46",
+      "source_id": "src_search_4",
+      "book": "荀子",
+      "chapter": "王霸",
+      "book_id": "795658cafeab",
+      "chapter_idx": 12,
+      "author": "荀子",
+      "snippet": "国者，天下之利用也；人主者，天下之利埶也。得道以持之，则大安也，大荣 也，积美之源也；不得道以持之，则大危也，大累也，有之不如无之；及其綦也， 索为匹夫不可得也，齐愍、宋献是也。故人主天下之利埶也，然而不能自安也，安 之者必将道也。 故用国者，义立而王，信立而霸，权谋立而亡。－－三者明主之所谨择也，仁 人之所务白也。絜国以呼礼义，而无以害之，行一不义，杀一无罪，而得天下，仁 者不为也。擽然扶持心国，且若是其固也。之所与为之者，之人则举义",
+      "score": 0.53,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_47",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "第五章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 4,
+      "author": "老子",
+      "snippet": "天地不仁，以万物为刍狗；圣人不仁，以百姓为刍狗。天地之间，其犹橐籥乎？虚而不屈，动而愈出。多言数穷，不如守中。",
+      "score": 0.529,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_51",
+      "source_id": "src_search_4",
+      "book": "荀子",
+      "chapter": "君子",
+      "book_id": "795658cafeab",
+      "chapter_idx": 25,
+      "author": "荀子",
+      "snippet": "天子无妻，告人无匹也。四海之内无客礼，告无适也。足能行，待相者然后进； 口能言，待官人然后诏。不视而见，不听而聪，不言而信，不虑而知，不动而功， 告至备也。天子也者，埶至重，形至佚，心至愈，志无所诎，形无所劳，尊无上矣。 诗曰：“普天之下，莫非王土；率土之滨，莫非王臣。”此之谓也。 圣王在上，分义行乎下，则士大夫无流淫之行，百吏官人无怠慢之事，众庶百 姓无奸怪之俗，无盗贼之罪，莫敢犯上之大禁，天下晓然皆知夫盗窃之不可以为富 也，皆知夫贼",
+      "score": 0.523,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_53",
+      "source_id": "src_search_4",
+      "book": "大学章句集注",
+      "chapter": "第四章",
+      "book_id": "4c5aaf145298",
+      "chapter_idx": 5,
+      "author": "朱熹",
+      "snippet": "《诗》云：“邦畿千里，维民所止。”《诗》云：“缗蛮黄鸟，止于丘隅。” 子曰：“于止，知其所止，可以人而不如鸟乎？” 《诗》云：“穆穆文王，於缉熙敬止！”为人君，止于仁；为人臣，止于敬；为人子，止于孝；为人父，止于慈；与国人交，止于信。 《诗》云：“瞻彼淇澳，菉竹猗猗。有匪君子，如切如磋，如琢如磨。瑟兮僴兮，赫兮喧兮。有匪君子，终不可喧兮！”“如切如磋”者，道学也。“如琢如磨”者，自修也。“瑟兮僴兮”者，恂栗也。“赫兮喧兮”者，威仪也。“",
+      "score": 0.523,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_54",
+      "source_id": "src_search_4",
+      "book": "韩非子",
+      "chapter": "用人",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 28,
+      "author": "韩非",
+      "snippet": "闻古之善用人者，必循天顺人而明赏罚。循天，则用力寡而功立；顺人，则刑罚省而令行；明赏罚，则伯夷、盗跖不乱。如此，则白黑分矣。治国之臣，效功于国以履位，见能于官以受职，尽力于权衡以任事。人臣皆宜其能，胜其官，轻其任，而莫怀余力于心，莫负兼官之责于君。故内无伏怨之乱，外无马服之患。明君使事不相干，故莫讼；使士不兼官，故技长；使人不同功，故莫争。争讼止，技长立，则强弱不觳力，冰炭不合形，天下莫得相伤，治之至也。 释法术而心治，尧不能正一国，去",
+      "score": 0.523,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_55",
+      "source_id": "src_search_4",
+      "book": "韩非子",
+      "chapter": "八经",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 49,
+      "author": "韩非",
+      "snippet": "一、因情 凡治天下，必因人情。人情者，有好恶，故赏罚可用；赏罚可用，则禁令可立而治道具矣。君执柄以处势，故令行禁止。柄者，杀生之制也；势者，胜众之资也。废置无度则权渎，赏罚下共则威分。是以明主不怀爱而听，不留说而计。故听言不参，则权分乎奸；智力不用，则君穷乎臣。故明主之行制也天，其用人也鬼。天则不非，鬼则不困。势行教严，逆而不违，毁誉一行而不议。故赏贤罚暴，誉善之至者也；赏暴罚贤，举恶之至者也：是谓赏同罚异。赏莫如厚，使民利之；誉莫如美",
+      "score": 0.522,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_58",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "第二十八章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 27,
+      "author": "老子",
+      "snippet": "知其雄，守其雌，为天下谿。为天下谿，常德不离，复归于婴儿。知其白，守其黑，为天下式。为天下式，常德不忒，复归于无极。知其荣，守其辱，为天下谷。为天下谷，常德乃足，复归于朴。朴散则为器，圣人用之，则为官长，故大制不割。",
+      "score": 0.519,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_59",
+      "source_id": "src_search_4",
+      "book": "中庸",
+      "chapter": "第二十九章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 30,
+      "author": "子思",
+      "snippet": "王天下有三重焉，其寡过矣乎！ 上焉者虽善，无征。无征，不信。不信，民弗从。下焉者虽善，不尊。不尊，不信。不信，民弗从。 故君子之道，本诸身，征诸庶民。考诸三王而不缪，建诸天地而不悖。质诸鬼神而无疑，百世以俟圣人而不惑。 质诸鬼神而无疑，知天也。百世以俟圣人而不惑，知人也。 是故君子动而世为天下道，行而世为天下法，言而世为天下则。远之，则有望；近之，则不厌。 诗曰：“在彼无恶，在此无射；庶几夙夜，以永终誉。”君子未有不如此，而蚤有誉于天下",
+      "score": 0.524,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_60",
+      "source_id": "src_search_4",
+      "book": "道德经",
+      "chapter": "第二十九章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 28,
+      "author": "老子",
+      "snippet": "将欲取天下而为之，吾见其不得已。天下神器，不可为也，不可执也。为者败之，执者失之。是以圣人无为，故无败；无执，故无失。夫物或行或随；或嘘或吹；或强或羸；或载或隳。是以圣人去甚，去奢，去泰。",
+      "score": 0.519,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_61",
+      "source_id": "src_chapter_5",
+      "book": "孟子",
+      "chapter": "尽心章句下",
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 13,
+      "author": "孟子",
+      "snippet": "尽心章句下·第一节孟子曰：“不仁哉，梁惠王也！仁者以其所爱及其所不爱，不仁者以其所不爱及其所爱。”公孙丑曰：“何谓也？”\n“梁惠王以土地之故，糜烂其民而战之，大败，将复之，恐不能胜，故驱其所爱子弟以殉之，是之谓以其所不爱及其所爱也。”\n尽心章句下·第二节孟子曰：“春秋无义战。彼善于此，则有之矣。征者上伐下也，敌国不相征也。”\n尽心章句下·第三节孟子曰：“尽信书，则不如无书。吾于武成，取二三策而已矣。仁人无敌于天下。以至仁伐至不仁，而何其",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": true,
+      "supports_claim_ids": [
+       "claim_16"
+      ],
+      "candidate": true
+     },
+     {
+      "evidence_id": "ev_69",
+      "source_id": "src_search_6",
+      "book": "马基雅维利语录",
+      "chapter": "统治者对民众，不仅要以善政待之，更要以其对自由的冀望为追求。",
+      "book_id": "96a84c0450cd",
+      "chapter_idx": 88,
+      "author": "马基雅维利",
+      "snippet": "统治者对民众，不仅要以善政待之，更要以其对自由的冀望为追求。 ——《论李维》",
+      "score": 0.477,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_74",
+      "source_id": "src_search_6",
+      "book": "道德经",
+      "chapter": "德经·第七十二章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 71,
+      "author": "老子",
+      "snippet": "德经·第七十二章 民不畏威，则大威至。无狎其所居，无厌其所生。夫唯不厌，是以不厌。是以圣人自知不自见；自爱不自贵。故去彼取此。",
+      "score": 0.491,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_75",
+      "source_id": "src_search_6",
+      "book": "老子道德经",
+      "chapter": "第七十二章 自知自爱",
+      "book_id": "dd8853676655",
+      "chapter_idx": 72,
+      "author": "老子",
+      "snippet": "【原文】 民不畏威，则大威至。无狎其所居[134]，无厌其所生[135]。夫唯不厌[136]，是以不厌[137]。是以圣人自知不自见[138]，自爱不自贵。故去彼取此。 【译文】 当人民不畏惧统治者的威压时，那么可怕的祸乱就要到来了。不要逼迫人民使人民不得安居，不要压榨人民使人民无以生计。只有不压迫人民，人民才不厌恶统治者。因此，有道的人不但有自知之明，而且也不会自我表现；有自爱之心也不自显高贵。所以要舍弃后者而保持前者。 【解析】 这",
+      "score": 0.461,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_76",
+      "source_id": "src_search_6",
+      "book": "西方百年学术经典著作",
+      "chapter": "第十八章 为何在美国人认为一切正当的行业都是高尚的",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 767,
+      "author": "佚名",
+      "snippet": "在民主国家中，人们无法世袭财产，所有人不是依靠劳动生活，就是依靠劳动的积蓄生活，或者依靠劳动者的父母生活。因为在人们看来，劳动是所有人人生中的必要因素，并且也是非常自然而合理的事情。因此，关于劳动的观点就不断地进入人们的头脑。 对于民主国家的人民来说，劳动不仅不下贱，反而是光荣的。舆论也在赞成劳动而不是反对劳动。在美国，所有的富人都有这种看法：他们能在空暇时光去做些工商活动或公共事务，正是得益于舆论的支持。他们认为，如果自己为了自己的利",
+      "score": 0.459,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_77",
+      "source_id": "src_search_6",
+      "book": "马基雅维利语录",
+      "chapter": "没有领导者的民众，是毫无价值的存在。",
+      "book_id": "96a84c0450cd",
+      "chapter_idx": 52,
+      "author": "马基雅维利",
+      "snippet": "没有领导者的民众，是毫无价值的存在。 ——《论李维》",
+      "score": 0.458,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_79",
+      "source_id": "src_search_6",
+      "book": "知行合一王阳明：心学日课21天",
+      "chapter": "第八章 明德亲民",
+      "book_id": "2e806c6e6594",
+      "chapter_idx": 8,
+      "author": "度阴山",
+      "snippet": "第 八 章 明 德 亲 民 明 德 亲 民 有弟子问王阳明：“我要去做官啦，请问如何‘亲民’？” 王阳明回答：“明德而已。” 弟子再问：“如何明德？” 王阳明回答：“亲民而已。” 弟子说：“二者不是一回事吧？” 王阳明告诉他，作为官员，要彰显美好的道德，只能在对待百姓的方式上彰显，也就是为百姓服务。只有为百姓服务，才能彰显自身的道德，这二者是一回事。如果强行把它们分开，那么，哪方面都不会做好。  明德、亲民，一也。古之人明明德以亲其民，",
+      "score": 0.457,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_81",
+      "source_id": "src_search_6",
+      "book": "西方百年学术经典著作",
+      "chapter": "法律的分类",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 117,
+      "author": "佚名",
+      "snippet": "如果要把整体合理布置，把国家置于最佳的形式，我们就必须考虑各种关系。首先，存在整个共同体的自身运动，主权体整体对国家整体的关系。这种关系，正如我们所见的，是由中间条件的关系构成的。 调节这种关系的法律冠以“政治法律”之名，而且如果它们是明智的话，不妨也称之为根本法。因为，如果在一国之中只存在一套良好的体系，拥有它的人民应该紧紧抓住它，但是如果已经建立的秩序是坏的话，法律为什么要妨碍人民把基础的东西变好？此外，不论任何时候，即便法律是好的",
+      "score": 0.507,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_82",
+      "source_id": "src_search_6",
+      "book": "知行合一王阳明大全集(套装共5册）",
+      "chapter": "以和为贵：《告谕庐陵父老子弟》",
+      "book_id": "d3f79625368c",
+      "chapter_idx": 54,
+      "author": "度阴山",
+      "snippet": "以和为贵：《告谕庐陵父老子弟》 原文 庐陵文献之地，而以健讼称，甚为吾民羞之。县令不明，不能听断，且气弱多疾。今与吾民约，自今非有迫于躯命，大不得已事，不得辄兴词。兴词但诉一事，不得牵连，不得过两行，每行不得过三十字。过是者不听。故违者有罚。县中父老谨厚知礼法者，其以吾言归告子弟，务在息争兴让。 呜呼！一朝之忿，忘其身以及其亲，破败其家，遗祸于其子孙。孰与和巽自处，以良善称于乡族，为人之所敬爱者乎？吾民其思之。 今灾疫大行，无知之民，惑",
+      "score": 0.455,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_84",
+      "source_id": "src_search_6",
+      "book": "中庸",
+      "chapter": "第九章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 10,
+      "author": "子思",
+      "snippet": "子曰：“天下国家，可均也；爵禄，可辞也；白刃，可蹈也；中庸不可能也。”",
+      "score": 0.508,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_86",
+      "source_id": "src_search_6",
+      "book": "西方百年学术经典著作",
+      "chapter": "没有一种政府形式适合于所有国家",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 125,
+      "author": "佚名",
+      "snippet": "自由不是所有气候的果实，它不在所有民族的范围之内。孟德斯鸠提出的这个规则越是加以考虑，就越能感受到它的真理性；越是对它加以否定，就越是有可能用新证据予以肯定。 在业已存在的所有政府中，公家只知消费，不知生产。那么，它从哪儿得到消耗的东西？从其成员的劳动中。公众的必需品是由个体剩下的剩余品提供的。由此可见，只要人类的劳动带给公民国家比他们所需得到的回报更大，公民国家就能存活。 这种数量上的过剩并非在所有国家都相同。在一些国家，它的数量甚为",
+      "score": 0.452,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_87",
+      "source_id": "src_search_6",
+      "book": "三十六计",
+      "chapter": "混水摸鱼",
+      "book_id": "23026c516292",
+      "chapter_idx": 20,
+      "author": "佚名",
+      "snippet": "乘其阴乱，利其弱而无主，随，以向晦入宴息。",
+      "score": 0.452,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_88",
+      "source_id": "src_search_6",
+      "book": "韩非子",
+      "chapter": "诡使",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 46,
+      "author": "韩非",
+      "snippet": "圣人之所以为治道者三：一曰“利”，二曰“威”，三曰“名”。夫利者，所以得民也；威者，所以行令也；名者，上下之所同道也。非此三者，虽有不急矣。今利非无有也，而民不化上；威非不存也，而下不听从；官非无法也，而治不当名。三者非不存也，而世一治一乱者，何也？夫上之所贵与其所以为治相反也。 夫立名号，所以为尊也；今有贱名轻实者，世谓“高”。设爵位，所以为贱贵基也；而简上不求见者，谓之“贤”。威利，所以行令也；而无利轻威者，世谓之“重”。法令，所以",
+      "score": 0.451,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_90",
+      "source_id": "src_search_6",
+      "book": "韩非子",
+      "chapter": "心度",
+      "book_id": "6ec167f8492b",
+      "chapter_idx": 55,
+      "author": "韩非",
+      "snippet": "圣人之治民，度于本，不从其欲，期于利民而已。故其与之刑，非所以恶民，爱之本也。刑胜而民静，赏繁而奸生。故治民者，刑胜，治之首也；赏繁，乱之本也。夫民之性，喜其乱而不亲其法。故明主之治国也，明赏，则民劝功；严刑，则民亲法。劝功，则公事不犯；亲法，则奸无所萌。故治民者，禁奸于未萌；而用兵者，服战于民心。禁先其本者治，兵战其心者胜。圣人之治民也，先治者强，先战者胜。夫国事务先而一民心，专举公而私不从，赏告而奸不生，明法而治不烦。能用四者强，不",
+      "score": 0.45,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_92",
+      "source_id": "src_search_7",
+      "book": "中庸",
+      "chapter": "第十七章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 18,
+      "author": "子思",
+      "snippet": "子曰：“舜其大孝也与！德为圣人，尊为天子，富有四海之内。宗庙飨之，子孙保之。” 故大德，必得其位，必得其禄，必得其名，必得其寿。 故天之生物必因其材而笃焉。故栽者培之，倾者覆之。 诗曰：‘嘉乐君子，宪宪令德，宜民宜人。受禄于天。保佑命之，自天申之。’ 故大德者必受命。”",
+      "score": 0.538,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_96",
+      "source_id": "src_search_7",
+      "book": "中庸",
+      "chapter": "第十一章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 12,
+      "author": "子思",
+      "snippet": "子曰：“素隐行怪，后世有述焉：吾弗为之矣。 君子遵道而行，半途而废：吾弗能已矣。 君子依乎中庸，遁世不见知，而不悔。唯圣者能之。”",
+      "score": 0.521,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_98",
+      "source_id": "src_search_7",
+      "book": "道德经",
+      "chapter": "第十七章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 16,
+      "author": "老子",
+      "snippet": "太上，不知有之；其次，亲而誉之；其次，畏之；其次，侮之。信不足焉，有不信焉。悠兮，其贵言。功成事遂，百姓皆谓：“我自然”。",
+      "score": 0.515,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_99",
+      "source_id": "src_search_7",
+      "book": "道德经",
+      "chapter": "德经·第六十六章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 65,
+      "author": "老子",
+      "snippet": "德经·第六十六章 江海之所以能为百谷王者，以其善下之，故能为百谷王。是以圣人欲上民，必以言下之；欲先民，必以身后之。是以圣人处上而民不重，处前而民不害。是以天下乐推而不厌。以其不争，故天下莫能与之争。",
+      "score": 0.514,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_105",
+      "source_id": "src_search_7",
+      "book": "道德经",
+      "chapter": "德经·第三十九章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 38,
+      "author": "老子",
+      "snippet": "德经·第三十九章 昔之得一者，天得一以清；地得一以宁；神得一以灵；谷得一以盈，万物得一以生；侯王得一以为天下正。其致之也，谓天无以清，将恐裂；地无以宁，将恐废；神无以灵，将恐歇；谷无以盈，将恐竭；万物无以生，将恐灭；侯王无以正，将恐蹶。故贵以贱为本，高以下为基。是以侯王自谓孤、寡、不穀。此非以贱为本邪？非乎？故至誉无誉。是故不欲琭琭如玉，珞珞如石。",
+      "score": 0.495,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_106",
+      "source_id": "src_search_7",
+      "book": "论语",
+      "chapter": "子路篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 14,
+      "author": "孔子",
+      "snippet": "子路问政，子曰：“先之，劳之。”请益，曰：“无倦。” 仲弓为季氏宰，问政，子曰：“先有司，赦小过，举贤才。”曰：“焉知贤才而举之？”曰：“举尔所知。尔所不知，人其舍诸？” 子路曰：“卫君待子而为政，子将奚先？”子曰：“必也正名乎！”子路曰：“有是哉，子之迂也！奚其正？”子曰：“野哉由也！君子于其所不知，盖阙如也。名不正，则言不顺；言不顺，则事不成；事不成，则礼乐不兴；礼乐不兴，则刑罚不中；刑罚不中，则民无所措手足。故君子名之必可言也，言",
+      "score": 0.494,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_110",
+      "source_id": "src_search_7",
+      "book": "荀子",
+      "chapter": "王制",
+      "book_id": "795658cafeab",
+      "chapter_idx": 10,
+      "author": "荀子",
+      "snippet": "请问为政？曰：贤能不待次而举，罢不能不待须而废，元恶不待教而诛，中庸民不待政而化。分未定也则有昭缪。虽王公士大夫之子孙也，不能属于礼义，则归之庶人。虽庶人之子孙也，积文学，正身行，能属于礼义，则归之卿相士大夫。故奸言、奸说、奸事、奸能、遁逃反侧之民，职而教之，须而待之，勉之以庆赏，惩之以刑罚。安职则畜，不安职则弃。五疾，上收而养之，材而事之，官施而衣食之，兼覆无遗。才行反时者死无赦。夫是之谓天德，是王者之政也。 听政之大分：以善至者待之",
+      "score": 0.49,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_111",
+      "source_id": "src_search_7",
+      "book": "中庸",
+      "chapter": "第六章",
+      "book_id": "4d187a31575a",
+      "chapter_idx": 7,
+      "author": "子思",
+      "snippet": "子曰：“舜其大知也与！舜好问而好察迩言。隐恶而扬善。执其两端，用其中于民。其斯以为舜乎！”",
+      "score": 0.489,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_114",
+      "source_id": "src_search_7",
+      "book": "论语",
+      "chapter": "公冶长篇",
+      "book_id": "d9272a80942a",
+      "chapter_idx": 6,
+      "author": "孔子",
+      "snippet": "子谓公冶长：“可妻也，虽在缧绁之中，非其罪也！”以其子妻之。 子谓南容：“邦有道不废；邦无道免于刑戮。”以其兄之子妻之。 子谓子贱：“君子哉若人！鲁无君子者，斯焉取斯？” 子贡问曰：“赐也何如？”子曰：“女器也。”曰：“何器也？”曰：“瑚琏也。” 或曰：“雍也仁而不佞。”子曰：“焉用佞？御人以口给，屡憎于人。不知其仁，焉用佞？” 子使漆雕开仕，对曰：“吾斯之未能信。”子说。 子曰：“道不行，乘桴浮于海，从我者其由与？”子路闻之喜，子曰：",
+      "score": 0.485,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_115",
+      "source_id": "src_search_7",
+      "book": "庄子",
+      "chapter": "则阳",
+      "book_id": "84adfb4d0c0b",
+      "chapter_idx": 26,
+      "author": "庄子",
+      "snippet": "则阳游于楚，夷节言之于王，王未之见。夷节归。彭阳见王果曰： “夫子何不谭我于王？”王果曰：“我不若公阅休。”彭阳曰：“公 阅休奚为者邪？”曰：“冬则戳鳖于江，夏则休乎山樊。有过而问者 ，曰：‘此予宅也。’夫夷节已不能，而况我乎！吾又不若夷节。夫 夷节之为人也，无德而有知，不自许，以之神其交，固颠冥乎富贵之 地。非相助以德，相助消也。夫冻者假衣于春，暍者反冬乎冷风。夫 楚王之为人也，形尊而严。其于罪也 ，无赦如虎。非夫佞人正德，其孰能桡焉",
+      "score": 0.485,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_116",
+      "source_id": "src_search_7",
+      "book": "荀子",
+      "chapter": "儒效",
+      "book_id": "795658cafeab",
+      "chapter_idx": 9,
+      "author": "荀子",
+      "snippet": "大儒之效：武王崩，成王幼，周公屏成王而及武王以属天下，恶天下之倍周也。履天子之籍，听天下之断，偃然如固有之，而天下不称贪焉；杀管叔，虚殷国，而天下不称戾焉；兼制天下，立七十一国，姬姓独居五十三人，而天下不称偏焉。教诲开导成王，使谕于道，而能掩迹于文、武。周公归周，反籍于成王，而天下不辍事周，然而周公北面而朝之。天子也者，不可以少当也，不可以假摄为也。能则天下归之，不能则天下去之，是以周公屏成王而及武王以属天下，恶天下之离周也。成王冠，成",
+      "score": 0.484,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_118",
+      "source_id": "src_search_7",
+      "book": "庄子",
+      "chapter": "山木",
+      "book_id": "84adfb4d0c0b",
+      "chapter_idx": 21,
+      "author": "庄子",
+      "snippet": "庄子行于山中，见大木，枝叶盛茂。伐木者止其旁而不取也。问其 故，曰：“无所可用。”庄子曰：“此木以不材得终其天年。”夫子 出于山，舍于故人之家。故人喜，命竖子杀雁而烹之。竖子请曰：“ 其一能鸣，其一不能鸣，请奚杀？”主人曰：“杀不能鸣者。”明日 ，弟子问于庄子曰：“昨日山中之木，以不材得终其天年；今主人之 雁，以不材死。先生将何处？”庄子笑曰：“周将处乎材与不材之间 。材与不材之间，似之而非也，故未免乎累。若夫乘道德而浮游则不 然，无誉",
+      "score": 0.484,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_121",
+      "source_id": "src_search_7",
+      "book": "道德经",
+      "chapter": "德经·第四十七章",
+      "book_id": "6ef2f18cfdc9",
+      "chapter_idx": 46,
+      "author": "老子",
+      "snippet": "德经·第四十七章 不出户，知天下；不窥牖，见天道。其出弥远，其知弥少。是以圣人不行而知，不见而明，不为而成。",
+      "score": 0.483,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_138",
+      "source_id": "src_search_9",
+      "book": "西方百年学术经典著作",
+      "chapter": "章十三",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 390,
+      "author": "佚名",
+      "snippet": "若只考虑城邦存在的要素，那么上述一切或若干因素都是公正的。但若考虑到优质的生活，教育和心灵才是最正当的因素。然而，那些在某一方面平等若干方面不平等，或是在某一方面不平等在其余所有方面也不平等，一切基于此种原则建立的政体都是堕落的变体。 或许每个人的要求都各有道理，但不是都有意义。富人要求更多的权力，因为他们占有若干土地，而土地是城邦的公共部分，富人们通常也较为诚信。自由人和贵族联系紧密，他们提出了同样要求，原因也合理。出身高贵者较出身卑",
+      "score": 0.505,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_139",
+      "source_id": "src_search_9",
+      "book": "南怀瑾经典合集（共24册）",
+      "chapter": "第七篇　治国平天下",
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 421,
+      "author": "南怀瑾",
+      "snippet": "四五、人世难能天下平 在进一步研究“平天下在治其国”之前，让我们先来读这段原文： 所谓平天下在治其国者，上老老，而民兴孝；上长长，而民兴弟；上恤孤，而民不倍。是以君子有絜矩之道也。所恶于上，毋以使下；所恶于下，毋以事上；所恶于前，毋以先后；所恶于后，毋以从前；所恶于右，毋以交于左；所恶于左，毋以交于右；此之谓絜矩之道。（一） 《诗》云：“乐只君子，民之父母。”民之所好好之，民之所恶恶之，此之谓民之父母。《诗》云：“节彼南山，维石岩岩。赫",
+      "score": 0.504,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_146",
+      "source_id": "src_web_10",
+      "book": "",
+      "chapter": "",
+      "book_id": "",
+      "chapter_idx": -1,
+      "author": "",
+      "snippet": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 孟子', 'snippet': '2000年11月11日\\u2002·\\u2002孟子（公元前372年-公元前289年），姬姓，孟氏，名轲，字子舆（待考，一说字子车、子居），与孔子并称“孔 …', 'url': 'https://baike.baidu.com/item/%E5%AD%9F%E5%AD%90",
+      "score": 0.0,
+      "source_type": "secondary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     }
+    ],
+    "candidate_evidence": [
+     {
+      "evidence_id": "ev_61",
+      "source_id": "src_chapter_5",
+      "book": "孟子",
+      "chapter": "尽心章句下",
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 13,
+      "author": "孟子",
+      "snippet": "尽心章句下·第一节孟子曰：“不仁哉，梁惠王也！仁者以其所爱及其所不爱，不仁者以其所不爱及其所爱。”公孙丑曰：“何谓也？”\n“梁惠王以土地之故，糜烂其民而战之，大败，将复之，恐不能胜，故驱其所爱子弟以殉之，是之谓以其所不爱及其所爱也。”\n尽心章句下·第二节孟子曰：“春秋无义战。彼善于此，则有之矣。征者上伐下也，敌国不相征也。”\n尽心章句下·第三节孟子曰：“尽信书，则不如无书。吾于武成，取二三策而已矣。仁人无敌于天下。以至仁伐至不仁，而何其",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": true,
+      "supports_claim_ids": [
+       "claim_16"
+      ],
+      "candidate": true
+     }
+    ],
+    "used_evidence": [
+     {
+      "evidence_id": "ev_61",
+      "source_id": "src_chapter_5",
+      "book": "孟子",
+      "chapter": "尽心章句下",
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 13,
+      "author": "孟子",
+      "snippet": "尽心章句下·第一节孟子曰：“不仁哉，梁惠王也！仁者以其所爱及其所不爱，不仁者以其所不爱及其所爱。”公孙丑曰：“何谓也？”\n“梁惠王以土地之故，糜烂其民而战之，大败，将复之，恐不能胜，故驱其所爱子弟以殉之，是之谓以其所不爱及其所爱也。”\n尽心章句下·第二节孟子曰：“春秋无义战。彼善于此，则有之矣。征者上伐下也，敌国不相征也。”\n尽心章句下·第三节孟子曰：“尽信书，则不如无书。吾于武成，取二三策而已矣。仁人无敌于天下。以至仁伐至不仁，而何其",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": true,
+      "supports_claim_ids": [
+       "claim_16"
+      ],
+      "candidate": true
+     }
+    ],
+    "claims": [
+     {
+      "claim_id": "claim_1",
+      "text": "我已经完成了对原典库和外部来源的检索与核验",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_2",
+      "text": "**关于出处（篇名）**",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_3",
+      "text": "这句名言出自《孟子》的**《尽心下》一篇**（即\"尽心章句下\"）",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_4",
+      "text": "这是我掌握的传统知识，且经原典库结构核验得到间接支持：库内《孟子》第13章即《尽心章句下》，其中我逐字读到的**第十三节**为——",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_5",
+      "text": "> \"不仁而得国者，有之矣",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_6",
+      "text": "按传世《孟子》的分章次序，紧接其后的**第十四章**正应是\"民为贵，社稷次之，君为轻\"这一章",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_7",
+      "text": "**关于逐字核验（必须坦白的局限）**",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_8",
+      "text": "我未能做到对这句话本身的**逐字原文核验**，原因是：",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_9",
+      "text": "1. 原典库收录的《孟子》（共14章，第13章为《尽心章句下》）在正文中，**\"第十四节\"至\"第十八节\"的内容段为空缺**——从\"第十三节\"直接跳到了\"第十九节\"",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_10",
+      "text": "而\"民为贵\"恰落在这段空缺区间内，因此对该书反复检索\"民为贵\"\"社稷次之\"\"得乎丘民而为天子\"等均无法命中",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_11",
+      "text": "2. 上网补充检索也只返回书目页与工具书词条，未能取回该章可据以逐字核验的可靠原文片段",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_12",
+      "text": "因此，关于这句话在《孟子·尽心下》中的完整原文措辞（我记忆中的通行本为\"民为贵，社稷次之，君为轻",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_13",
+      "text": "是故得乎丘民而为天子……\"以及后文\"诸侯危社稷，则变置\"等句），**属于记忆，未经库中原文核验**，我不以确定口吻逐字引用",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_14",
+      "text": "| 原文事实 | 出处为《孟子·**尽心下**》（库内该书第13章《尽心章句下》）",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_15",
+      "text": "原典库该章此段正文缺失，未能逐字核验原句措辞 |",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_16",
+      "text": "| 已核验的旁证 | 库内《尽心章句下》第十三节原文为\"不仁而得国者……\"，按传世分章其下一章即\"民为贵\"章【《孟子》·尽心章句下】 |",
+      "epistemic_type": "SOURCE_FACT",
+      "role": "TEXTUAL_CLAIM",
+      "evidence_ids": [
+       "ev_61"
+      ],
+      "direct_evidence": true
+     },
+     {
+      "claim_id": "claim_17",
+      "text": "| 待核验 | \"民为贵……\"一段的精确逐字文本及\"第十四节\"章节编号（凭记忆，未在库中定位到该节原文） |",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_18",
+      "text": "如果你需要的是可用于正式引用的逐字原文，建议另行核对善本（如朱熹《孟子集注》或中华书局点校本）",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     },
+     {
+      "claim_id": "claim_19",
+      "text": "若你希望我以**外部权威版本**为目标再做一轮核验，我可以进一步尝试定向取文",
+      "epistemic_type": "UNKNOWN",
+      "role": "INTERPRETIVE_CLAIM",
+      "evidence_ids": [],
+      "direct_evidence": false
+     }
+    ],
+    "citations": [
+     {
+      "evidence_id": "ev_61",
+      "book": "孟子",
+      "chapter": "尽心章句下",
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 13,
+      "author": "孟子",
+      "source_type": "primary",
+      "used": true,
+      "supports_claim_ids": [
+       "claim_16"
+      ]
+     }
+    ],
+    "unverified_citations": [],
+    "retrieved_count": 73,
+    "used_count": 1,
+    "facts": {
+     "read_chapters": [
+      "孟子#13"
+     ],
+     "search_execs": 12,
+     "read_execs": 1,
+     "source_candidate_found": true,
+     "primary_text_read": true
+    }
+   },
+   "tool_calls": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "民为贵 社稷次之 君为轻"
+     },
+     "result_summary": "{'results': [{'book_id': '4d187a31575a', 'book_title': '中庸', 'author': '子思', 'chapter_idx': 15, 'chapter_title': '第十四章', 'citation_label': '【《中庸》·第十四章】', 'snippet': '君子素其位而行，不愿乎其外。 素富贵，行乎富贵；素贫贱，行乎贫贱；素",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "孟子 民为贵"
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "query_database",
+     "args": {
+      "table": "books",
+      "key": "孟子"
+     },
+     "result_summary": "{'results': [{'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'chapterCount': 14, 'rank': 40.8, 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的思想，提出“性善论”，认为人性",
+     "thought": "执行 query_database"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "孟子"
+     },
+     "result_summary": "{'id': 'dd03ec6572e7', 'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的思想，提出“性善论”，认为人性本善，具有恻隐、羞恶、辞让、是非四端，通过扩充这些",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "社稷 君为轻 尽心",
+      "limit": 10
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 25, 'chapter_title': '第二十六章', 'citation_label': '【《道德经》·第二十六章】', 'snippet': '重为轻根，静为躁君。是以君子终日行不离輜重，虽有荣观，燕处超",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "孟子",
+      "chapter_idx": 13
+     },
+     "result_summary": "{'book_id': 'dd03ec6572e7', 'chapter_idx': 13, 'title': '尽心章句下', 'book_title': '孟子', 'citation_label': '【《孟子》·尽心章句下】', 'text': '尽心章句下·第一节孟子曰：“不仁哉，梁惠王也！仁者以其所爱及其所不爱，不仁者以其所不爱及其所爱。”公孙丑曰：“何谓也？”\\n“梁惠王以土地之故，",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "limit": 10,
+      "query": "民为贵"
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "limit": 10,
+      "query": "得乎丘民而为天子"
+     },
+     "result_summary": "{'results': [{'book_id': '4d187a31575a', 'book_title': '中庸', 'author': '子思', 'chapter_idx': 18, 'chapter_title': '第十七章', 'citation_label': '【《中庸》·第十七章】', 'snippet': '子曰：“舜其大孝也与！德为圣人，尊为天子，富有四海之内。宗庙飨之，子",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "list_books",
+     "args": {
+      "author": "朱熹"
+     },
+     "result_summary": "{'books': [{'id': '4c5aaf145298', 'title': '大学章句集注', 'author': '朱熹', 'region': '东方', 'rank': 37.6, 'summary': '《大学章句集注》是南宋理学家朱熹对《大学》的注释和阐发，是《四书章句集注》之一。朱熹将《大学》从《礼记》中抽出，分为经一章和传十章，认为经是孔子之言而曾子述之，传是曾子之意而门人",
+     "thought": "执行 list_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "limit": 8,
+      "query": "民为贵 社稷次之"
+     },
+     "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 74, 'chapter_title': '德经·第七十五章', 'citation_label': '【《道德经》·德经·第七十五章】', 'snippet': '德经·第七十五章 民之饥，以其上食税之多，是以饥",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "query": "孟子 民为贵 社稷次之 君为轻 出自哪一篇 尽心"
+     },
+     "result_summary": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 孟子', 'snippet': '2000年11月11日\\u2002·\\u2002孟子（公元前372年-公元前289年），姬姓，孟氏，名轲，字子舆（待考，一说字子车、子居），与孔子并称“孔 …', 'url': 'https://baike.baidu.com/ite",
+     "thought": "执行 websearch"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "query": "孟子 尽心下 \"民为贵，社稷次之，君为轻\" 原文 \"得乎丘民而为天子\""
+     },
+     "result_summary": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 孟子', 'snippet': '2000年11月11日\\u2002·\\u2002孟子（公元前372年-公元前289年），姬姓，孟氏，名轲，字子舆（待考，一说字子车、子居），与孔子并称“孔 …', 'url': 'https://baike.baidu.com/ite",
+     "thought": "执行 websearch"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "query": "\"得乎丘民而为天子\" 孟子 尽心 章句 原文 逐字"
+     },
+     "result_summary": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 得', 'snippet': '得（拼音：dé、děi、de）为汉语一级通用规范汉字（常用字）。此字始见于商代甲骨文及商代金文，其古字形由又和贝组合而成，表 …', 'url': 'https://baike.baidu.com/item/%E5%BE%97/4547",
+     "thought": "执行 websearch"
+    }
+   ],
+   "suggestions": [
+    "就 「得乎丘民而为天子\"」 与另一位哲学家隔空对质",
+    "追溯 「得乎丘民而为天子\"」 在哲学史中的时间线"
+   ],
+   "safety": null,
+   "tool_loop": {
+    "invocation_id": "eedd52c8aed3",
+    "budget": {
+     "useful": 13,
+     "retry": 0,
+     "inner_retries": 0,
+     "duplicate_reused": 0,
+     "no_gain": 0,
+     "total_executed": 13,
+     "retrieval_executed": 13,
+     "hard": false,
+     "cfg": {
+      "hard_retrieval": 20,
+      "hard_total": 24
+     }
+    },
+    "model_retries": 0,
+    "recovered_after_error": false,
+    "no_gain_calls": 0
+   },
+   "causal": {
+    "provenance": "o1",
+    "engine_cognitive_auto_tools": 0,
+    "main_agent_tool_decisions": 13,
+    "agent_invocations": 8,
+    "thinking_sources": "main_agent_only"
+   },
+   "final_ownership": {
+    "provenance": "o2",
+    "final_text_owner": "main_agent",
+    "semantic_mutators": 0,
+    "runtime_factual_appends": 0,
+    "final_retract_semantic_use": 0,
+    "invalid_final_publicly_streamed": false,
+    "validator_repair_invocations": 0,
+    "main_agent_final_ownership_rate": 1.0
+   },
+   "validation": {
+    "result": {
+     "ok": true,
+     "issues": []
+    },
+    "repairs_used": 0,
+    "max_validation_repairs": 2,
+    "repair_protocol": "same_main_agent"
+   },
+   "timing": {
+    "phases": [
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 7875.4,
+      "msgs_len": 3
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 2468.8,
+      "msgs_len": 6
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 7950.2,
+      "msgs_len": 9
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 5553.6,
+      "msgs_len": 12
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 10442.8,
+      "msgs_len": 15
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 7342.5,
+      "msgs_len": 19
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 5920.3,
+      "msgs_len": 21
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 12688.2,
+      "msgs_len": 23
+     },
+     {
+      "type": "phase",
+      "phase": "validator_quote_bound",
+      "duration_ms": 2.0
+     },
+     {
+      "type": "phase",
+      "phase": "validator_evidence_contract",
+      "duration_ms": 48.6
+     },
+     {
+      "type": "phase",
+      "phase": "validator_citation_sanitize",
+      "duration_ms": 0.0
+     }
+    ],
+    "total_ms": 89740.1
+   },
+   "citation_sanitize": {
+    "verified_citations": [
+     {
+      "book": "孟子",
+      "chapter": "尽心章句下"
+     }
+    ],
+    "unverified_before": [],
+    "actions": [
+     {
+      "book": "孟子",
+      "chapter": "尽心章句下",
+      "action": "verified"
+     }
+    ]
+   },
+   "quote_bound": {
+    "entries": [
+     {
+      "quote_claim_id": "quote_1",
+      "kind": "blockquote",
+      "preview": "\"不仁而得国者，有之矣；不仁而得天下，未之有也。\"",
+      "verification_state": "VERIFIED_EXACT",
+      "source_evidence_id": "qb_read_4",
+      "source_book": "孟子",
+      "source_chapter": "尽心章句下",
+      "stitched": false,
+      "coverage": 1.0,
+      "disclosed": false,
+      "unverified_blockquote": false
+     }
+    ],
+    "summary": {
+     "quotes": 1,
+     "verified_exact": 1,
+     "verified_near": 0,
+     "memory_only": 0,
+     "stitched": 0,
+     "unverified_blockquote": 0,
+     "memory_only_exact_claim": 0
+    }
+   },
+   "temporal": null,
+   "safety_enforcement": {
+    "initiated_by": "safety_runtime",
+    "action": "none"
+   },
+   "safety_reply": null
+  },
+  {
+   "type": "suggestions",
+   "suggestions": [
+    "这句话在《孟子》全书中算比较靠后的内容，那它之前的思想脉络是怎么一步步走到“民贵君轻”这一步的？",
+    "朱熹在《孟子集注》里对“民为贵”这章是怎么注解的？他有没有特别强调“民贵”与“君轻”之间的轻重关系？",
+    "如果把“民为贵”和西方政治思想里的“社会契约论”放在一起看，孟子讲的民之“贵”和卢梭讲的“人民主权”有什么本质差别？"
+   ]
+  }
+ ]
+}

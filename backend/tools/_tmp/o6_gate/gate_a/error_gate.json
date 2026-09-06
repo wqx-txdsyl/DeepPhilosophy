@@ -1,0 +1,177 @@
+{
+ "cases": [
+  {
+   "case": "E1_tool_timeout",
+   "stack_trace_leak": [],
+   "no_stack_trace_clean": true,
+   "answer_chars": 33,
+   "done_count": 1,
+   "error_count": 0,
+   "clean_close": true,
+   "event_types": [
+    "done",
+    "status",
+    "thinking_summary",
+    "token",
+    "tool",
+    "tool_note",
+    "tool_start"
+   ],
+   "expect": "工具超时→error结果→正常发布",
+   "tool_error_surfaced": true,
+   "published_ok": true
+  },
+  {
+   "case": "E2_tool_execution_error",
+   "stack_trace_leak": [],
+   "no_stack_trace_clean": true,
+   "answer_chars": 33,
+   "done_count": 1,
+   "error_count": 0,
+   "clean_close": true,
+   "event_types": [
+    "done",
+    "status",
+    "thinking_summary",
+    "token",
+    "tool",
+    "tool_note",
+    "tool_start"
+   ],
+   "expect": "工具异常→error结果→正常发布",
+   "tool_error_surfaced": true,
+   "secret_in_public_answer": false,
+   "published_ok": true
+  },
+  {
+   "case": "E3_unknown_tool",
+   "stack_trace_leak": [],
+   "no_stack_trace_clean": true,
+   "answer_chars": 33,
+   "done_count": 1,
+   "error_count": 0,
+   "clean_close": true,
+   "event_types": [
+    "done",
+    "status",
+    "thinking_summary",
+    "token",
+    "tool",
+    "tool_note",
+    "tool_start"
+   ],
+   "expect": "未知工具→error结果→正常发布",
+   "tool_error_surfaced": true,
+   "published_ok": true
+  },
+  {
+   "case": "E4_missing_param_schema",
+   "stack_trace_leak": [],
+   "no_stack_trace_clean": true,
+   "answer_chars": 33,
+   "done_count": 1,
+   "error_count": 0,
+   "clean_close": true,
+   "event_types": [
+    "done",
+    "status",
+    "thinking_summary",
+    "token",
+    "tool",
+    "tool_note",
+    "tool_start"
+   ],
+   "expect": "缺参→error结果→正常发布",
+   "tool_error_surfaced": true,
+   "published_ok": true
+  },
+  {
+   "case": "E5_hard_ceiling",
+   "stack_trace_leak": [],
+   "no_stack_trace_clean": true,
+   "answer_chars": 33,
+   "done_count": 1,
+   "error_count": 0,
+   "clean_close": true,
+   "event_types": [
+    "done",
+    "status",
+    "thinking_summary",
+    "token",
+    "tool",
+    "tool_note",
+    "tool_start"
+   ],
+   "expect": "硬上限→机械拒绝→forced→干净发布",
+   "ceiling_mechanical_reject": false,
+   "no_semantic_sufficiency_language": true,
+   "cancels": [],
+   "published_ok": true,
+   "repairs_used": 0
+  },
+  {
+   "case": "E6_provider_error",
+   "stack_trace_leak": [],
+   "no_stack_trace_clean": true,
+   "answer_chars": 0,
+   "done_count": 0,
+   "error_count": 1,
+   "clean_close": true,
+   "event_types": [
+    "error",
+    "status"
+   ],
+   "expect": "provider错误→脱敏error→无答案泄漏",
+   "model_retry_count": 6,
+   "sanitized_error": true,
+   "no_ghostwritten_final": true
+  },
+  {
+   "case": "E7_validator_exhaustion",
+   "stack_trace_leak": [],
+   "no_stack_trace_clean": true,
+   "answer_chars": 0,
+   "done_count": 1,
+   "error_count": 1,
+   "clean_close": true,
+   "event_types": [
+    "done",
+    "error",
+    "status",
+    "tool_note",
+    "validation_failed"
+   ],
+   "expect": "耗尽→validation_failed+error→零泄漏",
+   "sentinel_leak": false,
+   "invalid_candidate_leak": false
+  },
+  {
+   "case": "E8_cancel_and_repair_loss_F2",
+   "stack_trace_leak": [],
+   "no_stack_trace_clean": true,
+   "answer_chars": 33,
+   "done_count": 1,
+   "error_count": 0,
+   "clean_close": true,
+   "event_types": [
+    "done",
+    "status",
+    "thinking_summary",
+    "token",
+    "tool",
+    "tool_cancel",
+    "tool_note",
+    "tool_start"
+   ],
+   "expect": "宣告未执行→tool_cancel; repair文本被丢→耗尽(BUG F2 取证)",
+   "cancels": [
+    "websearch"
+   ],
+   "repairs_used": 1,
+   "final_issues": [],
+   "bug_F2_reproduced": false,
+   "published_ok": true
+  }
+ ],
+ "all_clean": true
+}

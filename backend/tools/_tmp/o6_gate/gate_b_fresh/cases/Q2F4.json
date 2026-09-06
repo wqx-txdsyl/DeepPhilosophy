@@ -1,0 +1,4344 @@
+{
+ "result": {
+  "id": "Q2F4",
+  "category": "B",
+  "fresh": true,
+  "question": "“奥卡姆剃刀”通常被表述为“如无必要，勿增实体”——请解释这个原则的本来含义，以及它在哲学论证中适用的边界。",
+  "agent": "general",
+  "attempt": 1,
+  "tag": "ok",
+  "duration_s": 124.6,
+  "answer_chars": 0,
+  "answer": "",
+  "published": false,
+  "validation": {
+   "result": {
+    "ok": false,
+    "issues": [
+     {
+      "code": "UNSUPPORTED_EXACT_QUOTE",
+      "locator": "的判断，属于文献学的通行说法，并非我库内检索核验到的原文；我对奥卡姆在某一部著作中逐字写下这句格言的原文位置，未能直接核",
+      "evidence_ref": null,
+      "detail": "in-line verbatim quote not found in retrieved evidence and not disclosed as recalled (match=NONE)"
+     },
+     {
+      "code": "UNSUPPORTED_EXACT_QUOTE",
+      "locator": "，属文献学通行说法，我未能在本库核验到奥卡姆手稿中对应原话的精确位置，故全文不将其作为逐字引文呈现；②奥卡姆神学论注中表",
+      "evidence_ref": null,
+      "detail": "in-line verbatim quote not found in retrieved evidence and not disclosed as recalled (match=NONE)"
+     }
+    ]
+   },
+   "repairs_used": 2,
+   "max_validation_repairs": 2,
+   "repair_protocol": "same_main_agent"
+  },
+  "validation_failed_payload": {
+   "type": "validation_failed",
+   "content": "回答未通过确定性证据校验",
+   "issues": [
+    {
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator": "的判断，属于文献学的通行说法，并非我库内检索核验到的原文；我对奥卡姆在某一部著作中逐字写下这句格言的原文位置，未能直接核",
+     "evidence_ref": null,
+     "detail": "in-line verbatim quote not found in retrieved evidence and not disclosed as recalled (match=NONE)"
+    },
+    {
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator": "，属文献学通行说法，我未能在本库核验到奥卡姆手稿中对应原话的精确位置，故全文不将其作为逐字引文呈现；②奥卡姆神学论注中表",
+     "evidence_ref": null,
+     "detail": "in-line verbatim quote not found in retrieved evidence and not disclosed as recalled (match=NONE)"
+    }
+   ],
+   "repairs_used": 2,
+   "initiated_by": "validator",
+   "decision_group_id": "inv-9"
+  },
+  "error_payload": {
+   "type": "error",
+   "content": "本轮回答未通过证据一致性校验，请重试或换一种问法"
+  },
+  "tool_calls": [
+   {
+    "name": "search_books",
+    "args": {
+     "query": "奥卡姆剃刀 勿增实体"
+    },
+    "result_summary": "{'results': [], 'query': '奥卡姆剃刀 勿增实体', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "如无必要 勿增实体"
+    },
+    "result_summary": "{'results': [{'book_id': '56bb065c1796', 'book_title': '信仰寻求理解', 'author': '安瑟伦', 'chapter_idx': 12, 'chapter_title': '第12章', 'citation_label': '【《信仰寻求理解》·第12章】', 'snippet': '提要：至高的实体通过它自身创造万有。但是，它是通过",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "奥卡姆 经济原则 简约"
+    },
+    "result_summary": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 372, 'chapter_title': '章七', 'citation_label': '【《西方百年学术经典著作》·章七】', 'snippet': '另外还有一部分人，或个人，或哲学家，或政治",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "query_database",
+    "args": {
+     "table": "philosophers",
+     "key": "奥卡姆"
+    },
+    "result_summary": "{'results': [{'name': '奥卡姆的威廉', 'school': '经院哲学', 'region': '西方'}], 'total': 1, 'table': 'philosophers'}",
+    "thought": "执行 query_database"
+   },
+   {
+    "name": "get_philosopher",
+    "args": {
+     "name": "奥卡姆的威廉"
+    },
+    "result_summary": "{'name': '奥卡姆的威廉', 'period': '', 'century': '', 'school': '经院哲学', 'region': '西方', 'works': [], 'bio': '奥卡姆的威廉约于1287年出生在英格兰萨里郡的奥卡姆村，1347年因黑死病在慕尼黑去世，他的一生贯穿了中世纪晚期的思想动荡与政治冲突，作为方济各会修士和唯名论的核心代表，他以其锐利的逻辑批判和哲",
+    "thought": "执行 get_philosopher"
+   },
+   {
+    "name": "list_books",
+    "args": {
+     "author": "奥卡姆"
+    },
+    "result_summary": "{'books': [{'id': 'ad4153e66d7e', 'title': '逻辑大全', 'author': '奥卡姆的威廉', 'region': '西方', 'rank': 37.1, 'summary': '奥卡姆的威廉的《逻辑大全》是中世纪晚期逻辑学与语言哲学的里程碑式著作。全书系统探讨了词项、命题和推理的逻辑结构，尤其关注指代理论和语义问题，为后来的逻辑学发展提供了严密的框架",
+    "thought": "执行 list_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "奥卡姆剃刀 唯名论"
+    },
+    "result_summary": "{'results': [{'book_id': 'c97cb4e6161a', 'book_title': '认识世界：古代与中世纪哲学', 'author': '理查德·大卫·普莱希特', 'chapter_idx': 99, 'chapter_title': '在我们身上思考的质料', 'citation_label': '【《认识世界：古代与中世纪哲学》·在我们身上思考的质料】', 'sn",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "不要增加多于必要的实体 简约原则 逻辑"
+    },
+    "result_summary": "{'results': [{'book_id': 'c0e78ea6f80a', 'book_title': '维特根斯坦文集（套装全8卷）', 'author': '路德维希·维特根斯坦', 'chapter_idx': 5, 'chapter_title': 'MS 101', 'citation_label': '【《维特根斯坦文集（套装全8卷）》·MS 101】', 'snippet': ",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_book_detail",
+    "args": {
+     "book_id": "ad4153e66d7e"
+    },
+    "result_summary": "{'error': \"'NoneType' object has no attribute 'get'\"}",
+    "thought": "执行 get_book_detail"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "剃刀 多余 应当被删去 不必要的东西 少数原则"
+    },
+    "result_summary": "{'results': [{'book_id': '1282e86cd93b', 'book_title': '论选择的艺术', 'author': '爱比克泰德', 'chapter_idx': 45, 'chapter_title': '45', 'citation_label': '【《论选择的艺术》·45】', 'snippet': '有人洗澡洗得很匆忙，不要说他洗得不干净，只要说他洗得匆",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "奥卡姆 简约性 无需必然 原则 科学解释"
+    },
+    "result_summary": "{'results': [{'book_id': 'bbac1be0bb4b', 'book_title': '黑格尔作品集（套装共14册）', 'author': '格奥尔格·威廉·弗里德里希·黑格尔', 'chapter_idx': 65, 'chapter_title': '丙、绝对的必然', 'citation_label': '【《黑格尔作品集（套装共14册）》·丙、绝对的必然】', '",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "奥卡姆 共相 名称 不是实体 极端唯名论"
+    },
+    "result_summary": "{'results': [{'book_id': '9efee732eaff', 'book_title': '语词和对象', 'author': '威拉德·范·奥曼·蒯因', 'chapter_idx': 7, 'chapter_title': '第七章\\u3000本体论的判定', 'citation_label': '【《语词和对象》·第七章\\u3000本体论的判定】', 'snippet':",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "威廉 奥卡姆 剃刀 经院哲学 约翰 邓斯 司各特"
+    },
+    "result_summary": "{'results': [{'book_id': '4b4d8792d7c9', 'book_title': '苏菲的哲学课', 'author': '多米尼克·贾尼科', 'chapter_idx': 34, 'chapter_title': '推荐阅读', 'citation_label': '【《苏菲的哲学课》·推荐阅读】', 'snippet': '推荐阅读 加斯东·巴什拉：《科学精神的形",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_book_detail",
+    "args": {
+     "book_id": "88dc7d5961df"
+    },
+    "result_summary": "{'id': '88dc7d5961df', 'title': '西方百年学术经典著作', 'author': '佚名', 'region': '西方', 'file_type': 'epub', 'summary': '《西方百年学术经典著作》是一部精心编选的跨学科思想文集，聚焦于近一百年来西方人文社科领域最具影响力的里程碑式著作。本书收录了弗洛伊德的精神分析学、韦伯的社会学、萨特的存在主义、列",
+    "thought": "执行 get_book_detail"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "奥卡姆 剃刀 后来 命名 概括 方法"
+    },
+    "result_summary": "{'results': [{'book_id': 'c0e78ea6f80a', 'book_title': '维特根斯坦文集（套装全8卷）', 'author': '路德维希·维特根斯坦', 'chapter_idx': 38, 'chapter_title': '正文', 'citation_label': '【《维特根斯坦文集（套装全8卷）》·正文】', 'snippet': '正文 1. ",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "奥卡姆 不用多 而能 则毋需 徒劳 设定繁多"
+    },
+    "result_summary": "{'results': [{'book_id': '221f09d04944', 'book_title': '自然与快乐', 'author': '伊壁鸠鲁', 'chapter_idx': 11, 'chapter_title': '奥依诺安达的第欧根尼 铭文残篇选', 'citation_label': '【《自然与快乐》·奥依诺安达的第欧根尼 铭文残篇选】', 'snippet': '奥依",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "9efee732eaff",
+     "chapter_idx": 7
+    },
+    "result_summary": "{'book_id': '9efee732eaff', 'chapter_idx': 7, 'title': '第七章\\u3000本体论的判定', 'book_title': '语词和对象', 'citation_label': '【《语词和对象》·第七章\\u3000本体论的判定】', 'text': '第七章本体论的判定48.唯名论和实在论?\\n对于是否存在澳大利亚袋熊、独角兽、天使、中微子、类",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "search_books",
+    "args": {
+     "query": "奥卡姆的威廉 上帝 全能 信仰 判断 直观"
+    },
+    "result_summary": "{'results': [{'book_id': '215af36cac9f', 'book_title': '最伟大的思想家 - 奥古斯丁', 'author': '沙伦·M.凯/保罗·汤姆森', 'chapter_idx': 1, 'chapter_title': '简介', 'citation_label': '【《最伟大的思想家 - 奥古斯丁》·简介】', 'snippet': '圣奥勒留",
+    "thought": "执行 search_books"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "c97cb4e6161a",
+     "chapter_idx": 98
+    },
+    "result_summary": "{'book_id': 'c97cb4e6161a', 'chapter_idx': 98, 'title': '没有什么是必然的', 'book_title': '认识世界：古代与中世纪哲学', 'citation_label': '【《认识世界：古代与中世纪哲学》·没有什么是必然的】', 'text': '在讨论威廉未来的命运之前，我们先把目光投向其他人是如何进一步思考他的思想的。其中之一就是",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "c97cb4e6161a",
+     "chapter_idx": 96
+    },
+    "result_summary": "{'book_id': 'c97cb4e6161a', 'chapter_idx': 96, 'title': '意志与个体性', 'book_title': '认识世界：古代与中世纪哲学', 'citation_label': '【《认识世界：古代与中世纪哲学》·意志与个体性】', 'text': '对迪特里希来说，物理学与形而上学是同一块硬币的两面。在他研究光学、解释彩虹现象的时候，这二者才彼",
+    "thought": "执行 get_chapter"
+   },
+   {
+    "name": "websearch",
+    "args": {
+     "query": "奥卡姆剃刀 拉丁语 \"Entia non sunt multiplicanda praeter necessitatem\" 出处 后人 命名 并非奥卡姆"
+    },
+    "result_summary": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 奥', 'snippet': '2021年11月19日\\u2002·\\u2002奥（拼音：ào、yù）是汉语一级通用规范汉字（常用字）。据现有古文字材料，此字始见于《说文解字》篆文。此 …', 'url': 'https://baike.baidu.com/item/",
+    "thought": "执行 websearch"
+   },
+   {
+    "name": "get_chapter",
+    "args": {
+     "book_id": "c97cb4e6161a",
+     "chapter_idx": 97
+    },
+    "result_summary": "{'error': 'RESOURCE_CEILING_REACHED: 全局工具执行硬上限已达（本调用未执行——这是机械资源约束, 不代表库中无相关内容; 请立即基于已取得的材料输出最终回答）。'}",
+    "thought": "执行 get_chapter"
+   }
+  ],
+  "tool_seq": [
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆剃刀 勿增实体"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "如无必要 勿增实体"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆 经济原则 简约"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "query_database",
+    "cls": "search",
+    "args": {
+     "table": "philosophers",
+     "key": "奥卡姆"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_philosopher",
+    "cls": "read",
+    "args": {
+     "name": "奥卡姆的威廉"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "list_books",
+    "cls": "other",
+    "args": {
+     "author": "奥卡姆"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆剃刀 唯名论"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "不要增加多于必要的实体 简约原则 逻辑"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_book_detail",
+    "cls": "read",
+    "args": {
+     "book_id": "ad4153e66d7e"
+    },
+    "reused": false,
+    "err": true
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "剃刀 多余 应当被删去 不必要的东西 少数原则"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆 简约性 无需必然 原则 科学解释"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆 共相 名称 不是实体 极端唯名论"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "威廉 奥卡姆 剃刀 经院哲学 约翰 邓斯 司各特"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_book_detail",
+    "cls": "read",
+    "args": {
+     "book_id": "88dc7d5961df"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆 剃刀 后来 命名 概括 方法"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆 不用多 而能 则毋需 徒劳 设定繁多"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "9efee732eaff",
+     "chapter_idx": 7
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "search_books",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆的威廉 上帝 全能 信仰 判断 直观"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "c97cb4e6161a",
+     "chapter_idx": 98
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "c97cb4e6161a",
+     "chapter_idx": 96
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "websearch",
+    "cls": "search",
+    "args": {
+     "query": "奥卡姆剃刀 拉丁语 \"Entia non sunt multiplicanda praeter necessitatem\" 出处 后人 命名 并非奥卡姆"
+    },
+    "reused": false,
+    "err": false
+   },
+   {
+    "name": "get_chapter",
+    "cls": "read",
+    "args": {
+     "book_id": "c97cb4e6161a",
+     "chapter_idx": 97
+    },
+    "reused": false,
+    "err": true
+   }
+  ],
+  "tool_count": 22,
+  "search_calls": 14,
+  "read_calls": 7,
+  "budget": {
+   "useful": 20,
+   "retry": 0,
+   "inner_retries": 1,
+   "duplicate_reused": 0,
+   "no_gain": 1,
+   "total_executed": 21,
+   "retrieval_executed": 21,
+   "hard": true,
+   "cfg": {
+    "hard_retrieval": 20,
+    "hard_total": 24
+   }
+  },
+  "quote_bound": {
+   "entries": [],
+   "summary": {
+    "quotes": 0,
+    "verified_exact": 0,
+    "verified_near": 0,
+    "memory_only": 0,
+    "stitched": 0,
+    "unverified_blockquote": 0,
+    "memory_only_exact_claim": 0
+   }
+  },
+  "citations": [],
+  "citation_sanitize": {
+   "verified_citations": [],
+   "unverified_before": [],
+   "actions": []
+  },
+  "causal": {
+   "provenance": "o1",
+   "engine_cognitive_auto_tools": 0,
+   "main_agent_tool_decisions": 22,
+   "agent_invocations": 9,
+   "thinking_sources": "main_agent_only"
+  },
+  "final_ownership": {
+   "provenance": "o2",
+   "final_text_owner": "main_agent",
+   "semantic_mutators": 0,
+   "runtime_factual_appends": 0,
+   "final_retract_semantic_use": 0,
+   "invalid_final_publicly_streamed": false,
+   "validator_repair_invocations": 2,
+   "main_agent_final_ownership_rate": 1.0
+  },
+  "temporal": null,
+  "timing": {
+   "phases": [
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 2577.8,
+     "msgs_len": 3
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 3070.9,
+     "msgs_len": 8
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 3093.4,
+     "msgs_len": 13
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 7035.8,
+     "msgs_len": 17
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 10578.4,
+     "msgs_len": 21
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 10742.4,
+     "msgs_len": 25
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 5945.8,
+     "msgs_len": 28
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 5167.1,
+     "msgs_len": 32
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 37511.4,
+     "msgs_len": 34
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 14478.4,
+     "msgs_len": 6
+    },
+    {
+     "type": "phase",
+     "phase": "llm_invocation",
+     "duration_ms": 17389.9,
+     "msgs_len": 6
+    },
+    {
+     "type": "phase",
+     "phase": "validator_quote_bound",
+     "duration_ms": 1.0
+    },
+    {
+     "type": "phase",
+     "phase": "validator_evidence_contract",
+     "duration_ms": 4.5
+    },
+    {
+     "type": "phase",
+     "phase": "validator_citation_sanitize",
+     "duration_ms": 0.0
+    }
+   ],
+   "total_ms": 124602.8
+  },
+  "event_audit": {
+   "n_events": 101,
+   "type_counts": {
+    "status": 1,
+    "thinking_summary": 8,
+    "tool_start": 22,
+    "tool_note": 45,
+    "tool": 22,
+    "validation_failed": 1,
+    "error": 1,
+    "done": 1
+   },
+   "unknown_event_types": [],
+   "thinking_events": 8,
+   "thinking_by_initiator": {
+    "main_agent": 8
+   },
+   "thinking_phase_seq": [
+    "analysis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis",
+    "synthesis"
+   ],
+   "runtime_thinking_events": 0,
+   "raw_cot_marker_hits": [],
+   "tool_start": 22,
+   "tool_exec": 22,
+   "tool_cancel": 0,
+   "unparented_tool_results": 0,
+   "duplicate_visible_events": 1,
+   "duplicate_examples": [
+    {
+     "type": "tool_note",
+     "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）"
+    }
+   ],
+   "validation_failed_events": 1,
+   "error_events": 1,
+   "decision_group_missing": 0,
+   "initiated_by_missing": 0,
+   "tool_call_id_missing_on_start": 0,
+   "tool_exec_unbound_ids": 0
+  },
+  "ownership_fingerprints": [],
+  "status": "SAFE_REJECT"
+ },
+ "events_compact": [
+  {
+   "type": "status",
+   "content": "开始思考"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "我来研究这个原则的原文出处与哲学边界。先做一轮原典检索定位相关表述。",
+   "phase": "analysis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_pjh8gtpxKCuMtecv1hvM2153"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_rJldHdhhp57Q9euyCgd03195"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_33zjAlnCA9orx4764SSC8050"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool_start",
+   "name": "query_database",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_a7Mdbeht1Oo9L2DUU0gp9007"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核实相关材料…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "奥卡姆剃刀 勿增实体"
+   },
+   "result": "{'results': [], 'query': '奥卡姆剃刀 勿增实体', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_pjh8gtpxKCuMtecv1hvM2153"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "如无必要 勿增实体"
+   },
+   "result": "{'results': [{'book_id': '56bb065c1796', 'book_title': '信仰寻求理解', 'author': '安瑟伦', 'chapter_idx': 12, 'chapter_title': '第12章', 'citation_label': '【《信仰寻求理解》·第12章】', 'snippet': '提要：至高的实体通过它自身创造万有。但是，它是通过那生来而最内在的“言”创造万有的。因此，至高实体那生来的“言”就是至高实体本身。然而，正如理性所教导的，这同样是确定无疑的：那至高的实体无论创造什么，它都仅仅通过它自身进行创造；它无论创造什么，它都仅",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_rJldHdhhp57Q9euyCgd03195"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "奥卡姆 经济原则 简约"
+   },
+   "result": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 372, 'chapter_title': '章七', 'citation_label': '【《西方百年学术经典著作》·章七】', 'snippet': '另外还有一部分人，或个人，或哲学家，或政治家，提出了一些不同的政体形式，这些政体都比柏拉图的理想机制更接近既有的政体。他们中没有人谈到过妇女儿童公有或妇女参与共餐制这类罕见的措施，所有立法者都是从实际出发的。有些人把人世间产生争执及暴乱的原因",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_33zjAlnCA9orx4764SSC8050"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-1"
+  },
+  {
+   "type": "tool",
+   "name": "query_database",
+   "args": {
+    "table": "philosophers",
+    "key": "奥卡姆"
+   },
+   "result": "{'results': [{'name': '奥卡姆的威廉', 'school': '经院哲学', 'region': '西方'}], 'total': 1, 'table': 'philosophers'}",
+   "thought": "执行 query_database",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_a7Mdbeht1Oo9L2DUU0gp9007"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "原典库似乎没有奥卡姆本人的著作集，但哲人库里有他。我需要确认这一点，并查看是否有收录他的书籍或哲学史对它的讨论。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_philosopher",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_5eRet5zJoEgRWRhCjBQi6498"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在查证哲人资料…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool_start",
+   "name": "list_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_9vJ56cU8gcVVsyDjiTtb0786"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核实相关材料…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_tuTrOl7cR7DT6AKavcOE3683"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_DUHlgJUwgfoJyQHN52BH5885"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "get_philosopher",
+   "args": {
+    "name": "奥卡姆的威廉"
+   },
+   "result": "{'name': '奥卡姆的威廉', 'period': '', 'century': '', 'school': '经院哲学', 'region': '西方', 'works': [], 'bio': '奥卡姆的威廉约于1287年出生在英格兰萨里郡的奥卡姆村，1347年因黑死病在慕尼黑去世，他的一生贯穿了中世纪晚期的思想动荡与政治冲突，作为方济各会修士和唯名论的核心代表，他以其锐利的逻辑批判和哲学简化原则，深刻塑造了西方哲学与神学的走向。\\n\\n奥卡姆的威廉的哲学思想根植于对实在论的反叛，其中最核心的概念是“唯名论”。他坚持共相——如“人类”、“正义”等普遍概念——并非独立存在的实体，而仅仅",
+   "thought": "执行 get_philosopher",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_5eRet5zJoEgRWRhCjBQi6498"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "list_books",
+   "args": {
+    "author": "奥卡姆"
+   },
+   "result": "{'books': [{'id': 'ad4153e66d7e', 'title': '逻辑大全', 'author': '奥卡姆的威廉', 'region': '西方', 'rank': 37.1, 'summary': '奥卡姆的威廉的《逻辑大全》是中世纪晚期逻辑学与语言哲学的里程碑式著作。全书系统探讨了词项、命题和推理的逻辑结构，尤其关注指代理论和语义问题，为后来的逻辑学发展提供了严密的框架。奥卡姆的核心方法论原则是著名的“奥卡姆剃刀”：如无必要，勿增实体。这一原则强调逻辑分析应简化假设，避免不必要的形而上学实体，'}], 'total': 1}",
+   "thought": "执行 list_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_9vJ56cU8gcVVsyDjiTtb0786"
+  },
+  {
+   "type": "tool_note",
+   "content": "书目筛选返回 1 项。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "奥卡姆剃刀 唯名论"
+   },
+   "result": "{'results': [{'book_id': 'c97cb4e6161a', 'book_title': '认识世界：古代与中世纪哲学', 'author': '理查德·大卫·普莱希特', 'chapter_idx': 99, 'chapter_title': '在我们身上思考的质料', 'citation_label': '【《认识世界：古代与中世纪哲学》·在我们身上思考的质料】', 'snippet': '坚定不移地继续沿着奥特库尔的尼古拉所开辟的道路前进的，是约翰·布里丹（Johannes Buridan），他是农民的儿子，来自法国北部的皮卡第大区。1320年左右，他获得了法国莱莫恩",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_tuTrOl7cR7DT6AKavcOE3683"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "不要增加多于必要的实体 简约原则 逻辑"
+   },
+   "result": "{'results': [{'book_id': 'c0e78ea6f80a', 'book_title': '维特根斯坦文集（套装全8卷）', 'author': '路德维希·维特根斯坦', 'chapter_idx': 5, 'chapter_title': 'MS 101', 'citation_label': '【《维特根斯坦文集（套装全8卷）》·MS 101】', 'snippet': 'MS 101 注1 14.8.22 注2 1. 逻辑必须照料自身。 2. 如果关于函项的句法规则 终究 是可以建立起来的，那么整个关于物、性质等等的理论都成为多余的了。至为明显的是，《基本规律》 注",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_DUHlgJUwgfoJyQHN52BH5885"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-2"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "库中确实收录了奥卡姆本人的《逻辑大全》。我需要进入该书查找\"剃刀\"原则的直接表述，同时看看哲学史著作对它的专门讨论。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_zfOflEARyKlXcGQz0bJZ4470"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_ab2lBdR7MLSspT3qRLGt6874"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_1mI26MQhdka7SbDib82Q2843"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "ad4153e66d7e"
+   },
+   "result": "{'error': \"'NoneType' object has no attribute 'get'\"}",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_zfOflEARyKlXcGQz0bJZ4470"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "剃刀 多余 应当被删去 不必要的东西 少数原则"
+   },
+   "result": "{'results': [{'book_id': '1282e86cd93b', 'book_title': '论选择的艺术', 'author': '爱比克泰德', 'chapter_idx': 45, 'chapter_title': '45', 'citation_label': '【《论选择的艺术》·45】', 'snippet': '有人洗澡洗得很匆忙，不要说他洗得不干净，只要说他洗得匆忙。有人喝了很多酒，不要说他喝这么多不好，只要说他喝了很多。除非你知道他们这么做的原因，否则怎么能判断他们的行为是不好的呢？不要清清楚楚地亲眼看到某件事，嘴里却妄下结论地断言另一件事。', 'scor",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_ab2lBdR7MLSspT3qRLGt6874"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "奥卡姆 简约性 无需必然 原则 科学解释"
+   },
+   "result": "{'results': [{'book_id': 'bbac1be0bb4b', 'book_title': '黑格尔作品集（套装共14册）', 'author': '格奥尔格·威廉·弗里德里希·黑格尔', 'chapter_idx': 65, 'chapter_title': '丙、绝对的必然', 'citation_label': '【《黑格尔作品集（套装共14册）》·丙、绝对的必然】', 'snippet': '实在的必然性是 有规定的 必然；形式的必然在自身中还没有内容和规定性。必然的规定性在于：它在自身中具有其否定，即偶然。它所发生的结果就是如此。 但这个规定性 在其最初的单纯性中 ",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_1mI26MQhdka7SbDib82Q2843"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-3"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "库内奥卡姆《逻辑大全》缺乏目录数据，我需另寻哲学史著作中对奥卡姆剃刀原则的学术讨论作为二手定位，同时确认历史背景。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_gRlcqynlAO5Y3R4ypjma6038"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_qeofYDG1EwQkYN9TdHQj8274"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_02_zy46LA7aL11fjbY0owsT8457"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在核对书目信息…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "奥卡姆 共相 名称 不是实体 极端唯名论"
+   },
+   "result": "{'results': [{'book_id': '9efee732eaff', 'book_title': '语词和对象', 'author': '威拉德·范·奥曼·蒯因', 'chapter_idx': 7, 'chapter_title': '第七章\\u3000本体论的判定', 'citation_label': '【《语词和对象》·第七章\\u3000本体论的判定】', 'snippet': '第七章本体论的判定48.唯名论和实在论? 对于是否存在澳大利亚袋熊、独角兽、天使、中微子、类、点、英里及命题等，我们发现或者可以想像存在着不同意见。哲学与具体科学为关于何物存在问题上的意见分歧提供",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_gRlcqynlAO5Y3R4ypjma6038"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "威廉 奥卡姆 剃刀 经院哲学 约翰 邓斯 司各特"
+   },
+   "result": "{'results': [{'book_id': '4b4d8792d7c9', 'book_title': '苏菲的哲学课', 'author': '多米尼克·贾尼科', 'chapter_idx': 34, 'chapter_title': '推荐阅读', 'citation_label': '【《苏菲的哲学课》·推荐阅读】', 'snippet': '推荐阅读 加斯东·巴什拉：《科学精神的形成》 亨利·柏格森：《笑》 奥古斯特·孔德：《论实证精神》 伏尔泰：《天真汉》 康德：《纯粹理性批判》序言一、二 尼采：《查拉图斯特拉如是说》《悲剧的诞生》 柏拉图：《会饮篇》《理想国》《大希庇阿斯篇",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_qeofYDG1EwQkYN9TdHQj8274"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "tool",
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "88dc7d5961df"
+   },
+   "result": "{'id': '88dc7d5961df', 'title': '西方百年学术经典著作', 'author': '佚名', 'region': '西方', 'file_type': 'epub', 'summary': '《西方百年学术经典著作》是一部精心编选的跨学科思想文集，聚焦于近一百年来西方人文社科领域最具影响力的里程碑式著作。本书收录了弗洛伊德的精神分析学、韦伯的社会学、萨特的存在主义、列维-斯特劳斯的结构主义等大师级学者的经典篇章，涵盖了哲学、心理学、社会学、人类学、政治学等多个学科。每一篇选文都附有专业的导读与背景解析，帮助读者准确把握学术思想的历史语境、核心论点及其当代价值。本书",
+   "thought": "执行 get_book_detail",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_02_zy46LA7aL11fjbY0owsT8457"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-4"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "需要进一步定位奥卡姆剃刀在哲学史著作中的权威论述。我并行做定向检索，并准备读取蒯因《语词和对象》的本体论判定一章作为后续哲学应用的参考。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_rUHldlwLMrtzvfdBa2FW4151"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_hIubEYt2DkJet2mH0usM7845"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_exJ2vk1uAgXUxOZ0ujw82339"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "奥卡姆 剃刀 后来 命名 概括 方法"
+   },
+   "result": "{'results': [{'book_id': 'c0e78ea6f80a', 'book_title': '维特根斯坦文集（套装全8卷）', 'author': '路德维希·维特根斯坦', 'chapter_idx': 38, 'chapter_title': '正文', 'citation_label': '【《维特根斯坦文集（套装全8卷）》·正文】', 'snippet': '正文 1. 奥古斯丁在其《忏悔录》I／8节中写道：假定大人们命名了某个对象并且与此同时转向它，我看到了这个事实并且领会到，这个对象被经由他们想要指向它时所发出的那些声音加以表示了。但是，我是从他们的身体活动——这",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_rUHldlwLMrtzvfdBa2FW4151"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "奥卡姆 不用多 而能 则毋需 徒劳 设定繁多"
+   },
+   "result": "{'results': [{'book_id': '221f09d04944', 'book_title': '自然与快乐', 'author': '伊壁鸠鲁', 'chapter_idx': 11, 'chapter_title': '奥依诺安达的第欧根尼 铭文残篇选', 'citation_label': '【《自然与快乐》·奥依诺安达的第欧根尼 铭文残篇选】', 'snippet': '奥依诺安达的第欧根尼 铭文残篇选 1.奢侈的财富对于男人和女人毫无意义，就像水对于已经倒满水的杯子毫无意义一样。它们都是无用的和毫无必要的。 2.当我们看到别人的财富和捞到的东西那么多时，只要记住我们并不",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_hIubEYt2DkJet2mH0usM7845"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "9efee732eaff",
+    "chapter_idx": 7
+   },
+   "result": "{'book_id': '9efee732eaff', 'chapter_idx': 7, 'title': '第七章\\u3000本体论的判定', 'book_title': '语词和对象', 'citation_label': '【《语词和对象》·第七章\\u3000本体论的判定】', 'text': '第七章本体论的判定48.唯名论和实在论?\\n对于是否存在澳大利亚袋熊、独角兽、天使、中微子、类、点、英里及命题等，我们发现或者可以想像存在着不同意见。哲学与具体科学为关于何物存在问题上的意见分歧提供了无限的空间。传统上使哲学家分成不同派别的一个问题，就是是否存在抽象对象。唯名论者认为不存在；实",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_exJ2vk1uAgXUxOZ0ujw82339"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-5"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "我需要一处对奥卡姆剃刀本义与语源做过权威交代的哲学史段落。让我定位《认识世界》等哲学史中奥卡姆专章的上下文，并试探读取《逻辑大全》能否找到奥卡姆本人的相关文本。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_EWfzMd4R2pR6T61akhpL2090"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在检索原典库…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_Zm2yLXbItudulJHBVhBZ4735"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool",
+   "name": "search_books",
+   "args": {
+    "query": "奥卡姆的威廉 上帝 全能 信仰 判断 直观"
+   },
+   "result": "{'results': [{'book_id': '215af36cac9f', 'book_title': '最伟大的思想家 - 奥古斯丁', 'author': '沙伦·M.凯/保罗·汤姆森', 'chapter_idx': 1, 'chapter_title': '简介', 'citation_label': '【《最伟大的思想家 - 奥古斯丁》·简介】', 'snippet': '圣奥勒留·奥古斯丁(St.Aurelius Augu-stinus)，354—430年，古罗马神学家、哲学家。出生于罗马帝国所属北非，在罗马受教育，早年信仰摩尼教，33岁在米兰接受基督教洗礼，后任北非希坡主教",
+   "thought": "执行 search_books",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_EWfzMd4R2pR6T61akhpL2090"
+  },
+  {
+   "type": "tool_note",
+   "content": "原典检索命中 15 项相关资料，先看与问题直接相关的部分。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "c97cb4e6161a",
+    "chapter_idx": 98
+   },
+   "result": "{'book_id': 'c97cb4e6161a', 'chapter_idx': 98, 'title': '没有什么是必然的', 'book_title': '认识世界：古代与中世纪哲学', 'citation_label': '【《认识世界：古代与中世纪哲学》·没有什么是必然的】', 'text': '在讨论威廉未来的命运之前，我们先把目光投向其他人是如何进一步思考他的思想的。其中之一就是奥特库尔的尼古拉（Nicolaus von Autrecourt）。他生于1300年前夕，1320—1327年间在巴黎学习神学。他是中世纪晚期邓·司各脱与奥卡姆的威廉的传统中第三位伟大的认知批判者。尼",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_Zm2yLXbItudulJHBVhBZ4735"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-6"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "《认识世界》第98章讲的是奥卡姆的继承者，奥卡姆本人的专章应在其前。我向前读取以定位奥卡姆本义论述，同时用网络检索考证该原则的拉丁语源与\"后人命名\"的史实（这超出原典库收藏范围）。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_276svs0bLqSFUi4ODzOX2107"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "tool_start",
+   "name": "websearch",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_Cyuyd35PEdKGjI8glVSK0503"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在上网搜索…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "c97cb4e6161a",
+    "chapter_idx": 96
+   },
+   "result": "{'book_id': 'c97cb4e6161a', 'chapter_idx': 96, 'title': '意志与个体性', 'book_title': '认识世界：古代与中世纪哲学', 'citation_label': '【《认识世界：古代与中世纪哲学》·意志与个体性】', 'text': '对迪特里希来说，物理学与形而上学是同一块硬币的两面。在他研究光学、解释彩虹现象的时候，这二者才彼此区分开来。如果说罗吉尔·培根的宏大计划还难言成功，那么牛津大学至少要赋予他的自然研究一个更高的价值。数学、物理学与医学是1300年左右最重要的主题，这一情形不仅仅是在英国。今天，在许多大学里人们将哲",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_276svs0bLqSFUi4ODzOX2107"
+  },
+  {
+   "type": "tool_note",
+   "content": "已调取对应章节原文，用于核对语境。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "tool",
+   "name": "websearch",
+   "args": {
+    "query": "奥卡姆剃刀 拉丁语 \"Entia non sunt multiplicanda praeter necessitatem\" 出处 后人 命名 并非奥卡姆"
+   },
+   "result": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 奥', 'snippet': '2021年11月19日\\u2002·\\u2002奥（拼音：ào、yù）是汉语一级通用规范汉字（常用字）。据现有古文字材料，此字始见于《说文解字》篆文。此 …', 'url': 'https://baike.baidu.com/item/%E5%A5%A5/4407'}, {'title': 'hanyuguoxue.comhttps://www.hanyuguoxue.com › zidian', 'snippet': '奥是多音字",
+   "thought": "执行 websearch",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_Cyuyd35PEdKGjI8glVSK0503"
+  },
+  {
+   "type": "tool_note",
+   "content": "网上检索返回 5 项材料，作为补充证据核验。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-7"
+  },
+  {
+   "type": "thinking_summary",
+   "content": "网络检索本次未命中有效结果（被拆成汉字词条），拉丁语源部分我将以学界通说并明确标注待核验的方式处理。现在读《认识世界》中奥卡姆本人的专章（第97章）。",
+   "phase": "synthesis",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-8",
+   "conversation_id": null,
+   "message_id": null,
+   "invocation_id": "None:None"
+  },
+  {
+   "type": "tool_start",
+   "name": "get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_ctHl5YLHLwazMenm3T1N2094"
+  },
+  {
+   "type": "tool_note",
+   "content": "正在读取章节原文…",
+   "initiated_by": "runtime_mechanical",
+   "activity": true,
+   "decision_group_id": "inv-8"
+  },
+  {
+   "type": "tool",
+   "name": "get_chapter",
+   "args": {
+    "book_id": "c97cb4e6161a",
+    "chapter_idx": 97
+   },
+   "result": "{'error': 'RESOURCE_CEILING_REACHED: 全局工具执行硬上限已达（本调用未执行——这是机械资源约束, 不代表库中无相关内容; 请立即基于已取得的材料输出最终回答）。'}",
+   "thought": "执行 get_chapter",
+   "initiated_by": "main_agent",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_ctHl5YLHLwazMenm3T1N2094"
+  },
+  {
+   "type": "tool_note",
+   "content": "这一步没有检索到直接材料，需要换个方向核实。",
+   "initiated_by": "runtime_mechanical",
+   "decision_group_id": "inv-8"
+  },
+  {
+   "type": "tool_note",
+   "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）",
+   "initiated_by": "validator",
+   "activity": true,
+   "decision_group_id": "inv-9"
+  },
+  {
+   "type": "tool_note",
+   "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）",
+   "initiated_by": "validator",
+   "activity": true,
+   "decision_group_id": "inv-9"
+  },
+  {
+   "type": "validation_failed",
+   "content": "回答未通过确定性证据校验",
+   "issues": [
+    {
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator": "的判断，属于文献学的通行说法，并非我库内检索核验到的原文；我对奥卡姆在某一部著作中逐字写下这句格言的原文位置，未能直接核",
+     "evidence_ref": null,
+     "detail": "in-line verbatim quote not found in retrieved evidence and not disclosed as recalled (match=NONE)"
+    },
+    {
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator": "，属文献学通行说法，我未能在本库核验到奥卡姆手稿中对应原话的精确位置，故全文不将其作为逐字引文呈现；②奥卡姆神学论注中表",
+     "evidence_ref": null,
+     "detail": "in-line verbatim quote not found in retrieved evidence and not disclosed as recalled (match=NONE)"
+    }
+   ],
+   "repairs_used": 2,
+   "initiated_by": "validator",
+   "decision_group_id": "inv-9"
+  },
+  {
+   "type": "error",
+   "content": "本轮回答未通过证据一致性校验，请重试或换一种问法"
+  },
+  {
+   "type": "done",
+   "citations": [],
+   "evidence": {
+    "retrieved_evidence": [
+     {
+      "evidence_id": "ev_1",
+      "source_id": "src_search_1",
+      "book": "信仰寻求理解",
+      "chapter": "第12章",
+      "book_id": "56bb065c1796",
+      "chapter_idx": 12,
+      "author": "安瑟伦",
+      "snippet": "提要：至高的实体通过它自身创造万有。但是，它是通过那生来而最内在的“言”创造万有的。因此，至高实体那生来的“言”就是至高实体本身。然而，正如理性所教导的，这同样是确定无疑的：那至高的实体无论创造什么，它都仅仅通过它自身进行创造；它无论创造什么，它都仅仅通过它自身那最内在的“言”（persuamintimamlo-cutionem）进行创造，要么通过说出一个一个的“言”（singulisverbis）创造一个一个的事物，要么通过说出一个“",
+      "score": 0.468,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_2",
+      "source_id": "src_search_1",
+      "book": "形而上学",
+      "chapter": "第二章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 59,
+      "author": "亚里士多德",
+      "snippet": "*“实体”（ouoia/Substance）一词如果不是有更多的意义的话，至35少适用于四个主要对象；因为本质和一般*以及种都被认为是每一事物的实体，而第四个就是基质（tounokeiuevov/Substratum）。现在，基质就是那别的每一个事物表述它，而它本身不表述别的任何事物的。因而1029我们必须首先*确定这个东西的本性；因为那原初地支承着一个事物的东西被认为是在最真实的意义上的它的实体。而在一种意义上，质料（an/Matte",
+      "score": 0.491,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_3",
+      "source_id": "src_search_1",
+      "book": "信仰寻求理解",
+      "chapter": "第26章",
+      "book_id": "56bb065c1796",
+      "chapter_idx": 26,
+      "author": "安瑟伦",
+      "snippet": "有的实体，惟独它是其所是提要：既然那至高的本性绝不容许任何的变化和偶性，因此我们不能说它是实体，除非我们说实体就是本质。由于惟有它是自有的，故它在所有的实体之上，超越所有的实体。因此，它不同它的受造物有相同意义的名号。但是，如果我们关于那至高本性的单一性的认识是真实有效的，那么，它如何是实体呢？因为，即使每一个的实体都容许差异的混合（admistionisdifferentiarum）或偶性的变化（mutationisaccidenti",
+      "score": 0.386,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_4",
+      "source_id": "src_search_1",
+      "book": "皮浪学说概要",
+      "chapter": "十一、关于增长与减少",
+      "book_id": "1c67b29ec906",
+      "chapter_idx": 68,
+      "author": "皮浪",
+      "snippet": "[82]通过使用同样的论证，我们对增长和减少保持存疑。因为，明显的事实似乎达致它们的实在性，而论证似乎推翻它们的实在性。思考一下这个论证：增长者（toauxomenon）必须作为实体才能获得数量上的增长。因此当一物被加给另一物时有人声称一物增长了，这种说法是错误的。因为实体无论何时都不是静止的， 而是永远流动的，一个替代另一个，因此被说成是已获得增长的东西不会同时持有先前的那个实体和加给它的那个实体，而是持有截然不同的实体。[83]为了",
+      "score": 0.491,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_5",
+      "source_id": "src_search_1",
+      "book": "形而上学",
+      "chapter": "第一章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 74,
+      "author": "亚里士多德",
+      "snippet": "1042°3*我们必须从我们已经说过的得出结论，在总结结果之后，使我的5研究得以完成。我们已经说过：实体的原因、本原以及元素都是我们研究的对象。①并且有些实体是每个人都承认的，但是有些实体则为特殊的学派所宣扬。那些一般被承认的是自然的实体，即火、土、水、气10等等简单物体。其次，是植物和它的部分，*动物和动物的部分；最后是物理宇宙（ooopavog/Universe）及其部分：而特殊学派说形式和数学对象都是实体②。但是有各种论证导致这样",
+      "score": 0.472,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_6",
+      "source_id": "src_search_1",
+      "book": "形而上学",
+      "chapter": "第八章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 33,
+      "author": "亚里士多德",
+      "snippet": "*我们叫作“实体”（ouoia）的是（1）简单的物体（taaπ入101710ouata），例如土、火和水以及每一个这类的事物，如一般地说由它们构成的物体或东西，包括动物，神性的存在物（8auovua）以及这些东西的部分。所有这些都被叫作实体，因为它们不是表述一个主语的，而是别的每一个东西表述它们。（2）*那呈现于那样的事物中而不是作为表述一个主语的，是它们的存在的原因，如像灵魂是动物存在的原因。 （3）出现于那样的事物中的部分，限制它们",
+      "score": 0.536,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_7",
+      "source_id": "src_search_1",
+      "book": "马基雅维利语录",
+      "chapter": "我一再强调：没有军事力量的国家是不可能存在和发展的。但最后我们不得已面对了现在的局面。",
+      "book_id": "96a84c0450cd",
+      "chapter_idx": 123,
+      "author": "马基雅维利",
+      "snippet": "我一再强调：没有军事力量的国家是不可能存在和发展的。但最后我们不得已面对了现在的局面。 倘若您认为对我国来说军事力量是必要的，佛罗伦萨不需要法国国王的保护，瓦伦蒂诺公爵切萨雷·波吉亚就不能以进攻我国相要挟，我会回答说，这样考虑并不是轻率的。 因为所有国家都面临着想要侵略其领土的敌人的威胁，其中有些敌人是无法防御的。君主国也好，共和国也好，任何国家在今天，在将国土防御委以其他国家之时，难道不应该考虑保证自身的安全吗？ ——《关于资金援助提",
+      "score": 0.379,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_8",
+      "source_id": "src_search_1",
+      "book": "马基雅维利语录",
+      "chapter": "人不会在不必要的情况下行善。",
+      "book_id": "96a84c0450cd",
+      "chapter_idx": 167,
+      "author": "马基雅维利",
+      "snippet": "人不会在不必要的情况下行善。 因为在完全自由放任的状态，谁都会做出自私的事来，在混乱与无秩序里横行无阻。 如果在不存在法律、人们却向着好的方向前进的时代，法律就不是必需的了。但在没有这样好的风俗习惯支配的情况下，制定法律就是非常必要的。 ——《论李维》",
+      "score": 0.375,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_9",
+      "source_id": "src_search_1",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "甲、有",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 12,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "(1) 有、纯有，——没有任何更进一步的规定。有在无规定的直接性中，只是与它自身相同，而且也不是与他物不同，对内对外都没有差异。有假如由于任何规定或内容而使它在自身有了区别，或者由于任何规定或内容而被建立为与一个他物有了区别，那么，有就不再保持纯粹了。有是纯粹的无规定性和空。——即使这里可以谈到直观，在有中，也没有什么可以直观的；或者说，有只是这种纯粹的、空的直观本身。在有中，也同样没有什么可以思维的；或者说，有同样只是这种空的思维。有",
+      "score": 0.372,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_10",
+      "source_id": "src_search_1",
+      "book": "人类理解论",
+      "chapter": "第三卷　第四章簡單观念底名称",
+      "book_id": "44a32441dabe",
+      "chapter_idx": 41,
+      "author": "约翰·洛克",
+      "snippet": "1簡單观念，情状和实体底名称，各有一种特殊之点一一我虽然过，一切字眼所直接表示的，只有話者心中的观念，可是我們在进一步观察之后，就会看到，簡單观念，混杂情状（各种关系在内），自然实体，等等底名称，都各有一些特点，而且互不相同。例如： 2第一点，簡罩观念底名称和簡單实体底名称可以告知我們一种实在的存在一一第一点，簡單观念和实体两者底名称，不但直 接表示心中的观念，而且报告一种实在的存在，因为它們底原始模型正是由这种存在所托出的。至于混杂情",
+      "score": 0.371,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_11",
+      "source_id": "src_search_1",
+      "book": "形而上学",
+      "chapter": "第三章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 127,
+      "author": "亚里士多德",
+      "snippet": "何贡献呢？这些东西什么责献也没有，正如数学对象什么贡献也没有一样。甚至任何【数学】定理也不适用于它们，除非我们想改变数学对象并发明我们自已的理论。*但是，设定任何任意的假设和编织一个长长的结论，是并不困难的。所以这些人在试图将数学对象与理念弄在一起时，是错误的。然而那些首先设置两类数（即理念数和数学数）的人，关于数学数如何存在及在什么地方存在，根本没有说什么，也不能说出什么来。*他们把它置于理念数和可感觉的数之间。但是，如果（1）它来自",
+      "score": 0.368,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_12",
+      "source_id": "src_search_1",
+      "book": "马基雅维利语录",
+      "chapter": "在各种林林总总的“斗争”之中，使得自己不断弱化的斗争，是绝对不能卷入的。",
+      "book_id": "96a84c0450cd",
+      "chapter_idx": 176,
+      "author": "马基雅维利",
+      "snippet": "在各种林林总总的“斗争”之中，使得自己不断弱化的斗争，是绝对不能卷入的。 要尽可能避免让自己失去名誉的事件。 如果不考虑这一点，所谓的积极进取就成了有害无益的愚蠢行径。 ——《佛罗伦萨史》",
+      "score": 0.364,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_13",
+      "source_id": "src_search_1",
+      "book": "西方百年学术经典著作",
+      "chapter": "前　言",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 96,
+      "author": "佚名",
+      "snippet": "数年前，我着手撰写一部长篇著作。当时，我没有认识到自己的局限性，后来有此感念，便弃之不用。掐指算来，到现在也已经过去很久了。这本篇幅不长的论文，便是取自那部著作的内容。那部旧作可资撷取的各个片段中，我认为本篇的内容是至为重要的，而且也是最为值得呈献给公众的。而其余的部分，我早就弃之如敝履。",
+      "score": 0.364,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_14",
+      "source_id": "src_search_1",
+      "book": "哲学导论",
+      "chapter": "4.3 个人与共同体 G•W•F•黑格尔，论“精神”与个人",
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 65,
+      "author": "罗伯特·所罗门",
+      "snippet": "在一个精神生活的普遍本性日益得到强调和大大加强的时代，纯粹个人的方面理所当然相应地变得无关紧要，而且，普遍的方面还在坚持着并要求占有它的整个范围和既成财富，因而心灵的全部事业中属于个人活动范围的那一部分，只能是微不足道的。因为这种情况，个人就必须如科学的性质所表明和要求的那样，更加忘我。此外，他还必须成为他能够成为的人，做他能够做的事。但是，正如他对自己不作奢望，为自己不多要求一样，人们对于他也必须力避要求过多。 在别处的一个著名段落中",
+      "score": 0.361,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_15",
+      "source_id": "src_search_1",
+      "book": "擬仿物與擬像",
+      "chapter": "餘留物",
+      "book_id": "cc9d0d9358a7",
+      "chapter_idx": 15,
+      "author": "让·鲍德里亚",
+      "snippet": "邊，什麼也沒有。「總體及其餘胃」、添加物與餘震、操作與餘富，這些都不是眞正的一一元對立。 而且，在餘切另一邊，豐在的，是應框起來的東西。也就是在這個怪異而不對寓對立系統，在這個不足以成爲結構的W H -這是一個威力十足的時刻，一個優位的元素。但是，這個加框的東西，沒有它的名字。它是匿名的，不穩定的，沒有確切定義可言。所有的肯定性之物，都是透過否定性來給予它現實的力量。嚴格說來，它只能夠被說成日齒(leresfereste)如此說來，餘陽",
+      "score": 0.361,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_16",
+      "source_id": "src_search_2",
+      "book": "西方百年学术经典著作",
+      "chapter": "章七",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 372,
+      "author": "佚名",
+      "snippet": "另外还有一部分人，或个人，或哲学家，或政治家，提出了一些不同的政体形式，这些政体都比柏拉图的理想机制更接近既有的政体。他们中没有人谈到过妇女儿童公有或妇女参与共餐制这类罕见的措施，所有立法者都是从实际出发的。有些人把人世间产生争执及暴乱的原因归结为财富问题。卡尔西登（Chalcedon）的费勒亚斯（Phaleas）最先提出通过均分财富的办法预防这种危机。他认为在一片新殖民地区实行均分制要比在既有的国家里推行容易得多。另一个更为快捷的方法",
+      "score": 0.483,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_17",
+      "source_id": "src_search_2",
+      "book": "马克思恩格斯文集",
+      "chapter": "1881年",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 331,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "170恩格斯致卡尔·考茨基 维也纳 1881年2月1日于伦敦西北区瑞琴特公园路122号 亲爱的考茨基先生： 耽搁了很久，终于动手给您写回信。 不过，既然您打算很快就到这里来，对您惠寄给我的那本书写详细的书面评论，看来也许是多余的了，我将有机会和您面谈这一问题，所以这里只稍微谈点意见。[421] （1）第66页以及后面几页上的说法是站不住脚的，因为在剩余价值和资本利润之间，除了对可变资本或总资本的百分比计算的差别之外，还有其他的一些实际差",
+      "score": 0.48,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_18",
+      "source_id": "src_search_2",
+      "book": "马克思恩格斯文集",
+      "chapter": "第二十三章 利息和企业主收入",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 230,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "我们在上两章已经看到，利息原来表现为，原来是并且实际上始终不外是利润即剩余价值的一部分，这个部分是执行职能的资本家，即产业家或商人，在他不是使用自有的资本而是使用借入的资本时，必须支付给这个资本的所有者和贷出者的。如果他只使用自有的资本，利润的这种分割就不会发生；利润就会全部归他所有。事实上，如果资本的所有者亲自把资本用于再生产过程，他们也就不会参与决定利息率的竞争。这一点已经可以说明，利息的范畴——没有利息率的决定，就不可能有这个范畴",
+      "score": 0.474,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_19",
+      "source_id": "src_search_2",
+      "book": "资本论",
+      "chapter": "第二十三章 利息和企业主收入",
+      "book_id": "53d1b4ff90d2",
+      "chapter_idx": 83,
+      "author": "卡尔·马克思",
+      "snippet": "我们在上两章已经看到，利息原来表现为，原来是并且实际上始终不外是利润即剩余价值的一部分，这个部分是执行职能的资本家，即产业家或商人，在他不是使用自有的资本而是使用借入的资本时，必须支付给这个资本的所有者和贷出者的。如果他只使用自有的资本，利润的这种分割就不会发生；利润就会全部归他所有。事实上，如果资本的所有者亲自把资本用于再生产过程，他们也就不会参与决定利息率的竞争。这一点已经可以说明，利息的范畴——没有利息率的决定，就不可能有这个范畴",
+      "score": 0.472,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_20",
+      "source_id": "src_search_2",
+      "book": "世界哲学简史",
+      "chapter": "亚当·斯密、道德情感和新教伦理",
+      "book_id": "be928be3b1c9",
+      "chapter_idx": 48,
+      "author": "罗伯特·所罗门",
+      "snippet": "新出现的重商主义改变了文艺复兴以来欧洲的面貌，但是，它仍然没有得到规定。旧的封建秩序因自我封闭的义务和交换体系已经消失，新出现的商业社会是日益开放的社会，它以货币作为交换媒介，这种方式不仅极大地改变了经济的性质，而且改变了社会的性质。随着国际贸易成了大量财富的来源，很多民族国家日益转向新近受到尊敬的由银行家和商人组成的“中产阶级”。随着国库财富的增多，英国、法国和西班牙的国王和女王能够提供更多的船只、武器，资助更多的探险，占据更多的殖民",
+      "score": 0.468,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_21",
+      "source_id": "src_search_2",
+      "book": "打开：周濂的100堂西方哲学课",
+      "chapter": "073 马云和比尔·盖茨有权拥有他们的巨大财富吗？——洛克的《政府论》（下）",
+      "book_id": "b220d9690317",
+      "chapter_idx": 80,
+      "author": "周濂",
+      "snippet": "洛克的补充条款 让我们来设想这样一个场景：在人类还处于自然状态的时候，某天，张三和李四相约去采摘果实，两人在山谷里搜寻了整整一天，结果一无所获，直到黄昏即将来临的时候，才不约而同地看到远方有一棵苹果树。两人相互对视了一眼之后，突然开始发足狂奔，张三以迅雷不及掩耳之势跑到苹果树下，又以迅雷不及掩耳之势将苹果一扫而空，等李四气喘吁吁地来到树下时，已经一无所有了。 按照上一讲介绍的洛克理论，张三把自己的劳动混入果实中，那么他就应该拥有对所有果",
+      "score": 0.468,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_22",
+      "source_id": "src_search_2",
+      "book": "马克思恩格斯文集",
+      "chapter": "［笔记本III］",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 9,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "［对笔记本II第XXXVI页的补充］ ［私有财产和劳动］ ［I］补入第XXXVI页。私有财产的主体本质，私有财产作为自为地存在着的活动、作为主体、作为人，就是劳动。因此，十分明显，只有把劳动视为自己的原则——亚当·斯密——，也就是说，不再认为私有财产仅仅是人之外的一种状态的国民经济学，只有这种国民经济学才应该被看成私有财产的现实能量和现实运动的产物（这种国民经济学是私有财产的在意识中自为地形成的独立运动，是现代工业本身），现代工业的产物",
+      "score": 0.468,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_23",
+      "source_id": "src_search_2",
+      "book": "开放社会及其敌人",
+      "chapter": "第六章 极权主义的正义",
+      "book_id": "67d0b7e3c795",
+      "chapter_idx": 7,
+      "author": "卡尔·波普尔",
+      "snippet": "柏拉图的政治纲领 分析了柏拉图的社会学后，使得介绍他的政治纲领容易起来。可以用两个方案中的任何一个来表述他的最基本的要求：第一个跟他的理想主义的变化和静止观有关；第二个则关于他的自然主义。理想主义的方案是：阻止所有的政治变革！变化是邪恶的，静止是神圣的。如果国家是照它最初的样子——即城邦的形式和理念制作而成的精准的复制品，则所有的变化都可被阻止。若要质问这样做的可行性，我们可用自然主义的方案作答：回到自然中去！回到我们祖先时代的最初的国",
+      "score": 0.467,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_24",
+      "source_id": "src_search_2",
+      "book": "马克思恩格斯文集",
+      "chapter": "第二十四章 所谓原始积累",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 169,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "1. 原始积累的秘密 我们已经知道，货币怎样转化为资本，资本怎样产生剩余价值，剩余价值又怎样产生更多的资本。但是，资本积累以剩余价值为前提，剩余价值以资本主义生产为前提，而资本主义生产又以商品生产者握有较大量的资本和劳动力为前提。因此，这整个运动好像是在一个恶性循环中兜圈子，要脱出这个循环，就只有假定在资本主义积累之前有一种“原始”积累（亚当·斯密称为“预先积累”），这种积累不是资本主义生产方式的结果，而是它的起点。 这种原始积累在政治",
+      "score": 0.462,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_25",
+      "source_id": "src_search_2",
+      "book": "资本论",
+      "chapter": "名目索引",
+      "book_id": "53d1b4ff90d2",
+      "chapter_idx": 36,
+      "author": "卡尔·马克思",
+      "snippet": "A 阿西恩托条约——870。 埃及——387、533、587、588。 爱尔兰——291、292、310、482、803、819、837、867。 奥地利——319。 澳大利亚——515、887。 B 拜物教 ——商品拜物教——见商品拜物教。 ——货币拜物教——73、101、108—113、157。 ——资本拜物教——100、877—878。 半成品——213。 保护关税制度——34、649、859、861、867、868、877。 保",
+      "score": 0.462,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_26",
+      "source_id": "src_search_2",
+      "book": "资本论",
+      "chapter": "第二十四章 所谓原始积累",
+      "book_id": "53d1b4ff90d2",
+      "chapter_idx": 29,
+      "author": "卡尔·马克思",
+      "snippet": "1.原始积累的秘密 我们已经知道，货币怎样转化为资本，资本怎样产生剩余价值，剩余价值又怎样产生更多的资本。但是，资本积累以剩余价值为前提，剩余价值以资本主义生产为前提，而资本主义生产又以商品生产者握有较大量的资本和劳动力为前提。因此，这整个运动好像是在一个恶性循环中兜圈子，要脱出这个循环，就只有假定在资本主义积累之前有一种“原始”积累（亚当·斯密称为“预先积累”），这种积累不是资本主义生产方式的结果，而是它的起点。 这种原始积累在政治经",
+      "score": 0.46,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_27",
+      "source_id": "src_search_2",
+      "book": "正义论",
+      "chapter": "第五章　分配的份额",
+      "book_id": "929771a017d6",
+      "chapter_idx": 5,
+      "author": "约翰·罗尔斯",
+      "snippet": "分配的份额在这一章中，我将讨论第二个正义原则，说明一种在现代国家背景下满足它的要求的制度安排。一开始，我将指明两个正义原则可能成为一种政治经济理论的组成部分。功利主义传统一直强调这种运用，我们必须看看它们是怎样被运用的。我也强调两个正义原则自身中已经孕育了某种社会制度的理想，当我们在第三编中讨论共同体的价值时，这个事实将会是十分重要的。作为以后的讨论的一个准备，我要简明要地评论一下经济制度、市场作用等等。然后，我转向讨论储存和代际正义的",
+      "score": 0.459,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_28",
+      "source_id": "src_search_2",
+      "book": "马克思恩格斯文集",
+      "chapter": "1868年",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 318,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "100马克思致恩格斯 曼彻斯特 1868年1月8日［于伦敦］ 亲爱的弗雷德： 关于杜林[245]。他几乎完全接受了《原始积累》这一节(1)，这对他来说已经很不容易了。他还年轻。作为凯里的信徒，他是直接反对自由贸易派66的。此外，他还是非公聘讲师，所以妨碍他们这些人的前程的罗雪尔教授挨了脚踢[246]，他并不伤心。他的评论中有一处特别引起我的注意。这就是：当劳动时间决定价值这一点像在李嘉图本人的书里那样还“不明确”的时候，它并没有引起这些",
+      "score": 0.459,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_29",
+      "source_id": "src_search_2",
+      "book": "马克思恩格斯文集",
+      "chapter": "第二章 利润率",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 209,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "资本的总公式是G—W—G′；这就是说，一个价值额投入流通，是为了从流通中取出一个更大的价值额。这个更大价值额的产生过程，是资本主义的生产；这个更大价值额的实现过程，是资本的流通。资本家生产商品，不是为了商品本身，不是为了商品的使用价值或他的个人消费。资本家实际关心的产品，不是可以摸得着的产品本身，而是产品的价值超过在产品上消费的资本的价值的余额。资本家预付总资本时并没有考虑它的各个组成部分在剩余价值的生产上所起的不同作用。他把这一切组成",
+      "score": 0.458,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_30",
+      "source_id": "src_search_2",
+      "book": "马克思恩格斯文集",
+      "chapter": "第二十一章 简单再生产",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 166,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "币额在今年转化为资本，生产了20镑剩余价值，那么，在明年及以后各年它必须重复同样的活动。剩余价值作为资本价值的周期增加额或处在过程中的资本的周期果实，取得了来源于资本的收入［Revenue(1)］的形式。(2) 如果这种收入只是充当资本家的消费基金，或者说，它周期地获得，也周期地消费掉，那么，在其他条件不变的情况下，这就是简单再生产。虽然简单再生产只是生产过程在原来规模上的重复，但是这种单纯的重复或连续，赋予这个过程以某些新的特征，或者",
+      "score": 0.457,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_31",
+      "source_id": "src_search_6",
+      "book": "认识世界：古代与中世纪哲学",
+      "chapter": "在我们身上思考的质料",
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 99,
+      "author": "理查德·大卫·普莱希特",
+      "snippet": "坚定不移地继续沿着奥特库尔的尼古拉所开辟的道路前进的，是约翰·布里丹（Johannes Buridan），他是农民的儿子，来自法国北部的皮卡第大区。1320年左右，他获得了法国莱莫恩学院（Collège Lemoine）的奖学金。紧接着，他转到了大学。1327年，他获得了博雅学院的硕士头衔，与此同时也第一次被选为校长。布里丹以亚里士多德注解专家而享有盛名。中世纪哲学家中找不出第二人像布里丹那样熟悉亚里士多德的，不管是阿尔伯特、托马斯、邓",
+      "score": 0.377,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_32",
+      "source_id": "src_search_6",
+      "book": "哲学导论",
+      "chapter": "6.2 先定论 杰奎琳•特里米耶，论约鲁巴人的奥瑞",
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 84,
+      "author": "罗伯特·所罗门",
+      "snippet": "在约鲁巴人的哲学中，奥瑞（ori）【或者说“内在头脑”】决定着人的命运，与绝大多数其他对灵魂的文化解释不同的是，约鲁巴人实际上选择他的奥瑞。在创世神话中，阿加拉（Ajala）这位“头脑陶艺师”为每一个身体提供一个头脑。不过，在一个人来到世间之前，他或她必须到阿加拉的屋子里挑选一个头脑。然而，阿加拉给人的印象是不负责任且粗心大意，问题也因此变得更加复杂。结果，阿加拉铸造了许多坏的头脑；他时而忘了烧制，时而弄得奇形怪状，时而烧制得过了头。据",
+      "score": 0.376,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_33",
+      "source_id": "src_search_6",
+      "book": "苏菲的世界（贾德名作系列三部曲）",
+      "chapter": "笛卡尔",
+      "book_id": "46736478a11d",
+      "chapter_idx": 17,
+      "author": "乔斯坦·贾德",
+      "snippet": "……他希望清除工地上所有的瓦砾…… 艾伯特站起身来，脱下红色披风，搁在椅子上，然后再度坐在沙发的一角。 “笛卡尔诞生于一五九六年，一生中曾住过几个欧洲国家。他在年轻时就已经有强烈的欲望要洞悉人与宇宙的本质。但在研习哲学之后，他逐渐体会到自己的无知。” “就像苏格拉底一样？” “是的，或多或少。他像苏格拉底一样，相信唯有透过理性才能获得确实的知识。他认为我们不能完全相信古籍的记载，也不能完全信任感官的知觉。” “柏拉图也这么想。他相信确实",
+      "score": 0.375,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_34",
+      "source_id": "src_search_6",
+      "book": "认识世界：古代与中世纪哲学",
+      "chapter": "道德动物学",
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 48,
+      "author": "理查德·大卫·普莱希特",
+      "snippet": "教育出一位凭借穷兵黩武、挥霍无度、凶狠残忍、暴虐无道且杀人无数而从其同党中脱颖而出并被写入史书的王子，这对一位哲学家来说不能算是功绩。人们之所以能不计较亚里士多德曾兼任亚历山大大帝的老师，而仍认为他理应是哲学史上或许最重要的伦理学家，是因为一系列永远与他的名字密不可分的、格外明智的洞见。 从道德角度观察世界的人会把世界分为他所尊崇（achtet）的和他所鄙夷（ächtet）的事物。这一区分有相应的规则吗？我能客观地认识到什么是好，什么是",
+      "score": 0.375,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_35",
+      "source_id": "src_search_6",
+      "book": "尼采文集（合集）",
+      "chapter": "七",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 560,
+      "author": "弗里德里希·尼采",
+      "snippet": "事实上，我们的庸人头目是勇敢的，在语词上、在他可以认为通过这样一种勇敢能够使他的高贵的“我们”轻松愉快的所有地方都甚至是极大胆的。因此，旧的隐居者和圣徒的禁欲和自制应当被视为醉后悔恨的一种形式，耶稣可以被描写成在我们的时代几乎不会被疯人院漏掉的狂想者，耶稣复活的故事可以被称为一种“世界历史性的骗术” (64) ——这一切我们都想予以容忍，以便研究我们的“经典庸人”施特劳斯所能够拥有的勇气的独特种类。 我们先听一听他的表白：“当然，向世人",
+      "score": 0.367,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_36",
+      "source_id": "src_search_6",
+      "book": "语词和对象",
+      "chapter": "第七章　本体论的判定",
+      "book_id": "9efee732eaff",
+      "chapter_idx": 7,
+      "author": "威拉德·范·奥曼·蒯因",
+      "snippet": "第七章本体论的判定48.唯名论和实在论?\n对于是否存在澳大利亚袋熊、独角兽、天使、中微子、类、点、英里及命题等，我们发现或者可以想像存在着不同意见。哲学与具体科学为关于何物存在问题上的意见分歧提供了无限的空间。传统上使哲学家分成不同派别的一个问题，就是是否存在抽象对象。唯名论者认为不存在；实在论者（在该词的一个特定的意义上），或柏拉图主义者（这个称呼是为了避免“唯实论者”一词可能带来的麻烦），则认为存在。\n关于“抽象”（abstract",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_37",
+      "source_id": "src_search_6",
+      "book": "西方哲学史（第9版）",
+      "chapter": "第六章 奥古斯丁",
+      "book_id": "4a4a200536bd",
+      "chapter_idx": 10,
+      "author": "撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽",
+      "snippet": "第六章奥古斯丁 6.1　奥古斯丁的生平 奥古斯丁十分关注自己的个人命运，这为他的哲学活动提供了推动力。从很小的时候开始，他就苦于一种道德上的深刻困扰。这种困扰激发了他内心对智慧和精神上的宁静的毕生追求。354 年，他出生在非洲努米底亚省的塔加斯特城。虽然他父亲不是基督徒但是他母亲莫尼卡却是这个新信仰的虔诚信徒。16 岁时奥古斯丁在迦太基开始学习修辞学。迦太基是一个生活放浪成风的港口城市。虽然他母亲向他灌输了一些基督教思想和行为的传统，但",
+      "score": 0.549,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_38",
+      "source_id": "src_search_6",
+      "book": "尼采文集（合集）",
+      "chapter": "193",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 310,
+      "author": "弗里德里希·尼采",
+      "snippet": " 康德的玩笑 。——康德想以一种侮辱“每个人”的方式证明，“每个人”都有道理：——这是康德心里的隐秘玩笑。他写文章反对学者们，支持民众的偏见，但他是为学者们写作，而不为民众写作。 边码：505",
+      "score": 0.363,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_39",
+      "source_id": "src_search_6",
+      "book": "上帝之城",
+      "chapter": "第九卷",
+      "book_id": "bcc83fdfca5e",
+      "chapter_idx": 9,
+      "author": "奥古斯丁",
+      "snippet": "第九卷 [本卷提要]奥古斯丁在前一卷的讨论中指出必须弃绝精灵崇拜，因为精灵以成千上万种方式表明自己是邪恶的，但在本卷中奥古斯丁要面对这样的论断，即有人认为某些精灵是恶的，某些精灵是善的。在阐述了这个区别以后， 奥古斯丁证明精灵不能给人提供幸福，而只有基督才能担当为人类提供永久幸福的职责。 前述论证之要点及留待讨论的问题 有人提出这样的看法，神既有善的，又有恶的。①但也有人对诸神比较敬重，把众多荣耀归于诸神，以至于不敢相信有任何神是恶的。",
+      "score": 0.362,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_40",
+      "source_id": "src_search_6",
+      "book": "西方百年学术经典著作",
+      "chapter": "第六章",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 566,
+      "author": "佚名",
+      "snippet": "现在，我要试着证明，苏格拉底确实让他的门人更善于辩论。因为他认为，了解每件事存在的本质，就最有能力向别人作出解释，但是他又说，那些没有这类知识的人，毫无疑问既是在欺骗自己，又是在误人子弟。所以，他从未停止和他的门徒深入探讨每件事存在的本质。 想要把他在无数言论中使用的术语的定义都详细地记录下来，是巨大的任务，但是，我把那些我认为能够达到目的的记录下来，以证明他是如何开展探究的。 那么，首先是他关于虔诚本质的看法，大致如下。 “欧西德莫斯",
+      "score": 0.362,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_41",
+      "source_id": "src_search_6",
+      "book": "尼采文集（合集）",
+      "chapter": "十二",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 565,
+      "author": "弗里德里希·尼采",
+      "snippet": "作为结束语，我们却想给我们的经典散文作家施特劳斯呈上已许诺的风格样品集；也许，叔本华将把它完全一般地题名为：《目前的流氓黑话的新证据》；因为这样说也许对施特劳斯是一种慰藉，如果对他来说能够是一种慰藉的话，即如今所有世人都在像他那样写作，有些还更为糟糕，但在瞎子中间任何一个独眼龙都是国王。确实，当我们承认他有一只眼的时候，我们也就承认他很多了；但我们之所以这样做，乃是因为施特劳斯不是像一切德意志败家子中最无耻的败家子，亦即黑格尔学派及其畸",
+      "score": 0.36,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_42",
+      "source_id": "src_search_6",
+      "book": "西方哲学史（第9版）",
+      "chapter": "第四章 亚里士多德",
+      "book_id": "4a4a200536bd",
+      "chapter_idx": 8,
+      "author": "撒穆尔·伊诺克·斯通普夫/詹姆斯·菲泽",
+      "snippet": "第四章亚里士多德 4.1　亚里士多德的生平 亚里士多德于公元前 384 年生于色雷斯东北海滨的小城斯塔吉拉。他的父亲是马其顿国王的医生。很有可能亚里士多德对生物学和一般科学的兴趣在他幼年时代就得到了培养。在他 17 岁的时候，亚里士多德前往雅典进入柏拉图学院。他作为一位学生和学派的一个成员，在那里一直待了 20 年。亚里士多德在学园里有“博览群书”之称并被誉为“学园的头脑”。虽然为了形成他自己对于一些哲学问题的看法，亚里士多德最终与柏拉",
+      "score": 0.358,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_43",
+      "source_id": "src_search_6",
+      "book": "哲学的故事",
+      "chapter": "第八章 赫伯特·斯宾塞",
+      "book_id": "d56e17acb59b",
+      "chapter_idx": 12,
+      "author": "威尔·杜兰特",
+      "snippet": "第八章 赫伯特·斯宾塞 一、孔德和达尔文 自称“未来形而上学先河”的康德哲学其实存心不良，不仅颠覆了传统的思辨模式，还自违初衷，破坏性地打击了一切形而上学。纵观整个思想史，形而上学一直在寻找实在的终极本质。如今，人类认识到，借用权威的话就是，实在是永远不能被体验的，实在是“本体”，可设想却不可知，即使是最发达的人类理性也无法超越现象，无法透过玛雅人的面纱。费希特、黑格尔和谢林过多的形而上学，加上他们对古代难题的不同解读以及各自提出的自我",
+      "score": 0.357,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_44",
+      "source_id": "src_search_6",
+      "book": "哲学的底色：人类永恒追求的六大哲学主题",
+      "chapter": "第二章 柏拉图，正确的观点和错误的观点",
+      "book_id": "1681f14003dd",
+      "chapter_idx": 3,
+      "author": "莫提默 · 艾德勒",
+      "snippet": "第二章 柏拉图，正确的观点和错误的观点 当亚里士多德的名字变成形容词来修饰名词时，它通常和“逻辑”一词相随相伴。若我们把刚听到的论据评价为“那是亚里士多德式的逻辑”，有时是在赞扬这一论据，有时则是在贬低它。 而当柏拉图的名字变成一个形容词，它常常要么与“爱”同行，要么与“观念”同在。我们把一种特定的友谊说成是柏拉图式的爱情；或者我们说“那只是柏拉图式的观念，与现实无关”。 当然，“柏拉图式的观念”这一短语的贬义延伸是指柏拉图关于观念的理",
+      "score": 0.357,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_45",
+      "source_id": "src_search_6",
+      "book": "当尼采哭泣(欧文隆)",
+      "chapter": "第四章",
+      "book_id": "8a3e4665c65c",
+      "chapter_idx": 4,
+      "author": "欧文·亚隆",
+      "snippet": "两星期之后，布雷尔身着白色医师袍，坐在办公室里，读一封路·莎乐美的来信： 1882年11月23日 亲爱的布雷尔医生： 我们的计划生效了。对于尼采病况之危险，奥弗贝克教授与我们的观点完全一致，他认为尼采的状况从未这样糟过。因此，他会尽一切可能，要求尼采求治于你。你在这件事情上雪中送炭的厚意，尼采与我将永远铭记在心。 路·莎乐美 “我们的计划、我们的观点、我们的需要。我们、我们、我们……”布雷尔放下了那封信。自从一星期前收到这封信之后，他已",
+      "score": 0.357,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_46",
+      "source_id": "src_search_7",
+      "book": "维特根斯坦文集（套装全8卷）",
+      "chapter": "MS 101",
+      "book_id": "c0e78ea6f80a",
+      "chapter_idx": 5,
+      "author": "路德维希·维特根斯坦",
+      "snippet": "MS 101 注1 14.8.22 注2 1. 逻辑必须照料自身。 2. 如果关于函项的句法规则 终究 是可以建立起来的，那么整个关于物、性质等等的理论都成为多余的了。至为明显的是，《基本规律》 注3 和《数学原理》 注4 都没有谈到这个理论。再强调一下：因为逻辑必须照料自身。一个 可能的 符号必定也能够表示。可能的一切东西也是合法的（允许的）。请回忆一下人们是如何解释“苏格拉底是柏拉图”为什么没有任何意义的。即：是因为 我们 没有作出",
+      "score": 0.491,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_50",
+      "source_id": "src_search_7",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "乙、机械的过程",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 83,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "假如客体只被看作是自身封闭的总体，那么，它们就不能相互发生作用。客体在这种规定中，和 单子 是一回事，单子正是因此而被设想为彼此全无影响。但单子的概念也正因此而是一个有缺憾的反思。因为 第一 ，单子是它的仅仅是 自在 之有的总体的一个 规定了的 表象；作为它的世界表象的发展和 建立起来之有 的 某一程度 ，它是 规定了的 ；当它现在是自身封闭的总体时，它对这种规定性也是漠不相关的；因此，这不是它自己特有的，而是由 另一 客体 建立起来的",
+      "score": 0.47,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_52",
+      "source_id": "src_search_7",
+      "book": "形而上学",
+      "chapter": "第十四章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 70,
+      "author": "亚里士多德",
+      "snippet": "们能够是一个（例如“倍”是潜在地由两个一半组成：因为[两个一半】 的完全实现将使它们分离）；因此，如果实体是一个，它将不会由呈现于它之中并以这种方式呈现的诸实体构成。德谟克利特正确地描述了这一点，他说一事物*不能由两事物构成，两事物也不能由一事物构成，10因为他把不可分的量当作实体。因此，很清楚，这对于数也同样适合； 如果像有些人说的那样，数是单位的合成；因为二或者不是一，或者在完全的实在中，单位不呈现于它之中。 但是我们的结果包含着一",
+      "score": 0.467,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_53",
+      "source_id": "src_search_7",
+      "book": "维特根斯坦文集（套装全8卷）",
+      "chapter": "2.实际情况，事实，是诸基本事态的存在",
+      "book_id": "c0e78ea6f80a",
+      "chapter_idx": 18,
+      "author": "路德维希·维特根斯坦",
+      "snippet": "2.实际情况，事实，是诸基本事态的存在 2.01  基本事态是诸对象（物件、物）的结合。 2.011  能成为基本事态的构成成分，这一点对于物来说具有本质的意义。 2.012  在逻辑中不存在任何偶然的东西：一个物，如果它 能 出现在一个基本事态之中，那么该基本事态的可能性便已经被预先断定在该物之中了。 2.0121  如下之点看起来好像是偶然的：一个物，本来可以独自存在，后来竟然有一个基本事态适合于它。 如果诸物能出现在诸基本事态之中",
+      "score": 0.463,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_54",
+      "source_id": "src_search_7",
+      "book": "纯粹理性批判(注释本)",
+      "chapter": "第二章 论先验的理想（Prototypon transscendentale［先验的原型］）",
+      "book_id": "eca1899561c4",
+      "chapter_idx": 40,
+      "author": "伊曼努尔·康德",
+      "snippet": "任何一个概念，就它本身里面不包含的东西而言，是未被规定的，并且从属于可规定性的原理：在任何两个彼此矛盾对立的谓词中间，只有一个能够属于该概念。这条原理依据的是矛盾律，因而是一条纯然逻辑的原则，它抽掉了知识的一切内容，仅仅关注知识的逻辑形式。 但是，任何一个事物按照其可能性都还从属于普遍的规定的原理，按照这条原理，在事物所有可能的谓词中间，如果把这些谓词与它们的对立面进行比较，就必然有一个谓词属于该事物。这依据的不仅仅是矛盾律；因为它除了",
+      "score": 0.457,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_55",
+      "source_id": "src_search_7",
+      "book": "世界的逻辑构造",
+      "chapter": "第一章 任务",
+      "book_id": "8ae083851bd8",
+      "chapter_idx": 6,
+      "author": "鲁道夫·卡尔纳普",
+      "snippet": "科学的哲学研究的最高准则是：凡是可能的地方，就要用逻辑构造代替推论出的存在物。 罗素 本书研究的目的是提出一个关于对象或概念的认识论的逻辑的系统，提出一个“构造系统”。此处“对象”一词总是在最广泛的意义上使用的，即指可对其做出陈述的一切东西。因此，不仅事物属于对象，而且特性和联系、类和关系、状态和过程以及现实的和非现实的东西都算是对象。 与其他的概念系统不同，构造系统的任务不是仅仅把概念区分为不同的种类并研究各类概念的区别和相互关系，而",
+      "score": 0.454,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_56",
+      "source_id": "src_search_7",
+      "book": "形而上学",
+      "chapter": "第一章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 109,
+      "author": "亚里士多德",
+      "snippet": "1069°18*我们的研究是关于实体的：因为我们研究的是关于实体的本原和20原因。因为如果把宇宙看作一个整体，那么实体就是[它的]第一部分（πp@tovμepoc/Firstpart）；而如果我们把这个整体看作是由于依次相继的，那么实体也是第一的，接下来是质，再次是量。同时，后面这些甚至不是绝对意义上的存在，而是存在物的各种质和各种运动，一否则的话，“非白”、“非直”也将是“存在”了。然而无论如何我们说它们也“是”，例如，“它是不白的”",
+      "score": 0.52,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_57",
+      "source_id": "src_search_7",
+      "book": "形而上学",
+      "chapter": "第二章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 90,
+      "author": "亚里士多德",
+      "snippet": "*关于一的实体和本性，我们必须研究它在两种方式的哪一种中*10539、10存在。这正是我们在关于问题的讨论中已经考察过的那个问题：什么是一，我们对它采取什么看法，是否我们必须把一本身看作是一种实体（正如毕达哥拉斯派先这样说，而后柏拉图也这样说），或者毋宁说有某种本性潜伏在它下面，并且一应当被更加可以理解地加以描述，而且更加追随*自然哲学家的方式，在这些自然哲学家中一个说一是爱，另一15个说它是气，另外一个说它是不限定（toincipov",
+      "score": 0.451,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_58",
+      "source_id": "src_search_7",
+      "book": "打开：周濂的100堂西方哲学课",
+      "chapter": "082 “是什么”与“是起来”：黑格尔的“实体即主体”",
+      "book_id": "b220d9690317",
+      "chapter_idx": 92,
+      "author": "周濂",
+      "snippet": "这一讲的主题是“实体即主体”。先给大家打一针预防针，本讲内容会比较抽象，我会尽我所能把它讲得浅显易懂一些。 什么是实体？ 第一个问题，什么是实体（substance）？我们已经多次探讨过这个概念，为了帮助理解，我想请各位回忆一下在第9讲中提到的那个观点，在所有的主谓判断句“S is P”中，无论主词和谓词怎么变化，总有一个词是不变的，比方说天是蓝的，花是红的，水是纯净的，女孩是可爱的，或者女孩是老虎，你会发现，在这些判断句中，都有一个永",
+      "score": 0.516,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_59",
+      "source_id": "src_search_7",
+      "book": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "chapter": "第二编　一般方法论",
+      "book_id": "309de54e4392",
+      "chapter_idx": 78,
+      "author": "伊曼努尔·康德",
+      "snippet": "第二编　一般方法论 Ⅰ　通过对概念的定义、阐明和描述，来促成知识的逻辑完备 §99．定义 定义是充分明晰准确的概念（conceptus rei adaequatus in minimis terminis, complete determinatus〔以最少言辞充分完全规定的概念〕）。 注释　唯独定义可视为逻辑上完备的概念；因为在定义中结合着概念的两种最主要的完备——明晰，及明晰中的圆满精确（明晰的量）。 §100．分析定义和综合定义 ",
+      "score": 0.45,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_60",
+      "source_id": "src_search_7",
+      "book": "存在与时间",
+      "chapter": "导论 概述存在意义的问题",
+      "book_id": "c5013f33fe01",
+      "chapter_idx": 0,
+      "author": "马丁·海德格尔",
+      "snippet": "第一章 存在问题的必要性、结构和优先地位 第一节 突出地重提存在问题的必要性 我们的时代虽把重新肯定“形而上学”当作自己的进步，但这里所提的问题如今已久被遗忘了。人们认为自己无须努力来重新展开巨人们关于存在的争论。然而，这里提出的问题却绝不是随随便便的问题。它曾使柏拉图和亚里士多德为之思殚力竭。当然，从那以后，它作为实际探索的专门课题，就无人问津了。这两位这人赢得的东西，以各式各样的偏离和“润色”一直保持到黑格尔的“逻辑学”之中。曾经以",
+      "score": 0.45,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_61",
+      "source_id": "src_search_9",
+      "book": "论选择的艺术",
+      "chapter": "45",
+      "book_id": "1282e86cd93b",
+      "chapter_idx": 45,
+      "author": "爱比克泰德",
+      "snippet": "有人洗澡洗得很匆忙，不要说他洗得不干净，只要说他洗得匆忙。有人喝了很多酒，不要说他喝这么多不好，只要说他喝了很多。除非你知道他们这么做的原因，否则怎么能判断他们的行为是不好的呢？不要清清楚楚地亲眼看到某件事，嘴里却妄下结论地断言另一件事。",
+      "score": 0.484,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_62",
+      "source_id": "src_search_9",
+      "book": "尼采文集（合集）",
+      "chapter": "42 过于精细者的原则",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 96,
+      "author": "弗里德里希·尼采",
+      "snippet": " 过于精细者的原则 (57) 宁愿踮着脚尖走路， 也不要用四肢爬行！ 宁愿穿过一个锁孔， 也不走敞开的大门！ 边码：363",
+      "score": 0.476,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_63",
+      "source_id": "src_search_9",
+      "book": "形而上学",
+      "chapter": "第二十七章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 50,
+      "author": "亚里士多德",
+      "snippet": "1024°11*并非任何碰巧是量的事物都能被叫作“截割的”（koloβov/Muti- lated），它必须是一个整体面且是可分的，因为如果二的两个一中的一个被拿走，不仅二并不成为“截割的”（因为由截割去掉的部分并不等于15剩余的部分），面且一般地说没有数是那样被截割的；*因为本质留下来也是必要的：如果一只杯子被截割了，它必须仍然是一只杯子；但数则不复是相同的数。再说，即使事物包含着不相等的部分，这些事物也不能全都被说成是“残缺的\"①，",
+      "score": 0.473,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_64",
+      "source_id": "src_search_9",
+      "book": "尼采文集（合集）",
+      "chapter": "191",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 308,
+      "author": "弗里德里希·尼采",
+      "snippet": " 反对某些辩护 。——要破坏某事，最刁奸的做法是故意用错误的理由为这事辩护。",
+      "score": 0.471,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_65",
+      "source_id": "src_search_9",
+      "book": "尼采文集（合集）",
+      "chapter": "205",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 322,
+      "author": "弗里德里希·尼采",
+      "snippet": " 需要 。——需要被看作某物产生的原因：事实上，它往往只不过是已经产生的事物的一个结果。 边码：507",
+      "score": 0.465,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_66",
+      "source_id": "src_search_9",
+      "book": "皮浪学说概要",
+      "chapter": "二十一、关于哲学的伦理学部分",
+      "book_id": "1c67b29ec906",
+      "chapter_idx": 78,
+      "author": "皮浪",
+      "snippet": "[168]剩下来的是哲学的伦理学部分，这一部分被认为是关乎善的、恶的和无差别的东西的区分。为了简明扼要讨论这一部分，我们将研究善的、恶的和无差别的东西的真实存在性，首先对每个概念进行解释。 ①参见M11.1-2 ",
+      "score": 0.456,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_67",
+      "source_id": "src_search_9",
+      "book": "尼采文集（合集）",
+      "chapter": "174",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 291,
+      "author": "弗里德里希·尼采",
+      "snippet": " 偏离 。——议会制度，就是公开允许人们在五种主要的政治意见中做出选择，它讨好大众，那些喜欢 显得 独立和个性化、并且想为自己的意见而斗争的人们。而最终，是群盲被强制接受一种意见，抑或被允许有五种意见，那是无关紧要的。——谁若偏离和漠视这五种公共意见，全体群盲就总是会反对他。 边码：501",
+      "score": 0.454,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_68",
+      "source_id": "src_search_9",
+      "book": "马基雅维利语录",
+      "chapter": "关于做人这一点，从来就没有谁是完美无瑕的。",
+      "book_id": "96a84c0450cd",
+      "chapter_idx": 38,
+      "author": "马基雅维利",
+      "snippet": "关于做人这一点，从来就没有谁是完美无瑕的。 就算一开始能做到慎思明辨，不犯错误，经过一段时间，困难仍会自然渐渐发生。 因此，领导者有必要时常对法律、制度等方面做出合乎现状的改变。 ——《论李维》",
+      "score": 0.454,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_69",
+      "source_id": "src_search_9",
+      "book": "尼采文集（合集）",
+      "chapter": "5",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 122,
+      "author": "弗里德里希·尼采",
+      "snippet": "5 (21) 绝对的义务 。——所有人都觉得，为了 从根本上 发挥作用，他们需要最有力的话语和声音，最雄辩的举止和姿态——所有这些革命政治家、社会主义者、基督教的和非基督教的布道者，他们都拒不接受半拉子的成功：所有这些人都在谈论“义务”，而且总是在谈论具有绝对性质的“义务”——倘若没有这种义务，他们便无权拥有自己的伟大激情了：这一点，是他们十分清楚的！于是，他们谋求那些宣讲某种绝对命令 (22) 的道德哲学，或者，他们接受宗教里的某个优",
+      "score": 0.449,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_70",
+      "source_id": "src_search_9",
+      "book": "西方百年学术经典著作",
+      "chapter": "结论",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 144,
+      "author": "佚名",
+      "snippet": "既然我已经列举了政治权利的真正原则，并且试图给国家找一个可以倚靠的基础，接下来我应该用它外部关系强化它。这种外部的关系包括各国的法律、商业、战争与征服的权利、公众权利、各种联盟、各种协商、各种条约等。但是，这些构成了一个新主题，对于我狭窄的探讨范围而言，这个主题真是太过宽广了。自始至终，对于把握的议题，我都应该保持在一个更加有限的范围内。",
+      "score": 0.449,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_71",
+      "source_id": "src_search_9",
+      "book": "马基雅维利语录",
+      "chapter": "弱国的决定常常是优柔寡断的。",
+      "book_id": "96a84c0450cd",
+      "chapter_idx": 113,
+      "author": "马基雅维利",
+      "snippet": "弱国的决定常常是优柔寡断的。 因此，做决断时浪费时间，总是有害的。 对于这一点，我可以说是很有信心的。就国家行为来说，模糊处理每个问题，对佛罗伦萨共和国来说是多么有害，我已经有了切身的体验。 欠缺决断力的人，无论做多么郑重的协商，其得出的结论总是模棱两可而没有意义。 而与优柔寡断一样有害的是，经过长时间讨论以后迟来的结论。 这是因为，比方说在对外援助的问题上贻误时机，不仅无法起到帮助对方的作用，还可能使其以怨报德。 很多时候，如果一开始",
+      "score": 0.449,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_72",
+      "source_id": "src_search_9",
+      "book": "单行道",
+      "chapter": "内务部",
+      "book_id": "5d26edcad281",
+      "chapter_idx": 13,
+      "author": "瓦尔特·本雅明",
+      "snippet": "一个人越是敌视留存下来的东西，也就会越发不可阻挡地将他个人 的生活置于他想将之推举为未来社会法则的规范中。这些还未得以实 施的规范似乎使他有义务至少在自己的生活中去事先实施它们。而知 道按照自己所属阶层或民族之最古老传统行事的人，有时候却会刻意将 他个人的生活对立于他在公开场合始终不渝宣扬的行为准则，这样的人 暗中又会毫无良心不安地将自己的行为看作是对自己所信奉基本准则 之巨大权威性的最有力印证。自由社会主义政治家与保守派政治家之 间的",
+      "score": 0.448,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_73",
+      "source_id": "src_search_9",
+      "book": "尼采文集（合集）",
+      "chapter": "244",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 361,
+      "author": "弗里德里希·尼采",
+      "snippet": " 思想与话语 。——即便是人们自己的思想，人们也不能完全用话语来加以复述。",
+      "score": 0.444,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_74",
+      "source_id": "src_search_9",
+      "book": "变形记",
+      "chapter": "决断",
+      "book_id": "ad61ed0fd976",
+      "chapter_idx": 8,
+      "author": "弗朗茨·卡夫卡",
+      "snippet": "决　断 (5) 挣脱一种恶劣的处境，想必勉强使使劲也是容易做到的。我猛地从椅子上站起，绕着桌子走，活动活动头和脖子，眨巴一下眼睛，绷紧眼睛四周的肌肉。我压制每一种情感，热烈欢迎甲，如果他现在会来的话；我在我的房间里友好地容忍乙；不顾疼痛和辛劳也要大口大口地把丙说的话全部吸收进自己的肚里。 然而，尽管这样可行，整个事情容易的和艰难的，也会因每一个避免不了的错误而停滞不前，而我则将不得不在圈子里转回去。 所以，最好的办法依旧是：忍受一切，采",
+      "score": 0.444,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_75",
+      "source_id": "src_search_9",
+      "book": "尼采文集（合集）",
+      "chapter": "297",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 414,
+      "author": "弗里德里希·尼采",
+      "snippet": "297 (42) 能够表达异议 。——如今众所周知，能够容忍异议 (43) 乃是文化的一个崇高标志。有些人甚至知道，高等人希望并且欢呼针对自己的异议，为的是获得一种关于他自己迄今一概未知的不公不义的指示。然而， 能够 表达异议，在针对习惯、传统、神圣的敌意方面所达到的 好 良心，——这一点更胜于上述两者，这一点乃是我们文化的真正伟大、新颖和令人惊奇之处，是自由精神的最大步伐：有谁知道这个呀？—— 边码：538",
+      "score": 0.443,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_76",
+      "source_id": "src_search_10",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "丙、绝对的必然",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 65,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "实在的必然性是 有规定的 必然；形式的必然在自身中还没有内容和规定性。必然的规定性在于：它在自身中具有其否定，即偶然。它所发生的结果就是如此。 但这个规定性 在其最初的单纯性中 是现实； 有规定的 必然因此直接是 现实的必然。这样本身是必然的 这个现实，由于它包含必然性作为它的 自在之有 ，它就是 绝对的现实 ；——不再能是任何别的东西的现实，因为它的 自在之有 不是可能性，而是必然性本身。 但这样一来，这个 现实 ，——因为它被建立为",
+      "score": 0.56,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_77",
+      "source_id": "src_search_10",
+      "book": "皮尔斯文选",
+      "chapter": "审视必然性学说",
+      "book_id": "8b1e1c5ebaac",
+      "chapter_idx": 15,
+      "author": "查尔斯·桑德斯·皮尔士",
+      "snippet": "审视必然性学说 在这里，我要检查一下这个最普通的信念：在我们这个宇宙中存在的 每个事件都是被法则严格决定的。不能认为这个思想不论何时何地都已经 被所有有理性的人普遍认可了。最初提出这种思想的人似乎是原子论著德 谟克利特。人们告诉我们，他是经过反思“物质的不可穿透性、转化和 碰撞”（αuTTuπuα KatopαKαT入nYnTmeL入ne）得出这种结论的。这即 是说，他把自己的注意力集中在这样一个范围之内，在那里产生影响的只 是机械的力",
+      "score": 0.541,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_78",
+      "source_id": "src_search_10",
+      "book": "全部知识学的基础",
+      "chapter": "第一部分全部知识学之诸原理",
+      "book_id": "5d4fa02c0903",
+      "chapter_idx": 6,
+      "author": "费希特",
+      "snippet": "1.第一条：绝对无条件的原理 82.第二条：内容上有条件的原理 3.第三条：形式上有条件的原理",
+      "score": 0.537,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_79",
+      "source_id": "src_search_10",
+      "book": "过程与实在",
+      "chapter": "第七章　主体性原则",
+      "book_id": "08bc692fb974",
+      "chapter_idx": 10,
+      "author": "阿尔弗雷德·诺思·怀特海",
+      "snippet": "体性原则不断产生的严重后果的历史。休谟和康德的巨大功绩就在于以极大的明确性面对这种困难。 主体性原则就是认为对经验活动中的材料可以完全通过普遍性质加以恰当地分析。 感觉主义的原则就是认为经验活动中的基本活动就是纯粹主体性地接纳材料而没有任何接受的主体形式。这就是纯粹感觉理论。 主体性原则来自以下三个前提：（1)接受“实体一属性”概念作为对最终本体论原则的表达。（2)接受亚里士多德对第一实体的定义，总是把它作为主体而绝不作为谓词。（3）关",
+      "score": 0.55,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_80",
+      "source_id": "src_search_10",
+      "book": "形而上学",
+      "chapter": "第七章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 103,
+      "author": "亚里士多德",
+      "snippet": "然实体（puoigkaiouoia）是存在事物的首要的【事物】，那么物理学就会是第一的科学：但是如果有另一类实在和实体（puoigkaiouoia），它是分离的和不动的，那么关于它的科学必定不同于并优先于物理学，而且它是普遍的，因为它是在先的。①①参看第六卷第一章：第十一卷，105926-29*由于“存在”一般说来（toáπA@cov）具有几种意义，其一是“出于偶然的存在”（okataouuBeBnkoc），我们必须考虑在这种意义上的存",
+      "score": 0.533,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_81",
+      "source_id": "src_search_10",
+      "book": "充足理由律的四重根",
+      "chapter": "第2章 迄今为止有关充足根据律的最重要的观点概述",
+      "book_id": "d8bcc10d42ff",
+      "chapter_idx": 3,
+      "author": "阿图尔·叔本华",
+      "snippet": "我们打算进一步说明充足根据律是几个先天概念的共同表述。同时，这一原则又必须以这一或那一公式表达。我认为沃尔夫的表达最具概括性：“任何事物都有其为什么存在而不是不存在的理由。” 关于整个认识的这样一个如此根本的原则之或多或少较为确定的抽象表达，肯定在很早的年代即已出现，因此难以确定这种表达最早始于何时，不过话说回来，即使能够确定也没有多少必要性。虽然柏拉图和亚里士多德经常把它作为不言自明的真理而提起，但他们谁都没有正式地把它表达为一个主要",
+      "score": 0.528,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_82",
+      "source_id": "src_search_10",
+      "book": "哲学导论",
+      "chapter": "6.3 决定论 大卫•休谟，论因果关系与性格",
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 95,
+      "author": "罗伯特·所罗门",
+      "snippet": "现在让我们进行关于自由与必然性问题的协调计划，这是形而上学这门争议最多的科学中最具争议的问题，用不着多费唇舌就可证明，所有人向来就赞同自由学说和必然性学说，而在这一方面的全部争论，迄今为止不过是言辞之争。自由一词应用于自愿行动时，究竟是什么意思呢？我们当然不会是说，这些行动与动机、倾向和环境毫无联系，一个并不以一定程度的齐一性伴随着另一个，一个并不为我们提供推断另一个存在的推论。因为这些是显而易见的、人所公认的事实。因此，我们所谓的自由",
+      "score": 0.524,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_83",
+      "source_id": "src_search_10",
+      "book": "哲学和我们的时代",
+      "chapter": "一切事物皆有其实体本性",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 36,
+      "author": "周龙辉",
+      "snippet": "[第177～181节] 然而真正讲来，普遍性才是个体事物的根据和基础，根本和实体。 ——黑格尔：《小逻辑》，第352页 1.事物必然地为类所决定 回顾一下，反思的判断是在与他物的联系中表达主词，“这一植物是可以治病的”即是在与人的联系中表达主词的特性。这是反思判断中的单称判断，而反思的全称判断是“所有的A是B”，“所有的植物都是可以治病的”即是反思判断中的全称判断。在这种判断中，主词在量上扩展到了极致，换言之，主词也成了普遍的东西，“所",
+      "score": 0.523,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_84",
+      "source_id": "src_search_10",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "乙、相对的必然或实在的现实，可能和必然",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 64,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "1. 以上得的结果，是：必然性是 形式的 ，因为它的环节是形式的，即那些环节是单纯的规定，它们只是作为单纯的统一或作为一个环节直接转化另一环节那样的总体，从而不具有独立形态。——在这种形式的必然中，统一首先是单纯的，对其区别漠不相关。这种必然，作为形式规定的 直接 统一，就是 现实 ；但却是这样的一个现实，它——因为它的统一现在 被规定为 对形式规定的 区别 ，即对它本身和可能性的区别 漠不相关 ，——具有一个 内容 。这个内容，作为漠",
+      "score": 0.521,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_85",
+      "source_id": "src_search_10",
+      "book": "哲学科学全书纲要",
+      "chapter": "第一部分. 数学.",
+      "book_id": "497b0228c3a6",
+      "chapter_idx": 15,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "§ . 198. 1） 自然的最初的或直接的规定是 它的己外存在的 抽象 普遍性 ，即这种己外存在的无中介的不相干性，是 空间 。空间是完全观念性的 相互并列 ，因为它是己外存在，并且是完全 连续的 ，因为这种相互外在还完全是抽象的，在自己内不具有什么确定的区别。 关于空间的本性，向来就已有各种各样说法。我只想提到 康德的 规定，他认为空间和时间一样是 感性直观的 一种 形式 。就是在其他地方，主张空间必须仅仅 看作 是表象中某种主观的",
+      "score": 0.518,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_86",
+      "source_id": "src_search_10",
+      "book": "纯粹理性批判(注释本)",
+      "chapter": "第四章 论上帝存在的本体论证明的不可能性",
+      "book_id": "eca1899561c4",
+      "chapter_idx": 42,
+      "author": "伊曼努尔·康德",
+      "snippet": "从以上所述人们很容易看出：一个绝对必然的存在者的概念是一个纯粹的理性概念，也就是说，是一个纯然的理念，它的客观实在性凭借理性需要它还远远没有得到证明，它也只是对某一种尽管无法达到的完备性提供了指示，而且真正说来，与其说是被用来把知性扩展到新的对象上，倒不如说是被用来给理性设置界限。如今，这里所存在的令人惊异和荒谬的东西是，从一个被给予的一般存在到某个绝对必然的存在的推论似乎是迫切的和正确的，而尽管如此，我们对于这样一种必然性形成一个概念",
+      "score": 0.509,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_87",
+      "source_id": "src_search_10",
+      "book": "形而上学",
+      "chapter": "第五章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 30,
+      "author": "亚里士多德",
+      "snippet": "那个不能是另外一个样的东西就必然地是像它那样的。*并且从这个意35义的“必然性”，所有其他的意义就都以某种方式引申出来了。因为一个事物*被说成去做或承受那是必然的东西（在强制的意义上），仅仅是在它由于强迫的力量而不能按照它的冲动来行动的时候，一这就蕴含着：必然性是那由于它面使得一个事物不能是另外一个样的那个东西。关于生活的和善的诸条件也与此相似：因为*善在一个场合，生活或存在在另一个场合，如果没有某种条件，它们就不是可能的，这些条件就是",
+      "score": 0.508,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_88",
+      "source_id": "src_search_10",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "A 空间",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 104,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "§.254 自然界最初的或直接的规定性是 其己外存在 的抽象 普遍性 ，是这种存在的没有中介的无差别性，这就是 空间 。空间是己外存在，因此，空间构成完全观念的、 相互并列的东西 ；这种相互外在的东西还是完全 抽象的 ，内部没有任何确定的差别，因此空间就是完全 连续的。 〔 说明 〕关于空间的本性，人们很早以来就提出过各式各样的说法。我只想提到 康德的 定义，他认为空间和时间是 感性直观形式 1 。即使在其他地方，把这种认为空间应当仅仅",
+      "score": 0.508,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_89",
+      "source_id": "src_search_10",
+      "book": "哲学和我们的时代",
+      "chapter": "大全一体的观点是一切哲学的基础",
+      "book_id": "87b26c6b10e6",
+      "chapter_idx": 32,
+      "author": "周龙辉",
+      "snippet": "[第149～153节] 大体看来，东方人的观点多认一切有限的事物仅是奄忽即逝，不能长存，这种东方人的世界观在斯宾诺莎的哲学里得到一种思想性的表述，这种东方人的实体统一性的观点无疑地可以形成一切真正哲学进一步发展的基础…… ——黑格尔：《小逻辑》，第315～316页 1.大全是实体 熟悉康德哲学的人应该都知道，实体关系、因果关系和相互作用是《纯粹理性批判》十二个范畴中的三个，属于关系的范畴。在《小逻辑》中，这三个范畴与康德哲学一样也被视为",
+      "score": 0.507,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_90",
+      "source_id": "src_search_10",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "甲、实体性的对比",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 66,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "绝对的必然是绝对的对比，因为绝对的必然不是作为有那样的 有 ，而是“它有， 因为 它有”这样的 有 ，是作为它与自身的绝对中介这样的有。这个有就是 实体 ；作为有与本质最后的统一，实体就是在 一切 有中的有，既不是不反思的直接物，又不是一个抽象的、站在存在和现象背后的东西，而是直接的现实本身，并且这个现实是作为绝对自身反思的有，作为自在自为之有的 长在 。——实体，作为有与反思的这种统一，在本质上是它们的 映现 和 建立起来之有 。映现",
+      "score": 0.506,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_93",
+      "source_id": "src_search_11",
+      "book": "形而上学",
+      "chapter": "第四章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 121,
+      "author": "亚里士多德",
+      "snippet": "绝对。追随主张形式理论的人的所有其他论证，都导致与这个理论的原理相抵触。 再有，按照那些主张*理念存在的人的假设，就将不仅有实体的理念，而且也有许多其他事物的理念（因为不仅有关于实体的一个名称，而且也有关于非实体的名称，而且也将有种种不仅是关于实体的科学），还有其他的无数这样的问题随之而来。由于必然性以及按照关于理念的意见，如果形式能被分有，那么就必定只有实体的理念，因为它们不是偶然地被分有的，而是每个形式必定是作为某种不是表述一个主体",
+      "score": 0.539,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_95",
+      "source_id": "src_search_11",
+      "book": "哲学导论",
+      "chapter": "1.2 最初的希腊哲学家 形而上学",
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 33,
+      "author": "罗伯特·所罗门",
+      "snippet": "这些关于世界真实地存在的方式的各种理论，有一个特定的名称。它们都叫作形而上学理论，而提出这些学说的努力，我们一直在讨论的部分也属于其中，叫作形而上学。形而上学的主要任务是提出和回答这样一些基本问题：宇宙是什么，它的结构是什么，构成它的“基质”是什么，人和心灵的规则是什么，宇宙的非物质方面的性质和物质方面的性质是什么。但是，既然我们现在要讨论柏拉图和亚里士多德意义上成熟的形而上学，那就让我们给“基质”一个特定的名称吧。这个名称就是实体（亚",
+      "score": 0.531,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_97",
+      "source_id": "src_search_11",
+      "book": "形而上学",
+      "chapter": "第十一章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 67,
+      "author": "亚里士多德",
+      "snippet": "人，以及铜和右头之于雕像：他们把所有事物都归结为数，并且说“线” 的公式是“二”的公式。至于那些断言理念的人，有些人使“二”是线本身，*而另一些人则使“二”成为线的“形式”：因为在有些情况下他们说形式和那是它的“形式”的东西是相同的，例如，“二”与二的“形式”；但是在关于“线”的情况下，他们说这就不再是如此了。 这样，就会得出，许多事物有一个“形式”，而这许多事物的形式显然是不同的（这个结论也摆在毕达哥拉斯派的面前）：可能使得一个事物成",
+      "score": 0.517,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_99",
+      "source_id": "src_search_11",
+      "book": "充足理由律的四重根",
+      "chapter": "第7章 论主体的第四类客体以及充足根据律在其中起支配作用的形式",
+      "book_id": "d8bcc10d42ff",
+      "chapter_idx": 8,
+      "author": "阿图尔·叔本华",
+      "snippet": "接下来要考察的相对于我们表象能力而言的最后一类客体，不仅相当特别而且非常重要。它仅由每个个体的一个客体所构成，即内感觉的直接客体，意志主体，它是认识主体的客体；因此它只在时间中展现自己（从不在空间中），我们将会看到，即使在时间中，也会受到极严格的限制。 一切认识都预先假定了主体和客体。因此，即便是自我意识也并非绝对单一，而是跟我们对所有其他事物的意识（即直观能力）一样，再行划分为被认识部分和认识部分。被认识部分绝对地、毫无例外地作为意志",
+      "score": 0.514,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_100",
+      "source_id": "src_search_11",
+      "book": "形而上学",
+      "chapter": "第三章",
+      "book_id": "f11f1b13c278",
+      "chapter_idx": 14,
+      "author": "亚里士多德",
+      "snippet": "（4）还有，我们必须说只有可感觉的实体是存在的呢，还是*在它997们之外还有其他的实体呢？并且，诸实体是一类呢，或是如像那些断定“形式”以及居间者存在的人所说的，事实上有几类实体呢？他们说数学科学处理居间者。我们说“形式”既是原因又是根据它们自身（ka0eavtac）的实体是什么意思，这已经在我第一次谈到它们时解5释过了。②*然而这个理论在许多方面出现困难。最为谬的是这样一个陈述：在物质世界的那些事物之外，还有某些事物，而且除了它们是永",
+      "score": 0.511,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_101",
+      "source_id": "src_search_11",
+      "book": "哲学导论",
+      "chapter": "1.2 最初的希腊哲学家 德谟克利特、原子和多元论",
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 27,
+      "author": "罗伯特·所罗门",
+      "snippet": "并不是所有的唯物主义者都认为实在只有唯一一种终极成分。古代世界的许多哲学家信奉多元论，就是说，构成宇宙的基本“基质”不止一种。最著名的多元论者是德谟克利特（Democritus），他认为，宇宙是由大量叫做原子的细微“基质”构成。这些原子结合在一起就形成了世界的许多不同事物和性质。（他说，灵魂由圆形的光滑原子构成，它们通常是活动的，散布在整个身体。）另外一些多元论者则强调，这些不同的“基质”在种类上也非常不同，比如，构成水的大量“基质”，",
+      "score": 0.511,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_102",
+      "source_id": "src_search_11",
+      "book": "实用主义与社会学",
+      "chapter": "20.思维与实在是异质的吗？",
+      "book_id": "676528b8f9b3",
+      "chapter_idx": 20,
+      "author": "爱弥尔·涂尔干",
+      "snippet": "现在，我们必须得检验实用主义这种宣称思维与实 在是异质的学说了。同时，我们也要检验实用主义从柏 格森那里借来论证上述论题的观点。 让我们按照以下方式回忆一下实用主义的论证线 索：真理意味着各要索之间存在差别：实在则很少有这 样的差别：因此，真理如果不能呈现为独特的东西，就不 能表达实在，但这种东西又不能是独特的：总之，如果真 理不歪曲实在，就不能表达实在。与物质一样，实在也 组成了一个统一体，其中，所有事物都结合在一起，没有 明显的分离",
+      "score": 0.51,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_103",
+      "source_id": "src_search_11",
+      "book": "存在与虚无",
+      "chapter": "第一章 否定的起源",
+      "book_id": "274c59617693",
+      "chapter_idx": 5,
+      "author": "让-保罗·萨特",
+      "snippet": "第一卷37虚无的问题第一章否定的起源一、考问前面的探索把我们引到了存在的内部。但是这些探索也已走投无路了，因为我们没有能够建立起已发现的两个存在领域之间的联系。也许是因为我们没有选好一个合适的途径来指导这些探索。当笛卡尔不得不致力于研究身心关系问题的时候，他面临着类似的问题。当时他主张在思想实体和广延实体的统一业已发生的基础上来寻求解决这个问题，也就是凭借想象。这种主张是有价值的：当然我们与笛卡尔关注的东西并不相同，我们对想象的看法也与",
+      "score": 0.51,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_104",
+      "source_id": "src_search_11",
+      "book": "论存在者与本质",
+      "chapter": "结论",
+      "book_id": "e1fabd8e802c",
+      "chapter_idx": 8,
+      "author": "托马斯·阿奎那",
+      "snippet": "这样，我们就澄清了本质是以什么方式存在于实体之中和偶性之中的，是以什么方式被发现存在于复合实体和单纯实体之中的。同时，我们也澄清了逻辑的普遍概念（intentionesuniversaleslogicae）是以什么样的方式存在于所有这些事物之中的。当然，第一存在，由于它的绝对单纯性（infinesimplicitatis），是一个例外。 由于它的单纯性，无论是属相的概念还是种相的概念，以及定义的概念，都不适合于它。正是在这一存在者中，我",
+      "score": 0.51,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_105",
+      "source_id": "src_search_11",
+      "book": "命名与必然性",
+      "chapter": "第二篇演讲",
+      "book_id": "6b68595de71f",
+      "chapter_idx": 3,
+      "author": "索尔·克里普克",
+      "snippet": "（1970年1月22日） 在上次演讲结束时，我们谈到了命名的理论，这个理论是根 据黑板上所列的若干论题提出的： （1）对每一个名称或指示符号“x\"来说，都有一簇与之相应 的特性，即特性族使得A相信“x”。 （2）A相信，其中一种特性或几个特性的某种结合，惟一地 标示某个个体。 （3）如果特性的大多数或绝大多数为惟一的对象y所满 足，则y即为x的指称。 （4）如果表决不产生任何惟一的对象，那么“x\"就无所指。 （5）“如果x存在，则x具有",
+      "score": 0.508,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_106",
+      "source_id": "src_search_12",
+      "book": "苏菲的哲学课",
+      "chapter": "推荐阅读",
+      "book_id": "4b4d8792d7c9",
+      "chapter_idx": 34,
+      "author": "多米尼克·贾尼科",
+      "snippet": "推荐阅读 加斯东·巴什拉：《科学精神的形成》 亨利·柏格森：《笑》 奥古斯特·孔德：《论实证精神》 伏尔泰：《天真汉》 康德：《纯粹理性批判》序言一、二 尼采：《查拉图斯特拉如是说》《悲剧的诞生》 柏拉图：《会饮篇》《理想国》《大希庇阿斯篇》 叔本华：《人生智慧箴言》《争论的艺术》",
+      "score": 0.676,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_107",
+      "source_id": "src_search_12",
+      "book": "偶像的黄昏",
+      "chapter": "作者简介",
+      "book_id": "d1986c75d6b2",
+      "chapter_idx": 1,
+      "author": "弗里德里希·尼采",
+      "snippet": "弗里德里希·尼采 Friedrich Nietzsche, 1844—1900 欧洲思想史上特立独行的天才，现代最有影响的思想家之一。25岁时被聘为巴塞尔大学教授，45岁时精神病发作；在世纪之交离世。他对其时代的文化和道德，尤其是基督教、颓废主义、民族主文作了激烈的批判。主要著作有《悲剧的诞生》《论道德的谱系》《权力意志》《查拉图斯特拉如是说》《偶像的黄昏》《朝霞》等。 卫茂平 毕业于原上海外国语学院德语专业，1989年获德国海德堡大学",
+      "score": 0.65,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_108",
+      "source_id": "src_search_12",
+      "book": "尼采文集（合集）",
+      "chapter": "作者简介",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 512,
+      "author": "弗里德里希·尼采",
+      "snippet": "弗里德里希·尼采 Friedrich Nietzsche, 1844—1900 欧洲思想史上特立独行的天才，现代最有影响的思想家之一。25岁时被聘为巴塞尔大学教授，45岁时精神病发作；在世纪之交离世。他对其时代的文化和道德，尤其是基督教、颓废主义、民族主文作了激烈的批判。主要著作有《悲剧的诞生》《论道德的谱系》《权力意志》《查拉图斯特拉如是说》《偶像的黄昏》《朝霞》等。 卫茂平 毕业于原上海外国语学院德语专业，1989年获德国海德堡大学",
+      "score": 0.65,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_109",
+      "source_id": "src_search_12",
+      "book": "尼采文集（合集）",
+      "chapter": "作者简介",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 526,
+      "author": "弗里德里希·尼采",
+      "snippet": "弗里德里希·尼采 Friedrich Nietzsche，1844—1900 欧洲思想史上特立独行的天才，现代最有影响的思想家之一。25岁时被聘为巴塞尔大学教授，45岁时精神病发作；在世纪之交离世。他对其时代的文化和道德，尤其是基督教、颓废主义、民族主义作了激烈的批判。主要著作有《悲剧的诞生》《论道德的谱系》《权力意志》《查拉图斯特拉如是说》《偶像的黄昏》《朝霞》等。 卫茂平 毕业于原上海外国语学院德语专业，1989年获德国海德堡大学哲",
+      "score": 0.649,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_110",
+      "source_id": "src_search_12",
+      "book": "让孩子像哲学家一样会思考",
+      "chapter": "目录",
+      "book_id": "8331c039d11a",
+      "chapter_idx": 0,
+      "author": "张玮",
+      "snippet": "作者序 第一章 泰勒斯——古希腊哲学的起源 第二章 毕达哥拉斯——坚决不吃豆子的哲学家 第三章 赫拉克利特——人不能两次踏进同一条河流 第四章 巴门尼德——抽象思维哪家强？ 第五章 恩培多克勒——四大元素构成了世界 第六章 阿那克萨哥拉——万事万物的“种子” 第七章 德谟克利特——发现“原子”的预言家？ 第八章 芝诺——古希腊最著名的“杠精” 第九章 普罗塔哥拉——“人”是万物的尺度 第十章 苏格拉底——你能扛住我的提问吗？ 第十一章 ",
+      "score": 0.648,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_111",
+      "source_id": "src_search_12",
+      "book": "沙发上的哲学家",
+      "chapter": "译名对照表",
+      "book_id": "1712b01d0856",
+      "chapter_idx": 11,
+      "author": "里克·杜菲尔",
+      "snippet": "哲学家 安·兰德  Ayn Rand  巴鲁赫·德·斯宾诺莎  Baruch de Spinoza  伯特兰·罗素  Bertrand Russell  查尔斯·桑德斯·皮尔士  Charles Sanders Peirce  大卫·休谟  David Hume  弗里德里希·威廉姆·约瑟夫·谢林  Friedrich Wilhelm Joseph Schelling  汉斯·约纳斯  Hans Jonas  杰里米·边沁  Jerem",
+      "score": 0.645,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_112",
+      "source_id": "src_search_12",
+      "book": "尼采文集（合集）",
+      "chapter": "作者简介",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 547,
+      "author": "弗里德里希·尼采",
+      "snippet": "弗里德里希·尼采 Friedrich Nietzsche, 1844-1900 欧洲思想史上特立独行的天才，现代最有影响的思想家之一。25岁时被聘为巴塞尔大学教授，45岁时精神病发作；在世纪之交离世。他对其时代的文化和道德，尤其是基督教、颓废主义、民族主义作了激烈的批判。主要著作有《悲剧的诞生》《论道德的谱系》《权力意志》《査拉图斯特拉如是说》《偶像的黄昏》《朝霞》等。 谢地坤 江苏南京人，哲学博士。现为中国人民大学杰出学者，特聘杰出人",
+      "score": 0.638,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_113",
+      "source_id": "src_search_12",
+      "book": "西方百年学术经典著作",
+      "chapter": "对话人物：",
+      "book_id": "88dc7d5961df",
+      "chapter_idx": 280,
+      "author": "佚名",
+      "snippet": "苏格拉底（Socrates） 格劳孔（Glaucon） 阿德曼图斯（Adeimantus） 玻勒马霍斯（Polemarchus） 克法洛斯（Cephalus） 塞拉西马柯（Thrasymachus） 克里托芬（Cleitophon） 其他",
+      "score": 0.626,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_114",
+      "source_id": "src_search_12",
+      "book": "第一哲学沉思集",
+      "chapter": "英译本鸣谢",
+      "book_id": "88b56fb4da52",
+      "chapter_idx": 2,
+      "author": "勒内·笛卡尔",
+      "snippet": "斯坦利·特怀曼 德斯蒙德·克拉克的文章《笛卡尔对“证明”和“推理”的运用》是在《现代经院哲学家》1977年第54期第一次出现，并且经过作者和《现代经院哲学家》的允许再版的。雅克·欣蒂卡的《关于笛卡尔的方法的谈论》经过作者和出版者的允许在《笛卡尔：批评性和解释性文章》（巴尔的摩：约翰·霍普金斯大学出版社，1987）中引用，编辑是迈克尔·胡克。《程序问题：分析、综合和笛卡尔的〈哲学原理〉》由丹尼尔·加伯和莱斯利·科恩首次刊发在《哲学史档案》",
+      "score": 0.617,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_115",
+      "source_id": "src_search_12",
+      "book": "西方哲学史（英汉对照）",
+      "chapter": "关于哲学史的参考",
+      "book_id": "c39ded430a1e",
+      "chapter_idx": 3,
+      "author": "弗兰克·梯利",
+      "snippet": "哲学史一般著作：K.Fischer，《近代哲学史》，第一卷，第一篇，J.P.Gordy译，1887年；W.Windelband，《哲学史》，J.H.Tufts译，第2版，1901年；W.Turner，《哲学史》，1903年；H.E.Cushman，《哲学史入门》，1920年；V.Ferm，《哲学体系史》，1950年；Martin，Clark，Clarke和Ruddick，《哲学史》，1934年；A.K.Rogers，《哲学史入门》，19",
+      "score": 0.613,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_116",
+      "source_id": "src_search_12",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "人名索引",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 158,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "A Anselm,V.Canterbury 安瑟尔谟 1033年生于意大利奥斯塔，1109年卒于英国坎特伯雷。中世纪意大利经院哲学家，教会博士，1093年任坎特伯雷大主教。著有《论道篇》、《独白篇》和《天主何故化身为人》等。21，375—377 Aristoteles 亚里士多德 公元前384年生于马其顿斯塔吉拉，公元前322年卒于希腊哈尔斯基。希腊哲学家，科学家。柏拉图的学生，亚历山大大帝的教师。著有《工具论》、《形而上学》、《物理学",
+      "score": 0.611,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_117",
+      "source_id": "src_search_12",
+      "book": "打开：周濂的100堂西方哲学课",
+      "chapter": "参考文献",
+      "book_id": "b220d9690317",
+      "chapter_idx": 113,
+      "author": "周濂",
+      "snippet": "A.C.格雷林著，张金言译，《维特根斯坦与哲学》，译林出版社，2013年。 A.J.P.肯尼著，韩东晖译，《牛津西方哲学史》，中国人民大学出版社，2006年。 A.J.艾耶尔著，吴宁宁、张卜天译，《休谟》，译林出版社，2016年。 A.P.马蒂尼奇著，陈玉明译，《霍布斯传》，上海人民出版社，2007年。 A.P.马尔蒂尼著，王军伟译，《霍布斯》，华夏出版社，2015年。 G.H.R.帕金森、S.G.杉克尔总主编，中文翻译总主编冯俊，《劳",
+      "score": 0.608,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_118",
+      "source_id": "src_search_12",
+      "book": "死亡哲学：耶鲁大学第一公开课",
+      "chapter": "版权信息",
+      "book_id": "1a48d625db4a",
+      "chapter_idx": 0,
+      "author": "谢利·卡根",
+      "snippet": "死亡哲学:耶鲁大学第一公开课(典藏版) 作　　者：〔美〕谢利·卡根 译　　者：贝小戎　等译 责任编辑：王　巍 装帧设计：水玉银文化",
+      "score": 0.606,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_119",
+      "source_id": "src_search_12",
+      "book": "苏菲的哲学课",
+      "chapter": "10.思想长廊：伟大的近现代哲学家",
+      "book_id": "4b4d8792d7c9",
+      "chapter_idx": 13,
+      "author": "多米尼克·贾尼科",
+      "snippet": "10.思想长廊：伟大的近现代哲学家 要介绍几位近现代的大哲学家，我们得从公元前三世纪一下子跳到十七世纪。不必去计算这二十个世纪的跨度，那只会把问题复杂化。看到我这样说，你们会不会就认为：从亚里士多德逝世到笛卡儿诞生之间，什么都没发生过？ 这个看法既不准确，也不太合理。在古希腊和古罗马，陆续产生了一些重要的哲学流派：斯多葛派、伊壁鸠鲁派、新柏拉图主义，等等。历史学家们把这段漫长的历史年代命名为“中世纪”，真是再贴切不过了。 在这段时间里，",
+      "score": 0.602,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_120",
+      "source_id": "src_search_12",
+      "book": "认识世界：古代与中世纪哲学",
+      "chapter": "注释",
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 106,
+      "author": "理查德·大卫·普莱希特",
+      "snippet": "1. 柏拉图：《普罗泰戈拉篇》（ Protagoras ），314d–315b。 2. 希罗多德：《历史》（ Historien ），I，74。 3. 第欧根尼·拉尔修：《名哲言行录》（ Doxa ），I，23–24。 4. 亚里士多德：《政治学》（ Politik ），1259a。 5. 汉斯·沃尔施莱格：《在这个远离精神的时代》（ In diesengeistfernen Zeiten ,Diogenes，1988），21页。 6.",
+      "score": 0.6,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_121",
+      "source_id": "src_search_14",
+      "book": "维特根斯坦文集（套装全8卷）",
+      "chapter": "正文",
+      "book_id": "c0e78ea6f80a",
+      "chapter_idx": 38,
+      "author": "路德维希·维特根斯坦",
+      "snippet": "正文 1. 奥古斯丁在其《忏悔录》I／8节中写道：假定大人们命名了某个对象并且与此同时转向它，我看到了这个事实并且领会到，这个对象被经由他们想要指向它时所发出的那些声音加以表示了。但是，我是从他们的身体活动——这个所有民族的自然的语言——中获知这点的。（这种语言经由面部表情变化和眼部的变化，经由肢体的动作和说话的音调来表明心灵有所追求，或有所执着，或有所拒绝，或有所躲避时所具有的诸感受。）以这样的方式，我逐渐地学习理解了我一再地听到人们",
+      "score": 0.424,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_122",
+      "source_id": "src_search_14",
+      "book": "马克思恩格斯文集",
+      "chapter": "人名索引",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 100,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "A 阿贝尔，雅克·勒奈（Hébert, Jacques-René 1757—1794）——法国新闻工作者，18世纪末法国资产阶级革命的活动家，雅各宾派左翼的领袖；《度申老头》编辑（1790—1794）；后被处死。——360。 阿蒂娅（Attia）——尤利娅的女儿，凯撒的外甥女，罗马皇帝奥古斯都（盖尤斯·尤利乌斯·凯撒·屋大维）的母亲。——593。 阿弗尔，德尼·奥古斯特 （Affre, Denis-Auguste 1793—1848）—",
+      "score": 0.409,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_123",
+      "source_id": "src_search_14",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "专有名词中外文对照表",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 416,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "A 阿柏利康 Apellikon 阿波罗 Apollon 阿布德拉 Abdera 阿尔基塔 Archytas 阿尔刻劳 Archelaus 阿尔其比亚德 Alkibiades 阿基里斯 Achilles 阿加德摩 Akademos 阿嘉通 Agathon 阿金努色 Arginuse 阿卡底 Arkadien 阿拉伯 Arabische 阿里斯底波 Aristipp 阿里斯多芬 Aristophanes 阿里斯",
+      "score": 0.394,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_124",
+      "source_id": "src_search_14",
+      "book": "君主论（拿破仑批注版）",
+      "chapter": "专名索引",
+      "book_id": "aacf9c09a197",
+      "chapter_idx": 30,
+      "author": "马基雅维利",
+      "snippet": "专名索引 [307] （按照汉语拼音排序，罗马数字为章节号，阿拉伯数字为段落号） 阿尔巴（Alba）：VI. 3 阿尔贝里戈·达·科尼奥（Alberigo da Conio / Alberigo da Barbiano）：XII. 6 阿尔比努斯（Clodius Albinus）：XIX. 9 阿基琉斯（Achilles，又译“阿喀琉斯”、“阿基里斯”）：XIV. 5，XVIII. 2 阿伽托克勒斯（Agathocles，又译“阿加索克",
+      "score": 0.393,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_125",
+      "source_id": "src_search_14",
+      "book": "历史与阶级意识",
+      "chapter": "人名索引",
+      "book_id": "5bdec4dbde50",
+      "chapter_idx": 11,
+      "author": "格奥尔格·卢卡奇",
+      "snippet": "Adler, M.　M. 阿德勒Aischylos　埃斯库罗斯Andler, E.　E. 安德勒Anselm von Canterbury　坎特伯雷的安瑟伦Aristoteles　亚里士多德Avenarius, R.　R. 阿芬那留斯Bachofen, J. J.　J. J. 巴霍芬Bacon, F.　F. 培根Ballod, K.　K. 白劳德Bauer, B.　B. 鲍威尔Bauer, O.　O. 鲍威尔Bebel, A.　A. 倍",
+      "score": 0.388,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_126",
+      "source_id": "src_search_14",
+      "book": "哲学研究",
+      "chapter": "§1-§52",
+      "book_id": "08e055841182",
+      "chapter_idx": 3,
+      "author": "路德维希·维特根斯坦",
+      "snippet": "1.“当他们（我的长辈）称呼某个对象时，他们同时转向它。我2e注意到这点并且领会到这个对象就是用他们想要指向它时所发出的声音来称呼的。这可从他们的动作看出来，而这些动作可以说构成了一切民族的自然的语言：它通过面部的表情和眼神儿，以及身体其他部位的动作和声调等显示出我们的心灵在有所欲求、有所执著，或有所拒绝、有所躲避时所具有的诸多感受。这样，我便逐渐学习理解了我一再听到的那些出现于诸多不同句子中的特定位置上的语词究竟是指称什么事物的；当我",
+      "score": 0.382,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_127",
+      "source_id": "src_search_14",
+      "book": "马克思恩格斯文集",
+      "chapter": "人名索引",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 346,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "A 阿伯丁伯爵，乔治·汉密尔顿·戈登（Aberdeen, George Hamilton Gordon, Earl of 1784—1860）——英国国务活动家，托利党人，1850年起为皮尔派领袖，曾任外交大臣（1828—1830和1841—1846）、殖民和陆军大臣（1834—1835）和联合内阁首相（1852—1855）。——127。 阿卜杜尔·阿齐兹（Abdul-Aziz 1830—1876）——土耳其苏丹（1861年起），阿卜杜",
+      "score": 0.382,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_128",
+      "source_id": "src_search_14",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "专有名词中外文对照",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 409,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "（按汉语拼音为序） A 阿波罗 Apollon 阿波罗多洛 Apollodoros 阿波罗纽，底亚纳的 Apollonius von Tyane 阿布德拉 Abdera 阿尔波第山 Albordi 阿尔多布朗地尼 Aldobrandini 阿尔戈 Argos 阿尔克劳 Archelaus 阿尔克迈恩 Alkmäon 阿该亚人 Argiver 阿格里根特 Agrigentin 阿古西劳 Akusilaus 阿基里斯 Achilles 阿克",
+      "score": 0.379,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_129",
+      "source_id": "src_search_14",
+      "book": "马克思恩格斯文集",
+      "chapter": "人名索引",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 62,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "A 阿伯丁伯爵，乔治·汉密尔顿·戈登（Aberdeen, George Hamilton Gordon, Earl of 1784—1860）——英国国务活动家，托利党人，1850年起为皮尔派领袖，曾任外交大臣（1828—1830和1841—1846）、殖民和陆军大臣（1834—1835）和联合内阁首相（1852—1855）。——659。 阿尔伯（Albert 原名亚历山大·马丁Alexandre Martin, 人称工人阿尔伯 Ouv",
+      "score": 0.378,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_130",
+      "source_id": "src_search_14",
+      "book": "当尼采哭泣(欧文隆)",
+      "chapter": "第十三章",
+      "book_id": "8a3e4665c65c",
+      "chapter_idx": 13,
+      "author": "欧文·亚隆",
+      "snippet": "那天以后，当他们搭乘马车前往医疗中心的途中，布雷尔提出了保密的问题，并且建议尼采使用一个假名入院或许会让他感到较为放心。具体地说，就是以艾克卡·穆勒之名入院，那个他在跟弗洛伊德讨论时所用的名字。 “艾克卡·穆勒，艾克克克克克克卡·穆穆穆勒，艾克卡·穆穆穆穆穆穆穆勒，”尼采兴高采烈，以轻柔的细语对自己缓缓地唱着这个名字，好像要辨识出它的韵律的样子。“它跟其他任何一个名字都一样好，我猜是这样吧。它有特殊的含义吗？或许，”他淘气地揣测着，“它",
+      "score": 0.378,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_131",
+      "source_id": "src_search_14",
+      "book": "马克思恩格斯文集",
+      "chapter": "文学作品和神话中的人物索引",
+      "book_id": "7729ccdecb0f",
+      "chapter_idx": 136,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "A 阿波罗——古希腊神话中的太阳神和光明之神，艺术的保护神。——20—21。 阿耳泰娅——古希腊神话中国王铁斯特士的女儿，梅里格尔的母亲。——155。 阿芙罗狄蒂——古希腊神话中的爱神和美神，罗马神话中称之为维纳斯，掌管人类爱情、婚姻和生育以至一切动植物的生长繁殖。——79。 阿基里斯——古希腊神话中围攻特洛伊的一位最勇敢的希腊英雄，荷马的《伊利亚特》中的主要人物，他同希腊军队的领袖亚加米农的争吵和回到自己的营幕去，构成了荷马史诗《伊利",
+      "score": 0.377,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_132",
+      "source_id": "src_search_14",
+      "book": "哲学规劝录 哲学的慰藉",
+      "chapter": "中译者前言",
+      "book_id": "26f5e0df6d76",
+      "chapter_idx": 1,
+      "author": "扬布里柯/波爱修斯",
+      "snippet": "中译者前言新柏拉图主义者扬布里柯（Iamblichus，约245一325）出生于叙利亚的卡尔基斯（Chalcis）。他曾经在罗马听过波菲利（Porphyry）和阿那托留（Anatolius）的讲课，后来（约于公元305年）回到叙利亚，在安条克（Antioch）附近的阿帕米亚（Apameia）创办学校，充当一位教师和宗教改革家，开创了新柏拉图主义的叙利亚学派。扬布里柯拥有来自各地的众多门徒，其中有一位埃德修（Aedesius）最为出色，此",
+      "score": 0.376,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_133",
+      "source_id": "src_search_14",
+      "book": "上帝之城",
+      "chapter": "名目索引",
+      "book_id": "bcc83fdfca5e",
+      "chapter_idx": 23,
+      "author": "奥古斯丁",
+      "snippet": "目索引 (本索引的内容包括本书正文中出现的人名和神名， 不包括圣经人物，数码为本书页码) 亚伯俄娜(Abeona) :罗马女神，负责监管学走路的婴儿，除了奥古斯丁之外，其他文献中均未提及，参阅本书卷4 ，章21; 卷7 ，章3 。 164 ,266 阿卡(Acca) :参阅福斯图鲁斯( Faustulus )。 653 ,832 ,833 ,835 ,838 ,1035 阿喀琉斯( Achilles) :希腊英雄，帖撤利国王咱琉斯与女神",
+      "score": 0.375,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_134",
+      "source_id": "src_search_14",
+      "book": "哲学辞典",
+      "chapter": "亚当",
+      "book_id": "40a5f4bf8cb4",
+      "chapter_idx": 6,
+      "author": "伏尔泰",
+      "snippet": "ADAM亚当 第一节 人们曾经对亚当、亚当的妻子、亚当以前的人类等等问题，高 ①《旧约·创世记》第24章記载说“亚伯拉罕对管理他全业最老的仆人说，請 你把手放在我大腿底下。我要叫你指着耶和华天地的主起暂，不要为我几子要这迦南 地中的女子为妻。”一译者 ②《旧约·创世记》第25章記载：“亚伯拉罕又娶了一妻，名叫基土拉 （Kéthura），基土拉给他生了心兰（Zimran）、约珊（Jokshan）、米但（Medan）米甸 （Madian）、",
+      "score": 0.374,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_135",
+      "source_id": "src_search_14",
+      "book": "德意志意识形态（节选本）",
+      "chapter": "人名索引",
+      "book_id": "ae97dec227b6",
+      "chapter_idx": 25,
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "snippet": "A阿拉戈，多米尼克·弗朗索瓦（Arago，Dominique-Francois1786—1853）——法国天文学家、物理学家和数学家；资产阶级政治家；七月王朝时期为共和主义者；《改革报》的创办人和出版者之一；1848年为临时政府成员和执行委员会委员，曾参加镇压1848年巴黎六月起义。—123—124。爱尔维修，克劳德·阿德里安（Helvetius，Claude-Adrien1715一1771）——法国哲学家，机械唯物主义的代表人物，无神",
+      "score": 0.374,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_136",
+      "source_id": "src_search_15",
+      "book": "自然与快乐",
+      "chapter": "奥依诺安达的第欧根尼 铭文残篇选",
+      "book_id": "221f09d04944",
+      "chapter_idx": 11,
+      "author": "伊壁鸠鲁",
+      "snippet": "奥依诺安达的第欧根尼 铭文残篇选 1.奢侈的财富对于男人和女人毫无意义，就像水对于已经倒满水的杯子毫无意义一样。它们都是无用的和毫无必要的。 2.当我们看到别人的财富和捞到的东西那么多时，只要记住我们并不受这些欲望的干扰，也不会为满足这些需求而当牛当马，我们就可以获得很大的满足。 3.这些就是所有的坏事的根子一—害怕神，害怕死亡，害怕痛苦，以及欲望超出了自然为幸福生活所要求的东西的界限。 4.能带来宁静的最佳办法就是简单的生活方式：它不",
+      "score": 0.468,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_137",
+      "source_id": "src_search_15",
+      "book": "50堂经典哲学思维课",
+      "chapter": "41 马可·奥勒留《沉思录》 乱世之中如何寻求宁静？",
+      "book_id": "327e5a1db152",
+      "chapter_idx": 41,
+      "author": "郁喆隽",
+      "snippet": "阅读挑战 马可·奥勒留 即使一个人能活上三千年，甚至能活上三万年，你仍要记住，人所失去的不是什么别的，只是他正拥有的生活；他正拥有的不是什么别的，而是他正在失去的生活。\r\r ——马可·奥勒留《沉思录》 引言 + 你是否感觉每天都过得很匆忙、很凌乱？一会儿接到一个电话，一会儿又有一条微信消息需要回复，手头还有一大堆事情等着处理，一天24小时待命，全年365天无休……如果遇到天气不好、办事的人不配合、少了某些材料而不能完成程序等突发状况，事",
+      "score": 0.461,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_138",
+      "source_id": "src_search_15",
+      "book": "塞涅卡道德书简：致鲁基里乌斯书信集",
+      "chapter": "书信一百二十一 论动物的天性",
+      "book_id": "23ab04b02f68",
+      "chapter_idx": 122,
+      "author": "塞涅卡",
+      "snippet": "（1）在我陈述完今天这个已经探索过很久的小问题后，我敢肯定，你又会给我带来新的疑问。你会再次质疑：“这与性格有什么关系？”你可以抱怨，但让我先给你看看，你可能将会面临的其他对手。例如，波西杜尼斯和阿克岱谬斯（Archidemus）：这些人将会面对你的质疑。然后，我会说，与性格相关的任何东西，都不一定会带来好的性格。（2）人们需要很多东西，一些为了食物，一些为了锻炼，一些为了穿着，一些为了指导，另一些为了享乐。虽然每一种都不会使其变得更好",
+      "score": 0.454,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_139",
+      "source_id": "src_search_15",
+      "book": "塞涅卡道德书简：致鲁基里乌斯书信集",
+      "chapter": "书信六十二 论好的陪伴",
+      "book_id": "23ab04b02f68",
+      "chapter_idx": 63,
+      "author": "塞涅卡",
+      "snippet": "（1）我们被那些人欺骗了，他们想让我们认为，大量的事务可以阻碍对自由的学习。他们假装忙忙碌碌地与人一起处理事务，实际上只是自己繁忙罢了。鲁基里乌斯，对我来说，时间是自由的。确实，不管在哪里，我都掌控着自已的时间。我不会任由其他事务来摆弄自已，也不会为浪费时间寻找任何借口。无论身处哪里，我都会持续冥想，用有益的思考来填充大脑。（2）当与朋友打交道时，我不会放弃与自已的相伴，也不会花费太多的时间在那些偶然遇到的人，或在官场上结交的人身上。但",
+      "score": 0.453,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_140",
+      "source_id": "src_search_15",
+      "book": "在我身上有一个不可战胜的夏天",
+      "chapter": "婚礼集",
+      "book_id": "8fed9aaf9e9a",
+      "chapter_idx": 8,
+      "author": "阿尔贝·加缪",
+      "snippet": "N o c e s 刽子手用一根丝绳绞死红衣主教卡拉法， 绳子断了：不得不重复两次。 红衣主教看着刽子手，一言未发。 ——司汤达《帕利亚诺公爵夫人》",
+      "score": 0.45,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_141",
+      "source_id": "src_search_15",
+      "book": "图斯库兰论辩集",
+      "chapter": "第二章 论忍受痛苦",
+      "book_id": "4be7b72cf01d",
+      "chapter_idx": 2,
+      "author": "西塞罗",
+      "snippet": "1. 一方面, 在恩尼乌斯①( Ennius) 的悲剧中, 勒欧普托勒慕斯(Neoptolemus) 说他仅仅做了一点点哲学家所做的事情, 因为他做的其他一切, 人们都认为不是一个哲学家能够做的;②另一方面, 布鲁图斯(Brutus) 对我来说, 也“应该” 是一位哲学家。因为首先每一次当我无事可做时, 我会忙碌什么呢? 那时, 我在忙碌对哲学有利的事情。当然,并不是像勒欧普托勒慕斯所说的那样是“做一点事情” 就可以成为哲学家的。因为在",
+      "score": 0.449,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_142",
+      "source_id": "src_search_15",
+      "book": "尼采文集（合集）",
+      "chapter": "266",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 383,
+      "author": "弗里德里希·尼采",
+      "snippet": " 需要残酷的地方 。——伟大的人对其次等的德性和考量是残酷的。",
+      "score": 0.448,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_143",
+      "source_id": "src_search_15",
+      "book": "反与正·婚礼集·夏",
+      "chapter": "人身牛头怪",
+      "book_id": "9bd452eb8422",
+      "chapter_idx": 11,
+      "author": "阿尔贝·加缪",
+      "snippet": "可你呢，你为明媚的日子而生…… ——荷尔德林① ——献给皮埃尔·加林多 本文写于1939年，读者应该经常回顾一下这篇文章，以便对今日之奥兰作一番评价。这座美丽的城市发出的热情宣言使我确信，它已经（或将会）医治好本身的缺陷，并且本文所赞颂的美，也得到了小心翼翼的保护。奥兰这个欢快又务实的城市，从此以后就不再需要作家了：它在等待着游客。 1953年 已然没有了荒漠，也不见了岛屿。然而人们却觉得它们应该存在。因为，要了解世界，有时就得转过身来",
+      "score": 0.444,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_144",
+      "source_id": "src_search_15",
+      "book": "世界哲学简史",
+      "chapter": "序 言",
+      "book_id": "be928be3b1c9",
+      "chapter_idx": 0,
+      "author": "罗伯特·所罗门",
+      "snippet": "献给奥克兰大学的朋友和同事 感谢他们的善意、友情和交流 序　言 早在有历史记载之前的数千年，哲学的核心概念就已经存在。某种形式的不朽概念，至少可以回溯到数万年前的尼安德特人。他们似乎已经发展出了一种来世观念，这体现在他们的墓葬遗址和图腾符号中。在史前时期，巫术也显示了明确的哲学基础：它诉诸不可见且尚未得到理解的原因。抽象和观念化形式则可追溯到生活于一万多年前的克鲁马努人。那些可怖的人类献祭活动，历史同样久远，也已表明某种关于世界的复杂信",
+      "score": 0.443,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_145",
+      "source_id": "src_search_15",
+      "book": "尼采文集（合集）",
+      "chapter": "313",
+      "book_id": "bedc9c78dfdf",
+      "chapter_idx": 430,
+      "author": "弗里德里希·尼采",
+      "snippet": " 不画殉难图 。——我要像拉斐尔 (72) 所做的那样，不再画殉难图。有足够的崇高事物，人们不必到崇高与残暴伴生的地方去寻觅崇高；再者，倘若我想把自己弄成高尚的刽子手，我的虚荣心是不会因此而满足的 (73)。",
+      "score": 0.443,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_146",
+      "source_id": "src_search_15",
+      "book": "狱中书简",
+      "chapter": "致塔齐娅娜（米兰，1927年3月19日）",
+      "book_id": "ee6b604ffa02",
+      "chapter_idx": 0,
+      "author": "安东尼奥·葛兰西",
+      "snippet": "致塔齐娅娜（米兰，1927年3月19日） 亲爱的塔妮娅：……我的生活是天天老一套，很单调。就连想搞点研究，其困难之大，也非一般人所能想象。送来的书籍，已经转交给我一些，也读了不少（每天读一本多点，外加报纸）；不过我指的是另一种情况：似乎有一种想法，一种被监禁者所共有的想法，使我感到烦恼，即：人生在世总得做一番fürewig[1]〔德文，意思是不朽，永久，也可引伸为超然的态度〕的功业，这里引用的是歌德的一个复杂理念，就我记忆所及，这也是曾",
+      "score": 0.442,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_147",
+      "source_id": "src_search_15",
+      "book": "雅斯贝尔斯传",
+      "chapter": "3.著述家",
+      "book_id": "978ade412255",
+      "chapter_idx": 18,
+      "author": "卡尔·雅斯贝尔斯",
+      "snippet": "重大的意义。他的创作以几条简单的准则为基础，他有时把它们当作忠告劝诫一些青年人：“始终想着事情。—必须对这事情着迷。一一不局促一一不应当有任何勉强。一一我不写任何规范著作。可以说我正在穿越一片沟坎交错的地区。当我面临一条沟渠时，我不寻找桥梁。我放上一块木板，然后从上面迈过去。就这样向前走。”在青年时，他有时就将他的手稿“付印，不誉写，只作略微的修改”。后来就逐渐形成了这样的写作方式。后期的所有著作都是以这种方式写成的。他以一些大都是在过",
+      "score": 0.439,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_148",
+      "source_id": "src_search_15",
+      "book": "马基雅维利语录",
+      "chapter": "然而如果有人这么说：恺撒也是因为慷慨而取得罗马的统治权的。而且不止他一人，由于慷慨而获得成…",
+      "book_id": "96a84c0450cd",
+      "chapter_idx": 24,
+      "author": "马基雅维利",
+      "snippet": "然而如果有人这么说：恺撒也是因为慷慨而取得罗马的统治权的。而且不止他一人，由于慷慨而获得成功的人太多了。 我就会这样回答他： 您这样认为，是因为您要么已经获得了君位，要么正在争取统治的地位。 对于已经获得君位的人来说，慷慨是有害的；然而对正在争取君权的人来说，慷慨行事则是很有必要的。 至于恺撒，他是在取得罗马统治权的过程中表现出慷慨的。但他如果在取得罗马君权之后还那样慷慨，那就是在毁灭罗马了。 ——《君主论》",
+      "score": 0.439,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_149",
+      "source_id": "src_search_15",
+      "book": "社会契约论",
+      "chapter": "第八章 论人民",
+      "book_id": "fa175af7701a",
+      "chapter_idx": 17,
+      "author": "让-雅克·卢梭",
+      "snippet": "正如建筑家在建立-一座大厦之前，先要检查和勘测土壤，看它是否能担负建筑物的重量一样；明智的创制者也并不从制订良好的法律本身着手，而是事先要考察-下，他要为之而立法的那些人民是否适宜于接受那些法律。正是因此，所以柏拉图才拒①伊斯美（Ismael）为亚伯拉罕与阿加尔之子，传说为阿拉伯人的祖先。\"一译注②“虚骄的哲学\"指伏尔秦（Voltaire，1694—1778）。伏尔泰在《穆罕默德》中曾称穆罕默德为骗子。·译注③华伯登（Warburton",
+      "score": 0.438,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_152",
+      "source_id": "src_search_17",
+      "book": "最伟大的思想家 - 奥古斯丁",
+      "chapter": "简介",
+      "book_id": "215af36cac9f",
+      "chapter_idx": 1,
+      "author": "沙伦·M.凯/保罗·汤姆森",
+      "snippet": "圣奥勒留·奥古斯丁(St.Aurelius Augu-stinus)，354—430年，古罗马神学家、哲学家。出生于罗马帝国所属北非，在罗马受教育，早年信仰摩尼教，33岁在米兰接受基督教洗礼，后任北非希坡主教。著有《上帝之城》《忏悔录》等。奥古斯丁借用新柏拉图主义思想，服务于神学教义，为人认识上帝的权威的绝对奠定了基础。他以圣经为本，提出正统三一论，主张神是绝对存有，单一不可分的观念。他把灵魂分为记忆、理智和意志三种官能，同时认为这三者",
+      "score": 0.569,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_153",
+      "source_id": "src_search_17",
+      "book": "认识世界：古代与中世纪哲学",
+      "chapter": "没有什么是必然的",
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 98,
+      "author": "理查德·大卫·普莱希特",
+      "snippet": "在讨论威廉未来的命运之前，我们先把目光投向其他人是如何进一步思考他的思想的。其中之一就是奥特库尔的尼古拉（Nicolaus von Autrecourt）。他生于1300年前夕，1320—1327年间在巴黎学习神学。他是中世纪晚期邓·司各脱与奥卡姆的威廉的传统中第三位伟大的认知批判者。尼古拉精准地理解了威廉，尽管他们俩也许从未亲眼见过面。但威廉使他明白，只有那些逻辑上无矛盾的，才能成为真的。然而问题在于，由此从篦子的缝隙间落下的，不仅是",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_154",
+      "source_id": "src_search_17",
+      "book": "哲学小史",
+      "chapter": "第八章 完美之岛 安瑟伦和阿奎那",
+      "book_id": "fea8d6ddc565",
+      "chapter_idx": 9,
+      "author": "奈杰尔·沃伯顿",
+      "snippet": "第八章 完美之岛 安瑟伦和阿奎那 上帝是什么样子？我们心目中都有一个想象。我们都明白“上帝”是什么意思，不论是否相信上帝真实存在。你现在一定正在想象自己心目中的上帝是什么样子，但是这并不等于说上帝确实存在。安瑟伦（Anselm [1] ，约1033—1109）是一位意大利神父，后来成为坎特伯雷大主教（Archbishop of Canterbury），他在这个问题上的论述与众不同，其“本体论论证”（Ontological Argumen",
+      "score": 0.55,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_156",
+      "source_id": "src_search_17",
+      "book": "黑格尔作品集（套装共14册）",
+      "chapter": "第一章 不自觉的象征",
+      "book_id": "bbac1be0bb4b",
+      "chapter_idx": 228,
+      "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+      "snippet": "1．古波斯教 (4) 古波斯教把自然界的光，即发光的太阳、星辰和火，看作绝对或神，不把神和光分别开来，不把光看作仅仅是神的表现、写照或感性形象。神（意义）和光（神的实际存在）是统一的。如果把光看作善、正义、福气、生命的支援者和传播者，那也并不是把光看作只是代表善的形象，而是把光和善看作一回事。光的反面也是如此，例如黑暗就等于污浊、祸害、恶、毁灭和死亡。 这种观照方式又可细分如下： a） 第一 ，神，本身纯洁的，和他的对立面黑暗，本身不纯",
+      "score": 0.542,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_157",
+      "source_id": "src_search_17",
+      "book": "哲学100问（套装共3册）",
+      "chapter": "二、教父哲学",
+      "book_id": "a325bbdc496e",
+      "chapter_idx": 6,
+      "author": "书杰",
+      "snippet": " 奥古斯丁：真理与光照 圣·奥勒留·奥古斯丁（Saint Aurelius Augustinus，354—430年）。罗马帝国时期基督教思想家，欧洲中世纪基督教神学、教父哲学的重要代表人物，奥斯定会的发起人。 奥古斯丁是教父哲学最杰出的代表，也是基督教神学重要的奠基者。他出生于公元354年的北非，早年曾信奉摩尼教，主张善恶二元论，并沉溺于感官享乐。后来他又曾一度对新柏拉图主义和怀疑主义的思想产生兴趣。 其实奥古斯丁还挺有意思，他早年间的",
+      "score": 0.534,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_158",
+      "source_id": "src_search_17",
+      "book": "打开：周濂的100堂西方哲学课",
+      "chapter": "047 宇宙论论证和本体论论证：上帝存在的证明（下）",
+      "book_id": "b220d9690317",
+      "chapter_idx": 51,
+      "author": "周濂",
+      "snippet": "第一推动者 有人说，每一个人天生不是柏拉图主义者，就是亚里士多德主义者。按照这个说法，奥古斯丁就是天生的柏拉图主义者，而托马斯·阿奎那则是天生的亚里士多德主义者。 阿奎那（Thomas Aquinas，1225-1274）比奥古斯丁晚生了大约900年，奥古斯丁是早期教父哲学的代表人物，而阿奎那则被视为中世纪哲学史上最伟大的学者，他最重要的哲学功绩就在于，用亚里士多德哲学取代了此前的奥古斯丁式的柏拉图主义。当然，阿奎那不仅是亚里士多德的迷",
+      "score": 0.53,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_159",
+      "source_id": "src_search_17",
+      "book": "苏菲的世界（贾德名作系列三部曲）",
+      "chapter": "斯宾诺莎",
+      "book_id": "46736478a11d",
+      "chapter_idx": 18,
+      "author": "乔斯坦·贾德",
+      "snippet": "……上帝不是一个傀儡戏师傅…… 他们坐在那儿，许久没有开口。后来苏菲打破沉默，想让艾伯特忘掉刚才的事。 “笛卡尔一定是个怪人。他后来成名了吗？” 艾伯特深呼吸了几秒钟才开口回答； “他对后世的影响非常重大，尤其是对另外一位大哲学家斯宾诺莎。他是荷兰人，生于一六三二——一六七七年间。” “你要告诉我有关他的事情吗？” “我正有此意。我们不要被来自军方的挑衅打断。” “你说吧，我正在听。” “斯宾诺莎是阿姆斯特丹的犹太人，他因为发表异端邪说",
+      "score": 0.529,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_160",
+      "source_id": "src_search_17",
+      "book": "哲学导论",
+      "chapter": "6.2 先定论 圣奥古斯丁，《论意志的自由选择》",
+      "book_id": "c13b139d1db3",
+      "chapter_idx": 82,
+      "author": "罗伯特·所罗门",
+      "snippet": "1. 上帝为何给人意志的自由，既然人正是藉此而犯罪？ 伊阿丢斯：若可能的话，现在请向我解释上帝为何给人意志的自由选择，因为人若没有接受这一赐予，就无法犯罪。 奥古斯丁：你确信是上帝给了你认为不应该给与人的东西吗？ 伊阿丢斯：就我对第一卷中的讨论的理解，我们拥有意志的自由，而如果我们没有这种自由的话就无法犯罪。 奥古斯丁：我也记得，我们弄清楚了这一点。但我要问的是，你知不知道，我们所拥有并显然使我们能够犯罪的能力是上帝赐予我们的吗？ 伊阿",
+      "score": 0.526,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_161",
+      "source_id": "src_search_17",
+      "book": "认识世界：古代与中世纪哲学",
+      "chapter": "上帝之国与尘世之国",
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 80,
+      "author": "理查德·大卫·普莱希特",
+      "snippet": "410年，不可思议的事发生了。奥古斯丁正处在权力与影响的顶峰，基督教成为罗马帝国国教已有30年，教会在神学和政治上比以往任何时候都要稳固——然后罗马失陷了！哥特人的统帅亚拉里克一世（Alarich I.）带着他的士兵攻陷了这座城市，将其洗劫一空。 这不仅是对罗马帝国的沉重一击，也是对基督教教会的沉重一击！教会的思想家，比如凯撒利亚的尤西比乌斯（Eusebius von Caesarea）连同他的《基督教会史》（ Kirchengesch",
+      "score": 0.522,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_162",
+      "source_id": "src_search_17",
+      "book": "上帝之城",
+      "chapter": "第一卷",
+      "book_id": "bcc83fdfca5e",
+      "chapter_idx": 1,
+      "author": "奥古斯丁",
+      "snippet": "第一卷 [本卷提要]奥古斯丁批判异教徒把世上发生的一系列灾难，特别是哥特人最近洗劫罗马，归咎于基督教及其禁止崇拜诸神。他认为生活中的幸运和灾祸为善人和恶人所共有。最后，他谴责可耻地讥笑基督教妇女遭受敌兵侮辱的那些人。 前言写作本书的基本设想 最荣耀的上帝之城①是本书的主题，我最亲爱的孩子马凯利努斯( Marcellinus )②，写作此书是出于你的建议，我现将此书按照应许题献给你。关于上帝之城，我已经为她做了辩护，反对那些宁要他们自己的",
+      "score": 0.52,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_163",
+      "source_id": "src_search_17",
+      "book": "给青年人的哲学十二讲",
+      "chapter": "第四讲 关于上帝的思想",
+      "book_id": "799db3e2c1b4",
+      "chapter_idx": 5,
+      "author": "卡尔·雅斯贝尔斯",
+      "snippet": "第 四 讲 关 于 上 帝 的 思 想 ▎信仰没有知识的确定性，而只有在生活实践中的确定性。 我们西方人关于上帝的思想，有两个历史根源：《圣经》和古希腊哲学。 当耶利米看到他为之奋斗毕生的一切都垮塌时，当他的国家和民众都损失殆尽时，当他残余的民众在埃及最后也不忠于对耶和华的信仰并向伊希斯献祭时，当他的门徒巴录绝望地说“我因叹息而疲倦，得不到休息”时，耶利米回答说：“耶和华是这么说的：我所建造的，我必拆毁；我所栽植的，我必拔出。……你还为",
+      "score": 0.517,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_164",
+      "source_id": "src_search_17",
+      "book": "皮尔斯文选",
+      "chapter": "上帝概念",
+      "book_id": "8b1e1c5ebaac",
+      "chapter_idx": 26,
+      "author": "查尔斯·桑德斯·皮尔士",
+      "snippet": "上帝概念 “你是否相信至高无上的存在物的存在？”休谟在他的《关于自然宗 教的对话》中正确地指出，“至高无上的存在物”（“supremebeing”）这 个词组与“上帝”一词并非同义，因为这个词组除了蕴涵存在物和至高 无上性之外，没有蕴涵无限性，也没有蕴涵上帝的其他任何属性。这一点 很重要，而这两个名称之间的另一个区别更加董要。这就是“上蒂”是 一个日常词语（vermacularword），它与所有那样的词一样模糊，而且几乎 比任何一个那",
+      "score": 0.515,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_165",
+      "source_id": "src_search_17",
+      "book": "信仰寻求理解",
+      "chapter": "第80章",
+      "book_id": "56bb065c1796",
+      "chapter_idx": 80,
+      "author": "安瑟伦",
+      "snippet": "提要：惟有那至高的本质统治和主宰着万有，“上帝”是他惟一恰当的名。因为“上帝”这个名只能被理解为就是那超越一切本性的实体，他由于其卓越的尊严而为人们所崇敬，并且，人们为了摆脱其自身不可抗拒的内在必然性而向他祈祷。正如那“灵”凭借其至高的仁善和至高的智慧创造了万有，同样，他自己也统治、主宰着万有。万有不被任何其他的东西所统治和主宰，也不完全出乎偶然性。惟有从他那里，所有的福乐可以被希望；惟有到他那里，所有的不幸才可以被逃避；惟有同他在一起",
+      "score": 0.514,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_166",
+      "source_id": "src_search_17",
+      "book": "企鹅哲学史",
+      "chapter": "中世纪哲学",
+      "book_id": "4e1a78c6f009",
+      "chapter_idx": 9,
+      "author": "A.C.格雷林",
+      "snippet": "奥古斯丁（Augustine，354—430） 希波的圣奥古斯丁（St Augustine of Hippo，这是教会对他的称呼）[53]，出生于罗马的努米底亚（Numidia）行省，他的出生地在今天的阿尔及利亚境内。他的母亲莫妮卡是个基督徒，把他也培养成了一个基督徒，但他在十几岁做学生的时候改信了摩尼教。在过了一段时间有教养年轻人的典型生活之后，他在三十出头的年纪重新皈依基督教。此前他有过一个长期情妇，还生了一个儿子——这是他在《忏悔",
+      "score": 0.514,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_168",
+      "source_id": "src_chapter_19",
+      "book": "认识世界：古代与中世纪哲学",
+      "chapter": "意志与个体性",
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 96,
+      "author": "理查德·大卫·普莱希特",
+      "snippet": "对迪特里希来说，物理学与形而上学是同一块硬币的两面。在他研究光学、解释彩虹现象的时候，这二者才彼此区分开来。如果说罗吉尔·培根的宏大计划还难言成功，那么牛津大学至少要赋予他的自然研究一个更高的价值。数学、物理学与医学是1300年左右最重要的主题，这一情形不仅仅是在英国。今天，在许多大学里人们将哲学从神学中区分出来，这获得了相当有益的结果。而托马斯·阿奎那几年前就想永远弥合的那个鸿沟，至此在制度上被固化下来。\n无法相互协调的两个世界——看",
+      "score": 1.0,
+      "source_type": "primary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     },
+     {
+      "evidence_id": "ev_169",
+      "source_id": "src_web_20",
+      "book": "",
+      "chapter": "",
+      "book_id": "",
+      "chapter_idx": -1,
+      "author": "",
+      "snippet": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 奥', 'snippet': '2021年11月19日\\u2002·\\u2002奥（拼音：ào、yù）是汉语一级通用规范汉字（常用字）。据现有古文字材料，此字始见于《说文解字》篆文。此 …', 'url': 'https://baike.baidu.com/item/%E5%A5%A5/4407'}, {'",
+      "score": 0.0,
+      "source_type": "secondary",
+      "retrieved": true,
+      "used": false,
+      "supports_claim_ids": [],
+      "candidate": false
+     }
+    ],
+    "candidate_evidence": [],
+    "used_evidence": [],
+    "claims": [],
+    "citations": [],
+    "unverified_citations": [],
+    "retrieved_count": 156,
+    "used_count": 0,
+    "facts": {
+     "read_chapters": [
+      "9efee732eaff#7",
+      "c97cb4e6161a#98",
+      "c97cb4e6161a#96"
+     ],
+     "search_execs": 18,
+     "read_execs": 3,
+     "source_candidate_found": true,
+     "primary_text_read": true
+    }
+   },
+   "tool_calls": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "奥卡姆剃刀 勿增实体"
+     },
+     "result_summary": "{'results': [], 'query': '奥卡姆剃刀 勿增实体', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "如无必要 勿增实体"
+     },
+     "result_summary": "{'results': [{'book_id': '56bb065c1796', 'book_title': '信仰寻求理解', 'author': '安瑟伦', 'chapter_idx': 12, 'chapter_title': '第12章', 'citation_label': '【《信仰寻求理解》·第12章】', 'snippet': '提要：至高的实体通过它自身创造万有。但是，它是通过",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "奥卡姆 经济原则 简约"
+     },
+     "result_summary": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 372, 'chapter_title': '章七', 'citation_label': '【《西方百年学术经典著作》·章七】', 'snippet': '另外还有一部分人，或个人，或哲学家，或政治",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "query_database",
+     "args": {
+      "table": "philosophers",
+      "key": "奥卡姆"
+     },
+     "result_summary": "{'results': [{'name': '奥卡姆的威廉', 'school': '经院哲学', 'region': '西方'}], 'total': 1, 'table': 'philosophers'}",
+     "thought": "执行 query_database"
+    },
+    {
+     "name": "get_philosopher",
+     "args": {
+      "name": "奥卡姆的威廉"
+     },
+     "result_summary": "{'name': '奥卡姆的威廉', 'period': '', 'century': '', 'school': '经院哲学', 'region': '西方', 'works': [], 'bio': '奥卡姆的威廉约于1287年出生在英格兰萨里郡的奥卡姆村，1347年因黑死病在慕尼黑去世，他的一生贯穿了中世纪晚期的思想动荡与政治冲突，作为方济各会修士和唯名论的核心代表，他以其锐利的逻辑批判和哲",
+     "thought": "执行 get_philosopher"
+    },
+    {
+     "name": "list_books",
+     "args": {
+      "author": "奥卡姆"
+     },
+     "result_summary": "{'books': [{'id': 'ad4153e66d7e', 'title': '逻辑大全', 'author': '奥卡姆的威廉', 'region': '西方', 'rank': 37.1, 'summary': '奥卡姆的威廉的《逻辑大全》是中世纪晚期逻辑学与语言哲学的里程碑式著作。全书系统探讨了词项、命题和推理的逻辑结构，尤其关注指代理论和语义问题，为后来的逻辑学发展提供了严密的框架",
+     "thought": "执行 list_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "奥卡姆剃刀 唯名论"
+     },
+     "result_summary": "{'results': [{'book_id': 'c97cb4e6161a', 'book_title': '认识世界：古代与中世纪哲学', 'author': '理查德·大卫·普莱希特', 'chapter_idx': 99, 'chapter_title': '在我们身上思考的质料', 'citation_label': '【《认识世界：古代与中世纪哲学》·在我们身上思考的质料】', 'sn",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "不要增加多于必要的实体 简约原则 逻辑"
+     },
+     "result_summary": "{'results': [{'book_id': 'c0e78ea6f80a', 'book_title': '维特根斯坦文集（套装全8卷）', 'author': '路德维希·维特根斯坦', 'chapter_idx': 5, 'chapter_title': 'MS 101', 'citation_label': '【《维特根斯坦文集（套装全8卷）》·MS 101】', 'snippet': ",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "ad4153e66d7e"
+     },
+     "result_summary": "{'error': \"'NoneType' object has no attribute 'get'\"}",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "剃刀 多余 应当被删去 不必要的东西 少数原则"
+     },
+     "result_summary": "{'results': [{'book_id': '1282e86cd93b', 'book_title': '论选择的艺术', 'author': '爱比克泰德', 'chapter_idx': 45, 'chapter_title': '45', 'citation_label': '【《论选择的艺术》·45】', 'snippet': '有人洗澡洗得很匆忙，不要说他洗得不干净，只要说他洗得匆",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "奥卡姆 简约性 无需必然 原则 科学解释"
+     },
+     "result_summary": "{'results': [{'book_id': 'bbac1be0bb4b', 'book_title': '黑格尔作品集（套装共14册）', 'author': '格奥尔格·威廉·弗里德里希·黑格尔', 'chapter_idx': 65, 'chapter_title': '丙、绝对的必然', 'citation_label': '【《黑格尔作品集（套装共14册）》·丙、绝对的必然】', '",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "奥卡姆 共相 名称 不是实体 极端唯名论"
+     },
+     "result_summary": "{'results': [{'book_id': '9efee732eaff', 'book_title': '语词和对象', 'author': '威拉德·范·奥曼·蒯因', 'chapter_idx': 7, 'chapter_title': '第七章\\u3000本体论的判定', 'citation_label': '【《语词和对象》·第七章\\u3000本体论的判定】', 'snippet':",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "威廉 奥卡姆 剃刀 经院哲学 约翰 邓斯 司各特"
+     },
+     "result_summary": "{'results': [{'book_id': '4b4d8792d7c9', 'book_title': '苏菲的哲学课', 'author': '多米尼克·贾尼科', 'chapter_idx': 34, 'chapter_title': '推荐阅读', 'citation_label': '【《苏菲的哲学课》·推荐阅读】', 'snippet': '推荐阅读 加斯东·巴什拉：《科学精神的形",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "88dc7d5961df"
+     },
+     "result_summary": "{'id': '88dc7d5961df', 'title': '西方百年学术经典著作', 'author': '佚名', 'region': '西方', 'file_type': 'epub', 'summary': '《西方百年学术经典著作》是一部精心编选的跨学科思想文集，聚焦于近一百年来西方人文社科领域最具影响力的里程碑式著作。本书收录了弗洛伊德的精神分析学、韦伯的社会学、萨特的存在主义、列",
+     "thought": "执行 get_book_detail"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "奥卡姆 剃刀 后来 命名 概括 方法"
+     },
+     "result_summary": "{'results': [{'book_id': 'c0e78ea6f80a', 'book_title': '维特根斯坦文集（套装全8卷）', 'author': '路德维希·维特根斯坦', 'chapter_idx': 38, 'chapter_title': '正文', 'citation_label': '【《维特根斯坦文集（套装全8卷）》·正文】', 'snippet': '正文 1. ",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "奥卡姆 不用多 而能 则毋需 徒劳 设定繁多"
+     },
+     "result_summary": "{'results': [{'book_id': '221f09d04944', 'book_title': '自然与快乐', 'author': '伊壁鸠鲁', 'chapter_idx': 11, 'chapter_title': '奥依诺安达的第欧根尼 铭文残篇选', 'citation_label': '【《自然与快乐》·奥依诺安达的第欧根尼 铭文残篇选】', 'snippet': '奥依",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "9efee732eaff",
+      "chapter_idx": 7
+     },
+     "result_summary": "{'book_id': '9efee732eaff', 'chapter_idx': 7, 'title': '第七章\\u3000本体论的判定', 'book_title': '语词和对象', 'citation_label': '【《语词和对象》·第七章\\u3000本体论的判定】', 'text': '第七章本体论的判定48.唯名论和实在论?\\n对于是否存在澳大利亚袋熊、独角兽、天使、中微子、类",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "奥卡姆的威廉 上帝 全能 信仰 判断 直观"
+     },
+     "result_summary": "{'results': [{'book_id': '215af36cac9f', 'book_title': '最伟大的思想家 - 奥古斯丁', 'author': '沙伦·M.凯/保罗·汤姆森', 'chapter_idx': 1, 'chapter_title': '简介', 'citation_label': '【《最伟大的思想家 - 奥古斯丁》·简介】', 'snippet': '圣奥勒留",
+     "thought": "执行 search_books"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 98
+     },
+     "result_summary": "{'book_id': 'c97cb4e6161a', 'chapter_idx': 98, 'title': '没有什么是必然的', 'book_title': '认识世界：古代与中世纪哲学', 'citation_label': '【《认识世界：古代与中世纪哲学》·没有什么是必然的】', 'text': '在讨论威廉未来的命运之前，我们先把目光投向其他人是如何进一步思考他的思想的。其中之一就是",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 96
+     },
+     "result_summary": "{'book_id': 'c97cb4e6161a', 'chapter_idx': 96, 'title': '意志与个体性', 'book_title': '认识世界：古代与中世纪哲学', 'citation_label': '【《认识世界：古代与中世纪哲学》·意志与个体性】', 'text': '对迪特里希来说，物理学与形而上学是同一块硬币的两面。在他研究光学、解释彩虹现象的时候，这二者才彼",
+     "thought": "执行 get_chapter"
+    },
+    {
+     "name": "websearch",
+     "args": {
+      "query": "奥卡姆剃刀 拉丁语 \"Entia non sunt multiplicanda praeter necessitatem\" 出处 后人 命名 并非奥卡姆"
+     },
+     "result_summary": "{'results': [{'title': 'baidu.comhttps://baike.baidu.com › item › 奥', 'snippet': '2021年11月19日\\u2002·\\u2002奥（拼音：ào、yù）是汉语一级通用规范汉字（常用字）。据现有古文字材料，此字始见于《说文解字》篆文。此 …', 'url': 'https://baike.baidu.com/item/",
+     "thought": "执行 websearch"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "c97cb4e6161a",
+      "chapter_idx": 97
+     },
+     "result_summary": "{'error': 'RESOURCE_CEILING_REACHED: 全局工具执行硬上限已达（本调用未执行——这是机械资源约束, 不代表库中无相关内容; 请立即基于已取得的材料输出最终回答）。'}",
+     "thought": "执行 get_chapter"
+    }
+   ],
+   "suggestions": [
+    "就 「奥卡姆剃刀」 与另一位哲学家隔空对质",
+    "追溯 「奥卡姆剃刀」 在哲学史中的时间线"
+   ],
+   "safety": null,
+   "tool_loop": {
+    "invocation_id": "187c1a5e3b5d",
+    "budget": {
+     "useful": 20,
+     "retry": 0,
+     "inner_retries": 1,
+     "duplicate_reused": 0,
+     "no_gain": 1,
+     "total_executed": 21,
+     "retrieval_executed": 21,
+     "hard": true,
+     "cfg": {
+      "hard_retrieval": 20,
+      "hard_total": 24
+     }
+    },
+    "model_retries": 0,
+    "recovered_after_error": false,
+    "no_gain_calls": 1
+   },
+   "causal": {
+    "provenance": "o1",
+    "engine_cognitive_auto_tools": 0,
+    "main_agent_tool_decisions": 22,
+    "agent_invocations": 9,
+    "thinking_sources": "main_agent_only"
+   },
+   "final_ownership": {
+    "provenance": "o2",
+    "final_text_owner": "main_agent",
+    "semantic_mutators": 0,
+    "runtime_factual_appends": 0,
+    "final_retract_semantic_use": 0,
+    "invalid_final_publicly_streamed": false,
+    "validator_repair_invocations": 2,
+    "main_agent_final_ownership_rate": 1.0
+   },
+   "validation": {
+    "result": {
+     "ok": false,
+     "issues": [
+      {
+       "code": "UNSUPPORTED_EXACT_QUOTE",
+       "locator": "的判断，属于文献学的通行说法，并非我库内检索核验到的原文；我对奥卡姆在某一部著作中逐字写下这句格言的原文位置，未能直接核",
+       "evidence_ref": null,
+       "detail": "in-line verbatim quote not found in retrieved evidence and not disclosed as recalled (match=NONE)"
+      },
+      {
+       "code": "UNSUPPORTED_EXACT_QUOTE",
+       "locator": "，属文献学通行说法，我未能在本库核验到奥卡姆手稿中对应原话的精确位置，故全文不将其作为逐字引文呈现；②奥卡姆神学论注中表",
+       "evidence_ref": null,
+       "detail": "in-line verbatim quote not found in retrieved evidence and not disclosed as recalled (match=NONE)"
+      }
+     ]
+    },
+    "repairs_used": 2,
+    "max_validation_repairs": 2,
+    "repair_protocol": "same_main_agent"
+   },
+   "timing": {
+    "phases": [
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 2577.8,
+      "msgs_len": 3
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 3070.9,
+      "msgs_len": 8
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 3093.4,
+      "msgs_len": 13
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 7035.8,
+      "msgs_len": 17
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 10578.4,
+      "msgs_len": 21
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 10742.4,
+      "msgs_len": 25
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 5945.8,
+      "msgs_len": 28
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 5167.1,
+      "msgs_len": 32
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 37511.4,
+      "msgs_len": 34
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 14478.4,
+      "msgs_len": 6
+     },
+     {
+      "type": "phase",
+      "phase": "llm_invocation",
+      "duration_ms": 17389.9,
+      "msgs_len": 6
+     },
+     {
+      "type": "phase",
+      "phase": "validator_quote_bound",
+      "duration_ms": 1.0
+     },
+     {
+      "type": "phase",
+      "phase": "validator_evidence_contract",
+      "duration_ms": 4.5
+     },
+     {
+      "type": "phase",
+      "phase": "validator_citation_sanitize",
+      "duration_ms": 0.0
+     }
+    ],
+    "total_ms": 124602.8
+   },
+   "citation_sanitize": {
+    "verified_citations": [],
+    "unverified_before": [],
+    "actions": []
+   },
+   "quote_bound": {
+    "entries": [],
+    "summary": {
+     "quotes": 0,
+     "verified_exact": 0,
+     "verified_near": 0,
+     "memory_only": 0,
+     "stitched": 0,
+     "unverified_blockquote": 0,
+     "memory_only_exact_claim": 0
+    }
+   },
+   "temporal": null,
+   "safety_enforcement": {
+    "initiated_by": "safety_runtime",
+    "action": "none"
+   },
+   "safety_reply": null
+  }
+ ]
+}

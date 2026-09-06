@@ -301,3 +301,67 @@ O7_B_AUTHORIZED = false
 下一步（待 Reviewer）: JUDGE_MODEL_REPLACEMENT_EVALUATION（候选须 TESTED≠JUDGE,
   更换后重走 §10-§11 全部门; 现有 32 fixtures + 机械矩阵可直接复用, 边际成本仅 judge 调用）。
 ```
+
+
+---
+
+# O7-A JR1 — Judge Model Replacement Evaluation（2026-09-06）
+
+> BASE_SHA: `6cfe1181c` ｜ JR1_CODE_SHA: `33a34bb26`（仅 invocation adapter, 语义 prompt 零改动）
+> 候选配置全部钉死: provider=bigmodel endpoint=/api/paas/v4/chat/completions, temperature=0,
+> response_format=json_object, max_tokens=8000, glm-4.6 另 thinking={"type":"disabled"};
+> CONTROL_REJECTED_MODEL = glm-4-plus（RP2 数据复用, 不再参跑）
+> 任务书: docs/tasks/PHIAGENT_O7A_JR1_JUDGE_MODEL_REPLACEMENT_EVALUATION_TASK.md
+
+## JR1-1. Stage-1 Screening（14 fixtures × k3, 同一冻结语义 prompt/labels）
+
+| 候选 | seeded recall | false fatal | schema 失败 | p50 延迟 | 判定 |
+|---|---|---|---|---|---|
+| **glm-4.6**（thinking=disabled） | **7/7** | 0 | 0 | 25.0s | **PASS → Stage 2** |
+| glm-4.5-air | 7/7 | 1（C6-mid 误报 F6） | 0 | 35.8s | ELIMINATED |
+| glm-4-flash | 0/7 | 0 | 0 | 31.0s | ELIMINATED |
+| glm-4-plus（control） | RP2: 10/12, 9/12 | 0 | 0 | ~80s | REJECTED（复用） |
+
+## JR1-2. Stage-2 Full Qualification（glm-4.6, 32 fixtures × k3 × 2 ensembles + anti-luck）
+
+| 门 | Ensemble A | Ensemble B | 要求 | 判定 |
+|---|---|---|---|---|
+| ENSEMBLE_EXPECTED_FATAL_RECALL | **12/12=100%** | **12/12=100%** | 100% A&B | **PASS** |
+| F1/F2/F3/F4/F6_RECALL | 全 1.0 | 全 1.0 | 各 100% | **PASS** |
+| F5 mechanical | 1.0 | 1.0 | 100% | PASS |
+| GOOD>MID>BAD | 3.056/2.188/0.194 | 3.062/2.146/0.222 | ✓ | PASS |
+| DIMENSION_DIFF≤1 | — | 100% | ≥90% | PASS |
+| PER_DIM_APPLICABILITY | — | 94.4% | ≥90% | PASS |
+| REQUIRED↔N/A contradictions | — | 0 | 0 | PASS |
+| Anti-luck gate（9 fixtures 额外 k3） | recall=1.0, 0 误报 | — | 100%/0 | **PASS** |
+| FALSE_FATAL_ASSERTIONS | **1（C6-L3-good F6, 3/3 票双轮一致）** | 同 | 0 | **FAIL** |
+| ENSEMBLE_FATAL_FLAG_AGREEMENT | — | 96.9% | 100% | **FAIL** |
+
+## JR1-3. 两个 FAIL 的精确诊断
+
+1. **C6-L3-good 的 F6 误报（3/3 票, 双轮一致——系统性而非噪声）**: 该 fixture（RP1 时期所写）
+   的答案声称「第一节界定语言游戏的描写性进路」, 但所给全文摘录只覆盖第二/三节内容——
+   judge 判罚在语义上是**正确的**（FULL_TEXT_READ 也只支持所给全文能支撑的主张）,
+   根因是 **fixture supply/claim 失配（我方 fixture 编码缺陷）**。JR1 冻结 fixture 不可修 → 如实上报。
+2. **AGREEMENT 96.9%（31/32）**: 唯一分歧 = F6-M4-bad 上 Ensemble A 额外判了未植入的
+   FABRICATED_SCHOLAR_ATTRIBUTION（B 未判）; **全部 seeded (fixture,flag) 断言双轮一致命中**
+   （seeded-assertion agreement = 100%）。
+
+## JR1-4. 判定与建议
+
+```
+JR1 = 无完全 qualified 候选（letter 级）; 差距全部可归因:
+  (a) 我方 fixture L3 supply/claim 失配（1 例 false fatal 的根因）
+  (b) 未植入额外 flag 的单例判断方差（agreement 差 1/32）
+RECOMMENDED_JUDGE_MODEL = glm-4.6（thinking=disabled, t=0, json_object）
+  依据: seeded recall 100%×2 + per-flag 1.0×6 + anti-luck 1.0 + per-dim applicability 94.4%
+  + dim diff 100% + 零 schema 失败——除上述两处 letter 偏差外全部门通过,
+  且两处偏差均非"召回能力"缺陷（glm-4-plus 同 fixture 系统性漏报, glm-4.6 是过度警惕）。
+正式锁定 O7_OFFICIAL_JUDGE_MODEL 由 Reviewer 签。
+请 Reviewer 裁定其一:
+  (α) 授权最小 fixture 修正（C6-L3 补全第一节所给文本, 与其 claims 对齐）+ glm-4.6 重跑
+      Stage-2 双 ensemble 复验（~2.5h）—— 若 FALSE_FATAL=0 且 AGREEMENT=100% 即 qualified;
+  (β) 接受书面偏差（false fatal 根因=fixture 我方缺陷; agreement 差异=未植入额外 flag）,
+      直接签 glm-4.6 为 O7_OFFICIAL_JUDGE_MODEL 并解锁 O7-B。
+O7_B_AUTHORIZED = false（未授权）
+```

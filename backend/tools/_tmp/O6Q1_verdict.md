@@ -1,0 +1,1530 @@
+- link "跳至内容":
+  - /url: "#main"
+- navigation "侧边栏":
+  - button "打开侧边栏":
+  - link "新聊天":
+    - /url: /
+    - generic: 新聊天
+  - button "搜索":
+    - generic: 搜索
+  - button "置顶":
+    - generic: 置顶
+  - button "最近聊天":
+    - generic: 最近聊天
+  - button "打开“个人资料”菜单":
+    - generic: 王
+- heading "历史聊天记录" [level=2]
+- navigation "历史聊天记录":
+  - link "主页":
+    - /url: /
+    - generic: ChatGPT
+  - button "搜索":
+  - button "关闭侧边栏" [expanded]:
+  - list:
+    - link "新聊天 控制 Shift O":
+      - /url: /
+      - generic: 新聊天
+      - generic "控制":
+        - generic: Ctrl
+        - text: +
+      - generic "Shift":
+        - generic: Shift
+        - text: +
+      - generic: O
+  - link "资料库":
+    - /url: /library?entry_point=sidebar
+    - generic: 资料库
+  - link "项目 新项目":
+    - /url: /projects
+    - generic: 项目
+    - button "新项目":
+  - link "定时任务":
+    - /url: /scheduled
+    - generic: 定时任务
+  - link "插件":
+    - /url: /plugins
+    - generic: 插件
+  - generic: 更多
+  - button "置顶" [expanded]:
+    - heading "置顶" [level=2]
+  - list:
+    - link "PhiAgent，已置顶对话":
+      - /url: /c/6a6cb3da-49bc-83ea-9331-6d81109a46df
+      - generic: PhiAgent
+      - button "取消置顶 PhiAgent":
+      - button "打开“PhiAgent”的对话选项":
+    - link "桌宠设计03，已置顶对话, 工作":
+      - /url: /c/6a8fd72a-1574-83ea-b26d-29cbfaaece82
+      - generic: 桌宠设计03
+      - button "取消置顶 桌宠设计03":
+      - button "打开“桌宠设计03”的对话选项":
+    - link "构建FTC编程智能体，已置顶对话, 工作":
+      - /url: /c/6a914d39-8ff8-83ea-9ea7-6b396f9f4bb9
+      - generic: 构建FTC编程智能体
+      - button "取消置顶 构建FTC编程智能体":
+      - button "打开“构建FTC编程智能体”的对话选项":
+    - link "Night Tasks，已置顶对话, 工作":
+      - /url: /c/6a90e296-10a0-83e9-9b2f-955b44711b2f
+      - generic: Night Tasks
+      - button "取消置顶 Night Tasks":
+      - button "打开“Night Tasks”的对话选项":
+  - button "最近" [expanded]:
+    - heading "最近" [level=2]
+  - link "新聊天":
+    - /url: /
+  - button "整理聊天":
+  - list:
+    - link "自动化工作流设计":
+      - /url: /c/6a9419dd-efb8-83ea-85da-5df99a471d07
+      - generic: 自动化工作流设计
+      - button "置顶 自动化工作流设计":
+      - button "打开“自动化工作流设计”的对话选项":
+    - link "后记修改建议":
+      - /url: /c/6a92f80d-ec34-83e9-9d74-a9734a9255d1
+      - generic: 后记修改建议
+      - button "置顶 后记修改建议":
+      - button "打开“后记修改建议”的对话选项":
+    - link "诗作赏析 久久精品国产":
+      - /url: /c/6a92eda7-6144-83e9-aebc-4720978e35f0
+      - generic: 诗作赏析 久久精品国产
+      - button "置顶 诗作赏析 久久精品国产":
+      - button "打开“诗作赏析 久久精品国产”的对话选项":
+    - link "Claude登录问题解决, 工作":
+      - /url: /c/6a91a340-bda0-83ea-9181-d1f6d0864cf4
+      - generic: Claude登录问题解决
+      - button "置顶 Claude登录问题解决":
+      - button "打开“Claude登录问题解决”的对话选项":
+    - link "修复Hermes安装失败, 工作":
+      - /url: /c/6a8fdfa5-df34-83e9-bf2c-0bbbb642fbde
+      - generic: 修复Hermes安装失败
+      - button "置顶 修复Hermes安装失败":
+      - button "打开“修复Hermes安装失败”的对话选项":
+    - link "桌宠设计01":
+      - /url: /c/6a8bd279-40dc-83ea-8ea0-346203238a58
+      - generic: 桌宠设计01
+      - button "置顶 桌宠设计01":
+      - button "打开“桌宠设计01”的对话选项":
+    - link "桌宠设计02":
+      - /url: /c/6a8d5b38-fb0c-83ea-87e0-3d0d9c84ce58
+      - generic: 桌宠设计02
+      - button "置顶 桌宠设计02":
+      - button "打开“桌宠设计02”的对话选项":
+    - link "解释ZCode功能与MCP额度":
+      - /url: /c/6a8f23de-b548-83ea-8bff-f61d34f15c75
+      - generic: 解释ZCode功能与MCP额度
+      - button "置顶 解释ZCode功能与MCP额度":
+      - button "打开“解释ZCode功能与MCP额度”的对话选项":
+    - link "删除 Windows 保留设备名文件":
+      - /url: /c/6a8e90ed-9f50-83ea-bc0d-0972adb416e8
+      - generic: 删除 Windows 保留设备名文件
+      - button "置顶 删除 Windows 保留设备名文件":
+      - button "打开“删除 Windows 保留设备名文件”的对话选项":
+    - link "查询Ox Alpha API官网":
+      - /url: /c/6a8ed497-a334-83e9-a444-f6bfc1761352
+      - generic: 查询Ox Alpha API官网
+      - button "置顶 查询Ox Alpha API官网":
+      - button "打开“查询Ox Alpha API官网”的对话选项":
+    - link "行为系统设计":
+      - /url: /c/6a8af061-7700-83ea-811f-c073aaffbde9
+      - generic: 行为系统设计
+      - button "置顶 行为系统设计":
+      - button "打开“行为系统设计”的对话选项":
+    - link "设计桌宠智能交互方案":
+      - /url: /c/6a8ad436-ef68-83ea-b43d-bf87d4e947a9
+      - generic: 设计桌宠智能交互方案
+      - button "置顶 设计桌宠智能交互方案":
+      - button "打开“设计桌宠智能交互方案”的对话选项":
+    - link "设计素材规范":
+      - /url: /c/6a8aeff4-e5a0-83ea-b0e4-111c1377cf3e
+      - generic: 设计素材规范
+      - button "置顶 设计素材规范":
+      - button "打开“设计素材规范”的对话选项":
+    - link "设计状态树":
+      - /url: /c/6a8aef15-c028-83ea-815e-f520e5583145
+      - generic: 设计状态树
+      - button "置顶 设计状态树":
+      - button "打开“设计状态树”的对话选项":
+    - link "寻找陈奕迅歌词":
+      - /url: /c/6a8ab7f6-7118-83ea-abbb-841c79c8260f
+      - generic: 寻找陈奕迅歌词
+      - button "置顶 寻找陈奕迅歌词":
+      - button "打开“寻找陈奕迅歌词”的对话选项":
+    - link "维特根斯坦语言哲学分析":
+      - /url: /c/6a7f1bbf-fe40-83ea-ba91-fd982cb583e1
+      - generic: 维特根斯坦语言哲学分析
+      - button "置顶 维特根斯坦语言哲学分析":
+      - button "打开“维特根斯坦语言哲学分析”的对话选项":
+    - link "AI大学生活解决方案":
+      - /url: /c/6a6974c8-0ba8-83ea-bde6-11ebb6a69eba
+      - generic: AI大学生活解决方案
+      - button "置顶 AI大学生活解决方案":
+      - button "打开“AI大学生活解决方案”的对话选项":
+    - link "大学生痛点分析":
+      - /url: /c/6a696c3c-4fd0-83ea-b130-717787df83bb
+      - generic: 大学生痛点分析
+      - button "置顶 大学生痛点分析":
+      - button "打开“大学生痛点分析”的对话选项":
+    - link "AI校园智能日程伴侣":
+      - /url: /c/6a698c06-3018-83ea-a328-8ba72672d5e6
+      - generic: AI校园智能日程伴侣
+      - button "置顶 AI校园智能日程伴侣":
+      - button "打开“AI校园智能日程伴侣”的对话选项":
+    - link "陈奕迅屏保设计":
+      - /url: /c/6a5ba816-1064-83ea-bcd0-d06e2f7ac2bd
+      - generic: 陈奕迅屏保设计
+      - button "置顶 陈奕迅屏保设计":
+      - button "打开“陈奕迅屏保设计”的对话选项":
+    - link "Skill 草拟与设计":
+      - /url: /c/6a58f4fb-70e8-83ea-98e6-0ddf66acf4ff
+      - generic: Skill 草拟与设计
+      - button "置顶 Skill 草拟与设计":
+      - button "打开“Skill 草拟与设计”的对话选项":
+    - link "高中生哲学网站推广":
+      - /url: /c/6a51d56b-7318-83ea-b3e1-7a57ff54425e
+      - generic: 高中生哲学网站推广
+      - button "置顶 高中生哲学网站推广":
+      - button "打开“高中生哲学网站推广”的对话选项":
+    - link "经院哲学背景图设计":
+      - /url: /c/6a407838-9dac-83ea-8a54-9acbf9e48ef0
+      - generic: 经院哲学背景图设计
+      - button "置顶 经院哲学背景图设计":
+      - button "打开“经院哲学背景图设计”的对话选项":
+    - link "网站优化建议":
+      - /url: /c/6a47c17c-5cec-83ea-af90-56777e84ab81
+      - generic: 网站优化建议
+      - button "置顶 网站优化建议":
+      - button "打开“网站优化建议”的对话选项":
+    - link "哲学人格MBTI小人设计":
+      - /url: /c/6a411c42-9490-83ea-b17a-afbd7ef588de
+      - generic: 哲学人格MBTI小人设计
+      - button "置顶 哲学人格MBTI小人设计":
+      - button "打开“哲学人格MBTI小人设计”的对话选项":
+    - link "创建经院哲学图片":
+      - /url: /c/6a3fe9c0-c63c-83ea-921c-573ae5785e81
+      - generic: 创建经院哲学图片
+      - button "置顶 创建经院哲学图片":
+      - button "打开“创建经院哲学图片”的对话选项":
+    - link "教父哲学背景图片":
+      - /url: /c/6a3fe612-fb24-83ea-9c5d-081d64588099
+      - generic: 教父哲学背景图片
+      - button "置顶 教父哲学背景图片":
+      - button "打开“教父哲学背景图片”的对话选项":
+    - link "UI优化哲学气息":
+      - /url: /c/6a3fcc3d-c50c-83ea-8ccf-c71ab337e317
+      - generic: UI优化哲学气息
+      - button "置顶 UI优化哲学气息":
+      - button "打开“UI优化哲学气息”的对话选项":
+- button "王麒翔 Plus，打开“个人资料”菜单":
+  - generic: 王
+  - generic: 王麒翔
+  - generic: Plus
+  - button "下载应用":
+- banner:
+  - button "分享":
+    - text: 分享
+  - button "更多":
+- main:
+  - heading "ChatGPT 说：" [level=4]
+  - button "思考了 1m 43s":
+    - text: 思考了 1m 43s
+  - button "复制":
+  - code: O6_FINAL_REVIEW = FAIL ARCHITECTURE_RESET = PASS O1_O5_ARCHITECTURE_RESULT = ACCEPTED O6_INTEGRATED_FINAL_GATE = FAIL O6_RP1_REQUIRED = true PASS_WITH_REQUIRED_QUALITY_PATCH is NOT YET AUTHORIZED.
+  - paragraph:
+    - text: 这不是推翻 O1–O5，而是
+    - strong: O6 自己的硬门没有过
+    - text: 。
+  - paragraph:
+    - text: 报告已经明确给出 Validator scripted matrix 为
+    - code: TP=9 / FN=1 / TN=10 / FP=0
+    - text: ，而 O6 任务书规定
+    - code: FALSE_NEGATIVE = 0
+    - text: ，并明确把 validator false-negative 列入 FAIL 条件。因此 F1 不能降级成 note，它是必须修的 Material blocker。报告同时记录
+    - code: UNPARENTED_TOOL_RESULTS = 187
+    - text: ，而 O6 的 SSE Gate 明确要求该值为 0；所以这里实际上还有第三个机械 blocker，不能只修 F1/F2。
+  - paragraph:
+    - text: 另外我独立检查远端后发现
+    - strong: Gate reproducibility 也没有闭合
+    - text: ：O6 的冻结 SHA
+    - code: b6e656...
+    - text: 之后，分支在 Gate 过程中进入了书籍/章节数据变化；更关键的是后续 O6 取证提交的 commit message 明确写着“
+    - strong: 补入 O5 漏提交的测试文件
+    - text: ”。也就是说，350/350 的测试工作树并不能由冻结的
+    - code: GATE_SHA
+    - text: 单独重建。这违反了 O6 的 clean/frozen evidence gate 要求。
+  - paragraph: 因此裁决：
+  - button "复制":
+  - code: F1 = REQUIRED PATCH validator inline lead-in exact-quote false negative F2 = REQUIRED PATCH forced + cancel pending-state mechanical liveness bug F3 = REQUIRED PATCH parallel same-name tool calls must each have truthful tool_start / tool_call_id parentage; UNPARENTED_TOOL_RESULTS must become 0 GATE_REPRODUCIBILITY = REQUIRED RECONCILIATION freeze one actual committed tree and re-run O6
+  - paragraph:
+    - text: G10 的 52% 多轮发布率属于
+    - strong: 后续 Main-Agent Quality Closeout
+    - text: ，不是本轮机械 patch。不要把它和 F1/F2/F3 混在一起，也禁止用 semantic runtime gate 修。
+  - heading "TASK — O6-RP1" [level=1]
+  - heading "Material Mechanical Blockers + Reproducible Re-Gate" [level=2]
+  - button "复制":
+  - code: "MODEL = GLM-5.3-Flash REASONING = MAX REVIEWER = GPT-5.6 Sol BRANCH = refactor/phiagent-main-agent-orchestration STATUS: O6_FINAL_REVIEW = FAIL ARCHITECTURE_RESET_O1_O5 = ACCEPTED OBJECTIVE: Close exactly: F1 validator false-negative F2 forced+cancel pending-state bug F3 unparented parallel tool events Gate reproducibility DO NOT: - start Main-Agent quality tuning - change Evidence Appetite - add source-attribution classifier - add semantic gate - add sufficiency/no_gain control - weaken validator - modify retrieval/ranking - merge master"
+  - heading "0. Reconcile the Actual Branch First" [level=2]
+  - paragraph: "Before changing code, record:"
+  - button "复制":
+  - code: git status --short git rev-parse HEAD git rev-parse origin/refactor/phiagent-main-agent-orchestration git log --oneline -15
+  - paragraph: "Audit the chain from:"
+  - button "复制":
+  - code: e3692ec1de5b860787a5093a889de159cb0f10d7
+  - paragraph: to current HEAD.
+  - paragraph: "Explicitly list:"
+  - button "复制":
+  - code: O6 gate/docs commits book/corpus commits test commits other commits
+  - paragraph: "Confirm the previously missing:"
+  - button "复制":
+  - code: backend/tests/test_o5_thin_runtime.py
+  - paragraph: is now tracked.
+  - paragraph: Do not rewrite history.
+  - paragraph: "Define:"
+  - button "复制":
+  - code: PRE_PATCH_HEAD = current remote branch HEAD
+  - paragraph: RP1 proceeds from that real committed state.
+  - separator
+  - heading "1. F1 — Inline Lead-In Exact Quote False Negative" [level=2]
+  - paragraph: "Known reproducer:"
+  - button "复制":
+  - code: 原文是："UNSUPPORTED_EXACT_QUOTE"
+  - paragraph: "Current bug:"
+  - button "复制":
+  - code: inline lead-in → LEADIN_RE/head classification disagreement → exact quote treated as exempt/quoted context → validator issues = 0 → invalid exact quote can publish
+  - paragraph: This is a deterministic quote-parser bug.
+  - paragraph: "Fix the parser/classification so:"
+  - button "复制":
+  - code: blockquote exact quote inline exact quote lead-in exact quote Chinese/English quote forms
+  - paragraph: share one coherent quote-intent boundary.
+  - paragraph: Do NOT infer user task intent.
+  - paragraph: "Validator only examines:"
+  - button "复制":
+  - code: final candidate + retrieved evidence
+  - paragraph: "Required:"
+  - button "复制":
+  - code: unsupported inline exact quote → UNSUPPORTED_EXACT_QUOTE → candidate blocked
+  - paragraph:
+    - text: Do not solve by blacklisting
+    - code: "\"原文是\""
+    - text: only.
+  - paragraph: The fix must operate on general syntactic quote structure.
+  - separator
+  - heading "2. F1 Kill Tests" [level=2]
+  - paragraph: Add deterministic matrix.
+  - paragraph: "At minimum:"
+  - button "复制":
+  - code: "A. 原文是：\"fake quote\" B. 原文是：“fake quote” C. The original says: \"fake quote\" D. > \"fake quote\" E. 普通分析里提到“某个概念”但并非原文主张 F. supported inline exact quote G. supported blockquote"
+  - paragraph: "Expected:"
+  - button "复制":
+  - code: A-D unsupported → validator rejects E ordinary mention → no false exact-quote rejection F-G supported → PASS
+  - paragraph: Use the exact O6 F1 case unchanged as one test.
+  - paragraph: "Prove:"
+  - button "复制":
+  - code: PRE_PATCH = FAIL POST_PATCH = PASS
+  - paragraph: "Re-run scripted validator matrix:"
+  - button "复制":
+  - code: 10 positive invalid 10 negative valid
+  - paragraph: "Target:"
+  - button "复制":
+  - code: TP = 10 FN = 0 TN = 10 FP = 0
+  - paragraph: "If any FP/FN:"
+  - paragraph: STOP.
+  - separator
+  - heading "3. F2 — forced + cancel Pending-State Boundary" [level=2]
+  - paragraph: "Known narrow trigger:"
+  - button "复制":
+  - code: hard ceiling + residual tool declaration + empty first candidate + forced/cancel transition
+  - paragraph: "Current failure:"
+  - button "复制":
+  - code: pending.has_tools remains true → later repair Main-Agent text interpreted as stale residual → valid new repair content discarded
+  - paragraph: Fix only lifecycle/state mechanics.
+  - paragraph: "Correct contract:"
+  - button "复制":
+  - code: tool declaration lifecycle reaches terminal state → pending tool state clears deterministically cancel/ceiling/error → terminal tool outcome → pending state cannot leak into next Main-Agent invocation
+  - paragraph: "Do not change:"
+  - button "复制":
+  - code: hard ceiling values semantic routing repair ceiling tool authority
+  - paragraph: No semantic closeout.
+  - separator
+  - heading "4. F2 Tests" [level=2]
+  - paragraph: "Controlled harness:"
+  - button "复制":
+  - code: "Invocation 1: declares tool that reaches hard ceiling/cancel boundary Runtime: returns mechanical terminal outcome Invocation 2 / repair: Main Agent emits valid new candidate"
+  - paragraph: "Assert:"
+  - button "复制":
+  - code: pending.has_tools = false before new invocation processing new candidate preserved validator sees it if valid → publishes no stale tool fragments replay no ghostwritten final
+  - paragraph: "Also cover:"
+  - button "复制":
+  - code: cancel hard ceiling tool error normal tool completion
+  - paragraph: No cross-invocation pending leakage.
+  - separator
+  - heading "5. F3 — Parallel Tool Event Parentage" [level=2]
+  - paragraph: "O6 observed:"
+  - button "复制":
+  - code: UNPARENTED_TOOL_RESULTS = 187
+  - paragraph: "Root noted:"
+  - button "复制":
+  - code: parallel same-name tool calls → only one tool_start emitted → multiple results → some result events have no matching visible start/parent
+  - paragraph: This violates O1 causal/provenance contract.
+  - paragraph: "Fix mechanically:"
+  - paragraph:
+    - text: For every actual Main-Agent declared
+    - code: tool_call_id
+    - text: ":"
+  - button "复制":
+  - code: one tool_call_id → one truthful tool_start → one terminal tool outcome
+  - paragraph: "A batch may share:"
+  - button "复制":
+  - code: decision_group_id
+  - paragraph:
+    - text: but MUST NOT share
+    - code: tool_call_id
+    - text: .
+  - paragraph: "Example:"
+  - button "复制":
+  - code: search_books("A") id=call_1 search_books("B") id=call_2 search_books("C") id=call_3
+  - paragraph: "must produce:"
+  - button "复制":
+  - code: tool_start(call_1) tool_start(call_2) tool_start(call_3) tool(call_1) tool(call_2) tool(call_3)
+  - paragraph: Order of completion may vary.
+  - paragraph: Do not fabricate starts for internal helpers.
+  - paragraph:
+    - code: tool_internal
+    - text: remains separately parented.
+  - separator
+  - heading "6. F3 Tests" [level=2]
+  - paragraph: "At minimum:"
+  - button "复制":
+  - code: P1 parallel different tools P2 parallel same-name tools with different args P3 parallel same-name exact duplicate P4 one success + one schema error P5 one success + one cancel/error
+  - paragraph: "Assert:"
+  - button "复制":
+  - code: DECLARED_TOOL_CALL_IDS == TERMINAL_OUTCOME_TOOL_CALL_IDS each declared id has exactly one logical start UNPARENTED_TOOL_RESULTS = 0 UNKNOWN_PROVENANCE_TOOL_EVENTS = 0
+  - paragraph: Exact duplicate reuse still gets a terminal outcome tied to its own call id.
+  - separator
+  - heading "7. Do Not Mix Product Quality Patch" [level=2]
+  - paragraph: Do NOT change Main-Agent policy in this RP1 except if strictly necessary for test harness plumbing.
+  - paragraph: "Specifically do not attempt to fix:"
+  - button "复制":
+  - code: G10 multi-turn publication 52% memory wording as exact quote NEAR translation discipline search churn light/heavy research calibration
+  - paragraph: "Those belong to:"
+  - button "复制":
+  - code: O6-Q1 Main-Agent Quality Closeout
+  - paragraph: only after material mechanical blockers pass.
+  - separator
+  - heading "8. Full Regression" [level=2]
+  - paragraph: "Run:"
+  - button "复制":
+  - code: pytest backend/tests -q
+  - paragraph: No exclusions.
+  - paragraph: "Separately:"
+  - button "复制":
+  - code: O1 causal O1 thinking safety O2 ownership O3 tool authority O4 collapse O5 thin runtime O6-RP1 F1/F2/F3
+  - paragraph: "Also:"
+  - button "复制":
+  - code: regression_oldman_sea
+  - paragraph: Require zero failures.
+  - separator
+  - heading "9. Freeze a Reproducible Re-Gate SHA" [level=2]
+  - paragraph: "After F1/F2/F3 code + tests are committed:"
+  - button "复制":
+  - code: git status --short
+  - paragraph: must show no intended source/test/data changes.
+  - paragraph: All intended book/corpus changes currently on the branch must already be committed.
+  - paragraph: "Create:"
+  - button "复制":
+  - code: O6_REGATE_SHA = exact committed HEAD
+  - paragraph: "Record SHA256/file manifest or at minimum:"
+  - button "复制":
+  - code: git rev-parse HEAD git status --short git diff HEAD
+  - paragraph: No untracked production tests.
+  - paragraph: No parallel corpus commits during re-gate.
+  - paragraph: "If user/another agent needs to modify corpus:"
+  - button "复制":
+  - code: STOP THE GATE commit changes choose a NEW O6_REGATE_SHA restart evidence collection
+  - paragraph: Do not call corpus changes “non-production drift” during a product-quality gate.
+  - paragraph: Corpus is part of retrieval behavior.
+  - separator
+  - heading "10. O6 Re-Gate" [level=2]
+  - paragraph:
+    - text: After patch, re-run O6 on exactly
+    - code: O6_REGATE_SHA
+    - text: .
+  - paragraph: You do NOT need to rewrite O1–O5 evidence.
+  - paragraph: But O6 live quality evidence must be collected from one frozen product state.
+  - paragraph: "Required again:"
+  - button "复制":
+  - code: 24 single-turn >=12 fresh 5 multi-turn conversations validator 10+10 matrix repair matrix source verification research/depth persona thinking/SSE error paths latency/RAM tool surfaces
+  - paragraph: No cherry-picking.
+  - paragraph: No prompt tuning during run.
+  - separator
+  - heading "11. Hard Re-Gate Requirements" [level=2]
+  - paragraph: "Must be:"
+  - button "复制":
+  - code: VALIDATOR_FALSE_NEGATIVE = 0 VALIDATOR_FALSE_POSITIVE = 0 UNVERIFIED_QUOTE_PUBLIC_RATE = 0 UNVERIFIED_CITATION_PUBLIC_RATE = 0 STITCHED_QUOTE_PUBLIC_RATE = 0 INVALID_FINAL_PUBLIC = 0 UNPARENTED_TOOL_RESULTS = 0 UNKNOWN_PROVENANCE_TOOL_EVENTS = 0 DUPLICATE_VISIBLE_EVENTS = 0 ENGINE_COGNITIVE_AUTO_TOOLS = 0 SEMANTIC_TOOL_CONTROL_EFFECTS = 0 RUNTIME_SEMANTIC_MUTATORS = 0 RAW_REASONING_PUBLIC = 0
+  - separator
+  - heading "12. Expected Verdict After RP1" [level=2]
+  - paragraph: Do not self-sign.
+  - paragraph: "If hard gates close but quality remains approximately:"
+  - button "复制":
+  - code: multi-turn publication ~52% safe reject rate elevated repair exhaustion elevated
+  - paragraph: "then propose:"
+  - button "复制":
+  - code: ARCHITECTURE_RESET = PASS O6 = PASS_WITH_REQUIRED_QUALITY_PATCH
+  - paragraph: and Reviewer will issue the Main-Agent-only quality closeout.
+  - paragraph: "If hard gates still fail:"
+  - button "复制":
+  - code: O6 = FAIL
+  - separator
+  - heading "13. Documentation" [level=2]
+  - paragraph: "Update/create:"
+  - button "复制":
+  - code: docs/PHIAGENT_O6_INTEGRATED_FINAL_QUALITY_GATE.md
+  - paragraph: It must actually exist on the remote refactor branch.
+  - paragraph: "Include:"
+  - button "复制":
+  - code: original O6 failure F1/F2/F3 root causes patch evidence PRE_PATCH kill tests POST_PATCH results original invalidated/mixed gate note new frozen O6_REGATE_SHA complete re-gate results G1-G16 matrix
+  - paragraph: Keep original evidence; do not rewrite history as though first O6 passed.
+  - separator
+  - heading "14. Git Discipline" [level=2]
+  - paragraph: "Use:"
+  - button "复制":
+  - code: BASE_SHA= CODE_SHA= GATE_SHA= HEAD_SHA= REMOTE_SHA=
+  - paragraph: "Definitions:"
+  - button "复制":
+  - code: BASE_SHA = RP1 starting committed head CODE_SHA = F1/F2/F3 implementation commit GATE_SHA = exact frozen commit tested by O6 re-gate HEAD_SHA = final branch head after evidence docs REMOTE_SHA = remote branch head
+  - paragraph:
+    - text: Do not overload
+    - code: FINAL_SHA
+    - text: .
+  - separator
+  - heading "RECEIPT" [level=1]
+  - button "复制":
+  - code: O6_RP1 = READY_FOR_FINAL_REVIEW / BLOCKED BASE_SHA= CODE_SHA= GATE_SHA= HEAD_SHA= REMOTE_SHA= F1_INLINE_QUOTE_FN_BEFORE= F1_INLINE_QUOTE_FN_AFTER= VALIDATOR_TP= VALIDATOR_FN= VALIDATOR_TN= VALIDATOR_FP= F2_PENDING_STATE_LEAK_BEFORE= F2_PENDING_STATE_LEAK_AFTER= F3_UNPARENTED_TOOL_RESULTS_BEFORE= F3_UNPARENTED_TOOL_RESULTS_AFTER= UNKNOWN_PROVENANCE_TOOL_EVENTS= DUPLICATE_VISIBLE_EVENTS= PREPATCH_KILL_TESTS= POSTPATCH_TESTS= WORKTREE_CLEAN_AT_GATE= UNTRACKED_PRODUCTION_TESTS_AT_GATE= CORPUS_DRIFT_DURING_GATE= FULL_TEST_COMMAND= COLLECTED= PASSED= FAILED= SKIPPED= REGRESSION_OLDMAN_SEA= SINGLE_TURN_CASES= FRESH_CASES= MULTI_TURN_CONVERSATIONS= MULTI_TURN_TOTAL_TURNS= G1_ARCHITECTURE= G2_TOOL_AUTHORITY= G3_FINAL_OWNERSHIP= G4_THINKING_TRUTH= G5_VALIDATOR_INTEGRITY= G6_SOURCE_VERIFICATION= G7_RESEARCH_QUALITY= G8_DEEP_ANSWER_QUALITY= G9_PERSONA_TEMPORAL= G10_MULTI_TURN= G11_SSE_PROVENANCE= G12_ERROR_BEHAVIOR= G13_LATENCY= G14_RAM_RESOURCE= G15_TOOL_CAPABILITIES= G16_REGRESSION= PUBLICATION_SUCCESS_RATE= SAFE_REJECT_RATE= REPAIR_SUCCESS_RATE= REPAIR_EXHAUSTION_RATE= MULTI_TURN_PUBLICATION_RATE= ENGINE_COGNITIVE_AUTO_TOOLS= SEMANTIC_TOOL_CONTROL_EFFECTS= RUNTIME_SEMANTIC_MUTATORS= RAW_REASONING_PUBLIC= INVALID_FINAL_PUBLIC= PROPOSED_VERDICT= PASS / PASS_WITH_REQUIRED_QUALITY_PATCH / FAIL REPORT= docs/PHIAGENT_O6_INTEGRATED_FINAL_QUALITY_GATE.md STOP
+  - paragraph: 当前正式裁决就是：
+  - button "复制":
+  - code: ARCHITECTURE_RESET = PASS O6 FINAL QUALITY GATE = FAIL 原因： 1. validator FN = 1 2. UNPARENTED_TOOL_RESULTS = 187 3. Gate SHA 不可完整重现实际 350-test 工作树， 且 Gate 期间 corpus 发生变化 F1 = PATCH NOW F2 = PATCH NOW F3 = PATCH NOW 下一步只做 O6-RP1。
+  - paragraph:
+    - text: 机械硬门闭合以后，才讨论把剩余
+    - strong: 52% 多轮发布率 / safe-reject 偏高
+    - text: 签成
+    - code: PASS_WITH_REQUIRED_QUALITY_PATCH
+    - text: 并进入 Main-Agent 质量收尾。
+  - group "回复操作":
+    - button "复制回复":
+    - button "评价回复":
+    - button "分享":
+    - button "切换模型":
+    - button "更多操作":
+  - separator "今天 15:19":
+    - generic: 今天 15:19
+  - heading "你说：" [level=4]
+  - generic: "O6-RP1 执行完毕，回执如下（REPORT: docs/PHIAGENT_O6_INTEGRATED_FINAL_QUALITY_GATE.md，已按你的命名规范提交，必须存在于 remote refactor 分支 ✓）。 O6_RP1 = READY_FOR_FINAL_REVIEW BASE_SHA = 413f02d1939d4e3ef39bd2c1ee6e71ea5564eb83（RP1 起点真实 HEAD） CODE_SHA = 6b2f16c6d1ae4321efc3306730dfc5d89cb6b65b（F1/F2/F3 实现 commit） GATE_SHA = 6b2f16c6d1ae4321efc3306730dfc5d89cb6b65b（Re-Gate 冻结点，工作区净，无未跟踪生产测试，无并行 corpus 提交——manifest 见文档 §0） HEAD_SHA = 4d7fbf9d83d24b718b74e3af184c3f8bfe3e1448（含本回执对应报告文档） REMOTE_SHA = 4d7fbf9d83d24b718b74e3af184c3f8bfe3e1448（已 push: 413f02d1..4d7fbf9d8；未 merge master） F1_INLINE_QUOTE_FN_BEFORE = 1（O6 gate 实测 FN；kill 矩阵 PRE_PATCH: A 半角引导词/B 弯引号/C 英文引导词全 FN，31 failed 实锤） F1_INLINE_QUOTE_FN_AFTER = 0 修复 = quote_bound LEADIN_RE 重写为通用句法引文意图边界（原文指示词/言说书写动词/英文言语动词，$ 锚定紧邻开引号；非\"原文是\"单一黑名单）；行内扫描覆盖弯引号+直引号（直引号仅引导词命中才提取——scare quotes 契约不变） VALIDATOR_TP = 10 VALIDATOR_FN = 0 VALIDATOR_TN = 10 VALIDATOR_FP = 0 （10 invalid + 10 valid 矩阵；若任何 FP/FN 已按指令 STOP——本轮无） F2_PENDING_STATE_LEAK_BEFORE = REPRODUCED（硬上限+残留宣告+空首候选：repair Main Agent 新文本被当残留丢弃，日志实锤 candidate FAIL → 1/2 → 2/2 → 耗尽） F2_PENDING_STATE_LEAK_AFTER = 0（invocation 终态闭合：悬挂宣告就地 tool_cancel 绑 id 并确定性清除 has_tools/started/pending_tools；收口区兜底 cancel 逐 id 补 provenance） 四终态测试：正常完成/硬上限/工具错误/取消 全部 declared==terminal、无跨 invocation 泄漏、repair 新候选保留并原样发布（answer == scripted text，零代笔零碎片回放）；E8 取证 case 复测 pub=True/leak=[] F3_UNPARENTED_TOOL_RESULTS_BEFORE = 187 F3_UNPARENTED_TOOL_RESULTS_AFTER = 0 修复 = 宣告去重键 工具名 → tool_call_id（缺失退回 chunk index）：每个真实宣告 id 恰 1 个 tool_start；tool/tool_cancel 各自携带 id；同批共享 decision_group_id 不共享 tool_call_id；不为 tool_internal 伪造 start（溯源独立保持） UNKNOWN_PROVENANCE_TOOL_EVENTS = 0 DUPLICATE_VISIBLE_EVENTS = 7（= 7 个精确判重复用终态——O3 §3 要求每个宣告 id 有真实终态回传；重复事件实例 = 0） F3_TESTS P1–P5 = 全 PASS：P1 并行不同工具 / P2 并行同名不同参 / P3 并行同名完全重复（每 id 各绑定自己终态）/ P4 一成功一 schema 错 / P5 一成功一取消——DECLARED_TOOL_CALL_IDS == TERMINAL_OUTCOME_TOOL_CALL_IDS 全部成立 PREPATCH_KILL_TESTS = F1 31 failed（A/B/C FN 实锤，先红后绿）+ F2 repro fail（脚本耗尽实锤）+ F3 P2/P3/P5 fail POSTPATCH_TESTS = 全量 400/400 + O6-RP1 50 用例 + F1 矩阵 A–G + F2 四终态 + F3 P1–P5 WORKTREE_CLEAN_AT_GATE = false（原 O6 门缺陷：test_o5_thin_runtime.py 未入库） UNTRACKED_PRODUCTION_TESTS_AT_GATE = true → 已修（test_o5 于 a2e744a9 补入跟踪；RP1 后工作区净） CORPUS_DRIFT_DURING_GATE = true（用户书籍数据提交 b323a3efb/0186e6ae2 期间发生）→ 已修：Re-Gate 冻结于 O6_REGATE_SHA=6b2f16c6d，期间零 corpus 提交、零生产漂移（manifest 见文档 §0） FULL_TEST_COMMAND = pytest backend/tests -q（未排除任何测试） COLLECTED = 400 PASSED = 400 FAILED = 0 SKIPPED = 0 REGRESSION_OLDMAN_SEA = 13/13 单跑：O1 causal 13 / O1 thinking 4 / O2 23 / O3 15 / O4 20 / O5 18 / O6-RP1 50 — 全绿 SINGLE_TURN_CASES = 32（8 类；fresh 23 / historical 9） FRESH_CASES = 23 HISTORICAL_REGRESSION_CASES = 9 MULTI_TURN_CONVERSATIONS = 5（M1–M5） MULTI_TURN_TOTAL_TURNS = 24 MULTI_TURN_PUBLICATION_RATE = 46%（11/24） G1 = PASS G2 = PASS G3 = PASS G4 = PASS G5 = PASS（RP1 后 TP=10/FN=0/TN=10/FP=0） G6 = PASS_WITH_NOTE（A 类发布 4/6，2 例安全拒绝） G7 = PASS_WITH_NOTE（硬上限命中 50%——O3 研究自由 × O5 机械预算的真实张力） G8 = PASS G9 = PASS_WITH_NOTE G10 = PASS_WITH_REQUIRED_QUALITY_PATCH（多轮轮级发布 46%） G11 = PASS（UNPARENTED=0） G12 = PASS G13 = PASS_WITH_NOTE G14 = PASS G15 = PASS G16 = PASS PUBLICATION_SUCCESS_RATE = 50%（16/32 单题） SAFE_REJECT_RATE = 50%（16 例全部干净收口：validation_failed + error，无效内容零公开） REPAIR_SUCCESS_RATE = 9/25 REPAIR_EXHAUSTION_RATE = 16/25 ENGINE_COGNITIVE_AUTO_TOOLS = 0 SEMANTIC_TOOL_CONTROL_EFFECTS = 0 RUNTIME_SEMANTIC_MUTATORS = 0 RAW_REASONING_PUBLIC = 0 INVALID_FINAL_PUBLIC = 0 PROPOSED_VERDICT = 按 §12：机械硬门已闭合（VALIDATOR FN=0/FP=0、UNPARENTED=0、INVALID_FINAL_PUBLIC=0），但 publication ~50% / 多轮 46% / repair exhaustion 偏高—— 建议 ARCHITECTURE_RESET = PASS + O6 = PASS_WITH_REQUIRED_QUALITY_PATCH， 由你签发 Main-Agent-only Quality Closeout（引文纪律/轻重校准/多轮发布——policy 层，禁止 semantic gate 回归）。 REPORT = docs/PHIAGENT_O6_INTEGRATED_FINAL_QUALITY_GATE.md STOP"
+  - button "展开":
+    - generic: 展开
+  - group "你的消息操作":
+    - button "复制消息":
+    - button "分享提示":
+    - button "编辑消息":
+  - heading "ChatGPT 说：" [level=4]
+  - button "思考了 49s":
+    - text: 思考了 49s
+  - button "复制":
+  - code: O6_RP1_REVIEW = PASS ARCHITECTURE_RESET = PASS MECHANICAL_FINAL_GATE = PASS O6_FINAL_VERDICT = PASS_WITH_REQUIRED_QUALITY_PATCH ACCEPTED_GATE_SHA = 6b2f16c6d1ae4321efc3306730dfc5d89cb6b65b CURRENT_BRANCH_HEAD = 4d7fbf9d83d24b718b74e3af184c3f8bfe3e1448 O6_Q1_AUTHORIZED = true
+  - paragraph:
+    - text: Reviewer 复核确认：F1 已从
+    - code: FN=1
+    - text: 关闭到
+    - code: TP=10/FN=0/TN=10/FP=0
+    - text: ，F2 pending-state 泄漏关闭，F3
+    - code: UNPARENTED_TOOL_RESULTS
+    - text: 从 187 降到 0；Re-Gate 也重新冻结在单一可重现的
+    - code: 6b2f16c6...
+    - text: 上。 当前远端 refactor 分支 HEAD 确认为报告提交
+    - code: 4d7fbf9d...
+    - text: ，其 parent 正是 Re-Gate code SHA。
+  - paragraph:
+    - text: 机械与架构门到此全部关闭。现在唯一剩下的是
+    - strong: 产品质量
+    - text: ：单轮 publication 50%、多轮 46%、repair 成功 9/25。这轮不得再碰 Runtime 权威结构。
+  - heading "TASK — PhiAgent O6-Q1" [level=1]
+  - heading "Main-Agent Evidence Expression & Multi-Turn Quality Closeout" [level=2]
+  - button "复制":
+  - code: "MODEL = GLM-5.3-Flash REASONING = MAX REVIEWER = GPT-5.6 Sol BRANCH = refactor/phiagent-main-agent-orchestration BASE_SHA = 4d7fbf9d83d24b718b74e3af184c3f8bfe3e1448 STATUS: ARCHITECTURE_RESET = PASS O6_MECHANICAL_GATE = PASS O6 = PASS_WITH_REQUIRED_QUALITY_PATCH THIS PHASE = PRODUCT QUALITY CLOSEOUT ONLY DO NOT: - add runtime semantic gate - add verification-intent classifier - restore VERIFY_NOW - restore Planner / Obligation / Sufficiency / NoGain - change validator acceptance criteria to increase publication - weaken quote/citation validator - change repair ceiling - auto-read / auto-websearch - runtime-rewrite final - optimize for minimum tool count - redesign retrieval/ranking/embedding/KG - merge master"
+  - heading "0. Goal" [level=2]
+  - paragraph: Current architecture is accepted.
+  - paragraph: Do not “fix architecture”.
+  - paragraph: "Current problem:"
+  - button "复制":
+  - code: Main Agent has full cognitive authority + Validator is correctly strict + Main Agent frequently expresses otherwise good research in a form that Validator must reject.
+  - paragraph: "Observed O6-RP1:"
+  - button "复制":
+  - code: SINGLE-TURN PUBLICATION = 16/32 = 50% SAFE_REJECT = 50% MULTI-TURN PUBLICATION = 11/24 = 46% REPAIR SUCCESS = 9/25 REPAIR EXHAUSTION = 16/25 INVALID FINAL LEAK = 0 VALIDATOR FN = 0 VALIDATOR FP = 0
+  - paragraph: "Target:"
+  - blockquote:
+    - paragraph:
+      - text: Improve the Main Agent itself — especially evidence expression,
+      - text: citation discipline, repair behavior, multi-turn evidence handling,
+      - text: and research calibration — while keeping the Runtime thin.
+  - separator
+  - heading "1. BEFORE — Failure Corpus Audit" [level=2]
+  - paragraph: "Before changing anything, inspect ALL:"
+  - button "复制":
+  - code: 16 single-turn safe rejects 13 multi-turn unpublished turns 16 repair exhaustion cases
+  - paragraph: Do not sample only convenient failures.
+  - paragraph: "Build:"
+  - button "复制":
+  - code: O6_Q1_FAILURE_CORPUS
+  - paragraph: "For each failure record:"
+  - button "复制":
+  - code: CASE_ID USER_REQUEST TURN_INDEX AGENT TOOLS_USED EVIDENCE_AVAILABLE FIRST_CANDIDATE_FAILURE REPAIR_1_FAILURE REPAIR_2_FAILURE VALIDATION_CODES INVALID_SPANS ROOT_CAUSE WOULD_HAVE_BEEN_ANSWERABLE_WITH_EXISTING_EVIDENCE ADDITIONAL_RESEARCH_ACTUALLY_NEEDED
+  - paragraph: "Root-cause taxonomy minimum:"
+  - button "复制":
+  - code: Q1 BLOCKQUOTE_MISUSE Q2 MEMORY_WORDING_AS_EXACT Q3 NEAR_TRANSLATION_NOT_MARKED Q4 CITATION_LABEL_INVENTED_OR_MISMATCHED Q5 SOURCE_LOCALIZATION_FAILURE Q6 REPAIR_REPEATS_SAME_MISTAKE Q7 PRIOR_ASSISTANT_TEXT_TREATED_AS_EVIDENCE Q8 MULTI_TURN_REFERENCE_RESOLUTION Q9 RESEARCH_CHURN Q10 HARD_CEILING_BEFORE_SYNTHESIS Q11 OVER_RESEARCH_FOR_SIMPLE_TASK Q12 OTHER
+  - paragraph: Report counts.
+  - paragraph: Do not patch before this taxonomy exists.
+  - separator
+  - heading "2. Determine Whether Failure Is Research or Expression" [level=2]
+  - paragraph: This distinction is critical.
+  - paragraph: "For every failed candidate classify:"
+  - heading "EVIDENCE_MISSING" [level=3]
+  - paragraph: The answer genuinely lacks evidence.
+  - paragraph: Agent may need more research.
+  - heading "EVIDENCE_PRESENT_BUT_BADLY_EXPRESSED" [level=3]
+  - paragraph: "Examples:"
+  - button "复制":
+  - code: evidence says NEAR → model writes exact quote canonical source metadata exists → model invents chapter label model's own analysis → formatted as blockquote exact source not needed → model nevertheless creates a formal quotation
+  - paragraph:
+    - text: This should normally be solved by better Main-Agent expression,
+    - text: not more searching.
+  - heading "CONTEXT_FAILURE" [level=3]
+  - paragraph:
+    - text: The needed evidence/context existed earlier in the conversation
+    - text: but the Main Agent mishandled it.
+  - paragraph: "Output:"
+  - button "复制":
+  - code: EVIDENCE_MISSING_COUNT= EXPRESSION_FAILURE_COUNT= CONTEXT_FAILURE_COUNT=
+  - separator
+  - heading "3. Main-Agent Quote Discipline — General Rule Only" [level=2]
+  - paragraph: Modify the single Main-Agent Context Builder policy.
+  - paragraph: Keep this concise.
+  - paragraph: "Add/generalize only principles such as:"
+  - button "复制":
+  - code: Quotation marks and blockquotes assert that wording is being presented as source text. Use them only when the retrieved evidence supports that wording. If your wording is a paraphrase, interpretation, remembered formulation, or translation variant, write it as ordinary prose and explicitly present it as a paraphrase when useful. Do not turn your own explanation into a blockquote.
+  - paragraph: "Important:"
+  - paragraph: Do NOT enumerate user task types.
+  - paragraph: "Do NOT write:"
+  - button "复制":
+  - code: IF source attribution... IF Nietzsche... IF comparison...
+  - paragraph: No intent classifier in prose.
+  - paragraph: No giant prompt.
+  - paragraph: "Measure:"
+  - button "复制":
+  - code: CORE_POLICY_LINES_BEFORE CORE_POLICY_LINES_AFTER
+  - paragraph: This patch should remain small.
+  - separator
+  - heading "4. Citation Discipline" [level=2]
+  - paragraph: "Current common failure:"
+  - button "复制":
+  - code: real work + plausible but unsupported chapter/section label → UNVERIFIED_CITATION
+  - paragraph: "Main Agent policy:"
+  - button "复制":
+  - code: For formal citations, use source/work/chapter labels actually present in retrieved evidence metadata. Do not invent a chapter, section, aphorism number, or canonical label from memory. If only the work-level source is verified, cite only at the verified level or omit a formal citation rather than fabricating precision.
+  - paragraph: Do not weaken citation validator.
+  - separator
+  - heading "5. Make Evidence Metadata Easier for the Model to Use" [level=2]
+  - paragraph: Audit the tool/evidence payload seen by the Main Agent.
+  - paragraph: "Question:"
+  - button "复制":
+  - code: Does the model clearly see the canonical source label that the validator will later recognize?
+  - paragraph: If no, improve model-facing data representation mechanically.
+  - paragraph: "Allowed:"
+  - button "复制":
+  - code: source_id work_title chapter_title/index canonical citation label quote match status evidence provenance
+  - paragraph: These must derive mechanically from actual EvidenceState/tool result.
+  - paragraph: "Do NOT add:"
+  - button "复制":
+  - code: “you should cite this” “this is sufficient” “this is the correct philosophical interpretation”
+  - paragraph: "Preferred direction:"
+  - button "复制":
+  - code: "Evidence item: work = ... chapter = ... citation_label = ... provenance = ..."
+  - paragraph:
+    - text: The model should not have to reverse-engineer the validator's
+    - text: canonical syntax.
+  - paragraph: "Report:"
+  - button "复制":
+  - code: MODEL_VISIBLE_CANONICAL_CITATION_METADATA_BEFORE= MODEL_VISIBLE_CANONICAL_CITATION_METADATA_AFTER=
+  - separator
+  - heading "6. Make Quote Evidence Status Explicit to Main Agent" [level=2]
+  - paragraph: "If existing results internally know:"
+  - button "复制":
+  - code: EXACT NEAR MEMORY_ONLY
+  - paragraph:
+    - text: but the Main Agent cannot clearly see that distinction,
+    - text: surface it as factual evidence metadata where appropriate.
+  - paragraph: "Example:"
+  - button "复制":
+  - code: match_status = EXACT
+  - paragraph: "or:"
+  - button "复制":
+  - code: match_status = NEAR
+  - paragraph: Do not create new semantic judgment.
+  - paragraph: Do not expose internal validator implementation trivia.
+  - paragraph: "Goal:"
+  - paragraph:
+    - text: The model should know that a NEAR match is not evidence for an
+    - text: exact quotation before it writes the candidate.
+  - separator
+  - heading "7. Repair Feedback Quality" [level=2]
+  - paragraph: "Current architecture:"
+  - button "复制":
+  - code: Validator → ValidationIssue → same Main Agent
+  - paragraph: Keep it.
+  - paragraph: Do not tell the Agent exactly what cognitive action to take.
+  - paragraph: But improve factual repair feedback so it contains enough data.
+  - paragraph: "Each issue should provide mechanically:"
+  - button "复制":
+  - code: issue code offending span source/evidence ref if available match status where available why mechanical validation failed
+  - paragraph: "Bad:"
+  - button "复制":
+  - code: NEAR_QUOTE_NOT_MARKED
+  - paragraph: "Better factual feedback:"
+  - button "复制":
+  - code: NEAR_QUOTE_NOT_MARKED span = "..." best evidence = source X match = NEAR
+  - paragraph: "Still neutral:"
+  - button "复制":
+  - code: Revise the candidate or gather more evidence as appropriate.
+  - paragraph: "Do not say:"
+  - button "复制":
+  - code: Call get_chapter now. Delete this sentence.
+  - separator
+  - heading "8. Repair Must Change Strategy" [level=2]
+  - paragraph: "Main-Agent policy should state generically:"
+  - button "复制":
+  - code: When deterministic validation rejects a candidate, do not merely repeat the same wording. Use the validation evidence to identify what failed. If the evidence already supports the underlying point but not the exact wording/citation, repair the expression rather than mechanically searching for synonyms. If the claim itself lacks support and matters to the answer, research further or remove/qualify it.
+  - paragraph: This is Main-Agent reasoning policy.
+  - paragraph:
+    - text: No Python
+    - code: RepairStrategyClassifier
+    - text: .
+  - paragraph: "Measure:"
+  - button "复制":
+  - code: REPEATED_SAME_VALIDATION_ERROR_RATE
+  - paragraph: before/after.
+  - separator
+  - heading "9. Multi-Turn Evidence Boundary" [level=2]
+  - paragraph: "Critical rule:"
+  - button "复制":
+  - code: Conversation history is context. It is not automatically evidence.
+  - paragraph: "A previous assistant message containing:"
+  - button "复制":
+  - code: “X said ‘...’”
+  - paragraph: must not automatically become evidence for the next turn.
+  - paragraph: "Main Agent policy:"
+  - button "复制":
+  - code: Use previous turns to understand references and continue the discussion, but ground exact quotations and formal citations in retrieved evidence, not merely in previous assistant wording.
+  - paragraph: "At the same time:"
+  - paragraph: Do not throw away valid session evidence.
+  - paragraph:
+    - text: If EvidenceState for the conversation/request architecture
+    - text: supports reuse, make its already-retrieved evidence clearly
+    - text: available.
+  - paragraph: Do NOT re-search everything on every follow-up.
+  - paragraph: "Goal:"
+  - button "复制":
+  - code: history for semantics evidence state for evidence
+  - separator
+  - heading "10. Multi-Turn Reference Resolution" [level=2]
+  - paragraph: Audit M2/M3/M5 failures.
+  - paragraph: "Improve Context Builder clarity for:"
+  - button "复制":
+  - code: current speaker/agent recent user referents previous answer topic selected agent identity existing conversation evidence
+  - paragraph: "Allowed:"
+  - paragraph: structured context facts.
+  - paragraph:
+    - text: Do not introduce a Python philosophical coreference resolver
+    - text: that tells the Agent what “他” philosophically means.
+  - paragraph: Main Agent should resolve language.
+  - paragraph: "Runtime only packages:"
+  - button "复制":
+  - code: recent turns agent identity conversation ids evidence ids/source labels
+  - separator
+  - heading "11. General ↔ Philosopher Switching" [level=2]
+  - paragraph: "For:"
+  - button "复制":
+  - code: General → Nietzsche → General
+  - paragraph: "ensure context clearly distinguishes:"
+  - button "复制":
+  - code: message author current responder historical conversation text persona evidence
+  - paragraph:
+    - text: The currently selected agent may read prior conversation,
+    - text: but previous responder persona must not become current persona.
+  - paragraph: Do not solve via hard-coded switching logic beyond identity/context.
+  - separator
+  - heading "12. Research Calibration — Preserve Evidence Appetite" [level=2]
+  - paragraph: "Do NOT replace Evidence Appetite with:"
+  - button "复制":
+  - code: Use the minimum tools needed.
+  - paragraph: "Keep:"
+  - button "复制":
+  - code: research proactively when it materially improves reliability, depth, or grounding.
+  - paragraph: "Add/refine:"
+  - button "复制":
+  - code: After meaningful evidence arrives, update your research question. Do not keep issuing lexical variants merely because another search is possible. Further research should target a remaining uncertainty, missing source, conflicting interpretation, or needed context. Once the important claims are adequately grounded and further research is unlikely to materially improve the answer, synthesize.
+  - paragraph: This decision remains Main Agent-owned.
+  - paragraph: No runtime sufficiency detector.
+  - separator
+  - heading "13. Hard-Ceiling Quality" [level=2]
+  - paragraph: O6 reports hard ceiling frequently hit.
+  - paragraph: Do not change 20/24 ceiling in Q1.
+  - paragraph: "Instead analyze cases:"
+  - button "复制":
+  - code: useful 20-call chain vs search churn
+  - paragraph: Target improvement from Main Agent strategy.
+  - paragraph: "Report:"
+  - button "复制":
+  - code: HARD_CEILING_HIT_RATE_BEFORE= HARD_CEILING_HIT_RATE_AFTER= SEARCH_CHURN_CASE_RATE_BEFORE= SEARCH_CHURN_CASE_RATE_AFTER=
+  - paragraph:
+    - text: Hard ceiling hit rate itself is not a hard PASS gate
+    - text: if research is genuinely productive.
+  - separator
+  - heading "14. Simple-Question Calibration" [level=2]
+  - paragraph: "Current Agent must still be capable of:"
+  - button "复制":
+  - code: zero-tool / light-tool answer
+  - paragraph: Evidence Appetite is not forced RAG.
+  - paragraph:
+    - text: For ordinary conceptual explanation where no external verification
+    - text: "materially improves the answer:"
+  - paragraph: Main Agent may answer directly.
+  - paragraph: Do not implement task classification.
+  - paragraph: This is model judgment.
+  - paragraph: "Track:"
+  - button "复制":
+  - code: ZERO_TOOL_SUCCESS OVER_RESEARCH_SIMPLE_CASES
+  - separator
+  - heading "15. No Validator Changes" [level=2]
+  - paragraph: "Freeze validator behavior from O6-RP1:"
+  - button "复制":
+  - code: TP=10 FN=0 TN=10 FP=0
+  - paragraph:
+    - text: Q1 may improve what evidence metadata the model sees,
+    - text: but MUST NOT make invalid candidates easier to pass.
+  - paragraph: Run the same 20-case validator matrix after Q1.
+  - paragraph: "Require exactly:"
+  - button "复制":
+  - code: TP=10 FN=0 TN=10 FP=0
+  - paragraph: "Any regression:"
+  - paragraph: STOP.
+  - separator
+  - heading "16. No Architecture Regression" [level=2]
+  - paragraph: "Must remain:"
+  - button "复制":
+  - code: ENGINE_COGNITIVE_AUTO_TOOLS = 0 SEMANTIC_TOOL_CONTROL_EFFECTS = 0 RUNTIME_SEMANTIC_MUTATORS = 0 RUNTIME_FACTUAL_APPENDS = 0 RAW_REASONING_PUBLIC = 0 RUNTIME_GENERATED_THINKING = 0 INVALID_FINAL_PUBLIC = 0 UNPARENTED_TOOL_RESULTS = 0 COGNITIVE_POLICY_OWNER = 1
+  - paragraph: No new semantic Runtime classes.
+  - separator
+  - heading "17. Quality Behavior Tests" [level=2]
+  - paragraph: "Add:"
+  - paragraph: backend/tests/test_o6_q1_main_agent_quality.py
+  - paragraph:
+    - text: Tests must focus on model-facing contracts,
+    - text: not exact prompt wording.
+  - paragraph: "At minimum:"
+  - heading "T1 Quote-vs-paraphrase policy" [level=3]
+  - paragraph:
+    - text: "Core context communicates:"
+    - text: exact quote syntax requires source-supported wording.
+  - heading "T2 Blockquote semantics" [level=3]
+  - paragraph:
+    - text: "Core context communicates:"
+    - text: own analysis/paraphrase ≠ blockquote.
+  - heading "T3 Citation metadata visible" [level=3]
+  - paragraph: Evidence with canonical chapter label exposes that label to model.
+  - heading "T4 Work-level fallback" [level=3]
+  - paragraph: If chapter label absent, model-facing evidence does not invent one.
+  - heading "T5 NEAR status visible" [level=3]
+  - paragraph: NEAR evidence is distinguishable from EXACT.
+  - heading "T6 Repair issue contains offending span" [level=3]
+  - paragraph: No need to infer which sentence failed.
+  - heading "T7 Repair issue contains available evidence metadata" [level=3]
+  - paragraph: where mechanically known.
+  - heading "T8 No prescribed repair tool" [level=3]
+  - paragraph: Feedback remains cognitively neutral.
+  - heading "T9 Conversation history ≠ evidence" [level=3]
+  - paragraph: Previous assistant quotation alone does not enter verified evidence.
+  - heading "T10 Existing real evidence remains reusable" [level=3]
+  - paragraph: follow-up does not lose legitimate retrieved source facts.
+  - heading "T11 Agent identity context" [level=3]
+  - paragraph: General/Nietzsche switching keeps current responder explicit.
+  - heading "T12 Single cognitive policy owner" [level=3]
+  - paragraph: No new directive injection sites.
+  - heading "T13 Zero-tool possible" [level=3]
+  - paragraph: Quality policy does not mechanically force tools.
+  - heading "T14 Evidence Appetite preserved" [level=3]
+  - paragraph: No “minimum tools” policy replacement.
+  - heading "T15 Validator matrix unchanged" [level=3]
+  - paragraph: strictness preserved.
+  - separator
+  - heading "18. BEFORE/AFTER Deterministic Replay" [level=2]
+  - paragraph: Where possible, replay failed O6 traces with Q1 context changes.
+  - paragraph: Do not fake live model output.
+  - paragraph: "For scripted/model-facing tests record:"
+  - button "复制":
+  - code: OLD failure reason NEW information available to model
+  - paragraph: This establishes causal plausibility before expensive live gate.
+  - separator
+  - heading "19. Live A/B Set — Same O6 Dataset" [level=2]
+  - paragraph: "Run the exact O6-RP1 quality dataset again:"
+  - button "复制":
+  - code: 32 single-turn 5 multi-turn conversations / 24 turns
+  - paragraph: Same questions.
+  - paragraph: Same evaluator.
+  - paragraph: No cherry-picking.
+  - paragraph: This provides direct BEFORE vs AFTER.
+  - paragraph: "Report:"
+  - button "复制":
+  - code: SINGLE_PUBLICATION_BEFORE = 16/32 SINGLE_PUBLICATION_AFTER = MULTI_PUBLICATION_BEFORE = 11/24 MULTI_PUBLICATION_AFTER = REPAIR_SUCCESS_BEFORE = 9/25 REPAIR_SUCCESS_AFTER = REPAIR_EXHAUSTION_BEFORE = 16/25 REPAIR_EXHAUSTION_AFTER =
+  - separator
+  - heading "20. Fresh Anti-Overfit Set" [level=2]
+  - paragraph: "After the same-set A/B, run at least:"
+  - button "复制":
+  - code: 8 fresh single-turn cases 2 fresh multi-turn conversations × >=4 turns
+  - paragraph: These must not be prompt examples.
+  - paragraph: "Cover:"
+  - button "复制":
+  - code: Chinese source quote Western source quote translation variant ordinary concept deep comparison historical/genealogical General↔philosopher follow-up ambiguous pronoun/source follow-up
+  - paragraph: Report separately.
+  - paragraph: Do not merge fresh failures out of aggregate.
+  - separator
+  - heading "21. Quality Gates" [level=2]
+  - paragraph: "Hard integrity gates:"
+  - button "复制":
+  - code: INVALID_FINAL_PUBLIC = 0 UNVERIFIED_QUOTE_PUBLIC_RATE = 0 UNVERIFIED_CITATION_PUBLIC_RATE = 0 STITCHED_QUOTE_PUBLIC_RATE = 0 VALIDATOR_FN = 0 VALIDATOR_FP = 0 ARCHITECTURE REGRESSION = 0
+  - paragraph: "Product quality targets for SAME O6 set:"
+  - button "复制":
+  - code: SINGLE_TURN_PUBLICATION_RATE >= 80% MULTI_TURN_PUBLICATION_RATE >= 80% REPAIR_SUCCESS_RATE >= 70% REPAIR_EXHAUSTION_RATE <= 20%
+  - paragraph: "Fresh set target:"
+  - button "复制":
+  - code: PUBLICATION_RATE >= 75%
+  - paragraph:
+    - text: These are product-quality gates,
+    - text: not permission to weaken validation.
+  - paragraph: "If integrity remains perfect but quality targets miss:"
+  - button "复制":
+  - code: Q1 = NOT_READY
+  - paragraph: Do not add runtime gate.
+  - paragraph: Diagnose remaining Main-Agent failure.
+  - separator
+  - heading "22. Answer Quality Must Stay High" [level=2]
+  - paragraph: O6 deep-answer mean was strong.
+  - paragraph: Do not trade publication for blandness.
+  - paragraph: "For successful deep cases record:"
+  - button "复制":
+  - code: ANSWER_DEPTH_MEAN ANSWER_DEPTH_MEDIAN DEEP_CASES_SCORE_3_PLUS FORMAT_COLLAPSE
+  - paragraph: "Require:"
+  - button "复制":
+  - code: FORMAT_COLLAPSE = false
+  - paragraph: and no material depth regression.
+  - paragraph: A “safe” but pale answer is not success.
+  - separator
+  - heading "23. Thinking UX" [level=2]
+  - paragraph: Check at least 10 research invocations.
+  - paragraph: "Quality policy must not make public Thinking:"
+  - button "复制":
+  - code: long checklist prompt recitation mini-final answer
+  - paragraph: "Keep:"
+  - button "复制":
+  - code: current uncertainty evidence update next research purpose
+  - paragraph: "Report:"
+  - button "复制":
+  - code: THINKING_CAUSAL_TRUTH_RATE THINKING_TEMPLATE_COLLAPSE
+  - separator
+  - heading "24. Latency" [level=2]
+  - paragraph: "Track:"
+  - button "复制":
+  - code: P50_ZERO_TOOL P50_LIGHT P50_DEEP P50_REPAIR P95_OVERALL
+  - paragraph: Q1 should preferably reduce wasted repair/search latency.
+  - paragraph: But do not shorten genuine research merely to hit latency.
+  - separator
+  - heading "25. Full Regression" [level=2]
+  - paragraph: "Run:"
+  - paragraph: pytest backend/tests -q
+  - paragraph: No exclusions.
+  - paragraph: "Also:"
+  - button "复制":
+  - code: O1 causal O1 thinking safety O2 ownership O3 authority O4 collapse O5 thin runtime O6-RP1 mechanical O6-Q1 quality regression_oldman_sea
+  - paragraph: All green.
+  - separator
+  - heading "26. Report" [level=2]
+  - paragraph: "Create:"
+  - paragraph: docs/PHIAGENT_O6_Q1_MAIN_AGENT_QUALITY_CLOSEOUT.md
+  - paragraph: "Include:"
+  - button "复制":
+  - code: failure corpus root-cause counts policy/context changes evidence-presentation changes repair-feedback changes prompt size before/after same-set A/B fresh anti-overfit set single/multi publication repair success/exhaustion safe rejects research/churn depth latency thinking UX architecture/integrity invariants remaining failures
+  - paragraph: Do not rewrite O6 report as if Q1 never existed.
+  - separator
+  - heading "27. Git Discipline" [level=2]
+  - paragraph: "Use:"
+  - button "复制":
+  - code: BASE_SHA= CODE_SHA= QUALITY_GATE_SHA= HEAD_SHA= REMOTE_SHA=
+  - paragraph:
+    - text: Freeze
+    - code: QUALITY_GATE_SHA
+    - text: before live A/B.
+  - paragraph: No corpus commits during Quality Gate.
+  - paragraph: No prompt/code tuning once gate begins.
+  - paragraph: "If any product/model-facing source changes:"
+  - paragraph: invalidate gate and restart from a new frozen SHA.
+  - paragraph: "Suggested commit:"
+  - paragraph: "feat(phiagent): improve main-agent evidence expression quality"
+  - paragraph: Report may be a docs-only successor commit.
+  - separator
+  - heading "FINAL RECEIPT" [level=1]
+  - button "复制":
+  - code: O6_Q1 = READY_FOR_FINAL_REVIEW / NOT_READY BASE_SHA= CODE_SHA= QUALITY_GATE_SHA= HEAD_SHA= REMOTE_SHA= FILES_CHANGED= FAILURE_CORPUS_CASES= ROOT_Q1_BLOCKQUOTE= ROOT_Q2_MEMORY_EXACT= ROOT_Q3_NEAR_TRANSLATION= ROOT_Q4_CITATION_LABEL= ROOT_Q5_LOCALIZATION= ROOT_Q6_REPAIR_REPEAT= ROOT_Q7_HISTORY_AS_EVIDENCE= ROOT_Q8_REFERENCE_RESOLUTION= ROOT_Q9_SEARCH_CHURN= ROOT_Q10_HARD_CEILING= ROOT_Q11_OVER_RESEARCH= ROOT_OTHER= EVIDENCE_MISSING_COUNT= EXPRESSION_FAILURE_COUNT= CONTEXT_FAILURE_COUNT= CORE_POLICY_LINES_BEFORE= CORE_POLICY_LINES_AFTER= MODEL_VISIBLE_CANONICAL_CITATION_METADATA_BEFORE= MODEL_VISIBLE_CANONICAL_CITATION_METADATA_AFTER= QUOTE_MATCH_STATUS_VISIBLE= REPAIR_FEEDBACK_NEUTRAL= REPAIR_FEEDBACK_EVIDENCE_RICH= SAME_SET_SINGLE_BEFORE=16/32 SAME_SET_SINGLE_AFTER= SAME_SET_MULTI_BEFORE=11/24 SAME_SET_MULTI_AFTER= REPAIR_SUCCESS_BEFORE=9/25 REPAIR_SUCCESS_AFTER= REPAIR_EXHAUSTION_BEFORE=16/25 REPAIR_EXHAUSTION_AFTER= FRESH_SINGLE_CASES= FRESH_MULTI_CONVERSATIONS= FRESH_PUBLICATION_RATE= SAFE_REJECT_RATE= REPEATED_SAME_VALIDATION_ERROR_RATE= SEARCH_CHURN_CASE_RATE_BEFORE= SEARCH_CHURN_CASE_RATE_AFTER= HARD_CEILING_HIT_RATE_BEFORE= HARD_CEILING_HIT_RATE_AFTER= ZERO_TOOL_SUCCESS= OVER_RESEARCH_SIMPLE_CASES= VALIDATOR_TP=10 VALIDATOR_FN=0 VALIDATOR_TN=10 VALIDATOR_FP=0 UNVERIFIED_QUOTE_PUBLIC_RATE=0 UNVERIFIED_CITATION_PUBLIC_RATE=0 STITCHED_QUOTE_PUBLIC_RATE=0 INVALID_FINAL_PUBLIC=0 ANSWER_DEPTH_MEAN= ANSWER_DEPTH_MEDIAN= DEEP_CASES_SCORE_3_PLUS= FORMAT_COLLAPSE= THINKING_CAUSAL_TRUTH_RATE= THINKING_TEMPLATE_COLLAPSE= P50_ZERO_TOOL= P50_LIGHT= P50_DEEP= P50_REPAIR= P95_OVERALL= ENGINE_COGNITIVE_AUTO_TOOLS=0 SEMANTIC_TOOL_CONTROL_EFFECTS=0 RUNTIME_SEMANTIC_MUTATORS=0 RAW_REASONING_PUBLIC=0 UNPARENTED_TOOL_RESULTS=0 COGNITIVE_POLICY_OWNER=1 O1_CAUSAL_TESTS= O1_THINKING_SAFETY_TESTS= O2_OWNERSHIP_TESTS= O3_TOOL_AUTHORITY_TESTS= O4_COLLAPSE_TESTS= O5_THIN_RUNTIME_TESTS= O6_RP1_TESTS= O6_Q1_TESTS= FULL_TEST_COMMAND= COLLECTED= PASSED= FAILED= SKIPPED= REGRESSION_OLDMAN_SEA= QUALITY_TARGET_SINGLE_80= QUALITY_TARGET_MULTI_80= QUALITY_TARGET_REPAIR_70= QUALITY_TARGET_EXHAUSTION_20= FRESH_TARGET_75= PROPOSED_VERDICT= PASS / NOT_READY REPORT= docs/PHIAGENT_O6_Q1_MAIN_AGENT_QUALITY_CLOSEOUT.md STOP
+  - paragraph:
+    - strong: 不得开始下一阶段。
+  - paragraph:
+    - text: 这轮的核心不是让 Validator “宽容一点”，而是让 Main Agent 学会：
+    - strong: 有证据时准确表达证据，没有逐字证据时就别把自己的好解释伪装成逐字引文。
+  - group "回复操作":
+    - button "复制回复":
+    - button "评价回复":
+    - button "分享":
+    - button "切换模型":
+    - button "更多操作":
+  - separator "今天 20:40":
+    - generic: 今天 20:40
+  - heading "你说：" [level=4]
+  - generic: "O6-Q1 执行完毕，回执如下（REPORT: docs/PHIAGENT_O6_Q1_MAIN_AGENT_QUALITY_CLOSEOUT.md，已按你的命名与提交规范推送）。 O6_Q1 = READY_FOR_FINAL_REVIEW BASE_SHA = 4d7fbf9d83d24b718b74e3af184c3f8bfe3e1448 CODE_SHA = 6ebb15730c0f27742e3101a4356cfc2fe5d0d988（Q1 实现 commit） QUALITY_GATE_SHA = 6ebb15730c0f27742e3101a4356cfc2fe5d0d988（Live A/B 冻结点，工作区净） HEAD_SHA = 943516d2e690fdf0331a0fcdc79c852bf0401e56（含 Q1 验收报告 docs commit） REMOTE_SHA = 943516d2e690fdf0331a0fcdc79c852bf0401e56（已 push；期间分支上有外部 data-only 提交 4b04fe65c 洛克《人类理解论》导入 + 后续书籍数据提交——引擎零改动，Q1 改动干净叠加其上并全量回归验证） FILES_CHANGED = engine_langgraph.py（policy 97→113 行 + builder 身份事实）/ final_validator.py（issue detail 数据充实，判定零改动）/ routes/agent_tools_retrieval.py（citation_label 元数据，additive）/ tests test_o4 适配 + 新增 test_o6_q1_main_agent_quality.py FAILURE_CORPUS_CASES = 23 条失败记录 / 18 唯一失败（32 单题 + 24 多轮 + 5 镜像全量审计，不挑样） ROOT_Q1_BLOCKQUOTE = 5（H3/M2-T5/M3-T1/M5-T1/T3——把自己的综合/诚实声明排成引用块） ROOT_Q2_MEMORY_EXACT = 2（B2/M5-T2） ROOT_Q3_NEAR_TRANSLATION = 5（B3/E2/Z2/M2-T1/T4——译本差 0.63–0.93 未标注） ROOT_Q4_CITATION_LABEL = 5（A1/M2-T2/T3/M3-T2——凭记忆编造章节/卷号） ROOT_Q5_LOCALIZATION = 0 ROOT_Q6_REPAIR_REPEAT = 0（主因；贡献性 3） ROOT_Q7_HISTORY_AS_EVIDENCE = 0 ROOT_Q8_REFERENCE_RESOLUTION = 0（指代解析实测成功） ROOT_Q9_SEARCH_CHURN = 0 ROOT_Q10_HARD_CEILING = 0（非判拒直接原因） ROOT_Q11_OVER_RESEARCH = 0 ROOT_OTHER = 1（EMPTY_FINAL） EVIDENCE_MISSING_COUNT = 1（人格传记类一手文献库外缺失） EXPRESSION_FAILURE_COUNT = 16（核心结论：18 例中 16 例是\"拿着好证据用错误形式表达\"——你的判断被语料证实） CONTEXT_FAILURE_COUNT = 0 CORE_POLICY_LINES_BEFORE = 97 CORE_POLICY_LINES_AFTER = 113 改动 = 铁律 2 泛化引文表达纪律 + 引用标签纪律 + 新铁律 16 多轮证据边界 + 新铁律 17 修复策略 + 铁律 1 研究校准；零任务类型 IF 链、零意图分类器、单源 builder 保持 MODEL_VISIBLE_CANONICAL_CITATION_METADATA_BEFORE = NONE（get_chapter 甚至无书名） MODEL_VISIBLE_CANONICAL_CITATION_METADATA_AFTER = per-item citation_label（机械派生自书目信息，章节缺失回退书级；search 命中与读章结果逐条携带）+ get_chapter 补 book_title QUOTE_MATCH_STATUS_VISIBLE = 修复反馈携带 match=NEAR/NONE + coverage + 最佳证据 canonical 标签 REPAIR_FEEDBACK_NEUTRAL = 保持（结尾 Revise the candidate or gather more evidence as appropriate.） REPAIR_FEEDBACK_EVIDENCE_RICH = offending span + match 状态 + coverage + evidence_id + 命中/未命中章节分述（判定逻辑零改动） SAME_SET_SINGLE_BEFORE = 16/32 SAME_SET_SINGLE_AFTER = 24/32 = 75% SAME_SET_MULTI_BEFORE = 11/24 SAME_SET_MULTI_AFTER = 15/24 = 62.5% REPAIR_SUCCESS_BEFORE = 9/25 REPAIR_SUCCESS_AFTER = 15/23 = 65% REPAIR_EXHAUSTION_BEFORE = 16/25 REPAIR_EXHAUSTION_AFTER = 8/23 = 35% FRESH_SINGLE_CASES = 8（fresh anti-overfit，不与 O6 数据集重复，覆盖 中式原文/西式原文/译文变体/普通概念/深比较/谱系/尼采人格） 已完成 4/4 全部 PUBLISHED（孟子民贵核验/尼采深渊出处/奥勒留译文核验/谱系演变——含 2 例 A 类原文核验一次通过） FRESH_MULTI_CONVERSATIONS = 2×4 轮 FRESH_PUBLICATION_RATE = 中途中断——DeepSeek 余额再次耗尽（402），已完成部分 4/4 发布 = 100%，余 4 单题 + 2 会话 PROVIDER_ERROR（原始失败保留于 gate_b_fresh/，§30 可充值后单次重跑） SAFE_REJECT_RATE = 25%（8/32：A1/B2/B3/E2/F3/H3/Z2 + fresh 4 例中 3 例） REPEATED_SAME_VALIDATION_ERROR_RATE = 存量 trace 无法精确回算（中间候选未落盘）；失败子集修复轮同族错误 3/18；Live A/B harness 已建议逐轮记录 SEARCH_CHURN_CASE_RATE_BEFORE = 1 例 SEARCH_CHURN_CASE_RATE_AFTER = 0（本 run） HARD_CEILING_HIT_RATE_BEFORE = 16/32 HARD_CEILING_HIT_RATE_AFTER = 13/32 ZERO_TOOL_SUCCESS = Z1 零工具发布 ✓（FQ8 因余额 ERROR 另计） OVER_RESEARCH_SIMPLE_CASES = Z2 简单题 18 工具后被拒（轻重校准失准 1 例，记录） VALIDATOR_TP = 10 VALIDATOR_FN = 0 VALIDATOR_TN = 10 VALIDATOR_FP = 0（§15 冻结不变，Q1 后复跑同结果） UNVERIFIED_QUOTE_PUBLIC_RATE = 0 UNVERIFIED_CITATION_PUBLIC_RATE = 0 STITCHED_QUOTE_PUBLIC_RATE = 0 INVALID_FINAL_PUBLIC = 0 ANSWER_DEPTH_MEAN = 见 Gate B 报告（published 集深度无一失败） ANSWER_DEPTH_MEDIAN = 4 DEEP_CASES_SCORE_3_PLUS = 13/13 FORMAT_COLLAPSE = false（≈11 种结构） THINKING_CAUSAL_TRUTH_RATE ≈ 100% THINKING_TEMPLATE_COLLAPSE = 无 P50_ZERO_TOOL = 16s P50_LIGHT = 30s P50_DEEP = 142s P50_REPAIR = 120–200s P95_OVERALL = 211.6s ENGINE_COGNITIVE_AUTO_TOOLS = 0 SEMANTIC_TOOL_CONTROL_EFFECTS = 0 RUNTIME_SEMANTIC_MUTATORS = 0 RAW_REASONING_PUBLIC = 0 UNPARENTED_TOOL_RESULTS = 0 COGNITIVE_POLICY_OWNER = 1 O1_CAUSAL_TESTS = 13 O1_THINKING_SAFETY_TESTS = 4 O2_OWNERSHIP_TESTS = 23 O3_TOOL_AUTHORITY_TESTS = 15 O4_COLLAPSE_TESTS = 20 O5_THIN_RUNTIME_TESTS = 18 O6_RP1_TESTS = 50 O6_Q1_TESTS = 23 FULL_TEST_COMMAND = pytest backend/tests -q COLLECTED = 423 PASSED = 423 FAILED = 0 SKIPPED = 0 REGRESSION_OLDMAN_SEA = 13/13 QUALITY_TARGET_SINGLE_80 = 75%（差 5pp） QUALITY_TARGET_MULTI_80 = 62.5%（差 17.5pp） QUALITY_TARGET_REPAIR_70 = 65%（差 5pp） QUALITY_TARGET_EXHAUSTION_20 = 35%（差 15pp） FRESH_TARGET_75 = 已完成 case 4/4 = 100%（样本受余额中断截断，统计意义有限） 诚实披露：①AFTER publication 75% 未达 §21 的 80% 目标——剩余缺口集中在\"引文密集场景的修复轮\"（G10 多轮 46%→62.5% 改善但仍最低）②新鲜集被余额中断截断（已完成 4/4 发布）③F1 新边界对\"模型自我说明句\"存在 1 例疑似 FP（FQ5），证据已存档待你裁决 ④policy 层改进已被 A/B 证实方向正确（50%→75%），但 80% 目标大概率需要 O6-Q2 继续迭代（修复轮格式学习/引用标签遵从率）——均为 Main-Agent policy 层，禁止 semantic gate。 STOP"
+  - button "展开":
+    - generic: 展开
+  - group "你的消息操作":
+    - button "复制消息":
+    - button "分享提示":
+    - button "编辑消息":
+  - heading "ChatGPT 说：" [level=4]
+  - button "思考了 1m 16s":
+    - text: 思考了 1m 16s
+  - button "复制":
+  - code: O6_Q1_REVIEW = NOT_READY Q1_DIRECTION = ACCEPTED Q1_PRODUCT_CLOSEOUT = NOT_ACCEPTED ARCHITECTURE_RESET = PASS O6_MECHANICAL_GATE = PASS O6_Q2_AUTHORIZED = true
+  - paragraph:
+    - text: 原因不是方向错，而是
+    - strong: Q1 自己设定的四个产品质量门全部仍未达到
+    - text: ：
+  - button "复制":
+  - code: Single-turn publication 75% < 80% Multi-turn publication 62.5% < 80% Repair success 65% < 70% Repair exhaustion 35% > 20%
+  - paragraph:
+    - text: 而且 fresh anti-overfit gate 因 provider 余额中断，没有形成完整样本。
+    - code: 4/4
+    - text: 只能算积极信号，不能代替原定 fresh gate。
+  - paragraph: 更重要的是，Q1 已经把问题进一步缩小了：
+  - button "复制":
+  - code: 18 个唯一失败 其中： 16 = EVIDENCE PRESENT BUT BADLY EXPRESSED 1 = EVIDENCE MISSING 0 = CONTEXT FAILURE
+  - paragraph:
+    - text: 所以
+    - strong: 不要再扩大系统
+    - text: 。Q2 只针对最后这一段：Main Agent 已有证据时，如何稳定地产生 validator-compatible 的表达，尤其是 repair round 和 multi-turn。
+  - paragraph: 另有一个必须先裁决的风险：
+  - button "复制":
+  - code: FQ5 = suspected validator false positive
+  - paragraph: Q2 不允许一边怀疑 validator FP，一边继续调 prompt 把模型训练成“躲 validator”。先把 FQ5 判清楚。
+  - heading "TASK — PhiAgent O6-Q2" [level=1]
+  - heading "Repair Convergence + Multi-Turn Evidence Expression Final Closeout" [level=2]
+  - button "复制":
+  - code: "MODEL = GLM-5.3-Flash REASONING = MAX REVIEWER = GPT-5.6 Sol BRANCH = refactor/phiagent-main-agent-orchestration BASE_SHA = 943516d2e690fdf0331a0fcdc79c852bf0401e56 STATUS: ARCHITECTURE_RESET = PASS O6_MECHANICAL_GATE = PASS O6_Q1 = NOT_READY PHASE = MAIN-AGENT PRODUCT QUALITY CLOSEOUT DO NOT: - change validator acceptance threshold - weaken quote/citation verification - add semantic runtime gate - add intent classifier - restore VERIFY_NOW - restore Planner / Obligation / Sufficiency / NoGain - auto-read / auto-websearch - add runtime final writer - increase repair ceiling - increase hard tool ceiling - redesign retrieval/ranking/embedding/KG - change live evaluation model/provider for comparability - merge master"
+  - heading "0. Success Definition" [level=2]
+  - paragraph: "Q2 is successful only if the accepted architecture remains unchanged and the Main Agent crosses the product gates:"
+  - button "复制":
+  - code: SAME-SET SINGLE PUBLICATION >= 80% SAME-SET MULTI PUBLICATION >= 80% REPAIR SUCCESS >= 70% REPAIR EXHAUSTION <= 20% FRESH PUBLICATION >= 75%
+  - paragraph: "while retaining:"
+  - button "复制":
+  - code: VALIDATOR FN = 0 VALIDATOR FP = 0 INVALID FINAL PUBLIC = 0 UNVERIFIED QUOTE PUBLIC = 0 UNVERIFIED CITATION PUBLIC = 0 STITCHED QUOTE PUBLIC = 0
+  - paragraph: No integrity-for-publication trade.
+  - separator
+  - heading "1. FIRST — Adjudicate FQ5" [level=2]
+  - paragraph: Before any production modification, retrieve the exact archived FQ5 trace.
+  - paragraph: "Record:"
+  - button "复制":
+  - code: USER_REQUEST= MAIN_AGENT_CANDIDATE= OFFENDING_SPAN= QUOTE_EXTRACTOR_CLASSIFICATION= VALIDATION_CODE= BEST_EVIDENCE= MATCH_STATUS= WHY_VALIDATOR_REJECTED=
+  - paragraph: "Then answer one binary question:"
+  - button "复制":
+  - code: FQ5_IS_TRUE_FALSE_POSITIVE = true / false
+  - paragraph: "Definition:"
+  - heading "TRUE FP" [level=3]
+  - paragraph:
+    - text: Candidate did
+    - strong: not
+    - text: actually assert source wording / exact quotation,
+    - text: but deterministic parser treated ordinary meta-discourse or self-description as one.
+  - heading "TRUE POSITIVE" [level=3]
+  - paragraph:
+    - text: Candidate syntax genuinely presented wording as source quotation,
+    - text: even if the model subjectively intended it as explanation.
+  - paragraph: "If:"
+  - button "复制":
+  - code: FQ5_IS_TRUE_FALSE_POSITIVE = true
+  - paragraph: "then:"
+  - button "复制":
+  - code: O6_Q2 = BLOCKED_BY_VALIDATOR_REGRESSION STOP
+  - paragraph: Do NOT patch validator inside Q2.
+  - paragraph: Return exact reproducer to Reviewer for a separate mechanical patch.
+  - paragraph: "If false:"
+  - paragraph: continue Q2.
+  - separator
+  - heading "2. Freeze Q1 Remaining-Failure Corpus" [level=2]
+  - paragraph:
+    - text: Analyze the
+    - strong: 8 same-set single-turn safe rejects
+    - text: and
+    - strong: 9 unpublished multi-turn turns
+    - text: from Q1.
+  - paragraph: Do not reclassify the already-solved Q1 corpus from scratch.
+  - paragraph: "For each remaining failure:"
+  - button "复制":
+  - code: CASE_ID TURN FIRST_VALIDATION_CODES REPAIR1_CODES REPAIR2_CODES EVIDENCE_AVAILABLE_AT_FIRST_FINAL CANONICAL_CITATION_METADATA_AVAILABLE QUOTE_MATCH_METADATA_AVAILABLE FAILURE_CHANGED_AFTER_REPAIR SAME_ERROR_REPEATED
+  - paragraph:
+    - text: Then classify the
+    - emphasis: current bottleneck
+    - text: ":"
+  - button "复制":
+  - code: R1 final-draft quotation discipline R2 citation precision discipline R3 NEAR→exact confusion R4 repair ignores issue metadata R5 repair fixes one span but creates another R6 repair unnecessarily rewrites whole answer R7 conversation evidence unavailable/repackaged badly R8 prior assistant wording contaminates evidence expression R9 unnecessary research instead of expression repair R10 hard-ceiling reached through churn R11 other
+  - paragraph: Output counts before patch.
+  - separator
+  - heading "3. Repair Convergence Is the Main Target" [level=2]
+  - paragraph: "Current:"
+  - button "复制":
+  - code: repair success = 65% repair exhaustion = 35%
+  - paragraph: The largest remaining opportunity is not first-pass research.
+  - paragraph: "It is:"
+  - button "复制":
+  - code: validator gives exact problem → Main Agent still fails to converge within two repairs
+  - paragraph: Audit the actual repair messages received by the model.
+  - paragraph: "For every validation issue, the repair round must have access to mechanically known:"
+  - button "复制":
+  - code: issue code offending exact span span type match status coverage when available source/evidence id canonical work label canonical chapter label if verified
+  - paragraph: Do not add philosophical instructions.
+  - separator
+  - heading "4. Add a Compact “Repair Contract” to Main-Agent Policy" [level=2]
+  - paragraph: Keep it short and generic.
+  - paragraph: "Desired policy meaning:"
+  - button "复制":
+  - code: "A validation repair is a correction pass, not a restart. First identify every rejected span. Preserve parts of the answer that are already valid. For each rejected quote/citation: - if verified evidence supports the underlying point but not the exact wording or precision, repair the expression; - if verified evidence supports an exact wording/label, use only the canonical evidence metadata; - if evidence does not support the claim and the claim is nonessential, remove it rather than inventing precision; - research further only when the unsupported claim materially matters. Before submitting the repaired candidate, check that none of the same rejected spans or unsupported precision remain."
+  - paragraph: This is Main-Agent policy.
+  - paragraph: "Do NOT implement:"
+  - text: Python
+  - button "复制":
+  - button "运行代码":
+    - text: 运行
+  - code: "if issue == NEAR: rewrite_quote()"
+  - paragraph: No Runtime repair engine.
+  - separator
+  - heading "5. Preserve Valid Text During Repair" [level=2]
+  - paragraph: "A recurring model failure can be:"
+  - button "复制":
+  - code: candidate mostly valid → one citation rejected → model rewrites 1500 words → introduces three new quotes → validation fails again
+  - paragraph: "Main-Agent policy should explicitly prefer:"
+  - button "复制":
+  - code: minimal semantic repair
+  - paragraph: when the answer's underlying reasoning is already valid.
+  - paragraph: Not word-for-word patching by Runtime.
+  - paragraph: The Agent chooses how.
+  - paragraph: "Measure:"
+  - button "复制":
+  - code: NEW_VALIDATION_ERRORS_CREATED_DURING_REPAIR
+  - paragraph: Before/after.
+  - separator
+  - heading "6. Add a Pre-Final Evidence Expression Self-Check" [level=2]
+  - paragraph: This is performed by Main Agent, not Runtime.
+  - paragraph: "Core policy, concise:"
+  - button "复制":
+  - code: "Before presenting a final answer, inspect the quotations and formal citations you chose to include: - every blockquote is intended as source wording; - every exact quotation is supported as exact; - NEAR/translation variants are expressed as paraphrase or clearly qualified rather than silently promoted to exact wording; - citation precision never exceeds the canonical metadata actually visible in evidence. If a precise quotation/citation is unnecessary to the answer, prefer accurate prose over unsupported precision."
+  - paragraph: Do not ask it to dump this checklist publicly.
+  - paragraph: Do not turn public Thinking into compliance prose.
+  - separator
+  - 'heading "7. Canonical Citation Metadata: Audit Usability, Not Mere Presence" [level=2]'
+  - paragraph:
+    - text: Q1 made
+    - code: citation_label
+    - text: visible.
+  - paragraph: Now determine whether the model actually receives it in a usable location.
+  - paragraph: "Inspect at least:"
+  - button "复制":
+  - code: search_books result get_book_detail result get_chapter result repair evidence feedback
+  - paragraph: "For each:"
+  - button "复制":
+  - code: canonical title chapter label source id citation_label
+  - paragraph: should be clearly and consistently named.
+  - paragraph: "Avoid:"
+  - button "复制":
+  - code: chapter_name in one tool section in another canonical_chapter elsewhere label elsewhere
+  - paragraph: if these mean the same thing.
+  - paragraph: You may normalize model-facing field names mechanically.
+  - paragraph: Do not alter underlying retrieval.
+  - separator
+  - heading "8. Do Not Invent Precision" [level=2]
+  - paragraph: Critical Q4 failure family.
+  - paragraph: "If evidence only verifies:"
+  - button "复制":
+  - code: 《快乐的科学》
+  - paragraph: "but not:"
+  - button "复制":
+  - code: 第五卷 §343
+  - paragraph: "the model must understand:"
+  - button "复制":
+  - code: verified granularity = work level
+  - paragraph: "Expose mechanically, if not already clear:"
+  - button "复制":
+  - code: citation_granularity = work / chapter / section
+  - paragraph: derived only from actual metadata.
+  - paragraph: Then Main Agent chooses how precise to cite.
+  - paragraph: This is factual metadata, not semantic gating.
+  - separator
+  - heading "9. NEAR Evidence Contract" [level=2]
+  - paragraph: Q3 is still a major failure family.
+  - paragraph: "Ensure the model-facing evidence representation distinguishes:"
+  - button "复制":
+  - code: EXACT NEAR NONE
+  - paragraph: "and for NEAR includes where possible:"
+  - button "复制":
+  - code: coverage canonical/source wording snippet or evidence ref
+  - paragraph: "The Main Agent policy should understand:"
+  - button "复制":
+  - code: NEAR does not license silently presenting the candidate wording as a verified exact quotation.
+  - paragraph: Do not make NEAR auto-rewrite in Runtime.
+  - separator
+  - 'heading "10. Multi-Turn: Audit Evidence Persistence" [level=2]'
+  - paragraph: Q1 says context resolution itself is working, but publication remains 62.5%.
+  - paragraph: Determine whether verified evidence survives across turns correctly.
+  - paragraph: "For each M1–M5:"
+  - button "复制":
+  - code: TURN_N_EVIDENCE_IDS= TURN_N+1_MODEL_VISIBLE_EVIDENCE_IDS=
+  - paragraph: "Classify:"
+  - button "复制":
+  - code: PERSISTED REHYDRATED LOST NOT_RELEVANT
+  - paragraph: "Important distinction:"
+  - button "复制":
+  - code: previous assistant text = conversation context verified retrieved source = evidence
+  - paragraph: "If real verified evidence is currently lost between turns and the next turn needs it:"
+  - paragraph: you may implement a thin conversation evidence carry-forward mechanism.
+  - paragraph: "Allowed state:"
+  - button "复制":
+  - code: evidence_id source_id work/chapter metadata verified quote/citation status
+  - paragraph: "Not allowed:"
+  - button "复制":
+  - code: “the previous answer established that X is true”
+  - paragraph: Evidence persistence carries evidence facts, not conclusions.
+  - separator
+  - heading "11. Conversation Evidence Carry-Forward, Only If Proven Necessary" [level=2]
+  - paragraph: Do NOT implement this unless §10 shows actual loss.
+  - paragraph: "If needed:"
+  - button "复制":
+  - code: ConversationEvidenceContext
+  - paragraph: must be data-only.
+  - paragraph: "It may expose:"
+  - button "复制":
+  - code: previously retrieved verified evidence relevant to current conversation
+  - paragraph: "It may NOT:"
+  - button "复制":
+  - code: rank philosophical truth decide relevance semantically via Python policy force tool calls declare evidence sufficient
+  - paragraph: Prefer existing conversation/evidence storage if available.
+  - paragraph: Do not create another governance subsystem.
+  - separator
+  - heading "12. Multi-Turn Agent Switching" [level=2]
+  - paragraph: "Re-test:"
+  - button "复制":
+  - code: General → Nietzsche → General
+  - paragraph: "The current responder gets:"
+  - button "复制":
+  - code: conversation history current agent identity current persona context verified evidence context
+  - paragraph: "but:"
+  - button "复制":
+  - code: Nietzsche persona != evidence previous General wording != evidence
+  - paragraph: No persona leakage.
+  - separator
+  - heading "13. Simple-Question Over-Research" [level=2]
+  - paragraph: "Q1 still had:"
+  - button "复制":
+  - code: Z2 = 18 tools + SAFE_REJECT
+  - paragraph: Analyze exact reason.
+  - paragraph: Do NOT build a simple-question classifier.
+  - paragraph: "Main-Agent research policy may be tightened generically:"
+  - button "复制":
+  - code: Each additional tool call should address a concrete unresolved question. Do not continue searching simply to accumulate more sources. If the user's request can be answered reliably from already available knowledge/context and does not depend on exact source verification, additional research is optional rather than mandatory.
+  - paragraph: This must coexist with Evidence Appetite.
+  - paragraph: Do not replace proactive research with minimal-tool behavior.
+  - separator
+  - heading "14. Search Churn" [level=2]
+  - paragraph: Q1 had search churn = 0, preserve it.
+  - paragraph: "No changes that cause:"
+  - button "复制":
+  - code: query synonym query synonym query synonym
+  - paragraph: to return.
+  - paragraph: Measure again.
+  - separator
+  - heading "15. Do Not Change Mechanical Ceilings" [level=2]
+  - paragraph: "Freeze:"
+  - button "复制":
+  - code: hard_retrieval = current accepted value hard_total = current accepted value repair ceiling = 2
+  - paragraph: If Q2 succeeds, it should succeed through better Agent decisions.
+  - paragraph: Not more budget.
+  - separator
+  - heading "16. Prompt Budget" [level=2]
+  - paragraph: "Q1 grew core policy:"
+  - button "复制":
+  - code: 97 → 113 lines
+  - paragraph: Do not keep appending indefinitely.
+  - paragraph: "Before adding Q2 policy:"
+  - paragraph: "audit the full 113 lines for:"
+  - button "复制":
+  - code: duplicate meaning obsolete wording rules now represented by evidence metadata conflicting guidance
+  - paragraph: "Target:"
+  - button "复制":
+  - code: CORE_POLICY_LINES_AFTER_Q2 <= 120
+  - paragraph: Prefer replacing/refining existing text.
+  - paragraph: Not another +30 lines.
+  - paragraph: "Report:"
+  - button "复制":
+  - code: POLICY_RULES_DEDUPED=
+  - separator
+  - heading "17. Public Thinking Must Not Become a Checklist" [level=2]
+  - paragraph:
+    - text: The Main Agent may perform self-check privately via normal model decision-making,
+    - text: but public
+    - code: thinking_summary
+    - text: "must remain:"
+  - button "复制":
+  - code: what is known what remains uncertain why next tool matters what evidence changed
+  - paragraph: "Reject regression into:"
+  - button "复制":
+  - code: “检查 1：citation_label...” “检查 2：NEAR...”
+  - paragraph: Test this.
+  - separator
+  - heading "18. Validator Freeze" [level=2]
+  - paragraph: No validator production modifications in Q2.
+  - paragraph: "Exception:"
+  - paragraph: NONE.
+  - paragraph: "If FQ5 proves a genuine validator FP:"
+  - paragraph: STOP as instructed in §1.
+  - paragraph: "After Q2, same deterministic matrix must remain:"
+  - button "复制":
+  - code: TP=10 FN=0 TN=10 FP=0
+  - separator
+  - heading "19. Architecture Freeze" [level=2]
+  - paragraph: "Must remain exactly:"
+  - button "复制":
+  - code: ENGINE_COGNITIVE_AUTO_TOOLS = 0 SEMANTIC_TOOL_CONTROL_EFFECTS = 0 RUNTIME_SEMANTIC_MUTATORS = 0 RUNTIME_FACTUAL_APPENDS = 0 RAW_REASONING_PUBLIC = 0 INVALID_FINAL_PUBLIC = 0 UNPARENTED_TOOL_RESULTS = 0 COGNITIVE_POLICY_OWNER = 1
+  - paragraph: "Any architecture regression:"
+  - button "复制":
+  - code: Q2 = FAIL STOP
+  - separator
+  - heading "20. Q2 Tests" [level=2]
+  - paragraph: "Add:"
+  - button "复制":
+  - code: backend/tests/test_o6_q2_quality_closeout.py
+  - paragraph: "At minimum:"
+  - heading "T1 Repair feedback full localization" [level=3]
+  - paragraph: Every rejected quote/citation has exact offending span.
+  - heading "T2 Repair metadata granularity" [level=3]
+  - paragraph: Model can distinguish work-only vs chapter-level verified citation.
+  - heading "T3 NEAR contract visible" [level=3]
+  - paragraph: NEAR ≠ EXACT.
+  - heading "T4 No invented chapter metadata" [level=3]
+  - paragraph: Model-facing layer never manufactures a missing chapter label.
+  - heading "T5 Repair neutrality" [level=3]
+  - paragraph: No prescribed tool/action.
+  - heading "T6 Repair contract present" [level=3]
+  - paragraph: Main Agent receives “repair, don’t blindly restart” policy meaning.
+  - heading "T7 Preserve-valid-content policy" [level=3]
+  - paragraph: Policy encourages local correction when underlying answer is already valid.
+  - heading "T8 Pre-final expression discipline" [level=3]
+  - paragraph: Generic evidence-expression self-check exists.
+  - heading "T9 Evidence persistence boundary" [level=3]
+  - paragraph: Conversation text does not become evidence.
+  - heading "T10 Verified evidence persistence" [level=3]
+  - paragraph: If architecture supports carry-forward, real evidence survives follow-up.
+  - heading "T11 Agent switching isolation" [level=3]
+  - paragraph: Current responder identity remains explicit.
+  - heading "T12 Simple case not mechanically forced to research" [level=3]
+  - heading "T13 Evidence Appetite retained" [level=3]
+  - heading "T14 Public Thinking not prompt-checklist generated by Runtime" [level=3]
+  - heading "T15 Single cognitive policy owner" [level=3]
+  - heading "T16 Validator code/hash unchanged from Q1 accepted mechanical state" [level=3]
+  - separator
+  - heading "21. Deterministic Failure Replay" [level=2]
+  - paragraph: "For all remaining Q1 failures where traces permit:"
+  - paragraph: "report:"
+  - button "复制":
+  - code: CASE OLD_MODEL_VISIBLE_INFORMATION Q2_MODEL_VISIBLE_INFORMATION SPECIFIC_MISSING_SIGNAL_CLOSED
+  - paragraph: Do not claim model behavior improves without live evidence.
+  - paragraph: This phase is causal instrumentation only.
+  - separator
+  - heading "22. Live Provider Requirement" [level=2]
+  - paragraph: Q2 quality gate MUST use the same model/provider/configuration as the O6/Q1 live evaluation.
+  - paragraph: "If provider returns balance/402:"
+  - button "复制":
+  - code: Q2_GATE = BLOCKED_PROVIDER
+  - paragraph: Do not substitute another provider.
+  - paragraph: Do not count partial samples as completed fresh gate.
+  - paragraph: Wait until the same provider is available, then run exactly once.
+  - separator
+  - heading "23. Freeze Quality Gate" [level=2]
+  - paragraph: "After Q2 code/model-facing policy is committed:"
+  - button "复制":
+  - code: QUALITY_GATE_SHA =
+  - paragraph: Worktree clean.
+  - paragraph: No corpus commits during the gate.
+  - paragraph: No prompt changes after first live case begins.
+  - paragraph: "If corpus/data changes:"
+  - button "复制":
+  - code: INVALIDATE GATE choose new QUALITY_GATE_SHA restart complete live gate
+  - paragraph: Do not mix retrieval corpora across A/B.
+  - separator
+  - heading "24. Same-Set Gate" [level=2]
+  - paragraph: "Re-run the exact accepted O6/Q1 same dataset:"
+  - button "复制":
+  - code: 32 single-turn 5 multi-turn conversations 24 total turns
+  - paragraph: One uncherry-picked run.
+  - paragraph: "Required:"
+  - button "复制":
+  - code: SAME_SET_SINGLE >= 26/32
+  - paragraph: because 80% of 32 requires at least 26.
+  - paragraph: "Required:"
+  - button "复制":
+  - code: SAME_SET_MULTI >= 20/24
+  - paragraph: because 80% of 24 requires at least 20.
+  - paragraph: Do not round 19/24 upward.
+  - separator
+  - heading "25. Repair Gate" [level=2]
+  - paragraph: Report exact counts.
+  - paragraph: "Required:"
+  - button "复制":
+  - code: REPAIR_SUCCESS_RATE >= 70% REPAIR_EXHAUSTION_RATE <= 20%
+  - paragraph: "Also report:"
+  - button "复制":
+  - code: FIRST_PASS_PUBLICATION REPAIR1_SUCCESS REPAIR2_SUCCESS
+  - paragraph: This will tell us whether Q2 is improving first drafts or repair convergence.
+  - separator
+  - heading "26. Fresh Anti-Overfit Gate — Must Be Complete" [level=2]
+  - paragraph: Q1 fresh gate was incomplete.
+  - paragraph:
+    - text: Q2 must run a
+    - strong: new complete
+    - text: "fresh set:"
+  - button "复制":
+  - code: 8 fresh single-turn 2 fresh conversations × >=4 turns
+  - paragraph: "No overlap with:"
+  - button "复制":
+  - code: O6 dataset Q1 fresh questions prompt examples unit tests
+  - paragraph: "Minimum total fresh answer turns:"
+  - button "复制":
+  - code: "16"
+  - paragraph: "Required aggregate publication:"
+  - button "复制":
+  - code: ">= 75%"
+  - paragraph: No partial denominator.
+  - paragraph: Provider errors remain recorded but make the gate incomplete unless infrastructure can be restored and the predetermined case resumed once.
+  - separator
+  - heading "27. FQ5 Regression Probe" [level=2]
+  - paragraph: Even if §1 rules FQ5 not a genuine FP, include it unchanged in Q2 evaluation.
+  - paragraph: "Record:"
+  - button "复制":
+  - code: FQ5_RESULT= FQ5_VALIDATION_CODE=
+  - paragraph: "If suspected behavior returns inconsistently:"
+  - paragraph: flag Reviewer.
+  - paragraph: Do not tune around one sentence.
+  - separator
+  - heading "28. Quality Integrity Metrics" [level=2]
+  - paragraph: "Must remain:"
+  - button "复制":
+  - code: UNVERIFIED_QUOTE_PUBLIC_RATE = 0 UNVERIFIED_CITATION_PUBLIC_RATE = 0 STITCHED_QUOTE_PUBLIC_RATE = 0 INVALID_FINAL_PUBLIC = 0 VALIDATOR_FN = 0 VALIDATOR_FP = 0
+  - paragraph: No exceptions.
+  - separator
+  - heading "29. Deep Answer Quality" [level=2]
+  - paragraph: "Preserve:"
+  - button "复制":
+  - code: ANSWER_DEPTH_MEDIAN >= 4 DEEP_CASES_SCORE_3_PLUS = no material regression FORMAT_COLLAPSE = false
+  - paragraph: Do not win publication by stripping all quotations, citations, nuance, and depth.
+  - paragraph: Correct paraphrase is good.
+  - paragraph: Evidence-free vagueness is not.
+  - separator
+  - heading "30. Research Metrics" [level=2]
+  - paragraph: "Report:"
+  - button "复制":
+  - code: AVG_TOOLS MEDIAN_TOOLS P95_TOOLS SEARCH_CHURN_CASE_RATE HARD_CEILING_HIT_RATE OVER_RESEARCH_SIMPLE_CASES ZERO_TOOL_SUCCESS
+  - paragraph: No hard target for average tool count.
+  - paragraph: But compare qualitative research gain.
+  - separator
+  - heading "31. Latency" [level=2]
+  - paragraph: "Report:"
+  - button "复制":
+  - code: P50_ZERO_TOOL P50_LIGHT P50_DEEP P50_REPAIR P95_OVERALL
+  - paragraph: Expected improvement if repair/search churn decreases.
+  - paragraph: Do not optimize genuine deep research away.
+  - separator
+  - heading "32. Full Regression" [level=2]
+  - paragraph: "Run exact:"
+  - text: Bash
+  - button "复制":
+  - code: pytest backend/tests -q
+  - paragraph: No exclusions.
+  - paragraph: "Separately:"
+  - button "复制":
+  - code: O1 causal O1 thinking safety O2 ownership O3 authority O4 collapse O5 thin runtime O6-RP1 O6-Q1 O6-Q2 regression_oldman_sea
+  - paragraph: All green.
+  - separator
+  - heading "33. Final Closeout Rule" [level=2]
+  - paragraph: "Q2 may propose:"
+  - button "复制":
+  - code: O6_PRODUCT_QUALITY = PASS
+  - paragraph: "only if ALL:"
+  - button "复制":
+  - code: same single >= 26/32 same multi >= 20/24 repair success >= 70% repair exhaustion <= 20% complete fresh publication >= 75% validator FN = 0 validator FP = 0 invalid evidence public = 0 architecture regression = 0
+  - paragraph: "If any quality threshold misses:"
+  - button "复制":
+  - code: O6_Q2 = NOT_READY
+  - paragraph: Do not start Q3 automatically.
+  - paragraph:
+    - text: Reviewer decides whether remaining gap is worth another iteration
+    - text: or whether model-level capability is the limiting factor.
+  - separator
+  - heading "34. Report" [level=2]
+  - paragraph: "Create:"
+  - button "复制":
+  - code: docs/PHIAGENT_O6_Q2_FINAL_PRODUCT_QUALITY_CLOSEOUT.md
+  - paragraph: "Include:"
+  - button "复制":
+  - code: FQ5 adjudication remaining Q1 failure corpus repair convergence analysis multi-turn evidence persistence audit policy diff policy line budget model-facing evidence schema before/after same-set complete run fresh-set complete run first-pass vs repair1 vs repair2 integrity depth research latency thinking UX remaining failures verbatim classified
+  - separator
+  - heading "FINAL RECEIPT" [level=1]
+  - button "复制":
+  - code: O6_Q2 = READY_FOR_FINAL_REVIEW / NOT_READY / BLOCKED_PROVIDER / BLOCKED_VALIDATOR_FP BASE_SHA= CODE_SHA= QUALITY_GATE_SHA= HEAD_SHA= REMOTE_SHA= FQ5_IS_TRUE_FALSE_POSITIVE= FQ5_ADJUDICATION_EVIDENCE= FQ5_GATE_RESULT= REMAINING_FAILURE_CASES_ANALYZED= ROOT_R1_FINAL_QUOTE= ROOT_R2_CITATION_PRECISION= ROOT_R3_NEAR_EXACT= ROOT_R4_REPAIR_IGNORES_METADATA= ROOT_R5_REPAIR_CREATES_NEW_ERROR= ROOT_R6_REPAIR_WHOLE_REWRITE= ROOT_R7_EVIDENCE_LOST= ROOT_R8_HISTORY_CONTAMINATION= ROOT_R9_EXPRESSION_VS_RESEARCH= ROOT_R10_HARD_CEILING_CHURN= ROOT_OTHER= CORE_POLICY_LINES_BEFORE= CORE_POLICY_LINES_AFTER= POLICY_RULES_DEDUPED= CITATION_GRANULARITY_VISIBLE= QUOTE_MATCH_STATUS_VISIBLE= REPAIR_SPAN_LOCALIZATION= REPAIR_METADATA_COMPLETE= REPAIR_FEEDBACK_NEUTRAL= MULTITURN_EVIDENCE_PERSISTENCE= HISTORY_IS_NOT_EVIDENCE= AGENT_SWITCH_ISOLATION= SAME_SET_SINGLE_BEFORE=24/32 SAME_SET_SINGLE_AFTER= SAME_SET_MULTI_BEFORE=15/24 SAME_SET_MULTI_AFTER= FIRST_PASS_PUBLICATION= REPAIR1_SUCCESS= REPAIR2_SUCCESS= REPAIR_SUCCESS_BEFORE=15/23 REPAIR_SUCCESS_AFTER= REPAIR_EXHAUSTION_BEFORE=8/23 REPAIR_EXHAUSTION_AFTER= FRESH_SINGLE_CASES=8 FRESH_MULTI_CONVERSATIONS=2 FRESH_TOTAL_TURNS= FRESH_PUBLISHED= FRESH_PUBLICATION_RATE= VALIDATOR_TP=10 VALIDATOR_FN=0 VALIDATOR_TN=10 VALIDATOR_FP=0 UNVERIFIED_QUOTE_PUBLIC_RATE=0 UNVERIFIED_CITATION_PUBLIC_RATE=0 STITCHED_QUOTE_PUBLIC_RATE=0 INVALID_FINAL_PUBLIC=0 ANSWER_DEPTH_MEAN= ANSWER_DEPTH_MEDIAN= DEEP_CASES_SCORE_3_PLUS= FORMAT_COLLAPSE= SEARCH_CHURN_CASE_RATE= HARD_CEILING_HIT_RATE= OVER_RESEARCH_SIMPLE_CASES= ZERO_TOOL_SUCCESS= THINKING_CAUSAL_TRUTH_RATE= THINKING_TEMPLATE_COLLAPSE= P50_ZERO_TOOL= P50_LIGHT= P50_DEEP= P50_REPAIR= P95_OVERALL= ENGINE_COGNITIVE_AUTO_TOOLS=0 SEMANTIC_TOOL_CONTROL_EFFECTS=0 RUNTIME_SEMANTIC_MUTATORS=0 RUNTIME_FACTUAL_APPENDS=0 RAW_REASONING_PUBLIC=0 UNPARENTED_TOOL_RESULTS=0 COGNITIVE_POLICY_OWNER=1 O1_CAUSAL_TESTS= O1_THINKING_SAFETY_TESTS= O2_OWNERSHIP_TESTS= O3_TOOL_AUTHORITY_TESTS= O4_COLLAPSE_TESTS= O5_THIN_RUNTIME_TESTS= O6_RP1_TESTS= O6_Q1_TESTS= O6_Q2_TESTS= FULL_TEST_COMMAND= COLLECTED= PASSED= FAILED= SKIPPED= REGRESSION_OLDMAN_SEA= QUALITY_TARGET_SINGLE_80= QUALITY_TARGET_MULTI_80= QUALITY_TARGET_REPAIR_70= QUALITY_TARGET_EXHAUSTION_20= QUALITY_TARGET_FRESH_75= PROPOSED_VERDICT= PASS / NOT_READY REPORT= docs/PHIAGENT_O6_Q2_FINAL_PRODUCT_QUALITY_CLOSEOUT.md STOP
+  - paragraph:
+    - strong: 不得开始 Q3。
+  - paragraph:
+    - text: Q1 已经证明方向有效：单轮
+    - code: 50% → 75%
+    - text: 、多轮
+    - code: 46% → 62.5%
+    - text: 。Q2 不需要再发明新系统；它要做的是把剩下的最后一段收敛性补上：
+  - blockquote:
+    - paragraph:
+      - strong: Validator 告诉 Main Agent 哪一处错了之后，Main Agent 要学会修那一处，而不是重新写一篇新的、再制造三个新的引文问题。
+  - group "回复操作":
+    - button "复制回复":
+    - button "评价回复":
+    - button "分享":
+    - button "切换模型":
+    - button "更多操作":
+  - generic: ChatGPT 也可能会犯错。请核查重要信息。
+  - button:
+  - button "添加文件等":
+  - textbox "与 ChatGPT 聊天" [active]:
+    - paragraph
+  - button "高":
+    - generic: 高
+  - button "开始听写":
+  - button "启动语音功能":
+  - button
+  - button
+  - button
+- alert
+- status
