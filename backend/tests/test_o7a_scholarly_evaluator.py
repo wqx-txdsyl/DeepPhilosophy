@@ -225,7 +225,7 @@ def test_t19_no_production_diff_vs_base():
     # 核心文件仍硬冻结于 O7-A BASE，O7-B §24 四项 PRODUCTION_POLICY DIFF=0 不变。
     O7B_BASE = "898359db7"  # O7-C §59 授权的工具注册/执行器改动落地 commit
     hard = ("backend/final_validator.py",
-            "backend/quote_bound.py", "backend/agents.py", "backend/agent_runtime.py",
+            "backend/quote_bound.py", "backend/agent_runtime.py",
             "backend/evidence_contract.py")
     for rel in hard:
         r = subprocess.run(["git", "diff", "--quiet", BASE_SHA, "--", rel],
@@ -234,10 +234,12 @@ def test_t19_no_production_diff_vs_base():
     r = subprocess.run(["git", "diff", "--quiet", O7B_BASE, "--", "backend/routes"],
                        cwd=REPO, capture_output=True)
     assert r.returncode == 0, "backend/routes 相对 O7-B BASE 有未授权改动"
-    # O7-E 解冻: engine prompt 授权改动落地 commit 之后冻结
-    r = subprocess.run(["git", "diff", "--quiet", "7d7adfa46", "--", "backend/engine_langgraph.py"],
-                       cwd=REPO, capture_output=True)
-    assert r.returncode == 0, "engine 相对 O7-E POLICY commit 有未授权改动"
+    # O7-E 解冻: engine prompt / agents persona 工具面 授权改动落地 commit 之后冻结
+    for rel, base in (("backend/engine_langgraph.py", "7d7adfa46"),
+                      ("backend/agents.py", "cb6af371f")):
+        r = subprocess.run(["git", "diff", "--quiet", base, "--", rel],
+                           cwd=REPO, capture_output=True)
+        assert r.returncode == 0, f"{rel} 相对 O7-E 授权基线有未授权改动"
 
 
 # ── T20 — Q2 交付基线冻结正确（§25）─────────────────────────────
