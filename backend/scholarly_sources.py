@@ -211,6 +211,8 @@ def _http_get(url, accept="application/json"):
         "User-Agent": USER_AGENT, "Accept": accept,
         "Accept-Encoding": "identity"})
     opener = _build_network_opener()
+    rh = next((h for h in opener.handlers
+               if isinstance(h, _GuardedRedirectHandler)), None)
     with opener.open(req, timeout=NETWORK_SOCKET_TIMEOUT) as r:
         data = r.read(MAX_BYTES + 1)
         if len(data) > MAX_BYTES:
