@@ -441,3 +441,135 @@ def test_t21_production_frozen():
                             "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
                            cwd=ROOT, capture_output=True)
         assert r.returncode == 0, f"{rel} 被改动"
+
+
+# ══ Final Gate Patch: Network Trust Boundary & Verified Document Body ══
+def test_t22_ct_pdf_html_body_not_read(monkeypatch):
+    monkeypatch.setattr(SS, "_http_get",
+                        lambda *a, **k: _resp(body=b"<html>" + b"word " * 500 + b"</html>",
+                                              ct="application/pdf"))
+    r = _mk_oa(kind="DIRECT_PDF")
+    _, i = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert i["access_level_after"] != "FULL_TEXT_READ"
+
+
+def test_t23_url_pdf_html_body_not_read(monkeypatch):
+    monkeypatch.setattr(SS, "_http_get",
+                        lambda *a, **k: _resp(body=b"<html>" + b"word " * 500 + b"</html>",
+                                              ct="text/html",
+                                              final="https://oa.example.org/p.pdf"))
+    monkeypatch.setattr(SS, "_extract_text", lambda d, u: "should not count " * 50)
+    r = _mk_oa(kind="DIRECT_PDF", url="https://oa.example.org/p.pdf")
+    _, i = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert i["access_level_after"] != "FULL_TEXT_READ"   # 命名不构成 body 证明
+
+
+def test_t24_pdf_magic_parser_success_read(monkeypatch):
+    monkeypatch.setattr(SS, "_http_get",
+                        lambda *a, **k: _resp(body=_pdf_body(), ct="application/octet-stream"))
+    monkeypatch.setattr(SS, "_extract_text", lambda d, u: "body " * 200)
+    r = _mk_oa(kind="DIRECT_PDF")
+    _, i = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert i["access_level_after"] == "FULL_TEXT_READ"  # body beats wrong content-type
+
+
+def test_t25_read_provenance_body_signature(monkeypatch):
+    monkeypatch.setattr(SS, "_http_get", lambda *a, **k: _resp(body=_pdf_body()))
+    monkeypatch.setattr(SS, "_extract_text", lambda d, u: "body " * 200)
+    r = _mk_oa(kind="DIRECT_PDF")
+    rec, _ = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert rec["access"]["body_signature_verified"] is True
+    assert rec["access"]["verified_document_kind"] == "PDF"
+    assert rec["access"]["parser"] == "pdftotext"
+
+
+def test_t26_direct_mode_19818_blocked(monkeypatch):
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+    monkeypatch.setattr(SS.socket, "getaddrinfo",
+                        lambda h, p, proto=None: [(2, 1, 6, "", ("198.18.0.1", p or 443))])
+    with pytest.raises(SS.ProviderError) as e:
+        SS._pinned_addr_for("https://some.example/x")
+    assert e.value.kind == "URL_BLOCKED"
+    ok, why = SS._url_guard("https://some.example/x")
+    assert not ok
+
+
+def test_t27_trusted_fake_ip_mode_allows(monkeypatch):
+    monkeypatch.setenv("SCHOLARLY_NETWORK_MODE", "TRUSTED_PROXY")
+    monkeypatch.setattr(SS.socket, "getaddrinfo",
+                        lambda h, p, proto=None: [(2, 1, 6, "", ("198.18.0.1", p or 443))])
+    addr = SS._pinned_addr_for("https://some.example/x")
+    assert addr[0] == "198.18.0.1"
+    ok, _ = SS._url_guard("https://some.example/x")
+    assert ok
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+
+
+def test_t28_untrusted_proxy_not_auto_delegated(monkeypatch):
+    monkeypatch.setenv("HTTP_PROXY", "http://untrusted.example:8080")
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+    import inspect
+    src = inspect.getsource(SS._http_get)
+    assert "getproxies()" not in src.split("# DIRECT_PINNED")[0], \
+        "检测到代理就自动信任的分支已废除"
+    monkeypatch.delenv("HTTP_PROXY", raising=False)
+
+
+def test_t29_trusted_proxy_reports_delegated(monkeypatch):
+    monkeypatch.setenv("SCHOLARLY_NETWORK_MODE", "TRUSTED_PROXY")
+    assert SS.dns_rebinding_mode() == "TRUSTED_PROXY_DELEGATED"
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+    monkeypatch.setenv("SCHOLARLY_NETWORK_MODE", "DIRECT_PINNED")
+    assert SS.dns_rebinding_mode() == "DIRECT_IP_PINNED"
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+
+
+def test_t30_cross_host_redirect_repins(monkeypatch):
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+    resolved = []
+    def gai(host, port, proto=None):
+        ip = "1.1.1.1" if host == "host-a.example" else "2.2.2.2"
+        resolved.append((host, ip))
+        return [(2, 1, 6, "", (ip, port or 443))]
+    monkeypatch.setattr(SS.socket, "getaddrinfo", gai)
+    h = SS._PinnedHTTPSHandler()
+    # 第一跳 host-A
+    class _ReqA:
+        full_url = "https://host-a.example/x"
+        def get_method(self): return "GET"
+    try:
+        h.do_open(SS._PinnedHTTPS, _ReqA())
+    except Exception:
+        pass
+    # 第二跳 redirect → host-B: do_open 重新按当前 URL pin
+    class _ReqB:
+        full_url = "https://host-b.example/y"
+        def get_method(self): return "GET"
+    try:
+        h.do_open(SS._PinnedHTTPS, _ReqB())
+    except Exception:
+        pass
+    ips = [ip for _, ip in resolved]
+    assert "2.2.2.2" in ips, "第二跳必须对 host-B 重新 resolve/pin"
+
+
+def test_t31_redirect_private_still_blocked(monkeypatch):
+    monkeypatch.delenv("SCHOLARLY_NETWORK_MODE", raising=False)
+    req = urllib.request.Request("https://public.example/s", headers={"User-Agent": "t"})
+    h = SS._GuardedRedirectHandler()
+    with pytest.raises(SS.ProviderError):
+        h.redirect_request(req, None, 302, "Found", {}, "http://192.168.0.1/x")
+
+
+def test_t32_live_read_verifier_checks_signature():
+    src = open(os.path.join(BACKEND, "tools", "evaluation", "o7c_live_gate.py"),
+               encoding="utf-8").read()
+    assert "body_signature_verified" in src and "VERIFIED_PDF_READ_COUNT" in src
+
+
+def test_t33_metrics_distinguish_available_only():
+    src = open(os.path.join(BACKEND, "tools", "evaluation", "o7c_live_gate.py"),
+               encoding="utf-8").read()
+    assert "FULLTEXT_AVAILABLE_ONLY_SUCCESS" in src
+    assert "DIRECT_PDF_PARSE_FAILURES" in src
+    assert '"FULLTEXT_PARSE_FAILURES"' not in src

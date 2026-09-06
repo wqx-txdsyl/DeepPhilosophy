@@ -37,6 +37,21 @@ MAX_BYTES = 5 * 1024 * 1024   # full text 不无界下载
 USER_AGENT = "DeepPhilosophy-PhiAgent/0.7 (scholarly metadata; contact: site-admin)"
 
 SCHEMA_VERSION = "o7c-1"
+
+# ── 网络信任边界（Final Gate Patch §C-E）──
+# DIRECT_PINNED: 直连 + 逐请求 IP pin; 198.18.0.0/15 按 reserved 拒绝
+# TRUSTED_PROXY: 用户显式信任的代理/TUN（DNS 解析与出网边界委托给代理;
+#                此时 fake-IP 段 198.18/15 是代理分配的映射地址, 允许）
+# AUTO(默认): 检测到系统代理也【不】静默信任——按 DIRECT_PINNED 安全直连处理
+def _network_mode():
+    return os.environ.get("SCHOLARLY_NETWORK_MODE", "AUTO").upper()
+
+def _fake_ip_allowed():
+    return _network_mode() == "TRUSTED_PROXY"
+
+def dns_rebinding_mode():
+    return ("TRUSTED_PROXY_DELEGATED" if _network_mode() == "TRUSTED_PROXY"
+            else "DIRECT_IP_PINNED")
 ACCESS_LEVELS = ("METADATA_ONLY", "ABSTRACT_AVAILABLE", "FULL_TEXT_AVAILABLE",
                  "FULL_TEXT_READ")
 _LEVEL_ORDER = {lv: i for i, lv in enumerate(ACCESS_LEVELS)}
@@ -64,10 +79,10 @@ def _url_guard(url):
         return False, f"dns failure: {e}"
     for info in infos:
         ip = ipaddress.ip_address(info[4][0])
-        # 198.18.0.0/15（RFC2544 benchmark）在本机被 VPN fake-IP DNS 用作映射段,
-        # 实际流量经代理出网; 真实 SSRF 面（loopback/RFC1918/link-local/file）仍硬禁。
         if ip in ipaddress.ip_network("198.18.0.0/15"):
-            continue
+            if _fake_ip_allowed():
+                continue   # 仅显式 TRUSTED_PROXY/TUN fake-IP 模式允许该映射段
+            return False, "reserved ip 198.18.0.0/15（非 trusted fake-IP 模式默认拒绝）"
         if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
             return False, f"private/reserved ip {ip}"
     return True, "ok"
@@ -130,8 +145,10 @@ def _pinned_addr_for(url):
     for info in infos:
         ip = ipaddress.ip_address(info[4][0])
         if ip in ipaddress.ip_network("198.18.0.0/15"):
-            # 本机 VPN fake-IP 映射段（RFC2544）: 由本机代理 TUN 分配并映射回真实
-            # 目标, 外部 DNS 应答被代理劫持, 不受远端攻击者控制; 可作为 pinned 目标
+            # 仅显式 TRUSTED_PROXY 模式: 该段是本机代理 TUN 分配的映射地址
+            if not _fake_ip_allowed():
+                raise ProviderError("URL_BLOCKED",
+                                    f"reserved ip {ip}（非 trusted fake-IP 模式）")
             if fake_ip is None:
                 fake_ip = info[4]
             continue
@@ -144,20 +161,19 @@ def _pinned_addr_for(url):
 
 
 class _PinnedHTTPHandler(urllib.request.HTTPHandler):
-    addr = None
+    """逐请求/逐跳 pin: do_open 时按当前 req 的目标 URL 重新 guard+resolve+pin
+    （redirect 到 host-B 时第二跳 pin host-B, 不是初始 host-A）。"""
 
     def do_open(self, http_class, req, **kw):
         class _C(_PinnedHTTP):
-            _pinned_addr = self.addr
+            _pinned_addr = _pinned_addr_for(req.full_url)
         return super().do_open(_C, req, **kw)
 
 
 class _PinnedHTTPSHandler(urllib.request.HTTPSHandler):
-    addr = None
-
     def do_open(self, http_class, req, **kw):
         class _C(_PinnedHTTPS):
-            _pinned_addr = self.addr
+            _pinned_addr = _pinned_addr_for(req.full_url)
         return super().do_open(_C, req, **kw)
 
 
@@ -179,14 +195,13 @@ def _http_get(url, accept="application/json"):
         "User-Agent": USER_AGENT, "Accept": accept,
         "Accept-Encoding": "identity"})
     rh = _GuardedRedirectHandler()
-    if urllib.request.getproxies():
-        # 代理出网环境（本机 VPN/HTTP proxy）: DNS 解析与真实连接都发生在代理侧,
-        # 出网边界由代理解决; pinning 仅对直连环境生效（诚实分支, 不假装 pin）。
+    if _network_mode() == "TRUSTED_PROXY":
+        # 显式信任代理: DNS 解析与出网边界委托给代理（DELEGATED, 如实上报）
         opener = urllib.request.build_opener(rh)
     else:
-        addr = _pinned_addr_for(url)      # 校验与连接使用同一解析结果（pin）
-        hh = _PinnedHTTPHandler(); hh.addr = addr
-        hs = _PinnedHTTPSHandler(); hs.addr = addr
+        # DIRECT_PINNED / AUTO: 检测到系统代理也不静默信任——安全直连 + 逐跳 pin
+        hh = _PinnedHTTPHandler()
+        hs = _PinnedHTTPSHandler()
         opener = urllib.request.build_opener(hs, hh, rh)
     with opener.open(req, timeout=NETWORK_SOCKET_TIMEOUT) as r:
         data = r.read(MAX_BYTES + 1)
@@ -549,26 +564,30 @@ def get_evidence(rec, requested_access):
             info["full_text_attempts"].append(attempt)
             continue
         attempt["http_status"] = resp.status
-        is_pdf = (resp.body[:4] == b"%PDF"
-                  or "pdf" in (resp.content_type or "").lower()
-                  or url.lower().endswith(".pdf"))
-        text = _extract_text(resp.body, url) if is_pdf else None
-        if is_pdf and text and len(text.strip()) >= 200 and cand.get("candidate_kind") == "DIRECT_PDF":
-            # RP2 §9: DIRECT_PDF + 解析成功 → READ
+        # Final Gate Patch §A: 只有 body 以 %PDF 魔数开头才尝试 PDF 解析;
+        # Content-Type/URL 命名只是提示, 不构成 body 证明（document body beats naming）
+        body_is_pdf = resp.body[:4] == b"%PDF"
+        text = _extract_text(resp.body, url) if body_is_pdf else None
+        if (body_is_pdf and text and len(text.strip()) >= 200
+                and cand.get("candidate_kind") == "DIRECT_PDF"):
+            # READ = DIRECT_PDF + %PDF body 签名 + 解析成功（缺一不可）
             chash = hashlib.sha256(resp.body).hexdigest()
-            _promote_access(rec, "FULL_TEXT_READ", "direct PDF fetched+parsed",
+            _promote_access(rec, "FULL_TEXT_READ", "verified PDF body parsed",
                             url=resp.final_url, chash=chash,
                             extra={"content_length": len(text),
                                    "parser": "pdftotext",
                                    "content_type": resp.content_type,
                                    "redirect_count": resp.redirect_count,
-                                   "candidate_kind": "DIRECT_PDF"})
+                                   "candidate_kind": "DIRECT_PDF",
+                                   "verified_document_kind": "PDF",
+                                   "body_signature_verified": True})
             info.update({"access_level_after": rec["access"]["level"],
                          "full_text_status": "READ",
                          "content_hash": chash,
                          "evidence_passages": _top_passages(text, None),
-                         "access_notes": "DIRECT_PDF 已解析; 返回节选段落"})
+                         "access_notes": "verified PDF body 已解析; 返回节选段落"})
             attempt["result"] = "READ"
+            attempt["body_signature_verified"] = True
             info["full_text_attempts"].append(attempt)
             return rec, info
         # PDF 解析失败 或 HTML OA_LOCATION → 至多 AVAILABLE（RP2 §10）
@@ -583,9 +602,11 @@ def get_evidence(rec, requested_access):
                                "candidate_kind": cand.get("candidate_kind")})
         info.update({"access_level_after": rec["access"]["level"],
                      "full_text_status": "AVAILABLE_ONLY",
-                     "access_notes": ("HTML OA_LOCATION/PDF 解析未成功 → AVAILABLE"
+                     "access_notes": ("HTML OA_LOCATION/PDF body 未验证 → AVAILABLE"
                                       "（landing page 不冒充论文正文）")})
-        attempt["result"] = "AVAILABLE"
+        attempt["result"] = "AVAILABLE_ONLY"
+        attempt["pdf_parse_failed"] = bool(cand.get("candidate_kind") == "DIRECT_PDF"
+                                           and body_is_pdf)
         info["full_text_attempts"].append(attempt)
         return rec, info
     info["full_text_status"] = f"FETCH_FAILED:{last_err}"

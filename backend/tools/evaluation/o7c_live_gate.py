@@ -215,10 +215,13 @@ def phase_d(g):
     n_att = len(attempts_all)
     n_http = sum(1 for a in attempts_all if a["result"] == "HTTP_FAILURE")
     n_blocked = sum(1 for a in attempts_all if a["result"] == "BLOCKED")
-    n_succ = sum(1 for a in attempts_all if a["result"] in ("READ", "AVAILABLE"))
-    n_parse_ok = sum(1 for a in attempts_all if a["result"] == "READ")
-    n_parse_fail = sum(1 for a in attempts_all if a["result"] == "AVAILABLE")
+    n_succ = sum(1 for a in attempts_all if a["result"] in ("READ", "AVAILABLE_ONLY"))
+    n_read = sum(1 for a in attempts_all if a["result"] == "READ")
+    n_avail_only = sum(1 for a in attempts_all if a["result"] == "AVAILABLE_ONLY")
+    n_pdf_parse_fail = sum(1 for a in attempts_all
+                           if a.get("pdf_parse_failed"))   # AVAILABLE_ONLY 的子集
     accounting_delta = n_att - (n_http + n_blocked + n_succ)
+    success_delta = n_succ - (n_read + n_avail_only)
 
     # ── READ manifest（RP2 §18）──
     read_manifest = []
@@ -227,6 +230,8 @@ def phase_d(g):
         read_manifest.append({
             "source_record_id": sid,
             "candidate_kind": rr["access"].get("candidate_kind"),
+            "verified_document_kind": rr["access"].get("verified_document_kind"),
+            "body_signature_verified": rr["access"].get("body_signature_verified"),
             "final_url": rr["access"].get("final_url") or rr["access"].get("full_text_url"),
             "content_type": rr["access"].get("content_type"),
             "content_hash": rr["access"].get("content_hash"),
@@ -290,8 +295,10 @@ def phase_d(g):
         "FULLTEXT_FETCH_SUCCESS": n_succ,
         "FULLTEXT_HTTP_FAILURES": n_http,
         "FULLTEXT_BLOCKED_ATTEMPTS": n_blocked,
-        "FULLTEXT_PARSE_SUCCESS": n_parse_ok,
-        "FULLTEXT_PARSE_FAILURES": n_parse_fail,
+        "FULLTEXT_READ_SUCCESS": n_read,
+        "FULLTEXT_AVAILABLE_ONLY_SUCCESS": n_avail_only,
+        "DIRECT_PDF_PARSE_FAILURES": n_pdf_parse_fail,
+        "SUCCESS_ACCOUNTING_DELTA": success_delta,
         "FETCH_ATTEMPT_ACCOUNTING_DELTA": accounting_delta,
         "DIRECT_PDF_CANDIDATES": sum(1 for r in uniq.values()
                                      for c in (r.get("full_text_candidates") or [])
@@ -299,10 +306,22 @@ def phase_d(g):
         "HTML_OA_CANDIDATES": sum(1 for r in uniq.values()
                                   for c in (r.get("full_text_candidates") or [])
                                   if c.get("candidate_kind") == "OA_LOCATION"),
+        "VERIFIED_PDF_READ_COUNT": sum(
+            1 for m in read_manifest
+            if m["candidate_kind"] == "DIRECT_PDF"
+            and m.get("body_signature_verified") is True
+            and m.get("parser") == "pdftotext" and m.get("content_hash")
+            and (m.get("parsed_length") or 0) >= 200),
         "HTML_LANDING_FALSE_READ": sum(
             1 for m in read_manifest if m["candidate_kind"] != "DIRECT_PDF"),
         "FULL_TEXT_READ_WITHOUT_VERIFIED_DOCUMENT_BODY": sum(
-            1 for m in read_manifest if m["candidate_kind"] != "DIRECT_PDF"),
+            1 for m in read_manifest
+            if not (m["candidate_kind"] == "DIRECT_PDF"
+                    and m.get("body_signature_verified") is True
+                    and m.get("parser") == "pdftotext" and m.get("content_hash")
+                    and (m.get("parsed_length") or 0) >= 200)),
+        "NETWORK_BOUNDARY_MODE": SS._network_mode(),
+        "DNS_REBINDING_MODE": SS.dns_rebinding_mode(),
         "kill_cases_executed": {"A1": A1, "A2": A2, "A3": A3, "A4": A4,
                                 "A5": A5, "A6": A6, "A7": A7, "A8": A8},
         "read_evidence_manifest": read_manifest,
