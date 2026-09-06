@@ -330,7 +330,57 @@ F. 访问诚实: METADATA_ONLY 只能确认文献存在与书目信息; ABSTRACT
 G. 不造假权威: 证据只支持"论文存在"就只能说存在; 不写"Smith 证明了…"除非证据真正支持该
 归因。历史纪律: 避免时代错位词汇、后世问题倒灌原作者、把现代解释当成作者自述。哲学家人格
 第一人称时, 区分历史文本可支持的自述与后世 scholarship——不得让尼采"知道"20/21 世纪论文。
+
+H. 引文与出处纪律: 逐字引文必须实际复制已检索取得的文本; 只有意思或近似措辞时用转述并
+如实标注, 不冒充逐字引用。正式的章节引用必须使用检索证据中实际存在的书名/章节身份; 只有
+书级证据时不伪造精确章节。当精确引文本身有研究价值且证据已经取得时, 应正常使用——不得为
+了规避校验而系统性删除引文、出处或文本细节。
 """
+
+
+def _build_repair_evidence_packet(validation, raw_tool_log, max_evidence=3,
+                                   max_chars=6000):
+    """O7-E RP2 §3-6: MECHANICAL_REPAIR_EVIDENCE_PACKET——纯机械构造。
+
+    复用 validator issue 的 evidence_ref + 已检索的 raw_tool_log 真实文本;
+    禁止 LLM 摘要, 禁止新造 matcher。每个 issue 最多 max_evidence 条证据,
+    总长 ≤max_chars, 不把全部 tool result 塞回 prompt。"""
+    import json as _json
+    issues = validation.as_dict().get("issues", [])
+    refs = []
+    for i in issues:
+        r = (i or {}).get("evidence_ref")
+        if r and r not in refs:
+            refs.append(r)
+    packet_items = []
+    used = 0
+    for ref in refs[:max_evidence * 2]:
+        # raw_tool_log 条目: get_chapter 类结果含真实正文; evidence_ref 形如
+        # ev_<n> 或直接书名/章节标签——机械匹配 result_full 中的文本身份
+        for t in (raw_tool_log or []):
+            blob = _json.dumps({k: v for k, v in (t or {}).items()
+                                if k in ("name", "args", "result_full", "result_summary")},
+                               ensure_ascii=False)
+            if ref in blob or ref in str((t or {}).get("args", "")):
+                excerpt = str((t or {}).get("result_full") or
+                              (t or {}).get("result_summary") or "")[:800]
+                if excerpt:
+                    packet_items.append({"evidence_id": ref,
+                                         "tool": (t or {}).get("name"),
+                                         "retrieved_text_excerpt": excerpt})
+                    used += len(excerpt)
+                break
+        if len(packet_items) >= max_evidence or used > max_chars:
+            break
+    # evidence_ref 无命中时: 附检索文本身份清单（书名/章节级, 无正文）
+    if not packet_items:
+        for t in (raw_tool_log or [])[:max_evidence]:
+            rf = (t or {}).get("result_full") or {}
+            if isinstance(rf, dict) and rf.get("book_title"):
+                packet_items.append({"evidence_id": "identity",
+                                     "book": rf.get("book_title"),
+                                     "chapter": rf.get("title")})
+    return {"available_evidence": packet_items[:max_evidence]}
 
 
 def get_system_prompt(agent):
@@ -1552,6 +1602,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # O2 §9: 中性反馈——只列机械 issue, 不命令具体修复动作（改写/标注/删引文/
             # 补研究由 Agent 自主决定）; validator 自身绝不调用工具。
             _fb = format_feedback(validation)
+            # O7-E RP2 §3-6: 机械 repair evidence packet——issue 关联的真实检索文本
+            _pkt = _build_repair_evidence_packet(validation, raw_tool_log)
+            if _pkt["available_evidence"]:
+                _fb += ("\n\nMECHANICAL_REPAIR_EVIDENCE_PACKET (retrieved evidence "
+                        "mechanically linked to the issues):\n"
+                        + json.dumps(_pkt, ensure_ascii=False)[:6000])
             # O7-E RP1 §8: repair transport contract——完整替换候选 + 资源上限下基于
             # 已有证据修订 + 禁止空候选（传输合同, 非学术内容指令; validator 文件零改动）
             _fb = _fb.replace(
@@ -1561,7 +1617,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "mechanical evidence problems. You may gather additional evidence "
                 "only if tool resources remain available. If the tool resource "
                 "ceiling has been reached, revise using the evidence already "
-                "obtained. Do not return an empty candidate.")
+                "obtained. Do not return an empty candidate.\n"
+                "Evidence discipline: a verified exact quotation must reproduce the "
+                "retrieved wording exactly; if the available evidence supports the "
+                "meaning but not the exact wording, do not present a reconstructed "
+                "sentence as a verbatim quotation — paraphrase instead. A formal "
+                "book/chapter citation must use a book/chapter identity actually "
+                "present in retrieved evidence; if only book-level provenance is "
+                "available, do not invent a chapter-level citation. Do not "
+                "systematically delete quotations or citations to avoid validation — "
+                "use verified evidence normally.")
             # §7: hard 预算已成立 → 机械资源事实并入反馈消息（不新增 SystemMessage
             # 注入点, 维持「builder 1 + hard 预算 1」注入不变量）; repair 零工具模式
             _no_tools = bool(budget is not None and budget.hard_reached())
