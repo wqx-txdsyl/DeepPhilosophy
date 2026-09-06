@@ -1,5 +1,7 @@
 {
  "audit_scope": "ALL_VERIFIED_FIELDS",
+ "audit_implementation": "INDEPENDENT",
+ "shared_extraction_rules": 0,
  "fields_audited": 22,
  "SEMANTICALLY_UNSUPPORTED_VERIFIED_FIELDS": [],
  "rows": [
@@ -12,7 +14,15 @@
     "ISBN 978-7-208-16305-8"
    ],
    "semantic_evidence_class": "ISBN_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-ISBN-01 independent ISBN statement check",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "ISBN 978-7-208-16305-8",
+    "ISBN 978-7-208-16305-8"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "d1986c75d6b2",
@@ -23,7 +33,15 @@
     "上海人民出版社"
    ],
    "semantic_evidence_class": "PUBLISHER_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-PUB-01 independent publisher-token parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "上海人民出版社",
+    "上海人民出版社"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "d1986c75d6b2",
@@ -34,7 +52,15 @@
     "卫茂平　译"
    ],
    "semantic_evidence_class": "RESPONSIBILITY_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-TR-01 independent responsibility-statement parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "卫茂平译",
+    "卫茂平　译"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "5c935000a2a7",
@@ -45,7 +71,15 @@
     "ISBN 978-7-5675-5071-1"
    ],
    "semantic_evidence_class": "ISBN_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-ISBN-01 independent ISBN statement check",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "ISBN 978-7-5675-5071-1",
+    "ISBN 978-7-5675-5071-1"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "5c935000a2a7",
@@ -56,7 +90,15 @@
     "华东师范大学出版社"
    ],
    "semantic_evidence_class": "PUBLISHER_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-PUB-01 independent publisher-token parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "华东师范大学出版社",
+    "华东师范大学出版社"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "5c935000a2a7",
@@ -67,8 +109,19 @@
     "核字（2016）",
     "2016年9月第1版"
    ],
-   "semantic_evidence_class": "CIP_BIBLIOGRAPHIC_YEAR",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "semantic_evidence_class": "CIP_BIBLIOGRAPHIC_YEAR/CIP_REGISTRATION_YEAR/EDITION_YEAR",
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-YR-01 support-class separation (EDITION/CIP_BIBLIO vs PRINTING/REG)",
+   "audit_reason": "supporting=2 ignored=1 rejected=0",
+   "supporting_spans": [
+    "，2016 [CIP_BIBLIOGRAPHIC_YEAR]",
+    "2016年9月第1版 [EDITION_YEAR]"
+   ],
+   "ignored_spans": [
+    "核字（2016） [CIP_REGISTRATION_YEAR]"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "b5c7fcb371d4",
@@ -79,7 +132,15 @@
     "ISBN 978-7-100-06459-0"
    ],
    "semantic_evidence_class": "ISBN_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-ISBN-01 independent ISBN statement check",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "ISBN 978-7-100-06459-0",
+    "ISBN 978-7-100-06459-0"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "b5c7fcb371d4",
@@ -92,7 +153,17 @@
     "商务印书馆"
    ],
    "semantic_evidence_class": "PUBLISHER_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-PUB-01 independent publisher-token parse",
+   "audit_reason": "supporting=4 rejected=0",
+   "supporting_spans": [
+    "商务印书馆",
+    "商务印书馆",
+    "商务印书馆",
+    "商务印书馆"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "b5c7fcb371d4",
@@ -104,7 +175,16 @@
     "张竹明　译"
    ],
    "semantic_evidence_class": "RESPONSIBILITY_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-TR-01 independent responsibility-statement parse",
+   "audit_reason": "supporting=3 rejected=0",
+   "supporting_spans": [
+    "张竹明　译",
+    "张竹明译",
+    "张竹明　译"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "8c3044772b18",
@@ -115,7 +195,15 @@
     "ISBN 978-7-5535-2100-8"
    ],
    "semantic_evidence_class": "ISBN_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-ISBN-01 independent ISBN statement check",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "ISBN 978-7-5535-2100-8",
+    "ISBN 978-7-5535-2100-8"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "8c3044772b18",
@@ -126,7 +214,15 @@
     "上海文化出版社"
    ],
    "semantic_evidence_class": "PUBLISHER_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-PUB-01 independent publisher-token parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "上海文化出版社",
+    "上海文化出版社"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "2c1a4c7d17a4",
@@ -137,7 +233,15 @@
     "上海译文出版社"
    ],
    "semantic_evidence_class": "PUBLISHER_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-PUB-01 independent publisher-token parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "上海译文出版社",
+    "上海译文出版社"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "2c1a4c7d17a4",
@@ -149,8 +253,20 @@
     "2008年4月第1版",
     "2008年4月第1次印刷"
    ],
-   "semantic_evidence_class": "CIP_BIBLIOGRAPHIC_YEAR",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "semantic_evidence_class": "CIP_BIBLIOGRAPHIC_YEAR/CIP_REGISTRATION_YEAR/EDITION_YEAR/PRINTING_YEAR",
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-YR-01 support-class separation (EDITION/CIP_BIBLIO vs PRINTING/REG)",
+   "audit_reason": "supporting=2 ignored=2 rejected=0",
+   "supporting_spans": [
+    "，2008 [CIP_BIBLIOGRAPHIC_YEAR]",
+    "2008年4月第1版 [EDITION_YEAR]"
+   ],
+   "ignored_spans": [
+    "核字（2008） [CIP_REGISTRATION_YEAR]",
+    "2008年4月第1次印刷 [PRINTING_YEAR]"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "17fda3378628",
@@ -161,7 +277,15 @@
     "ISBN 978-7-208-16251-8"
    ],
    "semantic_evidence_class": "ISBN_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-ISBN-01 independent ISBN statement check",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "ISBN 978-7-208-16251-8",
+    "ISBN 978-7-208-16251-8"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "17fda3378628",
@@ -172,7 +296,15 @@
     "上海人民出版社"
    ],
    "semantic_evidence_class": "PUBLISHER_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-PUB-01 independent publisher-token parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "上海人民出版社",
+    "上海人民出版社"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "17fda3378628",
@@ -183,7 +315,15 @@
     "王柯平　译"
    ],
    "semantic_evidence_class": "RESPONSIBILITY_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-TR-01 independent responsibility-statement parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "王柯平译",
+    "王柯平　译"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "17fda3378628",
@@ -195,8 +335,20 @@
     "2020年4月第1版",
     "2020年4月第1次印刷"
    ],
-   "semantic_evidence_class": "CIP_BIBLIOGRAPHIC_YEAR",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "semantic_evidence_class": "CIP_BIBLIOGRAPHIC_YEAR/CIP_REGISTRATION_YEAR/EDITION_YEAR/PRINTING_YEAR",
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-YR-01 support-class separation (EDITION/CIP_BIBLIO vs PRINTING/REG)",
+   "audit_reason": "supporting=2 ignored=2 rejected=0",
+   "supporting_spans": [
+    "，2020 [CIP_BIBLIOGRAPHIC_YEAR]",
+    "2020年4月第1版 [EDITION_YEAR]"
+   ],
+   "ignored_spans": [
+    "核字（2020） [CIP_REGISTRATION_YEAR]",
+    "2020年4月第1次印刷 [PRINTING_YEAR]"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "c3c401982587",
@@ -207,7 +359,15 @@
     "ISBN 978-7-210-10744-6"
    ],
    "semantic_evidence_class": "ISBN_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-ISBN-01 independent ISBN statement check",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "ISBN 978-7-210-10744-6",
+    "ISBN 978-7-210-10744-6"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "c3c401982587",
@@ -218,7 +378,15 @@
     "江西人民出版社"
    ],
    "semantic_evidence_class": "PUBLISHER_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-PUB-01 independent publisher-token parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "江西人民出版社",
+    "江西人民出版社"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "32093eed6ff1",
@@ -229,7 +397,15 @@
     "ISBN 978-7-301-17395-4"
    ],
    "semantic_evidence_class": "ISBN_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-ISBN-01 independent ISBN statement check",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "ISBN 978-7-301-17395-4",
+    "ISBN 978-7-301-17395-4"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "32093eed6ff1",
@@ -240,7 +416,15 @@
     "北京大学出版社"
    ],
    "semantic_evidence_class": "PUBLISHER_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-PUB-01 independent publisher-token parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "北京大学出版社",
+    "北京大学出版社"
+   ],
+   "rejected_spans": []
   },
   {
    "book_id": "32093eed6ff1",
@@ -251,7 +435,15 @@
     "涂又光译"
    ],
    "semantic_evidence_class": "RESPONSIBILITY_STATEMENT",
-   "SUPPORTS_FIELD_SEMANTICS": true
+   "audit_implementation": "INDEPENDENT",
+   "SUPPORTS_FIELD_SEMANTICS": true,
+   "audit_rule_id": "AUD-TR-01 independent responsibility-statement parse",
+   "audit_reason": "supporting=2 rejected=0",
+   "supporting_spans": [
+    "涂又光译",
+    "涂又光译"
+   ],
+   "rejected_spans": []
   }
  ]
 }
