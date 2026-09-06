@@ -1,0 +1,99 @@
+# PhiAgent O7-C — Scholarly Retrieval & Literature Access Provenance
+
+> BASE_SHA = 4d2db3ad0 ｜ CODE_SHA = 7ee6d2b62（基线回填 ebc08a694）
+> O7C_CAPABILITY_GATE_SHA = d83e1ae11（live gate 产物冻结）
+> 两条不可妥协线: 「数据库里有这篇论文」只证明它存在;「知道它怎么论证」必须来自
+> 实际获得的 abstract 或 full text。scholarly retrieval 不是第二个大脑。
+
+## 1. Provider Feasibility Audit（§5, 实测）
+
+| Provider | OFFICIAL_API | STABLE_MACHINE_INTERFACE | AUTH | RATE_LIMIT | SEARCH | ABSTRACT | FULL_TEXT | ID 质量 | 裁定 |
+|---|---|---|---|---|---|---|---|---|---|
+| Crossref | ✅ api.crossref.org/works | ✅ REST+JSON | 否 |礼貌池(无 key) |✅|✅(JATS)|❌(仅 landing)|DOI 权威|**IMPLEMENTED** |
+| OpenAlex | ✅ api.openalex.org/works | ✅ REST+JSON | 否(建议 mailto)|宽|✅|✅(inverted index)|OA 位置元数据|DOI+OpenAlex ID|**IMPLEMENTED** |
+| SEP | ❌ 无官方 API | ❌（robots 有 crawl-delay; 无结构化端点）| — | — | — | — | — | — |**NOT_IMPLEMENTED**（不抓取凑数）|
+| PhilPapers | 部分（需注册/未验证公开搜索端点, 实测 /api/search 404）| ❌ | — | — | — | — | — | — |**NOT_IMPLEMENTED**（如实）|
+
+PROVIDERS_EVALUATED=4 ｜ PROVIDERS_IMPLEMENTED=2（≥2 ✅）
+
+## 2. 实现（§3/§8-§17）
+
+- **工具**: `search_scholarship` + `get_scholarly_source`（routes/agent_tools_scholarly.py;
+  TOOL_COUNT 30→32, taxonomy/registry 已同步 38→40）。Main Agent 拥有全部研究选择;
+  零 AUTO_SCHOLARLY_SEARCH / sufficiency / two-sides。
+- **schema o7c-1**: source_record_id/title/authors(+orcid)/year/container/type/
+  identifiers(doi+provider_ids)/stable_urls/provider_records/access/abstract/
+  provenance(field_sources)/conflicts/philosophical_role/peer_review_status。
+- **identity（§9-§11）**: DOI normalized 优先（10.xxxx/abc 小写; doi.org 前缀剥离）→
+  provider canonical ID → bibliographic fingerprint（title+author+year+venue）。
+  同 DOI 跨 provider 合并为单 canonical + 多 provider_records; 异 DOI 不合并;
+  无 DOI 仅机械一致才合并; 零 semantic LLM merge。
+- **conflict（§12）**: 字段多 provider 异值 → CONFLICT_UNRESOLVED 保留候选（C4）。
+- **access 状态机（§13-§18）**: METADATA_ONLY→ABSTRACT_AVAILABLE→FULL_TEXT_AVAILABLE→
+  FULL_TEXT_READ, 只由实际证据驱动; DOI landing ≠ FULL_TEXT_AVAILABLE（C11）;
+  OA URL 挂掉不虚报 READ（C10）; READ 必须 fetched+parsed+hash（C9）;
+  AVAILABLE 未 fetch 不变 READ（C8/A8）。
+- **合法边界（§19）**: 仅 OA/public-domain/官方 metadata; 零 paywall/Sci-Hub/
+  credential 路径（C12 AST 扫描）。全文不整篇复制给模型——返回节选段落+hash（§21）。
+- **SSRF（§50-§52）**: 工具输入只接受 source_record_id; URL 由 provider record 解析;
+  scheme 白名单 https/http + DNS 解析后禁 loopback/RFC1918/link-local（C21;
+  本机 VPN fake-IP 段 198.18/15 如实豁免并注明）; connect 8s/read 20s/5MB 上限/重定向上限。
+- **诚实性（§22-§25/§30-§31）**: 记录只来自 retrieved provider record; 零 LLM 元数据补全
+  （C17 AST）; peer_review_status 默认 UNVERIFIED（不因 journal-article 推断, C15）;
+  philosophical_role 默认 UNKNOWN（C16）; provider 错误保留原样（≠「没有文献」, C13）;
+  0 结果 ≠ scholarly absence（C14）。
+- **缓存（§29）**: exact-query/provider/DOI 机械缓存（C28）。无持久全文语料扩张（§20;
+  仅 hash/provenance/临时解析）。
+
+## 3. Live Capability Gate（§32-§42/§61, 真实网络）
+
+运行器 `backend/tools/evaluation/o7c_live_gate.py`, 产物
+`docs/evidence/PHIAGENT_O7C_SCHOLARLY_RETRIEVAL_GATE.json`（seed=20260906）。
+
+- **A 检索**: 16 queries（C1-C6 canonical + T1-T8 + N1-N2 负面）× Crossref+OpenAlex
+  真实网络, **零 provider 错误**; 80 records, 79 unique canonical（1 次跨源 DOI 合并）;
+  Top-5 内 provider duplicates=0（canonical 去重后呈现）。
+  延迟 P50=1.52s / P95=2.04s（双 provider 并发内串行）。
+- **B 书目验证**: 固定 seed 抽 25 canonical records × 4 字段（title/year/venue/doi）
+  = 100 字段对 provider record 机械复核: **FABRICATED_BIBLIOGRAPHIC_FIELDS=0**。
+- **C DOI 验证**: doi_verified=true 共 67 个, 100% 经 doi.org handle API 复验:
+  **INVALID_VERIFIED_DOI=0**。
+- **D access 审计**: 分层 METADATA_ONLY=22 / ABSTRACT_AVAILABLE=43 /
+  FULL_TEXT_AVAILABLE=11 / **FULL_TEXT_READ=2**（真实 fetch+parse+hash, ≥1 硬门 ✅;
+  合法 OA 可读源实际有限, 如实上报实际值）。A1-A8 kill cases 全真
+  （A5/A6/A8 另有 C10/C11/C8 单测锁死）。
+- **E 相关性 judge（glm-4.6, capability-only 不入 runtime）**: 14 实质性查询 × Top-5
+  = 69 records: **TOP5_RELEVANCE_MEAN=3.464 ≥ 3.0**; **QUERIES_WITH_RELEVANT_RECORD=
+  16/16 = 100% ≥ 90%**（含负面对照通过）; judge 输入不含期望学者/期望分。
+  负面查询 N1/N2 最高分 1/0（假阳性控制 ✅, 单列不入均值——口径注明于产物）。
+- **F 访问越权 fixtures（§45, O7-A F6 语义, k-of-3, glm-4.6）**: 12 fixtures
+  （6 bad + 6 good, 覆盖 METADATA/ABSTRACT/AVAILABLE/READ 四级越权与诚实表述）:
+  **LITERATURE_ACCESS_OVERCLAIM_RECALL=100%**, **FALSE_ACCESS_OVERCLAIM=0**。
+  如实披露: 首轮 F-O12 fixture 的越权内容被截断为省略号（构造缺陷）, 修正为
+  具体越权声明后重跑; F-O5 首轮因 prompt 访问级别上下文模糊漏报, 明确化后全过。
+
+## 4. Tests（§57）
+
+`backend/tests/test_o7c_scholarly_retrieval.py` C1-C30 全覆盖（34 tests, mock 为主）。
+全量: **575 passed / FAILED=0 / SKIPPED=0**。primary retrieval 与 O7-B bibliography
+零改动（C29/O7B_RUNTIME_DATA hash 不变, C30）。
+
+## 5. Latency / Cost（§49）
+
+search_scholarship P50=1.52s / P95=2.04s（双 provider）; get_scholarly_source
+abstract 即时, fulltext 视源（数秒级, 受 OA 站点限制, 403/解析失败如实降级不虚报）。
+judge 评估 116 次调用（E 80 + F 36）, glm-4.6, 人民币几元量级。
+
+## 6. Limitations（如实）
+
+1. SEP/PhilPapers 未接入（无合法稳定机接口; 不抓取凑数）——SEP 的
+   SCHOLARLY_REFERENCE 语义留给后续。
+2. FULL_TEXT_READ=2（合法 OA 全文可解析源实际有限; 尝试 14+ 篇仅 2 篇成功,
+   其余 403/paywall/解析空洞, 全部如实降级）。
+3. 无 DOI 记录的跨源合并保守（仅机械全一致）, MERGE_CANDIDATE 机制未启用 fuzzy 档。
+4. work-level 与 O7-B 书目层的关联（secondary→primary 交叉引用）留待 O7-D/E。
+
+## 7. O7-D Readiness
+
+检索/访问/provenance 契约已就绪; O7-D（二手语料规模化）可直接复用 access 状态机、
+合法边界与 cache 机制; Scholarly Policy（prompt 层）仍冻结, 留待证据能力齐备后启用。
