@@ -220,12 +220,20 @@ def test_t18_no_production_imports():
 
 # ── T19 — 生产系统对 BASE 零 diff ────────────────────────────────
 def test_t19_no_production_diff_vs_base():
-    for rel in ("backend/engine_langgraph.py", "backend/final_validator.py",
-                "backend/quote_bound.py", "backend/agents.py", "backend/agent_runtime.py",
-                "backend/routes", "backend/evidence_contract.py"):
+    # O7-B §14（2026-09-06 Reviewer 授权）: get_book_detail/get_chapter 允许 additive
+    # 书目元数据暴露 → backend/routes 的冻结基线改对照 O7-B BASE；认知/校验/引文
+    # 核心文件仍硬冻结于 O7-A BASE，O7-B §24 四项 PRODUCTION_POLICY DIFF=0 不变。
+    O7B_BASE = "9edf34775"
+    hard = ("backend/engine_langgraph.py", "backend/final_validator.py",
+            "backend/quote_bound.py", "backend/agents.py", "backend/agent_runtime.py",
+            "backend/evidence_contract.py")
+    for rel in hard:
         r = subprocess.run(["git", "diff", "--quiet", BASE_SHA, "--", rel],
                            cwd=REPO, capture_output=True)
         assert r.returncode == 0, f"{rel} 相对 BASE {BASE_SHA[:9]} 有改动（O7-A 禁止）"
+    r = subprocess.run(["git", "diff", "--quiet", O7B_BASE, "--", "backend/routes"],
+                       cwd=REPO, capture_output=True)
+    assert r.returncode == 0, "backend/routes 相对 O7-B BASE 有未授权改动"
 
 
 # ── T20 — Q2 交付基线冻结正确（§25）─────────────────────────────

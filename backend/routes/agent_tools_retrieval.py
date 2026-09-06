@@ -24,6 +24,48 @@ def _cite_label(book_title, chapter_title):
     return f"【《{bt}》·{ct}】" if ct else f"【《{bt}》】"
 
 
+# ── O7-B §14-17: 书目元数据 additive 暴露（work/edition/digital_source 三分离）──
+# 数据源 = backend/data/book_bibliography.json（dp_biblio_build.py 产出, 仅 pilot 书）。
+# 模型可见精简视图（verified/source_type/granularity）; 完整 provenance 留在数据层。
+# 缺失字段保持 null——不生成「未知出版社/第?页」类占位文本（§16）。
+_BIBLIO_PATH = os.path.join(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__))), "data", "book_bibliography.json")
+_biblio_cache = None
+
+def _load_biblio():
+    global _biblio_cache
+    if _biblio_cache is None:
+        try:
+            with open(_BIBLIO_PATH, encoding="utf-8") as f:
+                _biblio_cache = json.load(f).get("books", {})
+        except FileNotFoundError:
+            _biblio_cache = {}
+    return _biblio_cache
+
+def _biblio_payload(bid):
+    """pilot 书 → 模型可见书目元数据（additive）; 非 pilot 书 → None（零改动）。"""
+    rec = _load_biblio().get(bid)
+    if not rec:
+        return None
+    ed, wk = rec.get("edition", {}), rec.get("work", {})
+    return {
+        "work": {"author": wk.get("author"),
+                 "canonical_title": wk.get("canonical_title"),
+                 "original_language": wk.get("original_language")},
+        "edition": {"translator": ed.get("translator"),       # null = 未验证/未收录
+                    "publisher": ed.get("publisher"),
+                    "publication_year": ed.get("publication_year"),
+                    "isbn": ed.get("isbn"),
+                    "edition_identity": ed.get("edition_identity")},
+        "citation_capability": rec.get("citation_capability"),
+        "metadata_status": {
+            "source_type": "embedded_front_matter",   # 数据层 Tier1（版权页/扉页内嵌于数字源）
+            "verified_fields": [k for k, v in rec.get("field_provenance", {}).items()
+                                if v.get("verified")],
+            "note": "字段为 null 表示当前数字源未提供或未通过双重证据核验; 不得臆测补全"},
+    }
+
+
 # ── 工具 1: search_books（书级过滤 + 章级关键词扫描）──
 def _match_score(text, terms):
     """简单关键词评分: 命中数 + 位置权重"""
@@ -170,11 +212,16 @@ def _exec_book_detail(args):
     if not b:
         return {"error": f"未找到书籍 {bid}（提示: 先用 search_books 检索获取 book_id）"}
     meta = chapter_meta(bid)
-    return {"id": b.get("id"), "title": b.get("title"), "author": b.get("author"),
-            "region": b.get("region"), "file_type": b.get("file_type"),
-            "summary": b.get("summary", "")[:500], "rank": b.get("rank"),
-            "chapterCount": meta.get("chapterCount", 0) if meta else 0,
-            "toc": [t.get("title") if isinstance(t, dict) else t for t in (meta.get("toc") or [])][:30]}
+    out = {"id": b.get("id"), "title": b.get("title"), "author": b.get("author"),
+           "region": b.get("region"), "file_type": b.get("file_type"),
+           "summary": b.get("summary", "")[:500], "rank": b.get("rank"),
+           "chapterCount": meta.get("chapterCount", 0) if meta else 0,
+           "toc": [t.get("title") if isinstance(t, dict) else t for t in (meta.get("toc") or [])][:30]}
+    # O7-B: additive 书目元数据（pilot 书才有; 已有字段零改动）
+    bib = _biblio_payload(b.get("id", bid))
+    if bib:
+        out["bibliographic_metadata"] = bib
+    return out
 
 register_tool(
     "get_book_detail",
@@ -200,10 +247,15 @@ def _exec_chapter(args):
     # （置于 text 之前, 防 ToolMessage 截断丢失; 无语义文案）
     _b = book_by_id(bid) or {}
     _bt = _b.get("title") or bid
-    return {"book_id": bid, "chapter_idx": idx, "title": ch["title"],
-            "book_title": _bt,
-            "citation_label": _cite_label(_bt, ch["title"]),
-            "text": ch["text"][:6000]}
+    out = {"book_id": bid, "chapter_idx": idx, "title": ch["title"],
+           "book_title": _bt,
+           "citation_label": _cite_label(_bt, ch["title"]),
+           "text": ch["text"][:6000]}
+    # O7-B: additive 书目元数据可见性（pilot 书; §16 缺失=null 不占位）
+    bib = _biblio_payload(bid)
+    if bib:
+        out["bibliographic_metadata"] = bib
+    return out
 
 register_tool(
     "get_chapter",
