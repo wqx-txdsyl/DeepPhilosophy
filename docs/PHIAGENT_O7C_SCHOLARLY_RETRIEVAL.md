@@ -97,3 +97,61 @@ judge 评估 116 次调用（E 80 + F 36）, glm-4.6, 人民币几元量级。
 
 检索/访问/provenance 契约已就绪; O7-D（二手语料规模化）可直接复用 access 状态机、
 合法边界与 cache 机制; Scholarly Policy（prompt 层）仍冻结, 留待证据能力齐备后启用。
+
+---
+
+# O7-C RP1 — Access Truth & Security Closure（2026-09-06）
+
+> BASE_SHA=43978eb49 ｜ CODE_SHA=6571ec7de（RP1 生产修复冻结）
+> O7C_RP1_CAPABILITY_GATE_SHA= 本节 gate 产物 commit
+> PRE_REBASE_HISTORICAL_CODE_SHA=7ee6d2b62 ｜ PRE_REBASE_HISTORICAL_GATE_SHA=d83e1ae11
+> （rebase 前旧 SHA, 保留历史不删除, 不再作为当前 Gate）
+
+## 修复对照（四 blocker）
+
+1. **Access 真值**: provider OA URL 降为 `full_text_candidates[]`（access_claim=
+   OPEN_ACCESS 的机械候选）, 不自动升级。FULL_TEXT_AVAILABLE 新定义 = 实际
+   network attempt 已证明 URL 可达+body 可取得; 解析出正文 → FULL_TEXT_READ;
+   2xx+body 但解析无正文 → AVAILABLE（AVAILABLE_PARSE_FAILED）。broken URL
+   降回真实态（有摘要→ABSTRACT_AVAILABLE, 仅 metadata→METADATA_ONLY）。
+   OA 候选不再依赖 abstract 存在。状态机严格单调（ABSTRACT 请求不降级,
+   内容请求与状态字段分离: `returned_evidence_level`）。
+2. **Redirect SSRF**: `_GuardedRedirectHandler` 逐跳过 SSRF guard
+   （scheme/DNS/私网/环回/链路本地）, >MAX_REDIRECTS=4 → REDIRECT_LIMIT。
+   timeout 语义 Option A: 连接阶段 `_connect_probe`（CONNECT_TIMEOUT=8s 单独
+   强制）+ 读阶段 READ_TIMEOUT=20s。
+3. **Source role 诚实化**: `model_view.source_category = philosophical_role or
+   UNKNOWN`; journal-article 不再自动 SCHOLARLY_SECONDARY; 工具描述改为
+   「学术文献记录（可能是 secondary/reference/primary/尚未分类）」。
+4. **Gate 真值**: A1-A8 全部执行式计算（零硬编码 True）; 指标拆分
+   SUBSTANTIVE_*（14 查询）/ NEGATIVE_*（2 查询假阳性对照）; 全文尝试全量记账;
+   新增 ACCESS_STATE_ACCOUNTING_DELTA 守恒不变量。
+
+## 冻结后全量重跑（§17: 16 live queries + 书目 + DOI + access + judge + F6 全复跑）
+
+```text
+A: 16 queries 双 provider, provider 错误=0; 80 records / 79 unique; P50=1.53s P95=2.20s
+B: 25 records × 4 字段抽样复核 FABRICATED=0
+C: 67 个 doi_verified 经 doi.org 复验 INVALID=0
+D: METADATA_ONLY=19 / ABSTRACT_AVAILABLE=53 / FULL_TEXT_AVAILABLE=2 / FULL_TEXT_READ=5
+   ACCESS_STATE_ACCOUNTING_DELTA=0  BROKEN_OA_AS_AVAILABLE=0
+   FULLTEXT_CANDIDATES=18 / ATTEMPTS=18 / SUCCESS=7 / PARSE_SUCCESS=5 / HTTP_FAIL=11 / PARSE_FAIL=2
+   A1-A8 执行式全真（A4: 5 篇真实 FULL_TEXT_READ, 均带 content hash）
+E: TOP5_RELEVANCE_MEAN=3.486（≥3.0）; SUBSTANTIVE 14/14=100%（≥90%）;
+   NEGATIVE_QUERIES_WITH_FALSE_POSITIVE=0, NEGATIVE_CONTROL_PASS=true
+F: LITERATURE_ACCESS_OVERCLAIM_RECALL=100%, FALSE_ACCESS_OVERCLAIM=0（12 fixtures 复跑）
+```
+
+## 测试
+
+新增 R1-R18（候选不自动升级/broken 降级/READ 需解析/解析失败→AVAILABLE/
+无摘要可读全文/ABSTRACT 不降级×2/journal 默认 UNKNOWN/primary 不误分类/
+redirect kill R1-R7（public→public 放行, →localhost/127/10/169.254/file 拦截,
+>4 跳 REDIRECT_LIMIT）/gate 无硬编码/守恒/指标拆分/生产冻结）。
+全量: **595 passed / FAILED=0 / SKIPPED=0**。
+
+## SSRF Gate
+
+DIRECT_SSRF_BLOCK=7/7（localhost/127.0.0.1/192.168/10.x/169.254/file/ftp）;
+REDIRECT_SSRF_BLOCK=6/6 kill cases 全过; REDIRECT_LIMIT_ENFORCED=true;
+get_scholarly_source 仍只接受 source_record_id（无 URL 参数）。
