@@ -71,15 +71,46 @@ def _url_guard(url):
     return True, "ok"
 
 
+class _GuardedRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """O7-C RP1 §7: 每一跳 redirect target 都过 SSRF guard; >MAX_REDIRECTS 拒绝。"""
+    hops = 0
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if _GuardedRedirectHandler.hops >= MAX_REDIRECTS:
+            raise ProviderError("REDIRECT_LIMIT",
+                                f">{MAX_REDIRECTS} redirects: {newurl}")
+        ok, why = _url_guard(newurl)
+        if not ok:
+            raise ProviderError("URL_BLOCKED", f"redirect target {why}: {newurl}")
+        _GuardedRedirectHandler.hops += 1
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _connect_probe(url):
+    """Option A 连接阶段硬上限: DNS+TCP connect 单独受 CONNECT_TIMEOUT 约束。"""
+    u = urllib.parse.urlsplit(url)
+    host, port = u.hostname, u.port or (443 if u.scheme == "https" else 80)
+    infos = socket.getaddrinfo(host, port, proto=socket.IPPROTO_TCP)
+    s = socket.create_connection(infos[0][4], timeout=CONNECT_TIMEOUT)
+    s.close()
+
+
 def _http_get(url, accept="application/json"):
-    """带硬上限的 GET。返回 (status, bytes)；错误抛 ProviderError。"""
+    """带硬上限的 GET。返回 (status, bytes)；错误抛 ProviderError。
+
+    timeout 语义（RP1 §9 Option A）: 连接阶段 = CONNECT_TIMEOUT（_connect_probe）,
+    读阶段 = READ_TIMEOUT（urlopen timeout 覆盖 read; urlopen 内部 connect 复用
+    同一 socket 已建立, 故连接上限由 probe 单独强制）。"""
     ok, why = _url_guard(url)
     if not ok:
         raise ProviderError("URL_BLOCKED", why)
+    _connect_probe(url)
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT, "Accept": accept,
         "Accept-Encoding": "identity"})
-    with urllib.request.urlopen(req, timeout=CONNECT_TIMEOUT) as r:
+    _GuardedRedirectHandler.hops = 0
+    opener = urllib.request.build_opener(_GuardedRedirectHandler)
+    with opener.open(req, timeout=READ_TIMEOUT) as r:
         data = r.read(MAX_BYTES + 1)
         if len(data) > MAX_BYTES:
             raise ProviderError("RESPONSE_TOO_LARGE", url)
@@ -96,6 +127,8 @@ class ProviderError(Exception):
 def _get_json(url):
     try:
         status, data = _http_get(url)
+    except ProviderError:
+        raise                       # REDIRECT_LIMIT / URL_BLOCKED 原样透传
     except urllib.error.HTTPError as e:
         if e.code == 429:
             raise ProviderError("PROVIDER_RATE_LIMIT", str(e.code))
@@ -354,78 +387,105 @@ def _mk_canonical(provider_records):
                          "evidence": f"abstract from {rec['abstract']['source']}",
                          "checked_at": int(time.time()),
                          "full_text_url": None, "content_hash": None}
-    # OA full text location（§16: 合法可解析位置才 FULL_TEXT_AVAILABLE）
-    oa_url = None
-    for r in provider_records:
-        if (r.get("oa_pdf_url") or "").startswith(("https://", "http://")):
-            oa_url = r["oa_pdf_url"]
-            break
-    if oa_url and rec["access"]["level"] == "ABSTRACT_AVAILABLE":
-        rec["access"] = {"level": "FULL_TEXT_AVAILABLE",
-                         "evidence": f"OA pdf url from provider record: {oa_url}",
-                         "checked_at": int(time.time()),
-                         "full_text_url": oa_url, "content_hash": None}
+    # O7-C RP1 §1: provider OA URL 只是机械候选, 不自动升级 access level
+    #   provider says OA != URL verified reachable
+    rec["full_text_candidates"] = [
+        {"url": u, "provider": r["provider"], "access_claim": "OPEN_ACCESS"}
+        for r in provider_records
+        if (r.get("oa_pdf_url") or "").startswith(("https://", "http://"))
+        for u in [r["oa_pdf_url"]]]
     return rec
 
 
 # ── Access state machine（§13-§18）───────────────────────────────
+def _record_access(rec, level, evidence, url=None, chash=None, extra=None):
+    rec["access"] = {"level": level, "evidence": evidence,
+                     "checked_at": int(time.time()),
+                     "full_text_url": url, "content_hash": chash}
+    if extra:
+        rec["access"].update(extra)
+
+
 def get_evidence(rec, requested_access):
-    """按请求取实际 evidence; 严格逐级, 只升不降。返回 (record, result_info)。"""
+    """O7-C RP1 §2-§6: 严格单调访问状态机 + returned_evidence_level 与状态分离。
+
+    - FULL_TEXT_AVAILABLE = 实际 network attempt 已证明 URL 可达且 body 可取得
+    - FULL_TEXT_READ = body 取得 + 解析出有意义正文（+content hash）
+    - 请求 ABSTRACT 不得降低状态字段（可返回摘要内容, 但 after 不降）
+    """
     before = rec["access"]["level"]
     info = {"source_record_id": rec["source_record_id"],
-            "access_level_before": before, "access_level_after": before,
+            "access_level_before": before,
+            "access_level_after": before,          # 单调: 只升不降
+            "returned_evidence_level": None,       # 本次实际返回的证据层级（机械字段）
             "full_text_status": None, "evidence_passages": [],
             "passage_locators": [], "source_url": None, "content_hash": None,
             "access_notes": ""}
     if rec["abstract"]["text"]:
         info["abstract"] = dict(rec["abstract"])
+
     if requested_access == "ABSTRACT":
         if rec["abstract"]["text"]:
-            info["access_level_after"] = "ABSTRACT_AVAILABLE"
-            info["access_notes"] = "abstract returned; 来源与 hash 见 abstract 字段"
+            info["returned_evidence_level"] = "ABSTRACT_AVAILABLE"
+            info["access_level_after"] = max(
+                before, "ABSTRACT_AVAILABLE", key=lambda l: _LEVEL_ORDER[l])
+            info["access_notes"] = "abstract 返回; 状态字段单调不降"
         else:
-            info["access_notes"] = "abstract 未取得: 保持 METADATA_ONLY（不得凭 title 推断内容）"
+            info["access_notes"] = ("abstract 未取得: 不得凭 title 推断论文内容; "
+                                    "状态保持不变")
         return rec, info
 
-    # FULL_TEXT_IF_LEGALLY_AVAILABLE
-    if rec["access"]["level"] in ("METADATA_ONLY", "ABSTRACT_AVAILABLE"):
-        info["access_notes"] = ("无合法可访问 full-text location（provider record "
-                                "未提供 OA 位置）; 不因 DOI landing page 存在而升级")
+    # FULL_TEXT_IF_LEGALLY_AVAILABLE: 逐个尝试机械候选（不要求先有 abstract）
+    cands = rec.get("full_text_candidates") or []
+    info["full_text_attempts"] = 0
+    if not cands:
+        info["access_notes"] = ("无 OA 全文候选（provider record 未提供 OA 位置）; "
+                                "DOI landing page 不构成全文可用")
         return rec, info
-    url = rec["access"].get("full_text_url")
-    info["source_url"] = url
-    try:
-        status, data = _http_get(url, accept="application/pdf,text/html,*/*")
-    except ProviderError as e:
-        info["full_text_status"] = f"FETCH_FAILED:{e.kind}"
-        info["access_notes"] = f"full text 获取失败（{e.kind}）; 保持 FULL_TEXT_AVAILABLE 不虚报已读"
+    last_err = None
+    for cand in cands[:3]:
+        url = cand["url"]
+        info["full_text_attempts"] += 1
+        info["source_url"] = url
+        try:
+            status, data = _http_get(url, accept="application/pdf,text/html,*/*")
+        except ProviderError as e:
+            last_err = f"{e.kind}"
+            continue
+        except urllib.error.HTTPError as e:
+            last_err = f"HTTP_{e.code}"
+            continue
+        except (urllib.error.URLError, OSError) as e:
+            last_err = "NETWORK"
+            continue
+        # body 实际取得 → 至少 FULL_TEXT_AVAILABLE（已证明可取得, RP1 §2）
+        text = _extract_text(data, url)
+        if not text or len(text.strip()) < 200:
+            # RP1 §2: 2xx + body 取得但 parser 未读懂 → AVAILABLE 合理
+            _record_access(rec, "FULL_TEXT_AVAILABLE",
+                           f"body retrievable (HTTP {status}) but parser produced "
+                           f"no meaningful text", url=url)
+            info.update({"access_level_after": "FULL_TEXT_AVAILABLE",
+                         "full_text_status": "AVAILABLE_PARSE_FAILED",
+                         "access_notes": "全文位置已验证可达, 但当前解析器未产出正文"})
+            return rec, info
+        chash = hashlib.sha256(data).hexdigest()
+        _record_access(rec, "FULL_TEXT_READ",
+                       "fetched+parsed body obtained", url=url, chash=chash,
+                       extra={"content_length": len(text),
+                              "parser": "plain-text-heuristic"})
+        info.update({"access_level_after": "FULL_TEXT_READ",
+                     "full_text_status": "READ",
+                     "content_hash": chash,
+                     "evidence_passages": _top_passages(text, None),
+                     "access_notes": "全文已内部解析; 返回节选段落而非整篇复制"})
         return rec, info
-    except urllib.error.HTTPError as e:
-        info["full_text_status"] = f"FETCH_FAILED:HTTP_{e.code}"
-        info["access_notes"] = f"full text HTTP {e.code}; 保持 FULL_TEXT_AVAILABLE 不虚报已读"
-        return rec, info
-    except (urllib.error.URLError, OSError) as e:
-        info["full_text_status"] = "FETCH_FAILED:NETWORK"
-        info["access_notes"] = f"full text 网络失败（{e}）; 保持 FULL_TEXT_AVAILABLE 不虚报已读"
-        return rec, info
-    text = _extract_text(data, url)
-    if not text or len(text.strip()) < 200:
-        info["full_text_status"] = "PARSE_FAILED"
-        info["access_notes"] = "body 解析未取得有意义内容; 不升级 FULL_TEXT_READ"
-        return rec, info
-    chash = hashlib.sha256(data).hexdigest()
-    rec["access"] = {"level": "FULL_TEXT_READ",
-                     "evidence": "fetched+parsed body obtained",
-                     "checked_at": int(time.time()),
-                     "full_text_url": url, "content_hash": chash,
-                     "content_length": len(text), "parser": "plain-text-heuristic"}
-    info.update({"access_level_after": "FULL_TEXT_READ",
-                 "full_text_status": "READ",
-                 "content_hash": chash,
-                 "evidence_passages": _top_passages(text, query_terms=None),
-                 "access_notes": ("全文已内部解析; 返回相关节选段落而非整篇复制"
-                                  "（§21 copyright-safe）")})
+    # 全部候选失败 → 状态保持原级（broken 候选不虚报, RP1 §3）
+    info["full_text_status"] = f"FETCH_FAILED:{last_err}"
+    info["access_notes"] = (f"OA 候选获取失败（{last_err}）; 状态保持 {before}, "
+                            "不虚报全文可用")
     return rec, info
+
 
 
 def _extract_text(data, url):
@@ -535,8 +595,7 @@ def model_view(rec):
             "publication_type": rec["publication_type"],
             "venue": rec["container_title"],
             "doi": rec["identifiers"].get("doi"),
-            "source_category": ("SCHOLARLY_SECONDARY"
-                                if rec["publication_type"] == "JOURNAL_ARTICLE" else "UNKNOWN"),
+            "source_category": rec.get("philosophical_role") or "UNKNOWN",
             "access_level": rec["access"]["level"],
             "provider": "/".join(rec["provenance"]["providers"]),
             "bibliographic_verified_fields": sorted(rec["provenance"]["field_sources"]),

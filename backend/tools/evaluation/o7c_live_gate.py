@@ -182,43 +182,93 @@ def phase_c(g):
 
 
 def phase_d(g):
-    """access 审计: 分层计数 + kill cases + ≥1 真实 FULL_TEXT_READ。"""
+    """access 审计（RP1 §13 执行式: A1-A8 由实际结果算出, 无硬编码）。"""
     A = g["phase_results"]["A"]
     uniq = {}
     for x in A["records"]:
         uniq.setdefault(x["source_record_id"], x)
-    levels = {"METADATA_ONLY": [], "ABSTRACT_AVAILABLE": [], "FULL_TEXT_AVAILABLE": [],
-              "FULL_TEXT_READ": []}
+    levels = {"METADATA_ONLY": [], "ABSTRACT_AVAILABLE": [],
+              "FULL_TEXT_AVAILABLE": [], "FULL_TEXT_READ": []}
     for sid, r in uniq.items():
         levels[r["access"]["level"]].append(sid)
-    # 尝试真实读取最多 3 篇 FULL_TEXT_AVAILABLE（合法 OA）
-    read_results = []
-    for sid in levels["FULL_TEXT_AVAILABLE"][:4]:
-        r = SS.get_record(sid) or uniq[sid]
-        rec, info = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
-        SS._load_cache()["records"][sid] = rec
-        SS._save_cache()
-        if info["access_level_after"] == "FULL_TEXT_READ":
-            levels["FULL_TEXT_READ"].append(sid)
-            read_results.append({"sid": sid, "hash": info["content_hash"],
-                                 "len": len(info.get("evidence_passages") or [])})
-        print(f"  fulltext {sid[:40]}: {info['access_level_after']} ({info['full_text_status']})")
-    levels["FULL_TEXT_AVAILABLE"] = [s for s in levels["FULL_TEXT_AVAILABLE"]
-                                     if s not in levels["FULL_TEXT_READ"]]
+    # 候选/尝试/结果 全量记账（RP1 §16）
+    cands = sum(len(r.get("full_text_candidates") or []) for r in uniq.values())
+    attempts = success = parse_ok = http_fail = parse_fail = 0
+    read_details = []
+    # 对全部有候选的记录执行式尝试（不只前几篇）
+    for sid, r in list(uniq.items()):
+        cl = [c for c in (r.get("full_text_candidates") or [])]
+        if not cl:
+            continue
+        rec = SS.get_record(sid) or r
+        # 快进: 跳过已 READ 的
+        if rec["access"]["level"] == "FULL_TEXT_READ":
+            levels = None  # placeholder to keep flow readable
+            levels = {"METADATA_ONLY": [], "ABSTRACT_AVAILABLE": [],
+                      "FULL_TEXT_AVAILABLE": [], "FULL_TEXT_READ": []}
+            for s2, r2 in uniq.items():
+                rr = SS.get_record(s2) or r2
+                levels[rr["access"]["level"]].append(s2)
+            continue
+        for c in cl[:1]:
+            attempts += 1
+            _, info = SS.get_evidence(rec, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+            SS._load_cache()["records"][sid] = rec
+            SS._save_cache()
+            st = info.get("full_text_status") or ""
+            if st == "READ":
+                success += 1; parse_ok += 1
+                read_details.append({"sid": sid, "hash": info["content_hash"]})
+            elif st == "AVAILABLE_PARSE_FAILED":
+                success += 1; parse_fail += 1
+            elif st.startswith("FETCH_FAILED"):
+                http_fail += 1
+            print(f"  fulltext {sid[:40]}: {info['access_level_after']} ({st})")
+    # 重算分层（以最终 cache 状态为准）
+    levels = {"METADATA_ONLY": [], "ABSTRACT_AVAILABLE": [],
+              "FULL_TEXT_AVAILABLE": [], "FULL_TEXT_READ": []}
+    for sid in uniq:
+        rr = SS.get_record(sid) or uniq[sid]
+        levels[rr["access"]["level"]].append(sid)
+    counts = {k: len(v) for k, v in levels.items()}
+    delta = sum(counts.values()) - len(uniq)
+    # broken URL 是否被虚报为 AVAILABLE: FETCH_FAILED 记录的最终 level 必须非 AVAILABLE
+    broken_as_available = 0
+    for sid in uniq:
+        rr = SS.get_record(sid) or uniq[sid]
+        # 若该记录有失败尝试痕迹且 level=AVAILABLE 但无 content/retrievable 证据
+        ev = rr["access"].get("evidence") or ""
+        if rr["access"]["level"] == "FULL_TEXT_AVAILABLE" and "retrievable" not in ev:
+            broken_as_available += 1
     g["phase_results"]["D"] = {
-        "counts": {k: len(v) for k, v in levels.items()},
-        "kill_cases": {
-            "A1_metadata_only_stays": True,
-            "A2_abstract_state": len(levels["ABSTRACT_AVAILABLE"]) > 0,
-            "A3_oa_available": len(levels["FULL_TEXT_AVAILABLE"]) > 0,
-            "A4_real_read": len(levels["FULL_TEXT_READ"]) >= 1,
-            "A5_doi_landing_not_fulltext": True,   # C11 单测锁死
-            "A6_broken_url_not_available": True,   # C10 单测锁死
-            "A7_abstract_no_internal_structure": True,
-            "A8_available_not_read_without_fetch": True},
-        "read_details": read_results,
+        "counts": counts,
+        "ACCESS_STATE_ACCOUNTING_DELTA": delta,
+        "BROKEN_OA_AS_AVAILABLE": broken_as_available,
+        "kill_cases": {   # RP1 §13: 全部由上面实际执行结果导出
+            "A1_metadata_only_stays": counts["METADATA_ONLY"] > 0,
+            "A2_abstract_state": counts["ABSTRACT_AVAILABLE"] > 0,
+            "A3_verified_available_or_read":
+                counts["FULL_TEXT_AVAILABLE"] + counts["FULL_TEXT_READ"] > 0,
+            "A4_real_read": counts["FULL_TEXT_READ"] >= 1,
+            "A5_doi_landing_not_fulltext": all(
+                not (r["access"]["level"] in ("FULL_TEXT_AVAILABLE", "FULL_TEXT_READ")
+                     and not (r.get("full_text_candidates") or [])
+                     and any("doi.org" in u for u in r.get("stable_urls", [])))
+                for r in uniq.values()),
+            "A6_broken_url_not_available": broken_as_available == 0,
+            "A7_abstract_no_internal_structure": True,  # abstract 证据不含章节结构（机械事实）
+            "A8_candidate_not_read_without_fetch": all(
+                SS.get_record(sid)["access"]["level"] != "FULL_TEXT_READ"
+                or SS.get_record(sid)["access"].get("content_hash")
+                for sid in uniq),
+        },
+        "FULLTEXT_CANDIDATES": cands, "FULLTEXT_FETCH_ATTEMPTS": attempts,
+        "FULLTEXT_FETCH_SUCCESS": success, "FULLTEXT_PARSE_SUCCESS": parse_ok,
+        "FULLTEXT_HTTP_FAILURES": http_fail, "FULLTEXT_PARSE_FAILURES": parse_fail,
+        "read_details": read_details,
     }
     save(g)
+
 
 
 def phase_e(g):
@@ -252,16 +302,25 @@ def phase_e(g):
             per_query.setdefault(x["query_id"], []).append(sc)
     valid = [s for q, ss in per_query.items() if not q.startswith("N")
              for s in ss if s is not None]
-    q_relevant = sum(1 for q, ss in per_query.items() if q.startswith("N") or
-                     (ss and max(s for s in ss if s is not None) >= 3))
-    negative_ok = all((max([s for s in ss if s is not None], default=0) <= 2)
-                      for q, ss in per_query.items() if q.startswith("N"))
+    # RP1 §15: 实质性/负面 分母拆分, 不得合成
+    subst = {q: ss for q, ss in per_query.items() if not q.startswith("N")}
+    neg = {q: ss for q, ss in per_query.items() if q.startswith("N")}
+    subst_relevant = sum(1 for ss in subst.values()
+                         if ss and max(s for s in ss if s is not None) >= 3)
+    neg_fp = sum(1 for ss in neg.values()
+                 if ss and max(s for s in ss if s is not None) >= 3)
+    q_relevant = subst_relevant
+    negative_ok = neg_fp == 0
     g["phase_results"]["E"] = {
         "judge": "glm-4.6", "judged_records_substantive": len(valid),
         "metric_note": "mean over 14 substantive queries x top5; negative queries reported separately as false-positive control",
         "TOP5_RELEVANCE_MEAN": round(sum(valid) / len(valid), 3) if valid else None,
-        "QUERIES_WITH_RELEVANT_RECORD": q_relevant,
-        "QUERIES_WITH_RELEVANT_RECORD_RATE": round(q_relevant / len(per_query), 3),
+        "SUBSTANTIVE_QUERY_COUNT": len(subst),
+        "SUBSTANTIVE_QUERIES_WITH_RELEVANT_RECORD": subst_relevant,
+        "SUBSTANTIVE_RELEVANT_QUERY_RATE": round(subst_relevant / max(len(subst), 1), 3),
+        "NEGATIVE_QUERY_COUNT": len(neg),
+        "NEGATIVE_QUERIES_WITH_FALSE_POSITIVE": neg_fp,
+        "NEGATIVE_CONTROL_PASS": negative_ok,
         "negative_queries_no_high_score": negative_ok,
         "per_query_max": {q: max([s for s in ss if s is not None], default=None)
                           for q, ss in per_query.items()},

@@ -7,6 +7,7 @@ provider 失败 != scholarly absence; 无 LLM 元数据补全; SSRF 边界。
 import json
 import os
 import sys
+import urllib.request
 
 import pytest
 
@@ -89,40 +90,46 @@ def test_c7_abstract_available():
 
 
 def test_c8_available_not_read(monkeypatch):
+    # RP1 §1: OA 候选不自动升级; 未 fetch 前停留在证据层级
     r = SS._mk_canonical([_pr(doi="10.1/f", abstract_text="abs",
                               oa_pdf_url="https://example.org/paper.pdf")])
-    assert r["access"]["level"] == "FULL_TEXT_AVAILABLE"  # OA 位置存在（未读取）
-    # A8: 不调用 get_scholarly_source/fetch → 永远不会变成 FULL_TEXT_READ
-    # （此处直接构造后检查: 状态保持 AVAILABLE）
-    assert r["access"]["level"] == "FULL_TEXT_AVAILABLE"
-    # 显式 fetch 失败后仍不得 READ
+    assert r["access"]["level"] == "ABSTRACT_AVAILABLE"
+    assert r["full_text_candidates"] and not r["access"]["full_text_url"]
     def boom(*a, **k):
         raise SS.ProviderError("PROVIDER_UNAVAILABLE", "net down")
     monkeypatch.setattr(SS, "_http_get", boom)
     _, info = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
-    assert info["access_level_after"] == "FULL_TEXT_AVAILABLE"
+    assert info["access_level_after"] == "ABSTRACT_AVAILABLE"  # broken 不虚报
+    assert info["full_text_status"].startswith("FETCH_FAILED")
 
 
 def test_c9_read_requires_parsed_body(monkeypatch):
+    # RP1 §2: 2xx+body 取得但解析无正文 → FULL_TEXT_AVAILABLE（非 READ）
     r = SS._mk_canonical([_pr(doi="10.1/f2", abstract_text="abs",
                               oa_pdf_url="https://example.org/paper.pdf")])
     monkeypatch.setattr(SS, "_http_get",
                         lambda *a, **k: (200, b"%PDF junk no text"))
     monkeypatch.setattr(SS, "_extract_text", lambda d, u: "")  # 解析失败
     _, info = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
-    assert info["access_level_after"] != "FULL_TEXT_READ"
-    assert info["full_text_status"] == "PARSE_FAILED"
+    assert info["access_level_after"] == "FULL_TEXT_AVAILABLE"
+    assert info["full_text_status"] == "AVAILABLE_PARSE_FAILED"
+    assert not r["access"].get("content_hash")  # READ 才有 hash
 
 
 def test_c10_broken_oa_url_not_read(monkeypatch):
+    # RP1 §3: broken OA URL 降回真实状态（ABSTRACT_AVAILABLE）, 不是 FULL_TEXT_AVAILABLE
     def boom(*a, **k):
         raise SS.ProviderError("PROVIDER_UNAVAILABLE", "http 404")
     r = SS._mk_canonical([_pr(doi="10.1/b", abstract_text="abs",
                               oa_pdf_url="https://example.org/gone.pdf")])
     monkeypatch.setattr(SS, "_http_get", boom)
     _, info = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
-    assert info["access_level_after"] == "FULL_TEXT_AVAILABLE"  # 不虚报 READ
-    assert info["full_text_status"].startswith("FETCH_FAILED")
+    assert info["access_level_after"] == "ABSTRACT_AVAILABLE"
+    # 仅 metadata 的记录 broken → 保持 METADATA_ONLY
+    r2 = SS._mk_canonical([_pr(doi="10.1/b2", oa_pdf_url="https://example.org/g2.pdf")])
+    monkeypatch.setattr(SS, "_http_get", boom)
+    _, info2 = SS.get_evidence(r2, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert info2["access_level_after"] == "METADATA_ONLY"
 
 
 def test_c11_doi_landing_not_fulltext():
@@ -289,3 +296,168 @@ def test_c30_tool_count():
     import routes.agent_tools_scholarly as ATS
     assert "search_scholarship" in ATS.TOOLS
     assert "get_scholarly_source" in ATS.TOOLS
+
+
+# ══ O7-C RP1 — Access Truth & Security Closure（R1-R18）══════════
+def _mk_oa(doi="10.1/x", abstract=None, url="https://oa.example.org/p.pdf"):
+    return SS._mk_canonical([_pr(doi=doi, abstract_text=abstract, oa_pdf_url=url)])
+
+
+def test_r1_candidate_not_auto_available():
+    r = _mk_oa(abstract="abs")
+    assert r["access"]["level"] == "ABSTRACT_AVAILABLE"      # 非 AVAILABLE
+    assert r["full_text_candidates"][0]["access_claim"] == "OPEN_ACCESS"
+
+
+def test_r2_broken_oa_stays_real_state(monkeypatch):
+    monkeypatch.setattr(SS, "_http_get",
+                        lambda *a, **k: (_ for _ in ()).throw(SS.ProviderError("PROVIDER_UNAVAILABLE", "404")))
+    r = _mk_oa(abstract="abs")
+    _, i = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert i["access_level_after"] == "ABSTRACT_AVAILABLE"
+
+
+def test_r3_body_and_parse_reads(monkeypatch):
+    body = ("para " * 400).encode()
+    monkeypatch.setattr(SS, "_http_get", lambda *a, **k: (200, body))
+    monkeypatch.setattr(SS, "_extract_text", lambda d, u: "t " * 500)
+    r = _mk_oa(abstract="abs")
+    rec, i = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert i["access_level_after"] == "FULL_TEXT_READ" and i["content_hash"]
+
+
+def test_r4_body_parse_fail_available(monkeypatch):
+    monkeypatch.setattr(SS, "_http_get", lambda *a, **k: (200, b"%PDF xx"))
+    monkeypatch.setattr(SS, "_extract_text", lambda d, u: "")
+    r = _mk_oa(abstract="abs")
+    _, i = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert i["access_level_after"] == "FULL_TEXT_AVAILABLE"
+
+
+def test_r5_oa_without_abstract_readable(monkeypatch):
+    # RP1 §4: 无 abstract 也可直接尝试全文
+    monkeypatch.setattr(SS, "_http_get", lambda *a, **k: (200, b"x" * 1000))
+    monkeypatch.setattr(SS, "_extract_text", lambda d, u: "meaningful " * 100)
+    r = _mk_oa(abstract=None)
+    assert r["access"]["level"] == "METADATA_ONLY"
+    rec, i = SS.get_evidence(r, "FULL_TEXT_IF_LEGALLY_AVAILABLE")
+    assert i["access_level_after"] == "FULL_TEXT_READ"
+
+
+def test_r6_abstract_request_no_downgrade_available():
+    r = _mk_oa(abstract="abs")
+    r["access"] = {"level": "FULL_TEXT_AVAILABLE", "evidence": "prev verified",
+                   "checked_at": 1, "full_text_url": "u", "content_hash": None}
+    _, i = SS.get_evidence(r, "ABSTRACT")
+    assert i["access_level_after"] == "FULL_TEXT_AVAILABLE"  # 不降级
+    assert i["returned_evidence_level"] == "ABSTRACT_AVAILABLE"
+
+
+def test_r7_abstract_request_no_downgrade_read():
+    r = _mk_oa(abstract="abs")
+    r["access"] = {"level": "FULL_TEXT_READ", "evidence": "prev read",
+                   "checked_at": 1, "full_text_url": "u", "content_hash": "h"}
+    _, i = SS.get_evidence(r, "ABSTRACT")
+    assert i["access_level_after"] == "FULL_TEXT_READ"
+
+
+def test_r8_source_category_journal_defaults_unknown():
+    r = SS._mk_canonical([_pr(doi="10.1/sc")])   # JOURNAL_ARTICLE
+    assert SS.model_view(r)["source_category"] == "UNKNOWN"
+
+
+def test_r9_primary_journal_not_secondary():
+    # 哲学家本人论文（journal article）也不得自动 SCHOLARLY_SECONDARY
+    r = SS._mk_canonical([_pr(doi="10.1/pj", title="Kant's own essay",
+                              authors=[{"name": "Immanuel Kant"}])])
+    r["philosophical_role"] = "PRIMARY"
+    assert SS.model_view(r)["source_category"] == "PRIMARY"
+
+
+# ── R10-R13 redirect SSRF kill cases（mock redirect handler）──
+class _Redirector(SS._GuardedRedirectHandler):
+    def __init__(self, chain):
+        self.chain = chain
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        target = self.chain.pop(0) if self.chain else newurl
+        ok, why = SS._url_guard(target)
+        if not ok:
+            raise SS.ProviderError("URL_BLOCKED", f"redirect target {why}")
+        return super().redirect_request(req, fp, code, msg, headers, target)
+
+
+def _redirect_chain_test(chain, monkeypatch):
+    """模拟: 初始 URL 公网, 逐跳跳到 chain 中的目标（真实 Request 对象）。"""
+    req = urllib.request.Request("https://public.example/start",
+                                 headers={"User-Agent": "t"})
+    h = _Redirector(chain)
+    try:
+        h.redirect_request(req, None, 302, "Found", {}, chain[0])
+        return True, None
+    except SS.ProviderError as e:
+        return False, e.kind
+
+
+@pytest.mark.parametrize("target,should_block", [
+    ("https://elsewhere.example.org/x", False),      # R1 public→public
+    ("http://localhost:9000/x", True),               # R2
+    ("http://127.0.0.1/x", True),                    # R3
+    ("http://10.0.0.1/x", True),                     # R4
+    ("http://169.254.169.254/latest", True),         # R5
+    ("file:///etc/passwd", True),                    # R6
+])
+def test_r10_r12_redirect_targets(target, should_block, monkeypatch):
+    monkeypatch.setattr(SS.socket, "getaddrinfo",
+                        lambda h, p: [(2, 1, 6, "", ("93.184.216.34", 0))]
+                        if not h.replace(".", "").isdigit() else [(2, 1, 6, "", (h, 0))])
+    ok, kind = _redirect_chain_test([target], monkeypatch)
+    assert ok != should_block
+
+
+def test_r13_redirect_limit():
+    req = urllib.request.Request("https://public.example/start",
+                                 headers={"User-Agent": "t"})
+    h = SS._GuardedRedirectHandler()
+    SS._GuardedRedirectHandler.hops = SS.MAX_REDIRECTS   # 已达上限
+    try:
+        with pytest.raises(SS.ProviderError) as e:
+            h.redirect_request(req, None, 302, "Found", {}, "https://x.example/y")
+        assert e.value.kind == "REDIRECT_LIMIT"
+    finally:
+        SS._GuardedRedirectHandler.hops = 0
+
+
+def test_r14_gate_kill_cases_computed():
+    # live gate 的 A1-A8 必须由数据算出（gate runner 已改为执行式; 此处锁 runner 源码无硬编码 True）
+    src = open(os.path.join(BACKEND, "tools", "evaluation", "o7c_live_gate.py"),
+               encoding="utf-8").read()
+    assert '"A6_broken_url_not_available": True' not in src
+    assert '"A4_real_read": True' not in src
+
+
+def test_r15_access_counts_sum():
+    # 访问状态计数守恒（对 cache 内记录机械校验）
+    recs = list(SS._load_cache()["records"].values())
+    if not recs:
+        pytest.skip("cache 空")  # live gate 后填充
+    from collections import Counter
+    c = Counter(r["access"]["level"] for r in recs)
+    assert sum(c.values()) == len(recs)
+
+
+def test_r16_r17_metric_split():
+    src = open(os.path.join(BACKEND, "tools", "evaluation", "o7c_live_gate.py"),
+               encoding="utf-8").read()
+    assert "SUBSTANTIVE_QUERIES_WITH_RELEVANT_RECORD" in src
+    assert "NEGATIVE_QUERIES_WITH_FALSE_POSITIVE" in src
+    assert "NEGATIVE_CONTROL_PASS" in src
+
+
+def test_r18_production_frozen_rp1():
+    import subprocess
+    for rel in ("backend/engine_langgraph.py", "backend/final_validator.py",
+                "backend/quote_bound.py"):
+        r = subprocess.run(["git", "diff", "--quiet",
+                            "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
+                           cwd=ROOT, capture_output=True)
+        assert r.returncode == 0, f"{rel} 被改动"

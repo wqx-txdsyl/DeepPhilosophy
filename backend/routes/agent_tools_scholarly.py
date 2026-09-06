@@ -61,6 +61,7 @@ def _exec_get_scholarly_source(args):
            "bibliographic_record": SS.model_view(rec),
            "access_level_before": info["access_level_before"],
            "access_level_after": info["access_level_after"],
+           "returned_evidence_level": info.get("returned_evidence_level"),
            "full_text_status": info["full_text_status"],
            "source_url": info["source_url"],
            "content_hash": info["content_hash"],
@@ -78,10 +79,11 @@ def _exec_get_scholarly_source(args):
 
 register_tool(
     "search_scholarship",
-    "检索真实二手学术文献（期刊论文/专著章节等 scholarly records; Crossref+OpenAlex 双源）。"
-    "返回真实书目记录与 access_level（METADATA_ONLY/ABSTRACT_AVAILABLE/FULL_TEXT_AVAILABLE——"
-    "只反映已实际取得的证据层级）。是否检索、检索什么、选哪篇由你决定; "
-    "记录存在不等于论文已被阅读, 不得凭标题推断论文内容。",
+    "检索真实学术文献记录（期刊论文/专著章节等; Crossref+OpenAlex 双源）。"
+    "记录可能是 scholarly secondary、reference、primary publication 或尚未分类——"
+    "由 source_category 字段如实标注。access_level（METADATA_ONLY/ABSTRACT_AVAILABLE/"
+    "FULL_TEXT_AVAILABLE/FULL_TEXT_READ）只反映已实际取得的证据层级。"
+    "是否检索、检索什么、选哪篇由你决定; 记录存在不等于论文已被阅读, 不得凭标题推断论文内容。",
     {"type": "object",
      "properties": {"query": {"type": "string", "description": "研究主题/论证/争议关键词"},
                     "philosopher": {"type": "string", "description": "哲学家名（可选, 限定检索）"},
