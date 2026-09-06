@@ -542,6 +542,9 @@ def get_evidence(rec, requested_access):
             info["access_level_after"] = max(
                 before, "ABSTRACT_AVAILABLE", key=lambda l: _LEVEL_ORDER[l])
             info["access_notes"] = "abstract 返回; 状态字段单调不降"
+            info["_evidence_origin_items"] = [
+                {"evidence_id": "inline-abstract",
+                 "evidence_origin": "ABSTRACT_METADATA"}]
             return rec, info
         # O7-D RP1 §8: 本地 registry 持久化 abstract 回退
         if rec.get("ingest") is not None:
@@ -560,6 +563,9 @@ def get_evidence(rec, requested_access):
                     before, "ABSTRACT_AVAILABLE", key=lambda l: _LEVEL_ORDER[l])
                 info["access_notes"] = ("持久化 abstract 返回（evidence_origin="
                                         "ABSTRACT_METADATA, 本地 registry）")
+                info["_evidence_origin_items"] = [
+                    {"evidence_id": e.get("evidence_id", "persisted-abstract"),
+                     "evidence_origin": "ABSTRACT_METADATA"}]
                 return rec, info
         info["access_notes"] = ("abstract 未取得: 不得凭 title 推断论文内容; "
                                 "状态保持不变")
@@ -825,7 +831,10 @@ def get_record(source_record_id):
         return rec
     try:
         import scholarly_registry as SR
-        return SR.record(source_record_id)
+        r = SR.record(source_record_id)
+        # micro-patch §1: 直接 registry 命中 → retrieval_origin=LOCAL_CURATED
+        # （不动 registry 持久数据; source_provenance 保持原 provider）
+        return dict(r, retrieval_origin="LOCAL_CURATED") if r else None
     except Exception:
         return None
 

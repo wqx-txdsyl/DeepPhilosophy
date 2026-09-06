@@ -418,3 +418,48 @@ def test_r19_production_frozen_rp1():
                             "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
                            cwd=ROOT, capture_output=True)
         assert r.returncode == 0
+
+
+# ══ O7-D Final Micro Patch: Local Provenance Closure（F1-F6）══════
+def test_f1_f2_f3_registry_fallback_origin(monkeypatch):
+    # F1: cache miss + registry hit → LOCAL_CURATED（不动 registry 持久数据）
+    sid = "doi:10.1/mp-origin"
+    rec = _inject_persisted_evidence(sid, passages=False, abstract=True)
+    monkeypatch.setattr(SS, "_load_cache", lambda: {"searches": {}, "records": {}})
+    got = SS.get_record(sid)
+    assert got["retrieval_origin"] == "LOCAL_CURATED"          # F1
+    mv = SS.model_view(got)
+    assert mv["retrieval_origin"] == "LOCAL_CURATED"           # F2
+    assert mv["retrieval_origin"] != "LIVE"
+    assert mv["source_providers"] == ["crossref"]              # F3
+    # registry 持久数据未被污染
+    assert "retrieval_origin" not in SR.load_registry()[sid]
+    SR.load_registry().pop(sid, None); SR._evidence.pop(sid, None)
+
+
+def test_f4_persisted_abstract_origin_through_tool(monkeypatch):
+    sid = "doi:10.1/mp-abs-origin"
+    monkeypatch.setattr(SS, "get_record",
+                        lambda s: dict(_inject_persisted_evidence(
+                            s, passages=False, abstract=True),
+                            retrieval_origin="LOCAL_CURATED"))
+    from routes import agent_tools_scholarly as ATS
+    out = ATS.TOOLS["get_scholarly_source"]["execute"](
+        {"source_record_id": sid, "requested_access": "ABSTRACT"})
+    assert out.get("abstract", {}).get("text")
+    assert out.get("evidence_origin") == "ABSTRACT_METADATA"   # F4 真行为
+    SR.load_registry().pop(sid, None); SR._evidence.pop(sid, None)
+
+
+def test_f5_f6_persisted_fulltext_unchanged(monkeypatch):
+    sid = "doi:10.1/mp-ft-origin"
+    monkeypatch.setattr(SS, "get_record",
+                        lambda s: dict(_inject_persisted_evidence(
+                            s, passages=True, abstract=True),
+                            retrieval_origin="LOCAL_CURATED"))
+    from routes import agent_tools_scholarly as ATS
+    out = ATS.TOOLS["get_scholarly_source"]["execute"](
+        {"source_record_id": sid, "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"})
+    assert out.get("evidence_origin") == "PERSISTED_VERIFIED_READ"   # F5
+    assert out.get("access_level_after") != "FULL_TEXT_READ"          # F6
+    SR.load_registry().pop(sid, None); SR._evidence.pop(sid, None)
