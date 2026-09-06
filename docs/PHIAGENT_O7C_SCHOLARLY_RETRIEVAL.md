@@ -161,8 +161,8 @@ get_scholarly_source 仍只接受 source_record_id（无 URL 参数）。
 
 # O7-C RP2 — Transport Truth, Fulltext Authenticity & Final Gate Closure（2026-09-06）
 
-> BASE_SHA=274784567 ｜ CODE_SHA= 本 RP2 生产代码 commit
-> O7C_RP2_CAPABILITY_GATE_SHA= 本节 gate 产物 commit
+> BASE_SHA=274784567 ｜ CODE_SHA=35e81e06c（+传输收尾 7af6dd999）
+> O7C_RP2_CAPABILITY_GATE_SHA=7af6dd999
 > 历史: PRE_REBASE_HISTORICAL_CODE_SHA=7ee6d2b62 / GATE=d83e1ae11（保留, 不作当前 Gate）
 
 ## 修复对照（四 blocker）
