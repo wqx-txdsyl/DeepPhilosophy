@@ -43,7 +43,10 @@ def _load_biblio():
     return _biblio_cache
 
 def _biblio_payload(bid):
-    """pilot 书 → 模型可见书目元数据（additive）; 非 pilot 书 → None（零改动）。"""
+    """pilot 书 → 模型可见书目元数据（additive）; 非 pilot 书 → None（零改动）。
+
+    O7-B RP1 §15: 冲突字段模型可见值 = null（不把竞争候选猜一个给模型）;
+    production 字段层已保证 CONFLICT_UNRESOLVED → null。"""
     rec = _load_biblio().get(bid)
     if not rec:
         return None
@@ -51,8 +54,9 @@ def _biblio_payload(bid):
     return {
         "work": {"author": wk.get("author"),
                  "canonical_title": wk.get("canonical_title"),
+                 "original_title": wk.get("original_title"),
                  "original_language": wk.get("original_language")},
-        "edition": {"translator": ed.get("translator"),       # null = 未验证/未收录
+        "edition": {"translator": ed.get("translator"),       # null = 未验证/冲突/未收录
                     "publisher": ed.get("publisher"),
                     "publication_year": ed.get("publication_year"),
                     "isbn": ed.get("isbn"),
@@ -61,8 +65,10 @@ def _biblio_payload(bid):
         "metadata_status": {
             "source_type": "embedded_front_matter",   # 数据层 Tier1（版权页/扉页内嵌于数字源）
             "verified_fields": [k for k, v in rec.get("field_provenance", {}).items()
-                                if v.get("verified")],
-            "note": "字段为 null 表示当前数字源未提供或未通过双重证据核验; 不得臆测补全"},
+                                if v.get("verified") and not v.get("conflict")],
+            "conflict_fields": [k for k, v in rec.get("field_provenance", {}).items()
+                                if v.get("conflict")],
+            "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"},
     }
 
 
