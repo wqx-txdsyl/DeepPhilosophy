@@ -336,7 +336,9 @@ def _inverted_to_text(inv):
 
 def search_openalex(query, limit=8, year_from=None, year_to=None):
     q = urllib.parse.quote(query)
+    # mailto 礼貌池（OpenAlex 文档: 提供 contact 进入 polite pool, 限流显著放宽）
     url = (f"https://api.openalex.org/works?search={q}&per-page={min(limit, 20)}"
+           f"&mailto=deepphilosophy.agent@outlook.com"
            f"&select=id,doi,title,publication_year,type,open_access,primary_location,"
            f"authorships,abstract_inverted_index,cited_by_count")
     if year_from:
@@ -692,36 +694,79 @@ def _save_cache():
         pass
 
 
+def _local_results(q, limit):
+    """O7-D §23-25: LOCAL_CURATED provider（registry, 非 authority）。
+    失败静默降级为无本地结果（registry 缺失≠错误, 只是未构建）。"""
+    try:
+        import scholarly_registry as SR
+        return SR.search_local(q, limit=limit)
+    except Exception:
+        return []
+
+
+def _dedup_local_live(local, live):
+    """同 source_record_id / 同 DOI → 单 canonical（local 基底, live provenance 并入）。
+    LOCAL_LIVE_DUPLICATES_IN_TOP5=0。"""
+    out = list(local)
+    seen_doi = {r["identifiers"].get("doi") for r in local if r["identifiers"].get("doi")}
+    seen_id = {r["source_record_id"] for r in local}
+    for r in live:
+        doi = r["identifiers"].get("doi")
+        if r["source_record_id"] in seen_id or (doi and doi in seen_doi):
+            continue
+        out.append(r)
+        seen_id.add(r["source_record_id"])
+        if doi:
+            seen_doi.add(doi)
+    return out
+
+
 def search_scholarship(query, philosopher=None, work=None, year_from=None,
                        year_to=None, limit=8):
-    """主入口: 双 provider 检索 → 归一 → canonical 去重。
+    """主入口: LOCAL_CURATED + Crossref + OpenAlex → canonical 去重。
 
-    返回 {"results": [...], "providers_queried": [...], "errors": [...]},
-    provider 失败以 errors 保留（≠ 没有文献）。"""
+    O7-D §26-27 离线语义: 双 live provider 失败而本地有结果时如实标注
+    「外部 provider 当前失败; 结果来自本地 registry」, 不冒充实时检索。"""
     q = " ".join(filter(None, [philosopher, work, query])).strip()
     key = json.dumps([q, year_from, year_to, limit], ensure_ascii=False)
     cache = _load_cache()
     if key in cache["searches"]:
         return cache["searches"][key]
     results, errors = [], []
+    live_ok = []
     for name, fn in (("crossref", search_crossref), ("openalex", search_openalex)):
         try:
             results.extend(fn(q, limit=limit, year_from=year_from, year_to=year_to))
+            live_ok.append(name)
         except ProviderError as e:
             errors.append({"provider": name, "error": e.kind, "detail": e.detail})
     canon = merge_records(results)
     canon.sort(key=lambda r: -(r.get("provider_records", [{}])[0].get("cited_by") or 0))
-    out = {"query": q, "results": canon[:limit],
-           "providers_queried": ["crossref", "openalex"], "errors": errors}
+    local = _local_results(q, limit)
+    merged = _dedup_local_live(local, canon)[:limit]
+    out = {"query": q, "results": merged,
+           "providers_queried": ["LOCAL_CURATED", "crossref", "openalex"],
+           "errors": errors}
+    if not live_ok and local:
+        out["offline_mode"] = True
+        out["note"] = ("外部 provider 当前失败（见 errors）; 以下结果来自已验证的"
+                       "本地学术 registry（LOCAL_CURATED, 历史发现+策展）, 非实时检索")
     cache["searches"][key] = out
-    for r in canon:
+    for r in merged:
         cache["records"][r["source_record_id"]] = r
     _save_cache()
     return out
 
 
 def get_record(source_record_id):
-    return _load_cache()["records"].get(source_record_id)
+    rec = _load_cache()["records"].get(source_record_id)
+    if rec is not None:
+        return rec
+    try:
+        import scholarly_registry as SR
+        return SR.record(source_record_id)
+    except Exception:
+        return None
 
 
 # ── 模型可见精简视图（§26/§27）───────────────────────────────────

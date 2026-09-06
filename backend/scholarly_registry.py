@@ -89,12 +89,15 @@ def search_local(query, limit=8):
     load_registry()
     if not os.path.exists(INDEX):
         build_index()
+    # OR 语义（提高召回; bm25 让多词命中者排前）; 引号短语保留原样
+    terms = [t for t in query.replace('"', ' ').split() if len(t) >= 2]
+    match = " OR ".join(terms) or query
     con = sqlite3.connect(INDEX)
     rows = con.execute(
         "SELECT source_record_id, bm25(sources) FROM sources WHERE sources MATCH ? "
-        "ORDER BY bm25(sources) LIMIT ?", (query, limit)).fetchall()
+        "ORDER BY bm25(sources) LIMIT ?", (match, limit)).fetchall()
     con.close()
-    return [dict(_registry[sid], _bm25=round(b, 2)) for s, b in rows
+    return [dict(_registry[s], _bm25=round(b, 2)) for s, b in rows
             if s in _registry]
 
 
