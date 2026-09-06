@@ -223,7 +223,7 @@ def test_t19_no_production_diff_vs_base():
     # O7-B §14（2026-09-06 Reviewer 授权）: get_book_detail/get_chapter 允许 additive
     # 书目元数据暴露 → backend/routes 的冻结基线改对照 O7-B BASE；认知/校验/引文
     # 核心文件仍硬冻结于 O7-A BASE，O7-B §24 四项 PRODUCTION_POLICY DIFF=0 不变。
-    O7B_BASE = "686973478"  # O7-B RP1 §14-15 授权的 routes additive 改动落地 commit
+    O7B_BASE = "7ee6d2b62"  # O7-C §59 授权的工具注册/执行器改动落地 commit
     hard = ("backend/engine_langgraph.py", "backend/final_validator.py",
             "backend/quote_bound.py", "backend/agents.py", "backend/agent_runtime.py",
             "backend/evidence_contract.py")

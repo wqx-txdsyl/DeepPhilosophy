@@ -63,13 +63,13 @@ def _capture_llm(content):
 # T1: Taxonomy 覆盖
 # ═══════════════════════════════════════════════════════
 class TestTaxonomy:
-    def test_full_coverage_38(self):
+    def test_full_coverage_40(self):
         philo = {"philosopher_memory", "philosopher_period", "philosopher_style",
                  "philosopher_quote", "philosopher_graph", "philosopher_corpus",
                  "philosopher_concepts", "philosopher_user"}
         assert set(AG.TOOLS) <= set(TC.TOOL_TAXONOMY)
         assert philo <= set(TC.TOOL_TAXONOMY)
-        assert len(TC.TOOL_TAXONOMY) == 38
+        assert len(TC.TOOL_TAXONOMY) == 40  # O7-C +2 scholarly
 
     def test_flags_complete(self):
         flags = {"USES_INTERNAL_LLM", "RETURNS_FINAL_PROSE", "STATEFUL",

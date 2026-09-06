@@ -157,7 +157,7 @@ def test_tool_registry_unchanged():
     import engine_langgraph as elg
     # 工具数/名称不得变化（分级器不注册任何工具）; O5: 经 TOOLS_LG 断言（TOOLS_BY_NAME 已删）
     assert set(before) == {t.name for t in elg.TOOLS_LG}
-    assert len(before) == 30
+    assert len(before) == 32  # O7-C +2 scholarly
     assert "search_books" in before and "philosopher_debate" in before
     # 哲学家专属四件套不变
     from agents import PHILO_EXTRA_TOOLS

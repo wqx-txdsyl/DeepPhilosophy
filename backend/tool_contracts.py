@@ -75,6 +75,9 @@ TOOL_TAXONOMY = {
     "concept_trace":    _T("STRUCTURED_DATA", USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=True, USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True),
     "websearch":        _T("RETRIEVAL",  USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=False, USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True),
     "query_database":   _T("STRUCTURED_DATA", USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=False, USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True),
+    # ── 二手学术文献检索域（agent_tools_scholarly.py, O7-C 2）──
+    "search_scholarship":     _T("RETRIEVAL", USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=False, USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True, NOTE="O7-C: Crossref+OpenAlex 双源; 返回真实书目+access_level"),
+    "get_scholarly_source":   _T("READ",       USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=True,  EVIDENCE_PRODUCING=True,  USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True, NOTE="O7-C: 只接受 source_record_id; 访问状态机 PAPER_EXISTS!=PAPER_READ"),
     # ── 记忆/创作域（agent_tools_memory.py, 5）──
     "write_essay":        _T("GENERATION", USES_INTERNAL_LLM=True, RETURNS_FINAL_PROSE=True,  STATEFUL=True,  EVIDENCE_PRODUCING=True,  USER_VISIBLE_ARTIFACT=True,  SAFE_TO_REPEAT=False, NOTE="USER_REQUESTED_ARTIFACT——用户请求的对象即作文本身"),
     "generate_image":     _T("EXTERNAL_ACTION", USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=True, EVIDENCE_PRODUCING=False, USER_VISIBLE_ARTIFACT=True, SAFE_TO_REPEAT=False, NOTE="外部生图 API; 迭代=图生图修改, 合法重入"),
