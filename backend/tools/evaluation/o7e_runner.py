@@ -67,6 +67,20 @@ def run_case(case):
         if n and n not in tool_names:
             tool_names.append(n)
     done = next((e for e in reversed(events) if e.get("type") == "done"), {})
+    # RP1 Final Closure C: run_status 分类——余额类阻断 ≠ 产品交付失败, 不入发布分母
+    err_blob = " ".join(str(e.get("content") or e.get("message") or "")
+                        for e in events if e.get("type") == "error")
+    if "余额不足" in err_blob or "Insufficient Balance" in err_blob or "402" in err_blob:
+        run_status = "BLOCKED_MODEL_BILLING"
+    elif answer.strip() or done:
+        run_status = "COMPLETED"
+    else:
+        run_status = "RUN_ERROR"
+    # O7-E RP1 §4: 真值来自 done.validation（repairs_used/history）, 不再从 SSE 计数推导
+    val = (done.get("validation") or {})
+    repairs_used = val.get("repairs_used", 0)
+    hist = val.get("history") or []
+    val_failures = sum(1 for h in hist if not h.get("ok"))
     val_fails = [e for e in events if e.get("type") == "validation_failed"]
     errors = [e for e in events if e.get("type") == "error"]
     return {
@@ -76,12 +90,23 @@ def run_case(case):
         "tool_calls": tool_names,
         "tool_call_count": len([e for e in events if e.get("type") == "tool_start"]),
         "delivery": {
-            "published": bool(answer.strip()) and not errors,
-            "validation_rejections": len(val_fails),
-            "repair_attempts": len(val_fails),
-            "repair_success": bool(answer.strip()) if val_fails else None,
-            "terminal_pending": bool(errors) and not answer.strip(),
-            "tool_loop_abort": any("预算" in str(e.get("message", "")) or
+            "run_status": run_status,
+            "publication_denominator_member": run_status == "COMPLETED",
+            "published": (bool(answer.strip()) and not errors
+                          if run_status == "COMPLETED" else None),
+            "validation_attempts": len(hist),
+            "validation_failures": val_failures,
+            "repair_attempts": repairs_used,
+            "repair_success": (repairs_used > 0 and bool(answer.strip()) and
+                               not errors) if repairs_used else None,
+            "repair_exhaustion": (repairs_used >= (val.get("max_validation_repairs") or 2)
+                                  and not bool(val.get("result", {}).get("ok"))),
+            "final_validation_result": bool(val.get("result", {}).get("ok")),
+            "final_validation_issue_codes": [i.get("code") for i in
+                                             val.get("result", {}).get("issues", [])][:8],
+            "terminal_pending": (bool(errors) and not answer.strip()
+                                 and run_status == "COMPLETED"),
+            "tool_loop_abort": any("预算" in str(e.get("content") or e.get("message", "")) or
                                    e.get("type") == "tool_cancel" for e in events),
         },
         "done_payload_keys": sorted(done.keys()) if done else [],
@@ -89,7 +114,8 @@ def run_case(case):
         "quote_bound": _as_list(done.get("quote_bound")) if done else [],
         "evidence_digest": _ev_digest(done.get("evidence")) if done else None,
         "elapsed_s": round(time.time() - t0, 1),
-        "error_messages": [str(e.get("message", ""))[:300] for e in errors][:3],
+        "error_messages": [str(e.get("content") or e.get("message", ""))[:300]
+                           for e in errors][:3],
     }
 
 
@@ -120,9 +146,18 @@ def main(scope, only=None):
         print(f"   published={d.get('published')} tools={r.get('tool_call_count')} "
               f"val_rej={d.get('validation_rejections')} {r.get('elapsed_s','?')}s "
               f"len={len(r.get('answer',''))}", flush=True)
-    pub = sum(1 for r in runs if r.get("delivery", {}).get("published"))
-    print(json.dumps({"scope": scope, "cases": len(runs), "published": pub,
-                      "rate": round(pub / max(len(runs), 1), 3)}, ensure_ascii=False))
+    completed = [r for r in runs if r.get("delivery", {}).get("run_status") == "COMPLETED"]
+    pub = sum(1 for r in completed if r.get("delivery", {}).get("published"))
+    blocked = sum(1 for r in runs if r.get("delivery", {}).get("run_status") == "BLOCKED_MODEL_BILLING")
+    errs = len(runs) - len(completed) - blocked
+    required = {"CAL": 12, "HOLDOUT": 28, "SMOKE": 8}[scope]
+    status = ("BLOCKED_INCOMPLETE" if len(completed) < required else
+              ("PASS_RATE" if pub / max(len(completed), 1) >= 0.9 else "RATE_FAIL"))
+    print(json.dumps({"scope": scope, "cases": len(runs),
+                      "completed": len(completed), "published_among_completed": pub,
+                      "publication_rate_completed": round(pub / max(len(completed), 1), 3),
+                      "blocked_model_billing": blocked, "run_errors": errs,
+                      "FINAL_GATE_STATUS": status}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

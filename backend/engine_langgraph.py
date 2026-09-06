@@ -433,6 +433,10 @@ class AgentState(TypedDict):
     # obligation_ledger（→ evidence_state, EvidenceState 纯事实登记）。
     evidence_state: Any   # EvidenceState（evidence_contract; 纯事实登记器）
     raw_tool_log: Any     # 共享 raw 工具记录列表（tools_node 写入, 引擎消费; 引用核验用）
+    # O7-E RP1 Final Closure A: 零工具 repair 的正式 State channel——
+    # hard 预算已成立的 repair invocation 由 _stream_graph(no_tools=True) 置位,
+    # agent_node 读取后不 bind tools（资源控制, 非认知决策）
+    no_tools: bool
 
 async def agent_node(state):
     msgs = list(state["messages"])
