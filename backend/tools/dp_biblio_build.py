@@ -310,9 +310,10 @@ def detect_locators(bid, book_title, author=""):
     for scheme, kind, rx, author_gate, desc in LOCATOR_PROBES:
         if kind == "CANONICAL" and author_gate and not _author_matches(author_gate):
             continue
-        hits_t = set(rx.findall(title_blob)[:50]) if scheme != "KANT_AB" else []
+        hits_t = rx.findall(title_blob)[:50] if scheme != "KANT_AB" else []
         hits_x = rx.findall(text_blob)[:50] if scheme in ("STEPHANUS", "BEKKER", "KANT_AB") else []
-        hits = list(dict.fromkeys(list(hits_t) + list(hits_x)))
+        # 确定性: set 迭代顺序受 PYTHONHASHSEED 影响 → 统一排序（重建 hash 稳定）
+        hits = sorted(dict.fromkeys(list(hits_t) + list(hits_x)), key=str)
         if len(hits) >= 3:
             ev_ch = next((i for i, t in enumerate(titles) if rx.search(t or "")), None)
             locators.append({"locator_kind": kind, "locator_scheme": scheme,
