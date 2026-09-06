@@ -267,9 +267,15 @@ ACCESS_FIXTURES = {
             "第三节处理规则遵循异议并给出回应；其结论是定义主义不可取但描写方案可行。",
             "general",
             "SECONDARY_SOURCE_RECORDS: [{title:'Wittgenstein on Language Games', author:'A. Scholar', "
-            "year:2018, journal:'Philosophical Review', access_level:'FULL_TEXT_READ'}]",
+            "year:2018, journal:'Philosophical Review', access_level:'FULL_TEXT_READ'}]; "
+            "SUPPLIED_FULL_TEXT: 第一节界定语言游戏的描写性进路; 第二节以‘家族相似’反驳充分必要条件定义; "
+            "第三节处理规则遵循异议并给出回应; 结论: 定义主义不可取但描写方案可行",
             secondary_source_records=[{"title": "Wittgenstein on Language Games",
-                                       "access_level": "FULL_TEXT_READ"}])},
+                                       "access_level": "FULL_TEXT_READ",
+                                       "supplied_text": "第一节界定语言游戏的描写性进路; "
+                                                        "第二节以‘家族相似’反驳充分必要条件定义; "
+                                                        "第三节处理规则遵循异议并给出回应; "
+                                                        "结论: 定义主义不可取但描写方案可行"}])},
     # ── RP1 §4: F6 metamorphic fixtures（证明 judge 掌握的是访问级别边界原则, 不是句子模式;
     #    全部使用与 C6 不同的学者/论文/主题）─────────────────────────
     "F6-M1-bad": {
