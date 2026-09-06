@@ -68,9 +68,13 @@ def _exec_get_scholarly_source(args):
            "access_notes": info["access_notes"],
            "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容"}
     if info.get("abstract"):
-        out["abstract"] = {"text": info["abstract"]["text"][:1800],
-                           "source": info["abstract"]["source"],
-                           "hash": info["abstract"]["hash"]}
+        out["abstract"] = {"text": (info["abstract"].get("text") or "")[:1800],
+                           "source": info["abstract"].get("source"),
+                           "hash": info["abstract"].get("hash")}
+    if info.get("historical_evidence_level"):
+        out["historical_evidence_level"] = info["historical_evidence_level"]
+    for item in info.get("_evidence_origin_items") or []:
+        out.setdefault("evidence_origin", item["evidence_origin"])
     if info.get("evidence_passages"):
         out["evidence_passages"] = info["evidence_passages"]
         out["passage_locators"] = [p.get("locator") for p in info["evidence_passages"]]

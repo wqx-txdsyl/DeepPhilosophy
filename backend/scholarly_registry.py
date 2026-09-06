@@ -67,21 +67,27 @@ def build_index():
         os.unlink(INDEX)
     con = sqlite3.connect(INDEX)
     con.execute("CREATE VIRTUAL TABLE sources USING fts5("
-                "source_record_id UNINDEXED, cluster_ids, title, authors, "
+                "source_record_id UNINDEXED, cluster_ids_accepted, title, authors, "
                 "abstract, passages, book_ids)")
+    indexed = 0
     for sid, r in _registry.items():
+        # RP1 §2: 默认索引只含 accepted records（curation 约束 runtime 暴露）
+        if not r.get("cluster_ids_accepted"):
+            continue
         ev = _evidence.get(sid, [])
         con.execute(
             "INSERT INTO sources VALUES (?,?,?,?,?,?,?)",
             (sid,
-             " ".join(r.get("cluster_ids") or []),
+             " ".join(r.get("cluster_ids_accepted") or []),
              r.get("title") or "",
              " ".join(a.get("name", "") for a in (r.get("authors") or [])),
              next((e["text"] for e in ev if e["evidence_type"] == "ABSTRACT"), ""),
              " ".join(e["text"] for e in ev if e["evidence_type"] == "FULLTEXT_PASSAGE"),
              " ".join(r.get("related_primary_book_ids") or [])))
+        indexed += 1
     con.commit()
     con.close()
+    return indexed
 
 
 def search_local(query, limit=8):
@@ -89,16 +95,21 @@ def search_local(query, limit=8):
     load_registry()
     if not os.path.exists(INDEX):
         build_index()
-    # OR 语义（提高召回; bm25 让多词命中者排前）; 引号短语保留原样
-    terms = [t for t in query.replace('"', ' ').split() if len(t) >= 2]
-    match = " OR ".join(terms) or query
+    # OR 语义（提高召回; bm25 让多词命中者排前）; 引号短语原样保留（簇 tag 精确命中）
+    if '"' in query:
+        match = query
+    else:
+        terms = [t for t in query.split() if len(t) >= 2]
+        match = " OR ".join(terms) or query
     con = sqlite3.connect(INDEX)
     rows = con.execute(
         "SELECT source_record_id, bm25(sources) FROM sources WHERE sources MATCH ? "
         "ORDER BY bm25(sources) LIMIT ?", (match, limit)).fetchall()
     con.close()
-    return [dict(_registry[s], _bm25=round(b, 2)) for s, b in rows
-            if s in _registry]
+    # retrieval_origin 标注: 记录取自本地 curated registry（区别于书目来源 provider）
+    return [dict(_registry[s], _bm25=round(b, 2),
+                 retrieval_origin="LOCAL_CURATED") for s, b in rows
+            if s in _registry and _registry[s].get("cluster_ids_accepted")]
 
 
 def stats():

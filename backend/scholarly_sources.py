@@ -542,10 +542,54 @@ def get_evidence(rec, requested_access):
             info["access_level_after"] = max(
                 before, "ABSTRACT_AVAILABLE", key=lambda l: _LEVEL_ORDER[l])
             info["access_notes"] = "abstract 返回; 状态字段单调不降"
-        else:
-            info["access_notes"] = ("abstract 未取得: 不得凭 title 推断论文内容; "
-                                    "状态保持不变")
+            return rec, info
+        # O7-D RP1 §8: 本地 registry 持久化 abstract 回退
+        if rec.get("ingest") is not None:
+            try:
+                import scholarly_registry as _SR
+                evs = [e for e in _SR.evidence_for(rec["source_record_id"])
+                       if e["evidence_type"] == "ABSTRACT"]
+            except Exception:
+                evs = []
+            if evs:
+                e = evs[0]
+                info["abstract"] = {"text": e["text"], "source": e.get("abstract_source"),
+                                    "hash": e.get("abstract_hash")}
+                info["returned_evidence_level"] = "ABSTRACT_AVAILABLE"
+                info["access_level_after"] = max(
+                    before, "ABSTRACT_AVAILABLE", key=lambda l: _LEVEL_ORDER[l])
+                info["access_notes"] = ("持久化 abstract 返回（evidence_origin="
+                                        "ABSTRACT_METADATA, 本地 registry）")
+                return rec, info
+        info["access_notes"] = ("abstract 未取得: 不得凭 title 推断论文内容; "
+                                "状态保持不变")
         return rec, info
+
+    # O7-D RP1 §8-9: 本地 registry 记录的持久证据回退（历史验证读 ≠ 当前读）
+    if rec.get("ingest") is not None:
+        try:
+            import scholarly_registry as _SR
+            evs = _SR.evidence_for(rec["source_record_id"])
+        except Exception:
+            evs = []
+        passages = [e for e in evs if e["evidence_type"] == "FULLTEXT_PASSAGE"]
+        if (rec["ingest"].get("access_level_at_ingest") == "FULL_TEXT_READ"
+                and passages):
+            info.update({
+                "access_level_after": rec["access"]["level"],   # 不虚构当前 FULL_TEXT_READ
+                "historical_evidence_level": "FULL_TEXT_READ",
+                "full_text_status": "PERSISTED_VERIFIED_READ",
+                "evidence_passages": [
+                    {"passage_id": e["evidence_id"], "locator": None,
+                     "text": e["text"], "page": None} for e in passages[:5]],
+                "access_notes": ("此前验证读取并持久化的证据节选（evidence_origin="
+                                 "PERSISTED_VERIFIED_READ）; 本轮未重新获取全文, "
+                                 "不声称当前 URL 仍可访问")})
+            for e in passages[:5]:
+                info.setdefault("_evidence_origin_items", []).append(
+                    {"evidence_id": e["evidence_id"],
+                     "evidence_origin": "PERSISTED_VERIFIED_READ"})
+            return rec, info
 
     cands = rec.get("full_text_candidates") or []
     if not cands:
@@ -704,18 +748,35 @@ def _local_results(q, limit):
         return []
 
 
+def _live_origin(r):
+    ps = {p for p in r.get("provenance", {}).get("providers", [])}
+    if len(ps) >= 2:
+        return "LIVE_COMBINED"
+    if "crossref" in ps:
+        return "LIVE_CROSSREF"
+    if "openalex" in ps:
+        return "LIVE_OPENALEX"
+    return "LIVE"
+
+
 def _dedup_local_live(local, live):
-    """同 source_record_id / 同 DOI → 单 canonical（local 基底, live provenance 并入）。
-    LOCAL_LIVE_DUPLICATES_IN_TOP5=0。"""
+    """同 source_record_id / 同 DOI → 单 canonical; retrieval_origin 双真值
+    （local+live 命中 → LOCAL_CURATED+LIVE）; bibliographic source provenance 不丢。"""
     out = list(local)
+    index = {r["source_record_id"]: r for r in local}
     seen_doi = {r["identifiers"].get("doi") for r in local if r["identifiers"].get("doi")}
-    seen_id = {r["source_record_id"] for r in local}
     for r in live:
         doi = r["identifiers"].get("doi")
-        if r["source_record_id"] in seen_id or (doi and doi in seen_doi):
+        if r["source_record_id"] in index or (doi and doi in seen_doi):
+            sid = r["source_record_id"] if r["source_record_id"] in index else None
+            if sid is None:   # 同 DOI 异 id: 找 local 中同 doi 的
+                sid = next(x["source_record_id"] for x in local
+                           if x["identifiers"].get("doi") == doi)
+            index[sid]["retrieval_origin"] = "LOCAL_CURATED+LIVE"
             continue
+        r = dict(r, retrieval_origin=_live_origin(r))
         out.append(r)
-        seen_id.add(r["source_record_id"])
+        index[r["source_record_id"]] = r
         if doi:
             seen_doi.add(doi)
     return out
@@ -781,5 +842,7 @@ def model_view(rec):
             "source_category": rec.get("philosophical_role") or "UNKNOWN",
             "access_level": rec["access"]["level"],
             "provider": "/".join(rec["provenance"]["providers"]),
-            "bibliographic_verified_fields": sorted(rec["provenance"]["field_sources"]),
+            "source_providers": rec["provenance"]["providers"],
+            "retrieval_origin": rec.get("retrieval_origin", "LIVE"),
+            "bibliographic_verified_fields": sorted(rec.get("provenance", {}).get("field_sources", {})),
             "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"}

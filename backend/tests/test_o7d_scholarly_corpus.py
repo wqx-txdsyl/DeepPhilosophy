@@ -241,3 +241,180 @@ def test_d30_production_frozen():
                             "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
                            cwd=ROOT, capture_output=True)
         assert r.returncode == 0, f"{rel} 被改动"
+
+
+# ══ O7-D RP1: Curated-Corpus Truth & Local Evidence Runtime（R1-R19）═══
+def _counts(reg):
+    cur = [r for r in reg.values() if r["association_status"] == "CURATED"]
+    disc = [r for r in reg.values() if r["association_status"] == "DISCOVERY_ONLY"]
+    return cur, disc
+
+
+def test_r1_r2_association_status_correct(reg):
+    cur, disc = _counts(reg)
+    assert len(cur) == 276 and len(disc) == 34
+    for r in cur:
+        assert r["cluster_ids_accepted"]
+    for r in disc:
+        assert not r["cluster_ids_accepted"] and r["cluster_ids_discovery_only"]
+
+
+def test_r3_default_local_search_excludes_discovery_only(reg):
+    for q in ("kant", "nietzsche", "confucius"):
+        for r in SR.search_local(q, 10):
+            assert r["association_status"] == "CURATED", \
+                f"discovery-only {r['source_record_id']} 泄入默认本地搜索"
+
+
+def test_r4_cluster_tags_indexed():
+    # accepted cluster tag 命中（title/abstract 无该词也该能搜到）
+    rows = SR.search_local('"kant-schematism"', 5)
+    assert any("kant-schematism" in r["cluster_ids_accepted"] for r in rows), \
+        "cluster_ids_accepted 未实际进入 FTS 索引"
+
+
+def test_r5_nonexistent_cluster_ids_field_unused():
+    import inspect
+    src = inspect.getsource(SR.build_index)
+    assert 'r.get("cluster_ids")' not in src and "cluster_ids_accepted" in src
+
+
+def test_r6_discovery_only_no_curated_primary_links(reg):
+    for r in reg.values():
+        if r["association_status"] == "DISCOVERY_ONLY":
+            assert not r["related_primary_book_ids"], \
+                f"{r['source_record_id']} discovery-only 继承了 curated primary link"
+
+
+def test_r7_r8_local_origin_and_source_provenance(reg):
+    rs = SR.search_local("kant thing in itself", 3)
+    assert rs
+    for r in rs:
+        assert r["retrieval_origin"] == "LOCAL_CURATED"        # R7
+        assert "crossref" in r["provenance"]["providers"]       # R8 书目来源保留
+        mv = SS.model_view(r)
+        assert mv["retrieval_origin"] == "LOCAL_CURATED"
+        assert mv["source_providers"] == r["provenance"]["providers"]
+
+
+def test_r9_offline_not_mislabeled_live(monkeypatch):
+    def boom(*a, **k):
+        raise SS.ProviderError("PROVIDER_UNAVAILABLE", "down")
+    monkeypatch.setattr(SS, "search_crossref", boom)
+    monkeypatch.setattr(SS, "search_openalex", boom)
+    monkeypatch.setattr(SS, "_cache", {"searches": {}, "records": {}})
+    out = SS.search_scholarship("kant thing in itself", limit=5)
+    for r in out["results"]:
+        mv = SS.model_view(r)
+        assert mv["retrieval_origin"] == "LOCAL_CURATED" != mv["source_providers"][0]
+
+
+def test_r10_dedup_preserves_origin_truth():
+    local = {"source_record_id": "doi:10.1/d", "identifiers": {"doi": "10.1/d"},
+             "title": "A", "provider_records": [],
+             "provenance": {"providers": ["crossref"]},
+             "retrieval_origin": "LOCAL_CURATED"}
+    live = {"source_record_id": "doi:10.1/d", "identifiers": {"doi": "10.1/d"},
+            "title": "A", "provider_records": [],
+            "provenance": {"providers": ["crossref"]}}
+    merged = SS._dedup_local_live([local], [live])
+    assert len(merged) == 1
+    assert merged[0]["retrieval_origin"] == "LOCAL_CURATED+LIVE"
+    assert merged[0]["provenance"]["providers"] == ["crossref"]
+
+
+def _inject_persisted_evidence(sid, passages=True, abstract=True):
+    reg = SR.load_registry()
+    base = {"source_record_id": sid, "title": "Persisted", "identifiers": {"doi": None},
+            "provider_records": [], "provenance": {"providers": ["crossref"], "field_sources": {"title": "crossref"}},
+            "publication_year": 2000, "publication_type": "JOURNAL_ARTICLE",
+            "container_title": "V", "authors": [{"name": "A. Author", "orcid": None}],
+            "citation_capability": {}, "stable_urls": [],
+            "peer_review_status": "UNVERIFIED",
+            "philosophical_role": "UNKNOWN",
+            "conflicts": [], "cluster_ids_accepted": ["kant-schematism"],
+            "cluster_ids_discovery_only": [], "related_primary_book_ids": [],
+            "association_status": "CURATED",
+            "ingest": {"access_level_at_ingest":
+                       "FULL_TEXT_READ" if passages else "ABSTRACT_AVAILABLE"},
+            "reuse_status": "ACCESSIBLE_BUT_REUSE_UNVERIFIED",
+            "abstract": {"text": "persisted abstract." if abstract else None,
+                         "source": "crossref" if abstract else None,
+                         "hash": "h0" if abstract else None},
+            "access": {"level": "ABSTRACT_AVAILABLE" if abstract else "METADATA_ONLY",
+                       "evidence": "x", "checked_at": 1, "full_text_url": None,
+                       "content_hash": None}}
+    reg[sid] = base
+    ev = []
+    if abstract:
+        ev.append({"source_record_id": sid, "evidence_id": "ev-abs",
+                   "evidence_type": "ABSTRACT", "text": "persisted abstract.",
+                   "abstract_source": "crossref", "abstract_hash": "h1",
+                   "evidence_origin": "ABSTRACT_METADATA"})
+    if passages:
+        ev.append({"source_record_id": sid, "evidence_id": "ev-p1",
+                   "evidence_type": "FULLTEXT_PASSAGE", "text": "p " * 100,
+                   "content_hash": "doc-h", "access_level_at_ingest": "FULL_TEXT_READ",
+                   "evidence_origin": "PERSISTED_VERIFIED_READ",
+                   "page": None, "locator": None})
+    SR._evidence[sid] = ev
+    return base
+
+
+def test_r11_persisted_abstract_tool_path(monkeypatch):
+    sid = "doi:10.1/persisted-abs"
+    monkeypatch.setattr(SS, "get_record", lambda s: _inject_persisted_evidence(
+        s, passages=False, abstract=True))
+    from routes import agent_tools_scholarly as ATS
+    out = ATS.TOOLS["get_scholarly_source"]["execute"](
+        {"source_record_id": sid, "requested_access": "ABSTRACT"})
+    assert out.get("abstract", {}).get("text", "").startswith("persisted abstract")
+    SR.load_registry().pop(sid, None); SR._evidence.pop(sid, None)
+
+
+def test_r12_r13_r14_r15_persisted_fulltext_tool_path(monkeypatch):
+    sid = "doi:10.1/persisted-ft"
+    monkeypatch.setattr(SS, "get_record", lambda s: _inject_persisted_evidence(
+        s, passages=True, abstract=True))
+    from routes import agent_tools_scholarly as ATS
+    out = ATS.TOOLS["get_scholarly_source"]["execute"](
+        {"source_record_id": sid, "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"})
+    assert out.get("evidence_passages"), "持久化 passages 未通过工具路径返回"
+    assert out.get("evidence_origin") == "PERSISTED_VERIFIED_READ"      # R13
+    assert out.get("evidence_origin") != "LIVE_CURRENT_READ"            # R14
+    assert out.get("historical_evidence_level") == "FULL_TEXT_READ"
+    assert "本轮未重新获取全文" in out["access_notes"]
+    # R15: 当前 access 不被历史读虚构
+    assert out["access_level_after"] != "FULL_TEXT_READ"
+    SR.load_registry().pop(sid, None); SR._evidence.pop(sid, None)
+
+
+def test_r16_r17_bibliographic_audit_includes_authors():
+    src = open(os.path.join(BACKEND, "tools", "evaluation", "o7d_gate.py"),
+               encoding="utf-8").read()
+    assert '"authors"' in src.split("def phase_b")[1].split("def phase_d")[0]
+    g = json.load(open(os.path.join(ROOT, "docs/evidence",
+                                    "PHIAGENT_O7D_CORPUS_GATE.json"), encoding="utf-8"))
+    b = g["phases"]["B"]
+    assert b["sample"] >= 50 and b["fields_per_record"] == 5
+    assert b["fields_checked"] >= 250 and b["BIBLIOGRAPHIC_WRONG_FIELDS"] == []
+
+
+def test_r18_deterministic_rebuild_rp1():
+    before = json.load(open(os.path.join(REG_DIR, "corpus_manifest.json"),
+                            encoding="utf-8"))
+    r = subprocess.run([sys.executable, "backend/tools/dp_o7d_registry.py"],
+                       cwd=ROOT, capture_output=True, text=True)
+    assert r.returncode == 0
+    after = json.load(open(os.path.join(REG_DIR, "corpus_manifest.json"),
+                           encoding="utf-8"))
+    assert before["registry_sha256"] == after["registry_sha256"]
+
+
+def test_r19_production_frozen_rp1():
+    for rel in ("backend/engine_langgraph.py", "backend/final_validator.py",
+                "backend/quote_bound.py"):
+        r = subprocess.run(["git", "diff", "--quiet",
+                            "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
+                           cwd=ROOT, capture_output=True)
+        assert r.returncode == 0

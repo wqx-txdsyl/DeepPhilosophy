@@ -46,11 +46,12 @@ def build(fetch_passages=False):
         for r in cl["candidates"]:
             cluster_of.setdefault(r["source_record_id"], {})[cid] = \
                 rel.get((cid, r["source_record_id"]))
+    # RP1 §4: primary-work links 只能从 accepted 关系派生（relevance>=3）
     book_ids_of = {}
     for c in m["clusters"]:
         if c.get("related_primary_book_ids"):
-            for sid in cluster_of:
-                if c["cluster_id"] in cluster_of[sid]:
+            for sid, clusters in cluster_of.items():
+                if clusters.get(c["cluster_id"]) is not None and clusters[c["cluster_id"]] >= 3:
                     book_ids_of.setdefault(sid, []).extend(c["related_primary_book_ids"])
 
     records = {}
@@ -68,7 +69,7 @@ def build(fetch_passages=False):
                 "cluster_ids_accepted": acc,
                 "cluster_ids_discovery_only": disc,
                 "related_primary_book_ids": sorted(set(book_ids_of.get(sid, []))),
-                "association_status": "CURATED",
+                "association_status": "CURATED" if acc else "DISCOVERY_ONLY",
                 "ingest": {"discovery_snapshot_hash": snap["discovery_snapshot_hash"],
                            "access_level_at_ingest": level,
                            "checked_at": ran_at},

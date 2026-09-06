@@ -190,6 +190,12 @@ def phase_d(g):
     reg = SR.load_registry()
     dois = sorted({r["identifiers"]["doi"] for r in reg.values()
                    if r["identifiers"].get("doi")})
+    set_hash = hashlib.sha256("\n".join(dois).encode()).hexdigest()
+    prev = g["phases"].get("D")
+    if prev and prev.get("doi_set_hash") == set_hash and prev.get("INVALID_VERIFIED_DOI") == []:
+        g["phases"]["D"] = dict(prev, doi_set_unchanged=True)   # 确定性复用
+        _save(g)
+        return
     invalid = []
     for i, d in enumerate(dois):
         try:
@@ -201,7 +207,8 @@ def phase_d(g):
             invalid.append(d)
         if (i + 1) % 60 == 0:
             print(f"  doi {i+1}/{len(dois)}", flush=True)
-    g["phases"]["D"] = {"doi_checked": len(dois), "INVALID_VERIFIED_DOI": invalid}
+    g["phases"]["D"] = {"doi_checked": len(dois), "doi_set_hash": set_hash,
+                        "INVALID_VERIFIED_DOI": invalid}
     _save(g)
 
 
@@ -209,12 +216,24 @@ def phase_b(g):
     reg = SR.load_registry()
     rng = random.Random(SEED)
     sample = sorted(rng.sample(sorted(reg), min(50, len(reg))))
+    def _norm_authors(a):
+        return sorted(((" ".join(str(x.get("name", "")).lower().split()),
+                        str(x.get("orcid") or "").lower())
+                       for x in (a or [])))
+
     wrong = []
     checked = 0
     for sid in sample:
         r = reg[sid]
-        for field in ("title", "publication_year", "container_title", "doi"):
+        for field in ("title", "authors", "publication_year", "container_title", "doi"):
             cv = r.get(field) if field != "doi" else r["identifiers"].get("doi")
+            if field == "authors":
+                checked += 1
+                pvs = [_norm_authors(p.get("authors")) for p in r["provider_records"]
+                       if p.get("authors")]
+                if cv and pvs and _norm_authors(cv) not in pvs:
+                    wrong.append(f"{sid}.{field}")
+                continue
             pvs = [p.get(field) for p in r["provider_records"]
                    if p.get(field) not in (None, "", [])]
             checked += 1
@@ -225,6 +244,7 @@ def phase_b(g):
             if cv not in pvs:
                 wrong.append(f"{sid}.{field}")
     g["phases"]["B"] = {"sample": len(sample), "fields_checked": checked,
+                        "fields_per_record": 5,
                         "BIBLIOGRAPHIC_WRONG_FIELDS": wrong}
     _save(g)
 
