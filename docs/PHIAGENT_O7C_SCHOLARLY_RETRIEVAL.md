@@ -208,3 +208,49 @@ T1-T21（M1-M3 单调 kill / 无 detached probe / timeout 真值 / redirect 实�
 独立 handler / DNS rebind 合成 / DIRECT_PDF 读 / HTML landing 不读 / 无摘要可读 /
 逐候选记账与守恒 / gate 无硬编码断言 / 报告真实 SHA / 生产冻结）。
 全量: 595 passed / FAILED=0 / SKIPPED=0。
+
+---
+
+# O7-C Final Gate Patch — Network Trust Boundary & Verified Document Body（2026-09-06）
+
+> BASE_SHA=fd7ca8709 ｜ CODE_SHA=6ef2c1bcc
+> O7C_FINAL_CAPABILITY_GATE_SHA= 本节 gate 产物 commit
+
+## 修复对照
+
+1. **READ = verified PDF body**: READ 路径要求 `body[:4]=="%PDF"` 魔数 +
+   pdftotext 解析 ≥200 字 + DIRECT_PDF；Content-Type/URL 命名只是路由提示,
+   不构成 body 证明（T22: CT=pdf+HTML body 不 READ; T23: .pdf 后缀+HTML 不 READ;
+   T24: 错误 CT+真 PDF body 仍 READ）。READ provenance 新增
+   `verified_document_kind=PDF` / `body_signature_verified=true`。
+2. **显式网络信任模式**: `SCHOLARLY_NETWORK_MODE ∈ {DIRECT_PINNED, TRUSTED_PROXY,
+   AUTO}`。AUTO（默认）检测到系统代理也**不**静默信任——按 DIRECT_PINNED 安全
+   直连。TRUSTED_PROXY 为显式用户信任（本机 VPN TUN）, 如实上报
+   `DNS_REBINDING_MODE=TRUSTED_PROXY_DELEGATED`; 直连模式才报
+   `DIRECT_IP_PINNED`（T28/T29）。
+3. **198.18/15 豁免条件化**: 仅 TRUSTED_PROXY 模式允许该 fake-IP 段;
+   直连默认按 reserved 拒绝（T26/T27）。
+4. **逐跳 repin**: pinned handler 在 `do_open` 时按**当前请求 URL**（含 redirect
+   后的目标）重新 guard+resolve+pin——host-A→host-B 第二跳 pin host-B 的 IP
+   （T30）; redirect→私网仍拦截（T31）, >4 跳 REDIRECT_LIMIT 不变。
+5. **指标拆分**: `FULLTEXT_PARSE_FAILURES` 废除 → `FULLTEXT_AVAILABLE_ONLY_SUCCESS`
+   （HTML OA_LOCATION 按设计至多 AVAILABLE, 非 parser failure）+
+   `DIRECT_PDF_PARSE_FAILURES`（其子集）; 成功侧守恒
+   SUCCESS = READ + AVAILABLE_ONLY（T33）。
+
+## 冻结后完整重跑（TRUSTED_PROXY 显式模式, 本机部署环境）
+
+```text
+A: 16 queries 错误=0; 80/79 unique; P50=1.53s
+B: 25×4 FABRICATED=0    C: 67 DOI INVALID=0
+D: 19/53/3/4 分层, ACCESS_STATE_ACCOUNTING_DELTA=0
+   attempts: 18 = 11 HTTP_FAIL + 0 BLOCKED + 7 SUCCESS（delta=0）
+   SUCCESS 7 = READ 4 + AVAILABLE_ONLY 3（delta=0）; DIRECT_PDF_PARSE_FAILURES=0
+   VERIFIED_PDF_READ_COUNT=4（全部 body_signature_verified+pdftotext+hash）
+   HTML_LANDING_FALSE_READ=0; FULL_TEXT_READ_WITHOUT_VERIFIED_DOCUMENT_BODY=0
+   A1-A8 执行式全真; NETWORK_BOUNDARY_MODE=TRUSTED_PROXY / DNS_REBINDING_MODE=TRUSTED_PROXY_DELEGATED
+E: TOP5_RELEVANCE_MEAN=3.500; SUBSTANTIVE 14/14; NEGATIVE FP=0 CONTROL=true
+F: LITERATURE_ACCESS_OVERCLAIM_RECALL=100%, FALSE=0（12 fixtures k3 复跑）
+```
+
+## 测试: T22-T33 新增; 全量 607 passed / FAILED=0 / SKIPPED=0
