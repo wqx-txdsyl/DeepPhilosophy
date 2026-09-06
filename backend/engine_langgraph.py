@@ -10,7 +10,7 @@ validation_failed / error / done / suggestions
  answer_retract / reasoning_summary / auto_read 同为已删词表外事件）
 工具: 复用 routes.agent 的 TOOLS 注册表（30 个工具平移为 StructuredTool, 零逻辑改动）
 """
-import asyncio, json, re, time, inspect
+import asyncio, hashlib, json, re, time, inspect
 from typing import Annotated, Any, TypedDict
 
 from loguru import logger
@@ -450,7 +450,9 @@ async def agent_node(state):
     # "证据是否充分/是否该收口/该不该换工具"自 O3 起由 Main Agent 自主判断。
     budget = state.get("budget")
     forced = False
-    if budget is not None and budget.hard_reached():
+    if state.get("no_tools"):
+        pass   # 零工具 repair 轮: 无工具可宣告, 不注入 hard 指令（防诱导工具宣告）
+    elif budget is not None and budget.hard_reached():
         # hard 预算（机械资源上限）: 终止工具循环 → graceful answer completion。
         # 保留工具绑定（解绑会导致 LLM 退化为写 XML 文本调用）; 硬提示让 LLM 直接回答。
         # 后续 tools 轮中新宣告的调用将被机械拒绝（RESOURCE_CEILING_REACHED）。
@@ -471,7 +473,8 @@ async def agent_node(state):
             _trace_ref.begin_group()
         except Exception:
             pass
-    resp, retries = await _agent_llm_invoke(agent, msgs, trace=_trace_ref)
+    resp, retries = await _agent_llm_invoke(agent, msgs, trace=_trace_ref,
+                                            no_tools=bool(state.get("no_tools")))
     if _trace_ref is not None:
         try:
             _trace_ref.record_phase("llm_invocation", _llm_t0, msgs_len=len(msgs))
@@ -480,9 +483,14 @@ async def agent_node(state):
     # O5: model_retries state 字段已删（write-only）——重试计数真源 = trace.model_retries
     return {"messages": [resp], "forced": forced}
 
-async def _agent_llm_invoke(agent, msgs, trace=None):
-    """agent 轮 LLM 调用（线程池防阻塞）+ A4 有限重试。返回 (resp, retry_count)。"""
+async def _agent_llm_invoke(agent, msgs, trace=None, no_tools=False):
+    """agent 轮 LLM 调用（线程池防阻塞）+ A4 有限重试。返回 (resp, retry_count)。
+
+    O7-E RP1 §7: no_tools=True 仅用于「hard 预算已成立的 repair invocation」——
+    绑定零工具防 RESOURCE_CEILING×forced_tools_done 空候选死路（资源控制, 非认知决策）。"""
     def _call(m):
+        if no_tools:
+            return get_llm().invoke(m)
         return get_llm().bind_tools(get_tools(agent)).invoke(m)
     def _on_retry(attempt, exc):
         # A1: model retry 计数入 trace（trace 经 state 共享引用, 单轮生命周期内安全）
@@ -1275,7 +1283,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # evidence 完成回答）, 恢复成功/已有部分正文 → 继续正常收口（citations/done 照常）。
     stream_error = None
 
-    async def _stream_graph(msgs):
+    async def _stream_graph(msgs, no_tools=False):
         """跑一遍图流（一组 Main Agent invocation 序列）——O2: 首次运行与 validator
         repair 运行共用同一条路径（repair 绑定完整 tool set, 遵守 O1 causal contract）。
         thinking/tool 活动实时 yield; 候选正文只进缓冲, 绝不提前公开。
@@ -1290,6 +1298,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         async for chunk, metadata in APP.astream(
                 {"messages": msgs, "agent": agent, "language": language,
                  "guard": guard, "budget": budget, "trace": trace,
+                 "no_tools": no_tools,
                  "tool_count": 0,
                  "evidence_state": evidence_state,
                  "raw_tool_log": raw_tool_log},
@@ -1516,10 +1525,17 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         candidate = pending["text"]
         pending["text"] = ""
         repairs_used = 0
+        _val_history = []      # O7-E RP1 §5: 纯机械 validation history（无 CoT/正文）
         while True:
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
                 language=language)
+            _val_history.append({
+                "attempt_index": len(_val_history), "ok": bool(validation.ok),
+                "issue_codes": [i.get("code") for i in validation.as_dict().get("issues", [])],
+                "candidate_chars": len(candidate or ""),
+                "candidate_sha256": hashlib.sha256(
+                    (candidate or "").encode("utf-8")).hexdigest() if (candidate or "").strip() else None})
             if validation.ok or repairs_used >= MAX_VALIDATION_REPAIRS:
                 break
             repairs_used += 1
@@ -1532,10 +1548,27 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # O2 §9: 中性反馈——只列机械 issue, 不命令具体修复动作（改写/标注/删引文/
             # 补研究由 Agent 自主决定）; validator 自身绝不调用工具。
             _fb = format_feedback(validation)
+            # O7-E RP1 §8: repair transport contract——完整替换候选 + 资源上限下基于
+            # 已有证据修订 + 禁止空候选（传输合同, 非学术内容指令; validator 文件零改动）
+            _fb = _fb.replace(
+                "Revise the candidate or gather more evidence as appropriate.",
+                "This is a validation repair of the same answer. Produce a complete "
+                "replacement final candidate. The validator issues above are "
+                "mechanical evidence problems. You may gather additional evidence "
+                "only if tool resources remain available. If the tool resource "
+                "ceiling has been reached, revise using the evidence already "
+                "obtained. Do not return an empty candidate.")
+            # §7: hard 预算已成立 → 机械资源事实并入反馈消息（不新增 SystemMessage
+            # 注入点, 维持「builder 1 + hard 预算 1」注入不变量）; repair 零工具模式
+            _no_tools = bool(budget is not None and budget.hard_reached())
+            if _no_tools:
+                _fb += ("\n\nNO_MORE_TOOL_EXECUTION_AVAILABLE（机械资源事实）: 工具执行"
+                        "硬上限已达。本轮修复不可执行任何工具——直接基于已获得的证据"
+                        "写出完整替换最终候选; 禁止宣告新工具, 禁止空候选。")
             _repair_msgs = list(messages) + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
-                async for _ev in _stream_graph(_repair_msgs):
+                async for _ev in _stream_graph(_repair_msgs, no_tools=_no_tools):
                     yield _ev
             except Exception as _re:
                 logger.warning(f"[o2-repair] stream failed: {str(_re)[:200]}")
@@ -1743,6 +1776,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                # O2: 确定性校验结果（final candidate 发布前的唯一守门人）
                "validation": {"result": validation.as_dict(),
                               "repairs_used": repairs_used,
+                              "history": _val_history,
                               "max_validation_repairs": MAX_VALIDATION_REPAIRS,
                               "repair_protocol": "same_main_agent"},
                # O1 (§13): 机械 timing observability（llm_invocation / validator_* 阶段时长;
