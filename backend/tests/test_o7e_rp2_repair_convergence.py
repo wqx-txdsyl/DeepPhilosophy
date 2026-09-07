@@ -30,18 +30,28 @@ def _pkt(validation_issues, raw_tool_log, **kw):
 
 
 def test_p1_p2_packet_includes_referenced_real_text():
-    raw = [{"name": "get_chapter",
+    """真实 ev_1 → canonical resolver（pool 顺序第 1 条证据）→ 实际文本。
+
+    raw_tool_log 第 1 条可证据条目 = search_books 的 results[0]（pool 顺序）。
+    禁止把 evidence_ref 偷改成 args 字符串。"""
+    raw = [{"name": "search_books", "args": {"query": "言必有中"},
+            "result_full": {"results": [
+                {"book_title": "论语", "chapter_title": "先进篇",
+                 "snippet": "夫人不言，言必有中。", "book_id": "lunyu"}]}},
+           {"name": "get_chapter",
             "args": {"book_id": "lunyu", "chapter_idx": 13},
             "result_full": {"book_title": "论语", "title": "先进篇",
-                            "text": "夫人不言，言必有中。" * 10}}]
-    issues = [{"code": "UNSUPPORTED_EXACT_QUOTE", "locator": "「X」",
-               "evidence_ref": "ev_1"}]
-    # evidence_ref 命中 args/文本 blob → packet 提供真实检索文本
-    issues[0]["evidence_ref"] = "lunyu"
+                            "text": "夫人不言，言必有中。" * 30}}]
+    issues = [{"code": "UNSUPPORTED_EXACT_QUOTE",
+               "locator": "「其人不言，言必有中」",
+               "evidence_ref": "ev_2"}]      # pool 第2条 = get_chapter 正文
     pkt = _pkt(issues, raw)
     assert pkt["available_evidence"]
-    assert any("言必有中" in (e.get("retrieved_text_excerpt") or "")
-               for e in pkt["available_evidence"])      # P2: 真实文本
+    e = pkt["available_evidence"][0]
+    assert e["SOURCE_EVIDENCE_ID"] == "ev_2"
+    assert "言必有中" in (e.get("SOURCE_EXACT_CONTEXT") or "")   # P2: 真实文本
+    assert e["SOURCE_BOOK"] == "论语" and e["SOURCE_CHAPTER"] == "先进篇"
+    assert len(e["SOURCE_EXACT_CONTEXT"]) <= 400                  # C: ≤400 字
 
 
 def test_p3_packet_bounded():

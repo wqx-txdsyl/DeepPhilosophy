@@ -331,132 +331,76 @@ G. 不造假权威: 证据只支持"论文存在"就只能说存在; 不写"Smit
 归因。历史纪律: 避免时代错位词汇、后世问题倒灌原作者、把现代解释当成作者自述。哲学家人格
 第一人称时, 区分历史文本可支持的自述与后世 scholarship——不得让尼采"知道"20/21 世纪论文。
 
-H. 引文与出处纪律: 逐字引文必须实际复制已检索取得的文本, 并使用引文格式（引用块/「」）
-呈现——引文格式内的文字会被逐字校验, 近似措辞不得放入引文格式, 用普通转述即可。只有意思
-或近似措辞时用转述并如实标注, 不冒充逐字引用。正式的章节引用必须使用检索证据中实际存在的书名/章节身份; 只有
+H. 引文与出处纪律: 逐字引文必须实际复制已检索取得的文本; 只有意思或近似措辞时用转述并
+如实标注, 不冒充逐字引用。正式的章节引用必须使用检索证据中实际存在的书名/章节身份; 只有
 书级证据时不伪造精确章节。当精确引文本身有研究价值且证据已经取得时, 应正常使用——不得为
 了规避校验而系统性删除引文、出处或文本细节。
 """
 
 
 def _build_repair_evidence_packet(validation, raw_tool_log, max_evidence=3,
-                                   max_chars=6000):
-    """O7-E RP2 §3-6: MECHANICAL_REPAIR_EVIDENCE_PACKET——纯机械构造。
+                                   max_context_chars=400):
+    """O7-E RP2 Calibration Closure B/C: canonical evidence_ref resolver + 减法 packet。
 
-    复用 validator issue 的 evidence_ref + 已检索的 raw_tool_log 真实文本;
-    禁止 LLM 摘要, 禁止新造 matcher。每个 issue 最多 max_evidence 条证据,
-    总长 ≤max_chars, 不把全部 tool result 塞回 prompt。"""
-    import json as _json
-    issues = validation.as_dict().get("issues", [])
-    refs = []
-    for i in issues:
-        r = (i or {}).get("evidence_ref")
-        if r and r not in refs:
-            refs.append(r)
-    packet_items = []
-    used = 0
-    # quote 类 issue: validator detail 已含 best_evidence=【《书》·章】标签——
-    # 机械解析并附上 raw_tool_log 中该书/章的实际检索文本（模型无需猜措辞）
+    沿 Evidence Contract 真源解析: raw_tool_log → build_evidence_pool →
+    (kind, entry_index) → 候选证据（validator 的 ev_N 序号 = quote_bound 池顺序）
+    → 定位原始条目, 给出 SOURCE_EXACT_CONTEXT ≤ max_context_chars。
+    零 LLM、零语义 reranker、零 best-window 启发式。"""
     import re as _re
+    import evidence_contract as EC
+    pool = EC.build_evidence_pool(raw_tool_log or [])
+    issues = validation.as_dict().get("issues", [])
+    items, used = [], 0
     for i in issues:
-        det = (i or {}).get("detail") or ""
-        m = _re.search(r"best_evidence=【《([^》]+)》(?:·([^】]+))?】", det)
-        if not m:
+        ref = (i or {}).get("evidence_ref") or ""
+        m_ev = _re.fullmatch(r"ev_(\d+)", ref.strip())
+        if not m_ev:
             continue
-        book, chap = m.group(1), m.group(2)
+        n = int(m_ev.group(1)) - 1        # ev_1 起 → pool 候选序（按检索顺序）
+        cand = None
+        seq = 0
         for t in (raw_tool_log or []):
-            rf = (t or {}).get("result_full") or {}
-            if isinstance(rf, dict) and rf.get("book_title") == book:
-                txt = str(rf.get("text") or "")
-                if chap and chap in str(rf.get("title") or ""):
-                    pass
-                elif chap:
-                    continue
-                if txt:
-                    seg = txt[:1200]
-                    packet_items.append({"evidence_id": f"best:{book}" + (f"·{chap}" if chap else ""),
-                                         "book": book, "chapter": rf.get("title"),
-                                         "retrieved_text_excerpt": seg})
-                    used += len(seg)
-                break
-        if len(packet_items) >= max_evidence or used > max_chars:
-            break
-    # NEAR/UNSUPPORTED quote issue: 用 locator 中的引文 span 在已检索章节文本里
-    # 机械定位最高字符二元组重叠窗口——把库中真实措辞原样给模型（可逐字复制或转述）
-    def _best_window(quote, text, win=900):
-        if not quote or not text:
-            return None
-        q = "".join(ch for ch in quote if not ch.isspace())
-        if len(q) < 6:
-            return None
-        grams = {q[i:i+2] for i in range(len(q) - 1)}
-        best, best_score = None, 0.0
-        step = max(win // 2, 100)
-        for start in range(0, max(len(text) - win, 0) + 1, step):
-            seg = text[start:start + win + 200]
-            sg = {seg[i:i+2] for i in range(len(seg) - 1)}
-            score = len(grams & sg) / max(len(grams), 1)
-            if score > best_score:
-                best, best_score = seg, score
-        return (best, round(best_score, 2)) if best and best_score >= 0.2 else None
-
-    for i in issues:
-        if (i or {}).get("code") not in ("NEAR_QUOTE_NOT_MARKED",
-                                         "UNSUPPORTED_EXACT_QUOTE",
-                                         "STITCHED_QUOTE"):
-            continue
-        locator = (i or {}).get("locator") or ""
-        for t in (raw_tool_log or []):
-            rf = (t or {}).get("result_full") or {}
-            if not (isinstance(rf, dict) and rf.get("text")):
+            rf = (t or {}).get("result_full")
+            if not isinstance(rf, dict) or rf.get("error"):
                 continue
-            hit = _best_window(locator, str(rf["text"]))
-            if hit:
-                seg, score = hit
-                packet_items.append({
-                    "evidence_id": f"match:{rf.get('book_title')}",
-                    "book": rf.get("book_title"), "chapter": rf.get("title"),
-                    "match_overlap": score,
-                    "retrieved_text_excerpt": seg})
-                used += len(seg)
+            if (t.get("name") or "") == "search_books":
+                for _item in rf.get("results") or []:
+                    if seq == n:
+                        cand = {"kind": "search", "text": _item.get("snippet") or "",
+                                "book": _item.get("book_title"),
+                                "chapter": _item.get("chapter_title"),
+                                "author": _item.get("author")}
+                    seq += 1
+            elif (t.get("name") or "") in ("get_chapter", "get_book_detail",
+                                           "locate_exact_phrase"):
+                if seq == n:
+                    txt = str(rf.get("text") or rf.get("toc") or "")
+                    cand = {"kind": "chapter", "text": txt,
+                            "book": rf.get("book_title"),
+                            "chapter": rf.get("title"), "author": rf.get("author")}
+                seq += 1
+            if cand:
                 break
-        if len(packet_items) >= max_evidence or used > max_chars:
-            break
-    for ref in refs[:max_evidence * 2]:
-        # raw_tool_log 条目: get_chapter 类结果含真实正文; evidence_ref 形如
-        # ev_<n> 或直接书名/章节标签——机械匹配 result_full 中的文本身份
-        for t in (raw_tool_log or []):
-            blob = _json.dumps({k: v for k, v in (t or {}).items()
-                                if k in ("name", "args", "result_full", "result_summary")},
-                               ensure_ascii=False)
-            if ref in blob or ref in str((t or {}).get("args", "")):
-                excerpt = str((t or {}).get("result_full") or
-                              (t or {}).get("result_summary") or "")[:800]
-                if excerpt:
-                    packet_items.append({"evidence_id": ref,
-                                         "tool": (t or {}).get("name"),
-                                         "retrieved_text_excerpt": excerpt})
-                    used += len(excerpt)
-                break
-        if len(packet_items) >= max_evidence or used > max_chars:
-            break
-    # evidence_ref 无命中时: 附检索文本身份清单（书名/章节级, 无正文）
-    if not packet_items:
-        for t in (raw_tool_log or [])[:max_evidence]:
-            rf = (t or {}).get("result_full") or {}
-            if isinstance(rf, dict) and rf.get("book_title"):
-                packet_items.append({"evidence_id": "identity",
-                                     "book": rf.get("book_title"),
-                                     "chapter": rf.get("title")})
-    seen_ids = set()
-    deduped = []
-    for e in packet_items:
-        k = e.get("evidence_id")
-        if k in seen_ids:
+        if not cand:
             continue
-        seen_ids.add(k)
-        deduped.append(e)
-    return {"available_evidence": deduped[:max_evidence]}
+        loc = (i or {}).get("locator") or ""
+        # SOURCE_EXACT_CONTEXT: locator 引文在文本中的机械包含定位（≤400 字）; 无命中给开头
+        pos = cand["text"].find("".join(ch for ch in loc if not ch.isspace())[:24]) \
+            if loc else -1
+        if pos < 0 and loc:
+            q = loc.strip().strip("「」> ").strip()
+            pos = cand["text"].find(q[:24]) if q else -1
+        start = max(pos - 60, 0) if pos >= 0 else 0
+        ctx = cand["text"][start:start + max_context_chars]
+        items.append({"OFFENDING_ISSUE": (i or {}).get("code"),
+                      "SOURCE_BOOK": cand.get("book"),
+                      "SOURCE_CHAPTER": cand.get("chapter"),
+                      "SOURCE_EVIDENCE_ID": ref,
+                      "SOURCE_EXACT_CONTEXT": ctx})
+        used += len(ctx)
+        if len(items) >= max_evidence or used > 6000:
+            break
+    return {"available_evidence": items}
 
 
 def get_system_prompt(agent):
@@ -1702,18 +1646,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "present in retrieved evidence; if only book-level provenance is "
                 "available, do not invent a chapter-level citation. Do not "
                 "systematically delete quotations or citations to avoid validation — "
-                "use verified evidence normally. If an exact quote has already failed "
-                "validation once, do not re-submit the same wording: either copy the "
-                "retrieved text character-for-character from the evidence packet, or "
-                "convert it to an explicit paraphrase with citation. Mechanical format "
-                "rule: text presented in blockquote (>) or 「…」 quote formatting is "
-                "validated character-for-character against retrieved evidence. If you "
-                "cannot reproduce the retrieved wording exactly, do NOT use quote "
-                "formatting for it — write it as plain prose paraphrase. A third "
-                "mechanical option also passes validation: keep the near quote, and "
-                "immediately after it add a short note in your own words stating that "
-                "this passage is reproduced from memory / approximated and has not "
-                "been verified character-for-character against the source.")
+                "use verified evidence normally.")
             # §7: hard 预算已成立 → 机械资源事实并入反馈消息（不新增 SystemMessage
             # 注入点, 维持「builder 1 + hard 预算 1」注入不变量）; repair 零工具模式
             _no_tools = bool(budget is not None and budget.hard_reached())
