@@ -268,3 +268,53 @@ def test_p22_runner_evaluator_sha_recorded():
     import hashlib
     runner_path = os.path.join(ROOT, "backend/tools/evaluation/o7e_runner.py")
     assert hashlib.sha256(open(runner_path, "rb").read()).hexdigest()
+
+
+# ══ RP-SYS §9: E2E packet→model 真验证 ═══════════════════════
+def test_e2e_protocol_and_packet_reach_model():
+    """spy LLM 输入: validator 出 qb_read_* → packet 原文 → repair_mode=true →
+    实际 SystemMessage 含 REPAIR_SYSTEM_PROTOCOL, HumanMessage 含 qb 原文。"""
+    import asyncio
+
+    _spy_prompts = []
+
+    class SpyChat(ScriptedChat):
+        def invoke(self, messages, *a, **k):
+            _spy_prompts.append(list(messages))
+            return super().invoke(messages, *a, **k)
+
+    # NEAR quote（与库文一字之差）→ validator 给 evidence_ref=qb_read_*
+    from test_o2_final_ownership import _LUNYU_PASSAGE
+    near = _LUNYU_PASSAGE.replace("夫人不言", "其人不言")
+    bad_final = "原文：\n\n> 「" + near + "」\n"
+    good_final = "经核验：该句与库中原文相近但非逐字，转述——孔子说言必有中。"
+    script = list(_TOOLS_SCRIPT) + [_msg(bad_final), _msg(good_final)]
+    spy = SpyChat(script=list(script))
+    orig_llm, orig_tools = EG.get_llm, EG.get_tools
+    EG.get_llm = lambda: spy
+    EG.get_tools = lambda agent: _fake_tools()
+
+    async def _collect():
+        evs = []
+        async for ev in EG.stream_agent("言必有中出处", [], agent="general", language="zh"):
+            evs.append(ev)
+        return evs
+    try:
+        evs = asyncio.run(_collect())
+    finally:
+        EG.get_llm, EG.get_tools = orig_llm, orig_tools
+    done = _done(evs)
+    assert done["validation"]["repairs_used"] >= 1
+    proto_found = any(any(getattr(m, "type", "") == "system" and
+                          "修复执行协议" in (m.content or "")
+                          for m in prompts) for prompts in _spy_prompts)
+    assert proto_found, "REPAIR_SYSTEM_PROTOCOL 未到达模型 SystemMessage"
+    pkt_found = any(any(getattr(m, "type", "") == "human" and
+                        ("qb_read_" in (m.content or "") or
+                         "SOURCE_EXACT_CONTEXT" in (m.content or ""))
+                        for m in prompts) for prompts in _spy_prompts)
+    assert pkt_found, "qb_* packet 未到达模型 HumanMessage"
+    rt = done["validation"].get("repair_trace") or []
+    assert rt and rt[0]["repair_mode"] is True
+    assert rt[0]["system_protocol_injected"] is True
+    assert "packet_sha256" in rt[0]

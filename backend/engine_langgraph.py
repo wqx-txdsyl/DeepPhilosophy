@@ -413,6 +413,22 @@ def _build_repair_evidence_packet(validation, raw_tool_log, max_evidence=3,
     return {"available_evidence": items}
 
 
+# ── O7-E RP2 RP-SYS §4-§5: repair invocation 的 system-level protocol ──
+REPAIR_SYSTEM_PROTOCOL = """
+【修复执行协议（Repair Execution Protocol）】你正在修复自己此前提交的最终候选——它未通过
+确定性证据校验。这不是对校验器的讨论: 直接为用户的原始问题产出一个完整的替换最终回答。
+
+校验 issue 与 MECHANICAL_REPAIR_EVIDENCE_PACKET 提供的是机械证据事实。逐字引文规则:
+- 以逐字引文形式呈现的文本, 必须从 SOURCE_EXACT_CONTEXT 中连续复制一个子串, 一字不差;
+- 不得在逐字引文内重构、翻译、合并、规范化、润色或补全措辞。
+无法支撑逐字措辞时: 用普通转述表达该内容; 不得把重构措辞排版成引文。
+正式引用规则: 只使用检索证据实际提供的 SOURCE_BOOK/SOURCE_CHAPTER 身份; 不得虚构章节或出处位置。
+保留实质性论证与有价值的文本细节; 不得为通过校验而系统性删除引文、引用、争议或原典依据。
+工具执行可用且所给证据不足时可继续研究; 工具不可用时基于已获得的证据修复。
+最终回答中不得提及修复过程、校验器、证据包或本协议。只输出完整的替换候选。
+"""
+
+
 def get_system_prompt(agent):
     return AGENTS.AGENT_PROMPTS.get(agent, SYSTEM_PROMPT_LG)
 
@@ -447,7 +463,7 @@ def _identity_context(agent, language="zh"):
 
 
 def _build_context_messages(agent, language, custom_instructions=None,
-                            user_message=None, reinforce=False):
+                            user_message=None, reinforce=False, repair_mode=False):
     """构建 Main Agent 上下文消息（返回 list, 恒为一条 SystemMessage; 无内容时为空）。
 
     reinforce=False  完整上下文（每请求一次, 置于消息列表头部）
@@ -455,6 +471,10 @@ def _build_context_messages(agent, language, custom_instructions=None,
     时期上下文只随完整上下文注入（persona/context snapshot, 不逐轮重复）。"""
     if reinforce:
         parts = []
+        # O7-E RP-SYS §3: repair 轮的强化消息同样由唯一 builder 注入 protocol
+        # （agent_node 每轮走 reinforce 分支——protocol 必须在这里到达模型）
+        if agent == "general" and repair_mode:
+            parts.append(REPAIR_SYSTEM_PROTOCOL)
         if agent != "general":
             parts.append(PERSONA_THINK_REMINDER_EN if language == "en" else PERSONA_THINK_REMINDER)
         if language != "en":
@@ -466,6 +486,10 @@ def _build_context_messages(agent, language, custom_instructions=None,
     # scope; 其学术化留待专门设计）——单一 canonical owner 不变
     if agent == "general":
         prompt = prompt.rstrip() + "\n\n" + SCHOLARLY_CONTRACT
+    # O7-E RP-SYS §3-§4: repair protocol 经唯一 builder 注入（general+repair_mode;
+    # 哲学家人格不注入; 注入点仍=builder 1+hard 预算 1, 零 ad-hoc SystemMessage）
+    if agent == "general" and repair_mode:
+        prompt = prompt.rstrip() + "\n\n" + REPAIR_SYSTEM_PROTOCOL
     if custom_instructions and custom_instructions.strip():
         prompt = (prompt.rstrip() +
                   f"\n\n## 用户的个性化指令（必须遵守）\n{custom_instructions.strip()}")
@@ -517,13 +541,17 @@ class AgentState(TypedDict):
     # hard 预算已成立的 repair invocation 由 _stream_graph(no_tools=True) 置位,
     # agent_node 读取后不 bind tools（资源控制, 非认知决策）
     no_tools: bool
+    # O7-E RP2 RP-SYS §2: repair invocation mode——validator FAIL 后的整个 repair
+    # tool loop 持续为 true; context builder 据此注入 repair protocol
+    repair_mode: bool
 
 async def agent_node(state):
     msgs = list(state["messages"])
     agent = state.get("agent", "general")
     # ── O4-RP1 §8: 单源 Context Builder——每轮强化消息由 builder 产出
     # （人格 + 语言合并为一条, 不再分段; 无核验状态/意图类注入）──
-    for _m in _build_context_messages(agent, state.get("language", "zh"), reinforce=True):
+    for _m in _build_context_messages(agent, state.get("language", "zh"), reinforce=True,
+                                      repair_mode=bool(state.get("repair_mode"))):
         msgs.append(_m)
     # ── Phase A: 预算与终止条件 ──
     # ══ O3 §5/§8: 停止权威归还 Main Agent——runtime 仅在机械约束下停止循环 ══
@@ -1367,7 +1395,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # evidence 完成回答）, 恢复成功/已有部分正文 → 继续正常收口（citations/done 照常）。
     stream_error = None
 
-    async def _stream_graph(msgs, no_tools=False):
+    async def _stream_graph(msgs, no_tools=False, repair_mode=False):
         """跑一遍图流（一组 Main Agent invocation 序列）——O2: 首次运行与 validator
         repair 运行共用同一条路径（repair 绑定完整 tool set, 遵守 O1 causal contract）。
         thinking/tool 活动实时 yield; 候选正文只进缓冲, 绝不提前公开。
@@ -1382,7 +1410,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         async for chunk, metadata in APP.astream(
                 {"messages": msgs, "agent": agent, "language": language,
                  "guard": guard, "budget": budget, "trace": trace,
-                 "no_tools": no_tools,
+                 "no_tools": no_tools, "repair_mode": repair_mode,
                  "tool_count": 0,
                  "evidence_state": evidence_state,
                  "raw_tool_log": raw_tool_log},
@@ -1610,6 +1638,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         pending["text"] = ""
         repairs_used = 0
         _val_history = []      # O7-E RP1 §5: 纯机械 validation history（无 CoT/正文）
+        _repair_trace = []     # O7-E RP-SYS §8: repair 遥测（无 CoT/无 rejected 正文/无完整 passage）
         while True:
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
@@ -1632,31 +1661,19 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # O2 §9: 中性反馈——只列机械 issue, 不命令具体修复动作（改写/标注/删引文/
             # 补研究由 Agent 自主决定）; validator 自身绝不调用工具。
             _fb = format_feedback(validation)
-            # O7-E RP2 §3-6: 机械 repair evidence packet——issue 关联的真实检索文本
+            # O7-E RP2 RP-SYS §6: Human 反馈做减法——程序性规则已上移
+            # REPAIR_SYSTEM_PROTOCOL（system 层）; Human 只留 issue 事实 + packet
+            # + 资源机械事实。validator 文件仍零改动。
+            _fb = _fb.replace(
+                "Revise the candidate or gather more evidence as appropriate.",
+                "Produce the complete replacement final candidate. Do not return "
+                "an empty candidate.")
+            # O7-E RP2 RP-SYS: packet（issue 事实的机械证据——Human 层唯一附加）
             _pkt = _build_repair_evidence_packet(validation, raw_tool_log)
             if _pkt["available_evidence"]:
                 _fb += ("\n\nMECHANICAL_REPAIR_EVIDENCE_PACKET (retrieved evidence "
                         "mechanically linked to the issues):\n"
                         + json.dumps(_pkt, ensure_ascii=False)[:6000])
-            # O7-E RP1 §8: repair transport contract——完整替换候选 + 资源上限下基于
-            # 已有证据修订 + 禁止空候选（传输合同, 非学术内容指令; validator 文件零改动）
-            _fb = _fb.replace(
-                "Revise the candidate or gather more evidence as appropriate.",
-                "This is a validation repair of the same answer. Produce a complete "
-                "replacement final candidate. The validator issues above are "
-                "mechanical evidence problems. You may gather additional evidence "
-                "only if tool resources remain available. If the tool resource "
-                "ceiling has been reached, revise using the evidence already "
-                "obtained. Do not return an empty candidate.\n"
-                "Evidence discipline: a verified exact quotation must reproduce the "
-                "retrieved wording exactly; if the available evidence supports the "
-                "meaning but not the exact wording, do not present a reconstructed "
-                "sentence as a verbatim quotation — paraphrase instead. A formal "
-                "book/chapter citation must use a book/chapter identity actually "
-                "present in retrieved evidence; if only book-level provenance is "
-                "available, do not invent a chapter-level citation. Do not "
-                "systematically delete quotations or citations to avoid validation — "
-                "use verified evidence normally.")
             # §7: hard 预算已成立 → 机械资源事实并入反馈消息（不新增 SystemMessage
             # 注入点, 维持「builder 1 + hard 预算 1」注入不变量）; repair 零工具模式
             _no_tools = bool(budget is not None and budget.hard_reached())
@@ -1664,10 +1681,32 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 _fb += ("\n\nNO_MORE_TOOL_EXECUTION_AVAILABLE（机械资源事实）: 工具执行"
                         "硬上限已达。本轮修复不可执行任何工具——直接基于已获得的证据"
                         "写出完整替换最终候选; 禁止宣告新工具, 禁止空候选。")
+            import hashlib as _hl
+            _trace_pkt = _pkt or {"available_evidence": []}
+            _repair_trace.append({
+                "attempt_index": repairs_used,
+                "issue_codes": [i.get("code") for i in validation.as_dict().get("issues", [])][:8],
+                "evidence_refs": [i.get("evidence_ref") for i in
+                                  validation.as_dict().get("issues", []) if i.get("evidence_ref")][:8],
+                "repair_mode": True,
+                "system_protocol_injected": agent == "general",
+                "system_protocol_sha256": _hl.sha256(
+                    REPAIR_SYSTEM_PROTOCOL.encode("utf-8")).hexdigest()[:16],
+                "packet_present": bool(_trace_pkt.get("available_evidence")),
+                "packet_item_count": len(_trace_pkt.get("available_evidence") or []),
+                "packet_evidence_refs": [e.get("SOURCE_EVIDENCE_ID") or e.get("evidence_id")
+                                         for e in _trace_pkt.get("available_evidence") or []],
+                "packet_context_chars": sum(len(e.get("SOURCE_EXACT_CONTEXT") or
+                                                e.get("retrieved_text_excerpt") or "")
+                                            for e in _trace_pkt.get("available_evidence") or []),
+                "packet_sha256": _hl.sha256(json.dumps(
+                    _trace_pkt, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16],
+                "no_tools": bool(budget is not None and budget.hard_reached())})
             _repair_msgs = list(messages) + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
-                async for _ev in _stream_graph(_repair_msgs, no_tools=_no_tools):
+                async for _ev in _stream_graph(_repair_msgs, no_tools=_no_tools,
+                                                repair_mode=True):
                     yield _ev
             except Exception as _re:
                 logger.warning(f"[o2-repair] stream failed: {str(_re)[:200]}")
@@ -1876,6 +1915,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                "validation": {"result": validation.as_dict(),
                               "repairs_used": repairs_used,
                               "history": _val_history,
+                              "repair_trace": _repair_trace,
                               "max_validation_repairs": MAX_VALIDATION_REPAIRS,
                               "repair_protocol": "same_main_agent"},
                # O1 (§13): 机械 timing observability（llm_invocation / validator_* 阶段时长;
