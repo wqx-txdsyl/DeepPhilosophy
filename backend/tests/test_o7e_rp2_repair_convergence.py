@@ -371,17 +371,51 @@ def test_r25_subwork_identity():
     assert EV2.check_case(case, r_cxl)["primary_satisfied"] is True
 
 
-def test_primary_missing_cannot_pass():
-    """§6: 28 completed/28 published/primary_missing=1 → 不得 PASS。"""
-    completed = 28
-    pub = 28
-    primary_missing = 1
-    if completed < 28:
-        status = "BLOCKED_INCOMPLETE"
-    elif pub / completed < 0.9:
-        status = "DELIVERY_RATE_FAIL"
-    elif primary_missing > 0:
-        status = "PRIMARY_GATE_FAIL"
-    else:
-        status = "DELIVERY_PRIMARY_PASS"
-    assert status == "PRIMARY_GATE_FAIL"
+def _mk_runs(n_completed, n_pub, n_primary_missing):
+    runs = []
+    for i in range(n_completed):
+        runs.append({"delivery": {"run_status": "COMPLETED",
+                                  "published": i < n_pub}})
+    for r in runs[:n_primary_missing]:
+        r["primary_gate"] = {"primary_required": True, "primary_satisfied": False}
+    return runs
+
+
+def test_g1_primary_missing_cannot_pass():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "o7e_runner", os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), "tools", "evaluation", "o7e_runner.py"))
+    R = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(R)
+    assert R.aggregate_gate_status(_mk_runs(28, 28, 1), 28) == "PRIMARY_GATE_FAIL"
+
+
+def test_g2_delivery_primary_pass():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "o7e_runner", os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), "tools", "evaluation", "o7e_runner.py"))
+    R = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(R)
+    assert R.aggregate_gate_status(_mk_runs(28, 27, 0), 28) == "DELIVERY_PRIMARY_PASS"
+
+
+def test_g3_incomplete():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "o7e_runner", os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), "tools", "evaluation", "o7e_runner.py"))
+    R = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(R)
+    assert R.aggregate_gate_status(_mk_runs(27, 27, 0), 28) == "BLOCKED_INCOMPLETE"
+
+
+def test_g4_rate_fail():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "o7e_runner", os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), "tools", "evaluation", "o7e_runner.py"))
+    R = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(R)
+    assert R.aggregate_gate_status(_mk_runs(28, 20, 0), 28) == "DELIVERY_RATE_FAIL"

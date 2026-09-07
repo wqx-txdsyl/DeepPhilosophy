@@ -46,6 +46,26 @@ def _ev_digest(ev):
     return out
 
 
+def aggregate_gate_status(runs, required):
+    """O7-E Bakeoff §1: canonical gate 状态（runner 与测试唯一实现）。
+
+    BLOCKED_INCOMPLETE → DELIVERY_RATE_FAIL → PRIMARY_GATE_FAIL → DELIVERY_PRIMARY_PASS
+    （primary_missing 在此函数内计算——修复外层使用早于赋值的 UnboundLocal bug）。"""
+    completed = [r for r in runs if r.get("delivery", {}).get("run_status") == "COMPLETED"]
+    pub = sum(1 for r in completed if r["delivery"].get("published"))
+    primary_missing = sum(1 for r in completed
+                          if isinstance(r.get("primary_gate"), dict)
+                          and r["primary_gate"].get("primary_required")
+                          and not r["primary_gate"].get("primary_satisfied"))
+    if len(completed) < required:
+        return "BLOCKED_INCOMPLETE"
+    if pub / max(len(completed), 1) < 0.9:
+        return "DELIVERY_RATE_FAIL"
+    if primary_missing > 0:
+        return "PRIMARY_GATE_FAIL"
+    return "DELIVERY_PRIMARY_PASS"
+
+
 def run_case(case):
     """全链路跑一个案例; 返回 answer/tool_trace/delivery/事件摘要。"""
     events = []
@@ -166,18 +186,11 @@ def main(scope, only=None):
     blocked = sum(1 for r in runs if r.get("delivery", {}).get("run_status") == "BLOCKED_MODEL_BILLING")
     errs = len(runs) - len(completed) - blocked
     required = {"CAL": 12, "HOLDOUT": 28, "RP2_HOLDOUT": 28, "SMOKE": 8}[scope]
-    if len(completed) < required:
-        status = "BLOCKED_INCOMPLETE"
-    elif pub / max(len(completed), 1) < 0.9:
-        status = "DELIVERY_RATE_FAIL"
-    elif primary_missing > 0:
-        status = "PRIMARY_GATE_FAIL"
-    else:
-        status = "DELIVERY_PRIMARY_PASS"
     primary_missing = sum(1 for r in runs
                           if isinstance(r.get("primary_gate"), dict)
                           and r["primary_gate"].get("primary_required")
                           and not r["primary_gate"].get("primary_satisfied"))
+    status = aggregate_gate_status(runs, required)
     print(json.dumps({"scope": scope, "cases": len(runs), "REQUIRED_PRIMARY_MISSING": primary_missing,
                       "completed": len(completed), "published_among_completed": pub,
                       "publication_rate_completed": round(pub / max(len(completed), 1), 3),
