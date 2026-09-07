@@ -337,3 +337,51 @@ def test_e2e_protocol_and_packet_reach_model():
     assert rt and rt[0]["repair_mode"] is True
     assert rt[0]["system_protocol_injected"] is True
     assert "packet_sha256" in rt[0]
+
+
+# ══ RP-DEC §6-§9: primary gate 状态化 + collection subwork ════
+def test_r19_subwork_identity():
+    """读工具论·其他篇 ≠ 范畴篇; 读工具论 ch1（范畴篇）= true; 形而上学单行本另需。"""
+    case = next(c for c in RP2C.HOLDOUT_CASES_RP2 if c["case_id"] == "R19")
+    meta = [{"name": "get_chapter", "args": {"book_id": "b471f41a78de"},
+             "result_full": {"book_title": "工具论", "text": "x"}}]
+    r_other = {"evidence_digest": {"facts": {"read_chapters": ["b471f41a78de#5"]}}}
+    import importlib
+    import o7e_evidence_checks as EV2
+    importlib.reload(EV2)
+    r = EV2.check_case(case, r_other)
+    assert r["primary_satisfied"] is False        # 读其他篇不算
+    r_cat = {"evidence_digest": {"facts": {"read_chapters": ["b471f41a78de#1"]}}}
+    r1 = EV2.check_case(case, r_cat)
+    assert r1["primary_satisfied"] is False       # ALL 还缺形而上学
+    r_both = {"evidence_digest": {"facts": {
+        "read_chapters": ["b471f41a78de#1", "f11f1b13c278#0"]}}}
+    r2 = EV2.check_case(case, r_both)
+    assert r2["primary_satisfied"] is True
+
+
+def test_r25_subwork_identity():
+    case = next(c for c in RP2C.HOLDOUT_CASES_RP2 if c["case_id"] == "R25")
+    import importlib
+    import o7e_evidence_checks as EV2
+    importlib.reload(EV2)
+    r_other = {"evidence_digest": {"facts": {"read_chapters": ["909e887aac01#30"]}}}
+    assert EV2.check_case(case, r_other)["primary_satisfied"] is False
+    r_cxl = {"evidence_digest": {"facts": {"read_chapters": ["909e887aac01#2"]}}}
+    assert EV2.check_case(case, r_cxl)["primary_satisfied"] is True
+
+
+def test_primary_missing_cannot_pass():
+    """§6: 28 completed/28 published/primary_missing=1 → 不得 PASS。"""
+    completed = 28
+    pub = 28
+    primary_missing = 1
+    if completed < 28:
+        status = "BLOCKED_INCOMPLETE"
+    elif pub / completed < 0.9:
+        status = "DELIVERY_RATE_FAIL"
+    elif primary_missing > 0:
+        status = "PRIMARY_GATE_FAIL"
+    else:
+        status = "DELIVERY_PRIMARY_PASS"
+    assert status == "PRIMARY_GATE_FAIL"

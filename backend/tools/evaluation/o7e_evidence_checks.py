@@ -66,23 +66,44 @@ def check_case(case, run):
     if isinstance(facts, dict):
         rc = facts.get("read_chapters") or []
         reads_raw = [str(x) for x in rc]
-    read_book_ids = {r.split("#")[0] for r in reads_raw if r}
+    read_pairs = set()
+    for r in reads_raw:
+        b, _, c = r.partition("#")
+        read_pairs.add((b, c))
+    read_book_ids = {b for b, _ in read_pairs}
     mode = case.get("primary_target_mode", "ANY")
     extra = {}
+    man_subwork = []
     man_path = os.path.join(ROOT, "docs/evidence",
                             "PHIAGENT_O7E_RP2_PRIMARY_TARGET_RESOLUTION.json")
     if os.path.exists(man_path):
         for x in json.load(open(man_path, encoding="utf-8")):
-            if isinstance(x, dict) and x.get("resolved_book_ids"):
+            if not isinstance(x, dict):
+                continue
+            if x.get("resolved_book_ids"):
                 extra[(x.get("case_id"), x.get("author"), x.get("work"))] = x["resolved_book_ids"]
+            if x.get("identity_scope") == "BOOK_SUBWORK":
+                man_subwork.append(x)
+    # RP-DEC §7-9: SUBWORK 合集目标需要 book_id + 目标章节索引命中
+    subwork_idx = {}
+    for x in man_subwork:
+        subwork_idx[(x.get("case_id"), x.get("work"))] = x
     resolved, read_ids, missing = [], [], []
     for t in targets:
+        work = (t.get("works") or [""])[0]
         ids = set(t.get("book_ids") or [])
-        ids |= set(extra.get((case.get("case_id"), t.get("author"),
-                              (t.get("works") or [""])[0]), []))
-        hit = sorted(ids & read_book_ids)
+        ids |= set(extra.get((case.get("case_id"), t.get("author"), work), []))
+        sw = subwork_idx.get((case.get("case_id"), work))
+        if sw:
+            chaps = set(sw.get("resolved_chapter_indices") or [])
+            hit = sorted({b for b, c in read_pairs
+                          if b == sw.get("resolved_book_id")
+                          and (c.lstrip("-").isdigit() and int(c) in chaps)})
+        else:
+            hit = sorted(ids & read_book_ids)
         resolved.append({"author": t.get("author"),
-                         "works": t.get("works"), "book_ids": sorted(ids)})
+                         "works": t.get("works"), "book_ids": sorted(ids),
+                         "identity_scope": "BOOK_SUBWORK" if sw else "BOOK"})
         if hit:
             read_ids.extend(hit)
         else:

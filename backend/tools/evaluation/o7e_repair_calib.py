@@ -53,8 +53,22 @@ def main():
     exhausted = [r for r in comp if r["delivery"].get("repair_exhaustion")]
     empty = sum(1 for r in comp
                 if "EMPTY_FINAL" in (r["delivery"].get("final_validation_issue_codes") or []))
+    # RP-DEC §5: E2E 真值（从真实 run artifact 的 repair_trace 计算）
+    traces = [t for r in comp for t in (r.get("repair_trace") or [])]
+    e2e_attempts = len(traces)
+    e2e_proto = sum(1 for t in traces if t.get("system_protocol_injected"))
+    packet_expected = sum(1 for t in traces if t.get("evidence_refs"))
+    packet_present = sum(1 for t in traces if t.get("packet_present"))
     out = {
         "cases": len(runs), "completed": len(comp), "published": len(pub),
+        "E2E_REPAIR_ATTEMPTS": e2e_attempts,
+        "E2E_PROTOCOL_INJECTED_ATTEMPTS": e2e_proto,
+        "E2E_REPAIR_PROTOCOL_INJECTION_RATE":
+            round(e2e_proto / max(e2e_attempts, 1), 3) if e2e_attempts else None,
+        "E2E_PACKET_EXPECTED_ATTEMPTS": packet_expected,
+        "E2E_PACKET_PRESENT_ATTEMPTS": packet_present,
+        "E2E_PACKET_TELEMETRY_MISSING":
+            packet_expected - packet_present,
         "REPAIR_TRIGGERED_CASES": len(triggered),
         "REPAIR_CONVERGED_CASES": len(converged),
         "REPAIR_CASE_CONVERGENCE_RATE":

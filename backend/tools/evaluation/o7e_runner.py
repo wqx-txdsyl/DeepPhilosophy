@@ -112,6 +112,8 @@ def run_case(case):
                                    e.get("type") == "tool_cancel" for e in events),
         },
         "done_payload_keys": sorted(done.keys()) if done else [],
+        "repair_trace": ((done.get("validation") or {}).get("repair_trace")
+                         or []) if done else [],
         "citations": _as_list(done.get("citations")) if done else [],
         "quote_bound": _as_list(done.get("quote_bound")) if done else [],
         "evidence_digest": _ev_digest(done.get("evidence")) if done else None,
@@ -164,8 +166,14 @@ def main(scope, only=None):
     blocked = sum(1 for r in runs if r.get("delivery", {}).get("run_status") == "BLOCKED_MODEL_BILLING")
     errs = len(runs) - len(completed) - blocked
     required = {"CAL": 12, "HOLDOUT": 28, "RP2_HOLDOUT": 28, "SMOKE": 8}[scope]
-    status = ("BLOCKED_INCOMPLETE" if len(completed) < required else
-              ("PASS_RATE" if pub / max(len(completed), 1) >= 0.9 else "RATE_FAIL"))
+    if len(completed) < required:
+        status = "BLOCKED_INCOMPLETE"
+    elif pub / max(len(completed), 1) < 0.9:
+        status = "DELIVERY_RATE_FAIL"
+    elif primary_missing > 0:
+        status = "PRIMARY_GATE_FAIL"
+    else:
+        status = "DELIVERY_PRIMARY_PASS"
     primary_missing = sum(1 for r in runs
                           if isinstance(r.get("primary_gate"), dict)
                           and r["primary_gate"].get("primary_required")
