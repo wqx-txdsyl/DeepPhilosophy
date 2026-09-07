@@ -134,27 +134,12 @@ def test_p9_exact_required_not_deleted_to_game():
 import o7e_cases_rp2 as RP2C
 
 
-def _primary_satisfied(case, tool_log):
-    """evaluation-only primary truth（§10-14）——按 primary_targets 机械匹配。
+import o7e_evidence_checks as EV
 
-    满足条件: 目标作者/作品的实际 get_chapter 正文读取（或等价 verified primary-body）。
-    search_books snippet / 二手评论书不计入 target primary。
-    """
-    targets = case.get("primary_targets") or []
-    mode = case.get("primary_target_mode", "ANY")
-    target_ids = set()
-    for t in targets:
-        target_ids.update(t.get("book_ids") or [])
-    if not targets:
-        return None    # 无 target 定义 → 无该维度要求
-    reads = {t.get("args", {}).get("book_id") for t in tool_log
-             if t.get("name") in ("get_chapter", "get_book_detail")
-             and isinstance(t.get("result_full"), dict)
-             and (t["result_full"].get("text") or t["result_full"].get("toc"))}
-    hits = [t for t in targets if set(t.get("book_ids") or []) & reads]
-    if mode == "ALL":
-        return len(hits) == len(targets)
-    return len(hits) >= 1
+
+def _primary_satisfied(case, tool_log):
+    """canonical primary truth（§H: 测试只调用 production-evaluation helper）。"""
+    return EV.primary_satisfied(case, tool_log)
 
 
 def test_p10_secondary_book_not_target_primary():
