@@ -44,6 +44,34 @@ def get_llm():
                                 extra_body={"thinking": {"type": "enabled"}, "reasoning_effort": "low"})
     return _llm
 
+
+# ── O7-E RP2 RP-DEC §1-§2: repair-only deterministic decoding ──
+# 同 Main Agent/同 model id/同 provider/同 thinking 配置——仅 temperature 0.7→0.0。
+# 这是解码配置而非第二大脑: REPAIR_AGENT_COUNT=0, FINAL_WRITER=MAIN_AGENT。
+_llm_repair = None
+
+def get_repair_llm():
+    global _llm_repair
+    # 测试/注入环境: get_llm 被外部替换（返回非缓存实例）时直接复用注入实例
+    # （脚本化 LLM 本身确定性; 生产路径才构建 temp=0 的确定性 client）
+    if get_llm() is not _llm:
+        return get_llm()
+    if _llm_repair is None:
+        if "bigmodel.cn" in AG.API_URL or "glm" in AG.MODEL.lower():
+            from langchain_openai import ChatOpenAI
+            _llm_repair = ChatOpenAI(model=AG.MODEL, api_key=AG.API_KEY,
+                                     base_url=AG.API_URL, temperature=0.0,
+                                     max_tokens=4000)
+        else:
+            from langchain_deepseek import ChatDeepSeek
+            _llm_repair = ChatDeepSeek(model=AG.MODEL, api_key=AG.API_KEY,
+                                       base_url=AG.API_URL, temperature=0.0,
+                                       max_tokens=4000,
+                                       extra_body={"thinking": {"type": "enabled"},
+                                                   "reasoning_effort": "low"})
+    return _llm_repair
+
+
 # ── 检索纪律（Phase A: 预算与终止条件收编到 agent_runtime, 本处只保留引用）──
 RETRIEVAL_TOOLS = {"search_books", "get_chapter", "get_philosopher", "query_graph", "websearch",
                    "get_school", "get_book_detail", "list_books", "query_database", "compare_views",
@@ -586,7 +614,8 @@ async def agent_node(state):
         except Exception:
             pass
     resp, retries = await _agent_llm_invoke(agent, msgs, trace=_trace_ref,
-                                            no_tools=bool(state.get("no_tools")))
+                                            no_tools=bool(state.get("no_tools")),
+                                            repair_mode=bool(state.get("repair_mode")))
     if _trace_ref is not None:
         try:
             _trace_ref.record_phase("llm_invocation", _llm_t0, msgs_len=len(msgs))
@@ -595,15 +624,18 @@ async def agent_node(state):
     # O5: model_retries state 字段已删（write-only）——重试计数真源 = trace.model_retries
     return {"messages": [resp], "forced": forced}
 
-async def _agent_llm_invoke(agent, msgs, trace=None, no_tools=False):
+async def _agent_llm_invoke(agent, msgs, trace=None, no_tools=False,
+                           repair_mode=False):
     """agent 轮 LLM 调用（线程池防阻塞）+ A4 有限重试。返回 (resp, retry_count)。
 
     O7-E RP1 §7: no_tools=True 仅用于「hard 预算已成立的 repair invocation」——
-    绑定零工具防 RESOURCE_CEILING×forced_tools_done 空候选死路（资源控制, 非认知决策）。"""
+    绑定零工具防 RESOURCE_CEILING×forced_tools_done 空候选死路（资源控制, 非认知决策）。
+    O7-E RP2 RP-DEC §1: repair_mode=True → 同模型确定性解码（temperature=0.0）。"""
     def _call(m):
+        base = get_repair_llm() if repair_mode else get_llm()
         if no_tools:
-            return get_llm().invoke(m)
-        return get_llm().bind_tools(get_tools(agent)).invoke(m)
+            return base.invoke(m)
+        return base.bind_tools(get_tools(agent)).invoke(m)
     def _on_retry(attempt, exc):
         # A1: model retry 计数入 trace（trace 经 state 共享引用, 单轮生命周期内安全）
         if trace is not None:
