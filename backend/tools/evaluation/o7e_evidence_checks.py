@@ -55,7 +55,40 @@ def primary_satisfied(case, tool_log):
 
 
 def check_case(case, run):
-    """Final Gate 单案例 primary 检查 → dict 供聚合。"""
-    tl = run.get("tool_trace") or run.get("tool_calls") or []
-    # runner 只存名字——需要 raw log; 由 gate 在运行期直接调用 primary_satisfied
-    return None
+    """Final Gate 单案例 primary 检查（Closure-2 §3: 消费 runner 已保存的
+    evidence_digest.read_chapters 机械事实——book_id#chapter_idx 列表）。"""
+    targets = case.get("primary_targets") or []
+    if not targets:
+        return {"primary_required": False}
+    ev = run.get("evidence_digest") or {}
+    reads_raw = []
+    facts = ev.get("facts") or {}
+    if isinstance(facts, dict):
+        rc = facts.get("read_chapters") or []
+        reads_raw = [str(x) for x in rc]
+    read_book_ids = {r.split("#")[0] for r in reads_raw if r}
+    mode = case.get("primary_target_mode", "ANY")
+    extra = {}
+    man_path = os.path.join(ROOT, "docs/evidence",
+                            "PHIAGENT_O7E_RP2_PRIMARY_TARGET_RESOLUTION.json")
+    if os.path.exists(man_path):
+        for x in json.load(open(man_path, encoding="utf-8")):
+            if isinstance(x, dict) and x.get("resolved_book_ids"):
+                extra[(x.get("case_id"), x.get("author"), x.get("work"))] = x["resolved_book_ids"]
+    resolved, read_ids, missing = [], [], []
+    for t in targets:
+        ids = set(t.get("book_ids") or [])
+        ids |= set(extra.get((case.get("case_id"), t.get("author"),
+                              (t.get("works") or [""])[0]), []))
+        hit = sorted(ids & read_book_ids)
+        resolved.append({"author": t.get("author"),
+                         "works": t.get("works"), "book_ids": sorted(ids)})
+        if hit:
+            read_ids.extend(hit)
+        else:
+            missing.append({"author": t.get("author"),
+                            "works": t.get("works")})
+    satisfied = (len(missing) == 0) if mode == "ALL" else (len(read_ids) >= 1)
+    return {"primary_required": True, "primary_target_mode": mode,
+            "resolved_targets": resolved, "read_target_ids": sorted(set(read_ids)),
+            "primary_satisfied": satisfied, "missing_targets": missing}

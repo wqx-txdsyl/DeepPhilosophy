@@ -30,28 +30,37 @@ def _pkt(validation_issues, raw_tool_log, **kw):
 
 
 def test_p1_p2_packet_includes_referenced_real_text():
-    """真实 ev_1 → canonical resolver（pool 顺序第 1 条证据）→ 实际文本。
-
-    raw_tool_log 第 1 条可证据条目 = search_books 的 results[0]（pool 顺序）。
-    禁止把 evidence_ref 偷改成 args 字符串。"""
-    raw = [{"name": "search_books", "args": {"query": "言必有中"},
-            "result_full": {"results": [
-                {"book_title": "论语", "chapter_title": "先进篇",
-                 "snippet": "夫人不言，言必有中。", "book_id": "lunyu"}]}},
-           {"name": "get_chapter",
+    """双命名空间: qb_read_1（quote 世界, 真实 QB.evidence_spans id）与
+    ev_N（citation 世界, EC._extract_candidates id）都必须解析出真实文本。"""
+    raw = [{"name": "get_chapter",
             "args": {"book_id": "lunyu", "chapter_idx": 13},
             "result_full": {"book_title": "论语", "title": "先进篇",
-                            "text": "夫人不言，言必有中。" * 30}}]
-    issues = [{"code": "UNSUPPORTED_EXACT_QUOTE",
+                            "text": "鲁人为长府。\n夫人不言，言必有中。\n子曰较多。"}},
+           {"name": "search_books", "args": {"query": "言必有中"},
+            "result_full": {"results": [
+                {"book_title": "论语", "chapter_title": "先进篇",
+                 "snippet": "夫人不言，言必有中。", "book_id": "lunyu"}]}}]
+    # quote 侧: evidence_ref = qb_read_0（entry_index 0 的 chapter read）
+    issues = [{"code": "NEAR_QUOTE_NOT_MARKED",
                "locator": "「其人不言，言必有中」",
-               "evidence_ref": "ev_2"}]      # pool 第2条 = get_chapter 正文
+               "evidence_ref": "qb_read_0"}]
     pkt = _pkt(issues, raw)
-    assert pkt["available_evidence"]
+    assert pkt["available_evidence"], "qb_read_* 未被 resolver 接住"
     e = pkt["available_evidence"][0]
-    assert e["SOURCE_EVIDENCE_ID"] == "ev_2"
-    assert "言必有中" in (e.get("SOURCE_EXACT_CONTEXT") or "")   # P2: 真实文本
-    assert e["SOURCE_BOOK"] == "论语" and e["SOURCE_CHAPTER"] == "先进篇"
-    assert len(e["SOURCE_EXACT_CONTEXT"]) <= 400                  # C: ≤400 字
+    assert e["SOURCE_EVIDENCE_ID"] == "qb_read_0"
+    assert "言必有中" in (e.get("SOURCE_EXACT_CONTEXT") or "")   # 真实原文 unit
+    assert len(e["SOURCE_EXACT_CONTEXT"]) <= 400
+    assert e["SHINGLE_OVERLAP"] > 0.1
+
+    # citation 侧: ev_N 经 EC._extract_candidates exact match
+    import evidence_contract as EC
+    cands = EC._extract_candidates(raw)
+    ev_id = next(c["evidence_id"] for c in cands if c.get("snippet"))
+    issues2 = [{"code": "UNVERIFIED_CITATION", "locator": "",
+                "evidence_ref": ev_id}]
+    pkt2 = _pkt(issues2, raw)
+    assert pkt2["available_evidence"], "ev_N 未被 resolver 接住"
+    assert pkt2["available_evidence"][0]["SOURCE_EVIDENCE_ID"] == ev_id
 
 
 def test_p3_packet_bounded():

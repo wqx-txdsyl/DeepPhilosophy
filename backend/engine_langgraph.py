@@ -338,67 +338,77 @@ H. 引文与出处纪律: 逐字引文必须实际复制已检索取得的文本
 """
 
 
+def resolve_repair_evidence_ref(ref, raw_tool_log):
+    """O7-E RP2 Closure-2 §1: 双命名空间 canonical resolver。
+
+    ev_N   → Evidence Contract 候选池（exact evidence_id match）
+    qb_*   → quote_bound.evidence_spans（exact evidence_id match）
+    禁止重猜序号; 返回 (kind, payload) 或 (kind, None)。"""
+    import re as _re
+    import quote_bound as QB
+    import evidence_contract as EC
+    ref = (ref or "").strip()
+    if _re.fullmatch(r"ev_\d+", ref):
+        for c in EC._extract_candidates(raw_tool_log or []):
+            if c.get("evidence_id") == ref:
+                return "citation", c
+        return "citation", None
+    if ref.startswith(("qb_read_", "qb_snip_", "qb_corp_")):
+        for s in QB.evidence_spans(raw_tool_log or []):
+            if s.get("evidence_id") == ref:
+                return "quote", s
+        return "quote", None
+    return "unknown", None
+
+
+def _qb_best_unit(locator, span_units, max_context=400):
+    """Closure-2 §2: 仅在 resolved span 的 units 内, 用 quote_bound 既有 7-shingle
+    口径机械选与 locator 覆盖最高的 unit（无新 reranker/阈值）。"""
+    import quote_bound as QB
+    qn = QB.norm_q(locator or "")
+    if not qn:
+        return None, 0.0
+    qsh = QB._shingles(qn)
+    best, best_score = None, 0.0
+    for u in span_units or []:
+        ush = QB._shingles(QB.norm_q(u))
+        score = len(qsh & ush) / max(len(qsh), 1)
+        if score > best_score:
+            best, best_score = u, score
+    return (best[:max_context] if best else None), round(best_score, 2)
+
+
 def _build_repair_evidence_packet(validation, raw_tool_log, max_evidence=3,
                                    max_context_chars=400):
-    """O7-E RP2 Calibration Closure B/C: canonical evidence_ref resolver + 减法 packet。
-
-    沿 Evidence Contract 真源解析: raw_tool_log → build_evidence_pool →
-    (kind, entry_index) → 候选证据（validator 的 ev_N 序号 = quote_bound 池顺序）
-    → 定位原始条目, 给出 SOURCE_EXACT_CONTEXT ≤ max_context_chars。
-    零 LLM、零语义 reranker、零 best-window 启发式。"""
-    import re as _re
-    import evidence_contract as EC
-    pool = EC.build_evidence_pool(raw_tool_log or [])
+    """O7-E RP2 Closure-2: 双命名空间解析 + span 内真实上下文（≤400 字, 零 LLM）。"""
     issues = validation.as_dict().get("issues", [])
-    items, used = [], 0
+    items = []
     for i in issues:
         ref = (i or {}).get("evidence_ref") or ""
-        m_ev = _re.fullmatch(r"ev_(\d+)", ref.strip())
-        if not m_ev:
-            continue
-        n = int(m_ev.group(1)) - 1        # ev_1 起 → pool 候选序（按检索顺序）
-        cand = None
-        seq = 0
-        for t in (raw_tool_log or []):
-            rf = (t or {}).get("result_full")
-            if not isinstance(rf, dict) or rf.get("error"):
-                continue
-            if (t.get("name") or "") == "search_books":
-                for _item in rf.get("results") or []:
-                    if seq == n:
-                        cand = {"kind": "search", "text": _item.get("snippet") or "",
-                                "book": _item.get("book_title"),
-                                "chapter": _item.get("chapter_title"),
-                                "author": _item.get("author")}
-                    seq += 1
-            elif (t.get("name") or "") in ("get_chapter", "get_book_detail",
-                                           "locate_exact_phrase"):
-                if seq == n:
-                    txt = str(rf.get("text") or rf.get("toc") or "")
-                    cand = {"kind": "chapter", "text": txt,
-                            "book": rf.get("book_title"),
-                            "chapter": rf.get("title"), "author": rf.get("author")}
-                seq += 1
-            if cand:
-                break
-        if not cand:
+        kind, payload = resolve_repair_evidence_ref(ref, raw_tool_log)
+        if payload is None:
             continue
         loc = (i or {}).get("locator") or ""
-        # SOURCE_EXACT_CONTEXT: locator 引文在文本中的机械包含定位（≤400 字）; 无命中给开头
-        pos = cand["text"].find("".join(ch for ch in loc if not ch.isspace())[:24]) \
-            if loc else -1
-        if pos < 0 and loc:
-            q = loc.strip().strip("「」> ").strip()
-            pos = cand["text"].find(q[:24]) if q else -1
-        start = max(pos - 60, 0) if pos >= 0 else 0
-        ctx = cand["text"][start:start + max_context_chars]
-        items.append({"OFFENDING_ISSUE": (i or {}).get("code"),
-                      "SOURCE_BOOK": cand.get("book"),
-                      "SOURCE_CHAPTER": cand.get("chapter"),
-                      "SOURCE_EVIDENCE_ID": ref,
-                      "SOURCE_EXACT_CONTEXT": ctx})
-        used += len(ctx)
-        if len(items) >= max_evidence or used > 6000:
+        if kind == "quote":
+            ctx, overlap = _qb_best_unit(loc, payload.get("units"), max_context_chars)
+            if ctx is None or overlap <= 0:
+                continue
+            items.append({"OFFENDING_ISSUE": (i or {}).get("code"),
+                          "SOURCE_BOOK": payload.get("book"),
+                          "SOURCE_CHAPTER": payload.get("chapter"),
+                          "SOURCE_EVIDENCE_ID": ref,
+                          "SHINGLE_OVERLAP": overlap,
+                          "SOURCE_EXACT_CONTEXT": ctx})
+        else:      # citation ev_N
+            snip = str(payload.get("snippet") or "")[:max_context_chars]
+            if not snip:
+                continue
+            items.append({"OFFENDING_ISSUE": (i or {}).get("code"),
+                          "SOURCE_BOOK": payload.get("book"),
+                          "SOURCE_CHAPTER": payload.get("chapter"),
+                          "SOURCE_EVIDENCE_ID": ref,
+                          "SOURCE_EXACT_CONTEXT": snip})
+        if len(items) >= max_evidence:
             break
     return {"available_evidence": items}
 

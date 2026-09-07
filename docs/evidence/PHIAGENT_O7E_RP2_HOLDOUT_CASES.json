@@ -1,5 +1,5 @@
 {
- "stage": "B-RP2",
+ "stage": "B-RP2-V2",
  "cases": [
   {
    "case_id": "R01",
@@ -585,7 +585,7 @@
   {
    "case_id": "R21",
    "category": "comparative",
-   "question": "孔子「仁」与墨子「兼爱」的道德哲学差异？",
+   "question": "孔子的「仁」与孟子的「四端」在道德根据上有什么差异？",
    "persona": "general",
    "applicability": {
     "TEXTUAL_GROUNDING": "REQUIRED",
@@ -607,11 +607,13 @@
      ]
     },
     {
-     "author": "Mozi (墨翟)",
+     "author": "Mencius (孟轲)",
      "works": [
-      "墨子"
+      "孟子"
      ],
-     "book_ids": []
+     "book_ids": [
+      "dd03ec6572e7"
+     ]
     }
    ],
    "primary_target_mode": "ALL"
@@ -619,7 +621,7 @@
   {
    "case_id": "R22",
    "category": "chinese",
-   "question": "《墨子·兼爱》的论证为什么诉诸利害而不是道德直觉？",
+   "question": "荀子为什么认为「礼义」能够改造人的欲望，而不只是压制欲望？",
    "persona": "general",
    "applicability": {
     "TEXTUAL_GROUNDING": "REQUIRED",
@@ -632,11 +634,13 @@
    "quote_expectation": "PARAPHRASE_OK",
    "primary_targets": [
     {
-     "author": "Mozi (墨翟)",
+     "author": "Xunzi (荀况)",
      "works": [
-      "墨子"
+      "荀子"
      ],
-     "book_ids": []
+     "book_ids": [
+      "795658cafeab"
+     ]
     }
    ],
    "primary_target_mode": "ANY"
@@ -763,17 +767,21 @@
    "primary_target_mode": "ANY"
   }
  ],
- "holdout_case_universe_hash": "670522673bd66e920a2828d34548d4cb2ac97ed0449f7fa39c22ff098d9a6d43",
+ "holdout_case_universe_hash": "81a85c5d5db523795393c8051448731d24bb604d8eb9f529164be13372b84cc8",
  "locked": true,
- "supersedes": [
-  "135ef3b7e40d46df (STAGE_B_FIRST)",
-  "9a0e2ec6ddf54e51 (RP1_PARTIAL)"
+ "old_universe": {
+  "hash": "670522673bd66e92",
+  "status": "SUPERSEDED_PRE_STAGE_B_PRIMARY_COVERAGE_FAILURE"
+ },
+ "unchanged_case_texts": 26,
+ "replaced_cases": [
+  "R21",
+  "R22"
  ],
  "quote_required_cases": [
   "R05",
   "R08",
   "R15",
   "R23"
- ],
- "note": "语料覆盖机械确认（论语·学而 ch2 / 孟子·梁惠王下 ch1 / 尼各马可 ch1 / 纯批）; 先秦 chinese 4 + 宋明 1 + 双标签比较 2"
+ ]
 }
