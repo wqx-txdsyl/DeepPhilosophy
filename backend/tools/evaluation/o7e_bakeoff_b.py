@@ -16,7 +16,11 @@ sys.path.insert(0, os.path.join(ROOT, "backend", "tools", "evaluation"))
 CAND = {"deepseek-chat": ("DEEPSEEK_API_KEY", "https://api.deepseek", "deepseek-chat"),
         "glm-4-plus": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4-plus"),
         "glm-4.6": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4.6"),
-        "glm-4-air": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4-air")}
+        "glm-4-air": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4-air"),
+        "deepseek-v4-pro": ("DEEPSEEK_API_KEY", "https://api.deepseek", "deepseek-v4-pro"),
+        "deepseek-v4-flash": ("DEEPSEEK_API_KEY", "https://api.deepseek", "deepseek-v4-flash"),
+        "glm-5.3": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-5.3"),
+        "glm-5.3-flash": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-5.3-flash")}
 
 import routes.agent as AG
 import o7e_runner as R
