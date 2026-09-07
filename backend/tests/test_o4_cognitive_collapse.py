@@ -410,7 +410,7 @@ def test_t10_repair_feedback_returns_to_same_main_agent():
     # O6-Q1 §7: 中性结尾措辞更新（仍无任何命令式动作指令）
     # O7-E RP1 §8: repair transport contract 取代旧结尾（完整替换候选+
     # 资源上限下修订+禁空候选; 传输合同非命令式内容指令）
-    assert "Produce a complete replacement final candidate" in feedback_blob
+    assert "只输出完整的替换候选" in feedback_blob or "修复执行协议" in feedback_blob
 
 
 # ═══════════════════════════════════════════════════════
