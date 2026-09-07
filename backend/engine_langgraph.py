@@ -381,6 +381,47 @@ def _build_repair_evidence_packet(validation, raw_tool_log, max_evidence=3,
                 break
         if len(packet_items) >= max_evidence or used > max_chars:
             break
+    # NEAR/UNSUPPORTED quote issue: 用 locator 中的引文 span 在已检索章节文本里
+    # 机械定位最高字符二元组重叠窗口——把库中真实措辞原样给模型（可逐字复制或转述）
+    def _best_window(quote, text, win=900):
+        if not quote or not text:
+            return None
+        q = "".join(ch for ch in quote if not ch.isspace())
+        if len(q) < 6:
+            return None
+        grams = {q[i:i+2] for i in range(len(q) - 1)}
+        best, best_score = None, 0.0
+        step = max(win // 2, 100)
+        for start in range(0, max(len(text) - win, 0) + 1, step):
+            seg = text[start:start + win + 200]
+            sg = {seg[i:i+2] for i in range(len(seg) - 1)}
+            score = len(grams & sg) / max(len(grams), 1)
+            if score > best_score:
+                best, best_score = seg, score
+        return (best, round(best_score, 2)) if best and best_score >= 0.2 else None
+
+    for i in issues:
+        if (i or {}).get("code") not in ("NEAR_QUOTE_NOT_MARKED",
+                                         "UNSUPPORTED_EXACT_QUOTE",
+                                         "STITCHED_QUOTE"):
+            continue
+        locator = (i or {}).get("locator") or ""
+        for t in (raw_tool_log or []):
+            rf = (t or {}).get("result_full") or {}
+            if not (isinstance(rf, dict) and rf.get("text")):
+                continue
+            hit = _best_window(locator, str(rf["text"]))
+            if hit:
+                seg, score = hit
+                packet_items.append({
+                    "evidence_id": f"match:{rf.get('book_title')}",
+                    "book": rf.get("book_title"), "chapter": rf.get("title"),
+                    "match_overlap": score,
+                    "retrieved_text_excerpt": seg})
+                used += len(seg)
+                break
+        if len(packet_items) >= max_evidence or used > max_chars:
+            break
     for ref in refs[:max_evidence * 2]:
         # raw_tool_log 条目: get_chapter 类结果含真实正文; evidence_ref 形如
         # ev_<n> 或直接书名/章节标签——机械匹配 result_full 中的文本身份
