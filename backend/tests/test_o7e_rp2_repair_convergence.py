@@ -185,15 +185,34 @@ def test_p12_snippet_alone_insufficient():
 
 
 def test_p13_comparative_all_requires_both():
+    """RP-SYS §13: 真实 ID 双边断言——R20 孟子 dd03ec6572e7 + 荀子 795658cafeab。"""
     case = next(c for c in RP2C.HOLDOUT_CASES_RP2 if c["case_id"] == "R20")
     assert case["primary_target_mode"] == "ALL"
-    one_side = [{"name": "get_chapter", "args": {"book_id": "dd03ec6572e7"},
-                 "result_full": {"book_title": "孟子", "text": "正文"}}]
-    assert _primary_satisfied(case, one_side) is False
-    both = one_side + [{"name": "get_chapter", "args": {"book_id": "xunzi"},
-                        "result_full": {"book_title": "荀子", "text": "正文"}}]
-    # 荀子无 book_id → target book_ids 空 → ALL 无法命中: 如实 False
-    assert _primary_satisfied(case, both) is False
+    one = [{"name": "get_chapter", "args": {"book_id": "dd03ec6572e7"},
+            "result_full": {"book_title": "孟子", "text": "正文"}}]
+    assert _primary_satisfied(case, one) is False          # 单边 False
+    both = one + [{"name": "get_chapter", "args": {"book_id": "795658cafeab"},
+                   "result_full": {"book_title": "荀子", "text": "正文"}}]
+    assert _primary_satisfied(case, both) is True           # 双边真实 ID True
+
+    # V2 R21: 论语 only False; 论语+孟子 True
+    r21 = next(c for c in RP2C.HOLDOUT_CASES_RP2 if c["case_id"] == "R21")
+    lunyu = [{"name": "get_chapter", "args": {"book_id": "d9272a80942a"},
+              "result_full": {"book_title": "论语", "text": "正文"}}]
+    assert _primary_satisfied(r21, lunyu) is False
+    both21 = lunyu + [{"name": "get_chapter", "args": {"book_id": "dd03ec6572e7"},
+                       "result_full": {"book_title": "孟子", "text": "正文"}}]
+    assert _primary_satisfied(r21, both21) is True
+
+    # §14 R19 work identity: 范畴篇(工具论)+形而上学 双 target ALL, 无尼各马可顶替
+    r19 = next(c for c in RP2C.HOLDOUT_CASES_RP2 if c["case_id"] == "R19")
+    assert r19["primary_target_mode"] == "ALL"
+    ids = {bid for t in r19["primary_targets"] for bid in t["book_ids"]}
+    assert "b471f41a78de" in ids and "f11f1b13c278" in ids
+    assert "e574c8e7f515" not in ids          # 尼各马可不得顶替
+    ne_only = [{"name": "get_chapter", "args": {"book_id": "e574c8e7f515"},
+                "result_full": {"book_title": "尼各马可伦理学", "text": "正文"}}]
+    assert _primary_satisfied(r19, ne_only) is False
 
 
 def test_p14_broad_target_primary_works():

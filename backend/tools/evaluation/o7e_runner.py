@@ -16,6 +16,8 @@ sys.path.insert(0, os.path.join(ROOT, "backend"))
 sys.path.insert(0, os.path.join(ROOT, "backend", "tools", "evaluation"))
 
 import o7e_cases as CASES
+import o7e_cases_rp2 as CASES_RP2
+import o7e_evidence_checks as EVCHK
 import engine_langgraph as ENG
 
 TMP = os.path.join(ROOT, "backend", "tools", "_tmp")
@@ -122,7 +124,14 @@ def run_case(case):
 def main(scope, only=None):
     cases = {"CAL": CASES.CALIBRATION_CASES,
              "HOLDOUT": CASES.HOLDOUT_CASES,
+             "RP2_HOLDOUT": CASES_RP2.HOLDOUT_CASES_RP2,
              "SMOKE": CASES.LIVE_SMOKE_CASES}[scope]
+    if scope == "RP2_HOLDOUT":
+        import hashlib as _hl
+        loaded = _hl.sha256(json.dumps(cases, ensure_ascii=False,
+                                       sort_keys=True).encode()).hexdigest()
+        assert loaded == CASES_RP2.HOLDOUT_CASE_UNIVERSE_HASH, \
+            f"case universe hash 漂移: {loaded[:12]} != 冻结值"
     out_path = os.path.join(TMP, f"o7e_runs_{scope}.json")
     runs = []
     if os.path.exists(out_path):
@@ -139,6 +148,10 @@ def main(scope, only=None):
         except Exception as e:
             r = {"case_id": c["case_id"], "question": c["question"],
                  "run_error": str(e)[:400], "delivery": {"published": False}}
+        try:
+            r["primary_gate"] = EVCHK.check_case(c, r)
+        except Exception:
+            r["primary_gate"] = {"error": "check_case failed"}
         runs = [x for x in runs if x["case_id"] != c["case_id"]] + [r]
         json.dump(runs, open(out_path, "w", encoding="utf-8"),
                   ensure_ascii=False, indent=1)
@@ -150,10 +163,14 @@ def main(scope, only=None):
     pub = sum(1 for r in completed if r.get("delivery", {}).get("published"))
     blocked = sum(1 for r in runs if r.get("delivery", {}).get("run_status") == "BLOCKED_MODEL_BILLING")
     errs = len(runs) - len(completed) - blocked
-    required = {"CAL": 12, "HOLDOUT": 28, "SMOKE": 8}[scope]
+    required = {"CAL": 12, "HOLDOUT": 28, "RP2_HOLDOUT": 28, "SMOKE": 8}[scope]
     status = ("BLOCKED_INCOMPLETE" if len(completed) < required else
               ("PASS_RATE" if pub / max(len(completed), 1) >= 0.9 else "RATE_FAIL"))
-    print(json.dumps({"scope": scope, "cases": len(runs),
+    primary_missing = sum(1 for r in runs
+                          if isinstance(r.get("primary_gate"), dict)
+                          and r["primary_gate"].get("primary_required")
+                          and not r["primary_gate"].get("primary_satisfied"))
+    print(json.dumps({"scope": scope, "cases": len(runs), "REQUIRED_PRIMARY_MISSING": primary_missing,
                       "completed": len(completed), "published_among_completed": pub,
                       "publication_rate_completed": round(pub / max(len(completed), 1), 3),
                       "blocked_model_billing": blocked, "run_errors": errs,
