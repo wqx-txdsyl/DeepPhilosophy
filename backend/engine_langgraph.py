@@ -1709,7 +1709,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "rule: text presented in blockquote (>) or 「…」 quote formatting is "
                 "validated character-for-character against retrieved evidence. If you "
                 "cannot reproduce the retrieved wording exactly, do NOT use quote "
-                "formatting for it — write it as plain prose paraphrase.")
+                "formatting for it — write it as plain prose paraphrase. A third "
+                "mechanical option also passes validation: keep the near quote, and "
+                "immediately after it add a short note in your own words stating that "
+                "this passage is reproduced from memory / approximated and has not "
+                "been verified character-for-character against the source.")
             # §7: hard 预算已成立 → 机械资源事实并入反馈消息（不新增 SystemMessage
             # 注入点, 维持「builder 1 + hard 预算 1」注入不变量）; repair 零工具模式
             _no_tools = bool(budget is not None and budget.hard_reached())
