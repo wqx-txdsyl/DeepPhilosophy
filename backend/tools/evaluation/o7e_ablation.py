@@ -97,9 +97,6 @@ def stage_a(rp_id):
     print(json.dumps(out, ensure_ascii=False))
 
 
-if __name__ == "__main__":
-    stage_a(sys.argv[2])
-
 
 def stage_b(rp_id, run_tag="RUN1"):
     """§6 sequential gate: matched-config E2E（normal=V4PRO_NORMAL 冻结;
@@ -187,3 +184,11 @@ def stage_b(rp_id, run_tag="RUN1"):
     json.dump(out, open(out_path.replace(".json", "_summary.json"), "w",
                         encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps(out, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    if sys.argv[1] == "A":
+        stage_a(sys.argv[2])
+    elif sys.argv[1] == "B":
+        stage_b(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "RUN1")
+
