@@ -39,7 +39,7 @@ def _resolve_evidence(evidence_ref, raw_tool_log):
     if re.fullmatch(r"ev_\d+", ref):
         for c in EC._extract_candidates(raw_tool_log or []):
             if c.get("evidence_id") == ref:
-                return {"kind": "citation", "payload": c}
+                return "citation", c
         return "citation", None
     if ref.startswith(("qb_read_", "qb_snip_", "qb_corp_")):
         for s in QB.evidence_spans(raw_tool_log or []):
@@ -63,17 +63,66 @@ def _best_unit(locator, units, max_context=MAX_CONTEXT_PER_EVIDENCE):
     return (best[:max_context] if best else None), round(best_score, 2)
 
 
-def _citation_anchor(candidate, locator):
-    """formal citation 【《书》·章】regex 直接定位。"""
+def _citation_anchor(candidate, locator, exclude_spans=None):
+    """formal citation 【《书》·章】regex 直接定位（排除已占 span——H1 §3）。"""
     if not locator:
         return None
+    exclude_spans = exclude_spans or set()
+
+    def _free(i):
+        return all(i + len(locator) <= s or i >= e for s, e in exclude_spans)
+
     idx = candidate.find(locator)
+    while idx >= 0 and not _free(idx):
+        idx = candidate.find(locator, idx + 1)
     if idx < 0:
-        # 容错: locator 可能被截断——取前 24 字符再找
-        idx = candidate.find(locator[:24])
+        loc24 = locator[:24]
+        idx = candidate.find(loc24)
+        while idx >= 0 and not all(idx + len(loc24) <= s or idx >= e
+                                    for s, e in exclude_spans):
+            idx = candidate.find(loc24, idx + 1)
     if idx < 0:
         return None
-    return {"start": idx, "end": idx + len(locator)}
+    end = idx + len(locator)
+    return {"start": idx, "end": end}
+
+
+def _claim_content_span(candidate, q):
+    """H1 §2: 从 quote claim 提取 content span（保留 wrapper/delimiters/leadin）。
+
+    blockquote: claim=整块（含 > 行）, content=去 > 前缀后的正文
+    leadin/quoted: claim=引号域, content=引号内文本
+    返回 (claim_start, claim_end, content_start, content_end) 或 None。"""
+    cs, ce = q.get("char_start"), q.get("char_end")
+    if cs is None:
+        return None
+    raw = candidate[cs:ce]
+    if q["kind"] == "blockquote":
+        # 多行 blockquote 的 content 非单一 contiguous 正文（含 > 残留）→ 不安全
+        lines = raw.split("\n")
+        if len(lines) > 1:
+            return None
+        # 单行: "> 「text」" → content = 去掉 > 前缀后的「text」或 text
+        m = re.match(r"^\s*>\s*(.*)$", raw)
+        if not m:
+            return None
+        inner = m.group(1)
+        c_start = cs + raw.index(inner) if inner else cs
+        # 引号内: 找「或“ 对
+        dm = re.match(r"^[「“](.*)[」”]$", inner)
+        if dm:
+            text = dm.group(1)
+            t_off = c_start + inner.index(text)
+            return (cs, ce, t_off, t_off + len(text))
+        return (cs, ce, c_start, c_start + len(inner))
+    # leadin/quoted: 引号内文本
+    text = q["text"]
+    idx = candidate.find(text, cs, ce + 200)
+    if idx < 0:
+        idx = cs
+        # 兜底: claim 即 content
+        return (cs, ce, cs, ce)
+    return (cs, ce, idx, idx + len(text))
 
 
 def _quote_anchor(candidate, locator, exclude_spans=None):
@@ -102,13 +151,34 @@ def _quote_anchor(candidate, locator, exclude_spans=None):
         if best is None or rel > best[0]:
             best = (rel, qs, qe)
     if best and best[0] >= 0.15:
-        return {"start": best[1], "end": best[2]}
+        claim = (best[1], best[2])
+        # H1 §2: 拆 claim/content——COPY 只操作 content, wrapper 保留
+        q_obj = next((q for q in QB.extract_quotes(candidate)
+                      if q.get("char_start") == claim[0]), None)
+        cc = _claim_content_span(candidate, q_obj) if q_obj else None
+        if cc:
+            return {"claim_start": cc[0], "claim_end": cc[1],
+                    "content_start": cc[2], "content_end": cc[3],
+                    "claim_sha256": _span_sha(candidate, cc[0], cc[1]),
+                    "content_sha256": _span_sha(candidate, cc[2], cc[3]),
+                    "start": cc[2], "end": cc[3]}   # 兼容字段=content
+        return {"start": claim[0], "end": claim[1],
+                "claim_start": claim[0], "claim_end": claim[1],
+                "content_start": claim[0], "content_end": claim[1],
+                "claim_sha256": _span_sha(candidate, claim[0], claim[1]),
+                "content_sha256": _span_sha(candidate, claim[0], claim[1])}
     # 回退: 文本查找（排除已占用）
     idx = candidate.find(loc[:40])
     while idx >= 0 and any(not (idx + len(loc) <= s or idx >= e)
                            for s, e in exclude_spans):
         idx = candidate.find(loc[:40], idx + 1)
-    return {"start": idx, "end": idx + len(loc)} if idx >= 0 else None
+    if idx < 0:
+        return None
+    return {"start": idx, "end": idx + len(loc),
+            "claim_start": idx, "claim_end": idx + len(loc),
+            "content_start": idx, "content_end": idx + len(loc),
+            "claim_sha256": _span_sha(candidate, idx, idx + len(loc)),
+            "content_sha256": _span_sha(candidate, idx, idx + len(loc))}
 
 
 def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
@@ -127,20 +197,40 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
         ref = (i or {}).get("evidence_ref")
         anchor = None
         if code == "UNVERIFIED_CITATION":
-            anchor = _citation_anchor(candidate, locator)
+            anchor = _citation_anchor(candidate, locator, _used_spans)
         elif code in ("UNSUPPORTED_EXACT_QUOTE", "NEAR_QUOTE_NOT_MARKED",
                       "STITCHED_QUOTE"):
             anchor = _quote_anchor(candidate, locator,
                                    exclude_spans=_used_spans)
         if anchor:
-            _used_spans.add((anchor["start"], anchor["end"]))
+            _used_spans.add((anchor["claim_start"], anchor["claim_end"])
+                            if "claim_start" in anchor
+                            else (anchor["start"], anchor["end"]))
+        if anchor and "claim_start" in anchor:
+            anchor_out = {
+                "claim_start": anchor["claim_start"], "claim_end": anchor["claim_end"],
+                "content_start": anchor["content_start"],
+                "content_end": anchor["content_end"],
+                "claim_sha256": anchor["claim_sha256"],
+                "content_sha256": anchor["content_sha256"],
+                "surface_sha256": anchor["content_sha256"],   # patch 合同锚 = content
+                "surface_preview": candidate[anchor["content_start"]:
+                                            anchor["content_end"]][:60]}
+        elif anchor:
+            anchor_out = {
+                "start": anchor["start"], "end": anchor["end"],
+                "claim_start": anchor["start"], "claim_end": anchor["end"],
+                "content_start": anchor["start"], "content_end": anchor["end"],
+                "claim_sha256": _span_sha(candidate, anchor["start"], anchor["end"]),
+                "content_sha256": _span_sha(candidate, anchor["start"], anchor["end"]),
+                "surface_sha256": _span_sha(candidate, anchor["start"],
+                                            anchor["end"]),
+                "surface_preview": candidate[anchor["start"]:anchor["end"]][:60]}
+        else:
+            anchor_out = None
         bundle = {
             "issue_id": f"vi_{n}", "code": code,
-            "anchor": ({"start": anchor["start"], "end": anchor["end"],
-                        "surface_sha256": _span_sha(candidate, anchor["start"],
-                                                    anchor["end"]),
-                        "surface_preview": candidate[anchor["start"]:anchor["end"]][:60]}
-                       if anchor else None),
+            "anchor": anchor_out,
             "evidence_ref": ref,
             "source": None}
         # evidence: issue-complete（可解析 ref 必给; 上限内给满）;
@@ -179,7 +269,37 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
 
 
 def render_patch_prompt(candidate_sha, bundles):
-    """Main Agent 的 LOCAL_PATCH 输出合同 prompt（机械模板, 零语义指令）。"""
+    """Main Agent 的 LOCAL_PATCH 输出合同 prompt（机械模板, 零语义指令）。
+
+    H1 §4: evidence context 预算——所有 issue identity（id/anchor sha/evidence_ref）
+    永远保留; 超预算时逐条缩短 exact_context, 不截断 JSON。"""
+    import copy
+    def _issue_metadata_only(b):
+        return {"issue_id": b["issue_id"], "code": b["code"],
+                "anchor": b["anchor"],
+                "evidence_ref": b["evidence_ref"]}
+
+    def _budgeted(bundles_in, budget):
+        """先全 metadata; 剩余预算按序分配 exact_context。"""
+        items = []
+        overhead = 0
+        for b in bundles_in:
+            meta = _issue_metadata_only(b)
+            s = json.dumps(meta, ensure_ascii=False)
+            overhead += len(s) + 60      # 结构开销余量
+            items.append([meta, b.get("source")])
+        remaining = max(budget - overhead, 0)
+        per = max(remaining // max(len(items), 1), 80)
+        out = []
+        for meta, source in items:
+            m = dict(meta)
+            if source:
+                m["source"] = {k: (v[:per] if k == "exact_context" else v)
+                               for k, v in source.items()}
+            out.append(m)
+        return out
+
+    budgeted = _budgeted(bundles, MAX_TOTAL_REPAIR_CONTEXT_CHARS)
     return ("The final candidate (sha256=" + candidate_sha + ") failed deterministic "
             "validation on LOCAL issues. Instead of rewriting the whole answer, output "
             "ONLY a JSON patch object:\n"
@@ -191,9 +311,12 @@ def render_patch_prompt(candidate_sha, bundles):
             "Rules: every vi_N listed below must be covered by exactly one patch. "
             "For verbatim quotes prefer COPY_EVIDENCE_SLICE copying a continuous "
             "substring of the issue's source.exact_context (source_start/end are "
-            "character offsets into that exact_context). REPLACE_TEXT text is your own "
-            "prose (paraphrase, citation fix). Do not output anything besides the JSON.\n\n"
-            "ISSUES:\n" + json.dumps(bundles, ensure_ascii=False)[:MAX_TOTAL_REPAIR_CONTEXT_CHARS])
+            "character offsets into that exact_context). COPY_EVIDENCE_SLICE replaces "
+            "only the quoted content — keep the surrounding quote markers/blockquote "
+            "format intact. REPLACE_TEXT text is your own prose (paraphrase, citation "
+            "fix) and also replaces only the content span. Do not output anything "
+            "besides the JSON.\n\n"
+            "ISSUES:\n" + json.dumps(budgeted, ensure_ascii=False))
 
 
 def apply_main_agent_patches(candidate, patch_json, bundles):
@@ -226,7 +349,11 @@ def apply_main_agent_patches(candidate, patch_json, bundles):
         if not a:
             errs.append(f"PATCH_PROTOCOL_ERROR: {iid} has no anchor")
             continue
-        if pt.get("anchor_sha256") != a["surface_sha256"]:
+        # H1 §2: patch 操作 content span; anchor_sha 合同 = content_sha256
+        c_s = a.get("content_start", a.get("start", 0))
+        c_e = a.get("content_end", a.get("end", 0))
+        c_sha = a.get("content_sha256", a.get("surface_sha256"))
+        if pt.get("anchor_sha256") != c_sha:
             errs.append(f"PATCH_PROTOCOL_ERROR: {iid} anchor stale")
             continue
         action = pt.get("action")
@@ -250,7 +377,7 @@ def apply_main_agent_patches(candidate, patch_json, bundles):
         else:
             errs.append(f"PATCH_PROTOCOL_ERROR: {iid} unknown action {action!r}")
             continue
-        spans.append((a["start"], a["end"], text, iid))
+        spans.append((c_s, c_e, text, iid))
     # 未覆盖的 LOCAL issue = 协议错误
     for b in bundles:
         if b["issue_id"] not in covered:

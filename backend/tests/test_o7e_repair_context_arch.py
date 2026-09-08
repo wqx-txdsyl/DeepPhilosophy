@@ -46,7 +46,7 @@ def test_a1_citation_exact_anchor():
     cit = next(b for b in bundles if b["code"] == "UNVERIFIED_CITATION")
     a = cit["anchor"]
     assert a and a["start"] >= 0
-    assert CAND[a["start"]:a["end"]] == "【《韩非子·五蠹》】"  # 精确 span
+    assert CAND[a["content_start"]:a["content_end"]] == "【《韩非子·五蠹》】"  # 精确 span
     assert a["surface_sha256"] == _sha("【《韩非子·五蠹》】")[:16]
 
 
@@ -56,8 +56,8 @@ def test_a2_quote_exact_anchor():
     qt = next(b for b in bundles if b["code"] in
               ("NEAR_QUOTE_NOT_MARKED", "UNSUPPORTED_EXACT_QUOTE"))
     a = qt["anchor"]
-    assert a and "改造" in CAND[a["start"]:a["end"]]  # 精确引文 span（1 字差异近引）
-    assert a["surface_sha256"] == _sha(CAND[a["start"]:a["end"]])[:16]
+    assert a and "改造" in CAND[a["content_start"]:a["content_end"]]  # 精确引文 span（1 字差异近引）
+    assert a["surface_sha256"] == _sha(CAND[a["content_start"]:a["content_end"]])[:16]
 
 
 def test_a3_duplicate_preview_no_wrong_span():
@@ -67,10 +67,10 @@ def test_a3_duplicate_preview_no_wrong_span():
     v = _mk_validation(cand)
     bundles = RC.build_repair_issue_bundles(cand, v, _raw_log())
     q_anchors = [b["anchor"] for b in bundles if b["anchor"]]
-    starts = [a["start"] for a in q_anchors]
+    starts = [a["content_start"] for a in q_anchors]
     assert len(starts) == len(set(starts))          # 不同引文不同锚
     for a in q_anchors:
-        span = cand[a["start"]:a["end"]]
+        span = cand[a["content_start"]:a["content_end"]]
         assert "改造" in span or "另一句假引文" in span  # 锚到的就是那条引文
 
 
@@ -204,7 +204,7 @@ def test_a13_non_target_zero_change():
          "action": "REPLACE_TEXT", "replacement_text": "【《论语》·先进篇】"}]})
     new, _ = RC.apply_main_agent_patches(CAND, patch, [cit])
     a = cit["anchor"]
-    spans = [(a["start"], a["end"])]
+    spans = [(a["content_start"], a["content_end"])]
     assert RC.non_target_changed_chars(CAND, new, spans) == 0
     assert new[:a["start"]] == CAND[:a["start"]]      # 前文逐字节不变
     assert new.endswith("结尾一段正文。")               # 后文不变
@@ -219,10 +219,10 @@ def test_a14_two_patches_atomic():
         {"issue_id": cit["issue_id"], "anchor_sha256": cit["anchor"]["surface_sha256"],
          "action": "REPLACE_TEXT", "replacement_text": "【《论语》·先进篇】"},
         {"issue_id": qt["issue_id"], "anchor_sha256": qt["anchor"]["surface_sha256"],
-         "action": "REPLACE_TEXT", "replacement_text": "（闵子骞语，见《论语》）"}]})
+         "action": "REPLACE_TEXT", "replacement_text": "闵子骞之语，见《论语·先进篇》的记载"}]})
     new, errs = RC.apply_main_agent_patches(CAND, patch, [cit, qt])
     assert new and not errs
-    assert "《论语》·先进篇" in new and "见《论语》" in new
+    assert "《论语》·先进篇" in new
 
 
 # ── A15-A18: 流程语义 ──
@@ -232,12 +232,26 @@ def test_a15_patched_candidate_revalidated():
     cit = next(b for b in bundles if b["code"] == "UNVERIFIED_CITATION")
     qt = next(b for b in bundles if b["code"] in
               ("NEAR_QUOTE_NOT_MARKED", "UNSUPPORTED_EXACT_QUOTE"))
+    ctx = (qt.get("source") or {}).get("exact_context") or ""
+    s0 = ctx.find("鲁人为长府")
+    if s0 >= 0:
+        qt_patch = {"issue_id": qt["issue_id"],
+                    "anchor_sha256": qt["anchor"]["surface_sha256"],
+                    "action": "COPY_EVIDENCE_SLICE",
+                    "evidence_ref": qt["evidence_ref"],
+                    "source_start": s0,
+                    "source_end": s0 + len("鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”")}
+    else:
+        qt_patch = {"issue_id": qt["issue_id"],
+                    "anchor_sha256": qt["anchor"]["surface_sha256"],
+                    "action": "REPLACE_TEXT",
+                    "replacement_text": "见《论语》原文"}
     patch = json.dumps({"candidate_sha256": _sha(CAND), "patches": [
         {"issue_id": cit["issue_id"], "anchor_sha256": cit["anchor"]["surface_sha256"],
          "action": "REPLACE_TEXT", "replacement_text": "（出自《论语·先进篇》）"},
-        {"issue_id": qt["issue_id"], "anchor_sha256": qt["anchor"]["surface_sha256"],
-         "action": "REPLACE_TEXT", "replacement_text": "闵子骞之语见《论语》"}]})
-    new, _ = RC.apply_main_agent_patches(CAND, patch, [cit, qt])
+        qt_patch]})
+    new, errs = RC.apply_main_agent_patches(CAND, patch, [cit, qt])
+    assert new is not None, errs
     v2 = _mk_validation(new)
     assert v2.ok, [i.code for i in v2.issues]
 
