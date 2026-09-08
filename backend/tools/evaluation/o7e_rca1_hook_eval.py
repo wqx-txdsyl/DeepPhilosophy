@@ -21,36 +21,32 @@ import routes.agent as AG
 
 
 class LocalPatchAdapter:
-    """H2C: V2 合同 + ALL-local 路由 + per-issue ranking。"""
+    """H2D: prepare 三条件 preflight + V2 合同。"""
     def can_handle(self, validation):
-        # H2C §2: ALL issues 可局部化才 LOCAL_PATCH; ANY-local 不再足够
         return RC.all_issues_localizable(validation)
 
     def build(self, candidate, validation, raw_tool_log, prev_errors=None):
-        bundles = RC.build_repair_issue_bundles(candidate, validation, raw_tool_log)
+        prep = RC.prepare_local_patch(candidate, validation, raw_tool_log, prev_errors)
         issues = validation.as_dict().get("issues", [])
-        per_loc = {f"vi_{k+1}": (i or {}).get("locator") or ""
-                   for k, i in enumerate(issues)}
-        anchor_ok = all(b.get("anchor") for b in bundles)
-        catalog = RC.build_slice_catalog(bundles, "", per_issue_locators=per_loc)
         fps = [RC.issue_fingerprint((i or {}).get("code"),
                                     (i or {}).get("locator") or "",
                                     (i or {}).get("evidence_ref"))
                for i in issues]
-        base = {"pre_patch_candidate": candidate, "bundles": bundles,
-                "catalog": catalog, "anchor_ok": anchor_ok, "issue_fps": fps}
-        if not anchor_ok:
-            base["prompt"] = ""
-            return base
-        base["prompt"] = RC.render_patch_prompt_v2(bundles, catalog, prev_errors)
-        return base
+        return {"prompt": prep["prompt"] if prep["supported"] else "",
+                "pre_patch_candidate": candidate,
+                "bundles": prep["bundles"], "catalog": prep["catalog"],
+                "anchor_ok": prep["supported"],
+                "unsupported_reason": prep["unsupported_reason"],
+                "candidate_sha": prep["candidate_sha"],
+                "issue_fps": fps}
 
     def parse_and_apply(self, pre_candidate, model_output, ctx):
         if not ctx.get("anchor_ok", True):
-            return None, ["LOCAL_PATCH_UNSUPPORTED: anchor unresolved"]
+            return None, [f"LOCAL_PATCH_UNSUPPORTED: {ctx.get('unsupported_reason', 'anchor')}"]
         new, errs = RC.apply_main_agent_patches_v2(
             pre_candidate, model_output, ctx["bundles"],
-            ctx.get("catalog") or {})
+            ctx.get("catalog") or {},
+            context_candidate_sha=ctx.get("candidate_sha"))
         return new, (errs or [])
 
 
@@ -83,10 +79,33 @@ def run_case(case, mk_normal, mk_repair):
                      if e.get("type") == "token" and i > last_fail)
     lp_used = [t for t in trace if t.get("local_patch")]
     final_codes = [i.get("code") for i in val.get("result", {}).get("issues", [])]
+    # H2D §5: fingerprint 轨迹（每 validation state 的 issue 集合 → resolved/persisted/introduced）
+    fp_traj = []
+    for t in trace:
+        fps = t.get("issue_fps") or []
+        fp_traj.append(fps)
+    classification = {}
+    for k in range(1, len(fp_traj)):
+        before, after = set(fp_traj[k-1]), set(fp_traj[k])
+        classification[f"R{k}"] = {
+            "resolved": sorted(before - after),
+            "persisted": sorted(before & after),
+            "introduced": sorted(after - before)}
+    # H2D §6: canonical hard-gate telemetry
+    anchor_total = sum(len(t.get("bundles") or []) for t in trace)
+    anchor_resolved = sum(1 for t in trace
+                          for b in (t.get("bundles") or []) if b.get("anchor"))
+    unknown_slice = sum(1 for t in trace for e in (t.get("local_patch", {}).get("errors") or [])
+                        if "UNKNOWN_SLICE_ID" in str(e))
     return {"case_id": case["case_id"],
             "published": bool(answer.strip()) and bool(val.get("result", {}).get("ok")),
             "repairs": val.get("repairs_used", 0),
             "issue_counts": [len(h.get("issue_codes") or []) for h in hist],
+            "fingerprint_classification": classification,
+            "ANCHOR_TOTAL": anchor_total, "ANCHOR_RESOLVED": anchor_resolved,
+            "UNKNOWN_SLICE_IDS": unknown_slice,
+            "FINALIZATION_INVOCATIONS": sum(
+                1 for t in trace if t.get("finalization")),
             "final_issues": final_codes[:4],
             "VALIDATOR_EMPTY_FINAL": "EMPTY_FINAL" in final_codes,
             "TERMINAL_EMPTY_ANSWER": not answer.strip() and
