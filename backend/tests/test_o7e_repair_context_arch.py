@@ -306,8 +306,11 @@ def test_a21_philosopher_diff_zero():
 
 
 def test_a22_production_patch_mode_default_false():
-    """生产默认关: repair_context 未被 engine_langgraph import（production 未接线）。"""
+    """生产默认关: engine 有 evaluation seam 但 (1) 默认 None (2) 不 import
+    repair_context（adapter 由 eval harness 注入; PRODUCTION_LOCAL_PATCH_ENABLED=false）"""
     eng = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                             "engine_langgraph.py"), encoding="utf-8").read()
-    assert "repair_context" not in eng, "production 接线未授权（RCA-1 §13）"
-    assert "LOCAL_PATCH_ENABLED" not in eng
+    assert "import repair_context" not in eng, "production 直接接线未授权"
+    assert "_evaluation_repair_adapter=None" in eng, "seam 默认必须 None"
+    # 默认无 adapter 时 adapter 分支不可达
+    assert "if _evaluation_repair_adapter is not None" in eng
