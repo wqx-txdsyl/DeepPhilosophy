@@ -261,11 +261,14 @@ def test_t15_single_cognitive_policy_owner():
 # T16 — validator/quote_bound 冻结（§18: 零生产改动）
 # ═══════════════════════════════════════════════════════
 def test_t16_verification_stack_unchanged_from_q1():
-    for rel in ("final_validator.py", "quote_bound.py"):
-        r = subprocess.run(["git", "diff", "--quiet", "943516d2e", "--",
+    # O7-E RCA-1 §2 授权: quote_bound 仅加 char_start/char_end metadata
+    # （判定语义零改动）→ 其冻结点从 Q1 blob 移至 RCA-1 commit; validator 仍冻 Q1
+    for rel, base in (("final_validator.py", "943516d2e"),
+                      ("quote_bound.py", "597234f6e")):
+        r = subprocess.run(["git", "diff", "--quiet", base, "--",
                             os.path.join("backend", rel)],
                            cwd=REPO, capture_output=True)
-        assert r.returncode == 0, f"{rel} 相对 Q1 blob 内容有改动（validator 冻结）"
+        assert r.returncode == 0, f"{rel} 相对冻结点 {base} 有改动"
 
 def test_t16_validator_matrix_unchanged():
     from tests.test_o6_rp1_mechanical import _matrix_cases

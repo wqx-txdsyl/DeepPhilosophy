@@ -231,9 +231,12 @@ def test_p15_no_production_primary_router():
 
 
 def test_p16_p17_validator_quotebound_unchanged():
-    for rel in ("backend/final_validator.py", "backend/quote_bound.py"):
-        r = subprocess.run(["git", "diff", "--quiet",
-                            "302f7380a4146d78374887063b336c5aa7381ddd", "HEAD", "--", rel],
+    # RCA-1 §2: quote_bound 仅加 metadata（判定语义零改动）→ 冻结点移至 RCA commit;
+    # validator 仍冻 O7-A base
+    for rel, base in (("backend/final_validator.py",
+                       "302f7380a4146d78374887063b336c5aa7381ddd"),
+                      ("backend/quote_bound.py", "597234f6e")):
+        r = subprocess.run(["git", "diff", "--quiet", base, "HEAD", "--", rel],
                            cwd=ROOT, capture_output=True)
         assert r.returncode == 0, f"{rel} 被改动"
 

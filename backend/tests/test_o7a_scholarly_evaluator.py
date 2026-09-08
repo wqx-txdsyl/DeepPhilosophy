@@ -224,11 +224,12 @@ def test_t19_no_production_diff_vs_base():
     # 书目元数据暴露 → backend/routes 的冻结基线改对照 O7-B BASE；认知/校验/引文
     # 核心文件仍硬冻结于 O7-A BASE，O7-B §24 四项 PRODUCTION_POLICY DIFF=0 不变。
     O7B_BASE = "500bb8e88"  # O7-C §59 授权的工具注册/执行器改动落地 commit
-    hard = ("backend/final_validator.py",
-            "backend/quote_bound.py", "backend/agent_runtime.py",
-            "backend/evidence_contract.py")
-    for rel in hard:
-        r = subprocess.run(["git", "diff", "--quiet", BASE_SHA, "HEAD", "--", rel],
+    hard = (("backend/final_validator.py", BASE_SHA),
+            ("backend/quote_bound.py", "597234f6e"),   # RCA-1 §2: 仅 metadata 增改
+            ("backend/agent_runtime.py", BASE_SHA),
+            ("backend/evidence_contract.py", BASE_SHA))
+    for rel, _base in hard:
+        r = subprocess.run(["git", "diff", "--quiet", _base, "HEAD", "--", rel],
                            cwd=REPO, capture_output=True)
         assert r.returncode == 0, f"{rel} 相对 BASE {BASE_SHA[:9]} 有改动（O7-A 禁止）"
     r = subprocess.run(["git", "diff", "--quiet", O7B_BASE, "HEAD", "--", "backend/routes"],
