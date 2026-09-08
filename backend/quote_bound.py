@@ -91,11 +91,19 @@ def extract_quotes(text):
     quoted（既有豁免）; 直引号无引导词 → 不提取（scare quotes 契约不变）。"""
     out = []
     seq = 0
-    lines = (text or "").split("\n")
+    _text = text or ""
+    lines = _text.split("\n")
+    # 行起始偏移表（O7-E RCA-1 §2: 引文 char_start/char_end——只加 metadata,
+    # EXACT/NEAR/MEMORY_ONLY 判定语义与 NEAR_THRESHOLD 零改动）
+    _line_off, _acc = [], 0
+    for _l in lines:
+        _line_off.append(_acc)
+        _acc += len(_l) + 1
     i = 0
     while i < len(lines):
         if BLOCKQ_LINE_RE.match(lines[i]):
             buf = []
+            i0 = i
             while i < len(lines) and BLOCKQ_LINE_RE.match(lines[i]):
                 buf.append(BLOCKQ_LINE_RE.sub("", lines[i], count=1).strip())
                 i += 1
@@ -103,7 +111,9 @@ def extract_quotes(text):
             if body:
                 seq += 1
                 out.append({"quote_claim_id": f"quote_{seq}", "kind": "blockquote",
-                            "text": body, "line_count": len(buf)})
+                            "text": body, "line_count": len(buf),
+                            "char_start": _line_off[i0],
+                            "char_end": _line_off[min(i, len(_line_off) - 1)]})
             continue
         i += 1
     src = text or ""
@@ -120,7 +130,8 @@ def extract_quotes(text):
         seq += 1
         out.append({"quote_claim_id": f"quote_{seq}",
                     "kind": "leadin" if leadin else "quoted",
-                    "text": body, "line_count": 1})
+                    "text": body, "line_count": 1,
+                    "char_start": m.start(), "char_end": m.end()})
         taken.append((m.start(), m.end()))
     # 直引号长文本: 仅引导词命中才提取（无引导词的成对直引号多为 scare quotes,
     # 逐对直引号之间的正文曾被误捕获为假引文——真实回归 R1 的 3 条 MEMORY_ONLY 噪声）
@@ -135,7 +146,8 @@ def extract_quotes(text):
             continue
         seq += 1
         out.append({"quote_claim_id": f"quote_{seq}", "kind": "leadin",
-                    "text": body, "line_count": 1})
+                    "text": body, "line_count": 1,
+                    "char_start": m.start(), "char_end": m.end()})
     return out
 
 
