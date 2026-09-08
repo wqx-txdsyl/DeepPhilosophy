@@ -1800,6 +1800,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
                     _lp_meta["pre_patch_candidate"], candidate,
                     {"bundles": _lp_meta["bundles"],
+                     "catalog": _lp_meta.get("catalog") or {},
                      "rebind_ok": _rebind.get("anchor_ok", True),
                      "rebind_bundles": _rebind.get("bundles")})
                 if _repair_trace:
