@@ -21,31 +21,37 @@ import routes.agent as AG
 
 
 class LocalPatchAdapter:
-    """H1 §5: can_handle/build/parse_and_apply 三段式。"""
+    """H2 §C-F: V2 合同——slice_id 选择/零 SHA 回显。"""
     def can_handle(self, validation):
         codes = {i.get("code") for i in validation.as_dict().get("issues", [])}
         return bool(codes & RC.LOCAL_PATCH_CODES)
 
-    def build(self, candidate, validation, raw_tool_log):
+    def build(self, candidate, validation, raw_tool_log, prev_errors=None):
         bundles = RC.build_repair_issue_bundles(candidate, validation, raw_tool_log)
         anchor_ok = all(b.get("anchor") for b in bundles
                         if b["code"] in RC.LOCAL_PATCH_CODES)
+        issues = validation.as_dict().get("issues", [])
+        locators = [(i or {}).get("locator") or "" for i in issues]
+        catalog = RC.build_slice_catalog(bundles, " ".join(locators))
         if not anchor_ok:
             return {"prompt": "", "pre_patch_candidate": candidate,
-                    "bundles": bundles, "anchor_ok": False}
-        cand_sha = hashlib.sha256(candidate.encode("utf-8")).hexdigest()
-        return {"prompt": RC.render_patch_prompt(cand_sha, bundles),
-                "pre_patch_candidate": candidate, "bundles": bundles,
-                "anchor_ok": True}
+                    "bundles": bundles, "catalog": catalog, "anchor_ok": False,
+                    "issue_fps": [RC.issue_fingerprint((i or {}).get("code"),
+                                                       (i or {}).get("locator") or "")
+                                  for i in issues]}
+        prompt = RC.render_patch_prompt_v2(bundles, catalog, prev_errors)
+        return {"prompt": prompt, "pre_patch_candidate": candidate,
+                "bundles": bundles, "catalog": catalog, "anchor_ok": True,
+                "issue_fps": [RC.issue_fingerprint((i or {}).get("code"),
+                                                   (i or {}).get("locator") or "")
+                              for i in issues]}
 
     def parse_and_apply(self, pre_candidate, model_output, ctx):
-        # ctx: {"bundles": 模型所见原 bundle, "rebind_ok": bool,
-        #       "rebind_bundles": 最新 evidence 重建 bundle}
-        if not ctx.get("rebind_ok", True):
-            return None, ["LOCAL_PATCH_UNSUPPORTED: evidence refreshed, "
-                          "refs no longer resolvable"]
-        new, errs = RC.apply_main_agent_patches(pre_candidate, model_output,
-                                                 ctx["bundles"])
+        if not ctx.get("anchor_ok", True):
+            return None, ["LOCAL_PATCH_UNSUPPORTED: anchor unresolved"]
+        new, errs = RC.apply_main_agent_patches_v2(
+            pre_candidate, model_output, ctx["bundles"],
+            ctx.get("catalog") or {})
         return new, (errs or [])
 
 
@@ -77,12 +83,15 @@ def run_case(case, mk_normal, mk_repair):
     answer = "".join(e.get("content", "") for i, e in enumerate(evs)
                      if e.get("type") == "token" and i > last_fail)
     lp_used = [t for t in trace if t.get("local_patch")]
+    final_codes = [i.get("code") for i in val.get("result", {}).get("issues", [])]
     return {"case_id": case["case_id"],
             "published": bool(answer.strip()) and bool(val.get("result", {}).get("ok")),
             "repairs": val.get("repairs_used", 0),
             "issue_counts": [len(h.get("issue_codes") or []) for h in hist],
-            "final_issues": [i.get("code") for i in
-                             val.get("result", {}).get("issues", [])][:4],
+            "final_issues": final_codes[:4],
+            "VALIDATOR_EMPTY_FINAL": "EMPTY_FINAL" in final_codes,
+            "TERMINAL_EMPTY_ANSWER": not answer.strip() and
+                                     "EMPTY_FINAL" not in final_codes,
             "LOCAL_PATCH_TRIGGERED": bool(lp_used),
             "lp_applied": sum(1 for t in lp_used if t["local_patch"].get("applied")),
             "lp_errors": [e for t in lp_used
@@ -128,7 +137,10 @@ def main(run_tag):
            "REPAIR_CONVERGENCE": round(conv / max(len(trig), 1), 3) if trig else None,
            "LOCAL_PATCH_TRIGGERED": lp_trig,
            "TOOL_LOOP_REAL": all((r.get("tool_starts") or 0) > 0 for r in ok),
-           "EMPTY_FINAL": sum(1 for r in ok if not (r.get("answer_len") or 0)),
+           "VALIDATOR_EMPTY_FINAL": sum(1 for r in ok
+                                        if r.get("VALIDATOR_EMPTY_FINAL")),
+           "TERMINAL_EMPTY_ANSWER": sum(1 for r in ok
+                                        if r.get("TERMINAL_EMPTY_ANSWER")),
            "PATCH_PROTOCOL_ERRORS": sum(1 for r in ok if r.get("lp_errors"))}
     json.dump(out, open(out_path.replace(".json", "_summary.json"), "w",
                         encoding="utf-8"), ensure_ascii=False, indent=1)
