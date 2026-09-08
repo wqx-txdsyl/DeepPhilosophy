@@ -413,3 +413,147 @@ def non_target_changed_chars(original, patched, spans):
     if patched[len(patched) - (len(original) - post_start):] != original[post_start:]:
         return -1
     return 0
+
+
+# ── O7-E RCA-1 H2 §C-F: COPY_SLICE_ID 合同——模型只选不数 ──
+MAX_COPY_SLICES_PER_ISSUE = 12
+MAX_COPY_SLICE_NORM_LENGTH = 240
+
+
+def build_slice_catalog(bundles, locator):
+    """机械生成 slice catalog: per-issue evidence 连续原始子串候选。"""
+    qn = QB.norm_q(locator or "")
+    qsh = QB._shingles(qn) if qn else set()
+    catalog = {}
+    for b in bundles:
+        src = (b.get("source") or {})
+        ctx = src.get("exact_context") or ""
+        if not ctx:
+            continue
+        atoms = [a for a in re.split(r"(?<=[。！？；\n])|(?<=[，”」])", ctx) if a.strip()]
+        if not atoms:
+            atoms = [ctx]
+        cands = []
+        for i in range(len(atoms)):
+            for span in (1, 2, 3):
+                j = i + span
+                if j > len(atoms):
+                    break
+                text = "".join(atoms[i:j])
+                norm = QB.norm_q(text)
+                if not (8 <= len(norm) <= MAX_COPY_SLICE_NORM_LENGTH):
+                    continue
+                ov = (len(qsh & QB._shingles(norm)) / len(qsh)) if qsh else 0
+                cands.append({"text": text, "overlap": round(ov, 2)})
+        seen = set()
+        uniq = []
+        for c in sorted(cands, key=lambda c: -c["overlap"]):
+            if c["text"] in seen:
+                continue
+            seen.add(c["text"])
+            uniq.append(c)
+        catalog[b["issue_id"]] = [
+            {"slice_id": f"{b['issue_id']}:s{k+1}", "text": c["text"],
+             "overlap_score": c["overlap"]}
+            for k, c in enumerate(uniq[:MAX_COPY_SLICES_PER_ISSUE])]
+    return catalog
+
+
+def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
+    """H2 §C-D: 模型零 SHA/零 offset/零 evidence_ref 回显。"""
+    def strip_meta(b):
+        out = {"issue_id": b["issue_id"], "code": b["code"]}
+        a = b.get("anchor") or {}
+        out["anchor_preview"] = a.get("surface_preview", "")[:60]
+        src = b.get("source") or {}
+        if src.get("exact_context"):
+            out["source_context"] = src["exact_context"][:400]
+        if b["issue_id"] in slice_catalog:
+            out["copy_slices"] = [{"slice_id": s["slice_id"], "text": s["text"][:240],
+                                   "overlap_score": s["overlap_score"]}
+                                  for s in slice_catalog[b["issue_id"]]]
+        return out
+
+    header = ("Repair the LOCAL issues below in your own previous final candidate. "
+              "Output ONLY a JSON object:\n"
+              '{"patches": [{"issue_id": "vi_N", "action": "COPY_SLICE", '
+              '"slice_id": "vi_N:sK"} or {"issue_id": "vi_N", "action": '
+              '"REPLACE_TEXT", "replacement_text": "..."}]}\n'
+              "Rules: every issue listed must be covered by exactly one patch. "
+              "COPY_SLICE replaces the quoted content with the exact bytes of the "
+              "chosen slice (quote markers stay). REPLACE_TEXT is your own prose "
+              "(paraphrase or citation fix), also replacing only the content span. "
+              "Do not compute offsets or copy any hash.\n")
+    if prev_errors:
+        header += ("\nprevious_patch_protocol_errors: " +
+                   json.dumps(prev_errors[:6], ensure_ascii=False) +
+                   "\n(fix the format accordingly)\n")
+    items = [strip_meta(b) for b in bundles]
+    return header + "\nISSUES:\n" + json.dumps(items, ensure_ascii=False)
+
+
+def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog):
+    """H2 §C-D: 无 SHA 回显版 applier——runtime 自验 candidate/anchor 身份。"""
+    try:
+        p = json.loads(patch_json)
+    except Exception:
+        return None, ["INVALID_JSON"]
+    errs = []
+    covered = set()
+    spans = []
+    cat_by_id = {s["slice_id"]: (s, iid) for iid, sl in slice_catalog.items()
+                 for s in sl}
+    for pt in p.get("patches") or []:
+        iid = pt.get("issue_id")
+        bundle = next((b for b in bundles if b["issue_id"] == iid), None)
+        if bundle is None:
+            errs.append(f"UNKNOWN_ISSUE_ID:{iid}")
+            continue
+        if iid in covered:
+            errs.append(f"DUPLICATE_PATCH:{iid}")
+            continue
+        covered.add(iid)
+        a = bundle.get("anchor")
+        if not a:
+            errs.append(f"NO_ANCHOR:{iid}")
+            continue
+        c_s = a.get("content_start", a.get("start", 0))
+        c_e = a.get("content_end", a.get("end", 0))
+        action = pt.get("action")
+        if action == "COPY_SLICE":
+            sid = pt.get("slice_id")
+            hit = cat_by_id.get(sid)
+            if hit is None or hit[1] != iid:
+                errs.append(f"UNKNOWN_SLICE_ID:{sid}")
+                continue
+            text = hit[0]["text"]
+        elif action == "REPLACE_TEXT":
+            text = pt.get("replacement_text")
+            if not isinstance(text, str) or not text.strip():
+                errs.append(f"EMPTY_REPLACEMENT:{iid}")
+                continue
+        else:
+            errs.append(f"UNKNOWN_ACTION:{action!r}:{iid}")
+            continue
+        spans.append((c_s, c_e, text, iid))
+    for b in bundles:
+        if b["issue_id"] not in covered:
+            errs.append(f"UNPATCHED_ISSUE:{b['issue_id']}")
+    if errs:
+        return None, errs
+    spans.sort(key=lambda t: -t[0])
+    last_start = None
+    for s, e, _, iid in spans:
+        if last_start is not None and e > last_start:
+            return None, [f"OVERLAP:{iid}"]
+        last_start = s
+    new = candidate
+    for s, e, text, _ in spans:
+        new = new[:s] + text + new[e:]
+    return new, []
+
+
+def issue_fingerprint(code, locator):
+    """H2 §J: issue 指纹（跨轮追踪 resolved/persisted/introduced）。"""
+    return hashlib.sha256(
+        f"{code}|{QB.norm_q(locator or '')[:120]}".encode()).hexdigest()[:16]
