@@ -21,30 +21,29 @@ import routes.agent as AG
 
 
 class LocalPatchAdapter:
-    """H2 §C-F: V2 合同——slice_id 选择/零 SHA 回显。"""
+    """H2C: V2 合同 + ALL-local 路由 + per-issue ranking。"""
     def can_handle(self, validation):
-        codes = {i.get("code") for i in validation.as_dict().get("issues", [])}
-        return bool(codes & RC.LOCAL_PATCH_CODES)
+        # H2C §2: ALL issues 可局部化才 LOCAL_PATCH; ANY-local 不再足够
+        return RC.all_issues_localizable(validation)
 
     def build(self, candidate, validation, raw_tool_log, prev_errors=None):
         bundles = RC.build_repair_issue_bundles(candidate, validation, raw_tool_log)
-        anchor_ok = all(b.get("anchor") for b in bundles
-                        if b["code"] in RC.LOCAL_PATCH_CODES)
         issues = validation.as_dict().get("issues", [])
-        locators = [(i or {}).get("locator") or "" for i in issues]
-        catalog = RC.build_slice_catalog(bundles, " ".join(locators))
+        per_loc = {f"vi_{k+1}": (i or {}).get("locator") or ""
+                   for k, i in enumerate(issues)}
+        anchor_ok = all(b.get("anchor") for b in bundles)
+        catalog = RC.build_slice_catalog(bundles, "", per_issue_locators=per_loc)
+        fps = [RC.issue_fingerprint((i or {}).get("code"),
+                                    (i or {}).get("locator") or "",
+                                    (i or {}).get("evidence_ref"))
+               for i in issues]
+        base = {"pre_patch_candidate": candidate, "bundles": bundles,
+                "catalog": catalog, "anchor_ok": anchor_ok, "issue_fps": fps}
         if not anchor_ok:
-            return {"prompt": "", "pre_patch_candidate": candidate,
-                    "bundles": bundles, "catalog": catalog, "anchor_ok": False,
-                    "issue_fps": [RC.issue_fingerprint((i or {}).get("code"),
-                                                       (i or {}).get("locator") or "")
-                                  for i in issues]}
-        prompt = RC.render_patch_prompt_v2(bundles, catalog, prev_errors)
-        return {"prompt": prompt, "pre_patch_candidate": candidate,
-                "bundles": bundles, "catalog": catalog, "anchor_ok": True,
-                "issue_fps": [RC.issue_fingerprint((i or {}).get("code"),
-                                                   (i or {}).get("locator") or "")
-                              for i in issues]}
+            base["prompt"] = ""
+            return base
+        base["prompt"] = RC.render_patch_prompt_v2(bundles, catalog, prev_errors)
+        return base
 
     def parse_and_apply(self, pre_candidate, model_output, ctx):
         if not ctx.get("anchor_ok", True):
