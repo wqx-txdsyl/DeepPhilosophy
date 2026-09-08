@@ -13,12 +13,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.a
 sys.path.insert(0, os.path.join(ROOT, "backend"))
 sys.path.insert(0, os.path.join(ROOT, "backend", "tools", "evaluation"))
 
-CAND = {"deepseek-chat": ("DEEPSEEK_API_KEY", "https://api.deepseek", "deepseek-chat"),
+CAND = {"deepseek-chat": ("DEEPSEEK_API_KEY", "https://api.deepseek.com", "deepseek-chat"),
         "glm-4-plus": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4-plus"),
         "glm-4.6": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4.6"),
         "glm-4-air": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4-air"),
-        "deepseek-v4-pro": ("DEEPSEEK_API_KEY", "https://api.deepseek", "deepseek-v4-pro"),
-        "deepseek-v4-flash": ("DEEPSEEK_API_KEY", "https://api.deepseek", "deepseek-v4-flash"),
+        "deepseek-v4-pro": ("DEEPSEEK_API_KEY", "https://api.deepseek.com", "deepseek-v4-pro"),
+        "deepseek-v4-flash": ("DEEPSEEK_API_KEY", "https://api.deepseek.com", "deepseek-v4-flash"),
         "glm-5.3": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-5.3"),
         "glm-5.3-flash": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-5.3-flash")}
 
@@ -41,6 +41,24 @@ def main(mid):
     import engine_langgraph as EG
     EG._llm = None
     EG._llm_repair = None
+    # V2 §C: 候选声明解码配置——v4 系 thinking 下 4000 tokens 会被 reasoning 耗尽
+    # （FX-N3b 实测 finish=length/content=0; 8000 实测 stop/content>0）→ max_tokens 8000
+    if mid.startswith("deepseek-v4") or mid.startswith("glm-5"):
+        from langchain_deepseek import ChatDeepSeek as _CDS
+        from langchain_openai import ChatOpenAI as _COA
+        _is_ds = api_url.startswith("https://api.deepseek.com")
+
+        def _mk(temp):
+            if _is_ds:
+                return _CDS(model=model, api_key=key, base_url=api_url,
+                            temperature=temp, max_tokens=8000,
+                            extra_body={"thinking": {"type": "enabled"},
+                                        "reasoning_effort": "low"})
+            return _COA(model=model, api_key=key, base_url=api_url,
+                        temperature=temp, max_tokens=8000)
+        _orig_get_llm, _orig_get_rllm = EG.get_llm, EG.get_repair_llm
+        EG.get_llm = lambda: _mk(0.7)
+        EG.get_repair_llm = lambda: _mk(0.0)
     out_path = os.path.join(ROOT, "backend", "tools", "_tmp",
                             f"o7e_bakeoff_B_{mid.replace('.', '_')}.json")
     runs = []
@@ -73,6 +91,8 @@ def main(mid):
     AG.API_KEY, AG.API_URL, AG.MODEL = orig
     EG._llm = None
     EG._llm_repair = None
+    if mid.startswith("deepseek-v4") or mid.startswith("glm-5"):
+        EG.get_llm, EG.get_repair_llm = _orig_get_llm, _orig_get_rllm
     # 汇总（与校准同口径）
     comp = [r for r in runs if r.get("delivery", {}).get("run_status") == "COMPLETED"]
     pub = [r for r in comp if r["delivery"].get("published")]
