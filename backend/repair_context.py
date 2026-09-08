@@ -76,22 +76,38 @@ def _citation_anchor(candidate, locator):
     return {"start": idx, "end": idx + len(locator)}
 
 
-def _quote_anchor(candidate, locator):
-    """quote issue: 复用 extract_quotes 的 char 锚——按 locator 文本匹配对应引文。"""
+def _quote_anchor(candidate, locator, exclude_spans=None):
+    """quote issue: 复用 extract_quotes 的 char 锚——按 locator 文本匹配对应引文。
+
+    exclude_spans: 已被其他 bundle 占用的 (start,end)——多引文场景防止同一引文
+    被重复锚定（A3: duplicate preview 不得静默选错/重复 span）。"""
+    exclude_spans = exclude_spans or set()
     loc = (locator or "").strip().strip("「」> ").strip()
     if not loc:
         return None
+    best = None
     for q in QB.extract_quotes(candidate):
-        if q["text"][:40] in loc[:80] or loc[:40] in q["text"][:80] or \
-           QB.norm_q(loc)[:30] in QB.norm_q(q["text"]):
-            if "char_start" in q:
-                return {"start": q["char_start"], "end": q["char_end"],
-                        "quote_claim_id": q["quote_claim_id"]}
-            # 无 char 锚（旧路径）: 文本查找回退
+        qs, qe = q.get("char_start"), q.get("char_end")
+        if qs is None:
             idx = candidate.find(q["text"][:60])
-            if idx >= 0:
-                return {"start": idx, "end": idx + len(q["text"])}
+            if idx < 0:
+                continue
+            qs, qe = idx, idx + len(q["text"])
+        if any(not (qe <= s or qs >= e) for s, e in exclude_spans):
+            continue
+        # 相关度: locator 与引文文本的重叠
+        qn, ln = QB.norm_q(q["text"]), QB.norm_q(loc)
+        rel = (len(QB._shingles(ln) & QB._shingles(qn)) /
+               max(len(QB._shingles(ln)), 1))
+        if best is None or rel > best[0]:
+            best = (rel, qs, qe)
+    if best and best[0] >= 0.15:
+        return {"start": best[1], "end": best[2]}
+    # 回退: 文本查找（排除已占用）
     idx = candidate.find(loc[:40])
+    while idx >= 0 and any(not (idx + len(loc) <= s or idx >= e)
+                           for s, e in exclude_spans):
+        idx = candidate.find(loc[:40], idx + 1)
     return {"start": idx, "end": idx + len(loc)} if idx >= 0 else None
 
 
@@ -104,6 +120,7 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
     issues = validation_result.as_dict().get("issues", [])
     bundles = []
     total_ctx = 0
+    _used_spans = set()
     for n, i in enumerate(issues, 1):
         code = (i or {}).get("code")
         locator = (i or {}).get("locator") or ""
@@ -113,7 +130,10 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
             anchor = _citation_anchor(candidate, locator)
         elif code in ("UNSUPPORTED_EXACT_QUOTE", "NEAR_QUOTE_NOT_MARKED",
                       "STITCHED_QUOTE"):
-            anchor = _quote_anchor(candidate, locator)
+            anchor = _quote_anchor(candidate, locator,
+                                   exclude_spans=_used_spans)
+        if anchor:
+            _used_spans.add((anchor["start"], anchor["end"]))
         bundle = {
             "issue_id": f"vi_{n}", "code": code,
             "anchor": ({"start": anchor["start"], "end": anchor["end"],
@@ -123,7 +143,18 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
                        if anchor else None),
             "evidence_ref": ref,
             "source": None}
-        # evidence: issue-complete（可解析 ref 必给; 上限内给满）
+        # evidence: issue-complete（可解析 ref 必给; 上限内给满）;
+        # MEMORY_ONLY 无 ref → best-effort 给最高重叠 span（仍机械, 供 COPY_SLICE/转述参考）
+        if not ref and code in ("UNSUPPORTED_EXACT_QUOTE", "STITCHED_QUOTE",
+                                "NEAR_QUOTE_NOT_MARKED") and raw_tool_log:
+            _ctx, _ov = _best_unit(locator,
+                                    [u for s in QB.evidence_spans(raw_tool_log)
+                                     for u in s.get("units") or []])
+            if _ctx and _ov >= 0.2 and total_ctx + len(_ctx) <= MAX_TOTAL_REPAIR_CONTEXT_CHARS:
+                bundle["source"] = {"book": None, "chapter": None,
+                                    "exact_context": _ctx,
+                                    "shingle_overlap": _ov, "best_effort": True}
+                total_ctx += len(_ctx)
         if ref:
             kind, payload = _resolve_evidence(ref, raw_tool_log)
             if payload is not None and kind == "quote":

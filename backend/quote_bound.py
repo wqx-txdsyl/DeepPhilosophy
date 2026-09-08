@@ -110,10 +110,12 @@ def extract_quotes(text):
             body = "".join(buf).strip()
             if body:
                 seq += 1
+                # end = 末块行结尾（i 是块后首行; 块行 = i0..i-1）
+                _last = max(i0, min(i - 1, len(lines) - 1))
                 out.append({"quote_claim_id": f"quote_{seq}", "kind": "blockquote",
                             "text": body, "line_count": len(buf),
                             "char_start": _line_off[i0],
-                            "char_end": _line_off[min(i, len(_line_off) - 1)]})
+                            "char_end": _line_off[_last] + len(lines[_last])})
             continue
         i += 1
     src = text or ""
