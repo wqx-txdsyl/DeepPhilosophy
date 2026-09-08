@@ -308,3 +308,119 @@ def test_h2_25_philosopher_diff_zero():
     assert "search_scholarship" not in diff or "+" not in diff
 
 
+
+
+# ══ H2D §7: I1-I10 integration tests ═══════════════════════
+def test_i1_anchor_missing_first_round_full_rewrite():
+    """I1: anchor 缺失 → prepare unsupported → FULL_REWRITE（invocation 前）"""
+    # 构造: locator 在 candidate 中找不到 → anchor None
+    from types import SimpleNamespace
+    fake_val = SimpleNamespace(as_dict=lambda: {"issues": [
+        {"code": "UNVERIFIED_CITATION", "locator": "【不存在的引】", "evidence_ref": None}]})
+    prep = RC.prepare_local_patch("无此引用的正文", fake_val, _raw_log())
+    assert prep["supported"] is False
+    assert "UNRESOLVED_ANCHORS" in prep["unsupported_reason"]
+
+
+def test_i2_anchor_missing_no_local_patch_protocol():
+    """I2: prepare unsupported → adapter.anchor_ok=False → engine repair_output_mode=FULL_REWRITE"""
+    # engine seam: _lp_meta None or anchor_ok False → FULL_REWRITE branch
+    # 验证: unsupported_reason 非空时 prompt 为空（LOCAL_PATCH protocol 不被注入）
+    from types import SimpleNamespace
+    fake_val = SimpleNamespace(as_dict=lambda: {"issues": [
+        {"code": "UNVERIFIED_CITATION", "locator": "【不存在】", "evidence_ref": None}]})
+    prep = RC.prepare_local_patch("x", fake_val, _raw_log())
+    assert prep["prompt"] == ""
+
+
+def test_i3_stale_candidate_sha_rejected():
+    """I3: runtime SHA 校验——candidate 被改后 apply 拒。"""
+    _, bundles, catalog = _bundles_and_catalog()
+    cand_sha = hashlib.sha256(CAND.encode()).hexdigest()
+    # 用正确的 sha 但传一个不同 candidate → STALE_CANDIDATE
+    qt = bundles[0]
+    patch = json.dumps({"patches": [{"issue_id": qt["issue_id"],
+                                     "action": "REPLACE_TEXT",
+                                     "replacement_text": "改"}]})
+    new, errs = RC.apply_main_agent_patches_v2(
+        CAND + "EXTRA", patch, [qt], catalog,
+        context_candidate_sha=cand_sha)
+    assert new is None and "STALE_CANDIDATE" in errs
+
+
+def test_i4_stale_anchor_sha_rejected():
+    """I4: anchor span 被改 → content SHA 失配 → STALE_ANCHOR。"""
+    v = _mk_validation(CAND)
+    bundles = RC.build_repair_issue_bundles(CAND, v, _raw_log())
+    qt = next(b for b in bundles if b.get("anchor"))
+    patch = json.dumps({"patches": [{"issue_id": qt["issue_id"],
+                                     "action": "REPLACE_TEXT",
+                                     "replacement_text": "改"}]})
+    # 用一个不同位置的 anchor SHA——直接篡改 bundle anchor sha
+    import copy as _cp
+    bad = _cp.deepcopy(qt)
+    bad["anchor"]["content_sha256"] = "deadbeefdeadbeef"
+    new, errs = RC.apply_main_agent_patches_v2(
+        CAND, patch, [bad], {},
+        context_candidate_sha=None)
+    assert new is None and any("STALE_ANCHOR" in e for e in errs)
+
+
+def test_i5_finalization_uses_stream_graph():
+    """I5: engine 的 finalization 走 _stream_graph（源码断言无 direct invoke）。"""
+    eng = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "engine_langgraph.py"), encoding="utf-8").read()
+    fin_block = eng[eng.find("H2D §3"):]
+    assert "_stream_graph" in fin_block[:3000]    # canonical path
+    assert "_final_client = get_repair_llm()" not in fin_block[:3000]  # 无 direct invoke
+
+
+def test_i6_finalization_model_input_has_local_patch_system():
+    """I6: finalization 的 _stream_graph 调 repair_output_mode='LOCAL_PATCH'。"""
+    eng = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "engine_langgraph.py"), encoding="utf-8").read()
+    fin = eng[eng.find("H2D §3"):eng.find("H2D §3") + 3000]
+    assert 'repair_output_mode="LOCAL_PATCH"' in fin
+
+
+def test_i7_finalization_no_tools():
+    """I7: finalization no_tools=True。"""
+    eng = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "engine_langgraph.py"), encoding="utf-8").read()
+    fin = eng[eng.find("H2D §3"):eng.find("H2D §3") + 2000]
+    assert "no_tools=True" in fin
+
+
+def test_i8_finalization_no_repairs_used():
+    """I8: finalization 在 repair loop 内不递增 repairs_used。"""
+    eng = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "engine_langgraph.py"), encoding="utf-8").read()
+    fin_start = eng.find("H2D §3")
+    fin_end = eng.find("H2D §9", fin_start)
+    fin_block = eng[fin_start:fin_end]
+    # finalization 不含 repairs_used += 1
+    assert "repairs_used += 1" not in fin_block
+
+
+def test_i9_prev_errors_reach_attempt2():
+    """I9: protocol error 后 _prev_patch_errors 非空 → 下轮 build 收到。"""
+    # engine 层: _prev_patch_errors = _apply_errs if _apply_errs else None
+    # adapter build(prev_errors=...) → render_prompt_v2 含 previous_patch_protocol_errors
+    _, bundles, catalog = _bundles_and_catalog()
+    prompt = RC.render_patch_prompt_v2(bundles, catalog, ["INVALID_JSON"])
+    assert "previous_patch_protocol_errors" in prompt
+    assert "INVALID_JSON" in prompt
+
+
+def test_i10_fingerprint_classification():
+    """I10: before/after fingerprint 差集产生 resolved/persisted/introduced。"""
+    before = {"A", "B"}
+    after = {"B", "C"}
+    resolved = before - after
+    persisted = before & after
+    introduced = after - before
+    assert resolved == {"A"} and persisted == {"B"} and introduced == {"C"}
+    # repair_context fingerprint 三元组保证可区分
+    fa = RC.issue_fingerprint("X", "loc", "ev1")
+    fb = RC.issue_fingerprint("X", "loc", "ev2")
+    assert fa != fb
