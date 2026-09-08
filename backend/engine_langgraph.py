@@ -457,6 +457,20 @@ REPAIR_SYSTEM_PROTOCOL = """
 """
 
 
+# ── O7-E RCA-1 H2 §B: LOCAL_PATCH 专用 system protocol（与 FULL_REWRITE 互斥）──
+LOCAL_PATCH_SYSTEM_PROTOCOL = """
+【局部补丁执行协议（Local Patch Execution Protocol）】你正在修复自己此前提交的最终
+候选中的局部证据问题。本 invocation 不要求产出一篇替换回答——你的最终非工具输出必须
+**只是一个 patch JSON 对象**，不含任何解释性正文。
+
+工具仍可正常使用（更多证据有用时可继续检索）。不得重写候选中未被 issue 覆盖的部分。
+每条 patch 二选一: COPY_SLICE（用 slice_id 选择 evidence 的连续原始子串——只负责选，
+不负责数 offset 或抄 hash）或 REPLACE_TEXT（你自己的转述/引用修正文本——只替换引文
+内容本身，保留外层引用格式）。由你决定每个 issue 用哪种修复动作; runtime 只机械应用
+你选定的动作。上一轮如有 patch_protocol_errors 字段，那是机械错误事实，据以修正格式。
+"""
+
+
 def get_system_prompt(agent):
     return AGENTS.AGENT_PROMPTS.get(agent, SYSTEM_PROMPT_LG)
 
@@ -491,7 +505,8 @@ def _identity_context(agent, language="zh"):
 
 
 def _build_context_messages(agent, language, custom_instructions=None,
-                            user_message=None, reinforce=False, repair_mode=False):
+                            user_message=None, reinforce=False, repair_mode=False,
+                            repair_output_mode=None):
     """构建 Main Agent 上下文消息（返回 list, 恒为一条 SystemMessage; 无内容时为空）。
 
     reinforce=False  完整上下文（每请求一次, 置于消息列表头部）
@@ -499,10 +514,11 @@ def _build_context_messages(agent, language, custom_instructions=None,
     时期上下文只随完整上下文注入（persona/context snapshot, 不逐轮重复）。"""
     if reinforce:
         parts = []
-        # O7-E RP-SYS §3: repair 轮的强化消息同样由唯一 builder 注入 protocol
-        # （agent_node 每轮走 reinforce 分支——protocol 必须在这里到达模型）
+        # O7-E RP-SYS §3 / H2 §B: repair 轮强化消息同源互斥注入
         if agent == "general" and repair_mode:
-            parts.append(REPAIR_SYSTEM_PROTOCOL)
+            parts.append(LOCAL_PATCH_SYSTEM_PROTOCOL
+                         if repair_output_mode == "LOCAL_PATCH"
+                         else REPAIR_SYSTEM_PROTOCOL)
         if agent != "general":
             parts.append(PERSONA_THINK_REMINDER_EN if language == "en" else PERSONA_THINK_REMINDER)
         if language != "en":
@@ -514,10 +530,13 @@ def _build_context_messages(agent, language, custom_instructions=None,
     # scope; 其学术化留待专门设计）——单一 canonical owner 不变
     if agent == "general":
         prompt = prompt.rstrip() + "\n\n" + SCHOLARLY_CONTRACT
-    # O7-E RP-SYS §3-§4: repair protocol 经唯一 builder 注入（general+repair_mode;
-    # 哲学家人格不注入; 注入点仍=builder 1+hard 预算 1, 零 ad-hoc SystemMessage）
+    # O7-E RP-SYS §3-§4 / RCA-1 H2 §B: repair protocol 经唯一 builder 注入;
+    # FULL_REWRITE 与 LOCAL_PATCH 互斥（H2-01/02）——按 repair_output_mode 二选一
     if agent == "general" and repair_mode:
-        prompt = prompt.rstrip() + "\n\n" + REPAIR_SYSTEM_PROTOCOL
+        proto = (LOCAL_PATCH_SYSTEM_PROTOCOL
+                 if repair_output_mode == "LOCAL_PATCH"
+                 else REPAIR_SYSTEM_PROTOCOL)
+        prompt = prompt.rstrip() + "\n\n" + proto
     if custom_instructions and custom_instructions.strip():
         prompt = (prompt.rstrip() +
                   f"\n\n## 用户的个性化指令（必须遵守）\n{custom_instructions.strip()}")
@@ -572,6 +591,9 @@ class AgentState(TypedDict):
     # O7-E RP2 RP-SYS §2: repair invocation mode——validator FAIL 后的整个 repair
     # tool loop 持续为 true; context builder 据此注入 repair protocol
     repair_mode: bool
+    # O7-E RCA-1 H2 §A: repair 输出模式（机械字段, 非语义路由——
+    # 依据=adapter 存在 AND issue codes 可局部化）; LOCAL_PATCH 与 FULL_REWRITE 互斥
+    repair_output_mode: str   # None | "FULL_REWRITE" | "LOCAL_PATCH"
 
 async def agent_node(state):
     msgs = list(state["messages"])
@@ -579,7 +601,8 @@ async def agent_node(state):
     # ── O4-RP1 §8: 单源 Context Builder——每轮强化消息由 builder 产出
     # （人格 + 语言合并为一条, 不再分段; 无核验状态/意图类注入）──
     for _m in _build_context_messages(agent, state.get("language", "zh"), reinforce=True,
-                                      repair_mode=bool(state.get("repair_mode"))):
+                                      repair_mode=bool(state.get("repair_mode")),
+                                      repair_output_mode=state.get("repair_output_mode")):
         msgs.append(_m)
     # ── Phase A: 预算与终止条件 ──
     # ══ O3 §5/§8: 停止权威归还 Main Agent——runtime 仅在机械约束下停止循环 ══
@@ -1428,7 +1451,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # evidence 完成回答）, 恢复成功/已有部分正文 → 继续正常收口（citations/done 照常）。
     stream_error = None
 
-    async def _stream_graph(msgs, no_tools=False, repair_mode=False):
+    async def _stream_graph(msgs, no_tools=False, repair_mode=False,
+                            repair_output_mode=None):
         """跑一遍图流（一组 Main Agent invocation 序列）——O2: 首次运行与 validator
         repair 运行共用同一条路径（repair 绑定完整 tool set, 遵守 O1 causal contract）。
         thinking/tool 活动实时 yield; 候选正文只进缓冲, 绝不提前公开。
@@ -1444,6 +1468,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 {"messages": msgs, "agent": agent, "language": language,
                  "guard": guard, "budget": budget, "trace": trace,
                  "no_tools": no_tools, "repair_mode": repair_mode,
+                 "repair_output_mode": repair_output_mode,
                  "tool_count": 0,
                  "evidence_state": evidence_state,
                  "raw_tool_log": raw_tool_log},
@@ -1747,8 +1772,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             _repair_msgs = list(messages) + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
-                async for _ev in _stream_graph(_repair_msgs, no_tools=_no_tools,
-                                                repair_mode=True):
+                async for _ev in _stream_graph(
+                        _repair_msgs, no_tools=_no_tools, repair_mode=True,
+                        repair_output_mode=("LOCAL_PATCH" if _lp_meta else
+                                            "FULL_REWRITE")):
                     yield _ev
             except Exception as _re:
                 logger.warning(f"[o2-repair] stream failed: {str(_re)[:200]}")
@@ -1780,7 +1807,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         "applied": _applied is not None,
                         "errors": (_apply_errs or [])[:4]}
                 if _apply_errs:
-                    candidate = ""       # PATCH_PROTOCOL_ERROR → 空→validation fail→可下一轮
+                    # H2 §G: 协议错误保持原候选（不制假 EMPTY_FINAL, 不静默 fallback）;
+                    # attempt 已消耗; 下轮仍 LOCAL_PATCH（can_handle 对原 issues 仍真）
+                    candidate = _lp_meta["pre_patch_candidate"]
                 else:
                     candidate = _applied or ""
         # 发布（§11: BUFFER FINAL UNTIL VALIDATED）: 只有 validator PASS 的候选才允许
