@@ -1762,12 +1762,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                             for e in _trace_pkt.get("available_evidence") or []),
                 "packet_sha256": _hl.sha256(json.dumps(
                     _trace_pkt, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16],
-                "no_tools": bool(budget is not None and budget.hard_reached()),
-                "issue_fps": _lp_meta.get("issue_fps") if _lp_meta else None,
-                "bundles": [{"issue_id": b["issue_id"],
-                             "anchor": bool(b.get("anchor")),
-                             "code": b["code"]}
-                            for b in (_lp_meta.get("bundles") or [])] if _lp_meta else None})
+                "no_tools": bool(budget is not None and budget.hard_reached())})
             # O7-E RCA-2 H1 §5-8 / H2C §3-§6: evaluation-only LOCAL_PATCH adapter
             # 生产 _evaluation_repair_adapter=None 永走原 full-rewrite
             _lp_meta = None
@@ -1781,6 +1776,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     candidate, validation, raw_tool_log,
                     prev_errors=_prev_patch_errors)
                 _fb = _lp_meta["prompt"]
+                if _repair_trace:
+                    _repair_trace[-1]["issue_fps"] = _lp_meta.get("issue_fps")
+                    _repair_trace[-1]["bundles"] = [
+                        {"issue_id": b["issue_id"], "anchor": bool(b.get("anchor")),
+                         "code": b["code"]}
+                        for b in (_lp_meta.get("bundles") or [])]
+                    _repair_trace[-1]["unsupported_reason"] = _lp_meta.get("unsupported_reason")
                 # §6: no_tools 机械事实进入 LOCAL_PATCH context
                 if budget is not None and budget.hard_reached():
                     _fb += ("\n\ntool_execution_available = false "
