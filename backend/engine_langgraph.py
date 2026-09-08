@@ -1697,6 +1697,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         repairs_used = 0
         _val_history = []      # O7-E RP1 §5: 纯机械 validation history（无 CoT/正文）
         _repair_trace = []     # O7-E RP-SYS §8: repair 遥测（无 CoT/无 rejected 正文/无完整 passage）
+        _prev_patch_errors = None   # H2C §3: 跨 attempt 协议错误传递
+        _raw_log_hash_before = None  # H2C §4: latest-evidence finalization 检测
         while True:
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
@@ -1760,15 +1762,23 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "packet_sha256": _hl.sha256(json.dumps(
                     _trace_pkt, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16],
                 "no_tools": bool(budget is not None and budget.hard_reached())})
-            # O7-E RCA-2 H1 §5-8: evaluation-only LOCAL_PATCH adapter——
+            # O7-E RCA-2 H1 §5-8 / H2C §3-§6: evaluation-only LOCAL_PATCH adapter
             # 生产 _evaluation_repair_adapter=None 永走原 full-rewrite
-            # （API 默认值保证, 非 env var; PRODUCTION_LOCAL_PATCH_ENABLED=false）
             _lp_meta = None
             if _evaluation_repair_adapter is not None and \
                     _evaluation_repair_adapter.can_handle(validation):
+                import hashlib as _hl2
+                _raw_log_hash_before = _hl2.sha256(json.dumps(
+                    raw_tool_log, ensure_ascii=False, default=str).encode()
+                ).hexdigest()[:16]
                 _lp_meta = _evaluation_repair_adapter.build(
-                    candidate, validation, raw_tool_log)
+                    candidate, validation, raw_tool_log,
+                    prev_errors=_prev_patch_errors)
                 _fb = _lp_meta["prompt"]
+                # §6: no_tools 机械事实进入 LOCAL_PATCH context
+                if budget is not None and budget.hard_reached():
+                    _fb += ("\n\ntool_execution_available = false "
+                            "(NO_MORE_TOOL_EXECUTION_AVAILABLE——机械资源事实)")
             _repair_msgs = list(messages) + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
@@ -1792,24 +1802,62 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # RCA-2 H1 §5-8: adapter 机械应用 patch——工具轮后 raw_tool_log
             # 可能已更新 → 基于最新 evidence 重建 bundle 再应用（§8）
             if _lp_meta is not None and candidate.strip():
-                # §8 evidence 刷新: repair 轮若调用了工具, raw_tool_log 已变 →
-                # rebind 校验 evidence_ref 仍可解析; slice/anchor 仍按模型所见的
-                # 原 bundle 解析（rebind 只做存在性门, 不改变模型 offset 语义）
-                _rebind = _evaluation_repair_adapter.build(
-                    _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
-                _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
-                    _lp_meta["pre_patch_candidate"], candidate,
-                    {"bundles": _lp_meta["bundles"],
-                     "catalog": _lp_meta.get("catalog") or {},
-                     "rebind_ok": _rebind.get("anchor_ok", True),
-                     "rebind_bundles": _rebind.get("bundles")})
+                import hashlib as _hl3
+                _raw_log_hash_after = _hl3.sha256(json.dumps(
+                    raw_tool_log, ensure_ascii=False, default=str).encode()
+                ).hexdigest()[:16]
+                # H2C §4: latest-evidence finalization——repair 轮内调用了新工具
+                # → 丢弃本轮 patch serialization, 用最新 evidence 重建 bundle/catalog,
+                # no-tools 二次 finalization（不增 repairs_used）
+                if _raw_log_hash_after != _raw_log_hash_before:
+                    _fin_meta = _evaluation_repair_adapter.build(
+                        _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
+                    if _fin_meta.get("anchor_ok"):
+                        _final_client = get_repair_llm()
+                        from langchain_core.messages import HumanMessage as _HM2, AIMessage as _AM2, SystemMessage as _SM2
+                        _fin_msgs = list(messages) + [
+                            _AM2(content=_lp_meta["pre_patch_candidate"]),
+                            _HM2(content=_fin_meta["prompt"] +
+                                 "\n(Evidence refreshed: use the latest catalog above. "
+                                 "No further tool calls; output patch JSON only.)")]
+                        try:
+                            _fin_resp = await asyncio.to_thread(
+                                lambda: _final_client.invoke(_fin_msgs))
+                            _fin_out = _fin_resp.content or ""
+                            _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
+                                _lp_meta["pre_patch_candidate"], _fin_out, _fin_meta)
+                        except Exception as _fe:
+                            _applied, _apply_errs = None, [f"FINALIZATION_ERROR:{str(_fe)[:80]}"]
+                        if _repair_trace:
+                            _repair_trace[-1]["finalization"] = {
+                                "raw_log_changed": True,
+                                "applied": _applied is not None}
+                    else:
+                        _applied, _apply_errs = None, ["FINALIZATION_NO_ANCHOR"]
+                else:
+                    # 无新工具 → 直接用模型原 patch + 原 bundle/catalog
+                    _rebind = _evaluation_repair_adapter.build(
+                        _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
+                    _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
+                        _lp_meta["pre_patch_candidate"], candidate,
+                        {"bundles": _lp_meta["bundles"],
+                         "catalog": _lp_meta.get("catalog") or {},
+                         "rebind_ok": _rebind.get("anchor_ok", True)})
+                # H2C §9: INVALID_JSON 诊断遥测（无正文保存）
+                _patch_diag = {}
+                if _apply_errs and any("JSON" in str(e) or "INVALID" in str(e) for e in _apply_errs):
+                    _patch_diag = {"chars": len(candidate or ""),
+                                  "starts_object": (candidate or "").lstrip().startswith("{"),
+                                  "fence_wrapped": "```" in (candidate or "")[:20],
+                                  "empty": not (candidate or "").strip()}
                 if _repair_trace:
                     _repair_trace[-1]["local_patch"] = {
                         "applied": _applied is not None,
-                        "errors": (_apply_errs or [])[:4]}
+                        "errors": (_apply_errs or [])[:4],
+                        "patch_diag": _patch_diag}
+                # H2C §3: 记录协议错误供下轮 prompt 引用
+                _prev_patch_errors = _apply_errs if _apply_errs else None
                 if _apply_errs:
-                    # H2 §G: 协议错误保持原候选（不制假 EMPTY_FINAL, 不静默 fallback）;
-                    # attempt 已消耗; 下轮仍 LOCAL_PATCH（can_handle 对原 issues 仍真）
                     candidate = _lp_meta["pre_patch_candidate"]
                 else:
                     candidate = _applied or ""
