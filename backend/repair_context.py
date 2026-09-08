@@ -420,12 +420,16 @@ MAX_COPY_SLICES_PER_ISSUE = 12
 MAX_COPY_SLICE_NORM_LENGTH = 240
 
 
-def build_slice_catalog(bundles, locator):
-    """机械生成 slice catalog: per-issue evidence 连续原始子串候选。"""
-    qn = QB.norm_q(locator or "")
-    qsh = QB._shingles(qn) if qn else set()
+def build_slice_catalog(bundles, locator, per_issue_locators=None):
+    """机械生成 slice catalog: per-issue evidence 连续原始子串候选。
+
+    H2C §5: per_issue_locators = {issue_id: locator}——每个 issue 的 slice
+    用自己的 locator 排序（不再全局拼接）; Main Agent 选择权不变。"""
     catalog = {}
     for b in bundles:
+        _loc = (per_issue_locators or {}).get(b["issue_id"], locator or "")
+        qn = QB.norm_q(_loc)
+        qsh = QB._shingles(qn) if qn else set()
         src = (b.get("source") or {})
         ctx = src.get("exact_context") or ""
         if not ctx:
@@ -553,7 +557,16 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog):
     return new, []
 
 
-def issue_fingerprint(code, locator):
-    """H2 §J: issue 指纹（跨轮追踪 resolved/persisted/introduced）。"""
+def issue_fingerprint(code, locator, evidence_ref=None):
+    """H2C §6: issue 指纹（code+norm locator+evidence_ref 三元组）。"""
     return hashlib.sha256(
-        f"{code}|{QB.norm_q(locator or '')[:120]}".encode()).hexdigest()[:16]
+        f"{code}|{QB.norm_q(locator or '')[:120]}|{evidence_ref or ''}".encode()
+    ).hexdigest()[:16]
+
+
+def all_issues_localizable(validation):
+    """H2C §2: ALL issues 必须可局部化且可锚定 → LOCAL_PATCH; 否则 FULL_REWRITE。"""
+    issues = validation.as_dict().get("issues", [])
+    if not issues:
+        return False
+    return all((i or {}).get("code") in LOCAL_PATCH_CODES for i in issues)
