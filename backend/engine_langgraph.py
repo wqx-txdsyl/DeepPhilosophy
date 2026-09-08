@@ -1294,7 +1294,8 @@ def interpret_thinking(name, args, result, language):
 
 
 async def stream_agent(req_message, history, agent="general", custom_instructions=None, language="zh",
-                       conversation_id=None, message_id=None):
+                       conversation_id=None, message_id=None,
+                       _evaluation_repair_adapter=None):
     """LangGraph 引擎 SSE 事件流（async generator, 事件协议与自研版一致）
     agent: general=通用深哲; 其他=哲学家智能体（提示词+工具集按注册表切换）
     custom_instructions: 用户自定义指令（个性化, 追加到 system prompt）
@@ -1734,6 +1735,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "packet_sha256": _hl.sha256(json.dumps(
                     _trace_pkt, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16],
                 "no_tools": bool(budget is not None and budget.hard_reached())})
+            # O7-E RCA-2 H1 §5-8: evaluation-only LOCAL_PATCH adapter——
+            # 生产 _evaluation_repair_adapter=None 永走原 full-rewrite
+            # （API 默认值保证, 非 env var; PRODUCTION_LOCAL_PATCH_ENABLED=false）
+            _lp_meta = None
+            if _evaluation_repair_adapter is not None and \
+                    _evaluation_repair_adapter.can_handle(validation):
+                _lp_meta = _evaluation_repair_adapter.build(
+                    candidate, validation, raw_tool_log)
+                _fb = _lp_meta["prompt"]
             _repair_msgs = list(messages) + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
@@ -1752,6 +1762,21 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 pending["text"] = ""
             candidate = (_ptail2 + _tail2) + pending["text"]
             pending["text"] = ""
+            # RCA-2 H1 §5-8: adapter 机械应用 patch——工具轮后 raw_tool_log
+            # 可能已更新 → 基于最新 evidence 重建 bundle 再应用（§8）
+            if _lp_meta is not None and candidate.strip():
+                _rebind = _evaluation_repair_adapter.build(
+                    _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
+                _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
+                    _lp_meta["pre_patch_candidate"], candidate, _rebind)
+                if _repair_trace:
+                    _repair_trace[-1]["local_patch"] = {
+                        "applied": _applied is not None,
+                        "errors": (_apply_errs or [])[:4]}
+                if _apply_errs:
+                    candidate = ""       # PATCH_PROTOCOL_ERROR → 空→validation fail→可下一轮
+                else:
+                    candidate = _applied or ""
         # 发布（§11: BUFFER FINAL UNTIL VALIDATED）: 只有 validator PASS 的候选才允许
         # 公开。O2-RP1 (P0): repair 耗尽后绝不允许发布无效候选（含 ok=false 透传发布）——
         # validator 有权拒绝答案, 但 runtime 不会因此获得"替你把错误答案发出去"的权力。
