@@ -32,7 +32,25 @@ def base_system():
 
 def stage_a(rp_id):
     cfg = CC.v4pro_config(dict(RP[rp_id], id=rp_id))
-    client = CC.build_candidate_client(cfg, "repair")
+    # V2.1+ §1: Stage A/B 同一 LangChain client（关 client-path confound）
+    _lc = CC.build_candidate_langchain_client(cfg, "repair")
+
+    def client(messages):
+        from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+        lc = [SystemMessage(content=m["content"]) if m["role"] == "system"
+              else AIMessage(content=m["content"]) if m["role"] == "assistant"
+              else HumanMessage(content=m["content"]) for m in messages]
+        resp = _lc.invoke(lc)
+        return {"content": resp.content or "",
+                "response_model": getattr(resp, "response_metadata", {}).get("model_name"),
+                "finish_reason": "stop",
+                "content_chars": len(resp.content or ""),
+                "reasoning_chars": len(getattr(resp, "additional_kwargs", {}).get("reasoning_content") or ""),
+                "config_echo": {"requested_model": cfg.requested_model,
+                                "temperature": cfg.repair["temperature"],
+                                "max_tokens": cfg.repair["max_tokens"],
+                                "thinking": cfg.repair.get("thinking"),
+                                "reasoning_effort": cfg.repair.get("reasoning_effort")}}
     sys_blob = base_system()
     fixtures = json.load(open(os.path.join(TMP, "o7e_bakeoff_fixtures.json"),
                               encoding="utf-8"))

@@ -102,3 +102,22 @@ def build_candidate_client(cfg, mode):
                                 "thinking": m.get("thinking"),
                                 "reasoning_effort": m.get("reasoning_effort")}}
     return call
+
+
+def build_candidate_langchain_client(cfg, mode):
+    """V2.1+ §1: Stage A/B 共用 LangChain 客户端（关 client path confound）。"""
+    from langchain_deepseek import ChatDeepSeek
+    from langchain_openai import ChatOpenAI
+    m = cfg.normal if mode == "normal" else cfg.repair
+    extra = {}
+    if cfg.provider == "deepseek" and m.get("thinking"):
+        extra = {"thinking": {"type": m["thinking"]}}
+        if m.get("reasoning_effort"):
+            extra["reasoning_effort"] = m["reasoning_effort"]
+    cls = ChatDeepSeek if cfg.provider == "deepseek" else ChatOpenAI
+    kw = dict(model=cfg.requested_model, api_key=cfg.api_key(),
+              base_url=cfg.base_url, temperature=m["temperature"],
+              max_tokens=m["max_tokens"])
+    if extra:
+        kw["extra_body"] = extra
+    return cls(**kw)
