@@ -496,12 +496,18 @@ def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
     return header + "\nISSUES:\n" + json.dumps(items, ensure_ascii=False)
 
 
-def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog):
-    """H2 §C-D: 无 SHA 回显版 applier——runtime 自验 candidate/anchor 身份。"""
+def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
+                                context_candidate_sha=None):
+    """H2D §2: 无 SHA 回显版 applier——runtime 自验 candidate/anchor SHA。
+
+    context_candidate_sha: build() 时记录的候选 SHA（模型不可见）; apply 前校验
+    sha(current_candidate)==context SHA; 每 anchor 校验 content SHA。"""
     try:
         p = json.loads(patch_json)
     except Exception:
         return None, ["INVALID_JSON"]
+    if context_candidate_sha and _sha(candidate) != context_candidate_sha:
+        return None, ["STALE_CANDIDATE"]
     errs = []
     covered = set()
     spans = []
@@ -523,6 +529,11 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog):
             continue
         c_s = a.get("content_start", a.get("start", 0))
         c_e = a.get("content_end", a.get("end", 0))
+        # H2D §2: runtime anchor SHA 校验
+        _expected = a.get("content_sha256") or a.get("surface_sha256")
+        if _expected and _sha(candidate[c_s:c_e])[:16] != _expected:
+            errs.append(f"STALE_ANCHOR:{iid}")
+            continue
         action = pt.get("action")
         if action == "COPY_SLICE":
             sid = pt.get("slice_id")
@@ -570,3 +581,36 @@ def all_issues_localizable(validation):
     if not issues:
         return False
     return all((i or {}).get("code") in LOCAL_PATCH_CODES for i in issues)
+
+
+def prepare_local_patch(candidate, validation, raw_tool_log, prev_errors=None):
+    """H2D §1: LOCAL_PATCH preflight——三条件全过才 supported=true。
+
+    (1) all issue codes local  (2) all anchors exact  (3) prompt structurally complete。
+    返回 {supported, unsupported_reason, bundles, catalog, prompt, candidate_sha}。"""
+    if not all_issues_localizable(validation):
+        return {"supported": False, "unsupported_reason": "MIXED_OR_NON_LOCAL_ISSUES",
+                "bundles": [], "catalog": {}, "prompt": "", "candidate_sha": None}
+    bundles = build_repair_issue_bundles(candidate, validation, raw_tool_log)
+    unanchored = [b["issue_id"] for b in bundles if not b.get("anchor")]
+    if unanchored:
+        return {"supported": False,
+                "unsupported_reason": f"UNRESOLVED_ANCHORS:{','.join(unanchored[:4])}",
+                "bundles": bundles, "catalog": {}, "prompt": "",
+                "candidate_sha": None}
+    issues = validation.as_dict().get("issues", [])
+    per_loc = {b["issue_id"]: (i or {}).get("locator") or ""
+               for b, i in zip(bundles, issues)}
+    catalog = build_slice_catalog(bundles, "", per_issue_locators=per_loc)
+    cand_sha = _sha(candidate)
+    prompt = render_patch_prompt_v2(bundles, catalog, prev_errors)
+    # prompt structural completeness: 所有 issue_id 在 prompt 中可见
+    missing = [b["issue_id"] for b in bundles
+               if b["issue_id"] not in prompt]
+    if missing:
+        return {"supported": False,
+                "unsupported_reason": f"PROMPT_ISSUE_INVISIBLE:{','.join(missing[:4])}",
+                "bundles": bundles, "catalog": catalog, "prompt": prompt,
+                "candidate_sha": cand_sha}
+    return {"supported": True, "unsupported_reason": None, "bundles": bundles,
+            "catalog": catalog, "prompt": prompt, "candidate_sha": cand_sha}

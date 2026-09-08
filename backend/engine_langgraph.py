@@ -463,7 +463,8 @@ LOCAL_PATCH_SYSTEM_PROTOCOL = """
 候选中的局部证据问题。本 invocation 不要求产出一篇替换回答——你的最终非工具输出必须
 **只是一个 patch JSON 对象**，不含任何解释性正文。
 
-工具仍可正常使用（更多证据有用时可继续检索）。不得重写候选中未被 issue 覆盖的部分。
+若本 invocation 允许工具执行，你可以继续检索；若提供了 tool_execution_available=false，
+则不得宣告工具。不得重写候选中未被 issue 覆盖的部分。
 每条 patch 二选一: COPY_SLICE（用 slice_id 选择 evidence 的连续原始子串——只负责选，
 不负责数 offset 或抄 hash）或 REPLACE_TEXT（你自己的转述/引用修正文本——只替换引文
 内容本身，保留外层引用格式）。由你决定每个 issue 用哪种修复动作; runtime 只机械应用
@@ -1813,19 +1814,26 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     _fin_meta = _evaluation_repair_adapter.build(
                         _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
                     if _fin_meta.get("anchor_ok"):
-                        _final_client = get_repair_llm()
-                        from langchain_core.messages import HumanMessage as _HM2, AIMessage as _AM2, SystemMessage as _SM2
+                        # H2D §3: finalization 走 canonical _stream_graph path
+                        # （repair_mode+LOCAL_PATCH System protocol+no_tools; 不绕
+                        # direct LLM invoke; 不增 repairs_used）
+                        from langchain_core.messages import HumanMessage as _HM2, AIMessage as _AM2
                         _fin_msgs = list(messages) + [
                             _AM2(content=_lp_meta["pre_patch_candidate"]),
                             _HM2(content=_fin_meta["prompt"] +
                                  "\n(Evidence refreshed: use the latest catalog above. "
-                                 "No further tool calls; output patch JSON only.)")]
+                                 "tool_execution_available=false; output patch JSON only.)")]
+                        _fin_candidate = ""
                         try:
-                            _fin_resp = await asyncio.to_thread(
-                                lambda: _final_client.invoke(_fin_msgs))
-                            _fin_out = _fin_resp.content or ""
+                            async for _fev in _stream_graph(
+                                    _fin_msgs, no_tools=True, repair_mode=True,
+                                    repair_output_mode="LOCAL_PATCH"):
+                                if _fev.get("type") == "token":
+                                    _fin_candidate += _fev.get("content", "")
+                                elif _fev.get("type") in ("tool_start", "tool"):
+                                    pass  # no_tools=True: 理论上不该有; 记录但不中断
                             _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
-                                _lp_meta["pre_patch_candidate"], _fin_out, _fin_meta)
+                                _lp_meta["pre_patch_candidate"], _fin_candidate, _fin_meta)
                         except Exception as _fe:
                             _applied, _apply_errs = None, [f"FINALIZATION_ERROR:{str(_fe)[:80]}"]
                         if _repair_trace:
