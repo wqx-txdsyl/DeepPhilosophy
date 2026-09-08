@@ -1765,10 +1765,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # RCA-2 H1 §5-8: adapter 机械应用 patch——工具轮后 raw_tool_log
             # 可能已更新 → 基于最新 evidence 重建 bundle 再应用（§8）
             if _lp_meta is not None and candidate.strip():
+                # §8 evidence 刷新: repair 轮若调用了工具, raw_tool_log 已变 →
+                # rebind 校验 evidence_ref 仍可解析; slice/anchor 仍按模型所见的
+                # 原 bundle 解析（rebind 只做存在性门, 不改变模型 offset 语义）
                 _rebind = _evaluation_repair_adapter.build(
                     _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
                 _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
-                    _lp_meta["pre_patch_candidate"], candidate, _rebind)
+                    _lp_meta["pre_patch_candidate"], candidate,
+                    {"bundles": _lp_meta["bundles"],
+                     "rebind_ok": _rebind.get("anchor_ok", True),
+                     "rebind_bundles": _rebind.get("bundles")})
                 if _repair_trace:
                     _repair_trace[-1]["local_patch"] = {
                         "applied": _applied is not None,

@@ -39,8 +39,11 @@ class LocalPatchAdapter:
                 "anchor_ok": True}
 
     def parse_and_apply(self, pre_candidate, model_output, ctx):
-        if not ctx.get("anchor_ok"):
-            return None, ["LOCAL_PATCH_UNSUPPORTED: anchor unresolved"]
+        # ctx: {"bundles": 模型所见原 bundle, "rebind_ok": bool,
+        #       "rebind_bundles": 最新 evidence 重建 bundle}
+        if not ctx.get("rebind_ok", True):
+            return None, ["LOCAL_PATCH_UNSUPPORTED: evidence refreshed, "
+                          "refs no longer resolvable"]
         new, errs = RC.apply_main_agent_patches(pre_candidate, model_output,
                                                  ctx["bundles"])
         return new, (errs or [])
