@@ -264,7 +264,7 @@ def test_t16_verification_stack_unchanged_from_q1():
     # O7-E RCA-1 §2 授权: quote_bound 仅加 char_start/char_end metadata
     # （判定语义零改动）→ 其冻结点从 Q1 blob 移至 RCA-1 commit; validator 仍冻 Q1
     for rel, base in (("final_validator.py", "943516d2e"),
-                      ("quote_bound.py", "597234f6e")):
+                      ("quote_bound.py", "95bc3ae52")):
         r = subprocess.run(["git", "diff", "--quiet", base, "--",
                             os.path.join("backend", rel)],
                            cwd=REPO, capture_output=True)

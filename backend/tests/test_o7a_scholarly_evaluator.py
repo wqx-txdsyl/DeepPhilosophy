@@ -225,7 +225,7 @@ def test_t19_no_production_diff_vs_base():
     # 核心文件仍硬冻结于 O7-A BASE，O7-B §24 四项 PRODUCTION_POLICY DIFF=0 不变。
     O7B_BASE = "500bb8e88"  # O7-C §59 授权的工具注册/执行器改动落地 commit
     hard = (("backend/final_validator.py", BASE_SHA),
-            ("backend/quote_bound.py", "597234f6e"),   # RCA-1 §2: 仅 metadata 增改
+            ("backend/quote_bound.py", "95bc3ae52"),   # RCA-1 §2: 仅 metadata 增改
             ("backend/agent_runtime.py", BASE_SHA),
             ("backend/evidence_contract.py", BASE_SHA))
     for rel, _base in hard:
