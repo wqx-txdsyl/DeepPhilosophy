@@ -105,6 +105,59 @@ def _compact_digest(r):
     }
 
 
+def _judge_evidence_parts(r):
+    """PF-RP2 §0 / PF-RP3B §E: 拆分 canonical judge 的四类正式字段。
+    PRIMARY_TEXT_EVIDENCE 只含既有 run 的真实 source text（used_evidence primary
+    条目 + evidence replay windows）; 答案侧引文是 answer_quote 映射, 不冒充
+    source text; secondary（web + scholarly records/passage）与 access_levels 走
+    build_judge_input 的独立正式字段; 缺的数据保持空, 不编造。"""
+    ev = r.get("evidence_digest") or {}
+    facts = ev.get("facts") or {}
+    used = [e for e in (ev.get("used_evidence") or []) if isinstance(e, dict)]
+    primary = [{"evidence_id": e.get("evidence_id"),
+                "source_type": e.get("source_type"),
+                "book": e.get("book"), "chapter": e.get("chapter"),
+                "source_text": ((e.get("text") or e.get("snippet") or "")[:400])
+                } for e in used
+               if e.get("source_type") in ("primary_read", "primary", "snippet")
+               and (e.get("text") or e.get("snippet"))][:10]
+    qb = [e for e in (r.get("quote_bound") or [])
+          if e.get("verification_state") in ("VERIFIED_EXACT", "VERIFIED_NEAR")]
+    answer_quotes = [{"answer_quote": e.get("preview"),
+                      "evidence_id": e.get("source_evidence_id"),
+                      "state": e.get("verification_state")} for e in qb[:12]]
+    primary_ev = [
+        {"source": "primary_evidence_from_existing_run",
+         "entries": primary},
+        {"source": "answer_quote_to_evidence_mapping",
+         "entries": answer_quotes},
+        {"source": "read_chapters", "chapters": facts.get("read_chapters")},
+    ]
+    secondary = [{"book": e.get("book"), "chapter": e.get("chapter"),
+                  "source_type": e.get("source_type"),
+                  "evidence_id": e.get("evidence_id")}
+                 for e in used if e.get("source_type") == "secondary"][:6]
+    # PF-RP3B §E: scholarly evidence 只来自 run artifact——禁止事后 registry 查询
+    schol = r.get("scholarly_provenance") or {}
+    ev_by_id = {e.get("source_record_id"): e
+                for e in (schol.get("scholarly_evidence") or [])}
+    sec_records = []
+    for rec in schol.get("scholarly_records") or []:
+        entry = dict(rec)
+        e = ev_by_id.get(rec.get("source_record_id"))
+        if e:
+            if e.get("abstract_text"):
+                entry["abstract_text"] = e["abstract_text"][:1200]
+            if e.get("evidence_passages"):
+                entry["evidence_passages"] = e["evidence_passages"][:5]
+            entry["access_level_after"] = e.get("access_level_after")
+        sec_records.append(entry)
+    access_levels = [{"source_record_id": k, "access_level": lvl}
+                     for k, lvl in (schol.get("SCHOLARLY_ACCESS_LEVELS")
+                                    or {}).items()]
+    return primary_ev, secondary + sec_records, access_levels
+
+
 def _best_window(text, claim, wlen=500):
     """章节原文中与 claim 归一 shingle 重叠最高的窗口起点（保留原文坐标）。"""
     qsh = QB._shingles(QB.norm_q(claim))
