@@ -23,6 +23,14 @@ MAX_TOTAL_REPAIR_CONTEXT_CHARS = 6000
 LOCAL_PATCH_CODES = {"UNVERIFIED_CITATION", "UNSUPPORTED_EXACT_QUOTE",
                      "NEAR_QUOTE_NOT_MARKED", "STITCHED_QUOTE"}
 
+# O7-E PF-RP1 §A: patch action 合同单一真源——System protocol / Human patch
+# contract / applier eligibility 三方以此为唯一 owner（drift 由测试锁死:
+# SYSTEM_HUMAN_ACTION_MATRIX_EQUAL / APPLIER_ACTION_MATRIX_EQUAL）
+LOCAL_PATCH_ACTION_MATRIX = {
+    "quote": ("COPY_SLICE", "PARAPHRASE_CLAIM"),
+    "citation": ("COPY_SLICE", "REPLACE_TEXT"),
+}
+
 
 def _sha(s):
     return hashlib.sha256((s or "").encode("utf-8")).hexdigest()
@@ -506,6 +514,8 @@ def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
                                   for s in slice_catalog[b["issue_id"]]]
         return out
 
+    q_actions = ", ".join(LOCAL_PATCH_ACTION_MATRIX["quote"])
+    c_actions = ", ".join(LOCAL_PATCH_ACTION_MATRIX["citation"])
     header = ("Repair the LOCAL issues below in your own previous final candidate. "
               "Output ONLY a JSON object:\n"
               '{"patches": [{"issue_id": "vi_N", "action": "COPY_SLICE", '
@@ -513,11 +523,10 @@ def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
               '"PARAPHRASE_CLAIM", "replacement_text": "..."} or '
               '{"issue_id": "vi_N", "action": "REPLACE_TEXT", '
               '"replacement_text": "..."}]}\n'
-              "Action eligibility (strict):\n"
-              "- kind=quote issues: COPY_SLICE or PARAPHRASE_CLAIM only. "
-              "REPLACE_TEXT is invalid for quote issues.\n"
-              "- kind=citation issues: COPY_SLICE or REPLACE_TEXT only. "
-              "PARAPHRASE_CLAIM is invalid for citation issues.\n"
+              "Action eligibility (strict, by issue kind):\n"
+              f"- kind=quote issues: {q_actions} only.\n"
+              f"- kind=citation issues: {c_actions} only.\n"
+              "Actions outside this matrix are invalid for that kind.\n"
               "Rules: every issue listed must be covered by exactly one patch.\n"
               "COPY_SLICE replaces the quoted content with the exact bytes of the "
               "chosen slice (quote markers stay).\n"
@@ -597,14 +606,12 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
             errs.append(f"NO_ANCHOR:{iid}")
             continue
         is_citation = bundle.get("code") == "UNVERIFIED_CITATION"
-        # RCA-2 §action: quote/citation 动作资格（机械, 零兼容）
-        if action == "REPLACE_TEXT" and not is_citation:
-            errs.append(f"INVALID_ACTION_FOR_QUOTE:{iid}")
+        # PF-RP1 §A: 资格判定由 LOCAL_PATCH_ACTION_MATRIX 单一真源驱动
+        kind = "citation" if is_citation else "quote"
+        if action not in LOCAL_PATCH_ACTION_MATRIX[kind]:
+            errs.append(f"INVALID_ACTION_FOR_{kind.upper()}:{iid}")
             continue
         if action == "PARAPHRASE_CLAIM":
-            if is_citation:
-                errs.append(f"INVALID_ACTION_FOR_CITATION:{iid}")
-                continue
             text = pt.get("replacement_text")
             if not isinstance(text, str) or not text.strip():
                 errs.append(f"EMPTY_REPLACEMENT:{iid}")
@@ -637,14 +644,11 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
                 errs.append(f"UNKNOWN_SLICE_ID:{sid}")
                 continue
             text = hit[0]["text"]
-        elif action == "REPLACE_TEXT":
+        else:   # REPLACE_TEXT（citation 专属——矩阵已过滤）
             text = pt.get("replacement_text")
             if not isinstance(text, str) or not text.strip():
                 errs.append(f"EMPTY_REPLACEMENT:{iid}")
                 continue
-        else:
-            errs.append(f"UNKNOWN_ACTION:{action!r}:{iid}")
-            continue
         spans.append((c_s, c_e, text, iid, False))
     for b in bundles:
         if b["issue_id"] not in covered:

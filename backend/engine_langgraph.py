@@ -465,10 +465,18 @@ LOCAL_PATCH_SYSTEM_PROTOCOL = """
 
 若本 invocation 允许工具执行，你可以继续检索；若提供了 tool_execution_available=false，
 则不得宣告工具。不得重写候选中未被 issue 覆盖的部分。
-每条 patch 二选一: COPY_SLICE（用 slice_id 选择 evidence 的连续原始子串——只负责选，
-不负责数 offset 或抄 hash）或 REPLACE_TEXT（你自己的转述/引用修正文本——只替换引文
-内容本身，保留外层引用格式）。由你决定每个 issue 用哪种修复动作; runtime 只机械应用
-你选定的动作。上一轮如有 patch_protocol_errors 字段，那是机械错误事实，据以修正格式。
+
+每条 patch 的动作由 issue 类别（kind）决定，资格矩阵如下（机械合同，越界即被拒绝）:
+- kind=quote → COPY_SLICE（用 slice_id 选择 evidence 的连续原始子串；只替换引文
+  内容本身，引号 wrapper 原样保留——维持逐字引文形态）或 PARAPHRASE_CLAIM（你显式
+  声明：这段不再作为逐字引文。replacement_text 替换整个 claim span——含引号与
+  blockquote 前缀一并移除——且必须写成纯转述，本身不得再包含任何逐字引文；如保留了
+  主语/上文，replacement 需与其语法衔接）。
+- kind=citation → COPY_SLICE（同上）或 REPLACE_TEXT（你自己的修正文本，只替换引用
+  内容 span）。
+quote 上使用 REPLACE_TEXT、citation 上使用 PARAPHRASE_CLAIM 均为非法动作。由你决定
+每个 issue 用哪种合法动作; runtime 只机械应用你选定的动作。上一轮如有
+patch_protocol_errors 字段，那是机械错误事实，据以修正格式。
 """
 
 
