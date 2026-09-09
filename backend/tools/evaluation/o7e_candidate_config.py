@@ -43,11 +43,11 @@ RP_A = dict(temperature=0, max_tokens=8000, thinking="enabled", reasoning_effort
 RP_B = dict(temperature=0, max_tokens=8000, thinking="disabled", reasoning_effort=None)
 
 
-def v4pro_config(repair_cfg):
+def v4pro_config(repair_cfg, requested_model="deepseek-v4-pro", candidate_id=None):
     c = BakeoffCandidateConfig(
-        candidate_id=f"deepseek-v4-pro@{repair_cfg['id']}",
+        candidate_id=candidate_id or f"{requested_model}@{repair_cfg['id']}",
         provider="deepseek", base_url="https://api.deepseek.com",
-        requested_model="deepseek-v4-pro",
+        requested_model=requested_model,
         normal_temperature=V4PRO_NORMAL["temperature"],
         normal_max_tokens=V4PRO_NORMAL["max_tokens"],
         normal_thinking=V4PRO_NORMAL["thinking"],

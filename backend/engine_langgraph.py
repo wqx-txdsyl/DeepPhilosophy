@@ -1317,6 +1317,16 @@ def interpret_thinking(name, args, result, language):
     return None
 
 
+def _issue_fingerprint(code, locator, evidence_ref=None):
+    """O7-E FINAL-DIAG §4: validation state 的 issue 指纹（code+norm locator+
+    evidence_ref 三元组）。与 repair_context.issue_fingerprint 同一算法——engine
+    生产边界禁止直接依赖该模块（H2-24）, 一致性由
+    tests/test_o7e_final_diagnostic.py 锁死。"""
+    return hashlib.sha256(
+        f"{code}|{QB.norm_q(locator or '')[:120]}|{evidence_ref or ''}".encode()
+    ).hexdigest()[:16]
+
+
 async def stream_agent(req_message, history, agent="general", custom_instructions=None, language="zh",
                        conversation_id=None, message_id=None,
                        _evaluation_repair_adapter=None):
@@ -1704,9 +1714,18 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
                 language=language)
+            val_dict = validation.as_dict()
+            _val_issues = val_dict.get("issues", [])
             _val_history.append({
                 "attempt_index": len(_val_history), "ok": bool(validation.ok),
-                "issue_codes": [i.get("code") for i in validation.as_dict().get("issues", [])],
+                "issue_codes": [i.get("code") for i in _val_issues],
+                # FINAL-DIAG §4: 每个 validation state 的 live fingerprint——
+                # runner 由此做 R1/R2 集合差（真源=_val_history, 不从 trace 猜）
+                "issue_fingerprints": [
+                    _issue_fingerprint((i or {}).get("code"),
+                                       (i or {}).get("locator") or "",
+                                       (i or {}).get("evidence_ref"))
+                    for i in _val_issues],
                 "candidate_chars": len(candidate or ""),
                 "candidate_sha256": hashlib.sha256(
                     (candidate or "").encode("utf-8")).hexdigest() if (candidate or "").strip() else None})
@@ -1746,13 +1765,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             _trace_pkt = _pkt or {"available_evidence": []}
             _repair_trace.append({
                 "attempt_index": repairs_used,
-                "issue_codes": [i.get("code") for i in validation.as_dict().get("issues", [])][:8],
+                "issue_codes": [i.get("code") for i in _val_issues][:8],
                 "evidence_refs": [i.get("evidence_ref") for i in
-                                  validation.as_dict().get("issues", []) if i.get("evidence_ref")][:8],
+                                  _val_issues if i.get("evidence_ref")][:8],
                 "repair_mode": True,
                 "system_protocol_injected": agent == "general",
-                "system_protocol_sha256": _hl.sha256(
-                    REPAIR_SYSTEM_PROTOCOL.encode("utf-8")).hexdigest()[:16],
+                # FINAL-DIAG §6: protocol provenance 在 mode 决定后写——
+                # （repair_output_mode / actual_system_protocol_sha256 / 兼容键
+                #  system_protocol_sha256 均在下方 prepare 之后按实际注入值落笔）
                 "packet_present": bool(_trace_pkt.get("available_evidence")),
                 "packet_item_count": len(_trace_pkt.get("available_evidence") or []),
                 "packet_evidence_refs": [e.get("SOURCE_EVIDENCE_ID") or e.get("evidence_id")
@@ -1763,30 +1783,54 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "packet_sha256": _hl.sha256(json.dumps(
                     _trace_pkt, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16],
                 "no_tools": bool(budget is not None and budget.hard_reached())})
-            # O7-E RCA-2 H1 §5-8 / H2C §3-§6: evaluation-only LOCAL_PATCH adapter
-            # 生产 _evaluation_repair_adapter=None 永走原 full-rewrite
+            # O7-E RCA-2 H1 §5-8 / FINAL-DIAG §1: candidate-aware prepare 单入口。
+            # 生产 _evaluation_repair_adapter=None 永走原 full-rewrite。
+            # 只有 prep["supported"]（ALL codes local + ALL anchors exact + prompt
+            # complete）才进 LOCAL_PATCH; unsupported → _lp_meta=None → 原有
+            # FULL_REWRITE _fb 原样保留（绝不注入空 prompt 的 LOCAL_PATCH System）。
             _lp_meta = None
-            if _evaluation_repair_adapter is not None and \
-                    _evaluation_repair_adapter.can_handle(validation):
+            if _evaluation_repair_adapter is not None:
                 import hashlib as _hl2
                 _raw_log_hash_before = _hl2.sha256(json.dumps(
                     raw_tool_log, ensure_ascii=False, default=str).encode()
                 ).hexdigest()[:16]
-                _lp_meta = _evaluation_repair_adapter.build(
+                _prep = _evaluation_repair_adapter.prepare(
                     candidate, validation, raw_tool_log,
                     prev_errors=_prev_patch_errors)
-                _fb = _lp_meta["prompt"]
+                if _prep.get("supported") and (_prep.get("prompt") or "").strip():
+                    _lp_meta = _prep
+                    _fb = _lp_meta["prompt"]
+                    # §6: no_tools 机械事实进入 LOCAL_PATCH context
+                    if budget is not None and budget.hard_reached():
+                        _fb += ("\n\ntool_execution_available = false "
+                                "(NO_MORE_TOOL_EXECUTION_AVAILABLE——机械资源事实)")
                 if _repair_trace:
-                    _repair_trace[-1]["issue_fps"] = _lp_meta.get("issue_fps")
+                    _repair_trace[-1]["issue_fps"] = _prep.get("issue_fps")
                     _repair_trace[-1]["bundles"] = [
                         {"issue_id": b["issue_id"], "anchor": bool(b.get("anchor")),
-                         "code": b["code"]}
-                        for b in (_lp_meta.get("bundles") or [])]
-                    _repair_trace[-1]["unsupported_reason"] = _lp_meta.get("unsupported_reason")
-                # §6: no_tools 机械事实进入 LOCAL_PATCH context
-                if budget is not None and budget.hard_reached():
-                    _fb += ("\n\ntool_execution_available = false "
-                            "(NO_MORE_TOOL_EXECUTION_AVAILABLE——机械资源事实)")
+                         "code": b["code"],
+                         "linked_source": bool(b.get("source")),
+                         "source_overlap": (b.get("source") or {}).get("shingle_overlap")
+                         if isinstance((b.get("source") or {}).get("shingle_overlap"),
+                                       (int, float)) else None}
+                        for b in (_prep.get("bundles") or [])]
+                    _repair_trace[-1]["unsupported_reason"] = _prep.get("unsupported_reason")
+                    _repair_trace[-1]["lp_gate"] = {
+                        "supported": bool(_prep.get("supported")),
+                        "prompt_issue_coverage": _prep.get("prompt_issue_coverage")}
+            # FINAL-DIAG §6: protocol provenance——mode 决定之后记录实际注入的
+            # System protocol（LOCAL_PATCH 不得再记成 FULL_REWRITE 的 SHA）
+            if _repair_trace:
+                _lp_mode = "LOCAL_PATCH" if _lp_meta else "FULL_REWRITE"
+                _actual_proto = (LOCAL_PATCH_SYSTEM_PROTOCOL if _lp_mode == "LOCAL_PATCH"
+                                 else REPAIR_SYSTEM_PROTOCOL)
+                _repair_trace[-1]["repair_output_mode"] = _lp_mode
+                _repair_trace[-1]["actual_system_protocol_sha256"] = _hl.sha256(
+                    _actual_proto.encode("utf-8")).hexdigest()[:16]
+                _repair_trace[-1]["system_protocol_sha256"] = \
+                    _repair_trace[-1]["actual_system_protocol_sha256"]
+                if _lp_meta is not None:
+                    _repair_trace[-1]["lp_prompt_chars"] = len(_fb)
             _repair_msgs = list(messages) + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
@@ -1814,13 +1858,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 _raw_log_hash_after = _hl3.sha256(json.dumps(
                     raw_tool_log, ensure_ascii=False, default=str).encode()
                 ).hexdigest()[:16]
+                _applied, _apply_errs, _act = None, None, {}
                 # H2C §4: latest-evidence finalization——repair 轮内调用了新工具
                 # → 丢弃本轮 patch serialization, 用最新 evidence 重建 bundle/catalog,
                 # no-tools 二次 finalization（不增 repairs_used）
                 if _raw_log_hash_after != _raw_log_hash_before:
-                    _fin_meta = _evaluation_repair_adapter.build(
+                    _fin_meta = _evaluation_repair_adapter.prepare(
                         _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
-                    if _fin_meta.get("anchor_ok"):
+                    if _fin_meta.get("supported"):
                         # H2D §3: finalization 走 canonical _stream_graph path
                         # （repair_mode+LOCAL_PATCH System protocol+no_tools; 不绕
                         # direct LLM invoke; 不增 repairs_used）
@@ -1830,34 +1875,56 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                             _HM2(content=_fin_meta["prompt"] +
                                  "\n(Evidence refreshed: use the latest catalog above. "
                                  "tool_execution_available=false; output patch JSON only.)")]
+                        # FINAL-DIAG §2: patch 从 pending 收口（与正常 candidate 完全
+                        # 相同的机械路径: phrase_scr.flush + rationale_parser.finish +
+                        # pending["text"]）——_stream_graph 的未验证候选从不以 token
+                        # 事件外流, 旧「监听 token 事件」永远拿到空串（false-green 移除）。
                         _fin_candidate = ""
+                        _fin_tool_calls = 0
                         try:
                             async for _fev in _stream_graph(
                                     _fin_msgs, no_tools=True, repair_mode=True,
                                     repair_output_mode="LOCAL_PATCH"):
-                                if _fev.get("type") == "token":
-                                    _fin_candidate += _fev.get("content", "")
-                                elif _fev.get("type") in ("tool_start", "tool"):
-                                    pass  # no_tools=True: 理论上不该有; 记录但不中断
-                            _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
-                                _lp_meta["pre_patch_candidate"], _fin_candidate, _fin_meta)
+                                if _fev.get("type") in ("tool_start", "tool"):
+                                    _fin_tool_calls += 1   # no_tools=True 下的机械事实, 只计数
+                            _fin_tails = (_phrase_scr.flush()
+                                          + _visible_text(_rat_parser.finish()))
+                            _fin_candidate = _fin_tails + pending["text"]
                         except Exception as _fe:
-                            _applied, _apply_errs = None, [f"FINALIZATION_ERROR:{str(_fe)[:80]}"]
+                            _apply_errs = [f"FINALIZATION_ERROR:{str(_fe)[:80]}"]
+                        pending["text"] = ""
+                        if _apply_errs is None:
+                            _applied, _apply_errs, _act = \
+                                _evaluation_repair_adapter.parse_and_apply(
+                                    _lp_meta["pre_patch_candidate"], _fin_candidate,
+                                    {"bundles": _fin_meta.get("bundles") or [],
+                                     "catalog": _fin_meta.get("catalog") or {},
+                                     "candidate_sha": _fin_meta.get("candidate_sha"),
+                                     "issue_fps": _fin_meta.get("issue_fps") or []})
                         if _repair_trace:
                             _repair_trace[-1]["finalization"] = {
                                 "raw_log_changed": True,
-                                "applied": _applied is not None}
+                                "applied": _applied is not None,
+                                "patch_from": "pending",
+                                "patch_chars": len(_fin_candidate or ""),
+                                "tool_calls": _fin_tool_calls,
+                                "actions": (_act or {}).get("actions") or [],
+                                "quote_wrapper_loss": (_act or {}).get("quote_wrapper_loss", 0),
+                                "non_target_changed": (_act or {}).get("non_target_changed", 0)}
                     else:
                         _applied, _apply_errs = None, ["FINALIZATION_NO_ANCHOR"]
                 else:
                     # 无新工具 → 直接用模型原 patch + 原 bundle/catalog
-                    _rebind = _evaluation_repair_adapter.build(
+                    _rebind = _evaluation_repair_adapter.prepare(
                         _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
-                    _applied, _apply_errs = _evaluation_repair_adapter.parse_and_apply(
-                        _lp_meta["pre_patch_candidate"], candidate,
-                        {"bundles": _lp_meta["bundles"],
-                         "catalog": _lp_meta.get("catalog") or {},
-                         "rebind_ok": _rebind.get("anchor_ok", True)})
+                    _applied, _apply_errs, _act = \
+                        _evaluation_repair_adapter.parse_and_apply(
+                            _lp_meta["pre_patch_candidate"], candidate,
+                            {"bundles": _lp_meta["bundles"],
+                             "catalog": _lp_meta.get("catalog") or {},
+                             "candidate_sha": _lp_meta.get("candidate_sha"),
+                             "issue_fps": _lp_meta.get("issue_fps") or [],
+                             "rebind_ok": _rebind.get("supported", True)})
                 # H2C §9: INVALID_JSON 诊断遥测（无正文保存）
                 _patch_diag = {}
                 if _apply_errs and any("JSON" in str(e) or "INVALID" in str(e) for e in _apply_errs):
@@ -1869,7 +1936,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     _repair_trace[-1]["local_patch"] = {
                         "applied": _applied is not None,
                         "errors": (_apply_errs or [])[:4],
-                        "patch_diag": _patch_diag}
+                        "patch_diag": _patch_diag,
+                        # FINAL-DIAG §5: patch action 遥测——只记 identity/动作,
+                        # 禁止 replacement_text / source 正文 / CoT
+                        "actions": (_act or {}).get("actions") or [],
+                        "quote_wrapper_loss": (_act or {}).get("quote_wrapper_loss", 0),
+                        "non_target_changed": (_act or {}).get("non_target_changed", 0)}
                 # H2C §3: 记录协议错误供下轮 prompt 引用
                 _prev_patch_errors = _apply_errs if _apply_errs else None
                 if _apply_errs:

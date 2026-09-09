@@ -497,11 +497,23 @@ def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
 
 
 def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
-                                context_candidate_sha=None):
+                                context_candidate_sha=None, telemetry=None):
     """H2D §2: 无 SHA 回显版 applier——runtime 自验 candidate/anchor SHA。
 
     context_candidate_sha: build() 时记录的候选 SHA（模型不可见）; apply 前校验
-    sha(current_candidate)==context SHA; 每 anchor 校验 content SHA。"""
+    sha(current_candidate)==context SHA; 每 anchor 校验 content SHA。
+    FINAL-DIAG §5: telemetry 传入 list 时逐条 DECLARED patch 记录
+    {issue_id, issue_code, anchor_kind, action, slice_id}——禁止 replacement_text/
+    source 正文/CoT; action 语义零改动（记录并行存在）。"""
+    def _rec(iid, action, slice_id=None):
+        if telemetry is None:
+            return
+        b = next((x for x in bundles if x["issue_id"] == iid), None)
+        code = (b or {}).get("code")
+        telemetry.append({"issue_id": iid, "issue_code": code,
+                          "anchor_kind": "citation"
+                          if code == "UNVERIFIED_CITATION" else "quote",
+                          "action": action, "slice_id": slice_id})
     try:
         p = json.loads(patch_json)
     except Exception:
@@ -523,6 +535,8 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
             errs.append(f"DUPLICATE_PATCH:{iid}")
             continue
         covered.add(iid)
+        _rec(iid, pt.get("action"),
+             pt.get("slice_id") if pt.get("action") == "COPY_SLICE" else None)
         a = bundle.get("anchor")
         if not a:
             errs.append(f"NO_ANCHOR:{iid}")
@@ -607,10 +621,12 @@ def prepare_local_patch(candidate, validation, raw_tool_log, prev_errors=None):
     # prompt structural completeness: 所有 issue_id 在 prompt 中可见
     missing = [b["issue_id"] for b in bundles
                if b["issue_id"] not in prompt]
+    coverage = round((len(bundles) - len(missing)) / max(len(bundles), 1), 3)
     if missing:
         return {"supported": False,
                 "unsupported_reason": f"PROMPT_ISSUE_INVISIBLE:{','.join(missing[:4])}",
                 "bundles": bundles, "catalog": catalog, "prompt": prompt,
-                "candidate_sha": cand_sha}
+                "candidate_sha": cand_sha, "prompt_issue_coverage": coverage}
     return {"supported": True, "unsupported_reason": None, "bundles": bundles,
-            "catalog": catalog, "prompt": prompt, "candidate_sha": cand_sha}
+            "catalog": catalog, "prompt": prompt, "candidate_sha": cand_sha,
+            "prompt_issue_coverage": coverage}
