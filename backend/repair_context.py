@@ -131,12 +131,10 @@ def _claim_content_span(candidate, q):
         m = QB.LEADIN_RE.search(win)
         if not m:
             return None
-        # 言语主体 contiguous 前缀（"孔子写道"的"孔子"）——词字符连续才并入,
-        # 标点/空白断开即止（边界仍由候选文本自身句法决定）
-        s = m.start()
-        while s > 0 and re.match(r"[\w]", win[s - 1]) and (m.end() - s) < 24:
-            s -= 1
-        cs = cs - len(win) + s
+        # RP1A: claim_start 严格 = LEADIN_RE match 绝对起点——禁止任何额外
+        # backward expansion（\w 后向扫描会吞掉 "对此/中" 等普通语境词;
+        # 主体/语境留给 Main Agent 的 replacement 做语法衔接）
+        cs = cs - len(win) + m.start()
     return (cs, ce, idx, idx + len(text))
 
 
@@ -527,6 +525,9 @@ def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
               "verbatim quote. Your replacement_text replaces the ENTIRE claim "
               "including the surrounding quote marks / blockquote marker, and must "
               "not itself contain any verbatim quotation (write plain prose).\n"
+              "For a lead-in quote, the deterministic verbatim cue may begin after "
+              "a preserved grammatical subject/context. Write replacement_text so "
+              "it connects grammatically to the preserved left context.\n"
               "REPLACE_TEXT (citation issues only) is your own prose replacing the "
               "citation content span.\n"
               "Do not compute offsets or copy any hash.\n")
