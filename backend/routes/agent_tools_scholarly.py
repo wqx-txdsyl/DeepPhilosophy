@@ -84,9 +84,12 @@ def _exec_get_scholarly_source(args):
 register_tool(
     "search_scholarship",
     "检索真实学术文献记录（期刊论文/专著章节等; Crossref+OpenAlex 双源）。"
+    "⚠ metadata/discovery only: 只返回书目与访问层级信息, 内容归因必须再用 "
+    "get_scholarly_source 取得摘要/正文证据。"
     "记录可能是 scholarly secondary、reference、primary publication 或尚未分类——"
     "由 source_category 字段如实标注。access_level（METADATA_ONLY/ABSTRACT_AVAILABLE/"
-    "FULL_TEXT_AVAILABLE/FULL_TEXT_READ）只反映已实际取得的证据层级。"
+    "FULL_TEXT_AVAILABLE/FULL_TEXT_READ）只反映已实际取得的证据层级; "
+    "ABSTRACT_AVAILABLE 表示有摘要可读, 不表示已读。"
     "是否检索、检索什么、选哪篇由你决定; 记录存在不等于论文已被阅读, 不得凭标题推断论文内容。",
     {"type": "object",
      "properties": {"query": {"type": "string", "description": "研究主题/论证/争议关键词"},
