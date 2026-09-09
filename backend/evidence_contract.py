@@ -586,6 +586,65 @@ def _project(ev):
     }
 
 
+def build_scholarly_provenance(raw_tool_log):
+    """PF-RP3B §B: O7-C scholarly tools → canonical scholarly provenance。
+
+    search_scholarship → scholarly_records（文献身份/metadata; 不证明论文观点）
+    get_scholarly_source → scholarly_evidence（access 前后态+abstract/passage 全保真）
+    access 语义沿用 O7-C 冻结态机: METADATA_ONLY → 无内容证据;
+    ABSTRACT_AVAILABLE → 仅 abstract; FULL_TEXT_AVAILABLE → 仅可用性;
+    FULL_TEXT_READ → passages 可支撑内容主张。"""
+    records, evidence, access = [], [], {}
+    searches = fetches = 0
+    for i, tc in enumerate(raw_tool_log or []):
+        name = tc.get("name") or ""
+        rf = tc.get("result_full")
+        if not isinstance(rf, dict) or rf.get("error"):
+            continue
+        if name == "search_scholarship":
+            searches += 1
+            for item in rf.get("results") or []:
+                if not isinstance(item, dict):
+                    continue
+                records.append({
+                    "source_record_id": item.get("source_record_id"),
+                    "title": item.get("title"),
+                    "authors": item.get("authors") or [],
+                    "publication_year": item.get("year"),
+                    "publication_type": item.get("publication_type"),
+                    "container_title": item.get("venue"),
+                    "doi": item.get("doi"),
+                    "access_level": item.get("access_level"),
+                    "provider": item.get("provider"),
+                })
+        elif name == "get_scholarly_source":
+            fetches += 1
+            abstract = (rf.get("abstract") or {}).get("text") or ""
+            passages = []
+            for p in rf.get("evidence_passages") or []:
+                passages.append(p.get("text") if isinstance(p, dict) else str(p))
+            sid = rf.get("source_record_id")
+            evidence.append({
+                "source_record_id": sid,
+                "access_level_before": rf.get("access_level_before"),
+                "access_level_after": rf.get("access_level_after"),
+                "returned_evidence_level": rf.get("returned_evidence_level"),
+                "abstract_text": abstract,
+                "evidence_passages": passages[:8],
+                "content_hash": rf.get("content_hash"),
+            })
+            if sid:
+                access[sid] = rf.get("access_level_after") or "METADATA_ONLY"
+    return {"scholarly_search_calls": searches,
+            "scholarly_source_fetch_calls": fetches,
+            "scholarly_records": records,
+            "scholarly_evidence": evidence,
+            "scholarly_access": access,
+            "scholarly_facts": {"search_calls": searches, "fetch_calls": fetches,
+                                "record_count": len(records),
+                                "evidence_count": len(evidence)}}
+
+
 def build_evidence_contract(tool_log, answer, agent="general", language="zh"):
     """构建 Evidence Contract（纯计算, 不调 LLM）
 
@@ -627,6 +686,9 @@ def build_evidence_contract(tool_log, answer, agent="general", language="zh"):
                  "speculation_claims": sum(1 for c in claims if c["epistemic_type"] == "SPECULATION"),
                  "unverified_citations": len(unverified),
                  "answer_len": len(ans)})
+    # PF-RP3B §B: O7-C scholarly provenance 独立输出（不混入 primary used_evidence;
+    # 原典引用面板 citations 投影零改动）
+    scholarly = build_scholarly_provenance(tool_log)
     return {
         "retrieved_evidence": retrieved,
         "candidate_evidence": [e for e in retrieved if e.get("candidate")],
@@ -636,6 +698,10 @@ def build_evidence_contract(tool_log, answer, agent="general", language="zh"):
         "unverified_citations": unverified,
         "retrieved_count": len(retrieved),
         "used_count": len(used),
+        "scholarly_records": scholarly["scholarly_records"],
+        "scholarly_evidence": scholarly["scholarly_evidence"],
+        "scholarly_access": scholarly["scholarly_access"],
+        "scholarly_facts": scholarly["scholarly_facts"],
     }
 
 

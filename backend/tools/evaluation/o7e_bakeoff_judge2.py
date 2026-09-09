@@ -139,8 +139,26 @@ def _judge_evidence_parts(r):
                   "source_type": e.get("source_type"),
                   "evidence_id": e.get("evidence_id")}
                  for e in used if e.get("source_type") == "secondary"][:6]
-    access_levels = []   # 本 run 未记录 access 状态——保持空, 不编造
-    return primary_ev, secondary, access_levels
+    # PF-RP3B §E: scholarly evidence 只来自 run artifact（SCHOL_CAL 起携带）——
+    # 禁止事后 registry 查询; 元数据+abstract/passages 按记录精度给 judge
+    schol = r.get("scholarly_provenance") or {}
+    ev_by_id = {e.get("source_record_id"): e
+                for e in (schol.get("scholarly_evidence") or [])}
+    sec_records = []
+    for rec in schol.get("scholarly_records") or []:
+        entry = dict(rec)
+        e = ev_by_id.get(rec.get("source_record_id"))
+        if e:
+            if e.get("abstract_text"):
+                entry["abstract_text"] = e["abstract_text"][:1200]
+            if e.get("evidence_passages"):
+                entry["evidence_passages"] = e["evidence_passages"][:5]
+            entry["access_level_after"] = e.get("access_level_after")
+        sec_records.append(entry)
+    access_levels = [{"source_record_id": k, "access_level": lvl}
+                     for k, lvl in (schol.get("SCHOLARLY_ACCESS_LEVELS")
+                                    or {}).items()]
+    return primary_ev, secondary + sec_records, access_levels
 
 
 def judge_candidate(mid, runs_path=None, out_tag=None):

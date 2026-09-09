@@ -73,9 +73,13 @@ def get_repair_llm():
 
 
 # ── 检索纪律（Phase A: 预算与终止条件收编到 agent_runtime, 本处只保留引用）──
+# O7-E PF-RP3B §A: scholarly 检索工具进入机械 retrieval/provenance 集——
+# raw_tool_log / ToolLoopTrace / hard 机械预算均按此集捕获（非 semantic router;
+# O7-C 能力接入 O7-E canonical Evidence Store 的管线缺口修复）
+SCHOLARLY_RETRIEVAL_TOOLS = {"search_scholarship", "get_scholarly_source"}
 RETRIEVAL_TOOLS = {"search_books", "get_chapter", "get_philosopher", "query_graph", "websearch",
                    "get_school", "get_book_detail", "list_books", "query_database", "compare_views",
-                   "role_play", "concept_trace"}
+                   "role_play", "concept_trace"} | SCHOLARLY_RETRIEVAL_TOOLS
 # O4 Cognitive Layer Collapse: soft 预算提示 / no-gain 提醒与强制 / 充分性收敛 /
 # STREAM_ANSWER_DELAY（O2 起即仅作兼容常量）全部删除——"证据是否充分/是否该收口"
 # 由 Main Agent 自主判断; runtime 只保留 hard 机械资源上限（AR.HARD_BUDGET_DIRECTIVE）。
@@ -2082,6 +2086,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         _fail = sum(1 for tc in tool_log if isinstance(tc.get("result_full"), dict) and tc["result_full"].get("error"))
         # O4: tool_ownership_audit（tool_value/final_use 审计）已随 tool_contracts 瘦身删除——
         # "专用工具是否被绕过/冗余"的语义审计不改变任何行为, done.tool_ownership 字段随之移除。
+        # O7-E PF-RP3B §C: scholarly provenance 独立投影——必须在 result_full
+        # 剥离前构建（原典 citations 面板零污染; 仅作 done/evaluation provenance）
+        _scholarly_sources = None
+        try:
+            from evidence_contract import build_scholarly_provenance as _bsp
+            _scholarly_sources = _bsp(tool_log)
+        except Exception as _e:
+            logger.warning(f"[scholarly-provenance] skipped: {str(_e)[:200]}")
         for tc in tool_log:
             tc.pop("result_full", None)
         # 安全审查（done 前）
@@ -2151,6 +2163,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # done.obligation_ledger 字段已删除）。
             evidence_payload["facts"] = evidence_state.snapshot()
         yield {"type": "done", "citations": citations, "evidence": evidence_payload,
+               "scholarly_sources": _scholarly_sources,
                "tool_calls": tool_log,
                "suggestions": suggestions, "safety": safety_flag,
                # O4 删除的 done 字段: composition / epistemic / obligations / budget（扫描）/

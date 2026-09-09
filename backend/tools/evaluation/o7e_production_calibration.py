@@ -74,6 +74,20 @@ def run_case_production(case, mk_normal, mk_repair):
     tel = case_result(case["case_id"], evs)
     published = bool(tel["published"])
     final_codes = [i.get("code") for i in val.get("result", {}).get("issues", [])]
+    # PF-RP3B §D: run-time scholarly provenance（安全投影: abstract/passages 是
+    # tool evidence 可存; 零 provider CoT）
+    _ss_done = done.get("scholarly_sources") or {}
+    scholarly_provenance = {
+        "SCHOLARLY_SEARCH_CALLS": _ss_done.get("scholarly_search_calls", 0),
+        "SCHOLARLY_SOURCE_FETCH_CALLS": _ss_done.get("scholarly_source_fetch_calls", 0),
+        "SCHOLARLY_RECORD_IDS": [r.get("source_record_id")
+                                 for r in _ss_done.get("scholarly_records") or []],
+        "SCHOLARLY_EVIDENCE_RECORD_IDS": [e.get("source_record_id")
+                                          for e in _ss_done.get("scholarly_evidence") or []],
+        "SCHOLARLY_ACCESS_LEVELS": _ss_done.get("scholarly_access") or {},
+        "scholarly_records": _ss_done.get("scholarly_records") or [],
+        "scholarly_evidence": _ss_done.get("scholarly_evidence") or [],
+    }
     # §E delivery 新字段。terminal_pending = 未达终态校验（流崩溃/无 done 事件）——
     # 耗尽修复后的干净拒绝（有 done、终态候选非空）不是 pending。
     # PF-RP1 §B: access overclaim 是语义学术判断, 不伪装成机械 delivery gate
@@ -99,6 +113,7 @@ def run_case_production(case, mk_normal, mk_repair):
               "citations": _as_list(done.get("citations")),
               "quote_bound": _as_list(done.get("quote_bound")),
               "evidence_digest": _ev_digest(done.get("evidence")) if done else None,
+              "scholarly_provenance": scholarly_provenance,
               "hard_gate": {k: tel[k] for k in (
                   "PREP_ANCHOR_TOTAL", "PREP_ANCHOR_RESOLVED",
                   "LP_ANCHOR_TOTAL", "LP_ANCHOR_RESOLVED",
@@ -191,6 +206,18 @@ def main(run_tag="CAL1", requested_model="deepseek-v4-flash"):
                h.get("INTENTIONAL_QUOTE_TO_PARAPHRASE") or 0 for h in hg),
            "PARAPHRASE_INTRODUCED_QUOTE_ISSUES": sum(
                h.get("PARAPHRASE_INTRODUCED_QUOTE_ISSUES") or 0 for h in hg),
+           "SCHOLARLY_SEARCH_CASES": sum(
+               1 for r in ok if (r.get("scholarly_provenance") or {})
+               .get("SCHOLARLY_SEARCH_CALLS")),
+           "SCHOLARLY_SOURCE_FETCH_CASES": sum(
+               1 for r in ok if (r.get("scholarly_provenance") or {})
+               .get("SCHOLARLY_SOURCE_FETCH_CALLS")),
+           "SCHOLARLY_RECORD_COUNT": sum(
+               len((r.get("scholarly_provenance") or {}).get("SCHOLARLY_RECORD_IDS")
+                   or []) for r in ok),
+           "SCHOLARLY_EVIDENCE_COUNT": sum(
+               len((r.get("scholarly_provenance") or {}).get("SCHOLARLY_EVIDENCE_RECORD_IDS")
+                   or []) for r in ok),
            }
     json.dump(out, open(out_path.replace(".json", "_summary.json"), "w",
                         encoding="utf-8"), ensure_ascii=False, indent=1)
