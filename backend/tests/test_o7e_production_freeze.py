@@ -94,3 +94,49 @@ def test_p3_adapter_owner_single_source():
 def test_p4_production_enabled_by_default():
     assert EG.LOCAL_PATCH_PRODUCTION_ENABLED is True
     assert EG._LOCAL_PATCH_PRODUCTION_AGENTS == {"general"}
+
+
+# ═══════════════════════════════════════════════════════
+# PF-RP1 §A: action 合同单一真源——三方 drift 锁死
+# ═══════════════════════════════════════════════════════
+def test_p5_action_matrix_system_human_applier_equal():
+    import json
+    import re as _re
+    import repair_context as RC
+    matrix = RC.LOCAL_PATCH_ACTION_MATRIX
+    assert matrix == {"quote": ("COPY_SLICE", "PARAPHRASE_CLAIM"),
+                      "citation": ("COPY_SLICE", "REPLACE_TEXT")}
+    # ① System protocol 文本逐 kind 列出矩阵动作, 且不得再宣称 quote 可 REPLACE_TEXT
+    eng = open(os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__)), ), "engine_langgraph.py"), encoding="utf-8").read()
+    proto = eng.split('LOCAL_PATCH_SYSTEM_PROTOCOL = """')[1].split('"""')[0]
+    block = proto[proto.index("- kind=quote"):proto.index("quote 上使用")]
+    q_seg = block[:block.index("- kind=citation")]
+    c_seg = block[block.index("- kind=citation"):]
+    for act in matrix["quote"]:
+        assert act in q_seg, f"System protocol quote 段缺 {act}"
+    for act in matrix["citation"]:
+        assert act in c_seg, f"System protocol citation 段缺 {act}"
+    assert "REPLACE_TEXT" not in q_seg            # 旧漂移文本已清除
+    assert "PARAPHRASE_CLAIM" not in c_seg
+    assert "均为非法动作" in proto
+    # ② Human patch contract 由同一矩阵派生资格行
+    prompt = RC.render_patch_prompt_v2([], {})
+    assert f"kind=quote issues: {', '.join(matrix['quote'])} only." in prompt
+    assert f"kind=citation issues: {', '.join(matrix['citation'])} only." in prompt
+    # ③ applier 资格由矩阵驱动: citation+PARAPHRASE_CLAIM → INVALID_ACTION_FOR_CITATION
+    from test_o7e_rca2_action_semantics import _LOG_SEARCH
+    from final_validator import validate_final_candidate
+    import repair_context as RC2
+    cite_cand = ("引言测试正文，讨论《论语》的成书与流传。\n\n"
+                 "书中另有说法，见【《论语》·八佾】。结尾一段正文保持结构完整。")
+    v = validate_final_candidate(cite_cand, raw_tool_log=_LOG_SEARCH,
+                                 fallback_log=[], language="zh")
+    bundles = RC2.build_repair_issue_bundles(cite_cand, v, _LOG_SEARCH)
+    ct = next(b for b in bundles if b["code"] == "UNVERIFIED_CITATION")
+    patch = json.dumps({"patches": [
+        {"issue_id": ct["issue_id"], "action": "PARAPHRASE_CLAIM",
+         "replacement_text": "纯转述文本"}]}, ensure_ascii=False)
+    new, errs = RC2.apply_main_agent_patches_v2(cite_cand, patch, [ct], {})
+    assert new is None
+    assert any("INVALID_ACTION_FOR_CITATION" in e for e in errs)
