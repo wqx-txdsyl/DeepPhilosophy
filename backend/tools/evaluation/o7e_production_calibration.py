@@ -64,6 +64,10 @@ def run_case_production(case, mk_normal, mk_repair):
     done = next((e for e in reversed(evs) if e.get("type") == "done"), {})
     errors = [e for e in evs if e.get("type") == "error"]
     answer = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
+    val = done.get("validation") or {}
+    tel = case_result(case["case_id"], evs)
+    published = bool(tel["published"])
+    final_codes = [i.get("code") for i in val.get("result", {}).get("issues", [])]
     # §E delivery 新字段。terminal_pending = 未达终态校验（流崩溃/无 done 事件）——
     # 耗尽修复后的干净拒绝（有 done、终态候选非空）不是 pending。
     # PF-RP1 §B: access overclaim 是语义学术判断, 不伪装成机械 delivery gate

@@ -140,3 +140,39 @@ def test_p5_action_matrix_system_human_applier_equal():
     new, errs = RC2.apply_main_agent_patches_v2(cite_cand, patch, [ct], {})
     assert new is None
     assert any("INVALID_ACTION_FOR_CITATION" in e for e in errs)
+
+
+# ═══════════════════════════════════════════════════════
+# PF-RP2 §0: 校准 runner 在 HEAD 可执行（CAL2 provenance 教训——
+# NameError 只在工作树修、没进 commit，导致 CAL2 不可复现）
+# ═══════════════════════════════════════════════════════
+def test_p6_calibration_runner_reproducible_at_head():
+    import json
+    bad = "结论：原文如下——\n\n> 「" + _SENTINEL_FAKE + "」\n"
+    para = "孔子在此批评鲁人改建长府，言语贵在切中要害。"
+    patch = json.dumps({"patches": [
+        {"issue_id": "vi_1", "action": "PARAPHRASE_CLAIM",
+         "replacement_text": para}]}, ensure_ascii=False)
+    script = _TOOLS_SCRIPT + [_msg(bad), _msg(patch)]
+    for k in _STUB_CALLS:
+        _STUB_CALLS[k] = []
+    orig = (EG.get_llm, EG.get_tools, AG.llm_chat)
+    chat = ScriptedChat(script=list(script))
+    EG.get_llm = lambda: chat
+    EG.get_tools = lambda a: _fake_tools()
+    AG.llm_chat = lambda *a, **k: (_ for _ in ()).throw(
+        AssertionError("收口路径不得调用隐藏 LLM"))
+    from o7e_production_calibration import run_case_production
+    try:
+        r = run_case_production({"case_id": "P6", "question": "言必有中出处"},
+                                lambda: chat, lambda: chat)
+    finally:
+        EG.get_llm, EG.get_tools, AG.llm_chat = orig
+    d = r["delivery"]
+    assert d["run_status"] == "COMPLETED"
+    assert d["published"] is True
+    assert d["repairs_used"] == 1
+    assert d["terminal_pending"] is False
+    assert d["public_access_overclaims"] == "DEFERRED_TO_CANONICAL_JUDGE"
+    assert r["hard_gate"]["LOCAL_PATCH_ANCHOR_RESOLUTION_RATE"] == 1.0
+    assert "quote_bound" in r and "citations" in r and "evidence_digest" in r
