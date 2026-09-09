@@ -1317,6 +1317,13 @@ def interpret_thinking(name, args, result, language):
     return None
 
 
+# O7-E Production Freeze §B: General Agent 生产启用 LOCAL_PATCH
+# （PRODUCTION_LOCAL_PATCH_ENABLED=true; Reviewer 2026-09-09 签署）。
+# 哲学家 Agent 不在启用集合（PHILOSOPHER_AGENT_DIFF=0, 永走 FULL_REWRITE）。
+LOCAL_PATCH_PRODUCTION_ENABLED = True
+_LOCAL_PATCH_PRODUCTION_AGENTS = {"general"}
+
+
 def _issue_fingerprint(code, locator, evidence_ref=None):
     """O7-E FINAL-DIAG §4: validation state 的 issue 指纹（code+norm locator+
     evidence_ref 三元组）。与 repair_context.issue_fingerprint 同一算法——engine
@@ -1335,6 +1342,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     custom_instructions: 用户自定义指令（个性化, 追加到 system prompt）
     language: zh/en——输出与思考流语言（覆盖 system 内的语言要求）
     conversation_id/message_id: Phase A (A1) 观测上下文（可选, 缺省自动生成）"""
+    # O7-E Production Freeze §B: General Agent 生产启用 LOCAL_PATCH
+    # （PRODUCTION_LOCAL_PATCH_ENABLED=true; LOCAL_PATCH_ADAPTER_OWNER=1——
+    # 生产与评测共用 local_patch_runtime 同一 adapter）; 哲学家 Agent 继续
+    # 零改（adapter 保持 None → 永走 FULL_REWRITE, PHILOSOPHER_AGENT_DIFF=0）。
+    _repair_adapter = _evaluation_repair_adapter
+    if (_repair_adapter is None and agent in _LOCAL_PATCH_PRODUCTION_AGENTS
+            and LOCAL_PATCH_PRODUCTION_ENABLED):
+        import local_patch_runtime as _LPR
+        _repair_adapter = _LPR.production_adapter()
     yield {"type": "status", "content": "开始思考" if language != "en" else "Thinking"}
     _t_start = time.time()
     # 预热 MCP 工具（加载完成后 get_tools 才能拿到; MCP_SERVERS 空时秒返回）
@@ -1783,18 +1799,19 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "packet_sha256": _hl.sha256(json.dumps(
                     _trace_pkt, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16],
                 "no_tools": bool(budget is not None and budget.hard_reached())})
-            # O7-E RCA-2 H1 §5-8 / FINAL-DIAG §1: candidate-aware prepare 单入口。
-            # 生产 _evaluation_repair_adapter=None 永走原 full-rewrite。
+                        # O7-E RCA-2 H1 §5-8 / FINAL-DIAG §1: candidate-aware prepare 单入口。
+            # Production Freeze §B: General Agent 生产默认注入 production adapter;
+            # 哲学家 Agent 与评测注入（seam 参数）之外的路径保持无 adapter。
             # 只有 prep["supported"]（ALL codes local + ALL anchors exact + prompt
             # complete）才进 LOCAL_PATCH; unsupported → _lp_meta=None → 原有
             # FULL_REWRITE _fb 原样保留（绝不注入空 prompt 的 LOCAL_PATCH System）。
             _lp_meta = None
-            if _evaluation_repair_adapter is not None:
+            if _repair_adapter is not None:
                 import hashlib as _hl2
                 _raw_log_hash_before = _hl2.sha256(json.dumps(
                     raw_tool_log, ensure_ascii=False, default=str).encode()
                 ).hexdigest()[:16]
-                _prep = _evaluation_repair_adapter.prepare(
+                _prep = _repair_adapter.prepare(
                     candidate, validation, raw_tool_log,
                     prev_errors=_prev_patch_errors)
                 if _prep.get("supported") and (_prep.get("prompt") or "").strip():
@@ -1828,6 +1845,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 _actual_proto = (LOCAL_PATCH_SYSTEM_PROTOCOL if _lp_mode == "LOCAL_PATCH"
                                  else REPAIR_SYSTEM_PROTOCOL)
                 _repair_trace[-1]["repair_output_mode"] = _lp_mode
+                _repair_trace[-1]["adapter_owner"] = (
+                    "evaluation" if _evaluation_repair_adapter is not None
+                    else ("production" if _repair_adapter is not None else "none"))
                 _repair_trace[-1]["actual_system_protocol_sha256"] = _hl.sha256(
                     _actual_proto.encode("utf-8")).hexdigest()[:16]
                 _repair_trace[-1]["system_protocol_sha256"] = \
@@ -1866,7 +1886,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # → 丢弃本轮 patch serialization, 用最新 evidence 重建 bundle/catalog,
                 # no-tools 二次 finalization（不增 repairs_used）
                 if _raw_log_hash_after != _raw_log_hash_before:
-                    _fin_meta = _evaluation_repair_adapter.prepare(
+                    _fin_meta = _repair_adapter.prepare(
                         _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
                     if _fin_meta.get("supported"):
                         # H2D §3: finalization 走 canonical _stream_graph path
@@ -1898,7 +1918,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         pending["text"] = ""
                         if _apply_errs is None:
                             _applied, _apply_errs, _act = \
-                                _evaluation_repair_adapter.parse_and_apply(
+                                _repair_adapter.parse_and_apply(
                                     _lp_meta["pre_patch_candidate"], _fin_candidate,
                                     {"bundles": _fin_meta.get("bundles") or [],
                                      "catalog": _fin_meta.get("catalog") or {},
@@ -1924,10 +1944,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         _applied, _apply_errs = None, ["FINALIZATION_NO_ANCHOR"]
                 else:
                     # 无新工具 → 直接用模型原 patch + 原 bundle/catalog
-                    _rebind = _evaluation_repair_adapter.prepare(
+                    _rebind = _repair_adapter.prepare(
                         _lp_meta["pre_patch_candidate"], validation, raw_tool_log)
                     _applied, _apply_errs, _act = \
-                        _evaluation_repair_adapter.parse_and_apply(
+                        _repair_adapter.parse_and_apply(
                             _lp_meta["pre_patch_candidate"], candidate,
                             {"bundles": _lp_meta["bundles"],
                              "catalog": _lp_meta.get("catalog") or {},
