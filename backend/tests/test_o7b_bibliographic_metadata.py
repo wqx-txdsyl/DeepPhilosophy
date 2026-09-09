@@ -295,11 +295,18 @@ HARD_FROZEN = ("backend/final_validator.py",
                "backend/agent_runtime.py", "backend/evidence_contract.py")  # engine 由 O7-E 授权解冻(7d7adfa46 后冻结)
 
 
+# O7-E PF-RP3B: evidence_contract 获授权接入 scholarly schema——逐文件基线
+_R17_BASES = {"backend/evidence_contract.py": "624fad500",
+              "backend/final_validator.py": None,
+              "backend/agent_runtime.py": None}
+
+
 @pytest.mark.parametrize("rel", HARD_FROZEN)
 def test_r17_production_frozen(rel):
-    r = subprocess.run(["git", "diff", "--quiet", O7A_BASE, "--", rel],
+    base = _R17_BASES.get(rel) or O7A_BASE
+    r = subprocess.run(["git", "diff", "--quiet", base, "--", rel],
                        cwd=ROOT, capture_output=True)
-    assert r.returncode == 0, f"{rel} 相对 O7-A BASE 有改动（禁止）"
+    assert r.returncode == 0, f"{rel} 相对 {base} 有改动（禁止）"
 
 
 def test_r17_routes_within_rp1_scope():
