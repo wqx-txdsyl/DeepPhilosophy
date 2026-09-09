@@ -33,7 +33,7 @@ def _ev_digest(ev):
     仅 retrieved_evidence 等大列表截断。"""
     if not isinstance(ev, dict):
         return ev
-    full_keys = {"used_evidence", "citations", "unverified_citations"}
+    full_keys = {"used_evidence", "citations", "unverified_citations", "claims"}
     out = {}
     for k, v in ev.items():
         if k in full_keys and isinstance(v, list):
@@ -114,6 +114,10 @@ def run_case_production(case, mk_normal, mk_repair):
               "quote_bound": _as_list(done.get("quote_bound")),
               "evidence_digest": _ev_digest(done.get("evidence")) if done else None,
               "scholarly_provenance": scholarly_provenance,
+              # PF-RP4 §3: 真实工具选择轨迹（declared tool 序列, 机械事实）
+              "tool_trajectory": [e.get("name") for e in evs
+                                  if e.get("type") == "tool_start"
+                                  and e.get("initiated_by") == "main_agent"],
               "hard_gate": {k: tel[k] for k in (
                   "PREP_ANCHOR_TOTAL", "PREP_ANCHOR_RESOLVED",
                   "LP_ANCHOR_TOTAL", "LP_ANCHOR_RESOLVED",

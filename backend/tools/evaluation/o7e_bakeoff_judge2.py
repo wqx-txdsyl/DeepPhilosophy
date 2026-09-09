@@ -89,76 +89,107 @@ def _source_window(text, claim, max_window=500):
     return text[max(0, center - 0):center + wlen]
 
 
-def _replay_windows(r, max_windows=12):
-    """答案中每个 verbatim claim → 已读章节里的 source window（机械, 无 validator 判断）。"""
-    import quote_bound as QB
-    ans = r.get("answer", "")
-    texts = _materialize_read_chapters(r)
-    if not texts:
-        return []
-    windows = []
-    for q in QB.extract_quotes(ans)[:max_windows]:
-        for key, text in texts.items():
-            w = _source_window(text, q["text"], max_window=500)
-            if w:
-                windows.append({"chapter_key": key,
-                                "source_window": w,
-                                "for_answer_claim": q["text"][:80]})
-                break
-    return windows
+def _compact_digest(r):
+    """PF-RP4A §A: 结构化 compact digest——不再对整份 JSON 做盲目前缀截断。"""
+    ev = r.get("evidence_digest") or {}
+    return {
+        "retrieved_count": ev.get("retrieved_count"),
+        "used_count": ev.get("used_count"),
+        "used_evidence": [{"evidence_id": e.get("evidence_id"),
+                           "book": e.get("book"), "chapter": e.get("chapter"),
+                           "source_type": e.get("source_type")}
+                          for e in (ev.get("used_evidence") or [])
+                          if isinstance(e, dict)][:12],
+        "scholarly_facts": ev.get("scholarly_facts") or {},
+        "scholarly_access": ev.get("scholarly_access") or {},
+    }
 
 
-def _judge_evidence_parts(r):
-    """PF-RP2 §0: 拆分 canonical judge 的四类正式字段。
-    PRIMARY_TEXT_EVIDENCE 只含既有 run 的真实 source text（used_evidence primary
-    条目）; 答案侧引文是 answer_quote 映射, 不冒充 source text; secondary 与
-    access_levels 走 build_judge_input 的独立正式字段; 缺的数据保持空。"""
+def _best_window(text, claim, wlen=500):
+    """章节原文中与 claim 归一 shingle 重叠最高的窗口起点（保留原文坐标）。"""
+    qsh = QB._shingles(QB.norm_q(claim))
+    if not qsh or not text:
+        return None, 0.0
+    best_i, best_ov = None, 0.0
+    n = len(text)
+    if n <= wlen:
+        ov = len(QB._shingles(QB.norm_q(text)) & qsh) / max(len(qsh), 1)
+        return (0, ov) if ov >= 0.05 else (None, 0.0)
+    for i in list(range(0, n - wlen + 1, 300)) + [max(n - wlen, 0)]:
+        ov = len(QB._shingles(QB.norm_q(text[i:i + wlen])) & qsh) / max(len(qsh), 1)
+        if ov > best_ov:
+            best_i, best_ov = i, ov
+    return (best_i, best_ov) if best_i is not None else (None, 0.0)
+
+
+def _replay_windows(r, max_windows=24, max_window_chars=500):
+    """PF-RP4A §A: 全量候选机械 replay 选择——绝不做 positional 截断。
+
+    候选 = 答案全部 quote-like spans + evidence contract 中 substantial claim
+    texts（有 evidence_ids 或 TEXTUAL_CLAIM）; 对每个候选在全部已物化已读章节
+    上算确定性 shingle overlap → 排序 → 同章节近区去重 → bounded top-K。
+    只提供 source text, 不携带 validator 的 EXACT/NEAR/MEMORY_ONLY 结论。"""
     ev = r.get("evidence_digest") or {}
     facts = ev.get("facts") or {}
-    used = [e for e in (ev.get("used_evidence") or []) if isinstance(e, dict)]
-    primary = [{"evidence_id": e.get("evidence_id"),
-                "source_type": e.get("source_type"),
-                "book": e.get("book"), "chapter": e.get("chapter"),
-                "source_text": ((e.get("text") or e.get("snippet") or "")[:400])
-                } for e in used
-               if e.get("source_type") in ("primary_read", "primary", "snippet")
-               and (e.get("text") or e.get("snippet"))][:10]
-    qb = [e for e in (r.get("quote_bound") or [])
-          if e.get("verification_state") in ("VERIFIED_EXACT", "VERIFIED_NEAR")]
-    answer_quotes = [{"answer_quote": e.get("preview"),
-                      "evidence_id": e.get("source_evidence_id"),
-                      "state": e.get("verification_state")} for e in qb[:12]]
-    primary_ev = [
-        {"source": "primary_evidence_from_existing_run",
-         "entries": primary},
-        {"source": "answer_quote_to_evidence_mapping",
-         "entries": answer_quotes},
-        {"source": "read_chapters", "chapters": facts.get("read_chapters")},
-    ]
-    secondary = [{"book": e.get("book"), "chapter": e.get("chapter"),
-                  "source_type": e.get("source_type"),
-                  "evidence_id": e.get("evidence_id")}
-                 for e in used if e.get("source_type") == "secondary"][:6]
-    # PF-RP3B §E: scholarly evidence 只来自 run artifact（SCHOL_CAL 起携带）——
-    # 禁止事后 registry 查询; 元数据+abstract/passages 按记录精度给 judge
-    schol = r.get("scholarly_provenance") or {}
-    ev_by_id = {e.get("source_record_id"): e
-                for e in (schol.get("scholarly_evidence") or [])}
-    sec_records = []
-    for rec in schol.get("scholarly_records") or []:
-        entry = dict(rec)
-        e = ev_by_id.get(rec.get("source_record_id"))
-        if e:
-            if e.get("abstract_text"):
-                entry["abstract_text"] = e["abstract_text"][:1200]
-            if e.get("evidence_passages"):
-                entry["evidence_passages"] = e["evidence_passages"][:5]
-            entry["access_level_after"] = e.get("access_level_after")
-        sec_records.append(entry)
-    access_levels = [{"source_record_id": k, "access_level": lvl}
-                     for k, lvl in (schol.get("SCHOLARLY_ACCESS_LEVELS")
-                                    or {}).items()]
-    return primary_ev, secondary + sec_records, access_levels
+    recorded = facts.get("read_chapters") or []
+    texts = _materialize_read_chapters(r)
+    failed = [k for k in recorded if k not in texts]
+    ans = r.get("answer", "")
+    candidates = [q.get("text") or "" for q in QB.extract_quotes(ans)]
+    # PF-RP4A §A: textual claim 不一定带外层引号（H13 实况——整句转述+内部
+    # scare quotes）→ 答案句级候选作为机械超集; 归一文本去重
+    import re as _re
+    seen_norm = set()
+    sentences = [s.strip() for s in _re.split(r"[。！？\n]", ans) if s.strip()]
+    for s in sentences:
+        if len(QB.norm_q(s)) >= 12:
+            n = QB.norm_q(s)
+            if n not in seen_norm:
+                seen_norm.add(n)
+                candidates.append(s)
+    for c in (ev.get("claims") or []):
+        if isinstance(c, dict) and (c.get("evidence_ids")
+                                    or c.get("role") == "TEXTUAL_CLAIM"):
+            t = (c.get("text") or "").strip()
+            if t and len(QB.norm_q(t)) >= 12:
+                n = QB.norm_q(t)
+                if n not in seen_norm:
+                    seen_norm.add(n)
+                    candidates.append(t)
+    candidates = [c.strip() for c in candidates if c.strip()]
+    scored = []
+    for t in candidates:
+        best = None
+        for key in sorted(texts):
+            i, ov = _best_window(texts[key], t, max_window_chars)
+            if i is not None and ov >= 0.05 and (best is None or ov > best[0]):
+                best = (ov, key, i)
+        if best is not None:
+            scored.append((best[0], best[1], best[2], t))
+    scored.sort(key=lambda x: -x[0])
+    matched = len(scored)
+    windows, seen_regions = [], []
+    for ov, key, i, t in scored:
+        if any(k == key and abs(i - j) < 250 for k, j in seen_regions):
+            continue
+        if len(windows) >= max_windows:
+            break
+        seen_regions.append((key, i))
+        windows.append({"chapter_key": key,
+                        "source_window": texts[key][i:i + max_window_chars],
+                        "for_answer_claim": t[:80],
+                        "overlap": round(ov, 2)})
+    meta = {"read_chapters_recorded": len(recorded),
+            "read_chapters_materialized": len(texts),
+            "read_chapters_materialize_failed": len(failed),
+            "materialize_failed_keys": failed,
+            "primary_replay_candidates": len(candidates),
+            "primary_replay_matched": matched,
+            "primary_replay_windows": len(windows),
+            "primary_replay_coverage_rate": round(
+                matched / max(len(candidates), 1), 3),
+            "new_primary_source_ids": 0}
+    return windows, meta
 
 
 def judge_candidate(mid, runs_path=None, out_tag=None):
@@ -183,7 +214,7 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
         # PF-RP3A §B EVIDENCE REPLAY: 已读章节机械物化 → verbatim claim 的
         # source window（≤500 字符）——judge 与 validator 看同一证据事实,
         # 但不含 validator 的 EXACT/NEAR/MEMORY_ONLY 结论
-        replay = _replay_windows(r)
+        replay, replay_meta = _replay_windows(r)
         if replay:
             primary_ev = primary_ev + [
                 {"source": "evidence_replay_read_chapters", "entries": replay}]
@@ -193,9 +224,8 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
         inp = O7A.build_judge_input(
             user_question=m["question"], task_category=m["task_category"],
             answer=r.get("answer", ""), agent_identity=m["agent_identity"],
-            evidence_digest=json.dumps(
-                {k: v for k, v in (r.get("evidence_digest") or {}).items()
-                 if k != "facts"}, ensure_ascii=False)[:2000],
+            # PF-RP4A §A: 结构化 compact digest 取代整份 JSON 的盲目前缀截断
+            evidence_digest=json.dumps(_compact_digest(r), ensure_ascii=False),
             primary_text_evidence=primary_ev,
             bibliographic_records=(r.get("citations") or [])[:8],
             secondary_source_records=secondary,
@@ -286,7 +316,8 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
                        "fatal_vote_counts": fatal_vc,
                        "applicability_mismatch_votes": mismatch_votes,
                        "required_missing": required_missing,
-                       "votes_archive": votes_archive})
+                       "votes_archive": votes_archive,
+                       "replay_meta": replay_meta})
         json.dump(judged, open(out_path, "w", encoding="utf-8"),
                   ensure_ascii=False, indent=1)
         print(f"  {cid}: " + " ".join(f"{d.split('_')[0]}={dims[d]['median']}"
