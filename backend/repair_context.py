@@ -232,7 +232,9 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
             "issue_id": f"vi_{n}", "code": code,
             "anchor": anchor_out,
             "evidence_ref": ref,
-            "source": None}
+            "source": None,
+            # RCA-2 §metric: resolver 状态显式化——不再从 source is None 反推语义
+            "evidence_resolution": "NOT_REQUIRED" if not ref else "UNRESOLVED"}
         # evidence: issue-complete（可解析 ref 必给; 上限内给满）;
         # MEMORY_ONLY 无 ref → best-effort 给最高重叠 span（仍机械, 供 COPY_SLICE/转述参考）
         if not ref and code in ("UNSUPPORTED_EXACT_QUOTE", "STITCHED_QUOTE",
@@ -256,6 +258,7 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
                                         "shingle_overlap": overlap,
                                         "source_char_length": len(payload.get("units") and
                                                                   "".join(payload["units"]) or "")}
+                    bundle["evidence_resolution"] = "RESOLVED"
                     total_ctx += len(ctx)
             elif payload is not None and kind == "citation":
                 snip = str(payload.get("snippet") or "")[:MAX_CONTEXT_PER_EVIDENCE]
@@ -263,6 +266,7 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
                     bundle["source"] = {"book": payload.get("book"),
                                         "chapter": payload.get("chapter"),
                                         "exact_context": snip}
+                    bundle["evidence_resolution"] = "RESOLVED"
                     total_ctx += len(snip)
         bundles.append(bundle)
     return bundles
@@ -464,9 +468,14 @@ def build_slice_catalog(bundles, locator, per_issue_locators=None):
 
 
 def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
-    """H2 §C-D: 模型零 SHA/零 offset/零 evidence_ref 回显。"""
+    """H2 §C-D: 模型零 SHA/零 offset/零 evidence_ref 回显。
+    RCA-2 §action: quote 动作拆分——COPY_SLICE（保留逐字引文形式）与
+    PARAPHRASE_CLAIM（Main Agent 显式声明放弃逐字引文, claim 整体替换）;
+    citation 仍用 COPY_SLICE / REPLACE_TEXT。"""
     def strip_meta(b):
-        out = {"issue_id": b["issue_id"], "code": b["code"]}
+        out = {"issue_id": b["issue_id"], "code": b["code"],
+               "kind": "citation" if b.get("code") == "UNVERIFIED_CITATION"
+               else "quote"}
         a = b.get("anchor") or {}
         out["anchor_preview"] = a.get("surface_preview", "")[:60]
         src = b.get("source") or {}
@@ -482,11 +491,23 @@ def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
               "Output ONLY a JSON object:\n"
               '{"patches": [{"issue_id": "vi_N", "action": "COPY_SLICE", '
               '"slice_id": "vi_N:sK"} or {"issue_id": "vi_N", "action": '
-              '"REPLACE_TEXT", "replacement_text": "..."}]}\n'
-              "Rules: every issue listed must be covered by exactly one patch. "
+              '"PARAPHRASE_CLAIM", "replacement_text": "..."} or '
+              '{"issue_id": "vi_N", "action": "REPLACE_TEXT", '
+              '"replacement_text": "..."}]}\n'
+              "Action eligibility (strict):\n"
+              "- kind=quote issues: COPY_SLICE or PARAPHRASE_CLAIM only. "
+              "REPLACE_TEXT is invalid for quote issues.\n"
+              "- kind=citation issues: COPY_SLICE or REPLACE_TEXT only. "
+              "PARAPHRASE_CLAIM is invalid for citation issues.\n"
+              "Rules: every issue listed must be covered by exactly one patch.\n"
               "COPY_SLICE replaces the quoted content with the exact bytes of the "
-              "chosen slice (quote markers stay). REPLACE_TEXT is your own prose "
-              "(paraphrase or citation fix), also replacing only the content span. "
+              "chosen slice (quote markers stay).\n"
+              "PARAPHRASE_CLAIM (quote issues only) declares: this is no longer a "
+              "verbatim quote. Your replacement_text replaces the ENTIRE claim "
+              "including the surrounding quote marks / blockquote marker, and must "
+              "not itself contain any verbatim quotation (write plain prose).\n"
+              "REPLACE_TEXT (citation issues only) is your own prose replacing the "
+              "citation content span.\n"
               "Do not compute offsets or copy any hash.\n")
     if prev_errors:
         header += ("\nprevious_patch_protocol_errors: " +
@@ -501,10 +522,18 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
     """H2D §2: 无 SHA 回显版 applier——runtime 自验 candidate/anchor SHA。
 
     context_candidate_sha: build() 时记录的候选 SHA（模型不可见）; apply 前校验
-    sha(current_candidate)==context SHA; 每 anchor 校验 content SHA。
+    sha(current_candidate)==context SHA; 每 anchor 校验 target span SHA。
     FINAL-DIAG §5: telemetry 传入 list 时逐条 DECLARED patch 记录
     {issue_id, issue_code, anchor_kind, action, slice_id}——禁止 replacement_text/
-    source 正文/CoT; action 语义零改动（记录并行存在）。"""
+    source 正文/CoT。
+    RCA-2 §action: quote 动作语义拆分——
+      COPY_SLICE      仅 quote/citation 通用: 替换 content_span（quote wrapper 保留）
+      PARAPHRASE_CLAIM 仅 quote: Main Agent 显式声明放弃逐字引文 → 替换整个
+                      claim_span（含 wrapper/blockquote 前缀一并移除）; replacement
+                      本身不得再构成 QuoteBound 可识别的逐字引文
+      REPLACE_TEXT    仅 citation（quote 上使用 → INVALID_ACTION_FOR_QUOTE, 零兼容）;
+      PARAPHRASE_CLAIM 用于 citation → INVALID_ACTION_FOR_CITATION。"""
+
     def _rec(iid, action, slice_id=None):
         if telemetry is None:
             return
@@ -522,7 +551,7 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
         return None, ["STALE_CANDIDATE"]
     errs = []
     covered = set()
-    spans = []
+    spans = []   # (start, end, text, iid, is_claim_span)
     cat_by_id = {s["slice_id"]: (s, iid) for iid, sl in slice_catalog.items()
                  for s in sl}
     for pt in p.get("patches") or []:
@@ -535,12 +564,40 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
             errs.append(f"DUPLICATE_PATCH:{iid}")
             continue
         covered.add(iid)
-        _rec(iid, pt.get("action"),
-             pt.get("slice_id") if pt.get("action") == "COPY_SLICE" else None)
+        action = pt.get("action")
+        _rec(iid, action,
+             pt.get("slice_id") if action == "COPY_SLICE" else None)
         a = bundle.get("anchor")
         if not a:
             errs.append(f"NO_ANCHOR:{iid}")
             continue
+        is_citation = bundle.get("code") == "UNVERIFIED_CITATION"
+        # RCA-2 §action: quote/citation 动作资格（机械, 零兼容）
+        if action == "REPLACE_TEXT" and not is_citation:
+            errs.append(f"INVALID_ACTION_FOR_QUOTE:{iid}")
+            continue
+        if action == "PARAPHRASE_CLAIM":
+            if is_citation:
+                errs.append(f"INVALID_ACTION_FOR_CITATION:{iid}")
+                continue
+            text = pt.get("replacement_text")
+            if not isinstance(text, str) or not text.strip():
+                errs.append(f"EMPTY_REPLACEMENT:{iid}")
+                continue
+            # PARAPHRASE_CLAIM 不得重新制造 quote（机械 QB 门）
+            if QB.extract_quotes(text):
+                errs.append(f"PARAPHRASE_CONTAINS_VERBATIM_QUOTE:{iid}")
+                continue
+            t_s = a.get("claim_start", a.get("start", 0))
+            t_e = a.get("claim_end", a.get("end", 0))
+            # runtime anchor SHA 校验（target = claim span）
+            _expected = a.get("claim_sha256") or a.get("content_sha256")
+            if _expected and _sha(candidate[t_s:t_e])[:16] != _expected:
+                errs.append(f"STALE_ANCHOR:{iid}")
+                continue
+            spans.append((t_s, t_e, text, iid, True))
+            continue
+        # COPY_SLICE / citation REPLACE_TEXT: target = content span
         c_s = a.get("content_start", a.get("start", 0))
         c_e = a.get("content_end", a.get("end", 0))
         # H2D §2: runtime anchor SHA 校验
@@ -548,7 +605,6 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
         if _expected and _sha(candidate[c_s:c_e])[:16] != _expected:
             errs.append(f"STALE_ANCHOR:{iid}")
             continue
-        action = pt.get("action")
         if action == "COPY_SLICE":
             sid = pt.get("slice_id")
             hit = cat_by_id.get(sid)
@@ -564,7 +620,7 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
         else:
             errs.append(f"UNKNOWN_ACTION:{action!r}:{iid}")
             continue
-        spans.append((c_s, c_e, text, iid))
+        spans.append((c_s, c_e, text, iid, False))
     for b in bundles:
         if b["issue_id"] not in covered:
             errs.append(f"UNPATCHED_ISSUE:{b['issue_id']}")
@@ -572,12 +628,12 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
         return None, errs
     spans.sort(key=lambda t: -t[0])
     last_start = None
-    for s, e, _, iid in spans:
+    for s, e, _, iid, _claim in spans:
         if last_start is not None and e > last_start:
             return None, [f"OVERLAP:{iid}"]
         last_start = s
     new = candidate
-    for s, e, text, _ in spans:
+    for s, e, text, _, _claim in spans:
         new = new[:s] + text + new[e:]
     return new, []
 
