@@ -1810,6 +1810,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         {"issue_id": b["issue_id"], "anchor": bool(b.get("anchor")),
                          "code": b["code"],
                          "linked_source": bool(b.get("source")),
+                         "has_evidence_ref": bool(b.get("evidence_ref")),
+                         "evidence_resolution": b.get("evidence_resolution"),
                          "source_overlap": (b.get("source") or {}).get("shingle_overlap")
                          if isinstance((b.get("source") or {}).get("shingle_overlap"),
                                        (int, float)) else None}
@@ -1900,7 +1902,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                     {"bundles": _fin_meta.get("bundles") or [],
                                      "catalog": _fin_meta.get("catalog") or {},
                                      "candidate_sha": _fin_meta.get("candidate_sha"),
-                                     "issue_fps": _fin_meta.get("issue_fps") or []})
+                                     "issue_fps": _fin_meta.get("issue_fps") or [],
+                                     "raw_tool_log": raw_tool_log})
                         if _repair_trace:
                             _repair_trace[-1]["finalization"] = {
                                 "raw_log_changed": True,
@@ -1909,7 +1912,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                 "patch_chars": len(_fin_candidate or ""),
                                 "tool_calls": _fin_tool_calls,
                                 "actions": (_act or {}).get("actions") or [],
-                                "quote_wrapper_loss": (_act or {}).get("quote_wrapper_loss", 0),
+                                "intentional_quote_to_paraphrase":
+                                    (_act or {}).get("intentional_quote_to_paraphrase", 0),
+                                "unintentional_quote_wrapper_loss":
+                                    (_act or {}).get("unintentional_quote_wrapper_loss", 0),
+                                "preexisting_verified_quotes_lost":
+                                    (_act or {}).get("preexisting_verified_quotes_lost", 0),
                                 "non_target_changed": (_act or {}).get("non_target_changed", 0)}
                     else:
                         _applied, _apply_errs = None, ["FINALIZATION_NO_ANCHOR"]
@@ -1924,6 +1932,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                              "catalog": _lp_meta.get("catalog") or {},
                              "candidate_sha": _lp_meta.get("candidate_sha"),
                              "issue_fps": _lp_meta.get("issue_fps") or [],
+                             "raw_tool_log": raw_tool_log,
                              "rebind_ok": _rebind.get("supported", True)})
                 # H2C §9: INVALID_JSON 诊断遥测（无正文保存）
                 _patch_diag = {}
@@ -1937,10 +1946,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         "applied": _applied is not None,
                         "errors": (_apply_errs or [])[:4],
                         "patch_diag": _patch_diag,
-                        # FINAL-DIAG §5: patch action 遥测——只记 identity/动作,
-                        # 禁止 replacement_text / source 正文 / CoT
+                        # FINAL-DIAG §5 + RCA-2 §wrapper: patch action 遥测——
+                        # 只记 identity/动作, 禁止 replacement_text / source 正文 / CoT
                         "actions": (_act or {}).get("actions") or [],
-                        "quote_wrapper_loss": (_act or {}).get("quote_wrapper_loss", 0),
+                        "intentional_quote_to_paraphrase":
+                            (_act or {}).get("intentional_quote_to_paraphrase", 0),
+                        "unintentional_quote_wrapper_loss":
+                            (_act or {}).get("unintentional_quote_wrapper_loss", 0),
+                        "preexisting_verified_quotes_lost":
+                            (_act or {}).get("preexisting_verified_quotes_lost", 0),
                         "non_target_changed": (_act or {}).get("non_target_changed", 0)}
                 # H2C §3: 记录协议错误供下轮 prompt 引用
                 _prev_patch_errors = _apply_errs if _apply_errs else None

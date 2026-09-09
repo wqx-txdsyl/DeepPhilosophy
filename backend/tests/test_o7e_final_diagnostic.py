@@ -142,9 +142,13 @@ def test_f2_unresolved_anchor_local_patch_system_never_reaches_model():
 # F3-F6: finalization 真实执行（repair 轮内新工具 → raw log 变更 →
 # _stream_graph no_tools → pending 收口 patch → 真实 apply）
 # ═══════════════════════════════════════════════════════
-_PATCH = json.dumps({"patches": [{"issue_id": "vi_1", "action": "REPLACE_TEXT",
-                                  "replacement_text": _LUNYU_PASSAGE}]},
-                    ensure_ascii=False)
+# RCA-2 起 quote 上 REPLACE_TEXT 非法——finalization patch 用 PARAPHRASE_CLAIM
+# （纯转述, 无任何引号 → 不触发 PARAPHRASE_CONTAINS_VERBATIM_QUOTE 门）
+_FIN_PATCH = json.dumps(
+    {"patches": [{"issue_id": "vi_1", "action": "PARAPHRASE_CLAIM",
+                  "replacement_text": "孔子在此批评鲁人改建长府，并借闵子骞之言说明"
+                                      "行事应遵循成规，言语贵在切中要害。"}]},
+    ensure_ascii=False)
 
 
 def _finalization_run():
@@ -158,7 +162,7 @@ def _finalization_run():
                                                        # 同参会被 DuplicateGuard
                                                        # 机械复用, raw log 不增长）
         _msg("已重新取得原文，输出修订。"),                  # repair 轮收口文本（将被丢弃）
-        _msg(_PATCH),                                    # finalization patch JSON
+        _msg(_FIN_PATCH),                                # finalization patch JSON
     ]
     return _run_lp("言必有中出处", script, adapter=LocalPatchAdapter())
 
@@ -173,10 +177,10 @@ def test_f3_finalization_tool_use_path_actually_executes():
     assert fin and fin.get("raw_log_changed") is True
     assert fin.get("applied") is True
     assert fin.get("patch_chars", 0) > 0
-    # 真实 apply 的证据: 伪引文 content 被换成库中原文 → validator PASS → 发布
+    # 真实 apply 的证据: 伪引文 claim 被整体降级为转述 → validator PASS → 发布
     assert done["validation"]["repairs_used"] == 1     # finalization 不增 repairs
     assert done["validation"]["result"]["ok"] is True
-    assert _LUNYU_PASSAGE in _answer_text(evs)
+    assert "切中要害" in _answer_text(evs)
     # case_result 口径: 恰 1 次 finalization invocation
     r = case_result("f3", evs)
     assert r["PATCH_FINALIZATION_INVOCATIONS"] == 1
