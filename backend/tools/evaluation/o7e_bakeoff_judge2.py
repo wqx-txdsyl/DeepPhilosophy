@@ -36,15 +36,44 @@ def _call(prompt):
         return json.loads(r.read())["choices"][0]["message"]["content"] or ""
 
 
-def judge_candidate(mid):
-    runs = json.load(open(os.path.join(
+def _primary_text_evidence(r):
+    """D2（Production Freeze §D2）: canonical judge 的 PRIMARY_TEXT_EVIDENCE 必须
+    是真证据——verified QuoteBound 条目 + formal citation provenance + read chapter
+    identities, 全部来自既有 run 产物; 不新增检索, 不存 CoT, 不给 raw tool log。"""
+    ev = r.get("evidence_digest") or {}
+    facts = ev.get("facts") or {}
+    qb = [e for e in (r.get("quote_bound") or [])
+          if e.get("verification_state") in ("VERIFIED_EXACT", "VERIFIED_NEAR")]
+    cites = []
+    for c in (r.get("citations") or [])[:8]:
+        if isinstance(c, dict):
+            cites.append({k: c.get(k) for k in
+                          ("book", "chapter", "evidence_id", "evidence_ref",
+                           "verified") if c.get(k) is not None})
+        elif isinstance(c, str):
+            cites.append({"locator": c[:120]})
+    return [
+        {"source": "verified_quote_bound",
+         "entries": [{"text": e.get("preview"),
+                      "evidence_id": e.get("source_evidence_id"),
+                      "book": e.get("source_book"),
+                      "chapter": e.get("source_chapter"),
+                      "state": e.get("verification_state")}
+                     for e in qb[:12]]},
+        {"source": "formal_citation_provenance", "citations": cites},
+        {"source": "read_chapters", "chapters": facts.get("read_chapters")},
+    ]
+
+
+def judge_candidate(mid, runs_path=None, out_tag=None):
+    runs = json.load(open(runs_path or os.path.join(
         ROOT, "backend/tools/_tmp", f"o7e_bakeoff_B_{mid.replace('.','_')}.json"),
         encoding="utf-8"))
     man = {m["case_id"]: m for m in json.load(open(os.path.join(
         ROOT, "docs/evidence/PHIAGENT_O7E_BAKEOFF_EVALUATION_MANIFEST.json"),
         encoding="utf-8"))}
-    out_path = os.path.join(ROOT, "backend/tools/_tmp",
-                            f"o7e_bakeoff_judge2_{mid.replace('.','_')}.json")
+    tag = out_tag or f"o7e_bakeoff_judge2_{mid.replace('.','_')}"
+    out_path = os.path.join(ROOT, "backend/tools/_tmp", f"{tag}.json")
     judged = []
     if os.path.exists(out_path):
         judged = json.load(open(out_path, encoding="utf-8"))
@@ -54,15 +83,13 @@ def judge_candidate(mid):
         if cid in done or not r.get("delivery", {}).get("published"):
             continue
         m = man[cid]
-        ev = r.get("evidence_digest") or {}
-        facts = ev.get("facts") or {}
-        primary_ev = [{"source": "read_chapters",
-                       "chapters": facts.get("read_chapters")}]
+        primary_ev = _primary_text_evidence(r)   # D2: 真证据取代 chapter-only
         inp = O7A.build_judge_input(
             user_question=m["question"], task_category=m["task_category"],
             answer=r.get("answer", ""), agent_identity=m["agent_identity"],
             evidence_digest=json.dumps(
-                {k: v for k, v in ev.items() if k != "facts"}, ensure_ascii=False)[:2000],
+                {k: v for k, v in (r.get("evidence_digest") or {}).items()
+                 if k != "facts"}, ensure_ascii=False)[:2000],
             primary_text_evidence=primary_ev,
             bibliographic_records=(r.get("citations") or [])[:8])
         prompt = O7A.render_judge_prompt(inp)
@@ -84,33 +111,47 @@ def judge_candidate(mid):
             continue
         # applicability 取 manifest 真值（judge 不猜）
         dims = {}
+        required_missing = []
         for d in O7A.DIMENSIONS:
             scores = [((v.get("dimensions", {}).get(d) or {}).get("score"))
                       for v in valid]
             scores = [s for s in scores if isinstance(s, (int, float))]
-            dims[d] = {"median": sorted(scores)[len(scores)//2] if scores else None,
-                       "applicability": m["applicability"].get(d.upper(), "OPTIONAL")}
+            median = sorted(scores)[len(scores)//2] if scores else None
+            applic = m["applicability"].get(d.upper(), "OPTIONAL")
+            # D1: REQUIRED 维度无有效分 → 该 case 记 required_missing,
+            # 不静默出分母、不当 0 分（聚合层置 EVALUATION_INVALID）
+            if applic == "REQUIRED" and median is None:
+                required_missing.append(d)
+            dims[d] = {"median": median, "applicability": applic}
         fatal = set()
         for v in valid:
             for f in O7A.FATAL_FLAGS:
                 if ((v.get("fatal_flags") or {}).get(f) or {}).get("value"):
                     fatal.add(f)
-        judged.append({"case_id": cid, "dims": dims, "fatal": sorted(fatal)})
+        judged.append({"case_id": cid, "dims": dims, "fatal": sorted(fatal),
+                       "required_missing": required_missing})
         json.dump(judged, open(out_path, "w", encoding="utf-8"),
                   ensure_ascii=False, indent=1)
         print(f"  {cid}: " + " ".join(f"{d.split('_')[0]}={dims[d]['median']}"
                                       for d in dims) + f" fatal={sorted(fatal)}",
               flush=True)
-    # aggregate（manifest applicability 分母）
+    # aggregate（manifest applicability 分母; D1: REQUIRED 缺分 → EVALUATION_INVALID）
     dim_scores = {}
     fatal_total = set()
+    missing_required = []
     for j in judged:
         for d, dv in j.get("dims", {}).items():
             if dv["applicability"] == "REQUIRED" and dv["median"] is not None:
                 dim_scores.setdefault(d, []).append(dv["median"])
             if j.get("fatal"):
                 fatal_total.update(j["fatal"])
+        for d in (j.get("required_missing") or []):
+            missing_required.append({"case_id": j["case_id"], "dimension": d})
+    evaluation_invalid = bool(missing_required)
     out = {"candidate": mid, "judged": len([j for j in judged if j.get("dims")]),
+           "EVALUATION_INVALID": evaluation_invalid,
+           "REQUIRED_DIMENSION_MISSING_SCORE": len(missing_required),
+           "missing_required": missing_required,
            "dims": {d: round(sum(xs) / len(xs), 3) for d, xs in dim_scores.items()},
            "applicable_mean": round(
                sum(x for xs in dim_scores.values() for x in xs) /
