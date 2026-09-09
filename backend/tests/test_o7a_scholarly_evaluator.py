@@ -227,7 +227,7 @@ def test_t19_no_production_diff_vs_base():
     hard = (("backend/final_validator.py", BASE_SHA),
             ("backend/quote_bound.py", "95bc3ae52"),   # RCA-1 §2: 仅 metadata 增改
             ("backend/agent_runtime.py", BASE_SHA),
-            ("backend/evidence_contract.py", "624fad500"))   # PF-RP3B scholarly schema 授权点
+            ("backend/evidence_contract.py", "7049e1418"))   # PF-RP4 §1 授权点
     for rel, _base in hard:
         r = subprocess.run(["git", "diff", "--quiet", _base, "HEAD", "--", rel],
                            cwd=REPO, capture_output=True)
@@ -236,7 +236,7 @@ def test_t19_no_production_diff_vs_base():
                        cwd=REPO, capture_output=True)
     assert r.returncode == 0, "backend/routes 相对 O7-B BASE 有未授权改动"
     # O7-E 解冻: engine prompt / agents persona 工具面 授权改动落地 commit 之后冻结
-    for rel, base in (("backend/engine_langgraph.py", "624fad500"),   # PF-RP3B scholarly provenance 授权点
+    for rel, base in (("backend/engine_langgraph.py", "7049e1418"),   # PF-RP4 §2 contract v2 授权点
                       ("backend/agents.py", "2c87ce397")):
         r = subprocess.run(["git", "diff", "--quiet", base, "--", rel],
                            cwd=REPO, capture_output=True)

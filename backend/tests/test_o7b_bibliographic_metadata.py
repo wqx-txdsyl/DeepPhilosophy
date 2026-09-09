@@ -296,7 +296,7 @@ HARD_FROZEN = ("backend/final_validator.py",
 
 
 # O7-E PF-RP3B: evidence_contract 获授权接入 scholarly schema——逐文件基线
-_R17_BASES = {"backend/evidence_contract.py": "624fad500",
+_R17_BASES = {"backend/evidence_contract.py": "7049e1418",
               "backend/final_validator.py": None,
               "backend/agent_runtime.py": None}
 
