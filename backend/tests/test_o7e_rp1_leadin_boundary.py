@@ -64,14 +64,48 @@ def test_l1_yuanwen_leadin_removed_with_quote_domain():
     assert _PARA in new
 
 
-def test_l2_subject_leadin_removed_together():
+def test_l2a_subject_preserved_claim_starts_at_cue():
+    # RP1A: 主体（孔子）保留在 claim 外; 写道 + 引号域被 claim 替换
     cand = "孔子写道：“" + _FAKE + "”此后正文继续。"
+    qt, catalog = _fixtures(cand)
+    a = qt["anchor"]
+    assert cand[a["claim_start"]:a["content_start"]] == "写道：“"   # 引导语精确边界
+    new, errs = _apply_paraphrase(cand, qt, catalog)
+    assert new is not None, errs
+    assert new.startswith("孔子")                     # 主体 byte-preserved
+    assert "写道" not in new
+    assert "“" not in new and _FAKE not in new
+    assert _PARA in new
+
+
+def test_l2b_discourse_prefix_preserved():
+    cand = "对此孔子写道：“" + _FAKE + "”此后正文继续。"
     qt, catalog = _fixtures(cand)
     new, errs = _apply_paraphrase(cand, qt, catalog)
     assert new is not None, errs
-    assert "孔子写道" not in new            # 主体+引导语整体随 claim 替换
-    assert "“" not in new and _FAKE not in new
-    assert _PARA in new
+    assert new.startswith("对此孔子")                 # "对此孔子" byte-preserved
+
+
+def test_l2c_book_context_preserved_never_drops_particle():
+    cand = "在《论语》中孔子写道：“" + _FAKE + "”此后正文继续。"
+    qt, catalog = _fixtures(cand)
+    new, errs = _apply_paraphrase(cand, qt, catalog)
+    assert new is not None, errs
+    assert new.startswith("在《论语》中孔子")          # "中" 绝不被吞
+
+
+def test_l2_invariant_claim_start_equals_regex_match_start():
+    # 机械 invariant: LEADIN_CLAIM_START == LEADIN_RE match 绝对起点,
+    # 禁止任何额外 backward expansion
+    for prefix in ("孔子写道：", "对此孔子写道：", "在《论语》中孔子写道：",
+                   "原文如下：", "他曾说道："):
+        cand = prefix + "“" + _FAKE + "”此后正文继续。"
+        qt, _catalog = _fixtures(cand)
+        a = qt["anchor"]
+        cs0 = cand.find("“")                       # 引号开字符 = 原提取 char_start
+        m = QB.LEADIN_RE.search(cand[:cs0])
+        assert m is not None
+        assert a["claim_start"] == cs0 - len(cand[:cs0]) + m.start() == m.start()
 
 
 def test_l3_leadin_copy_slice_preserves_leadin_and_delimiters():
