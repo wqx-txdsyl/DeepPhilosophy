@@ -49,7 +49,18 @@ def _materialize_read_chapters(r, max_chapters=6):
             path = os.path.join(ROOT, "backend", "data", "book_chapters",
                                 book_id, f"{int(idx)}.json")
             d = json.load(open(path, encoding="utf-8"))
-            out[key] = d.get("content") or ""
+            content = d.get("content") or ""
+            if isinstance(content, list):
+                # 分章标准: content 为块列表（str 或 {text/content} 块）
+                parts = []
+                for b in content:
+                    if isinstance(b, str):
+                        parts.append(b)
+                    elif isinstance(b, dict):
+                        parts.append(str(b.get("value") or b.get("text")
+                                         or b.get("content") or ""))
+                content = "\n".join(x for x in parts if x)
+            out[key] = content
         except Exception:
             continue
     return out
