@@ -69,6 +69,8 @@ def _run_hard_budget_repair(repair_declares_tool=False):
         return True          # 机械事实: hard ceiling 已成立
 
     orig = EG.get_llm, EG.get_tools
+    real_lp_flag = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
+    EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # 旧 hard-budget 修复语义回归
     _chat = ScriptedChat(script=list(script))
     EG.get_llm = lambda: _chat
     from test_o2_final_ownership import _fake_tools
@@ -86,6 +88,7 @@ def _run_hard_budget_repair(repair_declares_tool=False):
     finally:
         AR.ToolBudget.hard_reached = real_hard
         EG.get_llm, EG.get_tools = orig
+        EG.LOCAL_PATCH_PRODUCTION_ENABLED = real_lp_flag
 
 
 def test_r2_hard_budget_repair_returns_complete_candidate():
@@ -212,6 +215,8 @@ def _run_hard_repair_instrumented(repair_declares_tool=False):
     counter = {"bind_tools": 0}
     _chat = _counting_llm(script, counter)
     orig_llm, orig_tools = EG.get_llm, EG.get_tools
+    real_lp_flag = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
+    EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # 旧 hard-budget 修复语义回归
     EG.get_llm = lambda: _chat
     EG.get_tools = lambda agent: _fake_tools()
 
@@ -229,6 +234,7 @@ def _run_hard_repair_instrumented(repair_declares_tool=False):
     finally:
         AR.ToolBudget.hard_reached = real_hard
         EG.get_llm, EG.get_tools = orig_llm, orig_tools
+        EG.LOCAL_PATCH_PRODUCTION_ENABLED = real_lp_flag
     # repair 起点 = 首个 validation_failed 事件
     vf_i = next((i for i, e in enumerate(evs) if e.get("type") == "validation_failed"), None)
     after = evs[vf_i + 1:] if vf_i is not None else []
@@ -279,6 +285,8 @@ def test_c5_normal_repair_tool_capability_preserved():
     from test_o2_final_ownership import _fake_tools
     _chat = _counting_llm(script, counter)
     orig_llm, orig_tools = EG.get_llm, EG.get_tools
+    real_lp_flag = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
+    EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # 旧 normal-repair 语义回归
     EG.get_llm = lambda: _chat
     EG.get_tools = lambda agent: _fake_tools()
     try:
@@ -291,6 +299,7 @@ def test_c5_normal_repair_tool_capability_preserved():
         evs = asyncio.run(_collect())
     finally:
         EG.get_llm, EG.get_tools = orig_llm, orig_tools
+        EG.LOCAL_PATCH_PRODUCTION_ENABLED = real_lp_flag
     done = _done(evs)
     assert done["validation"]["repairs_used"] >= 1
     assert done["validation"]["result"]["ok"] is True
@@ -314,6 +323,8 @@ def test_runner_uses_validation_history_and_repairs_used(monkeypatch):
     _chat = ScriptedChat(script=list(script))
     from test_o2_final_ownership import _fake_tools
     orig_llm, orig_tools = EG.get_llm, EG.get_tools
+    real_lp_flag = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
+    EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # 旧 runner 消费语义回归
     EG.get_llm = lambda: _chat
     EG.get_tools = lambda agent: _fake_tools()
     try:
@@ -323,6 +334,7 @@ def test_runner_uses_validation_history_and_repairs_used(monkeypatch):
         r = runner.run_case(case)
     finally:
         EG.get_llm, EG.get_tools = orig_llm, orig_tools
+        EG.LOCAL_PATCH_PRODUCTION_ENABLED = real_lp_flag
     d = r["delivery"]
     assert d["run_status"] == "COMPLETED"
     assert d["validation_attempts"] == 2              # history 长度（初检+repair 后）

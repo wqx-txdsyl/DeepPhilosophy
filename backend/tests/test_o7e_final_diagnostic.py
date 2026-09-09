@@ -225,7 +225,12 @@ def test_f7_terminal_validation_fingerprint_recorded():
     bad_a = "> 「" + _SENTINEL_FAKE + "」"
     bad_b = "> 「" + _FAKE_B + "」"
     script = _TOOLS_SCRIPT + [_msg(bad_a), _msg(bad_b), _msg(_GOOD)]
-    evs, _chat = _run_lp("言必有中出处", script, adapter=None)
+    _LP_OFF = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
+    EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # 需要 FULL_REWRITE 全量候选修复语义
+    try:
+        evs, _chat = _run_lp("言必有中出处", script, adapter=None)
+    finally:
+        EG.LOCAL_PATCH_PRODUCTION_ENABLED = _LP_OFF
     hist = _done(evs)["validation"]["history"]
     assert len(hist) == 3                              # initial / after R1 / terminal
     for h in hist:
@@ -238,7 +243,12 @@ def test_f8_two_repairs_produce_r1_and_r2_classifications():
     bad_a = "> 「" + _SENTINEL_FAKE + "」"
     bad_b = "> 「" + _FAKE_B + "」"
     script = _TOOLS_SCRIPT + [_msg(bad_a), _msg(bad_b), _msg(_GOOD)]
-    evs, _chat = _run_lp("言必有中出处", script, adapter=None)
+    _LP_OFF = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
+    EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # 需要 FULL_REWRITE 全量候选修复语义
+    try:
+        evs, _chat = _run_lp("言必有中出处", script, adapter=None)
+    finally:
+        EG.LOCAL_PATCH_PRODUCTION_ENABLED = _LP_OFF
     hist = _done(evs)["validation"]["history"]
     cls = classify_history(hist)
     assert set(cls) == {"R1", "R2"}

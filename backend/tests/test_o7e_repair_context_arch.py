@@ -306,11 +306,15 @@ def test_a21_philosopher_diff_zero():
 
 
 def test_a22_production_patch_mode_default_false():
-    """生产默认关: engine 有 evaluation seam 但 (1) 默认 None (2) 不 import
-    repair_context（adapter 由 eval harness 注入; PRODUCTION_LOCAL_PATCH_ENABLED=false）"""
+    """Production Freeze §B（Reviewer 2026-09-09 签署）后的生产合同: engine 保留
+    evaluation seam（默认 None）, General Agent 经 local_patch_runtime 生产 adapter
+    启用 LOCAL_PATCH（LOCAL_PATCH_ADAPTER_OWNER=1）; 哲学家 Agent 不在启用集合;
+    engine 仍不 import repair_context（经 local_patch_runtime 间接, 无直接依赖）"""
     eng = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                             "engine_langgraph.py"), encoding="utf-8").read()
-    assert "import repair_context" not in eng, "production 直接接线未授权"
+    assert "import repair_context" not in eng, "engine 不得直接依赖 repair_context"
     assert "_evaluation_repair_adapter=None" in eng, "seam 默认必须 None"
-    # 默认无 adapter 时 adapter 分支不可达
-    assert "if _evaluation_repair_adapter is not None" in eng
+    assert "import local_patch_runtime" in eng, "生产 adapter 未接线"
+    assert "LOCAL_PATCH_PRODUCTION_ENABLED = True" in eng
+    assert '_LOCAL_PATCH_PRODUCTION_AGENTS = {"general"}' in eng
+    assert "if _repair_adapter is not None" in eng

@@ -313,6 +313,8 @@ def test_e2e_protocol_and_packet_reach_model():
     script = list(_TOOLS_SCRIPT) + [_msg(bad_final), _msg(good_final)]
     spy = SpyChat(script=list(script))
     orig_llm, orig_tools = EG.get_llm, EG.get_tools
+    real_lp_flag = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
+    EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # O2 时代 repair 语义回归（生产启用由 P 套件锁定）
     EG.get_llm = lambda: spy
     EG.get_tools = lambda agent: _fake_tools()
 
@@ -325,6 +327,7 @@ def test_e2e_protocol_and_packet_reach_model():
         evs = asyncio.run(_collect())
     finally:
         EG.get_llm, EG.get_tools = orig_llm, orig_tools
+        EG.LOCAL_PATCH_PRODUCTION_ENABLED = real_lp_flag
     done = _done(evs)
     assert done["validation"]["repairs_used"] >= 1
     proto_found = any(any(getattr(m, "type", "") == "system" and

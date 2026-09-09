@@ -124,6 +124,8 @@ def _run_stream(question, script):
     for k in _STUB_CALLS:
         _STUB_CALLS[k] = []
     real_get_llm, real_get_tools, real_llm_chat = EG.get_llm, EG.get_tools, AG.llm_chat
+    real_lp_flag = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
+    EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # O2 时代 repair 语义回归（生产启用由 P 套件锁定）
     _chat = ScriptedChat(script=list(script))
     EG.get_llm = lambda: _chat
     EG.get_tools = lambda agent: _fake_tools()
@@ -139,6 +141,7 @@ def _run_stream(question, script):
         return asyncio.run(_collect())
     finally:
         EG.get_llm, EG.get_tools, AG.llm_chat = real_get_llm, real_get_tools, real_llm_chat
+        EG.LOCAL_PATCH_PRODUCTION_ENABLED = real_lp_flag
 
 
 def _of(evs, *types):
