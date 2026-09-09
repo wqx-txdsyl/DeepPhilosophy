@@ -37,13 +37,26 @@ def _call(prompt):
 
 
 def _primary_text_evidence(r):
-    """D2（Production Freeze §D2）: canonical judge 的 PRIMARY_TEXT_EVIDENCE 必须
-    是真证据——verified QuoteBound 条目 + formal citation provenance + read chapter
-    identities, 全部来自既有 run 产物; 不新增检索, 不存 CoT, 不给 raw tool log。"""
+    """D2（PF-RP1 §C 收口）: canonical judge 的 PRIMARY_TEXT_EVIDENCE = 既有 run
+    产物中的真实 source text（used_evidence 的 primary 条目全文/片段），绝不是
+    answer 侧 preview（VERIFIED_NEAR 的答案措辞不得冒充 primary source text——
+    自证循环）。答案侧引文单独以 answer_quote 字段映射到 evidence_id。
+    零新增检索, 不存 CoT, 不给 raw tool log; 缺的数据保持空。"""
     ev = r.get("evidence_digest") or {}
     facts = ev.get("facts") or {}
+    used = [e for e in (ev.get("used_evidence") or []) if isinstance(e, dict)]
+    primary = [{"evidence_id": e.get("evidence_id"),
+                "source_type": e.get("source_type"),
+                "book": e.get("book"), "chapter": e.get("chapter"),
+                "source_text": ((e.get("text") or e.get("snippet") or "")[:400])
+                } for e in used
+               if e.get("source_type") in ("primary_read", "primary", "snippet")
+               and (e.get("text") or e.get("snippet"))][:10]
     qb = [e for e in (r.get("quote_bound") or [])
           if e.get("verification_state") in ("VERIFIED_EXACT", "VERIFIED_NEAR")]
+    answer_quotes = [{"answer_quote": e.get("preview"),
+                      "evidence_id": e.get("source_evidence_id"),
+                      "state": e.get("verification_state")} for e in qb[:12]]
     cites = []
     for c in (r.get("citations") or [])[:8]:
         if isinstance(c, dict):
@@ -52,16 +65,19 @@ def _primary_text_evidence(r):
                            "verified") if c.get(k) is not None})
         elif isinstance(c, str):
             cites.append({"locator": c[:120]})
+    secondary = [{"book": e.get("book"), "chapter": e.get("chapter"),
+                  "source_type": e.get("source_type"),
+                  "evidence_id": e.get("evidence_id")}
+                 for e in used if e.get("source_type") == "secondary"][:6]
     return [
-        {"source": "verified_quote_bound",
-         "entries": [{"text": e.get("preview"),
-                      "evidence_id": e.get("source_evidence_id"),
-                      "book": e.get("source_book"),
-                      "chapter": e.get("source_chapter"),
-                      "state": e.get("verification_state")}
-                     for e in qb[:12]]},
+        {"source": "primary_evidence_from_existing_run",
+         "entries": primary},
+        {"source": "answer_quote_to_evidence_mapping",
+         "entries": answer_quotes},
         {"source": "formal_citation_provenance", "citations": cites},
         {"source": "read_chapters", "chapters": facts.get("read_chapters")},
+        {"source": "secondary_source_records", "entries": secondary},
+        {"source": "access_levels", "entries": []},   # 本 run 未记录 access 状态——保持空, 不编造
     ]
 
 
@@ -135,20 +151,39 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
         print(f"  {cid}: " + " ".join(f"{d.split('_')[0]}={dims[d]['median']}"
                                       for d in dims) + f" fatal={sorted(fatal)}",
               flush=True)
-    # aggregate（manifest applicability 分母; D1: REQUIRED 缺分 → EVALUATION_INVALID）
+    # aggregate（PF-RP1 §D）:
+    #   JUDGE_CASES_EXPECTED/VALID/MISSING——error case 不再静默消失,
+    #   MISSING>0 → EVALUATION_INVALID=true
+    #   APPLICABLE_DIMENSION_MEAN = numeric REQUIRED + numeric OPTIONAL
+    #   （NOT_APPLICABLE 排除; 合法 OPTIONAL null 排除）; REQUIRED_* 仍只看 REQUIRED
     dim_scores = {}
     fatal_total = set()
     missing_required = []
-    for j in judged:
+    expected = len([r for r in runs if r.get("delivery", {}).get("published")])
+    valid = [j for j in judged if j.get("dims")]
+    missing = expected - len(valid)
+    for j in valid:
+        if j.get("fatal"):
+            fatal_total.update(j["fatal"])
         for d, dv in j.get("dims", {}).items():
-            if dv["applicability"] == "REQUIRED" and dv["median"] is not None:
+            if dv["median"] is None:
+                continue
+            if dv["applicability"] == "REQUIRED":
                 dim_scores.setdefault(d, []).append(dv["median"])
-            if j.get("fatal"):
-                fatal_total.update(j["fatal"])
+            elif dv["applicability"] == "OPTIONAL":
+                dim_scores.setdefault(d, []).append(dv["median"])
         for d in (j.get("required_missing") or []):
             missing_required.append({"case_id": j["case_id"], "dimension": d})
-    evaluation_invalid = bool(missing_required)
-    out = {"candidate": mid, "judged": len([j for j in judged if j.get("dims")]),
+    # error case（三票全废）也算 missing
+    for j in judged:
+        if j.get("error"):
+            missing_required.append({"case_id": j["case_id"],
+                                     "dimension": "ALL_JUDGE_VOTES_INVALID"})
+    evaluation_invalid = bool(missing_required) or missing > 0
+    out = {"candidate": mid, "judged": len(valid),
+           "JUDGE_CASES_EXPECTED": expected,
+           "JUDGE_CASES_VALID": len(valid),
+           "JUDGE_CASES_MISSING": max(missing, 0),
            "EVALUATION_INVALID": evaluation_invalid,
            "REQUIRED_DIMENSION_MISSING_SCORE": len(missing_required),
            "missing_required": missing_required,
