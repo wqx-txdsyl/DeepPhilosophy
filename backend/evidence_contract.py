@@ -616,6 +616,12 @@ def build_scholarly_provenance(raw_tool_log):
                     "doi": item.get("doi"),
                     "access_level": item.get("access_level"),
                     "provider": item.get("provider"),
+                    # PF-RP4 §1: O7-C model view provenance 字段原样保留
+                    "source_category": item.get("source_category"),
+                    "source_providers": item.get("source_providers") or [],
+                    "retrieval_origin": item.get("retrieval_origin"),
+                    "bibliographic_verified_fields":
+                        item.get("bibliographic_verified_fields") or [],
                 })
         elif name == "get_scholarly_source":
             fetches += 1
@@ -624,19 +630,31 @@ def build_scholarly_provenance(raw_tool_log):
             for p in rf.get("evidence_passages") or []:
                 passages.append(p.get("text") if isinstance(p, dict) else str(p))
             sid = rf.get("source_record_id")
+            after = rf.get("access_level_after") or "METADATA_ONLY"
+            # PF-RP4 §1: 内容证据判定（access 态机语义冻结）
+            #   ABSTRACT_AVAILABLE + nonempty abstract → true
+            #   FULL_TEXT_READ + nonempty passages → true
+            #   METADATA_ONLY / FULL_TEXT_AVAILABLE(未读) → false
+            has_content = bool(abstract.strip()) or bool([x for x in passages if x.strip()])
             evidence.append({
                 "source_record_id": sid,
                 "access_level_before": rf.get("access_level_before"),
-                "access_level_after": rf.get("access_level_after"),
+                "access_level_after": after,
                 "returned_evidence_level": rf.get("returned_evidence_level"),
                 "abstract_text": abstract,
                 "evidence_passages": passages[:8],
                 "content_hash": rf.get("content_hash"),
+                "content_evidence": has_content,
             })
             if sid:
-                access[sid] = rf.get("access_level_after") or "METADATA_ONLY"
+                access[sid] = after
+    fetch_results = sum(1 for e in evidence
+                        if e.get("source_record_id"))
+    content_count = sum(1 for e in evidence if e.get("content_evidence"))
     return {"scholarly_search_calls": searches,
             "scholarly_source_fetch_calls": fetches,
+            "scholarly_fetch_result_count": fetch_results,
+            "scholarly_content_evidence_count": content_count,
             "scholarly_records": records,
             "scholarly_evidence": evidence,
             "scholarly_access": access,

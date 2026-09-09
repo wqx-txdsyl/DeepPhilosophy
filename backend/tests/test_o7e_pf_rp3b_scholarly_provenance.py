@@ -187,6 +187,7 @@ def test_s4_metadata_only_never_content_evidence():
     assert p["scholarly_evidence"][0]["abstract_text"] == ""
     assert p["scholarly_evidence"][0]["evidence_passages"] == []
     assert p["scholarly_access"]["r1"] == "METADATA_ONLY"
+    assert p["scholarly_evidence"][0]["content_evidence"] is False   # PF-RP4 §1
 
 
 def test_s5_abstract_becomes_abstract_evidence():
@@ -194,6 +195,7 @@ def test_s5_abstract_becomes_abstract_evidence():
     p = _prov(log)
     assert _STRAWSON_ABSTRACT in p["scholarly_evidence"][0]["abstract_text"]
     assert p["scholarly_access"]["o7d_test:strawson-2017"] == "ABSTRACT_AVAILABLE"
+    assert p["scholarly_evidence"][0]["content_evidence"] is True    # PF-RP4 §1
 
 
 def test_s6_full_text_available_without_read_no_content():
@@ -205,6 +207,7 @@ def test_s6_full_text_available_without_read_no_content():
     p = _prov(log)
     assert p["scholarly_evidence"][0]["abstract_text"] == ""
     assert p["scholarly_evidence"][0]["evidence_passages"] == []
+    assert p["scholarly_evidence"][0]["content_evidence"] is False   # 未读全文≠内容证据
 
 
 def test_s7_full_text_read_passages_are_content_evidence():
@@ -215,6 +218,7 @@ def test_s7_full_text_read_passages_are_content_evidence():
         "evidence_passages": [{"text": "passage 一"}, {"text": "passage 二"}]}}]
     p = _prov(log)
     assert p["scholarly_evidence"][0]["evidence_passages"] == ["passage 一", "passage 二"]
+    assert p["scholarly_evidence"][0]["content_evidence"] is True    # PF-RP4 §1
 
 
 def test_s8_scholarly_never_enters_primary_citation_panel():

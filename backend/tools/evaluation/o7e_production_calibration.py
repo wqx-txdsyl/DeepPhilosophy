@@ -135,7 +135,7 @@ def run_case_production(case, mk_normal, mk_repair):
     return record
 
 
-def main(run_tag="CAL1", requested_model="deepseek-v4-flash"):
+def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None):
     manifest = json.load(open(MANIFEST, encoding="utf-8"))
     cfg = CC.v4pro_config(dict(CC.RP_B, id="RP-B"),
                           requested_model=requested_model,
@@ -148,6 +148,8 @@ def main(run_tag="CAL1", requested_model="deepseek-v4-flash"):
         runs = json.load(open(out_path, encoding="utf-8"))
     done_ids = {r["case_id"] for r in runs}
     for m in manifest:
+        if only and m["case_id"] not in only:
+            continue
         if m["case_id"] in done_ids:
             continue
         print(f"== {m['case_id']}", flush=True)
@@ -225,4 +227,6 @@ def main(run_tag="CAL1", requested_model="deepseek-v4-flash"):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "CAL1")
+    _only = sys.argv[2].split(",") if len(sys.argv) > 2 else None
+    main(sys.argv[1] if len(sys.argv) > 1 else "CAL1",
+         requested_model="deepseek-v4-flash", only=_only)
