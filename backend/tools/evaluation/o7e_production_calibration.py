@@ -64,12 +64,10 @@ def run_case_production(case, mk_normal, mk_repair):
     done = next((e for e in reversed(evs) if e.get("type") == "done"), {})
     errors = [e for e in evs if e.get("type") == "error"]
     answer = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
-    val = done.get("validation") or {}
-    tel = case_result(case["case_id"], evs)
-    published = bool(tel["published"])
-    final_codes = [i.get("code") for i in val.get("result", {}).get("issues", [])]
     # §E delivery 新字段。terminal_pending = 未达终态校验（流崩溃/无 done 事件）——
-    # 耗尽修复后的干净拒绝（有 done、终态候选非空）不是 pending
+    # 耗尽修复后的干净拒绝（有 done、终态候选非空）不是 pending。
+    # PF-RP1 §B: access overclaim 是语义学术判断, 不伪装成机械 delivery gate
+    # → 不在 delivery 层测, DEFERRED 给 canonical scholarly judge（LITERATURE_ACCESS_OVERCLAIM）
     terminal_pending = not bool(done)
     public_invalid_citations = 1 if (published and "UNVERIFIED_CITATION" in final_codes) else 0
     public_unverified_quotes = 1 if (published and "UNSUPPORTED_EXACT_QUOTE" in final_codes) else 0
@@ -83,7 +81,7 @@ def run_case_production(case, mk_normal, mk_repair):
                   "terminal_pending": terminal_pending,
                   "public_invalid_citations": public_invalid_citations,
                   "public_unverified_exact_quotes": public_unverified_quotes,
-                  "public_access_overclaims": 0 if published else None,
+                  "public_access_overclaims": "DEFERRED_TO_CANONICAL_JUDGE",
                   "final_validation_result": bool(val.get("result", {}).get("ok")),
                   "final_validation_issue_codes": final_codes[:6],
               },
@@ -166,8 +164,9 @@ def main(run_tag="CAL1", requested_model="deepseek-v4-flash"):
                1 for r in ok if r.get("delivery", {}).get("public_invalid_citations")),
            "UNVERIFIED_PUBLIC_EXACT_QUOTES": sum(
                1 for r in ok if r.get("delivery", {}).get("public_unverified_exact_quotes")),
-           "PUBLIC_ACCESS_OVERCLAIMS": sum(
-               1 for r in ok if r.get("delivery", {}).get("public_access_overclaims")),
+           # PF-RP1 §B: access overclaim 交由 canonical judge（不再伪报机械 0）
+           "PUBLIC_ACCESS_OVERCLAIMS_MEASURED": False,
+           "ACCESS_OVERCLAIM_GATE": "DEFERRED_TO_CANONICAL_JUDGE",
            "LOCAL_PATCH_ANCHOR_RESOLUTION_RATE": round(lp_res / lp_total, 3)
                                                   if lp_total else None,
            "PROMPT_ISSUE_COVERAGE": round(min(covers), 3) if covers else None,
