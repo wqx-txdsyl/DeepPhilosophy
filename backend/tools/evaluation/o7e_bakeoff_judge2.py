@@ -36,12 +36,11 @@ def _call(prompt):
         return json.loads(r.read())["choices"][0]["message"]["content"] or ""
 
 
-def _primary_text_evidence(r):
-    """D2（PF-RP1 §C 收口）: canonical judge 的 PRIMARY_TEXT_EVIDENCE = 既有 run
-    产物中的真实 source text（used_evidence 的 primary 条目全文/片段），绝不是
-    answer 侧 preview（VERIFIED_NEAR 的答案措辞不得冒充 primary source text——
-    自证循环）。答案侧引文单独以 answer_quote 字段映射到 evidence_id。
-    零新增检索, 不存 CoT, 不给 raw tool log; 缺的数据保持空。"""
+def _judge_evidence_parts(r):
+    """PF-RP2 §0: 拆分 canonical judge 的四类正式字段。
+    PRIMARY_TEXT_EVIDENCE 只含既有 run 的真实 source text（used_evidence primary
+    条目）; 答案侧引文是 answer_quote 映射, 不冒充 source text; secondary 与
+    access_levels 走 build_judge_input 的独立正式字段; 缺的数据保持空。"""
     ev = r.get("evidence_digest") or {}
     facts = ev.get("facts") or {}
     used = [e for e in (ev.get("used_evidence") or []) if isinstance(e, dict)]
@@ -57,28 +56,19 @@ def _primary_text_evidence(r):
     answer_quotes = [{"answer_quote": e.get("preview"),
                       "evidence_id": e.get("source_evidence_id"),
                       "state": e.get("verification_state")} for e in qb[:12]]
-    cites = []
-    for c in (r.get("citations") or [])[:8]:
-        if isinstance(c, dict):
-            cites.append({k: c.get(k) for k in
-                          ("book", "chapter", "evidence_id", "evidence_ref",
-                           "verified") if c.get(k) is not None})
-        elif isinstance(c, str):
-            cites.append({"locator": c[:120]})
-    secondary = [{"book": e.get("book"), "chapter": e.get("chapter"),
-                  "source_type": e.get("source_type"),
-                  "evidence_id": e.get("evidence_id")}
-                 for e in used if e.get("source_type") == "secondary"][:6]
-    return [
+    primary_ev = [
         {"source": "primary_evidence_from_existing_run",
          "entries": primary},
         {"source": "answer_quote_to_evidence_mapping",
          "entries": answer_quotes},
-        {"source": "formal_citation_provenance", "citations": cites},
         {"source": "read_chapters", "chapters": facts.get("read_chapters")},
-        {"source": "secondary_source_records", "entries": secondary},
-        {"source": "access_levels", "entries": []},   # 本 run 未记录 access 状态——保持空, 不编造
     ]
+    secondary = [{"book": e.get("book"), "chapter": e.get("chapter"),
+                  "source_type": e.get("source_type"),
+                  "evidence_id": e.get("evidence_id")}
+                 for e in used if e.get("source_type") == "secondary"][:6]
+    access_levels = []   # 本 run 未记录 access 状态——保持空, 不编造
+    return primary_ev, secondary, access_levels
 
 
 def judge_candidate(mid, runs_path=None, out_tag=None):
@@ -99,7 +89,7 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
         if cid in done or not r.get("delivery", {}).get("published"):
             continue
         m = man[cid]
-        primary_ev = _primary_text_evidence(r)   # D2: 真证据取代 chapter-only
+        primary_ev, secondary, access_levels = _judge_evidence_parts(r)
         inp = O7A.build_judge_input(
             user_question=m["question"], task_category=m["task_category"],
             answer=r.get("answer", ""), agent_identity=m["agent_identity"],
@@ -107,7 +97,9 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
                 {k: v for k, v in (r.get("evidence_digest") or {}).items()
                  if k != "facts"}, ensure_ascii=False)[:2000],
             primary_text_evidence=primary_ev,
-            bibliographic_records=(r.get("citations") or [])[:8])
+            bibliographic_records=(r.get("citations") or [])[:8],
+            secondary_source_records=secondary,
+            access_levels=access_levels)
         prompt = O7A.render_judge_prompt(inp)
         votes = []
         for k in range(3):
@@ -151,12 +143,12 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
         print(f"  {cid}: " + " ".join(f"{d.split('_')[0]}={dims[d]['median']}"
                                       for d in dims) + f" fatal={sorted(fatal)}",
               flush=True)
-    # aggregate（PF-RP1 §D）:
-    #   JUDGE_CASES_EXPECTED/VALID/MISSING——error case 不再静默消失,
-    #   MISSING>0 → EVALUATION_INVALID=true
-    #   APPLICABLE_DIMENSION_MEAN = numeric REQUIRED + numeric OPTIONAL
-    #   （NOT_APPLICABLE 排除; 合法 OPTIONAL null 排除）; REQUIRED_* 仍只看 REQUIRED
-    dim_scores = {}
+    # aggregate（PF-RP2 §0: REQUIRED 与 applicable 分开记账）
+    #   required_dims: 每维 REQUIRED 中位数均值（REQUIRED_*_MEAN 用, 不含 OPTIONAL）
+    #   applicable_dims / applicable_mean: numeric REQUIRED + numeric OPTIONAL
+    #   （NOT_APPLICABLE 与合法 OPTIONAL null 排除）
+    required_scores = {}
+    applicable_scores = {}
     fatal_total = set()
     missing_required = []
     expected = len([r for r in runs if r.get("delivery", {}).get("published")])
@@ -169,9 +161,10 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
             if dv["median"] is None:
                 continue
             if dv["applicability"] == "REQUIRED":
-                dim_scores.setdefault(d, []).append(dv["median"])
+                required_scores.setdefault(d, []).append(dv["median"])
+                applicable_scores.setdefault(d, []).append(dv["median"])
             elif dv["applicability"] == "OPTIONAL":
-                dim_scores.setdefault(d, []).append(dv["median"])
+                applicable_scores.setdefault(d, []).append(dv["median"])
         for d in (j.get("required_missing") or []):
             missing_required.append({"case_id": j["case_id"], "dimension": d})
     # error case（三票全废）也算 missing
@@ -187,10 +180,15 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
            "EVALUATION_INVALID": evaluation_invalid,
            "REQUIRED_DIMENSION_MISSING_SCORE": len(missing_required),
            "missing_required": missing_required,
-           "dims": {d: round(sum(xs) / len(xs), 3) for d, xs in dim_scores.items()},
+           "required_dims": {d: round(sum(xs) / len(xs), 3)
+                             for d, xs in required_scores.items()},
+           "applicable_dims": {d: round(sum(xs) / len(xs), 3)
+                               for d, xs in applicable_scores.items()},
+           "dims": {d: round(sum(xs) / len(xs), 3)
+                    for d, xs in applicable_scores.items()},
            "applicable_mean": round(
-               sum(x for xs in dim_scores.values() for x in xs) /
-               max(sum(len(xs) for xs in dim_scores.values()), 1), 3),
+               sum(x for xs in applicable_scores.values() for x in xs) /
+               max(sum(len(xs) for xs in applicable_scores.values()), 1), 3),
            "fatal_flags": sorted(fatal_total)}
     json.dump(out, open(out_path.replace(".json", "_summary.json"), "w",
                         encoding="utf-8"), ensure_ascii=False, indent=1)
