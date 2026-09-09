@@ -122,6 +122,21 @@ def _claim_content_span(candidate, q):
         idx = cs
         # 兜底: claim 即 content
         return (cs, ce, cs, ce)
+    # RCA-2 RP1 §leadin: kind=leadin 的 claim 起点必须覆盖紧邻的逐字引导语
+    # （原文如下/写道/曰…）——LEADIN_RE $ 锚定, 对 quote 前 bounded 窗口求 match
+    # 即紧邻边界; 找不到 → None（无法安全 claim 锚定 → preflight unsupported,
+    # 绝不留下 "原文如下：转述文字" 的 verbatim 假承诺）
+    if q["kind"] == "leadin":
+        win = candidate[max(0, cs - 60):cs]
+        m = QB.LEADIN_RE.search(win)
+        if not m:
+            return None
+        # 言语主体 contiguous 前缀（"孔子写道"的"孔子"）——词字符连续才并入,
+        # 标点/空白断开即止（边界仍由候选文本自身句法决定）
+        s = m.start()
+        while s > 0 and re.match(r"[\w]", win[s - 1]) and (m.end() - s) < 24:
+            s -= 1
+        cs = cs - len(win) + s
     return (cs, ce, idx, idx + len(text))
 
 
@@ -161,7 +176,12 @@ def _quote_anchor(candidate, locator, exclude_spans=None):
                     "content_start": cc[2], "content_end": cc[3],
                     "claim_sha256": _span_sha(candidate, cc[0], cc[1]),
                     "content_sha256": _span_sha(candidate, cc[2], cc[3]),
+                    "quote_kind": (q_obj or {}).get("kind", "quoted"),
                     "start": cc[2], "end": cc[3]}   # 兼容字段=content
+        # RCA-2 RP1: leadin 的 verbatim 引导语边界不可机械恢复 → 不给锚
+        # （preflight unsupported → FULL_REWRITE; 绝不退化成 quote-only claim）
+        if q_obj and q_obj.get("kind") == "leadin":
+            return None
         return {"start": claim[0], "end": claim[1],
                 "claim_start": claim[0], "claim_end": claim[1],
                 "content_start": claim[0], "content_end": claim[1],
@@ -213,6 +233,7 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
                 "content_end": anchor["content_end"],
                 "claim_sha256": anchor["claim_sha256"],
                 "content_sha256": anchor["content_sha256"],
+                "quote_kind": anchor.get("quote_kind"),
                 "surface_sha256": anchor["content_sha256"],   # patch 合同锚 = content
                 "surface_preview": candidate[anchor["content_start"]:
                                             anchor["content_end"]][:60]}
@@ -542,6 +563,9 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
         telemetry.append({"issue_id": iid, "issue_code": code,
                           "anchor_kind": "citation"
                           if code == "UNVERIFIED_CITATION" else "quote",
+                          # RCA-2 RP1: quote 类别遥测（blockquote/leadin/quoted,
+                          # 只记类别不记正文）
+                          "quote_kind": ((b or {}).get("anchor") or {}).get("quote_kind"),
                           "action": action, "slice_id": slice_id})
     try:
         p = json.loads(patch_json)

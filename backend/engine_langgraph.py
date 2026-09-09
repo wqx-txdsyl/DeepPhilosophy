@@ -1812,6 +1812,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                          "linked_source": bool(b.get("source")),
                          "has_evidence_ref": bool(b.get("evidence_ref")),
                          "evidence_resolution": b.get("evidence_resolution"),
+                         "quote_kind": (b.get("anchor") or {}).get("quote_kind"),
                          "source_overlap": (b.get("source") or {}).get("shingle_overlap")
                          if isinstance((b.get("source") or {}).get("shingle_overlap"),
                                        (int, float)) else None}
