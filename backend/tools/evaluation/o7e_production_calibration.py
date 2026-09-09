@@ -28,11 +28,17 @@ def _as_list(v):
 
 
 def _ev_digest(ev):
+    """PF-RP1 复审（Response 2）发现: used_evidence 被 v[:10] 截断会让 judge 看
+    不到真正使用的 ev_56/ev_62——used_evidence/citations 全量归档（run 内有界）,
+    仅 retrieved_evidence 等大列表截断。"""
     if not isinstance(ev, dict):
         return ev
+    full_keys = {"used_evidence", "citations", "unverified_citations"}
     out = {}
     for k, v in ev.items():
-        if isinstance(v, list):
+        if k in full_keys and isinstance(v, list):
+            out[k] = v
+        elif isinstance(v, list):
             out[k] = v[:10]
         elif isinstance(v, dict):
             out[k] = {kk: v[kk] for kk in list(v)[:10]}

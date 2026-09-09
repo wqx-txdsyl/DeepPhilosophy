@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.join(ROOT, "backend"))
 sys.path.insert(0, os.path.join(ROOT, "backend", "tools", "evaluation"))
 
 import o7_scholarly_judge as O7A   # canonical judge constitution（冻结）
+import quote_bound as QB
 
 _key = None
 for line in open(os.path.join(ROOT, ".env"), encoding="utf-8"):
@@ -34,6 +35,66 @@ def _call(prompt):
         headers={"Content-Type": "application/json", "Authorization": "Bearer " + (_key or "")})
     with urllib.request.urlopen(req, timeout=240) as r:
         return json.loads(r.read())["choices"][0]["message"]["content"] or ""
+
+
+def _materialize_read_chapters(r, max_chapters=6):
+    """PF-RP3A §B EVIDENCE REPLAY: 把 run facts.read_chapters 记录的当时已读章节
+    从本地书库机械物化（⊆ RUN_FACTS_READ_CHAPTERS; 零新增检索/零网络）。"""
+    facts = (r.get("evidence_digest") or {}).get("facts") or {}
+    keys = facts.get("read_chapters") or []
+    out = {}
+    for key in keys[:max_chapters]:
+        try:
+            book_id, idx = str(key).rsplit("#", 1)
+            path = os.path.join(ROOT, "backend", "data", "book_chapters",
+                                book_id, f"{int(idx)}.json")
+            d = json.load(open(path, encoding="utf-8"))
+            out[key] = d.get("content") or ""
+        except Exception:
+            continue
+    return out
+
+
+def _source_window(text, claim, max_window=500):
+    """机械截取 claim 在章节原文中的最佳对应 window（≤500 字符）——
+    用 QuoteBound 归一 shingle 选区, 不下 EXACT/NEAR 结论。"""
+    qn = QB.norm_q(claim)
+    if not qn or not text:
+        return None
+    nt = QB.norm_q(text)
+    step, wlen = 300, 500
+    best, best_ov = None, 0.0
+    qsh = QB._shingles(qn)
+    for i in range(0, max(len(nt) - wlen, 1), step):
+        w = nt[i:i + wlen]
+        ov = len(QB._shingles(w) & qsh) / max(len(qsh), 1)
+        if ov > best_ov:
+            best, best_ov = i, ov
+    if best is None or best_ov < 0.05:
+        return None
+    # 归一坐标近似映射回原文: 按比例定位
+    ratio = best / max(len(nt) - wlen, 1)
+    center = int(ratio * max(len(text) - wlen, 1))
+    return text[max(0, center - 0):center + wlen]
+
+
+def _replay_windows(r, max_windows=12):
+    """答案中每个 verbatim claim → 已读章节里的 source window（机械, 无 validator 判断）。"""
+    import quote_bound as QB
+    ans = r.get("answer", "")
+    texts = _materialize_read_chapters(r)
+    if not texts:
+        return []
+    windows = []
+    for q in QB.extract_quotes(ans)[:max_windows]:
+        for key, text in texts.items():
+            w = _source_window(text, q["text"], max_window=500)
+            if w:
+                windows.append({"chapter_key": key,
+                                "source_window": w,
+                                "for_answer_claim": q["text"][:80]})
+                break
+    return windows
 
 
 def _judge_evidence_parts(r):
@@ -90,6 +151,16 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
             continue
         m = man[cid]
         primary_ev, secondary, access_levels = _judge_evidence_parts(r)
+        # PF-RP3A §B EVIDENCE REPLAY: 已读章节机械物化 → verbatim claim 的
+        # source window（≤500 字符）——judge 与 validator 看同一证据事实,
+        # 但不含 validator 的 EXACT/NEAR/MEMORY_ONLY 结论
+        replay = _replay_windows(r)
+        if replay:
+            primary_ev = primary_ev + [
+                {"source": "evidence_replay_read_chapters", "entries": replay}]
+        # PF-RP3A §A: manifest applicability 作为预注册 truth 进入 judge 输入
+        manifest_applic = {d.lower(): a for d, a in
+                           (m.get("applicability") or {}).items()}
         inp = O7A.build_judge_input(
             user_question=m["question"], task_category=m["task_category"],
             answer=r.get("answer", ""), agent_identity=m["agent_identity"],
@@ -99,7 +170,8 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
             primary_text_evidence=primary_ev,
             bibliographic_records=(r.get("citations") or [])[:8],
             secondary_source_records=secondary,
-            access_levels=access_levels)
+            access_levels=access_levels,
+            dimension_applicability=manifest_applic)
         prompt = O7A.render_judge_prompt(inp)
         votes = []
         for k in range(3):
@@ -111,9 +183,49 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
                     time.sleep(2 * (attempt + 1))
             else:
                 votes.append(None)
-        valid = [v for v in votes if v and not O7A.validate_verdict(v)]
+        # PF-RP3A §A: vote 级机械校验——applicability 必须等于 manifest 预注册;
+        # REQUIRED 维必须给数值分, 否则该票 invalid（不静默采信 judge 自判）
+        valid, mismatch_votes, votes_archive = [], 0, []
+        for vi, v in enumerate(votes):
+            if not v:
+                votes_archive.append({"vote_index": vi, "valid": False,
+                                      "reason": "vote_unparseable"})
+                continue
+            base_errs = O7A.validate_verdict(v)
+            vdims = v.get("dimensions", {}) or {}
+            bad = list(base_errs)
+            for dim, applic in manifest_applic.items():
+                vd = vdims.get(dim) or {}
+                if (vd.get("applicability") or applic) != applic:
+                    bad.append(f"{dim}: applicability {vd.get('applicability')!r} "
+                               f"!= manifest {applic!r}")
+                if applic == "REQUIRED" and not isinstance(
+                        vd.get("score"), (int, float)):
+                    bad.append(f"{dim}: REQUIRED requires numeric score")
+            votes_archive.append({
+                "vote_index": vi, "valid": not bad, "reasons": bad[:6],
+                "dimensions": {d: {"applicability": (vd or {}).get("applicability"),
+                                    "score": (vd or {}).get("score"),
+                                    "rationale": (vd or {}).get("rationale"),
+                                    "supporting_spans": (vd or {}).get("supporting_spans"),
+                                    "missing_requirements": (vd or {}).get("missing_requirements")}
+                               for d, vd in vdims.items()},
+                "fatal_flags": {f: {"value": ((fd or {}).get("value")),
+                                     "offending_spans": (fd or {}).get("offending_spans"),
+                                     "reason": (fd or {}).get("reason"),
+                                     "evidence_refs": (fd or {}).get("evidence_refs"),
+                                     "confidence": (fd or {}).get("confidence")}
+                                for f, fd in (v.get("fatal_flags") or {}).items()},
+                "overall_scholarly_assessment": v.get("overall_scholarly_assessment"),
+                "judge_confidence": v.get("judge_confidence")})
+            if bad:
+                mismatch_votes += 1
+                continue
+            valid.append(v)
         if not valid:
-            judged.append({"case_id": cid, "error": "all judge votes invalid"})
+            judged.append({"case_id": cid, "error": "all judge votes invalid",
+                           "votes_archive": votes_archive,
+                           "applicability_mismatch_votes": mismatch_votes})
             json.dump(judged, open(out_path, "w", encoding="utf-8"),
                       ensure_ascii=False, indent=1)
             continue
@@ -136,8 +248,16 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
             for f in O7A.FATAL_FLAGS:
                 if ((v.get("fatal_flags") or {}).get(f) or {}).get("value"):
                     fatal.add(f)
+        fatal_vc = {}
+        for v in valid:
+            for f in O7A.FATAL_FLAGS:
+                if ((v.get("fatal_flags") or {}).get(f) or {}).get("value"):
+                    fatal_vc[f] = fatal_vc.get(f, 0) + 1
         judged.append({"case_id": cid, "dims": dims, "fatal": sorted(fatal),
-                       "required_missing": required_missing})
+                       "fatal_vote_counts": fatal_vc,
+                       "applicability_mismatch_votes": mismatch_votes,
+                       "required_missing": required_missing,
+                       "votes_archive": votes_archive})
         json.dump(judged, open(out_path, "w", encoding="utf-8"),
                   ensure_ascii=False, indent=1)
         print(f"  {cid}: " + " ".join(f"{d.split('_')[0]}={dims[d]['median']}"
