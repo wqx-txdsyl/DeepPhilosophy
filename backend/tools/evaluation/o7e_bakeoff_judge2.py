@@ -150,6 +150,8 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
     required_scores = {}
     applicable_scores = {}
     fatal_total = set()
+    fatal_counts = {f: 0 for f in O7A.FATAL_FLAGS}
+    median_lt2 = 0
     missing_required = []
     expected = len([r for r in runs if r.get("delivery", {}).get("published")])
     valid = [j for j in judged if j.get("dims")]
@@ -157,9 +159,16 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
     for j in valid:
         if j.get("fatal"):
             fatal_total.update(j["fatal"])
+            for f in j["fatal"]:
+                if f in fatal_counts:
+                    fatal_counts[f] += 1
         for d, dv in j.get("dims", {}).items():
             if dv["median"] is None:
                 continue
+            # PF-RP3: REQUIRED_MEDIAN_LT_2 = published case × manifest REQUIRED 维
+            # 中 median < 2 的数量
+            if dv["applicability"] == "REQUIRED" and dv["median"] < 2:
+                median_lt2 += 1
             if dv["applicability"] == "REQUIRED":
                 required_scores.setdefault(d, []).append(dv["median"])
                 applicable_scores.setdefault(d, []).append(dv["median"])
@@ -179,6 +188,8 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
            "JUDGE_CASES_MISSING": max(missing, 0),
            "EVALUATION_INVALID": evaluation_invalid,
            "REQUIRED_DIMENSION_MISSING_SCORE": len(missing_required),
+           "REQUIRED_DIMENSION_MEDIAN_LT_2": median_lt2,
+           "FATAL_FLAG_COUNTS_BY_TYPE": fatal_counts,
            "missing_required": missing_required,
            "required_dims": {d: round(sum(xs) / len(xs), 3)
                              for d, xs in required_scores.items()},
