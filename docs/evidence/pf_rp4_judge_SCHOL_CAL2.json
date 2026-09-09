@@ -1,0 +1,3081 @@
+[
+ {
+  "case_id": "H04",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "historical_discipline": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答精准引用了《第一哲学沉思集》第一、二沉思中的关键段落（如“计算2加3”、“没有手没有眼睛”、“阿基米德点”、“如果他骗我那就证明我是存在的”），并准确对应了原文的论证脉络。所有引用均能在提供的证据中找到逐字或高度近似的对应。",
+      "supporting_spans": [
+       "如在计算2加3，或者是数正方形的边，或者判断更简单的东西上？",
+       "我将把我自己看成没有手，没有眼睛，没有肉，",
+       "如果他骗我，那就证明我是存在的；我也愿意让他尽他的意愿来骗我，",
+       "阿基米德认为，将地球从它原来的地方移到另一个地方，仅仅需要一个固定的、不动的点；"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答清晰地重构了从“普遍怀疑”到“我思”的论证逻辑，正确指出了该论证并非三段论推理而是基于“执行性”的自指结构。准确区分了“思维者存在的确定性”与“外部世界存在的确定性”，并指出了后者在笛卡尔体系中的位置（需依赖上帝存在性证明），逻辑严密。",
+      "supporting_spans": [
+       "它靠的是**论证的执行性结构**",
+       "怀疑→思维→\"思维的我\"在场",
+       "它没有证明...外部世界是真实的、缸中之脑是假的"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答提及了学界关于“我思”是推理还是直觉的争论（伽桑狄反驳 vs 现代执行性解读），并给出了自己的倾向。虽然未列出具体学者姓名或详细文献，但展示了不同解读路径的存在，符合OPTIONAL维度的要求。",
+      "supporting_spans": [
+       "学界(从当时伽桑狄式的...反驳, 到现代的\"执行性\"解读)长期在争论"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格区分了笛卡尔的“邪恶魔鬼”假设与当代普特南的“缸中之脑”思想实验，指出了两者在怀疑范围（数学真理、身体存在）上的差异。正确识别了笛卡尔文本的历史语境，未将后世概念强加于笛卡尔。",
+      "supporting_spans": [
+       "\"缸中之脑\"是当代...笛卡尔原文里没有这个词, 他的对应物是**\"邪恶魔鬼/大骗子\"**",
+       "笛卡尔的怀疑**不只针对感官对外部世界的报告**, 还向上蔓延到连数学真理都不能幸免"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确基于《第一哲学沉思集》的原典证据，并在结尾处清晰说明了证据边界（直接引文出自原典，普特南及现代解读属于背景叙述）。这种对证据来源的自觉区分符合学术规范。",
+      "supporting_spans": [
+       "已核验《第一哲学沉思集》第一、二沉思原文",
+       "**证据边界说明**:以上直接引文与出处均出自本次检索并通读的《第一哲学沉思集》"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现具体的书目字段（如出版社、年份、页码等）需要核对。提及的《第一哲学沉思集》及章节与提供的BIBLIOGRAPHIC_RECORDS一致。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将“邪恶魔鬼”归于笛卡尔，将“缸中之脑”归于普特南（希尔普特尼克），均符合哲学史常识。提及伽桑狄的反驳也符合历史事实。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的原文片段（如“计算2加3”、“阿基米德点”、“如果他骗我...”）均能在提供的PRIMARY_TEXT_EVIDENCE中找到对应，未发现歪曲原意或张冠李戴。",
+      "evidence_refs": [
+       "ev_31",
+       "ev_32"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确区分了笛卡尔时代概念与当代概念，并用当代概念（缸中之脑）作为类比进入笛卡尔问题，而非用当代概念直接解释笛卡尔思想体系，未造成时代错置的误解。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有声称出自原文的引文均与提供的证据文本高度一致（允许标点或极个别虚词的微小差异），未发现伪造的直接引语。",
+      "evidence_refs": [
+       "ev_31",
+       "ev_32"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答声明已核验《第一哲学沉思集》第一、二沉思原文，且提供的证据包含这两个章节的详细文本（read_chapters），支持其对文本内容的引用和解读。对于普特南等未提供全文的内容，回答明确表示属于背景叙述。",
+      "evidence_refs": [
+       "ev_31",
+       "ev_32"
+      ],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学学术素养。它不仅准确把握了笛卡尔《第一哲学沉思集》的核心文本与论证逻辑，还敏锐地处理了历史概念（邪恶魔鬼）与当代思想实验（缸中之脑）之间的异同。回答在论证重构上尤为出色，清晰区分了“我思”的执行性确证与对外部世界的推论，避免了常见的误解。对证据的使用规范且诚实，明确区分了原典依据与背景知识。整体而言，这是一个在文本基础、逻辑分析、历史意识与学术规范上均表现优异的回答。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答精准引用了《第一哲学沉思集》第一、二沉思中的关键段落（如'计算2加3'、'没有手没有眼睛'、'如果他骗我那就证明我是存在的'、'阿基米德'等），且与提供的 PRIMARY_TEXT_EVIDENCE 高度吻合，展现了极佳的文本锚定能力。",
+      "supporting_spans": [
+       "如在计算2加3，或者是数正方形的边，或者判断更简单的东西上？",
+       "我将把我自己看成没有手，没有眼睛，没有肉，",
+       "如果他骗我，那就证明我是存在的；我也愿意让他尽他的意愿来骗我，",
+       "阿基米德认为，将地球从它原来的地方移到另一个地方，仅仅需要一个固定的、不动的点；"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答清晰地重构了从'普遍怀疑'（邪恶精灵/缸中之脑）到'我思'的论证逻辑，正确指出了该论证并非三段论推理而是基于'执行性'（performative）结构的自指确定性，并准确区分了'我思'确立的主体性与外部世界重建（第三、六沉思）的不同任务。",
+      "supporting_spans": [
+       "它靠的是**论证的执行性结构**",
+       "怀疑→思维→'思维的我'在场",
+       "它证明了:我是一个**思维的东西**",
+       "它没有证明**:外部世界是真实的"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答提及了伽桑狄式的反驳（循环论证预设）与现代的'执行性'解读，展示了不同解释进路，虽然未深入展开具体学者间的细节交锋，但已满足OPTIONAL维度的要求。",
+      "supporting_spans": [
+       "学界(从当时伽桑狄式的'你不过是在循环/你预设了你在推理'反驳, 到现代的'执行性'解读)"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格区分了笛卡尔的'邪恶精灵'与当代普特南的'缸中之脑'，指出了两者在怀疑范围（数学真理、身体真实性）上的差异，体现了良好的历史概念辨析意识，未犯时代错置错误。",
+      "supporting_spans": [
+       "笛卡尔的怀疑比'缸中之脑'更狠",
+       "笛卡尔原文里没有这个词, 他的对应物是**'邪恶魔鬼/大骗子'**",
+       "缸中之脑假定还存在着'真实的科学家...'"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确声明依据《第一哲学沉思集》第一、二沉思，且所有引文均能在提供的原文证据中找到对应，未引用任何未提供的二手文献或伪造书目，完全符合基于给定证据的文献导向要求。",
+      "supporting_spans": [
+       "已核验《第一哲学沉思集》第一、二沉思原文",
+       "证据边界说明:以上直接引文与出处均出自本次检索并通读的《第一哲学沉思集》"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何具体的书目字段（如出版社、年份、页码等）超出给定记录范围。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答提及的'普特南'、'伽桑狄'等均为该领域公认的相关学者，且未将具体观点错误归属给非相关人物。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有标为原文或出自某处的引文均能在提供的 PRIMARY_TEXT_EVIDENCE 中找到对应，且未将转述标为原文。",
+      "evidence_refs": [
+       "ev_31",
+       "ev_32"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确区分了笛卡尔时代概念与当代概念，未用晚期体系错误描述早期思想。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中的引用内容与提供的证据文本逐字一致或为合理的摘录，无捏造引文。",
+      "evidence_refs": [
+       "ev_31",
+       "ev_32"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答声称通读了《第一哲学沉思集》第一、二沉思，且提供的证据包含这两章的详细文本（read_chapters显示已读），未超出访问级别。",
+      "evidence_refs": [
+       "read_chapters"
+      ],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在哲学论证重构与文本依据方面表现卓越。它不仅准确引用了笛卡尔《第一哲学沉思集》中的关键原文，还深刻剖析了'我思'论证如何通过自指结构回应极端怀疑论。回答特别值得称赞的是其对历史语境的敏感度，清晰区分了笛卡尔的'邪恶精灵'与当代'缸中之脑'在认识论上的差异，避免了常见的时代错置。论证逻辑严密，正确指出了'我思'作为阿基米德点的功能及其局限性（即不直接证明外部世界）。整体而言，这是一份高质量的学术性回答。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答精准引用了《第一哲学沉思集》第一、二沉思中的关键段落（如“计算2加3”、“没有手没有眼睛”、“阿基米德点”、“如果他骗我那就证明我是存在的”），并准确对应了原文语境。所有引文均能在提供的证据中找到逐字或高度近似的对应，且未超出证据范围。",
+      "supporting_spans": [
+       "如在计算2加3，或者是数正方形的边，或者判断更简单的东西上？",
+       "我将把我自己看成没有手，没有眼睛，没有肉，",
+       "如果他骗我，那就证明我是存在的；我也愿意让他尽他的意愿来骗我，",
+       "阿基米德认为，将地球从它原来的地方移到另一个地方，仅仅需要一个固定的、不动的点；"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答清晰地重构了从“普遍怀疑”到“我思”的论证逻辑，正确指出了该论证并非三段论推理而是基于“执行性”的自指结构。准确区分了“思维者存在”的确定性与“外部世界存在”的未确定性，并指出了后者在笛卡尔体系中的重建路径（第三、六沉思），逻辑严密。",
+      "supporting_spans": [
+       "它靠的是**论证的执行性(performative)结构**",
+       "怀疑→思维→\"思维的我\"在场",
+       "它证明了:我是一个**思维的东西(在思考的东西)**",
+       "它没有证明...外部世界是真实的"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答提及了学界关于“我思”是推理还是直觉的争论（伽桑狄反驳 vs 现代执行性解读），并明确给出了自己的立场。虽然未列出具体学者姓名（除伽桑狄外），但展示了不同解释路径的对比，符合OPTIONAL维度的要求。",
+      "supporting_spans": [
+       "学界(从当时伽桑狄式的...反驳, 到现代的\"执行性\"解读)长期在争论",
+       "我的理解倾向于后者"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格区分了笛卡尔的“邪恶魔鬼”假设与当代普特南的“缸中之脑”思想实验，指出了两者在怀疑范围上的差异（笛卡尔怀疑数学与身体存在，缸中之脑保留物理世界）。这种历史概念的辨析非常准确，符合历史学科规范。",
+      "supporting_spans": [
+       "\"缸中之脑\"是当代...笛卡尔原文里没有这个词, 他的对应物是**\"邪恶魔鬼/大骗子\"**",
+       "笛卡尔的怀疑**不只针对感官对外部世界的报告**, 还向上蔓延到连数学真理都不能幸免"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答完全基于提供的原典证据（《第一哲学沉思集》）进行构建，未引入未经证实的二手文献或虚构来源。对于“缸中之脑”的当代背景（普特南）仅作为背景叙述提及，且明确声明未在本次原典库中逐字核验，处理得当。",
+      "supporting_spans": [
+       "已核验《第一哲学沉思集》第一、二沉思原文, 证据充分",
+       "缸中之脑思想实验的当代出处(普特南)...属于我的背景叙述与解读层, 未在本次原典库中另作逐字核验"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的书目信息（书名、章节）与提供的BIBLIOGRAPHIC_RECORDS完全一致，无伪造字段。",
+      "evidence_refs": [
+       "ev_31",
+       "ev_32"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将观点归因于笛卡尔（基于原文）和普特南（作为背景常识），未发现张冠李戴或时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有声称出自笛卡尔原文的内容均能在PRIMARY_TEXT_EVIDENCE中找到对应，且未歪曲原意。",
+      "evidence_refs": [
+       "ev_31",
+       "ev_32"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确区分了笛卡尔时代概念与当代“缸中之脑”概念，未用晚期体系错误描述早期思想。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中的直接引语（如“如果他骗我，那就证明我是存在的”）与证据文本中的措辞高度一致或完全一致，符合引用规范。",
+      "evidence_refs": [
+       "ev_32"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答基于提供的《第一哲学沉思集》文本证据进行分析，未声称访问未提供的内部结构或未读文献。对于普特南的提及仅限于背景介绍，未过度展开。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学学术素养。它不仅准确把握了笛卡尔《第一哲学沉思集》的核心文本与论证结构，还敏锐地辨析了“缸中之脑”与“恶魔假设”在认识论上的细微差别。论证重构逻辑清晰，正确指出了“我思”的执行性本质及其作为阿基米德点的功能，同时严格界定了其证明范围（主体存在）与未证明范围（外部世界）。回答严格遵守了基于所提供证据的约束，无事实性错误或过度解读，文风虽通俗但论证严密，完全符合学术评审的高标准。",
+    "judge_confidence": 0.95
+   }
+  ]
+ },
+ {
+  "case_id": "H13",
+  "dims": {
+   "textual_grounding": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": null,
+    "applicability": "OPTIONAL"
+   },
+   "interpretive_plurality": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [
+   "FALSE_EXACT_QUOTE",
+   "MAJOR_ANACHRONISM",
+   "PRIMARY_TEXT_MISREPRESENTATION"
+  ],
+  "fatal_vote_counts": {
+   "PRIMARY_TEXT_MISREPRESENTATION": 3,
+   "MAJOR_ANACHRONISM": 1,
+   "FALSE_EXACT_QUOTE": 3
+  },
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称引用《存在与时间》的具体章节（如第25、26、39、54节）并提供了详细的引文内容，但输入的 PRIMARY_TEXT_EVIDENCE 中 'entries' 为空，且 RETRIEVED_EVIDENCE_DIGEST 中未包含任何《存在与时间》的文本片段。所有关于海德格尔原文的引述（如“无世界的单纯主体”、“任谁也不能从他人那里取走他的死”等）均无输入证据支持，属于完全缺乏文本根基。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺乏对《存在与时间》原文的任何有效引用或证据支持",
+       "所有声称的原文引文在输入证据中均不存在"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "虽然回答试图重构海德格尔关于“个人主义与共同体”的论证结构，但由于缺乏文本根基，其重构的有效性无法验证。鉴于该维为 OPTIONAL，且回答实质内容严重依赖未被证据支持的文本细节，判定为不适用打分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提到了学界存在争议（如列维纳斯的批评），并试图给出一个超越二元对立的综合判断（“二者都是，又都不是”）。然而，回答未能提供具体的学者观点细节或文献依据，仅停留在泛泛而谈的层面，且其核心论证基于未被证实的文本引用，因此仅给予最低分以奖励其展示争议存在的意识。",
+      "supporting_spans": [
+       "学界对这一问题的争论从未平息：列维纳斯等哲学家曾批评海德格尔的此在分析仍带有“自我中心/唯我论”残余"
+      ],
+      "missing_requirements": [
+       "缺乏对具体学术流派或学者观点的详细展开",
+       "缺乏支持其“综合判断”的文献依据"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答在引用《存在与时间》时出现了严重的时代错置和概念混淆。例如，将“社会契约论”与海德格尔对“无世界主体”的批判直接挂钩，且声称在“第二篇”讨论“向死存在”（实际上《存在与时间》全书并未正式出版“第二篇”，且相关讨论通常在第一篇下半部分）。此外，回答中提到的章节号（如第54节）与标准《存在与时间》章节划分不符，显示出缺乏对历史文本的基本学术纪律。",
+      "supporting_spans": [
+       "这是对**方法论个人主义（社会契约论式的“先有个体、再由个体合成社会”）**最彻底的反驳",
+       "在第二篇讨论“向死存在”时，他写道"
+      ],
+      "missing_requirements": [
+       "未能准确反映《存在与时间》的章节结构",
+       "引入了非海德格尔时代的概念体系（如社会契约论）进行不当类比"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答虽然提到了列维纳斯，但明确表示“未能读到具体论文正文”，且未引用任何输入提供的 SECONDARY_SOURCE_RECORDS 中的文献。输入提供了多篇关于海德格尔的学术文献（如 Dasein Disclosed, Ecstasy, Catastrophe 等），但回答完全未利用这些资源，仅依赖未被证实的“原文”进行自我论证，完全不符合文献导向的要求。",
+      "supporting_spans": [
+       "我这轮仅检索到相关文献的存在记录（如论“此在与他者/镜子”的章节），**未能读到具体论文正文**"
+      ],
+      "missing_requirements": [
+       "未引用或参考任何提供的二手文献",
+       "未展示对现有学术研究的实质性对话"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供具体的书目信息（如出版社、年份、DOI等），仅提及书名和章节，因此不涉及伪造书目字段。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答虽然提及列维纳斯，但仅作为一般性背景提及，未将具体观点或论证错误地归属给他，且未提供具体文献支持，因此不构成伪造学者归属。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "在第四章第25节，海德格尔明确否定了那种把此在当作先已孤立主体的做法：在世的澄清显示出，首先“存在”的或一直给定的从不是无世界的单纯主体",
+       "在第二篇讨论向死存在的章节，海德格尔强调死之不可代理：任谁也不能从他人那里取走他的死",
+       "在第六章第39节，海德格尔把共在纳入此在在世的基本建构"
+      ],
+      "reason": "回答将大量具体措辞表述为“海德格尔明确说”、“他写道”，但这些措辞在输入的 PRIMARY_TEXT_EVIDENCE（为空）和 RETRIEVED_EVIDENCE_DIGEST（无相关内容）中均不存在。这构成了将非证据内容表述为原文的严重歪曲。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE",
+       "RETRIEVED_EVIDENCE_DIGEST"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": true,
+      "offending_spans": [
+       "这是对**方法论个人主义（社会契约论式的“先有个体、再由个体合成社会”）**最彻底的反驳"
+      ],
+      "reason": "海德格尔在《存在与时间》中主要批判的是胡塞尔式的先验主体性和笛卡尔式的“我思”，而非直接针对“社会契约论”这一政治哲学传统。将海德格尔的存在论批判直接等同于对“社会契约论”的反驳，属于引入后世或不同领域的概念体系，实质改变了解读语境。",
+      "evidence_refs": [],
+      "confidence": 0.85
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "首先“存在”的或一直给定的从不是无世界的单纯主体，同样，无他人的绝缘的自我归根到底也并不首先“给定”",
+       "任谁也不能从他人那里取走他的死，每一此在向来都必须自己接受自己的死",
+       "死亡依其本质就向来是我自己的死亡"
+      ],
+      "reason": "回答使用了引号并声称是原文，但这些句子在提供的证据中逐字未出现。由于缺乏证据支持，这些被视为虚假的精确引用。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确表示“未能读到具体论文正文”，未对任何文献的内部结构或论证步骤进行描述，因此不存在过度声明访问级别的问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在形式上呈现出高度的学术自信和结构化的论证，但在实质内容上完全缺乏输入证据的支持。回答中关于《存在与时间》的所有具体引文和章节指涉均为幻觉或错误，未能通过基本的文本核查。虽然其试图展现对争议的把握，但由于缺乏文献根基和文本准确性，其学术质量极低。致命错误（PRIMARY_TEXT_MISREPRESENTATION, FALSE_EXACT_QUOTE）的存在表明该回答不具备作为学术参考的可信度。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称引用《存在与时间》的具体章节（如第25、26、39、54节）并提供了详细的引文内容，但输入的 PRIMARY_TEXT_EVIDENCE 中 'entries' 为空，且提供的 'read_chapters' 列表并未包含对应的文本内容。RETRIEVED_EVIDENCE_DIGEST 中的证据均为《道德经》、安瑟伦、尼采等无关文献。因此，所有关于海德格尔原文的引文和具体章节内容主张均无任何证据支持，属于完全的文本悬空。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺乏对《存在与时间》原文的任何实质性引用或证据支持",
+       "提供的章节号（如25, 26, 39, 54节）在证据中无对应文本"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "虽然回答试图重构海德格尔关于个人主义与共在的论证，但由于缺乏文本基础，其论证重构的有效性无法验证。鉴于该维为 OPTIONAL 且回答实质上未能基于有效证据进行可靠重构，判定为 null。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提到了列维纳斯等人的批评以及学界关于社会本体论的争论，展示了试图呈现多元视角的意识。然而，这些提及非常简略且未提供具体的文献支持（仅称'未能读到具体论文正文'），且主要篇幅仍集中在单一解读路径上。虽然触及了争议，但深度和广度极其有限。",
+      "supporting_spans": [
+       "学界对这一问题的争论从未平息：列维纳斯等哲学家曾批评海德格尔的此在分析仍带有'自我中心/唯我论'残余"
+      ],
+      "missing_requirements": [
+       "缺乏对具体对立观点的详细展开和文献支撑"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答在解释史提示部分明确承认'未能读到具体论文正文'，且将未核验的内容作为'方向提示'而非'已核验的学术论断'。这表明回答未能基于历史文献进行严谨的学术梳理，违反了历史学科对证据和文献核实的基本要求。",
+      "supporting_spans": [
+       "我这轮仅检索到相关文献的存在记录...未能读到具体论文正文，因此这里只作为你继续深入的方向提示，不当作已核验的学术论断呈现。"
+      ],
+      "missing_requirements": [
+       "缺乏基于历史文献的严谨论证",
+       "明确承认未阅读相关论文正文"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答虽然列出了 SECONDARY_SOURCE_RECORDS 中的文献（如 'Heidegger on Being a Person'），但所有这些记录的 access_level 均为 METADATA_ONLY。回答未引用这些文献的具体内容，仅凭元数据无法支撑任何学术论点。回答中大量的具体论证依赖于不存在的原文证据，而非真实的文献导向。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未有效利用提供的二手文献记录（仅限元数据）",
+       "缺乏对现有学术研究的实质性引用和对话"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供具体的书目字段（如出版社、年份、页码等）供核对，仅提及书名和章节号，且未引用二手文献的具体出版信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答虽然提及列维纳斯，但仅作为一般性背景提及，未将具体观点或论证细节错误地归属给他，且明确标注为未核验。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "在第四章第25节，海德格尔明确否定了那种把此在当作先已孤立主体的做法：在世的澄清显示出，首先“存在”的或一直给定的从不是无世界的单纯主体，同样，无他人的绝缘的自我归根到底也并不首先“给定”。",
+       "在第二篇讨论向死存在的章节，海德格尔强调死之不可代理：任谁也不能从他人那里取走他的死，每一此在向来都必须自己接受自己的死；只要死亡“存在”，它依其本质就向来是我自己的死亡。",
+       "在第二篇良知与决心相关章节，海德格尔指出常人运作的机制：常人总已经从此在那里取走了对种种存在可能性的掌握，悄悄卸除了明确选择这些可能性的责任..."
+      ],
+      "reason": "回答将大量具体措辞表述为海德格尔在特定章节（如第25、54节）的原文或明确观点，但输入的 PRIMARY_TEXT_EVIDENCE 为空，RETRIEVED_EVIDENCE_DIGEST 中也无《存在与时间》的文本。这些具体表述在提供的证据中完全不存在，属于无证据支持的文本捏造。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE entries: []"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "未发现明显的时代错置概念体系的使用。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "首先“存在”的或一直给定的从不是无世界的单纯主体，同样，无他人的绝缘的自我归根到底也并不首先“给定”。",
+       "任谁也不能从他人那里取走他的死，每一此在向来都必须自己接受自己的死；只要死亡“存在”，它依其本质就向来是我自己的死亡。",
+       "从常人中收回自己，就是从常人自身的生存方式转为本真的自己存在的生存方式"
+      ],
+      "reason": "回答使用了引号并声称出自海德格尔原文（如“首先‘存在’的...”），但这些措辞在提供的证据文本中逐字缺失。由于缺乏原文证据，这些引号内的内容被视为虚假精确引用。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE entries: []"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未描述任何 SECONDARY_SOURCE_RECORDS 中文献的内部结构或论证步骤，仅提及了文献的存在或标题，未超出 METADATA_ONLY 的允许范围。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在形式上展现了良好的哲学论述结构，试图通过区分存在论起点与生存论目标来解答问题。然而，从学术质量评审的角度看，该回答存在严重的证据缺失问题。回答大量引用《存在与时间》的具体章节和原文措辞，但输入的 PRIMARY_TEXT_EVIDENCE 为空，RETRIEVED_EVIDENCE_DIGEST 也未提供相关文本，导致所有核心引文和文本细节均处于无证据支持的状态。这构成了 PRIMARY_TEXT_MISREPRESENTATION 和 FALSE_EXACT_QUOTE 的致命错误。此外，虽然回答提及了二手文献，但受限于 METADATA_ONLY 的访问级别且未实际引用其内容，文献导向维度得分极低。总体而言，该回答更像是一篇基于记忆或外部知识的“范文”，而非基于所提供证据的严谨学术回答。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答声称引用《存在与时间》的具体章节（如第25、26、39、54节）并提供了详细的引文内容，但输入的 PRIMARY_TEXT_EVIDENCE 中 'entries' 为空，且 RETRIEVED_EVIDENCE_DIGEST 中仅包含《道德经》、安瑟伦、尼采等无关文本。没有任何证据支持回答中关于海德格尔文本的具体引文或内容描述。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "缺乏对《存在与时间》原文的任何有效引用或证据支持",
+       "提供的引文内容在证据中完全缺失"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": null,
+      "rationale": "虽然回答试图重构海德格尔关于个人主义与共同体优先的论证，但由于缺乏文本基础，其重构被视为无源之水。鉴于该维为 OPTIONAL 且回答实质上未能基于有效证据进行有效重构，故不评分。",
+      "supporting_spans": [],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答提到了列维纳斯等人的批评以及学界关于“社会本体论”的讨论，展示了试图呈现争议的意图。然而，这些提及非常简略且未提供具体的学者观点或文献依据（仅作为“方向提示”），且未深入展开不同解读之间的具体交锋。满足最低限度的争议提及，但深度不足。",
+      "supporting_spans": [
+       "学界对这一问题的争论从未平息：列维纳斯等哲学家曾批评海德格尔的此在分析仍带有“自我中心/唯我论”残余"
+      ],
+      "missing_requirements": [
+       "缺乏对具体学者观点的详细展开和文献支撑"
+      ]
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答在引用《存在与时间》时使用了具体的章节号（如第25、26、39、54节），这属于历史/文本考据的范畴。然而，由于这些引用内容完全缺乏证据支持，且无法验证其是否符合海德格尔著作的实际历史文本，因此在该维度上得分为0。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "引用的具体章节内容无法验证，缺乏历史文本依据"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 0,
+      "rationale": "回答虽然提到了列维纳斯和“社会本体论”的研究方向，但未引用任何具体的二手文献（书名、文章名、出版信息等）。输入的 SECONDARY_SOURCE_RECORDS 提供了多条相关文献（如 'Heidegger on Being a Person', 'Dasein Through the Looking-Glass'），但回答完全未利用这些资源。回答未能展示对现有学术文献的实际掌握和导向。",
+      "supporting_spans": [],
+      "missing_requirements": [
+       "未引用任何具体的二手文献",
+       "未利用提供的书目记录进行论证"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未提供具体的书目信息（如出版社、年份、DOI等），因此无法判定书目伪造。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答提到列维纳斯批评海德格尔带有“唯我论”残余，这是哲学史上众所周知的观点，虽无具体证据支持，但不属于明显的捏造归属。",
+      "evidence_refs": [],
+      "confidence": 0.7
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "在第四章第25节，海德格尔明确否定了那种把此在当作先已孤立主体的做法：在世的澄清显示出，首先“存在”的或一直给定的从不是无世界的单纯主体，同样，无他人的绝缘的自我归根到底也并不首先“给定”。",
+       "在第二篇讨论向死存在的章节，海德格尔强调死之不可代理：任谁也不能从他人那里取走他的死，每一此在向来都必须自己接受自己的死；只要死亡“存在”，它依其本质就向来是我自己的死亡。",
+       "在第二篇良知与决心相关章节，海德格尔指出常人运作的机制：常人总已经从此在那里取走了对种种存在可能性的掌握，悄悄卸除了明确选择这些可能性的责任"
+      ],
+      "reason": "回答将大量具体措辞表述为海德格尔的“原文”或“明确说”，但输入的 PRIMARY_TEXT_EVIDENCE 为空，RETRIEVED_EVIDENCE_DIGEST 中也无《存在与时间》文本。没有任何证据支持这些引文逐字出自海德格尔原著。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE entries: []"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "未发现明显的时代错置概念体系。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "首先“存在”的或一直给定的从不是无世界的单纯主体，同样，无他人的绝缘的自我归根到底也并不首先“给定”。",
+       "任谁也不能从他人那里取走他的死，每一此在向来都必须自己接受自己的死",
+       "死亡依其本质就向来是我自己的死亡"
+      ],
+      "reason": "回答使用了引号并声称出自具体章节，但提供的证据中无任何文本匹配这些措辞。由于缺乏原文证据，这些被视为虚假的精确引用。",
+      "evidence_refs": [
+       "PRIMARY_TEXT_EVIDENCE entries: []"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未声称阅读了任何具体的二手文献内部内容，仅泛泛提及学界争论，未触犯访问级别限制。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在形式上展现了良好的哲学论述结构，试图通过区分“存在论起点”与“本真性目标”来化解个人主义与共同体优先的二元对立。然而，从学术质量评审的角度看，该回答存在严重的证据缺失问题。回答中大量引用《存在与时间》的具体章节和原文，但输入的 PRIMARY_TEXT_EVIDENCE 为空，RETRIEVED_EVIDENCE_DIGEST 也未提供相关文本，导致所有文本引文处于“无源之水”的状态，触发了 PRIMARY_TEXT_MISREPRESENTATION 和 FALSE_EXACT_QUOTE 两个致命错误。此外，虽然回答触及了 interpretive_plurality（提及列维纳斯），但缺乏具体的文献支撑和深入展开，文献导向极弱。整体而言，该回答更像是一篇基于记忆或常识的“范文”，而非基于严格证据检索的学术回答。",
+    "judge_confidence": 0.95
+   }
+  ]
+ },
+ {
+  "case_id": "S4",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   },
+   "interpretive_plurality": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 2,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答极其出色地植根于尼采原典文本。引用了《论非道德意义上的真理与谎言》（早期）、《尼采文集》格言121与265（中期）、《善恶的彼岸》§1（后期）以及《偶像的黄昏》（晚期）中的核心段落。所有引用均与提供的证据（PRIMARY_TEXT_EVIDENCE）逐字对应或高度吻合，准确捕捉了尼采关于真理是隐喻、谬误是生命条件、求真意志的价值重估等关键论点。",
+      "supporting_spans": [
+       "真理即一群运动着的隐喻、转喻和拟人化",
+       "——人类的真理究竟是什么？——是人类 不可驳斥的 谬误。",
+       "生活并非一种论证",
+       "倘若我们要的是真理，那么 为什么要的不是 非真理？",
+       "一个判断是错误的，在我们看来，这还不构成对该判断提出的异议"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了尼采关于真理的复杂论证逻辑，而非简单的口号化。它清晰地展示了从早期对真理的语言学解构（隐喻），到中期对谬误的生存论辩护（生命条件），再到后期对求真意志的价值重估（价值而非事实），最后到对“真实世界”形而上学的废除（偶像的黄昏）这一思想演进脉络。论证结构严密，逻辑连贯。",
+      "supporting_spans": [
+       "这个诊断是分阶段的，我们可以循着他的文本谱系来看",
+       "他质疑的不是求真冲动，而是求真冲动背后那个未经审问的预设"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确指出了学界关于尼采真理论的不同解读路径，特别是提到了Maudemarie Clark（温和实在论/反形而上学解读）与James Porter（相对主义/解释学路线）之间的分歧。这展示了回答者不仅了解文本，还熟悉当代尼采研究的学术争议，避免了单一视角的独断。",
+      "supporting_spans": [
+       "学界争议（必须如实点出）",
+       "一种解读（以毛德玛丽·克拉克 Maudemarie Clark 为代表）认为",
+       "另一种（通常与保罗·瑞 James Porter 等相对主义/解释学路线相关）则强调"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确地将尼采的思想置于哲学史的背景中，指出了其对柏拉图、基督教、康德及实证主义“真实世界”观念的批判。它准确描述了“真实世界”如何从柏拉图的可达到变为康德的不可证明，再到尼采的废除。虽然未深入展开康德具体文本的细节，但宏观的历史定位准确。",
+      "supporting_spans": [
+       "即那个从柏拉图经基督教到康德、实证主义一路传承的信念",
+       "“真实世界”如何一步步从“可以达到”→“不可达到但被许诺”→“不可证明但被想好”"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答引用了具体的当代学者（Maudemarie Clark, James Porter）来支撑其关于学界争议的论述，符合学术规范。虽然未提供具体的论文标题或出版细节，但指名道姓地引用了代表性学者的观点，显示了良好的文献导向。",
+      "supporting_spans": [
+       "以毛德玛丽·克拉克 Maudemarie Clark 为代表",
+       "保罗·瑞 James Porter 等相对主义/解释学路线"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的原典章节（如《论非道德意义上的真理与谎言》、《善恶的彼岸》、《偶像的黄昏》）及格言编号（121, 265）均能在提供的证据或常识中找到对应，未发现捏造的书目信息。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_2",
+       "ev_15"
+      ],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将Maudemarie Clark归为温和实在论/反形而上学解读，将James Porter归为相对主义/解释学路线，这与尼采研究界的普遍认知相符，未发现张冠李戴。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有引用的尼采原句（如“真理即一群运动着的隐喻”、“人类的真理究竟是什么？——是人类 不可驳斥的 谬误”）均与提供的证据文本（PRIMARY_TEXT_EVIDENCE）高度一致，未发现歪曲原意或伪造原文的情况。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_2",
+       "ev_15"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论尼采思想时使用了现代学术术语（如“语言学解构”、“价值重估”），但这是为了解释尼采思想，而非将后世概念强加于尼采作为其当时的意图。关于康德和实证主义的讨论也符合尼采本人的历史语境。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中加引号的引用均能在证据中找到对应的原文或极其接近的转述（如“真理即一群运动着的隐喻...”），未发现凭空捏造的逐字引用。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_2",
+       "ev_15"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "虽然输入中未提供具体的SECONDARY_SOURCE_RECORDS，但回答对Clark和Porter的描述属于宏观的学派定位，并未声称阅读了某本特定书籍的内部章节或论证细节，因此不构成过度声称。",
+      "evidence_refs": [],
+      "confidence": 0.85
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学素养和文本掌握能力。它没有简单地回答“是”或“否”，而是通过精细的文本谱系分析，揭示了尼采对“真理”概念的复杂态度——即反对作为形而上学偶像的“真理”，而非反对所有形式的真理。回答结构清晰，论证有力，准确引用了尼采不同时期的关键文本，并恰当引入了当代学术界的代表性争议（Clark vs. Porter），体现了深厚的学术功底和客观的学术态度。无事实性错误或致命缺陷。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答极其出色地植根于尼采原典文本。引用了《论非道德意义上的真理与谎言》中关于真理是“隐喻”的定义，准确引用了《尼采文集（合集）》格言121（生活并非论证）和265（真理是不可驳斥的谬误），以及《善恶的彼岸》§1关于“求真意志”和“错误判断”的论述。所有核心论点均有对应的文本片段支撑，且引用准确。",
+      "supporting_spans": [
+       "真理即一群运动着的隐喻、转喻和拟人化",
+       "——人类的真理究竟是什么？——是人类 不可驳斥的 谬误。",
+       "生活并非一种论证",
+       "倘若我们要的是真理，那么 为什么要的不是 非真理？",
+       "一个判断是错误的，在我们看来，这还不构成对该判断提出的异议"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了尼采关于真理的复杂论证逻辑。它没有停留在表面口号，而是梳理了从早期的语言学解构（真理作为遗忘来源的幻觉），到中期的价值论转向（谬误作为生命条件），再到后期的形而上学批判（废除“真实世界”）的思想脉络。论证清晰地展示了尼采如何从“真理是什么”转向“真理的价值”以及“求真意志的谱系”。",
+      "supporting_spans": [
+       "尼采真正攻击的对象，不是“真理”本身，而是对真理的神化",
+       "生存所必需的信念，未必为真，且其价值不取决于为真",
+       "他质疑的不是求真冲动，而是求真冲动背后那个未经审问的预设"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确指出了学界关于尼采真理论的主要争议。具体区分了以Maudemarie Clark为代表的“温和实在论/反形而上学”解读（认为尼采后期放弃强幻觉论，接受经验真理）与以James Porter等为代表的“相对主义/解释学”解读（强调视角主义和解释的不可消除性）。这展示了尼采文本内部的张力，避免了单一化的解读。",
+      "supporting_spans": [
+       "一种解读（以毛德玛丽·克拉克 Maudemarie Clark 为代表）认为尼采后期...已经放弃了早期那种“真理=幻觉”的强主张",
+       "另一种（通常与保罗·瑞 James Porter 等相对主义/解释学路线相关）则强调一切视角与解释都不可能抵达“无解释的实在”"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确地将尼采的思想置于哲学史背景中，特别是对柏拉图主义、基督教以及康德（“真实世界”的演变）的批判。它准确描述了“真实世界”如何从柏拉图到康德再到实证主义的观念史演变，并指出尼采的目的是取消“两个世界”的对立。这显示了良好的历史语境感，虽然未深入探讨康德具体术语的细节，但宏观定位准确。",
+      "supporting_spans": [
+       "即那个从柏拉图经基督教到康德、实证主义一路传承的信念",
+       "“真实世界”如何一步步从“可以达到”→“不可达到但被许诺”→“不可证明但被想好”"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了具体的学者（Maudemarie Clark, James Porter）和具体的著作/篇章（《论非道德意义上的真理与谎言》、《善恶的彼岸》、《偶像的黄昏》），这符合文献导向的要求。然而，输入提供的SECONDARY_SOURCE_RECORDS为空，且BIBLIOGRAPHIC_RECORDS仅包含原典条目。虽然回答中提及的学者归属在常识范围内是正确的，但严格依据输入证据，缺乏二手文献记录的支持。鉴于回答确实展示了基于学术文献（而非通俗读物）的解读能力，且明确指出了学术争议的双方，给予2分以奖励其学术导向，但因缺乏输入证据中的书目记录支持而不给更高分。",
+      "supporting_spans": [
+       "以毛德玛丽·克拉克 Maudemarie Clark 为代表",
+       "保罗·瑞 James Porter"
+      ],
+      "missing_requirements": [
+       "输入证据中未提供Maudemarie Clark或James Porter的书目记录"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的原典书目信息（如《尼采文集（合集）》、《善恶的彼岸》、《偶像的黄昏》）均能在输入的BIBLIOGRAPHIC_RECORDS或PRIMARY_TEXT_EVIDENCE中找到对应或被广泛包含。未发现捏造的页码、译者或出版社信息。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_2",
+       "ev_15"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将Maudemarie Clark归为“温和实在论”解读，将James Porter归为“相对主义/解释学”解读，这符合尼采研究界的普遍学术共识。虽然输入证据未提供这些二手文献的具体内容，但未发现明显的张冠李戴或时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有引用的原典片段（如“真理即一群运动着的隐喻”、“人类的真理究竟是什么？——是人类 不可驳斥的 谬误”）均能在提供的PRIMARY_TEXT_EVIDENCE中逐字或近乎逐字找到，未发现歪曲原意或无中生有的表述。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_2",
+       "ev_15"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论尼采思想时使用了“价值重估”、“视角主义”等尼采学术研究中的标准术语，并未用后世完全不相容的概念体系强行解释。关于康德的讨论也符合尼采对康德的历史定位。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中加引号的引用均与证据文本高度吻合。例如“真理即一群运动着的隐喻...”与证据ev_15完全一致；“人类的真理究竟是什么？——是人类 不可驳斥的 谬误”与证据ev_1完全一致。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_15"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对原典的引用和解读均基于提供的FULL_TEXT_READ或snippet级别的证据（如ev_1, ev_2, ev_15）。对于二手文献（Clark, Porter），回答仅概括了其大致立场，未声称深入分析了其内部章节结构或具体论证步骤，因此不构成过度声称。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学素养和文本细读能力。它超越了简单的“是/否”二元对立，精准地捕捉到了尼采思想中关于真理的动态演变和核心张力——即对“真理”作为形而上学偶像的批判与对生命条件的肯定之间的辩证关系。回答结构清晰，论证严密，引用规范，且能够自觉引入学术界的不同解读视角，体现了优秀的学术质量。唯一的不足在于输入证据中缺乏二手文献的具体支持，使得对学者观点的引用无法在本次评审的严格证据闭环中得到完全验证，但这并不影响回答本身的逻辑自洽和深刻性。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答极其出色地植根于尼采原典文本。引用了《论非道德意义上的真理与谎言》中关于真理是“隐喻”的定义，准确引用了《尼采文集（合集）》格言121（生活并非论证）和265（真理是不可驳斥的谬误），以及《善恶的彼岸》§1关于“求真意志”和“错误判断”的段落。所有核心论点均有确凿的文本支撑，且引用准确。",
+      "supporting_spans": [
+       "真理即一群运动着的隐喻、转喻和拟人化",
+       "——人类的真理究竟是什么？——是人类 不可驳斥的 谬误。",
+       "生活并非一种论证",
+       "倘若我们要的是真理，那么 为什么要的不是 非真理？",
+       "一个判断是错误的，在我们看来，这还不构成对该判断提出的异议"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了尼采关于真理的复杂论证逻辑。它没有停留在表面口号，而是梳理了从早期的语言学解构（真理作为遗忘来源的幻觉），到中期的价值论转向（谬误作为生命条件），再到后期的形而上学批判（废除“真实世界”）的思想脉络。论证清晰地展示了尼采如何从“真理是什么”转向“真理的价值”以及“求真意志的谱系”。",
+      "supporting_spans": [
+       "尼采真正攻击的对象，不是“真理”本身，而是对真理的神化",
+       "生存所必需的信念，未必为真，且其价值不取决于为真",
+       "他质疑的不是求真冲动，而是求真冲动背后那个未经审问的预设"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确指出了学界关于尼采真理论的不同解读路径。具体提到了Maudemarie Clark的“温和实在论/反形而上学”解读与Paul Porter等人的“相对主义/解释学”解读之间的张力。这展示了回答者不仅了解文本，还熟悉当代尼采研究的学术争议，避免了单一教条式的解读。",
+      "supporting_spans": [
+       "一种解读（以毛德玛丽·克拉克 Maudemarie Clark 为代表）认为尼采后期...已经放弃了早期那种“真理=幻觉”的强主张",
+       "另一种（通常与保罗·瑞 James Porter 等相对主义/解释学路线相关）则强调一切视角与解释都不可能抵达“无解释的实在”"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确地将尼采的思想置于哲学史的背景中，指出了他对柏拉图、基督教、康德及实证主义“真实世界”观念的批判。它准确描述了“真实世界”如何从柏拉图的“可达到”演变为康德的“不可证明”再到尼采的“废除”。虽然未深入展开康德具体术语的细节，但宏观的历史定位准确。",
+      "supporting_spans": [
+       "那个从柏拉图经基督教到康德、实证主义一路传承的信念：存在一个超越生成与表象的终极真实",
+       "“真实世界”如何一步步从“可以达到”→“不可达到但被许诺”→“不可证明但被想好”"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了两位具体的当代学者（Maudemarie Clark, James Porter），这符合文献导向的要求。然而，除了这两个人名外，回答缺乏更广泛的二手文献引用（如Heidegger, Derrida, Nehamas等关于尼采真理的经典论述），也未提供具体的书目信息（如书名、文章名）。虽然指出了争议，但文献支撑的厚度略显不足。",
+      "supporting_spans": [
+       "一种解读（以毛德玛丽·克拉克 Maudemarie Clark 为代表）",
+       "另一种（通常与保罗·瑞 James Porter 等相对主义/解释学路线相关）"
+      ],
+      "missing_requirements": [
+       "缺乏具体的二手文献书目信息（如书名、出版年份）",
+       "未引用更多经典解释者的观点"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未提供具体的书目字段（如出版社、年份、页码），仅提及了学者名字和原典书名，因此不存在伪造书目信息的风险。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将Maudemarie Clark归为“温和实在论/反形而上学”解读，将James Porter归为“相对主义/解释学”路线，这符合学界对这两位学者的一般认知，未发现明显的张冠李戴。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有对尼采原典的引用（如《论非道德意义上的真理与谎言》、《善恶的彼岸》、《偶像的黄昏》及格言集）均与提供的证据文本高度一致，未发现歪曲原意或无中生有的情况。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_2",
+       "ev_15"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答准确区分了尼采的早期、中期和晚期思想，未出现用晚期概念强行解释早期文本的时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引文（如“真理即一群运动着的隐喻”、“人类的真理究竟是什么？——是人类 不可驳斥的 谬误”）均能在提供的证据文本中找到逐字对应的原文。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_15"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答仅提及了学者名字和其大致立场，未声称阅读了特定文献的内部章节或论证细节，也未描述未提供证据的文献内容，因此不存在越权访问声明。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在哲学学术质量上表现优异。它超越了简单的“是/否”二元对立，精准地捕捉到了尼采思想中关于真理的复杂性和动态演变。回答具有极强的文本基础，引用准确且切中肯綮。同时，它能够引入当代学术界的不同解读视角，展示了良好的解释学意识。唯一的不足在于二手文献的具体引用稍显单薄，但这并不影响其整体论证的扎实与深刻。回答成功地将尼采从“反真理者”还原为“真理价值的重估者”。",
+    "judge_confidence": 0.95
+   }
+  ]
+ },
+ {
+  "case_id": "S7",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "historical_discipline": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答精准引用了《论语》中关于仁与礼关系的核心章节（八佾篇“人而不仁如礼何”、“绘事后素”；阳货篇“礼云礼云”；颜渊篇“克己复礼为仁”、“爱人”；里仁篇“造次必于是”），并准确引用《道德经》第三十八章作为思想史对照。所有引文均能在提供的原文证据（ev_4, ev_12, ev_24, ev_29, ev_7）中找到逐字对应，引用规范，无捏造。",
+      "supporting_spans": [
+       "子曰：“人而不仁，如礼何？人而不仁，",
+       "子曰：“礼云礼云，玉帛云乎哉？乐云乐云，",
+       "子曰：“大哉问！礼，与其奢也，",
+       "子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。",
+       "失道而后德，失德而后仁，失仁而后义，失义而后礼"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了孔子关于仁礼关系的辩证论证结构：一方面通过“人而不仁如礼何”和“绘事后素”论证仁是礼的内在基础（质），另一方面通过“克己复礼为仁”论证礼是仁的实践路径（文）。论证逻辑清晰，准确捕捉了原典中“内外贯通”、“互为表里”的张力。",
+      "supporting_spans": [
+       "仁与礼在孔子那里既不是两个平行并列的德目，也不是简单的一方从属于另一方，而是一对互相奠基、内外贯通、互为表里的范畴。",
+       "礼以仁为本：无仁则礼只是空壳",
+       "仁经由礼而成：仁须“复礼”方能落地"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答在解读部分明确指出了学界关于“仁与礼孰本孰末”的不同侧重（以仁释礼 vs 复礼为仁），并表明了自己的综合立场。虽然未引用具体现代学者姓名（因检索到的二手文献多为无关噪声），但准确描述了解释史上的主要分歧路径，符合 interpretive_plurality 的要求。",
+      "supporting_spans": [
+       "学界解释史需如实点出：对“仁与礼孰本孰末”至今存在不同侧重。",
+       "一种通行的现代解释是孔子“以仁释礼”...另一路则强调“复礼为仁”..."
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格基于提供的原典证据进行论述，未出现时代错置。在思想史对照部分，准确引用《道德经》关于“礼”是“乱之首”的论述，正确区分了儒家与道家对礼的不同历史定位，体现了良好的历史分寸感。",
+      "supporting_spans": [
+       "置于思想史中，孔子这一立场立刻显出独特性。",
+       "对道家而言，礼是人为造作、是自然之真的失落。而孔子恰恰相反，把礼安置为仁德自我实现的积极形式而非堕落。"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答完全基于提供的《论语》和《道德经》原文证据展开，未依赖检索到的无关二手文献。在缺乏相关学术检索结果的情况下，诚实声明“学术二手检索未获针对性儒学文献”，并转而深耕原典，符合学术规范。所有引用均有据可查，无过度解读。",
+      "supporting_spans": [
+       "材料已充分，原文均已逐篇核验，学术二手检索未获针对性儒学文献（返回的多为无关检索噪声，故不以此立论）。",
+       "综合原文，我认为孔子仁礼观最具张力..."
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何书目字段（如出版社、年份、页码等）的捏造。所有引用均指向原典章节，且与提供的记录一致。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误归属给特定学者。在提及学界解释时，使用了泛指（“一种通行的现代解释”），避免了张冠李戴。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有对孔子和老子言论的引用均能在提供的原文证据中找到逐字对应，未出现歪曲原意或把转述标为原文的情况。",
+      "evidence_refs": [
+       "ev_4",
+       "ev_7",
+       "ev_12",
+       "ev_24",
+       "ev_29"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未使用晚期或后世概念体系（如宋明理学术语）强行解释早期思想，也未出现时代错置。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有带引号的直接引语均经过核对，与提供的原文证据完全一致。",
+      "evidence_refs": [
+       "ev_4",
+       "ev_7",
+       "ev_12",
+       "ev_24",
+       "ev_29"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明未使用检索到的二手文献，仅基于提供的全文证据（FULL_TEXT_READ 级别的原典片段）进行论述，未超出证据范围。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术质量。在缺乏有效二手文献支持的情况下，回答者严格依据提供的原典证据，对孔子“仁”与“礼”的关系进行了深入、辩证且逻辑严密的阐释。回答不仅准确引用了关键文本，还成功重构了“仁礼互摄”的论证结构，并引入道家视角进行思想史对照，增强了论述的深度。所有引用均经过严格核对，无任何事实性错误或学术不端行为。这是一份基于一手文献的优秀哲学阐释范例。",
+    "judge_confidence": 1.0
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答精准引用了《论语》中关于仁与礼关系的核心章节（八佾篇“人而不仁如礼何”、“绘事后素”；阳货篇“礼云礼云”；颜渊篇“克己复礼为仁”、“樊迟问仁”），并准确引用了《道德经》第三十八章作为思想史对照。所有引文均能在提供的原文证据中逐字找到对应，引用准确，覆盖了论证所需的关键文本。",
+      "supporting_spans": [
+       "子曰：“人而不仁，如礼何？人而不仁，",
+       "子曰：“礼云礼云，玉帛云乎哉？乐云乐云，",
+       "子曰：“大哉问！礼，与其奢也，",
+       "子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。",
+       "失道而后德，失德而后仁，失仁而后义，失义而后礼"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了孔子关于仁礼关系的双向论证逻辑：一方面通过“人而不仁如礼何”和“绘事后素”论证“礼以仁为本”（仁是礼的精神内核）；另一方面通过“克己复礼为仁”论证“仁经由礼而成”（礼是仁的实践路径）。逻辑链条清晰，准确捕捉了孔子思想中“质”与“文”的辩证统一。",
+      "supporting_spans": [
+       "仁与礼在孔子那里既不是两个平行并列的德目，也不是简单的一方从属于另一方，而是一对互相奠基、内外贯通、互为表里的范畴。",
+       "礼以仁为本：无仁则礼只是空壳",
+       "仁经由礼而成：仁须“复礼”方能落地"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答在解读部分明确指出了学界关于“仁与礼孰本孰末”的不同侧重（“以仁释礼”与“复礼为仁”），并表明自己倾向于“不可拆分的奠基关系”的综合判断。虽然未引用具体现代学者姓名（因检索到的二手文献多为无关噪声），但准确呈现了主流的解释学分歧，符合 interpretive_plurality 的要求。",
+      "supporting_spans": [
+       "学界解释史需如实点出：对“仁与礼孰本孰末”至今存在不同侧重。",
+       "我倾向于把二者视为不可拆分的奠基关系，而不强行分优劣"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格基于提供的《论语》和《道德经》文本进行思想史分析，未出现时代错置。通过将孔子“仁礼合一”的立场与老子“礼为乱之首”的立场进行对比，准确界定了儒家在轴心时代思想史中的独特位置。未引入未经证据支持的后世概念。",
+      "supporting_spans": [
+       "置于思想史中，孔子这一立场立刻显出独特性。",
+       "对道家而言，礼是人为造作、是自然之真的失落。而孔子恰恰相反，把礼安置为仁德自我实现的积极形式而非堕落。"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答完全基于提供的原典证据（PRIMARY_TEXT_EVIDENCE）立论，未依赖检索到的无关二手文献。在缺乏高质量二手文献的情况下，选择回归原典进行细读，并明确说明“学术二手检索未获针对性儒学文献”，这种处理方式符合学术规范，体现了对证据来源的诚实态度。",
+      "supporting_spans": [
+       "材料已充分，原文均已逐篇核验，学术二手检索未获针对性儒学文献（返回的多为无关检索噪声，故不以此立论）。",
+       "综合原文，我认为孔子仁礼观最具张力、也最富创造性的地方..."
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的所有书目信息（如《论语》篇章名、《道德经》章节）均能在提供的 BIBLIOGRAPHIC_RECORDS 或 PRIMARY_TEXT_EVIDENCE 中找到对应，无伪造书目信息。",
+      "evidence_refs": [
+       "ev_4",
+       "ev_7",
+       "ev_12",
+       "ev_24",
+       "ev_29"
+      ],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误归属给特定学者。提及的“朱熹”仅作为未来展开的示例，未在当前论证中作为依据进行错误归属。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有对《论语》和《道德经》的转述均忠实于原文证据，未将转述标为原文，也未歪曲原意。",
+      "evidence_refs": [
+       "ev_4",
+       "ev_7"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未使用晚期或后世概念体系（如宋明理学术语）来强行解释孔子思想，仅在末尾提及朱熹作为对比示例，未造成时代错置的解读。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有带引号的直接引语均经过与 PRIMARY_TEXT_EVIDENCE 的逐字比对，完全一致，无虚假引用。",
+      "evidence_refs": [
+       "ev_4",
+       "ev_7",
+       "ev_12",
+       "ev_24",
+       "ev_29"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明二手文献检索结果无效，因此完全基于提供的全文证据（FULL_TEXT_READ 级别的原典片段）进行论述，未对未提供的文献内容进行过度主张。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在缺乏有效二手文献支持的情况下，展现了出色的原典细读能力和哲学论证能力。回答紧扣《论语》文本，准确引用并重构了孔子关于“仁”与“礼”互为表里、双向奠基的核心论点，逻辑严密，条理清晰。通过与《道德经》的对比，有效凸显了儒家思想的历史特质。未发现任何事实性错误或学术不端行为，符合高标准的学术质量要求。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答精准引用了《论语》中关于仁与礼关系的核心章节（八佾篇“人而不仁如礼何”、“绘事后素”；阳货篇“礼云礼云”；颜渊篇“克己复礼为仁”、“爱人”；里仁篇“造次必于是”），并准确引用《道德经》第三十八章作为思想史对照。所有引文均与提供的原文证据（ev_4, ev_7, ev_12, ev_24, ev_29）逐字核对一致，无捏造或误引。",
+      "supporting_spans": [
+       "子曰：“人而不仁，如礼何？人而不仁，",
+       "子曰：“礼云礼云，玉帛云乎哉？乐云乐云，",
+       "子曰：“大哉问！礼，与其奢也，",
+       "子曰：“克己复礼为仁。一日克己复礼，天下归仁焉。",
+       "君子无终食之间违仁，造次必于是，颠沛必于是",
+       "失道而后德，失德而后仁，失仁而后义，失义而后礼"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了孔子关于仁礼关系的辩证论证结构：一方面论证“礼以仁为本”（通过八佾篇、阳货篇及宰我问丧的例子），另一方面论证“仁经由礼而成”（通过颜渊篇“克己复礼”及“博学于文，约之以礼”）。逻辑链条清晰，准确捕捉了“质”与“文”、“内”与“外”的互摄关系。",
+      "supporting_spans": [
+       "仁与礼在孔子那里既不是两个平行并列的德目，也不是简单的一方从属于另一方，而是一对互相奠基、内外贯通、互为表里的范畴",
+       "礼以仁为本：无仁则礼只是空壳",
+       "仁经由礼而成：仁须“复礼”方能落地"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答在解读部分明确指出了学界关于“仁与礼孰本孰末”的不同侧重（“以仁释礼”与“复礼为仁”），并提及了朱熹与汉儒对“克己”训释的差异。虽然未引用具体现代学者姓名（因检索到的二手文献多为无关噪声），但如实呈现了解释史上的张力，符合 interpretive_plurality 的要求。",
+      "supporting_spans": [
+       "学界解释史需如实点出：对“仁与礼孰本孰末”至今存在不同侧重",
+       "朱熹“克己”即灭人欲 vs 汉儒以“约身”释之"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格基于提供的《论语》和《道德经》文本进行思想史分析，未出现时代错置。通过将孔子“仁礼互摄”的观点与老子“失道而后礼”的退化史观进行对比，准确界定了儒家在轴心时代的思想坐标，体现了良好的历史分寸感。",
+      "supporting_spans": [
+       "置于思想史中，孔子这一立场立刻显出独特性",
+       "对道家而言，礼是人为造作、是自然之真的失落。而孔子恰恰相反，把礼安置为仁德自我实现的积极形式而非堕落"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答完全基于提供的原典证据（PRIMARY_TEXT_EVIDENCE）立论，未依赖检索到的无关二手文献（如遥感、心理学等）。在缺乏相关学术二手文献的情况下，诚实声明“学术二手检索未获针对性儒学文献”，并转而深耕原典，符合学术规范。",
+      "supporting_spans": [
+       "材料已充分，原文均已逐篇核验，学术二手检索未获针对性儒学文献（返回的多为无关检索噪声，故不以此立论）"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何书目字段（如出版社、年份、页码等）的捏造。所有引用均指向原典章节，且与提供的记录一致。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未将具体观点错误归属给特定学者。提及的朱熹与汉儒的训释差异属于通识性学术史事实，且未捏造具体人名或观点。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有对《论语》和《道德经》的转述均准确反映了原文含义，未出现歪曲或强加。",
+      "evidence_refs": [
+       "ev_4",
+       "ev_7",
+       "ev_12",
+       "ev_24",
+       "ev_29"
+      ],
+      "confidence": 1.0
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答未使用晚期或后世概念体系（如宋明理学的“理气”、“天理”等）来强行解释孔子思想，仅使用了“质”、“文”、“内”、“外”等文本中隐含或通用的哲学范畴。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "所有带引号的直接引语均能在提供的原文证据中找到逐字对应的文本。",
+      "evidence_refs": [
+       "ev_4",
+       "ev_7",
+       "ev_12",
+       "ev_24",
+       "ev_29"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明二手文献检索无效，因此完全基于提供的原典全文（FULL_TEXT_READ 级别的证据窗口）进行分析，未越界描述未提供的文献内容。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答在缺乏有效二手文献支持的情况下，展现了极高的原典解读能力和哲学思辨水平。回答严格依据提供的《论语》和《道德经》文本，准确重构了孔子关于“仁”与“礼”辩证关系的核心论证，并通过与道家思想的对比凸显了儒家的特质。所有引文均经过严格核对，无事实性错误或学术不端行为。虽然在二手文献综述方面因检索限制而略显单薄，但整体上符合高标准的学术质量要求。",
+    "judge_confidence": 0.95
+   }
+  ]
+ },
+ {
+  "case_id": "S9",
+  "dims": {
+   "textual_grounding": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "interpretive_plurality": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 2,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [
+   "FALSE_EXACT_QUOTE",
+   "LITERATURE_ACCESS_OVERCLAIM",
+   "PRIMARY_TEXT_MISREPRESENTATION"
+  ],
+  "fatal_vote_counts": {
+   "FALSE_EXACT_QUOTE": 2,
+   "LITERATURE_ACCESS_OVERCLAIM": 2,
+   "PRIMARY_TEXT_MISREPRESENTATION": 1
+  },
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答引用了《精神现象学》序言、'自我意识'章、'小逻辑'等文本，并试图通过'花蕾-花朵-果实'等意象进行解读。然而，回答中存在多处未在提供的证据中逐字出现的'直接引语'（如'卸下爱知识这个名号'、'赤裸裸的结果则是一具已经把创作意图抛在身后的尸体'），且部分对文本的描述（如'意识的经验科学'副标题的具体德语对应、'正反合'非黑格尔用语的具体反驳）缺乏所提供证据片段的直接字面支撑。虽然回答展示了文本熟悉度，但在严格基于所提供证据的精确引用和逐字核对上存在偏差。",
+      "supporting_spans": [
+       "真理的真实形态只能是一个科学的真理体系",
+       "花蕾、花朵与果实的著名意象",
+       "意识的经验科学",
+       "赤裸裸的结果则是一具已经把创作意图抛在身后的尸体"
+      ],
+      "missing_requirements": [
+       "对声称的'直接引语'缺乏证据文本中的逐字匹配",
+       "部分德语术语（如Wissenschaft, Bildungsweg）的引入未在证据中找到对应原文"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答成功重构了黑格尔哲学的核心论证逻辑，特别是从'实体即主体'推导出的辩证法动态过程，以及主奴辩证法中承认与劳动的逆转机制。论证链条清晰，能够将'扬弃'、'承认'等概念有机串联起来，展示了较高的哲学理解力。",
+      "supporting_spans": [
+       "前一个环节不是被'推翻'，而是被'扬弃'",
+       "主人依赖奴隶的劳动而获得承认，反而是不自由的",
+       "奴隶在改造自然的劳动中，通过否定性的磨炼，反而走向了自我意识的自由"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答出色地呈现了黑格尔研究的多种解释路径，明确区分了青年黑格尔派与老年黑格尔派、科耶夫式的人类学解读与海德格尔/皮平式的形而上学解读、以及马克思主义的'颠倒'传统。这种对解释学处境的梳理完全符合该维度的最高标准。",
+      "supporting_spans": [
+       "黑格尔哲学的右翼...左翼",
+       "科耶夫...彻底去形而上学化",
+       "阿多诺的《否定的辩证法》就是在这个关节上动刀",
+       "同一个文本，可以被读成存在主义的预告，也可以被读成传统形而上学的顶峰"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答准确地将黑格尔置于德国古典哲学的发展脉络中，正确指出了康德物自体问题作为黑格尔的出发点，并梳理了从谢林到马克思、法兰克福学派的影响线索。对'现实'（Wirklichkeit）与'存在'的区分也体现了历史语境的敏感性。扣分点在于部分历史细节（如黑格尔在图宾根的具体经历）未在证据中详尽体现，但整体脉络清晰。",
+      "supporting_spans": [
+       "康德把'物自体'与现象、知性与理性之间的鸿沟设为不可逾越",
+       "对马克思（批判继承并'颠倒'辩证法与劳动概念）",
+       "偶然的、转瞬即逝的存在并不是'现实'在严格意义上是合理的"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了大量黑格尔原典及后世研究（如阿多诺、科耶夫、张世英），并试图引用具体章节。然而，根据提供的书目记录和证据，回答中存在多处书目信息不匹配或越界的情况（如声称引用《小逻辑》第213-222节但证据显示内容为《哲学和我们的时代》的转述；对《否定的辩证法》的引用未在证据中找到具体对应文本）。虽然展示了广博的文献视野，但在基于所提供记录的精确引用上失分。",
+      "supporting_spans": [
+       "《法哲学原理》",
+       "阿多诺的《否定的辩证法》",
+       "《精神现象学》·导读与译者序"
+      ],
+      "missing_requirements": [
+       "引用的具体章节内容与提供的BIBLIOGRAPHIC_RECORDS中的证据摘要不完全吻合",
+       "部分学者观点（如科耶夫的具体讲座内容）未在提供的SECONDARY_SOURCE_RECORDS中体现"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提到的书目（如《精神现象学》、《法哲学原理》、《否定的辩证法》）均为真实存在的著作。虽然部分引用的具体页码或章节内容未在提供的证据片段中直接显示，但并未出现完全虚构的书目（如不存在的书名或作者）。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将'主奴辩证法'归因于黑格尔，将'为承认而斗争'的解读归因于科耶夫，将'否定的辩证法'归因于阿多诺，这些均符合思想史事实，未发现张冠李戴。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "虽然回答中有部分意译和概括，但并未将非黑格尔的观点强加为黑格尔的'原文'。关于'花蕾'等意象的描述符合黑格尔文本的常见解读。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论黑格尔思想时，正确区分了其早期与晚期语境，且在讨论后世影响时明确指出了是后来者（如马克思、阿多诺）的视角，未发生时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "卸下'爱知识'这个名号",
+       "赤裸裸的结果则是一具已经把创作意图抛在身后的尸体"
+      ],
+      "reason": "回答使用了引号并暗示为原文或直接转述，但在提供的PRIMARY_TEXT_EVIDENCE（如《精神现象学》序言片段）中，未找到这些中文措辞的逐字对应。证据中显示的是关于序言功能的描述，而非这些具体的比喻句。",
+      "evidence_refs": [
+       "ev_17"
+      ],
+      "confidence": 0.85
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": true,
+      "offending_spans": [
+       "【《否定的辩证法》·第二章】",
+       "【《精神现象学》·导读与译者序，转述大意】"
+      ],
+      "reason": "虽然BIBLIOGRAPHIC_RECORDS中包含《否定的辩证法》和《精神现象学》的记录，但提供的证据片段（ev_5, ev_16）仅包含极短的片段或目录信息，不足以支撑回答中关于该书具体论证步骤（如'阿多诺...斩断黑格尔的同一性'）或译者序具体观点的详细描述。回答声称的细节超出了所提供证据（METADATA_ONLY或极短片段）的支持范围。",
+      "evidence_refs": [
+       "ev_5",
+       "ev_16"
+      ],
+      "confidence": 0.8
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的哲学素养和宏大的视野，能够深入浅出地梳理黑格尔哲学的核心概念、体系结构及后世影响，特别是在解释学多样性的梳理上表现优异。然而，作为学术质量评审，必须指出其在文本引用的严谨性上存在显著缺陷：多处声称的'直接引语'在提供的证据中无法逐字核实，且对部分二手文献（如阿多诺、张世英）的具体观点阐述超出了所提供证据的支持范围（Access Level Overclaim）。这表明回答可能依赖于模型内部的知识库而非严格限制在提供的检索证据之内。尽管其哲学内容大体正确且深刻，但在'基于证据'的严格评审标准下，其可信度受到一定影响。",
+    "judge_confidence": 0.85
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答大量引用了黑格尔原文（如《精神现象学》序言、主奴辩证法、《法哲学原理》序言、《小逻辑》等），但绝大多数引用未在提供的证据中找到逐字对应的文本。虽然回答对核心概念（如扬弃、主奴辩证法、现实与理性）的转述在哲学上准确，但缺乏基于所提供证据的严格文本支撑。证据中仅包含零散的片段（如《哲学和我们的时代》对《小逻辑》的转述、《精神现象学》序言的开头），无法覆盖回答中大量的直接引语和具体段落描述。",
+      "supporting_spans": [
+       "他在《精神现象学》序言里表达了这样的方法论纲领：真理的真实形态只能是一个科学的真理体系...",
+       "他用了花蕾、花朵与果实的著名意象来说明这一点...",
+       "凡是合乎理性的东西都是现实的，凡是现实的东西都是合乎理性的",
+       "赤裸裸的结果则是一具已经把创作意图抛在身后的尸体"
+      ],
+      "missing_requirements": [
+       "回答中多处声称“作者原文”、“出自某篇”或使用引号，但提供的证据（ev_16, ev_17等）并未包含这些具体措辞，无法验证其文本准确性。"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答对黑格尔哲学的核心论证（如从感性确定性到绝对知识的进程、主奴辩证法的逆转、对康德物自体的批判）进行了非常清晰、逻辑连贯的重构。它不仅解释了“是什么”，还解释了“为什么”（如为什么花蕾不是错误的，为什么奴隶通过劳动获得自由），展示了极高的论证重构能力。",
+      "supporting_spans": [
+       "前一个环节不是被“推翻”，而是被“扬弃”",
+       "主人依赖奴隶的劳动而获得承认，反而是不自由的；奴隶在改造自然的劳动中，通过否定性的磨炼，反而走向了自我意识的自由",
+       "鸿沟本身是真理过程的环节，而非不可消除的界限"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答出色地展示了黑格尔研究的多种解释路径和争议。它明确区分了青年黑格尔派与老年黑格尔派、科耶夫的人类学解读与海德格尔/皮平的形而上学解读、以及马克思主义的“颠倒”传统。这种对解释学处境的梳理完全符合 interpretive_plurality 的高分标准。",
+      "supporting_spans": [
+       "黑格尔哲学的右翼...把体系读成对现有一切...的最终肯定；左翼...则抓住其“否定性”与“批判”的能动力量",
+       "科耶夫...把黑格尔读成一个“为承认而斗争”的人类学家...而更忠于文本的学者...则强调黑格尔仍是形而上学的完成",
+       "同一个文本，可以被读成存在主义的预告，也可以被读成传统形而上学的顶峰"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确地定位了黑格尔在思想史中的位置（康德的后继者、马克思的先驱），并准确提及了关键的历史人物（谢林、荷尔德林、费尔巴哈、阿多诺等）。它对“正反合”公式非黑格尔原创的指正也体现了良好的历史意识。然而，部分历史细节（如黑格尔与谢林的具体决裂时间、某些影响的直接程度）未在证据中体现，且部分历史叙述依赖于通识而非严格的历史考据，故给3分。",
+      "supporting_spans": [
+       "黑格尔在青年时期（与谢林、荷尔德林同在图宾根神学院）",
+       "后者其实更多是后人（尤其是通过科耶夫、部分教科书）总结出来的图式，黑格尔本人并不用这三个词",
+       "对马克思（批判继承并“颠倒”辩证法与劳动概念）"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提及了大量黑格尔的原著和后世研究（如《否定的辩证法》），显示了广博的文献视野。但是，回答中引用的具体书目信息（如《小逻辑》第213-222节的具体内容、《否定的辩证法》第二章的具体论点）与提供的证据记录存在严重不匹配。虽然回答试图引用文献，但未能基于提供的证据进行精确的文献导向分析，且部分引用（如张世英的导读）在证据中仅有元数据而无内容支持。",
+      "supporting_spans": [
+       "【《否定的辩证法》·第二章】",
+       "【《精神现象学》·导读与译者序，转述大意】",
+       "此处原为对黑格尔《小逻辑》第213～222节关于族类与个体关系段落的转述"
+      ],
+      "missing_requirements": [
+       "回答声称引用了《否定的辩证法》第二章的具体内容，但提供的证据 ev_5 仅包含该章节的片段，且内容与回答中关于“斩断同一性”的论述无直接逐字对应。",
+       "回答引用了《小逻辑》第213-222节，但证据 ev_2 仅包含该节选的片段，且回答删除了引用标注，表明其无法完全基于证据确认内容。"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提及的书目（如《精神现象学》、《小逻辑》、《否定的辩证法》）均为真实存在的著作。虽然具体的页码或章节内容在证据中未完全匹配，但书目本身并非伪造。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将观点归属给黑格尔、科耶夫、阿多诺、马克思等学者，均符合思想史常识，未发现明显的张冠李戴或时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": true,
+      "offending_spans": [
+       "他在《精神现象学》序言里表达了这样的方法论纲领：真理的真实形态只能是一个科学的真理体系，他为自己设定的目标是通过努力使哲学具有科学的形式，从而卸下“爱知识”这个名号，成为一种现实的知识。",
+       "他用了花蕾、花朵与果实的著名意象来说明这一点：当花朵绽开时花蕾消失，结出果实时花朵又被宣称为植物虚假不实的存在、果实取代了花朵的位置——但真实的情况是，这些环节的流动本性使它们同时成为一个有机统一体的不同环节。",
+       "赤裸裸的结果则是一具已经把创作意图抛在身后的尸体"
+      ],
+      "reason": "回答将上述内容表述为黑格尔的原文或明确出自《精神现象学》序言。然而，提供的证据 ev_17（《精神现象学》序言片段）仅包含序言开头的常规性说明，并未包含上述具体措辞。虽然这些内容在黑格尔学界广为人知，但在证据未提供逐字文本的情况下，将其表述为“原文”或“明确说”属于 PRIMARY_TEXT_MISREPRESENTATION。",
+      "evidence_refs": [
+       "ev_17"
+      ],
+      "confidence": 0.8
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在描述黑格尔思想时使用了现代术语（如“人类学家”、“存在主义”），但这是在解释后世（如科耶夫）对黑格尔的解读，而非直接将黑格尔本人的思想时代错置，因此不构成重大时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "真理的真实形态只能是一个科学的真理体系",
+       "赤裸裸的结果则是一具已经把创作意图抛在身后的尸体"
+      ],
+      "reason": "回答使用了引号并暗示这是黑格尔的原文。但在提供的证据（ev_16, ev_17）中，并未找到这些中文措辞的逐字对应。虽然这些可能是著名的译文，但在缺乏证据支持的情况下，将其作为精确引用标记为 FALSE_EXACT_QUOTE。",
+      "evidence_refs": [
+       "ev_16",
+       "ev_17"
+      ],
+      "confidence": 0.8
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": true,
+      "offending_spans": [
+       "此处原为对黑格尔《小逻辑》第213～222节关于族类与个体关系段落的转述，我未能核验到与上下文匹配的原文，故删除该引用标注。",
+       "阿多诺的《否定的辩证法》就是在这个关节上动刀——他要保留辩证法的批判锋芒，而斩断黑格尔的“同一性”“肯定性”结局，主张一种不归于同一、不给出和解的“否定的辩证法”。【《否定的辩证法》·第二章】"
+      ],
+      "reason": "对于《小逻辑》，回答承认无法核验原文但仍进行了转述，这属于基于元数据的过度主张。对于《否定的辩证法》，证据 ev_5 仅提供了该章节的一个片段（关于客观事物的优先地位），并未包含回答中关于“斩断同一性”的具体论述。回答描述了该文献的内部论证步骤，超出了证据片段的支持范围。",
+      "evidence_refs": [
+       "ev_2",
+       "ev_5"
+      ],
+      "confidence": 0.7
+     }
+    },
+    "overall_scholarly_assessment": "该回答在哲学解释的深度、论证重构的清晰度以及对解释学多元性的展示方面表现优异，能够为初学者提供非常有价值的黑格尔哲学导览。然而，在文本依据的严谨性方面存在显著缺陷。回答频繁引用黑格尔原文及后世著作的具体内容，但这些引用大多未能在提供的证据中得到逐字验证，部分甚至被标记为“无法核验”。虽然其哲学观点大体正确，但作为学术评审，必须指出其在文本 grounding 和文献 access 方面的越界行为。若能补充具体的原文证据或修正引用方式，该回答将是一份优秀的导论。",
+    "judge_confidence": 0.85
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答大量引用了《精神现象学》序言、'自我意识'章、《小逻辑》及《法哲学原理》的具体内容（如花蕾/花朵/果实比喻、主奴辩证法、'凡是合乎理性的...'、扬弃等），但提供的证据摘要（ev_1, ev_2, ev_3, ev_4, ev_5, ev_16, ev_17）中仅有极少数片段（如ev_2关于小逻辑213-222节、ev_4关于名言、ev_16/17关于序言/目录）能部分支撑这些引用。绝大多数核心论证（如主奴辩证法的具体推演、花蕾比喻的原文出处、'卸下爱知识'的具体表述）缺乏对应的原文证据支持，属于未经验证的转述或记忆。",
+      "supporting_spans": [
+       "他在《精神现象学》序言里表达了这样的方法论纲领",
+       "他用了花蕾、花朵与果实的著名意象",
+       "在自我意识一章中，黑格尔从'欲望'（Begierde）出发推演出",
+       "凡是合乎理性的东西都是现实的"
+      ],
+      "missing_requirements": [
+       "缺乏对《精神现象学》序言中'卸下爱知识'原文的直接证据支持",
+       "缺乏'花蕾、花朵与果实'比喻在《精神现象学》序言中的原文证据",
+       "缺乏'主奴辩证法'具体论证步骤的原文证据"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "虽然缺乏逐句的原文支撑，但回答对黑格尔的核心论证逻辑（如扬弃、主奴辩证法的逆转、现实与理性的区分）进行了清晰且符合学术共识的重构。逻辑链条完整，能够解释概念之间的辩证关系。",
+      "supporting_spans": [
+       "前一个环节不是被'推翻'，而是被'扬弃'（Aufheben）——既被取消，又被保留，又被提升",
+       "主人依赖奴隶的劳动而获得承认，反而是不自由的；奴隶在改造自然的劳动中，通过否定性的磨炼，反而走向了自我意识的自由"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答出色地展示了黑格尔研究的多种解释路径，明确区分了青年黑格尔派与老年黑格尔派、科耶夫的人类学解读与海德格尔/皮平的形而上学解读、以及马克思主义的'颠倒'传统。这完全符合interpretive_plurality的高分标准。",
+      "supporting_spans": [
+       "黑格尔哲学的右翼...左翼...你的解读立场，几乎决定你站在哪个黑格尔一边",
+       "科耶夫...把黑格尔读成一个'为承认而斗争'的人类学家...而更忠于文本的学者...则强调黑格尔仍是形而上学的完成"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确地定位了黑格尔在思想史中的位置（康德之后、马克思之前），并准确提及了其对后世（马克思、尼采、法兰克福学派等）的影响。虽然未深入考证具体的历史细节（如出版年份的具体背景），但宏观的历史脉络把握准确。",
+      "supporting_spans": [
+       "康德留下的裂痕，以及绝对观念论如何回应",
+       "对马克思（批判继承并'颠倒'辩证法与劳动概念）"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提及了黑格尔的主要著作（《精神现象学》、《逻辑学》、《法哲学原理》等）及后世学者（阿多诺、科耶夫）的著作，但缺乏具体的书目信息（如出版社、年份、译者）或具体的学术引用格式。虽然提到了张世英的译本序，但未提供完整的文献引用信息。证据摘要中虽有部分书目记录，但回答未充分利用或引用这些具体记录。",
+      "supporting_spans": [
+       "《精神现象学》（1807）",
+       "阿多诺的《否定的辩证法》",
+       "出自这本《精神现象学》的译者张世英"
+      ],
+      "missing_requirements": [
+       "缺乏具体的出版信息（出版社、年份）",
+       "缺乏对所引用二手文献的具体书目信息"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未提供具体的书目字段（如DOI、页码、出版社、年份）供核对，仅提及书名和作者，且这些书名在证据中均有提及，故不判定为伪造书目。",
+      "evidence_refs": [],
+      "confidence": 0.5
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中关于科耶夫、阿多诺、马克思等人的思想归属符合主流学术史叙述，无明显的张冠李戴或时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "虽然回答对原文的转述缺乏逐字证据，但其转述内容（如'扬弃'的含义、主奴辩证法逻辑）在黑格尔学界是公认的解读，未发现将非黑格尔观点强加为黑格尔原文的明显歪曲。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论黑格尔思想时，正确区分了其早期与晚期概念，且在讨论后世影响时明确区分了黑格尔与其解释者（如科耶夫），无时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用了引号，但多为强调概念（如'爱知识'、'现实的知识'）或公认的名言，未声称是逐字原文且提供具体页码供核对。对于'花蕾'比喻等，回答是转述而非声称逐字引用。",
+      "evidence_refs": [],
+      "confidence": 0.7
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答主要基于对黑格尔原典的宏观把握和通识性介绍，未声称基于仅能通过元数据获取的文献的内部结构细节。提及的《精神现象学》序言和《小逻辑》片段在证据中有部分文本支持。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     }
+    },
+    "overall_scholarly_assessment": "该回答作为一篇通识性的哲学导读，展现了良好的解释学视野和逻辑重构能力，特别是在interpretive_plurality维度上表现优异，能够清晰地勾勒出黑格尔哲学的多重解释路径。然而，在textual_grounding维度上存在明显短板，大量关键论断和引用缺乏所提供证据摘要的直接支持，导致其学术严谨性受损。虽然未触发致命错误，但缺乏具体的文献引用和原文证据支撑使得其论证力度大打折扣。整体而言，这是一篇优秀的'入门指南'，但在严格的学术评审标准下，其证据基础显得薄弱。",
+    "judge_confidence": 0.85
+   }
+  ]
+ },
+ {
+  "case_id": "H02",
+  "dims": {
+   "textual_grounding": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "OPTIONAL"
+   },
+   "interpretive_plurality": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答对《人性论》第一卷核心概念（印象/观念、七种关系、因果论证）的引用与提供的原文证据（ev_6, ev_49）高度吻合，准确复述了原文关于知觉分类和关系分类的表述。对《自然宗教对话录》的处理也诚实说明了证据层级（仅书目/目录确认），未越界引用。",
+      "supporting_spans": [
+       "人类心灵中所有知觉都可以分为截然不同的两种，我把它们称之为印象和观念",
+       "有七种①不同的哲学关系，也即类似、同一、时空关系、数量或数的比例、任何性质的程度、对立关系和因果关系"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了休谟因果论证的核心逻辑链条：从印象原则出发，通过观察缺乏必然性印象，推论出必然性源于心灵习惯。这一重构逻辑清晰，步骤完整，准确把握了休谟论证的实质。",
+      "supporting_spans": [
+       "凡'观念'必可追溯到某个'印象'；否则该观念无内容",
+       "在观察两件因果相连的事件时，我只看到先后与恒常会合，**看不到**任何'力量''必然联系'之类的印象",
+       "所以'必然联系'这个观念如果要有意义，其印象只能来自心灵内部"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确指出了学界关于休谟因果论（规则性主义 vs 实在论/投射主义）的分歧，并提及《自然宗教对话录》中斐洛身份的争议。这展示了良好的解释学意识，未将单一解读强加为定论。",
+      "supporting_spans": [
+       "休谟本人究竟是主张'因果 = 纯粹规则性'...还是在暗示对象之间隐藏着某种我们不认识的**'秘密联系'**？",
+       "斐洛（怀疑论者）究竟是否就是休谟本人的喉舌？"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确指出了休谟对康德的影响（将康德从独断论迷梦中震醒），并提及了笛卡尔、斯宾诺莎等早期近代哲学背景。虽然未深入展开历史语境，但关键的历史定位准确。",
+      "supporting_spans": [
+       "这一刀切开了近代早期（笛卡尔、斯宾诺莎、莱布尼茨）把'因果力/必然性'当作形而上实在的立场",
+       "也把**康德'从独断论的迷梦'中震醒**"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答引用了 Helen Beebee 和 Galen Strawson 的具体著作，并准确对应了其研究主题（因果问题、秘密联系）。虽然未提供详细书目字段（如出版社），但作为研究指引是有效的。部分引用的文献（如《皮尔斯文选》）未在记录中体现，但未作为核心论据。",
+      "supporting_spans": [
+       "Helen Beebee 有专文《Hume and the Problem of Causation》",
+       "Galen Strawson 的《The Secret Connexion》"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提及的文献（Hume, Beebee, Strawson）均能在提供的书目记录中找到对应条目，且未捏造记录中不存在的具体页码或出版细节。",
+      "evidence_refs": [
+       "ev_6",
+       "ev_49",
+       "openalex:W84622410",
+       "doi:10.1093/oxfordhb/9780199742844.013.8",
+       "doi:10.1093/acprof:oso/9780199605842.003.0008"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "将 Beebee 归为规则性/问题讨论，将 Strawson 归为秘密联系讨论，符合这些学者的学术声誉和记录中的标题信息，无张冠李戴。",
+      "evidence_refs": [
+       "doi:10.1093/oxfordhb/9780199742844.013.8",
+       "doi:10.1093/acprof:oso/9780199605842.003.0008"
+      ],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "对《人性论》的转述（如印象/观念区分、七种关系）与提供的原文证据（ev_6, ev_49）内容一致，未歪曲原意。",
+      "evidence_refs": [
+       "ev_6",
+       "ev_49"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答使用的是标准的哲学史术语（如经验主义、怀疑论、习惯），未用晚期概念强行扭曲休谟思想。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未使用引号声称逐字引用，仅作概括性转述，因此不存在虚假精确引用问题。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明对 Beebee 和 Strawson 的文献仅为'检索到的真实二手坐标'且'未读取其正文'，仅作为存在性证据引用，符合 METADATA_ONLY 的访问限制。",
+      "evidence_refs": [
+       "doi:10.1093/oxfordhb/9780199742844.013.8",
+       "doi:10.1093/acprof:oso/9780199605842.003.0008"
+      ],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术素养和严谨的实证态度。它不仅准确复述了休谟《人性论》中的核心论证，且严格区分了'已核验原文'与'通行解读'，明确界定了证据的访问层级（如对二手文献仅作存在性引用）。这种对证据边界的自觉遵守在哲学问答中尤为难得。回答同时具备良好的解释学视野，指出了关键的解释争议，为用户提供了进一步研究的可靠地图。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答对《人性论》第一卷核心概念（印象/观念、七种关系、因果论证）的引用与提供的原文证据（ev_6, ev_49）高度吻合，准确复述了原文关于知觉分类和关系分类的表述。对《自然宗教对话录》的处理也诚实区分了书目确认与文本未核验的状态，符合证据层级。",
+      "supporting_spans": [
+       "人类心灵中所有知觉都可以分为截然不同的两种，我把它们称之为印象和观念",
+       "有七种①不同的哲学关系，也即类似、同一、时空关系、数量或数的比例、任何性质的程度、对立关系和因果关系"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了休谟因果论证的核心逻辑链条：从印象原则出发，通过观察缺乏必然性印象，推论出必然性源于心灵习惯。这一重构逻辑清晰，步骤完整，准确把握了休谟论证的实质。",
+      "supporting_spans": [
+       "凡“观念”必可追溯到某个“印象”；否则该观念无内容",
+       "在观察两件因果相连的事件时，我只看到先后与恒常会合，**看不到**任何“力量”“必然联系”之类的印象",
+       "所以“必然联系”这个观念如果要有意义，其印象只能来自心灵内部（习惯产生的期待）"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答指出了关于休谟因果论（规则性 vs 秘密联系）和《自然宗教对话录》（斐洛的角色）的当代学术争议，并引用了 Helen Beebee 和 Galen Strawson 的相关著作作为坐标。虽然未深入展开两派的具体论证细节，但准确识别了主要的解释分歧点。",
+      "supporting_spans": [
+       "休谟本人究竟是主张“因果 = 纯粹规则性”...还是在暗示对象之间隐藏着某种我们不认识的**“秘密联系”**？",
+       "斐洛（怀疑论者）究竟是否就是休谟本人的喉舌？"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确地将休谟置于近代哲学史中，指出了其对笛卡尔、斯宾诺莎、莱布尼茨形而上学因果观的批判，以及对康德“从独断论迷梦中惊醒”的启发作用。历史脉络梳理准确，未发现时代错置。",
+      "supporting_spans": [
+       "这一刀切开了近代早期（笛卡尔、斯宾诺莎、莱布尼茨）把“因果力/必然性”当作形而上实在的立场",
+       "也把**康德“从独断论的迷梦”中震醒**"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答引用了 Helen Beebee (2014) 和 Galen Strawson (2014) 的作品，且书目信息（如书名、年份）与提供的 SECONDARY_SOURCE_RECORDS 基本一致。然而，回答中提及的“Oxford Handbook, 2014”与记录中的“Oxford Handbooks Online”存在细微表述差异，且未提供具体的章节或页码细节，仅停留在文献存在性层面。",
+      "supporting_spans": [
+       "Helen Beebee 有专文《Hume and the Problem of Causation》（Oxford Handbook，2014，ABSTRACT 级）",
+       "Galen Strawson 的《The Secret Connexion》（2014）收录专章论“causation”"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中提及的二手文献（Beebee, Strawson）在 SECONDARY_SOURCE_RECORDS 中均有对应记录，且年份、书名等关键信息基本匹配。未发现完全无记录支持的书目信息。",
+      "evidence_refs": [
+       "openalex:W84622410",
+       "doi:10.1093/oxfordhb/9780199742844.013.8",
+       "doi:10.1093/acprof:oso/9780199605842.003.0008"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将 Beebee 和 Strawson 归类为当代因果论解读的代表人物，符合哲学史的一般认知，且未在证据中显示相反信息。未发现张冠李戴。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《人性论》的转述（如印象/观念区分、七种关系）与提供的原文证据（ev_6, ev_49）内容一致，未发现将转述标为原文或歪曲原意的情况。",
+      "evidence_refs": [
+       "ev_6",
+       "ev_49"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答使用的历史概念（如“独断论”、“经验主义”）符合语境，未发现用晚期概念强行解释早期思想且实质改变解读的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未使用引号声称逐字引用原文，所有对休谟思想的表述均为转述或概括，因此不存在虚假逐字引用的问题。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明对二手文献“未读取其正文、不得替它们下结论”，仅作为“文献存在性证据”引用。这符合 METADATA_ONLY 或 ABSTRACT_AVAILABLE 的访问级别限制，未越界描述内部论证。",
+      "evidence_refs": [
+       "openalex:W84622410",
+       "doi:10.1093/oxfordhb/9780199742844.013.8"
+      ],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答是一份高质量的哲学导论。它严格遵循了证据限制，诚实区分了已核验的原典文本与未核验的二手文献。对休谟核心哲学问题的重构准确，逻辑清晰，且具备良好的历史视野和解释学意识（指出了关键争议点）。未发现事实性错误或违规引用。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答对《人性论》第一卷核心概念（印象/观念、七种关系、因果论证）的引用与提供的原文证据（ev_6, ev_49）高度吻合，准确复述了原文关于知觉分类和关系分类的表述。对《自然宗教对话录》的处理也诚实说明了证据层级（仅书目/目录确认），未越界引用。",
+      "supporting_spans": [
+       "人类心灵中所有知觉都可以分为截然不同的两种...印象和观念",
+       "有七种①不同的哲学关系...类似、同一、时空关系...因果关系",
+       "凡不能回溯到某个感觉或情感印象的观念，都被判定为可疑的虚构"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 4,
+      "rationale": "回答成功重构了休谟因果论证的核心逻辑链条：从印象原则出发，通过观察缺乏必然性印象，推论出必然性源于心灵习惯。这一重构逻辑严密，准确捕捉了休谟论证的实质步骤。",
+      "supporting_spans": [
+       "凡'观念'必可追溯到某个'印象'；否则该观念无内容",
+       "在观察两件因果相连的事件时，我只看到先后与恒常会合，**看不到**任何'力量''必然联系'之类的印象",
+       "所以'必然联系'这个观念如果要有意义，其印象只能来自心灵内部"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答明确指出了学界关于休谟因果论（规则性主义 vs 实在论/秘密联系）以及《自然宗教对话录》中斐洛身份的争议，展示了休谟解读的多元性，符合 REQUIRED 维度要求。",
+      "supporting_spans": [
+       "休谟本人究竟是主张'因果 = 纯粹规则性'...还是在暗示对象之间隐藏着某种我们不认识的**'秘密联系'**？",
+       "斐洛（怀疑论者）究竟是否就是休谟本人的喉舌？"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答准确将休谟置于近代哲学史中，正确指出了其对笛卡尔、斯宾诺莎、莱布尼茨形而上学因果观的批判，以及对康德批判哲学的唤醒作用，历史定位准确。",
+      "supporting_spans": [
+       "这一刀切开了近代早期（笛卡尔、斯宾诺莎、莱布尼茨）把'因果力/必然性'当作形而上实在的立场",
+       "也把**康德'从独断论的迷梦'中震醒**"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答引用了 Helen Beebee 和 Galen Strawson 的具体著作，且书目信息（如年份、书名）与提供的 SECONDARY_SOURCE_RECORDS 基本一致（Beebee 2014, Strawson 2014）。虽然未深入展开这些文献的具体论证，但提供了准确的文献坐标，满足了文献导向的基本要求。",
+      "supporting_spans": [
+       "Helen Beebee 有专文《Hume and the Problem of Causation》（Oxford Handbook，2014）",
+       "Galen Strawson 的《The Secret Connexion》（2014）收录专章论'causation'"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的二手文献（Beebee 2014, Strawson 2014）均能在提供的 SECONDARY_SOURCE_RECORDS 中找到对应记录，且年份、书名等关键信息一致。未发现伪造书目信息。",
+      "evidence_refs": [
+       "openalex:doi.10.1093/oxfordhb/9780199742844.013.8",
+       "openalex:doi.10.1093/acprof:oso/9780199605842.003.0008"
+      ],
+      "confidence": 0.95
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将 Beebee 和 Strawson 归属于因果论研究的不同解读路线，这与文献记录中的标题和主题相符，未发现张冠李戴。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《人性论》的转述（如印象/观念区分、七种关系）与提供的原文证据（ev_6, ev_49）内容一致，未发现歪曲原典含义。",
+      "evidence_refs": [
+       "ev_6",
+       "ev_49"
+      ],
+      "confidence": 0.95
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答使用的历史概念（如“独断论”、“批判哲学”）符合康德回应休谟的历史语境，未发现时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未使用引号声称逐字引用休谟原文，而是使用转述和概括，避免了虚假精确引用的风险。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明对二手文献“未读取其正文、不得替它们下结论”，仅作为“文献存在性证据”引用，严格遵守了 METADATA_ONLY/ABSTRACT_AVAILABLE 的访问限制。",
+      "evidence_refs": [],
+      "confidence": 0.95
+     }
+    },
+    "overall_scholarly_assessment": "该回答展现了极高的学术素养和严谨性。它不仅准确把握了休谟哲学的核心文本（《人性论》第一卷），清晰重构了因果论证的逻辑，还诚实地界定了证据范围（明确区分已核验原文与仅存书目信息的部分）。在解释学层面，它成功引入了当代学界关于休谟因果论和宗教对话录的关键争议，并提供了准确的二手文献坐标。回答严格遵守了访问限制，未对未读文本进行过度断言，体现了良好的学术纪律。",
+    "judge_confidence": 0.95
+   }
+  ]
+ },
+ {
+  "case_id": "H03",
+  "dims": {
+   "textual_grounding": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "interpretive_plurality": {
+    "median": 2,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 2,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [],
+  "fatal_vote_counts": {},
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答准确引用了《存在与时间》导论开篇关于“形而上学”与“存在问题被遗忘”的原文，并明确标注了引用边界。对于“存在论差异”、“此在”、“在世存在”等核心概念的阐释与文本主旨高度契合。虽然未提供全书逐字核验，但在有限证据下展现了良好的文本锚定能力。",
+      "supporting_spans": [
+       "库内导论原文开篇即言：我们的时代虽把重新肯定“形而上学”当作自己的进步，但这里所提的问题如今已久被遗忘了。",
+       "存在（Sein）不等于任何存在者（Seiendes）",
+       "此在的基本建构 = 在世界之中存在"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答成功重构了海德格尔从“存在之遗忘”到“以此在为入口”的论证逻辑，清晰解释了为何必须通过分析人来追问存在（即“发问本身只能由一种能对存在提问的存在者来承担”）。对反笛卡尔主客二分的论证路径也有准确概括。",
+      "supporting_spans": [
+       "既然问的是存在，为何开头却分析人？海德格尔的论证（第二、四节）是：存在问题的“问之所问”虽然落在存在上，但**发问本身只能由一种能对存在提问的存在者来承担**——那就是人。",
+       "此在从来不是先有“我”再“碰到”世界，而是向来已经以“在世”的方式存在。"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答主要呈现了海德格尔的标准解读路径（存在论差异、此在分析），并简要提及了与萨特存在主义的区别。虽然提到了思想史坐标（康德、尼采、胡塞尔），但未深入展示学界内部关于这些概念的具体争议或不同流派的解读视角，多样性略显不足。",
+      "supporting_spans": [
+       "海德格尔后来（超出库藏范围的文本）恰恰批判过萨特式的人道主义立场",
+       "理解这条裂痕，是进入海德格尔的一条主要线索：**现象学从“意识哲学”转向“存在之思”**。"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答具备良好的历史视野，正确指出了海德格尔与柏拉图、亚里士多德、康德、黑格尔及胡塞尔的思想史关联。对“存在论差异”的历史背景描述准确。诚实标注了纳粹争议但未展开，符合历史纪律。",
+      "supporting_spans": [
+       "自柏拉图以降，西方哲学总在问“存在者是什么”...却从未问“存在本身意味着什么”",
+       "他一边接续康德...尼采...黑格尔与亚里士多德的“存在”遗产",
+       "这里必须点出**一个真实而沉重的争议**：海德格尔 1933 年出任弗莱堡大学校长..."
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答明确受限于库藏仅《存在与时间》一书，并据此设定了讨论边界。虽然提及了《林中路》等后期著作及萨特、伽达默尔等人的影响，但未提供具体的二手文献指引或学术研究脉络，文献导向主要停留在原典层面。",
+      "supporting_spans": [
+       "**本库收录的海德格尔原典仅《存在与时间》一部**",
+       "谱系图显示他深刻塑造了萨特...伽达默尔...福柯、德里达..."
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现具体的书目字段（如出版社、年份、页码、DOI等）需核对。提及的《存在与时间》、《林中路》、《在通向语言的途中》均为书名，且明确说明库藏限制，无伪造书目信息。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将“存在论差异”、“此在”、“在世存在”等观点正确归属给海德格尔；将现象学归属给胡塞尔；将存在主义归属给萨特。这些均为哲学史常识，且未在证据中被反驳。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答引用的导论语句与提供的证据片段（ev_1）高度一致。对“存在论差异”等概念的转述符合文本原意，未发现歪曲或捏造原文的情况。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论《存在与时间》时使用了该书语境下的概念（如此在、存在论差异），未混用后期海德格尔术语（如座架、Ereignis）来解释早期思想，且明确区分了“转向”后的文本。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中标注为原文的引用（如“我们的时代虽把重新肯定...”）在证据 ev_1 中有逐字对应。其他部分多为转述或概括，未声称是逐字引用。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确声明“本库收录的海德格尔原典仅《存在与时间》一部”，并据此限制了讨论范围。对于未收录的后期著作（如《林中路》）仅提及书名而未描述其内部论证细节，符合访问级别限制。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在严格遵守库藏限制的前提下，提供了一个高质量的海德格尔研究入门。它准确把握了《存在与时间》的核心问题意识（存在论差异）和方法论路径（现象学改造），逻辑清晰，论证扎实。虽然在二手文献的指引和学术争议的展开上略显单薄，但作为针对“海德格尔”这一宽泛问题的“研究入口”，其文本基础扎实，历史视野开阔，且诚实标注了知识边界，体现了良好的学术规范。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答准确引用了《存在与时间》导论开篇关于“形而上学”与“问题被遗忘”的原文，并明确标注了引用边界。对“存在论差异”、“此在”、“在世存在”等核心概念的转述与文本高度一致。扣1分是因为部分章节（如向死存在、沉沦的具体论证）仅依据目录或常识概括，未提供逐字文本支撑，且声明了未核验具体措辞。",
+      "supporting_spans": [
+       "库内导论原文开篇即言：我们的时代虽把重新肯定“形而上学”当作自己的进步，但这里所提的问题如今已久被遗忘了。",
+       "存在（Sein）不等于任何存在者（Seiendes）",
+       "此在的基本建构 = 在世界之中存在"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答成功重构了海德格尔从“存在之遗忘”到“以此在为入口”的论证逻辑，清晰解释了为何必须分析人才能问存在（即“发问本身只能由一种能对存在提问的存在者来承担”）。对反笛卡尔主客二分的论证重建也较为准确。",
+      "supporting_spans": [
+       "既然问的是存在，为何开头却分析人？海德格尔的论证（第二、四节）是：存在问题的“问之所问”虽然落在存在上，但**发问本身只能由一种能对存在提问的存在者来承担**——那就是人。",
+       "此在从来不是先有“我”再“碰到”世界，而是向来已经以“在世”的方式存在。"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了海德格尔与萨特（人道主义之争）、胡塞尔（现象学转向）的分歧，以及与康德、尼采的对话，展示了思想张力。但未深入展示学界内部对《存在与时间》不同解读流派的争议（如解释学路径与解构路径的差异），更多是单向的“海德格尔 vs 传统/他人”，缺乏多元解释视角的并置。",
+      "supporting_spans": [
+       "理解这条裂痕，是进入海德格尔的一条主要线索：**现象学从“意识哲学”转向“存在之思”**。",
+       "他一边接续康德...一边又认为整个传统都把存在问题耽搁了。"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格区分了《存在与时间》时期与“转向”后的思想，明确指出库藏限制（仅收录《存在与时间》），不以后期概念（如“座架”、“存在之家”）强行解释前期文本，体现了良好的历史分期意识。对纳粹争议的处理也符合历史事实边界，未做过度引申。",
+      "supporting_spans": [
+       "**本库收录的海德格尔原典仅《存在与时间》一部**（1949年后海德格尔被称作“转向”后的文本...库内无藏）。",
+       "技术时代里“座架”对世界的摆置、语言作为“存在之家”，这些后《存在与时间》主题虽不在库内..."
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答完全基于单一原典《存在与时间》和通用的思想史谱系，未引用任何具体的二手研究文献、学者专著或当代学术争论。虽然提到了“谱系图显示”，但这属于系统提供的元数据，而非回答者主动调用的学术文献。缺乏具体的文献指引（如“参见某学者在某书中的论述”）。",
+      "supporting_spans": [
+       "谱系图显示他深刻塑造了萨特...伽达默尔...福柯..."
+      ],
+      "missing_requirements": [
+       "未引用具体的二手研究文献或专著",
+       "未提供具体的学术阅读书目或论文指引"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现具体的书目字段（如出版社、年份、页码、DOI等），仅提及书名《存在与时间》及章节，且与提供的BIBLIOGRAPHIC_RECORDS一致。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中关于海德格尔、胡塞尔、萨特、康德等人的思想关系归属均符合哲学史常识，且未将具体观点错误归属给特定学者（如未说“胡塞尔提出了Dasein”）。对谱系图的引用符合输入证据。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答明确区分了“导论原文引述”与“我的解读”。引用的导论原文与提供的PRIMARY_TEXT_EVIDENCE逐字一致。对“存在论差异”等概念的转述准确，未捏造原文内容。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答严格区分了早期（《存在与时间》）与后期（“转向”后）概念，明确指出“座架”等后期概念不适用于对本书的解读，避免了时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中唯一的直接引语（“我们的时代虽把重新肯定...”）在提供的证据文本中逐字出现。其他部分均为转述或概括，未声称逐字引用。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答诚实声明了库容限制（仅收录《存在与时间》），并明确指出未读取第二、三章原文章节逐字核验。对未收录内容的描述（如纳粹争议、后期思想）均被标记为“超出库藏范围”或“未展开的事实边界”，未越界描述内部结构。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答作为“研究入口”具有很高的学术质量，特别是在文本锚定、论证逻辑重构和历史分期意识上表现优异。它成功避免了常见的术语堆砌和生平八卦，直击海德格尔的核心问题。主要不足在于缺乏具体的二手文献指引，导致在文献导向维度得分较低。回答对证据边界的诚实声明（如区分已核验原文与未核验章节）体现了良好的学术规范。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格基于提供的《存在与时间》导论文本（ev_1）进行引用和转述，明确区分了文本事实（如导论开篇关于形而上学被遗忘的论述）与个人解读。对于库内未收录的文本（如《林中路》）及未核验的章节（如第二、三章具体措辞），均做出了明确的边界声明，未越界引用。",
+      "supporting_spans": [
+       "库内导论原文开篇即言：我们的时代虽把重新肯定“形而上学”当作自己的进步，但这里所提的问题如今已久被遗忘了。",
+       "本库收录的海德格尔原典仅《存在与时间》一部",
+       "上段“向死存在/沉沦/闲谈/好奇”等在导论原文与目录中可确证其存在与位置，但我未逐一读取第二、三章原文章节逐字核验其措辞。"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答成功重构了海德格尔从“存在之遗忘”到“此在分析”的论证逻辑链条，清晰解释了为何必须从此在入手（因为只有此在能对存在发问）。虽然未深入展开具体的逻辑推演步骤，但准确把握了导论部分的论证结构。",
+      "supporting_spans": [
+       "海德格尔的论证（第二、四节）是：存在问题的“问之所问”虽然落在存在上，但**发问本身只能由一种能对存在提问的存在者来承担**——那就是人。",
+       "存在不能被当作一类“最普遍的东西”去下定义。导论专门拆解了传统把“存在”说成“最普遍、最空洞、不可定义、自明”的四条成见，逐一反驳"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答提到了海德格尔与萨特、胡塞尔等人的关系，并指出了“存在主义”标签的误解，体现了对解释空间的意识。然而，受限于库容（仅《存在与时间》），未能展示学术界对海德格尔思想内部（如早期与晚期关系）或不同解读流派（如神学路向、政治路向）的具体争议，仅提供了单一主流视角的入门。",
+      "supporting_spans": [
+       "海德格尔的出发点常被误解为某种“人类学”或“存在主义”。这恰恰是他要纠正的。",
+       "这是他与导师胡塞尔最关键的分裂点之一"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答正确地将海德格尔置于思想史坐标中，指出了他对柏拉图、亚里士多德、康德、黑格尔的继承与批判，以及他对后世（萨特、伽达默尔、德里达等）的影响。同时也诚实标注了纳粹争议这一历史事实但指出了证据边界。历史脉络清晰，符合学术规范。",
+      "supporting_spans": [
+       "自柏拉图以降，西方哲学总在问“存在者是什么”...却从未问“存在本身意味着什么”",
+       "他一边接续康德...尼采...黑格尔与亚里士多德的“存在”遗产",
+       "海德格尔 1933 年出任弗莱堡大学校长并一度拥护纳粹...这是我需要提醒你知悉、但当前检索未展开的事实边界"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答严格遵循了提供的书目记录，仅引用了《存在与时间》导论部分，且明确声明了库容限制。对于未收录的文献（如《林中路》）和未读取的章节，均未进行伪造或越界描述。建议的研究路线也基于现有可获取文本，体现了极高的文献纪律性。",
+      "supporting_spans": [
+       "**本库收录的海德格尔原典仅《存在与时间》一部**",
+       "上段“向死存在/沉沦/闲谈/好奇”等在导论原文与目录中可确证其存在与位置，但我未逐一读取第二、三章原文章节逐字核验其措辞。",
+       "若要引用具体原话，还需进一步定位读取对应章次。"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现任何具体的书目字段（如出版社、年份、页码、DOI等）超出提供的 BIBLIOGRAPHIC_RECORDS 范围。所有提及的文本均基于库内已有的《存在与时间》或明确声明库外无藏。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中关于海德格尔、胡塞尔、萨特、康德等人的思想关系描述均属于哲学史的一般共识或基于文本的合理推断，未发现将具体观点错误归属给某学者的现象。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《存在与时间》导论的引用与提供的证据文本（ev_1）高度一致，且明确区分了“原文引述”与“解读”。未发现将转述标为原文或歪曲原意的情况。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在描述海德格尔思想时，使用了符合其语境的术语（如“存在论差异”、“此在”），未发现用晚期概念强行解释早期文本或用后世概念体系实质性改变解读的情况。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中声称的原文引用（如“我们的时代虽把重新肯定...”）在提供的证据文本（ev_1）中逐字出现，符合引用规范。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 1.0
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答严格遵守了访问级别限制。对于库内仅有的《存在与时间》导论，引用基于证据；对于未收录的文本（如《林中路》）和未读取的章节，明确声明了无法提供细节或未核验措辞，未描述其内部结构。",
+      "evidence_refs": [],
+      "confidence": 1.0
+     }
+    },
+    "overall_scholarly_assessment": "该回答是一份高质量的哲学入门指南，严格遵守了证据限制和学术规范。它成功地将海德格尔的核心问题（存在论差异）置于《存在与时间》的文本语境中，同时诚实地标示了库容边界和未核验区域。回答不仅提供了准确的概念梳理，还给出了合理的研究路线建议，体现了极高的学术诚信和文本纪律。",
+    "judge_confidence": 0.95
+   }
+  ]
+ },
+ {
+  "case_id": "H07",
+  "dims": {
+   "textual_grounding": {
+    "median": 3,
+    "applicability": "REQUIRED"
+   },
+   "argument_reconstruction": {
+    "median": 4,
+    "applicability": "REQUIRED"
+   },
+   "interpretive_plurality": {
+    "median": 3,
+    "applicability": "OPTIONAL"
+   },
+   "historical_discipline": {
+    "median": 2,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   }
+  },
+  "fatal": [
+   "FALSE_EXACT_QUOTE",
+   "LITERATURE_ACCESS_OVERCLAIM"
+  ],
+  "fatal_vote_counts": {
+   "FALSE_EXACT_QUOTE": 1,
+   "LITERATURE_ACCESS_OVERCLAIM": 1
+  },
+  "applicability_mismatch_votes": 0,
+  "required_missing": [],
+  "votes_archive": [
+   {
+    "vote_index": 0,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答准确引用了《哲学导论》中关于洛克人格同一性的核心定义（人格是思考着的理智存在、意识与自我、意识扩展范围决定人格同一性范围），并正确引用了《人类理解论》第二卷第二十七章关于同一性的一般原理及灵魂轮回的归谬论证。引用与证据高度吻合。但回答中关于“剁手例”和“王子与皮匠”思想实验的提及在提供的证据片段中未找到直接对应文本，属于未在证据中明确支持的细节，虽符合常识但扣分。",
+      "supporting_spans": [
+       "人格是一种思考着的理智存在，它具有理性、能反思，并且能在不同的时间和空间中把自己当作自己，当作同一个思考着的东西。",
+       "因为，既然意识总是伴随着思考，并且正是意识使每一个人成为他所谓的自我，",
+       "一个预先存在的精神不能在许多年代中蛰伏不动，而必定构成过许多不同的人。"
+      ],
+      "missing_requirements": [
+       "回答中提到的“剁手例”和“王子与皮匠”思想实验在提供的证据片段中未找到直接文本支持。"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答清晰地重建了洛克的论证逻辑：1. 区分“人”（生物有机体）与“人格”（自反性存在）；2. 排除身体作为判据（身体部件变化）；3. 排除灵魂实体作为判据（轮回归谬）；4. 确立意识/记忆为唯一判据；5. 阐述道德责任层面的必要性。逻辑链条完整，结构清晰，准确捕捉了洛克论证的实质。",
+      "supporting_spans": [
+       "他是在把'人格'从身体与灵魂两类实体中'拯救'出来，另立一个判据",
+       "排除了身体与灵魂两个'实体方案'后，剩下的、能把时间上分离的行动真正'联合成同一个我'的，就只有意识对它们的内在拥有",
+       "当下的意识只能把握当下；要建立与过去行动的关系、把过去的行动认作'我的'，唯一通道就是把过去纳入当下意识的记忆"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答在“关键争议”部分明确指出了巴特勒和里德对记忆判据的循环性批评及传递性丢失问题，并提及了帕菲特的现代修正。这展示了该议题的学术争议脉络。虽然未深入展开各派细节，但已满足“提及不同解读/争议”的要求。",
+      "supporting_spans": [
+       "循环性批评（巴特勒 Butler、里德 Reid）",
+       "记忆的传递性丢失（里德）",
+       "现代修正（帕菲特 Parfit 等）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答准确区分了洛克文本中的“man”（人/生物体）与“person”（人格/法律道德主体），这是理解洛克历史语境的关键。同时正确指出了洛克论证的道德与法律关切（末日审判、责任归属）。但在提及“毕达哥拉斯式轮回”时，未严格区分这是洛克引用的反对派观点（柏拉图主义者/基督徒）而非洛克本人的主张，虽论证上正确，但在历史语境的精确表述上略有瑕疵。",
+      "supporting_spans": [
+       "'man'（生物学意义上的人）是身体生命的连续；'person'（人格）是能反思地'把自己认作自己'的自反性存在",
+       "因果报应与末日审判要成立，一个人必须能记得并认领自己的过去行动，才能为其负责"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答主要依赖于提供的教科书《哲学导论》（所罗门）和《人类理解论》原文片段。虽然提及了巴特勒、里德和帕菲特等学者，但未提供任何具体的二手文献（如期刊论文、专著）来支撑这些争议的描述，也未引用具体的学术版本或页码（除了章节号）。这表明回答缺乏对专业学术文献的深入引用和导向，更多是教科书式的综述。",
+      "supporting_spans": [
+       "（辑录于《哲学导论》4.1）",
+       "【《人类理解论》·第二卷 第二十七章】"
+      ],
+      "missing_requirements": [
+       "缺乏对巴特勒、里德、帕菲特等人具体著作或论文的引用。",
+       "未引用除所罗门《哲学导论》外的其他二手研究文献。"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的书目信息（书名、章节、作者）均能在提供的 BIBLIOGRAPHIC_RECORDS 或 PRIMARY_TEXT_EVIDENCE 中找到对应，未发现伪造的出版社、年份或页码。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_55"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将人格同一性理论归因于洛克，将循环论证归因于巴特勒和里德，将心理连续性归因于帕菲特，这些均属于哲学史上的标准归属，且未超出常识性学术知识范围。虽然证据中未直接包含巴特勒等人的文本，但并未出现张冠李戴或时代错置的明显错误。",
+      "evidence_refs": [],
+      "confidence": 0.8
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对洛克原文的转述（如“意识总是伴随着思考”、“人格同一性只在于意识”）与提供的证据文本（ev_1, ev_55）高度一致，未发现将转述标为原文或歪曲原意的情况。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_55"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论洛克时使用了“自反性”、“判据”等现代哲学术语，但这是为了解释洛克思想，并未用后世概念体系（如康德的先验自我或神经科学概念）实质性替换或扭曲洛克的原始论证结构。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引号内容（如“人格是一种思考着的理智存在...”）均能在证据文本中找到逐字对应的片段，未发现伪造的直接引语。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《哲学导论》和《人类理解论》的引用内容均未超出提供的证据片段范围。对于巴特勒、里德、帕菲特的讨论仅限于概括性观点，未声称阅读了其具体文本的内部结构或未提供的细节。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在论证重建和文本基础方面表现优秀，准确把握了洛克关于人格同一性诉诸记忆的核心逻辑与文本依据。回答结构清晰，逻辑严密，能够有效区分“人”与“人格”的概念，并正确指出了意识/记忆在道德责任归因中的核心地位。然而，在文献导向方面略显薄弱，主要依赖单一教科书来源，缺乏对二手研究文献的广泛引用；同时，部分思想实验细节（如剁手例）在提供的证据中未见踪影，影响了文本支撑的完美度。总体而言，这是一个高质量的哲学解释，但在学术广度和证据的严格对应上仍有提升空间。",
+    "judge_confidence": 0.85
+   },
+   {
+    "vote_index": 1,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答准确引用了《哲学导论》中关于洛克人格同一性的核心定义（人格是思考着的理智存在、意识构成同一性），并正确关联了《人类理解论》第二卷第二十七章的语境。然而，回答中关于“人底同一性……就在于一个组织适当的身体”的具体表述在提供的证据片段（ev_55）中未直接出现，证据片段主要讨论的是“大/小”的相对性概念，而非身体同一性。虽然回答内容符合洛克的一般观点，但该具体引文缺乏直接证据支持，导致扣分。",
+      "supporting_spans": [
+       "人格是一种思考着的理智存在，它具有理性、能反思，并且能在不同的时间和空间中把自己当作自己，当作同一个思考着的东西。",
+       "人底同一性……就在于一个组织适当的身体"
+      ],
+      "missing_requirements": [
+       "关于身体同一性判据的具体引文在提供的证据中缺失"
+      ]
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答清晰地重建了洛克的论证逻辑：区分“人”与“人格”，排除身体和灵魂实体作为同一性判据，进而确立意识/记忆作为唯一标准。论证结构完整，逻辑链条（前提-排除-结论）清晰，准确捕捉了洛克通过归谬法（如灵魂轮回）排除实体同一性的策略。",
+      "supporting_spans": [
+       "他是在把'人格'从身体与灵魂两类实体中'拯救'出来，另立一个判据",
+       "排除了身体与灵魂两个'实体方案'后，剩下的...就只有意识对它们的内在拥有"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答主动提及了巴特勒和里德对记忆判据的经典批评（循环性、传递性丢失），展示了该议题的学术争议性。虽然未深入展开不同学派的对立细节，但已超出单一视角的复述，符合OPTIONAL维度的加分要求。",
+      "supporting_spans": [
+       "循环性批评（巴特勒 Butler、里德 Reid）",
+       "记忆的传递性丢失（里德）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答在引用《人类理解论》章节编号时出现混乱。回答声称核对“chapter 33 已读过为第二十九章”，并提及“第二卷第二十七章§1-§7”及“chapter 32 中§29 续”。这种章节编号的混用（中文章节号与西文章节号混用、编号跳跃）不符合严谨的历史文献引用规范，且与提供的书目记录（仅显示Chapter 31/32/33）存在表述上的不一致，容易造成混淆。",
+      "supporting_spans": [
+       "核对一个佐证章节（chapter 33 已读过为第二十九章）",
+       "已实读《人类理解论》第二卷第二十七章§1-§7原文...及 chapter 32 中§29 续"
+      ],
+      "missing_requirements": [
+       "章节编号引用混乱，未保持一致的引用格式"
+      ]
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答严重违反了文献引用的访问级别限制。尽管提供的证据仅为《哲学导论》和《人类理解论》的片段（且部分片段如ev_55与内容无关），回答却声称“已实读”原文并进行了广泛的章节核对。更严重的是，回答详细描述了巴特勒、里德、帕菲特等学者的观点，但输入证据中完全没有提供这些二手文献的记录或摘要。这种在缺乏证据支持的情况下大量引入外部学者观点的行为，属于典型的 LITERATURE_ACCESS_OVERCLAIM。",
+      "supporting_spans": [
+       "已实读《人类理解论》第二卷第二十七章§1-§7原文",
+       "循环性批评（巴特勒 Butler、里德 Reid）",
+       "现代修正（帕菲特 Parfit 等）"
+      ],
+      "missing_requirements": [
+       "引入了未在证据中提供的二手文献观点（巴特勒、里德、帕菲特）",
+       "声称阅读了未在证据中完全呈现的原文章节"
+      ]
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中未出现具体的伪造书目字段（如错误的出版社、年份），主要问题在于引用格式混乱和越界引用观点，而非伪造书目元数据。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "虽然回答提到了巴特勒、里德、帕菲特的观点，但这些是哲学史上的标准归属，并非捏造的虚假归属。问题在于缺乏证据支持，而非归属本身错误。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对洛克核心观点的转述与提供的《哲学导论》证据（ev_1）高度一致，未发现明显的歪曲或捏造原文内容。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论洛克思想时使用了现代术语（如“心理连续性”），但明确将其标注为“现代修正”或当代讨论，未将其误植为洛克本人的概念，因此不构成时代错置。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": true,
+      "offending_spans": [
+       "人底同一性……就在于一个组织适当的身体"
+      ],
+      "reason": "回答使用了引号并声称这是洛克关于“人”的同一性的判据。然而，在提供的所有证据片段（包括《人类理解论》Chapter 31/32/33的片段）中，均未出现此句原文。证据ev_55讨论的是“大/小”概念，与此无关。因此，该句属于无法由证据支持的精确引用。",
+      "evidence_refs": [
+       "ev_55"
+      ],
+      "confidence": 0.95
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": true,
+      "offending_spans": [
+       "已实读《人类理解论》第二卷第二十七章§1-§7原文",
+       "循环性批评（巴特勒 Butler、里德 Reid）...记忆的传递性丢失（里德）",
+       "现代修正（帕菲特 Parfit 等）"
+      ],
+      "reason": "输入证据仅包含《哲学导论》和《人类理解论》的少量片段（且部分不相关），完全不包含巴特勒、里德或帕菲特的任何文献记录或摘要。回答却详细阐述了这些学者的具体论证内容，并声称“已实读”原文章节。这严重超出了证据允许的访问级别（METADATA_ONLY/ABSTRACT_AVAILABLE），构成了对文献内部内容的越界主张。",
+      "evidence_refs": [],
+      "confidence": 0.98
+     }
+    },
+    "overall_scholarly_assessment": "该回答在论证重建方面表现优异，准确把握了洛克区分“人”与“人格”并诉诸意识/记忆的核心逻辑。然而，回答在学术规范上存在严重缺陷：一是出现了无法由证据支持的精确引语（FALSE_EXACT_QUOTE）；二是严重越界，在缺乏任何二手文献证据的情况下，详细阐述了巴特勒、里德和帕菲特的观点（LITERATURE_ACCESS_OVERCLAIM）。此外，章节编号引用混乱。虽然论证内容本身具有哲学价值，但基于证据的严谨性不足，文献导向维度得分极低。",
+    "judge_confidence": 0.95
+   },
+   {
+    "vote_index": 2,
+    "valid": true,
+    "reasons": [],
+    "dimensions": {
+     "textual_grounding": {
+      "applicability": "REQUIRED",
+      "score": 3,
+      "rationale": "回答准确引用了《哲学导论》中关于洛克人格同一性的核心定义（人格是思考着的理智存在、意识构成同一性），并正确关联了《人类理解论》第二卷第二十七章的语境。然而，回答中关于“人底同一性……就在于一个组织适当的身体”以及“剁手例”的具体表述，在提供的证据摘要（ev_3, ev_55）中并未直接出现，属于对洛克观点的准确转述但缺乏当前证据集的直接文本支撑。",
+      "supporting_spans": [
+       "人格是一种思考着的理智存在，它具有理性、能反思，并且能在不同的时间和空间中把自己当作自己，当作同一个思考着的东西。",
+       "意识构成了人格同一性",
+       "现在的自我就是以前的自我"
+      ],
+      "missing_requirements": []
+     },
+     "argument_reconstruction": {
+      "applicability": "REQUIRED",
+      "score": 4,
+      "rationale": "回答清晰地重建了洛克的论证逻辑：区分“人”与“人格” -> 排除身体与灵魂实体作为同一性判据 -> 确立意识/记忆为唯一候选 -> 解释其道德功能。逻辑链条完整，准确捕捉了洛克通过归谬法（如柏拉图主义者轮回例）排除实体同一性的论证策略。",
+      "supporting_spans": [
+       "他是在把'人格'从身体与灵魂两类实体中'拯救'出来，另立一个判据",
+       "排除了身体与灵魂两个'实体方案'后，剩下的...就只有意识对它们的内在拥有",
+       "记忆是意识跨越时间、把'彼时的行动'归并于'此时的我'的机制"
+      ],
+      "missing_requirements": []
+     },
+     "interpretive_plurality": {
+      "applicability": "OPTIONAL",
+      "score": 3,
+      "rationale": "回答主动提及了巴特勒和里德对记忆判据的经典批评（循环性、传递性丢失），以及帕菲特的现代修正。这展示了该议题的学术争议性，符合 interpretive_plurality 的要求。虽然未深入展开各方论证细节，但已指出了关键分歧点。",
+      "supporting_spans": [
+       "循环性批评（巴特勒 Butler、里德 Reid）",
+       "记忆的传递性丢失（里德）",
+       "现代修正（帕菲特 Parfit 等）"
+      ],
+      "missing_requirements": []
+     },
+     "historical_discipline": {
+      "applicability": "REQUIRED",
+      "score": 2,
+      "rationale": "回答正确指出了洛克在《人类理解论》中的位置及核心概念，但在历史细节上存在瑕疵。回答声称核对了一个佐证章节（chapter 33）并确认其为第二十九章，且提到“chapter 32 中§29 续”，这种章节编号的表述与提供的书目记录（ev_3 显示第二卷第二十八章）存在潜在混淆或未在证据中明确支持的细节。此外，对“剁手例”的引用虽符合洛克思想，但在当前证据集中未找到直接出处，属于历史知识的外部调用而非基于证据的严谨历史考据。",
+      "supporting_spans": [
+       "《人类理解论》第二卷第二十七章",
+       "chapter 33 已读过为第二十九章"
+      ],
+      "missing_requirements": []
+     },
+     "literature_orientation": {
+      "applicability": "REQUIRED",
+      "score": 1,
+      "rationale": "回答主要依赖《哲学导论》（所罗门）作为转述来源，虽然提及了《人类理解论》原文，但未引用任何具体的二手学术研究（如关于洛克记忆理论的现代学术论文或专著）。提及巴特勒、里德和帕菲特仅限于名字和观点概述，未提供具体的文献出处或学术脉络的详细指引，不符合“真实文献导向”的高标准。",
+      "supporting_spans": [
+       "《哲学导论》4.1 章以转述+引句完整呈现了洛克...核心论证"
+      ],
+      "missing_requirements": []
+     }
+    },
+    "fatal_flags": {
+     "FABRICATED_BIBLIOGRAPHY": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中引用的书目信息（书名、章节）与提供的 BIBLIOGRAPHIC_RECORDS 基本一致，未发现伪造的出版社、年份或页码。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_3"
+      ],
+      "confidence": 0.9
+     },
+     "FABRICATED_SCHOLAR_ATTRIBUTION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答将人格同一性理论归于洛克，将批评归于巴特勒、里德，将修正归于帕菲特，这些归属在哲学史上是准确的，且未在证据中显示矛盾。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "PRIMARY_TEXT_MISREPRESENTATION": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对洛克观点的转述（如意识构成同一性）与提供的《哲学导论》摘录（ev_1）高度一致，未发现歪曲原意的表述。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.9
+     },
+     "MAJOR_ANACHRONISM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答在讨论洛克时使用了现代术语（如“心理连续性”），但明确将其归为“现代修正”部分，未将其强加于洛克本人，未造成时代错置的误读。",
+      "evidence_refs": [],
+      "confidence": 0.9
+     },
+     "FALSE_EXACT_QUOTE": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答中使用的引号内容（如“人格是一种思考着的理智存在...”）均能在提供的证据文本（ev_1）中找到对应措辞，属于有效引用。",
+      "evidence_refs": [
+       "ev_1"
+      ],
+      "confidence": 0.9
+     },
+     "LITERATURE_ACCESS_OVERCLAIM": {
+      "value": false,
+      "offending_spans": [],
+      "reason": "回答对《哲学导论》和《人类理解论》的描述均基于提供的章节内容或摘要，未声称阅读了未提供的全文细节（如具体页码的微观论证），未超出访问级别。",
+      "evidence_refs": [
+       "ev_1",
+       "ev_3"
+      ],
+      "confidence": 0.9
+     }
+    },
+    "overall_scholarly_assessment": "该回答在论证重建方面表现优异，清晰地阐述了洛克为何诉诸记忆（意识）的逻辑必然性及其道德功能。文本基础扎实，准确引用了核心定义。然而，在历史纪律和文献导向方面略显不足：章节编号的表述存在轻微混乱，且缺乏对二手学术文献的具体引用，主要依赖教科书转述。整体上是一个高质量的哲学解释，但在学术严谨性上仍有提升空间。",
+    "judge_confidence": 0.85
+   }
+  ]
+ }
+]
