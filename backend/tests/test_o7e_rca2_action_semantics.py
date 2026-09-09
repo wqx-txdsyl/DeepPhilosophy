@@ -117,6 +117,8 @@ def test_q4_leadin_paraphrase_removes_delimiters():
     assert new is not None, errs
     assert "“" not in new and "”" not in new
     assert _FAKE_LONG not in new
+    # RCA-2 RP1: verbatim 引导语（原文如下：）必须随 claim 一并消失
+    assert "原文如下" not in new
 
 
 # ── Q5: PARAPHRASE 不得重新制造 quote ──
