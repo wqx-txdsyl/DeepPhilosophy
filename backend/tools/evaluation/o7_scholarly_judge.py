@@ -100,8 +100,11 @@ def build_judge_input(user_question: str, task_category: str, answer: str,
                       agent_identity: str, evidence_digest: str,
                       primary_text_evidence=None, bibliographic_records=None,
                       secondary_source_records=None, access_levels=None,
-                      claim_ledger=None) -> dict:
-    """§9 Judge Input Contract——judge 不得只读最终答案。"""
+                      claim_ledger=None,
+                      dimension_applicability=None) -> dict:
+    """§9 Judge Input Contract——judge 不得只读最终答案。
+    PF-RP3A §A: dimension_applicability 为预注册 evaluation truth（来自 frozen
+    manifest）; judge 必须原样采用, 不得自行改判。"""
     return {
         "USER_QUESTION": user_question,
         "TASK_CATEGORY": task_category,
@@ -113,6 +116,7 @@ def build_judge_input(user_question: str, task_category: str, answer: str,
         "SECONDARY_SOURCE_RECORDS": secondary_source_records or [],
         "ACCESS_LEVELS": access_levels or [],
         "CLAIM_LEDGER": claim_ledger or [],
+        "DIMENSION_APPLICABILITY": dimension_applicability or {},
     }
 
 
@@ -124,6 +128,9 @@ JUDGE_SYSTEM_PROMPT = """你是哲学学术质量评审器（measurement instrum
    REQUIRED 维必须给 0-4 整数分; OPTIONAL 维在回答实质涉及该维时必须打分,
    仅当回答完全不涉及该维时才允许 null; 不确定是否涉及时倾向打分而非 null。
    整份评审至少要有三维给出整数分。
+   若输入提供 DIMENSION_APPLICABILITY, 它是预注册 evaluation truth——必须原样
+   采用, 不得由你重新改判: 标 REQUIRED 的维必须给 0-4 整数分; 标
+   NOT_APPLICABLE 的维 score=null; 标 OPTIONAL 的维按上述规则。
 2. interpretive_plurality 与 historical_discipline、literature_orientation 允许 NOT_APPLICABLE;
    禁止因为回答"没有列两派/没有学者名"而在不适用时扣分——争议模板不是万能格式。
 3. 反风格偏置: 更长、引用更多、外语更多、学者名更多、语气更像论文, 本身不得加分。
