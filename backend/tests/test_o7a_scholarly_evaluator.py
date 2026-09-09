@@ -227,7 +227,7 @@ def test_t19_no_production_diff_vs_base():
     hard = (("backend/final_validator.py", BASE_SHA),
             ("backend/quote_bound.py", "95bc3ae52"),   # RCA-1 §2: 仅 metadata 增改
             ("backend/agent_runtime.py", BASE_SHA),
-            ("backend/evidence_contract.py", BASE_SHA))
+            ("backend/evidence_contract.py", "624fad500"))   # PF-RP3B scholarly schema 授权点
     for rel, _base in hard:
         r = subprocess.run(["git", "diff", "--quiet", _base, "HEAD", "--", rel],
                            cwd=REPO, capture_output=True)
