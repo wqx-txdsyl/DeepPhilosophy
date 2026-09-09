@@ -68,7 +68,9 @@ def run_case_production(case, mk_normal, mk_repair):
     tel = case_result(case["case_id"], evs)
     published = bool(tel["published"])
     final_codes = [i.get("code") for i in val.get("result", {}).get("issues", [])]
-    # §E delivery 新字段（published 由 validator 把关 → 三项机械为 0; 如实记录）
+    # §E delivery 新字段。terminal_pending = 未达终态校验（流崩溃/无 done 事件）——
+    # 耗尽修复后的干净拒绝（有 done、终态候选非空）不是 pending
+    terminal_pending = not bool(done)
     public_invalid_citations = 1 if (published and "UNVERIFIED_CITATION" in final_codes) else 0
     public_unverified_quotes = 1 if (published and "UNSUPPORTED_EXACT_QUOTE" in final_codes) else 0
     record = {"case_id": case["case_id"],
@@ -78,7 +80,7 @@ def run_case_production(case, mk_normal, mk_repair):
                   "run_status": "COMPLETED" if done else "RUN_ERROR",
                   "published": published,
                   "repairs_used": val.get("repairs_used", 0),
-                  "terminal_pending": bool(errors) and not answer.strip(),
+                  "terminal_pending": terminal_pending,
                   "public_invalid_citations": public_invalid_citations,
                   "public_unverified_exact_quotes": public_unverified_quotes,
                   "public_access_overclaims": 0 if published else None,
