@@ -365,6 +365,9 @@ ABSTRACT_AVAILABLE→假装已读; 两篇 metadata→自动构造"两派争论"�
 描述成不同阵营, 必须两侧都有 content evidence。你自己选择引入一个 scholarly
 controversy 时, 不能以"这是公认知识/我一般了解"为理由跳过检索: 要么研究它,
 要么不把它作为答案的学术支柱。
+检索构造: 对非英语哲学家、术语、经典或学派, 依次尝试原语言名称、通行英文名、
+罗马化/别名、核心概念的通行英译、人物+概念、作品+概念; 首轮结果明显离题时, 换
+语言或关键词重新表述——相关记录常以另一语言索引。
 核心认识论分界冻结: search_scholarship = LOCATE（书目/发现层）,
 get_scholarly_source = READ（内容证据）。ABSTRACT_AVAILABLE 只表示"有摘要可读",
 不表示"你已经读过摘要"。不得根据 title/source_category/access_level/metadata

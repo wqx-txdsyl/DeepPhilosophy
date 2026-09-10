@@ -90,7 +90,10 @@ register_tool(
     "由 source_category 字段如实标注。access_level（METADATA_ONLY/ABSTRACT_AVAILABLE/"
     "FULL_TEXT_AVAILABLE/FULL_TEXT_READ）只反映已实际取得的证据层级; "
     "ABSTRACT_AVAILABLE 表示有摘要可读, 不表示已读。"
-    "是否检索、检索什么、选哪篇由你决定; 记录存在不等于论文已被阅读, 不得凭标题推断论文内容。",
+    "是否检索、检索什么、选哪篇由你决定; 记录存在不等于论文已被阅读, 不得凭标题推断论文内容。"
+    "查询构造建议（非英语哲学家/术语/经典尤适用）: 依次尝试原语言名称、通行英文名、"
+    "罗马化/别名、核心概念的通行英译、人物+概念、作品+概念; 首轮结果明显离题时, "
+    "换语言或关键词重新表述再检索。",
     {"type": "object",
      "properties": {"query": {"type": "string", "description": "研究主题/论证/争议关键词"},
                     "philosopher": {"type": "string", "description": "哲学家名（可选, 限定检索）"},

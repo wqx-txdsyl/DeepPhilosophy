@@ -68,7 +68,7 @@ def build_index():
     con = sqlite3.connect(INDEX)
     con.execute("CREATE VIRTUAL TABLE sources USING fts5("
                 "source_record_id UNINDEXED, cluster_ids_accepted, title, authors, "
-                "abstract, passages, book_ids)")
+                "aliases, abstract, passages, book_ids)")
     indexed = 0
     for sid, r in _registry.items():
         # RP1 §2: 默认索引只含 accepted records（curation 约束 runtime 暴露）
@@ -76,11 +76,12 @@ def build_index():
             continue
         ev = _evidence.get(sid, [])
         con.execute(
-            "INSERT INTO sources VALUES (?,?,?,?,?,?,?)",
+            "INSERT INTO sources VALUES (?,?,?,?,?,?,?,?)",
             (sid,
              " ".join(r.get("cluster_ids_accepted") or []),
              r.get("title") or "",
              " ".join(a.get("name", "") for a in (r.get("authors") or [])),
+             " ".join(r.get("aliases") or []),   # PF-RP5/V3-RP3: 多语别名可检索
              next((e["text"] for e in ev if e["evidence_type"] == "ABSTRACT"), ""),
              " ".join(e["text"] for e in ev if e["evidence_type"] == "FULLTEXT_PASSAGE"),
              " ".join(r.get("related_primary_book_ids") or [])))
@@ -99,7 +100,10 @@ def search_local(query, limit=8):
     if '"' in query:
         match = query
     else:
-        terms = [t for t in query.split() if len(t) >= 2]
+        # V3-RP3: 连字符归一（FTS5 分词把 "Neo-Confucianism" 拆成 neo+confucianism,
+        # 查询串里的 "-" 会造成静默零命中）
+        q_norm = query.replace("-", " ")
+        terms = [t for t in q_norm.split() if len(t) >= 2]
         match = " OR ".join(terms) or query
     con = sqlite3.connect(INDEX)
     rows = con.execute(
