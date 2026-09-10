@@ -236,7 +236,7 @@ def test_t19_no_production_diff_vs_base():
                        cwd=REPO, capture_output=True)
     assert r.returncode == 0, "backend/routes 相对 PF-RP4A §B 授权基线 76c453190 有未授权改动"
     # O7-E 解冻: engine prompt / agents persona 工具面 授权改动落地 commit 之后冻结
-    for rel, base in (("backend/engine_langgraph.py", "76c453190"),   # PF-RP4A §B contract v3 授权点
+    for rel, base in (("backend/engine_langgraph.py", "a0c7c71d5"),   # PF-RP5 §1-§3 Contract V4 授权点
                       ("backend/agents.py", "2c87ce397")):
         r = subprocess.run(["git", "diff", "--quiet", base, "--", rel],
                            cwd=REPO, capture_output=True)
