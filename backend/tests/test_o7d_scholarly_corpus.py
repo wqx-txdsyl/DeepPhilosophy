@@ -251,7 +251,7 @@ def _counts(reg):
 
 def test_r1_r2_association_status_correct(reg):
     cur, disc = _counts(reg)
-    assert len(cur) == 276 and len(disc) == 34
+    assert len(cur) == 282 and len(disc) == 34   # V3-RP3: +3 王阳明 curated
     for r in cur:
         assert r["cluster_ids_accepted"]
     for r in disc:

@@ -89,14 +89,28 @@ def check_final_gate(summary, case_count=None):
         v = req_dims.get(dim)
         if not isinstance(v, (int, float)) or v < THRESHOLDS[thr_key]:
             failed.append(thr_key)
-    if (_num("REQUIRED_DIMENSION_MEDIAN_LT_2") or 0) != 0:
-        failed.append("REQUIRED_DIMENSION_MEDIAN_LT_2")
-    if (_num("REQUIRED_DIMENSION_MISSING_SCORE") or 0) != 0:
+    med_lt2 = _num("REQUIRED_DIMENSION_MEDIAN_LT_2")
+    if med_lt2 is None or med_lt2 != 0:
+        failed.append("REQUIRED_DIMENSION_MEDIAN_LT_2")     # 缺失也算 FAIL（fail-close）
+    miss_score = _num("REQUIRED_DIMENSION_MISSING_SCORE")
+    if miss_score is None or miss_score != 0:
         failed.append("REQUIRED_DIMENSION_MISSING_SCORE")
+    # PF-RP5-F1 §0 fail-close: 缺字段 ≠ 通过
     fatal_counts = summary.get("FATAL_FLAG_COUNTS_BY_TYPE") or {}
     for f in FATAL_KEYS:
-        if (fatal_counts.get(f) or 0) != 0:
+        if f not in fatal_counts or (fatal_counts.get(f) or 0) != 0:
             failed.append(f)
+    # scholarly 记账完整性强制（judge summary 四要素缺一即 FAIL）
+    jc_expected = _num("JUDGE_CASES_EXPECTED")
+    jc_valid = _num("JUDGE_CASES_VALID")
+    jc_missing = _num("JUDGE_CASES_MISSING")
+    eval_invalid = summary.get("EVALUATION_INVALID")
+    if jc_expected is None or jc_valid is None or jc_missing is None:
+        failed.append("JUDGE_CASE_ACCOUNTING_MISSING")
+    elif jc_valid != jc_expected or jc_missing != 0:
+        failed.append("JUDGE_CASES_MISSING")
+    if eval_invalid is not False:
+        failed.append("EVALUATION_INVALID")
 
     delivery_pass = not [g for g in failed if g in (
         "FINAL_PUBLICATION_RATE", "TERMINAL_PENDING", "TOOL_LOOP_ABORTS",
