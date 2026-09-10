@@ -99,8 +99,17 @@ def run_case_production(case, mk_normal, mk_repair):
     terminal_pending = not bool(done)
     public_invalid_citations = 1 if (published and "UNVERIFIED_CITATION" in final_codes) else 0
     public_unverified_quotes = 1 if (published and "UNSUPPORTED_EXACT_QUOTE" in final_codes) else 0
+    # V3 final holdout gate instrumentation
+    stitched_public = 1 if (published and "STITCHED_QUOTE" in final_codes) else 0
+    tool_loop_aborts = sum(1 for e in evs if e.get("type") == "tool_cancel")
+    cls_all = tel.get("fingerprint_classification") or {}
+    repair_new_fatal = 1 if any((cls_all.get(f"R{k}") or {}).get("introduced")
+                                for k in range(1, 8)) else 0
     record = {"case_id": case["case_id"],
               "question": case["question"],
+              "task_category": case.get("category") or case.get("task_category"),
+              "agent_identity": case.get("agent_identity") or "DeepPhilosophy",
+              "applicability": case.get("applicability") or {},
               "answer": answer,
               "delivery": {
                   "run_status": "COMPLETED" if done else "RUN_ERROR",
@@ -118,6 +127,9 @@ def run_case_production(case, mk_normal, mk_repair):
               "quote_bound": _as_list(done.get("quote_bound")),
               "evidence_digest": _ev_digest(done.get("evidence")) if done else None,
               "scholarly_provenance": scholarly_provenance,
+              "STITCHED_PUBLIC_QUOTES": stitched_public,
+              "REPAIR_CREATES_NEW_FATAL_ERROR": repair_new_fatal,
+              "TOOL_LOOP_ABORTS": tool_loop_aborts,
               # PF-RP4 §3: 真实工具选择轨迹（declared tool 序列, 机械事实）
               "tool_trajectory": [e.get("name") for e in evs
                                   if e.get("type") == "tool_start"
@@ -143,8 +155,9 @@ def run_case_production(case, mk_normal, mk_repair):
     return record
 
 
-def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None):
-    manifest = json.load(open(MANIFEST, encoding="utf-8"))
+def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None,
+         manifest_path=None):
+    manifest = json.load(open(manifest_path or MANIFEST, encoding="utf-8"))
     cfg = CC.v4pro_config(dict(CC.RP_B, id="RP-B"),
                           requested_model=requested_model,
                           candidate_id=f"{requested_model}@RP-B")
@@ -234,6 +247,12 @@ def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None):
                for e in ((r.get("scholarly_provenance") or {})
                          .get("scholarly_evidence") or [])
                if e.get("content_evidence")),
+           "FINAL_PUBLICATION_RATE": round(pub / max(len(ok), 1), 3),
+           "STITCHED_PUBLIC_QUOTES": sum(1 for r in ok
+                                         if r.get("STITCHED_PUBLIC_QUOTES")),
+           "REPAIR_CREATES_NEW_FATAL_ERROR": sum(
+               1 for r in ok if r.get("REPAIR_CREATES_NEW_FATAL_ERROR")),
+           "TOOL_LOOP_ABORTS": sum(r.get("TOOL_LOOP_ABORTS") or 0 for r in ok),
            }
     json.dump(out, open(out_path.replace(".json", "_summary.json"), "w",
                         encoding="utf-8"), ensure_ascii=False, indent=1)
@@ -242,5 +261,6 @@ def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None):
 
 if __name__ == "__main__":
     _only = sys.argv[2].split(",") if len(sys.argv) > 2 else None
+    _man = sys.argv[3] if len(sys.argv) > 3 else None
     main(sys.argv[1] if len(sys.argv) > 1 else "CAL1",
-         requested_model="deepseek-v4-flash", only=_only)
+         requested_model="deepseek-v4-flash", only=_only, manifest_path=_man)

@@ -1,0 +1,25 @@
+{
+  "V3_GATE_SCHEMA_AUDIT": true,
+  "audit_time_baseline": "bfbc12e04",
+  "measurement_sources": {
+    "HOLDOUT_CASES": "docs/evidence/V3_HOLDOUT_MANIFEST.json (28, universe hash locked)",
+    "FINAL_PUBLICATION_RATE": "o7e_production_calibration case_result.published",
+    "TERMINAL_PENDING": "run_case_production (done 事件存在性)",
+    "TOOL_LOOP_ABORTS": "SSE tool_cancel 事件计数 (run_case_production)",
+    "UNVERIFIED_PUBLIC_EXACT_QUOTES": "published ∧ final_codes ∋ UNSUPPORTED_EXACT_QUOTE",
+    "STITCHED_PUBLIC_QUOTES": "published ∧ final_codes ∋ STITCHED_QUOTE",
+    "PUBLIC_INVALID_CITATIONS": "published ∧ final_codes ∋ UNVERIFIED_CITATION",
+    "VALIDATOR_EMPTY_FINAL": "final_codes ∋ EMPTY_FINAL",
+    "TERMINAL_CANDIDATE_EMPTY": "validation.history[-1].candidate_chars == 0",
+    "LOCAL_PATCH_ANCHOR_RESOLUTION_RATE": "case_result LP_ANCHOR_* (仅 LOCAL_PATCH attempts)",
+    "PROMPT_ISSUE_COVERAGE": "trace lp_gate.prompt_issue_coverage (RC.prepare)",
+    "LINKED_EVIDENCE_STARVATION": "trace bundles evidence_resolution == UNRESOLVED (LP attempts)",
+    "UNKNOWN_SLICE_ID": "local_patch.errors UNKNOWN_SLICE_ID 计数",
+    "UNINTENTIONAL_QUOTE_WRAPPER_LOSS": "adapter parse_and_apply wrapper 检查 (COPY_SLICE quote)",
+    "NON_TARGET_TEXT_CHANGED_CHARS": "RC.non_target_changed_chars 按目标 span",
+    "REPAIR_CREATES_NEW_FATAL_ERROR": "fingerprint classification introduced 集合 (每 case 任一轮)",
+    "ACADEMIC_JUDGE": "o7e_bakeoff_judge2.judge_candidate (glm-4.6/temp0/k3, DIMENSION_APPLICABILITY 预注册)"
+  },
+  "INSTRUMENTATION_COMPLETE": true,
+  "HOLDOUT_MODEL_CALLS_AT_AUDIT": 0
+}
