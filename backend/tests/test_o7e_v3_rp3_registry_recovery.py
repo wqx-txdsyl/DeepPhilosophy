@@ -165,3 +165,46 @@ def test_clean_canonical_rebuild_deterministic():
         shutil.copy(tmp + '/r.jsonl', 'data/scholarly/registry.jsonl')
         shutil.copy(tmp + '/e.jsonl', 'data/scholarly/evidence.jsonl')
         shutil.rmtree(tmp, ignore_errors=True)
+
+
+# ── RP3-R1.1: 真实工具路径 search→read（不走私有内部函数）──
+def _search_tool():
+    from routes.agent_tools_scholarly import _exec_search_scholarship
+    return _exec_search_scholarship
+
+
+def _read_tool():
+    from routes.agent_tools_scholarly import _exec_get_scholarly_source
+    return _exec_get_scholarly_source
+
+
+def test_search_to_read_via_real_tools_chain():
+    """SEARCH(select sid from results) → get_scholarly_source → 内容证据。
+    全部走注册工具执行器; search 输出不含论文内容正文。"""
+    search_out = _search_tool()({"query": "Wang Yangming", "limit": 8})
+    results = search_out.get("results") or []
+    assert results, "search 必须返回候选"
+    sids = {r["source_record_id"] for r in results}
+    sid = "doi:10.1215/00318108-9554691"
+    assert sid in sids, "selected SID 必须来自该 search result"
+    # search 输出（metadata-only model view）不含摘要/正文内容
+    assert not any(r.get("abstract_text") or r.get("abstract") for r in results)
+    read_out = _read_tool()({"source_record_id": sid,
+                             "requested_access": "ABSTRACT"})
+    assert read_out.get("returned_evidence_level") == "ABSTRACT_AVAILABLE"
+    assert (read_out.get("abstract") or {}).get("text", "").strip()
+
+
+def test_metadata_only_read_returns_no_content():
+    """METADATA_ONLY 候选 → get_scholarly_source 无 abstract/passages、不造内容。"""
+    import scholarly_registry as SR
+    sid = None
+    for r in SR.load_registry().values():
+        if (r.get("ingest") or {}).get("access_level_at_ingest") == "METADATA_ONLY":
+            sid = r["source_record_id"]
+            break
+    assert sid
+    read_out = _read_tool()({"source_record_id": sid,
+                             "requested_access": "ABSTRACT"})
+    assert not (read_out.get("abstract") or {}).get("text", "").strip()
+    assert not read_out.get("evidence_passages")
