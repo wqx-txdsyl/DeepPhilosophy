@@ -1,0 +1,1683 @@
+{
+ "V5_F1_R1_RELEVANCE_RCA": true,
+ "BASE": "bf0b9ff54621d5b54321e503c53a2fb67ade03ba",
+ "PRIOR_ARTIFACT": "docs/evidence/V5_F1_SCHOLARLY_CONTENT_RCA.json（保留历史, 未覆盖）",
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V5_F1_R1_RELEVANCE_RCA_TASK.md",
+ "V5_MEASUREMENT_UNCHANGED": true,
+ "DATA_SOURCE": "仅 frozen docs/evidence/V5_FINAL_HOLDOUT_RUN.json 中 V5 当时实际返回的 records; 零 post-run 新发现记录计入",
+ "SECONDARY_REQUIRED_CASES": 6,
+ "SECONDARY_CONTENT_EVIDENCE_CASES": 0,
+ "METRICS": {
+  "V5-05": {
+   "RESULT_OCCURRENCES": 22,
+   "UNIQUE_RECORDS": 16,
+   "READABLE_OCCURRENCES": 7,
+   "UNIQUE_READABLE_RECORDS": 5,
+   "RELEVANT_UNIQUE_RECORDS": 0,
+   "RELEVANT_READABLE_UNIQUE_RECORDS": 0,
+   "RELEVANT_READABLE_BUT_UNREAD": 0,
+   "DIRECT_UNIQUE_RECORDS": 0,
+   "WAS_READ_COUNT": 0
+  },
+  "V5-06": {
+   "RESULT_OCCURRENCES": 86,
+   "UNIQUE_RECORDS": 22,
+   "READABLE_OCCURRENCES": 40,
+   "UNIQUE_READABLE_RECORDS": 9,
+   "RELEVANT_UNIQUE_RECORDS": 3,
+   "RELEVANT_READABLE_UNIQUE_RECORDS": 1,
+   "RELEVANT_READABLE_BUT_UNREAD": 1,
+   "DIRECT_UNIQUE_RECORDS": 0,
+   "WAS_READ_COUNT": 0
+  },
+  "V5-09": {
+   "RESULT_OCCURRENCES": 40,
+   "UNIQUE_RECORDS": 25,
+   "READABLE_OCCURRENCES": 23,
+   "UNIQUE_READABLE_RECORDS": 13,
+   "RELEVANT_UNIQUE_RECORDS": 1,
+   "RELEVANT_READABLE_UNIQUE_RECORDS": 0,
+   "RELEVANT_READABLE_BUT_UNREAD": 0,
+   "DIRECT_UNIQUE_RECORDS": 0,
+   "WAS_READ_COUNT": 0
+  },
+  "V5-10": {
+   "RESULT_OCCURRENCES": 55,
+   "UNIQUE_RECORDS": 30,
+   "READABLE_OCCURRENCES": 9,
+   "UNIQUE_READABLE_RECORDS": 7,
+   "RELEVANT_UNIQUE_RECORDS": 2,
+   "RELEVANT_READABLE_UNIQUE_RECORDS": 0,
+   "RELEVANT_READABLE_BUT_UNREAD": 0,
+   "DIRECT_UNIQUE_RECORDS": 0,
+   "WAS_READ_COUNT": 0
+  },
+  "V5-11": {
+   "RESULT_OCCURRENCES": 56,
+   "UNIQUE_RECORDS": 24,
+   "READABLE_OCCURRENCES": 11,
+   "UNIQUE_READABLE_RECORDS": 5,
+   "RELEVANT_UNIQUE_RECORDS": 4,
+   "RELEVANT_READABLE_UNIQUE_RECORDS": 2,
+   "RELEVANT_READABLE_BUT_UNREAD": 2,
+   "DIRECT_UNIQUE_RECORDS": 0,
+   "WAS_READ_COUNT": 0
+  },
+  "V5-12": {
+   "RESULT_OCCURRENCES": 85,
+   "UNIQUE_RECORDS": 34,
+   "READABLE_OCCURRENCES": 28,
+   "UNIQUE_READABLE_RECORDS": 11,
+   "RELEVANT_UNIQUE_RECORDS": 0,
+   "RELEVANT_READABLE_UNIQUE_RECORDS": 0,
+   "RELEVANT_READABLE_BUT_UNREAD": 0,
+   "DIRECT_UNIQUE_RECORDS": 0,
+   "WAS_READ_COUNT": 0
+  }
+ },
+ "CORRECTIONS_VS_PRIOR_RCA": {
+  "READABLE_RESULT_OCCURRENCES_118": "已更正为出现次数口径; 去重后六 case 唯一可读记录仅 50（5+9+13+7+5+11, 含跨 case 重叠）",
+  "CORPUS_COVERAGE_GAP": "UNRESOLVED → CONFIRMED（见 PRIMARY_ROOT_CAUSE）",
+  "EVIDENCE_PROMOTION_FAILURE_V5_12": "NOT_DEMONSTRATED（V5-12 无任何 scholarly READ, 不存在「读到但未 promotion」; 真实性质=记忆书目输出 + 对应 claim evidence_ids=[]/direct_evidence=false）"
+ },
+ "DETERMINISTIC_ABSENCE_PROBES": {
+  "method": "单专名查询（BM25 下若存在该作者/主题记录必置顶）",
+  "zero_record_terms": [
+   "Searle",
+   "Nishida",
+   "Averroes",
+   "Ibn Rushd",
+   "Anscombe",
+   "Mackie",
+   "Parfit",
+   "Enoch"
+  ],
+  "fuzzy_only_terms": {
+   "moral luck": "top 命中为 Moral regeneration/Kant Autonomy（OR 拆词模糊）",
+   "Chinese room": "top 命中为 Chinese Diplomacy/墨家（Chinese 一词模糊）",
+   "pure experience": "top 命中为 Pure Reason/Experiential Schematism（拆词模糊）",
+   "error theory": "top 命中为 Locke Personal Identity/Theory of Descriptions（无关）",
+   "virtue ethics revival": "top 命中为 Nietzsche Analytic Ethics/Heidegger ethics（无关）"
+  },
+  "conclusion": "六个 secondary 主题的关键作者/学说在 registry 中零记录——不是排序问题, 是语料不存在"
+ },
+ "REGISTRY_CONTENT_CEILING": {
+  "records_total": 316,
+  "accepted": 282,
+  "abstract_evidence": 31,
+  "passages": 0,
+  "fulltext_read": 0,
+  "note": "Reviewer 复核口径, 本地 registry.jsonl 独立验证 316/31/0 一致"
+ },
+ "PROVIDER_BLOCKAGE_SPLIT": {
+  "V5_RUN_OBSERVED_PROVIDER_FAILURE": "run 归档 452/452 返回记录全部 LOCAL_CURATED, 零 LIVE_*/零 LOCAL_CURATED+LIVE → run 期间 live 通道零贡献",
+  "POST_RUN_DETERMINISTIC_PROVIDER_PROBE": "crossref/openalex 双双 URL_BLOCKED（reserved ip 198.18.0.0/15 fake-IP 策略）→ 机制确证; 不冒充原 run 完整网络 trace"
+ },
+ "PER_CASE_ROOT_CAUSE_VERDICT": {
+  "V5-05": {
+   "READ_ORCHESTRATION_FAILURE": "NOT_DEMONSTRATED（可读池中零直接相关记录, 无可读之的）",
+   "primary": "CORPUS_COVERAGE_GAP"
+  },
+  "V5-06": {
+   "READ_ORCHESTRATION_FAILURE": "PARTIAL（1 条 SUPPORTING 级可读记录 Kant Autonomy 未读, 但 0 DIRECT——即使读也不足以支撑 moral luck 文献判断）",
+   "primary": "CORPUS_COVERAGE_GAP"
+  },
+  "V5-09": {
+   "READ_ORCHESTRATION_FAILURE": "NOT_DEMONSTRATED",
+   "primary": "CORPUS_COVERAGE_GAP"
+  },
+  "V5-10": {
+   "READ_ORCHESTRATION_FAILURE": "NOT_DEMONSTRATED",
+   "primary": "CORPUS_COVERAGE_GAP"
+  },
+  "V5-11": {
+   "READ_ORCHESTRATION_FAILURE": "PARTIAL（2 条 SUPPORTING 级可读未读; 0 DIRECT）",
+   "primary": "CORPUS_COVERAGE_GAP"
+  },
+  "V5-12": {
+   "READ_ORCHESTRATION_FAILURE": "NOT_DEMONSTRATED",
+   "primary": "CORPUS_COVERAGE_GAP + BIBLIOGRAPHY_GROUNDING_GUARD_GAP"
+  }
+ },
+ "PRIMARY_ROOT_CAUSE": "SCHOLARLY_CORPUS_DISCOVERY_CONTENT_GAP: registry 学术语料对六个 secondary 主题（Searle/moral luck/Nishida/Averroes/Anscombe/Mackie-Parfit-Enoch）零直接相关记录（逐记录分类 DIRECT=0/6 case + 单专名查询零命中确定性验证）, 复合 V5_RUN_OBSERVED_PROVIDER_FAILURE（live 发现通道在评测环境零贡献）——模型在「检索返回的全部离题」处境下退化为记忆型作答",
+ "PRIMARY_ROOT_CAUSE_CONFIDENCE": "HIGH（对「池中无直接相关可读记录」为确定性事实; 对「registry 中不存在相关记录」由单专名零命中+全量标题分类双证据支撑; QUERY_FORMULATION 因原查询丢失保持 UNRESOLVED 不参与定因）",
+ "SECONDARY_ROOT_CAUSES": [
+  "V5_RUN_OBSERVED_PROVIDER_FAILURE（环境）: live 学术发现通道零贡献, 使 registry 单点成为唯一来源",
+  "READ_ORCHESTRATION_FAILURE（降级为次要, CONFIRMED 但非六 case 主因）: 对照组 V5-04/08 的 4/5 READ 落在可见 METADATA_ONLY 记录上——读靶选择盲选是真实模式, 但在零 DIRECT 记录处境下不构成六 case 失败主因",
+  "SAFE_FALLBACK_DISCLOSURE_GAP: 检索结果全面离题时, 模型未向用户披露「未获得相关二手文献」而直接以记忆作答（V5-12 更以精确书目伪装 grounding）——机械层对此零拦截",
+  "BIBLIOGRAPHY_GROUNDING_GUARD_GAP: 精确书目元数据无证据链可入终稿（validator 零检出）",
+  "QUERY_LOG_HARNESS_DEFECT: query/args 未进归档（tool_start 无 args）, QUERY_FORMULATION_FAILURE 因此永久 UNRESOLVED"
+ ],
+ "REPAIR_SURFACE_RECOMMENDATION": [
+  "corpus 面（按 Reviewer 判据必须与 prompt 面同时处理）: 为 secondary 主题扩充 registry 语料（至少覆盖 qualification 覆盖矩阵声明的传统/主题）; registry 需要真实的 abstract/全文内容层而非 metadata 名录",
+  "环境面: qualification run 在 trusted 网络执行使 live provider 可用, 或 manifest 预声明 offline 模式并下调相应 gate 语义（由 Reviewer 决定）",
+  "contract/prompt 面: 检索结果全面离题时的诚实披露义务（SAFE_FALLBACK 硬化）",
+  "validator 面: bibliography grounding guard（不变, 维持 V5-F1 建议）",
+  "harness 面: query/args 归档修复（不变）"
+ ],
+ "METRICS_DETAIL_NOTE": "relevance 分类为标题级语义判断（DIRECT=直接讨论该主题; SUPPORTING=靶理论/传统相邻; UNCERTAIN=信息不足; IRRELEVANT=其余）, 逐条 reason 见 records; 分类可由 Reviewer 按同一 frozen 数据复核",
+ "RECORDS": {
+  "V5-05": [
+   {
+    "source_record_id": "doi:10.1111/phc3.12031",
+    "appearance_count": 3,
+    "title": "<i>Jian ai</i> and the Mohist attack of Early Confucianism",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.23977/phij.2025.040101",
+    "appearance_count": 3,
+    "title": "Confucius' Thoughts of Ren and Li and Chinese Diplomacy",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.2307/jj.23056125.9",
+    "appearance_count": 2,
+    "title": "A Thomistic Reading of Mohist Jian ai",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5040/9781350007222.ch-003",
+    "appearance_count": 2,
+    "title": "Some Considerations in Defense of a Radical Reading of the Mohist Jian Ai",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/acprof:oso/9780198239062.001.0001",
+    "appearance_count": 1,
+    "title": "Plato on the Self-Predication of Forms",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780271032214-019",
+    "appearance_count": 1,
+    "title": "15 Certainty and Consistency in the Socratic Elenchus",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5325/j.ctv14gpdz4.20",
+    "appearance_count": 1,
+    "title": "Certainty and Consistency in the Socratic Elenchus",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780773583467-007",
+    "appearance_count": 1,
+    "title": "Wittgenstein, Kripke and Non-Reductionism about Meaning",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5040/9781350511781.ch-5",
+    "appearance_count": 1,
+    "title": "The ergon argument and eudaimonia",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5040/9798216429951.ch-007",
+    "appearance_count": 1,
+    "title": "The Ontological Argument Further Developed",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9780203219065-20",
+    "appearance_count": 1,
+    "title": "The Private Language Argument",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.2307/j.ctv24rgc46.20",
+    "appearance_count": 1,
+    "title": "ADDENDA TO THE THIRD MAN ARGUMENT:",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1111/papq.12154",
+    "appearance_count": 1,
+    "title": "Human Nature and Moral Sprouts: Mencius on the Pollyanna Problem",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198846758.003.0008",
+    "appearance_count": 1,
+    "title": "Personal Identity, Transitivity, and Divine Justice",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1080/09552367.2021.1919368",
+    "appearance_count": 1,
+    "title": "Wang Yangming, Descartes, and the Sino-European juncture of Enlightenment",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1163/156853206778553225",
+    "appearance_count": 1,
+    "title": "The Last Campaigns of Wang Yangming",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈塞尔中文屋：强/弱 AI 区分与「理解/意向性」〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   }
+  ],
+  "V5-06": [
+   {
+    "source_record_id": "doi:10.1093/0199289115.003.0003",
+    "appearance_count": 9,
+    "title": "Kant on Autonomy and Moral Evil",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "SUPPORTING",
+    "relevance_reason": "康德自律/道德主体性是 moral luck 之争的靶理论, 但不直接讨论运气",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1163/9789004544680_005",
+    "appearance_count": 9,
+    "title": "Practical Freedom: Kant on Autonomy and Moral Respect",
+    "access_level": "METADATA_ONLY",
+    "relevance": "SUPPORTING",
+    "relevance_reason": "康德实践自由与 control/agency 相邻, 非 moral luck 文献",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/cbo9780511554728.007",
+    "appearance_count": 9,
+    "title": "Moral regeneration, human autonomy, and divine aid",
+    "access_level": "METADATA_ONLY",
+    "relevance": "UNCERTAIN",
+    "relevance_reason": "神圣辅助与人的道德能动性相邻于运气问题, 标题信息不足",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199646159.003.0002",
+    "appearance_count": 9,
+    "title": "Moral Knowledge: Pure Reason and the Law",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198846758.003.0004",
+    "appearance_count": 8,
+    "title": "Moral Personhood and Personal Identity",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/s11712-011-9222-5",
+    "appearance_count": 6,
+    "title": "McDowell, Wang Yangming, and Mengzi’s Contributions to Understanding Moral Perception",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1080/09552367.2014.952073",
+    "appearance_count": 6,
+    "title": "Thea PrioriValue and Feeling in Max Scheler and Wang Yangming",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.31235/osf.io/ejv52",
+    "appearance_count": 5,
+    "title": "A Modal Ontological Argument for the Existence of an Imperfect God.",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1111/papq.12154",
+    "appearance_count": 5,
+    "title": "Human Nature and Moral Sprouts: Mencius on the Pollyanna Problem",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198236412.003.0012",
+    "appearance_count": 4,
+    "title": "Aristotle on <i>Eudaimonia</i>",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/acprof:oso/9780195309386.003.0006",
+    "appearance_count": 3,
+    "title": "The Proslogion Argument for the Existence of God",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.2307/jj.2711647.5",
+    "appearance_count": 2,
+    "title": "Aristotle on Eudaimonia",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1525/9780520340985-004",
+    "appearance_count": 2,
+    "title": "1. Aristotle on Eudaimonia",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1111/phc3.12031",
+    "appearance_count": 1,
+    "title": "<i>Jian ai</i> and the Mohist attack of Early Confucianism",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/019512815x.003.0002",
+    "appearance_count": 1,
+    "title": "Spinoza's Substance Monism",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/978-1-349-15263-6_9",
+    "appearance_count": 1,
+    "title": "The Thing in Itself in Kantian Philosophy",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1525/9780520914049-010",
+    "appearance_count": 1,
+    "title": "6. Nietzsche and Analytic Ethics",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.31390/gradschool_theses.434",
+    "appearance_count": 1,
+    "title": "Heidegger and ethics: from Dasein as being-in-the-world to Dasein as ethical",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5840/philtoday200751428",
+    "appearance_count": 1,
+    "title": "The Ethics of Love in Spinoza and Kierkegaard and the Teleological Suspension of the Theological",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780198854586.013.5",
+    "appearance_count": 1,
+    "title": "Kant on the Transcendental Deduction of the Categories",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9783110244045.150",
+    "appearance_count": 1,
+    "title": "On the Teleological Suspension of the Ethical",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9781315094021-18",
+    "appearance_count": 1,
+    "title": "The “Paradox” of Knowledge and Power: Foucault on the Bias",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈道德运气（Williams/Nagel）对康德式 control principle 的挑战与学界回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   }
+  ],
+  "V5-09": [
+   {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199646159.003.0002",
+    "appearance_count": 4,
+    "title": "Moral Knowledge: Pure Reason and the Law",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.17161/aion.v2i1.24031",
+    "appearance_count": 4,
+    "title": "Schematism and Technology from Kant to Simondon: Towards an Experiential Schematism of the Imagination",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "UNCERTAIN",
+    "relevance_reason": "「Experiential」与经验理论相邻, 但与西田/詹姆斯无关",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.23943/princeton/9780691161006.001.0001",
+    "appearance_count": 4,
+    "title": "Locke on Personal Identity",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1080/00201746208601358",
+    "appearance_count": 3,
+    "title": "Kierkegaard and the ‘teleological suspension of the ethical’",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780198854586.013.5",
+    "appearance_count": 3,
+    "title": "Kant on the Transcendental Deduction of the Categories",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1080/09552367.2014.952073",
+    "appearance_count": 2,
+    "title": "Thea PrioriValue and Feeling in Max Scheler and Wang Yangming",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/kant-2017-0045",
+    "appearance_count": 2,
+    "title": "What does the Transcendental Deduction prove, and when does it prove it? Henry Allison on Kant’s Transcendental Deduction",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9781315301594-5",
+    "appearance_count": 1,
+    "title": "Sensations, Natural Properties, and the Private Language Argument",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1353/pew.2012.0005",
+    "appearance_count": 1,
+    "title": "Mohist Care",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9780230343191.0010",
+    "appearance_count": 1,
+    "title": "Russell and the Philosophy of Language",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9780230343191_8",
+    "appearance_count": 1,
+    "title": "Russell and the Philosophy of Language",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/978-3-030-55296-1_3",
+    "appearance_count": 1,
+    "title": "Heidegger’s Interpretation of Nietzsche’s Philosophy of Eternal Recurrence",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9781315239798-11",
+    "appearance_count": 1,
+    "title": "Private Language Arguments, Wittgenstein and Contemporary Philosophy",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9780203073803",
+    "appearance_count": 1,
+    "title": "Routledge Philosophy GuideBook to Kripke and Naming and Necessity",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/978-1-349-15263-6_9",
+    "appearance_count": 1,
+    "title": "The Thing in Itself in Kantian Philosophy",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/9781316218990.005",
+    "appearance_count": 1,
+    "title": "Human Nature and Cultivation in Confucian Philosophy: Mencius and Xunzi",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9781315762418-12",
+    "appearance_count": 1,
+    "title": "Locke on Substance, Consciousness, and Personal Identity",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198846758.003.0004",
+    "appearance_count": 1,
+    "title": "Moral Personhood and Personal Identity",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5771/9781793614704",
+    "appearance_count": 1,
+    "title": "The Great Synthesis of Wang Yangming Neo-Confucianism in Korea",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198853527.003.0004",
+    "appearance_count": 1,
+    "title": "From Freedom to Freedom",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.31235/osf.io/ejv52",
+    "appearance_count": 1,
+    "title": "A Modal Ontological Argument for the Existence of an Imperfect God.",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.3138/uram.14.2.132",
+    "appearance_count": 1,
+    "title": "An Ontological Argument for the Existence of God: Anselm, Aquinas and Kant in Dispute (<i>URAM</i> 12:177–201)",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190845667.013.8",
+    "appearance_count": 1,
+    "title": "The Theory of Descriptions",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/0195145283.003.0009",
+    "appearance_count": 1,
+    "title": "What Is It for a General Term to Be a Rigid Designator?",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/0199289115.003.0003",
+    "appearance_count": 1,
+    "title": "Kant on Autonomy and Moral Evil",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈西田几多郎「纯粹经验」对威廉·詹姆斯意识学说的吸收与改造〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   }
+  ],
+  "V5-10": [
+   {
+    "source_record_id": "doi:10.1057/9780230343191.0010",
+    "appearance_count": 4,
+    "title": "Russell and the Philosophy of Language",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.22143/hss21.12.1.201",
+    "appearance_count": 3,
+    "title": "Substance Monism and Double Aspect Theory in Spinoza",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9781315831893-17",
+    "appearance_count": 3,
+    "title": "Perspectivism, Philology, Truth",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9781315182612-27",
+    "appearance_count": 3,
+    "title": "Truth, Paradox, and Nietzschean Perspectivism",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/978-3-030-55296-1_3",
+    "appearance_count": 3,
+    "title": "Heidegger’s Interpretation of Nietzsche’s Philosophy of Eternal Recurrence",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oseo/instance.00258581",
+    "appearance_count": 3,
+    "title": "On Interpretation",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1086/356925",
+    "appearance_count": 2,
+    "title": "<i>Causation in Early Modern Philosophy: Cartesianism, Occasionalism, and Preestablished Harmony</i>. Steven Nadler",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/cbo9780511498268.010",
+    "appearance_count": 2,
+    "title": "Phenomenalism and Preestablished Harmony, 1671",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/cbo9780511498268.011",
+    "appearance_count": 2,
+    "title": "Preestablished Harmony, late 1671–early 1672",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9781137472519_5",
+    "appearance_count": 2,
+    "title": "Preestablished Harmony (1995)",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9781137472519_4",
+    "appearance_count": 2,
+    "title": "Introduction to ‘Preestablished Harmony’ and ‘Response to Gary Ebbs’",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9780230343191_8",
+    "appearance_count": 2,
+    "title": "Russell and the Philosophy of Language",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9781315239798-11",
+    "appearance_count": 2,
+    "title": "Private Language Arguments, Wittgenstein and Contemporary Philosophy",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9783110701357-124",
+    "appearance_count": 2,
+    "title": "Heidegger on ‘Thing in Itself’ and ‘Appearance’: A Promising Interpretation of Kant?",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5771/9781793614704",
+    "appearance_count": 2,
+    "title": "The Great Synthesis of Wang Yangming Neo-Confucianism in Korea",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/upo9781844653355.011",
+    "appearance_count": 2,
+    "title": "Truth Rules, Hoverflies, and the Kripke–Wittgenstein Paradox",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780773583467-013",
+    "appearance_count": 2,
+    "title": "Truth Rules, Hoverflies, and the Kripke-Wittgenstein Paradox",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5840/du2001115/650",
+    "appearance_count": 2,
+    "title": "Nietzsche and Wittgenstein",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5840/leibniz199997",
+    "appearance_count": 1,
+    "title": "Leibnizian Meditations on Monism, Force, and Substance, in relation to Descartes, Spinoza and Malebranche",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780199744725.013.15",
+    "appearance_count": 1,
+    "title": "Theory of Relations and Universal Harmony",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.3366/edinburgh/9781474417884.003.0004",
+    "appearance_count": 1,
+    "title": "Foucault and the Force of Power-Knowledge",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5840/leibniz1996613",
+    "appearance_count": 1,
+    "title": "When Did Leibniz Adopt the Pre-established Harmony?",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/978-94-010-1426-7_61",
+    "appearance_count": 1,
+    "title": "Reply to the Thoughts on the System of Preestablished Harmony Contained in the Second Edition of Mr. Bayle’s Critical Dictionary, Article Rorarius",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/978-3-031-27620-0_12",
+    "appearance_count": 1,
+    "title": "Jeong Dasan’s Interpretation of Mencius: Heaven, Way, Human Nature, and the Human Heart",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9780203073803",
+    "appearance_count": 1,
+    "title": "Routledge Philosophy GuideBook to Kripke and Naming and Necessity",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.55997/ps1005xxxiv100a1a5",
+    "appearance_count": 1,
+    "title": "Epistemological Value of the Five Ways in the Theology of Saint Thomas Aquinas",
+    "access_level": "METADATA_ONLY",
+    "relevance": "UNCERTAIN",
+    "relevance_reason": "阿奎那神学的哲学认识论价值, 与哲学-宗教关系主题弱相邻",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1111/papq.12154",
+    "appearance_count": 1,
+    "title": "Human Nature and Moral Sprouts: Mencius on the Pollyanna Problem",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1215/00318108-9554691",
+    "appearance_count": 1,
+    "title": "The Introspective Model of Genuine Knowledge in Wang Yangming",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.3366/edinburgh/9781474476089.003.0003",
+    "appearance_count": 1,
+    "title": "Faith and Repetition in Kierkegaard and Deleuze",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "UNCERTAIN",
+    "relevance_reason": "信仰与理性主题相邻哲学-宗教关系, 但非阿威罗伊/双重真理",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199646159.003.0002",
+    "appearance_count": 1,
+    "title": "Moral Knowledge: Pure Reason and the Law",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈阿威罗伊「双重真理」与哲学-宗教关系论的诠释之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   }
+  ],
+  "V5-11": [
+   {
+    "source_record_id": "doi:10.1093/oso/9780198236412.003.0012",
+    "appearance_count": 3,
+    "title": "Aristotle on <i>Eudaimonia</i>",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "SUPPORTING",
+    "relevance_reason": "德性伦理学/幸福论传统是安斯柯姆复兴议程的核心资源",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/0199289115.003.0003",
+    "appearance_count": 3,
+    "title": "Kant on Autonomy and Moral Evil",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "SUPPORTING",
+    "relevance_reason": "康德法则性道德是安斯柯姆批判的靶理论",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1163/9789004544680_005",
+    "appearance_count": 1,
+    "title": "Practical Freedom: Kant on Autonomy and Moral Respect",
+    "access_level": "METADATA_ONLY",
+    "relevance": "SUPPORTING",
+    "relevance_reason": "康德实践自由/道德律令主题与法则性道德观念相邻",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1525/9780520914049-010",
+    "appearance_count": 4,
+    "title": "6. Nietzsche and Analytic Ethics",
+    "access_level": "METADATA_ONLY",
+    "relevance": "UNCERTAIN",
+    "relevance_reason": "分析伦理学史相邻, 但非德性伦理复兴文献",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199646159.003.0002",
+    "appearance_count": 3,
+    "title": "Moral Knowledge: Pure Reason and the Law",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1086/356925",
+    "appearance_count": 3,
+    "title": "<i>Causation in Early Modern Philosophy: Cartesianism, Occasionalism, and Preestablished Harmony</i>. Steven Nadler",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.31390/gradschool_theses.434",
+    "appearance_count": 3,
+    "title": "Heidegger and ethics: from Dasein as being-in-the-world to Dasein as ethical",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/upo9781844653355.006",
+    "appearance_count": 3,
+    "title": "Kripke on Wittgenstein on Rules",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780773583467-008",
+    "appearance_count": 3,
+    "title": "Kripke on Wittgenstein on Rules*",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/upo9781844653355.011",
+    "appearance_count": 3,
+    "title": "Truth Rules, Hoverflies, and the Kripke–Wittgenstein Paradox",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780773583467-013",
+    "appearance_count": 3,
+    "title": "Truth Rules, Hoverflies, and the Kripke-Wittgenstein Paradox",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/upo9781844653355.012",
+    "appearance_count": 3,
+    "title": "Kripke on Wittgenstein on Normativity",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/cbo9780511554728.007",
+    "appearance_count": 3,
+    "title": "Moral regeneration, human autonomy, and divine aid",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5840/philtoday200751428",
+    "appearance_count": 2,
+    "title": "The Ethics of Love in Spinoza and Kierkegaard and the Teleological Suspension of the Theological",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/9780511843112",
+    "appearance_count": 2,
+    "title": "Schopenhauer: ‘The World as Will and Representation’ Volume 2",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198846758.003.0004",
+    "appearance_count": 2,
+    "title": "Moral Personhood and Personal Identity",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780773583467-014",
+    "appearance_count": 2,
+    "title": "Kripke on Wittgenstein on Normativity*",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/upo9781844653355.005",
+    "appearance_count": 2,
+    "title": "Wittgenstein, Kripke and Non-Reductionism about Meaning",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780773583467-007",
+    "appearance_count": 2,
+    "title": "Wittgenstein, Kripke and Non-Reductionism about Meaning",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9780230343191.0010",
+    "appearance_count": 2,
+    "title": "Russell and the Philosophy of Language",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.2307/j.ctt1cgfb9j.9",
+    "appearance_count": 1,
+    "title": "Li and Law, Yue and Music in a World of Ritual and Harmony",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198853527.003.0004",
+    "appearance_count": 1,
+    "title": "From Freedom to Freedom",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9780230343191_8",
+    "appearance_count": 1,
+    "title": "Russell and the Philosophy of Language",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9781315239798-11",
+    "appearance_count": 1,
+    "title": "Private Language Arguments, Wittgenstein and Contemporary Philosophy",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈安斯柯姆《现代道德哲学》与德性伦理学复兴、规则崇拜之争〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   }
+  ],
+  "V5-12": [
+   {
+    "source_record_id": "doi:10.23943/princeton/9780691161006.001.0001",
+    "appearance_count": 7,
+    "title": "Locke on Personal Identity",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/cbo9780511554728.007",
+    "appearance_count": 5,
+    "title": "Moral regeneration, human autonomy, and divine aid",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/0199289115.003.0003",
+    "appearance_count": 5,
+    "title": "Kant on Autonomy and Moral Evil",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199646159.003.0002",
+    "appearance_count": 5,
+    "title": "Moral Knowledge: Pure Reason and the Law",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1163/9789004544680_005",
+    "appearance_count": 5,
+    "title": "Practical Freedom: Kant on Autonomy and Moral Respect",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/ccol0521631785.007",
+    "appearance_count": 5,
+    "title": "The Theory of Descriptions",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9780230348899_3",
+    "appearance_count": 4,
+    "title": "Fleeing from Freedom: Sartre and Bad Faith",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1111/papq.12154",
+    "appearance_count": 4,
+    "title": "Human Nature and Moral Sprouts: Mencius on the Pollyanna Problem",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9781438499543-016",
+    "appearance_count": 4,
+    "title": "Plato and the Theory of Forms",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9780203095881-6",
+    "appearance_count": 4,
+    "title": "\"Platonism\" and the Theory of Forms",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/019512815x.003.0002",
+    "appearance_count": 3,
+    "title": "Spinoza's Substance Monism",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1057/9781137472519_4",
+    "appearance_count": 2,
+    "title": "Introduction to ‘Preestablished Harmony’ and ‘Response to Gary Ebbs’",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/978-94-010-1426-7_61",
+    "appearance_count": 2,
+    "title": "Reply to the Thoughts on the System of Preestablished Harmony Contained in the Second Edition of Mr. Bayle’s Critical Dictionary, Article Rorarius",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/upo9781844653355.005",
+    "appearance_count": 2,
+    "title": "Wittgenstein, Kripke and Non-Reductionism about Meaning",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780773583467-007",
+    "appearance_count": 2,
+    "title": "Wittgenstein, Kripke and Non-Reductionism about Meaning",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780198854586.013.5",
+    "appearance_count": 2,
+    "title": "Kant on the Transcendental Deduction of the Categories",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198846758.003.0004",
+    "appearance_count": 2,
+    "title": "Moral Personhood and Personal Identity",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/978-1-349-01909-0_2",
+    "appearance_count": 2,
+    "title": "The Theory of Descriptions",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/cbo9780511482618.003",
+    "appearance_count": 2,
+    "title": "The theory of forms",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1525/9780520914049-010",
+    "appearance_count": 2,
+    "title": "6. Nietzsche and Analytic Ethics",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.31390/gradschool_theses.434",
+    "appearance_count": 2,
+    "title": "Heidegger and ethics: from Dasein as being-in-the-world to Dasein as ethical",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5840/philtoday200751428",
+    "appearance_count": 2,
+    "title": "The Ethics of Love in Spinoza and Kierkegaard and the Teleological Suspension of the Theological",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.4324/9780203166864-7",
+    "appearance_count": 1,
+    "title": "What does the private language argument prove?",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1002/9781118978504.app1",
+    "appearance_count": 1,
+    "title": "Appendix What Happens to the Private Language Argument?",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/019924569x.003.0010",
+    "appearance_count": 1,
+    "title": "On Misunderstanding Wittgenstein: Kripke's Private‐Language Argument",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1017/upo9781844653355.012",
+    "appearance_count": 1,
+    "title": "Kripke on Wittgenstein on Normativity",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1515/9780773583467-014",
+    "appearance_count": 1,
+    "title": "Kripke on Wittgenstein on Normativity*",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.5040/9798216430940.ch-006",
+    "appearance_count": 1,
+    "title": "“There Are No Facts, Only Interpretations”",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198846758.003.0008",
+    "appearance_count": 1,
+    "title": "Personal Identity, Transitivity, and Divine Justice",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1163/156853206778553225",
+    "appearance_count": 1,
+    "title": "The Last Campaigns of Wang Yangming",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780199742844.013.8",
+    "appearance_count": 1,
+    "title": "Hume and the Problem of Causation",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780198236412.003.0012",
+    "appearance_count": 1,
+    "title": "Aristotle on <i>Eudaimonia</i>",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190845667.013.8",
+    "appearance_count": 1,
+    "title": "The Theory of Descriptions",
+    "access_level": "ABSTRACT_AVAILABLE",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   },
+   {
+    "source_record_id": "doi:10.1007/s11712-011-9222-5",
+    "appearance_count": 1,
+    "title": "McDowell, Wang Yangming, and Mengzi’s Contributions to Understanding Moral Perception",
+    "access_level": "METADATA_ONLY",
+    "relevance": "IRRELEVANT",
+    "relevance_reason": "标题与主题〈麦凯错误论（怪诞性/相对性论证）与当代道德实在论回应〉无语义关联（OR 语义模糊命中）",
+    "was_read": false,
+    "content_evidence": false
+   }
+  ]
+ }
+}
