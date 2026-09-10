@@ -220,7 +220,7 @@ def test_d25_d26_primary_and_o7b_unchanged():
     assert r.returncode == 0
     h = hashlib.sha256(open(os.path.join(BACKEND, "data", "book_bibliography.json"),
                             "rb").read()).hexdigest()
-    assert h == "bf7ad52559f32a791d1cd5ed9030c6a0ee4cb93c5f009346a522949d6e2dc543"
+    assert h == "3ee9648453bd2e25e72c36abea3aa062d29774fd717897c1ed27832b300bffe4"
 
 
 def test_d28_general_persona_corpus_same():

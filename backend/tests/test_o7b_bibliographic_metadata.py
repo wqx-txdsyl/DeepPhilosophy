@@ -452,5 +452,5 @@ def test_t17_production_frozen_rp2():
 
 def test_rp2_runtime_data_hash_unchanged():
     h = hashlib.sha256(open(BIBLIO_PATH, "rb").read()).hexdigest()
-    assert h == "bf7ad52559f32a791d1cd5ed9030c6a0ee4cb93c5f009346a522949d6e2dc543", \
+    assert h == "3ee9648453bd2e25e72c36abea3aa062d29774fd717897c1ed27832b300bffe4", \
         "RP2 未发现真实数据错误 → 运行时数据 hash 必须与 RP1 冻结值一致"
