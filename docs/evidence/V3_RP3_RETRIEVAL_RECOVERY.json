@@ -1,16 +1,34 @@
 {
  "V3_RP3_RETRIEVAL_RECOVERY": true,
  "BASE_SHA": "5835da17a",
+ "HEAD_SHA": "8f1ce5390",
  "NEW_AGENT_RUN": false,
  "NEW_JUDGE_RUN": false,
  "V3_HOLDOUT_DRIFT": false,
- "changed_files": [
-  "backend/scholarly_registry.py",
-  "backend/routes/agent_tools_scholarly.py",
-  "backend/engine_langgraph.py",
+ "changed_files_git_diff": [
+  "backend/data/scholarly/corpus_manifest.json",
+  "backend/data/scholarly/evidence.jsonl",
   "backend/data/scholarly/registry.jsonl",
-  "backend/data/scholarly/index.sqlite(rebuilt)"
+  "backend/engine_langgraph.py",
+  "backend/routes/agent_tools_scholarly.py",
+  "backend/scholarly_registry.py",
+  "backend/tools/evaluation/o7e_v3_rp2_rca.py",
+  "backend/tools/evaluation/o7e_v3_rp3_recovery.py",
+  "docs/evidence/PHIAGENT_O7D_COVERAGE_MANIFEST.json",
+  "docs/evidence/PHIAGENT_O7D_CURATION_DECISIONS.json",
+  "docs/evidence/PHIAGENT_O7D_DISCOVERY_SNAPSHOT.json",
+  "docs/evidence/V3_R25_RETRIEVAL_RCA.json",
+  "docs/evidence/V3_RP3_RETRIEVAL_RECOVERY.json",
+  "docs/tasks/PHIAGENT_O7E_V3_RP2_TASK.md",
+  "docs/tasks/PHIAGENT_O7E_V3_RP3_TASK.md"
  ],
+ "records_total": 316,
+ "records_with_accepted_cluster": 282,
+ "records_discovery_only": 34,
+ "evidence_abstract_entries": 31,
+ "fulltext_read_records": 0,
+ "discovery_snapshot_hash": "51605d8e155e16d8739499f989e01a8e263dd995e8e212373fafd5c8af895f78",
+ "SNAPSHOT_HASH_MATCH": true,
  "query_family_hits": {
   "王阳明": 6,
   "Wang Yangming": 7,
@@ -26,18 +44,19 @@
   "Song-Ming Confucianism": 8
  },
  "families_total_hits": 83,
- "registry": {
-  "records_total": 313,
-  "new_curated_wang_yangming": 3,
-  "alias_enriched_existing": 4,
-  "fts_aliases_column": true,
-  "hyphen_normalization": true
+ "alias_equivalence": "PASS（CN/EN 查询族交集非空）",
+ "search_to_read_probe": {
+  "query": "Wang Yangming",
+  "selected_source_record_id": "doi:10.1215/00318108-9554691",
+  "search_returned_content": false,
+  "read_called": true,
+  "returned_evidence_level": "ABSTRACT_AVAILABLE",
+  "returned_content_nonempty": true
  },
- "query_formulation_guidance": {
-  "tool_description": true,
-  "main_agent_contract": true,
-  "runtime_forced_loop": false
- },
- "read_depth_note": "新增记录为 METADATA_ONLY（provider 未返回摘要）——LOCATE 覆盖达成; READ 深度由 Main Agent 依 Contract V4 自主继续",
- "V3_HOLDOUT_artifacts_unchanged": true
+ "SAFE_FALLBACK_REGRESSION": "PASS",
+ "COMMITTED_TEST_COUNT": "tests/test_o7e_v3_rp3_registry_recovery.py 9 项（含 clean rebuild）",
+ "V3_EVIDENCE_DRIFT": false,
+ "PRODUCTION_MODEL_UNCHANGED": true,
+ "FROZEN_COMPONENT_DIFF": 0,
+ "CLEAN_REBUILD_DIFF": 0
 }
