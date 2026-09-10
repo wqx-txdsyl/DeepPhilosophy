@@ -9,7 +9,9 @@ import quote_bound as QB
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__))), "tools", "evaluation"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import o7e_bakeoff_judge2 as J2
+from tools_final_gate_helper import check_final_gate
 
 _ART = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))), "docs/evidence/o7e_calib_SCHOL_CAL2.json")
@@ -68,3 +70,49 @@ def test_m5_compact_digest_structured_not_blind_truncated():
     d = J2._compact_digest(_case("H13"))
     assert isinstance(d, dict) and "used_evidence" in d
     assert isinstance(d["used_evidence"], list)
+
+
+# ── PF-RP4B-R1: o7e_final_gate 机械回归（artifact=2 → 无论回执写什么必须 FAIL）──
+def test_final_gate_v3_summary_fails_on_median_lt2():
+    import pytest
+    from tools_final_gate_helper import load_v3_summary, check_final_gate
+    try:
+        summary = load_v3_summary()
+    except FileNotFoundError:
+        pytest.skip("V3 summary 未归档")
+    assert summary["REQUIRED_DIMENSION_MEDIAN_LT_2"] == 2   # canonical 真值
+    result = check_final_gate(summary)
+    assert result["DELIVERY_GATE"] == "PASS"
+    assert result["SCHOLARLY_GATE"] == "FAIL"
+    assert result["FAILED_GATES"] == ["REQUIRED_DIMENSION_MEDIAN_LT_2"]
+    assert result["FINAL_VERDICT"] == "V3_SCHOLARLY_GATE_NOT_MET"
+
+
+def test_final_gate_pass_path():
+    summary = {
+        "FINAL_PUBLICATION_RATE": 1.0, "TERMINAL_PENDING": 0,
+        "TOOL_LOOP_ABORTS": 0, "UNVERIFIED_PUBLIC_EXACT_QUOTES": 0,
+        "STITCHED_PUBLIC_QUOTES": 0, "PUBLIC_INVALID_CITATIONS": 0,
+        "VALIDATOR_EMPTY_FINAL": 0, "TERMINAL_CANDIDATE_EMPTY": 0,
+        "REPAIR_CREATES_NEW_FATAL_ERROR": 0,
+        "LOCAL_PATCH_ANCHOR_RESOLUTION_RATE": 1.0, "PROMPT_ISSUE_COVERAGE": 1.0,
+        "LINKED_EVIDENCE_STARVATION": 0, "UNKNOWN_SLICE_ID": 0,
+        "UNINTENTIONAL_QUOTE_WRAPPER_LOSS": 0, "NON_TARGET_TEXT_CHANGED_CHARS": 0,
+        "APPLICABLE_DIMENSION_MEAN": 3.5,
+        "required_dims": {"textual_grounding": 3.6,
+                          "argument_reconstruction": 3.5,
+                          "interpretive_plurality": 3.2,
+                          "historical_discipline": 3.5,
+                          "literature_orientation": 3.3},
+        "REQUIRED_DIMENSION_MEDIAN_LT_2": 0,
+        "REQUIRED_DIMENSION_MISSING_SCORE": 0,
+        "FATAL_FLAG_COUNTS_BY_TYPE": {f: 0 for f in (
+            "FABRICATED_BIBLIOGRAPHY", "FABRICATED_SCHOLAR_ATTRIBUTION",
+            "PRIMARY_TEXT_MISREPRESENTATION", "MAJOR_ANACHRONISM",
+            "FALSE_EXACT_QUOTE", "LITERATURE_ACCESS_OVERCLAIM")},
+    }
+    result = check_final_gate(summary)
+    assert result["DELIVERY_GATE"] == "PASS"
+    assert result["SCHOLARLY_GATE"] == "PASS"
+    assert result["FAILED_GATES"] == []
+    assert result["FINAL_VERDICT"] == "PASS"
