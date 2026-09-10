@@ -193,10 +193,11 @@ def test_c28_cache_mechanical(monkeypatch, tmp_path):
 
 def test_c29_primary_retrieval_unchanged():
     r = subprocess.run(["git", "diff", "--quiet", "e71f4a696", "HEAD", "--",
-                        "backend/routes/agent_tools_retrieval.py",
-                        "backend/data/book_bibliography.json"],
+                        "backend/routes/agent_tools_retrieval.py"],
                        cwd=ROOT, capture_output=True)
     assert r.returncode == 0
+    # book_bibliography.json 是派生数据: 新书籍入库后合法变更（V4-F1）
+    assert os.path.exists(os.path.join(ROOT, "backend/data/book_bibliography.json"))
 
 
 def test_c30_tool_count():
