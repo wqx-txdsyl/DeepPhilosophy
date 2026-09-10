@@ -33,7 +33,11 @@ def _ev_digest(ev):
     仅 retrieved_evidence 等大列表截断。"""
     if not isinstance(ev, dict):
         return ev
-    full_keys = {"used_evidence", "citations", "unverified_citations", "claims"}
+    # PF-RP5: retrieved/candidate_evidence 也全量归档——截断会饿死 replay 别名池
+    # （PROBE1 H02 人性论（全4册）#5 实证）
+    full_keys = {"used_evidence", "citations", "unverified_citations", "claims",
+                 "retrieved_evidence", "candidate_evidence",
+                 "scholarly_records", "scholarly_evidence"}
     out = {}
     for k, v in ev.items():
         if k in full_keys and isinstance(v, list):
