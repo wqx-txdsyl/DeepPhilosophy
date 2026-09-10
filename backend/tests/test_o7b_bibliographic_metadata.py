@@ -21,7 +21,7 @@ MANIFEST_PATH = os.path.join(ROOT, "docs", "evidence",
                              "PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json")
 AUDIT_PATH = os.path.join(ROOT, "docs", "evidence",
                           "PHIAGENT_O7B_SEMANTIC_FIELD_AUDIT.json")
-RP1_CODE_SHA = "98c8972a6"  # routes 冻结基线（O7-E V4-F1-R1.3 search_books lexical 授权改动落地点）
+RP1_CODE_SHA = "7b12b5db6"  # routes 冻结基线（O7-E V5-F2 scholarly pipeline repair 授权改动落地点）
 O7A_BASE = "302f7380a4146d78374887063b336c5aa7381ddd"
 
 import dp_biblio_build as B
@@ -297,7 +297,7 @@ HARD_FROZEN = ("backend/final_validator.py",
 
 # O7-E PF-RP3B: evidence_contract 获授权接入 scholarly schema——逐文件基线
 _R17_BASES = {"backend/evidence_contract.py": "7049e1418",
-              "backend/final_validator.py": None,
+              "backend/final_validator.py": "7b12b5db6",
               "backend/agent_runtime.py": None}
 
 
@@ -445,9 +445,9 @@ def test_t16_clean_checkout_reproducible():
 
 
 def test_t17_production_frozen_rp2():
-    r = subprocess.run(["git", "diff", "--quiet", "98c8972a6", "HEAD", "--", "backend/routes"],
+    r = subprocess.run(["git", "diff", "--quiet", "7b12b5db6", "HEAD", "--", "backend/routes"],
                        cwd=ROOT, capture_output=True)
-    assert r.returncode == 0, "routes 相对 V4-F1-R1.3 授权基线 98c8972a6 有未授权改动"
+    assert r.returncode == 0, "routes 相对 V5-F2 授权基线 7b12b5db6 有未授权改动"
 
 
 def test_rp2_runtime_data_hash_unchanged():

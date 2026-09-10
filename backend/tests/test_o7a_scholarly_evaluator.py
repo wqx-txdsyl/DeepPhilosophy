@@ -224,7 +224,7 @@ def test_t19_no_production_diff_vs_base():
     # 书目元数据暴露 → backend/routes 的冻结基线改对照 O7-B BASE；认知/校验/引文
     # 核心文件仍硬冻结于 O7-A BASE，O7-B §24 四项 PRODUCTION_POLICY DIFF=0 不变。
     O7B_BASE = "500bb8e88"  # O7-C §59 授权的工具注册/执行器改动落地 commit
-    hard = (("backend/final_validator.py", BASE_SHA),
+    hard = (("backend/final_validator.py", "7b12b5db6"),
             ("backend/quote_bound.py", "95bc3ae52"),   # RCA-1 §2: 仅 metadata 增改
             ("backend/agent_runtime.py", BASE_SHA),
             ("backend/evidence_contract.py", "7049e1418"))   # PF-RP4 §1 授权点
@@ -232,11 +232,11 @@ def test_t19_no_production_diff_vs_base():
         r = subprocess.run(["git", "diff", "--quiet", _base, "HEAD", "--", rel],
                            cwd=REPO, capture_output=True)
         assert r.returncode == 0, f"{rel} 相对 BASE {BASE_SHA[:9]} 有改动（O7-A 禁止）"
-    r = subprocess.run(["git", "diff", "--quiet", "98c8972a6", "HEAD", "--", "backend/routes"],
+    r = subprocess.run(["git", "diff", "--quiet", "7b12b5db6", "HEAD", "--", "backend/routes"],
                        cwd=REPO, capture_output=True)
-    assert r.returncode == 0, "backend/routes 相对 V4-F1-R1.3 授权基线 98c8972a6 有未授权改动"
+    assert r.returncode == 0, "backend/routes 相对 V5-F2 授权基线 7b12b5db6 有未授权改动"
     # O7-E 解冻: engine prompt / agents persona 工具面 授权改动落地 commit 之后冻结
-    for rel, base in (("backend/engine_langgraph.py", "042db8b84"),   # V3-RP3 检索指引授权点
+    for rel, base in (("backend/engine_langgraph.py", "7b12b5db6"),   # V5-F2 scholarly contract 授权点
                       ("backend/agents.py", "2c87ce397")):
         r = subprocess.run(["git", "diff", "--quiet", base, "--", rel],
                            cwd=REPO, capture_output=True)

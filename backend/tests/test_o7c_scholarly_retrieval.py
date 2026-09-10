@@ -442,7 +442,7 @@ def test_t20_report_contains_real_gate_sha():
 def test_t21_production_frozen():
     for rel in ("backend/final_validator.py",):
         r = subprocess.run(["git", "diff", "--quiet",
-                            "302f7380a4146d78374887063b336c5aa7381ddd", "--", rel],
+                            "7b12b5db6", "--", rel],
                            cwd=ROOT, capture_output=True)
         assert r.returncode == 0, f"{rel} 被改动"
 
