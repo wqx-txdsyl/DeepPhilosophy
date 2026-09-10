@@ -74,11 +74,11 @@ def _biblio_payload(bid):
 
 # ── 工具 1: search_books（书级过滤 + 章级关键词扫描）──
 def _match_score(text, terms):
-    """简单关键词评分: 命中数 + 位置权重"""
+    """简单关键词评分: 命中数 + 位置权重（大小写不敏感: 文本与词统一小写比较）"""
     score = 0
     low = text.lower()
     for t in terms:
-        c = low.count(t)
+        c = low.count(t.lower())
         score += c * 2 if c else 0
     return score
 
@@ -126,11 +126,11 @@ def _exec_search_books(args):
     terms = [t for t in re.split(r"[\s,，。；;：:、]+", query) if len(t) >= 2]
     if not terms:
         return {"error": "查询词过短"}
-    # 1) 书级过滤（书名/作者/简介命中）
+    # 1) 书级过滤（书名/作者/简介/tags 命中; tags 是 books.json 通用元数据字段）
     books = get_books()
     hits = []
     for b in books:
-        hay = f"{b.get('title','')} {b.get('author','')} {b.get('summary','')}"
+        hay = f"{b.get('title','')} {b.get('author','')} {b.get('summary','')} {' '.join(b.get('tags') or [])}"
         s = _match_score(hay, terms)
         if s > 0:
             hits.append((s, b))
@@ -142,7 +142,9 @@ def _exec_search_books(args):
         for i, title, text in _book_chapter_texts(b["id"]):
             if not text:
                 continue
-            cs = _match_score(text[:2000] + title, terms)
+            # 章内正文/标题零命中时继承书级得分: 书级元数据（含 tags）命中的书,
+            # 其章节仍可召回（否则原典为外文的书对 CN/Latin 别名查询永远不出结果）
+            cs = _match_score(text[:2000] + title, terms) or s
             if cs > 0:
                 best.append((s + cs, i, b, title, text))
         best.sort(key=lambda x: -x[0])
