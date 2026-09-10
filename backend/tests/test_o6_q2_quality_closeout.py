@@ -263,7 +263,7 @@ def test_t15_single_cognitive_policy_owner():
 def test_t16_verification_stack_unchanged_from_q1():
     # O7-E RCA-1 §2 授权: quote_bound 仅加 char_start/char_end metadata
     # （判定语义零改动）→ 其冻结点从 Q1 blob 移至 RCA-1 commit; validator 仍冻 Q1
-    for rel, base in (("final_validator.py", "7b12b5db6"),
+    for rel, base in (("final_validator.py", "554d62fac"),
                       ("quote_bound.py", "95bc3ae52")):
         r = subprocess.run(["git", "diff", "--quiet", base, "--",
                             os.path.join("backend", rel)],

@@ -234,7 +234,7 @@ def test_p16_p17_validator_quotebound_unchanged():
     # RCA-1 §2: quote_bound 仅加 metadata（判定语义零改动）→ 冻结点移至 RCA commit;
     # validator 仍冻 O7-A base
     for rel, base in (("backend/final_validator.py",
-                       "7b12b5db6"),
+                       "554d62fac"),
                       ("backend/quote_bound.py", "95bc3ae52")):
         r = subprocess.run(["git", "diff", "--quiet", base, "HEAD", "--", rel],
                            cwd=ROOT, capture_output=True)

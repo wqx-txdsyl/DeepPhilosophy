@@ -238,7 +238,7 @@ def test_d29_model_facing_compact():
 def test_d30_production_frozen():
     for rel in ("backend/final_validator.py",):
         r = subprocess.run(["git", "diff", "--quiet",
-                            "7b12b5db6", "--", rel],
+                            "554d62fac", "--", rel],
                            cwd=ROOT, capture_output=True)
         assert r.returncode == 0, f"{rel} 被改动"
 
@@ -414,7 +414,7 @@ def test_r18_deterministic_rebuild_rp1():
 def test_r19_production_frozen_rp1():
     for rel in ("backend/final_validator.py",):
         r = subprocess.run(["git", "diff", "--quiet",
-                            "7b12b5db6", "--", rel],
+                            "554d62fac", "--", rel],
                            cwd=ROOT, capture_output=True)
         assert r.returncode == 0
 

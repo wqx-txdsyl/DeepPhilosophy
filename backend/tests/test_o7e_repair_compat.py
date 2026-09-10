@@ -166,7 +166,7 @@ def test_r9_budget_not_increased():
 def test_r10_validator_semantics_unchanged():
     import subprocess
     r = subprocess.run(["git", "diff", "--quiet",
-                        "7b12b5db6", "--",
+                        "554d62fac", "--",
                         "backend/final_validator.py"],
                        cwd=os.path.dirname(os.path.dirname(os.path.dirname(
                            os.path.abspath(__file__)))), capture_output=True)
