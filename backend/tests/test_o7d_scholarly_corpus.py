@@ -214,13 +214,14 @@ def test_d24_tool_authorory_unchanged():
 
 
 def test_d25_d26_primary_and_o7b_unchanged():
-    r = subprocess.run(["git", "diff", "--quiet", "e71f4a696", "HEAD", "--",
+    # V4-F1-R1.3 §2 授权 generic lexical 修复落地后的新冻结点
+    r = subprocess.run(["git", "diff", "--quiet", "98c8972a6", "HEAD", "--",
                         "backend/routes/agent_tools_retrieval.py"],
                        cwd=ROOT, capture_output=True)
     assert r.returncode == 0
     h = hashlib.sha256(open(os.path.join(BACKEND, "data", "book_bibliography.json"),
                             "rb").read()).hexdigest()
-    assert h == "3ee9648453bd2e25e72c36abea3aa062d29774fd717897c1ed27832b300bffe4"
+    assert h == "63a4ed1bdb4a7211428a11b42eee8ed1cec657fbf750e565ed1ba0b207e9328e"
 
 
 def test_d28_general_persona_corpus_same():

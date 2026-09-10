@@ -192,7 +192,8 @@ def test_c28_cache_mechanical(monkeypatch, tmp_path):
 
 
 def test_c29_primary_retrieval_unchanged():
-    r = subprocess.run(["git", "diff", "--quiet", "e71f4a696", "HEAD", "--",
+    # V4-F1-R1.3 §2 授权 generic lexical 修复落地后的新冻结点
+    r = subprocess.run(["git", "diff", "--quiet", "98c8972a6", "HEAD", "--",
                         "backend/routes/agent_tools_retrieval.py"],
                        cwd=ROOT, capture_output=True)
     assert r.returncode == 0

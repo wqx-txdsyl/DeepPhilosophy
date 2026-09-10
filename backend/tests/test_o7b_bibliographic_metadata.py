@@ -21,7 +21,7 @@ MANIFEST_PATH = os.path.join(ROOT, "docs", "evidence",
                              "PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json")
 AUDIT_PATH = os.path.join(ROOT, "docs", "evidence",
                           "PHIAGENT_O7B_SEMANTIC_FIELD_AUDIT.json")
-RP1_CODE_SHA = "042db8b84"  # routes 冻结基线（PF-RP4A §B scholarly 工具描述授权点）
+RP1_CODE_SHA = "98c8972a6"  # routes 冻结基线（O7-E V4-F1-R1.3 search_books lexical 授权改动落地点）
 O7A_BASE = "302f7380a4146d78374887063b336c5aa7381ddd"
 
 import dp_biblio_build as B
@@ -445,12 +445,12 @@ def test_t16_clean_checkout_reproducible():
 
 
 def test_t17_production_frozen_rp2():
-    r = subprocess.run(["git", "diff", "--quiet", "042db8b84", "HEAD", "--", "backend/routes"],
+    r = subprocess.run(["git", "diff", "--quiet", "98c8972a6", "HEAD", "--", "backend/routes"],
                        cwd=ROOT, capture_output=True)
-    assert r.returncode == 0, "routes 相对 PF-RP4A §B 授权基线 042db8b84 有未授权改动"
+    assert r.returncode == 0, "routes 相对 V4-F1-R1.3 授权基线 98c8972a6 有未授权改动"
 
 
 def test_rp2_runtime_data_hash_unchanged():
     h = hashlib.sha256(open(BIBLIO_PATH, "rb").read()).hexdigest()
-    assert h == "3ee9648453bd2e25e72c36abea3aa062d29774fd717897c1ed27832b300bffe4", \
-        "RP2 未发现真实数据错误 → 运行时数据 hash 必须与 RP1 冻结值一致"
+    assert h == "63a4ed1bdb4a7211428a11b42eee8ed1cec657fbf750e565ed1ba0b207e9328e", \
+        "运行时数据 hash 必须与 V4-F1-R1.3 books.json tags 变更后的重建值一致"
