@@ -100,7 +100,9 @@ def main():
         if key not in have:
             cur["decisions"].append({"cluster_id": CLUSTER,
                                      "source_record_id": r["source_record_id"],
-                                     "TOPICAL_RELEVANCE": 4, "judge": "glm-4.6"})
+                                     "TOPICAL_RELEVANCE": 4,
+                                     "judge": "MANUAL_CURATED_RECOVERY",
+                                     "method_note": "V3-RP3 recovery: 由 recovery 脚本按标题相关性人工策展, 非 glm judge run"})
     json.dump(cur, open(CUR, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 
     # 5) registry/evidence 确定性重建 + FTS 重建
