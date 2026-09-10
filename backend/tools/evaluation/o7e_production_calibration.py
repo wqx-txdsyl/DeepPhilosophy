@@ -221,9 +221,15 @@ def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None):
            "SCHOLARLY_RECORD_COUNT": sum(
                len((r.get("scholarly_provenance") or {}).get("SCHOLARLY_RECORD_IDS")
                    or []) for r in ok),
-           "SCHOLARLY_EVIDENCE_COUNT": sum(
+           # PF-RP4B §metric: 模糊的 SCHOLARLY_EVIDENCE_COUNT 废弃, 拆为:
+           "SCHOLARLY_FETCH_RESULT_COUNT": sum(
                len((r.get("scholarly_provenance") or {}).get("SCHOLARLY_EVIDENCE_RECORD_IDS")
                    or []) for r in ok),
+           "SCHOLARLY_CONTENT_EVIDENCE_COUNT": sum(
+               1 for r in ok
+               for e in ((r.get("scholarly_provenance") or {})
+                         .get("scholarly_evidence") or [])
+               if e.get("content_evidence")),
            }
     json.dump(out, open(out_path.replace(".json", "_summary.json"), "w",
                         encoding="utf-8"), ensure_ascii=False, indent=1)
