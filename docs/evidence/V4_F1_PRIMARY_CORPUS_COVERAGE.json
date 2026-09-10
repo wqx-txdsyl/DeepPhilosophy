@@ -1,7 +1,13 @@
 {
  "V4_F1_PRIMARY_CORPUS_COVERAGE": true,
- "BASE_SHA": "0d900856b",
- "HEAD_SHA": "d35a2e8a67759c69abfecd2c61d44cb885040620",
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V4_F1_R1_3_TASK.md",
+ "BASE_SHA": "53bcbf72d21af3d5104325fe4725aca2ee00cd95",
+ "CONTENT_HEAD": "ec01f517dfa7a6bbe8215083426acbe4f28514d1",
+ "CONTENT_COMMIT_CHAIN": [
+  "98c8972a6dcb70bf2f3ea31414e59ddc5e033864 (fix: R1.3 §1/§2 lexical 修复 + 别名 + 新 primary 回归 + rp3 curation 删除)",
+  "ec01f517dfa7a6bbe8215083426acbe4f28514d1 (test: §2 冻结基线前移至授权点 98c8972a6)"
+ ],
+ "ARCHIVE_PARENT": "ec01f517dfa7a6bbe8215083426acbe4f28514d1",
  "SOURCE_PROVENANCE": {
   "text_source": "Project Gutenberg eBook #17611 (Part I) / #17897 (Part I-II)",
   "translation": "Fathers of the English Dominican Province (Benziger Brothers, 1911-1936)",
@@ -12,30 +18,87 @@
  "RIGHTS_STATUS": "PUBLIC_DOMAIN",
  "AQUINAS_Q48_49_AVAILABLE": true,
  "AQUINAS_Q90_97_AVAILABLE": true,
+ "EN_PRIMARY_RETRIEVAL": "PASS",
+ "CN_PRIMARY_RETRIEVAL": "PASS",
+ "LATIN_PRIMARY_RETRIEVAL": "PASS",
+ "PRIMARY_READ_Q48": "PASS",
+ "PRIMARY_READ_Q49": "PASS",
+ "PRIMARY_READ_Q93": "PASS",
+ "PRIMARY_READ_Q94": "PASS",
+ "PRIMARY_READ_Q95": "PASS",
+ "PRIMARY_BODY_METADATA_CONTAMINATION": false,
  "NORMAL_RETRIEVAL_PATH": true,
  "SPECIAL_CASE_ROUTING": false,
  "V4_CASE_IDS_IN_PRODUCTION_PROMPT": 0,
- "V4_ARTIFACT_DRIFT": false,
+ "V4_HOLDOUT_DRIFT": false,
+ "V4_RUN_ARTIFACT_DRIFT": false,
+ "V4_JUDGE_ARTIFACT_DRIFT": false,
  "JUDGE_CHANGED": false,
  "THRESHOLDS_CHANGED": false,
- "GATE_DECISION_PARITY": true,
- "registry": {
-  "records_total": 316,
-  "accepted": 282,
-  "discovery_only": 34,
-  "wang_yangming_cluster_records": 3,
-  "alias_enriched_zhu_xi_records": 4
+ "FINAL_GATE_CHANGED": false,
+ "SCHOLARLY_INDEX_TRACKED": false,
+ "PRODUCTION_MODEL_UNCHANGED": true,
+ "FROZEN_COMPONENT_DIFF": 0,
+ "FROZEN_COMPONENTS_VERIFIED_UNCHANGED": [
+  "docs/evidence/V4_FRESH_HOLDOUT_MANIFEST.json (blob SHA 5351c8b0b2dbb175c3742ace89beafbd1da437ce, R1.2 审计确认的冻结版本, 本轮零触碰)",
+  "backend/tools/evaluation/o7e_final_gate.py",
+  "backend/tools/evaluation/o7e_bakeoff_judge2.py",
+  "backend/engine_langgraph.py",
+  "backend/final_validator.py",
+  "backend/quote_bound.py",
+  "backend/repair_context.py",
+  "backend/agents.py"
+ ],
+ "RETRIEVAL_PROBES_PRODUCTION_PATH": {
+  "method": "TOOLS['search_books']['execute'] 正常 production 入口, _embed_query→None 走 production lexical fallback（任务书允许）, 零 mock（检索结果/排序/book_id/章节全部真实）",
+  "queries": [
+   {"lang": "EN", "query": "Thomas Aquinas Summa Theologiae", "aquinas_book_in_results": true, "rank": 1},
+   {"lang": "EN", "query": "natural law Aquinas", "aquinas_book_in_results": true, "rank": 1},
+   {"lang": "CN", "query": "阿奎那 神学大全 自然法", "aquinas_book_in_results": true, "rank": 7},
+   {"lang": "CN", "query": "阿奎那 恶是善的缺乏", "aquinas_book_in_results": true, "rank": 10},
+   {"lang": "Latin", "query": "Summa Theologiae lex naturalis", "aquinas_book_in_results": true, "rank": 1},
+   {"lang": "Latin", "query": "lex aeterna", "aquinas_book_in_results": true, "rank": 1},
+   {"lang": "Latin", "query": "lex humana", "aquinas_book_in_results": true, "rank": 1},
+   {"lang": "Latin", "query": "privatio boni", "aquinas_book_in_results": true, "rank": 1}
+  ],
+  "target_book_id": "590ee1d9a55a",
+  "regression_test": "backend/tests/test_o7e_v4_f1_r2.py (5 tests: EN/CN/Latin 命中 + search→read q48/q49/q93/q94/q95 + q48 正文纯净)"
  },
- "frozen_components_diff": 0,
- "retrieval_regression": {
-  "queries_tested": 4,
-  "EN_queries_find_aquinas_selections": "2/2 YES (top-1)",
-  "CN_queries_find_aquinas_selections": "0/2 (语义嵌入跨语言限制, 如实标注)",
-  "read_chapter_verification": "q.94 自然法 title+6000 chars text OK"
+ "GENERIC_LEXICAL_FIXES": [
+  "书级 hay 通用接入 tags: b.get(\"tags\") or []（books.json 通用元数据字段, 无任何 Aquinas/V4-03 特判）",
+  "章内正文/标题零命中时继承书级得分 cs = _match_score(text[:2000]+title, terms) or s（原典为外文的书否则对 CN/Latin 别名查询永远不出章节结果）",
+  "_match_score 大小写不敏感（原实现文本 lower 但查询词不 lower, 大写词永远零命中——顺带修复的真实生产 bug）"
+ ],
+ "DERIVED_DATA_AND_FREEZE_BASELINES": {
+  "book_bibliography_json": "dp_biblio_build 重生成（books.json universe hash 联动）; 新冻结 hash 63a4ed1bdb4a7211428a11b42eee8ed1cec657fbf750e565ed1ba0b207e9328e; 顺带修复 77dbd89be 加 tags 未同步重生成的既有红 (r13/r14/t16)",
+  "freeze_baseline_moves": [
+   {"file": "backend/tests/test_o7b_bibliographic_metadata.py", "what": "RP1_CODE_SHA + test_t17 routes 基线", "from": "042db8b84", "to": "98c8972a6", "authorization": "R1.3 任务书 §2 明示授权 search_books lexical 修复; bd8272f40 先例"},
+   {"file": "backend/tests/test_o7a_scholarly_evaluator.py", "what": "routes 冻结", "from": "042db8b84", "to": "98c8972a6", "authorization": "同上"},
+   {"file": "backend/tests/test_o7c_scholarly_retrieval.py", "what": "test_c29 agent_tools_retrieval.py 冻结", "from": "e71f4a696", "to": "98c8972a6", "authorization": "同上"},
+   {"file": "backend/tests/test_o7d_scholarly_corpus.py", "what": "test_d25_d26 routes 冻结 + biblio hash", "from": "e71f4a696 / 3ee96484…", "to": "98c8972a6 / 63a4ed1b…", "authorization": "同上"}
+  ],
+  "still_frozen_unchanged": "engine_langgraph/final_validator/quote_bound/agent_runtime/evidence_contract/agents/final-gate/judge/THRESHOLDS/V4 manifest"
+ },
+ "RP3_CURATION_SCRIPT_REMOVED": "backend/tools/evaluation/o7e_v3_rp3_registry_curation.py 已删除（RP3 已 CLOSED; R1.2 审计指出应删; 全库零引用确认后删除）",
+ "FULL_TEST_RESULT": {
+  "command": "cd backend && ../.venv/bin/python -m pytest tests/ -q",
+  "run_at": "ec01f517dfa7a6bbe8215083426acbe4f28514d1",
+  "collected": 826,
+  "passed": 826,
+  "failed": 0,
+  "skipped": 0
  },
  "changed_files_git_diff": [
-  "docs/tasks/PHIAGENT_O7E_V4_F1_TASK.md"
+  "app/public/books.json",
+  "backend/data/book_bibliography.json",
+  "backend/routes/agent_tools_retrieval.py",
+  "backend/tests/test_o7a_scholarly_evaluator.py",
+  "backend/tests/test_o7b_bibliographic_metadata.py",
+  "backend/tests/test_o7c_scholarly_retrieval.py",
+  "backend/tests/test_o7d_scholarly_corpus.py",
+  "backend/tests/test_o7e_v4_f1_r2.py",
+  "backend/tools/evaluation/o7e_v3_rp3_registry_curation.py",
+  "docs/tasks/PHIAGENT_O7E_V4_F1_R1_3_TASK.md"
  ],
- "PRODUCTION_MODEL_UNCHANGED": true,
- "FROZEN_COMPONENT_DIFF": 0
+ "changed_files_git_diff_note": "精确等于 git diff --name-only 53bcbf72d21af3d5104325fe4725aca2ee00cd95..ec01f517dfa7a6bbe8215083426acbe4f28514d1"
 }
