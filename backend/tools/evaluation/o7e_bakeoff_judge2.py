@@ -7,6 +7,7 @@ O7-E 只固定 invocation（glm-4.6/temp0/disabled/json/k3）与 manifest applic
 """
 import json
 import os
+import re
 import sys
 import time
 import urllib.request
@@ -37,21 +38,53 @@ def _call(prompt):
         return json.loads(r.read())["choices"][0]["message"]["content"] or ""
 
 
-def _materialize_read_chapters(r, max_chapters=6):
-    """PF-RP3A §B EVIDENCE REPLAY: 把 run facts.read_chapters 记录的当时已读章节
-    从本地书库机械物化（⊆ RUN_FACTS_READ_CHAPTERS; 零新增检索/零网络）。"""
+def _materialize_read_chapters(r, max_chapters=8):
+    """PF-RP3A §B EVIDENCE REPLAY + PF-RP4B §legacy: 把 run facts.read_chapters
+    记录的当时已读章节从本地书库机械物化（零新增检索/零网络/零 fuzzy）。
+
+    支持 key: canonical "book_id#idx"; legacy "书名#idx" 只允许用同一次 run
+    citations 中的 (book, chapter_idx)→(book_id, idx) 唯一精确别名解析
+    （RUN_EVIDENCE_EXACT_ALIAS）; 无法解析 → 记入 failed（调用方据此置
+    EVALUATION_INVALID, 不静默评分）。
+    返回 (texts, resolution)。"""
     facts = (r.get("evidence_digest") or {}).get("facts") or {}
     keys = facts.get("read_chapters") or []
-    out = {}
+    out, failed, resolution = {}, [], {}
+    # run 内 citations 建立精确别名: (书名, chapter_idx) → {(book_id, idx), ...}
+    alias = {}
+    for c in r.get("citations") or []:
+        if (isinstance(c, dict) and c.get("book")
+                and isinstance(c.get("chapter_idx"), int) and c.get("book_id")):
+            alias.setdefault((c["book"], c["chapter_idx"]),
+                             set()).add((c["book_id"], c["chapter_idx"]))
     for key in keys[:max_chapters]:
+        k = str(key)
+        resolved, mode = None, "UNRESOLVED"
         try:
-            book_id, idx = str(key).rsplit("#", 1)
+            if "#" in k:
+                left, idx_s = k.rsplit("#", 1)
+                idx = int(idx_s)
+                if _CH_ID_RE.fullmatch(left):
+                    resolved, mode = (left, idx), "CANONICAL_ID"
+                else:
+                    matches = alias.get((left, idx))
+                    if matches and len(matches) == 1:
+                        resolved, mode = next(iter(matches)), "RUN_EVIDENCE_EXACT_ALIAS"
+            elif k in alias and len(alias[k]) == 1:
+                resolved, mode = next(iter(alias[k])), "RUN_EVIDENCE_EXACT_ALIAS"
+        except Exception:
+            resolved = None
+        if resolved is None:
+            failed.append(key)
+            resolution[k] = "UNRESOLVED"
+            continue
+        book_id, idx = resolved
+        try:
             path = os.path.join(ROOT, "backend", "data", "book_chapters",
-                                book_id, f"{int(idx)}.json")
+                                book_id, f"{idx}.json")
             d = json.load(open(path, encoding="utf-8"))
             content = d.get("content") or ""
             if isinstance(content, list):
-                # 分章标准: content 为块列表（str 或 {text/content} 块）
                 parts = []
                 for b in content:
                     if isinstance(b, str):
@@ -60,10 +93,28 @@ def _materialize_read_chapters(r, max_chapters=6):
                         parts.append(str(b.get("value") or b.get("text")
                                          or b.get("content") or ""))
                 content = "\n".join(x for x in parts if x)
-            out[key] = content
+            out[k] = content
+            resolution[k] = mode
         except Exception:
-            continue
-    return out
+            failed.append(key)
+            resolution[k] = "UNRESOLVED"
+    return out, {"resolution": resolution, "failed": failed}
+
+
+_CH_ID_RE = re.compile(r"[0-9a-f]{8,}")
+
+
+def _materialize_with_meta(r, max_chapters=8):
+    texts, resolution = _materialize_read_chapters(r, max_chapters)
+    meta = {"read_chapters_recorded": len((r.get("evidence_digest") or {})
+                                          .get("facts", {}).get("read_chapters") or []),
+            "read_chapters_materialized": len(texts),
+            "read_chapters_materialize_failed": len(resolution["failed"]),
+            "materialize_failed_keys": resolution["failed"],
+            "resolution_modes": resolution["resolution"],
+            "legacy_resolved": sum(1 for m in resolution["resolution"].values()
+                                   if m == "RUN_EVIDENCE_EXACT_ALIAS")}
+    return texts, meta
 
 
 def _source_window(text, claim, max_window=500):
@@ -185,8 +236,8 @@ def _replay_windows(r, max_windows=24, max_window_chars=500):
     ev = r.get("evidence_digest") or {}
     facts = ev.get("facts") or {}
     recorded = facts.get("read_chapters") or []
-    texts = _materialize_read_chapters(r)
-    failed = [k for k in recorded if k not in texts]
+    texts, mat_meta = _materialize_read_chapters(r)
+    failed = mat_meta["failed"]
     ans = r.get("answer", "")
     candidates = [q.get("text") or "" for q in QB.extract_quotes(ans)]
     # PF-RP4A §A: textual claim 不一定带外层引号（H13 实况——整句转述+内部
@@ -236,6 +287,9 @@ def _replay_windows(r, max_windows=24, max_window_chars=500):
             "read_chapters_materialized": len(texts),
             "read_chapters_materialize_failed": len(failed),
             "materialize_failed_keys": failed,
+            "resolution_modes": mat_meta["resolution"],
+            "legacy_resolved": sum(1 for m in mat_meta["resolution"].values()
+                                   if m == "RUN_EVIDENCE_EXACT_ALIAS"),
             "primary_replay_candidates": len(candidates),
             "primary_replay_matched": matched,
             "primary_replay_windows": len(windows),
@@ -414,7 +468,10 @@ def judge_candidate(mid, runs_path=None, out_tag=None):
         if j.get("error"):
             missing_required.append({"case_id": j["case_id"],
                                      "dimension": "ALL_JUDGE_VOTES_INVALID"})
-    evaluation_invalid = bool(missing_required) or missing > 0
+    # PF-RP4B: 已读章节无法机械 replay → 不允许静默评分
+    mat_failed_total = sum(len(j.get("replay_meta", {}).get("materialize_failed_keys") or [])
+                           for j in judged if j.get("replay_meta"))
+    evaluation_invalid = bool(missing_required) or missing > 0 or mat_failed_total > 0
     out = {"candidate": mid, "judged": len(valid),
            "JUDGE_CASES_EXPECTED": expected,
            "JUDGE_CASES_VALID": len(valid),

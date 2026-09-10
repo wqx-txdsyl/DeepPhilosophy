@@ -21,7 +21,7 @@ MANIFEST_PATH = os.path.join(ROOT, "docs", "evidence",
                              "PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json")
 AUDIT_PATH = os.path.join(ROOT, "docs", "evidence",
                           "PHIAGENT_O7B_SEMANTIC_FIELD_AUDIT.json")
-RP1_CODE_SHA = "500bb8e88"  # routes 冻结基线（O7-C §59 授权改动落地 commit）
+RP1_CODE_SHA = "76c453190"  # routes 冻结基线（PF-RP4A §B scholarly 工具描述授权点）
 O7A_BASE = "302f7380a4146d78374887063b336c5aa7381ddd"
 
 import dp_biblio_build as B
@@ -445,9 +445,9 @@ def test_t16_clean_checkout_reproducible():
 
 
 def test_t17_production_frozen_rp2():
-    r = subprocess.run(["git", "diff", "--quiet", "500bb8e88", "HEAD", "--", "backend/routes"],
+    r = subprocess.run(["git", "diff", "--quiet", "76c453190", "HEAD", "--", "backend/routes"],
                        cwd=ROOT, capture_output=True)
-    assert r.returncode == 0, "routes 相对 O7-C 授权基线 500bb8e88 有未授权改动"
+    assert r.returncode == 0, "routes 相对 PF-RP4A §B 授权基线 76c453190 有未授权改动"
 
 
 def test_rp2_runtime_data_hash_unchanged():
