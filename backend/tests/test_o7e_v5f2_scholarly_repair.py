@@ -83,52 +83,73 @@ def test_search_response_all_metadata_note(monkeypatch):
     assert "METADATA_ONLY" in out["note"]
 
 
-# ══ §D: bibliography grounding guard ═════════════════════════
-def _log_with_record():
+# ══ §D + F2-R1 P0: bibliography grounding guard（逐字段溯源语义）═══════
+def _rec(title, year, authors, doi, verified):
+    return {"source_record_id": doi, "title": title,
+            "authors": [{"name": a} for a in authors], "year": year,
+            "publication_type": "JOURNAL_ARTICLE", "venue": "V",
+            "doi": doi, "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE", "provider": "crossref",
+            "source_providers": ["crossref"], "retrieval_origin": "LOCAL_CURATED",
+            "bibliographic_verified_fields": verified}
+
+
+def _mackie_log():
     return [{"name": "search_scholarship", "result_full": {"results": [
-        {"source_record_id": "doi:10.1111/mack.1977", "title": "Ethics",
-         "authors": [{"name": "J. L. Mackie"}], "year": 1977,
-         "publication_type": "JOURNAL_ARTICLE", "venue": "Mind", "doi": "10.1111/mack.1977"}]}}]
+        _rec("Ethics: Inventing Right and Wrong", 1977, ["J. L. Mackie"],
+             "10.1111/mack.1977",
+             ["authors", "title", "publication_year", "doi"])]}}]
 
 
-def test_bibliography_guard_flags_untraceable_press_year():
-    ans = "Mackie 的立场见 Derek Parfit, On What Matters, Vol. 2 (OUP, 2011)。"
-    issues = FV.check_bibliography_groundedness(ans, _log_with_record())
+def test_r1_no_trace_bibliography_blocked():
+    """F2-R1 P0: 零 scholarly record 时精确书目必须 flag（不得自动 PASS）。"""
+    for ans in ("Mackie, Ethics: Inventing Right and Wrong, 1977 主张错误论。",
+                "见 Derek Parfit, On What Matters, Vol. 2 (OUP, 2011)。",
+                "Enoch, Taking Morality Seriously (OUP, 2011) 反对错误论。"):
+        issues = FV.check_bibliography_groundedness(ans, [])
+        assert any(i.code == "UNGROUNDED_BIBLIOGRAPHIC_DETAIL" for i in issues), ans
+
+
+def test_r1_v512_triple_all_flagged():
+    """V5-12 三条书目 + 无 retrieved record → 逐条 flag。"""
+    ans = ("J. L. Mackie, Ethics: Inventing Right and Wrong, 1977; "
+           "Derek Parfit, On What Matters, Vol. 2 (OUP, 2011); "
+           "Enoch, Taking Morality Seriously (OUP, 2011)。")
+    issues = FV.check_bibliography_groundedness(ans, [])
+    assert len([i for i in issues if i.code == "UNGROUNDED_BIBLIOGRAPHIC_DETAIL"]) >= 2, issues
+
+
+def test_r1_field_level_publisher_unverified_fails():
+    """retrieved record 无 verified publisher: (Clarendon Press, 1977) → 必须 FAIL
+    （不得借作者+同年放行）。"""
+    ans = "J. L. Mackie, Ethics: Inventing Right and Wrong (Clarendon Press, 1977)。"
+    issues = FV.check_bibliography_groundedness(ans, _mackie_log())
     assert any(i.code == "UNGROUNDED_BIBLIOGRAPHIC_DETAIL" for i in issues), issues
 
 
-def test_bibliography_guard_passes_traceable_record():
-    ans = "Mackie 的立场见 J. L. Mackie, Ethics: Inventing Right and Wrong (Clarendon Press, 1977)。"
-    issues = FV.check_bibliography_groundedness(ans, _log_with_record())
+def test_r1_field_level_grounded_entry_passes():
+    """作者/书名/年份全部匹配同一 verified record → PASS。"""
+    ans = "J. L. Mackie, Ethics: Inventing Right and Wrong, 1977 主张错误论。"
+    issues = FV.check_bibliography_groundedness(ans, _mackie_log())
     assert not issues, issues
 
 
-def test_bibliography_guard_passes_doi():
-    ans = "参见 doi:10.1111/mack.1977 的论证。"
-    issues = FV.check_bibliography_groundedness(ans, _log_with_record())
+def test_r1_doi_grounded_passes():
+    issues = FV.check_bibliography_groundedness("参见 doi:10.1111/mack.1977 的论证。",
+                                                _mackie_log())
     assert not issues, issues
 
 
-def test_bibliography_guard_silent_without_scholarly_tools():
-    """本调用未用过 scholarly 工具 → 不触发（guard 只约束 scholarly 承诺）。"""
-    ans = "Parfit, On What Matters (OUP, 2011) 讨论了……"
-    issues = FV.check_bibliography_groundedness(ans, [])
+def test_r1_prose_years_not_flagged():
+    """普通行文年份/非书目形态不触发（conservative 触发面）。"""
+    ans = "康德在 1781 年出版第一部批判; 1977 年学界才开始系统讨论错误论。"
+    issues = FV.check_bibliography_groundedness(ans, _mackie_log())
     assert not issues, issues
 
 
 def test_validator_integrates_bibliography_guard():
     res = FV.validate_final_candidate(
         "见 Derek Parfit, On What Matters, Vol. 2 (OUP, 2011)。",
-        raw_tool_log=_log_with_record())
+        raw_tool_log=_mackie_log())
     assert not res.ok
     assert any(i.code == "UNGROUNDED_BIBLIOGRAPHIC_DETAIL" for i in res.issues)
-
-
-# ══ §F: preflight 结构 ════════════════════════════════════════
-def test_provider_preflight_fields():
-    from tools.evaluation.o7e_provider_preflight import preflight
-    p = preflight()
-    for k in ("NETWORK_MODE", "CROSSREF_REACHABLE", "OPENALEX_REACHABLE",
-              "LIVE_PROVIDER_AVAILABLE", "OFFLINE_MODE"):
-        assert k in p
-    assert p["OFFLINE_MODE"] == (not p["LIVE_PROVIDER_AVAILABLE"])

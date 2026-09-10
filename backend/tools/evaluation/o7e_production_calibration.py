@@ -84,6 +84,44 @@ def run_case_production(case, mk_normal, mk_repair):
                                            "tool_call_id": e.get("tool_call_id"),
                                            "args": e.get("args"),
                                            "result": (e.get("result") or "")[:300]})
+    # V5-F2-R1 P1: per-call scholarly trace——SSE result 只有 300 字符截断,
+    # 用确定性重放补全 search→records 映射（run 刚写入 cache, 命中即精确复现）;
+    # READ 调用与 case 级 scholarly_evidence 对账（access 前后态/证据级别/hash）。
+    # bounded、无 CoT、不依赖 cache 存活（结构化字段直接进 run artifact）。
+    try:
+        import scholarly_sources as _SS
+    except Exception:
+        _SS = None
+    for c in scholarly_calls_detail:
+        if _SS is None:
+            break
+        if c["tool"] == "search_scholarship" and isinstance(c.get("args"), dict):
+            try:
+                _a = {k: v for k, v in c["args"].items()
+                      if k in ("query", "philosopher", "work", "year_from", "year_to", "limit")}
+                _r = _SS.search_scholarship(**_a) if _a.get("query") else None
+                if _r:
+                    c["returned_source_record_ids"] = [
+                        x.get("source_record_id") for x in _r.get("results") or []]
+                    c["access_levels"] = {x.get("source_record_id"): x.get("access_level")
+                                          for x in _r.get("results") or []}
+                    c["retrieval_origins"] = [x.get("retrieval_origin")
+                                              for x in _r.get("results") or []]
+                    c["provider_errors"] = _r.get("errors") or []
+                    c["offline_mode"] = bool(_r.get("offline_mode"))
+            except Exception:
+                pass
+        elif c["tool"] == "get_scholarly_source":
+            _sid = (c.get("args") or {}).get("source_record_id")
+            _ev = next((e for e in (done.get("scholarly_sources") or {})
+                        .get("scholarly_evidence") or []
+                        if e.get("source_record_id") == _sid), None)
+            if _ev:
+                c.update({"source_record_id": _sid,
+                          "access_before": _ev.get("access_level_before"),
+                          "access_after": _ev.get("access_level_after"),
+                          "returned_evidence_level": _ev.get("returned_evidence_level"),
+                          "content_hash": _ev.get("content_hash")})
     answer = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
     val = done.get("validation") or {}
     tel = case_result(case["case_id"], evs)

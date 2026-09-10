@@ -220,8 +220,8 @@ def check_quotes(answer, raw_tool_log):
 
 
 # ═══════════════════════════════════════════════════════
-# 2b. 书目 grounding guard（V5-F2 §D, 确定性; V5-12 FABRICATED_BIBLIOGRAPHY 教训:
-#     精确书目细节——DOI/出版社-年份——可凭记忆进入终稿且机械层零拦截）
+# 2b. 书目 grounding guard（V5-F2-R1 逐字段语义; V5-12 FABRICATED_BIBLIOGRAPHY 教训:
+#     精确书目细节——DOI/出版社-年份/作者-书名-年份——可凭记忆进入终稿且机械层零拦截）
 # ═══════════════════════════════════════════════════════
 import re as _re
 
@@ -231,11 +231,25 @@ _PRESS_YEAR_RE = _re.compile(
     r"Harvard University Press|Princeton University Press|Routledge|Blackwell|"
     r"Hackett|Brill|Springer|Clarendon Press|McGill-Queen[\w'’ ]*?Press|"
     r"牛津大学出版社|剑桥大学出版社|商务印书馆)\s*[,，]\s*((?:19|20)\d{2}))\s*[）)]")
+# 显式书目条目形态: 作者序列, 书名(大写开头), 年份（V5-12: "J. L. Mackie, Ethics: ..., 1977"）
+_AUTHOR_TITLE_YEAR_RE = _re.compile(
+    r"\b([A-Z][\w.'’-]*(?:\s+[A-Z][\w.'’-]*){0,3}),\s+"
+    r"([A-Z][A-Za-z\u00c0-\u024f'’:\s-]{9,90}?),\s+"
+    r"((?:19|20)\d{2})\b")
+
 _WORD_RE = _re.compile(r"[A-Za-z\u00c0-\u024f]{3,}")
+# 断言字段 → scholarly record 的 verified-field 键名（V5-F2-R1: 逐字段验证;
+# record/bibliographic_verified_fields 里不存在的字段（publisher/volume/pages
+# 当前 provider 不验证）永远无法 grounding——宁缺毋滥）
+_FIELD_KEY = {"publisher": "publisher", "volume": "volume", "pages": "pages",
+              "doi": "doi", "publication_year": "publication_year",
+              "authors": "authors", "title": "title"}
+_TITLE_WORD_MIN = 4
 
 
 def _scholarly_trace_pool(raw_tool_log):
-    """本次调用的 scholarly 记录书目字段（search 结果 + READ 的 bibliographic_record）。"""
+    """本次调用的 scholarly 记录书目字段（search 结果 + READ 的 bibliographic_record,
+    model_view 形态）; 逐字段 grounding 依据 = bibliographic_verified_fields。"""
     pool = []
     for tc in (raw_tool_log or []):
         if (tc.get("name") or "") not in ("search_scholarship", "get_scholarly_source"):
@@ -250,44 +264,82 @@ def _scholarly_trace_pool(raw_tool_log):
         for it in items:
             if not isinstance(it, dict):
                 continue
-            doi = it.get("doi") or (it.get("identifiers") or {}).get("doi") or ""
-            year = it.get("year") or it.get("publication_year") or ""
+            doi = str(it.get("doi") or (it.get("identifiers") or {}).get("doi") or "").lower().rstrip(".")
+            year = str(it.get("year") or it.get("publication_year") or "")
             auths = " ".join(
                 (a if isinstance(a, str) else str(a.get("name") or ""))
                 for a in (it.get("authors") or []))
-            pool.append({"doi": str(doi).lower().rstrip("."),
-                         "year": str(year),
-                         "authors": auths.lower()})
+            pool.append({"doi": doi, "year": year, "authors": auths.lower(),
+                         "title": str(it.get("title") or "").lower(),
+                         "publisher": str(it.get("publisher") or "").lower(),
+                         "verified": set(it.get("bibliographic_verified_fields") or [])})
     return pool
 
 
+def _span_fields(kind, m):
+    """每种显式书目形态断言的精确字段及取值。"""
+    if kind == "doi":
+        return {"doi": m.group(0).lower().rstrip(".")}
+    if kind == "press":
+        return {"publisher": m.group(1).split()[0].lower(),
+                "publication_year": m.group(2)}
+    return {"authors": m.group(1), "title": m.group(2),
+            "publication_year": m.group(3)}
+
+
+def _field_ok(field, value, rec):
+    """单字段: 值匹配同一 record 且该字段在 record 的 verified_fields 中。"""
+    key = _FIELD_KEY[field]
+    if key not in rec["verified"]:
+        return False
+    if field == "doi":
+        return bool(value) and (value in rec["doi"] or rec["doi"] in value)
+    if field == "publication_year":
+        return rec["year"] == str(value)
+    if field == "authors":
+        surnames = [w.lower().strip(".,") for w in _WORD_RE.findall(value)]
+        return bool(surnames) and any(s in rec["authors"] for s in surnames)
+    if field == "title":
+        words = [w.lower() for w in _re.findall(r"[A-Za-z\u00c0-\u024f]{%d,}" % _TITLE_WORD_MIN, value)]
+        if not words:
+            return False
+        hit = sum(1 for w in words if w in rec["title"])
+        return hit / len(words) >= 0.6 or rec["title"].strip("[]") in value.lower()
+    if field == "publisher":
+        return bool(value) and value in rec["publisher"]
+    return False  # volume/pages 等暂不可验证 → 一律 flag（宁缺毋滥）
+
+
 def check_bibliography_groundedness(answer, raw_tool_log):
-    """终稿中的精确书目元数据必须能溯源到本次 scholarly 检索记录的书目字段。
-    触发面刻意收窄为两类"精确承诺": DOI 字符串、学术出版社+年份括注
-    （bare 年份/普通引用不算——避免对正常行文误报）。"""
+    """终稿中的精确书目元数据必须逐字段溯源到同一条本次检索所得 scholarly record,
+    且各字段都在该 record 的 bibliographic_verified_fields 中。
+
+    显式书目形态（conservative 触发面）: DOI 字符串 / 学术出版社+年份括注 /
+    「作者, 书名, 年份」条目。普通行文年份、无出版社/书名的泛引用不触发。
+    V5-F2-R1: 无 scholarly record 时不再自动 PASS——零溯源可用恰是最 must-flag
+    的情形（V5-12: 记忆书目 + issue=0 直接发布）。"""
     issues = []
     ans = answer or ""
     pool = _scholarly_trace_pool(raw_tool_log)
-    if not pool:
-        return issues
-    spans = [(m.group(0), None) for m in _DOI_IN_TEXT_RE.finditer(ans)]
-    spans += [(m.group(0), m.group(2)) for m in _PRESS_YEAR_RE.finditer(ans)]
-    for locator, year in spans:
-        low = locator.lower()
-        grounded = any(p["doi"] and (p["doi"] in low or low in p["doi"]) for p in pool)
-        if not grounded and year:
-            pos = ans.find(locator)
-            ctx_words = {w.lower() for w in _WORD_RE.findall(ans[max(0, pos - 200):pos])}
-            grounded = any(
-                p["year"] == str(year)
-                and any(w in p["authors"] for w in ctx_words)
-                for p in pool)
+    spans = []
+    for kind, rx in (("doi", _DOI_IN_TEXT_RE), ("press", _PRESS_YEAR_RE),
+                     ("entry", _AUTHOR_TITLE_YEAR_RE)):
+        for m in rx.finditer(ans):
+            if any(m.start() < e[1] and m.end() > e[0] for e in spans):   # 位置重叠去重
+                continue
+            spans.append((m.start(), m.end(), kind, m))
+    for start, end, kind, m in spans:
+        fields = _span_fields(kind, m)
+        grounded = any(all(_field_ok(f, v, rec) for f, v in fields.items())
+                       for rec in pool)
         if not grounded:
+            where = "无任何 retrieved scholarly record 可供溯源" if not pool else \
+                    "没有任何单条 retrieved record 能同时验证所断言的全部书目字段"
             issues.append(ValidationIssue(
-                code=UNGROUNDED_BIBLIOGRAPHIC_DETAIL, locator=locator[:80],
-                detail=("精确书目元数据无法追溯到本次检索所得 scholarly record 的书目字段"
-                        "（DOI/出版社-年份）——不得凭记忆输出精确书目; 删除细节或改用已检索"
-                        "记录的可溯源信息")))
+                code=UNGROUNDED_BIBLIOGRAPHIC_DETAIL, locator=ans[start:end][:80],
+                detail=("精确书目元数据未通过逐字段溯源（" + where +
+                        "）——不得凭记忆输出精确书目; 删除该细节, 或先用 search_scholarship/"
+                        "get_scholarly_source 取得可溯源记录")))
     return issues
 
 
