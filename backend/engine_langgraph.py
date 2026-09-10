@@ -1397,6 +1397,39 @@ def _issue_fingerprint(code, locator, evidence_ref=None):
     ).hexdigest()[:16]
 
 
+def _scholarly_call_snapshot(name, result):
+    """V5-F2-R1.1 §2: scholarly 工具原调用即时 provenance 快照。
+
+    在真实返回时刻、result_full 剥离与 cache 访问晋升（_promote_access 会原地
+    修改 rec["access"]）之前调用——只拷贝不可变的安全标量字段（id/级别/来源
+    标注/hash）, 无 passage 正文、无 CoT。快照一经生成即与 cache 后续状态解耦
+    （MUTATION_IMMUNITY）。非 scholarly 工具或结果异常时返回 None。"""
+    if name not in ("search_scholarship", "get_scholarly_source") \
+            or not isinstance(result, dict):
+        return None
+    try:
+        if name == "search_scholarship":
+            items = [x for x in result.get("results") or [] if isinstance(x, dict)]
+            return {
+                "returned_source_record_ids": [x.get("source_record_id") for x in items],
+                "access_levels": {x.get("source_record_id"): x.get("access_level")
+                                  for x in items},
+                "retrieval_origins": [x.get("retrieval_origin") for x in items],
+                "provider_errors": [dict(e) if isinstance(e, dict) else str(e)
+                                    for e in result.get("errors") or []],
+                "offline_mode": bool(result.get("offline_mode")),
+            }
+        return {
+            "source_record_id": result.get("source_record_id"),
+            "access_before": result.get("access_level_before"),
+            "access_after": result.get("access_level_after"),
+            "returned_evidence_level": result.get("returned_evidence_level"),
+            "content_hash": result.get("content_hash"),
+        }
+    except Exception:
+        return None
+
+
 async def stream_agent(req_message, history, agent="general", custom_instructions=None, language="zh",
                        conversation_id=None, message_id=None,
                        _evaluation_repair_adapter=None):
@@ -1663,16 +1696,21 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # O3: 准入拒绝已不存在——reused 为唯一非执行路径（机械精确判重复用）。
                 _thought = ("EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）" if reused
                             else f"执行 {name}")
+                # V5-F2-R1.1 §2: scholarly 原调用即时快照——在 result_full 剥离与
+                # cache 访问晋升（_promote_access）发生前, 对不可变的 bounded 安全字段
+                # 生成 provenance snapshot（绑定 tool_call_id; 无正文无 CoT）。
+                _scholarly_trace = _scholarly_call_snapshot(name, result)
                 tool_log.append({"name": name, "args": args,
                                  "result_summary": str(result)[:200], "result_full": result,
-                                 "thought": _thought})
+                                 "thought": _thought, "scholarly_trace": _scholarly_trace})
                 # O1 provenance: 工具执行结果——决定（宣告）来自 Main Agent;
                 # 执行/复用属机械层, 不改变发起者归属。
                 yield {"type": "tool", "name": name, "args": args,
                        "result": str(result)[:300], "thought": _thought,
                        "initiated_by": "main_agent",
                        "decision_group_id": extra.get("_dg") or _dg(),
-                       "tool_call_id": getattr(chunk, "tool_call_id", None)}
+                       "tool_call_id": getattr(chunk, "tool_call_id", None),
+                       "scholarly_trace": _scholarly_trace}
                 # Thinking UI: 工具结果解读（ACTIVITY 注记, runtime_mechanical; 不确定时静默）。
                 try:
                     if reused:
