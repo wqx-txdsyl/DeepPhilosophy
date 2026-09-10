@@ -73,6 +73,14 @@ def run_case_production(case, mk_normal, mk_repair):
 
     done = next((e for e in reversed(evs) if e.get("type") == "done"), {})
     errors = [e for e in evs if e.get("type") == "error"]
+    # V4 §2: scholarly 调用明细归档（query/args 可恢复, 支持 RCA）
+    scholarly_calls_detail = []
+    for e in evs:
+        if e.get("type") == "tool_start" and e.get("name") in (
+                "search_scholarship", "get_scholarly_source"):
+            scholarly_calls_detail.append({"tool": e.get("name"),
+                                           "tool_call_id": e.get("tool_call_id"),
+                                           "args": e.get("args")})
     answer = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
     val = done.get("validation") or {}
     tel = case_result(case["case_id"], evs)
@@ -127,6 +135,7 @@ def run_case_production(case, mk_normal, mk_repair):
               "quote_bound": _as_list(done.get("quote_bound")),
               "evidence_digest": _ev_digest(done.get("evidence")) if done else None,
               "scholarly_provenance": scholarly_provenance,
+              "scholarly_calls_detail": scholarly_calls_detail,
               "STITCHED_PUBLIC_QUOTES": stitched_public,
               "REPAIR_CREATES_NEW_FATAL_ERROR": repair_new_fatal,
               "TOOL_LOOP_ABORTS": tool_loop_aborts,
@@ -157,7 +166,11 @@ def run_case_production(case, mk_normal, mk_repair):
 
 def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None,
          manifest_path=None):
-    manifest = json.load(open(manifest_path or MANIFEST, encoding="utf-8"))
+    manifest_raw = json.load(open(manifest_path or MANIFEST, encoding="utf-8"))
+    # V3_HOLDOUT_MANIFEST 为 {meta..., cases: [...]} 包装; 兼容裸列表
+    manifest = manifest_raw.get("cases") if isinstance(manifest_raw, dict) \
+        else manifest_raw
+    manifest = manifest or []
     cfg = CC.v4pro_config(dict(CC.RP_B, id="RP-B"),
                           requested_model=requested_model,
                           candidate_id=f"{requested_model}@RP-B")
@@ -260,7 +273,14 @@ def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None,
 
 
 if __name__ == "__main__":
-    _only = sys.argv[2].split(",") if len(sys.argv) > 2 else None
-    _man = sys.argv[3] if len(sys.argv) > 3 else None
-    main(sys.argv[1] if len(sys.argv) > 1 else "CAL1",
-         requested_model="deepseek-v4-flash", only=_only, manifest_path=_man)
+    # 用法: o7e_production_calibration.py RUN_TAG [case_ids 逗号分隔 | -] [manifest.json]
+    _tag = sys.argv[1] if len(sys.argv) > 1 else "CAL1"
+    _only = None
+    _man = None
+    for a in sys.argv[2:]:
+        if a.endswith(".json"):
+            _man = a
+        elif a not in ("-", ""):
+            _only = a.split(",")
+    main(_tag, requested_model="deepseek-v4-flash", only=_only,
+         manifest_path=_man)
