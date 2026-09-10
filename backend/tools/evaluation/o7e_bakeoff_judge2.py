@@ -38,26 +38,38 @@ def _call(prompt):
         return json.loads(r.read())["choices"][0]["message"]["content"] or ""
 
 
-def _materialize_read_chapters(r, max_chapters=8):
-    """PF-RP3A §B EVIDENCE REPLAY + PF-RP4B §legacy: 把 run facts.read_chapters
-    记录的当时已读章节从本地书库机械物化（零新增检索/零网络/零 fuzzy）。
+def _materialize_read_chapters(r, max_chapters=None):
+    """PF-RP3A §B EVIDENCE REPLAY + PF-RP4B-R1: 把 run facts.read_chapters 记录的
+    当时已读章节从本地书库机械物化（零新增检索/零网络/零 fuzzy）。
 
-    支持 key: canonical "book_id#idx"; legacy "书名#idx" 只允许用同一次 run
-    citations 中的 (book, chapter_idx)→(book_id, idx) 唯一精确别名解析
-    （RUN_EVIDENCE_EXACT_ALIAS）; 无法解析 → 记入 failed（调用方据此置
-    EVALUATION_INVALID, 不静默评分）。
+    支持 key: canonical "book_id#idx"; legacy "书名#idx" 只允许用同一次 run 已有
+    evidence records（citations + used/candidate/retrieved_evidence）建立的
+    (book, chapter_idx)→(book_id, idx) 唯一精确别名解析
+    （RUN_EVIDENCE_EXACT_ALIAS）; 0 个 target → UNRESOLVED;
+    >1 个不同 target → AMBIGUOUS_RUN_EVIDENCE_ALIAS;
+    两者都记入 failed（调用方据此置 EVALUATION_INVALID, 不静默评分）。
+    遍历全部 facts.read_chapters——无 silent cap（PF-RP4B-R1）。
     返回 (texts, resolution)。"""
     facts = (r.get("evidence_digest") or {}).get("facts") or {}
     keys = facts.get("read_chapters") or []
     out, failed, resolution = {}, [], {}
-    # run 内 citations 建立精确别名: (书名, chapter_idx) → {(book_id, idx), ...}
+    # PF-RP4B-R1: exact alias provenance pool = 同一 run 的四类机械记录
     alias = {}
+
+    def _add_alias(entry):
+        if (isinstance(entry, dict) and entry.get("book")
+                and isinstance(entry.get("chapter_idx"), int)
+                and entry.get("book_id")):
+            alias.setdefault((entry["book"], entry["chapter_idx"]),
+                             set()).add((entry["book_id"], entry["chapter_idx"]))
+
     for c in r.get("citations") or []:
-        if (isinstance(c, dict) and c.get("book")
-                and isinstance(c.get("chapter_idx"), int) and c.get("book_id")):
-            alias.setdefault((c["book"], c["chapter_idx"]),
-                             set()).add((c["book_id"], c["chapter_idx"]))
-    for key in keys[:max_chapters]:
+        _add_alias(c)                                    # ALIAS_SOURCE_CITATIONS
+    ev = r.get("evidence_digest") or {}
+    for pool_key in ("used_evidence", "candidate_evidence", "retrieved_evidence"):
+        for e in ev.get(pool_key) or []:
+            _add_alias(e)                                # USED/CANDIDATE/RETRIEVED
+    for key in keys:                                     # 无 silent cap
         k = str(key)
         resolved, mode = None, "UNRESOLVED"
         try:
@@ -70,13 +82,17 @@ def _materialize_read_chapters(r, max_chapters=8):
                     matches = alias.get((left, idx))
                     if matches and len(matches) == 1:
                         resolved, mode = next(iter(matches)), "RUN_EVIDENCE_EXACT_ALIAS"
+                    elif matches and len(matches) > 1:
+                        mode = "AMBIGUOUS_RUN_EVIDENCE_ALIAS"
             elif k in alias and len(alias[k]) == 1:
                 resolved, mode = next(iter(alias[k])), "RUN_EVIDENCE_EXACT_ALIAS"
+            elif k in alias and len(alias[k]) > 1:
+                mode = "AMBIGUOUS_RUN_EVIDENCE_ALIAS"
         except Exception:
             resolved = None
         if resolved is None:
             failed.append(key)
-            resolution[k] = "UNRESOLVED"
+            resolution[k] = mode
             continue
         book_id, idx = resolved
         try:
@@ -104,8 +120,8 @@ def _materialize_read_chapters(r, max_chapters=8):
 _CH_ID_RE = re.compile(r"[0-9a-f]{8,}")
 
 
-def _materialize_with_meta(r, max_chapters=8):
-    texts, resolution = _materialize_read_chapters(r, max_chapters)
+def _materialize_with_meta(r):
+    texts, resolution = _materialize_read_chapters(r)
     meta = {"read_chapters_recorded": len((r.get("evidence_digest") or {})
                                           .get("facts", {}).get("read_chapters") or []),
             "read_chapters_materialized": len(texts),

@@ -291,3 +291,57 @@ def test_s15_missing_record_stays_missing():
     _primary, secondary, access = J2._judge_evidence_parts(r)
     assert not [s for s in secondary if s.get("source_record_id")]
     assert access == []
+
+
+# ═══════════════════════════════════════════════════════
+# PF-RP4B-R1: exact run-evidence alias closure（R1-R4）
+# ═══════════════════════════════════════════════════════
+def test_r1_s9_legacy_key_resolved_via_retrieved_evidence():
+    """S9 法哲学原理#2 的精确映射只在 retrieved_evidence——四源别名池必须解析。"""
+    runs = json.load(open(os.path.join(
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        "docs/evidence/o7e_calib_SCHOL_CAL3.json"), encoding="utf-8"))
+    s9 = next(r for r in runs if r["case_id"] == "S9")
+    texts, res = J2._materialize_read_chapters(s9)
+    assert res["resolution"].get("法哲学原理#2") == "RUN_EVIDENCE_EXACT_ALIAS"
+    assert texts.get("法哲学原理#2")                                # 物化成功
+
+
+def test_r2_duplicate_alias_sources_dedup_to_single_target():
+    # citations/used/candidate/retrieved 四源指向同一 target → dedup 后单义解析;
+    # book_id 指向真实存在的本地章节文件, 物化必须成功
+    r = {"case_id": "r2", "answer": "正文。", "citations": [], "quote_bound": [],
+         "evidence_digest": {"facts": {"read_chapters": ["书甲#8"]},
+                             "used_evidence": [{"book": "书甲", "chapter_idx": 8,
+                                                "book_id": "88b56fb4da52"}],
+                             "candidate_evidence": [{"book": "书甲", "chapter_idx": 8,
+                                                     "book_id": "88b56fb4da52"}],
+                             "retrieved_evidence": [{"book": "书甲", "chapter_idx": 8,
+                                                     "book_id": "88b56fb4da52"}]}}
+    texts, res = J2._materialize_read_chapters(r)
+    assert res["resolution"]["书甲#8"] == "RUN_EVIDENCE_EXACT_ALIAS"   # 三源同 target → dedup
+    assert texts.get("书甲#8")                                       # 物化成功（真实文件）
+
+
+def test_r3_ambiguous_alias_targets_fail_closed():
+    r = {"case_id": "r3", "answer": "正文。", "citations": [], "quote_bound": [],
+         "evidence_digest": {"facts": {"read_chapters": ["书乙#2"]},
+                             "used_evidence": [{"book": "书乙", "chapter_idx": 2,
+                                                "book_id": "bidA"}],
+                             "retrieved_evidence": [{"book": "书乙", "chapter_idx": 2,
+                                                     "book_id": "bidB"}]}}
+    texts, res = J2._materialize_read_chapters(r)
+    assert res["resolution"]["书乙#2"] == "AMBIGUOUS_RUN_EVIDENCE_ALIAS"
+    assert "书乙#2" not in texts
+
+
+def test_r4_no_silent_cap_on_read_chapters():
+    """9 个 recorded read_chapters 全部尝试 resolution/materialization——无 silent cap。"""
+    r = {"case_id": "r4", "answer": "正文。", "citations": [], "quote_bound": [],
+         "evidence_digest": {
+             "facts": {"read_chapters": [f"书{i}#0" for i in range(9)]},
+             "retrieved_evidence": [{"book": f"书{i}", "chapter_idx": 0,
+                                     "book_id": f"bid{i}"} for i in range(9)]}}
+    texts, res = J2._materialize_read_chapters(r)
+    total_attempted = len(texts) + len(res["failed"])
+    assert total_attempted == 9                          # 第 9 个绝不被静默丢弃
