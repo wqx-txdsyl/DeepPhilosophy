@@ -1,537 +1,240 @@
+我审完 a398b55f3 → 2f85229da。这轮 metric closure 我接受，SCHOL_CAL2 parity 归档也已经闭合，但 PF-RP4B 还不能 PASS。原因非常具体：S9 那个唯一 unresolved legacy key 其实在同一次 run 的 retrieved_evidence 里就存在精确 (book, chapter_idx) → book_id 映射，只是当前 resolver 只查了 citations，所以把本来可机械解析的 key 判成了 unresolved。
 
-我审完 a398b55f3 → 2f85229da。这次可以正式签：measurement 链关闭，后面不再因为分数不好继续找测量问题。下一阶段就是产品补丁：Scholarly Coverage + Historical Discipline。
+【注：本文件前半为 PF-RP4B 审查存档副本误挂；V4 Fresh Scholarly Qualification 任务书正文见下方分隔线之后的原文。】
 
-独立 compare 显示这两次提交只改了 evaluation resolver、对应测试和 canonical rejudge artifacts，没有碰 production runtime / Local Patch / Scholarly Contract。四源 exact alias、ambiguity fail-closed，以及取消 read_chapters silent cap 都已经真实落地。 R1–R4 也确实覆盖了 S9 retrieved-evidence alias、重复源去重、歧义拒绝和第 9 个章节不得被截断。
+=== 以下为 Reviewer 最新裁决原文（V3_RP3 = PASS → V4 FRESH QUALIFICATION AUTHORIZED）===
 
-最终 canonical summary 是干净的：
+我审完 a398b55f3 → 2f85229da（V3-RP3-R1 receipt）。Reviewer Verdict — V3_RP3_PASS
 
-JUDGE_CASES_VALID = 8
-EVALUATION_INVALID = false
+我确认 R1.1 两个剩余 blocker 已关闭。V3-RP3 Scholarly Retrieval Recovery 至此正式通过 Reviewer Gate。
 
-TEXTUAL_GROUNDING = 4.000
-ARGUMENT_RECONSTRUCTION = 4.000
-INTERPRETIVE_PLURALITY = 3.800
+关键核验结果：
 
-HISTORICAL_DISCIPLINE = 3.375 < 3.400
-LITERATURE_ORIENTATION = 2.750 < 3.200
+010bf438e 的真实工具链测试已经把同一 SID 串起来：search_scholarship("Wang Yangming") → sid ∈ results → search 不暴露正文 → get_scholarly_source(sid) → ABSTRACT_AVAILABLE → abstract 非空。上一轮"A 搜到、B 被读"的假连接已经不存在。
 
-REQUIRED_MEDIAN_LT_2 = 1
-REQUIRED_MISSING = 0
+METADATA_ONLY candidate 现在确实进入 get_scholarly_source，并机械断言无 abstract、无 passages，没有伪造内容。
 
-ALL_FATAL_FLAGS = 0
+400de963c → 010bf438e 只有 regression test 文件发生变化，因此 evidence 中的 changed_files_git_diff=["backend/tests/test_o7e_v3_rp3_registry_recovery.py"] 与内容冻结 commit 对得上。
 
-所以正式 verdict：
+010bf438e → d8ae6b809 又确实只有 V3_RP3_RETRIEVAL_RECOVERY.json 一个 docs artifact 变化。
 
-O7_E_PF_RP4B_R1_REVIEW = PASS_FOR_DIAGNOSIS
+关于 SHA 自指
 
-MEASUREMENT_CHAIN = CLOSED
-PRIMARY_EVIDENCE_PARITY = PASS
-LEGACY_ALIAS_RESOLUTION = PASS
-SCHOLARLY_PROVENANCE_MEASUREMENT = PASS
+我接受现在的两阶段方案：
 
-SCHOLARLY_GATE = FAIL
+CONTENT_HEAD = 010bf438e
+ARCHIVE_HEAD = d8ae6b809
 
-LITERATURE_ORIENTATION_WEAKNESS = CONFIRMED
-HISTORICAL_DISCIPLINE_WEAKNESS = CONFIRMED
+artifact 内记录 HEAD_SHA=010bf438e，而包含 artifact 自身的 d8ae6b809 是纯归档 commit。
 
-LITERATURE_DEFICIT_SEVERITY = MATERIAL
-HISTORICAL_DEFICIT_SEVERITY = MILD
+这是有效的无循环证据模型，不需要为了让文件记录自己的 commit SHA 再制造无限 docs commit。
 
-LOCAL_PATCH_ARCHITECTURE = FROZEN
-RP_B = RETAIN
+因此最终 gate：
 
-FURTHER_MEASUREMENT_PATCHES = NOT_AUTHORIZED
-UNLESS_NEW_INDEPENDENT_CORRECTNESS_DEFECT_IS_DEMONSTRATED
+QUERY_FORMULATION_GUIDANCE          PASS
+MULTILINGUAL_ALIAS_COVERAGE        PASS
+RELEVANT_SEARCH_RESULT_AVAILABLE   PASS
+SEARCH_TO_READ_PATH                PASS
+CONTENT_EVIDENCE_PATH              PASS
+METADATA_ONLY_SAFE_READ            PASS
+SAFE_FALLBACK_REGRESSION           PASS
+CANONICAL_SOURCE_CHAIN             PASS
+CLEAN_REBUILD_DIFF                 0
+CURATION_PROVENANCE                PASS
+RP3_EVIDENCE_CONSISTENCY           PASS
+V3_EVIDENCE_DRIFT                  false
+PRODUCTION_MODEL_UNCHANGED         true
+FROZEN_COMPONENT_DIFF              0
 
-V3_HOLDOUT_AUTHORIZED = false
+V3_RP3 = PASS
 
-NEXT_PHASE =
-O7_E_PF_RP5_SCHOLARLY_COVERAGE_AND_HISTORICAL_DISCIPLINE
+你报告的全量结果为 822/822/0/0；我这边不能远程重新执行你的本地 pytest，但已经独立核验对应测试代码和提交链，没有发现与回执冲突。
 
-特别值得注意的是 H04：canonical judge 给它 textual / argument / historical 都是 4，但 literature 只有 1，理由非常明确——回答自己承认没有检索二手文献，却仍然进入了“笛卡尔循环、阿尔诺、著名争议”这条解释史通道。 这已经不是“不会写哲学”，而是研究通道覆盖不一致。
+同时再次锁死：
 
-而 HD 的 3.375 只差 0.025，所以绝不能用“多塞生平、年代、轶事”这种办法硬提分。我们要修的是历史层次与因果纪律。
+V3_SCHOLARLY_GATE_NOT_MET
 
-O7-E PF-RP5 — Scholarly Coverage + Historical Discipline
-IMPLEMENTATION_MODEL = GLM-5.3-Flash
-REASONING = MAX
-REVIEWER = GPT-5.6 Sol
+仍然是历史有效事实。RP3 PASS 不会、也不得把 V3 改成 PASS。下一次资格判断必须使用全新的 V4 holdout。
 
-BASE_SHA = 2f85229da
+下一阶段直接授权。
 
-TESTED_MODEL = deepseek-v4-flash
-REPAIR_CONFIG = RP-B
-MAX_VALIDATION_REPAIRS = 2
+PhiAgent O7-E — V4 Fresh Scholarly Qualification
 
-LOCAL_PATCH_CHANGED = false
-FINAL_VALIDATOR_CHANGED = false
-QUOTE_BOUND_CHANGED = false
-EVIDENCE_CONTRACT_CHANGED = false
-SCHOLARLY_TOOL_SEMANTICS_CHANGED = false
+MODEL: GLM-5.3
+PRODUCTION_MODEL: deepseek-v4-flash
+QUALIFICATION_BASE: d8ae6b809
+Reviewer: GPT-5.6 Sol
 
-JUDGE_CHANGED = false
-ACADEMIC_THRESHOLDS_CHANGED = false
+Objective
 
-AUTO_LITERATURE_SEARCH = 0
-AUTO_SCHOLARLY_FETCH = 0
-SCHOLARLY_SEMANTIC_ROUTER = 0
-FIXED_LITERATURE_QUOTA = 0
+使用全新、未消费、未调参的 V4 scholarly holdout，重新判断修复后的 PhiAgent 是否满足 O7-E scholarly qualification。
 
-V3_HOLDOUT_RUN = false
-§1 Scholarly Contract V4：修“搜得不够广、读得不够深、用了却没证据”
+这是新测量，不是 V3 重判。
 
-不要继续往 System Prompt 后面叠一大段新规定。直接重写/压缩现有 V2/V3 scholarly block，保留 LOCATE/READ 分界，但升级成完整的：
+0. Freeze
 
-LOCATE
-→ SELECT
-→ READ
-→ SYNTHESIZE
+从 d8ae6b809 开始冻结生产系统。
 
-核心合同：
+禁止：
 
-二手研究不是答案末尾的装饰性 bibliography。
+修改 retrieval / registry / aliases / query formulation
 
-当你计划在最终回答中实质使用以下内容时：
-- 某位学者/某篇研究的具体观点
-- “学界认为 / 学界争论 / 解释传统”
-- 一个著名争议的解释史
-- 当代研究路线
-- 推荐研究入口或阅读路径
+修改 Local Patch / validator / quote_bound / replay
 
-这些内容本身就产生 scholarly evidence obligation。
+修改 evaluator/judge rubric 以适配结果
 
-不要先凭记忆写完整的“学界部分”，再在结尾声明没有核验。
+使用 V3 28 cases 作为 V4
 
-如果这些内容值得出现在答案里：
-→ 主动 LOCATE 相关真实研究
-→ 选择真正相关且可获得内容证据的候选
-→ READ
-→ 只综合实际取得的 abstract / passage
+使用 R25 或 RP3 王阳明 development probes 作为正式 holdout
 
-如果没有取得内容证据：
-→ 缩窄到 metadata 所支持的存在性/书目信息
-→ 或明确降格为自己的解释
-→ 或删掉该 scholarly claim
+看到 V4 answer/judge 后再 tuning
 
-Contract V3 的：
+允许的仅是 qualification harness / fresh case manifest / evidence 输出。
 
-search_scholarship = LOCATE
-get_scholarly_source = READ
+1. Fresh Holdout
 
-继续冻结。
+建立新的 V4 case set。
 
-再补一个现在非常重要的 stop/selection 原则：
+要求：
 
-需要内容证据时，
-一次 get_scholarly_source 返回 METADATA_ONLY
-不等于 scholarly research 已完成。
+NO_V3_CASE_REUSE=true
+NO_R25_REUSE=true
+NO_RP3_DEV_PROBE_REUSE=true
+CASE_CONTENT_UNSEEN_BEFORE_FREEZE=true
 
-如果你仍准备陈述具体学术观点：
-可以继续选择另一条真正相关且可读的 record，
-或者缩窄你的最终主张。
+覆盖：
 
-优先相关性，其次考虑实际可读证据；
-不得为了 access_level 高而选择无关文献。
+西方古典 / 中世纪 / 近现代 / 当代
 
-因为 CAL3 的真实数据已经显示：4 个 fetch result 中只有 2 个具有 content evidence；另两个只是 METADATA_ONLY。我们已经专门把两种计数拆开了，不能让 Main Agent 自己又把它们混回去。
+中国哲学
 
-同时继续禁止：
+至少一个其他非西方传统
 
-搜到标题
-→ 猜论文立场
+原典解释
 
-看到 source_category
-→ 猜解释阵营
+概念辨析
 
-ABSTRACT_AVAILABLE
-→ 假装已经读过
+哲学家比较
 
-两篇 metadata
-→ 自动构造“两派争论”
-一个非常关键的覆盖规则
+scholarly controversy / secondary scholarship
 
-加入：
+需要 secondary-source content evidence 的题目
 
-如果你自己选择引入一个 scholarly controversy，
-就不能再以“这是公认知识/我一般了解”为理由跳过检索。
+不得专门围绕 registry 已知强项出题。
 
-要么研究它，
-要么不把它作为答案的学术支柱。
+2. Run
 
-这正对 H04 当前的 failure mode，但 production prompt 不得出现 H04、CAL、judge、3.2 等任何 evaluation 信息。
+正式 run 使用：
 
-EVAL_CASE_IDS_IN_PRODUCTION_PROMPT = 0
-EVAL_THRESHOLDS_IN_PRODUCTION_PROMPT = 0
-§2 Historical Discipline V1：修历史层次，不加百科背景
+PRODUCTION_MODEL=deepseek-v4-flash
+BASE=d8ae6b809
 
-在同一个 Main Agent contract 中增加一个很短的 historical discipline 部分。
+保存完整：
 
-Main Agent 在使用历史材料时，内部必须区分：
+prompts
 
-TEXT_INTERNAL
-    作者该文本内部真正说了什么
+final answers
 
-CONTEMPORARY_CONTEXT
-    该文本当时的思想/政治/制度背景
+tool trace
 
-LATER_RECEPTION
-    后来的哲学家、学派、批评传统如何读它
+scholarly search calls
 
-RETROSPECTIVE_COMPARISON
-    我们今天拿后来概念回看作者
+selected records
 
-AGENT_SYNTHESIS
-    Main Agent 自己的综合判断
+get_scholarly_source READ calls
 
-这些不是 runtime label，也不需要展示给用户。
+evidence levels
 
-真正的合同是：
+repair trace
 
-不得因为两个思想相似，就写成“X影响了Y”。
+validator result
 
-不得因为后世常用某概念解释作者，
-就把那个概念写成作者自己的历史语汇。
+不得丢弃能够支持 RCA 的 query / tool args。
 
-不得把作者早期/晚期思想未经说明地揉在一起。
+3. Mechanical Gate
 
-不得把“后来被如此解释”
-写成“作者当时就是这个意思”。
+先运行现有 delivery/mechanical gates。
 
-如果一个政治事件、学术环境、宗教背景、
-思想继承关系或解释史事实
-会实质改变你的哲学结论：
-先取得足够证据再把它作为论证前提。
+必须独立报告：
 
-如果它只是无关紧要的背景，
-不要为了显得学术而加入。
+PUBLISHED_COUNT
+REPAIR_CONVERGENCE
+REPAIR_CREATES_NEW_FATAL_ERROR
+VALIDATOR_FATAL_COUNTS
+SCHOLARLY_SEARCH_CALLS
+SCHOLARLY_READ_CALLS
+CONTENT_EVIDENCE_CASE_COUNT
+SAFE_FALLBACK_CASE_COUNT
 
-对于后世人物：
+不得因为 scholarly judge 结果反向修改 mechanical evidence。
 
-后来的 X 可以作为 reception / comparison，
-但必须显式保持时间层级：
-“后来 X 如此解释/批评……”
-而不是让后世语言倒灌回原作者。
+4. Scholarly Judge
 
-这就是我要的 HD 修复。
+沿用冻结后的 canonical scholarly rubric。
 
-不是 biographies++。
+至少输出此前相同核心指标：
 
-§3 Scholarly synthesis：不要变成文献堆砌
+applicable_mean
+textual
+argument
+interpretive
+HD
+LO
+MEDIAN_LT_2
+REQUIRED_DIMENSION_MEDIAN_LT_2
+fatal categories
 
-Literature Orientation 高分不是“学者名字越多越好”。
+Judge 必须基于 V4 answer + V4 evidence。
 
-Contract 加一句：
+不得参考 V3 分数决定 V4 分数。
 
-只把真正改变、限定、反驳或深化当前解释的研究写进答案。
+5. Final Evidence
 
-每个实际使用的 secondary source
-应该有一个明确作用：
-- support
-- challenge
-- qualify
-- alternative interpretation
-- research direction
+生成：
 
-不要把检索结果列表直接当成学术综合。
+docs/evidence/V4_FINAL_HOLDOUT_*
 
-如果两篇来源要被描述成不同阵营：
+以及机械 summary。
 
-必须分别有 content evidence
-支持这个 contrast。
+最终 Reviewer 输入必须能回答：
 
-只有一边读过
-→ 不得构造“两派”。
+DELIVERY_GATE
+SCHOLARLY_GATE
+FAILED_GATES
+FATAL_COUNTS
+FINAL_V4_VERDICT
 
-这会直接防止我们之前在 H02 上看到的 metadata → 阵营跳跃。
+6. Stop condition
 
-§4 Product Freeze V3
+Builder 不得自行宣布：
 
-这次 Product Contract 真正发生变化，所以不能继续把旧 72b553dec 当正式 freeze。
+O7-E_PASS
+FINAL_PASS
 
-Contract V4 落地、全测通过后生成：
+完成后只返回：
 
-O7E_PRODUCTION_FREEZE_V3
+READY_FOR_V4_SCHOLARLY_REVIEW
 
-至少冻结：
+并附：
 
-backend/engine_langgraph.py
-backend/routes/agent_tools_scholarly.py
-backend/evidence_contract.py
+qualification BASE/HEAD
 
-backend/local_patch_runtime.py
-backend/final_validator.py
-backend/quote_bound.py
+fresh holdout manifest
 
-candidate config
+case count
 
-LOCAL_PATCH_SYSTEM_PROTOCOL
-REPAIR_SYSTEM_PROTOCOL
-SCHOLARLY_CONTRACT_V4
+run summary
 
-LOCAL_PATCH_ACTION_MATRIX
-MAX_VALIDATION_REPAIRS=2
+judge summary
 
-PRODUCTION_AGENT_SET={general}
+final-gate checker output
 
-记录：
-
-PRODUCTION_FREEZE_V3_SHA
-
-后面的 probe / CAL4 全部基于它，跑分途中禁止修改。
-
-§5 先跑 4-case product probe
-
-为了省调用，不直接烧完整 CAL4。
-
-预注册：
-
-H04
-H13
-S9
-H02
-
-理由分别覆盖：
-
-H04 → canonical controversy + literature coverage
-H13 → reception / historical layering
-S9  → broad research-entry + history
-H02 → locate/read/synthesis
-
-这是 evaluation selection，不是 production quota。
-
-跑：
-
-SCHOL_HD_PROBE1
-deepseek-v4-flash
-RP-B
-real production path
-
-只做两个 STOP 条件：
-
-if SCHOLARLY_SEARCH_CASES == 0:
-    STOP → COVERAGE_ACTIVATION_FAIL
-
-if SCHOLARLY_SOURCE_FETCH_CASES == 0
-or SCHOLARLY_CONTENT_EVIDENCE_COUNT == 0:
-    STOP → READ_SYNTHESIS_ACTIVATION_FAIL
-
-不规定“每题必须搜几篇”。
-
-同时跑 canonical judge，但 probe 不签最终 PASS，只看有没有明显反向退化：
-
-FATAL_FLAGS = 0
-
-PRIMARY_TEXT_MISREPRESENTATION = 0
-FALSE_EXACT_QUOTE = 0
-LITERATURE_ACCESS_OVERCLAIM = 0
-
-如果出现 fatal，立即 STOP。
-
-如果 acquisition 激活且 fatal=0，进入 CAL4。
-
-§6 SCHOL_CAL4 — 最后一次 8-case calibration
-same frozen 8-case pool
-same production path
-same deepseek-v4-flash
-same RP-B
-
-no evaluation seam
-no mid-run edits
-
-Delivery Gate 不变：
-
-COMPLETED = 8
-PUBLISHED >= 7
-
-if REPAIR_TRIGGERED >= 3:
-    REPAIR_CONVERGENCE >= 0.80
-
-TERMINAL_PENDING = 0
-VALIDATOR_EMPTY_FINAL = 0
-TERMINAL_CANDIDATE_EMPTY = 0
-
-PUBLIC_INVALID_CITATIONS = 0
-UNVERIFIED_PUBLIC_EXACT_QUOTES = 0
-
-LOCAL_PATCH_ANCHOR_RESOLUTION_RATE = 1.0
-PROMPT_ISSUE_COVERAGE = 1.0
-LINKED_EVIDENCE_STARVATION = 0
-UNKNOWN_SLICE_ID = 0
-UNINTENTIONAL_QUOTE_WRAPPER_LOSS = 0
-NON_TARGET_TEXT_CHANGED_CHARS = 0
-
-Scholarly acquisition telemetry：
-
-SCHOLARLY_SEARCH_CASES
-SCHOLARLY_SOURCE_FETCH_CASES
-
-SCHOLARLY_FETCH_RESULT_COUNT
-SCHOLARLY_CONTENT_EVIDENCE_COUNT
-
-METADATA_ONLY_COUNT
-ABSTRACT_AVAILABLE_COUNT
-FULL_TEXT_AVAILABLE_COUNT
-FULL_TEXT_READ_COUNT
-
-这些只是 observability，不作为固定调用数量 Gate。
-
-Academic Gate 原封不动：
-
-APPLICABLE_DIMENSION_MEAN >= 3.20
-
-TEXTUAL_GROUNDING_REQUIRED_MEAN >= 3.40
-ARGUMENT_RECONSTRUCTION_REQUIRED_MEAN >= 3.20
-INTERPRETIVE_PLURALITY_REQUIRED_MEAN >= 3.00
-
-HISTORICAL_DISCIPLINE_REQUIRED_MEAN >= 3.40
-LITERATURE_ORIENTATION_REQUIRED_MEAN >= 3.20
-
-REQUIRED_DIMENSION_MEDIAN_LT_2 = 0
-REQUIRED_DIMENSION_MISSING_SCORE = 0
-
-FABRICATED_BIBLIOGRAPHY = 0
-FABRICATED_SCHOLAR_ATTRIBUTION = 0
-PRIMARY_TEXT_MISREPRESENTATION = 0
-MAJOR_ANACHRONISM = 0
-FALSE_EXACT_QUOTE = 0
-LITERATURE_ACCESS_OVERCLAIM = 0
-
-这里我明确冻结一条：
-
-3.375 不会被四舍五入成 3.4；2.75 也不会因为“趋势很好”而放行。
-
-§7 裁决
-
-如果 CAL4 双轴通过：
-
-DELIVERY_RELIABILITY = PASS
-SCHOLARLY_QUALITY = PASS
-
-O7_E_CALIBRATION_FINAL = PASS
-V3_HOLDOUT_AUTHORIZED = true
-
-然后打开真正 untouched 的 28-case V3。
-
-如果 LO 仍失败：
+artifact paths
 
 STOP
 
-LITERATURE_PRODUCT_GATE = FAIL
+当前阶段转换正式记录为：
 
-如果 HD 仍失败：
+V3 FAIL → RCA → RP3 → R1 → R1.1 → RP3 PASS → V4 FRESH QUALIFICATION AUTHORIZED
 
-STOP
-
-HISTORICAL_PRODUCT_GATE = FAIL
-
-这一次不再改 judge、不再改 replay、不再改 alias resolver。Measurement chain 已经正式 closed。
-
-如果产品补丁仍不够，下一轮只能根据真实 case-level verdict 去改产品策略，而不能继续靠 calibration instrumentation 延长链条。
-
-最终回执：
-
-O7_E_PF_RP5 =
-READY_FOR_REVIEW /
-ACTIVATION_NOT_MET /
-DELIVERY_GATE_NOT_MET /
-SCHOLARLY_GATE_NOT_MET
-
-BASE_SHA=2f85229da
-
-SCHOLARLY_CONTRACT_V4_SHA=
-HISTORICAL_DISCIPLINE_SHA=
-FREEZE_V3_SHA=
-PROBE_SHA=
-SCHOL_CAL4_SHA=
-JUDGE_SHA=
-
-HEAD_SHA=
-REMOTE_SHA=
-
-MEASUREMENT_CHAIN_CLOSED=true
-JUDGE_CHANGED=false
-REPLAY_CHANGED=false
-ALIAS_RESOLVER_CHANGED=false
-
-SCHOLARLY_CONTRACT_OWNER=1
-HISTORICAL_DISCIPLINE_OWNER=1
-
-AUTO_LITERATURE_SEARCH=0
-AUTO_SCHOLARLY_FETCH=0
-SCHOLARLY_SEMANTIC_ROUTER=0
-FIXED_LITERATURE_QUOTA=0
-
-EVAL_CASE_IDS_IN_PRODUCTION_PROMPT=0
-EVAL_THRESHOLDS_IN_PRODUCTION_PROMPT=0
-
-PRODUCTION_FREEZE_V3_SHA=
-
-PROBE_COMPLETED=4
-PROBE_PUBLISHED=
-PROBE_SEARCH_CASES=
-PROBE_FETCH_CASES=
-PROBE_CONTENT_EVIDENCE_COUNT=
-PROBE_FATAL_FLAGS=
-
-SCHOL_CAL4_EXECUTED=
-SCHOL_CAL4_COMPLETED=
-SCHOL_CAL4_PUBLISHED=
-SCHOL_CAL4_REPAIR_CONVERGENCE=
-
-SCHOLARLY_SEARCH_CASES=
-SCHOLARLY_SOURCE_FETCH_CASES=
-SCHOLARLY_FETCH_RESULT_COUNT=
-SCHOLARLY_CONTENT_EVIDENCE_COUNT=
-
-METADATA_ONLY_COUNT=
-ABSTRACT_AVAILABLE_COUNT=
-FULL_TEXT_AVAILABLE_COUNT=
-FULL_TEXT_READ_COUNT=
-
-JUDGE_CASES_VALID=
-EVALUATION_INVALID=
-
-APPLICABLE_DIMENSION_MEAN=
-TEXTUAL_GROUNDING_REQUIRED_MEAN=
-ARGUMENT_RECONSTRUCTION_REQUIRED_MEAN=
-INTERPRETIVE_PLURALITY_REQUIRED_MEAN=
-HISTORICAL_DISCIPLINE_REQUIRED_MEAN=
-LITERATURE_ORIENTATION_REQUIRED_MEAN=
-
-REQUIRED_DIMENSION_MEDIAN_LT_2=
-REQUIRED_DIMENSION_MISSING_SCORE=
-
-FABRICATED_BIBLIOGRAPHY=
-FABRICATED_SCHOLAR_ATTRIBUTION=
-PRIMARY_TEXT_MISREPRESENTATION=
-MAJOR_ANACHRONISM=
-FALSE_EXACT_QUOTE=
-LITERATURE_ACCESS_OVERCLAIM=
-
-LOCAL_PATCH_CHANGED=false
-FINAL_VALIDATOR_CHANGED=false
-QUOTE_BOUND_CHANGED=false
-PRODUCTION_MODEL_CHANGED=false
-
-V3_HOLDOUT_RUN=false
-
-PROPOSED_VERDICT=
-AUTHORIZE_V3_HOLDOUT /
-SCHOLARLY_PRODUCT_PATCH_REQUIRED
-
-STOP
-
-这一阶段的状态现在非常干净：
-
-architecture                  ✅
-delivery reliability          ✅
-local patch                   ✅
-primary evidence correctness  ✅
-judge measurement             ✅
-scholarly locate              ✅
-scholarly read                ✅ 已激活
-
-scholarly coverage            ❌
-historical discipline         ❌ 轻微
-
-从 2f85229da 开始，不再有 measurement debt 可以拿来解释失败。 canonical evaluation 已经有效；现在就是 PhiAgent 本身要把最后这两项学术能力补上。
+这条 repair 线到这里收口，不再继续打 RP3 patch。
