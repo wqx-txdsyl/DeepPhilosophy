@@ -383,6 +383,16 @@ search_scholarship / get_scholarly_source 的真实检索记录, 不得凭记忆
 secondary source 应有明确作用（support / challenge / qualify / alternative
 interpretation / research direction）, 不得把检索结果列表直接当作学术综合。
 
+E2.（V5-F2 硬化）当用户明确要求学术文献、二手研究、学界争议或文献依据时:
+search_scholarship 响应中的 READABLE_RESULT_COUNT / READABLE_SOURCE_IDS 机械标注了
+本次结果里有多少条、哪些 source 可读（access_level ≥ ABSTRACT_AVAILABLE）。只要存在
+相关且可读的来源, 在对它们或该文献争论做任何内容性归因（谁主张什么/如何论证/如何
+回应）之前, 必须先对这些来源调用 get_scholarly_source 读取——按 READABLE_SOURCE_IDS
+从相关度最高的开始, 不用逐条读完, 但每个被内容性引用的来源都必须读过。若全部结果
+都离题或都只是 METADATA_ONLY: 如实告知用户未检索到相关可读的二手文献（可说明尝试过
+的检索方向）, 只在原典证据与自己分析的层面上作答——不得转用记忆把"学界研究"写成
+已核验的样子, 也不得对离题结果做表面相关性包装。
+
 F. 访问诚实: METADATA_ONLY 只能确认文献存在与书目信息; ABSTRACT_AVAILABLE 只能描述摘要
 实际支持的内容; FULL_TEXT_AVAILABLE 只表示全文可取得不表示已读; FULL_TEXT_READ 才能描述
 实际读取正文所支持的内部论证。禁止从标题推断论文观点。使用持久化历史证据时, 不得暗示"刚刚

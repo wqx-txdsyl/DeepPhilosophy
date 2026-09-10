@@ -91,12 +91,29 @@ def build_index():
     return indexed
 
 
+def _record_haystack(rec):
+    """V5-F2 §B: 参与覆盖率判定的记录文本（title + authors + abstract）。"""
+    parts = [str(rec.get("title") or "")]
+    parts += [str(a.get("name") or "") for a in (rec.get("authors") or [])
+              if isinstance(a, dict)]
+    ab = rec.get("abstract")
+    if isinstance(ab, dict):
+        parts.append(str(ab.get("text") or ""))
+    return " ".join(parts).lower()
+
+
 def search_local(query, limit=8):
-    """本地 FTS5 检索（BM25）→ canonical record 视图（复用 O7-C identity）。"""
+    """本地 FTS5 检索（BM25）→ canonical record 视图（复用 O7-C identity）。
+
+    V5-F2 §B: FTS OR 只做召回, 结果按通用相关性重排——多词覆盖率优先
+    （≤3 词要求全词命中, >3 词要求 ≥60%）, bm25 仅作 tie-break。
+    纯 OR/BM25 的单词碰撞（如 "moral luck" 命中任何含 moral 的记录）会把
+    离题记录顶进 top-k, 使 LOCATE 结果失去文献判断价值。覆盖率排序无任何
+    主题/查词特判; 全零覆盖时兜底退回 OR 排序, 不因收紧而静默空手。"""
     load_registry()
     if not os.path.exists(INDEX):
         build_index()
-    # OR 语义（提高召回; bm25 让多词命中者排前）; 引号短语原样保留（簇 tag 精确命中）
+    # OR 语义做召回池（放大池深, 重排在池内做）; 引号短语原样保留（簇 tag 精确命中）
     if '"' in query:
         match = query
     else:
@@ -108,12 +125,22 @@ def search_local(query, limit=8):
     con = sqlite3.connect(INDEX)
     rows = con.execute(
         "SELECT source_record_id, bm25(sources) FROM sources WHERE sources MATCH ? "
-        "ORDER BY bm25(sources) LIMIT ?", (match, limit)).fetchall()
+        "ORDER BY bm25(sources) LIMIT ?", (match, max(limit * 8, 40))).fetchall()
     con.close()
     # retrieval_origin 标注: 记录取自本地 curated registry（区别于书目来源 provider）
-    return [dict(_registry[s], _bm25=round(b, 2),
-                 retrieval_origin="LOCAL_CURATED") for s, b in rows
+    cand = [dict(_registry[s], _bm25=round(b, 2), retrieval_origin="LOCAL_CURATED")
+            for s, b in rows
             if s in _registry and _registry[s].get("cluster_ids_accepted")]
+    tl = [t.lower() for t in (query.replace("-", " ").split()) if len(t) >= 2]
+    if not tl or '"' in query:
+        return cand[:limit]
+    for c in cand:
+        text = _record_haystack(c)
+        c["_term_coverage"] = round(sum(1 for t in tl if t in text) / len(tl), 2)
+    need = 1.0 if len(tl) <= 3 else 0.6
+    strict = [c for c in cand if c["_term_coverage"] + 1e-9 >= need]
+    (strict or cand).sort(key=lambda c: (-c["_term_coverage"], c["_bm25"]))
+    return (strict or cand)[:limit]
 
 
 def stats():

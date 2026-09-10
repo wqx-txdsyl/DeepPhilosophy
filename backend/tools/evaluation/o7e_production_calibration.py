@@ -73,14 +73,17 @@ def run_case_production(case, mk_normal, mk_repair):
 
     done = next((e for e in reversed(evs) if e.get("type") == "done"), {})
     errors = [e for e in evs if e.get("type") == "error"]
-    # V4 §2: scholarly 调用明细归档（query/args 可恢复, 支持 RCA）
+    # V4 §2: scholarly 调用明细归档——V5-F2 §E 修复: args 只存在于 type="tool"
+    # 事件（tool_start 仅 name/tool_call_id, 无 args → V5 归档 query 全 null）;
+    # 从 tool 事件保存 tool_call_id/name/args/result, 原始 query 可恢复
     scholarly_calls_detail = []
     for e in evs:
-        if e.get("type") == "tool_start" and e.get("name") in (
+        if e.get("type") == "tool" and e.get("name") in (
                 "search_scholarship", "get_scholarly_source"):
             scholarly_calls_detail.append({"tool": e.get("name"),
                                            "tool_call_id": e.get("tool_call_id"),
-                                           "args": e.get("args")})
+                                           "args": e.get("args"),
+                                           "result": (e.get("result") or "")[:300]})
     answer = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
     val = done.get("validation") or {}
     tel = case_result(case["case_id"], evs)

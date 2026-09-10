@@ -32,17 +32,31 @@ def _exec_search_scholarship(args):
                                 work=args.get("work"),
                                 year_from=_year("year_from"), year_to=_year("year_to"),
                                 limit=limit)
+    # V5-F2 §C: 机械派生可读计数——search 只是 discovery, 内容性归因前必须
+    # get_scholarly_source; 模型需要显式知道结果里有多少条可读、是哪些
+    views = [SS.model_view(r) for r in out["results"]]
+    _readable = [r for r in views
+                 if r.get("access_level") in ("ABSTRACT_AVAILABLE",
+                                              "FULL_TEXT_AVAILABLE", "FULL_TEXT_READ")]
     resp = {"query": out["query"],
-            "results": [SS.model_view(r) for r in out["results"]],
+            "results": views,
+            "READABLE_RESULT_COUNT": len(_readable),
+            "READABLE_SOURCE_IDS": [r.get("source_record_id") for r in _readable],
             "providers_queried": out["providers_queried"]}
     if out["errors"]:
         resp["provider_errors"] = out["errors"]
         resp["note"] = ("部分 provider 检索失败（见 provider_errors）——"
                         "检索失败不等于没有相关文献")
+    elif not out["results"]:
+        resp["note"] = "0 结果只表示该 provider/query 无记录, 不表示学界没有研究"
+    elif _readable:
+        resp["note"] = (f"结果中有 {len(_readable)} 条可读来源（access_level ≥ "
+                        "ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映"
+                        "已实际取得的证据; 对任何来源作内容性归因前必须先用 "
+                        "get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点")
     else:
-        resp["note"] = ("0 结果只表示该 provider/query 无记录, 不表示学界没有研究"
-                        if not out["results"] else
-                        "记录为真实检索所得; access_level 只反映已实际取得的证据")
+        resp["note"] = ("记录为真实检索所得, 但全部为 METADATA_ONLY（无可读内容）——"
+                        "只能陈述书目存在性, 不得凭标题推断内容")
     return resp
 
 

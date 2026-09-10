@@ -35,6 +35,7 @@ UNSUPPORTED_EXACT_QUOTE = "UNSUPPORTED_EXACT_QUOTE"  # 以逐字形态呈现、�
 NEAR_QUOTE_NOT_MARKED = "NEAR_QUOTE_NOT_MARKED"    # 仅近似命中却被当作逐字且未自行标注
 STITCHED_QUOTE = "STITCHED_QUOTE"                  # 跨段落拼接引文
 EMPTY_FINAL = "EMPTY_FINAL"                        # 候选为空/纯空白（机械异常，非"太短"）
+UNGROUNDED_BIBLIOGRAPHIC_DETAIL = "UNGROUNDED_BIBLIOGRAPHIC_DETAIL"  # 精确书目元数据无检索记录可溯源（V5-F2 §D）
 
 # 修复上限（O2 §10）——纯机械 ceiling, 不是语义判断; 达到后宁可如实以
 # validation failure 收口, 也不由 runtime 代写"正确答案"
@@ -219,6 +220,78 @@ def check_quotes(answer, raw_tool_log):
 
 
 # ═══════════════════════════════════════════════════════
+# 2b. 书目 grounding guard（V5-F2 §D, 确定性; V5-12 FABRICATED_BIBLIOGRAPHY 教训:
+#     精确书目细节——DOI/出版社-年份——可凭记忆进入终稿且机械层零拦截）
+# ═══════════════════════════════════════════════════════
+import re as _re
+
+_DOI_IN_TEXT_RE = _re.compile(r"\b10\.\d{4,9}/[-._;()/:A-Za-z0-9]+")
+_PRESS_YEAR_RE = _re.compile(
+    r"[（(]\s*((?:OUP|Oxford University Press|Cambridge University Press|CUP|"
+    r"Harvard University Press|Princeton University Press|Routledge|Blackwell|"
+    r"Hackett|Brill|Springer|Clarendon Press|McGill-Queen[\w'’ ]*?Press|"
+    r"牛津大学出版社|剑桥大学出版社|商务印书馆)\s*[,，]\s*((?:19|20)\d{2}))\s*[）)]")
+_WORD_RE = _re.compile(r"[A-Za-z\u00c0-\u024f]{3,}")
+
+
+def _scholarly_trace_pool(raw_tool_log):
+    """本次调用的 scholarly 记录书目字段（search 结果 + READ 的 bibliographic_record）。"""
+    pool = []
+    for tc in (raw_tool_log or []):
+        if (tc.get("name") or "") not in ("search_scholarship", "get_scholarly_source"):
+            continue
+        rf = tc.get("result_full")
+        items = []
+        if isinstance(rf, dict):
+            if "results" in rf:
+                items = rf.get("results") or []
+            elif rf.get("bibliographic_record"):
+                items = [rf["bibliographic_record"]]
+        for it in items:
+            if not isinstance(it, dict):
+                continue
+            doi = it.get("doi") or (it.get("identifiers") or {}).get("doi") or ""
+            year = it.get("year") or it.get("publication_year") or ""
+            auths = " ".join(
+                (a if isinstance(a, str) else str(a.get("name") or ""))
+                for a in (it.get("authors") or []))
+            pool.append({"doi": str(doi).lower().rstrip("."),
+                         "year": str(year),
+                         "authors": auths.lower()})
+    return pool
+
+
+def check_bibliography_groundedness(answer, raw_tool_log):
+    """终稿中的精确书目元数据必须能溯源到本次 scholarly 检索记录的书目字段。
+    触发面刻意收窄为两类"精确承诺": DOI 字符串、学术出版社+年份括注
+    （bare 年份/普通引用不算——避免对正常行文误报）。"""
+    issues = []
+    ans = answer or ""
+    pool = _scholarly_trace_pool(raw_tool_log)
+    if not pool:
+        return issues
+    spans = [(m.group(0), None) for m in _DOI_IN_TEXT_RE.finditer(ans)]
+    spans += [(m.group(0), m.group(2)) for m in _PRESS_YEAR_RE.finditer(ans)]
+    for locator, year in spans:
+        low = locator.lower()
+        grounded = any(p["doi"] and (p["doi"] in low or low in p["doi"]) for p in pool)
+        if not grounded and year:
+            pos = ans.find(locator)
+            ctx_words = {w.lower() for w in _WORD_RE.findall(ans[max(0, pos - 200):pos])}
+            grounded = any(
+                p["year"] == str(year)
+                and any(w in p["authors"] for w in ctx_words)
+                for p in pool)
+        if not grounded:
+            issues.append(ValidationIssue(
+                code=UNGROUNDED_BIBLIOGRAPHIC_DETAIL, locator=locator[:80],
+                detail=("精确书目元数据无法追溯到本次检索所得 scholarly record 的书目字段"
+                        "（DOI/出版社-年份）——不得凭记忆输出精确书目; 删除细节或改用已检索"
+                        "记录的可溯源信息")))
+    return issues
+
+
+# ═══════════════════════════════════════════════════════
 # 3. 总入口
 # ═══════════════════════════════════════════════════════
 def validate_final_candidate(answer, *, raw_tool_log, fallback_log=None,
@@ -238,6 +311,7 @@ def validate_final_candidate(answer, *, raw_tool_log, fallback_log=None,
     issues.extend(cite_issues)
     audit, quote_issues = check_quotes(ans, raw_tool_log)
     issues.extend(quote_issues)
+    issues.extend(check_bibliography_groundedness(ans, raw_tool_log))   # V5-F2 §D
     result = ValidationResult(ok=not issues, issues=issues,
                               verified_citations=verified_citations, quote_audit=audit)
     return result
