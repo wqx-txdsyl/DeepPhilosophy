@@ -315,11 +315,13 @@ def _replay_windows(r, max_windows=24, max_window_chars=500):
     return windows, meta
 
 
-def judge_candidate(mid, runs_path=None, out_tag=None):
+def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
     runs = json.load(open(runs_path or os.path.join(
         ROOT, "backend/tools/_tmp", f"o7e_bakeoff_B_{mid.replace('.','_')}.json"),
         encoding="utf-8"))
-    man = {m["case_id"]: m for m in json.load(open(os.path.join(
+    # V8 §glue: manifest 可参数化（holdout qualification 用）; 默认行为零改动。
+    # judge 合同本身（O7A 冻结件）不受此参数影响。
+    man = {m["case_id"]: m for m in json.load(open(manifest_path or os.path.join(
         ROOT, "docs/evidence/PHIAGENT_O7E_BAKEOFF_EVALUATION_MANIFEST.json"),
         encoding="utf-8"))}
     tag = out_tag or f"o7e_bakeoff_judge2_{mid.replace('.','_')}"
