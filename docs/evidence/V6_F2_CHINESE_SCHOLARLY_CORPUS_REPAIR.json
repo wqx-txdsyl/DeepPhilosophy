@@ -2,7 +2,7 @@
  "V6_F2_CHINESE_SCHOLARLY_CORPUS_REPAIR": true,
  "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V6_F2_CHINESE_CORPUS_REPAIR_TASK.md",
  "BASE_SHA": "aaca1071b6f602204ea39f2ac382ff2d1417c81c",
- "CONTENT_HEAD": "025da2b50807238bbdf9a54cfc1d0ef479db7eb4",
+ "CONTENT_HEAD": "4ff19b60e6312d7b18454b5d5fdefe57093eb1d7",
  "ARCHIVE_PARENT": "025da2b50807238bbdf9a54cfc1d0ef479db7eb4",
  "PRIMARY_RCA_BEING_REPAIRED": "CORPUS_COVERAGE_GAP（V6-F1-R1 CONFIRMED, 范围限定当前 local registry + reachable provider universe）",
  "NEW_SOURCE_INVENTORY": {
@@ -345,7 +345,20 @@
   "backend/data/scholarly/corpus_manifest.json",
   "backend/data/scholarly/evidence.jsonl",
   "backend/data/scholarly/registry.jsonl",
+  "backend/scholarly_registry.py",
+  "backend/tests/test_o7d_scholarly_corpus.py",
+  "backend/tests/test_o7e_v5f2_scholarly_repair.py",
+  "backend/tools/dp_o7d_registry.py",
+  "docs/evidence/PHIAGENT_O7D_COVERAGE_MANIFEST.json",
+  "docs/evidence/PHIAGENT_O7D_CURATION_DECISIONS.json",
+  "docs/evidence/PHIAGENT_O7D_DISCOVERY_SNAPSHOT.json",
+  "docs/evidence/V6_F2_CHINESE_SCHOLARLY_CORPUS_REPAIR.json",
   "docs/tasks/PHIAGENT_O7E_V6_F2_CHINESE_CORPUS_REPAIR_TASK.md"
  ],
- "changed_files_git_diff_note": "精确等于 git diff --name-only aaca1071b6f602204ea39f2ac382ff2d1417c81c..025da2b50807238bbdf9a54cfc1d0ef479db7eb4"
+ "changed_files_git_diff_note": "精确等于 git diff --name-only aaca1071b6f602204ea39f2ac382ff2d1417c81c..4ff19b60e6312d7b18454b5d5fdefe57093eb1d7",
+ "CONTENT_COMMIT_CHAIN": [
+  "025da2b50 corpus 数据入库",
+  "4ff19b60e6312d7b18454b5d5fdefe57093eb1d7 实现文件补提交（staging 失败修正, 如实披露）"
+ ],
+ "ARCHIVE_ORDERING_NOTE": "evidence commit(47e7f3995) 因前次 staging 静默失败先于实现补提交落地; 本文件更新 changed_files/CONTENT_HEAD 至补提交后状态, 供 Reviewer 按 HEAD 复核"
 }
