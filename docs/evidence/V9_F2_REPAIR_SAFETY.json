@@ -1,0 +1,16 @@
+{
+ "V9_F2_REPAIR_SAFETY": true,
+ "BASE": "3a49fe585710a39d95d9293be01d363dc78b94d9",
+ "CONTENT_HEAD": "e017e77e86c8e084a6b84470e18f1926c52036d6",
+ "DEV_ONLY": true,
+ "FORBIDDEN_FROM_V10": true,
+ "fixes": {
+  "layer1_paraphrase_contract": "UNSAFE_PARAPHRASE_QUOTE_WRAPPER / UNSAFE_PARAPHRASE_ATTRIBUTION admission 拒绝（generic cue 扫描, 零硬编码）",
+  "layer2_semantic_gate": "LP apply 后对 effective candidate 校验 + o7e_semantic_transition 分类; GENUINELY_NEW/AMBIGUOUS × {QUOTE,CITATION,BIBLIOGRAPHIC} → 拒绝回退; REKEY/SHIFT/RELABEL 不误杀",
+  "safe_recovery": "升级反馈限定安全转述; 不收敛 → fail-closed"
+ },
+ "tests": "test_v9f2_repair_safety.py 7 场景（E2E production path 4 + admission 单元 3）",
+ "FULL_TEST_SHA": "e017e77e86c8e084a6b84470e18f1926c52036d6",
+ "FULL_TEST_RESULT": "916 passed / 0 failed @ exact CONTENT_HEAD",
+ "frozen_unchanged": "validator/quote_bound/semantic classifier/O7A judge/final gate(blob 22ea181c)/primary corpus/production model"
+}
