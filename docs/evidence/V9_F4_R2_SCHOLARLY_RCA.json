@@ -192,12 +192,13 @@
    "median": 3,
    "threshold": 3.2,
    "severe": false,
-   "root_cause": "MIXED",
-   "evidence_note": "V9-10 是唯一有 fetch 的 case(3 calls 3 results)但 score 仍低——需要区分 fetch 到的 content 是否相关/是否被回答使用; archive 无法进一步区分 → MIXED",
+   "root_cause": "NOT_RECOVERABLE",
+   "evidence_note": "V9-10 是唯一有 scholarly fetch 的 case (3 fetch calls → 3 fetch results), 但 frozen aggregate 只有 SCHOLARLY_CONTENT_EVIDENCE_COUNT=1（不是全部都形成了 content evidence）。archive 无法进一步区分: fetched content 是否相关? 是否被回答使用? 低分根因是否为回答分析不足? → 按 RCA taxonomy 合同: 无法区分具体机制 → NOT_RECOVERABLE",
    "search": 14,
    "fetch": 3,
    "records": 130,
-   "evidence_count": 3
+   "fetch_result_count": 3,
+   "content_evidence_count": 1
   },
   {
    "case_id": "V9-10",
@@ -205,12 +206,13 @@
    "median": 2,
    "threshold": 3.0,
    "severe": false,
-   "root_cause": "MIXED",
-   "evidence_note": "V9-10 是唯一有 fetch 的 case(3 calls 3 results)但 score 仍低——需要区分 fetch 到的 content 是否相关/是否被回答使用; archive 无法进一步区分 → MIXED",
+   "root_cause": "NOT_RECOVERABLE",
+   "evidence_note": "V9-10 是唯一有 scholarly fetch 的 case (3 fetch calls → 3 fetch results), 但 frozen aggregate 只有 SCHOLARLY_CONTENT_EVIDENCE_COUNT=1（不是全部都形成了 content evidence）。archive 无法进一步区分: fetched content 是否相关? 是否被回答使用? 低分根因是否为回答分析不足? → 按 RCA taxonomy 合同: 无法区分具体机制 → NOT_RECOVERABLE",
    "search": 14,
    "fetch": 3,
    "records": 130,
-   "evidence_count": 3
+   "fetch_result_count": 3,
+   "content_evidence_count": 1
   },
   {
    "case_id": "V9-10",
@@ -218,12 +220,13 @@
    "median": 2,
    "threshold": 3.4,
    "severe": false,
-   "root_cause": "MIXED",
-   "evidence_note": "V9-10 是唯一有 fetch 的 case(3 calls 3 results)但 score 仍低——需要区分 fetch 到的 content 是否相关/是否被回答使用; archive 无法进一步区分 → MIXED",
+   "root_cause": "NOT_RECOVERABLE",
+   "evidence_note": "V9-10 是唯一有 scholarly fetch 的 case (3 fetch calls → 3 fetch results), 但 frozen aggregate 只有 SCHOLARLY_CONTENT_EVIDENCE_COUNT=1（不是全部都形成了 content evidence）。archive 无法进一步区分: fetched content 是否相关? 是否被回答使用? 低分根因是否为回答分析不足? → 按 RCA taxonomy 合同: 无法区分具体机制 → NOT_RECOVERABLE",
    "search": 14,
    "fetch": 3,
    "records": 130,
-   "evidence_count": 3
+   "fetch_result_count": 3,
+   "content_evidence_count": 1
   },
   {
    "case_id": "V9-11",
@@ -323,7 +326,7 @@
   "MIXED": 3,
   "RETRIEVAL_RELEVANCE_FAILURE": 4
  },
- "FAILURE_CONCENTRATION": "MIXED_SYSTEMIC（多数 NOT_RECOVERABLE + V9-08 PRIMARY_CORPUS_GAP + V9-12 RETRIEVAL_RELEVANCE_FAILURE + V9-10 MIXED）",
+ "FAILURE_CONCENTRATION": "NOT_PROVEN",
  "DOMINANT_PROVEN_CAUSES": [
   "V9-08 PRIMARY_CORPUS_GAP（frozen run 自述）",
   "V9-12 RETRIEVAL_RELEVANCE_FAILURE（judge+answer 双确认）"
@@ -335,5 +338,8 @@
   "RETRIEVAL_RELEVANCE_FAILURE_requires": "机械证明 records 全离题——仅 V9-12 满足（judge+answer 双重确认）",
   "PRIMARY_CORPUS_GAP_requires": "frozen run 证明目标 primary text 不可用——仅 V9-08 满足"
  },
- "NOT_RECOVERABLE_COUNT": 15
+ "NOT_RECOVERABLE_COUNT": 15,
+ "concentration_note": "15/23 ≈ 65% fail cells 根因 NOT_RECOVERABLE（archive 无法区分具体机制）; 能确定的仅: V9-08 → PRIMARY_CORPUS_GAP（frozen run 自述）, V9-12 → RETRIEVAL_RELEVANCE_FAILURE（judge+answer 双确认）; 无法给整体 V9 scholarly deficit 下系统性根因结论",
+ "FETCH_CASE_ID_MECHANICALLY_PROVEN": true,
+ "fetch_case_source_pointer": "o7e_calib_V9_QUAL.json: V9-10 SCHOLARLY_SOURCE_FETCH_CALLS=3（唯一 >0 的 case）"
 }
