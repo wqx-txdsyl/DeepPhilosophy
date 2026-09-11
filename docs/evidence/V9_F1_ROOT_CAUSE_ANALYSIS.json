@@ -48,7 +48,7 @@
    "code": "UNSUPPORTED_EXACT_QUOTE",
    "locator_head": "马基雅维利语录 中收录的 论李维 大意是说 建立共和体制者应把确保公民自由的制度放在首位考虑"
   },
-  "V9_11_RAW_ATTEMPT_CHAIN_RECOVERED": true,
+  "V9_11_RAW_ATTEMPT_CHAIN_RECOVERED": "RENAMED→BOUNDED（候选正文/patch JSON 未持久化, 仅 hash/issue 级链路可恢复）",
   "chain": {
    "attempt_0": {
     "sha": "4a2cb24e3f99",
@@ -89,10 +89,16 @@
    "round1_new_quote": "c030000f0b83c4df UNSUPPORTED_EXACT_QUOTE（马基雅维利语录 中收录的 论李维…）",
    "round0_near_quote_resolved_in_round1": true
   },
-  "V9_11_EXACT_ROOT_CAUSE": "LOCAL_PATCH_PARAPHRASE_INTRODUCTION",
+  "V9_11_EXACT_ROOT_CAUSE": "NOT_RECOVERABLE",
   "V9_11_VALIDATOR_FALSE_NEW": false,
-  "reasoning": "两次 repair 均为 LOCAL_PATCH（supported）。round0 的 NEAR_QUOTE（斯巴达/威尼斯共和制度段）被 PARAPHRASE_CLAIM patch 处理后消失, 但替换正文以「马基雅维利语录中收录的《论李维》大意是说…」的逐字引文形式写入新句子 → 产生新的 UNSUPPORTED_EXACT_QUOTE 指纹。分类依据: (a) mode=LOCAL_PATCH + run 级 PARAPHRASE_INTRODUCED_QUOTE_ISSUES=1 且全 run 唯一, 机械对应 V9-11; (b) 新指纹内容与被改写段不同（公民自由 vs 斯巴达威尼斯制度）→ 分类器判 GENUINELY_NEW 正确, 非 VALIDATOR_FALSE_NEW; (c) patch apply 本身成功（文本确实改变）→ 非 PATCH_APPLICATION_BUG。注: patch JSON 原文未被 run record 持久化（有界遥测设计）, exact patch 文本不可恢复, 但 mode+issue 级机械链足以支撑分类。",
-  "answer_to_task_question": "为什么原 9 issue 大量消失时新 UNSUPPORTED_EXACT_QUOTE 首次出现: repair 1 的 LOCAL_PATCH PARAPHRASE_CLAIM 在改写近似引文段时, 模型把改写后的内容重新包装成对《论李维》的逐字引述（并新增「马基雅维利语录」出处标注）, 该新句子在库中无对应原文 → 新 UNSUPPORTED_EXACT_QUOTE; 随后 repair 2 再以 paraphrase 清除之。"
+  "reasoning": "已知（机械证明）: attempt0 9 issue → repair1 LOCAL_PATCH → 8 旧 issue 消失 + 新指纹 c030000f UNSUPPORTED_EXACT_QUOTE（GENUINELY_NEW, 分类无歧义）→ repair2 LOCAL_PATCH → 清除; REPAIR_OUTPUT_MODES=[LOCAL_PATCH,LOCAL_PATCH]; run 级 PARAPHRASE_INTRODUCED_QUOTE_ISSUES=1 唯一。推断（高证据支持但超出现存机械记录）: LOCAL_PATCH_PARAPHRASE_INTRODUCTION——patch JSON 原文未持久化, 具体改写动作文本不可恢复, 故 EXACT_ROOT_CAUSE=NOT_RECOVERABLE, 机制判断降级为 PROBABLE。",
+  "V9_11_PROBABLE_MECHANISM": "LOCAL_PATCH_PARAPHRASE_INTRODUCTION",
+  "V9_11_BOUNDED_ATTEMPT_CHAIN_RECOVERED": true,
+  "V9_11_RAW_PATCH_RECOVERED": false
  },
- "D_evidence_label": "未来 final-gate artifact 顶层使用 FINAL_V9_VERDICT（V9_FINAL_GATE.json 的 FINAL_V8_VERDICT 顶层字段名 typo 已由 Reviewer 指出; 按纪律不改写已归档 V9 artifact, 本文件起使用正确命名）"
+ "D_evidence_label": "未来 final-gate artifact 顶层使用 FINAL_V9_VERDICT（V9_FINAL_GATE.json 的 FINAL_V8_VERDICT 顶层字段名 typo 已由 Reviewer 指出; 按纪律不改写已归档 V9 artifact, 本文件起使用正确命名）",
+ "V9_11_EXACT_ROOT_CAUSE": "NOT_RECOVERABLE",
+ "V9_11_PROBABLE_MECHANISM": "LOCAL_PATCH_PARAPHRASE_INTRODUCTION",
+ "V9_11_BOUNDED_ATTEMPT_CHAIN_RECOVERED": true,
+ "V9_11_RAW_PATCH_RECOVERED": false
 }
