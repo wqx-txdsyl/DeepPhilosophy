@@ -1,0 +1,99 @@
+{
+ "V9_F3_R1_CORRECTION": true,
+ "R1_BASE": "49403ea580f3f157dbb8461174b516ca71852e22",
+ "A_historical_artifact_restored": {
+  "file": "docs/evidence/V9_QUALIFICATION_SUMMARY.json",
+  "action": "逐字节恢复到 pre-F3 版本（删除 F3 误加的 V9_F3_recovery_note 字段）",
+  "HISTORICAL_V9_SUMMARY_RESTORED": true,
+  "V9_QUALIFICATION_SUMMARY_BLOB_EQUALS_PRE_F3": true
+ },
+ "B_recovered_metric_correction": {
+  "ARGUMENT_RECONSTRUCTION_REQUIRED_MEAN": 3.182,
+  "ARGUMENT_RECONSTRUCTION_THRESHOLD": 3.2,
+  "ARGUMENT_RECONSTRUCTION_GATE": "FAIL",
+  "five_required_dimension_means": {
+   "TEXTUAL_GROUNDING_REQUIRED_MEAN": 3.0,
+   "THRESHOLD": 3.2,
+   "GATE": "FAIL",
+   "ARGUMENT_RECONSTRUCTION_REQUIRED_MEAN": 3.182,
+   "INTERPRETIVE_PLURALITY_REQUIRED_MEAN": 2.125,
+   "HISTORICAL_DISCIPLINE_REQUIRED_MEAN": 2.929,
+   "LITERATURE_ORIENTATION_REQUIRED_MEAN": 2.75
+  },
+  "ALL_FIVE_REQUIRED_MEAN_GATES_FAIL": true
+ },
+ "C_median_lt2_definition": {
+  "REQUIRED_DIMENSION_MEDIAN_LT_2": 9,
+  "DEFINITION": "count of published-case × manifest-REQUIRED-dimension cells whose 3-vote median score is < 2（case×dimension 单元计数, 非维度计数）",
+  "units": [
+   {
+    "case": "V9-03",
+    "dims_lt2": [
+     "interpretive_plurality"
+    ]
+   },
+   {
+    "case": "V9-09",
+    "dims_lt2": []
+   },
+   {
+    "case": "V9-10",
+    "dims_lt2": [
+     "interpretive_plurality",
+     "historical_discipline",
+     "literature_orientation"
+    ]
+   },
+   {
+    "case": "V9-11",
+    "dims_lt2": [
+     "interpretive_plurality",
+     "historical_discipline",
+     "literature_orientation"
+    ]
+   },
+   {
+    "case": "V9-12",
+    "dims_lt2": [
+     "interpretive_plurality",
+     "historical_discipline",
+     "literature_orientation"
+    ]
+   },
+   {
+    "case": "V9-13",
+    "dims_lt2": [
+     "interpretive_plurality",
+     "historical_discipline",
+     "literature_orientation"
+    ]
+   },
+   {
+    "case": "V9-14",
+    "dims_lt2": [
+     "interpretive_plurality",
+     "historical_discipline",
+     "literature_orientation"
+    ]
+   }
+  ],
+  "note": "9 = interp(2)+hist(2)+lit(2) 等 case×dim 单元合计; 非维度计数"
+ },
+ "D_preserved_valid_measurement": {
+  "SCHOLARLY_RECOVERY_VALID": true,
+  "EVALUATION_INVALID": false,
+  "JUDGE_CASES_VALID": "14/14",
+  "TOTAL_JUDGE_CALLS": 42,
+  "VALID_VOTES": 42,
+  "RECOVERED_SCHOLARLY_GATE": "FAIL",
+  "FATAL_CLASSES": 0,
+  "V9_JUDGE_RERUN": false
+ },
+ "E_interpretation_corrections": {
+  "ARGUMENT_RECONSTRUCTION_GATE": "FAIL（3.182 < 3.20; F3 receipt 曾误标 ≥3.20——冻结 gate FAILED_GATES 已正确列出）",
+  "systematic_deficit": "五个 required dimension mean 全部低于冻结阈值 → V9 暴露的是系统性 scholarly-quality deficit, 而非 literature/plurality 局部问题"
+ },
+ "PRODUCTION_CHANGED": false,
+ "V9_JUDGE_RERUN": false,
+ "V9_PRODUCTION_RERUN": false
+}
