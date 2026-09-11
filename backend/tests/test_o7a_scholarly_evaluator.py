@@ -236,11 +236,19 @@ def test_t19_no_production_diff_vs_base():
                        cwd=REPO, capture_output=True)
     assert r.returncode == 0, "backend/routes 相对 V5-F2 授权基线 554d62fac 有未授权改动"
     # O7-E 解冻: engine prompt / agents persona 工具面 授权改动落地 commit 之后冻结
-    for rel, base in (("backend/engine_langgraph.py", "a4eede928cfe71b3206c8cbfb9ebe673600bb124"),   # V7-F2 repair 纪律+observability 授权点
-                      ("backend/agents.py", "2c87ce397")):
-        r = subprocess.run(["git", "diff", "--quiet", base, "--", rel],
-                           cwd=REPO, capture_output=True)
-        assert r.returncode == 0, f"{rel} 相对 O7-E 授权基线有未授权改动"
+    # V7-F2-R1: engine 基线由 commit-SHA 改为内容哈希——R1 拓扑要求单一 CONTENT_HEAD
+    # （impl+tests 同提交）, commit-SHA 基线无法在同一提交内自引用; 哈希基线等强:
+    # 此后任何未授权 engine 漂移立即失败。授权依据 = R1 任务书（2026-09-11,
+    # V7-F2-R1 Semantic Observability Closure: 8 字段快照 + semantic_transition 持久化）。
+    import hashlib as _hl
+    _ENGINE_R1_SHA256 = "bc21100d7ba70c1e218257845e70f0970f138bd709bfef166029b953fc672bc3"
+    _eng_src = open(os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "engine_langgraph.py"), encoding="utf-8").read()
+    assert _hl.sha256(_eng_src.encode("utf-8")).hexdigest() == _ENGINE_R1_SHA256, \
+        "engine_langgraph.py 相对 V7-F2-R1 授权基线有未授权漂移"
+    r = subprocess.run(["git", "diff", "--quiet", "2c87ce397", "--", "backend/agents.py"],
+                       cwd=REPO, capture_output=True)
+    assert r.returncode == 0, "backend/agents.py 相对 O7-E 授权基线有未授权改动"
 
 
 # ── T20 — Q2 交付基线冻结正确（§25）─────────────────────────────

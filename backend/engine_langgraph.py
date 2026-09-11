@@ -25,6 +25,7 @@ import agents as AGENTS     # 智能体注册表（智能体广场: 通用 + 哲
 import agent_runtime as AR  # Phase A: tool loop 治理（观测/去重/预算/重试/终止）单一真源
 import tool_contracts as TC  # Phase T: 工具架构（taxonomy/mermaid/措辞净化/所有权审计）
 import quote_bound as QB     # Phase T.1: 逐字引文绑定（Quote Bound / T1.1-D~H）
+import o7e_semantic_transition as ST  # V7-F2-R1 §3: 确定性语义转移分类（零 LLM）
 from evidence_contract import EvidenceState  # O5: 执行事实登记（Evidence Store）
 
 # ── LLM（OpenAI 兼容; 智谱 glm-4-flash 免费 / DeepSeek 思考模式）──
@@ -1399,6 +1400,29 @@ def _issue_fingerprint(code, locator, evidence_ref=None):
     ).hexdigest()[:16]
 
 
+def _issue_snapshot(round_id, issue):
+    """V7-F2-R1 §2: per-round semantic identity snapshot（8 字段合同）。
+
+    round_id / fingerprint / issue_code / semantic_family / normalized_locator /
+    evidence_ref / source_record_id / citation_or_quote_target_id——validator
+    不产生的字段显式 null（不得省略键）。有界: 无 CoT / 无候选正文 / 无
+    repair prompt / 无大段 evidence 正文。"""
+    i = issue or {}
+    code = i.get("code")
+    locator = i.get("locator") or ""
+    ev = i.get("evidence_ref")
+    return {
+        "round_id": round_id,
+        "fingerprint": _issue_fingerprint(code, locator, ev),
+        "issue_code": code,
+        "semantic_family": ST.semantic_family(code),
+        "normalized_locator": ST.normalize_locator(locator),
+        "evidence_ref": ev,
+        "source_record_id": i.get("source_record_id"),
+        "citation_or_quote_target_id": i.get("citation_or_quote_target_id"),
+    }
+
+
 def _scholarly_call_snapshot(name, result):
     """V5-F2-R1.1 §2: scholarly 工具原调用即时 provenance 快照。
 
@@ -1835,16 +1859,23 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 language=language)
             val_dict = validation.as_dict()
             _val_issues = val_dict.get("issues", [])
+            # V7-F2-R1 §2: 完整语义身份快照（8 字段, 缺失显式 null）
+            _cur_details = [_issue_snapshot(len(_val_history), i)
+                            for i in _val_issues]
+            # V7-F2-R1 §3: 逐轮语义转移分类即时持久化（真源=上一轮快照;
+            # INITIAL 轮无 transition → 显式 null; 零 LLM, AMBIGUOUS fail-closed）
+            _sem_trans = (ST.classify_transition(
+                _val_history[-1]["issue_details"], _cur_details)
+                if _val_history else None)
             _val_history.append({
                 "attempt_index": len(_val_history), "ok": bool(validation.ok),
                 "issue_codes": [i.get("code") for i in _val_issues],
                 # V7-F2 原则5: 逐轮语义 observability——bounded 明细（无正文）,
                 # 修复 V7-F1 中「introduced 指纹语义不可恢复」的观测缺口
-                "issue_details": [
-                    {"code": (i or {}).get("code"),
-                     "locator": ((i or {}).get("locator") or "")[:200],
-                     "evidence_ref": (i or {}).get("evidence_ref")}
-                    for i in _val_issues],
+                "issue_details": _cur_details,
+                # V7-F2-R1 §3: 本轮相对上一轮的语义转移分类（新增第二层,
+                # 不覆盖 legacy fingerprint set-difference）
+                "semantic_transition": _sem_trans,
                 # FINAL-DIAG §4: 每个 validation state 的 live fingerprint——
                 # runner 由此做 R1/R2 集合差（真源=_val_history, 不从 trace 猜）
                 "issue_fingerprints": [

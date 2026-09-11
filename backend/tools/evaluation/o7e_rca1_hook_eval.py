@@ -25,6 +25,7 @@ sys.path.insert(0, os.path.join(ROOT, "backend", "tools", "evaluation"))
 import engine_langgraph as EG
 import repair_context as RC
 import quote_bound as QB
+import o7e_semantic_transition as ST  # V7-F2-R1 §4: 语义转移计数聚合
 import o7e_candidate_config as CC
 import routes.agent as AG
 
@@ -54,6 +55,19 @@ def classify_history(hist):
                         "persisted": sorted(before & after),
                         "introduced": sorted(after - before)}
     return out
+
+
+def semantic_transition_counts(hist):
+    """V7-F2-R1 §4: 语义转移六项计数——聚合 engine 逐轮持久化的
+    semantic_transition.summary; 键名按 R1 任务书逐字（AMBIGUOUS fail-closed
+    语义由 o7e_semantic_transition.transition_is_fail_closed 锁定）。"""
+    summaries = [(h.get("semantic_transition") or {}).get("summary")
+                 for h in (hist or [])]
+    counts = ST.dev_probe_counts(summaries)
+    counts["SEMANTIC_TRANSITION_FAIL_CLOSED"] = any(
+        ST.transition_is_fail_closed((h.get("semantic_transition") or {}).get("summary"))
+        for h in (hist or []))
+    return counts
 
 
 QUOTE_CODES = {"UNSUPPORTED_EXACT_QUOTE", "NEAR_QUOTE_NOT_MARKED", "STITCHED_QUOTE"}
@@ -125,6 +139,9 @@ def case_result(case_id, evs):
                                (int, float))]
     cls = classify_history(hist)
     by_copy, by_para, para_introduced = resolution_attribution(cls, hist, trace)
+    # V7-F2-R1 §4: 语义转移六项计数（engine 逐轮持久化的 semantic_transition
+    # 聚合; 纯 additive——legacy fingerprint_classification 原样保留）
+    sem_counts = semantic_transition_counts(hist)
     all_patch_actions = [a for t in lp_used
                          for a in (t["local_patch"].get("actions") or [])] + \
                         [a for f in fin_rows
@@ -138,6 +155,7 @@ def case_result(case_id, evs):
             "repairs": val.get("repairs_used", 0),
             "issue_counts": [len(h.get("issue_codes") or []) for h in hist],
             "fingerprint_classification": cls,
+            "SEMANTIC_TRANSITION_COUNTS": sem_counts,
             "PREP_ANCHOR_TOTAL": prep_total,
             "PREP_ANCHOR_RESOLVED": prep_res,
             "LP_ANCHOR_TOTAL": lp_total,
