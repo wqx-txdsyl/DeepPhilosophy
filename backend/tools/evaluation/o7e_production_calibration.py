@@ -119,6 +119,17 @@ def run_case_production(case, mk_normal, mk_repair):
     cls_all = tel.get("fingerprint_classification") or {}
     repair_new_fatal = 1 if any((cls_all.get(f"R{k}") or {}).get("introduced")
                                 for k in range(1, 8)) else 0
+    # V7-F2 原则3（prospective 指标版本化）: 把「introduced」拆分为 transient
+    # （terminal 前已被清除）与 persisted（终态仍存活）。旧字段
+    # REPAIR_CREATES_NEW_FATAL_ERROR 原样保留（V7 冻结语义不变）;
+    # 新字段仅供 V8+ 预注册使用, 不进入任何现有 gate。
+    _vh_hist = (done.get("validation") or {}).get("history") or []
+    _term_fps = set(_vh_hist[-1].get("issue_fingerprints") or []) if _vh_hist else set()
+    _intro_fps = set()
+    for _rk in (cls_all or {}).values():
+        _intro_fps.update(_rk.get("introduced") or [])
+    _intro_persisted = sorted(_intro_fps & _term_fps)
+    _intro_transient = sorted(_intro_fps - _term_fps)
     record = {"case_id": case["case_id"],
               "question": case["question"],
               "task_category": case.get("category") or case.get("task_category"),
@@ -137,12 +148,18 @@ def run_case_production(case, mk_normal, mk_repair):
                   "final_validation_issue_codes": final_codes[:6],
               },
               "errors": [str(e.get("content") or "")[:200] for e in errors][:3],
+              "validation_history": (done.get("validation") or {}).get("history") or [],
               "citations": _as_list(done.get("citations")),
               "quote_bound": _as_list(done.get("quote_bound")),
               "evidence_digest": _ev_digest(done.get("evidence")) if done else None,
               "scholarly_provenance": scholarly_provenance,
               "scholarly_calls_detail": scholarly_calls_detail,
               "STITCHED_PUBLIC_QUOTES": stitched_public,
+              "REPAIR_INTRODUCED_FINGERPRINTS_TOTAL": len(_intro_fps),
+              "REPAIR_INTRODUCED_PERSISTED_FINGERPRINTS": len(_intro_persisted),
+              "REPAIR_INTRODUCED_PERSISTED_IDS": _intro_persisted,
+              "REPAIR_INTRODUCED_TRANSIENT_FINGERPRINTS": len(_intro_transient),
+              "REPAIR_INTRODUCED_TRANSIENT_IDS": _intro_transient,
               "REPAIR_CREATES_NEW_FATAL_ERROR": repair_new_fatal,
               "TOOL_LOOP_ABORTS": tool_loop_aborts,
               # PF-RP4 §3: 真实工具选择轨迹（declared tool 序列, 机械事实）

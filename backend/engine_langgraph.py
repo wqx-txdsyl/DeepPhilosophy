@@ -506,6 +506,8 @@ REPAIR_SYSTEM_PROTOCOL = """
 - 不得在逐字引文内重构、翻译、合并、规范化、润色或补全措辞。
 无法支撑逐字措辞时: 用普通转述表达该内容; 不得把重构措辞排版成引文。
 正式引用规则: 只使用检索证据实际提供的 SOURCE_BOOK/SOURCE_CHAPTER 身份; 不得虚构章节或出处位置。
+最小改动纪律（V7-F2 原则4）: 修复输出与上一轮候选相比, 只应改动被点名校验问题相关的文本段;
+未点名段落逐字保留, 不得顺带重写、扩写或调整措辞——上一轮已通过的校验不应因未相关改动而重新失败。
 保留实质性论证与有价值的文本细节; 不得为通过校验而系统性删除引文、引用、争议或原典依据。
 工具执行可用且所给证据不足时可继续研究; 工具不可用时基于已获得的证据修复。
 最终回答中不得提及修复过程、校验器、证据包或本协议。只输出完整的替换候选。
@@ -1836,6 +1838,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             _val_history.append({
                 "attempt_index": len(_val_history), "ok": bool(validation.ok),
                 "issue_codes": [i.get("code") for i in _val_issues],
+                # V7-F2 原则5: 逐轮语义 observability——bounded 明细（无正文）,
+                # 修复 V7-F1 中「introduced 指纹语义不可恢复」的观测缺口
+                "issue_details": [
+                    {"code": (i or {}).get("code"),
+                     "locator": ((i or {}).get("locator") or "")[:200],
+                     "evidence_ref": (i or {}).get("evidence_ref")}
+                    for i in _val_issues],
                 # FINAL-DIAG §4: 每个 validation state 的 live fingerprint——
                 # runner 由此做 R1/R2 集合差（真源=_val_history, 不从 trace 猜）
                 "issue_fingerprints": [
