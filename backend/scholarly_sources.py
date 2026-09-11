@@ -917,8 +917,10 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
 
     canon = relevant
     canon.sort(key=lambda r: -(r.get("provider_records", [{}])[0].get("cited_by") or 0))
-    # V9-F5 §1: LOCAL_CURATED 也过同一 relevance gate（两层合同对等）
-    local_raw = _local_results(q, limit)
+    # V9-F5-R1 §3: LOCAL_CURATED 参与 bounded reformulation（与 live 对等）
+    local_raw = _local_results(q, limit, strict_only=True)
+    if local_raw and (q_latin or q_bigrams):
+        local_raw = [r for r in local_raw if _is_relevant(q_latin, q_bigrams, r)]
     if local_raw and (q_latin or q_bigrams):
         local_rel = [r for r in local_raw if _is_relevant(q_latin, q_bigrams, r)]
         local = local_rel

@@ -152,7 +152,7 @@ def search_local(query, limit=8, strict_only=False):
     need = 1.0 if len(tl) <= 2 else 0.6
     strict = [c for c in cand if c["_term_coverage"] + 1e-9 >= need]
     (strict or cand).sort(key=lambda c: (-c["_term_coverage"], c["_bm25"]))
-    result = (strict if strict_only and strict else (strict or cand))[:limit]
+    result = (strict if strict_only else (strict or cand))[:limit]
     return result
 
 
