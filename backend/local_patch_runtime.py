@@ -33,7 +33,7 @@ QUOTE_CODES = {"UNSUPPORTED_EXACT_QUOTE", "NEAR_QUOTE_NOT_MARKED", "STITCHED_QUO
 #   非空 span（防止 '' 空引号空触发）;
 # - cue 收敛任务书清单: 原文写道/原文说/语录/第N章/第N页/p.N;
 #   普通转述动词（写道/指出/认为/主张/曾说）不拦。
-_PARAPHRASE_WRAPPER_RE = re.compile("[\u300c\u300d\u300e\u300f\u201c\u201d]")
+_PARAPHRASE_WRAPPER_RE = re.compile("[\u300c\u300d\u300e\u300f\u201c\u201d\u0022]")
 # 成对单引号（ASCII 对 + typographic ‘’ 对）: opening 前不得是字母（词内缩约/
 # 所有格如 doesn't/Arendt's/students' 的 apostrophe 词邻字母 → 不构成 opening）,
 # closing 后不得是字母; 中间非空非换行 → quotation wrapper。零 NER/零 LLM。

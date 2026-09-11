@@ -1496,10 +1496,12 @@ def evaluate_repair_safety(pre_details, post_candidate, raw_tool_log, tool_log,
       - REKEY/SHIFT/RELABEL/PERSISTED → 不拒绝（不误杀）
     任何内部异常 → fail-closed（拒绝 + SAFETY_GATE_ERROR, 绝不 fail-open）。
     返回 dict:
-      rejection_kind: GENUINELY_NEW_EVIDENCE / AMBIGUOUS / SAFETY_GATE_ERROR
-        （三类互斥——遥测分层计数: NEW_ISSUE/AMBIGUOUS/GATE_ERROR 互不加数,
-        AMBIGUOUS 不冒充 GENUINELY_NEW, 门异常不冒充新 issue）
-      rejected/families/fingerprints/ambiguous_fps/failure_class/exception_class。"""
+      rejection_kind: GENUINELY_NEW_EVIDENCE / AMBIGUOUS / SAFETY_GATE_ERROR / None
+      new_evidence_fps + families: evidence 家族 GENUINELY_NEW 指纹
+      ambiguous_fps + ambiguous_families: AMBIGUOUS 指纹
+      （R3 §2: mixed transition 时两类并行返回——NEW_ISSUE/AMBIGUOUS 遥测
+      各自计数, 不互相冒充/丢失; SAFETY_GATE_ERROR 仍独立计数）
+      rejected/failure_class/exception_class。"""
     from final_validator import validate_final_candidate   # 与 stream_agent 同一惰性
     try:
         _safety_val = validate_final_candidate(
@@ -1522,22 +1524,20 @@ def evaluate_repair_safety(pre_details, post_candidate, raw_tool_log, tool_log,
             if _fam in ("QUOTE", "CITATION", "BIBLIOGRAPHIC"):
                 _new_fps.append(_fp)
                 _new_fams.append(_fam)
-        if _new_fps:
-            return {"rejected": True, "rejection_kind": "GENUINELY_NEW_EVIDENCE",
-                    "families": _new_fams, "fingerprints": _new_fps,
-                    "ambiguous_fps": [], "failure_class": None,
-                    "exception_class": None}
-        if _ambig_fps:
-            return {"rejected": True, "rejection_kind": "AMBIGUOUS",
-                    "families": _ambig_fams, "fingerprints": _ambig_fps,
-                    "ambiguous_fps": _ambig_fps, "failure_class": None,
-                    "exception_class": None}
-        return {"rejected": False, "rejection_kind": None, "families": [],
-                "fingerprints": [], "ambiguous_fps": [], "failure_class": None,
-                "exception_class": None}
+        # R3 §2: mixed transition 两类并行返回, 不互斥丢失
+        rejected = bool(_new_fps or _ambig_fps)
+        return {"rejected": rejected,
+                "rejection_kind": ("GENUINELY_NEW_EVIDENCE" if _new_fps
+                                   else "AMBIGUOUS" if _ambig_fps else None),
+                "families": _new_fams + _ambig_fams,
+                "fingerprints": _new_fps + [a for a in _ambig_fps],
+                "new_evidence_fps": _new_fps,
+                "ambiguous_fps": _ambig_fps,
+                "failure_class": None, "exception_class": None}
     except Exception as e:
         return {"rejected": True, "rejection_kind": "SAFETY_GATE_ERROR",
                 "families": [], "fingerprints": [], "ambiguous_fps": [],
+                "new_evidence_fps": [], "ambiguous_fps": [],
                 "failure_class": "SAFETY_GATE_ERROR",
                 "exception_class": type(e).__name__,
                 "detail": str(e)[:160]}
@@ -2387,22 +2387,21 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         # AMBIGUOUS → AMBIGUOUS 计数（不冒充 GENUINELY_NEW）;
                         # SAFETY_GATE_ERROR → GATE_ERROR += 1（不冒充新 issue）。
                         _kind = _safety.get("rejection_kind")
-                        if _kind == "GENUINELY_NEW_EVIDENCE":
-                            _repair_safety_rejected_new += len(
-                                _safety.get("fingerprints") or [])
+                        if _kind == "SAFETY_GATE_ERROR":
+                            _repair_safety_gate_error += 1
+                        else:
+                            # R3 §2: mixed transition 两类并行计数, 不互斥丢失
+                            _new_e = _safety.get("new_evidence_fps") or []
+                            _amb = _safety.get("ambiguous_fps") or []
+                            _repair_safety_rejected_new += len(_new_e)
+                            _repair_safety_rejected_ambiguous += len(_amb)
                             _repair_safety_rejected_families.extend(
                                 _safety.get("families") or [])
-                            _repair_safety_rejected_fps.extend(
-                                _safety.get("fingerprints") or [])
-                        elif _kind == "AMBIGUOUS":
-                            _repair_safety_rejected_ambiguous += len(
-                                _safety.get("ambiguous_fps") or []) or 1
-                        else:
-                            _repair_safety_gate_error += 1
+                            _repair_safety_rejected_fps.extend(_new_e + _amb)
                         if _repair_trace:
                             _repair_trace[-1]["repair_safety_rejected"] = {
                                 "rejection_kind": _kind,
-                                "new_fingerprints": _safety.get("fingerprints") or [],
+                                "new_evidence_fps": _safety.get("new_evidence_fps") or [],
                                 "ambiguous_fps": _safety.get("ambiguous_fps") or [],
                                 "families": _safety.get("families") or [],
                                 "failure_class": _safety.get("failure_class"),

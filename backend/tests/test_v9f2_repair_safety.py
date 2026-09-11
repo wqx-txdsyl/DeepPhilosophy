@@ -364,3 +364,120 @@ def test_r2_e2e_safety_gate_error_engine_fail_closed(monkeypatch):
     assert "CITATION" not in new_issue_families
     assert tel.get("REPAIR_NO_OP_COUNT", 0) == 0
     # fail-closed 后 safety escalation → 安全第二修收敛发布（非语义 error 路径也可）
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F2-R3 §1: 四种 wrapper 形态边界（ASCII/curly 双引号 + 成对单引号）
+# ═══════════════════════════════════════════════════════
+def test_r3_ascii_double_quote_rejected():
+    assert LPR._unsafe_paraphrase_scan(json.dumps(
+        {"patches": [{"issue_id": "vi_1", "action": "PARAPHRASE_CLAIM",
+                      "replacement_text": "\"will to power\" 是核心。"}]})) is not None
+
+
+def test_r3_curly_double_quote_rejected():
+    assert LPR._unsafe_paraphrase_scan(json.dumps(
+        {"patches": [{"issue_id": "vi_1", "action": "PARAPHRASE_CLAIM",
+                      "replacement_text": "“will to power” 是核心。"}]})) is not None
+
+
+def test_r3_ascii_single_quote_rejected():
+    assert LPR._unsafe_paraphrase_scan(json.dumps(
+        {"patches": [{"issue_id": "vi_1", "action": "PARAPHRASE_CLAIM",
+                      "replacement_text": "'will to power' 是核心。"}]})) is not None
+
+
+def test_r3_curly_single_quote_rejected():
+    assert LPR._unsafe_paraphrase_scan(json.dumps(
+        {"patches": [{"issue_id": "vi_1", "action": "PARAPHRASE_CLAIM",
+                      "replacement_text": "‘will to power’ 是核心。"}]})) is not None
+
+
+def test_r3_unpaired_single_quote_safe():
+    assert LPR._unsafe_paraphrase_scan("他说：'will to pow") is None
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F2-R3 §2: mixed transition（GENUINELY_NEW + AMBIGUOUS 并存）
+# ═══════════════════════════════════════════════════════
+def test_r3_mixed_transition_both_counted(monkeypatch):
+    import final_validator as FV
+    import engine_langgraph as EG
+    import o7e_semantic_transition as STmod
+
+    fp_a = EG._issue_fingerprint("UNSUPPORTED_EXACT_QUOTE", "新引文", None)
+    fp_b = EG._issue_fingerprint("UNKNOWN_CODE", "另一处", None)
+    pre = [{"fingerprint": "cccccccccccccccc", "issue_code": "UNSUPPORTED_EXACT_QUOTE",
+            "semantic_family": "QUOTE", "normalized_locator": "旧引文",
+            "evidence_ref": None, "round_id": 0, "source_record_id": None,
+            "citation_or_quote_target_id": None}]
+    post = [
+        {"fingerprint": fp_a, "issue_code": "UNSUPPORTED_EXACT_QUOTE",
+         "semantic_family": "QUOTE", "normalized_locator": "新引文",
+         "evidence_ref": None, "round_id": 1, "source_record_id": None,
+         "citation_or_quote_target_id": None},
+        {"fingerprint": fp_b, "issue_code": "UNKNOWN_CODE",
+         "semantic_family": "UNKNOWN", "normalized_locator": "另一处",
+         "evidence_ref": None, "round_id": 1, "source_record_id": None,
+         "citation_or_quote_target_id": None}]
+
+    class _FV:
+        def as_dict(self_inner):
+            return {"issues": [{"code": "UNSUPPORTED_EXACT_QUOTE",
+                                "locator": "新引文"},
+                               {"code": "UNKNOWN_CODE",
+                                "locator": "另一处"}]}
+
+    monkeypatch.setattr(FV, "validate_final_candidate",
+                        lambda candidate, **kw: _FV())
+    monkeypatch.setattr(EG.ST, "classify_transition",
+                        lambda p, c: {"introduced_class": {
+                            fp_a: EG.ST.GENUINELY_NEW_ISSUE,
+                            fp_b: EG.ST.AMBIGUOUS}, "summary": {}})
+    r = EG.evaluate_repair_safety(pre, post, [], [], "zh", 1)
+    assert r["rejected"] is True
+    assert r["new_evidence_fps"] == [fp_a]
+    assert r["ambiguous_fps"] == [fp_b]
+    assert r["rejection_kind"] == "GENUINELY_NEW_EVIDENCE"
+
+
+def test_r3_engine_telemetry_mixed_transition(monkeypatch):
+    import final_validator as FV
+    """engine telemetry integration: 1 new evidence + 1 ambiguous →
+    NEW_ISSUE == 1 且 AMBIGUOUS == 1 且 GATE_ERROR == 0"""
+    import engine_langgraph as EG
+    fp_a = EG._issue_fingerprint("UNSUPPORTED_EXACT_QUOTE", "新引文", None)
+    fp_b = EG._issue_fingerprint("UNKNOWN_CODE", "另一处", None)
+    pre = [{"fingerprint": "cccccccccccccccc", "issue_code": "UNSUPPORTED_EXACT_QUOTE",
+            "semantic_family": "QUOTE", "normalized_locator": "旧引文",
+            "evidence_ref": None, "round_id": 0, "source_record_id": None,
+            "citation_or_quote_target_id": None}]
+    post = [
+        {"fingerprint": fp_a, "issue_code": "UNSUPPORTED_EXACT_QUOTE",
+         "semantic_family": "QUOTE", "normalized_locator": "新引文",
+         "evidence_ref": None, "round_id": 1, "source_record_id": None,
+         "citation_or_quote_target_id": None},
+        {"fingerprint": fp_b, "issue_code": "UNKNOWN_CODE",
+         "semantic_family": "UNKNOWN", "normalized_locator": "另一处",
+         "evidence_ref": None, "round_id": 1, "source_record_id": None,
+         "citation_or_quote_target_id": None}]
+
+    class _FV:
+        def as_dict(self_inner):
+            return {"issues": [{"code": "UNSUPPORTED_EXACT_QUOTE",
+                                "locator": "新引文"},
+                               {"code": "UNKNOWN_CODE",
+                                "locator": "另一处"}]}
+
+    monkeypatch.setattr(FV, "validate_final_candidate",
+                        lambda candidate, **kw: _FV())
+    monkeypatch.setattr(EG.ST, "classify_transition",
+                        lambda p, c: {"introduced_class": {
+                            fp_a: EG.ST.GENUINELY_NEW_ISSUE,
+                            fp_b: EG.ST.AMBIGUOUS}, "summary": {}})
+    r = EG.evaluate_repair_safety(pre, post, [], [], "zh", 1)
+    # engine 拒绝分支按 new_evidence_fps/ambiguous_fps 分别计数
+    new_n = len(r.get("new_evidence_fps") or [])
+    amb_n = len(r.get("ambiguous_fps") or [])
+    assert r["rejected"] is True
+    assert new_n == 1 and amb_n == 1
