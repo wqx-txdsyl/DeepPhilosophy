@@ -98,7 +98,13 @@ def _call(prompt):
 
 
 def _parse_verdict(content, finish_reason=None):
-    """content → verdict dict; 失败抛 JudgeCallFailure（CONTENT_JSON_PARSE_ERROR）。"""
+    """content → verdict dict（仅 JSON decode 层）。
+
+    V9-F1-R1 §2: decode 失败 → CONTENT_JSON_PARSE_ERROR（attempt 内可重试）;
+    decode 成 dict 后的 schema/application 校验仍由 canonical
+    O7A.validate_verdict + manifest applicability 下游负责（旧 measurement
+    chain 行为, 不新增 LLM retry）; 结构性缺失仅记 VERDICT_SCHEMA_INVALID
+    观测事实, 不改变流程。"""
     try:
         verdict = json.loads(content)
     except Exception as e:
@@ -109,14 +115,14 @@ def _parse_verdict(content, finish_reason=None):
             response_sha256=hashlib.sha256(content.encode("utf-8")).hexdigest(),
             finish_reason=finish_reason,
             content_prefix=prefix)
-    if not isinstance(verdict, dict) or "dimensions" not in verdict:
-        raise JudgeCallFailure(
-            "VERDICT_SCHEMA_INVALID", "verdict missing dimensions",
-            response_chars=len(content),
-            response_sha256=hashlib.sha256(content.encode("utf-8")).hexdigest(),
-            finish_reason=finish_reason,
-            content_prefix=str(content)[:300])
     return verdict
+
+
+def _verdict_schema_observation(verdict):
+    """schema 结构观测（不改流程）: dict 且缺 dimensions → VERDICT_SCHEMA_INVALID。"""
+    if not isinstance(verdict, dict) or "dimensions" not in verdict:
+        return "VERDICT_SCHEMA_INVALID"
+    return None
 
 
 def _materialize_read_chapters(r, max_chapters=None):
@@ -443,12 +449,14 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
         prompt = O7A.render_judge_prompt(inp)
         votes, attempt_log = [], []
         for k in range(3):
-            content = None
-            fin = None
+            verdict = None
+            # V9-F1-R1 §1: 恢复历史 retry 语义——每 vote 最多 3 attempt,
+            # HTTP/超时/外层解析/空内容/content JSON decode 任一步失败都记
+            # taxonomy 并消耗该 attempt（仍有额度则 retry）; schema 观测
+            # （VERDICT_SCHEMA_INVALID）只记录, 不引入新 retry, 不改流程。
             for attempt in range(3):
                 try:
                     content, fin = _call(prompt)
-                    break
                 except JudgeCallFailure as jf:
                     attempt_log.append({
                         "case_id": cid, "vote_index": k,
@@ -460,6 +468,8 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
                         "response_chars": jf.response_chars,
                         "response_sha256": jf.response_sha256,
                         "content_prefix": jf.content_prefix})
+                    time.sleep(2 * (attempt + 1))
+                    continue
                 except Exception as e:   # 非预期异常兜底（不吞具体类型信息）
                     attempt_log.append({
                         "case_id": cid, "vote_index": k,
@@ -467,26 +477,32 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
                         "failure_class": "UNKNOWN",
                         "exception_class": type(e).__name__,
                         "detail": str(e)[:200]})
-                time.sleep(2 * (attempt + 1))
-            if content is None:
-                votes.append(None)
-                if attempt_log:
-                    attempt_log[-1]["vote_final_failure_classes"] = \
-                        [a["failure_class"] for a in attempt_log
-                         if a.get("vote_index") == k]
-                continue
-            try:
-                votes.append(_parse_verdict(content, fin))
-            except JudgeCallFailure as jf:
-                attempt_log.append({
-                    "case_id": cid, "vote_index": k, "attempt_index": -1,
-                    "failure_class": jf.failure_class,
-                    "exception_class": jf.exception_class,
-                    "finish_reason": jf.finish_reason,
-                    "response_chars": jf.response_chars,
-                    "response_sha256": jf.response_sha256,
-                    "content_prefix": jf.content_prefix})
-                votes.append(None)
+                    time.sleep(2 * (attempt + 1))
+                    continue
+                try:
+                    verdict = _parse_verdict(content, fin)
+                except JudgeCallFailure as jf:
+                    attempt_log.append({
+                        "case_id": cid, "vote_index": k,
+                        "attempt_index": attempt,
+                        "failure_class": jf.failure_class,
+                        "exception_class": jf.exception_class,
+                        "http_status": jf.http_status,
+                        "finish_reason": jf.finish_reason,
+                        "response_chars": jf.response_chars,
+                        "response_sha256": jf.response_sha256,
+                        "content_prefix": jf.content_prefix})
+                    time.sleep(2 * (attempt + 1))
+                    continue
+                _schema_obs = _verdict_schema_observation(verdict)
+                if _schema_obs:
+                    attempt_log.append({
+                        "case_id": cid, "vote_index": k,
+                        "attempt_index": attempt,
+                        "failure_class": _schema_obs,
+                        "observation_only": True})
+                break   # 本 attempt 成功取得 verdict（schema 校验在下游 canonical 层）
+            votes.append(verdict)
         # PF-RP3A §A: vote 级机械校验——applicability 必须等于 manifest 预注册;
         # REQUIRED 维必须给数值分, 否则该票 invalid（不静默采信 judge 自判）
         valid, mismatch_votes, votes_archive = [], 0, []
@@ -532,6 +548,7 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
         if not valid:
             judged.append({"case_id": cid, "error": "all judge votes invalid",
                            "votes_archive": votes_archive,
+                           "attempt_log": attempt_log,
                            "applicability_mismatch_votes": mismatch_votes})
             json.dump(judged, open(out_path, "w", encoding="utf-8"),
                       ensure_ascii=False, indent=1)
@@ -565,6 +582,8 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
                        "applicability_mismatch_votes": mismatch_votes,
                        "required_missing": required_missing,
                        "votes_archive": votes_archive,
+                       # V9-F1 §1: judge attempt 级失败 taxonomy 归档
+                       "attempt_log": attempt_log,
                        "replay_meta": replay_meta})
         json.dump(judged, open(out_path, "w", encoding="utf-8"),
                   ensure_ascii=False, indent=1)
