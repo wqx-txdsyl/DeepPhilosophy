@@ -149,8 +149,11 @@ def run_case_production(case, mk_normal, mk_repair):
               },
               "errors": [str(e.get("content") or "")[:200] for e in errors][:3],
               "validation_history": (done.get("validation") or {}).get("history") or [],
-              # V7-F2-R1 §4: 语义转移六项计数（来自 case_result 聚合, additive）
+              # V8-F2-R1 §4: 语义转移六项计数（来自 case_result 聚合, additive）
               "SEMANTIC_TRANSITION_COUNTS": tel.get("SEMANTIC_TRANSITION_COUNTS"),
+              # V9 §glue: V8-F2 closure regression telemetry 透传（additive,
+              # 不改 measurement semantics; 冻结于 V9 formal run 之前）
+              "V8F2_TELEMETRY": done.get("v8f2_telemetry"),
               "citations": _as_list(done.get("citations")),
               "quote_bound": _as_list(done.get("quote_bound")),
               "evidence_digest": _ev_digest(done.get("evidence")) if done else None,
