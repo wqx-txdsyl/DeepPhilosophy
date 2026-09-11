@@ -19,19 +19,29 @@ import quote_bound as QB
 
 QUOTE_CODES = {"UNSUPPORTED_EXACT_QUOTE", "NEAR_QUOTE_NOT_MARKED", "STITCHED_QUOTE"}
 
-# ══ V9-F2 §1: quote-safe PARAPHRASE_CLAIM 合同（generic, 零 case-specific）═══
-# PARAPHRASE_CLAIM 的替换正文必须是转述: 不得引入逐字引文 wrapper、逐字归因
-# 措辞（原话说/写道/语录…）、页码/章节式出处。机械 cue 扫描替换文本本身;
-# 命中 → 拒绝该 patch（admission 层, 不改 validator/quote_bound 语义）。
-_PARAPHRASE_UNSAFE_RE = re.compile(
-    "[\u300c\u300d\u300e\u300f\u201c\u201d\u2018\u2019\u0022\u0027]"
-    r"|(?:原文说|原文写道|原文中|语录中|收录于|语录|曾说|曾写道|写道|说过|指出|"
-    r"第\s*[0-9一二三四五六七八九十]+\s*[章节页]|pp?\.\s*[0-9]+)")
+# ══ V9-F2-R1 §4: quote-safe PARAPHRASE_CLAIM 合同（generic, 零 case-specific,
+# 收紧版）═══
+# PARAPHRASE 替换正文必须是转述。blockable cue 收敛为明确逐字/精确出处类
+# （任务书清单）: 原文写道/原文说/语录/第N章/第N页/p./pp.;
+# 普通转述动词（指出/认为/主张/写道）不再仅凭动词判 unsafe;
+# ASCII ' 与 curly ' 不作为单字符 wrapper（缩约/所有格不误杀, 如 doesn't /
+# Arendt's）; 单引号仅成对包围非空 span 时判 unsafe。零 NER/零第二套 classifier。
+_PARAPHRASE_WRAPPER_RE = re.compile("[\u300c\u300d\u300e\u300f\u201c\u201d\u0022]")
+_PAIRED_SINGLE_RE = re.compile("['\u2019][^'\u2019]{1,}['\u2019]")
+_WORD_ADJACENT_APOSTROPHE = re.compile("(?<=[A-Za-z])['\u2019](?=[A-Za-z])")
+_PARAPHRASE_CUE_RE = re.compile(
+    r"原文写道|原文说|原文中|语录|收录于|曾说"
+    r"|第\s*[0-9一二三四五六七八九十]+\s*[章节页]|pp?\.\s*[0-9]+")
 
 
 def _unsafe_paraphrase_scan(model_output):
     """扫描 patch JSON 中 PARAPHRASE_CLAIM 的 replacement_text;
-    返回 (error_code, bounded_prefix) 或 None（无违规/非 JSON→交给正常错误路径）。"""
+    返回 (error_code, bounded_prefix) 或 None（无违规/非 JSON→交给正常错误路径）。
+
+    - wrapper: CJK/双引号 wrapper 字符直接 unsafe;
+    - 单引号: 剥离词内缩约/所有格 apostrophe 后成对包围非空 span → unsafe;
+    - cue: 明确逐字/精确出处措辞（原文写道/原文说/语录/第N章/第N页/p. N）unsafe;
+      普通转述动词（指出/认为/主张/写道）不拦。"""
     try:
         obj = json.loads(model_output)
     except Exception:
@@ -43,13 +53,13 @@ def _unsafe_paraphrase_scan(model_output):
         if not isinstance(p, dict) or p.get("action") != "PARAPHRASE_CLAIM":
             continue
         text = str(p.get("replacement_text") or "")
-        m = _PARAPHRASE_UNSAFE_RE.search(text)
-        if m:
-            cue = m.group(0)
-            code = ("UNSAFE_PARAPHRASE_QUOTE_WRAPPER"
-                    if re.match("[\u300c\u300d\u300e\u300f\u201c\u201d\u2018\u2019\u0022\u0027]", cue)
-                    else "UNSAFE_PARAPHRASE_ATTRIBUTION")
-            return (code, text[:120])
+        if _PARAPHRASE_WRAPPER_RE.search(text):
+            return ("UNSAFE_PARAPHRASE_QUOTE_WRAPPER", text[:120])
+        _stripped = _WORD_ADJACENT_APOSTROPHE.sub("", text)
+        if _PAIRED_SINGLE_RE.search(_stripped):
+            return ("UNSAFE_PARAPHRASE_QUOTE_WRAPPER", text[:120])
+        if _PARAPHRASE_CUE_RE.search(text):
+            return ("UNSAFE_PARAPHRASE_ATTRIBUTION", text[:120])
     return None
 
 

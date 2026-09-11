@@ -1485,6 +1485,51 @@ def _issue_snapshot(round_id, issue):
     }
 
 
+def evaluate_repair_safety(pre_details, post_candidate, raw_tool_log, tool_log,
+                           language, round_id):
+    """V9-F2-R1 §1/§2: Local Patch effective candidate 语义安全门（纯函数）。
+
+    对 post-patch candidate 机械校验并复用 o7e_semantic_transition 分类
+    pre→post 转移; 拒绝规则:
+      - AMBIGUOUS → 无条件拒绝（family unknown 也不逃逸, fail-closed）
+      - GENUINELY_NEW 且 semantic_family ∈ {QUOTE,CITATION,BIBLIOGRAPHIC} → 拒绝
+      - REKEY/SHIFT/RELABEL/PERSISTED → 不拒绝（不误杀）
+    任何内部异常 → fail-closed（拒绝 + failure_class 记录, 绝不 fail-open）。
+    返回 dict: rejected/families/fingerprints/failure_class/exception_class。"""
+    from final_validator import validate_final_candidate   # 与 stream_agent 同一惰性导入边界
+    try:
+        _safety_val = validate_final_candidate(
+            post_candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
+            language=language)
+        _safety_details = [_issue_snapshot(round_id, i)
+                           for i in _safety_val.as_dict().get("issues", [])]
+        _safety_st = ST.classify_transition(pre_details, _safety_details)
+        _unsafe_fps, _fams = [], []
+        for _fp, _label in _safety_st["introduced_class"].items():
+            if _label == ST.AMBIGUOUS:
+                _snap = next((s for s in _safety_details
+                              if s["fingerprint"] == _fp), None)
+                _unsafe_fps.append(_fp)
+                _fams.append((_snap or {}).get("semantic_family") or "UNKNOWN")
+                continue
+            if _label != ST.GENUINELY_NEW_ISSUE:
+                continue
+            _snap = next((s for s in _safety_details
+                          if s["fingerprint"] == _fp), None)
+            _fam = (_snap or {}).get("semantic_family") or "UNKNOWN"
+            if _fam in ("QUOTE", "CITATION", "BIBLIOGRAPHIC"):
+                _unsafe_fps.append(_fp)
+                _fams.append(_fam)
+        return {"rejected": bool(_unsafe_fps), "families": _fams,
+                "fingerprints": _unsafe_fps, "failure_class": None,
+                "exception_class": None}
+    except Exception as e:
+        return {"rejected": True, "families": [], "fingerprints": [],
+                "failure_class": "SAFETY_GATE_ERROR",
+                "exception_class": type(e).__name__,
+                "detail": str(e)[:160]}
+
+
 def _scholarly_call_snapshot(name, result):
     """V5-F2-R1.1 §2: scholarly 工具原调用即时 provenance 快照。
 
@@ -1959,12 +2004,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         _repair_no_op_count = 0
         _repair_no_op_escalated = 0
         _no_op_escalate_next = False
-        # V9-F2 §2: repair-safety 遥测 + 有界安全升级
+        # V9-F2 §2/R1 §3: repair-safety 遥测 + 有界安全升级
         _repair_safety_rejected_new = 0
         _repair_safety_rejected_families = []
         _repair_safety_rejected_fps = []
         _safety_feedback_next = False
         _safety_rejected_this_round = False
+        _repair_safety_gate_error = 0
+        _repair_safety_admission_rejected = 0
+        _repair_safety_admission_code = None
+        _admission_safety_rejected = False
         while True:
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
@@ -2286,61 +2335,57 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         "non_target_changed": (_act or {}).get("non_target_changed", 0)}
                 # H2C §3: 记录协议错误供下轮 prompt 引用
                 _prev_patch_errors = _apply_errs if _apply_errs else None
+                # ══ V9-F2-R1 §3: admission 拒绝 ≠ no-op ══
+                # parse_and_apply 返回 paraphrase_safety_rejected →
+                # SAFETY_ADMISSION_REJECTED（非普通 apply failure/no-op）:
+                # 回退 pre candidate + safety escalation + 不增 no-op 计数
+                _admission_safety_rejected = False
+                if _apply_errs and ((_act or {}).get("paraphrase_safety_rejected")):
+                    _admission_safety_rejected = True
+                    _safety_rejected_this_round = True
+                    _safety_feedback_next = True
+                    _repair_safety_admission_rejected += 1
+                    _repair_safety_admission_code = ((_act or {}).get(
+                        "paraphrase_safety_rejected") or {}).get("code")
                 if _apply_errs:
                     candidate = _lp_meta["pre_patch_candidate"]
                 else:
                     candidate = _applied or ""
-                # ══ V9-F2 §2: Local Patch effective candidate 语义安全门 ══
+                # ══ V9-F2-R1 §1: effective candidate 语义安全门（fail-closed）══
                 # V9-11 机制（PROBABLE）: PARAPHRASE_CLAIM 修复 quote issue 时
-                # 可能引入新的 quote/citation 类 GENUINELY_NEW issue。修复此类
-                # issue 的 LP patch 若产生 evidence 家族（QUOTE/CITATION/
-                # BIBLIOGRAPHIC）新指纹 → 拒绝该 unsafe patch, 保留 pre-repair
-                # candidate, 下一 bounded repair 获得明确安全反馈; 不增
-                # MAX_VALIDATION_REPAIRS; 分类复用 o7e_semantic_transition
-                # （AMBIGUOUS fail-closed; REKEY/SHIFT/RELABEL 不误杀）。
+                # 可能引入新的 quote/citation 类 GENUINELY_NEW issue。门内任何
+                # 异常（validate/classify/处理）→ fail-closed: 回退 pre candidate
+                # + 拒绝记录 + 安全升级, 绝不 fail-open 放行; AMBIGUOUS 无条件
+                # 拒绝（family unknown 不逃逸）; GENUINELY_NEW 仅 evidence 家族
+                # （QUOTE/CITATION/BIBLIOGRAPHIC）拒绝; REKEY/SHIFT/RELABEL 不误杀;
+                # 分类复用 o7e_semantic_transition（classifier 零改动）。
                 _safety_rejected_this_round = False
                 if _lp_meta is not None and not _apply_errs and candidate.strip():
-                    try:
-                        _safety_val = validate_final_candidate(
-                            candidate, raw_tool_log=raw_tool_log,
-                            fallback_log=tool_log, language=language)
-                        _safety_details = [_issue_snapshot(len(_val_history), i)
-                                           for i in _safety_val.as_dict().get(
-                                               "issues", [])]
-                        _safety_st = ST.classify_transition(_cur_details,
-                                                            _safety_details)
-                        _unsafe_fps = []
-                        _unsafe_fams = set()
-                        for _fp, _label in _safety_st["introduced_class"].items():
-                            # GENUINELY_NEW 拒绝; AMBIGUOUS fail-closed（保守拒绝,
-                            # 宁可回退也不放行无法归类的新 evidence 家族问题）
-                            if _label not in (ST.GENUINELY_NEW_ISSUE, ST.AMBIGUOUS):
-                                continue
-                            _snap = next((s for s in _safety_details
-                                          if s["fingerprint"] == _fp), None)
-                            _fam = (_snap or {}).get("semantic_family")
-                            if _fam in ("QUOTE", "CITATION", "BIBLIOGRAPHIC"):
-                                _unsafe_fps.append(_fp)
-                                _unsafe_fams.add(_fam)
-                        if _unsafe_fps:
-                            candidate = _lp_meta["pre_patch_candidate"]
-                            _safety_rejected_this_round = True
-                            _repair_safety_rejected_new += len(_unsafe_fps)
-                            _repair_safety_rejected_families.extend(
-                                sorted(_unsafe_fams))
-                            _repair_safety_rejected_fps.extend(_unsafe_fps)
-                            _safety_feedback_next = True
-                            if _repair_trace:
-                                _repair_trace[-1]["repair_safety_rejected"] = {
-                                    "new_fingerprints": _unsafe_fps,
-                                    "families": sorted(_unsafe_fams),
-                                    "pre_candidate_restored": True}
-                            logger.warning("[o2-repair] SAFETY_REJECTED: patch 引入"
-                                           f"新的 {sorted(_unsafe_fams)} 类 issue"
-                                           f" {_unsafe_fps}")
-                    except Exception as _se:
-                        logger.warning(f"[o2-repair] safety gate skipped: "
-                                       f"{str(_se)[:160]}")
+                    _safety = evaluate_repair_safety(
+                        _cur_details, candidate, raw_tool_log, tool_log,
+                        language, len(_val_history))
+                    if _safety["rejected"]:
+                        candidate = _lp_meta["pre_patch_candidate"]
+                        _safety_rejected_this_round = True
+                        _safety_feedback_next = True
+                        if _safety.get("failure_class") == "SAFETY_GATE_ERROR":
+                            _repair_safety_gate_error += 1
+                        _repair_safety_rejected_new += len(
+                            _safety.get("fingerprints") or []) or 1
+                        _repair_safety_rejected_families.extend(
+                            _safety.get("families") or ["UNKNOWN"])
+                        _repair_safety_rejected_fps.extend(
+                            _safety.get("fingerprints") or [])
+                        if _repair_trace:
+                            _repair_trace[-1]["repair_safety_rejected"] = {
+                                "new_fingerprints": _safety.get("fingerprints") or [],
+                                "families": _safety.get("families") or [],
+                                "failure_class": _safety.get("failure_class"),
+                                "exception_class": _safety.get("exception_class"),
+                                "pre_candidate_restored": True}
+                        logger.warning("[o2-repair] SAFETY_REJECTED: "
+                                       f"{_safety.get('failure_class') or 'GENUINELY_NEW'} "
+                                       f"{_safety.get('families') or []}")
             # ══ V8-F2-R1 §2: no-op 在 effective candidate 上判定 ══
             # 统一语义: FULL_REWRITE → model replacement 即 effective;
             # LOCAL_PATCH → parse_and_apply/finalization 后的真正答案;
@@ -2348,8 +2393,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # V9-F2 §2: safety 拒绝不标记为 no-op（独立 telemetry, 不混淆类别）。
             _post_repair_hash = hashlib.sha256(
                 (candidate or "").encode("utf-8")).hexdigest()[:16]
+            # V9-F2-R1 §3: admission safety rejection ≠ no-op（独立类别）
             _is_no_op = (_post_repair_hash == _pre_repair_hash) \
-                and not _safety_rejected_this_round
+                and not _safety_rejected_this_round \
+                and not _admission_safety_rejected
             if _repair_trace:
                 _repair_trace[-1]["post_repair_candidate_sha256"] = _post_repair_hash
                 _repair_trace[-1]["no_op_repair"] = _is_no_op
@@ -2579,11 +2626,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                    "FINAL_ROUND_TOOL_CALLS": _final_round_tool_calls,
                    "REPAIR_NO_OP_COUNT": _repair_no_op_count,
                    "REPAIR_NO_OP_ESCALATED": _repair_no_op_escalated,
-                   # V9-F2 §2: repair-safety telemetry（admission 事实, 非决策系统）
+                   # V9-F2 §2/R1: repair-safety telemetry（admission 事实, 非决策系统）
                    "REPAIR_SAFETY_REJECTED_NEW_ISSUE": _repair_safety_rejected_new,
                    "REPAIR_SAFETY_REJECTED_FAMILY": sorted(
                        set(_repair_safety_rejected_families)),
-                   "REPAIR_SAFETY_REJECTED_FINGERPRINTS": _repair_safety_rejected_fps},
+                   "REPAIR_SAFETY_REJECTED_FINGERPRINTS": _repair_safety_rejected_fps,
+                   "REPAIR_SAFETY_GATE_ERROR": _repair_safety_gate_error,
+                   "REPAIR_SAFETY_ADMISSION_REJECTED": _repair_safety_admission_rejected,
+                   "REPAIR_SAFETY_ADMISSION_CODE": _repair_safety_admission_code},
                # O1 (§13): 机械 timing observability（llm_invocation / validator_* 阶段时长;
                # 工具级时长见 trace.calls 与 tool 事件, 此处为阶段汇总）
                "timing": {"phases": (list(trace.phases) if trace else []),

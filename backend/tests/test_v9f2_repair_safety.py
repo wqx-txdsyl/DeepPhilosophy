@@ -58,8 +58,14 @@ def test_v9f2_l1_wrapper_replacement_rejected_at_admission():
 
 
 def test_v9f2_l1_attribution_cue_rejected_at_admission():
-    unsafe = LPR._unsafe_paraphrase_scan(_ATTRIBUTION_PATCH)
+    # 收紧后: 明确逐字出处 cue（原文写道/原文说/语录/第N章/p.N）仍拦;
+    # 普通转述动词（写道/指出/认为）不再仅凭动词拦（R1 §4）
+    cue_patch = json.dumps({"patches": [{"issue_id": "vi_1",
+        "action": "PARAPHRASE_CLAIM",
+        "replacement_text": "原文写道：某某主张。"}]}, ensure_ascii=False)
+    unsafe = LPR._unsafe_paraphrase_scan(cue_patch)
     assert unsafe and unsafe[0] == "UNSAFE_PARAPHRASE_ATTRIBUTION"
+    assert LPR._unsafe_paraphrase_scan(_ATTRIBUTION_PATCH) is None  # 写道 单独不拦
 
 
 def test_v9f2_l1_non_json_falls_through():
@@ -88,7 +94,10 @@ def test_v9f2_e2e_wrapper_repair_rejected_then_safe_converges():
     assert lp.get("applied") is False            # unsafe patch 被 admission 拒绝
     assert any("UNSAFE_PARAPHRASE" in str(e) for e in lp.get("errors") or [])
     # admission 拒绝（零文本变化）→ 按 no-op 类别升级; 类别与 semantic 拒绝不混淆
-    assert trace[1].get("no_op_escalated") is True
+    assert trace[1].get("repair_safety_escalated") is True   # SAFETY escalation（非 no-op）
+    tel2 = (done.get("v8f2_telemetry") or {})
+    assert tel2.get("REPAIR_SAFETY_ADMISSION_REJECTED") == 1
+    assert tel2.get("REPAIR_NO_OP_COUNT") == 0               # 不计入 no-op
     answer = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
     assert _SENTINEL_FAKE not in answer
     assert done["validation"]["result"]["ok"] is True
@@ -141,3 +150,101 @@ def test_v9f2_e2e_safe_paraphrase_accepted():
     assert done["validation"]["result"]["ok"] is True
     tel = (done.get("v8f2_telemetry") or {})
     assert tel.get("REPAIR_SAFETY_REJECTED_NEW_ISSUE", 0) == 0
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F2-R1 §1/§2: safety gate 异常 fail-closed（单元 + E2E）
+# ═══════════════════════════════════════════════════════
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F2-R1 §1/§2: safety gate 异常 fail-closed（单元）
+# ═══════════════════════════════════════════════════════
+def test_r1_gate_validator_exception_fail_closed(monkeypatch):
+    import engine_langgraph as EG
+    import final_validator as FV
+
+    def boom(candidate, **kw):
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(FV, "validate_final_candidate", boom)
+    r = EG.evaluate_repair_safety([], "任意候选", [], [], "zh", 1)
+    assert r["rejected"] is True
+    assert r["failure_class"] == "SAFETY_GATE_ERROR"
+    assert r["exception_class"] == "RuntimeError"
+
+
+def test_r1_gate_classifier_exception_fail_closed(monkeypatch):
+    import engine_langgraph as EG
+
+    def boom(prev, cur):
+        raise RuntimeError("classify boom")
+
+    monkeypatch.setattr(EG.ST, "classify_transition", boom)
+    r = EG.evaluate_repair_safety([], "候选", [], [], "zh", 1)
+    assert r["rejected"] is True
+    assert r["failure_class"] == "SAFETY_GATE_ERROR"
+    assert r["exception_class"] == "RuntimeError"
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F2-R1 §2: AMBIGUOUS 无条件 fail-closed（family 无关）
+# ═══════════════════════════════════════════════════════
+def test_r1_ambiguous_always_fail_closed(monkeypatch):
+    import engine_langgraph as EG
+    import final_validator as FV
+
+    pre = [{"fingerprint": "aaaaaaaaaaaaaaaa", "issue_code": "UNVERIFIED_CITATION",
+            "semantic_family": "CITATION", "normalized_locator": "旧",
+            "evidence_ref": None, "round_id": 0, "source_record_id": None,
+            "citation_or_quote_target_id": None}]
+    for fam in (None, "UNKNOWN", "EMPTY", "QUOTE", "CITATION", "BIBLIOGRAPHIC"):
+        code = "EMPTY_FINAL" if fam == "EMPTY" else "UNSUPPORTED_EXACT_QUOTE"
+        post = [{"fingerprint": "ffffffffffffffff", "issue_code": code,
+                 "semantic_family": fam or "UNKNOWN", "normalized_locator": "新",
+                 "evidence_ref": None, "round_id": 1, "source_record_id": None,
+                 "citation_or_quote_target_id": None}]
+
+        class _FV:
+            def as_dict(self_inner):
+                return {"issues": [{"code": code, "locator": "新"}]}
+
+        monkeypatch.setattr(FV, "validate_final_candidate",
+                            lambda candidate, **kw: _FV())
+        monkeypatch.setattr(EG.ST, "classify_transition",
+                            lambda p, c: {"introduced_class": {
+                                "ffffffffffffffff": EG.ST.AMBIGUOUS},
+                                "summary": {}})
+        r = EG.evaluate_repair_safety(pre, post, [], [], "zh", 1)
+        assert r["rejected"] is True, f"AMBIGUOUS(family={fam}) 必须拒绝: {r}"
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F2-R1: REKEY / LOCATOR_SHIFT / RELABEL 不误杀
+# ═══════════════════════════════════════════════════════
+def test_r1_rekey_locator_shift_relabel_not_rejected(monkeypatch):
+    import engine_langgraph as EG
+    import final_validator as FV
+
+    pre = [{"fingerprint": "aaaaaaaaaaaaaaaa", "issue_code": "UNVERIFIED_CITATION",
+            "semantic_family": "CITATION", "normalized_locator": "旧定位",
+            "evidence_ref": None, "round_id": 0, "source_record_id": None,
+            "citation_or_quote_target_id": None}]
+    post = [{"fingerprint": "bbbbbbbbbbbbbbbb", "issue_code": "UNVERIFIED_CITATION",
+             "semantic_family": "CITATION", "normalized_locator": "新定位",
+             "evidence_ref": None, "round_id": 1, "source_record_id": None,
+             "citation_or_quote_target_id": None}]
+
+    class _FV:
+        def as_dict(self_inner):
+            return {"issues": [{"code": "UNVERIFIED_CITATION", "locator": "新定位"}]}
+
+    for label in (EG.ST.SAME_ISSUE_REKEYED, EG.ST.LOCATOR_SHIFT_ONLY,
+                  EG.ST.ISSUE_CODE_RELABEL):
+        monkeypatch.setattr(FV, "validate_final_candidate",
+                            lambda candidate, **kw: _FV())
+        monkeypatch.setattr(EG.ST, "classify_transition",
+                            lambda p, c, _l=label: {"introduced_class": {
+                                "bbbbbbbbbbbbbbbb": _l}, "summary": {}})
+        r = EG.evaluate_repair_safety(pre, post, [], [], "zh", 1)
+        assert r["rejected"] is False, f"{label} 被误拒: {r}"
