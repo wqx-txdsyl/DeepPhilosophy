@@ -1,0 +1,247 @@
+{
+ "V7_F1_REPAIR_FINGERPRINT_RCA": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V7_F1_REPAIR_TRANSITION_RCA_TASK.md",
+ "BASE_SHA": "25fce76185575e12c1ec82b8aef1482cc3a5dfa7",
+ "V7_MEASUREMENT_UNCHANGED": true,
+ "V7_SCHOLARLY_GATE_REMAINS_PASS": true,
+ "V7_DELIVERY_GATE_REMAINS_FAIL": true,
+ "DATA_SOURCE": "仅 frozen docs/evidence/V7_FINAL_HOLDOUT_RUN.json（hard_gate.fingerprint_classification / issue_counts / REPAIR_OUTPUT_MODES / LOCAL_PATCH 机械指标）+ 引擎/validator 冻结实现 + 历史任务书",
+ "§1_EXACT_TRANSITION_RECONSTRUCTION": {
+  "V7-04": {
+   "states": [
+    {
+     "state": "INITIAL",
+     "issue_count": 7,
+     "issue_codes": "NOT_RECOVERABLE_FROM_ARCHIVE（runner 未持久化逐轮 _val_history, 仅集合差分类与计数存档）",
+     "issue_fingerprints": [
+      "388daf3b13f35c1a",
+      "3c93edae1ead9d0c",
+      "72d93b62b52b8226",
+      "9074cdfc884f8638",
+      "920a0a4e5b62fd41",
+      "c26444f4d9f8355e",
+      "d1534d2bf9f0991a"
+     ],
+     "candidate_chars": "NOT_RECOVERABLE",
+     "validator_result": "FAIL"
+    },
+    {
+     "state": "R1",
+     "repair_mode": "FULL_REWRITE",
+     "issue_count": 2,
+     "issue_fingerprints": [
+      "9db1e23c42d617e4",
+      "e6a890f287d0c639"
+     ],
+     "candidate_chars": "NOT_RECOVERABLE",
+     "validator_result": "FAIL"
+    },
+    {
+     "state": "R2",
+     "repair_mode": "LOCAL_PATCH",
+     "issue_count": 0,
+     "issue_fingerprints": [],
+     "candidate_chars": "NOT_RECOVERABLE",
+     "validator_result": "PASS"
+    },
+    {
+     "state": "terminal",
+     "issue_count": 0,
+     "validator_result": "PASS",
+     "published": true
+    }
+   ],
+   "transitions": {
+    "INITIAL_to_R1": {
+     "resolved": 7,
+     "resolved_ids": [
+      "388daf3b13f35c1a",
+      "3c93edae1ead9d0c",
+      "72d93b62b52b8226",
+      "9074cdfc884f8638",
+      "920a0a4e5b62fd41",
+      "c26444f4d9f8355e",
+      "d1534d2bf9f0991a"
+     ],
+     "persisted": 0,
+     "introduced": 2,
+     "introduced_ids": [
+      "9db1e23c42d617e4",
+      "e6a890f287d0c639"
+     ],
+     "introduced_exact_issue_code": "NOT_RECOVERABLE_FROM_ARCHIVE（指纹为 sha256(code|norm_locator|evidence_ref)[:16] 单向哈希; 逐轮历史未被 runner 持久化）",
+     "non_target_text_changed_chars": 0
+    },
+    "R1_to_R2": {
+     "resolved": 2,
+     "resolved_ids": [
+      "9db1e23c42d617e4",
+      "e6a890f287d0c639"
+     ],
+     "persisted": 0,
+     "introduced": 0
+    }
+   },
+   "targeted_fingerprint_relation": "R2 的修复反馈即为 R1 引入的 2 个指纹（R2.resolved 与 R1.introduced 集合精确相等）——R2 针对性消除了 R1 的暂态回归"
+  },
+  "V7-06": {
+   "states": [
+    {
+     "state": "INITIAL",
+     "issue_count": 11,
+     "issue_fingerprints": [
+      "1bc8c093938173c3",
+      "3895b15d27bf4784",
+      "4428ef476efddd38",
+      "4eac481f6bd61c66",
+      "60ae4db3dddbf05c",
+      "92ef849151be1c67",
+      "968da2120a312da2"
+     ],
+     "note": "11 条 issue 的唯一指纹并集为 7（部分 issue 共享同一指纹）",
+     "candidate_chars": "NOT_RECOVERABLE",
+     "validator_result": "FAIL"
+    },
+    {
+     "state": "R1",
+     "repair_mode": "LOCAL_PATCH",
+     "issue_count": 2,
+     "issue_fingerprints": [
+      "312318a5adca2be6",
+      "a3a55f385fb0a10e"
+     ],
+     "candidate_chars": "NOT_RECOVERABLE",
+     "validator_result": "FAIL"
+    },
+    {
+     "state": "R2",
+     "repair_mode": "LOCAL_PATCH",
+     "issue_count": 0,
+     "issue_fingerprints": [],
+     "candidate_chars": "NOT_RECOVERABLE",
+     "validator_result": "PASS"
+    },
+    {
+     "state": "terminal",
+     "issue_count": 0,
+     "validator_result": "PASS",
+     "published": true
+    }
+   ],
+   "transitions": {
+    "INITIAL_to_R1": {
+     "resolved": 7,
+     "resolved_ids": [
+      "1bc8c093938173c3",
+      "3895b15d27bf4784",
+      "4428ef476efddd38",
+      "4eac481f6bd61c66",
+      "60ae4db3dddbf05c",
+      "92ef849151be1c67",
+      "968da2120a312da2"
+     ],
+     "persisted": 0,
+     "introduced": 2,
+     "introduced_ids": [
+      "312318a5adca2be6",
+      "a3a55f385fb0a10e"
+     ],
+     "introduced_exact_issue_code": "NOT_RECOVERABLE_FROM_ARCHIVE",
+     "non_target_text_changed_chars": 0
+    },
+    "R1_to_R2": {
+     "resolved": 2,
+     "resolved_ids": [
+      "312318a5adca2be6",
+      "a3a55f385fb0a10e"
+     ],
+     "persisted": 0,
+     "introduced": 0
+    }
+   },
+   "COPY_SLICE_ACTIONS": 4,
+   "CITATION_REPLACE_TEXT_ACTIONS": 9,
+   "PARAPHRASE_CLAIM_ACTIONS": 0,
+   "targeted_fingerprint_relation": "同 V7-04: R2.resolved 与 R1.introduced 集合精确相等"
+  }
+ },
+ "§2_SEMANTIC_CLASSIFICATION_PER_INTRODUCED_FINGERPRINT": {
+  "mechanical_discriminator": "R2.pre-repair 验证态中再次出现与 R1.introduced 完全相同的哈希（R2.resolved == R1.introduced, 集合精确相等）→ 该指纹在两次独立验证中稳定复现 → 排除 LOCATOR_SHIFT_ONLY（位移会产生新哈希）、排除 ISSUE_CODE_RELABEL（code 参与哈希）、排除 VALIDATOR_NONDETERMINISM（确定性复检）",
+  "fingerprints": [
+   {
+    "case": "V7-04",
+    "fid": "9db1e23c42d617e4",
+    "classification": "GENUINELY_NEW_SEMANTIC_ISSUE（暂态）",
+    "evidence": "INITIAL 不存在→R1 输出出现（修复动作直接制造）→R2 精确消除"
+   },
+   {
+    "case": "V7-04",
+    "fid": "e6a890f287d0c639",
+    "classification": "GENUINELY_NEW_SEMANTIC_ISSUE（暂态）",
+    "evidence": "同上"
+   },
+   {
+    "case": "V7-06",
+    "fid": "312318a5adca2be6",
+    "classification": "GENUINELY_NEW_SEMANTIC_ISSUE（暂态）",
+    "evidence": "同上"
+   },
+   {
+    "case": "V7-06",
+    "fid": "a3a55f385fb0a10e",
+    "classification": "GENUINELY_NEW_SEMANTIC_ISSUE（暂态）",
+    "evidence": "同上"
+   }
+  ],
+  "answers": {
+   "R1 新指纹是否此前不存在的错误": "是——INITIAL 指纹集合中不含它们（集合差定义）",
+   "是否由修复动作直接制造": "是——出现在 R1 输出候选（FULL_REWRITE/LOCAL_PATCH 各案对应）, INITIAL 无",
+   "R2 为何能消除": "R2 反馈含该指纹的 issue 事实, R2 输出零指纹（终态 PASS）",
+   "终态 clean 是否掩盖真实暂态回归": "否——指标按设计即计「出现过即失败」, 暂态回归已被本指标如实捕获（未被掩盖）",
+   "V7-04 与 V7-06 是否同一 failure mechanism": "是——同构模式: R1 解决全部初始指纹的同时各引入 2 个暂态新指纹, R2 精确清除; 仅修复模式不同（FULL_REWRITE+LOCAL_PATCH vs LOCAL_PATCH×2）"
+  }
+ },
+ "§3_METRIC_CONTRACT_AUDIT": {
+  "historical_evidence": "docs/tasks/PHIAGENT_O7E_H2D_CLOSURE_TASK.md §5（live fingerprint classification 的授权定义）: 「每个 successful patch 后下一 validation: resolved/persisted/introduced 由集合差机械计算。例如 before={A,B} after={B,C} → resolved={A} persisted={B} introduced={C}」——示例明确显示任意新 issue（C）即计入 introduced",
+  "implementation": "o7e_production_calibration.py:120 repair_new_fatal = 1 if any(Rk.introduced); 引擎 _issue_fingerprint=sha256(code|norm_locator|evidence_ref)[:16]（FINAL-DIAG §4, H2D-24 边界约束）",
+  "ruling": "METRIC_IMPLEMENTATION_MATCHES_INTENDED_CONTRACT",
+  "name_status": "METRIC_NAME_ONLY_MISNOMER（指标名沿自 PF-RP5 门列表旧名, H2D §5 重定义语义后未更名）",
+  "evidence_discipline": "裁定仅依据 H2D 冻结任务书与冻结实现, 未依据 V7 结果倒推; V7 verdict 不因本裁定改写"
+ },
+ "§4_ROOT_CAUSE": {
+  "REPAIR_POLICY_FAILURE": "NOT_DEMONSTRATED（两案 R1 均一次性解决全部初始指纹, 暂态副作用经 R2 清除——两轮修复协议按设计运转）",
+  "LOCAL_PATCH_FAILURE": "NOT_DEMONSTRATED（V7-06 两轮 LOCAL_PATCH 锚定解析 2/2、LP resolution rate=1.0、终态干净）",
+  "FULL_REWRITE_FAILURE": "NOT_DEMONSTRATED（V7-04 FULL_REWRITE 解决全部 7 个初始指纹, 2 个暂态新指纹由 R2 LOCAL_PATCH 清除）",
+  "FINGERPRINT_INSTABILITY": "NOT_DEMONSTRATED（R1.introduced 与 R2.resolved 哈希精确相等, 跨两次验证稳定）",
+  "VALIDATOR_INSTABILITY": "NOT_DEMONSTRATED（确定性复检一致）",
+  "MEASUREMENT_SEMANTIC_BUG": "NOT_DEMONSTRATED（实现=H2D §5 授权契约; 仅名称误称）",
+  "PRIMARY_ROOT_CAUSE": "TRANSIENT_REPAIR_REGRESSION（在 H2D §5 授权的严格集合差语义下）: R1 修复在解决大批初始指纹的同时各引入 2 个暂态新指纹, R2 全部清除; 冻结指标按「出现即失败」语义如实计数——mechanism 本身即两轮修复协议的正常运转 + 严格门语义, 非策略或实现故障"
+ },
+ "MINIMUM_REPAIR_SURFACE": "供裁定（未实施）: ①若维持现语义——无需代码修复（协议按设计运转, 2/12=17% 暂态率即真实成本）; ②若授权语义升级（如「introduced 且 persisted-to-terminal 才计」）——须 Reviewer 立项, 因现语义为 H2D 冻结契约; ③可选观测增强: runner 持久化逐轮 _val_history（本轮 RCA 的 issue codes 即因未持久化而不可恢复——观测缺口, 非语义缺陷）",
+ "§5_RECEIPT_RECONCILIATION": {
+  "canonical": {
+   "REPAIR_TRIGGERED": 9,
+   "REPAIR_CONVERGED": 8,
+   "REPAIR_CONVERGENCE": 0.889,
+   "FINAL_PUBLICATION_RATE": 0.917,
+   "SCHOLARLY_SOURCE_FETCH_CASES": 5,
+   "SCHOLARLY_FETCH_RESULT_COUNT": 19,
+   "SCHOLARLY_CONTENT_EVIDENCE_COUNT": 15
+  },
+  "receipt_errors_confirmed": [
+   "REPAIR_TRIGGERED=12/11/0.917 错（0.917 为 FINAL_PUBLICATION_RATE, 非收敛率）",
+   "READ_CALLS=29 错（混合口径）",
+   "TRACE=90/80/10 与 frozen artifact 重算不符"
+  ],
+  "frozen_artifact_recount": {
+   "SEARCH_TOOL_CALLS_type_tool_events": 72,
+   "READ_TOOL_CALLS_type_tool_events": 19,
+   "SCHOLARLY_TRACE_CALLS": 91,
+   "FETCH_RESULT_RECORDS": 19,
+   "RECEIPT discrepancy_note": "回执 80/29/90 采自被覆盖前的中间版 summary 与人工混算; 本表为 committed frozen artifact 的单一口径重算。若 Reviewer 侧另有 80/10 口径来源, 以 frozen artifact 解释条款为准"
+  }
+ },
+ "LIMITATIONS": [
+  "逐轮 _val_history（issue codes/候选字符数）未被 runner 持久化——introduced 指纹的精确 issue code 不可恢复, 已如实标注 NOT_RECOVERABLE; 机械事实（指纹相等性/集合差/计数/模式）全部可独立复核"
+ ]
+}
