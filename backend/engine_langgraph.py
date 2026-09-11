@@ -1405,25 +1405,38 @@ def _issue_fingerprint(code, locator, evidence_ref=None):
 # 直接成为终局候选并发布。合同: 想检索 → 本轮不调工具 → 必须给实质回答;
 # 用户真实请求研究计划时绝不误拦（Main Agent sovereignty 保持, 零新 judge）。
 _PLAN_USER_REQUEST_RE = re.compile(
-    r"研究计划|阅读计划|文献(综述|入门|清单|回顾)|怎么入手|如何入手|应该(先)?读|"
-    r"从哪些文献|读哪些(书|文献)|入门路径|阅读顺序|学习路径|研究路线|读书顺序|提纲")
+    r"研究计划|阅读计划|阅读路径|检索方案|研究路线|读书顺序|阅读顺序|学习路径|"
+    r"入门路径|怎么入手|如何入手|应该(先)?读|从哪些文献|读哪些(书|文献)")
+# 注（V8-F2-R1 §1）: 文献综述/文献回顾/文献清单是成品要求, 不构成 plan-only 豁免
 _PLAN_INTENT_RE = re.compile(
     r"(下一步|接下来|随后|然后)[^。！？]{0,6}我[^。！？]{0,6}(将|会|要|就|先|去|需)?[^。！？]{0,4}(并行)?(检索|搜索|查证|查找|核验|查阅|调研)"
     r"|(我将|我会|我要|让我|让我先|我先|我需要|先去|先来|需先)(并行)?(检索|搜索|查证|查找|核验|查阅|调研)"
     r"|必须(用|基于)?(检索|查证)(到|获得)?(的)?(真实|可靠)?(文献|证据|二手文献)")
 
 
+_PLAN_COMPLETION_RE = re.compile(
+    r"已经?(查到|找到|检索到|查证|核验|完成)|查到了|找到了|检索完成"
+    r"|结果(如下|表明|显示)|以下是[^。]{0,8}(结果|核验)")
+
+
 def _is_plan_only_terminal(candidate, user_message):
     """候选是否为「宣布未来检索动作」的 plan-only 终局文本（纯确定性）。
 
     - 用户消息本身在请求计划/文献路径 → 永不判定（真实计划回答正常发布）;
-    - 其余场景: 候选含第一人称未来检索意图宣告 → plan-only。"""
+    - 无未来检索宣告 → 非 plan-only;
+    - 候选中任何位置存在检索/核验已完成的语言证据（O4-T5 过程引导句实况:
+      「让我先检索一下材料。现在已经查到了：…」）→ 有实质交付, 非 plan-only。
+    """
     c = candidate or ""
     if not c.strip():
         return False
     if _PLAN_USER_REQUEST_RE.search(user_message or ""):
         return False
-    return bool(_PLAN_INTENT_RE.search(c))
+    if not _PLAN_INTENT_RE.search(c):
+        return False
+    if _PLAN_COMPLETION_RE.search(c):
+        return False
+    return True
 
 
 PLAN_ONLY_RECOVERY_DIRECTIVE = (
@@ -1885,13 +1898,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         repairs_used = 0
         # ══ V8-F2 §1: plan-only terminal 拦截 + 一次有界 recovery ══
         # V8-11 实证: 模型宣布「下一步检索」却 0 工具调用, 规划前言直接发布。
+        # V8-F2-R1 §1 修正: 工具记账是 ROUND-LOCAL（最终 model invocation 自身的
+        # tool-call 事实, FINAL_ROUND_TOOL_CALLS——终局文本轮按构造即为 0）,
+        # 不再用累计 tool_log 判断「本轮是否调用工具」→ 之前轮次调用过工具、
+        # 末轮输出「下一步我会继续检索……」的链路同样拦截。
         # 合同: 禁止纯操作计划前言作为 final answer; 允许恰一次有界 recovery
-        # （可实际调工具或产出实质受限回答）; 用户真实计划请求不误拦;
-        # 硬预算已尽时模型声明「无法检索」是合法受限回答, 不拦。
+        # （可实际调工具或产出实质受限回答）; 用户真实计划请求不误拦。
+        _final_round_tool_calls = 0   # 终局轮自身 tool-call 事实（见上注）
         _plan_gate = False
-        if (candidate.strip() and _is_plan_only_terminal(candidate, req_message)
-                and not tool_log and budget is not None
-                and not budget.hard_reached()):
+        if (candidate.strip() and _final_round_tool_calls == 0
+                and _is_plan_only_terminal(candidate, req_message)):
             _plan_gate = True
             yield {"type": "tool_note",
                    "content": "（智能体宣布了检索计划但尚未执行——正在要求它执行检索或直接给出实质性回答……）",
@@ -1901,8 +1917,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 AIMessage(content=candidate),
                 HumanMessage(content=PLAN_ONLY_RECOVERY_DIRECTIVE)]
             _recovered = ""
+            _recovery_no_tools = bool(budget is not None and budget.hard_reached())
             try:
-                async for _rev in _stream_graph(_recovery_msgs):
+                async for _rev in _stream_graph(
+                        _recovery_msgs, no_tools=_recovery_no_tools):
                     yield _rev
                 _rtails = _phrase_scr.flush() + _visible_text(_rat_parser.finish())
                 _recovered = _rtails + pending["text"]
@@ -2125,18 +2143,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 pending["text"] = ""
             candidate = (_ptail2 + _tail2) + pending["text"]
             pending["text"] = ""
-            # V8-F2 §3: post_repair hash——与 pre_repair 相同且 issue 仍在
-            # → NO_OP_REPAIR（不再盲跑下一轮相同修复, 触发有界升级）
-            _post_repair_hash = hashlib.sha256(
-                (candidate or "").encode("utf-8")).hexdigest()[:16]
-            _is_no_op = (_post_repair_hash == _pre_repair_hash)
-            if _repair_trace:
-                _repair_trace[-1]["post_repair_candidate_sha256"] = _post_repair_hash
-                _repair_trace[-1]["no_op_repair"] = _is_no_op
-            if _is_no_op:
-                _repair_no_op_count += 1
-                _no_op_escalate_next = True
-                logger.warning("[o2-repair] NO_OP_REPAIR: 修复候选与修复前逐字节相同")
+            # V8-F2-R1 §2: no-op 判定移至 Local Patch apply/finalization 之后——
+            # LP 模式下 repair model 输出是 patch JSON, 此处尚非 effective
+            # candidate; 统一在下方 effective candidate 确定后判定。
             # RCA-2 H1 §5-8: adapter 机械应用 patch——工具轮后 raw_tool_log
             if _lp_meta is not None and candidate.strip():
                 import hashlib as _hl3
@@ -2245,11 +2254,34 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     candidate = _lp_meta["pre_patch_candidate"]
                 else:
                     candidate = _applied or ""
+            # ══ V8-F2-R1 §2: no-op 在 effective candidate 上判定 ══
+            # 统一语义: FULL_REWRITE → model replacement 即 effective;
+            # LOCAL_PATCH → parse_and_apply/finalization 后的真正答案;
+            # patch apply 失败回退 pre candidate 也在此处被正确判定为 no-op。
+            _post_repair_hash = hashlib.sha256(
+                (candidate or "").encode("utf-8")).hexdigest()[:16]
+            _is_no_op = (_post_repair_hash == _pre_repair_hash)
+            if _repair_trace:
+                _repair_trace[-1]["post_repair_candidate_sha256"] = _post_repair_hash
+                _repair_trace[-1]["no_op_repair"] = _is_no_op
+                _repair_trace[-1]["no_op_scope"] = (
+                    "LOCAL_PATCH_EFFECTIVE" if _lp_meta is not None
+                    else "FULL_REWRITE")
+            if _is_no_op:
+                _repair_no_op_count += 1
+                _no_op_escalate_next = True
+                logger.warning("[o2-repair] NO_OP_REPAIR: effective candidate "
+                               "与修复前逐字节相同")
         # 发布（§11: BUFFER FINAL UNTIL VALIDATED）: 只有 validator PASS 的候选才允许
         # 公开。O2-RP1 (P0): repair 耗尽后绝不允许发布无效候选（含 ok=false 透传发布）——
         # validator 有权拒绝答案, 但 runtime 不会因此获得"替你把错误答案发出去"的权力。
         # 耗尽路径以非语义 failure/status 事件干净收口; done.validation 携带全部 issues。
-        if candidate.strip() and validation.ok:
+        # V8-F2-R1 §1 (P0): publish 显式要求 validation.ok AND not terminal_plan_only——
+        # repair 耗尽后仍为 plan-only → FAIL-CLOSED 不发布（计划前言绝不发给用户,
+        # 以既有 validation_failed/error 非语义失败路径收口）。
+        _terminal_plan_only = bool(_plan_gate and _is_plan_only_terminal(
+            candidate, req_message))
+        if candidate.strip() and validation.ok and not _terminal_plan_only:
             full_answer = candidate
             for ch in candidate:
                 yield {"type": "token", "content": ch}
@@ -2455,6 +2487,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                # V8-F2 §3: 机械 telemetry（事实记录, 非决策系统）
                "v8f2_telemetry": {
                    "PLAN_ONLY_TERMINAL_BLOCKED": bool(_plan_gate),
+                   "PLAN_ONLY_EXHAUSTION_FAIL_CLOSED": bool(_terminal_plan_only),
+                   "FINAL_ROUND_TOOL_CALLS": _final_round_tool_calls,
                    "REPAIR_NO_OP_COUNT": _repair_no_op_count,
                    "REPAIR_NO_OP_ESCALATED": _repair_no_op_escalated},
                # O1 (§13): 机械 timing observability（llm_invocation / validator_* 阶段时长;

@@ -838,6 +838,24 @@ def _reformulate_query(q):
     return None
 
 
+def _latin_variant_from_local(q, limit=24):
+    """V8-F2-R1 §3: 中文 query 的 bilingual variant——用 q 的 CJK bigram 匹配
+    本地 curated registry 记录（canonical/alias 元数据）, 取命中记录的 latin
+    token（作者/标题的规范英文身份）构成 variant。无可靠 alias → None
+    （禁止模型猜译, 禁止 case-specific 硬编码）。"""
+    latin, bigrams = _query_tokens(q)
+    if not bigrams or latin:
+        return None
+    for rec in _local_results(q, limit):
+        hay = " ".join([str(rec.get("title") or "")] +
+                       [str(a.get("name") or "")
+                        for a in (rec.get("authors") or [])])
+        r_latin, r_bigrams = _query_tokens(hay)
+        if (r_bigrams & bigrams) and r_latin:
+            return " ".join(sorted(r_latin)[:6])
+    return None
+
+
 def search_scholarship(query, philosopher=None, work=None, year_from=None,
                        year_to=None, limit=8):
     """主入口: LOCAL_CURATED + Crossref + OpenAlex → canonical 去重。
@@ -871,19 +889,27 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
     relevant = [r for r in canon if _is_relevant(q_latin, q_bigrams, r)]
     dropped = len(canon) - len(relevant)
 
-    # 一次有界 reformulation: live 有返回但全离题（或零返回）时重试一次
+    # 一次有界 reformulation: 没有 relevant live records 即触发（V8-F2-R1 §3）——
+    # 覆盖 provider 返回 0 条、全离题、单 provider 失败而另一 provider 空手三种形态;
+    # variant 优先 latin token, 中文 query 走本地 canonical/alias 元数据的
+    # bilingual 路径; 全程硬预算（重试恰一次, 无循环）。
     reformulation = {"triggered": False, "variant_query": None,
                      "recovered_relevant": 0}
-    if canon and not relevant:
-        variant = _reformulate_query(q)
+    if not relevant:
+        variant = _reformulate_query(q) or _latin_variant_from_local(q)
         if variant and variant.lower() != q.lower():
+            v_latin, v_bigrams = _query_tokens(variant)
             r2, e2, ok2 = _providers_fetch(variant)
             errors.extend(e2)
             results.extend(r2)
             if ok2:
                 live_ok = sorted(set(live_ok) | set(ok2))
             canon2 = merge_records(results)
-            relevant = [r for r in canon2 if _is_relevant(q_latin, q_bigrams, r)]
+            # variant 是合法的查询变换: 其命中按「原 query 或 variant 任一相关」
+            # 保留（跨语言命中原 query 无 token 交集, 不得被二次过滤掉）
+            relevant = [r for r in canon2
+                        if _is_relevant(q_latin, q_bigrams, r)
+                        or _is_relevant(v_latin, v_bigrams, r)]
             dropped = len(canon2) - len(relevant)
             reformulation = {"triggered": True, "variant_query": variant,
                              "recovered_relevant": len(relevant)}

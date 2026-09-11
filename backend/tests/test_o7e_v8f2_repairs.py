@@ -19,8 +19,11 @@ import scholarly_sources as SS
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from test_o7e_final_diagnostic import (_run_lp, _done, _GOOD,
-                                       _AnchorMissingAdapter)
+                                       _AnchorMissingAdapter, _FIN_PATCH)
 from test_o2_final_ownership import _TOOLS_SCRIPT, _msg, _SENTINEL_FAKE
+
+_PLAN = ("我先梳理一下：这个问题涉及相关学术争论。下一步我并行检索几个方向，"
+         "定位真实文献记录。")
 
 
 # ═══════════════════════════════════════════════════════
@@ -195,3 +198,141 @@ def test_d4_relevant_records_kept(monkeypatch, stub_cache):
     out = SS.search_scholarship("平庸之恶 批评")
     assert out["relevance_gate"]["kept_relevant"] >= 1
     assert out["relevance_gate"]["dropped_irrelevant"] == 0
+
+
+# ═══════════════════════════════════════════════════════
+# V8-F2-R1 §1: round-local tool accounting + fail-closed
+# ═══════════════════════════════════════════════════════
+def test_r1_prior_tools_then_terminal_plan_still_blocked():
+    # 前一轮真实执行了工具 → 累计 tool_log 非空; 末轮输出「下一步我会继续检索」
+    # 且 0 tool → round-local 记账下必须仍被拦截
+    evs, _chat = _run_lp(
+        "言必有中出处",
+        [_msg("需要定位原典核验。",
+              [{"name": "search_books", "args": {"query": "言必有中 出处"}, "id": "c1"}]),
+         _msg("结果已取得。下一步我会继续检索更多二手文献来核验这个说法。"),
+         _msg(_GOOD)])
+    done = _done(evs)
+    tel = done.get("v8f2_telemetry") or {}
+    assert tel.get("PLAN_ONLY_TERMINAL_BLOCKED") is True
+    answer = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
+    assert "下一步我会继续检索" not in answer
+
+
+def test_r1_stubborn_plan_exhaustion_fail_closed():
+    # initial + recovery + 全部 repair 都返回 plan-only → 永不发布, 计划文本
+    # 不得出现在任何 token 中, 以 validation_failed/error 非语义失败路径收口
+    script = [_msg(_PLAN), _msg(_PLAN), _msg(_PLAN), _msg(_PLAN)]
+    evs, _chat = _run_lp("尼采谱系学", script)
+    tokens = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
+    assert _PLAN not in tokens
+    assert not [e for e in evs if e.get("type") == "token"]
+    assert any(e.get("type") == "validation_failed" for e in evs)
+    assert any(e.get("type") == "error" for e in evs)
+    done = _done(evs)
+    tel = done.get("v8f2_telemetry") or {}
+    assert tel.get("PLAN_ONLY_EXHAUSTION_FAIL_CLOSED") is True
+
+
+def test_r1_literature_review_not_exempted():
+    # 「给我写一份文献综述」要求成品——模型只输出「下一步我检索」必须拦截
+    # （V8-F2-R1 §1: 文献综述/回顾/清单不再构成 plan-request 豁免）
+    assert EG._is_plan_only_terminal(_PLAN, "给我写一份文献综述：阿伦特平庸之恶研究")
+
+
+def test_r1_genuine_research_plan_still_exempt():
+    assert not EG._is_plan_only_terminal(
+        "建议顺序: 先读原著再读二手。", "给我一份研究计划：海德格尔存在与时间")
+
+
+# ═══════════════════════════════════════════════════════
+# V8-F2-R1 §2: no-op 在 effective candidate 上判定
+# ═══════════════════════════════════════════════════════
+_NOOP_PATCH = json.dumps({"patches": []}, ensure_ascii=False)   # 零 patch → 零文本变化
+
+
+def test_r1_local_patch_effective_no_op_detected():
+    # production LocalPatchAdapter（supported）: patch apply「成功」但
+    # replacement 与原文相同 → effective candidate == pre → NO_OP_REPAIR
+    evs, _chat = _run_lp(
+        "言必有中出处",
+        _TOOLS_SCRIPT + [_msg("结论：原文如下——\n\n> 「" + _SENTINEL_FAKE + "」\n"),
+                         _msg(_NOOP_PATCH), _msg(_FIN_PATCH)],
+        adapter=__import__("local_patch_runtime", fromlist=["LocalPatchAdapter"]).LocalPatchAdapter())
+    done = _done(evs)
+    trace = (done.get("validation") or {}).get("repair_trace") or []
+    tel = done.get("v8f2_telemetry") or {}
+    assert trace[0]["repair_output_mode"] == "LOCAL_PATCH"
+    assert trace[0]["no_op_repair"] is True
+    assert trace[0]["no_op_scope"] == "LOCAL_PATCH_EFFECTIVE"
+    assert trace[0]["pre_repair_candidate_sha256"] == \
+        trace[0]["post_repair_candidate_sha256"]
+    assert trace[1].get("no_op_escalated") is True
+    assert tel.get("REPAIR_NO_OP_COUNT") == 1
+    assert tel.get("REPAIR_NO_OP_ESCALATED") == 1
+
+
+def test_r1_local_patch_apply_failure_fallback_is_no_op():
+    # patch 解析/应用失败 → 回退 pre candidate → effective post hash == pre
+    # → no-op 事实正确记录并触发升级
+    evs, _chat = _run_lp(
+        "言必有中出处",
+        _TOOLS_SCRIPT + [_msg("结论：原文如下——\n\n> 「" + _SENTINEL_FAKE + "」\n"),
+                         _msg("这不是一个合法的 patch JSON。"),
+                         _msg(_FIN_PATCH)],
+        adapter=__import__("local_patch_runtime", fromlist=["LocalPatchAdapter"]).LocalPatchAdapter())
+    done = _done(evs)
+    trace = (done.get("validation") or {}).get("repair_trace") or []
+    assert trace[0]["repair_output_mode"] == "LOCAL_PATCH"
+    assert trace[0]["no_op_repair"] is True
+    assert trace[0]["pre_repair_candidate_sha256"] == \
+        trace[0]["post_repair_candidate_sha256"]
+    assert trace[1].get("no_op_escalated") is True
+
+
+# ═══════════════════════════════════════════════════════
+# V8-F2-R1 §3: 零结果 reformulation + 中文 canonical bilingual 路径
+# ═══════════════════════════════════════════════════════
+def test_r1_zero_result_still_triggers_reformulation(monkeypatch, stub_cache):
+    calls = {"n": 0}
+
+    def empty_then_relevant(query, limit=8, year_from=None, year_to=None):
+        calls["n"] += 1
+        # 首轮（含 CJK 的原 query）零结果; variant 轮（纯 latin）返回相关记录
+        if "平庸" not in query:
+            return [_mk_rec("Hannah Arendt and the banality of evil",
+                            "Journal of Genocide Research")]
+        return []
+
+    monkeypatch.setattr(SS, "search_crossref", empty_then_relevant)
+    monkeypatch.setattr(SS, "search_openalex", empty_then_relevant)
+
+    out = SS.search_scholarship("Arendt banality of evil 平庸之恶")
+    assert out["query_reformulation"]["triggered"] is True   # 零结果也重试
+    assert calls["n"] == 4                                   # 2 provider × 恰一次 retry
+    assert any("banality" in (r.get("title") or "") for r in out["results"])
+
+
+def test_r1_chinese_query_bilingual_canonical_variant(monkeypatch, stub_cache):
+    # 中文-only query 无 latin token → 经本地 canonical/alias 元数据
+    # （匹配 CJK bigram 的 curated 记录的英文身份）形成英文 variant;
+    # 零硬编码、零模型猜译。
+    def fake_local(q, limit=24):
+        rec = _mk_rec("阿伦特与艾希曼审判的当代争论 平庸之恶", "伦理学研究",
+                      provider="local_curated")
+        rec["authors"] = [{"name": "Hannah Arendt"}]
+        return [rec]
+
+    def fake_crossref(query, limit=8, year_from=None, year_to=None):
+        if "arendt" in query.lower():
+            return [_mk_rec("Hannah Arendt revisited: Eichmann and the banality of evil",
+                            "Political Theory")]
+        return []
+
+    monkeypatch.setattr(SS, "_local_results", fake_local)
+    monkeypatch.setattr(SS, "search_crossref", fake_crossref)
+
+    out = SS.search_scholarship("平庸之恶 批评")
+    assert out["query_reformulation"]["triggered"] is True
+    assert "arendt" in (out["query_reformulation"]["variant_query"] or "").lower()
+    assert any("Arendt" in (r.get("title") or "") for r in out["results"])
