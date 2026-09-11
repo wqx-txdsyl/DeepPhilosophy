@@ -118,13 +118,6 @@ def _parse_verdict(content, finish_reason=None):
     return verdict
 
 
-def _verdict_schema_observation(verdict):
-    """schema 结构观测（不改流程）: dict 且缺 dimensions → VERDICT_SCHEMA_INVALID。"""
-    if not isinstance(verdict, dict) or "dimensions" not in verdict:
-        return "VERDICT_SCHEMA_INVALID"
-    return None
-
-
 def _materialize_read_chapters(r, max_chapters=None):
     """PF-RP3A §B EVIDENCE REPLAY + PF-RP4B-R1: 把 run facts.read_chapters 记录的
     当时已读章节从本地书库机械物化（零新增检索/零网络/零 fuzzy）。
@@ -494,14 +487,8 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
                         "content_prefix": jf.content_prefix})
                     time.sleep(2 * (attempt + 1))
                     continue
-                _schema_obs = _verdict_schema_observation(verdict)
-                if _schema_obs:
-                    attempt_log.append({
-                        "case_id": cid, "vote_index": k,
-                        "attempt_index": attempt,
-                        "failure_class": _schema_obs,
-                        "observation_only": True})
-                break   # 本 attempt 成功取得 verdict（schema 校验在下游 canonical 层）
+                break   # 本 attempt 成功取得 verdict（schema 校验在下游 canonical 层;
+                        # canonical schema invalid 观测在该层统一记录）
             votes.append(verdict)
         # PF-RP3A §A: vote 级机械校验——applicability 必须等于 manifest 预注册;
         # REQUIRED 维必须给数值分, 否则该票 invalid（不静默采信 judge 自判）
@@ -517,6 +504,18 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
             base_errs = O7A.validate_verdict(v)
             vdims = v.get("dimensions", {}) or {}
             bad = list(base_errs)
+            # V9-F1-R2: canonical schema invalid 全量可观测——O7A.validate_verdict
+            # 非空（缺维/非法 applicability/score 越界/REQUIRED 分缺失/缺 rationale/
+            # fatal flag 缺失等）→ 记 VERDICT_SCHEMA_INVALID（observation_only,
+            # 不增 LLM call/不改 vote validity/不改流程）; manifest applicability
+            # mismatch 保持既有 mismatch reason, 不冒充 canonical schema error。
+            if base_errs:
+                attempt_log.append({
+                    "case_id": cid, "vote_index": vi,
+                    "attempt_index": None,   # canonical 层观测, 原 attempt 序号不可得 → 显式 null
+                    "failure_class": "VERDICT_SCHEMA_INVALID",
+                    "observation_only": True,
+                    "canonical_reasons": [str(x)[:120] for x in base_errs]})
             for dim, applic in manifest_applic.items():
                 vd = vdims.get(dim) or {}
                 if (vd.get("applicability") or applic) != applic:
@@ -525,6 +524,12 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
                 if applic == "REQUIRED" and not isinstance(
                         vd.get("score"), (int, float)):
                     bad.append(f"{dim}: REQUIRED requires numeric score")
+                    attempt_log.append({
+                        "case_id": cid, "vote_index": vi,
+                        "attempt_index": None,
+                        "failure_class": "VERDICT_SCHEMA_INVALID",
+                        "observation_only": True,
+                        "canonical_reasons": [f"{dim}: REQUIRED requires numeric score"]})
             votes_archive.append({
                 "vote_index": vi, "valid": not bad, "reasons": bad[:6],
                 "dimensions": {d: {"applicability": (vd or {}).get("applicability"),

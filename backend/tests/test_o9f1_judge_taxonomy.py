@@ -98,13 +98,10 @@ def test_empty_content_classified_production_call(monkeypatch):
 
 
 def test_schema_invalid_classified():
-    # V9-F1-R1 §2: schema-invalid 不新增 retry——_parse_verdict 正常返回 dict,
-    # 结构缺失仅产生 VERDICT_SCHEMA_INVALID 观测分类（下游 canonical 校验不变）
+    # V9-F1-R1 §2: _parse_verdict 仅负责 JSON decode; 结构缺失的
+    # VERDICT_SCHEMA_INVALID 观测由 judge_candidate canonical 层记录
     v = J2._parse_verdict(json.dumps({"foo": 1}), "stop")
-    assert J2._verdict_schema_observation(v) == "VERDICT_SCHEMA_INVALID"
-    # 有 dimensions 的 dict → 无 schema 观测
-    assert J2._verdict_schema_observation(
-        J2._parse_verdict(json.dumps({"dimensions": {}}), "stop")) is None
+    assert isinstance(v, dict) and "dimensions" not in v
 
 
 def test_valid_verdict_passes():
@@ -245,3 +242,113 @@ def test_p6_valid_first_attempt_exactly_one_call_per_vote(monkeypatch, pipeline_
     j = json.load(open(f"{J2.ROOT}/backend/tools/_tmp/{pipeline_env['tag']}.json"))
     vote = next(v for v in j[0]["votes_archive"] if v.get("vote_index") == 0)
     assert vote["valid"] is True
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F1-R2: canonical schema invalid 全量可观测
+# ═══════════════════════════════════════════════════════
+def _verdict_missing_dim():
+    v = _valid_verdict()
+    v["dimensions"].pop("historical_discipline")   # 缺一个冻结维度
+    return v
+
+
+def _verdict_bad_score():
+    v = _valid_verdict()
+    v["dimensions"]["textual_grounding"]["score"] = 5   # 越界（0-4）
+    return v
+
+
+def _verdict_required_missing_score():
+    v = _valid_verdict()
+    man = [{"case_id": "TAX-1", "question": "q", "task_category": "t",
+            "agent_identity": "A",
+            "applicability": {"TEXTUAL_GROUNDING": "REQUIRED"}}]
+    v["dimensions"]["textual_grounding"] = {"applicability": "REQUIRED"}  # 无 score
+    return v, man
+
+
+def _verdict_missing_fatal():
+    v = _valid_verdict()
+    v["fatal_flags"].pop("FABRICATED_BIBLIOGRAPHY")
+    return v
+
+
+def _verdict_missing_rationale():
+    v = _valid_verdict()
+    v["dimensions"]["textual_grounding"]["rationale"] = None
+    return v
+
+
+def _run_canonical(monkeypatch, pipeline_env, verdict, man=None):
+    calls = _patch_call(monkeypatch, [json.dumps(verdict)])
+    man_path = pipeline_env["man"]
+    if man is not None:
+        man_path = str(pipeline_env["man_path_override"])
+        open(man_path, "w", encoding="utf-8").write(json.dumps(man))
+    J2.judge_candidate("deepseek-v4-flash", runs_path=pipeline_env["runs"],
+                       out_tag=pipeline_env["tag"], manifest_path=man_path)
+    j = json.load(open(f"{J2.ROOT}/backend/tools/_tmp/{pipeline_env['tag']}.json"))
+    return calls, j
+
+
+def _schema_obs(j):
+    return [a for a in j[0].get("attempt_log", [])
+            if a.get("failure_class") == "VERDICT_SCHEMA_INVALID"]
+
+
+def test_r2_missing_dimension_observable(monkeypatch, pipeline_env):
+    calls, j = _run_canonical(monkeypatch, pipeline_env, _verdict_missing_dim())
+    assert calls["n"] == 3                       # 零额外 retry
+    vote = next(v for v in j[0]["votes_archive"] if v.get("vote_index") == 0)
+    assert vote["valid"] is False
+    obs = _schema_obs(j)
+    assert len(obs) == 3                         # 每 vote 一条观测
+    assert all(a.get("observation_only") for a in obs)
+    assert any("historical_discipline" in r for a in obs
+               for r in a.get("canonical_reasons", []))
+
+
+def test_r2_bad_score_observable(monkeypatch, pipeline_env):
+    calls, j = _run_canonical(monkeypatch, pipeline_env, _verdict_bad_score())
+    vote = next(v for v in j[0]["votes_archive"] if v.get("vote_index") == 0)
+    assert vote["valid"] is False
+    obs = _schema_obs(j)
+    assert len(obs) == 3
+    assert any("0-4" in r for a in obs for r in a.get("canonical_reasons", []))
+
+
+def test_r2_missing_required_score_observable(monkeypatch, pipeline_env):
+    v, man = _verdict_required_missing_score()
+    pipeline_env["man_path_override"] = str(pipeline_env["man"]) + ".req.json"
+    calls, j = _run_canonical(monkeypatch, pipeline_env, v, man)
+    vote = next(v for v in j[0]["votes_archive"] if v.get("vote_index") == 0)
+    assert vote["valid"] is False
+    obs = _schema_obs(j)
+    assert len(obs) >= 3
+    assert any("REQUIRED requires numeric score" in r
+               for a in obs for r in a.get("canonical_reasons", []))
+
+
+def test_r2_missing_fatal_flag_observable(monkeypatch, pipeline_env):
+    calls, j = _run_canonical(monkeypatch, pipeline_env, _verdict_missing_fatal())
+    vote = next(v for v in j[0]["votes_archive"] if v.get("vote_index") == 0)
+    assert vote["valid"] is False
+    obs = _schema_obs(j)
+    assert len(obs) == 3
+    assert any("FABRICATED_BIBLIOGRAPHY" in r
+               for a in obs for r in a.get("canonical_reasons", []))
+
+
+def test_r2_missing_rationale_observable(monkeypatch, pipeline_env):
+    calls, j = _run_canonical(monkeypatch, pipeline_env, _verdict_missing_rationale())
+    vote = next(v for v in j[0]["votes_archive"] if v.get("vote_index") == 0)
+    assert vote["valid"] is False
+    obs = _schema_obs(j)
+    assert len(obs) == 3
+    assert any("rationale" in r for a in obs for r in a.get("canonical_reasons", []))
+
+
+def test_r2_canonical_valid_no_schema_observation(monkeypatch, pipeline_env):
+    calls, j = _run_canonical(monkeypatch, pipeline_env, _valid_verdict())
+    assert _schema_obs(j) == []
