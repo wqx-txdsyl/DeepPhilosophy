@@ -1,0 +1,25 @@
+{
+ "V8_F2_R1_FIXES": true,
+ "R1_BASE": "f53b8bed95c296d6e9f8b02c845080da630f5444",
+ "CONTENT_HEAD_R1": "97d5b9ffc455423909ba24265d43807071c76629",
+ "fixes": {
+  "P0_A_plan_only": {
+   "ROUND_LOCAL_TOOL_ACCOUNTING": "FINAL_ROUND_TOOL_CALLS（终局 invocation 自身事实）取代累计 tool_log; prior-tools+末轮 plan 拦截回归 PASS",
+   "EXHAUSTION_FAIL_CLOSED": "publish 显式要求 validation.ok AND not terminal_plan_only; stubborn exhaustion 集成测试: 计划文本零 token 外流, validation_failed/error 非语义收口, PLAN_ONLY_EXHAUSTION_FAIL_CLOSED=true",
+   "EXEMPTION_NARROWED": "文献综述/回顾/清单不再豁免（成品要求）; 研究计划/阅读路径/检索方案/研究路线仍豁免; 回归 PASS",
+   "COMPLETION_EVIDENCE_GUARD": "O4-T5 实况「让我先检索一下材料。现在已经查到了：…」含完成性语言证据 → 非 plan-only 原样发布（不误拦已有实质交付的候选）"
+  },
+  "P0_B_no_op_effective": {
+   "JUDGMENT_MOVED": "no-op 判定移至 Local Patch parse_and_apply/finalization 之后（effective candidate）; patch apply 失败回退 pre 的形态亦被覆盖",
+   "NO_OP_SCOPE": "LOCAL_PATCH_EFFECTIVE / FULL_REWRITE 记录于 trace",
+   "tests": "LP effective no-op（零 patch）PASS; LP apply 失败回退 no-op PASS; FULL_REWRITE no-op 保持 PASS"
+  },
+  "P1_C_scholarly": {
+   "ZERO_RESULT_TRIGGER": "触发条件 not relevant（覆盖 0 条/全离题/单 provider 失败另一家空手）; 恰一次 retry（call count 断言）",
+   "BILINGUAL_CANONICAL": "中文 query 经本地 curated/alias 元数据英文身份形成 variant（零硬编码零猜译）; variant 命中按原 query 或 variant 任一相关保留（跨语言命中不被二次过滤）"
+  }
+ },
+ "FULL_TEST_SHA": "97d5b9ffc455423909ba24265d43807071c76629",
+ "FULL_TEST_RESULT": "878 passed / 0 failed @ exact CONTENT_HEAD_R1",
+ "FROZEN_VERIFIED": "final gate blob 22ea181c…/O7A judge/validator/quote_bound/semantic classifier/primary corpus 全部与 BASE 零 diff; V8_RERUN=false; V9_RERUN=false"
+}
