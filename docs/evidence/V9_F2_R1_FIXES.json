@@ -1,0 +1,15 @@
+{
+ "V9_F2_R1_FIXES": true,
+ "R1_BASE": "9ea24e6422e5c973d6791d4b161c2b0a6101326c",
+ "CONTENT_HEAD_R1": "a726bfee6bf4b8a1325c2b8af5dd440676abe6a5",
+ "fixes": {
+  "P0_A_safety_gate_fail_closed": "门逻辑提取为 evaluate_repair_safety 纯函数; validate/classify/处理异常 → rejected=True + SAFETY_GATE_ERROR + 回退 pre candidate + escalation; 绝不 fail-open",
+  "P0_B_ambiguous_unconditional": "AMBIGUOUS 无条件拒绝（family UNKNOWN/EMPTY/QUOTE/CITATION/BIBLIOGRAPHIC 全覆盖）; GENUINELY_NEW 仅 evidence 三家族拒绝",
+  "P1_C_admission_vs_noop": "paraphrase_safety_rejected → SAFETY_ADMISSION_REJECTED（safety escalation, 不增 REPAIR_NO_OP_COUNT）; semantic 拒绝同样不计 no-op",
+  "P1_D_layer1_tightened": "ASCII '/curly ' 不作单字符 wrapper（doesn't/Arendt's 不误杀）; 单引号成对包围非空 span 判 unsafe; cue 收敛至 原文写道/原文说/语录/第N章/第N页/p.N; 指出 等普通转述动词不拦",
+  "P1_E_tests": "20 场景: admission 不增 no-op + safety escalation E2E / exception fail-closed 单元×2 + E2E / AMBIGUOUS 全家族 / REKEY/SHIFT/RELABEL 不误杀 / wrapper+attribution+新citation 拒绝 / safe paraphrase 接受 / unsafe 两修均拒 FAIL-CLOSED / unsafe→safe 收敛"
+ },
+ "FULL_TEST_SHA": "a726bfee6bf4b8a1325c2b8af5dd440676abe6a5",
+ "FULL_TEST_RESULT": "920 passed / 0 failed @ exact CONTENT_HEAD_R1",
+ "frozen_unchanged": "validator/quote_bound/semantic classifier/O7A judge/final gate(blob 22ea181c)/primary corpus/production model"
+}
