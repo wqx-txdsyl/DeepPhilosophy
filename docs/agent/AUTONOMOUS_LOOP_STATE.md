@@ -10,7 +10,7 @@ BASE_SHA=232783e67f7c9ea37ad9ff0acfafc8c9cba54a11（V9 授权基线 = V8-F2-R3 A
 LATEST_CONTENT_SHA=967fde3e6831cfbb6a91849b99328d35cead9cd5（QUALIFICATION_HEAD, manifest+harness 冻结于 run 前）
 LATEST_ARCHIVE_SHA=(见 git log -1; V9 evidence 归档)
 LATEST_REMOTE_SHA=(= push 后 HEAD)
-NEXT_ACTION=读取 Reviewer 对 V9 FAIL 的裁定（注意: scholarly FAIL 含 judge 六例 vote_unparseable 的 infra 签名, EVALUATION_INVALID=true——测量有效性问题与产品问题需区分; delivery FAIL 为 V9-11 一例 GENUINELY_NEW transient）
+NEXT_ACTION=V9-F1 已交付（judge taxonomy + 双 RCA）, READY_FOR_V9_F1_REVIEW=true; 读取 Reviewer 裁定: PASS → Reviewer 决定 judge-only measurement recovery + V9-11 定点 patch 或保守 repair safety patch
 FROZEN_SCOPE=engine production behavior; scholarly_sources; primary corpus; Local Patch; validator; quote_bound; semantic classifier; judge rubric/thresholds/vote semantics; final gate; production model; V3-V8 历史
 LAST_REVIEW_TIMESTAMP=2026-09-11
 REVIEW_CHAT_IDENTIFIER=chatgpt.com/c/6aa3e455-ae50-83ee-a4af-359574391bb7 (「V7 F2 审查结论」)
