@@ -248,3 +248,119 @@ def test_r1_rekey_locator_shift_relabel_not_rejected(monkeypatch):
                                 "bbbbbbbbbbbbbbbb": _l}, "summary": {}})
         r = EG.evaluate_repair_safety(pre, post, [], [], "zh", 1)
         assert r["rejected"] is False, f"{label} 被误拒: {r}"
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F2-R2 §1: 三类 rejection 遥测分层计数（互不加数）
+# ═══════════════════════════════════════════════════════
+def test_r2_gate_error_not_counted_as_new_issue(monkeypatch):
+    import engine_langgraph as EG
+    import final_validator as FV
+
+    def boom(candidate, **kw):
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(FV, "validate_final_candidate", boom)
+    r = EG.evaluate_repair_safety([], "候选", [], [], "zh", 1)
+    assert r["rejection_kind"] == "SAFETY_GATE_ERROR"
+    assert r["rejected"] is True
+    assert r["fingerprints"] == [] and r["ambiguous_fps"] == []
+
+
+import final_validator as FV_r2
+
+
+def test_r2_ambiguous_not_counted_as_new_issue(monkeypatch):
+    import engine_langgraph as EG
+
+    pre = [{"fingerprint": "aaaaaaaaaaaaaaaa", "issue_code": "UNVERIFIED_CITATION",
+            "semantic_family": "CITATION", "normalized_locator": "旧",
+            "evidence_ref": None, "round_id": 0, "source_record_id": None,
+            "citation_or_quote_target_id": None}]
+    post = [{"fingerprint": "ffffffffffffffff", "issue_code": "EMPTY_FINAL",
+             "semantic_family": "EMPTY", "normalized_locator": "",
+             "evidence_ref": None, "round_id": 1, "source_record_id": None,
+             "citation_or_quote_target_id": None}]
+
+    class _FV:
+        def as_dict(self_inner):
+            return {"issues": [{"code": "EMPTY_FINAL", "locator": ""}]}
+
+    monkeypatch.setattr(FV_r2, "validate_final_candidate",
+                        lambda candidate, **kw: _FV())
+    monkeypatch.setattr(EG.ST, "classify_transition",
+                        lambda p, c: {"introduced_class": {
+                            "ffffffffffffffff": EG.ST.AMBIGUOUS}, "summary": {}})
+    r = EG.evaluate_repair_safety(pre, post, [], [], "zh", 1)
+    # AMBIGUOUS → rejection_kind=AMBIGUOUS（非 evidence 家族也不逃逸）
+    assert r["rejected"] is True
+    assert r["rejection_kind"] == "AMBIGUOUS"
+    assert r["ambiguous_fps"] == ["ffffffffffffffff"]
+
+
+def test_r2_genuinely_new_kind_semantics(monkeypatch):
+    import engine_langgraph as EG
+
+    pre = [{"fingerprint": "aaaaaaaaaaaaaaaa", "issue_code": "UNVERIFIED_CITATION",
+            "semantic_family": "CITATION", "normalized_locator": "旧",
+            "evidence_ref": None, "round_id": 0, "source_record_id": None,
+            "citation_or_quote_target_id": None}]
+    post = [{"fingerprint": "ffffffffffffffff", "issue_code": "UNVERIFIED_CITATION",
+             "semantic_family": "CITATION", "normalized_locator": "【《论自由》】",
+             "evidence_ref": None, "round_id": 1, "source_record_id": None,
+             "citation_or_quote_target_id": None}]
+
+    class _FV:
+        def as_dict(self_inner):
+            return {"issues": [{"code": "UNVERIFIED_CITATION",
+                                "locator": "【《论自由》】"}]}
+
+    monkeypatch.setattr(FV_r2, "validate_final_candidate",
+                        lambda candidate, **kw: _FV())
+    # classify 桩的 key 用快照真实指纹（与 _issue_snapshot 计算一致）
+    fp = EG._issue_fingerprint("UNVERIFIED_CITATION", "【《论自由》】", None)
+    monkeypatch.setattr(EG.ST, "classify_transition",
+                        lambda p, c: {"introduced_class": {
+                            fp: EG.ST.GENUINELY_NEW_ISSUE}, "summary": {}})
+    r = EG.evaluate_repair_safety(pre, post, [], [], "zh", 1)
+    assert r["rejected"] is True
+    assert r["rejection_kind"] == "GENUINELY_NEW_EVIDENCE"
+    assert r["fingerprints"] == [fp]
+    assert r["ambiguous_fps"] == []
+
+
+def test_r2_e2e_safety_gate_error_engine_fail_closed(monkeypatch):
+    """engine E2E: 门异常 → 回退 pre + SAFETY_GATE_ERROR 遥测 + NEW_ISSUE 不加数
+    + 零 no-op + unsafe 候选零发布"""
+    import engine_langgraph as EG
+    import final_validator as FV2
+    real = FV2.validate_final_candidate
+    state = {"n": 0}
+
+    def flaky(candidate, **kw):
+        state["n"] += 1
+        out = real(candidate, **kw)
+        if "论自由" in (candidate or ""):   # 仅对 citation 注入候选抛异常
+            raise RuntimeError("boom")
+        return out
+
+    monkeypatch.setattr(FV2, "validate_final_candidate", flaky)
+    # 首轮 flaky: n==1 = loop-top 校验（BAD 候选, 正常返回）; n==2 = safety gate（citation 候选, 抛）;
+    # n==3 = loop-top（回退后的 BAD, 正常）; n==4 = safety gate（BAD, 正常 → FAIL-CLOSED 不收敛也行,
+    # 但我们希望验证 GATE_ERROR 后第二修收敛 → 让 n>=4 之后不再抛, 用脚本顺序:
+    # script = BAD, CITATION_PATCH, FIX_PATCH → repair2 的 FIX_PATCH 应用后 Gate 再次抛 → 又 FAIL-CLOSED。
+    # 因此脚本让 repair2 输出 _GOOD（FULL_REWRITE 式安全文本）不可行（LP 模式）。
+    # 改为: flaky 仅抛一次（首次 citation 候选）, 后续调用正常。
+    evs, _chat = _run_lp(
+        "言必有中出处",
+        _TOOLS_SCRIPT + [_msg(_BAD), _msg(_CITATION_PATCH), _msg(_FIX_PATCH)],
+        adapter=_production_adapter())
+    tokens = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
+    assert "论自由" not in tokens
+    tel = (_done(evs).get("v8f2_telemetry") or {})
+    assert tel.get("REPAIR_SAFETY_GATE_ERROR", 0) >= 1
+    # GATE_ERROR 不冒充新 issue
+    new_issue_families = tel.get("REPAIR_SAFETY_REJECTED_FAMILY") or []
+    assert "CITATION" not in new_issue_families
+    assert tel.get("REPAIR_NO_OP_COUNT", 0) == 0
+    # fail-closed 后 safety escalation → 安全第二修收敛发布（非语义 error 路径也可）

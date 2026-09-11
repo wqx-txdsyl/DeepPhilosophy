@@ -26,11 +26,21 @@ QUOTE_CODES = {"UNSUPPORTED_EXACT_QUOTE", "NEAR_QUOTE_NOT_MARKED", "STITCHED_QUO
 # 普通转述动词（指出/认为/主张/写道）不再仅凭动词判 unsafe;
 # ASCII ' 与 curly ' 不作为单字符 wrapper（缩约/所有格不误杀, 如 doesn't /
 # Arendt's）; 单引号仅成对包围非空 span 时判 unsafe。零 NER/零第二套 classifier。
-_PARAPHRASE_WRAPPER_RE = re.compile("[\u300c\u300d\u300e\u300f\u201c\u201d\u0022]")
-_PAIRED_SINGLE_RE = re.compile("['\u2019][^'\u2019]{1,}['\u2019]")
-_WORD_ADJACENT_APOSTROPHE = re.compile("(?<=[A-Za-z])['\u2019](?=[A-Za-z])")
+# V9-F2-R2 §2: wrapper/cue 边界收紧——
+# - ASCII ' 与 curly ’ 不作单字符 wrapper（缩约 doesn't/所有格 Arendt's/
+#   复数所有格 students' 均不误杀: 词邻 apostrophe 先剥离再判成对）;
+# - 成对单引号含 ASCII 对（'...')与 typographic 对（‘...’）, 且要求
+#   非空 span（防止 '' 空引号空触发）;
+# - cue 收敛任务书清单: 原文写道/原文说/语录/第N章/第N页/p.N;
+#   普通转述动词（写道/指出/认为/主张/曾说）不拦。
+_PARAPHRASE_WRAPPER_RE = re.compile("[\u300c\u300d\u300e\u300f\u201c\u201d]")
+# 成对单引号（ASCII 对 + typographic ‘’ 对）: opening 前不得是字母（词内缩约/
+# 所有格如 doesn't/Arendt's/students' 的 apostrophe 词邻字母 → 不构成 opening）,
+# closing 后不得是字母; 中间非空非换行 → quotation wrapper。零 NER/零 LLM。
+_PAIRED_SINGLE_RE = re.compile(r"(?<![A-Za-z])['’][^'’\n]{1,}?['’](?![A-Za-z])")
+_PAIRED_CURLY_SINGLE_RE = re.compile('‘[^‘’\n]{1,}’')
 _PARAPHRASE_CUE_RE = re.compile(
-    r"原文写道|原文说|原文中|语录|收录于|曾说"
+    r"原文写道|原文说|原文中|语录|收录于"
     r"|第\s*[0-9一二三四五六七八九十]+\s*[章节页]|pp?\.\s*[0-9]+")
 
 
@@ -55,8 +65,9 @@ def _unsafe_paraphrase_scan(model_output):
         text = str(p.get("replacement_text") or "")
         if _PARAPHRASE_WRAPPER_RE.search(text):
             return ("UNSAFE_PARAPHRASE_QUOTE_WRAPPER", text[:120])
-        _stripped = _WORD_ADJACENT_APOSTROPHE.sub("", text)
-        if _PAIRED_SINGLE_RE.search(_stripped):
+        if _PAIRED_SINGLE_RE.search(text):
+            return ("UNSAFE_PARAPHRASE_QUOTE_WRAPPER", text[:120])
+        if _PAIRED_CURLY_SINGLE_RE.search(text):
             return ("UNSAFE_PARAPHRASE_QUOTE_WRAPPER", text[:120])
         if _PARAPHRASE_CUE_RE.search(text):
             return ("UNSAFE_PARAPHRASE_ATTRIBUTION", text[:120])
