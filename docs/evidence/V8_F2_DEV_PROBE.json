@@ -1,0 +1,42 @@
+{
+ "V8_F2_DEV_PROBE": true,
+ "DEV_ONLY": true,
+ "QUALIFICATION": false,
+ "FORBIDDEN_FROM_V9": true,
+ "PRODUCTION_MODEL": "deepseek-v4-flash",
+ "DEV_CASES_FRESH": true,
+ "V8_CASES_REUSED": false,
+ "probes": [
+  {
+   "name": "plan-only terminal（生产路径集成: 真实 LangGraph 图 + 脚本化假 LLM）",
+   "result": "PASS",
+   "detail": "前言不被发布（PLAN_ONLY_TERMINAL_BLOCKED=true）; 一次有界 recovery 后实质回答成为终局候选; 断言前言文本不在最终 answer 中"
+  },
+  {
+   "name": "real research-plan request（不误杀回归）",
+   "result": "PASS",
+   "detail": "用户明示请求研究计划 → PLAN_ONLY_TERMINAL_BLOCKED=false, 计划型回答 round0 ok=True 正常发布"
+  },
+  {
+   "name": "no-op repair（生产路径集成）",
+   "result": "PASS",
+   "detail": "repair 返回逐字节相同候选 → trace[0].no_op_repair=true（pre/post sha256 相等）; 下一轮 escalation 注入（no_op_escalated=true）; escalation 后候选改变、issue 消失、零 GENUINELY_NEW/AMBIGUOUS; REPAIR_NO_OP_COUNT=1/ESCALATED=1"
+  },
+  {
+   "name": "scholarly relevance 门 + irrelevant-only reformulation（deterministic unit, stub providers）",
+   "result": "PASS",
+   "detail": "首轮全离题 → 一次 latin variant reformulation → 相关记录恢复; 离题记录全部剔除（dropped_irrelevant>=1）; 无 variant 时不冒充成功（results=[]）"
+  },
+  {
+   "name": "provider failover（deterministic unit, stub providers）",
+   "result": "PASS",
+   "detail": "crossref UNAVAILABLE → openalex 供给相关记录, provider_failover=true, scholarly path 不整体失效"
+  },
+  {
+   "name": "live provider probe（真实网络）",
+   "result": "ENVIRONMENT_LIMITED",
+   "detail": "本沙箱对外部 scholarly provider 直连被拒（crossref/openalex 均 URL_BLOCKED reserved-ip, 与 V8-12 案例的 provider 屏蔽环境同类）→ 系统诚实进入 offline_mode, 仅 LOCAL_CURATED 策展记录, 未把失败冒充成功; 相关性门的真实丢弃行为由上列 deterministic unit 覆盖"
+  }
+ ],
+ "test_files": "backend/tests/test_o7e_v8f2_repairs.py（11 场景全过）"
+}
