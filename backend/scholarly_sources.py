@@ -788,32 +788,118 @@ def _dedup_local_live(local, live):
     return out
 
 
+# ── V8-F2 §2: relevance 门 + 一次有界 query reformulation ─────────
+# V8-12 实证 failure class: provider 返回大量记录但全部离题（康德/洛克/孟子…）,
+# 「返回很多 records」被当成检索成功。合同: 只有相关记录才进入后续证据链;
+# 相关性判定纯机械（query token 与 title/venue 重叠）, 零 LLM; 单 provider
+# 失败不使整个 scholarly path 失效（双 provider 互为 failover, 已有）;
+# metadata-only 不冒充 content evidence 的合同由既有 LOCATE→READ 承担（不变）。
+
+_RELEVANCE_STOPCHARS = set("之乎者也的了与和或及其在为有是无不没等的之中上下")
+
+def _query_tokens(query):
+    """query → (latin 词集, CJK bigram 集)。纯机械分词, 无词典。"""
+    latin = {w.lower() for w in re.findall(r"[A-Za-z]{3,}", query or "")}
+    cjk = re.findall(r"[\u4e00-\u9fff]{2,}", query or "")
+    bigrams = set()
+    for seg in cjk:
+        for i in range(len(seg) - 1):
+            a, b = seg[i], seg[i + 1]
+            if a in _RELEVANCE_STOPCHARS or b in _RELEVANCE_STOPCHARS:
+                continue
+            bigrams.add(a + b)
+    return latin, bigrams
+
+
+def _record_tokens(rec):
+    text = " ".join([str(rec.get("title") or ""), str(rec.get("container_title") or "")])
+    return _query_tokens(text)
+
+
+def _is_relevant(q_latin, q_bigrams, rec):
+    """标题/venue 与 query 的机械相关性: latin 词或 CJK bigram 任一命中即相关;
+    query 无可用 token 时保守放行（不可判定 ≠ 不相关）。"""
+    if not q_latin and not q_bigrams:
+        return True
+    r_latin, r_bigrams = _record_tokens(rec)
+    if q_latin & r_latin:
+        return True
+    if q_bigrams & r_bigrams:
+        return True
+    return False
+
+
+def _reformulate_query(q):
+    """一次有界 query 重构（generic, 零硬编码）: 取 query 中的 latin 学术词
+    （作者/作品名常为拉丁转写）重构为纯 latin variant; 无 latin 词 → None。"""
+    latin = re.findall(r"[A-Za-z]{3,}", q or "")
+    if len(latin) >= 1:
+        return " ".join(latin[:6])
+    return None
+
+
 def search_scholarship(query, philosopher=None, work=None, year_from=None,
                        year_to=None, limit=8):
     """主入口: LOCAL_CURATED + Crossref + OpenAlex → canonical 去重。
 
     O7-D §26-27 离线语义: 双 live provider 失败而本地有结果时如实标注
-    「外部 provider 当前失败; 结果来自本地 registry」, 不冒充实时检索。"""
+    「外部 provider 当前失败; 结果来自本地 registry」, 不冒充实时检索。
+    V8-F2 §2: live 结果过 relevance 门（离题记录不入证据链）; 相关记录为空时
+    做一次有界 query reformulation 重试; 全程硬预算（重试恰一次, 无循环）。"""
     q = " ".join(filter(None, [philosopher, work, query])).strip()
-    key = json.dumps([q, year_from, year_to, limit], ensure_ascii=False)
+    key = json.dumps(["v8f2", q, year_from, year_to, limit], ensure_ascii=False)
     cache = _load_cache()
     if key in cache["searches"]:
         return cache["searches"][key]
-    results, errors = [], []
-    live_ok = []
-    for name, fn in (("crossref", search_crossref), ("openalex", search_openalex)):
-        try:
-            results.extend(fn(q, limit=limit, year_from=year_from, year_to=year_to))
-            live_ok.append(name)
-        except ProviderError as e:
-            errors.append({"provider": name, "error": e.kind, "detail": e.detail})
+
+    def _providers_fetch(query_text):
+        results, errors, live_ok = [], [], []
+        for name, fn in (("crossref", search_crossref),
+                         ("openalex", search_openalex)):
+            try:
+                results.extend(fn(query_text, limit=limit,
+                                  year_from=year_from, year_to=year_to))
+                live_ok.append(name)
+            except ProviderError as e:
+                errors.append({"provider": name, "error": e.kind,
+                               "detail": e.detail})
+        return results, errors, live_ok
+
+    q_latin, q_bigrams = _query_tokens(q)
+    results, errors, live_ok = _providers_fetch(q)
     canon = merge_records(results)
+    relevant = [r for r in canon if _is_relevant(q_latin, q_bigrams, r)]
+    dropped = len(canon) - len(relevant)
+
+    # 一次有界 reformulation: live 有返回但全离题（或零返回）时重试一次
+    reformulation = {"triggered": False, "variant_query": None,
+                     "recovered_relevant": 0}
+    if canon and not relevant:
+        variant = _reformulate_query(q)
+        if variant and variant.lower() != q.lower():
+            r2, e2, ok2 = _providers_fetch(variant)
+            errors.extend(e2)
+            results.extend(r2)
+            if ok2:
+                live_ok = sorted(set(live_ok) | set(ok2))
+            canon2 = merge_records(results)
+            relevant = [r for r in canon2 if _is_relevant(q_latin, q_bigrams, r)]
+            dropped = len(canon2) - len(relevant)
+            reformulation = {"triggered": True, "variant_query": variant,
+                             "recovered_relevant": len(relevant)}
+
+    canon = relevant
     canon.sort(key=lambda r: -(r.get("provider_records", [{}])[0].get("cited_by") or 0))
     local = _local_results(q, limit)
     merged = _dedup_local_live(local, canon)[:limit]
     out = {"query": q, "results": merged,
            "providers_queried": ["LOCAL_CURATED", "crossref", "openalex"],
-           "errors": errors}
+           "errors": errors,
+           # V8-F2 §2 机械 telemetry（事实, 非决策系统）
+           "relevance_gate": {"dropped_irrelevant": dropped,
+                              "kept_relevant": len(relevant)},
+           "query_reformulation": reformulation,
+           "provider_failover": bool(errors and live_ok)}
     if not live_ok and local:
         out["offline_mode"] = True
         out["note"] = ("外部 provider 当前失败（见 errors）; 以下结果来自已验证的"

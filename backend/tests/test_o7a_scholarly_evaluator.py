@@ -238,10 +238,11 @@ def test_t19_no_production_diff_vs_base():
     # O7-E 解冻: engine prompt / agents persona 工具面 授权改动落地 commit 之后冻结
     # V7-F2-R1: engine 基线由 commit-SHA 改为内容哈希——R1 拓扑要求单一 CONTENT_HEAD
     # （impl+tests 同提交）, commit-SHA 基线无法在同一提交内自引用; 哈希基线等强:
-    # 此后任何未授权 engine 漂移立即失败。授权依据 = R1 任务书（2026-09-11,
-    # V7-F2-R1 Semantic Observability Closure: 8 字段快照 + semantic_transition 持久化）。
+    # 此后任何未授权 engine 漂移立即失败。
+    # V8-F2（2026-09-11 授权）: plan-only terminal 拦截 + no-op repair 哈希追踪
+    # 落地 → 基线哈希更新（授权依据 = V8-F2 任务书三类 failure class 修复）。
     import hashlib as _hl
-    _ENGINE_R1_SHA256 = "bc21100d7ba70c1e218257845e70f0970f138bd709bfef166029b953fc672bc3"
+    _ENGINE_R1_SHA256 = "20767a529aae8147eddc0e88b5f32621cd87cbfa9886580036d9a2c39c4787e6"
     _eng_src = open(os.path.join(os.path.dirname(os.path.dirname(
         os.path.abspath(__file__))), "engine_langgraph.py"), encoding="utf-8").read()
     assert _hl.sha256(_eng_src.encode("utf-8")).hexdigest() == _ENGINE_R1_SHA256, \

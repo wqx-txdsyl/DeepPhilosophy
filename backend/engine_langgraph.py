@@ -1400,6 +1400,40 @@ def _issue_fingerprint(code, locator, evidence_ref=None):
     ).hexdigest()[:16]
 
 
+# ══ V8-F2 §1: plan-only terminal 检测（纯确定性, 零 LLM）══════════
+# V8-11 实证 failure class: 模型宣布「下一步检索」却未调用任何工具, 规划前言
+# 直接成为终局候选并发布。合同: 想检索 → 本轮不调工具 → 必须给实质回答;
+# 用户真实请求研究计划时绝不误拦（Main Agent sovereignty 保持, 零新 judge）。
+_PLAN_USER_REQUEST_RE = re.compile(
+    r"研究计划|阅读计划|文献(综述|入门|清单|回顾)|怎么入手|如何入手|应该(先)?读|"
+    r"从哪些文献|读哪些(书|文献)|入门路径|阅读顺序|学习路径|研究路线|读书顺序|提纲")
+_PLAN_INTENT_RE = re.compile(
+    r"(下一步|接下来|随后|然后)[^。！？]{0,6}我[^。！？]{0,6}(将|会|要|就|先|去|需)?[^。！？]{0,4}(并行)?(检索|搜索|查证|查找|核验|查阅|调研)"
+    r"|(我将|我会|我要|让我|让我先|我先|我需要|先去|先来|需先)(并行)?(检索|搜索|查证|查找|核验|查阅|调研)"
+    r"|必须(用|基于)?(检索|查证)(到|获得)?(的)?(真实|可靠)?(文献|证据|二手文献)")
+
+
+def _is_plan_only_terminal(candidate, user_message):
+    """候选是否为「宣布未来检索动作」的 plan-only 终局文本（纯确定性）。
+
+    - 用户消息本身在请求计划/文献路径 → 永不判定（真实计划回答正常发布）;
+    - 其余场景: 候选含第一人称未来检索意图宣告 → plan-only。"""
+    c = candidate or ""
+    if not c.strip():
+        return False
+    if _PLAN_USER_REQUEST_RE.search(user_message or ""):
+        return False
+    return bool(_PLAN_INTENT_RE.search(c))
+
+
+PLAN_ONLY_RECOVERY_DIRECTIVE = (
+    "你刚才输出的是一段「接下来将要检索/查证」的操作计划, 而不是对用户问题的回答, "
+    "且本轮尚未执行任何工具调用。现在二选一, 并直接执行: "
+    "(1) 立即调用检索工具执行你宣布的检索; "
+    "(2) 基于你已掌握的证据直接给出对用户问题的实质性回答; "
+    "无法核验的部分明确标注证据边界, 不得只留下工具计划。不要再输出行动计划。")
+
+
 def _issue_snapshot(round_id, issue):
     """V7-F2-R1 §2: per-round semantic identity snapshot（8 字段合同）。
 
@@ -1849,16 +1883,58 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         candidate = pending["text"]
         pending["text"] = ""
         repairs_used = 0
+        # ══ V8-F2 §1: plan-only terminal 拦截 + 一次有界 recovery ══
+        # V8-11 实证: 模型宣布「下一步检索」却 0 工具调用, 规划前言直接发布。
+        # 合同: 禁止纯操作计划前言作为 final answer; 允许恰一次有界 recovery
+        # （可实际调工具或产出实质受限回答）; 用户真实计划请求不误拦;
+        # 硬预算已尽时模型声明「无法检索」是合法受限回答, 不拦。
+        _plan_gate = False
+        if (candidate.strip() and _is_plan_only_terminal(candidate, req_message)
+                and not tool_log and budget is not None
+                and not budget.hard_reached()):
+            _plan_gate = True
+            yield {"type": "tool_note",
+                   "content": "（智能体宣布了检索计划但尚未执行——正在要求它执行检索或直接给出实质性回答……）",
+                   "initiated_by": "runtime_mechanical", "activity": True,
+                   "decision_group_id": _dg()}
+            _recovery_msgs = list(messages) + [
+                AIMessage(content=candidate),
+                HumanMessage(content=PLAN_ONLY_RECOVERY_DIRECTIVE)]
+            _recovered = ""
+            try:
+                async for _rev in _stream_graph(_recovery_msgs):
+                    yield _rev
+                _rtails = _phrase_scr.flush() + _visible_text(_rat_parser.finish())
+                _recovered = _rtails + pending["text"]
+                if pending["has_tools"]:
+                    async for ev in flush_agent():
+                        yield ev
+                    _recovered = _rtails   # 残留工具轮文本不入候选
+                pending["text"] = ""
+            except Exception as _pe:
+                logger.warning(f"[plan-only recovery] failed: {str(_pe)[:200]}")
+            if _recovered.strip():
+                candidate = _recovered
+            logger.info(f"[plan-only] blocked preamble ({len(candidate)} chars "
+                        f"recovered={bool(_recovered.strip())})")
         _val_history = []      # O7-E RP1 §5: 纯机械 validation history（无 CoT/正文）
         _repair_trace = []     # O7-E RP-SYS §8: repair 遥测（无 CoT/无 rejected 正文/无完整 passage）
         _prev_patch_errors = None   # H2C §3: 跨 attempt 协议错误传递
         _raw_log_hash_before = None  # H2C §4: latest-evidence finalization 检测
+        # V8-F2 §3: no-op repair 检测（pre/post candidate hash）+ 有界升级
+        _repair_no_op_count = 0
+        _repair_no_op_escalated = 0
+        _no_op_escalate_next = False
         while True:
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
                 language=language)
             val_dict = validation.as_dict()
             _val_issues = val_dict.get("issues", [])
+            # V8-F2 §1: plan-gate——plan-only 候选即使机械校验通过也不得发布;
+            # 进入 repair 分支做有界升级（escalation 反馈见下方 _fb 构建）
+            _plan_only_now = bool(_plan_gate and _is_plan_only_terminal(
+                candidate, req_message))
             # V7-F2-R1 §2: 完整语义身份快照（8 字段, 缺失显式 null）
             _cur_details = [_issue_snapshot(len(_val_history), i)
                             for i in _val_issues]
@@ -1886,18 +1962,32 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "candidate_chars": len(candidate or ""),
                 "candidate_sha256": hashlib.sha256(
                     (candidate or "").encode("utf-8")).hexdigest() if (candidate or "").strip() else None})
-            if validation.ok or repairs_used >= MAX_VALIDATION_REPAIRS:
+            if (validation.ok and not _plan_only_now) or \
+                    repairs_used >= MAX_VALIDATION_REPAIRS:
                 break
             repairs_used += 1
-            logger.info(f"[o2-validator] candidate FAIL ({len(validation.issues)} issues) → "
-                        f"main-agent repair {repairs_used}/{MAX_VALIDATION_REPAIRS}")
+            if _plan_only_now and validation.ok:
+                logger.info(f"[plan-only gate] recovery 后仍为计划前言 → "
+                            f"repair {repairs_used}/{MAX_VALIDATION_REPAIRS}")
+            else:
+                logger.info(f"[o2-validator] candidate FAIL ({len(validation.issues)} issues) → "
+                            f"main-agent repair {repairs_used}/{MAX_VALIDATION_REPAIRS}")
             yield {"type": "tool_note",
-                   "content": "（答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……）",
+                   "content": ("答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……"
+                               if not _plan_only_now else
+                               "（检测到计划式回答尚未落实为实质回答——正在要求智能体给出实质回答……）"),
                    "initiated_by": "validator", "activity": True,
                    "decision_group_id": _dg()}
             # O2 §9: 中性反馈——只列机械 issue, 不命令具体修复动作（改写/标注/删引文/
             # 补研究由 Agent 自主决定）; validator 自身绝不调用工具。
             _fb = format_feedback(validation)
+            if _plan_only_now:
+                # V8-F2 §1: plan-only 升级反馈——机械 issues 为空时也必须给出
+                # 实质回答（证据边界明确）, 不得再输出行动计划
+                _fb = ("PLAN_ONLY_GATE: 你再次提交了「将要检索/查证」式的操作计划, "
+                       "而不是对用户问题的回答。立即给出实质性回答: 基于已获得的证据"
+                       "正面回应问题; 无法核验的部分明确标注证据边界后照常论证; "
+                       "禁止只输出工具计划。这是最后机会。")
             # O7-E RP2 RP-SYS §6: Human 反馈做减法——程序性规则已上移
             # REPAIR_SYSTEM_PROTOCOL（system 层）; Human 只留 issue 事实 + packet
             # + 资源机械事实。validator 文件仍零改动。
@@ -1995,6 +2085,26 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     _repair_trace[-1]["actual_system_protocol_sha256"]
                 if _lp_meta is not None:
                     _repair_trace[-1]["lp_prompt_chars"] = len(_fb)
+            # V8-F2 §1: no-op 升级附加（LOCAL_PATCH prompt 与 FULL_REWRITE 反馈
+            # 两种模式都在此处落到最终 _fb/_prompt 之后, 语义一致）
+            if _no_op_escalate_next:
+                _no_op_escalation = (
+                    "NO_OP_REPAIR_ESCALATION: 你上一次修复返回的候选与修复前逐字节相同"
+                    "——问题一个都没有解决。本次必须产生实质改变: "
+                    "无证据支撑的逐字引文 → 删除引号改为普通转述; "
+                    "无法核验的引用/学者归因 → 删除、降级为明确标注的背景陈述, 或先检索取证; "
+                    "证据缺口 → 如实限定回答范围, 但保留可支持的哲学论证。"
+                    "再次提交相同候选将不会被接受。")
+                _fb = _fb + "\n\n" + _no_op_escalation
+                if _repair_trace:
+                    _repair_trace[-1]["no_op_escalated"] = True
+                _repair_no_op_escalated += 1
+                _no_op_escalate_next = False
+            _repair_trace[-1]["plan_only_gate"] = bool(_plan_only_now)
+            # V8-F2 §3: pre_repair_candidate_hash（修复调用前锁定）
+            _pre_repair_hash = hashlib.sha256(
+                (candidate or "").encode("utf-8")).hexdigest()[:16]
+            _repair_trace[-1]["pre_repair_candidate_sha256"] = _pre_repair_hash
             _repair_msgs = list(messages) + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
@@ -2015,8 +2125,19 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 pending["text"] = ""
             candidate = (_ptail2 + _tail2) + pending["text"]
             pending["text"] = ""
+            # V8-F2 §3: post_repair hash——与 pre_repair 相同且 issue 仍在
+            # → NO_OP_REPAIR（不再盲跑下一轮相同修复, 触发有界升级）
+            _post_repair_hash = hashlib.sha256(
+                (candidate or "").encode("utf-8")).hexdigest()[:16]
+            _is_no_op = (_post_repair_hash == _pre_repair_hash)
+            if _repair_trace:
+                _repair_trace[-1]["post_repair_candidate_sha256"] = _post_repair_hash
+                _repair_trace[-1]["no_op_repair"] = _is_no_op
+            if _is_no_op:
+                _repair_no_op_count += 1
+                _no_op_escalate_next = True
+                logger.warning("[o2-repair] NO_OP_REPAIR: 修复候选与修复前逐字节相同")
             # RCA-2 H1 §5-8: adapter 机械应用 patch——工具轮后 raw_tool_log
-            # 可能已更新 → 基于最新 evidence 重建 bundle 再应用（§8）
             if _lp_meta is not None and candidate.strip():
                 import hashlib as _hl3
                 _raw_log_hash_after = _hl3.sha256(json.dumps(
@@ -2331,6 +2452,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                               "repair_trace": _repair_trace,
                               "max_validation_repairs": MAX_VALIDATION_REPAIRS,
                               "repair_protocol": "same_main_agent"},
+               # V8-F2 §3: 机械 telemetry（事实记录, 非决策系统）
+               "v8f2_telemetry": {
+                   "PLAN_ONLY_TERMINAL_BLOCKED": bool(_plan_gate),
+                   "REPAIR_NO_OP_COUNT": _repair_no_op_count,
+                   "REPAIR_NO_OP_ESCALATED": _repair_no_op_escalated},
                # O1 (§13): 机械 timing observability（llm_invocation / validator_* 阶段时长;
                # 工具级时长见 trace.calls 与 tool 事件, 此处为阶段汇总）
                "timing": {"phases": (list(trace.phases) if trace else []),
