@@ -1,10 +1,17 @@
 {
  "O7E_DELIVERY_METRIC_V2_PROPOSAL": true,
- "context": "V7-F1 RCA 确认 REPAIR_CREATES_NEW_FATAL_ERROR 存在名称误称（实际计任何新 fingerprint 非仅 fatal）+ 观测缺口（逐轮语义身份不可恢复）",
+ "r1_correction": "V7-F2-R1 修正历史边界表述（Reviewer 2026-09-11: 不得把 V7-F1 未决问题表述为已确认）。本修正仅涉本提案文件；V3-V7 values/verdict 绝不回写。",
+ "context": "Builder 提案侧观察（非已决裁定）：REPAIR_CREATES_NEW_FATAL_ERROR 的实现语义为 any(Rk.introduced non-empty)——计任何新 fingerprint 而非仅 fatal；名称中的 fatal 与该实现语义不完全对应，prospective V2 据此提议改名并新增语义层指标。该指标的契约一致性与命名问题在 V7-F1 RCA 中均为未决状态（见 historical_boundary），本提案不预设其结论。",
+ "historical_boundary": {
+  "HISTORICAL_INTENT_ANY_INTRODUCED_AUTO_FATAL": "NOT_ESTABLISHED",
+  "METRIC_IMPLEMENTATION_MATCHES_INTENDED_CONTRACT": "UNRESOLVED",
+  "METRIC_NAME_ONLY_MISNOMER": "UNRESOLVED",
+  "MEASUREMENT_SEMANTIC_BUG": "UNRESOLVED",
+  "source": "V7_F1_R1_REPAIR_FINGERPRINT_RCA.json（冻结裁定, 保持原义）"
+ },
  "legacy": {
   "name": "REPAIR_CREATES_NEW_FATAL_ERROR",
   "actual_semantics": "any(Rk.introduced non-empty)",
-  "name_problem": "fatal 一词误导",
   "V3_V7_values": "全部保持原义原 verdict 不回写"
  },
  "v2_metrics": [
