@@ -1,0 +1,108 @@
+{
+ "V6_F2_R1_READABLE_CONTENT_CLOSURE": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V6_F2_R1_RECORD_AUDIT_TASK.md（V6-F2-R1 closure 指令见 Reviewer V6_F2_PATCH_REQUIRED 回复）",
+ "BASE_SHA": "fc6f0b59d6436e3916b2ae550f7b44e84cae6f9f",
+ "CONTENT_HEAD": "ac00aab65f60afbb07e5ccf6dd829b5839bf7d0b",
+ "PRIOR_ARTIFACTS_PRESERVED": "V6_F2_CHINESE_SCHOLARLY_CORPUS_REPAIR.json 及全部 V6/F2 evidence 未覆盖",
+ "SOURCE_INVENTORY_AND_PROVENANCE": [
+  {
+   "doi": "10.17715/jme.2015.04.27.1.69",
+   "title": "A Study on the Rule of Virtue of Neo-Confucianism: Review on the Debate between Chu Hsi and Ch-en Liang",
+   "authors": "Chun-Ho Shin",
+   "year": 2015,
+   "container": "The Korean Society for the Study of Moral Education (JME Korea)",
+   "abstract_provenance": "OpenAlex 官方反排索引重建（1826 字符韩文摘要）",
+   "provenance_url": "https://api.openalex.org/works/doi:10.17715/jme.2015.04.27.1.69",
+   "cluster": "chenliang-zhuxi-yili-debate",
+   "curation": "TOPICAL_RELEVANCE=3 (DIRECT)"
+  },
+  {
+   "doi": "10.12677/acpp.2024.139332",
+   "title": "叶适事功之学中的「成人」与「成事」思想",
+   "authors": "王溪鹭, 彭智",
+   "year": 2024,
+   "container": "哲学进展 (Advances in Philosophy, Hans Publishers)",
+   "abstract_provenance": "出版社官方页公开摘要（浏览器渲染取证; 服务端反爬壳 5 通道不可得已如实披露）",
+   "provenance_url": "https://www.hanspub.org/journal/paperinformation?paperid=96366",
+   "cluster": "yeshi-yongjia-shigong",
+   "curation": "TOPICAL_RELEVANCE=3 (DIRECT)"
+  }
+ ],
+ "CHEN_READ_TRACE": {
+  "label": "陈亮(JME Korea)",
+  "sid": "doi:10.17715/jme.2015.04.27.1.69",
+  "ok": true,
+  "search_direct": true,
+  "before": "ABSTRACT_AVAILABLE",
+  "after": "ABSTRACT_AVAILABLE",
+  "ev_level": "ABSTRACT_AVAILABLE",
+  "abs_len": 1800,
+  "content_evidence": true
+ },
+ "YESHI_READ_TRACE": {
+  "label": "叶适/永嘉(Hans)",
+  "sid": "doi:10.12677/acpp.2024.139332",
+  "ok": true,
+  "search_direct": true,
+  "before": "ABSTRACT_AVAILABLE",
+  "after": "ABSTRACT_AVAILABLE",
+  "ev_level": "ABSTRACT_AVAILABLE",
+  "abs_len": 150,
+  "content_evidence": true
+ },
+ "DONG_REGRESSION": {
+  "readable_direct_kept": true,
+  "query": "Dong Zhongshu Heaven political responsibility",
+  "direct_hit_rank": 1,
+  "n": 8,
+  "read_detail": {
+   "label": "董仲舒/义利(JRE)",
+   "sid": "doi:10.1017/s0034670523000542",
+   "ok": true,
+   "search_direct": true,
+   "before": "ABSTRACT_AVAILABLE",
+   "after": "ABSTRACT_AVAILABLE",
+   "ev_level": "ABSTRACT_AVAILABLE",
+   "abs_len": 1090,
+   "content_evidence": true
+  }
+ },
+ "THREE_CLUSTER_GATE_ACCOUNTING": [
+  {
+   "cluster": "dongzhongshu-yili-zhengqi",
+   "DIRECT_SEARCH": true,
+   "DIRECT_READABLE": true,
+   "READ_CONTENT": true
+  },
+  {
+   "cluster": "chenliang-zhuxi-yili-debate",
+   "DIRECT_SEARCH": true,
+   "DIRECT_READABLE": true,
+   "READ_CONTENT": true
+  },
+  {
+   "cluster": "yeshi-yongjia-shigong",
+   "DIRECT_SEARCH": true,
+   "DIRECT_READABLE": true,
+   "READ_CONTENT": true
+  }
+ ],
+ "GATE_SUMMARY": "3/3 DIRECT_RELEVANT_SEARCH_HIT=PASS; 3/3 READABLE_DIRECT_RELEVANT_HIT=PASS; 3/3 GET_SCHOLARLY_SOURCE_NONEMPTY=PASS; 3/3 CONTENT_EVIDENCE_CAPABLE=PASS",
+ "RANKING_CHANGED_IN_R1": false,
+ "production_changes_in_R1": "零 production 代码改动; 仅 corpus 数据（snapshot 摘要附着+access 同步, registry/evidence/manifest 重建）",
+ "FULL_TEST": {
+  "command": "cd backend && ../.venv/bin/python -m pytest tests/ -q",
+  "FULL_TEST_SHA": "ac00aab65f60afbb07e5ccf6dd829b5839bf7d0b",
+  "run_at": "ac00aab65f60afbb07e5ccf6dd829b5839bf7d0b",
+  "passed": 843,
+  "failed": 0,
+  "skipped": 0
+ },
+ "changed_files_git_diff_BASE_to_CONTENT_HEAD": [
+  "backend/data/scholarly/corpus_manifest.json",
+  "backend/data/scholarly/evidence.jsonl",
+  "backend/data/scholarly/registry.jsonl",
+  "docs/evidence/PHIAGENT_O7D_DISCOVERY_SNAPSHOT.json"
+ ],
+ "changed_files_note": "精确等于 git diff --name-only fc6f0b59d6436e3916b2ae550f7b44e84cae6f9f..ac00aab65f60afbb07e5ccf6dd829b5839bf7d0b; CONTENT_HEAD..ARCHIVE_HEAD(本 commit) 仅 docs/evidence/V6_F2_R1_READABLE_CONTENT_CLOSURE.json"
+}
