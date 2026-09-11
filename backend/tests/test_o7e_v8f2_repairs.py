@@ -391,3 +391,33 @@ def test_r2_completion_after_intent_counts_as_delivery():
     # O4-T5 实况: 意图句在前、完成+实质回答在后 → 非 plan-only
     assert not EG._is_plan_only_terminal(
         "让我先检索一下材料。现在已经查到了：荒诞是裂隙。", "什么是荒诞？")
+
+
+# ═══════════════════════════════════════════════════════
+# V8-F2-R3: completion keyword ≠ substantive delivery
+# ═══════════════════════════════════════════════════════
+def test_r3_completion_with_empty_result_still_plan_only():
+    assert EG._is_plan_only_terminal("下一步我会检索。现在已经查到了。", "研究问题")
+
+
+def test_r3_completion_colon_no_body_still_plan_only():
+    assert EG._is_plan_only_terminal("下一步我会检索。结果如下：", "研究问题")
+
+
+def test_r3_search_complete_no_body_still_plan_only():
+    assert EG._is_plan_only_terminal("下一步我会检索。检索完成。", "研究问题")
+
+
+def test_r3_punctuation_only_after_completion_still_plan_only():
+    assert EG._is_plan_only_terminal("下一步我会检索。现在已经查到了。！！？！", "研究问题")
+
+
+def test_r3_another_plan_after_completion_still_plan_only():
+    assert EG._is_plan_only_terminal(
+        "下一步我会检索。现在已经查到了。下一步我会继续查证。", "研究问题")
+
+
+def test_r3_substantive_result_body_after_completion_not_blocked():
+    assert not EG._is_plan_only_terminal(
+        "让我先检索一下材料。现在已经查到了：荒诞是主体期待意义而世界沉默之间的裂隙。",
+        "什么是荒诞？")

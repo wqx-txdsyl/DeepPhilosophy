@@ -1440,9 +1440,18 @@ def _is_plan_only_terminal(candidate, user_message):
     # （「已经找到一些线索，但还不能下结论。下一步我会检索……」仍拦截）;
     # O4-T5 实况（意图句在前, 「现在已经查到了：荒诞是裂隙。」在后）正常发布。
     tail_after_last_intent = c[matches[-1].end():]
-    if _PLAN_COMPLETION_RE.search(tail_after_last_intent):
-        return False
-    return True
+    completion = _PLAN_COMPLETION_RE.search(tail_after_last_intent)
+    if completion:
+        # V8-F2-R3: completion keyword ≠ substantive delivery——completion 标记
+        # 之后必须存在非空、非纯标点、非又一个操作计划的结果正文, 否则
+        # 完成词本身就是 bypass token（「现在已经查到了。」「结果如下：」）
+        result_body = tail_after_last_intent[completion.end():]
+        body = re.sub(r"[\s\W\u3000-\u303F\uFF00-\uFFEF\u4e86\u7684\u5417\u5462\u5427\u554a\u5440\u54e6\u55ef]+",
+                      "", result_body, flags=re.UNICODE)
+        if len(body) >= 3 and not _PLAN_INTENT_RE.search(result_body):
+            return False
+        return True   # completion 后无实质正文（或又是计划）→ 仍 plan-only
+    return True       # 无完成性证据 → 仍 plan-only
 
 
 PLAN_ONLY_RECOVERY_DIRECTIVE = (

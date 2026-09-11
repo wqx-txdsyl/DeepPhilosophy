@@ -242,7 +242,7 @@ def test_t19_no_production_diff_vs_base():
     # V8-F2（2026-09-11 授权）: plan-only terminal 拦截 + no-op repair 哈希追踪
     # 落地 → 基线哈希更新（授权依据 = V8-F2 任务书三类 failure class 修复）。
     import hashlib as _hl
-    _ENGINE_R1_SHA256 = "71b73febf5eb903f191e1d9f1076f54929626899da9097b77510898914502d0b"
+    _ENGINE_R1_SHA256 = "73bea20181af799ebc0890c8bb293e18c51f6cb1ddc96a7c37d725abf79fdb5d"
     _eng_src = open(os.path.join(os.path.dirname(os.path.dirname(
         os.path.abspath(__file__))), "engine_langgraph.py"), encoding="utf-8").read()
     assert _hl.sha256(_eng_src.encode("utf-8")).hexdigest() == _ENGINE_R1_SHA256, \
