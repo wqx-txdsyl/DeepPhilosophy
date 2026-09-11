@@ -9,6 +9,7 @@
 import hashlib
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -17,6 +18,39 @@ import repair_context as RC
 import quote_bound as QB
 
 QUOTE_CODES = {"UNSUPPORTED_EXACT_QUOTE", "NEAR_QUOTE_NOT_MARKED", "STITCHED_QUOTE"}
+
+# ══ V9-F2 §1: quote-safe PARAPHRASE_CLAIM 合同（generic, 零 case-specific）═══
+# PARAPHRASE_CLAIM 的替换正文必须是转述: 不得引入逐字引文 wrapper、逐字归因
+# 措辞（原话说/写道/语录…）、页码/章节式出处。机械 cue 扫描替换文本本身;
+# 命中 → 拒绝该 patch（admission 层, 不改 validator/quote_bound 语义）。
+_PARAPHRASE_UNSAFE_RE = re.compile(
+    "[\u300c\u300d\u300e\u300f\u201c\u201d\u2018\u2019\u0022\u0027]"
+    r"|(?:原文说|原文写道|原文中|语录中|收录于|语录|曾说|曾写道|写道|说过|指出|"
+    r"第\s*[0-9一二三四五六七八九十]+\s*[章节页]|pp?\.\s*[0-9]+)")
+
+
+def _unsafe_paraphrase_scan(model_output):
+    """扫描 patch JSON 中 PARAPHRASE_CLAIM 的 replacement_text;
+    返回 (error_code, bounded_prefix) 或 None（无违规/非 JSON→交给正常错误路径）。"""
+    try:
+        obj = json.loads(model_output)
+    except Exception:
+        return None
+    patches = obj.get("patches") if isinstance(obj, dict) else None
+    if not isinstance(patches, list):
+        return None
+    for p in patches:
+        if not isinstance(p, dict) or p.get("action") != "PARAPHRASE_CLAIM":
+            continue
+        text = str(p.get("replacement_text") or "")
+        m = _PARAPHRASE_UNSAFE_RE.search(text)
+        if m:
+            cue = m.group(0)
+            code = ("UNSAFE_PARAPHRASE_QUOTE_WRAPPER"
+                    if re.match("[\u300c\u300d\u300e\u300f\u201c\u201d\u2018\u2019\u0022\u0027]", cue)
+                    else "UNSAFE_PARAPHRASE_ATTRIBUTION")
+            return (code, text[:120])
+    return None
 
 
 class LocalPatchAdapter:
@@ -38,6 +72,13 @@ class LocalPatchAdapter:
     def parse_and_apply(self, pre_candidate, model_output, ctx):
         if not ctx.get("rebind_ok", True):
             return None, ["LOCAL_PATCH_UNSUPPORTED: rebind"], {}
+        # V9-F2 §1: PARAPHRASE 替换文本安全合同（admission 层机械扫描;
+        # 拒绝 → apply 失败 → engine 回退 pre candidate 并给安全升级反馈）
+        unsafe = _unsafe_paraphrase_scan(model_output)
+        if unsafe:
+            code, prefix = unsafe
+            return None, [f"{code}: {prefix}"], {
+                "paraphrase_safety_rejected": {"code": code, "prefix": prefix}}
         telemetry = []
         new, errs = RC.apply_main_agent_patches_v2(
             pre_candidate, model_output, ctx.get("bundles") or [],

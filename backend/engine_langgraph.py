@@ -1959,6 +1959,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         _repair_no_op_count = 0
         _repair_no_op_escalated = 0
         _no_op_escalate_next = False
+        # V9-F2 §2: repair-safety 遥测 + 有界安全升级
+        _repair_safety_rejected_new = 0
+        _repair_safety_rejected_families = []
+        _repair_safety_rejected_fps = []
+        _safety_feedback_next = False
+        _safety_rejected_this_round = False
         while True:
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
@@ -2123,6 +2129,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     _repair_trace[-1]["actual_system_protocol_sha256"]
                 if _lp_meta is not None:
                     _repair_trace[-1]["lp_prompt_chars"] = len(_fb)
+            # V9-F2 §4: unsafe patch 被拒后的安全升级反馈（有界, 不增次数）
+            if _safety_feedback_next:
+                _fb += ("\n\nREPAIR_SAFETY_ESCALATION: 你上一次的 patch 被安全门拒绝——"
+                        "它在改写引文相关问题时产生了新的逐字引文/出处式主张。本轮只做"
+                        "安全转述: 不用引号、不新增出处、不新增作品名/学者名/页码/章节"
+                        "等任何引用性标注; 无法核验的 attribution/citation 一律删除或"
+                        "降级为明确标注的背景陈述; 不得创造新 source claim。")
+                if _repair_trace:
+                    _repair_trace[-1]["repair_safety_escalated"] = True
+                _safety_feedback_next = False
             # V8-F2 §1: no-op 升级附加（LOCAL_PATCH prompt 与 FULL_REWRITE 反馈
             # 两种模式都在此处落到最终 _fb/_prompt 之后, 语义一致）
             if _no_op_escalate_next:
@@ -2274,13 +2290,66 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     candidate = _lp_meta["pre_patch_candidate"]
                 else:
                     candidate = _applied or ""
+                # ══ V9-F2 §2: Local Patch effective candidate 语义安全门 ══
+                # V9-11 机制（PROBABLE）: PARAPHRASE_CLAIM 修复 quote issue 时
+                # 可能引入新的 quote/citation 类 GENUINELY_NEW issue。修复此类
+                # issue 的 LP patch 若产生 evidence 家族（QUOTE/CITATION/
+                # BIBLIOGRAPHIC）新指纹 → 拒绝该 unsafe patch, 保留 pre-repair
+                # candidate, 下一 bounded repair 获得明确安全反馈; 不增
+                # MAX_VALIDATION_REPAIRS; 分类复用 o7e_semantic_transition
+                # （AMBIGUOUS fail-closed; REKEY/SHIFT/RELABEL 不误杀）。
+                _safety_rejected_this_round = False
+                if _lp_meta is not None and not _apply_errs and candidate.strip():
+                    try:
+                        _safety_val = validate_final_candidate(
+                            candidate, raw_tool_log=raw_tool_log,
+                            fallback_log=tool_log, language=language)
+                        _safety_details = [_issue_snapshot(len(_val_history), i)
+                                           for i in _safety_val.as_dict().get(
+                                               "issues", [])]
+                        _safety_st = ST.classify_transition(_cur_details,
+                                                            _safety_details)
+                        _unsafe_fps = []
+                        _unsafe_fams = set()
+                        for _fp, _label in _safety_st["introduced_class"].items():
+                            # GENUINELY_NEW 拒绝; AMBIGUOUS fail-closed（保守拒绝,
+                            # 宁可回退也不放行无法归类的新 evidence 家族问题）
+                            if _label not in (ST.GENUINELY_NEW_ISSUE, ST.AMBIGUOUS):
+                                continue
+                            _snap = next((s for s in _safety_details
+                                          if s["fingerprint"] == _fp), None)
+                            _fam = (_snap or {}).get("semantic_family")
+                            if _fam in ("QUOTE", "CITATION", "BIBLIOGRAPHIC"):
+                                _unsafe_fps.append(_fp)
+                                _unsafe_fams.add(_fam)
+                        if _unsafe_fps:
+                            candidate = _lp_meta["pre_patch_candidate"]
+                            _safety_rejected_this_round = True
+                            _repair_safety_rejected_new += len(_unsafe_fps)
+                            _repair_safety_rejected_families.extend(
+                                sorted(_unsafe_fams))
+                            _repair_safety_rejected_fps.extend(_unsafe_fps)
+                            _safety_feedback_next = True
+                            if _repair_trace:
+                                _repair_trace[-1]["repair_safety_rejected"] = {
+                                    "new_fingerprints": _unsafe_fps,
+                                    "families": sorted(_unsafe_fams),
+                                    "pre_candidate_restored": True}
+                            logger.warning("[o2-repair] SAFETY_REJECTED: patch 引入"
+                                           f"新的 {sorted(_unsafe_fams)} 类 issue"
+                                           f" {_unsafe_fps}")
+                    except Exception as _se:
+                        logger.warning(f"[o2-repair] safety gate skipped: "
+                                       f"{str(_se)[:160]}")
             # ══ V8-F2-R1 §2: no-op 在 effective candidate 上判定 ══
             # 统一语义: FULL_REWRITE → model replacement 即 effective;
             # LOCAL_PATCH → parse_and_apply/finalization 后的真正答案;
             # patch apply 失败回退 pre candidate 也在此处被正确判定为 no-op。
+            # V9-F2 §2: safety 拒绝不标记为 no-op（独立 telemetry, 不混淆类别）。
             _post_repair_hash = hashlib.sha256(
                 (candidate or "").encode("utf-8")).hexdigest()[:16]
-            _is_no_op = (_post_repair_hash == _pre_repair_hash)
+            _is_no_op = (_post_repair_hash == _pre_repair_hash) \
+                and not _safety_rejected_this_round
             if _repair_trace:
                 _repair_trace[-1]["post_repair_candidate_sha256"] = _post_repair_hash
                 _repair_trace[-1]["no_op_repair"] = _is_no_op
@@ -2509,7 +2578,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                    "PLAN_ONLY_EXHAUSTION_FAIL_CLOSED": bool(_terminal_plan_only),
                    "FINAL_ROUND_TOOL_CALLS": _final_round_tool_calls,
                    "REPAIR_NO_OP_COUNT": _repair_no_op_count,
-                   "REPAIR_NO_OP_ESCALATED": _repair_no_op_escalated},
+                   "REPAIR_NO_OP_ESCALATED": _repair_no_op_escalated,
+                   # V9-F2 §2: repair-safety telemetry（admission 事实, 非决策系统）
+                   "REPAIR_SAFETY_REJECTED_NEW_ISSUE": _repair_safety_rejected_new,
+                   "REPAIR_SAFETY_REJECTED_FAMILY": sorted(
+                       set(_repair_safety_rejected_families)),
+                   "REPAIR_SAFETY_REJECTED_FINGERPRINTS": _repair_safety_rejected_fps},
                # O1 (§13): 机械 timing observability（llm_invocation / validator_* 阶段时长;
                # 工具级时长见 trace.calls 与 tool 事件, 此处为阶段汇总）
                "timing": {"phases": (list(trace.phases) if trace else []),
