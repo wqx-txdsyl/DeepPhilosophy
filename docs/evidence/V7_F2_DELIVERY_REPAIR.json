@@ -1,0 +1,61 @@
+{
+ "V7_F2_DELIVERY_REPAIR": true,
+ "TASK_BOOK": "docs/tasks/PHIAGENT_O7E_V7_F2_DELIVERY_REPAIR_AUTH.md + docs/tasks/V7_F2_EXECUTION_PLAN_BUILDER.md",
+ "BASE_SHA": "5544955423b1e0d2c6f2b7a6c92cf29e2c5f8ab3",
+ "CONTENT_HEAD": "338e51324866c598adceb322a8e703d4c53d36a7",
+ "ARCHIVE_PARENT": "338e51324866c598adceb322a8e703d4c53d36a7",
+ "REVIEWER_FROZEN_PRINCIPLES_KEPT": {
+  "delivery_semantics_unchanged": "any introduced fingerprint = delivery regression（V7 冻结语义原样）",
+  "no_retroactive_v7_change": true,
+  "prospective_metric_versioning_only": true,
+  "product_fix": "repair R1 不再制造新 validator fingerprint（最小改动纪律）",
+  "per_round_semantic_observability": true
+ },
+ "CHANGES": [
+  "engine_langgraph.py: ①REPAIR_SYSTEM_PROTOCOL 增最小改动纪律（只改被点名问题段, 未点名段落逐字保留）②_val_history 每轮新增 issue_details（code/locator[:200]/evidence_ref, bounded 无正文）",
+  "o7e_production_calibration.py: run record 持久化 validation_history + 新增 prospective 指标 REPAIR_INTRODUCED_{TOTAL,PERSISTED,TRANSIENT}_FINGERPRINTS（旧字段 REPAIR_CREATES_NEW_FATAL_ERROR 原样保留）"
+ ],
+ "REGRESSION_VERIFICATION": {
+  "three_cluster_production_READ": [
+   {
+    "cluster": "董仲舒/义利",
+    "sid": "doi:10.1017/s0034670523000542",
+    "ev": "ABSTRACT_AVAILABLE",
+    "abs_len": 1090
+   },
+   {
+    "cluster": "陈亮(JME Korea)",
+    "sid": "doi:10.17715/jme.2015.04.27.1.69",
+    "ev": "ABSTRACT_AVAILABLE",
+    "abs_len": 1800
+   },
+   {
+    "cluster": "叶适/永嘉(Hans)",
+    "sid": "doi:10.12677/acpp.2024.139332",
+    "ev": "ABSTRACT_AVAILABLE",
+    "abs_len": 150
+   }
+  ],
+  "dev_probe_DP02_rerun_with_new_discipline": {
+   "published": true,
+   "repairs": 1,
+   "converged": true,
+   "REPAIR_INTRODUCED_FINGERPRINTS_TOTAL": 0,
+   "REPAIR_INTRODUCED_PERSISTED_FINGERPRINTS": 0,
+   "REPAIR_INTRODUCED_TRANSIENT_FINGERPRINTS": 0,
+   "final_issue_codes": [],
+   "content_evidence_records": 4,
+   "note": "新修复纪律下暂态回归=0（旧指标 REPAIR_CREATES_NEW_FATAL_ERROR 同步=0, 未放宽任何 gate）"
+  }
+ },
+ "FULL_TEST": {
+  "command": "cd backend && ../.venv/bin/python -m pytest tests/ -q",
+  "FULL_TEST_SHA": "338e51324866c598adceb322a8e703d4c53d36a7",
+  "run_at": "338e51324866c598adceb322a8e703d4c53d36a7",
+  "passed": 843,
+  "failed": 0,
+  "skipped": 0
+ },
+ "changed_files_git_diff": [],
+ "changed_files_note": "精确等于 git diff --name-only 5544955423b1e0d2c6f2b7a6c92cf29e2c5f8ab3..338e51324866c598adceb322a8e703d4c53d36a7"
+}
