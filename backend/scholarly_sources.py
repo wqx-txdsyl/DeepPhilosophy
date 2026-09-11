@@ -912,11 +912,28 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
                         if _is_relevant(q_latin, q_bigrams, r)
                         or _is_relevant(v_latin, v_bigrams, r)]
             dropped = len(canon2) - len(relevant)
+            # R1 §3: LOCAL_CURATED 也参与 variant lookup（relevance parity）
+            local_variant = _local_results(variant, limit, strict_only=True)
+            if local_variant and (v_latin or v_bigrams):
+                local_variant = [r for r in local_variant
+                                 if _is_relevant(v_latin, v_bigrams, r)]
             reformulation = {"triggered": True, "variant_query": variant,
-                             "recovered_relevant": len(relevant)}
+                             "recovered_relevant": len(relevant),
+                             "local_variant_count": len(local_variant)}
+            # variant-local relevant 合并进 relevant
+            for lr in local_variant:
+                if lr["source_record_id"] not in {x["source_record_id"] for x in relevant}:
+                    lr.setdefault("retrieval_origin", "LOCAL_CURATED_VARIANT")
+                    relevant.append(lr)
 
     canon = relevant
-    canon.sort(key=lambda r: -(r.get("provider_records", [{}])[0].get("cited_by") or 0))
+    # V9-F5-R1 §4: readability-aware ordering（relevance 已通过后排序）
+    _ACCESS_RANK = {"FULL_TEXT_READ": 3, "FULL_TEXT_AVAILABLE": 2,
+                    "ABSTRACT_AVAILABLE": 1, "METADATA_ONLY": 0}
+    canon.sort(key=lambda r: (
+        -_ACCESS_RANK.get(r.get("access_level") or
+                          (r.get("access") or {}).get("level") or "METADATA_ONLY", 0),
+        -(r.get("provider_records", [{}])[0].get("cited_by") or 0)))
     # V9-F5-R1 §3: LOCAL_CURATED 参与 bounded reformulation（与 live 对等）
     local_raw = _local_results(q, limit, strict_only=True)
     if local_raw and (q_latin or q_bigrams):
