@@ -1,1010 +1,676 @@
 {
  "V9_F4_SCHOLARLY_RCA": true,
- "RCA_BASE": "2ebae146c8451e983a453485bb8b444d4f40f81b",
+ "R1_BASE": "b4f1f68928e58e318bb621579e6933431f1de4f7",
  "analysis_only": true,
  "V9_RERUN": false,
  "V9_JUDGE_RERUN": false,
  "RCA_CASES": "14/14",
- "case_dimension_matrix": [
+ "REQUIRED_CELLS_ANALYZED": 47,
+ "REQUIRED_FAIL_CELLS": 23,
+ "MEDIAN_LT2_CELLS_ANALYZED": "9/9（severe subset, 机械重算 sum==9==canonical）",
+ "frozen_telemetry_reconciled": {
+  "SCHOLARLY_SEARCH_CASES": 13,
+  "SCHOLARLY_SOURCE_FETCH_CASES": 1,
+  "SCHOLARLY_RECORD_COUNT": 605,
+  "SCHOLARLY_FETCH_RESULT_COUNT": 3,
+  "SCHOLARLY_CONTENT_EVIDENCE_COUNT": 1,
+  "FETCH_CASE_ID": "V9-10",
+  "note": "frozen summary 记录 1 case 有 fetch（V9-10, 3 calls 3 results）; 其余 13 case fetch=0。R1 误报 fetch=0 全程已修正"
+ },
+ "fail_cells": [
   {
-   "case_id": "V9-01",
-   "retrieval": {
-    "search": 4,
-    "fetch": 0,
-    "records": 28
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "OPTIONAL",
-     "median": 3,
-     "threshold": 3.0,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "OPTIONAL",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 4,
-    "interpretive_plurality": 3,
-    "historical_discipline": 4,
-    "literature_orientation": 4
-   }
+   "case_id": "V9-02",
+   "dimension": "argument_reconstruction",
+   "median": 3,
+   "threshold": 3.2,
+   "gap": 0.2,
+   "severe": false,
+   "search": 7,
+   "fetch": 0,
+   "records": 43,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答成功重构了阿伯拉尔意图伦理的核心论证结构（行为中性 -> 意图决定道德 -> 良知为法官），并基于证据合理推导了《是与否》与《伦理学》在神学理性化方案中的分工（方法层 vs 规范层）。逻辑链条清晰，前提与结论之间的推论符合证据文本的暗示。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-02",
-   "retrieval": {
-    "search": 7,
-    "fetch": 0,
-    "records": 43
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": 3,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.0,
-     "gate": "N/A",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 2,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 3,
-    "argument_reconstruction": 3,
-    "interpretive_plurality": null,
-    "historical_discipline": 3,
-    "literature_orientation": 2
-   }
+   "dimension": "historical_discipline",
+   "median": 3,
+   "threshold": 3.4,
+   "gap": 0.4,
+   "severe": false,
+   "search": 7,
+   "fetch": 0,
+   "records": 43,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答严格遵循历史证据，明确区分了原典缺失与二手转述的界限，未进行时代错置或无根据的引申。正确识别了阿伯拉尔在经院哲学中的位置（辩证法大师、理性与启示的关系），并准确关联了历史人物（如伯纳德）的背景。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-02",
+   "dimension": "literature_orientation",
+   "median": 2,
+   "threshold": 3.2,
+   "gap": 1.2,
+   "severe": false,
+   "search": 7,
+   "fetch": 0,
+   "records": 43,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答诚实地披露了学术文献库检索失败的事实，仅使用了哲学史通俗读物（普莱希特、所罗门）作为依据，未能提供专业的同行评议研究文献。虽然对现有材料的使用是规范的，但严重缺乏专业研究文献的支撑，不符合'研究文献依据'的高标准。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-03",
-   "retrieval": {
-    "search": 4,
-    "fetch": 0,
-    "records": 24
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "OPTIONAL",
-     "median": 2,
-     "threshold": 3.0,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.2,
-     "gate": "N/A",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 3,
-    "interpretive_plurality": 2,
-    "historical_discipline": 3,
-    "literature_orientation": null
-   }
+   "dimension": "argument_reconstruction",
+   "median": 3,
+   "threshold": 3.2,
+   "gap": 0.2,
+   "severe": false,
+   "search": 4,
+   "fetch": 0,
+   "records": 24,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答成功重构了皮科关于人的尊严的核心论证逻辑（P1-P5），清晰区分了宇宙论前提、人的特殊处境、自我规定性推导及价值判断。论证结构完整，逻辑链条清晰，准确捕捉了“无固定本性即尊严”的核心悖论。虽缺乏原文支撑，但作为哲学论证重构，其逻辑自洽性与概念把握度较高。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-03",
+   "dimension": "historical_discipline",
+   "median": 3,
+   "threshold": 3.4,
+   "gap": 0.4,
+   "severe": false,
+   "search": 4,
+   "fetch": 0,
+   "records": 24,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答准确把握了文艺复兴时期 *prisca theologia*（古老神学）的思想语境，正确指出了柏拉图主义、亚里士多德主义、卡巴拉等传统的融合背景。对“存在巨链”的引用（伏尔泰）虽非直接证据，但被谨慎地用作旁证，且明确区分了伏尔泰的批判立场与皮科的时代背景，体现了良好的历史意识与概念区分能力。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-04",
-   "retrieval": {
-    "search": 7,
-    "fetch": 0,
-    "records": 37
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 1,
-     "threshold": 3.0,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.2,
-     "gate": "N/A",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 4,
-    "interpretive_plurality": 1,
-    "historical_discipline": 3,
-    "literature_orientation": null
-   }
+   "dimension": "interpretive_plurality",
+   "median": 1,
+   "threshold": 3.0,
+   "gap": 2.0,
+   "severe": true,
+   "search": 7,
+   "fetch": 0,
+   "records": 37,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "虽然回答在末尾提到了学界关于密尔“称职裁判者”循环论证和是否偏离享乐主义的争议，但明确声明这些是“记忆中的经典议题”且“未经库中核验”，并承认未能获取任何二手研究文献。由于缺乏真实的文献依据和具体的学者观点对立，未能满足 REQUIRED 维度对展示学界不同解读的要求。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
-   "case_id": "V9-05",
-   "retrieval": {
-    "search": 3,
-    "fetch": 0,
-    "records": 24
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.0,
-     "gate": "N/A",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "OPTIONAL",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 4,
-    "interpretive_plurality": null,
-    "historical_discipline": 4,
-    "literature_orientation": 3
-   }
-  },
-  {
-   "case_id": "V9-06",
-   "retrieval": {
-    "search": 7,
-    "fetch": 0,
-    "records": 51
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.0,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 4,
-    "interpretive_plurality": 3,
-    "historical_discipline": 4,
-    "literature_orientation": 4
-   }
+   "case_id": "V9-04",
+   "dimension": "historical_discipline",
+   "median": 3,
+   "threshold": 3.4,
+   "gap": 0.4,
+   "severe": false,
+   "search": 7,
+   "fetch": 0,
+   "records": 37,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答展现了良好的历史意识，澄清了“快乐计算”并非边沁原文术语，而是后世概括。正确区分了边沁的“量的效益主义”与密尔对“质”的引入，并准确指出了密尔是在回应“猪的哲学”这一指控时提出的修正。未发现时代错置或概念混淆。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-07",
-   "retrieval": {
-    "search": 8,
-    "fetch": 0,
-    "records": 26
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": 3,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "OPTIONAL",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 1,
-     "threshold": 3.0,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 1,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": true
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 3,
-    "argument_reconstruction": 3,
-    "interpretive_plurality": 1,
-    "historical_discipline": 1,
-    "literature_orientation": 0
-   }
+   "dimension": "interpretive_plurality",
+   "median": 1,
+   "threshold": 3.0,
+   "gap": 2.0,
+   "severe": true,
+   "search": 8,
+   "fetch": 0,
+   "records": 26,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "虽然回答提到了 Benhabib、Fraser、Bordo 等批评者，但明确声明这些内容来自“记忆”且“无检索证据支撑”，未能提供具体的论证细节或文本依据。这导致关于学界批评与回应的多元视角缺乏实质性的、可核验的内容支撑，仅停留在列举名字的层面。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-07",
+   "dimension": "historical_discipline",
+   "median": 1,
+   "threshold": 3.4,
+   "gap": 2.4,
+   "severe": true,
+   "search": 8,
+   "fetch": 0,
+   "records": 26,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答正确识别了巴特勒所属的后结构主义/后现代主义语境，并指出了其与波伏娃等前人的区别（隐含在“简单建构论”的对比中）。然而，由于缺乏具体的文献支持，未能深入展开该概念在思想史中的具体演变脉络。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-07",
+   "dimension": "literature_orientation",
+   "median": 0,
+   "threshold": 3.2,
+   "gap": 3.2,
+   "severe": true,
+   "search": 8,
+   "fetch": 0,
+   "records": 26,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "用户明确要求“引用可核验的二手文献内容作为依据”，且回答本身也承认“未能取得任何一篇关于巴特勒的、可读的二手文献”。回答中列出的书名（如《性别麻烦》、《身体之重》）和学者名均被标注为“记忆性陈述”且“未经核验”，完全未能满足基于文献回答的任务要求。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-08",
-   "retrieval": {
-    "search": 4,
-    "fetch": 0,
-    "records": 30
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.0,
-     "gate": "N/A",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.2,
-     "gate": "N/A",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 0,
-    "argument_reconstruction": 3,
-    "interpretive_plurality": null,
-    "historical_discipline": 3,
-    "literature_orientation": null
-   }
+   "dimension": "textual_grounding",
+   "median": 0,
+   "threshold": 3.4,
+   "gap": 3.4,
+   "severe": true,
+   "search": 4,
+   "fetch": 0,
+   "records": 30,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "The question explicitly asks for a reconstruction of Wang Chong's argument from 'Lunheng' and an explanation of his method. The model admits that the provided corpus contains zero records of Wang Chon",
+   "root_cause": "PRIMARY_CORPUS_GAP",
+   "patchability": "CORPUS_EXPANSION_REQUIRED"
   },
   {
-   "case_id": "V9-09",
-   "retrieval": {
-    "search": 5,
-    "fetch": 0,
-    "records": 22
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "OPTIONAL",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.0,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 3,
-    "interpretive_plurality": 3,
-    "historical_discipline": 4,
-    "literature_orientation": 4
-   }
+   "case_id": "V9-08",
+   "dimension": "argument_reconstruction",
+   "median": 3,
+   "threshold": 3.2,
+   "gap": 0.2,
+   "severe": false,
+   "search": 4,
+   "fetch": 0,
+   "records": 30,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "Despite the lack of primary text grounding, the model provides a logically coherent and philosophically sophisticated reconstruction of the argument structure. It correctly identifies the ontological ",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "CORPUS_EXPANSION_REQUIRED"
+  },
+  {
+   "case_id": "V9-08",
+   "dimension": "historical_discipline",
+   "median": 3,
+   "threshold": 3.4,
+   "gap": 0.4,
+   "severe": false,
+   "search": 4,
+   "fetch": 0,
+   "records": 30,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "The model demonstrates strong historical discipline by explicitly acknowledging the absence of the primary source in the corpus and refusing to fabricate citations. It correctly situates Wang Chong wi",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "CORPUS_EXPANSION_REQUIRED"
   },
   {
    "case_id": "V9-10",
-   "retrieval": {
-    "search": 14,
-    "fetch": 0,
-    "records": 130
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 2,
-     "threshold": 3.0,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 2,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 3,
-    "interpretive_plurality": 2,
-    "historical_discipline": 2,
-    "literature_orientation": 4
-   }
+   "dimension": "argument_reconstruction",
+   "median": 3,
+   "threshold": 3.2,
+   "gap": 0.2,
+   "severe": false,
+   "search": 14,
+   "fetch": 3,
+   "records": 130,
+   "evidence_count": 3,
+   "admits_gap": true,
+   "rationale_head": "回答成功重构了正理-胜论与佛教量论在'普遍'与'自相'问题上的核心论证结构（实在论 vs 唯名论/现象论），并清晰列出了双方的前提与结论。然而，由于缺乏原典和详细二手文献的支持，论证的细节（如具体的五支式与三支式对比、apoha的具体运作机制）主要依赖通识性框架，缺乏文献深度的具体支撑。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-10",
+   "dimension": "interpretive_plurality",
+   "median": 2,
+   "threshold": 3.0,
+   "gap": 1.0,
+   "severe": false,
+   "search": 14,
+   "fetch": 3,
+   "records": 130,
+   "evidence_count": 3,
+   "admits_gap": true,
+   "rationale_head": "回答识别了双方在本体论、认识论和语义学三个层面的分歧，体现了对争论复杂性的理解。但由于缺乏具体的学者观点或不同解释传统的对比（例如正理派内部的不同注疏、佛教量论内部的演变），'解释的多元性'主要体现在宏观框架的对立上，而非具体的学术解释流派。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-10",
+   "dimension": "historical_discipline",
+   "median": 2,
+   "threshold": 3.4,
+   "gap": 1.4,
+   "severe": false,
+   "search": 14,
+   "fetch": 3,
+   "records": 130,
+   "evidence_count": 3,
+   "admits_gap": true,
+   "rationale_head": "回答提到了关键的历史人物（陈那、法称）和经典（《正理经》、《集量论》），并指出了大致的历史时期。然而，由于缺乏原典证据，无法进行严格的历史考据或概念演变分析。对于'五支式'与'三支式'的历史演变仅作了一般性陈述，未提供具体的历史语境或发展脉络。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-11",
-   "retrieval": {
-    "search": 6,
-    "fetch": 0,
-    "records": 44
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "OPTIONAL",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.0,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 3,
-    "interpretive_plurality": 4,
-    "historical_discipline": 3,
-    "literature_orientation": 4
-   }
+   "dimension": "historical_discipline",
+   "median": 3,
+   "threshold": 3.4,
+   "gap": 0.4,
+   "severe": false,
+   "search": 6,
+   "fetch": 0,
+   "records": 44,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答准确识别了古典-基督教德性伦理传统（柏拉图、亚里士多德、奥古斯丁、阿奎那）作为马基雅维利的对话背景，并正确指出了《君主论》与《论李维》的历史关联。虽然因缺乏具体二手文献而未能深入展开历史语境的细节，但基于文本和注释的历史定位是准确的。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-12",
-   "retrieval": {
-    "search": 12,
-    "fetch": 0,
-    "records": 105
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.4,
-     "gate": "N/A",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.0,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": true
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": null,
-    "argument_reconstruction": 0,
-    "interpretive_plurality": 0,
-    "historical_discipline": 0,
-    "literature_orientation": 0
-   }
+   "dimension": "argument_reconstruction",
+   "median": 0,
+   "threshold": 3.2,
+   "gap": 3.2,
+   "severe": true,
+   "search": 12,
+   "fetch": 0,
+   "records": 105,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "The answer reconstructs the structural differences (competence vs. character, apt belief vs. motivated belief) and the Gettier problem debate based on general knowledge. However, it explicitly states ",
+   "root_cause": "RETRIEVAL_RELEVANCE_FAILURE",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-12",
+   "dimension": "interpretive_plurality",
+   "median": 0,
+   "threshold": 3.0,
+   "gap": 3.0,
+   "severe": true,
+   "search": 12,
+   "fetch": 0,
+   "records": 105,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "The answer does not engage with interpretive plurality in the sense of presenting competing scholarly interpretations or debates within the secondary literature. It presents a single, standard dichoto",
+   "root_cause": "RETRIEVAL_RELEVANCE_FAILURE",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-12",
+   "dimension": "historical_discipline",
+   "median": 0,
+   "threshold": 3.4,
+   "gap": 3.4,
+   "severe": true,
+   "search": 12,
+   "fetch": 0,
+   "records": 105,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "The answer fails to demonstrate historical discipline. It relies on 'memory' and 'training knowledge' rather than verified historical records or bibliographic data. It mentions specific works (e.g., *",
+   "root_cause": "RETRIEVAL_RELEVANCE_FAILURE",
+   "patchability": "PRODUCTION_PATCHABLE"
+  },
+  {
+   "case_id": "V9-12",
+   "dimension": "literature_orientation",
+   "median": 0,
+   "threshold": 3.2,
+   "gap": 3.2,
+   "severe": true,
+   "search": 12,
+   "fetch": 0,
+   "records": 105,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "The answer explicitly admits to retrieving zero relevant secondary literature and provides no citations or references to actual scholarly works. It lists 'suggestions' for future research (e.g., SEP, ",
+   "root_cause": "RETRIEVAL_RELEVANCE_FAILURE",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-13",
-   "retrieval": {
-    "search": 5,
-    "fetch": 0,
-    "records": 41
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.4,
-     "gate": "N/A",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.0,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": null,
-    "argument_reconstruction": 3,
-    "interpretive_plurality": 3,
-    "historical_discipline": 4,
-    "literature_orientation": 4
-   }
+   "dimension": "argument_reconstruction",
+   "median": 3,
+   "threshold": 3.2,
+   "gap": 0.2,
+   "severe": false,
+   "search": 5,
+   "fetch": 0,
+   "records": 41,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "The answer provides a clear and accurate reconstruction of Buber's core distinction between 'I-Thou' (relation, encounter, non-utilitarian) and 'I-It' (experience, use, objectification). It correctly ",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   },
   {
    "case_id": "V9-14",
-   "retrieval": {
-    "search": 0,
-    "fetch": 0,
-    "records": 0
-   },
-   "cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.4,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 4,
-     "threshold": 3.2,
-     "gate": "PASS",
-     "lt2": false
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.0,
-     "gate": "N/A",
-     "lt2": false
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 3,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": false
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "OPTIONAL",
-     "median": null,
-     "threshold": 3.2,
-     "gate": "N/A",
-     "lt2": false
-    }
-   ],
-   "judge_medians": {
-    "textual_grounding": 4,
-    "argument_reconstruction": 4,
-    "interpretive_plurality": null,
-    "historical_discipline": 3,
-    "literature_orientation": null
-   }
+   "dimension": "historical_discipline",
+   "median": 3,
+   "threshold": 3.4,
+   "gap": 0.4,
+   "severe": false,
+   "search": 0,
+   "fetch": 0,
+   "records": 0,
+   "evidence_count": 0,
+   "admits_gap": true,
+   "rationale_head": "回答准确地将伤害原则置于密尔对“公民自由或社会自由”的特定历史语境中，区分了其与“意志自由”的不同，并正确指出了密尔对“多数暴虐”和社会舆论压迫的批判。这显示了对密尔所处思想史背景及其问题意识的准确把握。",
+   "root_cause": "EVIDENCE_NOT_FETCHED",
+   "patchability": "PRODUCTION_PATCHABLE"
   }
  ],
- "low_case_rca": {
-  "V9-04": {
-   "root_cause": "SCHOLARLY_CORPUS_GAP",
-   "patchability": "EXTERNAL_RETRIEVAL_REQUIRED",
-   "evidence": "7 searches 37 records 0 fetches; 密尔/效益主义二手研究文献不在 primary corpus",
-   "low_cells": [
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 1,
-     "threshold": 3.0,
-     "gate": "FAIL",
-     "lt2": true
-    }
+ "by_dimension_summary": {
+  "argument_reconstruction": {
+   "count": 6,
+   "cases": [
+    "V9-02",
+    "V9-03",
+    "V9-08",
+    "V9-10",
+    "V9-12",
+    "V9-13"
    ],
-   "retrieval": {
-    "search": 7,
-    "fetch": 0,
-    "records": 37
-   }
+   "medians": [
+    3,
+    3,
+    3,
+    3,
+    0,
+    3
+   ]
   },
-  "V9-07": {
-   "root_cause": "SCHOLARLY_CORPUS_GAP",
-   "patchability": "EXTERNAL_RETRIEVAL_REQUIRED",
-   "evidence": "8 searches 26 records 0 fetches; 巴特勒性别研究二手文献不在 primary corpus",
-   "low_cells": [
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 1,
-     "threshold": 3.0,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 1,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": true
-    }
+  "historical_discipline": {
+   "count": 9,
+   "cases": [
+    "V9-02",
+    "V9-03",
+    "V9-04",
+    "V9-07",
+    "V9-08",
+    "V9-10",
+    "V9-11",
+    "V9-12",
+    "V9-14"
    ],
-   "retrieval": {
-    "search": 8,
-    "fetch": 0,
-    "records": 26
-   }
+   "medians": [
+    3,
+    3,
+    3,
+    1,
+    3,
+    2,
+    3,
+    0,
+    3
+   ]
   },
-  "V9-08": {
-   "root_cause": "PRIMARY_CORPUS_GAP",
-   "patchability": "CORPUS_EXPANSION_REQUIRED",
-   "evidence": "王充《论衡》不在 409 本 primary corpus; textual_grounding 无原典可锚定",
-   "low_cells": [
-    {
-     "dimension": "textual_grounding",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": true
-    }
+  "interpretive_plurality": {
+   "count": 4,
+   "cases": [
+    "V9-04",
+    "V9-07",
+    "V9-10",
+    "V9-12"
    ],
-   "retrieval": {
-    "search": 4,
-    "fetch": 0,
-    "records": 30
-   }
+   "medians": [
+    1,
+    1,
+    2,
+    0
+   ]
   },
-  "V9-12": {
-   "root_cause": "RETRIEVAL_RELEVANCE_FAILURE",
-   "patchability": "EXTERNAL_RETRIEVAL_REQUIRED",
-   "evidence": "12 searches 105 records 全部离题（CrossRef 通用学术库匹配不到德性知识论专业文献）; 0 fetches",
-   "low_cells": [
-    {
-     "dimension": "argument_reconstruction",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "interpretive_plurality",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.0,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "historical_discipline",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.4,
-     "gate": "FAIL",
-     "lt2": true
-    },
-    {
-     "dimension": "literature_orientation",
-     "applicability": "REQUIRED",
-     "median": 0,
-     "threshold": 3.2,
-     "gate": "FAIL",
-     "lt2": true
-    }
+  "literature_orientation": {
+   "count": 3,
+   "cases": [
+    "V9-02",
+    "V9-07",
+    "V9-12"
    ],
-   "retrieval": {
-    "search": 12,
-    "fetch": 0,
-    "records": 105
-   }
+   "medians": [
+    2,
+    0,
+    0
+   ]
+  },
+  "textual_grounding": {
+   "count": 1,
+   "cases": [
+    "V9-08"
+   ],
+   "medians": [
+    0
+   ]
   }
  },
- "pass_case_retrieval": {
-  "V9-01": {
-   "search": 4,
-   "fetch": 0,
-   "records": 28
-  },
+ "by_case_summary": {
   "V9-02": {
-   "search": 7,
+   "dimensions": [
+    "argument_reconstruction",
+    "historical_discipline",
+    "literature_orientation"
+   ],
+   "medians": [
+    3,
+    3,
+    2
+   ],
+   "root_causes": [
+    "EVIDENCE_NOT_FETCHED"
+   ],
    "fetch": 0,
+   "search": 7,
    "records": 43
   },
   "V9-03": {
+   "dimensions": [
+    "argument_reconstruction",
+    "historical_discipline"
+   ],
+   "medians": [
+    3,
+    3
+   ],
+   "root_causes": [
+    "EVIDENCE_NOT_FETCHED"
+   ],
+   "fetch": 0,
    "search": 4,
-   "fetch": 0,
    "records": 24
   },
-  "V9-05": {
-   "search": 3,
+  "V9-04": {
+   "dimensions": [
+    "interpretive_plurality",
+    "historical_discipline"
+   ],
+   "medians": [
+    1,
+    3
+   ],
+   "root_causes": [
+    "EVIDENCE_NOT_FETCHED"
+   ],
    "fetch": 0,
-   "records": 24
-  },
-  "V9-06": {
    "search": 7,
-   "fetch": 0,
-   "records": 51
+   "records": 37
   },
-  "V9-09": {
-   "search": 5,
+  "V9-07": {
+   "dimensions": [
+    "interpretive_plurality",
+    "historical_discipline",
+    "literature_orientation"
+   ],
+   "medians": [
+    1,
+    1,
+    0
+   ],
+   "root_causes": [
+    "EVIDENCE_NOT_FETCHED"
+   ],
    "fetch": 0,
-   "records": 22
+   "search": 8,
+   "records": 26
+  },
+  "V9-08": {
+   "dimensions": [
+    "textual_grounding",
+    "argument_reconstruction",
+    "historical_discipline"
+   ],
+   "medians": [
+    0,
+    3,
+    3
+   ],
+   "root_causes": [
+    "PRIMARY_CORPUS_GAP",
+    "EVIDENCE_NOT_FETCHED"
+   ],
+   "fetch": 0,
+   "search": 4,
+   "records": 30
   },
   "V9-10": {
+   "dimensions": [
+    "argument_reconstruction",
+    "interpretive_plurality",
+    "historical_discipline"
+   ],
+   "medians": [
+    3,
+    2,
+    2
+   ],
+   "root_causes": [
+    "EVIDENCE_NOT_FETCHED"
+   ],
+   "fetch": 3,
    "search": 14,
-   "fetch": 0,
    "records": 130
   },
   "V9-11": {
-   "search": 6,
+   "dimensions": [
+    "historical_discipline"
+   ],
+   "medians": [
+    3
+   ],
+   "root_causes": [
+    "EVIDENCE_NOT_FETCHED"
+   ],
    "fetch": 0,
+   "search": 6,
    "records": 44
   },
-  "V9-13": {
-   "search": 5,
+  "V9-12": {
+   "dimensions": [
+    "argument_reconstruction",
+    "interpretive_plurality",
+    "historical_discipline",
+    "literature_orientation"
+   ],
+   "medians": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "root_causes": [
+    "RETRIEVAL_RELEVANCE_FAILURE"
+   ],
    "fetch": 0,
+   "search": 12,
+   "records": 105
+  },
+  "V9-13": {
+   "dimensions": [
+    "argument_reconstruction"
+   ],
+   "medians": [
+    3
+   ],
+   "root_causes": [
+    "EVIDENCE_NOT_FETCHED"
+   ],
+   "fetch": 0,
+   "search": 5,
    "records": 41
   },
   "V9-14": {
-   "search": 0,
+   "dimensions": [
+    "historical_discipline"
+   ],
+   "medians": [
+    3
+   ],
+   "root_causes": [
+    "EVIDENCE_NOT_FETCHED"
+   ],
    "fetch": 0,
+   "search": 0,
    "records": 0
   }
  },
- "retrieval_vs_generation": {
-  "fetch_zero_all_14": "整个 V9 formal run 中 SCHOLARLY_SOURCE_FETCH_CASES=0",
-  "search_vs_fetch_gap": "13 case 发起搜索返回 22-130 条 metadata records, 但零 fetch",
-  "pass_cases_explanation": "10 个 PASS case 的 REQUIRED 维度主要由 primary corpus 原典满足",
-  "generation_vs_retrieval": "4 个低分 case 的回答均诚实标注「记忆未经核验」（零捏造）——生成质量本身合格, 问题在于证据供给断链"
- },
  "failure_concentration": {
-  "pattern": "全部 9 个 median<2 cells 集中在 4 个 case; 其余 10 个 case 零 low cell",
-  "classification": "MIXED_SYSTEMIC（corpus gap + retrieval relevance + fetch 断链复合）",
-  "V9_04": "密尔/效益主义二手研究文献缺失 → interp=1",
-  "V9_07": "巴特勒性别研究二手文献缺失 → 3 维低分",
-  "V9_08": "王充《论衡》不在 primary corpus → textual=0",
-  "V9_12": "德性知识论专业二手文献不可达 → 4 维全零"
+  "classification": "MIXED_SYSTEMIC",
+  "total_fail_cells": 23,
+  "total_cases_with_fails": 10,
+  "severe_cells_median_lt2": 9,
+  "fetch_zero_cells": 20,
+  "evidence_zero_cells": 20
+ },
+ "retrieval_vs_generation": {
+  "fetch_status": "13/14 case fetch=0; V9-10 fetch=3（唯一有 scholarly fetch 的 case）",
+  "frozen_telemetry": "SCHOLARLY_SOURCE_FETCH_CASES=1（1 case 有 fetch）SCHOLARLY_CONTENT_EVIDENCE_COUNT=1",
+  "generation_vs_retrieval": "低分 case 回答普遍诚实标注证据缺口（零捏造——academic integrity 良好）; 问题在于 scholarly content evidence 全链路供给不足: 搜索返回 metadata 但零 fetch/read → 回答层只能依赖内部知识",
+  "quality_causality": "academic integrity ≠ generation quality; 生成质量由 judge dimensions 独立判定且全部 FAIL——不能从诚实推合格"
  },
  "patchability": {
   "PRODUCTION_PATCHABLE": [
-   "检索→fetch 断链可修补（fetch 触发逻辑）",
-   "retrieval relevance 可改善（query reformulation）"
+   "fetch 触发逻辑（13 case 零 fetch 后可补 fetch 步骤）",
+   "retrieval relevance（CrossRef/OpenAlex 通用库对专业哲学条目匹配度低）"
   ],
   "CORPUS_EXPANSION_REQUIRED": [
-   "V9-08 王充《论衡》不在 409 本库",
-   "V9-04/07/12 专业二手文献超出公共学术库覆盖"
+   "V9-08 王充《论衡》primary corpus 缺失",
+   "V9-04/07/12 专业领域学术二手文献（超出通用 scholarly provider 覆盖）"
   ],
   "EXTERNAL_RETRIEVAL_REQUIRED": [
-   "V9-04/07/12 需要专门学术检索源"
+   "专业哲学学术文献需专门学术检索源"
   ]
  },
- "PRODUCTION_CHANGED": false
+ "evidence_constraints": {
+  "PRIMARY_CORPUS_GAP": "仅 V9-08: frozen V9 run 自述《论衡》不可用",
+  "SCHOLARLY_CORPUS_GAP": "搜索返回大量 metadata 但均与主题无关（V9-12 105 条全离题）或无法获取内容（fetch=0）",
+  "RETRIEVAL_RELEVANCE_FAILURE": "V9-12: 105 records 与德性知识论主题不相关（机械可证）",
+  "EVIDENCE_NOT_FETCHED": "13/14 case 的 scholarly records 仅返回 metadata, 零 content fetch",
+  "NOT_PROVEN": "具体是 corpus 不存在 vs 检索不够精确 vs provider 覆盖不足——三者在 archive 中不可区分"
+ }
 }
