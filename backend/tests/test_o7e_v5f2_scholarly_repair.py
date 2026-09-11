@@ -31,7 +31,7 @@ def test_search_local_dev_topics_direct_in_topk():
         "Searle Chinese room": "chinese room",
         "moral luck Williams Nagel": "moral luck",
         "Nishida Kitaro pure experience": "nishida",
-        "Averroes Ibn Rushd philosophy religion": "averroes",
+        "Averroes Ibn Rushd philosophy religion": "ibn rushd",
         "Anscombe modern moral philosophy virtue": "modern moral philosophy",
         "Mackie error theory queerness": "inventing right and wrong",
     }

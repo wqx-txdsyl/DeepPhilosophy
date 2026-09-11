@@ -65,8 +65,12 @@ def build(fetch_passages=False):
             disc = sorted(c for c, v in cluster_of[sid].items()
                           if v is not None and (v or 0) < 3)
             level = r["access"]["level"]
+            # V6-F2 §4: accepted 簇的 curated topic 烘焙为可检索语料元数据
+            # （章节记录的主题词常只在簇 topic 中; 通用机制, 无任何 case 特判）
+            _topics = sorted({c2["topic"] for c2 in m["clusters"] if c2["cluster_id"] in acc})
             r.update({
                 "cluster_ids_accepted": acc,
+                "cluster_topics": _topics,
                 "cluster_ids_discovery_only": disc,
                 "related_primary_book_ids": sorted(set(book_ids_of.get(sid, []))),
                 "association_status": "CURATED" if acc else "DISCOVERY_ONLY",

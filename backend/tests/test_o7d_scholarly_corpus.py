@@ -252,7 +252,7 @@ def _counts(reg):
 
 def test_r1_r2_association_status_correct(reg):
     cur, disc = _counts(reg)
-    assert len(cur) == 396 and len(disc) == 131   # V5-F2 §A: +14 cluster corpus 扩充后新冻结态
+    assert len(cur) == 408 and len(disc) == 179   # V6-F2 §A: +3 中文思想史修复簇后新冻结态
     for r in cur:
         assert r["cluster_ids_accepted"]
     for r in disc:

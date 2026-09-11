@@ -68,7 +68,7 @@ def build_index():
     con = sqlite3.connect(INDEX)
     con.execute("CREATE VIRTUAL TABLE sources USING fts5("
                 "source_record_id UNINDEXED, cluster_ids_accepted, title, authors, "
-                "aliases, abstract, passages, book_ids)")
+                "aliases, abstract, passages, book_ids, container, cluster_topics)")
     indexed = 0
     for sid, r in _registry.items():
         # RP1 §2: 默认索引只含 accepted records（curation 约束 runtime 暴露）
@@ -76,7 +76,7 @@ def build_index():
             continue
         ev = _evidence.get(sid, [])
         con.execute(
-            "INSERT INTO sources VALUES (?,?,?,?,?,?,?,?)",
+            "INSERT INTO sources VALUES (?,?,?,?,?,?,?,?,?,?)",
             (sid,
              " ".join(r.get("cluster_ids_accepted") or []),
              r.get("title") or "",
@@ -84,7 +84,12 @@ def build_index():
              " ".join(r.get("aliases") or []),   # PF-RP5/V3-RP3: 多语别名可检索
              next((e["text"] for e in ev if e["evidence_type"] == "ABSTRACT"), ""),
              " ".join(e["text"] for e in ev if e["evidence_type"] == "FULLTEXT_PASSAGE"),
-             " ".join(r.get("related_primary_book_ids") or [])))
+             " ".join(r.get("related_primary_book_ids") or []),
+             # V6-F2 §4: 书名/期刊名是标准书目检索面——章节记录的判别词
+             # （如 Tillman 专著名 Utilitarian Confucianism）常只存在于 container
+             r.get("container_title") or "",
+             # V6-F2 §4: curated 簇 topic 是记录的主题判别词所在（通用语料元数据）
+             " ".join(r.get("cluster_topics") or [])))
         indexed += 1
     con.commit()
     con.close()
@@ -92,14 +97,18 @@ def build_index():
 
 
 def _record_haystack(rec):
-    """V5-F2 §B: 参与覆盖率判定的记录文本（title + authors + abstract）。"""
+    """V5-F2 §B: 参与覆盖率判定的记录文本（title + authors + abstract + container）。"""
     parts = [str(rec.get("title") or "")]
     parts += [str(a.get("name") or "") for a in (rec.get("authors") or [])
               if isinstance(a, dict)]
     ab = rec.get("abstract")
     if isinstance(ab, dict):
         parts.append(str(ab.get("text") or ""))
-    return " ".join(parts).lower()
+    # V6-F2 §4: 书名/期刊名纳入覆盖判定（章节记录的判别词常只在 container）
+    parts.append(str(rec.get("container_title") or ""))
+    parts.append(" ".join(rec.get("cluster_topics") or []))
+    # V6-F2 §4: 撇号归一（"Ch'en Liang" vs "Chen Liang"——FTS/子串两侧统一）
+    return " ".join(parts).lower().replace("'", "").replace("’", "")
 
 
 def search_local(query, limit=8):
@@ -131,13 +140,14 @@ def search_local(query, limit=8):
     cand = [dict(_registry[s], _bm25=round(b, 2), retrieval_origin="LOCAL_CURATED")
             for s, b in rows
             if s in _registry and _registry[s].get("cluster_ids_accepted")]
-    tl = [t.lower() for t in (query.replace("-", " ").split()) if len(t) >= 2]
+    tl = [t.lower().replace("'", "").replace("’", "")
+          for t in (query.replace("-", " ").split()) if len(t) >= 2]
     if not tl or '"' in query:
         return cand[:limit]
     for c in cand:
         text = _record_haystack(c)
         c["_term_coverage"] = round(sum(1 for t in tl if t in text) / len(tl), 2)
-    need = 1.0 if len(tl) <= 3 else 0.6
+    need = 1.0 if len(tl) <= 2 else 0.6
     strict = [c for c in cand if c["_term_coverage"] + 1e-9 >= need]
     (strict or cand).sort(key=lambda c: (-c["_term_coverage"], c["_bm25"]))
     return (strict or cand)[:limit]
