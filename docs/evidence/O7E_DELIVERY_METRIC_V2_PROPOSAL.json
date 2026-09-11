@@ -1,0 +1,29 @@
+{
+ "O7E_DELIVERY_METRIC_V2_PROPOSAL": true,
+ "context": "V7-F1 RCA 确认 REPAIR_CREATES_NEW_FATAL_ERROR 存在名称误称（实际计任何新 fingerprint 非仅 fatal）+ 观测缺口（逐轮语义身份不可恢复）",
+ "legacy": {
+  "name": "REPAIR_CREATES_NEW_FATAL_ERROR",
+  "actual_semantics": "any(Rk.introduced non-empty)",
+  "name_problem": "fatal 一词误导",
+  "V3_V7_values": "全部保持原义原 verdict 不回写"
+ },
+ "v2_metrics": [
+  {
+   "name": "REPAIR_INTRODUCED_FINGERPRINT_CASES",
+   "replaces": "REPAIR_CREATES_NEW_FATAL_ERROR",
+   "semantics": "任一 repair transition 出现新 fingerprint（名称如实）"
+  },
+  {
+   "name": "REPAIR_INTRODUCED_GENUINELY_NEW_ISSUE_CASES",
+   "semantics": "repair 真正制造此前不存在的语义错误",
+   "proposed_gate": "hard gate, zero tolerance"
+  },
+  {
+   "name": "REPAIR_TRANSITION_AMBIGUOUS_CASES",
+   "semantics": "无法可靠分类的 transition",
+   "proposed_gate": "hard gate, fail-closed"
+  }
+ ],
+ "compatibility": "旧名保留为 alias; 新指标仅供 V8+ 预注册; V3-V7 verdict 绝不回写",
+ "final_gate_unchanged": true
+}
