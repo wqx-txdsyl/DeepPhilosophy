@@ -1,0 +1,102 @@
+{
+ "V8_QUALIFICATION_SUMMARY": true,
+ "run": "V8_QUAL",
+ "PRODUCTION_MODEL": "deepseek-v4-flash",
+ "PRODUCTION_PATH": true,
+ "QUALIFICATION_BASE": "33243d0d19f9c49bf7bc813532f5e612ea20f5ec",
+ "QUALIFICATION_HEAD": "e0818327e8391bf4cf2f590fca82e6de9788d036",
+ "MANIFEST_SHA256": "65d9eb2c3293d8ab5a55c7092613b0e858523f0fcad58a954df38b522070defb",
+ "FRESH_CASES": true,
+ "PREVIOUSLY_CONSUMED_CASES": 0,
+ "CASE_COUNT": 12,
+ "canonical_summary_fed_to_checker": {
+  "run": "V8_QUAL",
+  "model": "deepseek-v4-flash",
+  "CALIBRATION_COMPLETED": 12,
+  "CALIBRATION_PUBLISHED": 11,
+  "CALIBRATION_REPAIR_TRIGGERED": 11,
+  "CALIBRATION_REPAIR_CONVERGED": 10,
+  "CALIBRATION_REPAIR_CONVERGENCE": 0.909,
+  "TERMINAL_PENDING": 0,
+  "VALIDATOR_EMPTY_FINAL": 0,
+  "TERMINAL_CANDIDATE_EMPTY": 0,
+  "PUBLIC_INVALID_CITATIONS": 0,
+  "UNVERIFIED_PUBLIC_EXACT_QUOTES": 0,
+  "PUBLIC_ACCESS_OVERCLAIMS_MEASURED": false,
+  "ACCESS_OVERCLAIM_GATE": "DEFERRED_TO_CANONICAL_JUDGE",
+  "LOCAL_PATCH_ANCHOR_RESOLUTION_RATE": 1.0,
+  "PROMPT_ISSUE_COVERAGE": 1.0,
+  "LINKED_EVIDENCE_STARVATION": 0,
+  "UNKNOWN_SLICE_ID": 0,
+  "UNINTENTIONAL_QUOTE_WRAPPER_LOSS": 0,
+  "NON_TARGET_TEXT_CHANGED_CHARS": 0,
+  "INTENTIONAL_QUOTE_TO_PARAPHRASE": 18,
+  "PARAPHRASE_INTRODUCED_QUOTE_ISSUES": 0,
+  "SCHOLARLY_SEARCH_CASES": 10,
+  "SCHOLARLY_SOURCE_FETCH_CASES": 2,
+  "SCHOLARLY_RECORD_COUNT": 306,
+  "SCHOLARLY_FETCH_RESULT_COUNT": 2,
+  "SCHOLARLY_CONTENT_EVIDENCE_COUNT": 2,
+  "FINAL_PUBLICATION_RATE": 0.917,
+  "STITCHED_PUBLIC_QUOTES": 0,
+  "REPAIR_CREATES_NEW_FATAL_ERROR": 0,
+  "TOOL_LOOP_ABORTS": 0,
+  "candidate": "deepseek-v4-flash",
+  "judged": 11,
+  "JUDGE_CASES_EXPECTED": 11,
+  "JUDGE_CASES_VALID": 11,
+  "JUDGE_CASES_MISSING": 0,
+  "EVALUATION_INVALID": false,
+  "REQUIRED_DIMENSION_MISSING_SCORE": 0,
+  "REQUIRED_DIMENSION_MEDIAN_LT_2": 6,
+  "FATAL_FLAG_COUNTS_BY_TYPE": {
+   "FABRICATED_BIBLIOGRAPHY": 0,
+   "FABRICATED_SCHOLAR_ATTRIBUTION": 1,
+   "PRIMARY_TEXT_MISREPRESENTATION": 0,
+   "MAJOR_ANACHRONISM": 0,
+   "FALSE_EXACT_QUOTE": 0,
+   "LITERATURE_ACCESS_OVERCLAIM": 0
+  },
+  "missing_required": [],
+  "required_dims": {
+   "argument_reconstruction": 4.0,
+   "historical_discipline": 3.1,
+   "textual_grounding": 3.75,
+   "interpretive_plurality": 1.75,
+   "literature_orientation": 2.167
+  },
+  "applicable_dims": {
+   "textual_grounding": 3.556,
+   "argument_reconstruction": 3.6,
+   "historical_discipline": 3.091,
+   "interpretive_plurality": 2.375,
+   "literature_orientation": 2.286
+  },
+  "dims": {
+   "textual_grounding": 3.556,
+   "argument_reconstruction": 3.6,
+   "historical_discipline": 3.091,
+   "interpretive_plurality": 2.375,
+   "literature_orientation": 2.286
+  },
+  "applicable_mean": 3.044,
+  "fatal_flags": [
+   "FABRICATED_SCHOLAR_ATTRIBUTION"
+  ]
+ },
+ "gate": {
+  "DELIVERY_GATE": "PASS",
+  "SCHOLARLY_GATE": "FAIL",
+  "FAILED_GATES": [
+   "APPLICABLE_DIMENSION_MEAN",
+   "FABRICATED_SCHOLAR_ATTRIBUTION",
+   "HISTORICAL_DISCIPLINE_REQUIRED_MEAN_MIN",
+   "INTERPRETIVE_PLURALITY_REQUIRED_MEAN_MIN",
+   "LITERATURE_ORIENTATION_REQUIRED_MEAN_MIN",
+   "REQUIRED_DIMENSION_MEDIAN_LT_2"
+  ],
+  "FINAL_VERDICT": "SCHOLARLY_GATE_NOT_MET"
+ },
+ "FULL_TEST_SHA": "e0818327e8391bf4cf2f590fca82e6de9788d036",
+ "FULL_TEST_RESULT": "859 passed / 0 failed (cd backend && ../.venv/bin/python -m pytest tests/ -q @ QUALIFICATION_HEAD)"
+}
