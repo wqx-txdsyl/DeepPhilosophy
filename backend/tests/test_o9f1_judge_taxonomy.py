@@ -318,16 +318,9 @@ def test_r2_bad_score_observable(monkeypatch, pipeline_env):
     assert any("0-4" in r for a in obs for r in a.get("canonical_reasons", []))
 
 
-def test_r2_missing_required_score_observable(monkeypatch, pipeline_env):
-    v, man = _verdict_required_missing_score()
-    pipeline_env["man_path_override"] = str(pipeline_env["man"]) + ".req.json"
-    calls, j = _run_canonical(monkeypatch, pipeline_env, v, man)
-    vote = next(v for v in j[0]["votes_archive"] if v.get("vote_index") == 0)
-    assert vote["valid"] is False
-    obs = _schema_obs(j)
-    assert len(obs) >= 3
-    assert any("REQUIRED requires numeric score" in r
-               for a in obs for r in a.get("canonical_reasons", []))
+# （test_r2_missing_required_score_observable 已被 V9-F1-R3 修正拆分:
+#  manifest-only 场景 → test_r3_pure_manifest_mismatch_no_schema_label;
+#  canonical REQUIRED 场景 → test_r3_canonical_required_missing_score_observable）
 
 
 def test_r2_missing_fatal_flag_observable(monkeypatch, pipeline_env):
@@ -352,3 +345,43 @@ def test_r2_missing_rationale_observable(monkeypatch, pipeline_env):
 def test_r2_canonical_valid_no_schema_observation(monkeypatch, pipeline_env):
     calls, j = _run_canonical(monkeypatch, pipeline_env, _valid_verdict())
     assert _schema_obs(j) == []
+
+
+# ═══════════════════════════════════════════════════════
+# V9-F1-R3: manifest 层与 canonical schema 两层分离
+# ═══════════════════════════════════════════════════════
+def test_r3_pure_manifest_mismatch_no_schema_label(monkeypatch, pipeline_env):
+    """pure manifest applicability mismatch → invalid vote + mismatch reason +
+    VERDICT_SCHEMA_INVALID 计数 0 + 每 vote 恰 1 LLM call（零重试）"""
+    verdict = _valid_verdict()
+    verdict["dimensions"]["textual_grounding"] = {
+        "applicability": "OPTIONAL", "score": None, "rationale": "合法 rationale"}
+    man = [{"case_id": "TAX-1", "question": "q", "task_category": "t",
+            "agent_identity": "A",
+            "applicability": {"TEXTUAL_GROUNDING": "REQUIRED"}}]
+    man_path = str(pipeline_env["man"]) + ".mismatch.json"
+    open(man_path, "w", encoding="utf-8").write(json.dumps(man))
+    calls = _patch_call(monkeypatch, [json.dumps(verdict)])
+    J2.judge_candidate("deepseek-v4-flash", runs_path=pipeline_env["runs"],
+                       out_tag=pipeline_env["tag"], manifest_path=man_path)
+    assert calls["n"] == 3                       # 每 vote 恰 1 call, 零重试
+    j = json.load(open(f"{J2.ROOT}/backend/tools/_tmp/{pipeline_env['tag']}.json"))
+    vote = next(v for v in j[0]["votes_archive"] if v.get("vote_index") == 0)
+    assert vote["valid"] is False                # mismatch → vote invalid
+    assert any("applicability" in str(rsn) or "!= manifest" in str(rsn)
+               for rsn in vote.get("reasons") or [])
+    assert _schema_obs(j) == []                  # 零 canonical schema 误标
+
+
+def test_r3_canonical_required_missing_score_observable(monkeypatch, pipeline_env):
+    """verdict 自身标 REQUIRED 且无 score → O7A canonical 判定 → 可观测"""
+    v = _valid_verdict()
+    v["dimensions"]["textual_grounding"] = {"applicability": "REQUIRED"}  # 无 score
+    calls = _patch_call(monkeypatch, [json.dumps(v)])
+    J2.judge_candidate("deepseek-v4-flash", runs_path=pipeline_env["runs"],
+                       out_tag=pipeline_env["tag"], manifest_path=pipeline_env["man"])
+    assert calls["n"] == 3                       # 零重试
+    obs = _schema_obs(json.load(open(
+        f"{J2.ROOT}/backend/tools/_tmp/{pipeline_env['tag']}.json")))
+    assert len(obs) == 3
+    assert any("REQUIRED" in r for a in obs for r in a.get("canonical_reasons", []))

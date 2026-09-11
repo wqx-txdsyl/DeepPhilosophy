@@ -523,13 +523,11 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
                                f"!= manifest {applic!r}")
                 if applic == "REQUIRED" and not isinstance(
                         vd.get("score"), (int, float)):
+                    # V9-F1-R3 §1: manifest 层合同失败——保持 mismatch reason 使
+                    # vote invalid, 但不记 canonical VERDICT_SCHEMA_INVALID
+                    #（两层合同分离: canonical schema 观测仅来自
+                    # O7A.validate_verdict 非空）
                     bad.append(f"{dim}: REQUIRED requires numeric score")
-                    attempt_log.append({
-                        "case_id": cid, "vote_index": vi,
-                        "attempt_index": None,
-                        "failure_class": "VERDICT_SCHEMA_INVALID",
-                        "observation_only": True,
-                        "canonical_reasons": [f"{dim}: REQUIRED requires numeric score"]})
             votes_archive.append({
                 "vote_index": vi, "valid": not bad, "reasons": bad[:6],
                 "dimensions": {d: {"applicability": (vd or {}).get("applicability"),
