@@ -336,3 +336,58 @@ def test_r1_chinese_query_bilingual_canonical_variant(monkeypatch, stub_cache):
     assert out["query_reformulation"]["triggered"] is True
     assert "arendt" in (out["query_reformulation"]["variant_query"] or "").lower()
     assert any("Arendt" in (r.get("title") or "") for r in out["results"])
+
+
+# ═══════════════════════════════════════════════════════
+# V8-F2-R2 §1: repair 生成的 plan-only 同样拦截（每候选独立判定）
+# ═══════════════════════════════════════════════════════
+def test_r2_repair_generated_plan_only_blocked():
+    # initial 是含伪引文的实质回答（validator FAIL）→ repair 1 返回计划前言
+    # （validator 本身 ok）→ plan gate 必须独立拦截, 不得发布;
+    # repair 2（升级反馈后）给出实质回答 → 发布
+    bad = "结论：原文如下——\n\n> 「" + _SENTINEL_FAKE + "」\n"
+    evs, _chat = _run_lp(
+        "言必有中出处",
+        _TOOLS_SCRIPT + [_msg(bad), _msg(_PLAN), _msg(_GOOD)],
+        adapter=_AnchorMissingAdapter())
+    done = _done(evs)
+    answer = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
+    tel = done.get("v8f2_telemetry") or {}
+    assert tel.get("PLAN_ONLY_TERMINAL_BLOCKED") is True
+    assert _PLAN not in answer
+    assert _GOOD in answer
+
+
+def test_r2_repair_generated_plan_exhaustion_fail_closed():
+    # repair 全部只产出计划前言 → 耗尽后 FAIL-CLOSED, 计划零外流
+    bad = "结论：原文如下——\n\n> 「" + _SENTINEL_FAKE + "」\n"
+    evs, _chat = _run_lp(
+        "言必有中出处",
+        _TOOLS_SCRIPT + [_msg(bad), _msg(_PLAN), _msg(_PLAN), _msg(_PLAN)],
+        adapter=_AnchorMissingAdapter())
+    tokens = "".join(e.get("content", "") for e in evs if e.get("type") == "token")
+    assert _PLAN not in tokens and _SENTINEL_FAKE not in tokens
+    assert any(e.get("type") == "error" for e in evs)
+    tel = (_done(evs).get("v8f2_telemetry") or {})
+    assert tel.get("PLAN_ONLY_EXHAUSTION_FAIL_CLOSED") is True
+
+
+# ═══════════════════════════════════════════════════════
+# V8-F2-R2 §2: completion 语言不再一刀切豁免
+# ═══════════════════════════════════════════════════════
+def test_r2_past_completion_plus_future_intent_still_blocked():
+    assert EG._is_plan_only_terminal(
+        "我已经找到了一些初步线索，但还不能下结论。下一步我会检索正式文献进行核实。",
+        "研究问题")
+
+
+def test_r2_genuinely_completed_answer_still_published():
+    # 无未来宣告的完成型回答照常发布
+    assert not EG._is_plan_only_terminal(
+        "我已经查到相关材料。核心分歧有三点：第一……第二……第三……", "研究问题")
+
+
+def test_r2_completion_after_intent_counts_as_delivery():
+    # O4-T5 实况: 意图句在前、完成+实质回答在后 → 非 plan-only
+    assert not EG._is_plan_only_terminal(
+        "让我先检索一下材料。现在已经查到了：荒诞是裂隙。", "什么是荒诞？")

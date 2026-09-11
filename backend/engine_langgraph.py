@@ -1424,17 +1424,23 @@ def _is_plan_only_terminal(candidate, user_message):
 
     - 用户消息本身在请求计划/文献路径 → 永不判定（真实计划回答正常发布）;
     - 无未来检索宣告 → 非 plan-only;
-    - 候选中任何位置存在检索/核验已完成的语言证据（O4-T5 过程引导句实况:
-      「让我先检索一下材料。现在已经查到了：…」）→ 有实质交付, 非 plan-only。
+    - 完成性证据（O4-T5 实况「…现在已经查到了：荒诞是裂隙。」）只在
+      **最后意图宣告之后**出现才算实质交付（V8-F2-R2 §2）。
     """
     c = candidate or ""
     if not c.strip():
         return False
     if _PLAN_USER_REQUEST_RE.search(user_message or ""):
         return False
-    if not _PLAN_INTENT_RE.search(c):
+    matches = list(_PLAN_INTENT_RE.finditer(c))
+    if not matches:
         return False
-    if _PLAN_COMPLETION_RE.search(c):
+    # V8-F2-R2 §2: 完成性证据只在「最后意图宣告之后」才算实质交付——
+    # 意图宣告之前的「已经找到一些线索」是过去检索, 不能豁免其后的未来宣告
+    # （「已经找到一些线索，但还不能下结论。下一步我会检索……」仍拦截）;
+    # O4-T5 实况（意图句在前, 「现在已经查到了：荒诞是裂隙。」在后）正常发布。
+    tail_after_last_intent = c[matches[-1].end():]
+    if _PLAN_COMPLETION_RE.search(tail_after_last_intent):
         return False
     return True
 
@@ -1906,6 +1912,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         # （可实际调工具或产出实质受限回答）; 用户真实计划请求不误拦。
         _final_round_tool_calls = 0   # 终局轮自身 tool-call 事实（见上注）
         _plan_gate = False
+        _plan_blocked_midloop = False   # V8-F2-R2: repair 生成的 plan-only 被拦截
         if (candidate.strip() and _final_round_tool_calls == 0
                 and _is_plan_only_terminal(candidate, req_message)):
             _plan_gate = True
@@ -1951,8 +1958,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             _val_issues = val_dict.get("issues", [])
             # V8-F2 §1: plan-gate——plan-only 候选即使机械校验通过也不得发布;
             # 进入 repair 分支做有界升级（escalation 反馈见下方 _fb 构建）
-            _plan_only_now = bool(_plan_gate and _is_plan_only_terminal(
-                candidate, req_message))
+            # V8-F2-R2 §1: 每个候选独立判定 plan-only——repair 生成的候选同样
+            # 可能是计划前言（initial 实质回答被 validator 打回后, repair 返回
+            # 「下一步我会继续检索……」的路径）, _plan_gate 不再作为前提。
+            _current_plan_only = _is_plan_only_terminal(candidate, req_message)
             # V7-F2-R1 §2: 完整语义身份快照（8 字段, 缺失显式 null）
             _cur_details = [_issue_snapshot(len(_val_history), i)
                             for i in _val_issues]
@@ -1980,11 +1989,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 "candidate_chars": len(candidate or ""),
                 "candidate_sha256": hashlib.sha256(
                     (candidate or "").encode("utf-8")).hexdigest() if (candidate or "").strip() else None})
-            if (validation.ok and not _plan_only_now) or \
+            if (validation.ok and not _current_plan_only) or \
                     repairs_used >= MAX_VALIDATION_REPAIRS:
                 break
             repairs_used += 1
-            if _plan_only_now and validation.ok:
+            if _current_plan_only:
+                _plan_blocked_midloop = True
+            if _current_plan_only and validation.ok:
                 logger.info(f"[plan-only gate] recovery 后仍为计划前言 → "
                             f"repair {repairs_used}/{MAX_VALIDATION_REPAIRS}")
             else:
@@ -1992,14 +2003,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                             f"main-agent repair {repairs_used}/{MAX_VALIDATION_REPAIRS}")
             yield {"type": "tool_note",
                    "content": ("答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……"
-                               if not _plan_only_now else
+                               if not _current_plan_only else
                                "（检测到计划式回答尚未落实为实质回答——正在要求智能体给出实质回答……）"),
                    "initiated_by": "validator", "activity": True,
                    "decision_group_id": _dg()}
             # O2 §9: 中性反馈——只列机械 issue, 不命令具体修复动作（改写/标注/删引文/
             # 补研究由 Agent 自主决定）; validator 自身绝不调用工具。
             _fb = format_feedback(validation)
-            if _plan_only_now:
+            if _current_plan_only:
                 # V8-F2 §1: plan-only 升级反馈——机械 issues 为空时也必须给出
                 # 实质回答（证据边界明确）, 不得再输出行动计划
                 _fb = ("PLAN_ONLY_GATE: 你再次提交了「将要检索/查证」式的操作计划, "
@@ -2118,7 +2129,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     _repair_trace[-1]["no_op_escalated"] = True
                 _repair_no_op_escalated += 1
                 _no_op_escalate_next = False
-            _repair_trace[-1]["plan_only_gate"] = bool(_plan_only_now)
+            _repair_trace[-1]["plan_only_gate"] = bool(_current_plan_only)
             # V8-F2 §3: pre_repair_candidate_hash（修复调用前锁定）
             _pre_repair_hash = hashlib.sha256(
                 (candidate or "").encode("utf-8")).hexdigest()[:16]
@@ -2279,8 +2290,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         # V8-F2-R1 §1 (P0): publish 显式要求 validation.ok AND not terminal_plan_only——
         # repair 耗尽后仍为 plan-only → FAIL-CLOSED 不发布（计划前言绝不发给用户,
         # 以既有 validation_failed/error 非语义失败路径收口）。
-        _terminal_plan_only = bool(_plan_gate and _is_plan_only_terminal(
-            candidate, req_message))
+        _terminal_plan_only = _is_plan_only_terminal(candidate, req_message)
         if candidate.strip() and validation.ok and not _terminal_plan_only:
             full_answer = candidate
             for ch in candidate:
@@ -2486,7 +2496,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                               "repair_protocol": "same_main_agent"},
                # V8-F2 §3: 机械 telemetry（事实记录, 非决策系统）
                "v8f2_telemetry": {
-                   "PLAN_ONLY_TERMINAL_BLOCKED": bool(_plan_gate),
+                   "PLAN_ONLY_TERMINAL_BLOCKED": bool(_plan_gate or _plan_blocked_midloop),
                    "PLAN_ONLY_EXHAUSTION_FAIL_CLOSED": bool(_terminal_plan_only),
                    "FINAL_ROUND_TOOL_CALLS": _final_round_tool_calls,
                    "REPAIR_NO_OP_COUNT": _repair_no_op_count,
