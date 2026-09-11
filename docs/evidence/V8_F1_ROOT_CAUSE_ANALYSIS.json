@@ -1,0 +1,967 @@
+{
+ "V8_F1_ROOT_CAUSE_ANALYSIS": true,
+ "BASE_SHA": "d64ac0a504a87900b34800f0e8accaa21cbee223",
+ "V8_FAILURE_EVIDENCE_PRESERVED": true,
+ "analysis_only": true,
+ "V8_RERUN": false,
+ "v8_11_fatal": {
+  "case_id": "V8-11",
+  "fatal_flag": "FABRICATED_SCHOLAR_ATTRIBUTION",
+  "fatal_votes": {
+   "FABRICATED_SCHOLAR_ATTRIBUTION": 1
+  },
+  "chain": {
+   "answer_chars": 282,
+   "answer_is_preamble": true,
+   "answer_evidence": "首 candidate 即为规划性前言（『这些都还只是我的记忆，属于工作假设…下一步我并行检索』），引擎将其作为最终候选发布",
+   "repairs_used": 0,
+   "validation_rounds": 1,
+   "round0_passed": true,
+   "SCHOLARLY_SEARCH_CALLS": 0,
+   "SCHOLARLY_SOURCE_FETCH_CALLS": 0,
+   "scholarly_records": 0,
+   "citations": 0
+  },
+  "judge_votes": [
+   {
+    "vote_index": 2,
+    "flag": "FABRICATED_SCHOLAR_ATTRIBUTION",
+    "reason": "回答将“宗教启蒙”这一具体观点/概念归属给 David Sorkin，但提供的证据摘要和书目记录为空，无任何证据支持该归属。",
+    "offending_spans": [
+     "批评通常来自强调启蒙多元性、宗教性启蒙（如 David Sorkin 的\"宗教启蒙\"）"
+    ],
+    "evidence_refs": []
+   }
+  ],
+  "ROOT_CAUSE": "UNSUPPORTED_MODEL_ATTRIBUTION",
+  "classification_note": "模型未经任何 scholarly 检索（0 次调用）即以记忆归因（David Sorkin『宗教启蒙』等）完成发布; 1/3 票 fatal 属实（attribution 无检索支撑）。次要产品缺口: 机械 validator 对『答案为规划前言而非实质回答』无 issue code（非空即过），使该 preamble 绕过校验。非 JUDGE_FALSE_POSITIVE（judge 判断与事实一致），非 RETRIEVAL_CONTAMINATION（检索根本未发生）。"
+ },
+ "v8_12_low_score": {
+  "case_id": "V8-12",
+  "medians": {
+   "textual_grounding": {
+    "median": 1,
+    "applicability": "OPTIONAL"
+   },
+   "argument_reconstruction": {
+    "median": 1,
+    "applicability": "OPTIONAL"
+   },
+   "interpretive_plurality": {
+    "median": 1,
+    "applicability": "REQUIRED"
+   },
+   "historical_discipline": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   },
+   "literature_orientation": {
+    "median": 0,
+    "applicability": "REQUIRED"
+   }
+  },
+  "run_facts": {
+   "search_calls": 10,
+   "fetch_calls": 0,
+   "records_returned": 66,
+   "answer_self_report": "回答如实披露: 阿伦特《艾希曼在耶路撒冷》《精神生活》不在库中; 学术检索接口报错（外部 provider 屏蔽）且返回记录全部离题（康德/洛克/孟子/罗素等）; 网络搜索不可达; 仅《哲学100问》通俗读物可用"
+  },
+  "per_dimension": {
+   "textual_grounding": [
+    {
+     "vote": 0,
+     "score": 1,
+     "rationale": "回答仅引用了通俗读物《哲学100问》中的转述内容，未能引用《艾希曼在耶路撒冷》或《精神生活》的原典文本。虽然回答诚实声明了原典缺失，但基于文本基础极其薄弱，仅能得1分。"
+    },
+    {
+     "vote": 1,
+     "score": 1,
+     "rationale": "回答仅引用了通俗读物《哲学100问》中的转述内容，未能引用《艾希曼在耶路撒冷》或《精神生活》的原典文本，且明确承认原典不在库中。虽然对有限证据进行了引用，但核心文本依据缺失。"
+    },
+    {
+     "vote": 2,
+     "score": 2,
+     "rationale": "回答正确引用了库内《哲学100问》中关于“平庸之恶”双重指向（艾希曼的无思想性与犹太领导人的配合）及争议性质的描述，并明确标注了引用来源。然而，对于核心问题要求的《艾希曼在耶路撒冷》和《精神生活》的原典内容，回答诚实声明了库内缺失，导致对核心文本的支撑严重不足，仅能依赖通俗读物的转述。"
+    }
+   ],
+   "argument_reconstruction": [
+    {
+     "vote": 0,
+     "score": 2,
+     "rationale": "回答基于通俗读物重构了“平庸之恶”的双重指向（艾希曼的无思想性与犹太领导人的配合），这一重构在证据范围内是准确的。然而，对于后续档案批评（如Stangneth）和《精神生活》的回应，回答仅提供了非常笼统的轮廓，未能展开具体的论证步骤或逻辑链条。"
+    },
+    {
+     "vote": 1,
+     "score": 1,
+     "rationale": "回答未能重构阿伦特关于“平庸之恶”的具体论证逻辑，也未能详细展开《精神生活》中“思考”与“判断”如何回应批评的理论路径。仅提供了非常概括的描述（如'我与我自己之间的无声对话'），缺乏论证步骤的展示。"
+    },
+    {
+     "vote": 2,
+     "score": 1,
+     "rationale": "回答未能有效重构基于档案与史实的批评论证。虽然提到了施坦格奈特和塞萨拉尼的研究方向，但明确标注为“记忆/未经核验”，且未提供具体的论证步骤或档案细节。对于《精神生活》如何回应挑战，仅给出了非常通用的哲学概念描述（如“我与我自己之间的无声对话”），未能建立起“思考/判断”与“档案批评”之间的具体逻辑回应链条。"
+    }
+   ],
+   "interpretive_plurality": [
+    {
+     "vote": 0,
+     "score": 1,
+     "rationale": "虽然回答提到了学界对《精神生活》与“平庸之恶”关系的两种读法（理论补强 vs. 断裂），但明确标注为“未核验”且未提供任何具体的学者观点或文献支持。对于档案批评的多元视角（如意识形态驱动 vs. 官僚体制），也仅停留在记忆线索层面，缺乏实质性的多元解读呈现。"
+    },
+    {
+     "vote": 1,
+     "score": 0,
+     "rationale": "题目明确要求引用“可核验的二手文献内容”来展示基于档案与史实的批评及后续回应。回答明确声明“没有取得任何一条可读的、关于'平庸之恶'批评的研究文献”，且将施坦格奈特、塞萨拉尼等学者的观点标注为“记忆／未经核验”。因此，未能提供任何基于证据的学术争议或多元解读。"
+    },
+    {
+     "vote": 2,
+     "score": 1,
+     "rationale": "题目明确要求引用可核验的二手文献来展示争议与批评。回答虽然提到了肖勒姆、施坦格奈特、塞萨拉尼等不同维度的批评，但全部声明为“记忆/未经核验”，且检索到的二手文献记录（如CrossRef记录）均为无关条目（康德、洛克等），未能利用任何真实的二手文献来支撑或展示这些解释的多样性。回答实际上是在展示“我知道有这些争议”，而非“基于文献展示这些争议”。"
+    }
+   ],
+   "historical_discipline": [
+    {
+     "vote": 0,
+     "score": 0,
+     "rationale": "问题明确要求“基于档案与史实的批评”，但回答明确承认“未能检索到任何一条可读的学术文献”，且将Stangneth和Cesarani的研究仅作为“记忆线索”列出，未提供任何档案细节、史实依据或具体的批评内容。完全未满足历史维度的要求。"
+    },
+    {
+     "vote": 1,
+     "score": 0,
+     "rationale": "题目要求基于“档案与史实”的批评。回答承认检索失败，未能获取任何档案研究或史实考据的文献。虽然提到了阿根廷访谈录音等档案线索，但明确表示“未核验”，无法满足历史维度的证据要求。"
+    },
+    {
+     "vote": 2,
+     "score": 0,
+     "rationale": "题目核心要求是“基于档案与史实的批评”。回答明确承认“未能检索到任何一条可读的学术文献”，且检索接口报错。因此，回答完全无法提供基于档案（如Sassen访谈、阿根廷档案）的具体史实批评，也无法核实所提及的学者（Stangneth, Cesarani）的具体研究成果。回答仅停留在“记忆中的书目印象”层面，完全未达到历史学科基于证据的要求。"
+    }
+   ],
+   "literature_orientation": [
+    {
+     "vote": 0,
+     "score": 0,
+     "rationale": "问题明确要求“引用可核验的二手文献内容作为依据”，但回答明确表示“本轮我无法提供”可核验的二手文献。回答中提到的Stangneth、Cesarani、Scholem等均未提供书目验证或内容引用，且检索到的二手文献记录（如CrossRef记录）与主题完全无关。因此，在文献导向维度得0分。"
+    },
+    {
+     "vote": 1,
+     "score": 0,
+     "rationale": "题目要求“引用可核验的二手文献内容作为依据”。回答明确表示无法提供此类依据，且检索到的二手文献记录（如Stangneth, Cesarani）均未被实际读取或引用。回答仅依赖通俗读物，完全缺乏学术文献导向。"
+    },
+    {
+     "vote": 2,
+     "score": 0,
+     "rationale": "题目明确要求“引用可核验的二手文献内容作为依据”。回答检索到的BIBLIOGRAPHIC_RECORDS和SECONDARY_SOURCE_RECORDS中，没有任何一条关于阿伦特、艾希曼审判或相关争议的记录（全为康德、洛克、孟子等无关内容）。回答中提到的所有相关文献（肖勒姆书信、Stangneth, Cesarani等）均无对应的记录支持，且回答自身也承认无法核验。因此，回答在文献导向上完全未能满足要求。"
+    }
+   ]
+  },
+  "ROOT_CAUSE": "MIXED（CORPUS_COVERAGE 主因 + RETRIEVAL_FAILURE 次因）",
+  "classification_note": "CORPUS_COVERAGE: 核心原典（《艾希曼在耶路撒冷》《精神生活》）与相关学术二手文献均不在书库; RETRIEVAL_FAILURE: scholarly 检索 provider 报错且 66 条返回记录全离题（0 次成功 fetch）。judge 三票独立一致、理由翔实 → 非 JUDGE_APPLICATION_FAILURE; 模型诚实标注未核验内容、零捏造 → 非 EVIDENCE_DISCIPLINE_FAILURE; literature_orientation/historical_discipline 的 0 分是 corpus+retrieval 缺口的直接后果。"
+ },
+ "case_dimension_table": [
+  {
+   "case_id": "V8-01",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "OPTIONAL",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "OPTIONAL"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 4,
+    "argument_reconstruction": 4,
+    "interpretive_plurality": null,
+    "historical_discipline": 4,
+    "literature_orientation": null
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 3,
+      "literature_orientation": null
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-02",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "OPTIONAL",
+    "LITERATURE_ORIENTATION": "OPTIONAL"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 4,
+    "argument_reconstruction": 4,
+    "interpretive_plurality": 3,
+    "historical_discipline": 3,
+    "literature_orientation": 3
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 2,
+      "historical_discipline": 3,
+      "literature_orientation": 3
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 3,
+      "literature_orientation": 2
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 2,
+      "literature_orientation": 3
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-03",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 3,
+    "argument_reconstruction": 3,
+    "interpretive_plurality": 2,
+    "historical_discipline": 3,
+    "literature_orientation": 3
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 3,
+      "argument_reconstruction": 3,
+      "interpretive_plurality": 2,
+      "historical_discipline": 3,
+      "literature_orientation": 2
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 3,
+      "argument_reconstruction": 3,
+      "interpretive_plurality": 2,
+      "historical_discipline": 4,
+      "literature_orientation": 3
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 3,
+      "argument_reconstruction": 3,
+      "interpretive_plurality": 2,
+      "historical_discipline": 3,
+      "literature_orientation": 3
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-04",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "OPTIONAL",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 4,
+    "argument_reconstruction": 4,
+    "interpretive_plurality": 3,
+    "historical_discipline": 4,
+    "literature_orientation": 3
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": 3
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": 4
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": 3
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-05",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "OPTIONAL",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "OPTIONAL"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": null,
+    "argument_reconstruction": 4,
+    "interpretive_plurality": 3,
+    "historical_discipline": 4,
+    "literature_orientation": null
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": null,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": null,
+      "argument_reconstruction": 3,
+      "interpretive_plurality": 2,
+      "historical_discipline": 3,
+      "literature_orientation": null
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": null,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-06",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "OPTIONAL",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "OPTIONAL"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 4,
+    "argument_reconstruction": 4,
+    "interpretive_plurality": null,
+    "historical_discipline": 4,
+    "literature_orientation": null
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-07",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "OPTIONAL",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 4,
+    "argument_reconstruction": 4,
+    "interpretive_plurality": null,
+    "historical_discipline": 4,
+    "literature_orientation": 4
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 4,
+      "literature_orientation": 4
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 4,
+      "literature_orientation": 4
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": null,
+      "historical_discipline": 4,
+      "literature_orientation": 4
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-08",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "REQUIRED",
+    "INTERPRETIVE_PLURALITY": "OPTIONAL",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "OPTIONAL"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 4,
+    "argument_reconstruction": 4,
+    "interpretive_plurality": 3,
+    "historical_discipline": 4,
+    "literature_orientation": null
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": null
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-09",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "REQUIRED",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 4,
+    "argument_reconstruction": 4,
+    "interpretive_plurality": 4,
+    "historical_discipline": 4,
+    "literature_orientation": 3
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 3,
+      "historical_discipline": 4,
+      "literature_orientation": 3
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 4,
+      "interpretive_plurality": 4,
+      "historical_discipline": 4,
+      "literature_orientation": 3
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 4,
+      "argument_reconstruction": 3,
+      "interpretive_plurality": 4,
+      "historical_discipline": 4,
+      "literature_orientation": 2
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-11",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "OPTIONAL",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "fatal": [
+    "FABRICATED_SCHOLAR_ATTRIBUTION"
+   ],
+   "fatal_vote_counts": {
+    "FABRICATED_SCHOLAR_ATTRIBUTION": 1
+   },
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": null,
+    "argument_reconstruction": null,
+    "interpretive_plurality": 0,
+    "historical_discipline": 0,
+    "literature_orientation": 0
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": null,
+      "argument_reconstruction": null,
+      "interpretive_plurality": 0,
+      "historical_discipline": 0,
+      "literature_orientation": 0
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": null,
+      "argument_reconstruction": null,
+      "interpretive_plurality": 0,
+      "historical_discipline": 0,
+      "literature_orientation": 0
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": null,
+      "argument_reconstruction": null,
+      "interpretive_plurality": 0,
+      "historical_discipline": 0,
+      "literature_orientation": 0
+     }
+    }
+   ]
+  },
+  {
+   "case_id": "V8-12",
+   "applicability": {
+    "TEXTUAL_GROUNDING": "OPTIONAL",
+    "ARGUMENT_RECONSTRUCTION": "OPTIONAL",
+    "INTERPRETIVE_PLURALITY": "REQUIRED",
+    "HISTORICAL_DISCIPLINE": "REQUIRED",
+    "LITERATURE_ORIENTATION": "REQUIRED"
+   },
+   "fatal": [],
+   "fatal_vote_counts": {},
+   "required_missing": [],
+   "medians": {
+    "textual_grounding": 1,
+    "argument_reconstruction": 1,
+    "interpretive_plurality": 1,
+    "historical_discipline": 0,
+    "literature_orientation": 0
+   },
+   "per_vote_scores": [
+    {
+     "vote_index": 0,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 1,
+      "argument_reconstruction": 2,
+      "interpretive_plurality": 1,
+      "historical_discipline": 0,
+      "literature_orientation": 0
+     }
+    },
+    {
+     "vote_index": 1,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 1,
+      "argument_reconstruction": 1,
+      "interpretive_plurality": 0,
+      "historical_discipline": 0,
+      "literature_orientation": 0
+     }
+    },
+    {
+     "vote_index": 2,
+     "valid": true,
+     "scores": {
+      "textual_grounding": 2,
+      "argument_reconstruction": 1,
+      "interpretive_plurality": 1,
+      "historical_discipline": 0,
+      "literature_orientation": 0
+     }
+    }
+   ]
+  }
+ ],
+ "leave_one_out": {
+  "all": {
+   "required_means": {
+    "argument_reconstruction": 4.0,
+    "historical_discipline": 3.1,
+    "textual_grounding": 3.75,
+    "interpretive_plurality": 1.75,
+    "literature_orientation": 2.167
+   },
+   "applicable_mean": 3.044
+  },
+  "excl_V8-11": {
+   "required_means": {
+    "argument_reconstruction": 4.0,
+    "historical_discipline": 3.444,
+    "textual_grounding": 3.75,
+    "interpretive_plurality": 2.333,
+    "literature_orientation": 2.6
+   },
+   "applicable_mean": 3.262
+  },
+  "excl_V8-12": {
+   "required_means": {
+    "argument_reconstruction": 4.0,
+    "historical_discipline": 3.444,
+    "textual_grounding": 3.75,
+    "interpretive_plurality": 2.0,
+    "literature_orientation": 2.6
+   },
+   "applicable_mean": 3.35
+  },
+  "excl_both": {
+   "required_means": {
+    "argument_reconstruction": 4.0,
+    "historical_discipline": 3.875,
+    "textual_grounding": 3.75,
+    "interpretive_plurality": 3.0,
+    "literature_orientation": 3.25
+   },
+   "applicable_mean": 3.622
+  }
+ },
+ "thresholds": {
+  "APPLICABLE_DIMENSION_MEAN_MIN": 3.2,
+  "TEXTUAL_GROUNDING": 3.4,
+  "ARGUMENT_RECONSTRUCTION": 3.2,
+  "INTERPRETIVE_PLURALITY": 3.0,
+  "HISTORICAL_DISCIPLINE": 3.4,
+  "LITERATURE_ORIENTATION": 3.2
+ },
+ "required_median_lt2": {
+  "interpretive_plurality": [
+   "V8-11",
+   "V8-12"
+  ],
+  "historical_discipline": [
+   "V8-11",
+   "V8-12"
+  ],
+  "literature_orientation": [
+   "V8-11",
+   "V8-12"
+  ]
+ },
+ "DIMENSION_FAILURE_CONCENTRATION": "CONCENTRATED",
+ "concentration_note": "排除 V8-11+V8-12 后全部 required 维达标（arg=4.0≥3.2, textual=3.75≥3.4, interp=3.0≥3.0, hist=3.875≥3.4, lit=3.25≥3.2）且 applicable_mean=3.622≥3.20; REQUIRED median<2 的 6 个分布全部落在 V8-11/V8-12 两案例 → 失败集中于两个 独立可解释的异常案例, 非全维度/全案例的学术能力退化（9/11 正常案例各维 3-4 分）。",
+ "v8_10_persistence": {
+  "case_id": "V8-10",
+  "four_fingerprints": {
+   "622052df126a9671": [
+    {
+     "round": 0,
+     "code": "UNVERIFIED_CITATION",
+     "locator_head": "中国哲学辞典 理气论",
+     "evidence_ref": "ev_51"
+    },
+    {
+     "round": 1,
+     "code": "UNVERIFIED_CITATION",
+     "locator_head": "中国哲学辞典 理气论",
+     "evidence_ref": "ev_51"
+    },
+    {
+     "round": 2,
+     "code": "UNVERIFIED_CITATION",
+     "locator_head": "中国哲学辞典 理气论",
+     "evidence_ref": "ev_51"
+    }
+   ],
+   "63a591d7ecbba159": [
+    {
+     "round": 0,
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator_head": "盖气则能凝结造作 理却无情意 无计度 无造作 若理则只是个净洁空阔的世界 无形迹 他却不会造作 气则能酝酿凝聚生物",
+     "evidence_ref": "qb_read_17"
+    },
+    {
+     "round": 1,
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator_head": "盖气则能凝结造作 理却无情意 无计度 无造作 若理则只是个净洁空阔的世界 无形迹 他却不会造作 气则能酝酿凝聚生物",
+     "evidence_ref": "qb_read_17"
+    },
+    {
+     "round": 2,
+     "code": "NEAR_QUOTE_NOT_MARKED",
+     "locator_head": "盖气则能凝结造作 理却无情意 无计度 无造作 若理则只是个净洁空阔的世界 无形迹 他却不会造作 气则能酝酿凝聚生物",
+     "evidence_ref": "qb_read_17"
+    }
+   ],
+   "bf9f2015f3792e3f": [
+    {
+     "round": 0,
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator_head": "阳动阴静 非太极动静 只是理有动静 理不可见 因阴阳而后知 理搭在阴阳上 如人跨马相似 中国哲学简史 第二十五",
+     "evidence_ref": null
+    },
+    {
+     "round": 1,
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator_head": "阳动阴静 非太极动静 只是理有动静 理不可见 因阴阳而后知 理搭在阴阳上 如人跨马相似 中国哲学简史 第二十五",
+     "evidence_ref": null
+    },
+    {
+     "round": 2,
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator_head": "阳动阴静 非太极动静 只是理有动静 理不可见 因阴阳而后知 理搭在阴阳上 如人跨马相似 中国哲学简史 第二十五",
+     "evidence_ref": null
+    }
+   ],
+   "89379821bbd2dded": [
+    {
+     "round": 0,
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator_head": "以下内容我依据对朝鲜性理学史的专业了解转述 本库无对应原典可供逐字核验 其中的命题表述是学界通行用语 具体",
+     "evidence_ref": null
+    },
+    {
+     "round": 1,
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator_head": "以下内容我依据对朝鲜性理学史的专业了解转述 本库无对应原典可供逐字核验 其中的命题表述是学界通行用语 具体",
+     "evidence_ref": null
+    },
+    {
+     "round": 2,
+     "code": "UNSUPPORTED_EXACT_QUOTE",
+     "locator_head": "以下内容我依据对朝鲜性理学史的专业了解转述 本库无对应原典可供逐字核验 其中的命题表述是学界通行用语 具体",
+     "evidence_ref": null
+    }
+   ]
+  },
+  "identical_persisted_rounds": [
+   0,
+   1,
+   2
+  ],
+  "candidate_sha256_per_round": [
+   "b678fc7596fcb0e8eb9e4f68834ccc207766236a653addde9c5c78c177a7694e",
+   "b678fc7596fcb0e8eb9e4f68834ccc207766236a653addde9c5c78c177a7694e",
+   "b678fc7596fcb0e8eb9e4f68834ccc207766236a653addde9c5c78c177a7694e"
+  ],
+  "candidate_byte_identical_across_repairs": true,
+  "repair_prompt_coverage_note": "4 个 issue 在每轮修复反馈中均被点名（issue_codes 逐轮相同）",
+  "ROOT_CAUSE": "MODEL_NONCOMPLIANCE（主因）+ SOURCE_GAP（次因）",
+  "classification_note": "两次 repair 返回的候选与初始候选 sha256 逐字节相同（零改动）→ 模型未执行任何针对性修改, 4 指纹必然全程 PERSISTED。这不是 validator locator 问题（指纹一致恰说明文本未变）, 也不是 repair context 不足（issue 逐轮点名+evidence packet 提供了 qb_read_17 上下文）。次因 SOURCE_GAP: 案例要求的朝鲜朝四七之辩文献不在库中, 第 4 条 issue 的 locator 本身即模型自述『本库无对应原典可供逐字核验』; 模型面对无法核验的内容选择了原样保留而非改写/删除。"
+ },
+ "judge_harness_audit": {
+  "audited_file": "backend/tools/evaluation/o7e_bakeoff_judge2.py",
+  "diff_e0818327": "judge_candidate 增加 additive 参数 manifest_path=None; 默认 manifest 路径不变",
+  "diff_254ee0ec": "manifest 载入增加 {meta,cases:[...]} 包装 unwrap（与 o7e_production_calibration 同款）",
+  "MANIFEST_IO_CHANGED": true,
+  "SCORING_PROMPT_CHANGED": false,
+  "RUBRIC_CHANGED": false,
+  "THRESHOLDS_CHANGED": false,
+  "VOTE_SEMANTICS_CHANGED": false,
+  "code_states": {
+   "production_run": "QUALIFICATION_HEAD e0818327e（production 文件相对 BASE 33243d0d 零 diff）",
+   "judge_run": "unwrap 修复后的 glue 状态（O7A 合同函数零改动; 两 diff 均仅 manifest I/O）",
+   "final_gate": "同上; checker=o7e_final_gate.check_final_gate 零改动调用（blob 22ea181c…）"
+  },
+  "O7A_JUDGE_CONTRACT_UNCHANGED": true,
+  "SCORING_RUBRIC_UNCHANGED": true,
+  "SCORING_THRESHOLDS_UNCHANGED": true,
+  "VOTING_SEMANTICS_UNCHANGED": true,
+  "HARNESS_PROCEDURAL_DEVIATION": true,
+  "V8_MEASUREMENT_VALID": true,
+  "procedural_note": "Builder 已在 V8 receipt 中如实披露 glue 变更; 程序性瑕疵在于 unwrap 修复落在 evidence commit 而非 QUALIFICATION_HEAD, 已由 Reviewer 独立发现并确认不影响评分语义。"
+ },
+ "PRODUCTION_CHANGED": false,
+ "production_changed_files": [],
+ "FAILED_GATE_ROOT_CAUSE_MAP": {
+  "APPLICABLE_DIMENSION_MEAN": "CONCENTRATED——全部由 V8-11（模型 0 检索发布记忆归因前言）与 V8-12（corpus+retrieval 缺口）拉低; excl_both=3.622 达标",
+  "HISTORICAL_DISCIPLINE": "CONCENTRATED——required mean 3.1 全由 V8-11(0)/V8-12(0) 拉低; excl_both=3.875 达标",
+  "INTERPRETIVE_PLURALITY": "CONCENTRATED——1.75 由两案例 0-1 分拉低; excl_both=3.0 达标",
+  "LITERATURE_ORIENTATION": "CONCENTRATED——2.167 由两案例 0 分拉低; excl_both=3.25 达标",
+  "REQUIRED_DIMENSION_MEDIAN_LT_2": "CONCENTRATED——6 个 <2 分布全部在 V8-11/V8-12",
+  "FABRICATED_SCHOLAR_ATTRIBUTION": "UNSUPPORTED_MODEL_ATTRIBUTION——V8-11 零检索发布记忆归因; judge 判定属实"
+ }
+}
