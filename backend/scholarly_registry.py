@@ -111,14 +111,16 @@ def _record_haystack(rec):
     return " ".join(parts).lower().replace("'", "").replace("’", "")
 
 
-def search_local(query, limit=8):
+def search_local(query, limit=8, strict_only=False):
     """本地 FTS5 检索（BM25）→ canonical record 视图（复用 O7-C identity）。
 
     V5-F2 §B: FTS OR 只做召回, 结果按通用相关性重排——多词覆盖率优先
     （≤3 词要求全词命中, >3 词要求 ≥60%）, bm25 仅作 tie-break。
     纯 OR/BM25 的单词碰撞（如 "moral luck" 命中任何含 moral 的记录）会把
     离题记录顶进 top-k, 使 LOCATE 结果失去文献判断价值。覆盖率排序无任何
-    主题/查词特判; 全零覆盖时兜底退回 OR 排序, 不因收紧而静默空手。"""
+    主题/查词特判; 全零覆盖时兜底退回 OR 排序, 不因收紧而静默空手。
+    V9-F5 §1: strict_only=True 时仅返回达到 coverage threshold 的候选
+    （scholarly production path 使用; 非 scholarly consumer 默认 False 不变）。"""
     load_registry()
     if not os.path.exists(INDEX):
         build_index()
@@ -150,7 +152,8 @@ def search_local(query, limit=8):
     need = 1.0 if len(tl) <= 2 else 0.6
     strict = [c for c in cand if c["_term_coverage"] + 1e-9 >= need]
     (strict or cand).sort(key=lambda c: (-c["_term_coverage"], c["_bm25"]))
-    return (strict or cand)[:limit]
+    result = (strict if strict_only and strict else (strict or cand))[:limit]
+    return result
 
 
 def stats():
