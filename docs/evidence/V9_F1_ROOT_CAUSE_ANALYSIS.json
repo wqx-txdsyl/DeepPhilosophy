@@ -1,0 +1,98 @@
+{
+ "V9_F1_ROOT_CAUSE_ANALYSIS": true,
+ "R2_BASE": "bbfc4a50e64342c565c01e2e9ea77fb4e7433cc0",
+ "analysis_only": true,
+ "V9_RERUN": false,
+ "V9_JUDGE_RERUN": false,
+ "A_judge_observability": {
+  "implemented": true,
+  "module": "backend/tools/evaluation/o7e_bakeoff_judge2.py",
+  "taxonomy": [
+   "HTTP_ERROR",
+   "TIMEOUT",
+   "API_RESPONSE_PARSE_ERROR",
+   "EMPTY_CONTENT",
+   "CONTENT_JSON_PARSE_ERROR",
+   "VERDICT_SCHEMA_INVALID",
+   "UNKNOWN"
+  ],
+  "per_attempt_facts": [
+   "case_id",
+   "vote_index",
+   "attempt_index",
+   "failure_class",
+   "exception_class",
+   "http_status",
+   "finish_reason",
+   "response_chars",
+   "response_sha256",
+   "content_prefix(<=300 chars)"
+  ],
+  "secrets": "API key/header 永不入档",
+  "semantics_unchanged": "model/temperature/prompt/rubric/阈值/3-vote/3-attempt 重试结构零改动",
+  "tests": "backend/tests/test_o9f1_judge_taxonomy.py 7 场景（429/timeout/外层JSON坏/content JSON坏/空content/schema无效/有效verdict）全过"
+ },
+ "B_historical_judge_rca": {
+  "V9_JUDGE_FAILURE_ROOT_CAUSE": "NOT_RECOVERABLE",
+  "HISTORICAL_CAUSE_PROVEN": false,
+  "basis": "R1 之前的 judge driver 以 except Exception 吞掉全部异常且未存档 exception class/http status/finish reason/response 内容——votes_archive 仅有 reason=vote_unparseable 字符串; 历史异常细节不可恢复, 禁止从 18 连续失败猜 provider 原因",
+  "observable_facts_from_archive": {
+   "V9-08": "1 valid vote + 2 vote_unparseable（失败始于 V9-08, 非突始于 V9-09）",
+   "V9-09_to_14": "3/3 票 vote_unparseable × 6 案例"
+  }
+ },
+ "C_v9_11_repair_rca": {
+  "V9_11_NEW_FINGERPRINT_CONFIRMED": true,
+  "new_fingerprint": "c030000f0b83c4df",
+  "new_issue": {
+   "code": "UNSUPPORTED_EXACT_QUOTE",
+   "locator_head": "马基雅维利语录 中收录的 论李维 大意是说 建立共和体制者应把确保公民自由的制度放在首位考虑"
+  },
+  "V9_11_RAW_ATTEMPT_CHAIN_RECOVERED": true,
+  "chain": {
+   "attempt_0": {
+    "sha": "4a2cb24e3f99",
+    "chars": 4086,
+    "issues": 9,
+    "codes": "6×UNVERIFIED_CITATION + 2×UNSUPPORTED_EXACT_QUOTE + 1×NEAR_QUOTE_NOT_MARKED"
+   },
+   "repair_1": {
+    "mode": "LOCAL_PATCH",
+    "sha_after": "af5329a6b4f5",
+    "chars": 3960,
+    "effect": "9 issue 中 8 个消失（6 引用+1 学者列举逐字引文+1 近似引文）; 同时新引入 c030000f UNSUPPORTED_EXACT_QUOTE"
+   },
+   "attempt_1": {
+    "sha": "af5329a6b4f5",
+    "issues": 1,
+    "new_fingerprint": "c030000f0b83c4df"
+   },
+   "repair_2": {
+    "mode": "LOCAL_PATCH",
+    "sha_after": "8c455ef91b24",
+    "chars": 3895,
+    "effect": "c030000f 被清除"
+   },
+   "attempt_2": {
+    "sha": "8c455ef91b24",
+    "issues": 0,
+    "ok": true
+   }
+  },
+  "mechanical_facts": {
+   "REPAIR_OUTPUT_MODES": [
+    "LOCAL_PATCH",
+    "LOCAL_PATCH"
+   ],
+   "PARAPHRASE_INTRODUCED_QUOTE_ISSUES_RUN_TOTAL": 1,
+   "round0_near_quote": "ae3604d7c6bc2458 NEAR_QUOTE_NOT_MARKED（建立共和体制…斯巴达和现代的威尼斯…）",
+   "round1_new_quote": "c030000f0b83c4df UNSUPPORTED_EXACT_QUOTE（马基雅维利语录 中收录的 论李维…）",
+   "round0_near_quote_resolved_in_round1": true
+  },
+  "V9_11_EXACT_ROOT_CAUSE": "LOCAL_PATCH_PARAPHRASE_INTRODUCTION",
+  "V9_11_VALIDATOR_FALSE_NEW": false,
+  "reasoning": "两次 repair 均为 LOCAL_PATCH（supported）。round0 的 NEAR_QUOTE（斯巴达/威尼斯共和制度段）被 PARAPHRASE_CLAIM patch 处理后消失, 但替换正文以「马基雅维利语录中收录的《论李维》大意是说…」的逐字引文形式写入新句子 → 产生新的 UNSUPPORTED_EXACT_QUOTE 指纹。分类依据: (a) mode=LOCAL_PATCH + run 级 PARAPHRASE_INTRODUCED_QUOTE_ISSUES=1 且全 run 唯一, 机械对应 V9-11; (b) 新指纹内容与被改写段不同（公民自由 vs 斯巴达威尼斯制度）→ 分类器判 GENUINELY_NEW 正确, 非 VALIDATOR_FALSE_NEW; (c) patch apply 本身成功（文本确实改变）→ 非 PATCH_APPLICATION_BUG。注: patch JSON 原文未被 run record 持久化（有界遥测设计）, exact patch 文本不可恢复, 但 mode+issue 级机械链足以支撑分类。",
+  "answer_to_task_question": "为什么原 9 issue 大量消失时新 UNSUPPORTED_EXACT_QUOTE 首次出现: repair 1 的 LOCAL_PATCH PARAPHRASE_CLAIM 在改写近似引文段时, 模型把改写后的内容重新包装成对《论李维》的逐字引述（并新增「马基雅维利语录」出处标注）, 该新句子在库中无对应原文 → 新 UNSUPPORTED_EXACT_QUOTE; 随后 repair 2 再以 paraphrase 清除之。"
+ },
+ "D_evidence_label": "未来 final-gate artifact 顶层使用 FINAL_V9_VERDICT（V9_FINAL_GATE.json 的 FINAL_V8_VERDICT 顶层字段名 typo 已由 Reviewer 指出; 按纪律不改写已归档 V9 artifact, 本文件起使用正确命名）"
+}

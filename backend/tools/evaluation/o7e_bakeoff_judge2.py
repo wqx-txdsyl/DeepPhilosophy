@@ -5,11 +5,14 @@
 render_judge_prompt/validate_verdict/DIMENSIONS/FATAL_FLAGS）。
 O7-E 只固定 invocation（glm-4.6/temp0/disabled/json/k3）与 manifest applicability。
 """
+import hashlib
 import json
 import os
 import re
+import socket
 import sys
 import time
+import urllib.error
 import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -25,7 +28,29 @@ for line in open(os.path.join(ROOT, ".env"), encoding="utf-8"):
         _key = line.split("=", 1)[1].strip().strip('"').strip("'")
 
 
+class JudgeCallFailure(Exception):
+    """V9-F1 §1: judge 调用失败分类（机械 taxonomy, 零语义判断）。
+
+    failure_class 封闭集: HTTP_ERROR / TIMEOUT / API_RESPONSE_PARSE_ERROR /
+    EMPTY_CONTENT / CONTENT_JSON_PARSE_ERROR。"""
+    def __init__(self, failure_class, detail="", http_status=None,
+                 exception_class=None, response_chars=None, response_sha256=None,
+                 content_prefix=None, finish_reason=None):
+        super().__init__(f"{failure_class}: {detail}"[:300])
+        self.failure_class = failure_class
+        self.http_status = http_status
+        self.exception_class = exception_class
+        self.response_chars = response_chars
+        self.response_sha256 = response_sha256
+        self.content_prefix = content_prefix
+        self.finish_reason = finish_reason
+
+
 def _call(prompt):
+    """judge LLM 调用——语义零改动（model/temperature/prompt/解析合同不变）;
+    V9-F1 §1: 失败按封闭 taxonomy 抛 JudgeCallFailure, 携带可归档机械事实
+    （http_status/exception_class/response_chars/sha256/bounded prefix≤300;
+    禁止记录 API key/header）。"""
     payload = {"model": "glm-4.6", "temperature": 0, "max_tokens": 4000,
                "thinking": {"type": "disabled"},
                "response_format": {"type": "json_object"},
@@ -34,8 +59,64 @@ def _call(prompt):
     req = urllib.request.Request(O7A.JUDGE_BASE_URL,
         data=json.dumps(payload).encode(),
         headers={"Content-Type": "application/json", "Authorization": "Bearer " + (_key or "")})
-    with urllib.request.urlopen(req, timeout=240) as r:
-        return json.loads(r.read())["choices"][0]["message"]["content"] or ""
+    try:
+        with urllib.request.urlopen(req, timeout=240) as r:
+            raw = r.read()
+    except urllib.error.HTTPError as e:
+        raise JudgeCallFailure("HTTP_ERROR", f"http {e.code}",
+                               http_status=e.code,
+                               exception_class=type(e).__name__)
+    except (urllib.error.URLError, TimeoutError, socket.timeout) as e:
+        reason = getattr(e, "reason", e)
+        raise JudgeCallFailure("TIMEOUT" if isinstance(e, (TimeoutError, socket.timeout))
+                               else "TIMEOUT", str(reason)[:200],
+                               exception_class=type(e).__name__)
+    # 外层 API response JSON 解析
+    try:
+        outer = json.loads(raw)
+    except Exception as e:
+        raise JudgeCallFailure("API_RESPONSE_PARSE_ERROR", str(e)[:120],
+                               response_chars=len(raw),
+                               response_sha256=hashlib.sha256(raw).hexdigest(),
+                               exception_class=type(e).__name__)
+    try:
+        choice = outer["choices"][0]
+        finish_reason = (choice.get("finish_reason") or None) \
+            if isinstance(choice, dict) else None
+        content = choice["message"]["content"] or ""
+    except Exception as e:
+        raise JudgeCallFailure("API_RESPONSE_PARSE_ERROR", f"choices shape: {e}"[:120],
+                               response_chars=len(raw),
+                               response_sha256=hashlib.sha256(raw).hexdigest(),
+                               exception_class=type(e).__name__)
+    if not str(content).strip():
+        raise JudgeCallFailure("EMPTY_CONTENT", "empty message.content",
+                               response_chars=len(raw),
+                               response_sha256=hashlib.sha256(raw).hexdigest(),
+                               finish_reason=finish_reason)
+    return content, finish_reason
+
+
+def _parse_verdict(content, finish_reason=None):
+    """content → verdict dict; 失败抛 JudgeCallFailure（CONTENT_JSON_PARSE_ERROR）。"""
+    try:
+        verdict = json.loads(content)
+    except Exception as e:
+        prefix = str(content)[:300]
+        raise JudgeCallFailure(
+            "CONTENT_JSON_PARSE_ERROR", str(e)[:120],
+            response_chars=len(content),
+            response_sha256=hashlib.sha256(content.encode("utf-8")).hexdigest(),
+            finish_reason=finish_reason,
+            content_prefix=prefix)
+    if not isinstance(verdict, dict) or "dimensions" not in verdict:
+        raise JudgeCallFailure(
+            "VERDICT_SCHEMA_INVALID", "verdict missing dimensions",
+            response_chars=len(content),
+            response_sha256=hashlib.sha256(content.encode("utf-8")).hexdigest(),
+            finish_reason=finish_reason,
+            content_prefix=str(content)[:300])
+    return verdict
 
 
 def _materialize_read_chapters(r, max_chapters=None):
@@ -360,23 +441,62 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
             access_levels=access_levels,
             dimension_applicability=manifest_applic)
         prompt = O7A.render_judge_prompt(inp)
-        votes = []
+        votes, attempt_log = [], []
         for k in range(3):
+            content = None
+            fin = None
             for attempt in range(3):
                 try:
-                    votes.append(json.loads(_call(prompt)))
+                    content, fin = _call(prompt)
                     break
-                except Exception:
-                    time.sleep(2 * (attempt + 1))
-            else:
+                except JudgeCallFailure as jf:
+                    attempt_log.append({
+                        "case_id": cid, "vote_index": k,
+                        "attempt_index": attempt,
+                        "failure_class": jf.failure_class,
+                        "exception_class": jf.exception_class,
+                        "http_status": jf.http_status,
+                        "finish_reason": jf.finish_reason,
+                        "response_chars": jf.response_chars,
+                        "response_sha256": jf.response_sha256,
+                        "content_prefix": jf.content_prefix})
+                except Exception as e:   # 非预期异常兜底（不吞具体类型信息）
+                    attempt_log.append({
+                        "case_id": cid, "vote_index": k,
+                        "attempt_index": attempt,
+                        "failure_class": "UNKNOWN",
+                        "exception_class": type(e).__name__,
+                        "detail": str(e)[:200]})
+                time.sleep(2 * (attempt + 1))
+            if content is None:
+                votes.append(None)
+                if attempt_log:
+                    attempt_log[-1]["vote_final_failure_classes"] = \
+                        [a["failure_class"] for a in attempt_log
+                         if a.get("vote_index") == k]
+                continue
+            try:
+                votes.append(_parse_verdict(content, fin))
+            except JudgeCallFailure as jf:
+                attempt_log.append({
+                    "case_id": cid, "vote_index": k, "attempt_index": -1,
+                    "failure_class": jf.failure_class,
+                    "exception_class": jf.exception_class,
+                    "finish_reason": jf.finish_reason,
+                    "response_chars": jf.response_chars,
+                    "response_sha256": jf.response_sha256,
+                    "content_prefix": jf.content_prefix})
                 votes.append(None)
         # PF-RP3A §A: vote 级机械校验——applicability 必须等于 manifest 预注册;
         # REQUIRED 维必须给数值分, 否则该票 invalid（不静默采信 judge 自判）
         valid, mismatch_votes, votes_archive = [], 0, []
         for vi, v in enumerate(votes):
             if not v:
+                _cls = [a.get("failure_class") for a in attempt_log
+                        if a.get("vote_index") == vi and a.get("failure_class")]
                 votes_archive.append({"vote_index": vi, "valid": False,
-                                      "reason": "vote_unparseable"})
+                                      "reason": "vote_unparseable",
+                                      "failure_classes": _cls or ["UNKNOWN"]})
                 continue
             base_errs = O7A.validate_verdict(v)
             vdims = v.get("dimensions", {}) or {}
@@ -493,7 +613,13 @@ def judge_candidate(mid, runs_path=None, out_tag=None, manifest_path=None):
     mat_failed_total = sum(len(j.get("replay_meta", {}).get("materialize_failed_keys") or [])
                            for j in judged if j.get("replay_meta"))
     evaluation_invalid = bool(missing_required) or missing > 0 or mat_failed_total > 0
+    failure_classes = {}
+    for j in judged:
+        for v in (j.get("votes_archive") or []):
+            for fc in (v.get("failure_classes") or []):
+                failure_classes[fc] = failure_classes.get(fc, 0) + 1
     out = {"candidate": mid, "judged": len(valid),
+           "judge_failure_classes": failure_classes,
            "JUDGE_CASES_EXPECTED": expected,
            "JUDGE_CASES_VALID": len(valid),
            "JUDGE_CASES_MISSING": max(missing, 0),
