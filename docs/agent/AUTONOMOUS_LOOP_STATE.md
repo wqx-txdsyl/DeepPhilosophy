@@ -10,7 +10,7 @@ BASE_SHA=232783e67f7c9ea37ad9ff0acfafc8c9cba54a11（V9 授权基线 = V8-F2-R3 A
 LATEST_CONTENT_SHA=967fde3e6831cfbb6a91849b99328d35cead9cd5（QUALIFICATION_HEAD, manifest+harness 冻结于 run 前）
 LATEST_ARCHIVE_SHA=(见 git log -1; V9 evidence 归档)
 LATEST_REMOTE_SHA=(= push 后 HEAD)
-NEXT_ACTION=V9-F2-R1 已交付（5 缺口修复: gate 异常 fail-closed/AMBIGUOUS 全量拒/admission 分离/layer-1 收紧/专项测试; 920/0 @ CONTENT_HEAD_R1）, READY_FOR_V9_F2_R1_REVIEW=true; R1 过审即 V9-F2 CLOSED → judge-only V9 scholarly measurement recovery
+NEXT_ACTION=V9-F2-R2 已交付（rejection_kind 分层/wrapper 边界/门异常 E2E; 924/0）, READY_FOR_V9_F2_R2_REVIEW=true; R2 过审即 V9-F2 CLOSED → judge-only V9 scholarly measurement recovery
 FROZEN_SCOPE=engine production behavior; scholarly_sources; primary corpus; Local Patch; validator; quote_bound; semantic classifier; judge rubric/thresholds/vote semantics; final gate; production model; V3-V8 历史
 LAST_REVIEW_TIMESTAMP=2026-09-11
 REVIEW_CHAT_IDENTIFIER=chatgpt.com/c/6aa3e455-ae50-83ee-a4af-359574391bb7 (「V7 F2 审查结论」)
