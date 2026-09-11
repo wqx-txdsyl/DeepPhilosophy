@@ -11,73 +11,88 @@
   "ARGUMENT_RECONSTRUCTION_REQUIRED_MEAN": 3.182,
   "ARGUMENT_RECONSTRUCTION_THRESHOLD": 3.2,
   "ARGUMENT_RECONSTRUCTION_GATE": "FAIL",
-  "five_required_dimension_means": {
-   "TEXTUAL_GROUNDING_REQUIRED_MEAN": 3.0,
-   "THRESHOLD": 3.2,
-   "GATE": "FAIL",
-   "ARGUMENT_RECONSTRUCTION_REQUIRED_MEAN": 3.182,
-   "INTERPRETIVE_PLURALITY_REQUIRED_MEAN": 2.125,
-   "HISTORICAL_DISCIPLINE_REQUIRED_MEAN": 2.929,
-   "LITERATURE_ORIENTATION_REQUIRED_MEAN": 2.75
+  "required_dimension_mean_gates": {
+   "TEXTUAL_GROUNDING": {
+    "mean": 3.0,
+    "threshold": 3.4,
+    "gate": "FAIL"
+   },
+   "ARGUMENT_RECONSTRUCTION": {
+    "mean": 3.182,
+    "threshold": 3.2,
+    "gate": "FAIL"
+   },
+   "INTERPRETIVE_PLURALITY": {
+    "mean": 2.125,
+    "threshold": 3.0,
+    "gate": "FAIL"
+   },
+   "HISTORICAL_DISCIPLINE": {
+    "mean": 2.929,
+    "threshold": 3.4,
+    "gate": "FAIL"
+   },
+   "LITERATURE_ORIENTATION": {
+    "mean": 2.75,
+    "threshold": 3.2,
+    "gate": "FAIL"
+   }
   },
   "ALL_FIVE_REQUIRED_MEAN_GATES_FAIL": true
  },
  "C_median_lt2_definition": {
   "REQUIRED_DIMENSION_MEDIAN_LT_2": 9,
   "DEFINITION": "count of published-case × manifest-REQUIRED-dimension cells whose 3-vote median score is < 2（case×dimension 单元计数, 非维度计数）",
-  "units": [
+  "MEDIAN_LT2_BAD_HANDWRITTEN_UNITS_REMOVED": true,
+  "units_mechanically_regenerated_from_frozen_artifacts": [
    {
-    "case": "V9-03",
-    "dims_lt2": [
-     "interpretive_plurality"
-    ]
+    "case_id": "V9-04",
+    "dimension": "interpretive_plurality",
+    "median": 1
    },
    {
-    "case": "V9-09",
-    "dims_lt2": []
+    "case_id": "V9-07",
+    "dimension": "interpretive_plurality",
+    "median": 1
    },
    {
-    "case": "V9-10",
-    "dims_lt2": [
-     "interpretive_plurality",
-     "historical_discipline",
-     "literature_orientation"
-    ]
+    "case_id": "V9-07",
+    "dimension": "historical_discipline",
+    "median": 1
    },
    {
-    "case": "V9-11",
-    "dims_lt2": [
-     "interpretive_plurality",
-     "historical_discipline",
-     "literature_orientation"
-    ]
+    "case_id": "V9-07",
+    "dimension": "literature_orientation",
+    "median": 0
    },
    {
-    "case": "V9-12",
-    "dims_lt2": [
-     "interpretive_plurality",
-     "historical_discipline",
-     "literature_orientation"
-    ]
+    "case_id": "V9-08",
+    "dimension": "textual_grounding",
+    "median": 0
    },
    {
-    "case": "V9-13",
-    "dims_lt2": [
-     "interpretive_plurality",
-     "historical_discipline",
-     "literature_orientation"
-    ]
+    "case_id": "V9-12",
+    "dimension": "argument_reconstruction",
+    "median": 0
    },
    {
-    "case": "V9-14",
-    "dims_lt2": [
-     "interpretive_plurality",
-     "historical_discipline",
-     "literature_orientation"
-    ]
+    "case_id": "V9-12",
+    "dimension": "interpretive_plurality",
+    "median": 0
+   },
+   {
+    "case_id": "V9-12",
+    "dimension": "historical_discipline",
+    "median": 0
+   },
+   {
+    "case_id": "V9-12",
+    "dimension": "literature_orientation",
+    "median": 0
    }
   ],
-  "note": "9 = interp(2)+hist(2)+lit(2) 等 case×dim 单元合计; 非维度计数"
+  "unit_sum": 9,
+  "note": "units 由冻结 V9_F3_RECOVERY_JUDGE.json + V9 manifest applicability 机械重算; sum == 9 == canonical REQUIRED_DIMENSION_MEDIAN_LT_2"
  },
  "D_preserved_valid_measurement": {
   "SCHOLARLY_RECOVERY_VALID": true,
