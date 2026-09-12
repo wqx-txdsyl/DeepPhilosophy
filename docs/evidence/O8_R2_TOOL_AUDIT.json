@@ -1,0 +1,1620 @@
+{
+ "O8_R2_TOOL_AUDIT": true,
+ "TOOL_COUNT": 32,
+ "mechanical": [
+  {
+   "tool": "advisor_council",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "council",
+     "reasoning_authority",
+     "presentation_hint"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "agent_council",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "council",
+     "note"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "analyze_argument",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "argument",
+     "reasoning_authority",
+     "presentation_hint"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "compare_views",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "shared_problem",
+     "comparison_axes",
+     "side_a_claims",
+     "side_b_claims",
+     "strongest_divergence",
+     "evidence_needs",
+     "candidate_consequences",
+     "side",
+     "side_a"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "concept_trace",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "FAIL",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "PASS",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "FAIL_NO_SOURCE_MARKS",
+    "CITATION": "WEAK",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "concept",
+     "hits",
+     "timeline",
+     "note"
+    ],
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "conceptual_map",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "map_type",
+     "directionality",
+     "graph",
+     "mermaid",
+     "map_text",
+     "format",
+     "mermaid_validation",
+     "source",
+     "constraints_applied"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "confrontation",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "PASS",
+    "CITATION": "PASS",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "stance_a",
+     "stance_b",
+     "exchanges",
+     "referee_note",
+     "citations",
+     "evidence",
+     "side_a",
+     "side_b",
+     "reasoning_authority"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "dialectic",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "movement",
+     "fields_used",
+     "constraints",
+     "template_labels_removed",
+     "reasoning_authority",
+     "presentation_hint"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "essay_outline",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "outline",
+     "note"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "generate_image",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "N/A",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "image_url",
+     "prompt",
+     "size",
+     "bytes",
+     "reference",
+     "note"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "get_book_detail",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "PASS",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "id",
+     "title",
+     "author",
+     "region",
+     "file_type",
+     "summary",
+     "rank",
+     "chapterCount",
+     "toc"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "get_chapter",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "PASS",
+    "CITATION": "PASS",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "book_id",
+     "chapter_idx",
+     "title",
+     "book_title",
+     "citation_label",
+     "text"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "get_philosopher",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "PASS",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "FAIL",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "name",
+     "period",
+     "century",
+     "school",
+     "region",
+     "works",
+     "bio"
+    ],
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "get_scholarly_source",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "N/A",
+    "FAILURE_PATH": "PASS",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "source_record_id",
+     "bibliographic_record",
+     "access_level_before",
+     "access_level_after",
+     "returned_evidence_level",
+     "full_text_status",
+     "source_url",
+     "content_hash",
+     "access_notes",
+     "note"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "get_school",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "PASS",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "FAIL",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "name",
+     "region",
+     "quote",
+     "quoteAuthor",
+     "subtitle",
+     "overview",
+     "thinkers",
+     "timeline"
+    ],
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "history_timeline",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "FAIL",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "timeline"
+    ],
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "life_coach",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "N/A",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "coach"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "list_books",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "FAIL",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "books",
+     "total"
+    ],
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "paper_review",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "review",
+     "reasoning_authority",
+     "presentation_hint"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "philosopher_debate",
+   "checks": {
+    "VALID_INPUT": "FAIL",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "N/A",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_error": "'list' object has no attribute 'replace'",
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "phti_test",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "N/A",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "questions",
+     "instruction"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "profile",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "N/A",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "profile_text"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "query_database",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "PASS",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "PASS",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "results",
+     "total",
+     "table"
+    ],
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "query_graph",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "PASS",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "FAIL",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "philosopher",
+     "region",
+     "rank",
+     "relations"
+    ],
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "role_play",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "role",
+     "instruction",
+     "identity",
+     "values",
+     "reasoning_rules",
+     "output_constraints",
+     "emotion_baseline",
+     "style",
+     "concept_anchors",
+     "period",
+     "contradiction_rules",
+     "memories"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "school_arena",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "arena",
+     "note"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "search_books",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "FAIL",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "FAIL",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "PASS",
+    "CITATION": "PASS",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "results",
+     "query",
+     "method"
+    ],
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "search_scholarship",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "PASS",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "PASS",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "query",
+     "results",
+     "READABLE_RESULT_COUNT",
+     "READABLE_SOURCE_IDS",
+     "providers_queried",
+     "provider_errors",
+     "note"
+    ],
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "socratic_tutor",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "diagnosed_assumption",
+     "next_question",
+     "question_purpose",
+     "state_update",
+     "reasoning_authority",
+     "presentation_hint"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "thought_experiment",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "kind",
+     "summary",
+     "confidence",
+     "setting",
+     "stance_projections",
+     "reasoning_authority",
+     "presentation_hint"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "websearch",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "PASS",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "PASS",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "N/A",
+    "CITATION": "N/A",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "results",
+     "query",
+     "note"
+    ],
+    "provenance_na_reason": "脚手架/生成类工具, 输出非外部事实主张",
+    "citation_na_reason": "工具输出本身不是引文/不返回外部出处",
+    "security_probes": 2
+   }
+  },
+  {
+   "tool": "write_essay",
+   "checks": {
+    "VALID_INPUT": "PASS",
+    "INVALID_INPUT": "PASS",
+    "EMPTY_RESULT": "N/A",
+    "BOUNDARY": "PASS",
+    "FAILURE_PATH": "N/A",
+    "SCHEMA": "PASS",
+    "PROVENANCE": "PASS",
+    "CITATION": "PASS",
+    "SECURITY": "PASS"
+   },
+   "notes": {
+    "valid_result_keys": [
+     "essay",
+     "citations",
+     "steps"
+    ],
+    "empty_na_reason": "生成型/无『空结果』语义",
+    "failure_na_reason": "本地纯函数无外部资源失败路径",
+    "security_probes": 2
+   }
+  }
+ ],
+ "mechanical_summary": {
+  "VALID_INPUT": {
+   "PASS": 31,
+   "FAIL": 1
+  },
+  "INVALID_INPUT": {
+   "PASS": 32
+  },
+  "EMPTY_RESULT": {
+   "N/A": 22,
+   "FAIL": 4,
+   "PASS": 6
+  },
+  "BOUNDARY": {
+   "PASS": 27,
+   "N/A": 5
+  },
+  "FAILURE_PATH": {
+   "N/A": 22,
+   "PASS": 6,
+   "FAIL": 4
+  },
+  "SCHEMA": {
+   "PASS": 31,
+   "N/A": 1
+  },
+  "PROVENANCE": {
+   "N/A": 27,
+   "FAIL_NO_SOURCE_MARKS": 1,
+   "PASS": 4
+  },
+  "CITATION": {
+   "N/A": 27,
+   "WEAK": 1,
+   "PASS": 4
+  },
+  "SECURITY": {
+   "PASS": 32
+  }
+ },
+ "agentic": [
+  {
+   "case_id": "AG-search_books-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "search_books",
+   "trajectory": [
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "list_books",
+    "get_book_detail",
+    "get_chapter",
+    "search_scholarship",
+    "search_scholarship",
+    "websearch"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-get_book_detail-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "get_book_detail",
+   "trajectory": [
+    "get_book_detail"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-get_chapter-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "get_chapter",
+   "trajectory": [
+    "search_books",
+    "get_book_detail",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-query_graph-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "query_graph",
+   "trajectory": [
+    "get_philosopher",
+    "query_graph",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-get_philosopher-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "get_philosopher",
+   "trajectory": [
+    "get_philosopher",
+    "search_books",
+    "list_books",
+    "query_graph",
+    "get_book_detail",
+    "get_chapter",
+    "get_chapter",
+    "get_chapter",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-list_books-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "list_books",
+   "trajectory": [
+    "list_books",
+    "query_database",
+    "list_books",
+    "query_database",
+    "list_books",
+    "list_books",
+    "list_books",
+    "list_books",
+    "query_database",
+    "list_books",
+    "list_books",
+    "list_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-write_essay-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "write_essay",
+   "trajectory": [
+    "write_essay",
+    "get_chapter",
+    "get_chapter",
+    "search_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-generate_image-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "generate_image",
+   "trajectory": [
+    "generate_image",
+    "search_books",
+    "search_books",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-get_school-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "get_school",
+   "trajectory": [
+    "get_school",
+    "search_books",
+    "search_books",
+    "list_books",
+    "get_book_detail",
+    "get_book_detail",
+    "get_book_detail",
+    "get_book_detail",
+    "get_chapter",
+    "get_chapter",
+    "get_chapter",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-phti_test-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "phti_test",
+   "trajectory": [
+    "phti_test",
+    "phti_test"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-compare_views-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "compare_views",
+   "trajectory": [
+    "compare_views",
+    "search_books",
+    "search_books",
+    "search_books",
+    "list_books",
+    "list_books",
+    "search_books",
+    "search_books",
+    "get_book_detail",
+    "get_book_detail",
+    "get_chapter",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-socratic_tutor-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "socratic_tutor",
+   "trajectory": [
+    "socratic_tutor",
+    "search_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-philosopher_debate-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "philosopher_debate",
+   "trajectory": [
+    "search_books",
+    "search_books",
+    "get_book_detail",
+    "get_book_detail",
+    "get_chapter",
+    "get_chapter",
+    "philosopher_debate",
+    "search_scholarship",
+    "search_scholarship"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-thought_experiment-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "thought_experiment",
+   "trajectory": [
+    "thought_experiment",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "get_chapter",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "concept_trace",
+    "get_book_detail",
+    "get_chapter",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-advisor_council-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "advisor_council",
+   "trajectory": [
+    "advisor_council",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "search_books",
+    "get_book_detail",
+    "search_books",
+    "query_database"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-paper_review-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "paper_review",
+   "trajectory": [
+    "analyze_argument",
+    "search_books",
+    "search_books",
+    "search_scholarship",
+    "get_chapter",
+    "search_books",
+    "websearch",
+    "websearch",
+    "get_chapter",
+    "search_books"
+   ],
+   "judge_hit": false
+  },
+  {
+   "case_id": "AG-analyze_argument-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "analyze_argument",
+   "trajectory": [
+    "analyze_argument",
+    "concept_trace",
+    "get_book_detail"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-concept_trace-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "concept_trace",
+   "trajectory": [
+    "concept_trace",
+    "concept_trace",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "list_books",
+    "list_books",
+    "list_books",
+    "list_books",
+    "search_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-conceptual_map-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "conceptual_map",
+   "trajectory": [
+    "concept_trace",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "conceptual_map"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-websearch-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "websearch",
+   "trajectory": [
+    "websearch",
+    "get_school",
+    "websearch",
+    "search_books",
+    "search_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-query_database-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "query_database",
+   "trajectory": [
+    "list_books",
+    "query_database"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-role_play-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "role_play",
+   "trajectory": [
+    "role_play",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "get_book_detail",
+    "search_books",
+    "get_chapter",
+    "search_books",
+    "search_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-essay_outline-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "essay_outline",
+   "trajectory": [
+    "essay_outline",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "get_chapter",
+    "search_scholarship",
+    "search_scholarship"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-life_coach-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "life_coach",
+   "trajectory": [
+    "life_coach",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-dialectic-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "dialectic",
+   "trajectory": [
+    "dialectic",
+    "search_books",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_scholarship",
+    "search_books",
+    "search_books",
+    "search_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-history_timeline-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "history_timeline",
+   "trajectory": [
+    "history_timeline",
+    "get_school",
+    "search_books",
+    "get_philosopher",
+    "get_chapter",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "websearch",
+    "websearch",
+    "search_scholarship",
+    "search_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-confrontation-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "confrontation",
+   "trajectory": [
+    "confrontation",
+    "search_books",
+    "search_books",
+    "concept_trace",
+    "list_books",
+    "search_books",
+    "search_books",
+    "get_book_detail",
+    "get_book_detail",
+    "search_books",
+    "search_books",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-school_arena-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "school_arena",
+   "trajectory": [
+    "school_arena",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "list_books",
+    "list_books",
+    "get_chapter"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-agent_council-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "agent_council",
+   "trajectory": [
+    "agent_council",
+    "search_books",
+    "search_books",
+    "concept_trace",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "get_book_detail",
+    "search_books"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-search_scholarship-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "search_scholarship",
+   "trajectory": [
+    "search_scholarship",
+    "search_scholarship",
+    "search_scholarship",
+    "search_scholarship",
+    "get_scholarly_source",
+    "get_scholarly_source",
+    "search_scholarship",
+    "search_scholarship",
+    "search_scholarship",
+    "search_scholarship",
+    "search_scholarship",
+    "search_scholarship"
+   ],
+   "judge_hit": true
+  },
+  {
+   "case_id": "AG-get_scholarly_source-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "get_scholarly_source",
+   "trajectory": [
+    "search_scholarship",
+    "search_scholarship",
+    "websearch",
+    "websearch"
+   ],
+   "judge_hit": false
+  },
+  {
+   "case_id": "AG-SHARE-NOTCALL",
+   "scenario": "NOTCALL",
+   "tool": null,
+   "trajectory": [],
+   "judge_hit": null
+  },
+  {
+   "case_id": "AG-SHARE-MULTI1",
+   "scenario": "MULTI1",
+   "tool": null,
+   "trajectory": [
+    "search_books",
+    "search_books",
+    "get_philosopher",
+    "search_scholarship",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_scholarship",
+    "search_scholarship",
+    "get_book_detail",
+    "get_chapter",
+    "search_scholarship"
+   ],
+   "judge_hit": null
+  },
+  {
+   "case_id": "AG-SHARE-MULTI2",
+   "scenario": "MULTI2",
+   "tool": null,
+   "trajectory": [
+    "query_graph",
+    "get_philosopher",
+    "list_books",
+    "get_book_detail"
+   ],
+   "judge_hit": null
+  },
+  {
+   "case_id": "AG-SHARE-BADFIRST",
+   "scenario": "BADFIRST",
+   "tool": null,
+   "trajectory": [
+    "search_books",
+    "search_books",
+    "search_books",
+    "list_books",
+    "get_chapter",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "search_books",
+    "concept_trace",
+    "search_books"
+   ],
+   "judge_hit": null
+  },
+  {
+   "case_id": "AG-SHARE-DEGRADED",
+   "scenario": "DEGRADED",
+   "tool": null,
+   "trajectory": [
+    "search_books",
+    "search_books",
+    "search_books",
+    "list_books",
+    "query_database",
+    "search_books",
+    "search_books",
+    "websearch",
+    "websearch"
+   ],
+   "judge_hit": null
+  },
+  {
+   "case_id": "AG-SHARE-RECOVERY",
+   "scenario": "RECOVERY",
+   "tool": null,
+   "trajectory": [
+    "search_books",
+    "search_books",
+    "get_chapter"
+   ],
+   "judge_hit": null
+  },
+  {
+   "case_id": "AG-profile-SHOULDCALL",
+   "scenario": "SHOULD_CALL",
+   "tool": "profile",
+   "trajectory": [
+    "profile",
+    "get_school",
+    "list_books",
+    "list_books",
+    "list_books",
+    "list_books",
+    "list_books",
+    "list_books",
+    "search_books",
+    "search_books",
+    "get_chapter",
+    "get_book_detail"
+   ],
+   "judge_hit": true
+  }
+ ],
+ "should_call_hits": {
+  "search_books": true,
+  "get_book_detail": true,
+  "get_chapter": true,
+  "query_graph": true,
+  "get_philosopher": true,
+  "list_books": true,
+  "write_essay": true,
+  "generate_image": true,
+  "get_school": true,
+  "phti_test": true,
+  "compare_views": true,
+  "socratic_tutor": true,
+  "philosopher_debate": true,
+  "thought_experiment": true,
+  "advisor_council": true,
+  "paper_review": false,
+  "analyze_argument": true,
+  "concept_trace": true,
+  "conceptual_map": true,
+  "websearch": true,
+  "query_database": true,
+  "role_play": true,
+  "essay_outline": true,
+  "life_coach": true,
+  "dialectic": true,
+  "history_timeline": true,
+  "confrontation": true,
+  "school_arena": true,
+  "agent_council": true,
+  "search_scholarship": true,
+  "get_scholarly_source": false,
+  "profile": true
+ },
+ "shared_negative_trajectory": [],
+ "mechanical_findings": [
+  {
+   "id": "O8R2-MECH-1",
+   "severity": "P1",
+   "finding": "philosopher_debate 在 speakers 为 JSON 数组时崩溃（agent_tools_memory.py:520 speakers.replace 假设 str）",
+   "evidence": "mechanical gate VALID_INPUT=FAIL + 定位 traceback"
+  },
+  {
+   "id": "O8R2-MECH-2",
+   "severity": "P1",
+   "finding": "search_books 向量路径无空查询守卫且相似度地板 0.35 过低——伪查询/空查询返回不相关结果, EMPTY_RESULT 语义不可达",
+   "evidence": "mechanical gate EMPTY_RESULT/FAILURE_PATH=FAIL + 直接探测"
+  },
+  {
+   "id": "O8R2-MECH-3",
+   "severity": "P2",
+   "finding": "query_graph/get_philosopher/get_school 空字符串输入静默回退到默认实体（柏拉图）而非优雅拒绝",
+   "evidence": "mechanical gate FAILURE_PATH=FAIL + 直接探测"
+  },
+  {
+   "id": "O8R2-MECH-4",
+   "severity": "P2",
+   "finding": "concept_trace 对不存在概念返回模糊命中（无相关性地板）; list_books/history_timeline 过滤器无命中时返回全集",
+   "evidence": "mechanical gate EMPTY_RESULT=FAIL"
+  }
+ ]
+}

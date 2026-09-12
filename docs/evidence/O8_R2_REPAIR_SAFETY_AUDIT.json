@@ -1,0 +1,756 @@
+{
+ "STATIC_PATH_ANALYSIS": {
+  "code_facts": [
+   {
+    "line": 1488,
+    "code": "def evaluate_repair_safety(pre_details, post_candidate, raw_tool_log, tool_log,",
+    "fact": "LOCAL_PATCH post-patch 语义安全门定义"
+   },
+   {
+    "line": 2378,
+    "code": "_safety = evaluate_repair_safety(",
+    "fact": "production Local Patch path 实际调用门"
+   },
+   {
+    "line": 2377,
+    "code": "if _lp_meta is not None and not _apply_errs and candidate.strip():",
+    "fact": "门调用守卫=仅 Local Patch 路径（_lp_meta 非空）"
+   },
+   {
+    "line": 2365,
+    "code": "candidate = _lp_meta[\"pre_patch_candidate\"]",
+    "fact": "拒绝即回滚 pre-patch candidate（rollback parity 存在于 Local Patch）"
+   },
+   {
+    "line": 2390,
+    "code": "if _kind == \"SAFETY_GATE_ERROR\":",
+    "fact": "门异常 fail-closed 独立计数"
+   },
+   {
+    "line": 1494,
+    "code": "- AMBIGUOUS → 无条件拒绝（family unknown 也不逃逸, fail-closed）",
+    "fact": "AMBIGUOUS 无条件拒绝语义（见函数 docstring 与分类逻辑）"
+   },
+   {
+    "line": 1499,
+    "code": "rejection_kind: GENUINELY_NEW_EVIDENCE / AMBIGUOUS / SAFETY_GATE_ERROR / None",
+    "fact": "evidence-family GENUINELY_NEW 拒绝返回"
+   },
+   {
+    "line": null,
+    "fact": "NOT FOUND: repair 输出模式记录（LOCAL_PATCH vs FULL_REWRITE 可观测）"
+   }
+  ],
+  "full_rewrite_path": {
+   "post_repair_semantic_validation_exists": false,
+   "new_evidence_family_detection": false,
+   "ambiguous_fail_closed": false,
+   "rollback_parity": false,
+   "candidate_preservation": "FULL_REWRITE 直接替换 candidate; 无 pre-patch candidate 保存点（对照 Local Patch 的 _lp_meta['pre_patch_candidate']）",
+   "final_gate_backstop": "frozen final_validator 在发布前仍拦截问题（下一轮校验兜底）; 但无 repair 轮内的引入-检测-回滚机制",
+   "measurement_note": "以上 False = 该路径缺失对应机制（工程缺口归类 REPAIR_SAFETY_ENGINEERING_GAP 的 FULL_REWRITE 分支）; 仅测量归类, 本轮不实现 parity"
+  },
+  "local_patch_path": {
+   "post_repair_semantic_validation_exists": true,
+   "new_evidence_family_detection": true,
+   "ambiguous_fail_closed": true,
+   "rollback_parity": true,
+   "candidate_preservation": true,
+   "evidence": "engine_langgraph.py:1488 定义 / :2378 调用 / 拒绝回滚 pre_patch_candidate / SAFETY_GATE_ERROR fail-closed"
+  }
+ },
+ "BENCHMARK_TELEMETRY": {
+  "cases_with_repair": 72,
+  "repair_rounds_total": 132,
+  "cases_repair_introduced_then_cleared": 47,
+  "cases_repair_persisted_issues": 3,
+  "cases_full_rewrite_observed": 0,
+  "cases_local_patch_observed": 0,
+  "per_case": [
+   {
+    "case_id": "O8R2-01",
+    "repairs": 1,
+    "round1_codes": [
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "d221de7b4ef8cfaf"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-02",
+    "repairs": 1,
+    "round1_codes": [
+     "3e61e030228a9868",
+     "5eaeaec7e0e753ef",
+     "691ad1255fe8be54",
+     "NEAR_QUOTE_NOT_MARKED",
+     "ddd1e40306242b2a"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-03",
+    "repairs": 1,
+    "round1_codes": [
+     "4a612d4cbd690728",
+     "7633de6b6f374920",
+     "8cf85f4e58b6346e",
+     "NEAR_QUOTE_NOT_MARKED"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-04",
+    "repairs": 1,
+    "round1_codes": [
+     "29ac525adc86f836",
+     "NEAR_QUOTE_NOT_MARKED"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-05",
+    "repairs": 1,
+    "round1_codes": [
+     "090b7675f2da7cba",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNVERIFIED_CITATION",
+     "d02772460e88ec39"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-06",
+    "repairs": 1,
+    "round1_codes": [
+     "6323120c126ca38f",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "d3b9f347e0c7cd5e",
+     "fedf0473849370a2"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-07",
+    "repairs": 2,
+    "round1_codes": [
+     "484f0471c5143814",
+     "UNVERIFIED_CITATION",
+     "d4c0a07c4c3f3c3b"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-08",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-09",
+    "repairs": 2,
+    "round1_codes": [
+     "0324ea954ee0ee9f",
+     "07f6457050a3d24c",
+     "7968fc5c6f6256f3",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNGROUNDED_BIBLIOGRAPHIC_DETAIL"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-10",
+    "repairs": 2,
+    "round1_codes": [
+     "91b22605b83b2d84",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "a1c447d422df8b7b",
+     "c1fcd373a1fb194f"
+    ],
+    "final_codes": [
+     "91b22605b83b2d84",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "a1c447d422df8b7b",
+     "c1fcd373a1fb194f"
+    ]
+   },
+   {
+    "case_id": "O8R2-11",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-12",
+    "repairs": 2,
+    "round1_codes": [
+     "2906b7c112d6b44e",
+     "93d65d250a3d533b",
+     "97e12946c8e93fb7",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "fb722af2ea375062"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-13",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-14",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-15",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-16",
+    "repairs": 1,
+    "round1_codes": [
+     "1002e358cbad8fbd",
+     "1f7376b472c3872f",
+     "7e629cfd1447e6b6",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-17",
+    "repairs": 2,
+    "round1_codes": [
+     "1de7bca119a5081a",
+     "7d933c3564f584ff",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "UNVERIFIED_CITATION"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-18",
+    "repairs": 1,
+    "round1_codes": [
+     "0c1484eaef944474",
+     "534f9ec6f2386e7a",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "bc6930efd71a5429"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-19",
+    "repairs": 1,
+    "round1_codes": [
+     "73aff02864febe4a",
+     "8ea8a7db26f0141f",
+     "NEAR_QUOTE_NOT_MARKED",
+     "d47aa89961096fa9"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-20",
+    "repairs": 1,
+    "round1_codes": [
+     "978b8a49eb5ab7b6",
+     "NEAR_QUOTE_NOT_MARKED",
+     "b2ac201f1c18af6c",
+     "d061a6891884ef9e"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-21",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-22",
+    "repairs": 1,
+    "round1_codes": [
+     "2e228b84eb8ff1b6",
+     "903d00d65e09ee7f",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "b53fb668606b6467"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-23",
+    "repairs": 2,
+    "round1_codes": [
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "UNVERIFIED_CITATION",
+     "da2827cf8381ccce"
+    ],
+    "final_codes": [
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "UNVERIFIED_CITATION",
+     "da2827cf8381ccce"
+    ]
+   },
+   {
+    "case_id": "O8R2-24",
+    "repairs": 2,
+    "round1_codes": [
+     "UNSUPPORTED_EXACT_QUOTE",
+     "UNVERIFIED_CITATION",
+     "b519d2cdb62487ad",
+     "b849ea4e2f409020"
+    ],
+    "final_codes": [
+     "UNSUPPORTED_EXACT_QUOTE",
+     "UNVERIFIED_CITATION",
+     "b519d2cdb62487ad",
+     "b849ea4e2f409020"
+    ]
+   },
+   {
+    "case_id": "O8R2-25",
+    "repairs": 1,
+    "round1_codes": [
+     "059ea8e5e40df61b",
+     "30c5b9a94656ca91",
+     "3d6cac2eed3485ec",
+     "NEAR_QUOTE_NOT_MARKED"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-26",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-27",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-28",
+    "repairs": 1,
+    "round1_codes": [
+     "NEAR_QUOTE_NOT_MARKED",
+     "c344877d422bace0"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-29",
+    "repairs": 1,
+    "round1_codes": [
+     "NEAR_QUOTE_NOT_MARKED",
+     "ed7ff6e4b7d2917e"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-30",
+    "repairs": 1,
+    "round1_codes": [
+     "41ef27c355b45765",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "a8704bba3d7399cb",
+     "d436e65cd4d3db3e"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-31",
+    "repairs": 1,
+    "round1_codes": [
+     "413c363c3c987d1b",
+     "6cd7869ff5387f31",
+     "NEAR_QUOTE_NOT_MARKED",
+     "e21d57a477ad9deb"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-32",
+    "repairs": 1,
+    "round1_codes": [
+     "51efd56528bcb8b9",
+     "NEAR_QUOTE_NOT_MARKED"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-33",
+    "repairs": 1,
+    "round1_codes": [
+     "NEAR_QUOTE_NOT_MARKED",
+     "edaab4f38bf0f74f"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-34",
+    "repairs": 1,
+    "round1_codes": [
+     "147fb2d51aef544e",
+     "308061f9f3fcd564",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "ebbe8eed88c726cb"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-35",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-36",
+    "repairs": 1,
+    "round1_codes": [
+     "59411db086837497",
+     "NEAR_QUOTE_NOT_MARKED"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-37",
+    "repairs": 2,
+    "round1_codes": [
+     "148c146a3f9f74b9",
+     "3951fe1dac7c30ed",
+     "89ee59852fd2561b",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-38",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-39",
+    "repairs": 1,
+    "round1_codes": [
+     "1c25e1e2c64d37a2",
+     "UNVERIFIED_CITATION"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-40",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-41",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-42",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-43",
+    "repairs": 1,
+    "round1_codes": [
+     "1af5b0056e62cd55",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "fa05490b73ebb663"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-44",
+    "repairs": 1,
+    "round1_codes": [
+     "4f306c1602b61e4a",
+     "70ae31037bf5acab",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-45",
+    "repairs": 1,
+    "round1_codes": [
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-46",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-47",
+    "repairs": 1,
+    "round1_codes": [
+     "4eed33d764c2ef25",
+     "6af6424ef611d239",
+     "6c019938749a9f38",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-48",
+    "repairs": 1,
+    "round1_codes": [
+     "1b95de26f52cd724",
+     "520c5d8661867e0f",
+     "NEAR_QUOTE_NOT_MARKED",
+     "e9b2403440b7d15b",
+     "f85499411bd5bf7c"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-49",
+    "repairs": 1,
+    "round1_codes": [
+     "0e307edac204c88d",
+     "476f5797b051f651",
+     "9394157eeecb18f5",
+     "UNVERIFIED_CITATION"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-50",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-51",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-52",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-53",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-54",
+    "repairs": 2,
+    "round1_codes": [
+     "353e0219ba08e950",
+     "37b81cceff476031",
+     "81e099b1bdec9dcb",
+     "NEAR_QUOTE_NOT_MARKED",
+     "eeae99832aea41a0"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-55",
+    "repairs": 1,
+    "round1_codes": [
+     "0e33eeab94fd4252",
+     "98b33841056965cf",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "c2630d93cd6755d7"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-56",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-57",
+    "repairs": 1,
+    "round1_codes": [
+     "352ca783f3bff654",
+     "NEAR_QUOTE_NOT_MARKED",
+     "d6437b5a38a9a064"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-58",
+    "repairs": 1,
+    "round1_codes": [
+     "8bfc0b6121e7a9ba",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "UNVERIFIED_CITATION",
+     "c3b725879e16dca8"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-59",
+    "repairs": 2,
+    "round1_codes": [
+     "UNSUPPORTED_EXACT_QUOTE",
+     "fd472b55203d7704"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-60",
+    "repairs": 1,
+    "round1_codes": [
+     "95e0c0c977d9008c",
+     "NEAR_QUOTE_NOT_MARKED"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-61",
+    "repairs": 1,
+    "round1_codes": [
+     "3cb3de44485ce662",
+     "3effc69db42dc00d",
+     "821da4d04dbffd4e",
+     "UNSUPPORTED_EXACT_QUOTE"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-62",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-63",
+    "repairs": 1,
+    "round1_codes": [
+     "55b7761495184a32",
+     "UNVERIFIED_CITATION",
+     "f22a78735e2085c1"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-64",
+    "repairs": 1,
+    "round1_codes": [
+     "0d4ea2f81788c0c8",
+     "UNSUPPORTED_EXACT_QUOTE"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-65",
+    "repairs": 1,
+    "round1_codes": [
+     "3e4e83e113f271d3",
+     "NEAR_QUOTE_NOT_MARKED",
+     "eabcd651bec2313c"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-66",
+    "repairs": 1,
+    "round1_codes": [
+     "6338881b41325986",
+     "NEAR_QUOTE_NOT_MARKED"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-67",
+    "repairs": 1,
+    "round1_codes": [
+     "16e8e2d7a5e2680f",
+     "1fa186bd188d85a9",
+     "7fa75eb5cf45d366",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-68",
+    "repairs": 1,
+    "round1_codes": [
+     "5a39cf27acd3c34a",
+     "80f4ac34dd830ddb",
+     "NEAR_QUOTE_NOT_MARKED"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-69",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-70",
+    "repairs": 1,
+    "round1_codes": [
+     "0dff8b9acc3ff471",
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "acf01c1dace689c1"
+    ],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-71",
+    "repairs": 0,
+    "round1_codes": [],
+    "final_codes": []
+   },
+   {
+    "case_id": "O8R2-72",
+    "repairs": 1,
+    "round1_codes": [
+     "NEAR_QUOTE_NOT_MARKED",
+     "UNSUPPORTED_EXACT_QUOTE",
+     "a98d3dff9326c96a",
+     "ce73fc6faf6a372a"
+    ],
+    "final_codes": []
+   }
+  ]
+ },
+ "O8_R2_REPAIR_SAFETY_AUDIT": true
+}

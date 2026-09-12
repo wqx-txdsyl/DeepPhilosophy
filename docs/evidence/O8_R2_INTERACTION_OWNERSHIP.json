@@ -1,0 +1,92 @@
+{
+ "O8_R2_INTERACTION_OWNERSHIP": true,
+ "orphans": [
+  {
+   "path": "backend/jwt_verify.py",
+   "exists": true,
+   "size_bytes": 1255,
+   "head_summary": "# -*- coding: utf-8 -*- \"\"\"HS256 JWT 验签（纯 stdlib, 与 workers/auth 的 WebCrypto 实现同格式）。 AUTH_UPSTREAM 模式下配置了 JWT_SECRET 时用于本地免网络验签； payload 需含 user_id 且未过期。任何格式/签名/过期问题一律返回 None（不抛错）。 \"\"\" import base64 i",
+   "external_references": [],
+   "external_ref_count": 0,
+   "router_mounted_in_main": false,
+   "REFERENCED": false,
+   "RUNTIME_OWNER": "无生产挂载点",
+   "BUILD_IMPACT": "移除不影响任何构建/运行路径（零引用）",
+   "VERDICT": "DELETE_CANDIDATE",
+   "RATIONALE": "零外部引用（组内互引不计）; 「零引用」≠「可安全删除」——最终去留属用户资产决定, 本轮仅归类（Reviewer C 项裁定: 全部不删除不入库）"
+  },
+  {
+   "path": "backend/upstream.py",
+   "exists": true,
+   "size_bytes": 2208,
+   "head_summary": "# -*- coding: utf-8 -*- \"\"\"Workers 上游转发工具（AUTH_UPSTREAM 模式）。 AUTH_UPSTREAM_URL 非空时，agent 前端的 auth / 会话同步端点经本模块转发到 deepphilosophy.top（Cloudflare Workers + D1，账号唯一源），携带原始 Bearer。 转发是服务端到服务端（同源到浏览器），Work",
+   "external_references": [],
+   "external_ref_count": 0,
+   "router_mounted_in_main": false,
+   "REFERENCED": false,
+   "RUNTIME_OWNER": "无生产挂载点",
+   "BUILD_IMPACT": "移除不影响任何构建/运行路径（零引用）",
+   "VERDICT": "DELETE_CANDIDATE",
+   "RATIONALE": "零外部引用（组内互引不计）; 「零引用」≠「可安全删除」——最终去留属用户资产决定, 本轮仅归类（Reviewer C 项裁定: 全部不删除不入库）"
+  },
+  {
+   "path": "backend/user_profile_store.py",
+   "exists": true,
+   "size_bytes": 3388,
+   "head_summary": "# -*- coding: utf-8 -*- \"\"\"用户个性化资料统一存储（2026-09-07 拆自 routes/auth_proxy.py）。 - 存储表 `agent_user_profile`（backend/data/users.db, key = D1 user_id）, 账号级数据: 换设备登录同一账号即生效（区别于 localStorage 的本机应用偏好）。 - 读取带本地旧",
+   "external_references": [],
+   "external_ref_count": 0,
+   "router_mounted_in_main": false,
+   "REFERENCED": false,
+   "RUNTIME_OWNER": "无生产挂载点",
+   "BUILD_IMPACT": "移除不影响任何构建/运行路径（零引用）",
+   "VERDICT": "DELETE_CANDIDATE",
+   "RATIONALE": "零外部引用（组内互引不计）; 「零引用」≠「可安全删除」——最终去留属用户资产决定, 本轮仅归类（Reviewer C 项裁定: 全部不删除不入库）"
+  },
+  {
+   "path": "backend/routes/agent_history.py",
+   "exists": true,
+   "size_bytes": 1269,
+   "head_summary": "# -*- coding: utf-8 -*- \"\"\"PhiAgent 会话云端同步透传（AUTH_UPSTREAM 模式）。 agent-app 同源调用 /api/agent/conversations，本路由原样转发到 Workers api （D1 agent_conversations 表，按 JWT user_id 隔离）。鉴权完全由上游 requireAuth 承担（JWT 无效 →",
+   "external_references": [],
+   "external_ref_count": 0,
+   "router_mounted_in_main": false,
+   "REFERENCED": false,
+   "RUNTIME_OWNER": "无生产挂载点",
+   "BUILD_IMPACT": "移除不影响任何构建/运行路径（零引用）",
+   "VERDICT": "DELETE_CANDIDATE",
+   "RATIONALE": "零外部引用（组内互引不计）; 「零引用」≠「可安全删除」——最终去留属用户资产决定, 本轮仅归类（Reviewer C 项裁定: 全部不删除不入库）"
+  },
+  {
+   "path": "backend/routes/auth_proxy.py",
+   "exists": true,
+   "size_bytes": 4524,
+   "head_summary": "# -*- coding: utf-8 -*- \"\"\"AUTH_UPSTREAM 模式下的 /api/auth/* 全量接管（D1 = 账号唯一源）。 - register/login: 透传 Workers auth（本地 guard 仍做防刷限流），响应包装 success 字段 保持 agent-app auth.jsx 判断逻辑不变。 - profile GET: Workers 用户名 ",
+   "external_references": [],
+   "external_ref_count": 0,
+   "router_mounted_in_main": false,
+   "REFERENCED": false,
+   "RUNTIME_OWNER": "无生产挂载点",
+   "BUILD_IMPACT": "移除不影响任何构建/运行路径（零引用）",
+   "VERDICT": "DELETE_CANDIDATE",
+   "RATIONALE": "零外部引用（组内互引不计）; 「零引用」≠「可安全删除」——最终去留属用户资产决定, 本轮仅归类（Reviewer C 项裁定: 全部不删除不入库）"
+  },
+  {
+   "path": "agent-app/src/data/conversationSync.js",
+   "exists": true,
+   "size_bytes": 6156,
+   "head_summary": "/** * conversationSync — 会话云端同步层（2026-09-06 账号打通） * * 登录用户: localStorage 是缓存, D1（经同源 /api/agent/conversations）是真相源。 * - hydrate 拉取: 首次接入账号时与云端做并集合并（匿名历史无缝并入）, * 之后按 updated_at LWW 整体取新方。 * - 变更推送: sto",
+   "external_references": [],
+   "external_ref_count": 0,
+   "router_mounted_in_main": false,
+   "REFERENCED": false,
+   "RUNTIME_OWNER": "agent-app 前端（未入库, 无构建引用链）",
+   "BUILD_IMPACT": "移除不影响任何构建/运行路径（零引用）",
+   "VERDICT": "DELETE_CANDIDATE",
+   "RATIONALE": "零外部引用（组内互引不计）; 「零引用」≠「可安全删除」——最终去留属用户资产决定, 本轮仅归类（Reviewer C 项裁定: 全部不删除不入库）",
+   "conversationSync_importers": []
+  }
+ ],
+ "ruling_note": "Reviewer C 项裁定: 本轮全部不删除不入库; 本审计仅产 KEEP/DEPRECATE/DELETE 建议与证据",
+ "interaction_cases_note": "cat 12 多轮/Reader Context/工具模式案例见 O8_R2_CAPABILITY_RESULTS per_case O8R2-67..72"
+}
