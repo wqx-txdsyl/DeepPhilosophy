@@ -119,3 +119,14 @@ O8_ISSUE_LEDGER=docs/evidence/O8_FINAL_ISSUE_LEDGER.json/.md（15 项: P0×3 过
 O9_UI_DELIVERY=84c31fa0f（docs/ui 六件套 + agent-app 实现: DepthControls/EpStarter/SourceDrawer/分层来源/研究相位/响应式; UAT 十场景全 PASS desktop+mobile; 零后端改动）
 O9_FINAL_GATE=UI_AUDIT/IA/INTERACTION/DESIGN_SYSTEM 完整 ✓; DESKTOP_UAT=PASS ✓; MOBILE_UAT=PASS ✓; CITATION/PRIMARY_TEXT/RESEARCH/EVERYDAY_UX=PASS ✓; BACKEND_CORE_CHANGED=false ✓ → 待 Reviewer 终签
 ```
+
+## O9-R1 UI Wiring Closeout（2026-09-13）
+
+```
+O9_R1_VERDICT=PATCH_REQUIRED→已收口（researchPhase 接线 + DepthControls 双语 + 测试 + 构建门）
+R1_FIXES=①researchPhase 五态接线 MessageList（PhasePill 于 tool_start/merged/tool/renderCallRow 四处）; 确定性映射含核验类文本→SOURCE_VERIFY（恒可达）; ②DepthControls promptZh/promptEn 双语 + MessageBubble 传真实 lang
+R1_TESTS=tests/o9Research.test.mjs（RESEARCH_PHASE_MAPPING/LAYER_OF/DEPTH_ZH/DEPTH_EN 全 PASS; npm test 链入）
+R1_UAT=U1-U7 全 PASS（O9_UAT.md §5）
+FRONTEND_PRODUCTION_BUILD=PASS
+O14_DEPLOYMENT_CARRYOVER=VERCEL_STATUS_FAILURE_AT_84c31fa0f（O14 处理）
+```
