@@ -1,28 +1,30 @@
 # AUTONOMOUS LOOP STATE — PhiAgent O7-E Builder
 
 > 恢复辅助文件（真源 = Reviewer Chat + Git repository）。
-> V9-F5-R3 delivered at CONTENT ff732bc084fdd4b6267d21439ac514373e47bf81 + ARCHIVE（本提交）
-> CLOSURE_TIMESTAMP: 2026-09-11
+> V9-F5 CLOSED（R3 PASS）; V10 formal qualification 执行中
+> QUALIFICATION_HEAD=51aed14caabe8f5a8297c36f24fdbed12579b84e（冻结, run 已启动）
 
 ```
 CURRENT_REVIEWER=GPT-5.6 Sol
-CURRENT_PHASE=O7-E V9-F5（scholarly retrieval relevance patch）R3 最终收口已交付, 待 Reviewer 裁定
-CURRENT_REVIEW_STATUS=V9_F5_R2_REVIEW=PATCH_REQUIRED（4 PASS: strict_only fail-empty/生产 strict_only/variant lookup/variant gate; 4 FAIL: 全局 readability/contract tests/filter 重复/archive 拓扑）→ R3 已交付 READY_FOR_V9_F5_R3_REVIEW=true; R3 过审即 V9-F5 CLOSED → Reviewer 授权 fresh V10
-BASE_SHA=48e4d35e1830b18510a973b6c540362c67effc11（R3 基线 = R2 CONTENT）
-LATEST_CONTENT_SHA=ff732bc084fdd4b6267d21439ac514373e47bf81（CONTENT_HEAD_R3）
-LATEST_ARCHIVE_SHA=(见 git log -1; V9_F5_R3_CLOSURE.json 归档)
-LATEST_REMOTE_SHA=(= push 后 HEAD)
-NEXT_ACTION=轮询 Reviewer R3 裁定; 过审 → V9-F5 CLOSED + fresh V10 授权（全新未消费 case 批次, 验证 generic 修复转化为真实 scholarly 分数）
-R3_CONTENT=全局 readability 排序（dedup 后对最终 merged list 生效, FT>FTA>AB>META, cited_by tie-break 稳定排序）; original-local relevance filter 收敛为一次; variant-local append 防重（relevant ∪ local, 修 R9 离线误标 LOCAL_CURATED+LIVE）; test_v9f5 14→17 全真实 contract tests（零 assert True/inspect; monkeypatch 驱动真实函数路径）
-R3_LEDGER=FULL_TEST_BEFORE=945 collected(938+7)@BASE; FULL_TEST_AFTER=948/0@CONTENT_R3; 对账 +3=v9f5 文件 14→17; V8F2 桩签名加宽（R1 连带, 零断言改动）; 7 个 BASE 既有失败全部修复（6×V8F2 桩 + 1×R9 误标, 均为 R1 债务而非 R3 引入, worktree 对照证实）
-FROZEN_SCOPE=strict_only fail-empty; scholarly strict_only=True; variant LOCAL_CURATED lookup; variant relevance gate; MAX_REFORMULATION_COUNT=1; engine production behavior; primary corpus; Local Patch; validator; quote_bound; semantic classifier; judge rubric/thresholds/vote semantics; final gate(blob 22ea181c); production model; V3-V9 历史
-LAST_REVIEW_TIMESTAMP=2026-09-11
-REVIEW_CHAT_IDENTIFIER=新 Reviewer 会话（前会话 6aa2519d 达长度上限后迁移; 当前会话 URL 见 ZCode IAB 标签「V7 F2 审查结论」最新）
-IAB_INPUT_BROKEN_NOTE=ZCode 内置浏览器 trusted input 管线失效（点击/回车零事件到达页面）。可用绕过: evaluate 内对目标按钮 dispatchEvent 合成冒泡 PointerEvent/MouseEvent（pointerdown+click, bubbles:true）→ React 根委托接受, 发送成功。fill() 大参数 evaluate 会 Internal error, 大文本用零参数分块 execCommand insertText（游标存 window 变量, 勿用 textContent.length 当游标）。
-STASH_WARNING=仓库存在陈年 stash@{0}（WIP on master 29552df, 含 app/android+package 冲突体）; 切勿在未核对 pathspec cwd 的情况下 stash pop（2026-09-11 曾因 cwd 在 backend/ 下误弹出, 已 reset --hard 恢复, stash 本体保留）
+CURRENT_PHASE=O7-E V10 fresh formal qualification 已交付（FINAL_VERDICT=SCHOLARLY_GATE_NOT_MET）, 待 Reviewer 裁定
+CURRENT_REVIEW_STATUS=V9_F5_R3_REVIEW=PASS → V9_F5_CLOSED=true → V10 已执行: DELIVERY_GATE=PASS / SCHOLARLY_GATE=FAIL / FAILED_GATES=[HISTORICAL_DISCIPLINE_REQUIRED_MEAN_MIN, REQUIRED_DIMENSION_MISSING_SCORE] / READY_FOR_V10_REVIEW=true
+BASE_SHA=75e5bcea6497b36695015d389dc2d578d722d9f9（V10 授权基线 = V9-F5-R3 ARCHIVE）
+QUALIFICATION_HEAD=51aed14caabe8f5a8297c36f24fdbed12579b84e（manifest+provenance 冻结, docs-only）
+NEXT_ACTION=等 Reviewer V10 裁定; 两处 FAIL 性质迥异: ①REQUIRED_DIMENSION_MISSING_SCORE=1 纯 judge infra（bigmodel 1301 内容过滤对 V10-14 judge 输入确定性 400, 2 轮×3 票×3 尝试+手工复现同因; 非 case 质量信号; V9-F3 先例=judge-only measurement recovery）; ②HISTORICAL_DISCIPLINE_REQUIRED_MEAN 3.385<3.40（真实差 0.015, 若 V10-14 补判可能移动均值）; 不可自行补修, 由 Reviewer 决定 F-phase
+V10_VERDICT=DELIVERY_GATE=PASS（14/14 发布, repair 7/7 收敛, TERMINAL_PENDING=0, ABORTS=0, 引文/引号零违例, LP_ANCHOR=1.0, COVERAGE=1.0）; SCHOLARLY: applicable_mean=3.646, textual=4.0, argument=3.667, interpretive=3.571, historical=3.385(<3.40), literature=4.0; MEDIAN_LT_2=0; FATAL 全零; 语义守恒 PASS 全零; judge 57 呼叫 39 有效票（13/14 case）; V10-14=bigmodel 1301
+V10_MANIFEST=docs/evidence/V10_FRESH_QUALIFICATION_MANIFEST.json（14 case: 恩培多克勒/塞克斯都/库萨/斯宾诺莎V/维柯/谢林/戴维森/威廉斯/洪堡/郭象/记忆哲学争论/伊本·西那/西田（降级）/斯密引文）
+V10_FRESHNESS=193 prior questions, max_sim<=0.2386 < 0.45, PREVIOUSLY_CONSUMED=0
+V10_RUN_CMD=SCHOLARLY_NETWORK_MODE=TRUSTED_PROXY .venv/bin/python backend/tools/evaluation/o7e_production_calibration.py V10_QUAL - docs/evidence/V10_FRESH_QUALIFICATION_MANIFEST.json
+V10_RUN_OUT=backend/tools/_tmp/o7e_calib_V10_QUAL.json（增量写入, 断点续跑）
+V10_JUDGE_CMD=python -c "import ...; judge_candidate('V10_QUAL', runs_path='backend/tools/_tmp/o7e_calib_V10_QUAL.json', out_tag='V10_QUAL_JUDGE', manifest_path='docs/evidence/V10_FRESH_QUALIFICATION_MANIFEST.json')"
+FREEZE_RULE=QUALIFICATION_HEAD 后禁止一切 production code diff; 案例表现差不许换/删/重跑; judge 缺票 EVALUATION_INVALID=true → STOP
+PRODUCTION_MODEL=deepseek-v4-flash（经 CC 注入; api 冒烟 200; scholarly TRUSTED_PROXY 双 provider 可达）
+FINAL_GATE_BLOB=22ea181ce652276234f59a96d2b5c5f1a66ef2d8（冻结, 复验过）
+IAB_INPUT_BROKEN_NOTE=内置浏览器 trusted input 失效; 绕过: 分块 execCommand insertText + 合成 PointerEvent/MouseEvent click（data-testid=send-button, label 'Send prompt'）
+STASH_WARNING=仓库有陈年 stash@{0}（master 时代 WIP）; git pathspec 相对 cwd——务必先 cd 仓库根再操作（2026-09-11 曾因 cwd 在 backend/ 误弹 stash, 已 reset --hard 恢复）
 ```
 
 ## 会话定位规则（跨 session 恢复用）
 
-1. ChatGPT 侧边栏 Recents 最新「V7 F2 审查结论」= 当前 Reviewer 会话（前会话 6aa2519d 达长度上限后迁移）。
+1. ChatGPT 侧边栏 Recents 最新「V7 F2 审查结论」= 当前 Reviewer 会话。
 2. 永远在**最新** Reviewer 会话提交回执; 不回封存旧会话。
