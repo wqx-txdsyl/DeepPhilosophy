@@ -10,7 +10,7 @@ CURRENT_PHASE=O8-R1 correction（Reviewer PATCH_REQUIRED 裁定四件事已全�
 CURRENT_REVIEW_STATUS=O8 静态盘点 ACCEPTED_AS_FOUNDATION; O8_R1_COMPLETE=false（correction patch 审查中）; O8_R2_AUTHORIZED=false→PASS 后自动 true
 BASE_SHA=46e44c52682d1b6cb5769cfcd0ea98feea2524c8（Reviewer 指定 O8-R1 patch BASE = O8 静态盘点交付 commit）
 NEXT_ACTION=提交 O8-R1 correction Final Receipt → 等 Reviewer verdict → PASS 则立即自动进入 O8-R2（72-case capability benchmark + 32-tool Mechanical/Agentic Gate + efficiency audit + LOCAL_CURATED census + conversationSync ownership audit + primary-text coverage census; 真实 API 调用已授权, 仅限现有 credentials/quota）→ PATCH 则原样执行
-REVIEWER_CHANNEL_RULE=ChatGPT 侧边栏 Recents 最新 Reviewer 会话 = 「继续PhiAgent搭建」（/c/6aa5243e-52cc-83ee-b173-e6866a00313d）; 永远在最新 Reviewer 会话提交回执
+REVIEWER_CHANNEL_RULE=精确锁定 REVIEWER_CONVERSATION_ID=/c/6aa5243e-52cc-83ee-b173-e6866a00313d（「继续PhiAgent搭建」, REVIEWER_CONVERSATION_LOCKED=true）; 始终直接打开/复用该 ID; 禁止 Recents 最新路由/按标题猜会话/自动切新会话; 无法访问该会话 → HUMAN_DECISION_REQUIRED REASON=LOCKED_REVIEWER_CONVERSATION_UNAVAILABLE
 V12_CLASSIFICATION_FIXED=V12-08=REPAIR_SAFETY_ENGINEERING_GAP / V12-14=HONEST_CAPABILITY_CORPUS_LIMITATION / V12-09=REPAIR_CONVERGENCE_CITATION_QUOTE_RELIABILITY_GAP; 「非工程缺陷」blanket claim 已删除
 REPAIR_SAFETY_FACTS=Local Patch post-patch 语义安全门 evaluate_repair_safety（engine_langgraph.py:1488, 调用点 :2378）: AMBIGUOUS fail-closed / QUOTE+CITATION+BIBLIOGRAPHIC 家族 GENUINELY_NEW 拒绝 / 拒绝即回滚 pre-patch; 真实 gap = FULL_REWRITE / non-local-patch repair 无等价 global semantic safety + rollback parity（O8-R2 测量, O10 修复）
 GUARD_BASELINE_FIX=5 个 stale routes 守卫（O7A T19/r15/t21 + O7B r17/t17）基线 554d62fac → 46e44c526; final_validator/quote_bound/agent_runtime/evidence_contract 硬冻结项与 engine 内容哈希基线不变
@@ -47,7 +47,18 @@ M1_EVIDENCE_NOTE=_tmp 的 runtime smoke 未提交（Reviewer 明言不靠它签 
 历史批次终态=V10: MEASUREMENT_INVALID_NOT_RECOVERABLE(delivery PASS) / V11: FAIL_FROZEN(完整有效测量) / V12: FAIL_FROZEN(MIGRATION PASS+资格 FAIL)
 ```
 
-## 会话定位规则（跨 session 恢复用）
+## 会话定位规则（2026-09-12 Handoff Lock Micro-Patch 后, 跨 session 恢复用）
 
-1. ChatGPT 侧边栏 Recents 最新「V7 F2 审查结论」= 当前 Reviewer 会话。
-2. 永远在**最新** Reviewer 会话提交回执; 不回封存旧会话。
+1. Reviewer 会话 identity = `REVIEWER_CONVERSATION_ID=/c/6aa5243e-52cc-83ee-b173-e6866a00313d`（已锁定, 见 AUTONOMOUS_HANDOFF_CONTRACT.json）。
+2. 标题（「继续PhiAgent搭建」）仅作人类可读说明, 不可作为 identity。
+3. 禁止: Recents 最新路由 / 按标题猜会话 / 自动切换到新 conversation; 旧规则（「永远在最新 Reviewer 会话提交回执」）已废除。
+4. 该会话无法访问时: HUMAN_DECISION_REQUIRED, REASON=LOCKED_REVIEWER_CONVERSATION_UNAVAILABLE, 不得自动选择 Recents 中其他会话。
+
+## O8-R2 测量隔离规则（2026-09-12 Handoff Lock Micro-Patch 授权）
+
+```
+O8_R2_REQUIRES_CLEAN_ISOLATED_WORKTREE=true
+DIRTY_USER_WORKTREE_MUTATION=FORBIDDEN（主工作树 pre-existing tracked diff: PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json 409→410, 不删除/不覆盖/不 stash pop/不提交/不修改）
+PROCEDURE=REVIEWED_HEAD=<Handoff Lock PASS 后 HEAD>; git worktree add <isolated-path> REVIEWED_HEAD; 验证 git status --porcelain == "" 且 HEAD == REVIEWED_HEAD
+MEASUREMENT_SOURCE=72-case benchmark / 32-tool audit / LOCAL_CURATED census / primary-text coverage census / efficiency measurements 全部在 clean isolated worktree 执行; 禁止用原 dirty worktree 作 formal measurement source
+```

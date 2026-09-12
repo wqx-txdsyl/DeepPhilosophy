@@ -7,7 +7,20 @@
   "reviewer_transport": {
     "REVIEWER": "GPT-5.6 Sol",
     "REVIEWER_TRANSPORT": "ZCODE_BUILT_IN_BROWSER",
-    "REVIEWER_CHANNEL": "THIS_LOCKED_CHATGPT_CONVERSATION"
+    "REVIEWER_CONVERSATION_ID": "/c/6aa5243e-52cc-83ee-b173-e6866a00313d",
+    "REVIEWER_CONVERSATION_LOCKED": true,
+    "identity_rule": "始终直接打开/复用 REVIEWER_CONVERSATION_ID; 标题只可作为人类可读说明, 不可作为 identity",
+    "unavailable_fallback": {
+      "HUMAN_DECISION_REQUIRED": true,
+      "REASON": "LOCKED_REVIEWER_CONVERSATION_UNAVAILABLE",
+      "forbidden": "不得自动选择 Recents 中其他会话"
+    },
+    "removed_routing_rules": [
+      "Recents 最新 Reviewer 会话",
+      "永远在最新 Reviewer 会话提交回执",
+      "按标题猜 Reviewer conversation",
+      "自动切换到新 ChatGPT conversation"
+    ]
   },
   "states": [
     "BUILDER_RUNNING",
@@ -61,7 +74,7 @@
     "not_user_decisions": ["PATCH", "PASS", "phase transition", "test failure", "review retry"]
   },
   "handoff_mechanics": {
-    "transport_notes": "内置浏览器 trusted input 失效时的绕过: 分块 execCommand insertText + 合成 PointerEvent/MouseEvent click（data-testid=send-button）; 会话定位 = ChatGPT 侧边栏 Recents 最新 Reviewer 会话",
+    "transport_notes": "内置浏览器 trusted input 失效时的绕过: 分块 execCommand insertText（~16 行/块）+ 合成 PointerEvent/MouseEvent click（data-testid=send-button）; 会话定位 = 永远直接打开 REVIEWER_CONVERSATION_ID（已锁定, 不做 Recents/标题路由）",
     "receipt_must_include": [
       "当前任务书",
       "BASE_SHA",
@@ -69,6 +82,21 @@
       "tests / evidence",
       "Final Receipt"
     ]
+  },
+  "o8_r2_measurement_isolation": {
+    "O8_R2_REQUIRES_CLEAN_ISOLATED_WORKTREE": true,
+    "reason": "主工作树存在 pre-existing tracked dirty diff（docs/evidence/PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json 409→410, corpus 相关）; dirty state 上的测量会污染 canonical benchmark",
+    "dirty_user_worktree_policy": {
+      "DIRTY_USER_WORKTREE_MUTATED": false,
+      "forbidden": ["删除", "覆盖", "stash pop", "提交", "修改该 diff 内容"]
+    },
+    "procedure": [
+      "REVIEWED_HEAD = 本 micro-patch PASS 后的 HEAD",
+      "git worktree add <isolated-path> REVIEWED_HEAD（或等价 isolated checkout）",
+      "验证: git status --porcelain == \"\" 且 HEAD == REVIEWED_HEAD",
+      "72-case benchmark / 32-tool audit / LOCAL_CURATED census / primary-text coverage census / efficiency measurements 全部在 clean isolated environment 执行"
+    ],
+    "forbidden_measurement_source": "原 dirty worktree 不得作为 formal measurement source"
   },
   "phase_authorizations": {
     "O8_R2": {
