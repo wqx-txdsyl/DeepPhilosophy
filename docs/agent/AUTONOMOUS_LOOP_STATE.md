@@ -6,11 +6,12 @@
 
 ```
 CURRENT_REVIEWER=GPT-5.6 Sol
-CURRENT_PHASE=O7-E V12（deepseek-flash 基座迁移+qualification）已交付, 待 Reviewer 裁定
-CURRENT_REVIEW_STATUS=V11_REVIEW=FAIL_CONFIRMED → V11 FAIL_FROZEN 永久保留 → V12 已执行: MIGRATION_GATE=PASS（迁移/兼容/回归全过）+ V12_FORMAL_QUALIFICATION=FAIL（frozen gate: DELIVERY_GATE=FAIL + SCHOLARLY_GATE=FAIL, FAILED_GATES=[REPAIR_CREATES_NEW_FATAL_ERROR, TEXTUAL_GROUNDING_REQUIRED_MEAN_MIN, REQUIRED_DIMENSION_MEDIAN_LT_2], FINAL_VERDICT=DELIVERY_GATE_NOT_MET）/ READY_FOR_V12_REVIEW=true
+CURRENT_PHASE=O7-E V12-M1（production runtime migration closure）已交付, 待 Reviewer 裁定; M1 过审 → O7-E 以「迁移完成+最终 qualification 已知失败项」封存 → O8
+CURRENT_REVIEW_STATUS=V12_REVIEW=FAIL_CONFIRMED_WITH_MIGRATION_CLOSURE_REQUIRED（V12 qualification 真实 FAIL_FROZEN 三项成立; alias 兼容 PASS_CONFIRMED; 但应用 runtime 本体未迁移 → MIGRATION_GATE=PATCH_REQUIRED）→ V12_M1 已执行 READY_FOR_V12_M1_REVIEW=true
 BASE_SHA=75e5bcea6497b36695015d389dc2d578d722d9f9（V10 授权基线 = V9-F5-R3 ARCHIVE）
 QUALIFICATION_HEAD=51aed14caabe8f5a8297c36f24fdbed12579b84e（manifest+provenance 冻结, docs-only）
-NEXT_ACTION=等 Reviewer V12 裁定（按 §13: V12 FAIL → V12_FAIL_FROZEN, 不自动开 V12-R1/V13, 后续由 Reviewer 按真实失败原因单独裁定）。失败画像: ①REPAIR_CREATES_NEW_FATAL_ERROR=1（V12-08 嵇康: repair-1 引入 5 个 GENUINELY_NEW 全部 transient, repair-2 全清+发布; 冻结语义按历史计入）; ②V12-14 会饮逐字引文: deepseek-flash 对不在库原文诚实拒绝伪造（textual REQUIRED 3 票 0 分 → 均值 0.0<3.40 + median_lt2=1）; 其余 12 case 全部一次发布内通过或 repair 收敛; judge 13/13 全有效 39/39 票零失败
+NEXT_ACTION=等 Reviewer M1 裁定; M1 PASS → O7-E 封存（迁移完成+V12 qualification 已知失败项 DELIVERY_GATE_NOT_MET）→ O8 comprehensive capability/tool audit
+M1_FACTS=routes/agent_llm.py MODEL 默认 deepseek-flash（方案 A repo 即 canonical; env 覆盖保留）; 4 个 runtime contract tests（reload/真实构建/零注入 sys.modules 对照）+ 真实 smoke 全过（AG.MODEL=ENGINE_LLM=ENGINE_REPAIR=deepseek-flash, 7 工具调用+repair+发布）; pytest 952/0（948+4 对账）; 证据纠正=V12 DEV regression published=false 实况 + V12-09 唯一未发布（UNVERIFIED_CITATION×1 NEAR_QUOTE_NOT_MARKED×3）
 V12_FACTS=pub 13/14 (0.929≥0.90 达标); scholarly 13/13 search+fetch, 503 records, 37 content evidence; semantic 守恒 PASS（5 GENUINELY_NEW 全 transient, 0 AMBIGUOUS）; FATAL 全零; MIGRATION_GATE=PASS（14 探针 alias 等价 + 948/0 回归 + DEV 9/9 + 旧 id 清零 + OBSERVED_PROVIDER_MODEL 双 id 一致 deepseek-flash）; TOPOLOGY=476d49e5 → e87b604c2(MIGRATION) → 95c701b87(QUALIFICATION) → ARCHIVE
 F1_FACTS=根因 CONFIRMED: 触发文本=斯密「中国地震」段落（81 字, answer 本体+replay window 均含; answer 单独探测即 400/1301）; coding-plan 等价端点 trivial 探测 200 但 answer 探测同 400/1301 → 平台级过滤; 4 条恢复路径全部违反冻结或不可行; 39 票 13 case 原样; V10_QUALIFICATION_SUMMARY/FINAL_GATE 原文件未动; 证据=V10_F1_JUDGE_FAILURE_EVIDENCE.json + V10_F1_RECOVERY_ATTEMPT_LOG.json
 V10_VERDICT=DELIVERY_GATE=PASS（14/14 发布, repair 7/7 收敛, TERMINAL_PENDING=0, ABORTS=0, 引文/引号零违例, LP_ANCHOR=1.0, COVERAGE=1.0）; SCHOLARLY: applicable_mean=3.646, textual=4.0, argument=3.667, interpretive=3.571, historical=3.385(<3.40), literature=4.0; MEDIAN_LT_2=0; FATAL 全零; 语义守恒 PASS 全零; judge 57 呼叫 39 有效票（13/14 case）; V10-14=bigmodel 1301
