@@ -79,3 +79,13 @@ JUDGE_SCHEMA_AUDIT=O8-R2 72 + EP 6 全部 7 轴 12 维键精确 → EP_REJUDGE=f
 O8_FINAL_STATUS=PASS（六条件全满足, 待 Reviewer 终签）
 NEXT=O8 终签 → O9 MetaSo/Research Retrieval
 ```
+
+## O8 终签（2026-09-12 Reviewer Final Verdict）
+
+```
+O8_R1=PASS / O8_R2=PASS / O8_R3=PASS / O8_FINAL=PASS
+CURRENT_GATE_PASSED=true → NEXT_PHASE_DISPATCH=O9
+O9_TASK=MetaSo/Research Retrieval（BASE=0663f8999; 30 题 5 类冻结 queryset; 5 provider 配置 A=Crossref B=OpenAlex C=C+O D=MetaSo E=MetaSo+C+O; 决限 INTEGRATE/CONDITIONAL_PROVIDER/REJECT; REJECTED_WITH_EVIDENCE=PASS; existing credentials only; MetaSo 无 credential → AUTHENTICATION_REQUIRED=true 只暂停认证部分）
+O9_DELIVERABLES=O9_ARCHITECTURE_AUDIT.md / O9_API_CONTRACT.json / O9_QUERYSET.json / O9_PROVIDER_RESULTS.json / O9_COMPARISON.json / O9_INTEGRATION_DECISION.md
+O8_LEGACY_TO_O10=过度检索/重复调用/工具选择纪律(P0) + debate崩溃/向量地板/repair瞬态+FULL_REWRITE parity/比较类越库引用(P1) + 空输入默认/空结果语义/LC元数据/409对账/孤儿(P2)——O9 禁止趁机修
+```
