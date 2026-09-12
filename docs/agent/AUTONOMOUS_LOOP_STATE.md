@@ -6,11 +6,12 @@
 
 ```
 CURRENT_REVIEWER=GPT-5.6 Sol
-CURRENT_PHASE=O7-E V10 fresh formal qualification 已交付（FINAL_VERDICT=SCHOLARLY_GATE_NOT_MET）, 待 Reviewer 裁定
-CURRENT_REVIEW_STATUS=V9_F5_R3_REVIEW=PASS → V9_F5_CLOSED=true → V10 已执行: DELIVERY_GATE=PASS / SCHOLARLY_GATE=FAIL / FAILED_GATES=[HISTORICAL_DISCIPLINE_REQUIRED_MEAN_MIN, REQUIRED_DIMENSION_MISSING_SCORE] / READY_FOR_V10_REVIEW=true
+CURRENT_PHASE=O7-E V10-F1 judge-only measurement recovery 已交付（MEASUREMENT_NOT_RECOVERABLE 分支）, 待 Reviewer 裁定
+CURRENT_REVIEW_STATUS=V10_REVIEW=MEASUREMENT_RECOVERY_REQUIRED（V10_F1_AUTHORIZED=true; production 冻结确认干净; frozen gate 工件保留; scholarly quality 双向 NOT_ESTABLISHED）→ F1 执行: 根因 CONFIRMED（1301 内容过滤入档）+ 恢复不可行（平台级过滤, 触发文本=被测文本）→ MEASUREMENT_NOT_RECOVERABLE / READY_FOR_V10_F1_REVIEW=true
 BASE_SHA=75e5bcea6497b36695015d389dc2d578d722d9f9（V10 授权基线 = V9-F5-R3 ARCHIVE）
 QUALIFICATION_HEAD=51aed14caabe8f5a8297c36f24fdbed12579b84e（manifest+provenance 冻结, docs-only）
-NEXT_ACTION=等 Reviewer V10 裁定; 两处 FAIL 性质迥异: ①REQUIRED_DIMENSION_MISSING_SCORE=1 纯 judge infra（bigmodel 1301 内容过滤对 V10-14 judge 输入确定性 400, 2 轮×3 票×3 尝试+手工复现同因; 非 case 质量信号; V9-F3 先例=judge-only measurement recovery）; ②HISTORICAL_DISCIPLINE_REQUIRED_MEAN 3.385<3.40（真实差 0.015, 若 V10-14 补判可能移动均值）; 不可自行补修, 由 Reviewer 决定 F-phase
+NEXT_ACTION=等 Reviewer F1 裁定（其预告分支: 不可恢复 → V10 正式记为 MEASUREMENT_INVALID/NOT_RECOVERABLE, 13-case partial mean 不当正式 FAIL; 之后 Reviewer 决定是否需要新 fresh qualification）
+F1_FACTS=根因 CONFIRMED: 触发文本=斯密「中国地震」段落（81 字, answer 本体+replay window 均含; answer 单独探测即 400/1301）; coding-plan 等价端点 trivial 探测 200 但 answer 探测同 400/1301 → 平台级过滤; 4 条恢复路径全部违反冻结或不可行; 39 票 13 case 原样; V10_QUALIFICATION_SUMMARY/FINAL_GATE 原文件未动; 证据=V10_F1_JUDGE_FAILURE_EVIDENCE.json + V10_F1_RECOVERY_ATTEMPT_LOG.json
 V10_VERDICT=DELIVERY_GATE=PASS（14/14 发布, repair 7/7 收敛, TERMINAL_PENDING=0, ABORTS=0, 引文/引号零违例, LP_ANCHOR=1.0, COVERAGE=1.0）; SCHOLARLY: applicable_mean=3.646, textual=4.0, argument=3.667, interpretive=3.571, historical=3.385(<3.40), literature=4.0; MEDIAN_LT_2=0; FATAL 全零; 语义守恒 PASS 全零; judge 57 呼叫 39 有效票（13/14 case）; V10-14=bigmodel 1301
 V10_MANIFEST=docs/evidence/V10_FRESH_QUALIFICATION_MANIFEST.json（14 case: 恩培多克勒/塞克斯都/库萨/斯宾诺莎V/维柯/谢林/戴维森/威廉斯/洪堡/郭象/记忆哲学争论/伊本·西那/西田（降级）/斯密引文）
 V10_FRESHNESS=193 prior questions, max_sim<=0.2386 < 0.45, PREVIOUSLY_CONSUMED=0
