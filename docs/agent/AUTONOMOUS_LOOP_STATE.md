@@ -99,3 +99,13 @@ O9_BLOCKERS=①OpenAlex B 腿: 共享出口 IP 日配额耗尽（429, X-RateLimi
 O9_BASELINE=Crossref: rel 0.89 / DOI 1.00 / abstract 0.26 / meta 0.79 / lat 1.6s; 分类别: 西文 1.00 争议 1.00 罕见 0.97 中文 0.817 跨语言 0.65
 O9_CONDITIONS=用户提供 MetaSo API key（metaso.cn/search-api/api-keys）→ 同集补测 D/E; 判准=中文/跨语言 rel 或可读证据率 ≥10pp 稳定提升且无恶化; 集成形态=条件路由 provider（metaso_chat 不路由）
 ```
+
+## O9 裁定与 R1 进行中（2026-09-12）
+
+```
+O9_VERDICT=USER_DECISION_REQUIRED（REASON=METASO_CREDENTIAL_REQUIRED）; 合同审计 PASS / queryset 冻结 PASS / Crossref raw run PASS
+O9_R1_TASK=Provider Comparison Completion: ①provider-blind 分级 relevance rubric（2/1/0, judge temp=0, 不暴露 provider; 旧词元命中法已废 OLD_LEXICAL_RELEVANCE_RETIRED=true）②OpenAlex 恢复后补跑 B/C ③MetaSo D/E（若 METASO_AUTH_READY=true）; 决策规则: INTEGRATE=跨场景稳定净增益 / CONDITIONAL=某场景 ≥10pp 实测优势且无恶化 / REJECT=无增益或代价抵消
+HUMAN_GATE=MetaSo credential: 用户本地配置 key（不发给 Reviewer）→ METASO_AUTH_READY=true; 或拒绝 → METASO_AUTH_DECLINED=true（Reviewer 按部署约束收 operational REJECT）
+R1_PROGRESS=grading rubric 已冻结; A(Crossref) 离线重评分完成: 30/30, 300 条 graded judgments, 均值 0.82/2（直接相关 25%/不相关 43%）——证实旧词元命中法虚高（0.89→实际 0.41 归一化）; B/C 待 OpenAlex 配额恢复（automation-736c10a1 已调度 +9.5h）; D/E 待用户 gate
+O9_R1_RECEIPT_FIELDS=A_RELEVANCE 已有(graded); B/C/D/E 待补; DECISION 三选一在全部腿齐后按 §4 规则产出
+```
