@@ -109,3 +109,13 @@ HUMAN_GATE=MetaSo credential: 用户本地配置 key（不发给 Reviewer）→ 
 R1_PROGRESS=grading rubric 已冻结; A(Crossref) 离线重评分完成: 30/30, 300 条 graded judgments, 均值 0.82/2（直接相关 25%/不相关 43%）——证实旧词元命中法虚高（0.89→实际 0.41 归一化）; B/C 待 OpenAlex 配额恢复（automation-736c10a1 已调度 +9.5h）; D/E 待用户 gate
 O9_R1_RECEIPT_FIELDS=A_RELEVANCE 已有(graded); B/C/D/E 待补; DECISION 三选一在全部腿齐后按 §4 规则产出
 ```
+
+## 主线修正（2026-09-12 用户主线修正令）
+
+```
+ROADMAP_V2=O8 Audit(PASS) → O9 UI/UX Design → O10 Core Repair+Requalification → O11 Adaptive Reader → O12 Persistent Conversation → O13 Integration & UX Polish → O14 Production Release Gate → PHIAGENT 1.0
+METASO_EXPERIMENT=DEFERRED_OPTIONAL（BLOCKS_MAINLINE=false; USER_DECISION_REQUIRED=false; OpenAlex/MetaSo 阻断不再影响主线; 原 O9 MetaSo 轮产出保留为 evidence, credential gate 取消）
+O8_ISSUE_LEDGER=docs/evidence/O8_FINAL_ISSUE_LEDGER.json/.md（15 项: P0×3 过度检索/重复收敛/工具纪律; P1×7 debate崩溃/向量地板/FULL_REWRITE parity/repair瞬态/比较类越库引用/second-hop/paper_review 路由; P2×5 空输入默认/空结果语义/LC元数据/410对账/孤儿——全部 OWNER=O10（除 P2-03/04=O10_POLICY, P2-05=O13/O14））
+O9_UI_DELIVERY=84c31fa0f（docs/ui 六件套 + agent-app 实现: DepthControls/EpStarter/SourceDrawer/分层来源/研究相位/响应式; UAT 十场景全 PASS desktop+mobile; 零后端改动）
+O9_FINAL_GATE=UI_AUDIT/IA/INTERACTION/DESIGN_SYSTEM 完整 ✓; DESKTOP_UAT=PASS ✓; MOBILE_UAT=PASS ✓; CITATION/PRIMARY_TEXT/RESEARCH/EVERYDAY_UX=PASS ✓; BACKEND_CORE_CHANGED=false ✓ → 待 Reviewer 终签
+```
