@@ -6,10 +6,14 @@
 
 ```
 CURRENT_REVIEWER=GPT-5.6 Sol
-CURRENT_PHASE=O8-R1 correction（Reviewer PATCH_REQUIRED 裁定四件事已全部执行: ①audit 事实纠正 ②5 个 stale routes 守卫基线 554d62fac→46e44c526 ③AUTONOMOUS_HANDOFF_CONTRACT 落地 ④O8-R2 预授权固化）
-CURRENT_REVIEW_STATUS=O8 静态盘点 ACCEPTED_AS_FOUNDATION; O8_R1_COMPLETE=false（correction patch 审查中）; O8_R2_AUTHORIZED=false→PASS 后自动 true
-BASE_SHA=46e44c52682d1b6cb5769cfcd0ea98feea2524c8（Reviewer 指定 O8-R1 patch BASE = O8 静态盘点交付 commit）
-NEXT_ACTION=提交 O8-R1 correction Final Receipt → 等 Reviewer verdict → PASS 则立即自动进入 O8-R2（72-case capability benchmark + 32-tool Mechanical/Agentic Gate + efficiency audit + LOCAL_CURATED census + conversationSync ownership audit + primary-text coverage census; 真实 API 调用已授权, 仅限现有 credentials/quota）→ PATCH 则原样执行
+CURRENT_PHASE=O8-R2 执行审计已交付（commit fc06c79c1: 72-case benchmark + 32-tool 双 Gate + census×2 + repair-safety + ownership + FINAL_REPORT P0/P1/P2/WONT_FIX）, 待 Reviewer 审阅
+CURRENT_REVIEW_STATUS=O8_R1=PASS（correction+handoff lock 双 PASS）; O8-R2 测量全部产自 clean isolated worktree @ 63732e09d（porcelain=='' 验证; 主树 dirty manifest diff 未触碰）
+BASE_SHA=63732e09da98363b15b89e3954f47842c2c6c563（REVIEWED_BASE, Reviewer 指定）
+NEXT_ACTION=提交 O8-R2 Final Receipt → 等 verdict → PASS 则 O8 完成 → 自动进入 O9（MetaSo/Research Retrieval: architecture investigation + API contract audit + retrieval benchmark + provider comparison + integration decision, 结论限 INTEGRATE/CONDITIONAL_PROVIDER/REJECT）
+O8R2_FACTS=bench 72/72 零运行错误, 69/72 发布（3 例发布门干净拒绝=诚实合同行为）; judge 72/72 零错误（glm-4.6 temp=0 固定 7 轴 12 维）; 弱项 efficiency 0.89 / retrieval_strategy 1.61 / tool_selection 2.22; 793 重复调用/69 案; 简单题 8.83 工具调用; 强项 expression 3.76 / explanation 3.67 / argument 3.58; Mechanical 4 真实缺陷（debate speakers 数组崩溃 agent_tools_memory.py:520 / 向量检索无空查询守卫+0.35 地板 / 空输入默认柏拉图 / 空结果语义缺失）; FULL_REWRITE 无安全 parity（唯一调用点 _lp_meta 守卫）, LOCAL_PATCH 门验证有效; census: catalog 410 vs tracked manifest 409（只报告不修）, LC 587 条摘要覆盖 13.5%, 77 txt 占位; ownership: 6 孤儿全零引用 DELETE_CANDIDATE（本轮不删）; 遥测 453 LLM/1132 tool/11.41M tokens/TOKEN_COST=null
+O8R2_TOPOLOGY=63732e09d(Handoff Lock PASS) → dcfe15216(caseset 冻结) → b622b0f0b(评测工具集) → fc06c79c1(交付)=HEAD
+DELIVERY_R2_FILES=O8_R2_CASESET/CAPABILITY_RESULTS/EFFICIENCY/TOOL_AUDIT/RETRIEVAL_CENSUS/REPAIR_SAFETY_AUDIT/INTERACTION_OWNERSHIP.json + O8_R2_FINAL_REPORT.md
+ISOLATION_RULE=O8-R2 测量仅产自 isolated worktree（/Users/sen/DeepPhilosophy-o8r2, detached）; 主工作树用户 dirty diff 保持原样; DELIVER 经 ff 合并回主分支
 REVIEWER_CHANNEL_RULE=精确锁定 REVIEWER_CONVERSATION_ID=/c/6aa5243e-52cc-83ee-b173-e6866a00313d（「继续PhiAgent搭建」, REVIEWER_CONVERSATION_LOCKED=true）; 始终直接打开/复用该 ID; 禁止 Recents 最新路由/按标题猜会话/自动切新会话; 无法访问该会话 → HUMAN_DECISION_REQUIRED REASON=LOCKED_REVIEWER_CONVERSATION_UNAVAILABLE
 V12_CLASSIFICATION_FIXED=V12-08=REPAIR_SAFETY_ENGINEERING_GAP / V12-14=HONEST_CAPABILITY_CORPUS_LIMITATION / V12-09=REPAIR_CONVERGENCE_CITATION_QUOTE_RELIABILITY_GAP; 「非工程缺陷」blanket claim 已删除
 REPAIR_SAFETY_FACTS=Local Patch post-patch 语义安全门 evaluate_repair_safety（engine_langgraph.py:1488, 调用点 :2378）: AMBIGUOUS fail-closed / QUOTE+CITATION+BIBLIOGRAPHIC 家族 GENUINELY_NEW 拒绝 / 拒绝即回滚 pre-patch; 真实 gap = FULL_REWRITE / non-local-patch repair 无等价 global semantic safety + rollback parity（O8-R2 测量, O10 修复）
