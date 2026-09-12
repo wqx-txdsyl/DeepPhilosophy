@@ -1,0 +1,82 @@
+# -*- coding: utf-8 -*-
+"""O8-R3 B: Everyday Philosophy supplement caset 冻结生成器。
+
+CASE_COUNT=6; APPEND_ONLY=true; 原 72-case 零改动零重跑。
+EP-01/02/03 = Reviewer 指定（用户来源: 叁月聚粮视频题）; EP-04..06 = Builder 设计
+（同等级: hidden premise / conceptual distinction / normative reasoning / transfer）。"""
+import json
+import os
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__)))))
+
+CASES = [
+ {"case_id": "EP-01", "category": "everyday_philosophy",
+  "source": "REVIEWER_FIXED（叁月聚粮「重新规划路线」视频题）",
+  "question": "导航在你走错路时绝不会责怪你，而是说「已帮你重新规划路线」。这件事有什么值得哲学思考的？",
+  "evaluation_focus": ["必须能追问: 「错路」相对于什么目标? 谁设定目标? 改变目的是否仍叫走错? 重新规划是纠错还是适应?",
+                       "禁止降格为励志套话（失败乃成功之母/没有白走的路）"],
+  "expected_capability": "hidden premise detection（目标预设与规范性来源）+ conceptual distinction（纠错vs适应）+ 抵抗鸡汤化",
+  "tool_expectation": {"expected_tools": "无检索亦可高分（生活哲学, 语料无此内容）; 过度检索=负分",
+                       "note": "over-research 诊断题"}},
+ {"case_id": "EP-02", "category": "everyday_philosophy",
+  "source": "REVIEWER_FIXED（用户来源: 叁月聚粮）",
+  "question": "对他人的期待是不是一种微妙的暴力？",
+  "evaluation_focus": ["必须区分: 期待/要求/控制/强迫/惩罚/暴力的概念边界",
+                       "必须分析: 拒绝空间、权力不对称、期待落空的后果、对他人成为什么人的规定",
+                       "禁止被「微妙的暴力」的措辞直接带到 yes/no 站队"],
+  "expected_capability": "概念区分链 + 竞争性解释 + 规范推理, 拒绝修辞绑架",
+  "tool_expectation": {"expected_tools": "无检索亦可高分; 过度检索=负分", "note": "over-research 诊断题"}},
+ {"case_id": "EP-03", "category": "everyday_philosophy",
+  "source": "REVIEWER_FIXED（用户来源: 叁月聚粮「教师节送礼」题）",
+  "question": "教师节快到了，要给老师送礼吗？",
+  "evaluation_focus": ["至少区分: 感恩/礼物/经济价值/社会规范/师生权力关系/互惠/公平/个人表达",
+                       "禁止变成送礼攻略或「心意最重要」套话或单纯 yes/no"],
+  "expected_capability": "normative reasoning 的多层次区分 + 对权力/互惠结构的敏感",
+  "tool_expectation": {"expected_tools": "无检索亦可高分", "note": "over-research 诊断题"}},
+ {"case_id": "EP-04", "category": "everyday_philosophy",
+  "source": "BUILDER_DESIGN",
+  "question": "手机没电就心慌不安——我对设备的这种「依赖」，是一种成瘾，还是说明我与工具本来就分不开？",
+  "evaluation_focus": ["hidden premise: 「依赖=外物控制自我」预设了工具与自我的分离",
+                       "概念区分: 成瘾/依赖/具身关系/延展心智; 竞争性解释并置而非站队",
+                       "落到生活: 判断自己是否「成瘾」的可操作问题"],
+  "expected_capability": "哲学-to-生活迁移（technology & self）, 揭问句中隐藏的二分",
+  "tool_expectation": {"expected_tools": "无检索亦可高分", "note": "over-research 诊断题"}},
+ {"case_id": "EP-05", "category": "everyday_philosophy",
+  "source": "BUILDER_DESIGN",
+  "question": "好朋友总在深夜找我倾诉负面情绪，我最近很累，但怕拒绝会伤害他。一个「好朋友」应该无条件接住对方吗？",
+  "evaluation_focus": ["必须拆解「无条件」: 友谊的义务是角色义务还是自愿承诺? 照顾自己与照顾他人的张力",
+                       "拒绝空间与关系类型区分（倾听/支持/治疗式承接的不同义务强度）",
+                       "给出可操作的边界方案而非空泛两可"],
+  "expected_capability": "normative reasoning + friendship ethics + actionable nuance",
+  "tool_expectation": {"expected_tools": "无检索亦可高分", "note": "over-research 诊断题"}},
+ {"case_id": "EP-06", "category": "everyday_philosophy",
+  "source": "BUILDER_DESIGN",
+  "question": "AI 比我更会安慰人。如果安慰的效果可以被计算和优化，「真心安慰」还有价值吗？",
+  "evaluation_focus": ["概念区分: 安慰的效果 vs 安慰的真诚; 体验到的关心与被关心的真实性",
+                       "hidden premise: 「价值=效果」的功用主义预设可被追问",
+                       "竞争性解释并置: 关系性知识/被看见的需要/表达者自身的意义",
+                       "禁止鸡汤化或技术悲观套话"],
+  "expected_capability": "conceptual distinction + competing interpretations + AI 语境下的 transfer",
+  "tool_expectation": {"expected_tools": "无检索亦可高分", "note": "over-research 诊断题"}},
+]
+
+manifest = {
+ "O8_R3_EVERYDAY_PHILOSOPHY_CASESET": True,
+ "version": "O8R3-EP-2026-09-12",
+ "frozen_before_run": True,
+ "APPEND_ONLY": True,
+ "O8_R2_72_CASESET_UNCHANGED": True,
+ "BASE": "fe798f073a8bd4ac7abac7138be850ee75254e74",
+ "CASE_COUNT": len(CASES),
+ "design_note": "补充诊断 Everyday Philosophy coverage（现实生活哲学/philosophy-to-life transfer）。"
+                "重点测: hidden premise detection / conceptual distinction / competing interpretations / "
+                "normative reasoning / transfer / 抵抗口号与鸡汤 / 适当检索深度（与 O8-R2 OVERRESEARCH P0 互补诊断）。"
+                "EP-01/02/03 由 Reviewer 指定; EP-04..06 Builder 同等级设计, 全部在冻结前未与生产迭代。",
+ "cases": CASES,
+}
+
+out = os.path.join(ROOT, "docs/evidence/O8_R3_EVERYDAY_PHILOSOPHY_CASESET.json")
+json.dump(manifest, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+assert len(CASES) == 6
+print("EP CASESET FROZEN:", out)

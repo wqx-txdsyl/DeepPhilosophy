@@ -1,0 +1,1085 @@
+{
+ "O8_R3_AGENTIC_MATRIX": true,
+ "TOOL_COUNT": 32,
+ "AGENTIC_MATRIX_ROWS": 32,
+ "AGENTIC_MATRIX_COLUMNS": 6,
+ "columns": [
+  "SHOULD_CALL",
+  "SHOULD_NOT_CALL",
+  "MULTI_TOOL",
+  "BAD_FIRST_RESULT",
+  "DEGRADED_RESULT",
+  "FAILURE_RECOVERY"
+ ],
+ "UNJUSTIFIED_CELLS": 0,
+ "evidence_reuse_policy": "共享探针仅在能证明该工具该 gate 时引用; 每个 cell 附 EVIDENCE_REF+RATIONALE; 真实 FAIL 不改 N/A",
+ "preserved_fails": [
+  "paper_review/SHOULD_CALL",
+  "get_scholarly_source/SHOULD_CALL"
+ ],
+ "negative_probes_new": [
+  "AG-NEG-A-NOESSAY",
+  "AG-NEG-B-NOSOCRATIC",
+  "AG-NEG-C-NOTEST",
+  "AG-NEG-D-NOMULTI",
+  "AG-NEG-E-NOEXTRA"
+ ],
+ "gate_summary": {
+  "SHOULD_CALL": {
+   "PASS": 30,
+   "FAIL": 2,
+   "N/A": 0
+  },
+  "SHOULD_NOT_CALL": {
+   "PASS": 32,
+   "FAIL": 0,
+   "N/A": 0
+  },
+  "MULTI_TOOL": {
+   "PASS": 25,
+   "FAIL": 0,
+   "N/A": 7
+  },
+  "BAD_FIRST_RESULT": {
+   "PASS": 3,
+   "FAIL": 0,
+   "N/A": 29
+  },
+  "DEGRADED_RESULT": {
+   "PASS": 4,
+   "FAIL": 0,
+   "N/A": 28
+  },
+  "FAILURE_RECOVERY": {
+   "PASS": 4,
+   "FAIL": 0,
+   "N/A": 28
+  }
+ },
+ "matrix": {
+  "advisor_council": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.advisor_council=true; AG-advisor_council-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "全轨迹扫描(72 bench+38 agentic+5 NEG): 仅其专属探针触发 1 次, 其余题目零误触发",
+    "RATIONALE": "负向证据=全 run 轨迹扫描的零误触发记录"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-advisor_council-SHOULDCALL(检索书目链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "agent_council": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.agent_council=true; AG-agent_council-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-D-NOMULTI",
+    "RATIONALE": "单一哲学家知识题下未触发辩论/对质/竞技/扮演/比较"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-agent_council-SHOULDCALL(多工具协作链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "analyze_argument": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.analyze_argument=true; AG-analyze_argument-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-A..E 五探针零触发+全轨迹扫描(仅专属探针与 paper_review 链内合法出现)",
+    "RATIONALE": "只要分析不要评审时未启动 paper_review; analyze_argument 仅作为链中步骤合法出现"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-analyze_argument-SHOULDCALL(concept_trace/get_book_detail 链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "compare_views": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.compare_views=true; AG-compare_views-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-D-NOMULTI",
+    "RATIONALE": "单一哲学家知识题下未触发辩论/对质/竞技/扮演/比较"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-compare_views-SHOULDCALL(检索→比较脚手架链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "concept_trace": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.concept_trace=true; AG-concept_trace-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-concept_trace-SHOULDCALL(concept_trace→get_chapter 链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "conceptual_map": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.conceptual_map=true; AG-conceptual_map-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-E-NOEXTRA",
+    "RATIONALE": "仅要求文字说明时未生图/画图/实验/时间线"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-conceptual_map-SHOULDCALL(concept_trace→map 链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "confrontation": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.confrontation=true; AG-confrontation-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-D-NOMULTI",
+    "RATIONALE": "单一哲学家知识题下未触发辩论/对质/竞技/扮演/比较"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-confrontation-SHOULDCALL(检索+concept_trace+章节链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "dialectic": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.dialectic=true; AG-dialectic-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-E-NOEXTRA",
+    "RATIONALE": "仅要求文字说明时未生图/画图/实验/时间线"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-dialectic-SHOULDCALL(search/scholarly/get_chapter 链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "essay_outline": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.essay_outline=true; AG-essay_outline-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-A-NOESSAY",
+    "RATIONALE": "只要分析不要文章的题面下未生成文章/大纲/评审"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-essay_outline-SHOULDCALL(检索→大纲链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "generate_image": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.generate_image=true; AG-generate_image-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-E-NOEXTRA",
+    "RATIONALE": "仅要求文字说明时未生图/画图/实验/时间线"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-generate_image-SHOULDCALL(先检索语境后生图)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "get_book_detail": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.get_book_detail=true; AG-get_book_detail-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-get_chapter-SHOULDCALL(search→detail→chapter 链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-RECOVERY",
+    "RATIONALE": "失败后恢复到正确路径（改写/换源/如实回退）"
+   }
+  },
+  "get_chapter": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.get_chapter=true; AG-get_chapter-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-get_chapter-SHOULDCALL",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-RECOVERY(定位后读取的纠错链)",
+    "RATIONALE": "失败后恢复到正确路径（改写/换源/如实回退）"
+   }
+  },
+  "get_philosopher": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.get_philosopher=true; AG-get_philosopher-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-MULTI2",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "get_scholarly_source": {
+   "SHOULD_CALL": {
+    "verdict": "FAIL",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.agentic.get_scholarly_source-SHOULDCALL",
+    "RATIONALE": "O8-R2 实测未调用目标工具（paper_review 被 analyze_argument 替代; get_scholarly_source 停在 search_scholarship 未取记录）——保留真实 FAIL, O10 修复对象"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "依赖 search_scholarship 的记录 id——链式语义体现在 search_scholarship→本工具, 已由该工具 cell 覆盖"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "get_school": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.get_school=true; AG-get_school-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-C-NOTEST(get_school→search_books 链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "history_timeline": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.history_timeline=true; AG-history_timeline-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-E-NOEXTRA",
+    "RATIONALE": "仅要求文字说明时未生图/画图/实验/时间线"
+   },
+   "MULTI_TOOL": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "单源时间线生成(流派/哲人库内数据), 无链式协作语义"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "life_coach": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.life_coach=true; AG-life_coach-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-C-NOTEST",
+    "RATIONALE": "中性知识题下未启动测试/画像/疏导"
+   },
+   "MULTI_TOOL": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "独立疏导流程, 无检索/多工具链语义"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "list_books": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.list_books=true; AG-list_books-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-list_books-SHOULDCALL(list_books↔query_database 协作)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-BADFIRST",
+    "RATIONALE": "首次结果弱/失败后发生改写检索或换源"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED(作者过滤无命中)",
+    "RATIONALE": "部分/空结果场景下行为正确（如实降级, 无伪造）"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "paper_review": {
+   "SHOULD_CALL": {
+    "verdict": "FAIL",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.agentic.paper_review-SHOULDCALL",
+    "RATIONALE": "O8-R2 实测未调用目标工具（paper_review 被 analyze_argument 替代; get_scholarly_source 停在 search_scholarship 未取记录）——保留真实 FAIL, O10 修复对象"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-A-NOESSAY",
+    "RATIONALE": "只要分析不要文章的题面下未生成文章/大纲/评审"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-paper_review-SHOULDCALL(analyze_argument/search/scholarly 链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "philosopher_debate": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.philosopher_debate=true; AG-philosopher_debate-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-D-NOMULTI",
+    "RATIONALE": "单一哲学家知识题下未触发辩论/对质/竞技/扮演/比较"
+   },
+   "MULTI_TOOL": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "辩论会话自带多轮编排, 不与其他工具链式协作"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "phti_test": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.phti_test=true; AG-phti_test-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-C-NOTEST",
+    "RATIONALE": "中性知识题下未启动测试/画像/疏导"
+   },
+   "MULTI_TOOL": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "交互式测试启动器, 单调用即完整交付, 无链式协作语义"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "profile": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.profile=true; AG-profile-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-C-NOTEST",
+    "RATIONALE": "中性知识题下未启动测试/画像/疏导"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-profile-SHOULDCALL(profile→get_school/list_books 书目推荐链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "query_database": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.query_database=true; AG-query_database-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-list_books-SHOULDCALL(list_books↔query_database 协作)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED(key 无命中)",
+    "RATIONALE": "部分/空结果场景下行为正确（如实降级, 无伪造）"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "query_graph": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.query_graph=true; AG-query_graph-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-MULTI2(query_graph→get_philosopher→search_books)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "role_play": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.role_play=true; AG-role_play-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-D-NOMULTI",
+    "RATIONALE": "单一哲学家知识题下未触发辩论/对质/竞技/扮演/比较"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-agent_council-SHOULDCALL(role_play 与深哲协作链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "school_arena": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.school_arena=true; AG-school_arena-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-D-NOMULTI",
+    "RATIONALE": "单一哲学家知识题下未触发辩论/对质/竞技/扮演/比较"
+   },
+   "MULTI_TOOL": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "竞技场自成编排(两轮对抗+裁判), 不链式协作"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "search_books": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.search_books=true; AG-search_books-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-search_books-SHOULDCALL",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-BADFIRST(冷门主题三次改写检索+list_books 辅助+get_chapter)",
+    "RATIONALE": "首次结果弱/失败后发生改写检索或换源"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED(多路检索确认不在库→诚实降级)",
+    "RATIONALE": "部分/空结果场景下行为正确（如实降级, 无伪造）"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-RECOVERY(定位后读取的纠错链)",
+    "RATIONALE": "失败后恢复到正确路径（改写/换源/如实回退）"
+   }
+  },
+  "search_scholarship": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.search_scholarship=true; AG-search_scholarship-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-MULTI1",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "socratic_tutor": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.socratic_tutor=true; AG-socratic_tutor-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-B-NOSOCRATIC",
+    "RATIONALE": "用户明确拒绝引导式提问时未进入苏格拉底模式"
+   },
+   "MULTI_TOOL": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "单问题逐轮引导协议, 每调用一问, 无链式语义"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "thought_experiment": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.thought_experiment=true; AG-thought_experiment-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-E-NOEXTRA",
+    "RATIONALE": "仅要求文字说明时未生图/画图/实验/时间线"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-thought_experiment-SHOULDCALL(concept_trace/get_book_detail 语境链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  },
+  "websearch": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.websearch=true; AG-websearch-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
+    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-MULTI1(检索→章节→学术文献链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED(检索失败后改用 websearch=换源行为)",
+    "RATIONALE": "首次结果弱/失败后发生改写检索或换源"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED(网络不可达→如实披露)",
+    "RATIONALE": "部分/空结果场景下行为正确（如实降级, 无伪造）"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED(网络失败→披露→回落语料说明)",
+    "RATIONALE": "失败后恢复到正确路径（改写/换源/如实回退）"
+   }
+  },
+  "write_essay": {
+   "SHOULD_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.write_essay=true; AG-write_essay-SHOULDCALL",
+    "RATIONALE": "探针题自然触发且轨迹含目标工具"
+   },
+   "SHOULD_NOT_CALL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-NEG-A-NOESSAY",
+    "RATIONALE": "只要分析不要文章的题面下未生成文章/大纲/评审"
+   },
+   "MULTI_TOOL": {
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-write_essay-SHOULDCALL(write_essay→get_chapter 原文支撑链)",
+    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+   },
+   "BAD_FIRST_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+   },
+   "DEGRADED_RESULT": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+   },
+   "FAILURE_RECOVERY": {
+    "verdict": "N/A",
+    "EVIDENCE_REF": "-",
+    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+   }
+  }
+ }
+}
