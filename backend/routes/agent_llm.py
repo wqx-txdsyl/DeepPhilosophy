@@ -31,7 +31,10 @@ def _load_env():
                 os.environ.setdefault(k.strip(), v.strip())
 _load_env()
 API_URL = os.environ.get("DP_API_URL", "https://api.deepseek.com").rstrip("/")
-MODEL = os.environ.get("AGENT_MODEL", "deepseek-chat")
+# V12-M1: canonical production model = deepseek-flash（DeepSeek V4.1 Flash;
+# 旧 deepseek-v4-flash 为临时兼容 alias, 已服务端路由）。repo 默认即 canonical
+# （方案 A）; 部署侧仍可用 AGENT_MODEL 环境变量覆盖（方案 B, 需版本化非秘密配置）。
+MODEL = os.environ.get("AGENT_MODEL", "deepseek-flash")
 _IS_ZHIPU = "bigmodel.cn" in API_URL or "zhipu" in API_URL
 API_KEY = (os.environ.get("LLM_API_KEY")
            or (os.environ.get("ZHIPU_API_KEY") if _IS_ZHIPU else os.environ.get("DEEPSEEK_API_KEY"))
