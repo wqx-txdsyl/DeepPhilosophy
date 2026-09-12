@@ -89,3 +89,13 @@ O9_TASK=MetaSo/Research Retrieval（BASE=0663f8999; 30 题 5 类冻结 queryset;
 O9_DELIVERABLES=O9_ARCHITECTURE_AUDIT.md / O9_API_CONTRACT.json / O9_QUERYSET.json / O9_PROVIDER_RESULTS.json / O9_COMPARISON.json / O9_INTEGRATION_DECISION.md
 O8_LEGACY_TO_O10=过度检索/重复调用/工具选择纪律(P0) + debate崩溃/向量地板/repair瞬态+FULL_REWRITE parity/比较类越库引用(P1) + 空输入默认/空结果语义/LC元数据/409对账/孤儿(P2)——O9 禁止趁机修
 ```
+
+## O9 交付（2026-09-12）
+
+```
+O9_COMMIT=aaf071f8b（合同审计/30题queryset/基准/对比/CONDITIONAL决定; pytest 952/952）
+O9_DECISION=CONDITIONAL_PROVIDER（DECISION_EVIDENCE_COMPLETE=false）
+O9_BLOCKERS=①OpenAlex B 腿: 共享出口 IP 日配额耗尽（429, X-RateLimit-Remaining: 0, Retry-After 31830s）→ 恢复后重测 B/C; ②MetaSo D/E: AUTHENTICATION_REQUIRED（无 credential; 无凭证实测 JSON-RPC -32603 已归档）→ credential 获取=用户决策项
+O9_BASELINE=Crossref: rel 0.89 / DOI 1.00 / abstract 0.26 / meta 0.79 / lat 1.6s; 分类别: 西文 1.00 争议 1.00 罕见 0.97 中文 0.817 跨语言 0.65
+O9_CONDITIONS=用户提供 MetaSo API key（metaso.cn/search-api/api-keys）→ 同集补测 D/E; 判准=中文/跨语言 rel 或可读证据率 ≥10pp 稳定提升且无恶化; 集成形态=条件路由 provider（metaso_chat 不路由）
+```
