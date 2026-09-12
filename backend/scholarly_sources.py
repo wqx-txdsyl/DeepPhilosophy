@@ -839,6 +839,20 @@ def _reformulate_query(q):
     return None
 
 
+# V9-F5-R3 §1: readability rank（FULL_TEXT_READ > FULL_TEXT_AVAILABLE >
+# ABSTRACT_AVAILABLE > METADATA_ONLY）; cited_by 仅作同层级 tie-break,
+# Python sort 稳定 → 同分保持 dedup 插入序
+_ACCESS_RANK = {"FULL_TEXT_READ": 3, "FULL_TEXT_AVAILABLE": 2,
+                "ABSTRACT_AVAILABLE": 1, "METADATA_ONLY": 0}
+
+
+def _readability_key(r):
+    level = (r.get("access_level") or (r.get("access") or {}).get("level")
+             or "METADATA_ONLY")
+    return (-_ACCESS_RANK.get(level, 0),
+            -(r.get("provider_records", [{}])[0].get("cited_by") or 0))
+
+
 def _latin_variant_from_local(q, limit=24):
     """V8-F2-R1 §3: 中文 query 的 bilingual variant——用 q 的 CJK bigram 匹配
     本地 curated registry 记录（canonical/alias 元数据）, 取命中记录的 latin
@@ -890,6 +904,14 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
     relevant = [r for r in canon if _is_relevant(q_latin, q_bigrams, r)]
     dropped = len(canon) - len(relevant)
 
+    # V9-F5-R3 §2: original-local relevance gate 收敛为一次（q 无可用 token 时
+    # _is_relevant 保守放行, 与旧双过滤语义一致）; 先于 reformulation 取得,
+    # 供 variant-local append 防重——同一 registry 记录已被 original-local
+    # 发现时不得经 variant 路径二次入列, 否则 dedup 会把它误标为
+    # LOCAL_CURATED+LIVE（离线冒充实时, 违反 O7-D §26-27）
+    local = [r for r in _local_results(q, limit, strict_only=True)
+             if _is_relevant(q_latin, q_bigrams, r)]
+
     # 一次有界 reformulation: 没有 relevant live records 即触发（V8-F2-R1 §3）——
     # 覆盖 provider 返回 0 条、全离题、单 provider 失败而另一 provider 空手三种形态;
     # variant 优先 latin token, 中文 query 走本地 canonical/alias 元数据的
@@ -920,30 +942,21 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
             reformulation = {"triggered": True, "variant_query": variant,
                              "recovered_relevant": len(relevant),
                              "local_variant_count": len(local_variant)}
-            # variant-local relevant 合并进 relevant
+            # variant-local relevant 合并进 relevant（防重: relevant 与
+            # original-local 均已含该 id 时跳过）
+            seen_ids = ({x["source_record_id"] for x in relevant}
+                        | {x["source_record_id"] for x in local})
             for lr in local_variant:
-                if lr["source_record_id"] not in {x["source_record_id"] for x in relevant}:
+                if lr["source_record_id"] not in seen_ids:
                     lr.setdefault("retrieval_origin", "LOCAL_CURATED_VARIANT")
                     relevant.append(lr)
 
-    canon = relevant
-    # V9-F5-R1 §4: readability-aware ordering（relevance 已通过后排序）
-    _ACCESS_RANK = {"FULL_TEXT_READ": 3, "FULL_TEXT_AVAILABLE": 2,
-                    "ABSTRACT_AVAILABLE": 1, "METADATA_ONLY": 0}
-    canon.sort(key=lambda r: (
-        -_ACCESS_RANK.get(r.get("access_level") or
-                          (r.get("access") or {}).get("level") or "METADATA_ONLY", 0),
-        -(r.get("provider_records", [{}])[0].get("cited_by") or 0)))
-    # V9-F5-R1 §3: LOCAL_CURATED 参与 bounded reformulation（与 live 对等）
-    local_raw = _local_results(q, limit, strict_only=True)
-    if local_raw and (q_latin or q_bigrams):
-        local_raw = [r for r in local_raw if _is_relevant(q_latin, q_bigrams, r)]
-    if local_raw and (q_latin or q_bigrams):
-        local_rel = [r for r in local_raw if _is_relevant(q_latin, q_bigrams, r)]
-        local = local_rel
-    else:
-        local = local_raw
-    merged = _dedup_local_live(local, canon)[:limit]
+    # V9-F5-R3 §1: readability ordering 作用于最终 merged list——
+    # relevance-filtered local + live/variant-local → dedup → 全局排序 → limit;
+    # 排序只重排已过 relevance gate 的记录, 不挽回离题来源
+    merged = _dedup_local_live(local, relevant)
+    merged.sort(key=_readability_key)
+    merged = merged[:limit]
     out = {"query": q, "results": merged,
            "providers_queried": ["LOCAL_CURATED", "crossref", "openalex"],
            "errors": errors,

@@ -130,7 +130,8 @@ def stub_cache(monkeypatch):
     cache = {"searches": {}, "records": {}}
     monkeypatch.setattr(SS, "_load_cache", lambda: cache)
     monkeypatch.setattr(SS, "_save_cache", lambda: None)
-    monkeypatch.setattr(SS, "_local_results", lambda q, limit: [])
+    monkeypatch.setattr(SS, "_local_results",
+                        lambda q, limit, strict_only=False: [])
     return cache
 
 
@@ -317,7 +318,7 @@ def test_r1_chinese_query_bilingual_canonical_variant(monkeypatch, stub_cache):
     # 中文-only query 无 latin token → 经本地 canonical/alias 元数据
     # （匹配 CJK bigram 的 curated 记录的英文身份）形成英文 variant;
     # 零硬编码、零模型猜译。
-    def fake_local(q, limit=24):
+    def fake_local(q, limit=24, strict_only=False):
         rec = _mk_rec("阿伦特与艾希曼审判的当代争论 平庸之恶", "伦理学研究",
                       provider="local_curated")
         rec["authors"] = [{"name": "Hannah Arendt"}]
