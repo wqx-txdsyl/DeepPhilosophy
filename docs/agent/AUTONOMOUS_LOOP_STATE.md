@@ -68,3 +68,14 @@ DIRTY_USER_WORKTREE_MUTATION=FORBIDDEN（主工作树 pre-existing tracked diff:
 PROCEDURE=REVIEWED_HEAD=<Handoff Lock PASS 后 HEAD>; git worktree add <isolated-path> REVIEWED_HEAD; 验证 git status --porcelain == "" 且 HEAD == REVIEWED_HEAD
 MEASUREMENT_SOURCE=72-case benchmark / 32-tool audit / LOCAL_CURATED census / primary-text coverage census / efficiency measurements 全部在 clean isolated worktree 执行; 禁止用原 dirty worktree 作 formal measurement source
 ```
+
+## O8-R3-R1 Evidence Closure（2026-09-12）
+
+```
+R3_R1_COMMIT=c1aa0eb4b（EP canonical results + matrix v2 语义化 N/A + validator 215 断言全绿 + FINAL_REPORT 程序化再生）
+MATRIX_STATS=192 cells: 109 PASS / 2 FAIL（paper_review+get_scholarly_source SHOULD_CALL 真实保留）/ 81 N/A（全部 SEMANTIC+合同证据）; APPLICABLE=111
+EP_CANONICAL=O8_R3_EVERYDAY_PHILOSOPHY_RESULTS.json（6/6 发布, 0 诚实性红旗, dims 3.25-4.00, overresearch 4/6）
+JUDGE_SCHEMA_AUDIT=O8-R2 72 + EP 6 全部 7 轴 12 维键精确 → EP_REJUDGE=false
+O8_FINAL_STATUS=PASS（六条件全满足, 待 Reviewer 终签）
+NEXT=O8 终签 → O9 MetaSo/Research Retrieval
+```
