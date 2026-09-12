@@ -130,3 +130,17 @@ R1_UAT=U1-U7 全 PASS（O9_UAT.md §5）
 FRONTEND_PRODUCTION_BUILD=PASS
 O14_DEPLOYMENT_CARRYOVER=VERCEL_STATUS_FAILURE_AT_84c31fa0f（O14 处理）
 ```
+
+## O9 终签 & O10 调度（2026-09-13）
+
+```
+O9_FINAL=PASS（O9_UI_DESIGN=PASS / O9_R1_UI_WIRING=PASS; Reviewer Final Verdict 独立复核 8f529480e）
+O14_CARRYOVER=VERCEL_STATUS_FAILURE（最新 reviewed HEAD 仍 failure, 不阻断; O14 处理; 本地 production build PASS）
+O10_DISPATCH=docs/tasks/PHIAGENT_O10_CORE_REPAIR_TASK.md（原样捕获）
+O10_BASE=8f529480e3b0bdedb864da1afb5f7da83407f03b
+O10_SCOPE=修复 O8 Final Issue Ledger 全部 O10-owned 问题（P0×3 过度检索/重复收敛/工具纪律 + P1×7 + P2-01/02）→ 78-case 冻结重资格认证 → PHIAGENT_CORE_FROZEN
+O10_KEY_REQ=简单题默认不检索; 「看原典」才走 primary retrieval; 学术题才升 scholarly; exact duplicate 必阻; similar/no-new-info 必收敛; spinning 有 deterministic stop; 不得为压 TOOL_CALLS 牺牲证据需求
+O10_FINAL_FIELDS=REQUALIFICATION_CASES=78 / PHIAGENT_CORE_FROZEN / QUALITY_NON_REGRESSION / HONESTY_FATAL=0 / TOOL_COUNT=32 / UNUSED_TOOL_COUNT=0 / O9_UI_REGRESSION=false
+TOPOLOGY_NOW=…→84c31fa0f(O9 UI)→136078b9b(state)→d6054d183(R1 state)→8f529480e(R1 closeout)=REMOTE; isolated worktree /Users/sen/DeepPhilosophy-o8r2（agent-app node_modules 是指向主树 node_modules 的 symlink）
+NEXT_ACTION=执行 O10: 按 Ledger 修 P0/P1/P2(01-02) → 冻结 78-case requal queryset → 全量重资格认证 → Core Freeze → STOP_FOR_REVIEW
+```
