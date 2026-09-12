@@ -6,11 +6,11 @@
 
 ```
 CURRENT_REVIEWER=GPT-5.6 Sol
-CURRENT_PHASE=O7-E V10-F1 judge-only measurement recovery 已交付（MEASUREMENT_NOT_RECOVERABLE 分支）, 待 Reviewer 裁定
-CURRENT_REVIEW_STATUS=V10_REVIEW=MEASUREMENT_RECOVERY_REQUIRED（V10_F1_AUTHORIZED=true; production 冻结确认干净; frozen gate 工件保留; scholarly quality 双向 NOT_ESTABLISHED）→ F1 执行: 根因 CONFIRMED（1301 内容过滤入档）+ 恢复不可行（平台级过滤, 触发文本=被测文本）→ MEASUREMENT_NOT_RECOVERABLE / READY_FOR_V10_F1_REVIEW=true
+CURRENT_PHASE=O7-E V11 fresh formal qualification 已交付（完整有效测量, frozen gate=DELIVERY_GATE_NOT_MET）, 待 Reviewer 裁定
+CURRENT_REVIEW_STATUS=V10_F1_REVIEW=PASS → V10_F1_CLOSED=true → V11_AUTHORIZED=true → V11 已执行 READY_FOR_V11_REVIEW=true
 BASE_SHA=75e5bcea6497b36695015d389dc2d578d722d9f9（V10 授权基线 = V9-F5-R3 ARCHIVE）
 QUALIFICATION_HEAD=51aed14caabe8f5a8297c36f24fdbed12579b84e（manifest+provenance 冻结, docs-only）
-NEXT_ACTION=等 Reviewer F1 裁定（其预告分支: 不可恢复 → V10 正式记为 MEASUREMENT_INVALID/NOT_RECOVERABLE, 13-case partial mean 不当正式 FAIL; 之后 Reviewer 决定是否需要新 fresh qualification）
+NEXT_ACTION=等 Reviewer V11 裁定; V11=完整有效测量（33/33 票零失败, EVALUATION_INVALID=false）但 gate 实质 FAIL: FAILED_GATES=[FINAL_PUBLICATION_RATE(11/14=0.786<0.90), HISTORICAL_DISCIPLINE_REQUIRED_MEAN_MIN(3.091<3.40), INTERPRETIVE_PLURALITY_REQUIRED_MEAN_MIN(2.857<3.00), REQUIRED_DIMENSION_MEDIAN_LT_2(=4)]; 3 例未发布全因 UNSUPPORTED_EXACT_QUOTE 干净拒绝（V11-02/04/05, 原著不在库的引文型 case）; V10 状态永久保留 MEASUREMENT_INVALID_NOT_RECOVERABLE, V11 不回写 V10
 F1_FACTS=根因 CONFIRMED: 触发文本=斯密「中国地震」段落（81 字, answer 本体+replay window 均含; answer 单独探测即 400/1301）; coding-plan 等价端点 trivial 探测 200 但 answer 探测同 400/1301 → 平台级过滤; 4 条恢复路径全部违反冻结或不可行; 39 票 13 case 原样; V10_QUALIFICATION_SUMMARY/FINAL_GATE 原文件未动; 证据=V10_F1_JUDGE_FAILURE_EVIDENCE.json + V10_F1_RECOVERY_ATTEMPT_LOG.json
 V10_VERDICT=DELIVERY_GATE=PASS（14/14 发布, repair 7/7 收敛, TERMINAL_PENDING=0, ABORTS=0, 引文/引号零违例, LP_ANCHOR=1.0, COVERAGE=1.0）; SCHOLARLY: applicable_mean=3.646, textual=4.0, argument=3.667, interpretive=3.571, historical=3.385(<3.40), literature=4.0; MEDIAN_LT_2=0; FATAL 全零; 语义守恒 PASS 全零; judge 57 呼叫 39 有效票（13/14 case）; V10-14=bigmodel 1301
 V10_MANIFEST=docs/evidence/V10_FRESH_QUALIFICATION_MANIFEST.json（14 case: 恩培多克勒/塞克斯都/库萨/斯宾诺莎V/维柯/谢林/戴维森/威廉斯/洪堡/郭象/记忆哲学争论/伊本·西那/西田（降级）/斯密引文）
