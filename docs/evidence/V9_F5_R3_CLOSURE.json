@@ -1,0 +1,89 @@
+{
+  "phase": "V9-F5-R3",
+  "title": "V9-F5 最终收口——全局 readability ordering + 真实 contract tests + ARCHIVE 拓扑",
+  "base_sha": "48e4d35e1830b18510a973b6c540362c67effc11",
+  "content_head_r3": "ff732bc084fdd4b6267d21439ac514373e47bf81",
+  "archive_head_r3": null,
+  "archive_head_r3_note": "ARCHIVE 提交即本文件所在提交（evidence/state only, 零生产代码）; parent == CONTENT_HEAD_R3",
+  "reviewer_task_book": "R2 审查 PATCH_REQUIRED（V9_F5_R2_CONTENT_REVIEW=FAIL）; 冻结项: strict_only fail-empty / scholarly strict_only=True / variant LOCAL_CURATED lookup / variant relevance gate / MAX_REFORMULATION_COUNT=1",
+  "fixes": {
+    "global_readability_ordering": {
+      "change": "排序移至 _dedup_local_live(local, relevant) 之后, 对最终 merged list 全局生效: relevance-filtered local + relevance-filtered live/variant-local → dedup → global readability sort → limit",
+      "ordering": "FULL_TEXT_READ(3) > FULL_TEXT_AVAILABLE(2) > ABSTRACT_AVAILABLE(1) > METADATA_ONLY(0), cited_by 同层级 tie-break, Python 稳定排序保持同分 dedup 插入序",
+      "invariants": "排序只重排已过 relevance gate 的记录（readability 不挽救离题源）; local METADATA_ONLY 不再因 dedup 前缀排在 live ABSTRACT/FULLTEXT 之前",
+      "helper": "_ACCESS_RANK + _readability_key（模块级, 双 access 形态兼容: access_level 直挂 / access.level 嵌套）"
+    },
+    "duplicate_local_relevance_filter_removed": {
+      "before": "_local_results(q, limit, strict_only=True) 返回后对 original-local 连续执行两次相同的 _is_relevant 过滤（R1 遗留）",
+      "after": "单次 list-comprehension 过滤; q 无可用 token 时 _is_relevant 保守放行, 与旧双过滤语义一致"
+    },
+    "real_contract_tests": {
+      "file": "backend/tests/test_v9f5_scholarly_retrieval.py",
+      "test_count_before": 14,
+      "test_count_after": 17,
+      "method": "monkeypatch 驱动 search_scholarship / _exec_search_scholarship 真实函数路径（fake provider + fake _local_results + 干缓存 fixture）; 或纯 helper（_is_relevant）真实输出; 或真实 registry（strict_only fail-empty 三件套）",
+      "placeholder_eliminated": ["assert True × 6", "inspect.getsource 字符串匹配 × 1", "helper 级断言冒充排序验证 × 1"],
+      "contracts_proven": [
+        "VARIANT_LOCAL_RELEVANT_RECOVERED: 中文 query → alias 元数据 variant → variant-local relevant record 入最终结果（live 全空手, local_variant_count=1）",
+        "VARIANT_LOCAL_WEAK_REJECTED: 与 variant/query 无 token 交集的 variant-local 被拒, alias 记录不冒充结果",
+        "MAX_REFORMULATION_COUNT=1: 双 provider 各恰 2 次调用（initial+恰一次 retry）, 不循环",
+        "FINAL_MERGED_FULLTEXT_BEFORE_ABSTRACT: local FT(3) vs live AB(1) → FT 前",
+        "FINAL_MERGED_ABSTRACT_BEFORE_METADATA: live ABSTRACT(1) vs METADATA(0) → ABSTRACT 前（provider 批次故意反序喂入）",
+        "LOCAL_METADATA_BEHIND_LIVE_ABSTRACT: R3 核心回归——旧 dedup 前缀使 local META 排 live AB 前, 现全局排序修正",
+        "LIVE_METADATA_BEHIND_LOCAL_FULLTEXT: 对称方向 live META(0) vs local FT(3)",
+        "IRRELEVANT_READABLE_REJECTED: 持 abstract（可读）但离题 → relevance gate 拒绝, dropped_irrelevant=1",
+        "READABLE_SOURCE_IDS_EXACT: 真实 _exec_search_scholarship + model_view 路径, READABLE_SOURCE_IDS == 最终返回结果中 access_level>=ABSTRACT_AVAILABLE 的 id 序列, READABLE_RESULT_COUNT==2, METADATA_ONLY 不入",
+        "SEARCH_PATH_DOES_NOT_CALL_GET_SCHOLARLY_SOURCE/get_evidence: get_record/get_evidence 植入断言雷, 全搜索路径零触发（Main Agent sovereignty）",
+        "SCHOLARLY_PATH_STRICT_ONLY_ENABLED: 行为证明 _local_results 收到 strict_only=True（替代 inspect 字符串匹配）"
+      ],
+      "test_realism_notes": "access 语义遵循系统合同: live canonical 记录 access 由真实证据驱动（provider abstract_text → ABSTRACT_AVAILABLE, 否则 METADATA_ONLY）; FULL_TEXT_READ 仅出现在持历史证据的 local curated 记录; 排序断言用 title 序对 source_record_id 指纹方案免疫; fake provider 每次返回全新 dict 副本（归一化原地改写 provider 记录, 共享对象会跨 provider 污染 sid）"
+    }
+  },
+  "pre_existing_base_failures_repaired": {
+    "disclosure": "BASE 48e4d35 全量实跑为 945 collected = 938 passed + 7 failed（R2 回执 '938 passed / 0 failed' 与 exact BASE 实测不符, 如实更正）。7 个失败均为 R1 CONTENT 提交（7130ad47d/48e4d35）的连带债务, 非本次 R3 引入, 全部在本提交内修复:",
+    "items": [
+      {
+        "file": "backend/tests/test_o7e_v8f2_repairs.py",
+        "count": 6,
+        "root_cause": "R1 在生产调用 _local_results(q, limit, strict_only=True) 新增 strict_only 形参; stub_cache fixture 的 lambda 与 fake_local 桩签名未同步（TypeError: unexpected keyword argument 'strict_only'）",
+        "fix": "仅加宽桩签名接受 strict_only=False; 零断言/零行为改动（30 passed）"
+      },
+      {
+        "file": "tests/test_o7d_scholarly_corpus.py::test_r9_offline_not_mislabeled_live",
+        "count": 1,
+        "root_cause": "R1 的 variant-local append 防重只查 relevant（live 侧）, 未查 original-local; 离线场景下 q-lookup 与 variant-lookup 命中同一 registry 记录 → 该记录同时出现在 dedup 两侧 → 被误标 LOCAL_CURATED+LIVE（离线冒充实时, 违反 O7-D §26-27; BASE worktree 复跑证实失败在 BASE 已存在）",
+        "fix": "search_scholarship 中 original-local discovery 提前至 reformulation 之前取得, variant-local append 防重集合扩为 relevant ∪ local; frozen 行为（variant lookup / variant relevance gate / local_variant_count 语义）不变, 仅消除重复入列"
+      }
+    ]
+  },
+  "test_ledger": {
+    "FULL_TEST_BEFORE": "945 collected = 938 passed / 7 failed @ exact BASE 48e4d35e1830b18510a973b6c540362c67effc11（clean worktree 实跑 99.85s）",
+    "FULL_TEST_AFTER": "948 passed / 0 failed @ exact CONTENT_HEAD_R3 工作树（98.45s; 工作树内容与 CONTENT 提交完全一致）",
+    "reconciliation": "948 - 945 = +3 = test_v9f5_scholarly_retrieval.py 14→17（+3）; test_o7e_v8f2_repairs.py 30→30（签名加宽, 计数不变）; 其余测试文件零改动",
+    "FULL_TEST_SHA": "ff732bc084fdd4b6267d21439ac514373e47bf81",
+    "F5_DEV_TEST_COUNT": 17,
+    "PLACEHOLDER_ASSERT_TRUE_COUNT": 0
+  },
+  "boundaries_compliance": {
+    "changed_production_files": ["backend/scholarly_sources.py"],
+    "changed_test_files": ["backend/tests/test_v9f5_scholarly_retrieval.py", "backend/tests/test_o7e_v8f2_repairs.py（签名加宽披露见上）"],
+    "untouched": ["engine_langgraph", "validator", "Local Patch", "quote_bound", "semantic classifier", "judge", "final gate（blob=22ea181ce652276234f59a96d2b5c5f1a66ef2d8 复验一致）", "primary corpus", "scholarly corpus contents", "production model", "V7/V8/V9 historical artifacts"]
+  },
+  "frozen_behaviors_unchanged": {
+    "STRICT_ONLY_FAIL_EMPTY": true,
+    "SCHOLARLY_PATH_STRICT_ONLY_ENABLED": true,
+    "VARIANT_LOCAL_LOOKUP_IMPLEMENTED": true,
+    "VARIANT_LOCAL_RELEVANCE_GATE": true,
+    "MAX_REFORMULATION_COUNT_UNCHANGED": true,
+    "AUTO_FETCH_ADDED": false,
+    "MAIN_AGENT_SOVEREIGNTY_PRESERVED": true
+  },
+  "FORBIDDEN_FROM_V10": true,
+  "DEV_CASES_FRESH": true,
+  "V9_CASE_HARDCODE": false,
+  "V9_RERUN": false,
+  "V9_VERDICT_UNCHANGED": true,
+  "PRODUCTION_MODEL": "deepseek-v4-flash",
+  "PRIMARY_CORPUS_CHANGED": false,
+  "SCHOLARLY_CORPUS_CONTENT_CHANGED": false
+}
