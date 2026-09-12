@@ -26,14 +26,14 @@ import scholarly_sources  # noqa: F401 registration
 TMP = os.path.join(ROOT, "backend", "tools", "_tmp")
 ENVKEY = {"deepseek-chat": "DEEPSEEK_API_KEY", "glm-4-plus": "ZHIPU_API_KEY",
           "glm-4.6": "ZHIPU_API_KEY", "glm-4-air": "ZHIPU_API_KEY",
-          "deepseek-v4-pro": "DEEPSEEK_API_KEY", "deepseek-v4-flash": "DEEPSEEK_API_KEY",
+          "deepseek-v4-pro": "DEEPSEEK_API_KEY", "deepseek-flash": "DEEPSEEK_API_KEY",
           "glm-5.3": "ZHIPU_API_KEY", "glm-5.3-flash": "ZHIPU_API_KEY"}
 PROVIDER = {"deepseek-chat": ("deepseek", "https://api.deepseek.com"),
             "glm-4-plus": ("bigmodel", "https://open.bigmodel.cn/api/paas/v4"),
             "glm-4.6": ("bigmodel", "https://open.bigmodel.cn/api/paas/v4"),
             "glm-4-air": ("bigmodel", "https://open.bigmodel.cn/api/paas/v4"),
             "deepseek-v4-pro": ("deepseek", "https://api.deepseek.com"),
-            "deepseek-v4-flash": ("deepseek", "https://api.deepseek.com"),
+            "deepseek-flash": ("deepseek", "https://api.deepseek.com"),
             "glm-5.3": ("bigmodel", "https://open.bigmodel.cn/api/paas/v4"),
             "glm-5.3-flash": ("bigmodel", "https://open.bigmodel.cn/api/paas/v4")}
 sys.path.insert(0, ROOT)

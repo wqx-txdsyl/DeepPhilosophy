@@ -244,7 +244,7 @@ def run_case(case, mk_normal, mk_repair):
     return case_result(case["case_id"], evs)
 
 
-def main(run_tag, requested_model="deepseek-v4-flash"):
+def main(run_tag, requested_model="deepseek-flash"):
     # 2026-09-09 用户预算指令: deepseek-v4-pro 禁止作为 agent LLM（过贵）——
     # MODEL_UNDER_TEST 偏差在回执中向 Reviewer 如实披露
     cfg = CC.v4pro_config(dict(CC.RP_B, id="RP-B"),

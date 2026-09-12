@@ -192,7 +192,7 @@ def run_case_production(case, mk_normal, mk_repair):
     return record
 
 
-def main(run_tag="CAL1", requested_model="deepseek-v4-flash", only=None,
+def main(run_tag="CAL1", requested_model="deepseek-flash", only=None,
          manifest_path=None):
     manifest_raw = json.load(open(manifest_path or MANIFEST, encoding="utf-8"))
     # V3_HOLDOUT_MANIFEST 为 {meta..., cases: [...]} 包装; 兼容裸列表
@@ -310,5 +310,5 @@ if __name__ == "__main__":
             _man = a
         elif a not in ("-", ""):
             _only = a.split(",")
-    main(_tag, requested_model="deepseek-v4-flash", only=_only,
+    main(_tag, requested_model="deepseek-flash", only=_only,
          manifest_path=_man)

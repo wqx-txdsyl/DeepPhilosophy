@@ -18,7 +18,7 @@ CAND = {"deepseek-chat": ("DEEPSEEK_API_KEY", "https://api.deepseek.com", "deeps
         "glm-4.6": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4.6"),
         "glm-4-air": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-4-air"),
         "deepseek-v4-pro": ("DEEPSEEK_API_KEY", "https://api.deepseek.com", "deepseek-v4-pro"),
-        "deepseek-v4-flash": ("DEEPSEEK_API_KEY", "https://api.deepseek.com", "deepseek-v4-flash"),
+        "deepseek-flash": ("DEEPSEEK_API_KEY", "https://api.deepseek.com", "deepseek-flash"),
         "glm-5.3": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-5.3"),
         "glm-5.3-flash": ("ZHIPU_API_KEY", "https://open.bigmodel.cn/api/paas/v4", "glm-5.3-flash")}
 

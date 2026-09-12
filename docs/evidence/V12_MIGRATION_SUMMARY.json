@@ -1,0 +1,26 @@
+{
+  "V12_MIGRATION_SUMMARY": true,
+  "OLD_MODEL_ID": "deepseek-v4-flash",
+  "TARGET_MODEL_ID": "deepseek-flash",
+  "PRODUCTION_MODEL": "deepseek-flash",
+  "REQUESTED_MODEL_CONFIRMED": true,
+  "OBSERVED_PROVIDER_MODEL": {"deepseek-v4-flash": "deepseek-flash", "deepseek-flash": "deepseek-flash", "note": "旧 alias 服务端已路由至 V4.1 Flash; 两个 id 实际由同一模型服务"},
+  "ACTIVE_OLD_MODEL_REFERENCES": 0,
+  "ACTIVE_OLD_MODEL_REFERENCES_NOTE": "production-active 代码零旧 id（calibration/rca1_hook_eval 默认值 + bakeoff/bakeoff_b 映射表全部迁移）; 唯一残留=tests/test_o9f1_judge_taxonomy.py 的 judge_candidate(mid) 输出标签字符串（非模型选择, 冻结测试工件）; V7-V11 历史 evidence 中的旧 id 原样保留",
+  "ALIAS_EQUIVALENCE_PROBE_COUNT": 14,
+  "ALIAS_COMPATIBILITY_GATE": "PASS",
+  "alias_acceptance": {
+    "OLD_ALIAS_SUCCESS_COUNT": 7, "TARGET_MODEL_SUCCESS_COUNT": 7,
+    "UNSUPPORTED_PARAMETER_ERRORS": 0, "ADAPTER_PARSE_ERRORS": 0,
+    "TOOL_CALL_SCHEMA_ERRORS": 0, "FINISH_REASON_PARSE_ERRORS": 0,
+    "RESPONSE_ENVELOPE_ERRORS": 0,
+    "coverage": ["中文文本/英文文本/production thinking-mode（enabled+low）/repair-mode（disabled）/单工具调用/多工具 schema/中文 tool args JSON round-trip/中等长上下文"],
+    "not_applicable": "structured/JSON output: production DeepSeek 路径未使用 response_format",
+    "verbatim_equality_not_required": true
+  },
+  "performance_evidence": {"OLD_ALIAS_MEDIAN_LATENCY_S": 1.23, "TARGET_MEDIAN_LATENCY_S": 1.13, "note": "migration evidence only, 非 qualification gate"},
+  "FULL_TEST_RESULT": "948 passed / 0 failed（迁移后工作树）",
+  "DEV_PRODUCTION_PATH_REGRESSION": {"MAIN_AGENT_BOOT": true, "MODEL_RESPONSE": true, "TOOL_CALL": true, "TOOL_RESULT_RETURN": true, "SCHOLARLY_SEARCH": true, "SCHOLARLY_READ": true, "REPAIR_PATH": true, "VALIDATOR_PATH": true, "PUBLICATION_PATH": true, "note": "真实 stream_agent 驱动（deepseek-flash 注入）: 触发 get_book_detail/search_books/get_chapter 工具链 + 1 轮 repair + 发布成功; scholarly search 3 records + ABSTRACT 读取"},
+  "MIGRATION_GATE": "PASS",
+  "FORBIDDEN_FROM_V12_QUALIFICATION": true
+}
