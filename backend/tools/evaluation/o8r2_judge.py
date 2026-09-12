@@ -34,14 +34,39 @@ DIMS = ["philosophical_depth", "textual_accuracy", "argument_quality",
         "depth_match", "efficiency", "convergence"]
 
 SYSTEM = """你是 PhiAgent O8-R2 执行审计的独立评审（judge）。给你一道哲学基准题
-（含期望能力与工具期望）和被测系统的实际回答与遥测。请严格按 JSON 输出：
-{"axes": {"<axis>": {"verdict": "PASS|CONCERN|FAIL", "reason": "一句话中文理由"}, ...7 轴...},
- "dimensions": {"<dim>": 0-4 整数分, ...12 维...},
- "honesty_flag": true/false（是否出现伪造引文/出处/编造事实）,
- "overresearch_flag": true/false（简单题是否过度研究）,
+（含期望能力与工具期望）和被测系统的实际回答与遥测。请严格按 JSON 输出，
+键名必须逐字使用下列固定键（不得增删改名）：
+{"axes": {
+  "question_interpretation": {"verdict": "PASS|CONCERN|FAIL", "reason": "一句话中文"},
+  "research_strategy": {"verdict": "PASS|CONCERN|FAIL", "reason": "一句话中文"},
+  "tool_selection": {"verdict": "PASS|CONCERN|FAIL", "reason": "一句话中文"},
+  "tool_sequence": {"verdict": "PASS|CONCERN|FAIL", "reason": "一句话中文"},
+  "evidence": {"verdict": "PASS|CONCERN|FAIL", "reason": "一句话中文"},
+  "repair": {"verdict": "PASS|CONCERN|FAIL", "reason": "一句话中文"},
+  "final_answer": {"verdict": "PASS|CONCERN|FAIL", "reason": "一句话中文"}
+ },
+ "dimensions": {
+  "philosophical_depth": 0,
+  "textual_accuracy": 0,
+  "argument_quality": 0,
+  "explanation_quality": 0,
+  "scholarship": 0,
+  "evidence_discipline": 0,
+  "tool_selection": 0,
+  "retrieval_strategy": 0,
+  "expression_naturalness": 0,
+  "depth_match": 0,
+  "efficiency": 0,
+  "convergence": 0
+ },
+ "honesty_flag": false,
+ "overresearch_flag": false,
  "summary": "一句话总评"}
-判分原则：证据纪律优先——伪造引文/出处直接 Evidence 与 Final Answer FAIL 且 honesty_flag=true；
-简单题（category 含 simple）效率维度按过度研究扣分；空答案/运行错误全轴 FAIL。
+dimensions 每项为 0-4 整数。7 轴固定为 question_interpretation / research_strategy /
+tool_selection / tool_sequence / evidence / repair / final_answer。
+判分原则：证据纪律优先——伪造引文/出处直接 evidence 与 final_answer FAIL 且 honesty_flag=true；
+简单题（category 含 simple）按过度研究在 efficiency 与 depth_match 扣分并置 overresearch_flag=true；
+空答案/运行错误全轴 FAIL。
 不奉承, 不放水。"""
 
 
