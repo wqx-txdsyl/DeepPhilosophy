@@ -157,15 +157,16 @@ def run_case(case, cfg):
                                              (val.get("result") or {}).get("issues", [])][:8],
         },
         "evidence_refs": {
-            "citations": (done.get("citations") or [])[:20],
-            "quote_bound": (done.get("quote_bound") or [])[:20],
+            "citations": _as_list(done.get("citations"))[:20],
+            "quote_bound": _as_list(done.get("quote_bound"))[:20],
             "evidence_digest": _digest(done.get("evidence")),
             "scholarly_provenance": _scholarly(done),
         },
         "repair_history": [
             {"round": i + 1,
-             "issue_codes": [c for c in (h.get("issue_codes") or [])][:8]}
-            for i, h in enumerate((val.get("history") or [])[:4])
+             "issue_codes": [c for c in (_as_list(h.get("issue_codes")) +
+                                         _as_list(h.get("issue_fingerprints")))][:8]}
+            for i, h in enumerate(_as_list(val.get("history"))[:4])
         ],
         "failure_codes": [str(e.get("content") or "")[:160] for e in errors][:3],
         "efficiency": {
@@ -201,6 +202,15 @@ def _digest(ev):
         else:
             out[k] = v
     return out
+
+
+def _as_list(v):
+    """done 事件字段可能是 list / dict(映射) / None——统一安全转列表。"""
+    if isinstance(v, list):
+        return v
+    if isinstance(v, dict):
+        return list(v.values())
+    return [] if v is None else [v]
 
 
 def _scholarly(done):
