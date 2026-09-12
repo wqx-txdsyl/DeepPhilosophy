@@ -1,0 +1,158 @@
+{
+ "O8_CAPABILITY_AUDIT": true,
+ "version": "O8-2026-09-12",
+ "audit_head": "6209efed870efb82b6668eaefa0cd13a18743c6a",
+ "mandate": "M1 裁定正式指令: 对整个 PhiAgent 系统做能力地图/工具/orchestration/检索阅读闭环/repair-validator/交互能力与缺口的全量盘点, 然后决定真正需要补什么",
+ "production_model_layer": {
+  "canonical_production_model": "deepseek-flash（DeepSeek V4.1 Flash; V12-M1 起 repo 默认即 canonical, routes/agent_llm.MODEL）",
+  "service_default": "同上（.env 未设 AGENT_MODEL）",
+  "judge_model": "glm-4-plus @ bigmodel（O7A frozen, 独立计费通道）",
+  "image_gen": "agnes-image-2.1-flash @ apihub.agnes-ai.com",
+  "embeddings": "open.bigmodel.cn /api/paas/v4/embeddings（zhipu）",
+  "legacy_refs": "deepseek-chat 仅存于 config.DEEPSEEK_MODEL（独立常量, 服务非 agent 链）与历史 artifacts; deepseek-v4-flash 已清零（V12-M1）"
+ },
+ "tool_registry": {
+  "TOTAL": 32,
+  "reviewer_approx": "任务书'30 个工具'为约数, 审计实数=32",
+  "domains": {
+   "eval(15)": [
+    "phti_test",
+    "compare_views",
+    "socratic_tutor",
+    "advisor_council",
+    "paper_review",
+    "analyze_argument",
+    "profile",
+    "conceptual_map",
+    "essay_outline",
+    "life_coach",
+    "dialectic",
+    "history_timeline",
+    "confrontation",
+    "school_arena",
+    "agent_council"
+   ],
+   "retrieval(10)": [
+    "search_books",
+    "get_book_detail",
+    "get_chapter",
+    "query_graph",
+    "get_philosopher",
+    "list_books",
+    "get_school",
+    "concept_trace",
+    "websearch",
+    "query_database"
+   ],
+   "memory_writing(5)": [
+    "write_essay",
+    "generate_image",
+    "role_play",
+    "philosopher_debate",
+    "thought_experiment"
+   ],
+   "scholarly(2)": [
+    "search_scholarship",
+    "get_scholarly_source"
+   ]
+  },
+  "capability_groups": {
+   "原典检索与阅读闭环": [
+    "search_books",
+    "get_book_detail",
+    "get_chapter",
+    "list_books",
+    "concept_trace"
+   ],
+   "结构化知识查询": [
+    "query_database",
+    "query_graph",
+    "get_philosopher",
+    "get_school",
+    "history_timeline",
+    "websearch"
+   ],
+   "scholarly 双工具链": [
+    "search_scholarship",
+    "get_scholarly_source"
+   ],
+   "思辨脚手架/教育学": [
+    "socratic_tutor",
+    "analyze_argument",
+    "compare_views",
+    "dialectic",
+    "thought_experiment",
+    "phti_test",
+    "profile",
+    "life_coach",
+    "advisor_council"
+   ],
+   "多角色/生成类": [
+    "agent_council",
+    "philosopher_debate",
+    "confrontation",
+    "school_arena",
+    "role_play",
+    "write_essay",
+    "essay_outline",
+    "paper_review",
+    "conceptual_map",
+    "generate_image"
+   ]
+  }
+ },
+ "main_agent_orchestration": {
+  "engine": "engine_langgraph.py（2716 行）: LangGraph StateGraph = START→agent→(conditional: tools|END)→tools→agent 循环; 无规划节点（Main Agent 单脑直接决策）",
+  "entry": "stream_agent（SSE 事件流, line 1579）→ routes/agent_sse → agent-app 前端",
+  "llm_layer": "routes/agent_llm（模型 source-of-truth, deepseek-flash）+ agent_runtime（MODEL_RETRY 2 次 backoff 1.5/4.0 + invoke_llm_with_retry）",
+  "repair": "repair_mode=True → 确定性解码 temp=0; no_tools 资源上限变体; repair_context（717 行）",
+  "safety": "SAFETY_PATTERNS 三类（self_harm/violence/hate）中英双语回复, 输出审查",
+  "agent_registry": "agents.py: general（深哲）+ nietzsche（人格包, AIAuthor 数字作者记忆）双 agent; PHILO_AGENTS/PHILO_EXTRA_TOOLS 供哲学家广场"
+ },
+ "retrieval_reading_loop": {
+  "primary": "409 本原典（books.json/book_detail/章节双写: backend/data/book_chapters=git 源, OSS CDN+jsDelivr 双轨）: search_books(FTS 全文)→get_chapter(全文阅读)→引用核验闭环",
+  "scholarly": "search_scholarship（Crossref+OpenAlex+LOCAL_CURATED; relevance gate+readability ordering+一次有界 reformulation）→get_scholarly_source（ABSTRACT/OA 全文, access 四态状态机, §51/52 SSRF 边界）",
+  "known_frozen_failures": [
+   "V12-08: repair-1 引入 5 个 GENUINELY_NEW（全部 transient, repair-2 清除）→ REPAIR_CREATES_NEW_FATAL_ERROR=1 冻结计入",
+   "V12-14: 原文不在库时模型诚实拒伪造逐字引文 → textual REQUIRED 0.0（诚实性合同代价形态）",
+   "REQUIRED_DIMENSION_MEDIAN_LT_2=1（V12-14 textual 单元）"
+  ]
+ },
+ "repair_validator_chain": {
+  "modules": [
+   "final_validator(369 行, 问题码封闭集)",
+   "repair_context(717)",
+   "quote_bound(311)",
+   "local_patch_runtime(190, COPY/PARAPHRASE/CITATION_REPLACE)",
+   "o7e_semantic_transition(227, 7 标签分类器)",
+   "guard(216)"
+  ],
+  "semantics": "repair 轮次≤2（RP_B 确定性解码）; 语义转移六项守恒记账; FROZEN final gate blob=22ea181c"
+ },
+ "interaction_layer": {
+  "service": "FastAPI main.py: 12 routers（health/auth/user/admin/sync/knowledge/ai/history/text/agent/books/authors）+ SPA 静态托管",
+  "agent_routes": "routes/agent.py（202 行聚合）+ agent_core(388)/agent_llm(113)/agent_sse(62) + 4 工具域模块",
+  "frontend": "app/（平台: React+Vite, CF Pages）+ agent-app/（智能体前端, 本地 :5201, AgentPage.jsx+auth+conversationSync）",
+  "workers": "Cloudflare 双 Worker（auth/api）+ D1 deepphilosophy-db（生产 API 独立于 FastAPI）"
+ },
+ "gaps_and_debts": {
+  "immediate_fixed_in_o8": [
+   {
+    "item": "agent_llm.py 顶部旧文档注释仍写「缺省 → deepseek-chat」（M1 裁定留待 O8 的文档债）",
+    "status": "O8 内修复"
+   }
+  ],
+  "hygiene": [
+   "未跟踪孤儿文件（零引用, 不构成断链）: backend/jwt_verify.py, backend/upstream.py, backend/user_profile_store.py, backend/routes/agent_history.py, backend/routes/auth_proxy.py, agent-app/src/data/conversationSync.js —— 需用户决定入库或删除",
+   "未跟踪运行时资产: backend/data/scholarly_cache.json（gitignore 类）, app/public/philosopher/José Martí.webp 与 黑塞portrait webp（肖像资产, 疑似 scripts 漏提交）",
+   ".zcode/ 本地目录（不应入库）"
+  ],
+  "capability_gaps": [
+   "scholarly 链对「不在库原典」的逐字引文请求只能诚实降级（V12-14 形态）——可选补强: 扩大 OA 全文合法获取源或引入可核验原文片段库（需用户/Reviewer 决策, 涉及 corpus 政策）",
+   "repair 引入新问题（GENUINELY_NEW）无预检机制（V12-08 形态）——repair 生成后的 semantic 预检可减少空转轮次（改动涉及 repair semantics=冻结区, 需单独任务书授权）",
+   "元伦理/哲学学术文献在 LOCAL_CURATED 覆盖未量化——coverage 统计可作为 O8 后续小任务",
+   "agent-app 前端 conversationSync.js 未入库（多轮会话同步功能悬空）"
+  ],
+  "explicitly_out_of_scope": "V12 三项冻结失败不修（除非 Reviewer 另行授权）; judge/final gate/qualification thresholds 不动"
+ }
+}

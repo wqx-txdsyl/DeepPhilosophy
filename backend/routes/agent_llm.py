@@ -5,13 +5,16 @@
 从 routes/agent.py 原样搬移（不改逻辑）; agent.py 聚合 import 并 re-export
 API_KEY / API_URL / MODEL / llm_chat（engine_langgraph 依赖 AG.llm_chat 等）。
 
-2026-08-30: 供应商可切换（DeepSeek 默认 ↔ 智谱免费档, 改 .env 即切, 代码零改动）:
+2026-08-30: 供应商可切换（DeepSeek ↔ 智谱免费档, 改 .env 即切, 代码零改动）:
   DP_API_URL=https://open.bigmodel.cn/api/paas/v4 + AGENT_MODEL=glm-4-flash → 智谱
   （注: glm-4v-* 系列不支持 function calling, 只可用于识图, 不能驱动 agent 工具循环;
     glm-4-flash 可驱动但检索纪律差, 已实测放弃）
-  删除上述两行（或缺省）→ DeepSeek deepseek-chat + 思考模式。
+  删除上述两行（或缺省）→ DeepSeek canonical 模型 + 思考模式。
   密钥跟随 URL 供应商自动匹配（ZHIPU_API_KEY / DEEPSEEK_API_KEY）, 显式 LLM_API_KEY 永远优先。
   URL 拼接按供应商自适应: 智谱 v4 → /chat/completions; DeepSeek → /v1/chat/completions。
+
+2026-09-12 (V12-M1/O8): canonical production model = deepseek-flash（DeepSeek V4.1 Flash;
+  旧 deepseek-v4-flash 为临时兼容 alias, 已由服务端路由）。
 """
 import json, os, time, urllib.request
 from pathlib import Path

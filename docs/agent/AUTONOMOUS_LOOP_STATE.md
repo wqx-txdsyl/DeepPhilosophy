@@ -6,11 +6,11 @@
 
 ```
 CURRENT_REVIEWER=GPT-5.6 Sol
-CURRENT_PHASE=O7-E 已正式封存（CLOSED_WITH_KNOWN_QUALIFICATION_FAILURES）; 下一阶段 O8 comprehensive capability & tool audit（已授权, 任务书待下发）
+CURRENT_PHASE=O8 comprehensive capability & tool audit——全量盘点已交付（O8_CAPABILITY_AUDIT.json/md）, 待 Reviewer 审阅与缺口裁定
 CURRENT_REVIEW_STATUS=V12_M1_REVIEW=PASS → V12_M1_CLOSED=true → O7_E_COMPLETE=true / O7_E_STATUS=CLOSED_WITH_KNOWN_QUALIFICATION_FAILURES / O8_AUTHORIZED=true
 BASE_SHA=75e5bcea6497b36695015d389dc2d578d722d9f9（V10 授权基线 = V9-F5-R3 ARCHIVE）
 QUALIFICATION_HEAD=51aed14caabe8f5a8297c36f24fdbed12579b84e（manifest+provenance 冻结, docs-only）
-NEXT_ACTION=等 Reviewer 下发 O8 任务书（能力地图/30 工具/Main Agent orchestration/检索阅读闭环/repair validator/交互缺口全量盘点）; M1 遗留文档债（agent_llm.py 顶部旧注释仍写 deepseek-chat 缺省）由 O8 顺手处理, 不开 patch
+NEXT_ACTION=等 Reviewer 对 O8 审计的反馈与四项能力缺口的逐项裁定（①corpus 政策 ②repair 预检 ③LOCAL_CURATED coverage 统计 ④conversationSync 去留）+ 卫生类孤儿文件入库/删除决定
 M1_FACTS=routes/agent_llm.py MODEL 默认 deepseek-flash（方案 A repo 即 canonical; env 覆盖保留）; 4 个 runtime contract tests（reload/真实构建/零注入 sys.modules 对照）+ 真实 smoke 全过（AG.MODEL=ENGINE_LLM=ENGINE_REPAIR=deepseek-flash, 7 工具调用+repair+发布）; pytest 952/0（948+4 对账）; 证据纠正=V12 DEV regression published=false 实况 + V12-09 唯一未发布（UNVERIFIED_CITATION×1 NEAR_QUOTE_NOT_MARKED×3）
 V12_FACTS=pub 13/14 (0.929≥0.90 达标); scholarly 13/13 search+fetch, 503 records, 37 content evidence; semantic 守恒 PASS（5 GENUINELY_NEW 全 transient, 0 AMBIGUOUS）; FATAL 全零; MIGRATION_GATE=PASS（14 探针 alias 等价 + 948/0 回归 + DEV 9/9 + 旧 id 清零 + OBSERVED_PROVIDER_MODEL 双 id 一致 deepseek-flash）; TOPOLOGY=476d49e5 → e87b604c2(MIGRATION) → 95c701b87(QUALIFICATION) → ARCHIVE
 F1_FACTS=根因 CONFIRMED: 触发文本=斯密「中国地震」段落（81 字, answer 本体+replay window 均含; answer 单独探测即 400/1301）; coding-plan 等价端点 trivial 探测 200 但 answer 探测同 400/1301 → 平台级过滤; 4 条恢复路径全部违反冻结或不可行; 39 票 13 case 原样; V10_QUALIFICATION_SUMMARY/FINAL_GATE 原文件未动; 证据=V10_F1_JUDGE_FAILURE_EVIDENCE.json + V10_F1_RECOVERY_ATTEMPT_LOG.json
