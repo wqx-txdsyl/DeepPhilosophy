@@ -1,29 +1,26 @@
-# AUTONOMOUS LOOP STATE — PhiAgent O7-E Builder
+# AUTONOMOUS LOOP STATE — PhiAgent O8 Builder
 
 > 恢复辅助文件（真源 = Reviewer Chat + Git repository）。
-> V9-F5 CLOSED（R3 PASS）; V10 formal qualification 执行中
-> QUALIFICATION_HEAD=51aed14caabe8f5a8297c36f24fdbed12579b84e（冻结, run 已启动）
+> O8 静态盘点 = ACCEPTED_AS_FOUNDATION；O8-R1 correction patch 已交付待审
+> WORKFLOW_CONTRACT=docs/agent/AUTONOMOUS_HANDOFF_CONTRACT.json（2026-09-12 Reviewer 授权落地）
 
 ```
 CURRENT_REVIEWER=GPT-5.6 Sol
-CURRENT_PHASE=O8 comprehensive capability & tool audit——全量盘点已交付（O8_CAPABILITY_AUDIT.json/md）, 待 Reviewer 审阅与缺口裁定
-CURRENT_REVIEW_STATUS=V12_M1_REVIEW=PASS → V12_M1_CLOSED=true → O7_E_COMPLETE=true / O7_E_STATUS=CLOSED_WITH_KNOWN_QUALIFICATION_FAILURES / O8_AUTHORIZED=true
-BASE_SHA=75e5bcea6497b36695015d389dc2d578d722d9f9（V10 授权基线 = V9-F5-R3 ARCHIVE）
-QUALIFICATION_HEAD=51aed14caabe8f5a8297c36f24fdbed12579b84e（manifest+provenance 冻结, docs-only）
-NEXT_ACTION=等 Reviewer 对 O8 审计的反馈与四项能力缺口的逐项裁定（①corpus 政策 ②repair 预检 ③LOCAL_CURATED coverage 统计 ④conversationSync 去留）+ 卫生类孤儿文件入库/删除决定
-M1_FACTS=routes/agent_llm.py MODEL 默认 deepseek-flash（方案 A repo 即 canonical; env 覆盖保留）; 4 个 runtime contract tests（reload/真实构建/零注入 sys.modules 对照）+ 真实 smoke 全过（AG.MODEL=ENGINE_LLM=ENGINE_REPAIR=deepseek-flash, 7 工具调用+repair+发布）; pytest 952/0（948+4 对账）; 证据纠正=V12 DEV regression published=false 实况 + V12-09 唯一未发布（UNVERIFIED_CITATION×1 NEAR_QUOTE_NOT_MARKED×3）
-V12_FACTS=pub 13/14 (0.929≥0.90 达标); scholarly 13/13 search+fetch, 503 records, 37 content evidence; semantic 守恒 PASS（5 GENUINELY_NEW 全 transient, 0 AMBIGUOUS）; FATAL 全零; MIGRATION_GATE=PASS（14 探针 alias 等价 + 948/0 回归 + DEV 9/9 + 旧 id 清零 + OBSERVED_PROVIDER_MODEL 双 id 一致 deepseek-flash）; TOPOLOGY=476d49e5 → e87b604c2(MIGRATION) → 95c701b87(QUALIFICATION) → ARCHIVE
-F1_FACTS=根因 CONFIRMED: 触发文本=斯密「中国地震」段落（81 字, answer 本体+replay window 均含; answer 单独探测即 400/1301）; coding-plan 等价端点 trivial 探测 200 但 answer 探测同 400/1301 → 平台级过滤; 4 条恢复路径全部违反冻结或不可行; 39 票 13 case 原样; V10_QUALIFICATION_SUMMARY/FINAL_GATE 原文件未动; 证据=V10_F1_JUDGE_FAILURE_EVIDENCE.json + V10_F1_RECOVERY_ATTEMPT_LOG.json
-V10_VERDICT=DELIVERY_GATE=PASS（14/14 发布, repair 7/7 收敛, TERMINAL_PENDING=0, ABORTS=0, 引文/引号零违例, LP_ANCHOR=1.0, COVERAGE=1.0）; SCHOLARLY: applicable_mean=3.646, textual=4.0, argument=3.667, interpretive=3.571, historical=3.385(<3.40), literature=4.0; MEDIAN_LT_2=0; FATAL 全零; 语义守恒 PASS 全零; judge 57 呼叫 39 有效票（13/14 case）; V10-14=bigmodel 1301
-V10_MANIFEST=docs/evidence/V10_FRESH_QUALIFICATION_MANIFEST.json（14 case: 恩培多克勒/塞克斯都/库萨/斯宾诺莎V/维柯/谢林/戴维森/威廉斯/洪堡/郭象/记忆哲学争论/伊本·西那/西田（降级）/斯密引文）
-V10_FRESHNESS=193 prior questions, max_sim<=0.2386 < 0.45, PREVIOUSLY_CONSUMED=0
-V10_RUN_CMD=SCHOLARLY_NETWORK_MODE=TRUSTED_PROXY .venv/bin/python backend/tools/evaluation/o7e_production_calibration.py V10_QUAL - docs/evidence/V10_FRESH_QUALIFICATION_MANIFEST.json
-V10_RUN_OUT=backend/tools/_tmp/o7e_calib_V10_QUAL.json（增量写入, 断点续跑）
-V10_JUDGE_CMD=python -c "import ...; judge_candidate('V10_QUAL', runs_path='backend/tools/_tmp/o7e_calib_V10_QUAL.json', out_tag='V10_QUAL_JUDGE', manifest_path='docs/evidence/V10_FRESH_QUALIFICATION_MANIFEST.json')"
-FREEZE_RULE=QUALIFICATION_HEAD 后禁止一切 production code diff; 案例表现差不许换/删/重跑; judge 缺票 EVALUATION_INVALID=true → STOP
-PRODUCTION_MODEL=deepseek-v4-flash（经 CC 注入; api 冒烟 200; scholarly TRUSTED_PROXY 双 provider 可达）
-FINAL_GATE_BLOB=22ea181ce652276234f59a96d2b5c5f1a66ef2d8（冻结, 复验过）
-IAB_INPUT_BROKEN_NOTE=内置浏览器 trusted input 失效; 绕过: 分块 execCommand insertText + 合成 PointerEvent/MouseEvent click（data-testid=send-button, label 'Send prompt'）
+CURRENT_PHASE=O8-R1 correction（Reviewer PATCH_REQUIRED 裁定四件事已全部执行: ①audit 事实纠正 ②5 个 stale routes 守卫基线 554d62fac→46e44c526 ③AUTONOMOUS_HANDOFF_CONTRACT 落地 ④O8-R2 预授权固化）
+CURRENT_REVIEW_STATUS=O8 静态盘点 ACCEPTED_AS_FOUNDATION; O8_R1_COMPLETE=false（correction patch 审查中）; O8_R2_AUTHORIZED=false→PASS 后自动 true
+BASE_SHA=46e44c52682d1b6cb5769cfcd0ea98feea2524c8（Reviewer 指定 O8-R1 patch BASE = O8 静态盘点交付 commit）
+NEXT_ACTION=提交 O8-R1 correction Final Receipt → 等 Reviewer verdict → PASS 则立即自动进入 O8-R2（72-case capability benchmark + 32-tool Mechanical/Agentic Gate + efficiency audit + LOCAL_CURATED census + conversationSync ownership audit + primary-text coverage census; 真实 API 调用已授权, 仅限现有 credentials/quota）→ PATCH 则原样执行
+REVIEWER_CHANNEL_RULE=ChatGPT 侧边栏 Recents 最新 Reviewer 会话 = 「继续PhiAgent搭建」（/c/6aa5243e-52cc-83ee-b173-e6866a00313d）; 永远在最新 Reviewer 会话提交回执
+V12_CLASSIFICATION_FIXED=V12-08=REPAIR_SAFETY_ENGINEERING_GAP / V12-14=HONEST_CAPABILITY_CORPUS_LIMITATION / V12-09=REPAIR_CONVERGENCE_CITATION_QUOTE_RELIABILITY_GAP; 「非工程缺陷」blanket claim 已删除
+REPAIR_SAFETY_FACTS=Local Patch post-patch 语义安全门 evaluate_repair_safety（engine_langgraph.py:1488, 调用点 :2378）: AMBIGUOUS fail-closed / QUOTE+CITATION+BIBLIOGRAPHIC 家族 GENUINELY_NEW 拒绝 / 拒绝即回滚 pre-patch; 真实 gap = FULL_REWRITE / non-local-patch repair 无等价 global semantic safety + rollback parity（O8-R2 测量, O10 修复）
+GUARD_BASELINE_FIX=5 个 stale routes 守卫（O7A T19/r15/t21 + O7B r17/t17）基线 554d62fac → 46e44c526; final_validator/quote_bound/agent_runtime/evidence_contract 硬冻结项与 engine 内容哈希基线不变
+ORPHAN_RULING=全部孤儿文件不删除不入库; conversationSync.js 进 O8-R2 ownership audit; 其余五个 backend orphan O8-R2 证明 ownership/reference/build impact 后分类; 两张肖像=站点资产卫生, 不入 PhiAgent O8 scope
+GAP_PRIORITY=P0 autonomous Builder↔Reviewer handoff（已落地 contract）; P1 LOCAL_CURATED coverage census（O8-R2 只读）; P1 full-rewrite/non-local repair safety parity（O10 修）; P2 conversationSync ownership; P2 verifiable primary-text coverage expansion policy（当前不扩库）
+M1_FACTS=routes/agent_llm.py MODEL 默认 deepseek-flash（方案 A repo 即 canonical; env 覆盖保留）; 4 个 runtime contract tests + 真实 smoke 全过; pytest 952 collected（此前记录 952/0 为 commit 前测量; 已由 guard 基线修正恢复全绿）
+V12_FACTS=pub 13/14 (0.929≥0.90 达标); scholarly 13/13 search+fetch, 503 records, 37 content evidence; semantic 守恒 PASS（5 GENUINELY_NEW 全 transient, 0 AMBIGUOUS）; FATAL 全零; MIGRATION_GATE=PASS; TOPOLOGY=476d49e5 → e87b604c2(MIGRATION) → 95c701b87(QUALIFICATION) → ARCHIVE
+O7E_FINAL=O7_E_FINAL=CLOSED_WITH_KNOWN_QUALIFICATION_FAILURES; PRODUCTION_BASE_MIGRATION=PASS（canonical model=deepseek-flash）; NO_V13=true / NO_V12_RERUN=true
+FREEZE_RULE=审查期间 STOP_MUTATING_REPO; O8-R2 期间禁止修改 engine behavior/prompt constitution/tool behavior/retrieval/Local Patch semantics/validator/quote_bound/judge/final gate/thresholds/production model/corpus contents
+IAB_INPUT_BROKEN_NOTE=内置浏览器 trusted input 失效; 绕过: 分块 execCommand insertText（~16 行/块）+ 合成 PointerEvent/MouseEvent click（data-testid=send-button）; 长文先写 /tmp 再分块插入
 STASH_WARNING=仓库有陈年 stash@{0}（master 时代 WIP）; git pathspec 相对 cwd——务必先 cd 仓库根再操作（2026-09-11 曾因 cwd 在 backend/ 误弹 stash, 已 reset --hard 恢复）
 ```
 

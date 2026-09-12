@@ -21,7 +21,7 @@ MANIFEST_PATH = os.path.join(ROOT, "docs", "evidence",
                              "PHIAGENT_O7B_BIBLIOGRAPHIC_PILOT_MANIFEST.json")
 AUDIT_PATH = os.path.join(ROOT, "docs", "evidence",
                           "PHIAGENT_O7B_SEMANTIC_FIELD_AUDIT.json")
-RP1_CODE_SHA = "554d62fac"  # routes 冻结基线（O7-E V5-F2 scholarly pipeline repair 授权改动落地点）
+RP1_CODE_SHA = "46e44c52682d1b6cb5769cfcd0ea98feea2524c8"  # routes 冻结基线（2026-09-12 Reviewer O8-R1 裁定 D 项: 基线 554d62fac → 46e44c526, 冻结「最后一个已授权 routes 状态」= V12-M1 迁移 + O8 注释债修复; 仅更新 routes 基线, guard semantics/scope 不变）
 O7A_BASE = "302f7380a4146d78374887063b336c5aa7381ddd"
 
 import dp_biblio_build as B
@@ -445,9 +445,9 @@ def test_t16_clean_checkout_reproducible():
 
 
 def test_t17_production_frozen_rp2():
-    r = subprocess.run(["git", "diff", "--quiet", "554d62fac", "HEAD", "--", "backend/routes"],
+    r = subprocess.run(["git", "diff", "--quiet", "46e44c52682d1b6cb5769cfcd0ea98feea2524c8", "HEAD", "--", "backend/routes"],
                        cwd=ROOT, capture_output=True)
-    assert r.returncode == 0, "routes 相对 V5-F2 授权基线 554d62fac 有未授权改动"
+    assert r.returncode == 0, "routes 相对 O8-R1 授权基线 46e44c526 有未授权改动"
 
 
 def test_rp2_runtime_data_hash_unchanged():

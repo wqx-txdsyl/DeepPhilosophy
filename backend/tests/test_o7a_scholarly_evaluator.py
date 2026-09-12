@@ -232,9 +232,13 @@ def test_t19_no_production_diff_vs_base():
         r = subprocess.run(["git", "diff", "--quiet", _base, "HEAD", "--", rel],
                            cwd=REPO, capture_output=True)
         assert r.returncode == 0, f"{rel} 相对 BASE {BASE_SHA[:9]} 有改动（O7-A 禁止）"
-    r = subprocess.run(["git", "diff", "--quiet", "554d62fac", "HEAD", "--", "backend/routes"],
+    # O8-R1（2026-09-12 Reviewer 裁定 D 项）: routes 冻结基线 554d62fac →
+    # 46e44c526——冻结「最后一个已授权 routes 状态」（V12-M1 迁移 + O8 注释债
+    # 修复）；认知/校验/引文核心文件硬冻结项（上方 hard 表）不变，guard
+    # semantics/scope 不变，仅基线常量更新。
+    r = subprocess.run(["git", "diff", "--quiet", "46e44c52682d1b6cb5769cfcd0ea98feea2524c8", "HEAD", "--", "backend/routes"],
                        cwd=REPO, capture_output=True)
-    assert r.returncode == 0, "backend/routes 相对 V5-F2 授权基线 554d62fac 有未授权改动"
+    assert r.returncode == 0, "backend/routes 相对 O8-R1 授权基线 46e44c526 有未授权改动"
     # O7-E 解冻: engine prompt / agents persona 工具面 授权改动落地 commit 之后冻结
     # V7-F2-R1: engine 基线由 commit-SHA 改为内容哈希——R1 拓扑要求单一 CONTENT_HEAD
     # （impl+tests 同提交）, commit-SHA 基线无法在同一提交内自引用; 哈希基线等强:

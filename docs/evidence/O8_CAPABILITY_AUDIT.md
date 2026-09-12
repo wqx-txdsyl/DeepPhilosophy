@@ -4,6 +4,8 @@
 > 授权: V12-M1 裁定正式指令——能力地图 / 30 工具 / Main Agent orchestration /
 > 检索阅读闭环 / repair-validator / 交互能力与缺口全量盘点。
 > 机器可读版: docs/evidence/O8_CAPABILITY_AUDIT.json
+> 修订: 2026-09-12 O8-R1 Correction Patch（Reviewer 裁定 PATCH_REQUIRED 后修正）
+> ——gap② 事实纠正 / V12 三项失败拆分重分类 / 删除「非工程缺陷」总括 / 落定 P0-P2 缺口顺序。
 
 ## 1. 生产模型层
 
@@ -45,6 +47,8 @@
 
 `final_validator`(369 行，问题码封闭集) ← `quote_bound`(311) ← `local_patch_runtime`(190，COPY/PARAPHRASE/CITATION_REPLACE) ← `repair_context`(717) ← `o7e_semantic_transition`(227，7 标签记账)。repair ≤2 轮确定性解码；frozen final gate（blob 22ea181c）唯一裁决。
 
+**Local Patch post-patch 语义安全门**：`evaluate_repair_safety`（engine_langgraph.py:1488，V9-F2-R2 §1）在 production Local Patch 成功 apply 后实际调用（:2378）；AMBIGUOUS 无条件拒绝（family unknown 不逃逸，fail-closed）；GENUINELY_NEW 且 family ∈ {QUOTE,CITATION,BIBLIOGRAPHIC} 拒绝；REKEY/SHIFT/RELABEL/PERSISTED 不误杀；拒绝即回滚 pre-patch candidate；门内任何异常 fail-closed（SAFETY_GATE_ERROR）。该门当前**仅覆盖 Local Patch 路径**——FULL_REWRITE / non-local-patch repair 无等价 global semantic safety + rollback parity（真实 gap，见第 7 节）。
+
 ## 6. 交互层
 
 - **服务**：FastAPI `main.py` 12 routers（health/auth/user/admin/sync/knowledge/ai/history/text/agent/books/authors）+ SPA 托管；`routes/` 共 24 模块。
@@ -56,20 +60,27 @@
 ### 本次已顺手修复
 - ✅ agent_llm.py 顶部旧注释「缺省 → deepseek-chat」文档债（M1 裁定移交 O8）。
 
-### 卫生类（需用户决定，不改行为）
-- 未跟踪孤儿文件（零引用、不断链）：`backend/jwt_verify.py`、`backend/upstream.py`、`backend/user_profile_store.py`、`backend/routes/agent_history.py`、`backend/routes/auth_proxy.py`、`agent-app/src/data/conversationSync.js` —— 入库或删除待定。
-- 未跟踪肖像资产：`app/public/philosopher/José Martí.webp`、黑塞 portrait —— 疑似 scripts 产物漏提交。
+### 卫生类（2026-09-12 Reviewer C 项裁定：全部不删除、不入库）
+- 未跟踪孤儿文件（零引用、不断链）：`backend/jwt_verify.py`、`backend/upstream.py`、`backend/user_profile_store.py`、`backend/routes/agent_history.py`、`backend/routes/auth_proxy.py` —— 保持 untracked，O8-R2 仅证明 ownership/reference/build impact 后分类（「零引用」≠「可安全删除」）。
+- `agent-app/src/data/conversationSync.js` —— 单独进入 O8-R2 interaction ownership audit，先判 KEEP/DEPRECATE/DELETE。
+- 未跟踪肖像资产：`app/public/philosopher/José Martí.webp`、黑塞 portrait —— 属站点资产卫生，不纳入 PhiAgent O8 production scope。
 - `.zcode/`、`backend/data/scholarly_cache.json` 为本地/运行时文件，不应入库（维持现状）。
 
-### 能力缺口（需 Reviewer/用户决策，均不擅自动工）
-1. **原典缺口的逐字引文**：原文不在库时只能诚实降级（V12-14 形态，textual grounding 必然受损）。可选补强：扩大合法 OA 全文源 / 引入可核验原文片段库——涉及 corpus 政策，需单独授权。
-2. **repair 引入新问题无预检**：repair-1 生成后才被 semantic 分类（V12-08 形态，5 个 transient 空转）。预检机制涉及 repair semantics（冻结区），需单独任务书。
-3. **LOCAL_CURATED 学术覆盖未量化**：建议后续做一次 coverage 统计（纯只读小任务）。
-4. **conversationSync.js 悬空**：agent-app 多轮会话同步功能半成品，需决定去留。
+### 能力缺口（2026-09-12 Reviewer B 项裁定后修正；P0-P2 顺序为 Reviewer 推荐序）
+1. **P0 operational — autonomous Builder↔Reviewer handoff**：已落地 `docs/agent/AUTONOMOUS_HANDOFF_CONTRACT.json`（本 patch）。
+2. **P1 measurement — LOCAL_CURATED coverage census**：只读统计，直接进入 O8-R2 执行。
+3. **P1 repair — full-rewrite/non-local repair safety parity**：Local Patch 路径已存在 post-patch semantic safety gate（`evaluate_repair_safety`：AMBIGUOUS fail-closed、QUOTE/CITATION/BIBLIOGRAPHIC 家族 GENUINELY_NEW 拒绝、拒绝即回滚 pre-patch）；**真实 gap 是 FULL_REWRITE / non-local-patch repair 缺少与 Local Patch 等价的 global semantic safety + rollback parity**。O8-R2 测量，O10 修复（改动触及冻结 repair semantics，本 patch 不动）。
+4. **P2 interaction — conversationSync ownership**：agent-app 多轮会话同步半成品，O8-R2 ownership audit 裁定去留。
+5. **P2 corpus — verifiable primary-text coverage expansion policy**：原文不在库时只能诚实降级（V12-14 形态）。当前不扩库；O8-R2 先量化 primary-text coverage 与缺口、形成 expansion policy，实际 corpus 改动留待 O9/O10 证据之后。
+
+### V12 三项冻结失败的拆分重分类（Reviewer 裁定，替代任何总括归类）
+- **V12-08 = REPAIR_SAFETY_ENGINEERING_GAP**
+- **V12-14 = HONEST_CAPABILITY_CORPUS_LIMITATION**
+- **V12-09 = REPAIR_CONVERGENCE_CITATION_QUOTE_RELIABILITY_GAP**
 
 ### 明确不动
 V12 三项冻结失败不修；judge / final gate / qualification thresholds 不动；V13 不存在。
 
 ## 8. 结论
 
-PhiAgent 当前是一个**以 32 工具为手、LangGraph 单脑为骨、双检索闭环（原典+scholarly）为耳目、诚实性 validator 为闸**的完整哲学问答系统，production base 已迁移至 deepseek-flash。已知失败项（V12 三项）均属「诚实性合同的代价」或「冻结阈值的历史计入」，非工程缺陷。真正需要补什么的决策权在用户/Reviewer：上表第 7 节四项能力缺口按投入从「只读统计」到「corpus 政策变更」递增，建议按此顺序逐项裁定。
+PhiAgent 当前是一个**以 32 工具为手、LangGraph 单脑为骨、双检索闭环（原典+scholarly）为耳目、诚实性 validator 为闸**的完整哲学问答系统，production base 已迁移至 deepseek-flash。V12 三项冻结失败已按 Reviewer 裁定拆分重分类（V12-08=REPAIR_SAFETY_ENGINEERING_GAP / V12-14=HONEST_CAPABILITY_CORPUS_LIMITATION / V12-09=REPAIR_CONVERGENCE_CITATION_QUOTE_RELIABILITY_GAP），其中 repair-safety 属工程缺口（O10 统一修复），corpus 限制属诚实性合同下的能力边界。缺口优先级按第 7 节 P0→P2 执行：O8-R2 做测量与分类（72 题 benchmark + 32 工具双 Gate + efficiency audit），production repair 统一留给 O10。

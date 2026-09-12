@@ -1,0 +1,129 @@
+{
+  "AUTONOMOUS_HANDOFF_CONTRACT": true,
+  "version": "1.0",
+  "created": "2026-09-12",
+  "authorized_by": "Reviewer GPT-5.6 Sol — PhiAgent O8-R1 Correction + Handoff Patch（Reviewer Verdict 2026-09-12）",
+  "builder": "ZCode / GLM-5.3",
+  "reviewer_transport": {
+    "REVIEWER": "GPT-5.6 Sol",
+    "REVIEWER_TRANSPORT": "ZCODE_BUILT_IN_BROWSER",
+    "REVIEWER_CHANNEL": "THIS_LOCKED_CHATGPT_CONVERSATION"
+  },
+  "states": [
+    "BUILDER_RUNNING",
+    "RECEIPT_READY",
+    "REVIEW_PENDING",
+    "REVIEWER_RUNNING",
+    "PATCH_DISPATCH",
+    "CURRENT_GATE_PASSED",
+    "NEXT_PHASE_DISPATCH",
+    "LANDED",
+    "HUMAN_DECISION_REQUIRED"
+  ],
+  "state_transitions": {
+    "builder_complete": "BUILDER_RUNNING → RECEIPT_READY → REVIEW_PENDING → REVIEWER_RUNNING",
+    "patch": "PATCH_REQUIRED → patch verbatim（不改写/不摘要）→ PATCH_DISPATCH → BUILDER_RUNNING",
+    "pass": "PASS → CURRENT_GATE_PASSED → NEXT_PHASE_DISPATCH → BUILDER_RUNNING",
+    "invariants": "PASS != LANDED != CLOSED; PASS 仅代表 CURRENT_GATE_PASSED=true"
+  },
+  "stop_for_review_semantics": {
+    "STOP_FOR_REVIEW": [
+      "STOP_MUTATING_REPO",
+      "HANDOFF_TO_REVIEWER_AUTOMATICALLY",
+      "CONTINUE_AFTER_VERDICT",
+      "DO_NOT_ASK_USER"
+    ],
+    "note": "它不是 workflow 结束"
+  },
+  "forbidden": [
+    "ask user to relay receipt",
+    "ask 是否继续",
+    "ask whether to execute patch",
+    "ask whether to enter next phase",
+    "open substitute Reviewer conversation",
+    "Builder self-review"
+  ],
+  "verdict_actions": {
+    "PATCH_REQUIRED": "原样捕获 Patch Task → 不改写 → 不摘要 → 作为下一 Builder input → 自动执行",
+    "PASS": "若 roadmap 存在已授权下一阶段 → 自动 NEXT_PHASE_DISPATCH，不得询问用户"
+  },
+  "human_decision_gate": {
+    "HUMAN_DECISION_REQUIRED": true,
+    "allowed_reasons": [
+      "产品 scope 需要真实选择",
+      "credential / authentication",
+      "destructive / irreversible operation",
+      "repo / BASE identity conflict",
+      "Reviewer 明确要求用户决定",
+      "Reviewer ChatGPT 对话无法访问",
+      "roadmap 中不存在已授权下一阶段"
+    ],
+    "not_user_decisions": ["PATCH", "PASS", "phase transition", "test failure", "review retry"]
+  },
+  "handoff_mechanics": {
+    "transport_notes": "内置浏览器 trusted input 失效时的绕过: 分块 execCommand insertText + 合成 PointerEvent/MouseEvent click（data-testid=send-button）; 会话定位 = ChatGPT 侧边栏 Recents 最新 Reviewer 会话",
+    "receipt_must_include": [
+      "当前任务书",
+      "BASE_SHA",
+      "CONTENT_HEAD/ARCHIVE_HEAD/REMOTE_SHA",
+      "tests / evidence",
+      "Final Receipt"
+    ]
+  },
+  "phase_authorizations": {
+    "O8_R2": {
+      "status": "PREAUTHORIZED（本 O8-R1 correction patch PASS 后自动启动, 不询问用户）",
+      "definition": "O8-R2 = EXECUTION AUDIT（MEASURE/AUDIT/CLASSIFY, 不做 O10 的统一 production repair）",
+      "scope": [
+        "72-case capability benchmark",
+        "32-tool Mechanical Gate",
+        "32-tool Agentic Gate",
+        "KEEP/MERGE/REWRITE/DEPRECATE/DELETE classification",
+        "efficiency audit",
+        "LOCAL_CURATED coverage census",
+        "conversationSync ownership audit",
+        "primary-text coverage census/policy measurement"
+      ],
+      "real_api_calls": "AUTHORIZED=true（真实 production-path LLM/API 调用）",
+      "limits": [
+        "use existing credentials/quota only",
+        "no purchase",
+        "no credential mutation",
+        "no corpus expansion",
+        "no full-rewrite safety implementation",
+        "no destructive orphan deletion"
+      ],
+      "must_record": [
+        "LLM_CALLS",
+        "TOOL_CALLS",
+        "RETRIEVAL_ROUNDS",
+        "DUPLICATE_CALLS",
+        "LATENCY",
+        "REPAIR_COUNT",
+        "TOKEN_COST"
+      ]
+    }
+  },
+  "boundaries": {
+    "must_not_modify": [
+      "engine_langgraph behavior",
+      "prompt constitution",
+      "tool behavior",
+      "retrieval behavior",
+      "Local Patch semantics",
+      "validator",
+      "quote_bound",
+      "judge",
+      "final gate",
+      "qualification thresholds",
+      "production model",
+      "corpus contents"
+    ],
+    "allowed": [
+      "docs/evidence/state",
+      "workflow contract",
+      "授权的 test baseline constants",
+      "tests proving correction"
+    ]
+  }
+}
