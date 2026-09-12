@@ -8,7 +8,7 @@ import { useLang } from '../../utils/i18n';
 import { renderMarkdown } from './markdown';
 import { DP_READER, resolveCite, resolvePortrait } from '../../utils/api';
 import { pickUsedEvidence } from '../../utils/evidence';
-import { DepthControls, SourceDrawer, layerOf, layerLabel } from './O9';
+import { DepthControls, SourceDrawer, layerOf, layerLabel, researchPhase } from './O9';
 import {
   resolveIdentityVisible, toolShortSummary, toolShortArgs, toolHumanSummary,
   isRetrievalTool, retrievalGroupSummary, cleanUserMessageForRender,
@@ -89,7 +89,10 @@ function MessageAttachmentCards({ attachments }) {
 const CAN_DEBUG = import.meta.env.DEV || /[?&]debug(?:=1)?([#&]|$)/.test(window.location.search);
 
 function ToolTrace({ events, streaming }) {
-  const { t, toolLabel } = useLang();
+  const { t, toolLabel, lang } = useLang();
+  const PhasePill = ({ name, text }) => (
+    <span className="o9-phase" title={researchPhase(name, text, lang)}>{researchPhase(name, text, lang)}</span>
+  );
   const [openSet, setOpenSet] = useState(() => {
     const s = new Set();
     if (getPref('toolTraceOpen')) (events || []).forEach((ev, i) => { if (ev?.t === 'tool') { s.add('c' + i); s.add('t' + i); } });
@@ -146,6 +149,7 @@ function ToolTrace({ events, streaming }) {
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('c' + ev.i); } }}>
           {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
           <span className="cw-tool-line-icon">⌕</span>
+          <PhasePill name={rName} text={tc.result_summary || tc.thought} />
           <span className="cw-tool-line-label">{label}</span>
           <span className="cw-tool-line-summ">{short}</span>
           <span className="cw-tool-line-status">
@@ -209,6 +213,7 @@ function ToolTrace({ events, streaming }) {
             <div key={rEv.i} className="cw-tool-line">
               <Loader2 size={12} className="cw-spinner" aria-hidden />
               <span className="cw-tool-line-icon">⌕</span>
+              <PhasePill name={rName} />
               <span>{t('calling')} {label}…</span>
             </div>
           );
@@ -233,6 +238,7 @@ function ToolTrace({ events, streaming }) {
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('m' + g.key); } }}>
                 <ChevronRight size={11} />
                 <span className="cw-tool-line-icon">⌕</span>
+                <PhasePill name={toolName(g.items[0].ev)} />
                 <span>{retrievalGroupSummary(g.items.length)}</span>
                 <span className="cw-tool-line-done"><Check size={11} /> {t('toolDone')}</span>
               </div>
@@ -261,6 +267,7 @@ function ToolTrace({ events, streaming }) {
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle('t' + rEv.i); } }}>
               {isOpen ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
               <span className="cw-tool-line-icon">⌕</span>
+              <PhasePill name={rName} text={tc.result_summary || tc.thought} />
               <span className="cw-tool-line-label">{human || label}</span>
               <span className="cw-tool-line-summ">{human ? '' : (toolShortSummary(tc) || '')}</span>
               <span className="cw-tool-line-status">
@@ -463,7 +470,7 @@ function AgentActivity({ m, prefsTick }) {
 
 /* ── 单条消息（memo: 流式 tick 只重渲变化消息） ── */
 const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, prefsTick, onDrawioEdit, onSend }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   if (m.role === 'user') {
     // P0-3: visible content = structured attachment cards + 用户文本（legacy serialization 前缀保守 dedupe）
@@ -494,7 +501,7 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
       </div>
       {getPref('showCitations') && <EvidenceChips citations={m.citations} evidence={m.evidence} />}
       {!m.streaming && m.content && (
-        <DepthControls lang={undefined} disabled={false}
+        <DepthControls lang={lang} disabled={false}
           onPick={(prompt) => onSend(prompt)} />
       )}
       {m.suggestions?.length > 0 && !m.streaming && (

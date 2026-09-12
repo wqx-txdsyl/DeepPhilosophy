@@ -14,6 +14,18 @@ import { BookOpen, GraduationCap, Layers, X, Quote, ShieldCheck, ExternalLink } 
 
 
 import { useState as _useState } from 'react';
+import { researchPhaseKey as _phaseKey, RESEARCH_PHASES as _PHASES, layerOf as _layerOf, layerLabel as _layerLabel } from '../../utils/o9Research';
+
+export const RESEARCH_PHASES = _PHASES;
+export function researchPhase(toolName, textOrLang, maybeLang) {
+  const hasText = maybeLang !== undefined;
+  const text = hasText ? textOrLang : '';
+  const lang = hasText ? maybeLang : textOrLang;
+  return _PHASES[_phaseKey(toolName, text)][lang === 'en' ? 'en' : 'zh'];
+}
+export function researchPhaseKey(toolName, text) {
+  return _phaseKey(toolName, text);
+}
 import { resolveCite, DP_READER as _DP_READER } from '../../utils/api';
 function ReaderLink({ citation, fallback, zh }) {
   const [busy, setBusy] = _useState(false);
@@ -41,67 +53,39 @@ function ReaderLink({ citation, fallback, zh }) {
   );
 }
 
-/* ── 来源分层（§7 Scholarly Research UX: 分层展示, 高级字段收进抽屉） ── */
-export function layerOf(citation) {
-  const c = citation || {};
-  if (c.book) return 'primary';
-  if (c.doi || c.source_record_id || /journal|press|proceedings/i.test(c.container_title || c.venue || '')) return 'scholarly';
-  return 'web';
-}
-
-const LAYER_META = {
-  primary: { zh: '原典', en: 'Primary' },
-  scholarly: { zh: '学术', en: 'Scholarly' },
-  web: { zh: '网络', en: 'Web' },
-};
-export function layerLabel(layer, lang) {
-  return (LAYER_META[layer] || LAYER_META.web)[lang === 'en' ? 'en' : 'zh'];
-}
-
-/* ── 研究状态五态（§C Research State; 只给相位, 不给 raw 工具日志） ── */
-const PHASES = [
-  { zh: '正在理解问题', en: 'Understanding the question' },
-  { zh: '正在查找原典', en: 'Searching primary texts' },
-  { zh: '正在核验出处', en: 'Verifying sources' },
-  { zh: '正在查阅学术研究', en: 'Consulting scholarship' },
-  { zh: '正在整理论证', en: 'Organizing the argument' },
-];
-export function researchPhase(toolName, lang) {
-  const i = (() => {
-    switch (toolName) {
-      case 'search_books': case 'get_chapter': case 'get_book_detail': case 'list_books': case 'concept_trace':
-        return 1;
-      case 'search_scholarship': case 'get_scholarly_source': case 'websearch':
-        return 3;
-      case 'query_graph': case 'query_database': case 'get_philosopher': case 'get_school':
-        return 0;
-      default:
-        return 4;
-    }
-  })();
-  return PHASES[i][lang === 'en' ? 'en' : 'zh'];
-}
+/* ── 来源分层（纯函数在 utils/o9Research.js） ── */
+export const layerOf = _layerOf;
+export const layerLabel = _layerLabel;
 
 /* ── Depth Controls（§D; O11 起映射 Reader State / Answer Depth / Research Depth） ── */
 const DEPTHS = [
-  { key: 'simpler', zh: '简单一点', en: 'Simpler', prompt: '请用更通俗的语言重新解释上面的回答，少用术语，多给例子。' },
-  { key: 'deeper', zh: '深入一点', en: 'Deeper', prompt: '请在上面的回答基础上更深入一层：展开关键概念的哲学史脉络与核心争议。' },
-  { key: 'primary', zh: '看原典', en: 'Primary texts', prompt: '请针对上面的回答，引用相关原典原文（给出书名与章节），并解释原文语境。' },
-  { key: 'scholarly', zh: '看学术研究', en: 'Scholarship', prompt: '请针对上面的回答检索并综述相关学术研究（给出代表文献与争论点）。' },
+  { key: 'simpler', zh: '简单一点', en: 'Simpler',
+    promptZh: '请用更通俗的语言重新解释上面的回答，少用术语，多给例子。',
+    promptEn: 'Please re-explain the answer above in plainer language, with fewer technical terms and more examples.' },
+  { key: 'deeper', zh: '深入一点', en: 'Deeper',
+    promptZh: '请在上面的回答基础上更深入一层：展开关键概念的哲学史脉络与核心争议。',
+    promptEn: 'Go one level deeper on the answer above: unpack the historical lineage of the key concepts and the core controversies.' },
+  { key: 'primary', zh: '看原典', en: 'Primary texts',
+    promptZh: '请针对上面的回答，引用相关原典原文（给出书名与章节），并解释原文语境。',
+    promptEn: 'For the answer above, quote relevant primary-text passages (with work and chapter) and explain their context.' },
+  { key: 'scholarly', zh: '看学术研究', en: 'Scholarship',
+    promptZh: '请针对上面的回答检索并综述相关学术研究（给出代表文献与争论点）。',
+    promptEn: 'For the answer above, survey relevant scholarship (representative literature and points of debate).' },
 ];
 export function DepthControls({ onPick, disabled, lang }) {
+  const en = lang === 'en';
   if (disabled) return null;
   return (
     <div className="o9-depth" role="group" aria-label="Depth controls">
       {DEPTHS.map((d) => (
         <button key={d.key} className="o9-depth-chip" disabled={disabled}
-          onClick={() => onPick(d.prompt)}
-          aria-label={d[lang === 'en' ? 'en' : 'zh']}>
+          onClick={() => onPick(en ? d.promptEn : d.promptZh)}
+          aria-label={d[en ? 'en' : 'zh']}>
           {d.key === 'simpler' && '◦ '}
           {d.key === 'deeper' && '↧ '}
           {d.key === 'primary' && <BookOpen size={11} style={{ verticalAlign: '-1px', marginRight: 4 }} aria-hidden />}
           {d.key === 'scholarly' && <GraduationCap size={11} style={{ verticalAlign: '-1px', marginRight: 4 }} aria-hidden />}
-          {d[lang === 'en' ? 'en' : 'zh']}
+          {d[en ? 'en' : 'zh']}
         </button>
       ))}
     </div>

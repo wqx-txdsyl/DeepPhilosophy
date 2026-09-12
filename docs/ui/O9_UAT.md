@@ -41,3 +41,21 @@
 - 321–360px 窄屏与横屏 tablet 专项（O13 复验, 见 RESPONSIVE_SPEC §5）。
 - Argument View 一等树视图（O9 仅交付措辞合同, O13 渲染）。
 - 登录态跨设备会话同步 UI（O12 域）。
+
+## 5. O9-R1 Wiring Closeout UAT（2026-09-13 补充）
+
+前置: researchPhase 五态接线 MessageList（PhasePill）; DepthControls 双语 promptZh/promptEn; 纯函数测试 tests/o9Research.test.mjs。
+
+| # | 场景 | 结果 | 证据 |
+|---|---|---|---|
+| U1-R1 | research phase 流式可见 | PASS | 流中采样: 「正在整理论证」「正在查找原典」相位 pill 渲染于工具行 |
+| U2-R1 | 相位随 primary/scholarly 路径切换 | PASS | search_books→查找原典; compare_views→整理论证; scholarly 映射由单测覆盖 |
+| U3-R1 | zh 深度控件 | PASS | 简单一点/深入一点/看原典/看学术研究 |
+| U4-R1 | en 深度控件（phiagent_lang=en） | PASS | Simpler/Deeper/Primary texts/Scholarship; UI 同步英文 |
+| U5-R1 | 深度点击发送同语言追问 | PASS | en 模式点击 Primary texts → 发送英文 prompt（逐字核对） |
+| U6-R1 | SourceDrawer 无回归 | PASS | 抽屉开启/字段/核验状态/关闭 全通 |
+| U7-R1 | mobile 390px 无横向溢出 | PASS | scrollWidth == innerWidth |
+
+测试: RESEARCH_PHASE_MAPPING_TEST=PASS / LAYER_OF_TEST=PASS / DEPTH_CONTROLS_ZH_TEST=PASS / DEPTH_CONTROLS_EN_TEST=PASS（npm test 链入）。
+构建: FRONTEND_PRODUCTION_BUILD=PASS（vite build ✓ 3.29s）。
+Vercel deployment failure @84c31fa0f → 记入 O14_DEPLOYMENT_CARRYOVER（O14 处理, 本轮不伪装 green）。
