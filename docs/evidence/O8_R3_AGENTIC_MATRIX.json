@@ -11,19 +11,6 @@
   "DEGRADED_RESULT",
   "FAILURE_RECOVERY"
  ],
- "UNJUSTIFIED_CELLS": 0,
- "evidence_reuse_policy": "共享探针仅在能证明该工具该 gate 时引用; 每个 cell 附 EVIDENCE_REF+RATIONALE; 真实 FAIL 不改 N/A",
- "preserved_fails": [
-  "paper_review/SHOULD_CALL",
-  "get_scholarly_source/SHOULD_CALL"
- ],
- "negative_probes_new": [
-  "AG-NEG-A-NOESSAY",
-  "AG-NEG-B-NOSOCRATIC",
-  "AG-NEG-C-NOTEST",
-  "AG-NEG-D-NOMULTI",
-  "AG-NEG-E-NOEXTRA"
- ],
  "gate_summary": {
   "SHOULD_CALL": {
    "PASS": 30,
@@ -41,58 +28,82 @@
    "N/A": 7
   },
   "BAD_FIRST_RESULT": {
-   "PASS": 3,
+   "PASS": 5,
    "FAIL": 0,
-   "N/A": 29
+   "N/A": 27
   },
   "DEGRADED_RESULT": {
-   "PASS": 4,
+   "PASS": 8,
    "FAIL": 0,
-   "N/A": 28
+   "N/A": 24
   },
   "FAILURE_RECOVERY": {
-   "PASS": 4,
+   "PASS": 9,
    "FAIL": 0,
-   "N/A": 28
+   "N/A": 23
   }
  },
+ "cell_statistics_computed_by_validator": {
+  "TOTAL_CELLS": 192,
+  "PASS": 109,
+  "FAIL": 2,
+  "N/A": 81,
+  "APPLICABLE": 111
+ },
+ "UNJUSTIFIED_CELLS": 0,
+ "unjustified_rule": "PASS/FAIL 必须有 EVIDENCE_REF+RATIONALE; N/A 必须有 N_A_SEMANTIC_REASON+CONTRACT_OR_TOOL_CLASS_EVIDENCE; 禁止『本轮没观察到』",
+ "preserved_fails": [
+  "paper_review/SHOULD_CALL",
+  "get_scholarly_source/SHOULD_CALL"
+ ],
+ "new_probes_r3_r1": [
+  "AG-FAULT-1-PHILOSOPHER",
+  "AG-FAULT-2-SCHOOL",
+  "AG-FAULT-3-SCHOLARLY"
+ ],
  "matrix": {
   "advisor_council": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.advisor_council=true; AG-advisor_council-SHOULDCALL",
+    "EVIDENCE_REF": "AG-advisor_council-SHOULDCALL; should_call_hits.advisor_council=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "全轨迹扫描(72 bench+38 agentic+5 NEG): 仅其专属探针触发 1 次, 其余题目零误触发",
-    "RATIONALE": "负向证据=全 run 轨迹扫描的零误触发记录"
+    "EVIDENCE_REF": "全轨迹扫描(72 bench+38 agentic+5 NEG+3 FAULT): 仅其专属探针触发 1 次, 其余全零误触发",
+    "RATIONALE": "负向证据=全 run 轨迹扫描零误触发"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-advisor_council-SHOULDCALL(检索书目链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-advisor_council-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "agent_council": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.agent_council=true; AG-agent_council-SHOULDCALL",
+    "EVIDENCE_REF": "AG-agent_council-SHOULDCALL; should_call_hits.agent_council=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -102,61 +113,73 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-agent_council-SHOULDCALL(多工具协作链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-agent_council-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "analyze_argument": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.analyze_argument=true; AG-analyze_argument-SHOULDCALL",
+    "EVIDENCE_REF": "AG-analyze_argument-SHOULDCALL; should_call_hits.analyze_argument=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
     "EVIDENCE_REF": "AG-NEG-A..E 五探针零触发+全轨迹扫描(仅专属探针与 paper_review 链内合法出现)",
-    "RATIONALE": "只要分析不要评审时未启动 paper_review; analyze_argument 仅作为链中步骤合法出现"
+    "RATIONALE": "只要分析不要评审时未启动评审; 仅作为链中步骤合法出现"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-analyze_argument-SHOULDCALL(concept_trace/get_book_detail 链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-analyze_argument-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "compare_views": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.compare_views=true; AG-compare_views-SHOULDCALL",
+    "EVIDENCE_REF": "AG-compare_views-SHOULDCALL; should_call_hits.compare_views=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -166,61 +189,73 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-compare_views-SHOULDCALL(检索→比较脚手架链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-compare_views-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "concept_trace": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.concept_trace=true; AG-concept_trace-SHOULDCALL",
+    "EVIDENCE_REF": "AG-concept_trace-SHOULDCALL; should_call_hits.concept_trace=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-concept_trace-SHOULDCALL(concept_trace→get_chapter 链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-concept_trace-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "conceptual_map": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.conceptual_map=true; AG-conceptual_map-SHOULDCALL",
+    "EVIDENCE_REF": "AG-conceptual_map-SHOULDCALL; should_call_hits.conceptual_map=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -230,29 +265,35 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-conceptual_map-SHOULDCALL(concept_trace→map 链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-conceptual_map-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "confrontation": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.confrontation=true; AG-confrontation-SHOULDCALL",
+    "EVIDENCE_REF": "AG-confrontation-SHOULDCALL; should_call_hits.confrontation=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -262,29 +303,35 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-confrontation-SHOULDCALL(检索+concept_trace+章节链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-confrontation-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "dialectic": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.dialectic=true; AG-dialectic-SHOULDCALL",
+    "EVIDENCE_REF": "AG-dialectic-SHOULDCALL; should_call_hits.dialectic=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -294,29 +341,35 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-dialectic-SHOULDCALL(search/scholarly/get_chapter 链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-dialectic-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "essay_outline": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.essay_outline=true; AG-essay_outline-SHOULDCALL",
+    "EVIDENCE_REF": "AG-essay_outline-SHOULDCALL; should_call_hits.essay_outline=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -326,29 +379,35 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-essay_outline-SHOULDCALL(检索→大纲链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-essay_outline-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "generate_image": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.generate_image=true; AG-generate_image-SHOULDCALL",
+    "EVIDENCE_REF": "AG-generate_image-SHOULDCALL; should_call_hits.generate_image=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -358,189 +417,215 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-generate_image-SHOULDCALL(先检索语境后生图)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-generate_image-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "get_book_detail": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.get_book_detail=true; AG-get_book_detail-SHOULDCALL",
+    "EVIDENCE_REF": "AG-get_book_detail-SHOULDCALL; should_call_hits.get_book_detail=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-get_chapter-SHOULDCALL(search→detail→chapter 链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-get_chapter-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "单资源定位, 无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖",
+    "RATIONALE": "单资源定位, 无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+    "N_A_SEMANTIC_REASON": "降级输入(无记录/坏参数)的行为已由 Mechanical FAILURE_PATH 验证; agent 级降级场景在本审计中未对该工具单独构成",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖; agent 级降级的家族证据见同族 get_philosopher/get_school/search_scholarship 的 FAULT PASS",
+    "RATIONALE": "降级输入(无记录/坏参数)的行为已由 Mechanical FAILURE_PATH 验证; agent 级降级场景在本审计中未对该工具单独构成"
    },
    "FAILURE_RECOVERY": {
     "verdict": "PASS",
     "EVIDENCE_REF": "AG-SHARE-RECOVERY",
-    "RATIONALE": "失败后恢复到正确路径（改写/换源/如实回退）"
+    "RATIONALE": "定位→读取链中的失败纠正"
    }
   },
   "get_chapter": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.get_chapter=true; AG-get_chapter-SHOULDCALL",
+    "EVIDENCE_REF": "AG-get_chapter-SHOULDCALL; should_call_hits.get_chapter=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
     "EVIDENCE_REF": "AG-get_chapter-SHOULDCALL",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "单资源定位, 无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖",
+    "RATIONALE": "单资源定位, 无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+    "N_A_SEMANTIC_REASON": "降级输入(无记录/坏参数)的行为已由 Mechanical FAILURE_PATH 验证; agent 级降级场景在本审计中未对该工具单独构成",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖; agent 级降级的家族证据见同族 get_philosopher/get_school/search_scholarship 的 FAULT PASS",
+    "RATIONALE": "降级输入(无记录/坏参数)的行为已由 Mechanical FAILURE_PATH 验证; agent 级降级场景在本审计中未对该工具单独构成"
    },
    "FAILURE_RECOVERY": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-RECOVERY(定位后读取的纠错链)",
-    "RATIONALE": "失败后恢复到正确路径（改写/换源/如实回退）"
+    "EVIDENCE_REF": "AG-SHARE-RECOVERY",
+    "RATIONALE": "定位→读取链中的失败纠正"
    }
   },
   "get_philosopher": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.get_philosopher=true; AG-get_philosopher-SHOULDCALL",
+    "EVIDENCE_REF": "AG-get_philosopher-SHOULDCALL; should_call_hits.get_philosopher=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-MULTI2",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-SHARE-MULTI2",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "单资源定位, 无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖",
+    "RATIONALE": "单资源定位, 无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-1(不存在哲人: 查询→多路辅助→如实说明无此人)",
+    "RATIONALE": "空结果诚实降级"
    },
    "FAILURE_RECOVERY": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-1",
+    "RATIONALE": "空结果后多路辅助(websearch/query_database)并如实收束"
    }
   },
   "get_scholarly_source": {
    "SHOULD_CALL": {
     "verdict": "FAIL",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.agentic.get_scholarly_source-SHOULDCALL",
-    "RATIONALE": "O8-R2 实测未调用目标工具（paper_review 被 analyze_argument 替代; get_scholarly_source 停在 search_scholarship 未取记录）——保留真实 FAIL, O10 修复对象"
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.agentic.{t}-SHOULDCALL(轨迹无目标工具)",
+    "RATIONALE": "O8-R2 实测未调用目标工具（paper_review 被 analyze_argument 替代; get_scholarly_source 停在 search_scholarship 未取记录）——真实 FAIL 保留, O10 修复"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "依赖 search_scholarship 的记录 id——链式语义体现在 search_scholarship→本工具, 已由该工具 cell 覆盖"
+    "N_A_SEMANTIC_REASON": "自足式交互协议, 无链式协作语义",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "自足式交互协议（自带多轮编排/单调用即完整交付）, 与其他工具无链式协作语义",
+    "RATIONALE": "自足式交互协议, 无链式协作语义"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "单资源定位, 无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖",
+    "RATIONALE": "单资源定位, 无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+    "N_A_SEMANTIC_REASON": "降级输入(无记录/坏参数)的行为已由 Mechanical FAILURE_PATH 验证; agent 级降级场景在本审计中未对该工具单独构成",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖; agent 级降级的家族证据见同族 get_philosopher/get_school/search_scholarship 的 FAULT PASS",
+    "RATIONALE": "降级输入(无记录/坏参数)的行为已由 Mechanical FAILURE_PATH 验证; agent 级降级场景在本审计中未对该工具单独构成"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "get_school": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.get_school=true; AG-get_school-SHOULDCALL",
+    "EVIDENCE_REF": "AG-get_school-SHOULDCALL; should_call_hits.get_school=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-NEG-C-NOTEST(get_school→search_books 链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-NEG-C-NOTEST",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "单资源定位, 无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖",
+    "RATIONALE": "单资源定位, 无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-2(不存在流派: 多路查询→如实说明)",
+    "RATIONALE": "空结果诚实降级"
    },
    "FAILURE_RECOVERY": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-2",
+    "RATIONALE": "空结果后换工具辅助并如实收束"
    }
   },
   "history_timeline": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.history_timeline=true; AG-history_timeline-SHOULDCALL",
+    "EVIDENCE_REF": "AG-history_timeline-SHOULDCALL; should_call_hits.history_timeline=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -551,28 +636,36 @@
    "MULTI_TOOL": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "单源时间线生成(流派/哲人库内数据), 无链式协作语义"
+    "N_A_SEMANTIC_REASON": "自足式交互协议, 无链式协作语义",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "自足式交互协议（自带多轮编排/单调用即完整交付）, 与其他工具无链式协作语义",
+    "RATIONALE": "自足式交互协议, 无链式协作语义"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "life_coach": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.life_coach=true; AG-life_coach-SHOULDCALL",
+    "EVIDENCE_REF": "AG-life_coach-SHOULDCALL; should_call_hits.life_coach=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -583,61 +676,71 @@
    "MULTI_TOOL": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "独立疏导流程, 无检索/多工具链语义"
+    "N_A_SEMANTIC_REASON": "自足式交互协议, 无链式协作语义",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "自足式交互协议（自带多轮编排/单调用即完整交付）, 与其他工具无链式协作语义",
+    "RATIONALE": "自足式交互协议, 无链式协作语义"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "list_books": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.list_books=true; AG-list_books-SHOULDCALL",
+    "EVIDENCE_REF": "AG-list_books-SHOULDCALL; should_call_hits.list_books=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-list_books-SHOULDCALL(list_books↔query_database 协作)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-list_books-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-BADFIRST",
-    "RATIONALE": "首次结果弱/失败后发生改写检索或换源"
+    "EVIDENCE_REF": "AG-SHARE-BADFIRST(冷门主题三次改写检索)/AG-SHARE-DEGRADED(websearch 换源)",
+    "RATIONALE": "首次结果弱后发生改写检索或换源"
    },
    "DEGRADED_RESULT": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-DEGRADED(作者过滤无命中)",
-    "RATIONALE": "部分/空结果场景下行为正确（如实降级, 无伪造）"
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED",
+    "RATIONALE": "空/部分结果场景如实降级, 无伪造"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "paper_review": {
    "SHOULD_CALL": {
     "verdict": "FAIL",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.agentic.paper_review-SHOULDCALL",
-    "RATIONALE": "O8-R2 实测未调用目标工具（paper_review 被 analyze_argument 替代; get_scholarly_source 停在 search_scholarship 未取记录）——保留真实 FAIL, O10 修复对象"
+    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.agentic.{t}-SHOULDCALL(轨迹无目标工具)",
+    "RATIONALE": "O8-R2 实测未调用目标工具（paper_review 被 analyze_argument 替代; get_scholarly_source 停在 search_scholarship 未取记录）——真实 FAIL 保留, O10 修复"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
@@ -646,29 +749,35 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-paper_review-SHOULDCALL(analyze_argument/search/scholarly 链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-paper_review-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "philosopher_debate": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.philosopher_debate=true; AG-philosopher_debate-SHOULDCALL",
+    "EVIDENCE_REF": "AG-philosopher_debate-SHOULDCALL; should_call_hits.philosopher_debate=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -679,28 +788,36 @@
    "MULTI_TOOL": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "辩论会话自带多轮编排, 不与其他工具链式协作"
+    "N_A_SEMANTIC_REASON": "自足式交互协议, 无链式协作语义",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "自足式交互协议（自带多轮编排/单调用即完整交付）, 与其他工具无链式协作语义",
+    "RATIONALE": "自足式交互协议, 无链式协作语义"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "phti_test": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.phti_test=true; AG-phti_test-SHOULDCALL",
+    "EVIDENCE_REF": "AG-phti_test-SHOULDCALL; should_call_hits.phti_test=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -711,28 +828,36 @@
    "MULTI_TOOL": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "交互式测试启动器, 单调用即完整交付, 无链式协作语义"
+    "N_A_SEMANTIC_REASON": "自足式交互协议, 无链式协作语义",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "自足式交互协议（自带多轮编排/单调用即完整交付）, 与其他工具无链式协作语义",
+    "RATIONALE": "自足式交互协议, 无链式协作语义"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "profile": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.profile=true; AG-profile-SHOULDCALL",
+    "EVIDENCE_REF": "AG-profile-SHOULDCALL; should_call_hits.profile=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -742,93 +867,101 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-profile-SHOULDCALL(profile→get_school/list_books 书目推荐链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-profile-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "query_database": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.query_database=true; AG-query_database-SHOULDCALL",
+    "EVIDENCE_REF": "AG-query_database-SHOULDCALL; should_call_hits.query_database=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-list_books-SHOULDCALL(list_books↔query_database 协作)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-list_books-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-2(query_database 两次迭代辅助定位)",
+    "RATIONALE": "空结果后换参重试"
    },
    "DEGRADED_RESULT": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-DEGRADED(key 无命中)",
-    "RATIONALE": "部分/空结果场景下行为正确（如实降级, 无伪造）"
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED",
+    "RATIONALE": "空/部分结果场景如实降级, 无伪造"
    },
    "FAILURE_RECOVERY": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-2",
+    "RATIONALE": "空结果后换参重试"
    }
   },
   "query_graph": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.query_graph=true; AG-query_graph-SHOULDCALL",
+    "EVIDENCE_REF": "AG-query_graph-SHOULDCALL; should_call_hits.query_graph=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-MULTI2(query_graph→get_philosopher→search_books)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-SHARE-MULTI2",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "单资源定位, 无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "单资源定位工具（按 id/name 精确取数, 无结果列表）, 无『首结果质量』决策面; 资源不存在/参数错误的失败与降级行为已由 Mechanical FAILURE_PATH（PASS_GRACEFUL）与 AG-FAULT 探针族覆盖",
+    "RATIONALE": "单资源定位, 无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-1(不存在哲人: 查询→多路辅助→如实说明无此人)",
+    "RATIONALE": "空结果诚实降级"
    },
    "FAILURE_RECOVERY": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-1",
+    "RATIONALE": "空结果后多路辅助(websearch/query_database)并如实收束"
    }
   },
   "role_play": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.role_play=true; AG-role_play-SHOULDCALL",
+    "EVIDENCE_REF": "AG-role_play-SHOULDCALL; should_call_hits.role_play=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -838,29 +971,35 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-agent_council-SHOULDCALL(role_play 与深哲协作链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-agent_council-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "school_arena": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.school_arena=true; AG-school_arena-SHOULDCALL",
+    "EVIDENCE_REF": "AG-school_arena-SHOULDCALL; should_call_hits.school_arena=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -871,92 +1010,100 @@
    "MULTI_TOOL": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "竞技场自成编排(两轮对抗+裁判), 不链式协作"
+    "N_A_SEMANTIC_REASON": "自足式交互协议, 无链式协作语义",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "自足式交互协议（自带多轮编排/单调用即完整交付）, 与其他工具无链式协作语义",
+    "RATIONALE": "自足式交互协议, 无链式协作语义"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "search_books": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.search_books=true; AG-search_books-SHOULDCALL",
+    "EVIDENCE_REF": "AG-search_books-SHOULDCALL; should_call_hits.search_books=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
     "EVIDENCE_REF": "AG-search_books-SHOULDCALL",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-BADFIRST(冷门主题三次改写检索+list_books 辅助+get_chapter)",
-    "RATIONALE": "首次结果弱/失败后发生改写检索或换源"
+    "EVIDENCE_REF": "AG-SHARE-BADFIRST(冷门主题三次改写检索)/AG-SHARE-DEGRADED(websearch 换源)",
+    "RATIONALE": "首次结果弱后发生改写检索或换源"
    },
    "DEGRADED_RESULT": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-DEGRADED(多路检索确认不在库→诚实降级)",
-    "RATIONALE": "部分/空结果场景下行为正确（如实降级, 无伪造）"
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED",
+    "RATIONALE": "空/部分结果场景如实降级, 无伪造"
    },
    "FAILURE_RECOVERY": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-RECOVERY(定位后读取的纠错链)",
-    "RATIONALE": "失败后恢复到正确路径（改写/换源/如实回退）"
+    "EVIDENCE_REF": "AG-SHARE-RECOVERY",
+    "RATIONALE": "定位→读取链中的失败纠正"
    }
   },
   "search_scholarship": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.search_scholarship=true; AG-search_scholarship-SHOULDCALL",
+    "EVIDENCE_REF": "AG-search_scholarship-SHOULDCALL; should_call_hits.search_scholarship=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-MULTI1",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-SHARE-MULTI1",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-3(8 次查询改写: 中英/主题拆分迭代, 检索日志表格归档)",
+    "RATIONALE": "零命中后系统性改写关键词重试=首结果不可用时的标准行为"
    },
    "DEGRADED_RESULT": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具在 O8-R2 探针中未出现降级输入场景"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-3(零命中→检索日志表格+『直说不硬凑』)",
+    "RATIONALE": "零命中诚实披露"
    },
    "FAILURE_RECOVERY": {
-    "verdict": "N/A",
-    "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "verdict": "PASS",
+    "EVIDENCE_REF": "AG-FAULT-3",
+    "RATIONALE": "零命中后系统性改写+最终如实披露"
    }
   },
   "socratic_tutor": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.socratic_tutor=true; AG-socratic_tutor-SHOULDCALL",
+    "EVIDENCE_REF": "AG-socratic_tutor-SHOULDCALL; should_call_hits.socratic_tutor=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -967,28 +1114,36 @@
    "MULTI_TOOL": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "单问题逐轮引导协议, 每调用一问, 无链式语义"
+    "N_A_SEMANTIC_REASON": "自足式交互协议, 无链式协作语义",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "自足式交互协议（自带多轮编排/单调用即完整交付）, 与其他工具无链式协作语义",
+    "RATIONALE": "自足式交互协议, 无链式协作语义"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "thought_experiment": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.thought_experiment=true; AG-thought_experiment-SHOULDCALL",
+    "EVIDENCE_REF": "AG-thought_experiment-SHOULDCALL; should_call_hits.thought_experiment=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -998,61 +1153,67 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-thought_experiment-SHOULDCALL(concept_trace/get_book_detail 语境链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-thought_experiment-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   },
   "websearch": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.websearch=true; AG-websearch-SHOULDCALL",
+    "EVIDENCE_REF": "AG-websearch-SHOULDCALL; should_call_hits.websearch=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E(检索受控)",
-    "RATIONALE": "明确不需检索的题面下未发生该检索工具的误调用; 该题对检索类工具构成有效负向证据"
+    "EVIDENCE_REF": "AG-SHARE-NOTCALL(零工具轨迹)+AG-NEG-B..E",
+    "RATIONALE": "明确无需检索的题面下未发生该检索工具误调用; 题面对检索类工具构成有效负向诱惑"
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-MULTI1(检索→章节→学术文献链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-SHARE-MULTI1",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-DEGRADED(检索失败后改用 websearch=换源行为)",
-    "RATIONALE": "首次结果弱/失败后发生改写检索或换源"
+    "EVIDENCE_REF": "AG-SHARE-BADFIRST(冷门主题三次改写检索)/AG-SHARE-DEGRADED(websearch 换源)",
+    "RATIONALE": "首次结果弱后发生改写检索或换源"
    },
    "DEGRADED_RESULT": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-DEGRADED(网络不可达→如实披露)",
-    "RATIONALE": "部分/空结果场景下行为正确（如实降级, 无伪造）"
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED",
+    "RATIONALE": "空/部分结果场景如实降级, 无伪造"
    },
    "FAILURE_RECOVERY": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-SHARE-DEGRADED(网络失败→披露→回落语料说明)",
-    "RATIONALE": "失败后恢复到正确路径（改写/换源/如实回退）"
+    "EVIDENCE_REF": "AG-SHARE-DEGRADED(网络不可达→如实披露→回落语料说明)",
+    "RATIONALE": "外部故障后恢复到可验证路径"
    }
   },
   "write_essay": {
    "SHOULD_CALL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "O8_R2_TOOL_AUDIT.should_call_hits.write_essay=true; AG-write_essay-SHOULDCALL",
+    "EVIDENCE_REF": "AG-write_essay-SHOULDCALL; should_call_hits.write_essay=true",
     "RATIONALE": "探针题自然触发且轨迹含目标工具"
    },
    "SHOULD_NOT_CALL": {
@@ -1062,23 +1223,29 @@
    },
    "MULTI_TOOL": {
     "verdict": "PASS",
-    "EVIDENCE_REF": "AG-write_essay-SHOULDCALL(write_essay→get_chapter 原文支撑链)",
-    "RATIONALE": "该工具在真实轨迹中与其他工具形成有效协作链"
+    "EVIDENCE_REF": "AG-write_essay-SHOULDCALL",
+    "RATIONALE": "真实轨迹中与其他工具形成有效协作链"
    },
    "BAD_FIRST_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "该工具无『首结果质量』语义（脚手架/单资源定位/交互启动类, 弱结果不产生重试决策）"
+    "N_A_SEMANTIC_REASON": "生成器无首结果质量决策面",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无首结果质量决策面"
    },
    "DEGRADED_RESULT": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "生成/脚手架类工具, 无『部分数据降级』语义; 生成质量属 capability 域"
+    "N_A_SEMANTIC_REASON": "生成器无『部分数据降级』语义; 生成质量属 capability 域",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "生成器无『部分数据降级』语义; 生成质量属 capability 域"
    },
    "FAILURE_RECOVERY": {
     "verdict": "N/A",
     "EVIDENCE_REF": "-",
-    "RATIONALE": "O8-R2 agent 级运行中该工具未发生可观测失败; 工具级输入失败属 Mechanical Gate FAILURE_PATH 域"
+    "N_A_SEMANTIC_REASON": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)",
+    "CONTRACT_OR_TOOL_CLASS_EVIDENCE": "生成器/脚手架类工具（本地确定性结构或单次生成, 无外部枚举结果集）, 不存在『首结果质量/部分数据降级/故障后重试』决策面; 其工具级失败=异常, 已由 O8_R2_TOOL_AUDIT Mechanical FAILURE_PATH 覆盖; agent 级『无工具直接作答』恢复路径已由 AG-SHARE-NOTCALL 零工具完整回答全局证明",
+    "RATIONALE": "本类工具在 agent 级无外部故障面可注入(本地确定性/单次生成, 生产修改禁止)"
    }
   }
  }
