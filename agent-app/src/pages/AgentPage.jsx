@@ -10,6 +10,7 @@ import useAgents from '../utils/useAgents';
 import ConversationSidebar from '../components/conversation/ConversationSidebar';
 import ConversationHeader from '../components/conversation/ConversationHeader';
 import MessageList, { QUESTION_BANK } from '../components/conversation/MessageList';
+import { EpStarter } from '../components/conversation/O9';
 import Composer from '../components/conversation/Composer';
 import AgentPlaza from '../components/conversation/AgentPlaza';
 import SettingsPanel from '../components/conversation/SettingsPanel';
@@ -542,6 +543,7 @@ export default function AgentWorkspace() {
         <Icon name="icon-brain" size={38} />
         <div className="cw-empty-title" style={{ marginTop: 12 }}>{name}</div>
         <div className="cw-empty-sub">{t('emptyGreeting')}</div>
+        <EpStarter lang={lang} onPick={(q) => dispatchSend({ message: q, display: q })} />
         <div className="cw-empty-starters">
           {starters.map(([k, label]) => (
             <button key={k} className="cw-empty-chip" onClick={() => document.querySelector('.cw-composer textarea')?.focus()}>

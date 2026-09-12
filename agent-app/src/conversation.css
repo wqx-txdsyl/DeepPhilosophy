@@ -622,3 +622,132 @@ body.dark-mode .cw-danger-btn:hover { background: #2c1d1d; }
 }
 .cw-dots span:nth-child(2) { animation-delay: 0.15s; }
 .cw-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+/* ============================================================
+   O9 UI/UX Design System additions（docs/ui/O9_DESIGN_SYSTEM.md）
+   原则: 阅读优先 / 克制 / 学术感 / 温度; 全部复用既有 tokens
+   ============================================================ */
+
+/* ── Depth Controls（§D; 回答附近, 低干扰 chips） ── */
+.o9-depth {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin: 10px 0 2px;
+}
+.o9-depth-chip {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-dim);
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+.o9-depth-chip:hover { color: var(--text); border-color: var(--text-dim); }
+.o9-depth-chip:disabled { opacity: .5; cursor: default; }
+
+/* ── Everyday Philosophy 入口（§5; 空态卡片, 温度感） ── */
+.o9-ep { margin: 18px 0 8px; max-width: 560px; width: 100%; }
+.o9-ep-cap {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-dim); margin-bottom: 8px;
+}
+.o9-ep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 8px;
+}
+.o9-ep-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: border-color .15s ease, transform .12s ease;
+}
+.o9-ep-card:hover { border-color: var(--text-dim); transform: translateY(-1px); }
+.o9-ep-icon { font-size: 15px; line-height: 1; }
+.o9-ep-title { font-size: 12.5px; font-weight: 600; color: var(--text); }
+.o9-ep-q {
+  font-size: 11.5px; color: var(--text-dim);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* ── 来源分层（§7; 原典/学术/网络 分组 chips） ── */
+.o9-layer { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; }
+.o9-layer-cap {
+  font-size: 10.5px; letter-spacing: .4px;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 1px 8px;
+  margin-right: 2px;
+  opacity: .85;
+}
+.o9-cite-numbered { display: inline-flex; align-items: center; gap: 4px; }
+.o9-cite-n {
+  font-size: 10px; color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 来源抽屉（§B; 点击引用 → 全量来源 + 核验状态） ── */
+.o9-drawer-mask {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(0,0,0,.32);
+  display: flex; justify-content: flex-end;
+  animation: o9-fade .16s ease;
+}
+@keyframes o9-fade { from { opacity: 0; } to { opacity: 1; } }
+.o9-drawer {
+  width: min(400px, 92vw);
+  height: 100%;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  animation: o9-slide .18s ease;
+  overflow-y: auto;
+}
+@keyframes o9-slide { from { transform: translateX(16px); opacity: .6; } to { transform: none; opacity: 1; } }
+.o9-drawer-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.o9-drawer-cap { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+.o9-drawer-close {
+  border: none; background: transparent; color: var(--text-dim);
+  cursor: pointer; padding: 4px; border-radius: 6px;
+}
+.o9-drawer-close:hover { color: var(--text); }
+.o9-drawer-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.o9-drawer-title { font-size: 15px; font-weight: 700; line-height: 1.45; }
+.o9-drawer-row { display: flex; gap: 10px; font-size: 12.5px; }
+.o9-drawer-k { color: var(--text-dim); flex-shrink: 0; width: 64px; }
+.o9-drawer-quote {
+  margin: 0; padding: 10px 12px;
+  border-left: 2px solid var(--border);
+  background: var(--soft);
+  border-radius: 0 8px 8px 0;
+  font-size: 12.5px; line-height: 1.7;
+  color: var(--text);
+}
+.o9-drawer-verify {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11.5px; color: var(--text-dim);
+}
+.o9-drawer-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; color: var(--accent);
+  text-decoration: none;
+}
+.o9-drawer-link:hover { text-decoration: underline; }
+
+/* ── 响应式（§10; 移动端: 抽屉全宽 / EP 单列 / 深度控件横向滚动） ── */
+@media (max-width: 640px) {
+  .o9-ep-grid { grid-template-columns: 1fr 1fr; }
+  .o9-drawer { width: 100vw; border-left: none; }
+  .o9-depth { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 2px; }
+  .o9-depth-chip { flex-shrink: 0; }
+}

@@ -8,6 +8,7 @@ import { useLang } from '../../utils/i18n';
 import { renderMarkdown } from './markdown';
 import { DP_READER, resolveCite, resolvePortrait } from '../../utils/api';
 import { pickUsedEvidence } from '../../utils/evidence';
+import { DepthControls, SourceDrawer, layerOf, layerLabel } from './O9';
 import {
   resolveIdentityVisible, toolShortSummary, toolShortArgs, toolHumanSummary,
   isRetrievalTool, retrievalGroupSummary, cleanUserMessageForRender,
@@ -291,14 +292,25 @@ function _toolEvidence(args) {
 const EVIDENCE_PREVIEW = 5;   // 低干扰: 默认最多 5 个 chip（§21 Evidence Without Noise）
 
 function EvidenceChips({ citations, evidence }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const used = pickUsedEvidence(citations);
   // 单一 source of truth（P0-2）: citationExpanded 控制 collapsed/expanded 两态
   const [citationExpanded, setCitationExpanded] = useState(false);
+  const [drawer, setDrawer] = useState(null);   // O9: 来源抽屉（全量字段+核验状态+阅读器深链）
   if (!used.length) return null;
   const rCount = evidence?.retrieved_count;
   const shown = citationExpanded ? used : used.slice(0, EVIDENCE_PREVIEW);
   const rest = used.length - EVIDENCE_PREVIEW;
+  // O9 §7: 分层展示（原典/学术/网络），层内保持原顺序并编号（[1]..[n] 对应抽屉）
+  const layers = [];
+  for (const c of shown) {
+    const L = layerOf(c);
+    if (!layers.find(x => x.layer === L)) layers.push({ layer: L, items: [] });
+    layers.find(x => x.layer === L).items.push(c);
+  }
+  let n = 0;
+  const idxById = new Map();
+  for (const c of used) { n += 1; idxById.set(c.evidence_id || `${c.book}/${c.chapter}/${n}`, n); }
   return (
     <div className="cw-evidence">
       <span className="cw-evidence-cap">
@@ -307,7 +319,23 @@ function EvidenceChips({ citations, evidence }) {
           ? ` · ${t('verifiedCount', { a: used.length, b: rCount })}`
           : ` · ${used.length}`}
       </span>
-      {shown.map((c, i) => <CiteChip key={c.evidence_id || i} c={c} />)}
+      {layers.map(({ layer, items }) => (
+        <div key={layer} className="o9-layer">
+          <span className="o9-layer-cap">{layerLabel(layer, lang)}</span>
+          {items.map((c) => {
+            n = idxById.get(c.evidence_id || `${c.book}/${c.chapter}/${-1}`) || 0;
+            return (
+              <button key={c.evidence_id || `${layer}-${c.title}-${n}`} className="cw-cite-chip o9-cite-numbered"
+                onClick={() => setDrawer(c)}
+                title={t('citeOpen')}
+                aria-label={`[${n}] ${(c.title || c.book || '').slice(0, 60)}`}>
+                <sup className="o9-cite-n">[{n}]</sup>
+                <span className="cw-cite-chip-title">{(c.title || (c.book ? `《${c.book}》${c.chapter ? `· ${c.chapter}` : ''}` : '')) .slice(0, 46)}</span>
+              </button>
+            );
+          })}
+        </div>
+      ))}
       {!citationExpanded && rest > 0 && (
         <button className="cw-cite-more" onClick={() => setCitationExpanded(true)}
           aria-label={t('expandCitations', { a: used.length })}>
@@ -320,6 +348,7 @@ function EvidenceChips({ citations, evidence }) {
           {t('citationCollapse')}
         </button>
       )}
+      <SourceDrawer open={!!drawer} citation={drawer} lang={lang} onClose={() => setDrawer(null)} />
     </div>
   );
 }
@@ -464,6 +493,10 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
         )}
       </div>
       {getPref('showCitations') && <EvidenceChips citations={m.citations} evidence={m.evidence} />}
+      {!m.streaming && m.content && (
+        <DepthControls lang={undefined} disabled={false}
+          onPick={(prompt) => onSend(prompt)} />
+      )}
       {m.suggestions?.length > 0 && !m.streaming && (
         <div className="cw-followups">
           <div className="cw-followups-cap">{t('explore')}</div>
