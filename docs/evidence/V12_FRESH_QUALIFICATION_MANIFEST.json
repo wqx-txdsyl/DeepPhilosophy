@@ -1,0 +1,167 @@
+{
+  "V12_FRESH_QUALIFICATION_MANIFEST": true,
+  "version": "V12-2026-09-12",
+  "frozen_before_run": true,
+  "QUALIFICATION_BASE": "e87b604c2d557f62582cdf24be94ecc33ff6709a",
+  "PRODUCTION_MODEL": "deepseek-flash",
+  "design_note": "全新 14-case formal qualification holdout（V12, deepseek-flash 迁移后首批 formal qualification）。V3(R01-R28/H01-H30)/V4-01~12/V5-01~12/V6-01~12/V7-01~12/V8-01~12/V9-01~14/V10-01~14/V11-01~14/BAKEOFF(H/S)/R25 RP3 dev probes/F2 DP-01~07/V6-F1-F2 dev probes/V7-F2-R1 DEV probes/V8-F2 DEV synthetic cases/V9-F* DEV cases/V9-F5 synthetic tests/V10-F*/V12 migration DEV probes 零复用、零近似改写；不针对 V11-02/04/05 做同题变体；未刻意挑易通过的题、未为躲避 judge content filter 刻意回避正常哲学主题。全部主题（西塞罗《论义务》/蒙田《随笔录》/帕斯卡《思想录》/费希特《全部知识学的基础》/狄尔泰精神科学/奎因《经验论的两个教条》/麦金太尔《追寻美德》/嵇康《声无哀乐论》/二程天理观/元伦理学实在论vs反实在论争论现状/宗喀巴应成中观/道元《正法眼藏》/杜塞尔解放哲学/柏拉图《会饮》爱欲阶梯引文）在全部历史 case 集中零出现（霍布斯/莱布尼茨/叔本华/克尔凯郭尔/朱陈之辩/墨子/奥古斯丁忏悔录/安瑟伦/伯林/王弼老子注/理想国洞穴喻等候选经 question 文本重叠预检主动排除）。覆盖矩阵含: corpus 不完整但应安全降级题（V12-13 杜塞尔, 原著不在书库）、易诱发 plan-only 的研究现状题（V12-10 元伦理学争论现状）、可能触发 repair 的逐字引文证据题（V12-14 柏拉图《会饮》, 柏拉图作品集/对话集在库）、非西方传统 2+（宗喀巴藏传中观/道元日本曹洞禅/杜塞尔拉美解放哲学）。全部 case 内容在冻结前未与 production 迭代。",
+  "no_reuse_constraints": {
+    "NO_V3_CASE_REUSE": true,
+    "NO_V4_CASE_REUSE": true,
+    "NO_V5_CASE_REUSE": true,
+    "NO_V6_CASE_REUSE": true,
+    "NO_V7_CASE_REUSE": true,
+    "NO_V8_CASE_REUSE": true,
+    "NO_V9_CASE_REUSE": true,
+    "NO_V10_CASE_REUSE": true,
+    "NO_V11_CASE_REUSE": true,
+    "NO_V10_14_REUSE": true,
+    "NO_V11_02_04_05_VARIANT": true,
+    "NO_V6_09_REUSE": true,
+    "NO_V6_09_NEAR_PARAPHRASE": true,
+    "NO_R25_RP3_REUSE": true,
+    "NO_F2_DP_PROBE_REUSE": true,
+    "NO_V6_F1_F2_DEV_PROBE_REUSE": true,
+    "NO_V7_F2_R1_DEV_PROBE_REUSE": true,
+    "NO_V8_F2_DEV_SYNTHETIC_REUSE": true,
+    "NO_V9_F_DEV_CASE_REUSE": true,
+    "NO_V9_F5_SYNTHETIC_TEST_REUSE": true,
+    "NO_V12_MIGRATION_PROBE_REUSE": true,
+    "NO_EASY_TOPIC_SCREENING": true,
+    "NO_FILTER_AVOIDANCE_TOPIC_SCREENING": true,
+    "CASE_CONTENT_UNSEEN_BEFORE_FREEZE": true
+  },
+  "coverage": [
+    "罗马伦理学（西塞罗《论义务》: 斯多亚伦理罗马化与义务冲突）",
+    "文艺复兴怀疑论（蒙田《随笔录》）",
+    "早期现代宗教哲学（帕斯卡《思想录》心的理由与信仰赌博）",
+    "德国观念论（费希特知识学三项原理）",
+    "生命哲学/诠释学（狄尔泰精神科学与体验-表达-理解）",
+    "当代分析哲学（奎因经验论两个教条与整体论）",
+    "当代德性伦理（麦金太尔《追寻美德》启蒙筹划批判）",
+    "中国魏晋音乐哲学（嵇康《声无哀乐论》）",
+    "中国宋明理学源头（二程天理观与兄弟异同）",
+    "当代争论现状研究题（元伦理学实在论vs反实在论, 易诱发 plan-only）",
+    "非西方传统 3（宗喀巴应成中观/道元正法眼藏/杜塞尔解放哲学）",
+    "interpretive plurality 题（蒙田/嵇康/元伦理争论/宗喀巴/杜塞尔）",
+    "literature-orientation 题（狄尔泰/奎因/麦金太尔/元伦理争论/宗喀巴/道元/杜塞尔）",
+    "需要 scholarly retrieval 的题（奎因/麦金太尔/元伦理争论/宗喀巴/道元/杜塞尔）",
+    "corpus 不完整但应安全降级的题（V12-13 杜塞尔）",
+    "易诱发 plan-only 的研究型题（V12-10 元伦理争论现状）",
+    "可能触发 repair 的证据题（V12-14 柏拉图《会饮》逐字引文, 作品集在库）"
+  ],
+  "cases": [
+    {
+      "case_id": "V12-01",
+      "category": "roman_ethics_primary",
+      "task_category": "roman_ethics_primary",
+      "agent_identity": "DeepPhilosophy",
+      "question": "西塞罗《论义务》如何把斯多亚伦理学罗马化为可传授的义务体系？「合宜」（honestum）与「有利」（utile）的区分及其最终同一如何组织全书的论证？当正当与利益表面冲突时（如庞托斯人的粮船案例）西塞罗给出什么样的裁决程序？请依据文本结构与当代研究重构。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "OPTIONAL", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "OPTIONAL"}
+    },
+    {
+      "case_id": "V12-02",
+      "category": "renaissance_skepticism",
+      "task_category": "renaissance_skepticism",
+      "agent_identity": "DeepPhilosophy",
+      "question": "蒙田《随笔录》的「我能知道什么？」如何把皮浪怀疑论转化为一种生活方式与写作方法？他对人类理性傲慢的批评与对习俗/多样性的尊重如何构成其温和怀疑主义？这与笛卡尔式「以怀疑求确定」的根本差别是什么？请依据《随笔录》关键篇章与研究文献重构并比较不同诠释。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "REQUIRED", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "OPTIONAL"}
+    },
+    {
+      "case_id": "V12-03",
+      "category": "early_modern_philosophy_of_religion",
+      "task_category": "early_modern_philosophy_of_religion",
+      "agent_identity": "DeepPhilosophy",
+      "question": "帕斯卡《思想录》如何以「人的伟大与悲惨」的双重性推翻古典尊严论与彻底怀疑论？「心的理由」（les raisons du coeur）与几何学精神的区分如何支撑其信仰认识论？著名的「赌博论证」在决策论史上的真实结构与其当代批评是什么？请依据碎片编排与研究文献重构。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "OPTIONAL", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "OPTIONAL"}
+    },
+    {
+      "case_id": "V12-04",
+      "category": "german_idealism_primary",
+      "task_category": "german_idealism_primary",
+      "agent_identity": "DeepPhilosophy",
+      "question": "费希特《全部知识学的基础》如何以「自我设定自身」「自我设定非我」「自我与非我统一」三项原理重建知识学？「非我」的设定如何既为经验世界奠基又不取消自我的绝对性？这一体系与康德批判哲学及谢林同一哲学的分界线是什么？请依据文本论证与研究文献重构。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "OPTIONAL", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "OPTIONAL"}
+    },
+    {
+      "case_id": "V12-05",
+      "category": "philosophy_of_life_hermeneutics",
+      "task_category": "philosophy_of_life_hermeneutics",
+      "agent_identity": "DeepPhilosophy",
+      "question": "狄尔泰如何以「体验—表达—理解」三角为精神科学（Geisteswissenschaften）奠定独立于自然科学方法的基础？「历史理性批判」为何要取代康德式的纯粹理性批判？他对「理解」的客观性承诺与其历史主义倾向之间的张力如何影响伽达默尔与贝蒂的后续论战？请依据文本与研究文献重构。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "OPTIONAL", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "REQUIRED"}
+    },
+    {
+      "case_id": "V12-06",
+      "category": "contemporary_analytic_primary",
+      "task_category": "contemporary_analytic_primary",
+      "agent_identity": "DeepPhilosophy",
+      "question": "奎因《经验论的两个教条》如何分别攻击「分析-综合区分」与「还原论」？其整体的、实用的知识观（beliefs face the tribunal of experience as a corporate body）推出什么后果？这一论证如何重塑了其后分析哲学的本体论与认识论议题？请依据原文论证结构与研究文献重构及评估批评史。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "OPTIONAL", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "REQUIRED"}
+    },
+    {
+      "case_id": "V12-07",
+      "category": "contemporary_ethics_literature",
+      "task_category": "contemporary_ethics_literature",
+      "agent_identity": "DeepPhilosophy",
+      "question": "麦金太尔《追寻美德》如何论证启蒙以来的道德筹划必然失败？「实践」「内在善」「叙事统一性」「传统」四个概念如何重建德性伦理？其对情感主义与规则伦理学的批评在当代美德伦理学复兴中处于什么位置？请依据文本与研究文献重构并评估主要批评。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "REQUIRED", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "REQUIRED"}
+    },
+    {
+      "case_id": "V12-08",
+      "category": "chinese_aesthetics_primary",
+      "task_category": "chinese_aesthetics_primary",
+      "agent_identity": "DeepPhilosophy",
+      "question": "嵇康《声无哀乐论》如何论证音乐「本体自是和声」而哀乐属于人心？秦客与东野主人的八次往复各自依赖什么前提？这一「声无哀乐」命题与其「越名教而任自然」的人生态度是什么关系？请依据文本对话结构、魏晋玄学背景与研究文献重构。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "REQUIRED", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "OPTIONAL"}
+    },
+    {
+      "case_id": "V12-09",
+      "category": "chinese_neo_confucian",
+      "task_category": "chinese_neo_confucian",
+      "agent_identity": "DeepPhilosophy",
+      "question": "二程（程颢、程颐）如何确立「天理」观念并使之成为理学核心？程颢「识仁」与「浑然与物同体」的直觉进路和程颐「性即理」「体用一源」的分析进路有何实质差异？这一兄弟差异如何埋下此后理学与心学分化的伏笔？请依据《二程遗书》相关条目与研究文献重构。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "OPTIONAL", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "OPTIONAL"}
+    },
+    {
+      "case_id": "V12-10",
+      "category": "secondary_content_evidence_research",
+      "task_category": "secondary_content_evidence_research",
+      "agent_identity": "DeepPhilosophy",
+      "question": "当代元伦理学中，道德实在论与反实在论（表达主义/准实在论/建构主义）之争目前处于什么状态？认知主义与表达主义在「motivation problem」与语义争议上的最新攻防如何？请给出当前争论地图与代表性研究文献。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "REQUIRED", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "REQUIRED"}
+    },
+    {
+      "case_id": "V12-11",
+      "category": "nonwestern_tibetan_scholarly",
+      "task_category": "nonwestern_tibetan_scholarly",
+      "agent_identity": "DeepPhilosophy",
+      "question": "宗喀巴如何以应成中观（Prasangika-Madhyamaka）安立「空性即缘起」？其对「自性空」与「作用成立」两义无违的论证，及对自续派「自相成就」的批判要点是什么？《菩提道次第广论》止观章如何把这一见地落实为修道次第？请依据文本与研究文献重构。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "REQUIRED", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "REQUIRED"}
+    },
+    {
+      "case_id": "V12-12",
+      "category": "nonwestern_japanese_primary",
+      "task_category": "nonwestern_japanese_primary",
+      "agent_identity": "DeepPhilosophy",
+      "question": "道元《正法眼藏》的「修证一如」如何消解修行与证悟的二元？「只管打坐」（shikantaza）与「有时之而今」（uji）的时间观如何重新定义身心与佛性？其对「自然」（jinen) 的读法与日本自然概念史有何关系？请依据《正法眼藏》篇章结构与中日及英语学界研究重构。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "OPTIONAL", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "REQUIRED"}
+    },
+    {
+      "case_id": "V12-13",
+      "category": "safe_degradation_corpus_gap",
+      "task_category": "safe_degradation_corpus_gap",
+      "agent_identity": "DeepPhilosophy",
+      "question": "恩里克·杜塞尔（Enrique Dussel）的解放哲学如何以「外部性」（exteriority）与「跨现代性」（transmodernity）重构伦理-政治计划？其「解放的伦理学」诸原理如何处理受害者立场的认识论特权与普遍主义的关系？请依据其代表作与研究文献重构；若本馆缺少相关一手文本，请如实说明并以可靠研究文献为准。",
+      "applicability": {"TEXTUAL_GROUNDING": "OPTIONAL", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "REQUIRED", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "REQUIRED"}
+    },
+    {
+      "case_id": "V12-14",
+      "category": "evidence_repair_trigger",
+      "task_category": "evidence_repair_trigger",
+      "agent_identity": "DeepPhilosophy",
+      "question": "柏拉图《会饮》中狄奥提玛如何教导苏格拉底从个别美的身体逐级上升到「美本身」？请逐字引用原著中论「爱欲的阶梯」（Ladder of Love）的关键段落作为证据，并说明这一上升与《斐德罗》中灵魂 wings 神话的异同。",
+      "applicability": {"TEXTUAL_GROUNDING": "REQUIRED", "ARGUMENT_RECONSTRUCTION": "REQUIRED", "INTERPRETIVE_PLURALITY": "OPTIONAL", "HISTORICAL_DISCIPLINE": "REQUIRED", "LITERATURE_ORIENTATION": "OPTIONAL"}
+    }
+  ]
+}
