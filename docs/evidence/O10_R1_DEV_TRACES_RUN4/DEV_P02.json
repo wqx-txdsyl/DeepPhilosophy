@@ -1,0 +1,248 @@
+{
+ "case_id": "DEV_P02",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "请核对《道德经》第一章「道可道也，非恒道也」与通行本「道可道，非常道」的措辞差异，读取库中《道德经》第一章原文，说明这一章在全书中的地位。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_nhSNd31iU3n6R9uLZZTN1471"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_P3W9TsAaw2L6OhHFFHjG9342"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_W2GG2fUmWqI0qUY0Fb8E3060",
+   "args": {
+    "book_id": "道德经"
+   },
+   "result_head": "{'id': '6ef2f18cfdc9', 'title': '道德经', 'author': '老子', 'region': '东方', 'file_type': 'epub', 'summary': '《道德经》是道家哲学的开山之作，相传为春秋时期老子所著，共81章，约五千言。全书以“道”为核心，探讨宇宙本源、万"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_E12tYKwSU2Jb2V562A9A1590"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_NwykZWpKwKeWG4emVaJW2846",
+   "args": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 1
+   },
+   "result_head": "{'book_id': 'dd8853676655', 'chapter_idx': 1, 'title': '第一章 众妙之门', 'book_title': '老子道德经', 'citation_label': '【《老子道德经》·第一章 众妙之门】', 'text': '【原文】\\n道可道[1]，非常道[2]；名"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_dl0dyIsyKQAyVZu1zVfb8532"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_mXG4bzMha9XcG59NuPuq5570",
+   "args": {
+    "query": "马王堆帛书老子 道可道也非恒道也 第一章 原文"
+   },
+   "result_head": "{'results': [], 'query': '马王堆帛书老子 道可道也非恒道也 第一章 原文', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_yvD3MqWFmzzRRW3ZCyWy1529",
+   "args": {
+    "query": "帛书老子 非恒道 避汉文帝刘恒讳 常道"
+   },
+   "result_head": "{'results': [], 'query': '帛书老子 非恒道 避汉文帝刘恒讳 常道', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_IXjIqYv0ckE5Kep51tgD5315",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "帛书原文核验",
+    "gap_filled": true,
+    "budget_extension_reason": "网络通道不可达，无法进一步核验帛书，库内证据已足够",
+    "unresolved_evidence_gap": "帛书甲乙本逐字原文（外部通道不可达）"
+   },
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'MIXED', 'evidence_gap': '马王堆帛"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中《道德经》第一章的原文措辞（是否作「道可道也，非恒道也」或「道可道，非常道」）及其章节结构",
+    "gap_filled": false,
+    "budget_extension_reason": "尚未检索，需先定位原典",
+    "unresolved_evidence_gap": "《道德经》第一章原文"
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "马王堆帛书《老子》甲乙本第一章原文措辞，以及「恒」改「常」避汉文帝讳的背景",
+    "gap_filled": false,
+    "budget_extension_reason": "库中仅收通行本，帛书原文需网络核验",
+    "unresolved_evidence_gap": "帛书甲乙本第一章的确切文字"
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "帛书原文核验",
+    "gap_filled": true,
+    "budget_extension_reason": "网络通道不可达，无法进一步核验帛书，库内证据已足够",
+    "unresolved_evidence_gap": "帛书甲乙本逐字原文（外部通道不可达）"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 0,
+ "final_answer": "",
+ "publication_state": "FAIL_CLOSED_VALIDATION",
+ "validation_ok": false,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "马王堆帛书《老子》甲乙本第一章原文措辞，以及「恒」改「常」避汉文帝讳的背景",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:19:53",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "库中《道德经》第一章的原文措辞（是否作「道可道也，非恒道也」或「道可道，非常道」）及其章节结构",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:20:01",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "PRIMARY",
+    "evidence_gap": "马王堆帛书《老子》甲乙本第一章原文措辞，以及「恒」改「常」避汉文帝讳的背景",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:20:08",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "MIXED"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:19:53",
+    "reason": "尚未检索，需先定位原典",
+    "unresolved_gap": "《道德经》第一章原文"
+   },
+   {
+    "ts": "2026-09-13 12:20:01",
+    "reason": "库中仅收通行本，帛书原文需网络核验",
+    "unresolved_gap": "帛书甲乙本第一章的确切文字"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 10,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 117725,
+   "output_tokens": 7521,
+   "total_tokens": 125246
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 8,
+   "compacted_chars_saved": 7899,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11774,
+     "output_tokens": 405,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15403,
+     "output_tokens": 416,
+     "tool_chars_added": 5846
+    },
+    {
+     "round": 3,
+     "input_tokens": 14544,
+     "output_tokens": 946,
+     "tool_chars_added": 2345
+    },
+    {
+     "round": 4,
+     "input_tokens": 15422,
+     "output_tokens": 202,
+     "tool_chars_added": 1791
+    },
+    {
+     "round": 5,
+     "input_tokens": 15108,
+     "output_tokens": 620,
+     "tool_chars_added": 80
+    },
+    {
+     "round": 6,
+     "input_tokens": 16615,
+     "output_tokens": 1244,
+     "tool_chars_added": 1890
+    },
+    {
+     "round": 7,
+     "input_tokens": 14319,
+     "output_tokens": 2091,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 8,
+     "input_tokens": 14540,
+     "output_tokens": 1597,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 117725,
+  "output_tokens": 7521,
+  "total_tokens": 125246
+ },
+ "llm_rounds": 0,
+ "stream_error": "本轮回答未通过证据一致性校验，请重试或换一种问法",
+ "wall_s": 44.8
+}

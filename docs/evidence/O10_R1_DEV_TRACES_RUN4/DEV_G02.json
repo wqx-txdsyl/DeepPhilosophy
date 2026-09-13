@@ -1,0 +1,248 @@
+{
+ "case_id": "DEV_G02",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "当代美学研究中，「恐怖悖论」（paradox of horror）有哪些代表性论文和对立解释？请综述学界研究现状。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_e5dNGurhdwzxYnoLG7kl4372"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_yKcEZQ6Efoyj3vyb6Jrd4831"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_0E7no4rZrCMozwzxVw045036"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_NNANs8F2qn5SfA1hq2Xx2829",
+   "args": {
+    "query": "art-horror Noël Carroll emotional response",
+    "limit": 10
+   },
+   "result_head": "{'query': 'art-horror Noël Carroll emotional response', 'results': [{'source_record_id': 'doi:10.1111/j.1540-594x.2004.00147.x', 'title': 'Empathic Engagement w"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_iTk40sfYk0edmWsvIZIf2990"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_vz0sFTMJcZwXXqVNwTzw1056"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_Y7AEnyyW03JO7ZujxUch2323"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_ynMrzBJn8jQjYnIE1RrV4511"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_sk6xoA2bmP1GC8SY3OnE2436",
+   "args": {
+    "source_record_id": "doi:10.3389/fpsyg.2019.02298",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_WOyMyg6mUZMHsBSzW0qk5984",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要读取 Bantinaki (2012)、Strohl (2012)、Menninghaus et al. (2017)、Gaut (1993) 等核心篇目的实际摘要/正文内容，以核验各自的解释框架与对立关系",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求综述\"当代美学研究中恐怖悖论的代表性论文和对立解释\"，属 SCHOLARLY 核心诉求；但前 4 次检索仅取得书目元数据，尚无任何一篇的可读内容证据（Gaut 1993 返回的是元数据式摘要，不含实质论断），无法如实归因其立场。若就此作答只能罗列标题，违反\"不得凭标题推断论文内容\"的纪律。",
+    "unresolved_evidence_gap": "Bantinaki \"The Paradox of Horror: Fear as a Positive Emotion\"、Strohl \"Horror and Hedonic Ambivalence\"、Menninghaus et al. \"Distancing-Embracing model\" 三篇的实际摘要内容，用于核验其提出的解释机制"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 需要读取 Bantinaki (2012)、Strohl (2012)、Menninghaus et al. (2017)、Gaut (199"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_6NM8sqWC4levwTrG2NwL2248"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_nRnn3KkXdOCcU6kfhApN3856",
+   "args": {
+    "source_record_id": "doi:10.1017/s0140525x17000309",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1017/s0140525x17000309', 'bibliographic_record': {'source_record_id': 'doi:10.1017/s0140525x17000309', 'title': 'The Distancing-Emb"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要定位\"恐怖悖论\"（paradox of horror）当代美学研究的代表性论文、主要解释框架（如 Carroll 的 art-horror/好奇解释、Walton 的 quasi-emotion、meta-emotion 解释等）及其对立争论的真实文献记录",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要读取 Bantinaki (2012)、Strohl (2012)、Menninghaus et al. (2017)、Gaut (1993) 等核心篇目的实际摘要/正文内容，以核验各自的解释框架与对立关系",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求综述\"当代美学研究中恐怖悖论的代表性论文和对立解释\"，属 SCHOLARLY 核心诉求；但前 4 次检索仅取得书目元数据，尚无任何一篇的可读内容证据（Gaut 1993 返回的是元数据式摘要，不含实质论断），无法如实归因其立场。若就此作答只能罗列标题，违反\"不得凭标题推断论文内容\"的纪律。",
+    "unresolved_evidence_gap": "Bantinaki \"The Paradox of Horror: Fear as a Positive Emotion\"、Strohl \"Horror and Hedonic Ambivalence\"、Menninghaus et al. \"Distancing-Embracing model\" 三篇的实际摘要内容，用于核验其提出的解释机制"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3357,
+ "final_answer": "以下综述基于本轮对真实学术文献库的检索记录。我先如实交代证据边界：本轮检索在文中定位到若干高相关篇目，但**只有两篇取到了可读的内容证据**（Bantinaki 2012、Menninghaus et al. 2017 的摘要），其余多数仅确认\"文献存在\"与书目信息。凡我未读到内容者，只陈述其**存在与题名指向**，不推断其具体论证——这一点在综述文献时尤为重要。\n\n---\n\n## 一、问题的界定\n\n「恐怖悖论」的经典表述是：恐怖艺术（恐怖电影、哥特小说等）以**蓄意引发恐惧与厌恶**为标志，而恐惧与厌恶在情感理论中被视为典型的负面情感、内在地令人不快、在现实生活中我们本能回避——那么，人们为何**主动寻求**并在其中获得愉悦？\n\n我在 Bantinaki 的摘要中读到了对这一刻画的确证：恐怖类型的\"标志\"（mark）是\"在观众身上引发恐惧与厌恶，以回应被感知为威胁的超自然或异常存在\"，而恐惧与厌恶\"被一般视为内在地令人不快，因而在现实生活中我们会连同引发它们的情境一并回避\"——正是这一\"传统构想\"产生了悖论式的追问。Menninghaus 等人的摘要则直接把它称为一个\"被广泛讨论的（表面上的）悖论\"（much discussed (apparent) paradox）。可见\"这是不是一个真悖论\"本身，就是学界分歧的第一道分水岭。\n\n## 二、本轮检索到的代表性文献群\n\n按我实际取得的证据层级分列：\n\n**读到内容证据者：**\n\n| 文献 | 期刊/年份 | 摘要所支持的立场 |\n|---|---|---|\n| Katerina Bantinaki, *The Paradox of Horror: Fear as a Positive Emotion* | *Journal of Aesthetics and Art Criticism*, 2012 | 挑战\"恐惧是典型负面情感\"的预设，主张**恐惧本身可作为一种积极情感**被体验 |\n| Winfried Menninghaus, V. Wagner, J. Hanich, E. Wassiliwizky, T. Jacobsen, S. Koelsch, *The Distancing-Embracing Model of the Enjoyment of Negative Emotions in Art Reception* | *Behavioral and Brain Sciences*, 2017 | 提出**\"距离化—拥抱\"双机制模型** |\n\n**仅确认书目存在者**（题名指向该争论，但我未读到内容，故不归因其论断）：\n\n- Noël Carroll, *The Philosophy of Horror, or Paradoxes of the Heart*（1990）——检索到其书评记录（MacKenzie 评），确认该书存在；\n- Berys Gaut, *The Paradox of Horror*, *British Journal of Aesthetics* 33(4), 1993（书目核验存在，内容未读）；\n- Matthew S. Strohl, *Horror and Hedonic Ambivalence*, *JAAC*, 2012（书目核验存在，内容未读）；\n- Amy Coplan, *Empathic Engagement with Narrative Fictions*, *JAAC*, 2004（书目核验存在，内容未读）。\n\n一个可观察的**文献史事实**：从 1990 年的 Carroll 专著，经 1993 年 Gaut（BJA）、2012 年两位作者在 JAAC 上的集中讨论，到 2017 年 Menninghaus 等人在认知科学期刊上的模型化尝试——这场争论持续近三十年，并从**哲学美学**（BJA、JAAC）扩展到**实证心理学/神经美学**（BBS）。\n\n## 三、对立解释的几条轴线\n\n**轴线 1：消解悖论（dissolution）vs 解决悖论（solution）。**\n一派认为\"恐怖悖论\"根本不是悖论——因为我们体验的并非现实意义上的恐惧，而是某种虚构框架内转化的情感。这里通常被援引的是 Carroll 的\"艺术恐怖\"（art-horror）与 Walton 的\"准情感\"（quasi-emotion）思路（*Fearing Fictions*, 1978；*Mimesis as Make-Believe*, 1990）。**但我必须标注：这两位哲学家的具体论证在本轮检索中未获内容证据，属学界通识（我的记忆），未经本轮核验**；Carroll 书的正文我亦未读到，只能确认其存在与题名。另一派则认为悖论是真实的，需要正面解释愉悦从何而来。\n\n**轴线 2：重估情感本身 vs 保留情感负面性、解释其转化。**\n- Bantinaki 走的是**重估路径**：摘要明示她质疑\"恐惧内在不快\"这一前提，把恐惧重新描述为可承载积极价值的情感。\n- Menninghaus 等人走的是**转化路径**：他们保留负面情感\"负面\"的定性，转而解释艺术接受如何把它转化为愉悦。其摘要把机制分为两组：第一组是**心理距离化机制**（由艺术、表征、虚构的认知图式激活，提供\"个人安全感\"与对\"继续或中断暴露\"的控制），**防止负面情感与愉悦期待变得完全不容**；第二组是**拥抱成分**（正负情感的组合交互、媒介审美德性对情感感知的影响、意义建构努力），使接受者能**积极地接纳**负面情感体验，从而令接受\"更强烈、更有趣、更动人、更深刻，有时甚至更美\"。模型还提出**混合情感**有助于把负面情感整合进整体愉悦。\n\n这两条路径并不完全排斥，但**理论负荷不同**：Bantinaki 重估的是恐惧的情感价（valence），Menninghaus 重估的是艺术接受的加工结构。\n\n## 四、我的综合与证据边界\n\n**综合判断（Agent 视角）**：当代恐怖悖论研究的分歧，表面上是\"为什么享受恐怖\"，深层其实是三个更基础的分歧——（i）恐怖引发的情感**是否等同于现实情感**（本体论分歧）；（ii）这些情感的**价性是否可重估**（价值论分歧）；（iii）愉悦来自**情感本身**还是来自**加工/意义机制**（机制分歧）。轴线 1 主要争（i），轴线 2 主要争（ii）与（iii）。把 Menninghaus 的\"距离化—拥抱\"模型与哲学侧的\"消解式\"方案并置看，二者在一点上趋同：都强调**虚构/表征框架提供的安全距离**是享受的前置条件——区别在于哲学家据此否定\"真恐惧\"，心理学家则用它来解释\"真负面情感\"如何被安全地拥抱。\n\n**必须声明的证据边界**：本轮我只读到上述两篇摘要，能力范围不允许我在此对 Carroll、Gaut、Walton、Strohl 的具体论证做内容性归因。若要写成严格的文献综述（谁主张什么、如何反驳谁），需要逐篇读取正文——尤其 Carroll 1990 与 Gaut 1993 是这条线索的两端锚点，值得优先取得全文。\n\n## 五、可继续深入的研究入口\n\n1. **奠基与消解路线**：Carroll, *The Philosophy of Horror*（1990）→ Walton, *Fearing Fictions*（1978）/ *Mimesis as Make-Believe*（1990）；\n2. **直接交锋线**：Gaut, *The Paradox of Horror*, *BJA* 33(4) 1993 → Bantinaki（2012）与 Strohl（2012）在 *JAAC* 的同期讨论；\n3. **实证/认知转向**：Menninghaus et al., *BBS* 2017（内含大量同行评论与作者回应，是了解当代争论全貌的高效入口）。\n\n如果你需要，我可以针对其中任一条线索，**逐篇读取正文**做更精确的立场重建与论战还原——那需要重新登记一次文献研究。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "需要读取 Bantinaki (2012)、Strohl (2012)、Menninghaus et al. (2017)、Gaut (1993) 等核心篇目的实际摘要/正文内容，以核验各自的解释框架与对立关系",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:23:40",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "需要定位\"恐怖悖论\"（paradox of horror）当代美学研究的代表性论文、主要解释框架（如 Carroll 的 art-horror/好奇解释、Walton 的 quasi-emotion、meta-emotion 解释等）及其对立争论的真实文献记录"
+   },
+   {
+    "ts": "2026-09-13 12:23:53",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "需要读取 Bantinaki (2012)、Strohl (2012)、Menninghaus et al. (2017)、Gaut (1993) 等核心篇目的实际摘要/正文内容，以核验各自的解释框架与对立关系",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:23:53",
+    "reason": "用户明确要求综述\"当代美学研究中恐怖悖论的代表性论文和对立解释\"，属 SCHOLARLY 核心诉求；但前 4 次检索仅取得书目元数据，尚无任何一篇的可读内容证据（Gaut 1993 返回的是元数据式摘要，不含实质论断），无法如实归因其立场。若就此作答只能罗列标题，违反\"不得凭标题推断论文内容\"的纪律。",
+    "unresolved_gap": "Bantinaki \"The Paradox of Horror: Fear as a Positive Emotion\"、Strohl \"Horror and Hedonic Ambivalence\"、Menninghaus et al. \"Distancing-Embracing model\" 三篇的实际摘要内容，用于核验其提出的解释机制"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:23:47"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:23:47"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:23:47"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:23:47"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 78463,
+   "output_tokens": 6886,
+   "total_tokens": 85349
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 15277,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11749,
+     "output_tokens": 746,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 16880,
+     "output_tokens": 932,
+     "tool_chars_added": 13357
+    },
+    {
+     "round": 3,
+     "input_tokens": 14907,
+     "output_tokens": 1028,
+     "tool_chars_added": 2520
+    },
+    {
+     "round": 4,
+     "input_tokens": 16939,
+     "output_tokens": 505,
+     "tool_chars_added": 2596
+    },
+    {
+     "round": 5,
+     "input_tokens": 17988,
+     "output_tokens": 3675,
+     "tool_chars_added": 6062
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 78463,
+  "output_tokens": 6886,
+  "total_tokens": 85349
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 49.8
+}

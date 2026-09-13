@@ -36,6 +36,8 @@ from langchain_core.messages import AIMessage
 from langchain_core.tools import StructuredTool
 import pytest
 
+from tests.o10r1_compliance import comply as _comply
+
 import agent_runtime as AR
 import engine_langgraph as EG
 import routes.agent as AG
@@ -329,6 +331,7 @@ def _fake_tools():
 
 
 def _run_stream(question, script, monkeypatch):
+    script = _comply(script)   # O10-R1: 脚本化 Main Agent 合规（先声明后检索）
     """production stream_agent 全链路（真实图/真实 tools_node/真实 validator）。"""
     monkeypatch.setattr(AR, "TRACE_FILE", None, raising=False)
     real = (EG.get_llm, EG.get_tools, AG.llm_chat)
@@ -378,8 +381,12 @@ def _tool_family(evs):
 def _assert_parentage(evs):
     """F3 合同: DECLARED_TOOL_CALL_IDS == TERMINAL_OUTCOME_TOOL_CALL_IDS;
     每个宣告 id 恰一个逻辑 start; UNPARENTED_TOOL_RESULTS=0;
-    UNKNOWN_PROVENANCE_TOOL_EVENTS=0。"""
+    UNKNOWN_PROVENANCE_TOOL_EVENTS=0。
+    （O10-R1: declare_research_need 是治理声明工具——其事件具备同完整溯源性,
+     但不属于被检认知工具族, 过滤后断言。）"""
     starts, tools, cancels, declared, terminal = _tool_family(evs)
+    starts = [e for e in starts if e.get("name") != "declare_research_need"]
+    tools = [e for e in tools if e.get("name") != "declare_research_need"]
     assert len(declared) == len(set(declared)), "每个宣告 id 恰一个逻辑 tool_start"
     assert sorted(map(str, declared)) == sorted(map(str, terminal)), \
         f"declared={declared} terminal={terminal}"

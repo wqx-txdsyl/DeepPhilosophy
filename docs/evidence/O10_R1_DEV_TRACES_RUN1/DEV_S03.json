@@ -1,0 +1,68 @@
+{
+ "case_id": "DEV_S03",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "什么叫「循环论证」？请自己编一个日常生活中的循环论证例子，并指出它为什么没有证明任何东西。",
+ "tool_sequence": [],
+ "declarations": [],
+ "blocked_calls": [],
+ "answer_chars": 1249,
+ "final_answer": "## 什么叫「循环论证」\n\n循环论证（circular reasoning）指这样一种论证：**它用来支持结论的理由，其本身的成立又反过来依赖那个结论**。结论被偷偷地（有时是很长地绕一圈）塞回了前提里，于是整个论证在原地打转。\n\n逻辑学传统里它有一个拉丁名称：*petitio principii*，中文常译作\"乞题\"或\"窃取论题\"。这个名称点出了它的要害——**它把本应被证明的东西当作已经成立的东西来使用**。\n\n## 我自己编的一个例子\n\n设想这样一段对话：甲断言老李必定是个诚实的人；被问到凭什么这样说，甲答因为老李从来不说假话；再被追问凭什么知道老李从不说假话，甲的答复是老李为人诚实，而诚实的人当然不会说假话。\n\n拆开来看，它的结构是：\n\n- 结论：老李是诚实的。\n- 理由①：老李从不说假话。\n- 理由②（用来支持理由①的）：老李是诚实的。\n\n而理由②恰恰就是结论本身。\n\n## 为什么它什么也没有证明\n\n**第一，它没有提供\"独立于结论\"的支持。** 一个论证之所以能说服人，是因为它拿出来的理由可以在不接受结论的前提下被独立检验。\"老李从不说假话\"表面上是条理由，可是当被追问它凭什么成立时，给出的唯一依据又是\"老李诚实\"——理由的可靠性完全借自结论。这样一来，论证等于在说\"老李诚实，因为老李诚实\"。\n\n**第二，它对两类人都无效力。** 对本来就不信老李诚实的人：他没有任何理由接受\"老李从不说假话\"这个前提，论证对他是空的。对本来就相信的人：他不需要这个论证。所以循环论证只能\"说服\"已经相信的人，或者说它哪里也没说服。\n\n**第三，它证明的不是\"真\"，至多是\"自洽\"。** 从形式上看，循环论证往往并不\"推理错误\"——A 由 A 支持，甚至可以形式上严整。它的问题不在于推理步骤错，而在于**没有认识论增益**：听的人对结论的信任度，在听完论证之后并不会提高。它最多证明\"如果这个结论为真，那么它和它自己一致\"——这是句废话，而不是一个证明。\n\n## 两个容易混淆、值得点出的地方\n\n**其一，\"所有演绎都算循环吗？\"不算。** 演绎推理确实有\"结论已包含在前提中\"的性质，但有效演绎的前提是可以独立被接受的，而且通常比结论更普遍、更强（从\"所有人都会死\"推出\"苏格拉底会死\"，前提并不需要靠结论来支撑）。循环论证的特征不是\"结论包含在前提里\"，而是**前提反过来靠结论支撑**。混淆这两者，正是很多诡辩爱用的借口。\n\n**其二，循环常常伪装成长链。** 明显的循环（当面绕回原点）容易识破，但更常见的是拉长成一串：A 支持 B，B 支持 C，C 支持……最后回头支持 A。听起来\"证据很多\"，实际只是一个信念换了几件衣服在兜圈子。识破它的办法就是逐条追问：\"如果我不接受结论，我凭什么接受这一条？\"——只要每一环的答案最终都落回结论，循环就成立了。\n\n**一句话总结：** 循环论证之所以什么也没证明，是因为它把结论既当靶子又当子弹——你要先接受它，它才能替你证明它。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 24720,
+   "output_tokens": 2928,
+   "total_tokens": 27648
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11612,
+     "output_tokens": 2606,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13108,
+     "output_tokens": 322,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 24720,
+  "output_tokens": 2928,
+  "total_tokens": 27648
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 23.0
+}

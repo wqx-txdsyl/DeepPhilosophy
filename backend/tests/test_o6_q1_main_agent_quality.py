@@ -311,8 +311,8 @@ class TestT13T14ResearchCalibration:
 
     def test_t14_evidence_appetite_preserved(self):
         ctx = _core_context()
-        # 主动研究纪律原样保留（test_o4 T6 关键词契约）
-        assert "主动使用" in ctx and "配额管制" in ctx
+        # O10-R1 修订: 检索由研究需求治理（类别 + soft 预算）; 诚实资产条款原样保留
+        assert "RESEARCH_NEED" in ctx and "soft 检索预算" in ctx
         assert "优先直接证据" in ctx and "最强相关解读" in ctx and "继续研究" in ctx
         # 未被"最少工具"策略替换
         for banned in ("最少工具", "最小化工具", "minimum tools", "Use the minimum tools"):

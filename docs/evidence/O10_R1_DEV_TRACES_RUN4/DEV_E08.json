@@ -1,0 +1,152 @@
+{
+ "case_id": "DEV_E08",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "「明天就开始」——起点被一天天推迟。拖延只是一个时间管理问题吗？还是说它是我们跟自己的一种特殊关系出了问题？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_K3EAPa3t3z4KC0ZZBuKB7501"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_NnA5MeEZWYyE70eLaqYh4570"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_sXrCpjOoTkNDy1Yceu9y8437",
+   "args": {
+    "query": "自欺 坏信念 不承认自己的自由"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 319, 'chapter_title': '202', 'citation_label': '【《尼采文集（合"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_fMf6gvXKXN3NLudrnWE18605",
+   "args": {
+    "book_id": "a2931a891bf9",
+    "chapter_idx": 8
+   },
+   "result_head": "{'book_id': 'a2931a891bf9', 'chapter_idx': 8, 'title': '卷八', 'book_title': '奥古斯丁忏悔录', 'citation_label': '【《奥古斯丁忏悔录》·卷八】', 'text': '我的天主，我愿回忆，我要诵说你对我的慈爱，以此表示我的感激"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_Tm7ouSFhdVfeoLt5pu523017",
+   "args": {
+    "query": "给我贞洁 但是 不要 立刻 迟延",
+    "limit": 5
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "核验奥古斯丁《忏悔录》卷八\"明天就开始/赐我贞洁但不要现在\"的原文措辞与出处，以及萨特论自欺的相关表述，以支撑\"拖延是自我关系问题\"这一分析",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1967,
+ "final_answer": "检索预算已到，我不再纠缠出处，直接综合已有材料作答。有一点先如实交代：《忏悔录》卷八我读到了奥古斯丁讲自己\"现实生命中的一切依旧动荡不安，我的心需要清除陈旧的酵母\"以及维克托利努斯皈依的段落，并能核验这一句；至于他更著名的那句\"请赐我贞洁，但不是现在\"，我这次没能在库中定位到原文，下面只作转述并标明是记忆，不作为逐字引文。\n\n---\n\n## 拖延不只是时间管理，但\"自我关系出问题\"这句话也得拆开说\n\n先给一个分层的答复：**把拖延说成纯粹的时间管理问题是错的；但若不加区分地把每一次拖延都拔高成\"存在论危机\"，则是另一种错。**拖延至少有三种性质，混为一谈会让问题既答不准，也帮不上忙。\n\n### 一、时间管理解释：局部有效，但预设了一个不存在的\"统一自我\"\n\n时间管理的整套语汇——优先级矩阵、番茄钟、任务拆解——都建立在一个隐含前提上：**行动者和他的目标是一致的、透明的**，只是\"不会排期\"。可你恰恰是\"知道该排，也知道怎么排，就是不动手\"。方法论解决的是\"怎么做\"，而拖延卡住的常常是\"为什么不做\"。所以它有效，但只在表层有效。\n\n### 二、意志的分裂：奥古斯丁的镜头\n\n\"明天就开始\"这个句式里藏着一个悖论：**发出命令的我和不服从的我，是同一个人。**一个我下令，另一个我抗命；而抗命者并不掌握一支部队，它就是\"我\"本身。这说明自我并非一个统一、透明的执行主体。\n\n奥古斯丁《忏悔录》卷八写的正是这种撕裂。他并非不知何者为善，而是\"心不专一\"——他记录自己\"现实生命中的一切依旧动荡不安，我的心需要清除陈旧的酵母\"【《奥古斯丁忏悔录》·卷八】，并以维克托利努斯那样干脆的皈依来反衬自己的反复迟延。他有一段广为人知的呼告，大意是\"请赐我纯洁与节制，只是不要现在\"——**这句我这次未能在原典库中核验到原文，仅凭记忆转述**，但它精准命名了你说的那个\"明天就开始\"：不是拒绝改变，而是**把改变推到一个永不抵达的时点**。这里拖延不是时间问题，是意志与自身的关系问题。\n\n### 三、\"明天\"的时间结构：与一个理想自我的无限延宕\n\n\"明天\"的关键在于：它永远不到来。今天一到，它就变成\"又一个今天\"，而\"明天\"再次被向后投射。于是拖延的秘密是——**我把决断的可能性寄存到一个拥有更完整自制的\"未来的我\"身上，而那个我永远只是投射，从不兑现。**当下的我不是在做那件事，而是在\"为做那件事的那个人让位\"。\n\n这里可以和亚里士多德的\"意志薄弱\"（akrasia）对照：明知何为善，却因情欲或情感而行背。但拖延往往比 akrasia 更微妙——它不一定伴随强烈的欲望拉扯，有时只伴随一种**弥散的回避**：回避开始，因为开始意味着直面\"我可能做不好\"。\n\n### 四、自欺：把\"我没有选择\"伪装成\"我就是这样的人\"\n\n最深的一层，是萨特所说的\"自欺\"（mauvaise foi，我按记忆提及，未经本次核验）：明明自由，却把自己物化，假装自己没有别的可能。拖延者最典型的自欺句式是——**\"我就是个拖延的人\"\"我一向如此\"\"我状态不对\"。**这些话把一次当下的、可撤回的\"不行动\"，伪装成一种固定的、给定的\"本性\"。经由这种伪装，选择的重负被卸掉了：不是我选择不做，是我\"本来就这样\"。\n\n所以你看，**拖延确实是我们跟自己的一种特殊关系出了问题**——准确说，是三层关系的错位：**命令的我 与 执行的我**（意志分裂）、**当下的我 与 被投射到明天的理想我**（时间性逃避）、**自由的我 与 被我物化的\"本性自我\"**（自欺）。\n\n### 五、但请留一分清醒：别把所有拖延都心理化、存在论化\n\n反过来说，如果一切拖延都被诊断为\"自我关系危机\"，那是另一种偷懒——**它把可被环境设计解决的问题神秘化了。**值得区分：\n\n- **策略性推迟**：任务本身该等条件成熟，或排期确实失当——这是管理问题，改流程即可；\n- **症状性拖延**：背后是恐惧失败/成功、完美主义、任务意义缺失、或对他人期待的无意识反抗——这才是自我关系问题；\n- **存在性拖延**：回避的是\"有限性\"本身——任何投入都意味着放弃其他可能，于是迟迟不肯把自己钉死在某个选择上。这一层才配上海德格尔式的语言。\n\n不加区分地往最深那层解释，反而会让你误以为\"想通了就能动\"，而实际上改善往往从最浅的一端开始（把任务切小、降低开始门槛、改变环境），**同时**对第二、第三层保持诚实。\n\n---\n\n最后一问留给你自己：当你说\"明天就开始\"的那一刻，**你是真的相信明天会做，还是你在用\"相信明天\"来换取今天不必面对？**——若是后者，那\"明天\"就不是时间单位，而是一个用来安放愧疚、又永远不必兑现的寄存处。你对自己许下的到底是一个计划，还是一个开脱？",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "核验奥古斯丁《忏悔录》卷八\"明天就开始/赐我贞洁但不要现在\"的原文措辞与出处，以及萨特论自欺的相关表述，以支撑\"拖延是自我关系问题\"这一分析",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:18:13",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "核验奥古斯丁《忏悔录》卷八\"明天就开始/赐我贞洁但不要现在\"的原文措辞与出处，以及萨特论自欺的相关表述，以支撑\"拖延是自我关系问题\"这一分析"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:18:22"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 59888,
+   "output_tokens": 4377,
+   "total_tokens": 64265
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 4,
+   "compacted_chars_saved": 11640,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11751,
+     "output_tokens": 869,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17329,
+     "output_tokens": 303,
+     "tool_chars_added": 9177
+    },
+    {
+     "round": 3,
+     "input_tokens": 16069,
+     "output_tokens": 825,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 4,
+     "input_tokens": 14739,
+     "output_tokens": 2380,
+     "tool_chars_added": 243
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 59888,
+  "output_tokens": 4377,
+  "total_tokens": 64265
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 34.3
+}

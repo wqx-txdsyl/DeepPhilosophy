@@ -1,0 +1,191 @@
+{
+ "case_id": "DEV_P02",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "请核对《道德经》第一章「道可道也，非恒道也」与通行本「道可道，非常道」的措辞差异，读取库中《道德经》第一章原文，说明这一章在全书中的地位。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_GxGFiDVTP3dLnjzvkKZE9843"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_CxfQoFww5wQFgs0laS4D2095"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_REmqZzTmMlfL5B35VSuO3961",
+   "args": {
+    "book_id": "道德经"
+   },
+   "result_head": "{'id': '6ef2f18cfdc9', 'title': '道德经', 'author': '老子', 'region': '东方', 'file_type': 'epub', 'summary': '《道德经》是道家哲学的开山之作，相传为春秋时期老子所著，共81章，约五千言。全书以“道”为核心，探讨宇宙本源、万"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_rNv9vDlXJmXBFelLZS6J7145"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_86v1kMJSm7OiihNdLRyh1206",
+   "args": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 1
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_GHlE2d95Cn3BwWdO6PtU6306"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_JIvZrpyJzA37tOnJUSjz7557",
+   "args": {
+    "query": "道德经 帛书 道可道也 非恒道也 通行本 非常道 避讳"
+   },
+   "result_head": "{'results': [], 'query': '道德经 帛书 道可道也 非恒道也 通行本 非常道 避讳', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中《道德经》第一章的原文措辞及版本（是否为「道可道也，非恒道也」或「道可道，非常道」），用于核对两种版本的用字差异",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "WEB",
+    "evidence_gap": "帛书本（马王堆）《老子》第一章「道可道也，非恒道也」的确切用字，以及「恒」改「常」是否为避汉文帝刘恒讳——库中仅有通行本，需外部核验",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "库中《道德经》只收通行本，帛书本原文与避讳问题不在库内，需一次网络核验以支撑版本差异陈述",
+    "unresolved_evidence_gap": "帛书本第一章确切措辞及「恒→常」避讳关系"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1455,
+ "final_answer": "网络这次没能返回结果，所以我无法对帛书本原文作外部核验——这一点我会在回答里如实标明。库中第一章原文已读到，用户提供的帛书本措辞也已给出，核对与\"地位\"分析的材料足够，可以收口作答。\n\n---\n\n## 一、库中第一章原文（已读取核验）\n\n库中收有《道德经》（老子），第一章原文为：\n\n> 道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。\n\n出处标注为【《道德经》· 第一章】。库中另有《老子道德经》（老子）第一章「众妙之门」，检索片段显示的措辞同样是「道可道，非常道；名可名，非常名」，与上者一致。\n\n**这说明一件关键的事**：库内两个《道德经》文本都属**通行本**系统，用的是「非常道」「非常名」，并**没有**收帛书本「道可道也，非恒道也」这一系统的原文。\n\n## 二、措辞差异核对\n\n你给出的两种措辞，差异集中在三处：\n\n| 位置 | 你引的帛书本 | 库中通行本 |\n|---|---|---|\n| 第一句 | 道可道**也**，非**恒**道**也** | 道可道，非**常**道 |\n| 第二句 | 名可名**也**，非**恒**名**也**（对应句式） | 名可名，非**常**名 |\n\n1. **虚词「也」**：帛书本在分句末多出语气词「也」，形成更整齐的「……也，非……也」判断句式；通行本删去虚词，句式更凝练。这类虚词增删是先秦写本与后世传本之间的常见差异。\n2. **「恒」与「常」**：这是最实质的用字差异。「恒」与「常」义近（长久、恒常），但用字不同。\n\n关于第二点，需要说明证据边界：**「恒→常」的改动通常被解释为避汉文帝刘恒之讳**（\"恒\"与\"常\"同义替换是汉代避讳改字的常见做法）。这一说法是版本学上的通行观点，但**我在库中未检索到帛书本原文，本次网络核验也未返回结果**，因此这里只能作为**未在本库核验的通说（记忆）** 陈述，不宜当作已确证的结论。若你需要坐实，可查马王堆帛书《老子》甲乙本释文及避讳相关研究——这部分我建议你核对专门的出土文献整理本。\n\n## 三、第一章在全书中的地位\n\n按我个人的阅读理解（属解读，非原文字面事实），第一章在《老子》全书中有三重地位：\n\n1. **开宗门之作**：全书以「道」为核心，而第一章开门第一句就立「道」，并且立刻指出「道」的**不可言说性**——\"可道之道\"已非\"常道\"。等于在全书最前面先给核心概念设了一道边界，声明它超出名言所能框定。\n2. **全书总纲/门户**：章名「众妙之门」，末句\"玄之又玄，众妙之门\"本身就是自我点题。第一章同时铺开了贯穿全书的基本对子——**道与名、无与有、无欲与有欲**，后面各章基本是在这些线索上展开。\n3. **方法论的起点**：老子用否定性、悖论式表述开篇（不可道、不可名），奠定了全书\"正言若反\"式的言说风格——重要的东西恰恰无法被直陈，只能通过\"非……\"来逼近。\n\n**层次区分提醒**：第二、三部分里，原文措辞（第一部分与表格左列）是可跳转核验的文本事实；「恒→常」避讳是未经本库核验的通说；第一章的\"地位\"判断则是我的解读性综合，不同注家（如王弼系统与出土文献研究者）在具体强调点上会有出入。\n\n如果你希望，我可以进一步**带你逐句精读第一章**，或**对比郭店楚简、帛书、通行本三个系统的开篇用字**（后者需要你确认是否允许我重新申请外部检索，因为帛书与楚简原文不在本库）。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "WEB",
+  "evidence_gap": "帛书本（马王堆）《老子》第一章「道可道也，非恒道也」的确切用字，以及「恒」改「常」是否为避汉文帝刘恒讳——库中仅有通行本，需外部核验",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:51:49",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "库中《道德经》第一章的原文措辞及版本（是否为「道可道也，非恒道也」或「道可道，非常道」），用于核对两种版本的用字差异",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:51:57",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "WEB",
+    "prev": "PRIMARY",
+    "evidence_gap": "帛书本（马王堆）《老子》第一章「道可道也，非恒道也」的确切用字，以及「恒」改「常」是否为避汉文帝刘恒讳——库中仅有通行本，需外部核验",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:51:57",
+    "reason": "库中《道德经》只收通行本，帛书本原文与避讳问题不在库内，需一次网络核验以支撑版本差异陈述",
+    "unresolved_gap": "帛书本第一章确切措辞及「恒→常」避讳关系"
+   }
+  ],
+  "retrieval_executed": 4,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:51:51"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 56342,
+   "output_tokens": 3473,
+   "total_tokens": 59815
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 5,
+   "compacted_chars_saved": 4935,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11911,
+     "output_tokens": 372,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15484,
+     "output_tokens": 378,
+     "tool_chars_added": 5821
+    },
+    {
+     "round": 3,
+     "input_tokens": 13401,
+     "output_tokens": 1130,
+     "tool_chars_added": 441
+    },
+    {
+     "round": 4,
+     "input_tokens": 15546,
+     "output_tokens": 1593,
+     "tool_chars_added": 1960
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 56342,
+  "output_tokens": 3473,
+  "total_tokens": 59815
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 25.1
+}

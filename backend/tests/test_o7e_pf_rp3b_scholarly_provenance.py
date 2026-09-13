@@ -31,6 +31,8 @@ from test_o2_final_ownership import (_msg, _done, _TOOLS_SCRIPT, ScriptedChat,
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__))), "tools", "evaluation"))
 import o7e_bakeoff_judge2 as J2
+from tests.o10r1_compliance import comply as _comply
+
 from o7e_production_calibration import run_case_production
 
 # ═══════════════════════════════════════════════════════
@@ -99,6 +101,7 @@ def _scholarly_tools(extra=None):
 
 
 def _run(question, script, agent="general"):
+    script = _comply(script, enabled=(agent == "general"))   # O10-R1: general 合规
     for k in _STUB_CALLS:
         _STUB_CALLS[k] = []
     orig = (EG.get_llm, EG.get_tools, AG.llm_chat)

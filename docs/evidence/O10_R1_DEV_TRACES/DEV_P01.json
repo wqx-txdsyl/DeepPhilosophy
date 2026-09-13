@@ -1,0 +1,202 @@
+{
+ "case_id": "DEV_P01",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "《孟子》里「鱼与熊掌」的比喻出现在哪一章？请读取该章原文，引用「二者不可得兼」一句的原文，并解释孟子用这个比喻论证什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_wVQH5bCJ1oOFGCVA0VOz2147"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_1KwGbrQSJs8Qu3nUHiMS7961",
+   "args": {
+    "query": "鱼与熊掌 二者不可得兼 舍生取义"
+   },
+   "result_head": "{'results': [{'book_id': 'ea6f47b169f0', 'book_title': '庄子今注今译', 'author': '陈鼓应', 'chapter_idx': 34, 'chapter_title': '外物', 'citation_label': '【《庄子今注今译》·外物】', '"
+  },
+  {
+   "name": "query_database",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_It7XlblkP2A1baFn4tW47724"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_SlTaIAyiyhRSjBTNOH741481",
+   "args": {
+    "query": "孟子 告子上 舍生而取义者也"
+   },
+   "result_head": "{'results': [{'book_id': '4d187a31575a', 'book_title': '中庸', 'author': '子思', 'chapter_idx': 12, 'chapter_title': '第十一章', 'citation_label': '【《中庸》·第十一章】', 'snipp"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_WAUpGWgDlMGAOsWX2tIQ0734",
+   "args": {
+    "book_id": "dd03ec6572e7",
+    "chapter_idx": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_x5NDLEhy9hU3j7GjrELA4759"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_UUfhNIwoczQ8o9Nwv5XI8964",
+   "args": {
+    "book_id": "dd03ec6572e7",
+    "chapter_idx": 10
+   },
+   "result_head": "{'book_id': 'dd03ec6572e7', 'chapter_idx': 10, 'title': '告子章句上', 'book_title': '孟子', 'citation_label': '【《孟子》·告子章句上】', 'text': '告子章句上·第一节\\n告子曰：“性，犹杞柳也；义，犹桮棬也。以人"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《孟子》\"鱼与熊掌\"比喻所在的篇章位置及\"二者不可得兼\"一句的原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《孟子·告子章句上》\"鱼与熊掌\"一节的原文全文，尤其是\"二者不可得兼，舍鱼而取熊掌者也\"的准确措辞与篇章位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "库中已确认存在《孟子》且定位到\"告子章句上\"，但尚未读取该章原文；用户明确要求读取原文并引用\"二者不可得兼\"，逐字引文与篇章位置核验必须落在已读文本上，读一次章节即可闭合缺口",
+    "unresolved_evidence_gap": "《孟子·告子章句上》该节原文全文及\"二者不可得兼\"的逐字措辞"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1390,
+ "final_answer": "已读取到原文并核验措辞，证据缺口闭合。以下是回答。\n\n## 出处\n\n这段话出自 **《孟子·告子章句上》第十节**（即通行本《告子上》\"鱼我所欲也\"一章），库中文本内部编号为\"告子章句上·第十节\"。它与前后几节同属《告子章句上》讨论\"性善\"\"本心\"\"大体小体\"的一组文字。\n\n## 原文\n\n该节开篇即是你问的比喻：\n\n> 孟子曰：\"鱼，我所欲也；熊掌，亦我所欲也，二者不可得兼，舍鱼而取熊掌者也。生，亦我所欲也；义，亦我所欲也，二者不可得兼，舍生而取义者也。生亦我所欲，所欲有甚于生者，故不为苟得也；死亦我所恶，所恶有甚于死者，故患有所不辟也。\"\n\n——【《孟子》· 告子章句上】\n\n（以上引文为库中所收原文的逐字措辞。）\n\n## 孟子用它论证什么\n\n**1. 表层：一个类比的推理结构。** 比喻本身只是脚手架。它先确立一个日常直觉：当两样都想要的东西不能同时得到时，人会取更想要的那一样（舍鱼取熊掌）。然后把这个结构平移到\"生\"与\"义\"上——既然生命和道义都是我所欲，而二者冲突时不能兼得，那就应当舍生取义。比喻的作用是让\"按价值高低取舍\"这个原则显得自明，从而支撑后面的结论。\n\n**2. 中层：确立\"义\"高于\"生\"。** 真正的论点是：存在\"所欲有甚于生者\"（比生命更值得欲求的东西）和\"所恶有甚于死者\"（比死亡更可厌恶的东西）。正因为有它，人才能在可以求生时\"不为苟得\"、在可以避祸时\"有所不辟\"。这里孟子要反驳的是一种功利式的算计——如果活着就是最高价值，那人就该无所不用其极地求生；而现实中确实有人宁死不屈，这说明\"义\"在价值序列上高于\"生\"。\n\n**3. 深层：为性善论作证。** 紧接着孟子说，这种心\"非独贤者有是心也，人皆有之，贤者能勿丧耳\"。也就是说，舍生取义的能力不是少数圣贤独有的，而是人人本有的\"本心\"。这一节因此与同章第六节\"恻隐之心，人皆有之……仁义礼智，我固有之也\"、第十一节\"学问之道无他，求其放心而已矣\"、第十五节\"从其大体为大人\"构成一条线索：**道德抉择的可能性，根植于人先天具有的善良本心。**\n\n**4. 收尾的批判对象。** 该节后半段转向\"一箪食，一豆羹\"与\"万钟\"的对比：行乞之人尚且不食\"呼尔\"\"蹴尔\"之食（宁死不受辱），而有人却为了\"宫室之美、妻妾之奉\"去接受不合礼义的万钟俸禄。孟子的落点是\"此之谓失其本心\"——最可怕的不是要不要为义而死，而是人在日常的利害面前不知不觉把本心丢掉了。\n\n## 一点辨析\n\n需要区分的是：**\"鱼与熊掌\"只是引子，孟子的核心命题是\"舍生取义\"和\"本心人皆有之\"。** 比喻诉诸直觉，本身并不构成严格的证明——它只是把\"两害相权取其轻、两利相权取其重\"这个共享前提引出来，真正的论证力量来自后面对\"所欲有甚于生者\"的诉求，以及\"人皆有之\"这一性善论预设。\n\n顺带一个可以反问自己的问题：如果把\"义\"换成任何一个人认为比生命更高的东西（名誉、信仰、所爱之人），这个类比同样成立——那么孟子这里论证的究竟是\"道义的客观优先性\"，还是仅仅在描述\"人总会有某种高于生命的价值\"这一心理事实？这个读法上的缝隙，正是后来对《孟子》该章解释分歧的一个入口。\n\n如果你想接着深入，我建议顺势读同章第十五节（\"耳目之官不思……心之官则思\"）——它把\"大体/小体\"的区分讲得更透，是理解本节\"本心\"的关键上下文。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《孟子·告子章句上》\"鱼与熊掌\"一节的原文全文，尤其是\"二者不可得兼，舍鱼而取熊掌者也\"的准确措辞与篇章位置",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:32:35",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《孟子》\"鱼与熊掌\"比喻所在的篇章位置及\"二者不可得兼\"一句的原文措辞",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:32:44",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《孟子·告子章句上》\"鱼与熊掌\"一节的原文全文，尤其是\"二者不可得兼，舍鱼而取熊掌者也\"的准确措辞与篇章位置",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:32:44",
+    "reason": "库中已确认存在《孟子》且定位到\"告子章句上\"，但尚未读取该章原文；用户明确要求读取原文并引用\"二者不可得兼\"，逐字引文与篇章位置核验必须落在已读文本上，读一次章节即可闭合缺口",
+    "unresolved_gap": "《孟子·告子章句上》该节原文全文及\"二者不可得兼\"的逐字措辞"
+   }
+  ],
+  "retrieval_executed": 4,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:32:40"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 74242,
+   "output_tokens": 3438,
+   "total_tokens": 77680
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 5,
+   "compacted_chars_saved": 8334,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11902,
+     "output_tokens": 285,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14941,
+     "output_tokens": 227,
+     "tool_chars_added": 5177
+    },
+    {
+     "round": 3,
+     "input_tokens": 15422,
+     "output_tokens": 359,
+     "tool_chars_added": 4362
+    },
+    {
+     "round": 4,
+     "input_tokens": 13556,
+     "output_tokens": 698,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 5,
+     "input_tokens": 18421,
+     "output_tokens": 1869,
+     "tool_chars_added": 6063
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 74242,
+  "output_tokens": 3438,
+  "total_tokens": 77680
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 25.9
+}

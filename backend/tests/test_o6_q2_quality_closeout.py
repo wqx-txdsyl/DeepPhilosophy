@@ -218,11 +218,13 @@ class TestT12T13ResearchCalibration:
         assert _validate("康德的义务论强调行为本身的道德性质，而非其后果，核心是绝对命令。").ok is True
 
     def test_t13_evidence_appetite_preserved(self):
+        # O10-R1 修订: 检索由研究需求治理（类别 + soft 预算 + 延展留痕）,
+        # V1 判定的"不受限检索"许可已移除; 反过度纠正意图保留——
+        # 无"最少工具/最小化工具"式截断, 预算错配时升级类别仍合法。
         ctx = _core_context()
-        assert "主动使用" in ctx and "配额管制" in ctx
+        assert "RESEARCH_NEED" in ctx and "soft 检索预算" in ctx
         assert "优先直接证据" in ctx and "最强相关解读" in ctx
-        assert "检索次数不受限制" in ctx
-        for banned in ("最少工具", "最小化工具"):
+        for banned in ("最少工具", "最小化工具", "检索次数不受限制", "不存在配额管制"):
             assert banned not in ctx
 
 

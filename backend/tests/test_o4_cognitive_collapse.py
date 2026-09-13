@@ -29,6 +29,8 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, AIMessageChunk, ToolMessage
 import pytest
 
+from tests.o10r1_compliance import comply as _comply
+
 import agent_runtime as AR
 import engine_langgraph as EG
 import routes.agent as AG
@@ -143,6 +145,7 @@ def _msg(note, tool_calls=None):
 
 
 def _run_stream(question, script, agent="general"):
+    script = _comply(script, enabled=(agent == "general"))   # O10-R1: general 合规（哲学家 agent 无门）
     real = (EG.get_llm, EG.get_tools, AG.llm_chat)
     real_lp_flag = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)
     EG.LOCAL_PATCH_PRODUCTION_ENABLED = False   # O2 时代 repair 语义回归（生产启用由 P 套件锁定）
@@ -301,13 +304,14 @@ def test_t5_no_composer_ownership():
 
 
 # ═══════════════════════════════════════════════════════
-# T6 — Evidence Appetite prompt present（研究伦理不锁整段）
+# T6 — Evidence Appetite prompt present（O10-R1 修订: 检索由研究需求治理）
 # ═══════════════════════════════════════════════════════
 def test_t6_evidence_appetite_prompt_present():
     p = EG.SYSTEM_PROMPT_LG
-    # ① proactive: 工具是主动研究手段, 不存在配额管制
-    assert "主动使用" in p and "配额管制" in p
-    # ② 不止步于貌似可行: 记忆只是工作假设
+    # ① O10-R1: 检索由研究需求决策治理——类别 + soft 预算 + 停止规则在提示词层
+    assert "RESEARCH_NEED" in p and "EVIDENCE_GAP" in p
+    assert "soft 检索预算" in p and "证据缺口停止规则" in p
+    # ② 不止步于貌似可行: 记忆只是工作假设（诚实资产, 不变）
     assert "不因" in p and "就停止研究" in p and "工作假设" in p
     # ③ 优先直接证据 / 解读类收集最强相关解读 / 继续研究
     assert "优先直接证据" in p
@@ -315,7 +319,10 @@ def test_t6_evidence_appetite_prompt_present():
     assert "继续研究" in p
     # ④ 避免冗余机械检索（机械判重复用）
     assert "机械检索" in p
-    # 但不把 Evidence Appetite 实现成 runtime gate（无 gate 符号）
+    # ⑤ O10-R1: V1 判定的过度检索许可已移除（P0-01 根因）
+    assert "不存在配额管制" not in p and "检索次数不受限制" not in p
+    # 但不把 Evidence Appetite 实现成 runtime 认知 gate（无 gate 符号;
+    # O10-R1 的 ResearchDiscipline 是机械门, 非语义充分性判断——无 SUFFICIENCY 符号）
     assert not hasattr(EG, "SUFFICIENCY_FORCE_DIRECTIVE_ZH")
 
 
@@ -435,7 +442,7 @@ def test_t11_no_semantic_auto_tool():
     assert _STUB_CALLS.get("websearch") is None, "引擎不得自动补 websearch"
     done = _done(evs)
     assert done["causal"]["engine_cognitive_auto_tools"] == 0
-    assert done["causal"]["main_agent_tool_decisions"] == 1
+    assert done["causal"]["main_agent_tool_decisions"] == 2   # O10-R1: declare_research_need + search_books 均为 Main Agent 决策
 
 
 # ═══════════════════════════════════════════════════════

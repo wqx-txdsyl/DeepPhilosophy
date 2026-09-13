@@ -1,0 +1,62 @@
+{
+ "case_id": "DEV_S04",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "「全校学生都穿校服，所以穿校服一定能提高成绩。」这个推理犯了什么错误？请说明理由。",
+ "tool_sequence": [],
+ "declarations": [],
+ "blocked_calls": [],
+ "answer_chars": 1090,
+ "final_answer": "这个推理的问题不止一处，但最核心的是：**它把一个\"普遍共存的事实\"直接当成了\"因果关系\"，而且结论里出现了前提中根本没有的东西。** 下面分层说明。\n\n## 一、先摆出它的逻辑骨架\n\n- 前提：全校学生都穿校服。（一个关于\"校服\"的普遍事实陈述）\n- 结论：穿校服一定能提高成绩。（一个关于\"校服→成绩\"的因果/充分条件断言）\n\n## 二、错在哪里\n\n**1. 结论超出了前提（\"推不出\"，non sequitur）**\n前提里从头到尾没有出现\"成绩\"这个词。关于校服的普遍性陈述，无论怎么推理，都推不出任何关于成绩的结论。前提和结论之间缺的是\"桥\"——而这座桥（校服与成绩的因果联系）恰恰是需要证明的东西，却被当成了结论直接端出来。这是最根本的毛病。\n\n**2. 混淆\"相关/共存\"与\"因果\"（虚假原因，false cause）**\n即使退一步，假设我们观察到\"穿校服的学校成绩都不错\"，那也只是一个**相关**。两件事经常一起出现，不等于一件事引起了另一件。常见的两种混淆：\n- 可能是**共同原因**：某校管理严格、投入大，既规定了校服，也提升了成绩——校服只是\"搭便车\"的伴随现象。\n- 可能是**倒果为因**：也许恰恰是生源好、成绩好的学校才有余力统一校服。\n\n**3. 缺了因果推断最需要的东西：对照与变异**\n要判断\"穿校服是否提高成绩\"，需要在\"穿\"与\"不穿\"之间做比较，并控制其他变量。可这个前提说的是**全校都穿**——恰恰把\"不穿\"的对照组消除了。没有变异，就没有比较；没有比较，因果就无从识别。这个前提本身反而使结论无法被检验。\n\n**4. \"一定能\"是过强的断言**\n哪怕真存在某种正向趋势，它也至多支持\"可能有助于/平均而言略有相关\"这类**概率性、倾向性**的说法，撑不起\"一定能\"这种全称必然的口气。\n\n## 三、给它归个类\n\n- 主导谬误：**虚假原因**（把共存/普遍性当因果）；\n- 同时犯：**推不出**（结论超出前提）、**结论的必然性过强**。\n- 如果说话人心里想的是\"很多成绩好的学校都穿校服\"，那还叠加了**以偏概全**。\n\n## 四、要救它，得补什么\n\n把结论降格成一个**可检验的假设**，并给出对照设计：比较穿与不穿校服（或改革前后）的学生、控制师资与生源等变量、说明校服通过什么**机制**影响学习（如减少攀比、强化归属感）。做到这些，它才从\"谬误\"变成\"待验证的经验命题\"。\n\n不妨反问一句：如果全校都穿校服、成绩也提高了，你凭什么把功劳记在校服头上，而不是记在那一年新换的数学老师身上？——这正是这个推理回避的问题。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 11886,
+   "output_tokens": 2089,
+   "total_tokens": 13975
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11886,
+     "output_tokens": 2089,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 11886,
+  "output_tokens": 2089,
+  "total_tokens": 13975
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 15.9
+}

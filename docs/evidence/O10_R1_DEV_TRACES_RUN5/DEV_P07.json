@@ -1,0 +1,355 @@
+{
+ "case_id": "DEV_P07",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "亚里士多德在《尼各马可伦理学》中如何用「中道」定义勇敢？请定位相关章节，引用关键表述，并说明「过度」与「不及」各指什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_cIQ0fNMqAfmFdqzTMPX77643"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_EjpnrQemb5UUWAZeUnwr4020"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_pze36219MQdEo2NB6il03487",
+   "args": {
+    "query": "德性 中道 过度 不及"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 37, 'chapter_title': '德经·第三十八章', 'citation_label': '【《道德经》·德经·第三十八章"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_d9KMBPPdMih1Co0viTlJ5812"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_I0IfXiwZCA2AZEAlsmK18608",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_JdsBRBkQuDAsOi94WXDs8995",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已定位《尼各马可伦理学》第二卷「伦理德性与中庸」与第三卷「德行特征与具体德性」，但尚未读取正文——缺少中道定义的原文措辞及勇敢作为恐惧/自信中道、鲁莽与怯懦两端命名的逐字原文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "仅完成书目定位（第二卷/第三卷标题），尚未执行任何 get_chapter 读取，逐字引文与出处核验完全无证据基础，无法综合作答",
+    "unresolved_evidence_gap": "《尼各马可伦理学》第二卷论德性作为中道、第三卷论勇敢且区分鲁莽（过度）与怯懦（不及）的原文措辞"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 已定位《尼各马可伦理学》第二卷「伦理德性与中庸」与第三卷「德行特征与具体德性」，但尚未读取正文——缺少中道定义的原文措辞及勇敢作为恐惧/自信中道、"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_ESq8jWKvhrVWUcJKmIjo1414"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_OYRinpLjCSWBygveisEp0196",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 3
+   },
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 3, 'title': '第三卷 德行特征与具体德性', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第三卷 德行特征与具体德性】', 't"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_v17BCkcJR1LW0QM44Iwy4650"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_N4sM11raBkQVYmh1w76m7979",
+   "args": {
+    "query": "勇敢 恐惧 鲁莽 怯懦 中道 自信",
+    "book_id": "e574c8e7f515"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_0CYStOImRsreo3INW0f35032"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_dwZyTZIxkmSgMduLkFNG8222"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_02_FUPmEOzdE8UckZejkkHL0338",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 3
+   },
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 3, 'title': '第三卷 德行特征与具体德性', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第三卷 德行特征与具体德性】', 't"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_1Xx9IvdRx61FwGrRLwqD1370"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_Vk0IC9QhYf9Mp6E6bGRm4718"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_02_vYbw86OqlMnUAQKoKLL66488",
+   "args": {
+    "query": "勇敢 恐惧 鲁莽 怯懦",
+    "book_id": "e574c8e7f515"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 311, 'chapter_title': '194', 'citation_label': '【《尼采文集（合"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》中\"德性是中道\"的原文措辞与卷章位置，以及第三卷论勇敢时\"过度（鲁莽）与不及（怯懦）\"的原文命名",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已定位《尼各马可伦理学》第二卷「伦理德性与中庸」与第三卷「德行特征与具体德性」，但尚未读取正文——缺少中道定义的原文措辞及勇敢作为恐惧/自信中道、鲁莽与怯懦两端命名的逐字原文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "仅完成书目定位（第二卷/第三卷标题），尚未执行任何 get_chapter 读取，逐字引文与出处核验完全无证据基础，无法综合作答",
+    "unresolved_evidence_gap": "《尼各马可伦理学》第二卷论德性作为中道、第三卷论勇敢且区分鲁莽（过度）与怯懦（不及）的原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第二卷中\"德性是中道/适度\"的核心定义句，及第三卷论勇敢时\"过度=鲁莽、不及=怯懦、中道=勇敢\"的逐字措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "此前读取仅覆盖两卷开篇（第二卷至1104a15、第三卷至自愿论），用户问题的核心定义句与勇敢专门分析仍无任何原文证据，逐字引文无法落地，不能作答",
+    "unresolved_evidence_gap": "《尼各马可伦理学[注释导读本]》第二卷中道定义段与第三卷勇敢段（含鲁莽/怯懦命名）的原文"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第二卷\"德性是中道\"定义段与第三卷勇敢段（鲁莽/怯懦命名）在本书内的片段措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "整卷读取在注释处被截断，仍未取得中道定义句与勇敢段原文，需限定本书关键词定点定位片段",
+    "unresolved_evidence_gap": "《尼各马可伦理学[注释导读本]》中\"德性是中道\"与\"勇敢是恐惧与自信的中道、过度为鲁莽、不及为怯懦\"的原文措辞"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2267,
+ "final_answer": "## 先说明证据边界\n\n我需要如实交代本次检索的实际状况，再进入内容：\n\n- **实际核验到的原文**：我定位到并读取了《尼各马可伦理学[注释导读本]》第二卷「伦理德性与中庸」的开篇正文（约 Bekker 1103a—1104a 段）与第三卷「德行特征与具体德性」的开篇（自愿/不自愿论，约 1109b—1111b 段）。\n- **未能逐字核验的部分**：中道的一般定义句（通行标号约 1106b36—1107a2）与论勇敢的专门段落（通行标号约第三卷 1115a—1117b）**在本次检索中未能读到原文**。以下凡涉及这些段落的具体措辞与精确编号，都属我依据哲学史通说给出的转述，不是库中已核验的逐字原文，我会逐处标明。\n\n---\n\n## 一、章节定位\n\n按《尼各马可伦理学》的通行结构（标准 Bekker 编排）：\n\n- **第二卷**：德性总论，重点在第 5—6 节，给出「德性作为中道（mesotēs）」的一般规定。中道并非只属于勇敢，而是全部伦理德性的共同结构。\n- **第三卷**：具体德性逐一分析，其中第 6—9 节专论**勇敢（andreia）**，是勇敢与过度、不及「两恶」相对照的核心段落。\n\n（以上节次编号出自哲学史通行编排，**本次未能对照库中原文逐字核验**。）\n\n我实际读到的第二卷开篇已奠定框架：德性是**由习惯养成的品质**（1103a），且属于「按其本性会被**过度和不及**所毁败的这类东西」，亚里士多德随即以**体力与健康**作类比——锻炼过度或不足都毁坏体力（约 1104a）。这一片段是我在【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】中实际读到的，可作为「过度/不及毁败德性」这一命题的原文依据。\n\n## 二、勇敢如何被「中道」定义\n\n按通说（以下为**转述，未经本次逐字核验**），中道的一般定义大意是：\n\n按通说，亚里士多德把德性规定为一种与选择相关的品质，它落在相对于我们而言的中道之上，而这个中道由理性原则（logos）来界定，并依据明智者（phronimos）所界定的标准（通行编排约在 1106b36—1107a2，本次未逐字核验）。\n\n关键在于「**相对于我们**」：中道不是数理上的算术中点，而是因人因境而变、由实践理性把握的「适度」。\n\n把这一框架套用到勇敢上，勇敢的**对象**是**恐惧与自信**（尤其在战场上面对死亡的危险）。勇敢因此被界定为**在恐惧与自信上守中**的品质。这就直接回答了你的核心问题：\n\n- **过度的一端 = 鲁莽（也译莽撞、逞勇，希腊文 thrasos / thrasytēs）**：表现为**恐惧不足、盲目自信**，该害怕时不害怕，贸然涉险。\n- **不及的一端 = 怯懦（通行译名「怯懦」，deilia）**：表现为**恐惧过度、自信不足**，不该害怕时也害怕，临阵退缩。\n- **中道 = 勇敢**：既非不知畏惧的鲁莽，也非畏缩的怯懦。\n\n这一「两端命名 + 中道居中」的对照，我在**二手中文著作**中检索到了明确表述：周濂称「什么是中道？简单说，就是处于『两种恶即过度与不及的中间』。举例来说，**鲁莽是过度，懦弱是不及，而勇敢则是居于中间者**」【《打开：周濂的100堂西方哲学课》·038 射箭与中道】。注意这里周濂用的是「懦弱」，与学界更常见的「怯懦」是同一所指的不同译法。\n\n值得点出的一层（**转述，未逐字核验**）：亚里士多德特别强调**勇敢与鲁莽不是一回事**——鲁莽是危险的「假勇敢」，其行动出于对危险的错误估计而非真正的德性。这正体现了中道学说的要义：**德性不是两端之间的任意一点，而是被理性规定的那个「恰当」**，而过度与不及各自是一种「恶」，并非德性的「程度增减」。\n\n## 三、「过度」与「不及」在这里各指什么\n\n| 面向 | 不及（怯懦） | 中道（勇敢） | 过度（鲁莽） |\n|---|---|---|---|\n| 恐惧 | 恐惧过度 | 恰当恐惧 | 恐惧不足 |\n| 自信 | 自信不足 | 恰当自信 | 自信过度 |\n| 行为 | 临阵退缩、逃避 | 面对危险、坚守 | 贸然犯险、逞强 |\n\n**一句话概括**：勇敢是恐惧与自信方面的中道；「过度」在此**不是「太多的勇敢」，而是鲁莽这一独立的恶**，「不及」**也不是「勇敢不足」，而是怯懦这一独立的恶**。中道学说的要点恰在于：两种「恶」分居两侧，德性是那个被理性命中的中项。\n\n---\n\n## 四、必须向你交代的限度\n\n我没有做到、也不应伪装做到的事：**我未能在原典库中逐字核验中道定义句（约 1106b36—1107a2）与勇敢专节（约第三卷 1115a—1117b）的原文措辞**。因此：\n\n1. 上表中「恐惧/自信」的具体对应、以及 thrasos、deilia 等希腊术语的对应，都是**依据哲学史通说的转述**，请以**记忆性概括**看待，而非本次核验的逐字原文；\n2. 我实际能站得住的库内原文证据，主要是**第二卷开篇**（德性由习惯养成、过度与不及毁败德性、体力健康类比）与**第三卷开篇**（自愿/不自愿论）；勇敢的逐字定义我没有读到，故不给出带精确节号的正式引用；\n3. 若你要我给出**可直接引用的精确原文**，我可以在你允许的情况下，针对第二卷第 6 节与第三卷第 6—9 节做定点重读——那需要重新进入原文核验。\n\n要不要我据此把勇敢那一段（含鲁莽/怯懦的原文命名）定位到具体节次并逐字读出？",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "第二卷\"德性是中道\"定义段与第三卷勇敢段（鲁莽/怯懦命名）在本书内的片段措辞",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:53:42",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《尼各马可伦理学》中\"德性是中道\"的原文措辞与卷章位置，以及第三卷论勇敢时\"过度（鲁莽）与不及（怯懦）\"的原文命名",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:53:47",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "已定位《尼各马可伦理学》第二卷「伦理德性与中庸」与第三卷「德行特征与具体德性」，但尚未读取正文——缺少中道定义的原文措辞及勇敢作为恐惧/自信中道、鲁莽与怯懦两端命名的逐字原文",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:54:00",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "第二卷中\"德性是中道/适度\"的核心定义句，及第三卷论勇敢时\"过度=鲁莽、不及=怯懦、中道=勇敢\"的逐字措辞",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:54:06",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "第二卷\"德性是中道\"定义段与第三卷勇敢段（鲁莽/怯懦命名）在本书内的片段措辞",
+    "source_dependent": true,
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:53:47",
+    "reason": "仅完成书目定位（第二卷/第三卷标题），尚未执行任何 get_chapter 读取，逐字引文与出处核验完全无证据基础，无法综合作答",
+    "unresolved_gap": "《尼各马可伦理学》第二卷论德性作为中道、第三卷论勇敢且区分鲁莽（过度）与怯懦（不及）的原文措辞"
+   },
+   {
+    "ts": "2026-09-13 12:54:00",
+    "reason": "此前读取仅覆盖两卷开篇（第二卷至1104a15、第三卷至自愿论），用户问题的核心定义句与勇敢专门分析仍无任何原文证据，逐字引文无法落地，不能作答",
+    "unresolved_gap": "《尼各马可伦理学[注释导读本]》第二卷中道定义段与第三卷勇敢段（含鲁莽/怯懦命名）的原文"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:53:44"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:53:54"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:53:54"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 155427,
+   "output_tokens": 8073,
+   "total_tokens": 163500
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 13,
+   "compacted_chars_saved": 27127,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11902,
+     "output_tokens": 494,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17008,
+     "output_tokens": 288,
+     "tool_chars_added": 9109
+    },
+    {
+     "round": 3,
+     "input_tokens": 13923,
+     "output_tokens": 443,
+     "tool_chars_added": 1590
+    },
+    {
+     "round": 4,
+     "input_tokens": 14911,
+     "output_tokens": 263,
+     "tool_chars_added": 2076
+    },
+    {
+     "round": 5,
+     "input_tokens": 19105,
+     "output_tokens": 851,
+     "tool_chars_added": 8000
+    },
+    {
+     "round": 6,
+     "input_tokens": 16179,
+     "output_tokens": 1093,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 7,
+     "input_tokens": 23434,
+     "output_tokens": 1148,
+     "tool_chars_added": 10874
+    },
+    {
+     "round": 8,
+     "input_tokens": 24877,
+     "output_tokens": 3047,
+     "tool_chars_added": 11169
+    },
+    {
+     "round": 9,
+     "input_tokens": 14088,
+     "output_tokens": 446,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 155427,
+  "output_tokens": 8073,
+  "total_tokens": 163500
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 54.2
+}

@@ -1,0 +1,410 @@
+{
+ "case_id": "DEV_P05",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "卢梭《社会契约论》第一卷开篇如何论证「合法的政治秩序」？请读取第一章原文，引用关键句，并解释「把强力转化为权利」批判的含义。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_FEczE96pu9yytrAqXizD7288"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_kthKLhfViJE2nlfh91aQ2764"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_wekpvKr7o9RcpudD66O32210",
+   "args": {
+    "query": "强力转化为权利 服从强力是义务"
+   },
+   "result_head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 99, 'chapter_title': '最强者的权利', 'citation_label': '【《西方百年学术经典"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_6nFcW1avL43Y5ltaz7OL9199",
+   "args": {
+    "book_id": "fa175af7701a"
+   },
+   "result_head": "{'id': 'fa175af7701a', 'title': '社会契约论', 'author': '让-雅克·卢梭', 'region': '西方', 'file_type': 'pdf', 'summary': '《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_7rfX3tkqL365Z0OsLn0k9825"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_pXHpqvAJ4d7VpKTKKHLi9420"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_wvwIfDZ11y80WRgQR8c06992",
+   "args": {
+    "book_id": "fa175af7701a",
+    "chapter_idx": 4
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_Yxx7aOp1HtVIsaYrO38O2620",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第一卷第一章「第一卷的题旨」、第二章「论原始社会」、第三章「论最强者的权利」的逐字原文与上下文",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"读取第一章原文，引用关键句\"。此前3次检索仅取得片段定位线索（命中片段、目录），尚未读取任何一章的完整原文；片段不足以支撑逐字引用与上下文解释，逐字引文必须来自实际读取的章节原文。",
+    "unresolved_evidence_gap": "《社会契约论》第一卷开篇三章（尤其第一章题旨与第三章最强者的权利）的完整原文措辞"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 第一卷第一章「第一卷的题旨」、第二章「论原始社会」、第三章「论最强者的权利」的逐字原文与上下文）。soft 检索预算=3 次。预算延展已获准（BU"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_mGTF5fClv55Zrpp7sKqo5075"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_7dlRs1VMYrLbnXqVuQHo5715"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_nY99zlvyJ2oXumPpUPCL3580",
+   "args": {
+    "book_id": "fa175af7701a",
+    "chapter_idx": 4
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_hCXWRyzZ7Cn9sTXO5J8J4267"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_Cl3rMAtO4cjeC8hqNw936067",
+   "args": {
+    "book_id": "fa175af7701a",
+    "chapter_idx": 1
+   },
+   "result_head": "{'book_id': 'fa175af7701a', 'chapter_idx': 1, 'title': '第一章 第一卷的题旨', 'book_title': '社会契约论', 'citation_label': '【《社会契约论》·第一章 第一卷的题旨】', 'text': '我要探讨在社会秩序之中，从人类的实"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_7acCumDh2fS4iBoQLdQt9806"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_aMxB0ADAtHDZS4If88wl1338"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_02_S5OGvg2Upiz3o21bJE6E9196",
+   "args": {
+    "query": "强力 权利 最强者的权利"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_6DIbxpRmMMZisKVYjHZT5414"
+  },
+  {
+   "name": "list_books",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_01_S0AwTt9px4TYemnZJv3J4321"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_02_ZFaJwpRshMVqZ20czJZO8985",
+   "args": {
+    "query": "社会契约论 公意 服从 义务"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《社会契约论》第一卷开篇及第一章的逐字原文、章节编号与\"把强力转化为权利\"批判的原文措辞",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第一卷第一章「第一卷的题旨」、第二章「论原始社会」、第三章「论最强者的权利」的逐字原文与上下文",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"读取第一章原文，引用关键句\"。此前3次检索仅取得片段定位线索（命中片段、目录），尚未读取任何一章的完整原文；片段不足以支撑逐字引用与上下文解释，逐字引文必须来自实际读取的章节原文。",
+    "unresolved_evidence_gap": "《社会契约论》第一卷开篇三章（尤其第一章题旨与第三章最强者的权利）的完整原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第一卷第一章「第一卷的题旨」的逐字原文（含\"人生而自由，却无往不在枷锁之中\"开篇句）",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"读取第一章原文，引用关键句\"，而此前读取到的是第二章、第三章，尚未取得第一章「第一卷的题旨」的原文；开篇名句位于该章，无原文则无法完成用户指定的引用任务。",
+    "unresolved_evidence_gap": "《社会契约论》第一卷第一章「第一卷的题旨」完整原文措辞与章节身份"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《社会契约论》第一卷第一章（及\"论最强者的权利\"一节）的原文措辞与章节结构，用于核验\"人生而自由\"开篇句与\"强力不能产生权利/把强力转化为权利\"批判的确切表述",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "卢梭《社会契约论》第一卷第一章「第一卷的题旨」及「论最强者的权利」一节的逐字原文与章节身份",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"读取第一章原文，引用关键句\"。目前取得的仅是开篇句的二手转述（沃伯顿《从理想国到正义论》《哲学小史》）与译本中\"社会状态\"一节片段，尚无卢梭原典第一卷第一章与\"最强者的权利\"章的原文措辞，无法完成逐字引用与\"把强力转化为权利\"批判的原文核验。",
+    "unresolved_evidence_gap": "《社会契约论》第一卷第一章与「论最强者的权利」一节的完整原文措辞"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1749,
+ "final_answer": "# 卢梭《社会契约论》第一卷开篇：合法的政治秩序如何可能\n\n## 一、问题的提出——把\"正当性\"而非\"事实\"设为起点\n\n卢梭《社会契约论》第一卷的开篇，做了一件对整个近代政治哲学都具有决定意义的事：它把全书的根本问题，从一个关于**事实**的问题扭转为关于**正当性（légitimité）**的问题。\n\n库中沃伯顿的著作在介绍卢梭时明确点出这一点，并引述了那句著名的开篇语——据其介绍，这是《社会契约论》全书的**第一句话**：\n\n据沃伯顿在书中的介绍，卢梭以人天生自由、现实中却处处受到束缚这一对照开篇，并由此引出全书要处理的核心难题（该句的精确译文我未能在原典库中逐字核验，故此处仅作大意转述，不作逐字引用）。\n\n（按：这是沃伯顿书中对该句的转引措辞；通行的汉译常作\"却无往不在枷锁之中\"，两者仅虚词微异。）\n\n关键在于卢梭紧接着提出的问题结构。按我的理解与通常解读，他并未在\"人是否自由\"这一事实上停留——那是一个已被现实证伪的判断（人处处受束缚）；他真正要追问的是：**这副枷锁能否被正当化**。也就是说，他要探讨的不是\"谁在统治\"（事实），而是\"何种统治规则才是合法的、可靠的\"（规范）。正是这一转向，使社会契约论区别于一切\"强权政治学\"。\n\n由此，\"合法\"（正当的）政治秩序成为第一卷的中心课题：既然枷锁已然存在，那么——**是否存在某种使人虽受约束却仍然自由、虽被统治却仍然正当的秩序？**\n\n## 二、合法性的排除法：自然与强力都不足以奠基\n\n卢梭并非先给出答案，而是先用两章排除两种最流行、也最危险的奠基方式。\n\n**其一，自然（天性）不足以奠基。** 第二章「论原始社会」以家庭为\"最初的社会\"和\"政治社会的原始模型\"（转述）。表面上父子之间的统治关系似乎自然正当，但卢梭指出：这种服从出于**需要**（父亲抚养孩子），一旦子女长大、自然纽带解除，家庭便只能靠**约定**来维系。既然连最\"自然\"的家庭权威最终都落到约定上，那么更大的政治社会就更不可能从天性中直接推出统治的权利。\n\n**其二——也是本问题的核心——强力不足以奠基。** 第三章「论最强者的权利」集中处理这一点，其结论常被概括为\"把强力转化为权利\"的批判。\n\n## 三、\"把强力转化为权利\"批判的含义\n\n这一批判的含义，可以拆为几层理解（以下为对卢梭论证的**转述**，非逐字原文；该章中文逐字措辞我本次未能取出核验，故以转述与通行概括呈现，涉及卢梭本人措辞处均不作逐字引号处理）：\n\n1. **强力与权利属于两个不同的秩序。** 强力是一种物理的、事实性的力量，它的作用方式是因果必然性——被强力压倒时人\"不得不\"屈服，这是一种**必要的行为**，而非一种出于意志的**义务行为**。而权利、义务属于道德秩序。物理的强制无法产生道德上的应当。\n\n2. **\"最强者的权利\"是一个自相矛盾的说法。** 若\"权利\"随\"强力\"而变，那么最强者的\"权利\"就随其实力涨落而涨落，一旦他不再最强，\"权利\"即刻消失。凡随事实变化而随时可失效的东西，根本不是权利。\n\n3. **因此\"把强力转化为权利\"是一个强力本身无法完成的任务。** 卢梭的论点是：最强者之所以不能永远做主人，正因为他无法仅仅凭强力把自己确立为正当的主宰——他必须\"把自己的强力转化为权利、把服从转化为义务\"（此为该论证要旨的通行概括，**非逐字原文**），而这种转化绝不可能由强力自己完成。**能让强力变正当的，只能是自由人的约定。**\n\n4. **批判的双重面向。** 一方面，它驳斥赤裸的强权论（即\"统治的正当性来自统治的事实/实力\"）；另一方面，它划出了**事实与权利的界限**：政治哲学不能从\"谁在统治\"直接推出\"谁应当统治\"。任何先于或外于约定的统治，无论多强，都只具备事实的强制，而无正当性。\n\n这一批判因此是整部《社会契约论》的**否定性环节**：先扫清强力、天性、神意等一切伪奠基，才为下一环节——真正的奠基——腾出位置。\n\n## 四、正面的回答：一切合法权威的基础只能是约定\n\n在排除了自然与强力之后，卢梭的正面命题随之确立：**既然强力不能产生权利，那么人类社会一切合法的权威，就只能以约定为基础。** 这一约定在第六章「论社会公约",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "卢梭《社会契约论》第一卷第一章「第一卷的题旨」及「论最强者的权利」一节的逐字原文与章节身份",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:20:44",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《社会契约论》第一卷开篇及第一章的逐字原文、章节编号与\"把强力转化为权利\"批判的原文措辞"
+   },
+   {
+    "ts": "2026-09-13 12:20:51",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "第一卷第一章「第一卷的题旨」、第二章「论原始社会」、第三章「论最强者的权利」的逐字原文与上下文",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:20:57",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "第一卷第一章「第一卷的题旨」的逐字原文（含\"人生而自由，却无往不在枷锁之中\"开篇句）",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:21:24",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《社会契约论》第一卷第一章（及\"论最强者的权利\"一节）的原文措辞与章节结构，用于核验\"人生而自由\"开篇句与\"强力不能产生权利/把强力转化为权利\"批判的确切表述"
+   },
+   {
+    "ts": "2026-09-13 12:21:39",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "卢梭《社会契约论》第一卷第一章「第一卷的题旨」及「论最强者的权利」一节的逐字原文与章节身份",
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:20:51",
+    "reason": "用户明确要求\"读取第一章原文，引用关键句\"。此前3次检索仅取得片段定位线索（命中片段、目录），尚未读取任何一章的完整原文；片段不足以支撑逐字引用与上下文解释，逐字引文必须来自实际读取的章节原文。",
+    "unresolved_gap": "《社会契约论》第一卷开篇三章（尤其第一章题旨与第三章最强者的权利）的完整原文措辞"
+   },
+   {
+    "ts": "2026-09-13 12:20:57",
+    "reason": "用户明确要求\"读取第一章原文，引用关键句\"，而此前读取到的是第二章、第三章，尚未取得第一章「第一卷的题旨」的原文；开篇名句位于该章，无原文则无法完成用户指定的引用任务。",
+    "unresolved_gap": "《社会契约论》第一卷第一章「第一卷的题旨」完整原文措辞与章节身份"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:20:49"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:20:49"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:20:49"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:20:53"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:21:24"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:21:39"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 168519,
+   "output_tokens": 15112,
+   "total_tokens": 183631
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 14,
+   "compacted_chars_saved": 20098,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11761,
+     "output_tokens": 386,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 16650,
+     "output_tokens": 425,
+     "tool_chars_added": 9093
+    },
+    {
+     "round": 3,
+     "input_tokens": 13587,
+     "output_tokens": 511,
+     "tool_chars_added": 945
+    },
+    {
+     "round": 4,
+     "input_tokens": 14086,
+     "output_tokens": 332,
+     "tool_chars_added": 729
+    },
+    {
+     "round": 5,
+     "input_tokens": 15444,
+     "output_tokens": 306,
+     "tool_chars_added": 2091
+    },
+    {
+     "round": 6,
+     "input_tokens": 17589,
+     "output_tokens": 808,
+     "tool_chars_added": 4392
+    },
+    {
+     "round": 7,
+     "input_tokens": 18760,
+     "output_tokens": 4001,
+     "tool_chars_added": 4224
+    },
+    {
+     "round": 8,
+     "input_tokens": 12144,
+     "output_tokens": 732,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 9,
+     "input_tokens": 16455,
+     "output_tokens": 2850,
+     "tool_chars_added": 7402
+    },
+    {
+     "round": 10,
+     "input_tokens": 18494,
+     "output_tokens": 4000,
+     "tool_chars_added": 4821
+    },
+    {
+     "round": 11,
+     "input_tokens": 13549,
+     "output_tokens": 761,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 168519,
+  "output_tokens": 15112,
+  "total_tokens": 183631
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 90.9
+}

@@ -1,0 +1,213 @@
+{
+ "case_id": "DEV_P06",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "《庄子·逍遥游》开篇的大鹏意象想说明什么？请读取原文，引用「小知不及大知」附近的段落，解释「小大之辩」在篇中的论证作用。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_tZQZzm52dS0RpJQNvYPd1174"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_FyNpypArfMGTtT8uGusP7754"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_5yXyYGIN0xNQ4cUCiZuS5275",
+   "result_head": "{'results': [{'book_id': '32093eed6ff1', 'book_title': '中国哲学简史', 'author': '冯友兰', 'chapter_idx': 11, 'chapter_title': '第十章 道家第三阶段：庄子', 'citation_label': '【《中国哲学"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_qxtJjbLembFAVjv5XtR26975"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_aVrBDjo7o3mj1ZY2O1lI8843",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_iHJTnROcYq2eIhKNnUaE1214"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_2hOWSEFd5crPgbku3Gkf8303",
+   "result_head": "{'results': [{'book_id': '4d187a31575a', 'book_title': '中庸', 'author': '子思', 'chapter_idx': 3, 'chapter_title': '第二章', 'citation_label': '【《中庸》·第二章】', 'snippet'"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_vKfDcqYfNi2lNRu6ZuJk2143"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_UpzJdsJ8lPKrFqhs10nc1913",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《庄子·逍遥游》开篇大鹏意象及「小知不及大知」段的原文措辞与上下文",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《逍遥游》「小知不及大知，小年不及大年」及结尾「此小大之辩也」的原文措辞与上下文",
+    "gap_filled": false,
+    "budget_extension_reason": "已读取《逍遥游》首章前半（北冥有鱼至蜩与学鸠笑之），但用户明确要求引用的「小知不及大知」「小大之辩」段落位于其后，尚未取得任何原文，属未闭合的核心证据缺口",
+    "unresolved_evidence_gap": "「小知不及大知，小年不及大年……此小大之辩也」的原文措辞与所在上下文"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 0,
+ "final_answer": "",
+ "publication_state": "FAIL_CLOSED_VALIDATION",
+ "validation_ok": false,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《逍遥游》「小知不及大知，小年不及大年」及结尾「此小大之辩也」的原文措辞与上下文",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:15:09",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《庄子·逍遥游》开篇大鹏意象及「小知不及大知」段的原文措辞与上下文"
+   },
+   {
+    "ts": "2026-09-13 11:15:20",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《逍遥游》「小知不及大知，小年不及大年」及结尾「此小大之辩也」的原文措辞与上下文",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:15:20",
+    "reason": "已读取《逍遥游》首章前半（北冥有鱼至蜩与学鸠笑之），但用户明确要求引用的「小知不及大知」「小大之辩」段落位于其后，尚未取得任何原文，属未闭合的核心证据缺口",
+    "unresolved_gap": "「小知不及大知，小年不及大年……此小大之辩也」的原文措辞与所在上下文"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:15:12"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:15:27"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 115077,
+   "output_tokens": 15468,
+   "total_tokens": 130545
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 16694,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11630,
+     "output_tokens": 432,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17053,
+     "output_tokens": 418,
+     "tool_chars_added": 9054
+    },
+    {
+     "round": 3,
+     "input_tokens": 16302,
+     "output_tokens": 1347,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 4,
+     "input_tokens": 18095,
+     "output_tokens": 1273,
+     "tool_chars_added": 5777
+    },
+    {
+     "round": 5,
+     "input_tokens": 19925,
+     "output_tokens": 3999,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 6,
+     "input_tokens": 15971,
+     "output_tokens": 4000,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 7,
+     "input_tokens": 16101,
+     "output_tokens": 3999,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 115077,
+  "output_tokens": 15468,
+  "total_tokens": 130545
+ },
+ "llm_rounds": 0,
+ "stream_error": "本轮回答未通过证据一致性校验，请重试或换一种问法",
+ "wall_s": 83.3
+}

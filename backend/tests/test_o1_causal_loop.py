@@ -28,6 +28,8 @@ from langchain_core.messages import AIMessage
 from langchain_core.tools import StructuredTool
 import pytest
 
+from tests.o10r1_compliance import comply as _comply
+
 import engine_langgraph as EG
 import routes.agent as AG
 import quote_bound as QB
@@ -127,6 +129,7 @@ def _fake_tools():
 # harness: 跑 production 图, 收集全部 SSE 事件
 # ═══════════════════════════════════════════════════════
 def _run_stream(question, script):
+    script = _comply(script)   # O10-R1: 脚本化 Main Agent 合规（先声明后检索）
     for k in _STUB_CALLS:
         _STUB_CALLS[k] = []
     real_get_llm, real_get_tools, real_llm_chat = EG.get_llm, EG.get_tools, AG.llm_chat
@@ -208,11 +211,14 @@ class TestT1NoHiddenPrimaryRead:
     def test_all_cognitive_tools_come_from_declarations(self):
         evs = _run_stream("言必有中出处", _R1_SCRIPT)
         tools = _of(evs, "tool")
-        assert [t["name"] for t in tools] == ["search_books", "get_chapter"]
+        # O10-R1: 治理声明（declare_research_need）不计入认知工具族
+        assert [t["name"] for t in tools if t["name"] != "declare_research_need"] == [
+            "search_books", "get_chapter"]
         assert all(t.get("initiated_by") == "main_agent" for t in tools)
         done = [e for e in evs if e.get("type") == "done"][-1]
         assert done["causal"]["engine_cognitive_auto_tools"] == 0
-        assert done["causal"]["main_agent_tool_decisions"] == 2
+        # O10-R1: 合规 harness 每工具批带一条声明（2 声明 + 2 检索）
+        assert done["causal"]["main_agent_tool_decisions"] == 4
         # 引擎未代跑 locate_exact_phrase / 任何未宣告工具
         assert _STUB_CALLS["locate_exact_phrase"] == []
 
@@ -262,7 +268,8 @@ class TestT4ParallelBatchAllowed:
         ]
         evs = _run_stream("言必有中出处并介绍《论语》", script)
         tools = _of(evs, "tool")
-        assert [t["name"] for t in tools] == ["get_book_detail", "search_books"]
+        assert [t["name"] for t in tools if t["name"] != "declare_research_need"] == [
+            "get_book_detail", "search_books"]   # O10-R1: 治理声明不计入
         assert _group_num(tools[0]) == _group_num(tools[1])   # 同一 decision group, 不算缺 thinking
         assert all(t.get("initiated_by") == "main_agent" for t in tools)
 

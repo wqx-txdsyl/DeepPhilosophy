@@ -1,0 +1,174 @@
+{
+ "case_id": "DEV_G07",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "关于「意识的困难问题」（hard problem of consciousness），学界目前有哪些主要立场和代表性论文？请综述研究现状而不是给百科介绍。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_xCfZ2nclbeQwxzsEb7gC5415"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_nNtGCqT78iyIPBEJVaXa4533"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_nZq44VaojldTkm8DN5an5328"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_bGmDELNdzEXEkmYXImrV9751"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_04_cCq4GawaTuRi63qFUrsv1708",
+   "result_head": "{'query': 'integrated information theory consciousness', 'results': [], 'READABLE_RESULT_COUNT': 0, 'READABLE_SOURCE_IDS': [], 'providers_queried': ['LOCAL_CURA"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_OM657rSKedRjnulciXUL7162"
+  },
+  {
+   "name": "websearch",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_TM2PvgCisZDpDp1chMiY5601"
+  },
+  {
+   "name": "websearch",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_23DjNueQHW15rzN5gity0133"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_pTmaIRTf9UgJ6GTaLv0R8590",
+   "result_head": "{'results': [{'book_id': '44a32441dabe', 'book_title': '人类理解论', 'author': '约翰·洛克', 'chapter_idx': 9, 'chapter_title': '第二卷\\u3000第五章各种感官底簡單观念', 'citation_label':"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要「意识困难问题」各方立场（物理主义/二元论/泛心论/幻觉论/神秘主义/IIT等）的真实代表性文献记录及其可读内容证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "SCHOLARLY 通道 provider 全部被阻，需改用网络通道补「困难问题」各方立场与代表文献的可靠背景，并查本地库是否有查尔默斯/相关原典文本",
+    "gap_filled": false,
+    "budget_extension_reason": "SCHOLARLY 通道四路检索因 provider URL_BLOCKED 全部失败，未取得任何相关可读文献，证据缺口完全未闭合，需转 WEB/MIXED 通道补齐",
+    "unresolved_evidence_gap": "困难问题各方立场（物理主义/二元论/泛心论/幻觉论/神秘主义/IIT）的可靠文献线索与查尔默斯原文出处"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3361,
+ "final_answer": "## 先说明本次的证据状况（这一条影响你怎么读下文）\n\n我需要如实交代：我本轮尝试了三条证据通道，**全部失败**——学术文献库（Crossref/OpenAlex 两个提供方均被网络阻挡）返回不了任何相关记录；联网检索（Bing 与维基百科均不可达）无结果；本地原典库只有从柏拉图到近代的文本，**不包含任何当代意识研究文献**（检索\"意识/困难问题/感受质\"命中的是洛克、霍布斯、布伦塔克、叔本华等，与本题无关）。\n\n因此，下文**无法**以「已核验的文献综述」形式呈现——我不能对任何论文的具体主张、年份、页码做\"我已读过\"式的背书。我能提供的是两样东西：**(1) 我基于通行学术认知画出的问题结构与立场地图（属我自己的分析与转述，非检索核验）；(2) 一份标明为\"记忆性线索\"的代表文献清单，请你务必用官方书目二次核对。**下文凡涉及具体书目与年份处，均属此类未核验线索。\n\n---\n\n## 一、问题的切分：easy vs. hard，以及这个切分本身就是战场\n\n通行叙事里，「困难问题」由查尔默斯（David Chalmers）在 1990 年代中期确立：他把意识研究分成两类——**\"容易问题\"**（注意、报告、行为控制、记忆存取等功能的神经机制，原则上可用标准认知科学方法处理）与**\"困难问题\"**（为什么这些物理/功能过程会伴随**主观体验**，即\"像什么\"的那种特质，qualia / phenomenal character）。\n\n关键在于：**这个切分并非中立描述，而是争论的第一战场。** 后续几乎所有立场都可以按\"如何对待这个切分\"来定位：\n\n- 承认切分且认为它不可被功能/物理解释消解 → 非还原论阵营；\n- 承认切分但认为它可被解释 → 还原论物理主义的各种理论；\n- **拒斥切分本身**（认为\"困难问题\"是假问题或概念混淆）→ 取消主义/幻觉论。\n\n所以研究现状不该按\"谁对谁错\"罗列，而应看每条路线**必须回应什么反驳**。\n\n## 二、立场光谱（按对困难问题的处置方式排列）\n\n**A. 消解问题型——取消主义与幻觉论（illusionism）**\n代表方向：丹尼特（Dennett）一系的取消式物理主义，以及弗兰尼希（Keith Frankish）系统化的\"幻觉论\"（记忆线索：Frankish 约 2016 年一篇纲领性论文）。核心主张是：现象意识那种\"内在的、非物理的、不可言说的质\"是一种**内省错觉**；我们真正需要解释的，是\"我们为何会相信自己有这种质\"。这条路线近年最有力的武器是**\"元问题\"（meta-problem）**策略（Chalmers 约 2018 年提出）：把研究目标从\"意识如何产生\"转向\"我们为何产生关于意识的问题性直觉\"——这个转向让幻觉论与主流实证研究接了轨。\n\n**B. 承认问题但给还原解释型——主要认知科学理论**\n- **全局工作空间理论（GWT/GNW，Baars、Dehaene 一系）**：意识 = 信息进入全局广播的状态。\n- **高阶表征理论（HOT，Rosenthal、Lau 等）**：一个状态有意识，当且仅当被更高阶的表征所表征。\n- **整合信息论（IIT，Tononi、Koch 一系）**：意识对应系统不可分解的整合信息量 Φ。\n- **预测加工/贝叶斯脑路线（Seth、Clark 一系）**：意识源于对感知精度的预测性建模，Seth 的\"beast machine\"论。\n这些理论**正面回答困难问题的方式各不相同**：多数默认\"解释功能 = 解释意识\"，而这恰是 A、C 阵营指责的\"跳过困难问题\"。\n\n**C. 非还原型——二元论与泛心论**\n- **属性二元论 / 自然主义二元论**：查尔默斯本人的立场——意识是自然界的基本属性，不可还原为结构/功能。其论证支柱是**僵尸可设想性论证**（可设想一个物理上与你完全一样、却无内在体验的存在者）。\n- **泛心论（panpsychism）复兴**：Strawson、Goff 等（记忆线索：Goff 的《Galileo's Error》约 2019 年），主张体验是基本物理属性的一个方面。泛心论内部最大的难题是**组合问题**（combination problem）：微观体验如何\"组合\"成统一的宏观主体。\n\n**D. 认识论悲观型——新神秘主义（new mysterianism）**\nMcGinn 一系：认为人类认知结构原则上无法理解意识如何从物理中产生——不是\"尚未解决\"，而是\"我们这物种解决不了\"。这条路线常被诟病为\"以无知为答案\"，但它的价值在于逼问：**我们凭什么假定困难问题对人类是可解的？**\n\n## 三、贯穿各立场的核心论辩轴\n\n研究现状的真正骨架是几条反复交锋的论证线，它们比\"立场标签\"更能定位文献：\n\n1. **知识论证（Jackson 的\"玛丽\"）**：一个掌握全部物理知识的色彩科学家，首次见到红色时是否学到了新东西？——直接支撑非还原论，反方则用\"旧事实新把握方式\"（old fact / new mode of presentation）回应。\n2. **解释鸿沟（Levine）**：即便接受同一性，我们仍缺一个能\"讲通\"为何如此的解释。\n3. **可设想性—可能性论证（Chalmers 的模态论证）**：争论焦点后来集中在\"可设想性能否推出形而上学可能\"。\n4. **元问题策略**：把双方从\"意识本身\"转向\"意识直觉的解释\"，是近年最实质的方法论转向。\n5. **组合问题**：泛心论的软肋，也是它能否成为严肃选项的关键。\n\n## 四、近年实证动向与张力\n\n值得注意的现实图景是：**理论多于判决性实验，且理论与实证出现裂痕**。几个方向（据通行认知，未核验）：\n\n- **对抗性合作（adversarial collaboration）测试**：IIT 与 GWT 被设计成可给出**相反预测**的实验（如后皮层 vs. 前额叶在意识中的作用），结果被双方各取所需地解读，未产生清晰胜负。\n- **\"意识科学\"的方法论困境**：如何避免把\"可报告\"当成\"有意识\"，即如何用第三人称方法捕捉第一人称事实——这是实证阵营与哲学阵营共同焦虑的点。\n- **Phi 值的可测性与泛心论诱惑**：IIT 在数学上赋予简单系统（甚至某些人工系统）以意识，这一\"泛心论式后果\"引发大量争论。\n\n## 五、我的综合判断（明确标注为本人判断）\n\n若把研究现状读成一个**收敛中的问题**，那是误读。更准确的说法是：**它分成两层在同时演进**——一层是**概念/形而上学层**（二元论 vs. 物理主义 vs. 泛心论），多年僵持；另一层是**实证/方法论层**（GWT、HOT、IIT、预测加工），进展快但都默认或回避了困难问题。真正的活跃前沿，我认为是**\"元问题 + 幻觉论 + 高阶理论\"的合流**：它不试图证明非还原论错，而是重新定义什么叫\"解释了意识\"——这是一种\"换战场\"的策略，能否成功尚无定论。\n\n---\n\n## 证据边界与你的核验路径\n\n- **我未能核验任何一手或二手文献**（三通道均失败），上面所有书名、年份、作者归属均为**记忆性线索，未经本次检索核验**，其中的年份尤其可能有误（如查尔默斯 1995 年论文与 1996 年专著的区分）。\n- 要得到可引用的综述，建议直接查三类权威来源：**Stanford Encyclopedia of Philosophy** 的 \"Consciousness\" 与 \"The Problem of Consciousness\"、\"Panpsychism\"、\"Illusionism\" 条目；**PhilPapers** 的对应分类页；以及查尔默斯本人维护的 **online bibliography / papers 页面**——后者能给出 paper 级的一手文献与逐年更新。\n- 如果你愿意，把上面任一立场（比如幻觉论或泛心论）单独提出来，我可以尝试**重新走一次检索通道**（也许在别的时段文献提供方可恢复），围绕那一条做真正带内容的深挖。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "SCHOLARLY 通道 provider 全部被阻，需改用网络通道补「困难问题」各方立场与代表文献的可靠背景，并查本地库是否有查尔默斯/相关原典文本",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:18:37",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "需要「意识困难问题」各方立场（物理主义/二元论/泛心论/幻觉论/神秘主义/IIT等）的真实代表性文献记录及其可读内容证据"
+   },
+   {
+    "ts": "2026-09-13 11:18:43",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "SCHOLARLY 通道 provider 全部被阻，需改用网络通道补「困难问题」各方立场与代表文献的可靠背景，并查本地库是否有查尔默斯/相关原典文本",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:18:43",
+    "reason": "SCHOLARLY 通道四路检索因 provider URL_BLOCKED 全部失败，未取得任何相关可读文献，证据缺口完全未闭合，需转 WEB/MIXED 通道补齐",
+    "unresolved_gap": "困难问题各方立场（物理主义/二元论/泛心论/幻觉论/神秘主义/IIT）的可靠文献线索与查尔默斯原文出处"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 8,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 42205,
+   "output_tokens": 5058,
+   "total_tokens": 47263
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 5,
+   "compacted_chars_saved": 2386,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11616,
+     "output_tokens": 641,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13798,
+     "output_tokens": 999,
+     "tool_chars_added": 4014
+    },
+    {
+     "round": 3,
+     "input_tokens": 16791,
+     "output_tokens": 3418,
+     "tool_chars_added": 5945
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 42205,
+  "output_tokens": 5058,
+  "total_tokens": 47263
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 42.3
+}

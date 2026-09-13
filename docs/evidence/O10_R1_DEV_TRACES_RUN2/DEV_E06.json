@@ -1,0 +1,126 @@
+{
+ "case_id": "DEV_E06",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "朋友分手后说：「这段感情我全力以赴了，所以不算白谈。」「全力以赴过」真的能让一件事「不算白费」吗？请分析这种安慰的逻辑结构和它成立与否的条件。",
+ "tool_sequence": [
+  {
+   "name": "analyze_argument",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_KnTEwjtDKsfRx9Qb8vSk7422",
+   "args": {
+    "text": "这段感情我全力以赴了，所以不算白谈。"
+   },
+   "result_head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '', 'premises': [], 'hidden_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_hkc2ch1DxV6hnixrOZM33151"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_OJfOPoGVtTQPqaM0Cvzr6849",
+   "args": {
+    "query": "善良意志 无条件 善 世界之内"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 7, 'chapter_title': '第八章', 'citation_label': '【《道德经》·第八章】', 'snippe"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "康德《道德形而上学奠基》开篇关于\"善良意志\"无条件为善的原文措辞，用于支撑\"价值内在于意愿/努力而非结果\"这一立场",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1992,
+ "final_answer": "## 先把这句话拆成一个论证来看\n\n朋友那句话表面是安慰，底下其实压着一个推理。把它摊开：\n\n- 前提一：我对这段感情全力以赴了。\n- 前提二（被省略）：一件事\"算不算白费\"，取决于有没有全力以赴，而不取决于结果如何。\n- 结论：这段感情不算白费。\n\n这里真正在偷偷干活的是那个被省略的前提二。整句话成不成立，全看它能不能站住。\n\n## 「白费」至少有两把尺子\n\n「白费」是个评价词，评价就得先有标准。而这里至少有两套互不相容的标准：\n\n**结果尺度**——一件事有没有达成目标、有没有换来预期的东西。按这把尺子，全力以赴和「不白费」之间没有任何必然联系：你完全可以拼尽全力，依然颗粒无收。\n\n**过程尺度**——投入本身、那份真诚的意愿、此间经历和成长、品格的磨砺，这些被认为本身就构成价值，不因结果而增减。\n\n朋友的话之所以听起来顺，恰恰是因为它在暗中从第一把尺子滑到了第二把尺子。你被问的是「结果有没有白费」，得到的回答却是「过程没有白费」——这是替换了评价标准，而不完全是解决原来的问题。这不是欺骗，而是安慰话语里最常见的结构：把问题挪到一个更容易给肯定答案的地方。\n\n## 那么，它在什么条件下成立？\n\n「全力以赴 → 不算白费」不是形式上有效的推理，而是一个**价值判断**，它需要几条额外前提来支撑：\n\n1. **确实存在独立于结果的过程价值。** 如果一个人的价值体系是纯后果论的——只有达成才有意义——那么全力以赴而失败，的确就是彻底的白费，再多的投入也补不回来。朋友的乐观立场，预设了他其实不接受纯后果论。\n\n2. **这种过程价值足以\"抵账\"。** 即便承认过程有价值，也要看它的分量能否覆盖结果层面的实际损失（时间、机会、创伤）。全力以赴也许让事情「不那么白」，但不一定让它是「不白」。所以「全力以赴」更像是给「不白费」提供了一个辩护理由，而不构成充分条件。\n\n3. **这套尺度得是当事人自己认的。** 如果这位朋友心里真正在乎的其实还是结果——\"我本来想和TA一直走下去\"——那么拿\"过程有意义\"去安慰，理由就是外在的，力量很弱。安慰是否有效，取决于用谁的尺子量。\n\n## 它到底是「论证」还是「情感动作」？\n\n这里必须分清两层。这句话的逻辑有效性，和它作为安慰的有效性，不是一回事。\n\n作为**推理**，它偷换了尺度，站不稳。\n作为**安慰**，它的功能可能压根不是证明，而是：重新锚定评价标准（把注意力从不可控的结果，移回可控的投入），或者替受伤的自尊找一个落脚点。它可能「有用但不真」，也可能「既真又有用」——但这两件事得分开评。\n\n## 哲学史上有现成的两派立场\n\n这条思路并不孤立，哲学史上早有正反两边。\n\n**支持「过程/意愿自有价值」的一边：**\n\n康德是这条线最强硬的版本（以下为我对其立场的转述，非逐字引文，我未能在本次检索中定位到该处原文措辞）：善良意志的价值不取决于它是否成功实现了意图，哪怕因命运的捉弄而一无所成，它本身依然保有全部价值——它不因结局而增减光芒。也就是说，评价的落点是「我是否出于正当的意愿而尽力」，而非「结果如何」。\n\n斯多葛派（爱比克泰德、马可·奥勒留一路）给出的是它的骨架：把可控者（意愿、判断、努力）与不可控者（结果、他人、际遇）分开，价值只应安放于可控之物。朋友的这句话，几乎就是这套二分法的通俗版。\n\n再往后，存在主义把它推到极致：加缪笔下推石上山的西西弗斯，意义不在于石头终于到顶，而在于推石这一承担与反抗本身。\n\n**反对「光靠全力以赴就够」的一边：**\n\n后果论/功利主义会直接否定前提二：价值由结果衡量，全力以赴而失败就是白费——这是与朋友乐观立场针锋相对的另一极。\n\n值得注意的还有亚里士多德（同样为转述）：他把幸福理解为合德性的活动，本身重视过程；但他并不认为外在善可有可无——友谊、健康、运气这些「结果性」的东西，是幸福难以剥离的条件。这正提示了对那句安慰的一个诚实反驳：像亲密关系这类善，恰恰是**结果性的**，它没法被「我努力过了」完全替代。这正是安慰话语最容易踩空的地方。\n\n## 结论\n\n「全力以赴过，所以不算白费」——这不是一个能自洽推出的结论，而是一个需要补前提的价值判断。它成立，至少要同时满足三个条件：有独立于结果的过程价值、该价值足以覆盖结果损失（或当事人不再要求这种覆盖）、并且当事人本人认可这一尺度。\n\n三条都满足，它既真又有力；只满足一部分，它就抚慰的其实是「我是不是不够努力」这种自我怀疑，而不是「我到底有没有得到」这个更难回答的问题。\n\n最后不妨把问题往回推一步：所谓「白费」，究竟是对谁、按谁的尺子而言的？「只有结果才算数」——这本身就是一个未经检验就被默认的假设。也许真正值得追问的，从来不是「全力以赴够不够」，而是「我们凭什么认定一件事必须以结果来结算」。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "康德《道德形而上学奠基》开篇关于\"善良意志\"无条件为善的原文措辞，用于支撑\"价值内在于意愿/努力而非结果\"这一立场",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:36:54",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "康德《道德形而上学奠基》开篇关于\"善良意志\"无条件为善的原文措辞，用于支撑\"价值内在于意愿/努力而非结果\"这一立场"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 1,
+  "soft_limit": 3,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 53116,
+   "output_tokens": 5927,
+   "total_tokens": 59043
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11708,
+     "output_tokens": 1222,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13093,
+     "output_tokens": 801,
+     "tool_chars_added": 374
+    },
+    {
+     "round": 3,
+     "input_tokens": 12091,
+     "output_tokens": 1313,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 4,
+     "input_tokens": 16224,
+     "output_tokens": 2591,
+     "tool_chars_added": 5307
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 53116,
+  "output_tokens": 5927,
+  "total_tokens": 59043
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 49.9
+}

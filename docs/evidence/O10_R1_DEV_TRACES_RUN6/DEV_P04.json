@@ -1,0 +1,341 @@
+{
+ "case_id": "DEV_P04",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "马可·奥勒留在《沉思录》里如何处理「被外界打扰」这件事？请找到相关原文章节，引用关键句，并说明斯多葛式的处理技术是什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_gJ38cI7mYXhsfHvTEa2z5280"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_XQNXdPOLcVlXsbTdt9Of8185"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_mU87WshRJ2TyKTIm5yXN2240"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_vUD2L63b80zPfO3HvYmK8027"
+  },
+  {
+   "name": "list_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_04_uQg93xXsqy3u8nLF2FEg3961",
+   "args": {
+    "author": "马可·奥勒留"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_jyfTz1qRAsrSQuvWU3YD5742"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_F4McWlH5UQyve0dNF2JO0203"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_ackWoSoK9odj32cZDIzP5378",
+   "args": {
+    "query": "马可·奥勒留 灵魂 理性 障碍"
+   },
+   "result_head": "{'results': [{'book_id': '978ade412255', 'book_title': '雅斯贝尔斯传', 'author': '卡尔·雅斯贝尔斯', 'chapter_idx': 21, 'chapter_title': '雅斯贝尔斯生平及著作年表', 'citation_label': '【《"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_yllkYMkYEDrULtyynP0v5705",
+   "args": {
+    "book_id": "a43cd7310a57"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_u433CU0sxy1EtovT1OK17848"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_6dRdmHa5panog3MAtMW78717",
+   "args": {
+    "book_id": "a43cd7310a57"
+   },
+   "result_head": "{'id': 'a43cd7310a57', 'title': '沉思录', 'author': '马可·奥勒留', 'region': '西方', 'file_type': 'epub', 'summary': '《沉思录》是古罗马皇帝马可·奥勒留的自我对话录，写于戎马倥偬的军旅生涯中，是斯多葛哲学最著名的实践文本之"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_7P1LwYNFFaQNPsjHEp9i3445"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_8V8jae0AN6dRE4ufhhIr8765",
+   "args": {
+    "book_id": "a43cd7310a57",
+    "chapter_idx": 8
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_Dg8LWAgG4Ov8Hr3kzpoJ4773"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_2GxXVeJNBsT5WZFMbvK92589"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_02_OP1GwQvUlFIwrEtRBrYX3728",
+   "args": {
+    "book_id": "a43cd7310a57",
+    "chapter_idx": 9
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中关于\"被外界打扰/受外物烦扰\"的原文措辞与具体卷章位置（如\"退入自身\"\"内心城堡\"\"判断即烦扰之源\"等段落）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "尚未定位到《沉思录》任何原文；需先确认库中是否收录马可·奥勒留该书并找到\"退入自身/内心城堡\"\"判断即烦扰\"等段落的卷章位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "前两轮按主题词检索均未命中《沉思录》原文（只命中爱比克泰德、尼采等他书），核心证据缺口完全未补，按现有关键词继续无法收敛",
+    "unresolved_evidence_gap": "《沉思录》中处理外界打扰的核心段落原文与卷章位置"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已定位《沉思录》(book_id a43cd7310a57) 但未取得任何卷章原文；需读目录定位\"退入自身/内心城堡\"\"判断即烦扰\"等段落所在卷章",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "唯一能核验原文的路径尚未走通：已取得 book_id，但目录与正文均未读取，先前所有检索都未返回《沉思录》原文片段，若不读原文则无法给出任何可核验的引用",
+    "unresolved_evidence_gap": "《沉思录》处理外界打扰的核心卷章原文措辞与位置"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已读第三卷，但本问题最核心的\"退隐到自身\"（约卷四·3）与\"内心城堡/理性堡垒\"（约卷八·48）原文尚未核验",
+    "source_dependent": true,
+    "budget_extension_reason": "卷四与卷八是\"如何对待外界打扰\"最直接的两处原典出处，未读则无法给出任何可核验的核心引用，先前证据只覆盖第三卷",
+    "gap_filled": false,
+    "unresolved_evidence_gap": "《沉思录》卷四\"退隐自身\"与卷八\"内心城堡\"段落的原文措辞"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 938,
+ "final_answer": "## 一、先交代证据状况（这一点很重要）\n\n库中确实收录了《沉思录》（马可·奥勒留，译文社译本），我实际读取了其中**第三卷**的原文。但需要向你坦白：这本题最著名的两处段落——通常归在**卷四**（关于\"退隐到自身\"）和**卷八**（关于\"理性如不可攻破的堡垒\"）——**本次我没能读到时对应的卷章原文**（受研究路径限制，未能打开那两卷）。所以下面的回答里，凡是我能核验的，我给出【《沉思录》·第三卷】的正式引用；凡是我凭记忆提到、但未能核验的经典措辞，我会明确标注\"（记忆，未经库中核验）\"，不冒充原文。\n\n## 二、斯多葛处理\"外界打扰\"的核心技术\n\n马可·奥勒留（以及整个斯多葛派）对\"被打扰\"的处理，建立在一个共同的结构上：**把\"发生的事\"与\"我对它的判断\"撕开**。技术可以拆成四步，它们是一套连贯的操作，不是四个孤立口号：\n\n**1. 判断论（划出真正的扰动源）**\n斯多葛的基本命题是：扰动人的不是事情本身，而是人对事情的判断（ὑπόληψις / hypolepsis）。外物只是中性的\"材料\"，它本身不进入你的支配范围，能被扰动的只是你对它下的判断。所以\"被别人无礼对待\"\"事情不顺\"本身不构成伤害，构成伤害的是你认定\"这是不可忍受的坏事\"。（这条命题在爱比克泰德那里表述最经典——\"扰乱人的不是事物，而是人对事物的看法\"，属斯多葛派通说；但我此轮未能核验到爱比克泰德的原文，暂按学派通说陈述。）\n\n**2. 控制二分（区分\"取决于我们\"与\"不取决于我们\"）**\n把一切分成两类：属于自己权能之内的（判断、意愿、欲望、行动）和不在自己权能之内的（身体、财产、名声、他人、天气、死亡）。外界打扰之所以能刺痛你，往往是因为你把某件\"不取决于我\"的东西当成了\"我的\"。技术动作是：一旦觉察扰动，先问\"这件事在我权能之内吗？\"——若不在，收回对它的执着。\n\n**3. 印象审查与悬置赞同（对 phantasia 不动手）**\n被\"打扰\"的瞬间，先不急着认同那个印象。奥勒留反复强调：不要对印象立刻\"加上判断\"；让它留在那儿，说一句\"你只是一个印象，未必是它显现的样子\"。这就是所谓\"先停一拍\"——扰动由此从即时反应变成一个可审视的对象。\n\n**4. 退隐到理性",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "已读第三卷，但本问题最核心的\"退隐到自身\"（约卷四·3）与\"内心城堡/理性堡垒\"（约卷八·48）原文尚未核验",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:13:21",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《沉思录》中关于\"被外界打扰/受外物烦扰\"的原文措辞与具体卷章位置（如\"退入自身\"\"内心城堡\"\"判断即烦扰之源\"等段落）",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:13:27",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "尚未定位到《沉思录》任何原文；需先确认库中是否收录马可·奥勒留该书并找到\"退入自身/内心城堡\"\"判断即烦扰\"等段落的卷章位置",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:13:36",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "已定位《沉思录》(book_id a43cd7310a57) 但未取得任何卷章原文；需读目录定位\"退入自身/内心城堡\"\"判断即烦扰\"等段落所在卷章",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:13:49",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "已读第三卷，但本问题最核心的\"退隐到自身\"（约卷四·3）与\"内心城堡/理性堡垒\"（约卷八·48）原文尚未核验",
+    "source_dependent": true,
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:13:27",
+    "reason": "前两轮按主题词检索均未命中《沉思录》原文（只命中爱比克泰德、尼采等他书），核心证据缺口完全未补，按现有关键词继续无法收敛",
+    "unresolved_gap": "《沉思录》中处理外界打扰的核心段落原文与卷章位置"
+   },
+   {
+    "ts": "2026-09-13 13:13:36",
+    "reason": "唯一能核验原文的路径尚未走通：已取得 book_id，但目录与正文均未读取，先前所有检索都未返回《沉思录》原文片段，若不读原文则无法给出任何可核验的引用",
+    "unresolved_gap": "《沉思录》处理外界打扰的核心卷章原文措辞与位置"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "list_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:13:21"
+   },
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:13:32"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:13:44"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:13:49"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:13:49"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 125198,
+   "output_tokens": 9203,
+   "total_tokens": 134401
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 13,
+   "compacted_chars_saved": 27204,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11900,
+     "output_tokens": 634,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 19407,
+     "output_tokens": 964,
+     "tool_chars_added": 13507
+    },
+    {
+     "round": 3,
+     "input_tokens": 19327,
+     "output_tokens": 508,
+     "tool_chars_added": 9905
+    },
+    {
+     "round": 4,
+     "input_tokens": 15399,
+     "output_tokens": 655,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 5,
+     "input_tokens": 17707,
+     "output_tokens": 1392,
+     "tool_chars_added": 3370
+    },
+    {
+     "round": 6,
+     "input_tokens": 20424,
+     "output_tokens": 1050,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 7,
+     "input_tokens": 21034,
+     "output_tokens": 4000,
+     "tool_chars_added": 3587
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 125198,
+  "output_tokens": 9203,
+  "total_tokens": 134401
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 57.9
+}

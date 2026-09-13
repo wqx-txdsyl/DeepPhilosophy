@@ -1,0 +1,256 @@
+{
+ "case_id": "DEV_G02",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "当代美学研究中，「恐怖悖论」（paradox of horror）有哪些代表性论文和对立解释？请综述学界研究现状。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_JNidugsMe5GQmly7dvG20621"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_By0okeME17EkA7ESUL2B7158"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_qy77IcUubhm72a8KCKQm5976",
+   "args": {
+    "query": "horror fiction aesthetic pleasure paradox",
+    "limit": 10
+   },
+   "result_head": "{'query': 'horror fiction aesthetic pleasure paradox', 'results': [{'source_record_id': 'doi:10.5406/jaesteduc.54.2.0075', 'title': 'Dewey, Foucault, and the Va"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_7a2r3JUWlMjzNmwlLRRm8808"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_svym4GmBVhjqTbXQGc9O7170"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_FuvHaJcx6Kvnk61Xh5926575"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_yNOMBoFlWNkNfWhPhFFf0474",
+   "args": {
+    "query": "Walton quasi-fear fiction horror",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Walton quasi-fear fiction horror', 'results': [], 'READABLE_RESULT_COUNT': 0, 'READABLE_SOURCE_IDS': [], 'providers_queried': ['LOCAL_CURATED', 'cros"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_j9PtfVejGFjIyyWPf0xp9688"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_2RZpAMX5ZrFODNwzKY2j3171"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_459ccsUeqqvVnqK3iu1m4638",
+   "args": {
+    "query": "Gaut paradox of horror art emotion",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Gaut paradox of horror art emotion', 'results': [{'source_record_id': 'doi:10.1093/acprof:oso/9780199263219.001.0001', 'title': 'Art, Emotion and Eth"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_TXv67JOXOPSlgpm9vik10819"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_5FLgpyeR4J4opCeJ6QLk8274"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_02_13AkAA18SHYaGX5Dfu1l6588",
+   "args": {
+    "source_record_id": "doi:10.4324/9780203361894",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "恐怖悖论（paradox of horror）的当代美学代表性论文与相互对立的解释阵营（如补偿理论、准恐惧/元反应理论等），需要真实文献书目与内容证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "尚未开始检索",
+    "unresolved_evidence_gap": "恐怖悖论的当代美学代表性论文与对立解释"
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "Walton 的\"准恐惧/quasi-fear\"路线与 Gaut 关于恐怖悖论的文献条目尚未取得（Walton 查询遇接口限流失败），需补检这两条对立解释路线的真实书目",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已检索4次但其中Walton一次因接口限流（429）返回空，实际内容证据仅覆盖Carroll与Vorobej、Yeung三线，准恐惧与Gaut两条对立路线尚无书目",
+    "unresolved_evidence_gap": "Walton quasi-fear 与 Gaut paradox of horror 的文献书目"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3015,
+ "final_answer": "已经取得了足以呈现该问题研究结构的文献证据，我在此收口，把已核验的内容证据与仅有书目信息的条目严格分开陈述。\n\n---\n\n# 恐怖悖论（Paradox of Horror）的当代美学研究现状综述\n\n## 一、问题本身\n\n恐怖悖论直面的是一组表面矛盾：恐怖虚构（horror fiction）以引发恐惧、恶心、厌恶等典型的**负面**情感为旨归，而这些情感在真实生活中是我们竭力回避的；既然如此，人们为何仍主动、反复地消费恐怖作品，并从中获得某种满足或价值？美学的任务就是解释这种明显的\"反享乐\"偏好何以可能。\n\n需要先说明证据边界：以下带内容归因的三条路线，是我在本次检索中实际读到摘要证据的；另有若干重要文献我只确认了书目存在（METADATA_ONLY），会单独标注，不对其立场下断语。\n\n## 二、三条带内容证据的解释路线\n\n### 1. 补偿/认知论（Carroll 的传统）\n\n这一传统的奠基之作是 **Noël Carroll,《The Philosophy of Horror》**（Routledge；检索确认 2003 年版，书级书目证据）。其核心思路通常被概括为\"补偿理论\"：恐怖作品之所以吸引人，是因为它提供了未被满足的认知需求的补偿——我们对怪物的**好奇**，以及\"解释它、把它纳入认知秩序\"的欲望，在虚构叙事中得到满足。需要说明，我本次只核验到该书书目，未能取得其正文内容证据，因此\"补偿理论\"这一标签及其内部论证的精确表述，我按转述处理，而非逐字原文。\n\n### 2. 反驳 Carroll 的\"自我认识\"路线\n\n**Mark Vorobej, \"Monsters and the Paradox of Horror,\"** *Dialogue*（1997；DOI: 10.1017/s0012217300009483，摘要级证据）明确以 Carroll 的认知方案为靶子。据其摘要，Vorobej 论证 Carroll 的认知解决是站不住脚的，理由在于**怪物在恐怖虚构里被再现的方式**本身；他转而主张，怪物的美学价值在于它们是获得**自我认识（self-understanding）**的手段。这是一条清晰的对立解释：不是\"认知好奇心被补偿\"，而是恐怖文本承载着某种关于我们自身的反思功能。\n\n### 3. 非享乐价值/转化论\n\n**Lorraine K. C. Yeung, \"Dewey, Foucault, and the Value of Horror: Transformative Learning through Reading Horror Fiction,\"** *Journal of Aesthetic Education*（2020；DOI: 10.5406/jaesteduc.54.2.0075，摘要级证据）走的是第三条路。摘要提出：恐怖虚构承载着**非享乐（nonhedonic）的价值**；作者借助杜威的\"审美经验\"、福柯的\"经验之书\"（experience book）以及 O'Leary 关于虚构价值的讨论，论证阅读恐怖作品可以带来\"转化性学习\"。换言之，恐怖的价值不必从\"愉悦\"里去找——它可能在于经验的转化与自我重塑。这条路线把讨论从\"为何愉悦\"推向\"有何价值\"，是当代研究中一个值得注意的转向。\n\n## 三、仅确认书目存在、未取得内容证据的相关文献\n\n以下条目我确认了其真实存在与书目信息，但**不**据标题推断其具体论证或阵营归属：\n\n- **Berys Gaut, \"The Paradox of Horror,\"** *The British Journal of Aesthetics* 33(4)（1993；DOI: 10.1093/bjaesthetics/33.4.333，METADATA_ONLY）。这是与 Carroll 齐名的一篇同名奠基论文。\n- **Berys Gaut, \"The Paradox of Horror,\"** 收入 *The Horror Theory Reader*（2010）的重印章节（METADATA_ONLY）。\n- **Berys Gaut, *Art, Emotion and Ethics***（Oxford University Press，2007；METADATA_ONLY），涉及虚构情感与价值的一般框架。\n- **Katerina Bantinaki, \"The Paradox of Horror: Fear as a Positive Emotion,\"** *Journal of Aesthetics and Art Criticism*（2012；DOI: 10.1111/j.1540-6245.2012.01530.x，METADATA_ONLY）。题名指向\"把恐惧本身视为正面情感\"的路线，但因其仅有书目，我**不**对其论证内容作任何归因，仅报告其存在。\n\n## 四、我未能取得证据的路线（须如实说明）\n\n当代讨论中还有一条极为重要的解释路线——沃尔顿（Kendall Walton）式的\"准情感/准恐惧（quasi-fear、quasi-emotion）\"：观众在虚构中并不真正恐惧，产生的是一种\"类情感\"状态，因而悖论根本不成立。据我所知，其经典出处是 Kendall Walton, \"Fearing Fictions,\" *The Journal of Philosophy*（1978），以及他的 *Mimesis as Make-Believe*（1990）——但**这是记忆，本次未能在检索中定位并核验相应的文献记录**（一次\"quasi-fear / horror\"检索因接口限流失败，另一次检索未命中）。因此本节只能作为\"待核验的研究方向\"提示读者，不作为已核验证据使用。若需严谨，请以 Walton 原著为准核对。\n\n## 五、研究现状的几点判断（我的综合）\n\n1. **分歧的焦点不在\"是否愉悦\"，而在\"愉悦之外还有什么\"。** Carroll 及其批评者（如 Vorobej）之争，表面是\"补偿论是否成立\"，实则是\"恐怖的价值能否被还原为一种认知满足\"；Vorobej 与 Yeung 共同代表了把价值从\"享乐\"中释放出来的趋势。\n2. **至少存在四类可辨识的对立解释框架**：①认知/补偿论（Carroll）；②认知论的反驳与自我认识论（Vorobej）；③非享乐/转化价值论（Yeung）；④把恐惧本身正面化或\"准情感化\"的路线（Gaut、Bantinaki 题名所指向，以及 Walton 传统）——后两类在我本次检索中证据层级较低，属需进一步核验的阵营。\n3. **证据边界提示**：本综述中，仅有 Vorobej（1997）与 Yeung（2020）两条取得了摘要级内容证据；Carroll、Gaut、Bantinaki 均为书目级。若要做严格的理解史或\"两派争论\"论证，应进一步取得各自全文，尤其是 Gaut 1993 与 Bantinaki 2012 的正文论证——我不应仅凭题名替它们站队。\n\n如果你愿意，我可以下一步针对 Gaut 1993 或 Walton 的准情感路线做定点补检与精读，把目前的\"待核验\"项落成确证。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "Walton 的\"准恐惧/quasi-fear\"路线与 Gaut 关于恐怖悖论的文献条目尚未取得（Walton 查询遇接口限流失败），需补检这两条对立解释路线的真实书目",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:16:46",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "恐怖悖论（paradox of horror）的当代美学代表性论文与相互对立的解释阵营（如补偿理论、准恐惧/元反应理论等），需要真实文献书目与内容证据",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:17:00",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "Walton 的\"准恐惧/quasi-fear\"路线与 Gaut 关于恐怖悖论的文献条目尚未取得（Walton 查询遇接口限流失败），需补检这两条对立解释路线的真实书目",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:16:46",
+    "reason": "尚未开始检索",
+    "unresolved_gap": "恐怖悖论的当代美学代表性论文与对立解释"
+   },
+   {
+    "ts": "2026-09-13 13:17:00",
+    "reason": "已检索4次但其中Walton一次因接口限流（429）返回空，实际内容证据仅覆盖Carroll与Vorobej、Yeung三线，准恐惧与Gaut两条对立路线尚无书目",
+    "unresolved_gap": "Walton quasi-fear 与 Gaut paradox of horror 的文献书目"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 8,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:17:09"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:17:09"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:17:09"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 79905,
+   "output_tokens": 6037,
+   "total_tokens": 85942
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 25130,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11886,
+     "output_tokens": 485,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15596,
+     "output_tokens": 691,
+     "tool_chars_added": 9454
+    },
+    {
+     "round": 3,
+     "input_tokens": 16318,
+     "output_tokens": 1069,
+     "tool_chars_added": 9393
+    },
+    {
+     "round": 4,
+     "input_tokens": 18810,
+     "output_tokens": 1275,
+     "tool_chars_added": 10126
+    },
+    {
+     "round": 5,
+     "input_tokens": 17295,
+     "output_tokens": 2517,
+     "tool_chars_added": 735
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 79905,
+  "output_tokens": 6037,
+  "total_tokens": 85942
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 48.6
+}

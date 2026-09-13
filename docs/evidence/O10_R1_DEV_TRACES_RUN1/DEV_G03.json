@@ -1,0 +1,168 @@
+{
+ "case_id": "DEV_G03",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "哲学界如何研究「非同一性问题」（non-identity problem）？请给出代表性学者、论文与主要对立立场。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_OHsPig2eheDsQ8FTJIck8962"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_WyeY4aq1nLuHTzx8n65T7485"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_1nnXURdvBV3cqXF34Mo47566"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_fidfrK6pI9M6rgDUdL0r6444",
+   "result_head": "{'query': 'person-affecting principle non-identity problem wronging future people', 'results': [{'source_record_id': 'doi:10.1093/oso/9780198846758.003.0008', '"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_Sjy15AW2dEPwZWWs77a52538"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_V6pzqa9ykcKWj09Pdvb08301"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_yYMXERUdXZZ434Arx4ja5550"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_ees0hI2e3q90aDbHUbv76916",
+   "result_head": "{'results': [{'book_id': 'e6580d920ee7', 'book_title': '世界尽头的咖啡馆', 'author': '约翰·史崔勒基', 'chapter_idx': 17, 'chapter_title': '16', 'citation_label': '【《世界尽头的咖啡馆》"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "用户明确要求\"哲学界如何研究非同一性问题\"——需取得真实二手文献的书目记录与可读内容证据，用于呈现代表性学者、论文与对立解释阵营",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "SCHOLARLY 通道（crossref/openalex）被网络拒绝、仅命中一条离题记录；需换不同关键词再试一次二手文献，并查原典库是否有 Parfit《Reasons and Persons》以取得非同一性问题的原始表述",
+    "gap_filled": false,
+    "budget_extension_reason": "前三次 scholarly 检索 provider 全部 URL_BLOCKED，本地仅返回一条不相关记录，尚不能断定库中无相关文献，需换通道核验",
+    "unresolved_evidence_gap": "非同一性问题的原典出处与任何相关二手文献的可读内容证据"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3277,
+ "final_answer": "## 先说清楚本次检索的证据边界（重要）\n\n我按\"学界研究\"这一类需求做了多路检索，结果如实汇报：**外部学术数据库（Crossref、OpenAlex）本次被网络层拒绝（URL_BLOCKED），本地原典库（403 本）与 curated 学术库在\"非同一性问题\"上均未命中相关材料**——原典库返回的都是无关哲学导论类条目，学术库只返回一条论洛克人格同一性的离题记录。\n\n这意味着：**下面这份\"研究地图\"不是我本次核验过的文献综述，而是出自我的一般学术知识**。凡是涉及具体学者、著作、年份的地方，我都标注\"未经本次核验\"，请把它们当作查找线索而非可引用的确证。我不会为它伪造页码或章节引用。\n\n---\n\n## 一、问题的构造：为什么它能成为一个\"问题\"\n\n非同一性问题的核心是一个关于**伤害的比较结构**的悖论。它的标志性表述一般归于 Derek Parfit 的《Reasons and Persons》（1984）——（记忆，未经库中核验）。\n\n它依赖两个经典案例：\n\n**1. 资源枯竭案例**：我们这一代人过度消耗资源，使两百年后的人生活水平下降。直觉上我们\"伤害了\"他们。但问题是：如果我们当初选择可持续的生活方式，我们的配偶选择、生育时机、日常行动都会改变，因而**生出来的将是完全不同的人**——不同精卵结合、不同时点。所以那个未来受害者，在\"我们不消耗\"的反事实情形里根本不会存在。既然不存在，就无法说他\"被我们弄得比本可以是的状态更差\"。\n\n**2. 14 岁少女案例**：一个少女若此刻生育，孩子一生艰难但尚值得过；若她等待成熟、与更合适的伴侣生育，会生出一个境况更好的**另一个**孩子。孩子不能被说成\"被母亲伤害\"，因为若不是母亲当初的选择，他根本不会存在。\n\n**关键机制**：通常的\"伤害\"是反事实比较概念——\"把某人弄得比他本可所处的状态更差\"。但当行为**决定的是某人是否以及作为谁存在**时，这个比较失去了基准，因为替代情形里没有\"那个人\"来充当对照项。Parfit 因此把这类情形与\"使其存在\"绑定，称之为一个会瓦解**\"以人为对象的原则\"（person-affecting principle）**的问题。\n\n## 二、它冲击的是什么\n\n如果伤害必须在\"对某个具体人而言更差\"的意义上成立，而非同一性问题表明代际/生育行为常常无法满足这个条件，那么要么：\n\n- 我们关于未来世代、生育选择的许多道德判断（\"这样做是错的\"）**缺乏根据**；或\n- 我们必须放弃或改写\"伤害\"与\"以人为对象\"的道德框架。\n\n这就是全部争论的枢纽。\n\n## 三、主要对立立场（阵营地图）\n\n据我的一般知识，学界大致沿一条轴线分裂——**道德陈述是否必须\"针对某个具体主体\"**：\n\n**立场 A：非人格论 / 总体论（impersonal / totalist）**\n主张道德最终关心的是**事态或总体福利的好坏**，而非\"对某个特定人\"。因此即便无人被伤害，使世界总体上更糟也可能就是错的。Parfit 自己倾向的方向之一是提出**\"无差别论\"（No-Difference View）**：同一性事实不应改变我们关于\"哪种未来更好\"的判断。（记忆，未核验）\n\n**立场 B：坚持\"以人为对象\"（person-affecting），但放宽其形式**\n认为道德判断仍需落在人身上，但伤害/受益的界定可以扩展——例如\"**广义以人为对象**\"（只要求存在某人其处境被影响，不要求同一性）。读者会看到这一支在**生育伦理**里格外活跃：主张把孩子生进一个可预见的低福利状态，本身就是**伤害**，哪怕换成别的选择就不会有\"这个\"孩子。\n\n**立场 C：接受问题、但认为规范性结论仍可保留**\n通过权利、公正、契约论或关系性理由，论证代际义务无需依赖\"某人被伤害\"。即：结论（我们亏欠未来世代）对，但论证**换轨**。\n\n**立场 D：消解论**\n部分学者认为悖论被夸大——或主张\"伤害\"概念本就允许非同一性情形，或主张真正相关的是**行为方式/态度**而非个别人。\n\n## 四、代表性学者与文本（⚠️ 以下全部未经本次核验，请以原始来源自行确认）\n\n- **Derek Parfit**, *Reasons and Persons*（1984），第 16–17 章通常被视为问题命名与\"无差别论\"的源头；他另将问题接到**\"令人厌恶的结论\"（Repugnant Conclusion）**的人口伦理学讨论。（记忆）\n- **Gregory Kavka**, *\"The Paradox of Future Individuals\"*（1982）——被认为在同一年代独立触及类似困境。（记忆，早于 Parfit 成书）\n- **James Woodward**, *\"The Non-Identity Problem\"*（*Ethics*，1986）——早期系统讨论。（记忆）\n- **David Heyd**, *Genethics*（1992）——专门处理代际与生育伦理。（记忆）\n- **Melinda A. Roberts**（*Child versus Childmaker*, 1998 等）——通常与\"child-ist\"式、以孩子利益为轴的处理相联系。（记忆）\n- **Elizabeth Harman**, *\"Can We Harm and Benefit in Creating?\"*（*Philosophical Perspectives*，2004）——通常被归为\"创造即可能伤害\"的一方。（记忆）\n- **Rahul Kumar**, *\"Who Can Be Wronged?\"*（2003）——探讨\"被做错\"与同一性的关系。（记忆）\n- **Jeff McMahan**——在伤害理论与生育案例上的相关工作。（记忆）\n\n**再次强调**：以上名称、年份、期刊是我记忆中的线索，**本次检索未能对其中任何一条取得书目或内容证据**。请把它们当作\"待核实的检索起点\"，而不是已确认的引用。若你要正式引用，应先在 PhilPapers、Google Scholar 或相关期刊上逐条核对书目与论点。\n\n## 五、纠缠在一起的相关争议\n\n非同一性问题很少孤立出现，通常与以下争论捆绑：\n1. **伤害的反事实比较理论**是否成立（这是分析的行动哲学核心议题）。\n2. **\"错误生命\"诉讼**（wrongful life）与残障儿童的生育伦理。\n3. **人口伦理学**：与 Parfit 的\"令人厌恶的结论\"、\"不同数量的人\"问题联动。\n4. **代际正义**：与 John Rawls 的\"正义储存原则\"、Derek Parfit 与契约论传统的张力相关。\n\n---\n\n## 六、给你的下一步（因为工具本次不可用，我给出可自行执行的方向）\n\n- 先读 **Parfit《Reasons and Persons》第四部分（第 16–19 章）**——问题、无差别论、令人厌恶的结论连成一条线；\n- 再读 **Stanford Encyclopedia of Philosophy 的 \"The Non-Identity Problem\" 与 \"Population Ethics\" 条目**——它们带完整参考文献，是核实上述书目最快的方式；\n- 沿\"person-affecting vs. impersonal\"这条轴，找 Woodward 1986、Harman 2004、Kumar 2003 的正反交锋。\n\n**诚实总结**：你问的这个问题是真实的、有成熟研究传统的；但我本次**没有取得任何可核验的文献证据**（外部学术库被拒、本地库无命中），所以上面是知识性导览，不是证据支撑的文献综述。如果你愿意，我可以等文献通道恢复后**重新检索并逐条核验**这些书目与论点，再给你一份带真实来源标注的版本。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "SCHOLARLY 通道（crossref/openalex）被网络拒绝、仅命中一条离题记录；需换不同关键词再试一次二手文献，并查原典库是否有 Parfit《Reasons and Persons》以取得非同一性问题的原始表述",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:17:13",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "用户明确要求\"哲学界如何研究非同一性问题\"——需取得真实二手文献的书目记录与可读内容证据，用于呈现代表性学者、论文与对立解释阵营"
+   },
+   {
+    "ts": "2026-09-13 11:17:21",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "SCHOLARLY 通道（crossref/openalex）被网络拒绝、仅命中一条离题记录；需换不同关键词再试一次二手文献，并查原典库是否有 Parfit《Reasons and Persons》以取得非同一性问题的原始表述",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:17:21",
+    "reason": "前三次 scholarly 检索 provider 全部 URL_BLOCKED，本地仅返回一条不相关记录，尚不能断定库中无相关文献，需换通道核验",
+    "unresolved_gap": "非同一性问题的原典出处与任何相关二手文献的可读内容证据"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 8,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 45641,
+   "output_tokens": 5543,
+   "total_tokens": 51184
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 4,
+   "compacted_chars_saved": 4116,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11613,
+     "output_tokens": 990,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14612,
+     "output_tokens": 1372,
+     "tool_chars_added": 5400
+    },
+    {
+     "round": 3,
+     "input_tokens": 19416,
+     "output_tokens": 3181,
+     "tool_chars_added": 10327
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 45641,
+  "output_tokens": 5543,
+  "total_tokens": 51184
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 43.2
+}

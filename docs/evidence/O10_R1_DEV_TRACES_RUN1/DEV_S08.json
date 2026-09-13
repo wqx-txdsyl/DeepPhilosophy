@@ -1,0 +1,151 @@
+{
+ "case_id": "DEV_S08",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "有同学说：「我亲眼见过一只白乌鸦，所以『乌鸦都是黑的』这个命题彻底完蛋了。」用「举反例」的逻辑来评估：他的反驳成立吗？需要什么条件才成立？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_iAfJxqFXhqUZT7MJHu9j4620"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_PyuKGTUOb7bnzYij5maF8118"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_TtEX600ZYQfqbmRNL5pd8969"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_S2u2ZQ6BaXtMGvC1T0C19561",
+   "result_head": "{'results': [{'book_id': 'b471f41a78de', 'book_title': '工具论', 'author': '亚里士多德', 'chapter_idx': 8, 'chapter_title': '论题篇第二卷', 'citation_label': '【《工具论》·论题篇第二卷】'"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_o1nl51M1vZojkgxh6J1e6702"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_sgo6G1vHrYLgXsbjbak84429",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "核验波普尔证伪主义与亨佩尔确证理论中经典例证（白天鹅/黑天鹅 vs 乌鸦）的实际原文归属，避免张冠李戴",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 211,
+ "final_answer": "先说结论：从\"举反例\"的逻辑看，他的**方向是对的**，但\"彻底完蛋\"这个说法把结论说过头了；而且这个反驳能不能成立，取决于几个很容易被忽略的条件。\n\n## 一、先把命题翻译成逻辑形式\n\n\"乌鸦都是黑的\"不是一句观察报告，而是一个**全称命题**：\n\n用形式化写法把它表示出来，就是：对任何对象而言，只要它属于乌鸦，它就具有黑色这一性质。\n\n\"我见过一只白乌鸦\"则是一个**存在命题**：\n\n> ∃x（乌鸦(x) ∧ ¬黑",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "核验波普尔证伪主义与亨佩尔确证理论中经典例证（白天鹅/黑天鹅 vs 乌鸦）的实际原文归属，避免张冠李戴",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:08:26",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "核验波普尔证伪主义与亨佩尔确证理论中经典例证（白天鹅/黑天鹅 vs 乌鸦）的实际原文归属，避免张冠李戴"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:08:32"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:08:32"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 59797,
+   "output_tokens": 7178,
+   "total_tokens": 66975
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 4,
+   "compacted_chars_saved": 11894,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11632,
+     "output_tokens": 1912,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 20378,
+     "output_tokens": 866,
+     "tool_chars_added": 13110
+    },
+    {
+     "round": 3,
+     "input_tokens": 15297,
+     "output_tokens": 4000,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 4,
+     "input_tokens": 12490,
+     "output_tokens": 400,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 59797,
+  "output_tokens": 7178,
+  "total_tokens": 66975
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 43.6
+}

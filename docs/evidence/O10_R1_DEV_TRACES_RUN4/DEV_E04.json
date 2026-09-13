@@ -1,0 +1,145 @@
+{
+ "case_id": "DEV_E04",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "有位同事总说「我这人说话直」来解释自己嘴上不饶人。直率到底是一种美德，还是一种免于检讨的借口？边界在哪里？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_M0lJ0opKboztCcQIFmz97921"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_nYcAKlZKz5HUUlLqc3ng6258"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_gWvaDwwZ8Keqoca1lQ3J0505",
+   "args": {
+    "query": "直率 坦白 真诚 德性"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 311, 'chapter_title': '194', 'citation_label': '【《尼采文集（合"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_Zd7zpFG6T1YRWCoHAc748573",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "亚里士多德\"诚实\"德性中道结构——库中未定位到《尼各马可伦理学》相关章节；改用已命中的尼采、伏尔泰、《中庸》三处材料支撑辨析",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '亚里"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "亚里士多德《尼各马可伦理学》中\"诚实/真理（aletheia）\"作为社交德性的中道结构，及其两侧过与不及的原文措辞与卷章位置",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "亚里士多德\"诚实\"德性中道结构——库中未定位到《尼各马可伦理学》相关章节；改用已命中的尼采、伏尔泰、《中庸》三处材料支撑辨析",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1899,
+ "final_answer": "这个问题问得很准——\"直率是美德还是借口\"其实预设了一个二分，而我想先拆掉它：**直率本身既不是美德，也不是借口，它只是\"表达的真实性\"这一项属性；它的价值取决于它服务于什么。**\"我这人说话直\"之所以可疑，恰恰在于它用一项属性去冒领整整一套德性的信任。\n\n下面分三层说。\n\n## 一、\"直\"掩盖了三种被混为一谈的东西\n\n日常语境里的\"直率\"至少混着三件事：\n\n1. **内容真实**——我说的是心里想的、是真话（不说谎）；\n2. **动机诚实**——我说这话不是算计对方、不是为伤害（不欺人、也不借真话泄私愤）；\n3. **表达合宜**——我用恰当的方式、时机、分寸说（说话的\"技艺\"）。\n\n\"我这人说话直\"只保证了第 1 项，却常被用来同时豁免第 2、3 项的责任。而德性伦理学的关键恰恰在后两项：**真话不必是恶言，\"诚实\"和\"得体\"是两码事。**\n\n## 二、三处原文给出的侧面证据\n\n**尼采早就描述过这个结构。**在《尼采文集（合集）》的一条格言里，\"坦率者\"被这样刻画：\n\n> 那个人可能总是按照隐秘的理由来行动：因为在他的嘴上，还有差不多在他张开的手上，总是有可传达的……\n\n【《尼采文集（合集）》·194】\n\n我的理解是：被称作\"坦率者\"的人，嘴上、手上总摆着\"可传达的理由\"（即能说出口的表面理由），可他\"可能总是按照隐秘的理由来行动\"。这正是\"直率\"最危险的用法——**坦率可以是一层遮罩**：用\"我就是直\"这个可传达的理由，盖住那个不便说出的隐秘理由（想赢、想贬低、想免责）。同一文集的另一条也提醒：\"即便面对一种德性，人们也可能不顾体面\"【《尼采文集（合集）》·160】——以德性之名，行失礼伤人之实。\n\n**伏尔泰则把德行的判据从\"说真话\"挪到了\"对人有益\"。**《哲学辞典》\"德行\"条里，德行的核心被界定为\"对待别人好\"，而\"把真情实况告诉我\"这件事之所以\"毫不迟疑地称道你……是品端德正的君子\"，是因为它**对\"我\"有益**【《哲学辞典》·德行】。据此，判断\"直\"是不是德性的，不是它真不真，而是它利不利人。\n\n**《中庸》则把\"诚\"和\"合时宜\"绑在一起。**第二十五章讲，诚\"非自成己而已也，所以成物也\"——真诚不只是自我完成（把心里话倒出来），还要\"成物\"（成就事情、成就关系），而且落到\"时措之宜\"：**在恰当的时机以恰当的方式施用**【《中庸》·第二十五章】。只\"成己\"而不\"成物\"的直，是半截的诚。\n\n补充一句（记忆，未经本库核验）：亚里士多德《尼各马可伦理学》通常把\"诚实（aletheia）\"列为一种社交德性，是自夸与自贬之间的中道，且其分寸由实践智慧（phronesis）在具体情境中定夺——我在《尼各马可伦理学》里没能在本库定位到对应章节，所以这条只作旁证、不作引用。它想说的意思很简单：**\"诚实\"在古典语境里本就内置了\"分寸\"，而\"嘴上不饶人\"恰恰缺的正是分寸。**\n\n## 三、边界在哪：四条可操作的判据\n\n综合来看，美德版直率与借口版直率的分界，落在这四个问题上：\n\n- **动机**：我说这话，是为了对方/事情变好，还是为了宣泄、炫优越、先免责？尼采那个\"隐秘理由\"就是这里的测谎仪。\n- **方式**：我走了最小伤害的表达吗？同一句话，私下说还是当众说、对当事人说还是对旁人点评，是不同的德性行为。\"直\"不等于\"想到哪说到哪\"。\n- **对象与权力**：对方有能力、有必要接受吗？恰是在权力不对称处（上级对下级、多数对少数、你对得罪不起你的人），\"我就是直\"最容易被当成免罪的通行证——而这恰恰背离了古典\"直言\"的原始含义：**真正的直言，是说真话者自己承担风险**（如冒死进谏）；\"我这人说话直\"通常是零风险地伤比自己弱的人（此为我的一般理解，未核验）。\n- **回旋对称（一个反问送你）**：如果别人用同样的\"直\"回敬你、批评你最在乎的东西，你还觉得这是美德吗？**你的\"直率\"是不是只在你有权说、而别人无权回敬时才被激活？**——伏尔泰那个\"你不喜欢别人对你的推理是否和推理别人时相同\"，问的正是这一点。\n\n## 结论\n\n**直率是德性的必要条件，不是充分条件，更不能单独成立。**它是\"诚实\"这棵树的一根枝，却被单拎出来当免罪的盾。一句可用的判据：把\"我这人说话直\"改写成\"**我选择用这种方式、在这个时机，对他说这句话，因为这对他是好的**\"——如果你能诚实地补上后半句，它是美德；如果补不上，它只是\"我想说\"。\n\n所以对你那位同事，或许可以这样回应：我信你不是在撒谎，但我更想知道——**你是希望我变好，还是希望我闭嘴？**",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "亚里士多德《尼各马可伦理学》中\"诚实/真理（aletheia）\"作为社交德性的中道结构，及其两侧过与不及的原文措辞与卷章位置",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:17:26",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "亚里士多德《尼各马可伦理学》中\"诚实/真理（aletheia）\"作为社交德性的中道结构，及其两侧过与不及的原文措辞与卷章位置"
+   },
+   {
+    "ts": "2026-09-13 12:17:46",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 2,
+  "soft_limit": 3,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 47884,
+   "output_tokens": 7389,
+   "total_tokens": 55273
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 3,
+   "compacted_chars_saved": 8233,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11757,
+     "output_tokens": 1766,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18201,
+     "output_tokens": 3385,
+     "tool_chars_added": 9149
+    },
+    {
+     "round": 3,
+     "input_tokens": 17926,
+     "output_tokens": 2238,
+     "tool_chars_added": 1275
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 47884,
+  "output_tokens": 7389,
+  "total_tokens": 55273
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 49.3
+}

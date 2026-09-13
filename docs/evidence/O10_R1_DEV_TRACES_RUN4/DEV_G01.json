@@ -1,0 +1,254 @@
+{
+ "case_id": "DEV_G01",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请介绍学界对「虚构悖论」（paradox of fiction：我们为何会为明知虚构的人物动情）的主要研究与代表论文，给出研究文献而不是百科式解释。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_7od6d1leFsFwuL6fKDpl3104"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_W3O35QkreKY2gBP7TWeZ5077"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_ohg7BVdDA2yLipWdRCSc8483"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_ghZpSuwVFmPh97HtnjU46361"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_04_gHEVljyvzjWKvcR5t2OI7743",
+   "args": {
+    "query": "fiction emotion irrationality Radford Walton debate",
+    "limit": 8
+   },
+   "result_head": "{'query': 'fiction emotion irrationality Radford Walton debate', 'results': [{'source_record_id': 'doi:10.1007/s10676-015-9371-z', 'title': 'Social robots, fict"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_QAt00EUuW9USlp1RuQNf9219"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_CqO7xnR3igX7yOlsotCD2693"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_QvrIJcblUIUEKCrZMi8n8090"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_4apojkVU803UgjtAjn3S0344",
+   "args": {
+    "source_record_id": "doi:10.1353/nar.0.0007",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_e6bOAacz1cu42Ezea2Sm3459",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要对已检索到的可读来源（Radford & Weston 1975、Davies 2009、Sacco 2025、Harrison 2008）取得摘要/正文内容证据，否则无法对其主张做内容归因",
+    "gap_filled": false,
+    "budget_extension_reason": "LOCATE（检索）已完成，但 READ（get_scholarly_source）尚未执行；学术契约要求在对任何文献做内容性归因前先读取可读来源。若不延展，回答将只能停留在书目存在性层面，无法满足用户\"研究综述\"的需求。",
+    "unresolved_evidence_gap": "Radford & Weston 1975（Anna Karenina 悖论原文）、Stephen Davies 2009（情感回应虚构问题）、Sacco 2025（动机论解释）等可读记录的摘要内容"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 需要对已检索到的可读来源（Radford & Weston 1975、Davies 2009、Sacco 2025、Harrison 2008"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_skcC2Sa0csAWGQqusCrM8753"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_NNKm0uUXb1GVBBNHcD5G5067",
+   "args": {
+    "source_record_id": "doi:10.1111/j.1540-6245.2009.01358.x",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1111/j.1540-6245.2009.01358.x', 'bibliographic_record': {'source_record_id': 'doi:10.1111/j.1540-6245.2009.01358.x', 'title': 'Resp"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "虚构悖论的学界研究：代表性论文的真实书目与内容主张（Radford、Walton 等的立场与争论结构）",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要对已检索到的可读来源（Radford & Weston 1975、Davies 2009、Sacco 2025、Harrison 2008）取得摘要/正文内容证据，否则无法对其主张做内容归因",
+    "gap_filled": false,
+    "budget_extension_reason": "LOCATE（检索）已完成，但 READ（get_scholarly_source）尚未执行；学术契约要求在对任何文献做内容性归因前先读取可读来源。若不延展，回答将只能停留在书目存在性层面，无法满足用户\"研究综述\"的需求。",
+    "unresolved_evidence_gap": "Radford & Weston 1975（Anna Karenina 悖论原文）、Stephen Davies 2009（情感回应虚构问题）、Sacco 2025（动机论解释）等可读记录的摘要内容"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2679,
+ "final_answer": "## 先说明本次的证据边界\n\n我做了文献通道检索（Crossref/OpenAlex），命中若干条真实记录。其中**只有一条我取得了实质的摘要内容证据**（Stephen Davies 2009）；Radford & Weston 1975 我只核验到书目身份，摘要字段实际只回传了出版信息，不含论点内容；另有几条我只见到题名与书目。以下我会逐条标明每条文献处在哪个证据层级——凡是我未能取得内容证据的判断，一律降格标注，请勿当作已核验。\n\n---\n\n## 一、悖论的问题结构（有内容证据）\n\n当代对这一争论的标准表述，可由 Stephen Davies 的论文摘要直接读出。他的摘要这一悖论通常被表述为：人们普遍接受自己会对自己明知是虚构的人物、情境或事件产生情感反应，而这一事实本身似乎自相矛盾。（人们普遍认为，我们会对明知是虚构的人物/情境/事件产生情绪反应，这一事实构成一个悖论）。\n\nDavies 摘要中给出的两个范例（他自称 \"the Charles and Diana accounts\"）把悖论的结构交代得很清楚：\n\n- **Charles**：一个电影观众不相信（因为他知道）虚构的黏液怪物真实存在、能伤害他，然而他却害怕它——用代号的例子说明\"恐惧\"似乎要求\"相信有东西威胁自己\"。\n- **Diana**：《安娜·卡列尼娜》的读者不相信安娜受苦（因为她知道安娜不存在），然而她怜悯安娜。\n\n这两个例子把悖论归结为三条看似各自成立、合起来冲突的命题：①我们确有情绪反应；②情绪须以\"对象存在/构成威胁或处于可怜处境\"的信念为条件；③我们明知对象不存在。Davies 明确点出，这套表述预设了所谓**情绪认知理论**（cognitive theory of the emotions）——即情绪有意向对象、并按主体对对象持有的信念来区分（以上均为 Davies 2009 摘要的证据）。\n\n这一点本身就是一个有价值的研究入口：**悖论究竟是\"情感哲学\"问题，还是\"信念—情绪关系\"问题**，取决于你是否接受认知情绪理论。Davies 自己的贡献正在这里——他主张 Charles 与 Diana 两种情形\"far from equivalent\"，认为把二者视为同一会\"get in the way of a clear view of the issues\"。也就是说，他质疑的不是\"我们能否被虚构打动\"，而是**\"虚构悖论\"是否是一个单一的问题**。\n\n---\n\n## 二、主要研究取向（分层标注）\n\n**1. 悖论的提出与\"非理性\"诊断（Radford 传统）**\n关键文献：Colin Radford & Michael Weston, *How Can We Be Moved by the Fate of Anna Karenina?*, *Aristotelian Society Supplementary Volume*, 49(1), 1975, DOI: 10.1093/aristoteliansupp/49.1.67。\n我为这一条取得的只有**书目证据**（作者、题名、刊物、卷期、年份、DOI 均经核验）。通常哲学史把该文视为当代\"虚构悖论\"讨论的起点，并把 Radford 的立场概括为：对虚构人物的情绪是\"不一致/不理性\"的——但这**一具体论点我本次未能核验原文**，属记忆中印象，请以原文为准。\n\n**2. 假装论 / 准情绪路线（Walton）**\nKendall Walton 的 *Fearing Fictions*（我记忆中是 *Journal of Philosophy*, 1978）一般被视为与 Radford 相对的另一种解答——把虚构中的\"恐惧\"理解为假装/游戏内（make-believe）状态下的\"准情绪\"。**但需明确：这条我本次未在检索结果中取得该文的记录，也未取得任何内容证据**，题名、刊物、年份均为记忆（未经本次核验）。若你要引用 Walton，请务必自行核实原文，不要采信我这里的口径。\n\n**3. 认知论对假装论的批评、及元问题化（Davies 一类）**\n见上文第一条有内容证据的 Davies 2009，*Responding Emotionally to Fictions*, *Journal of Aesthetics and Art Criticism*, DOI: 10.1111/j.1540-6245.2009.01358.x。\n\n**4. 相关但需另立通道的邻近文献（仅书目证据）**\n- John Morreall, *Enjoying Negative Emotions In Fictions*, 1985（题名与书目来自检索；这是\"为何人们享受悲剧/负面情绪\"的邻近问题，属悖论讨论的旁支）。\n- Raffaele Rodogno, *Social robots, fiction, and sentimentality*, 2015（把虚构情感问题延伸到对机器人的道德情感，属应用性延伸）。\n\n这两条我只有**书目证据**，未读内容，故不对其具体主张作任何归因。\n\n---\n\n## 三、目前可信的文献骨架\n\n| 文献 | 层级 | 我能确认的内容 |\n|---|---|---|\n| Radford & Weston 1975, *Aristotelian Society Suppl. Vol.* 49(1) | 书目已核验 | 存在；论文身份；无摘要内容证据 |\n| Davies 2009, *JAAC*, DOI 10.1111/j.1540-6245.2009.01358.x | 摘要已读 | 悖论的标准表述、Charles/Diana 例、认知情绪理论预设、Davies 的\"两例不等价\"主张 |\n| Morreall 1985 | 仅书目 | 题名层面（负面情绪的享受问题） |\n| Rodogno 2015 | 仅书目 | 题名层面（机器人、虚构与感伤性） |\n| Walton 1978 等 | 记忆 | **未核验**，仅作线索 |\n\n我建议你把上表当作\"起点地图\"而非\"文献综述\"——多数条目我只完成到发现层。\n\n---\n\n## 四、继续深入的建议路径\n\n1. **从奠基文本读起**：Radford & Weston 1975 是多数讨论的靶子，先读原文确定 Radford 到底主张\"不理性\"还是别的诊断（这是",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "需要对已检索到的可读来源（Radford & Weston 1975、Davies 2009、Sacco 2025、Harrison 2008）取得摘要/正文内容证据，否则无法对其主张做内容归因",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:23:10",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "虚构悖论的学界研究：代表性论文的真实书目与内容主张（Radford、Walton 等的立场与争论结构）"
+   },
+   {
+    "ts": "2026-09-13 12:23:20",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "需要对已检索到的可读来源（Radford & Weston 1975、Davies 2009、Sacco 2025、Harrison 2008）取得摘要/正文内容证据，否则无法对其主张做内容归因",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:23:20",
+    "reason": "LOCATE（检索）已完成，但 READ（get_scholarly_source）尚未执行；学术契约要求在对任何文献做内容性归因前先读取可读来源。若不延展，回答将只能停留在书目存在性层面，无法满足用户\"研究综述\"的需求。",
+    "unresolved_gap": "Radford & Weston 1975（Anna Karenina 悖论原文）、Stephen Davies 2009（情感回应虚构问题）、Sacco 2025（动机论解释）等可读记录的摘要内容"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:23:17"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:23:17"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:23:17"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:23:17"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 91021,
+   "output_tokens": 7849,
+   "total_tokens": 98870
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 15774,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11760,
+     "output_tokens": 836,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17713,
+     "output_tokens": 779,
+     "tool_chars_added": 15328
+    },
+    {
+     "round": 3,
+     "input_tokens": 14479,
+     "output_tokens": 614,
+     "tool_chars_added": 980
+    },
+    {
+     "round": 4,
+     "input_tokens": 16258,
+     "output_tokens": 387,
+     "tool_chars_added": 2368
+    },
+    {
+     "round": 5,
+     "input_tokens": 17022,
+     "output_tokens": 4000,
+     "tool_chars_added": 4374
+    },
+    {
+     "round": 6,
+     "input_tokens": 13789,
+     "output_tokens": 1233,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 91021,
+  "output_tokens": 7849,
+  "total_tokens": 98870
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 55.2
+}

@@ -1,0 +1,228 @@
+{
+ "case_id": "DEV_E08",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "「明天就开始」——起点被一天天推迟。拖延只是一个时间管理问题吗？还是说它是我们跟自己的一种特殊关系出了问题？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_RUiQJPsq58ZSkr8oqzEj0376"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_4ODBmHvXe4jiQgrDqeRj6429"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_Ox7DXDyybAhxuvHTl4pA9461",
+   "args": {
+    "query": "克尔凯郭尔 致死的疾病 自我 与自身发生关系"
+   },
+   "result_head": "{'results': [{'book_id': 'a1448e164acc', 'book_title': '别笑，我是正经哲学书', 'author': '富增章成', 'chapter_idx': 31, 'chapter_title': '什么是我能为它而死的真理？', 'citation_label': '【"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_SQ3vqoLEOM1VjiXq5P634834"
+  },
+  {
+   "name": "list_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_bpCktNSVm6aVqSwDy91F6610",
+   "args": {
+    "author": "克尔凯郭尔"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_9ijBBEo2sF20ZAvRWa2E0278"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_GcWDpipeqVJR2sJS2z959529",
+   "args": {
+    "book_id": "a2931a891bf9",
+    "chapter_idx": 8
+   },
+   "result_head": "{'book_id': 'a2931a891bf9', 'chapter_idx': 8, 'title': '卷八', 'book_title': '奥古斯丁忏悔录', 'citation_label': '【《奥古斯丁忏悔录》·卷八】', 'text': '我的天主，我愿回忆，我要诵说你对我的慈爱，以此表示我的感激"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_Nn6TvVtArYZkS1Opa9gc6769",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《忏悔录》卷八\"心已认同正道却迈不出脚步\"的自述原文",
+    "source_dependent": true,
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '《忏"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "奥古斯丁《忏悔录》中\"求贞洁却不愿现在\"的自白原文措辞与卷章位置；克尔凯郭尔《致死的疾病》中\"自我是一种与自身发生关系的关系\"的措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《忏悔录》卷八中奥古斯丁\"求贞洁却不愿立刻\"的自白原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已定位《忏悔录》卷八为待读章节，但尚未取得该段逐字措辞；该句是我要为\"拖延即自我分裂\"论点引用的核心文本，不读原文无法把引文呈现为原文。",
+    "unresolved_evidence_gap": "《忏悔录》卷八关于\"贞洁/不是现在/明天再说\"那段的实际措辞与上下文"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《忏悔录》卷八\"心已认同正道却迈不出脚步\"的自述原文",
+    "source_dependent": true,
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2018,
+ "final_answer": "先说结论：拖延不只是（甚至不主要是）时间管理问题。时间管理框架之所以常常失灵，是因为它预设了一个错误的前提——它假定你是一个\"统一的意志\"，只是资源（时间、精力、方法）分配不当。可\"明天就开始\"这句话里真正出问题的，恰恰是这个\"你\"本身：想要行动的你和迟迟不动的你，并不是同一个完整的意志。这是自我与自身的关系问题，不是日程表问题。\n\n下面分几层展开。\n\n## 一、时间管理框架的隐蔽预设\n\n时间管理话语默认：目标已定 → 主体是理性执行者 → 障碍在外部（时间不够、计划不周、干扰太多）。于是解决方案永远是\"更细的清单、更早的闹钟、更强的提醒\"。\n\n但它解释不了一个现象：拖延最顽固的时候，往往正是\"你明明想做、甚至很想做\"的时候。资源不缺，动机不缺，卡住的是\"从想，到动\"之间的那道缝。这说明障碍不在你与任务之间，而在你与你之间。\n\n## 二、奥古斯丁：意志的分裂\n\n对这种\"缝\"最古典、最精确的诊断来自奥古斯丁。他在《忏悔录》卷八描述自己皈依前那段著名的挣扎：他已经认同了更高的东西，心已经转向，人却迟迟迈不出那一步——不是不知道善，而是明知道、也想要，却做不到。他讲的是**意志被撕成两半**：一个旧的意志与一个新的意志在同一个人身上彼此拉扯，谁也不能干净利落地取胜。\n\n这正是拖延的深层结构，而不是它的比喻。拖延者说的\"我想做\"，和实际发生的\"我没做\"，并不构成简单的矛盾；它们是同一个自我内部两个\"想要\"的对峙。所以\"明天就开始\"不是一句谎言，而是一个分裂的自我给自己开出的承诺——一个它此刻无意兑现、又真心希望将来能兑现的承诺。\n\n（说明：以上是对《奥古斯丁忏悔录》卷八内容与主旨的转述，我调取了该卷原文核对过其主题，但未逐字摘引其具体句读；卷八中那句常被引用的、祈求贞洁而求\"不要现在\"的著名自白，我未在本次核验的文本窗口内确认到逐字措辞，故不冒充逐字引用。）\n\n## 三、被推迟的不是任务，而是\"我自己\"\n\n更值得追问的是\"明天\"这个时间词。它表面指一个日期，实际是一种自我的悬置：\n\n每一次\"明天就开始\"，都是把\"要行动的那个我\"外包给一个未来的我。而这个未来之我在每一次被召唤时，又都会变成新的现在之我——于是它永远推迟。被推后的不是任务，是我与自己的会面。\n\n这里可以接上存在主义一脉的观察（属一般性提及，未作原典核验）：萨特所说的\"自欺\"，是把自由的重负推给某种看似必然的本质——\"我天生就不是自律的人\"\"我就是懒\"。拖延常常正是这种自欺的日常形态：不是我不能动，而是我不想承担\"能不动却必须动\"的那份自由。海德格尔意义上\"沉沦于常人\"的逃避，也可在此参照。这些都是同一个机制的变体：**用某种方式避免直面自己**。\n\n## 四、拖延在逃避什么\n\n再往下一层，拖延往往不是逃避任务本身，而是逃避任务附带的情感暴露：可能失败的羞耻、可能做得不够好的焦虑、对\"其实我没那么在意/没那么强\"的恐惧。任务只是一个引信。所以拖延在功能上是一种自我保护——它保住了\"如果我认真做，就会很好\"这个未被检验的自我形象。承认这一点很重要：它意味着单纯的\"意志更坚强\"往往无效，因为拖延在执行一项对你有用的心理任务。\n\n## 五、也需要分层的诚实\n\n不过，不要把所有拖延都收进哲学。至少三种层面要分开：\n\n- **生理与临床层面**：注意力、睡眠、抑郁或焦虑状态下的执行困难，首先要处理的是身体和健康，不是自我关系。\n- **结构与规训层面**：许多拖延是被外部强加的时间结构逼出来的抵抗，带有反抗的合理性。\n- **自我关系层面**（哲学真正要说的）：明知如何、也想如此，却与自身无法达成一致——这是亚里士多德式\"意志薄弱\"（akrasia，属一般性提及，未作原典核验）的现代变体，也是上面奥古斯丁诊断的那种撕裂。\n\n混淆这三层，正是\"时间管理\"最容易犯的错——它把前两层的症状误诊成第三层，又用技术手段去治一个关系性问题。\n\n## 六、那么出路在哪\n\n如果不是更强的清单，那是什么？我的判断是：出路不在\"与自己作战\"，而在\"与自己和解后的诚实\"。\n\n- 停止把拖延当成道德污点来谴责——谴责只是让分裂更深（一个自我审判另一个自我）。\n- 问清楚：这个任务在保护我免受什么？看清了那条防线，它才有可能松开。\n- 把\"明天\"拉回\"此刻\"：不是承诺\"从明天起彻底改变\"，而是此刻能做的、小到不触发防御的一步。因为自我关系只能在此刻重建，永远不会在明天重建。\n\n## 最后，一个反问留给你\n\n如果\"明天就开始\"的你，真的相信明天那个自己会行动——那么请问：**你现在对谁许下了这个承诺，又为什么对\"自己\"失信，比对任何一个他人都要心安理得？**\n\n一个人对别人失信会羞愧，对自己失信却几乎无感——这个不对称本身，或许就是\"特殊关系\"最直接的证据：你其实并没有真的把自己当成一个需要被认真对待的\"一个主体\"。拖延之所以难，往往难在这里。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《忏悔录》卷八中奥古斯丁\"求贞洁却不愿立刻\"的自白原文措辞",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:11:20",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "奥古斯丁《忏悔录》中\"求贞洁却不愿现在\"的自白原文措辞与卷章位置；克尔凯郭尔《致死的疾病》中\"自我是一种与自身发生关系的关系\"的措辞",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:11:28",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《忏悔录》卷八中奥古斯丁\"求贞洁却不愿立刻\"的自白原文措辞",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:11:44",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:11:28",
+    "reason": "已定位《忏悔录》卷八为待读章节，但尚未取得该段逐字措辞；该句是我要为\"拖延即自我分裂\"论点引用的核心文本，不读原文无法把引文呈现为原文。",
+    "unresolved_gap": "《忏悔录》卷八关于\"贞洁/不是现在/明天再说\"那段的实际措辞与上下文"
+   }
+  ],
+  "retrieval_executed": 4,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "list_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:11:24"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 85288,
+   "output_tokens": 8409,
+   "total_tokens": 93697
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 13785,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11888,
+     "output_tokens": 1893,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18574,
+     "output_tokens": 532,
+     "tool_chars_added": 9272
+    },
+    {
+     "round": 3,
+     "input_tokens": 15374,
+     "output_tokens": 768,
+     "tool_chars_added": 977
+    },
+    {
+     "round": 4,
+     "input_tokens": 19432,
+     "output_tokens": 2710,
+     "tool_chars_added": 5911
+    },
+    {
+     "round": 5,
+     "input_tokens": 20020,
+     "output_tokens": 2506,
+     "tool_chars_added": 1941
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 85288,
+  "output_tokens": 8409,
+  "total_tokens": 93697
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 57.9
+}

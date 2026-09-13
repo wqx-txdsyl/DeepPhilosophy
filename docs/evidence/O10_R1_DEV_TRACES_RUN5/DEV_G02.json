@@ -1,0 +1,264 @@
+{
+ "case_id": "DEV_G02",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "当代美学研究中，「恐怖悖论」（paradox of horror）有哪些代表性论文和对立解释？请综述学界研究现状。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_VneGrCzD9SWUgaGbvIP97088"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_e0Iv5nZBZdggv3QiFnq99785"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_87htyJpZDxZjsrVkCDwo1120"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_waTcMKeQRlbasFLo8GAv8900",
+   "args": {
+    "query": "why we enjoy frightening fiction art horror emotional paradox",
+    "limit": 10
+   },
+   "result_head": "{'query': 'why we enjoy frightening fiction art horror emotional paradox', 'results': [{'source_record_id': 'doi:10.1017/s0140525x17000309', 'title': 'The Dista"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_kvDlCfzLQIndrvfIgeav2933"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_F1Ln1catKeroqiArerb64982"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_GIcDH3vOMHTmwjfOI9cq2649"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_GSjlb5zoFqJAan6megCD1718"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_7N1uwzGQBlv1zcMd9dNy7203"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_05_ABXBFmTa0kGrYkcka1wZ8496",
+   "args": {
+    "source_record_id": "openalex:W1496998313",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_MXrmZPo4bcUcoFikkxXU6024",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位来源（Carroll 书、Bantinaki、Strohl、Hanich、Menninghaus 等）的摘要/正文内容证据，用于如实归因其主张与解释阵营",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求综述「恐怖悖论」学界研究现状与对立解释；按学术契约 E2，对文献做任何内容性归因前必须 get_scholarly_source 实读。目前仅取得 Gaut(1993) 一条书目级证据，其余已定位的高相关来源读取请求被预算拒绝，无内容证据则无法完成综述。",
+    "unresolved_evidence_gap": "Carroll《The Philosophy of Horror》、Bantinaki(2012)、Strohl(2012)、Hanich(2010)、Menninghaus et al.(2017) 的摘要或正文节选"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 已定位来源（Carroll 书、Bantinaki、Strohl、Hanich、Menninghaus 等）的摘要/正文内容证据，用于如实归因"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_Ye1pIRMnrh4QG3SLHR9z8943"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_3yZd34T6wtvdaR9rvclz4830",
+   "args": {
+    "source_record_id": "doi:10.2307/2904611",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.2307/2904611', 'bibliographic_record': {'source_record_id': 'doi:10.2307/2904611', 'title': 'The Philosophy of Horror or Paradoxes "
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "「恐怖悖论」的当代美学代表性论文、主要解释阵营（如 Carroll 的补偿/好奇说与其他学者反驳）及其真实书目与内容证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位来源（Carroll 书、Bantinaki、Strohl、Hanich、Menninghaus 等）的摘要/正文内容证据，用于如实归因其主张与解释阵营",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求综述「恐怖悖论」学界研究现状与对立解释；按学术契约 E2，对文献做任何内容性归因前必须 get_scholarly_source 实读。目前仅取得 Gaut(1993) 一条书目级证据，其余已定位的高相关来源读取请求被预算拒绝，无内容证据则无法完成综述。",
+    "unresolved_evidence_gap": "Carroll《The Philosophy of Horror》、Bantinaki(2012)、Strohl(2012)、Hanich(2010)、Menninghaus et al.(2017) 的摘要或正文节选"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3400,
+ "final_answer": "我已取得足以负责任作答的证据，下面收口综合。需要先说明证据边界：本次实际读到内容摘要的是两篇核心来源，另有若干篇我只确认了书目存在（题名、作者、年代、刊物），未读到内容——我会逐条标明，不把题名伪装成已读观点。\n\n---\n\n# 「恐怖悖论」的当代美学研究现状综述\n\n## 一、问题的界定与命名\n\n所谓「恐怖悖论」，指的是一个看起来自相矛盾的现象：观众、读者为何会**主动去追求那些引发恐惧、厌恶等负面情绪**的作品？恐惧与厌恶本是人们日常避之唯恐不及的体验，却在恐怖小说、恐怖电影、哥特文学乃至更广的悲剧艺术中成为被反复追逐的对象。这里需要先做一层概念辨析（这是我的分析）：它至少要区分于两个相邻议题——\n\n- **虚构悖论**（paradox of fiction）：为何会为明知不存在的人物动情；\n- **悲剧悖论**（paradox of tragedy）：为何愉悦地观看悲剧性苦难。\n\n「恐怖悖论」专指**负面情绪本身**（尤其恐惧与厌恶）如何与审美愉悦相容的问题。这个命名通常追溯到 Noël Carroll 的著作 *The Philosophy of Horror, or Paradoxes of the Heart*（1990）——副标题「心中的悖论」正是对上述问题的直陈。\n\n## 二、有实质内容证据的两条主线\n\n### 1. Carroll 的奠基性框架（经核验的书目证据）\n\n我核验证实的记录（MacKenzie 书评，载 *MLN*, 1991）显示，该书被描述为「首次认真审视恐怖美学的著作」，把恐怖当作**跨媒介的类型现象**来处理，讨论其本性与叙事结构，并明确以哲学视角**解释「人们如何在被吓得魂飞魄散中获得快乐」**这一问题（此为该记录摘要的转述，非 Carroll 原文措辞）。\n\n需要坦白：我**未能取得 Carroll 本人论证的逐字文本**（如他关于「好奇心/认知解决」或恐怖作为「认知性情感」的具体论点）。因此我**不**对 Carroll 的具体机制主张作内容归因；学界熟知的那套解释（恐怖愉悦源于悬置的好奇得到解决、或「艺术恐怖」与「现实恐怖」的区分）属于我的**记忆背景，本次未经原典核验**，请谨慎对待。\n\n### 2. 「距离—拥抱」模型（有完整摘要，认知—心理学路径）\n\n这是当代最系统的一个替代框架：Menninghaus, Wagner, Hanich, Wassiliwizky, Jacobsen & Koelsch, *\"The Distancing-Embracing model of the enjoyment of negative emotions in art reception\"*, **Behavioral and Brain Sciences**, 2017（我读到的是摘要全文）。其要旨为：\n\n- **问题的重述**：负面情绪在艺术接受中的中心地位「远超悲剧」，是一个被广泛讨论的**表面悖论**（apparent paradox）。\n- **核心主张**：负面情绪是一般艺术的重要资源，而非某些特殊艺术形式的专利。理由是负面情绪在**获取注意、激发强烈投入、形成高记忆度**方面格外有力，而这恰是艺术作品所追求的（以上为对摘要的转述）。\n- **两组机制**：\n  - **距离机制（distancing）**：与「艺术/表征/虚构」的认知图式一同激活，隐含**人身安全**与对「是否继续接触」的**控制感**，从而防止负面情绪与「期待享受」彻底不相容；\n  - **拥抱机制（embracing）**：正负情绪的**组合互动**、再现媒介的美学特质（音乐声、语言、色彩、形状）对情绪感知的影响、以及**意义建构**努力，使接受者能积极地「拥抱」负面情绪，令体验更强烈、更有趣、更动人、更深刻，有时甚至更美。\n  - 此外，**混合情绪**有助于把负面情绪整合进总体愉悦。\n\n这条路径的特点是把悖论「消解」在认知与情绪加工机制层面，而不依赖作品类型的特殊性——它同时覆盖恐怖、悲剧与更广的负面情绪艺术。\n\n## 三、其他可定位的代表文献（仅书目层，未读内容）\n\n以下文献我**确认其存在**（题名/作者/年代/刊物来自真实检索记录），但**未取得内容证据**，故只报告其研究方向，不陈述其论证：\n\n| 文献 | 出处 | 从题名可见的研究方向 |\n|---|---|---|\n| Berys Gaut,《The Paradox of Horror》 | *The British Journal of Aesthetics*, 1993 | 直接以「恐怖悖论」为题的理论论文（内容未核验） |\n| Katerina Bantinaki,《The Paradox of Horror: Fear as a Positive Emotion》 | *JAAC*, 2012 | 似主张恐惧可作为「正面情绪」理解（内容未核验） |\n| Matthew S. Strohl,《Horror and Hedonic Ambivalence》 | *JAAC*, 2012 | 似以「享乐矛盾」解释恐怖愉悦（内容未核验） |\n| Julian Hanich, *Cinematic Emotion in Horror Films and Thrillers: The Aesthetic Paradox of Pleasurable Fear* | 专著, 2010 | 从电影情绪现象学处理「可愉悦的恐惧」（内容未核验） |\n\n**我必须强调**：上表中第三列的措辞**只从题名推知研究方向**，不能当作这些文献的实际论点。要对其立场作内容归因，需进一步读取正文——这超出我本次已取得的证据。\n\n## 四、学界分歧的几条轴线（我的综合分析，非文献归因）\n\n综合已核验证据与该领域的常识性图景（后者标注为背景），对立解释大致沿以下几组轴线展开：\n\n1. **「消解悖论」还是「保留矛盾」**：\n   - 消解派（如距离—拥抱模型的「距离机制」）认为，一旦引入「这是虚构/艺术」的认知图式，恐惧就不再与愉悦真正冲突——**悖论是表面的**。\n   - 保留矛盾派（题名所示如「享乐矛盾」「恐惧作为正面情绪」）则倾向于承认恐惧与愉悦**同时并存**，甚至主张某些恐惧体验本身即具正面价值。\n2. **认知解释 vs 情绪解释**：前者诉诸好奇心、意义建构、认知解决；后者诉诸情绪本身的动力学（混合情绪、元情绪、情绪唤起强度）。\n3. **艺术特殊性 vs 一般负面情绪艺术**：Carroll 的路径倾向于围绕**恐怖类型**的特殊结构；Menninghaus 等则明确主张负面情绪是**一切艺术**的普遍资源，恐怖只是极端案例。\n\n（第 2、3 轴中涉及具体学者的归属，属我的概括性描述，本次未逐篇核验其文献来源，读者若需精确归因应循上表路径查证。）\n\n## 五、诚实的证据边界\n\n- **内容级证据**：本次实际读到摘要的只有 Menninghaus 等 (2017) 一篇与 Carroll 著作的一则书评记录（后者为对 Caroll 立场的二手转述）。\n- **书目级证据**：Gaut (1993)、Bantinaki (2012)、Strohl (2012)、Hanich (2010) 我只确认其存在与出处，**未读内容**。\n- **记忆背景**（未经本次核验）：Carroll 的具体机制主张、以及坊间常提的「元情绪说（如 Smuts）」「make-believe 说（如 Walton）」等，我**未能取得证据**，故未纳入上述内容性陈述。\n\n如果要把它做成一篇可引用的文献综述，下一步应做的是：定位并阅读 Gaut 1993 与 Bantinaki/Strohl 两篇 *JAAC* 论文的正文，以厘清「恐惧—愉悦」相容性问题上真正的正反交锋，再补上恐怖片情绪反应的实证研究线（如 Hanich 及后续的预测加工路径研究）。这些方向我本次只能标出入口，未能进入。\n\n---\n\n若你希望，我可以就其中某一条轴线（例如「消解悖论」vs「保留矛盾」）深入地做一次文献对质，或把这份综述整理成带大纲的论文骨架。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "已定位来源（Carroll 书、Bantinaki、Strohl、Hanich、Menninghaus 等）的摘要/正文内容证据，用于如实归因其主张与解释阵营",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:55:13",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "「恐怖悖论」的当代美学代表性论文、主要解释阵营（如 Carroll 的补偿/好奇说与其他学者反驳）及其真实书目与内容证据",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:55:24",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "已定位来源（Carroll 书、Bantinaki、Strohl、Hanich、Menninghaus 等）的摘要/正文内容证据，用于如实归因其主张与解释阵营",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:55:24",
+    "reason": "用户明确要求综述「恐怖悖论」学界研究现状与对立解释；按学术契约 E2，对文献做任何内容性归因前必须 get_scholarly_source 实读。目前仅取得 Gaut(1993) 一条书目级证据，其余已定位的高相关来源读取请求被预算拒绝，无内容证据则无法完成综述。",
+    "unresolved_gap": "Carroll《The Philosophy of Horror》、Bantinaki(2012)、Strohl(2012)、Hanich(2010)、Menninghaus et al.(2017) 的摘要或正文节选"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:55:20"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:55:20"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:55:20"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:55:20"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:55:20"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 80273,
+   "output_tokens": 7749,
+   "total_tokens": 88022
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 11,
+   "compacted_chars_saved": 15155,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11886,
+     "output_tokens": 759,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17016,
+     "output_tokens": 1006,
+     "tool_chars_added": 13242
+    },
+    {
+     "round": 3,
+     "input_tokens": 15251,
+     "output_tokens": 671,
+     "tool_chars_added": 2767
+    },
+    {
+     "round": 4,
+     "input_tokens": 16962,
+     "output_tokens": 1901,
+     "tool_chars_added": 2576
+    },
+    {
+     "round": 5,
+     "input_tokens": 19158,
+     "output_tokens": 3412,
+     "tool_chars_added": 4848
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 80273,
+  "output_tokens": 7749,
+  "total_tokens": 88022
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 55.4
+}

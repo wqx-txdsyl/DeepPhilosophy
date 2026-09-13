@@ -1,0 +1,287 @@
+{
+ "case_id": "DEV_G06",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "「道德运气」（moral luck）问题的代表性研究有哪些？威廉斯与内格尔的原始论文之后，学界又有哪些重要推进？请给出文献。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_D4cEdjQwASVsQKMPA2PX3584"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_YKxB4zeMsXC0YXfCsKhE0980"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_2uw3BpaKNninESNpI4WR4658",
+   "args": {
+    "query": "moral luck Williams Nagel",
+    "limit": 10
+   },
+   "result_head": "{'query': 'moral luck Williams Nagel', 'results': [{'source_record_id': 'doi:10.1017/cbo9781139165860', 'title': 'Moral Luck', 'authors': ['Bernard Williams'], "
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_U6kOGdLAKD1jRo2H46r59198"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_iVLsr8bbo1BzGRygqwxt8242",
+   "args": {
+    "query": "moral luck Nelkin Latus",
+    "limit": 10
+   },
+   "result_head": "{'query': 'moral luck Nelkin Latus', 'results': [{'source_record_id': 'doi:10.1111/1467-9973.00285', 'title': 'Constitutive Luck', 'authors': ['Andrew Latus'], "
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_pFd8OSnDiia9ODw7MxNd6202"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_nwHE3cLRyP841aRtTwvy8349"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_blC3ZKIHh0xKlf3OyqnL9883"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_03_rtz2JcL8utigrRaypqgR0323"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_04_xDT2YSHERXzklAiP0GTu1040"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_05_su2F5pGImR7h3xaUFtde3780",
+   "args": {
+    "source_record_id": "doi:10.1017/cbo9780511621246.022",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_TJJQIrB6IBiIJtt3G9xN9375",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位威廉斯/内格尔原始论文及若干后续记录的书目，但尚未读取任何一条的内容证据，无法对其主张做可靠归因",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"道德运气\"的代表性研究文献综述；access_level 显示多条记录为 ABSTRACT_AVAILABLE/可读，按学术契约须先读取摘要证据才能做内容性归因，否则只能标注书目而不能说明其学术主张。缺此证据回答将退化为纯书目罗列，无法满足用户的文献综述需求。",
+    "unresolved_evidence_gap": "需读取若干核心后续研究（如 Latus 构成运气、Zimmerman 运气与道德责任、Cyr 道德运气的不可避免性、Mickelson 悖论、Williams 后记）的摘要，以核实其具体主张与推进方向"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 已定位威廉斯/内格尔原始论文及若干后续记录的书目，但尚未读取任何一条的内容证据，无法对其主张做可靠归因）。soft 检索预算=4 次。预算延展"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_KuQwOqC35RRfPhioiQ3q5422"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_eDgiXxEFird0bxyiuPJj6407",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1002/tht3.508"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1002/tht3.508', 'bibliographic_record': {'source_record_id': 'doi:10.1002/tht3.508', 'title': 'The inescapability of moral luck', '"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "\"道德运气\"（moral luck）的代表性研究文献——威廉斯与内格尔原始论文之后的重要学术推进（专著/论文/争议综述）",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位威廉斯/内格尔原始论文及若干后续记录的书目，但尚未读取任何一条的内容证据，无法对其主张做可靠归因",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"道德运气\"的代表性研究文献综述；access_level 显示多条记录为 ABSTRACT_AVAILABLE/可读，按学术契约须先读取摘要证据才能做内容性归因，否则只能标注书目而不能说明其学术主张。缺此证据回答将退化为纯书目罗列，无法满足用户的文献综述需求。",
+    "unresolved_evidence_gap": "需读取若干核心后续研究（如 Latus 构成运气、Zimmerman 运气与道德责任、Cyr 道德运气的不可避免性、Mickelson 悖论、Williams 后记）的摘要，以核实其具体主张与推进方向"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3130,
+ "final_answer": "## 结论先行\n\n「道德运气」是 1970 年代由**伯纳德·威廉斯**与**托马斯·内格尔**几乎同时确立的一个问题域，此后五十年的研究大致沿三条线推进：**①概念细分**（结果运气/情境运气/构成运气）；**②是否可被\"消除\"的存亡之争**；**③与道德责任、自由意志理论的接口**。下面我分开呈现**本次实际核验到的文献**与**属于学界地图、但我未逐条核验书目的经典**，并明确标注证据层级。\n\n---\n\n## 一、原始坐标：威廉斯与内格尔\n\n- **伯纳德·威廉斯的《Moral Luck》**：本次在原典/学术库中定位到其 1981 年剑桥文集 *Moral Luck*（DOI: 10.1017/cbo9781139165860，题名、作者、年份已核验）。学界通常把这篇文章追溯到 1976 年他在亚里士多德学会的讲演，并把它与内格尔的同名论文视作该问题的双起点——**这一\"1976 讲演—1979 论文\"的时间脉络是我的知识背景，本次未在库中核验到原始讲演的精确出处，故标注为待核验**。\n- **内格尔的《Moral Luck》**：通常归于 1979 年 *Proceedings of the Aristotelian Society*（Supplementary Volume），但我**未能在本次检索中定位到该原始论文的独立记录**，故不作正式书目标注（记忆，未经库中核验）。\n- 二者被并置的核心机制：都追问\"我们实际作出的道德判断，是否依赖于行为者无法控制的因素\"，但**取向不同**——这一点学界讨论很多，我在本次仅取得二级文献的间接证据，不展开归因。\n\n---\n\n## 二、有内容证据支撑的后续推进（摘要级证据）\n\n以下两篇我实际读取到摘要，可对其主张作可靠转述：\n\n1. **Andrew Latus, \"Constitutive Luck\", *Metaphilosophy*, 2003**（DOI: 10.1111/1467-9973.00285）\n   该文处理\"**构成运气**\"（constitutive luck，即影响\"你是何种人\"的运气）。据其摘要：Latus 指出有一派学者——**Susan Hurley、Nicholas Rescher、Daniel Statman**——主张构成运气的概念本身**不融贯**，因而可回避其麻烦；Latus 则通过分析\"运气\"概念（机会、价值、缺乏控制三要素）论证该概念**并非不融贯**，结论是\"我们被构成运气造成的问题困住了\"。这篇是\"概念细分 + 反驳消除论\"这一路线的代表性节点。\n\n2. **Taylor W. Cyr, \"The inescapability of moral luck\", *Thought*, 2021**（DOI: 10.1002/tht3.508）\n   据摘要：Cyr 论证任何试图**消除结果运气或情境运气**的方案，都与我们对\"构成运气问题\"的自然反应**相冲突**——因为我们有时确实参与塑造自己的品格、从而缓解后来的构成运气，但\"我们是否成功改变品格\"本身又取决于结果运气与情境运气。他由此导出一个**二难：无论走哪一叉，都必须接受某种形式的道德运气**。这是近年\"不可消除论\"的一个明确推进。\n\n---\n\n## 三、本次检索定位到存在、但未取内容证据的记录\n\n以下记录在检索中**出现**（题名/作者/年份/期刊层面），但我**未读取其摘要或正文**，因此**只能确认其存在，不能说明其具体论证立场**：\n\n- Michael Zimmerman 关于运气与道德责任的研究（1980年代）；\n- Brian Rosebury 关于道德责任与道德运气的论文（约 1995）；\n- Brynmor Browne 的相关论文（约 1992）；\n- Claudia Card, *The Unnatural Lottery*（关于运气与道德的书，1990年代）；\n- Robert Hartman 关于道德运气的研究（约 2017）；\n- Duncan Pritchard 关于\"道德运气与认知运气\"的研究；\n- 一篇西班牙语论文，讨论 Nagel 与 Williams 论道德运气（*Revista de Filosofía*，约 2006）；\n- 若干近年论文如 Mickelson（自由意志、自我创造与道德运气悖论）、Diamantis（构成运气的道德无关性）等。\n\n按学术纪律，检索到某文献存在并不等于已经读过它；上面我只承担书目层面的陈述，不声称读过其内容，也不对其内容或解释阵营作任何归因。\n\n---\n\n## 四、学界地图（我的综合判断，标注来源性质）\n\n如果你要进入这个问题，下面这些是学界公认的**经典推进者与方向**，但请注意标注——**它们属于我的知识框架，本次未逐一取得内容证据**：\n\n| 路线 | 代表人物 | 著作/方向（记忆，未经库中核验） |\n|---|---|---|\n| 结果运气的道德意义 | **Judith Jarvis Thomson** | \"Morality and Bad Luck\" |\n| 反对道德运气的道德意义 | **Susan Wolf** | \"The Moral of Moral Luck\" |\n| 运气的系统处理 | **Nicholas Rescher** | *Luck*（书中一章论道德运气） |\n| 道德责任与运气的分析哲学进路 | **Michael Zimmerman** | *An Essay on Moral Responsibility* 等 |\n| 运气与\"不平等\"的政治哲学延伸 | **Claudia Card** | *The Unnatural Lottery* |\n| 构成运气概念分析 | **Andrew Latus**（有证据）、Susan Hurley、Daniel Statman | 见上文 |\n| 综述与研究入口 | **Dana Nelkin**（*Stanford Encyclopedia of Philosophy* \"Moral Luck\" 条目的作者） | 我**未在本次检索中核验到该条目的独立记录**，故不作正式引用 |\n\n---\n\n## 五、建议的研究入口路径\n\n1. **原始文本**：威廉斯 1981 年文集中的《Moral Luck》一文（本次已定位书目）→ 与内格尔同名论文对读，先抓住二者对\"agent-regret\"（行为者悔恨）处理方式的分歧。\n2. **概念骨架**：读 Latus 的 *Constitutive Luck*（2003），它把\"运气\"拆成机会/价值/控制三要素，是理解后续争论的分析工具。\n3. **存亡之争的最新形态**：读 Cyr 的 *The inescapability of moral luck*（2021），它把\"能否消除道德运气\"的问题收缩为一个清晰二难。\n4. **延伸**：进入\"道德运气—道德责任—自由意志\"的接口（Zimmerman 路线），以及政治哲学中\"原生运气\"的延伸（Card 路线）。\n\n---\n\n需要说明的是：**本次检索预算有限**，我在\"内容性归因\"上只对 Latus 与 Cyr 两篇取得了摘要证据；其余文献我仅能确认存在。如果你希望，我可以**针对上述任一条路线（例如 Wolf vs. Thomson 的对立、或 Nelkin 的综述）再做定点核验**，把书目层面提升到可引用的摘要/正文证据。你想先深入哪一支？",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "已定位威廉斯/内格尔原始论文及若干后续记录的书目，但尚未读取任何一条的内容证据，无法对其主张做可靠归因",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:25:29",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "\"道德运气\"（moral luck）的代表性研究文献——威廉斯与内格尔原始论文之后的重要学术推进（专著/论文/争议综述）"
+   },
+   {
+    "ts": "2026-09-13 12:25:43",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "已定位威廉斯/内格尔原始论文及若干后续记录的书目，但尚未读取任何一条的内容证据，无法对其主张做可靠归因",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:25:43",
+    "reason": "用户明确要求\"道德运气\"的代表性研究文献综述；access_level 显示多条记录为 ABSTRACT_AVAILABLE/可读，按学术契约须先读取摘要证据才能做内容性归因，否则只能标注书目而不能说明其学术主张。缺此证据回答将退化为纯书目罗列，无法满足用户的文献综述需求。",
+    "unresolved_gap": "需读取若干核心后续研究（如 Latus 构成运气、Zimmerman 运气与道德责任、Cyr 道德运气的不可避免性、Mickelson 悖论、Williams 后记）的摘要，以核实其具体主张与推进方向"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:25:40"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:25:40"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:25:40"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:25:40"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:25:40"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:25:40"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 108294,
+   "output_tokens": 7737,
+   "total_tokens": 116031
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 12,
+   "compacted_chars_saved": 17811,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11755,
+     "output_tokens": 689,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15514,
+     "output_tokens": 440,
+     "tool_chars_added": 9147
+    },
+    {
+     "round": 3,
+     "input_tokens": 15868,
+     "output_tokens": 999,
+     "tool_chars_added": 8000
+    },
+    {
+     "round": 4,
+     "input_tokens": 15235,
+     "output_tokens": 473,
+     "tool_chars_added": 1470
+    },
+    {
+     "round": 5,
+     "input_tokens": 17031,
+     "output_tokens": 1708,
+     "tool_chars_added": 2541
+    },
+    {
+     "round": 6,
+     "input_tokens": 18826,
+     "output_tokens": 3119,
+     "tool_chars_added": 3569
+    },
+    {
+     "round": 7,
+     "input_tokens": 14065,
+     "output_tokens": 309,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 108294,
+  "output_tokens": 7737,
+  "total_tokens": 116031
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 54.6
+}

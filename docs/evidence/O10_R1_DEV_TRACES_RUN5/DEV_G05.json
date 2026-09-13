@@ -1,0 +1,286 @@
+{
+ "case_id": "DEV_G05",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "「体验机器」（experience machine）思想实验在当代研究中的争论现状如何？请提供近年学术文献与双方主要论证。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_cWu38PxZrAUvNiCgTjon6144"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_sfUQ0yfMLzxCWW7pzDqQ0951"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_BHm8rCAfLlqTk3sl31dR2044"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_Ii3DjVxo6OoYl66mLcAC7236",
+   "args": {
+    "query": "experience machine intuition reliability well-being",
+    "limit": 10
+   },
+   "result_head": "{'query': 'experience machine intuition reliability well-being', 'results': [{'source_record_id': 'doi:10.4324/9781315682266-39', 'title': 'THE EXPERIENCE MACHI"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_ZZy6tVk4eI4ufqch05K55664"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_MSA24s5cACEfG4kjTw3K4717"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_4qOYSFFK5b9GT3zmK9Om1837",
+   "args": {
+    "limit": 10,
+    "query": "defending hedonism experience machine objections responses"
+   },
+   "result_head": "{'query': 'defending hedonism experience machine objections responses', 'results': [{'source_record_id': 'doi:10.1177/0048393104269597', 'title': 'Psychological"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_I0JKSzoaqQO9GisUJaFD3030"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_bXAVzf6w8RmPN2o2AlDg8109"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_YOALNFYGMZrRqkmc9yzv5342"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_03_cNhWiXZLQv8mD8p4giXU3890",
+   "args": {
+    "limit": 10,
+    "query": "experience machine reality contact autonomy objection Nozick"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reas"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_mrO9gXbaPbdZb56OE6Yf4151",
+   "args": {
+    "budget_extension_reason": "用户明确要求\"近年学术文献与双方主要论证\"，属于典型 SCHOLARLY 需求；已定位的高相关文献（Weijers & Schouten 2013 综述、Feldman 辩护方、Barber 2011、Hewitt 2009、Hawkins 2015）目前全部停留在 METADATA_ONLY，无法对文献立场做内容归因，而这正是回答\"双方主要论证\"所必需的内容证据；此外 De Brigard 一脉的实证转向检索因接口限流失败，尚未取得任何证据。",
+    "evidence_gap": "需要读取当代综述与代表文献的可读内容证据（摘要/正文），以有据地呈现\"反对体验机器\"与\"为享乐主义辩护\"双方的主要论证",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "source_dependent": true,
+    "unresolved_evidence_gap": "①Weijers & Schouten (2013) 综述所评估的近期各方回应；②Feldman 对经典反驳的回应；③近年关于体验机器直觉可靠性与实证转向（De Brigard 等）的可读证据"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 需要读取当代综述与代表文献的可读内容证据（摘要/正文），以有据地呈现\"反对体验机器\"与\"为享乐主义辩护\"双方的主要论证）。soft 检索预算="
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_MRfo3aVTUgAnoFHjVEuh8672"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_ZZTGPTD0iKYvuh5vrRmz0150",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1093/019926516x.003.0004"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "①诺齐克体验机器思想实验的原典原文措辞与所在章节；②当代（尤其近十年）学界围绕该思想实验的争论——双方主要论证与代表文献",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "用户明确要求\"近年学术文献与双方主要论证\"，属于典型 SCHOLARLY 需求；已定位的高相关文献（Weijers & Schouten 2013 综述、Feldman 辩护方、Barber 2011、Hewitt 2009、Hawkins 2015）目前全部停留在 METADATA_ONLY，无法对文献立场做内容归因，而这正是回答\"双方主要论证\"所必需的内容证据；此外 De Brigard 一脉的实证转向检索因接口限流失败，尚未取得任何证据。",
+    "evidence_gap": "需要读取当代综述与代表文献的可读内容证据（摘要/正文），以有据地呈现\"反对体验机器\"与\"为享乐主义辩护\"双方的主要论证",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "source_dependent": true,
+    "unresolved_evidence_gap": "①Weijers & Schouten (2013) 综述所评估的近期各方回应；②Feldman 对经典反驳的回应；③近年关于体验机器直觉可靠性与实证转向（De Brigard 等）的可读证据"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2853,
+ "final_answer": "## 关于「体验机器」争论现状的答复（含证据边界说明）\n\n先说一个诚实的前提，因为它直接影响这份答复能给你什么。\n\n我这一轮试图同时打通两条通道：**原典出处**与**当代学术文献**。结果如下——\n\n- 在本站的原典库中，我**没有检索到诺齐克《无政府、国家与乌托邦》的原文**（检索\"体验机器\"命中的是别的书）。因此，下面对诺齐克设定的复述是**一般转述，未经本库原文核验**，我不会给它挂正式章节引用。\n- 在学术文献那边，我定位到一批高相关条目，但**多数只取到书目层（作者/题名/年份），没有读到内容**。按学术规范，只看到标题不能推断论文的具体论证与立场。所以我必须严格区分：哪些是**我有内容证据的**，哪些我只能说**\"这篇文献存在\"**。\n\n下面照这个分界来写。\n\n---\n\n### 一、经典设定（一般转述，未核验出处）\n\n诺齐克设想一台机器：你可以接入它，从此体验任何你想要的、极其逼真的理想人生——写一部伟大的小说、交到知心朋友、解决难题——只是这一切都发生在电极刺激之下，并非真实发生。他的问题是：你会接入吗？诺齐克认为多数人会拒绝，并由此推出**快乐不是唯一的内在善**：我们还想要\"确实去做某些事\"、\"成为某种人\"、\"与更深的实在相接触\"。\n\n这段是通行转述，**具体措辞与所在章节我本轮未能核验**，故不作正式引用。\n\n### 二、当代争论的结构（我梳理的轴线，标注认识论地位）\n\n围绕这个实验，当代讨论大致沿三条张力展开。我把它们与**证据支撑强度**一并标出：\n\n**轴线 1：这个直觉是否有证明力？**\n这是最激烈的一线。反方依赖\"多数人不愿接入\"的直觉来否证享乐主义；辩护方则质疑该直觉的可靠性——它可能反映的是现状偏差、损失厌恶或对陌生的恐惧，而非真正的价值判断。**需坦白**：我这一轮没能取到这一线代表文献的可读内容（相关实证方向我连书目都没检索到），所以这条轴线我只能作为**问题框架**呈现，**不把它归因给任何具体作者**。\n\n**轴线 2：「不完整性」反驳——体验机器到底证明了什么？**\n这是我在本轮**唯一取得可读内容证据**的一线。据 Andrić（2019, *Thought: A Journal of Philosophy*）的摘要，他处理的是享乐主义面临的\"不完整性反驳\"（incompleteness objection）：体验机器之类的反例至多表明\"快乐之外还有别的善\"，却**并未**表明快乐本身没有价值，因而这类反例对享乐主义的打击是\"不完整\"的。他的应对策略是**区分某物的\"善\"（goodness）与其\"可欲性\"（desirability）**，并把 desirability 理解为一种道义论（deontic）概念，以此替享乐主义保留空间。这是辩护方的一条典型路径，属**有摘要证据的内容归因**（仍然：转述其摘要，非逐字引用）。\n\n**轴线 3：能否重新刻画\"快乐\"或\"体验\"，使机器不再构成反例？**\n辩护方的另一条路是修改\"快乐\"或\"内在善\"的定义（例如把\"与现实接触\"本身纳入偏好），使体验机器不再是反例；相应地，也有人主张体验机器的设定本身在描述上不自洽或不可想象。**这一线我同样只有书目层证据**，故只作为框架列出。\n\n### 三、我这轮实际定位到的代表文献（仅书目层，不陈述其论证）\n\n以下是工具返回的真实书目记录。**我只确认它们存在，不对其内部论证或立场做任何归因**：\n\n- Weijers, D. & Schouten, B. (2013), \"An Assessment of Recent Responses to the Experience Machine Objection to Hedonism\", *The Journal of Value Inquiry*（题名显示是对\"近期回应\"的评估，是本议题最贴近的综述型文献；但我**未读到内容**）。\n- Barber, A. (2011), \"Hedonism and the Experience Machine\"。\n- Hawkins, J. (2015), \"The Experience Machine and the Experience Requirement\", 收入 Routledge 哲学手册（章节）。\n- Lemos, J. (2004), \"Psychological Hedonism, Evolutionary Biology, and the Experience Machine\", *Philosophy of the Social Sciences*。\n- Feldman, F., \"Classic Objections to Hedonism\"（出自 *Pleasure and the Good Life*，章节）。\n- 检索中另出现 Hewitt（关于\"体验机器直觉究竟告诉了我们什么\"）与 Weijers（\"体验机器对享乐主义的反驳\"）等条目的题名。\n\n**这些条目我只核验到\"存在\"，未核验其内容。** 若你在答辩或论文中要引用它们的具体观点，需要先实际取得正文——这一点我不会替你含糊过去。\n\n### 四、关于\"近年\"的诚实交代\n\n我要明确：**\"近年文献\"这条线我这一轮做得不充分。** 真正取得内容证据的只有 Andrić（2019）一条；最相关的综述（Weijers & Schouten 2013）停在了书目层；而近年围绕该实验的**实验哲学/实证转向**（例如对直觉是否受顺序与现状偏差影响的研究）我**没能检索到任何记录**。因此，任何\"近年来学界普遍如何如何\"的概括，我在这里都**不敢背书**——那会是把书目当结论。\n\n---\n\n### 五、给你的一条可操作路径\n\n如果目标是把这个课题做成一篇有文献支撑的综述，建议按这个优先级去取正文：\n\n1. **Weijers & Schouten (2013)** —— 先读这篇，它本身就是对\"近期回应\"的盘点，能一次给你一张双方文献地图。\n2. 顺着它去读**辩护方代表**（Feldman 对经典反驳的回应、Barber 2011）与**实证质疑方**（对\"不愿接入\"直觉的实验研究）。\n3. 最后读 **Andrić (2019)**，看\"不完整性反驳\"这条相对较新的辩护进路如何收口。\n\n我的判断：这条争论的**真正焦点不在\"你会不会接入\"，而在\"一个直觉能承担多重的证明责任\"**——反方要用它否证享乐主义，辩护方则通过削弱直觉的可信度、收窄实验的结论范围、或重定义关键概念来化解。Andrić 那篇正落在\"收窄结论范围\"这条线上。\n\n如果你愿意，我可以下一轮专门去把 Weijers & Schouten (2013) 的正文取回来，逐条给你梳理它划分的各方回应——这才是你问题里\"双方主要论证\"真正需要的那块材料。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "需要读取当代综述与代表文献的可读内容证据（摘要/正文），以有据地呈现\"反对体验机器\"与\"为享乐主义辩护\"双方的主要论证",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:56:30",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": null,
+    "evidence_gap": "①诺齐克体验机器思想实验的原典原文措辞与所在章节；②当代（尤其近十年）学界围绕该思想实验的争论——双方主要论证与代表文献",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:56:52",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "MIXED",
+    "evidence_gap": "需要读取当代综述与代表文献的可读内容证据（摘要/正文），以有据地呈现\"反对体验机器\"与\"为享乐主义辩护\"双方的主要论证",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:56:52",
+    "reason": "用户明确要求\"近年学术文献与双方主要论证\"，属于典型 SCHOLARLY 需求；已定位的高相关文献（Weijers & Schouten 2013 综述、Feldman 辩护方、Barber 2011、Hewitt 2009、Hawkins 2015）目前全部停留在 METADATA_ONLY，无法对文献立场做内容归因，而这正是回答\"双方主要论证\"所必需的内容证据；此外 De Brigard 一脉的实证转向检索因接口限流失败，尚未取得任何证据。",
+    "unresolved_gap": "①Weijers & Schouten (2013) 综述所评估的近期各方回应；②Feldman 对经典反驳的回应；③近年关于体验机器直觉可靠性与实证转向（De Brigard 等）的可读证据"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:46"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:46"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:46"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:46"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:57:00"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:57:00"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 101250,
+   "output_tokens": 9552,
+   "total_tokens": 110802
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 12,
+   "compacted_chars_saved": 18609,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11887,
+     "output_tokens": 768,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17305,
+     "output_tokens": 1082,
+     "tool_chars_added": 12171
+    },
+    {
+     "round": 3,
+     "input_tokens": 16382,
+     "output_tokens": 1393,
+     "tool_chars_added": 6722
+    },
+    {
+     "round": 4,
+     "input_tokens": 16639,
+     "output_tokens": 1188,
+     "tool_chars_added": 964
+    },
+    {
+     "round": 5,
+     "input_tokens": 19122,
+     "output_tokens": 1556,
+     "tool_chars_added": 2591
+    },
+    {
+     "round": 6,
+     "input_tokens": 19915,
+     "output_tokens": 3565,
+     "tool_chars_added": 490
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 101250,
+  "output_tokens": 9552,
+  "total_tokens": 110802
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 62.8
+}

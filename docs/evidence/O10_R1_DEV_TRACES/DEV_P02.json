@@ -1,0 +1,155 @@
+{
+ "case_id": "DEV_P02",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "请核对《道德经》第一章「道可道也，非恒道也」与通行本「道可道，非常道」的措辞差异，读取库中《道德经》第一章原文，说明这一章在全书中的地位。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_Wo6IL7scXB2SJ2lfjq0l2475"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_Mln63ue95g9cJYJ6skDr0992"
+  },
+  {
+   "name": "list_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_cW34ooUOXOjImkalJEag9850",
+   "args": {
+    "author": "老子"
+   },
+   "result_head": "{'books': [{'id': '6ef2f18cfdc9', 'title': '道德经', 'author': '老子', 'region': '东方', 'rank': 48.8, 'summary': '《道德经》是道家哲学的开山之作，相传为春秋时期老子所著，共81章，约五千言。全书以“道”为核心，探讨宇宙"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_U4FYzsEkWIYHiyj4Y8OX1639"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_k56htEwFb8GF2ZeESejg3602",
+   "args": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 1
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中《道德经》第一章的实际原文措辞（是「非恒道」还是「非常道」），以及全书版本与分章结构",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1525,
+ "final_answer": "已读取库中《道德经》第一章，证据足以作答（另一注译本读取受检索预算限制，但其第一章片段已在检索中确认）。\n\n## 一、库中《道德经》第一章原文\n\n库中通行本系统的《道德经》第一章原文为：\n\n大意是说：能够被言说的道，就不是那恒常不变的道；能够被命名的名，也不是那恒常不变的名。它进而把有与无分别联系到天地的开端与万物的母体，并提出可从恒常的无欲与有欲两个方向去观照，又说这两个方面来源相同而名称相异，它们一同被称为幽深，幽深之中更有幽深，是一切奥妙的门径。\n\n库中另一注译本《老子道德经》第一章（标为「众妙之门」）的片段同样是「道可道，非常道；名可名，非常名」，唯标点断句作「无名，万物之始；有名，万物之母」——即把「无名/有名」断开作主语短语，与上引通行本的「无名天地之始，有名万物之母」（连读）不同。这是库内两本之间可核验的标点/断句差异，不影响关键字的措辞。\n\n## 二、与帛书系统「道可道也，非恒道也」的差异\n\n需要先明确一个证据边界：**库中并未收录马王堆帛书《老子》**，因此「道可道也，非恒道也」这一措辞我无法在原典库中直接定位核验，只能依据你给出的前提、并作为版本学常识来讨论——以下说明属我的转述，不是库内检索到的原文。\n\n两者的差异主要有三层：\n\n1. **虚词的有无**：帛书系（甲、乙本）作「道可道也，非恒道也；名可名也，非恒名也」，句末多个「也」；通行系则省去「也」字。这属于汉语虚词在两系抄本间的常见出入，一般不改变命题内容。\n\n2. **关键字「恒」与「常」**：帛书作「恒」，通行本作「常」。历代注家通常用避讳来解释这一替换——汉文帝名刘恒，抄写者为避讳将「恒」改作义近的「常」（恒、常皆有恒久、经常之义）。因此二者在这句里基本可视为同一意思的不同字形；但严格说，避讳说是一种得到广泛接受的解释，而非可以仅凭字面确证的事实（此点为我的说明，未在库中核验）。\n\n3. **文本系统的归属**：帛书本属战国末至汉初的抄本系统，通行本（如王弼本）是魏晋以后的定本系统。二者的差异反映的是「早期抄本—后世定本」的传抄史，不是两位作者的不同主张。\n\n## 三、第一章在全书中的地位\n\n**文本事实层面**：第一章位于全书开篇，确立了几个贯穿全书的枢纽语汇——「道」的不可言说性（可道之道非常道）、「名」的限度、有／无的对举、以及「玄」与「众妙之门」。\n\n**通常解读层面**（以下为解释性判断，非原文直陈）：\n\n- **总纲／门户地位**：本章被视为全书的「入口」，故注译本径称其为「众妙之门」。它先行交代了「道」不可被言说与命名，为后面八十一章中一切关于「道」的言说设定了自我限制——后文所说，都是「强为之名」。\n- **有无问题的方法论起点**：「常无欲以观其妙，常有欲以观其徼」「此两者同出而异名」把「有」与「无」处理为同一根源的两种面向，这为后文「有无相生」「道生一」等章节提供了方法论前提。\n- **言说悖论的开端**：全书以「道可道，非常道」开篇，本身就构成一个悖论式的自我指涉——它一边说「道」不可道，一边又在道说。这个张力是历代注疏反复处理的核心难题，也是本章被视为「全书钥匙」的原因。\n\n**我的综合判断**：第一章之所以地位特殊，不在于它给出了「道」的定义（它恰恰拒绝定义），而在于它规定了全书言说的方式与界限；读后面各章时，这一章相当于悬在头上的「元规则」。\n\n---\n\n**证据边界小结**：库中两本老子文本（通行系统）第一章的措辞已核对，均为「道可道，非常道」；帛书系统「非恒道也」的措辞**不在库内**，我据版本学常识作出的说明已标注为转述而非原典援引，若需逐字核验帛书原文，需另行查证帛书释文资料。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "库中《道德经》第一章的实际原文措辞（是「非恒道」还是「非常道」），以及全书版本与分章结构",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:32:51",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "库中《道德经》第一章的实际原文措辞（是「非恒道」还是「非常道」），以及全书版本与分章结构",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:32:55"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 69961,
+   "output_tokens": 7181,
+   "total_tokens": 77142
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 3,
+   "compacted_chars_saved": 4853,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11911,
+     "output_tokens": 517,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15505,
+     "output_tokens": 470,
+     "tool_chars_added": 5738
+    },
+    {
+     "round": 3,
+     "input_tokens": 13643,
+     "output_tokens": 1696,
+     "tool_chars_added": 441
+    },
+    {
+     "round": 4,
+     "input_tokens": 14339,
+     "output_tokens": 2521,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 5,
+     "input_tokens": 14563,
+     "output_tokens": 1977,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 69961,
+  "output_tokens": 7181,
+  "total_tokens": 77142
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 45.5
+}

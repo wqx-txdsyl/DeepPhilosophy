@@ -9,6 +9,8 @@ import sys
 
 import pytest
 
+from tests.o10r1_compliance import comply as _comply
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -310,7 +312,7 @@ def test_e2e_protocol_and_packet_reach_model():
     near = _LUNYU_PASSAGE.replace("夫人不言", "其人不言")
     bad_final = "原文：\n\n> 「" + near + "」\n"
     good_final = "经核验：该句与库中原文相近但非逐字，转述——孔子说言必有中。"
-    script = list(_TOOLS_SCRIPT) + [_msg(bad_final), _msg(good_final)]
+    script = _comply(list(_TOOLS_SCRIPT) + [_msg(bad_final), _msg(good_final)])   # O10-R1 合规
     spy = SpyChat(script=list(script))
     orig_llm, orig_tools = EG.get_llm, EG.get_tools
     real_lp_flag = getattr(EG, "LOCAL_PATCH_PRODUCTION_ENABLED", None)

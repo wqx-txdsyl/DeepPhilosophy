@@ -1,0 +1,233 @@
+{
+ "case_id": "DEV_P02",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "请核对《道德经》第一章「道可道也，非恒道也」与通行本「道可道，非常道」的措辞差异，读取库中《道德经》第一章原文，说明这一章在全书中的地位。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_s0XUTHd7DQZvNfVahzK45193"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_MaahfaEElieR352As4sN5798",
+   "args": {
+    "query": "道可道 非常道 道德经"
+   },
+   "result_head": "{'results': [{'book_id': 'dd8853676655', 'book_title': '老子道德经', 'author': '老子', 'chapter_idx': 1, 'chapter_title': '第一章 众妙之门', 'citation_label': '【《老子道德经》·第一章 众"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_gAnAiuY8MnIZfPgtsp9S8601"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_zslp2OnDF6Td2LTOxF5k1667"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_eOO7VEJA1w7bVkLyjj7M7359",
+   "args": {
+    "book_id": "6ef2f18cfdc9"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_GmkCutSC7VUfEi8qjxc68692"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_FMJAHgisCYh7jc17066S8367",
+   "args": {
+    "query": "马王堆帛书老子 第一章 道可道也 非恒道也 原文"
+   },
+   "result_head": "{'results': [], 'query': '马王堆帛书老子 第一章 道可道也 非恒道也 原文', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_pc2t6YsoNFFRfCbKBOtV5686",
+   "args": {
+    "research_need": "WEB",
+    "evidence_gap": "帛书本第一章措辞在线核验",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": "帛书本原文因网络不可达未能在线核验，将如实标注"
+   },
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'WEB', 'evidence_gap': '马王堆帛书《"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中《道德经》第一章原文的具体措辞（尤其\"道可道也，非恒道也\"还是\"道可道，非常道\"），以及该章版本/底本信息",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "WEB",
+    "evidence_gap": "马王堆帛书《老子》甲乙本第一章\"道可道也，非恒道也\"的确切原文措辞——库中仅有通行本，无帛书文本",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求核对\"道可道也，非恒道也\"与通行本措辞差异，库中仅有通行本原文，帛书本第一章措辞是回答核心，未核验无法完成比对",
+    "unresolved_evidence_gap": "马王堆帛书《老子》第一章（及郭店楚简）\"道可道也，非恒道也\"的确切原文与版本归属"
+   }
+  },
+  {
+   "args": {
+    "research_need": "WEB",
+    "evidence_gap": "帛书本第一章措辞在线核验",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": "帛书本原文因网络不可达未能在线核验，将如实标注"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 0,
+ "final_answer": "",
+ "publication_state": "FAIL_CLOSED_VALIDATION",
+ "validation_ok": false,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "WEB",
+  "evidence_gap": "马王堆帛书《老子》甲乙本第一章\"道可道也，非恒道也\"的确切原文措辞——库中仅有通行本，无帛书文本",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:38:24",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "库中《道德经》第一章原文的具体措辞（尤其\"道可道也，非恒道也\"还是\"道可道，非常道\"），以及该章版本/底本信息"
+   },
+   {
+    "ts": "2026-09-13 11:38:32",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "WEB",
+    "prev": "PRIMARY",
+    "evidence_gap": "马王堆帛书《老子》甲乙本第一章\"道可道也，非恒道也\"的确切原文措辞——库中仅有通行本，无帛书文本",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:38:40",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "WEB"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:38:32",
+    "reason": "用户明确要求核对\"道可道也，非恒道也\"与通行本措辞差异，库中仅有通行本原文，帛书本第一章措辞是回答核心，未核验无法完成比对",
+    "unresolved_gap": "马王堆帛书《老子》第一章（及郭店楚简）\"道可道也，非恒道也\"的确切原文与版本归属"
+   }
+  ],
+  "retrieval_executed": 4,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:38:26"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 103343,
+   "output_tokens": 11754,
+   "total_tokens": 115097
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 7584,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11718,
+     "output_tokens": 308,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14802,
+     "output_tokens": 382,
+     "tool_chars_added": 5132
+    },
+    {
+     "round": 3,
+     "input_tokens": 14299,
+     "output_tokens": 1083,
+     "tool_chars_added": 2588
+    },
+    {
+     "round": 4,
+     "input_tokens": 15414,
+     "output_tokens": 1061,
+     "tool_chars_added": 1904
+    },
+    {
+     "round": 5,
+     "input_tokens": 16700,
+     "output_tokens": 1288,
+     "tool_chars_added": 1908
+    },
+    {
+     "round": 6,
+     "input_tokens": 15093,
+     "output_tokens": 3632,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 7,
+     "input_tokens": 15317,
+     "output_tokens": 4000,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 103343,
+  "output_tokens": 11754,
+  "total_tokens": 115097
+ },
+ "llm_rounds": 0,
+ "stream_error": "本轮回答未通过证据一致性校验，请重试或换一种问法",
+ "wall_s": 66.4
+}

@@ -245,8 +245,10 @@ def test_t19_no_production_diff_vs_base():
     # 此后任何未授权 engine 漂移立即失败。
     # V8-F2（2026-09-11 授权）: plan-only terminal 拦截 + no-op repair 哈希追踪
     # 落地 → 基线哈希更新（授权依据 = V8-F2 任务书三类 failure class 修复）。
+    # O10-R1（2026-09-13 Reviewer 任务书授权）: 检索纪律修复——研究需求决策协议
+    # （declare_research_need + 类别 soft 预算 + 缺口停止 + 证据压缩）落地 → 基线哈希更新。
     import hashlib as _hl
-    _ENGINE_R1_SHA256 = "0eb2bcfe07f183e46415cbbb085b29eda8ba4e058c3bea06dd920547b0a4fca7"
+    _ENGINE_R1_SHA256 = "4dbdbe389671bd66ee46983a0411416ce818ddd30fd6f59fe49d38efa5e8a970"
     _eng_src = open(os.path.join(os.path.dirname(os.path.dirname(
         os.path.abspath(__file__))), "engine_langgraph.py"), encoding="utf-8").read()
     assert _hl.sha256(_eng_src.encode("utf-8")).hexdigest() == _ENGINE_R1_SHA256, \

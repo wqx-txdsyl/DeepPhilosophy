@@ -1,0 +1,250 @@
+{
+ "case_id": "DEV_P08",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "《孟子》「四端说」的原文在哪里？请读取相关章节，引用「恻隐之心，仁之端也」一句所在的完整段落，并解释「端」这个比喻的论证功能。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_qH2lH2d1iCEKKVsKgmJZ1946"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_WKWQ6LtQrGWrGUQwZsto0805"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_xHrPGl3m1o1LTghTurHH3936",
+   "args": {
+    "query": "四端 人皆有不忍人之心"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 67, 'chapter_title': '德经·第六十八章', 'citation_label': '【《道德经》·德经·第六十八章"
+  },
+  {
+   "name": "list_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_NhHQcI0pIavZ25xnsr0D5286"
+  },
+  {
+   "name": "query_database",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_mPddcCFIOgiVoNAQSF8F3413",
+   "args": {
+    "table": "books",
+    "key": "孟子"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_OppZX0NnEEug5LnVf8aq5916"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_piZvd7G5OIXZj0rHSJAw4204",
+   "args": {
+    "book_id": "dd03ec6572e7"
+   },
+   "result_head": "{'id': 'dd03ec6572e7', 'title': '孟子', 'author': '孟子', 'region': '东方', 'file_type': 'epub', 'summary': '《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_DroI7KkNo5BfpQP0mTP37904"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_HGspGIZw1L7OOKdNnxvc4470",
+   "args": {
+    "book_id": "dd03ec6572e7",
+    "chapter_idx": 4
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_u7kLHH7RikzpgsP8ONMU7123",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已读取《孟子·公孙丑章句上》第六节原文，含「恻隐之心，仁之端也」的完整段落及上下文（孺子入井、四端、四体、扩充）均已取得",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '已确"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "需核验「恻隐之心，仁之端也」所在段落的完整原文与准确章节位置（《公孙丑上》抑或《告子上》）",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已确认库中有《孟子》，但尚未读取含「恻隐之心，仁之端也」的章节原文，需读取该段确认措辞与位置",
+    "gap_filled": false,
+    "budget_extension_reason": "已定位到《孟子》在库中的书目（id: dd03ec6572e7），但引用原文必须实际读取对应章节，前两次检索仅得到无关命中与书目元数据，尚未取得任何原典文本证据",
+    "unresolved_evidence_gap": "含「恻隐之心，仁之端也」的完整段落原文及其章节位置"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已读取《孟子·公孙丑章句上》第六节原文，含「恻隐之心，仁之端也」的完整段落及上下文（孺子入井、四端、四体、扩充）均已取得",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 200,
+ "final_answer": "## 出处\n\n这段话出自《孟子·公孙丑上》论「人皆有不忍人之心」的一节（库中收录的《孟子》编在【《孟子》·公孙丑章句上】）。需要先纠正一个可能的误会：「四端说」的这句典型表述在《公孙丑上》，而《告子上》另有「恻隐之心，人皆有之」等「四心」的相关论说，二者措辞与语境并不相同。\n\n## 完整段落\n\n这一段以「人皆有不忍人之心」发起，经孺子入井的例证，落到四端，再落到「扩充」：\n\n> 孟子曰：「人皆有不",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "已确认库中有《孟子》，但尚未读取含「恻隐之心，仁之端也」的章节原文，需读取该段确认措辞与位置",
+  "gap_filled": true,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:22:43",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "需核验「恻隐之心，仁之端也」所在段落的完整原文与准确章节位置（《公孙丑上》抑或《告子上》）"
+   },
+   {
+    "ts": "2026-09-13 12:22:47",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "已确认库中有《孟子》，但尚未读取含「恻隐之心，仁之端也」的章节原文，需读取该段确认措辞与位置",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:23:12",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:22:47",
+    "reason": "已定位到《孟子》在库中的书目（id: dd03ec6572e7），但引用原文必须实际读取对应章节，前两次检索仅得到无关命中与书目元数据，尚未取得任何原典文本证据",
+    "unresolved_gap": "含「恻隐之心，仁之端也」的完整段落原文及其章节位置"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:22:44"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:22:57"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 96836,
+   "output_tokens": 9538,
+   "total_tokens": 106374
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 9,
+   "compacted_chars_saved": 13958,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11768,
+     "output_tokens": 439,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17411,
+     "output_tokens": 250,
+     "tool_chars_added": 9090
+    },
+    {
+     "round": 3,
+     "input_tokens": 13236,
+     "output_tokens": 528,
+     "tool_chars_added": 516
+    },
+    {
+     "round": 4,
+     "input_tokens": 15167,
+     "output_tokens": 1865,
+     "tool_chars_added": 2979
+    },
+    {
+     "round": 5,
+     "input_tokens": 19347,
+     "output_tokens": 2456,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 6,
+     "input_tokens": 19907,
+     "output_tokens": 4000,
+     "tool_chars_added": 2068
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 96836,
+  "output_tokens": 9538,
+  "total_tokens": 106374
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 55.3
+}

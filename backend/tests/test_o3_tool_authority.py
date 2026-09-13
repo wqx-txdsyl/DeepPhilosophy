@@ -27,6 +27,8 @@ from langchain_core.messages import AIMessage, ToolMessage
 from langchain_core.tools import StructuredTool
 import pytest
 
+from tests.o10r1_compliance import comply as _comply
+
 import agent_runtime as AR
 import engine_langgraph as EG
 import routes.agent as AG
@@ -155,6 +157,7 @@ def _msg(note, tool_calls=None):
 
 
 def _run_stream(question, script):
+    script = _comply(script)   # O10-R1: 脚本化 Main Agent 合规（先声明后检索）
     real = (EG.get_llm, EG.get_tools, AG.llm_chat)
     chat = ScriptedChat(script=list(script), prompts=[])
     tools = _stub_tools()   # 每用例清一次计数; 图每轮 get_tools 复用同一列表（不清空）

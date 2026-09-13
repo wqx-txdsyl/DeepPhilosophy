@@ -26,6 +26,7 @@ import agent_runtime as AR  # Phase A: tool loop 治理（观测/去重/预算/�
 import tool_contracts as TC  # Phase T: 工具架构（taxonomy/mermaid/措辞净化/所有权审计）
 import quote_bound as QB     # Phase T.1: 逐字引文绑定（Quote Bound / T1.1-D~H）
 import o7e_semantic_transition as ST  # V7-F2-R1 §3: 确定性语义转移分类（零 LLM）
+import research_discipline as RD  # O10-R1: 检索纪律（研究需求/软预算/缺口停止/证据压缩）单一真源
 from evidence_contract import EvidenceState  # O5: 执行事实登记（Evidence Store）
 
 # ── LLM（OpenAI 兼容; 智谱 glm-4-flash 免费 / DeepSeek 思考模式）──
@@ -105,6 +106,38 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
    ④（若有）新证据改变了之前的哪个假设。尚未核验的内容用"可能/我记得/待核验"的口吻表述,
    不得把记忆当作已确认事实。写完工作笔记后再宣告本轮工具调用。这段笔记不是最终答案——
    不得在此提前输出完整回答或结论; 不再调用工具的那一轮直接输出最终回答, 无需工作笔记。
+0.5.【研究需求决策（先决策, 后检索; 机械强制）】任何检索类工具（search_books/get_chapter/
+   search_scholarship/websearch 等）执行前, 必须先用 declare_research_need 登记:
+   RESEARCH_NEED（五选一）+ EVIDENCE_GAP（一句话: 本次要补的具体证据缺口）。
+   类别语义与 soft 检索预算: NONE = 基本概念解释 / 概念辨析 / 逻辑方法与谬误分析 /
+   普通哲学推理 / 基于用户给定前提的论证分析 / 思想实验的机制讨论 / 不依赖事实与
+   出处的日常哲学——预算 0, 不检索直接作答; PRIMARY = 回答的正确性取决于某部具体
+   著作的原文措辞、章节位置或历史出处（精确引文/出处核验/原典文本解读）——预算 3;
+   SCHOLARLY = 用户明确要求学界/现代研究/论文/争议综述, 或回答确实依赖二手研究——
+   预算 4; WEB = 需要网络事实补充——预算 3; MIXED = 多通道证据需求——预算 6。
+   判断标准只有一条: 这个问题不查原文/文献就答不对吗? 概念题、辨析题、方法论问题
+   答错的原因是思考不清, 不是没查书——通识可靠即可作答, 一律 NONE; 「查了更显得
+   扎实」不是检索理由, 不得为显得学术而升级类别。日常生活的选择、习惯、人际、
+   情境反思类问题一律 NONE——它们的回答质量来自分析本身, 不来自引用密度; 若你发现
+   自己想在 NONE 类问题的回答里放【《书》·章】引用标注, 那正是类别误判的信号。
+   提及思想家/术语/经典例子（如"举反例""证伪"这类逻辑概念）不需要核对其出处——
+   只有当用户明确问出处、或你打算给出逐字引文/正式【《书》·章】标注时才需要证据;
+   靠记忆提及名词时按铁律 9 降级措辞即可, 这不构成检索理由。需要用某概念作答时
+   （如用某术语分析问题）, 用你自己的准确转述解释概念、自己构造例子即可——
+   回去检索该概念的经典原文例证不是证据缺口, 是把"答得更好看"误当成了证据需求。
+   用户没有证据需求就不扩展研究;
+   判断错了可以再次 declare 升级修正（全部留痕, 不算错误）。NONE 类问题直接作答时
+   无需 declare。declare 可与检索工具同批宣告（先 declare 后检索, 不必单独一轮）。
+   非 NONE 类别的 declare 必须同时置 source_dependent=true（确认回答正确性确实依赖
+   特定文献/出处）并给出具体化的 evidence_gap——缺任一项登记不生效, 机械要求补正一次;
+   这一步就是让你在升级类别前最后自问一次: 不查就答不对吗?
+   超出 soft 预算的检索会被机械拒绝; 确有未解决的证据缺口时, 在 declare 中同时给出
+   budget_extension_reason 与 unresolved_evidence_gap 申请延展——没有理由不得继续检索。
+0.6.【证据缺口停止规则】每次检索后自问两个事实: EVIDENCE_GAP_FILLED（缺口是否已补）/
+   NEW_INFORMATION_GAIN（本次是否带来新信息）。缺口已补 → 立即 declare（gap_filled=true）
+   并停止研究、综合作答; 上一次检索没有带来新信息（空命中/同结果）→ 禁止同通道换同义词
+   碰运气（高相似查询会被机械拒绝）——要么换明确不同的数据源/证据目标重新表述,
+   要么收口作答并如实标注证据边界。
 1. 【研究纪律: 检索—阅读闭环】凡涉及具体哲学主张/概念/出处/原话, 必须以真实的检索与阅读
    支撑结论, 不得凭记忆作答:
    - 先 search_books 定位; 命中候选后, 下一步就是 get_chapter 读取对应篇章原文,
@@ -113,10 +146,10 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
      未经原文核验前不得以确定口吻陈述;
    - 若原文核验修正了你的工作假设（如记忆中出处/对象有误、与相邻章句混淆）,
      最终回答必须明确指出修正了什么;
-   - 工具是你主动使用的研究手段, 不存在配额管制: 只要 additional 检索/阅读可能实质
-     提升可靠性、深度或出处根基, 就主动去做——对可外部验证的主张、引文、出处与史实,
+   - 检索由研究需求治理（铁律 0.5/0.6）: 对可外部验证的主张、引文、出处与史实,
      优先直接证据而非记忆; 对解读类问题, 应收集足以呈现最强相关解读的证据, 而不是
-     停留在第一个貌似可行的读法; 只要还有证据可能实质改善回答, 就继续研究;
+     停留在第一个貌似可行的读法——预算的目的不是限制质量, 而是强制每次检索都对应
+     一个明确的证据缺口;
    - 研究校准: 获得实质证据后更新你的研究问题——后续检索应指向尚存的不确定性、
      缺失来源或冲突解读, 不要因为"还能再搜"就对同一问题反复发同义词变体检索;
      重要主张已充分落地、继续研究不太可能实质改善回答, 或问题不依赖逐字核验且
@@ -153,15 +186,16 @@ SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智
 4'. 多轮修改: 用户说"修改/重写/改一下刚才的作文" → 调 write_essay 并传 modify; 说"修改/换成/调整刚才的图" → 调 generate_image（工具自动基于上次结果修改, 无需额外参数）。
 4''''. 工具选择的关键区分: "画星图/关系图/脑图/思想地图/论证依赖图/以X为中心的图" → **conceptual_map**（关系结构图）; "生成图片/插画/画像/艺术图" → generate_image（AI 艺术图像）。星图是结构图不是画——选错会答非所问。
    评审仲裁: 输入是单个论证/短文本说"评审" → analyze_argument（逻辑结构）; 输入是完整论文/文章 → paper_review（整体同行评审）——按输入形态与工具能力匹配选择, 不按关键词机械匹配。
-5. 检索纪律: 避免无意义重复——同一关键词不重复查; 检索覆盖不足时换新关键词补充; 材料充分后停止检索直接回答。检索次数不受限制, 以回答质量为准。
+5. 检索纪律: 避免无意义重复——同一关键词不重复查; 检索覆盖不足时换新关键词补充; 材料充分后停止检索直接回答。检索受研究需求类别与 soft 预算治理（铁律 0.5/0.6）, 把次数用在真正产生新信息的检索上。
 5'. 工具结果所有权（Phase T, 重要）: reasoning 类专用工具（compare_views/dialectic/analyze_argument/
    paper_review/advisor_council/thought_experiment/conceptual_map/socratic_tutor/confrontation）返回的是
    **结构化脚手架**（比较轴线/辩证运动字段/论证结构/图结构/单个问题）——不是最终答案。你必须结合证据契约、
    对话语境与用户指令**二次综合**后再作答, 不得把工具产物原样照搬充当最终回答。
    例外（USER_REQUESTED_ARTIFACT）: write_essay/generate_image/essay_outline 的产物本身就是用户请求的对象, 可较完整呈现。
 5''. 输出 mermaid 图（mindmap/flowchart）的规范: ①每个节点一行, 不写一行式图（mindmap 用缩进层级, flowchart 每行一条边）; ②节点文本内换行用 <br/> 而非换行符; ③节点文本含特殊字符（括号/引号/斜杠）时用双引号包裹; ④全图节点 ≤ 15 个。
-6. 若原典库检索无结果或覆盖不足, **先调用 websearch 上网补充（1~2 次, 换关键词重试）**, 仍无结果才如实说明"库中未检索到"——不硬答、不编造。
-6'. 【主动上网搜索】websearch 不是兜底摆设, 遇到以下情形**应当主动调用**:
+6. 若原典库检索无结果或覆盖不足, 先把研究需求升级为 WEB/MIXED 通道, 再调用 websearch
+   上网补充（1~2 次, 换关键词重试）, 仍无结果才如实说明"库中未检索到"——不硬答、不编造。
+6'. 【主动上网搜索】websearch 属 WEB/MIXED 通道——登记相应研究需求后, 遇到以下情形应当主动调用:
    ① 问题超出 403 本原典库范围（现当代哲学研究、其他文化传统、跨学科内容、时事引用）;
    ② 库内检索多轮仍找不到关键事实（著作年代/版本/学界共识/人物生平细节）;
    ③ 对自己的记忆有怀疑、需要交叉验证的论断。
@@ -242,6 +276,22 @@ def _build_tools():
 
 TOOLS_LG = _build_tools()
 
+# ── O10-R1: 研究需求声明工具（general 专属; 真实登记在 tools_node 拦截层）──
+_declare_tool_cache = None
+
+def _declare_tool():
+    global _declare_tool_cache
+    if _declare_tool_cache is None:
+        fields = {}
+        for pname, pmeta in RD.DECLARE_TOOL_PARAMETERS.get("properties", {}).items():
+            ann = bool if pmeta.get("type") == "boolean" else str
+            fields[pname] = (ann, Field(description=pmeta.get("description", "")))
+        schema = create_model("declare_research_need_args", **fields)
+        _declare_tool_cache = StructuredTool.from_function(
+            func=RD.declare_tool_stub, name=RD.DECLARE_TOOL_NAME,
+            description=RD.DECLARE_TOOL_DESCRIPTION, args_schema=schema)
+    return _declare_tool_cache
+
 # 哲学家智能体的人格保持提醒（每轮注入——多轮对话后 reasoning 易回归任务规划腔）
 PERSONA_THINK_REMINDER = (
     "（记住: 你就是你——不是'用户要求你回答'的助手。"
@@ -293,9 +343,9 @@ PHILO_TOOL_DEFS = {
 }
 
 def _tools_for_agent(agent):
-    """按智能体组装工具集: general=全部; 哲学家=共享原典工具 + 专属四件套"""
+    """按智能体组装工具集: general=全部 + 研究需求声明工具（O10-R1）; 哲学家=共享原典工具 + 专属四件套"""
     if agent == "general":
-        return TOOLS_LG
+        return TOOLS_LG + [_declare_tool()]
     shared = [t for t in TOOLS_LG if t.name in AGENTS.PHILO_SHARED_TOOLS]
     extra = []
     for tn in AGENTS.PHILO_EXTRA_TOOLS:
@@ -347,7 +397,8 @@ C. 解释类问题: 学界确有争议时, 不得把一个解释写成"X 显然�
 文本事实 / 学界共识 / 有争议的解释 / 你的综合判断——不必每句打印标签, 但表述要如实反映地位。
 
 D. 证据使用: 主动但不机械。当工具能明显提高可靠性/文本定位/解释深度/书目真实性/历史准确性时
-主动使用; 不设任何工具数量或文献数量配额。原典主张、原文措辞、论证重建优先用原典工具; 逐字
+主动使用; 检索量由研究需求类别与 soft 预算治理（系统提示铁律 0.5/0.6, 延展须留痕）,
+预算对应证据缺口, 不是质量上限。原典主张、原文措辞、论证重建优先用原典工具; 逐字
 引文必须来自实际检索证据, 不得凭记忆生成。
 
 E. 二手文献 = 独立研究通道, 完整链路: LOCATE → SELECT → READ → SYNTHESIZE
@@ -379,7 +430,9 @@ get_scholarly_source = READ（内容证据）。ABSTRACT_AVAILABLE 只表示"有
 观点"不构成跳过 scholarly retrieval 的理由——可验证的书目身份、学者归因和文献内容
 需要工具提供 provenance, 不是模型记忆能替代的; ③ 文献存在性与书目必须来自
 search_scholarship / get_scholarly_source 的真实检索记录, 不得凭记忆补书目;
-不设任何检索数量或文献数量配额: 搜什么、读什么、何时停止由你根据研究价值自主决定。
+检索数量由 SCHOLARLY/MIXED 类 soft 预算治理（系统提示铁律 0.5/0.6; 确有未解决的
+证据缺口可申请延展并留痕）; 搜什么、读什么、何时停止仍由你根据研究价值与证据缺口
+自主决定——缺口闭合立即停止。
 综合纪律: 只把真正改变、限定、反驳或深化当前解释的研究写进答案。每个实际使用的
 secondary source 应有明确作用（support / challenge / qualify / alternative
 interpretation / research direction）, 不得把检索结果列表直接当作学术综合。
@@ -642,6 +695,7 @@ class AgentState(TypedDict):
     budget: Any           # ToolBudget（A3; O4 后只剩 hard 资源上限 + 遥测计数）
     trace: Any            # ToolLoopTrace（A1）
     tool_count: int       # 本轮已执行工具调用总数（A3 total 预算口径）
+    discipline: Any       # O10-R1: ResearchDiscipline（检索纪律状态机; general 专属, 其他 agent 为 None）
     # ── O5: 执行事实与共享工具记录（对象经内存态传递）──
     # O4/O4-RP1 删除的 state 字段: retrieval_count / no_gain_streak / round_all_low /
     # round_any_low / retrieval_state / reentry / user_message（Shadow cognition
@@ -661,6 +715,45 @@ class AgentState(TypedDict):
     # O7-E RCA-1 H2 §A: repair 输出模式（机械字段, 非语义路由——
     # 依据=adapter 存在 AND issue codes 可局部化）; LOCAL_PATCH 与 FULL_REWRITE 互斥
     repair_output_mode: str   # None | "FULL_REWRITE" | "LOCAL_PATCH"
+
+def _compact_consumed_tool_messages(msgs, discipline):
+    """O10-R1 Token/Context Discipline: 已被模型消费过的工具结果 → 有界紧凑引用。
+
+    V1 实测: 每轮携带全量工具结果使 input token 随轮次 10k→21k 线性膨胀
+    （14 题 2.46M tokens, 直接烧穿供应商账户）。合同:
+      - 只压缩"最后一个 AIMessage 之前"的工具消息（已被模型看过的历史轮）;
+        最后一次宣告之后的工具结果保持全文（当前工作集, 就近引用能力不变）;
+      - 长文本载体（章节原文/文献内容）保留头尾窗口, 其余保留摘要窗口;
+      - raw_tool_log / tool_log（确定性校验与证据契约的数据源）不在此路径,
+        全量保留——压缩只作用于 LLM 上下文, 不触碰任何校验数据源;
+      - 已压缩消息经 _compacted 标记幂等跳过。"""
+    last_ai = -1
+    for i, m in enumerate(msgs):
+        if isinstance(m, AIMessage):
+            last_ai = i
+    if last_ai < 0:
+        return
+    for i, m in enumerate(msgs):
+        if i >= last_ai:
+            break
+        if not isinstance(m, ToolMessage):
+            continue
+        ak = m.additional_kwargs if isinstance(m.additional_kwargs, dict) else {}
+        if ak.get("_compacted"):
+            continue
+        full = m.content or ""
+        if not full:
+            continue
+        ref = RD.compact_reference(m.name or "", ak.get("_args") or {}, full,
+                                   str(ak.get("_rh") or ""))
+        saved = max(0, len(full) - len(ref))
+        m.content = ref
+        ak["_compacted"] = True
+        ak["_compacted_from_chars"] = len(full)
+        m.additional_kwargs = ak
+        if discipline is not None:
+            discipline.record_compaction(saved)
+
 
 async def agent_node(state):
     msgs = list(state["messages"])
@@ -697,7 +790,10 @@ async def agent_node(state):
     # O1: 机械 timing observability——Main Agent invocation 的起止时长入 trace;
     # 每次模型调用开启一个新的 decision group（本组内宣告的工具归属该组）。
     _trace_ref = state.get("trace")
+    discipline = state.get("discipline")
     _llm_t0 = time.time()
+    # ── O10-R1 Token/Context Discipline: 消费过的工具结果压缩为紧凑引用 ──
+    _compact_consumed_tool_messages(msgs, discipline)
     if _trace_ref is not None:
         try:
             _trace_ref.begin_group()
@@ -709,6 +805,19 @@ async def agent_node(state):
     if _trace_ref is not None:
         try:
             _trace_ref.record_phase("llm_invocation", _llm_t0, msgs_len=len(msgs))
+        except Exception:
+            pass
+    # ── O10-R1: 逐轮 token 计量（真实 usage_metadata; 无则留空不伪造）──
+    if discipline is not None:
+        try:
+            _um = getattr(resp, "usage_metadata", None) or {}
+            _fresh_chars = sum(len(m.content or "") for m in msgs
+                               if isinstance(m, ToolMessage)
+                               and not ((m.additional_kwargs or {}).get("_compacted")))
+            discipline.record_round_usage(
+                len(discipline.context_discipline["rounds"]) + 1,
+                input_tokens=_um.get("input_tokens"), output_tokens=_um.get("output_tokens"),
+                tool_chars_added=_fresh_chars)
         except Exception:
             pass
     # O5: model_retries state 字段已删（write-only）——重试计数真源 = trace.model_retries
@@ -776,6 +885,7 @@ async def tools_node(state):
     trace = state.get("trace")
     raw_log = state.get("raw_tool_log")
     ev_state = state.get("evidence_state")
+    discipline = state.get("discipline")   # O10-R1: general 专属, 哲学家 agent 为 None
     retrieval_set = set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS)
     TOOL_TIMEOUT = AR.TOOL_TIMEOUT   # 工具执行超时（防挂起; Phase A 收编为配置）
     forced = bool(state.get("forced"))
@@ -803,6 +913,8 @@ async def tools_node(state):
                                additional_kwargs={"_args": args, "_result_full": skip_res,
                                                   "_budget_class": "ceiling", "_info_gain": "",
                                                   "_dg": getattr(trace, "current_group", None)})
+        # ── O10-R1: 检索纪律门在 tools_node 同步相位统一执行（见 run_one 之下）——
+        # 并行批的兄弟调用必须互相可见, 否则同批 5 连发可全部越过 4 次 soft 预算。──
         # ── O3 §3: 精确重复复用（机械判重: 同工具 + 归一化后完全相同参数）──
         decision = guard.decide(name, args) if guard else {"action": "execute", "cls": "unique", "reason": ""}
         if decision["action"] == "reuse":
@@ -821,6 +933,7 @@ async def tools_node(state):
                                tool_call_id=call.get("id", ""),
                                additional_kwargs={"_args": args, "_result_full": prev,
                                                   "_budget_class": "duplicate", "_reused": True,
+                                                  "_rh": AR.result_hash(prev),
                                                   "_info_gain": "repeat",
                                                   "_dg": getattr(trace, "current_group", None)})
         # ── A3/A1: 执行（带预算口径的轮内重试）──
@@ -866,6 +979,10 @@ async def tools_node(state):
         info_gain = ""
         if not is_err and name in retrieval_set:
             info_gain = "empty" if AR.result_is_empty(res) else "new"
+        # ── O10-R1: 检索纪律执行事实登记（仅成功执行计入 soft 预算与相似判定;
+        #     失败/复用不计入——失败重试合法性由 DuplicateGuard 独立判定）──
+        if discipline is not None and not is_err and name in RD.DISCIPLINE_RETRIEVAL_TOOLS:
+            discipline.record(name, args, rh, info_gain)
         # ── O5: EvidenceState 事实登记（纯事实: 已读章节/主文本已读/定位线索命中/
         #     执行计数——成败都登记检索计数, 只有成功读取才置位 READ; 无任何
         #     准入/配额/义务判定）──
@@ -925,12 +1042,185 @@ async def tools_node(state):
                            tool_call_id=call.get("id", ""),
                            additional_kwargs={"_args": args, "_result_full": res,
                                               "_budget_class": cls, "_info_gain": info_gain,
+                                              "_rh": rh,
                                               "_dg": getattr(trace, "current_group", None)})
 
     base_index = state.get("tool_count", 0)
-    results = await asyncio.gather(*[run_one(c, base_index + i) for i, c in enumerate(calls)])
+    # ── O10-R1: 同批声明先于检索登记（机械序）──
+    # 模型被要求 declare_research_need 与检索同批宣告且先 declare; 本处对整批
+    # 先同步处理全部声明（登记即时生效）, 再放行本批检索——批内次序归一化,
+    # 不依赖模型输出 tool_calls 的数组顺序。
+    decl_indices = set()
+    if agent == "general" and discipline is not None:
+        decl_indices = {i for i, c in enumerate(calls)
+                        if c.get("name") == RD.DECLARE_TOOL_NAME}
+    results = [None] * len(calls)
+    decl_results = {}
+    for i in sorted(decl_indices):
+        call = calls[i]
+        dargs = call.get("args") or {}
+        dres = discipline.declare(
+            research_need=dargs.get("research_need"),
+            evidence_gap=dargs.get("evidence_gap"),
+            gap_filled=bool(dargs.get("gap_filled")),
+            budget_extension_reason=dargs.get("budget_extension_reason"),
+            unresolved_evidence_gap=dargs.get("unresolved_evidence_gap"),
+            source_dependent=dargs.get("source_dependent"))
+        if trace:
+            trace.record_call(base_index + i, RD.DECLARE_TOOL_NAME, dargs, 0.0, True, None,
+                              json.dumps(dres, ensure_ascii=False)[:200],
+                              AR.result_hash(dres), "declaration", "", 0,
+                              executed=True, thought="研究需求登记",
+                              decision_group=getattr(trace, "current_group", None),
+                              tool_call_id=call.get("id"))
+        decl_results[i] = ToolMessage(content=json.dumps(dres, ensure_ascii=False)[:4000],
+                                      name=RD.DECLARE_TOOL_NAME,
+                                      tool_call_id=call.get("id", ""),
+                                      additional_kwargs={"_args": dargs, "_result_full": dres,
+                                                         "_budget_class": "declaration",
+                                                         "_info_gain": "",
+                                                         "_dg": getattr(trace, "current_group", None)})
+    # ── O10-R1: 检索纪律机械门（同步相位, 批内串行化）──
+    # 声明缺失 / 类别禁止 / 通道错配 / 软预算 / 无新信息循环——逐调用过门;
+    # 过门者先 reserve 占位（兄弟调用互相可见）, 被拒者就地返回结构化拒绝
+    # （不进入执行 gather, 不消耗任何执行预算）。拒绝是机械事实, 不暗含
+    # "证据已充分"; 每条拒绝消息给出 Main Agent 可执行的下一步。
+    gate_blocked = {}
+    other_indices = []
+    # ── O10-R1 (P0-02): 词序不敏感精确复用（bag-of-words 等价查询 → 复用首次结果）──
+    # 「A B C」与「C B A」对检索 API 是同一查询——换词序重复执行曾被审计判为
+    # NO_NEW_INFORMATION_LOOP（RUN6 G07 实况）。缓存命中非新检索, 不占软预算,
+    # 也不需要纪律门放行; guard 生命周期 = invocation, 跨轮复用。
+    bag_map = getattr(guard, "_bag_success", None)
+    if bag_map is None:
+        bag_map = {}
+        setattr(guard, "_bag_success", bag_map)
+    bag_fp_by_index = {}
+    for i in range(len(calls)):
+        if i in decl_indices:
+            continue
+        call = calls[i]
+        name = call.get("name", "")
+        args_i = call.get("args") or {}
+        # ① bag 等价复用（优先于纪律门: 复用既有结果零成本、零新检索）
+        bfp = RD.query_bag_fingerprint(name, args_i)
+        if bfp is not None:
+            if bfp in bag_map:
+                prev_msg = bag_map[bfp]
+                prev_kw = (getattr(prev_msg, "additional_kwargs", {}) or {})
+                if trace:
+                    trace.record_call(base_index + i, name, args_i, 0.0, True, None,
+                                      json.dumps(prev_kw.get("_result_full") or {},
+                                                 ensure_ascii=False)[:200],
+                                      AR.result_hash(prev_kw.get("_result_full")),
+                                      "duplicate", "repeat", 0, executed=False,
+                                      thought="BAG_EQUIVALENT_REUSED（词序等价查询复用此前结果）",
+                                      decision_group=getattr(trace, "current_group", None),
+                                      tool_call_id=call.get("id"))
+                if budget:
+                    budget.count(name, "duplicate", executed=False)
+                results[i] = ToolMessage(
+                    content=(prev_msg.content or "")[:4000], name=name,
+                    tool_call_id=call.get("id", ""),
+                    additional_kwargs={"_args": args_i,
+                                       "_result_full": prev_kw.get("_result_full"),
+                                       "_budget_class": "duplicate", "_reused": True,
+                                       "_rh": prev_kw.get("_rh"), "_info_gain": "repeat",
+                                       "_dg": getattr(trace, "current_group", None)})
+                continue
+        # ② 检索纪律机械门
+        if discipline is not None and name in RD.DISCIPLINE_RETRIEVAL_TOOLS:
+            verdict = discipline.gate_query(name, call.get("args") or {})
+            if verdict is not None:
+                discipline.record_blocked(name, verdict.get("error", ""))
+                if trace:
+                    trace.record_call(base_index + i, name, call.get("args") or {}, 0.0, False,
+                                      verdict.get("error"),
+                                      json.dumps(verdict, ensure_ascii=False)[:200],
+                                      AR.result_hash(verdict), "discipline_blocked", "", 0,
+                                      executed=False, thought=verdict.get("error", ""),
+                                      decision_group=getattr(trace, "current_group", None),
+                                      tool_call_id=call.get("id"))
+                gate_blocked[i] = ToolMessage(
+                    content=json.dumps(verdict, ensure_ascii=False)[:4000], name=name,
+                    tool_call_id=call.get("id", ""),
+                    additional_kwargs={"_args": call.get("args") or {}, "_result_full": verdict,
+                                       "_budget_class": "discipline_blocked",
+                                       "_info_gain": "",
+                                       "_dg": getattr(trace, "current_group", None)})
+                continue
+            discipline.reserve()
+        other_indices.append(i)
+    # ── O10-R1 (P0-02): 批内精确去重 ──
+    # 并行批的同参兄弟调用互相可见: DuplicateGuard 的 decide/record 发生在执行时刻,
+    # 同批两个相同 (tool, args) 会双双通过 decide 而重复执行（RUN2 P03 实况）。
+    # 与 guard 同口径（REUSE_SAFE_TOOLS + 完整指纹）; 被去重者复用首个结果并照常
+    # 获得终态回传（§17: 每个宣告的 tool_call_id 都有终态）, 预算计 duplicate 不占执行。
+    exec_indices = []
+    batch_first = {}
+    dup_pairs = {}   # dup index -> 首个同参调用 index
+    for i in other_indices:
+        name = calls[i].get("name", "")
+        if name in AR.REUSE_SAFE_TOOLS:
+            full_fp, _ = AR.call_fingerprint(name, calls[i].get("args") or {})
+            if full_fp in batch_first:
+                dup_pairs[i] = batch_first[full_fp]
+                continue
+            batch_first[full_fp] = i
+        exec_indices.append(i)
+    gathered_map = {}
+    if exec_indices:
+        gathered = await asyncio.gather(*[run_one(calls[i], base_index + i)
+                                          for i in exec_indices])
+        for j, i in enumerate(exec_indices):
+            gathered_map[i] = gathered[j]
+    for i, msg in decl_results.items():
+        results[i] = msg
+    for i, msg in gate_blocked.items():
+        results[i] = msg
+    for i in exec_indices:
+        results[i] = gathered_map[i]
+    for dup_i, first_i in dup_pairs.items():
+        first = gathered_map.get(first_i)
+        first_kw = (getattr(first, "additional_kwargs", {}) or {}) if first is not None else {}
+        dup_kw = {"_args": calls[dup_i].get("args") or {},
+                  "_result_full": first_kw.get("_result_full"),
+                  "_budget_class": "duplicate", "_reused": True,
+                  "_rh": first_kw.get("_rh"),
+                  "_info_gain": "repeat",
+                  "_dg": getattr(trace, "current_group", None)}
+        results[dup_i] = ToolMessage(
+            content=(first.content if first is not None else "")[:4000],
+            name=calls[dup_i].get("name", ""),
+            tool_call_id=calls[dup_i].get("id", ""),
+            additional_kwargs=dup_kw)
+        if budget:
+            budget.count(calls[dup_i].get("name", ""), "duplicate", executed=False)
+        if trace:
+            trace.record_call(base_index + dup_i, calls[dup_i].get("name", ""),
+                              calls[dup_i].get("args") or {}, 0.0, True, None,
+                              json.dumps(first_kw.get("_result_full") or {},
+                                         ensure_ascii=False)[:200],
+                              AR.result_hash(first_kw.get("_result_full")),
+                              "duplicate", "repeat", 0, executed=False,
+                              thought="批内同参去重复用",
+                              decision_group=getattr(trace, "current_group", None),
+                              tool_call_id=calls[dup_i].get("id"))
+    # ── bag 指纹登记: 成功执行的检索型调用进入词序等价复用池（跨轮）──
+    for i in exec_indices:
+        call = calls[i]
+        name_i = call.get("name", "")
+        res_kw = (getattr(gathered_map.get(i), "additional_kwargs", {}) or {})
+        res_full = res_kw.get("_result_full")
+        if name_i in RD.SEARCH_BAG_TOOLS and isinstance(res_full, dict) and not res_full.get("error"):
+            bfp_i = RD.query_bag_fingerprint(name_i, call.get("args") or {})
+            if bfp_i:
+                bag_map[bfp_i] = gathered_map[i]
+    if discipline is not None:
+        discipline.settle_batch()
     executed = sum(1 for r in results
-                   if (getattr(r, "additional_kwargs", {}) or {}).get("_budget_class") != "duplicate")
+                   if (getattr(r, "additional_kwargs", {}) or {}).get("_budget_class")
+                   not in ("duplicate", "declaration", "discipline_blocked"))
     # O4: no_gain_streak / round_all_low / round_any_low / retrieval_count 状态链已删——
     # 预算快照内的 no_gain 计数（遥测）保留。
     return {"messages": results,
@@ -1257,6 +1547,9 @@ def _activity_line(name, args, language="zh"):
     zh = language != "en"
     a = args if isinstance(args, dict) else {}
     q = str(a.get("query") or a.get("keyword") or "").strip()
+    if name == RD.DECLARE_TOOL_NAME:
+        cls = str(a.get("research_need") or "").strip().upper()
+        return f"登记研究需求（{cls or '待定'}）…" if zh else f"Registering research need ({cls or 'pending'})…"
     if name == "search_books":
         if q:
             return f"正在检索「{q[:24]}」…" if zh else f"Searching \"{q[:24]}\"…"
@@ -1411,7 +1704,12 @@ _PLAN_USER_REQUEST_RE = re.compile(
 _PLAN_INTENT_RE = re.compile(
     r"(下一步|接下来|随后|然后)[^。！？]{0,6}我[^。！？]{0,6}(将|会|要|就|先|去|需)?[^。！？]{0,4}(并行)?(检索|搜索|查证|查找|核验|查阅|调研)"
     r"|(我将|我会|我要|让我|让我先|我先|我需要|先去|先来|需先)(并行)?(检索|搜索|查证|查找|核验|查阅|调研)"
-    r"|必须(用|基于)?(检索|查证)(到|获得)?(的)?(真实|可靠)?(文献|证据|二手文献)")
+    r"|必须(用|基于)?(检索|查证)(到|获得)?(的)?(真实|可靠)?(文献|证据|二手文献)"
+    # O10-R1: 研究需求登记词汇表的未来时宣告（RUN5 P06 实况: 「下一步：先登记研究需求
+    # 为 PRIMARY，并检索定位……再读取原文」整篇只剩计划）。锚定未来标记, 不误伤
+    # 过去时追述（「已登记研究需求……检索命中了……」不匹配）。
+    r"|(?:下一步|接着|准备|将|将要|要|需要)[:：，]?\s*(?:先|再|并)?登记研究需求"
+    r"[^。！？]{0,24}(?:并|再|然后)?(?:并行)?(?:检索|搜索|查证|查找|核验|读取|调研)")
 
 
 _PLAN_COMPLETION_RE = re.compile(
@@ -1622,6 +1920,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     guard = AR.DuplicateGuard()
     budget = AR.ToolBudget(retrieval_tools=set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS))
     trace = AR.ToolLoopTrace(conversation_id, message_id, agent, question_chars=len(req_message or ""))
+    # ── O10-R1: 检索纪律状态机（general 专属; 哲学家 agent 行为零改变）──
+    discipline = RD.ResearchDiscipline() if agent == "general" else None
     # ── O5: EvidenceState（纯事实登记器; 旧义务台账 / RetrievalState 语义统计已删）──
     evidence_state = EvidenceState()
     raw_tool_log = []   # 共享 raw 工具记录（tools_node 写入; 引用核验/证据契约消费; result_full 保留到收口）
@@ -1734,14 +2034,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         pending = {"text": "", "has_tools": False, "started": set(), "note_emitted": False}
         pending_tools.clear()
         async for chunk, metadata in APP.astream(
-                {"messages": msgs, "agent": agent, "language": language,
-                 "guard": guard, "budget": budget, "trace": trace,
-                 "no_tools": no_tools, "repair_mode": repair_mode,
-                 "repair_output_mode": repair_output_mode,
-                 "tool_count": 0,
-                 "evidence_state": evidence_state,
-                 "raw_tool_log": raw_tool_log},
-                config, stream_mode="messages"):
+                    {"messages": msgs, "agent": agent, "language": language,
+                     "guard": guard, "budget": budget, "trace": trace,
+                     "discipline": discipline,
+                     "no_tools": no_tools, "repair_mode": repair_mode,
+                     "repair_output_mode": repair_output_mode,
+                     "tool_count": 0,
+                     "evidence_state": evidence_state,
+                     "raw_tool_log": raw_tool_log},
+                    config, stream_mode="messages"):
             node = metadata.get("langgraph_node", "")
             # O1 因果观测: tools→agent 回到 agent 节点 = 一次新的 Main Agent invocation
             # （tool batch 结束后若再有认知工具, 必须由这次新 invocation 宣告——T3 断言依据）
@@ -2616,6 +2917,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                               "model_retries": trace.model_retries if trace else 0,
                               "recovered_after_error": bool(stream_error),
                               "no_gain_calls": budget.no_gain if budget else 0},
+               # O10-R1: 检索纪律遥测（声明链/软预算/被拒调用/token 纪律——审计用, 无控制语义）
+               "research_discipline": discipline.snapshot() if discipline else None,
                # O1: 单智能体因果链审计块——
                # engine_cognitive_auto_tools 恒为 0（引擎不再代执行任何认知性工具;
                # 全部 top-level 工具由 Main Agent 宣告, UAT/回归断言用）。

@@ -1,0 +1,239 @@
+{
+ "case_id": "DEV_G05",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "「体验机器」（experience machine）思想实验在当代研究中的争论现状如何？请提供近年学术文献与双方主要论证。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_1RNVhzlOccFFnkGLtQ0Q0171"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_cIrAFRVzBoS0SlPuIZm41597"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_wbWz8sc71NWGH7PMARcX1335"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_aRjoniIDYxqaOXdI2stC7055"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_04_7x2TwEJ3eiNGGmrAU9lZ0451",
+   "result_head": "{'results': [], 'query': 'experience machine', 'method': 'lexical', 'degraded_reason': 'embedding_unavailable'}"
+  },
+  {
+   "name": "query_database",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_zSEnEcvrPF2xciZdh7BJ5578"
+  },
+  {
+   "name": "query_database",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_BPO0tawIaSbXGFV6AsGA9064"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_CES1gDNtdcW198bQ3OTq9948"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_YehshEVo6oyqcOqLvOps0427"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_cUimXR0ikaP230u5PbVR2912",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_99hDuL3T1lhf160wXw9n1757"
+  },
+  {
+   "name": "websearch",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_9EzwLTad4BoDZRF51svs7913"
+  },
+  {
+   "name": "websearch",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_XcBuOStAmjE6JdweW8wU2675",
+   "result_head": "{'results': [], 'query': 'experience machine thought experiment Nozick literature debate Weijers De Brigard', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "用户明确要求\"近年学术文献与双方主要论证\"，需检索诺齐克体验机器思想实验的当代学界争论文献（书目+可读摘要），并核验诺齐克原典中的原始表述。",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "前四次检索（原典库+学术 Crossref/OpenAlex 通道）全部返回空且 provider 报错，诺齐克体验机器思想实验的原典原文与当代争论文献均未取得，需网络通道补充作者原话与近年文献书目。",
+    "gap_filled": false,
+    "budget_extension_reason": "SCHOLARLY 通道两次调用均因 provider URL_BLOCKED 返回 0 结果，本地原典库对\"体验机器/experience machine\"无命中，用户明确要求的文献证据缺口完全未闭合，属确有必要继续检索。",
+    "unresolved_evidence_gap": "诺齐克《无政府、国家与乌托邦》中体验机器段落的措辞，以及当代学界（如 Weijers、De Brigard、Silverstein、Kolber 等）对方论证的可核验书目与主张。"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2397,
+ "final_answer": "## 先说明本次检索的边界\n\n这个话题我本应为你调出原典原文与近年文献，但**本次会话的三个证据通道都没有返回结果**：403 本原典库里检索不到\"体验机器/experience machine\"相关段落（诺齐克的《无政府、国家与乌托邦》看来不在库中）；学术文献检索（Crossref/OpenAlex）连续返回空且伴有数据源访问错误；网络检索也提示\"Bing 与维基百科均不可达\"。\n\n因此我要坦率地界定下面回答的认识论地位：**凡涉及具体文献的书目、作者主张、发表年份，均为我的记忆线索，未经本次核验**，请你按文末提示自行核对或换一个检索环境重试；只有\"该实验意味着什么、争论的真正焦点在哪\"这部分概念分析，是我可以在不依赖检索的情况下负责地展开的。\n\n---\n\n## 一、实验的基本设定与诺齐克的三条理由（记忆，未经库中核验）\n\n思想实验出自诺齐克《无政府、国家与乌托邦》（1974）讨论\"幸福\"（happiness）与\"体验\"的部分。设定大意是：假设有一台机器能给你任何你想要的体验——写一部小说、结交朋友、读一本好书，全都能通过电极刺激直接\"体验到\"，而你在机器里不会知道自己是缸中之脑。问题是：你会不会预先把自己接进去，度过余生？\n\n诺齐克说多数人会拒绝，并给出三条理由（以下是大意转述，非逐字原文）：\n\n1. **我们想\"做\"某些事，而不只是想\"有\"做这些事的体验。** 我们想真正地行动、真正地成就，而不只是感觉自己在成就。\n2. **我们想以某种方式\"存在\"（be a certain way），想成为某种人。** 泡在缸里的一团东西算不上勇敢、善良或智慧。\n3. **体验机器把我们限制在一个人造的现实之内。** 它让我们无法接触比这更深的现实。\n\n提示：这三条理由的确切措辞和所在小节我未能核验，故不给出正式的章节引用标注。若你需要逐字原文，应查阅该书第三部分乌托邦中论幸福的那一节。\n\n---\n\n## 二、当代争论的两条主线（均为记忆线索，待核验）\n\n### （A）支持诺齐克直觉的一方\n\n传统上，这个实验被当作**对享乐主义（hedonism）和一切\"福利主义\"幸福理论的标准反例**：如果多数人拒绝机器，说明\"幸福\"不等同于\"好的体验\"，好的体验之外还有被人们看重的东西（真实性、成就、自主、与他人的真实关联）。这一用法在规范伦理学教材与福利（well-being）理论文献中被广泛沿用。\n\n### （B）质疑该直觉论证力的一方——这是近年争论的主力\n\n近二十年的质疑大致分两路：\n\n**1. 哲学分析路向：** 有论者（我记忆中包括 Eden Lin 的一篇论\"如何使用体验机器\"的文章）主张，机器直觉真正测出的可能不是\"享乐主义错\"，而是**内在价值与工具价值之别**，或人们对不同价值的排序方式；因此不能把它当成一记直球反例来用。Weijers 一系的工作则质疑被试用**其他逃避现实的例子**（长时间看电视、沉浸小说、游戏）来类比，认为人们并不真的排斥非真实体验，从而怀疑机器直觉的普遍性。\n\n**2. 实验哲学/经验研究路向：** 记忆中最有名的研究是 Felipe De Brigard 的实验，发现一种**\"现状偏好\"（status quo bias）**：当被试被告知\"你其实已经生活在机器里、可以出来\"时，多数人反而选择留下。若真如此，那么拒绝机器可能只是\"偏好现状\"这一心理倾向的产物，而非对真实性的价值判断。\n\n上述作者、论文题名与结论均未经本次核验。我特别提醒两点：① 那种认为 De Brigard 已经证明了现状偏好在起作用的归因，需以原文为准，我不应替你打包成定论；② 近年是否还有更新的复制研究或反驳，我无法确认。\n\n---\n\n## 三、争论真正的焦点在哪里（这部分是可以独立分析的）\n\n把文献线索放到一边，这场争论其实绕三个问题打架：\n\n1. **思想实验的\"直觉\"能否充当证据？** 反诺齐克者攻击的是**载体的可靠性**——从直觉跳到结论需要额外前提（如\"直觉反映真实价值排序\"），而这恰恰是争论点。这是整个实验哲学方法论的缩影。\n2. **现状偏好问题。** 即便有人拒绝机器，若动机只是\"害怕改变\"，那这份数据就不能支撑\"真实性本身有价值\"。反驳者会说：我们可以重构实验（让被试在机器与真实世界间对称选择）来剥离偏好污染。\n3. **理论层面的权衡。** 享乐主义并不会因为一个直觉就出局——支持者可以选择**修补理论**（区分内在价值/工具价值、重新表述\"善\"），或干脆**质疑直觉**（\"我们其实很愿意生活在幸福幻觉里\"，Weijers 方向）。这本质上是\"理论简洁性 vs 保存直觉\"的取舍。\n\n---\n\n## 四、研究入口（待核验线索，请自行核对）\n\n若你要系统跟进，我建议沿以下路径自行检索（**我无法在本次会话中替你核实这些条目的准确出版信息**）：\n\n- **回到源头**：诺齐克《无政府、国家与乌托邦》第三部分\"乌托邦\"论幸福的小节。\n- **经验研究方向**：以 \"De Brigard / status quo bias / experience machine\" 为关键词检索期刊（如 *Philosophical Psychology* 一系）。\n- **哲学反驳方向**：以 \"experience machine objection / hedonism / well-being\" 结合 Weijers、Lin 等作者名检索。\n- **背景理论**：福利（well-being）理论关于享乐主义、欲望满足论、客观清单理论的争论，是这场讨论的真正战场。\n\n最后一句提醒：本回答的**文献部分是记忆，未经核验**；如果你希望，我可以在原典库与网络通道恢复后，重新为你做一次带真实书目与摘要的核查。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "前四次检索（原典库+学术 Crossref/OpenAlex 通道）全部返回空且 provider 报错，诺齐克体验机器思想实验的原典原文与当代争论文献均未取得，需网络通道补充作者原话与近年文献书目。",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:17:54",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "用户明确要求\"近年学术文献与双方主要论证\"，需检索诺齐克体验机器思想实验的当代学界争论文献（书目+可读摘要），并核验诺齐克原典中的原始表述。"
+   },
+   {
+    "ts": "2026-09-13 11:18:03",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "前四次检索（原典库+学术 Crossref/OpenAlex 通道）全部返回空且 provider 报错，诺齐克体验机器思想实验的原典原文与当代争论文献均未取得，需网络通道补充作者原话与近年文献书目。",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:18:03",
+    "reason": "SCHOLARLY 通道两次调用均因 provider URL_BLOCKED 返回 0 结果，本地原典库对\"体验机器/experience machine\"无命中，用户明确要求的文献证据缺口完全未闭合，属确有必要继续检索。",
+    "unresolved_gap": "诺齐克《无政府、国家与乌托邦》中体验机器段落的措辞，以及当代学界（如 Weijers、De Brigard、Silverstein、Kolber 等）对方论证的可核验书目与主张。"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 8,
+  "blocked_calls": [
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:17:57"
+   },
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:17:57"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:17:57"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:17:57"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:17:57"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 68346,
+   "output_tokens": 5495,
+   "total_tokens": 73841
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 1476,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11614,
+     "output_tokens": 465,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13156,
+     "output_tokens": 542,
+     "tool_chars_added": 2645
+    },
+    {
+     "round": 3,
+     "input_tokens": 13748,
+     "output_tokens": 951,
+     "tool_chars_added": 1225
+    },
+    {
+     "round": 4,
+     "input_tokens": 16044,
+     "output_tokens": 2799,
+     "tool_chars_added": 2675
+    },
+    {
+     "round": 5,
+     "input_tokens": 13784,
+     "output_tokens": 738,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 68346,
+  "output_tokens": 5495,
+  "total_tokens": 73841
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 41.6
+}

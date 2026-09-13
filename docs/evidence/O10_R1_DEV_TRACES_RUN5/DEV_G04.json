@@ -1,0 +1,319 @@
+{
+ "case_id": "DEV_G04",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请综述学界对帕菲特（Parfit）人格同一性理论的主要争论：代表论文有哪些，争论焦点是什么？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_UUL4uB2q0f9rg4pUSpur6241"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_Yy3BE33N8C7OFWpiNmdu5527"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_qg8xgI7c12Xyc2yBQtQF4813",
+   "args": {
+    "query": "Parfit personal identity criticism animalism fission what matters",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Parfit personal identity criticism animalism fission what matters', 'results': [{'source_record_id': 'doi:10.4324/9781315708652-25', 'title': 'Person"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_VRt5eJtgkIHmFI7fFTxA3551"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_JrPIIJQ06wnAzYe2OU408952"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_BlDI8T2DCaYVuqiHcmYx1587"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_g3Us15Naybc889RJg12p7465",
+   "args": {
+    "query": "Parfit personal identity animalism biological continuity Olson critique",
+    "limit": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_3PHIx63snlrXmpaeJXEb6975",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尚缺动物主义/生物连续性理论（如 Olson）对帕菲特还原论的正面批评、以及裂变案例与\"what matters\"的核心二手讨论文献及其可读内容，无法综述争论版图",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "要回答\"学界主要争论\"，仅有苏伊卡宁与埃林两条证据不足以覆盖争议版图，必须补足动物主义批评与裂变/what matters 两条主线，否则会以偏概全",
+    "unresolved_evidence_gap": "动物主义（animalism）对帕菲特的批评文献、以及\"what matters in survival\"争论的代表研究与可读内容证据"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 尚缺动物主义/生物连续性理论（如 Olson）对帕菲特还原论的正面批评、以及裂变案例与\"what matters\"的核心二手讨论文献及其可读内"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_xZ2KH0RydCw7gZLA29Is4947"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_ZTC9NUocLbvQSEZWyytj7413"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_02_blligiGewaE4ukNISixk4754",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.3366/edinburgh/9781474486736.003.0010"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_tPcDQNKfrURU3ozolr4K8003"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_2RTQSXUN9aUP1up15vHK2963"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_lrWqygHKdPHS6Aj2HtwB5403",
+   "args": {
+    "requested_access": "ABSTRACT",
+    "source_record_id": "doi:10.1093/oso/9780192843432.003.0002"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1093/oso/9780192843432.003.0002', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780192843432.003.0002', 'title': '"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_8RdR1FnftGmAVmJKoRKc7791",
+   "args": {
+    "limit": 10,
+    "query": "Olson animalism personal identity Parfit reductionism objection",
+    "philosopher": "Eric Olson"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要定位学界关于帕菲特人格同一性理论（《Reasons and Persons》第三部分）的代表研究文献及其实际可读内容证据，以确认争论焦点（还原论 vs 非还原论、心理连续性、裂变案例、what matters、与动物主义/生物连续性理论的争论等）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尚缺动物主义/生物连续性理论（如 Olson）对帕菲特还原论的正面批评、以及裂变案例与\"what matters\"的核心二手讨论文献及其可读内容，无法综述争论版图",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "要回答\"学界主要争论\"，仅有苏伊卡宁与埃林两条证据不足以覆盖争议版图，必须补足动物主义批评与裂变/what matters 两条主线，否则会以偏概全",
+    "unresolved_evidence_gap": "动物主义（animalism）对帕菲特的批评文献、以及\"what matters in survival\"争论的代表研究与可读内容证据"
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "现有实读证据仅两条摘要，无法对称呈现争论双方；需读取帕菲特起点章节与反方（动物主义/同一性重要论）的可读摘要，否则综述会偏向一方",
+    "evidence_gap": "尚缺帕菲特本人核心章节（\"Why Our Identity Is not What Matters\"）与反方（Merricks《What Matters in Survival》）的可读内容证据",
+    "gap_filled": false,
+    "research_need": "SCHOLARLY",
+    "source_dependent": true,
+    "unresolved_evidence_gap": "争论起点文本与反方代表的实读摘要证据"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3118,
+ "final_answer": "## 一个先行的证据边界说明\n\n用户要的是\"学界综述\"，这要求二手文献的真实检索，而非凭记忆罗列。我检索了学术文献库并实际读取了若干来源的摘要层证据；但需坦白：本轮取得的主要是**摘要级（ABSTRACT_AVAILABLE）**与**书目级（METADATA_ONLY）**证据，我**未能读取任何一篇的全文**，也未能覆盖动物主义一脉的可读全文。因此下文中：凡标\"主题/题域\"者为题名与刊物所能确认；凡我实际读到摘要要点的，我会说明；凡属帕菲特理论的**结构性背景**（我据其理论与通行教科书知识整理），我会显式标为\"背景陈述，非本次核验\"。\n\n---\n\n## 一、争论的地形（焦点地图）\n\n帕菲特在《Reasons and Persons》（1984 初版 / 此处检索到的 1986 版）第三部分主张：人格同一性不是\"进一步的事实\"（a further fact），而可还原为大脑、身体与心理连续性等非人格化事实；真正\"重要的东西\"（what matters）是**关系 R**（心理连通性与/或连续性，且以恰当的原因为载体），同一性只是\"R + 无分支\"。（背景陈述，非本次核验）\n\n围绕这一点，学界的争论可归为五条轴线：\n\n1. **还原论 vs. 非还原论**——同一性是否是一个不可还原的\"进一步事实\"（简单论/实体论一方）。\n2. **裂变（fission）案例**——若两个后继者都与我有 R，同一性如何分配？\"重要之物\"是否随同一性一起丢失。\n3. **\"什么重要\"与同一性的关系**——what matters 是否可以被等同于同一性本身。\n4. **动物主义／生物学连续性**——我们根本上是生物有机体，而非心理连续性所构成者，故心理连续性标准本身站不住。\n5. **帕菲特理论前后期的一致性**——早期还原论与晚期伦理理论之间是否有张力。\n\n---\n\n## 二、代表性文献（按证据层级标注）\n\n**起点文本**\n\n- Derek Parfit，《Reasons and Persons》，\"Why Our Identity Is not What Matters\"，1986。【实读摘要级】该章摘要的要点方向是：即便脑分裂后的人无法再与我们是**同一个人**，他们仍可能以**包含一切审慎所重视之物的方式**与我们相关——这正是\"同一性并非重要之物\"的策略性论证。（摘要支持，未读全文）\n- 同书 \"Personal Identity and Morality\"。【仅书目级】只确认存在，不作内容归因。\n\n**裂变与\"什么重要\"一线**\n\n- Douglas Ehring，《What Matters in Survival》中 \"Fission and Indeterminacy\"，2021。【实读摘要级】题域为裂变情境下的不确定性，处理\"什么重要\"这一问题。（我读到的是摘要，未能确认其对同一性关系的具体结论）\n- Trenton Merricks，《Self and Identity》中 \"What Matters in Survival\"，2022。【实读摘要级】其论述回应\"什么重要\"之问。（我未能读到足以归因其具体立场的摘要内容，故不判断其属哪一\"阵营\"）\n\n**动物主义／还原论对质**\n\n- 《Personal Identity and Self-Consciousness》中 \"Animalism and Reductionism\"，2002。【仅书目级】确认存在；题名显示其处理动物主义与还原论之争，但我**未取得可读内容**，故不归因。\n- 另检索到同一文集 \"Parfit and 'What Matters in Survival'\"。【仅书目级】\n\n**还原论与伦理理论的张力**\n\n- Jussi Suikkanen，\"Parfit on Personal Identity and Ethical Theories\"，*Oxford Studies in Normative Ethics*，2025。【实读摘要级】处理帕菲特早期还原论与其后期伦理理论之间的张力。（摘要支持，未读全文）\n\n**跨传统比较**\n\n- 检索到 Barton，\"Friendship and Fission: Personal Identity in Derrida and Parfit\"。【仅书目级】确认存在。\n\n---\n\n## 三、争论焦点的展开（分层标注）\n\n**① 还原论之争（背景陈述）**　还原论者认为同一性事实可还原；非还原论者（如简单论传统，此处**未在本次检索中核验原文**）坚持同一性是基本的、不可还原的事实。帕菲特的对手因此可分为\"进一步事实论者\"与\"拒绝其思想实验方法者\"两类——但请注意，第二类我**没有取得文献证据**，仅作结构提示。\n\n**② 裂变与关系 R（摘要级 + 背景）**　这是帕菲特论证最关键的支点：裂变中\"重要之物\"似乎被保留，而同一性并未保留，由此推出同一性不重要。Ehring（2021）正是在\"裂变 + 不确定性\"的框架内推进此议题，但我未能读到足以断定他接受还是拒斥帕菲特结论的摘要内容——**此处不作猜测**。\n\n**③ \"什么重要\"是否等于同一性（摘要级）**　Merricks（2022）处理这一问题。反方的基本思路（背景陈述）是：同一性本身就是我们所关心的东西，用 R 去替代同一性是范畴错误。但因未读全文，我不把该立场明确归给 Merricks。\n\n**④ 动物主义（书目级）**　\"Animalism and Reductionism\"（2002）的存在确认了该争论线的历史存在，但我**没有可读内容**，无法复述其论证。\n\n**⑤ 前后期一致性（摘要级）**　Suikkanen（2025）关注早期还原论与晚期伦理理论的配合问题，说明学界确有\"帕菲特理论内部连贯性\"的讨论。\n\n---\n\n## 四、我的综合判断与研究路径\n\n**综合判断（Agent）**：就我实际取得的证据看，帕菲特人格同一性争论的**真正承重轴**是\"关系 R 能否承担同一性曾承担的实践角色\"——裂变案例与\"什么重要\"之问都是这一轴的展开；动物主义一线虽在书目上存在，但本轮未获得可读证据，故我不能声称已覆盖。\n\n**诚实的缺口**：我**未能读取任何全文**，动物主义（如 Olson 一脉）与简单论批评者（Wiggins、Williams、Swinburne、Johnston 等，均为记忆中的常见争论方，**未经本次库中核验**）的代表文本我**没有取得可读证据**，因此上述对这些人的提及仅为\"学界常见争论方\"的提示，**不作为已核验的文献归因**。如果你需要，我可以就其中某一支（例如动物主义对帕菲特的正面反驳）做一次专门的定向检索与阅读，补足全文层证据。\n\n**建议的继续阅读路径**（均为已确认存在的文献，可作入口）：帕菲特《Reasons and Persons》第三部分 → Merricks《Self and Identity》相关章 → Ehring《What Matters in Survival》 → Suikkanen（2025）关于伦理侧张力的讨论 → 动物主义文集中的批评章。这条路线的递进关系是：**起点论证 → \"什么重要\"之争 → 裂变的技术性处境 → 伦理后果 → 本体论层面的替代方案**。\n\n---\n\n要不要我针对你更关心的一条轴线（如动物主义反驳，或裂变案例的当代技术性讨论）做一次带全文证据的深入检索？",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "尚缺帕菲特本人核心章节（\"Why Our Identity Is not What Matters\"）与反方（Merricks《What Matters in Survival》）的可读内容证据",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:56:07",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "需要定位学界关于帕菲特人格同一性理论（《Reasons and Persons》第三部分）的代表研究文献及其实际可读内容证据，以确认争论焦点（还原论 vs 非还原论、心理连续性、裂变案例、what matters、与动物主义/生物连续性理论的争论等）",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:56:20",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "尚缺动物主义/生物连续性理论（如 Olson）对帕菲特还原论的正面批评、以及裂变案例与\"what matters\"的核心二手讨论文献及其可读内容，无法综述争论版图",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:56:33",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "尚缺帕菲特本人核心章节（\"Why Our Identity Is not What Matters\"）与反方（Merricks《What Matters in Survival》）的可读内容证据",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:56:20",
+    "reason": "要回答\"学界主要争论\"，仅有苏伊卡宁与埃林两条证据不足以覆盖争议版图，必须补足动物主义批评与裂变/what matters 两条主线，否则会以偏概全",
+    "unresolved_gap": "动物主义（animalism）对帕菲特的批评文献、以及\"what matters in survival\"争论的代表研究与可读内容证据"
+   },
+   {
+    "ts": "2026-09-13 12:56:33",
+    "reason": "现有实读证据仅两条摘要，无法对称呈现争论双方；需读取帕菲特起点章节与反方（动物主义/同一性重要论）的可读摘要，否则综述会偏向一方",
+    "unresolved_gap": "争论起点文本与反方代表的实读摘要证据"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 8,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:13"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:13"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:23"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:38"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 116947,
+   "output_tokens": 8711,
+   "total_tokens": 125658
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 14,
+   "compacted_chars_saved": 25825,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11885,
+     "output_tokens": 509,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15600,
+     "output_tokens": 653,
+     "tool_chars_added": 9437
+    },
+    {
+     "round": 3,
+     "input_tokens": 14835,
+     "output_tokens": 1110,
+     "tool_chars_added": 4659
+    },
+    {
+     "round": 4,
+     "input_tokens": 16346,
+     "output_tokens": 526,
+     "tool_chars_added": 2270
+    },
+    {
+     "round": 5,
+     "input_tokens": 18786,
+     "output_tokens": 1296,
+     "tool_chars_added": 8245
+    },
+    {
+     "round": 6,
+     "input_tokens": 20080,
+     "output_tokens": 928,
+     "tool_chars_added": 6694
+    },
+    {
+     "round": 7,
+     "input_tokens": 19415,
+     "output_tokens": 3689,
+     "tool_chars_added": 245
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 116947,
+  "output_tokens": 8711,
+  "total_tokens": 125658
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 64.0
+}

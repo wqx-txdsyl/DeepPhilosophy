@@ -19,6 +19,8 @@ from types import SimpleNamespace
 
 import pytest
 
+from tests.o10r1_compliance import comply as _comply
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import engine_langgraph as EG
 import repair_context as RC
@@ -66,6 +68,7 @@ class RecordingChat(ScriptedChat):
 
 
 def _run_lp(question, script, adapter=None):
+    script = _comply(script)   # O10-R1: 脚本化 Main Agent 合规（先声明后检索）
     for k in _STUB_CALLS:
         _STUB_CALLS[k] = []
     orig = (EG.get_llm, EG.get_tools, AG.llm_chat)

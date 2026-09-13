@@ -1,0 +1,134 @@
+{
+ "case_id": "DEV_P02",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "请核对《道德经》第一章「道可道也，非恒道也」与通行本「道可道，非常道」的措辞差异，读取库中《道德经》第一章原文，说明这一章在全书中的地位。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_UP0E58IuXu3NwoojOq9K4329"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_tlBBsuzaHacZIx0E2fsZ0838"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_JaTFJSEy2ExAaAVWeqwA0652",
+   "result_head": "{'results': [{'book_id': 'dd8853676655', 'book_title': '老子道德经', 'author': '老子', 'chapter_idx': 0, 'chapter_title': '前言', 'citation_label': '【《老子道德经》·前言】', 'snip"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_MkbFwFxP1sqKA7mQoVe72142"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_TGxHyYFwaNYr1vgmT0h76155",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中《道德经》第一章原文措辞，以及帛书本\"恒/常\"用字差异能否在库中核实",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1255,
+ "final_answer": "## 一、库中第一章原文（已核验）\n\n在本站原典库中检索并读取到《道德经》第一章全文，用字属通行本系统：\n\n> 道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无欲以观其妙；常有欲以观其徼。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。\n\n【《道德经》·第一章】\n\n这段文字可以确认三处关键用字：**「常」**（非常道、非常名）、**「无名」「有名」**、**「玄之又玄」「众妙之门」**。\n\n## 二、与帛书本「恒」字措辞的差异\n\n用户所称「道可道也，非恒道也」属于马王堆帛书《老子》的整理用字，与库中通行本存在两方面差异：\n\n1. **用字：「恒」vs「常」。** 帛书系统作「非恒道」「非恒名」，通行本作「非常道」「非常名」。\n2. **虚词：帛书多一「也」字**，作「道可道也，非恒道也；名可名也，非恒名也」，语气与断句更舒缓。\n\n**证据边界说明（须如实标注）：** 上述帛书措辞是我依据学界通行整理本给出的（记忆，**未能在本站原典库中直接检索到帛书原文**——库中《道德经》为通行本系统）。通常的解释是，汉文帝名刘恒，汉人避讳而将「恒」改「常」，这一避讳说也是学界通行说法，但我同样**未能在此库中核验到**其文献依据。因此，若你需要写进论文，帛书用字与避讳说应回到马王堆帛书整理本或王弼注、河上公注的校勘记去落实，不宜以本站库内证据为据。\n\n值得留意的是，即便是「常」字，「常无欲以观其妙；常有欲以观其徼」在断句上也有争议（一说读作「常无欲」「常有欲」，一说读作「常无」「常欲以观其妙」「常有」「常欲以观其徼」，即「常」属下而非属上）。此点同样属解释争议，非原文事实。\n\n## 三、第一章在全书中的地位\n\n从已核验的文本本身即可看出，第一章在《道德经》中具有**总纲与开宗明义**的地位，理由有三：\n\n1. **立「道」之不可言说性。** 开篇「道可道，非常道」即以「言说」与「道」的对立立论——可言说之道已非恒常之道。这为全书提供了一个前设：真正的「道」超出名言界定，后续各章反复展开的「道」皆须在此限度内理解。\n2. **立「名」与「无/有」的框架。** 「名可名，非常名」紧随其后，把「名」与「道」并置；「无名天地之始，有名万物之母」则引出「无」「有」这对贯穿全书的根本范畴。\n3. **立观照方法。** 「常无欲以观其妙，常有欲以观其徼」提出两种观照方式（「妙」与「徼」），而「此两者同出而异名，同谓之玄。玄之又玄，众妙之门」以「玄」统摄二者，并以「众妙之门」作结——近乎为全书题名「道德」与全部「妙」理开门。\n\n**层次区分：** 前两点中「立道之不可言说性」「无/有范畴」是文本事实；「第一章是全书总纲」这一判断，属我的综合解读（常见的解释传统也如此定位，但我未在本库中核验具体学者论述，故仅作解读层陈述）。\n\n简言之：你在库中能核验到的，是通行本「非常道」系统与第一章的总纲性文本；帛书「非恒道也」的用字差异与避讳成因，需另循帛书整理本核实，本库未提供直接证据。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "库中《道德经》第一章原文措辞，以及帛书本\"恒/常\"用字差异能否在库中核实",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:12:51",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "库中《道德经》第一章原文措辞，以及帛书本\"恒/常\"用字差异能否在库中核实"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:12:53"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 41531,
+   "output_tokens": 2157,
+   "total_tokens": 43688
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 3,
+   "compacted_chars_saved": 8166,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11638,
+     "output_tokens": 313,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 16939,
+     "output_tokens": 267,
+     "tool_chars_added": 9069
+    },
+    {
+     "round": 3,
+     "input_tokens": 12954,
+     "output_tokens": 1577,
+     "tool_chars_added": 441
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 41531,
+  "output_tokens": 2157,
+  "total_tokens": 43688
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 17.1
+}

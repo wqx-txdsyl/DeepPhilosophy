@@ -1,0 +1,85 @@
+{
+ "case_id": "DEV_S04",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "「全校学生都穿校服，所以穿校服一定能提高成绩。」这个推理犯了什么错误？请说明理由。",
+ "tool_sequence": [
+  {
+   "name": "analyze_argument",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_oNSfjOMNFUNQ6U2fMeCQ9891",
+   "args": {
+    "text": "全校学生都穿校服，所以穿校服一定能提高成绩。"
+   },
+   "result_head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '', 'premises': [], 'hidden_"
+  }
+ ],
+ "declarations": [],
+ "blocked_calls": [],
+ "answer_chars": 1097,
+ "final_answer": "工具没能直接给出结构化拆解，这没关系——这个推理本身很典型，我直接把它的结构摊开来说明。\n\n## 这个推理犯的错：把\"共现\"当成\"因果\"（以共存为因果）\n\n它属于一类经典谬误，拉丁名称叫 **cum hoc ergo propter hoc**（\"伴此发生，故因此\"）——把两件事**同时存在/共同出现**，直接当作一个是另一个的原因。它与\"先后即因果\"（post hoc）是一对孪生错误，只不过这里连先后关系都没有，只有纯粹的\"同在\"。\n\n## 先把论证结构拆开\n\n- **前提**：全校学生都穿校服。（一个关于\"普遍存在\"的事实描述）\n- **结论**：穿校服**一定**能提高成绩。（一个关于\"因果\"且\"必然\"的主张）\n\n问题立刻暴露：前提里只有\"是什么、都存在什么\"，结论里却多了两样前提里根本没有的东西——**因果关系**和**必然性**。从\"都穿\"到\"提高\"，中间被偷偷塞进了一个没人证明的隐含前提：\n\n即事先假定了穿校服本身是提高成绩的原因或有效手段——而这恰恰正是有待证明的东西。\n\n而这个隐含前提**恰恰就是它要证明的结论本身**。换句话说，这个论证把自己想得出的东西当成了前提，绕了一圈没有真正前进。\n\n## 具体错在哪几层\n\n1. **相关不等于因果**。\"全校都穿\"和\"成绩\"只是两条并排的事实，同时为真并不意味着一条产生另一条。可能是巧合，可能各有各的原因。\n\n2. **缺对照，无法排除共因（混淆变量）**。要说明\"穿校服提高成绩\"，至少要比较\"穿\"和\"不穿\"两组。很可能真正起作用的是第三个因素：**管理严格的学校既要求穿校服、又狠抓学习**——真正拉高成绩的是\"严格管理\"，校服只是恰好同行的现象。这就是典型的\"共因\"（confounding）。\n\n3. **\"一定\"是凭空加上去的**。前提说的是一种普遍事实，结论却断言\"必然提高\"。即便真存在某种促进作用，从普遍性事实也推不出排除了所有例外的必然性。\n\n4. **信息增益为零**。前提里没有任何关于\"变化\"的信息（没人说穿校服前后成绩变过），所以它在原理上就推不出任何\"提高\"。石头里榨不出水。\n\n## 怎样才算站得住\n\n要让结论成立，得做**对照实验或纵向追踪**：一组穿、一组不穿（或同一批人穿之前与之后对照），并控制住管理、师资、家庭背景等变量，看成绩差异是否真由校服带来。只有这样的证据，才能把\"共现\"升级为\"因果\"。\n\n---\n\n一句话反问留给你：如果\"全校都做某件事\"就足以推出\"这件事一定有用\"，那么请问——\"全校学生都呼吸，能否推出呼吸一定能提高成绩\"？看出问题，你就抓住了这个谬误的要害。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 37747,
+   "output_tokens": 2432,
+   "total_tokens": 40179
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11749,
+     "output_tokens": 976,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 12891,
+     "output_tokens": 1181,
+     "tool_chars_added": 374
+    },
+    {
+     "round": 3,
+     "input_tokens": 13107,
+     "output_tokens": 275,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 37747,
+  "output_tokens": 2432,
+  "total_tokens": 40179
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 24.6
+}

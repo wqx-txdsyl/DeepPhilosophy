@@ -1,0 +1,323 @@
+{
+ "case_id": "DEV_G03",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "哲学界如何研究「非同一性问题」（non-identity problem）？请给出代表性学者、论文与主要对立立场。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_KD9HG8MMULrx3BVhpUta6582"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_bxahMbgKgGRDJRQpfLEJ9097"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_09ORewc2e6rR4gI4cYz44328"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_mCbgo3eavB45iI5m86AR2540",
+   "args": {
+    "query": "non-identity problem person-affecting view impersonal reasons",
+    "limit": 10
+   },
+   "result_head": "{'query': 'non-identity problem person-affecting view impersonal reasons', 'results': [{'source_record_id': 'doi:10.1093/019824908x.003.0016', 'title': 'The Non"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_tImQFQOyT86JNBnEVui84784"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_56djpdfhHoCQoEFWosnP7388"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_WijtEoDkYvD7IjsbsYb91675"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_O5u6qHpMb13fhC9qMuQR3830"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_ODq8dhwqHLyRzdDmoMqm1783"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_05_hx1K4lGZ94mV6oB9M61g6604",
+   "args": {
+    "query": "non-identity problem solution consequentialism rights future persons",
+    "limit": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_IYENDW2w72RaBIW79rJx2554",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尚未读取已定位的 Boonin 2014、Bykvist 2021 等可读来源的摘要，也缺 Kavka/Roberts 等对立立场文献的内容证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求代表性学者、论文与主要对立立场的具体归因；当前仅取得 1 条 Parfit 章节摘要，不足以支撑对多位学者的内容性归因，读取已定位可读来源与补检对立阵营文献是回答正确性的必要条件",
+    "unresolved_evidence_gap": "Boonin、Bykvist 等可读来源的实际论证，以及 Kavka/Roberts/Weinberg 等对立立场的文献与内容"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 尚未读取已定位的 Boonin 2014、Bykvist 2021 等可读来源的摘要，也缺 Kavka/Roberts 等对立立场文献的内容证"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_oJbz8QWg9DBqGOIfA7Bv5525",
+   "args": {
+    "query": "the non-identity problem ethics of future people Boonin",
+    "limit": 10
+   },
+   "result_head": "{'query': 'the non-identity problem ethics of future people Boonin', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190881931.013.35', 'title': 'Par"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_JcY5Cy3h53ahczbTmY0N4324"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_7TjVIr2tRfqp7g2Jfv742556"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_LKxzhDMKum9b8Ky2gQru8629",
+   "args": {
+    "query": "未来世代 责任 后代",
+    "limit": 8
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "非同一性问题的真实二手文献：代表性学者的具体论文/专著、主要解释立场与对立阵营的内容证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尚未读取已定位的 Boonin 2014、Bykvist 2021 等可读来源的摘要，也缺 Kavka/Roberts 等对立立场文献的内容证据",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求代表性学者、论文与主要对立立场的具体归因；当前仅取得 1 条 Parfit 章节摘要，不足以支撑对多位学者的内容性归因，读取已定位可读来源与补检对立阵营文献是回答正确性的必要条件",
+    "unresolved_evidence_gap": "Boonin、Bykvist 等可读来源的实际论证，以及 Kavka/Roberts/Weinberg 等对立立场的文献与内容"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "403 本原典库中是否存在讨论代际伦理/未来世代责任（如约纳斯《责任的命令》）的原文文本",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2752,
+ "final_answer": "**收口说明**：我的两路补充检索（读取 Boonin 2021 摘要、探查原典库）先后被预算与通道规则拦下，未能再取得新证据。因此下面我把\"确实检索到的书目证据\"与\"我的理论分析与记忆性内容\"严格分层，不把未核验的归因伪装成已读文献。\n\n---\n\n# 非同一性问题（Non-Identity Problem）：研究地图与对立立场\n\n## 一、先说证据边界\n\n本次我能确证的**书目存在**（真实检索到的记录）：\n\n- **Derek Parfit, \"The Non-Identity Problem\"**，收于其 *Reasons and Persons*（记录标年 1986，DOI 指向该书章节）。这是该问题最常被追溯的源头章节。\n- **David Boonin, *The Non-Identity Problem and the Ethics of Future People***（专著，记录为 METADATA_ONLY）。\n- **David Boonin, \"Parfit and the Non-Identity Problem\"**，收于《牛津代际伦理手册》（Oxford Handbook of Intergenerational Ethics, 2021）。\n- **Krister Bykvist, \"Person-Affecting and Non-Identity\"**（2021 前后的记录）。\n\n**我必须如实说明**：这些记录我多半只取得了**书目层证据**（题名/作者/年份/载体），我**没有读到足以逐字引用的正文段落**。因此下文凡是\"某学者主张××\"的表述，只有在我明确标注时才可视为已核验；其余属于理论分析或我个人的了解，标注为**未核验**。\n\n---\n\n## 二、问题的问题结构（这是分析，不是引文）\n\n非同一性问题的锋利之处不在\"未来人是否重要\"，而在于它刺穿了**\"伤害\"这个概念的一个隐含前提**：要说明一个行为伤害了某人，通常需要能说——\"若此行为不做出，此人会过得更好\"。\n\n但如果你改变的是一个**会决定谁将存在**的行为（受孕时间、配子组合、资源消耗节奏），那么在\"行为不做出\"的那个对照世界里，那个未来个体**根本不出现**。于是：\n\n该行为虽会降低某个未来人的生活水准，但我们无法据此断言它使那个未来人变得更糟，因为在行为未曾发生的那种情形里，那个特定的人根本不会存在，也就无从进行处境比较。\n\n这就形成表面悖论：我们似乎有充分理由不做某些事（例如把后代的生活压到仅够温饱），却**无法把它表述为对这个或那个具体人的伤害**。\n\n我的理解（分析层）：问题的真正靶子是**人格影响原则（person-affecting principle）**——道德评价须落回\"对某个人而言更好/更糟\"。非同一性问题表明，若把人口伦理完全建立在这一原则上，就会得出大量与直觉冲突的结论。\n\n---\n\n## 三、研究的技术核心：一条原则 vs 另一条路线\n\n哲学界处理它的方式，基本沿着**是否肯放弃人格影响原则**分岔：\n\n1. **放弃/弱化人格影响原则，转向非人格（impersonal）或总体（total）理由。** 这是帕菲特本人论证所指向的方向（**据我了解，未经本次逐字核验**）：即便没有任何人因此更糟，人口规模与生活质量的总体价值仍可提供行动理由。代价是接受一些反直觉后果（如\"令人厌恶的结论\"）。\n2. **保留人格影响原则，重新定义\"伤害\"或引入阈值。** 例如主张存在一个\"勉强值得活\"的门槛，制造低于门槛的存在本身就是可指责的（**与 Gregory Kavka 关于未来个体的悖论式讨论方向相近，但本次检索未取得其内容证据，属未核验**）。\n3. **把义务建立在非人格的\"不制造严重受损生命\"或权利之上**，从而绕过同一性比较。\n4. **否认问题成立**：主张\"无所谓伤害\"的推理其实是对的，我们本就没有那种被误解的义务。\n\n需要说明，上述分类是我依据论证逻辑梳理出的可能立场空间，并不是对任何具体学者立场的已核验归因。\n\n---\n\n## 四、我确实检索到的两位学者（但只能做书目层陈述）\n\n- **帕菲特**：《理由与人格》中确实有一节/章以\"The Non-Identity Problem\"命名——这是问题命名与经典表述的源头位置。\n- **Boonin**：他既写了该主题的专著（2014 前后），又在 2021 年的《牛津代际伦理手册》中撰写\"Parfit and the Non-Identity Problem\"一章——这说明学界把它当作一个**仍待评估的经典难题**，而非已经解决的历史话题。\n- **Bykvist**：其题名\"Person-Affecting and Non-Identity\"直指上述第 1 与第 2 条路线的交汇处。\n\n**我无法负责地告诉你** Boonin 究竟给出了什么解法、Bykvist 的结论是什么——因为我没有读到他们的正文或摘要。凡我在此断言他们的具体主张，都会是编造。\n\n---\n\n## 五、其他常被提及的研究名字（明确标注：本次未取得内容证据）\n\n据我了解（**未经本次检索核验**），这一领域围绕以下人物与文本展开讨论：Gregory Kavka（关于未来个体的悖论）、Melinda A. Roberts、Rivka Weinberg、David Heyd、Jeff McMahan、Rahul Kumar 等，讨论窗口包括 *Philosophy & Public Affairs*、*Ethics*、*Journal of Philosophy* 等期刊。我**没有**在本次会话中取得他们任何一位的著作内容，所以仅作方向提示，请用户自行核验。\n\n---\n\n## 六、如果继续深入，我建议的入口\n\n1. 先读帕菲特《理由与人格》中\"The Non-Identity Problem\"一章，抓住\"同一性依赖\"与\"人格影响原则\"的原始表述。\n2. 再读 Boonin 2021 的手册章节，作为评估各条回应路线的地图。\n3. 若关心\"生成选择\"的当代争论（如为聋儿选聋），转向 Kavka、Roberts 一系文献——但这部分需要一次专门的文献检索。\n\n---\n\n**关于本次回答的诚实定位**：我给出的是一个**问题结构 + 立场类型学 + 少量已核验书目**的框架，而不是一份\"谁主张什么\"的文献综述。后者的内容性归因需要真正读到论文正文，这一步我本次未能完成；如果你愿意，我可以就此主题再做一轮专门的文献检索与阅读，把代表学者的具体论证逐一落地。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "403 本原典库中是否存在讨论代际伦理/未来世代责任（如约纳斯《责任的命令》）的原文文本",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:37:47",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "非同一性问题的真实二手文献：代表性学者的具体论文/专著、主要解释立场与对立阵营的内容证据",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:37:58",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "尚未读取已定位的 Boonin 2014、Bykvist 2021 等可读来源的摘要，也缺 Kavka/Roberts 等对立立场文献的内容证据",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:38:17",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "403 本原典库中是否存在讨论代际伦理/未来世代责任（如约纳斯《责任的命令》）的原文文本",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:37:58",
+    "reason": "用户明确要求代表性学者、论文与主要对立立场的具体归因；当前仅取得 1 条 Parfit 章节摘要，不足以支撑对多位学者的内容性归因，读取已定位可读来源与补检对立阵营文献是回答正确性的必要条件",
+    "unresolved_gap": "Boonin、Bykvist 等可读来源的实际论证，以及 Kavka/Roberts/Weinberg 等对立立场的文献与内容"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:37:53"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:37:53"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:37:53"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:37:53"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:37:53"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "CHANNEL_MISMATCH",
+    "ts": "2026-09-13 13:38:17"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:38:17"
+   }
+  ],
+  "blocked_codes": [
+   "CHANNEL_MISMATCH",
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 112712,
+   "output_tokens": 9285,
+   "total_tokens": 121997
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 12,
+   "compacted_chars_saved": 15228,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11886,
+     "output_tokens": 717,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15862,
+     "output_tokens": 831,
+     "tool_chars_added": 9770
+    },
+    {
+     "round": 3,
+     "input_tokens": 15032,
+     "output_tokens": 801,
+     "tool_chars_added": 2790
+    },
+    {
+     "round": 4,
+     "input_tokens": 16842,
+     "output_tokens": 1338,
+     "tool_chars_added": 2448
+    },
+    {
+     "round": 5,
+     "input_tokens": 18557,
+     "output_tokens": 1673,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 6,
+     "input_tokens": 20439,
+     "output_tokens": 3482,
+     "tool_chars_added": 3139
+    },
+    {
+     "round": 7,
+     "input_tokens": 14094,
+     "output_tokens": 443,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 112712,
+  "output_tokens": 9285,
+  "total_tokens": 121997
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 67.4
+}

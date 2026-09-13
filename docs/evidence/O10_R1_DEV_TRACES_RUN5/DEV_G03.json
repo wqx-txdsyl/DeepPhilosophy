@@ -1,0 +1,292 @@
+{
+ "case_id": "DEV_G03",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "哲学界如何研究「非同一性问题」（non-identity problem）？请给出代表性学者、论文与主要对立立场。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_zXMoRnLJ8Bnu7hRSF3KH6631"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_gAqRSiq0U41BWNG2y3xC9455"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_D7U4NZRcg0XLcjzdn4qX7314",
+   "args": {
+    "query": "nonidentity problem future generations Parfit",
+    "limit": 10
+   },
+   "result_head": "{'query': 'nonidentity problem future generations Parfit', 'results': [{'source_record_id': 'openalex:W1494910757', 'title': 'Future Generations: A Prioritarian"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_SAOYhK81qvVUfIlCNFHb0598"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_KxRFUd9RJvQdhUr3b4Ud7271"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_7E3eyn0SWHihm8t1ft4j5570"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_e4vYiYUjdoCIvilJXsXW7706",
+   "args": {
+    "source_record_id": "doi:10.1017/apa.2021.1",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_piGECxanSgdfVF6N1fBM6039"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_KB0sGojUjX9IQsowReiw1796"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_0sCeHwg0ETMBxhlEbMMe3261",
+   "args": {
+    "source_record_id": "doi:10.1017/apa.2021.1",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1017/apa.2021.1', 'bibliographic_record': {'source_record_id': 'doi:10.1017/apa.2021.1', 'title': 'No Harm Done? An Experimental Ap"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_S4yeyIxFRyPKrZtL7VRJ5762",
+   "args": {
+    "query": "non-identity problem person-affecting principle harm analysis",
+    "limit": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_DJwtbA5SNPqsLezxiiNA9445"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_uraF7Abd4YOcOBibzG7b1664",
+   "args": {
+    "query": "The Non-Identity Problem and the Ethics of Future People",
+    "philosopher": "David Boonin",
+    "limit": 5
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要检索非同一性问题（non-identity problem）的代表性研究文献（作者/年份/题名），并对相关且可读的来源读取摘要，以核实其具体主张与立场分野，而非凭记忆罗列。",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要核实非同一性问题研究中\"反对该问题框架\"的立场（Harman）与实验哲学进路（Kopec & Bruner）的具体主张，以确认对立阵营的内容而非仅书目。",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已取得的 Boonin/Brock 摘要只覆盖\"接受问题存在并寻求解决\"的一侧，无法支撑用户要求的\"主要对立立场\"内容性描述；需读取反对阵营与实验进路的来源才能如实呈现分歧。",
+    "unresolved_evidence_gap": "Harman 关于非同一性问题的立场内容、Kopec & Bruner 实验哲学结论，以及 Parfit 原始论证的文献定位。"
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "Boonin《The Non-Identity Problem and the Ethics of Future People》的单条可溯源书目记录（作者/题名/出版社/年份）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2953,
+ "final_answer": "## 关于「非同一性问题」的研究图景\n\n先说明本次的证据基础：我通过学术文献检索确认了若干真实研究文献的书目身份（作者、年份、题名、期刊/出版社），并尝试读取其摘要。因此下面凡是**具体到某篇文献\"主张什么\"**的地方，我只在题名本身能支持或我明确标注为通行背景认知的限度内陈述；我**没有**取得可供逐字引用的原文，所以本文不提供带章节号的正式原典引用。\n\n### 一、问题本身（学科公认背景）\n\n非同一性问题由 Dereck Parfit 在 *Reasons and Persons*（1984）中系统提出（这一归属是学界通行说法，本次未在库中原典核验到具体章节号）。其原型是所谓\"少女怀孕\"案例：若她此刻生育，孩子会因母亲的处境而生活较差；但若她等到成年再生，出生的是**另一个孩子**。于是对实际出生的那个孩子而言，其人生仍值得一过、并不比\"不存在\"更糟；对未出生的那个孩子而言，他从未存在，也谈不上被伤害。结果似乎是**没有任何人被伤害，但产出的总体结果显然更差**。\n\n这一结论之所以构成\"问题\"，是因为它同时冲撞了两条直觉：（1）使一个行为\"错误\"的，似乎应是它对**某个人**造成了伤害；（2）这种情形下的行为又明显应当受到道德约束。\n\n### 二、研究该问题的主要进路与代表性文献\n\n从本次检索到的书目看，研究大致分为四条进路：\n\n**1. 系统建构与\"在框架内求解\"路线**\n- David Boonin, *The Non-Identity Problem and the Ethics of Future People*——一部以非同一性问题为核心、面向未来人伦理的系统专著，是该领域最完整的单行本研究之一。\n\n**2. 应用伦理路线（把问题落到具体诉讼与医疗决策）**\n- Dan W. Brock, \"The Non-Identity Problem and Genetic Harms – The Case of Wrongful Handicaps\", *Bioethics*（1995）。题名直接指向\"错误残疾\"这一 20 世纪后期\"错误生命\"（wrongful life）诉讼与遗传咨询中的现实困境：如果孩子的残疾状态无法与\"另一个可能的孩子\"作比较，传统侵权法\"损害\"要件是否落空。\n- Elizabeth Harman, \"Abortion and the Non-Identity Problem\", 收于 *Ethics and Existence*（2022）。题名表明她把非同一性现象带入**堕胎伦理**语境——而堕胎恰是\"是否让某个特定个体存在\"的最典型场景。\n\n**3. 代际正义 / 公共理性的延伸**\n- Matthew D. Adler, \"Future Generations: A Prioritarian View\"，*Social Theory and Practice*（2009）。这是一条把代际伦理收拢进**优先主义**（prioritarian）分配框架的路线：不诉诸\"谁被伤害\"，而诉诸\"境况较差者应获优先\"。\n- *\"Can the all-affected principle include future persons? Green deliberative democracy and the non-identity problem\"*（2008，期刊论文）。题名显示这是**协商民主理论**中的争论：把所有\"受影响的\"人纳入协商，而未来人的身份又取决于当下决策，这一\"全体受影响原则\"如何自洽。\n\n**4. 实验哲学 / 方法论挑战**\n- Matthew Kopec & Justin Bruner, \"No Harm Done? An Experimental Approach to the Nonidentity Problem\", *Journal of the American Philosophical Association*（2021）。题名中的\"An Experimental Approach\"直接表明其方法：用**实验哲学**手段检验普通人的直觉到底是否如哲学家所预设的那样认同\"没有人被伤害\"。\n\n### 三、主要对立立场（几条真正构成张力的轴线）\n\n这里我必须区分\"我能从题名支撑的\"与\"属于通行教科书图景的\"：\n\n**轴线一：人格影响原则（person-affecting） vs. 非人格化比较（impersonal）**\n\n这是问题的**核心对立**。一条立场坚持：道德评价最终必须落到\"对某个具体的人而言更好或更坏\"，因此非同一性案例中若无人受损，就不存在道德过错——或需要更精细的\"伤害\"概念来挽救这一直觉。另一条立场（Parfit 自己由此导向的方向）则放弃\"必须有人受损\"这一约束，转向对**事态总体优劣**的非人格化比较——代价是接受一些被帕菲特自己形容为\"令人厌恶\"的反直觉推论。这组对立是通行学界共识的框架；本次未取得可引用原文来逐字呈现。\n\n**轴线二：接受问题并求解 vs. 质疑问题预设**\n\nBoonin 的专著（题名即\"非同一性问题\"）代表前者——把问题当作真问题、并试图给出系统解决。而 Kopec & Bruner 的实验进路（题名\"'No Harm Done?'\"）则从**元层面**追问：哲学家用来设定问题的那些直觉，普通人是否真的持有？若并不普遍持有，问题本身的规范力量就需要重新评估。\n\n**轴线三：理论伦理 vs. 应用伦理的评价尺度**\n\nBrock 关于遗传损害的分析提示：在理论层面争论\"是否有人被伤害\"是一回事，在遗传咨询与侵权诉讼中作实际判断是另一回事——司法实践中的\"损害\"要件未必需与哲学家的人格影响原则绑定。\n\n**轴线四：伤害中心框架 vs. 分配/优先主义框架**\n\nAdler 的优先主义进路（题名支持）代表一种策略：与其纠缠\"谁被伤害\"，不如直接对**分配结果**排序，让境况较差者优先。这等于绕开而非解答非同一性难题，但代价是放弃了\"对某人而言更坏\"这一传统的错误制判标准。\n\n### 四、我尚不能确证的部分（证据边界）\n\n为对你诚实，以下我**没有**取得本次证据、只作为需读者自行核验的线索列出：\n\n- Parfit *Reasons and Persons* 中该章的具体章节号，以及\"令人厌恶的结论\"等术语的**逐字表述**；\n- Jeff McMahan、Melinda Roberts、David Heyd、Rivka Weinberg 等常被列为该领域代表学者的具体论文与其**立场归属**——我的记忆中他们是重要参与者，但本次未检索到并读取其文献，因此不能把\"某某主张什么\"写成已核验结论；\n- 上述四篇文献摘要正文的具体内容（我只能确认书目身份）。\n\n如果你希望，我可以针对其中某一条轴线（例如专门比较 Boonin 与 Harman，或专攻\"人格影响原则 vs 非人格化\"的原典 vs 当代辩护）做**定向的原典 / 文献精读**，把上面的研究地图收窄成一份可追溯的论证谱系。你想先深入哪一支？",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "Boonin《The Non-Identity Problem and the Ethics of Future People》的单条可溯源书目记录（作者/题名/出版社/年份）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:55:28",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "需要检索非同一性问题（non-identity problem）的代表性研究文献（作者/年份/题名），并对相关且可读的来源读取摘要，以核实其具体主张与立场分野，而非凭记忆罗列。",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 12:55:39",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "需要核实非同一性问题研究中\"反对该问题框架\"的立场（Harman）与实验哲学进路（Kopec & Bruner）的具体主张，以确认对立阵营的内容而非仅书目。",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:56:11",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "Boonin《The Non-Identity Problem and the Ethics of Future People》的单条可溯源书目记录（作者/题名/出版社/年份）",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:55:39",
+    "reason": "已取得的 Boonin/Brock 摘要只覆盖\"接受问题存在并寻求解决\"的一侧，无法支撑用户要求的\"主要对立立场\"内容性描述；需读取反对阵营与实验进路的来源才能如实呈现分歧。",
+    "unresolved_gap": "Harman 关于非同一性问题的立场内容、Kopec & Bruner 实验哲学结论，以及 Parfit 原始论证的文献定位。"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:55:36"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:55:36"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:55:46"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:56:11"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 106098,
+   "output_tokens": 8683,
+   "total_tokens": 114781
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 16033,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11886,
+     "output_tokens": 540,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15559,
+     "output_tokens": 883,
+     "tool_chars_added": 9326
+    },
+    {
+     "round": 3,
+     "input_tokens": 15048,
+     "output_tokens": 668,
+     "tool_chars_added": 4427
+    },
+    {
+     "round": 4,
+     "input_tokens": 17334,
+     "output_tokens": 888,
+     "tool_chars_added": 6542
+    },
+    {
+     "round": 5,
+     "input_tokens": 16853,
+     "output_tokens": 3543,
+     "tool_chars_added": 245
+    },
+    {
+     "round": 6,
+     "input_tokens": 13815,
+     "output_tokens": 499,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 7,
+     "input_tokens": 15603,
+     "output_tokens": 1662,
+     "tool_chars_added": 3046
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 106098,
+  "output_tokens": 8683,
+  "total_tokens": 114781
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 60.1
+}

@@ -1,0 +1,286 @@
+{
+ "case_id": "DEV_G07",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "关于「意识的困难问题」（hard problem of consciousness），学界目前有哪些主要立场和代表性论文？请综述研究现状而不是给百科介绍。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_vScxO16XGnyv5tKRQwAj1929"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_zbIy06PcZjvhfkVMdDA11271"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_dFO4v3yWM57E7BknWa9o5112"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_yH3XM9zKuYNXENwgpXsA4462",
+   "args": {
+    "query": "panpsychism consciousness Goff",
+    "limit": 10
+   },
+   "result_head": "{'query': 'panpsychism consciousness Goff', 'results': [{'source_record_id': 'openalex:W1185747990', 'title': 'Consciousness in the physical world : perspective"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_g7OxjXXYdgoOUymrdl806401"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_MeS587VyeQgM4zYosokv8467"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_5w7chn1JqSuKi76VvGmb5738"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_EEeZwSjZoJSmNMZZaR2T4846"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_kqYxN1LDS3OX8ncZm9Of4918"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_05_T6xYqtAi4ydJdOWYvFpw7035"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_06_Hvit45QJdRRYUryjDYb88889",
+   "args": {
+    "query": "illusionism phenomenal consciousness Frankish",
+    "limit": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_9g8fGsl1zuZAixjZVFR28564",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "补齐困难问题各主要立场的可读代表作证据：illusionism（Frankish/Dennett）、泛心论（Goff/Strawson）、新神秘主义、解释鸿沟（Levine）",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求综述\"主要立场和代表性论文\"，目前仅成功读取1篇摘要（Chalmers 2017）；illusionism、泛心论、新神秘主义、解释鸿沟四条核心立场尚无任何可读内容证据，仅凭书目标题不能做内容归因，缺口实质性未闭合",
+    "unresolved_evidence_gap": "illusionism 与泛心论的代表性文献的可读摘要（用于如实描述各立场的具体主张）"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 补齐困难问题各主要立场的可读代表作证据：illusionism（Frankish/Dennett）、泛心论（Goff/Strawson）、新神"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_5LWlvehyCbFL8wEXBDql3491",
+   "args": {
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': '未找到 source_record_id （先用 search_scholarship 检索）'}"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_beTL3JOUczLmuyhfiLKq6143"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_SOKBGAn4wo8kE4JE5t7v5684",
+   "args": {
+    "query": "illusionism about consciousness Frankish debunking phenomenal",
+    "limit": 10
+   },
+   "result_head": "{'query': 'illusionism about consciousness Frankish debunking phenomenal', 'results': [{'source_record_id': 'doi:10.3998/ergo.12405314.0006.032', 'title': 'The "
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要真实二手研究文献：困难问题的主要立场（物理主义/illusionism、泛心论、新神秘主义、解释鸿沟等）的代表性论文及其可读证据",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "补齐困难问题各主要立场的可读代表作证据：illusionism（Frankish/Dennett）、泛心论（Goff/Strawson）、新神秘主义、解释鸿沟（Levine）",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求综述\"主要立场和代表性论文\"，目前仅成功读取1篇摘要（Chalmers 2017）；illusionism、泛心论、新神秘主义、解释鸿沟四条核心立场尚无任何可读内容证据，仅凭书目标题不能做内容归因，缺口实质性未闭合",
+    "unresolved_evidence_gap": "illusionism 与泛心论的代表性文献的可读摘要（用于如实描述各立场的具体主张）"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 903,
+ "final_answer": "先说明证据状况，再给研究现状导航。\n\n---\n\n## 一、这份综述的证据基础\n\n我做了几轮文献检索，必须如实交代证据层级，以免把书目当成已读内容：\n\n**我可以确认\"存在且书目为真\"的文献**（来自检索记录）——但多数只到了书目层，未逐条读取其内部论证：\n\n- Chalmers, *The Hard Problem of Consciousness*（2017, doi:10.1002/9781119132363.ch3）\n- Block, *The Harder Problem of Consciousness*（2002, doi:10.2307/3655621）\n- Melloni 等, *Making the hard problem of consciousness easier*（2021, *Science*, doi:10.1126/science.abj3259）\n- Doerig 等, *Hard criteria for empirical theories of consciousness*（2020, doi:10.1080/17588928.2020.1772214）\n- Signorelli 等, *Explanatory profiles of models of consciousness*（2021, doi:10.1093/nc/niab021）\n- Alter & Nagasawa 主编, *Consciousness in the Physical World: Perspectives on Russellian Monism*（2015）\n\n**唯一读取到实质内容的一条**：上面那本 Alter & Nagasawa 主编卷，其摘要字段返回的是**目录**，可靠地显示该卷收录了 Galen Strawson *Real Materialism*、Gregg Rosenberg *Causality and the Combination Problem*、David Chalmers *Panpsychism and Panpro",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "补齐困难问题各主要立场的可读代表作证据：illusionism（Frankish/Dennett）、泛心论（Goff/Strawson）、新神秘主义、解释鸿沟（Levine）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:46:06",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "需要真实二手研究文献：困难问题的主要立场（物理主义/illusionism、泛心论、新神秘主义、解释鸿沟等）的代表性论文及其可读证据"
+   },
+   {
+    "ts": "2026-09-13 11:46:21",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "补齐困难问题各主要立场的可读代表作证据：illusionism（Frankish/Dennett）、泛心论（Goff/Strawson）、新神秘主义、解释鸿沟（Levine）",
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:46:21",
+    "reason": "用户明确要求综述\"主要立场和代表性论文\"，目前仅成功读取1篇摘要（Chalmers 2017）；illusionism、泛心论、新神秘主义、解释鸿沟四条核心立场尚无任何可读内容证据，仅凭书目标题不能做内容归因，缺口实质性未闭合",
+    "unresolved_gap": "illusionism 与泛心论的代表性文献的可读摘要（用于如实描述各立场的具体主张）"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:46:15"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:46:15"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:46:15"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:46:15"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:46:15"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:46:15"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 106330,
+   "output_tokens": 11625,
+   "total_tokens": 117955
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 13,
+   "compacted_chars_saved": 15438,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11696,
+     "output_tokens": 1041,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17036,
+     "output_tokens": 1257,
+     "tool_chars_added": 13161
+    },
+    {
+     "round": 3,
+     "input_tokens": 15740,
+     "output_tokens": 1025,
+     "tool_chars_added": 3473
+    },
+    {
+     "round": 4,
+     "input_tokens": 17767,
+     "output_tokens": 4000,
+     "tool_chars_added": 2489
+    },
+    {
+     "round": 5,
+     "input_tokens": 20872,
+     "output_tokens": 302,
+     "tool_chars_added": 60
+    },
+    {
+     "round": 6,
+     "input_tokens": 23219,
+     "output_tokens": 4000,
+     "tool_chars_added": 6541
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 106330,
+  "output_tokens": 11625,
+  "total_tokens": 117955
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 73.3
+}

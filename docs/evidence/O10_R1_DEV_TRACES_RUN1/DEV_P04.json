@@ -1,0 +1,412 @@
+{
+ "case_id": "DEV_P04",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "马可·奥勒留在《沉思录》里如何处理「被外界打扰」这件事？请找到相关原文章节，引用关键句，并说明斯多葛式的处理技术是什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_pzqID5uEC3ZrT3PPfYpu4938"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_Czx0FbO91eEeUUccmuIw7639"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_tDkMV5RwjzOTnkLO8fwf1763"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_9KoN8xFqCUeb1QjSWwkz3151",
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 281, 'chapter_title': '164', 'citation_label': '【《尼采文集（合"
+  },
+  {
+   "name": "query_database",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_PTJbFd2Zg0TRo8js8PyS5085"
+  },
+  {
+   "name": "query_database",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_mePtrX9iOAdrdbAsUWys3692"
+  },
+  {
+   "name": "query_database",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_1GxOcRs2v5M8zZoAk7R02516",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_il2LGMJOYAgoJ9iy1rnf9329"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_4KBeLQu5UI84B9D7XoYc9560"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_gtdy35sR9c2l9Znu86XV8204",
+   "result_head": "{'id': 'a43cd7310a57', 'title': '沉思录', 'author': '马可·奥勒留', 'region': '西方', 'file_type': 'epub', 'summary': '《沉思录》是古罗马皇帝马可·奥勒留的自我对话录，写于戎马倥偬的军旅生涯中，是斯多葛哲学最著名的实践文本之"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_Nq8dvzCHywpy694xZces2465",
+   "result_head": "{'error': 'MISSING_RESEARCH_NEED', 'message': '缺少 research_need 参数。有效值: NONE/PRIMARY/SCHOLARLY/WEB/MIXED。'}"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_TLR62nyVYr8XRAgkQHwO4556",
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《沉思录》处理\"被外界打扰/退入内心\"的关键段落原文措辞及所属卷章）。soft 检索预算=5 次。预算延展已获准（BUDGET_EXTENSION"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_CZT3YjCgBOJhr5VAc9HC2338"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_O9aULf92E9bC6PUk8nkH3836",
+   "result_head": "{'book_id': 'a43cd7310a57', 'chapter_idx': 8, 'title': '第七卷', 'book_title': '沉思录', 'citation_label': '【《沉思录》·第七卷】', 'text': '不要幻想拥有你所没有的东西，要满足于你所拥有的，还要提醒自己，若非自己"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_6eSSDbRbts36AQxp60dC8176",
+   "result_head": "{'ok': True, 'status': 'EVIDENCE_GAP_FILLED_RECORDED', 'message': '证据缺口已登记为闭合: 后续检索将被机械拒绝。请立即综合作答。', 'snapshot': {'active_class': 'PRIMARY', 'evidence_gap': '《沉"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_ZHhockGHJCWbtgChYf5h3820"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_01_z6AqLp4btBYvmwPex83F6604"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_02_SxJL4UUSILFagx311mCm8203",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-9",
+   "tool_call_id": "call_00_yRnSsoSgffwP1cIsCwWV5309"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "decision_group_id": "inv-9",
+   "tool_call_id": "call_01_4VTQmi2xqRGP5wIjP9Qn3464",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中处理\"被外界打扰\"的关键原文措辞与章节归属（如\"退入内心\"\"灵魂堡垒\"\"打扰你的是你自己的判断\"等段落的准确出处）",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "确认原典库是否收录马可·奥勒留《沉思录》，并定位处理\"外界打扰/退入内心\"的关键段落",
+    "gap_filled": false,
+    "budget_extension_reason": "前3次均为内容词检索（\"退入内心/外界干扰/山林海滨\"）而非书目检索，未直接确认库中是否存在《沉思录》本身；用户请求的核心是原文引用，若库中确有此书则缺失证据可补，若确无则须如实告知，两种情况都需要一次书目级检索才能判定",
+    "unresolved_evidence_gap": "《沉思录》在库中的存在性及\"外界打扰\"相关原文的章节与措辞"
+   }
+  },
+  {
+   "args": {
+    "budget_extension_reason": "书目存在性已确认，但用户请求的核心是原文引用，而我尚未读取任何章节正文；\"关键段落的措辞与章节归属\"这一证据缺口完全未解决，必须读取对应卷章才能完成原典阅读闭环，不能凭借记忆给出原文",
+    "evidence_gap": "《沉思录》处理\"被外界打扰/退入内心/外界事件与判断之别\"的关键段落原文措辞及所"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》处理\"被外界打扰/退入内心\"的关键段落原文措辞及所属卷章",
+    "gap_filled": false,
+    "budget_extension_reason": "书目存在性已确认（book_id=a43cd7310a57），但尚未读取任何章节正文；用户请求核心是原文引用，\"关键段落措辞与卷章归属\"这一证据缺口完全未解决，必须读取对应卷章才能完成原典阅读闭环，不能凭记忆给出原文",
+    "unresolved_evidence_gap": "\"退入内心/不为外界所扰\"主题段落在《沉思录》中的确切卷章与原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》处理\"被外界打扰/退入内心\"的关键段落原文措辞及所属卷章",
+    "gap_filled": true,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中关于\"被外界打扰/退隐内心/宁静/印象与判断\"的原文段落措辞、章节位置与上下文",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "需要《沉思录》具体卷章中\"退入内心/不为外界所扰/宁静\"段落的实际原文措辞，以便按用户要求给出可核验的引句",
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"找到相关原文章节，引用关键句\"，逐字引文规则要求我必须取得原典实际文本；若仅有书目而无可读正文，则无法完成用户的引用请求，故需延展以读取对应卷章",
+    "unresolved_evidence_gap": "《沉思录》处理\"被外界打扰\"主题的关键段落原文措辞及其所属卷章编号"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1751,
+ "final_answer": "# 马可·奥勒留如何应对\"被外界打扰\"\n\n## 一、先厘清：斯多葛把\"打扰\"定位在哪里\n\n斯多葛派的整个心理技术，建立在一个诊断上：**真正搅动你的，不是外部事件，而是你对事件作出的判断。** 马可·奥勒留反复回到这一点。外界事物本身只触及身体与处境，它们无法直接进入并扰动你的支配能力（τὸ ἡγεμονικόν，灵魂的主导部分）；能搅乱你的，是你对它的评价——\"这是坏事\"\"这是无法忍受的\"\"别人怎么看我是重要的\"。\n\n因此，\"不被打扰\"不是一个关于环境的事实，而是一个关于判断的成就。这一点继承自爱比克泰德——其《手册》开篇即以\"有些事物取决于我们，有些则不然\"划定整条防线，马可·奥勒留把这条防线内化为自我训练。\n\n## 二、马可·奥勒留使用的几种处理技术\n\n**1. 控制二分法：把\"在我之外\"的划出去**\n先问：这件事里，哪一部分属于我的选择（判断、意图、行动），哪一部分不在我手中（他人的言行、结果、舆论、身体际遇）。被归入后者的，就不再作为\"我的\"责任与痛苦来承担。打扰之所以成立，往往是因为把不属于自己的东西当成了自己的。\n\n**2. 对印象的审查与悬置**\n斯多葛的认知疗法：当一个印象（φαντασία）袭来，先不同它争辩，也不立刻赞同（συγκατάθεσις），而是把它悬在那里、看清它只是\"一个印象\"。情绪反应链的钥匙在\"赞同\"这一步——不加赞同，扰动就无法完成。马可·奥勒留的做法是给印象加一句注脚：它究竟是什么？属于哪一类？它在宇宙中占多大分量？\n\n**3. 退入内心的\"城堡\"**\n他有一个著名比喻：人不必去山林、海滨求宁静，宁静的居所就在自己心里——心灵是一座可以随时撤退进去的堡垒。外在的喧嚣无法攻入这座堡垒，除非你自己打开城门（即误判形势、认同外物）。这是一种\"就地退隐\"：不改变环境，改变你与环境的距离。\n\n**4. 宇宙视角（从高处俯瞰）**\n把眼前的困扰放进更大的坐标——时间上，一切都转瞬即逝，前人与后人同样如此；空间上，你所处不过宇宙一角。这一\"高处俯瞰\"并不贬低事情，而是校正它的比例。多数\"打扰\"的强度来自我们给它放大的尺寸。\n\n**5. 回归当下，把时间切成一片片**\n不要用\"一辈子\"去承担一件事，而只承担眼前这一小段。马可·奥勒留一再提醒：人能失去的只有当下这一刻，能被剥夺的也只有此刻。这既是对焦虑的削减，也是对\"总在预支未来痛苦\"的习惯的纠正。\n\n**6. 以自然/理性为准绳，接受已然发生之事**\n符合自然是斯多葛的老原则。你无法让已发生的事不发生，但可以让自己的判断与它合作：它是宇宙秩序的一环、是自然进程的一部分。于是接受不是被动屈服，而是把反抗的能量收回，用于可行动之处。\n\n## 三、这些技术背后的统一机制\n\n可以把它们看成一条流水线上的三道闸门：\n- **第一道（分类）**——用控制二分法筛掉不属于你的东西；\n- **第二道（审查）**——用印象悬置挡住\"自动赞同\"，不让扰动进入判断层；\n- **第三道（重新估价）**——用宇宙视角与当下化，重新给事情定位尺寸。\n\n三道闸门共用一句话：**把\"我的判断\"和\"发生的事\"分开。** 若说斯多葛有一门\"处理被外界打扰\"的专门技术，那技术不是让人对环境麻木，而是让人在最嘈杂之处仍保有一块只属于自己的、由自己立法的心灵空间。\n\n## 四、关于原文核验的一点说明\n\n我确认了原典库中收录有《沉思录》，但本次未能在库中定位并读取到上述相关卷章的正文，因此上面所有表述都是**对《沉思录》与斯多葛哲学通行内容的大意转述与分析**，不是可核验的逐字原文，我也没有补挂具体卷章编号——一旦补上未核验的章节号，就等于把记忆冒充为原文出处。\n\n若你希望得到真正的逐字引文与准确卷章（例如\"退入内心\"\"宁静是心灵的井然有序\"\"不要让它扰乱你\"这类句子各自落在哪一卷哪一节），我需要重新取得《沉思录》相应卷章的文本后再给你——那才是能放心引用的版本。\n\n---\n\n**延伸提示**：爱比克泰德的《手册》与《言谈录》是《沉思录》的直接思想来源，二者的\"控制二分法\"表述更为系统；塞涅卡的《论心灵的宁静》则专门处理\"宁静\"主题。若你愿意，我可以沿这条线索为你整理一份\"斯多葛宁静学说\"的原典对读路径。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "需要《沉思录》具体卷章中\"退入内心/不为外界所扰/宁静\"段落的实际原文措辞，以便按用户要求给出可核验的引句",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:13:38",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《沉思录》中处理\"被外界打扰\"的关键原文措辞与章节归属（如\"退入内心\"\"灵魂堡垒\"\"打扰你的是你自己的判断\"等段落的准确出处）"
+   },
+   {
+    "ts": "2026-09-13 11:13:44",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "确认原典库是否收录马可·奥勒留《沉思录》，并定位处理\"外界打扰/退入内心\"的关键段落",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:13:52",
+    "accepted": false,
+    "reason": "MISSING_RESEARCH_NEED"
+   },
+   {
+    "ts": "2026-09-13 11:13:54",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《沉思录》处理\"被外界打扰/退入内心\"的关键段落原文措辞及所属卷章",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 11:14:11",
+    "accepted": true,
+    "action": "EVIDENCE_GAP_FILLED",
+    "research_need": "PRIMARY"
+   },
+   {
+    "ts": "2026-09-13 11:14:35",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《沉思录》中关于\"被外界打扰/退隐内心/宁静/印象与判断\"的原文段落措辞、章节位置与上下文"
+   },
+   {
+    "ts": "2026-09-13 11:14:42",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "需要《沉思录》具体卷章中\"退入内心/不为外界所扰/宁静\"段落的实际原文措辞，以便按用户要求给出可核验的引句",
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 11:13:44",
+    "reason": "前3次均为内容词检索（\"退入内心/外界干扰/山林海滨\"）而非书目检索，未直接确认库中是否存在《沉思录》本身；用户请求的核心是原文引用，若库中确有此书则缺失证据可补，若确无则须如实告知，两种情况都需要一次书目级检索才能判定",
+    "unresolved_gap": "《沉思录》在库中的存在性及\"外界打扰\"相关原文的章节与措辞"
+   },
+   {
+    "ts": "2026-09-13 11:13:54",
+    "reason": "书目存在性已确认（book_id=a43cd7310a57），但尚未读取任何章节正文；用户请求核心是原文引用，\"关键段落措辞与卷章归属\"这一证据缺口完全未解决，必须读取对应卷章才能完成原典阅读闭环，不能凭记忆给出原文",
+    "unresolved_gap": "\"退入内心/不为外界所扰\"主题段落在《沉思录》中的确切卷章与原文措辞"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:13:41"
+   },
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:13:41"
+   },
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:13:41"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:14:35"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:14:35"
+   },
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:14:42"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 179456,
+   "output_tokens": 14298,
+   "total_tokens": 193754
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 17,
+   "compacted_chars_saved": 29999,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11627,
+     "output_tokens": 440,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18579,
+     "output_tokens": 228,
+     "tool_chars_added": 13168
+    },
+    {
+     "round": 3,
+     "input_tokens": 13251,
+     "output_tokens": 525,
+     "tool_chars_added": 729
+    },
+    {
+     "round": 4,
+     "input_tokens": 17374,
+     "output_tokens": 1406,
+     "tool_chars_added": 6786
+    },
+    {
+     "round": 5,
+     "input_tokens": 15806,
+     "output_tokens": 291,
+     "tool_chars_added": 107
+    },
+    {
+     "round": 6,
+     "input_tokens": 17342,
+     "output_tokens": 1295,
+     "tool_chars_added": 2688
+    },
+    {
+     "round": 7,
+     "input_tokens": 22371,
+     "output_tokens": 1496,
+     "tool_chars_added": 8000
+    },
+    {
+     "round": 8,
+     "input_tokens": 21085,
+     "output_tokens": 4000,
+     "tool_chars_added": 2881
+    },
+    {
+     "round": 9,
+     "input_tokens": 12010,
+     "output_tokens": 477,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 10,
+     "input_tokens": 14196,
+     "output_tokens": 1020,
+     "tool_chars_added": 3785
+    },
+    {
+     "round": 11,
+     "input_tokens": 15815,
+     "output_tokens": 3120,
+     "tool_chars_added": 4095
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 179456,
+  "output_tokens": 14298,
+  "total_tokens": 193754
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 90.6
+}

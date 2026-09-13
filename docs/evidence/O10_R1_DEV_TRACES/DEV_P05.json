@@ -1,0 +1,370 @@
+{
+ "case_id": "DEV_P05",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "卢梭《社会契约论》第一卷开篇如何论证「合法的政治秩序」？请读取第一章原文，引用关键句，并解释「把强力转化为权利」批判的含义。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_loC47c5BDX7MoR4wgn450983"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_KL98ck4b7RZ13ALcZ4fR8609"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_Ie20Uz3Ma8DPFbji2ZyE3797",
+   "args": {
+    "book_id": "社会契约论"
+   },
+   "result_head": "{'id': 'fa175af7701a', 'title': '社会契约论', 'author': '让-雅克·卢梭', 'region': '西方', 'file_type': 'pdf', 'summary': '《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_eCrCCIB02KA53QAVs2LX6744"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_IeSLBOgAZ16i3SZihyeI9880",
+   "args": {
+    "book_id": "fa175af7701a",
+    "chapter_idx": 4
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_T9ddT6T0xuDtw8g42ClF0349"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_OPpGngWeKgBBZCjBnvyB1307"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_0HO53gw3yI5lfSajTPMF7022",
+   "args": {
+    "book_id": "fa175af7701a",
+    "chapter_idx": 3
+   },
+   "result_head": "{'book_id': 'fa175af7701a', 'chapter_idx': 3, 'title': '第三章 论最强者的权利', 'book_title': '社会契约论', 'citation_label': '【《社会契约论》·第三章 论最强者的权利】', 'text': '即使是最强者也决不会强得足以永"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_PLivqSpHmcobdOvB5ZtD0874"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_LFflIO18hoCpkC9CxuSj8833"
+  },
+  {
+   "name": "search_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_02_nHKgiJy9scsuwjWWssDR1850",
+   "args": {
+    "query": "最强者的权利 强力 服从"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_9Y5COIUsW403RUxqSC1T4232"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "reused",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_wfc32ueJBFLaQ27G5Aqq9328",
+   "args": {
+    "book_id": "社会契约论"
+   },
+   "result_head": "{'id': 'fa175af7701a', 'title': '社会契约论', 'author': '让-雅克·卢梭', 'region': '西方', 'file_type': 'pdf', 'summary': '《社会契约论》探讨了政治权威的合法基础，提出“公意”作为社会契约的核心，即个体通过让渡自然自由以换取"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_sqLuAjC95j1DEbIzml8y7821"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_RVMLvJt6zenDvdKojVWo8465",
+   "args": {
+    "book_id": "社会契约论",
+    "chapter_idx": 4
+   },
+   "result_head": "{'book_id': 'fa175af7701a', 'chapter_idx': 4, 'title': '第四章 论奴隶制', 'book_title': '社会契约论', 'citation_label': '【《社会契约论》·第四章 论奴隶制】', 'text': '既然任何人对于自己的同类都没有任何天然的权"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_QNCOEtfhUTGH55z3zUcm6255"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_Frfn1v9dzj50D1QC1YDV5425",
+   "args": {
+    "book_id": "社会契约论",
+    "chapter_idx": 3
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《社会契约论》第一卷开篇（尤其第一章）的原文措辞，以及\"把强力转化为权利/把服从转化为义务\"这一批判句的确切位置与上下文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第一卷第一章\"第一卷的题旨\"原文（\"人是生而自由的，却无往不在枷锁之中\"的确切措辞）与第三章\"论最强者的权利\"中\"把强力转化为权利/把服从转化为义务\"批判句的确切位置与上下文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已读章节实为第二章（论原始社会），第一章题旨句与第三章\"最强者的权利\"批判句是本次回答的核心证据，尚未取得，缺其一则无法核验用户所问的开篇论证与关键句",
+    "unresolved_evidence_gap": "《社会契约论》第一卷第一章原文，及第三章\"论最强者的权利\"中关于强力与权利关系的原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《社会契约论》第一卷开篇（题旨）与\"论最强者的权利\"一章的原文措辞与章节位置",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《社会契约论》第一卷第一章\"题旨\"的原文措辞，以及第三章\"论最强者的权利\"中关于强力与权利关系的批判句确切用词——这是用户点名要求的关键句，缺此则无法提供可信引用",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"读取第一章原文，引用关键句\"，逐字引文是本问题的核心交付物；目前缺口恰是这两处关键句的原文措辞与章节位置，不补则只能降格为无引文的转述，无法满足用户请求",
+    "unresolved_evidence_gap": "第一卷第一章\"题旨\"全文，及第三章\"论最强者的权利\"关于强力不构成权利的原文句"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 0,
+ "final_answer": "",
+ "publication_state": "FAIL_CLOSED_VALIDATION",
+ "validation_ok": false,
+ "repairs_used": 2,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《社会契约论》第一卷第一章\"题旨\"的原文措辞，以及第三章\"论最强者的权利\"中关于强力与权利关系的批判句确切用词——这是用户点名要求的关键句，缺此则无法提供可信引用",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:34:07",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《社会契约论》第一卷开篇（尤其第一章）的原文措辞，以及\"把强力转化为权利/把服从转化为义务\"这一批判句的确切位置与上下文",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:34:16",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "第一卷第一章\"第一卷的题旨\"原文（\"人是生而自由的，却无往不在枷锁之中\"的确切措辞）与第三章\"论最强者的权利\"中\"把强力转化为权利/把服从转化为义务\"批判句的确切位置与上下文",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 13:35:06",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《社会契约论》第一卷开篇（题旨）与\"论最强者的权利\"一章的原文措辞与章节位置",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:35:13",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《社会契约论》第一卷第一章\"题旨\"的原文措辞，以及第三章\"论最强者的权利\"中关于强力与权利关系的批判句确切用词——这是用户点名要求的关键句，缺此则无法提供可信引用",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:34:16",
+    "reason": "已读章节实为第二章（论原始社会），第一章题旨句与第三章\"最强者的权利\"批判句是本次回答的核心证据，尚未取得，缺其一则无法核验用户所问的开篇论证与关键句",
+    "unresolved_gap": "《社会契约论》第一卷第一章原文，及第三章\"论最强者的权利\"中关于强力与权利关系的原文措辞"
+   },
+   {
+    "ts": "2026-09-13 13:35:13",
+    "reason": "用户明确要求\"读取第一章原文，引用关键句\"，逐字引文是本问题的核心交付物；目前缺口恰是这两处关键句的原文措辞与章节位置，不补则只能降格为无引文的转述，无法满足用户请求",
+    "unresolved_gap": "第一卷第一章\"题旨\"全文，及第三章\"论最强者的权利\"关于强力不构成权利的原文句"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:34:11"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:35:06"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:35:06"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:35:20"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:35:20"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 156980,
+   "output_tokens": 16809,
+   "total_tokens": 173789
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 12,
+   "compacted_chars_saved": 19742,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11898,
+     "output_tokens": 376,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15336,
+     "output_tokens": 655,
+     "tool_chars_added": 6191
+    },
+    {
+     "round": 3,
+     "input_tokens": 15547,
+     "output_tokens": 803,
+     "tool_chars_added": 3527
+    },
+    {
+     "round": 4,
+     "input_tokens": 17045,
+     "output_tokens": 4000,
+     "tool_chars_added": 4468
+    },
+    {
+     "round": 5,
+     "input_tokens": 17743,
+     "output_tokens": 3999,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 6,
+     "input_tokens": 12281,
+     "output_tokens": 598,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 7,
+     "input_tokens": 14175,
+     "output_tokens": 1145,
+     "tool_chars_added": 2895
+    },
+    {
+     "round": 8,
+     "input_tokens": 16492,
+     "output_tokens": 302,
+     "tool_chars_added": 4223
+    },
+    {
+     "round": 9,
+     "input_tokens": 19497,
+     "output_tokens": 931,
+     "tool_chars_added": 7284
+    },
+    {
+     "round": 10,
+     "input_tokens": 16966,
+     "output_tokens": 4000,
+     "tool_chars_added": 486
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 156980,
+  "output_tokens": 16809,
+  "total_tokens": 173789
+ },
+ "llm_rounds": 0,
+ "stream_error": "本轮回答未通过证据一致性校验，请重试或换一种问法",
+ "wall_s": 98.3
+}

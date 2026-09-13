@@ -1,0 +1,156 @@
+{
+ "case_id": "DEV_E03",
+ "section": "E",
+ "expected_class": "NONE",
+ "question": "刷短视频的时候笑得很开心，放下手机却觉得空。娱乐和幸福是同一回事吗？如果不是，差在哪里？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_Y3ZOfeOlQLe8VDHKuudx2998"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_0jVlfDITmPNPW3mtdKO14870"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_bWEi7UMXIEJ1fYPXvhC15503"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_wfigsLxZ5OUlJj9jzsgm0310",
+   "result_head": "{'results': [{'book_id': '221f09d04944', 'book_title': '自然与快乐', 'author': '伊壁鸠鲁', 'chapter_idx': 8, 'chapter_title': '伊壁鸠鲁基本要道', 'citation_label': '【《自然与快乐》·伊壁鸠"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_EeWQtRpydfZHVCxIHXpl0864"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_z9sxM5LeMbvt9GFxGv555692"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_K0pyZRFjEptMnXlGVZVt8904",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "核实\"娱乐/快乐\"与\"幸福\"在经典原典中的区分措辞：亚里士多德幸福即活动、密尔高级/低级快乐之分、伊壁鸠鲁的快乐层级",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 1594,
+ "final_answer": "（检索收口说明，放在回答之外的不必要——直接进入回答。）\n\n---\n\n## 不是同一回事。差在整个结构上。\n\n先说一个最容易暴露问题的思想实验（这个实验我记忆中是诺齐克的，但未能在本次检索中核验原文，请当作一个帮助思考的假设）：假设有一台\"体验机\"，接上电极后，你能体验到任何你想要的快乐——写出一部杰作的狂喜、拿到冠军的激动、被爱人回应的幸福，全都真实地\"感觉\"到了。你会终身泡在里面吗？\n\n大多数人说不会。可如果**快乐就等于幸福**，那没有理由不泡进去——反正感受完全一样。你不愿意，恰恰说明你要的不只是\"感觉好\"，还要求这份好**真的属于你、真的发生过、真的是你做的事**。幸福里有一个快乐之外的结构：它和真实、和你\"是谁\"绑在一起。\n\n这一层，刷视频和真正活得好就已经分开了。\n\n### 一、时间结构不同\n\n娱乐是**点状的**：一个刺激、一次反应、一次满足，然后归零。它不留下记忆，也不构成叙事——四小时短视频垒起来，几乎不产生\"一段经历\"，只产生\"一段空白\"。\n\n幸福更像**一段时间被回头看时的总体评价**。在哲学史上，亚里士多德就反对把幸福理解为当下的快乐状态；我检索到的一本导读（《50堂经典哲学思维课》里讲《尼各马可伦理学》\"什么才是幸福生活\"的那一章）正是从这个方向切入的——不过我只取到定位线索，未能读取该章全文，所以这里按哲学史一般理解转述：亚里士多德把幸福看作一种**实现活动**（活得好的活动），而不是一刻接一刻的感觉。（此为转述，非原典引文。）点状的感觉堆再多，也堆不出一段\"过得好\"。\n\n### 二、你是\"容器\"还是\"行动者\"\n\n这是最实用的一条分辨。看短视频时，你的角色是被动接收——算法把笑点喂给你，你被逗乐。娱乐里，人是**容器**，等着被填。\n\n而幸福要求你**去投入、去创造、去承担**。它有个奇怪的脾气：**不能被直接给予，一被当作目标去给，就变质**。别人能逗你笑，但没人能替你\"过得充实\"。你放下手机觉得空，很可能不是因为你玩了，而是因为你在这几小时里**始终没有做任何一件\"需要你这个人\"才能做的事**。\n\n### 三、快乐还有\"质\"的差别\n\n功利主义内部其实就为这个问题打过架。边沁式的算法是\"快乐就是快乐，只算量和强度\"；而密尔（我记忆中的立场——本次检索只命中一本导读《别笑，我是正经哲学书》讲他\"质的效益主义\"，未读取全文，故此处按通常理解转述）坚持快乐有**高低之别**：做不满足的苏格拉底，胜过做满足的傻瓜。（此句措辞为记忆，未经库中核验。）这句话的意思不是\"高级快乐更爽\"，而是：**能享受高级快乐本身就是一种能力**，而娱乐通常只需要你最低的那部分——只要还有反应能力就行。\n\n### 四、那\"空\"到底从哪来\n\n娱乐满足的是一种真实的需要：**被刺激、被放松、暂时不用做自己**。这本身没错。问题出在**期望错位**——\n\n- 把娱乐当**休息**：它很好，充电而已。\n- 把娱乐当**幸福**：它必然让你失望。因为你在向一个只想给你三秒钟笑点的东西，索要一段人生的意义。\n\n伊壁鸠鲁——一个真正意义上的快乐主义者——之所以还要给欲望分级（哪些自然且必要、哪些不必追求），讲的就是这件事：**不是所有让人当下舒服的东西都值得追**。（此为哲学史一般理解，本次未核验其原文。）而娱乐的很多供给，恰恰是靠**削弱你忍受\"不刺激\"的能力**来赚钱的：它让你越来越难安于安静、越来越需要下一个笑点，这一循环本身就和\"过得好\"背道而驰。\n\n### 收束\n\n所以：**娱乐是幸福的燃料之一，不是幸福本身。** 幸福比娱乐多出来的，是投入、是真实性、是你这个人在其中真的在场。\n\n不妨把这个问题反过来问自己一次：刷完手机让你觉得空，那个\"空\"的地方，本来是想用什么填上的？——如果那个答案不是\"再刷一条\"，你大概已经知道差在哪里了。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "核实\"娱乐/快乐\"与\"幸福\"在经典原典中的区分措辞：亚里士多德幸福即活动、密尔高级/低级快乐之分、伊壁鸠鲁的快乐层级",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 11:09:50",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "核实\"娱乐/快乐\"与\"幸福\"在经典原典中的区分措辞：亚里士多德幸福即活动、密尔高级/低级快乐之分、伊壁鸠鲁的快乐层级"
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:09:56"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:09:56"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 11:09:56"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 46043,
+   "output_tokens": 4957,
+   "total_tokens": 51000
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 4,
+   "compacted_chars_saved": 11907,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11613,
+     "output_tokens": 1195,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 19511,
+     "output_tokens": 1120,
+     "tool_chars_added": 13143
+    },
+    {
+     "round": 3,
+     "input_tokens": 14919,
+     "output_tokens": 2642,
+     "tool_chars_added": 729
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 46043,
+  "output_tokens": 4957,
+  "total_tokens": 51000
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 35.4
+}

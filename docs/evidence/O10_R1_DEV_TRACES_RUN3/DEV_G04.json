@@ -1,0 +1,419 @@
+{
+ "case_id": "DEV_G04",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请综述学界对帕菲特（Parfit）人格同一性理论的主要争论：代表论文有哪些，争论焦点是什么？",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_V2tHvV6PQNWkriCKVTuG0840"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_pNHflGGcThoLjpouwYfv0319"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_kqDwfCUacMLjs0sBVD7U2123"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_kaMK4MOPlar2KgiAFqbb0434",
+   "args": {
+    "query": "personal identity psychological continuity circularity Butler",
+    "limit": 10
+   },
+   "result_head": "{'query': 'personal identity psychological continuity circularity Butler', 'results': [{'source_record_id': 'doi:10.3389/fpubh.2019.00141', 'title': 'Facilitati"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_NAy3vp7EbykBQYaXedJk2198"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_RgobcdFNsxd5oQXwn1g39238"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_CImDy7hZlP03SUhJ0NTO3823"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_OkDgN9WCIvxG6vXNbejv3565"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_04_vBXxzcDMRSHf20pdX9JM2664",
+   "args": {
+    "query": "Parfit non-identity problem future generations ethics",
+    "limit": 8
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_KnxD6tPO3yvyPQf2CEOy5087",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尚未取得任何\"帕菲特人格同一性理论之争\"的经核验代表性二手文献记录与内容证据（当前唯一读到的 Korsgaard 摘要偏重康德式 vs 功利主义道德哲学，与人格同一性直接关联薄弱）",
+    "gap_filled": false,
+    "budget_extension_reason": "首轮三条并列检索中，关于\"心理连续性循环性\"的一条已明显离题（落到社会心理学），而真正对应争论焦点的记录（还原论批评、分支案例、非同一性问题）尚未读取摘要；要在综述中做出任何学术归因，至少需再取得数条真实记录并读取其摘要，现有证据不足以收口。",
+    "unresolved_evidence_gap": "①还原论人格观的主要批评文献（如对\"同一性非关键\"、分支案例的质疑）的真实书目与摘要；②\"非同一性问题\"脉络的代表文献记录；③对\"心理连续性/记忆标准循环性\"批评的真实文献"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 尚未取得任何\"帕菲特人格同一性理论之争\"的经核验代表性二手文献记录与内容证据（当前唯一读到的 Korsgaard 摘要偏重康德式 vs 功利主"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_PQiCpRpPZLqyBJqlf7d84045"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_6oqgBCTzmu3MH8jcZ3Kh0345",
+   "args": {
+    "query": "Parfit non-identity problem population ethics future generations",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Parfit non-identity problem population ethics future generations', 'results': [{'source_record_id': 'doi:10.1080/13698230903326232', 'title': 'Repres"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_lQQkr16A71O14OAprTYI5382"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_mArap8xH32F1ZrsUvM907791"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_02_rJMu9japmzsKTKTQQzAq9875",
+   "args": {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199608751.003.0015",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_uzqOYHki5R2KBPUjJj5p3697"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_NI8WayuZpLZySRk4C2qq5482",
+   "args": {
+    "query": "人格同一性 帕菲特 心理连续性",
+    "limit": 8
+   },
+   "result_head": "{'results': [{'book_id': 'c13b139d1db3', 'book_title': '哲学导论', 'author': '罗伯特·所罗门', 'chapter_idx': 75, 'chapter_title': '4.4 唯一自我？任一自我？个人“本质”概念的探析 概要与结论', 'cita"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_LZ4rG3cCXRLxbLVVj9oX0252"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_rONzy6UhaGwhIcBxpU9s7499",
+   "args": {
+    "source_record_id": "doi:10.1515/lehr-2014-0003",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_00_Or6JRlkAS0pzt1Et1lob6784"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "decision_group_id": "inv-8",
+   "tool_call_id": "call_01_F8ZhFJyJtk8ZIVH9ysGm5062",
+   "args": {
+    "query": "Noonan Personal Identity",
+    "philosopher": "Derek Parfit",
+    "limit": 5
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要真实检索帕菲特人格同一性理论（还原论、\"什么才是关键\"、分支案例、非同一性问题）的二手研究文献，并读取摘要/正文以核验代表人物、论文与争论焦点",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "尚未取得任何\"帕菲特人格同一性理论之争\"的经核验代表性二手文献记录与内容证据（当前唯一读到的 Korsgaard 摘要偏重康德式 vs 功利主义道德哲学，与人格同一性直接关联薄弱）",
+    "gap_filled": false,
+    "budget_extension_reason": "首轮三条并列检索中，关于\"心理连续性循环性\"的一条已明显离题（落到社会心理学），而真正对应争论焦点的记录（还原论批评、分支案例、非同一性问题）尚未读取摘要；要在综述中做出任何学术归因，至少需再取得数条真实记录并读取其摘要，现有证据不足以收口。",
+    "unresolved_evidence_gap": "①还原论人格观的主要批评文献（如对\"同一性非关键\"、分支案例的质疑）的真实书目与摘要；②\"非同一性问题\"脉络的代表文献记录；③对\"心理连续性/记忆标准循环性\"批评的真实文献"
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已获得多条真实书目记录（Noonan 2019、Shoemaker 2016、Heyd 2014 等），但尚未读到任何一条直接相关文献的摘要，无法对\"争论焦点/代表论文立场\"做经核验的内容性陈述",
+    "gap_filled": false,
+    "budget_extension_reason": "用户的唯一诉求就是\"学界争论与代表论文\"，这必须以文献内容证据为支撑；目前六次调用中真正读到的内容证据仅一条且偏题，若就此收口只能给出\"文献存在性清单\"，无法回答\"争论焦点\"，属于未能满足核心证据需求。",
+    "unresolved_evidence_gap": "代表性文献（Noonan、Shoemaker、Heyd 等）的摘要内容，用于核验各篇究竟主张什么、构成哪条争论线"
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "核验 Noonan 题为 Personal Identity 的著作的书目字段（出版社/年份）是否有可溯源记录",
+    "gap_filled": false,
+    "budget_extension_reason": "被点名的精确书目细节（Routledge, 2019）需取得逐字段可溯源记录才能保留",
+    "unresolved_evidence_gap": "该书的单一可溯源记录（同时验证题名、作者、出版社、年份）"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3340,
+ "final_answer": "我已完成检索，可以给出综述了。先说清证据边界——这一点对本题很重要。\n\n---\n\n## 一、先交代我能核验什么、不能核验什么\n\n这次我检索的是**真实文献数据库**（Crossref/OpenAlex 通道），不是凭记忆列书目。结果如下：\n\n- **库内没有帕菲特本人的著作**。《Reasons and Persons》（1984）不在本站 403 本原典库中——我查了原典通道，只命中所罗门《哲学导论》对人格同一性问题域（洛克—休谟—康德）的教科书式概述。因此下文中\"帕菲特主张了什么\"，属于**我的领域概述，未经本库原典核验**，请按此谨慎对待。\n- **二手文献只读到两条摘要**：Noonan (2019) 一篇（内容直接相关），Korsgaard (1996) 一篇（标题相关、但摘要实际重心偏离）。其余几条我只核验到**书目存在性**（题名/作者/年份/刊物），**没有读到其具体论证**，因此不会替它们编造立场。\n\n这正是回答本题时最容易失守的地方：把\"检索到一篇论文存在\"偷换成\"这篇论文主张 X\"。\n\n---\n\n## 二、争论的地形：帕菲特到底提出了什么（概述，未核验原典）\n\n帕菲特在《Reasons and Persons》第三部分给出一个**还原论（reductionism）**的人格观，要点大致是：\n\n1. 人格同一性可以**还原**为更基本的事实——大致是\"心理连续性/联结\"（他所谓 Relation R）与物理连续性的组合，而非独立于这些事实的\"进一步事实\"（further fact）。\n2. 由此得出那个著名的、也是争议最大的结论：**人格同一性并不是要紧的东西**（identity is not what matters）；要紧的是 Relation R 本身以某种形式延续。\n3. **分支案例**（branch-line case）是核心论据：若我的大脑两半球被分别移植到两个身体中、两者都与我心理连续，则\"两个都是我\"不可能成立，但\"我的幸存\"似乎又都成立——帕菲特由此说同一性在此是空洞的、非关键的。\n4. **非同一性问题**（non-identity problem）：影响未来世代的政策并不使任何**具体的人**境况变坏，因为不同政策下出生的将是不同的人——这是人格观向人口伦理学的外溢。\n\n（以上是我的概述；其中的术语与论证细节我未能回到帕菲特原著核验。）\n\n---\n\n## 三、争论焦点（分条，并标注每条的证据地位）\n\n**焦点 1：还原论能否成立，以及\"简单观点/复杂观点\"这组分类是否融贯**——这是唯一我有直接内容证据的一条。\nNoonan (2019) 的摘要本身是在回应 Olson 的一个尖锐质疑。据该摘要，Olson 主张：人格同一性文献中\"复杂观点 vs 简单观点\"的区分，**根本无法得到任何融贯的刻画**，\"这场辩论一直被系统地错误描述\"。Noonan 则反驳说，他近期提出的方案能够提供 Olson 认为不可能的融贯刻画，并进一步把\"还原论/非还原论\"这一区分与\"复杂/简单\"区分**分开**，以便使\"非简单却仍属非还原论\"这一立场变得可理解。\n【Harold W. Noonan, \"Personal Identity: The Simple and Complex Views Revisited\", *Disputatio*, 2019，摘要级证据】\n\n也就是说，在关于帕菲特的讨论里，连\"还原论 vs 非还原论\"和\"复杂 vs 简单\"这两组标签能不能划清，学界本身就存在争论——这本身是一个元层面的争论焦点。\n\n**焦点 2：动物主义（animalism）批评**——\"我们不是心理连续体，而是生物有机体\"。\n这条线上我核验到 **Shoemaker, \"The Stony Metaphysical Heart of Animalism\"（2016）** 与 **Noonan, *Personal Identity*** 的真实书目存在（后者的题名记录我核验到，但其出版项未能逐字段溯源，故此处只标题名）。按所标示的主题与年份，它们处于动物主义与心理连续性理论的论战区间；但**其具体论证我没有读到，不作内容性归因**。\n\n**焦点 3：分支案例与\"同一性非关键\"的推理是否合法。** 批评者通常质疑：从\"分支情形下不可能两个都是我\"能否推出\"同一性不重要\"。这条是帕菲特最著名的软肋，但我这次**未能取得该焦点的直接文献内容证据**。\n\n**焦点 4：心理连续性标准的循环性。** 即\"记忆/心理标准预设了同一性\"这一可上溯到巴特勒主教的老问题。我这次的一轮检索落到社会心理学方向、完全离题，**未能取得有效文献**。\n\n**焦点 5：非同一性问题及其伦理后果。** 我核验到 **Heyd, \"Parfit on the Non-identity Problem, Again\"（2014）** 的真实书目存在；内容未读，不作归因。\n\n**焦点 6：康德式/实践哲学回应。** Korsgaard (1996) 的章节 **经我实际读取摘要**，其实际论述重心是康德式道德哲学与功利主义的对立（康德式对帕菲特的回应语境），**其与人格同一性的直接关联比标题所示要弱**——我如实报告这一点，不把它硬拉成\"人格同一性之争的代表作\"。\n【Christine M. Korsgaard, \"Personal Identity and the Unity of Agency: A Kantian Response to Parfit\", 1996，摘要级证据】\n\n---\n\n## 四、代表文献一览（按证据层级分开列，请勿混淆）\n\n**A. 已读取摘要（内容证据）**\n- Noonan, *Personal Identity: The Simple and Complex Views Revisited*, Disputatio (2019)——直接处理还原论/简单—复杂观点之争。\n\n**B. 已核验书目存在、但未读内容**\n- Shoemaker, \"The Stony Metaphysical Heart of Animalism\" (2016)\n- Noonan, *Personal Identity*（仅题名级记录）\n- Heyd, \"Parfit on the Non-identity Problem, Again\" (2014)\n- （Korsgaard 1996 亦属此类，但其摘要我已读且偏题，见上）\n\n**C. 我未能在本次检索中核验的常见被引文献**（列作线索，非已核验书目）\n- Olson 关于\"简单/复杂观点不可刻画\"的论点——经 Noonan 摘要转述可见，但 Olson 本人的原始论文/专著记录我未取得；\n- Olson 的动物主义专著、Williams 对心理连续性观的批评等，均属**记忆线索，未经本次检索核验**，不作正式书目。\n\n---\n\n## 五、结论与边界\n\n概括地说，围绕帕菲特的争论可归为三条主线：**（1）还原论 vs 非还原论的元层面分类之争**（Noonan–Olson，有内容证据）；**（2）生命本体论之争**——动物主义对心理连续性理论的挑战（书目已核验，内容未读）；**（3）人格观外溢到人口伦理的后果之争**——非同一性问题（书目已核验，内容未读）。\n\n必须坦率说明的局限：**本次我只有一条直接相关内容证据（Noonan 2019）**，其余多为\"文献存在\"而非\"文献内容\"。因此这份综述的**书目部分可靠、'各派具体主张'部分远未充分**。若要把\"代表论文有哪些、每篇主张什么\"真正做扎实，需要的正是把 Shoemaker、Heyd、Olson 原始文献逐篇读取——而这一步在我本次可用的检索范围内未能完成。\n\n如果你愿意，我可以就其中**一条**争论线（例如\"动物主义 vs 心理连续性\"或\"非同一性问题\"）做一次聚焦的深度检索与阅读，把那一线的代表文献真正读透，而不是像现在这样广而浅。你看先从哪条切入？",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 1,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "核验 Noonan 题为 Personal Identity 的著作的书目字段（出版社/年份）是否有可溯源记录",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:06:49",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "需要真实检索帕菲特人格同一性理论（还原论、\"什么才是关键\"、分支案例、非同一性问题）的二手研究文献，并读取摘要/正文以核验代表人物、论文与争论焦点"
+   },
+   {
+    "ts": "2026-09-13 12:07:03",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "尚未取得任何\"帕菲特人格同一性理论之争\"的经核验代表性二手文献记录与内容证据（当前唯一读到的 Korsgaard 摘要偏重康德式 vs 功利主义道德哲学，与人格同一性直接关联薄弱）",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:07:24",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "已获得多条真实书目记录（Noonan 2019、Shoemaker 2016、Heyd 2014 等），但尚未读到任何一条直接相关文献的摘要，无法对\"争论焦点/代表论文立场\"做经核验的内容性陈述",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:07:52",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "核验 Noonan 题为 Personal Identity 的著作的书目字段（出版社/年份）是否有可溯源记录",
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:07:03",
+    "reason": "首轮三条并列检索中，关于\"心理连续性循环性\"的一条已明显离题（落到社会心理学），而真正对应争论焦点的记录（还原论批评、分支案例、非同一性问题）尚未读取摘要；要在综述中做出任何学术归因，至少需再取得数条真实记录并读取其摘要，现有证据不足以收口。",
+    "unresolved_gap": "①还原论人格观的主要批评文献（如对\"同一性非关键\"、分支案例的质疑）的真实书目与摘要；②\"非同一性问题\"脉络的代表文献记录；③对\"心理连续性/记忆标准循环性\"批评的真实文献"
+   },
+   {
+    "ts": "2026-09-13 12:07:24",
+    "reason": "用户的唯一诉求就是\"学界争论与代表论文\"，这必须以文献内容证据为支撑；目前六次调用中真正读到的内容证据仅一条且偏题，若就此收口只能给出\"文献存在性清单\"，无法回答\"争论焦点\"，属于未能满足核心证据需求。",
+    "unresolved_gap": "代表性文献（Noonan、Shoemaker、Heyd 等）的摘要内容，用于核验各篇究竟主张什么、构成哪条争论线"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 8,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:06:56"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:06:56"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:06:56"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:06:56"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:18"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:18"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:18"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:28"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:07:52"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 175690,
+   "output_tokens": 13295,
+   "total_tokens": 188985
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 17,
+   "compacted_chars_saved": 30229,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11748,
+     "output_tokens": 957,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17006,
+     "output_tokens": 843,
+     "tool_chars_added": 13186
+    },
+    {
+     "round": 3,
+     "input_tokens": 15215,
+     "output_tokens": 1154,
+     "tool_chars_added": 3705
+    },
+    {
+     "round": 4,
+     "input_tokens": 17131,
+     "output_tokens": 1257,
+     "tool_chars_added": 2380
+    },
+    {
+     "round": 5,
+     "input_tokens": 19978,
+     "output_tokens": 831,
+     "tool_chars_added": 8000
+    },
+    {
+     "round": 6,
+     "input_tokens": 18889,
+     "output_tokens": 1019,
+     "tool_chars_added": 735
+    },
+    {
+     "round": 7,
+     "input_tokens": 23586,
+     "output_tokens": 675,
+     "tool_chars_added": 7431
+    },
+    {
+     "round": 8,
+     "input_tokens": 21750,
+     "output_tokens": 3541,
+     "tool_chars_added": 2435
+    },
+    {
+     "round": 9,
+     "input_tokens": 13922,
+     "output_tokens": 682,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 10,
+     "input_tokens": 16465,
+     "output_tokens": 2336,
+     "tool_chars_added": 4169
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 175690,
+  "output_tokens": 13295,
+  "total_tokens": 188985
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 86.2
+}

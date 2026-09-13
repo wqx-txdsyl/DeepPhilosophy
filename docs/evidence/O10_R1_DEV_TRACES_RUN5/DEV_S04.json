@@ -1,0 +1,62 @@
+{
+ "case_id": "DEV_S04",
+ "section": "S",
+ "expected_class": "NONE",
+ "question": "「全校学生都穿校服，所以穿校服一定能提高成绩。」这个推理犯了什么错误？请说明理由。",
+ "tool_sequence": [],
+ "declarations": [],
+ "blocked_calls": [],
+ "answer_chars": 1091,
+ "final_answer": "这个推理的错误可以归结为一句话：**它把\"普遍共存\"当成了\"因果必然\"**。下面逐层拆开看。\n\n## 一、前提和结论说的不是一回事\n\n- 前提陈述的是一个**事实/统计命题**：全校学生都穿校服（即\"穿校服\"与\"学生\"高度重合）。\n- 结论却是一个**因果必然命题**：穿校服 → 一定能提高成绩。\n\n\"所有 A 都是 B\"是关于**共现**的描述，它本身不含任何方向性、动力性的信息。从\"两件事都发生\"推不出\"一件导致另一件\"，这是典型的**以共存为因果（cum hoc ergo propter hoc）**的谬误。日常版就是：\"冰淇淋销量高的日子溺水事故也多，所以吃冰淇淋导致溺水。\"\n\n## 二、\"一定\"这个模态词是第二个漏洞\n\n即便两者确有某种关联，前提也至多支持\"也许有关\"，绝支持不了\"**一定**能提高\"。从实然（是什么）跳到必然（一定如此），是**模态上的越界**。\n\n## 三、最关键的一点：这个前提本身反而使因果推断不可能\n\n这是很多人忽略的地方。因果推断需要**对照与变异**——要判断\"穿校服是否提高成绩\"，得比较\"穿校服的学生\"和\"不穿校服的学生\"。\n\n可前提恰恰说\"**全校都穿**\"。当所有人都做同一件事时，这个变量就失去了变异，你**根本无法构造对照组**。换句话说，前提不仅没支撑结论，它使结论在方法上不可检验——你连\"穿与不穿\"的比较都做不了，何谈\"一定提高\"。\n\n## 四、还存在至少两种更合理的解释\n\n1. **共同原因**：严格的管理、良好的校风、更长的自习时间，既带来了统一着装，也带来了成绩提升。校服和成绩可能都是\"学校管理严格\"这个第三因素的结果，二者只是同源，而非彼此因果。\n2. **反向或选择效应**：也许是\"成绩好的学校更倾向于推行统一校服\"，因果方向与结论相反；或者校服只是筛选了某类学生。\n\n这三种结构（A→B、B→A、C→A 且 C→B）在数据上可能表现为完全相同的\"共存\"，仅凭前提无法区分。\n\n## 五、如何修正\n\n- 把结论从\"一定能\"降级为\"可能相关\"，并明确这只是**待检验的假设**；\n- 若要检验，需要引入对照（部分班级着装不同）、排除共同原因、考虑时间先后；\n- 对因果本身也要保持谨慎——这一点上，休谟早已指出，我们观察到的只是事件间的**恒常会合**与心理上的习惯性期待，而非在经验中直接看到\"必然联系\"（此为对休谟因果论述的通常概括，非逐字引用）。\n\n一句话总结：**\"人人都做 X\" 既不是 \"X 有益\" 的证据，反而取消了验证它的可能；而这个推理还额外把\"也许有关\"偷换成了\"一定提高\"。**",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 11886,
+   "output_tokens": 1188,
+   "total_tokens": 13074
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11886,
+     "output_tokens": 1188,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 11886,
+  "output_tokens": 1188,
+  "total_tokens": 13074
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 10.8
+}

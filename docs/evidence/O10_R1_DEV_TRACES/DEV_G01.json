@@ -1,0 +1,265 @@
+{
+ "case_id": "DEV_G01",
+ "section": "G",
+ "expected_class": "SCHOLARLY",
+ "question": "请介绍学界对「虚构悖论」（paradox of fiction：我们为何会为明知虚构的人物动情）的主要研究与代表论文，给出研究文献而不是百科式解释。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_njLE9e81sh5x66KFOrVN5681"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_O42fRXPRSMSdX8YbBj0E1634"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_dcI6cxbgugMAGBlwc1KG5618"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_dcR9y2Oylo1LRwwzVLeP5401"
+  },
+  {
+   "name": "search_scholarship",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_04_aPQWV7TdmxOSxkCXu0rT7312",
+   "args": {
+    "query": "fictional emotions irrationality imagination quasi-emotions",
+    "limit": 10
+   },
+   "result_head": "{'query': 'fictional emotions irrationality imagination quasi-emotions', 'results': [{'source_record_id': 'doi:10.1093/acprof:oso/9780199589760.003.0012', 'titl"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_C2I3wXX5i296y87K0ZtY6713"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_o7SQM0K7SJ8CHualnhZF6266"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_oWuCIxJCDBZ5LVikaetp4327"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_03_eaaaJmv4cxM0u2Nk4NyS4908",
+   "args": {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199589760.003.0012",
+    "requested_access": "FULL_TEXT_IF_LEGALLY_AVAILABLE"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_GSoqtN9QIKNf0rGrLV8n5354",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位 Radford/Walton/Gendler/Hartz 等核心文献书目，但尚未取得任何可读内容证据；需读取至少数条来源的实际摘要/正文，才能对各派立场做有据归因而非猜测",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "学术契约要求：对文献做任何内容性归因（谁主张什么）前必须取得可读内容证据；当前仅有 metadata，若此时作答将只能凭标题推测论文立场，属明令禁止。故申请延展以完成 READ 环节",
+    "unresolved_evidence_gap": "Hartz 1999 摘要、Radford 1975 与 Walton 1978 的可读内容、Gendler 章节的可读内容，用以核验各代表立场"
+   },
+   "result_head": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 已定位 Radford/Walton/Gendler/Hartz 等核心文献书目，但尚未取得任何可读内容证据；需读取至少数条来源的实际摘要/正"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "declared",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_grIJbOl9ExQkjTrgqoFY1639"
+  },
+  {
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_01_Oge4k9ukaSWv98K3VPaJ8771",
+   "args": {
+    "source_record_id": "doi:10.1017/s0031819199000674",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1017/s0031819199000674', 'bibliographic_record': {'source_record_id': 'doi:10.1017/s0031819199000674', 'title': 'How We Can Be Move"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "需要取得\"虚构悖论\"（paradox of fiction）代表研究文献的真实书目记录与可读内容证据（核心论文、主要立场：Radford/假装论/思想论/错觉论等）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "已定位 Radford/Walton/Gendler/Hartz 等核心文献书目，但尚未取得任何可读内容证据；需读取至少数条来源的实际摘要/正文，才能对各派立场做有据归因而非猜测",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "学术契约要求：对文献做任何内容性归因（谁主张什么）前必须取得可读内容证据；当前仅有 metadata，若此时作答将只能凭标题推测论文立场，属明令禁止。故申请延展以完成 READ 环节",
+    "unresolved_evidence_gap": "Hartz 1999 摘要、Radford 1975 与 Walton 1978 的可读内容、Gendler 章节的可读内容，用以核验各代表立场"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 3623,
+ "final_answer": "## 关于\"虚构悖论\"学界研究文献的检索报告\n\n### 一、先说清楚证据边界（这决定你该怎么读下面的内容）\n\n你明确要求\"研究文献而非百科式解释\"，所以我按学术检索来办，并且要如实交代我这一轮**实际读到了什么**：\n\n- 我通过学术文献库（Crossref/OpenAlex）检索到了该论域若干**真实存在的论文记录**，书目信息（作者/年份/题名/期刊/DOI）可核验；\n- 但其中**只有一条**取得了可读的内容证据（摘要）——Glenn Hartz 1999 那篇；\n- 其余绝大多数记录停留在**书目层级**（METADATA_ONLY）。这意味着：我可以告诉你\"某某文献存在、题名年份作者是什么\"，但**不能**替你断言它里面究竟主张了什么。下面凡是涉及\"某文献的具体立场\"的地方，我都会标明证据等级。\n\n---\n\n### 二、检索到的核心文献清单（书目可核验）\n\n**源头表述**\n\n- **Colin Radford & Michael Weston (1975)**，*How Can We Be Moved by the Fate of Anna Karenina?*，载 *Aristotelian Society Supplementary Volume*，DOI: 10.1093/aristoteliansupp/49.1.67。\n  这是该问题的原始出处，题目本身点出了标志性案例（安娜·卡列尼娜之死）。**证据等级：仅书目**——我本轮只核验到题名、作者、年份、刊物与 DOI，未取得正文。\n\n**假装论（make-believe）路线**\n\n- **Kendall L. Walton (1978)**，*Fearing Fictions*，DOI: 10.2307/2025831。**证据等级：仅书目**（题名/年份/作者已核验）。这是虚构情感讨论中被反复引用的经典论文之一。\n\n**当代\"理性论/思想论\"路线**\n\n- **Tamar Szabó Gendler**，*Genuine Rational Fictional Emotions*，见于牛津学术专著（ISBN 9780199589760 相关章节），DOI: 10.1093/acprof:oso/9780199589760.003.0012。**证据等级：仅书目**——从题名可读出其问题意识是\"虚构情感能否是真正且理性的\"，但具体论证我本轮未取得。\n\n**反驳与\"疑题化\"路线（唯一可读内容）**\n\n- **Glenn A. Hartz (1999)**，*How We Can Be Moved by Anna Karenina, Green Slime, and a Red Pony*，载 *Philosophy*，DOI: 10.1017/s0031819199000674。**证据等级：摘要可读**，是本次唯一取得内容证据的文献。详见下节。\n\n**实验心理学进路**\n\n- **Sperduti 等 (2016)**，*The paradox of fiction: Emotional response toward fiction and the modulatory role of self-relevance*，DOI: 10.1016/j.actpsy.2016.02.003。**证据等级：仅书目**——题名表明其用\"自我相关性\"作为调节变量做实证研究，但具体结论未核验。\n\n---\n\n### 三、我实际读到的内容：Hartz 1999 摘要说了什么\n\n这是本轮唯一有内容证据的一条，故单独交代。该摘要（Crossref 元数据）包含以下可直接引述的内容：\n\n该摘要（Crossref 元数据）的内容，我以转述方式交代如下，以下不是逐字引文：摘要表明，虚构悖论这一提法被追溯到 Radford，而该悖论的核心问题被表述为我们如何可能被虚构出来的造物所打动；摘要作者主张，沃尔顿笔下的 Charles 案例可以做到真正恐惧那团绿黏物、同时又声称并不认为它危险，而这并不构成非理性；摘要作者还判定 Morreall、Moran、Hyslop、Boruah、Lamarque 与 Neill 等人各自提出的解决方案都不充分；其倾向性结论是，这一问题的答案大概不在哲学之内，而在认知神经科学之中。\n\n从这段摘要，我**可以核实地**得出四点：\n\n1. \"fiction paradox（虚构悖论）\"这一提法**追溯归功于 Radford**——这是 Hartz 的表述，与前面检索到的 Radford 1975 书目吻合，互为印证。\n2. 该悖论的核心提问被 Hartz 表述为：\"我们怎能被虚构的人物/造物所感动？\"（*How can we be moved by creatures of fiction?*）\n3. **Walton 提供了一个著名的思想实验案例\"Charles\"**：Charles 真的恐惧那团\"绿史莱姆\"，同时又声称并不认为它危险，而 Hartz 认为这**不构成非理性**。（注意：这是 Hartz 对 Walton 案例的转述与自己的辩护，不等于 Walton 本人的结论——Walton 本人的立场我没读到。）\n4. Hartz 在摘要中**点名了一批他判定为\"不充分\"的解决方案提出者**：**Morreall、Moran、Hyslop、Boruah、Lamarque、Neill**。这是真实、可核验的学者名单（出自该摘要），**但它只说明\"这些人各自提出过解决方案而 Hartz 认为不够\"**——摘要没有交代他们各自主张的具体内容，我不替你脑补。\n5. Hartz 自己的结论倾向：**该问题的答案\"大概在哲学之外\"——在认知神经科学中**。这本身是一个元哲学立场，也解释了为什么该论域后来确有实验心理学论文（如上引 Sperduti 等 2016）。\n\n---\n\n### 四、该问题的经典争议框架（此节为通行理解，**本轮未取得原典/原文核验**）\n\n下面这套\"三个命题相冲突\"的经典刻画，是教科书与导论文献里的通行框架，**但我本轮没有检索到它的一手出处原文**，所以请按\"待核验的背景框架\"对待，不要当作我核验过的引文：\n\n- 通常被表述为三命题张力：① 我们确实会为虚构人物（如安娜·卡列尼娜）产生真实的情感反应；② 我们明知这些人物不存在；③ 而情感（至少某些情感，如恐惧、怜悯）似乎要求相信其对象真实存在。\n- 对此大致形成几条路线：**假装论/准情感论**（Walton 一线，认为这类\"情感\"是处于\"假装/想象\"游戏中的 quasi-emotion，而非真正的信念型情感）；**思想论/想象论**（认为情感可以由想象内容而非信念内容触发，从而否认①与③的冲突）；**错觉论或非理性论**（Radford 一线被认为倾向于承认动情在某种意义上是\"非理性/不一致\"的）。\n\n以上每条路线的**具体归属**（哪篇论文持哪一路线）我这一轮只有**书目**支撑、无内容支撑，我不把学者的具体论点坐实为已核验事实。\n\n---\n\n### 五、给你继续深入的建议（研究入口）\n\n如果你想真正进入该论域而不止步于此，建议按以下顺序取文献：\n\n1. **先读源头**：Radford & Weston 1975（DOI: 10.1093/aristoteliansupp/49.1.67），看\"悖论\"最初是怎么被提出、Weston 又是如何回应的——这是一场\"提出者 vs 回应者\"的同卷对谈。\n2. **再读假装论经典**：Walton 1978 *Fearing Fictions*（DOI: 10.2307/2025831），并对照 Hartz 摘要中提到的 \"Charles\" 案例。\n3. **读当代辩护路线**：Gendler 的 *Genuine Rational Fictional Emotions*，她代表的是\"虚构情感可以是真正且理性的\"这一方向。\n4. **读批判性综述**：Hartz 1999 是最经济的一篇——它一次性点名并反驳了 Morreall、Moran、Hyslop、Boruah、Lamarque、Neill 等多条路线；可据其参考文献回溯原文。\n5. **读跨学科进路**：Sperduti 等 2016，若你关心实证维度。\n\n**一条诚实的提示**：这份清单是我本轮实际检索所得，但内容证据只覆盖了 Hartz 1999 一例。若你需要我核验其中某一篇（如 Walton 1978、Gendler 章节）**究竟主张什么**，请指定文献，我可以对该篇做定点深读后再给你有内容证据支撑的综述——那比现在把这些论文的\"通行印象\"写满要可靠得多。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 2,
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "已定位 Radford/Walton/Gendler/Hartz 等核心文献书目，但尚未取得任何可读内容证据；需读取至少数条来源的实际摘要/正文，才能对各派立场做有据归因而非猜测",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 13:36:45",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "需要取得\"虚构悖论\"（paradox of fiction）代表研究文献的真实书目记录与可读内容证据（核心论文、主要立场：Radford/假装论/思想论/错觉论等）",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 13:36:56",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "已定位 Radford/Walton/Gendler/Hartz 等核心文献书目，但尚未取得任何可读内容证据；需读取至少数条来源的实际摘要/正文，才能对各派立场做有据归因而非猜测",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 13:36:56",
+    "reason": "学术契约要求：对文献做任何内容性归因（谁主张什么）前必须取得可读内容证据；当前仅有 metadata，若此时作答将只能凭标题推测论文立场，属明令禁止。故申请延展以完成 READ 环节",
+    "unresolved_gap": "Hartz 1999 摘要、Radford 1975 与 Walton 1978 的可读内容、Gendler 章节的可读内容，用以核验各代表立场"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:36:53"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:36:53"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:36:53"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 13:36:53"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 108297,
+   "output_tokens": 8923,
+   "total_tokens": 117220
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 17847,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11897,
+     "output_tokens": 898,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18553,
+     "output_tokens": 979,
+     "tool_chars_added": 17314
+    },
+    {
+     "round": 3,
+     "input_tokens": 14871,
+     "output_tokens": 554,
+     "tool_chars_added": 980
+    },
+    {
+     "round": 4,
+     "input_tokens": 16649,
+     "output_tokens": 614,
+     "tool_chars_added": 2455
+    },
+    {
+     "round": 5,
+     "input_tokens": 17220,
+     "output_tokens": 3904,
+     "tool_chars_added": 2859
+    },
+    {
+     "round": 6,
+     "input_tokens": 14453,
+     "output_tokens": 725,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 7,
+     "input_tokens": 14654,
+     "output_tokens": 1249,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 108297,
+  "output_tokens": 8923,
+  "total_tokens": 117220
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 62.3
+}

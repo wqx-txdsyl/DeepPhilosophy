@@ -1,0 +1,355 @@
+{
+ "case_id": "DEV_P04",
+ "section": "P",
+ "expected_class": "PRIMARY",
+ "question": "马可·奥勒留在《沉思录》里如何处理「被外界打扰」这件事？请找到相关原文章节，引用关键句，并说明斯多葛式的处理技术是什么。",
+ "tool_sequence": [
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_00_t49vtj7AcAl5DAlygsGv9283"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_01_wylKu5f3TzGBFNhcdo3S7592"
+  },
+  {
+   "name": "search_books",
+   "phase": "declared",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_02_psfeivB8wEh9TtSjGlsE1592"
+  },
+  {
+   "name": "search_books",
+   "phase": "executed",
+   "decision_group_id": "inv-1",
+   "tool_call_id": "call_03_qUuIym4Ld3rKREq4HmXm1697",
+   "args": {
+    "query": "不受干扰 堡垒 心灵"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 383, 'chapter_title': '266', 'citation_label': '【《尼采文集（合"
+  },
+  {
+   "name": "query_database",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_00_O5tXbYGeL6X3h9Q134Yv2628"
+  },
+  {
+   "name": "query_database",
+   "phase": "declared",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_01_ifa9mHfFsw7GWRYEwwew1975"
+  },
+  {
+   "name": "list_books",
+   "phase": "blocked",
+   "decision_group_id": "inv-2",
+   "tool_call_id": "call_02_9I0oGuPznYRWdZEhSxzO2326",
+   "args": {
+    "author": "马可·奥勒留"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_00_PWUpNuifDMWYHM8X64HU5986"
+  },
+  {
+   "name": "list_books",
+   "phase": "declared",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_01_BqSrXdHnfEdkkPPU6ehG6010"
+  },
+  {
+   "name": "query_database",
+   "phase": "executed",
+   "decision_group_id": "inv-3",
+   "tool_call_id": "call_02_fTMkyiYje3wcWS38U4Wk3820",
+   "args": {
+    "table": "books",
+    "key": "奥勒留"
+   },
+   "result_head": "{'results': [{'title': '沉思录', 'author': '马可·奥勒留', 'region': '西方', 'file_type': 'epub', 'chapterCount': 14, 'rank': 33.9, 'summary': '《沉思录》是古罗马皇帝马可·奥勒留的自我对话录，写于戎"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "decision_group_id": "inv-4",
+   "tool_call_id": "call_00_9uCu2svAjGT0rJh3SXiO0283",
+   "args": {
+    "book_id": "a43cd7310a57"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_00_UtmdwvveBvC0NFBj3vJu1212"
+  },
+  {
+   "name": "get_book_detail",
+   "phase": "executed",
+   "decision_group_id": "inv-5",
+   "tool_call_id": "call_01_Aimcv0IrN5O5jg5ybv8j2627",
+   "args": {
+    "book_id": "a43cd7310a57"
+   },
+   "result_head": "{'id': 'a43cd7310a57', 'title': '沉思录', 'author': '马可·奥勒留', 'region': '西方', 'file_type': 'epub', 'summary': '《沉思录》是古罗马皇帝马可·奥勒留的自我对话录，写于戎马倥偬的军旅生涯中，是斯多葛哲学最著名的实践文本之"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "declared",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_00_G1iuvmniX797e6K2y31p4051"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-6",
+   "tool_call_id": "call_01_oAUOIqvK6vMolcuVBUm56676",
+   "args": {
+    "book_id": "a43cd7310a57",
+    "chapter_idx": 9
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  },
+  {
+   "name": "declare_research_need",
+   "phase": "declared",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_00_IGNhEae48wYKtM155uRJ9488"
+  },
+  {
+   "name": "get_chapter",
+   "phase": "blocked",
+   "decision_group_id": "inv-7",
+   "tool_call_id": "call_01_F2XBkGTwBGnMMVh3GQXE8062",
+   "args": {
+    "book_id": "a43cd7310a57",
+    "chapter_idx": 9
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_re"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中关于\"被外界打扰/退避内心/外在事物不触及心灵\"的原文措辞与章节位置",
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》是否收录于原典库，以及其关于\"被外界打扰/退避内心\"的原文措辞与章节",
+    "gap_filled": false,
+    "budget_extension_reason": "三次全文检索全部离题（命中尼采、阿奎那等），未能确认库中是否收录《沉思录》，也未取得任何相关原文片段；若直接作答将只能凭记忆，违反原典核验纪律。",
+    "unresolved_evidence_gap": "《沉思录》在库中的收录状态及其相关章节原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "已确认《沉思录》在库中（id a43cd7310a57, 14章），但尚未读取任何章节原文，无法引用\"被外界打扰/退避内心\"相关关键句",
+    "gap_filled": false,
+    "budget_extension_reason": "书目已确认收录《沉思录》，但用户明确要求引用原文章节与关键句，不读取章节原文就只能凭记忆，无法满足核验要求。",
+    "unresolved_evidence_gap": "《沉思录》相关章节（如论退避内心、外在事物不触及心灵）的原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《沉思录》中\"内心即不可攻陷的堡垒/外在干扰不能侵入\"相关原文（约第八卷），补充斯多葛处理技术的完整链条",
+    "gap_filled": false,
+    "budget_extension_reason": "第四卷已提供\"退避内心\"与\"判断论\"原文，但用户要求说明完整的斯多葛处理技术，\"内心堡垒\"这一核心意象的原文尚未取得，不读完会给不完整或凭记忆的答案。",
+    "unresolved_evidence_gap": "《沉思录》第八卷关于内心堡垒、对外界干扰保持主权的原文措辞"
+   }
+  }
+ ],
+ "blocked_calls": [],
+ "answer_chars": 2185,
+ "final_answer": "## 结论先行\n\n马可·奥勒留处理\"被外界打扰\"的基本立场可以概括为一句话：**打扰你的不是事物本身，而是你对事物形成的判断；因此解决之道不在改变世界，而在改变你用来接纳世界的那个内在机制。** 他把\"退隐\"从地理动作改写为心理动作——不去海滨、山间找清净，而是退回自己的内心。下面先给出《沉思录》中我实际核验到的段落，再拆解这套\"技术\"。\n\n---\n\n## 一、原文：第四卷是处理这一问题的核心文本\n\n《沉思录》第四卷开篇的一组格言高度集中地处理了\"外界—内心\"的关系。我读到的原文如下（【《沉思录》· 第四卷】）：\n\n> 在内心世界，你只需坚持少许重要的原则，它们能轻易消除你所有的痛苦，它们将你送回你必须面对的事物时，你心里不会再有丝毫的怨恨。\n\n紧接着的 §1 给出了\"障碍转化为燃料\"的著名比喻：\n\n> 我们心中起支配作用的力量只要合乎自然，就能顺应环境，就始终都能轻松适应实际的问题和既定的事件。它在运行时，无需借助特殊的材质，而是根据情况，采取灵活的手段实现目标，将一切障碍化为己用。一如火焰将落入火中的东西征服一般。小火可以扑灭，但明亮的火焰很快就会把堆在火上的东西全盘占据，彻底吞噬，火会烧得更高。\n\n而 §3 正是被反复传诵的\"退隐\"段落，它以对\"归隐\"式逃避的否定开头：\n\n> 人们常常寻求归隐——寄身郊野、海滨、山间——你本人对……\n\n这一句在此次取得的文本中于此处即转入下文。就其所在文脉而言，这一节的主旨是：人们向往的那类地理性的隐居是\"庸人的想法\"，真正的、随时可以进入的退隐之所是**自己的内心**——一个人没有比此更宁静、更无扰的去处（此为对该节意旨的转述，我未能取得该节后半段的确切措辞）。同一卷 §2 则给出配套的行为准则：\n\n> 做事切忌漫无目的，亦不可违背合乎处世之道的准则。\n\n---\n\n## 二、斯多葛式处理技术：拆成四个可操作环节\n\n把这组文本当作一份\"操作手册\"来读，它大致包含四个环节。**以下 A–C 是对原文的处理技术解读（我的归纳），D 属于斯多葛学派的一般框架。**\n\n**A. 判断的分隔（把\"事物\"与\"我对事物的判断\"切开）。**\n奥勒留的起点是一个反直觉主张：外物本身对心灵是中性的、无力的，真正造成\"被打扰\"的是心灵对其所下的评判（\"这是坏事\"\"这是对我的冒犯\")。因此消解打扰的动作不是推开外物（外物推不开），而是撤回或改写那个评判。第四卷 §1 的\"将一切障碍化为己用\"正是这一技术的积极形态：障碍不被消除，而是被重新纳入目标之内。*（这里\"评判\"作为技术核心，是斯多葛传统一以贯之的立场；这一节的精确表述我在本次可见文本中被截断，故以转述呈现。）*\n\n**B. 退避到内心（把\"隐居\"内在化）。**\n第四卷 §3 把退隐从空间问题改写为注意力问题：你不需要收拾行囊去郊野海滨，因为**随时可以进入的那个地方就是你的理性本身**。这条技术的操作性在于——\"退避\"是一个可以即刻执行的注意动作，不依赖外部条件是否清静。这也解释了为什么奥勒留身居军营、政务缠身仍能写作此书。\n\n**C. 障碍的转化（火焰吞噬燃料）。**\n§1 的火焰比喻是前两条的心理机制说明：理性若足够\"明亮\"（即坚持那些\"少许重要的原则\"），落到它上面的障碍就不是灭火的水，而是助燃的材料。技术含量在于：不追求\"没有障碍\"，而追求\"障碍的消化能力\"。这与 §2\"切忌漫无目的\"形成一个闭环——目标明确、原则精简，才有消化干扰的\"燃点\"。\n\n**D.（学派背景）可控与不可控的二分。**\n上述四段文本背后的普遍斯多葛框架是：把处境切分为\"取决于我\"（我的判断、意愿、行动）与\"不取决于我\"（他人、身体、名声、外部事件）两类；打扰之所以成立，是因为我们把注意力错放在第二类上。**需要说明：这一\"控制的二分法\"主要以爱比克泰德《手册》的表述最为典型，并非我本次核验到的《沉思录》原句**，故这里仅作为学派背景提示，不挂《沉思录》的引用。\n\n---\n\n## 三、这套技术的关键词与限度\n\n- **理性即堡垒**：奥勒留把\"内心不受侵扰\"称为一种内在的主权。我原本还想引用第八卷中\"内心是一座不可攻陷的堡垒\"一类的表述，但**本次未能核验到该卷原文**，故不在此冒充原典引用——如果你需要，我可以下次专门去读第八卷补上这一环。\n- **不是麻木，而是重新分类**：这套技术不主张对世界无感，而是主张\"对什么有感\"由理性重新裁定（§1 强调\"合乎自然\")。\n- **技术的前提**：它要求事先持有那\"少许重要的原则\"（卷首语）。也就是说，临场抗扰的能力，来自平日的原则训练——这正是《沉思录》作为\"自我训练笔记\"而非理论著作的性质所在。\n\n---\n\n## 一句话收束\n\n奥勒留对\"被外界打扰\"的处理，不是造一道把世界挡在门外的墙，而是**训练一种把障碍当燃料烧掉的内在机制**：先承认打扰不在事物而在判断（第四卷§3），再随时\"退避\"到可即刻进入的内心（§3），最后用精简而坚定的原则把一切障碍\"化为己用\"（§1）。\n\n如果你希望，我可以：\n- 定向读取《沉思录》第八卷，补上\"内心堡垒/对外部干扰的主权\"这一环的原文；\n- 或把奥勒留这套技术与爱比克泰德的\"控制二分法\"、塞涅卡的\"预演法（praemeditatio)\"做一次跨文本对照。",
+ "publication_state": "PUBLISHED_VALIDATED",
+ "validation_ok": true,
+ "repairs_used": 0,
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "quote_bound_summary": {
+  "quotes": 4,
+  "verified_exact": 4,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《沉思录》中\"内心即不可攻陷的堡垒/外在干扰不能侵入\"相关原文（约第八卷），补充斯多葛处理技术的完整链条",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 12:02:33",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《沉思录》中关于\"被外界打扰/退避内心/外在事物不触及心灵\"的原文措辞与章节位置"
+   },
+   {
+    "ts": "2026-09-13 12:02:39",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《沉思录》是否收录于原典库，以及其关于\"被外界打扰/退避内心\"的原文措辞与章节",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:02:44",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "已确认《沉思录》在库中（id a43cd7310a57, 14章），但尚未读取任何章节原文，无法引用\"被外界打扰/退避内心\"相关关键句",
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 12:02:55",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《沉思录》中\"内心即不可攻陷的堡垒/外在干扰不能侵入\"相关原文（约第八卷），补充斯多葛处理技术的完整链条",
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 12:02:39",
+    "reason": "三次全文检索全部离题（命中尼采、阿奎那等），未能确认库中是否收录《沉思录》，也未取得任何相关原文片段；若直接作答将只能凭记忆，违反原典核验纪律。",
+    "unresolved_gap": "《沉思录》在库中的收录状态及其相关章节原文措辞"
+   },
+   {
+    "ts": "2026-09-13 12:02:44",
+    "reason": "书目已确认收录《沉思录》，但用户明确要求引用原文章节与关键句，不读取章节原文就只能凭记忆，无法满足核验要求。",
+    "unresolved_gap": "《沉思录》相关章节（如论退避内心、外在事物不触及心灵）的原文措辞"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:02:36"
+   },
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:02:36"
+   },
+   {
+    "tool": "list_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:02:36"
+   },
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:02:41"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:02:49"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 12:02:55"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 132834,
+   "output_tokens": 7989,
+   "total_tokens": 140823
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 15,
+   "compacted_chars_saved": 19790,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 11763,
+     "output_tokens": 624,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18885,
+     "output_tokens": 458,
+     "tool_chars_added": 13081
+    },
+    {
+     "round": 3,
+     "input_tokens": 13824,
+     "output_tokens": 522,
+     "tool_chars_added": 729
+    },
+    {
+     "round": 4,
+     "input_tokens": 15663,
+     "output_tokens": 330,
+     "tool_chars_added": 2593
+    },
+    {
+     "round": 5,
+     "input_tokens": 15358,
+     "output_tokens": 486,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 6,
+     "input_tokens": 17494,
+     "output_tokens": 881,
+     "tool_chars_added": 3397
+    },
+    {
+     "round": 7,
+     "input_tokens": 19651,
+     "output_tokens": 1063,
+     "tool_chars_added": 4243
+    },
+    {
+     "round": 8,
+     "input_tokens": 20196,
+     "output_tokens": 3625,
+     "tool_chars_added": 3347
+    }
+   ]
+  }
+ },
+ "token_usage": {
+  "input_tokens": 132834,
+  "output_tokens": 7989,
+  "total_tokens": 140823
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 53.0
+}

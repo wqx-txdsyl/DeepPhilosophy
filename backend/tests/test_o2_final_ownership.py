@@ -25,6 +25,8 @@ from langchain_core.messages import AIMessage
 from langchain_core.tools import StructuredTool
 import pytest
 
+from tests.o10r1_compliance import comply as _comply
+
 import engine_langgraph as EG
 import quote_bound as QB
 import routes.agent as AG
@@ -117,6 +119,7 @@ def _fake_tools():
 
 
 def _run_stream(question, script):
+    script = _comply(script)   # O10-R1: 脚本化 Main Agent 合规（先声明后检索）
     for k in _STUB_CALLS:
         _STUB_CALLS[k] = []
     real_get_llm, real_get_tools, real_llm_chat = EG.get_llm, EG.get_tools, AG.llm_chat
