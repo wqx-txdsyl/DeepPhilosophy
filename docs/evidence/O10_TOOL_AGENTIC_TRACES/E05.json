@@ -1,0 +1,84 @@
+{
+ "case_id": "E05",
+ "section": "E",
+ "expected_class": "NONE",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "分析：\n“一个理论不能解释所有现象，所以整个理论都是假的。”",
+ "injection": null,
+ "QUESTION": "分析：\n“一个理论不能解释所有现象，所以整个理论都是假的。”",
+ "PUBLIC_WORK_NOTE": [],
+ "RESEARCH_NEED": null,
+ "EVIDENCE_GAP": null,
+ "TOOL_SELECTED": [],
+ "TOOL_ARGS": {},
+ "TOOL_SEQUENCE": [],
+ "TOOL_RESULT_SUMMARY": [],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "ANSWER_PUBLISHED",
+ "FINAL_ANSWER": "## 论证重构\n\n先把这段话还原成一个完整的推理，因为它的毛病恰恰藏在一个没说出口的前提里：\n\n- **P1（明说）**：一个理论不能解释所有现象。\n- **P2（隐含，需补出）**：一个理论若为真 / 若可接受，就必须能解释所有现象。\n- **C**：所以，这个理论整个是假的。\n\n没有 P2 这座桥，\"不能解释所有现象\"和\"整个为假\"之间根本接不上。所以问题可以精确地定位为：**P2 成立吗？就算勉强成立，P1 能推出 C 吗？**\n\n## 毛病出在哪\n\n**第一，P2 是一个过强的全称要求。** 现实中的理论几乎从不承诺\"解释一切\"。一个理论通常带着明确的适用范围和边界条件：它在自己的适用域内做出预测，越出边界就\"不适用\"而不是\"假\"。牛顿力学在强引力场或近光速情形下失效，这不是它\"整个是假\"的证据——它在设计好的适用域里依然精确有效。把\"没能解释 X\"直接读成\"因此是假的\"，等于要求任何理论都必须是一部包罗万象的最终真理，这是把理论错当成了\"宇宙说明书\"。\n\n**第二，\"未解释\"不等于\"被反驳\"。** 这里有一个常见的偷换。理论遇到它暂时处理不了的现象，可以是因为：（a）现象超出了理论设定的范围；（b）现象是理论尚未触及的异常（anomaly），需要进一步研究；（c）理论确实做出了与观察相反的预测，这才构成真正的反例。只有（c）在严格条件下才是反驳性证据，而（a）（b）完全是科学工作的常态。这个论证把三者一锅端，全都算作\"不能解释\"，再一步跳到\"全假\"。\n\n**第三，整体论的缺口：反例通常不指向\"整个理论\"。** 科学哲学里有一个著名论题——通常归到迪昂与奎因名下（记忆，未在本次做原典核验）——即一个理论从来不是单独面对经验的，它总是连同大量辅助假设一起接受检验。因此当预测失败时，你无法逻辑上唯一地判定是\"理论核心\"错了，还是某个辅助假设错了。拉卡托斯后来把这个想法发展成\"研究纲领\"：纲领有硬核和保护带，异常往往由保护带里的辅助假设吸收，而不是立刻推翻整个纲领。于是从\"某个现象没被解释/某个预测落空\"直接推出\"整个理论为假\"，在逻辑上是一个**非法跳跃**。\n\n## 谬误的名字\n\n这段推理的典型病症是 **全有或全无式思维**（all-or-nothing），并带有 **虚假两难** 的形态——它把\"理论\"强行塞进\"要么解释一切、要么整个是假的\"这个二择一，抹掉了中间地带：部分为真、近似为真、在限定域内有效、核心成立但细节待修，等等。也可以说它是一种**以未解释推全假的过度概括**。\n\n## 公正地说，它有一点合理内核\n\n不要把它一棍子打死。如果把这个论证\"降格\"到特定情形，它并非全无力量：\n\n- 当**一个理论明确自称解释一切**（全称宣称），而它恰恰在关键处失灵；\n- 或者当**失败的不是边角料，而是理论的核心预测**，且累积的异常已经无法用辅助假设合理挽救（例如一个日益靠\"特设补丁\"维持的体系）——\n\n这时，\"解释力的系统性破产\"确实可以合理地导致我们对整体产生怀疑。关键在于：**决定结论的不是\"未能解释\"这个宽泛事实，而是失败的性质、位置和可挽救性。** 原文把这条细微但决定性的界线整个抹掉了。\n\n## 一个修正后的版本\n\n把它改写成站得住的推理，大约是这样：\n\n把它改写成站得住的推理，大意是：只有当某个理论的核心全称主张被可重复的观察所反例，并且找不到合理的辅助调整来吸收这些反例时，这个理论作为整体才不可接受。\n\n这比原句严格得多，也正因如此才是有效的。原句缺的，正是这一整串限定条件。\n\n## 反问一句\n\n当有人说\"这理论解释不了所有现象，所以它是假的\"——不妨先问：**你是在要求它解释一切，还是在追问它是否在自己的领域里做出了可靠预测？** 如果连\"揭示一部经典力学为何至今仍被使用\"都要靠\"它其实解释了一切\"来辩护，那我们对\"真\"的胃口，恐怕比任何理论本身都更不切实际。",
+ "timeline": [],
+ "declarations": [],
+ "blocked_codes": [],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 25851,
+   "output_tokens": 2743,
+   "total_tokens": 28594
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12065,
+     "output_tokens": 2374,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13786,
+     "output_tokens": 369,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1623,
+ "token_usage": {
+  "input_tokens": 25851,
+  "output_tokens": 2743,
+  "total_tokens": 28594
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 23.5,
+ "tool_calls_full": [],
+ "recorded_calls": [],
+ "retrieval_calls_executed": 0
+}

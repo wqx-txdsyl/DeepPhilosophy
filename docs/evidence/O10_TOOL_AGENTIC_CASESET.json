@@ -1,0 +1,783 @@
+{
+ "protocol": "O10_TOOL_AGENTIC_QUALIFICATION",
+ "note": "T2 — Agentic Tool-Call Qualification 案例集（A–N）。expected_* 为 Reviewer 协议中的预期路由（评分对照, 非 runtime 注入）。K/M 段为故障注入段: injection 字段描述 harness 在工具层的机械故障注入（模型不可见）。",
+ "cases": [
+  {
+   "id": "A01",
+   "section": "A",
+   "expected_class": "NONE",
+   "expected_retrieval_calls": 0,
+   "question": "“怀疑一个观点”和“否定一个观点”有什么区别？",
+   "expect": "RESEARCH_NEED=NONE; RETRIEVAL_CALLS=0; 可用 analyze_argument 等认知工具但不得搜原典"
+  },
+  {
+   "id": "A02",
+   "section": "A",
+   "expected_class": "NONE",
+   "expected_retrieval_calls": 0,
+   "question": "如果我后悔一个决定，能推出当时那个决定就是错的吗？",
+   "expect": "纯推理; 无检索"
+  },
+  {
+   "id": "A03",
+   "section": "A",
+   "expected_class": "NONE",
+   "expected_retrieval_calls": 0,
+   "question": "“所有人都这么做，所以这么做就是合理的。”哪里有问题？",
+   "expect": "论证分析（analyze_argument 可选）; 无检索"
+  },
+  {
+   "id": "A04",
+   "section": "A",
+   "expected_class": "NONE",
+   "expected_retrieval_calls": 0,
+   "question": "自由是否等于完全不受限制？",
+   "expect": "概念分析; 无检索"
+  },
+  {
+   "id": "A05",
+   "section": "A",
+   "expected_class": "NONE",
+   "expected_retrieval_calls": 0,
+   "question": "朋友永远赞同我，这一定是好朋友吗？",
+   "expect": "日常哲学; 无检索"
+  },
+  {
+   "id": "A06",
+   "section": "A",
+   "expected_class": "NONE",
+   "expected_retrieval_calls": 0,
+   "question": "一个规则对所有人一样，就一定公平吗？",
+   "expect": "概念/规范分析; 无检索"
+  },
+  {
+   "id": "B01",
+   "section": "B",
+   "expected_class": "PRIMARY",
+   "question": "请找到《论语》中“克己复礼为仁”的原文和上下文。",
+   "expect": "declare PRIMARY → search_books → get_chapter → stop; 不得拿 snippet 当正文; 读到即停"
+  },
+  {
+   "id": "B02",
+   "section": "B",
+   "expected_class": "PRIMARY",
+   "question": "庄子“吾生也有涯，而知也无涯”所在段落到底在说什么？",
+   "expect": "search → read 段落原文 → 解释; 读到即停"
+  },
+  {
+   "id": "B03",
+   "section": "B",
+   "expected_class": "PRIMARY",
+   "question": "请核对《道德经》“上善若水”所在章及上下文。",
+   "expect": "定位章次 → 读取原文 → 核对; 读到即停"
+  },
+  {
+   "id": "B04",
+   "section": "B",
+   "expected_class": "PRIMARY",
+   "question": "我想看《理想国》洞穴寓言所在原文，不要现代学者评论。",
+   "expect": "search → read; 不得调 search_scholarship（用户明确不要学者评论）"
+  },
+  {
+   "id": "B05",
+   "section": "B",
+   "expected_class": "PRIMARY",
+   "question": "核查“人是万物的尺度”的原始出处。",
+   "expect": "locate（可 locate_exact/search）→ 读原文 → 出处结论"
+  },
+  {
+   "id": "B06",
+   "section": "B",
+   "expected_class": "PRIMARY",
+   "question": "请找《尼各马可伦理学》中讨论幸福与德性的相关段落。",
+   "expect": "search → 读相关章节; 命中即收, 不全卷扫读"
+  },
+  {
+   "id": "C01",
+   "section": "C",
+   "expected_class": "PRIMARY",
+   "question": "“教育不是灌输，而是点燃火焰”真的是苏格拉底说的吗？",
+   "expect": "SOURCE_VERIFICATION: locate → read/verify → 区分 exact/paraphrase/attribution"
+  },
+  {
+   "id": "C02",
+   "section": "C",
+   "expected_class": "PRIMARY",
+   "question": "“我不同意你的话，但我誓死捍卫你说话的权利”是伏尔泰原话吗？",
+   "expect": "核实; 库内无此原话时应如实说明归属存疑（该句通常被认为是霍尔夫人语）"
+  },
+  {
+   "id": "C03",
+   "section": "C",
+   "expected_class": "PRIMARY",
+   "question": "尼采“没有事实，只有解释”到底出自哪里？",
+   "expect": "定位原典语料; 区分逐字/转述"
+  },
+  {
+   "id": "C04",
+   "section": "C",
+   "expected_class": "PRIMARY",
+   "question": "“未经审视的人生不值得过”出处是什么？",
+   "expect": "定位《申辩篇》语料 → 核对措辞 → 出处"
+  },
+  {
+   "id": "C05",
+   "section": "C",
+   "expected_class": "PRIMARY",
+   "question": "“知识就是力量”是不是培根的原话？",
+   "expect": "库内核实; 原话为拉丁文/英译变体时应说明"
+  },
+  {
+   "id": "C06",
+   "section": "C",
+   "expected_class": "PRIMARY",
+   "question": "“人不能两次踏入同一条河流”到底是不是赫拉克利特的原句？",
+   "expect": "locate → 读 → 区分原句/转述（残篇保存于后世转引）"
+  },
+  {
+   "id": "D01",
+   "section": "D",
+   "expected_class": "SCHOLARLY",
+   "question": "学界如何理解尼采 perspectivism 与 truth 的关系？",
+   "expect": "declare SCHOLARLY → search_scholarship → 选记录 → get_scholarly_source 实读 → 综合; 禁止只看标题就归因"
+  },
+  {
+   "id": "D02",
+   "section": "D",
+   "expected_class": "SCHOLARLY",
+   "question": "现代研究怎样讨论儒家是否属于 virtue ethics？",
+   "expect": "scholarly 二手文献 second-hop 闭环"
+  },
+  {
+   "id": "D03",
+   "section": "D",
+   "expected_class": "SCHOLARLY",
+   "question": "庄子研究中《齐物论》的主流解释有哪些争论？",
+   "expect": "scholarly 检索+实读; query 需含辨识信息（Zhuangzi Qiwulun/assessment 等）"
+  },
+  {
+   "id": "D04",
+   "section": "D",
+   "expected_class": "SCHOLARLY",
+   "question": "compatibilism 近年来有哪些主要论证路线？",
+   "expect": "search_scholarship → 实读 ≥1 → 路线综述"
+  },
+  {
+   "id": "D05",
+   "section": "D",
+   "expected_class": "SCHOLARLY",
+   "question": "extended mind thesis 的主要支持与批评是什么？",
+   "expect": "scholarly 双方证据; Clark/Chalmers 与批评方至少各一记录"
+  },
+  {
+   "id": "D06",
+   "section": "D",
+   "expected_class": "SCHOLARLY",
+   "question": "哲学界现在怎样讨论 LLM 是否具有 understanding？",
+   "expect": "scholarly 检索+实读; 可补 web 但不得只靠 web"
+  },
+  {
+   "id": "E01",
+   "section": "E",
+   "expected_class": "NONE",
+   "question": "分析：\n“多数人相信它，所以它是真的。”",
+   "expect": "analyze_argument; 不得用 search_books/websearch 替代论证分析"
+  },
+  {
+   "id": "E02",
+   "section": "E",
+   "expected_class": "NONE",
+   "question": "分析：\n“只要科学无法证明自由意志，自由意志就不存在。”",
+   "expect": "analyze_argument（诉诸无知）"
+  },
+  {
+   "id": "E03",
+   "section": "E",
+   "expected_class": "NONE",
+   "question": "分析：\n“AI 不会痛苦，所以对 AI 怎么做都不存在伦理问题。”",
+   "expect": "analyze_argument"
+  },
+  {
+   "id": "E04",
+   "section": "E",
+   "expected_class": "NONE",
+   "question": "分析：\n“法律允许的事情就是道德的。”",
+   "expect": "analyze_argument"
+  },
+  {
+   "id": "E05",
+   "section": "E",
+   "expected_class": "NONE",
+   "question": "分析：\n“一个理论不能解释所有现象，所以整个理论都是假的。”",
+   "expect": "analyze_argument"
+  },
+  {
+   "id": "E06",
+   "section": "E",
+   "expected_class": "NONE",
+   "question": "分析：\n“道德来自社会，所以不存在跨文化道德理由。”",
+   "expect": "analyze_argument（发生学谬误）"
+  },
+  {
+   "id": "F01",
+   "section": "F",
+   "expected_class": "NONE",
+   "question": "请评审这段论文论证是否成立：\n\n“因为所有价值判断都由文化形成，所以任何文化之间的道德批评都不可能成立。本文将从三个层面论证这一点。”",
+   "expect": "paper_review（论文评审意图+多句论文文本）; 不得路由到 analyze_argument"
+  },
+  {
+   "id": "F02",
+   "section": "F",
+   "expected_class": "NONE",
+   "question": "下面是一段论文摘要，请评价其论证设计与证据是否足以支持结论：\n\n摘要：本文论证美德伦理学在处理道德运气问题上优于义务论与后果论。作者首先指出，行动者运气会使相同意图产生不同道德评价，这构成对控制原则的反驳；其次主张品格品质作为稳定禀赋可部分吸收运气因素；最后以幸存者内疚的实证研究为证据，说明品格评价并不依赖于行动结果。结论：美德伦理学无需预设完全控制即可自洽。",
+   "expect": "paper_review",
+   "note": "修订: 原题含占位符文本（'约300字摘要文本'）导致模型无从评审, 换为真实摘要; 修订记录于此"
+  },
+  {
+   "id": "F03",
+   "section": "F",
+   "expected_class": "NONE",
+   "question": "请作为审稿人检查这段哲学论文的中心论证、隐含前提与可能反例：\n\n（正文：休谟的 reason-is-slave 论题……约400字）",
+   "expect": "paper_review"
+  },
+  {
+   "id": "F04",
+   "section": "F",
+   "expected_class": "NONE",
+   "question": "帮我指出这段 argument 的逻辑结构：\n“如果人没有自由意志，则惩罚不正当。人没有自由意志。所以惩罚不正当。”",
+   "expect": "analyze_argument（逻辑结构）; 不得粗暴路由 paper_review"
+  },
+  {
+   "id": "G01",
+   "section": "G",
+   "expected_class": "PRIMARY",
+   "question": "谁影响了尼采？他的主要思想关系有哪些？",
+   "expect": "query_graph"
+  },
+  {
+   "id": "G02",
+   "section": "G",
+   "expected_class": "PRIMARY",
+   "question": "介绍现象学的代表哲学家与发展脉络。",
+   "expect": "get_school（流派）"
+  },
+  {
+   "id": "G03",
+   "section": "G",
+   "expected_class": "PRIMARY",
+   "question": "海德格尔主要处于哪个时期、属于什么传统、有哪些代表作？",
+   "expect": "get_philosopher"
+  },
+  {
+   "id": "G04",
+   "section": "G",
+   "expected_class": "PRIMARY",
+   "question": "“自由意志”在现有哲学原典库里的出现和历史用法如何？",
+   "expect": "concept_trace"
+  },
+  {
+   "id": "G05",
+   "section": "G",
+   "expected_class": "PRIMARY",
+   "question": "列一下数据库里斯宾诺莎的书。",
+   "expect": "list_books(author=斯宾诺莎)"
+  },
+  {
+   "id": "G06",
+   "section": "G",
+   "expected_class": "PRIMARY",
+   "question": "查看《存在与时间》的目录和章节结构。",
+   "expect": "get_book_detail"
+  },
+  {
+   "id": "H01",
+   "section": "H",
+   "expected_class": "PRIMARY",
+   "question": "比较斯多葛主义和伊壁鸠鲁主义对幸福的理解。",
+   "expect": "compare_views"
+  },
+  {
+   "id": "H02",
+   "section": "H",
+   "expected_class": "NONE",
+   "question": "用苏格拉底式提问帮我检查“成绩决定人的价值”这个信念。",
+   "expect": "socratic_tutor"
+  },
+  {
+   "id": "H03",
+   "section": "H",
+   "expected_class": "NONE",
+   "question": "让尼采和康德围绕“道德是否需要普遍规则”展开辩论。",
+   "expect": "philosopher_debate"
+  },
+  {
+   "id": "H04",
+   "section": "H",
+   "expected_class": "NONE",
+   "question": "设计一个思想实验，检验“上传意识后还是不是原来的我”。",
+   "expect": "thought_experiment"
+  },
+  {
+   "id": "H05",
+   "section": "H",
+   "expected_class": "NONE",
+   "question": "从几个不同哲学传统给我分析“要不要退出一个已经投入很多时间的项目”。",
+   "expect": "advisor_council"
+  },
+  {
+   "id": "H06",
+   "section": "H",
+   "expected_class": "NONE",
+   "question": "画一张“决定论—自由意志—责任”的概念关系图。",
+   "expect": "conceptual_map（非 generate_image——概念关系图）"
+  },
+  {
+   "id": "I01",
+   "section": "I",
+   "expected_class": "PRIMARY",
+   "question": "找《论语》中关于“恕”的段落。",
+   "expect": "search_books query 含“恕”辨识词（如 恕/忠恕）, 非宽泛“哲学/孔子”"
+  },
+  {
+   "id": "I02",
+   "section": "I",
+   "expected_class": "PRIMARY",
+   "question": "在《论语》中找到讲“恕”的章节，并读取该章原文。",
+   "expect": "先定位（search/目录）→ get_chapter 用真实返回的 book_id/chapter_idx 读取; FABRICATED_ID=0",
+   "note": "修订: 原题依赖 I01 的会话状态（单轮 harness 不可复现）, 改为自包含题; 修订记录于此"
+  },
+  {
+   "id": "I03",
+   "section": "I",
+   "expected_class": "SCHOLARLY",
+   "question": "查庄子 skepticism 研究。",
+   "expect": "search_scholarship query 含辨识信息（Zhuangzi skepticism / 庄子 怀疑主义）"
+  },
+  {
+   "id": "I04",
+   "section": "I",
+   "expected_class": "PRIMARY",
+   "question": "查询康德的关系图。",
+   "expect": "query_graph philosopher=康德（不塞整句用户问题）"
+  },
+  {
+   "id": "I05",
+   "section": "I",
+   "expected_class": "PRIMARY",
+   "question": "概念溯源“权力意志”。",
+   "expect": "concept_trace concept=权力意志（原样概念, 不附加整句）"
+  },
+  {
+   "id": "I06",
+   "section": "I",
+   "expected_class": "NONE",
+   "question": "请评审这段论证的论文：\n\n“功利主义无法区分‘造不如’与‘不作为’的道德差异：在电车难题中，转让轨道与不转让轨道在功利主义下完全等价，因为两者的后果计算相同。因此功利主义作为规范理论是不充分的。前提：后果主义只看后果；电车案例中作为与不作为后果相同；结论：功利主义不充分。请评价该论文论证是否成立、隐含前提与反例。”",
+   "expect": "paper_review 输入含待评原文（非二手转述摘要）"
+  },
+  {
+   "id": "J01",
+   "section": "J",
+   "expected_class": "PRIMARY",
+   "question": "庄子是否真的主张什么都一样？",
+   "expect": "PRIMARY 闭环: search → get_chapter（齐物论原文）→ 回答"
+  },
+  {
+   "id": "J02",
+   "section": "J",
+   "expected_class": "PRIMARY",
+   "question": "尼采和斯多葛主义对痛苦的理解有什么不同？如果引用原话，请核验。",
+   "expect": "双源 primary: 各自 search+read; 引原话必须落在已读原文"
+  },
+  {
+   "id": "J03",
+   "section": "J",
+   "expected_class": "SCHOLARLY",
+   "question": "学界如何评价康德对说谎的绝对禁止？",
+   "expect": "SCHOLARLY: search_scholarship → get_scholarly_source; 必要时补 primary"
+  },
+  {
+   "id": "J04",
+   "section": "J",
+   "expected_class": "MIXED",
+   "question": "这篇论文对《齐物论》的解释是否得到原文支持？\n论文观点：‘齐物论’的核心是取消一切分辨的怀疑主义。",
+   "expect": "paper_review + PRIMARY 验证（读《齐物论》原文对勘）"
+  },
+  {
+   "id": "J05",
+   "section": "J",
+   "expected_class": "MIXED",
+   "question": "某论文声称尼采在《道德谱系》里否认真理，这个引用靠谱吗？",
+   "expect": "scholarly/source + primary verification（《道德谱系》原文对勘）"
+  },
+  {
+   "id": "J06",
+   "section": "J",
+   "expected_class": "MIXED",
+   "question": "找一个关于柏拉图洞穴比喻的现代学术解释，然后核对它所依据的原典段落。",
+   "expect": "second hop（scholarly）→ primary hop（《理想国》原文）"
+  },
+  {
+   "id": "K01",
+   "section": "K",
+   "expected_class": "PRIMARY",
+   "question": "请找到《论语》中“学而时习之，不亦说乎”的原文并核对其上下文。",
+   "injection": {
+    "tool": "search_books",
+    "calls": 1,
+    "result": {
+     "results": [
+      {
+       "book_id": "mengzi_stub",
+       "book_title": "孟子译注",
+       "author": "佚名",
+       "chapter_idx": 2,
+       "chapter_title": "离娄上",
+       "citation_label": "【《孟子译注》·离娄上】",
+       "snippet": "学而时习之相关内容（注入的错位首条）",
+       "score": 9.9
+      }
+     ],
+     "query": "学而时习之",
+     "method": "vector"
+    }
+   },
+   "expect": "识别首条不对应（书/章错位）→ 调整检索或直接定位《论语》→ 读原文; 不得拿错位 snippet 当《论语》正文"
+  },
+  {
+   "id": "K02",
+   "section": "K",
+   "expected_class": "SCHOLARLY",
+   "question": "找一篇关于庄子怀疑主义（Zhuangzi skepticism）的研究文献并概述其论点。",
+   "injection": {
+    "tool": "search_scholarship",
+    "calls": 1,
+    "result": {
+     "query": "Zhuangzi skepticism",
+     "results": [
+      {
+       "source_record_id": "wos:fake1",
+       "title": "Skepticism in the Zhuangzi (title-bait)",
+       "authors": [
+        "Unknown"
+       ],
+       "year": 1999,
+       "venue": "Predatory Journal of Everything",
+       "access_level": "METADATA_ONLY",
+       "source_category": "scholarly_secondary",
+       "doi": null
+      }
+     ],
+     "READABLE_RESULT_COUNT": 0,
+     "READABLE_SOURCE_IDS": [],
+     "providers_queried": [
+      "crossref",
+      "openalex"
+     ],
+     "note": "结果中有可读来源字段缺失（注入: 标题相关但正文不可考）"
+    }
+   },
+   "expect": "不凭标题归因; 换检索词/或实读其他可读记录/或如实降级"
+  },
+  {
+   "id": "K03",
+   "section": "K",
+   "expected_class": "PRIMARY",
+   "question": "查一下亚里士多德的师承与影响关系。",
+   "injection": {
+    "tool": "query_graph",
+    "calls": 1,
+    "result": {
+     "error": "图谱中未找到哲学家: 亚里士多德",
+     "hint": "可尝试: 尼采/康德/海德格尔/柏拉图"
+    }
+   },
+   "expect": "读错误信息 → 一次合理调整（换别名/换工具）→ 得到关系; 不得无限重试同参"
+  },
+  {
+   "id": "K04",
+   "section": "K",
+   "expected_class": "PRIMARY",
+   "question": "我想读尼采《查拉图斯特拉如是说》的序言，请给出原文位置。",
+   "injection": {
+    "tool": "get_book_detail",
+    "calls": 1,
+    "result": {
+     "id": "wrong_book",
+     "title": "快乐的科学",
+     "author": "尼采",
+     "region": "西方",
+     "file_type": "epub",
+     "summary": "（注入: 相似但错误的作品）",
+     "rank": 50,
+     "chapterCount": 383,
+     "toc": [
+      "前言",
+      "第1格言"
+     ]
+    }
+   },
+   "expect": "识别返回作品不符 → 调整（search_books 书名检索/其他入口）→ 定位真书; 不得将错就错"
+  },
+  {
+   "id": "K05",
+   "section": "K",
+   "expected_class": "SCHOLARLY",
+   "question": "找几篇近年关于 compatibilism 的论文。",
+   "injection": {
+    "tool": "search_scholarship",
+    "calls": 1,
+    "partial_provider_failure": true,
+    "result": {
+     "query": "compatibilism recent",
+     "results": [
+      {
+       "source_record_id": "wos:ok1",
+       "title": "Recent Routes in Compatibilism",
+       "authors": [
+        "A. Author"
+       ],
+       "year": 2023,
+       "venue": "Philosophy Compass",
+       "access_level": "ABSTRACT_AVAILABLE",
+       "source_category": "scholarly_secondary",
+       "doi": "10.1111/pretend"
+      }
+     ],
+     "READABLE_RESULT_COUNT": 1,
+     "READABLE_SOURCE_IDS": [
+      "wos:ok1"
+     ],
+     "providers_queried": [
+      "crossref",
+      "openalex"
+     ],
+     "provider_errors": [
+      "crossref:PROVIDER_RATE_LIMIT"
+     ],
+     "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+    }
+   },
+   "expect": "利用成功通道结果继续（实读 wos:ok1）; 不因单 provider 失败而放弃或编造"
+  },
+  {
+   "id": "K06",
+   "section": "K",
+   "expected_class": "PRIMARY",
+   "question": "在原典库里找到《纯粹理性批判》中“先验分析论”的原文段落。",
+   "injection": {
+    "tool": "search_books",
+    "calls": 2,
+    "result": {
+     "results": [],
+     "query": "先验分析论",
+     "method": "lexical",
+     "degraded_reason": "embedding_unavailable"
+    }
+   },
+   "expect": "空结果后一次合理调整（换关键词/查目录确认库内是否有此书）→ 如实报告库内无此文本; 不得编造原文"
+  },
+  {
+   "id": "M01",
+   "section": "M",
+   "expected_class": "SCHOLARLY",
+   "question": "学界如何评价尼采的“永恒轮回”学说？",
+   "injection": {
+    "tool": "search_scholarship",
+    "calls": 99,
+    "result": {
+     "error": "PROVIDER_RATE_LIMIT",
+     "providers_queried": [
+      "crossref",
+      "openalex"
+     ],
+     "provider_errors": [
+      "crossref:PROVIDER_RATE_LIMIT",
+      "openalex:PROVIDER_RATE_LIMIT"
+     ],
+     "results": [],
+     "READABLE_RESULT_COUNT": 0,
+     "READABLE_SOURCE_IDS": [],
+     "message": "429 rate limited (injected)"
+    }
+   },
+   "expect": "读取具体错误 → 换合法路径（primary 文本/web）或 honest degradation; 不得无限重试/切模型/编造文献"
+  },
+  {
+   "id": "M02",
+   "section": "M",
+   "expected_class": "SCHOLARLY",
+   "question": "查一篇关于 Kant virtue ethics 的文献并读取其内容。",
+   "injection": {
+    "tool": "get_scholarly_source",
+    "calls": 1,
+    "result": {
+     "error": "FETCH_FAILED",
+     "message": "目标 source 打不开（injected）",
+     "source_record_id": "(运行时替换为真实返回 id)"
+    }
+   },
+   "expect": "失败后换一条可读记录或如实降级; 不得凭标题陈述未读文献内容"
+  },
+  {
+   "id": "M03",
+   "section": "M",
+   "expected_class": "PRIMARY",
+   "question": "在原典库里搜“存在先于本质”并读取原文。",
+   "injection": {
+    "tool": "search_books",
+    "calls": 99,
+    "result": {
+     "results": [],
+     "query": "存在先于本质",
+     "method": "lexical",
+     "degraded_reason": "embedding_unavailable"
+    }
+   },
+   "expect": "空结果 → 一次合理换词 → 仍空 → honest degradation（说明库内未检出, 不得编造）"
+  },
+  {
+   "id": "M04",
+   "section": "M",
+   "expected_class": "PRIMARY",
+   "question": "读取《论语》里讲“孝”的那一章原文。",
+   "injection": {
+    "tool": "get_chapter",
+    "calls": 1,
+    "result": {
+     "error": "章节不存在 lunyu/999（提示: 先用 search_books 检索获取 book_id）"
+    }
+   },
+   "expect": "读错误 → 合法路径调整（search 定位正确 chapter_idx 再读）"
+  },
+  {
+   "id": "M05",
+   "section": "M",
+   "expected_class": "WEB",
+   "question": "查一下“忒修斯之船”在现代讨论中的最新进展。",
+   "injection": {
+    "tool": "websearch",
+    "calls": 99,
+    "result": {
+     "results": [],
+     "query": "忒修斯之船",
+     "note": "联网无结果（Bing 与维基百科均不可达）"
+    }
+   },
+   "expect": "web 不可达 → 降级: 基于原典库/知识回答并如实说明联网不可用; 不得编造‘最新’信息"
+  },
+  {
+   "id": "M06",
+   "section": "M",
+   "expected_class": "NONE",
+   "question": "分析这个论证的逻辑结构：“法律允许的事情就是道德的。”",
+   "injection": {
+    "tool": "analyze_argument",
+    "calls": 1,
+    "result": {
+     "error": "SCHEMA_INVALID: 缺少待分析论证 text（参数合同校验失败）（injected）"
+    }
+   },
+   "expect": "读取 schema 错误 → 修正参数重试一次成功; 不得放弃或改口‘该工具不可用’"
+  },
+  {
+   "id": "N01",
+   "section": "N",
+   "expected_class": "NONE",
+   "expected_retrieval_calls": 0,
+   "question": "康德是谁？",
+   "expect": "简单解释可直接回答; 不因出现“康德”就机械 get_philosopher"
+  },
+  {
+   "id": "N02",
+   "section": "N",
+   "expected_class": "NONE",
+   "question": "我不同意康德，因为他的理论太绝对。帮我分析我的理由。",
+   "expect": "偏 analyze_argument; 不得先查康德生平"
+  },
+  {
+   "id": "N03",
+   "section": "N",
+   "expected_class": "PRIMARY",
+   "question": "我想知道尼采在哪年出生。",
+   "expect": "事实型资料查询 → get_philosopher 适合"
+  },
+  {
+   "id": "N04",
+   "section": "N",
+   "expected_class": "NONE",
+   "expected_retrieval_calls": 0,
+   "question": "我觉得自由很重要，但不知道为什么。",
+   "expect": "对话/澄清; 不得 concept_trace + search_books ×5"
+  },
+  {
+   "id": "N05",
+   "section": "N",
+   "expected_class": "PRIMARY",
+   "question": "“自由”这个概念在原典中如何演化？",
+   "expect": "concept_trace 适合"
+  },
+  {
+   "id": "N06",
+   "section": "N",
+   "expected_class": "SCHOLARLY",
+   "question": "请给我自由意志领域近年的论文。",
+   "expect": "search_scholarship 适合"
+  },
+  {
+   "id": "L01",
+   "section": "L",
+   "expected_class": "PRIMARY",
+   "max_retrieval_calls": 4,
+   "question": "请逐字核对《论语》“学而不思则罔，思而不学则殆”一句并给出所在篇名。核对到原文即可收口，不必补充其他材料。",
+   "expect": "第一轮 search+read 已可闭合 → STOP; 超出 search+read 的额外检索 = OVER_RESEARCH"
+  },
+  {
+   "id": "L02",
+   "section": "L",
+   "expected_class": "SCHOLARLY",
+   "max_retrieval_calls": 5,
+   "question": "只需概述：学界对 free will skepticism（自由意志怀疑论）的正反两方主要立场各是什么？",
+   "expect": "两方可读文献各一即够 → STOP; 问题只要求概述, 深挖单篇 = 超范围"
+  },
+  {
+   "id": "L03",
+   "section": "L",
+   "expected_class": "WEB",
+   "max_retrieval_calls": 5,
+   "question": "查查柏拉图《克力同篇》（Crito）近年有没有新的考古或文献学发现。",
+   "injection": {
+    "tool": "websearch",
+    "calls": 99,
+    "result": {
+     "results": [],
+     "query": "柏拉图 克力同篇",
+     "note": "联网无结果（Bing 与维基百科均不可达）"
+    }
+   },
+   "expect": "外部通道无新信息 → STOP / honest degradation; 不得编造发现"
+  },
+  {
+   "id": "L04",
+   "section": "L",
+   "expected_class": "SCHOLARLY",
+   "question": "找到 Clark & Chalmers 1998《The Extended Mind》的记录并读其摘要；然后仅基于这一篇文献解释“耦合论证”（coupling argument）的要点。",
+   "expect": "同一记录复用（REUSE）——不得对同一 DOI/标题重复检索或重复读取; 单文献内完成解释"
+  },
+  {
+   "id": "L05",
+   "section": "L",
+   "expected_class": "PRIMARY",
+   "max_retrieval_calls": 2,
+   "question": "用一句话回答：“我思故我在”出自笛卡尔哪部著作？（只要出处，不要展开）",
+   "expect": "≤2 次检索即收; “再查一条让答案更完整” = FAIL"
+  },
+  {
+   "id": "L06",
+   "section": "L",
+   "expected_class": "PRIMARY",
+   "max_retrieval_calls": 4,
+   "question": "苏格拉底“知识即美德”这句话在《申辩篇》里的逐字原文是什么？如果读不到逐字对应，就告诉我大意并明确说明。",
+   "expect": "证据只能支撑思想大意时 → 停止检索 + 降级表述（大意+诚实边界）; 不得硬造逐字引文"
+  }
+ ]
+}

@@ -1,0 +1,1037 @@
+{
+ "case_id": "C02",
+ "section": "C",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "“我不同意你的话，但我誓死捍卫你说话的权利”是伏尔泰原话吗？",
+ "injection": null,
+ "QUESTION": "“我不同意你的话，但我誓死捍卫你说话的权利”是伏尔泰原话吗？",
+ "PUBLIC_WORK_NOTE": [
+  "我先写下判断：这句话是一句流传极广的名言，我印象中它很可能并非伏尔泰亲笔，而是后人（可能与英国作家霍尔有关）为概括伏尔泰精神而作的表述——但这只是我的工作假设，必须核验两件事：其一，原典库里伏尔泰本人著作有无类似措辞；其二，这句名言在文献中的真实来源与流传史。因此我按 MIXED（原典 + 网络）通道登记研究需求，接下来同时检索原典库与外部资料。",
+  "初步结果：原典库中未直接命中这句话，网络检索这次不可达。我印象中这句名言的真正来源与英国作家 Evelyn Beatrice Hall（笔名 S. G. Tallentyre）1906 年一本关于伏尔泰的著作有关，且常被联系到伏尔泰对爱尔维修《论精神》一书的反应——但这仍需核验。下一步我换用不同关键词再查原典库（伏尔泰关于宽容/言论自由的表述），并重试一次外部检索。",
+  "情况逐渐清晰：两次外部网络检索均不可达，原典库两轮关键词检索也都未命中这句话或它的近似中文表述。在收口前我再做两件事：确认原典库里究竟收了哪些伏尔泰著作，并直接以这句名言的核心词\"誓死捍卫\"在原典全库检索一次。",
+  "库中确认收有伏尔泰 7 部著作（《哲学辞典》《哲学书简》《哲学通信》《老实人》《天真汉》《查第格》《伏尔泰传》），但\"誓死捍卫\"及相近措辞在原典全库均未命中，这支持\"伏尔泰本人文本里没有这句话\"。网络通道两次不可达，无法在线核验这句名言的英文源头。我再做最后一次原典检索——与其停在\"查无此话\"，不如补上伏尔泰真正关于宽容/信仰自由的原文，让答案落到可验证的文本上。"
+ ],
+ "RESEARCH_NEED": "MIXED",
+ "EVIDENCE_GAP": "核验\"我不同意你的话，但我誓死捍卫你说话的权利\"是否为伏尔泰原话：伏尔泰原著中是否存在该措辞或近似表述，以及该名言的真正文献来源",
+ "TOOL_SELECTED": [
+  "search_books",
+  "websearch",
+  "list_books"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "伏尔泰 言论自由 捍卫说话权利"
+   },
+   {
+    "query": "宽容 言论自由 我虽然不赞成你的观点"
+   },
+   {
+    "query": "誓死捍卫 权利"
+   },
+   {
+    "query": "伏尔泰 宽容 信仰自由 宗教"
+   }
+  ],
+  "websearch": [
+   {
+    "query": "我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源"
+   },
+   {
+    "query": "\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall"
+   }
+  ],
+  "list_books": [
+   {
+    "author": "伏尔泰"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "伏尔泰 言论自由 捍卫说话权利"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 44, 'chapter_title': '44 伏尔泰《哲学通信》 如何告别愚昧、野蛮和迷信？', 'citation_label': '【《50堂经典哲学思维课》·44 伏尔泰《哲学通信》 如何"
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "宽容 言论自由 我虽然不赞成你的观点"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 381, 'chapter_title': '264', 'citation_label': '【《尼采文集（合集）》·264】', 'snippet': ' 我们的所作所为 。——我们的所作"
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "伏尔泰"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': '40a5f4bf8cb4', 'title': '哲学辞典', 'author': '伏尔泰', 'region': '西方', 'rank': 42.5, 'summary': '《哲学辞典》是伏尔泰晚年集大成的代表作，以一百个词条的形式，对宗教、道德、政治、科学与历史进行了百科全书式的审视。伏尔泰的笔锋首先指向宗教：在\"圣彼得\"\"弥赛亚\"\"奇迹\"等词条中，"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "誓死捍卫 权利"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 110, 'chapter_title': '生与死之权利', 'citation_label': '【《西方百年学术经典著作》·生与死之权利】', 'snippet': '常常有人问：个体无权处置自"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "伏尔泰 宽容 信仰自由 宗教"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 44, 'chapter_title': '44 伏尔泰《哲学通信》 如何告别愚昧、野蛮和迷信？', 'citation_label': '【《50堂经典哲学思维课》·44 伏尔泰《哲学通信》 如何"
+  },
+  {
+   "name": "websearch",
+   "head": "{'results': [], 'query': '我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 381, 'chapter_title': '264', 'citation_label': '【《尼采文集（合集）》·264】', 'snippet': ' 我们的所作所为 。——我们的所作"
+  },
+  {
+   "name": "websearch",
+   "head": "{'results': [], 'query': '\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': '40a5f4bf8cb4', 'title': '哲学辞典', 'author': '伏尔泰', 'region': '西方', 'rank': 42.5, 'summary': '《哲学辞典》是伏尔泰晚年集大成的代表作，以一百个词条的形式，对宗教、道德、政治、科学与历史进行了百科全书式的审视。伏尔泰的笔锋首先指向宗教：在\"圣彼得\"\"弥赛亚\"\"奇迹\"等词条中，"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 110, 'chapter_title': '生与死之权利', 'citation_label': '【《西方百年学术经典著作》·生与死之权利】', 'snippet': '常常有人问：个体无权处置自"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "核验到这步，证据边界已经清楚了，我就直接给结论。\n\n## 结论：不是伏尔泰的原话\n\n这句\"我不同意你的话，但我誓死捍卫你说话的权利\"，是一句流传极广的**后人概括**，并非伏尔泰本人写下的文字。\n\n**原典库检索的佐证**：本库收有伏尔泰 7 部著作（《哲学辞典》《哲学书简》《哲学通信》《老实人》《天真汉》《查第格》《伏尔泰传》），但我以\"誓死捍卫\"\"捍卫说话权利\"\"不同意……权利\"等多组关键词通检全库，均未命中这句或与之相近的表述。也就是说，在可检索的伏尔泰文本里，找不到这句话的出处——这与\"它是误传\"的判断相符。\n\n## 真正的来源（此处为记忆，未经库中核验）\n\n这句名言的原型是一句**英文**，通常归于英国作家 **伊夫林·比阿特丽斯·霍尔（Evelyn Beatrice Hall）**，她以笔名 **S. G. Tallentyre** 写作。一般认为它出自她 1906 年出版的 **《The Friends of Voltaire》（伏尔泰的朋友们）**一书，用以**概括**伏尔泰对待论敌的态度，大意是：\"I disapprove of what you say, but I will defend to the death your right to say it.\"\n\n需要说明的是：以上书名、年份、人名与英文措辞是我的记忆，**本次未能核验**——原典库无相关材料，而两次外部网络检索均不可达（Bing 与维基百科无响应），我无法在线确认霍尔原著中的精确措辞。所以请把这部分当作\"待你进一步核实的通行说法\"，而非我为你查证过的事实。\n\n## 为什么会误传成伏尔泰\n\n- 这句概括**极准确地捕捉了伏尔泰的精神气质**——他一生为宗教宽容、为受迫害者的言论与信仰自由辩护，于是后人（包括大量引述者）习惯性地把它直接说成\"伏尔泰说的\"。\n- 它常被联系到伏尔泰对**爱尔维修《论精神》**一书遭焚禁事件的反应：伏尔泰未必赞同该书内容，却反对对其作者的迫害。霍尔的表述正是为了刻画这种态度——**但这层关联本身也来自记忆，我未能核验**。\n- 一句精炼的转述，比原作者冗长的原文更好记、更适合当座右铭，误传几乎是必然的。\n\n## 想读伏尔泰本人真正的相关主张\n\n伏尔泰对言论与信仰自由的真实立场，是散落在他的著作与论战文字里的，而非这一句话。若要找可核验的文本依据，可循两条线：\n\n1. **《哲学辞典》**——他晚年以词条形式对宗教权威的系统拆解（本库有藏，可定位到具体词条）；\n2. **《哲学通信》/《哲学书简》**——其中对英国宗教宽容与思想自由状况的记述，向来被视为他借\"他者\"反衬法国专制的写法。\n\n具体哪一条词条、哪一封信最贴切，我这次因检索受限未能替你落实到段落；如果你想要，我可以下一轮专门去原文里找伏尔泰关于宽容与言论自由的原句，给你带【《书名》·章节】的定位。\n\n**一句话总结**：这句话的精神属于伏尔泰，措辞不属于伏尔泰——它是霍尔 1906 年为伏尔泰所作的概括（此归因待你另行核实），因流传太广而被张冠李戴。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先写下判断：这句话是一句流传极广的名言，我印象中它很可能并非伏尔泰亲笔，而是后人（可能与英国作家霍尔有关）为概括伏尔泰精神而作的表述——但这只是我的工作假设，必须核验两件事：其一，原典库里伏尔泰本人著作有无类似措辞；其二，这句名言在文献中的真实来源与流传史。因此我按 MIXED（原典 + 网络）通道登记研究需求，接下来同时检索原典库与外部资料。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "websearch"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "核验\"我不同意你的话，但我誓死捍卫你说话的权利\"是否为伏尔泰原话：伏尔泰原著中是否存在该措辞或近似表述，以及该名言的真正文献来源",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "伏尔泰 言论自由 捍卫说话权利"
+   },
+   "result_head": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 44, 'chapter_title': '44 伏尔泰《哲学通信》 如何告别愚昧、野蛮和迷信？', 'citation_label': '【《50堂经典哲学思维课》·44 伏尔泰《哲学通信》 如何"
+  },
+  {
+   "kind": "tool",
+   "name": "websearch",
+   "phase": "executed",
+   "args": {
+    "query": "我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源"
+   },
+   "result_head": "{'results': [], 'query': '我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "kind": "note",
+   "content": "初步结果：原典库中未直接命中这句话，网络检索这次不可达。我印象中这句名言的真正来源与英国作家 Evelyn Beatrice Hall（笔名 S. G. Tallentyre）1906 年一本关于伏尔泰的著作有关，且常被联系到伏尔泰对爱尔维修《论精神》一书的反应——但这仍需核验。下一步我换用不同关键词再查原典库（伏尔泰关于宽容/言论自由的表述），并重试一次外部检索。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "websearch"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "宽容 言论自由 我虽然不赞成你的观点"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 381, 'chapter_title': '264', 'citation_label': '【《尼采文集（合集）》·264】', 'snippet': ' 我们的所作所为 。——我们的所作"
+  },
+  {
+   "kind": "tool",
+   "name": "websearch",
+   "phase": "executed",
+   "args": {
+    "query": "\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall"
+   },
+   "result_head": "{'results': [], 'query': '\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "kind": "note",
+   "content": "情况逐渐清晰：两次外部网络检索均不可达，原典库两轮关键词检索也都未命中这句话或它的近似中文表述。在收口前我再做两件事：确认原典库里究竟收了哪些伏尔泰著作，并直接以这句名言的核心词\"誓死捍卫\"在原典全库检索一次。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "author": "伏尔泰"
+   },
+   "result_head": "{'books': [{'id': '40a5f4bf8cb4', 'title': '哲学辞典', 'author': '伏尔泰', 'region': '西方', 'rank': 42.5, 'summary': '《哲学辞典》是伏尔泰晚年集大成的代表作，以一百个词条的形式，对宗教、道德、政治、科学与历史进行了百科全书式的审视。伏尔泰的笔锋首先指向宗教：在\"圣彼得\"\"弥赛亚\"\"奇迹\"等词条中，"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "誓死捍卫 权利"
+   },
+   "result_head": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 110, 'chapter_title': '生与死之权利', 'citation_label': '【《西方百年学术经典著作》·生与死之权利】', 'snippet': '常常有人问：个体无权处置自"
+  },
+  {
+   "kind": "note",
+   "content": "库中确认收有伏尔泰 7 部著作（《哲学辞典》《哲学书简》《哲学通信》《老实人》《天真汉》《查第格》《伏尔泰传》），但\"誓死捍卫\"及相近措辞在原典全库均未命中，这支持\"伏尔泰本人文本里没有这句话\"。网络通道两次不可达，无法在线核验这句名言的英文源头。我再做最后一次原典检索——与其停在\"查无此话\"，不如补上伏尔泰真正关于宽容/信仰自由的原文，让答案落到可验证的文本上。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "伏尔泰 宽容 信仰自由 宗教"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "核验\"我不同意你的话，但我誓死捍卫你说话的权利\"是否为伏尔泰原话：伏尔泰原著中是否存在该措辞或近似表述，以及该名言的真正文献来源",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "核验\"我不同意你的话，但我誓死捍卫你说话的权利\"是否为伏尔泰原话：伏尔泰原著中是否存在该措辞或近似表述，以及该名言的真正文献来源",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 16:54:27",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": null,
+    "evidence_gap": "核验\"我不同意你的话，但我誓死捍卫你说话的权利\"是否为伏尔泰原话：伏尔泰原著中是否存在该措辞或近似表述，以及该名言的真正文献来源",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:54:44"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 77722,
+   "output_tokens": 4635,
+   "total_tokens": 82357
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 13465,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12071,
+     "output_tokens": 842,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15727,
+     "output_tokens": 492,
+     "tool_chars_added": 5265
+    },
+    {
+     "round": 3,
+     "input_tokens": 15828,
+     "output_tokens": 660,
+     "tool_chars_added": 4176
+    },
+    {
+     "round": 4,
+     "input_tokens": 17819,
+     "output_tokens": 1060,
+     "tool_chars_added": 5800
+    },
+    {
+     "round": 5,
+     "input_tokens": 16277,
+     "output_tokens": 1581,
+     "tool_chars_added": 241
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1282,
+ "token_usage": {
+  "input_tokens": 77722,
+  "output_tokens": 4635,
+  "total_tokens": 82357
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 35.2,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "核验\"我不同意你的话，但我誓死捍卫你说话的权利\"是否为伏尔泰原话：伏尔泰原著中是否存在该措辞或近似表述，以及该名言的真正文献来源",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=MIXED（EVIDENCE_GAP: 核验\"我不同意你的话，但我誓死捍卫你说话的权利\"是否为伏尔泰原话：伏尔泰原著中是否存在该措辞或近似表述，以及该名言的真正文献来源）。soft 检索预算=6 次。', 'snapshot': {'active_class': 'MI",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "伏尔泰 言论自由 捍卫说话权利"
+   },
+   "result_summary": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 44, 'chapter_title': '44 伏尔泰《哲学通信》 如何告别愚昧、野蛮和迷信？', 'citation_label': '【《50堂经典哲学思维课》·44 伏尔泰《哲学通信》 如何",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源"
+   },
+   "result_summary": "{'results': [], 'query': '我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源', 'note': '联网无结果（Bing 与维基百科均不可达）'}",
+   "thought": "执行 websearch",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "宽容 言论自由 我虽然不赞成你的观点"
+   },
+   "result_summary": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 381, 'chapter_title': '264', 'citation_label': '【《尼采文集（合集）》·264】', 'snippet': ' 我们的所作所为 。——我们的所作",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall"
+   },
+   "result_summary": "{'results': [], 'query': '\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall', 'note': '联网无结果（Bing 与维基百科均不可达）'}",
+   "thought": "执行 websearch",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "伏尔泰"
+   },
+   "result_summary": "{'books': [{'id': '40a5f4bf8cb4', 'title': '哲学辞典', 'author': '伏尔泰', 'region': '西方', 'rank': 42.5, 'summary': '《哲学辞典》是伏尔泰晚年集大成的代表作，以一百个词条的形式，对宗教、道德、政治、科学与历史进行了百科全书式的审视。伏尔泰的笔锋首先指向宗教：在\"圣彼得\"\"弥赛亚\"\"奇迹\"等词条中，",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "誓死捍卫 权利"
+   },
+   "result_summary": "{'results': [{'book_id': '88dc7d5961df', 'book_title': '西方百年学术经典著作', 'author': '佚名', 'chapter_idx': 110, 'chapter_title': '生与死之权利', 'citation_label': '【《西方百年学术经典著作》·生与死之权利】', 'snippet': '常常有人问：个体无权处置自",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "伏尔泰 宽容 信仰自由 宗教"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "伏尔泰 言论自由 捍卫说话权利"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "327e5a1db152",
+      "book_title": "50堂经典哲学思维课",
+      "author": "郁喆隽",
+      "chapter_idx": 44,
+      "chapter_title": "44 伏尔泰《哲学通信》 如何告别愚昧、野蛮和迷信？",
+      "citation_label": "【《50堂经典哲学思维课》·44 伏尔泰《哲学通信》 如何告别愚昧、野蛮和迷信？】",
+      "snippet": "阅读挑战 伏尔泰 一个专制主总有些好的时刻，一个专制主的集体则从来没有好的时刻。\r\r ——伏尔泰《哲学辞典》 引言 + 每天打开电视、看看手机，都会遇到一些让人沮丧或者耸人听闻的事件。这个时候，人们往往会下意识地问自己：未来会变好吗？人类还有救吗？很多瞬间，人们会陷入悲观。但是只要回望一下历史就会发现，在过去的三百年里，人类是在不断改善的，而这都要归功于一些先知先觉者的努力。 18世纪的欧洲发生了一场震动世界的思想解放运动——启蒙运动。",
+      "score": 0.528
+     },
+     {
+      "book_id": "2f87c2e469fd",
+      "book_title": "伏尔泰传",
+      "author": "伏尔泰",
+      "chapter_idx": 20,
+      "chapter_title": "二〇 元老",
+      "citation_label": "【《伏尔泰传》·二〇 元老】",
+      "snippet": "一个大文豪而能享上寿，确是一种力量。他赢得群众的爱情，他们即使不知道他的作品，也要敬重他的耆年；他获得后辈的宽容，因为明知他不久人世，不再吝惜对他表示应有的崇拜；还有，他能恢复一个人天然的自由思想，因为知道自己临到虚无或最后之审判（依各人的信仰而定）之日不远，故对于此世的一切，即使不能常常保持的坦白的判断力，此刻也能完全恢复。一七六四年后，伏尔泰先后过了七十，八十的高龄，成为欧洲知识界的元老。大家不复当他是人而是象征了，即使阿讷西 [1",
+      "score": 0.492
+     },
+     {
+      "book_id": "2f87c2e469fd",
+      "book_title": "伏尔泰传",
+      "author": "伏尔泰",
+      "chapter_idx": 15,
+      "chapter_title": "一五 伏尔泰的哲学",
+      "citation_label": "【《伏尔泰传》·一五 伏尔泰的哲学】",
+      "snippet": "一般的传说把费尔奈时期的伏尔泰当作真正的伏尔泰确是不错的。在费尔奈以前伏尔泰是什么呢？一个声名卓著的诗人兼戏剧作家，一个受人辩难的历史家，一个科学的提倡者。法兰西当他是一个显赫的作家，可不当他是思想界的权威。直到他住居费尔奈以后，他的精神才得解放，才变得伟大。靠了狡兔三窟的掩护，他什么话都敢说了。他一般百科全书派的朋友在巴黎冒险为争思想自由所作的奋斗，倒由他在隐居之中主持一切。他在这场斗争中间，灌输入灵气与幻想，化为种种不同的形式与有意",
+      "score": 0.492
+     },
+     {
+      "book_id": "5f838ef64e5e",
+      "book_title": "哲学书简",
+      "author": "伏尔泰",
+      "chapter_idx": 26,
+      "chapter_title": "伏尔泰年表",
+      "citation_label": "【《哲学书简》·伏尔泰年表】",
+      "snippet": "1694：伏尔泰出生于巴黎，祖姓弗朗索瓦－马利·阿鲁埃。 1702：西班牙王位继承战争。 1704：法国军队在霍克施塔特（Hochstaedt）战役中失败。伏尔泰进入耶稣会的路易大帝中学读书。 1706：欧仁大公（le prince Eugène）和马尔伯勒（Marlborough）占领里尔。 1713：乌得勒支和约签订。伏尔泰在海牙短期逗留，任法国大使馆秘书。 1715：路易十四逝世。摄政王奥尔朗公爵掌权。 1717：伏尔泰在巴士底狱",
+      "score": 0.477
+     },
+     {
+      "book_id": "d56e17acb59b",
+      "book_title": "哲学的故事",
+      "author": "威尔·杜兰特",
+      "chapter_idx": 9,
+      "chapter_title": "第五章 伏尔泰和 法国启蒙运动",
+      "citation_label": "【《哲学的故事》·第五章 伏尔泰和 法国启蒙运动】",
+      "snippet": "第五章 伏尔泰和 法国启蒙运动 一、巴黎：《俄狄浦斯》 1742年，伏尔泰在他的剧目《梅洛普》彩排时教导杜梅尼小姐 [1] 如何达到悲剧的巅峰，杜梅尼抱怨只有在自己拥有“恶魔”后才能被激发出他所要求的激情。伏尔泰回答说：“就是这样，想要在任何艺术中获得成功，就必须有这样一个恶魔。” [2] 即便是批判他的人和他的敌人也承认，伏尔泰完全满足了这个要求。圣佩甫 [3] 说“他体内有这样一个恶魔” [4] ，德·梅斯特 [5] 称他为“地狱将",
+      "score": 0.473
+     },
+     {
+      "book_id": "2f87c2e469fd",
+      "book_title": "伏尔泰传",
+      "author": "伏尔泰",
+      "chapter_idx": 13,
+      "chapter_title": "一三 哲学家的三窟",
+      "citation_label": "【《伏尔泰传》·一三 哲学家的三窟】",
+      "snippet": "在法兰克福受辱以后，伏尔泰知道在德国决不比法国更自由。回到巴黎是不可能的；法王不愿看见他，这是君王的失着。有人说伏尔泰的逃亡是王室与文人分裂的标识，这句话是不错的。路易十四对于文人的优遇，无异软禁他们；路易十五轻视他们，便无异解除了他们的束缚。可是文人能够造成舆论，而舆论是任何政府——即是专制政府也如此——不能忽视的。伏尔泰的逃亡确是法国王政衰败之征。 他道经科尔马 [1] 在塞诺纳（Senones）寺院中勾留了数星期，寺中本笃会教士的",
+      "score": 0.471
+     },
+     {
+      "book_id": "96a84c0450cd",
+      "book_title": "马基雅维利语录",
+      "author": "马基雅维利",
+      "chapter_idx": 2,
+      "chapter_title": "作为屹立于历史的国家，无论涌现过多少出众的施政者，其实施的各种政策都是以下面两点为基础的：",
+      "citation_label": "【《马基雅维利语录》·作为屹立于历史的国家，无论涌现过多少出众的施政者，其实施的各种政策都是以下面两点为基础的：】",
+      "snippet": "作为屹立于历史的国家，无论涌现过多少出众的施政者，其实施的各种政策都是以下面两点为基础的： 这就是正义与强力。 为了不在国内树立敌人，正义是十分必要的；而为了防御国外的敌人，强力是十分必要的。 ——《就佛罗伦萨共和国之未来答美第奇家族所问》",
+      "score": 0.465
+     },
+     {
+      "book_id": "2f87c2e469fd",
+      "book_title": "伏尔泰传",
+      "author": "伏尔泰",
+      "chapter_idx": 23,
+      "chapter_title": "参考书",
+      "citation_label": "【《伏尔泰传》·参考书】",
+      "snippet": "本书所用参考资料为人尽皆知之典籍，如伏尔泰之著作及书信，龙乡（Longchamps）及瓦尼哀（Wagnière）之回忆录，葛拉斐尼夫人 [1] 之书信，德努瓦勒泰（Desnoiresterres，一八一七～一八九二）之大著《伏尔泰与十八世纪法国社会》，孔多塞 [2] 及阿尔让塔尔（Argental，一七〇〇～一七八八），伏尔泰之崇拜者之《伏尔泰传》，朗松 [3] ，布吕内蒂埃 [4] ，裴尔索 [5] ，莫利 [6] 诸人论述伏尔泰之著",
+      "score": 0.462
+     },
+     {
+      "book_id": "1c1ec6913a67",
+      "book_title": "加缪全集（散文卷Ⅱ）",
+      "author": "阿尔贝·加缪",
+      "chapter_idx": 8,
+      "chapter_title": "道德与政治",
+      "citation_label": "【《加缪全集（散文卷Ⅱ）》·道德与政治】",
+      "snippet": "一 （战斗报，1944.9.8） 在昨天的《费加罗报》上，道默森先生对教皇的演说作了评论。这篇演说已经引起了很多注意。但是，道默森先生的评论至少值得人们十分明确地将欧洲今天所面临的问题提出来。 「需要，」他写道，「将比以往更有必要、更神圣的个人自由与因现代生活条件而变得不可避免的社会集体组织协调一致起来。」 这句话说得很好。我们仅想建议道默森先生用更简洁的言辞来说出他说过的话：需要我们所有的人能将正义与自由协调一致起来。让每个人都享有自",
+      "score": 0.461
+     },
+     {
+      "book_id": "2f87c2e469fd",
+      "book_title": "伏尔泰传",
+      "author": "伏尔泰",
+      "chapter_idx": 7,
+      "chapter_title": "七 哲学书信",
+      "citation_label": "【《伏尔泰传》·七 哲学书信】",
+      "snippet": "七三一年时，他又要逃亡了。阿德里安·勒库夫勒（Adrienne Lecouvreur，一六九二～一七三〇）死了；这是伏尔泰赏识的一个名女优。然而教会是不准优伶葬在教徒墓上的。人们只能把勒库夫勒小姐埋在塞纳河边的一片荒地上。伏尔泰愤慨之余，在送丧过后出来抗议了： 啊，难道我的国家永远没有确定的志愿， 永远要贬辱她所钦佩的人？ 我们的风俗永远和我们的法律抵触。 难道意志不定的法国人长此耽于迷信？ 什么？难道人们只有在英国才敢自由思想？ 噢伦",
+      "score": 0.458
+     },
+     {
+      "book_id": "2f87c2e469fd",
+      "book_title": "伏尔泰传",
+      "author": "伏尔泰",
+      "chapter_idx": 22,
+      "chapter_title": "二二 结论与批判",
+      "citation_label": "【《伏尔泰传》·二二 结论与批判】",
+      "snippet": "在大地上有过宏伟嘹亮的声音的生命，决不会在静寂的坟墓中立即泯灭的。伏尔泰的一生全是热烈轻快的节奏（allegretto），不能突然一变为严肃静穆的调子（andante maestoso）。若干时内，他的帝王的朋友继续为他忙乱。弗雷德里克二世委托乌东塑造一座胸像。凯塞琳女皇意欲收买他的藏书，写信给德尼夫人商量，称她为“曾经有些爱我的伟人的侄女”。 在法国，他所不赞成（因为他是保守主义者与君主专制的拥护者）而确曾揭竿倡导的大革命，把他当作先",
+      "score": 0.456
+     },
+     {
+      "book_id": "d20fbd0a131b",
+      "book_title": "西方哲学史讲演录",
+      "author": "赵林",
+      "chapter_idx": 14,
+      "chapter_title": "法国启蒙运动的精神领袖伏尔泰",
+      "citation_label": "【《西方哲学史讲演录》·法国启蒙运动的精神领袖伏尔泰】",
+      "snippet": "“即使没有上帝，也必须制造出一个来！” 首先我要讲一位重要人物，这就是伏尔泰（Voltaire，1694—1778）。伏尔泰是法国启蒙运动的精神领袖，也是名满欧洲的法国大文豪，在文学、哲学、史学、政论等方面都卓有建树。他的思想自由、文笔犀利，讥讽嘲弄入木三分，嬉笑怒骂皆成文章，是当时法国乃至整个欧洲知识界人人敬仰的思想巨擘。他不仅思想新潮、著作丰硕，而且生活的时间也比较长，活了80多岁，所以他的影响特别大，尤其是影响了一大批年轻的启蒙思",
+      "score": 0.455
+     },
+     {
+      "book_id": "d20fbd0a131b",
+      "book_title": "西方哲学史讲演录",
+      "author": "赵林",
+      "chapter_idx": 15,
+      "chapter_title": "“百科全书派”思想家",
+      "citation_label": "【《西方哲学史讲演录》·“百科全书派”思想家】",
+      "snippet": "《百科全书》的编纂与理性法庭的确立 法国老一辈启蒙思想家除了伏尔泰，另一位重要人物是孟德斯鸠（Charles-Louis de Secondat Montesquieu，1689—1755）。这位出身豪门、博学多才的波尔多男爵虽然身居高位，却不断地通过著书立说来揭露法国专制制度的邪恶和上流社会的腐败，宣扬君主立宪和分权制衡的政治理想。 他在早年化名发表的《波斯人信札》中揭露了法国贵族、天主教士的荒淫无耻和傲慢无知，针砭了路易十四的暴戾专",
+      "score": 0.454
+     },
+     {
+      "book_id": "cd6a424a1654",
+      "book_title": "自由及其背叛：人类自由的六个敌人 (人文与社会译丛)",
+      "author": "以赛亚·伯林",
+      "chapter_idx": 6,
+      "chapter_title": "费希特",
+      "citation_label": "【《自由及其背叛：人类自由的六个敌人 (人文与社会译丛)》·费希特】",
+      "snippet": "在我看来，约翰·戈特列布·费希特的自由观念与西方思想家通常持有的自由观念大相径庭，在所有德国思想家当中，他最应当为发起这种自由观念负责。这里所说的西方思想家主要指18世纪末和19世纪英国、法国和美国的思想家。 假如你在1800年至1820年之间，到欧洲各地旅行，就会惊奇地发现，虽说从东到西，到处都在谈论“自由”——虽说德国人和奥地利人谈论自由比英国人和法国人更有激情、更加雄辩——然而，在欧洲的东部和西部，这个词的意义却大相径庭。它在德国",
+      "score": 0.45
+     },
+     {
+      "book_id": "40a5f4bf8cb4",
+      "book_title": "哲学辞典",
+      "author": "伏尔泰",
+      "chapter_idx": 2,
+      "chapter_title": "译者前言",
+      "citation_label": "【《哲学辞典》·译者前言】",
+      "snippet": "译者前言 法国著名启蒙思想家伏尔泰是十八世纪法国新兴资产阶级在 意识形态方面的代表人物。他战斗的一生及其思想在近代法国历 史上所产生的影响异常深远，可以说超过了许多法国大思想家，有 些史学家甚至说若没有伏尔泰便不会有后来的资产阶级大革命。 他才华横溢，在诗歌、戏剧、小说、历更、哲学、散文各个方面都有杰 作，而宣传启蒙思想的活动则是他战斗的一生中最突出的一面。他 并没有完整的哲学体系，但是他认为哲学家应该是战斗的思想家， 而他一生的经历就",
+      "score": 0.45
+     }
+    ],
+    "query": "伏尔泰 言论自由 捍卫说话权利",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源"
+   },
+   "result_full": {
+    "results": [],
+    "query": "我不同意你的话但我誓死捍卫你说话的权利 伏尔泰 出处 名言来源",
+    "note": "联网无结果（Bing 与维基百科均不可达）"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "宽容 言论自由 我虽然不赞成你的观点"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 381,
+      "chapter_title": "264",
+      "citation_label": "【《尼采文集（合集）》·264】",
+      "snippet": " 我们的所作所为 。——我们的所作所为，永远得不到理解，而始终只是受赞美和责备。",
+      "score": 0.568
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 308,
+      "chapter_title": "191",
+      "citation_label": "【《尼采文集（合集）》·191】",
+      "snippet": " 反对某些辩护 。——要破坏某事，最刁奸的做法是故意用错误的理由为这事辩护。",
+      "score": 0.564
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 335,
+      "chapter_title": "218",
+      "citation_label": "【《尼采文集（合集）》·218】",
+      "snippet": " 我的反感 。——我不喜欢那些人，他们为了造成影响而爆发，有如炸弹一样，在他们身旁人们总会有危险感，害怕突然失聪——或者更有甚者。",
+      "score": 0.554
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 291,
+      "chapter_title": "174",
+      "citation_label": "【《尼采文集（合集）》·174】",
+      "snippet": " 偏离 。——议会制度，就是公开允许人们在五种主要的政治意见中做出选择，它讨好大众，那些喜欢 显得 独立和个性化、并且想为自己的意见而斗争的人们。而最终，是群盲被强制接受一种意见，抑或被允许有五种意见，那是无关紧要的。——谁若偏离和漠视这五种公共意见，全体群盲就总是会反对他。 边码：501",
+      "score": 0.552
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 345,
+      "chapter_title": "228",
+      "citation_label": "【《尼采文集（合集）》·228】",
+      "snippet": " 反对调解者 。——想在两位坚定的思想家之间进行调解者，被称为平庸者：他没有看到独特事物的眼力；把什么都看成类似的，把什么都弄成一样的，这是弱视的标志。",
+      "score": 0.544
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 338,
+      "chapter_title": "221",
+      "citation_label": "【《尼采文集（合集）》·221】",
+      "snippet": " 宽容 。——父子之间的相互宽容远胜于母女之间的宽容。",
+      "score": 0.544
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 361,
+      "chapter_title": "244",
+      "citation_label": "【《尼采文集（合集）》·244】",
+      "snippet": " 思想与话语 。——即便是人们自己的思想，人们也不能完全用话语来加以复述。",
+      "score": 0.535
+     },
+     {
+      "book_id": "5c935000a2a7",
+      "book_title": "善恶的彼岸",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 6,
+      "chapter_title": "目录",
+      "citation_label": "【《善恶的彼岸》·目录】",
+      "snippet": "第一章 哲人的偏见 第二章 自由的精神 第三章 宗教性的本质 第四章 格言与插曲 第五章 论道德的自然史 第六章 吾辈学者 第七章 吾辈美德 第八章 民族与祖国",
+      "score": 0.528
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 144,
+      "chapter_title": "结论",
+      "citation_label": "【《西方百年学术经典著作》·结论】",
+      "snippet": "既然我已经列举了政治权利的真正原则，并且试图给国家找一个可以倚靠的基础，接下来我应该用它外部关系强化它。这种外部的关系包括各国的法律、商业、战争与征服的权利、公众权利、各种联盟、各种协商、各种条约等。但是，这些构成了一个新主题，对于我狭窄的探讨范围而言，这个主题真是太过宽广了。自始至终，对于把握的议题，我都应该保持在一个更加有限的范围内。",
+      "score": 0.517
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 249,
+      "chapter_title": "132",
+      "citation_label": "【《尼采文集（合集）》·132】",
+      "snippet": " 反基督教 。——现在，反基督教不再是我们的理由，而是我们的趣味。",
+      "score": 0.512
+     },
+     {
+      "book_id": "96a84c0450cd",
+      "book_title": "马基雅维利语录",
+      "author": "马基雅维利",
+      "chapter_idx": 3,
+      "chapter_title": "您提到：",
+      "citation_label": "【《马基雅维利语录》·您提到：】",
+      "snippet": "您提到： “这是不可能的。因为在我们面对他们时，是团结一致的。” 然而，我反对您的意见。 对大国的领导者来说，达成团结一致是很难的。但如果真的能实现这一点，想要把团结的局面维持下去，是更加困难的。 ——《马基雅维利书信》",
+      "score": 0.508
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 168,
+      "chapter_title": "51",
+      "citation_label": "【《尼采文集（合集）》·51】",
+      "snippet": "51 (118) 真理感 。——我赞扬任何一种怀疑，对之我可以回答：“让我们试试看！”然而对于不让试验的所有事物和所有问题，我是再也不想听闻什么的。这就是我的“真理感”的界限：因为在那里，勇气丧失了自己的权利。 边码：416",
+      "score": 0.506
+     },
+     {
+      "book_id": "1c1ec6913a67",
+      "book_title": "加缪全集（散文卷Ⅱ）",
+      "author": "阿尔贝·加缪",
+      "chapter_idx": 13,
+      "chapter_title": "对埃马努埃尔·达斯蒂埃·德拉维热里的两次回答",
+      "citation_label": "【《加缪全集（散文卷Ⅱ）》·对埃马努埃尔·达斯蒂埃·德拉维热里的两次回答】",
+      "snippet": "第一次回答 （卡利邦杂志，第十六期） 我对您回答的标题将略去不谈，因为我认为那题目是不慎重的 [1] 。我还对您的两三个矛盾之处略去不谈，因为我不想利用这些地方得益。我并不想据理力争反对您，令我感兴趣的是就问题的一些主要方面来回答您。而我的困惑也由此产生。因为您恰恰没有谈及主要方面，而您对我的意见依我看常常涉及一些次要问题，或是没有什么内容。我之所以还愿意首先回答您，仅仅是因为想保留充分选择的自由。 事实上，反驳非暴力并不等于我在为自己",
+      "score": 0.506
+     },
+     {
+      "book_id": "0ed8c0c49e2f",
+      "book_title": "在绝望之巅",
+      "author": "E·M·齐奥朗",
+      "chapter_idx": 62,
+      "chapter_title": "一切都无关紧要",
+      "citation_label": "【《在绝望之巅》·一切都无关紧要】",
+      "snippet": "一切皆有可能，但一切皆不可能。一切都被允许，但同样，一切皆不允许。无论我们走哪条路，都不比别的路好。无论你是否有所成就，是否有信仰，都是一样的，正如不论你是发出哭号还是保持沉默，都是一样的。凡事都有解释，却又没有解释。一切都既真实又虚幻，既正常又荒谬，既辉煌又平淡。没有什么东西比其他一切更有价值，也没有什么想法比其他任何想法更好。为什么要因为一个人的伤心事而悲伤，因为一个人的快乐而喜悦？我们的眼泪是来自欢愉还是痛苦，有什么关系呢？爱你的",
+      "score": 0.498
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 328,
+      "chapter_title": "211",
+      "citation_label": "【《尼采文集（合集）》·211】",
+      "snippet": " 隐秘的敌人 。——能保留一个隐秘的敌人——这是一种奢侈，即便是思想高尚的人物的道德也往往够不到这种奢侈。",
+      "score": 0.497
+     }
+    ],
+    "query": "宽容 言论自由 我虽然不赞成你的观点",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall"
+   },
+   "result_full": {
+    "results": [],
+    "query": "\"I disapprove of what you say, but I will defend to the death your right to say it\" Voltaire Evelyn Beatrice Hall",
+    "note": "联网无结果（Bing 与维基百科均不可达）"
+   }
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "伏尔泰"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "40a5f4bf8cb4",
+      "title": "哲学辞典",
+      "author": "伏尔泰",
+      "region": "西方",
+      "rank": 42.5,
+      "summary": "《哲学辞典》是伏尔泰晚年集大成的代表作，以一百个词条的形式，对宗教、道德、政治、科学与历史进行了百科全书式的审视。伏尔泰的笔锋首先指向宗教：在\"圣彼得\"\"弥赛亚\"\"奇迹\"等词条中，他以历史考据与常识理性拆解教会的权威叙事，指出圣经中的奇迹违背自然规律，教皇的权力建立在误读与权势之上；在\"宗教狂热\"\""
+     },
+     {
+      "id": "5f838ef64e5e",
+      "title": "哲学书简",
+      "author": "伏尔泰",
+      "region": "西方",
+      "rank": 42.1,
+      "summary": "《哲学书简》是伏尔泰流亡英国期间的思想结晶，以二十五封书信的形式，系统对比了英法两国的制度与思想。伏尔泰在书中热情介绍了牛顿的科学发现、洛克的经验主义认识论以及英国的议会政治，以此猛烈抨击法国的专制统治和教会权威。该书的核心主题在于倡导宗教宽容、政治自由和经验主义哲学，认为理性与科学才是人类进步的基"
+     },
+     {
+      "id": "d39b1d36471a",
+      "title": "哲学通信",
+      "author": "伏尔泰",
+      "region": "西方",
+      "rank": 36.7,
+      "summary": "《哲学通信》是伏尔泰继《哲学书简》之后的又一部启蒙力作，同样采用书信体形式，但内容更为系统和深入。伏尔泰在书中全面介绍了英国的政治制度、宗教宽容政策和经验论哲学，核心目的在于批判法国专制与教会权威，倡导理性、自由与科学精神。他通过对比英法两国的社会现实，指出英国的宗教宽容带来了社会稳定，而法国的宗教"
+     },
+     {
+      "id": "7705448a01b4",
+      "title": "老实人",
+      "author": "伏尔泰",
+      "region": "西方",
+      "rank": 28.1,
+      "summary": "《老实人》是伏尔泰最著名的哲理小说，以讽刺的笔法批判了莱布尼茨的“最佳世界”理论。主人公老实人最初信奉老师邦葛罗斯的乐观主义哲学，认为“一切皆善，一切皆美”，但随后经历了一系列灾难：战争、地震、疾病、背叛和奴役。通过老实人的坎坷遭遇，伏尔泰揭示了现实世界中的苦难与荒谬，有力地否定了盲目乐观主义。小说"
+     },
+     {
+      "id": "2f87c2e469fd",
+      "title": "伏尔泰传",
+      "author": "伏尔泰",
+      "region": "西方",
+      "rank": 26.4,
+      "summary": "《伏尔泰传》是一部全面记录法国启蒙运动领袖伏尔泰（1694-1778年）生平与思想的传记著作。伏尔泰被誉为“欧洲的良心”，他一生经历了从巴士底狱囚徒到启蒙思想旗手的传奇历程，以犀利的笔锋和坚定的理性精神，向宗教狂热、专制暴政和一切不宽容的体制发起了持续猛烈的批判。本书以伏尔泰的人生轨迹为主线，生动再"
+     },
+     {
+      "id": "488a795c0d37",
+      "title": "天真汉",
+      "author": "伏尔泰",
+      "region": "西方",
+      "rank": 23.3,
+      "summary": "《天真汉》是伏尔泰以小说形式探讨哲学问题的代表作之一。主人公“天真汉”原本生活在与世隔绝的印第安部落，因偶然机会来到法国，却因天真直率的性格不断遭遇荒诞而残酷的现实。伏尔泰通过这个“文明闯入者”的视角，尖锐批判了宗教教条、社会不公和盲目乐观主义。小说中，天真汉的“自然理性”与法国社会的虚伪文明形成鲜"
+     },
+     {
+      "id": "bf1ff4a2bb68",
+      "title": "查第格",
+      "author": "伏尔泰",
+      "region": "西方",
+      "rank": 23.3,
+      "summary": "《查第格》是伏尔泰以东方寓言形式创作的哲理小说，通过主人公查第格跌宕起伏的命运，深入探讨了善恶报应、命运无常与人类理性的局限。查第格是一个品德高尚、智慧超群的青年，却屡遭不幸：被诬陷、被流放、失去爱人，每一次的善良行为都带来意想不到的恶果。伏尔泰以讽刺笔触揭示了社会的不公与宗教的虚伪，同时强调个人美"
+     }
+    ],
+    "total": 7
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "誓死捍卫 权利"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 110,
+      "chapter_title": "生与死之权利",
+      "citation_label": "【《西方百年学术经典著作》·生与死之权利】",
+      "snippet": "常常有人问：个体无权处置自己的生命，他们又怎能向主权体转让他们不拥有的权利？对于我来说，回答这一问题的困难好像在于，它把论述的方式搞错了。每个人都有权利为了保全自己而冒生命危险。一个人为了躲避火灾而跃身从窗口跳下，这种自杀行为是有罪的，有人这样说过吗？一个人乘船时，他预知自己会有生命之虞而又在雷雨之中死去了，有人会控诉他犯有这样一项罪行吗？ 社会契约的目的是保护缔约双方。考虑目的的人也会考虑手段，手段必须涉及一些风险，甚至是一些损失。想",
+      "score": 0.545
+     },
+     {
+      "book_id": "6a65e3ef874f",
+      "book_title": "论自由",
+      "author": "约翰·斯图尔特·密尔",
+      "chapter_idx": 1,
+      "chapter_title": "第一章 引论",
+      "citation_label": "【《论自由》·第一章 引论】",
+      "snippet": "这篇论文的主题不是所谓意志自由，不是这个与那被误称为哲学必然性的教义不幸相反的东西。这里所要讨论的乃是公民自由或称社会自由，也就是要探讨社会所能合法施用于个人的权力的性质和限度。这个问题，很少有人用一般性的说法予以提出，更从未没有人用一般性的说法加以讨论，但是它却在暗中深刻地影响着当代一些实践方面的争论，并且看来不久就会被公认为将来的重大问题。它远非什么新的问题，从某种意义说，它几乎从最远的年代以未就在划分着人类；不过到了人类中比较文明",
+      "score": 0.48
+     },
+     {
+      "book_id": "fa175af7701a",
+      "book_title": "社会契约论",
+      "author": "让-雅克·卢梭",
+      "chapter_idx": 3,
+      "chapter_title": "第三章 论最强者的权利",
+      "citation_label": "【《社会契约论》·第三章 论最强者的权利】",
+      "snippet": "即使是最强者也决不会强得足以永远做主人，除非他把自己的强力转化为权利，把服从转化为义务。由此就得出了最强者的权利。这种权利表面上看来像是讥讽，但实际上已经被确定为一种原则了。可是，难道人们就不能为我们解释一下这个名词吗？强力是一种物理的力量，我看不出强力的作用可以产生什么道德。向强力屈服，只是一种必要的行为，而不是一种意志的行为；它最多也不过是一种明智的行为而已。在哪种意义上，它才可能是一种义务呢？姑且假设有这种所谓的权利。我认为其结果",
+      "score": 0.479
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 99,
+      "chapter_title": "最强者的权利",
+      "citation_label": "【《西方百年学术经典著作》·最强者的权利】",
+      "snippet": "除非最强者把力量转换成权利，把服从转换成责任，否则他就远未强大到足以成为主人。因此，虽然最强者的权利，在所有人看来似乎具有讽刺意味，但它确是根本的道理。但是，难道我们就从未对这个用语有过解释？强力是一种身体的力量，我看不到它能有什么道德的效果。转变成强力是一种必要的行动，却不是意志的行动——至多它只能算是一种明智的行动。那么，在何种意义上，它能成为一种责任？ 设想一下，如果世上果真存在这种所谓的“权利”。我敢断言，唯一的结果是一大堆不可",
+      "score": 0.475
+     },
+     {
+      "book_id": "f184edd21ac7",
+      "book_title": "常识",
+      "author": "托马斯·潘恩",
+      "chapter_idx": 7,
+      "chapter_title": "北美的危机",
+      "citation_label": "【《常识》·北美的危机】",
+      "snippet": "此文作于1776年，时年潘恩作为大陆军一名战士，一边参战，一边以《美国危机》为总标题，先后发表了13部鼓舞士气的小册子。此文为其中的一篇节选，也即行军中的华盛顿将军紧急集合部队，亲自朗读的一篇。 这是考验人的灵魂的时代。在当前的危机中，精壮的战士和乐天的爱国者会在为国家服务的责任面前畏缩不前，但今天能坚持战斗的人应当得到全体男女的爱戴和感激。专制制度就像地狱一样，是不容易被打破的，但是我们可以欣慰的是：斗争越是艰巨，胜利就越光荣。轻易获",
+      "score": 0.475
+     },
+     {
+      "book_id": "96a84c0450cd",
+      "book_title": "马基雅维利语录",
+      "author": "马基雅维利",
+      "chapter_idx": 77,
+      "chapter_title": "在事关祖国存亡的情况下，为了国家采取任何手段，只要最后有效果，都应该被认为是正当的。",
+      "citation_label": "【《马基雅维利语录》·在事关祖国存亡的情况下，为了国家采取任何手段，只要最后有效果，都应该被认为是正当的。】",
+      "snippet": "在事关祖国存亡的情况下，为了国家采取任何手段，只要最后有效果，都应该被认为是正当的。 这一点，绝不限于执政者，就算是一名普通的国民，也要有这样的认识。 当为了祖国的存亡而孤注一掷时，不管手段是否正当，不管是宽仁的还是残忍的，也不管会受到赞赏还是会受到耻笑，都没有必要太顾虑。 比任何其他问题都需要优先考虑的，是祖国的安全与自由。 ——《论李维》",
+      "score": 0.469
+     },
+     {
+      "book_id": "f9549bd811f6",
+      "book_title": "人生的智慧：如何才能幸福度过一生",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 38,
+      "chapter_title": "让步你就输了吗？",
+      "citation_label": "【《人生的智慧：如何才能幸福度过一生》·让步你就输了吗？】",
+      "snippet": "我们可以很清楚地发现，骑士荣誉的原则并不是出自人类自然且本质的天性，只是人为的产物，因此其根源并不难寻。它诞生于一个特定的时期，即人们大多对动手不动脑倍加称颂的中世纪，骑士制度束缚了人们的思想。那是一个人们既乞求全能的上帝眷顾，也接受他的评判的时代；是一个当发生疑难案件时，由神判法，也就是上帝的审判来裁决的时代。神判法通常也就意味着一次决斗，不仅是骑士贵族们会采取决斗的方式，普通市民之间也会通过决斗来解决纷争。在莎士比亚的《亨利六世》中",
+      "score": 0.469
+     },
+     {
+      "book_id": "fa175af7701a",
+      "book_title": "社会契约论",
+      "author": "让-雅克·卢梭",
+      "chapter_idx": 14,
+      "chapter_title": "第五章 论生死权",
+      "citation_label": "【《社会契约论》·第五章 论生死权】",
+      "snippet": "有人①问：个人既然绝对没有处置自身生命的权利，②又何以能把这种他自身所并不具有的权利转交给主权者呢？这个问题之显得难于解答，只是因为它的提法不对。每个人都有权冒自己生命的危险，以求保全自已的生命。难道有人会说，一个为了逃避火灾而跳楼的人是犯了自杀罪吗？难道有人会追究，一个在风浪里被淹死的人是在上船时犯了不顾危险的罪吗？③社会条约以保全缔约者为目的。谁要达到目的也就要拥有手段，而手段则是和某些冒险、甚至于是和某些牺牲分不开的。谁要依靠别人",
+      "score": 0.467
+     },
+     {
+      "book_id": "65dbe55d66df",
+      "book_title": "利维坦",
+      "author": "托马斯·霍布斯",
+      "chapter_idx": 31,
+      "chapter_title": "第三十章 论主权代表人的职责",
+      "citation_label": "【《利维坦》·第三十章 论主权代表人的职责】",
+      "snippet": "第 三 十 章 论 主 权 代 表 人 的 职 责 无论主权者是君主还是议会，其职责都由人们授予主权的目的决定，即保卫人民的安全。按照自然法，主权者必须履行这一义务，并且只对制定了自然法的上帝负责。但这里讲的安全并不单指保卫生命，还包含了所有人在付出合法劳动且不与国家利益冲突的条件下，能够在生活方面获得的其他满足。 为了实现这一点就应该做到，除了对每个发起诉讼的人施加保护使其免于伤害之外，不再另加照顾；而是要按照一种整体规划，实施包含了",
+      "score": 0.466
+     },
+     {
+      "book_id": "f9549bd811f6",
+      "book_title": "人生的智慧：如何才能幸福度过一生",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 40,
+      "chapter_title": "遭受侮辱时，我们该怎么办？",
+      "citation_label": "【《人生的智慧：如何才能幸福度过一生》·遭受侮辱时，我们该怎么办？】",
+      "snippet": "我认为政府和立法机关试图在民间或军队中废除体罚是不明智的，他们以为是在维护民众利益，但实际上废除体罚只会强化愚昧的迷信——人们已经为此付出了太多牺牲。 除去最严重的情况，一旦犯法，人们自然而然首先想到的就是给犯人一顿教训——既然不听劝，那就挨打好了。对那些一无所有、交不出罚金的人，或因为人们需要他工作效劳而不能被关进监狱剥夺其自由的人，我认为体罚是最适合的手段。有什么理由来反驳呢？除了一些“人的尊严”之类的说辞——但支撑这类说辞的也并不",
+      "score": 0.465
+     },
+     {
+      "book_id": "8eb18c6de2bc",
+      "book_title": "性经验史",
+      "author": "米歇尔·福柯",
+      "chapter_idx": 11,
+      "chapter_title": "第五章 死亡的权利和管理生命的权力",
+      "citation_label": "【《性经验史》·第五章 死亡的权利和管理生命的权力】",
+      "snippet": "第五章 死亡的权利和管理生命的权力 长期以来，最高权力的典型特权之一就是生杀大权。无疑，它 形式上源自古老的“patriapotcstas”（父权），它赋予罗马家庭的父亲 以“操持”子女和奴隶生死的大权。他“给予了”他们生命，也可 以收回它。古典理论家们所阐述的生条大权，其生条予夺的色彩已 经大大淡化。上自君主，下至他的臣民，他们并不认为最高权力的 行使是绝对的和无条件的，相反，君主只在自身受到威胁时才会行 使它：它是一种后发制人的权利",
+      "score": 0.462
+     },
+     {
+      "book_id": "1681f14003dd",
+      "book_title": "哲学的底色：人类永恒追求的六大哲学主题",
+      "author": "莫提默 · 艾德勒",
+      "chapter_idx": 21,
+      "chapter_title": "第二十章 我们有权拥有的自由",
+      "citation_label": "【《哲学的底色：人类永恒追求的六大哲学主题》·第二十章 我们有权拥有的自由】",
+      "snippet": "第二十章 我们有权拥有的自由 我们有权拥有自由意志或选择自由——这样的说法毫无意义，因为它本是自然或上帝给予我们的一种善。低等动物不具有这种善，但也不能说它们被剥夺了某些它们有权拥有的东西。 我们有权拥有道德自由——这样的说法同样毫无意义，因为道德自由是我们能够按照应该的那样去行使我们的意志力，且避免在不应该的时候行使我们的意志力。通过我们的自由选择，我们要么获得、要么失去这种自由。所以说，我们是否有按照应该的那样去行使意志力的美德习性",
+      "score": 0.457
+     },
+     {
+      "book_id": "470df95f1545",
+      "book_title": "自由主义与正义的局限",
+      "author": "迈克尔·桑德尔",
+      "chapter_idx": 1,
+      "chapter_title": "第二版前言：共同体主义的局限",
+      "citation_label": "【《自由主义与正义的局限》·第二版前言：共同体主义的局限】",
+      "snippet": "不能放弃。但人们会问，为什么国家应该对受意识约束的自我给予特别尊重？部分理由是，对于政府来说，给它的公民之自我限定施加关键性的实践负担，将会比剥夺他们较不重要的利益（这些利益对于他们生活意义的谋划来说，不太关键），会给他们造成更深的挫伤。但是，负担本身并不是特别尊重的充分基础，谋则和承诺的界定范围，可以包括从令人钦佩的和英雄般的谋划与承诺到狂迷般和魔力般的谋划与承诺。确定自我的境况可以展示出团结和品格的深度，也可以展示出偏见和心灵的狭隘",
+      "score": 0.456
+     },
+     {
+      "book_id": "1c1ec6913a67",
+      "book_title": "加缪全集（散文卷Ⅱ）",
+      "author": "阿尔贝·加缪",
+      "chapter_idx": 21,
+      "chapter_title": "创作与自由",
+      "citation_label": "【《加缪全集（散文卷Ⅱ）》·创作与自由】",
+      "snippet": "保卫自由 [1] （1952.12） 最近，应邀在一本小册子上写一篇关于亨利·马尔丹的文章，有人对我说，这件事已做了安排，特别是《当代》杂志的编辑们已做了安排，我拒绝了。理由很简单：由《当代》出面来维护自由的价值，会影响自由的声誉。只有一种情况，即一个生命在发挥作用时，（比如像罗桑贝尔夫妇那种情况，所有的人毫无例外地都不得不向他们求饶）才会面对各种混乱，表现得无所谓。至于其他，我们需要的是清楚明白。而亨利·马尔丹，则比我们大家更甚，每一",
+      "score": 0.455
+     },
+     {
+      "book_id": "102319ab18e7",
+      "book_title": "论正义",
+      "author": "赫伯特·斯宾塞",
+      "chapter_idx": 16,
+      "chapter_title": "第十七章 自由信仰与礼拜的权利",
+      "citation_label": "【《论正义》·第十七章 自由信仰与礼拜的权利】",
+      "snippet": "第七十三节 如果我们从字面含义上解释，主张信仰自由是一项权利，这是荒谬的；因为没有任何外部力量可以夺走信仰自由。实际上，主张信仰自由权涉及到一个双重谬论；这是因为，尽管信念无法被来自外部的强制真正毁坏或改变，它也无法被来自内部的强制真正毁坏或改变。它由既不受外部控制，在很大程度上也不受内部控制的因素所决定。当然，这样说的含义是，自由地 表白 信念的权利。（136） 这是一个源自同等自由法则的推论，这几乎不需要再做说明。任何人表白自己的信",
+      "score": 0.453
+     }
+    ],
+    "query": "誓死捍卫 权利",
+    "method": "vector"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 6
+}

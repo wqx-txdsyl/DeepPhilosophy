@@ -1,0 +1,477 @@
+{
+ "case_id": "B03",
+ "section": "B",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "请核对《道德经》“上善若水”所在章及上下文。",
+ "injection": null,
+ "QUESTION": "请核对《道德经》“上善若水”所在章及上下文。",
+ "PUBLIC_WORK_NOTE": [
+  "我需要在原典库中定位\"上善若水\"所在的章节并读取上下文原文。",
+  "已定位到\"上善若水\"在第八章。现在读取该章原文核对完整上下文措辞。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "《道德经》\"上善若水\"一句的确切章节归属与上下文原文措辞",
+ "TOOL_SELECTED": [
+  "search_books",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "上善若水"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "6ef2f18cfdc9",
+    "chapter_idx": 7
+   },
+   {
+    "book_id": "dd8853676655",
+    "chapter_idx": 8
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "上善若水"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'dd8853676655', 'book_title': '老子道德经', 'author': '老子', 'chapter_idx': 8, 'chapter_title': '第八章 不争无尤', 'citation_label': '【《老子道德经》·第八章 不争无尤】', 'snippet': '【原文】 上善若水[30]。水善利万物而不"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "6ef2f18cfdc9",
+    "chapter_idx": 7
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 7, 'title': '第八章', 'book_title': '道德经', 'citation_label': '【《道德经》·第八章】', 'text': '上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。'}"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 8
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'dd8853676655', 'chapter_idx': 8, 'title': '第八章 不争无尤', 'book_title': '老子道德经', 'citation_label': '【《老子道德经》·第八章 不争无尤】', 'text': '【原文】\\n上善若水[30]。水善利万物而不争，处众人之所恶[31]，故几于道[32]。居善地[33]，\\n心善渊[34]"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'dd8853676655', 'book_title': '老子道德经', 'author': '老子', 'chapter_idx': 8, 'chapter_title': '第八章 不争无尤', 'citation_label': '【《老子道德经》·第八章 不争无尤】', 'snippet': '【原文】 上善若水[30]。水善利万物而不"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 7, 'title': '第八章', 'book_title': '道德经', 'citation_label': '【《道德经》·第八章】', 'text': '上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。'}"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'dd8853676655', 'chapter_idx': 8, 'title': '第八章 不争无尤', 'book_title': '老子道德经', 'citation_label': '【《老子道德经》·第八章 不争无尤】', 'text': '【原文】\\n上善若水[30]。水善利万物而不争，处众人之所恶[31]，故几于道[32]。居善地[33]，\\n心善渊[34]"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "ANSWER_PUBLISHED",
+ "FINAL_ANSWER": "已核对完成。库中两个版本都确认\"上善若水\"位于《道德经》第八章，且两本原文措辞高度一致。\n\n## 核对结果\n\n**一、章节归属**\n\n\"上善若水\"出自《道德经》**第八章**（通行本即王弼本编次为第八章）。我核验了库内两个不同版本，均落在第八章：\n\n- 【《道德经》·第八章】：\"上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。\"\n- 【《老子道德经》·第八章 不争无尤】正文基本相同，唯有一处异文（见下）。\n\n**二、上下文（全章原文）**\n\n该章是完整的一章，从\"上善若水\"到\"故无尤\"一气贯下，可分三层：\n\n> 上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。\n\n1. **总起（以水喻道）**：\"上善若水\"——最高的善像水一样；\"水善利万物而不争，处众人之所恶，故几于道\"——水滋润万物却不争，居于众人厌恶的低处，所以最接近\"道\"。\n2. **七善（具体展开）**：居善地、心善渊、与善仁、言善信、政善治、事善能、动善时，即居处、心胸、交往、言语、为政、做事、行动七方面的\"善\"。\n3. **归结（不争无尤）**：\"夫唯不争，故无尤\"——正因为不争，所以没有过失/怨咎。\n\n这一章紧接第七章（\"天长地久……以其不自生，故能长生……非以其无私邪？故能成其私\"），由天地之道推及人道，再以水为喻；\"不争\"与\"处下\"是老子由\"道\"落到\"德\"的核心线索。\n\n**三、一处版本异文（值得注意）**\n\n两本在第五个\"善\"字处不同：\n- 《道德经》作\"**政**善治\"；\n- 《老子道德经》作\"**正**善治\"（该本另有夹注编号，如\"上善若水[30]\"）。\n\n\"政/正\"之别是《老子》流传中真实存在的异文（涉及后世校勘对本章此句的取舍），若要精确引用，建议注明所依版本，不要混用。\n\n**一点提醒**：本章各句在通行本中确为第八章无疑；若你手边用的是帛书本（马王堆出土），其编次与分章和通行本不同（帛书《德经》在前且不标\"章\"），引用时需按帛书本另作核对。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我需要在原典库中定位\"上善若水\"所在的章节并读取上下文原文。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德经》\"上善若水\"一句的确切章节归属与上下文原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "上善若水"
+   },
+   "result_head": "{'results': [{'book_id': 'dd8853676655', 'book_title': '老子道德经', 'author': '老子', 'chapter_idx': 8, 'chapter_title': '第八章 不争无尤', 'citation_label': '【《老子道德经》·第八章 不争无尤】', 'snippet': '【原文】 上善若水[30]。水善利万物而不"
+  },
+  {
+   "kind": "note",
+   "content": "已定位到\"上善若水\"在第八章。现在读取该章原文核对完整上下文措辞。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "6ef2f18cfdc9",
+    "chapter_idx": 7
+   },
+   "result_head": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 7, 'title': '第八章', 'book_title': '道德经', 'citation_label': '【《道德经》·第八章】', 'text': '上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。'}"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 8
+   },
+   "result_head": "{'book_id': 'dd8853676655', 'chapter_idx': 8, 'title': '第八章 不争无尤', 'book_title': '老子道德经', 'citation_label': '【《老子道德经》·第八章 不争无尤】', 'text': '【原文】\\n上善若水[30]。水善利万物而不争，处众人之所恶[31]，故几于道[32]。居善地[33]，\\n心善渊[34]"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德经》\"上善若水\"一句的确切章节归属与上下文原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《道德经》\"上善若水\"一句的确切章节归属与上下文原文措辞",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 16:52:25",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《道德经》\"上善若水\"一句的确切章节归属与上下文原文措辞",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 3,
+  "soft_limit": 3,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 41334,
+   "output_tokens": 1569,
+   "total_tokens": 42903
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 2,
+   "compacted_chars_saved": 4558,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12065,
+     "output_tokens": 248,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15162,
+     "output_tokens": 255,
+     "tool_chars_added": 5150
+    },
+    {
+     "round": 3,
+     "input_tokens": 14107,
+     "output_tokens": 1066,
+     "tool_chars_added": 1845
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 1,
+  "verified_exact": 1,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 903,
+ "token_usage": {
+  "input_tokens": 41334,
+  "output_tokens": 1569,
+  "total_tokens": 42903
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 11.6,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《道德经》\"上善若水\"一句的确切章节归属与上下文原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《道德经》\"上善若水\"一句的确切章节归属与上下文原文措辞）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞——正式引用与逐字引文必",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "上善若水"
+   },
+   "result_summary": "{'results': [{'book_id': 'dd8853676655', 'book_title': '老子道德经', 'author': '老子', 'chapter_idx': 8, 'chapter_title': '第八章 不争无尤', 'citation_label': '【《老子道德经》·第八章 不争无尤】', 'snippet': '【原文】 上善若水[30]。水善利万物而不",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "6ef2f18cfdc9",
+    "chapter_idx": 7
+   },
+   "result_summary": "{'book_id': '6ef2f18cfdc9', 'chapter_idx': 7, 'title': '第八章', 'book_title': '道德经', 'citation_label': '【《道德经》·第八章】', 'text': '上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。'}",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 8
+   },
+   "result_summary": "{'book_id': 'dd8853676655', 'chapter_idx': 8, 'title': '第八章 不争无尤', 'book_title': '老子道德经', 'citation_label': '【《老子道德经》·第八章 不争无尤】', 'text': '【原文】\\n上善若水[30]。水善利万物而不争，处众人之所恶[31]，故几于道[32]。居善地[33]，\\n心善渊[34]",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "上善若水"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "dd8853676655",
+      "book_title": "老子道德经",
+      "author": "老子",
+      "chapter_idx": 8,
+      "chapter_title": "第八章 不争无尤",
+      "citation_label": "【《老子道德经》·第八章 不争无尤】",
+      "snippet": "【原文】 上善若水[30]。水善利万物而不争，处众人之所恶[31]，故几于道[32]。居善地[33]， 心善渊[34]，与善仁，言善信，正善治[35]，事善能，动善时。夫唯不争，故无尤[36]。 【译文】 最高的善就像水一样，水善于滋润万物却不与其争短长。它总是停留在众人不愿去的低洼之地，这种品德，最接近于“道”。上善的人总是甘居卑下的环境，心胸善于保持沉静而深远博大，待人善于相助、真诚可亲，说话善于信守诺言，为政善于治理，办事善于发挥",
+      "score": 0.612
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 7,
+      "chapter_title": "第八章",
+      "citation_label": "【《道德经》·第八章】",
+      "snippet": "上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。",
+      "score": 0.584
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 599,
+      "chapter_title": "第八章",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·第八章】",
+      "snippet": "上善若水，水善利万物而不争，处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，正善治，事善能，动善时。夫唯不争，故无尤。 水的人生艺术 为了引申发挥道家的似私而实无私的妙用，进而刻画出如何才合于“后其身而身先，外其身而身存”的作用，因此便引出一段水之美的人生哲学。 在这节的开场，首先提出“上善若水”为提纲。一个人如要效法自然之道的无私善行，便要做到如水一样至柔之中的至刚、至净、能容、能大的胸襟和气度。 水，具有滋养万物生命的德性。",
+      "score": 0.563
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 40,
+      "chapter_title": "德经·第四十一章",
+      "citation_label": "【《道德经》·德经·第四十一章】",
+      "snippet": "德经·第四十一章 上士闻道，勤而行之；中士闻道，若存若亡；下士闻道，大笑之。不笑不足以为道。故建言有之：明道若昧，进道若退，夷道若纇。上德若谷；广德若不足；建德若偷；质真若渝。大白若辱；大方无隅；大器免成；大音希声；大象无形；道隐无名。夫唯道，善贷且成。",
+      "score": 0.507
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 9,
+      "chapter_title": "第八章",
+      "citation_label": "【《中庸》·第八章】",
+      "snippet": "子曰：“回之为人也：择乎中庸，得一善，则拳拳服膺而弗失之矣。”",
+      "score": 0.453
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 26,
+      "chapter_title": "第二十七章",
+      "citation_label": "【《道德经》·第二十七章】",
+      "snippet": "善行，无辙跡；善言，无瑕謫；善数，不用筹策；善闭，无关楗而不可开；善结，无绳约而不可解。是以圣人常善救人，故无弃人；常善救物，故无弃物。是谓袭明。故善人者，不善人之师；不善人者，善人之资。不贵其师，不爱其资，虽智大迷。是谓要妙。",
+      "score": 0.453
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 67,
+      "chapter_title": "德经·第六十八章",
+      "citation_label": "【《道德经》·德经·第六十八章】",
+      "snippet": "德经·第六十八章 善为士者，不武；善战者，不怒；善胜敌者，不与；善用人者，为之下。是谓不争之德，是谓用人之力，是谓配天古之极。",
+      "score": 0.448
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 14,
+      "chapter_title": "第十五章",
+      "citation_label": "【《道德经》·第十五章】",
+      "snippet": "古之善为道者，微妙玄通，深不可识。夫唯不可识，故强为之容；豫兮若冬涉川；犹兮若畏四邻；俨兮其若客；涣兮若冰之将释；敦兮其若朴；旷兮其若谷；混兮其若浊；孰能浊以止，静之徐清？孰能安以久，动之徐生？保此道者，不欲盈。夫唯不盈，故能蔽而新成。",
+      "score": 0.448
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 44,
+      "chapter_title": "德经·第四十五章",
+      "citation_label": "【《道德经》·德经·第四十五章】",
+      "snippet": "德经·第四十五章 大成若缺，其用不弊。大盈若冲，其用不穷。大直若屈，大巧若拙，大辩若讷。躁胜寒，静胜热。清静为天下正。",
+      "score": 0.446
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 600,
+      "chapter_title": "第九章",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·第九章】",
+      "snippet": "持而盈之，不如其已；揣而棁之，不可长保。金玉满堂，莫之能守；富贵而骄，自遗其咎。功遂身退，天之道。 由“上善若水”到“不争故无尤”的用世无诤三昧，引而申之，说明天道自然的法则，因而引用在人生处世的哲学艺术上，便构成本章一连串“劝世文”式的老子格言。 首先他说：“持而盈之，不如其已。”可作两个层次来理解它： （一）一个人，真能对天道自然的法则有所认识，那么，天赋人生，已够充实。能够将生命原有的真实性，善加利用，因应现实的世间，就能优游余裕",
+      "score": 0.441
+     },
+     {
+      "book_id": "dd8853676655",
+      "book_title": "老子道德经",
+      "author": "老子",
+      "chapter_idx": 42,
+      "chapter_title": "第四十一章 大器晚成",
+      "citation_label": "【《老子道德经》·第四十一章 大器晚成】",
+      "snippet": "【原文】 上士闻道，仅而行之；中士闻道，若存若亡[13]；下士闻道，大笑之。不笑不足以为道。故建言有之[14]：明道若昧；进道若退；夷道若纇[15]；上德若谷；大白若辱；广德若不足；建德若偷[16]；质真若渝[17]；大方无隅[18]；大器晚成；大音希声 [19]；大象无形；道隐无名。夫唯道[20]，善始且善成。 【译文】 上士听到道后，仅仅能去实行；中士听到道后，则将信将疑犹豫不定；下士听到道后，则会哈哈大笑。如果不被他们嘲笑，那就不",
+      "score": 0.436
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 594,
+      "chapter_title": "第三章",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·第三章】",
+      "snippet": "不尚贤，使民不争；不贵难得之货，使民不为盗；不见可欲，使民心不乱。 是以圣人之治，虚其心，实其腹，弱其志，强其骨。常使民无知、无欲。使夫智者不敢为也，为无为，则无不治。 老子薄视时贤 第三章是将天地自然的法则，引申应用到人世间的治道的发挥。这章的文字，明白畅晓，都很容易懂得，很好解释。但其中有三个要点，须特别注意，那便是“不尚贤，使民不争；不贵难得之货，使民不为盗；不见可欲，使民心不乱”。 读秦汉以上的书，有关于这个“民”字，要小心求解",
+      "score": 0.431
+     },
+     {
+      "book_id": "ea6f47b169f0",
+      "book_title": "庄子今注今译",
+      "author": "陈鼓应",
+      "chapter_idx": 23,
+      "chapter_title": "秋水",
+      "citation_label": "【《庄子今注今译》·秋水】",
+      "snippet": "〈秋水〉篇，主题思想为讨论价值判断的无穷相对性。“秋水”即秋天雨水。取篇首二字作为篇名。 本篇以河伯与海若的对话为主要部分，河伯与海若共七问七答。第一番问答，写河伯的自我中心心境——“欣然自喜，以天下之美为尽在已”。河伯的自以为多，和海若的未尝自多，恰成一鲜明的对比。由海若描述海的大与天地的无穷，舒展思想的视野，使人心胸为之开阔。第二番对话，述时空的无穷性与事物变化的不定性，指出认知与确切判断的不易。第三番对话，指出宇宙间有许多事物是“",
+      "score": 0.428
+     },
+     {
+      "book_id": "6ec167f8492b",
+      "book_title": "韩非子",
+      "author": "韩非",
+      "chapter_idx": 30,
+      "chapter_title": "大体",
+      "citation_label": "【《韩非子》·大体】",
+      "snippet": "古之全大体者：望天地，观江海，因山谷，日月所照，四时所行，云布风动；不以智累心，不以私累己；寄治乱于法术，托是非于赏罚，属轻重于权衡；不逆天理，不伤情性；不吹毛而求小疵，不洗垢而察难知；不引绳之外，不推绳之内；不急法之外，不缓法之内；守成理，因自然；祸福生乎道法，而不出乎爱恶；荣辱之责在乎己，而不在乎人。故至安之世，法如朝露，纯朴不散，心无结怨，口无烦言。故车马不疲弊于远路，旌旗不乱乎大泽，万民不失命于寇戎，雄骏不创寿于旗幢；豪杰不著名",
+      "score": 0.427
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 7,
+      "chapter_title": "第六章",
+      "citation_label": "【《中庸》·第六章】",
+      "snippet": "子曰：“舜其大知也与！舜好问而好察迩言。隐恶而扬善。执其两端，用其中于民。其斯以为舜乎！”",
+      "score": 0.426
+     }
+    ],
+    "query": "上善若水",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "6ef2f18cfdc9",
+    "chapter_idx": 7
+   },
+   "result_full": {
+    "book_id": "6ef2f18cfdc9",
+    "chapter_idx": 7,
+    "title": "第八章",
+    "book_title": "道德经",
+    "citation_label": "【《道德经》·第八章】",
+    "text": "上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。"
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 8
+   },
+   "result_full": {
+    "book_id": "dd8853676655",
+    "chapter_idx": 8,
+    "title": "第八章 不争无尤",
+    "book_title": "老子道德经",
+    "citation_label": "【《老子道德经》·第八章 不争无尤】",
+    "text": "【原文】\n上善若水[30]。水善利万物而不争，处众人之所恶[31]，故几于道[32]。居善地[33]，\n心善渊[34]，与善仁，言善信，正善治[35]，事善能，动善时。夫唯不争，故无尤[36]。\n【译文】\n最高的善就像水一样，水善于滋润万物却不与其争短长。它总是停留在众人不愿去的低洼之地，这种品德，最接近于“道”。上善的人总是甘居卑下的环境，心胸善于保持沉静而深远博大，待人善于相助、真诚可亲，说话善于信守诺言，为政善于治理，办事善于发挥所长，行动善于把握时机。正因为有不争的美德，所以才不会出现过失。\n【解析】\n在上一章里，老子以天地之道推及人道之后，这一章又以自然界的水来喻人、\n教人。\n老子首先用水性来比喻有德之人的人格，认为他们的品格像水一样：一是柔，\n二是居于卑下的地方，三是滋润万物而不与之争。具备理想人格的人也应该具有这种心态，不但做有利于众人的事情而不与之争，而且还愿意去众人不愿去的地方，\n愿意做别人不愿做的事情。他可以忍辱负重，任劳任怨，能尽其所能贡献自己的力量去帮助他人，而不会与他人争功、争名、争利，这就是老子“善利万物而不争”的著名思想。\n“上善若水”，上为至高，只有至高的东西才叫上；水的德行最高，虽然它的构成简单，但它是自然界里的生命之源。上善若水，从字面上解释就是：具有善性的人就像水一样，老子这是要人们学习水“柔弱处下”的德行。\n那么，水的德行究竟是什么呢？它是最柔弱最具善性的东西，它具有宽广包容的胸怀和毫无所求、甘居人下的德操，无论到什么地方都是无声无息的。\n众所周知，水有形却无状，谁也不能说清水的形状，把它放在什么样的容器里，它就呈现什么样的形状。它生性温柔，就像一个柔弱的少女，羞涩柔韧而又随遇而安。用坝拦它，它就静止不动；抽刀断水，于水毫发无损。在天则为雨雪云雾，在地则成江河湖海。遇热成汽，逢冷结冰，见风起浪，居高成湍，千变万化。\n最重要的是，无论它身处多么显贵的高位，都会谦卑地向下流淌。这一点，和人类恰恰相反，人是钟情于高处的，仿佛只有不停地高攀才能实现自身的价值，人人都往高处走。水比人明智，它甘居下位，滋润万物而不居功自傲，清静无为而又无所不为。\n水和“大道”十分相像。水性善柔，大道无形；水善利万物而不争，大道化育一切而不言功劳。而这正应该是圣人必备的德行。老子认为，拥有最高德行的人就如水一样，具有宽广的胸怀、谦逊的品格、与世无争的情操、宽厚诚实的作风，这些最接近于大道的本质，是人类最应效仿的德行。因此，人的心胸就应该像水一样宽广无边、清湛悠然；像水的流势一样，谦虚卑下。不可处处与人争高低，要择地而居。对人要亲切自然，以诚相待，老实厚道，宁愿居下位也决不欺他人。为人处世重诺守信，就如同潮汐一般，起落守时。\n在自然界万事万物中，老子最钟爱的是水，认为水德是近于道的。而理想中的“圣人”是道的体现者，因为他的言行与水的德行相似。为什么说水德近于道呢？王夫之解释说：“五行之体，水为最微。善居道者，为其微，不为其著；处众之后，而常德众之先。”以不争为争，以无私为私，这就是水的最显著特性。水滋润万物而无取于万物，而且甘心停留在最低洼、最潮湿的地方。老子并列举出七个“善”字，都是受到水的启发。最后的结论是：为人处世的要旨，即“不争”。\n也就是说，宁处别人之所恶也不去与人争利，所以别人也没有什么怨尤。人类一旦拥有了像水一样的品格，就能助人而自乐，与世无争，日子过得恬淡自然，就能避免与他人发生矛盾和冲突，就能免去患得患失的精神折磨。如果能够使自己的品格如水一般，就能与大道协调，就会免去纷争、痛苦和烦恼，就能过得逍遥自在、轻松愉悦。"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 3
+}

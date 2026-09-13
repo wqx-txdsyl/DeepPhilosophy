@@ -1,0 +1,1032 @@
+{
+ "case_id": "F03",
+ "section": "F",
+ "expected_class": "NONE",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "请作为审稿人检查这段哲学论文的中心论证、隐含前提与可能反例：\n\n（正文：休谟的 reason-is-slave 论题……约400字）",
+ "injection": null,
+ "QUESTION": "请作为审稿人检查这段哲学论文的中心论证、隐含前提与可能反例：\n\n（正文：休谟的 reason-is-slave 论题……约400字）",
+ "PUBLIC_WORK_NOTE": [
+  "我先说明一个前提问题，然后做一次原文核验再展开。\n\n**工作笔记**：用户要求以审稿人身份检查一段论文，但我这边看到的\"正文\"只是省略标注（\"休谟的 reason-is-slave 论题……约400字\"），没有实际内容——所以我无法对作者的具体措辞、论证步骤逐句评审。我能做的是：围绕这个明确的主题，给出审稿人会重点检查的中心论证重构、隐含前提与经典反例清单。要谈休谟这一论题，最好锚定《人性论》原文（\"理性是激情的奴隶\"这句及上下文），凭记忆引原话不符合纪律，所以我先做一次定向核验。",
+  "**工作笔记**：两轮检索的结果有点出乎意料——原典库里命中的都是二手著作（赖特《洞见》、所罗门《哲学的快乐》），没有休谟《人性论》的原文；赖特的转述确认了该论题存在，并把\"激情\"读作广义的\"感觉\"。我需要先确认库里到底有没有休谟原著：如果有，我读取核验原话；如果没有，我引用那句名言时就只能标注\"未经库中核验\"。",
+  "**工作笔记**：库里确实有休谟《人性论（全4册）》，只是我前两次关键词都撞上了二手转述而非原著——这说明我该直接进原著核验，而不是停在检索摘要。核验这句论题的原始措辞与语境是 PRIMARY 的核心缺口，我申请一次预算延展，并在《人性论》内定点查找该句。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "休谟《人性论》中\"理性是激情的奴隶\"论题的确切章节位置与原文措辞（用于准确重构其中心论证）",
+ "TOOL_SELECTED": [
+  "search_books",
+  "list_books",
+  "get_book_detail"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "理性是激情的奴隶"
+   },
+   {
+    "query": "reason slave of the passions"
+   },
+   {
+    "query": "激情的奴隶"
+   }
+  ],
+  "list_books": [
+   {
+    "author": "休谟"
+   },
+   {
+    "author": "大卫·休谟"
+   }
+  ],
+  "get_book_detail": [
+   {
+    "book_id": "178e7d06d42d"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "理性是激情的奴隶"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '958d02ba12f5', 'book_title': '洞见：从科学到哲学，打开人类的认知真相', 'author': '罗伯特·赖特', 'chapter_idx': 12, 'chapter_title': '第九章 “自我”控制', 'citation_label': '【《洞见：从科学到哲学，打开人类的认知真相》·第九章 “自我”控制"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "reason slave of the passions"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '86759652897c', 'book_title': '哲学的快乐：干瘪的思考vs.激情的生活', 'author': '罗伯特·所罗门', 'chapter_idx': 14, 'chapter_title': '情感的（诸）目的', 'citation_label': '【《哲学的快乐：干瘪的思考vs.激情的生活》·情感的（诸）目的】',"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "休谟"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': '178e7d06d42d', 'title': '人性论（全4册）', 'author': '大卫·休谟', 'region': '西方', 'rank': 45.1, 'summary': '《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "大卫·休谟"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "激情的奴隶"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '343df8697039', 'book_title': '陀思妥耶夫斯基集（全九册）', 'author': '费奥多尔·陀思妥耶夫斯基', 'chapter_idx': 69, 'chapter_title': '第十三章', 'citation_label': '【《陀思妥耶夫斯基集（全九册）》·第十三章】', 'snippet': '老人"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "178e7d06d42d"
+   },
+   "phase": "executed",
+   "result_head": "{'id': '178e7d06d42d', 'title': '人性论（全4册）', 'author': '大卫·休谟', 'region': '西方', 'file_type': 'pdf', 'summary': '《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '958d02ba12f5', 'book_title': '洞见：从科学到哲学，打开人类的认知真相', 'author': '罗伯特·赖特', 'chapter_idx': 12, 'chapter_title': '第九章 “自我”控制', 'citation_label': '【《洞见：从科学到哲学，打开人类的认知真相》·第九章 “自我”控制"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '86759652897c', 'book_title': '哲学的快乐：干瘪的思考vs.激情的生活', 'author': '罗伯特·所罗门', 'chapter_idx': 14, 'chapter_title': '情感的（诸）目的', 'citation_label': '【《哲学的快乐：干瘪的思考vs.激情的生活》·情感的（诸）目的】',"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': '178e7d06d42d', 'title': '人性论（全4册）', 'author': '大卫·休谟', 'region': '西方', 'rank': 45.1, 'summary': '《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建"
+  },
+  {
+   "name": "list_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '343df8697039', 'book_title': '陀思妥耶夫斯基集（全九册）', 'author': '费奥多尔·陀思妥耶夫斯基', 'chapter_idx': 69, 'chapter_title': '第十三章', 'citation_label': '【《陀思妥耶夫斯基集（全九册）》·第十三章】', 'snippet': '老人"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': '178e7d06d42d', 'title': '人性论（全4册）', 'author': '大卫·休谟', 'region': '西方', 'file_type': 'pdf', 'summary': '《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "## 先说明一个无法回避的问题\n\n你标注的正文是\"（正文：休谟的 reason-is-slave 论题……约400字）\"——这是一句省略提示，不是我实际拿到的文本。所以我**无法对这位作者的具体措辞、推理步骤和引证做逐句评审**；下面做两件事：**先按审稿人的方式给出针对\"休谟 reason-is-slave 论题\"这类论文的检查框架**（中心论证应如何被还原、有哪些隐含前提、常见反例），并明确指出作者最容易在哪一步失分。等你把完整正文贴上来，我可以逐段对照这份清单打分。\n\n另外先交代一处证据边界：我试着在本库中定位该论题的原文，库里的《人性论（全4册）》电子版目录只到**第一卷**（论知性），而\"理性是激情的奴隶\"按学界通例属于**第二卷\"论情感\"**讨论意志与动机的部分——这一段在本库中我没有定位到。因此下文凡涉及那句名言的措辞，我都按**转述**处理，标注为未经本库核验的记忆，不冒充逐字原文。\n\n---\n\n## 一、审稿人第一步：还原中心论证\n\n这类论文最大的风险是**把休谟讲成一个心理学的经验断言**（\"人其实总是被情感驱动\"），而真实主张是一个**关于理性能力的规范性—概念性论题**。审稿人应先要求作者把论证显式重建为标准形式（下面是我对休谟论证的重构，属**解读**层）：\n\n1. **理性的全部工作只有两类**：比较观念（演绎/证明性推理）与推断因果（或然性推理）。\n2. **理性评判的对象只有\"真/假\"**：一个判断或真或假，取决于它是否符合观念关系或实际事实。\n3. **激情/情感不是命题**，无所谓真假，因此理性无法直接\"反对\"或评判某一激情本身。\n4. **行动需要动机，而动机只能是某种情感或欲望**；理性单独不产生任何冲动。\n5. **结论**：理性不能单独引发或对抗行动，只能作为工具为激情服务——发现达成目的的手段，或揭示激情所依赖的错误信念/虚假对象，从而间接影响行动。\n\n请作者核对：他论文里主张的到底是 (5) 这个**能力论题（理性不能单独决定意志）**，还是被误写成\"情感比理性更有力量\"这种**经验比较命题**。后者是常见降格。\n\n## 二、隐含前提（作者最常漏标的地方）\n\n这篇论文若要立得住，必须承认或辩护以下隐含前提——审稿意见可直接指向它们：\n\n- **动机的内驱论前提**：任何行动都必须由一个欲望/情感提供动力，\"信念\"本身不激发行动。这是休谟的动机理论内核，也是康德及当代内在主义争论的靶子。\n- **理性的窄化前提**：把理性等同于\"发现真伪\"的工具理性，排除了理性可能具有**自主的实践功能**。这一步是最有争议的，作者若默认它而不辩护，论证就悬空。\n- **命题与情感的类型二分前提**：情感不可真假评价——但当代\"情感认知主义\"（如评价理论式的情绪观）恰恰主张情感内含评价性判断，可能含真假。\n- **手段—目的框架的完备性前提**：假定实践推理只处理手段、不产生目的。作者需说明，若理性还能评价目的本身的合理性，结论\"奴隶\"是否还成立。\n\n## 三、可能反例与最强反驳\n\n- **康德式反例（最致命）**：存在\"纯粹实践理性\"——道德法则本身可直接规定意志，不需要情感驱动。这本是思想史中**针对休谟**提出的对立立场；作者若完全回避，会被判为对该论题的标准争论没有交代。注意做**时间分层**：这是后世回应，不是休谟本人语境内的问题。\n- **内在主义反例**：我认为某件事是好的、应当做的，这个信念本身就足以产生动机，无需额外激情。\n- **\"冷静的推理改变行为\"反例**：一个纯由推理得出的信念（如发现自己长期目标在逻辑上不可同时实现）似乎能直接改变行为。休谟式回应是：这仍是通过改变激情的对象/手段而起作用——审稿人应看作者是否处理了这个回应的循环风险。\n- **理性批判激情的可能性**：理性可以指出某激情建立在错误信念或不真实对象上（如复仇欲源于误信），从而\"校正\"它。休谟承认这种**间接**影响；作者须小心，别把它误读为\"理性可以对抗激情\"，否则与论题冲突。\n- **工具理性的规范缺口**：若理性纯为工具，它如何评价目的？这一问题会把论文引向\"休谟式工具主义是否站得住\"的更深处。\n\n## 四、给作者的审稿意见（若按标准水准）\n\n1. **命题定位**：明确是能力论题而非力量比较，给出精确主张。\n2. **重建论证链**：显式写出前提 1–5，标注哪一步是休谟明言的、哪一步是阐释者的补充。\n3. **暴露隐含前提**：至少在动机内驱论与理性窄化两处，给出辩护或承认代价。\n4. **引入反方**：以康德纯实践理性为核心对立面，并做历史分层。\n5. **证据纪律**：凡逐字引用该名言，须落到具体版本与章节（第二卷论情感部分），不可笼统。\n\n---\n\n如果你把实际的400字正文发我，我会按同一框架逐句标注问题（中心论证是否清晰、隐含前提是否被默认、反例是否被回应），并给出修改优先级。也可能我会就作者的具体措辞再回库核验一次原文。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先说明一个前提问题，然后做一次原文核验再展开。\n\n**工作笔记**：用户要求以审稿人身份检查一段论文，但我这边看到的\"正文\"只是省略标注（\"休谟的 reason-is-slave 论题……约400字\"），没有实际内容——所以我无法对作者的具体措辞、论证步骤逐句评审。我能做的是：围绕这个明确的主题，给出审稿人会重点检查的中心论证重构、隐含前提与经典反例清单。要谈休谟这一论题，最好锚定《人性论》原文（\"理性是激情的奴隶\"这句及上下文），凭记忆引原话不符合纪律，所以我先做一次定向核验。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "休谟\"理性是激情的奴隶\"（reason is the slave of the passions）论题的原文措辞与上下文（《人性论》相关章节），用于准确重构该论题的中心论证",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "理性是激情的奴隶"
+   },
+   "result_head": "{'results': [{'book_id': '958d02ba12f5', 'book_title': '洞见：从科学到哲学，打开人类的认知真相', 'author': '罗伯特·赖特', 'chapter_idx': 12, 'chapter_title': '第九章 “自我”控制', 'citation_label': '【《洞见：从科学到哲学，打开人类的认知真相》·第九章 “自我”控制"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "reason slave of the passions"
+   },
+   "result_head": "{'results': [{'book_id': '86759652897c', 'book_title': '哲学的快乐：干瘪的思考vs.激情的生活', 'author': '罗伯特·所罗门', 'chapter_idx': 14, 'chapter_title': '情感的（诸）目的', 'citation_label': '【《哲学的快乐：干瘪的思考vs.激情的生活》·情感的（诸）目的】',"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：两轮检索的结果有点出乎意料——原典库里命中的都是二手著作（赖特《洞见》、所罗门《哲学的快乐》），没有休谟《人性论》的原文；赖特的转述确认了该论题存在，并把\"激情\"读作广义的\"感觉\"。我需要先确认库里到底有没有休谟原著：如果有，我读取核验原话；如果没有，我引用那句名言时就只能标注\"未经库中核验\"。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "author": "休谟"
+   },
+   "result_head": "{'books': [{'id': '178e7d06d42d', 'title': '人性论（全4册）', 'author': '大卫·休谟', 'region': '西方', 'rank': 45.1, 'summary': '《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "blocked",
+   "args": {
+    "author": "大卫·休谟"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：库里确实有休谟《人性论（全4册）》，只是我前两次关键词都撞上了二手转述而非原著——这说明我该直接进原著核验，而不是停在检索摘要。核验这句论题的原始措辞与语境是 PRIMARY 的核心缺口，我申请一次预算延展，并在《人性论》内定点查找该句。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "休谟《人性论》中\"理性是激情的奴隶\"论题的确切章节位置与原文措辞（用于准确重构其中心论证）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已确认库中确有休谟《人性论》全文（此前两次检索仅命中二手转述），核验该论题原文措辞是 PRIMARY 类别的核心缺口，尚未闭合",
+    "unresolved_evidence_gap": "\"理性是、并且只应当是激情的奴隶\"一句在《人性论》中的确切章节编号与上下文措辞"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "激情的奴隶"
+   },
+   "result_head": "{'results': [{'book_id': '343df8697039', 'book_title': '陀思妥耶夫斯基集（全九册）', 'author': '费奥多尔·陀思妥耶夫斯基', 'chapter_idx': 69, 'chapter_title': '第十三章', 'citation_label': '【《陀思妥耶夫斯基集（全九册）》·第十三章】', 'snippet': '老人"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "178e7d06d42d"
+   },
+   "result_head": "{'id': '178e7d06d42d', 'title': '人性论（全4册）', 'author': '大卫·休谟', 'region': '西方', 'file_type': 'pdf', 'summary': '《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "休谟\"理性是激情的奴隶\"（reason is the slave of the passions）论题的原文措辞与上下文（《人性论》相关章节），用于准确重构该论题的中心论证",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "休谟《人性论》中\"理性是激情的奴隶\"论题的确切章节位置与原文措辞（用于准确重构其中心论证）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已确认库中确有休谟《人性论》全文（此前两次检索仅命中二手转述），核验该论题原文措辞是 PRIMARY 类别的核心缺口，尚未闭合",
+    "unresolved_evidence_gap": "\"理性是、并且只应当是激情的奴隶\"一句在《人性论》中的确切章节编号与上下文措辞"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "休谟《人性论》中\"理性是激情的奴隶\"论题的确切章节位置与原文措辞（用于准确重构其中心论证）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:02:28",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "休谟\"理性是激情的奴隶\"（reason is the slave of the passions）论题的原文措辞与上下文（《人性论》相关章节），用于准确重构该论题的中心论证",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:02:40",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "休谟《人性论》中\"理性是激情的奴隶\"论题的确切章节位置与原文措辞（用于准确重构其中心论证）",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:02:40",
+    "reason": "已确认库中确有休谟《人性论》全文（此前两次检索仅命中二手转述），核验该论题原文措辞是 PRIMARY 类别的核心缺口，尚未闭合",
+    "unresolved_gap": "\"理性是、并且只应当是激情的奴隶\"一句在《人性论》中的确切章节编号与上下文措辞"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "list_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:02:34"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 65591,
+   "output_tokens": 6714,
+   "total_tokens": 72305
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 5,
+   "compacted_chars_saved": 8659,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12086,
+     "output_tokens": 1774,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18317,
+     "output_tokens": 722,
+     "tool_chars_added": 9326
+    },
+    {
+     "round": 3,
+     "input_tokens": 15448,
+     "output_tokens": 883,
+     "tool_chars_added": 783
+    },
+    {
+     "round": 4,
+     "input_tokens": 19740,
+     "output_tokens": 3335,
+     "tool_chars_added": 7107
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 2069,
+ "token_usage": {
+  "input_tokens": 65591,
+  "output_tokens": 6714,
+  "total_tokens": 72305
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 49.6,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "休谟\"理性是激情的奴隶\"（reason is the slave of the passions）论题的原文措辞与上下文（《人性论》相关章节），用于准确重构该论题的中心论证",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 休谟\"理性是激情的奴隶\"（reason is the slave of the passions）论题的原文措辞与上下文（《人性论》相关章节），用于准确重构该论题的中心论证）。soft 检索预算=3 次。（PRIMARY 闭环",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "理性是激情的奴隶"
+   },
+   "result_summary": "{'results': [{'book_id': '958d02ba12f5', 'book_title': '洞见：从科学到哲学，打开人类的认知真相', 'author': '罗伯特·赖特', 'chapter_idx': 12, 'chapter_title': '第九章 “自我”控制', 'citation_label': '【《洞见：从科学到哲学，打开人类的认知真相》·第九章 “自我”控制",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "reason slave of the passions"
+   },
+   "result_summary": "{'results': [{'book_id': '86759652897c', 'book_title': '哲学的快乐：干瘪的思考vs.激情的生活', 'author': '罗伯特·所罗门', 'chapter_idx': 14, 'chapter_title': '情感的（诸）目的', 'citation_label': '【《哲学的快乐：干瘪的思考vs.激情的生活》·情感的（诸）目的】',",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "休谟"
+   },
+   "result_summary": "{'books': [{'id': '178e7d06d42d', 'title': '人性论（全4册）', 'author': '大卫·休谟', 'region': '西方', 'rank': 45.1, 'summary': '《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "大卫·休谟"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "休谟《人性论》中\"理性是激情的奴隶\"论题的确切章节位置与原文措辞（用于准确重构其中心论证）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已确认库中确有休谟《人性论》全文（此前两次检索仅命中二手转述），核验该论题原文措辞是 PRIMARY 类别的核心缺口，尚未闭合",
+    "unresolved_evidence_gap": "\"理性是、并且只应当是激情的奴隶\"一句在《人性论》中的确切章节编号与上下文措辞"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 休谟《人性论》中\"理性是激情的奴隶\"论题的确切章节位置与原文措辞（用于准确重构其中心论证））。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "激情的奴隶"
+   },
+   "result_summary": "{'results': [{'book_id': '343df8697039', 'book_title': '陀思妥耶夫斯基集（全九册）', 'author': '费奥多尔·陀思妥耶夫斯基', 'chapter_idx': 69, 'chapter_title': '第十三章', 'citation_label': '【《陀思妥耶夫斯基集（全九册）》·第十三章】', 'snippet': '老人",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "178e7d06d42d"
+   },
+   "result_summary": "{'id': '178e7d06d42d', 'title': '人性论（全4册）', 'author': '大卫·休谟', 'region': '西方', 'file_type': 'pdf', 'summary': '《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "理性是激情的奴隶"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "958d02ba12f5",
+      "book_title": "洞见：从科学到哲学，打开人类的认知真相",
+      "author": "罗伯特·赖特",
+      "chapter_idx": 12,
+      "chapter_title": "第九章 “自我”控制",
+      "citation_label": "【《洞见：从科学到哲学，打开人类的认知真相》·第九章 “自我”控制】",
+      "snippet": "18世纪苏格兰哲学家大卫·休谟（David Hume）写到，人类的理性是“激情的奴隶” (1) 。如果休谟所谓的“激情”与我们今天对这个词的定义相同，那么他的观察结果也没有太多值得称道的。显然，当我们被欲望或复仇等强烈的感觉裹挟时，掌控局势的就不是我们的理性能力了。但是休谟所谓的“激情”有不同的含义，他所说的激情从广义上讲是指感觉。他的意思是说，尽管理性在人类动机中起重要作用，但是在某种意义上做决定的永远都不是理性。我们做某事，是基于感",
+      "score": 0.566
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 16,
+      "chapter_title": "情感的政治与合理性",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·情感的政治与合理性】",
+      "snippet": "好像不是每个激情都是有理性的成分似的！ ——尼采，《权力意志》 理性的伟大斗士苏格拉底把德尔斐神庙的铭文“认识你自己”当成了自己的座右铭，并提出了极其激进的告诫“未经省察的生活不值得过”。确实，这一认识中，有一部分是我们对自己情感的理解和体贴，毕竟，正是它们才使得生活值得过。在此，我提出一个有争议的说法，情感是一个内在合理性的问题。根据政治来谈论情感，就是主张情感完全不同于纯粹的感受和更为原始的反应，它是有目的、有策略且理智的——换句话",
+      "score": 0.527
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 20,
+      "chapter_title": "情感的理性与理性的情感基础",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·情感的理性与理性的情感基础】",
+      "snippet": "对激情和理性的误解，仿佛后者是一个独自存在的实体，而非不同激情和欲望之间的一种关系状态…… ——尼采，《权力意志》 在上述关于理性概念的诸多含义中，最具破坏性的无疑是试图系统地把理性与情感对立起来，把理性理解为合理，进而直截了当地反对“情绪化”。理性就是不带激情、“冷静”、不为情感所动。作为对照，我认为需要重新考量理性与情感之间的所谓对立，并强烈质疑不带激情（或毫无激情）的理性的优先性。 基于这一点，我认为我们若从拥有正确的情感、关心正",
+      "score": 0.511
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 18,
+      "chapter_title": "怀疑（理性）的一些理由",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·怀疑（理性）的一些理由】",
+      "snippet": "赤裸裸的暴力我还受得了，可是赤裸裸的明智我完全不能忍受。这样运用头脑不够光明正大。这是对理性的暗算。 ——奥斯卡·王尔德， 《道林·格雷的画像》（ The Picture of Dorian Gray） 我能勉强算是个存在主义者，所以向来怀疑关于理性的哲学谈论。“理性”是哲学中闪光的语词之一，被赋予神学的意蕴和解释。一些哲学家坚持认为，上帝本身就是“理性”（由此回避了信上帝是否是理性的这个问题）。其他哲学家则显得温和些，把理性描述为“上",
+      "score": 0.506
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 289,
+      "chapter_title": "第九卷",
+      "citation_label": "【《西方百年学术经典著作》·第九卷】",
+      "snippet": "苏：“最后就轮到僭主政治的个人了。对于这些人我们已经问过，他是如何从民主政治形成的呢？他又是如何生活，是幸福还是痛苦呢？” “是的，”他说，“最后剩下来的问题就是他了。” “但是，”我说，“在这之前还有一个问题留待回答。” 阿：“什么问题？” 苏：“我认为我们还没有充分地给欲望的性质和种类下好定义。只有回答了这个问题，我们的提问才不至于迷离不清。” “好的，”他说，“亡羊补牢，为时不晚。” “非常正确，”我说，“现在来看看我想要理解的这",
+      "score": 0.502
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 11,
+      "chapter_title": "何谓情感？（走向一种政治观）",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·何谓情感？（走向一种政治观）】",
+      "snippet": "伦理哲学家通过诉诸自己的下丘脑边缘系统的情感中枢，就直觉地知道义务论的道德准则。 ——威尔逊（E. O. Wilson）， 《社会生物学》（ Sociobiology） “何谓情感？”威廉·詹姆斯一百年前为《心灵》（ Mind ）杂志撰写的论文就以此为标题，一字不差地问过。 自西方哲学开端以来，哲学家们就一直关心且担忧情感的本性。苏格拉底和前苏格拉底的哲学家们，对于情感在理想人生中的位置，就提出过深刻的问题，只是他们提出的问题并不一致。",
+      "score": 0.495
+     },
+     {
+      "book_id": "b8210487d306",
+      "book_title": "清醒思考的艺术",
+      "author": "罗尔夫·多贝里",
+      "chapter_idx": 53,
+      "chapter_title": "跋",
+      "citation_label": "【《清醒思考的艺术》·跋】",
+      "snippet": "在群体里容易按照他人的想法生活，在孤独中容易按照自己的想法生活。但值得记住的只是那些在群体中保持独立的人。 ——爱默生 非理性有狂热说与冷淡说之分。狂热说源远流长。柏拉图的著作中有这样的画面：骑手驾驭狂奔的马儿。骑手代表理性，奔马象征情感。理性控制情感。如果控制不成功，非理性就会暴露出来。再看另一幅画面：情感是沸腾的熔岩，理性大多数时候可以将它们控制在盖子之下，但非理性的熔岩偶尔也会爆发。因此，非理性是狂热的。理性实际上是一切正常，它没",
+      "score": 0.471
+     },
+     {
+      "book_id": "44a32441dabe",
+      "book_title": "人类理解论",
+      "author": "约翰·洛克",
+      "chapter_idx": 37,
+      "chapter_title": "第二卷　第三十三章观念底联路",
+      "citation_label": "【《人类理解论》·第二卷　第三十三章观念底联路】",
+      "snippet": "鲁莽地来鄙弃它。实则我們自己底教条和行为亦許更不合理，不过我們从看不到这一，而且从不能相信这一層。 2这种現象抖不全由于自爱一·自爱心理在这方面虽然亦很有力量，不过仍不是完全的原因。因为心理公本而且雅不欲过事自夸的人們，亦常犯这种毛病。我們常見人們虽然把理性底证据，明如皎日地置在一个有价值的人面前，而他亦会肆意狡、执意不服，这眞是不能不合人惊异莫名的。 3亦不由于教育一-人們亦常把这种達反理性的情形归之于教育和偏見。这种法虽然大部分是很",
+      "score": 0.469
+     },
+     {
+      "book_id": "e2845fe17764",
+      "book_title": "作为意欲和表象的世界（第2卷）",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 17,
+      "chapter_title": "第16章论对理性的实际应用和斯多葛主义",
+      "citation_label": "【《作为意欲和表象的世界（第2卷）》·第16章论对理性的实际应用和斯多葛主义】",
+      "snippet": "第16章论对理性的实际应用和斯多葛主义 在第7章，我已指出在理论方面，从概念出发就只能做出平平的成绩：相比之下，要取得杰出的成就则要求从直观本身波取知识，因为直观是一切知识的源头。但在实际事务中，却是相反的情形：在此，由直观所决定是动物的做法，却并非与人相称的行事方式，因为人有观念以指导自己的行事，并以此从直观所见的现时此刻的威力中解放出来。但动物却无条件地听任现时的力量的摆布。根据一个人行使这一特权的程度，他的行事就相应地被称为理性的",
+      "score": 0.467
+     },
+     {
+      "book_id": "0ed8c0c49e2f",
+      "book_title": "在绝望之巅",
+      "author": "E·M·齐奥朗",
+      "chapter_idx": 60,
+      "chapter_title": "人",
+      "citation_label": "【《在绝望之巅》·人】",
+      "snippet": "人应该不再充当—或成为—理性的动物。他应该成为一个疯子，为了他危险的幻想而甘愿冒一切风险，能够高歌猛进，愿意为世界已有的一切而死，也愿意为世界所没有的一切而死。每个人的理想都应该是不再做人。这只能通过绝对的任性妄为来实现。",
+      "score": 0.465
+     },
+     {
+      "book_id": "1282e86cd93b",
+      "book_title": "论选择的艺术",
+      "author": "爱比克泰德",
+      "chapter_idx": 28,
+      "chapter_title": "28",
+      "citation_label": "【《论选择的艺术》·28】",
+      "snippet": "如果要你把肉体的控制权交给别人，你无疑是绝对不愿意的。那么因为随便某个人的批评就让自己的精神动摇，从而自动变得混乱不安， 这难道不可耻吗？",
+      "score": 0.464
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 19,
+      "chapter_title": "从求和到利己：理性作为一个本质上充满冲突的概念",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·从求和到利己：理性作为一个本质上充满冲突的概念】",
+      "snippet": "疯子并不是失去理性的人。疯子是除理性外失去了一切的人。 ——切斯特顿（G. K. Chesterton）， 《回到正统》（ Orthodoxy） 理性（像“自由”、“真理”和“正义”一样）是哲学中那些“本质上充满冲突的概念”之一，它在我们的交谈中有着规范和论战的双重作用。尽管“理性”这个词像某些技能的演示或运用一样有其中立性，但它仍是一个敬语，指涉一种德性。不过，这一德性有各种各样的描述。伯特兰·罗素曾揶揄说，理性就是“我们求和的能力”",
+      "score": 0.463
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 14,
+      "chapter_title": "情感的（诸）目的",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·情感的（诸）目的】",
+      "snippet": "我们无法再生活于如此匆忙且艰难的世界。然而，我们必须有所行动。因此，我们要试着改变世界，像变魔术一样。 ——让—保罗·萨特，《情感》（ The Emotions） 关于情感，20世纪（再次）出现了一个较为激动人心的论点，即情感是有目的的。它们有让—保罗·萨特所谓的“目的”（finalité）。 也就是说，它们不只是功能性和偶尔有利的，也不只是变化无常的进化所剩的偶然残余；它们也为自身而存在，具有策略性和政治性。用一种颇具争议的不同说法来",
+      "score": 0.457
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 164,
+      "chapter_title": "47",
+      "citation_label": "【《尼采文集（合集）》·47】",
+      "snippet": " 论激情之压抑 。——如果人们持续地禁止自己，不让自己把激情表达出来，仿佛它是被托付给“庸人”、粗鲁者、市民、农民的某种东西，——也即不是要压抑激情本身，而只是压抑激情的语言和表情：那么，结果仍然会 一起 达到人们不想要的东西，那就是：激情本身之压抑，至少是激情之弱化和改变：——这方面最有教益的例子，是路易十四的宫廷以及依附于宫廷的所有东西。 后继的 时代，在表达之压抑方面受到了教育，不再拥有激情本身，取而代之的是一种优雅、平淡、玩耍的",
+      "score": 0.452
+     },
+     {
+      "book_id": "e74dc59d508e",
+      "book_title": "柏拉图哲学作品集（套装6册）",
+      "author": "柏拉图",
+      "chapter_idx": 10,
+      "chapter_title": "第九卷",
+      "citation_label": "【《柏拉图哲学作品集（套装6册）》·第九卷】",
+      "snippet": "苏： 我们还剩下有待讨论的问题是关于僭主式个人的问题。问题包括：这种人物是怎样从民主式人物发展来的？他具有什么样的性格？他的生活怎样，痛苦呢还是快乐？ 阿： 是的，还有这个问题要讨论。 苏： 你知道另外还有什么问题要讨论的吗？ 阿： 还有什么？ 苏： 关于欲望问题。我觉得我们分析欲望的性质和种类这个工作还做得不够。这个工作不做好，我们讨论僭主式人物就讨论不清楚。 阿： 那么，现在你的机会不是来了吗？ 苏： 很好。我想要说明的如下。在非必",
+      "score": 0.452
+     }
+    ],
+    "query": "理性是激情的奴隶",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "reason slave of the passions"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 14,
+      "chapter_title": "情感的（诸）目的",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·情感的（诸）目的】",
+      "snippet": "我们无法再生活于如此匆忙且艰难的世界。然而，我们必须有所行动。因此，我们要试着改变世界，像变魔术一样。 ——让—保罗·萨特，《情感》（ The Emotions） 关于情感，20世纪（再次）出现了一个较为激动人心的论点，即情感是有目的的。它们有让—保罗·萨特所谓的“目的”（finalité）。 也就是说，它们不只是功能性和偶尔有利的，也不只是变化无常的进化所剩的偶然残余；它们也为自身而存在，具有策略性和政治性。用一种颇具争议的不同说法来",
+      "score": 0.44
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 289,
+      "chapter_title": "第九卷",
+      "citation_label": "【《西方百年学术经典著作》·第九卷】",
+      "snippet": "苏：“最后就轮到僭主政治的个人了。对于这些人我们已经问过，他是如何从民主政治形成的呢？他又是如何生活，是幸福还是痛苦呢？” “是的，”他说，“最后剩下来的问题就是他了。” “但是，”我说，“在这之前还有一个问题留待回答。” 阿：“什么问题？” 苏：“我认为我们还没有充分地给欲望的性质和种类下好定义。只有回答了这个问题，我们的提问才不至于迷离不清。” “好的，”他说，“亡羊补牢，为时不晚。” “非常正确，”我说，“现在来看看我想要理解的这",
+      "score": 0.435
+     },
+     {
+      "book_id": "40a5f4bf8cb4",
+      "book_title": "哲学辞典",
+      "author": "伏尔泰",
+      "chapter_idx": 36,
+      "chapter_title": "目的因",
+      "citation_label": "【《哲学辞典》·目的因】",
+      "snippet": "CAUSES FINALES目的因? 第一节 维吉尔说： 心灵支配世界；宅干预世界，使世界活跃。 一《伊尼特》，VI,727. 维吉尔说得对。而伯努阿②·斯宾诺莎本没有维吉尔那样思 本，人们不相信这样无聊的话，坚持日本这句格言是不可否认的真理： 上帝行事，从不偏心，而是遵循一般规律。一伏尔泰 ①被爱尔维修称做目的因造者的伏尔泰，在本文里攻击霍尔巴赫男爵著名的 《自然体系》一书。这部无神论著作，于1770年以已故莫·米拉波的名义出版。米拉",
+      "score": 0.43
+     },
+     {
+      "book_id": "ae97dec227b6",
+      "book_title": "德意志意识形态（节选本）",
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "chapter_idx": 21,
+      "chapter_title": "无产者的阶级地位和历史使命",
+      "citation_label": "【《德意志意识形态（节选本）》·无产者的阶级地位和历史使命】",
+      "snippet": "在现实中，个人有各种需要，正因为如此，他们已经有了某种 职责和某种任务，至于他们是否也在观念中把这种职责当作自己的职责，这在一开始还是无关紧要的。但是，不言而喻，由于个人都是具有意识的，他们对于自己的经验生活所赋予他们的这种职责也会形成一种观念，因而就使得圣桑乔能够抓住“职责”这个字眼，即抓住他们的现实生活条件在观念中的表现，而把这些生活条件本身置于视野之外。譬如说无产者吧，他的职责就是要像其他任何人一样满足自己的需要；而他连那些和其他",
+      "score": 0.427
+     },
+     {
+      "book_id": "8fed9aaf9e9a",
+      "book_title": "在我身上有一个不可战胜的夏天",
+      "author": "阿尔贝·加缪",
+      "chapter_idx": 16,
+      "chapter_title": "巴旦杏树",
+      "citation_label": "【《在我身上有一个不可战胜的夏天》·巴旦杏树】",
+      "snippet": "路易·德·丰塔纳（Louis de Fontanes，1757-1821），法国作家、诗人。 拿破仑曾对丰塔纳 说：“您知道我在这世界上最欣赏的是什么吗？是权力在缔造事物时的无力感。世界上只存在两种力量：刀剑与精神。从长远来看，刀剑总会被精神击败。” 佛兰德斯（Flandres），欧洲历史地区名，位于今法国西北部、比利时西部和荷兰南部，英法两国曾为争夺该地区爆发“百年战争”（1337-1453）。 安格鲁斯·西勒修斯（Angelus S",
+      "score": 0.424
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 1,
+      "chapter_title": "序言",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·序言】",
+      "snippet": "我想我特别容易对运动的魔力倾心。 ——弗拉基米尔·纳博科夫（Vladimir Nabokov） 《洛丽塔》（ Lolita） 我们相遇那年，他四十五岁。念大学时，他是位（田径）运动员，课程对他来说只是兄弟聚会和周六球赛之间的插曲，不过还算不错，他坚持了下来（但也就如此而已）。大学毕业后，他成了一位成功的生意人、不错的网球选手、有头有脸的社会成功人士，可谓美国梦的化身。可如今，他的反手拍开始失误，他会在又一次收购中不由自主地问一些连自己都",
+      "score": 0.422
+     },
+     {
+      "book_id": "40a5f4bf8cb4",
+      "book_title": "哲学辞典",
+      "author": "伏尔泰",
+      "chapter_idx": 66,
+      "chapter_title": "宗教狂热",
+      "citation_label": "【《哲学辞典》·宗教狂热】",
+      "snippet": "FANATISME宗教狂热 第一节① 这是一种错误意识构成的结果。这种错误意识使宗教为变幻 莫测的想像和紊乱失常的情欲所奴役。 总的说来，宗教狂热是由于创立戒律的人眼光过于狭窄，或是 由于人们逾越了他们所规定的限度。他们所订的律条只是为少数 经过选择的人物制订的。这些法规戒律，由于一种热心而扩及全 体人民。又由于一种雄心壮志而从一地移植到另一地，它们本来 应该因地制宜地加以更动以便适应于当地环境和人物才是。但是 实际上又如何呢？实际上就",
+      "score": 0.42
+     },
+     {
+      "book_id": "1fbb4b1099e1",
+      "book_title": "The Ethics of Psychoanalysis 1959-1960",
+      "author": "雅克·拉康",
+      "chapter_idx": 15,
+      "chapter_title": "XV The jouissance of transgression",
+      "citation_label": "【《The Ethics of Psychoanalysis 1959-1960》·XV The jouissance of transgression】",
+      "snippet": "XV Thejouissance of transgression THE BARRIER TO JOUISSANCE THE RESPECT OF THE IMAGE OF THE OTHER SADE, HIS PANTASM AND HIS DOCTRINE METIPSEMUS FRAGMENTED ANDINDESTRUCTISLE I announced that I would talk about Sade. It is",
+      "score": 0.419
+     },
+     {
+      "book_id": "1fbb4b1099e1",
+      "book_title": "The Ethics of Psychoanalysis 1959-1960",
+      "author": "雅克·拉康",
+      "chapter_idx": 18,
+      "chapter_title": "XVIII The function of the beautiful",
+      "citation_label": "【《The Ethics of Psychoanalysis 1959-1960》·XVIII The function of the beautiful】",
+      "snippet": "XVIII Thefunctionofthebeautiful THE DUPLICITY OF THE GOOD ON THE POTLATCH THE DISCOURSE OF SCIENCE PORGETS NOTHING OUTRAGE AND PAIN It seemed to me this morning that it wasn't inappropriate to begin my semi nar by asking",
+      "score": 0.418
+     },
+     {
+      "book_id": "1fbb4b1099e1",
+      "book_title": "The Ethics of Psychoanalysis 1959-1960",
+      "author": "雅克·拉康",
+      "chapter_idx": 7,
+      "chapter_title": "VII Drives and lures",
+      "citation_label": "【《The Ethics of Psychoanalysis 1959-1960》·VII Drives and lures】",
+      "snippet": "VII Drivesandlures THE DOMAIN OF THE PASTORAL THE PARADOX OF THE MORAL CONSCIENCE WORLD AND BODY LUTHER THE PROBLEM OF THE OBJECT RELATION During the retreat of the vacation,I felt the need to make a little excursion int",
+      "score": 0.415
+     },
+     {
+      "book_id": "278a154690ce",
+      "book_title": "新教伦理与资本主义精神",
+      "author": "马克斯·韦伯",
+      "chapter_idx": 6,
+      "chapter_title": "导论",
+      "citation_label": "【《新教伦理与资本主义精神》·导论】",
+      "snippet": "斯蒂芬·卡尔贝格 毫无疑问，即使抱着最大的决心，现代人也几乎无法想象，我们那些植根于宗教信仰中的意识成分实际上曾经对于文化……和生活组织发挥过多么巨大的作用。（p.125[1]） 初版于1904—1905年、修订于1920年并于1930年被译成英文的马克斯·韦伯名著《新教伦理与资本主义精神》（以下简称《新教伦理》），乃是20世纪最富有生命力的著作之一，也是社会科学领域的一部主要经典。它集中论述了价值观和观念如何成为了社会变革的源泉，这引",
+      "score": 0.413
+     },
+     {
+      "book_id": "40750581f8e8",
+      "book_title": "存在主义是一种人道主义",
+      "author": "让-保罗·萨特",
+      "chapter_idx": 5,
+      "chapter_title": "莱维访谈（一）",
+      "citation_label": "【《存在主义是一种人道主义》·莱维访谈（一）】",
+      "snippet": "莱维： 一段时间以来，您一直在思考希望和绝望问题。这是两个您过去在著作中没有更多地涉及的主题。 萨特： 至少，不是以同样的方式。因为我始终认为每个人都爱希望，我的意思是说，每个人都认为无论他从事什么工作，或者无论什么，只要与他，或者与他所属的社会团体利害有关的事，都是在取得实现的过程中，而且对他和构成他那个社团的人们也必将是有利的。我认为希望是人的一部分；人类的行动是超越的，那就是说，它总是在现在中孕育，从现在朝向一个未来的目标，我们又",
+      "score": 0.411
+     },
+     {
+      "book_id": "ec338ccc63b6",
+      "book_title": "论演说家",
+      "author": "西塞罗",
+      "chapter_idx": 2,
+      "chapter_title": "第一卷",
+      "citation_label": "【《论演说家》·第一卷】",
+      "snippet": "引言：作者自我介绍常常每当我思考和回忆往昔时，胞弟昆图斯，（1}我总觉得1那些在共和国最光辉的时期荣誉、勋业卓著，既能在为国家服务时不受危险地，又能在个人闲逸［2）时享受尊荣地度过一生的人是无比幸福的。曾经有过这样的时候，当时在我看来，我开始享受宁静，潜心地从事我们所喜爱的那两种科学的高尚研究是合理的，差不多也是为所有的人赞同的，既然政治升迁已经终了，个人也韶华已度，理应停止不断的广场忙碌和无穷尽的功名追求。〔3）但是沉重的社会灾难和我",
+      "score": 0.411
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 574,
+      "chapter_title": "神父",
+      "citation_label": "【《西方百年学术经典著作》·神父】",
+      "snippet": "一天，查拉图斯特拉给他的追随者们比了个手势，并对他们说了这些话： “这些神父，尽管他们是我的敌人，你们也要静静地从他们身边走过，带着你们沉睡的剑！ “即便是他们之中，也有着英雄；他们之中许多人承受了太多痛苦，所以他们想要使别人受苦。 “他们是恶劣的敌人：没有什么比他们的谦逊更富有报复性。而触碰他们的人将轻易地玷污自己。 “但是我与他们是血亲：我想知道，哪怕是在他们的血中，我的血也是受到尊敬的。” 当追随者们散开后，查拉图斯特拉被痛苦攫住",
+      "score": 0.408
+     },
+     {
+      "book_id": "48f7bf321598",
+      "book_title": "快乐的科学",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 14,
+      "chapter_title": "第二部（第57—107节）",
+      "citation_label": "【《快乐的科学》·第二部（第57—107节）】",
+      "snippet": "音乐中的女人。一和煦而湿润的风何以也能把音乐的426情调和富有创意的欢乐旋律带来呢？它们不就是那充满教堂并且使女人们产生恋爱想法的风么？1怀疑论者。一—我担心，在其内心最隐秘的隐匿之所，年纪变老的女人比所有男人都更有怀疑精神：她们相信人生此在的表面就是其本质，而所有的德性和深度在她们看来都只是对这种“真理”的遮掩，对一种pudendum［外阴、外生殖器］的十分值得想望的遮掩一一，也就是关乎正直和羞耻的事，此外无他。奉献。一有一些贵妇人，",
+      "score": 0.407
+     }
+    ],
+    "query": "reason slave of the passions",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "休谟"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "178e7d06d42d",
+      "title": "人性论（全4册）",
+      "author": "大卫·休谟",
+      "region": "西方",
+      "rank": 45.1,
+      "summary": "《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和因果关系的基础之上。休谟提出了著名的“印象与观念”区分，认为所有复杂观念都可以还原为简单的感觉印象，从而彻底贯彻了经验主义"
+     },
+     {
+      "id": "9c9e77918c07",
+      "title": "自然宗教对话录",
+      "author": "大卫·休谟",
+      "region": "西方",
+      "rank": 43.2,
+      "summary": "《自然宗教对话录》是休谟晚年最重要的哲学著作之一，采用对话录的形式，通过三位人物——怀疑论者斐洛、自然神论者克里安提斯和正统神学家德梅亚——之间的辩论，深入探讨了宗教的理性基础问题。休谟在书中系统批判了“设计论证”，即认为从自然界的秩序可以证明上帝存在的观点。他通过斐洛之口指出，宇宙的秩序可能源于偶"
+     }
+    ],
+    "total": 2
+   }
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "178e7d06d42d"
+   },
+   "result_full": {
+    "id": "178e7d06d42d",
+    "title": "人性论（全4册）",
+    "author": "大卫·休谟",
+    "region": "西方",
+    "file_type": "pdf",
+    "summary": "《人性论（全4册）》是苏格兰哲学家大卫·休谟最具代表性的著作，也是西方哲学史上的一部里程碑式作品。休谟在书中主张一切知识都来源于感官经验，通过对观念的分析，他将认识论建立在归纳和因果关系的基础之上。休谟提出了著名的“印象与观念”区分，认为所有复杂观念都可以还原为简单的感觉印象，从而彻底贯彻了经验主义原则。在知识论方面，休谟对因果关系进行了深刻剖析，指出我们所谓的“因果必然性”实际上只是心理习惯的产物，而非客观实在。这一观点动摇了传统形而上学的根基。在道德哲学方面，休谟认为道德判断源于情感而非理性，提出了“同情”作为道德的基础。该书虽然出版后反响平平，但后来被公认为经验主义哲学的巅峰之作，深刻影响了康德、实证主义以及现代科学方法。休谟的怀疑论虽然激进，却为哲学开辟了新的思考方向，成为后世哲学家无法绕过的思想资源。",
+    "rank": 45.1,
+    "chapterCount": 6,
+    "toc": [
+     "出版说明",
+     "一、二卷的公告",
+     "导论",
+     "第一卷 第一章 论观念，它们的起源、组合、联系、抽象等",
+     "第一卷 第二章 论空间和时间观念",
+     "第一卷 第三章 论知识和或然性"
+    ],
+    "bibliographic_metadata": {
+     "work": {
+      "author": "大卫·休谟",
+      "canonical_title": "人性论（全4册）",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "激情的奴隶"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "343df8697039",
+      "book_title": "陀思妥耶夫斯基集（全九册）",
+      "author": "费奥多尔·陀思妥耶夫斯基",
+      "chapter_idx": 69,
+      "chapter_title": "第十三章",
+      "citation_label": "【《陀思妥耶夫斯基集（全九册）》·第十三章】",
+      "snippet": "老人走进来。他好奇地，而且好像为什么事感到羞愧似的看看我们，皱着眉头，走到桌子跟前。 “茶炊怎么样啦？”他问，“难道到现在还不能拿来摆好？” “就来啦，老爷子，就来啦。瞧，这不是拿来啦！”安娜·安德烈耶芙娜张罗起来。 玛特辽娜一看见尼古拉·谢尔盖伊奇，马上就端着茶炊出来了，仿佛她一定要等他出来才送上茶炊。她是个忠诚可靠的老女仆，但却是世界上性情最为古怪的女仆，她爱唠叨，脾气又倔又固执。她害怕尼古拉·谢尔盖伊奇，在他面前总是缄口不语。不过",
+      "score": 0.451
+     },
+     {
+      "book_id": "23ab04b02f68",
+      "book_title": "塞涅卡道德书简：致鲁基里乌斯书信集",
+      "author": "塞涅卡",
+      "chapter_idx": 48,
+      "chapter_title": "书信四十七 论主人与奴隶",
+      "citation_label": "【《塞涅卡道德书简：致鲁基里乌斯书信集》·书信四十七 论主人与奴隶】",
+      "snippet": "（1）我很高兴从到访过你那里的人获知，你与你的奴隶们很融洽地生活在一起。这符合像你一样明智，且受过良好教育的人的行为标准有人会说，“他们是奴隶”。不，他们是人。“他们是奴隶！”不.他们是我们的同伴。“他们是奴隶！”不，他们是我们朴实的朋友。“他们是奴隶！”不，如果反思一下，若命运对奴隶和自由人赋予同等权利的话，他们可以被视为我们的“同伴奴隶”。（2）这就是我为什么嘲笑那些人，他们认为和自已的奴隶一起就餐是很去脸的事、但是，为什么他们认为",
+      "score": 0.447
+     },
+     {
+      "book_id": "63a3b006c9d7",
+      "book_title": "红书",
+      "author": "卡尔·古斯塔夫·荣格",
+      "chapter_idx": 36,
+      "chapter_title": "第十六章 第三夜",
+      "citation_label": "【《红书》·第十六章 第三夜】",
+      "snippet": "[HI 108] [1] 第十六章　第三夜 [2] 我的 灵魂低声对我说，急促又警醒：“言语，言语，不要有太多的言语。安静，认真听：你是否认识到自己的疯狂，承认它吗？你是否发现你所有的根基都已完全陷入疯狂之中？你是否愿意认识自己的疯狂，并友好地欢迎它？你想去接受一切，那么请也接受疯狂吧。发出你的疯狂之光，它将为你带来黎明。你不应该蔑视疯狂，更不应该恐惧它，而是给予它生命。 我 ：“你的话语很难懂，指派的工作很难做。” 灵魂：“如果你想找",
+      "score": 0.442
+     },
+     {
+      "book_id": "eef5ec46714f",
+      "book_title": "论法的精神",
+      "author": "孟德斯鸠",
+      "chapter_idx": 28,
+      "chapter_title": "第十五章　民事奴隶法何以与气候性质有关",
+      "citation_label": "【《论法的精神》·第十五章　民事奴隶法何以与气候性质有关】",
+      "snippet": "第十五章 民事奴隶法何以与气候性质有关第一节 民事奴隶确切地说，所谓奴隶制，就是一个人完全隶属于另一个人，后者成为前者生命和财产的绝对主人。奴隶制从根本上就不是一种好制度，无论对主人还是对奴隶，都没有好处。奴隶不可能凭品德做事，主人则会沾染上奴隶的种种恶习，以至于在不知不觉间养成了违背一切美德的习惯，变得傲慢、急躁、暴戾、易怒、骄奢淫逸和残忍。在专制国家里，人民已经是政治奴隶，所以，民事奴隶制比别处较能得到容忍。在专制国家里，每个人能够",
+      "score": 0.442
+     },
+     {
+      "book_id": "63a3b006c9d7",
+      "book_title": "红书",
+      "author": "卡尔·古斯塔夫·荣格",
+      "chapter_idx": 23,
+      "chapter_title": "第三章 卑微的人",
+      "citation_label": "【《红书》·第三章 卑微的人】",
+      "snippet": "[HI 11] 第三章　卑微的人 [1] 第二天夜里， [2] 我发现自己再次陷入彷徨，站在一个冰雪覆盖且带有家乡气息的农村。阴沉的夜空将太阳遮住，空气潮湿冰冷。一个看起来不值得信任的人与我同行，最引人注目的是，他只有一只眼睛，脸上有很多伤疤，穿着破旧且肮脏的衣服。他是一个流浪汉，胡子拉碴，似乎有很长一段时间没有刮过了。我手里拄着一根拐杖以备不时之需。“冷死了，”他说。我同意他的说法。经过很长时间的沉默之后，他问：“你要去哪里？” 我：",
+      "score": 0.439
+     },
+     {
+      "book_id": "343df8697039",
+      "book_title": "陀思妥耶夫斯基集（全九册）",
+      "author": "费奥多尔·陀思妥耶夫斯基",
+      "chapter_idx": 5,
+      "chapter_title": "第四章",
+      "citation_label": "【《陀思妥耶夫斯基集（全九册）》·第四章】",
+      "snippet": "一 “难道这还是在做梦？”拉斯科尔尼科夫不由得再次思忖。他小心谨慎而又满腹狐疑地打量着这位不速之客。 “斯维德里盖洛夫？荒唐至极！不可能！”他终于疑惑莫解地大声说道。 客人对这阵惊呼似乎丝毫也不感到奇怪。 “我到您这里来，有两个原因：第一，我想亲自认识您，因为我久仰大名，早已听到过关于您的饶有趣味的如潮好评；第二，我希望，您也许在一件事情上不会拒绝助我一臂之力，这件事情直接关系到令妹阿芙多季娅·罗曼诺芙娜的利益。由于她对我成见很深，没有",
+      "score": 0.436
+     },
+     {
+      "book_id": "3e85310c7179",
+      "book_title": "哲学谈话录",
+      "author": "爱比克泰德",
+      "chapter_idx": 84,
+      "chapter_title": "论自由",
+      "citation_label": "【《哲学谈话录》·论自由】",
+      "snippet": "如果一个人能按自己的意愿生活, 不受强迫, 不受阻碍, 不受暴力, 不受束缚地选择, 成功地达成愿望, 不陷入他想要避免的讨厌的事, 他就是自由的。有什么人愿意在错误中生活呢? ———没有人。———有谁愿意受欺骗地、鲁莽地、不公正地、无节制地、烦躁地、卑下地生活吗? ———没有人。———因此, 坏人无法按自己的意愿生活, 坏人是不自由的。有谁愿意在悲伤中、在害怕中、在妒忌中、在怜悯中、在渴望某样东西却无法得到中、在想避免某样事情却无法避",
+      "score": 0.435
+     },
+     {
+      "book_id": "aa614e2cf92d",
+      "book_title": "罪与罚",
+      "author": "费奥多尔·陀思妥耶夫斯基",
+      "chapter_idx": 34,
+      "chapter_title": "第六部 第四章",
+      "citation_label": "【《罪与罚》·第六部 第四章】",
+      "snippet": "四“您知道，也许（对了，其实，我自己告诉过您），”斯维德里加依洛夫谈起来了，“因为欠了人一笔巨款，一个子儿也没有归还的希望，我坐过这儿的债务拘留所。当时玛尔法·彼得罗夫娜怎样把我赎出来，这不用细述了；您可知道，爱情有时能使一个女人糊涂到什么程度？这是一个正直的很通情达理的女人（虽然根本没有受过教育）。您要知道，这个最爱吃醋的和正直的女人发狂似的大吵大闹，埋怨我许多次后，决意迁就我，跟我订立了一个合同，在我们的婚后生活中她一直履行着这个合",
+      "score": 0.432
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 289,
+      "chapter_title": "第九卷",
+      "citation_label": "【《西方百年学术经典著作》·第九卷】",
+      "snippet": "苏：“最后就轮到僭主政治的个人了。对于这些人我们已经问过，他是如何从民主政治形成的呢？他又是如何生活，是幸福还是痛苦呢？” “是的，”他说，“最后剩下来的问题就是他了。” “但是，”我说，“在这之前还有一个问题留待回答。” 阿：“什么问题？” 苏：“我认为我们还没有充分地给欲望的性质和种类下好定义。只有回答了这个问题，我们的提问才不至于迷离不清。” “好的，”他说，“亡羊补牢，为时不晚。” “非常正确，”我说，“现在来看看我想要理解的这",
+      "score": 0.432
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 187,
+      "chapter_title": "70",
+      "citation_label": "【《尼采文集（合集）》·70】",
+      "snippet": "70 (19) 支配主人们的女主 。——正如人们有时在剧院里听到的，有一种深沉有力的女低音，它突然为我们拉开了帷幕，让我们看到我们通常不会相信的可能性：我们一下子就相信了，世上某个地方可能真有这样的女人，她们具有崇高的、英勇的、威严的心灵，她们能够而且乐意作出了不起的反驳、抉择和牺牲，能够而且乐意统治男人们，因为在她们身上，男人的精华已经超越性别，变成具体真实的理想了。虽然按照戏剧的意图，此类女低音恰恰 不是 要给出这样一个关于女人的概",
+      "score": 0.43
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 623,
+      "chapter_title": "论科学",
+      "citation_label": "【《西方百年学术经典著作》·论科学】",
+      "snippet": "巫士这样歌唱，并且所有那些事物就像不知不觉进入网中的鸟儿一样，一起不知不觉地进入了他的狡猾的、忧郁的感官。只有这个在精神上谨小慎微的人没有被捉住。他迅速地从巫士手中夺走竖琴并且喊道：“空气！让新鲜的空气进来！让查拉图斯特拉进来！你让这个洞穴又闷热又有毒，你这邪恶的老巫士！ “你引诱，你这虚假的家伙，你这敏感的家伙，引诱到未知的荒野和欲望。而如果你这么对我说并且对真理造成困扰，那么这将是悲痛的！ “所有自由的精神因为没有留心这样的巫士而感",
+      "score": 0.428
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 625,
+      "chapter_title": "觉醒",
+      "citation_label": "【《西方百年学术经典著作》·觉醒】",
+      "snippet": "这个漫游者和影子的歌唱过后，洞穴突然充满了喧闹和笑声，并且由于所有这些聚在一起的客人都在同一时间交谈，甚至是驴子，受到这样的鼓舞，也不再保持沉默，一种对于他的拜访者轻微的反感和轻蔑袭上查拉图斯特拉心头。尽管他为他们的愉快感到高兴。因为它在他看来是一种康复的标志。所以他悄悄溜到外面来，并且对他的动物们讲话。 “他们的悲痛现在跑到哪里去了？”他说着，并且从他轻微的反感中如释重负——“在我看来，他们已经忘记了他们悲痛的呼喊！尽管不幸的并不是他",
+      "score": 0.428
+     },
+     {
+      "book_id": "8a3e4665c65c",
+      "book_title": "当尼采哭泣(欧文隆)",
+      "author": "欧文·亚隆",
+      "chapter_idx": 8,
+      "chapter_title": "第八章",
+      "citation_label": "【《当尼采哭泣(欧文隆)》·第八章】",
+      "snippet": "清晨时光在布雷尔家中是一成不变的。街角的面包师傅在6点钟送来刚出炉的帝王面包卷，他也是布雷尔的病人。在她的丈夫更衣的时候，玛蒂尔德摆设餐桌，调制肉桂咖啡，并且放好松脆的三角形面包卷与甜奶油，还有蜜渍黑樱桃。虽说他们婚姻之中存在着紧张关系，玛蒂尔德总是在露易丝与葛蕾珍照料孩子的时候，准备他的早餐。 这个早上，布雷尔全神贯注于他与尼采下午的会面，他忙碌地翻阅《人性的，太人性的》，连玛蒂尔德替他倒咖啡时，都没有抬头看她一眼。他在沉默中用完早餐",
+      "score": 0.427
+     },
+     {
+      "book_id": "aa614e2cf92d",
+      "book_title": "罪与罚",
+      "author": "费奥多尔·陀思妥耶夫斯基",
+      "chapter_idx": 30,
+      "chapter_title": "第五部 第五章",
+      "citation_label": "【《罪与罚》·第五部 第五章】",
+      "snippet": "五列别兹雅特尼柯夫神色慌张。 “索菲雅·谢苗诺夫娜，我要找您哪。请原谅……我料到会碰到您，”他忽然掉转脸去，对拉斯柯尔尼科夫说。“也就是说，这种事情……我倒没有什么想法……可我想的是……卡杰琳娜·伊凡诺夫娜在家里发疯了。”他撇下拉斯柯尔尼科夫，忽然毫无顾忌地又对索尼雅说。 索尼雅大叫一声。 “也就是说，似乎情况至少是这样。不过……对您说吧，我们不知道该怎么办！她已经回来了——大概在什么地方被撵了出来……说不定还挨过揍呢……似乎情况至少是",
+      "score": 0.426
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 576,
+      "chapter_title": "暴民",
+      "citation_label": "【《西方百年学术经典著作》·暴民】",
+      "snippet": "生活是愉悦的源泉，但是暴民聚饮之处，所有的水井皆被毒化。 对于一切洁净之物我都心怀好感，但是我并不介意看见不洁之人的咧嘴和渴望。 他们将目光投向深井，现在他们令人不快的笑容闪现在我上方的水井中。 他们用自己的淫欲毒化了神圣的水源；而当他们称自己肮脏的幻想为希望时，他们同样也毒化了“希望”这个词。 当他们潮湿的心靠近火焰时，火焰就会熄灭；当暴民靠近火焰时，精神自身便会翻滚蔓延。 水果在他们手中香甜得苍白并且过于甘美，他们的目光使得果树从顶",
+      "score": 0.425
+     }
+    ],
+    "query": "激情的奴隶",
+    "method": "vector"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 5
+}

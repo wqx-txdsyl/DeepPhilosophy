@@ -1,0 +1,1560 @@
+{
+ "case_id": "B06",
+ "section": "B",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "请找《尼各马可伦理学》中讨论幸福与德性的相关段落。",
+ "injection": null,
+ "QUESTION": "请找《尼各马可伦理学》中讨论幸福与德性的相关段落。",
+ "PUBLIC_WORK_NOTE": [
+  "我先登记研究需求，再定位原文。\n\n**工作笔记**：用户要的是《尼各马可伦理学》中\"幸福\"与\"德性\"相关的段落，这是一个明确的原典定位与原文核验任务——回答的正确性取决于能否准确定位并读取该书特定章节的措辞，而非仅凭记忆概述。我印象中亚里士多德在第一卷论幸福（eudaimonia）、第二卷论德性（arete）与中道、第十卷回到幸福与思辨生活，但这些都需用库中原文核验，尤其是章节位置与关键措辞。所以下一步先检索关键词定位候选章节，再读取对应章节全文。",
+  "**工作笔记**：检索确认原典库中有亚里士多德《尼各马可伦理学[注释导读本]》（book_id: e574c8e7f515），这是我要引用的正本。检索片段也显示\"幸福是灵魂的一种合于完满德性的实现活动\"这一关键表述，但那是二手导读中的转引，我需要回到原典本身核验措辞与章节位置。所以下一步先看该书的目录结构，确认第一卷（论幸福）、第二卷（论德性）以及第十卷（论幸福/思辨）的具体篇章编号，再逐一读取原文。",
+  "**工作笔记**：目录已确认全书的篇章结构——第一卷\"善、幸福与灵魂活动\"、第二卷\"伦理德性与中庸\"、第十卷\"论快乐、幸福和立法\"正是用户所问的两大主题所在。现在我需要逐一读取这几卷原文，核验幸福的定义措辞（是否即\"灵魂合乎德性的现实活动\"）以及德性作为\"中道\"的原文表述，再据此给出可跳转的引用。下一步读取第一卷、第二卷、第十卷。",
+  "**工作笔记**：检索预算已用完，但我的证据缺口仍未填补——已执行的三次检索只完成了书籍定位与目录确认，尚未读取任何一卷正文，而用户要的恰恰是具体原文段落。这构成正当的延展理由，我申请延展后读取第一、二、十卷。",
+  "**工作笔记**：我已成功读取第一卷（善、幸福与灵魂活动）与第二卷（伦理德性与中庸）的正文，核心证据已到手——第一卷点明\"幸福是灵魂合乎德性的活动\"，第二卷论德性由习惯养成及中道。唯一缺口是第十卷\"论快乐、幸福和立法\"，它是幸福论的终局（思辨/静观幸福），与前面构成重要张力，对回答\"幸福段落\"有价值。我再申请一次延展读取第十卷。",
+  "**工作笔记**：已读取第一卷、第二卷、第十卷正文。核心收获是：第一卷开篇点明\"每种技艺和探索与每种行动和选择一样，都显得是追求某种善\"，主题是善、幸福与灵魂活动；第二卷确认\"德性有两类：理智德性和伦理德性……前者通过教导，后者从习惯中产生\"；第十卷标题\"论快乐、幸福和立法\"并出现\"合乎德性的实现活动和幸福也不是什么性质\"一句。但第一卷论幸福的核心段落——\"人的善是灵魂合乎德性的活动\"这一功能论证的完整措辞——我只看到章节标题和头尾片段，中间定义句尚未逐字核验；这是我最终引用时最需要的落点。因此我再补一次定位检索，争取拿到该定义句的原文片段，随后收口。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "第一卷第7章幸福定义（功能论证）的原文措辞——即\"人的善是灵魂合乎德性的活动\"一类表述的确切原文",
+ "TOOL_SELECTED": [
+  "search_books",
+  "get_book_detail",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "幸福 德性 尼各马可伦理学"
+   },
+   {
+    "query": "幸福是灵魂合乎德性的活动"
+   },
+   {
+    "query": "人的善是灵魂合乎德性的活动 一生"
+   },
+   {
+    "query": "幸福 最高善 自足 灵魂 合于德性 实现活动"
+   }
+  ],
+  "get_book_detail": [
+   {
+    "book_id": "e574c8e7f515"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "幸福 德性 尼各马可伦理学"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 20, 'chapter_title': '20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？', 'citation_label': '【《50堂经典哲学思维课》·20 亚里士多德《尼各马"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "幸福是灵魂合乎德性的活动"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 331, 'chapter_title': '214', 'citation_label': '【《尼采文集（合集）》·214】', 'snippet': ' 信仰使人福乐 。——德性只给予那"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "e574c8e7f515"
+   },
+   "phase": "executed",
+   "result_head": "{'id': 'e574c8e7f515', 'title': '尼各马可伦理学[注释导读本]', 'author': '亚里士多德', 'region': '西方', 'file_type': 'pdf', 'summary': '《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系统探讨道德哲学的经典。亚里士多德（公元前384-前322年）以理性思辨为工具，追"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 1, 'title': '第一卷 伦理学和政治学：善、幸福与灵魂活动', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第一卷 伦理学和政治学：善、幸福与灵魂活动】', 'text': '第一卷伦理学和政治学：善、幸福与灵"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 2, 'title': '第二卷 伦理德性与中庸', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】', 'text': '第二卷伦理德性与中庸\\n1.伦理德性源自习惯，因此既非自然而然，也非反自然"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 10, 'title': '第十卷 论快乐、幸福和立法', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第十卷 论快乐、幸福和立法】', 'text': '第十卷论快乐、幸福和立法\\n1.快乐问题上的两种极端意见1172"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "人的善是灵魂合乎德性的活动 一生"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '26f5e0df6d76', 'book_title': '哲学规劝录 哲学的慰藉', 'author': '扬布里柯/波爱修斯', 'chapter_idx': 20, 'chapter_title': '第十九章 灵魂的美德胜过其他各种好处', 'citation_label': '【《哲学规劝录 哲学的慰藉》·第十九章 灵魂的美德胜过其他各"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "幸福 最高善 自足 灵魂 合于德性 实现活动"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 20, 'chapter_title': '20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？', 'citation_label': '【《50堂经典哲学思维课》·20 亚里士多德《尼各马"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 331, 'chapter_title': '214', 'citation_label': '【《尼采文集（合集）》·214】', 'snippet': ' 信仰使人福乐 。——德性只给予那"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': 'e574c8e7f515', 'title': '尼各马可伦理学[注释导读本]', 'author': '亚里士多德', 'region': '西方', 'file_type': 'pdf', 'summary': '《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系统探讨道德哲学的经典。亚里士多德（公元前384-前322年）以理性思辨为工具，追"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 1, 'title': '第一卷 伦理学和政治学：善、幸福与灵魂活动', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第一卷 伦理学和政治学：善、幸福与灵魂活动】', 'text': '第一卷伦理学和政治学：善、幸福与灵"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 2, 'title': '第二卷 伦理德性与中庸', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】', 'text': '第二卷伦理德性与中庸\\n1.伦理德性源自习惯，因此既非自然而然，也非反自然"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 10, 'title': '第十卷 论快乐、幸福和立法', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第十卷 论快乐、幸福和立法】', 'text': '第十卷论快乐、幸福和立法\\n1.快乐问题上的两种极端意见1172"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '26f5e0df6d76', 'book_title': '哲学规劝录 哲学的慰藉', 'author': '扬布里柯/波爱修斯', 'chapter_idx': 20, 'chapter_title': '第十九章 灵魂的美德胜过其他各种好处', 'citation_label': '【《哲学规劝录 哲学的慰藉》·第十九章 灵魂的美德胜过其他各"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "已到证据边界，我基于实际读取的三卷原文来回答。\n\n---\n\n## 《尼各马可伦理学》中论\"幸福\"与\"德性\"的核心段落\n\n先说结论性的定位。在库中译本《尼各马可伦理学[注释导读本]》里，\"幸福\"与\"德性\"这两条线索集中在**三卷**：\n\n### 一、论幸福：第一卷 + 第十卷\n\n**第一卷「伦理学和政治学：善、幸福与灵魂活动」** 是全书的起点。它从\"目的\"结构入手：一切技艺、探索、行动、选择都指向某种善，由此追问\"最高善\"是什么。该卷正文开头（贝克尔编码 1094a）可核验到的原文大意是：每种技艺和探索、每种行动和选择，都显得是追求某种善，所以人们有理由把善说成万事万物所追求的目标。幸福正是在这一框架下被指认为\"最高善/至善\"。此后第一卷通过\"人的特有功能（ergon）\"的论证，把幸福规定为**灵魂合乎德性的现实活动**——这个定义位于第一卷后半（约 1097b–1098a）。\n\n**第十卷「论快乐、幸福和立法」** 在讨论了快乐之后重新回到幸福，是幸福论的收束处。此卷标题本身即标明它同时处理\"幸福\"。它开篇论快乐，并指出快乐与痛苦的情感\"对于德性和幸福也必然具有至关重要的价值和意义\"。\n\n### 二、论德性：第二卷\n\n**第二卷「伦理德性与中庸」** 是德性论的核心。可核验的原文是：\n\n此处应以转述而非逐字引用呈现：第二卷把德性分为理智德性与伦理德性两类，并认为理智德性主要经由教导形成、因而需要经验与时间，伦理德性则出自习惯。\n\n紧接着该卷以\"过度—不及—中道\"来刻画伦理德性，并用体力、健康的例子说明这类事物\"按其本性会被过度和不及所毁败\"（约 1104a）。所以第二卷的落点是：**伦理德性是一种与选择相关的、以中道为标准的品质**。\n\n### 三、证据边界（必须如实说明）\n\n上面能给出精确章节定位的，是我本轮实际读到正文的三卷。但有两处我**未能在库中逐字核验**，只能作转述，不能作为逐字引文呈现：\n\n1. **第一卷\"幸福=灵魂合乎德性的活动\"这一定义句的原文措辞**——我读到的第一卷正文是章节框架与开头，定义句所在的中段我没有取得逐字文本。该表述是通行的标准译法（通常系于 1098a），但请按\"常见译法（未经本次库中核验）\"对待。\n2. **第十卷关于\"思辨/静观生活是最完满幸福\"的段落（约 1177a–1178a）**——我读到的是第十卷开头论快乐的部分，尚未核验到思辨幸福那一段的原文。第十卷是否把最高幸福归给思辨生活，这一读法我此处不作断言。\n\n### 四、给你的定位坐标\n\n如果你要对照标准版（贝克尔编码 / Bywater 行号）自行精读，可径直查这几处：\n\n- **1094a**：一切活动指向善，引出最高善\n- **1097b–1098a**：功能论证与幸福的定义（德性活动）\n- **1103a**：德性二分——理智德性 / 伦理德性\n- **1104a 起**：中道说\n- **1172a 起**：快乐问题\n- **1177a–1178a**：思辨幸福（本卷论幸福的终局，待你另行核验）\n\n**综合来看**：在这部书里，\"幸福\"与\"德性\"不是两个并列主题，而是一个论证的两端——第一卷把幸福界定为灵魂合乎德性的活动，第二卷展开\"德性\"究竟是什么（习惯养成 + 中道），第十卷再回到幸福并抬高其最完满形态。若你想继续深入，我建议先精读 1097b–1098a（幸福定义）与 1103a–1108b（德性论）这两段，它们是整条链条的枢纽。\n\n需要我把某一段（例如功能论证或中道说）展开成完整的论证重建，或者去核验我上面标注为\"待核验\"的那两处吗？",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先登记研究需求，再定位原文。\n\n**工作笔记**：用户要的是《尼各马可伦理学》中\"幸福\"与\"德性\"相关的段落，这是一个明确的原典定位与原文核验任务——回答的正确性取决于能否准确定位并读取该书特定章节的措辞，而非仅凭记忆概述。我印象中亚里士多德在第一卷论幸福（eudaimonia）、第二卷论德性（arete）与中道、第十卷回到幸福与思辨生活，但这些都需用库中原文核验，尤其是章节位置与关键措辞。所以下一步先检索关键词定位候选章节，再读取对应章节全文。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》中讨论\"幸福\"与\"德性\"的原文段落及其所属章节定位",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "幸福 德性 尼各马可伦理学"
+   },
+   "result_head": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 20, 'chapter_title': '20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？', 'citation_label': '【《50堂经典哲学思维课》·20 亚里士多德《尼各马"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "幸福是灵魂合乎德性的活动"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 331, 'chapter_title': '214', 'citation_label': '【《尼采文集（合集）》·214】', 'snippet': ' 信仰使人福乐 。——德性只给予那"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：检索确认原典库中有亚里士多德《尼各马可伦理学[注释导读本]》（book_id: e574c8e7f515），这是我要引用的正本。检索片段也显示\"幸福是灵魂的一种合于完满德性的实现活动\"这一关键表述，但那是二手导读中的转引，我需要回到原典本身核验措辞与章节位置。所以下一步先看该书的目录结构，确认第一卷（论幸福）、第二卷（论德性）以及第十卷（论幸福/思辨）的具体篇章编号，再逐一读取原文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "e574c8e7f515"
+   },
+   "result_head": "{'id': 'e574c8e7f515', 'title': '尼各马可伦理学[注释导读本]', 'author': '亚里士多德', 'region': '西方', 'file_type': 'pdf', 'summary': '《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系统探讨道德哲学的经典。亚里士多德（公元前384-前322年）以理性思辨为工具，追"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：目录已确认全书的篇章结构——第一卷\"善、幸福与灵魂活动\"、第二卷\"伦理德性与中庸\"、第十卷\"论快乐、幸福和立法\"正是用户所问的两大主题所在。现在我需要逐一读取这几卷原文，核验幸福的定义措辞（是否即\"灵魂合乎德性的现实活动\"）以及德性作为\"中道\"的原文表述，再据此给出可跳转的引用。下一步读取第一卷、第二卷、第十卷。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：检索预算已用完，但我的证据缺口仍未填补——已执行的三次检索只完成了书籍定位与目录确认，尚未读取任何一卷正文，而用户要的恰恰是具体原文段落。这构成正当的延展理由，我申请延展后读取第一、二、十卷。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第一、二、十卷论幸福与德性的原文措辞与章节定位——尚未读取任何正文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行三次检索仅完成书籍定位与目录确认，尚未读取《尼各马可伦理学》任何一卷正文；用户明确要求\"相关段落\"，必须读取原文核验措辞与章节位置，否则无法作答",
+    "unresolved_evidence_gap": "第一、二、十卷讨论幸福与德性的原文段落措辞及所在章节"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 1, 'title': '第一卷 伦理学和政治学：善、幸福与灵魂活动', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第一卷 伦理学和政治学：善、幸福与灵魂活动】', 'text': '第一卷伦理学和政治学：善、幸福与灵"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 2, 'title': '第二卷 伦理德性与中庸', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】', 'text': '第二卷伦理德性与中庸\\n1.伦理德性源自习惯，因此既非自然而然，也非反自然"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：我已成功读取第一卷（善、幸福与灵魂活动）与第二卷（伦理德性与中庸）的正文，核心证据已到手——第一卷点明\"幸福是灵魂合乎德性的活动\"，第二卷论德性由习惯养成及中道。唯一缺口是第十卷\"论快乐、幸福和立法\"，它是幸福论的终局（思辨/静观幸福），与前面构成重要张力，对回答\"幸福段落\"有价值。我再申请一次延展读取第十卷。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第十卷论幸福（思辨/静观生活）的原文措辞——第一卷、第二卷已读取，第十卷正文尚未读到",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "第一卷、第二卷已核验，但第十卷\"论快乐、幸福和立法\"是幸福论终局（思辨幸福），与前面德性活动幸福说构成关键张力，是回答\"幸福段落\"的实质补充",
+    "unresolved_evidence_gap": "第十卷讨论幸福的原文段落措辞及章节位置"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "result_head": "{'book_id': 'e574c8e7f515', 'chapter_idx': 10, 'title': '第十卷 论快乐、幸福和立法', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第十卷 论快乐、幸福和立法】', 'text': '第十卷论快乐、幸福和立法\\n1.快乐问题上的两种极端意见1172"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记**：已读取第一卷、第二卷、第十卷正文。核心收获是：第一卷开篇点明\"每种技艺和探索与每种行动和选择一样，都显得是追求某种善\"，主题是善、幸福与灵魂活动；第二卷确认\"德性有两类：理智德性和伦理德性……前者通过教导，后者从习惯中产生\"；第十卷标题\"论快乐、幸福和立法\"并出现\"合乎德性的实现活动和幸福也不是什么性质\"一句。但第一卷论幸福的核心段落——\"人的善是灵魂合乎德性的活动\"这一功能论证的完整措辞——我只看到章节标题和头尾片段，中间定义句尚未逐字核验；这是我最终引用时最需要的落点。因此我再补一次定位检索，争取拿到该定义句的原文片段，随后收口。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第一卷第7章幸福定义（功能论证）的原文措辞——即\"人的善是灵魂合乎德性的活动\"一类表述的确切原文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "第一卷正文此前只返回头尾窗口，幸福定义句的逐字措辞尚未核验，而它正是用户所问\"讨论幸福的段落\"的核心落点",
+    "unresolved_evidence_gap": "第一卷第7章幸福定义句的原文措辞"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "人的善是灵魂合乎德性的活动 一生"
+   },
+   "result_head": "{'results': [{'book_id': '26f5e0df6d76', 'book_title': '哲学规劝录 哲学的慰藉', 'author': '扬布里柯/波爱修斯', 'chapter_idx': 20, 'chapter_title': '第十九章 灵魂的美德胜过其他各种好处', 'citation_label': '【《哲学规劝录 哲学的慰藉》·第十九章 灵魂的美德胜过其他各"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "幸福 最高善 自足 灵魂 合于德性 实现活动"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》中讨论\"幸福\"与\"德性\"的原文段落及其所属章节定位",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第一、二、十卷论幸福与德性的原文措辞与章节定位——尚未读取任何正文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行三次检索仅完成书籍定位与目录确认，尚未读取《尼各马可伦理学》任何一卷正文；用户明确要求\"相关段落\"，必须读取原文核验措辞与章节位置，否则无法作答",
+    "unresolved_evidence_gap": "第一、二、十卷讨论幸福与德性的原文段落措辞及所在章节"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第十卷论幸福（思辨/静观生活）的原文措辞——第一卷、第二卷已读取，第十卷正文尚未读到",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "第一卷、第二卷已核验，但第十卷\"论快乐、幸福和立法\"是幸福论终局（思辨幸福），与前面德性活动幸福说构成关键张力，是回答\"幸福段落\"的实质补充",
+    "unresolved_evidence_gap": "第十卷讨论幸福的原文段落措辞及章节位置"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第一卷第7章幸福定义（功能论证）的原文措辞——即\"人的善是灵魂合乎德性的活动\"一类表述的确切原文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "第一卷正文此前只返回头尾窗口，幸福定义句的逐字措辞尚未核验，而它正是用户所问\"讨论幸福的段落\"的核心落点",
+    "unresolved_evidence_gap": "第一卷第7章幸福定义句的原文措辞"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "第一卷第7章幸福定义（功能论证）的原文措辞——即\"人的善是灵魂合乎德性的活动\"一类表述的确切原文",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 16:53:15",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《尼各马可伦理学》中讨论\"幸福\"与\"德性\"的原文段落及其所属章节定位",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 16:53:24",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第一、二、十卷论幸福与德性的原文措辞与章节定位——尚未读取任何正文",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 16:53:29",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第十卷论幸福（思辨/静观生活）的原文措辞——第一卷、第二卷已读取，第十卷正文尚未读到",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 16:53:41",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "第一卷第7章幸福定义（功能论证）的原文措辞——即\"人的善是灵魂合乎德性的活动\"一类表述的确切原文",
+    "source_dependent": true,
+    "extension": "DENIED_MAX_EXTENSIONS"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 16:53:24",
+    "reason": "已执行三次检索仅完成书籍定位与目录确认，尚未读取《尼各马可伦理学》任何一卷正文；用户明确要求\"相关段落\"，必须读取原文核验措辞与章节位置，否则无法作答",
+    "unresolved_gap": "第一、二、十卷讨论幸福与德性的原文段落措辞及所在章节"
+   },
+   {
+    "ts": "2026-09-13 16:53:29",
+    "reason": "第一卷、第二卷已核验，但第十卷\"论快乐、幸福和立法\"是幸福论终局（思辨幸福），与前面德性活动幸福说构成关键张力，是回答\"幸福段落\"的实质补充",
+    "unresolved_gap": "第十卷讨论幸福的原文段落措辞及章节位置"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:53:19"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:53:19"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:53:19"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:53:24"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:53:41"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 136013,
+   "output_tokens": 8433,
+   "total_tokens": 144446
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 13,
+   "compacted_chars_saved": 23784,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12067,
+     "output_tokens": 497,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 17217,
+     "output_tokens": 243,
+     "tool_chars_added": 9174
+    },
+    {
+     "round": 3,
+     "input_tokens": 13923,
+     "output_tokens": 406,
+     "tool_chars_added": 1347
+    },
+    {
+     "round": 4,
+     "input_tokens": 14214,
+     "output_tokens": 865,
+     "tool_chars_added": 729
+    },
+    {
+     "round": 5,
+     "input_tokens": 21012,
+     "output_tokens": 749,
+     "tool_chars_added": 10407
+    },
+    {
+     "round": 6,
+     "input_tokens": 20524,
+     "output_tokens": 2148,
+     "tool_chars_added": 6754
+    },
+    {
+     "round": 7,
+     "input_tokens": 23252,
+     "output_tokens": 2563,
+     "tool_chars_added": 7333
+    },
+    {
+     "round": 8,
+     "input_tokens": 13804,
+     "output_tokens": 962,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1501,
+ "token_usage": {
+  "input_tokens": 136013,
+  "output_tokens": 8433,
+  "total_tokens": 144446
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 54.3,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》中讨论\"幸福\"与\"德性\"的原文段落及其所属章节定位",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《尼各马可伦理学》中讨论\"幸福\"与\"德性\"的原文段落及其所属章节定位）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞——正式引用",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "幸福 德性 尼各马可伦理学"
+   },
+   "result_summary": "{'results': [{'book_id': '327e5a1db152', 'book_title': '50堂经典哲学思维课', 'author': '郁喆隽', 'chapter_idx': 20, 'chapter_title': '20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？', 'citation_label': '【《50堂经典哲学思维课》·20 亚里士多德《尼各马",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "幸福是灵魂合乎德性的活动"
+   },
+   "result_summary": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 331, 'chapter_title': '214', 'citation_label': '【《尼采文集（合集）》·214】', 'snippet': ' 信仰使人福乐 。——德性只给予那",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "e574c8e7f515"
+   },
+   "result_summary": "{'id': 'e574c8e7f515', 'title': '尼各马可伦理学[注释导读本]', 'author': '亚里士多德', 'region': '西方', 'file_type': 'pdf', 'summary': '《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系统探讨道德哲学的经典。亚里士多德（公元前384-前322年）以理性思辨为工具，追",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第一、二、十卷论幸福与德性的原文措辞与章节定位——尚未读取任何正文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行三次检索仅完成书籍定位与目录确认，尚未读取《尼各马可伦理学》任何一卷正文；用户明确要求\"相关段落\"，必须读取原文核验措辞与章节位置，否则无法作答",
+    "unresolved_evidence_gap": "第一、二、十卷讨论幸福与德性的原文段落措辞及所在章节"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《尼各马可伦理学》第一、二、十卷论幸福与德性的原文措辞与章节定位——尚未读取任何正文）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   "result_summary": "{'book_id': 'e574c8e7f515', 'chapter_idx': 1, 'title': '第一卷 伦理学和政治学：善、幸福与灵魂活动', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第一卷 伦理学和政治学：善、幸福与灵魂活动】', 'text': '第一卷伦理学和政治学：善、幸福与灵",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   "result_summary": "{'book_id': 'e574c8e7f515', 'chapter_idx': 2, 'title': '第二卷 伦理德性与中庸', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】', 'text': '第二卷伦理德性与中庸\\n1.伦理德性源自习惯，因此既非自然而然，也非反自然",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《尼各马可伦理学》第十卷论幸福（思辨/静观生活）的原文措辞——第一卷、第二卷已读取，第十卷正文尚未读到",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "第一卷、第二卷已核验，但第十卷\"论快乐、幸福和立法\"是幸福论终局（思辨幸福），与前面德性活动幸福说构成关键张力，是回答\"幸福段落\"的实质补充",
+    "unresolved_evidence_gap": "第十卷讨论幸福的原文段落措辞及章节位置"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《尼各马可伦理学》第十卷论幸福（思辨/静观生活）的原文措辞——第一卷、第二卷已读取，第十卷正文尚未读到）。soft 检索预算=5 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "result_summary": "{'book_id': 'e574c8e7f515', 'chapter_idx': 10, 'title': '第十卷 论快乐、幸福和立法', 'book_title': '尼各马可伦理学[注释导读本]', 'citation_label': '【《尼各马可伦理学[注释导读本]》·第十卷 论快乐、幸福和立法】', 'text': '第十卷论快乐、幸福和立法\\n1.快乐问题上的两种极端意见1172",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "第一卷第7章幸福定义（功能论证）的原文措辞——即\"人的善是灵魂合乎德性的活动\"一类表述的确切原文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "第一卷正文此前只返回头尾窗口，幸福定义句的逐字措辞尚未核验，而它正是用户所问\"讨论幸福的段落\"的核心落点",
+    "unresolved_evidence_gap": "第一卷第7章幸福定义句的原文措辞"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 第一卷第7章幸福定义（功能论证）的原文措辞——即\"人的善是灵魂合乎德性的活动\"一类表述的确切原文）。soft 检索预算=7 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "人的善是灵魂合乎德性的活动 一生"
+   },
+   "result_summary": "{'results': [{'book_id': '26f5e0df6d76', 'book_title': '哲学规劝录 哲学的慰藉', 'author': '扬布里柯/波爱修斯', 'chapter_idx': 20, 'chapter_title': '第十九章 灵魂的美德胜过其他各种好处', 'citation_label': '【《哲学规劝录 哲学的慰藉》·第十九章 灵魂的美德胜过其他各",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "幸福 最高善 自足 灵魂 合于德性 实现活动"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（7 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "幸福是灵魂合乎德性的活动"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 331,
+      "chapter_title": "214",
+      "citation_label": "【《尼采文集（合集）》·214】",
+      "snippet": " 信仰使人福乐 。——德性只给予那些笃信自己德性的人以幸福和福乐：——但不赐予那些更精细的心灵，后者的德性在于对自己和一切德性的深度怀疑中。说到底，即便在这里，也是“信仰使人福乐！”——注意！ 并非 德性！",
+      "score": 0.577
+     },
+     {
+      "book_id": "b220d9690317",
+      "book_title": "打开：周濂的100堂西方哲学课",
+      "author": "周濂",
+      "chapter_idx": 40,
+      "chapter_title": "037 我们反复做的事成就了自己：亚里士多德的《尼各马可伦理学》(中)",
+      "citation_label": "【《打开：周濂的100堂西方哲学课》·037 我们反复做的事成就了自己：亚里士多德的《尼各马可伦理学》(中)】",
+      "snippet": "幸福就是让灵魂过上有德性的生活 上一讲我们谈到最高善“eudaimonia”的最佳翻译是“繁荣”，但是这个翻译看起来稍微有些别扭，试想一下，如果你在大街上被央视记者拉住问“你繁荣吗”，你会有何感想？所以为了表达的方便，让我们还是暂时使用“幸福”这个译名，尽管在大街上被记者拉住问“你幸福吗”，同样会感到非常别扭。 现在的问题在于，如果想让“幸福像花儿一样绽放”，需要满足哪些前提条件呢？ 亚里士多德并非不食人间烟火的哲学家，他虽然主张“沉思",
+      "score": 0.572
+     },
+     {
+      "book_id": "26f5e0df6d76",
+      "book_title": "哲学规劝录 哲学的慰藉",
+      "author": "扬布里柯/波爱修斯",
+      "chapter_idx": 20,
+      "chapter_title": "第十九章 灵魂的美德胜过其他各种好处",
+      "citation_label": "【《哲学规劝录 哲学的慰藉》·第十九章 灵魂的美德胜过其他各种好处】",
+      "snippet": "问题上的主张。第十九章灵魂的美德胜过其他各种好处人们也可以将灵魂中的各种善单独提出来讨论，说明其中哪些是完美的，哪些是幸福的本质特性。灵魂胜过身体，正如灵魂的各种善胜过身体的各种善；身体方面的善相对而言没那么重要。然而，灵魂方面的各种善应该受到最高的尊重。所以，善与快乐不是一回事，追求快乐不是因为善，追求善也不是因为快乐。令人快乐的东西通过其在场而带来快乐，善的东西由于其在场而使我们变善。我们与其他一切善的事物都由于获取一些德性而具有善",
+      "score": 0.559
+     },
+     {
+      "book_id": "4b4d8792d7c9",
+      "book_title": "苏菲的哲学课",
+      "author": "多米尼克·贾尼科",
+      "chapter_idx": 21,
+      "chapter_title": "18.幸福是无处不在的吗？",
+      "citation_label": "【《苏菲的哲学课》·18.幸福是无处不在的吗？】",
+      "snippet": "18.幸福是无处不在的吗？ 你可能会说：哲学是件严肃的事，简直太严肃了！宗教、义务、道德准则，也都是如此。但是，平稳的生活偶尔不也该有点休闲放松吗？严肃的活动过后，难道不应该玩一会儿？如果智慧不让我们幸福，那它还有什么意义呢？ 我会这样回答：你想要轻松，我不反对——我们前面的课的确有点儿严肃。 但是，我还是希望严肃对待幸福这个问题！这个问题最早是古希腊哲学提出的，它对当下始终都有重要的意义。我们可以用以下的简单方法将它归纳出来：正确而良",
+      "score": 0.549
+     },
+     {
+      "book_id": "e0b0b534b86e",
+      "book_title": "幸福的底层逻辑：关于人生的7堂哲学课",
+      "author": "刘小播",
+      "chapter_idx": 11,
+      "chapter_title": "幸福到底是什么？",
+      "citation_label": "【《幸福的底层逻辑：关于人生的7堂哲学课》·幸福到底是什么？】",
+      "snippet": "古罗马哲学家奥古斯丁有句名言： “时间是什么？如果没人问我，我是知道的。但让我做出解释，我就不知道了。” 幸福其实也是类似的。每当我们思考它的时候，理性就会占据我们的头脑，理性有时候就这样成了幸福最大的敌人。这种扫兴就像一个小孩正在愉快地玩耍时，你问他“作业写完了没有”一样。当我们开始用理性思考什么是幸福的时候，问题、困惑、痛苦就会扑面而来。 法国哲学家布莱兹·帕斯卡说： “想象不能赐予愚者智慧，却能给予他们幸福，这是理性所羡慕的，因为",
+      "score": 0.546
+     },
+     {
+      "book_id": "327e5a1db152",
+      "book_title": "50堂经典哲学思维课",
+      "author": "郁喆隽",
+      "chapter_idx": 20,
+      "chapter_title": "20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？",
+      "citation_label": "【《50堂经典哲学思维课》·20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？】",
+      "snippet": "阅读挑战 亚里士多德 既然幸福是灵魂的一种合于完满德性的实现活动，我们就必须考察德性的本性。这样我们就能更清楚地了解幸福的本性……我们所寻求的是人的善和人的幸福。人的善我们指的是灵魂的而不是身体的善。人的幸福我们指的是灵魂的一种活动。\r\r ——亚里士多德 《尼各马可伦理学》 引言 + 前几年央视的记者曾做过一个街头采访，问题是“你幸福吗”。受访者的回答不一而足，但几乎每个人都认为幸福是好的，是值得追求的。不过问题是，“幸福”到底意味着什",
+      "score": 0.541
+     },
+     {
+      "book_id": "e0b0b534b86e",
+      "book_title": "幸福的底层逻辑：关于人生的7堂哲学课",
+      "author": "刘小播",
+      "chapter_idx": 15,
+      "chapter_title": "幸福的生活，就是灵魂合乎德性的生活",
+      "citation_label": "【《幸福的底层逻辑：关于人生的7堂哲学课》·幸福的生活，就是灵魂合乎德性的生活】",
+      "snippet": "亚里士多德说，幸福就是至善；幸福的生活，就是灵魂与美德相一致的生活。 亚里士多德提出了哲学上著名的“四因说”，即形式因、质料因、动力因和目的因，我们可以从这四个方面来区分所有事物，而其中最重要的是目的因。在其看来，世间万物的存在都有一个目的，当然，这其实是一种带有决定论和目的论色彩的哲学观点。 基于这样的目的论，亚里士多德自然认为，人的存在也应该有一个终极的目的，而这个终极目的就是善。 前面我们介绍过，善是理念的最高原则，这是亚里士多德",
+      "score": 0.53
+     },
+     {
+      "book_id": "4be7b72cf01d",
+      "book_title": "图斯库兰论辩集",
+      "author": "西塞罗",
+      "chapter_idx": 5,
+      "chapter_title": "第五章 论德性对于幸福生活是自足的",
+      "citation_label": "【《图斯库兰论辩集》·第五章 论德性对于幸福生活是自足的】",
+      "snippet": "1. 布鲁图斯, 这是第五天了。这一天将结束我们在图斯库兰的论辩了。前一天我们已经讨论过一个主题, 这个主题是所有主题中你特别希望讨论的。因为从那本书中①可以看到, 你的写作十分周到, 你将此书献给了我。在那本书中有我们很多的谈话, 我已经从中认识到你坚信德性对于幸福生活是自足的。②虽然我要避免遭到不同痛苦③命运的打击是困难的,但是, 承受这样打击的希望还是很容易产生的。因为我们身上有一种有价值意义的能量。不过, 在哲学所有相关的主题中",
+      "score": 0.527
+     },
+     {
+      "book_id": "d0c5ade4fcbd",
+      "book_title": "叔本华哲学经典（套装共5册）",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 11,
+      "chapter_title": "第一章　生命的划分",
+      "citation_label": "【《叔本华哲学经典（套装共5册）》·第一章　生命的划分】",
+      "snippet": "亚里士多德将人生的幸福分成三类，那就是自外界得来的幸福、自心灵得来的幸福和自肉体得来的幸福。这种划分除数量外，实际上没有指出什么。据我观察，人的命运中的根本不同点，可以分为三类： 一、什么是人。从“人格”一词的广泛意义来说，人就是人格；其中包括着健康与精力、美与才性、道德品性、智慧与教育等等。 二、人有些什么。人有财富和他可能占有的事物。 三、如何面对他人对自己的评价，也就是大家所知道的他人把你看成什么样子，或更严格一点来说，他人对你的",
+      "score": 0.526
+     },
+     {
+      "book_id": "f9549bd811f6",
+      "book_title": "人生的智慧：如何才能幸福度过一生",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 5,
+      "chapter_title": "不幸福只是因为你“感觉不幸福”",
+      "citation_label": "【《人生的智慧：如何才能幸福度过一生》·不幸福只是因为你“感觉不幸福”】",
+      "snippet": "我们年轻时几乎意识不到的一点是，最高级最丰富且最持久的乐趣来源于思想，思想力量的强弱决定了乐趣大小。人生的幸福在很大程度上取决于我们是谁以及我们的个性；财富或命运通常只是意味着我们有什么，或是别人以为我们有什么。如果我们真的内心富足，就不会过于期待改变命运，就好像一个傻瓜永远只是一个傻瓜，即便是到了人生的弥留之际，即便那时他身处天堂，也依然只是一个无聊的傻瓜而已。这也是为何歌德10在他的《西东合集》中告诉大家只有个性才是人生幸福的要素时",
+      "score": 0.524
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 217,
+      "chapter_title": "引言",
+      "citation_label": "【《西方百年学术经典著作》·引言】",
+      "snippet": "在前面这几页，我想说说关于“人生的智慧”这一术语的普遍意义。因为掌控我们的生活是一门艺术，我们只有掌控了我们的生活才可能让自己得到快乐与成功；关于这门艺术的理论可以被称为幸福论（拉丁文是“edudæmonistic”），因为它教会我们怎样才能“幸福地存在”（happy existence）。关于这一问题必然会牵涉一些主观想法，然而单纯地从一个客观的角度来定义它，或者说是在我们冷静和成熟的思考之后显然这样幸福地存在比不存在好。这意味着我们",
+      "score": 0.517
+     },
+     {
+      "book_id": "3e85310c7179",
+      "book_title": "哲学谈话录",
+      "author": "爱比克泰德",
+      "chapter_idx": 64,
+      "chapter_title": "与自由城市的帝国执行官①的谈话，",
+      "citation_label": "【《哲学谈话录》·与自由城市的帝国执行官①的谈话，】",
+      "snippet": "此人是一个伊壁鸠鲁主义者当帝国执行官(这是一个伊壁鸠鲁主义者) 来拜访爱比克泰德时,爱比克泰德说: 我们这些门外汉完全应该向你们哲学家们探询什么是这世上最好的东西———这就好像那些来到了异乡的人, 向那些熟悉这个地方的人和公民探询一样———为的是, 在了解它之后, 我们就可以自己去探索它和观看它, 就像那些外来的人可以自己去探索与观看城市的景色一样。既然几乎无人能否认人拥有三样东西, 即灵魂、肉体和外部事物; 那么, 你要回答的就是这个",
+      "score": 0.512
+     },
+     {
+      "book_id": "f9549bd811f6",
+      "book_title": "人生的智慧：如何才能幸福度过一生",
+      "author": "阿图尔·叔本华",
+      "chapter_idx": 6,
+      "chapter_title": "宁做健康的乞丐，不做病恹恹的国王",
+      "citation_label": "【《人生的智慧：如何才能幸福度过一生》·宁做健康的乞丐，不做病恹恹的国王】",
+      "snippet": "健康比什么都重要。所谓宁可做健康的乞丐，也比做病恹恹的国王快活得多。性情乐观、体格健康、充满活力、温文尔雅、有良知、能够洞察事物的本质，这些都是地位或财富无法弥补或取代的优势。 别人无法给予也无法夺走，即使孤身一人时依然伴随着你的，是你的本性——“你自己”是最本质的，比任何外在财富或是别人怎么看你更重要。 对一个本身就很无趣的人来说，任何消遣，无论是社交聚会，还是看戏出游，都无法驱逐新鲜过后的无聊感。而一个精神世界丰富的人就连在独处时，",
+      "score": 0.511
+     },
+     {
+      "book_id": "10c315f073ef",
+      "book_title": "快乐主义",
+      "author": "伊壁鸠鲁",
+      "chapter_idx": 0,
+      "chapter_title": "致美诺西斯的信",
+      "citation_label": "【《快乐主义》·致美诺西斯的信】",
+      "snippet": "在研究哲学这件事上，年轻的时候每个人都不该拖延，年纪大了也不该失去热情，因为追求心灵健康无所谓早晚。如果有人说研究哲学的时候未到或机会已逝，那就像是在说幸福现在还不该来，或不会再来了一样。因此，无论年纪大小，每个人都应该学习哲学。它能让年长者从过往的美好经历中获益，在岁月渐增时依然保持年轻，也能让年幼者立即成熟起来，面对未来无所畏惧。我们应当多多实践创造幸福的方法，因为拥有幸福显然便拥有了一切，而失去它时我们也会付出一切去追寻。 幸福的",
+      "score": 0.51
+     },
+     {
+      "book_id": "921c1dcbdd17",
+      "book_title": "幸福之路",
+      "author": "伯特兰·罗素",
+      "chapter_idx": 16,
+      "chapter_title": "第十七章 幸福的人",
+      "citation_label": "【《幸福之路》·第十七章 幸福的人】",
+      "snippet": "幸福，正如前已揭示的那樣，部分依靠外界環境，部分依靠個人自身。在本書內，我們考察了依靠個人自身的那部分，并且得出這樣的結論，在與個人自身相關的范圍內，幸福的訣竅是十分簡單的。許多人——我想前已提及的克羅齊先生也應包括在內——認為，如果沒有一種多少帶有宗教色彩的信仰，那么幸福是不可能的。許多自己并不幸福的人認為，他們的憂傷有著復雜而高度理智化的原因。我不相信這些是幸福或不幸的真正根源，我認為它們只不過是表面現象而已。一個快樂的人通常會信仰",
+      "score": 0.508
+     }
+    ],
+    "query": "幸福是灵魂合乎德性的活动",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "幸福 德性 尼各马可伦理学"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "327e5a1db152",
+      "book_title": "50堂经典哲学思维课",
+      "author": "郁喆隽",
+      "chapter_idx": 20,
+      "chapter_title": "20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？",
+      "citation_label": "【《50堂经典哲学思维课》·20 亚里士多德《尼各马可伦理学》 什么才是“幸福”生活？】",
+      "snippet": "阅读挑战 亚里士多德 既然幸福是灵魂的一种合于完满德性的实现活动，我们就必须考察德性的本性。这样我们就能更清楚地了解幸福的本性……我们所寻求的是人的善和人的幸福。人的善我们指的是灵魂的而不是身体的善。人的幸福我们指的是灵魂的一种活动。\r\r ——亚里士多德 《尼各马可伦理学》 引言 + 前几年央视的记者曾做过一个街头采访，问题是“你幸福吗”。受访者的回答不一而足，但几乎每个人都认为幸福是好的，是值得追求的。不过问题是，“幸福”到底意味着什",
+      "score": 0.585
+     },
+     {
+      "book_id": "9aea99ccb525",
+      "book_title": "西方哲学二十一讲",
+      "author": "弗兰克·梯利",
+      "chapter_idx": 5,
+      "chapter_title": "第四讲 伦理的运动",
+      "citation_label": "【《西方哲学二十一讲》·第四讲 伦理的运动】",
+      "snippet": "据伊壁鸠鲁学派说，至善或理想，是快乐或幸福（快乐论）。快乐或幸福为唯一有价值的目标。其余的东西，若为得到幸福的手段则为有价值；而其价值，亦只因其有此手段。生当乱世，各人的聪明才能，应该用到使各人能得到利益上。但据斯多葛学派说，最可贵的东西，不是幸福，是品性、道德、克己、义务、重公、轻私。 第一章 伦理的运动之大观 苏格拉底的主要问题是实践的问题：他以“用道德与真理矫正当时之俗弊”为己任。他相信明白的思想是正当行为的根本；发现实践的原理，",
+      "score": 0.566
+     },
+     {
+      "book_id": "e0b0b534b86e",
+      "book_title": "幸福的底层逻辑：关于人生的7堂哲学课",
+      "author": "刘小播",
+      "chapter_idx": 34,
+      "chapter_title": "怎么做一个有道德的人？",
+      "citation_label": "【《幸福的底层逻辑：关于人生的7堂哲学课》·怎么做一个有道德的人？】",
+      "snippet": "前面我们分享了两种主流的道德哲学思想，一种是边沁和穆勒的“功利主义”，一种是康德的“义务论”。它们分别提出了判断一件事情是否符合道德的标准和法则，比如功利主义的“最大幸福原则”，“义务论”的三条“绝对律令”。 接下来，我们再来分享古希腊哲学家亚里士多德的“德性论”。相较于上述具体的、明确的道德判断原则，亚里士多德的德性论就显得比较“佛系”了。因为在两千多年前的亚里士多德看来，道德哲学可以帮助我们思考道德问题，指导我们的行为，但我们并不能",
+      "score": 0.549
+     },
+     {
+      "book_id": "e0b0b534b86e",
+      "book_title": "幸福的底层逻辑：关于人生的7堂哲学课",
+      "author": "刘小播",
+      "chapter_idx": 32,
+      "chapter_title": "最大幸福原则",
+      "citation_label": "【《幸福的底层逻辑：关于人生的7堂哲学课》·最大幸福原则】",
+      "snippet": "如前所述，道德哲学包含三个领域：元伦理学、规范伦理学、应用伦理学。而在规范伦理学中，又有八种道德判断的工具，它们分别是直觉主义、情感主义、功利主义、契约论、神圣命令论、义务论、利己主义、德性论。接下来，重点介绍三种主流的道德哲学理论：边沁和穆勒的功利主义；康德的义务论；亚里士多德的德性论。最后我们再来介绍东方儒家和道家的道德感。 我们已经介绍了休谟提出的“效用”理论，他从公共效用的角度解释了人类道德的起源，而这正是英国哲学家边沁功利主义",
+      "score": 0.543
+     },
+     {
+      "book_id": "e574c8e7f515",
+      "book_title": "尼各马可伦理学[注释导读本]",
+      "author": "亚里士多德",
+      "chapter_idx": 0,
+      "chapter_title": "导读：从《尼各马可伦理学》找回对德性力量的确信",
+      "citation_label": "【《尼各马可伦理学[注释导读本]》·导读：从《尼各马可伦理学》找回对德性力量的确信】",
+      "snippet": "导读：从《尼各马可伦理学》找回对德性力量的确信我们的时代有许多值得我们惊喜的进步和改变，但所有的惊喜和进步都无法抵消我们对精神萎靡的悲叹。人人忙碌得不可开交，却无暇顾及自已的灵魂；尽管总理高喊着“企业家身上要流淌道德的血液”，“公平正义比太阳还光辉”这样震撼人心的话语，却无人制止得了一些企业丧失天良的道德败坏；最为可悲的现状就是，社会正在一天一天地把每个人变成残酷的竞争者，却无人相信德性的光辉和力量！只要能成名和暴富，各种耀眼的光环就会",
+      "score": 0.543
+     },
+     {
+      "book_id": "4be7b72cf01d",
+      "book_title": "图斯库兰论辩集",
+      "author": "西塞罗",
+      "chapter_idx": 5,
+      "chapter_title": "第五章 论德性对于幸福生活是自足的",
+      "citation_label": "【《图斯库兰论辩集》·第五章 论德性对于幸福生活是自足的】",
+      "snippet": "1. 布鲁图斯, 这是第五天了。这一天将结束我们在图斯库兰的论辩了。前一天我们已经讨论过一个主题, 这个主题是所有主题中你特别希望讨论的。因为从那本书中①可以看到, 你的写作十分周到, 你将此书献给了我。在那本书中有我们很多的谈话, 我已经从中认识到你坚信德性对于幸福生活是自足的。②虽然我要避免遭到不同痛苦③命运的打击是困难的,但是, 承受这样打击的希望还是很容易产生的。因为我们身上有一种有价值意义的能量。不过, 在哲学所有相关的主题中",
+      "score": 0.528
+     },
+     {
+      "book_id": "86759652897c",
+      "book_title": "哲学的快乐：干瘪的思考vs.激情的生活",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 9,
+      "chapter_title": "论诸德性的优点",
+      "citation_label": "【《哲学的快乐：干瘪的思考vs.激情的生活》·论诸德性的优点】",
+      "snippet": "既然灵魂的状态有三种：感情、能力与人格状态，德性必是其中之一。［但是］德性与恶习不是感情。因为首先，我们并不是因为我们的感情，而是因为我们的德性或恶习而被称为好人或坏人的。而且……我们被称赞或谴责也不是因为我们的感情。其次，我们愤怒或恐惧并不是出于选择，而德性则是选择的或包含着选择的。同样由于这些原因，德性也不是能力。因为首先，我们不是仅仅由于感受到这些感情的能力而被称为好人或坏人，而被称赞或谴责的……因此，既然德性既不是感情也不是能力",
+      "score": 0.521
+     },
+     {
+      "book_id": "1c1ec6913a67",
+      "book_title": "加缪全集（散文卷Ⅱ）",
+      "author": "阿尔贝·加缪",
+      "chapter_idx": 15,
+      "chapter_title": "三次访谈录",
+      "citation_label": "【《加缪全集（散文卷Ⅱ）》·三次访谈录】",
+      "snippet": "一 （开罗杂志，1948） 本次访谈录由埃米尔·西蒙刊登在1948年的《开罗杂志》上。埃米尔·西蒙所提的很长的、中肯的问题在这里做了删节，但未改变原意。 问：……您不认为可以为幸福，某些人在思想上与放任、快乐、安逸的生活不恰当地混同一起的概念找到一种纯粹的寓意吗？而且幸福的确是一种十分高尚的境界和十分难以得到的（比幸福的人更为罕见？）…… 答：是的，对幸福来说是这样。而且是无例外的。巴斯卡尔说，错误总是源自排他性。只追求幸福，最后得到的",
+      "score": 0.518
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 237,
+      "chapter_title": "120",
+      "citation_label": "【《尼采文集（合集）》·120】",
+      "snippet": " 心灵的健康 。——有一个广受欢迎的、具有医学疗效的道德公式（其倡议者是希俄斯的阿里斯顿 (20) ）：“德性就是心灵健康” (21) ——为了变成可用的，这个公式至少得略加改动，表述为：“你的德性是你的心灵的健康”。因为健康本身 (22) 是不存在的，以此方式来界定某个事物的所有尝试，都遭到了可悲的失败。为了确定 什么东西 对于你的 身体 来说是健康的，关键在于你的目标、你的视野、你的力量、你的动力、你的谬误，尤其是你心灵的理想和幻象",
+      "score": 0.517
+     },
+     {
+      "book_id": "bcf351290904",
+      "book_title": "像哲学家一样生活：斯多葛哲学的生活艺术",
+      "author": "威廉·B. 欧文",
+      "chapter_idx": 26,
+      "chapter_title": "注释",
+      "citation_label": "【《像哲学家一样生活：斯多葛哲学的生活艺术》·注释】",
+      "snippet": "[1] 伊壁鸠鲁，54. [2] 塞涅卡，《给鲁基里乌斯的道德书简》，CVIII.4. [3] 《美国英语遗产词典》，第三版。 [4] 塞涅卡，《论安宁》，II.4. [5] 塞涅卡，《论幸福生活》，IV.4. [6] 墨索尼亚斯，《讲课》，17.2. [7] 塞涅卡，《论坚定》，II.1-2. [8] 马可，VII.31. [9] 第欧根尼·拉尔修斯，《序言》，I.13-14. [10] 西塞罗，V.10. [11] 康福德，5. [",
+      "score": 0.517
+     },
+     {
+      "book_id": "e0b0b534b86e",
+      "book_title": "幸福的底层逻辑：关于人生的7堂哲学课",
+      "author": "刘小播",
+      "chapter_idx": 13,
+      "chapter_title": "所有的痛苦都源自两个错误",
+      "citation_label": "【《幸福的底层逻辑：关于人生的7堂哲学课》·所有的痛苦都源自两个错误】",
+      "snippet": "前面我们介绍了，在古希腊的文化和社会走向衰落的背景下，人们开始关注自身的幸福和快乐，这是该时期各个思想流派的共同特点。伊壁鸠鲁学派崇尚简单快乐的生活，认为这种简单快乐且心灵不受纷扰的生活就是幸福，而这种简单的快乐是以理性、乐观和低欲望为基础的。 与此同时，还出现了一个与伊壁鸠鲁学派相对立的思想流派，那就是斯多葛学派。两者的对立集中体现在对欲望的理解上，斯多葛学派主张克制欲望，甚至禁欲，他们主张过理性和自然的生活，成为欲望的主人而非奴隶。",
+      "score": 0.515
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 331,
+      "chapter_title": "214",
+      "citation_label": "【《尼采文集（合集）》·214】",
+      "snippet": " 信仰使人福乐 。——德性只给予那些笃信自己德性的人以幸福和福乐：——但不赐予那些更精细的心灵，后者的德性在于对自己和一切德性的深度怀疑中。说到底，即便在这里，也是“信仰使人福乐！”——注意！ 并非 德性！",
+      "score": 0.511
+     },
+     {
+      "book_id": "8331c039d11a",
+      "book_title": "让孩子像哲学家一样会思考",
+      "author": "张玮",
+      "chapter_idx": 15,
+      "chapter_title": "第十四章 伊壁鸠鲁——什么是真正的快乐？",
+      "citation_label": "【《让孩子像哲学家一样会思考》·第十四章 伊壁鸠鲁——什么是真正的快乐？】",
+      "snippet": "一转眼，已经到第十四章了。 不知道之前哪位哲学家，以及他们的哪些观点，给你留下了深刻印象？ 其实如果按照历史阶段分的话，我们的哲学家的故事，已经进入“希腊化时期”了。 什么是“希腊化时期”？ 我们之前提到过，亚历山大大帝的马其顿王国崛起之后，古希腊原有的城邦政治和社会秩序都受到了冲击，连续不断的战争打破了人们平静的生活，道德败坏的情况也让很多人感到悲观；另一方面，古希腊文化与其他文化之间的交流也变多了，与柏拉图、亚里士多德同时代的第欧根",
+      "score": 0.51
+     },
+     {
+      "book_id": "4b4d8792d7c9",
+      "book_title": "苏菲的哲学课",
+      "author": "多米尼克·贾尼科",
+      "chapter_idx": 21,
+      "chapter_title": "18.幸福是无处不在的吗？",
+      "citation_label": "【《苏菲的哲学课》·18.幸福是无处不在的吗？】",
+      "snippet": "18.幸福是无处不在的吗？ 你可能会说：哲学是件严肃的事，简直太严肃了！宗教、义务、道德准则，也都是如此。但是，平稳的生活偶尔不也该有点休闲放松吗？严肃的活动过后，难道不应该玩一会儿？如果智慧不让我们幸福，那它还有什么意义呢？ 我会这样回答：你想要轻松，我不反对——我们前面的课的确有点儿严肃。 但是，我还是希望严肃对待幸福这个问题！这个问题最早是古希腊哲学提出的，它对当下始终都有重要的意义。我们可以用以下的简单方法将它归纳出来：正确而良",
+      "score": 0.51
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 271,
+      "chapter_title": "第一章　论使美德和得体性一致的体系",
+      "citation_label": "【《西方百年学术经典著作》·第一章　论使美德和得体性一致的体系】",
+      "snippet": "柏拉图、亚里士多德和芝诺都告诉我们，美德存在于行为的合宜性之中，或者说存在于感情的合宜性之中。 在柏拉图的体系中，灵魂就好像小国家一样，由三种不同的成分组成。 第一重是判断的官能，这种感官不仅会决定何种方式是合适的，同时也决定何种结果是适宜的，同时会给各项加上一个相对价值。柏拉图把这种官能称作“理性”，考虑到这种官能决定了何种原则可以作用于全体，因此这个名称很合适。通过名称我们可以看出，他把这个感官理解为不仅能够判断是非，还可以判断自身",
+      "score": 0.508
+     }
+    ],
+    "query": "幸福 德性 尼各马可伦理学",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "e574c8e7f515"
+   },
+   "result_full": {
+    "id": "e574c8e7f515",
+    "title": "尼各马可伦理学[注释导读本]",
+    "author": "亚里士多德",
+    "region": "西方",
+    "file_type": "pdf",
+    "summary": "《尼各马可伦理学[注释导读本]》是亚里士多德伦理学的核心著作，也是西方哲学史上第一部系统探讨道德哲学的经典。亚里士多德（公元前384-前322年）以理性思辨为工具，追问“人应当如何生活”这一根本问题。他提出，所有人类活动都以某种“善”为目的，而最高的善就是“幸福”（eudaimonia）。幸福不是短暂的快乐，而是灵魂合乎理性德性的现实活动。书中详细区分了伦理德性与理智德性，并提出了著名的“中庸之道”——德性就是两种极端之间的中道。亚里士多德强调，德性不是天生的，而是通过习惯和实践培养出来的。他还深入讨论了正义、友谊、快乐等伦理主题，指出友谊不仅是个人幸福的重要组成部分，也是城邦团结的基础。本书的注释导读本为现代读者提供了清晰的解读路径，帮助理解亚里士多德如何将伦理学从抽象理论转化为可实践的智慧。作为古希腊哲学的集大成者，亚里士多德的思想深刻影响了后来的基督教神学、启蒙运动哲学以及当代美德伦理学，至今仍是哲学研究的核心议题。阅读本书，不仅是在学习一套伦理体系，更是在学习如何理性地思考人生、选择与幸福。",
+    "rank": 45.1,
+    "chapterCount": 12,
+    "toc": [
+     "导读：从《尼各马可伦理学》找回对德性力量的确信",
+     "第一卷 伦理学和政治学：善、幸福与灵魂活动",
+     "第二卷 伦理德性与中庸",
+     "第三卷 德行特征与具体德性",
+     "第四卷 具体德性续论",
+     "第五卷 公正论",
+     "第六卷 理智德性论",
+     "第七卷 自制和快乐",
+     "第八卷 友爱论",
+     "第九卷 友爱续论",
+     "第十卷 论快乐、幸福和立法",
+     "附录"
+    ],
+    "bibliographic_metadata": {
+     "work": {
+      "author": "亚里士多德",
+      "canonical_title": "尼各马可伦理学[注释导读本]",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CANONICAL_LOCATOR",
+      "locator_schemes": [
+       "BEKKER",
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1
+   },
+   "result_full": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 1,
+    "title": "第一卷 伦理学和政治学：善、幸福与灵魂活动",
+    "book_title": "尼各马可伦理学[注释导读本]",
+    "citation_label": "【《尼各马可伦理学[注释导读本]》·第一卷 伦理学和政治学：善、幸福与灵魂活动】",
+    "text": "第一卷伦理学和政治学：善、幸福与灵魂活动\n1.善之为目标/伦理学导论1094a每种技艺和探索【18】【18】Reclam版本译作“科学研与每种行动和选择【19】二究”，而Taschenbuch 版和Meiner 版样，都显得是追求某种都译作Lehre（学问），我们考虑到这善，所以人们有理由把善表里亚里士多德是把它作为与“技艺”示为万事万物所追求的目相对的认识探索活动，因而译作“探标【20】。但目标和目标之间索”。因为一般直译为“科学”或“知也显得不同。有些目标是纯识”，但说所有的“科学”或“知识”粹的活动，有些目标超出活都追求善，似乎说不通，尤其是亚里1094a5动之外，是活动的结果。凡士多德本人也在下文明确批判了苏格是有目标存在于行动之外之拉底“德性即知识”的学说，这里译处，结果按其本性就比单纯作“科学”和“知识”都追求善，就的活动更好【21】与其思想不符。由于活动、技艺和知识【19】亚里士多德用这四个概念来有多种多样，结果目标也就代表人类活动的整个领域。实际上两是多种多样的：医术的目标个流行的亚里士多德二分法是：“认是健康，造船术的目标是船识和实践”（1095a6），“制作和行动”舶，战术的目标是取胜，理（1140a2）。他由此也把“知识”分作财术的目标是财富。但凡这“理论的”（科学，认识，思辨）“实些被指向的目标从属于一个践的”（行动，选择）和制作的（技艺、技能）。所以在下文也会出现这马鞍的技艺和制造其他马具样的用法：“每种认识和每种扶择”的技艺都从属于骑马术，而（1095a14），“在每种行为和每种实践骑马术又连同所有以取胜为技能上”（1097a16）。在这四个概念目标的战争从属于战术，同中，“选择”是亚里士多德伦理学的核样，其他一些技能也这样从心，它一般被用在两个意义上：一是\n第一卷伦理学和政治学：善、幸福与灵魂活动“权衡的选择”（uberlegte Wahl），这属于其他目标，【使得每一种含义我们译作“选择”；一是做决定，次被指向的目标呈现出建筑做选择，这种含义我们译作“决断”术的结构]【23]】，在所有这( Entscheidung )。些情况下，主导性的目标总【20】请注意这里是“目标\"（Ziele）的说来就比从属性的目标更的复数，不是单数的“目的”（Zweck）。优先地被追求，因为后者只1094a15因此也有人否认亚里士多德是以“目是因前者之故才被追求。的论”来定义“善”，他的伦理学具有在这里，行动的目标是明显的“技艺”特性（如何命中目标活动本身还是活动之外的某成为“德性”的一个重要规定）。后种别的东西，是没有分别来西方也有不少伦理学家把伦理学定的，上述所列举的那些技艺义为“技艺论”（Kunstlehre），如胡塞就是这种情况。【24】尔。但我们觉得在亚里士多德这里，但如果有一个行为的目“目的”和“目标”不是严格分开的，标，我们是因它自身而欲求有时把“智慧”与“目的”联系得较它，其余的目标也只是因它紧，有时把“明智”与“命中”“目标”之故才欲求；而且如果我们联系得较紧。我们认为，即便我们严因此也就不追求所有因他物格地区分“目的”与“目标”也不能之故才欲求的东西（因为这否认亚里士多德实践哲学的“目的论”样就会导致无穷后退，使得1094a20框架。人的追求是空洞而虚妄的），【21】“更好”在这里是“更值得那么显然，这样一个目标就被追求”的意思，就像“房屋”比“建是终极目的，是最高的善。筑活动”更值得追求一样，因为前者而对那个[终极]目标是后者的“目的”。但在实际生活中，的认识对于生活不也至关重有时并非“结果”一定就比“活动”要吗？我们岂不就像有目标更好，琴如“婚姻”（如果作为“结果”的射手那样能够更好地命中的话）就不一定比“恋爱”（作为单纯正确的东西吗？如若这样，的“活动”或“过程”）更好；在亚里那么我们必须试图弄清楚，1094a25士多德本身的语境中，“科学”作为单至少应该概括地讲一讲，这纯的求知活动，也不适合于说求知的个最高的善究竞是什么，属结果（知识）比求知的活动本身更好。于哪门科学或者属于何种技那么亚里士多德在这里为什么强调艺。\n诚然大家愿意想到它属“结果比活动”更好呢？亚里士多德于最有权威、最高主导意义在这里暗示了其伦理学（作为实践暂上的科学【25】。而这样的科学）的一个基本目标：不仅是在考察学看来就是政治学【26】。因德性活动，而且要成为有德性的人。为它规定了，在城邦中哪些伦理学最终作为“人学”不是为了获知识[或技能和组织]是必得关于人是什么的知识，而是“成人”须具备的，每个公民必须学的活动；“成人的活动”不仅仅是“做1094b习哪一些，以至学到什么程人”，而且是实现自己所选择、所追度。我们确实也看到，那些求的“最好的自己”。所以，在苏格最被看重的技能，如战术，拉底那里最重要的暂学问题“认识你理财术和修辞术和其他种自己”，在亚里士多德这里变成了“成种，都从属于治国术。由于为你自己”。海德格尔后期哲学一个它把其余的实践科学当作是最重要的概念：Ereignis，如果应用于1094b5为其目的服务的，所以它还伦理学的话，实际上就是“成为本真从法律上规定，人可做什么的自己”的意思。这就是“实践哲学”和不可做什么，这样一来，它要追求的结果。另外也暗示了亚里士的目标就包含了作为较高目多德的这一思想：人为什么要从事灵标的其他实践科学的目标，魂合乎德性的活动呢？因为德性活动因此，它的这个目标也就不能实现幸福这一人生目的；而“幸福”过是对于人而言的善（Gut则只能被作为所有人生活动所追求的fur Menschen）了。只要这最终目的（结果：作为整个人生的状种善对于个人以及对于城邦态，而非现代所理解的主观感受：快乐）意义上来该论。否则，我们很难它把握和保持为城邦之善就理解为什么亚里士多德在第一卷一开1094b10显得更加重要和完善。这种始谈幸福是灵魂合乎德性的活动，一善哪怕只能帮助一个人达到直到第九卷，都可以说是从德性活动真正的幸福，就已经很令人来理解幸福，而到了第十卷，却说真高兴了，但若为了民族或国正的幸福是单纯的静观、沉思或思辨家[的福社]，则无疑更加高了。尚和神圣。所以我们现在研【22】“使命”（Aufgabe）这是依究的伦理学，作为政治学的从Taschenbuch的译法，具有“本职”、一部分，其目标就在于此。“天职”之义；Reclam版译作“从属\n第一卷伦理学和政治学：善、幸福与灵魂活动于同一种技艺”，Meiner版译作“从但我们必须只满足于与属于同一种愿力（Vermogen）”，可参[这个学科］所与的材料相考和选择适应的那种确定性程度。因【23】这句话是Meiner版译者加为人们不可在所有的研究中的，其他版本没有，但为了更形象地要求同样程度的精确性，例理解不同目标之间的等级关系，我们如在工匠的手工制作活动还是保留了这句话，凡是译者根据原中，就不大可能提出精确性文意思附加的，我们都加上“[]”，要求。政治学研究的对象是1094b15特此说明。高贵和公正，表现出的差异【24】这段文字说明了技艺活动的是如此之大、如此不确定，目标不在活动之外。以至于令人产生这种看法，【25】上面有三个问题，但一般版以为它们只是基于约定，而本在这里只回答一个问题。我们这里不是基于自然。类似的不确依据Meiner版，回答的是属于哪门定性也在财富上存在。因为科学的问题。Reclam版回答的是属许多人就因财富而带来伤于何种技艺的问题，所以说它“属于害：有些人因财而亡，有些技艺领域”。从赫费的分析看，他与Meiner版一致，认为这里的两个“最是已经出现过的事情。所高级一“最有权威、最高主导’还以，在谈论高贵和公正这类没有准确地规定出政治学的重要性”，题材时，在这样不确定的前参阅由赫费主编的《经典诠释》丛书，提下，我们不得不满足于粗1094b20第2卷，Otfried Hoffe （Hrg.）:Aristo-略而轮廊性地暗示正确的东teles Nikomachische Ethik, Akademie西。如果我们只谈论经常出Verlag,2006,S.17.现的和以之为前提的题材，【26】这里的“致治学”德文版用那么我们也将只是进行这种的是Staatskunst，在强调“科学”或类型的推论。“学科”的意义上，我把它译作“政治而听众对我们将说的所学”，但在强调“技艺”、“技能”的意有东西也应当完全以这同样义上，我把它译作“治国术”。实际上的方式来接受。因为一个有这个德文词更强调的是后一含义。但教养的人的特点，就是在每在英译本中一概都是作为“政治学”。一个具体领域只要求事情的我们要注意的是，无论把它译作“政本性所允许的那种精确性程\n1094b25度。因为要求数学家接受或治学”还是“治国术”，亚里士多德然性，就如同要求演说家进在这本书中是把它作为“伦理学”或行思维严密的证明一样，是者更正确地说“实践暂学”的同义词不恰当的。使用的。“政治”一词的希腊文原型每个人只能对他所了解为Politics,其核心词是Polis，该词最的东西做出正确的判断，在早是城堡的意思，后来转义为人们在这些事情上是一个好的判断城堡里的生活。这种“城邦”中的生1095a者。所以，对于某个特定的活，即公共生活或社会生活，也即今专门领域能做出好的判断的天意义上的“政治生活”。“政治学”人，是在那个领域受过特殊的核心自然是讨论治国安邦的原则和教育的人，而要在事物的总建制，分析什么是最好的政制，只有体上做出正确的判断，就要对于公民和城邦都是同样“好”（善）受过全面的教育。因此，青的才是“致治”的最高目标。因此亚年人是不适合当政治学课里士多德说“政治学”规定了通过人程【29】的听众的。他们在的实践所能实现的“最高善”，伦理学生活实践中还缺乏经验，而从属于“政治学”一方面是以这种最所有政治教育恰恰是以生活高善为目标；另一方面是政治学通过1095a5实践为题材和出发点。此立法者规定了社会生活中的善及其等外，青年人还完全受感情左级，并通过教育使人养成这些善。同右，听课也是徒劳的，不会时请参阅本书第十卷10。起什么作用，因为这门课程【27】用现代的语言来说，就是对的目的不是知识，而是实于个人和国家有一种共同的最高善，践。【30】一个人无论是在年这一点太重要了。许多国家的（可能纪上还是性格上不成熟，都也包括我们自己的）严峻伦理问题，一样不适合听政治学的课。就是找不到一个国家和个人都诚心信因为缺陷不在于时间，而在服的共同善。这应该是我们伦理学研于他们的生活受情感主宰，究的一个重要课题。并根据情感选择他们的目【28】这里“勇敢”也被视为一种标。知识对于这些人就像对“财富”。那些不能自制的人一样，是【29】Reclam版注释：这里所谓的1095a10无用的。但是，对于那些其政治学课程，实际上指的是伦理学课欲求和行动都合理性的人，程，因为伦理学才涉及整个人生。\n第一卷伦理学和政治学：善、幸福与灵魂活动【30】这是亚里士多德的一个核心这些知识将有大用。观念，“实践”和“行动”在他这里是关于什么人适合学习这可以互换的概念，在后面1103b26和门学问，如何学习，如何理1179a35又再次提起。解，以及这种研究的目的是什么，作为导论就讲这么多。2.幸福作为通过行为所能实现的最高善/伦理学方法既然每种认识和每种块择都以追求某种善为目标，现在我们要再提和再讲这个问题：根据我们的看法，政1095a15治学的目标善（Zielgut）究竞是什么？在实践中所能实现的至善又是什么？在名称上，大多数人在这里诚然是一致的，一般大众和有教养的人都把它称之为幸福，他们把好生活（Gut-Leben）和好品行（das sich-gut-Ver-halten）与幸福等量齐观。但究竞什么是幸福，人1095a20们对此的看法却不一【31】前面说在幸福上是一致的，致，【31】而且一般民众和有是就总体而言的，是从所有行为和追智慧的人的意见迥然不同。求的最终目标而言的，这里又说不一一般大众所理解的幸福是某致是就具体内容而言的。种抓得着、看得见的东西，\n例如快乐、财富或荣誉。但究竞是哪一个，这个人说是这个，那个人说是那个，甚至同一个人有时说它是这【32】指柏拉图及其学派的人。个，有时说它是那个。生病【33】这种考察实际上是在下两章1095a25时，说健康就是幸福；贫穷（即卷三和卷四）进行的。时，说财富就是幸福。而在【34】Meiner版和Taschenbuch版译感觉到了自己的无知之后，作“原则\"，Reclam 版译作Grundgege-又羡慕那些高谈阔论、说出benheit（基本事态）：“在一个从基本一些超出他们理解力的东西事态出发的阐述和把另一个人带往基的人。与之相反，有些本事态的阐述之间的区别”。而且，人【32】认为，除了这些众Reclam版把这个概念和下文1095b8多的善物之外，还有另一种的das DaB（具体的东西）看作是一个善本身，它既是独立的善，概念。因为亚里士多德在那里说，“出同时又是所有其他善物之为发点是具体的东西”（dasDaB）。这两善的原因。种译法是完全相反的，我之所以选择对所有这些说法都加以译作“原则”是因为亚里士多德在这1095a30考察，诚然是无意义的。所里还不是表达他自己的立场，而是提以我们只限于考察【33】这请注意他和柏拉图立场之间的区别。样一些流传甚广或者毕竞具所以译作“原则”似乎更可取。当然，有某些道理的说法。在下文1095b6—8他是在表达他自己在这里我们也不要忽略的立场，说“出发点是具体的东西”从原则【34】出发和归结出就是可以理解的了。原则这【两种]探索之间的【35】“全然是已知的”：schlechthin区别。柏拉图也曾合理地探Bekanntes，也可译作：本来已知的东索过这种区别，他经常问：西（das an sich Bekannt），绝对已知的方法是从原则出发还是上升东西。类似于我们中国人说的“天地1095b到原则，他以赛跑为例，在良心”之类的东西，虽然是抽象的伦运动场上，究竞是从裁判员理原则，但都觉得一定会存在；而“对那里跑向终点还是从终点跑我们而言的已知的东西”则如同前回到裁判员这里。无疑，人反思的知识，是通过身边的好人的榜们须从已知的东西开始。但样，习俗的意见而知的。\n第一卷伦理学和政治学：善、幸福与灵魂活动【36】这里所指的“政治学”是关已知的东西有双重意义：对于城邦公民如何相处的知识。于我们是已知的和全然是已【37】Reclam版的注释说，不能把知的【35】。我们当然要以对“这个具体的东西”或者“已有的品于我们已知的东西开始。所质”（1",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "亚里士多德",
+      "canonical_title": "尼各马可伦理学[注释导读本]",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CANONICAL_LOCATOR",
+      "locator_schemes": [
+       "BEKKER",
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2
+   },
+   "result_full": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 2,
+    "title": "第二卷 伦理德性与中庸",
+    "book_title": "尼各马可伦理学[注释导读本]",
+    "citation_label": "【《尼各马可伦理学[注释导读本]》·第二卷 伦理德性与中庸】",
+    "text": "第二卷伦理德性与中庸\n1.伦理德性源自习惯，因此既非自然而然，也非反自然1103a那么德性【76】有两类：[76】Tugend（arete）现在在伦理理智德性【77】和伦理德学上一般把它翻译为“德性”较为普1103a15性【78】。前者主要是通过遍，对应于“德性伦理”或“美德伦教导（Belehrung）【79】来理”，但把它理解为“德行”似更准形成和培养，因此需要经确。因为光有“德性”而不“行动”验和时间，后者相反是从是亚里士多德特别反对的，“德”就是习惯【80】中产生的，所以在“行”中养成和获得的，是实行的只把习惯这个词略加改变“能力”或“品行”，强调“德”的“行也就得到了伦理德性这个动”性；在我们汉语中，德与行也是名称。直接等义的；因此，我们为了与现在由此也可清楚地看出，通行的用语一致，一般地也译作“德没有什么德性是自然赋予我性”，但在特别明显强调“行”的地方也译作“德行”，特此说明。自然的东西能够被习惯所改【77】理智德性：he arete diano-变。例如，石头的本性是下cthike ( dianoetische Tugend, Verstandes-落，没有什么习惯能够把它tugend）与理智、认识、理解、权衡、变为向上运动，哪怕你无数选择和判断等能力相关，与我们汉语次地把它向上抛，想让它习中的“才能”、“才干”接近，当我们惯于此也是枉然。你也不能说一个人“德才兼备”时，是把“才”追使火苗向下窜，由自然确与“德”区分开的，而“智德”就相定在一个特定方向上的事当于这里的“才”。但在亚里士多德这物，我们不能让它们习惯里，特别强调理智德性是灵魂基于逻另一种关系。所以德性既各斯部分的德性（行），逻各斯既是自非出乎自然也非违反自然，然、宇宙的秩序，尺度，律则，也是1103a25而是我们具有自然的天赋，人的论证、推理、决断的理性能力。\n第二卷伦理德性与中庸为了简便，我们有时也译作“智德”，把它接受到我们之内，然以与“品德”相对。后通过习惯让这种天赋完【78】伦理德性：he aréte ethike（ sit-善起来。tlicheTugend），一般译为“伦理品德”其次，我们自然的与或“道德德性”，显得“形容词”sittliche生俱来的东西，首先只是（伦理的或道德的）是多余的，因此，潜能，然后我们才把它们我们有时也为了简便，译作“品德”。表现为相应的活动。一个但我们必须注意到，古希腊的“德”明显的例子就是感官知觉。字，比我们现代狭义上的品德、道德我们确实不是通过经常地要宽泛得多，并常常在非道德的意义看或经常地听而获得感官上使用。现代意义上的“道德\"（Moral）知觉能力，而是相反，我1103a30在那时根本没有出现，因此加上“伦们先已具备了感官知觉的理的”或“道德的”也是有必要的。潜能，然后我们才使用它但这种“伦理德性”似乎也有广义和们，不是使用之后才获得狭义之分。就广义言，它包含了智德，作为一般德性的代名词；作为狭反，我们事先施行德性活义言，它仅与人的性情、习性、脾气、动，然后才获得了德行，品格相关的德（区别于基于知识、逻就像艺术家是先从事了艺各斯，理性推理的“智德”）。术活动然后才成为艺术家【79】这直接回答了苏格拉底和智一样。因为我们必须在技者派争论的“德性可教吗？”这个问题。艺活动当中，才能学会技【80】希腊文“习惯”一词的写艺，在制作活动当中，学法是ethos，“伦理”一词的写法是会制作：在建筑活动中，成cthike。这种字形的相似更多地是反为建筑师，在演奏竖琴过映了词源学上本义的同源。德国现代程中，成为竖琴家。所以，1103b哲学家如海德格尔对ethos本义的考我们也是在做公正的事情察是非常值得认真对待的：ethos（对当中，成为公正的人，在应的德文词“习惯”是Gewohnung，审慎当中成为审慎的人，我们从德文词可以更清楚地看出“习在勇敢的行动中，成为勇惯”和“伦理”的本义）的词根是“居敢的人。过去的城邦生活住”（Wohnen），居留之地，居住之也证明了这一点：立法者通所（Wohnung）。因此，所谓ethos（习过习俗使公民变成有德之\n人，这至少是每个立法者惯、伦理）就其本义而言，就是对人1103b5的意图。但是做得不讨巧，的“居所”的意思，这种意思只为了数开“存在之真理”，海德格尔认为坏政体的区别也就在这里。这就是“原伦理学”（Metaethike）。参再次，所有的德性都阅他的《关于人道主义的书信》，中是从同样的原因形成并出文载于孙周兴译《路标》，商务印书于同样的原因毁坏的，这馆2001年版，第417—420页。这种恰如技艺中情况。例如，词源学的考察也不仅仅海德格尔“基一个好琴师是通过演奏竖础存在论”的特殊嗜好，实际上，在琴而成的，一个坏琴师也伦理学史上，早在斯多亚派的伦理是。同样，建筑师和每个思考中就已经出现了，参阅Maximil-其他手工匠或艺术家也是ian Forschner: Die Stoische Ethik, IX.1103b10如此。因为通过建好的建Oikeiosis,Darmstadt, Wissenscharliche筑，成为一个好的建筑师，Buchgesellschaft,1995,S.142—159. 同]如果总是建不好的建筑，时这种词源学考察也在当代的应用伦就变成一个坏建筑师。若理学中具有特别重要的意义。参阅赫非如此，那么人根本就不费著，邓安庆、朱根生译：《作为现代需要老师了，所有人反而化之代价的道德》，第二部分：建造家天生成为巧匠（Meister）园。上海译文出版社2005年版。但或笨匠（Stumper）。德性的在亚里士多德这里，显然不是从这个情况也是这样。通过商业往词的本义上，而是从习俗意义上使用1103b15来中的为人处世，我们或者的。这样就使得西方伦理学在其起源变得公正或者变得不公正。之初，就遗忘了伦理的存在之根，这通过面临危险是习惯于担惊是暂学追求作为“科学”出现而留下受怕还是习惯于处事不惊，的遗憾。而在柏拉图之前，希腊伦理我们或者成为勇将或者成为学思考也像古代中国的一样，并无夫。面对欲望和愤怒的冲“科学”的要求，既不是“逻辑学”，动，情况也完全相同，有些也不是“物理学”（自然学），也不是人变得节制和温文尔雅，有这样失去存在之根的“伦理学”。1103b20些人变得放纵和情绪暴躁，【81】这里强调德性不是自然的，之所以如此，就是因为在类也请参阅“自然的德性”：1144b1—1145a2。似处境中的习惯使然。总而【82】德行（Tugenden），注意这\n第二卷伦理德性与中庸里用的是复数，而不是单数。言之，习性是从久经历练的【83】这里指的不讨巧，就是立法相应活动中形成的。所以我者没有培养起公民的遵纪守法的良好们必须给予我们的行为一个习惯，从而恶化社会风气。特定的品格，我们稳固的基【84】习性或品格是对Habitus的翻本品质【84】就是根据行为译，德语有的用Grundhaltung（Reclam的这种习性塑造的。所以，版），有的用Charakter（Meiner版），有我们从青年时代起以这种的甚至用 Eigenschaften（Taschenbuch 版）。习惯还是以那种习惯来塑我们这里的翻译依据的是Reclam版的。造自己，这绝非小事，而1103b25【85】由此可见，亚里士多德如同柏是非常重要的事情，甚至拉图和智者派一样，强调德育的意义。就是一切的【85】2.伦理德性作为品格由与之相应的活动养成、毁坏并伴随苦与乐由于我们在这里所探讨的哲学的这一部分，不像其【86】Reclam版注：数学、物理学他部分【86】那样，是纯粹和神学。思辨的，因为我们搞哲学，不是为了知道德性是什么，而是为了变成有德行的人（由于德性对于我们没有别的用处）。所以我们要考察1103b30人们究竞是如何实施行为的，因为我们说过，如何行为的方式也决定地影响到我们的伦理品质如何。“要按照正当的尺度（logos）行动”这个原理是\n普遍承认的【87]，我们在这里也是【87】即在柏拉图学派中以之为前提。后面【88】我们将讨被普遍承认。论，什么是正当的尺度，以及它同【88】在第六卷1和13中。1104a其他德性处在什么关系中。但预先亚里士多德在后面所谓的“正能够达成一致的观念是，每种伦当的尺度（logos）”就是“明智”理学理论只能提供一个一般轮廊，或“实践智慧”。而不可要求达到科学的【89】严格【89】Taschenbuch版是译作“数学的准确性”，可参考。到，我们所要求的研究形式，必须【90】参考1094b11—27所强调的伦理学方法。求的领域内，本来就没有什么东西【91】Reclam版的这句话1104a5是固定不变的，就像健康状况是不译作：必须符合这种知识状况。确定的一样。这已经是普遍适用的情况，凡是在个别情况根本无法达到准确规定的地方，也是合理适用的。因为在这些领域内，既不存在一门主管的科学，也不存在一般的建议，相反，行为者每次都只能依靠自己去判断当下的具体境况，这1104a10就像医生和舵手的技艺。尽管我们探讨的学科有这样的性质，但我们还是试图对之进行通盘的考察。首先我们来考察，按其本性会被过度和不及所毁败的这类东西。为了便于从可见的东西来说明不可见的东西，我们来看看体力和健康1104a15的情况：过多的锻炼和过少的锻炼一样，都会损害体力。同样，吃喝过量或饮食不足都有害健康，只有饮食适度才能带来、增进与保持健康。其他的德性，如勇敢、节【92】关于节制和勇敢请参制【92】都是这种情形。一个回避阅第三卷9—12和13—14。\n第二卷伦理德性与中庸正文一切，害怕一切，什么都不担当的人，便成为一个橘夫，反之一个什么都不怕，对任何危险都敢勇往1104a20直前的人，就是一个葬汉了。同样，一个纵情享乐，来者不拒的人，就是一个放纵的人，但像一个呆子那样逃避任何快乐，就是一个麻木不仁者。所以，1104a25节制与勇敢被过度与不及所毁坏，而为适度的中庸所保存。但是德性不仅是由同样的原因并通过同样的原因形成、陶养和毁坏的，而且也以这种原因实现在同样范围的具体情况中。在其他可感可见的东西，如体力那里，都是这样：它产生于吸收丰富的营养，经受艰1104a30苦的锻炼，而强壮的人也是这样做得最好的。德性也是如此：通过节制感官享乐，我们变得节制了，而我1104a35们变得节制了，我们就最有力量保持快乐。在勇敢这1104b里也没什么不同：我们通过培养藐视并经历危险的习惯，我们变得勇敢了；而只要我们变得勇敢了，我们就能最轻易地经受住危险。作为品质的一种表征，我们必须考察与行为连在一起的快乐和痛苦。节制感官享乐并对此感到愉悦的1104b5人，是节制的，但对这种节制感到痛苦的人，是放纵的。同样，能经受住危险并对此感到愉悦的，或者至少对此不感到痛苦的人，是勇敢的，但对此感到痛苦的，就是儒夫。伦理德性与苦乐感相关，因为首先，1104b10我们甚至因享乐而行可耻之事，因痛苦而摘下善事不做。所以，如柏拉图所言，我们必须从小就培养起对该享乐的感到快乐，对不该享乐的感到痛苦。这才是正确的教育。其次，德性与行为和性情（Affeckten）相关。但由于每种性情和每种行为都伴随着苦乐，所以伦理德1104b15性也就与苦乐相关。这一点也见证于快乐和痛苦也被用作惩罚的手段这件事。惩罚仿佛是一种治疗手段，但对恶习的治疗习惯于通过相反的事物来起作用。\n[ 93 】参阅魂的每种品质在其出乎本性的活动中也与那1104a27—b3。些它在其中并与之打交道时而被变好或变坏【94】这种对德1104b20的事物相关。但只有当它追求了不该追求的、性的规定在希腊化回避了不该回避的苦乐时，或者说，只有当时期是斯多亚（斯它在不适当的时间，以不适当的方式追求了多葛）派的典型形不该追求的、逃避了不该逃避的苦乐时，它象，而亚里士多德才被苦乐所败坏。出于这个原因所以有人也在这里指的是谁，把德性规定为[对苦乐]不动心（Unempfind-难以确定。规定是没有道理的，因为它要求的是绝对不动心，而没有附加说，我们如何（wie）应该或者如何不应该，或者，在何时我们应该，在何时我们就不应该。所以可以把我们所作的规定视为前提：德性无论在哪里都是与苦乐相关的最佳行为品质，恶则相反。我们还可以通过下列事实把这个问题说1104b30清楚：首先，有三类东西是我们自愿追求的：善，有益的东西和令人快适的东西；也有三类东西是我们逃避的对象：恶，有害的东西和令人不快的东西。虽然在所有这些对象上，有德性的人都能命中正确的东西，而德性差的人则不能，这尤其适合于对待享乐的举止1104b35上。因为享乐对于所有有感觉的存在者都是1105a共同的并同我们所选择的对象相关。善和有益的东西也就表现为能带来快乐的东西。其次，快乐从孩提时候起就伴随着我们成长，所以要消除我们对快乐的感觉是很难的，因为它已经深深地扎根于我们的生命之中了。第三，我们大家或多或少地也把快乐和1105a5痛苦作为衡量我们行为的尺度，所以这两种情感必然是我们整个理论的中枢。因为以正\n第二卷伦理德性与中庸正文当的还是错误的方式感受苦乐，对于行动至关重要。最后，如赫拉克利特所说，虽然制怒很难，但战胜快乐更难。而任何时候技艺和德性却总是同更难的事情联系在一起，并因此使好的东西变得更好。所以说，出于这个原因，德性与治国术的整个1105a10活动都是围绕苦乐转的，在这里谁处理得好，谁就优秀，谁处理得坏，谁就恶劣。所以我们的结论是：德性同苦乐相关；这既是德性形成和发育的原因，也是它毁败的原因：最终德性也自我实现在这个它从中获得1105a15根源的范围内。3.如何能够在德性之前有合乎德性的行为？德性与技艺之别有人可能会提出这样的问题：当我们说，人们必定是通过公正的行为变成公正的人，通过有节制的行为变成有节制的人，何以能够这样认为呢？因为人们做事公正和节制，然后就已经是公正和有1105a20节制的人了，这就如同能熟练地使用语法和演奏音乐的人，必定已经是一个有语法知识和音乐知识的人一样。但是，这种前提在技艺上是根本不正确的。因为一个人完全可能是因为偶然，或者事先得到了另一个人的指点，才说出符合语法规定的东西。所以，只有当一个人不仅如同语法所规定的那样说话，而且也能够根据自己的语法知识1105a25来说话时，他才是一个有语言知识的人。此外，在专门的技艺和德性之间也没有类同性。因为通过技艺产生的作品，它的质地就在其自身之中。只要它被这样制作出来，就具有了某种特定的质地，[这种质地就是它的好]。而在德性的领域内，某种事情的发生并非已经就",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "亚里士多德",
+      "canonical_title": "尼各马可伦理学[注释导读本]",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CANONICAL_LOCATOR",
+      "locator_schemes": [
+       "BEKKER",
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10
+   },
+   "result_full": {
+    "book_id": "e574c8e7f515",
+    "chapter_idx": 10,
+    "title": "第十卷 论快乐、幸福和立法",
+    "book_title": "尼各马可伦理学[注释导读本]",
+    "citation_label": "【《尼各马可伦理学[注释导读本]》·第十卷 论快乐、幸福和立法】",
+    "text": "第十卷论快乐、幸福和立法\n1.快乐问题上的两种极端意见1172a20接下来我们轮到讨论快乐。没有任何东西像快乐这样与我们的本性相合。所以人们用来教育年轻人的方式是引导他们如何驾驭快乐和痛苦这两个舵。同样，培养青年人爱正当的事务，恨不正当的事务，对于品德教【426】这一章是育也至关重要。因为这些情感影响到我们生本卷讨论快乐问题的1172a25活的方方面面，对于德性和幸福也必然具有导论，说明三个问至关重要的价值和意义。确实，人总想趋乐题：1.追求快乐是根避苦。所以，对于这个具有如此深远意义的植于人的本性的；2.正问题，人们确实不应该闭口不谈，回避了当的快乐感对于品德事，尤其是在这个问题上存在着不同意见的具有重大意义；3.对激烈争论。【426】于这种意义的评价存一种意见把快乐等同于最高的善，而另在重大的意见分歧。一种意见则相反地说它是完全彻底的恶。其[427】Meiner 版中有些人也许愿意相信快乐确实就是恶的，注释说：这些人不是1172a30而另一些人则认为，即便快乐不是恶，但把真的相信快乐是恶它当作是某种恶的东西对于我们的生活也许的，而只是出于教育的意图而代表这类看做快乐的奴隶，结果肯定是适得其反。因为法。以这种方式根本不可能保持中庸。【428】[428】Meiner 版1172a35但这种看法几乎是不对的。凡是在情绪对此注释说，与前一和行为转弯抹角的地方，话语就不如行动有种确信快乐是恶的看信服力，如果话语与人们感觉到的东西不一法相反，后面的观点1172b致，就会遭受误解，哪怕说的是真理本身，只是代表了出于教育也会被击破。意图的看法。\n第十卷论快乐、幸福和立法如果人们看到，一个遣责快乐的人又在某种具体情况下欲求快乐，人们就容易认【429】本章是本为，他是倾心于追求任何情况下的快乐的，卷第一部分（论快似乎这两种快乐追求没什么两样。因为多数乐）的导论，涉及三事情上没有这种区别。所以，我们觉得，对1172b5个问题：（1）肯定快于快乐有正确的观念不仅对理论，而且同样乐是根植于人的本性对实践都有最高的价值。由于它们与行为相中的；（2）正当的快一致而令人信服，对于其持续的倾听者也是乐感对于品德具有重一种激励，激励他们按照真实的原则确定人大意义；（3）对于快生方向。乐的评价存在巨大的对这一点说这么多就够了。现在我们来分歧。2.对这两种极端意见之理由的阐释和审核欧多克索斯认为，快乐就是善，因为我1172b10们看到，所有生物，不管是有理性的还是无理性的，都在追寻快乐；而在所有事情上，被欲望的就是好的，被欲望得最多的就是最好的。所以这就证明了这一现象：所有有生命的存在者都倾心追求的东西，对于所有追求者就是最好的东西。因为就像每个生灵都知道寻求它的营养，营养对于寻求者就是好东西一样，那么对所有东西都是好的东西，必定是被所有东西所追求的绝对的善。但是1172b15人们信服这一学说，与其说是由于这一学说本身，还不如说是由于欧多克索斯的德性品质。他以非同寻常的节制闻名，所以人们得\n命命到这一印象，他这样说不是因为他爱快乐，而是事实就是如此。他的学说的正确性，对于信服者而言，不少人分明是从快乐的反面认识到的。因为痛苦对所有有生命的存在者而言都1172b20被视为必须逃避的东西，因此痛苦的反面也就必定是值得欲求的。但是，他们还认为，最值得欲求的东西，是那些因其自身而不是因某种别的原因而被欲求的事物，而快乐就具有这种特征。没有人问，我们愿意快乐是为了什么目的。这表达出一个事实，快乐本身就是值得欲求的。最后他认为，虽然公正1172b25和节制也值得欲求，但要加上快乐就更加可欲。善只有通过善的东西才能相加。而最后的这一论据似乎只能说明，快乐是与别的东西并列的一种善，但不能说明它比别的善更好。因为任何一种善在加上另一种善之后都比它单独时要好这个证据，柏拉图就曾想借助于它相反地证明，快乐不是善。他说，快乐的生活加上明智之后比单纯的快乐生活更值得欲求；如果说加上明智更1172b30好的话，那么快乐就不是善。因为善本身不通过什么加上去会更值得欲求。仅此，我们看到，如果要加上某种东西善本身才更值得欲求，那么善本身也就什么也不是了。至于1172b35究竞什么是这样一种我们也能分享的善？这[430】亚里士多也正是我们要询问的。【430】德在这里既利用柏拉可是，那些想反驳一切生物都追求的东图的“善本身”概念西就是善这一意见的人，似乎代表的是一种反驳快乐本身是至善1173a轻浮的意见，没什么立得住的东西。因为的观点，但后一句又（1）我们主张，大家都信奉的东西，就是真暗示他并不同意柏拉的。如果有人出来反对大家都信奉的东西，图“善本身”的概念。\n第十卷论快乐、幸福和立法正文他要知道，他将很难说出什么东西让我们相信。如果他们单纯地只是反对，无理性的存在者所追求的是善，那么他们的意见还算有某些在理之处；但是，如果有理性的存在者也都追求这个东西，那么反对还有什么意义呢？而且，也许在低等生物中也有某种自然的善，1173a5比它们自身更强烈地追求比它们的本性更高级的东西。（2）他们对[欧多克索斯]那条反面论据的反驳也同样不妥。因为他们说，即便痛苦是一种恶，也不能因此就推出快乐是一种善。因为恶也可能与另一种恶形成对立，以及两种恶都会与非善非恶的东西对立。这一论证虽然本身不坏，但可惜放在这里并不适合。因1173a10为如果快乐和痛苦两者都是恶，它们必然都是我们要逃避的；而如果两者属于非善非恶，那么我们对两者都不逃避，或者在同样程度上对待它们。但现在我们看到，人们是如何把一种作为恶来逃避，另一种作为善来欲求。在此意义上，它们是相互对立的。（3）即便他们说，快乐不是什么性质，由此也推导不出它不是善。合乎德性的实现活动和幸福也不是什么性质。1173a15（4）他们说，善是有限定的，而快乐不可限定，因为它可以多一点或少一点。如果他们是基于对快乐的感受而形成这种判断，那么对于公正和其他德性同样也可这样说。我们显然可以不假思索地说，拥有德性品质可以更多一点和更少一点。因为更高程度上的公1173a20正和勇敢也还是公正的和勇敢的。公正的行动和节制的行动也可以更多一点和更少一点。但如果他们是基于快乐的不同形式而形成这种判断，那他们确实还未切中事情的真正原因，因为快乐当真有时是混杂的，有时是单纯的。所以，快乐何尝不是像健康那样，虽然1173a25是可限定的，但还是可以更多和更少一点。因为在健康上不是所有人都共同享有一个同样的尺度，在一个人身上这个尺度也不是永远相同的，它是在一个可规定的限度内变化的，允许有不同的度，可多一点可少一点都行。所以，快乐也会有这样不同的度。（5）他们还提出，善是完成了的东西，但运动和变化是未完成1173a.30的，并试图证明，快乐是运动和变化。但说快乐是运动，就已经显得不妥了。因为运动有快有慢，这种快慢不是同自身相比，而是同另一个东西相比，如同我们在天体运动中所看到的那样。但是快乐却没有快慢的性质。确实，有人可能很快得到快感，就像也能很快\n1173b生气一样，但人不可能很快地活在快乐中，也不能同别的东西比较快慢，当然人可以快速走路，快速成长等等。所以，变得快乐可以或快或慢地完成，但不能很快地生活在快乐中，我想说的首先是：自足的现实快乐。1173b5其次，快乐又如何应当是一种生成呢？因为任何事物都不是无选择地从随便一个事物中生成，而是从它消亡后也要归之于它的东西中生成。【431】所以，如果说快乐是一件事物的【431】这就类生成，那么，这个事物的消亡也就必定是痛似于人们说，万物苦。生于土，死后也要（6）他们也说，痛苦是自然需求的缺乏，复归于土一样。而快乐是这种缺乏的满足。但是诸如缺乏和满足这类事情都是身体的感受状态。如果说快乐1173b10是自然需求的满足，那么这种满足的发生之所必定是身体，所以身体感到快乐。但人们很难接受这种看法。那样的话，快乐就不是满足，而是当满足发生时对快乐的感受，正如痛苦，就像在做手术时的感受那样。这种意见诚然是从关于饮食的苦乐感引申出来的。因为我们首1173b15先经受饥渴这种缺乏状态，感受到了痛苦，在饥渴满足后就感到快乐。但这不能切合于所有的快乐感。例如，学习的快乐就不以痛苦为前提，还有那些因噢觉、听觉、视觉以及回忆和希望产生的快乐也都如此。如果快乐是生成，1173b20这些快乐是由什么生成的呢？因为这里不以需要得到满足的缺乏为前提。（7）如果有人最终要受那些可耻的快乐所引诱，那么人们可以回答说，这根本不是快乐。如果一些事物对于品质恶劣的人来说是快乐的，那我们必须这样来看，这些事物恰恰只是对于这些人才是快乐的，就像一些事情只对\n第十卷论快乐、幸福和立法正文于病人来说才健康，才是甜的或苦的，而且就像只对有眼疾的人才显得是白色的东西，并非本来就是白的一样1173b25或者人们也可能这样来回答：虽然快乐是值得欲求的，但并非源于这些源头，正如财富是值得拥有的，但并非源于背叛，健康是值得拥有的，但并非吃所有东西都是可能的。或者人们可以说，快乐是多种多样的。从高贵的源头流出的快乐与从污浊的源头流出的快乐，不可同日而语。如果一个人是不公正的人，他就不能感受不1173b30到公正带来的快乐。如果一个人不懂音乐，他就感受不到音乐带来的快乐。等等。朋友和奉承者判然两人，也对此提供一个明证，决非什么快乐都是善的，或者说快乐和善是两件不同的事。朋友与我们往来追求的是善待，奉承者则追求快乐。善待朋友是受称赞的，奉承朋友1174a是受责备的，因为奉承者总是抱有别的目的。谁也不愿意一辈子这样度过：只是最大限度地对儿童感到喜悦的东西感到喜悦，哪怕他的一生真的只有儿童的心智水平；谁也不愿意以做可耻之事为代价来取乐，哪怕他从来没有从做可耻之事中感到什么痛苦。有许多1174a5事情，哪怕不给我们带来快乐，我们也会费心尽力去做的，比如观看，回忆，获取知识，拥有美德。如果做这些事情必然地伴随着享受和满足，那就没什么好说的了，因为即使没有快乐从中产生，我们也应选择它们。如此看来似乎能够证明，快乐并不是善，也不是每一种快乐都1174a10值得欲求。但有一些快乐本身就是值得欲求的，从而在种类上或本源上与其他快乐区别开来。对于快乐和痛苦的种种意见，说这么多就够了。3.快乐是完成了的和整体性的活动如果我们再从头开始考察，什么是快乐，快乐有哪些种\n[ 432 】 Mein-在眼光的每一次注视中都是完成了的（因为它无er版译作：“如需任何随后的补充来完成它的视觉实现活动）。何是快乐”或快乐似乎与此类似。它是一个整体，不是在任何“何以是快乐”。瞬间感到的快乐，都要靠时间的延长才能完成。正因为如此，它也不是运动。因为每一种运动都是在时间中完成的，都有一目标，就像建筑工1174a20艺，只有等作为追求目标的房屋建造完成了，它的实现活动才完成，所以运动或者是在整个时间中，或者在这个特定的时间点完成的。在每个具体的时间单元它们都未完成，在种类上，整体的运动和局部运动相互之间是不同的。石头的堆积在种类上不同于廊柱的雕刻，这两者又不同于庙1174a25宇的建造。庙宇的建成就是完善的生成（因为对于有此意图的目的而言，无需再要求别的什么了），而地基的挖掘和[陶立克柱式]三陇板的收拢都属于单纯部分的建造，是未完成的，因为两者都是某一部分的生成。所以在这里我们有不同种类的运动。在每一次建造实现活动所要求的完整时间之外，人们不能在任何别的时间中把握一个形式上完善的运动。行走以及其他种类的运1174a30动如是如此。如果位移是从一个所来之点到所去之点的运动，那么，飞、跑、跳和类似的运动也都是不同种类的运动。但区别不单表现在这种[种类]意义上，而且就是在行走本身当中也有区别。因为起点和终点在一个场地上就不是相同的，在一个场地的不同部分也是不相同的，在这一部分和那一部分也是不相同的，甚至在这条跑道上或那条跑道上，也是不同的。因为人们跨越1174b的不仅仅是一条线，而是这个位置上的一条线，[433】即《物而这条线从哪个位置开始对于不同的位置是不同理学》第5-8\n第十卷论快乐、幸福和立法正文在这里所说的记住这一点就够了：它在整个时间中似乎没有一次是完成了的，绝大多数都是未完成的，在种类上是不同的，因为起点和终点的不同就是由其不同的种类构成的。1174b5与之相反，快乐的种类及其形式任何时候都是完成了的，所以这就看清了，它与运动是不同的，它是整体性的和完成了的东西。这也从这一点可以看出：人们不能完成一种根本不在时间中的运动，但不与时间相关的快乐人们却能感觉得到，因为快乐在瞬间即成一个整体。由此可知，说快乐是一种运动或生成的意见是不对的。1174b10因为这些概念不能运用于所有东西，而只能运用于部分的，不是整体的东西。观视行动，点和统一，都没有生成，不是生成，不是运动。快乐也不是，因为它是一个整体。.快乐使实现活动完满，快乐不能持久的原因由于每种感觉实现活动都与感官的对象相关，如果感官1174b15本身处在良好状态，它的对象也是它所能感觉到的最美和最惬意的东西，那么感觉是完善的一一不过这诚然本质上就是完善的实现活动一—不论我们是说实际的感觉本身还是说感官本身，都没什么两样。所以，在所有实现活动中，最好的实现活动就是感觉本身处在最好状态，又指向它最惬意的对象的实现活动。这种实现活动也就是最完满和最享受的。由1174b20于每种感觉都有其快乐，那么每种思辨或静观也同样有其快乐。最高的快乐在最完满的实现活动中，最完满的实现活动就是实现活动本身处在最好的状态中面对其最惬意的对象的实现活动。快乐使实现活动完善。不过它不是在似乎感觉对象和感觉能力同样优越的意义上使实现活动完善的，就如同健1174b25\n康和医生不以同样的方式作为健康的原因一样。【434】【434】快乐和每个感觉中都伴随有快乐，这是显然的。对象或感觉能力，我们确实也称所看见和听见的东西是令人愉悦其作用类似于健康的。最令人愉悦的是在这种情况下：感觉处在和医生的关系，就最佳状态，以最佳方式面对其对象进行感觉。是说类似于目的1174b30如果感觉对象和感觉官能都处在最佳状态，那因( causa finalis )么总是快乐的。因为这里实存的东西，正是它和作用因（causa产生和经验的东西。efficiens）的关系。但快乐使实现活动完满，不是如同一个寓健康作为目的因，于快乐中的状态，而是作为一个趋向实现的完即作为目的，参善【435】，如同成熟之人身上的那种美。只要阅1094a8.而医生思辨或感觉的对象保持在所要求的状态，思辨作为“作用因”是产的或感觉的主",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "亚里士多德",
+      "canonical_title": "尼各马可伦理学[注释导读本]",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CANONICAL_LOCATOR",
+      "locator_schemes": [
+       "BEKKER",
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "人的善是灵魂合乎德性的活动 一生"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "26f5e0df6d76",
+      "book_title": "哲学规劝录 哲学的慰藉",
+      "author": "扬布里柯/波爱修斯",
+      "chapter_idx": 20,
+      "chapter_title": "第十九章 灵魂的美德胜过其他各种好处",
+      "citation_label": "【《哲学规劝录 哲学的慰藉》·第十九章 灵魂的美德胜过其他各种好处】",
+      "snippet": "问题上的主张。第十九章灵魂的美德胜过其他各种好处人们也可以将灵魂中的各种善单独提出来讨论，说明其中哪些是完美的，哪些是幸福的本质特性。灵魂胜过身体，正如灵魂的各种善胜过身体的各种善；身体方面的善相对而言没那么重要。然而，灵魂方面的各种善应该受到最高的尊重。所以，善与快乐不是一回事，追求快乐不是因为善，追求善也不是因为快乐。令人快乐的东西通过其在场而带来快乐，善的东西由于其在场而使我们变善。我们与其他一切善的事物都由于获取一些德性而具有善",
+      "score": 0.604
+     },
+     {
+      "book_id": "a43cd7310a57",
+      "book_title": "沉思录",
+      "author": "马可·奥勒留",
+      "chapter_idx": 12,
+      "chapter_title": "第十一卷",
+      "citation_label": "【《沉思录》·第十一卷】",
+      "snippet": "尽可能用最美好的方式度过一生。这样做的力量就寓于人的灵魂之中，只要他能对无关紧要的事物淡然置之。只要他在看待这些事物的时候，既将它们视为一个整体，又能分析它们的组成部分，同时记住，它们无法强迫我们对它们做出判断，也无法强加到我们头上，这样就能做到淡然置之。 1　理性灵魂的性质：它能自我省察，自我塑造，让自己成为想要的样子，还能采撷自身结出的果实——而植物的果实和动物产的蛋，则是由他人采集。不论生命的局限摆在哪里，它都能达成自己的目标。舞",
+      "score": 0.584
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 1,
+      "chapter_title": "第二章",
+      "citation_label": "【《道德经》·第二章】",
+      "snippet": "天下皆知美之为美，斯恶已。皆知善之为善，斯不善已。故有无相生，难易相成，长短相形，高下相倾，音声相和，前后相随，恒也。是以圣人处无为之事，行不言之教，万物作焉而不辞，生而不有，为而不恃，功成而弗居。夫唯弗居，是以不去。",
+      "score": 0.582
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 331,
+      "chapter_title": "214",
+      "citation_label": "【《尼采文集（合集）》·214】",
+      "snippet": " 信仰使人福乐 。——德性只给予那些笃信自己德性的人以幸福和福乐：——但不赐予那些更精细的心灵，后者的德性在于对自己和一切德性的深度怀疑中。说到底，即便在这里，也是“信仰使人福乐！”——注意！ 并非 德性！",
+      "score": 0.581
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 26,
+      "chapter_title": "第二十七章",
+      "citation_label": "【《道德经》·第二十七章】",
+      "snippet": "善行，无辙跡；善言，无瑕謫；善数，不用筹策；善闭，无关楗而不可开；善结，无绳约而不可解。是以圣人常善救人，故无弃人；常善救物，故无弃物。是谓袭明。故善人者，不善人之师；不善人者，善人之资。不贵其师，不爱其资，虽智大迷。是谓要妙。",
+      "score": 0.576
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 7,
+      "chapter_title": "第八章",
+      "citation_label": "【《道德经》·第八章】",
+      "snippet": "上善若水，水善利万物而不争。处众人之所恶，故几于道。居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。夫唯不争，故无尤。",
+      "score": 0.574
+     },
+     {
+      "book_id": "a43cd7310a57",
+      "book_title": "沉思录",
+      "author": "马可·奥勒留",
+      "chapter_idx": 13,
+      "chapter_title": "第十二卷",
+      "citation_label": "【《沉思录》·第十二卷】",
+      "snippet": "人生的救赎在于看清每一样事物的本质和整体，辨明其物质和因由，全心全意地做正确的事，讲真实的话。余下的只有接连不断地行善的乐趣，中间不留丝毫空隙。 1　你祈求在人生某一刻得到的东西，你现在就可以拥有——只要你对自己慷慨一些就行。就是说，只要你能把过去全部抛到身后，把未来托付给天意，把现在指引向虔诚与公正。唯有虔诚，你才会喜爱自己分得的命运：是自然将它交托给你，将你交托给它。唯有公正，你的言行才能做到率直而坦白，才能做到实话实说，行为合乎法",
+      "score": 0.572
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 642,
+      "chapter_title": "论善良与性善",
+      "citation_label": "【《西方百年学术经典著作》·论善良与性善】",
+      "snippet": "我在这里将要谈论的“善良”，是指能为人类谋利的那种“善”，就是希腊人所谓的“博爱”，所以用“人道”这个词还不足以表达。“善良”是一种习惯，“性善”是一种天性的倾向。在所有的高贵品德中，“善良”是最可贵的品德，是属于神的品质。如果没有它，人类就会成为一种整日忙着害人的生物，比害虫好不到哪儿去。它与宗教中的“德”“爱”很相似，你可以把它的对象搞错，但却永远不会过度。追求权力的欲望过于浓烈，会使天使堕落(1)；追求知识的欲望过于浓烈，会使人堕",
+      "score": 0.555
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 69,
+      "chapter_title": "第69章",
+      "citation_label": "【《信仰寻求理解》·第69章】",
+      "snippet": "提要：人的灵魂是理性的受造物。因此，它被创造出来，是为了爱那至高的本质，并且永远爱至高的本质。因为，认为至高的智慧创造人的灵魂是为了让它在有些时候自愿或被迫放弃那爱，是衰法的。因此，剩下的情形就是：任何的灵魂是为了永远爱至高的本质才被创造出来。但是，人的灵魂不可能做此事，除非它永远地活着。因此，人的灵魂被创造出来就是为了永生，只要它总是愿意做它被创造出来应当做的事。此外，对于至善的上帝而言，既然我们绝对不应怀疑他爱一切真正爱他的本性，那",
+      "score": 0.555
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 26,
+      "chapter_title": "第二十五章",
+      "citation_label": "【《中庸》·第二十五章】",
+      "snippet": "诚者自成也，而道自道也。 诚者，物之终始，不诚无物。是故君子诚之为贵。 诚者，非自成己而已也。所以成物也。成己仁也。成物知也。性之德也，合外内之道也。故时措之宜也。",
+      "score": 0.55
+     },
+     {
+      "book_id": "a43cd7310a57",
+      "book_title": "沉思录",
+      "author": "马可·奥勒留",
+      "chapter_idx": 10,
+      "chapter_title": "第九卷",
+      "citation_label": "【《沉思录》·第九卷】",
+      "snippet": "当前的判断确凿无疑，当前的行为有益社会，当前的心情对任何外来的影响都能欣赏接受，有这些就够了。 排除幻想，遏制冲动，抑制欲望：让你那起支配作用的心灵自己做主。 1　不公即罪过。宇宙自然造就出理性的造物，让他们彼此互助——他们理应彼此互惠，但绝不应该彼此伤害——任何违背其意志的人，显然都犯下了违抗最古老神明的罪行：因为宇宙自然就是终极现实的本性，而现存的一切都与终极现实有关。 说谎也是违背那位神明意志的罪行，她就是真理之神，一切真实的事物",
+      "score": 0.55
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 48,
+      "chapter_title": "德经·第四十九章",
+      "citation_label": "【《道德经》·德经·第四十九章】",
+      "snippet": "德经·第四十九章 圣人无常心，以百姓心为心。善者，吾善之；不善者，吾亦善之；德善。信者，吾信之；不信者，吾亦信之；德信。圣人在天下，歙歙焉，為天下浑其心，百姓皆注其耳目，圣人皆孩之。",
+      "score": 0.55
+     },
+     {
+      "book_id": "4e213cf57480",
+      "book_title": "呻吟语",
+      "author": "吕坤",
+      "chapter_idx": 3,
+      "chapter_title": "性命",
+      "citation_label": "【《呻吟语》·性命】",
+      "snippet": "正命者，完却正理，全却初气，未尝以我害之，虽桎梏而死，不害其人正命。若初气所凿丧，正理不完，即正寝告终，恐非正命。 德性以收敛沉着为第一，收敛沉着中又以精明平易为第一。大段收敛沉着人，怕含糊，怕深险。浅浮子虽光明洞达，非蓄德之器也。 或问：“人将死而见鬼神，真耶？幻耶？”曰：“人寤则为真见，梦则为妄见。魂游而不附体，故随所之而见物，此外妄也。神与心离合而不安定，故随所交而成景，此内妄也。故至人无梦，愚人无梦，无妄念也。人之将死，如梦然，",
+      "score": 0.548
+     },
+     {
+      "book_id": "1c67b29ec906",
+      "book_title": "皮浪学说概要",
+      "author": "皮浪",
+      "chapter_idx": 81,
+      "chapter_title": "二十四、何为所谓的生活的技艺？",
+      "citation_label": "【《皮浪学说概要》·二十四、何为所谓的生活的技艺？】",
+      "snippet": "[188]再者，斯多亚派声称灵魂的善是某种技艺，也就是德性。他们说技艺是由种种共同练习的理解所形成的系统，理解则生成于灵魂的中枢部分。然而，理解的存储和如此之多的聚集如何会在灵魂的中枢部分一这个被他们说成是气息（pneuma） 的东西一里面发生以至于生成技艺，这点是难以想象的。既然气息是流动的，且被说成是作为一个整体为每个印象所推动，那么相继生成的印象就会永远不断地抹掉在它之前的印象。[189] 声称柏拉图所幻想出来的灵魂我指的是“不可",
+      "score": 0.548
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 61,
+      "chapter_title": "德经·第六十二章",
+      "citation_label": "【《道德经》·德经·第六十二章】",
+      "snippet": "德经·第六十二章 道者万物之奥。善人之宝，不善人之所保。美言可以市尊，美行可以加人。人之不善，何弃之有？故立天子，置三公，虽有拱璧以先駟马，不如坐进此道。古之所以贵此道者何？不曰：求以得，有罪以免邪？故为天下贵。",
+      "score": 0.548
+     }
+    ],
+    "query": "人的善是灵魂合乎德性的活动 一生",
+    "method": "vector"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 7
+}

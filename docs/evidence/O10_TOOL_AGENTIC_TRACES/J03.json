@@ -1,0 +1,1092 @@
+{
+ "case_id": "J03",
+ "section": "J",
+ "expected_class": "SCHOLARLY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "学界如何评价康德对说谎的绝对禁止？",
+ "injection": null,
+ "QUESTION": "学界如何评价康德对说谎的绝对禁止？",
+ "PUBLIC_WORK_NOTE": [
+  "我先梳理一下手头的情况：用户要的是\"学界如何评价\"这一评价性问题，核心争议我大致记得集中在康德那篇《论出于人类之爱而说谎的所谓权利》以及对贡斯当的回应、谋杀者追问藏匿者的经典案例上。但\"学界如何评价\"我不能凭记忆作答——必须检索真实的二手文献并实际读到内容证据，否则就违反了学界的归因纪律。因此我先登记研究需求为 SCHOLARLY，然后并行检索相关英文/中文文献。",
+  "检索到两篇可读证据的来源：Timmermann《Kant and the Supposed Right to Lie》(2025) 与 Carson《Kant and the Absolute Prohibition against Lying》(2010)，两者都是 ABSTRACT_AVAILABLE，可读摘要。接下来必须实读它们的摘要内容，才能对\"学界评价\"做内容性归因；同时我打算核验康德那篇原始短文的库内情况，避免只凭二手转述。"
+ ],
+ "RESEARCH_NEED": "SCHOLARLY",
+ "EVIDENCE_GAP": "关于康德绝对禁止说谎这一立场，学界有哪些具体评价、批评与辩护，需要真实的二手文献书目与内容证据（谁主张什么、如何论证）",
+ "TOOL_SELECTED": [
+  "search_scholarship",
+  "get_scholarly_source",
+  "search_books"
+ ],
+ "TOOL_ARGS": {
+  "search_scholarship": [
+   {
+    "query": "Kant on lying right to lie from philanthropy",
+    "philosopher": "Kant",
+    "limit": 8
+   },
+   {
+    "query": "Kant's prohibition of lying absolute duty murder at the door",
+    "limit": 8
+   }
+  ],
+  "get_scholarly_source": [
+   {
+    "source_record_id": "doi:10.1017/9781108992435",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+    "requested_access": "ABSTRACT"
+   }
+  ],
+  "search_books": [
+   {
+    "query": "论出于人类之爱而说谎的所谓权利 康德"
+   },
+   {
+    "query": "说谎 义务 诚实 康德"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Kant on lying right to lie from philanthropy",
+    "philosopher": "Kant",
+    "limit": 8
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Kant Kant on lying right to lie from philanthropy', 'results': [{'source_record_id': 'doi:10.1017/9781108992435', 'title': 'Kant and the Supposed Right to Lie', 'authors': ['Jens Timmermann"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Kant's prohibition of lying absolute duty murder at the door",
+    "limit": 8
+   },
+   "phase": "executed",
+   "result_head": "{'query': \"Kant's prohibition of lying absolute duty murder at the door\", 'results': [{'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'title': 'Kant and the Absolute Prohibition "
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1017/9781108992435",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1017/9781108992435', 'bibliographic_record': {'source_record_id': 'doi:10.1017/9781108992435', 'title': 'Kant and the Supposed Right to Lie', 'authors': ['Jens Timmermann'"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'bibliographic_record': {'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'title': 'Kant and the Absolute Proh"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论出于人类之爱而说谎的所谓权利 康德"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "说谎 义务 诚实 康德"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Kant Kant on lying right to lie from philanthropy', 'results': [{'source_record_id': 'doi:10.1017/9781108992435', 'title': 'Kant and the Supposed Right to Lie', 'authors': ['Jens Timmermann"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': \"Kant's prohibition of lying absolute duty murder at the door\", 'results': [{'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'title': 'Kant and the Absolute Prohibition "
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1017/9781108992435', 'bibliographic_record': {'source_record_id': 'doi:10.1017/9781108992435', 'title': 'Kant and the Supposed Right to Lie', 'authors': ['Jens Timmermann'"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'bibliographic_record': {'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'title': 'Kant and the Absolute Proh"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "我已经取得两份可读的二手证据（Timmermann 2025 摘要、Carson 2010 章节摘要），它们分别覆盖了\"同情式文本解读\"与\"批评绝对主义\"两条主线，并提示了 Korsgaard 的辩护立场；原典库检索名额外被预算拦下，但回答\"学界如何评价\"这一问题，现有证据已足以收口，无需再强行延展。下面综合作答。\n\n---\n\n## 一、先厘清被评价的对象：康德到底主张了什么\n\n被学界反复讨论的，主要是康德 1797 年的短文《论出于人类之爱而说谎的所谓权利》（Über ein vermeintes Recht aus Menschenliebe zu lügen），写作的直接刺激是邦雅曼·贡斯当（Benjamin Constant）与其译者 Cramer 对康德\"不得说谎\"立场的挑战。康德的回答是：即便只有一句\"自信的谎言\"才能救一位朋友，当凶手问起朋友的藏身处时，你也应当如实回答，从而把朋友的藏身处暴露给想杀他的人。（以上据 Timmermann 2025 摘要转述，摘要还指出这一\"凶手叩门\"的案例在思想史上早经奥古斯丁、费希特、Johann David Michaelis 等人讨论。）\n\n需要说明的是：这里给出的是二手文献对康德立场的概述，并非我本次核验过的康德原文；康德原典库的检索本轮未能展开，故本节不含逐字引文。\n\n## 二、学界的评价，大致沿三条路线展开\n\n**（1）批评路线：绝对禁令既无充分论证，又不可信。**\nThomas L. Carson 在《Lying and Deception》中的\"Kant and the Absolute Prohibition against Lying\"一章（2010）是这一路线的代表。据其摘要，Carson 主张：康德是西方哲学史上最著名的\"说谎绝对禁止\"辩护者，但**他本人从未在任何论证中直接诉诸绝对命令来证明说谎永远错误**；而且绝对命令的普遍法则公式并不蕴含\"说谎永远错误\"——一个人完全可以自洽地意愿\"人人都遵守有时允许说谎的准则\"。Carson 还明确针对 Korsgaard 提出反驳：绝对命令的第二公式（\"绝不把人仅仅当作手段\"）同样不蕴含\"说谎永不被允许\"，他认为 Korsgaard 的论证依赖于对康德若干含混段落的争议性解读。由此 Carson 的结论是双重的：康德既没有给出令人信服的绝对禁令论证，而且\"存在积极理由拒绝其绝对主义\"——因为\"不说谎的义务\"会与其他道德义务冲突，而认为它**永远**比任何冲突义务更重要，是极不合理的；康德自己那个\"对凶手说谎\"的例子恰恰是最好的例证。\n\n**（2）辩护／同情解读路线：重估论证与文本语境。**\nJens Timmermann 的专著《Kant and the Supposed Right to Lie》（2025，摘要所描述）代表另一种态度。据摘要，该书细致挖掘这篇短文的**背景**（贡斯当及其译者的触发）、**案例的历史**（奥古斯丁、费希特、Michaelis 等）、**贡斯当版本的案例的独特之处**，以及**康德针对贡斯当的核心论证**：说谎、或主张一项说谎的权利，会瓦解契约性权利、给全人类带来灾难。摘要明确把此书定位为\"丰富的解释性资源\"，并附有该短文的对照译文。这说明一部分学界工作并不急于宣判康德\"荒谬\"，而是先弄清他究竟在何种论证框架内、针对何种对手说话。\n\n**（3）文本与语境的澄清工作。**\n无论批评还是辩护，第一层工作都是**文本校订**：区分康德原意与贡斯当的转述版本、厘清\"说谎\"在这篇短文里究竟指什么、案例是对谁说的。Timmermann 摘要所列的\"背景—案例史—版本差异—核心论证\"四重考察，正是这一层工作的体现。\n\n## 三、争议的真正焦点\n\n综合这两份证据可以看出，争论不在于\"康德是否禁止说谎\"（这点无争议），而在于三个更细的问题：\n\n1. **康德的论证是否真的支持绝对禁令？** Carson 认为否，甚至认为绝对命令诸公式都不蕴含它；\n2. **义务冲突时该怎么办？** Carson 主张不冲突的道德义务客观存在，故\"永不让步\"不合理；辩护方则需说明康德的\"权利/契约\"论证为何能排除例外；\n3. **Korsgaard 式的辩护是否成立？** Carson 直接反驳了它，但对 Korsgaard 具体论证的评估，我本次只读到 Carson 的转述，**未读到 Korsgaard 本人文本**，故对其立场只能按 Carson 的概括呈现，不宜替她展开。\n\n## 四、我的综合判断\n\n从可取得的证据看，\"学界如何评价\"并不存在一个统一判决，而是一个**两极加上大量文本考据**的格局：一端是以 Carson 为代表的\"绝对禁令不可辩护、且有反例（义务冲突）\"的批评；另一端是以 Timmermann 为代表的\"先回到语境与论证、再作判断\"的同情性重估；中间则是大量关于案例版本、术语与思想史的澄清工作。值得注意的是，Carson 摘要里那条\"康德从不直接诉诸绝对命令\"的观察，如果成立，会把争论从\"绝对命令是否蕴含绝对禁令\"转移到\"康德在这篇短文里用的是什么样的论证\"——这也正是 Timmermann 式的细读要处理的问题。\n\n一句提示：这些评价都建立在\"康德主张绝对禁止说谎\"这一被普遍接受的前提上；而该前提本身的文本依据（那篇短文的原文措辞）本轮未及核验，若要作严格的文本研究，应从 1797 年原文与 Timmermann 所附对照译文入手。\n\n---\n\n**证据边界（如实说明）**：以上两份来源均为 **ABSTRACT_AVAILABLE**——我读到的是它们的摘要，而非全文；因此我对其内容的陈述严格限于摘要所支撑的范围，尤其没有替 Timmermann 或 Carson 展开摘要之外的内部论证，也没有替 Korsgaard 作超出 Carson 转述的归因。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先梳理一下手头的情况：用户要的是\"学界如何评价\"这一评价性问题，核心争议我大致记得集中在康德那篇《论出于人类之爱而说谎的所谓权利》以及对贡斯当的回应、谋杀者追问藏匿者的经典案例上。但\"学界如何评价\"我不能凭记忆作答——必须检索真实的二手文献并实际读到内容证据，否则就违反了学界的归因纪律。因此我先登记研究需求为 SCHOLARLY，然后并行检索相关英文/中文文献。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "关于康德绝对禁止说谎这一立场，学界有哪些具体评价、批评与辩护，需要真实的二手文献书目与内容证据（谁主张什么、如何论证）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Kant on lying right to lie from philanthropy",
+    "philosopher": "Kant",
+    "limit": 8
+   },
+   "result_head": "{'query': 'Kant Kant on lying right to lie from philanthropy', 'results': [{'source_record_id': 'doi:10.1017/9781108992435', 'title': 'Kant and the Supposed Right to Lie', 'authors': ['Jens Timmermann"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Kant's prohibition of lying absolute duty murder at the door",
+    "limit": 8
+   },
+   "result_head": "{'query': \"Kant's prohibition of lying absolute duty murder at the door\", 'results': [{'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'title': 'Kant and the Absolute Prohibition "
+  },
+  {
+   "kind": "note",
+   "content": "检索到两篇可读证据的来源：Timmermann《Kant and the Supposed Right to Lie》(2025) 与 Carson《Kant and the Absolute Prohibition against Lying》(2010)，两者都是 ABSTRACT_AVAILABLE，可读摘要。接下来必须实读它们的摘要内容，才能对\"学界评价\"做内容性归因；同时我打算核验康德那篇原始短文的库内情况，避免只凭二手转述。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.1017/9781108992435",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1017/9781108992435', 'bibliographic_record': {'source_record_id': 'doi:10.1017/9781108992435', 'title': 'Kant and the Supposed Right to Lie', 'authors': ['Jens Timmermann'"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'bibliographic_record': {'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'title': 'Kant and the Absolute Proh"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "论出于人类之爱而说谎的所谓权利 康德"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "说谎 义务 诚实 康德"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "关于康德绝对禁止说谎这一立场，学界有哪些具体评价、批评与辩护，需要真实的二手文献书目与内容证据（谁主张什么、如何论证）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "关于康德绝对禁止说谎这一立场，学界有哪些具体评价、批评与辩护，需要真实的二手文献书目与内容证据（谁主张什么、如何论证）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:10:47",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "关于康德绝对禁止说谎这一立场，学界有哪些具体评价、批评与辩护，需要真实的二手文献书目与内容证据（谁主张什么、如何论证）",
+    "source_dependent": true
+   }
+  ],
+  "extensions": [],
+  "retrieval_executed": 4,
+  "soft_limit": 4,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:10:53"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:10:53"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 43179,
+   "output_tokens": 3806,
+   "total_tokens": 46985
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 3,
+   "compacted_chars_saved": 8278,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12059,
+     "output_tokens": 686,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15866,
+     "output_tokens": 568,
+     "tool_chars_added": 9239
+    },
+    {
+     "round": 3,
+     "input_tokens": 15254,
+     "output_tokens": 2552,
+     "tool_chars_added": 5321
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 2442,
+ "token_usage": {
+  "input_tokens": 43179,
+  "output_tokens": 3806,
+  "total_tokens": 46985
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 32.5,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "关于康德绝对禁止说谎这一立场，学界有哪些具体评价、批评与辩护，需要真实的二手文献书目与内容证据（谁主张什么、如何论证）",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 关于康德绝对禁止说谎这一立场，学界有哪些具体评价、批评与辩护，需要真实的二手文献书目与内容证据（谁主张什么、如何论证））。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任何文献做内容性归因前必须 get_sc",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Kant on lying right to lie from philanthropy",
+    "philosopher": "Kant",
+    "limit": 8
+   },
+   "result_summary": "{'query': 'Kant Kant on lying right to lie from philanthropy', 'results': [{'source_record_id': 'doi:10.1017/9781108992435', 'title': 'Kant and the Supposed Right to Lie', 'authors': ['Jens Timmermann",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1017/9781108992435",
+     "doi:10.17161/aion.v2i1.24031",
+     "doi:10.1017/cbo9780511813306.014",
+     "doi:10.1515/9783110733730-004",
+     "doi:10.1017/9781108992435.011",
+     "doi:10.1017/9781108992435.012",
+     "doi:10.1017/9781108992435.002",
+     "doi:10.1017/9781108992435.001"
+    ],
+    "access_levels": {
+     "doi:10.1017/9781108992435": "ABSTRACT_AVAILABLE",
+     "doi:10.17161/aion.v2i1.24031": "ABSTRACT_AVAILABLE",
+     "doi:10.1017/cbo9780511813306.014": "METADATA_ONLY",
+     "doi:10.1515/9783110733730-004": "METADATA_ONLY",
+     "doi:10.1017/9781108992435.011": "METADATA_ONLY",
+     "doi:10.1017/9781108992435.012": "METADATA_ONLY",
+     "doi:10.1017/9781108992435.002": "METADATA_ONLY",
+     "doi:10.1017/9781108992435.001": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Kant's prohibition of lying absolute duty murder at the door",
+    "limit": 8
+   },
+   "result_summary": "{'query': \"Kant's prohibition of lying absolute duty murder at the door\", 'results': [{'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'title': 'Kant and the Absolute Prohibition ",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/acprof:oso/9780199577415.003.0004",
+     "doi:10.1353/ecy.2014.0012",
+     "doi:10.20396/kant.v20i00.8682011",
+     "doi:10.1093/ajj/44.1.43",
+     "doi:10.1515/kant.1982.73.1-4.413",
+     "doi:10.2986/tren.029-0622",
+     "doi:10.13109/9783666552687.159",
+     "doi:10.2307/1226255"
+    ],
+    "access_levels": {
+     "doi:10.1093/acprof:oso/9780199577415.003.0004": "ABSTRACT_AVAILABLE",
+     "doi:10.1353/ecy.2014.0012": "ABSTRACT_AVAILABLE",
+     "doi:10.20396/kant.v20i00.8682011": "ABSTRACT_AVAILABLE",
+     "doi:10.1093/ajj/44.1.43": "METADATA_ONLY",
+     "doi:10.1515/kant.1982.73.1-4.413": "METADATA_ONLY",
+     "doi:10.2986/tren.029-0622": "METADATA_ONLY",
+     "doi:10.13109/9783666552687.159": "METADATA_ONLY",
+     "doi:10.2307/1226255": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1017/9781108992435",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1017/9781108992435', 'bibliographic_record': {'source_record_id': 'doi:10.1017/9781108992435', 'title': 'Kant and the Supposed Right to Lie', 'authors': ['Jens Timmermann'",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1017/9781108992435",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'bibliographic_record': {'source_record_id': 'doi:10.1093/acprof:oso/9780199577415.003.0004', 'title': 'Kant and the Absolute Proh",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论出于人类之爱而说谎的所谓权利 康德"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "说谎 义务 诚实 康德"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Kant's prohibition of lying absolute duty murder at the door",
+    "limit": 8
+   },
+   "result_full": {
+    "query": "Kant's prohibition of lying absolute duty murder at the door",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+      "title": "Kant and the Absolute Prohibition against Lying",
+      "authors": [
+       "Thomas L. Carson"
+      ],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Lying and Deception",
+      "doi": "10.1093/acprof:oso/9780199577415.003.0004",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1353/ecy.2014.0012",
+      "title": "Lying with Godwin and Kant: Truth and Duty in St. Leon",
+      "authors": [
+       "Peter Melville"
+      ],
+      "year": 2014,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "The Eighteenth Century",
+      "doi": "10.1353/ecy.2014.0012",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.20396/kant.v20i00.8682011",
+      "title": "Hegel, Kant und die absolute Form",
+      "authors": [
+       "Anton Friedrich Koch"
+      ],
+      "year": 2025,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Kant e-prints",
+      "doi": "10.20396/kant.v20i00.8682011",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/ajj/44.1.43",
+      "title": "The Absolute Prohibition of Lying and the Origins of the Casuistry of Mental Reservation: Augustinian Arguments and Thomistic Developments",
+      "authors": [
+       "J. Boyle"
+      ],
+      "year": 1999,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "The American Journal of Jurisprudence",
+      "doi": "10.1093/ajj/44.1.43",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/kant.1982.73.1-4.413",
+      "title": "On Lying: Kant and Benjamin Constant",
+      "authors": [
+       "Jules Vuillemin"
+      ],
+      "year": 1982,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Kant-Studien",
+      "doi": "10.1515/kant.1982.73.1-4.413",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2986/tren.029-0622",
+      "title": "Thomas Aquinas On The Absolute Prohibition Against Lying And The Necessity Of Deception In Life",
+      "authors": [
+       "Daniel P. CHAMPOLI"
+      ],
+      "year": null,
+      "publication_type": "DISSERTATION",
+      "venue": null,
+      "doi": "10.2986/tren.029-0622",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.13109/9783666552687.159",
+      "title": "Murder and Murder Prohibition in Josephus",
+      "authors": [
+       "Silvia Castelli"
+      ],
+      "year": 2017,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "“You Shall Not Kill”",
+      "doi": "10.13109/9783666552687.159",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/1226255",
+      "title": "Lying in Wait Murder: Criminal Law. Homicide. First Degree Murder Does Not Require Premeditated and Deliberated Intent to Kill When Murder Committed from Lying in Wait",
+      "authors": [],
+      "year": 1954,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Stanford Law Review",
+      "doi": "10.2307/1226255",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 3,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/acprof:oso/9780199577415.003.0004",
+     "doi:10.1353/ecy.2014.0012",
+     "doi:10.20396/kant.v20i00.8682011"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Kant on lying right to lie from philanthropy",
+    "philosopher": "Kant",
+    "limit": 8
+   },
+   "result_full": {
+    "query": "Kant Kant on lying right to lie from philanthropy",
+    "results": [
+     {
+      "source_record_id": "doi:10.1017/9781108992435",
+      "title": "Kant and the Supposed Right to Lie",
+      "authors": [
+       "Jens Timmermann"
+      ],
+      "year": 2025,
+      "publication_type": "OTHER",
+      "venue": null,
+      "doi": "10.1017/9781108992435",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.17161/aion.v2i1.24031",
+      "title": "Schematism and Technology from Kant to Simondon: Towards an Experiential Schematism of the Imagination",
+      "authors": [
+       "Vincent Beaubois"
+      ],
+      "year": 2025,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "Aion. Journal of Philosophy and Science",
+      "doi": "10.17161/aion.v2i1.24031",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/cbo9780511813306.014",
+      "title": "On a supposed right to lie from philanthropy (1797)",
+      "authors": [
+       "Immanuel Kant",
+       "Allen W. Wood"
+      ],
+      "year": null,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Immanuel Kant: Practical philosophy",
+      "doi": "10.1017/cbo9780511813306.014",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9783110733730-004",
+      "title": "Kant tell an a priori lie",
+      "authors": [
+       "Roy Sorensen"
+      ],
+      "year": 2022,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "From Lying to Perjury",
+      "doi": "10.1515/9783110733730-004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781108992435.011",
+      "title": "What Kant Should Have Said",
+      "authors": [],
+      "year": 2025,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Kant and the Supposed Right to Lie",
+      "doi": "10.1017/9781108992435.011",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781108992435.012",
+      "title": "“On a Supposed Right to Lie”: Text and Translation",
+      "authors": [],
+      "year": 2025,
+      "publication_type": "OTHER",
+      "venue": "Kant and the Supposed Right to Lie",
+      "doi": "10.1017/9781108992435.012",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781108992435.002",
+      "title": "Introduction",
+      "authors": [],
+      "year": 2025,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Kant and the Supposed Right to Lie",
+      "doi": "10.1017/9781108992435.002",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781108992435.001",
+      "title": "Preface",
+      "authors": [],
+      "year": 2025,
+      "publication_type": "OTHER",
+      "venue": "Kant and the Supposed Right to Lie",
+      "doi": "10.1017/9781108992435.001",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 2,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1017/9781108992435",
+     "doi:10.17161/aion.v2i1.24031"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "crossref",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     },
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     },
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1017/9781108992435",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1017/9781108992435",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1017/9781108992435",
+     "title": "Kant and the Supposed Right to Lie",
+     "authors": [
+      "Jens Timmermann"
+     ],
+     "year": 2025,
+     "publication_type": "OTHER",
+     "venue": null,
+     "doi": "10.1017/9781108992435",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "In his 1797 essay 'On a Supposed Right to Lie from Love of Humanity', Kant argues that when only a confident lie might save a friend, one must, if asked, reply truthfully and thus betray his hiding-place to the person who wants to kill him. This is the first monograph to explore Kant's essay in detail. Jens Timmermann examines the background of the piece (Kant was provoked by Benjamin Constant and his translator, Carl Friedrich Cramer); the history of the example (which was also discussed by, amongst others, Augustine, Fichte and Johann David Michaelis); the peculiarities of Constant's version of the case; and Kant's core argument against Constant: lying, or a right to lie, would undermine contractual rights and spell disaster for all humanity. This rich, interpretative resource, which includes a facing-page translation of Kant's essay, will be of wide interest to Kant scholars and moral philosophers.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "5044e001c620998b5ff0ea58c44172d2a4c94bd6a252c300ba20ac6e972d4502"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1093/acprof:oso/9780199577415.003.0004",
+     "title": "Kant and the Absolute Prohibition against Lying",
+     "authors": [
+      "Thomas L. Carson"
+     ],
+     "year": 2010,
+     "publication_type": "BOOK_CHAPTER",
+     "venue": "Lying and Deception",
+     "doi": "10.1093/acprof:oso/9780199577415.003.0004",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "Abstract</jats:title>In several works, Kant claims that lying is always wrong, no matter what. He is probably the most well‐known defender of an absolute prohibition against lying in the history of Western philosophy. The chapter surveys what Kant says about lying in his writings. It is noteworthy that he never directly appeals to the categorical imperative in any of his arguments to show that lying is always wrong. The chapter argues that the universal law version of the categorical imperative does not imply that lying is always wrong – one can consistently will that everyone follows maxims or principles that sometimes permit lying. Korsgaard to the contrary, the second version of the categorical imperative, which says that we should never treat another person as a mere means, does not imply that lying is never permissible. The chapter contends that Korsgaard's arguments rest on contentious interpretations of several ambiguous passages in Kant. None of the versions of the categorical imperative commits Kant to an absolute prohibition against lying. Not only does Kant fail to give a compelling argument for an absolute prohibition against lying, there are positive reasons to reject his absolutism. The duty not to lie can conflict with other moral duties. If lying is always wrong no matter what, then the duty not to lie must always be more important than any conflicting duty. However, it is most implausible to hold that the duty not to lie is always more important than any conflicting duty. Kant's own example of lying to thwart the plans of a would‐be murderer is one of the best illustrations of this.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "ba5ab10caaf6bfd4242f25211a77e1263fe3d5b60f17cbfab328fa9680401264"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 4
+}

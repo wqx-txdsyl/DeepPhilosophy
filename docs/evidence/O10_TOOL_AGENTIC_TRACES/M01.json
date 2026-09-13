@@ -1,0 +1,1397 @@
+{
+ "case_id": "M01",
+ "section": "M",
+ "expected_class": "SCHOLARLY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "学界如何评价尼采的“永恒轮回”学说？",
+ "injection": {
+  "tool": "search_scholarship",
+  "calls": 99,
+  "result": {
+   "error": "PROVIDER_RATE_LIMIT",
+   "providers_queried": [
+    "crossref",
+    "openalex"
+   ],
+   "provider_errors": [
+    "crossref:PROVIDER_RATE_LIMIT",
+    "openalex:PROVIDER_RATE_LIMIT"
+   ],
+   "results": [],
+   "READABLE_RESULT_COUNT": 0,
+   "READABLE_SOURCE_IDS": [],
+   "message": "429 rate limited (injected)"
+  }
+ },
+ "QUESTION": "学界如何评价尼采的“永恒轮回”学说？",
+ "PUBLIC_WORK_NOTE": [
+  "我先登记研究需求：用户问的是**学界如何评价**某一学说，这明确属于二手研究/解释争议综述，回答的正确性依赖于真实文献而非我自己的印象——因此按 SCHOLARLY 处理。我的记忆中有若干经典解释路线（海德格尔的存在论解读、德勒兹的差异哲学解读、考夫曼的\"生存论测试\"解读、马格努斯质疑其宇宙论地位等），但这些\"学界认为\"的说法必须先落到真实可读的文献证据上，不能凭记忆归因。\n\n我先定位相关二手文献，再看哪些实际可读。",
+  "检索通道被限流（429），尚未取得任何文献。我再试一次二手文献检索，同时并行核对尼采原典中\"永恒轮回\"的核心表述，以便评价有据可依。",
+  "工作笔记：二手文献检索通道连续返回限流（429），本轮尚未取得任何期刊/学术记录，所以\"学界如何评价\"目前无法靠真实的学术文献证据来支撑。原典库倒是定位到了两处可读材料——斯坦哈特《尼采》的\"永恒回归\"章，以及一套尼采研究丛书中专门讨论\"永恒轮回的实存论意义\"的章节，这属于可实际读取的解读性文本。下一步我读取这些章节确认具体措辞，并尝试用一次网络检索补充学界解释路线的背景（仅作语境，不作原典引用）。",
+  "工作笔记：已取得两块实质证据。其一，那套尼采研究丛书明确概括了学界的基本理解方向——\"最常见的理解方向是伦理的和形而上学／宇宙论的\"，并转述了西美尔（伦理责任 vs 形而上学意义两种动机）、海德格尔（把永恒轮回定位于实存哲学并强调\"瞬间\"）的解读，作者本人主张真正动机是\"实存论\"的。其二，斯坦哈特《尼采》\"永恒回归\"章给出另一种独立解读：永恒回归不是物理理论、不是神话，而是关于\"现实为何有秩序\"的逻辑—存在论范畴。网络检索无结果、期刊文献通道仍限流。我再试一次学术文献检索（换关键词），并补读该丛书\"永恒轮回思想的形成\"一节以理清学术史脉络。"
+ ],
+ "RESEARCH_NEED": "MIXED",
+ "EVIDENCE_GAP": "二手文献通道限流不可用，改以库内可读解读文本 + 网络背景核对尼采永恒轮回的解释路线",
+ "TOOL_SELECTED": [
+  "search_scholarship",
+  "search_books",
+  "get_chapter",
+  "websearch"
+ ],
+ "TOOL_ARGS": {
+  "search_scholarship": [
+   {
+    "query": "eternal recurrence Nietzsche interpretation",
+    "limit": 10
+   },
+   {
+    "query": "ewige Wiederkunft Nietzsche Deutung",
+    "limit": 8
+   },
+   {
+    "query": "Nietzsche eternal return cosmology or existential test Magnus",
+    "limit": 8
+   },
+   {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence"
+   },
+   {
+    "limit": 8,
+    "query": "eternal return Nietzsche Heidegger Deleuze reading"
+   },
+   {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence critique cosmological existential"
+   }
+  ],
+  "search_books": [
+   {
+    "query": "永恒轮回",
+    "limit": 10
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 52
+   },
+   {
+    "book_id": "00fadd7de47c",
+    "chapter_idx": 5
+   },
+   {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 50
+   }
+  ],
+  "websearch": [
+   {
+    "query": "尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "eternal recurrence Nietzsche interpretation",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "ewige Wiederkunft Nietzsche Deutung",
+    "limit": 8
+   },
+   "phase": "executed",
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche eternal return cosmology or existential test Magnus",
+    "limit": 8
+   },
+   "phase": "executed",
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence"
+   },
+   "phase": "executed",
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 8,
+    "query": "eternal return Nietzsche Heidegger Deleuze reading"
+   },
+   "phase": "executed",
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "永恒轮回",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 50, 'chapter_title': '第一节 永恒轮回思想的形成', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 52
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': '4cc9d23c7dbf', 'chapter_idx': 52, 'title': '第三节 永恒轮回的实存论意义', 'book_title': '尼采经典著作及研究丛书（四册全）', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】', 'text': '那么，我们应该如何来理解尼采所谓的“相同者的永恒轮回"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "00fadd7de47c",
+    "chapter_idx": 5
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': '00fadd7de47c', 'chapter_idx': 5, 'title': '第6章 永恒回归', 'book_title': '尼采', 'citation_label': '【《尼采》·第6章 永恒回归】', 'text': \"永恒回归发生和回归尼采哲学最重要的部分之一就是同一的永恒再现，也称作永恒回归。解释它的最简单方式是：它意味着，一切事物一遍又一遍地发生"
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence critique cosmological existential"
+   },
+   "phase": "executed",
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 50
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': '4cc9d23c7dbf', 'chapter_idx': 50, 'title': '第一节 永恒轮回思想的形成', 'book_title': '尼采经典著作及研究丛书（四册全）', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的形成】', 'text': '如上所述，尼采自己说他是在1881年夏天才惊鸿一瞥，突然"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 50, 'chapter_title': '第一节 永恒轮回思想的形成', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': '4cc9d23c7dbf', 'chapter_idx': 52, 'title': '第三节 永恒轮回的实存论意义', 'book_title': '尼采经典著作及研究丛书（四册全）', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】', 'text': '那么，我们应该如何来理解尼采所谓的“相同者的永恒轮回"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': '00fadd7de47c', 'chapter_idx': 5, 'title': '第6章 永恒回归', 'book_title': '尼采', 'citation_label': '【《尼采》·第6章 永恒回归】', 'text': \"永恒回归发生和回归尼采哲学最重要的部分之一就是同一的永恒再现，也称作永恒回归。解释它的最简单方式是：它意味着，一切事物一遍又一遍地发生"
+  },
+  {
+   "name": "websearch",
+   "head": "{'results': [], 'query': '尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': '4cc9d23c7dbf', 'chapter_idx': 50, 'title': '第一节 永恒轮回思想的形成', 'book_title': '尼采经典著作及研究丛书（四册全）', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的形成】', 'text': '如上所述，尼采自己说他是在1881年夏天才惊鸿一瞥，突然"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "ANSWER_PUBLISHED",
+ "FINAL_ANSWER": "先说明证据边界：我优先检索了学术期刊/专著数据库，但该通道本次持续返回限流错误，网络补充检索也无结果，因此我**未能取得可读的当代期刊论文记录**。下面的\"学界评价\"主要建立在三块**库内实际可读的材料**上：一部尼采研究丛书中\"永恒轮回思想的形成\"\"永恒轮回的实存论意义\"两节，以及一部题为《尼采》的研究著作\"永恒回归\"章；凡超出这些材料、属于我记忆中经典解释路线（考夫曼、马格努斯、德勒兹等）的内容，我会明确标注为未经本次核验。\n\n---\n\n## 一、为什么\"如何评价\"首先是个分歧问题\n\n尼采本人把\"相同者的永恒轮回\"（die ewige Wiederkunft des Gleichen）视为自己思想的\"最深的、最重的元素\"，但它在文本中的呈现方式极不平衡：在《快乐的科学》里是一段文学化的恶魔独白，在《查拉图斯特拉》里是\"存在之轮/存在之环\"的诗性意象，而在《权力意志》时期的大量遗稿中反而少有系统展开【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的形成】。\n\n正是这种**文本形态的游移**，直接催生了学界评价的分裂。该研究丛书明确概括：对永恒轮回\"最常见的理解方向是伦理的和形而上学／宇宙论的\"【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】。围绕这一二分，学界的评价大致形成几条相互竞争的解释路线。\n\n## 二、几条主要的解释路线\n\n**① 宇宙论—物理学解读（把永恒轮回当作一个世界假说）**\n\n这一路线认为永恒轮回是一个关于宇宙的真实命题：时间无限、能量有限、事物组合有限，因此一切组合必然无限重复。斯坦哈特式论证以抛硬币的穷举为例——抛三次硬币只有八种序列，序列耗尽后必然重复【《尼采》·第6章 永恒回归】。这是最\"字面\"的读法，也最接近尼采遗稿中那些试图\"证明\"轮回的段落。\n\n学界对它的评价大多是**怀疑的**：作为物理学命题，它依赖若干可疑前提（有限能量、决定论的组合穷举等），且尼采本人从未给出严格的证明。因此当代主流倾向于不把它当作尼采学说的重心。（此段对\"主流倾向\"的概括含我的判断成分。）\n\n**② 生存论／实存论解读（把永恒轮回当作生命的试金石）**\n\n更强的一路主张：永恒轮回的核心不是关于世界的描述，而是对行动者的**逼问**。这种读法直接呼应《快乐的科学》第341节\"最大的重负\"——恶魔告诉你，你此刻的生活将无数次原样重复，问题于是变成：\"你还想要它吗？还要无数次吗？\"【同上】。永恒轮回在这里是一种**生存测试**：它筛选出那些能对生命说\"是\"、能承担整体肯定的人。那部研究丛书作者本人就倾向这一方向，主张永恒轮回的真正动机是\"实存论的\"，即关于人如何承受与肯定自身存在【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】。\n\n我记忆中，**考夫曼（W. Kaufmann）是这一\"生存论测试\"经典读法的重要确立者**（记忆，本次未经库中核验）。\n\n**③ 海德格尔的存在论解读**\n\n海德格尔把永恒轮回抬升为尼采**存在论**的核心，与\"权力意志\"构成一体两面。库内材料详细转述了他的两个要点：其一，思想史考古——海德格尔从尼采19岁\"生平自述\"中追问\"环绕存在者整体的圆环\"这一心结出发，论证\"起源就是未来\"；其二，本体论定位——强调\"瞬间\"（Augenblick）：\"永恒轮回学说中最沉重和最本真的东西就是：永恒在瞬间中存在……瞬间不是稍纵即逝的现在……而是将来与过去的碰撞\"【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】。在此解读下，永恒轮回不是自然科学的假说，而是存在者整体的存在方式。\n\n**④ 差异哲学解读（反对\"同一者\"的读法）**\n\n我还记得以德勒兹（Gilles Deleuze）为代表的法国解读，主张永恒轮回**恰恰不是\"同一\"的回归**，而是对差异的肯定与筛选——只有能肯定差异、能\"回归\"的东西才回归，其矛头指向传统同一性哲学（记忆，本次未经库中核验）。若此说成立，它与海德格尔的存在论读法又构成对峙。\n\n**⑤ 文本批判／怀疑论解读**\n\n我记忆中另有一路（以马格努斯 Bernd Magnus 为代表）质疑把永恒轮回当作\"学说\"本身是否恰当，认为它更像生存论工具而非可验证的教义（记忆，本次未经库中核验）。\n\n## 三、一个值得注意的术语分歧\n\n库内材料在进入评价之前先设了两道字面门槛，这本身也是一种学术立场：把德语 ewige Wiederkunft 译作汉语\"永恒轮回\"带有过多佛教色彩，\"永恒复返／返回\"也许更近原义；且尼采用的\"相同者\"（das Gleiche）**不能**译成\"同一者\"（das Identische）【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】。这个区分对判定第④路线是否成立至为关键——因为\"相同者的轮回\"与\"同一者的轮回\"是两回事。\n\n## 四、我的综合判断\n\n综合这些材料，我认为可以说：**当代学界对永恒轮回的评价，整体上从\"宇宙论假说\"撤退到了\"生存论／存在论／实践哲学\"的解读**，即不再把它当作一个关于世界如何运行的命题，而当作一个关于**如何肯定生命、如何承受存在**的思想装置。但这一\"撤退\"本身并未取得一致——海德格尔的存在论化、德勒兹的差异哲学化、考夫曼式的人生测试化之间仍有实质张力（后两条在我这里属未经核验的记忆，仅供参考）。\n\n用一层区分来收束：**原文事实**上，尼采确实留下了从宇宙论笔记到恶魔独白、再到存在之环意象的多种措辞；**解释**上，学界对这些措辞的\"重心\"判然有别；**争议**在于永恒轮回究竟是不是一个学说、若是又属于哪一类；至于我偏向生存论—实践读法，那是**我自己的综合判断**，而非文本的定论。\n\n---\n\n📖 原典路径（若你想顺着文本自己判断）\n1. 《快乐的科学》第341节\"最大的重负\"——永恒轮回的第一次公开传达，生存论读法的文本起点【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的形成】。\n2. 《查拉图斯特拉如是说》第三部\"痊愈者\"——\"存在之环永远忠实于自己……中心无所不在，永恒之路是弯曲的\"，宇宙论读法的诗性版本【同上】。\n3. 《瞧，这个人》——尼采晚年对自己学说地位的最后确认【同上】。\n\n（说明：以上三处我本次是在该研究丛书的梳理中转引并核实的，并非逐一回到各原著单行本核对；当代期刊文献因检索通道本次不可用而缺失，这是本次回答最大的证据缺口。）",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先登记研究需求：用户问的是**学界如何评价**某一学说，这明确属于二手研究/解释争议综述，回答的正确性依赖于真实文献而非我自己的印象——因此按 SCHOLARLY 处理。我的记忆中有若干经典解释路线（海德格尔的存在论解读、德勒兹的差异哲学解读、考夫曼的\"生存论测试\"解读、马格努斯质疑其宇宙论地位等），但这些\"学界认为\"的说法必须先落到真实可读的文献证据上，不能凭记忆归因。\n\n我先定位相关二手文献，再看哪些实际可读。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "学界对尼采\"永恒轮回\"学说的主要解释路线与争议（宇宙论/生存论测试/存在论/差异哲学等）的真实文献证据与内容摘要",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "eternal recurrence Nietzsche interpretation",
+    "limit": 10
+   },
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "ewige Wiederkunft Nietzsche Deutung",
+    "limit": 8
+   },
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Nietzsche eternal return cosmology or existential test Magnus",
+    "limit": 8
+   },
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "kind": "note",
+   "content": "检索通道被限流（429），尚未取得任何文献。我再试一次二手文献检索，同时并行核对尼采原典中\"永恒轮回\"的核心表述，以便评价有据可依。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence"
+   },
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "limit": 8,
+    "query": "eternal return Nietzsche Heidegger Deleuze reading"
+   },
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "永恒轮回",
+    "limit": 10
+   },
+   "result_head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 50, 'chapter_title': '第一节 永恒轮回思想的形成', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：二手文献检索通道连续返回限流（429），本轮尚未取得任何期刊/学术记录，所以\"学界如何评价\"目前无法靠真实的学术文献证据来支撑。原典库倒是定位到了两处可读材料——斯坦哈特《尼采》的\"永恒回归\"章，以及一套尼采研究丛书中专门讨论\"永恒轮回的实存论意义\"的章节，这属于可实际读取的解读性文本。下一步我读取这些章节确认具体措辞，并尝试用一次网络检索补充学界解释路线的背景（仅作语境，不作原典引用）。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "websearch"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "二手文献通道限流不可用，改以库内可读解读文本 + 网络背景核对尼采永恒轮回的解释路线",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "首选通道 search_scholarship 连续被限流，需以其它通道补背景",
+    "unresolved_evidence_gap": "学界对永恒轮回的经典解释路线（宇宙论/生存论/存在论/差异哲学）的可读证据"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 52
+   },
+   "result_head": "{'book_id': '4cc9d23c7dbf', 'chapter_idx': 52, 'title': '第三节 永恒轮回的实存论意义', 'book_title': '尼采经典著作及研究丛书（四册全）', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】', 'text': '那么，我们应该如何来理解尼采所谓的“相同者的永恒轮回"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "00fadd7de47c",
+    "chapter_idx": 5
+   },
+   "result_head": "{'book_id': '00fadd7de47c', 'chapter_idx': 5, 'title': '第6章 永恒回归', 'book_title': '尼采', 'citation_label': '【《尼采》·第6章 永恒回归】', 'text': \"永恒回归发生和回归尼采哲学最重要的部分之一就是同一的永恒再现，也称作永恒回归。解释它的最简单方式是：它意味着，一切事物一遍又一遍地发生"
+  },
+  {
+   "kind": "tool",
+   "name": "websearch",
+   "phase": "executed",
+   "args": {
+    "query": "尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼"
+   },
+   "result_head": "{'results': [], 'query': '尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：已取得两块实质证据。其一，那套尼采研究丛书明确概括了学界的基本理解方向——\"最常见的理解方向是伦理的和形而上学／宇宙论的\"，并转述了西美尔（伦理责任 vs 形而上学意义两种动机）、海德格尔（把永恒轮回定位于实存哲学并强调\"瞬间\"）的解读，作者本人主张真正动机是\"实存论\"的。其二，斯坦哈特《尼采》\"永恒回归\"章给出另一种独立解读：永恒回归不是物理理论、不是神话，而是关于\"现实为何有秩序\"的逻辑—存在论范畴。网络检索无结果、期刊文献通道仍限流。我再试一次学术文献检索（换关键词），并补读该丛书\"永恒轮回思想的形成\"一节以理清学术史脉络。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence critique cosmological existential"
+   },
+   "result_head": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 50
+   },
+   "result_head": "{'book_id': '4cc9d23c7dbf', 'chapter_idx': 50, 'title': '第一节 永恒轮回思想的形成', 'book_title': '尼采经典著作及研究丛书（四册全）', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的形成】', 'text': '如上所述，尼采自己说他是在1881年夏天才惊鸿一瞥，突然"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "学界对尼采\"永恒轮回\"学说的主要解释路线与争议（宇宙论/生存论测试/存在论/差异哲学等）的真实文献证据与内容摘要",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "二手文献通道限流不可用，改以库内可读解读文本 + 网络背景核对尼采永恒轮回的解释路线",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "首选通道 search_scholarship 连续被限流，需以其它通道补背景",
+    "unresolved_evidence_gap": "学界对永恒轮回的经典解释路线（宇宙论/生存论/存在论/差异哲学）的可读证据"
+   }
+  }
+ ],
+ "blocked_codes": [],
+ "injection_fired": 12,
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "二手文献通道限流不可用，改以库内可读解读文本 + 网络背景核对尼采永恒轮回的解释路线",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:14:44",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "学界对尼采\"永恒轮回\"学说的主要解释路线与争议（宇宙论/生存论测试/存在论/差异哲学等）的真实文献证据与内容摘要",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:14:55",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "二手文献通道限流不可用，改以库内可读解读文本 + 网络背景核对尼采永恒轮回的解释路线",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:14:55",
+    "reason": "首选通道 search_scholarship 连续被限流，需以其它通道补背景",
+    "unresolved_gap": "学界对永恒轮回的经典解释路线（宇宙论/生存论/存在论/差异哲学）的可读证据"
+   }
+  ],
+  "retrieval_executed": 5,
+  "soft_limit": 8,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 82381,
+   "output_tokens": 6756,
+   "total_tokens": 89137
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 11,
+   "compacted_chars_saved": 12823,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12061,
+     "output_tokens": 710,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13622,
+     "output_tokens": 361,
+     "tool_chars_added": 2064
+    },
+    {
+     "round": 3,
+     "input_tokens": 15996,
+     "output_tokens": 1678,
+     "tool_chars_added": 4552
+    },
+    {
+     "round": 4,
+     "input_tokens": 21370,
+     "output_tokens": 875,
+     "tool_chars_added": 9808
+    },
+    {
+     "round": 5,
+     "input_tokens": 19332,
+     "output_tokens": 3132,
+     "tool_chars_added": 2875
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": true,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 2674,
+ "token_usage": {
+  "input_tokens": 82381,
+  "output_tokens": 6756,
+  "total_tokens": 89137
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 48.0,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "学界对尼采\"永恒轮回\"学说的主要解释路线与争议（宇宙论/生存论测试/存在论/差异哲学等）的真实文献证据与内容摘要",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 学界对尼采\"永恒轮回\"学说的主要解释路线与争议（宇宙论/生存论测试/存在论/差异哲学等）的真实文献证据与内容摘要）。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任何文献做内容性归因前必须 get_schol",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "eternal recurrence Nietzsche interpretation",
+    "limit": 10
+   },
+   "result_summary": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "ewige Wiederkunft Nietzsche Deutung",
+    "limit": 8
+   },
+   "result_summary": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche eternal return cosmology or existential test Magnus",
+    "limit": 8
+   },
+   "result_summary": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence"
+   },
+   "result_summary": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 8,
+    "query": "eternal return Nietzsche Heidegger Deleuze reading"
+   },
+   "result_summary": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "永恒轮回",
+    "limit": 10
+   },
+   "result_summary": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 50, 'chapter_title': '第一节 永恒轮回思想的形成', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "二手文献通道限流不可用，改以库内可读解读文本 + 网络背景核对尼采永恒轮回的解释路线",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "首选通道 search_scholarship 连续被限流，需以其它通道补背景",
+    "unresolved_evidence_gap": "学界对永恒轮回的经典解释路线（宇宙论/生存论/存在论/差异哲学）的可读证据"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=MIXED（EVIDENCE_GAP: 二手文献通道限流不可用，改以库内可读解读文本 + 网络背景核对尼采永恒轮回的解释路线）。soft 检索预算=6 次。预算延展已获准（BUDGET_EXTENSION_REASON 已留痕）: soft 预算=8 次。', 'sna",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 52
+   },
+   "result_summary": "{'book_id': '4cc9d23c7dbf', 'chapter_idx': 52, 'title': '第三节 永恒轮回的实存论意义', 'book_title': '尼采经典著作及研究丛书（四册全）', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】', 'text': '那么，我们应该如何来理解尼采所谓的“相同者的永恒轮回",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "00fadd7de47c",
+    "chapter_idx": 5
+   },
+   "result_summary": "{'book_id': '00fadd7de47c', 'chapter_idx': 5, 'title': '第6章 永恒回归', 'book_title': '尼采', 'citation_label': '【《尼采》·第6章 永恒回归】', 'text': \"永恒回归发生和回归尼采哲学最重要的部分之一就是同一的永恒再现，也称作永恒回归。解释它的最简单方式是：它意味着，一切事物一遍又一遍地发生",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼"
+   },
+   "result_summary": "{'results': [], 'query': '尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼', 'note': '联网无结果（Bing 与维基百科均不可达）'}",
+   "thought": "执行 websearch",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence critique cosmological existential"
+   },
+   "result_summary": "{'error': 'PROVIDER_RATE_LIMIT', 'providers_queried': ['crossref', 'openalex'], 'provider_errors': ['crossref:PROVIDER_RATE_LIMIT', 'openalex:PROVIDER_RATE_LIMIT'], 'results': [], 'READABLE_RESULT_COU",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 50
+   },
+   "result_summary": "{'book_id': '4cc9d23c7dbf', 'chapter_idx': 50, 'title': '第一节 永恒轮回思想的形成', 'book_title': '尼采经典著作及研究丛书（四册全）', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的形成】', 'text': '如上所述，尼采自己说他是在1881年夏天才惊鸿一瞥，突然",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "eternal recurrence Nietzsche interpretation",
+    "limit": 10
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "ewige Wiederkunft Nietzsche Deutung",
+    "limit": 8
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche eternal return cosmology or existential test Magnus",
+    "limit": 8
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "eternal recurrence Nietzsche interpretation",
+    "limit": 10
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "ewige Wiederkunft Nietzsche Deutung",
+    "limit": 8
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Nietzsche eternal return cosmology or existential test Magnus",
+    "limit": 8
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence"
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 8,
+    "query": "eternal return Nietzsche Heidegger Deleuze reading"
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence"
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 8,
+    "query": "eternal return Nietzsche Heidegger Deleuze reading"
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "永恒轮回",
+    "limit": 10
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 50,
+      "chapter_title": "第一节 永恒轮回思想的形成",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的形成】",
+      "snippet": "如上所述，尼采自己说他是在1881年夏天才惊鸿一瞥，突然冒出了“相同者的永恒轮回”思想的。但根据海德格尔的研究，尼采似乎早就有此“轮回”观念了。1863年9月18日，19岁的高中学生尼采写了一份“生平自述”，其结束语如下：“而这个人就这样长大了，不再需要曾经缠绕着他的一切了。他无需冲破这些桎梏，而是突然地，好比有一个神下了命令，这些桎梏都脱落了。那么，那个最终依然环绕着他的圆环在哪里呢？它是世界吗？是神吗？……” [3] 海德格尔并且发",
+      "score": 0.459
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 52,
+      "chapter_title": "第三节 永恒轮回的实存论意义",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】",
+      "snippet": "那么，我们应该如何来理解尼采所谓的“相同者的永恒轮回”（die ewige Wiederkunft des Gleichen）？首先在字面上我们需要注意两点，一是把德语的ewige Wiederkunft译为我们汉语的“永恒轮回”，难免过多的佛教色彩，也许“永恒复返”、“永恒返回”等中文译法更接近于原义 [15] ；二是我们不能把尼采使用的“相同者”（das Gleiche）译为“同一者”，后者的德语原文为das Identische—",
+      "score": 0.448
+     },
+     {
+      "book_id": "5dcede8a79a6",
+      "book_title": "原型与集体无意识",
+      "author": "卡尔·古斯塔夫·荣格",
+      "chapter_idx": 5,
+      "chapter_title": "关于轮回",
+      "citation_label": "【《原型与集体无意识》·关于轮回】",
+      "snippet": "轮回概念并非总是在同一意文上被使用的。既然这一侧念有多个面向。 释一要它的不同意义定会不无神益，我将列出互种不同的形式，如是有人希望更为详细地论，也许还可以增加：低是我斗期地想。我的定义至少强盖了的第二部分将讨论轮网的建多心理面向，在第三都分，我将提供一个选自《古最为重要的意文。在文章的第一部分。我将类要总结轮风的不同形式，百文章兰经) 的轮风之逐例证。 (1) 转度(meemgsyebesis)。在我所希望大家关推的轮民的五个润向中，",
+      "score": 0.447
+     },
+     {
+      "book_id": "0ed8c0c49e2f",
+      "book_title": "在绝望之巅",
+      "author": "E·M·齐奥朗",
+      "chapter_idx": 31,
+      "chapter_title": "瞬间与永恒",
+      "citation_label": "【《在绝望之巅》·瞬间与永恒】",
+      "snippet": "永恒只能被理解为主观经验。它不能被客观地设想，因为人的时间有限性，使他无法把无限当作一个不受限制的时间进程的概念去把握。因此，对永恒的体验取决于主观感受的强度，而通向永恒的途径是对暂时性的超越。人们必须与时间作艰苦的斗争，才能—一旦克服了瞬间连续不断的妄念— 彻底地生活在进入永恒的一瞬间。瞬间如何变成通往永恒的大门？瞬间的不充分性和相对性产生了成为永恒的感觉：那些对暂时性抱有敏锐意识的人，每一刻都在想着下一刻。 只有在没有连续性的情况下",
+      "score": 0.445
+     },
+     {
+      "book_id": "00fadd7de47c",
+      "book_title": "尼采",
+      "author": "埃里克·斯坦哈特",
+      "chapter_idx": 5,
+      "chapter_title": "第6章 永恒回归",
+      "citation_label": "【《尼采》·第6章 永恒回归】",
+      "snippet": "永恒回归发生和回归尼采哲学最重要的部分之一就是同一的永恒再现，也称作永恒回归。解释它的最简单方式是：它意味着，一切事物一遍又一遍地发生： 像你现在正生活着的或已经生活过的生活，你将不得不再生活一次，再生活无数次。而且其中没有任何事物是新的，在你人生中的任何痛苦和高兴和叹息，和不可言表的细小或重大的一切事情将不得不重新光临你，而且都是以同样的先后顺序和序列。（GS341)像很多深沉的哲学思想一样，这昕起来很荒谬一一当- /.!'7 - 你",
+      "score": 0.444
+     },
+     {
+      "book_id": "309de54e4392",
+      "book_title": "康德著作集（套装10册）（汉译世界学术名著丛书）",
+      "author": "伊曼努尔·康德",
+      "chapter_idx": 68,
+      "chapter_title": "万物的终结",
+      "citation_label": "【《康德著作集（套装10册）（汉译世界学术名著丛书）》·万物的终结】",
+      "snippet": "万物的终结 (1) 下面是在虔诚的谈话中特别流行的一种提法，即让一个临死的人说，他是要 从时间进入永恒 了。 如果这里的 永恒 一词被理解为一种朝着无穷在前进的时间，那么这个提法事实上并没有说出任何东西；因为人确实是永远不会从时间里面走出来的，而只能是永远地从一个时间前进到另一个时间。因此， 一切时间的终结 在这里就必须是指人类永不中断的向前绵延，但这一绵延（把它的存在作为数量来考虑）又必须是指我们对之确实无法形成任何（除了是纯消极的）",
+      "score": 0.429
+     },
+     {
+      "book_id": "7657ef4a2cd3",
+      "book_title": "与神对话(全5卷）",
+      "author": "尼尔·唐纳德·沃尔什",
+      "chapter_idx": 52,
+      "chapter_title": "第八章",
+      "citation_label": "【《与神对话(全5卷）》·第八章】",
+      "snippet": "生命其实是会永远延续下去的，对吧？ 它肯定是这样的啊。 它是不会终结的。 是啊。 转世是真的。 是的。你可以随时随意回到凡躯——也就是会“死亡”的肉身。 何时回来是我们决定的吗？ 是的，“是否”与“何时”回来都由你们决定。 我们也可以决定什么时候离开吗？在什么时候死亡是我们选择的吗？ 凡是灵魂遇到的经验，没有哪次是违背其意愿的。也就是说，是不可能违背其意愿的，因为灵魂创造着所有经验。 灵魂什么都不想要。灵魂拥有一切。一切智慧，一切认识，",
+      "score": 0.414
+     },
+     {
+      "book_id": "747c2bf54af0",
+      "book_title": "重返世界尽头的咖啡馆",
+      "author": "约翰·史崔勒基",
+      "chapter_idx": 28,
+      "chapter_title": "28",
+      "citation_label": "【《重返世界尽头的咖啡馆》·28】",
+      "snippet": "凯茜向杰西卡微微一笑：“你用过车载GPS吗？它可以自动定位你的位置，输入你想去的地方，就会响起一个非常友好的声音，一句一句指导你该怎么走。” 杰西卡忍不住哈哈大笑：“用过啊。” “我发现这就是宇宙运转的方式。” “什么？” “我们做人生决定也是同样的原理。我们尝试新事物，或左转，或右转，或原地打转，都是一样的。”凯茜答道。 杰西卡微笑着认真听。 “有时候，我们感觉自己偏离原路太远，没人能把我们带回去。”凯茜看了杰西卡一眼，“你知道我的意",
+      "score": 0.41
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 44,
+      "chapter_title": "第四节 永恒轮回思想的思想家",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第四节 永恒轮回思想的思想家】",
+      "snippet": "不过，反传统的、否定性的查拉图斯特拉还只是事情的一方面。尼采采用查拉图斯特拉形象的主要目的是让他来宣告“相同者的永恒轮回”学说。“查拉图斯特拉”这个名字总是与“相同者的永恒轮回”联系在一起的。如上所引，尼采首次在笔记本里使用“查拉图斯特拉”这个名字是在一则题为“正午与永恒”的笔记里（科利版第9卷11［195］），是与“永恒”问题相关的。而尼采首次公开使用“查拉图斯特拉”这个名字的《快乐的科学》第342节也是在同样性质的语境里，因为此前的",
+      "score": 0.408
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 608,
+      "chapter_title": "七印记",
+      "citation_label": "【《西方百年学术经典著作》·七印记】",
+      "snippet": "如果我是一个预言者并且充满了预言的精神，在两片海域之间的高脊上漫游。 像过去和未来之间的一片浓云一样漫游——敌对所有闷热的低地以及所有倦怠的既不能生也不能死的事物。 阴暗的胸膛已经为闪电和救赎的光束作好了准备，孕育着说着“是”，笑着说着“是”的闪电，为预言的雷电作好了准备。 然而这样孕育的人是多么神圣啊！诚然，谁如果终有一天要点亮未来的灯，谁就必须高悬很长一段时间，就像山峰上恶劣的气候一样！ 噢，我如何能够不因永恒而狂热，不因婚戒而狂热",
+      "score": 0.407
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 51,
+      "chapter_title": "第二节 永恒轮回思想的证明",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第二节 永恒轮回思想的证明】",
+      "snippet": "尼采是怎样证明“相同者的永恒轮回”学说的？我们知道，尼采不是一位善于证明自己思想的论辩高手，况且，推论式的思想本身也不是尼采所要追求的，而倒是他要放弃和反对的。如前所述，尼采是在1881年8月间确实地形成他的“相同者的永恒轮回”思想的。正是在这个时期的笔记中，尼采首先对自己的“相同者的永恒轮回”学说进行了最早的论证。后来海德格尔根据尼采1881年8月以后的一组笔记，对尼采有关永恒轮回思想的论证思路做了一次简明的梳理，把它概括为十个要点：",
+      "score": 0.399
+     },
+     {
+      "book_id": "cc9d0d9358a7",
+      "book_title": "擬仿物與擬像",
+      "author": "让·鲍德里亚",
+      "chapter_idx": 10,
+      "chapter_title": "複製體的故事",
+      "citation_label": "【《擬仿物與擬像》·複製體的故事】",
+      "snippet": "個幽異魅影的樣子，力量便會永存。每個人都有能力做夢，而且，會夢見他的一生…：—也就是關於他的存有之完美複體，或多重複體。但是，這樣的拷貝樣本只有夢寐的力量。而且，若有人要強制性地把夢境轉入現實之境，宀第嘉摧毀了，這樣的說法，對於誘惑的原初場景，也是成立的。也書它被奇魅化、被記憶截獲，但卻委入現實，它才能夠運作自身我們的時代渴望把這個魅影，如同它者般地置出境。也就是說，要在某個完全不同的戲局中，讓它以血肉高之態實現出來、物質化出來，從某個",
+      "score": 0.399
+     },
+     {
+      "book_id": "cc9d0d9358a7",
+      "book_title": "擬仿物與擬像",
+      "author": "让·鲍德里亚",
+      "chapter_idx": 3,
+      "chapter_title": "末世災厄",
+      "citation_label": "【《擬仿物與擬像》·末世災厄】",
+      "snippet": "《末世災厄》媒介、透過普遍化的銀幕以及微觀處理器畫貝行它。就在這種情景中，忘卻與銷亡nmantissement)達成它的美學向度：它在倒退中被成就出來，最昇到大衆性的層級。 即使是社會歷史性向度的類型，也在這種罪疚、羞恥的懺悔，以及未被說出、未曾存在的型式中被遺忘。因爲，現在大家都知道，大家都在滅絕中顚撲前行。這就是滅絕不會再發生的電性符號。但是，當我們在這道程中，耗費的倉、一些淚水，就不會生產出來—由爲，它總是在再生產自身的當下，正好",
+      "score": 0.399
+     },
+     {
+      "book_id": "56bb065c1796",
+      "book_title": "信仰寻求理解",
+      "author": "安瑟伦",
+      "chapter_idx": 24,
+      "chapter_title": "第24章",
+      "citation_label": "【《信仰寻求理解》·第24章】",
+      "snippet": "中，对此如何理解“提要：那至高的本性既无开端也无终结，也没有时间变迁中所表现出来的现在、过去和将来，因为它的永恒一一不是别的，就是它自身，既不变动，也没有部分。确切地讲，由于“无时不在”这个语词指称的是永恒，而时间指称的是变化，因此，我们说那至高的本性“无时不在”比我们说它存在于每一时间中要更恰当。由于永恒就是同时完满存在着的无尽的生命，故它同那惟一的至高本性相一致，它没有起点，没有终点，也没有任何的界限。售同样清楚的是，那至高的本性既",
+      "score": 0.39
+     },
+     {
+      "book_id": "cc9d0d9358a7",
+      "book_title": "擬仿物與擬像",
+      "author": "让·鲍德里亚",
+      "chapter_idx": 2,
+      "chapter_title": "歷史：退卻的劇景",
+      "citation_label": "【《擬仿物與擬像》·歷史：退卻的劇景】",
+      "snippet": "幕上取代神話的位置。幻象的結局，就是恭賀自己，具於銀幕上歷史的自覺，如同恭賀自己能夠將政治轉化爲學問。這是相同的誤解與神話化，進入學術的政治，也就是習於歷史的旗一東西二它是退卻的政治，完全剝除了實質，就在膚淺的費下，得以合法化。就在遊戲的硏、以及冒險場域中，這雋政治就像是情慾、長期瞽，或者在那種時代的社會福利一就是驗屍般的解放過程a-isationu m e )那個時代的偉大事件，偉大的創傷，就是強烈指窮的衰亡。豐一眞實性的死去，以及用",
+      "score": 0.39
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 370,
+      "chapter_title": "转轮圣王",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·转轮圣王】",
+      "snippet": "天上寿尽，还生人间，或为轮王，统摄四洲，威德自在，安立无量百千有情于十善道。 因过去修十善道的善行，受持八关斋戒，天人寿尽了，生到人世间，也不是普通人，而是治世的帝王，佛经称“转轮圣王”。转轮圣王不是几百年才出啊！也许好几千年、万年才出一个。治世的帝王分四种：金轮圣王、银轮圣王、铜轮圣王、铁轮圣王。《华严经》上说，真正治世的转轮圣王，功德同佛一样，也就是在家佛，是十地菩萨转生的。这一点很妙，真正的转轮治世的圣王是十地菩萨转生，真正示现十",
+      "score": 0.389
+     },
+     {
+      "book_id": "cc9d0d9358a7",
+      "book_title": "擬仿物與擬像",
+      "author": "让·鲍德里亚",
+      "chapter_idx": 1,
+      "chapter_title": "擬仿物的形構進程",
+      "citation_label": "【《擬仿物與擬像》·擬仿物的形構進程】",
+      "snippet": "依然可以在沙漠中若隱若現，這麼魅人的「廢墟抽象」(abstraction ruisve)體具現著形上學的美色，足以和帝國至較勁爭鋒，然後，又如同屍身般地腐化，回返靈魂的本相。 舔福世代的淘洗，擬方和眞實手的混淆，多少變成雙重收場如此，我們可以將這個寓言故事視爲擬像最美麗的借喩；而寓言本身對於我們來說，已經整整繞了一圈：它擁有的，就僅僅是二層次擬simuacresd e u xo r d r e )的拘謹魅力。 現今來說，抽瘍再也不是所謂",
+      "score": 0.388
+     },
+     {
+      "book_id": "c13b139d1db3",
+      "book_title": "哲学导论",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 80,
+      "chapter_title": "6.1 宿命论与业 西谷启治，论命运",
+      "citation_label": "【《哲学导论》·6.1 宿命论与业 西谷启治，论命运】",
+      "snippet": "从那一观点【即空的观点】来看，业是这样一个世界，在那里，每一个个人都为其在无穷无尽的世界网络中的纽带和因果关系决定着，然而，每一个个人存在和个人行为的实例，连同它们的每一个瞬间，都是作为某种全新的东西出现，拥有自由和创造性。 “自没有开端的过往时间以来”，总体网络的盛衰被设想为一连串无限的因果必然性，而它不具有开端这一点意味着存在着一个先于任何可设想的过去的之前。而这样的时间没有终点则意味着，哪怕对于最遥远的可能未来，都还有一个之后。任",
+      "score": 0.385
+     },
+     {
+      "book_id": "0ed8c0c49e2f",
+      "book_title": "在绝望之巅",
+      "author": "E·M·齐奥朗",
+      "chapter_idx": 47,
+      "chapter_title": "回归混沌",
+      "citation_label": "【《在绝望之巅》·回归混沌】",
+      "snippet": "让我们回归原始的混沌！让我们想象原始的混乱，原始的旋涡！让我们把自己扔进习俗形成之前的旋风。让我们的存在在火热的深渊中因努力和疯狂而颤抖！让一切都被抹去，以便我们在混乱和失衡的包围中，全面参与到普遍的谵妄中，沿着旧路，从秩序回到混沌，从形式回到旋涡。世界的解体是反向的创世：是颠倒的启示录，但出于相似的冲动。在第一次体验到启示录般的眩晕之前，没有人愿意回归混沌。 一想到被卷入初始混沌的旋涡，那充满似是而非的对称的大混乱—混沌那独特的几何形",
+      "score": 0.384
+     },
+     {
+      "book_id": "7657ef4a2cd3",
+      "book_title": "与神对话(全5卷）",
+      "author": "尼尔·唐纳德·沃尔什",
+      "chapter_idx": 50,
+      "chapter_title": "第六章",
+      "citation_label": "【《与神对话(全5卷）》·第六章】",
+      "snippet": "现在我想换个话题啦，如果可以的话，我想谈谈地球的变化。但是在此之前，我有句话想说。你在这里说的许多道理我好像以前听说过。我有时候觉得我反复地听到相同的东西。 那很好啊。因为确实是这样的！正如我早前说过的，这是事先注定的。 本书包含的信息就像弹簧。在收缩的时候，它本身变成许多圈圈。一个圈叠着一个圈，看上去确实是“不断在转圈”。只有当弹簧展开时，你才会发现它以螺旋的形式延伸，其舒展的幅度之大远远超乎你的想象。 是的，你是对的。这里所说的道理",
+      "score": 0.38
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 458,
+      "chapter_title": "341",
+      "citation_label": "【《尼采文集（合集）》·341】",
+      "snippet": " 最大的重负 。——假如在某个白天或者某个黑夜，有个恶魔潜入你最孤独的寂寞中，并且对你说：“这种生活，如你目前正在经历、往日曾经度过的生活，就是你将来还不得不无数次重复的生活；其中决不会出现任何新鲜亮色，而每一种痛苦、每一种欢乐、每一个念头和叹息，以及你生命中所有无以言传的大大小小的事体，都必将在你身上重现，而且一切都是以相同的顺序排列着的——同样是这蜘蛛，同样是这树林间的月光，同样是这个时刻以及我自己。存在的永恒沙漏将不断地反复转动，",
+      "score": 0.38
+     },
+     {
+      "book_id": "de8732de1469",
+      "book_title": "一堂终身哲学课：回答一生必然遇到的20个人生难题",
+      "author": "莫提默·J·艾德勒",
+      "chapter_idx": 45,
+      "chapter_title": "41 如何思考变化",
+      "citation_label": "【《一堂终身哲学课：回答一生必然遇到的20个人生难题》·41 如何思考变化】",
+      "snippet": "我们开始来讨论变化这一大问题。有很多词汇可以表达变化，比如运动、修改、变成、逝去。而下列词汇则含有相反的含义，意味着不变化：停止、保留、稳定、永久。 另外，我们也可以换个角度思考和变化与稳定、动与静类似的一组对立概念，那就是暂时与永恒。因为所有变化都发生在时间之中，所有会发生变化的事物都是暂时存在的事物，只有那些绝对不变的事物，才能够被称为永恒。 让我用这个事实来提醒大家注意，那就是“永恒”这个词在英语中有两层含义。有时它指的是“无尽的",
+      "score": 0.38
+     },
+     {
+      "book_id": "7657ef4a2cd3",
+      "book_title": "与神对话(全5卷）",
+      "author": "尼尔·唐纳德·沃尔什",
+      "chapter_idx": 58,
+      "chapter_title": "第十四章",
+      "citation_label": "【《与神对话(全5卷）》·第十四章】",
+      "snippet": "看着这些文字，我心里充满了敬畏。谢谢你以这种方式与我同在。谢谢你与我们大家同在。因为已经有数百万的人看过这几卷对话录，还有数百万的人将会看。我们非常感激你到我们心里来。 你们是我最爱的生灵，我一直在你们心里。你们现在能够真正地感受到我在那里，我十分高兴。 我向来与你们同在。我从不曾离开你们。我是你们，你们是我，我们不会分离，永远不会，因为那是不可能的。 喂，且慢！我有种似曾相识的感觉。我们以前是不是说过这些话啊？ 当然啦！去看第十二章的",
+      "score": 0.377
+     },
+     {
+      "book_id": "f11f1b13c278",
+      "book_title": "形而上学",
+      "author": "亚里士多德",
+      "chapter_idx": 114,
+      "chapter_title": "第六章",
+      "citation_label": "【《形而上学》·第六章】",
+      "snippet": "地甚至不能解释*他有时认为是运动的源泉的，亦即那本身运动的东西，①究竞是什么：因为根据他的看法，灵魂是在后的，并且与天是同年龄的。②这样，设想潜能先于现实，在一种意义上是对的，而在另一种意义上则是不对的：我们必须说明为什么。*现实在先已经由阿那克5萨哥拉验证过了（因为“理性”是现实性），也被恩培多克勒在他的爱与斗的学说中验证过了。 因此，混沌或黑夜并不持续地存在于无限的时间之中，但是相同的事物已经永远存在（或者通过一种变化的循环，或者依",
+      "score": 0.376
+     },
+     {
+      "book_id": "c13b139d1db3",
+      "book_title": "哲学导论",
+      "author": "罗伯特·所罗门",
+      "chapter_idx": 79,
+      "chapter_title": "6.1 宿命论与业 索福克勒斯，《俄狄浦斯王》",
+      "citation_label": "【《哲学导论》·6.1 宿命论与业 索福克勒斯，《俄狄浦斯王》】",
+      "snippet": "俄狄浦斯：我去了德尔菲。福波斯……宣布了一件十分可怖的事：他预言我会玷污我母亲的床榻，生下一些使人不忍看的儿女，而且我会是杀害自己生身父亲的凶手。因此，我再也没有回到科林斯——惟有天象告诉我科林斯在何处——免得看见那个神谕得到残酷实现。 伊俄卡斯特：听我说，你就会知道并没有一个凡人精通预言术。我很快可以给你个证据。有一次，【我的丈夫】得到一个神谕……它说他跟我会有一个儿子，然而这个儿子会夺取他的生命。可是——听他们说——他被一伙陌生人杀",
+      "score": 0.376
+     },
+     {
+      "book_id": "747c2bf54af0",
+      "book_title": "重返世界尽头的咖啡馆",
+      "author": "约翰·史崔勒基",
+      "chapter_idx": 32,
+      "chapter_title": "32",
+      "citation_label": "【《重返世界尽头的咖啡馆》·32】",
+      "snippet": "“ 凡是过去都有存在的必要 。”凯茜说，“ 如果没有过去，此刻也不会发生 。” “可我不喜欢我的过去。” “没关系， 你不必喜欢自己的全部过去，也不必释怀。你只需要知道，过去的作用是把你带到现在 ……这就够了。” 凯茜看着杰西卡，说：“只要我们回溯的时间够长，就会发现发生过的一切都有意义。只要你清楚，自己要向宇宙GPS里输入什么新目的地，接下来就容易多了。一旦你心中有数，你就能看到，过去和新目的地之间早就铺好了路。 “然后你就会明白，其",
+      "score": 0.374
+     },
+     {
+      "book_id": "46736478a11d",
+      "book_title": "苏菲的世界（贾德名作系列三部曲）",
+      "author": "乔斯坦·贾德",
+      "chapter_idx": 88,
+      "chapter_title": "解开人类生存之谜",
+      "citation_label": "【《苏菲的世界（贾德名作系列三部曲）》·解开人类生存之谜】",
+      "snippet": "傅佩荣 经过一百五十亿年的等待，我终于要动笔写这篇文章了。原来从创造宇宙的大爆炸开始，所有发生的一切都是为了成就我眼前的这一件事。仔细读完贾德的新作《玛雅》之后，我很难想到不同于上述所说的开场白。 《玛雅》是一本什么样的书呢？是带有悬疑色彩的爱情小说，还是深寓哲思趣味的散文随笔？或者，是探讨生命起源以至人类演化的科学著作，还是关心永恒并且触及来世与轮回的宗教假设？正确的答案是：以上皆是。如果再加上解说西班牙画家哥雅的玛雅画像的神奇轶事，",
+      "score": 0.374
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 53,
+      "chapter_title": "第四节 权力意志与永恒轮回",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第四节 权力意志与永恒轮回】",
+      "snippet": "根据海德格尔的著名解释，尼采的形而上学哲学的“主楼”轮廓显得格外清晰了：“权力意志”说的是存在者的“什么”（Was），即要解决形而上学的“本质”（essentia）问题；有了“什么”，还得有“如何”（Wie）之解，尼采的第二个大概念“相同者的永恒轮回”代表的就是这个“如何”，即存在者整体的在场方式，也就是尼采对于“实存”（existentia）问题的形而上学解答。如此，尼采哲学便被纳入欧洲—西方形而上学传统的问题结构之中，成就形而上学的",
+      "score": 0.374
+     },
+     {
+      "book_id": "f11f1b13c278",
+      "book_title": "形而上学",
+      "author": "亚里士多德",
+      "chapter_idx": 10,
+      "chapter_title": "第二章",
+      "citation_label": "【《形而上学》·第二章】",
+      "snippet": "第二卷（a）1第二章也不能有*无限地向下的进展，即在向上的方向有一个开端，所以20水应当来自火，土来自水，这样永远有某种其他种类的东西被产生出来。因为一个事物来自另一事物有两种方式一“来自”不是“后于” 的意思（如像我们说在伊斯特米赛会[lo0uia]后，来了奥林匹克赛会[Oxouma]），而是（1）如人来自小孩，即由于小孩的变化：或者[2]如气来自水。*“如人来自小孩”，我们的意思是：“像那个已经成为存在的东西来自那正在变为存在的东西",
+      "score": 0.374
+     },
+     {
+      "book_id": "7657ef4a2cd3",
+      "book_title": "与神对话(全5卷）",
+      "author": "尼尔·唐纳德·沃尔什",
+      "chapter_idx": 57,
+      "chapter_title": "第十三章",
+      "citation_label": "【《与神对话(全5卷）》·第十三章】",
+      "snippet": "哇！你这些话很刺耳哦。你是说我们不该做出承诺——不该向任何人承诺任何东西吗？ 从你们大多数人现在的生活来看，每个承诺都包含着一个谎言。这个谎言就是，你们现在能够知道，在未来任何时刻，你们将会对某件事情产生什么感受，你们将会怎样处理那件事。假如你们以反应性生灵的身份去生活（绝大多数人是这样的），你们将无从知道这些。唯有当你们以创造性生灵的身份去生活时，你们才能许下不包含谎言的承诺。 创造性生灵确实能够知道，在未来任何时间，他们将会对某件事",
+      "score": 0.374
+     }
+    ],
+    "query": "永恒轮回",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 52
+   },
+   "result_full": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 52,
+    "title": "第三节 永恒轮回的实存论意义",
+    "book_title": "尼采经典著作及研究丛书（四册全）",
+    "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第三节 永恒轮回的实存论意义】",
+    "text": "那么，我们应该如何来理解尼采所谓的“相同者的永恒轮回”（die ewige Wiederkunft des Gleichen）？首先在字面上我们需要注意两点，一是把德语的ewige Wiederkunft译为我们汉语的“永恒轮回”，难免过多的佛教色彩，也许“永恒复返”、“永恒返回”等中文译法更接近于原义 [15] ；二是我们不能把尼采使用的“相同者”（das Gleiche）译为“同一者”，后者的德语原文为das Identische——简约说来，“相同者”（das Gleiche）与“同一者”（das Identische）的区别在于，前者包含着差异，是有差异的相对的“同”，而后者则是形式／逻辑上的绝对的“同”。\n关于尼采的“相同者的永恒轮回”学说，学界可谓众说纷纭，但基本的理解方向还是集中的。最常见的理解方向是伦理的和形而上学／宇宙论的，即从伦理角度与形而上学角度理解尼采的永恒轮回学说。 [16] 哲学家西美尔指出：尼采的永恒轮回思想最可疑的现实意义存在于它的两个本质性的意义之间，即伦理规整的意义与形而上学的意义。“尼采用这种思想使心灵的两种典型的和相互对立的基本动机形成一个独特的统一：一种是对有限者，对具体的被限定者，即对已发生者的形式规定的需求；另一种是对无限者，对超越一切限制者，对失迷于无界限状态的需求。” [17] 西美尔在此所讲的两个基本动机，既可与康德的现象与本体、知识与信仰之分相沟通，也可与后来的海德格尔所主张的形而上学的两个路向，即存在学／本体论（ontologia）与实存哲学／神学（theologia）两个问题结构相联通。在海德格尔那里，尼采的“相同者的永恒轮回”学说被定位于实存哲学／神学的路向上，从而也就获得了形而上学的意义。\n尼采永恒轮回学说的两重根本意义，即伦理意义与形而上学意义，自然是此说中的应有之义，或者说是从中容易生发出来的意义。不过，对于这两重意义的确认和解释，人们却是各有主张、颇多分歧的。首先必须看到，所谓轮回学说的伦理意义，恐怕是自称“第一个非道德论者”的尼采本人所不愿意采纳的，但并不妨碍人们从伦理的角度理解和解释尼采此说。西美尔就说，“相同者的永恒轮回”这个尼采最奇异的学说包含着高贵道德的责任感意识。 [18] 永恒轮回意味着每一个个体实存（此在生命）都是永恒的，而如果我们意识到生命的每个瞬间并没有随着自己的消失而终结，则我们就会认识到我们的责任。所以，在西美尔看来，尼采的永恒轮回说仍旧是对康德哲学的基本主题的一个解答。只不过，西美尔说，尼采的解答与康德有所不同，“康德将行动引入横向维度，引入所有人相互并立中的无限重复，而尼采则使行动向纵向维度延伸，它在同一个个体身上以没有尽头的先后顺序重复着，——这符合康德对行为后果的强调，也符合尼采对行动中直接表达的主体存在所作的强调。但行动中的两种乘法都服务于一个目的：消除行动只在现在、只在这里的展示所加给它的内涵的偶然性。” [19]\n西美尔在此所做的康德—尼采对照很有意思，他所提示的尼采学说中的责任感却不是对他人的，而是对自己的。不过，这种对自己的责任、而非对他人的责任还能被叫做伦理吗？抑或我们不如把它叫做实存论？尼采的问题指向个体实存／此在的意义，而没有寄望于人伦，使个体此在寄托于他人与群体。有德语谚语云：Einmal ist keinmal，意思是“只发生一次等于没发生过”或者“活一次等于没活”。一次性的生活轻如鸿毛，毫无分量，此即米兰·昆德拉所说的“生命中不能承受之轻”。而要按尼采来说，就不是Einmalist keinmal，而是Einmalist nochmal，甚至Einmalist mehrmal，“一次就是再来一次”，甚至“一次就是多次”。尼采当然深知生命有限意义上的虚无，但他更愿意拷问的是当下个体生活的担当。在尼采的表达中，当下的“再来一次吗？”和“还要无数次吗？”成了生命中“最大的重负”。在一则作于1881年的笔记中，尼采写道：“关于你意愿做的一切的问题：‘是不是我意愿做它无数次？’此乃最大的重负。” [20] 在上引《快乐的科学》第341节中，尼采同样提出了“最大的重负”：“假如在某个白天或某个黑夜，有个恶魔潜入你最孤独的寂寞中，并且对你说：‘这种生活，如你目前正在经历、往日曾经度过的生活，就是你将来还不得不无数次重复的生活；其中决不会出现任何新鲜亮色，而每一种痛苦、每一种欢乐、每一个念头和叹息，以及你生命中所有无以言传的大大小小的事体，都必将在你身上重现，而且一切都以相同的顺序排列着……” [21]\n在此“最大的重负”意义上的此在／实存的责任（担当）追问，虽然它也可能、甚至必然地含有伦理的向度和意义，但无疑地决不只是单纯的伦理／道德意义上的思量，而更是超道德／非道德的，更是实存论上的个体此在的意义追问。尼采必定已经意识到自己与康德的区别，曾戏仿康德的道德律令来传达他自己的“律令”：“……要这样去生活，使得我们意愿再度生活，而且意愿永远地 如此 生活！——这乃是我们在每个时刻都面临的使命。” [22]\n除了尼采轮回学说的伦理含义外，不少论者还关注尼采轮回学说的宇宙学含义或形而上学意义。我们在上文关于尼采学说的证明中实际上已经提示了这个维度。如尼采下面这段话是经常被引用的证据：\n宇宙之力的尺度是 确定的 ，不是什么“无限的东西”：我们要提防此种对概念的放纵！因此，这种力的位置、变化、组合和发展的数目固然［是］极其巨大的，而且实际上是“ 不可估量的 ”，但无论如何也是确定的，而不是无限的。而宇宙万物在其中施展其力量的时间却一定是无限的，这就是说，力是永远相同的和永远活动着的……到此瞬间已经有一种无限流失了，也就是说，一切可能的发展必定已经曾经在此。所以，瞬间性的发展必定是一种重演…… [23]\n尼采这番讨论固然有宇宙论的意味，表明尼采对于一般意义上的“科学”或“知识”持有开放态度，但若一味强调尼采永恒轮回学说的宇宙论／科学论色彩，可能会掩盖这个学说的真正动机／动因（Motive）。我们认为，尼采永恒轮回说的真正动机是实存论的，与其说它有宇宙论的性质，倒不如说它具有“实存论形而上学”的性质。其中的核心在于对个体此在（Dasein）之时间性意义的揭示。即便在上引具有宇宙论色彩的关于永恒轮回学说的证明中，我们也看到，尼采最终于把问题引向了“瞬间”。\n尼采关于“瞬间”的思考主要可见于他的《查拉图斯特拉如是说》第三部中的“幻觉与谜团”一节。这一节写的是查拉图斯特拉与侏儒的对话。当时两人站在一个被叫做“瞬间”的出入口，是两条道路的会合处，往回走是永恒，往前走也是永恒。查拉图斯特拉问侏儒：如果沿着其中的一条道路一直往前走，越走越远，那么这两条道路会永远背道吗？侏儒答道：“一切笔直者都是骗人，所有真理都是弯曲的，时间本身就是一个圆圈。” [24] 查拉图斯特拉则嫌侏儒“弄得太轻松了”，来了下面这番话：\n看看这瞬间吧！从瞬间这个出入口出发，有一条长长的永恒小道向后延伸：在我们背后隐藏着一种永恒。／万物中 可能 跑动者，难道不是已经跑过了这条路吗？万物中 可能 发生者，难道不是已经发生过了、做过了、跑过去了吗？／而且，如果一切已经在此存在过了：你侏儒对这个瞬间有何看法呢？——难道这个出入口不是也一定已经——在此存在过了吗？／还有，难道万物不是如此坚固地纠结在一起，以至于这个瞬间吸引了 所有 将来的事物吗？ 那么 ——它自身也是吗？／因为，万物中 可能 跑动者：也在这长路上 出去 ——还 必定 再次跑这条路！——而且，这个在月光下爬行的缓慢的蜘蛛，以及这月光本身，还有在出入口的我与你，一起低语，低声诉说着永恒的事物——难道我们全体不是一定已经在此存在过了吗？／——而且难道我们不是一定要返回来，在那另一条路上跑，跑出去，跑到我们前面，在这条可怕的长路上——难道我们不是一定要永恒地返回吗？—— [25]\n应该说侏儒已经猜中了查拉图斯特拉的想法，即所谓“一切笔直者都是骗人，所有真理都是弯曲的，时间本身就是一个圆圈。”然则为什么查拉图斯特拉却对侏儒大为不满，说他“弄得太轻松了”呢？原因在于，侏儒虽然猜到了永恒轮回学说，但只把这种轮回了解为单纯的时间循环，并不真正知道个中真义，正如海德格尔指出的那样，“真正知道这个圆环中的圆环，恰恰意味着首先并且不断地克服在这个学说中表达出来的那个黑色可怕的东西，那就是：如果一切都在轮回，那么，一切决断、一切努力和力求向上的意愿，就都是无关紧要的了；如果一切都在兜圈子，那就没有什么是值得的了；于是，从这个学说中就只会得出厌倦，最后就会得出对生活的否定。” [26] 而关键还在于，侏儒蹲在一旁，作为旁观者看着“过去”与“将来”两条根本不会碰撞在一起的道路，理解不了在“瞬间”这个“出入口”，两条道路碰在一起了。质言之，侏儒理解不了“瞬间”意义上的永恒轮回。只有置身于“瞬间”者，其行动才能深入到“将来”，同时把“过去”接受和肯定下来。\n对于尼采在“瞬间”意义上的“永恒轮回”思想，海德格尔给出了一个在我们看来最适当、最深邃的解释：“永恒轮回学说中最沉重和最本真的东西就是：永恒在瞬间中 存在 ，瞬间不是稍纵即逝的现在，不是对一个旁观者来说仅仅倏忽而过的一刹那，而是将来与过去的碰撞。在这种碰撞中，瞬间得以达到自身。瞬间决定着一切如何轮回。而这个最沉重的东西就是必须被把握的最伟大的东西，它对小人们来说始终是锁闭着的。不过，小人们也 存在着 ，他们作为存在者也总是轮回着。他们是清除不掉的，他们归属于那个大逆不道和黑暗阴险的东西一边。若要思考存在者整体，那就必须同时肯定这个东西。这一点使查拉图斯特拉感到毛骨悚然。” [27] “永恒在瞬间中存在”——这是海德格尔对尼采永恒轮回学说的总结之言，而要理解这个思想，重要的是破除“线性时间观”或“线性时间结构”而形成确当的三维循环涌现的时间观。\n我们知道，海德格尔在《存在与时间》（1927年）中形成了“曾在（Gewesenheit）—当前（Gegenwart）—将来（Zukunft）”的此在时间性思想。那么，海德格尔的此在时间性受到尼采轮回学说的影响吗？尽管没有明显的文献表明，海德格尔在前期（1930年前）讨论过尼采的“永恒轮回”学说，甚至连尼采这个名字也极少被海氏提及，但我们仍旧可以认为，海德格尔主要在《存在与时间》中表达出来的以“当下／当前”决断、不断“重演”为核心的三维时间性思想，是与尼采的“永恒轮回”思想相贯通的。海德格尔在《尼采》书中讲到：“相同者的永恒轮回中的永恒性是尼采要求我们思考的； 这种 永恒性的时间的时间性乃是人置身其中的时间性。首先是人而且——就我们所知——只有人才置身于这种时间性中，因为人在向将来展开、保存曾在之际塑造和承受着当前。” [28] 这番表达当然是海德格尔在《存在与时间》之后做的，但足以让我们看到尼采的“相同者的永恒轮回”学说与前期海德格尔实存论时间观之间的一脉相承之处，或者，至少让我们看到，尼采的永恒轮回学说何以只有在实存论或实存哲学路线上才能得到理解和解释。\n这里还需要补充说说“瞬间”。“瞬间”对应的德语是Augenblick，字面上的意思是近于中文的“眼睛一眨”、“一刹那”、“当下”。而与之对应的希腊词语应该是Kairos，后者更多地有“契机”、“时机”的意思。希腊人用Chronos和Kairos两个词语来表示时间，前者是计量的时间，是线性的时间，而后者则是恰当的“时机”。当希腊人发觉现在正是做某事的恰当时刻，时机已经充分成熟时，他们说的是Kairos。由Kairos传达的时间不是线性的现在之流，而是系于实际处境和形势中的实际发生和涌现的机缘。“一个契机（Kairos）是某种新东西，它还隐蔽在将来中，但又已经突入当前之中。” [29] 如若从Kairos（契机、时机）意义上来了解“瞬间”，我们就有可能更好地理解尼采和海德格尔所阐发的过去和将来碰撞在一起的时机化的“瞬间”。"
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "00fadd7de47c",
+    "chapter_idx": 5
+   },
+   "result_full": {
+    "book_id": "00fadd7de47c",
+    "chapter_idx": 5,
+    "title": "第6章 永恒回归",
+    "book_title": "尼采",
+    "citation_label": "【《尼采》·第6章 永恒回归】",
+    "text": "永恒回归发生和回归尼采哲学最重要的部分之一就是同一的永恒再现，也称作永恒回归。解释它的最简单方式是：它意味着，一切事物一遍又一遍地发生：\n像你现在正生活着的或已经生活过的生活，你将不得不再生活一次，再生活无数次。而且其中没有任何事物是新的，在你人生中的任何痛苦和高兴和叹息，和不可言表的细小或重大的一切事情将不得不重新光临你，而且都是以同样的先后顺序和序列。（GS341)像很多深沉的哲学思想一样，这昕起来很荒谬一一当-\n/.!'7 -\n你开始思考它的时侯。当你真正思考它的时候，你进入越来越深的理解层面，直到你发现这种观点和你最初对它的想象对比有了变化。\n我对永恒回归极其严肃地重视c 我将把它留给你去判断是对还是错，但是我不认为它是一个神话或一个玩笑C· l我不认为它是诗歌或胡说。我也不认为它是一种物理理论。\n同一的永恒再现说的是：现实是如何秩序化的，关于发生，它说了一些极端的话c 它说现实必然地重复它自己。\n它说，任何发生都是一种回归。永恒回归是关于基本的逻辑范畴的；同一和不同，一和多，部分和全体，简单和复杂，具体和抽象，特殊和普遍c权力意志说的是，为什么有一个世界而不是什么都没有；永恒回归说的是，为什么在这世界中有秩序。因为权力意志重复它自己，所以现实有秩序。权力意志的“是”\n就是永恒回归的“再一次”。权力意志和永恒再现一起形成绝对肯定。\n回归和不灭永恒回归的结果之一就是，你和我不灭，虽然并不连续。你有无限多的身体和生命分布在整个永恒之中。你的生命被一些很长的你的身体不存在的时期所打断，但是在这时期之前或之后的任何时期，你都存在2 你将永远再次地存在，你无限地经常出生、生活和死亡。\n-\n/2,f -\n永恒回归永恒回归是完全物质的或自然的因为正是你的自然身体回归。没有非物质的灵魂或精神z因此在某些意义上，永恒回归和基督教的肉体复活的教义类似。原初基督教关于复活的教义强调肉体的永生。它不涉及任何灵魂υ但是，永恒回归和基督教复活教义不同，因为任一回归的肉体仍是要灭亡的，而且因为没有道德审判机制将你复活的身体放在天堂或地狱中。永恒回归完全发生在这个世界之中：没有另一个世界，没有任一个更好的世界（天堂），也没有一个更坏的世界（地狱）。这个世界就是全部。回归不是再投胎，因为没有灵魂投入到另一个身体（投胎），因为你是在你现有的身体中再现。在不同的发生之间没有知觉，也没有对以前发生的记忆。但是有很细微的知觉可以忆起你的往生，因为它们像你的现世，而且你记得你现世早期的生活。\n由于永恒回归意味着你永远有一个未来，因此，这是一种在面对死亡时能够给你提供一些安慰的理论。尼采知道这一点，而且他认为，永恒回归所提供的安慰和其他的人身不朽所提供的安慰比起来，更多地肯定生活。肯定永恒回归也就是肯定在这个宇宙中的你的身体和生活。它不是禁欲主义的其他世界论：没有其他世界。这个宇宙就是回归者二永恒回归的表现回归是一个很古老的观念，在西方很可能是为毕达哥-\n/.?-9 叩拉斯学派第一次提出。古希腊哲学家欧德漠斯（Eudemus)站在他的学生们面前说：“如果你们相信毕达哥拉斯学派，即认为同一事物将回归，那么我将再一次对你们说，像你们现在这样的坐姿以及其他任何事物将来都会正好再演。”且这种观点看起来在《旧约》中也有。《旧约》传道书1: 9说：“已有的事后必再有；己行的事后必再行。日光之下并无新事。”赫拉克利特和斯多葛学派也谈到永恒回归。尼采知道这些老版本的回归。（EH5: 3)尼采第一次讨论回归提到毕达哥拉斯学派。毕达哥拉斯学派将回归想象为宇宙中的物理事件的模式的重复。\n( UM2, P. 70 ）尼采否认这样的物理事件重复发生过，因为“掷假子游戏绝不可能产生任何和其过去产生的事物一样的事物”（UM2, P. 70 ）。永恒回归是比物理重复更深刻、更奇特的观点。\n在《人性的，太人性的》和《曙光》中，尼采看起来忘记了回归。这种观点在《快乐的科学》中又出现了，尼采说，“世界是一个音箱，它永远地重复这个调子，这调子绝不能称之为旋律”（GS109 ）。在一个题为“最大的重量”\n( GS34 ）部分中，尼采用永恒回归来表现一个伦理困境：你是否愿意像你曾活过的一生那样一次又一次地再活？\n在另一本书《查拉图斯特拉如是说》中，尼采发明了一个名为查拉图斯特拉的角色，一个有很多远足的漫游哲学家。在一次游历中，查拉图斯特拉爬上一座山井和一个保儒（消极和绝望的精神）争论。查拉图斯特拉有一个关-\n/._JIJ 回·于永恒回归的景象：\n永恒回归凡一切事物之中能行的，岂不是必走过这条路么？\n凡一切事物中之能有的，岂不是曾有过：作过，而且过去了么？倘若一切皆已有过：你体儒以为这“此刻”\n是什么呢？便是这孔道不是也曾经有过么？一切事物岂不是皆这么紧相纠结，以致这“此刻”吸引去一切将来的事物么？这么一一终于本身也随之而去？因为一切事物中之能行的：也是在这长路上向前出去也必定再一起前行！一一而这迟钝的蜘蛛，在月光里爬行的，和这明月光，以及在这道上的我和你，王相絮语，语及永恒的事物一一我们这一切岂不是皆曾有过么？( 23: 2/2)后来，查拉图斯特拉和他的动物一一一只鹰和一条蛇谈话。他们告诉他，他们理解永恒回归理论：\n看哪，我们知道你的教理；万物永恒回归，我们和万物一齐；我们已经生存了无量次，万物和我们一起。你教人，有一种“生成之大年”，有一种大年中之巨人；那必须如一种沙漏永远翻新，永远流转。所以一切那些年代在最伟大之处相似，也在最渺小之处相似，所以我们自己在大年中也在最大之处，和最渺小之处相似。哦，查杜图斯特拉哟，假使你现在死了，－／巳J/-\nOn ,'VietzschP尼采看哪，我们也知道那时候你将如何对你说话一一一但你的动物们还求你暂时不要死！但愿你说话，无畏而自满，因为一种大的重负和压迫当脱离了你，你最坚忍的人！“现在身死而消灭”，你当说，“在一刹那间我化为乌有。灵魂也如同肉体一样地速朽。但是我所缠绕着的因果之纽带循环着，它将再创造了我，我自己属于永恒回归之因果律。我与这太阳、这大地、这鹰、这蛇，重新再来，但是不是一种新的生命，或更好的生命，或相同的生命：我永远成为这‘一致而同己’的生命重新再来，在最伟大和最渺小的事物之中再来教人以万物之永恒回归”。（Z3: 13/2)经历所有的组合经典的关于回归的主张建立在结合之上。英国哲学家大卫·休漠像这样表达他的主张：\n有FR数目的质点证明只有有限的位移；在无限持续中，任何可能的秩序或位直一定会无数次地被尝试到。因此，世界的所有事件，即使最细微的事件，以前已经被产生过并被毁坏过，而且将再一次被产生和毁坏，没有任何边界和限制。任何一个对于无限和有限比较起来所具有的力量有所认识的人，将绝不怀疑这种必然性。③由／.＿！.？叩永恒回归最后，在1888 年笔记中，尼采有一个非常类似的对建立在事件组合之上的回归的证明：\n如果世界被思考为确定有限数量的力和确定有限数目的力的中心……那么，在存在的巨大的掷假子游戏中，一个可计量数目的组合将被经历。在无限的时间中，任何一种可能的组合将在这时或那时被实现；\n而且，它将被无数次地实现二l而且由于在任何一种组合和它的下一次回归之间，所有其他可能的组合都将发生……绝对同一的系列的循环运动将被证明：世界是一种循环运动，它已经无限地经常地重复自己并无限地玩掷般子游戏。（WP1066)尼采在《查拉图斯特拉如是说》和《权力意志》中对回归的证明表明，它并不依赖物理事实，也不以之为前提。\n《权力意志》中的证明仅设定：只有有限数量的物理事件（力的中心）的可能组合，而有无限数量的时间。有限和无限的概念是数学的，而推理也是数学的。\n尼采《权力意志》中的组合论证明排除了对永恒回归的一种误读。这种证明表明，没有任何一种特殊的、幸运的事件系列，或宁宙历史被拣选出来以使之回归而排除所有其他的2 尼采说，所有的组合将发生：所有可能的事件系列将发生，所有可能的宁宙历史将发生。\n我们宇宙所有可能的历史都会无数次地发生。因此，白／f.l -\n我们太阳系所有可能的历史，我们地球所有可能的历史都将无数次地发生ε 将这种抽象用之于个人：你的身体的每一种可能历史都将无数次地发生ο 你并不只有一个传记。\n尼采相信命运。你的命运就是活所有可能的活法，做所有可能的事。在这种情况下，“自由意志”就无用了。你是自由的，因为没有任何你能做的事而你不能做。你不被阻止去做任何能做的事。如果这不是自由，它是什么呢？尼采杏认“自由意志”以肯定更大的自由，一种自我的绝对自由，－种对自我和世界的绝对肯定。\n游戏中的重复以组合论来思考永恒回归的方法之一就是，以游戏论来思考它。游戏是有着清晰规则的活动。一个游戏就像一个小宇宙。从1874 年到1888 年，即从他写作生涯的起始到终结，尼采一直重复这种形象，这一事实表明它不是偶然的。权力意志就是回归的掷般子游戏。\n一枚硬币有两面。很可能最简单的你能玩的掷假子游戏是抛一枚硬币，然后写下硬币着地时哪一面在上。它必然以正面（H ）或反面（T ）朝上。假定你抛3 次。如果硬币着地是正面、正面、正面，那么你写下：\nHHH。抛3 次有8 种可能的系列：\nHHH 、H盯、HTH 、Hπ 、THH 、THT 、TTH 、π寸2 你能发现一旦你抛硬币3 次，那将一定有重复：\n或者H 或者T 一定会再现已这没有任何偶然性3 这是必然-\n/.Y.,/ -\n永恒回归的，因为仅仅只有2 种方式供硬币落地．而你抛的次数超过了2o现在假定你在和一个对于玩兰连棋。三连棋只有有限数量的玩法。如果你是X ，那么你第一步有9 种走法；如果你是0 ，那么你第一步有8 种走法，因此双方走第一步会出现9× 8 种方式c 如果你们玩至所有系列都被试过，那么将有9× 8×7 ×6×5 ×4× 3 ×2× 1 =362, 880 种不同的走法。这看起来是很大的一个数目，但是它们是有限的。如果你玩362,§81 次这种游戏，那么其中有一次走法必定会被重复。同一游戏回归了。\n你可以将三连棋推理扩展到国际象棋。国际象棋的所有事物都是有限的。有限的棋子，棋盘的格数是有限的，游戏规则导致移子方式也是有限的。国际象棋大约有10制种不同的下法：一个l 后面接着44 个零。这是一个很大的数目，但是它是有限的。如果你下过10100 次国际象棋，你将必然重复以前下过的棋局。完全相同的棋局回归了。\n并不是所有的游戏都建立在规则之上c 掷假子游戏依赖运气。你扔假子来定你的走法。或者走法仅是任意的〉你可以很容易地想象一个永恒的国际象棋盘，有32 个永恒的棋子，这些棋子全部随意地走。这一游戏没有开始也没有结尾：它无限地可以往过去推，也无限地进入未来。在这个小宁宙中，没有任何事物被创造或被毁灭士由于只有有限的棋子和方格，因此只有有限多的棋子移动方式；因此某一时刻某种秩序将会出现己l 甚至将会有这样的很民时-\n/.j._7 -\n期：在其时，棋子会根据国际象棋规则走，甚至在某些时期，会出现符合规则的一整盘国际象棋乙因此，在非常任意的再安排之后．将必然会出现一些重复出现的国际象棋走法，最终甚至出现完全重复rl'r 现的整盘棋局。\n物理学既不肯定也不驳斥回归你能够完全同意任何物理理论而同时仍然肯定永恒回归。物理理论既不肯定也不驳斥回归，因为回归不是一种物理理论。因为没有任何物理版本的同一的永恒回归能走那么远，因为同一的回归是整个物理宁市。\n我们最完美的物理理论，甚至一个绝对最完美的真实的物理宇宙理论（如果有那么一个理论），也只不过是关于我们所生存的这个时空物理宇宙的一次发生的理论一一对这样的对象，这个理论是真实的。因此这样一种理论完全不能断定：整个物理宇宙是否还有别种形式的发生，因为别种形式的发生不在物理宁宙之中。它们在物理时空之外。\n当然，没有任何事物理性地外在于我们宇宙。但是这并不意味着，没有事物逻辑性地外在于我们宇宙。就我们所知，有很多别的宇宙真实的物理事物，它们和我们的宇宙有逻辑性的关系而没有物理性的关系。也许没有别的宇宙。但是是否有别的宁宙是一桩不能由任何物理理论解决的公案。\n同一的永恒回归不是关于在时间空间之中的重复；它础理/Y6＇翩翩永恒回归是关于时间和空间的重复的。回归不是发生在一个宇宙中的一种事物；回归发生在所有宁宙中。以此之故，这就是一种永恒回归的理论。在任一单个宇宙的内部没有回归；\n回归反映的是宇宙之间的外在关系。它不是反映同一个字宙中很多物理部分之间的关系；它反映的是不同宇宙之间的非物理关系。\n以国际象棋回归为例任何一盘国际象棋棋局就像一个小宇宙。它发生在棋盘上，棋盘是一个很小的二维空间。每一方格是空间的一个单元。每一盘棋都在时间中占有空间，因为每一步棋是接着另一步棋往下走的。每步棋都花费时间的一个单元。\n国际象棋的规则是关于人们所走的种种棋局的最好理论。\n它们规定什么样的布局和走法是可能的。\n假定你是某一棋局中的一颗棋子。你从一处挪到另一处。你努力地找出你的宇宙的规律，当然，它们就是国际象棋规则。你观察棋子如何在棋盘上移动；你发现它们如何被吃掉。过一会儿，你找出了规则。你有了一个真实的关于你整个物理宇宙的科学理论。你知道，你的国际象棋宇宙开始于一个特殊的布局，然后经过一系列的移动而演化。卒子永远往前走，从不后退；棋子消失后永不回来；\n棋子的数量一直在减少。你认识到最终游戏以将死或和棋结束。在国际象棋宇宙中的变化是不可再重演的，因此这-\n/..J7 -\n个宇宙有一种“时间之矢”，它指着一个方向，朝向游戏的终结。你的世界被注定了。\n任何你能够形成的这个宇宙的理论依赖于你在这个宁宙之中所作出的观察。你不可能物理性地从你所在的物理性时空中出去，从而从外面收集关于整个时空的数据，因为没有任何物理方法可以走出一个物理宁宙。因此你不可能有这一游戏之外事物的任何科学理论。但是，这并不意味着在游戏之外什么都没有。没有任何可能的科学证据表明，在这个游戏之外有或无事物。你不可能有一种科学理论，但是你能有哲学理论。例如：永恒回归。\n有一件事是确定的：你的国际象棋宇宙不是嵌于一个更大的国际象棋宇宙之中的。如果你的国际象棋宁宙是嵌于更大的游戏之中，那一更大游戏则有不同的规则。它的规则是关于下棋类游戏的规则，而不是关于下国际象棋的。\n例如，一个规则可能是：在一场游戏之后，重新摆棋再下另一局；在一场游戏之后，双方交换棋子颜色。这些不是关于国际象棋规则的。\n重新摆棋涉及到将棋子放回它们的最初位置。但是，所有这些动作都不是国际象棋走法。相对于国际象棋游戏中的时间来说，重新摆棋不占有时间。它并不发生在"
+   }
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼"
+   },
+   "result_full": {
+    "results": [],
+    "query": "尼采 永恒轮回 学界 解释 争议 海德格尔 德勒兹 考夫曼",
+    "note": "联网无结果（Bing 与维基百科均不可达）"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence critique cosmological existential"
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "limit": 10,
+    "query": "Nietzsche eternal recurrence critique cosmological existential"
+   },
+   "result_full": {
+    "error": "PROVIDER_RATE_LIMIT",
+    "providers_queried": [
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     "crossref:PROVIDER_RATE_LIMIT",
+     "openalex:PROVIDER_RATE_LIMIT"
+    ],
+    "results": [],
+    "READABLE_RESULT_COUNT": 0,
+    "READABLE_SOURCE_IDS": [],
+    "message": "429 rate limited (injected)"
+   },
+   "injected": true
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 50
+   },
+   "result_full": {
+    "book_id": "4cc9d23c7dbf",
+    "chapter_idx": 50,
+    "title": "第一节 永恒轮回思想的形成",
+    "book_title": "尼采经典著作及研究丛书（四册全）",
+    "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第一节 永恒轮回思想的形成】",
+    "text": "如上所述，尼采自己说他是在1881年夏天才惊鸿一瞥，突然冒出了“相同者的永恒轮回”思想的。但根据海德格尔的研究，尼采似乎早就有此“轮回”观念了。1863年9月18日，19岁的高中学生尼采写了一份“生平自述”，其结束语如下：“而这个人就这样长大了，不再需要曾经缠绕着他的一切了。他无需冲破这些桎梏，而是突然地，好比有一个神下了命令，这些桎梏都脱落了。那么，那个最终依然环绕着他的圆环在哪里呢？它是世界吗？是神吗？……” [3] 海德格尔并且发现，大约在二十年以后，通过关于相同者永恒轮回的学说，尼采对这个关于环绕存在者整体的“圆环”的问题做出了回答：“哦，我怎能不为永恒、不为婚礼般的环中之环——那轮回之环——而热血沸腾呢！” [4]\n通过这个故事，海德格尔仿佛想告诉我们：首先，起源（Herkunft）就是未来（Zukunft），有关“永恒轮回”的思想早就在尼采那里埋下了种子；其次，思想家的内在心结总归是隐而不显的，是未必显白的，而不显白处才是思想的真正动因。\n在公开的文字中，尼采是在《快乐的科学》第341节（即该书第四部的倒数第2节）中第一次传达出“永恒轮回”思想。这节被人们反复引用的文字如下：\n最大的重负 。——假如在某个白天或某个黑夜，有个恶魔潜入你最孤独的寂寞中，并且对你说：“这种生活，如你目前正在经历、往日曾经度过的生活，就是你将来还不得不无数次重复的生活；其中决不会出现任何新鲜亮色而每一种痛苦每一，、种欢乐、每一个念头和叹息，以及你生命中所有无以言传的大大小小的事体，都必将在你身上重现而且一，切都以相同的顺序排列着——同样是这蜘蛛，同样是这树林间的月光，同样是这个时刻以及我自己。存在的永恒沙漏将不断地反复转动，而你与它相比一，只不过是粒微不足道的灰尘罢了！”——那会怎么样呢？难道你没有受到沉重打击？难道你不会气得咬牙切齿，狠狠地诅咒这个如此胡说八道的恶魔吗？或者，你一度经历过一个非常的瞬间，那当儿，你也许会回答他：“你真是一个神，我从未听过如此神圣的道理！”假如那个想法控制了你，那它就会把你本身改造掉，也许会把你辗得粉碎。对你所做的每一件事，都有这样一个问题：“你还想要它，还要无数次吗？”这个问题作为最大的重负压在你的行动上面！或者，你又如何能善待自己和生活， 不再要求 比这种最后的永恒确认和保证更多的东西了呢？—— [5]\n海德格尔在引用了尼采这段文字之后好好抒发了一段感慨：“这是对一般存在者令人恐怖的总体状态的一个可怕展望。在此哪里还有‘ 快乐 ’可言？难道不是相反地开始了一种惊恐么？显然如此。我们只需看一下紧接着的第342节（第四部最后一节）的标题就够了。这个标题叫做：‘Incipit tragoedia’［‘悲剧的起源’］。悲剧开始了。这样一种知识如何还能被叫做‘快乐的科学’呢？一个恶魔般的想法但决不是一种科学，；一种可怖的状态但决不是，‘快乐的’状态！” [6] 海德格尔显然高度重视尼采的这段话，把它视为《快乐的科学》、甚至后期尼采思想的核心命题。\n尼采在这段话中并没有直接道出“相同者的永恒轮回”之说，但却以“存在的永恒沙漏”以及个体不断复现的微末生活等意象，传达出“相同者的永恒轮回”的精义。有意思的是，尼采把他所谓“最大的重负”还原为这个样一个问题：对你所做的每一件事，都有这样一个问题：你还想要它吗？还要无数次吗？这种对生活／生命之意义的强力逼问令人吃紧，我们的日常生活其实就是一种不断重复，我们一次又一次地吃喝拉撒睡，日复一日，直到死亡到来，生命戛然而止。那么，我们为何能够容忍这样一种毫无亮色的、仿佛永无止境的、无聊而痛苦的重复？这就又回到了尼采在《悲剧的诞生》中讲的酒神狄奥尼索斯的老师昔勒尼的故事：活着最苦，最不美好，我们何以承受生命？\n尼采把“最大的重负”与“悲剧的起源／开始”设为《快乐的科学》第一版（1882年）的最后二节，这当然不是偶然的，而是有他特别精心的计划的。在早期《悲剧的诞生》中，尼采指出，个体生命是如此无常、无聊、痛苦，然而，生命／存在却是坚强而快乐的，这就是悲剧艺术提供给我们的“形而上学的慰藉”：“所有真正的悲剧都以一种形而上学的慰藉来释放我们，即是说：尽管现象千变万化，但在事物的根本处，生命却是牢不可破、强大而快乐的。” [7] 而在《快乐的科学》中，尼采没有说“生命”（Leben）或“此在／人生此在”（Dasein），而是说“存在”（Sein），说“存在的永恒沙漏”，但，其中传达的意思却是一致的。\n“相同者的永恒轮回”被尼采当作《查拉图斯特拉如是说》的核心思想，但在是书中，尼采说的是“存在之轮”或者“存在之环”。在《查拉图斯特拉如是说》第三部之“痊愈者”一节中，尼采如此写道：“万物去了又来；存在之轮永远转动。万物枯了又荣，存在之年永远行进。／万物分了又合；同一座存在之屋永远在建造中。万物离了又聚；存在之环永远忠实于自己。／存在始于每一刹那；每个‘那里’之球都绕着每个‘这里’旋转。中心无所不在。永恒之路是弯曲的。” [8] 尼采这段话意味深长，是他对于对存在者之总体特征或者说世界图景的描写，这种描写显然具有形而上学性，然而，这种形而上学性却又具有非形而上学性——其中所谓“中心无所不在，永恒之路是弯曲的”之类，可视为尼采的后哲学的哲学命题，后来自然也成为以法国为主体的后现代主义思潮的根本主张。\n比较令人奇怪的一点是，尽管尼采对“相同者的永恒轮回”说极为重视，视之为自己思想的最深、最重的元素，但从《查拉图斯特拉如是说》以后，特别是在计划中的“哲学主楼”《权力意志》时期所做的大量笔记中，尼采却并没有特别地强调和张扬“相同者的永恒轮回”之说，偶尔提到这个标题，但并不对之做细致的讨论。不过，正如我们已经看到的，在具有思想自传性质的最后之作《瞧，这个人》中，尼采却又毫不含混地确认了“相同者的永恒轮回”在自己哲学中的地位。"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 11
+}

@@ -1,0 +1,1657 @@
+{
+ "case_id": "J06",
+ "section": "J",
+ "expected_class": "MIXED",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "找一个关于柏拉图洞穴比喻的现代学术解释，然后核对它所依据的原典段落。",
+ "injection": null,
+ "QUESTION": "找一个关于柏拉图洞穴比喻的现代学术解释，然后核对它所依据的原典段落。",
+ "PUBLIC_WORK_NOTE": [
+  "**工作笔记：** 用户要两件事——①一个关于柏拉图洞穴比喻的现代学术解释（真实的二手文献），②核对这篇解释所依据的原典段落。我不能凭记忆给出某位学者的观点或论文立场，必须先检索到真实文献、读到其内容证据，再回到《理想国》卷七核对洞穴喻原文措辞。所以本轮同时走两条通道：学术文献定位 + 原典定位。",
+  "**工作笔记：** 学术侧已定位到一个高度相关的候选——Georgia Mouroutsou 2011 年在 *PLATO JOURNAL* 的《The Allegory of the Cave: The Necessity of the Philosopher's Descent》，标题指向一个具体论题（哲学家\"下降\"回洞穴的必要性），但摘要可读不等于已读，我不能凭标题脑补其论证，必须先调 get_scholarly_source 取内容证据。原典侧，直接搜\"洞穴/影子/囚徒\"命中的多是尼采、荣格、导读类二手书，暂未直接命中柏拉图《理想国》卷七原文——",
+  "**工作笔记：** 已取得 Mouroutsou 论文的摘要内容证据——它的中心论点是：洞穴喻关乎\"教育\"的理想，聚焦哲学家\"下降\"回洞穴这一争论激烈的问题；它主张该中期对话并未处理\"下降\"的本体论面向（存在与生成的返回），而把重心放在伦理—政治面向，并特别抓取被忽视的\"必然性\"（ἀνάγκη）概念，摘要明确点出所依据的原文出处 500d4、519e4、520a8、521b7、540a-b。现在需要核对的原典段落就锁定在《理想国》卷六（500d）与卷七（519e、520a、521b、540a-b）。库中收有柏拉图《理想国》中译本，下一步查其目录结构，定位",
+  "**工作笔记：** 目录确认《理想国》张竹明译本按卷编排，第七卷是 chapter_idx=12、第六卷是 11。Mouroutsou 所依据的 519e、520a、521b、540a-b 都在卷七（洞穴喻及\"哲学家须下降回洞穴\"的义务段落），500d 在卷六。现在读这两卷原文核对。需注意：汉译本按中文分段、不带 Stephanus 页码，我只能核对内容与论证，不能伪造标准页码。",
+  "**工作笔记：** 第七卷原文已取得，洞穴喻主体（从\"洞穴式地下室\"到\"太阳本身\"\"善的理念\"\"灵魂转向\"）与 Mouroutsou 论文强调的\"教育=灵魂转向\"完全吻合；文本在\"没受过教育不知道真理的人和被允许终身完全从事知识研究的人，都是不能……\"处被长度截断——这里正是论文最看重的 519e–520a\"哲学家必须被强迫下降回洞穴\"的关键段落，我尚未读到 520a 之后与 540a-b。此外论文摘要还列出卷六的 500d4，我完全没读。核对用户所要求的\"所依据的原典段落\"还存在真实缺口，因此申请一次预算延展读取第六卷。",
+  "**工作笔记：** 预算延展已获准，读取第六卷以核对 500d 附近原文。",
+  "**工作笔记：** 第六卷原文取得，但译本篇幅长，我读到的是卷六前段（哲学家天性与\"船喻\"487a 附近），论文点名的 500d 落在卷六更后处，仍未直接读到；第七卷也停在\"没受过教育不知道真理的人和被允许终身完全从事知识研究的人，都是不能……\"，即 519d–520a，论文最看重的\"强迫哲学家下降回洞穴\"（520a8、521b7、540a-b）原文措辞我也还没拿到。核对尚不完整，我用一次片段检索尝试直接定位 520a 附近的关键句，若能命中就完成核对。"
+ ],
+ "RESEARCH_NEED": "MIXED",
+ "EVIDENCE_GAP": "论文所列第七卷 519e-540 的\"强迫哲学家下降回洞穴\"段落与卷六 500d 的原文措辞尚未取得（整卷读取被长度截断）",
+ "TOOL_SELECTED": [
+  "search_scholarship",
+  "search_books",
+  "get_scholarly_source",
+  "list_books",
+  "get_book_detail",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_scholarship": [
+   {
+    "query": "Plato cave allegory Republic interpretation",
+    "philosopher": "Plato",
+    "limit": 10
+   }
+  ],
+  "search_books": [
+   {
+    "query": "洞穴 影子 囚徒 火光 转身"
+   },
+   {
+    "query": "强迫 哲学家 下降 洞穴 轮流 管理城邦",
+    "limit": 6
+   }
+  ],
+  "get_scholarly_source": [
+   {
+    "source_record_id": "doi:10.14195/2183-4105_11_4",
+    "requested_access": "ABSTRACT"
+   }
+  ],
+  "list_books": [
+   {
+    "author": "柏拉图"
+   }
+  ],
+  "get_book_detail": [
+   {
+    "book_id": "b5c7fcb371d4"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 12
+   },
+   {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   },
+   {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato cave allegory Republic interpretation",
+    "philosopher": "Plato",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'Plato Plato cave allegory Republic interpretation', 'results': [{'source_record_id': 'doi:10.3828/liverpool/9780856684067.003.0003', 'title': 'Plato: Republic 10', 'authors': [], 'year': 19"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "洞穴 影子 囚徒 火光 转身"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 81, 'chapter_title': '27 漫游者', 'citation_label': '【《尼采文集（合集）》·27 漫游者】', 'snippet': '27 (36) 漫游者 "
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.14195/2183-4105_11_4",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.14195/2183-4105_11_4', 'bibliographic_record': {'source_record_id': 'doi:10.14195/2183-4105_11_4', 'title': 'The Allegory of the Cave: The Necessity of the Philosopher’s D"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "柏拉图"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': 'e74dc59d508e', 'title': '柏拉图哲学作品集（套装6册）', 'author': '柏拉图', 'region': '西方', 'rank': 48.8, 'summary': '柏拉图是古希腊最伟大的哲学家之一，苏格拉底的学生，亚里士多德的老师。他的哲学作品集收录了其最重要的对话录，包括《理想国》、《会饮篇》、《斐多篇》、《巴门尼德篇》"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "b5c7fcb371d4"
+   },
+   "phase": "executed",
+   "result_head": "{'id': 'b5c7fcb371d4', 'title': '理想国', 'author': '柏拉图', 'region': '西方', 'file_type': 'epub', 'summary': '《理想国》是柏拉图最著名的对话录，以苏格拉底为主角，探讨正义、城邦与灵魂的秩序。全书通过构建一个理想的城邦，提出哲学家王的概念，认为应由具备智慧与美德的哲学家统治。柏拉图将城邦分为三个阶层："
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 12
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'b5c7fcb371d4', 'chapter_idx': 12, 'title': '第七卷', 'book_title': '理想国', 'citation_label': '【《理想国》·第七卷】', 'text': '苏：接下来让我们把受过教育的人与没受过教育的人的本质比作下述情形。让我们想象一个洞穴式的地下室，它有一长长通道通向外面，可让和洞穴一样宽的一路亮光照"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'b5c7fcb371d4', 'chapter_idx': 11, 'title': '第六卷', 'book_title': '理想国', 'citation_label': '【《理想国》·第六卷】', 'text': '苏：那么，格劳孔，经过这么漫长而累人的讨论，我们终于搞清楚了，什么样的人才是真哲学家，什么样的人不是真哲学家了。\\n格：要知道，欲速则不达呀。\\n苏"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "强迫 哲学家 下降 洞穴 轮流 管理城邦",
+    "limit": 6
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'c97cb4e6161a', 'book_title': '认识世界：古代与中世纪哲学', 'author': '理查德·大卫·普莱希特', 'chapter_idx': 1, 'chapter_title': '目录', 'citation_label': '【《认识世界：古代与中世纪哲学》·目录】', 'snippet': '导言 雅典学园 "
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'Plato Plato cave allegory Republic interpretation', 'results': [{'source_record_id': 'doi:10.3828/liverpool/9780856684067.003.0003', 'title': 'Plato: Republic 10', 'authors': [], 'year': 19"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 81, 'chapter_title': '27 漫游者', 'citation_label': '【《尼采文集（合集）》·27 漫游者】', 'snippet': '27 (36) 漫游者 "
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.14195/2183-4105_11_4', 'bibliographic_record': {'source_record_id': 'doi:10.14195/2183-4105_11_4', 'title': 'The Allegory of the Cave: The Necessity of the Philosopher’s D"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': 'e74dc59d508e', 'title': '柏拉图哲学作品集（套装6册）', 'author': '柏拉图', 'region': '西方', 'rank': 48.8, 'summary': '柏拉图是古希腊最伟大的哲学家之一，苏格拉底的学生，亚里士多德的老师。他的哲学作品集收录了其最重要的对话录，包括《理想国》、《会饮篇》、《斐多篇》、《巴门尼德篇》"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': 'b5c7fcb371d4', 'title': '理想国', 'author': '柏拉图', 'region': '西方', 'file_type': 'epub', 'summary': '《理想国》是柏拉图最著名的对话录，以苏格拉底为主角，探讨正义、城邦与灵魂的秩序。全书通过构建一个理想的城邦，提出哲学家王的概念，认为应由具备智慧与美德的哲学家统治。柏拉图将城邦分为三个阶层："
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'b5c7fcb371d4', 'chapter_idx': 12, 'title': '第七卷', 'book_title': '理想国', 'citation_label': '【《理想国》·第七卷】', 'text': '苏：接下来让我们把受过教育的人与没受过教育的人的本质比作下述情形。让我们想象一个洞穴式的地下室，它有一长长通道通向外面，可让和洞穴一样宽的一路亮光照"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'b5c7fcb371d4', 'chapter_idx': 11, 'title': '第六卷', 'book_title': '理想国', 'citation_label': '【《理想国》·第六卷】', 'text': '苏：那么，格劳孔，经过这么漫长而累人的讨论，我们终于搞清楚了，什么样的人才是真哲学家，什么样的人不是真哲学家了。\\n格：要知道，欲速则不达呀。\\n苏"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'c97cb4e6161a', 'book_title': '认识世界：古代与中世纪哲学', 'author': '理查德·大卫·普莱希特', 'chapter_idx': 1, 'chapter_title': '目录', 'citation_label': '【《认识世界：古代与中世纪哲学》·目录】', 'snippet': '导言 雅典学园 "
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "我把已取得的材料核对完毕后收口。下面是结果——分\"所找的学术解释\"与\"对它的原典核对\"两部分，并明确哪些核对上了、哪些没能逐句坐实。\n\n---\n\n## 一、找到的现代学术解释\n\n**Georgia Mouroutsou,《The Allegory of the Cave: The Necessity of the Philosopher's Descent》（洞穴喻：哲学家下降的必要性），*PLATO JOURNAL*, 2011, DOI: 10.14195/2183-4105_11_4。**\n\n这是一篇真实存在、且有摘要可读的期刊论文（我已读取其摘要，下面对其主张的复述基于该摘要内容，而非仅凭标题）：\n\n- 论文把洞穴喻理解为**柏拉图关于\"教育\"(paideia) 的理想**，核心聚焦在一个解释上有争议的问题：哲学家是否/为何**必须\"下降\"回到洞穴**。\n- 论文的处理分两条线：一条是从**本体论**（存在与生成之别）角度考察\"下降\"——作者认为这部中期对话**并未处理\"下降\"的本体论面向**，因而没有在此意义上解决该问题；另一条是**伦理—政治**面向。\n- 论文的关键抓手是一个**常被忽视的概念：必然性（ἀνάγκη）**。作者主张它在洞穴喻里扮演突出角色却未获足够重视，并据此重新审视\"强制/必然\"在哲学家下降义务中的位置。\n- 摘要明确标注了所依据的原文出处：**500d4、519e4、520a8、521b7、540a-b**。\n\n需要注意认识论地位：以上是**摘要层面**的内容证据。论文正文的内部论证（它如何具体重构\"必然性\"、如何反驳本体论读法）我并未读取正文，故不对其论证细节下判断。\n\n## 二、对所依据原典段落的核对\n\n核对对象是论文自己列出的出处。库里收有柏拉图《理想国》中译本（张竹明译），我逐卷读取了对应章节。\n\n**核对上的部分：**\n\n第七卷开篇即把整个比喻定位为\"教育\"问题，与论文\"洞穴喻=教育理想\"的框架吻合——原文以\"接下来让我们把受过教育的人与没受过教育的人的本质比作下述情形\"引出洞穴场景（囚徒自小被缚、只能看后壁影子）【《理想国》·第七卷】。比喻主体（火光与影子、转身、上升到地面、看见太阳、善的理念）也完整读到了。更关键的是，我自己读到的卷七文本里确实出现了论文所赖的\"转向\"主题：灵魂的\"同一部分被扭向了真理\"、此前被感官欲望\"紧缠在身上\"而\"只能看见下面事物\"——这正是论文所说的\"教育即灵魂转向\"（转述，对应论文所引 519 段落），且与论文强调的**下降/转向的伦理—政治含义**在文本上有落点【《理想国》·第七卷】。\n\n**没能逐句坐实的部分（如实标注）：**\n\n- 论文点名的 **500d4** 属第六卷。我读取了第六卷，但我取得的译本内容覆盖的是卷六前段（真哲学家的天性与\"船喻\"一段），**500d 所在的后段未能读到**，因此这一段我无法逐句核对。\n- 论文核心的\"**哲学家必须被强迫下降回洞穴**\"义务句（摘要标为 519e4、520a8、521b7、540a-b），位于第七卷后半。我读取的卷七文本恰好在\"没受过教育不知道真理的人和被允许终身完全从事知识研究的人，都是不能……\"这一句（约当 519d–520a）处被截断，**520a 之后的原文措辞我没能拿到**，以片段检索也未能直接定位该句。故论文\"下降必要性\"这一最核心主张的**逐句文本依据，我未能坐实**，只能确认它们落在第七卷、且主题确属\"哲学家对城邦的义务\"这一范围。\n\n**一个格式性提醒：** 论文用的是 Stephanus 标准页码（500d、519e 等），而库中张竹明译本不带这套页码；我是按论文标注的\"卷次+主题位置\"去比对中文段落，而非把中文行号当成标准页码对应。因此上文的核对是**内容层面**的，不是页码层面的精确定位。\n\n## 三、结论\n\n- 你要的\"现代学术解释\"确有一篇对口的：Mouroutsou 2011，它给洞穴喻提出了一个具体论题（下降的必要性 + 被忽视的必然性 ἀνάγκη）。\n- 它依据的原典确实在《理想国》卷六末段与卷七——这一点与文本吻合；**卷七洞穴喻主体与\"灵魂转向\"主题，我核对上了**；但论文最关键的具体出处句（卷七 519e 之后、卷六 500d），受译本整卷长度所限，我没能逐句核对。\n\n如果你愿意，我可以只盯一句话来做精确核对——比如告诉我你要核的是\"强迫哲学家下降\"那句，还是 500d 的\"哲学家凝视永恒秩序\"那句，我针对该处定点重读，把核对补全。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "**工作笔记：** 用户要两件事——①一个关于柏拉图洞穴比喻的现代学术解释（真实的二手文献），②核对这篇解释所依据的原典段落。我不能凭记忆给出某位学者的观点或论文立场，必须先检索到真实文献、读到其内容证据，再回到《理想国》卷七核对洞穴喻原文措辞。所以本轮同时走两条通道：学术文献定位 + 原典定位。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "需要一篇真实存在的关于柏拉图洞穴比喻的现代学术解释（其具体论点须有可读证据），以及《理想国》卷七洞穴喻原典段落原文用于核对",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "Plato cave allegory Republic interpretation",
+    "philosopher": "Plato",
+    "limit": 10
+   },
+   "result_head": "{'query': 'Plato Plato cave allegory Republic interpretation', 'results': [{'source_record_id': 'doi:10.3828/liverpool/9780856684067.003.0003', 'title': 'Plato: Republic 10', 'authors': [], 'year': 19"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "洞穴 影子 囚徒 火光 转身"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 81, 'chapter_title': '27 漫游者', 'citation_label': '【《尼采文集（合集）》·27 漫游者】', 'snippet': '27 (36) 漫游者 "
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记：** 学术侧已定位到一个高度相关的候选——Georgia Mouroutsou 2011 年在 *PLATO JOURNAL* 的《The Allegory of the Cave: The Necessity of the Philosopher's Descent》，标题指向一个具体论题（哲学家\"下降\"回洞穴的必要性），但摘要可读不等于已读，我不能凭标题脑补其论证，必须先调 get_scholarly_source 取内容证据。原典侧，直接搜\"洞穴/影子/囚徒\"命中的多是尼采、荣格、导读类二手书，暂未直接命中柏拉图《理想国》卷七原文——",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.14195/2183-4105_11_4",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.14195/2183-4105_11_4', 'bibliographic_record': {'source_record_id': 'doi:10.14195/2183-4105_11_4', 'title': 'The Allegory of the Cave: The Necessity of the Philosopher’s D"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "author": "柏拉图"
+   },
+   "result_head": "{'books': [{'id': 'e74dc59d508e', 'title': '柏拉图哲学作品集（套装6册）', 'author': '柏拉图', 'region': '西方', 'rank': 48.8, 'summary': '柏拉图是古希腊最伟大的哲学家之一，苏格拉底的学生，亚里士多德的老师。他的哲学作品集收录了其最重要的对话录，包括《理想国》、《会饮篇》、《斐多篇》、《巴门尼德篇》"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记：** 已取得 Mouroutsou 论文的摘要内容证据——它的中心论点是：洞穴喻关乎\"教育\"的理想，聚焦哲学家\"下降\"回洞穴这一争论激烈的问题；它主张该中期对话并未处理\"下降\"的本体论面向（存在与生成的返回），而把重心放在伦理—政治面向，并特别抓取被忽视的\"必然性\"（ἀνάγκη）概念，摘要明确点出所依据的原文出处 500d4、519e4、520a8、521b7、540a-b。现在需要核对的原典段落就锁定在《理想国》卷六（500d）与卷七（519e、520a、521b、540a-b）。库中收有柏拉图《理想国》中译本，下一步查其目录结构，定位",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "b5c7fcb371d4"
+   },
+   "result_head": "{'id': 'b5c7fcb371d4', 'title': '理想国', 'author': '柏拉图', 'region': '西方', 'file_type': 'epub', 'summary': '《理想国》是柏拉图最著名的对话录，以苏格拉底为主角，探讨正义、城邦与灵魂的秩序。全书通过构建一个理想的城邦，提出哲学家王的概念，认为应由具备智慧与美德的哲学家统治。柏拉图将城邦分为三个阶层："
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记：** 目录确认《理想国》张竹明译本按卷编排，第七卷是 chapter_idx=12、第六卷是 11。Mouroutsou 所依据的 519e、520a、521b、540a-b 都在卷七（洞穴喻及\"哲学家须下降回洞穴\"的义务段落），500d 在卷六。现在读这两卷原文核对。需注意：汉译本按中文分段、不带 Stephanus 页码，我只能核对内容与论证，不能伪造标准页码。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 12
+   },
+   "result_head": "{'book_id': 'b5c7fcb371d4', 'chapter_idx': 12, 'title': '第七卷', 'book_title': '理想国', 'citation_label': '【《理想国》·第七卷】', 'text': '苏：接下来让我们把受过教育的人与没受过教育的人的本质比作下述情形。让我们想象一个洞穴式的地下室，它有一长长通道通向外面，可让和洞穴一样宽的一路亮光照"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记：** 第七卷原文已取得，洞穴喻主体（从\"洞穴式地下室\"到\"太阳本身\"\"善的理念\"\"灵魂转向\"）与 Mouroutsou 论文强调的\"教育=灵魂转向\"完全吻合；文本在\"没受过教育不知道真理的人和被允许终身完全从事知识研究的人，都是不能……\"处被长度截断——这里正是论文最看重的 519e–520a\"哲学家必须被强迫下降回洞穴\"的关键段落，我尚未读到 520a 之后与 540a-b。此外论文摘要还列出卷六的 500d4，我完全没读。核对用户所要求的\"所依据的原典段落\"还存在真实缺口，因此申请一次预算延展读取第六卷。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "Mouroutsou 论文摘要明确列为依据的《理想国》500d4（卷六）原文尚未读取，核对该论文所依据原典段落仍不完整",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"核对它所依据的原典段落\"，而该论文摘要点名的 500d4 属于第六卷，我尚未读取第六卷原文，仅凭卷七无法完成核对",
+    "unresolved_evidence_gap": "《理想国》第六卷 500d 附近（哲学家凝视永恒秩序/下降问题）原文措辞"
+   }
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记：** 预算延展已获准，读取第六卷以核对 500d 附近原文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   },
+   "result_head": "{'book_id': 'b5c7fcb371d4', 'chapter_idx': 11, 'title': '第六卷', 'book_title': '理想国', 'citation_label': '【《理想国》·第六卷】', 'text': '苏：那么，格劳孔，经过这么漫长而累人的讨论，我们终于搞清楚了，什么样的人才是真哲学家，什么样的人不是真哲学家了。\\n格：要知道，欲速则不达呀。\\n苏"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记：** 第六卷原文取得，但译本篇幅长，我读到的是卷六前段（哲学家天性与\"船喻\"487a 附近），论文点名的 500d 落在卷六更后处，仍未直接读到；第七卷也停在\"没受过教育不知道真理的人和被允许终身完全从事知识研究的人，都是不能……\"，即 519d–520a，论文最看重的\"强迫哲学家下降回洞穴\"（520a8、521b7、540a-b）原文措辞我也还没拿到。核对尚不完整，我用一次片段检索尝试直接定位 520a 附近的关键句，若能命中就完成核对。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "evidence_gap": "论文所列第七卷 519e-540 的\"强迫哲学家下降回洞穴\"段落与卷六 500d 的原文措辞尚未取得（整卷读取被长度截断）",
+    "gap_filled": false,
+    "research_need": "MIXED",
+    "source_dependent": true,
+    "budget_extension_reason": "get_chapter 返回整卷会固定截断，无法取得第七卷后半与第六卷 500d 原文，需借片段检索直接定位关键句以完成用户要求的核对",
+    "unresolved_evidence_gap": "《理想国》第七卷\"哲学家须下降/轮流下到洞穴\"的义务句原文"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "强迫 哲学家 下降 洞穴 轮流 管理城邦",
+    "limit": 6
+   },
+   "result_head": "{'results': [{'book_id': 'c97cb4e6161a', 'book_title': '认识世界：古代与中世纪哲学', 'author': '理查德·大卫·普莱希特', 'chapter_idx': 1, 'chapter_title': '目录', 'citation_label': '【《认识世界：古代与中世纪哲学》·目录】', 'snippet': '导言 雅典学园 "
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "需要一篇真实存在的关于柏拉图洞穴比喻的现代学术解释（其具体论点须有可读证据），以及《理想国》卷七洞穴喻原典段落原文用于核对",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "Mouroutsou 论文摘要明确列为依据的《理想国》500d4（卷六）原文尚未读取，核对该论文所依据原典段落仍不完整",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"核对它所依据的原典段落\"，而该论文摘要点名的 500d4 属于第六卷，我尚未读取第六卷原文，仅凭卷七无法完成核对",
+    "unresolved_evidence_gap": "《理想国》第六卷 500d 附近（哲学家凝视永恒秩序/下降问题）原文措辞"
+   }
+  },
+  {
+   "args": {
+    "evidence_gap": "论文所列第七卷 519e-540 的\"强迫哲学家下降回洞穴\"段落与卷六 500d 的原文措辞尚未取得（整卷读取被长度截断）",
+    "gap_filled": false,
+    "research_need": "MIXED",
+    "source_dependent": true,
+    "budget_extension_reason": "get_chapter 返回整卷会固定截断，无法取得第七卷后半与第六卷 500d 原文，需借片段检索直接定位关键句以完成用户要求的核对",
+    "unresolved_evidence_gap": "《理想国》第七卷\"哲学家须下降/轮流下到洞穴\"的义务句原文"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "论文所列第七卷 519e-540 的\"强迫哲学家下降回洞穴\"段落与卷六 500d 的原文措辞尚未取得（整卷读取被长度截断）",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:12:24",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": null,
+    "evidence_gap": "需要一篇真实存在的关于柏拉图洞穴比喻的现代学术解释（其具体论点须有可读证据），以及《理想国》卷七洞穴喻原典段落原文用于核对",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:12:54",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "MIXED",
+    "evidence_gap": "Mouroutsou 论文摘要明确列为依据的《理想国》500d4（卷六）原文尚未读取，核对该论文所依据原典段落仍不完整",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 17:13:07",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "MIXED",
+    "evidence_gap": "论文所列第七卷 519e-540 的\"强迫哲学家下降回洞穴\"段落与卷六 500d 的原文措辞尚未取得（整卷读取被长度截断）",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:12:54",
+    "reason": "用户明确要求\"核对它所依据的原典段落\"，而该论文摘要点名的 500d4 属于第六卷，我尚未读取第六卷原文，仅凭卷七无法完成核对",
+    "unresolved_gap": "《理想国》第六卷 500d 附近（哲学家凝视永恒秩序/下降问题）原文措辞"
+   },
+   {
+    "ts": "2026-09-13 17:13:07",
+    "reason": "get_chapter 返回整卷会固定截断，无法取得第七卷后半与第六卷 500d 原文，需借片段检索直接定位关键句以完成用户要求的核对",
+    "unresolved_gap": "《理想国》第七卷\"哲学家须下降/轮流下到洞穴\"的义务句原文"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 10,
+  "blocked_calls": [
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:12:41"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 143225,
+   "output_tokens": 9940,
+   "total_tokens": 153165
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 19723,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12067,
+     "output_tokens": 489,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 16445,
+     "output_tokens": 885,
+     "tool_chars_added": 9158
+    },
+    {
+     "round": 3,
+     "input_tokens": 14991,
+     "output_tokens": 683,
+     "tool_chars_added": 3099
+    },
+    {
+     "round": 4,
+     "input_tokens": 15472,
+     "output_tokens": 836,
+     "tool_chars_added": 1087
+    },
+    {
+     "round": 5,
+     "input_tokens": 18516,
+     "output_tokens": 2196,
+     "tool_chars_added": 4241
+    },
+    {
+     "round": 6,
+     "input_tokens": 19639,
+     "output_tokens": 210,
+     "tool_chars_added": 2065
+    },
+    {
+     "round": 7,
+     "input_tokens": 21538,
+     "output_tokens": 1986,
+     "tool_chars_added": 4000
+    },
+    {
+     "round": 8,
+     "input_tokens": 24557,
+     "output_tokens": 2655,
+     "tool_chars_added": 6662
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1886,
+ "token_usage": {
+  "input_tokens": 143225,
+  "output_tokens": 9940,
+  "total_tokens": 153165
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 65.8,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "需要一篇真实存在的关于柏拉图洞穴比喻的现代学术解释（其具体论点须有可读证据），以及《理想国》卷七洞穴喻原典段落原文用于核对",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=MIXED（EVIDENCE_GAP: 需要一篇真实存在的关于柏拉图洞穴比喻的现代学术解释（其具体论点须有可读证据），以及《理想国》卷七洞穴喻原典段落原文用于核对）。soft 检索预算=6 次。', 'snapshot': {'active_class': 'MIXED",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato cave allegory Republic interpretation",
+    "philosopher": "Plato",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'Plato Plato cave allegory Republic interpretation', 'results': [{'source_record_id': 'doi:10.3828/liverpool/9780856684067.003.0003', 'title': 'Plato: Republic 10', 'authors': [], 'year': 19",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.3828/liverpool/9780856684067.003.0003",
+     "doi:10.14195/2183-4105_11_4",
+     "doi:10.3735/9781961844056.book-part-017",
+     "doi:10.3735/9781961844193.book-part-091",
+     "doi:10.14195/2183-4105_23_6",
+     "doi:10.25205/1995-4328-2020-14-2-431-447",
+     "doi:10.4324/9781315303673-22",
+     "doi:10.4324/9781003235750-5",
+     "doi:10.1093/oseo/instance.00246997",
+     "doi:10.4324/9780203100448"
+    ],
+    "access_levels": {
+     "doi:10.3828/liverpool/9780856684067.003.0003": "ABSTRACT_AVAILABLE",
+     "doi:10.14195/2183-4105_11_4": "ABSTRACT_AVAILABLE",
+     "doi:10.3735/9781961844056.book-part-017": "ABSTRACT_AVAILABLE",
+     "doi:10.3735/9781961844193.book-part-091": "ABSTRACT_AVAILABLE",
+     "doi:10.14195/2183-4105_23_6": "ABSTRACT_AVAILABLE",
+     "doi:10.25205/1995-4328-2020-14-2-431-447": "ABSTRACT_AVAILABLE",
+     "doi:10.4324/9781315303673-22": "METADATA_ONLY",
+     "doi:10.4324/9781003235750-5": "METADATA_ONLY",
+     "doi:10.1093/oseo/instance.00246997": "METADATA_ONLY",
+     "doi:10.4324/9780203100448": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "洞穴 影子 囚徒 火光 转身"
+   },
+   "result_summary": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 81, 'chapter_title': '27 漫游者', 'citation_label': '【《尼采文集（合集）》·27 漫游者】', 'snippet': '27 (36) 漫游者 ",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.14195/2183-4105_11_4",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.14195/2183-4105_11_4', 'bibliographic_record': {'source_record_id': 'doi:10.14195/2183-4105_11_4', 'title': 'The Allegory of the Cave: The Necessity of the Philosopher’s D",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.14195/2183-4105_11_4",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "柏拉图"
+   },
+   "result_summary": "{'books': [{'id': 'e74dc59d508e', 'title': '柏拉图哲学作品集（套装6册）', 'author': '柏拉图', 'region': '西方', 'rank': 48.8, 'summary': '柏拉图是古希腊最伟大的哲学家之一，苏格拉底的学生，亚里士多德的老师。他的哲学作品集收录了其最重要的对话录，包括《理想国》、《会饮篇》、《斐多篇》、《巴门尼德篇》",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "b5c7fcb371d4"
+   },
+   "result_summary": "{'id': 'b5c7fcb371d4', 'title': '理想国', 'author': '柏拉图', 'region': '西方', 'file_type': 'epub', 'summary': '《理想国》是柏拉图最著名的对话录，以苏格拉底为主角，探讨正义、城邦与灵魂的秩序。全书通过构建一个理想的城邦，提出哲学家王的概念，认为应由具备智慧与美德的哲学家统治。柏拉图将城邦分为三个阶层：",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 12
+   },
+   "result_summary": "{'book_id': 'b5c7fcb371d4', 'chapter_idx': 12, 'title': '第七卷', 'book_title': '理想国', 'citation_label': '【《理想国》·第七卷】', 'text': '苏：接下来让我们把受过教育的人与没受过教育的人的本质比作下述情形。让我们想象一个洞穴式的地下室，它有一长长通道通向外面，可让和洞穴一样宽的一路亮光照",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "Mouroutsou 论文摘要明确列为依据的《理想国》500d4（卷六）原文尚未读取，核对该论文所依据原典段落仍不完整",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户明确要求\"核对它所依据的原典段落\"，而该论文摘要点名的 500d4 属于第六卷，我尚未读取第六卷原文，仅凭卷七无法完成核对",
+    "unresolved_evidence_gap": "《理想国》第六卷 500d 附近（哲学家凝视永恒秩序/下降问题）原文措辞"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=MIXED（EVIDENCE_GAP: Mouroutsou 论文摘要明确列为依据的《理想国》500d4（卷六）原文尚未读取，核对该论文所依据原典段落仍不完整）。soft 检索预算=6 次。预算延展已获准（BUDGET_EXTENSION_REASON 已留痕）: so",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   },
+   "result_summary": "{'book_id': 'b5c7fcb371d4', 'chapter_idx': 11, 'title': '第六卷', 'book_title': '理想国', 'citation_label': '【《理想国》·第六卷】', 'text': '苏：那么，格劳孔，经过这么漫长而累人的讨论，我们终于搞清楚了，什么样的人才是真哲学家，什么样的人不是真哲学家了。\\n格：要知道，欲速则不达呀。\\n苏",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "evidence_gap": "论文所列第七卷 519e-540 的\"强迫哲学家下降回洞穴\"段落与卷六 500d 的原文措辞尚未取得（整卷读取被长度截断）",
+    "gap_filled": false,
+    "research_need": "MIXED",
+    "source_dependent": true,
+    "budget_extension_reason": "get_chapter 返回整卷会固定截断，无法取得第七卷后半与第六卷 500d 原文，需借片段检索直接定位关键句以完成用户要求的核对",
+    "unresolved_evidence_gap": "《理想国》第七卷\"哲学家须下降/轮流下到洞穴\"的义务句原文"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=MIXED（EVIDENCE_GAP: 论文所列第七卷 519e-540 的\"强迫哲学家下降回洞穴\"段落与卷六 500d 的原文措辞尚未取得（整卷读取被长度截断））。soft 检索预算=8 次。预算延展已获准（BUDGET_EXTENSION_REASON 已留痕）: ",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "强迫 哲学家 下降 洞穴 轮流 管理城邦",
+    "limit": 6
+   },
+   "result_summary": "{'results': [{'book_id': 'c97cb4e6161a', 'book_title': '认识世界：古代与中世纪哲学', 'author': '理查德·大卫·普莱希特', 'chapter_idx': 1, 'chapter_title': '目录', 'citation_label': '【《认识世界：古代与中世纪哲学》·目录】', 'snippet': '导言 雅典学园 ",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "洞穴 影子 囚徒 火光 转身"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 81,
+      "chapter_title": "27 漫游者",
+      "citation_label": "【《尼采文集（合集）》·27 漫游者】",
+      "snippet": "27 (36) 漫游者 “没路了！周遭是深渊和死一般的寂静！”—— 这就是你想要的！你的意志想离开小路！ 漫游者啊，现在是时候了！冷静而清晰地看看吧！ 如果你相信——危险，你就无望了。",
+      "score": 0.505
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 67,
+      "chapter_title": "13 致舞者",
+      "citation_label": "【《尼采文集（合集）》·13 致舞者】",
+      "snippet": "13 (18) 致舞者 (19) 平滑的冰 善舞者的 天堂。",
+      "score": 0.496
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 57,
+      "chapter_title": "3 无畏的",
+      "citation_label": "【《尼采文集（合集）》·3 无畏的】",
+      "snippet": " 无畏的 (3) 在你站立的地方，往下深挖吧！ 下面就是井泉！ 就让灰暗的人们 (4) 叫喊： “下面永远是——地狱！” 边码：354",
+      "score": 0.473
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 98,
+      "chapter_title": "44 彻底之人",
+      "citation_label": "【《尼采文集（合集）》·44 彻底之人】",
+      "snippet": "44 (59) 彻底之人 我是探究者？噢，省省吧！ 我只是笨重——有好多磅！ 我一直掉啊掉 终于掉到了谷底 (60)！",
+      "score": 0.467
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 116,
+      "chapter_title": "62 瞧，这个人",
+      "citation_label": "【《尼采文集（合集）》·62 瞧，这个人】",
+      "snippet": "62 (84) 瞧，这个人 (85) 是的！我知道我来自哪里！ 就像火焰一样不知餍足 灼烧自己，折磨自己。 我抓住的一切全都变成光明， 我丢弃的一切全都变成灰烬： 我是火焰，毫无疑问！",
+      "score": 0.466
+     },
+     {
+      "book_id": "f15e7fd89491",
+      "book_title": "从《理想国》到《正义论》",
+      "author": "奈杰尔·沃伯顿",
+      "chapter_idx": 0,
+      "chapter_title": "柏拉图：《理想国》",
+      "citation_label": "【《从《理想国》到《正义论》》·柏拉图：《理想国》】",
+      "snippet": "洞穴 设想有这样一个洞穴，囚徒们都被手铐脚镣锁着，面对远处的墙。他们终生都必须保持这个姿势，脑袋也被固定住，除了洞穴的墙，别的什么都看不见。在他们身后有一堆火，在火和他们的后背之间有一条路。各种各样的人在路上行走，火将他们的影子投射在墙壁上。有的人还背着一些动物模型，这些模型也有影子。里面的囚徒们只能看见影子。他们相信这些影子就是真实的事物，因为他们只知道影子，对其他的事物一无所知。但是实际上他们从没有看到过真正的人。 后来有一天，一个",
+      "score": 0.462
+     },
+     {
+      "book_id": "63a3b006c9d7",
+      "book_title": "红书",
+      "author": "卡尔·古斯塔夫·荣格",
+      "chapter_idx": 13,
+      "chapter_title": "第五章 未来的地狱之旅",
+      "citation_label": "【《红书》·第五章 未来的地狱之旅】",
+      "snippet": "[HI iii(v)] 第五章　未来的地狱之旅 [1] 第二天夜里，空气中充满各种声音。有一个很大的声音说：“我正在坠落。”其他声音在中间困惑又激动地大叫：“掉到哪里了？你想怎么样？”我要把自己托付给这些混乱吗？我感到不寒而栗，它深得可怕。你想让我试一下运气，进入我自己黑暗的疯狂？惶惑？惶惑？不论你是谁，只要你跌落，我也会和你一起跌落。 [Image iii(v) 1] 深度 精神 打开了我的双眼，我得以瞥见内在的事物、我灵魂的世界，很",
+      "score": 0.447
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 617,
+      "chapter_title": "影子",
+      "citation_label": "【《西方百年学术经典著作》·影子】",
+      "snippet": "自发的求乞者刚刚从查拉图斯特拉这里跑开，查拉图斯特拉重新独自一人，立刻听到背后有一个新的声音喊叫：“停一停！查拉图斯特拉！在那儿等一会儿！我实际上，噢，查拉图斯特拉，我，你的影子啊！”但是查拉图斯特拉没有等，因为一阵突然的烦恼向他袭来，在他的山峰之中冲撞得粉碎。“我的孤寂跑到哪里去了？”他说。 “这对我来说确实太多了，山脊密集，我的王国已不复存在，我需要新的山峰。 “我的影子呼唤我？我的影子有什么要紧？就让它跟在我身后跑吧！我——应该从",
+      "score": 0.442
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 287,
+      "chapter_title": "第七卷",
+      "citation_label": "【《西方百年学术经典著作》·第七卷】",
+      "snippet": "“现在，”我说，“让我用一个故事来说明文明之人和落后之人本质的区别有多大——看呀！人类住在一个地下的洞穴中，洞穴中有一条道路通向光亮。这些人从小就一直住在这个洞穴里，他们的脖子上和脚上都锁着铁链，因此不能活动，只能看到他们面前的东西，头部也不能转动。在距离他们远一些的后上方闪烁着一团火焰，在火焰和这些囚禁者之间有一条突起的道路，如果你仔细看，你会看到路上还筑有一道矮墙，就好像放在木偶表演者前面的那道屏障一样，那些表演者就是在这道屏障之上",
+      "score": 0.432
+     },
+     {
+      "book_id": "63a3b006c9d7",
+      "book_title": "红书",
+      "author": "卡尔·古斯塔夫·荣格",
+      "chapter_idx": 32,
+      "chapter_title": "第十二章 地狱",
+      "citation_label": "【《红书》·第十二章 地狱】",
+      "snippet": "[HI 73] 第十二章　地狱 第二天夜里， [1] 在创造完神之后，一个幻象使我认识到自己已经到达阴间。 我 发现自己站在一座阴暗的地下墓室中，地上铺的是潮湿的石板。一根石柱竖在中间，石柱上挂着绳索和斧子，有一个丑陋的蛇形人体蜷缩在柱脚。最初，我看到的是一个少女形象，有着一头金红色的头发，一个面目狰狞的男人有一半的身体在她身下，他的头弯向后侧，一股细细的血流从他前额上流下来，两个长得很像的魔鬼躺在少女的脚和身体上。他们表情凶残，这是真",
+      "score": 0.429
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 594,
+      "chapter_title": "幻与谜",
+      "citation_label": "【《西方百年学术经典著作》·幻与谜】",
+      "snippet": "当船员们得知查拉图斯特拉也登上了船时——因为有一个从福佑之岛来的人和他一起登上了船——人们产生了巨大的好奇和期待。但是查拉图斯特拉沉默了两天，因为悲伤而冷漠木讷并且闭目塞听，因此他不对任何看望和问题做出反应。然而在第二天晚上，他重新打开了自己的耳朵，尽管他仍然保持沉默，因为有很多陌生而危险的东西在盯着这艘船，这船从远方来，将开往更远方。但查拉图斯特拉是那些远行的人的一个朋友，并且他讨厌生存在没有危险的环境中。瞧呀！在聆听中他自己的舌头最",
+      "score": 0.428
+     },
+     {
+      "book_id": "ad61ed0fd976",
+      "book_title": "变形记",
+      "author": "弗朗茨·卡夫卡",
+      "chapter_idx": 4,
+      "chapter_title": "目录",
+      "citation_label": "【《变形记》·目录】",
+      "snippet": "译本序 第一辑　生前问世之作 1．观察 公路上的孩子们 揭穿一个骗子 突然去散步 决断 山地远足 单身汉的不幸 商人 心不在焉地向外眺望 回家的路 过路人 乘客 衣服 拒绝 为男骑手们考虑 临街的窗户 想当印第安人 树 不幸 2．判决 3．变形记 4．在流放地 5．乡村医生 新律师 乡村医生 在剧院顶层楼座 往事一页 在法的大门前 豺狗和阿拉伯人 视察矿山 最近的村庄 一道圣旨 家长的忧虑 十一个儿子 杀兄 梦 致某科学院的报告 6．饥",
+      "score": 0.425
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 281,
+      "chapter_title": "164",
+      "citation_label": "【《尼采文集（合集）》·164】",
+      "snippet": " 寻求安宁的人 。——我知道这些寻求安宁的人物，因为他们在自身周围摆设了大量 黑暗的 物事：谁想要睡觉，他就得把自己的房间弄暗，或者钻进洞穴里去。——这是给那些不知道、也不想知道自己到底最需要寻求什么的人们的一个暗示！",
+      "score": 0.423
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 73,
+      "chapter_title": "19 无意的诱惑者",
+      "citation_label": "【《尼采文集（合集）》·19 无意的诱惑者】",
+      "snippet": " 无意的诱惑者 为了消遣，他把一个空虚的字眼 射向天空——居然掉下来一个女人。",
+      "score": 0.421
+     },
+     {
+      "book_id": "c97cb4e6161a",
+      "book_title": "认识世界：古代与中世纪哲学",
+      "author": "理查德·大卫·普莱希特",
+      "chapter_idx": 34,
+      "chapter_title": "洞穴图",
+      "citation_label": "【《认识世界：古代与中世纪哲学》·洞穴图】",
+      "snippet": "这是哲学史上最著名的画面之一：在一个地下洞穴里，囚徒被用链子拴在一堵墙上。他们向来在这下面生活，且不能转动脑袋。他们的目光只能朝向对面的石壁。来自洞穴隐蔽的入口处，即在这些被缚者背后，有光投射在这堵石壁上。不过那些囚徒是看不见光源的，他们看到的只是眼前被照亮的石壁，以及石壁上出现的一种奇特仪式。可见的是人和动物形状的影子。这是一些塑像的影子，搬运者在洞穴入口处的光中将它们扛来扛去。搬运者在搬动这些塑像时交谈，但囚徒看不到他们。被缚者所感",
+      "score": 0.421
+     }
+    ],
+    "query": "洞穴 影子 囚徒 火光 转身",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "Plato cave allegory Republic interpretation",
+    "philosopher": "Plato",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "Plato Plato cave allegory Republic interpretation",
+    "results": [
+     {
+      "source_record_id": "doi:10.3828/liverpool/9780856684067.003.0003",
+      "title": "Plato: Republic 10",
+      "authors": [],
+      "year": 1988,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Plato: Republic X",
+      "doi": "10.3828/liverpool/9780856684067.003.0003",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.14195/2183-4105_11_4",
+      "title": "The Allegory of the Cave: The Necessity of the Philosopher’s Descent",
+      "authors": [
+       "Georgia Mouroutsou"
+      ],
+      "year": 2011,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "PLATO JOURNAL",
+      "doi": "10.14195/2183-4105_11_4",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.3735/9781961844056.book-part-017",
+      "title": "Plato: “Allegory of the Cave”",
+      "authors": [],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Milestone Documents in World History",
+      "doi": "10.3735/9781961844056.book-part-017",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.3735/9781961844193.book-part-091",
+      "title": "Plato: “Allegory of the Cave”",
+      "authors": [],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Schlager Anthology of the Ancient World",
+      "doi": "10.3735/9781961844193.book-part-091",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.14195/2183-4105_23_6",
+      "title": "Ἀνα τὸν αὐτὸν λόγον",
+      "authors": [
+       "Bernard Suzanne"
+      ],
+      "year": 2022,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "PLATO JOURNAL",
+      "doi": "10.14195/2183-4105_23_6",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.25205/1995-4328-2020-14-2-431-447",
+      "title": "Plato and the cave allegory. An interpretation beginning with verbs of knowledge",
+      "authors": [
+       "Claudio César Calabreze"
+      ],
+      "year": 2020,
+      "publication_type": "JOURNAL_ARTICLE",
+      "venue": "ΣΧΟΛΗ. Ancient Philosophy and the Classical Tradition",
+      "doi": "10.25205/1995-4328-2020-14-2-431-447",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781315303673-22",
+      "title": "Allegory of the Cave",
+      "authors": [
+       "Plato"
+      ],
+      "year": 2017,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Aesthetics",
+      "doi": "10.4324/9781315303673-22",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9781003235750-5",
+      "title": "“Allegory of the Cave”",
+      "authors": [
+       "Plato"
+      ],
+      "year": 2021,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "In the Mind's Eye",
+      "doi": "10.4324/9781003235750-5",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oseo/instance.00246997",
+      "title": "6. The Cave: Republic 514a–217a",
+      "authors": [],
+      "year": 2004,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Oxford World's Classics: Plato: Selected Myths",
+      "doi": "10.1093/oseo/instance.00246997",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4324/9780203100448",
+      "title": "The Message of Plato (RLE: Plato)",
+      "authors": [
+       "Edward Urwick"
+      ],
+      "year": 2013,
+      "publication_type": "BOOK",
+      "venue": null,
+      "doi": "10.4324/9780203100448",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 6,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.3828/liverpool/9780856684067.003.0003",
+     "doi:10.14195/2183-4105_11_4",
+     "doi:10.3735/9781961844056.book-part-017",
+     "doi:10.3735/9781961844193.book-part-091",
+     "doi:10.14195/2183-4105_23_6",
+     "doi:10.25205/1995-4328-2020-14-2-431-447"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "柏拉图"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "e74dc59d508e",
+      "title": "柏拉图哲学作品集（套装6册）",
+      "author": "柏拉图",
+      "region": "西方",
+      "rank": 48.8,
+      "summary": "柏拉图是古希腊最伟大的哲学家之一，苏格拉底的学生，亚里士多德的老师。他的哲学作品集收录了其最重要的对话录，包括《理想国》、《会饮篇》、《斐多篇》、《巴门尼德篇》等。在《理想国》中，柏拉图构建了一个理想的城邦，提出了哲学家王的观念，并阐述了正义、教育、艺术和政治的哲学基础。在《会饮篇》中，他通过一系列"
+     },
+     {
+      "id": "35279e2e439d",
+      "title": "柏拉图对话集",
+      "author": "柏拉图",
+      "region": "西方",
+      "rank": 48.8,
+      "summary": "《柏拉图对话集》收录了柏拉图（公元前427-前347年）以对话录形式撰写的多篇哲学作品，是西方哲学最经典的文本集合之一。柏拉图以苏格拉底为主要对话者，通过戏剧性的辩论探讨宇宙本原、知识、正义、灵魂、爱、美与至善等根本问题。核心思想包括：理念论（理念是真实、永恒、不变的存在，现实事物只是其不完美的摹本"
+     },
+     {
+      "id": "b5c7fcb371d4",
+      "title": "理想国",
+      "author": "柏拉图",
+      "region": "西方",
+      "rank": 47.7,
+      "summary": "《理想国》是柏拉图最著名的对话录，以苏格拉底为主角，探讨正义、城邦与灵魂的秩序。全书通过构建一个理想的城邦，提出哲学家王的概念，认为应由具备智慧与美德的哲学家统治。柏拉图将城邦分为三个阶层：统治者、护卫者与生产者，对应灵魂中的理性、激情与欲望。他主张正义即各司其职，并设计教育体系培养护卫者。书中还包"
+     }
+    ],
+    "total": 3
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.14195/2183-4105_11_4",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.14195/2183-4105_11_4",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.14195/2183-4105_11_4",
+     "title": "The Allegory of the Cave: The Necessity of the Philosopher’s Descent",
+     "authors": [
+      "Georgia Mouroutsou"
+     ],
+     "year": 2011,
+     "publication_type": "JOURNAL_ARTICLE",
+     "venue": "PLATO JOURNAL",
+     "doi": "10.14195/2183-4105_11_4",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "The allegory of the cave is about the Platonic ideal of education. It has been received, interpreted, and transformed throughout the entire course of the history of philosophy. After some preliminary remarks on this philosophical image (I), I shall focus on the hotly debated descent of the philosopher back into the cave. On the one hand, I shall examine the issue with regard to the ontological distinction between being and becoming: the middle dialogue in question is not concerned with the ontological aspect of the descent, as I label the return from being to becoming, and thus does not solve the problem so formulated (II). On the other hand, I shall consider a well-known crux: the ethical and political aspect of the problem (III). To do so, I shall center on the concept of necessity (ἀνάγκη) that plays a prominent role in the Cave1 but nonetheless has not yet received due attention (IV). For this it is important to show in what way and to what extent we have to take “necessity” or “compulsion” seriously in the broader relevant context (500d4, 519e4, 520a8, 521b7, 540a-b); and also what kinds of necessity are at stake.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "d9b643b43d27099495e0c50c9e6408d55b99d0be1247c40d38a421b6570b2ee2"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "b5c7fcb371d4"
+   },
+   "result_full": {
+    "id": "b5c7fcb371d4",
+    "title": "理想国",
+    "author": "柏拉图",
+    "region": "西方",
+    "file_type": "epub",
+    "summary": "《理想国》是柏拉图最著名的对话录，以苏格拉底为主角，探讨正义、城邦与灵魂的秩序。全书通过构建一个理想的城邦，提出哲学家王的概念，认为应由具备智慧与美德的哲学家统治。柏拉图将城邦分为三个阶层：统治者、护卫者与生产者，对应灵魂中的理性、激情与欲望。他主张正义即各司其职，并设计教育体系培养护卫者。书中还包含著名的“洞穴寓言”，隐喻人类从无知到启蒙的历程。该书奠定了西方政治哲学与形而上学的基石，对后世乌托邦思想影响深远。",
+    "rank": 47.7,
+    "chapterCount": 20,
+    "toc": [
+     "目录",
+     "扉页",
+     "版权页",
+     "插页",
+     "汉译世界学术名著丛书出版说明",
+     "译者引言",
+     "第一卷",
+     "第二卷",
+     "第三卷",
+     "第四卷",
+     "第五卷",
+     "第六卷",
+     "第七卷",
+     "第八卷",
+     "第九卷",
+     "第十卷",
+     "索引",
+     "人名地名索引之一",
+     "人名地名索引之二",
+     "本书版本简目"
+    ],
+    "bibliographic_metadata": {
+     "work": {
+      "author": "柏拉图",
+      "canonical_title": "理想国",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": "张竹明",
+      "publisher": "商务印书馆",
+      "publication_year": null,
+      "isbn": "978-7-100-06459-0",
+      "edition_identity": "VERIFIED"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [
+       "isbn",
+       "publisher",
+       "translator"
+      ],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 12
+   },
+   "result_full": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 12,
+    "title": "第七卷",
+    "book_title": "理想国",
+    "citation_label": "【《理想国》·第七卷】",
+    "text": "苏：接下来让我们把受过教育的人与没受过教育的人的本质比作下述情形。让我们想象一个洞穴式的地下室，它有一长长通道通向外面，可让和洞穴一样宽的一路亮光照进来。有一些人从小就住在这洞穴里，头颈和腿脚都绑着，不能走动也不能转头，只能向前看着洞穴后壁。让我们再想象在他们背后远处高些的地方有东西燃烧着发出火光。在火光和这些被囚禁者之间，在洞外上面有一条路。沿着路边已筑有一带矮墙。矮墙的作用像傀儡戏演员在自己和观众之间设的一道屏障，他们把木偶举到屏障上头去表演。\n格：我看见了。\n苏：接下来让我们想象有一些人拿着各种器物举过墙头，从墙后面走过，有的还举着用木料、石料或其他材料制作的假人和假兽。而这些过路人，你可以料到有的在说话，有的不在说话。\n格：你说的是一个奇特的比喻和一些奇特的囚徒。\n苏：不，他们是一些和我们一样的人。你且说说看，你认为这些囚徒除了火光投射到他们对面洞壁上的阴影而外，他们还能看到自己的或同伴们的什么呢？\n格：如果他们一辈子头颈被限制了不能转动，他们又怎样能看到别的什么呢？\n苏：那么，后面路上人举着过去的东西，除了它们的阴影而外，囚徒们能看到它们别的什么吗？\n格：当然不能。\n苏：那么，如果囚徒们能彼此交谈，你不认为，他们会断定，他们在讲自己所看到的阴影时是在讲真物本身吗？\n格：必定如此。\n苏：又，如果一个过路人发出声音，引起囚徒对面洞壁的回声，你不认为，囚徒们会断定，这是他们对面洞壁上移动的阴影发出的吗？\n格：他们一定会这样断定的。\n苏：因此无疑，这种人不会想到，上述事物除阴影而外还有什么别的实在。\n格：无疑的。\n苏：那么，请设想一下，如果他们被解除禁锢，矫正迷误，你认为这时他们会怎样呢？如果真的发生如下的事情：其中有一人被解除了桎梏，被迫突然站了起来，转头环视，走动，抬头看望火光，你认为这时他会怎样呢？他在做这些动作时会感觉痛苦的，并且，由于眼花缭乱，他无法看见那些他原来只看见其阴影的实物。如果有人告诉他，说他过去惯常看到的全然是虚假，如今他由于被扭向了比较真实的器物，比较地接近了实在，所见比较真实了，你认为他听了这话会说些什么呢？如果再有人把墙头上过去的每一器物指给他看，并且逼他说出那是些什么，你不认为，这时他会不知说什么是好，并且认为他过去所看到的阴影比现在所看到的实物更真实吗？\n格：更真实得多呀！\n苏：如果他被迫看火光本身，他的眼睛会感到痛苦，他会转身走开，仍旧逃向那些他能够看清而且确实认为比人家所指示的实物还更清楚更实在的影像的。不是吗？\n格：会这样的。\n苏：再说，如果有人硬拉他走上一条陡峭崎岖的坡道，直到把他拉出洞穴见到了外面的阳光，不让他中途退回去，他会觉得这样被强迫着走很痛苦，并且感到恼火；当他来到阳光下时，他会觉得眼前金星乱蹦金蛇乱串，以致无法看见任何一个现在被称为真实的事物的。你不认为会这样吗？\n格：噢，的确不是一下子就能看得见的。\n苏：因此我认为，要他能在洞穴外面的高处看得见东西，大概需要有一个逐渐习惯的过程。首先大概看阴影是最容易，其次要数看人和其他东西在水中的倒影容易，再次是看东西本身；经过这些之后他大概会觉得在夜里观察天象和天空本身，看月光和星光比白天看太阳和太阳光容易。\n格：当然啰。\n苏：这样一来，我认为，他大概终于就能直接观看太阳本身，看见他的真相了，就可以不必通过水中的倒影或影像，或任何其他媒介中显示出的影像看它了，就可以在它本来的地方就其本身看见其本相了。\n格：这是一定的。\n苏：接着他大概对此已经可以得出结论了：造成四季交替和年岁周期，主宰可见世界一切事物的正是这个太阳，它也就是他们过去通过某种曲折看见的所有那些事物的原因。\n格：显然，他大概会接着得出这样的结论。\n苏：如果他回想自己当初的穴居、那个时候的智力水平，以及禁锢中的伙伴们，你不认为，他会庆幸自己的这一变迁，而替伙伴们遗憾吗？\n格：确实会的。\n苏：如果囚徒们之间曾有过某种选举，也有人在其中赢得过尊荣，而那些敏于辨别而且最能记住过往影像的惯常次序，因而最能预言后面还有什么影像会跟上来的人还得到过奖励，你认为这个既已解放了的人他会再热衷于这种奖赏吗？对那些受到囚徒们尊重并成了他们领袖的人，他会心怀嫉妒，和他们争夺那里的权力地位吗？或者，还是会像荷马所说的那样，他宁愿活在人世上做一个穷人的奴隶，受苦受难，也不愿和囚徒们有共同意见，再过他们那种生活呢？\n格：我想，他会宁愿忍受任何苦楚也不愿再过囚徒生活的。\n苏：如果他又回到地穴中坐在他原来的位置上，你认为会怎么样呢？他由于突然地离开阳光走进地穴，他的眼睛不会因黑暗而变得什么也看不见吗？\n格：一定是这样的。\n苏：这时他的视力还很模糊，还没来得及习惯于黑暗——再习惯于黑暗所需的时间也不会是很短的。如果有人趁这时就要他和那些始终禁锢在地穴中的人们较量一下“评价影像”，他不会遭到笑话吗？人家不会说他到上面去走了一趟，回来眼睛就坏了，不会说甚至连起一个往上去的念头都是不值得的吗？要是把那个打算释放他们并把他们带到上面去的人逮住杀掉是可以的话，他们不会杀掉他吗？\n格：他们一定会的。\n苏：亲爱的格劳孔，现在我们必须把这个比喻整个儿地应用到前面讲过的事情上去，把地穴囚室比喻可见世界，把火光比喻太阳的能力。如果你把从地穴到上面世界并在上面看见东西的上升过程和灵魂上升到可知世界的上升过程联想起来，你就领会对了我的这一解释了，既然你急于要听我的解释。至于这一解释本身是不是对，这是只有神知道的。但是无论如何，我觉得，在可知世界中最后看见的，而且是要花很大的努力才能最后看见的东西乃是善的理念。我们一旦看见了它，就必定能得出下述结论：它的确就是一切事物中一切正确者和美者的原因，就是可见世界中创造光和光源者，在可理知世界中它本身就是真理和理性的决定性源泉；任何人凡能在私人生活或公共生活中行事合乎理性的，必定是看见了善的理念的。\n格：就我所能了解的而言，我都同意。\n苏：那么来吧，你也来同意我下述的看法吧，而且在看到下述情形时别感到奇怪吧：那些已达到这一高度的人不愿意做那些琐碎俗事，他们的心灵永远渴望逗留在高处的真实之境。如果我们的比喻是合适的话，这种情形应该是不奇怪的。\n格：是不足为怪的。\n苏：再说，如果有人从神圣的观察再回到人事；他在还看不见东西还没有变得足够地习惯于黑暗环境时，就被迫在法庭上或其他什么地方同人家争论关于正义的影子或产生影子的偶像，辩论从未见过正义本身的人头脑里关于正义的观念。如果他在这样做时显得样子很难看举止极可笑，你认为值得奇怪吗？\n格：一点儿也不值得奇怪。\n苏：但是，凡有头脑的人都会记得，眼睛有性质不同的两种迷茫，它们是由两种相应的原因引起的：一是由亮处到了暗处，另一是由暗处到了亮处。凡有头脑的人也都会相信，灵魂也能出现同样的情况。他在看到某个灵魂发生迷茫不能看清事物时，不会不假思索就予以嘲笑的，他会考察一下，灵魂的视觉是因为离开了较光明的生活被不习惯的黑暗迷误了的呢，还是由于离开了无知的黑暗进入了比较光明的世界，较大的亮光使它失去了视觉的呢？于是他会认为一种经验与生活道路是幸福的，另一种经验与生活道路是可怜的；如果他想笑一笑的话，那么从下面到上面去的那一种是不及从上面的亮处到下面来的这一种可笑的。\n格：你说的非常有道理。\n苏：如果这是正确的，那么关于这些事，我们就必须有如下的看法：教育实际上并不像某些人在自己的职业中所宣称的那样。他们宣称，他们能把灵魂里原来没有的知识灌输到灵魂里去，好像他们能把视力放进瞎子的眼睛里去似的。\n格：他们确曾有过这种说法。\n苏：但是我们现在的论证说明，知识是每个人灵魂里都有的一种能力，而每个人用以学习的器官就像眼睛。——整个身体不改变方向，眼睛是无法离开黑暗转向光明的。同样，作为整体的灵魂必须转离变化世界，直至它的“眼睛”得以正面观看实在，观看所有实在中最明亮者，即我们所说的善者。是这样吧？\n格：是的。\n苏：于是这方面或许有一种灵魂转向的技巧，即一种使灵魂尽可能容易尽可能有效地转向的技巧。它不是要在灵魂中创造视力，而是肯定灵魂本身有视力，但认为它不能正确地把握方向，或不是在看该看的方向，因而想方设法努力促使它转向。\n格：很可能有这种技巧。\n苏：因此，灵魂的其他所谓美德似乎近于身体的优点，身体的优点确实不是身体里本来就有的，是后天的教育和实践培养起来的。但是心灵的优点似乎确实有比较神圣的性质，是一种永远不会丧失能力的东西；因所取的方向不同，它可以变得有用而有益也可以变得无用而有害。有一种通常被说成是机灵的坏人。你有没有注意过，他们的目光是多么敏锐？他们的灵魂是小 [1] 的，但是在那些受到他们注意的事情上，他们的视力是够尖锐的。他们的“小”不在于视力贫弱，而在于视力被迫服务于恶，结果是，他们的视力愈敏锐，恶事就也做得愈多。\n格：这是真的。\n苏：但是，假设这种灵魂的这一部分从小就已得到锤炼，已经因此如同释去了重负，——这种重负是这个变化世界里所本有的是拖住人们灵魂的视力使它只能看见下面事物的那些感官的纵欲如贪食之类所紧缠在人们身上的。——假设重负已释，这同一些人的灵魂的同一部分被扭向了真理，它们看真理就会有同样敏锐的视力，像现在看它们面向的事物时那样。\n格：很可能的。\n苏：那么，没受过教育不知道真理的人和被允许终身完全从事知识研究的人，都是不能胜任治理国家的。这个结论不也是很对的，而且还是上述理论的必然结论吗？因为没受过教育的人不能把自己的全部公私活动都集中于一个生活目标；而知识分子又不能自愿地做任何实际的事情，而是在自己还活着的时候就想象自己已离开这个世界进入乐园了。\n格：对。\n苏：因此，我们作为这个国家的建立者的职责，就是要迫使最好的灵魂达到我们前面说是最高的知识，看见善，并上升到那个高度；而当他们已到达这个高度并且看够了时，我们不让他们像现在容许他们做的那样。\n格：什么意思？\n苏：逗留在上面不愿再下到囚徒中去，和他们同劳苦共荣誉，不论大小。\n格：你这是说我们要委曲他们，让他们过较低级的生活了，在他们能过较高级生活的时候？\n苏：朋友，你又忘了，我们的立法不是为城邦任何一个阶级的特殊幸福，而是为了造成全国作为一个整体的幸福。它运用说服或强制，使全体公民彼此协调和谐，使他们把各自能向集体提供的利益让大家分享。而它在城邦里造就这样的人，其目的就在于让他们不致各行其是，把他们团结成为一个不可分的城邦公民集体。\n格：我忘了。你的话很对。\n苏：那么，格劳孔，你得看到，我们对我们之中出现的哲学家也不会是不公正的；我们强迫他们关心和护卫其他公民的主张也是公正的。我们将告诉他们：“哲学家生在别的国家中有理由拒不参加辛苦的政治工作，因为他们完全是自发地产生的，不是政府有意识地培养造就的；一切自力更生不是被培养而产生的人才不欠任何人的情，因而没有热切要报答培育之恩的心情，那是正当的。但是我们已经培养了你们——既为你们自己也为城邦的其他公民——做蜂房中的蜂王和领袖；你们受到了比别人更好更完全的教育，有更大的能力参加两种生活 [2] 。因此你们每个人在轮值时必须下去和其他人同住，习惯于观看模糊影像。须知，一经习惯你就会比他们看得清楚不知多少倍的，就能辨别各种不同的影子并且知道影子所反映的东西的，因为你已经看见过美者、正义者和善者的真实。因此我们的国家将被我们和你们清醒地管理着，而不是像如今的大多数国家那样被昏昏然地管理着，被那些为影子而互相殴斗，为权力——被当作最大的善者——而相互争吵的人统治着。事实是：在凡是被定为统治者的人最不热心权力的城邦里必定有最善最稳定的管理，凡有与此相反的统治者的城邦里其管理必定是最恶的。”\n格：一定的。\n苏：那么，我们的学生听到我们的这种话时，还会不服从，还会在轮到每个人值班时拒绝分担管理国家的辛劳吗（当然另一方面在大部分的时间里他们还是被允许一起住在上面的）？\n格：拒绝是不可能的。因为我们是在向正义的人提出正义的要求。但是，和当前每个国家中的统治者相反，他们担任公职一定是把它当作一种义不容辞的事情看待的。\n苏：因为，事实上，亲爱的朋友，只有当你能为你们未来的统治者找到一种比统治国家更善的生活时，你才可能有一个管理得好的国家。因为，只有在这种国家里才能有真正富有的人来统治。当然他们不是富有黄金，而是富有幸福所必需的那种善的和智慧的生活。如果未来的统治者是一些个人福利匮乏的穷人，那么，当他们投身公务时，他们想到的就是要从中攫取自己的好处，如果国家由这种人统治，就不会有好的管理。因为，当统治权成了争夺对象时，这种自相残杀的争夺往往同时既毁了国家也毁了统治者自己。\n格：再正确不过。\n苏：除了真正的哲学生活而外，你还能举出别的什么能轻视政治权力的？\n格：的确举不出来。\n苏：但是我们就是要不爱权力的人掌权。否则就会出现对手之间的争斗。\n格：一定的。\n苏：那么，除了那些最知道如何可使国家得到最好管理的人，那些有其他报酬可得，有比政治生活更好的生活的人而外，还有什么别的人你可以迫使他们负责护卫城邦的呢？\n格：再没有别的人了。\n苏：于是，你愿意让我们来研究如下的问题吗？这种人才如何造就出来？如何把他们带到上面的光明世界，让他们像故事里说的人从冥土升到天上那样？\n格：当然愿意。\n苏：这看来不像游戏中翻贝壳那样容易，这是心灵从朦胧的黎明转到真正的大白天，上升到我们称之为真正哲学的实在。\n格：无疑的。\n苏：那么，我们难道不应该研究一下，什么学问有这种能耐？\n格：当然应该。\n苏：那么，格劳孔，这种把灵魂拖着离开变化世界进入实在世界的学问是什么呢？说到这里我想起了：我们不是曾经说过吗，这种人年轻的时候必须是战场上的斗士？\n格：我们是说过这话的。\n苏：因此，我们正在寻找的这门学问还必须再有一种能耐。\n格：什么能耐？\n苏：对士兵不是无用的。\n格：如果可能的话，当然必须有。\n苏：前面我们曾经让他们受体操和音乐教育。\n格：是的。\n苏：体操关心的是生灭事物 [3] ；因为它影响身体的增强与衰弱。\n格：这很明白。\n苏：因此，它不会是我们所寻觅的那门学问。\n格：不是的。\n苏：那么，这门学问是我们前面描述过的音乐教育吗？\n格：如果你还记得的话，音乐是和体育相对的，它通过习惯 [4] 以教育护卫者，以音调培养某种精神和谐（不是知识），以韵律培养优雅得体，还以故事（或纯系传说的或较为真实的）的语言培养与此相近的品质。可是这些途径没有任何一个是能通向你所正在寻求的那种善的。\n苏：你的记忆再准确不过了。因为事实上其中没有这类的因素。但是，啊呀，格劳孔，那么我们寻求的这种学问是什么呢？因为手工技艺似乎又全都是有点低贱的。\n格：确实是的。可是除去音乐、体操和手",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "柏拉图",
+      "canonical_title": "理想国",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": "张竹明",
+      "publisher": "商务印书馆",
+      "publication_year": null,
+      "isbn": "978-7-100-06459-0",
+      "edition_identity": "VERIFIED"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [
+       "isbn",
+       "publisher",
+       "translator"
+      ],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11
+   },
+   "result_full": {
+    "book_id": "b5c7fcb371d4",
+    "chapter_idx": 11,
+    "title": "第六卷",
+    "book_title": "理想国",
+    "citation_label": "【《理想国》·第六卷】",
+    "text": "苏：那么，格劳孔，经过这么漫长而累人的讨论，我们终于搞清楚了，什么样的人才是真哲学家，什么样的人不是真哲学家了。\n格：要知道，欲速则不达呀。\n苏：我觉得不是这样。我还是认为，如果我们仅仅讨论这一个问题，如果不是还有许多其他的问题需要我们同时加以讨论的话（这些问题是一个希望弄清楚正义者的生活和不正义者的生活有何区别的人所必须研究的），我们或许把这个问题已经弄得更清楚了呢。\n格：且说，下面我们该讨论什么问题呢？\n苏：是的，我们应当考虑接下来要讨论的问题。既然哲学家是能把握永恒不变事物的人，而那些做不到这一点，被千差万别事物的多样性搞得迷失了方向的人就不是哲学家，那么，两种人我们应该让哪一种当城邦的领袖呢？\n格：你说我们怎么回答才对呢？\n苏：我认为谁看来最能守卫城邦的法律和习惯，就确定让谁做城邦的护卫者。\n格：对。\n苏：再说，一个不管是看守什么事物的人，应当用一个盲者呢还是用一个视力敏锐的人去担当呢？这个问题的答案该是一明二白的吧？\n格：当然是明明白白的。\n苏：你认为下述这种人与盲者有什么不同吗：他们不知道每一事物的实在，他们的心灵里没有任何清晰的原型，因而不能像画家看着自己要画的东西那样地注视着绝对真实，不断地从事复原工作，并且，在必要时尽可能真切地注视着原样，也在我们这里制定出关于美、正义和善的法律，并守护着它们？\n格：真的，这种人与盲者没有多大区别。\n苏：另外还有一种人，他们知道每一事物的实在，而且在经验方面也不少似上述那种人，在任何一种美德方面也不差似上述那种人，那么，我们还不任命这种人当护卫者反而去任命上述那种类似盲者的人当护卫者吗？\n格：的确，不挑选这种人当护卫者是荒唐的，如果他们在经验和别的美德方面都不差的话。因为他们这种懂得事物实在的知识或许是一切美德中最大的美德呢。\n苏：现在我们不是应该来讨论这样一个问题了吗：同一的人怎能真的具有这两个方面优点的？\n格：当然应该。\n苏：那么，正如这一讨论之初我们曾经说过的，我们首先必须弄清楚哲学家的天性；我还认为，如果我们在这个问题上取得了足够一致的意见，我们就也会在下列问题上取得一致的认识：同一的人们同时具有两种品质是可能的；以及，应当正是让这种人而不是让别种人当城邦的统治者。\n格：是吗？\n苏：让我们一致认为这一点是哲学家天性方面的东西吧：即永远酷爱那种能让他们看到永恒的不受产生与灭亡过程影响的实体的知识。\n格：就把这一点作为我们一致的看法吧。\n苏：再让我们一致认为：他们爱关于实体的知识是爱其全部，不会情愿拒绝它的一个无论大点的还是小点的，荣誉大点的还是荣誉小点的部分的。这全像我们前面在谈到爱者和爱荣誉者时所说过的那样。 [1]\n格：你说得对。\n苏：那么请接下来研究一个问题：如果他们一定是我们所说过的那种人，那么在他们的天性里此外就一定不再有别种品质也是必具的了？\n格：哪种品质？\n苏：一个“真”字。他们永远不愿苟同一个“假”字，他们憎恶假，他们爱真。\n格：可能是的。\n苏：我的朋友呀，不是仅仅“可能”如此，是“完全必定”如此：一个人天性爱什么，他就会珍惜一切与之相近的东西。\n格：对。\n苏：你还能找到什么比真实与智慧关系更相近的吗？\n格：不能了。\n苏：那么，同一天性能够既爱智慧又爱假吗？\n格：是无论如何也不可能的。\n苏：因此，真正的爱知者应该从小时起就一直是追求全部真理的。\n格：无疑是的。\n苏：再说，凭经验我们知道，一个人的欲望在一个方面强时，在其他方面就会弱，这完全像水被引导流向了一个地方一样。\n格：是的。\n苏：当一个人的欲望被引导流向知识及一切这类事情上去时我认为，他就会参与自身心灵的快乐，不去注意肉体的快乐，如果他不是一个冒牌的而是一个真正的哲学家的话。\n格：这是完全必然的。\n苏：这种人肯定是有节制的，是无论如何也不会贪财的；因为别的人热心追求财富和巨大花费所要达到的那种目的 [2] ，是不会被他们当作一件重要事情对待的。\n格：是这样。\n苏：在判别哲学家的天性和非哲学家的天性上还有一点是需要注意的。\n格：哪一点？\n苏：你可别疏忽了任何一点胸襟偏窄的毛病。因为哲学家在无论神还是人的事情上总是追求完整和完全的，没有什么比器量窄小和哲学家的这种心灵品质更其相反的了。\n格：绝对正确。\n苏：一个人眼界广阔，观察研究所有时代的一切实在，你想，他能把自己的一条性命看得很重大吗？\n格：不可能的。\n苏：因此，这种人也不会把死看作一件可怕的事情吧？\n格：绝对不会的。\n苏：那么，胆怯和狭隘看来不会属于真正哲学家的天性。\n格：我看不会。\n苏：一个性格和谐的人，既不贪财又不偏窄，既不自夸又不胆怯，这种人会待人刻薄处世不正吗？\n格：不会的。\n苏：因此，这也是你在识别哲学家或非哲学家灵魂时所要观察的一点：这人从小就是公正温良的呢还是粗暴凶残的呢？ [3]\n格：的确。\n苏：我想你也不会疏忽这一点的。\n格：哪一点？\n苏：学习起来聪敏还是迟钝呀。一个人做一件事如果做得不愉快，费了好大的劲然而成效甚微，你想他能真正热爱这项工作吗？\n格：不会的。\n苏：还有，一个人如果健忘，学了什么也记不得，他还能不是一个头脑空空的人吗？\n格：怎能不是呢？\n苏：因此，一个人如果劳而无功，他最后一定深恨自己和他所从事的那项工作。\n格：怎能不呢？\n苏：因此一个健忘的灵魂不能算作真正哲学家的天性，我们坚持哲学家要有良好的记性。\n格：完全对。\n苏：我们还应该坚持认为，天性不和谐、不适当只能导致没分寸，不能导致别的什么。\n格：一定是的。\n苏：你认为真理与有分寸相近呢还是与没分寸相近呢？\n格：和有分寸相近。\n苏：因此，除了别的品质而外，我们还得寻求天然有分寸而温雅的心灵，它本能地就很容易导向每一事物的理念。\n格：当然还得注意这一品质。\n苏：那么怎么样？我们还没有以某种方式给你证明，上面列述的诸品质是一个要充分完全地理解事物实在的灵魂所必须具备的又是相互关联的吗？\n格：是最必需的。\n苏：综上所述，一个人如果不是天赋具有良好的记性，敏于理解，豁达大度，温文尔雅，爱好和亲近真理、正义、勇敢和节制，他是不能很好地从事哲学学习的。那么，如果是一个具备了这些优良品质的人从事这一学习，对此你还有什么可指摘的吗？\n格：对此虽玛摩斯 [4] 也无法挑剔了。\n苏：因此，像这样的人——在他们教育完成了，年龄成熟了的时候——不是也只有这样的人你才肯把国家托付给他们吗？\n阿得曼托斯：苏格拉底啊，对于你上面所说的这些话虽然没人能加以反驳，然而这些一直在听着你刚才的讨论的人，他们觉得：他们由于缺乏问答法的经验，在每一问之后被你的论证一点儿一点儿地引入了歧途，这些一点儿一点儿的差误积累起来，到讨论进行到结论时，他们发现错误已经很大，结论已经和他们原先的看法相反了；他们觉得，这正如两人下棋，棋艺差的人最后被高手所困，一个子儿也走不动了一样，他们在这场不是使用棋子而是运用语言的竞技中也被最后逼得哑口无言了；然而真理是不会因口才高低而有任何改变的。我是注意到了刚才的讨论情况说这个话的。因为现在人们可能会说，他们虽然口才不好，不能在每一提问上反驳你，但作为事实，他们看到热爱哲学的那些人，不是仅仅为了完成自己的教育而学一点哲学并且在还年轻时就放下它，而是把学习它的时间拖得太长，以致其中大多数变成了怪人（我们且不说他们变成了坏蛋），而那些被认为是其中最优秀者的人物也还是被你们称赞的这种学习变成了对城邦无用的人。\n苏：〔听了他的这些话之后我说道〕：你认为他们说的这些话是错的吗？\n阿：我不知道，我很高兴听听你的意见。\n苏：你可以听到的意见大概是：“我觉得他们说得对。”\n阿：既然我们 [5] 一致认为哲学家对城邦无用，那么“在哲学家统治城邦之前城邦不能摆脱邪恶”——你的这个论断又怎能成立呢？\n苏：你的这个问题须用譬喻来解答。\n阿：啊，我想，你诚然不是惯于用譬喻说话的呀！\n苏：你已把我置于如此进退维谷的辩论境地，现在又来讥笑我了。不过，还得请你听我的比喻，然后你可以更清楚地看到，我是比喻得多么吃力了。因为，最优秀的人物他们在和城邦关系方面的感受是很不愉快的，并且世界上没有任何一种单一的事物和这种感受相像，因此为了比得像，以达到替他们辩护的目的，需要把许多东西凑到一起来拼成一个东西，像画家们画鹿羊之类怪物时进行拼合那样。好，请设想有一队船或一只船，船上发生这样的事情：船上有一个船长，他身高力大超过船上所有船员，但是耳朵有点聋，眼睛不怎么好使，他的航海知识也不太高明。船上水手们都争吵着要替代他做船长，都说自己有权掌舵，虽然他们从没学过航海术，都说不出自己在何时跟谁学过航海术。而且，他们还断言航海术是根本无法教的，谁要是说可以教，他们就准备把他碎尸万段。同时，他们围住船长强求他，甚至不择手段地骗他把舵交给自己；有时他们失败了，别人被船长同意代为指挥，他们就杀死别人或把别人逐出船去，然后用麻醉药或酒之类东西把高贵的船长困住；他们夺得了船只的领导权，于是尽出船上库存，吃喝玩乐，他们就照自己希望的这么航行着。不仅如此，凡是曾经参与阴谋，狡猾地帮助过他们从船长手里夺取权力的人，不论是出过主意的还是出过力的，都被授以航海家、领航、船老大等等荣誉称号，对不同伙的人，他们就骂是废物。其实，真正的航海家必须注意年、季节、天空、星辰、风云，以及一切与航海有关的事情，如果他要成为船只的真正当权者的话；并且，不管别人赞成不赞成，这样的人是必定会成为航海家的。如果不是事实如此的话，那些人大概连想都没想到过，在学会航海学的同时精通和实践这一技术是有可能的。你再说说看，在发生过这种变故之后的船上，一个真正的航海家在这些篡了权的水手中会被怎样看待呢？他们不会把他叫做唠叨鬼、看星迷或大废物吗？\n阿：正是的。\n苏：那么我想你是不再需要听我来解释这个比喻了，因为你已经明白了，我是用它来说明一个真正的哲学家在城邦中的处境的。\n阿：的确。\n苏：那么，你碰到谁对哲学家在我们这些城邦里不受尊重的状况感到惊讶，就请你首先把这个比方说给他听一听，再努力使他相信，要是哲学家受到尊重，那才更是咄咄怪事呢！\n阿：行，就这么办。\n苏：你还要告诉他：他说哲学家中的最优秀者对于世人无用，这话是对的；但是同时也要对他说清楚，最优秀哲学家的无用其责任不在哲学本身，而在别人不用哲学家。因为，船长求水手们受他管带或者智者趋赴富人门庭， [6] 都是不自然的。“智者们应趋富人门庭”这句俏皮话是不对的。真正合乎自然的事理应当是这样：一个人病了，不管他是穷人还是富人，应该是他趋赴医生的家门去找医生，任何要求管治的人应该是他们自己登门去请有能力管治他们的人来管他们。统治者如果真是有用的统治者，那么他去要求被统治者受他统治是不自然的。你如果把我们当前的政治统治者比作我们刚才所说的那种水手，把被他们称做废物、望星迷的哲学家比做真正的舵手，你是不会错的。\n阿：绝对正确。\n苏：因此，根据这些情况看来，在这样一些人当中，哲学这门最可贵的学问是不大可能得到反对者尊重的；然而使哲学蒙受最为巨大最为严重毁谤的还是那些自称也是搞哲学的人——他们就是你在指出哲学的反对者说大多数搞哲学的人都是坏蛋，而其中的优秀者也是无用的时，你心里所指的那些人；我当时也曾肯定过你的话是对的。 [7] 是这样吗？\n阿：是的。\n苏：其中的优秀者所以无用，其原因我们有没有解释清楚呢？\n阿：已经解释清楚了。\n苏：那么，让我们接下来指出：大多数哲学家的变坏是不可避免的，以及，如果可以做得到的话，让我们再试着证明这也不能归咎于哲学。我们可以做这个了吗？\n阿：可以了。\n苏：让我们一问一答地，从回忆我们前面描述一个要成为美而善者的人必须从小具备的天性处说起吧。如果你还记得的话，真理是他时时处处要追随的领袖，否则他就是一个和真正哲学毫无关系的江湖骗子。\n阿：记得是这么说过的。\n苏：这一点不是跟今人对哲学家的看法刚好相反吗？\n阿：是的。\n苏：我们不是很有理由用如下的话为他辩护吗：追求真实存在是真正爱知者的天性；他不会停留在意见所能达到的多样的个别事物上的，他会继续追求，爱的锋芒不会变钝，爱的热情不会降低，直至他心灵中的那个能把握真实的，即与真实相亲近的部分接触到了每一事物真正的实体，并且通过心灵的这个部分与事物真实的接近，交合，生出了理性和真理，他才有了真知，才真实地活着成长着；到那时，也只有到那时，他才停止自己艰苦的追求过程？\n阿：理由不能再充分了。\n苏：这种人会爱虚假吗？或者正相反，他会恨它呢？\n阿：他会恨它的。\n苏：真理带路，我想我们大概可以说，不会有任何邪恶跟在这个队伍里的。\n阿：怎么可能呢？\n苏：真理的队伍里倒是有一个健康的和正义的心，由节制伴随着。\n阿：对。\n苏：没有必要从头再来证明一遍哲学家所应具的天性了吧？因为，你一定还记得，勇敢、大度、聪敏、强记是这种天赋所必具的品质。你曾提出反对意见说，虽然大家都不得不同意我们的话，但是，只要抛开言辞，把注意力集中到言辞所说到的那些人身上，大家就会说，他们所看到的实际是：那些人里有些是无用的，大多数则是干尽了坏事的。于是我们开始研究名声坏的原因，这方面现在我们已经走到了这一步 [8] ：下面要研究，为什么其中大多数人变坏了的？为此我们重新提出了真正哲学家的天性问题并且确定了它必须是什么。\n阿：是这样。\n苏：我们必须在下面研究哲学家天性的败坏问题：为什么大多数人身上这种天性败坏了，而少数人没有；这少数人就是虽没被说成坏蛋，但被说成无用的那些人。然后我们再考察那些硬打扮成哲学家样子，自称是在研究哲学的人，看一看他们的灵魂天赋，看一看这种人是在怎样奢望着一种他们所不能也不配高攀的研究工作，并且以自己的缺乏一贯原则，所到之处给哲学带来了你所说的那种坏名声。\n阿：你所说的败坏是什么意思呢？\n苏：我将尽我所知试解释给你听。我想，任何人都会同意我们这一点：像我们刚才要求于一个完美哲学家的这种天赋是很难能在人身上生长出来的，即使有，也是只在很少数人身上生长出来的。你不这样认为吗？\n阿：的确难得。\n苏：请注意，败坏它的那些因素却是又多又强大的呢！\n阿：有哪些因素？\n苏：就中最使人惊讶的是，我们所称赞的那些自然天赋，其中每一个都能败坏自己所属的那个灵魂，拉着它离开哲学；这我是指的勇敢、节制，以及我们列举过的其余这类品质。\n阿：这听起来荒唐。\n苏：此外还有全部所谓的生活福利——美观．富裕、身强体壮、在城邦里有上层家族关系，以及与此关联的一切——这些因素也都有这种作用，我想你是明白我的意思的。\n阿：我明白；但是很高兴听到你更详细的论述。\n苏：你要把问题作为一个整体来正确地理解它。这样你就会觉得它很容易明白，对于我前面说的那些话你也就不会认为它荒唐了",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "柏拉图",
+      "canonical_title": "理想国",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": "张竹明",
+      "publisher": "商务印书馆",
+      "publication_year": null,
+      "isbn": "978-7-100-06459-0",
+      "edition_identity": "VERIFIED"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [
+       "isbn",
+       "publisher",
+       "translator"
+      ],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "强迫 哲学家 下降 洞穴 轮流 管理城邦",
+    "limit": 6
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "c97cb4e6161a",
+      "book_title": "认识世界：古代与中世纪哲学",
+      "author": "理查德·大卫·普莱希特",
+      "chapter_idx": 1,
+      "chapter_title": "目录",
+      "citation_label": "【《认识世界：古代与中世纪哲学》·目录】",
+      "snippet": "导言 雅典学园 古代哲学 从前在爱奥尼亚…… 西方大地的日食 第一位哲学家？ 古老的故事 遥望宇宙 信仰制造者 神话的力量 万物的尺度 罪责与债务 金钱的本质 毕达哥拉斯 权力集团 赫拉克利特 巴门尼德 人的本性 逻各斯所在 转世的灵魂 失落的天堂 灵魂的材料 温和的灵魂 一切皆为质料！ 流浪汉、他的弟子与雅典公共秩序 苏格拉底之谜 民主之路 实用哲学家 受到危害的秩序 公共审判 柏拉图 脚本真人秀 表象与存在 贵族改善世界 可靠的知识",
+      "score": 0.556
+     },
+     {
+      "book_id": "d1986c75d6b2",
+      "book_title": "偶像的黄昏",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 4,
+      "chapter_title": "目录",
+      "citation_label": "【《偶像的黄昏》·目录】",
+      "snippet": "编者说明 前言 格言与箭 苏格拉底的问题 哲学中的「理性」 ［真实的世界］如何最终成了寓言 一个缪误的历史 作为反自然的道德 四大谬误 人类的「改善者」 德国人失去了什么 一个不合时宜者的漫游",
+      "score": 0.535
+     },
+     {
+      "book_id": "fea8d6ddc565",
+      "book_title": "哲学小史",
+      "author": "奈杰尔·沃伯顿",
+      "chapter_idx": 42,
+      "chapter_title": "译名对照表",
+      "citation_label": "【《哲学小史》·译名对照表】",
+      "snippet": "a state of nature 自然状态 A Theory of Justice 《正义论》 absurdity 荒谬性 agnostic 不可知论者的 agnosticism 不可知论 alienation 异化 Alsatian 阿尔萨斯狗 amphetamine 安非他命 An Assay Concerning Human Understanding 《人类理解论》 analytic 分析的 analytic statemen",
+      "score": 0.53
+     },
+     {
+      "book_id": "e248f347a940",
+      "book_title": "存在主义咖啡馆",
+      "author": "莎拉·贝克韦尔",
+      "chapter_idx": 1,
+      "chapter_title": "目录",
+      "citation_label": "【《存在主义咖啡馆》·目录】",
+      "snippet": "第一章　先生，太可怕了，存在主义！ 第二章　回到事物本身 第三章　来自梅斯基尔希的魔法师 第四章　常人，呼唤 第五章　嚼碎开花的扁桃树 第六章　我不想吃了我的手稿 第七章　占领，解放 第八章　破坏 第九章　生平考述 第十章　跳舞的哲学家 第十一章　像这样交叉 第十二章　在处境最困难的人眼中 第十三章　一旦品尝了现象学 第十四章　无法估量的繁盛 出场人物表 致谢 注释",
+      "score": 0.527
+     },
+     {
+      "book_id": "dcead00ff195",
+      "book_title": "惩罚的社会",
+      "author": "米歇尔·福柯",
+      "chapter_idx": 17,
+      "chapter_title": "术语对照",
+      "citation_label": "【《惩罚的社会》·术语对照】",
+      "snippet": "术语对照 acceptabilite可接受性 agedupanoptisme全景散式主义时代 agora广场 ajustement 调整 alcoolisme 酸酒 ame灵魂 amende罚金 amendement修正案 analogie类似 anomie（社会）混乱 anormal，anormaux不正常的人 anthropophagie，anthropophagique 食人肉 antinomiesavoir/pouvoir知识/",
+      "score": 0.524
+     },
+     {
+      "book_id": "8331c039d11a",
+      "book_title": "让孩子像哲学家一样会思考",
+      "author": "张玮",
+      "chapter_idx": 0,
+      "chapter_title": "目录",
+      "citation_label": "【《让孩子像哲学家一样会思考》·目录】",
+      "snippet": "作者序 第一章 泰勒斯——古希腊哲学的起源 第二章 毕达哥拉斯——坚决不吃豆子的哲学家 第三章 赫拉克利特——人不能两次踏进同一条河流 第四章 巴门尼德——抽象思维哪家强？ 第五章 恩培多克勒——四大元素构成了世界 第六章 阿那克萨哥拉——万事万物的“种子” 第七章 德谟克利特——发现“原子”的预言家？ 第八章 芝诺——古希腊最著名的“杠精” 第九章 普罗塔哥拉——“人”是万物的尺度 第十章 苏格拉底——你能扛住我的提问吗？ 第十一章 ",
+      "score": 0.523
+     },
+     {
+      "book_id": "d54046539e0d",
+      "book_title": "历史主义贫困论",
+      "author": "卡尔·波普尔",
+      "chapter_idx": 6,
+      "chapter_title": "译名对照表",
+      "citation_label": "【《历史主义贫困论》·译名对照表】",
+      "snippet": "abstract，abstraction　抽象，抽象作用 activism　行动主义 Acton，Lord　阿克顿 Adams，Henry　 亚丹斯 adjustment　调节 Alexander The Great　 亚力山大大帝 analogy　类比 anti- naturalism　 反自然主义 a priori　先验的 atomism　原子论 Bacon，Francis　 培根 Bellarmino，Cardinal　贝拉米诺 ",
+      "score": 0.512
+     },
+     {
+      "book_id": "302d32b2975c",
+      "book_title": "审美无意识",
+      "author": "雅克·朗西埃",
+      "chapter_idx": 3,
+      "chapter_title": "第四章 默然言说的两种形式",
+      "citation_label": "【《审美无意识》·第四章 默然言说的两种形式】",
+      "snippet": "那么，精神分析在这场反运动中找到了其诞生之地，这场反运动的英雄是叔本华和尼采，而反运动统治着从左拉(I)(Zola)到莫泊桑②(Maupassant)、易卜 4：•③(Ibsen)、斯① 埃米尔•左拉(fmilc Zola, 184() —1902) ： 19世纪法国最重要的作家7自然主义文学的代表人物，亦是法国自由主义政治运动的重要角色。1871年至1893年，他前后创作了 2()部小说，并起名为《卢贡-马卡尔家族〉，这咚小说以卢贡-",
+      "score": 0.508
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 57,
+      "chapter_title": "3 无畏的",
+      "citation_label": "【《尼采文集（合集）》·3 无畏的】",
+      "snippet": " 无畏的 (3) 在你站立的地方，往下深挖吧！ 下面就是井泉！ 就让灰暗的人们 (4) 叫喊： “下面永远是——地狱！” 边码：354",
+      "score": 0.5
+     },
+     {
+      "book_id": "7f462a9750e8",
+      "book_title": "导读德勒兹《差异与重复》",
+      "author": "亨利·萨默斯-霍尔",
+      "chapter_idx": 12,
+      "chapter_title": "索引",
+      "citation_label": "【《导读德勒兹《差异与重复》》·索引】",
+      "snippet": "阿尔都塞，路易Althusser，Louis146-8，152阿奎那，圣·托马斯Aquinas，SaintThomas31-2，37，40安塞尔·皮尔逊，基斯AnsellPearson，Keith194把握，概念的comprehension，conceptual14-17柏格森，亨利Bergson，Henri8，64，65-72，115-16，151，156，162-3, 176-80柏拉图Plato53-5,72-5,111-17,1",
+      "score": 0.497
+     },
+     {
+      "book_id": "1712b01d0856",
+      "book_title": "沙发上的哲学家",
+      "author": "里克·杜菲尔",
+      "chapter_idx": 11,
+      "chapter_title": "译名对照表",
+      "citation_label": "【《沙发上的哲学家》·译名对照表】",
+      "snippet": "哲学家 安·兰德  Ayn Rand  巴鲁赫·德·斯宾诺莎  Baruch de Spinoza  伯特兰·罗素  Bertrand Russell  查尔斯·桑德斯·皮尔士  Charles Sanders Peirce  大卫·休谟  David Hume  弗里德里希·威廉姆·约瑟夫·谢林  Friedrich Wilhelm Joseph Schelling  汉斯·约纳斯  Hans Jonas  杰里米·边沁  Jerem",
+      "score": 0.497
+     },
+     {
+      "book_id": "10e1874c2255",
+      "book_title": "康德三大批判合集（上下）",
+      "author": "伊曼努尔·康德",
+      "chapter_idx": 8,
+      "chapter_title": "人名索引",
+      "citation_label": "【《康德三大批判合集（上下）》·人名索引】",
+      "snippet": "人名索引 Anaxagoras阿那克萨哥拉161 Leibniz莱布尼茨113，183 Anna Boleyn安妮·博林178 Mahomet穆罕默德139 Aristoteles 亚里士多德147 Mandeville 曼德维尔48 Cheselden 切斯尔登14 Mendelssohn 门德尔松117 Crusius克鲁修斯48 Montaigne 蒙田48 Epikur伊壁鸠鲁 27, 48, 49, 133, Plato 柏拉",
+      "score": 0.491
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 414,
+      "chapter_title": "章三",
+      "citation_label": "【《西方百年学术经典著作》·章三】",
+      "snippet": "在这些原因中，傲慢和贪婪应该对变革的发生，应负多少责任、它们又是如何引发变革的，都是显而易见。一旦地方行政官员开始变得傲慢而贪婪，他们就会内讧，破坏赋予他们权力的政体，牺牲或侵吞他人或公共的财产，从中谋取私利。荣誉之于变革有何影响，如何成为其根源，理由都是非常明显。反叛事件会使一部分人感到屈辱，他们不得不眼见着他人获得荣誉。而只有荣辱与功过匹配之时才是公平的，否则，即是不公平。 另外，当一个人或者一些人掌握着城邦中过大的权力，更非全部群",
+      "score": 0.491
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 523,
+      "chapter_title": "一个不合时宜者的漫游",
+      "citation_label": "【《尼采文集（合集）》·一个不合时宜者的漫游】",
+      "snippet": " 我那不可能做的事。——塞内卡 (1) ：或者德行的斗牛士。——卢梭 (2) ：或者进入污秽的原始自然 (3) 的返归自然。—— 席勒 ：或者塞金根的道德号手 (4) ——但丁 (5) ：或者在坟墓里作诗的鬣狗 (6) 。——康德：或者伪善言辞 (7) 作为理知的特性 (8) 。—— 维克多 · 雨果 (9) ：或者荒谬之海上的法鲁斯 (10) 。—— 李斯特 (11) ：或者精湛技巧的学校——追逐女人 (12) 。—— 乔治 · 桑 ",
+      "score": 0.49
+     },
+     {
+      "book_id": "d1986c75d6b2",
+      "book_title": "偶像的黄昏",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 13,
+      "chapter_title": "一个不合时宜者的漫游",
+      "citation_label": "【《偶像的黄昏》·一个不合时宜者的漫游】",
+      "snippet": " 我那不可能做的事。——塞内卡 (1) ：或者德行的斗牛士。——卢梭 (2) ：或者进入污秽的原始自然 (3) 的返归自然。—— 席勒 ：或者塞金根的道德号手 (4) ——但丁 (5) ：或者在坟墓里作诗的鬣狗 (6) 。——康德：或者伪善言辞 (7) 作为理知的特性 (8) 。—— 维克多 · 雨果 (9) ：或者荒谬之海上的法鲁斯 (10) 。—— 李斯特 (11) ：或者精湛技巧的学校——追逐女人 (12) 。—— 乔治 · 桑 ",
+      "score": 0.49
+     },
+     {
+      "book_id": "eca1899561c4",
+      "book_title": "纯粹理性批判(注释本)",
+      "author": "伊曼努尔·康德",
+      "chapter_idx": 56,
+      "chapter_title": "汉德人名对照表",
+      "citation_label": "【《纯粹理性批判(注释本)》·汉德人名对照表】",
+      "snippet": "阿尔凯西劳 Arcesilas 奥维德 Ovid 鲍姆嘉登 Baumgarten 贝克莱 Berkeley 彼得 Petrus 柏拉图 Plato 博奈特 Bonnet 布鲁克尔 Brucker 策德利茨 Zedlitz 笛卡尔 Cartes 第欧根尼 Diogenes 哥白尼 Copernicus 哈勒 Haller 赫卡柏 Hecuba 霍布斯 Hobbes 伽利略 Galilei 莱布尼茨L eibniz 兰贝特 Lambert ",
+      "score": 0.489
+     },
+     {
+      "book_id": "c97cb4e6161a",
+      "book_title": "认识世界：古代与中世纪哲学",
+      "author": "理查德·大卫·普莱希特",
+      "chapter_idx": 35,
+      "chapter_title": "对社会的不满",
+      "citation_label": "【《认识世界：古代与中世纪哲学》·对社会的不满】",
+      "snippet": "理念论就像一块沉重的墓碑凌驾于柏拉图的身后名声之上。今天人们想到他时，就会想起他将人类经验世界视为非本真的。除此之外，在墓碑上似乎还可以找到一个十分确定的要求：不是习惯上的政客，也不是任何人，而偏偏是哲学家能够统治一个国家： 除非哲学家成为我们这些国家的国王，或者我们目前称之为国王和统治者的那些人物，成为真正的和彻底的哲学家。只要国家权力和哲学还没有结合在一起……就……不会有对国家之恶的拯救，而我也相信不会有对人类的拯救…… [73] ",
+      "score": 0.488
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 399,
+      "chapter_title": "282",
+      "citation_label": "【《尼采文集（合集）》·282】",
+      "snippet": " 步法 。——有各种精神举止，通过它们，连伟大的人物也会泄露出，他们来自群氓或者半群氓：——尤其是他们思想的步法和步伐搞出了这个泄密者；他们竟不能 行走 。所以，令拿破仑深为恼怒的是，在人们一定得真正弄懂步法的场合，比如在宏大的加冕仪式以及类似的场合，他也不能王侯般地和“合法地”行走：即便在这种时候，他也始终只是某个纵队的首领而已——高傲而又慌张，而且他自己完全知道这一点。——看到这些作家用冗长句子织成的皱巴巴的长袍，在自己周围弄出沙沙",
+      "score": 0.488
+     }
+    ],
+    "query": "强迫 哲学家 下降 洞穴 轮流 管理城邦",
+    "method": "vector"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 8
+}

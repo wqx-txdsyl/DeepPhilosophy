@@ -1,0 +1,1751 @@
+{
+ "case_id": "L02",
+ "section": "L",
+ "expected_class": "SCHOLARLY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": 5,
+ "question": "只需概述：学界对 free will skepticism（自由意志怀疑论）的正反两方主要立场各是什么？",
+ "injection": null,
+ "QUESTION": "只需概述：学界对 free will skepticism（自由意志怀疑论）的正反两方主要立场各是什么？",
+ "PUBLIC_WORK_NOTE": [
+  "我先核对所需的证据缺口：用户明确要求\"学界\"对自由意志怀疑论的正反立场，这属于文献综述类问题，回答的正确性依赖于真实的二手研究，而非我的记忆。因此我先登记研究需求为 SCHOLARLY，再检索相关文献，读摘要后再综合。",
+  "已定位到关键文献。几篇可读摘要（Caruso、Focquaert、Kane）需要实际读取才能做内容归因；同时我还缺反对方（自由意志实在论/相容论辩护）的代表文献，需再补一次检索。",
+  "两条内容证据已到手（Caruso、Kane），足以刻画怀疑论方的立场结构，但反对方目前只有 Kane 这一自由意志论（libertarian）类型，尚缺相容论辩护一方的内容证据——这确是未闭合的证据缺口。我申请一次预算延展来补这一点。",
+  "已有怀疑论方（Caruso、Focquaert）与自由意志论反驳方（Kane）的内容证据，但相容论辩护一方仍缺实读内容。我读一下已检索到的 Pereboom & McKenna 篇（ABSTRACT_AVAILABLE），它正落在怀疑论与相容论争论的核心（操纵论证）上，可补上反方与争论结构。"
+ ],
+ "RESEARCH_NEED": "SCHOLARLY",
+ "EVIDENCE_GAP": "反对方（相容论辩护/自由意志实在论）对 free will skepticism 的代表性反驳立场的内容证据，以及 Focquaert 等篇的摘要内容",
+ "TOOL_SELECTED": [
+  "search_scholarship",
+  "get_scholarly_source"
+ ],
+ "TOOL_ARGS": {
+  "search_scholarship": [
+   {
+    "query": "free will skepticism",
+    "limit": 10
+   },
+   {
+    "query": "free will skepticism moral responsibility deflationism",
+    "limit": 8
+   },
+   {
+    "query": "defense of free will compatibilism moral responsibility skepticism critique",
+    "limit": 8
+   },
+   {
+    "query": "compatibilism free will moral responsibility defense against skepticism",
+    "limit": 8
+   }
+  ],
+  "get_scholarly_source": [
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.38",
+    "requested_access": "ABSTRACT"
+   },
+   {
+    "source_record_id": "doi:10.1093/oso/9780195064971.003.0004",
+    "requested_access": "ABSTRACT"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "free will skepticism",
+    "limit": 10
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'free will skepticism', 'results': [{'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'title': 'Free Will Skepticism, Freedom, and Criminal Behavior', 'authors': ['Farah Focquae"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "free will skepticism moral responsibility deflationism",
+    "limit": 8
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'free will skepticism moral responsibility deflationism', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'title': 'Free Will Skepticism and Criminal Justice', "
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'title': 'Free Will Skepticism and Criminal "
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1093/oso/9780197751404.003.0010', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780197751404.003.0010', 'title': 'Skepticism and Illusionism about Free Wi"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "defense of free will compatibilism moral responsibility skepticism critique",
+    "limit": 8
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "compatibilism free will moral responsibility defense against skepticism",
+    "limit": 8
+   },
+   "phase": "executed",
+   "result_head": "{'query': 'compatibilism free will moral responsibility defense against skepticism', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.38', 'title': 'Manipulation Arguments Agai"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "executed",
+   "result_head": "{'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'title': 'Free Will Skepticism, Freedom, and Crimi"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.38",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780195064971.003.0004",
+    "requested_access": "ABSTRACT"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'free will skepticism', 'results': [{'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'title': 'Free Will Skepticism, Freedom, and Criminal Behavior', 'authors': ['Farah Focquae"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'free will skepticism moral responsibility deflationism', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'title': 'Free Will Skepticism and Criminal Justice', "
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'title': 'Free Will Skepticism and Criminal "
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1093/oso/9780197751404.003.0010', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780197751404.003.0010', 'title': 'Skepticism and Illusionism about Free Wi"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "search_scholarship",
+   "head": "{'query': 'compatibilism free will moral responsibility defense against skepticism', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.38', 'title': 'Manipulation Arguments Agai"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'title': 'Free Will Skepticism, Freedom, and Crimi"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "name": "get_scholarly_source",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "下面是基于本次实际检索到的文献证据所作的概述。我先说明证据边界：我读到了三篇文献的摘要（Caruso、Kane、Focquaert 等），得到的是怀疑论方与自由意志论反驳方的内容证据；相容论辩护一方我只检索到相关文献的存在与题名，没有取得其内容证据——因此对那一支的描述会明确降格为背景性概述。\n\n## 一、争论的基本分歧点\n\n两派共享一个关键概念：**\"basic desert\"（基本应得）道德责任**——即某人仅因其行为本身（而非出于预防、改造、威慑等后果理由）就\"应得\"赞扬或谴责。怀疑论与反怀疑论之争，很大程度上是围绕\"我们是否拥有 basic desert 责任所要求的那种自由意志/控制力\"展开的。\n\n## 二、正反两方主要立场\n\n### 怀疑论方（skepticism 一侧）\n\n其核心主张是：我们并不拥有 basic desert 道德责任所要求的那种自由意志。Robert Kane 在其 2024 年的篇章摘要中直接概括了这一方立场：怀疑论者认为我们缺乏 basic desert 责任所需的那类自由意志；而这（按他们的诊断）与决定论不相容——因此相容论式的说明抓不住它，而声称能提供它的自由意志论主张又是\"不可能的\"。这实际上给怀疑论建立了一个两难结构：无论决定论真或假，我们都没有所需的那种自由意志。\n\nGregg Caruso 在《牛津道德责任手册》的篇章（《Free Will Skepticism and Criminal Justice》，2022）中，把怀疑论延伸到了制度层面——为一种与否定 basic desert 责任相容的刑事司法改革方向辩护（可概括为面向公共健康/隔离而非报应的进路）。与之呼应，Focquaert、Glenn 与 Raine 2018 年的著作 《Free Will Skepticism, Freedom, and Criminal Behavior》 摘要也把怀疑论与犯罪行为、自由问题联系起来，属于把怀疑论应用于神经科学与刑事司法的路线。\n\n我检索到的这几篇使\"怀疑论方\"的面貌很清晰：它不只是形而上学否定，也是一套关于责任实践（尤其刑罚）应如何改造的规范性纲领。\n\n### 反方（为自由意志/道德责任辩护的一侧）\n\n反方并非铁板一块，至少可分为两支，而我对这两支的证据掌握并不对称：\n\n**（1）自由意志论一脉（libertarianism）——有此方的一手摘要证据。**\nKane 本人的篇章即代表这一支：他不接受怀疑论者的两难，主张 basic desert 责任可以被他所辩护的自由意志论观点\"捕捉\"到。也就是说，他承认 basic desert 责任的重要性，但否认只有决定论框架才可行——他试图在非决定论的前提下为这种责任重建地基。（据其摘要，该文还一并检视了\"illusionism\"，即把自由意志信念视为系统性幻觉的立场。）\n\n**（2）相容论一脉（compatibilism）——仅检索到文献存在，未取得内容证据。**\n相容论者通常主张自由意志/道德责任与决定论并不冲突，怀疑论者（以及自由意志论者）把\"自由意志\"的门槛设得过高。就这场争论而言，我检索到 Derk Pereboom 与 Michael McKenna 合撰的篇章《Manipulation Arguments Against Compatibilism》（载于《牛津道德责任手册》），题名显示它处理的正是怀疑论阵营用来挑战相容论的核心武器——\"操纵论证\"（构造一个被暗中操纵却满足相容论全部条件的行动者，追问其是否真的有责任）。**需要说明：我只确认该文献存在及其题名，未取得其摘要或正文，因此不能据此陈述其具体论证或立场归属。** 相容论方如何逐条回应操纵论证、其内部有哪些不同回应策略，我没有拿到可读的证据，此处不作展开。\n\n## 三、证据边界与提醒\n\n- 我在本次检索中**实读摘要**的来源：Caruso（2022）、Kane（2024）、Focquaert/Glenn/Raine（2018）。\n- 我**仅确认存在、未读内容**的来源：Pereboom & McKenna《Manipulation Arguments Against Compatibilism》。\n- 关于这一领域常见的其他代表人物（如被归为 hard incompatibilism、illusionism 或相容论辩护的若干知名学者），属于我的一般背景了解，**未在本次检索中核验**，故不列入作为已证实的立场归属；若你需要，我可以针对具体学者或具体论证（例如操纵论证、basic desert 的界定）再作定点检索与实读。\n\n一句话概括：这场争论的一端是\"我们缺乏 basic desert 责任所需的自由意志，责任实践应据此重构\"（怀疑论），另一端可分为\"这种自由意志在非决定论下仍可重建\"（自由意志论，如 Kane）与\"怀疑论者对自由意志的要求本身设得过高\"（相容论）两种回应路线——前者我读到了内容证据，后者我目前只触及其题名，尚待补证。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先核对所需的证据缺口：用户明确要求\"学界\"对自由意志怀疑论的正反立场，这属于文献综述类问题，回答的正确性依赖于真实的二手研究，而非我的记忆。因此我先登记研究需求为 SCHOLARLY，再检索相关文献，读摘要后再综合。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "学界对自由意志怀疑论（free will skepticism）正反双方主要立场的真实文献立场与代表性论点，而非凭记忆罗列人名",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "free will skepticism",
+    "limit": 10
+   },
+   "result_head": "{'query': 'free will skepticism', 'results': [{'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'title': 'Free Will Skepticism, Freedom, and Criminal Behavior', 'authors': ['Farah Focquae"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "free will skepticism moral responsibility deflationism",
+    "limit": 8
+   },
+   "result_head": "{'query': 'free will skepticism moral responsibility deflationism', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'title': 'Free Will Skepticism and Criminal Justice', "
+  },
+  {
+   "kind": "note",
+   "content": "已定位到关键文献。几篇可读摘要（Caruso、Focquaert、Kane）需要实际读取才能做内容归因；同时我还缺反对方（自由意志实在论/相容论辩护）的代表文献，需再补一次检索。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'title': 'Free Will Skepticism and Criminal "
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1093/oso/9780197751404.003.0010', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780197751404.003.0010', 'title': 'Skepticism and Illusionism about Free Wi"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "blocked",
+   "args": {
+    "query": "defense of free will compatibilism moral responsibility skepticism critique",
+    "limit": 8
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "note",
+   "content": "两条内容证据已到手（Caruso、Kane），足以刻画怀疑论方的立场结构，但反对方目前只有 Kane 这一自由意志论（libertarian）类型，尚缺相容论辩护一方的内容证据——这确是未闭合的证据缺口。我申请一次预算延展来补这一点。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_scholarship"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "反对方（相容论辩护/自由意志实在论）对 free will skepticism 的代表性反驳立场的内容证据，以及 Focquaert 等篇的摘要内容",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已取得怀疑论方（Caruso）与自由意志论反驳方（Kane）的摘要，但相容论/实在论一方的反驳立场尚无内容证据，而用户明确要求\"正反两方主要立场\"，正方的另一端（相容论者如何回应怀疑论）是回答完整性的必要组成",
+    "unresolved_evidence_gap": "相容论者对 free will skepticism 的代表性回应的可读摘要或文献内容"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_scholarship",
+   "phase": "executed",
+   "args": {
+    "query": "compatibilism free will moral responsibility defense against skepticism",
+    "limit": 8
+   },
+   "result_head": "{'query': 'compatibilism free will moral responsibility defense against skepticism', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.38', 'title': 'Manipulation Arguments Agai"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "executed",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'title': 'Free Will Skepticism, Freedom, and Crimi"
+  },
+  {
+   "kind": "note",
+   "content": "已有怀疑论方（Caruso、Focquaert）与自由意志论反驳方（Kane）的内容证据，但相容论辩护一方仍缺实读内容。我读一下已检索到的 Pereboom & McKenna 篇（ABSTRACT_AVAILABLE），它正落在怀疑论与相容论争论的核心（操纵论证）上，可补上反方与争论结构。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_scholarly_source"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.38",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  },
+  {
+   "kind": "tool",
+   "name": "get_scholarly_source",
+   "phase": "blocked",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780195064971.003.0004",
+    "requested_access": "ABSTRACT"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "学界对自由意志怀疑论（free will skepticism）正反双方主要立场的真实文献立场与代表性论点，而非凭记忆罗列人名",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "反对方（相容论辩护/自由意志实在论）对 free will skepticism 的代表性反驳立场的内容证据，以及 Focquaert 等篇的摘要内容",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已取得怀疑论方（Caruso）与自由意志论反驳方（Kane）的摘要，但相容论/实在论一方的反驳立场尚无内容证据，而用户明确要求\"正反两方主要立场\"，正方的另一端（相容论者如何回应怀疑论）是回答完整性的必要组成",
+    "unresolved_evidence_gap": "相容论者对 free will skepticism 的代表性回应的可读摘要或文献内容"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "SCHOLARLY",
+  "evidence_gap": "反对方（相容论辩护/自由意志实在论）对 free will skepticism 的代表性反驳立场的内容证据，以及 Focquaert 等篇的摘要内容",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:18:17",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": null,
+    "evidence_gap": "学界对自由意志怀疑论（free will skepticism）正反双方主要立场的真实文献立场与代表性论点，而非凭记忆罗列人名",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:18:27",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "SCHOLARLY",
+    "prev": "SCHOLARLY",
+    "evidence_gap": "反对方（相容论辩护/自由意志实在论）对 free will skepticism 的代表性反驳立场的内容证据，以及 Focquaert 等篇的摘要内容",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:18:27",
+    "reason": "已取得怀疑论方（Caruso）与自由意志论反驳方（Kane）的摘要，但相容论/实在论一方的反驳立场尚无内容证据，而用户明确要求\"正反两方主要立场\"，正方的另一端（相容论者如何回应怀疑论）是回答完整性的必要组成",
+    "unresolved_gap": "相容论者对 free will skepticism 的代表性回应的可读摘要或文献内容"
+   }
+  ],
+  "retrieval_executed": 6,
+  "soft_limit": 6,
+  "blocked_calls": [
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:18:22"
+   },
+   {
+    "tool": "search_scholarship",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:18:22"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:18:34"
+   },
+   {
+    "tool": "get_scholarly_source",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:18:34"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 78113,
+   "output_tokens": 5113,
+   "total_tokens": 83226
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 10,
+   "compacted_chars_saved": 18838,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12072,
+     "output_tokens": 482,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15618,
+     "output_tokens": 650,
+     "tool_chars_added": 9251
+    },
+    {
+     "round": 3,
+     "input_tokens": 15075,
+     "output_tokens": 995,
+     "tool_chars_added": 5100
+    },
+    {
+     "round": 4,
+     "input_tokens": 18212,
+     "output_tokens": 981,
+     "tool_chars_added": 8451
+    },
+    {
+     "round": 5,
+     "input_tokens": 17136,
+     "output_tokens": 2005,
+     "tool_chars_added": 490
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": true,
+ "scholar_fetch": true,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 2094,
+ "token_usage": {
+  "input_tokens": 78113,
+  "output_tokens": 5113,
+  "total_tokens": 83226
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 37.3,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "学界对自由意志怀疑论（free will skepticism）正反双方主要立场的真实文献立场与代表性论点，而非凭记忆罗列人名",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 学界对自由意志怀疑论（free will skepticism）正反双方主要立场的真实文献立场与代表性论点，而非凭记忆罗列人名）。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任何文献做内容性归因前必须 ge",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "free will skepticism",
+    "limit": 10
+   },
+   "result_summary": "{'query': 'free will skepticism', 'results': [{'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'title': 'Free Will Skepticism, Freedom, and Criminal Behavior', 'authors': ['Farah Focquae",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/oso/9780190460723.003.0013",
+     "doi:10.1017/9781108655583.003",
+     "doi:10.1017/9781108655583.005",
+     "doi:10.1017/9781108655583.001",
+     "doi:10.1017/9781108655583.011",
+     "doi:10.1017/cbo9780511844720.005",
+     "doi:10.1017/cbo9780511844720.010",
+     "doi:10.1093/acprof:oso/9780199685516.003.0008",
+     "doi:10.2307/j.ctt3fgp2m.22",
+     "doi:10.2307/j.ctvj4swvh.14"
+    ],
+    "access_levels": {
+     "doi:10.1093/oso/9780190460723.003.0013": "ABSTRACT_AVAILABLE",
+     "doi:10.1017/9781108655583.003": "METADATA_ONLY",
+     "doi:10.1017/9781108655583.005": "METADATA_ONLY",
+     "doi:10.1017/9781108655583.001": "METADATA_ONLY",
+     "doi:10.1017/9781108655583.011": "METADATA_ONLY",
+     "doi:10.1017/cbo9780511844720.005": "METADATA_ONLY",
+     "doi:10.1017/cbo9780511844720.010": "METADATA_ONLY",
+     "doi:10.1093/acprof:oso/9780199685516.003.0008": "METADATA_ONLY",
+     "doi:10.2307/j.ctt3fgp2m.22": "METADATA_ONLY",
+     "doi:10.2307/j.ctvj4swvh.14": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED",
+     "LOCAL_CURATED",
+     "LIVE_CROSSREF",
+     "LOCAL_CURATED",
+     "LOCAL_CURATED"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "free will skepticism moral responsibility deflationism",
+    "limit": 8
+   },
+   "result_summary": "{'query': 'free will skepticism moral responsibility deflationism', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'title': 'Free Will Skepticism and Criminal Justice', ",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/oxfordhb/9780190679309.013.18",
+     "doi:10.1093/oso/9780197751404.003.0010",
+     "doi:10.5040/9781666994087.ch-1",
+     "doi:10.5771/9780739177327-17",
+     "doi:10.1057/9781137414953_13",
+     "doi:10.1007/978-3-642-28036-8_101076",
+     "doi:10.1057/9781137414953_14",
+     "doi:10.4159/9780674989436-003"
+    ],
+    "access_levels": {
+     "doi:10.1093/oxfordhb/9780190679309.013.18": "ABSTRACT_AVAILABLE",
+     "doi:10.1093/oso/9780197751404.003.0010": "ABSTRACT_AVAILABLE",
+     "doi:10.5040/9781666994087.ch-1": "METADATA_ONLY",
+     "doi:10.5771/9780739177327-17": "METADATA_ONLY",
+     "doi:10.1057/9781137414953_13": "METADATA_ONLY",
+     "doi:10.1007/978-3-642-28036-8_101076": "METADATA_ONLY",
+     "doi:10.1057/9781137414953_14": "METADATA_ONLY",
+     "doi:10.4159/9780674989436-003": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.18', 'title': 'Free Will Skepticism and Criminal ",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1093/oso/9780197751404.003.0010', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780197751404.003.0010', 'title': 'Skepticism and Illusionism about Free Wi",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "defense of free will compatibilism moral responsibility skepticism critique",
+    "limit": 8
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（4 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [],
+    "access_levels": {},
+    "retrieval_origins": [],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "SCHOLARLY",
+    "evidence_gap": "反对方（相容论辩护/自由意志实在论）对 free will skepticism 的代表性反驳立场的内容证据，以及 Focquaert 等篇的摘要内容",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已取得怀疑论方（Caruso）与自由意志论反驳方（Kane）的摘要，但相容论/实在论一方的反驳立场尚无内容证据，而用户明确要求\"正反两方主要立场\"，正方的另一端（相容论者如何回应怀疑论）是回答完整性的必要组成",
+    "unresolved_evidence_gap": "相容论者对 free will skepticism 的代表性回应的可读摘要或文献内容"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=SCHOLARLY（EVIDENCE_GAP: 反对方（相容论辩护/自由意志实在论）对 free will skepticism 的代表性反驳立场的内容证据，以及 Focquaert 等篇的摘要内容）。soft 检索预算=4 次。（SCHOLARLY 闭环: 对任何文献",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "compatibilism free will moral responsibility defense against skepticism",
+    "limit": 8
+   },
+   "result_summary": "{'query': 'compatibilism free will moral responsibility defense against skepticism', 'results': [{'source_record_id': 'doi:10.1093/oxfordhb/9780190679309.013.38', 'title': 'Manipulation Arguments Agai",
+   "thought": "执行 search_scholarship",
+   "scholarly_trace": {
+    "returned_source_record_ids": [
+     "doi:10.1093/oxfordhb/9780190679309.013.38",
+     "doi:10.1093/oso/9780195064971.003.0004",
+     "doi:10.5040/9781666994087.ch-1",
+     "doi:10.1057/9781137414953_14",
+     "doi:10.7551/mitpress/9124.003.0004",
+     "doi:10.1515/9781400840250.133",
+     "doi:10.2986/tren.090-0016",
+     "doi:10.7551/mitpress/9780262016599.003.0003"
+    ],
+    "access_levels": {
+     "doi:10.1093/oxfordhb/9780190679309.013.38": "ABSTRACT_AVAILABLE",
+     "doi:10.1093/oso/9780195064971.003.0004": "ABSTRACT_AVAILABLE",
+     "doi:10.5040/9781666994087.ch-1": "METADATA_ONLY",
+     "doi:10.1057/9781137414953_14": "METADATA_ONLY",
+     "doi:10.7551/mitpress/9124.003.0004": "METADATA_ONLY",
+     "doi:10.1515/9781400840250.133": "METADATA_ONLY",
+     "doi:10.2986/tren.090-0016": "METADATA_ONLY",
+     "doi:10.7551/mitpress/9780262016599.003.0003": "METADATA_ONLY"
+    },
+    "retrieval_origins": [
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF",
+     "LIVE_CROSSREF"
+    ],
+    "provider_errors": [],
+    "offline_mode": false
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'bibliographic_record': {'source_record_id': 'doi:10.1093/oso/9780190460723.003.0013', 'title': 'Free Will Skepticism, Freedom, and Crimi",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "access_before": "ABSTRACT_AVAILABLE",
+    "access_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.38",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780195064971.003.0004",
+    "requested_access": "ABSTRACT"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: SCHOLARLY 类 soft 检索预算（6 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展—",
+   "thought": "执行 get_scholarly_source",
+   "scholarly_trace": {
+    "source_record_id": null,
+    "access_before": null,
+    "access_after": null,
+    "returned_evidence_level": null,
+    "content_hash": null
+   }
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "free will skepticism moral responsibility deflationism",
+    "limit": 8
+   },
+   "result_full": {
+    "query": "free will skepticism moral responsibility deflationism",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+      "title": "Free Will Skepticism and Criminal Justice",
+      "authors": [
+       "Gregg D. Caruso"
+      ],
+      "year": 2022,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Oxford Handbook of Moral Responsibility",
+      "doi": "10.1093/oxfordhb/9780190679309.013.18",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+      "title": "Skepticism and Illusionism about Free Will and Moral Responsibility",
+      "authors": [
+       "Robert Kane"
+      ],
+      "year": 2024,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Complex Tapestry of Free Will",
+      "doi": "10.1093/oso/9780197751404.003.0010",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9781666994087.ch-1",
+      "title": "Chapter One",
+      "authors": [
+       "Derk Pereboom"
+      ],
+      "year": 2013,
+      "publication_type": "OTHER",
+      "venue": "Exploring the Illusion of Free Will and Moral Responsibility",
+      "doi": "10.5040/9781666994087.ch-1",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5771/9780739177327-17",
+      "title": "I: Philosophical Explorations: Free Will Skepticism and Its Implications",
+      "authors": [],
+      "year": 2013,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Exploring the Illusion of Free Will and Moral Responsibility",
+      "doi": "10.5771/9780739177327-17",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1057/9781137414953_13",
+      "title": "Moral Responsibility Skepticism: Meeting McKenna’s Challenge",
+      "authors": [
+       "Neil Levy"
+      ],
+      "year": 2015,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Agency, Freedom, and Moral Responsibility",
+      "doi": "10.1057/9781137414953_13",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1007/978-3-642-28036-8_101076",
+      "title": "Moral Skepticism",
+      "authors": [],
+      "year": 2013,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Encyclopedia of Corporate Social Responsibility",
+      "doi": "10.1007/978-3-642-28036-8_101076",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1057/9781137414953_14",
+      "title": "In Defense of a Challenge to Moral Responsibility Skepticism: A Reply to Levy",
+      "authors": [
+       "Michael McKenna"
+      ],
+      "year": 2015,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Agency, Freedom, and Moral Responsibility",
+      "doi": "10.1057/9781137414953_14",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.4159/9780674989436-003",
+      "title": "2. Skepticism About Moral Desert",
+      "authors": [],
+      "year": 2018,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Limits of Blame",
+      "doi": "10.4159/9780674989436-003",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 2,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/oxfordhb/9780190679309.013.18",
+     "doi:10.1093/oso/9780197751404.003.0010"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "free will skepticism",
+    "limit": 10
+   },
+   "result_full": {
+    "query": "free will skepticism",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+      "title": "Free Will Skepticism, Freedom, and Criminal Behavior",
+      "authors": [
+       "Farah Focquaert",
+       "Andrea L. Glenn",
+       "Adrian Raine"
+      ],
+      "year": 2018,
+      "publication_type": "BOOK",
+      "venue": "Oxford Scholarship Online",
+      "doi": "10.1093/oso/9780190460723.003.0013",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781108655583.003",
+      "title": "Free Will Skepticism and Its Implications: An Argument for Optimism",
+      "authors": [
+       "Gregg D. Caruso"
+      ],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Free Will Skepticism in Law and Society",
+      "doi": "10.1017/9781108655583.003",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781108655583.005",
+      "title": "Free Will Skepticism and Prevention of Crime",
+      "authors": [
+       "Derk Pereboom"
+      ],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Free Will Skepticism in Law and Society",
+      "doi": "10.1017/9781108655583.005",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781108655583.001",
+      "title": "Free Will Skepticism in Law and Society: An Overview",
+      "authors": [
+       "Gregg D. Caruso",
+       "Elizabeth Shaw",
+       "Derk Pereboom"
+      ],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Free Will Skepticism in Law and Society",
+      "doi": "10.1017/9781108655583.001",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/9781108655583.011",
+      "title": "Free Will Skepticism and Criminal Punishment: A Preliminary Ethical Analysis",
+      "authors": [
+       "Farah Focquaert"
+      ],
+      "year": 2019,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Free Will Skepticism in Law and Society",
+      "doi": "10.1017/9781108655583.011",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/cbo9780511844720.005",
+      "title": "On the Free Choice of the Will, On Grace and Free Choice, and Other Writings",
+      "authors": [],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Augustine: On the Free Choice of the Will, On Grace and Free Choice, and Other Writings",
+      "doi": "10.1017/cbo9780511844720.005",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1017/cbo9780511844720.010",
+      "title": "On Grace and Free Choice",
+      "authors": [],
+      "year": 2010,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Augustine: On the Free Choice of the Will, On Grace and Free Choice, and Other Writings",
+      "doi": "10.1017/cbo9780511844720.010",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/acprof:oso/9780199685516.003.0008",
+      "title": "Free Will Skepticism and Criminal Behavior",
+      "authors": [
+       "Derk Pereboom"
+      ],
+      "year": 2014,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Free Will, Agency, and Meaning in Life",
+      "doi": "10.1093/acprof:oso/9780199685516.003.0008",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/j.ctt3fgp2m.22",
+      "title": "GRACE AND FREE WILL",
+      "authors": [],
+      "year": null,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Writings; Writings; Commonitories; Grace and Free Will",
+      "doi": "10.2307/j.ctt3fgp2m.22",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2307/j.ctvj4swvh.14",
+      "title": "Epilogue:",
+      "authors": [],
+      "year": 2017,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Sin, Grace and Free Will - Vol. 1",
+      "doi": "10.2307/j.ctvj4swvh.14",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LOCAL_CURATED",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 1,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/oso/9780190460723.003.0013"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1093/oso/9780197751404.003.0010",
+     "title": "Skepticism and Illusionism about Free Will and Moral Responsibility",
+     "authors": [
+      "Robert Kane"
+     ],
+     "year": 2024,
+     "publication_type": "BOOK_CHAPTER",
+     "venue": "The Complex Tapestry of Free Will",
+     "doi": "10.1093/oso/9780197751404.003.0010",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "Abstract</jats:title> Free will skeptics believe we lack the kind of free will required for “basic desert” moral responsibility of the kind that is at issue in debates about free will. The free will necessary for such basic desert, they believe, is incompatible with determinism. So compatibilist views fail to capture it, while libertarian views which claim to capture it are impossible. This chapter critically examines the views of such free will skeptics, arguing that while they are right in believing that basic-desert responsibility is crucial for traditional debates about free will, such a notion of basic desert can be captured by the libertarian view defended in this book, contrary to their arguments. The chapter also critically examines another skeptical view, “illusionism,” which claims that illusion about free will is morally necessary.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "45365fc65018a15d1d62da556dbe269303b1cb18ce06651c55138f8709f84bbb"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.18",
+     "title": "Free Will Skepticism and Criminal Justice",
+     "authors": [
+      "Gregg D. Caruso"
+     ],
+     "year": 2022,
+     "publication_type": "BOOK_CHAPTER",
+     "venue": "The Oxford Handbook of Moral Responsibility",
+     "doi": "10.1093/oxfordhb/9780190679309.013.18",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "Abstract</jats:title> This chapter develops and defends the public health-quarantine model, a non-retributive and non-punitive alternative for addressing criminal behavior that draws on the public health framework and prioritizes prevention and social justice. It begins by arguing that there are several powerful reasons for rejecting retributivism, not the least of which is that it’s unclear that agents possess the kind of free will and moral responsibility needed to justify it. Section 1 briefly summarizes the arguments against free will and basic desert moral responsibility and explains their implications for the retributive justification of legal punishment. Section 2 then introduces and defends the public health-quarantine model and argues that it’s not only consistent with free will skepticism but that it also provides a more humane, holistic, and effective approach to dealing with criminal behavior than either retributivism or other leading non-retributive alternatives. The chapter concludes in sections 3 and 4 by addressing a number of potential concerns about proportionality, human dignity, and victims’ rights. It is argued that each of these concerns can be met and that in the end the public health-quarantine model offers a superior alternative to retributive punishment and other non-retributive accounts.</jats:p>",
+     "source": "crossref_METADATA",
+     "hash": "d385b560912088dcd1cd481ba9038887469f6c2a76728c1e3a2e12be30c34bef"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "get_scholarly_source",
+   "args": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "requested_access": "ABSTRACT"
+   },
+   "result_full": {
+    "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+    "bibliographic_record": {
+     "source_record_id": "doi:10.1093/oso/9780190460723.003.0013",
+     "title": "Free Will Skepticism, Freedom, and Criminal Behavior",
+     "authors": [
+      "Farah Focquaert",
+      "Andrea L. Glenn",
+      "Adrian Raine"
+     ],
+     "year": 2018,
+     "publication_type": "BOOK",
+     "venue": "Oxford Scholarship Online",
+     "doi": "10.1093/oso/9780190460723.003.0013",
+     "source_category": "UNKNOWN",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "provider": "crossref",
+     "source_providers": [
+      "crossref"
+     ],
+     "retrieval_origin": "LIVE_CROSSREF",
+     "bibliographic_verified_fields": [
+      "authors",
+      "container_title",
+      "doi",
+      "publication_type",
+      "publication_year",
+      "title"
+     ],
+     "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+    },
+    "access_level_before": "ABSTRACT_AVAILABLE",
+    "access_level_after": "ABSTRACT_AVAILABLE",
+    "returned_evidence_level": "ABSTRACT_AVAILABLE",
+    "full_text_status": null,
+    "source_url": null,
+    "content_hash": null,
+    "access_notes": "abstract 返回; 状态字段单调不降",
+    "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+    "abstract": {
+     "text": "<p>In Chapter 13, the authors address the issue of free will skepticism and criminal behavior, asking how we should, as a society, deal with criminal behavior in the current era of neuroexistentialism and if our belief in free will is essential to adequately addressing it, or if neurocriminology offer a new way of addressing crime without resorting to backward-looking notions of moral responsibility and guilt. They argue for a neurocriminological approach to “moral answerability” and forward-looking claims of responsibility that focus on the moral betterment or moral enhancement of individuals prone to criminal behavior and on reparative measures toward victims, placed within a broader public health perspective of human behavior. Within this framework, neurocriminology approaches to criminal behavior may provide specific guidance within a broader moral enhancement framework. Rather than undermining current criminal justice practices, the free will skeptics’ approach can draw on neurocriminological findings to reduce immoral behavior.</p>",
+     "source": "crossref_METADATA",
+     "hash": "0df52d973c638123ce121d973d4916b53526c5813b05fa93daa4c793514b9ffd"
+    },
+    "evidence_origin": "ABSTRACT_METADATA"
+   }
+  },
+  {
+   "name": "search_scholarship",
+   "args": {
+    "query": "compatibilism free will moral responsibility defense against skepticism",
+    "limit": 8
+   },
+   "result_full": {
+    "query": "compatibilism free will moral responsibility defense against skepticism",
+    "results": [
+     {
+      "source_record_id": "doi:10.1093/oxfordhb/9780190679309.013.38",
+      "title": "Manipulation Arguments Against Compatibilism",
+      "authors": [
+       "Derk Pereboom",
+       "Michael McKenna"
+      ],
+      "year": 2022,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Oxford Handbook of Moral Responsibility",
+      "doi": "10.1093/oxfordhb/9780190679309.013.38",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1093/oso/9780195064971.003.0004",
+      "title": "Compatibilism and Moral Responsibility",
+      "authors": [
+       "Richard Double"
+      ],
+      "year": 1990,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "The Non-Reality of Free Will",
+      "doi": "10.1093/oso/9780195064971.003.0004",
+      "source_category": "UNKNOWN",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.5040/9781666994087.ch-1",
+      "title": "Chapter One",
+      "authors": [
+       "Derk Pereboom"
+      ],
+      "year": 2013,
+      "publication_type": "OTHER",
+      "venue": "Exploring the Illusion of Free Will and Moral Responsibility",
+      "doi": "10.5040/9781666994087.ch-1",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1057/9781137414953_14",
+      "title": "In Defense of a Challenge to Moral Responsibility Skepticism: A Reply to Levy",
+      "authors": [
+       "Michael McKenna"
+      ],
+      "year": 2015,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Agency, Freedom, and Moral Responsibility",
+      "doi": "10.1057/9781137414953_14",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/9124.003.0004",
+      "title": "Rescuing Free Will from Moral Responsibility",
+      "authors": [],
+      "year": 2011,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Against Moral Responsibility",
+      "doi": "10.7551/mitpress/9124.003.0004",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.1515/9781400840250.133",
+      "title": "Chapter Six. A Metaskeptical Analysis of Libertarianism and Compatibilism",
+      "authors": [],
+      "year": 2012,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Relative Justice",
+      "doi": "10.1515/9781400840250.133",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.2986/tren.090-0016",
+      "title": "Divine Sovereignty And Human Responsibility: A Defense of Compatibilism",
+      "authors": [
+       "Mark A. MADLEM"
+      ],
+      "year": null,
+      "publication_type": "DISSERTATION",
+      "venue": null,
+      "doi": "10.2986/tren.090-0016",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "doi",
+       "publication_type",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     },
+     {
+      "source_record_id": "doi:10.7551/mitpress/9780262016599.003.0003",
+      "title": "Rescuing Free Will from Moral Responsibility",
+      "authors": [
+       "Bruce N. Waller"
+      ],
+      "year": 2011,
+      "publication_type": "BOOK_CHAPTER",
+      "venue": "Against Moral Responsibility",
+      "doi": "10.7551/mitpress/9780262016599.003.0003",
+      "source_category": "UNKNOWN",
+      "access_level": "METADATA_ONLY",
+      "provider": "crossref",
+      "source_providers": [
+       "crossref"
+      ],
+      "retrieval_origin": "LIVE_CROSSREF",
+      "bibliographic_verified_fields": [
+       "authors",
+       "container_title",
+       "doi",
+       "publication_type",
+       "publication_year",
+       "title"
+      ],
+      "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+     }
+    ],
+    "READABLE_RESULT_COUNT": 2,
+    "READABLE_SOURCE_IDS": [
+     "doi:10.1093/oxfordhb/9780190679309.013.38",
+     "doi:10.1093/oso/9780195064971.003.0004"
+    ],
+    "providers_queried": [
+     "LOCAL_CURATED",
+     "crossref",
+     "openalex"
+    ],
+    "provider_errors": [
+     {
+      "provider": "openalex",
+      "error": "PROVIDER_RATE_LIMIT",
+      "detail": "429"
+     }
+    ],
+    "note": "部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 6
+}

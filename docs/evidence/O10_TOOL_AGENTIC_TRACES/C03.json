@@ -1,0 +1,1448 @@
+{
+ "case_id": "C03",
+ "section": "C",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "尼采“没有事实，只有解释”到底出自哪里？",
+ "injection": null,
+ "QUESTION": "尼采“没有事实，只有解释”到底出自哪里？",
+ "PUBLIC_WORK_NOTE": [
+  "**工作笔记（面向读者）**：这句\"没有事实，只有解释\"我记忆中常被归到尼采《权力意志》（*Der Wille zur Macht*）的编者辑录里——但《权力意志》本身不是尼采生前出版的书，而是其妹妹等人从遗稿中摘编的，因此这句的出处本身就很可争议。我不能凭记忆下结论，需要先在原典库定位到它到底出现在哪本书、哪一节，再核对原文措辞。所以下一步：登记出处核验需求，检索这句话在库中的分布。",
+  "**工作笔记（面向读者）**：第一轮检索没有直接命中\"没有事实，只有解释\"这句原话，命中的都是别的书里\"事实/解释\"的泛用。我记忆中它属于尼采遗稿（常被编入《权力意志》），但这正是需要核验的地方——如果库里有《权力意志》或其目录，就能定位到具体条目。所以下一步：查库中尼采相关书籍的目录结构，并再定向搜\"权力意志\"与\"解释\"。",
+  "**工作笔记（面向读者）**：库内三轮检索都没能定位到\"没有事实，只有解释\"这句原话——它要么不在这 403 本库的收录范围内，要么分散在未收录的尼采遗稿中，而我记得它常被编入《权力意志》（编者本）而非尼采生前出版的书。这正是问题的关键：如果它出自编者的遗稿辑录，那\"出自哪里\"的答案本身就带有一个版本学/真伪问题。库内已无相关证据，我需要走网络通道核实德语原文与确切的编者本节号。下一步：申请预算延展，用网络检索核实。",
+  "**工作笔记（面向读者）**：网络检索检索也不可达，库内三轮也没命中该表述的原话，所以我目前手里没有直接的原文证据。我记忆中它出自尼采1886—87年的遗稿笔记、后被编者辑入《权力意志》——但这恰恰是需要核验的地方。还想确认一件事：库里到底有没有收《权力意志》这本书。若没有，我就只能如实说明出处边界。下一步：换一个明确不同的检索目标——查库中尼采书目与《权力意志》是否存在。",
+  "**工作笔记（面向读者）**：查到库里确有两套尼采文集收录了《权力意志》，而第703章译后记也提到\"妹妹将他留下的部分笔记整理为《权力意志》\"——这印证了我记忆中的版本学背景。现在关键是确认库中《权力意志》正文里到底有没有\"没有事实，只有解释\"这一条，以及它对应哪一节。下一步：查看文集目录，并定向搜\"实证主义/解释\"这类更贴近原文语境的词（该条的德文开头是\"反对实证主义\"）。"
+ ],
+ "RESEARCH_NEED": "MIXED",
+ "EVIDENCE_GAP": "\"没有事实，只有解释\"在尼采遗稿中的确切位置（GA/KSA 手稿编号或《权力意志》编者本节号）及其德文原文措辞；库内 403 本未收录该表述，需网络核实",
+ "TOOL_SELECTED": [
+  "search_books",
+  "concept_trace",
+  "get_book_detail",
+  "websearch",
+  "list_books"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "没有事实，只有解释"
+   },
+   {
+    "query": "事实 解释 尼采"
+   },
+   {
+    "query": "权力意志 解释 事实"
+   },
+   {
+    "query": "只有解释 没有事实"
+   },
+   {
+    "query": "权力意志"
+   },
+   {
+    "query": "实证主义 现象 解释 权力意志"
+   }
+  ],
+  "concept_trace": [
+   {
+    "concept": "没有事实，只有解释"
+   }
+  ],
+  "get_book_detail": [
+   {
+    "book_id": "4cc9d23c7dbf"
+   },
+   {
+    "book_id": "bedc9c78dfdf"
+   }
+  ],
+  "websearch": [
+   {
+    "query": "尼采 没有事实 只有解释 权力意志 出处"
+   },
+   {
+    "query": "Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht"
+   }
+  ],
+  "list_books": [
+   {
+    "author": "尼采"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "没有事实，只有解释"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'fa4934527602', 'book_title': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'chapter_idx': 4, 'chapter_title': '第3章 经验事实和哲学性/概念性事实', 'citation_label': '【《世界观：现代人必须要懂的科学哲"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "事实 解释 尼采"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 1, 'chapter_title': '自序', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·自序】', 'snippet': '一 好些年"
+  },
+  {
+   "name": "concept_trace",
+   "args": {
+    "concept": "没有事实，只有解释"
+   },
+   "phase": "executed",
+   "result_head": "{'concept': '没有事实，只有解释', 'hits': 30, 'timeline': [{'book': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'region': '西方', 'rank': 36.7, 'chapter': '第3章 经验事实和哲学性/概念性事实', 'snippet': '在前一章中，我们看到，围绕真"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "4cc9d23c7dbf"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "权力意志 解释 事实"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "只有解释 没有事实"
+   },
+   "phase": "reused",
+   "result_head": "{'results': [{'book_id': 'fa4934527602', 'book_title': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'chapter_idx': 4, 'chapter_title': '第3章 经验事实和哲学性/概念性事实', 'citation_label': '【《世界观：现代人必须要懂的科学哲"
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "尼采 没有事实 只有解释 权力意志 出处"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': '尼采 没有事实 只有解释 权力意志 出处', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [], 'query': 'Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "权力意志"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 47, 'chapter_title': '第二节 何谓权力意志？', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第二节 何谓权力意志？】'"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "尼采"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'rank': 47.2, 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "phase": "executed",
+   "result_head": "{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "实证主义 现象 解释 权力意志"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'fa4934527602', 'book_title': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'chapter_idx': 4, 'chapter_title': '第3章 经验事实和哲学性/概念性事实', 'citation_label': '【《世界观：现代人必须要懂的科学哲"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 1, 'chapter_title': '自序', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·自序】', 'snippet': '一 好些年"
+  },
+  {
+   "name": "concept_trace",
+   "head": "{'concept': '没有事实，只有解释', 'hits': 30, 'timeline': [{'book': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'region': '西方', 'rank': 36.7, 'chapter': '第3章 经验事实和哲学性/概念性事实', 'snippet': '在前一章中，我们看到，围绕真"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'fa4934527602', 'book_title': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'chapter_idx': 4, 'chapter_title': '第3章 经验事实和哲学性/概念性事实', 'citation_label': '【《世界观：现代人必须要懂的科学哲"
+  },
+  {
+   "name": "websearch",
+   "head": "{'results': [], 'query': '尼采 没有事实 只有解释 权力意志 出处', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "websearch",
+   "head": "{'results': [], 'query': 'Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 47, 'chapter_title': '第二节 何谓权力意志？', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第二节 何谓权力意志？】'"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'rank': 47.2, 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "## 关于\"没有事实，只有解释\"的出处\n\n先说结论，再说这个结论本身的麻烦所在。\n\n**这句话不在尼采生前出版的任何一部著作里。** 它属于尼采的遗稿笔记（*Nachlass*），后世普遍是以《权力意志》（*Der Wille zur Macht*）的节号来引用它的——而这恰恰是问题的症结：《权力意志》并不是尼采写的一本书，而是他身后由妹妹伊丽莎白·福斯特-尼采与彼得·加斯特从大量遗稿中摘选、编排而成的格言辑录。所以严格说，\"出自《权力意志》第481条\"这样的说法，指的是一个编者构造物中的条目，而不是尼采在某个确定文本里写下的、他自己认可的表述。\n\n**需要坦白的证据边界**：我这次在原典库里做了多轮检索，都没有定位到\"没有事实，只有解释\"这句原话的确切出处；库里收录的尼采文集虽然包含以《权力意志》为名的译本，但我未能读到对应条目来逐字核对；网络检索通道这次也不可达。因此下面关于具体条号与德文措辞的部分，属于我的知识记忆，**未经本次库内核验，请你按\"待核验\"对待**：\n\n- 通行的德语形式大致是 *Es gibt keine Tatsachen, nur Interpretationen*（\"没有事实，只有解释\"）。\n- 它常被系于一段明确反对实证主义的笔记，大意是：实证主义停留在现象上、宣称\"只有事实\"——不，恰恰没有事实，只有解释。（*记忆中的转述，非逐字原文*）\n- 在《权力意志》旧编本中，它通常被标为**第481条**；在科利-蒙提那里（Colli–Montinari）考订版《尼采全集》（KSA）中，这条笔记位于第12卷（1885—1887年遗稿），手稿编号可能作 7[60]、页码约 KSA 12:315 一带——**这些编号我有印象但未能核验，请不要当作已确认的精确位置引用**。\n\n## 为什么这件事值得较真\n\n\"没有事实，只有解释\"是一个典型的\"引用越流利、越该警惕\"的例子：\n\n1. **它被当作尼采的招牌命题流通，但尼采本人从未以这个简洁形式发表过它。** 流行的短句很可能是后人对一段更啰嗦、带具体论敌（实证主义）的笔记的缩略概括。\n2. **《权力意志》的编辑史本身在学界是有争议的。** 该书把不同时期、不同语境的笔记按编者的框架重排并加了标题，制造出一种尼采从未有过的\"体系感\"。科利-蒙提那里考订版之后，主流做法是：涉及遗稿，宁可引手稿编号（如 KSA 卷次＋笔记本编号），而不再引《权力意志》的节号——因为后者会暗示一个并不存在的、作者本人定稿的文本。你注意到的库里那套《尼采文集》标有\"科利版编后记\"\"尼采手稿和笔记简写表\"，正是这一考订传统的痕迹。\n3. **因此\"出处\"问题的正确答案有两层**：表层是\"《权力意志》§481（旧编本）\"；深层是\"1886—87年遗稿中的一条笔记，其精确定位须查 KSA 第12卷手稿编号\"。\n\n## 如果要精确核验，该查什么\n\n- 直接读物：KSA 第12卷（遗稿 1885—1887），按笔记编号定位那条\"反对实证主义\"的格言。\n- 对照《权力意志》旧编本（Kröner 版或施莱希塔整理本）的第481条，看编者如何裁剪与加标题。\n- 想了解编辑史争议，可读科利-蒙提那里版的编者说明，以及蒙提那里关于《权力意志》如何被\"制作\"出来的考订性说明。\n\n一句话：**能确认的是它属于遗稿、《权力意志》只是编者辑录；不能确认的是我对具体条号与德文逐字措辞的记忆**——那部分等你（或我下次能读到库内对应译文时）逐字核验后再引用，才稳妥。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "**工作笔记（面向读者）**：这句\"没有事实，只有解释\"我记忆中常被归到尼采《权力意志》（*Der Wille zur Macht*）的编者辑录里——但《权力意志》本身不是尼采生前出版的书，而是其妹妹等人从遗稿中摘编的，因此这句的出处本身就很可争议。我不能凭记忆下结论，需要先在原典库定位到它到底出现在哪本书、哪一节，再核对原文措辞。所以下一步：登记出处核验需求，检索这句话在库中的分布。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "concept_trace"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"没有事实，只有解释\"这一表述在尼采著作/遗稿中的确切出处（书名、章节/格言号）及原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "没有事实，只有解释"
+   },
+   "result_head": "{'results': [{'book_id': 'fa4934527602', 'book_title': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'chapter_idx': 4, 'chapter_title': '第3章 经验事实和哲学性/概念性事实', 'citation_label': '【《世界观：现代人必须要懂的科学哲"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "事实 解释 尼采"
+   },
+   "result_head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 1, 'chapter_title': '自序', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·自序】', 'snippet': '一 好些年"
+  },
+  {
+   "kind": "tool",
+   "name": "concept_trace",
+   "phase": "executed",
+   "args": {
+    "concept": "没有事实，只有解释"
+   },
+   "result_head": "{'concept': '没有事实，只有解释', 'hits': 30, 'timeline': [{'book': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'region': '西方', 'rank': 36.7, 'chapter': '第3章 经验事实和哲学性/概念性事实', 'snippet': '在前一章中，我们看到，围绕真"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记（面向读者）**：第一轮检索没有直接命中\"没有事实，只有解释\"这句原话，命中的都是别的书里\"事实/解释\"的泛用。我记忆中它属于尼采遗稿（常被编入《权力意志》），但这正是需要核验的地方——如果库里有《权力意志》或其目录，就能定位到具体条目。所以下一步：查库中尼采相关书籍的目录结构，并再定向搜\"权力意志\"与\"解释\"。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "blocked",
+   "args": {
+    "book_id": "4cc9d23c7dbf"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "权力意志 解释 事实"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "reused",
+   "args": {
+    "query": "只有解释 没有事实"
+   },
+   "result_head": "{'results': [{'book_id': 'fa4934527602', 'book_title': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'chapter_idx': 4, 'chapter_title': '第3章 经验事实和哲学性/概念性事实', 'citation_label': '【《世界观：现代人必须要懂的科学哲"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记（面向读者）**：库内三轮检索都没能定位到\"没有事实，只有解释\"这句原话——它要么不在这 403 本库的收录范围内，要么分散在未收录的尼采遗稿中，而我记得它常被编入《权力意志》（编者本）而非尼采生前出版的书。这正是问题的关键：如果它出自编者的遗稿辑录，那\"出自哪里\"的答案本身就带有一个版本学/真伪问题。库内已无相关证据，我需要走网络通道核实德语原文与确切的编者本节号。下一步：申请预算延展，用网络检索核实。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "websearch"
+  },
+  {
+   "kind": "tool_start",
+   "name": "websearch"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "\"没有事实，只有解释\"在尼采遗稿中的确切位置（GA/KSA 手稿编号或《权力意志》编者本节号）及其德文原文措辞；库内 403 本未收录该表述，需网络核实",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "PRIMARY 预算已用尽，但库内三轮检索均未命中该表述的原文出处；用户明确询问\"出自哪里\"，回答正确性完全依赖出处核验，故需扩展至网络通道核实德语原文与版本位置",
+    "unresolved_evidence_gap": "该表述的手稿编号/《权力意志》编者本节号及德文原文"
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "websearch",
+   "phase": "executed",
+   "args": {
+    "query": "尼采 没有事实 只有解释 权力意志 出处"
+   },
+   "result_head": "{'results': [], 'query': '尼采 没有事实 只有解释 权力意志 出处', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "kind": "tool",
+   "name": "websearch",
+   "phase": "executed",
+   "args": {
+    "query": "Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht"
+   },
+   "result_head": "{'results': [], 'query': 'Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht', 'note': '联网无结果（Bing 与维基百科均不可达）'}"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记（面向读者）**：网络检索检索也不可达，库内三轮也没命中该表述的原话，所以我目前手里没有直接的原文证据。我记忆中它出自尼采1886—87年的遗稿笔记、后被编者辑入《权力意志》——但这恰恰是需要核验的地方。还想确认一件事：库里到底有没有收《权力意志》这本书。若没有，我就只能如实说明出处边界。下一步：换一个明确不同的检索目标——查库中尼采书目与《权力意志》是否存在。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "权力意志"
+   },
+   "result_head": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 47, 'chapter_title': '第二节 何谓权力意志？', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第二节 何谓权力意志？】'"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "author": "尼采"
+   },
+   "result_head": "{'books': [{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'rank': 47.2, 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值"
+  },
+  {
+   "kind": "note",
+   "content": "**工作笔记（面向读者）**：查到库里确有两套尼采文集收录了《权力意志》，而第703章译后记也提到\"妹妹将他留下的部分笔记整理为《权力意志》\"——这印证了我记忆中的版本学背景。现在关键是确认库中《权力意志》正文里到底有没有\"没有事实，只有解释\"这一条，以及它对应哪一节。下一步：查看文集目录，并定向搜\"实证主义/解释\"这类更贴近原文语境的词（该条的德文开头是\"反对实证主义\"）。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "result_head": "{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "实证主义 现象 解释 权力意志"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"没有事实，只有解释\"这一表述在尼采著作/遗稿中的确切出处（书名、章节/格言号）及原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "\"没有事实，只有解释\"在尼采遗稿中的确切位置（GA/KSA 手稿编号或《权力意志》编者本节号）及其德文原文措辞；库内 403 本未收录该表述，需网络核实",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "PRIMARY 预算已用尽，但库内三轮检索均未命中该表述的原文出处；用户明确询问\"出自哪里\"，回答正确性完全依赖出处核验，故需扩展至网络通道核实德语原文与版本位置",
+    "unresolved_evidence_gap": "该表述的手稿编号/《权力意志》编者本节号及德文原文"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "MIXED",
+  "evidence_gap": "\"没有事实，只有解释\"在尼采遗稿中的确切位置（GA/KSA 手稿编号或《权力意志》编者本节号）及其德文原文措辞；库内 403 本未收录该表述，需网络核实",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 16:54:53",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "\"没有事实，只有解释\"这一表述在尼采著作/遗稿中的确切出处（书名、章节/格言号）及原文措辞",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 16:55:03",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "MIXED",
+    "prev": "PRIMARY",
+    "evidence_gap": "\"没有事实，只有解释\"在尼采遗稿中的确切位置（GA/KSA 手稿编号或《权力意志》编者本节号）及其德文原文措辞；库内 403 本未收录该表述，需网络核实",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 16:55:03",
+    "reason": "PRIMARY 预算已用尽，但库内三轮检索均未命中该表述的原文出处；用户明确询问\"出自哪里\"，回答正确性完全依赖出处核验，故需扩展至网络通道核实德语原文与版本位置",
+    "unresolved_gap": "该表述的手稿编号/《权力意志》编者本节号及德文原文"
+   }
+  ],
+  "retrieval_executed": 8,
+  "soft_limit": 8,
+  "blocked_calls": [
+   {
+    "tool": "get_book_detail",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:54:58"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:54:58"
+   },
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 16:55:14"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 101451,
+   "output_tokens": 5700,
+   "total_tokens": 107151
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 12,
+   "compacted_chars_saved": 21238,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12062,
+     "output_tokens": 613,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 18595,
+     "output_tokens": 728,
+     "tool_chars_added": 11473
+    },
+    {
+     "round": 3,
+     "input_tokens": 16315,
+     "output_tokens": 913,
+     "tool_chars_added": 4486
+    },
+    {
+     "round": 4,
+     "input_tokens": 16469,
+     "output_tokens": 863,
+     "tool_chars_added": 2248
+    },
+    {
+     "round": 5,
+     "input_tokens": 19911,
+     "output_tokens": 608,
+     "tool_chars_added": 6119
+    },
+    {
+     "round": 6,
+     "input_tokens": 18099,
+     "output_tokens": 1975,
+     "tool_chars_added": 861
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1464,
+ "token_usage": {
+  "input_tokens": 101451,
+  "output_tokens": 5700,
+  "total_tokens": 107151
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 41.6,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "\"没有事实，只有解释\"这一表述在尼采著作/遗稿中的确切出处（书名、章节/格言号）及原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: \"没有事实，只有解释\"这一表述在尼采著作/遗稿中的确切出处（书名、章节/格言号）及原文措辞）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "没有事实，只有解释"
+   },
+   "result_summary": "{'results': [{'book_id': 'fa4934527602', 'book_title': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'chapter_idx': 4, 'chapter_title': '第3章 经验事实和哲学性/概念性事实', 'citation_label': '【《世界观：现代人必须要懂的科学哲",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "事实 解释 尼采"
+   },
+   "result_summary": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 1, 'chapter_title': '自序', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·自序】', 'snippet': '一 好些年",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "concept_trace",
+   "args": {
+    "concept": "没有事实，只有解释"
+   },
+   "result_summary": "{'concept': '没有事实，只有解释', 'hits': 30, 'timeline': [{'book': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'region': '西方', 'rank': 36.7, 'chapter': '第3章 经验事实和哲学性/概念性事实', 'snippet': '在前一章中，我们看到，围绕真",
+   "thought": "执行 concept_trace",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "4cc9d23c7dbf"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "权力意志 解释 事实"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "只有解释 没有事实"
+   },
+   "result_summary": "{'results': [{'book_id': 'fa4934527602', 'book_title': '世界观：现代人必须要懂的科学哲学和科学史（原书第3版）', 'author': '理查德·德威特', 'chapter_idx': 4, 'chapter_title': '第3章 经验事实和哲学性/概念性事实', 'citation_label': '【《世界观：现代人必须要懂的科学哲",
+   "thought": "EXACT_DUPLICATE_REUSED（同工具+完全相同参数, 机械判重复用此前结果）",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "MIXED",
+    "evidence_gap": "\"没有事实，只有解释\"在尼采遗稿中的确切位置（GA/KSA 手稿编号或《权力意志》编者本节号）及其德文原文措辞；库内 403 本未收录该表述，需网络核实",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "PRIMARY 预算已用尽，但库内三轮检索均未命中该表述的原文出处；用户明确询问\"出自哪里\"，回答正确性完全依赖出处核验，故需扩展至网络通道核实德语原文与版本位置",
+    "unresolved_evidence_gap": "该表述的手稿编号/《权力意志》编者本节号及德文原文"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=MIXED（EVIDENCE_GAP: \"没有事实，只有解释\"在尼采遗稿中的确切位置（GA/KSA 手稿编号或《权力意志》编者本节号）及其德文原文措辞；库内 403 本未收录该表述，需网络核实）。soft 检索预算=6 次。预算延展已获准（BUDGET_EXTENSIO",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "尼采 没有事实 只有解释 权力意志 出处"
+   },
+   "result_summary": "{'results': [], 'query': '尼采 没有事实 只有解释 权力意志 出处', 'note': '联网无结果（Bing 与维基百科均不可达）'}",
+   "thought": "执行 websearch",
+   "scholarly_trace": null
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht"
+   },
+   "result_summary": "{'results': [], 'query': 'Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht', 'note': '联网无结果（Bing 与维基百科均不可达）'}",
+   "thought": "执行 websearch",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "权力意志"
+   },
+   "result_summary": "{'results': [{'book_id': '4cc9d23c7dbf', 'book_title': '尼采经典著作及研究丛书（四册全）', 'author': '弗里德里希·尼采', 'chapter_idx': 47, 'chapter_title': '第二节 何谓权力意志？', 'citation_label': '【《尼采经典著作及研究丛书（四册全）》·第二节 何谓权力意志？】'",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "尼采"
+   },
+   "result_summary": "{'books': [{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'rank': 47.2, 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "result_summary": "{'id': 'bedc9c78dfdf', 'title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'region': '西方', 'file_type': 'epub', 'summary': '《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "实证主义 现象 解释 权力意志"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: MIXED 类 soft 检索预算（8 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无理由",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "没有事实，只有解释"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "fa4934527602",
+      "book_title": "世界观：现代人必须要懂的科学哲学和科学史（原书第3版）",
+      "author": "理查德·德威特",
+      "chapter_idx": 4,
+      "chapter_title": "第3章 经验事实和哲学性/概念性事实",
+      "citation_label": "【《世界观：现代人必须要懂的科学哲学和科学史（原书第3版）》·第3章 经验事实和哲学性/概念性事实】",
+      "snippet": "在前一章中，我们看到，围绕真理的命题都比人们一般所认为的要复杂得多。在下面这个简短的章节里，我们将探讨与事实相关的话题。 毫无疑问，事实与科学，彼此之间紧密相连。不管你想从科学理论中得到什么，人们对科学理论都有一个共识，那就是它应该描述相关的事实。然而，“事实”这个概念比人们一般所认为的要复杂得多。在本章中，我们将对它的某些复杂性进行探讨。对于某些观点，我们认为显然是事实，并有相应的理由，那么，就让我们从对这些理由的初步观察来开始本章的",
+      "score": 0.484
+     },
+     {
+      "book_id": "fa4934527602",
+      "book_title": "世界观：现代人必须要懂的科学哲学和科学史（原书第3版）",
+      "author": "理查德·德威特",
+      "chapter_idx": 9,
+      "chapter_title": "第8章 工具主义和现实主义",
+      "citation_label": "【《世界观：现代人必须要懂的科学哲学和科学史（原书第3版）》·第8章 工具主义和现实主义】",
+      "snippet": "本章的目的是介绍看待科学理论的两种常见态度。它们通常被称为 工具主义 （或实用主义）和 现实主义 。首先，我们将讨论与科学理论相关的两个命题，也就是预言和解释。 ｜预言和解释｜ 设想一下，我们提出这样一个问题，“我们想从科学理论中得到什么？”当然，进行准确预言的能力是其中一点。就像我们在第4章中讨论过的，20世纪初爱因斯坦提出相对论时，这个理论得到认可的一个原因就是它做出了准确的而别的理论没能做出的预言。1919年日全食的观测结果验证了",
+      "score": 0.484
+     },
+     {
+      "book_id": "96a84c0450cd",
+      "book_title": "马基雅维利语录",
+      "author": "马基雅维利",
+      "chapter_idx": 153,
+      "chapter_title": "正如西塞罗所说，民众尽管无知，却具有看穿真相的能力。",
+      "citation_label": "【《马基雅维利语录》·正如西塞罗所说，民众尽管无知，却具有看穿真相的能力。】",
+      "snippet": "正如西塞罗所说，民众尽管无知，却具有看穿真相的能力。 因此，倘若有将众人信赖集于一身的人将事实相告，他们便很容易被说服了。 ——《论李维》",
+      "score": 0.482
+     },
+     {
+      "book_id": "55591ecdf7e9",
+      "book_title": "我不想保持正确：拉图尔对塞尔的五次访谈",
+      "author": "米歇尔·塞尔",
+      "chapter_idx": 2,
+      "chapter_title": "访谈三证明",
+      "citation_label": "【《我不想保持正确：拉图尔对塞尔的五次访谈》·访谈三证明】",
+      "snippet": "访谈三证明 拉图尔:您还记得吗，我们在上一个季度谈了您 的方法？我试着把人们对您的诸多误解列出个清 单来。 塞尔:是的,我记得这张清单很长。 拉图尔：确实相当长。但我们解释了我认为具有 决定性的三个要点：风格、数学形式语言和时间， 即您的时间观。这三个要点彼此关联。风格使您可 以在一些迄今为止还未适用数学方法的主题上使用 这种方法，我们可以称之为泛化的比较研究法。而 这种比较研究法自身实际上又和您否认线性时间的 观点相关。因此，您将这些",
+      "score": 0.477
+     },
+     {
+      "book_id": "1c67b29ec906",
+      "book_title": "皮浪学说概要",
+      "author": "皮浪",
+      "chapter_idx": 62,
+      "chapter_title": "五、某物是某物的原因吗？",
+      "citation_label": "【《皮浪学说概要》·五、某物是某物的原因吗？】",
+      "snippet": "[17]原因存在似乎是可信的。如果不是出于某种原因，增加、减少、生成、毁灭、普遍的运动、每种自然与灵魂的结果、 整个宇宙的秩序以及其他所有的一切如何能够发生？即使这些东西本性上并非真实存在，我们也会声称正是出于某些原因它们对我们显得似乎如此，就像它们实际并非如此。[18]再者，假如原因并不存在，一切事物就会偶然地来自一切事物，比如，如果愿意，马或许会生自蚊蝇，大象或许会生自蚂蚁。?如果不是某种原因使南方风急雨骤，东方千旱无雨，那么埃及的",
+      "score": 0.476
+     },
+     {
+      "book_id": "87b26c6b10e6",
+      "book_title": "哲学和我们的时代",
+      "author": "周龙辉",
+      "chapter_idx": 24,
+      "chapter_title": "一切腐败的事物都可为它的腐败说出好理由",
+      "citation_label": "【《哲学和我们的时代》·一切腐败的事物都可为它的腐败说出好理由】",
+      "snippet": "[第121～124节] 世界上一切腐败的事物都可以为它的腐败说出好的理由。当一个人自诩为能说出理由或提出根据时，最初你或不免虚怀领受，肃然起敬。但到了你体验到所谓说出理由究竟是怎样一回事之后，你就会对它不加理睬，不为强词夺理的理由所欺骗。 ——黑格尔：《小逻辑》，第265～266页 1.世界上一切腐败的事物都可以为它的腐败说出好理由 同一与差别的统一，其结果并不是偏于任何一方，也不是抽象的“统一”本身，而是有一个确定的结果，这个确定的结",
+      "score": 0.474
+     },
+     {
+      "book_id": "f11f1b13c278",
+      "book_title": "形而上学",
+      "author": "亚里士多德",
+      "chapter_idx": 21,
+      "chapter_title": "第四章",
+      "citation_label": "【《形而上学》·第四章】",
+      "snippet": "得是窃题了。但如果别的人提出这个主张，那么就将有反证（cYxog） 而不是证明（aπooec）。所有这样的论证的出发点，不是要求我们的论敌说某物是*或不是（因为这也许会被认为是窃题），而是要他说一20点对他自己和别人是有意义的东西：因为如果他真的说了关于任何的事物的话，那么这就会是必然的。如果他说的任何意义都没有，那么这样一个人就没有能力进行推论，不论是和他自已还是对其他的人。任何人只要承认这一点，那么证明就是可能的，因为我们会有某些确",
+      "score": 0.469
+     },
+     {
+      "book_id": "37e1e8e2842b",
+      "book_title": "从经验立场出发的心理学",
+      "author": "弗朗茨·布伦塔诺",
+      "chapter_idx": 6,
+      "chapter_title": "第三章 对心理学方法的进一步探讨：对心理学基本规律的归纳",
+      "citation_label": "【《从经验立场出发的心理学》·第三章 对心理学方法的进一步探讨：对心理学基本规律的归纳】",
+      "snippet": "使我们尽量避开形而上学理论的原因，看来也使我们应避开为了进行生理学解释而提出的假定。正如穆勒在其《人类心理现象分析》的前言中所指出的：因为哈特雷（Hartley）没能如此做，以至于在很长时间内，他独到的尝试都没能得到应有的关注，可这一点却至关重要。",
+      "score": 0.469
+     },
+     {
+      "book_id": "f11f1b13c278",
+      "book_title": "形而上学",
+      "author": "亚里士多德",
+      "chapter_idx": 23,
+      "chapter_title": "第六章",
+      "citation_label": "【《形而上学》·第六章】",
+      "snippet": "而是现象对于它所呈现的人和它呈现的时间以及它呈现的方法和方式来说是真的。而如果他们坚持其观点但不是以这种方式，那么*他们很快就会发现：他们说的是与自己矛盾的东西，因为以下的情况是可能的即同一事物可以对于视觉显现得像蜂蜜，而对于味觉则不是。另外，由于我们有两个眼睛，事物可能对于每一只眼晴呈现为不一样的东西，如果它们的视力是不一样的话。现在，正如我们已经说过的，有些人由于已经提出的理由①*而说现象是真的，因此一切都同样地是假的又是真的了，因",
+      "score": 0.468
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 336,
+      "chapter_title": "推理顺序中的本体论证明",
+      "citation_label": "【《西方百年学术经典著作》·推理顺序中的本体论证明】",
+      "snippet": "——乔治·穆瓦亚尔 《沉思集》中应用本体论证据的地方成了亨利古耶教授和果鲁特教授长期争论的焦点，当后者的《笛卡尔的推理规则》第一次出现时，争论产生了《本体论证明的新思考》（Nouvelles reflexions sur la preuve ontologique），一个专题论文，在这个论文中果鲁特教授为理解《沉思集》详细地列出了一个至关重要的区别：在笛卡尔的行程表中，形而上学的水平（“形而上学的计划”）和本质的水平（本质的计划）的区别",
+      "score": 0.465
+     },
+     {
+      "book_id": "f11f1b13c278",
+      "book_title": "形而上学",
+      "author": "亚里士多德",
+      "chapter_idx": 88,
+      "chapter_title": "第十章",
+      "citation_label": "【《形而上学》·第十章】",
+      "snippet": "关于不运动的事物也很清楚，*在时间方面不可能有欺骗，如果我5们假设有不运动的事物的话。例如，我们假定三角形是不变动的。我们就不会在一个时间设想它的角[的和】等于两个直角，而在另一个时间又设想它们不等于两个直角（那就是变动的了）。但我们可以设想一个事物有某属性，另一事物没有某属性，例如，没有偶数是质数，或者有些是质数，而另一些不是质数。但是关于一个单个的数就不会*这样，10因为我们不再能够假设一个场合是这样的，另一个场合又不是这样的，而是",
+      "score": 0.464
+     },
+     {
+      "book_id": "fa4934527602",
+      "book_title": "世界观：现代人必须要懂的科学哲学和科学史（原书第3版）",
+      "author": "理查德·德威特",
+      "chapter_idx": 12,
+      "chapter_title": "第11章 天文学数据：经验事实",
+      "citation_label": "【《世界观：现代人必须要懂的科学哲学和科学史（原书第3版）》·第11章 天文学数据：经验事实】",
+      "snippet": "在接下来的几个章节中，我们将陆续研究托勒密、哥白尼、第谷和开普勒等人的天文学理论，随着这些理论的发展更迭，人们对宇宙的看法从旧的亚里士多德方式转变到了更新一点儿的牛顿方式。我们对这些理论的研究意在理解这个转变过程所涉及的某些因素和命题。在人们对宇宙看法转变的过程中，前面提到的几个理论都扮演了重要角色。为了理解这些理论，我们需要对某些数据进行研究，因为这些理论基本都是用来解释这些数据的。 我们在前面的章节中讨论过，不管我们希望从理论中得到",
+      "score": 0.464
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 238,
+      "chapter_title": "121",
+      "citation_label": "【《尼采文集（合集）》·121】",
+      "snippet": " 生活并非一种论证 。——我们想好了一个我们能够在其中生活的世界——通过假定和采纳体、线、面，因与果，动与静，形式与内容：要是没有这些信条，现在没有人能坚持活下去了！不过，这还丝毫没有证明它们。生活并非一种论证；生活的条件或许就包含着谬误。 边码：478",
+      "score": 0.463
+     },
+     {
+      "book_id": "1c67b29ec906",
+      "book_title": "皮浪学说概要",
+      "author": "皮浪",
+      "chapter_idx": 11,
+      "chapter_title": "十、怀疑论者否弃现象吗？",
+      "citation_label": "【《皮浪学说概要》·十、怀疑论者否弃现象吗？】",
+      "snippet": "? [19]那些声称怀疑论者否弃（anairousi）现象的人，在我看来，他们似乎没有听到过我们所讲的东西。正如前面所说，我们不会推翻那些基于感受印象、自觉不自觉地引导我们给予认同的东西，这些东西就是现象。当我们质疑存在物（tohupokeimenon）是否像它所显现的那样（hopoionphainetai），我们承认它显现这个事实，我们质疑的不是现象而是对现象做出的那些解释，这与质疑现象本身是有区别的。[20]例如，蜂蜜对我们显得似乎",
+      "score": 0.461
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 243,
+      "chapter_title": "126",
+      "citation_label": "【《尼采文集（合集）》·126】",
+      "snippet": "126 (32) 神秘的说明 。——神秘的说明被认为是深刻的；真相是，它们甚至连肤浅都谈不上。",
+      "score": 0.46
+     }
+    ],
+    "query": "没有事实，只有解释",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "事实 解释 尼采"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 1,
+      "chapter_title": "自序",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·自序】",
+      "snippet": "一 好些年以来，我一直有心写一本尼采书。但尼采好读不好写。尼采的中国接受史充分证明了这一点。就所谓“哲人”和“哲学书”而言，尼采在中国被译和被读得最多——他的《查拉图斯特拉如是说》居然已经有十几个中译本！我也算添乱，于2009年出了一个新译本，据说已经是第14个或者第15个译本了。但，比较而言，有关尼采的汉语研究文献却不在多数，有意思的研究著作差不多是屈指可数的。原因何在呢？我以为，主要在于，尼采不是传统意义上的哲学家，他不做推论的—论",
+      "score": 0.576
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 34,
+      "chapter_title": "第五节 尼采又热了，意味着什么？",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第五节 尼采又热了，意味着什么？】",
+      "snippet": "1989年以后，中国知识界在政治权力和商业经济大潮的夹缝里进入了一个内部分化和分裂的新阶段，渐渐演变为“新左派”与“自由主义”争论和冲突，一场知识界内部的左右之争。现在的“新左派”已经不是20世纪80年代的左派了，当然更不是毛泽东时代的左派了，而毋宁说，他们的政治主张是以全球化忧虑、现代性批判、启蒙理性反思为哲学基础的，因此显得比老式左派、甚至比时下的自由主义者更有学理上的依据。另一方面，比较而言，与自由主义者相比，中国“新左派”比较容",
+      "score": 0.562
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 13,
+      "chapter_title": "第二节 基督宗教的起源",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第二节 基督宗教的起源】",
+      "snippet": "尼采自称为“敌基督者”。不过，作为“敌基督者”的尼采其实不光是反对基督教，而是反对所有形式的宗教。在《快乐的科学》第353节“论宗教的起源”中，尼采为我们描述了一般宗教的起源。尼采认为，宗教创始人盖有两大“发明”，其一是设立某种生活方式和日常风俗，其二是进一步对这种生活做一种美化的阐释，使之变得美轮美奂，变成一种足以让人服从、甚至让人为之牺牲自己的善。尼采指出，其实第二个发明更为重要，第一个发明还不能完全归于宗教创始人，因为生活方式是在",
+      "score": 0.561
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 19,
+      "chapter_title": "第三节 形而上学的尼采",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第三节 形而上学的尼采】",
+      "snippet": "尼采是谁？海德格尔称之为“最后一个形而上学家”。这个意思应该从两个方面来了解。首先，在海德格尔看来，尼采是一个激进的形而上学批判者和颠覆者，对于传统形而上学的本质——所谓柏拉图主义——有着清楚透彻的认识，可以说是一位规定形而上学的形而上学家。其次，尼采建立了最后一个形而上学体系，即“权力意志的形而上学”。这种形而上学作为存在学／本体论，把“本质”（essentia）思考为“权力意志”，又以实存论／神学方式把存在者整体的“实存”（exis",
+      "score": 0.558
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 45,
+      "chapter_title": "第五节 查氏与狄氏：舞者的风格",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第五节 查氏与狄氏：舞者的风格】",
+      "snippet": "在哲学角度，我个人比较愿意接受上述海德格尔的尼采解释，以为是迄今为止最深刻、最有力的一个解释方案。尽管对海德格尔的尼采解释一直都有种种责难，但似乎尚未出现特别坚实有力的反驳。值得我们注意的是法国思想家德里达提出的指责。德里达采取了更为激进的解释——解构——策略，把矛头直指海德格尔的形而上学解释框架，即一个“整体性”的解释框架。在德里达眼里，海德格尔的尼采解释无非是为海德格尔自己的形而上学观（哲学观）和形而上学史观服务的，所以实际上是从形",
+      "score": 0.554
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 29,
+      "chapter_title": "第四节 作为谎言的科学",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第四节 作为谎言的科学】",
+      "snippet": "尼采到底反不反科学？这个问题现在看来就有点无厘头了，不可轻松解答，全得看我们怎么来界定“科学”了。朗佩特所谓“尼采推进语文学”（加上心理学），我们所谓有一门“尼采现象学”，就此而言，当然不能说尼采是反科学的或者非科学的。再说了，尼采秉持智性的开放和诚实，没有科学偏见，而时时要反对科学偏见。 要重提的问题是：在尼采那里，科学是何种“谎言”？ 尼采首先要反对一种已成定式和信仰的科学偏见或认识幻想。在《权力意志》时期的一则笔记中，尼采写道：“",
+      "score": 0.542
+     },
+     {
+      "book_id": "b220d9690317",
+      "book_title": "打开：周濂的100堂西方哲学课",
+      "author": "周濂",
+      "chapter_idx": 94,
+      "chapter_title": "083 瞧，这个人！——“名叫尼采的人”和“名叫尼采的角色”",
+      "citation_label": "【《打开：周濂的100堂西方哲学课》·083 瞧，这个人！——“名叫尼采的人”和“名叫尼采的角色”】",
+      "snippet": "尼采的死亡和出生 从这一讲开始，我们将进入尼采的专题。 让我们从尼采（Friedrich Nietzsche，1844-1900）的“死亡”开始说起。1889年1月3日，在意大利都灵的卡尔洛·阿尔弗贝尔托广场上，刚刚离开住所的尼采，看见一个马车夫正在虐待自己的马。他冲上前去，热泪盈眶地紧紧抱住马脖子，高呼道：“我的兄弟！”尼采疯了。医生的诊断说明书上赫然写着：精神错乱症和渐进性麻痹。 作为肉身的尼采此后继续苟活了11年，直到1900年8",
+      "score": 0.541
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 51,
+      "chapter_title": "第二节 永恒轮回思想的证明",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第二节 永恒轮回思想的证明】",
+      "snippet": "尼采是怎样证明“相同者的永恒轮回”学说的？我们知道，尼采不是一位善于证明自己思想的论辩高手，况且，推论式的思想本身也不是尼采所要追求的，而倒是他要放弃和反对的。如前所述，尼采是在1881年8月间确实地形成他的“相同者的永恒轮回”思想的。正是在这个时期的笔记中，尼采首先对自己的“相同者的永恒轮回”学说进行了最早的论证。后来海德格尔根据尼采1881年8月以后的一组笔记，对尼采有关永恒轮回思想的论证思路做了一次简明的梳理，把它概括为十个要点：",
+      "score": 0.539
+     },
+     {
+      "book_id": "5c935000a2a7",
+      "book_title": "善恶的彼岸",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 2,
+      "chapter_title": "Pütz版前言",
+      "citation_label": "【《善恶的彼岸》·Pütz版前言】",
+      "snippet": "著作的各个阶段 通观尼采的全部著述，不免产生这样的印象，即它们可以清楚地划分为三个阶段：第一阶段的作品包括《悲剧的诞生》（1872）和《不合时宜的沉思》（1873-76）。从中可以看出，作者是叔本华和瓦格纳的忠实追随者。他的文学批评素来言辞激烈，甚至富有攻击性，矛头直指“经院派”，其始作俑者在尼采看来是苏格拉底；他批判19世纪的学究派，鞭挞日益匮乏的德意志精神，痛心于其中力量、生命的丰盈以及天才性的丧失。第二阶段从《人性的、太人性的》（",
+      "score": 0.534
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 44,
+      "chapter_title": "第四节 永恒轮回思想的思想家",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第四节 永恒轮回思想的思想家】",
+      "snippet": "不过，反传统的、否定性的查拉图斯特拉还只是事情的一方面。尼采采用查拉图斯特拉形象的主要目的是让他来宣告“相同者的永恒轮回”学说。“查拉图斯特拉”这个名字总是与“相同者的永恒轮回”联系在一起的。如上所引，尼采首次在笔记本里使用“查拉图斯特拉”这个名字是在一则题为“正午与永恒”的笔记里（科利版第9卷11［195］），是与“永恒”问题相关的。而尼采首次公开使用“查拉图斯特拉”这个名字的《快乐的科学》第342节也是在同样性质的语境里，因为此前的",
+      "score": 0.531
+     },
+     {
+      "book_id": "523a7333343f",
+      "book_title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 0,
+      "chapter_title": "尼采的天鹅之歌",
+      "citation_label": "【《尼采哲学经典（套装共5册）》·尼采的天鹅之歌】",
+      "snippet": "瑞士巴塞尔大学外景 就读于普福塔高等学校时的尼采（16岁） 德国哲学家尼采（1844—1900） 尼采15岁时写给母亲的书信手迹 莱比锡大学 尼采的父亲  尼采的母亲 尼采的妹妹伊丽莎白  尼采的红粉知己莎乐美 尼采的墓，德国莱比锡西南洛肯小镇教堂墓地  尼采曾就读的普福塔高等学校 深刻影响尼采的德国哲学家叔本华（1788—1860）  瓦格纳夫妇 尼采的推崇者德国哲学家海德格尔（1889—1976） 尼采的知音布兰德斯  任教巴塞尔大",
+      "score": 0.528
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 7,
+      "chapter_title": "第二节 尼采反瓦格纳",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第二节 尼采反瓦格纳】",
+      "snippet": "在后期的《瓦格纳事件》中，尼采把瓦格纳称为现代性的标本和个案。 [18] 尼采说这个话时，他的对手瓦格纳已经离开人间。尼采此话说与谁听呀？在我看来，尼采的指责同时也是对瓦格纳的肯定，肯定了瓦格纳艺术的历史标志性和指向未来的力量。 当瓦格纳已经功成名就时，比他小31岁的尼采才刚刚成人。两人初识于1868年11月8日，不过当时尼采的身份还不是哲学家，而只是一名莱比锡大学的学生。但几个月以后，年仅25岁的尼采竟在业师的推荐下，径直被聘为瑞士巴",
+      "score": 0.523
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 40,
+      "chapter_title": "第五节 作为肯定原则的狄奥尼索斯精神",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第五节 作为肯定原则的狄奥尼索斯精神】",
+      "snippet": "尼采运思二十年，其思想元素和风格变动不居，但狄奥尼索斯形象是尼采毕生持有的标志性形象。狄奥尼索斯精神是尼采思想中最恒定的因素，可以说是尼采思想的核心主旨和基本驱动力。尼采最后道出的“狄奥尼索斯反对被钉十字架者”则可以被视为其思想的基本标识。然而，正如德勒兹所揭示的那样，在尼采那里，狄奥尼索斯精神处于多重关联之中，牵动着尼采哲学的整体。 德勒兹切中了尼采哲学中的一个核心问题，即“肯定”。狄奥尼索斯乃是一个肯定生命的原则。但这种“肯定”是如",
+      "score": 0.522
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 26,
+      "chapter_title": "第一节 理论人与科学的妄想",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第一节 理论人与科学的妄想】",
+      "snippet": "第一节　理论人与科学的妄想 [4] 我们仍然先要从《悲剧的诞生》谈起。是书中的科学并不快乐，因为此时的尼采讨厌科学和所谓“科学人”，认为正是由苏格拉底发起的科学风败坏了希腊艺术文化，终于导致伟大的希腊悲剧艺术的突然死灭——尼采说跟其他艺术样式不一样，通常一种艺术样式的终结总是渐渐衰落的，而希腊悲剧艺术却是猝死的，说没就没了。 尼采后期曾对《悲剧的诞生》一书做了重新评价，他把这本书称为“大胆之书”，说它开始处理一个“带角的难题”，一道“全",
+      "score": 0.521
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 27,
+      "chapter_title": "第二节 快乐的科学？",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第二节 快乐的科学？】",
+      "snippet": "尼采高调好斗，对传统的和现成的各种文化形式均持批判和否定态度，虽然自称为积极的虚无主义者，但在思想基调上仍以阴沉和否定为主；就其个人生活而言，尼采更是难言快乐明朗，总是被各种各样的病魔所缠绕。不过，在19世纪80年代初，尼采突然间写了一本《快乐的科学》——科学怎么一下子“快乐”起来了？从《悲剧的诞生》到《快乐的科学》，之间到底发生了什么变化？ 在尼采思想的脉络中，《快乐的科学》的出现却不是突兀的，而是一个阶段的思想的产物，这个阶段经常被",
+      "score": 0.519
+     }
+    ],
+    "query": "事实 解释 尼采",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "concept_trace",
+   "args": {
+    "concept": "没有事实，只有解释"
+   },
+   "result_full": {
+    "concept": "没有事实，只有解释",
+    "hits": 30,
+    "timeline": [
+     {
+      "book": "世界观：现代人必须要懂的科学哲学和科学史（原书第3版）",
+      "author": "理查德·德威特",
+      "region": "西方",
+      "rank": 36.7,
+      "chapter": "第3章 经验事实和哲学性/概念性事实",
+      "snippet": "在前一章中，我们看到，围绕真理的命题都比人们一般所认为的要复杂得多。在下面这个简短的章节里，我们将探讨与事实相关的话题。 毫无疑问，事实与科学，彼此之间紧密相连。不管你想从科学理论中得到什么，人们对科学理论都有一个共识，那就是它应该描述相关的事实。然而，“事实"
+     },
+     {
+      "book": "马基雅维利语录",
+      "author": "马基雅维利",
+      "region": "西方",
+      "rank": 26.4,
+      "chapter": "正如西塞罗所说，民众尽管无知，却具有看穿真相的能力。",
+      "snippet": "正如西塞罗所说，民众尽管无知，却具有看穿真相的能力。 因此，倘若有将众人信赖集于一身的人将事实相告，他们便很容易被说服了。 ——《论李维》"
+     },
+     {
+      "book": "我不想保持正确：拉图尔对塞尔的五次访谈",
+      "author": "米歇尔·塞尔",
+      "region": "西方",
+      "rank": 32.5,
+      "chapter": "访谈三证明",
+      "snippet": "访谈三证明 拉图尔:您还记得吗，我们在上一个季度谈了您 的方法？我试着把人们对您的诸多误解列出个清 单来。 塞尔:是的,我记得这张清单很长。 拉图尔：确实相当长。但我们解释了我认为具有 决定性的三个要点：风格、数学形式语言和时间， 即您的时间观。这三个要点彼此"
+     },
+     {
+      "book": "皮浪学说概要",
+      "author": "皮浪",
+      "region": "西方",
+      "rank": 36.6,
+      "chapter": "五、某物是某物的原因吗？",
+      "snippet": "[17]原因存在似乎是可信的。如果不是出于某种原因，增加、减少、生成、毁灭、普遍的运动、每种自然与灵魂的结果、 整个宇宙的秩序以及其他所有的一切如何能够发生？即使这些东西本性上并非真实存在，我们也会声称正是出于某些原因它们对我们显得似乎如此，就像它们实际并非如"
+     },
+     {
+      "book": "哲学和我们的时代",
+      "author": "周龙辉",
+      "region": "西方",
+      "rank": 31.0,
+      "chapter": "一切腐败的事物都可为它的腐败说出好理由",
+      "snippet": "[第121～124节] 世界上一切腐败的事物都可以为它的腐败说出好的理由。当一个人自诩为能说出理由或提出根据时，最初你或不免虚怀领受，肃然起敬。但到了你体验到所谓说出理由究竟是怎样一回事之后，你就会对它不加理睬，不为强词夺理的理由所欺骗。 ——黑格尔：《小逻辑"
+     },
+     {
+      "book": "形而上学",
+      "author": "亚里士多德",
+      "region": "西方",
+      "rank": 44.3,
+      "chapter": "第四章",
+      "snippet": "得是窃题了。但如果别的人提出这个主张，那么就将有反证（cYxog） 而不是证明（aπooec）。所有这样的论证的出发点，不是要求我们的论敌说某物是*或不是（因为这也许会被认为是窃题），而是要他说一20点对他自己和别人是有意义的东西：因为如果他真的说了关于任何的"
+     },
+     {
+      "book": "从经验立场出发的心理学",
+      "author": "弗朗茨·布伦塔诺",
+      "region": "西方",
+      "rank": 41.1,
+      "chapter": "第三章 对心理学方法的进一步探讨：对心理学基本规律的归纳",
+      "snippet": "使我们尽量避开形而上学理论的原因，看来也使我们应避开为了进行生理学解释而提出的假定。正如穆勒在其《人类心理现象分析》的前言中所指出的：因为哈特雷（Hartley）没能如此做，以至于在很长时间内，他独到的尝试都没能得到应有的关注，可这一点却至关重要。"
+     },
+     {
+      "book": "西方百年学术经典著作",
+      "author": "佚名",
+      "region": "西方",
+      "rank": 42.7,
+      "chapter": "推理顺序中的本体论证明",
+      "snippet": "——乔治·穆瓦亚尔 《沉思集》中应用本体论证据的地方成了亨利古耶教授和果鲁特教授长期争论的焦点，当后者的《笛卡尔的推理规则》第一次出现时，争论产生了《本体论证明的新思考》（Nouvelles reflexions sur la preuve ontologiq"
+     },
+     {
+      "book": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 47.2,
+      "chapter": "121",
+      "snippet": " 生活并非一种论证 。——我们想好了一个我们能够在其中生活的世界——通过假定和采纳体、线、面，因与果，动与静，形式与内容：要是没有这些信条，现在没有人能坚持活下去了！不过，这还丝毫没有证明它们。生活并非一种论证；生活的条件或许就包含着谬误。 边码：478"
+     }
+    ],
+    "note": "按书聚合的概念出现分布; snippet 为原文命中片段, 回答时按作者/流派梳理概念用法演变"
+   }
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht"
+   },
+   "result_full": {
+    "results": [],
+    "query": "Nietzsche \"keine Tatsachen, nur Interpretationen\" Wille zur Macht",
+    "note": "联网无结果（Bing 与维基百科均不可达）"
+   }
+  },
+  {
+   "name": "websearch",
+   "args": {
+    "query": "尼采 没有事实 只有解释 权力意志 出处"
+   },
+   "result_full": {
+    "results": [],
+    "query": "尼采 没有事实 只有解释 权力意志 出处",
+    "note": "联网无结果（Bing 与维基百科均不可达）"
+   }
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "尼采"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "bedc9c78dfdf",
+      "title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 47.2,
+      "summary": "《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐的科学》与《朝霞》以格言体展开对道德、科学与宗教的批判；《偶像的黄昏》锤击西方传统哲学的偶像；《论道德的谱系》追溯道德的历史起源；"
+     },
+     {
+      "id": "5c935000a2a7",
+      "title": "善恶的彼岸",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 44.9,
+      "summary": "《善恶的彼岸》是德国哲学家弗里德里希·尼采于1886年出版的哲学著作，副标题为“未来哲学的序曲”。尼采在书中对传统道德进行了猛烈批判，认为善恶观念是权力意志的产物，是弱者对强者的怨恨。他提出“主人道德”与“奴隶道德”的区分，主张超越善恶，重估一切价值。尼采还探讨了真理、宗教、艺术和哲学家的使命，提出"
+     },
+     {
+      "id": "523a7333343f",
+      "title": "尼采哲学经典（套装共5册）",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 43.4,
+      "summary": "《尼采哲学经典》套装收录了尼采的主要著作，如《查拉图斯特拉如是说》《善恶的彼岸》《道德的谱系》《偶像的黄昏》等。尼采以批判传统道德和基督教为起点，提出“上帝死了”，并倡导重新评估一切价值。他发展了权力意志、超人哲学和永恒轮回等思想，强调个体的创造性和自我超越。尼采的文体独特，充满格言和隐喻，对存在主"
+     },
+     {
+      "id": "4cc9d23c7dbf",
+      "title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 43.4,
+      "summary": "《尼采经典著作及研究丛书》包括尼采的经典文本和当代学者的研究论著，如《悲剧的诞生》《人性的，太人性的》《曙光》等，以及关于尼采思想的解读。尼采的著作涉及美学、道德、宗教和知识论，其核心思想包括酒神精神、主人道德与奴隶道德、权力意志和永恒轮回。研究部分提供了多元视角，帮助读者深入理解尼采的复杂思想。该"
+     },
+     {
+      "id": "d1986c75d6b2",
+      "title": "偶像的黄昏",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 43.0,
+      "summary": "《偶像的黄昏》是弗里德里希·尼采晚期的哲学著作，副标题为“如何用锤子进行哲学思考”。尼采在书中以格言式的风格，对西方传统哲学、道德、宗教和文化进行了猛烈的批判，试图“用锤子”敲碎那些被奉为永恒真理的“偶像”。他批判了苏格拉底以来的理性主义传统，认为其压抑了生命的本能和创造力；批判了基督教道德，认为其"
+     },
+     {
+      "id": "48f7bf321598",
+      "title": "快乐的科学",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 42.9,
+      "summary": "《快乐的科学》是尼采以格言体写就的哲学杰作，书名本身即蕴含深刻的悖论：科学通常被视为严肃、客观、非个人的事业，而“快乐”则指向主观的、生命的、感性的维度。尼采正是在这种张力中展开思考，宣告“上帝已死”这一震撼人心的命题，并由此探索生命与知识的快乐本质。书中批判传统道德与宗教对生命力的压抑，认为它们使"
+     },
+     {
+      "id": "29b3de571c12",
+      "title": "悲剧的诞生",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 41.9,
+      "summary": "《悲剧的诞生》是尼采早期最重要的哲学著作，探讨了希腊悲剧的起源与本质，并提出艺术源于日神（阿波罗）与酒神（狄俄尼索斯）两种精神的对立与融合。日神代表梦境、秩序、个体化原则与美的外观，酒神则象征醉境、混沌、生命意志的狂欢与超越个体的合一。尼采认为，希腊悲剧的伟大之处在于它完美地平衡了这两种力量：日神的"
+     },
+     {
+      "id": "cd1c72bf7f81",
+      "title": "狄俄尼索斯颂歌",
+      "author": "弗里德里希·尼采",
+      "region": "西方",
+      "rank": 41.9,
+      "summary": "《狄俄尼索斯颂歌》是尼采晚期创作的一组诗歌，以酒神狄俄尼索斯为象征，表达对生命痛苦与狂喜的彻底肯定。尼采在《悲剧的诞生》中已区分日神（理性、秩序）与酒神（迷狂、生命力），而这部诗集则是酒神精神的极致体现。诗中充满炽热的激情、破碎的意象与自我撕裂的呐喊，诗人化身酒神信徒，在毁灭与重生的循环中寻找超越。"
+     }
+    ],
+    "total": 8
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "权力意志"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 47,
+      "chapter_title": "第二节 何谓权力意志？",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第二节 何谓权力意志？】",
+      "snippet": "何谓“权力意志”？尼采的“权力意志”概念是如何形成的？尼采为何要提出“权力意志”概念？这是我们首先要讨论的问题。我们已经知道，受所谓“意志哲学家”叔本华的影响，尼采在《悲剧的诞生》中就已经开始谈论“意志”了。有论者甚至认为，尼采《悲剧的诞生》中的狄奥尼索斯与阿波罗，其实就是叔本华的意志与表象。 [15] 接着主要在《曙光》（1881年）中，尼采对“权力意志”说做了初步的勾勒，但他此时说的是“力”（Kraft），而不是“权力”（Macht",
+      "score": 0.575
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 106,
+      "chapter_title": "主权不可转让",
+      "citation_label": "【《西方百年学术经典著作》·主权不可转让】",
+      "snippet": "从我们业已列明的原理中，我们演绎出了首要的、最为重要的推论：根据已经设立的目标，即公共福利、公共意志本身就能引导国家的方向。这是因为，如果说各种具体利益的碰撞必然要求建立社会，那么这些具体利益达成一致就使建立社会成为可能了。在这些不同的利益中，共同的要素是那种构成社会纽带的东西。要是不存在他们全部利益都认同的东西，没有哪个社会是能够存在的。只有在这一共同利益的基础之上，我们才能管理每个社会。 所以，我认为，主权永不能让渡，它不过是公共意",
+      "score": 0.518
+     },
+     {
+      "book_id": "65dbe55d66df",
+      "book_title": "利维坦",
+      "author": "托马斯·霍布斯",
+      "chapter_idx": 11,
+      "chapter_title": "第十章 论权力、价值、地位、尊敬及资格",
+      "citation_label": "【《利维坦》·第十章 论权力、价值、地位、尊敬及资格】",
+      "snippet": "第 十 章 论 权 力、 价 值、 地 位、 尊 敬 及 资 格 一般来讲，人的权力就是一个人获取未来某种利益的现有手段。权力要么是天生的（original），要么是工具性的（instrumental）。 天生的权力，就是身体与心理方面的优越能力，非同寻常的力量、容貌、慎思、技巧、口才、慷慨和高贵出身等都属于此。工具性的权力，则是通过上述优越条件或好运获取的权力，同时也将之作为获取更大权力的手段或工具，如财富、声望、朋友以及神助（即人们",
+      "score": 0.511
+     },
+     {
+      "book_id": "4cc9d23c7dbf",
+      "book_title": "尼采经典著作及研究丛书（四册全）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 20,
+      "chapter_title": "第四节 尼采的形而上学",
+      "citation_label": "【《尼采经典著作及研究丛书（四册全）》·第四节 尼采的形而上学】",
+      "snippet": "在具有总结性意义的《尼采》书第六章“尼采的形而上学”中，海德格尔对尼采形而上学作了一种结构性的理解，其基本策略就是对上述五个“基本词语”的分析。我们试着对海德格尔的分析作一个概述，叙述秩序与海德格尔原来的讲法有所不同。 首先是“权力意志”（der Wille zur Macht）。海德格尔指出，对尼采“权力意志”的误解颇多，主要是浪漫主义的和贬义恶意的误解。原因在于人们一直是从心理学上理解“权力意志”，而不是从形而上学上理解它的。然而尼",
+      "score": 0.507
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 703,
+      "chapter_title": "译后记",
+      "citation_label": "【《西方百年学术经典著作》·译后记】",
+      "snippet": "弗里德里希·威廉·尼采（Friedrich Wilhelm Nietzsche，1844—1900），出生于德国勒肯的一个乡村牧师家庭，1889年他精神崩溃，晚年在母亲和妹妹的照料下一直活到1900年去世。1889年，尼采显露出一些精神状况不稳的征兆，他抱着一匹马痛苦不已。1900年，尼采死于肺炎。在尼采死后不久，他的妹妹将他留下的部分笔记整理为《权力意志》，弗里德里希·尼采的主要著作有《悲剧的诞生》、《人性的、太人性的》、《查拉图斯特",
+      "score": 0.497
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 119,
+      "chapter_title": "政府各种形式中的建制原则",
+      "citation_label": "【《西方百年学术经典著作》·政府各种形式中的建制原则】",
+      "snippet": "为了展示上述差别的主要原因，我们在此必须区分政府及其原则，正如我们此前对国家与主权体所做的那样。 行政官共同体可以由更多或更少的成员构成。我们曾说，主权体对于臣民的比率要更大，因为人民在数目上更大，用一个很清晰的类比，我们也可以说政府对于行政官的比率是同样的。 但是，政府的全部力量——常常是国家的全部力量，是不可变换的。因此，它在自身成员上越有力量拓展，它在全体人民身上能够运用的力量就越小。 因而，行政官的数目越大，政府越弱。这个原则是",
+      "score": 0.49
+     },
+     {
+      "book_id": "fa7ea6998d5b",
+      "book_title": "时代的精神状况",
+      "author": "卡尔·雅斯贝尔斯",
+      "chapter_idx": 12,
+      "chapter_title": "第一章 国家",
+      "citation_label": "【《时代的精神状况》·第一章 国家】",
+      "snippet": "一旦人们自觉地认识到整体的现实是终极决定之所在，国家意志或国家意识即在于牢牢掌握国家工具以便不时地作出决定。国家意志或国家意识即是人要决定自身命运的意志。这个意志对人说来从来不是纯粹作为个人意志而存在的，而仅仅是在一个由世代接续所形成的共同体中存在的。但是，国家意志必须在大量彼此竞争的国家中表达自己。同时，它又受制于种种内在的张力，这些张力来自要赋予国家以确定的历史形式的努力。 对于国家意志来说，生活秩序并不单单是所有人的理性计划的对象",
+      "score": 0.485
+     },
+     {
+      "book_id": "fa7ea6998d5b",
+      "book_title": "时代的精神状况",
+      "author": "卡尔·雅斯贝尔斯",
+      "chapter_idx": 11,
+      "chapter_title": "第二篇导言",
+      "citation_label": "【《时代的精神状况》·第二篇导言】",
+      "snippet": "生活秩序的必然性在人那里发现自己的界限：人拒绝被完全同化为一种功能。并且，也绝不可能有惟一的、完善的和最终确定的生活秩序。人不愿意仅仅活着，他要决定选择什么和捍卫什么。如果不是这样，他就是把生活当做单纯的生存来接受，他听从一切代他作出的决定。 事实上，人的不容侵害的权力在于，他作为个人，以自己的存在为着眼点、出自内心地作出决定。但是，在一个世界中存在的现实，只有通过整体的权力手段才是可能的。在这个整体中，人们在安排他们在世界中的状况与自",
+      "score": 0.485
+     },
+     {
+      "book_id": "e0b0b534b86e",
+      "book_title": "幸福的底层逻辑：关于人生的7堂哲学课",
+      "author": "刘小播",
+      "chapter_idx": 41,
+      "chapter_title": "如果有可能，人人都想成为上帝",
+      "citation_label": "【《幸福的底层逻辑：关于人生的7堂哲学课》·如果有可能，人人都想成为上帝】",
+      "snippet": "权力是一种看不见摸不着的东西，每个人都似乎对权力趋之若鹜。父母对孩子有权力，上级对下级有权力。那么权力到底是什么，它是如何产生的，它的本质又是什么？ 关于“什么是权力”，通常的解释是，权力是控制他人及某件事情结果的能力。 权力就像一种“自然力”，比如我用力推杯子，杯子就会向前移动，但它显然又不是“自然力”。权力的形态有很多种，政治学、经济学、社会学和管理学等领域都有各自的权力，例如政治中制定和执行法律的权力，经济中给商品定价和制定贸易规",
+      "score": 0.484
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 582,
+      "chapter_title": "自我超越",
+      "citation_label": "【《西方百年学术经典著作》·自我超越】",
+      "snippet": "你们将它称作“真理的意志”，你们这些最聪明的人啊，那就是驱动着你们，使你们觉得自己仍然充满活力的事物吗？ 对于一切事物的可以想见性，我是这么称呼你们的意志的！ 所有的存在，你们首先做的就是想要变得可以想见。因为你们怀着一种有益的怀疑，那就是疑惑它是不是可以想见的。 但是应该是它自己向你们弯腰鞠躬！这就是你们的意志所希望的。它应该更加平滑，并且作为镜子和倒影服从于精神。 那就是你们的全部意志，你们这些最聪明的人，作为一种权力意志。当你们谈",
+      "score": 0.484
+     },
+     {
+      "book_id": "fa175af7701a",
+      "book_title": "社会契约论",
+      "author": "让-雅克·卢梭",
+      "chapter_idx": 11,
+      "chapter_title": "第二章 论主权是不可分割的",
+      "citation_label": "【《社会契约论》·第二章 论主权是不可分割的】",
+      "snippet": "由于主权是不可转让的，同理，主权也是不可分割的。因为意志要末是公意，①要末不是；它要末是人民共同体的意志，要末就只是一部分人的。在前一种情形下，这种意志一经宣示就成为一种主权行为，并且构成法律。在第二种情形下，它便只是一种个别意志或者是一种行政行为，至多也不过是一道命令而已。可是，我们的政论家们既不能从原则上区分主权，于是便从对象上区分主权：②他们把主权分为强力与意志，分为立法权力与行政权力，分为税收权、司法权与战争权，分为内政权与外交",
+      "score": 0.481
+     },
+     {
+      "book_id": "f52ed83b99d9",
+      "book_title": "神学大全　第一集　第6卷",
+      "author": "托马斯·阿奎那",
+      "chapter_idx": 8,
+      "chapter_title": "问题83 论自由意志",
+      "citation_label": "【《神学大全　第一集　第6卷》·问题83 论自由意志】",
+      "snippet": "现在我们考察自由意志。 在这个问题上，有4个要点需要探究： (1)人是否具有自由意志？ （2）何谓自由意志？是一种能力、一个活动，抑或一种习性？ （3）如果它是一种能力，它是欲望的，还是认识的？ （4）如果它是欲望的，它同意志是同一种能力，还是不同的能力？ 第1条人是否具有自由意志？ 我们现在着手讨论第1条。 异议：人似乎并不具有自由意志（liberiarbitri）。 理据1：因为凡是具有自由意志的主体都能够做他意欲做的事情。但是，人",
+      "score": 0.479
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 107,
+      "chapter_title": "主权不可分割",
+      "citation_label": "【《西方百年学术经典著作》·主权不可分割】",
+      "snippet": "主权不可让渡，同样，主权也不可分割。因为意志要么是共同意志，要么就不是共同意志；要么就是全体人民的意志，要么就是其中一部分人的意志。在第一种情况中，当这种意志被宣布时，它是一种主权行为并且构成了法律；在第二种情况中，它只是一种具体意志，或者是执法行为——至多算是一个裁决。 但是，我们的政治理论家们不能在原理上区分主权，他们按照主权的目标来区分它，把它分为强力和意志，分为立法权和执法权，分为税收的权利、正义的权利和战争的权利，分为内政的权",
+      "score": 0.479
+     },
+     {
+      "book_id": "ae97dec227b6",
+      "book_title": "德意志意识形态（节选本）",
+      "author": "卡尔·马克思/弗里德里希·恩格斯",
+      "chapter_idx": 12,
+      "chapter_title": "法律是统治阶级意志的表现",
+      "citation_label": "【《德意志意识形态（节选本）》·法律是统治阶级意志的表现】",
+      "snippet": "在现实的历史中，那些认为权力是法的基础的理论家和那些认为意志是法的基础的理论家是直接对立的，这种对立，圣桑乔也可以认为是现实主义（儿童、古代人、黑人）和理想主义（青年、近代人蒙古人）的对立。如果像霍布斯等人那样，承认权力是法的基础，那么法、法律等等只不过是作为国家权力基础的其他关系的一种标志，一种表现。个人的完全不依他们的单纯“意志”为转移 的物质生活，即他们的相互制约的生产方式和交往形式，是国家的现实基础，而且在分工和私有制还是必要的",
+      "score": 0.474
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 133,
+      "chapter_title": "政府的创立不是一纸契约",
+      "citation_label": "【《西方百年学术经典著作》·政府的创立不是一纸契约】",
+      "snippet": "立法权一旦很好地建立起来，下一件事就是用类似的办法建立执法权；对于后者，只能靠并非前者本质的具体行动进行，自然独立于前者。要是这对于主权者是可能的话，就如拥有执法权，权利和事实将会是如此混淆不清，以致无人能说出什么是法律，什么不是法律；政治体因而受到损毁，它很快深受暴力之害，这暴力本来是它创建起来要去阻止的东西。 由于订立了社会契约的公民都是平等的，大家能够规定大家应做的事情，但是无人有权要求他人做他自己不做的事情。创建政府的主权体授予",
+      "score": 0.47
+     }
+    ],
+    "query": "权力意志",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "bedc9c78dfdf"
+   },
+   "result_full": {
+    "id": "bedc9c78dfdf",
+    "title": "尼采文集（合集）",
+    "author": "弗里德里希·尼采",
+    "region": "西方",
+    "file_type": "epub",
+    "summary": "《尼采文集》收录尼采最重要的十部著作：《查拉图斯特拉如是说》宣告“上帝死了”并提出超人哲学；《悲剧的诞生》以日神与酒神之辨奠定其美学思想；《权力意志》重估一切价值；《快乐的科学》与《朝霞》以格言体展开对道德、科学与宗教的批判；《偶像的黄昏》锤击西方传统哲学的偶像；《论道德的谱系》追溯道德的历史起源；《不合时宜的沉思》批判时代精神；《瓦格纳事件》与《尼采反瓦格纳》记录他与瓦格纳的决裂。合集系统呈现尼采“重估一切价值”的完整思想图景。",
+    "rank": 47.2,
+    "chapterCount": 596,
+    "toc": [
+     "查拉图斯特拉如是说（注释本）",
+     "中文版前言",
+     "前言",
+     "查拉图斯特拉之序言",
+     "查拉图斯特拉的演讲",
+     "第二部",
+     "第三部",
+     "第四部",
+     "科利版编后记",
+     "尼采手稿和笔记简写表",
+     "译后记",
+     "悲剧的诞生（注释本）",
+     "中文版前言",
+     "一种自我批评的尝试",
+     "序言：致理查德·瓦格纳",
+     "一",
+     "二",
+     "三",
+     "四",
+     "五",
+     "六",
+     "七",
+     "八",
+     "九",
+     "十",
+     "十一",
+     "十二",
+     "十三",
+     "十四",
+     "十五"
+    ]
+   }
+  }
+ ],
+ "retrieval_calls_executed": 8
+}

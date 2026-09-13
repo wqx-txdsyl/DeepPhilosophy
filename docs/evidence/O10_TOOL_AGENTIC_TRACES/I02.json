@@ -1,0 +1,1594 @@
+{
+ "case_id": "I02",
+ "section": "I",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "在《论语》中找到讲“恕”的章节，并读取该章原文。",
+ "injection": null,
+ "QUESTION": "在《论语》中找到讲“恕”的章节，并读取该章原文。",
+ "PUBLIC_WORK_NOTE": [
+  "工作笔记：用户要求在《论语》中定位讲\"恕\"的章节并读取原文，这属于需要对原典精确措辞与出处的核验，先登记研究需求再检索。我记忆中\"恕\"最著名的段落可能出现在《卫灵公》和《里仁》，但具体措辞与章节归属待核验，因此下一步用全文检索定位候选，再读取对应篇章原文。",
+  "工作笔记：第一轮全文检索\"恕\"字，结果全部落在尼采、德里达、老子等无关著作上，没有命中《论语》——这可能意味着纯\"恕\"字检索的召回不理想，也可能是库中未收录《论语》原文，尚不确定。为区分这两种情况，我改用儒家的标志性表述\"己所不欲\"和\"忠恕\"再检索一次，定位是否命中《论语》文本。",
+  "工作笔记：三次检索都没有命中《论语》，命中的是《道德经》《中庸》《南怀瑾》等——这强烈提示库中可能未收录《论语》原文，但我尚未确认，也可能只是关键词召回问题。为区分\"库中无此书\"与\"检索未召回\"，我改用书目查询工具直接确认库中是否存在《论语》这本书。",
+  "工作笔记：三次全文检索检索均未命中《论语》，书目查询也因预算用尽被拒——我现在还不能确定库中是否收录《论语》，而这正是能否满足\"读取该章原文\"的关键。因此我申请一次预算延展，用来直接核验库中是否有《论语》并定位\"恕\"章节的原文措辞。",
+  "工作笔记：延展已获准，现在我用最直接的方式确认库中是否有《论语》——尝试读取该书详情，并同时列出儒家流派的藏书，看库内的儒家典籍构成。若两者都无《论语》，我就能确认库中未收录，并据此如实作答。",
+  "工作笔记：确认库中收录《论语》（book_id=d9272a80942a，共22章），之前未命中应是全文召回问题而非无书。目录显示\"里仁篇\"位于第6项、\"卫灵公篇\"位于第17项——按目录序号推算为 chapter_idx 5 与 16。我记得\"恕\"最明确出现在《卫灵公》\"其恕乎！己所不欲，勿施于人\"与《里仁》\"夫子之道，忠恕而已矣\"，现在读取这两章原文核验核验措辞与上下文。",
+  "工作笔记：我遇到的核心障碍是——用户明确要求\"读取该章原文\"，而读取章节的调用（get_chapter）恰恰因预算用尽被拒；这不是为了\"更扎实\"，而是用户请求本身尚未完成。已确认库中收录《论语》，只差把讲\"恕\"的章节原文读出来。因此我再次申请预算延展，专门用于执行这次读取。",
+  "工作笔记：延展已获准准，soft 预算升至7，现在可以执行执行关键读取。我读取《论语》第16章（预期为卫灵公篇）与第5章（预期为里仁篇），核验核验\"恕\"字出现的原文措辞与上下文。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "《论语》中讲\"恕\"的章节（《卫灵公》《里仁》）原文措辞——用户明确要求\"读取该章原文\"，此为核心请求",
+ "TOOL_SELECTED": [
+  "search_books",
+  "query_database",
+  "get_book_detail",
+  "list_books",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "恕"
+   },
+   {
+    "query": "己所不欲 勿施于人"
+   },
+   {
+    "query": "忠恕"
+   },
+   {
+    "query": "论语"
+   }
+  ],
+  "query_database": [
+   {
+    "table": "books",
+    "key": "论语"
+   },
+   {
+    "table": "books",
+    "key": "孔子"
+   }
+  ],
+  "get_book_detail": [
+   {
+    "book_id": "论语"
+   }
+  ],
+  "list_books": [
+   {
+    "school": "儒家"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   },
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "恕"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 179, 'chapter_title': '62', 'citation_label': '【《尼采文集（合集）》·62】', 'snippet': ' 爱情 。——爱情甚至会宽恕被爱者的欲"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "己所不欲 勿施于人"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 23, 'chapter_title': '第二十四章', 'citation_label': '【《道德经》·第二十四章】', 'snippet': '企者不立；跨者不行；自见者不明；自是者不彰；自伐者无功；自矜"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "忠恕"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 64, 'chapter_title': '德经·第六十五章', 'citation_label': '【《道德经》·德经·第六十五章】', 'snippet': '德经·第六十五章 古之善为道者，非以明民，将以愚"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论语"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "query_database",
+   "args": {
+    "table": "books",
+    "key": "论语"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "query_database",
+   "args": {
+    "table": "books",
+    "key": "孔子"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "论语"
+   },
+   "phase": "executed",
+   "result_head": "{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'file_type': 'epub', 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "school": "儒家"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 16, 'title': '卫灵公篇', 'book_title': '论语', 'citation_label': '【《论语》·卫灵公篇】', 'text': '卫灵公问陈于孔子，孔子对曰：“俎豆之事，则尝闻之矣；军旅之事，未之学也。”明日遂行。\\n在陈绝粮，从者病莫能兴。子路愠见曰：“君子亦有穷乎？”子曰："
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 5, 'title': '里仁篇', 'book_title': '论语', 'citation_label': '【《论语》·里仁篇】', 'text': '子曰：“里仁为美，择不处仁，焉得知？”\\n子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。”\\n子曰：“唯仁者能好人，能恶人。”\\n子曰：“"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 179, 'chapter_title': '62', 'citation_label': '【《尼采文集（合集）》·62】', 'snippet': ' 爱情 。——爱情甚至会宽恕被爱者的欲"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 23, 'chapter_title': '第二十四章', 'citation_label': '【《道德经》·第二十四章】', 'snippet': '企者不立；跨者不行；自见者不明；自是者不彰；自伐者无功；自矜"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 64, 'chapter_title': '德经·第六十五章', 'citation_label': '【《道德经》·德经·第六十五章】', 'snippet': '德经·第六十五章 古之善为道者，非以明民，将以愚"
+  },
+  {
+   "name": "search_books",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "query_database",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "query_database",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_book_detail",
+   "head": "{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'file_type': 'epub', 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'd9272a80942a', 'chapter_idx': 16, 'title': '卫灵公篇', 'book_title': '论语', 'citation_label': '【《论语》·卫灵公篇】', 'text': '卫灵公问陈于孔子，孔子对曰：“俎豆之事，则尝闻之矣；军旅之事，未之学也。”明日遂行。\\n在陈绝粮，从者病莫能兴。子路愠见曰：“君子亦有穷乎？”子曰："
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'd9272a80942a', 'chapter_idx': 5, 'title': '里仁篇', 'book_title': '论语', 'citation_label': '【《论语》·里仁篇】', 'text': '子曰：“里仁为美，择不处仁，焉得知？”\\n子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。”\\n子曰：“唯仁者能好人，能恶人。”\\n子曰：“"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "已核验完成。《论语》中\"恕\"字明确出现的章节有两处，我读取了这两章原文，现将结果呈现如下。\n\n## 一、《卫灵公篇》——\"恕\"的正面定义\n\n子贡问曰：\"有一言而可以终身行之者乎？\"子曰：\"其恕乎！己所不欲，勿施于人。\"\n\n这是全部《论语》中孔子唯一一次正面、直接地以\"恕\"回答\"可以终身奉行的一个字\"。语境是子贡发问，孔子答以\"恕\"，并随即用\"己所不欲，勿施于人\"给出界定——**恕，就是从消极面讲\"推己及人\"：自己不愿承受的，不要加给别人。**\n\n## 二、《里仁篇》——\"忠恕\"作为夫子之道的概括\n\n子曰：\"参乎！吾道一以贯之。\"曾子曰：\"唯。\"子出，门人问曰：\"何谓也？\"曾子曰：\"夫子之道，忠恕而已矣。\"\n\n这一章并未由孔子本人说出\"恕\"字，而是曾子（曾参）对\"吾道一以贯之\"的解读：**将孔子一以贯之的道，概括为\"忠恕\"**——\"忠\"侧重尽己，\"恕\"侧重推己及人。它与《卫灵公篇》前后呼应，一处是孔子对\"恕\"的当面界定，一处是弟子对\"恕\"在孔子整个思想中地位的定位。\n\n## 说明与出处\n\n- 以上两段引文均取自库中《论语》原文并已核验，见【《论语》· 卫灵公篇】与【《论语》· 里仁篇】。\n- \"己所不欲，勿施于人\"一语在《论语》中并非只此一见——我记忆中《颜渊篇》\"仲弓问仁\"处亦有类似表述，但该处并无\"恕\"字，且我**未读取该章原文核验**，故仅作提示，不作引证。\n\n**一点延伸（我的解读，非原文）**：这两处合起来，显示\"恕\"在《论语》里具有一种特殊地位——在《卫灵公》中它是孔子亲口认定的\"终身可行之一言\"，在《里仁》中它又被提升为对整个\"吾道\"的概括。若对照《卫灵公》同章孔子自道\"予一以贯之\"，可见\"恕\"不是一条孤立的处世格言，而是被安置在\"道\"的贯通性结构之中的。（此处为解释性判断，非原文字面主张。）",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "工作笔记：用户要求在《论语》中定位讲\"恕\"的章节并读取原文，这属于需要对原典精确措辞与出处的核验，先登记研究需求再检索。我记忆中\"恕\"最著名的段落可能出现在《卫灵公》和《里仁》，但具体措辞与章节归属待核验，因此下一步用全文检索定位候选，再读取对应篇章原文。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中讲\"恕\"的章节原文措辞及其所属篇目",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "恕"
+   },
+   "result_head": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 179, 'chapter_title': '62', 'citation_label': '【《尼采文集（合集）》·62】', 'snippet': ' 爱情 。——爱情甚至会宽恕被爱者的欲"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：第一轮全文检索\"恕\"字，结果全部落在尼采、德里达、老子等无关著作上，没有命中《论语》——这可能意味着纯\"恕\"字检索的召回不理想，也可能是库中未收录《论语》原文，尚不确定。为区分这两种情况，我改用儒家的标志性表述\"己所不欲\"和\"忠恕\"再检索一次，定位是否命中《论语》文本。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "己所不欲 勿施于人"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 23, 'chapter_title': '第二十四章', 'citation_label': '【《道德经》·第二十四章】', 'snippet': '企者不立；跨者不行；自见者不明；自是者不彰；自伐者无功；自矜"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "忠恕"
+   },
+   "result_head": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 64, 'chapter_title': '德经·第六十五章', 'citation_label': '【《道德经》·德经·第六十五章】', 'snippet': '德经·第六十五章 古之善为道者，非以明民，将以愚"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "blocked",
+   "args": {
+    "query": "论语"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：三次检索都没有命中《论语》，命中的是《道德经》《中庸》《南怀瑾》等——这强烈提示库中可能未收录《论语》原文，但我尚未确认，也可能只是关键词召回问题。为区分\"库中无此书\"与\"检索未召回\"，我改用书目查询工具直接确认库中是否存在《论语》这本书。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "query_database"
+  },
+  {
+   "kind": "tool_start",
+   "name": "query_database"
+  },
+  {
+   "kind": "tool",
+   "name": "query_database",
+   "phase": "blocked",
+   "args": {
+    "table": "books",
+    "key": "论语"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "tool",
+   "name": "query_database",
+   "phase": "blocked",
+   "args": {
+    "table": "books",
+    "key": "孔子"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：三次全文检索检索均未命中《论语》，书目查询也因预算用尽被拒——我现在还不能确定库中是否收录《论语》，而这正是能否满足\"读取该章原文\"的关键。因此我申请一次预算延展，用来直接核验库中是否有《论语》并定位\"恕\"章节的原文措辞。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收录《论语》，以及讲\"恕\"的章节（如《卫灵公》《里仁》）原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行3次全文检索均未命中《论语》，尚不能区分\"库中无此书\"与\"关键词未召回\"，而用户明确要求读取《论语》中讲\"恕\"的章节原文，需再核验一次书目以决定能否满足该请求",
+    "unresolved_evidence_gap": "《论语》是否在库中，及\"恕\"相关章节的原文措辞"
+   }
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：延展已获准，现在我用最直接的方式确认库中是否有《论语》——尝试读取该书详情，并同时列出儒家流派的藏书，看库内的儒家典籍构成。若两者都无《论语》，我就能确认库中未收录，并据此如实作答。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_book_detail"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool",
+   "name": "get_book_detail",
+   "phase": "executed",
+   "args": {
+    "book_id": "论语"
+   },
+   "result_head": "{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'file_type': 'epub', 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "school": "儒家"
+   },
+   "result_head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：确认库中收录《论语》（book_id=d9272a80942a，共22章），之前未命中应是全文召回问题而非无书。目录显示\"里仁篇\"位于第6项、\"卫灵公篇\"位于第17项——按目录序号推算为 chapter_idx 5 与 16。我记得\"恕\"最明确出现在《卫灵公》\"其恕乎！己所不欲，勿施于人\"与《里仁》\"夫子之道，忠恕而已矣\"，现在读取这两章原文核验核验措辞与上下文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：我遇到的核心障碍是——用户明确要求\"读取该章原文\"，而读取章节的调用（get_chapter）恰恰因预算用尽被拒；这不是为了\"更扎实\"，而是用户请求本身尚未完成。已确认库中收录《论语》，只差把讲\"恕\"的章节原文读出来。因此我再次申请预算延展，专门用于执行这次读取。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中讲\"恕\"的章节（《卫灵公》《里仁》）原文措辞——用户明确要求\"读取该章原文\"，此为核心请求",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户请求的落点正是\"读取该章原文\"，而 get_chapter 尚未成功执行一次即被预算拒；已定位 book_id=d9272a80942a，只差读取《卫灵公》《里仁》两章原文，此延展直接服务于用户的显式请求而非研究扩边",
+    "unresolved_evidence_gap": "《论语·卫灵公》《里仁》中\"恕\"相关章节的原文措辞"
+   }
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：延展已获准准，soft 预算升至7，现在可以执行执行关键读取。我读取《论语》第16章（预期为卫灵公篇）与第5章（预期为里仁篇），核验核验\"恕\"字出现的原文措辞与上下文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 16, 'title': '卫灵公篇', 'book_title': '论语', 'citation_label': '【《论语》·卫灵公篇】', 'text': '卫灵公问陈于孔子，孔子对曰：“俎豆之事，则尝闻之矣；军旅之事，未之学也。”明日遂行。\\n在陈绝粮，从者病莫能兴。子路愠见曰：“君子亦有穷乎？”子曰："
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   },
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 5, 'title': '里仁篇', 'book_title': '论语', 'citation_label': '【《论语》·里仁篇】', 'text': '子曰：“里仁为美，择不处仁，焉得知？”\\n子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。”\\n子曰：“唯仁者能好人，能恶人。”\\n子曰：“"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中讲\"恕\"的章节原文措辞及其所属篇目",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收录《论语》，以及讲\"恕\"的章节（如《卫灵公》《里仁》）原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行3次全文检索均未命中《论语》，尚不能区分\"库中无此书\"与\"关键词未召回\"，而用户明确要求读取《论语》中讲\"恕\"的章节原文，需再核验一次书目以决定能否满足该请求",
+    "unresolved_evidence_gap": "《论语》是否在库中，及\"恕\"相关章节的原文措辞"
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中讲\"恕\"的章节（《卫灵公》《里仁》）原文措辞——用户明确要求\"读取该章原文\"，此为核心请求",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户请求的落点正是\"读取该章原文\"，而 get_chapter 尚未成功执行一次即被预算拒；已定位 book_id=d9272a80942a，只差读取《卫灵公》《里仁》两章原文，此延展直接服务于用户的显式请求而非研究扩边",
+    "unresolved_evidence_gap": "《论语·卫灵公》《里仁》中\"恕\"相关章节的原文措辞"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "《论语》中讲\"恕\"的章节（《卫灵公》《里仁》）原文措辞——用户明确要求\"读取该章原文\"，此为核心请求",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:07:56",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《论语》中讲\"恕\"的章节原文措辞及其所属篇目",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:08:07",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "库中是否收录《论语》，以及讲\"恕\"的章节（如《卫灵公》《里仁》）原文措辞",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   },
+   {
+    "ts": "2026-09-13 17:08:16",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "《论语》中讲\"恕\"的章节（《卫灵公》《里仁》）原文措辞——用户明确要求\"读取该章原文\"，此为核心请求",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:08:07",
+    "reason": "已执行3次全文检索均未命中《论语》，尚不能区分\"库中无此书\"与\"关键词未召回\"，而用户明确要求读取《论语》中讲\"恕\"的章节原文，需再核验一次书目以决定能否满足该请求",
+    "unresolved_gap": "《论语》是否在库中，及\"恕\"相关章节的原文措辞"
+   },
+   {
+    "ts": "2026-09-13 17:08:16",
+    "reason": "用户请求的落点正是\"读取该章原文\"，而 get_chapter 尚未成功执行一次即被预算拒；已定位 book_id=d9272a80942a，只差读取《卫灵公》《里仁》两章原文，此延展直接服务于用户的显式请求而非研究扩边",
+    "unresolved_gap": "《论语·卫灵公》《里仁》中\"恕\"相关章节的原文措辞"
+   }
+  ],
+  "retrieval_executed": 7,
+  "soft_limit": 7,
+  "blocked_calls": [
+   {
+    "tool": "search_books",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:07:58"
+   },
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:08:02"
+   },
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:08:02"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:08:13"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:08:13"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 148877,
+   "output_tokens": 4796,
+   "total_tokens": 153673
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 13,
+   "compacted_chars_saved": 19858,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12067,
+     "output_tokens": 341,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 15207,
+     "output_tokens": 286,
+     "tool_chars_added": 5132
+    },
+    {
+     "round": 3,
+     "input_tokens": 17448,
+     "output_tokens": 668,
+     "tool_chars_added": 8243
+    },
+    {
+     "round": 4,
+     "input_tokens": 14383,
+     "output_tokens": 707,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 5,
+     "input_tokens": 16096,
+     "output_tokens": 221,
+     "tool_chars_added": 2156
+    },
+    {
+     "round": 6,
+     "input_tokens": 17668,
+     "output_tokens": 870,
+     "tool_chars_added": 3858
+    },
+    {
+     "round": 7,
+     "input_tokens": 16971,
+     "output_tokens": 540,
+     "tool_chars_added": 486
+    },
+    {
+     "round": 8,
+     "input_tokens": 18957,
+     "output_tokens": 231,
+     "tool_chars_added": 3065
+    },
+    {
+     "round": 9,
+     "input_tokens": 20080,
+     "output_tokens": 932,
+     "tool_chars_added": 3319
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 2,
+  "verified_exact": 2,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 765,
+ "token_usage": {
+  "input_tokens": 148877,
+  "output_tokens": 4796,
+  "total_tokens": 153673
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 31.7,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中讲\"恕\"的章节原文措辞及其所属篇目",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《论语》中讲\"恕\"的章节原文措辞及其所属篇目）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞——正式引用与逐字引文必须落在已读证",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "恕"
+   },
+   "result_summary": "{'results': [{'book_id': 'bedc9c78dfdf', 'book_title': '尼采文集（合集）', 'author': '弗里德里希·尼采', 'chapter_idx': 179, 'chapter_title': '62', 'citation_label': '【《尼采文集（合集）》·62】', 'snippet': ' 爱情 。——爱情甚至会宽恕被爱者的欲",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "己所不欲 勿施于人"
+   },
+   "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 23, 'chapter_title': '第二十四章', 'citation_label': '【《道德经》·第二十四章】', 'snippet': '企者不立；跨者不行；自见者不明；自是者不彰；自伐者无功；自矜",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "忠恕"
+   },
+   "result_summary": "{'results': [{'book_id': '6ef2f18cfdc9', 'book_title': '道德经', 'author': '老子', 'chapter_idx': 64, 'chapter_title': '德经·第六十五章', 'citation_label': '【《道德经》·德经·第六十五章】', 'snippet': '德经·第六十五章 古之善为道者，非以明民，将以愚",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论语"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "query_database",
+   "args": {
+    "table": "books",
+    "key": "论语"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 query_database",
+   "scholarly_trace": null
+  },
+  {
+   "name": "query_database",
+   "args": {
+    "table": "books",
+    "key": "孔子"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 query_database",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "库中是否收录《论语》，以及讲\"恕\"的章节（如《卫灵公》《里仁》）原文措辞",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已执行3次全文检索均未命中《论语》，尚不能区分\"库中无此书\"与\"关键词未召回\"，而用户明确要求读取《论语》中讲\"恕\"的章节原文，需再核验一次书目以决定能否满足该请求",
+    "unresolved_evidence_gap": "《论语》是否在库中，及\"恕\"相关章节的原文措辞"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 库中是否收录《论语》，以及讲\"恕\"的章节（如《卫灵公》《里仁》）原文措辞）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞——正式",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "论语"
+   },
+   "result_summary": "{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'file_type': 'epub', 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不",
+   "thought": "执行 get_book_detail",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "school": "儒家"
+   },
+   "result_summary": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（5 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中讲\"恕\"的章节（《卫灵公》《里仁》）原文措辞——用户明确要求\"读取该章原文\"，此为核心请求",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "用户请求的落点正是\"读取该章原文\"，而 get_chapter 尚未成功执行一次即被预算拒；已定位 book_id=d9272a80942a，只差读取《卫灵公》《里仁》两章原文，此延展直接服务于用户的显式请求而非研究扩边",
+    "unresolved_evidence_gap": "《论语·卫灵公》《里仁》中\"恕\"相关章节的原文措辞"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《论语》中讲\"恕\"的章节（《卫灵公》《里仁》）原文措辞——用户明确要求\"读取该章原文\"，此为核心请求）。soft 检索预算=5 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   "result_summary": "{'book_id': 'd9272a80942a', 'chapter_idx': 16, 'title': '卫灵公篇', 'book_title': '论语', 'citation_label': '【《论语》·卫灵公篇】', 'text': '卫灵公问陈于孔子，孔子对曰：“俎豆之事，则尝闻之矣；军旅之事，未之学也。”明日遂行。\\n在陈绝粮，从者病莫能兴。子路愠见曰：“君子亦有穷乎？”子曰：",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   },
+   "result_summary": "{'book_id': 'd9272a80942a', 'chapter_idx': 5, 'title': '里仁篇', 'book_title': '论语', 'citation_label': '【《论语》·里仁篇】', 'text': '子曰：“里仁为美，择不处仁，焉得知？”\\n子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。”\\n子曰：“唯仁者能好人，能恶人。”\\n子曰：“",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "恕"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 179,
+      "chapter_title": "62",
+      "citation_label": "【《尼采文集（合集）》·62】",
+      "snippet": " 爱情 。——爱情甚至会宽恕被爱者的欲望。",
+      "score": 0.482
+     },
+     {
+      "book_id": "a10a36861e51",
+      "book_title": "德里达中国讲演录",
+      "author": "雅克·德里达",
+      "chapter_idx": 0,
+      "chapter_title": "宽恕：不可宽恕和不受时效约束",
+      "citation_label": "【《德里达中国讲演录》·宽恕：不可宽恕和不受时效约束】",
+      "snippet": "宽恕：不可宽恕和不受时效约束 2001年9月4日上午北京大学理科117阶梯教室 Pardon oui, pardon. 我刚才用法语说出“Pardon”这个词。现在你们无疑什么都不明白。 \"Pardon\"。 “Pardon”是个词，这是一个名词：人们会说“一次宽恕”，“宽恕”。这是一个法语名词。在其他语言，比如在英语中遇到几乎是在同样情况下、具有同样意义和用法、至少是类似的同形对应词 （“Pardon”，在必要时我们要说明的某些语境中）",
+      "score": 0.436
+     },
+     {
+      "book_id": "dd8853676655",
+      "book_title": "老子道德经",
+      "author": "老子",
+      "chapter_idx": 59,
+      "chapter_title": "第五十九章 长生久视",
+      "citation_label": "【《老子道德经》·第五十九章 长生久视】",
+      "snippet": "【原文】 治人事天，莫若啬[87]。夫唯啬，是以早服[88]；早服谓之重积德；重积德则无不克[89]；无不克则莫知其极；莫知其极，可以有国。有国之母[90]，可以长久。是谓深根固柢[91]，长生久视之道[92]。 【译文】 治理百姓、养护身心，没有比爱惜精力更为重要的了。爱惜精力，万事才能早作准备。早做准备，就是厚积其德。厚积其德就没有不能胜任的事，没有不能胜任的事就无法估计他的力量。无法估计力量，他就可以担当好治理国家的重任。有了治理",
+      "score": 0.417
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 345,
+      "chapter_title": "悭贪",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·悭贪】",
+      "snippet": "复次，曼殊室利，若诸有情，悭贪嫉妒，自赞毁他，当堕三恶趣中，无量千岁，受诸剧苦。 复次，以现代白话文解释就是再说，现在再告诉你。我们看佛经，大家往往都会被它的宗教气氛、宗教形式所覆蔽，实际上它与中国文化儒家的孔孟之道，讲做人做事的“行”是完全合一的。不过，在合一中又有所不同，孔孟之道是告诉我们做人做事的大原则；佛家讲做人做事是从检查自己的起心动念开始，从内心开始修正，所以叫修行，也叫修心。乃至慢慢观察自心，起心动念是否纯善，到了完全没有",
+      "score": 0.417
+     },
+     {
+      "book_id": "ea6f47b169f0",
+      "book_title": "庄子今注今译",
+      "author": "陈鼓应",
+      "chapter_idx": 14,
+      "chapter_title": "骈拇",
+      "citation_label": "【《庄子今注今译》·骈拇】",
+      "snippet": "〈骈拇〉篇，主旨阐扬人的行为当合于自然，顺人情之常。“骈拇”，即并生的足趾。取篇首二字作为篇名。 本篇的要点：首章指出滥用聪明，矫饰仁义的行为，并不是自然的正道。自然的正道，要在“不失其性命之情”。仁义的行为，须合于人情，如不合人情，则成“胶漆 索”一般，缚束人的行为。末章批评自三代以下，“奔命于仁义”、“招仁义以挠天下”；为了追逐仁义之名，弄得“残生伤性”，这种现象，都是悖违“性命之情”的。 出自本篇的成语有：骈拇枝指、附赘县疣、累瓦",
+      "score": 0.412
+     },
+     {
+      "book_id": "ea6f47b169f0",
+      "book_title": "庄子今注今译",
+      "author": "陈鼓应",
+      "chapter_idx": 17,
+      "chapter_title": "在宥",
+      "citation_label": "【《庄子今注今译》·在宥】",
+      "snippet": "〈在宥〉篇，主旨反对他治，反干涉主义。从人的本性上，说明人好自然而厌干涉。“在宥”，自在宽宥的意思。取首句中“在宥”二字作为篇名。 本篇的主要章节：第一章，批评“治天下”的结果，“使天下瘁瘁焉人苦其性”；指责自三代以下，“匈匈焉终以赏罚为事”，使人不能安于性命之情。第二章，借崔瞿与老聃的对话，指“黄帝始以仁义撄人之心”，尧舜“矜其血气以规法度”，于是刑具礼教丛生，弄得“天下脊脊大乱”。今世的情状更为惨烈，镣铐的人不计其数，刑戮的人触目皆",
+      "score": 0.41
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 64,
+      "chapter_title": "德经·第六十五章",
+      "citation_label": "【《道德经》·德经·第六十五章】",
+      "snippet": "德经·第六十五章 古之善为道者，非以明民，将以愚之。民之难治，以其智多。故以智治国，国之贼；不以智治国，国之福。知此两者亦稽式。常知稽式，是谓“玄德”。“玄德”深矣，远矣，与物反矣，然后乃至大顺。",
+      "score": 0.407
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 54,
+      "chapter_title": "德经·第五十五章",
+      "citation_label": "【《道德经》·德经·第五十五章】",
+      "snippet": "德经·第五十五章 含德之厚，比于赤子。毒虫不螫，猛兽不据，攫鸟不搏。骨弱筋柔而握固，未知牝牡之合而朘作，精之至也。终日号而不嗄，和之至也。知和曰常，知常曰明，益生曰祥，心使气曰强。物壮则老，谓之不道，不道早已。",
+      "score": 0.407
+     },
+     {
+      "book_id": "ea6f47b169f0",
+      "book_title": "庄子今注今译",
+      "author": "陈鼓应",
+      "chapter_idx": 33,
+      "chapter_title": "则阳",
+      "citation_label": "【《庄子今注今译》·则阳】",
+      "snippet": "〈则阳〉篇，由十一个单元汇编而成。其中篇末少知与大公调对话两节，讨论了宇宙论上的一些问题，颇有价值。“则阳”，人名，为一游士。取篇首二字为篇名。 本篇第一章，写游士的干禄竞进与圣人的恬退和乐。第二章，写圣人的心态。第三章，第一小段，“旧国旧都，望之畅然”，以故乡喻本性。人进入社群，逐物日久，一旦返复真性，内心感到舒畅。第二段，“冉相氏得其环中以随成”，写与物融合的心境。第四章，讥讽战国君主的争伐。第五章，借孔子赞市南宜僚，写隐士的恬淡凝",
+      "score": 0.404
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 58,
+      "chapter_title": "德经·第五十九章",
+      "citation_label": "【《道德经》·德经·第五十九章】",
+      "snippet": "德经·第五十九章 治人事天，莫若嗇。夫为嗇，是谓早服；早服谓之重积德；重积德则无不克；无不克则莫知其极；莫知其极，可以有国；有国之母，可以长久；是谓深根固柢，长生久视之道。",
+      "score": 0.402
+     },
+     {
+      "book_id": "d3f79625368c",
+      "book_title": "知行合一王阳明大全集(套装共5册）",
+      "author": "度阴山",
+      "chapter_idx": 70,
+      "chapter_title": "黄省曾录",
+      "citation_label": "【《知行合一王阳明大全集(套装共5册）》·黄省曾录】",
+      "snippet": "黄省曾录 良知就是易，易就是变 黄勉之问：“‘无适也，无莫也，义之与比。’事事要如此否？” 先生曰：“固是事事要如此，须是识得个头脑乃可。义即是良知，晓得良知是个头脑，方无执着。且如受人馈送，也有今日当受的，他日不当受的；也有今日不当受的，他日当受的。你若执着了今日当受的，便一切受去；执着了今日不当受的，便一切不受去。便是‘适’‘莫’，便不是良知的本体。如何唤得做义？” 【译文】 黄勉之问：“《论语》有言：‘没有绝对的肯定，也没有绝对的",
+      "score": 0.402
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 326,
+      "chapter_title": "悭贪不止　累积病情",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·悭贪不止　累积病情】",
+      "snippet": "复有无量悭贪有情，积集资财，于其自身，尚不受用，何况能与父母妻子奴婢作使，及来乞者。 佛说世界上还有很多很多无量众生，喜欢聚积财宝、物品，他自己本身都舍不得用，更何况他的父母、妻子、儿女、奴婢以及来求乞讨的人。 悭吝是舍不得施舍，吝比悭好一点，吝是比较上舍不得，即使拿出来给人家也不过是十分之一或百分之一。悭是内心坚固的舍不得，一毛不拔。悭吝就是对他人不肯慷慨，不肯帮助人，不愿付出仁慈。不过，节省不是悭吝，如果对自己要求淡泊，严格地管制自",
+      "score": 0.4
+     },
+     {
+      "book_id": "4c5aaf145298",
+      "book_title": "大学章句集注",
+      "author": "朱熹",
+      "chapter_idx": 6,
+      "chapter_title": "第五章",
+      "citation_label": "【《大学章句集注》·第五章】",
+      "snippet": "子曰：“听讼，吾犹人也。必也使无讼乎！”无情者不得尽其辞。大畏民志，此谓知本。 此谓知本，此谓知之至也。",
+      "score": 0.398
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 7,
+      "chapter_title": "第六章",
+      "citation_label": "【《中庸》·第六章】",
+      "snippet": "子曰：“舜其大知也与！舜好问而好察迩言。隐恶而扬善。执其两端，用其中于民。其斯以为舜乎！”",
+      "score": 0.397
+     },
+     {
+      "book_id": "1aaee7b6bdfe",
+      "book_title": "周易",
+      "author": "佚名",
+      "chapter_idx": 49,
+      "chapter_title": "革卦",
+      "citation_label": "【《周易》·革卦】",
+      "snippet": "《革》：巳日乃孚，元亨利贞，悔亡。 初九：巩用黄牛之革。 六二：巳日乃革之，征吉，无咎。 九三：征凶，贞厉，革言三就，有孚。 九四：悔亡，有孚改命，吉。 九五：大人虎变，未占有孚。 上六：君子豹变，小人革面，征凶，居贞吉。",
+      "score": 0.394
+     }
+    ],
+    "query": "恕",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "忠恕"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 64,
+      "chapter_title": "德经·第六十五章",
+      "citation_label": "【《道德经》·德经·第六十五章】",
+      "snippet": "德经·第六十五章 古之善为道者，非以明民，将以愚之。民之难治，以其智多。故以智治国，国之贼；不以智治国，国之福。知此两者亦稽式。常知稽式，是谓“玄德”。“玄德”深矣，远矣，与物反矣，然后乃至大顺。",
+      "score": 0.447
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 22,
+      "chapter_title": "第二十一章",
+      "citation_label": "【《中庸》·第二十一章】",
+      "snippet": "“自诚明，谓之性；自明诚，谓之教。诚则明矣；明则诚矣。”",
+      "score": 0.443
+     },
+     {
+      "book_id": "2e806c6e6594",
+      "book_title": "知行合一王阳明：心学日课21天",
+      "author": "度阴山",
+      "chapter_idx": 6,
+      "chapter_title": "第六章 良知",
+      "citation_label": "【《知行合一王阳明：心学日课21天》·第六章 良知】",
+      "snippet": "第 六 章 良 知 阳 明 “ 糊 涂 ” 审 案 某日，有父子二人来找王阳明评理。二人情绪激动，面红耳赤，几乎就要动手。 王阳明说了一句话：“舜是世间大不孝的子，瞽瞍是世间大慈的父。”父子二人恍然大悟，抱头痛哭，千恩万谢而去。 这句话当然是反话，因为实际上，舜特别孝顺，而他的父亲瞽瞍特别不慈。 有人莫名其妙，询问王阳明这样说的原因。王阳明就解释道：“舜始终认为父亲对自己不好，是因为自己不孝顺，所以就越发孝顺。瞽瞍始终认为自己不慈是因为",
+      "score": 0.442
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 317,
+      "chapter_title": "文天祥修大光明法",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·文天祥修大光明法】",
+      "snippet": "拿历史一个实例来证明，大家都知道文天祥，也念过他的《正气歌》，他以一朝宰相的身份，于宋朝亡国时作最后的抗争而被俘虏，那是何等滋味！元朝皇帝忽必烈请他当宰相，只要他点头投降，仍然是一人之下、万人之上的宰相，然而文天祥不干。 有一点是后代人很少研究的，许多人不知道文天祥也是学佛的，当他被俘时，四面八方都是敌人和武器对着他，走到半路出现一个道人（见《文山诗集》），不晓得是和尚还是道士，告诉他：“丞相，我传你一个大光明法。”文天祥立即应允接受，",
+      "score": 0.442
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 345,
+      "chapter_title": "悭贪",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·悭贪】",
+      "snippet": "复次，曼殊室利，若诸有情，悭贪嫉妒，自赞毁他，当堕三恶趣中，无量千岁，受诸剧苦。 复次，以现代白话文解释就是再说，现在再告诉你。我们看佛经，大家往往都会被它的宗教气氛、宗教形式所覆蔽，实际上它与中国文化儒家的孔孟之道，讲做人做事的“行”是完全合一的。不过，在合一中又有所不同，孔孟之道是告诉我们做人做事的大原则；佛家讲做人做事是从检查自己的起心动念开始，从内心开始修正，所以叫修行，也叫修心。乃至慢慢观察自心，起心动念是否纯善，到了完全没有",
+      "score": 0.44
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 17,
+      "chapter_title": "第十八章",
+      "citation_label": "【《道德经》·第十八章】",
+      "snippet": "大道废，有仁义；智慧出，有大伪；六亲不和，有孝慈；国家昏乱，有忠臣。",
+      "score": 0.44
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 177,
+      "chapter_title": "第十章　美德的进退两难",
+      "citation_label": "【《西方百年学术经典著作》·第十章　美德的进退两难】",
+      "snippet": "关于忠、孝、义、仁和所谓的人类情感的种种规定构成了日本人的人生观。他们认为，“人的全部义务”可以分成许多部分，就好像在地图上划分省份一样。用他们的话来说，人生是由“忠的圈子”“孝的圈子”“义的圈子”“仁的圈子”“人类情感的圈子”和更多的圈子组成的。各个圈子都有特别详细的准则，一个人对于同伴的判断，不是把他归于一个完整的人格，而是说他“不懂得孝”或“不懂得义”。他们不像一个美国人，用“不正义”来指责一个人，而是具体地指出他的这种不当的行为",
+      "score": 0.438
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 346,
+      "chapter_title": "229",
+      "citation_label": "【《尼采文集（合集）》·229】",
+      "snippet": "229 (101) 固执与忠诚 。——出于固执，他坚持某个对他来说已经显而易见的事体，——但他称之为“忠诚”。",
+      "score": 0.436
+     },
+     {
+      "book_id": "dd8853676655",
+      "book_title": "老子道德经",
+      "author": "老子",
+      "chapter_idx": 19,
+      "chapter_title": "第十九章 少私寡欲",
+      "citation_label": "【《老子道德经》·第十九章 少私寡欲】",
+      "snippet": "【原文】 绝圣弃智[89]，民利百倍；绝仁弃义，民复孝慈；绝巧弃利，盗贼无有。此三者以为文不足[90]；故令有所属：见素抱朴，少私寡欲。绝学无忧。 【译文】 抛却聪明和智巧，人民可以得到百倍的好处；杜绝仁慈，抛弃道义，人民才会回复到孝慈的本性；抛弃技巧和获利，就不会有盗贼产生。“圣智、仁义、巧利”这三者全是巧饰，不足以治理天下，所以要让人民的思想认识有所归属：保持纯洁质朴的本性，减少私欲杂念。抛弃“圣智礼法”的学问，就没有忧患了。 【解",
+      "score": 0.435
+     },
+     {
+      "book_id": "88dc7d5961df",
+      "book_title": "西方百年学术经典著作",
+      "author": "佚名",
+      "chapter_idx": 538,
+      "chapter_title": "第二章",
+      "citation_label": "【《西方百年学术经典著作》·第二章】",
+      "snippet": "有一天，苏格拉底听到他的大儿子兰普洛克勒斯（Lamprocles）对他的母亲生气，就说：“儿子，告诉我，你知不知道有一些人被称作忘恩负义的人？”年轻人回答说：“我当然知道。”“那么，你了解他们为什么得到这样一个名声吗？”兰普洛克勒斯回答说：“我知道，人们称这些人是忘恩负义的人，那是因为当他们接受善意的付出后，虽然他们需要给予回报，但是没有这么做。”“那么，在你看来，忘恩负义的人可以被归类为不正义的人吗？”他儿子回答说：“是的。”“你是否",
+      "score": 0.433
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 179,
+      "chapter_title": "62",
+      "citation_label": "【《尼采文集（合集）》·62】",
+      "snippet": " 爱情 。——爱情甚至会宽恕被爱者的欲望。",
+      "score": 0.432
+     },
+     {
+      "book_id": "dd8853676655",
+      "book_title": "老子道德经",
+      "author": "老子",
+      "chapter_idx": 3,
+      "chapter_title": "第三章 圣人之治",
+      "citation_label": "【《老子道德经》·第三章 圣人之治】",
+      "snippet": "【原文】 不尚贤[12]，使民不争。不贵难得之货，使民不为盗；不见可欲，使民心不乱。 是以圣人之治，虚其心，实其腹，弱其志，强其骨。常使民无知无欲，使夫知者不敢为也。为无为，则无不治。 【译文】 不推崇贤能之才，使人民不争名夺位；不以奇珍异宝为贵重之物，使人民不做偷盗的坏事；不炫耀可贪的事物，使人民不产生邪恶、动乱的念头。因此，有道的人治理天下的方法，是要净化人民的心灵，满足人民的温饱，减损人民争名夺利的心志，强健人民的体魄。要常使人民",
+      "score": 0.43
+     },
+     {
+      "book_id": "ea6f47b169f0",
+      "book_title": "庄子今注今译",
+      "author": "陈鼓应",
+      "chapter_idx": 17,
+      "chapter_title": "在宥",
+      "citation_label": "【《庄子今注今译》·在宥】",
+      "snippet": "〈在宥〉篇，主旨反对他治，反干涉主义。从人的本性上，说明人好自然而厌干涉。“在宥”，自在宽宥的意思。取首句中“在宥”二字作为篇名。 本篇的主要章节：第一章，批评“治天下”的结果，“使天下瘁瘁焉人苦其性”；指责自三代以下，“匈匈焉终以赏罚为事”，使人不能安于性命之情。第二章，借崔瞿与老聃的对话，指“黄帝始以仁义撄人之心”，尧舜“矜其血气以规法度”，于是刑具礼教丛生，弄得“天下脊脊大乱”。今世的情状更为惨烈，镣铐的人不计其数，刑戮的人触目皆",
+      "score": 0.427
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 326,
+      "chapter_title": "悭贪不止　累积病情",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·悭贪不止　累积病情】",
+      "snippet": "复有无量悭贪有情，积集资财，于其自身，尚不受用，何况能与父母妻子奴婢作使，及来乞者。 佛说世界上还有很多很多无量众生，喜欢聚积财宝、物品，他自己本身都舍不得用，更何况他的父母、妻子、儿女、奴婢以及来求乞讨的人。 悭吝是舍不得施舍，吝比悭好一点，吝是比较上舍不得，即使拿出来给人家也不过是十分之一或百分之一。悭是内心坚固的舍不得，一毛不拔。悭吝就是对他人不肯慷慨，不肯帮助人，不愿付出仁慈。不过，节省不是悭吝，如果对自己要求淡泊，严格地管制自",
+      "score": 0.427
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 2,
+      "chapter_title": "第三章",
+      "citation_label": "【《道德经》·第三章】",
+      "snippet": "不尚贤，使民不争；不贵难得之货，使民不为盗；不见可欲，使民心不乱。是以圣人之治，虚其心，实其腹；弱其志，强其骨。常使民无知无欲。使夫知者不敢为也。为无为，则无不治。",
+      "score": 0.426
+     }
+    ],
+    "query": "忠恕",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "己所不欲 勿施于人"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 23,
+      "chapter_title": "第二十四章",
+      "citation_label": "【《道德经》·第二十四章】",
+      "snippet": "企者不立；跨者不行；自见者不明；自是者不彰；自伐者无功；自矜者不长。其在道也，曰余食赘形，物或恶之，故有道者不处。",
+      "score": 0.593
+     },
+     {
+      "book_id": "23026c516292",
+      "book_title": "三十六计",
+      "author": "佚名",
+      "chapter_idx": 28,
+      "chapter_title": "上屋抽梯",
+      "citation_label": "【《三十六计》·上屋抽梯】",
+      "snippet": "假之以便，唆之使前，断其援应，陷之死地。遇毒，位不当也。",
+      "score": 0.578
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 2,
+      "chapter_title": "第三章",
+      "citation_label": "【《道德经》·第三章】",
+      "snippet": "不尚贤，使民不争；不贵难得之货，使民不为盗；不见可欲，使民心不乱。是以圣人之治，虚其心，实其腹；弱其志，强其骨。常使民无知无欲。使夫知者不敢为也。为无为，则无不治。",
+      "score": 0.571
+     },
+     {
+      "book_id": "23026c516292",
+      "book_title": "三十六计",
+      "author": "佚名",
+      "chapter_idx": 14,
+      "chapter_title": "借尸还魂",
+      "citation_label": "【《三十六计》·借尸还魂】",
+      "snippet": "有用者，不可借；不能用者，求借。借不能用者而用之。匪我求童蒙，童蒙求我。",
+      "score": 0.57
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 36,
+      "chapter_title": "第三十七章",
+      "citation_label": "【《道德经》·第三十七章】",
+      "snippet": "道常无为而无不为。侯王若能守之，万物将自化。化而欲作，吾将镇之以无名之朴。镇之以无名之朴，夫将不欲。不欲以静，天下将自正。",
+      "score": 0.562
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 28,
+      "chapter_title": "第二十九章",
+      "citation_label": "【《道德经》·第二十九章】",
+      "snippet": "将欲取天下而为之，吾见其不得已。天下神器，不可为也，不可执也。为者败之，执者失之。是以圣人无为，故无败；无执，故无失。夫物或行或随；或嘘或吹；或强或羸；或载或隳。是以圣人去甚，去奢，去泰。",
+      "score": 0.543
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 42,
+      "chapter_title": "德经·第四十三章",
+      "citation_label": "【《道德经》·德经·第四十三章】",
+      "snippet": "德经·第四十三章 天下之至柔，驰骋天下之至坚。无有入无间，吾是以知无为之有益。不言之教，无为之益，天下希及之。",
+      "score": 0.543
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 37,
+      "chapter_title": "德经·第三十八章",
+      "citation_label": "【《道德经》·德经·第三十八章】",
+      "snippet": "德经·第三十八章 上德不德，是以有德；下德不失德，是以无德。上德无为而无以为；下德无为而有以为。上仁为之而无以为；上义为之而有以为。上礼为之而莫之应，则攘臂而扔之。故失道而后德，失德而后仁，失仁而后义，失义而后礼。夫礼者，忠信之薄，而乱之首。前识者，道之华，而愚之始。是以大丈夫处其厚，不居其薄；处其实，不居其华。故去彼取此。",
+      "score": 0.542
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 55,
+      "chapter_title": "德经·第五十六章",
+      "citation_label": "【《道德经》·德经·第五十六章】",
+      "snippet": "德经·第五十六章 知者不言，言者不知。塞其兑，闭其门；挫其锐，解其纷；和其光，同其尘，是谓玄同。故不可得而亲，不可得而疏；不可得而利，不可得而害；不可得而贵，不可得而贱；故为天下贵。",
+      "score": 0.539
+     },
+     {
+      "book_id": "bedc9c78dfdf",
+      "book_title": "尼采文集（合集）",
+      "author": "弗里德里希·尼采",
+      "chapter_idx": 381,
+      "chapter_title": "264",
+      "citation_label": "【《尼采文集（合集）》·264】",
+      "snippet": " 我们的所作所为 。——我们的所作所为，永远得不到理解，而始终只是受赞美和责备。",
+      "score": 0.537
+     },
+     {
+      "book_id": "a26240ee8f45",
+      "book_title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "chapter_idx": 326,
+      "chapter_title": "悭贪不止　累积病情",
+      "citation_label": "【《南怀瑾经典合集（共24册）》·悭贪不止　累积病情】",
+      "snippet": "复有无量悭贪有情，积集资财，于其自身，尚不受用，何况能与父母妻子奴婢作使，及来乞者。 佛说世界上还有很多很多无量众生，喜欢聚积财宝、物品，他自己本身都舍不得用，更何况他的父母、妻子、儿女、奴婢以及来求乞讨的人。 悭吝是舍不得施舍，吝比悭好一点，吝是比较上舍不得，即使拿出来给人家也不过是十分之一或百分之一。悭是内心坚固的舍不得，一毛不拔。悭吝就是对他人不肯慷慨，不肯帮助人，不愿付出仁慈。不过，节省不是悭吝，如果对自己要求淡泊，严格地管制自",
+      "score": 0.536
+     },
+     {
+      "book_id": "96a84c0450cd",
+      "book_title": "马基雅维利语录",
+      "author": "马基雅维利",
+      "chapter_idx": 161,
+      "chapter_title": "对想要加害自己的对手表示亲切并施之以恩惠的人，与不这样做的人相比，总是得到感恩的。",
+      "citation_label": "【《马基雅维利语录》·对想要加害自己的对手表示亲切并施之以恩惠的人，与不这样做的人相比，总是得到感恩的。】",
+      "snippet": "对想要加害自己的对手表示亲切并施之以恩惠的人，与不这样做的人相比，总是得到感恩的。 ——《君主论》",
+      "score": 0.535
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 61,
+      "chapter_title": "德经·第六十二章",
+      "citation_label": "【《道德经》·德经·第六十二章】",
+      "snippet": "德经·第六十二章 道者万物之奥。善人之宝，不善人之所保。美言可以市尊，美行可以加人。人之不善，何弃之有？故立天子，置三公，虽有拱璧以先駟马，不如坐进此道。古之所以贵此道者何？不曰：求以得，有罪以免邪？故为天下贵。",
+      "score": 0.535
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 15,
+      "chapter_title": "第十四章",
+      "citation_label": "【《中庸》·第十四章】",
+      "snippet": "君子素其位而行，不愿乎其外。 素富贵，行乎富贵；素贫贱，行乎贫贱；素夷狄，行乎夷狄；素患难，行乎患难。君子无入而不自得焉。 在上位，不陵下；在下位，不援上；正己而不求于人则无怨。上不怨天，下不尤人。 故君子居易以俟命，小人行险以徼幸。 子曰：“射有似乎君子。失诸正鹄，反求诸其身。”",
+      "score": 0.535
+     },
+     {
+      "book_id": "1f6fe151032b",
+      "book_title": "鬼谷子",
+      "author": "鬼谷子",
+      "chapter_idx": 2,
+      "chapter_title": "内楗",
+      "citation_label": "【《鬼谷子》·内楗】",
+      "snippet": "君臣上下之事，有远而亲，近而疏；就之不用，去之反求；日进前而 不御，遥闻声而相思。 事皆有内楗，素结本始。或结以道德，或结以党友，或结以财货，或结以采色。用其意，欲入则入，欲出则出；欲亲则亲，欲疏则疏；欲 就则就；欲去则去；欲求则求，欲思则思。若蚨母之从子也；出无间 ，入无朕。独往独来，莫之能止。 内者，进说辞也。楗者，楗所谋也。欲说者务稳度，计事者务循顺。 阴虑可否，明言得失，以御其志。方来应时，以和其谋。详思来楗， 往应时当也。夫内",
+      "score": 0.534
+     }
+    ],
+    "query": "己所不欲 勿施于人",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "school": "儒家"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "d9272a80942a",
+      "title": "论语",
+      "author": "孔子",
+      "region": "东方",
+      "rank": 45.8,
+      "summary": "《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不欲，勿施于人”，并倡导“克己复礼为仁”。在政治方面，他提出“为政以德”，主张德治与礼治，反对苛政。在教育上"
+     },
+     {
+      "id": "909e887aac01",
+      "title": "王阳明全集：简体注释版",
+      "author": "王阳明",
+      "region": "东方",
+      "rank": 44.2,
+      "summary": "王阳明是明代最著名的思想家、哲学家和军事家，心学的集大成者。他的全集收录了其重要的著作，包括《传习录》、《大学问》以及书信、诗文等。《传习录》是王阳明与弟子们的问答记录，集中阐述了他的心学思想，核心是“致良知”和“知行合一”。王阳明认为，天理即人心中的良知，每个人生来就具有辨别是非的能力，但被私欲所"
+     },
+     {
+      "id": "32093eed6ff1",
+      "title": "中国哲学简史",
+      "author": "冯友兰",
+      "region": "东方",
+      "rank": 43.1,
+      "summary": "《中国哲学简史》是一部由多位学者合作编纂、以清晰脉络梳理中国数千年哲学思想的经典导论。本书以先秦诸子百家争鸣为起点，历经两汉经学、魏晋玄学、隋唐佛学，直至宋明理学的思想演进，系统勾勒出中国哲学的全景图。全书以儒、道、释三家思想为主线，深入阐发了它们各自的核心主张与相互影响，同时揭示了贯穿中国哲学史的"
+     },
+     {
+      "id": "167cb7f3a631",
+      "title": "中国哲学十九讲",
+      "author": "牟宗三",
+      "region": "东方",
+      "rank": 41.5,
+      "summary": "《中国哲学十九讲》是牟宗三先生在香港中文大学授课的讲稿，系统梳理了中国哲学的主要流派和核心问题。牟宗三以康德哲学为参照，对中国哲学进行了现代诠释，强调中国哲学的特质在于“内在超越”和“道德主体性”。他分别论述了儒家、道家、佛家（尤其是禅宗和天台宗）的哲学思想，并比较了中西哲学的异同。牟宗三认为，中国"
+     },
+     {
+      "id": "dd03ec6572e7",
+      "title": "孟子",
+      "author": "孟子",
+      "region": "东方",
+      "rank": 40.8,
+      "summary": "《孟子》是记录战国时期儒家思想家孟子及其弟子言行的一部著作，共七篇，是儒家经典“四书”之一。孟子继承并发展了孔子的思想，提出“性善论”，认为人性本善，具有恻隐、羞恶、辞让、是非四端，通过扩充这些善端，人可以达到道德的完善。在政治方面，孟子主张“仁政”和“王道”，强调民贵君轻，认为君主应以德治国，施行"
+     },
+     {
+      "id": "4d187a31575a",
+      "title": "中庸",
+      "author": "子思",
+      "region": "东方",
+      "rank": 40.0,
+      "summary": "《中庸》是儒家经典《四书》之一，相传为孔子之孙子思所作。全书以“中庸”为核心，阐述儒家关于人性、道德修养和治国平天下的思想。开篇即言“天命之谓性，率性之谓道，修道之谓教”，将人性与天道贯通，提出“性”“道”“教”三位一体的哲学框架。书中强调“中和”的境界，认为“喜怒哀乐之未发谓之中，发而皆中节谓之和"
+     },
+     {
+      "id": "795658cafeab",
+      "title": "荀子",
+      "author": "荀子",
+      "region": "东方",
+      "rank": 38.1,
+      "summary": "《荀子》是战国末期儒家思想家荀况的著作集，共三十二篇。荀子与孟子并称，但思想有显著差异。他提出“性恶论”，认为人的本性是恶的，善是后天人为（“伪”）的结果，因此强调“化性起伪”，通过礼义法度来改造人性。荀子重视学习，著有《劝学》篇，提出“学不可以已”，强调后天教育和环境对人的塑造作用。在认识论上，他"
+     },
+     {
+      "id": "4c5aaf145298",
+      "title": "大学章句集注",
+      "author": "朱熹",
+      "region": "东方",
+      "rank": 37.6,
+      "summary": "《大学章句集注》是南宋理学家朱熹对《大学》的注释和阐发，是《四书章句集注》之一。朱熹将《大学》从《礼记》中抽出，分为经一章和传十章，认为经是孔子之言而曾子述之，传是曾子之意而门人记之。他通过注释，系统阐述了“三纲领”（明明德、亲民、止于至善）和“八条目”（格物、致知、诚意、正心、修身、齐家、治国、平"
+     },
+     {
+      "id": "a26240ee8f45",
+      "title": "南怀瑾经典合集（共24册）",
+      "author": "南怀瑾",
+      "region": "东方",
+      "rank": 31.0,
+      "summary": "南怀瑾经典合集收录了南怀瑾先生的24部重要著作，涵盖儒、释、道三家经典的精讲与阐发。南怀瑾是当代著名的国学大师，他贯通古今、融会中西，以深入浅出的方式讲解《论语》《孟子》《老子》《庄子》《金刚经》《楞严经》等经典，并结合自身修行体验，将深奥的哲理转化为生活智慧。合集中包括《论语别裁》《原本大学微言》"
+     },
+     {
+      "id": "4e213cf57480",
+      "title": "呻吟语",
+      "author": "吕坤",
+      "region": "东方",
+      "rank": 27.0,
+      "summary": "《呻吟语》是明代思想家吕坤的代表作，是一部语录体著作，内容涵盖修身、处世、为政、治学等多个方面。书名“呻吟”意为病痛时的低吟，作者自谦为病中之语，实则是对人生和社会的深刻洞察。书中充满了警句和格言，如“一念收敛，则万善来同；一念放恣，则百邪乘衅”、“大其心，容天下之物；虚其心，受天下之善”等，体现了"
+     },
+     {
+      "id": "b7959caca36d",
+      "title": "颜氏家训",
+      "author": "颜之推",
+      "region": "东方",
+      "rank": 26.4,
+      "summary": "《颜氏家训》是南北朝时期颜之推所著的家训经典，成书于隋初，是中国古代家庭教育的典范。全书共二十篇，内容涵盖修身、治家、为学、处世等多个方面，以儒家思想为核心，结合历史典故与亲身经历，阐述了个人修养、家庭伦理和社会责任的重要性。颜之推强调教育应从小抓起，注重环境的影响，提倡勤学、节俭、谨慎交友，并批判"
+     }
+    ],
+    "total": 11
+   }
+  },
+  {
+   "name": "get_book_detail",
+   "args": {
+    "book_id": "论语"
+   },
+   "result_full": {
+    "id": "d9272a80942a",
+    "title": "论语",
+    "author": "孔子",
+    "region": "东方",
+    "file_type": "epub",
+    "summary": "《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不欲，勿施于人”，并倡导“克己复礼为仁”。在政治方面，他提出“为政以德”，主张德治与礼治，反对苛政。在教育上，他提倡“有教无类”，注重因材施教。该书是儒家学派的经典，对中国乃至东亚文化圈的价值观念、社会伦理和政治制度产生了深远影响，至今仍是中华文化的重要源头。",
+    "rank": 45.8,
+    "chapterCount": 22,
+    "toc": [
+     "关于本书",
+     "目录",
+     "学而篇",
+     "为政篇",
+     "八佾篇",
+     "里仁篇",
+     "公冶长篇",
+     "雍也篇",
+     "述而篇",
+     "泰伯篇",
+     "子罕篇",
+     "乡党篇",
+     "先进篇",
+     "颜渊篇",
+     "子路篇",
+     "宪问篇",
+     "卫灵公篇",
+     "季氏篇",
+     "阳货篇",
+     "微子篇",
+     "子张篇",
+     "尧曰篇"
+    ],
+    "bibliographic_metadata": {
+     "work": {
+      "author": "孔子",
+      "canonical_title": "论语",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16
+   },
+   "result_full": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 16,
+    "title": "卫灵公篇",
+    "book_title": "论语",
+    "citation_label": "【《论语》·卫灵公篇】",
+    "text": "卫灵公问陈于孔子，孔子对曰：“俎豆之事，则尝闻之矣；军旅之事，未之学也。”明日遂行。\n在陈绝粮，从者病莫能兴。子路愠见曰：“君子亦有穷乎？”子曰：“君子固穷，小人穷斯滥矣。”\n子曰：“赐也，女以予为多学而识之者与？”对曰：“然，非与？”曰：“非也，予一以贯之。”\n子曰：“由，知德者鲜矣。”\n子曰：“无为而治者其舜也与！夫何为哉？恭己正南面而已矣。”\n子张问行，子曰：“言忠信，行笃敬，虽蛮貊之邦行矣；言不忠信，行不笃敬，虽州里行乎哉？立则见其参于前也；在舆则见其倚于衡也，夫然后行。”子张书诸绅。\n子曰：“直哉史鱼！邦有道如矢，邦无道如矢。君子哉蘧伯玉！邦有道则仕，邦无道则可卷而怀之。”\n子曰：“可与言而不与之言，失人；不可与言而与之言，失言。知者不失人亦不失言。”\n子曰：“志士仁人无求生以害仁，有杀身以成仁。”\n子贡问为仁，子曰：“工欲善其事，必先利其器。居是邦也，事其大夫之贤者，友其士之仁者。”\n颜渊问为邦，子曰：“行夏之时，乘殷之辂，服周之冕，乐则《韶》、《舞》；放郑声，远佞人。郑声淫，佞人殆。”\n子曰：“人无远虑，必有近忧。”\n子曰：“已矣乎！吾未见好德如好色者也。”\n子曰：“臧文仲其窃位者与！知柳下惠之贤而不与立也。”\n子曰：“躬自厚而薄责于人，则远怨矣。”\n子曰：“不曰‘如之何、如之何’者，吾末如之何也已矣。”\n子曰：“群居终日，言不及义，好行小慧，难矣哉！”\n子曰：“君子义以为质，礼以行之，孙以出之，信以成之。君子哉！”\n子曰：“君子病无能焉，不病人之不己知也。”\n子曰：“君子疾没世而名不称焉。”\n子曰：“君子求诸己，小人求诸人。”\n子曰：“君子矜而不争，群而不党。”\n子曰：“君子不以言举人，不以人废言。”\n子贡问曰：“有一言而可以终身行之者乎？”子曰：“其恕乎！己所不欲，勿施于人。”\n子曰：“吾之于人也，谁毁谁誉？如有所誉者，其有所试矣。斯民也，三代之所以直道而行也。”\n子曰：“吾犹及史之阙文也，有马者借人乘之，今亡矣夫！”\n子曰：“巧言乱德，小不忍，则乱大谋。”\n子曰：“众恶之，必察焉；众好之，必察焉。”\n子曰：“人能弘道，非道弘人。”\n子曰：“过而不改，是谓过矣。”\n子曰：“吾尝终日不食、终夜不寝以思，无益，不如学也。”\n子曰：“君子谋道不谋食。耕也馁在其中矣，学也禄在其中矣。君子忧道不忧贫。”\n子曰：“知及之，仁不能守之，虽得之，必失之；知及之，仁能守之，不庄以莅之，则民不敬；知及之，仁能守之，庄以莅之，动之不以礼，未善也。”\n子曰：“君子不可小知而可大受也，小人不可大受而可小知也。”\n子曰：“民之于仁也，甚于水火。水火，吾见蹈而死者矣，未见蹈仁而死者也。”\n子曰：“当仁不让于师。”\n子曰：“君子贞而不谅。”\n子曰：“事君，敬其事而后其食。”\n子曰：“有教无类。”\n子曰：“道不同，不相为谋。”\n子曰：“辞达而已矣。”\n师冕见，及阶，子曰：“阶也。”及席，子曰：“席也。”皆坐，子告之曰：“某在斯，某在斯。”师冕出。子张问曰：“与师言之道与？”子曰：“然，固相师之道也。”",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "孔子",
+      "canonical_title": "论语",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5
+   },
+   "result_full": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 5,
+    "title": "里仁篇",
+    "book_title": "论语",
+    "citation_label": "【《论语》·里仁篇】",
+    "text": "子曰：“里仁为美，择不处仁，焉得知？”\n子曰：“不仁者不可以久处约，不可以长处乐。仁者安仁，知者利仁。”\n子曰：“唯仁者能好人，能恶人。”\n子曰：“苟志于仁矣，无恶也。”\n子曰：“富与贵，是人之所欲也；不以其道得之，不处也。贫与贱，是人之所恶也；不以其道得之，不去也。君子去仁，恶乎成名？君子无终食之间违仁，造次必于是，颠沛必于是。”\n子曰：“我未见好仁者，恶不仁者。好仁者，无以尚之；恶不仁者，其为仁矣，不使不仁者加乎其身。有能一日用其力于仁矣乎？我未见力不足者。盖有之矣，我未之见也。”\n子曰：“人之过也，各于其党。观过，斯知仁矣。”\n子曰：“朝闻道，夕死可矣。”\n子曰：“士志于道，而耻恶衣恶食者，未足与议也。”\n子曰：“君子之于天下也，无适也，无莫也，义之与比。”\n子曰：“君子怀德，小人怀土；君子怀刑，小人怀惠。”\n子曰：“放于利而行，多怨。”\n子曰：“能以礼让为国乎？何有？不能以礼让为国，如礼何？”\n子曰：“不患无位，患所以立；不患莫己知，求为可知也。”\n子曰：“参乎！吾道一以贯之。”曾子曰：“唯。”子出，门人问曰：“何谓也？”曾子曰：“夫子之道，忠恕而已矣。”\n子曰：“君子喻于义，小人喻于利。”\n子曰：“见贤思齐焉，见不贤而内自省也。”\n子曰：“事父母几谏，见志不从，又敬不违，劳而不怨。”\n子曰：“父母在，不远游，游必有方。”\n子曰：“三年无改于父之道，可谓孝矣。”\n子曰：“父母之年，不可不知也。一则以喜，一则以惧。”\n子曰：“古者言之不出，耻躬之不逮也。”\n子曰：“以约失之者鲜矣。”\n子曰：“君子欲讷于言而敏于行。”\n子曰：“德不孤，必有邻。”\n子游曰：“事君数，斯辱矣；朋友数，斯疏矣。”",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "孔子",
+      "canonical_title": "论语",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  }
+ ],
+ "retrieval_calls_executed": 7
+}

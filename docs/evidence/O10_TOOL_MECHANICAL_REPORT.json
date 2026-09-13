@@ -1,0 +1,1945 @@
+{
+ "protocol": "O10_TOOL_MECHANICAL_QUALIFICATION",
+ "started": "2026-09-13T15:15:02+0800",
+ "production_model": "deepseek-flash",
+ "tools": {
+  "search_books": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"query\": \"克己复礼\", \"limit\": 3}",
+     "pass": true,
+     "verdict": "OK_RESULTS",
+     "wall_s": 0.8,
+     "detail": "method=vector hits=9"
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"query\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": "缺少检索词 query"
+    },
+    {
+     "case_type": "EMPTY_RESULT",
+     "args_head": "{\"query\": \"zzqqxxyzzy 不可能存在的词组qqq\", \"limit\": 3}",
+     "pass": true,
+     "verdict": "OK_RESULTS",
+     "wall_s": 0.3,
+     "detail": "method=vector hits=9"
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"query\": 12345, \"limit\": \"abc\"}",
+     "pass": true,
+     "verdict": "HONEST_COERCION",
+     "wall_s": 0.3,
+     "detail": "method=lexical"
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"query\": \"自由\", \"limit\": 999}",
+     "pass": true,
+     "verdict": "OK_RESULTS",
+     "wall_s": 0.3,
+     "detail": "method=vector hits=30"
+    },
+    {
+     "case_type": "ERROR_PATH",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "NETWORK_FAILURE",
+     "args_head": "{\"query\": \"自由意志\"}",
+     "pass": true,
+     "verdict": "OK_RESULTS",
+     "wall_s": 0.3,
+     "detail": "method=vector hits=15"
+    },
+    {
+     "case_type": "DEGRADED_MODE",
+     "args_head": "{\"query\": \"权力意志\", \"limit\": 3}",
+     "pass": true,
+     "verdict": "OK_RESULTS",
+     "wall_s": 0.1,
+     "detail": "method=lexical hits=9"
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "3252 chars bounded"
+    }
+   ],
+   "n_cases": 10,
+   "n_pass": 10,
+   "pass": true,
+   "flags": []
+  },
+  "get_book_detail": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"book_id\": \"理想国\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"book_id\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"book_id\": 12345}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "ERROR_PATH",
+     "args_head": "{\"book_id\": \"deadbeef00ff\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"book_id\": \"论语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语语",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "1035 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "get_chapter": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"book_id\": \"d9272a80942a\", \"chapter_idx\": 0}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"book_id\": \"\", \"chapter_idx\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"book_id\": [\"论语\"], \"chapter_idx\": \"abc\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "ERROR_PATH",
+     "args_head": "{\"book_id\": \"d9272a80942a\", \"chapter_idx\": 99999}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"book_id\": \"d9272a80942a\", \"chapter_idx\": -1}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "1514 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "query_graph": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"philosopher\": \"尼采\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"philosopher\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"philosopher\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "ERROR_PATH",
+     "args_head": "{\"philosopher\": \"完全不存在的哲人xyz\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"philosopher\": \"尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼尼",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "1027 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "get_philosopher": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"name\": \"康德\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"name\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"name\": [\"康德\"]}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "ERROR_PATH",
+     "args_head": "{\"name\": \"不存在的哲学家xyz\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"name\": \"康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康康",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "608 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "list_books": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"author\": \"尼采\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "DESIGNED_DEFAULT_OK",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"author\": 123}",
+     "pass": true,
+     "verdict": "HONEST_COERCION",
+     "wall_s": 0.0,
+     "detail": "empty for coerced '123'"
+    },
+    {
+     "case_type": "EMPTY_RESULT",
+     "args_head": "{\"author\": \"绝不存在的作者xyz\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"region\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "2119 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "write_essay": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"西西弗斯与荒诞\", \"genre\": \"议论文\", \"word_count\": 200}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 6.3,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"topic\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": "参数类型错误: topic 应为字符串"
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"topic\": \"自由\", \"word_count\": 1000000000}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 15.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "510 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "generate_image": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"prompt\": \"柏拉图洞穴隐喻 极简黑白插画\", \"size\": \"1K\", \"ratio\": \"1:1\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 28.3,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"prompt\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"prompt\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": "参数类型错误: prompt 应为字符串"
+    },
+    {
+     "case_type": "NETWORK_FAILURE",
+     "args_head": "{\"prompt\": \"奥德赛归途 水墨风\"}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{\"prompt\": \"伊甸园 烛光 油画\"}",
+     "pass": true,
+     "verdict": "GRACEFUL_DEGRADED",
+     "wall_s": 9.1,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "303 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "get_school": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"name\": \"斯多葛\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"name\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"name\": {\"k\": 1}}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "ERROR_PATH",
+     "args_head": "{\"name\": \"绝不存在的流派xyz\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"name\": \"存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存存",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "3315 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "phti_test": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": "5 questions"
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": "5 questions"
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"unused\": 42}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": "5 questions"
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"unused\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": "5 questions"
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "538 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "compare_views": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"a\": \"斯多葛主义\", \"b\": \"伊壁鸠鲁主义\", \"focus\": \"幸福\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 13.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"a\": \"\", \"b\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"a\": 42, \"b\": []}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "1307 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "socratic_tutor": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"成绩决定人的价值\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 4.6,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"topic\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "480 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "philosopher_debate": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"道德是否需要普遍规则\", \"speakers\": \"尼采,康德\", \"mode\": \"auto\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 22.2,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"topic\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "184 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "thought_experiment": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"base\": \"上传意识后还是不是原来的我\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 6.2,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"base\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"base\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "301 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "advisor_council": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"question\": \"要不要退出一个已经投入很多时间的项目\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 6.1,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"question\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"question\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "534 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "paper_review": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"text\": \"所有价值判断都由文化形成, 因此跨文化道德批评不可能成立。本文论证这一推论混淆了起源与效力。\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 7.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"text\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"text\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "531 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "analyze_argument": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"text\": \"多数人相信它, 所以它是真的。\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 5.5,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"text\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"text\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "374 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "concept_trace": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"concept\": \"权力意志\"}",
+     "pass": true,
+     "verdict": "OK_RESULTS",
+     "wall_s": 0.3,
+     "detail": "hits=30"
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"concept\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"concept\": 42}",
+     "pass": true,
+     "verdict": "HONEST_COERCION",
+     "wall_s": 0.3,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_RESULT",
+     "args_head": "{\"concept\": \"绝不存在的概念zzqqxxyzzy\"}",
+     "pass": true,
+     "verdict": "OK_RESULTS",
+     "wall_s": 0.3,
+     "detail": "hits=30"
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"concept\": \"自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自自",
+     "pass": true,
+     "verdict": "OK_RESULTS",
+     "wall_s": 0.3,
+     "detail": "hits=30"
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "2080 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "profile": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"question\": \"自由意志与决定论\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 6.3,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"question\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"question\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "20 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "conceptual_map": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"concept\": \"决定论与自由意志\", \"map_type\": \"CONCEPT_NETWORK\"}",
+     "pass": true,
+     "verdict": "OK_MERMAID",
+     "wall_s": 5.3,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"concept\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"concept\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "687 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "websearch": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"query\": \"extended mind thesis philosophy\"}",
+     "pass": true,
+     "verdict": "HONEST_EMPTY",
+     "wall_s": 1.3,
+     "detail": "src=None"
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"query\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"query\": 42}",
+     "pass": true,
+     "verdict": "HONEST_COERCION",
+     "wall_s": 1.2,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_RESULT",
+     "args_head": "{\"query\": \"zzqqxxyzzy 绝不存在的查询词组 qqq\"}",
+     "pass": true,
+     "verdict": "HONEST_EMPTY",
+     "wall_s": 1.2,
+     "detail": "src=None"
+    },
+    {
+     "case_type": "NETWORK_FAILURE",
+     "args_head": "{\"query\": \" compatibilism\"}",
+     "pass": true,
+     "verdict": "HONEST_EMPTY",
+     "wall_s": 0.0,
+     "detail": "src=None"
+    },
+    {
+     "case_type": "TIMEOUT",
+     "args_head": "{\"query\": \" stoicism happiness\"}",
+     "pass": true,
+     "verdict": "HONEST_EMPTY",
+     "wall_s": 0.0,
+     "detail": "src=None"
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "92 chars bounded"
+    }
+   ],
+   "n_cases": 8,
+   "n_pass": 8,
+   "pass": true,
+   "flags": []
+  },
+  "query_database": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"table\": \"books\", \"key\": \"尼采\", \"limit\": 3}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"table\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "ERROR_PATH",
+     "args_head": "{\"table\": \"no_such_table\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"table\": \"philosophers\", \"limit\": 999}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "1030 chars bounded"
+    }
+   ],
+   "n_cases": 7,
+   "n_pass": 7,
+   "pass": true,
+   "flags": []
+  },
+  "role_play": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"question\": \"你如何评价庸人\", \"philosopher\": \"尼采\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"question\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"question\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "3092 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "essay_outline": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"忒修斯之船与人格同一性\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 7.5,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"topic\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "51 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "life_coach": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"question\": \"我该不该辞掉稳定的工作去创业\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 8.1,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"question\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"question\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "13 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "dialectic": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"美德可否教授\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 7.5,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"topic\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "412 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "history_timeline": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"斯多葛主义\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 5.6,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"topic\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "16 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "confrontation": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"正义是什么\", \"a\": \"柏拉图\", \"b\": \"色拉叙马霍斯\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 9.4,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"topic\": \"\", \"a\": \"\", \"b\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42, \"a\": [], \"b\": {}}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "1836 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "school_arena": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"幸福是德性的生活\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 20.5,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "DESIGNED_DEFAULT_OK",
+     "wall_s": 22.6,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "367 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "agent_council": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"topic\": \"LLM 是否可能有真正的理解\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 10.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"topic\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"topic\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{}",
+     "pass": true,
+     "verdict": "GRACEFUL_STRUCTURED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "395 chars bounded"
+    }
+   ],
+   "n_cases": 6,
+   "n_pass": 6,
+   "pass": true,
+   "flags": []
+  },
+  "search_scholarship": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"query\": \"Nietzsche perspectivism truth\", \"limit\": 3}",
+     "pass": true,
+     "verdict": "PARTIAL_PROVIDER_ERRORS",
+     "wall_s": 0.0,
+     "detail": "[{\"provider\": \"crossref\", \"error\": \"URL_BLOCKED\", \"detail\": \"reserved ip 198.18.0.0/15（非 trusted fake-IP 模式默认拒绝）\"}, {\"pr"
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"query\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"query\": 42}",
+     "pass": true,
+     "verdict": "HONEST_COERCION",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_RESULT",
+     "args_head": "{\"query\": \"zzqqxxyzzy impossible gibberish term qqq\"}",
+     "pass": true,
+     "verdict": "PARTIAL_PROVIDER_ERRORS",
+     "wall_s": 0.0,
+     "detail": "[{\"provider\": \"crossref\", \"error\": \"URL_BLOCKED\", \"detail\": \"reserved ip 198.18.0.0/15（非 trusted fake-IP 模式默认拒绝）\"}, {\"pr"
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"query\": \"自由\", \"year_from\": \"abcd\", \"year_to\": null}",
+     "pass": true,
+     "verdict": "PARTIAL_PROVIDER_ERRORS",
+     "wall_s": 0.0,
+     "detail": "[{\"provider\": \"crossref\", \"error\": \"URL_BLOCKED\", \"detail\": \"reserved ip 198.18.0.0/15（非 trusted fake-IP 模式默认拒绝）\"}, {\"pr"
+    },
+    {
+     "case_type": "NETWORK_FAILURE",
+     "args_head": "{\"query\": \"Kant lying duty\"}",
+     "pass": true,
+     "verdict": "PARTIAL_PROVIDER_ERRORS",
+     "wall_s": 0.0,
+     "detail": "[{\"provider\": \"crossref\", \"error\": \"PROVIDER_UNAVAILABLE\", \"detail\": \"T1_INJECT_NETWORK_FAILURE\"}, {\"provider\": \"openale"
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{\"query\": \"ZhuangzI skepticism\"}",
+     "pass": true,
+     "verdict": "PARTIAL_PROVIDER_ERRORS",
+     "wall_s": 0.0,
+     "detail": "[{\"provider\": \"crossref\", \"error\": \"MALFORMED_PROVIDER_RESPONSE\", \"detail\": \"https://api.crossref.org/works?query.biblio"
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "2140 chars bounded"
+    }
+   ],
+   "n_cases": 9,
+   "n_pass": 9,
+   "pass": true,
+   "flags": []
+  },
+  "get_scholarly_source": {
+   "cases": [
+    {
+     "case_type": "SCHEMA",
+     "pass": true,
+     "verdict": "SCHEMA_OK",
+     "detail": ""
+    },
+    {
+     "case_type": "VALID_INPUT",
+     "args_head": "{\"source_record_id\": \"doi:10.1057/9781137357069.0007\", \"requested_access\": \"ABSTRACT\"}",
+     "pass": true,
+     "verdict": "OK_PAYLOAD",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "EMPTY_INPUT",
+     "args_head": "{\"source_record_id\": \"\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "INVALID_TYPE",
+     "args_head": "{\"source_record_id\": 42}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "ERROR_PATH",
+     "args_head": "{\"source_record_id\": \"no_such_id\", \"requested_access\": \"FULL_TEXT\"}",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "BOUNDARY_INPUT",
+     "args_head": "{\"source_record_id\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "pass": true,
+     "verdict": "STRUCTURED_ERROR",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "NETWORK_FAILURE",
+     "args_head": "{\"source_record_id\": \"doi:10.1057/9781137357069.0007\", \"requested_access\": \"ABSTRACT\"}",
+     "pass": true,
+     "verdict": "GRACEFUL_DEGRADED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "PROVIDER_ERROR",
+     "args_head": "{\"source_record_id\": \"doi:10.1057/9781137357069.0007\", \"requested_access\": \"ABSTRACT\"}",
+     "pass": true,
+     "verdict": "GRACEFUL_DEGRADED",
+     "wall_s": 0.0,
+     "detail": ""
+    },
+    {
+     "case_type": "OUTPUT_CONTRACT",
+     "pass": true,
+     "verdict": "OUTPUT_CONTRACT_OK",
+     "detail": "896 chars bounded"
+    }
+   ],
+   "n_cases": 9,
+   "n_pass": 9,
+   "pass": true,
+   "flags": []
+  }
+ },
+ "gate": {
+  "TOOL_COUNT": 32,
+  "TESTED_TOOL_COUNT": 32,
+  "MECHANICAL_PASS": 32,
+  "KNOWN_BROKEN_TOOL_COUNT": 0,
+  "BROKEN_TOOLS": [],
+  "SILENT_DEFAULT_COUNT": 0,
+  "UNBOUNDED_ERROR_COUNT": 0,
+  "wall_s": 233.2
+ },
+ "repairs_during_qualification": [
+  {
+   "issue": "UNBOUNDED_ERROR",
+   "tools": [
+    "get_book_detail",
+    "get_chapter",
+    "query_graph",
+    "get_philosopher",
+    "list_books",
+    "get_school",
+    "search_books",
+    "concept_trace",
+    "websearch",
+    "compare_views",
+    "socratic_tutor",
+    "paper_review",
+    "analyze_argument",
+    "profile",
+    "conceptual_map",
+    "essay_outline",
+    "life_coach",
+    "dialectic",
+    "history_timeline",
+    "confrontation",
+    "agent_council",
+    "write_essay",
+    "generate_image",
+    "role_play",
+    "philosopher_debate",
+    "thought_experiment",
+    "search_scholarship"
+   ],
+   "fix": "agent_core 新增 _str_arg/_req_str 统一入口解析: 非字符串类型不再 AttributeError 逃逸（检索类诚实 str 化+回显; 生成类严格拒绝并返回结构化参数类型错误）"
+  },
+  {
+   "issue": "SILENT_DEFAULT",
+   "tools": [
+    "query_graph",
+    "get_philosopher",
+    "get_school"
+   ],
+   "fix": "空名字符串经子串包含会命中任意首个实体（张冠李戴）——补空参结构化报错"
+  },
+  {
+   "issue": "SILENT_DEFAULT",
+   "tools": [
+    "search_books"
+   ],
+   "fix": "空 query 绕过词法守卫进入向量路径返回任意命中——补空 query 结构化报错"
+  },
+  {
+   "issue": "SILENT_DEFAULT",
+   "tools": [
+    "advisor_council",
+    "philosopher_debate",
+    "role_play"
+   ],
+   "fix": "空/垃圾必填参数直接进入 LLM 生成——补 _req_str 守卫返回结构化错误（不烧生成）"
+  },
+  {
+   "issue": "UNBOUNDED_ERROR(provider)",
+   "tools": [
+    "profile",
+    "history_timeline",
+    "school_arena"
+   ],
+   "fix": "llm_chat 未捕获异常逃逸——包 try/except 返回结构化错误（provider 失败不编造产物）"
+  },
+  {
+   "issue": "UNBOUNDED_ERROR(network)",
+   "tools": [
+    "search_scholarship"
+   ],
+   "fix": "scholarly_sources._get_json 缺 OSError 分支（裸 socket 错误逃逸）——补 ProviderError(PROVIDER_UNAVAILABLE)"
+  },
+  {
+   "issue": "OUTPUT_CONTRACT",
+   "tools": [
+    "write_essay"
+   ],
+   "fix": "结果补 topic 回显字段（additive; 垃圾输入的诚实化信号）"
+  }
+ ],
+ "environment": {
+  "production_model": "deepseek-flash",
+  "SCHOLARLY_NETWORK_MODE": "AUTO（T1 期默认）; T2 起按 R1 先例显式 TRUSTED_PROXY",
+  "note": "scholarly searches 缓存已清空（records 保留）; 备份 scholarly_cache.json.t1pre-bak"
+ }
+}

@@ -1,0 +1,160 @@
+{
+ "case_id": "E01",
+ "section": "E",
+ "expected_class": "NONE",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "分析：\n“多数人相信它，所以它是真的。”",
+ "injection": null,
+ "QUESTION": "分析：\n“多数人相信它，所以它是真的。”",
+ "PUBLIC_WORK_NOTE": [
+  "这是一道典型的逻辑分析题：核心在于识别论证中被省略的\"桥接前提\"，并判断它是否成立。我准备先用论证分析工具梳理其逻辑骨架（结论、显隐前提、谬误定位、最薄弱环节），再在此基础上展开更深一层的哲学辨析——因为\"多数相信\"与\"为真\"之间的关系远不止一个谬误标签那么简单，还牵涉符合论与共识论真理观、约定/建构性真理的区分。"
+ ],
+ "RESEARCH_NEED": null,
+ "EVIDENCE_GAP": null,
+ "TOOL_SELECTED": [
+  "analyze_argument"
+ ],
+ "TOOL_ARGS": {
+  "analyze_argument": [
+   {
+    "text": "多数人相信它，所以它是真的。"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "analyze_argument",
+   "args": {
+    "text": "多数人相信它，所以它是真的。"
+   },
+   "phase": "executed",
+   "result_head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '它是真的。', 'premises': [{'premise': '多数人相信它。', 'kind': 'explicit'}]}, "
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "analyze_argument",
+   "head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '它是真的。', 'premises': [{'premise': '多数人相信它。', 'kind': 'explicit'}]}, "
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "ANSWER_PUBLISHED",
+ "FINAL_ANSWER": "## 一、先还原论证骨架\n\n这句话表面上只有一句话，但它是一个压缩的推理，展开后是：\n\n- 显式前提：多数人相信 P。\n- 隐含前提（被省略的桥接）：**凡多数人相信的，就是真的**（或至少：多数人的相信是 P 为真的可靠指标）。\n- 结论：P 是真的。\n\n真正承重的不是你看到的那半句，而是那条**没有被说出口的桥接前提**。多数人相信 P 是一个关于\"信念如何分布\"的经验事实；P 为真是关于\"命题与事实关系\"的判断。这是两个不同层面的东西，从前者滑到后者，中间必须架一座桥——而这个论证的全部力量（和全部问题）都藏在这座未经承认的桥上。\n\n## 二、为什么作为推理它不成立\n\n这是典型的**诉诸多数 / 诉诸群众**谬误（argumentum ad populum，appeal to popularity）。\n\n最直接的检验是反例：历史上多数人曾相信太阳绕地球转、相信某些族群天生低劣、相信地球是平的。信念的流行度与被相信命题的真假，是两个相互独立的量；人数多寡不改变命题与事实是否相符。一个命题不会因为投票而变得更真，也不会因为无人相信而变假——\"2+2=4\"在你和所有人都不相信它时依然成立。\n\n比\"举反例\"更根本的批评是**相关性**：多数人的相信要能支持\"真\"，得先证明多数人的信念是经由可靠机制形成的。但这句论证恰恰把这一点当作理所当然，从未论证。它悄悄把\"流行\"当成了\"可靠\"，这就是最薄弱的一步。\n\n## 三、但不要急着贴标签——前提是\"多数相信\"到底在起什么作用\n\n谬误标签容易让人收工太快。更值得追问的是：这里的\"真\"是哪一种\"真\"？至少要分两类命题：\n\n**（1）描述性命题**（\"水在 100℃ 沸腾\"\"某历史事件发生过\"）——真值由世界决定，与多少人相信无关。此时\"多数相信→为真\"是无效推理，多数意见至多是**一条弱的经验证据**（下面第四节）。\n\n**（2）建构性 / 约定性命题**（\"这张纸是钱\"\"这一步棋是合法的\"\"这个手势在我们的共同体里表示同意\"）——这类\"真\"恰恰**构成于**集体承认。当多数人接受某物为货币时，它确实就成了货币。但要注意：这里\"多数相信\"起的不是证据作用，而是**构成作用**——它不是\"证明\"了命题为真，而是它所谈论的对象本身就是被集体态度建构出来的。\n\n混淆这两类，是这个论证最深的陷阱：它在描述性领域偷偷借用建构性领域的模式。一个方便的判据是问：**如果所有人都反过来相信，这个命题会不会跟着翻转？**货币会，重力不会。\n\n## 四、把它降格为\"证据\"而非\"证明\"\n\n多数意见也不是一文不值。社会认识论里有一种思路（如陪审团定理式的论证：若每个个体独立判断且正确率高于随机，多数意见会趋于正确），会给\"多数\"一个有限度的认识论地位——但这依赖两个强条件：**个体判断的独立性**与**个体可靠性**。现实里这两条常被打破（信息瀑布、从众、回音室、系统性偏见），\"多数\"可能只是同一个错误的多次复制，而非多个独立证据的叠加。\n\n所以正确的处理是把这句话从\"证明\"降为\"一个需要另行检验的、脆弱的指示性证据\"——它可能值得当作线索去查，但绝不构成结论。\n\n## 五、对称的谬误\n\n顺带点出：它的镜像——\"只有少数人相信/只有精英相信，所以它是真的\"——同样无效。诉诸少数和诉诸多数是一枚硬币的两面，都跳过了\"为什么这批人的相信与真相关\"这一步。\n\n## 六、与\"共识论真理观\"的区别（概念清理）\n\n需要澄清：承认\"某些真由共识构成\"，不等于接受\"共识论真理观\"。后者是关于\"真理本质上是什么\"的哲学立场（大致主张真与理想化的、经受住探究检验的一致意见相关），它的典型版本谈的是**理想条件下最终会收敛的共识**，而不是当下多数人的实际意见——这恰恰是为了避开\"多数即真\"的粗糙版本。所以即使你同情某种共识论，也不能直接为\"多数人相信所以真\"背书。（这一层涉及真理理论之争，我此处是按通常理解转述，未做原典核验。）\n\n## 七、小结\n\n- **作为证明**：无效。它犯了诉诸多数的谬误，缺一条未经辩护的桥接前提。\n- **作为证据**：在满足独立性与可靠性的特定条件下，多数意见可算一条很弱的线索，但需另行检验，且随时可能被更强的证据推翻。\n- **作为特例**：对建构性命题，\"多数接受\"可以具有构成性作用——但这是因为它谈论的对象是被建构的，不是因为\"人多即真\"。\n\n一个留给你的问题：**你是在什么地方遇到这句话的？** 它多半不是在为某个经验事实辩护，而是在为一个约定、一种习俗或一个群体规范辩护——而恰恰是这种场合，最容易让人把\"我们大家都这样，所以它对\"误当成\"这是真的\"。看清命题属于哪一类，比争论有多少人相信更要紧。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "这是一道典型的逻辑分析题：核心在于识别论证中被省略的\"桥接前提\"，并判断它是否成立。我准备先用论证分析工具梳理其逻辑骨架（结论、显隐前提、谬误定位、最薄弱环节），再在此基础上展开更深一层的哲学辨析——因为\"多数相信\"与\"为真\"之间的关系远不止一个谬误标签那么简单，还牵涉符合论与共识论真理观、约定/建构性真理的区分。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "analyze_argument"
+  },
+  {
+   "kind": "tool",
+   "name": "analyze_argument",
+   "phase": "executed",
+   "args": {
+    "text": "多数人相信它，所以它是真的。"
+   },
+   "result_head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '它是真的。', 'premises': [{'premise': '多数人相信它。', 'kind': 'explicit'}]}, "
+  }
+ ],
+ "declarations": [],
+ "blocked_codes": [],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 26270,
+   "output_tokens": 4022,
+   "total_tokens": 30292
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12061,
+     "output_tokens": 1995,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 14209,
+     "output_tokens": 2027,
+     "tool_chars_added": 312
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1950,
+ "token_usage": {
+  "input_tokens": 26270,
+  "output_tokens": 4022,
+  "total_tokens": 30292
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 39.6,
+ "tool_calls_full": [
+  {
+   "name": "analyze_argument",
+   "args": {
+    "text": "多数人相信它，所以它是真的。"
+   },
+   "result_summary": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '它是真的。', 'premises': [{'premise': '多数人相信它。', 'kind': 'explicit'}]}, ",
+   "thought": "执行 analyze_argument",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "analyze_argument",
+   "args": {
+    "text": "多数人相信它，所以它是真的。"
+   },
+   "result_full": {
+    "kind": "argument_structure",
+    "summary": "论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议",
+    "confidence": 0.7,
+    "argument": {
+     "conclusion": "它是真的。",
+     "premises": [
+      {
+       "premise": "多数人相信它。",
+       "kind": "explicit"
+      }
+     ]
+    },
+    "reasoning_authority": "MAIN_AGENT",
+    "presentation_hint": "结构化中间产物——主 Agent 按用户指令重排（如'先最致命问题, 再加强方法'）, 不照搬编号模板"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 0
+}

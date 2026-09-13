@@ -1,0 +1,167 @@
+{
+ "case_id": "A03",
+ "section": "A",
+ "expected_class": "NONE",
+ "expected_retrieval_calls": 0,
+ "max_retrieval_calls": null,
+ "question": "“所有人都这么做，所以这么做就是合理的。”哪里有问题？",
+ "injection": null,
+ "QUESTION": "“所有人都这么做，所以这么做就是合理的。”哪里有问题？",
+ "PUBLIC_WORK_NOTE": [
+  "这是一个逻辑谬误分析问题。我可以直接拆解其结构，但也调用论证分析工具来获取结构化的脚手架，再结合分析综合作答。"
+ ],
+ "RESEARCH_NEED": null,
+ "EVIDENCE_GAP": null,
+ "TOOL_SELECTED": [
+  "analyze_argument"
+ ],
+ "TOOL_ARGS": {
+  "analyze_argument": [
+   {
+    "text": "所有人都这么做，所以这么做就是合理的。"
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "analyze_argument",
+   "args": {
+    "text": "所有人都这么做，所以这么做就是合理的。"
+   },
+   "phase": "executed",
+   "result_head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '', 'premises': [], 'hidden_assumptions': [], 'fallacies': [], 'weak"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "analyze_argument",
+   "head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '', 'premises': [], 'hidden_assumptions': [], 'fallacies': [], 'weak"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "ANSWER_PUBLISHED",
+ "FINAL_ANSWER": "工具没有返回可用的结构，正好——这是个经典的逻辑诊断，我来直接拆解。这属于逻辑方法与谬误分析，不需要查原典，凭论证分析本身即可判断。\n\n## 这句推理的病灶在哪里\n\n先把它还原成一个完整的论证：\n\n- **前提（显性）**：所有人都这么做。（描述性陈述，讲\"是什么\"）\n- **结论**：这么做就是合理的。（规范性陈述，讲\"应当/有理\"）\n\n问题不在前提的真假，而在这个推理**从前提跨到结论的那一步**。具体分层看：\n\n### 一、逻辑层面：一个被藏起来的、可疑的大前提\n\n这段推理要成立，必须补一个隐含大前提:\n\n凡多数人做的事都算合理之事。需要说明的是，这是我为使该推理形式有效而重构出来的隐含前提，属于我自己的转述与概括，并非引自任何文本的原文措辞。\n\n补上它，推理才形式有效；但恰恰这个大前提本身是**假的或未经证明的**——它正是全部争议所在。一个论证把自己的结论悄悄塞进了隐含前提，就等于没有真正证明任何东西。这就是经典的**诉诸大众（argumentum ad populum）**谬误，与\"诉诸传统\"\"诉诸权威\"同属一族：用\"有多少人相信/做\"来代替\"这件事本身为何成立\"。\n\n顺带，前提里那个\"**所有人**\"也经不起检验：经验上几乎没有多少行为真做到\"所有人\"都做，它往往只是\"我周围不少人做\"的夸大。\n\n### 二、认识论层面：从\"是\"跳到\"应当\"\n\n即便退一步，承认\"绝大多数人确实这么做\"，也仍然推不出\"这么做合理\"。\n\n这里隔着一道**描述与规范之间的鸿沟**：事实层面的\"大家都做 X\"不蕴含规范层面的\"X 值得做/应当做\"。休谟在《人性论》里指出过，从\"是\"（is）到\"应当\"（ought）的过渡需要一个额外的说明，不能径直滑过去（此处为转述，非逐字引用）。多数人的行为最多能解释**你为什么会跟着做**（动机理由：怕被排斥、图省事），却不构成**这件事值得做的证成理由**（justifying reason）。把\"动机\"误当成\"理由\"，是这类推理最深的错误。\n\n### 三、语义层面：\"合理\"是个滑动的词\n\n结论里的\"合理\"有歧义，两种读法都救不了它：\n\n- 若\"合理\"= **合乎理性、有正当理由** → 从众推不出（见上）。\n- 若\"合理\"= **合乎社会惯例、大家能接受** → 那么\"大家都做 ≈ 大家都接受 ≈ 合乎惯例\"，结论不过是把前提换了个说法，沦为**循环论证**，不再提供任何新信息。\n\n含混的\"合理\"让这句话显得像有道理，实则是在两种意思之间来回滑动。\n\n### 四、反例与它勉强能站住的那一角\n\n历史上\"所有人都这么做\"的事后来被判定不合理，例子比比皆是：奴隶制、裹脚、地心说都曾近乎\"人人如此\"。这说明**多数性不是可靠性的可靠指标**——多数人可能同样共享一个盲区（幸存者偏差、信息级联、从众压力都会放大这个盲区）。\n\n不过要公平地说，**在极有限的情形下，\"很多人都这么做\"确实能当作一种弱证据**：当这些人是**各自独立**地这么做、且**各自都有能力判断**、且**都因此受益**时，多数就变成了\"许多独立成功经验\"的汇总（可称为一种\"聚拢证据\"）。这时它有效的不是\"人多\"，而是\"独立证据多\"。日常的\"大家都这么做\"几乎从不满足这些条件，所以它大多时候不是在汇总证据，而是在**施加社会压力**。\n\n## 修复它的办法\n\n把这句话换成真正有论证力的版本，至少要做三件事之一：\n\n1. **给出这件事本身的理由**：\"这么做能（达到某个可辩护的目的），因为……\"——直接诉诸理由，而非人数。\n2. **限定多数性的证据条件**：明确是谁、多少人、是否独立、是否有能力判断，再把\"那么多人都受益\"当证据用。\n3. **说清\"合理\"指什么**：是理性上站得住，还是仅仅\"社会能接受\"？两者要分开。\n\n## 一个反问留给你\n\n如果\"人多\"能让一件事变得合理，那么只要足够多的人一起做一件明显荒谬的事，它就会立刻变成合理的吗？——**如果不会**，那你其实已经承认：使行为合理的东西是**别的理由**，\"大家都做\"顶多是你发现那些理由的一条线索，而不是理由本身。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "这是一个逻辑谬误分析问题。我可以直接拆解其结构，但也调用论证分析工具来获取结构化的脚手架，再结合分析综合作答。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "analyze_argument"
+  },
+  {
+   "kind": "tool",
+   "name": "analyze_argument",
+   "phase": "executed",
+   "args": {
+    "text": "所有人都这么做，所以这么做就是合理的。"
+   },
+   "result_head": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '', 'premises': [], 'hidden_assumptions': [], 'fallacies': [], 'weak"
+  }
+ ],
+ "declarations": [],
+ "blocked_codes": [],
+ "injection_fired": 0,
+ "discipline": {
+  "active_class": null,
+  "evidence_gap": "",
+  "gap_filled": false,
+  "declarations": [],
+  "extensions": [],
+  "retrieval_executed": 0,
+  "soft_limit": 0,
+  "blocked_calls": [],
+  "blocked_codes": [],
+  "token_usage": {
+   "input_tokens": 38409,
+   "output_tokens": 3297,
+   "total_tokens": 41706
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 0,
+   "compacted_chars_saved": 0,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12061,
+     "output_tokens": 373,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 12598,
+     "output_tokens": 2160,
+     "tool_chars_added": 374
+    },
+    {
+     "round": 3,
+     "input_tokens": 13750,
+     "output_tokens": 764,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 0,
+  "verified_exact": 0,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": false,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 1713,
+ "token_usage": {
+  "input_tokens": 38409,
+  "output_tokens": 3297,
+  "total_tokens": 41706
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 31.7,
+ "tool_calls_full": [
+  {
+   "name": "analyze_argument",
+   "args": {
+    "text": "所有人都这么做，所以这么做就是合理的。"
+   },
+   "result_summary": "{'kind': 'argument_structure', 'summary': '论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议', 'confidence': 0.7, 'argument': {'conclusion': '', 'premises': [], 'hidden_assumptions': [], 'fallacies': [], 'weak",
+   "thought": "执行 analyze_argument",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "analyze_argument",
+   "args": {
+    "text": "所有人都这么做，所以这么做就是合理的。"
+   },
+   "result_full": {
+    "kind": "argument_structure",
+    "summary": "论证的逻辑结构脚手架: 结论/前提(显隐)/隐含假设/谬误/最薄弱一步/补强建议",
+    "confidence": 0.7,
+    "argument": {
+     "conclusion": "",
+     "premises": [],
+     "hidden_assumptions": [],
+     "fallacies": [],
+     "weakest_point": "",
+     "strengthening": [
+      "结构化生成失败——请主 Agent 直接拆解"
+     ]
+    },
+    "reasoning_authority": "MAIN_AGENT",
+    "presentation_hint": "结构化中间产物——主 Agent 按用户指令重排（如'先最致命问题, 再加强方法'）, 不照搬编号模板"
+   }
+  }
+ ],
+ "retrieval_calls_executed": 0
+}

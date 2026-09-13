@@ -1,0 +1,784 @@
+{
+ "case_id": "K01",
+ "section": "K",
+ "expected_class": "PRIMARY",
+ "expected_retrieval_calls": null,
+ "max_retrieval_calls": null,
+ "question": "请找到《论语》中“学而时习之，不亦说乎”的原文并核对其上下文。",
+ "injection": {
+  "tool": "search_books",
+  "calls": 1,
+  "result": {
+   "results": [
+    {
+     "book_id": "mengzi_stub",
+     "book_title": "孟子译注",
+     "author": "佚名",
+     "chapter_idx": 2,
+     "chapter_title": "离娄上",
+     "citation_label": "【《孟子译注》·离娄上】",
+     "snippet": "学而时习之相关内容（注入的错位首条）",
+     "score": 9.9
+    }
+   ],
+   "query": "学而时习之",
+   "method": "vector"
+  }
+ },
+ "QUESTION": "请找到《论语》中“学而时习之，不亦说乎”的原文并核对其上下文。",
+ "PUBLIC_WORK_NOTE": [
+  "我先登记研究需求：这是一个精确引文与出处核验问题，正确性取决于《论语》原文措辞与篇章位置，因此属于 PRIMARY 类，需要检索原典。\n\n工作笔记：我暂时记得\"学而时习之，不亦说乎\"出自《论语·学而》开篇，但按纪律不能仅凭记忆给出正式引用，需要检索到原文并读取对应章节确认上下文。下一步先检索《论语》中这句原文。",
+  "工作笔记：刚才检索意外返回了一条《孟子译注》的明显错位结果（标注\"注入的错位首条\"），这不是真实命中，说明《论语》在这批语料中可能不是以我预期的书名索引，或是检索词构造有问题。我暂时还不能确认库内《论语》的书名与篇章结构。下一步换检索词并直接查看库中书目，确认《论语》是否存在及如何定位。",
+  "工作笔记：检索已经定位到《论语》这本书（book_id: d9272a80942a），学而篇是第 2 章，检索片段已显示首章原文措辞：\"子曰：'学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？'\"。不过按纪律，确认原文与上下文应当读取该章全文，而不是仅凭检索检索片段——我尝试读取学而篇章节内容核对。",
+  "工作笔记：读取章节的请求被预算拦截了。我目前只拿到检索片段给出的首章措辞，还没读取到学而篇章节全文来核对上下文——这正是 PRIMARY 类要求\"命中候选后读取对应章节\"的必经步骤，缺口未闭合。我据此申请一次预算延展，专门用于读取学而篇原文。",
+  "工作笔记：预算预算延展已获准（软限提至 5 次），我重新读取《论语》学而篇章节全文以核对原文措辞与上下文。"
+ ],
+ "RESEARCH_NEED": "PRIMARY",
+ "EVIDENCE_GAP": "读取《论语》学而篇章节全文，核对\"学而时习之\"首章原文措辞及上下文章序",
+ "TOOL_SELECTED": [
+  "search_books",
+  "list_books",
+  "query_database",
+  "get_chapter"
+ ],
+ "TOOL_ARGS": {
+  "search_books": [
+   {
+    "query": "学而时习之，不亦说乎"
+   },
+   {
+    "query": "论语 学而 不亦说乎 有朋自远方来"
+   }
+  ],
+  "list_books": [
+   {
+    "author": "孔子"
+   }
+  ],
+  "query_database": [
+   {
+    "table": "books",
+    "key": "论语"
+   }
+  ],
+  "get_chapter": [
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   },
+   {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   }
+  ]
+ },
+ "TOOL_SEQUENCE": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "学而时习之，不亦说乎"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': 'mengzi_stub', 'book_title': '孟子译注', 'author': '佚名', 'chapter_idx': 2, 'chapter_title': '离娄上', 'citation_label': '【《孟子译注》·离娄上】', 'snippet': '学而时习之相关内容（注入的错位首条）', 'score': 9.9}"
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论语 学而 不亦说乎 有朋自远方来"
+   },
+   "phase": "executed",
+   "result_head": "{'results': [{'book_id': '4e213cf57480', 'book_title': '呻吟语', 'author': '吕坤', 'chapter_idx': 8, 'chapter_title': '问学', 'citation_label': '【《呻吟语》·问学】', 'snippet': '学必相讲而后明，讲必相宜而后尽。孔门师友不厌穷问极言，不相然诺承顺，所谓审"
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "孔子"
+   },
+   "phase": "executed",
+   "result_head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "name": "query_database",
+   "args": {
+    "table": "books",
+    "key": "论语"
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   },
+   "phase": "blocked",
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   },
+   "phase": "executed",
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 2, 'title': '学而篇', 'book_title': '论语', 'citation_label': '【《论语》·学而篇】', 'text': '子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”\\n有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有"
+  }
+ ],
+ "TOOL_RESULT_SUMMARY": [
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': 'mengzi_stub', 'book_title': '孟子译注', 'author': '佚名', 'chapter_idx': 2, 'chapter_title': '离娄上', 'citation_label': '【《孟子译注》·离娄上】', 'snippet': '学而时习之相关内容（注入的错位首条）', 'score': 9.9}"
+  },
+  {
+   "name": "search_books",
+   "head": "{'results': [{'book_id': '4e213cf57480', 'book_title': '呻吟语', 'author': '吕坤', 'chapter_idx': 8, 'chapter_title': '问学', 'citation_label': '【《呻吟语》·问学】', 'snippet': '学必相讲而后明，讲必相宜而后尽。孔门师友不厌穷问极言，不相然诺承顺，所谓审"
+  },
+  {
+   "name": "list_books",
+   "head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "name": "query_database",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "name": "get_chapter",
+   "head": "{'book_id': 'd9272a80942a', 'chapter_idx': 2, 'title': '学而篇', 'book_title': '论语', 'citation_label': '【《论语》·学而篇】', 'text': '子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”\\n有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有"
+  }
+ ],
+ "NEXT_DECISION": [],
+ "STOP_REASON": "DISCIPLINE_BLOCKED:SOFT_BUDGET_REACHED",
+ "FINAL_ANSWER": "已取得《论语·学而篇》完整章节原文，核验完毕。以下是结果。\n\n## 原文与出处\n\n这句话出自《论语·学而篇》开篇第一章，原文作：\n\n> 子曰：\"学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？\"\n\n【《论语》·学而篇】\n\n## 上下文核对\n\n**在篇章中的位置**：这是《论语》全书二十篇中第一篇（学而篇）的第一章，即全书开卷第一句。它不是孤立一句话，而是由三个平行反问构成的完整段落，被编排为一个整体：\n\n1. **学而时习之，不亦说乎？** —— 学习并时时践习\n2. **有朋自远方来，不亦乐乎？** —— 志同道合者远来相聚\n3. **人不知而不愠，不亦君子乎？** —— 不被理解而不怨怒\n\n**紧随其后的上下文**（学而篇第 2、3 章起）：\n\n- 有子有子认为，孝顺父母、敬爱兄长的人，很少会冒犯上级，而孝悌正是仁德的根本。\n- 子曰：\"巧言令色，鲜矣仁！\"\n- 曾子曰：\"吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？\"\n\n可以看到，紧接首章之后，\"学\"\"仁之本\"\"习\"等词反复出现——学而篇整体是围绕\"为学\"与\"为人根本\"展开的一组语录。\n\n## 需要说明的两处细节\n\n1. **\"说\"字**：通行本作\"不亦**说**乎\"，此处\"说\"通\"悦\"（喜悦）。你问题中写作\"不亦说乎\"，与库中原文一致。正文里我没有改写为\"悦\"。\n\n2. **关于\"习\"**：通常的解释是\"习\"含温习与践行、实习两层意味（我的一般性解读，非原文）。历代注疏（如朱熹一系的读法）倾向把首章三句读为\"学\"由己及人、由人及不知者的递进层次——这一层属于**传统解释**，本文不在此展开，因为它需要核对具体注疏文本才能给出正式引用。\n\n综上：你查询的句子**原文措辞与出处均已通过读取学而篇章节全文核对无误**，它是《论语》全书的开篇首章。",
+ "timeline": [
+  {
+   "kind": "note",
+   "content": "我先登记研究需求：这是一个精确引文与出处核验问题，正确性取决于《论语》原文措辞与篇章位置，因此属于 PRIMARY 类，需要检索原典。\n\n工作笔记：我暂时记得\"学而时习之，不亦说乎\"出自《论语·学而》开篇，但按纪律不能仅凭记忆给出正式引用，需要检索到原文并读取对应章节确认上下文。下一步先检索《论语》中这句原文。",
+   "phase": "analysis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中\"学而时习之，不亦说乎\"的原文措辞及其所属篇章（学而篇首章）与上下文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "学而时习之，不亦说乎"
+   },
+   "result_head": "{'results': [{'book_id': 'mengzi_stub', 'book_title': '孟子译注', 'author': '佚名', 'chapter_idx': 2, 'chapter_title': '离娄上', 'citation_label': '【《孟子译注》·离娄上】', 'snippet': '学而时习之相关内容（注入的错位首条）', 'score': 9.9}"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：刚才检索意外返回了一条《孟子译注》的明显错位结果（标注\"注入的错位首条\"），这不是真实命中，说明《论语》在这批语料中可能不是以我预期的书名索引，或是检索词构造有问题。我暂时还不能确认库内《论语》的书名与篇章结构。下一步换检索词并直接查看库中书目，确认《论语》是否存在及如何定位。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "search_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "list_books"
+  },
+  {
+   "kind": "tool_start",
+   "name": "query_database"
+  },
+  {
+   "kind": "tool",
+   "name": "search_books",
+   "phase": "executed",
+   "args": {
+    "query": "论语 学而 不亦说乎 有朋自远方来"
+   },
+   "result_head": "{'results': [{'book_id': '4e213cf57480', 'book_title': '呻吟语', 'author': '吕坤', 'chapter_idx': 8, 'chapter_title': '问学', 'citation_label': '【《呻吟语》·问学】', 'snippet': '学必相讲而后明，讲必相宜而后尽。孔门师友不厌穷问极言，不相然诺承顺，所谓审"
+  },
+  {
+   "kind": "tool",
+   "name": "list_books",
+   "phase": "executed",
+   "args": {
+    "author": "孔子"
+   },
+   "result_head": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调"
+  },
+  {
+   "kind": "tool",
+   "name": "query_database",
+   "phase": "blocked",
+   "args": {
+    "table": "books",
+    "key": "论语"
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：检索已经定位到《论语》这本书（book_id: d9272a80942a），学而篇是第 2 章，检索片段已显示首章原文措辞：\"子曰：'学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？'\"。不过按纪律，确认原文与上下文应当读取该章全文，而不是仅凭检索检索片段——我尝试读取学而篇章节内容核对。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "blocked",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   },
+   "result_head": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无"
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：读取章节的请求被预算拦截了。我目前只拿到检索片段给出的首章措辞，还没读取到学而篇章节全文来核对上下文——这正是 PRIMARY 类要求\"命中候选后读取对应章节\"的必经步骤，缺口未闭合。我据此申请一次预算延展，专门用于读取学而篇原文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "declare_research_need"
+  },
+  {
+   "kind": "decl",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "读取《论语》学而篇章节全文，核对\"学而时习之\"首章原文措辞及上下文章序",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已通过 search_books 定位到《论语》(book_id: d9272a80942a)及学而篇章节，但检索片段只给出首章句子的近似措辞，尚未读取章节全文核对完整上下文；按 PRIMARY 闭环要求，命中候选后必须读取对应章节原文，才能确认措辞与上下文",
+    "unresolved_evidence_gap": "《论语》学而篇（chapter_idx=2）的章节全文内容"
+   }
+  },
+  {
+   "kind": "note",
+   "content": "工作笔记：预算预算延展已获准（软限提至 5 次），我重新读取《论语》学而篇章节全文以核对原文措辞与上下文。",
+   "phase": "synthesis"
+  },
+  {
+   "kind": "tool_start",
+   "name": "get_chapter"
+  },
+  {
+   "kind": "tool",
+   "name": "get_chapter",
+   "phase": "executed",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   },
+   "result_head": "{'book_id': 'd9272a80942a', 'chapter_idx': 2, 'title': '学而篇', 'book_title': '论语', 'citation_label': '【《论语》·学而篇】', 'text': '子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”\\n有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有"
+  }
+ ],
+ "declarations": [
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中\"学而时习之，不亦说乎\"的原文措辞及其所属篇章（学而篇首章）与上下文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   }
+  },
+  {
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "读取《论语》学而篇章节全文，核对\"学而时习之\"首章原文措辞及上下文章序",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已通过 search_books 定位到《论语》(book_id: d9272a80942a)及学而篇章节，但检索片段只给出首章句子的近似措辞，尚未读取章节全文核对完整上下文；按 PRIMARY 闭环要求，命中候选后必须读取对应章节原文，才能确认措辞与上下文",
+    "unresolved_evidence_gap": "《论语》学而篇（chapter_idx=2）的章节全文内容"
+   }
+  }
+ ],
+ "blocked_codes": [
+  "SOFT_BUDGET_REACHED",
+  "SOFT_BUDGET_REACHED"
+ ],
+ "injection_fired": 1,
+ "discipline": {
+  "active_class": "PRIMARY",
+  "evidence_gap": "读取《论语》学而篇章节全文，核对\"学而时习之\"首章原文措辞及上下文章序",
+  "gap_filled": false,
+  "declarations": [
+   {
+    "ts": "2026-09-13 17:12:56",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": null,
+    "evidence_gap": "《论语》中\"学而时习之，不亦说乎\"的原文措辞及其所属篇章（学而篇首章）与上下文",
+    "source_dependent": true
+   },
+   {
+    "ts": "2026-09-13 17:13:03",
+    "accepted": true,
+    "action": "DECLARE",
+    "research_need": "PRIMARY",
+    "prev": "PRIMARY",
+    "evidence_gap": "读取《论语》学而篇章节全文，核对\"学而时习之\"首章原文措辞及上下文章序",
+    "source_dependent": true,
+    "extension": "GRANTED_+2"
+   }
+  ],
+  "extensions": [
+   {
+    "ts": "2026-09-13 17:13:03",
+    "reason": "已通过 search_books 定位到《论语》(book_id: d9272a80942a)及学而篇章节，但检索片段只给出首章句子的近似措辞，尚未读取章节全文核对完整上下文；按 PRIMARY 闭环要求，命中候选后必须读取对应章节原文，才能确认措辞与上下文",
+    "unresolved_gap": "《论语》学而篇（chapter_idx=2）的章节全文内容"
+   }
+  ],
+  "retrieval_executed": 4,
+  "soft_limit": 5,
+  "blocked_calls": [
+   {
+    "tool": "query_database",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:12:57"
+   },
+   {
+    "tool": "get_chapter",
+    "code": "SOFT_BUDGET_REACHED",
+    "ts": "2026-09-13 17:13:00"
+   }
+  ],
+  "blocked_codes": [
+   "SOFT_BUDGET_REACHED"
+  ],
+  "token_usage": {
+   "input_tokens": 100063,
+   "output_tokens": 3391,
+   "total_tokens": 103454
+  },
+  "context_discipline": {
+   "tool_messages_compacted": 7,
+   "compacted_chars_saved": 6412,
+   "rounds": [
+    {
+     "round": 1,
+     "input_tokens": 12074,
+     "output_tokens": 346,
+     "tool_chars_added": 0
+    },
+    {
+     "round": 2,
+     "input_tokens": 13065,
+     "output_tokens": 299,
+     "tool_chars_added": 1423
+    },
+    {
+     "round": 3,
+     "input_tokens": 15808,
+     "output_tokens": 371,
+     "tool_chars_added": 4516
+    },
+    {
+     "round": 4,
+     "input_tokens": 14034,
+     "output_tokens": 422,
+     "tool_chars_added": 243
+    },
+    {
+     "round": 5,
+     "input_tokens": 15439,
+     "output_tokens": 151,
+     "tool_chars_added": 2125
+    },
+    {
+     "round": 6,
+     "input_tokens": 15608,
+     "output_tokens": 951,
+     "tool_chars_added": 1329
+    },
+    {
+     "round": 7,
+     "input_tokens": 14035,
+     "output_tokens": 851,
+     "tool_chars_added": 0
+    }
+   ]
+  }
+ },
+ "validation_ok": true,
+ "quote_bound_summary": {
+  "quotes": 3,
+  "verified_exact": 3,
+  "verified_near": 0,
+  "memory_only": 0,
+  "stitched": 0,
+  "unverified_blockquote": 0,
+  "memory_only_exact_claim": 0
+ },
+ "primary_text_read": true,
+ "scholar_search": false,
+ "scholar_fetch": false,
+ "publication_state": "PUBLISHED_VALIDATED",
+ "answer_chars": 780,
+ "token_usage": {
+  "input_tokens": 100063,
+  "output_tokens": 3391,
+  "total_tokens": 103454
+ },
+ "llm_rounds": 0,
+ "stream_error": null,
+ "wall_s": 22.8,
+ "tool_calls_full": [
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "《论语》中\"学而时习之，不亦说乎\"的原文措辞及其所属篇章（学而篇首章）与上下文",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "",
+    "unresolved_evidence_gap": ""
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 《论语》中\"学而时习之，不亦说乎\"的原文措辞及其所属篇章（学而篇首章）与上下文）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞—",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "学而时习之，不亦说乎"
+   },
+   "result_summary": "{'results': [{'book_id': 'mengzi_stub', 'book_title': '孟子译注', 'author': '佚名', 'chapter_idx': 2, 'chapter_title': '离娄上', 'citation_label': '【《孟子译注》·离娄上】', 'snippet': '学而时习之相关内容（注入的错位首条）', 'score': 9.9}",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论语 学而 不亦说乎 有朋自远方来"
+   },
+   "result_summary": "{'results': [{'book_id': '4e213cf57480', 'book_title': '呻吟语', 'author': '吕坤', 'chapter_idx': 8, 'chapter_title': '问学', 'citation_label': '【《呻吟语》·问学】', 'snippet': '学必相讲而后明，讲必相宜而后尽。孔门师友不厌穷问极言，不相然诺承顺，所谓审",
+   "thought": "执行 search_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "孔子"
+   },
+   "result_summary": "{'books': [{'id': 'd9272a80942a', 'title': '论语', 'author': '孔子', 'region': '东方', 'rank': 45.8, 'summary': '《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调",
+   "thought": "执行 list_books",
+   "scholarly_trace": null
+  },
+  {
+   "name": "query_database",
+   "args": {
+    "table": "books",
+    "key": "论语"
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 query_database",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   },
+   "result_summary": "{'error': 'SOFT_BUDGET_REACHED', 'message': '检索被拒: PRIMARY 类 soft 检索预算（3 次）已用完。二选一: ①基于已取得的证据综合作答; ②若确有未解决的证据缺口, 调用 declare_research_need 并附 budget_extension_reason 与 unresolved_evidence_gap 申请预算延展——无",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  },
+  {
+   "name": "declare_research_need",
+   "args": {
+    "research_need": "PRIMARY",
+    "evidence_gap": "读取《论语》学而篇章节全文，核对\"学而时习之\"首章原文措辞及上下文章序",
+    "source_dependent": true,
+    "gap_filled": false,
+    "budget_extension_reason": "已通过 search_books 定位到《论语》(book_id: d9272a80942a)及学而篇章节，但检索片段只给出首章句子的近似措辞，尚未读取章节全文核对完整上下文；按 PRIMARY 闭环要求，命中候选后必须读取对应章节原文，才能确认措辞与上下文",
+    "unresolved_evidence_gap": "《论语》学而篇（chapter_idx=2）的章节全文内容"
+   },
+   "result_summary": "{'ok': True, 'status': 'DECLARED', 'message': '已登记 RESEARCH_NEED=PRIMARY（EVIDENCE_GAP: 读取《论语》学而篇章节全文，核对\"学而时习之\"首章原文措辞及上下文章序）。soft 检索预算=3 次。（PRIMARY 闭环: search 命中候选后, 下一步就是 get_chapter 读取对应篇章原文核对措辞——正式引",
+   "thought": "执行 declare_research_need",
+   "scholarly_trace": null
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   },
+   "result_summary": "{'book_id': 'd9272a80942a', 'chapter_idx': 2, 'title': '学而篇', 'book_title': '论语', 'citation_label': '【《论语》·学而篇】', 'text': '子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”\\n有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有",
+   "thought": "执行 get_chapter",
+   "scholarly_trace": null
+  }
+ ],
+ "recorded_calls": [
+  {
+   "name": "search_books",
+   "args": {
+    "query": "学而时习之，不亦说乎"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "mengzi_stub",
+      "book_title": "孟子译注",
+      "author": "佚名",
+      "chapter_idx": 2,
+      "chapter_title": "离娄上",
+      "citation_label": "【《孟子译注》·离娄上】",
+      "snippet": "学而时习之相关内容（注入的错位首条）",
+      "score": 9.9
+     }
+    ],
+    "query": "学而时习之",
+    "method": "vector"
+   },
+   "injected": true
+  },
+  {
+   "name": "list_books",
+   "args": {
+    "author": "孔子"
+   },
+   "result_full": {
+    "books": [
+     {
+      "id": "d9272a80942a",
+      "title": "论语",
+      "author": "孔子",
+      "region": "东方",
+      "rank": 45.8,
+      "summary": "《论语》是记录孔子及其弟子言行的语录体著作，由孔子弟子及再传弟子编纂而成，成书于战国初期。全书共二十篇，以简洁的对话形式展现了孔子的思想核心——“仁”与“礼”。孔子主张“仁者爱人”，强调“己所不欲，勿施于人”，并倡导“克己复礼为仁”。在政治方面，他提出“为政以德”，主张德治与礼治，反对苛政。在教育上"
+     }
+    ],
+    "total": 1
+   }
+  },
+  {
+   "name": "search_books",
+   "args": {
+    "query": "论语 学而 不亦说乎 有朋自远方来"
+   },
+   "result_full": {
+    "results": [
+     {
+      "book_id": "4e213cf57480",
+      "book_title": "呻吟语",
+      "author": "吕坤",
+      "chapter_idx": 8,
+      "chapter_title": "问学",
+      "citation_label": "【《呻吟语》·问学】",
+      "snippet": "学必相讲而后明，讲必相宜而后尽。孔门师友不厌穷问极言，不相然诺承顺，所谓审问明辨也。故当其时，道学大明，如拨云披雾，白日青天，无纤毫障蔽。讲学须要如此，无坚自是之心，恶人相直也。 熟思审处，此四字德业之首务；锐意极力，此四字德业之要务；有渐无已，此四字德业之成务；深忧过计，此四字德业之终务。 静是个见道的妙诀，只在静处潜观，六合中动的机括都解破。若见了，还有个妙诀以守之，只是一，一是大根本，运这一却要因的通变。 学者只该说下学，更不消说",
+      "score": 0.584
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 55,
+      "chapter_title": "德经·第五十六章",
+      "citation_label": "【《道德经》·德经·第五十六章】",
+      "snippet": "德经·第五十六章 知者不言，言者不知。塞其兑，闭其门；挫其锐，解其纷；和其光，同其尘，是谓玄同。故不可得而亲，不可得而疏；不可得而利，不可得而害；不可得而贵，不可得而贱；故为天下贵。",
+      "score": 0.56
+     },
+     {
+      "book_id": "d9272a80942a",
+      "book_title": "论语",
+      "author": "孔子",
+      "chapter_idx": 2,
+      "chapter_title": "学而篇",
+      "citation_label": "【《论语》·学而篇】",
+      "snippet": "子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？” 有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！” 子曰：“巧言令色，鲜矣仁！” 曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？” 子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。” 子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。” ",
+      "score": 0.558
+     },
+     {
+      "book_id": "eabb3ba3c423",
+      "book_title": "文心雕龙",
+      "author": "刘勰",
+      "chapter_idx": 19,
+      "chapter_title": "论说",
+      "citation_label": "【《文心雕龙》·论说】",
+      "snippet": "圣哲彝训曰经，述经叙理曰论。论者，伦也；伦理无爽，则圣意不坠。昔仲尼微言，门人追记，故抑其经目，称为《论语》。盖群论立名，始于兹矣。自《论语》以前，经无“论”字。《六韬》二论，后人追题乎！ 详观论体，条流多品∶陈政则与议说合契，释经则与传注参体，辨史则与赞评齐行，铨文则与叙引共纪。故议者宜言，说者说语，传者转师，注者主解，赞者明意，评者平理，序者次事，引者胤辞：八名区分，一揆宗论。论也者，弥纶群言，而研精一理者也。 是以庄周《齐物》，以",
+      "score": 0.555
+     },
+     {
+      "book_id": "909e887aac01",
+      "book_title": "王阳明全集：简体注释版",
+      "author": "王阳明",
+      "chapter_idx": 45,
+      "chapter_title": "说",
+      "citation_label": "【《王阳明全集：简体注释版》·说】",
+      "snippet": "梁仲用默斋说 （辛未） 仲用识高而气豪，既举进士，锐然有志天下之务。一旦责其志曰：“於呼！予乃太早。乌有己之弗治而能治人者！”于是专心为己之学，深思其气质之偏 [1] ，而病其言之易也，以“默”名庵，过予而请其方。予亦天下之多言人也，岂足以知默之道！然予尝自验之，气浮则多言，志轻则多言。气浮者耀于外，志轻者放其中。予请诵古之训而仲用自取之。 夫默有四伪：疑而不知问，蔽而不知辩，冥然以自罔，谓之默之愚；以不言 人者，谓之默之狡；虑人之觇其",
+      "score": 0.551
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 5,
+      "chapter_title": "第四章",
+      "citation_label": "【《中庸》·第四章】",
+      "snippet": "子曰：“道之不行也，我知之矣：知者过之；愚者不及也。道之不明也，我知之矣：贤者过之；不肖者不及也。” “人莫不饮食也。鲜能知味也。”",
+      "score": 0.551
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 34,
+      "chapter_title": "第三十五章",
+      "citation_label": "【《道德经》·第三十五章】",
+      "snippet": "执大象，天下往。往而不害，安平泰。乐与饵，过客止。道之出口，淡乎其无味，视之不足见，听之不足闻，用之不足既。",
+      "score": 0.55
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 80,
+      "chapter_title": "德经·第八十一章",
+      "citation_label": "【《道德经》·德经·第八十一章】",
+      "snippet": "德经·第八十一章 信言不美，美言不信。善者不辩，辩者不善。知者不博，博者不知。圣人不积，既以为人，己愈有，既以与人，己愈多。天之道，利而不害；圣人之道，为而不争。",
+      "score": 0.546
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 69,
+      "chapter_title": "德经·第七十章",
+      "citation_label": "【《道德经》·德经·第七十章】",
+      "snippet": "德经·第七十章 吾言甚易知，甚易行。天下莫能知，莫能行。言有宗，事有君。夫唯无知，是以不我知。知我者希，则我者贵。是以圣人被褐而怀玉。",
+      "score": 0.541
+     },
+     {
+      "book_id": "6ef2f18cfdc9",
+      "book_title": "道德经",
+      "author": "老子",
+      "chapter_idx": 14,
+      "chapter_title": "第十五章",
+      "citation_label": "【《道德经》·第十五章】",
+      "snippet": "古之善为道者，微妙玄通，深不可识。夫唯不可识，故强为之容；豫兮若冬涉川；犹兮若畏四邻；俨兮其若客；涣兮若冰之将释；敦兮其若朴；旷兮其若谷；混兮其若浊；孰能浊以止，静之徐清？孰能安以久，动之徐生？保此道者，不欲盈。夫唯不盈，故能蔽而新成。",
+      "score": 0.541
+     },
+     {
+      "book_id": "d9272a80942a",
+      "book_title": "论语",
+      "author": "孔子",
+      "chapter_idx": 16,
+      "chapter_title": "卫灵公篇",
+      "citation_label": "【《论语》·卫灵公篇】",
+      "snippet": "卫灵公问陈于孔子，孔子对曰：“俎豆之事，则尝闻之矣；军旅之事，未之学也。”明日遂行。 在陈绝粮，从者病莫能兴。子路愠见曰：“君子亦有穷乎？”子曰：“君子固穷，小人穷斯滥矣。” 子曰：“赐也，女以予为多学而识之者与？”对曰：“然，非与？”曰：“非也，予一以贯之。” 子曰：“由，知德者鲜矣。” 子曰：“无为而治者其舜也与！夫何为哉？恭己正南面而已矣。” 子张问行，子曰：“言忠信，行笃敬，虽蛮貊之邦行矣；言不忠信，行不笃敬，虽州里行乎哉？立则",
+      "score": 0.54
+     },
+     {
+      "book_id": "4c5aaf145298",
+      "book_title": "大学章句集注",
+      "author": "朱熹",
+      "chapter_idx": 6,
+      "chapter_title": "第五章",
+      "citation_label": "【《大学章句集注》·第五章】",
+      "snippet": "子曰：“听讼，吾犹人也。必也使无讼乎！”无情者不得尽其辞。大畏民志，此谓知本。 此谓知本，此谓知之至也。",
+      "score": 0.54
+     },
+     {
+      "book_id": "795658cafeab",
+      "book_title": "荀子",
+      "author": "荀子",
+      "chapter_idx": 3,
+      "chapter_title": "修身",
+      "citation_label": "【《荀子》·修身】",
+      "snippet": "见善，修然必以自存也；见不善，愀然必以自省也。善在身，介然必以自好也；不善在身，菑然必以自恶也。故非我而当者，吾师也；是我而当者，吾友也；谄谀我者，吾贼也。故君子隆师而亲友，以致恶其贼。好善无厌，受谏而能诫，虽欲无进，得乎哉？小人反是，致乱而恶人之非己也，致不肖而欲人之贤己也，心如虎狼、行如禽兽而又恶人之贼己也。谄谀者亲，谏争者疏，修正为笑，至忠为贼，虽欲无灭亡，得乎哉？《诗》曰：“嗡嗡呰呰，亦孔之哀。谋之其臧，则具是违；谋之不臧，则具",
+      "score": 0.538
+     },
+     {
+      "book_id": "4d187a31575a",
+      "book_title": "中庸",
+      "author": "子思",
+      "chapter_idx": 29,
+      "chapter_title": "第二十八章",
+      "citation_label": "【《中庸》·第二十八章】",
+      "snippet": "子曰：“愚而好自用，贱而好自专。生乎今之世，反古之道。如此者灾及其身者也。” 非天子不议礼，不制度，不考文。 今天下，车同轨，书同文，行同伦。 虽有其位，苟无其德，不敢作礼乐焉。虽有其德，苟无其位，亦不敢作礼乐焉。 子曰：“吾说夏礼，杞不足徵也。吾学殷礼，有宋存焉。吾学周礼，今用之。吾从周。”",
+      "score": 0.537
+     },
+     {
+      "book_id": "909e887aac01",
+      "book_title": "王阳明全集：简体注释版",
+      "author": "王阳明",
+      "chapter_idx": 4,
+      "chapter_title": "书一（始正德己巳至庚辰）",
+      "citation_label": "【《王阳明全集：简体注释版》·书一（始正德己巳至庚辰）】",
+      "snippet": "与辰中诸生（己巳） 谪居两年，无可与语者。归途乃得诸友，何幸何幸！方以为喜，又遽尔别去，极怏怏也 [1] 。绝学之余，求道者少；一齐众楚，最易摇夺。自非豪杰，鲜有卓然不变者 [2] 。诸友宜相砥砺夹持，务期有成。近世士夫亦有稍知求道者，皆因实德未成而先揭标榜，以来世俗之谤，是以往往隳堕无立，反为斯道之梗 [3] 。诸友宜以是为鉴，刊落声华，务于切己处著实用力。 前在寺中所云静坐事，非欲坐禅入定。盖因吾辈平日为事物纷拏，未知为己，欲以此补",
+      "score": 0.536
+     }
+    ],
+    "query": "论语 学而 不亦说乎 有朋自远方来",
+    "method": "vector"
+   }
+  },
+  {
+   "name": "get_chapter",
+   "args": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2
+   },
+   "result_full": {
+    "book_id": "d9272a80942a",
+    "chapter_idx": 2,
+    "title": "学而篇",
+    "book_title": "论语",
+    "citation_label": "【《论语》·学而篇】",
+    "text": "子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”\n有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！”\n子曰：“巧言令色，鲜矣仁！”\n曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？”\n子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。”\n子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。”\n子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。”\n子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。”\n曾子曰：“慎终追远，民德归厚矣。”\n子禽问于子贡曰：“夫子至于是邦也，必闻其政，求之与，抑与之与？”子贡曰：“夫子温、良、恭、俭、让以得之。夫子之求之也，其诸异乎人之求之与？”\n子曰：“父在，观其志；父没，观其行；三年无改于父之道，可谓孝矣。”\n有子曰：“礼之用，和为贵。先王之道，斯为美。小大由之，有所不行。知和而和，不以礼节之，亦不可行也。”\n有子曰：“信近于义，言可复也。恭近于礼，远耻辱也。因不失其亲，亦可宗也。”\n子曰：“君子食无求饱，居无求安，敏于事而慎于言，就有道而正焉。可谓好学也已。”\n子贡曰：“贫而无谄，富而无骄，何如？”子曰：“可也。未若贫而乐道，富而好礼者也。”子贡曰：“《诗》云：‘如切如磋，如琢如磨’，其斯之谓与？”子曰：“赐也，始可与言《诗》已矣，告诸往而知来者。”\n子曰：“不患人之不己知，患不知人也。”",
+    "bibliographic_metadata": {
+     "work": {
+      "author": "孔子",
+      "canonical_title": "论语",
+      "original_title": null,
+      "original_language": null
+     },
+     "edition": {
+      "translator": null,
+      "publisher": null,
+      "publication_year": null,
+      "isbn": null,
+      "edition_identity": "UNKNOWN"
+     },
+     "citation_capability": {
+      "max_verified_granularity": "CHAPTER",
+      "locator_schemes": [
+       "CHAPTER_PART"
+      ]
+     },
+     "metadata_status": {
+      "source_type": "embedded_front_matter",
+      "verified_fields": [],
+      "conflict_fields": [],
+      "note": "字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全"
+     }
+    }
+   }
+  }
+ ],
+ "retrieval_calls_executed": 4
+}
