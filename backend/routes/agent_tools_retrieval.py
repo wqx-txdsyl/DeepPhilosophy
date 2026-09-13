@@ -8,7 +8,7 @@ list_books / get_school / concept_trace / websearch / query_database（10 个）
 import json, os, re, time, urllib.request, threading
 
 from routes.agent_core import (
-    TOOLS, register_tool, _int_arg,
+    TOOLS, register_tool, _int_arg, _str_arg,
     get_books, get_network, get_philosophers, book_by_id, chapter_meta, read_chapter,
     _book_chapter_texts, _load_vectors,
     PUBLIC, SCHOOLS_DIR,
@@ -83,7 +83,9 @@ def _match_score(text, terms):
     return score
 
 def _exec_search_books(args):
-    query = args.get("query", "")
+    query = _str_arg(args, "query")
+    if not query:
+        return {"error": "缺少检索词 query"}
     limit = _int_arg(args, "limit", 5, 1, 10)
     # 向量优先（索引就绪时）; 经 routes.agent 门面运行时取回 _embed_query——
     # 保持拆分前的 monkeypatch 契约（tests/test_agent.py 以 agent._embed_query 强制走关键词兜底路径）
@@ -211,7 +213,7 @@ def _resolve_book_by_name(name):
 
 
 def _exec_book_detail(args):
-    bid = args.get("book_id", "")
+    bid = _str_arg(args, "book_id")
     b = book_by_id(bid)
     if not b:
         alt = _resolve_book_by_name(bid)          # 书名宽容解析
@@ -241,7 +243,7 @@ register_tool(
 
 # ── 工具 3: get_chapter ──────────────────────────────
 def _exec_chapter(args):
-    bid = args.get("book_id", "")
+    bid = _str_arg(args, "book_id")
     idx = _int_arg(args, "chapter_idx", 0, 0)
     ch = read_chapter(bid, idx)
     if not ch:
@@ -276,7 +278,9 @@ register_tool(
 
 # ── 工具 4: query_graph（哲学家星丛/师承/论敌/影响）──
 def _exec_graph(args):
-    name = args.get("philosopher", "").strip()
+    name = _str_arg(args, "philosopher")
+    if not name:
+        return {"error": "缺少哲学家名", "hint": "可尝试: 尼采/康德/海德格尔/柏拉图"}
     net = get_network()
     # 图谱格式: {哲学家名: {rank, region, connections: [{name, type, note}]}}
     target_key = None
@@ -303,7 +307,9 @@ register_tool(
 
 # ── 工具 5: get_philosopher（生平/流派/时期）─────────
 def _exec_philosopher(args):
-    name = args.get("name", "").strip()
+    name = _str_arg(args, "name")
+    if not name:
+        return {"error": "缺少哲学家名"}
     phils = get_philosophers()
     entries = phils if isinstance(phils, list) else list(phils.values())
     for p in entries:
@@ -316,16 +322,16 @@ def _exec_philosopher(args):
 
 register_tool(
     "get_philosopher",
-    "获取哲学家生平资料（时期/流派/代表作/简介）。",
+    "获取哲学家生平资料（时期/流派/代表作/简介）。回答涉及时期/流派归属/代表作等事实资料时先查本工具核对, 避免凭记忆给出可能失准的资料。",
     {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]},
     _exec_philosopher,
 )
 
 # ── 工具 6: list_books（书单筛选）────────────────────
 def _exec_list_books(args):
-    author = args.get("author", "")
-    region = args.get("region", "")
-    school = args.get("school", "")
+    author = _str_arg(args, "author")
+    region = _str_arg(args, "region")
+    school = _str_arg(args, "school")
     out = []
     for b in get_books():
         if author and author not in b.get("author", ""):
@@ -349,7 +355,9 @@ register_tool(
 
 # ── 工具 9: get_school（哲学流派/谱系详情）──
 def _exec_school(args):
-    name = args.get("name", "").strip()
+    name = _str_arg(args, "name")
+    if not name:
+        return {"error": "缺少流派名", "hint": "可尝试: 存在主义/儒家/分析哲学/现象学/斯多葛"}
     if not SCHOOLS_DIR.exists():
         return {"error": "流派数据不存在"}
     files = os.listdir(SCHOOLS_DIR)
@@ -380,7 +388,7 @@ register_tool(
 
 # ── 工具: concept_trace（概念溯源——403 本书中的出现分布与演变）──
 def _exec_concept_trace(args):
-    concept = args.get("concept", "").strip()
+    concept = _str_arg(args, "concept")
     if not concept:
         return {"error": "缺少概念"}
     result = TOOLS["search_books"]["execute"]({"query": concept, "limit": 15})
@@ -414,7 +422,7 @@ register_tool("concept_trace",
 def _exec_websearch(args):
     """联网搜索: Bing 优先（中文结果+真实链接, 国内可达）→ 英文维基 → 中文维基
     2026-08-14: 加 TTL 缓存（同 query 10 分钟内不重复联网, 防 Bing 反爬/重复抓取）"""
-    query = args.get("query", "")
+    query = _str_arg(args, "query")
     if not query:
         return {"error": "缺少查询词"}
     qkey = query.strip()[:80]

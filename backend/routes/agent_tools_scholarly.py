@@ -14,11 +14,11 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import scholarly_sources as SS
-from routes.agent_core import TOOLS, register_tool, _int_arg
+from routes.agent_core import TOOLS, register_tool, _int_arg, _str_arg
 
 
 def _exec_search_scholarship(args):
-    query = (args.get("query") or "").strip()
+    query = _str_arg(args, "query")
     if not query:
         return {"error": "query 不能为空"}
     limit = _int_arg(args, "limit", 8, 1, 10)
@@ -61,7 +61,7 @@ def _exec_search_scholarship(args):
 
 
 def _exec_get_scholarly_source(args):
-    sid = (args.get("source_record_id") or "").strip()
+    sid = _str_arg(args, "source_record_id")
     requested = args.get("requested_access") or "ABSTRACT"
     if requested not in ("ABSTRACT", "FULL_TEXT_IF_LEGALLY_AVAILABLE"):
         return {"error": "requested_access 只支持 ABSTRACT | FULL_TEXT_IF_LEGALLY_AVAILABLE"}

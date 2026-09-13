@@ -243,6 +243,10 @@ def _get_json(url):
         raise ProviderError("PROVIDER_UNAVAILABLE", str(reason))
     except socket.timeout:
         raise ProviderError("PROVIDER_TIMEOUT", url)
+    except OSError as e:
+        # O10-T1: 裸 socket 错误（ECONNRESET 等）同样属于 provider 层失败,
+        # 不得以未捕获异常逃逸出工具边界——上游按 provider_errors 诚实记录
+        raise ProviderError("PROVIDER_UNAVAILABLE", str(e))
     try:
         return json.loads(resp.body.decode("utf-8", "replace"))
     except json.JSONDecodeError:

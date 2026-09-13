@@ -9,7 +9,7 @@ import json, os, re, time, hashlib, urllib.request, threading
 from pathlib import Path
 
 from routes.agent_core import (
-    TOOLS, register_tool, _int_arg,
+    TOOLS, register_tool, _int_arg, _str_arg, _req_str,
     _mem_slot, _save_agent_memory, _find_essay_topic, get_philosophers,
     PUBLIC, PHILOSOPHER_DIR, AGNES_IMG_DIR, AI_DIR,
 )
@@ -29,14 +29,16 @@ ESSAY_PROMPT = (
 # 2026-08-14 per-user 加固（P0）: 记忆按用户隔离（guard.user_memory_key）,
 #   原子写（tmp+rename）防并发损坏; 旧单用户格式自动迁移到 default 槽
 def _exec_write_essay(args):
-    topic = args.get("topic") or args.get("query") or ""
-    if not topic:
-        return {"error": "缺少作文题目"}
+    topic, err = _req_str(args, "topic")
+    if err and err["error"].startswith("缺少"):
+        topic, err = _req_str(args, "query")
+    if err:
+        return err
     try:
         word_count = _int_arg(args, "word_count", 800, 100, 3000)
     except Exception:
         word_count = 800
-    modify = (args.get("modify") or "").strip()
+    modify = _str_arg(args, "modify") or ""
     # 自动检测修改意图（LLM 未显式传 modify 时）: 修改词 + 存在对应题目记忆 → 对上次作文修改
     if not modify:
         intent_text = f"{topic} {args.get('extra', '')} {args.get('genre', '')}"
@@ -49,7 +51,7 @@ def _exec_write_essay(args):
     reply, citations, tcl = _essay_pipeline(topic, args.get("genre", "议论文"),
                                             word_count, args.get("extra", ""), modify)
     _save_agent_memory()   # 持久化多轮修改记忆
-    return {"essay": reply, "citations": citations, "steps": tcl}
+    return {"essay": reply, "citations": citations, "steps": tcl, "topic": topic}
 
 register_tool(
     "write_essay",
@@ -217,9 +219,9 @@ def _detect_reference(prompt):
 
 def _exec_generate_image(args):
     slot = _mem_slot()
-    prompt = (args.get("prompt") or "").strip()
-    if not prompt:
-        return {"error": "缺少图像描述 prompt"}
+    prompt, err = _req_str(args, "prompt")
+    if err:
+        return err
     api_key = os.environ.get("AGNES_API_KEY", "")
     if not api_key:
         return {"error": "服务端未配置 AGNES_API_KEY"}
@@ -373,11 +375,18 @@ def _recall_memories(query, limit=6):
     return [m for _, m in scored[:limit]] or memories[:limit]
 
 def _exec_role_play(args):
-    name = (args.get("philosopher") or args.get("persona") or args.get("name") or "").strip()
+    name = _str_arg(args, "philosopher") or _str_arg(args, "persona") or _str_arg(args, "name") or ""
     if name and "尼采" not in name:
         return {"error": f"人格层暂未覆盖「{name}」（当前仅尼采, 数据来自 AIAuthor 数字作者系统）",
                 "hint": "可改用 get_philosopher 查资料 / query_graph 查思想关联"}
-    query = (args.get("question") or args.get("topic") or args.get("query") or "").strip()[:80]
+    query, err = _req_str(args, "question")
+    if err and err["error"].startswith("缺少"):
+        query, err = _req_str(args, "topic")
+    if err and err["error"].startswith("缺少"):
+        query, err = _req_str(args, "query")
+    if err:
+        return err
+    query = query[:80]
     bundle = _load_persona_bundle()
     persona = bundle.get("persona", {})
     snapshots = bundle.get("snapshots", {})
@@ -515,18 +524,22 @@ def _debate_round(sp_list, topic, ctx, round_no, user_speech=None):
 
 def _exec_debate(args):
     slot = _mem_slot()
-    topic = (args.get("topic") or "").strip()
-    speakers = args.get("speakers") or "尼采、柏拉图"
+    topic = _str_arg(args, "topic", strict=True)
+    if topic is None:
+        return {"error": "参数类型错误: topic 应为字符串"}
+    speakers = _str_arg(args, "speakers") or "尼采、柏拉图"
     sp_list = [s.strip() for s in speakers.replace("和", "、").replace("与", "、").split("、") if s.strip()][:3] or ["尼采", "柏拉图"]
-    mode = args.get("mode") or "auto"
-    action = (args.get("action") or "start").strip().lower()
-    user_speech = (args.get("user_reply") or "").strip()
+    mode = _str_arg(args, "mode") or "auto"
+    action = (_str_arg(args, "action") or "start").lower()
+    user_speech = _str_arg(args, "user_reply")
     # 意图自动检测（LLM 未显式传 action 时）
     if action == "start":
         if any(w in topic for w in ("结束", "总结", "停止", "裁决", "收尾")):
             action = "summary"
         elif any(w in topic for w in ("继续", "下一轮", "接着", "再来", "加一轮", "第二轮", "第三轮")):
             action = "continue"
+    if not topic and action == "start":
+        return {"error": "缺少论题 topic"}
     # ── 结束辩论: 总结 + 演变图 ──
     if action == "summary" and slot["debate"]:
         sess = slot["debate"]
@@ -597,9 +610,9 @@ register_tool("philosopher_debate",
 def _exec_thought_exp(args):
     from tool_contracts import scaffold_result, extract_json
     slot = _mem_slot()
-    base = (args.get("base") or "").strip()
-    if not base:
-        return {"error": "缺少思想实验基础设定"}
+    base, err = _req_str(args, "base")
+    if err:
+        return err
     prev_exp = slot.get("experiment")
     # 变体迭代: 用户明确要求变体（修改词）+ 存在上次实验 → 基于上次重推演, 对比立场变化
     if prev_exp and any(w in base for w in ("改", "换成", "变体", "如果", "假设", "变化", "不同", "加", "减")):

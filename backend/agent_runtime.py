@@ -103,6 +103,9 @@ SCOPE_PARAMS = {"limit", "top_k", "k", "count", "max_results", "num"}
 REUSE_SAFE_TOOLS = {
     "search_books", "get_chapter", "get_book_detail", "query_graph", "get_philosopher",
     "get_school", "list_books", "query_database", "concept_trace", "websearch",
+    # O7-C/O10-T2: scholarly 二见/读取为只读查询（设计职责含 dedup/cache）——
+    # 同 source_record_id 重复读取应机械复用缓存, 不重复执行
+    "search_scholarship", "get_scholarly_source",
     "philosopher_memory", "philosopher_quote", "philosopher_corpus", "philosopher_graph",
     "philosopher_concepts", "philosopher_user", "philosopher_style", "philosopher_period",
 }

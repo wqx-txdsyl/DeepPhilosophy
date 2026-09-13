@@ -142,6 +142,33 @@ def _int_arg(args, key, default, lo=None, hi=None):
         v = hi
     return v
 
+def _str_arg(args, key, default="", max_len=None, strict=False):
+    """统一 str 解析（O10-T1 机械质量门）。
+    strict=False（检索/查找类）: 非字符串类型诚实 str 化（回显可见, 查找落空自然报错）;
+    strict=True（生成类必填内容参数）: 仅接受字符串, 其他类型 → None（调用方返回
+    结构化"参数类型错误"——垃圾输入不烧 LLM 生成, 也不被静默吞掉）。"""
+    v = args.get(key, default)
+    if isinstance(v, str):
+        s = v
+    elif not strict and isinstance(v, (int, float, bool)):
+        s = str(v)
+    else:
+        return None if strict else default
+    s = s.strip()
+    if max_len is not None:
+        s = s[:max_len]
+    return s
+
+def _req_str(args, key, max_len=None):
+    """生成类工具必填字符串参数: 非字符串/空 → (None, 错误dict)（T1 契约: 类型错误
+    必须结构化报错, 不得静默生成）"""
+    s = _str_arg(args, key, max_len=max_len, strict=True)
+    if s is None:
+        return None, {"error": f"参数类型错误: {key} 应为字符串"}
+    if not s:
+        return None, {"error": f"缺少 {key}"}
+    return s, None
+
 # ── 向量检索（智谱 embedding-2, numpy 余弦; 构建完成自动启用, 失败降级关键词）──
 _vectors = None
 _vector_index = None
