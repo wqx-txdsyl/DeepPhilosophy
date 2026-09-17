@@ -450,6 +450,22 @@ def test_tool_declaration_after_answer_start_never_executes_or_completes(monkeyp
     assert not any(e.get("complete") for e in of(events, "done"))
 
 
+def test_oversized_tool_artifact_reports_incomplete_delivery_separately_from_execution(monkeypatch):
+    raw = {"argument": {"conclusion": "初始结论", "body": "长" * 25000, "strongest_reply": "最后的反驳"}}
+    tool = StructuredTool.from_function(func=lambda text: raw, name="analyze_argument", description="Offline fixture")
+    install(monkeypatch, [
+        {"tool_calls": [{"name": "analyze_argument", "args": {"text": "论证"}, "id": "oversized"}]},
+        {"parts": ["<answer>", FIRST + LAST, "</answer>"]},
+    ], [tool])
+    events = collect()
+    done = successful_done(events)
+    event = of(events, "tool")[0]
+    assert event["status"] == "error" and event["delivery_status"] == "incomplete"
+    assert event["execution_status"] == "success" and event["summary"] == "结果未完整传递。"
+    assert done["tool_calls"][0]["context_delivery"]["status"] == "omitted"
+    assert raw["argument"]["strongest_reply"] == "最后的反驳"
+
+
 def test_legacy_unwrapped_answer_stays_buffered_until_model_finishes(monkeypatch):
     model = install(monkeypatch, [{"parts": [FIRST, LAST]}])
 

@@ -69,3 +69,42 @@ def test_general_only_override_and_zero_argument_tool_schema():
     assert "execute" not in general["phti_test"].args
     assert "question" in general["analyze_argument"].args
     assert "question" not in {tool.name: tool for tool in engine.TOOLS_LG}["analyze_argument"].args
+
+
+def test_real_request_tail_and_long_argument_reach_analysis_without_head_truncation(monkeypatch):
+    from deep_context import current_request_question
+    # The UI places the actual follow-up after an attachment or selected answer.
+    question = "【附件】\n" + "这是一份供分析的材料。" * 1500 + "\n本次追问：请检查文末结论是否偷换了主体。"
+    argument = "前提说明。" * 1500 + "\n最后结论：所有义务都只由个人偏好决定。"
+    calls = []
+    data = {"conclusion": "候选结论", "premises": [], "hidden_assumptions": [], "fallacies": [],
+            "counterexample": None, "strongest_reply": "需要解释桥梁前提", "weakest_point": "缺理由",
+            "strengthening": [], "question_fidelity": "已保留当前追问"}
+    def invoke(messages, **kwargs):
+        calls.append(messages)
+        return response(json.dumps(data, ensure_ascii=False))
+    monkeypatch.setattr(tools, "llm_chat", invoke)
+    token = current_request_question.set(question)
+    try:
+        result = tools.analyze_argument({"text": argument, "question": "调用者改写的问题"})
+    finally:
+        current_request_question.reset(token)
+    assert question in calls[0][1]["content"] and argument in calls[0][1]["content"]
+    assert "调用者改写的问题" not in calls[0][1]["content"]
+    assert result["question_context_truncated"] is False
+
+
+def test_oversized_question_preserves_both_ends_and_discloses_missing_middle():
+    question = "原问题开头" + "中间材料" * 12000 + "本次追问在末尾"
+    visible, truncated = tools._question_context(question)
+    assert truncated and visible.startswith("原问题开头") and visible.endswith("本次追问在末尾")
+    assert "不能据此认定已核对全部材料" in visible
+    assert len(visible) < tools.QUESTION_CONTEXT_CHARS + 100
+
+
+def test_over_limit_argument_does_not_review_a_different_truncated_claim(monkeypatch):
+    monkeypatch.setattr(tools, "llm_chat", lambda *_a, **_k: pytest.fail("Must not analyze an incomplete argument"))
+    text = "前提" * 11000 + "结论在最后。"
+    result = tools.analyze_argument({"text": text})
+    assert result["error"] == "ARGUMENT_INPUT_TOO_LONG"
+    assert result["input_chars"] == len(text)

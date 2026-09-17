@@ -143,7 +143,9 @@ class AnswerEnvelopeParser:
         return "" if tail.startswith("<") else tail
 
 
-def tool_status(result, budget_class="", reused=False):
+def tool_status(result, budget_class="", reused=False, delivery_status=None):
+    if delivery_status == "incomplete":
+        return "error"
     if budget_class in {"discipline_blocked", "ceiling"}:
         return "blocked"
     if isinstance(result, dict) and (result.get("error") or result.get("accepted") is False):
@@ -157,8 +159,10 @@ def tool_status(result, budget_class="", reused=False):
     return "success"
 
 
-def public_tool_summary(name, result, status, language="zh"):
+def public_tool_summary(name, result, status, language="zh", delivery_status=None):
     en = language == "en"
+    if delivery_status == "incomplete":
+        return "The result was not fully delivered." if en else "结果未完整传递。"
     if status == "blocked":
         return "This call did not run." if en else "本次调用未执行。"
     if status == "error":

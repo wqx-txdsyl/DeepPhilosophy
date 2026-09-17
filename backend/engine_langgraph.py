@@ -28,6 +28,7 @@ import quote_bound as QB     # Phase T.1: 逐字引文绑定（Quote Bound / T1.
 import o7e_semantic_transition as ST  # V7-F2-R1 §3: 确定性语义转移分类（零 LLM）
 import research_discipline as RD  # O10-R1: 检索纪律（研究需求/软预算/缺口停止/证据压缩）单一真源
 import deep_streaming as DS
+import deep_tool_context as DTC
 from evidence_contract import EvidenceState  # O5: 执行事实登记（Evidence Store）
 
 # ── LLM（OpenAI 兼容; 智谱 glm-4-flash 免费 / DeepSeek 思考模式）──
@@ -691,7 +692,7 @@ class AgentState(TypedDict):
     message_checkpoint: Any  # Request-local recovery context; never persisted or exposed.
     request_message: str  # Original user input for optional argument-fidelity checks.
 
-def _compact_consumed_tool_messages(msgs, discipline):
+def _compact_consumed_tool_messages(msgs, discipline, agent=None):
     """O10-R1 Token/Context Discipline: 已被模型消费过的工具结果 → 有界紧凑引用。
 
     V1 实测: 每轮携带全量工具结果使 input token 随轮次 10k→21k 线性膨胀
@@ -714,6 +715,10 @@ def _compact_consumed_tool_messages(msgs, discipline):
         if not isinstance(m, ToolMessage):
             continue
         ak = m.additional_kwargs if isinstance(m.additional_kwargs, dict) else {}
+        if DTC.preserves_artifact(m.name or "", agent):
+            # These artifacts are already bounded on delivery. Keeping only a
+            # head summary would discard counterarguments or generated endings.
+            continue
         if ak.get("_compacted"):
             continue
         full = m.content or ""
@@ -771,7 +776,7 @@ async def agent_node(state):
     discipline = state.get("discipline")
     _llm_t0 = time.time()
     # ── O10-R1 Token/Context Discipline: 消费过的工具结果压缩为紧凑引用 ──
-    _compact_consumed_tool_messages(msgs, discipline)
+    _compact_consumed_tool_messages(msgs, discipline, agent=agent)
     if _trace_ref is not None:
         try:
             _trace_ref.begin_group()
@@ -887,6 +892,14 @@ async def tools_node(state):
     TOOL_TIMEOUT = AR.TOOL_TIMEOUT   # 工具执行超时（防挂起; Phase A 收编为配置）
     forced = bool(state.get("forced"))
 
+    def result_message(*, content, name, tool_call_id, additional_kwargs):
+        rendered, delivery = DTC.tool_context(
+            name, additional_kwargs.get("_result_full"), agent, fallback_content=content)
+        if delivery is not None:
+            additional_kwargs = {**additional_kwargs, "_context_delivery": delivery}
+        return ToolMessage(content=rendered, name=name, tool_call_id=tool_call_id,
+                           additional_kwargs=additional_kwargs)
+
     async def run_one(call, call_index):
         name = call.get("name", "")
         args = call.get("args", {}) or {}
@@ -905,7 +918,7 @@ async def tools_node(state):
                                   executed=False, thought="RESOURCE_CEILING_REACHED",
                                   decision_group=getattr(trace, "current_group", None),
                                   tool_call_id=call.get("id"))
-            return ToolMessage(content=json.dumps(skip_res, ensure_ascii=False)[:4000], name=name,
+            return result_message(content=json.dumps(skip_res, ensure_ascii=False), name=name,
                                tool_call_id=call.get("id", ""),
                                additional_kwargs={"_args": args, "_result_full": skip_res,
                                                   "_budget_class": "ceiling", "_info_gain": "",
@@ -926,7 +939,7 @@ async def tools_node(state):
                                   decision_group=getattr(trace, "current_group", None),
                                   tool_call_id=call.get("id"))
             content = json.dumps(prev, ensure_ascii=False) if isinstance(prev, (dict, list)) else str(prev)
-            return ToolMessage(content=content[:4000], name=name,
+            return result_message(content=content, name=name,
                                tool_call_id=call.get("id", ""),
                                additional_kwargs={"_args": args, "_result_full": prev,
                                                   "_budget_class": "duplicate", "_reused": True,
@@ -1049,7 +1062,7 @@ async def tools_node(state):
                                     "parent_tool": name,
                                     "pseudo": True})
         content = json.dumps(res, ensure_ascii=False) if isinstance(res, (dict, list)) else str(res)
-        return ToolMessage(content=content[:4000], name=name,
+        return result_message(content=content, name=name,
                            tool_call_id=call.get("id", ""),
                            additional_kwargs={"_args": args, "_result_full": res,
                                               "_budget_class": cls, "_info_gain": info_gain,
@@ -1090,7 +1103,7 @@ async def tools_node(state):
                               executed=True, thought="研究需求登记",
                               decision_group=getattr(trace, "current_group", None),
                               tool_call_id=call.get("id"))
-        decl_results[i] = ToolMessage(content=json.dumps(dres, ensure_ascii=False)[:4000],
+        decl_results[i] = result_message(content=json.dumps(dres, ensure_ascii=False),
                                       name=RD.DECLARE_TOOL_NAME,
                                       tool_call_id=call.get("id", ""),
                                       additional_kwargs={"_args": dargs, "_result_full": dres,
@@ -1138,8 +1151,8 @@ async def tools_node(state):
                                       tool_call_id=call.get("id"))
                 if budget:
                     budget.count(name, "duplicate", executed=False)
-                results[i] = ToolMessage(
-                    content=(prev_msg.content or "")[:4000], name=name,
+                results[i] = result_message(
+                    content=prev_msg.content or "", name=name,
                     tool_call_id=call.get("id", ""),
                     additional_kwargs={"_args": args_i,
                                        "_result_full": prev_kw.get("_result_full"),
@@ -1168,8 +1181,8 @@ async def tools_node(state):
                                       executed=False, thought=verdict.get("error", ""),
                                       decision_group=getattr(trace, "current_group", None),
                                       tool_call_id=call.get("id"))
-                gate_blocked[i] = ToolMessage(
-                    content=json.dumps(verdict, ensure_ascii=False)[:4000], name=name,
+                gate_blocked[i] = result_message(
+                    content=json.dumps(verdict, ensure_ascii=False), name=name,
                     tool_call_id=call.get("id", ""),
                     additional_kwargs={"_args": call.get("args") or {}, "_result_full": verdict,
                                        "_budget_class": "discipline_blocked",
@@ -1216,7 +1229,7 @@ async def tools_node(state):
             is_retrieval = name in retrieval_set
             if remaining_total <= 0 or (is_retrieval and remaining_reads <= 0):
                 result = {"error": "RESOURCE_CEILING_REACHED", "message": "本次调用未执行；已达请求资源上限，不代表库中无相关内容。"}
-                gate_blocked[i] = ToolMessage(
+                gate_blocked[i] = result_message(
                     content=json.dumps(result, ensure_ascii=False), name=name,
                     tool_call_id=call.get("id", ""),
                     additional_kwargs={"_args": args_i, "_result_full": result,
@@ -1270,8 +1283,8 @@ async def tools_node(state):
                   "_rh": first_kw.get("_rh"),
                   "_info_gain": "repeat",
                   "_dg": getattr(trace, "current_group", None)}
-        results[dup_i] = ToolMessage(
-            content=(first.content if first is not None else "")[:4000],
+        results[dup_i] = result_message(
+            content=first.content if first is not None else "",
             name=calls[dup_i].get("name", ""),
             tool_call_id=calls[dup_i].get("id", ""),
             additional_kwargs=dup_kw)
@@ -2317,7 +2330,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 args = extra.get("_args", {})
                 result = extra.get("_result_full", {})
                 reused = extra.get("_reused", False)
-                _tool_status = DS.tool_status(result, extra.get("_budget_class", ""), reused)
+                _delivery = extra.get("_context_delivery") if agent == "general" else None
+                _delivery_status = ("incomplete" if _delivery.get("status") == "omitted" else "complete") if _delivery else None
+                _execution_status = DS.tool_status(result, extra.get("_budget_class", ""), reused)
+                _tool_status = DS.tool_status(result, extra.get("_budget_class", ""), reused, _delivery_status)
+                _delivery_meta = ({"delivery_status": _delivery_status, "execution_status": _execution_status,
+                                   "context_delivery": _delivery} if _delivery else {})
                 # O1: 引擎 auto-websearch 已删除——search_books 空结果后是否上网补充
                 # 由 Main Agent 下一轮自主宣告（websearch 对模型可用且不受隐性配额挤压）,
                 # runtime 不再代执行认知性工具（T7 断言依据）。
@@ -2332,7 +2350,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                  "result_summary": str(result)[:200], "result_full": result,
                                  "thought": _thought, "scholarly_trace": _scholarly_trace,
                                  **({"call_id": getattr(chunk, "tool_call_id", None),
-                                     "status": _tool_status} if agent == "general" else {})})
+                                     "status": _tool_status, **_delivery_meta} if agent == "general" else {})})
                 # O1 provenance: 工具执行结果——决定（宣告）来自 Main Agent;
                 # 执行/复用属机械层, 不改变发起者归属。
                 yield {"type": "tool", "name": name, "args": args,
@@ -2342,7 +2360,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                        "tool_call_id": getattr(chunk, "tool_call_id", None),
                        **({"call_id": getattr(chunk, "tool_call_id", None),
                            "status": _tool_status,
-                           "summary": DS.public_tool_summary(name, result, _tool_status, language)}
+                           "summary": DS.public_tool_summary(name, result, _tool_status, language, _delivery_status),
+                           **_delivery_meta}
                           if agent == "general" else {}),
                        "scholarly_trace": _scholarly_trace}
                 # Thinking UI: 工具结果解读（ACTIVITY 注记, runtime_mechanical; 不确定时静默）。

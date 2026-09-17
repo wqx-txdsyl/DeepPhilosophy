@@ -8,6 +8,22 @@ from tool_contracts import scaffold_result
 # low-effort request used 7,830 reasoning tokens before emitting its structure;
 # 8,192 therefore cut the result off. Keep one bounded call with output headroom.
 STRUCTURED_REASONING_MAX_TOKENS = 16384
+ARGUMENT_INPUT_CHARS = 20000
+QUESTION_CONTEXT_CHARS = 40000
+
+
+def _question_context(question):
+    """Keep ordinary attachment/follow-up requests intact, including their tail.
+
+    Oversized requests retain both ends with an explicit omission notice. This
+    is a transport limit, not an attempt to infer or rewrite the user's intent.
+    """
+    if len(question) <= QUESTION_CONTEXT_CHARS:
+        return question, False
+    half = QUESTION_CONTEXT_CHARS // 2
+    omitted = len(question) - QUESTION_CONTEXT_CHARS
+    return (question[:half] + f"\n[原问题中部省略了 {omitted} 字符；不能据此认定已核对全部材料]\n"
+            + question[-half:]), True
 
 
 def _strict_object(content):
@@ -58,13 +74,18 @@ def _valid_argument_structure(data):
 
 
 def analyze_argument(args):
-    text, error = _req_str(args, "text", max_len=6000)
+    text, error = _req_str(args, "text")
     if error:
         return error
+    if len(text) > ARGUMENT_INPUT_CHARS:
+        return {"error": "ARGUMENT_INPUT_TOO_LONG", "input_chars": len(text),
+                "max_input_chars": ARGUMENT_INPUT_CHARS,
+                "message": "请选取不超过20000字符的完整论证；未截断或审查这份输入。"}
     from deep_context import current_request_question
     question = current_request_question.get() or args.get("question") or ""
     if not isinstance(question, str):
         return {"error": "INVALID_ARGUMENT", "message": "question 应为字符串"}
+    question_text, question_truncated = _question_context(question)
     prompt = """检验下列论证，尤其检验从前提走到结论的关键一步。你返回可核对的中间分析，不写用户最终回答。
 忠实保留原文的主体、先后顺序与条件，不把结论塞进前提。不要因为一个结论听起来合理就说推理有效。
 构造一个最小且具体的反例：原前提仍然成立，暂定结论却不成立。必须解释哪些前提仍成立；
@@ -85,7 +106,7 @@ counterexample允许null，fallacies允许空列表。不要伪造哲学家归�
     try:
         response = llm_chat([
             {"role": "system", "content": prompt},
-            {"role": "user", "content": f"原问题：{question[:4000]}\n\n待检验论证：{text}"},
+            {"role": "user", "content": f"原问题：{question_text}\n\n待检验论证：{text}"},
         ], thinking=True, reasoning_effort="low", max_tokens=STRUCTURED_REASONING_MAX_TOKENS)
         choice = response["choices"][0]
         if choice.get("finish_reason") == "length":
@@ -102,9 +123,11 @@ counterexample允许null，fallacies允许空列表。不要伪造哲学家归�
             not all(isinstance(counter.get(key), str) and counter[key].strip()
                     for key in ("scenario", "premises_still_hold", "conclusion_fails"))):
         return {"error": "INVALID_COUNTEREXAMPLE", "message": "反例缺少前提仍成立的说明，不能直接采用。"}
-    return _scaffold(
+    result = _scaffold(
         "argument_structure", "已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。",
         "argument", data)
+    result["question_context_truncated"] = question_truncated
+    return result
 
 
 def paper_review(args):
