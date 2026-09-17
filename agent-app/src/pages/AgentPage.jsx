@@ -16,6 +16,8 @@ import AgentPlaza from '../components/conversation/AgentPlaza';
 import SettingsPanel from '../components/conversation/SettingsPanel';
 import DrawioModal from '../components/DrawioModal';
 import Icon from '../components/Icon';
+import { TriangleAlert, BrainCircuit } from 'lucide-react';
+import { createGeneralStream, reduceGeneralEvent, finishGeneralStream, readEventStream, prepareGeneralTurn, ownsGeneralRequest, releaseGeneralAnswer, prepareGeneralRequest } from '../data/generalStream';
 import '../conversation.css';
 
 /**
@@ -56,6 +58,7 @@ export default function AgentWorkspace() {
   const [drawio, setDrawio] = useState(null);             // {xml, convId, messageId}
 
   const streamsRef = useRef(new Map());   // convId → {controller, messageId}
+  const draftSendRef = useRef(false);
   const thinkQueueRef = useRef(new Map());   // convId → {list:[text]}: 思考打字机队列（逐字, 与回答同节奏）
   const thinkPlayingRef = useRef(new Set()); // convId → 正在播放
   const deletedRef = useRef(new Set());   // 已删除会话: late event 一律丢弃
@@ -82,6 +85,9 @@ export default function AgentWorkspace() {
     }
   };
   useEffect(() => { loadConversations(); }, []);
+  useEffect(() => () => {
+    for (const stream of streamsRef.current.values()) if (stream.agent === 'general') stream.controller.abort();
+  }, []);
 
   /* ── 登出（auth.jsx 广播）: 清内存会话 + 回草稿页（隐私, §auth）── */
   useEffect(() => {
@@ -100,6 +106,7 @@ export default function AgentWorkspace() {
 
   /* ── 打开会话 → Composer Agent 优先级（§6）: last_used → default → general ── */
   useEffect(() => {
+    draftSendRef.current = false;
     setSelectorTouched(false);
     if (conversationId) {
       // 会话不存在(已删除/失效): 交给 notFound 视图, 不得让异常卸载整棵树（§13）
@@ -134,8 +141,8 @@ export default function AgentWorkspace() {
         : c);
     });
 
-  const markStream = (convId, mid, controller) => {
-    streamsRef.current.set(convId, { controller, messageId: mid });
+  const markStream = (convId, mid, controller, agent) => {
+    streamsRef.current.set(convId, { controller, messageId: mid, agent });
     setStreamingIds(prev => new Set(prev).add(convId));
   };
   const unmarkStream = (convId) => {
@@ -212,7 +219,11 @@ export default function AgentWorkspace() {
 
     if (!shown.trim() && !hasAttach) return;   // 仅附件发送允许空文本（T6）
     // 同步锁（streamsRef 是同步结构; streamingIds 状态更新是异步的, 防双击产生双会话/双流）
-    if (!localOnly && streamsRef.current.has(scopeKey)) return;
+    if (!localOnly && !prepareGeneralRequest(streamsRef.current, scopeKey)) return;
+    if (agent === 'general' && !conversationId && !localOnly) {
+      if (draftSendRef.current) return;
+      draftSendRef.current = true;
+    }
 
     let convId = conversationId;
     const isNewConv = !convId;
@@ -233,8 +244,11 @@ export default function AgentWorkspace() {
     const _sendT0 = performance.now();   // Thinking UI: 最终「思考了 X 秒」用
     // 发送瞬间 snapshot attachments → immutable metadata（§12）; draft 由 Composer 清空
     const attachMeta = (attachments || []).filter(a => a && a.filename);
+    const convNow = conversations.find(c => c.conversation_id === convId);
+    const generalTurn = agent === 'general' ? prepareGeneralTurn(text, sourceMsg, convNow?.messages, hasAttach) : null;
     const userMsg = {
       message_id: genId('msg'), conversation_id: convId, role: 'user', content: shown, created_at: nowIso,
+      ...(generalTurn?.context_content !== undefined ? { context_content: generalTurn.context_content } : {}),
       ...(attachMeta.length ? { attachments: attachMeta } : {}),
     };
     appendMessageLocal(convId, userMsg);
@@ -250,11 +264,65 @@ export default function AgentWorkspace() {
     appendMessageLocal(convId, assistantMsg);
 
     // 历史快照: 发送前 20 条（含两种 Agent 的公开回答, §8 共享）
-    const convNow = conversations.find(c => c.conversation_id === convId);
-    const history = (convNow?.messages || []).slice(-20).map(m => ({ role: m.role, content: m.content }));
+    const history = (convNow?.messages || []).slice(-20).map(m => ({ role: m.role, content: agent === 'general' ? (m.context_content || m.content) : m.content }));
 
     const controller = new AbortController();
-    markStream(convId, mid, controller);
+    markStream(convId, mid, controller, agent);
+
+    // General owns its canonical network snapshot. Painting is batched, persistence never lags it.
+    // Nietzsche retains its existing stream protocol and presentation below.
+    if (agent === 'general') {
+      let state = createGeneralStream();
+      let paintTimer = null;
+      let lastSaved = 0;
+      const ownsStream = () => !deletedRef.current.has(convId) && ownsGeneralRequest(streamsRef.current, convId, mid);
+      const paint = () => {
+        paintTimer = null;
+        if (!ownsStream()) return;
+        const snapshot = state;
+        patchMessageLocal(convId, mid, m => ({ ...m, ...snapshot }));
+        if (Date.now() - lastSaved > 1500) {
+          conversationStore.updateMessage(convId, mid, { ...snapshot, stream_state: snapshot.done_received ? 'complete' : 'interrupted' });
+          lastSaved = Date.now();
+        }
+      };
+      conversationStore.appendMessage(convId, { ...assistantMsg, stream_state: 'interrupted' });
+      let failure = '';
+      try {
+        const response = await fetch(`${getApiBase()}/api/agent/stream_lg`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+          body: JSON.stringify({ message: generalTurn.message, history, agent, language: lang, conversation_id: convId, message_id: mid }),
+          signal: controller.signal,
+        });
+        await readEventStream(response, evt => {
+          if (!ownsStream()) return;
+          state = reduceGeneralEvent(state, evt);
+          if (evt.type === 'done' && state.done_received) {
+            state = finishGeneralStream(state, { duration: (performance.now() - _sendT0) / 1000 });
+            if (releaseGeneralAnswer(streamsRef.current, convId, mid)) {
+              setStreamingIds(prev => { const next = new Set(prev); next.delete(convId); return next; });
+            }
+            clearTimeout(paintTimer);
+            paint();
+            conversationStore.updateMessage(convId, mid, state);
+            lastSaved = Date.now();
+            return;
+          }
+          if (!paintTimer) paintTimer = setTimeout(paint, 32);
+        });
+      } catch (err) {
+        if (err.name !== 'AbortError') failure = err.message || t('reqFail');
+      } finally {
+        clearTimeout(paintTimer);
+        state = finishGeneralStream(state, { aborted: controller.signal.aborted, error: failure, duration: (performance.now() - _sendT0) / 1000 });
+        if (ownsStream()) {
+          patchMessageLocal(convId, mid, m => ({ ...m, ...state }));
+          conversationStore.updateMessage(convId, mid, state);
+          unmarkStream(convId);
+        }
+      }
+      return;
+    }
 
     /* ── 本轮流式快照（事件按 convId+msgId 归属; 与全局 agent 无关） ── */
     const snap = { content: '', events: [], citations: [], evidence: null, suggestions: [], reasoning_summary: null, safety: null, curThought: null };
@@ -500,7 +568,7 @@ export default function AgentWorkspace() {
   const handleSuggestion = (text, sourceMsg) => {
     const agent = resolveFollowupAgent(selectorTouched, composerAgent, sourceMsg?.agent_id);
     setComposerAgent(agent);
-    dispatchSend({ message: text, display: text, agentOverride: agent });
+    dispatchSend({ message: text, display: text, agentOverride: agent, ...(agent === 'general' ? { sourceMsg } : {}) });
   };
 
   // 稳定回调引用: MessageBubble 是 memo 组件, 流式 tick 期间若 onSend 引用每帧重建,
@@ -540,7 +608,7 @@ export default function AgentWorkspace() {
     ];
     return (
       <div className="cw-empty">
-        <Icon name="icon-brain" size={38} />
+        <BrainCircuit size={38} strokeWidth={1.4} aria-hidden />
         <div className="cw-empty-title" style={{ marginTop: 12 }}>{name}</div>
         <div className="cw-empty-sub">{t('emptyGreeting')}</div>
         <EpStarter lang={lang} onPick={(q) => dispatchSend({ message: q, display: q })} />
@@ -610,7 +678,7 @@ export default function AgentWorkspace() {
           {unavailable && (
             <div style={{ marginBottom: 10, padding: '8px 12px', borderRadius: 8, fontSize: 12.5,
                           border: '1px solid var(--border)', background: 'var(--soft)', color: 'var(--text-dim)' }}>
-              ⚠ {t('agentUnavailable')}
+              {composerAgent === 'general' ? <TriangleAlert size={14} style={{ verticalAlign: 'middle', marginRight: 6 }} /> : '⚠ '}{t('agentUnavailable')}
             </div>
           )}
           <MessageList
@@ -619,6 +687,7 @@ export default function AgentWorkspace() {
             emptyState={emptyState}
             conversationKey={conversationId || DRAFT_ID}
             prefsTick={prefsTick}
+            streaming={activeStreaming}
             onSend={stableOnSend}
             onDrawioEdit={openDrawio}
           />

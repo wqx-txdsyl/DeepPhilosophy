@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
-import { BookOpen, GraduationCap, Layers, X, Quote, ShieldCheck, ExternalLink } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { BookOpen, GraduationCap, Layers, X, Quote, ShieldCheck, ExternalLink, Compass, ScanFace, Gift, Battery, Moon, Bot, Minus, ArrowDown } from 'lucide-react';
+import { plainText } from '../../data/generalStream';
+import { generalAccessLabel, generalEvidenceLayer } from '../../utils/evidence';
 
 /**
  * O9 UI/UX 组件集（docs/ui/O9_*）——设计定型的落地件。
@@ -72,17 +74,21 @@ const DEPTHS = [
     promptZh: '请针对上面的回答检索并综述相关学术研究（给出代表文献与争论点）。',
     promptEn: 'For the answer above, survey relevant scholarship (representative literature and points of debate).' },
 ];
-export function DepthControls({ onPick, disabled, lang }) {
+export function DepthControls({ onPick, disabled, lang, general = false }) {
   const en = lang === 'en';
-  if (disabled) return null;
+  if (disabled && !general) return null;
+  const choices = general ? DEPTHS.map(d => d.key === 'deeper' ? { ...d,
+    promptZh: '请沿着这段回答最关键、还没有真正解决的难点继续想下去。检验最有力的反对意见，必要时修正原判断。',
+    promptEn: 'Follow the most important unresolved difficulty in this answer. Test the strongest objection and revise the judgment if needed.',
+  } : d) : DEPTHS;
   return (
     <div className="o9-depth" role="group" aria-label="Depth controls">
-      {DEPTHS.map((d) => (
+      {choices.map((d) => (
         <button key={d.key} className="o9-depth-chip" disabled={disabled}
           onClick={() => onPick(en ? d.promptEn : d.promptZh)}
           aria-label={d[en ? 'en' : 'zh']}>
-          {d.key === 'simpler' && '◦ '}
-          {d.key === 'deeper' && '↧ '}
+          {d.key === 'simpler' && (general ? <Minus size={11} aria-hidden /> : '◦ ')}
+          {d.key === 'deeper' && (general ? <ArrowDown size={11} aria-hidden /> : '↧ ')}
           {d.key === 'primary' && <BookOpen size={11} style={{ verticalAlign: '-1px', marginRight: 4 }} aria-hidden />}
           {d.key === 'scholarly' && <GraduationCap size={11} style={{ verticalAlign: '-1px', marginRight: 4 }} aria-hidden />}
           {d[en ? 'en' : 'zh']}
@@ -95,54 +101,109 @@ export function DepthControls({ onPick, disabled, lang }) {
 /* ── Everyday Philosophy 入口（§5; O8-R3 冻结 EP 六题） ── */
 export const EP_QUESTIONS = {
   zh: [
-    { icon: '🧭', title: '导航不会责怪你', q: '导航在你走错路时绝不会责怪你，而是说「已帮你重新规划路线」。这件事有什么值得哲学思考的？' },
-    { icon: '🪞', title: '期待是暴力吗', q: '对他人的期待是不是一种微妙的暴力？' },
-    { icon: '🎁', title: '教师节送礼', q: '教师节快到了，要给老师送礼吗？' },
-    { icon: '🔋', title: '手机没电就心慌', q: '手机没电就心慌不安——我对设备的这种「依赖」，是一种成瘾，还是说明我与工具本来就分不开？' },
-    { icon: '🌙', title: '深夜倾诉的朋友', q: '好朋友总在深夜找我倾诉负面情绪，我最近很累，但怕拒绝会伤害他。一个「好朋友」应该无条件接住对方吗？' },
-    { icon: '🤖', title: 'AI 安慰与真心', q: 'AI 比我更会安慰人。如果安慰的效果可以被计算和优化，「真心安慰」还有价值吗？' },
+    { title: '导航不会责怪你', q: '导航在你走错路时绝不会责怪你，而是说「已帮你重新规划路线」。这件事有什么值得哲学思考的？' },
+    { title: '期待是暴力吗', q: '对他人的期待是不是一种微妙的暴力？' },
+    { title: '教师节送礼', q: '教师节快到了，要给老师送礼吗？' },
+    { title: '手机没电就心慌', q: '手机没电就心慌不安——我对设备的这种「依赖」，是一种成瘾，还是说明我与工具本来就分不开？' },
+    { title: '深夜倾诉的朋友', q: '好朋友总在深夜找我倾诉负面情绪，我最近很累，但怕拒绝会伤害他。一个「好朋友」应该无条件接住对方吗？' },
+    { title: 'AI 安慰与真心', q: 'AI 比我更会安慰人。如果安慰的效果可以被计算和优化，「真心安慰」还有价值吗？' },
   ],
   en: [
-    { icon: '🧭', title: 'The GPS never blames you', q: 'Your GPS never scolds you when you take a wrong turn — it just says "recalculating". What is philosophically interesting about this?' },
-    { icon: '🪞', title: 'Expectation as violence', q: 'Is expecting things from others a subtle form of violence?' },
-    { icon: '🎁', title: 'Teacher gifts', q: 'Teacher\'s Day is coming — should you give your teacher a gift?' },
-    { icon: '🔋', title: 'Low-battery anxiety', q: 'My phone dying makes me anxious. Is my "dependence" on devices an addiction, or evidence that tools and selves were never separate?' },
-    { icon: '🌙', title: 'The midnight friend', q: 'A friend always vents to me late at night. I am exhausted but afraid hurting them. Must a good friend always be there?' },
-    { icon: '🤖', title: 'AI comfort vs sincerity', q: 'AI comforts people better than I do. If comfort can be computed and optimized, does "sincere comfort" still matter?' },
+    { title: 'The GPS never blames you', q: 'Your GPS never scolds you when you take a wrong turn — it just says "recalculating". What is philosophically interesting about this?' },
+    { title: 'Expectation as violence', q: 'Is expecting things from others a subtle form of violence?' },
+    { title: 'Teacher gifts', q: 'Teacher\'s Day is coming — should you give your teacher a gift?' },
+    { title: 'Low-battery anxiety', q: 'My phone dying makes me anxious. Is my "dependence" on devices an addiction, or evidence that tools and selves were never separate?' },
+    { title: 'The midnight friend', q: 'A friend always vents to me late at night. I am exhausted but afraid hurting them. Must a good friend always be there?' },
+    { title: 'AI comfort vs sincerity', q: 'AI comforts people better than I do. If comfort can be computed and optimized, does "sincere comfort" still matter?' },
   ],
 };
 export function EpStarter({ lang, onPick }) {
   const items = EP_QUESTIONS[lang === 'en' ? 'en' : 'zh'] || EP_QUESTIONS.zh;
+  const icons = [Compass, ScanFace, Gift, Battery, Moon, Bot];
   return (
     <div className="o9-ep" data-testid="o9-ep-entry">
       <div className="o9-ep-cap"><Layers size={12} aria-hidden /> {lang === 'en' ? 'Everyday philosophy' : '现实生活哲学'}</div>
       <div className="o9-ep-grid">
-        {items.map((it) => (
+        {items.map((it, i) => {
+          const EntryIcon = icons[i];
+          return (
           <button key={it.title} className="o9-ep-card" onClick={() => onPick(it.q)}>
-            <span className="o9-ep-icon" aria-hidden>{it.icon}</span>
+            <span className="o9-ep-icon" aria-hidden><EntryIcon size={18} strokeWidth={1.5} /></span>
             <span className="o9-ep-title">{it.title}</span>
             <span className="o9-ep-q">{it.q.length > 42 ? it.q.slice(0, 42) + '…' : it.q}</span>
           </button>
-        ))}
+        ); })}
       </div>
     </div>
   );
 }
 
 /* ── Source Drawer（§B Citation UX: 点击引用 → 全量来源 + 核验状态 + 原典深链） ── */
-export function SourceDrawer({ open, citation, lang, onClose }) {
+function GeneralReaderLink({ citation, zh }) {
+  const safe = value => { try { const url = new URL(value); return ['https:', 'http:'].includes(url.protocol) ? url.href : null; } catch { return null; } };
+  const scholarly = generalEvidenceLayer(citation) === 'scholarly';
+  const doi = String(citation.doi || '').replace(/^https?:\/\/(?:dx\.)?doi\.org\//i, '');
+  const doiLink = /^10\.\d{4,9}\/\S+$/.test(doi) ? `https://doi.org/${encodeURI(doi)}` : null;
+  const direct = safe(citation.reader_url) || safe(citation.url) || doiLink || (!scholarly && citation.book_id ? `${_DP_READER}/${encodeURIComponent(citation.book_id)}?ch=${Number(citation.chapter_idx) || 0}` : null);
+  const [resolved, setResolved] = _useState(null);
+  const [error, setError] = _useState(false);
+  const [attempt, setAttempt] = _useState(0);
+  useEffect(() => {
+    if (direct || !citation.book || scholarly) return;
+    let active = true;
+    setError(false); setResolved(null);
+    resolveCite(citation.book, citation.chapter || '').then(data => {
+      if (!active) return;
+      if (data.error || data.matched === false || !data.book_id) { setError(true); return; }
+      setResolved(`${_DP_READER}/${encodeURIComponent(data.book_id)}?ch=${Number(data.chapter_idx) || 0}`);
+    }).catch(() => { if (active) setError(true); });
+    return () => { active = false; };
+  }, [direct, citation.book, citation.chapter, scholarly, attempt]);
+  const href = direct || resolved;
+  if (href) return <a className="o9-drawer-link" href={href} target="_blank" rel="noopener noreferrer"><ExternalLink size={12} />{zh ? '打开来源' : 'Open source'}</a>;
+  if (!citation.book || scholarly) return <span>{zh ? '此来源未提供可打开的链接' : 'No usable link is available for this source'}</span>;
+  if (error) return <button className="cw-cite-more" onClick={() => setAttempt(v => v + 1)}>{zh ? '暂未定位到原文，点击重试' : 'Source unavailable. Retry'}</button>;
+  return <span role="status">{zh ? '正在定位原文…' : 'Locating source…'}</span>;
+}
+
+export function SourceDrawer({ open, citation, lang, onClose, general = false }) {
   const zh = lang !== 'en';
+  const drawerRef = useRef(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  useEffect(() => {
+    if (!open || !general) return;
+    const previous = document.activeElement;
+    const root = drawerRef.current;
+    root?.querySelector('button')?.focus();
+    const trap = e => {
+      if (e.key !== 'Tab') return;
+      const nodes = [...(root?.querySelectorAll('button:not(:disabled), a[href], [tabindex="0"]') || [])];
+      if (!nodes.length) return;
+      if (e.shiftKey && document.activeElement === nodes[0]) { e.preventDefault(); nodes.at(-1).focus(); }
+      else if (!e.shiftKey && document.activeElement === nodes.at(-1)) { e.preventDefault(); nodes[0].focus(); }
+    };
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    root?.addEventListener('keydown', trap);
+    return () => { root?.removeEventListener('keydown', trap); document.body.style.overflow = overflow; previous?.focus?.(); };
+  }, [open, general]);
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    const onKey = (e) => { if (e.key === 'Escape') closeRef.current(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
+  }, [open]);
   if (!open || !citation) return null;
-  const c = citation;
+  const c = general ? Object.fromEntries(Object.entries(citation).map(([key, value]) => [key, typeof value === 'string' ? plainText(value) : value])) : citation;
   const link = c.reader_url || c.url || null;
+  const excerpt = general ? (c.excerpt || c.quote || c.passage || c.abstract_text) : (c.quote || c.passage || c.abstract_text);
   const rows = [
+    ...(general ? [
+      [zh ? '资料类型' : 'Source type', layerLabel(generalEvidenceLayer(c), lang)],
+      [zh ? '读取范围' : 'Reading scope', generalAccessLabel(c.access_level, lang)],
+    ] : []),
     [zh ? '作者' : 'Author', (Array.isArray(c.authors) ? c.authors.map(a => a?.name || a).filter(Boolean).join(', ') : c.author) || null],
     [zh ? '著作' : 'Work', c.work || c.book || null],
     [zh ? '章节/页' : 'Chapter/Pages', c.chapter || c.page || null],
@@ -152,7 +213,7 @@ export function SourceDrawer({ open, citation, lang, onClose }) {
   ].filter(([, v]) => v);
   return (
     <div className="o9-drawer-mask" onClick={onClose}>
-      <aside className="o9-drawer" role="dialog" aria-modal="true" aria-label={zh ? '引用来源' : 'Citation source'}
+      <aside ref={drawerRef} className="o9-drawer" role="dialog" aria-modal="true" aria-label={zh ? '引用来源' : 'Citation source'}
         onClick={(e) => e.stopPropagation()}>
         <header className="o9-drawer-head">
           <span className="o9-drawer-cap"><Quote size={13} aria-hidden /> {zh ? '引用来源' : 'Citation source'}</span>
@@ -161,20 +222,19 @@ export function SourceDrawer({ open, citation, lang, onClose }) {
         <div className="o9-drawer-body">
           <div className="o9-drawer-title">{c.title || c.book || c.work || '—'}</div>
           {rows.map(([k, v]) => (
-            <div key={k} className="o9-drawer-row"><span className="o9-drawer-k">{k}</span><span>{v}</span></div>
+              <div key={k} className="o9-drawer-row"><span className="o9-drawer-k">{k}</span><span>{general ? plainText(v) : v}</span></div>
           ))}
-          {(c.quote || c.passage || c.abstract_text) && (
-            <blockquote className="o9-drawer-quote">
-              <Quote size={11} aria-hidden /> {(c.quote || c.passage || c.abstract_text || '').slice(0, 420)}
-            </blockquote>
-          )}
+          {excerpt && (general ? <section className="general-source-excerpt" aria-label={zh ? '来源片段' : 'Source excerpt'}>
+            <div className="cw-evidence-cap"><Quote size={11} aria-hidden />{zh ? '来源片段' : 'Source excerpt'}</div>
+            <blockquote className="o9-drawer-quote">{excerpt}</blockquote>
+          </section> : <blockquote className="o9-drawer-quote"><Quote size={11} aria-hidden />{excerpt.slice(0, 420)}</blockquote>)}
           <div className="o9-drawer-verify">
             <ShieldCheck size={12} aria-hidden />
-            {c.used === false ? (zh ? '检索到但未被本回答引用' : 'Retrieved but not cited by this answer')
+            {general ? (zh ? '本回答使用的来源' : 'Source used in this answer') : c.used === false ? (zh ? '检索到但未被本回答引用' : 'Retrieved but not cited by this answer')
               : (zh ? '已核验：本回答实际引用的证据' : 'Verified: actually cited by this answer')}
           </div>
-          {(link || citation.book) && (
-            <ReaderLink citation={citation} fallback={link} zh={zh} />
+          {(link || citation.book || (general && citation.doi)) && (
+            general ? <GeneralReaderLink key={c.evidence_id || c.book || c.url} citation={c} zh={zh} /> : <ReaderLink citation={citation} fallback={link} zh={zh} />
           )}
         </div>
       </aside>

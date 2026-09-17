@@ -243,6 +243,7 @@ def test_f7_terminal_validation_fingerprint_recorded():
 
 
 def test_f8_two_repairs_produce_r1_and_r2_classifications():
+    import hashlib
     bad_a = "> 「" + _SENTINEL_FAKE + "」"
     bad_b = "> 「" + _FAKE_B + "」"
     script = _TOOLS_SCRIPT + [_msg(bad_a), _msg(bad_b), _msg(_GOOD)]
@@ -252,16 +253,29 @@ def test_f8_two_repairs_produce_r1_and_r2_classifications():
         evs, _chat = _run_lp("言必有中出处", script, adapter=None)
     finally:
         EG.LOCAL_PATCH_PRODUCTION_ENABLED = _LP_OFF
-    hist = _done(evs)["validation"]["history"]
+    done = _done(evs)
+    hist = done["validation"]["history"]
     cls = classify_history(hist)
     assert set(cls) == {"R1", "R2"}
-    # R1: 伪引文 A 消失、B 引入; R2: B 消失（fingerprint 集合差, 真源=history）
-    assert cls["R1"]["resolved"] == hist[0]["issue_fingerprints"]
-    assert cls["R1"]["introduced"] == hist[1]["issue_fingerprints"]
-    assert cls["R2"]["resolved"] == sorted(
-        set(hist[1]["issue_fingerprints"]) - set(hist[2]["issue_fingerprints"]))
-    assert cls["R2"]["resolved"]                       # B 的指纹确实在 R2 被修掉
-    assert cls["R2"]["introduced"] == []               # 干净终态零新指纹
+    # General FULL_REWRITE now has the same evidence safety gate as a patch.
+    # Replacing false quote A with a different false quote B is rejected. The
+    # retained candidate/history must still describe A until the good repair.
+    assert cls["R1"] == {"resolved": [], "persisted": hist[0]["issue_fingerprints"], "introduced": []}
+    assert hist[0]["issue_fingerprints"]
+    assert hist[1]["candidate_sha256"] == hist[0]["candidate_sha256"]
+    assert hist[1]["candidate_sha256"] != hashlib.sha256(bad_b.encode()).hexdigest()
+    trace = done["validation"]["repair_trace"]
+    rejected = trace[0]["repair_safety_rejected"]
+    assert rejected["rejected"] is True and rejected["pre_candidate_restored"] is True
+    assert rejected["mode"] == "FULL_REWRITE" and rejected["rejection_kind"] == "AMBIGUOUS"
+    assert rejected["families"] == ["QUOTE"] and rejected["fingerprints"]
+    assert trace[0]["post_repair_candidate_sha256"] == trace[0]["pre_repair_candidate_sha256"]
+    assert trace[1]["repair_safety_escalated"] is True
+    assert done["v8f2_telemetry"]["REPAIR_SAFETY_REJECTED_AMBIGUOUS"] == 1
+    assert cls["R2"] == {"resolved": hist[0]["issue_fingerprints"], "persisted": [], "introduced": []}
+    assert hist[2]["ok"] is True and hist[2]["issue_fingerprints"] == []
+    assert _answer_text(evs) == _GOOD
+    assert _SENTINEL_FAKE not in _answer_text(evs) and _FAKE_B not in _answer_text(evs)
 
 
 # ═══════════════════════════════════════════════════════

@@ -373,6 +373,9 @@ def _mem_slot():
     """当前用户的记忆槽 dict（懒加载全量缓存）
     Phase T 加固: 逐键 setdefault 兜底——历史文件/迁移嵌套可能缺新增状态键（如 socratic）,
     工具侧不再假设槽键齐全。"""
+    from deep_context import current_memory_overlay
+    if (overlay := current_memory_overlay.get()) is not None:
+        return overlay
     global _mem_all
     if _mem_all is None:
         _mem_all = {}
@@ -394,6 +397,9 @@ def _mem_slot():
 
 def _save_agent_memory():
     """原子写全量记忆（tmp+rename; 失败静默——记忆非关键数据）"""
+    from deep_context import current_memory_overlay
+    if current_memory_overlay.get() is not None:
+        return  # The general-agent transaction commits after successful completion.
     global _mem_all
     if _mem_all is None:
         return

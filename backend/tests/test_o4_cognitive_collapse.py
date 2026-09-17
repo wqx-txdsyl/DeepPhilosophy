@@ -584,13 +584,12 @@ class TestRP1:
             _msg(final)]
         evs, chat = _run_stream("言必有中出处", script)
         base = EG.SYSTEM_PROMPT_LG[:24]
+        reinforcement = {m.content for m in EG._build_context_messages("general", "zh", reinforce=True)}
         for prompts in chat.prompts:
             for m in prompts:
                 if m.__class__.__name__ == "SystemMessage":
                     c = m.content or ""
-                    assert (c.startswith(base)
-                            or c.startswith("（记住: 你就是你")
-                            or c.startswith("（语言提醒：")), c[:60]
+                    assert c.startswith(base) or c in reinforcement, c[:60]
 
     # ── R7: Quote/citation validator intact（O2 冒烟）───────────────────
     def test_r7_evidence_validator_intact(self):

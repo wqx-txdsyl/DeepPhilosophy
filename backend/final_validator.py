@@ -177,12 +177,13 @@ def check_citations(answer, tool_log, fallback_log=None):
 # ═══════════════════════════════════════════════════════
 # 2. 逐字引文校验（复用 Quote Bound 的 extract/verify/audit，只检测）
 # ═══════════════════════════════════════════════════════
-def check_quotes(answer, raw_tool_log):
+def check_quotes(answer, raw_tool_log, *, strict_quote_spans=False):
     """最终候选正文 → 引文核验 issue。
     判定范围与原渲染契约一致: blockquote（整段原文形态）与 leadin（行内「」引文）
     承担"逐字承诺"; 行内短“引述”与过短片段（SHORT）不作逐字承诺。"""
     issues = []
-    audit = QB.audit_quotes(answer or "", raw_tool_log)
+    audit = QB.audit_quotes(answer or "", raw_tool_log,
+                            strict_quote_spans=strict_quote_spans)
     for e in audit.get("entries", []):
         st, kind = e.get("verification_state"), e.get("kind")
         loc = e.get("preview") or ""
@@ -347,12 +348,14 @@ def check_bibliography_groundedness(answer, raw_tool_log):
 # 3. 总入口
 # ═══════════════════════════════════════════════════════
 def validate_final_candidate(answer, *, raw_tool_log, fallback_log=None,
-                             language="zh") -> ValidationResult:
+                             language="zh", strict_quote_spans=False) -> ValidationResult:
     """对 Final Candidate 做一次性确定性校验（candidate 此刻只在内部缓冲，尚未公开）。
     纯函数式检测: 不改写、不追加、不重试——FAIL 时由调用方把结构化 issues 反馈给
     同一个 Main Agent 进入 repair。
     输入只有 candidate + evidence（raw_tool_log/fallback_log）——没有用户意图分类、
-    问题类型或来源约束: 同一候选无论配什么问题, 校验结果一致。"""
+    问题类型或来源约束: 同一候选无论配什么问题, 校验结果一致。
+    strict_quote_spans 是明确启用的解析版本：将引用块尾部的 formal citation
+    与逐字正文分开核验。默认保留旧解析，哲学家 agent 无行为变化。"""
     ans = answer or ""
     if not ans.strip():
         return ValidationResult(ok=False, issues=[ValidationIssue(
@@ -361,7 +364,8 @@ def validate_final_candidate(answer, *, raw_tool_log, fallback_log=None,
     verified_citations, cite_issues = check_citations(
         ans, raw_tool_log, fallback_log=fallback_log)
     issues.extend(cite_issues)
-    audit, quote_issues = check_quotes(ans, raw_tool_log)
+    audit, quote_issues = check_quotes(ans, raw_tool_log,
+                                     strict_quote_spans=strict_quote_spans)
     issues.extend(quote_issues)
     issues.extend(check_bibliography_groundedness(ans, raw_tool_log))   # V5-F2 §D
     result = ValidationResult(ok=not issues, issues=issues,

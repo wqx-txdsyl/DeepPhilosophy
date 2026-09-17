@@ -6,9 +6,10 @@
 由 agent.py 聚合 include_router（main.py 的 router 引用不变）。
 """
 import json
+import asyncio
 from typing import Optional, List
 
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends, Header, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
@@ -19,6 +20,30 @@ router = APIRouter()
 
 def _sse(event):
     return f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
+
+
+async def _heartbeat_stream(events, interval=15):
+    """Keep an idle research request alive; disconnect cancels its upstream task."""
+    pending = None
+    try:
+        while True:
+            pending = asyncio.create_task(anext(events))
+            while not pending.done():
+                done, _ = await asyncio.wait({pending}, timeout=interval)
+                if not done:
+                    yield ": keep-alive\n\n"
+            try:
+                event = pending.result()
+            except StopAsyncIteration:
+                return
+            pending = None
+            yield _sse(event)
+    finally:
+        if pending is not None:
+            if not pending.done():
+                pending.cancel()
+            await asyncio.gather(pending, return_exceptions=True)
+        await events.aclose()
 
 class AgentChatRequest(BaseModel):
     message: str
@@ -34,9 +59,9 @@ class AgentChatRequest(BaseModel):
 # Claude Code 风格: 思考 → 工具（并行）→ 最终回答; 前端协议不变
 # ═══════════════════════════════════════════════════════
 @router.post("/api/agent/stream_lg")
-async def agent_stream_lg(req: AgentChatRequest, authorization: str = Header(None),
+async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization: str = Header(None),
                           _g: dict = Depends(guard.agent_guard)):
-    async def gen():
+    async def stream_events():
         import engine_langgraph as elg
         if not API_KEY:
             yield _sse({"type": "error", "content": "未配置 API Key"})
@@ -55,8 +80,39 @@ async def agent_stream_lg(req: AgentChatRequest, authorization: str = Header(Non
                         language = prof["language"]
             except Exception:
                 pass
-        async for ev in elg.stream_agent(req.message, req.history or [], req.agent or "general", custom, language,
-                                          conversation_id=req.conversation_id, message_id=req.message_id):
-            yield _sse(ev)
+        events = elg.stream_agent(req.message, req.history or [], req.agent or "general", custom, language,
+                                 conversation_id=req.conversation_id, message_id=req.message_id)
+        if (req.agent or "general") == "general":
+            frames = _heartbeat_stream(events)
+            try:
+                async for frame in frames:
+                    yield frame
+            finally:
+                await frames.aclose()
+        else:
+            async for ev in events:
+                yield _sse(ev)
+
+    async def gen():
+        if (req.agent or "general") != "general":
+            async for frame in stream_events():
+                yield frame
+            return
+        from deep_context import current_memory_key, general_memory_key
+        # Sync FastAPI dependencies execute in a worker context. Their
+        # ContextVar writes do not propagate back into this SSE task.
+        ip = guard.client_ip(request)
+        identity_token = guard.current_user.set({"id": (_g or {}).get("id"), "ip": ip})
+        scope_token = current_memory_key.set(general_memory_key(_g, ip, req.conversation_id))
+        stream = stream_events()
+        try:
+            async for frame in stream:
+                yield frame
+        finally:
+            try:
+                await stream.aclose()
+            finally:
+                current_memory_key.reset(scope_token)
+                guard.current_user.reset(identity_token)
     return StreamingResponse(gen(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})

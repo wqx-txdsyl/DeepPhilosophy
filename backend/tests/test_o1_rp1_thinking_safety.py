@@ -254,8 +254,8 @@ class TestRp1RationaleChannelIntact:
         ]
         evs = _run_stream("言必有中出处", script)
         _assert_no_sentinel(evs)
-        notes = _of(evs, "thinking_summary")
-        assert any("先检索定位原典" in n.get("content", "") for n in notes)
+        notes = [e for e in evs if e.get("type") in ("thinking_summary", "thinking_summary_delta")]
+        assert "先检索定位原典" in "".join(n.get("content", "") for n in notes)
         assert all(n.get("initiated_by") == "main_agent" for n in notes)
         # rationale 标签本身不得泄漏到任何用户可见事件
         assert "<rationale>" not in _all_strings(evs)

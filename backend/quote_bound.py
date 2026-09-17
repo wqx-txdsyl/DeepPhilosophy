@@ -77,7 +77,60 @@ DISCLOSED_RE = re.compile(r"未经.{0,10}(核验|核对)|未在.{0,12}库.{0,6}(
 # ═══════════════════════════════════════════════════════
 # 1. 引文提取
 # ═══════════════════════════════════════════════════════
-def extract_quotes(text):
+def _split_quote_citation_suffix(body):
+    """Separate trailing formal source labels from quoted words, never interior labels.
+
+    Labels still undergo final_validator.check_citations against the unchanged
+    answer. Removing an interior label could accidentally join non-contiguous
+    fragments into a verified sentence, so only a complete terminal run counts.
+    """
+    suffix = re.search(
+        rf"(?:\s*(?:{EC._CITE_RE.pattern}|{EC._CITE_AUTHOR_WORK_RE.pattern}))+\s*$",
+        body)
+    if suffix is None:
+        return body, []
+    labels = []
+    tail = suffix.group(0)
+    for match in EC._CITE_RE.finditer(tail):
+        book, chapter = EC._split_book_chapter(match.group(1), match.group(2))
+        labels.append({"book": book, "chapter": chapter})
+    for match in EC._CITE_AUTHOR_WORK_RE.finditer(tail):
+        labels.append({"book": match.group(2), "chapter": ""})
+    return body[:suffix.start()].rstrip(), labels
+
+
+def _inline_quote_citation_labels(tail):
+    """Only labels immediately following a quoted span can attribute that span."""
+    match = re.match(
+        rf"(?:\s*(?:{EC._CITE_RE.pattern}|{EC._CITE_AUTHOR_WORK_RE.pattern}))+", tail)
+    if match is None:
+        return []
+    return _split_quote_citation_suffix(match.group(0))[1]
+
+
+def _illustrative_speech(head, tail):
+    """A generic participant's example dialogue makes no literary quote claim.
+
+    Only the general parser opts in. Explicit source labels, works, original
+    wording claims and literary attribution always retain evidence checking.
+    A bare historical/pronominal attribution is deliberately not exempted.
+    """
+    local = head.rsplit("\n\n", 1)[-1][-240:]
+    if (_inline_quote_citation_labels(tail)
+            or re.search(r"《|原文|原句|原话|原言|逐字|写道|曾说|曾言|曰|引述|\b(?:original|verbatim|wrote|writes|quoted)\b",
+                         local, re.IGNORECASE)):
+        return False
+    role = r"(?:伴侣|朋友|父母|孩子|病人|学生|老师|同事|照顾者|被照顾者|陌生人|顾客|店员)"
+    return bool(re.search(
+        rf"(?:{role}|(?:某个|一个|某位|一位)人)[^。！？\n“”\"]{{0,60}}"
+        r"(?:说|说道|问道|答道|回答道)\s*[:：]?\s*$", local)
+        or re.search(
+            r"\b(?:suppose|imagine|for example)\b[^.!?\n]{0,120}"
+            r"\b(?:someone|a friend|a partner|a child|a student|they|he|she)\b"
+            r"[^.!?\n]{0,40}\b(?:says|said)\s*:?\s*$", local, re.IGNORECASE))
+
+
+def extract_quotes(text, *, strict_quote_spans=False):
     """用户可见文本 → verbatim-like 引文清单
     kind: blockquote（markdown 引用块）| leadin（引导词+引号, 逐字主张）|
           quoted（中文引号长文本, 无引导词——scare-quote 契约豁免类）
@@ -88,7 +141,11 @@ def extract_quotes(text):
     且旧 LEADIN_RE 要求引导语自带结尾引号字符, 与 head 截取口径互斥,
     leadin 分类从未触发。现在两种引号形式共用 LEADIN_RE 同一意图边界:
     引导词命中 → leadin（逐字主张, validator 强制核验）; 弯引号无引导词 →
-    quoted（既有豁免）; 直引号无引导词 → 不提取（scare quotes 契约不变）。"""
+    quoted（既有豁免）; 直引号无引导词 → 不提取（scare quotes 契约不变）。
+
+    strict_quote_spans 由深哲调用方显式启用：引用块尾部完整的来源标签不是
+    原文词句，单独记录并核验。默认关闭，既有哲学家路径与修复定位保持兼容。
+    char_start/char_end 仍定位原候选中的完整引用块，绝不重写候选。"""
     out = []
     seq = 0
     _text = text or ""
@@ -108,6 +165,9 @@ def extract_quotes(text):
                 buf.append(BLOCKQ_LINE_RE.sub("", lines[i], count=1).strip())
                 i += 1
             body = "".join(buf).strip()
+            citation_labels = []
+            if strict_quote_spans:
+                body, citation_labels = _split_quote_citation_suffix(body)
             if body:
                 seq += 1
                 # end = 末块行结尾（i 是块后首行; 块行 = i0..i-1）
@@ -116,6 +176,8 @@ def extract_quotes(text):
                             "text": body, "line_count": len(buf),
                             "char_start": _line_off[i0],
                             "char_end": _line_off[_last] + len(lines[_last])})
+                if citation_labels:
+                    out[-1]["citation_labels"] = citation_labels
             continue
         i += 1
     src = text or ""
@@ -129,11 +191,17 @@ def extract_quotes(text):
             continue
         head = src[:m.start()]
         leadin = bool(LEADIN_RE.search(head[-40:]))
+        if strict_quote_spans and leadin and _illustrative_speech(head, src[m.end():]):
+            leadin = False
         seq += 1
         out.append({"quote_claim_id": f"quote_{seq}",
                     "kind": "leadin" if leadin else "quoted",
                     "text": body, "line_count": 1,
                     "char_start": m.start(), "char_end": m.end()})
+        if strict_quote_spans and leadin:
+            labels = _inline_quote_citation_labels(src[m.end():])
+            if labels:
+                out[-1]["citation_labels"] = labels
         taken.append((m.start(), m.end()))
     # 直引号长文本: 仅引导词命中才提取（无引导词的成对直引号多为 scare quotes,
     # 逐对直引号之间的正文曾被误捕获为假引文——真实回归 R1 的 3 条 MEMORY_ONLY 噪声）
@@ -147,9 +215,14 @@ def extract_quotes(text):
         if not LEADIN_RE.search(head[-40:]):
             continue
         seq += 1
-        out.append({"quote_claim_id": f"quote_{seq}", "kind": "leadin",
+        illustrative = strict_quote_spans and _illustrative_speech(head, src[m.end():])
+        out.append({"quote_claim_id": f"quote_{seq}", "kind": "quoted" if illustrative else "leadin",
                     "text": body, "line_count": 1,
                     "char_start": m.start(), "char_end": m.end()})
+        if strict_quote_spans:
+            labels = _inline_quote_citation_labels(src[m.end():])
+            if labels:
+                out[-1]["citation_labels"] = labels
     return out
 
 
@@ -277,12 +350,31 @@ def verify_quote(quote_text, spans):
 # ═══════════════════════════════════════════════════════
 # 5. 最终正文审计（done 事件 + 回归断言）
 # ═══════════════════════════════════════════════════════
-def audit_quotes(answer, raw_tool_log):
+def audit_quotes(answer, raw_tool_log, *, strict_quote_spans=False):
     """最终可见正文 → 引文核验审计（逐条 + 汇总）"""
     spans = evidence_spans(raw_tool_log)
+    if strict_quote_spans:
+        # Prefer an actually read passage over an equal search excerpt. This
+        # preserves context in repair feedback instead of selecting the first
+        # lexical hit merely because the search happened earlier.
+        spans = sorted(spans, key=lambda span: span.get("source_type") != "primary_read")
     entries = []
-    for q in extract_quotes(answer):
-        v = verify_quote(q["text"], spans)
+    for q in extract_quotes(answer, strict_quote_spans=strict_quote_spans):
+        labels = q.get("citation_labels") or []
+        if labels:
+            # Every attached attribution must support these exact words. A true
+            # quote from another retrieved book cannot validate a false label.
+            checks = [verify_quote(q["text"], [
+                sp for sp in spans
+                if EC._book_match(sp.get("book"), label["book"])
+                and EC._chapter_match(sp.get("chapter") or "", label["chapter"])
+            ]) for label in labels]
+            v = min(checks, key=lambda item: {
+                "MEMORY_ONLY": 0, "VERIFIED_NEAR": 1,
+                "SHORT": 2, "VERIFIED_EXACT": 3,
+            }[item["state"]])
+        else:
+            v = verify_quote(q["text"], spans)
         disclosed = bool(DISCLOSED_RE.search(
             (answer or "")[max(0, (answer or "").find(q["text"])):][:len(q["text"]) + 120]))
         entries.append({

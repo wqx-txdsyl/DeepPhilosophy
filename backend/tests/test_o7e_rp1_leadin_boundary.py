@@ -7,11 +7,10 @@
   L3 同一 leadin COPY_SLICE → lead-in + quote delimiters 全部原样保留
   L4 claim-span 外字节完全不变
   L5 无法机械确定 lead-in boundary → 不允许 quote-only PARAPHRASE（返回 None）
-  L6 QuoteBound extraction / EXACT / NEAR / MEMORY_ONLY semantics zero diff
+  L6 QuoteBound 默认 extraction / EXACT / NEAR / MEMORY_ONLY 语义保持
 """
 import json
 import os
-import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -19,9 +18,7 @@ import repair_context as RC
 import quote_bound as QB
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from test_o7e_h2c_contract import _raw_log, _sha
-
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from test_o7e_h2c_contract import _raw_log
 
 _FAKE = "伪造的引文措辞并非库中原文"
 
@@ -149,7 +146,29 @@ def test_l5_unresolvable_leadin_boundary_never_quote_only_claim():
     assert RC._claim_content_span(cand, q) is None
 
 
-def test_l6_quote_bound_semantics_zero_diff():
-    r = subprocess.run(["git", "diff", "--quiet", "afe8a1c70", "--",
-                        "backend/quote_bound.py"], cwd=ROOT, capture_output=True)
-    assert r.returncode == 0, "quote_bound 相对 RCA-2 BASE 有改动（本阶段禁止）"
+def test_l6_quote_bound_default_semantics_preserved():
+    # Historical RCA-2 source freeze: afe8a1c70. New opt-in general parsing is
+    # authorized; compatibility is a behavior contract, not file-byte equality.
+    exact = _raw_log()[0]["result_full"]["text"].split("\n")[0]
+    cases = [
+        (exact, "VERIFIED_EXACT"),
+        (exact.replace("改作", "改造"), "VERIFIED_NEAR"),
+        (_FAKE, "MEMORY_ONLY"),
+        (exact + "【《论语》·先进篇】", "VERIFIED_NEAR"),
+    ]
+    for text, state in cases:
+        candidate = "> " + text
+        quotes = QB.extract_quotes(candidate)
+        assert quotes == QB.extract_quotes(candidate, strict_quote_spans=False)
+        assert quotes[0]["text"] == text
+        assert quotes[0]["char_start"] == 0
+        assert quotes[0]["char_end"] == len(candidate)
+        audit = QB.audit_quotes(candidate, _raw_log())
+        assert audit == QB.audit_quotes(candidate, _raw_log(), strict_quote_spans=False)
+        assert audit["entries"][0]["verification_state"] == state
+
+    # Inline lead-ins keep their existing distinction from non-verbatim mention.
+    quoted = QB.extract_quotes("原文如下：“" + _FAKE + "”")[0]
+    mentioned = QB.extract_quotes("这里讨论“" + _FAKE + "”")[0]
+    assert quoted["kind"] == "leadin"
+    assert mentioned["kind"] == "quoted"

@@ -206,6 +206,9 @@ def auth_guard(request: Request):
 
 def user_memory_key() -> str:
     """per-user 记忆槽 key: 登录按用户, 匿名按 IP, 兜底 default"""
+    from deep_context import current_memory_key
+    if scoped := current_memory_key.get():
+        return scoped
     u = current_user.get()
     if not u:
         return "default"

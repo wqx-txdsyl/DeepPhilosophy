@@ -817,7 +817,15 @@ def _exec_agent_council(args):
     # ①② 并行执行（2026-08-14: 两次独立 LLM 调用并发, 总延迟减半）
     deep_speech = nietzsche_speech = ""
     with ThreadPoolExecutor(max_workers=2) as ex:
-        f1, f2 = ex.submit(_deep_speech), ex.submit(_nietzsche_speech)
+        from deep_context import current_tool_agent
+        if current_tool_agent.get() == "general":
+            from contextvars import copy_context
+            # Executor threads do not inherit ContextVars. Use a separate copy
+            # per simultaneous call; persona callers keep the legacy submit path.
+            f1 = ex.submit(copy_context().run, _deep_speech)
+            f2 = ex.submit(copy_context().run, _nietzsche_speech)
+        else:
+            f1, f2 = ex.submit(_deep_speech), ex.submit(_nietzsche_speech)
         try:
             deep_speech = f1.result()
         except Exception as e:

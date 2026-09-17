@@ -303,9 +303,15 @@ def test_e2e_protocol_and_packet_reach_model():
     _spy_prompts = []
 
     class SpyChat(ScriptedChat):
-        def invoke(self, messages, *a, **k):
+        # Observe provider-facing generation, shared by invoke/ainvoke and
+        # streaming. An invoke-only spy misses general's asynchronous path.
+        def _generate(self, messages, *a, **k):
             _spy_prompts.append(list(messages))
-            return super().invoke(messages, *a, **k)
+            return super()._generate(messages, *a, **k)
+
+        def _stream(self, messages, *a, **k):
+            _spy_prompts.append(list(messages))
+            yield from super()._stream(messages, *a, **k)
 
     # NEAR quote（与库文一字之差）→ validator 给 evidence_ref=qb_read_*
     from test_o2_final_ownership import _LUNYU_PASSAGE
@@ -332,19 +338,23 @@ def test_e2e_protocol_and_packet_reach_model():
         EG.LOCAL_PATCH_PRODUCTION_ENABLED = real_lp_flag
     done = _done(evs)
     assert done["validation"]["repairs_used"] >= 1
-    proto_found = any(any(getattr(m, "type", "") == "system" and
-                          "修复执行协议" in (m.content or "")
-                          for m in prompts) for prompts in _spy_prompts)
-    assert proto_found, "REPAIR_SYSTEM_PROTOCOL 未到达模型 SystemMessage"
-    pkt_found = any(any(getattr(m, "type", "") == "human" and
-                        ("qb_read_" in (m.content or "") or
-                         "SOURCE_EXACT_CONTEXT" in (m.content or ""))
-                        for m in prompts) for prompts in _spy_prompts)
-    assert pkt_found, "qb_* packet 未到达模型 HumanMessage"
+    repair_prompts = [prompts for prompts in _spy_prompts if any(
+        getattr(m, "type", "") == "system" and "修复执行协议" in (m.content or "") for m in prompts)]
+    assert repair_prompts, "REPAIR_SYSTEM_PROTOCOL 未到达实际模型生成接口"
+    # Protocol and the exact source must reach the same repair invocation,
+    # rather than independently occurring somewhere in the conversation.
+    assert any(any(getattr(m, "type", "") == "human" and
+                       "qb_read_" in (m.content or "") and
+                       "SOURCE_EXACT_CONTEXT" in (m.content or "") and
+                       "夫人不言，言必有中" in (m.content or "")
+                       for m in prompts) for prompts in repair_prompts), \
+        "修复调用没有同时收到 qb_* 标识与真实逐字原文"
     rt = done["validation"].get("repair_trace") or []
     assert rt and rt[0]["repair_mode"] is True
     assert rt[0]["system_protocol_injected"] is True
-    assert "packet_sha256" in rt[0]
+    assert rt[0]["packet_item_count"] > 0 and rt[0]["packet_evidence_refs"]
+    assert rt[0]["packet_sha256"]
+    assert done["validation"]["result"]["ok"] is True
 
 
 # ══ RP-DEC §6-§9: primary gate 状态化 + collection subwork ════

@@ -99,6 +99,7 @@ export function normalizeMessage(raw, fallbackAgentId = GENERAL_AGENT) {
     role,
     ...(role === 'assistant' ? { agent_id: raw.agent_id || fallbackAgentId } : {}),
     content: typeof raw.content === 'string' ? raw.content : '',
+    ...(typeof raw.context_content === 'string' ? { context_content: raw.context_content } : {}),
     ...(normalizeAttachments(raw.attachments).length ? { attachments: normalizeAttachments(raw.attachments) } : {}),
     ...(role === 'assistant'
       ? {
@@ -108,6 +109,7 @@ export function normalizeMessage(raw, fallbackAgentId = GENERAL_AGENT) {
           ...(raw.suggestions?.length ? { suggestions: raw.suggestions } : {}),
           ...(raw.reasoning_summary ? { reasoning_summary: raw.reasoning_summary } : {}),
           ...(raw.safety ? { safety: raw.safety } : {}),
+          ...(raw.agent_id === GENERAL_AGENT && raw.stream_state ? { stream_state: raw.stream_state, error: raw.error || '' } : {}),
         }
       : {}),
     created_at: raw.created_at || new Date().toISOString(),
@@ -124,6 +126,7 @@ export function normalizeAttachments(raw) {
       filename: String(a.filename),
       kind: ['image', 'markdown', 'text', 'document'].includes(a.kind) ? a.kind : 'document',
       ...(Number.isFinite(a.size) ? { size: a.size } : {}),
+      ...(a.truncated === true ? { truncated: true } : {}),
     }));
 }
 
@@ -276,11 +279,12 @@ export function toPersistedMessage(m) {
   };
   const attachments = normalizeAttachments(m.attachments);
   if (attachments.length) base.attachments = attachments;
+  if (typeof m.context_content === 'string') base.context_content = m.context_content;
   if (m.role !== 'assistant') return base;
   const events = (m.events || m.tool_events || []).map((ev) => {
-    if (ev?.t === 'tool_start') return { t: 'tool_cancel', name: ev.name, reason: '未执行，已跳过' };
+    if (ev?.t === 'tool_start') return { ...(m.agent_id === GENERAL_AGENT ? ev : {}), t: 'tool_cancel', name: ev.name, reason: m.agent_id === GENERAL_AGENT ? '执行结果未保存' : '未执行，已跳过' };
     if (ev?.t === 'tool' && ev.tc) {
-      return { t: 'tool', tc: { ...ev.tc, result_summary: String(ev.tc.result_summary || '').slice(0, 400) } };
+      return { ...(m.agent_id === GENERAL_AGENT ? ev : {}), t: 'tool', tc: { ...ev.tc, result_summary: String(ev.tc.result_summary || '').slice(0, 400) } };
     }
     return ev;
   });
@@ -293,6 +297,8 @@ export function toPersistedMessage(m) {
     ...(m.suggestions?.length ? { suggestions: m.suggestions } : {}),
     ...(m.reasoning_summary ? { reasoning_summary: m.reasoning_summary } : {}),
     ...(m.safety ? { safety: m.safety } : {}),
+    ...(m.agent_id === GENERAL_AGENT && m.stream_state ? { stream_state: m.stream_state, error: m.error || '' } : {}),
+    ...(m.agent_id === GENERAL_AGENT && Number.isFinite(m.duration_seconds) ? { duration_seconds: m.duration_seconds } : {}),
   };
 }
 

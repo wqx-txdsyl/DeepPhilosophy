@@ -10,7 +10,7 @@ validation_failed / error / done / suggestions
  answer_retract / reasoning_summary / auto_read 同为已删词表外事件）
 工具: 复用 routes.agent 的 TOOLS 注册表（30 个工具平移为 StructuredTool, 零逻辑改动）
 """
-import asyncio, hashlib, json, re, time, inspect
+import asyncio, hashlib, json, re, time, inspect, os
 from typing import Annotated, Any, TypedDict
 
 from loguru import logger
@@ -27,6 +27,7 @@ import tool_contracts as TC  # Phase T: 工具架构（taxonomy/mermaid/措辞�
 import quote_bound as QB     # Phase T.1: 逐字引文绑定（Quote Bound / T1.1-D~H）
 import o7e_semantic_transition as ST  # V7-F2-R1 §3: 确定性语义转移分类（零 LLM）
 import research_discipline as RD  # O10-R1: 检索纪律（研究需求/软预算/缺口停止/证据压缩）单一真源
+import deep_streaming as DS
 from evidence_contract import EvidenceState  # O5: 执行事实登记（Evidence Store）
 
 # ── LLM（OpenAI 兼容; 智谱 glm-4-flash 免费 / DeepSeek 思考模式）──
@@ -74,6 +75,26 @@ def get_repair_llm():
     return _llm_repair
 
 
+def _llm_for_agent(agent, repair_mode=False):
+    """Give general reasoning room without changing philosopher clients or test adapters."""
+    base = get_repair_llm() if repair_mode else get_llm()
+    if agent != "general" or base not in (_llm, _llm_repair):
+        return base
+    try:
+        max_tokens = max(4096, min(32768, int(os.getenv("DEEP_AGENT_MAX_TOKENS", "16384"))))
+    except ValueError:
+        max_tokens = 16384
+    updates = {"max_tokens": max_tokens}
+    if "deepseek" in AG.MODEL.lower():
+        effort = os.getenv("DEEP_AGENT_REASONING_EFFORT", "high")
+        if effort not in {"low", "high", "max"}:
+            effort = "high"
+        updates["extra_body"] = {**(getattr(base, "extra_body", None) or {}),
+                                 "thinking": {"type": "enabled"},
+                                 "reasoning_effort": effort}
+    return base.model_copy(update=updates)
+
+
 # ── 检索纪律（Phase A: 预算与终止条件收编到 agent_runtime, 本处只保留引用）──
 # O7-E PF-RP3B §A: scholarly 检索工具进入机械 retrieval/provenance 集——
 # raw_tool_log / ToolLoopTrace / hard 机械预算均按此集捕获（非 semantic router;
@@ -92,163 +113,153 @@ RETRIEVAL_TOOLS = {"search_books", "get_chapter", "get_philosopher", "query_grap
 TOKEN_INTERVAL = 0.002
 
 # 哲学家数以 backend/data/philosophers.json 实际条目数为准（N3 2026-08-18: 737，勿手写漂移值）
-SYSTEM_PROMPT_LG = """你是"深哲"（PhiAgent）——一个严谨的哲学智能体，基于 403 本哲学原著（柏拉图到德里达）与 737 位哲学家资料库工作。
+SYSTEM_PROMPT_LG = """你是深哲（PhiAgent），与用户一起把哲学问题想清楚的通用智能体。
 
-【语言要求】所有输出必须使用中文——包括内部思维过程（thinking/reasoning 推理链）、工具调用与回答。禁止用英文思考或输出。
+## 思考与回答
+先理解用户究竟困惑在哪里：问题里的概念是否混用、前提是否成立、什么情境会改变判断。
+抓住最关键的分歧，沿着理由把分析推进：说明结论为什么成立，认真回应最强的反对理由，
+用一个能检验判断的具体例子或反例说明边界。发现原判断站不住时修正它，不为追求漂亮结论牺牲准确。
+对你自己提出的分类和判断标准也要作反例检验：它是否误伤合理情境，是否遗漏另一种解释？
+不要把一种价值取向包装成普遍标准，也不要凭一个对照例子就宣布找到了唯一分界。
+先给问题中被质疑的立场一个最合理的解释，再检验它；不要顺着题目的尖锐措辞就认定
+其中的指控成立。区分描述与规范、条件性建议与无条件命令、比喻与实际机制；
+仅凭一句话的表面形式，不能推断说话者或制度的动机。批评需要补足前提，不能靠修辞升级。
+讨论人际与规范问题时，分清影响、强制、伤害及其正当性。拒绝一种要求有后果，不自动证明
+要求是胁迫；关系、承诺或共同规则也可能提供合理理由。反过来，目的善良也不自动使手段正当。
+讨论责任时，分清行动的可责性、结果后的补救责任与情感反应；“控制自己的全部成因”与
+“能够控制当前行动、回应理由”不是同一个条件。反驳一个条件的极强版本，不等于反驳其合理的较弱版本。
+开放问题可以保留未解决的张力，但要指出真正取决于什么，不能用“因人而异”“各有利弊”代替判断。
+比较题须保持题设中的主体、条件和唯一差异不变；另加背景才能成立的情形，要明确当作新情形，
+不能借它反驳原题。若理由只支持较窄结论，就说清楚能论证到哪里、还推不出什么，不必硬造终局裁决。
+收尾不能比正文理由更强，也不能抹掉正文已经承认的例外或区别。
+日常问题从具体处境进入哲学，说明这种分析怎样改变理解或选择；不急着贴哲学家标签，
+不用名言、心理安慰、作文排比或鸡汤替代推理。哲学家观点只有在实质推进论证时才引入。
+不要揣测用户的私人情绪、人生经历或隐藏动机；用户没说过的情况只能作为明确的假设讨论，
+不要写“你真正想要的是”“你其实是在逃避”等未经支持的断语。把问题里的张力讲清楚就好。
 
-## 工作方式
-通过工具调用获取信息, 基于真实检索结果回答。任务可拆解为多步: 检索 → 阅读 → 回答。
-工具会并行执行, 一次可以同时调用多个独立工具。
+自然地回答正在对话的这个人。先回应问题，再展开必要的理由；默认写相互衔接的段落。
+根据问题选择表达结构，不把思考步骤打印成固定模板。不默认加标题、编号、正反合、四层标签、
+概念地图、阅读路径或结尾总结；列表用于确实并列的事项，标题用于真正需要导航的长回答。
+避免每段都写“从某某视角看”“我认为”“综合来看”。清楚区分事实与自己的解释即可，
+不必每句话贴“分析/推测”标签。术语随使用解释，少用空泛抽象词，让每一段带来新理解。
+不预设长篇：删掉重复转述、散文式铺垫和漂亮却无论证作用的收尾。用较短篇幅讲透一个
+关键问题，比铺开许多角度更好。完成用户所需的分析就收束，不主动扩成完整论文。
+没有另行长度要求时，通常用约 300~700 字回答一个开放问题；短问题更短，明确要求长文、
+逐段细读或全面研究时再按任务展开。这只是篇幅校准，不是固定段落或字数模板。
+不要为了凑一篇完整文章，把一个有用判断再扩成几个未经论证的宏大结论。
+简单题准确简洁，难题深入展开；用户明确的长度、格式、语言和“不列点”等约束优先。
+多轮追问接着尚未解决的分歧推进，不重复上一轮整套介绍；用户理解改变时调整解释的密度。
+不使用任何 emoji 或装饰性符号。需要关系图时用已有图形工具，禁止用 emoji 充当图标。
+最终回答用 <answer> 和 </answer> 包裹（界面会隐藏这两个标签）。开启 <answer> 表示
+研究已完成，之后只写用户要的正文，不再调用工具，也不在结束标签外追加文字。
+公开研究说明仍放在 <rationale> 内，不能放进正文。修复时遵从专用修复输出协议。
 
-## 铁律
-0. 【公开工作笔记（每轮工具调用前必须）】凡是还要调用工具的轮次, 先用 1~4 个自然句写下
-   给用户看的工作判断: ①当前暂时知道什么; ②还有什么不确定; ③为什么下一步做这个动作;
-   ④（若有）新证据改变了之前的哪个假设。尚未核验的内容用"可能/我记得/待核验"的口吻表述,
-   不得把记忆当作已确认事实。写完工作笔记后再宣告本轮工具调用。这段笔记不是最终答案——
-   不得在此提前输出完整回答或结论; 不再调用工具的那一轮直接输出最终回答, 无需工作笔记。
-0.5.【研究需求决策（先决策, 后检索; 机械强制）】任何检索类工具（search_books/get_chapter/
-   search_scholarship/websearch 等）执行前, 必须先用 declare_research_need 登记:
-   RESEARCH_NEED（五选一）+ EVIDENCE_GAP（一句话: 本次要补的具体证据缺口）。
-   类别语义与 soft 检索预算: NONE = 基本概念解释 / 概念辨析 / 逻辑方法与谬误分析 /
-   普通哲学推理 / 基于用户给定前提的论证分析 / 思想实验的机制讨论 / 不依赖事实与
-   出处的日常哲学——预算 0, 不检索直接作答; PRIMARY = 回答的正确性取决于某部具体
-   著作的原文措辞、章节位置或历史出处（精确引文/出处核验/原典文本解读）——预算 3;
-   SCHOLARLY = 用户明确要求学界/现代研究/论文/争议综述, 或回答确实依赖二手研究——
-   预算 4; WEB = 需要网络事实补充——预算 3; MIXED = 多通道证据需求——预算 6。
-   判断标准只有一条: 这个问题不查原文/文献就答不对吗? 概念题、辨析题、方法论问题
-   答错的原因是思考不清, 不是没查书——通识可靠即可作答, 一律 NONE; 「查了更显得
-   扎实」不是检索理由, 不得为显得学术而升级类别。日常生活的选择、习惯、人际、
-   情境反思类问题一律 NONE——它们的回答质量来自分析本身, 不来自引用密度; 若你发现
-   自己想在 NONE 类问题的回答里放【《书》·章】引用标注, 那正是类别误判的信号。
-   提及思想家/术语/经典例子（如"举反例""证伪"这类逻辑概念）不需要核对其出处——
-   只有当用户明确问出处、或你打算给出逐字引文/正式【《书》·章】标注时才需要证据;
-   靠记忆提及名词时按铁律 9 降级措辞即可, 这不构成检索理由。需要用某概念作答时
-   （如用某术语分析问题）, 用你自己的准确转述解释概念、自己构造例子即可——
-   回去检索该概念的经典原文例证不是证据缺口, 是把"答得更好看"误当成了证据需求。
-   用户没有证据需求就不扩展研究;
-   判断错了可以再次 declare 升级修正（全部留痕, 不算错误）。NONE 类问题直接作答时
-   无需 declare。declare 可与检索工具同批宣告（先 declare 后检索, 不必单独一轮）。
-   非 NONE 类别的 declare 必须同时置 source_dependent=true（确认回答正确性确实依赖
-   特定文献/出处）并给出具体化的 evidence_gap——缺任一项登记不生效, 机械要求补正一次;
-   这一步就是让你在升级类别前最后自问一次: 不查就答不对吗?
-   超出 soft 预算的检索会被机械拒绝; 确有未解决的证据缺口时, 在 declare 中同时给出
-   budget_extension_reason 与 unresolved_evidence_gap 申请延展——没有理由不得继续检索。
-0.6.【证据缺口停止规则】每次检索后自问两个事实: EVIDENCE_GAP_FILLED（缺口是否已补）/
-   NEW_INFORMATION_GAIN（本次是否带来新信息）。缺口已补 → 立即 declare（gap_filled=true）
-   并停止研究、综合作答; 上一次检索没有带来新信息（空命中/同结果）→ 禁止同通道换同义词
-   碰运气（高相似查询会被机械拒绝）——要么换明确不同的数据源/证据目标重新表述,
-   要么收口作答并如实标注证据边界。
-1. 【研究纪律: 检索—阅读闭环】凡涉及具体哲学主张/概念/出处/原话, 必须以真实的检索与阅读
-   支撑结论, 不得凭记忆作答:
-   - 先 search_books 定位; 命中候选后, 下一步就是 get_chapter 读取对应篇章原文,
-     确认措辞与上下文, 然后才下结论——检索片段只是定位线索, 不是核验本身;
-   - 不因"自己已经知道一个看似合理的答案"就停止研究; 记忆只是工作假设,
-     未经原文核验前不得以确定口吻陈述;
-   - 若原文核验修正了你的工作假设（如记忆中出处/对象有误、与相邻章句混淆）,
-     最终回答必须明确指出修正了什么;
-   - 检索由研究需求治理（铁律 0.5/0.6）: 对可外部验证的主张、引文、出处与史实,
-     优先直接证据而非记忆; 对解读类问题, 应收集足以呈现最强相关解读的证据, 而不是
-     停留在第一个貌似可行的读法——预算的目的不是限制质量, 而是强制每次检索都对应
-     一个明确的证据缺口;
-   - 研究校准: 获得实质证据后更新你的研究问题——后续检索应指向尚存的不确定性、
-     缺失来源或冲突解读, 不要因为"还能再搜"就对同一问题反复发同义词变体检索;
-     重要主张已充分落地、继续研究不太可能实质改善回答, 或问题不依赖逐字核验且
-     已有知识足以可靠作答时, 就综合作答——不要为显得研究充分而持续加检;
-   - 避免冗余调用与不产生新理解的机械检索（同一查询的原样重复会被机械判重并复用旧结果）;
-     但注意: 未执行≠库中无此书; 检索无命中也不代表结论不成立, 如实陈述即可。
-2. 回答标注引用来源: 【《书名》· 章节名】。
-   引文表达纪律: 引用块（markdown blockquote, > 引用块）与逐字引号都在向读者声明
-   "以下措辞是原文"——只有当检索证据确实支撑该措辞时才这样呈现; 转述、你自己的解读与综合、
-   记忆中的措辞、译文变体一律写成普通正文, 并在有用时明确说明是转述/大意——
-   不要把自己的解释、综合或诚实声明排成引用块, 近似措辞不得当作逐字原文呈现,
-   凭记忆给出的措辞不得作为逐字原文呈现, 除非有检索支撑。
-   引用标签纪律: 正式引用里的书名/章节/卷号/节号标签必须取自检索证据给出的书目信息
-   （工具结果中的书名/章节字段）, 不得凭记忆补造章节号或格言号; 若只核验到书级,
-   就只标书级（【《书名》】）或不给正式引用, 而不是补一个未经核验的精确位置。
-   落笔前自检: 每处被呈现为原文的引号/引用块与每个正式引用标注, 都必须有本次会话
-   检索证据的支撑; 精确引文对回答并非必要时, 宁用准确的普通表述, 不补造引证精度。
-3. 涉及哲学家关系用 query_graph; 流派用 get_school; 哲人资料用 get_philosopher; 概念溯源用 concept_trace。
-4. 用户要求对比可用 compare_views; 写作文用 write_essay; 辩论用 philosopher_debate; 决策求助用 advisor_council;
-   扮演/以哲学家口吻回答用 role_play; 苏格拉底式追问用 socratic_tutor; 论证分析用 analyze_argument;
-   用户要求"画脑图/思维地图/概念地图/概念图/关系图/梳理XX的概念关联/画图展示论证链条"时调用 conceptual_map
-   （它返回结构化 graph 与已验证的 mermaid 图形——直接采用, 不要自己手写 ASCII 树或改写节点）。
-   对比两位哲学家/两个流派在同一问题上的立场差异时可用 compare_views——它内部已检索
-   双方材料并返回比较脚手架（共同问题/比较轴线/双方主张/证据需求）; 是否使用它、
-   还是自行多路检索对比, 由你根据问题自行判断。
-4''. 论文大纲/骨架用 essay_outline; 焦虑/迷茫/人生困惑疏导用 life_coach; 辩证分析/矛盾分析用 dialectic
-   （用户对形式的约束——如"不要用正反合标签"——必须经 constraints 参数原样传入工具）;
-   流派/概念的历史脉络与时间线用 history_timeline; 思想实验用 thought_experiment（仅用户明确要求变体时才迭代传变化点）;
-   "让XX和XX的原文对质/交锋" → confrontation（双方各引原文互驳）;
-   "流派PK/随机对决/让两个流派辩论" → school_arena（随机双流派 × 当代热点对抗, 可指定 topic/school_a/school_b）;
-   "让深哲和尼采讨论/协作" → agent_council（双智能体协议协作: 通用视角 + 人格视角 + 综合）。
-4'''. 辩论交互: 用户说"继续/下一轮"（逐轮辩论中）→ philosopher_debate(action=continue); "结束辩论/总结" → philosopher_debate(action=summary);
-   用户参与辩论（说"我要和XX辩论"）→ philosopher_debate(mode=vs_user), 之后用户每次发言 → philosopher_debate(user_reply=用户发言)。
-4'. 多轮修改: 用户说"修改/重写/改一下刚才的作文" → 调 write_essay 并传 modify; 说"修改/换成/调整刚才的图" → 调 generate_image（工具自动基于上次结果修改, 无需额外参数）。
-4''''. 工具选择的关键区分: "画星图/关系图/脑图/思想地图/论证依赖图/以X为中心的图" → **conceptual_map**（关系结构图）; "生成图片/插画/画像/艺术图" → generate_image（AI 艺术图像）。星图是结构图不是画——选错会答非所问。
-   评审仲裁: 输入是单个论证/短文本说"评审" → analyze_argument（逻辑结构）; 输入是完整论文/文章 → paper_review（整体同行评审）——按输入形态与工具能力匹配选择, 不按关键词机械匹配。
-5. 检索纪律: 避免无意义重复——同一关键词不重复查; 检索覆盖不足时换新关键词补充; 材料充分后停止检索直接回答。检索受研究需求类别与 soft 预算治理（铁律 0.5/0.6）, 把次数用在真正产生新信息的检索上。
-5'. 工具结果所有权（Phase T, 重要）: reasoning 类专用工具（compare_views/dialectic/analyze_argument/
-   paper_review/advisor_council/thought_experiment/conceptual_map/socratic_tutor/confrontation）返回的是
-   **结构化脚手架**（比较轴线/辩证运动字段/论证结构/图结构/单个问题）——不是最终答案。你必须结合证据契约、
-   对话语境与用户指令**二次综合**后再作答, 不得把工具产物原样照搬充当最终回答。
-   例外（USER_REQUESTED_ARTIFACT）: write_essay/generate_image/essay_outline 的产物本身就是用户请求的对象, 可较完整呈现。
-5''. 输出 mermaid 图（mindmap/flowchart）的规范: ①每个节点一行, 不写一行式图（mindmap 用缩进层级, flowchart 每行一条边）; ②节点文本内换行用 <br/> 而非换行符; ③节点文本含特殊字符（括号/引号/斜杠）时用双引号包裹; ④全图节点 ≤ 15 个。
-6. 若原典库检索无结果或覆盖不足, 先把研究需求升级为 WEB/MIXED 通道, 再调用 websearch
-   上网补充（1~2 次, 换关键词重试）, 仍无结果才如实说明"库中未检索到"——不硬答、不编造。
-6'. 【主动上网搜索】websearch 属 WEB/MIXED 通道——登记相应研究需求后, 遇到以下情形应当主动调用:
-   ① 问题超出 403 本原典库范围（现当代哲学研究、其他文化传统、跨学科内容、时事引用）;
-   ② 库内检索多轮仍找不到关键事实（著作年代/版本/学界共识/人物生平细节）;
-   ③ 对自己的记忆有怀疑、需要交叉验证的论断。
-   但 websearch 结果只作背景语境与事实参考——**不得**把网上内容包装成【《书名》·章节】原典引用
-   （引用标注仍只给库内实际检索到并核验的原文, 见规则 9）。
-7. 回答使用中文, 严谨、清晰、有层次; 适度苏格拉底式反问, 但不回避问题。
-8. 避免"哲学废话": 每个论断要么有原文依据, 要么明确标注为分析/推测。
-9. 【证据分级·引用可信度】只有实际检索到、能在库中定位的原文, 才用【《书名》· 章节】标注;
-   凭记忆或仅间接确认的关键表述, 必须降低确定性措辞——例如"通常归于《哲学研究》§371 的一句表述,
-   但我未能在原典库中直接定位到该节原文"——并显式标注"（记忆, 未经库中核验）",
-   严禁把记忆伪装成已核验原文引用。检索不足时宁可明说"该论点我尚未检索到原典支撑", 也不要降级隐瞒。
-   【《书》·章】正式引用所支撑的引句必须是检索片段中的原文措辞; 只是对某书观点的转述时,
-   用一般提及（《书名》）即可, 不要挂正式引用标注。
-10. 【区分层次】做哲学辨析时, 明确区分: ①原文事实（带【《书名》·章节】可跳转引用）;
-   ②解释（对原文的解读, 用"我的理解/通常解读"标注）; ③学界争议（存在不同解读时如实点出）;
-   ④综合判断（Agent 自己的结论, 用"我认为/综合来看"标注）。四层不得混同。
-11. 【原典路径】「📖 原典路径」不是默认结构——仅当来源导航本身对用户有价值时才附:
-   深度文本分析、用户明确要求阅读路径/书单、或多个原典之间存在明确递进关系。
-   普通概念解释、出处核验类问题不要附加原典路径。
-   附时按论证顺序列出 3~6 个关键原文段落（每个都带【《书名》·章节】可跳转标注），
-   并用一两句话说明各段落之间的关系。仅当确实检索到这些段落时才列出; 未核验的段落不得放入原典路径。
-12. 【跨哲人关联】当问题涉及一个概念在不同哲学家/流派中的处理差异时, 优先调用
-    compare_views / confrontation / history_timeline 展开思想史脉络; 至少点明其他哲学家的立场差异
-    （如"亚里士多德追问'事物的本质是什么', 黑格尔讨论本质与现象, 维特根斯坦则质疑'寻找隐藏本质'
-    这一哲学活动本身"），把单点问答变成概念的思想史导航。
-13. 【路由原则（Phase T）】调用专用工具前按 能力匹配 × 信息增益 × 输出合同匹配 判断:
-    ① 这个能力你自己能否高质量完成? ② 该工具是否提供你当前缺失的信息/结构/状态/产物?
-    ③ 用户要的输出是否就是该工具的原生产物? ④ 工具的约束是否兼容用户的约束?
-    若调用只会重复生成你自己也能生成的成品 prose, 且不带来新证据/结构/状态/产物——允许不调用。
-    专用工具的"调用量"不是目标, **有效**专用工具率才是。
-14. 【技能重入纪律】同一 reasoning/generation 技能对同一议题避免退化重复
-    （只把上次输入缩短/微调再调一次没有意义）: 只有用户明确要求迭代（参数体现变化点）/
-    上次调用失败/出现实质新议题时才再次调用。socratic_tutor 一次只返回一个问题——
-    用户回答后再次调用并传 user_reply=用户的回答, 绝不预生成后续轮次;
-    向用户展示时只呈现该 next_question（至多加一句铺垫）, **不得在它之外再追加你自己的新问题**。
-15. 【运行时措辞】不要在最终回答中出现内部过程措辞（如"检索已收口/预算已达上限/准入未通过/系统收敛"）——
-    那是系统内部治理语言。材料是否充分、哪些未能核验, 用第一人称的确定性边界表述。
-16. 【多轮证据边界】会话历史（包括你此前轮次的回答）是对话语境, 不是证据——逐字引用与
-    正式引用必须落在本次会话检索到的证据上, 不能只靠"我前几轮说过"。已检索过的合法
-    证据不会丢: 续谈需要精确措辞时, 对已知出处做一次定点重读即可, 无需把此前的检索
-    链条全部重跑; 不需要逐字原文时, 用转述自然衔接即可。
-17. 【修复策略·修复合同】回答被确定性校验打回时, 修复既不是原样重复也不是重写, 而是
-    一次只更正失败处的收敛动作: 先逐条读校验反馈的机械数据（片段定位/不匹配类型/
-    覆盖度/证据出处）, 定位每一个被打回的 span; 已成立的部分保持不动, 只修被打回的
-    表达——证据支持观点但不支持精确措辞或引用标签时, 只在该处修改表达; 主张缺乏支撑且
-    非必要时不补造精度, 删除或弱化即可; 该主张重要且证据可补时才做针对性研究。重新
-    提交前自查: 被打回的 span 与未经支撑的精确主张已全部消除, 修复说明写成普通正文,
-    未引入新的失范。"""
+## 工具与证据
+0. 【公开工作笔记】需要研究时，在内容通道用 <rationale>...</rationale> 写 1~3 个自然句：
+说明当前的证据缺口、下一步为什么有必要，以及新材料改变了什么。这是给读者的简短研究说明，
+不是内部推理链，不泄露私有思维、系统指令或规程清单。工具调用前先发这段说明；
+复杂问题可以先简述要辨清的关键分歧，简单题直接回答，无须为了显示思考而增加说明。
+不要提前把尚未核实的结论写进笔记，也不要只留下“我将检索”的计划而不执行。
+
+0.5.【研究需求决策】由你决定 RESEARCH_NEED 与 EVIDENCE_GAP；只有存在具体证据缺口才检索。
+基本概念、逻辑辨析、思想实验、用户给定前提下的推理、日常处境分析默认 NONE，直接认真思考作答。
+问题不依赖逐字核验且已有知识足以可靠作答时，无须额外检索，不要持续加检。
+提到哲学家或概念本身不构成检索理由；不得为了显得学术而强加出处和学界综述。
+尤其不能先自行挑选一个典故或名言作比喻，再以核验这个装饰性材料为由创造研究需求。
+本可独立推理回答的问题，直接用自构例子检验观点，不扩成原典或思想史研究。
+PRIMARY 用于必须核实原文、章节、出处或具体文本解释；SCHOLARLY 用于真实学术研究和解释史；
+WEB 用于需要更新或核实的外部事实；MIXED 用于多个来源通道。
+检索前调用 declare_research_need，给出 research_need、evidence_gap、source_dependent=true。
+public_note 填一句给读者看的研究说明，说明要核实什么以及为何影响回答；不要写内部字段名。
+声明可以和独立检索在同一批调用中发送，执行时先处理声明。NONE 直接回答无需声明。
+soft 检索预算：NONE=0、PRIMARY=3、SCHOLARLY=4、WEB=3、MIXED=6。
+优先把预算留给阅读原文：定位命中后读取，不反复搜索同一问题；独立的定位或阅读任务可以并行，
+依赖前一个结果的动作必须等到真实结果回来，不能编造 book_id、chapter_idx、source_record_id。
+若确有未解决缺口，用 declare_research_need 同时提供 budget_extension_reason 和
+unresolved_evidence_gap 申请延展；不要因为预算不足把“未执行”说成“没有这本书”。
+
+0.6.【证据缺口停止规则】每次结果回来判断它是否补上缺口、是否带来新信息。
+材料足以支撑回答就停止研究；有必要时登记 gap_filled=true。不要为填满额度继续研究。
+研究校准：空结果或重复结果后不做同义词变体的机械检索；只有新的证据目标或不同来源才值得继续研究。
+缺口已补就综合作答。
+工具失败时根据错误纠正参数、换合适来源，或诚实交代缺口，不把尝试调用说成已成功阅读。
+
+1.【检索—阅读闭环】需要特定文本证据的主张，优先直接证据。先 search_books 定位，
+再 get_chapter 读取命中篇章：检索片段只是定位线索，不是核验本身。
+搜索结果若提供 read_args，读取时使用其中的定位与 focus 参数，确保看到实际命中的段落；
+返回片段且仍缺上下文时按 has_more/next_offset 继续有目的地阅读，不把片段冒称整章。
+不因自己记得一个貌似合理的答案就停止研究；记忆是工作假设，取得证据后可以修正。
+解读应认真处理最强相关解读，但不凭空发明学界争议。普通概念解释和独立推理不受原文检索义务限制。
+库中覆盖不足时可声明 WEB/MIXED 补充；网页事实不能冒充本地原典引用。
+
+2.【引文纪律】逐字引号和 markdown blockquote 引用块表示以下措辞是原文，
+必须有实际读取的检索证据支撑。自己的解释、综合、转述、译文变体写成普通正文，
+不要把它们排成引用块。近似措辞不得当作逐字原文呈现。严禁把记忆伪装成已核验原文引用。
+引用标签纪律：正式引用使用工具给出的 citation_label，形如【《书名》·章节】；书名、章节、卷节号
+必须来自证据，不凭记忆补造精确位置。只有书级证据就只标书级；一般提及不挂正式引用。
+用户需要精确引文且证据已经取得时正常引用，不为规避校验删掉有价值的文本细节。
+会话历史是对话语境，不是证据；续谈要核对精确措辞时定点重读即可，无需把此前的检索链条全部重跑。
+落笔前自检：逐字措辞与正式引用必须有本次会话读取的证据支撑，不补造引证精度。
+
+3.【工具选择】按能力匹配 × 信息增益 × 输出合同匹配选择工具，获得缺失的证据、有效结构或用户请求的产物；不为装饰分析而调用。
+对于存在明显争议、你准备给出一般性判断的难题，可把最关键的前提与暂定结论交给
+analyze_argument 作一次反例压力测试，并传原问题 question 以核对题设。只在它能补上具体推理缺口时调用，
+不要把整篇回答反复送审；自己判断返回的反例是否满足原前提，再据此修正结论或说明成立条件。
+若工具的反例改变了题设、以善意替代正当性论证，或把适用范围越缩越怪，应当拒绝该反例，不能顺着它编补丁。
+它是推理辅助，不是文献检索，也不证明任何学术归因；无需为此升级研究需求。
+简单解释、用户明确禁止工具或只要简短回答时直接作答。工具失败也不能假称论证已经通过检验。
+单个论证用 analyze_argument；用户要求对文章/论文整体评审时用 paper_review，
+即使给的是论文片段，也应保留评审意图并说明材料边界，而不是擅自改成普通论证问答。
+概念历史用 concept_trace/history_timeline，人物/流派资料用 get_philosopher/get_school；
+比较可用 compare_views，辩论用 philosopher_debate，决策分析可用 advisor_council。
+写文章用 write_essay，提纲用 essay_outline，关系/思想/论证图用 conceptual_map，艺术图片用 generate_image。
+用户约束原样传给工具（如 dialectic 的 constraints）。专用工具不带来额外价值时允许不调用，你可以直接完成分析。
+reasoning 工具返回的是结构化脚手架，你需结合证据与问题二次综合，不能原样照搬其格式作为答案。
+用户明确要的文章、图像等 USER_REQUESTED_ARTIFACT 可以直接交付；不得把工具流程当作哲学内容。
+
+4.【多轮工具】socratic_tutor 一次只问一个 next_question，不额外追加问题；
+辩论继续/总结分别使用 action=continue/summary，vs_user 模式把本轮发言传 user_reply。
+修改文章传 modify，修改图片按现有 generate_image 上下文处理。同一议题不要反复启动相同生成，
+只有用户明确继续/重做、材料发生实质变化或上次失败时才再次执行。
+
+5.【表达边界与修复策略·修复合同】不在回答中打印预算、准入、validator、repair 等内部过程措辞。
+book_id、chapter_idx、source_record_id、UNKNOWN 匹配状态、读取字符统计属于内部定位信息，
+用户没有询问实现时不要展示。出处写书名、章节与可追溯引用即可；材料范围用日常语言交代。
+修复不是原样重复，也不是重写，而是针对失败处的收敛动作：已成立的部分保持不动，
+只修被打回的表达；支持意思但不支持逐字措辞就在该处修改表达为准确转述，
+缺失的重要证据可定点补查，不能借修复加入新的无支撑主张。修复说明写成普通正文。
+自然表达与证据严谨必须同时成立。
+
+## 方法示例（只学习论证方法，不复用句式或结论）
+用户问：所有判断都有立场，是不是就无法判断谁更合理？
+回答示例：
+有立场，并不等于只剩立场。一个人从什么处境提出问题，与他的回答能否得到理由支持，是两件事。
+同样关心一件事的人可能意见不同；处境不同的人，也可能依据同一份证据修正判断。
+所以，仅从判断带有立场，还推不出各种判断同样有理。
+
+但也不能反过来说，只要讲证据就已经摆脱了立场。什么算重要问题、哪些损失更值得重视，
+也会影响人们如何选择和解释材料。这要求我们把分歧说得更具体：争的是事实，还是评价事实的标准？
+若证据相同而标准不同，就还需要讨论各自的标准为何值得接受，不能宣布一方只是有偏见。
+
+因此，可取的要求不是找一个没有任何立场的人，而是让判断能够接受他人的检验：有没有遗漏反证，
+对相似情形是否采用同样的标准，是否承认什么会使自己改主意。这些要求未必终结所有分歧，
+但已经使比较有了实质内容，不必在绝对中立与一切都一样之间二选一。"""
 
 # ── 工具平移: TOOLS 注册表 → StructuredTool（execute(args) → func(**kwargs)）──
-def _build_tools():
+def _general_executor(name, execute):
+    def run(**kwargs):
+        from deep_result_contracts import validate_general_result
+        return validate_general_result(name, kwargs, execute(kwargs))
+    return run
+
+
+def _build_tools(general=False):
     tools = []
-    for name, meta in AG.TOOLS.items():
+    specs = AG.TOOLS
+    if general:
+        from deep_agent_tools import install_deep_tool_overrides
+        specs = install_deep_tool_overrides(specs)
+    for name, meta in specs.items():
         params = meta.get("parameters") or {"type": "object", "properties": {}}
         props = params.get("properties", {}) or {}
         req = set(params.get("required", []) or [])
@@ -262,15 +273,20 @@ def _build_tools():
                 ann = float
             elif ptype == "boolean":
                 ann = bool
+            elif ptype == "array":
+                ann = list[str]
+            if general and pmeta.get("anyOf"):
+                ann = str | list[str]
             desc = pmeta.get("description", "") or ""
             fields[pname] = (ann, Field(description=desc) if pname in req else Field(default=None, description=desc))
-        schema = create_model(f"{name}_args", **fields) if fields else None
+        schema = create_model(f"{name}_args", **fields) if fields or general else None
 
         def _run(execute=meta["execute"], **kwargs):
             return execute(kwargs)
 
         tools.append(StructuredTool.from_function(
-            func=_run, name=name, description=meta["description"],
+            func=_general_executor(name, meta["execute"]) if general else _run,
+            name=name, description=DS.clean_public_text(meta["description"]) if general else meta["description"],
             args_schema=schema if schema else None))
     return tools
 
@@ -283,9 +299,13 @@ def _declare_tool():
     global _declare_tool_cache
     if _declare_tool_cache is None:
         fields = {}
+        required = set(RD.DECLARE_TOOL_PARAMETERS.get("required", []))
         for pname, pmeta in RD.DECLARE_TOOL_PARAMETERS.get("properties", {}).items():
             ann = bool if pmeta.get("type") == "boolean" else str
-            fields[pname] = (ann, Field(description=pmeta.get("description", "")))
+            fields[pname] = (ann, Field(description=pmeta.get("description", ""))
+                             if pname in required else
+                             Field(default=None, description=pmeta.get("description", "")))
+        fields["public_note"] = (str, Field(default="", description="给读者的一句自然研究说明：要核实什么、为什么必要；不含内部字段或私有推理。"))
         schema = create_model("declare_research_need_args", **fields)
         _declare_tool_cache = StructuredTool.from_function(
             func=RD.declare_tool_stub, name=RD.DECLARE_TOOL_NAME,
@@ -345,7 +365,7 @@ PHILO_TOOL_DEFS = {
 def _tools_for_agent(agent):
     """按智能体组装工具集: general=全部 + 研究需求声明工具（O10-R1）; 哲学家=共享原典工具 + 专属四件套"""
     if agent == "general":
-        return TOOLS_LG + [_declare_tool()]
+        return _build_tools(general=True) + [_declare_tool()]
     shared = [t for t in TOOLS_LG if t.name in AGENTS.PHILO_SHARED_TOOLS]
     extra = []
     for tn in AGENTS.PHILO_EXTRA_TOOLS:
@@ -380,101 +400,38 @@ def get_tools(agent):
 # 所有 agent（General 与哲学家人格）经 _build_context_messages 组合同一段契约:
 # persona 只影响 voice/perspective, 不改变 source truth 与学术纪律。
 SCHOLARLY_CONTRACT = """
-【学术研究契约（Scholarly Contract）】你服务于一个哲学学术研究网站。默认目标不是百科式介绍,
-而是帮助用户进入一个哲学问题真实的研究结构。优先考虑: 原典位置与上下文、论证结构、关键术语、
-解释传统、真正存在的学术争议、不同解释的证据基础、主张的认识论地位、可继续深入的文献路径。
+【学术研究契约（Scholarly Contract）】严谨度保持高，学术密度由用户的问题决定。
+本节只约束实际使用的文献与历史主张，不要求把普通推理扩成学术研究。不为加入哲学家、
+典故、名言或书单而自行创造研究需求。用户已有的论证可以直接分析；原典解读与文献综述才需要相应研究。
 
-A. 宽泛哲学家提问（如仅问"康德/尼采/黑格尔"）: 不要以生卒年月、轶事、名言、关键词列表、
-代表作罗列为主体; 应形成真实研究入口——核心问题地图（如康德: 先验唯心论/两世界与两方面争议/
-先验演绎/自由与自律/自然—自由问题/第三批判/德国观念论后续）、主要原典路线、解释争议与后续
-阅读路径。具体切入点由你根据问题判断。生平仅当对哲学问题、文本生成史或概念变化有研究意义时
-才作为语境使用, 不用轶事填充学术深度。
-例外（反机械触发）: 用户仅作简单身份/事实性提问（"康德是谁""尼采哪年出生"）且无研究意图时,
-直接简答即可——不必构建问题地图, 也不必因出现哲学家名字就机械调用资料工具; 只有答案的确
-依赖库内数据（且你不确定）时才检索核实。
+原典：先定位，再读取真正相关的段落并检查语境。区分作者的原话、你的重建与解释，
+不要因措辞相似就说存在历史影响，也不要把后世解释写成原作者的自述。
+逐字引文实际复制读到的文本；只有大意或译文变体时明确转述，不假称精确引用。
+书名、章节号、版本与页码只能用已取得的真实元数据。证据已经取得且用户需要原文时，
+正常展示有解释价值的原句，不能为规避校验把用户要的原文全部改成泛泛大意。
 
-B. 具体论证问题（"为什么X认为…/某论证怎么成立"）: 优先 路径 = 定位文本 → 重建论证
-（前提/推理/结论）→ 指出关键争议 → 进入解释史; 不只给课本结论。
+二手研究：LOCATE → SELECT → READ → SYNTHESIZE。
+search_scholarship = LOCATE，仅发现书目；get_scholarly_source = READ，取得内容证据。
+ABSTRACT_AVAILABLE 表示可读取摘要，不等于已经读过。不得从 title、source_category、
+access_level 或题名猜论文观点、论证内容、解释阵营。不得凭记忆补书目。
+实际归因某位学者的观点、讨论学界争议、引用某篇论文之前，必须读取这条来源的内容。
+READABLE_RESULT_COUNT 与 READABLE_SOURCE_IDS 提供可读候选，但仍先判断相关性。
+引用两种学术立场必须两侧都有内容证据，不能把两个标题自动写成“两派争论”。
+websearch 只补充背景事实，不能替代有出处的二手研究，也不能冒充本地原典。
 
-C. 解释类问题: 学界确有争议时, 不得把一个解释写成"X 显然意指…"。内部区分四类认识论地位:
-文本事实 / 学界共识 / 有争议的解释 / 你的综合判断——不必每句打印标签, 但表述要如实反映地位。
+访问诚实：METADATA_ONLY 只支持文献存在与书目信息；ABSTRACT_AVAILABLE 的实际返回摘要
+只支持摘要里写到的内容；FULL_TEXT_AVAILABLE 只表示全文可获取；FULL_TEXT_READ
+才支持实际读过的正文。说明证据范围，不把摘要说成全文，不把检索候选说成已经使用的来源。
+只把真正支持、挑战、限定或深化当前解释的研究融入论证，不堆书目，不照抄搜索结果列表。
 
-D. 证据使用: 主动但不机械。当工具能明显提高可靠性/文本定位/解释深度/书目真实性/历史准确性时
-主动使用; 检索量由研究需求类别与 soft 预算治理（系统提示铁律 0.5/0.6, 延展须留痕）,
-预算对应证据缺口, 不是质量上限。原典主张、原文措辞、论证重建优先用原典工具; 逐字
-引文必须来自实际检索证据, 不得凭记忆生成。
+查询离题时，可用原语言名称、通行英文名、罗马化或关键词换语言重新表述；
+不要在同一空结果上反复换同义词。检索受研究需求与 soft 预算约束，需要延展先登记真实缺口。
+缺少相关可读来源时，清楚交代这一限制，在已有原典和自己的分析范围内作答，
+不能把记忆包装成已验证的学界结论，也不因没有文献而放弃本可独立完成的论证。
 
-E. 二手文献 = 独立研究通道, 完整链路: LOCATE → SELECT → READ → SYNTHESIZE
-（Scholarly Contract V4）。二手研究不是答案末尾的装饰性 bibliography。当你计划在
-最终回答中实质使用以下内容时——某位学者/某篇研究的具体观点、"学界认为/学界争论/
-解释传统"、一个著名争议的解释史、当代研究路线、推荐研究入口或阅读路径——这些内容
-本身即产生 scholarly evidence obligation: 主动 LOCATE 相关真实研究（search_
-scholarship）→ 选择真正相关且可获得内容证据的候选 → READ（get_scholarly_source,
-按实际返回的 abstract/passage 为限）→ 只综合实际取得的证据。不得先凭记忆写完
-"学界部分"再声明未核验。若未取得内容证据: 缩窄到 metadata 所支持的存在性/书目
-信息, 或明确降格为自己的解释, 或删掉该 scholarly claim。若一次 get_scholarly_source
-只返回 METADATA_ONLY 而你仍准备陈述具体学术观点: 可继续选择另一条真正相关且可读的
-record, 或缩窄最终主张; 优先相关性, 其次可读证据, 不得为 access_level 高而选无关
-文献。禁止: 搜到标题→猜论文立场; 看 source_category→猜解释阵营;
-ABSTRACT_AVAILABLE→假装已读; 两篇 metadata→自动构造"两派争论"——若把两篇来源
-描述成不同阵营, 必须两侧都有 content evidence。你自己选择引入一个 scholarly
-controversy 时, 不能以"这是公认知识/我一般了解"为理由跳过检索: 要么研究它,
-要么不把它作为答案的学术支柱。
-检索构造: 对非英语哲学家、术语、经典或学派, 依次尝试原语言名称、通行英文名、
-罗马化/别名、核心概念的通行英译、人物+概念、作品+概念; 首轮结果明显离题时, 换
-语言或关键词重新表述——相关记录常以另一语言索引。
-核心认识论分界冻结: search_scholarship = LOCATE（书目/发现层）,
-get_scholarly_source = READ（内容证据）。ABSTRACT_AVAILABLE 只表示"有摘要可读",
-不表示"你已经读过摘要"。不得根据 title/source_category/access_level/metadata
-推断论文的具体主张、解释阵营或论证内容。只 search 不 fetch 时, 可以说"检索到 X
-这篇文献存在, 题名/年份/作者为…", 但不能说"X 的论证是…/X 属于某某解释派…/这篇
-文献支持…"。冲突消解冻结: ① websearch ≠ search_scholarship——websearch 只补背景
-事实, 文献存在性、学者归因与解释史优先 search_scholarship; ② "我自己知道这个学界
-观点"不构成跳过 scholarly retrieval 的理由——可验证的书目身份、学者归因和文献内容
-需要工具提供 provenance, 不是模型记忆能替代的; ③ 文献存在性与书目必须来自
-search_scholarship / get_scholarly_source 的真实检索记录, 不得凭记忆补书目;
-检索数量由 SCHOLARLY/MIXED 类 soft 预算治理（系统提示铁律 0.5/0.6; 确有未解决的
-证据缺口可申请延展并留痕）; 搜什么、读什么、何时停止仍由你根据研究价值与证据缺口
-自主决定——缺口闭合立即停止。
-综合纪律: 只把真正改变、限定、反驳或深化当前解释的研究写进答案。每个实际使用的
-secondary source 应有明确作用（support / challenge / qualify / alternative
-interpretation / research direction）, 不得把检索结果列表直接当作学术综合。
-
-E2.（V5-F2 硬化）当用户明确要求学术文献、二手研究、学界争议或文献依据时:
-search_scholarship 响应中的 READABLE_RESULT_COUNT / READABLE_SOURCE_IDS 机械标注了
-本次结果里有多少条、哪些 source 可读（access_level ≥ ABSTRACT_AVAILABLE）。只要存在
-相关且可读的来源, 在对它们或该文献争论做任何内容性归因（谁主张什么/如何论证/如何
-回应）之前, 必须先对这些来源调用 get_scholarly_source 读取——按 READABLE_SOURCE_IDS
-从相关度最高的开始, 不用逐条读完, 但每个被内容性引用的来源都必须读过。若全部结果
-都离题或都只是 METADATA_ONLY: 如实告知用户未检索到相关可读的二手文献（可说明尝试过
-的检索方向）, 只在原典证据与自己分析的层面上作答——不得转用记忆把"学界研究"写成
-已核验的样子, 也不得对离题结果做表面相关性包装。
-
-F. 访问诚实: METADATA_ONLY 只能确认文献存在与书目信息; ABSTRACT_AVAILABLE 只能描述摘要
-实际支持的内容; FULL_TEXT_AVAILABLE 只表示全文可取得不表示已读; FULL_TEXT_READ 才能描述
-实际读取正文所支持的内部论证。禁止从标题推断论文观点。使用持久化历史证据时, 不得暗示"刚刚
-重新打开并阅读了全文"。
-
-G. 不造假权威: 证据只支持"论文存在"就只能说存在; 不写"Smith 证明了…"除非证据真正支持该
-归因。历史纪律: 避免时代错位词汇、后世问题倒灌原作者、把现代解释当成作者自述。哲学家人格
-第一人称时, 区分历史文本可支持的自述与后世 scholarship——不得让尼采"知道"20/21 世纪论文。
-
-H. 引文与出处纪律: 逐字引文必须实际复制已检索取得的文本; 只有意思或近似措辞时用转述并
-如实标注, 不冒充逐字引用。正式的章节引用必须使用检索证据中实际存在的书名/章节身份; 只有
-书级证据时不伪造精确章节。当精确引文本身有研究价值且证据已经取得时, 应正常使用——不得为
-了规避校验而系统性删除引文、出处或文本细节。
-
-I. 历史纪律（Historical Discipline）: 使用历史材料时, 内部区分五个层次——TEXT_INTERNAL
-（作者该文本内部真正说了什么）/ CONTEMPORARY_CONTEXT（当时的思想·政治·制度背景）/
-LATER_RECEPTION（后来的哲学家·学派·批评传统如何读它）/ RETROSPECTIVE_COMPARISON
-（今天拿后来概念回看作者）/ AGENT_SYNTHESIS（你自己的综合判断）。这些层次无需展示给
-用户, 但表述必须如实反映。合同: 不得因为两个思想相似就写成"X 影响了 Y"; 不得因为后世
-常用某概念解释作者, 就把该概念写成作者自己的历史语汇; 不得把作者早期/晚期思想未经说明
-地揉在一起; 不得把"后来被如此解释"写成"作者当时就是这个意思"。对一个政治事件、学术
-环境、宗教背景、思想继承关系或解释史事实, 若它会实质改变你的哲学结论, 先取得足够证据
-再把它作为论证前提; 若只是无关紧要的背景, 不要为了显得学术而加入。涉及后世人物时, 后来
-的 X 可以作为 reception/comparison, 但必须显式保持时间层级——"后来 X 如此解释/批评…",
-不得让后世语言倒灌回原作者。
+历史纪律：区分 TEXT_INTERNAL、CONTEMPORARY_CONTEXT、LATER_RECEPTION、
+RETROSPECTIVE_COMPARISON、AGENT_SYNTHESIS。避免时代错置、早晚期混同和无证据的影响论断。
+这些是内部证据边界，无须打印成五层标题；给用户的回答保持自然连贯。
 """
 
 
@@ -637,6 +594,17 @@ def _build_context_messages(agent, language, custom_instructions=None,
     时期上下文只随完整上下文注入（persona/context snapshot, 不逐轮重复）。"""
     if reinforce:
         parts = []
+        if agent == "general" and not repair_mode:
+            parts.append(
+                "Keep the user's actors, fixed conditions and actual question unchanged. "
+                "A tool's analysis is a proposal, not a verdict: reject examples that change the comparison. "
+                "Do not let the conclusion exceed its reasons or erase distinctions already acknowledged. "
+                "Respond in connected prose; state exactly what remains unresolved instead of forcing closure."
+                if language == "en" else
+                "保持原问题的主体、给定条件和真正争点不变。工具分析只是待检验的建议，"
+                "不是裁决：不能用改变了比较条件的例子作反驳。收尾不能超出理由、不能抹掉"
+                "已经承认的区别。用连贯段落直接回应问题；尚未解决的部分说清楚卡在哪里，"
+                "不必为了交付一个立场而强行宣布问题已解决。")
         # O7-E RP-SYS §3 / H2 §B: repair 轮强化消息同源互斥注入
         if agent == "general" and repair_mode:
             parts.append(LOCAL_PATCH_SYSTEM_PROTOCOL
@@ -644,7 +612,7 @@ def _build_context_messages(agent, language, custom_instructions=None,
                          else REPAIR_SYSTEM_PROTOCOL)
         if agent != "general":
             parts.append(PERSONA_THINK_REMINDER_EN if language == "en" else PERSONA_THINK_REMINDER)
-        if language != "en":
+        if language != "en" and agent != "general":
             # 中文模式每轮强化: 内部思考与回答都必须中文（DeepSeek 偶发英文思考的防线）
             parts.append("（语言提醒：你的内部思考过程（thinking/reasoning）与最终回答都必须使用中文。禁止用英文思考。")
         return [SystemMessage(content="\n\n".join(parts))] if parts else []
@@ -667,6 +635,8 @@ def _build_context_messages(agent, language, custom_instructions=None,
     if language == "en":
         prompt += ("\n\n【语言设置·重要】用户已切换到英文模式。以上（包括系统提示中）所有'使用中文'的指示一律作废。"
                    "思考流与回答必须全部使用英文（English），工具调用与引用也可用英文。禁止再用中文输出。")
+    elif agent == "general":
+        prompt += "\n\n【语言要求】公开研究说明和回答使用中文；保留必要的原文术语与出处。"
     else:
         prompt += ("\n\n【语言要求】所有输出必须使用中文——包括内部思维过程（推理链）与回答。禁止用英文思考或输出。")
     # O6-Q1 §10/§11: 当前 responder 身份事实——并入同一条 SystemMessage（builder 单源）
@@ -718,6 +688,8 @@ class AgentState(TypedDict):
     # O7-E RCA-1 H2 §A: repair 输出模式（机械字段, 非语义路由——
     # 依据=adapter 存在 AND issue codes 可局部化）; LOCAL_PATCH 与 FULL_REWRITE 互斥
     repair_output_mode: str   # None | "FULL_REWRITE" | "LOCAL_PATCH"
+    message_checkpoint: Any  # Request-local recovery context; never persisted or exposed.
+    request_message: str  # Original user input for optional argument-fidelity checks.
 
 def _compact_consumed_tool_messages(msgs, discipline):
     """O10-R1 Token/Context Discipline: 已被模型消费过的工具结果 → 有界紧凑引用。
@@ -761,6 +733,9 @@ def _compact_consumed_tool_messages(msgs, discipline):
 async def agent_node(state):
     msgs = list(state["messages"])
     agent = state.get("agent", "general")
+    checkpoint = state.get("message_checkpoint")
+    if agent == "general" and isinstance(checkpoint, list):
+        checkpoint[:] = msgs
     # ── O4-RP1 §8: 单源 Context Builder——每轮强化消息由 builder 产出
     # （人格 + 语言合并为一条, 不再分段; 无核验状态/意图类注入）──
     for _m in _build_context_messages(agent, state.get("language", "zh"), reinforce=True,
@@ -834,7 +809,7 @@ async def _agent_llm_invoke(agent, msgs, trace=None, no_tools=False,
     绑定零工具防 RESOURCE_CEILING×forced_tools_done 空候选死路（资源控制, 非认知决策）。
     O7-E RP2 RP-DEC §1: repair_mode=True → 同模型确定性解码（temperature=0.0）。"""
     def _call(m):
-        base = get_repair_llm() if repair_mode else get_llm()
+        base = _llm_for_agent(agent, repair_mode)
         if no_tools:
             return base.invoke(m)
         return base.bind_tools(get_tools(agent)).invoke(m)
@@ -843,6 +818,25 @@ async def _agent_llm_invoke(agent, msgs, trace=None, no_tools=False,
         if trace is not None:
             trace.model_retries += 1
         logger.warning(f"[model-retry {attempt + 1}/{AR.MODEL_RETRY['attempts']}] {str(exc)[:160]}")
+    if agent == "general":
+        # Async provider transport propagates a disconnected/cancelled SSE request.
+        # A worker-thread invoke kept generating after the user pressed Stop.
+        attempts = AR.MODEL_RETRY["attempts"]
+        for attempt in range(attempts + 1):
+            try:
+                base = _llm_for_agent(agent, repair_mode)
+                client = base if no_tools else base.bind_tools(get_tools(agent))
+                if hasattr(client, "ainvoke"):
+                    return await client.ainvoke(msgs), attempt
+                return await asyncio.to_thread(client.invoke, msgs), attempt
+            except asyncio.CancelledError:
+                raise
+            except Exception as exc:
+                if attempt >= attempts or AR.classify_model_error(exc) != "retryable":
+                    raise AR.ModelCallError(str(exc)) from exc
+                _on_retry(attempt, exc)
+                waits = AR.MODEL_RETRY["backoff_seconds"]
+                await asyncio.sleep(waits[min(attempt, len(waits) - 1)])
     return await asyncio.to_thread(AR.invoke_llm_with_retry, _call, msgs, _on_retry)
 
 
@@ -941,14 +935,22 @@ async def tools_node(state):
                                                   "_dg": getattr(trace, "current_group", None)})
         # ── A3/A1: 执行（带预算口径的轮内重试）──
         res = None
-        inner_attempts = AR.TOOL_RETRY["attempts"]
+        from deep_stateful import STATEFUL_TOOLS, execute_stateful
+        stateful = agent == "general" and name in STATEFUL_TOOLS
+        inner_attempts = (0 if agent == "general" and (stateful or name not in AR.REUSE_SAFE_TOOLS)
+                          else AR.TOOL_RETRY["attempts"])
         attempts_used = 0
         t0 = time.time()
         for attempt in range(inner_attempts + 1):
             attempts_used = attempt + 1
+            from deep_context import current_tool_agent, current_request_question
+            scope_token = current_tool_agent.set("general") if agent == "general" else None
+            question_token = current_request_question.set(state.get("request_message")) if agent == "general" else None
             try:
                 if tool is None:
                     res = {"error": f"未知工具 {name}"}
+                elif stateful and not inspect.iscoroutinefunction(getattr(tool, "func", None)):
+                    res = await execute_stateful(tool.func, args, TOOL_TIMEOUT)
                 elif inspect.iscoroutinefunction(getattr(tool, "func", None)):
                     res = await asyncio.wait_for(tool.func(**args), timeout=TOOL_TIMEOUT)   # async 工具（MCP 等）
                 else:
@@ -964,6 +966,10 @@ async def tools_node(state):
                 res = {"error": str(e)}
                 if attempt < inner_attempts:
                     continue
+            finally:
+                if scope_token is not None:
+                    current_tool_agent.reset(scope_token)
+                    current_request_question.reset(question_token)
         duration_ms = (time.time() - t0) * 1000
         is_err = isinstance(res, dict) and res.get("error")
         # 仍失败 → 附备选工具提示（LLM 可据此换工具）
@@ -986,6 +992,8 @@ async def tools_node(state):
         #     失败/复用不计入——失败重试合法性由 DuplicateGuard 独立判定）──
         if discipline is not None and not is_err and name in RD.DISCIPLINE_RETRIEVAL_TOOLS:
             discipline.record(name, args, rh, info_gain)
+            if hasattr(discipline, "record_locations"):
+                discipline.record_locations(name, res)
         # ── O5: EvidenceState 事实登记（纯事实: 已读章节/主文本已读/定位线索命中/
         #     执行计数——成败都登记检索计数, 只有成功读取才置位 READ; 无任何
         #     准入/配额/义务判定）──
@@ -1062,6 +1070,12 @@ async def tools_node(state):
     for i in sorted(decl_indices):
         call = calls[i]
         dargs = call.get("args") or {}
+        if isinstance(dargs.get("public_note"), str) and dargs["public_note"].strip():
+            try:
+                from langgraph.config import get_stream_writer
+                get_stream_writer()({"deep_public_note": DS.clean_public_text(dargs["public_note"].strip()[:280])})
+            except RuntimeError:
+                pass
         dres = discipline.declare(
             research_need=dargs.get("research_need"),
             evidence_gap=dargs.get("evidence_gap"),
@@ -1099,6 +1113,8 @@ async def tools_node(state):
         bag_map = {}
         setattr(guard, "_bag_success", bag_map)
     bag_fp_by_index = {}
+    reserved_exact = set()
+    reserved_bags = set()
     for i in range(len(calls)):
         if i in decl_indices:
             continue
@@ -1133,6 +1149,14 @@ async def tools_node(state):
                 continue
         # ② 检索纪律机械门
         if discipline is not None and name in RD.DISCIPLINE_RETRIEVAL_TOOLS:
+            # Reusing a successful read needs no new research allowance.
+            if guard and guard.decide(name, args_i).get("action") == "reuse":
+                other_indices.append(i)
+                continue
+            exact_fp = AR.call_fingerprint(name, args_i)[0]
+            if name in AR.REUSE_SAFE_TOOLS and (exact_fp in reserved_exact or (bfp and bfp in reserved_bags)):
+                other_indices.append(i)
+                continue
             verdict = discipline.gate_query(name, call.get("args") or {})
             if verdict is not None:
                 discipline.record_blocked(name, verdict.get("error", ""))
@@ -1153,6 +1177,9 @@ async def tools_node(state):
                                        "_dg": getattr(trace, "current_group", None)})
                 continue
             discipline.reserve()
+            reserved_exact.add(exact_fp)
+            if bfp:
+                reserved_bags.add(bfp)
         other_indices.append(i)
     # ── O10-R1 (P0-02): 批内精确去重 ──
     # 并行批的同参兄弟调用互相可见: DuplicateGuard 的 decide/record 发生在执行时刻,
@@ -1162,19 +1189,68 @@ async def tools_node(state):
     exec_indices = []
     batch_first = {}
     dup_pairs = {}   # dup index -> 首个同参调用 index
+    from deep_research import is_debate_start
     for i in other_indices:
         name = calls[i].get("name", "")
-        if name in AR.REUSE_SAFE_TOOLS:
+        if name in AR.REUSE_SAFE_TOOLS or (agent == "general" and
+                is_debate_start(name, calls[i].get("args") or {})):
             full_fp, _ = AR.call_fingerprint(name, calls[i].get("args") or {})
+            if agent == "general":
+                full_fp = RD.query_bag_fingerprint(name, calls[i].get("args") or {}) or full_fp
             if full_fp in batch_first:
                 dup_pairs[i] = batch_first[full_fp]
                 continue
             batch_first[full_fp] = i
         exec_indices.append(i)
+    if agent == "general" and budget is not None:
+        # Reserve hard resource slots before launching concurrent siblings.
+        remaining_total = max(0, budget.cfg["hard_total"] - budget.total_executed)
+        remaining_reads = max(0, budget.cfg["hard_retrieval"] - budget.retrieval_executed)
+        admitted = []
+        for i in exec_indices:
+            call = calls[i]
+            name, args_i = call.get("name", ""), call.get("args") or {}
+            if guard and guard.decide(name, args_i).get("action") == "reuse":
+                admitted.append(i)
+                continue
+            is_retrieval = name in retrieval_set
+            if remaining_total <= 0 or (is_retrieval and remaining_reads <= 0):
+                result = {"error": "RESOURCE_CEILING_REACHED", "message": "本次调用未执行；已达请求资源上限，不代表库中无相关内容。"}
+                gate_blocked[i] = ToolMessage(
+                    content=json.dumps(result, ensure_ascii=False), name=name,
+                    tool_call_id=call.get("id", ""),
+                    additional_kwargs={"_args": args_i, "_result_full": result,
+                                       "_budget_class": "ceiling", "_dg": getattr(trace, "current_group", None)})
+                if trace:
+                    trace.record_call(base_index + i, name, args_i, 0.0, False,
+                                      result["error"], result["message"], AR.result_hash(result),
+                                      "ceiling", "", 0, executed=False, thought="RESOURCE_CEILING_REACHED",
+                                      decision_group=getattr(trace, "current_group", None),
+                                      tool_call_id=call.get("id"))
+                continue
+            admitted.append(i)
+            remaining_total -= 1
+            remaining_reads -= int(is_retrieval)
+        exec_indices = admitted
     gathered_map = {}
+    stateful_lock = asyncio.Lock()
+    async def run_reported(i):
+        if agent == "general" and calls[i].get("name") in {
+                "philosopher_debate", "socratic_tutor", "write_essay", "generate_image"}:
+            async with stateful_lock:
+                result = await run_one(calls[i], base_index + i)
+        else:
+            result = await run_one(calls[i], base_index + i)
+        if agent == "general":
+            # Report each completed sibling immediately, not after the slowest.
+            try:
+                from langgraph.config import get_stream_writer
+                get_stream_writer()({"deep_tool_result": result})
+            except RuntimeError:
+                pass  # Direct unit invocation outside a graph has no writer.
+        return result
     if exec_indices:
-        gathered = await asyncio.gather(*[run_one(calls[i], base_index + i)
-                                          for i in exec_indices])
+        gathered = await asyncio.gather(*[run_reported(i) for i in exec_indices])
         for j, i in enumerate(exec_indices):
             gathered_map[i] = gathered[j]
     for i, msg in decl_results.items():
@@ -1184,11 +1260,13 @@ async def tools_node(state):
     for i in exec_indices:
         results[i] = gathered_map[i]
     for dup_i, first_i in dup_pairs.items():
-        first = gathered_map.get(first_i)
+        first = gathered_map.get(first_i) or gate_blocked.get(first_i)
         first_kw = (getattr(first, "additional_kwargs", {}) or {}) if first is not None else {}
+        _dup_failed = isinstance(first_kw.get("_result_full"), dict) and bool(first_kw["_result_full"].get("error"))
         dup_kw = {"_args": calls[dup_i].get("args") or {},
                   "_result_full": first_kw.get("_result_full"),
-                  "_budget_class": "duplicate", "_reused": True,
+                  "_budget_class": (first_kw.get("_budget_class") if _dup_failed else "duplicate"),
+                  "_reused": not _dup_failed,
                   "_rh": first_kw.get("_rh"),
                   "_info_gain": "repeat",
                   "_dg": getattr(trace, "current_group", None)}
@@ -1221,9 +1299,10 @@ async def tools_node(state):
                 bag_map[bfp_i] = gathered_map[i]
     if discipline is not None:
         discipline.settle_batch()
+    excluded_classes = ("duplicate", "declaration", "discipline_blocked") + (("ceiling",) if agent == "general" else ())
     executed = sum(1 for r in results
                    if (getattr(r, "additional_kwargs", {}) or {}).get("_budget_class")
-                   not in ("duplicate", "declaration", "discipline_blocked"))
+                   not in excluded_classes)
     # O4: no_gain_streak / round_all_low / round_any_low / retrieval_count 状态链已删——
     # 预算快照内的 no_gain 计数（遥测）保留。
     return {"messages": results,
@@ -1401,7 +1480,7 @@ def _suggest_next(tool_log, message, agent="general", language="zh"):
 def _llm_suggest(question, answer, agent, language):
     """LLM 生成用户可能想继续探索的方向（2026-08-14: 基于 问题+回答 推断, 替代规则模板）
     轻量: thinking 关闭, max_tokens 180; 失败/回答太短返回 None（调用方回退规则版）"""
-    if not answer or len(answer) < 40:
+    if not answer or len(answer) < 40 or (agent == "general" and not DS.wants_suggestions(question)):
         return None
     en = language == "en"
     sys_p = (
@@ -1417,13 +1496,28 @@ def _llm_suggest(question, answer, agent, language):
         f"User's last question: {question[:300]}\n\nYour answer (abridged): {answer[:2200]}"
         if en else
         f"用户上一个问题: {question[:300]}\n\n你的回答（节选）: {answer[:2200]}")
+    if agent == "general":
+        sys_p = ("Write two short, complete follow-up questions grounded in the unresolved tension or a "
+                 "specific claim in this conversation. Let each question advance the discussion in a "
+                 "different direction. No generic tool, essay, mind-map or debate promotions. "
+                 "No emoji, numbering, preface or answers. One question per line. "
+                 + ("Write in English." if en else "用中文写，每条不超过35字。"))
+    from deep_context import current_tool_agent
+    _suggest_scope = current_tool_agent.set("general") if agent == "general" else None
     try:
         resp = AG.llm_chat([{"role": "system", "content": sys_p}, {"role": "user", "content": user_p}],
-                           temperature=0.8, max_tokens=180)
+                           temperature=0.8, max_tokens=384 if agent == "general" else 180,
+                           **({"disable_thinking": True} if agent == "general" else {}))
+        if agent == "general" and resp["choices"][0].get("finish_reason") == "length":
+            return None
         text = (resp["choices"][0]["message"].get("content") or "").strip()
         lines = []
         for ln in text.splitlines():
             ln = ln.strip().lstrip("-•*0123456789.、)） ").strip()
+            if agent == "general":
+                ln = DS.clean_public_text(ln)
+                if not ln.endswith(("？", "?")) or len(ln) > (160 if en else 70):
+                    continue
             if len(ln) >= 4:
                 lines.append(ln)
             if len(lines) >= 3:
@@ -1431,6 +1525,9 @@ def _llm_suggest(question, answer, agent, language):
         return lines or None
     except Exception:
         return None
+    finally:
+        if _suggest_scope is not None:
+            current_tool_agent.reset(_suggest_scope)
 
 
 def _filter_xml_chars(text):
@@ -1787,7 +1884,7 @@ def _issue_snapshot(round_id, issue):
 
 
 def evaluate_repair_safety(pre_details, post_candidate, raw_tool_log, tool_log,
-                           language, round_id):
+                           language, round_id, strict_quote_spans=False):
     """V9-F2-R2 §1: Local Patch effective candidate 语义安全门（纯函数）。
 
     对 post-patch candidate 机械校验并复用 o7e_semantic_transition 分类
@@ -1807,7 +1904,8 @@ def evaluate_repair_safety(pre_details, post_candidate, raw_tool_log, tool_log,
     try:
         _safety_val = validate_final_candidate(
             post_candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
-            language=language)
+            language=language,
+            **({"strict_quote_spans": True} if strict_quote_spans else {}))
         _safety_details = [_issue_snapshot(round_id, i)
                            for i in _safety_val.as_dict().get("issues", [])]
         _safety_st = ST.classify_transition(pre_details, _safety_details)
@@ -1920,11 +2018,19 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 各工具的 capability 描述（工具 schema description）已说明适用场景, 由模型自主选择。
     tool_log = []
     # ── Phase A: tool loop 治理状态（A1 观测 / A2 去重 / A3 hard 预算——单轮生命周期对象）──
-    guard = AR.DuplicateGuard()
+    if agent == "general":
+        from deep_research import DeepDuplicateGuard
+        guard = DeepDuplicateGuard()
+    else:
+        guard = AR.DuplicateGuard()
     budget = AR.ToolBudget(retrieval_tools=set(RETRIEVAL_TOOLS) | set(AGENTS.PHILO_EXTRA_TOOLS))
     trace = AR.ToolLoopTrace(conversation_id, message_id, agent, question_chars=len(req_message or ""))
     # ── O10-R1: 检索纪律状态机（general 专属; 哲学家 agent 行为零改变）──
-    discipline = RD.ResearchDiscipline() if agent == "general" else None
+    if agent == "general":
+        from deep_research import DeepResearchDiscipline
+        discipline = DeepResearchDiscipline()
+    else:
+        discipline = None
     # ── O5: EvidenceState（纯事实登记器; 旧义务台账 / RetrievalState 语义统计已删）──
     evidence_state = EvidenceState()
     raw_tool_log = []   # 共享 raw 工具记录（tools_node 写入; 引用核验/证据契约消费; result_full 保留到收口）
@@ -1954,7 +2060,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                             # （2026-08-14: 用于截断时发 tool_cancel 解除前端"调用中"卡片;
                             #  O6-RP1 F2/F3: 携带 tool_call_id, 终态取消逐 id 绑定）
     full_answer = ""   # 已转发的所有回答文本（最终校验用）
-    _rat_parser = RationaleParser()   # <rationale>…</rationale> 流式解析（安全摘要通道）
+    _rat_parser = DS.PublicNoteParser() if agent == "general" else RationaleParser()
+    _candidate_truncated = False
+    _published_prefix = ""
     _rat_tools_done = 0   # phase 推断: 已完成的工具数
     _rat_phase = "analysis"
     # O1 因果观测: Main Agent invocation 组计数（tools→agent 每次回到 agent 节点 +1）
@@ -1975,8 +2083,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     def _note_event(content, phase, delta=False):
         """Main Agent 公开工作笔记事件（thinking_summary / thinking_summary_delta）。
         initiated_by=main_agent: 内容只能来自模型自己的输出（rationale 标签 / 工作笔记）。"""
+        if agent == "general":
+            content = DS.clean_public_text(content)
         return {"type": "thinking_summary_delta" if delta else "thinking_summary",
                 "content": content if delta else content[:280],
+                **({"id": f"{trace.invocation_id}:{_dg()}:note"} if agent == "general" else {}),
                 "phase": phase,
                 "initiated_by": "main_agent",
                 "decision_group_id": _dg(),
@@ -2022,6 +2133,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 模型侧 error"的真实路径）。现在: 图流异常先走 graceful completion（用已取得
     # evidence 完成回答）, 恢复成功/已有部分正文 → 继续正常收口（citations/done 照常）。
     stream_error = None
+    _message_checkpoint = []
 
     async def _stream_graph(msgs, no_tools=False, repair_mode=False,
                             repair_output_mode=None):
@@ -2031,12 +2143,21 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         共享状态经闭包更新（nonlocal）。"""
         nonlocal pending, _agent_invocations, _saw_tools_result
         nonlocal _main_agent_tool_decisions, _rat_tools_done, _rat_phase
+        nonlocal _candidate_truncated, _rat_parser, _phrase_scr
+        nonlocal _published_prefix
         # O6-RP1 (F2): 每次新 Main Agent invocation 从确定性干净 pending 起步——
         # 上一 invocation 的工具宣告状态必须已在其终态闭合中清除, 不跨轮泄漏
         # （repair/恢复轮的新候选不得被上一轮残留宣告的 has_tools 卡 True 丢弃）。
         pending = {"text": "", "has_tools": False, "started": set(), "note_emitted": False}
         pending_tools.clear()
-        async for chunk, metadata in APP.astream(
+        _candidate_truncated = False
+        if agent == "general":
+            _rat_parser = DS.PublicNoteParser()
+            _phrase_scr = TC.RuntimePhraseScrubber()
+        emitted_results = set()
+        answer_parser = DS.AnswerEnvelopeParser() if agent == "general" else None
+        checked_boundary = 0
+        async for item in APP.astream(
                     {"messages": msgs, "agent": agent, "language": language,
                      "guard": guard, "budget": budget, "trace": trace,
                      "discipline": discipline,
@@ -2044,24 +2165,56 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                      "repair_output_mode": repair_output_mode,
                      "tool_count": 0,
                      "evidence_state": evidence_state,
+                     "message_checkpoint": _message_checkpoint,
+                     "request_message": req_message,
                      "raw_tool_log": raw_tool_log},
-                    config, stream_mode="messages"):
+                    config, stream_mode=(["messages", "custom"] if agent == "general" else "messages")):
+            if isinstance(item[0], str) and item[0] in {"messages", "custom"}:
+                mode, data = item
+                if mode == "custom":
+                    if isinstance(data, dict) and data.get("deep_public_note"):
+                        yield _note_event(data["deep_public_note"], _phase_for())
+                        continue
+                    if not isinstance(data, dict) or "deep_tool_result" not in data:
+                        continue
+                    chunk, metadata = data["deep_tool_result"], {"langgraph_node": "tools"}
+                else:
+                    chunk, metadata = data
+            else:
+                chunk, metadata = item  # Persona path and compatible graph adapters.
             node = metadata.get("langgraph_node", "")
+            if node == "tools" and agent == "general":
+                result_id = getattr(chunk, "tool_call_id", None)
+                if result_id and result_id in emitted_results:
+                    continue
+                if result_id:
+                    emitted_results.add(result_id)
             # O1 因果观测: tools→agent 回到 agent 节点 = 一次新的 Main Agent invocation
             # （tool batch 结束后若再有认知工具, 必须由这次新 invocation 宣告——T3 断言依据）
             if node == "agent" and _saw_tools_result:
                 _agent_invocations += 1
                 _saw_tools_result = False
+                _candidate_truncated = False
             if node == "tools":
                 _saw_tools_result = True
             if node == "agent":
                 if not chunk:
                     continue
+                if agent == "general":
+                    finish = (getattr(chunk, "response_metadata", None) or {}).get("finish_reason")
+                    if finish == "length":
+                        _candidate_truncated = True
                 # 工具调用帧（content 为空）→ 标记本轮有工具, 并立即发"调用中"事件（CC 风格: 先显示再执行）
                 # 防御（2026-08-30 三连错误修复）: stream_mode="messages" 下偶发完整 AIMessage
                 # （无 tool_call_chunks 属性）——一律 getattr 取, 非工具帧按文本处理
                 tool_call_chunks = getattr(chunk, "tool_call_chunks", None)
+                if agent == "general" and not tool_call_chunks:
+                    tool_call_chunks = getattr(chunk, "tool_calls", None)
                 if tool_call_chunks:
+                    if agent == "general" and answer_parser.opened:
+                        raise RuntimeError("TOOL_CALL_AFTER_TERMINAL_ANSWER")
+                    if answer_parser is not None and not pending["has_tools"]:
+                        pending["text"] += DS.clean_public_text(answer_parser.finish())
                     pending["has_tools"] = True
                     # O1 (§5) causal order: 模型本轮写在内容通道的公开工作笔记
                     # （thinking_summary, initiated_by=main_agent）必须先于 tool_start 事件。
@@ -2089,6 +2242,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         # O1 provenance: 工具宣告来自 Main Agent 本轮 invocation
                         yield {"type": "tool_start", "name": nm,
                                "initiated_by": "main_agent", "decision_group_id": _dg(),
+                               **({"call_id": tcc.get("id") or f"{_dg()}:{call_key}"}
+                                  if agent == "general" else {}),
                                "tool_call_id": tcc.get("id") or None}
                         # O1 (§13): 宣告后立即给机械活动注记（ACTIVITY, 非 thinking）
                         try:
@@ -2110,12 +2265,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     _emit_text, _rats = _rat_parser.push(chunk.content)
                     for _rat in _rats:
                         _rat_phase = _phase_for()
-                        yield _note_event(_rat, _rat_phase)
+                        yield _note_event(_rat, _rat_phase, delta=agent == "general")
                     if not _emit_text:
                         continue
+                    if answer_parser is not None:
+                        _emit_text = answer_parser.push(_emit_text)
                     # O2: 机械净化（控制标签/内部治理措辞剥离）后只累积——
                     # 引用/引文的资格判断移到 final validator（结构化反馈）, 流式阶段不改写。
                     _vis = _visible_text(_emit_text)
+                    if agent == "general":
+                        _vis = DS.clean_public_text(_vis)
                     _vis = _phrase_scr.push(_vis)
                     if not _vis:
                         continue
@@ -2124,6 +2283,24 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     # 未经验证的候选文本绝不先于 validator 到达用户
                     # （O2 §11: INVALID_FINAL_PUBLICLY_STREAMED = false）。
                     pending["text"] += _vis
+                    if (agent == "general" and answer_parser.opened and not repair_mode
+                            and not no_tools and not pending["has_tools"]):
+                        prefix = DS.complete_paragraph_prefix(pending["text"])
+                        if len(prefix) > checked_boundary:
+                            checked_boundary = len(prefix)
+                            # This is the same evidence validator used for final publication.
+                            # Checked paragraphs can arrive while the model is still writing.
+                            checked = validate_final_candidate(
+                                prefix, raw_tool_log=raw_tool_log, fallback_log=tool_log,
+                                language=language, strict_quote_spans=True)
+                            if (checked.ok and prefix.startswith(_published_prefix)
+                                    and not _is_plan_only_terminal(prefix, req_message)
+                                    and "self_harm" not in _safety_check(prefix)):
+                                delta = prefix[len(_published_prefix):]
+                                if delta:
+                                    _published_prefix = prefix
+                                    yield {"type": "token", "content": delta,
+                                           "validated": True, "granularity": "paragraph"}
                 # Provider 私有推理（DeepSeek reasoning_content）→ RP1 (O1-RP1) 一律内部丢弃:
                 # raw chain-of-thought 是 provider-private 数据, 绝不进入用户可见 SSE（thought_stream
                 # 不再承载任何 raw 透传）; public Thinking 只能来自模型自己写的 <rationale>/
@@ -2140,6 +2317,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 args = extra.get("_args", {})
                 result = extra.get("_result_full", {})
                 reused = extra.get("_reused", False)
+                _tool_status = DS.tool_status(result, extra.get("_budget_class", ""), reused)
                 # O1: 引擎 auto-websearch 已删除——search_books 空结果后是否上网补充
                 # 由 Main Agent 下一轮自主宣告（websearch 对模型可用且不受隐性配额挤压）,
                 # runtime 不再代执行认知性工具（T7 断言依据）。
@@ -2152,7 +2330,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 _scholarly_trace = _scholarly_call_snapshot(name, result)
                 tool_log.append({"name": name, "args": args,
                                  "result_summary": str(result)[:200], "result_full": result,
-                                 "thought": _thought, "scholarly_trace": _scholarly_trace})
+                                 "thought": _thought, "scholarly_trace": _scholarly_trace,
+                                 **({"call_id": getattr(chunk, "tool_call_id", None),
+                                     "status": _tool_status} if agent == "general" else {})})
                 # O1 provenance: 工具执行结果——决定（宣告）来自 Main Agent;
                 # 执行/复用属机械层, 不改变发起者归属。
                 yield {"type": "tool", "name": name, "args": args,
@@ -2160,10 +2340,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                        "initiated_by": "main_agent",
                        "decision_group_id": extra.get("_dg") or _dg(),
                        "tool_call_id": getattr(chunk, "tool_call_id", None),
+                       **({"call_id": getattr(chunk, "tool_call_id", None),
+                           "status": _tool_status,
+                           "summary": DS.public_tool_summary(name, result, _tool_status, language)}
+                          if agent == "general" else {}),
                        "scholarly_trace": _scholarly_trace}
                 # Thinking UI: 工具结果解读（ACTIVITY 注记, runtime_mechanical; 不确定时静默）。
                 try:
-                    if reused:
+                    if agent == "general":
+                        pass  # The typed result above is the complete activity update.
+                    elif reused:
                         yield {"type": "tool_note",
                                "content": "（EXACT_DUPLICATE_REUSED）同一工具与完全相同的参数此前已执行——直接复用此前结果（机械判重, 不涉及证据充分性判断）。",
                                "initiated_by": "runtime_mechanical",
@@ -2178,9 +2364,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     logger.warning(f"[thinking-event] skipped: {str(_e)[:120]}")
                 # 本轮工具已处理完 → 清空待执行标记（下一 agent 轮重新计; 2026-08-14）
                 _rat_tools_done += 1
-                pending_tools.clear()
+                if agent == "general":
+                    pending_tools.discard((name, getattr(chunk, "tool_call_id", None)))
+                else:
+                    pending_tools.clear()
                 # O4-RP1: 术语核验状态计算块已删除——"这个词是否逐字出现"的判定
                 # 由 Main Agent 自己读取原文后给出, runtime 不再先行核验再注入措辞约束。
+        if answer_parser is not None:
+            pending["text"] += DS.clean_public_text(answer_parser.finish())
         # ── O6-RP1 (F2): 工具宣告生命周期终态闭合 ──────────────────────
         # invocation 正常结束时, 任何仍处"已宣告未执行"的工具就地到达终态
         # （机械取消, 逐 id 绑定 tool_call_id）, pending 工具状态确定性清除。
@@ -2193,6 +2384,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 yield ev
             for nm, tcid in sorted(pending_tools, key=lambda t: (t[0], str(t[1]))):
                 yield {"type": "tool_cancel", "name": nm, "tool_call_id": tcid,
+                       **({"call_id": tcid, "status": "cancelled"} if agent == "general" else {}),
                        "reason": "工具预算已达上限，该调用未执行",
                        "initiated_by": "runtime_mechanical",
                        "decision_group_id": _dg()}
@@ -2214,6 +2406,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     #   ③ 恢复也失败且无任何 evidence → 友好错误（不暴露内部细节/stack trace）
     # 恢复成功 → 落到正常收口: 已取得 evidence 不丢, citations/done 照常发出。
     if stream_error is not None:
+        if agent == "general" and str(stream_error) in {"TOOL_CALL_AFTER_TERMINAL_ANSWER", "ANSWER_ENVELOPE_ERROR"}:
+            yield {"type": "error", "code": "ANSWER_PROTOCOL_ERROR",
+                   "content": "回答过程被中断，请重试。" if language != "en"
+                   else "The response was interrupted. Please retry."}
+            return
         # ══ Phase A (A4) + O2 §8: graceful 恢复 = 同一个 Main Agent 原样重试一次 ══
         # 原"用 RECOVERY_SYSTEM_DIRECTIVE 调 AG.llm_chat 独立生成答案"是第二 writer——
         # 已删除。transport 异常后: 无候选正文 → 图重跑一次（evidence 全保留, 工具不重烧）;
@@ -2222,7 +2419,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         if not _strip_markers(pending["text"]):
             try:
                 logger.info("[graceful-completion] stream error → retrying main agent once")
-                async for _ev in _stream_graph(messages):
+                async for _ev in _stream_graph(list(_message_checkpoint) or messages):
                     yield _ev
                 _recovered = True
             except Exception as _re:
@@ -2254,7 +2451,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         _tail = _visible_text(_rat_parser.finish())   # 未闭合 rationale 残留剥离标签后释放
         _tails = _ptail + _tail
         if _tails:
-            pending["text"] = _tails + pending["text"]
+            pending["text"] = (pending["text"] + _tails if agent == "general"
+                               else _tails + pending["text"])
         # 预算强制收尾的残留工具轮: 文本降级为工作笔记, 不进入候选
         if pending["has_tools"]:
             async for ev in flush_agent():
@@ -2266,12 +2464,48 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         # 清除（此处为防御性兜底, 仅在异常中断后仍残留时触发）; 事件逐 tool_call_id 绑定。
         for nm, tcid in sorted(pending_tools, key=lambda t: (t[0], str(t[1]))):
             yield {"type": "tool_cancel", "name": nm, "tool_call_id": tcid,
+                   **({"call_id": tcid, "status": "cancelled"} if agent == "general" else {}),
                    "reason": "工具预算已达上限，该调用未执行",
                    "initiated_by": "runtime_mechanical",
                    "decision_group_id": _dg()}
 
         candidate = pending["text"]
         pending["text"] = ""
+        if agent == "general" and (_candidate_truncated or (stream_error and not _recovered and candidate.strip())):
+            # A provider length limit or interrupted final draft is not a complete answer.
+            # One bounded continuation uses the same responder; nothing unvalidated is published.
+            prefix = candidate if candidate.strip() else ""
+            yield {"type": "status", "content": "正在补全回答" if language != "en"
+                   else "Completing the response"}
+            # Resume with the actual request context, including completed tool calls.
+            # The checkpoint precedes the interrupted model response, so only a real
+            # visible draft is appended; reasoning-only exhaustion has no answer to continue.
+            completion_messages = list(_message_checkpoint) or list(messages)
+            if prefix:
+                completion_messages.append(AIMessage(content=prefix))
+                continuation = ("上一条回答因传输或输出长度限制中断。仅从断点继续，完成原问题的回答。"
+                                "不要重复已有段落，不要解释续写操作，不再调用工具。保持原来的语言和格式。")
+            else:
+                continuation = ("本轮因输出长度限制结束，尚未生成回答正文。请根据原问题与本轮已有材料，"
+                                "从头给出完整回答，不要承接不存在的前文，不要解释恢复操作，"
+                                "不再调用工具。保持原来的语言和格式。")
+            completion_messages.append(HumanMessage(content=continuation))
+            try:
+                async for _ev in _stream_graph(completion_messages, no_tools=True):
+                    yield _ev
+                suffix = _phrase_scr.flush() + _visible_text(_rat_parser.finish()) + pending["text"]
+                pending["text"] = ""
+                if _candidate_truncated or not suffix.strip():
+                    raise RuntimeError("INCOMPLETE_FINAL_RESPONSE")
+                if suffix.startswith(prefix) or (_published_prefix and suffix.startswith(_published_prefix)):
+                    candidate = suffix  # Exact delivered prefix repeated: keep one copy.
+                else:
+                    candidate = prefix + suffix
+            except Exception:
+                yield {"type": "error", "code": "INCOMPLETE_RESPONSE",
+                       "content": "回答未能完整生成，请重试。" if language != "en"
+                       else "The response could not be completed. Please retry."}
+                return
         repairs_used = 0
         # ══ V8-F2 §1: plan-only terminal 拦截 + 一次有界 recovery ══
         # V8-11 实证: 模型宣布「下一步检索」却 0 工具调用, 规划前言直接发布。
@@ -2309,6 +2543,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 pending["text"] = ""
             except Exception as _pe:
                 logger.warning(f"[plan-only recovery] failed: {str(_pe)[:200]}")
+            if agent == "general" and _candidate_truncated:
+                yield {"type": "error", "code": "INCOMPLETE_RESPONSE",
+                       "content": "回答未能完整生成，请重试。" if language != "en"
+                       else "The response could not be completed. Please retry."}
+                return
             if _recovered.strip():
                 candidate = _recovered
             logger.info(f"[plan-only] blocked preamble ({len(candidate)} chars "
@@ -2335,7 +2574,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         while True:
             validation = validate_final_candidate(
                 candidate, raw_tool_log=raw_tool_log, fallback_log=tool_log,
-                language=language)
+                language=language, **({"strict_quote_spans": True} if agent == "general" else {}))
             val_dict = validation.as_dict()
             _val_issues = val_dict.get("issues", [])
             # V8-F2 §1: plan-gate——plan-only 候选即使机械校验通过也不得发布;
@@ -2384,7 +2623,11 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 logger.info(f"[o2-validator] candidate FAIL ({len(validation.issues)} issues) → "
                             f"main-agent repair {repairs_used}/{MAX_VALIDATION_REPAIRS}")
             yield {"type": "tool_note",
-                   "content": ("答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……"
+                   "content": (("正在完成回答。" if _current_plan_only else "正在核对引用与表述。")
+                               if agent == "general" and language != "en" else
+                               ("Completing the answer." if _current_plan_only else "Checking sources and wording.")
+                               if agent == "general" else
+                               "答案证据校验未通过——正在把结构化问题反馈给智能体重新整理回答……"
                                if not _current_plan_only else
                                "（检测到计划式回答尚未落实为实质回答——正在要求智能体给出实质回答……）"),
                    "initiated_by": "validator", "activity": True,
@@ -2525,7 +2768,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # V8-F2 §3: pre_repair_candidate_hash（修复调用前锁定）
             _pre_repair_hash = hashlib.sha256(
                 (candidate or "").encode("utf-8")).hexdigest()[:16]
+            _pre_repair_candidate = candidate
+            _safety_rejected_this_round = False
+            _admission_safety_rejected = False
             _repair_trace[-1]["pre_repair_candidate_sha256"] = _pre_repair_hash
+            if agent == "general" and _published_prefix:
+                _fb += (f"\nThe first {len(_published_prefix)} characters of this candidate have already "
+                        "been validated and delivered. Preserve that prefix byte-for-byte; "
+                        "repair only the undelivered suffix. Do not repeat or rewrite the delivered text.")
             _repair_msgs = list(messages) + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
@@ -2546,6 +2796,9 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 pending["text"] = ""
             candidate = (_ptail2 + _tail2) + pending["text"]
             pending["text"] = ""
+            if agent == "general" and _candidate_truncated:
+                candidate = _pre_repair_candidate
+                break  # Preserve the rejected draft, never publish an incomplete repair.
             # V8-F2-R1 §2: no-op 判定移至 Local Patch apply/finalization 之后——
             # LP 模式下 repair model 输出是 patch JSON, 此处尚非 effective
             # candidate; 统一在下方 effective candidate 确定后判定。
@@ -2681,7 +2934,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 if _lp_meta is not None and not _apply_errs and candidate.strip():
                     _safety = evaluate_repair_safety(
                         _cur_details, candidate, raw_tool_log, tool_log,
-                        language, len(_val_history))
+                        language, len(_val_history), strict_quote_spans=agent == "general")
                     if _safety["rejected"]:
                         candidate = _lp_meta["pre_patch_candidate"]
                         _safety_rejected_this_round = True
@@ -2713,6 +2966,21 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                 "pre_candidate_restored": True}
                         logger.warning("[o2-repair] SAFETY_REJECTED: "
                                        f"{_kind} {_safety.get('families') or []}")
+            if agent == "general" and _lp_meta is None and candidate.strip():
+                _safety = evaluate_repair_safety(
+                    _cur_details, candidate, raw_tool_log, tool_log, language,
+                    len(_val_history), strict_quote_spans=True)
+                if _safety["rejected"]:
+                    candidate = _pre_repair_candidate
+                    _safety_rejected_this_round = True
+                    _safety_feedback_next = True
+                    _repair_safety_rejected_new += len(_safety.get("new_evidence_fps") or [])
+                    _repair_safety_rejected_ambiguous += len(_safety.get("ambiguous_fps") or [])
+                    _repair_safety_gate_error += int(_safety.get("rejection_kind") == "SAFETY_GATE_ERROR")
+                    _repair_safety_rejected_families.extend(_safety.get("families") or [])
+                    _repair_safety_rejected_fps.extend(_safety.get("fingerprints") or [])
+                    _repair_trace[-1]["repair_safety_rejected"] = {
+                        **_safety, "pre_candidate_restored": True, "mode": "FULL_REWRITE"}
             # ══ V8-F2-R1 §2: no-op 在 effective candidate 上判定 ══
             # 统一语义: FULL_REWRITE → model replacement 即 effective;
             # LOCAL_PATCH → parse_and_apply/finalization 后的真正答案;
@@ -2744,10 +3012,29 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         # 以既有 validation_failed/error 非语义失败路径收口）。
         _terminal_plan_only = _is_plan_only_terminal(candidate, req_message)
         if candidate.strip() and validation.ok and not _terminal_plan_only:
+            if agent == "general" and not candidate.startswith(_published_prefix):
+                yield {"type": "error", "code": "PUBLISHED_PREFIX_CHANGED",
+                       "content": "后续内容未能与已显示的回答保持一致，请重试。" if language != "en"
+                       else "The continuation did not match the delivered response. Please retry."}
+                return
             full_answer = candidate
-            for ch in candidate:
-                yield {"type": "token", "content": ch}
-                await asyncio.sleep(TOKEN_INTERVAL)
+            if agent == "general":
+                # Publish checked text in transport chunks; rendering controls its own cadence.
+                # No artificial per-character sleep and no truncated draft marked complete.
+                if "self_harm" in _safety_check(candidate):
+                    if _published_prefix:
+                        yield {"type": "error", "code": "RESPONSE_WITHHELD",
+                               "content": "后续内容未能安全完成，请换一种问法。" if language != "en"
+                               else "The remainder could not be safely completed. Please rephrase."}
+                        return
+                    full_answer = SAFETY_REPLY_EN if language == "en" else SAFETY_REPLY
+                for offset in range(len(_published_prefix), len(full_answer), 64):
+                    yield {"type": "token", "content": full_answer[offset:offset + 64]}
+                    await asyncio.sleep(0)
+            else:
+                for ch in candidate:
+                    yield {"type": "token", "content": ch}
+                    await asyncio.sleep(TOKEN_INTERVAL)
         else:
             yield {"type": "validation_failed",
                    "content": "回答未通过确定性证据校验",
@@ -2776,7 +3063,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         _quote_audit = None
         _vt0 = time.time()
         try:
-            _quote_audit = QB.audit_quotes(full_answer, raw_tool_log)
+            _quote_audit = QB.audit_quotes(full_answer, raw_tool_log,
+                                          **({"strict_quote_spans": True} if agent == "general" else {}))
         except Exception as _e:
             logger.warning(f"[quote-bound post] skipped: {str(_e)[:160]}")
         finally:
@@ -2797,6 +3085,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # 不再按用户意图分类排除二手证据。
             evidence_payload = build_evidence_contract(tool_log, full_answer, agent, language)
             citations = evidence_payload["citations"]
+            if agent == "general":
+                from deep_sources import enrich_citations
+                citations = enrich_citations(citations, evidence_payload, tool_log, full_answer)
+                evidence_payload["display_citations"] = citations
         except Exception as _e:
             logger.warning(f"[evidence-contract] skipped: {str(_e)[:200]}")
             citations = []
@@ -2859,7 +3151,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         # 2026-08-29 修复: 此前"推理链摘要 + 话题建议"两个 LLM 调用串行阻塞在 done 之前,
         # 回答结束后 UI 还要空等 5-15s 才出现"可继续探索"。现在 done 先行解锁 UI,
         # 两个 LLM 后处理并行执行, 完成后以增量事件补发（前端增量替换）
-        suggestions = _suggest_next(tool_log, req_message, agent, language)
+        suggestions = [] if agent == "general" else _suggest_next(tool_log, req_message, agent, language)
         _log_stats(agent, req_message, time.time() - _t_start, [t["name"] for t in tool_log],
                    _fail, None, len(full_answer))
         # ══ Phase A (A1): 单轮 invocation 轨迹汇总落盘（evidence ids 关联证据契约）══
@@ -2907,6 +3199,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             # done.obligation_ledger 字段已删除）。
             evidence_payload["facts"] = evidence_state.snapshot()
         yield {"type": "done", "citations": citations, "evidence": evidence_payload,
+               **({"content": full_answer, "complete": bool(full_answer)} if agent == "general" else {}),
                "scholarly_sources": _scholarly_sources,
                "tool_calls": tool_log,
                "suggestions": suggestions, "safety": safety_flag,
@@ -2997,7 +3290,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 return await asyncio.to_thread(_llm_suggest, req_message, full_answer, agent, language)
             except Exception:
                 return None
-        llm_suggestions = await _post_llm_suggest()
+        if agent == "general":
+            try:
+                llm_suggestions = await asyncio.wait_for(_post_llm_suggest(), timeout=8)
+            except asyncio.TimeoutError:
+                llm_suggestions = None
+        else:
+            llm_suggestions = await _post_llm_suggest()
         if llm_suggestions:
             yield {"type": "suggestions", "suggestions": llm_suggestions}
     except Exception as e:

@@ -174,14 +174,17 @@ def test_r10_validator_semantics_unchanged():
 
 
 def test_r10b_contract_bytes_unchanged_and_general_only():
-    """SCHOLARLY_CONTRACT 正文 byte 不变（RP1 只改注入范围）; general-only 注入。"""
-    import inspect
-    src = inspect.getsource(EG)
-    assert 'if agent == "general":' in src.split("SCHOLARLY_CONTRACT")[1][:1200] or \
-           'if agent == "general":' in src.split("def _build_context_messages")[1][:2000]
+    """实际上下文携带完整研究契约，且只注入通用智能体。"""
     contract = EG.SCHOLARLY_CONTRACT
     assert contract.strip().startswith("【学术研究契约")
     assert "访问诚实" in contract and "不得凭记忆补书目" in contract
+    for language in ("zh", "en"):
+        general = EG._build_context_messages("general", language)
+        persona = EG._build_context_messages("nietzsche", language)
+        assert len(general) == len(persona) == 1
+        assert general[0].content.count(contract) == 1
+        assert contract not in persona[0].content
+        assert "【学术研究契约" not in persona[0].content
 
 
 # ══ RP1 Final Closure A: no_tools 协议真验证（C1-C5）══════════

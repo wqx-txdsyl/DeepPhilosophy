@@ -511,7 +511,7 @@ def test_root_cause_no_evidence_and_recovery_fails_friendly_error(monkeypatch):
         "stats error 路径工具数不再硬编码 0（含引擎自动补充的 websearch）"
 
 
-def test_stream_agent_partial_answer_before_crash_kept(monkeypatch):
+def test_stream_agent_interrupted_unfinished_answer_is_not_reported_complete(monkeypatch):
     class _CrashAfterAnswer:
         async def astream(self, inputs, config, stream_mode="messages"):
             yield (AIMessageChunk(content="回答已经开始流式输出：权力意志是自我克服的冲动。"), {"langgraph_node": "agent"})
@@ -519,10 +519,9 @@ def test_stream_agent_partial_answer_before_crash_kept(monkeypatch):
     monkeypatch.setattr(elg, "APP", _CrashAfterAnswer())
     evs = asyncio.run(_collect_stream("权力意志"))
     types = [ev["type"] for ev in evs]
-    assert "error" not in types
-    done = next(ev for ev in evs if ev["type"] == "done")
-    text = "".join(ev.get("content", "") for ev in evs if ev["type"] == "token")
-    assert "权力意志" in text and done["tool_loop"]["recovered_after_error"] is True
+    assert "error" in types
+    assert "done" not in types
+    assert "token" not in types  # No validated paragraph was delivered before this interruption.
 
 
 # ═══════════════════════════════════════════════════════

@@ -7,7 +7,7 @@
   conceptual_map     过程图/概念网络/论证图 + 合法 Mermaid 生成（含 Q13 括号/引号风险回归）
   socratic_tutor     恰好一个问题 / 第二问依赖用户真实回答
   thought_experiment 重入有界
-  paper_review/analyze_argument 仲裁（短论证 vs 完整论文）
+  paper_review/analyze_argument 仲裁（用户评审意图 vs 论证结构分析，不按长度分流）
   citation variants  全部识别/净化
   final runtime phrase 零泄漏
 另: taxonomy 覆盖（38 项）/ scaffold 契约。
@@ -38,6 +38,38 @@ def _fake_llm(content):
     return _call
 
 
+def _general_turn(monkeypatch, question, answer):
+    """Exercise actual context building/tool binding with an offline model."""
+    import asyncio
+    import engine_langgraph as EG
+    from langchain_core.messages import AIMessage, HumanMessage
+
+    class PromptSpy:
+        def __init__(self):
+            self.prompts = []
+            self.tools = []
+
+        def bind_tools(self, tools, **kwargs):
+            self.tools = list(tools)
+            return self
+
+        def invoke(self, messages, *args, **kwargs):
+            self.prompts.append(list(messages))
+            return AIMessage(content=answer)
+
+        async def ainvoke(self, messages, *args, **kwargs):
+            return self.invoke(messages, *args, **kwargs)
+
+    model = PromptSpy()
+    tools = EG._build_tools(general=True)
+    monkeypatch.setattr(EG, "get_llm", lambda: model)
+    monkeypatch.setattr(EG, "get_tools", lambda _agent: tools)
+    state = {"agent": "general", "language": "zh", "budget": EG.AR.ToolBudget(),
+             "messages": EG._build_context_messages("general", "zh") + [HumanMessage(content=question)]}
+    out = asyncio.run(EG.agent_node(state))
+    return model, state, out
+
+
 @pytest.fixture(autouse=True)
 def _isolated_memory(monkeypatch, tmp_path):
     """隔离运行时记忆文件——防止测试写入污染 backend/data/agent_memory.json
@@ -54,7 +86,7 @@ def _capture_llm(content):
     captured = []
 
     def _call(messages, **kwargs):
-        captured.append(messages[-1]["content"] if messages else "")
+        captured.append("\n".join(message.get("content", "") for message in messages or []))
         return {"choices": [{"message": {"content": content}}]}
     return _call, captured
 
@@ -363,16 +395,48 @@ class TestArbitration:
         assert r["kind"] == "structured_review"
         assert r["review"]["thesis"]["statement"]
 
-    def test_descriptions_carry_capability_fit(self):
-        da = AG.TOOLS["analyze_argument"]["description"]
-        dp = AG.TOOLS["paper_review"]["description"]
+    def test_descriptions_carry_capability_fit(self, monkeypatch):
+        import engine_langgraph as EG
+        tools = {tool.name: tool for tool in EG._build_tools(general=True)}
+        da = tools["analyze_argument"].description
+        dp = tools["paper_review"].description
         assert "单个论证" in da and "paper_review" in da
-        assert "完整论文" in dp and "analyze_argument" in dp
+        assert "不看文本长度" in dp and "摘要" in dp and "analyze_argument" in dp
         assert "毒舌" not in dp
 
-    def test_system_prompt_arbitration_rule(self):
-        import engine_langgraph as EG
-        assert "按输入形态与工具能力匹配选择" in EG.SYSTEM_PROMPT_LG
+        # A short abstract remains valid input for peer review. The bound
+        # interface must preserve the review output, not switch to analysis.
+        text = "本文认为，道德责任取决于行动者回应理由的能力。"
+        review_json = ('{"genre_judgment":"论文摘要，材料有限",'
+                       '"thesis":{"statement":"道德责任依赖回应理由的能力"},'
+                       '"structure":{"strengths":[],"weaknesses":[]},'
+                       '"evidence":{"gaps":["未讨论强制与无知反例"]},'
+                       '"strongest_objection":"需要说明无法回应理由时如何归责",'
+                       '"priority_actions":["说明责任判断的例外条件"]}')
+        review_llm, review_prompts = _capture_llm(review_json)
+        import deep_reasoning_tools as deep_reasoning
+        monkeypatch.setattr(deep_reasoning, "llm_chat", review_llm)
+        reviewed = tools["paper_review"].invoke({"text": text})
+        assert reviewed["kind"] == "structured_review"
+        assert reviewed["review"]["genre_judgment"] == "论文摘要，材料有限"
+        assert reviewed["review"]["priority_actions"] == ["说明责任判断的例外条件"]
+        assert "同行评审" in review_prompts[0] and text in review_prompts[0]
+        import deep_reasoning_tools as deep_reasoning
+        monkeypatch.setattr(deep_reasoning, "llm_chat", _fake_llm(
+            '{"conclusion":"道德责任依赖回应理由的能力","premises":[],"counterexample":null,"weakest_point":"缺少桥梁前提",'
+            '"hidden_assumptions":[],"fallacies":[],"strongest_reply":"需解释桥梁前提","strengthening":[],"question_fidelity":""}'))
+        analyzed = tools["analyze_argument"].invoke({"text": text})
+        assert analyzed["kind"] == "argument_structure" and "review" not in analyzed
+        assert analyzed["argument"]["weakest_point"] == "缺少桥梁前提"
+
+    def test_system_prompt_arbitration_rule(self, monkeypatch):
+        question = "请评审这段论文摘要：道德责任取决于回应理由的能力。"
+        model, _, out = _general_turn(monkeypatch, question, "需要说明回应理由如何构成责任的条件。")
+        system = "\n".join(m.content for m in model.prompts[0] if m.type == "system")
+        assert "paper_review" in system and "论文片段" in system and "评审意图" in system
+        assert any(m.type == "human" and m.content == question for m in model.prompts[0])
+        assert {"paper_review", "analyze_argument"} <= {tool.name for tool in model.tools}
+        assert out["forced"] is False
 
 
 # ═══════════════════════════════════════════════════════
@@ -519,12 +583,16 @@ class TestThoughtExperiment:
 # T11: 路由原则进入系统提示
 # ═══════════════════════════════════════════════════════
 class TestRouterPrinciple:
-    def test_capability_fit_rule_present(self):
+    def test_capability_fit_rule_present(self, monkeypatch):
         import engine_langgraph as EG
-        p = EG.SYSTEM_PROMPT_LG
-        assert "能力匹配 × 信息增益 × 输出合同匹配" in p
-        assert "允许不调用" in p
-        assert "有效" in p and "专用工具" in p
+        answer = "期待让人感到压力，往往是因为它被附上了拒绝后的代价。"
+        model, state, out = _general_turn(monkeypatch, "直接分析期待为什么令人感到压力，不要检索。", answer)
+        system = "\n".join(m.content for m in model.prompts[0] if m.type == "system")
+        assert "允许不调用" in system
+        response, = out["messages"]
+        assert response.content == answer and not response.tool_calls
+        assert out["forced"] is False and state["budget"].total_executed == 0
+        assert EG.should_continue({**state, "messages": [response]}) == "end"
 
     def test_scaffold_ownership_rule_present(self):
         import engine_langgraph as EG

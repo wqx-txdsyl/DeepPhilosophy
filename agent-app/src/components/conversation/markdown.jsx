@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Square, SquareCheck } from 'lucide-react';
 import { DP_READER, resolveCite } from '../../utils/api';
 import { useLang } from '../../utils/i18n';
 import DrawioInline from '../DrawioInline';
@@ -40,8 +41,8 @@ export function CiteLink({ book, chapter }) {
 }
 
 /* ── 行内元素: **粗体** *斜体* `代码` [链接](url) ~~删除线~~ 【出处】 ── */
-export function renderInline(text) {
-  const parts = (text || '').split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]*\]\([^)]*\)|~~[^~]+~~|【[^】]+】)/g);
+export function renderInline(text, options = {}) {
+  const parts = (text || '').split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]*\]\([^)]*\)|~~[^~]+~~|【[^】]+】|\[\d{1,3}\])/g);
   return parts.map((p, i) => {
     if (p.startsWith('**') && p.endsWith('**')) return <strong key={i}>{p.slice(2, -2)}</strong>;
     if (p.startsWith('*') && p.endsWith('*') && p.length > 2) return <em key={i}>{p.slice(1, -1)}</em>;
@@ -56,6 +57,14 @@ export function renderInline(text) {
       return lm[0];
     }
     if (p.startsWith('~~') && p.endsWith('~~')) return <del key={i} style={{ color: 'var(--text-dim)' }}>{p.slice(2, -2)}</del>;
+    if (options.general) {
+      const numbered = p.match(/^\[(\d+)\]$/);
+      const reference = p.match(/^【《([^》]+)》[·・]?([^】]*)】$/);
+      const citation = numbered ? options.citations?.[Number(numbered[1]) - 1]
+        : reference ? options.citations?.find(c => (c.book || c.work || c.title) === reference[1] && (!reference[2] || c.chapter === reference[2])) : null;
+      if (citation) return <button key={i} type="button" className="general-inline-cite" onClick={() => options.onCitation?.(citation)} aria-label={`查看来源 ${p}`}>{p}</button>;
+      if (p.startsWith('【') || numbered) return p;
+    }
     const cm = p.match(/^【《([^》]+)》·?([^】]*)】$/);
     if (cm) return <CiteLink key={i} book={cm[1]} chapter={cm[2]} />;
     const cm2 = p.match(/^【([^】]+)】$/);
@@ -88,9 +97,9 @@ export function sanitizeMermaid(code) {
   return c;
 }
 
-const renderMermaid = (code, onEdit, drawioXml, t) => {
+const renderMermaid = (code, onEdit, drawioXml, t, options = {}) => {
   if (drawioXml) {
-    return <DrawioInline xml={drawioXml} onEdit={() => onEdit && onEdit(code)} />;
+    return <DrawioInline xml={drawioXml} onEdit={() => onEdit && onEdit(code)} general={options.general} />;
   }
   return (
   <div style={{ position: 'relative', margin: '10px 0' }}>
@@ -112,22 +121,22 @@ const renderMermaid = (code, onEdit, drawioXml, t) => {
 
 /* ── markdown 表格渲染 ── */
 let outSeq = 0;
-function renderTable(headers, rows) {
+function renderTable(headers, rows, options = {}, key) {
   return (
-    <div key={`tbl${outSeq++}`} style={{ overflowX: 'auto', margin: '10px 0' }}>
+    <div key={key ?? `tbl${outSeq++}`} style={{ overflowX: 'auto', margin: '10px 0' }}>
       <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 13, lineHeight: 1.6 }}>
         <thead>
           <tr>{headers.map((h, i) => (
             <th key={i} style={{ border: '1px solid var(--border)', padding: '6px 10px',
                                 background: 'var(--soft)', fontWeight: 600, textAlign: 'left' }}>
-              {renderInline(h)}
+              {renderInline(h, options)}
             </th>
           ))}</tr>
         </thead>
         <tbody>
           {rows.map((r, i) => (
             <tr key={i}>{r.map((c, j) => (
-              <td key={j} style={{ border: '1px solid var(--border)', padding: '6px 10px' }}>{renderInline(c)}</td>
+              <td key={j} style={{ border: '1px solid var(--border)', padding: '6px 10px' }}>{renderInline(c, options)}</td>
             ))}</tr>
           ))}
         </tbody>
@@ -136,17 +145,18 @@ function renderTable(headers, rows) {
   );
 }
 
-export function renderMarkdown(text, onEdit, drawioXml, t) {
+export function renderMarkdown(text, onEdit, drawioXml, t, options = {}) {
+  const inline = value => renderInline(value, options);
   const lines = (text || '').split('\n');
   const out = [];
   let fence = null;         // 围栏语言（''=普通代码块, 'mermaid'=脑图）
   let fenceLines = [];
-  const flushFence = () => {
+  const flushFence = (closed = true) => {
     if (fence !== null) {
       const code = fenceLines.join('\n');
-      if (fence === 'mermaid') {
+      if (fence === 'mermaid' && (!options.general || closed || !options.streaming)) {
         // mermaid 脑图: 由 useEffect 里 mermaid.run() 渲染成图形
-        out.push(renderMermaid(code, onEdit, drawioXml, t));
+        out.push(<div key={`diagram-${out.length}`}>{renderMermaid(code, onEdit, drawioXml, t, options)}</div>);
       } else {
         out.push(<pre key={`p${out.length}`} style={{ background: 'var(--soft)', padding: '10px 12px', borderRadius: 8, overflowX: 'auto', fontSize: 12.5, lineHeight: 1.6 }}>{code}</pre>);
       }
@@ -183,7 +193,7 @@ export function renderMarkdown(text, onEdit, drawioXml, t) {
         rows.push(lines[j].trim().split('|').slice(1, -1).map(c => c.trim()));
         j++;
       }
-      out.push(renderTable(headers, rows));
+      out.push(renderTable(headers, rows, options, `table-${i}`));
       i = j; continue;
     }
     const imgMatch = trimmed.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
@@ -197,40 +207,41 @@ export function renderMarkdown(text, onEdit, drawioXml, t) {
       i++; continue;
     }
     if (trimmed.startsWith('> ')) {
-      out.push(<blockquote key={i} style={{ margin: '8px 0', padding: '6px 12px', borderLeft: '3px solid var(--border)', color: 'var(--text-dim)', background: 'var(--soft)', borderRadius: 4 }}>{renderInline(trimmed.slice(2))}</blockquote>);
+      out.push(<blockquote key={i} style={{ margin: '8px 0', padding: '6px 12px', borderLeft: '3px solid var(--border)', color: 'var(--text-dim)', background: 'var(--soft)', borderRadius: 4 }}>{inline(trimmed.slice(2))}</blockquote>);
     } else if (/^[-*] \[[ xX]\] /.test(trimmed)) {
       // 任务列表 - [x] / - [ ]
       const checked = /^[-*] \[[xX]\] /.test(trimmed);
       out.push(<div key={i} style={{ paddingLeft: '1.2em', margin: '2px 0', display: 'flex', alignItems: 'baseline', gap: 6 }}>
-        <span style={{ color: checked ? '#6fae6f' : 'var(--text-dim)', fontSize: 12 }}>{checked ? '☑' : '☐'}</span>
+        <span style={{ color: checked ? '#6fae6f' : 'var(--text-dim)', fontSize: 12 }}>{options.general ? (checked ? <SquareCheck size={13} /> : <Square size={13} />) : checked ? '☑' : '☐'}</span>
         <span style={{ textDecoration: checked ? 'line-through' : 'none', color: checked ? 'var(--text-dim)' : 'inherit' }}>
-          {renderInline(trimmed.replace(/^[-*] \[[ xX]\] /, ''))}
+          {inline(trimmed.replace(/^[-*] \[[ xX]\] /, ''))}
         </span>
       </div>);
     } else if (/^\s{2,}[-*] /.test(line)) {
       // 嵌套列表（缩进子项）
       const depth = Math.min(Math.floor((line.length - line.trimStart().length) / 2), 4);
-      out.push(<div key={i} style={{ paddingLeft: `${1.2 + depth * 1.2}em`, margin: '1px 0' }}>· {renderInline(trimmed.replace(/^[-*] /, ''))}</div>);
+      out.push(<div key={i} style={{ paddingLeft: `${1.2 + depth * 1.2}em`, margin: '1px 0' }}>· {inline(trimmed.replace(/^[-*] /, ''))}</div>);
     } else if (/^[-*] |^\d+\. /.test(trimmed)) {
-      out.push(<div key={i} style={{ paddingLeft: '1.2em', margin: '2px 0' }}>· {renderInline(trimmed.replace(/^[-*] |^\d+\. /, ''))}</div>);
+      const marker = options.general && /^\d+\. /.test(trimmed) ? trimmed.match(/^\d+\./)[0] : '·';
+      out.push(<div key={i} className={options.general ? 'general-list-item' : undefined} style={{ paddingLeft: '1.2em', margin: '2px 0' }}>{marker} {inline(trimmed.replace(/^[-*] |^\d+\. /, ''))}</div>);
     } else if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
       // 水平分割线 --- *** ___
       out.push(<hr key={i} style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '12px 0' }} />);
     } else if (trimmed.startsWith('#### ')) {
-      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 12.5, margin: '8px 0 3px', color: 'var(--text-dim)' }}>{renderInline(trimmed.slice(5))}</div>);
+      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 12.5, margin: '8px 0 3px', color: 'var(--text-dim)' }}>{inline(trimmed.slice(5))}</div>);
     } else if (trimmed.startsWith('### ')) {
-      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 13.5, margin: '10px 0 4px', color: 'var(--text-dim)' }}>{renderInline(trimmed.slice(4))}</div>);
+      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 13.5, margin: '10px 0 4px', color: 'var(--text-dim)' }}>{inline(trimmed.slice(4))}</div>);
     } else if (trimmed.startsWith('## ')) {
-      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 14.5, margin: '12px 0 4px' }}>{renderInline(trimmed.slice(3))}</div>);
+      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 14.5, margin: '12px 0 4px' }}>{inline(trimmed.slice(3))}</div>);
     } else if (trimmed.startsWith('# ')) {
-      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 16, margin: '14px 0 6px' }}>{renderInline(trimmed.slice(2))}</div>);
+      out.push(<div key={i} style={{ fontWeight: 600, fontSize: 16, margin: '14px 0 6px' }}>{inline(trimmed.slice(2))}</div>);
     } else if (!trimmed) {
       out.push(<div key={i} style={{ height: '6px' }} />);
     } else {
-      out.push(<div key={i} style={{ margin: '2px 0' }}>{renderInline(trimmed)}</div>);
+      out.push(<div key={i} style={{ margin: '2px 0' }}>{inline(trimmed)}</div>);
     }
     i++;
   }
-  flushFence();
+  flushFence(false);
   return out;
 }

@@ -49,35 +49,45 @@ def _chat_url():
         return f"{API_URL}/chat/completions" if API_URL.endswith("/v1") else f"{API_URL}/v1/chat/completions"
     return f"{API_URL}/chat/completions"
 
-def llm_chat(messages, tools=None, temperature=0.7, max_tokens=2000, thinking=False):
+def llm_chat(messages, tools=None, temperature=0.7, max_tokens=2000, thinking=False,
+             disable_thinking=False, reasoning_effort=None):
     """chat 调用（支持 function calling; 思考模式仅 DeepSeek 有效）
     思考模式: reasoning_content 思维链 + 工具调用必须完整回传 reasoning_content（否则 400）
     """
     body = {"model": MODEL, "messages": messages, "max_tokens": max_tokens}
     if thinking and not _IS_ZHIPU:
         body["thinking"] = {"type": "enabled"}
-        body["reasoning_effort"] = "medium"   # 思考模式不支持 temperature（high 思考期过长: 30-90s 无输出）
+        body["reasoning_effort"] = reasoning_effort or "medium"
     else:
         body["temperature"] = temperature
+    from deep_context import current_tool_agent
+    # V4.1 Flash enables thinking by default when the field is omitted. Bounded
+    # general-agent tool calls asking for ordinary JSON/prose must reserve their
+    # output budget for that artifact. Main reasoning and persona calls retain
+    # their existing settings; only the explicit general tool scope opts in.
+    general_plain_tool = current_tool_agent.get() == "general" and not thinking
+    if (disable_thinking or general_plain_tool) and not _IS_ZHIPU:
+        body["thinking"] = {"type": "disabled"}
     if tools:
         body["tools"] = tools
     data = json.dumps(body).encode()
     req = urllib.request.Request(_chat_url(), data=data,
                                  headers={"Content-Type": "application/json",
                                           "Authorization": f"Bearer {API_KEY}"})
-    for attempt, wait in enumerate([5, 10, 15]):
+    waits = [0] if current_tool_agent.get() == "general" else [5, 10, 15]
+    for attempt, wait in enumerate(waits):
         try:
             with urllib.request.urlopen(req, timeout=90) as r:
                 return json.loads(r.read().decode())
         except urllib.error.HTTPError as e:
             err_body = e.read().decode("utf-8", "ignore")[:500]
             logger.warning(f"[llm] HTTP {e.code}: {err_body[:200]}")   # 细节只进日志
-            if attempt == 2:
+            if attempt == len(waits) - 1:
                 # 2026-08-14 脱敏: 客户端不携带上游响应体（可能含请求/密钥细节）
                 raise Exception(f"LLM API HTTP {e.code}")
             time.sleep(wait)
         except Exception:
-            if attempt == 2:
+            if attempt == len(waits) - 1:
                 raise
             time.sleep(wait)
 

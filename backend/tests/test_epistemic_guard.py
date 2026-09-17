@@ -167,7 +167,7 @@ def test_tool_registry_unchanged():
 def test_persona_and_prompts_unchanged():
     import engine_langgraph as elg
     import agents as AGENTS
-    assert "你是" in elg.SYSTEM_PROMPT_LG and "737 位哲学家" in elg.SYSTEM_PROMPT_LG
+    assert "你是深哲" in elg.SYSTEM_PROMPT_LG  # Catalogue size is data, not a prompt invariant.
     assert set(AGENTS.PHILO_AGENTS) == {"nietzsche"}, "Phase 1 禁新增哲学家"
     assert "查拉图斯特拉的作者" in AGENTS.NIETZSCHE_PROMPT
     assert elg.get_system_prompt("general") == elg.SYSTEM_PROMPT_LG

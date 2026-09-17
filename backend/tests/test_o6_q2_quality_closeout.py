@@ -2,8 +2,8 @@
 """O6-Q2 — Repair Convergence + Multi-Turn Evidence Expression Final Closeout（产品质量收尾）
 
 对应任务: O6-Q2（BASE 943516d2e）。焦点: 修复收敛（repair 只修失败处, 不整篇重写、
-不把修复说明排成引用块/引号）+ 多轮证据边界 + 引用粒度纪律。validator 生产代码零改动
-（T16: Q1 blob 内容冻结 + 确定性矩阵 TP=10/FN=0/TN=10/FP=0 不变）。
+不把修复说明排成引用块/引号）+ 多轮证据边界 + 引用粒度纪律。validator 默认行为保持
+（T16: 旧默认行为 + 确定性矩阵 TP=10/FN=0/TN=10/FP=0 不变）。
 
 T1  修复反馈全定位（每个被拒 quote/citation issue 自带 exact offending span 且反馈含 span）
 T2  修复元数据粒度（书级 vs 章级可机械区分; 标签形态 + policy 可见）
@@ -20,11 +20,10 @@ T12 简单问题不被机械强制研究（无必须调用工具; 校准条款�
 T13 Evidence Appetite 保留（无"最少工具"替换）
 T14 Public Thinking 非 Runtime 清单（工作笔记 = 自然句因果判断, 无运行时检查清单）
 T15 单一认知策略 owner（SystemMessage 注入 = builder + hard 预算机械位）
-T16 validator 冻结（final_validator.py/quote_bound.py 与 Q1 blob 内容一致 + 矩阵不变）
+T16 validator 默认兼容（明确关闭新解析时，旧 quote/citation 行为与矩阵不变）
 """
 import inspect
 import os
-import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -32,9 +31,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import engine_langgraph as EG
 import final_validator as FV
 import routes.agent_tools_retrieval as RET
-
-BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-REPO = os.path.dirname(BACKEND)
 
 # ── 共享合成证据（与 Q1/RP1 同一构造风格）──────────────
 _PASSAGE = "鲁人为长府，闵子骞曰：“仍旧贯如之何？何必改作？”子曰：“夫人不言，言必有中。”"
@@ -260,17 +256,28 @@ def test_t15_single_cognitive_policy_owner():
 
 
 # ═══════════════════════════════════════════════════════
-# T16 — validator/quote_bound 冻结（§18: 零生产改动）
+# T16 — validator/quote_bound 默认行为兼容
 # ═══════════════════════════════════════════════════════
-def test_t16_verification_stack_unchanged_from_q1():
-    # O7-E RCA-1 §2 授权: quote_bound 仅加 char_start/char_end metadata
-    # （判定语义零改动）→ 其冻结点从 Q1 blob 移至 RCA-1 commit; validator 仍冻 Q1
-    for rel, base in (("final_validator.py", "554d62fac"),
-                      ("quote_bound.py", "95bc3ae52")):
-        r = subprocess.run(["git", "diff", "--quiet", base, "--",
-                            os.path.join("backend", rel)],
-                           cwd=REPO, capture_output=True)
-        assert r.returncode == 0, f"{rel} 相对冻结点 {base} 有改动"
+def test_t16_verification_default_preserves_legacy_contract():
+    # Historical source freezes: final_validator 554d62fac, quote_bound 95bc3ae52.
+    # Authorized general-only parsing now coexists with the old default path.
+    assert inspect.signature(FV.validate_final_candidate).parameters[
+        "strict_quote_spans"].default is False
+    cases = [
+        ("> " + _PASSAGE, True, None),
+        ("> " + _PASSAGE.replace("夫人不言", "其人不言"), False, FV.NEAR_QUOTE_NOT_MARKED),
+        ("> " + _FAKE, False, FV.UNSUPPORTED_EXACT_QUOTE),
+        ("【《论语》·雍也篇】", False, FV.UNVERIFIED_CITATION),
+        ("> " + _PASSAGE + "【《论语》·先进篇】", False, FV.NEAR_QUOTE_NOT_MARKED),
+    ]
+    for candidate, expected_ok, expected_code in cases:
+        default = _validate(candidate)
+        explicit_legacy = FV.validate_final_candidate(
+            candidate, raw_tool_log=RAW_LOG, fallback_log=[], strict_quote_spans=False)
+        assert default == explicit_legacy
+        assert default.ok is expected_ok
+        if expected_code:
+            assert expected_code in {issue.code for issue in default.issues}
 
 def test_t16_validator_matrix_unchanged():
     from tests.test_o6_rp1_mechanical import _matrix_cases

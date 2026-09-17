@@ -1,0 +1,509 @@
+"""General-agent tool overrides; never mutate the shared/Nietzsche registry.
+
+Exact passages are evidence. Embedding neighbours are only reading candidates.
+The semantic gate was calibrated against real embedding-2 query distributions;
+see docs/evidence/DEEP_RETRIEVAL_CALIBRATION_20260917.md.
+"""
+from __future__ import annotations
+
+from copy import deepcopy
+from functools import lru_cache
+import heapq
+import math
+import re
+import threading
+
+from routes import agent_core as core
+from routes import agent_tools_retrieval as retrieval
+from routes import agent_tools_memory as memory
+
+
+# Both are needed: invented concepts can have high absolute cosine similarity
+# while remaining indistinguishable from the rest of this particular corpus.
+SEMANTIC_MIN_COSINE = 0.50
+SEMANTIC_MIN_Z = 4.0
+_vector_lock = threading.Lock()
+_vector_source = None
+_unit_vectors = None
+_catalogue_source = None
+_catalogue_lock = threading.Lock()
+_query_split = re.compile(r"[\s,，。；;：:、！？!?《》\"“”‘’]+")
+
+
+def _required_text(args, key):
+    value = args.get(key)
+    if not isinstance(value, str):
+        return None, {"error": f"参数类型错误: {key} 应为字符串"}
+    value = value.strip()
+    if not value:
+        return None, {"error": f"缺少 {key}"}
+    if len(value) > 500:
+        return None, {"error": f"{key} 过长，请使用 500 字以内的概念、关键词或原文片段"}
+    return value, None
+
+
+def _terms(query):
+    return tuple(dict.fromkeys(t.casefold() for t in _query_split.split(query) if t))
+
+
+def _fold_for_terms(text, terms):
+    # Avoid allocating a second copy of every Chinese chapter on every scan.
+    return text.casefold() if any(re.search(r"[A-Za-z]", t) for t in terms) else text
+
+
+def _snippet(text, terms, size=320):
+    hay = _fold_for_terms(text, terms)
+    positions = [hay.find(t) for t in terms if t and t in hay]
+    if not positions:
+        return text[:size].replace("\n", " ")
+    # Prefer a window containing multiple query terms over a chapter opening.
+    pos = max(positions, key=lambda p: sum(
+        t in hay[max(0, p - 60):p + size - 60] for t in terms))
+    start = max(0, pos - 60)
+    return text[start:start + size].replace("\n", " ")
+
+
+def _chapters(book):
+    """Include chapters beyond the legacy cache's 300-chapter limit."""
+    bid = book["id"]
+    yield from core._book_chapter_texts(bid)
+    meta = core.chapter_meta(bid) or {}
+    for idx in range(300, int(meta.get("chapterCount") or 0)):
+        chapter = core.read_chapter(bid, idx)
+        if chapter:
+            yield idx, chapter.get("title", ""), chapter.get("text", "")
+
+
+def _passage_result(book, idx, title, text, terms, score, focus=""):
+    return {
+        "book_id": book["id"], "book_title": book.get("title", ""),
+        "author": book.get("author", ""), "chapter_idx": idx,
+        "chapter_title": title,
+        "citation_label": retrieval._cite_label(book.get("title"), title),
+        "snippet": _snippet(text, terms), "score": round(score, 4),
+        "match_type": "exact_passage", "evidence_scope": "search_excerpt",
+        "needs_read": True,
+        "read_args": {"book_id": book["id"], "chapter_idx": idx, "focus": focus},
+    }
+
+
+@lru_cache(maxsize=32)
+def _lexical_search(query, catalogue_generation, occurrences_only=False):
+    """Search actual chapter text, independently of book-description matches.
+
+    The catalogue object's identity changes when invalidate_agent_cache runs;
+    that invalidates results without touching shared cache behaviour. Only the
+    short result records are cached, not another full copy of the 100M+ corpus.
+    """
+    terms = (query.casefold(),) if occurrences_only else _terms(query)
+    hits, metadata, scanned, total = [], [], 0, 0
+    books_with_passages = {}
+    for book in core.get_books():
+        title = book.get("title", "")
+        book_hay = _fold_for_terms(f"{title} {book.get('author', '')}", terms)
+        remaining = terms if occurrences_only else tuple(t for t in terms if t not in book_hay)
+        if not remaining and not occurrences_only:
+            metadata.append({
+                "book_id": book["id"], "book_title": title,
+                "author": book.get("author", ""), "snippet": "",
+                "citation_label": retrieval._cite_label(title, ""),
+                "score": retrieval._canon_score(title),
+                "match_type": "book_metadata", "evidence_scope": "catalogue",
+                "needs_read": True,
+            })
+            # A book title/author match alone does not establish a passage.
+            remaining = terms
+        for idx, chapter_title, text in _chapters(book):
+            scanned += 1
+            if not text:
+                continue
+            hay = _fold_for_terms(text, remaining)
+            if not all(t in hay for t in remaining):
+                continue
+            ch_hay = _fold_for_terms(chapter_title, terms)
+            # A focused chapter beats repeated incidental mentions. Short
+            # primary works beat anthologies when the same quotation occurs.
+            score = (sum(t in ch_hay for t in remaining) * 30
+                     + sum(min(hay.count(t), 5) for t in remaining)
+                     + retrieval._canon_score(title)
+                     + sum(t in _fold_for_terms(title, terms) for t in terms) * 40
+                     + (len(terms) - len(remaining)) * 10)
+            total += 1
+            row = _passage_result(book, idx, chapter_title, text, remaining, score, query)
+            previous = books_with_passages.get(book["id"])
+            count = (previous or {}).get("matched_chapters", 0) + 1
+            if previous is None or score > previous["score"]:
+                books_with_passages[book["id"]] = {**row, "matched_chapters": count}
+            else:
+                previous["matched_chapters"] = count
+            heapq.heappush(hits, (score, book["id"], idx, row))
+            if len(hits) > 100:
+                heapq.heappop(hits)
+    hits = sorted((item[3] for item in hits),
+                  key=lambda r: (-r["score"], r["book_id"], r["chapter_idx"]))
+    metadata.sort(key=lambda r: (-r["score"], len(r["book_title"]), r["book_id"]))
+    return {"passages": hits, "metadata": metadata, "scanned_chapters": scanned,
+            "total_passage_hits": total,
+            "book_passages": sorted(books_with_passages.values(), key=lambda r: -r["score"])}
+
+
+def _exact_results(query, occurrences_only=False):
+    global _catalogue_source
+    books = core.get_books()
+    with _catalogue_lock:
+        if books is not _catalogue_source:
+            _lexical_search.cache_clear()
+            _catalogue_source = books
+    return _lexical_search(query, id(books), occurrences_only)
+
+
+def _semantic_candidates(query, limit):
+    from routes.agent import _embed_query, _embed_status
+    vector = _embed_query(query)
+    if vector is None:
+        return [], {"degraded_reason": _embed_status.get("degraded_reason") or "embedding_unavailable"}
+    vectors, index = core._load_vectors()
+    if vectors is None or index is None or not len(vectors):
+        return [], {"degraded_reason": "embedding_index_unavailable"}
+    import numpy as np
+    global _vector_source, _unit_vectors
+    q = np.asarray(vector, dtype="float32")
+    if q.ndim != 1 or vectors.ndim != 2 or vectors.shape[1] != len(q):
+        return [], {"degraded_reason": "embedding_dimension_mismatch"}
+    norm = float(np.linalg.norm(q))
+    if not math.isfinite(norm) or norm <= 0:
+        return [], {"degraded_reason": "invalid_query_embedding"}
+    with _vector_lock:
+        if _vector_source is not vectors:
+            norms = np.linalg.norm(vectors, axis=1, keepdims=True)
+            _unit_vectors = np.divide(vectors, norms, out=np.zeros_like(vectors), where=norms > 0)
+            _vector_source = vectors
+        unit_vectors = _unit_vectors
+    sims = unit_vectors @ (q / norm)
+    finite = np.isfinite(sims)
+    if not finite.any():
+        return [], {"degraded_reason": "invalid_embedding_index"}
+    mean, std = float(sims[finite].mean()), float(sims[finite].std())
+    # A flat nearest-neighbour distribution provides no retrieval evidence.
+    if std <= 1e-6:
+        return [], {"rejected_reason": "no_semantic_separation"}
+    results = []
+    terms = _terms(query)
+    for pos in np.argsort(-np.where(finite, sims, -np.inf))[:max(30, limit * 4)]:
+        cosine = float(sims[pos])
+        z = (cosine - mean) / std
+        if cosine < SEMANTIC_MIN_COSINE or z < SEMANTIC_MIN_Z or pos >= len(index):
+            continue
+        item = index[pos]
+        book = core.book_by_id(item["bid"])
+        chapter = core.read_chapter(item["bid"], item["idx"])
+        if not book or not chapter or not chapter.get("text"):
+            continue
+        result = _passage_result(book, item["idx"], chapter.get("title", ""),
+                                 chapter["text"][:1500], terms, cosine, query)
+        result.update(match_type="semantic_candidate", evidence_scope="unverified_candidate",
+                      similarity_z=round(z, 3))
+        results.append(result)
+        if len(results) >= limit:
+            break
+    return results, {"semantic_gate": {"min_cosine": SEMANTIC_MIN_COSINE,
+                                       "min_corpus_z": SEMANTIC_MIN_Z}}
+
+
+def search_books(args):
+    query, error = _required_text(args, "query")
+    if error:
+        return error
+    if not _terms(query):
+        return {"error": "缺少有效检索词"}
+    limit = core._int_arg(args, "limit", 5, 1, 10)
+    exact = _exact_results(query)
+    results = exact["passages"][:limit]
+    if results:
+        return {"query": query, "results": deepcopy(results), "method": "exact_fulltext",
+                "total_passage_hits": exact["total_passage_hits"],
+                "note": "片段是原文命中；引用或作出处判断前应读取相应章节上下文。"}
+    if exact["metadata"]:
+        return {"query": query, "results": deepcopy(exact["metadata"][:limit]),
+                "method": "catalogue", "note": "仅命中书名或作者，尚未取得支持论点的原文；请查看目录并读取相关章节。"}
+    results, diagnostics = _semantic_candidates(query, limit)
+    return {"query": query, "results": results, "method": "semantic_candidates" if results else "no_match",
+            **diagnostics,
+            "note": ("这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。"
+                     if results else "本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。")}
+
+
+def concept_trace(args):
+    concept, error = _required_text(args, "concept")
+    if error:
+        return error
+    if not _terms(concept):
+        return {"error": "缺少有效概念"}
+    exact = _exact_results(concept, True)
+    grouped = {}
+    for hit in exact["book_passages"]:
+        bid = hit["book_id"]
+        if bid in grouped:
+            grouped[bid]["matched_chapters"] += 1
+            continue
+        grouped[bid] = {"book": hit["book_title"], "book_id": bid,
+                        "author": hit["author"], "chapter": hit["chapter_title"],
+                        "chapter_idx": hit["chapter_idx"], "citation_label": hit["citation_label"],
+                        "snippet": hit["snippet"], "matched_chapters": hit["matched_chapters"],
+                        "read_args": hit["read_args"],
+                        "match_type": "exact_passage", "needs_read": True}
+    return {"concept": concept, "hits": exact["total_passage_hits"],
+            "matched_books": len(grouped), "timeline": list(grouped.values())[:10],
+            "scanned_chapters": exact["scanned_chapters"],
+            "note": ("仅统计可在原文逐字确认的词项出现；这是按书聚合的分布，不等于概念起源或历史演变。需阅读上下文核实用法，异译词需另行检索。"
+                     if grouped else "本库未发现该词项的逐字出现；这不证明该概念不存在，异译词或相关概念需要另行检索。")}
+
+
+def _nonnegative_index(args, key, default=0):
+    raw = args.get(key)
+    if raw is None:
+        return default
+    if isinstance(raw, bool) or not (isinstance(raw, int) or (isinstance(raw, str) and raw.isdecimal())):
+        return None
+    value = int(raw)
+    return value if value >= 0 else None
+
+
+def get_chapter(args):
+    """Read an honest, bounded source window including a requested passage."""
+    bid, error = _required_text(args, "book_id")
+    if error:
+        return error
+    idx = _nonnegative_index(args, "chapter_idx", None)
+    offset = _nonnegative_index(args, "offset")
+    if idx is None or offset is None:
+        return {"error": "chapter_idx 和 offset 应为非负整数；chapter_idx 必填"}
+    focus = args.get("focus") or ""
+    if not isinstance(focus, str):
+        return {"error": "focus 应为字符串"}
+    if len(focus) > 500:
+        return {"error": "focus 应为 500 字以内的检索原词或片段"}
+    book = core.book_by_id(bid) or retrieval._resolve_book_by_name(bid)
+    if not book:
+        return {"error": f"未找到书籍 {bid}，请先检索取得实际 book_id"}
+    bid = book["id"]
+    chapter = core.read_chapter(bid, idx)
+    if not chapter:
+        return {"error": f"章节不存在 {bid}/{idx}，请查看该书目录确认索引"}
+    text = chapter.get("text", "")
+    window = 2800  # Fits the engine's 4,000-character ToolMessage including metadata.
+    positions, matched = [], []
+    if focus:
+        for term in _terms(focus):
+            match = re.search(re.escape(term), text, re.IGNORECASE)
+            if match:
+                positions.append(match.start())
+                matched.append(term)
+    if positions and args.get("offset") is None:
+        # Focus takes effect on the initial read; explicit offsets paginate it.
+        best = max(positions, key=lambda p: sum(abs(other - p) < window // 2 for other in positions))
+        offset = max(0, best - 700)
+    start = min(offset, len(text))
+    end = min(start + window, len(text))
+    out = {"book_id": bid, "book_title": book.get("title", ""),
+           "chapter_idx": idx, "title": chapter.get("title", ""),
+           "citation_label": retrieval._cite_label(book.get("title"), chapter.get("title")),
+           "text": text[start:end], "evidence_scope": "chapter_excerpt",
+           "excerpt_start": start, "excerpt_end": end, "chapter_text_length": len(text),
+           "has_more": end < len(text), "next_offset": end if end < len(text) else None,
+           "focus_found": bool(positions) if focus else None,
+           "focus_terms_matched": matched,
+           "note": "text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。"}
+    if focus and not positions:
+        out["note"] += " 本章未逐字匹配 focus；当前片段不能作为该词项出现的证明。"
+    biblio = retrieval._biblio_payload(bid)
+    if biblio:
+        out["bibliographic_metadata"] = biblio
+    return out
+
+
+def get_book_detail(args):
+    """Expose actual chapter indexes, with pagination for long anthologies."""
+    book_id, error = _required_text(args, "book_id")
+    if error:
+        return error
+    offset = _nonnegative_index(args, "offset")
+    if offset is None:
+        return {"error": "offset 应为非负整数"}
+    focus = args.get("focus") or ""
+    if not isinstance(focus, str):
+        return {"error": "focus 应为字符串"}
+    book = core.book_by_id(book_id) or retrieval._resolve_book_by_name(book_id)
+    if not book:
+        return {"error": f"未找到书籍 {book_id}，请先检索取得实际 book_id"}
+    bid = book["id"]
+    meta = core.chapter_meta(bid) or {}
+    out = {"id": bid, "title": book.get("title"), "author": book.get("author"),
+           "region": book.get("region"), "file_type": book.get("file_type"),
+           "summary": (book.get("summary") or "")[:500], "rank": book.get("rank"),
+           "chapterCount": meta.get("chapterCount", 0)}
+    biblio = retrieval._biblio_payload(bid)
+    if biblio:
+        out["bibliographic_metadata"] = biblio
+    titles = meta.get("chapterTitles") or []
+    if titles and len(titles) == meta.get("chapterCount") and all(isinstance(t, str) for t in titles):
+        chapters = [{"index": i, "title": title} for i, title in enumerate(titles)]
+    else:
+        # Read actual block titles; toc sections/parts can share an index and
+        # their array position cannot safely be passed to get_chapter.
+        chapters = [{"index": idx, "title": title} for idx, title, _ in _chapters({"id": bid})]
+    if focus.strip():
+        words = _terms(focus)
+        chapters = [row for row in chapters if all(term in row["title"].casefold() for term in words)]
+    limit = core._int_arg(args, "limit", 24, 1, 40)
+    end = min(offset + limit, len(chapters))
+    out.update(chapters=chapters[offset:end], matched_chapters=len(chapters),
+               has_more=end < len(chapters), next_offset=end if end < len(chapters) else None,
+               note="chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。")
+    return out
+
+
+def philosopher_debate(args):
+    raw = args.get("speakers")
+    speakers = ["尼采", "柏拉图"]
+    if raw is not None:
+        if isinstance(raw, str):
+            speakers = re.split(r"[,，、;；\n]+", raw)
+            if len(speakers) == 1:
+                # Preserve real names such as 和辻哲郎. Connector-style input is
+                # accepted only when both sides resolve to known philosophers.
+                known = core.get_philosophers()
+                names = set(known) if isinstance(known, dict) else {
+                    row.get("name") for row in known if isinstance(row, dict)}
+                def known_name(value):
+                    return len(value) >= 2 and any(
+                        isinstance(name, str) and (name == value or name.endswith("·" + value))
+                        for name in names)
+                for match in re.finditer("[和与]", raw):
+                    left, right = raw[:match.start()].strip(), raw[match.end():].strip()
+                    if known_name(left) and known_name(right):
+                        speakers = [left, right]
+                        break
+        elif isinstance(raw, list) and all(isinstance(name, str) for name in raw):
+            speakers = raw
+        else:
+            return {"error": "speakers 应为逗号分隔的字符串或字符串数组"}
+        speakers = [name.strip() for name in speakers if name.strip()]
+        unique = list(dict.fromkeys(speakers))
+        if len(unique) != len(speakers):
+            return {"error": "speakers 包含重复人物，请提供 2 至 3 位不同的哲学家"}
+        if not 2 <= len(unique) <= 3:
+            return {"error": "speakers 必须包含 2 至 3 位不同的哲学家，不能静默截断或补入默认人物"}
+        if any(re.search(r"[,，、;；\n]", name) for name in unique):
+            return {"error": "speakers 数组的每一项只应包含一位哲学家"}
+        speakers = unique
+    return _debate_with_speakers(args, speakers)
+
+
+def _debate_with_speakers(args, speakers):
+    """Use the existing generation/persona helpers with an intact speaker list.
+
+    The legacy dispatcher reparses names by globally replacing 和/与. Keeping
+    dispatch local avoids mutating it, including under parallel agent requests.
+    """
+    topic = core._str_arg(args, "topic", strict=True)
+    if topic is None:
+        return {"error": "参数类型错误: topic 应为字符串"}
+    from deep_research import debate_action
+    mode = core._str_arg(args, "mode") or "auto"
+    action = debate_action(args)
+    user_speech = core._str_arg(args, "user_reply")
+    if mode not in {"auto", "step", "vs_user"} or action not in {"start", "continue", "summary"}:
+        return {"error": "不支持的辩论 mode 或 action"}
+    slot = memory._mem_slot()
+    session = slot.get("debate")
+    if action in {"continue", "summary"} and not session:
+        return {"error": "当前没有进行中的辩论，请先提供论题并开始辩论"}
+    if not topic and action == "start" and not (user_speech and session):
+        return {"error": "缺少论题 topic"}
+    if action == "summary":
+        text = "\n".join(session["history"])
+        prompt = ("总结这场模拟辩论（400字内）：说明各方核心主张、最有力的交锋，"
+                  "以及仍然成立的分歧。区分历史人物可考的思想和本次模拟的推演，不强行达成折中结论。"
+                  f"\n\n辩论记录:\n{text[:4000]}")
+        response = memory.llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
+        summary = (response["choices"][0]["message"].get("content") or "").strip()
+        slot["debate"] = None
+        memory._save_agent_memory()
+        return {"debate_summary": summary, "map_text": memory._debate_map_text(text),
+                "note": "模拟辩论已结束；模拟发言不能作为哲学家的原话引用。"}
+    if session and (action == "continue" or (user_speech and session.get("mode") == "vs_user")):
+        reply = user_speech if session.get("mode") == "vs_user" else None
+        output = memory._debate_round(session["speakers"], session["topic"],
+                                      "\n".join(session["history"][-4:]), session["rounds_done"] + 1,
+                                      **({"user_speech": reply} if reply else {}))
+        session["history"] += ([f"用户: {reply}"] if reply else []) + output
+        session["rounds_done"] += 1
+        memory._save_agent_memory()
+        return {"debate": output, "note": f"第{session['rounds_done']}轮结束；可继续交锋或结束辩论。"}
+    if mode in {"step", "vs_user"}:
+        output = memory._debate_round(speakers, topic, "", 1)
+        slot["debate"] = {"topic": topic, "speakers": speakers, "mode": mode,
+                          "rounds_done": 1, "history": output}
+        memory._save_agent_memory()
+        return {"debate": output, "note": "模拟辩论已开始；可提出反驳、继续下一轮或结束辩论。"}
+    output = []
+    for round_no in range(core._int_arg(args, "rounds", 2, 1, 3)):
+        output.extend(memory._debate_round(speakers, topic, "\n".join(output[-3:]), round_no + 1))
+    result = {"topic": topic, "debate": output,
+              "map_text": memory._debate_map_text("\n".join(output)),
+              "note": "以下是基于思想资料的模拟交锋，不是哲学家的真实引文。"}
+    return result
+
+
+def install_deep_tool_overrides(tool_specs):
+    """Return isolated specs for general only; caller owns agent routing."""
+    specs = dict(tool_specs)
+    from deep_reasoning_tools import analyze_argument, paper_review
+    for name, execute in (("search_books", search_books), ("concept_trace", concept_trace),
+                          ("get_chapter", get_chapter), ("get_book_detail", get_book_detail),
+                          ("philosopher_debate", philosopher_debate), ("analyze_argument", analyze_argument),
+                          ("paper_review", paper_review)):
+        if name in specs:
+            specs[name] = {**specs[name], "parameters": deepcopy(specs[name]["parameters"]),
+                           "execute": execute}
+    if "analyze_argument" in specs:
+        specs["analyze_argument"]["description"] = (
+            "检验单个论证或自己的关键暂定判断，返回前提/结论/最小反例/最强回应/推理缺口。"
+            "复杂思辨可用一次来压力测试关键推理，但其反例仍须核对；不返回最终正文。"
+            "论文评审应使用paper_review。")
+        specs["analyze_argument"]["parameters"]["properties"]["question"] = {
+            "type": "string", "description": "可选：原用户问题，用于核对论证是否偷换人物、条件或真正问题。"}
+    if "search_books" in specs:
+        specs["search_books"]["description"] = (
+            "检索本地哲学书库。优先全文逐字命中，支持作者与原词组合；"
+            "无逐字命中时只返回经过相关性筛选的语义阅读候选。结果明确区分原文片段、书目和未核验候选。"
+            "引用或作出处判断前必须用 get_chapter 阅读上下文。limit 是实际返回条数上限（1–10）。")
+    if "concept_trace" in specs:
+        specs["concept_trace"]["description"] = (
+            "查询概念词项在本地原文中可逐字确认的出现分布，按书聚合。"
+            "不把语义相似章节当作概念出现，不推断首次提出者；异译词须分别检索。")
+    for name in ("get_chapter", "get_book_detail"):
+        if name in specs:
+            specs[name]["parameters"]["properties"].update({
+                "focus": {"type": "string", "description": "原检索词或要定位的片段；读章节时优先直接使用 search_books 返回的 read_args。查目录时按标题筛选。"},
+                "offset": {"type": "integer", "description": "分页起点；使用上次结果的 next_offset。读章节时为字符位置，查目录时为目录条目位置。"},
+            })
+    if "get_chapter" in specs:
+        specs["get_chapter"]["description"] = (
+            "读取指定真实章节的有界原文片段。优先原样传 search_books 的 read_args（包含 focus），"
+            "以定位章内后部命中。返回原文字符范围、has_more 与 next_offset，可续读；不要把片段称为全文。"
+            "引用或确认出处必须实际读到相关文字与上下文。")
+    if "get_book_detail" in specs:
+        specs["get_book_detail"]["description"] = (
+            "查看书籍详情和真实章节索引。chapters.index 可直接用于 get_chapter；支持 focus 筛选目录标题，"
+            "以及 offset/limit 翻页。不要用目录数组位置猜测章节编号。")
+        specs["get_book_detail"]["parameters"]["properties"]["limit"] = {
+            "type": "integer", "description": "目录返回条数，1 至 40，默认 24。"}
+    if "philosopher_debate" in specs:
+        specs["philosopher_debate"]["parameters"]["properties"]["speakers"] = {
+            "anyOf": [{"type": "string"}, {"type": "array", "items": {"type": "string"},
+                       "minItems": 2, "maxItems": 3, "uniqueItems": True}],
+            "description": "2 至 3 位不同哲学家；可传逗号/顿号分隔的字符串或字符串数组。",
+        }
+    return specs

@@ -14,6 +14,7 @@ import {
   isRetrievalTool, retrievalGroupSummary, cleanUserMessageForRender,
 } from '../../data/conversationLogic';
 import { getPref } from '../../data/localPrefs';
+import GeneralAnswer from './GeneralAnswer';
 
 /**
  * MessageList — Conversation 消息区（spec §8/§9/§10/§18-§22）
@@ -469,7 +470,7 @@ function AgentActivity({ m, prefsTick }) {
 }
 
 /* ── 单条消息（memo: 流式 tick 只重渲变化消息） ── */
-const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, prefsTick, onDrawioEdit, onSend }) {
+const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, prefsTick, onDrawioEdit, onSend, busy }) {
   const { t, lang } = useLang();
 
   if (m.role === 'user') {
@@ -484,6 +485,11 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
       </div>
     );
   }
+
+  if (m.agent_id === 'general') return <div className="cw-assistant" data-agent="general">
+    {showIdentity && <AgentIdentity agentId={m.agent_id} agents={agents} />}
+    <GeneralAnswer message={m} onSend={onSend} onDrawioEdit={onDrawioEdit} busy={busy} />
+  </div>;
 
   return (
     <div className="cw-assistant">
@@ -521,7 +527,7 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
 
 export default function MessageList({
   messages, agents, emptyState, onSend, onDrawioEdit,
-  conversationKey, prefsTick,
+  conversationKey, prefsTick, streaming,
 }) {
   const { t } = useLang();
   const bottomRef = useRef(null);
@@ -579,6 +585,7 @@ export default function MessageList({
       {(messages || []).map((m, i) => (
         <MessageBubble key={m.message_id || i} m={m} agents={agents}
           showIdentity={identityFlags[i]} prefsTick={prefsTick}
+          busy={streaming}
           onDrawioEdit={onDrawioEdit} onSend={onSend} />
       ))}
       <div ref={bottomRef} />
@@ -607,5 +614,4 @@ export const QUESTION_BANK = {
          'How would you judge this age?', 'What does eternal recurrence mean?'],
   },
 };
-
 
