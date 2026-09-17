@@ -57,8 +57,15 @@ function ResearchActivity({ message }) {
           return content ? <div className="cw-think-line" key={event.id || `note-${i}`}>{content}</div> : null;
         }
         const name = event.tc?.name || event.name;
+        const args = event.tc?.args || event.args || {};
+        const webLabel = name === 'websearch' ? (args.url ? (zh ? '读取网页' : 'Read webpage') : (zh ? '联网查阅' : 'Search web')) : null;
         const scholarlyLabel = { search_scholarship: zh ? '检索学术文献' : 'Search scholarship', get_scholarly_source: zh ? '读取学术资料' : 'Read scholarly source' }[name];
-        const label = scholarlyLabel || (toolLabel(name) !== name ? toolLabel(name) : (zh ? '查阅资料' : 'Consult source'));
+        const label = webLabel || scholarlyLabel || (toolLabel(name) !== name ? toolLabel(name) : (zh ? '查阅资料' : 'Consult source'));
+        let query = toolShortArgs(args);
+        if (args.url) {
+          try { query = new URL(args.url).hostname + (args.focus ? ` · ${args.focus}` : ''); }
+          catch { query = args.url; }
+        }
         const status = event.t === 'tool_start' ? 'running' : event.status || (event.t === 'tool_cancel' ? 'cancelled' : 'success');
         const [statusZh, statusEn] = STATUS[status] || STATUS.success;
         const summary = toolShortSummary(event.tc) || toolShortArgs(event.tc?.args || event.args) || event.reason;
@@ -66,7 +73,7 @@ function ResearchActivity({ message }) {
           <summary>
             {status === 'running' ? <Loader2 size={12} className="cw-spinner" /> : ['success', 'reused'].includes(status) ? <Check size={12} /> : <XCircle size={12} />}
             <span>{label}</span>
-            <span className="general-tool-query">{plainText(toolShortArgs(event.tc?.args || event.args))}</span>
+            <span className="general-tool-query">{plainText(query)}</span>
             <span className="general-tool-status">{zh ? statusZh : statusEn}</span>
             <ChevronDown size={12} />
           </summary>

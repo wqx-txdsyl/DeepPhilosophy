@@ -54,6 +54,9 @@ def _resolve_evidence(evidence_ref, raw_tool_log):
             if s.get("evidence_id") == ref:
                 return "quote", s
         return "quote", None
+    if ref.startswith("qb_web_"):
+        from deep_web_quotes import repair_span
+        return "quote", repair_span(ref, raw_tool_log)
     return "unknown", None
 
 
@@ -116,6 +119,8 @@ def _claim_content_span(candidate, q):
             return None
         inner = m.group(1)
         c_start = cs + raw.index(inner) if inner else cs
+        if q.get("citation_urls") and q.get("text") and inner.startswith(q["text"]):
+            inner = q["text"]  # A URL attribution stays outside the editable quote content.
         # 引号内: 找「或“ 对
         dm = re.match(r"^[「“](.*)[」”]$", inner)
         if dm:
@@ -138,7 +143,7 @@ def _claim_content_span(candidate, q):
         win = candidate[max(0, cs - 60):cs]
         m = QB.LEADIN_RE.search(win)
         if not m:
-            return None
+            return (cs, ce, idx, idx + len(text)) if q.get("citation_urls") else None
         # RP1A: claim_start 严格 = LEADIN_RE match 绝对起点——禁止任何额外
         # backward expansion（\w 后向扫描会吞掉 "对此/中" 等普通语境词;
         # 主体/语境留给 Main Agent 的 replacement 做语法衔接）
@@ -146,7 +151,7 @@ def _claim_content_span(candidate, q):
     return (cs, ce, idx, idx + len(text))
 
 
-def _quote_anchor(candidate, locator, exclude_spans=None):
+def _quote_anchor(candidate, locator, exclude_spans=None, strict_quote_spans=False):
     """quote issue: 复用 extract_quotes 的 char 锚——按 locator 文本匹配对应引文。
 
     exclude_spans: 已被其他 bundle 占用的 (start,end)——多引文场景防止同一引文
@@ -156,7 +161,8 @@ def _quote_anchor(candidate, locator, exclude_spans=None):
     if not loc:
         return None
     best = None
-    for q in QB.extract_quotes(candidate):
+    parsed_quotes = QB.extract_quotes(candidate, strict_quote_spans=strict_quote_spans)
+    for q in parsed_quotes:
         qs, qe = q.get("char_start"), q.get("char_end")
         if qs is None:
             idx = candidate.find(q["text"][:60])
@@ -174,7 +180,7 @@ def _quote_anchor(candidate, locator, exclude_spans=None):
     if best and best[0] >= 0.15:
         claim = (best[1], best[2])
         # H1 §2: 拆 claim/content——COPY 只操作 content, wrapper 保留
-        q_obj = next((q for q in QB.extract_quotes(candidate)
+        q_obj = next((q for q in parsed_quotes
                       if q.get("char_start") == claim[0]), None)
         cc = _claim_content_span(candidate, q_obj) if q_obj else None
         if cc:
@@ -214,6 +220,8 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
     evidence_ref, source{book,chapter,exact_context}}
     """
     issues = validation_result.as_dict().get("issues", [])
+    web_quote_spans = any(entry.get("citation_urls") for entry in
+                          (getattr(validation_result, "quote_audit", None) or {}).get("entries", []))
     bundles = []
     total_ctx = 0
     _used_spans = set()
@@ -227,7 +235,7 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
         elif code in ("UNSUPPORTED_EXACT_QUOTE", "NEAR_QUOTE_NOT_MARKED",
                       "STITCHED_QUOTE"):
             anchor = _quote_anchor(candidate, locator,
-                                   exclude_spans=_used_spans)
+                                   exclude_spans=_used_spans, strict_quote_spans=web_quote_spans)
         if anchor:
             _used_spans.add((anchor["claim_start"], anchor["claim_end"])
                             if "claim_start" in anchor
@@ -286,6 +294,9 @@ def build_repair_issue_bundles(candidate, validation_result, raw_tool_log):
                                         "source_char_length": len(payload.get("units") and
                                                                   "".join(payload["units"]) or "")}
                     bundle["evidence_resolution"] = "RESOLVED"
+                    if payload.get("source_type") == "web_read":
+                        bundle["source"].update({"source_type": "web_read", "title": payload.get("title"),
+                                                  "url": (payload.get("urls") or [None])[0]})
                     total_ctx += len(ctx)
             elif payload is not None and kind == "citation":
                 snip = str(payload.get("snippet") or "")[:MAX_CONTEXT_PER_EVIDENCE]
@@ -465,7 +476,10 @@ def build_slice_catalog(bundles, locator, per_issue_locators=None):
         ctx = src.get("exact_context") or ""
         if not ctx:
             continue
-        atoms = [a for a in re.split(r"(?<=[。！？；\n])|(?<=[，”」])", ctx) if a.strip()]
+        split_pattern = r"(?<=[。！？；\n])|(?<=[，”」])"
+        if src.get("source_type") == "web_read":
+            split_pattern += r"|(?<=[.!?])(?=\s)"
+        atoms = [a for a in re.split(split_pattern, ctx) if a.strip()]
         if not atoms:
             atoms = [ctx]
         cands = []

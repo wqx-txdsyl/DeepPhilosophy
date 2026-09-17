@@ -53,6 +53,28 @@ def test_web_sources_need_a_returned_url_actually_used_in_the_answer():
     assert enrich_citations([], {}, log, "https://example.org/source-fabricated") == []
 
 
+def test_actual_web_read_overrides_discovery_but_unused_reads_remain_hidden():
+    search = {"name": "websearch", "result_full": {"results": [
+        {"title": "Search title", "url": "https://example.org/start", "snippet": "Search summary."}]}}
+    read = {"name": "websearch", "result_full": {"mode": "read", "url": "https://example.org/final",
+        "requested_url": "https://example.org/start", "title": "Actual page title", "text": "Actually read paragraph.",
+        "access_level": "WEB_PASSAGE_READ", "content_hash": "abc", "document_truncated": False}}
+    assert enrich_citations([], {}, [search, read], "No reference to the source.") == []
+    for citation in ("[source](https://example.org/start)", "[source](https://example.org/final#section)",
+                     "（来源：Reference, https://example.org/final）"):
+        result = enrich_citations([], {}, [search, read], citation)
+        assert len(result) == 1 and result[0]["access_level"] == "WEB_PASSAGE_READ"
+        assert result[0]["url"] == "https://example.org/final"
+        assert result[0]["title"] == "Actual page title" and result[0]["excerpt"] == "Actually read paragraph."
+
+
+def test_failed_web_read_never_promotes_a_search_result_to_read():
+    log = [{"name": "websearch", "result_full": {"results": [{"title": "Source", "url": "https://example.org/"}]}},
+           {"name": "websearch", "result_full": {"mode": "read", "url": "https://example.org/", "error": "WEB_HTTP_ERROR"}}]
+    result = enrich_citations([], {}, log, "[source](https://example.org/)")
+    assert result[0]["access_level"] == "WEB_DISCOVERY_ONLY"
+
+
 def test_heartbeat_is_not_a_fabricated_thinking_event():
     async def run():
         async def events():

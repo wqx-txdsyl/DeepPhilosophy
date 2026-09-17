@@ -1,6 +1,6 @@
 """Bounded locate-to-read completion for the general agent only."""
 import re
-from research_discipline import ResearchDiscipline
+from research_discipline import ResearchDiscipline, DISCIPLINE_RETRIEVAL_TOOLS, channel_of, _blocked
 from agent_runtime import DuplicateGuard, call_fingerprint
 
 
@@ -51,15 +51,42 @@ class DeepDuplicateGuard(DuplicateGuard):
 
 
 class DeepResearchDiscipline(ResearchDiscipline):
-    """A located source may still be read after the search allowance runs out.
+    """General tool choices get three initial slots without invented declarations.
 
-    At most two identified reads per request may use this reserve. It cannot
-    authorize searches, fabricate source IDs, override closed gaps or hard limits.
+    Any declaration attempt restores the explicit protocol. At most two
+    identified reads may use the existing reserve; it cannot authorize searches,
+    fabricate source IDs, override closed gaps or hard limits.
     """
     def __init__(self, budgets=None):
         super().__init__(budgets)
         self.located_reads = set()
         self.read_reserve = []
+        self.tool_choice_admissions = []
+
+    def _tool_choice_open(self):
+        return self.active_class is None and not self.declarations and not self.gap_filled
+
+    def _soft_limit(self):
+        return 3 if self._tool_choice_open() else super()._soft_limit()
+
+    def gate(self, tool_name):
+        if tool_name not in DISCIPLINE_RETRIEVAL_TOOLS:
+            return None
+        if self.gap_filled:
+            return _blocked("EVIDENCE_GAP_FILLED_STOP", "证据缺口已声明闭合，后续检索不再执行。")
+        if not self._tool_choice_open():
+            return super().gate(tool_name)
+        if self.retrieval_executed + self.pending_slots >= self._soft_limit():
+            return _blocked("SOFT_BUDGET_REACHED", "尚未声明时的3次起始检索/读取额度已用完；如需继续，请正式登记研究需求及剩余缺口。",
+                            {"soft_limit": self._soft_limit(), "executed": self.retrieval_executed})
+        return None
+
+    def record_tool_choice_admission(self, tool_name, args, call_id):
+        """Record only research-gate admission, before hard admission or execution."""
+        if self._tool_choice_open() and tool_name in DISCIPLINE_RETRIEVAL_TOOLS:
+            self.tool_choice_admissions.append({"tool": tool_name, "channel": channel_of(tool_name),
+                "call_id": call_id, "args_fingerprint": call_fingerprint(tool_name, args)[0],
+                "basis": "main_tool_call", "stage": "research_gate_admitted"})
 
     @staticmethod
     def read_key(tool, args):
@@ -67,6 +94,8 @@ class DeepResearchDiscipline(ResearchDiscipline):
             return (tool, str(args["book_id"]), str(args["chapter_idx"]))
         if tool == "get_scholarly_source" and args.get("source_record_id"):
             return (tool, str(args["source_record_id"]))
+        if tool == "websearch" and isinstance(args.get("url"), str) and args["url"].strip():
+            return (tool, args["url"].strip())
         return None
 
     def record_locations(self, tool, result):
@@ -81,6 +110,8 @@ class DeepResearchDiscipline(ResearchDiscipline):
                      for row in rows if isinstance(row, dict)]
         elif tool == "concept_trace":
             items = result.get("timeline") or []
+        elif tool == "websearch" and result.get("mode") == "read":
+            items = [{"url": result.get(key)} for key in ("url", "requested_url")]
         else:
             items = result.get("results") or []
         for item in items[:1000]:
@@ -90,6 +121,8 @@ class DeepResearchDiscipline(ResearchDiscipline):
                 key = self.read_key("get_chapter", item)
             elif tool == "search_scholarship":
                 key = self.read_key("get_scholarly_source", item)
+            elif tool == "websearch":
+                key = self.read_key("websearch", item)
             else:
                 key = None
             if key:
@@ -110,4 +143,5 @@ class DeepResearchDiscipline(ResearchDiscipline):
 
     def snapshot(self):
         return {**super().snapshot(), "read_reserve_used": len(self.read_reserve),
-                "read_reserve_limit": 2}
+                "read_reserve_limit": 2, "tool_choice_limit": 3,
+                "tool_choice_admissions": list(self.tool_choice_admissions)}

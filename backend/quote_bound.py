@@ -149,6 +149,8 @@ def extract_quotes(text, *, strict_quote_spans=False):
     out = []
     seq = 0
     _text = text or ""
+    if strict_quote_spans:
+        import deep_web_quotes as web_quotes
     lines = _text.split("\n")
     # 行起始偏移表（O7-E RCA-1 §2: 引文 char_start/char_end——只加 metadata,
     # EXACT/NEAR/MEMORY_ONLY 判定语义与 NEAR_THRESHOLD 零改动）
@@ -166,8 +168,14 @@ def extract_quotes(text, *, strict_quote_spans=False):
                 i += 1
             body = "".join(buf).strip()
             citation_labels = []
+            citation_urls = []
             if strict_quote_spans:
+                body, web_labels, citation_urls = web_quotes.split_suffix(body)
                 body, citation_labels = _split_quote_citation_suffix(body)
+                citation_labels.extend(web_labels)
+                following = _text[_line_off[i]:] if i < len(lines) else ""
+                citation_urls.extend(web_quotes.inline_urls(following))
+                citation_labels.extend(web_quotes.inline_labels(following))
             if body:
                 seq += 1
                 # end = 末块行结尾（i 是块后首行; 块行 = i0..i-1）
@@ -178,6 +186,8 @@ def extract_quotes(text, *, strict_quote_spans=False):
                             "char_end": _line_off[_last] + len(lines[_last])})
                 if citation_labels:
                     out[-1]["citation_labels"] = citation_labels
+                if citation_urls:
+                    out[-1]["citation_urls"] = citation_urls
             continue
         i += 1
     src = text or ""
@@ -191,17 +201,21 @@ def extract_quotes(text, *, strict_quote_spans=False):
             continue
         head = src[:m.start()]
         leadin = bool(LEADIN_RE.search(head[-40:]))
+        urls = web_quotes.inline_urls(src[m.end():]) if strict_quote_spans else []
         if strict_quote_spans and leadin and _illustrative_speech(head, src[m.end():]):
             leadin = False
+        leadin = leadin or bool(urls)
         seq += 1
         out.append({"quote_claim_id": f"quote_{seq}",
                     "kind": "leadin" if leadin else "quoted",
                     "text": body, "line_count": 1,
                     "char_start": m.start(), "char_end": m.end()})
         if strict_quote_spans and leadin:
-            labels = _inline_quote_citation_labels(src[m.end():])
+            labels = web_quotes.inline_labels(src[m.end():])
             if labels:
                 out[-1]["citation_labels"] = labels
+            if urls:
+                out[-1]["citation_urls"] = urls
         taken.append((m.start(), m.end()))
     # 直引号长文本: 仅引导词命中才提取（无引导词的成对直引号多为 scare quotes,
     # 逐对直引号之间的正文曾被误捕获为假引文——真实回归 R1 的 3 条 MEMORY_ONLY 噪声）
@@ -212,17 +226,20 @@ def extract_quotes(text, *, strict_quote_spans=False):
         if len(norm_q(body)) < QUOTE_MIN_NORM:
             continue
         head = src[:m.start()]
-        if not LEADIN_RE.search(head[-40:]):
+        urls = web_quotes.inline_urls(src[m.end():]) if strict_quote_spans else []
+        if not LEADIN_RE.search(head[-40:]) and not urls:
             continue
         seq += 1
-        illustrative = strict_quote_spans and _illustrative_speech(head, src[m.end():])
+        illustrative = strict_quote_spans and not urls and _illustrative_speech(head, src[m.end():])
         out.append({"quote_claim_id": f"quote_{seq}", "kind": "quoted" if illustrative else "leadin",
                     "text": body, "line_count": 1,
                     "char_start": m.start(), "char_end": m.end()})
         if strict_quote_spans:
-            labels = _inline_quote_citation_labels(src[m.end():])
+            labels = web_quotes.inline_labels(src[m.end():])
             if labels:
                 out[-1]["citation_labels"] = labels
+            if urls:
+                out[-1]["citation_urls"] = urls
     return out
 
 
@@ -353,7 +370,10 @@ def verify_quote(quote_text, spans):
 def audit_quotes(answer, raw_tool_log, *, strict_quote_spans=False):
     """最终可见正文 → 引文核验审计（逐条 + 汇总）"""
     spans = evidence_spans(raw_tool_log)
+    web_spans = []
     if strict_quote_spans:
+        from deep_web_quotes import read_spans
+        web_spans = read_spans(raw_tool_log)
         # Prefer an actually read passage over an equal search excerpt. This
         # preserves context in repair feedback instead of selecting the first
         # lexical hit merely because the search happened earlier.
@@ -361,7 +381,8 @@ def audit_quotes(answer, raw_tool_log, *, strict_quote_spans=False):
     entries = []
     for q in extract_quotes(answer, strict_quote_spans=strict_quote_spans):
         labels = q.get("citation_labels") or []
-        if labels:
+        urls = q.get("citation_urls") or []
+        if labels or urls:
             # Every attached attribution must support these exact words. A true
             # quote from another retrieved book cannot validate a false label.
             checks = [verify_quote(q["text"], [
@@ -369,6 +390,7 @@ def audit_quotes(answer, raw_tool_log, *, strict_quote_spans=False):
                 if EC._book_match(sp.get("book"), label["book"])
                 and EC._chapter_match(sp.get("chapter") or "", label["chapter"])
             ]) for label in labels]
+            checks.extend(verify_quote(q["text"], [sp for sp in web_spans if url in sp["urls"]]) for url in urls)
             v = min(checks, key=lambda item: {
                 "MEMORY_ONLY": 0, "VERIFIED_NEAR": 1,
                 "SHORT": 2, "VERIFIED_EXACT": 3,
@@ -388,6 +410,7 @@ def audit_quotes(answer, raw_tool_log, *, strict_quote_spans=False):
             "unverified_blockquote": bool(q["kind"] == "blockquote"
                                           and v["state"] in ("MEMORY_ONLY",)
                                           and not disclosed),
+            **({"citation_urls": urls} if urls else {}),
         })
     summary = {
         "quotes": len(entries),

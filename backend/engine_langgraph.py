@@ -170,9 +170,9 @@ SYSTEM_PROMPT_LG = """你是深哲（PhiAgent），与用户一起把哲学问�
 本可独立推理回答的问题，直接用自构例子检验观点，不扩成原典或思想史研究。
 PRIMARY 用于必须核实原文、章节、出处或具体文本解释；SCHOLARLY 用于真实学术研究和解释史；
 WEB 用于需要更新或核实的外部事实；MIXED 用于多个来源通道。
-检索前调用 declare_research_need，给出 research_need、evidence_gap、source_dependent=true。
+需要正式限定通道、登记缺口或延展预算时，调用 declare_research_need，给出 research_need、evidence_gap、source_dependent=true；尚未做过任何声明时，可按需要直接检索或读取，起始窗口跨通道累计3次。
 public_note 填一句给读者看的研究说明，说明要核实什么以及为何影响回答；不要写内部字段名。
-声明可以和独立检索在同一批调用中发送，执行时先处理声明。NONE 直接回答无需声明。
+声明可以和独立检索同批发送，执行时先处理声明；一旦已尝试声明，就遵循声明协议，不能绕过显式 NONE 或已闭合缺口。无需检索时直接回答。
 soft 检索预算：NONE=0、PRIMARY=3、SCHOLARLY=4、WEB=3、MIXED=6。
 优先把预算留给阅读原文：定位命中后读取，不反复搜索同一问题；独立的定位或阅读任务可以并行，
 依赖前一个结果的动作必须等到真实结果回来，不能编造 book_id、chapter_idx、source_record_id。
@@ -310,7 +310,9 @@ def _declare_tool():
         schema = create_model("declare_research_need_args", **fields)
         _declare_tool_cache = StructuredTool.from_function(
             func=RD.declare_tool_stub, name=RD.DECLARE_TOOL_NAME,
-            description=RD.DECLARE_TOOL_DESCRIPTION, args_schema=schema)
+            description=RD.DECLARE_TOOL_DESCRIPTION.replace(
+                "研究需求登记（每次检索前必用）", "正式研究需求登记（限定通道、登记缺口或延展预算时使用）"),
+            args_schema=schema)
     return _declare_tool_cache
 
 # 哲学家智能体的人格保持提醒（每轮注入——多轮对话后 reasoning 易回归任务规划腔）
@@ -456,6 +458,9 @@ def resolve_repair_evidence_ref(ref, raw_tool_log):
             if s.get("evidence_id") == ref:
                 return "quote", s
         return "quote", None
+    if ref.startswith("qb_web_"):
+        from deep_web_quotes import repair_span
+        return "quote", repair_span(ref, raw_tool_log)
     return "unknown", None
 
 
@@ -497,6 +502,9 @@ def _build_repair_evidence_packet(validation, raw_tool_log, max_evidence=3,
                           "SOURCE_EVIDENCE_ID": ref,
                           "SHINGLE_OVERLAP": overlap,
                           "SOURCE_EXACT_CONTEXT": ctx})
+            if payload.get("source_type") == "web_read":
+                items[-1].update({"SOURCE_URL": (payload.get("urls") or [None])[0],
+                                  "SOURCE_TITLE": payload.get("title"), "SOURCE_TYPE": "web_read"})
         else:      # citation ev_N
             snip = str(payload.get("snippet") or "")[:max_context_chars]
             if not snip:
@@ -1190,6 +1198,8 @@ async def tools_node(state):
                                        "_dg": getattr(trace, "current_group", None)})
                 continue
             discipline.reserve()
+            if agent == "general" and hasattr(discipline, "record_tool_choice_admission"):
+                discipline.record_tool_choice_admission(name, args_i, call.get("id"))
             reserved_exact.add(exact_fp)
             if bfp:
                 reserved_bags.add(bfp)
@@ -2795,7 +2805,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 _fb += (f"\nThe first {len(_published_prefix)} characters of this candidate have already "
                         "been validated and delivered. Preserve that prefix byte-for-byte; "
                         "repair only the undelivered suffix. Do not repeat or rewrite the delivered text.")
-            _repair_msgs = list(messages) + [AIMessage(content=candidate),
+            _repair_base = (list(_message_checkpoint) or list(messages)) if agent == "general" else list(messages)
+            _repair_msgs = _repair_base + [AIMessage(content=candidate),
                                              HumanMessage(content=_fb)]
             try:
                 async for _ev in _stream_graph(

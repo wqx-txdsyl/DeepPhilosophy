@@ -135,7 +135,9 @@ async def run(args):
         "context_builder_sha256": digest(inspect.getsource(engine._build_context_messages)),
         "source_sha256": {name: hashlib.sha256((Path(BASE) / name).read_bytes()).hexdigest()
                            for name in ("engine_langgraph.py", "deep_reasoning_tools.py", "deep_agent_tools.py",
-                                        "deep_tool_context.py", "deep_streaming.py", "deep_result_contracts.py")
+                                        "deep_tool_context.py", "deep_streaming.py", "deep_result_contracts.py",
+                                        "deep_research.py", "deep_web.py", "deep_web_quotes.py",
+                                        "deep_sources.py", "quote_bound.py", "repair_context.py")
                            if (Path(BASE) / name).is_file()},
         "privacy": "Only public output and scalar request metadata; no private reasoning text.",
         "scope": "General engine entry; not browser, route authentication, or a semantic correctness judge.",

@@ -24,6 +24,7 @@ export function generalAccessLabel(level, lang = 'zh') {
     SEARCH_EXCERPT: ['仅检索片段', 'Search excerpts only'],
     METADATA_ONLY: ['仅书目信息', 'Bibliographic metadata only'],
     WEB_DISCOVERY_ONLY: ['仅定位网页，未读取正文', 'Page located; content not read'],
+    WEB_PASSAGE_READ: ['已读取网页正文片段', 'Webpage passages read'],
     ABSTRACT_AVAILABLE: ['摘要片段', 'Abstract excerpts'],
     ABSTRACT_READ: ['摘要片段', 'Abstract excerpts'],
     FULL_TEXT_AVAILABLE: ['正文可获取，未记录读取', 'Full text available; reading not recorded'],

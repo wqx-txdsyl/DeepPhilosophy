@@ -38,5 +38,8 @@ try {
   assert.ok(!scholarship.includes('已核验：')); assert.ok(!scholarship.includes('已读全文'));
   assert.ok(source({ source_type: 'scholarly', title: '论文', excerpt: '正文节选', access_level: 'FULL_TEXT_READ' }).includes('已读取正文片段'));
   assert.ok(source({ source_type: 'web', title: '网页', url: 'https://example.org', access_level: 'WEB_DISCOVERY_ONLY' }).includes('仅定位网页，未读取正文'));
+  const webRead = source({ source_type: 'web', title: '网页', url: 'https://example.org', excerpt: '实际读到的正文', access_level: 'WEB_PASSAGE_READ' });
+  assert.ok(webRead.includes('已读取网页正文片段') && webRead.includes('实际读到的正文'));
+  assert.ok(!webRead.includes('已读全文'));
   console.log('8 general markdown/source delivery checks passed');
 } finally { await server.close(); }

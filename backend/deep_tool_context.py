@@ -10,7 +10,8 @@ MAX_ARTIFACT_CONTEXT_CHARS = 24000
 def preserves_artifact(name, agent):
     capability = TOOL_TAXONOMY.get(name, {})
     return agent == "general" and bool(
-        capability.get("USES_INTERNAL_LLM") or capability.get("USER_VISIBLE_ARTIFACT"))
+        capability.get("USES_INTERNAL_LLM") or capability.get("USER_VISIBLE_ARTIFACT")
+        or name == "websearch")  # A read's URL/range must not be detached from its text.
 
 
 def tool_context(name, result, agent, fallback_content=None):

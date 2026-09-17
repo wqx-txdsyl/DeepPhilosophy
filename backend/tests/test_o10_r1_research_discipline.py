@@ -520,8 +520,8 @@ class TestBoundariesAndTelemetry:
         assert len(_tool_events(evs)) == 1
         assert _done(evs)["research_discipline"] is None      # 哲学家 agent 无纪律状态机
 
-    def test_t13_undeclared_retrieval_blocked_then_recovers(self):
-        """未声明检索被拒（RESEARCH_NEED_DECLARATION_REQUIRED）; 声明后同批检索恢复"""
+    def test_t13_general_tool_choice_admission_then_explicit_declaration(self):
+        """general 首次按实际工具选择准入，不伪造声明；后续正式声明仍生效。"""
         script = [
             _msg("先检索。", [{"name": "search_books", "args": {"query": "舍生取义"}, "id": "c0"}]),
             _msg("需要登记研究需求。",
@@ -530,8 +530,17 @@ class TestBoundariesAndTelemetry:
         ]
         evs = _run_stream("舍生取义出处", script)
         codes = _blocked_codes(evs)
-        assert codes[0] == "RESEARCH_NEED_DECLARATION_REQUIRED"
-        assert len(_executed_tool_events(evs)) == 1           # 恢复后执行一次
+        assert codes == []
+        assert len(_executed_tool_events(evs)) == 2
+        rd = _done(evs)["research_discipline"]
+        assert len(rd["declarations"]) == 1
+        assert [entry["call_id"] for entry in rd["tool_choice_admissions"]] == ["c0"]
+        assert rd["retrieval_executed"] == 2
+
+    def test_t13_base_discipline_still_requires_a_declaration(self):
+        d = RD.ResearchDiscipline()
+        assert d.gate_query("search_books", {"query": "x"})["error"] == "RESEARCH_NEED_DECLARATION_REQUIRED"
+        assert d.declarations == [] and d.active_class is None and d.evidence_gap == ""
 
     def test_t13b_upgrade_contract_requires_source_dependent(self):
         """非 NONE 升级合同: 缺 source_dependent/具体缺口 → 登记不生效; 补正后生效"""

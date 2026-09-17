@@ -1,7 +1,7 @@
 """General-agent source cards projected from observed retrieval and answer use."""
 import hashlib
 import re
-from urllib.parse import quote
+from urllib.parse import quote, urldefrag
 import evidence_contract as EC
 
 
@@ -35,7 +35,33 @@ def enrich_citations(citations, evidence, tool_log, answer):
                     "access_level": "PASSAGE_READ" if read else "SEARCH_EXCERPT"})
     seen = set()
     normalized = answer.casefold()
-    answer_urls = {url.rstrip(".,;，。；") for url in re.findall(r"https?://[^\s)\]<>]+", answer)}
+    answer_url_order = list(dict.fromkeys(urldefrag(url.rstrip(".,;，。；\"'"))[0]
+                                         for url in re.findall(r"https?://[^\s()\[\]<>（）【】\"']+", answer)))
+    answer_urls = set(answer_url_order)
+    # A successful URL read is stronger evidence than a search snippet. Keep
+    # source identity tied to the real final URL, including redirected aliases.
+    web_reads = {}
+    for call in tool_log:
+        result = call.get("result_full") or {}
+        if (call.get("name") == "websearch" and isinstance(result, dict) and not result.get("error")
+                and result.get("mode") == "read" and isinstance(result.get("text"), str) and result["text"].strip()):
+            for url in (result.get("url"), result.get("requested_url")):
+                if isinstance(url, str) and url.startswith(("https://", "http://")):
+                    web_reads.setdefault(urldefrag(url)[0], result)
+
+    def append_web_read(read):
+        url = read.get("url") or ""
+        if not url.startswith(("https://", "http://")) or url in seen:
+            return
+        out.append({"evidence_id": "web_" + hashlib.sha256(url.encode()).hexdigest()[:12],
+                    "source_type": "web", "used": True, "title": read.get("title") or url,
+                    "url": url, "excerpt": read["text"][:600], "access_level": "WEB_PASSAGE_READ",
+                    "content_hash": read.get("content_hash"), "document_truncated": read.get("document_truncated", False)})
+        seen.add(url)
+
+    for url in answer_url_order:
+        if url in web_reads:
+            append_web_read(web_reads[url])
     for call in tool_log:
         result = call.get("result_full") or {}
         if call.get("name") != "websearch" or not isinstance(result, dict) or result.get("error"):
@@ -43,6 +69,9 @@ def enrich_citations(citations, evidence, tool_log, answer):
         for record in result.get("results") or []:
             url = record.get("url") or ""
             if not url.startswith(("https://", "http://")) or url not in answer_urls or url in seen:
+                continue
+            if urldefrag(url)[0] in web_reads:
+                append_web_read(web_reads[urldefrag(url)[0]])
                 continue
             snippet = record.get("snippet") or ""
             out.append({"evidence_id": "web_" + hashlib.sha256(url.encode()).hexdigest()[:12],
