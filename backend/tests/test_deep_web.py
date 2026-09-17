@@ -21,6 +21,7 @@ def test_international_source_path_is_encoded_without_changing_existing_escapes(
     canonical, host, port = web.public_url("https://example.org/人格同一性?q=意识&lang=zh%2Dcn#章一")
     assert host == "example.org" and port == 443
     assert canonical == "https://example.org/%E4%BA%BA%E6%A0%BC%E5%90%8C%E4%B8%80%E6%80%A7?q=%E6%84%8F%E8%AF%86&lang=zh%2Dcn"
+    assert web.public_url("https://example.org/wiki/Identity_(philosophy)")[0] == "https://example.org/wiki/Identity_%28philosophy%29"
 
 
 @pytest.mark.parametrize("address", ["127.0.0.1", "10.0.0.1", "169.254.169.254", "0.0.0.0", "::1", "::ffff:127.0.0.1", "224.0.0.1", "198.18.1.1"])

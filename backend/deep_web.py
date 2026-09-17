@@ -92,8 +92,8 @@ def public_url(value):
         authority = f"[{host}]" if ":" in host else host
         if url.port is not None:
             authority += f":{port}"
-        path = urllib.parse.quote(url.path or "/", safe="/%:@!$&'()*+,;=-._~")
-        query = urllib.parse.quote(url.query, safe="%/?@!$&'()*+,;=:-._~[]")
+        path = urllib.parse.quote(url.path or "/", safe="/%:@!$&'*+,;=-._~")
+        query = urllib.parse.quote(url.query, safe="%/?@!$&'*+,;=:-._~[]")
         canonical = urllib.parse.urlunsplit((url.scheme, authority, path, query, ""))
         return canonical, host, port
     except (ValueError, UnicodeError):

@@ -16,7 +16,7 @@
 
 ## 验证
 
-- 完整默认后端回归：**1357 passed、15 skipped，117.63 秒**。跳过项仍为显式历史源码快照；未跳过当前行为或尼采隔离检查。日志：`backend/tools/_tmp/deep_web_final_regression_20260918.log`。
+- 提交后的完整默认后端回归：**1360 passed、15 skipped，116.41 秒**。跳过项仍为显式历史源码快照；未跳过当前行为或尼采隔离检查。日志：`backend/tools/_tmp/deep_web_committed_regression_20260918.log`。最后补齐 URL 括号转义后，网页／引文／来源的 71 项针对性检查再次通过。
 - 前端 `npm test` 与构建通过；仍有原有 Mermaid 分块大小提示。新增标签、来源片段及引文显示经过实际 JSX 检查。
 - 私网地址、凭据 URL、混合 DNS、DNS 超时、DoH 预算传递、TLS hostname、全部重定向状态、压缩大小、正文窗口与编码、假 URL 归因、保留来源的 COPY_SLICE 修复均有离线回归。独立审查发现的 DNS/DoH 超时、重定向无界读取和标点断开来源绑定问题已逐项修复。
 - 真实读取 SEP 的 [Personal Identity](https://plato.stanford.edu/entries/identity-personal/) 成功，命中指定词，返回 2400 字符正文片段、实际读取范围及内容哈希；一次记录耗时 0.937 秒。记录：`backend/tools/_tmp/deep_web_live_20260918.json`。这只证明该次网络与提取链路成功，不证明所有网站均可读取。
