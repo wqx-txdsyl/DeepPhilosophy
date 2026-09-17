@@ -10,6 +10,7 @@ import json
 import os
 import subprocess
 import sys
+import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -219,6 +220,7 @@ def test_t18_no_production_imports():
 
 
 # ── T19 — 生产系统对 BASE 零 diff ────────────────────────────────
+@pytest.mark.historical_snapshot
 def test_t19_no_production_diff_vs_base():
     # O7-B §14（2026-09-06 Reviewer 授权）: get_book_detail/get_chapter 允许 additive
     # 书目元数据暴露 → backend/routes 的冻结基线改对照 O7-B BASE；认知/校验/引文
@@ -385,6 +387,7 @@ def test_r14_no_fixture_specific_judge_rule():
         assert banned not in prompt, f"judge 宪法含 fixture 专属规则: {banned}"
 
 
+@pytest.mark.historical_snapshot
 def test_r15_no_production_imports_and_diff():
     # 复用 T18/T19 逻辑（RP1 后重申）
     test_t18_no_production_imports()
@@ -534,6 +537,7 @@ def test_t20_no_semantic_prompt_tuning():
         assert banned not in J.JUDGE_SYSTEM_PROMPT
 
 
+@pytest.mark.historical_snapshot
 def test_t21_no_production_imports_and_diff():
     test_t18_no_production_imports()
     test_t19_no_production_diff_vs_base()

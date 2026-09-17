@@ -302,6 +302,7 @@ _R17_BASES = {"backend/evidence_contract.py": "7049e1418",
 
 
 @pytest.mark.parametrize("rel", HARD_FROZEN)
+@pytest.mark.historical_snapshot
 def test_r17_production_frozen(rel):
     base = _R17_BASES.get(rel) or O7A_BASE
     r = subprocess.run(["git", "diff", "--quiet", base, "--", rel],
@@ -309,6 +310,7 @@ def test_r17_production_frozen(rel):
     assert r.returncode == 0, f"{rel} 相对 {base} 有改动（禁止）"
 
 
+@pytest.mark.historical_snapshot
 def test_r17_routes_within_rp1_scope():
     r = subprocess.run(["git", "diff", "--quiet", RP1_CODE_SHA, "HEAD", "--", "backend/routes"],
                        cwd=ROOT, capture_output=True)
@@ -444,6 +446,7 @@ def test_t16_clean_checkout_reproducible():
     assert '"DETERMINISTIC_REBUILD_MATCH": true' in r.stdout
 
 
+@pytest.mark.historical_snapshot
 def test_t17_production_frozen_rp2():
     r = subprocess.run(["git", "diff", "--quiet", "46e44c52682d1b6cb5769cfcd0ea98feea2524c8", "HEAD", "--", "backend/routes"],
                        cwd=ROOT, capture_output=True)

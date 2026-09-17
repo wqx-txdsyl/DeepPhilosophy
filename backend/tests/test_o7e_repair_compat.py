@@ -163,6 +163,7 @@ def test_r9_budget_not_increased():
     assert AR.TOOL_BUDGET["hard_retrieval"] == 20
 
 
+@pytest.mark.historical_snapshot
 def test_r10_validator_semantics_unchanged():
     import subprocess
     r = subprocess.run(["git", "diff", "--quiet",

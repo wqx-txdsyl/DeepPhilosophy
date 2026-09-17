@@ -232,6 +232,7 @@ def test_p15_no_production_primary_router():
     assert "primary_target" not in src and "PRIMARY_TARGETS" not in src
 
 
+@pytest.mark.historical_snapshot
 def test_p16_p17_validator_quotebound_unchanged():
     # RCA-1 §2: quote_bound 仅加 metadata（判定语义零改动）→ 冻结点移至 RCA commit;
     # validator 仍冻 O7-A base

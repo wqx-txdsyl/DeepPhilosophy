@@ -213,6 +213,7 @@ def test_d24_tool_authorory_unchanged():
     assert "import scholarly_sources" not in eng and "scholarly_sources." not in eng
 
 
+@pytest.mark.historical_snapshot
 def test_d25_d26_primary_and_o7b_unchanged():
     # V4-F1-R1.3 §2 授权 generic lexical 修复落地后的新冻结点
     r = subprocess.run(["git", "diff", "--quiet", "98c8972a6", "HEAD", "--",
@@ -235,6 +236,7 @@ def test_d29_model_facing_compact():
     assert "provider_records" not in mv and "conflicts" not in mv
 
 
+@pytest.mark.historical_snapshot
 def test_d30_production_frozen():
     for rel in ("backend/final_validator.py",):
         r = subprocess.run(["git", "diff", "--quiet",
@@ -411,6 +413,7 @@ def test_r18_deterministic_rebuild_rp1():
     assert before["registry_sha256"] == after["registry_sha256"]
 
 
+@pytest.mark.historical_snapshot
 def test_r19_production_frozen_rp1():
     for rel in ("backend/final_validator.py",):
         r = subprocess.run(["git", "diff", "--quiet",

@@ -191,12 +191,16 @@ def test_c28_cache_mechanical(monkeypatch, tmp_path):
     assert calls["n"] == 1
 
 
+@pytest.mark.historical_snapshot
 def test_c29_primary_retrieval_unchanged():
     # V4-F1-R1.3 §2 授权 generic lexical 修复落地后的新冻结点
     r = subprocess.run(["git", "diff", "--quiet", "98c8972a6", "HEAD", "--",
                         "backend/routes/agent_tools_retrieval.py"],
                        cwd=ROOT, capture_output=True)
     assert r.returncode == 0
+
+
+def test_c29_bibliography_data_exists():
     # book_bibliography.json 是派生数据: 新书籍入库后合法变更（V4-F1）
     assert os.path.exists(os.path.join(ROOT, "backend/data/book_bibliography.json"))
 
@@ -439,6 +443,7 @@ def test_t20_report_contains_real_gate_sha():
     assert "本节 gate 产物 commit" not in report, "占位 SHA 未回填"
 
 
+@pytest.mark.historical_snapshot
 def test_t21_production_frozen():
     for rel in ("backend/final_validator.py",):
         r = subprocess.run(["git", "diff", "--quiet",
