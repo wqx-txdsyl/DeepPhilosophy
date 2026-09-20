@@ -46,6 +46,7 @@ try {
   assert.equal((linked.match(/href="https:\/\/deepphilosophy.top\/reader\/lunyu\?ch=0"/g) || []).length, 2, 'quote and its citation both open the actual chapter');
   assert.ok(!render('“一段没有读到的伪造原文。”', { citations: [primaryCitation] }).includes('general-inline-quote'));
   assert.ok(!render('“学而时习之，不亦说乎。”', { citations: [{ ...primaryCitation, access_level: 'SEARCH_EXCERPT' }] }).includes('general-inline-quote'));
+  assert.ok(render('“不患人之不己知，患不知人也”', { citations: [{ ...primaryCitation, quoted_passages: ['不患人之不己知，患不知人也'] }] }).includes('general-inline-quote'), 'verified quotations outside the preview excerpt remain linked');
   const { sourceHref } = await server.ssrLoadModule('/src/utils/evidence.js');
   assert.equal(sourceHref({ book: '未知', book_id: 'missing', chapter_idx: -1 }), null, 'unknown chapter must not silently open chapter zero');
   assert.equal(sourceHref({ source_type: 'web', url: 'javascript:alert(1)' }), null);

@@ -45,6 +45,11 @@ def test_source_excerpt_contains_the_actual_quoted_passage_beyond_old_prefix():
     result = enrich_citations([citation], {}, log, f'“{quote}”【《论语》·学而】')
     assert quote in result[0]['excerpt']
     assert result[0]['excerpt'] in text
+    tail = '另一个在长章节末尾才出现的原句'
+    log[0]['result_full']['text'] += '较远的中间内容。' * 100 + tail
+    result = enrich_citations([citation], {}, log, f'“{quote}”以及“{tail}”【《论语》·学而】')
+    assert tail not in result[0]['excerpt']
+    assert result[0]['quoted_passages'] == [quote, tail]
 
 
 def test_keyword_overlap_never_turns_unused_search_candidates_into_citations():

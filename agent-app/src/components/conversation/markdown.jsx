@@ -70,7 +70,8 @@ export function renderInline(text, options = {}) {
       }
       if (/^[“「『]/.test(p)) {
         const quote = p.slice(1, -1);
-        const matches = (options.citations || []).filter(c => c.access_level === 'PASSAGE_READ' && c.excerpt?.includes(quote) && sourceHref(c));
+        const matches = (options.citations || []).filter(c => c.access_level === 'PASSAGE_READ'
+          && (c.excerpt?.includes(quote) || c.quoted_passages?.includes(quote)) && sourceHref(c));
         if (matches.length === 1) return <a key={i} className="general-inline-quote" href={sourceHref(matches[0])} target="_blank" rel="noopener noreferrer" title={`阅读《${matches[0].book}》原文`}>{p}</a>;
       }
       if (p.startsWith('【') || numbered) return p;

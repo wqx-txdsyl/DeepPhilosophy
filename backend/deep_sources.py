@@ -68,6 +68,8 @@ def enrich_citations(citations, evidence, tool_log, answer):
         key = _source_key(citation)
         read = key in reads
         out.append({**citation, "excerpt": _focused_excerpt(reads.get(key) or item.get("snippet") or "", answer),
+                    "quoted_passages": list(dict.fromkeys(q for q in re.findall(r'[“「『"]([^”」』"\n]{6,400})[”」』"]', answer or "")
+                                                           if read and q in reads[key])),
                     "access_level": "PASSAGE_READ" if read else "SEARCH_EXCERPT"})
     seen = set()
     normalized = answer.casefold()
