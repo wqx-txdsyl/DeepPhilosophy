@@ -61,6 +61,31 @@ def test_catalogue_hit_does_not_invent_supporting_chapter(small_library):
     assert out["results"][0]["evidence_scope"] == "catalogue"
 
 
+def test_author_books_remain_visible_when_other_books_mention_the_author(small_library):
+    _, chapters = small_library
+    chapters['secondary'] = [(0, '解释孔子', '这里讨论孔子的思想，但不是孔子本人原文。')]
+    out = deep.search_books({'query': '孔子'})
+    assert out['method'] == 'exact_fulltext'
+    assert out['results'][0]['book_id'] == 'secondary'
+    assert out['catalogue_matches'][0]['book_id'] == 'primary'
+    assert out['catalogue_matches'][0]['book_title'] == '论语'
+    assert 'chapter_idx' not in out['catalogue_matches'][0]
+    assert out['catalogue_match_count'] == 1
+
+
+def test_general_comparison_uses_general_search_without_mutating_persona_registry(monkeypatch):
+    from routes import agent_tools_eval
+    original = agent.TOOLS['search_books']['execute']
+    called = []
+    def stub(args, search_fn=None):
+        called.append((args, search_fn))
+        return {'ok': True}
+    monkeypatch.setattr(agent_tools_eval, '_exec_compare', stub)
+    assert deep.compare_views({'a': '甲', 'b': '乙'}) == {'ok': True}
+    assert called[0][1] is deep.search_books
+    assert agent.TOOLS['search_books']['execute'] is original
+
+
 def test_concept_trace_requires_literal_occurrence(small_library):
     out = deep.concept_trace({"concept": "不存在的哲学概念"})
     assert out["hits"] == 0

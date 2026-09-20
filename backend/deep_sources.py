@@ -43,13 +43,14 @@ def primary_research(citations, tool_log, answer):
 def enrich_citations(citations, evidence, tool_log, answer):
     used = {item.get("evidence_id"): item for item in (evidence or {}).get("used_evidence", [])}
     reads = {}
+    quoted = list(dict.fromkeys(re.findall(r'[“「『"]([^”」』"\n]{6,400})[”」』"]', answer or "")))
     scholarly = {}
     for call in tool_log:
         result = call.get("result_full") or {}
         if not isinstance(result, dict) or result.get("error"):
             continue
         if call.get("name") == "get_chapter":
-            reads[(str(result.get("book_id")), str(result.get("chapter_idx")))] = result.get("text") or ""
+            reads.setdefault((str(result.get("book_id")), str(result.get("chapter_idx"))), []).append(result.get("text") or "")
         if call.get("name") == "get_scholarly_source":
             scholarly[result.get("source_record_id")] = result
     out = []
@@ -67,10 +68,37 @@ def enrich_citations(citations, evidence, tool_log, answer):
             continue  # Lexical overlap with a retrieved snippet is not answer attribution.
         key = _source_key(citation)
         read = key in reads
-        out.append({**citation, "excerpt": _focused_excerpt(reads.get(key) or item.get("snippet") or "", answer),
-                    "quoted_passages": list(dict.fromkeys(q for q in re.findall(r'[“「『"]([^”」』"\n]{6,400})[”」』"]', answer or "")
-                                                           if read and q in reads[key])),
+        fragments = reads.get(key) or [item.get("snippet") or ""]
+        excerpt = max(fragments, key=lambda text: sum(len(q) for q in quoted if q in text))
+        out.append({**citation, "excerpt": _focused_excerpt(excerpt, answer),
+                    "quoted_passages": [q for q in quoted if read and any(q in text for text in fragments)],
                     "access_level": "PASSAGE_READ" if read else "SEARCH_EXCERPT"})
+    # A literal quotation attributed to a named book is actual source use even
+    # without the optional 【book·chapter】 marker. Require a unique read source,
+    # exact passage matching and an explicit book name; topic overlap is insufficient.
+    named_books = re.findall(r'《([^》]+)》', answer or "")
+    eligible = {}
+    for source in EC.build_evidence_pool(tool_log):
+        if source['kind'] == 'chapter' and source.get('book_id') and any(EC._book_match(source['book'], name) for name in named_books):
+            eligible.setdefault(_source_key(source), source)
+    unmarked = set()
+    for q in quoted:
+        if len(q) < 12:
+            continue
+        matches = [key for key in eligible if any(q in text for text in reads.get(key, []))]
+        if len(matches) == 1:
+            unmarked.add(matches[0])
+    present = {_source_key(c) for c in out}
+    for key, source in eligible.items():
+        if key not in unmarked or key in present:
+            continue
+        fragments = reads[key]
+        excerpt = max(fragments, key=lambda text: sum(len(q) for q in quoted if q in text))
+        out.append({k: source[k] for k in ('book', 'chapter', 'book_id', 'chapter_idx', 'author')})
+        out[-1].update(evidence_id='read_' + hashlib.sha256(repr(key).encode()).hexdigest()[:12],
+                       used=True, source_type='primary', access_level='PASSAGE_READ',
+                       excerpt=_focused_excerpt(excerpt, answer),
+                       quoted_passages=[q for q in quoted if any(q in text for text in fragments)])
     seen = set()
     normalized = answer.casefold()
     answer_url_order = list(dict.fromkeys(urldefrag(url.rstrip(".,;，。；\"'"))[0]

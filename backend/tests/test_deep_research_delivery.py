@@ -21,6 +21,35 @@ def research(limit=1):
     return result
 
 
+def test_general_declaration_accepts_a_substantive_philosophical_research_question():
+    d = DeepResearchDiscipline()
+    incomplete = d.declare('PRIMARY', '核验友谊中的责任与边界')
+    assert incomplete['status'] == 'UPGRADE_CONTRACT_INCOMPLETE'
+    assert '改用 NONE' not in incomplete['message']
+    accepted = d.declare('PRIMARY', '核验友谊中的责任与边界', source_dependent=True)
+    assert accepted['ok'] is True
+    assert d.gate_query('search_books', {'query': '友谊 相互 善'}) is None
+    assert d._soft_limit() == 3
+
+
+def test_general_model_receives_consistent_research_policy_and_specialist_tools():
+    tools = {tool.name: tool for tool in engine.get_tools('general')}
+    assert {'search_books', 'get_chapter', 'compare_views', 'dialectic', 'thought_experiment',
+            'analyze_argument', 'confrontation', 'socratic_tutor'} <= tools.keys()
+    declaration = tools['declare_research_need']
+    assert '默认 PRIMARY' in declaration.description
+    assert 'NONE=概念解释/普通推理/日常哲学' not in declaration.description
+    field = declaration.args_schema.model_json_schema()['properties']['source_dependent']['description']
+    assert '不要求用户先点名' in field
+    assert discipline_module.DECLARE_TOOL_PARAMETERS['properties']['source_dependent']['description'] != field
+    initial = '\n'.join(m.content for m in engine._build_context_messages('general', 'zh'))
+    reminder = '\n'.join(m.content for m in engine._build_context_messages('general', 'zh', reinforce=True))
+    assert '默认 PRIMARY' in initial and 'thought_experiment' in initial and 'dialectic' in initial
+    assert '原典解读与文献综述才需要' not in initial
+    assert '实际检索、阅读相关原典' in reminder
+    assert 'declare_research_need' not in {tool.name for tool in engine.get_tools('nietzsche')}
+
+
 def state(discipline=None, hard_total=24):
     return {"agent": "general", "guard": DeepDuplicateGuard(), "discipline": discipline,
             "budget": runtime.ToolBudget(discipline_module.DISCIPLINE_RETRIEVAL_TOOLS,
@@ -104,6 +133,24 @@ def test_identified_reads_get_two_reserve_slots_and_duplicates_reuse(monkeypatch
                   {"get_chapter": read})
     assert len(executions) == 2
     assert again[0].additional_kwargs["_reused"] is True
+
+
+def test_approved_extension_is_not_consumed_again_by_prior_reserve_reads():
+    d = research(1)
+    d.retrieval_executed = 1
+    d.record_locations('search_books', {'results': [{'book_id': 'book', 'chapter_idx': 0}]})
+    for offset in (0, 2800):
+        assert d.gate_query('get_chapter', {'book_id': 'book', 'chapter_idx': 0, 'offset': offset}) is None
+        d.retrieval_executed += 1
+    assert d.retrieval_executed == 3 and len(d.read_reserve) == 2
+    assert d.gate_query('search_books', {'query': '另一原著'})['error'] == 'SOFT_BUDGET_REACHED'
+    approved = d.declare('PRIMARY', '另一方原著内容尚未核实', source_dependent=True,
+                         budget_extension_reason='比较双方需各自原文', unresolved_evidence_gap='另一方原著中的主张及其语境')
+    assert approved['ok'] is True
+    assert d._soft_limit() == 5
+    assert d.gate_query('search_books', {'query': '另一原著'}) is None
+    d.retrieval_executed += 2
+    assert d.gate_query('search_books', {'query': '不能无限查找'})['error'] == 'SOFT_BUDGET_REACHED'
 
 
 @pytest.mark.parametrize("tool, payload", [

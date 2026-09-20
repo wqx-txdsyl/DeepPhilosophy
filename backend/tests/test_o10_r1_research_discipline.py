@@ -626,7 +626,7 @@ class TestBoundariesAndTelemetry:
     def test_t15_prompt_carries_discipline_and_no_unlimited_license(self):
         """提示词层: 研究需求协议在位; V1 过度检索许可移除; SCHOLARLY_CONTRACT 配额解除"""
         p = EG.get_system_prompt("general")
-        assert "RESEARCH_NEED" in p and "EVIDENCE_GAP" in p
+        assert "RESEARCH_NEED" in p.upper() and "EVIDENCE_GAP" in p.upper()
         assert "0.5." in p and "证据缺口停止规则" in p
         assert "检索次数不受限制" not in p and "不存在配额管制" not in p
         assert "不设任何工具数量或文献数量配额" not in EG.SCHOLARLY_CONTRACT

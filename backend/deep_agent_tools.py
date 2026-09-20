@@ -218,16 +218,18 @@ def search_books(args):
         return {"error": "缺少有效检索词"}
     limit = core._int_arg(args, "limit", 5, 1, 10)
     exact = _exact_results(query)
+    catalogue = {"catalogue_matches": deepcopy(exact["metadata"][:limit]),
+                 "catalogue_match_count": len(exact["metadata"])}
     results = exact["passages"][:limit]
     if results:
-        return {"query": query, "results": deepcopy(results), "method": "exact_fulltext",
+        return {"query": query, "results": deepcopy(results), "method": "exact_fulltext", **catalogue,
                 "total_passage_hits": exact["total_passage_hits"],
-                "note": "片段是原文命中；引用或作出处判断前应读取相应章节上下文。"}
+                "note": "片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。"}
     if exact["metadata"]:
         return {"query": query, "results": deepcopy(exact["metadata"][:limit]),
-                "method": "catalogue", "note": "仅命中书名或作者，尚未取得支持论点的原文；请查看目录并读取相关章节。"}
+                "method": "catalogue", **catalogue, "note": "仅命中书名或作者，尚未取得支持论点的原文；请查看目录并读取相关章节。"}
     results, diagnostics = _semantic_candidates(query, limit)
-    return {"query": query, "results": results, "method": "semantic_candidates" if results else "no_match",
+    return {"query": query, "results": results, **catalogue, "method": "semantic_candidates" if results else "no_match",
             **diagnostics,
             "note": ("这些是语义相近的阅读候选，未逐字命中查询，也未证明支持论点；读取后再判断是否相关。"
                      if results else "本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。")}
@@ -476,6 +478,11 @@ def websearch(args):
                                           if not result.get("results") else {})}
 
 
+def compare_views(args):
+    from routes.agent_tools_eval import _exec_compare
+    return _exec_compare(args, search_fn=search_books)
+
+
 def install_deep_tool_overrides(tool_specs):
     """Return isolated specs for general only; caller owns agent routing."""
     specs = dict(tool_specs)
@@ -483,7 +490,7 @@ def install_deep_tool_overrides(tool_specs):
     for name, execute in (("search_books", search_books), ("concept_trace", concept_trace),
                           ("get_chapter", get_chapter), ("get_book_detail", get_book_detail),
                           ("philosopher_debate", philosopher_debate), ("analyze_argument", analyze_argument),
-                          ("paper_review", paper_review), ("websearch", websearch)):
+                          ("paper_review", paper_review), ("websearch", websearch), ("compare_views", compare_views)):
         if name in specs:
             specs[name] = {**specs[name], "parameters": deepcopy(specs[name]["parameters"]),
                            "execute": execute}
@@ -498,7 +505,8 @@ def install_deep_tool_overrides(tool_specs):
         specs["search_books"]["description"] = (
             "检索本地哲学书库。优先全文逐字命中，支持作者与原词组合；"
             "无逐字命中时只返回经过相关性筛选的语义阅读候选。结果明确区分原文片段、书目和未核验候选。"
-            "引用或作出处判断前必须用 get_chapter 阅读上下文。limit 是实际返回条数上限（1–10）。")
+            "catalogue_matches 单独列出命中的真实作者/书名及book_id；不能因其他书的转述占据片段结果就判定本库无该作者原著。"
+            "可用作者名或书名定位书目，再用 get_book_detail 找真实章节。引用前用 get_chapter 阅读上下文。limit 为返回条数上限（1–10）。")
     if "websearch" in specs:
         specs["websearch"]["description"] = (
             "联网搜索或读取公开网页正文。query 搜索；url 读取已选网页（二选一）。"

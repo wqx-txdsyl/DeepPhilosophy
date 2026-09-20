@@ -84,11 +84,12 @@ def _calls(seq):
 def _run_node(calls, tools=None, **kw):
     tools = tools or _stub_tools()
     st = _mk_state(_calls(calls), **kw)
+    real_get_tools = EG.get_tools
     EG.get_tools = lambda agent: tools
     try:
         out = asyncio.run(EG.tools_node(st))
     finally:
-        pass
+        EG.get_tools = real_get_tools
     msgs = [m for m in out["messages"] if isinstance(m, ToolMessage)]
     return st, out, msgs
 
@@ -367,11 +368,12 @@ def test_t8_mechanical_core_intact():
     # ③ 精确重复复用
     st2 = _mk_state(_calls([("search_books", {"query": "言必有中"})]))
     st2["guard"].record("search_books", {"query": "言必有中"}, True, {"results": [{"book_title": "论语"}]})
+    real_get_tools = EG.get_tools
     EG.get_tools = lambda agent: _stub_tools()
     try:
         out2 = asyncio.run(EG.tools_node(st2))
     finally:
-        pass
+        EG.get_tools = real_get_tools
     m2 = [x for x in out2["messages"] if isinstance(x, ToolMessage)][0]
     assert (m2.additional_kwargs or {}).get("_reused") is True
     # ④ safety 护栏

@@ -63,6 +63,24 @@ def test_keyword_overlap_never_turns_unused_search_candidates_into_citations():
         ("论语", "颜渊篇"), ("论语", "卫灵公篇")]
 
 
+def test_named_book_with_exact_read_quote_keeps_its_link_without_formal_marker():
+    quote = '这是一段在原典实际读取窗口中出现的文字'
+    read = {'name': 'get_chapter', 'result_full': {'book_id': 'test-work', 'book_title': '测试原典',
+            'title': '评述', 'chapter_idx': 3, 'text': quote}}
+    later = {'name': 'get_chapter', 'result_full': {**read['result_full'], 'text': '后续窗口不含先前引用。'}}
+    answer = f'《测试原典》的评述转录了“{quote}”，这是该评述所引的说法。'
+    found = enrich_citations([], {}, [read, later], answer)
+    assert len(found) == 1 and found[0]['chapter'] == '评述'
+    assert found[0]['quoted_passages'] == [quote]
+    assert found[0]['access_level'] == 'PASSAGE_READ' and found[0]['used'] is True
+    assert enrich_citations([], {}, [read], f'《另一部书》说“{quote}”。') == []
+    assert enrich_citations([], {}, [read], '《测试原典》讨论了别的观点。') == []
+    search = {'name': 'search_books', 'result_full': {'results': [{'book_id': 'test-work', 'book_title': '测试原典', 'chapter_idx': 3, 'snippet': quote}]}}
+    assert enrich_citations([], {}, [search], answer) == []
+    ambiguous = {'name': 'get_chapter', 'result_full': {**read['result_full'], 'chapter_idx': 4}}
+    assert enrich_citations([], {}, [read, ambiguous], answer) == []
+
+
 def test_scholarly_cards_require_actual_read_and_explicit_answer_use():
     record = {"source_record_id": "s1", "title": "A careful argument", "doi": "10.1/test",
               "authors": [{"name": "Author"}]}

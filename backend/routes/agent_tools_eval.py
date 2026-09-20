@@ -50,7 +50,7 @@ register_tool(
 # ── 高级工具（V2+）──
 # Phase T（T3）: compare_views 从"一次调用生成完整对比成品"重构为 comparison scaffold——
 # 工具只产出比较结构/轴线/候选主张, 最终结论由主 Agent 结合 Evidence Contract 二次综合。
-def _exec_compare(args):
+def _exec_compare(args, search_fn=None):
     from tool_contracts import scaffold_result, extract_json
     a, ea = _req_str(args, "a")
     b, eb = _req_str(args, "b")
@@ -58,9 +58,10 @@ def _exec_compare(args):
         return ea or eb
     focus = _str_arg(args, "focus") or ""   # 可选: 对比焦点（问题维度）
     # 检索双方 + 合检（三方材料; 结构化引用随产物返回, 供主 Agent 核验后进入 Evidence Contract）
-    r1 = TOOLS["search_books"]["execute"]({"query": a, "limit": 4})
-    r2 = TOOLS["search_books"]["execute"]({"query": b, "limit": 4})
-    r3 = TOOLS["search_books"]["execute"]({"query": f"{a} {b}", "limit": 4})
+    search = search_fn or TOOLS["search_books"]["execute"]
+    r1 = search({"query": a, "limit": 4})
+    r2 = search({"query": b, "limit": 4})
+    r3 = search({"query": f"{a} {b}", "limit": 4})
     ctx = json.dumps({"a_materials": r1.get("results", [])[:4],
                       "b_materials": r2.get("results", [])[:4],
                       "both_materials": r3.get("results", [])[:4]},
@@ -119,6 +120,10 @@ def _exec_compare(args):
         candidate_consequences=(scaffold.get("candidate_consequences") or [])[:5],
         side=a, side_a=a, side_b=b,
         citations=citations[:8])
+    if search_fn is not None:
+        ret["catalogue_matches"] = {"side_a": r1.get("catalogue_matches", []),
+                                    "side_b": r2.get("catalogue_matches", [])}
+        ret["reading_note"] = "书目匹配只证明库中有这些原著；比较工具的候选主张仍需用 get_book_detail/get_chapter 核对双方原文。"
     return ret
 
 register_tool("compare_views",
