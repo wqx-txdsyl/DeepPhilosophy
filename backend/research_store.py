@@ -159,8 +159,11 @@ class ResearchStore:
             for check in out['checks']:
                 check['detail'] = json.loads(check.pop('detail_json'))
             out['evidence'] = [dict(r) for r in con.execute('SELECT * FROM evidence WHERE source_id=? ORDER BY obtained_at DESC LIMIT 20', (row['source_id'],))]
+            unique={}
             for item in out['evidence']:
                 item['locator'] = json.loads(item.pop('locator_json'))
+                unique.setdefault((item['kind'],item['text_hash'],dump(item['locator'])),item)
+            out['evidence']=list(unique.values())
             return out
 
     def save_check(self, sid, outcome, *, url=None, final_url=None, http_status=None, content_type=None, body_hash=None, byte_count=None, duration_ms=0, detail=None, passages=()):

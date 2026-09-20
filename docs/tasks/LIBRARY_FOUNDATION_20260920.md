@@ -38,5 +38,5 @@
 - 待外部条件：秘塔凭证；Semantic Scholar公共接口限流。资料问题：77本无本地正文，1本章节从1开始，105处标题差异等已明示。
 - 最近额度检查：周额度剩余52%，高于35%提前停止线。
 
-当前状态：实现与本地验收完成，准备启用生产服务并进行公网确认。
+当前状态：数据库与运行时已上线，公网状态、原典查询和带PDF页码的文献片段接口均已验证通过。现有工具注册表的 search_books / get_scholarly_source 也已实际验证。
 操作说明：`docs/RESEARCH_DATABASE_OPERATIONS.md`；验收：`docs/evidence/RESEARCH_DATABASE_DELIVERY_20260921.md`。

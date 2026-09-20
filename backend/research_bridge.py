@@ -83,8 +83,9 @@ def evidence_result(source_id, requested_access):
          'returned_evidence_level':level,'historical_evidence_level':level,
          'full_text_status':'PERSISTED_VERIFIED_READ' if requested_full else 'PERSISTED_ABSTRACT',
          'source_url':chosen[0].get('source_url'),'content_hash':chosen[0]['text_hash'],
+         'content_hash_basis':'persisted excerpt text; not the complete PDF binary',
          'access_notes':'返回数据库中已取得的历史证据；本次工具调用未重新获取网页，不能据此声称当前URL可达。',
-         'latest_access_check':{k:latest.get(k) for k in ('checked_at','outcome','http_status')} if latest else None,
+         'latest_access_check':{k:latest.get(k) for k in ('checked_at','outcome','http_status','body_hash')} if latest else None,
          'evidence_origin':'PERSISTED_VERIFIED_READ' if requested_full else 'ABSTRACT_METADATA'}
     if requested_full:
         out['evidence_passages']=[{'passage_id':e['id'],'text':e['text'],'locator':e['locator'],'evidence_origin':'PERSISTED_VERIFIED_READ'} for e in chosen[:5]]

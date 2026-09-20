@@ -148,6 +148,7 @@ def test_runtime_bridge_preserves_historical_access_scope(store,monkeypatch):
     monkeypatch.setenv('PHI_RESEARCH_DB_ENABLED','1');monkeypatch.setenv('PHI_RESEARCH_DB_PATH',str(store.path))
     sid=store.put_source(record())
     store.save_check(sid,'PDF_PASSAGES_VERIFIED',url='https://publisher.example/paper.pdf',passages=[{'text':'A verified body passage. '*20,'locator':{'pdf_page':2}}])
+    store.save_check(sid,'PDF_PASSAGES_VERIFIED',url='https://mirror.example/paper.pdf',passages=[{'text':'A verified body passage. '*20,'locator':{'pdf_page':2}}])
     store.save_check(sid,'ACCESS_DENIED',http_status=403)
     from research_bridge import local_records,evidence_result
     assert local_records('moral responsibility')[0]['retrieval_origin']=='LOCAL_RESEARCH_DB'
@@ -155,6 +156,7 @@ def test_runtime_bridge_preserves_historical_access_scope(store,monkeypatch):
     assert result['full_text_status']=='PERSISTED_VERIFIED_READ'
     assert result['latest_access_check']['outcome']=='ACCESS_DENIED'
     assert result['evidence_passages'][0]['locator']['pdf_page']==2
+    assert len(result['evidence_passages'])==1, 'mirror URLs do not duplicate the same evidence passage'
     from deep_tool_context import tool_context
     serialized,delivery=tool_context('get_scholarly_source',result,'general')
     assert json.loads(serialized)==result and delivery['status']=='complete'
