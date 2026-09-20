@@ -149,6 +149,14 @@ def _lexical_search(query, catalogue_generation, occurrences_only=False):
 
 def _exact_results(query, occurrences_only=False):
     global _catalogue_source
+    if not occurrences_only:
+        try:
+            from research_bridge import current_library_store
+            store = current_library_store(core.PUBLIC.parent.parent)
+            if store:
+                return store.lexical_results(query, _terms(query))
+        except Exception:
+            pass  # Canonical JSON remains usable if the derived index is stale/offline.
     books = core.get_books()
     with _catalogue_lock:
         if books is not _catalogue_source:

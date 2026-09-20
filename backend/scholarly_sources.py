@@ -283,7 +283,7 @@ def _fingerprint(title, first_author, year, venue):
     return "fp-" + hashlib.sha256(key.encode()).hexdigest()[:16]
 
 
-def search_crossref(query, limit=8, year_from=None, year_to=None):
+def search_crossref(query, limit=8, year_from=None, year_to=None, json_fetch=None):
     q = urllib.parse.quote(query)
     url = (f"https://api.crossref.org/works?query.bibliographic={q}"
            f"&rows={min(limit, 20)}&select=title,author,DOI,issued,container-title,"
@@ -292,7 +292,10 @@ def search_crossref(query, limit=8, year_from=None, year_to=None):
         lo = year_from or 1900
         hi = year_to or 2100
         url += f"&filter=from-pub-date:{lo}-01-01,until-pub-date:{hi}-12-31"
-    data = _get_json(url)
+    if json_fetch is None and os.environ.get('PHI_RESEARCH_DB_ENABLED', '').lower() in {'1','true','yes'}:
+        from research_bridge import live_json
+        json_fetch = live_json
+    data = (json_fetch or _get_json)(url)
     out = []
     for it in data.get("message", {}).get("items", []):
         year = None
@@ -338,24 +341,38 @@ def _inverted_to_text(inv):
     return " ".join(pos[i] for i in sorted(pos)) or None
 
 
-def search_openalex(query, limit=8, year_from=None, year_to=None):
+def search_openalex(query, limit=8, year_from=None, year_to=None, json_fetch=None, open_access_only=False):
     q = urllib.parse.quote(query)
     # mailto 礼貌池（OpenAlex 文档: 提供 contact 进入 polite pool, 限流显著放宽）
     url = (f"https://api.openalex.org/works?search={q}&per-page={min(limit, 20)}"
            f"&mailto=deepphilosophy.agent@outlook.com"
            f"&select=id,doi,title,publication_year,type,open_access,primary_location,"
-           f"authorships,abstract_inverted_index,cited_by_count")
+           f"authorships,abstract_inverted_index,cited_by_count,best_oa_location,locations")
     if year_from:
         url += f"&filter=from_publication_date:{year_from}-01-01"
     if year_to:
         url += (("&filter=" if "filter=" not in url else ",")
                 + f"to_publication_date:{year_to}-12-31")
-    data = _get_json(url)
+    if open_access_only:
+        url += ('&filter=' if 'filter=' not in url else ',') + 'is_oa:true'
+    if json_fetch is None and os.environ.get('PHI_RESEARCH_DB_ENABLED', '').lower() in {'1','true','yes'}:
+        from research_bridge import live_json
+        json_fetch = live_json
+    data = (json_fetch or _get_json)(url)
     out = []
     for it in data.get("results", []):
         loc = it.get("primary_location") or {}
         src = (loc.get("source") or {})
         oa = it.get("open_access") or {}
+        oa_locations = [it.get('best_oa_location') or {}] + (it.get('locations') or [])
+        readable_locations = []
+        for location in oa_locations:
+            if not location.get('is_oa'):
+                continue
+            candidate_url = location.get('pdf_url') or location.get('landing_page_url')
+            if candidate_url and candidate_url not in [c['url'] for c in readable_locations]:
+                readable_locations.append({'url': candidate_url, 'provider': 'openalex', 'access_claim': 'OPEN_ACCESS',
+                                           'candidate_kind': 'DIRECT_PDF' if location.get('pdf_url') else 'OA_LOCATION'})
         rec = {
             "title": it.get("title") or it.get("display_name"),
             "authors": [{"name": a.get("author", {}).get("display_name", ""),
@@ -376,6 +393,7 @@ def search_openalex(query, limit=8, year_from=None, year_to=None):
             "provider": "openalex",
             "provider_record_id": (it.get("id") or "").rsplit("/", 1)[-1] or None,
             "cited_by": it.get("cited_by_count"),
+            "oa_candidates": readable_locations[:8],
         }
         out.append(rec)
     return out
@@ -506,6 +524,10 @@ def _mk_canonical(provider_records):
          "candidate_kind": r.get("oa_candidate_kind") or "OA_LOCATION"}
         for r in provider_records
         if (r.get("oa_pdf_url") or "").startswith(("https://", "http://"))]
+    extra_candidates = [c for r in provider_records for c in r.get('oa_candidates', [])
+                        if isinstance(c, dict) and str(c.get('url', '')).startswith(('https://', 'http://'))]
+    # Open repository copies are often accessible when the publisher is not.
+    rec['full_text_candidates'] = list({c['url']: c for c in extra_candidates + rec['full_text_candidates']}.values())
     return rec
 
 
@@ -752,11 +774,19 @@ def _local_results(q, limit, strict_only=False):
     """O7-D §23-25: LOCAL_CURATED provider（registry, 非 authority）。
     失败静默降级为无本地结果（registry 缺失≠错误, 只是未构建）。
     V9-F5 §1: strict_only=True 时仅返回达到 coverage threshold 的候选。"""
+    indexed = []
+    try:
+        from research_bridge import local_records
+        indexed = local_records(q, limit)
+    except Exception:
+        pass  # Durable index is optional; legacy/local/live paths still work.
     try:
         import scholarly_registry as SR
-        return SR.search_local(q, limit=limit, strict_only=strict_only)
+        curated = SR.search_local(q, limit=limit, strict_only=strict_only)
+        combined = {r['source_record_id']: r for r in curated + indexed}
+        return list(combined.values())[:limit]
     except Exception:
-        return []
+        return indexed
 
 
 def _live_origin(r):
@@ -783,7 +813,7 @@ def _dedup_local_live(local, live):
             if sid is None:   # 同 DOI 异 id: 找 local 中同 doi 的
                 sid = next(x["source_record_id"] for x in local
                            if x["identifiers"].get("doi") == doi)
-            index[sid]["retrieval_origin"] = "LOCAL_CURATED+LIVE"
+            index[sid]["retrieval_origin"] = "LOCAL_RESEARCH_DB+LIVE" if index[sid].get('retrieval_origin', '').startswith('LOCAL_RESEARCH_DB') else "LOCAL_CURATED+LIVE"
             continue
         r = dict(r, retrieval_origin=_live_origin(r))
         out.append(r)
@@ -886,8 +916,18 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
     q = " ".join(filter(None, [philosopher, work, query])).strip()
     key = json.dumps(["v8f2", q, year_from, year_to, limit], ensure_ascii=False)
     cache = _load_cache()
+    durable_enabled = os.environ.get('PHI_RESEARCH_DB_ENABLED', '').lower() in {'1','true','yes'}
     if key in cache["searches"]:
-        return cache["searches"][key]
+        cached = cache['searches'][key]
+        if not durable_enabled:
+            return cached
+        if time.time() - cached.get('cache_created_at', 0) < 600:
+            result = json.loads(json.dumps(cached, ensure_ascii=False))
+            result['cached'] = True
+            result['providers_queried'] = []
+            for rec in result['results']:
+                rec['retrieval_origin'] = rec.get('retrieval_origin', 'PROVIDER_RESULT') + '+CACHE'
+            return result
 
     def _providers_fetch(query_text):
         results, errors, live_ok = [], [], []
@@ -903,9 +943,14 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
         return results, errors, live_ok
 
     q_latin, q_bigrams = _query_tokens(q)
+    def relevant_record(record, other_query=None):
+        if durable_enabled:
+            from research_relevance import assess
+            return assess(other_query or q, record)['eligible']
+        return _is_relevant(*(_query_tokens(other_query) if other_query else (q_latin,q_bigrams)),record)
     results, errors, live_ok = _providers_fetch(q)
     canon = merge_records(results)
-    relevant = [r for r in canon if _is_relevant(q_latin, q_bigrams, r)]
+    relevant = [r for r in canon if relevant_record(r)]
     dropped = len(canon) - len(relevant)
 
     # V9-F5-R3 §2: original-local relevance gate 收敛为一次（q 无可用 token 时
@@ -914,7 +959,7 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
     # 发现时不得经 variant 路径二次入列, 否则 dedup 会把它误标为
     # LOCAL_CURATED+LIVE（离线冒充实时, 违反 O7-D §26-27）
     local = [r for r in _local_results(q, limit, strict_only=True)
-             if _is_relevant(q_latin, q_bigrams, r)]
+             if relevant_record(r)]
 
     # 一次有界 reformulation: 没有 relevant live records 即触发（V8-F2-R1 §3）——
     # 覆盖 provider 返回 0 条、全离题、单 provider 失败而另一 provider 空手三种形态;
@@ -934,15 +979,13 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
             canon2 = merge_records(results)
             # variant 是合法的查询变换: 其命中按「原 query 或 variant 任一相关」
             # 保留（跨语言命中原 query 无 token 交集, 不得被二次过滤掉）
-            relevant = [r for r in canon2
-                        if _is_relevant(q_latin, q_bigrams, r)
-                        or _is_relevant(v_latin, v_bigrams, r)]
+            relevant = [r for r in canon2 if relevant_record(r) or relevant_record(r,variant)]
             dropped = len(canon2) - len(relevant)
             # R1 §3: LOCAL_CURATED 也参与 variant lookup（relevance parity）
             local_variant = _local_results(variant, limit, strict_only=True)
             if local_variant and (v_latin or v_bigrams):
                 local_variant = [r for r in local_variant
-                                 if _is_relevant(v_latin, v_bigrams, r)]
+                                 if relevant_record(r,variant)]
             reformulation = {"triggered": True, "variant_query": variant,
                              "recovered_relevant": len(relevant),
                              "local_variant_count": len(local_variant)}
@@ -969,13 +1012,24 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
                               "kept_relevant": len(relevant)},
            "query_reformulation": reformulation,
            "provider_failover": bool(errors and live_ok)}
+    if any(str(r.get('retrieval_origin','')).startswith('LOCAL_RESEARCH_DB') for r in merged):
+        out['providers_queried'].append('LOCAL_RESEARCH_DB')
     if not live_ok and local:
         out["offline_mode"] = True
         out["note"] = ("外部 provider 当前失败（见 errors）; 以下结果来自已验证的"
                        "本地学术 registry（LOCAL_CURATED, 历史发现+策展）, 非实时检索")
+        if 'LOCAL_RESEARCH_DB' in out['providers_queried']:
+            out['note'] = '外部检索失败；结果来自本地研究数据库与本地学术 registry 的历史记录（见 retrieval_origin），非实时检索。书目存在不等于学术质量已通过审校。'
+    if durable_enabled:
+        out['cache_created_at'] = time.time()
     cache["searches"][key] = out
     for r in merged:
         cache["records"][r["source_record_id"]] = r
+    try:
+        from research_bridge import persist_records
+        persist_records(merged)
+    except Exception:
+        pass  # Existing research must remain usable during DB maintenance.
     _save_cache()
     return out
 
@@ -984,6 +1038,13 @@ def get_record(source_record_id):
     rec = _load_cache()["records"].get(source_record_id)
     if rec is not None:
         return rec
+    try:
+        from research_bridge import record
+        found = record(source_record_id)
+        if found:
+            return found
+    except Exception:
+        pass
     try:
         import scholarly_registry as SR
         r = SR.record(source_record_id)

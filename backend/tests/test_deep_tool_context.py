@@ -53,7 +53,7 @@ def state_for(name, ids=("one",), agent="general"):
             "raw_tool_log": [], "tool_count": 0, "message_checkpoint": [], "request_message": "固定原问题"}
 
 
-@pytest.mark.parametrize('name', sorted(context.PRIMARY_CONTEXT_TOOLS))
+@pytest.mark.parametrize('name', sorted(context.PRIMARY_CONTEXT_TOOLS | context.SCHOLARLY_CONTEXT_TOOLS))
 def test_primary_research_metadata_and_middle_passages_survive_transport_and_later_rounds(name):
     data = {'text': '前文。' * 850 + '中心原文不能丢失' + '后文。' * 850,
             'results': [{'book_id': 'actual-id', 'read_args': {'book_id': 'actual-id', 'chapter_idx': 9}}],

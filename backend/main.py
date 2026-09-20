@@ -137,6 +137,7 @@ from routes.books import router as books_router
 from routes.authors import router as authors_router
 from routes.upload import router as upload_router
 from routes.account import router as account_router
+from routes.research import router as research_router
 
 app.include_router(health_router)
 app.include_router(auth_router)
@@ -152,6 +153,7 @@ app.include_router(books_router)
 app.include_router(authors_router)
 app.include_router(upload_router)
 app.include_router(account_router)
+app.include_router(research_router)
 from routes.openai_compat import router as openai_compat_router
 app.include_router(openai_compat_router)
 

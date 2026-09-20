@@ -57,6 +57,10 @@ def _exec_search_scholarship(args):
     else:
         resp["note"] = ("记录为真实检索所得, 但全部为 METADATA_ONLY（无可读内容）——"
                         "只能陈述书目存在性, 不得凭标题推断内容")
+    if out.get('cached'):
+        resp['cached'] = True
+        resp['cache_created_at'] = out.get('cache_created_at')
+        resp['note'] = '返回10分钟内的检索缓存，本轮未重新访问外部数据源。' + resp.get('note', '')
     return resp
 
 
@@ -65,6 +69,13 @@ def _exec_get_scholarly_source(args):
     requested = args.get("requested_access") or "ABSTRACT"
     if requested not in ("ABSTRACT", "FULL_TEXT_IF_LEGALLY_AVAILABLE"):
         return {"error": "requested_access 只支持 ABSTRACT | FULL_TEXT_IF_LEGALLY_AVAILABLE"}
+    try:
+        from research_bridge import evidence_result
+        indexed = evidence_result(sid, requested)
+        if indexed:
+            return indexed
+    except Exception:
+        pass  # Optional DB outage must not break the existing evidence reader.
     rec = SS.get_record(sid)
     if not rec:
         return {"error": f"未找到 source_record_id {sid}（先用 search_scholarship 检索）"}
