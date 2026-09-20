@@ -85,8 +85,9 @@ export function reduceGeneralEvent(state, evt) {
     ...(evt.safety === 'blocked' ? { content: plainText(evt.safety_reply) } : {}),
     citations: Array.isArray(evt.citations) ? evt.citations : [], evidence: evt.evidence || null,
     suggestions: suggestions(evt.suggestions), reasoning_summary: evt.reasoning_summary || null,
+    suggestions_status: evt.suggestions_status || (evt.suggestions?.length ? 'ready' : 'unavailable'),
   };
-  if (evt.type === 'suggestions') return { ...state, suggestions: suggestions(evt.suggestions) };
+  if (evt.type === 'suggestions') return { ...state, suggestions: suggestions(evt.suggestions), suggestions_status: evt.status || (evt.suggestions?.length ? 'ready' : 'unavailable') };
   if (evt.type === 'reasoning_summary') return { ...state, reasoning_summary: text };
   if (evt.type === 'error') return { ...state, error: text || '请求未完成', stream_state: 'error' };
   // Legacy thought/thought_stream do not identify a verified provider channel.
@@ -108,6 +109,7 @@ export function finishGeneralStream(state, { aborted = false, error = '', durati
   const failure = state.error || (!state.done_received ? error || (!aborted ? '连接已中断，回答可能不完整。' : '') : '');
   const stream_state = aborted && !state.done_received ? 'stopped' : failure ? 'error' : 'complete';
   return { ...state, streaming: false, status: '', stream_state, error: failure,
+    suggestions_status: state.suggestions_status === 'pending' ? 'unavailable' : state.suggestions_status,
     duration_seconds: Math.max(1, Math.round(duration)),
     suggestions: stream_state === 'complete' ? state.suggestions : [],
     events: state.events.map(e => e.t === 'tool_start'

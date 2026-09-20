@@ -582,3 +582,12 @@ def test_explicit_suggestion_opt_out_includes_negative_list_scope(message):
 
 def test_unrelated_negation_does_not_disable_requested_suggestions():
     assert DS.wants_suggestions("请不要省略例子，但可以给出后续建议。") is True
+
+
+def test_followup_suggestion_preference_comes_from_current_question():
+    context = {'原问题与附件': '旧问题，不加延伸建议。', '指定回答对应问题': '旧问题', '指定回答': '旧回答', '本次追问': '请查阅相关原典。'}
+    message = '请围绕下列指定回答继续讨论。\n<general_followup_context>\n' + json.dumps(context, ensure_ascii=False) + '\n</general_followup_context>'
+    assert DS.wants_suggestions(message) is True
+    assert DS.suggestion_question(message) == context['本次追问']
+    malformed = message.replace(json.dumps(context, ensure_ascii=False), json.dumps(list(context), ensure_ascii=False))
+    assert DS.suggestion_question(malformed) == malformed

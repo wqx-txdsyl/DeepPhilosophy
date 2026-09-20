@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Square, SquareCheck } from 'lucide-react';
 import { DP_READER, resolveCite } from '../../utils/api';
 import { useLang } from '../../utils/i18n';
+import { sourceHref } from '../../utils/evidence';
 import DrawioInline from '../DrawioInline';
 
 /**
@@ -42,7 +43,7 @@ export function CiteLink({ book, chapter }) {
 
 /* ── 行内元素: **粗体** *斜体* `代码` [链接](url) ~~删除线~~ 【出处】 ── */
 export function renderInline(text, options = {}) {
-  const parts = (text || '').split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]*\]\([^)]*\)|~~[^~]+~~|【[^】]+】|\[\d{1,3}\])/g);
+  const parts = (text || '').split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]*\]\([^)]*\)|~~[^~]+~~|【[^】]+】|\[\d{1,3}\]|“[^”\n]{6,400}”|「[^」\n]{6,400}」|『[^』\n]{6,400}』)/g);
   return parts.map((p, i) => {
     if (p.startsWith('**') && p.endsWith('**')) return <strong key={i}>{p.slice(2, -2)}</strong>;
     if (p.startsWith('*') && p.endsWith('*') && p.length > 2) return <em key={i}>{p.slice(1, -1)}</em>;
@@ -62,7 +63,16 @@ export function renderInline(text, options = {}) {
       const reference = p.match(/^【《([^》]+)》[·・]?([^】]*)】$/);
       const citation = numbered ? options.citations?.[Number(numbered[1]) - 1]
         : reference ? options.citations?.find(c => (c.book || c.work || c.title) === reference[1] && (!reference[2] || c.chapter === reference[2])) : null;
-      if (citation) return <button key={i} type="button" className="general-inline-cite" onClick={() => options.onCitation?.(citation)} aria-label={`查看来源 ${p}`}>{p}</button>;
+      if (citation) {
+        const href = sourceHref(citation);
+        if (href) return <a key={i} className="general-inline-cite" href={href} target="_blank" rel="noopener noreferrer" aria-label={`阅读来源 ${p}`}>{p}</a>;
+        return <button key={i} type="button" className="general-inline-cite" onClick={() => options.onCitation?.(citation)} aria-label={`查看来源 ${p}`}>{p}</button>;
+      }
+      if (/^[“「『]/.test(p)) {
+        const quote = p.slice(1, -1);
+        const matches = (options.citations || []).filter(c => c.access_level === 'PASSAGE_READ' && c.excerpt?.includes(quote) && sourceHref(c));
+        if (matches.length === 1) return <a key={i} className="general-inline-quote" href={sourceHref(matches[0])} target="_blank" rel="noopener noreferrer" title={`阅读《${matches[0].book}》原文`}>{p}</a>;
+      }
       if (p.startsWith('【') || numbered) return p;
     }
     const cm = p.match(/^【《([^》]+)》·?([^】]*)】$/);

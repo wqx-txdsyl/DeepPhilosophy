@@ -5,16 +5,51 @@ from urllib.parse import quote, urldefrag
 import evidence_contract as EC
 
 
+def _source_key(item):
+    return (str(item.get("book_id")), str(item.get("chapter_idx"))) if item.get("book_id") else (item.get("book"), item.get("chapter"))
+
+
+def _focused_excerpt(text, answer):
+    """Choose an actual source window around a quoted passage, never rewrite it."""
+    for quoted in re.findall(r'[“「『"]([^”」』"\n]{6,400})[”」』"]', answer or ""):
+        offset = text.find(quoted)
+        if offset >= 0:
+            start = max(0, offset - 80)
+            return text[start:start + 600]
+    return text[:600]
+
+
+def primary_research(citations, tool_log, answer):
+    """Actual primary retrieval, kept distinct from the answer's used citations."""
+    calls = [c for c in tool_log if c.get("name") in {"search_books", "get_chapter"}]
+    used = {_source_key(c) for c in citations if c.get("book_id") or c.get("book")}
+    sources = {}
+    for item in EC.build_evidence_pool(calls):
+        if item["kind"] not in {"search", "chapter"} or not item.get("book"):
+            continue
+        key = _source_key(item)
+        if key in sources and sources[key]["access_level"] == "PASSAGE_READ":
+            continue
+        sources[key] = {k: item[k] for k in ("book", "chapter", "book_id", "chapter_idx", "author")}
+        sources[key].update(source_type="primary", used=key in used,
+                            excerpt=_focused_excerpt(item.get("text") or "", answer),
+                            access_level="PASSAGE_READ" if item["kind"] == "chapter" else "SEARCH_EXCERPT")
+    failed = any(isinstance(c.get("result_full"), dict) and c["result_full"].get("error") for c in calls)
+    status = "complete" if sources else "failed" if failed else "empty" if calls else "not_requested"
+    ordered = sorted(sources.values(), key=lambda s: (not s["used"], s["access_level"] != "PASSAGE_READ"))
+    return {"status": status, "sources": ordered[:20], "total": len(ordered)}
+
+
 def enrich_citations(citations, evidence, tool_log, answer):
     used = {item.get("evidence_id"): item for item in (evidence or {}).get("used_evidence", [])}
-    reads = set()
+    reads = {}
     scholarly = {}
     for call in tool_log:
         result = call.get("result_full") or {}
         if not isinstance(result, dict) or result.get("error"):
             continue
         if call.get("name") == "get_chapter":
-            reads.add((str(result.get("book_id")), str(result.get("chapter_idx"))))
+            reads[(str(result.get("book_id")), str(result.get("chapter_idx")))] = result.get("text") or ""
         if call.get("name") == "get_scholarly_source":
             scholarly[result.get("source_record_id")] = result
     out = []
@@ -30,8 +65,9 @@ def enrich_citations(citations, evidence, tool_log, answer):
                                 and (not chapter or chapter in answer))
         if not explicitly_cited and not explicitly_named:
             continue  # Lexical overlap with a retrieved snippet is not answer attribution.
-        read = (str(citation.get("book_id")), str(citation.get("chapter_idx"))) in reads
-        out.append({**citation, "excerpt": item.get("snippet") or "",
+        key = _source_key(citation)
+        read = key in reads
+        out.append({**citation, "excerpt": _focused_excerpt(reads.get(key) or item.get("snippet") or "", answer),
                     "access_level": "PASSAGE_READ" if read else "SEARCH_EXCERPT"})
     seen = set()
     normalized = answer.casefold()

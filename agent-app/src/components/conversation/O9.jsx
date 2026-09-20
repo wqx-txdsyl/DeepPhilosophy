@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { BookOpen, GraduationCap, Layers, X, Quote, ShieldCheck, ExternalLink, Compass, ScanFace, Gift, Battery, Moon, Bot, Minus, ArrowDown } from 'lucide-react';
 import { plainText } from '../../data/generalStream';
-import { generalAccessLabel, generalEvidenceLayer } from '../../utils/evidence';
+import { generalAccessLabel, generalEvidenceLayer, sourceHref } from '../../utils/evidence';
 
 /**
  * O9 UI/UX 组件集（docs/ui/O9_*）——设计定型的落地件。
@@ -74,7 +74,7 @@ const DEPTHS = [
     promptZh: '请针对上面的回答检索并综述相关学术研究（给出代表文献与争论点）。',
     promptEn: 'For the answer above, survey relevant scholarship (representative literature and points of debate).' },
 ];
-export function DepthControls({ onPick, disabled, lang, general = false }) {
+export function DepthControls({ onPick, disabled, lang, general = false, kinds }) {
   const en = lang === 'en';
   if (disabled && !general) return null;
   const choices = general ? DEPTHS.map(d => d.key === 'deeper' ? { ...d,
@@ -83,7 +83,7 @@ export function DepthControls({ onPick, disabled, lang, general = false }) {
   } : d) : DEPTHS;
   return (
     <div className="o9-depth" role="group" aria-label="Depth controls">
-      {choices.map((d) => (
+      {choices.filter(d => !kinds || kinds.includes(d.key)).map((d) => (
         <button key={d.key} className="o9-depth-chip" disabled={disabled}
           onClick={() => onPick(en ? d.promptEn : d.promptZh)}
           aria-label={d[en ? 'en' : 'zh']}>
@@ -139,12 +139,9 @@ export function EpStarter({ lang, onPick }) {
 }
 
 /* ── Source Drawer（§B Citation UX: 点击引用 → 全量来源 + 核验状态 + 原典深链） ── */
-function GeneralReaderLink({ citation, zh }) {
-  const safe = value => { try { const url = new URL(value); return ['https:', 'http:'].includes(url.protocol) ? url.href : null; } catch { return null; } };
+export function GeneralReaderLink({ citation, zh }) {
   const scholarly = generalEvidenceLayer(citation) === 'scholarly';
-  const doi = String(citation.doi || '').replace(/^https?:\/\/(?:dx\.)?doi\.org\//i, '');
-  const doiLink = /^10\.\d{4,9}\/\S+$/.test(doi) ? `https://doi.org/${encodeURI(doi)}` : null;
-  const direct = safe(citation.reader_url) || safe(citation.url) || doiLink || (!scholarly && citation.book_id ? `${_DP_READER}/${encodeURIComponent(citation.book_id)}?ch=${Number(citation.chapter_idx) || 0}` : null);
+  const direct = sourceHref(citation);
   const [resolved, setResolved] = _useState(null);
   const [error, setError] = _useState(false);
   const [attempt, setAttempt] = _useState(0);
@@ -155,12 +152,14 @@ function GeneralReaderLink({ citation, zh }) {
     resolveCite(citation.book, citation.chapter || '').then(data => {
       if (!active) return;
       if (data.error || data.matched === false || !data.book_id) { setError(true); return; }
-      setResolved(`${_DP_READER}/${encodeURIComponent(data.book_id)}?ch=${Number(data.chapter_idx) || 0}`);
+      const link = sourceHref({ ...citation, book_id: data.book_id, chapter_idx: data.chapter_idx });
+      if (!link) { setError(true); return; }
+      setResolved(link);
     }).catch(() => { if (active) setError(true); });
     return () => { active = false; };
   }, [direct, citation.book, citation.chapter, scholarly, attempt]);
   const href = direct || resolved;
-  if (href) return <a className="o9-drawer-link" href={href} target="_blank" rel="noopener noreferrer"><ExternalLink size={12} />{zh ? '打开来源' : 'Open source'}</a>;
+  if (href) return <a className="o9-drawer-link" href={href} target="_blank" rel="noopener noreferrer"><ExternalLink size={12} />{generalEvidenceLayer(citation) === 'primary' ? (zh ? '阅读原典' : 'Read primary text') : (zh ? '打开来源' : 'Open source')}</a>;
   if (!citation.book || scholarly) return <span>{zh ? '此来源未提供可打开的链接' : 'No usable link is available for this source'}</span>;
   if (error) return <button className="cw-cite-more" onClick={() => setAttempt(v => v + 1)}>{zh ? '暂未定位到原文，点击重试' : 'Source unavailable. Retry'}</button>;
   return <span role="status">{zh ? '正在定位原文…' : 'Locating source…'}</span>;
@@ -230,7 +229,7 @@ export function SourceDrawer({ open, citation, lang, onClose, general = false })
           </section> : <blockquote className="o9-drawer-quote"><Quote size={11} aria-hidden />{excerpt.slice(0, 420)}</blockquote>)}
           <div className="o9-drawer-verify">
             <ShieldCheck size={12} aria-hidden />
-            {general ? (zh ? '本回答使用的来源' : 'Source used in this answer') : c.used === false ? (zh ? '检索到但未被本回答引用' : 'Retrieved but not cited by this answer')
+            {general ? (c.used === false ? (zh ? '检索相关材料，未被本回答引用' : 'Retrieved material, not cited in this answer') : (zh ? '本回答使用的来源' : 'Source used in this answer')) : c.used === false ? (zh ? '检索到但未被本回答引用' : 'Retrieved but not cited by this answer')
               : (zh ? '已核验：本回答实际引用的证据' : 'Verified: actually cited by this answer')}
           </div>
           {(link || citation.book || (general && citation.doi)) && (

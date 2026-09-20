@@ -1505,6 +1505,8 @@ def _llm_suggest(question, answer, agent, language):
     轻量: thinking 关闭, max_tokens 180; 失败/回答太短返回 None（调用方回退规则版）"""
     if not answer or len(answer) < 40 or (agent == "general" and not DS.wants_suggestions(question)):
         return None
+    if agent == "general":
+        question = DS.suggestion_question(question)
     en = language == "en"
     sys_p = (
         "You are a philosophy companion agent. Based on the user's last question and your answer, "
@@ -3124,9 +3126,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             evidence_payload = build_evidence_contract(tool_log, full_answer, agent, language)
             citations = evidence_payload["citations"]
             if agent == "general":
-                from deep_sources import enrich_citations
+                from deep_sources import enrich_citations, primary_research
                 citations = enrich_citations(citations, evidence_payload, tool_log, full_answer)
                 evidence_payload["display_citations"] = citations
+                evidence_payload["primary_research"] = primary_research(citations, tool_log, full_answer)
         except Exception as _e:
             logger.warning(f"[evidence-contract] skipped: {str(_e)[:200]}")
             citations = []
@@ -3183,6 +3186,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 evidence_payload["used_evidence"] = []
                 evidence_payload["citations"] = []
                 evidence_payload["used_count"] = 0
+                if agent == "general":
+                    evidence_payload["primary_research"] = {"status": "not_requested", "sources": [], "total": 0}
         elif _safety:
             safety_flag = "warning"
         # done 立即发出（引用/工具/安全/规则建议——均为纯内存计算, 不调 LLM）:
@@ -3238,6 +3243,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             evidence_payload["facts"] = evidence_state.snapshot()
         yield {"type": "done", "citations": citations, "evidence": evidence_payload,
                **({"content": full_answer, "complete": bool(full_answer)} if agent == "general" else {}),
+               **({"suggestions_status": "pending" if DS.wants_suggestions(req_message) and len(full_answer) >= 40 and safety_flag != "blocked" else "disabled"} if agent == "general" else {}),
                "scholarly_sources": _scholarly_sources,
                "tool_calls": tool_log,
                "suggestions": suggestions, "safety": safety_flag,
@@ -3330,13 +3336,14 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 return None
         if agent == "general":
             try:
-                llm_suggestions = await asyncio.wait_for(_post_llm_suggest(), timeout=8)
+                llm_suggestions = await asyncio.wait_for(_post_llm_suggest(), timeout=8) if safety_flag != "blocked" else None
             except asyncio.TimeoutError:
                 llm_suggestions = None
         else:
             llm_suggestions = await _post_llm_suggest()
-        if llm_suggestions:
-            yield {"type": "suggestions", "suggestions": llm_suggestions}
+        if llm_suggestions or agent == "general":
+            yield {"type": "suggestions", "suggestions": llm_suggestions or [],
+                   **({"status": "ready" if llm_suggestions else "unavailable" if DS.wants_suggestions(req_message) and len(full_answer) >= 40 and safety_flag != "blocked" else "disabled"} if agent == "general" else {})}
     except Exception as e:
         # 收口阶段异常（图流异常已在上方恢复处理; 此处兜底不丢观测）——
         # 2026-08-30 修复: 旧代码 error 路径把工具数硬编码记 0, 掩盖了"13 次调用后 error"的真实形态

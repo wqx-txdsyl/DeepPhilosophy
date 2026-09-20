@@ -41,5 +41,25 @@ try {
   const webRead = source({ source_type: 'web', title: '网页', url: 'https://example.org', excerpt: '实际读到的正文', access_level: 'WEB_PASSAGE_READ' });
   assert.ok(webRead.includes('已读取网页正文片段') && webRead.includes('实际读到的正文'));
   assert.ok(!webRead.includes('已读全文'));
+  const primaryCitation = { book: '论语', book_id: 'lunyu', chapter: '学而', chapter_idx: 0, excerpt: '学而时习之，不亦说乎。', access_level: 'PASSAGE_READ', used: true };
+  const linked = render('“学而时习之，不亦说乎。”【《论语》·学而】', { citations: [primaryCitation] });
+  assert.equal((linked.match(/href="https:\/\/deepphilosophy.top\/reader\/lunyu\?ch=0"/g) || []).length, 2, 'quote and its citation both open the actual chapter');
+  assert.ok(!render('“一段没有读到的伪造原文。”', { citations: [primaryCitation] }).includes('general-inline-quote'));
+  assert.ok(!render('“学而时习之，不亦说乎。”', { citations: [{ ...primaryCitation, access_level: 'SEARCH_EXCERPT' }] }).includes('general-inline-quote'));
+  const { sourceHref } = await server.ssrLoadModule('/src/utils/evidence.js');
+  assert.equal(sourceHref({ book: '未知', book_id: 'missing', chapter_idx: -1 }), null, 'unknown chapter must not silently open chapter zero');
+  assert.equal(sourceHref({ source_type: 'web', url: 'javascript:alert(1)' }), null);
+  const { AnswerResearch, AnswerExploration } = await server.ssrLoadModule('/src/components/conversation/AnswerResearch.jsx');
+  const researchPanel = message => renderToStaticMarkup(createElement(AnswerResearch, { message, lang: 'zh', onSend() {}, onSource() {} }));
+  const emptyResearch = researchPanel({});
+  assert.ok(emptyResearch.includes('原典检索') && emptyResearch.includes('本轮未检索原典') && emptyResearch.includes('检索相关原典'));
+  const research = researchPanel({ citations: [primaryCitation], evidence: { primary_research: { status: 'complete', total: 2, sources: [primaryCitation, { ...primaryCitation, book: '相关著作', book_id: 'other', used: false, access_level: 'SEARCH_EXCERPT' }] } } });
+  assert.ok(research.includes('本回答引用') && research.includes('另有 1 处检索材料') && research.includes('阅读原典'));
+  assert.ok(researchPanel({ evidence: { primary_research: { sources: [{ ...primaryCitation, used: false }] } } }).includes('相关材料 · 未引用'));
+  const exploration = renderToStaticMarkup(createElement(AnswerExploration, { message: { suggestions: [] }, lang: 'zh', onSend() {} }));
+  assert.ok(exploration.includes('继续探索') && exploration.includes('检验反例') && exploration.includes('比较不同立场'));
+  const unusedDrawer = source({ ...primaryCitation, used: false });
+  assert.ok(unusedDrawer.includes('未被本回答引用') && !unusedDrawer.includes('本回答使用的来源'));
   console.log('8 general markdown/source delivery checks passed');
+  console.log('Answer structure, primary-text links and exploration checks passed');
 } finally { await server.close(); }

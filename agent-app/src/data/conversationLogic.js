@@ -295,6 +295,7 @@ export function toPersistedMessage(m) {
     ...(m.evidence ? { evidence: m.evidence } : {}),
     tool_events: events,
     ...(m.suggestions?.length ? { suggestions: m.suggestions } : {}),
+    ...(m.agent_id === GENERAL_AGENT && m.suggestions_status ? { suggestions_status: m.suggestions_status } : {}),
     ...(m.reasoning_summary ? { reasoning_summary: m.reasoning_summary } : {}),
     ...(m.safety ? { safety: m.safety } : {}),
     ...(m.agent_id === GENERAL_AGENT && m.stream_state ? { stream_state: m.stream_state, error: m.error || '' } : {}),

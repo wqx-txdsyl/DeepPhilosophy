@@ -5,6 +5,8 @@
  * 前端再按 used 标记兜底过滤一次: "引用来源"面板永远只展示回答实际引用的证据。
  * 旧数据无 used 字段 → 视为已用（向后兼容）, 不因缺标记而误清空历史引用。
  */
+import { DP_READER } from './api.js';
+
 export const pickUsedEvidence = (citations) =>
   (Array.isArray(citations) ? citations : []).filter((c) => c && c.used !== false);
 
@@ -31,4 +33,27 @@ export function generalAccessLabel(level, lang = 'zh') {
     FULL_TEXT_READ: ['已读取正文片段', 'Full-text passages read'],
   };
   return labels[level]?.[lang === 'en' ? 1 : 0] || '';
+}
+
+/** Only known chapter coordinates become direct reader links; never invent chapter zero. */
+export function sourceHref(c = {}) {
+  const primary = generalEvidenceLayer(c) === 'primary';
+  const index = c.chapter_idx;
+  if (primary && c.book_id && index !== null && index !== undefined && index !== '' && typeof index !== 'boolean'
+      && Number.isInteger(Number(index)) && Number(index) >= 0) {
+    return `${DP_READER}/${encodeURIComponent(c.book_id)}?ch=${Number(index)}`;
+  }
+  for (const value of [c.reader_url, c.url]) {
+    try { const url = new URL(value); if (['https:', 'http:'].includes(url.protocol)) return url.href; } catch { /* unavailable */ }
+  }
+  const doi = String(c.doi || '').replace(/^https?:\/\/(?:dx\.)?doi\.org\//i, '');
+  return /^10\.\d{4,9}\/\S+$/.test(doi) ? `https://doi.org/${encodeURI(doi)}` : null;
+}
+
+export function primaryResearch(message = {}) {
+  const research = message.evidence?.primary_research;
+  if (research && Array.isArray(research.sources)) return research;
+  // Old saved answers retain known citations; unknown retrieval history is not reconstructed.
+  const sources = pickUsedEvidence(message.citations).filter(c => generalEvidenceLayer(c) === 'primary');
+  return { status: sources.length ? 'complete' : 'not_requested', sources, total: sources.length };
 }

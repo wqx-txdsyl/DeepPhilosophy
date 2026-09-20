@@ -122,6 +122,8 @@ await test('tool outcomes do not mislabel blocked and empty results as success',
 await test('no fabricated followups; explicit empty suggestions clears prior metadata', () => {
   const state = reduce([{ type: 'done', suggestions: ['进一步？', '进一步？'] }, { type: 'suggestions', suggestions: [] }]);
   assert.deepEqual(state.suggestions, []);
+  const optedOut = reduce([{ type: 'done', suggestions_status: 'disabled', content: '回答' }]);
+  assert.equal(toPersistedMessage({ ...optedOut, role: 'assistant', agent_id: 'general' }).suggestions_status, 'disabled');
 });
 await test('general full answer, outcome, call IDs and duration survive storage round trip', () => {
   const completed = finishGeneralStream(reduce([{ type: 'tool', name: 'search_books', call_id: 'unique', status: 'empty', result: '[]' }, { type: 'token', content: '长'.repeat(9000) }, { type: 'done' }]), { duration: 17 });

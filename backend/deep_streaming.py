@@ -1,5 +1,6 @@
 """Presentation-only helpers for the general agent; persona paths stay unchanged."""
 import re
+import json
 
 _EMOJI = re.compile(
     r"[0-9#*]\ufe0f?\u20e3|"
@@ -11,6 +12,20 @@ def clean_public_text(text):
     return _EMOJI.sub("", text or "")
 
 
+def suggestion_question(message):
+    """A follow-up envelope's old opt-outs do not override the current question."""
+    opening = '请围绕下列指定回答继续讨论。\n<general_followup_context>\n'
+    closing = '\n</general_followup_context>'
+    if isinstance(message, str) and message.startswith(opening) and message.endswith(closing):
+        try:
+            context = json.loads(message[len(opening):-len(closing)])
+            if isinstance(context, dict) and set(context) == {'原问题与附件', '指定回答对应问题', '指定回答', '本次追问'} and all(isinstance(v, str) for v in context.values()):
+                return context['本次追问']
+        except (ValueError, TypeError):
+            pass
+    return message
+
+
 def wants_suggestions(message):
     """Honor explicit requests to omit follow-ups, without classifying question intent."""
     return not re.search(
@@ -18,7 +33,7 @@ def wants_suggestions(message):
         r"(?:追问|延伸|后续|建议|推荐)|"
         r"(?:no|without|do not|don't)\s+(?:(?:add(?:ing)?|includ(?:e|ing)|giv(?:e|ing)|offer(?:ing)?|any|more)\s+)*"
         r"(?:follow[- ]?ups?|suggestions?|further questions)",
-        message or "", re.I)
+        suggestion_question(message) or "", re.I)
 
 
 def complete_paragraph_prefix(text):
