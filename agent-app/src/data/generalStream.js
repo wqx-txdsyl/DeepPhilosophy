@@ -1,4 +1,4 @@
-/** Public research events only. The canonical answer is never a typewriter queue. */
+/** Main-model reasoning, public research and answer have separate event channels. */
 export const plainText = value => String(value ?? '').replace(/[0-9#*]\uFE0F?\u20E3|[\p{Extended_Pictographic}\p{Regional_Indicator}\p{Emoji_Modifier}\uFE0F\u200D]/gu, '');
 const callId = e => e.call_id || e.tool_call_id || e.id;
 const suggestions = value => Array.isArray(value)
@@ -29,6 +29,15 @@ export function prepareGeneralRequest(streams, conversationId) {
 export function reduceGeneralEvent(state, evt) {
   if (!evt || typeof evt.type !== 'string') return state;
   const text = plainText(evt.content);
+  if (evt.type === 'provider_reasoning_delta') {
+    if (state.done_received || evt.source !== 'deepseek' || !evt.id || typeof evt.content !== 'string' || !evt.content) return state;
+    const events = [...state.events];
+    const i = events.findIndex(e => e.t === 'provider_reasoning' && e.id === evt.id);
+    // Preserve the provider's text exactly, including whitespace and Markdown.
+    if (i < 0) events.push({ t: 'provider_reasoning', id: evt.id, source: evt.source, content: evt.content });
+    else events[i] = { ...events[i], content: events[i].content + evt.content };
+    return { ...state, events };
+  }
   if (evt.type === 'token') return state.done_received ? state : { ...state, content: state.content + text };
   if (evt.type === 'answer_retract') {
     // Only retract a matching suffix. An unrelated/duplicate event must not erase a valid answer.
@@ -80,7 +89,7 @@ export function reduceGeneralEvent(state, evt) {
   if (evt.type === 'suggestions') return { ...state, suggestions: suggestions(evt.suggestions) };
   if (evt.type === 'reasoning_summary') return { ...state, reasoning_summary: text };
   if (evt.type === 'error') return { ...state, error: text || '请求未完成', stream_state: 'error' };
-  // thought/thought_stream are private reasoning and are deliberately neither rendered nor stored.
+  // Legacy thought/thought_stream do not identify a verified provider channel.
   return state;
 }
 

@@ -152,9 +152,45 @@ def test_first_validated_paragraph_arrives_before_the_last_tokens_exist(monkeypa
     assert early and answer(events) == FIRST + LAST
     notes = "".join(e.get("content", "") for e in of(events, "thinking_summary_delta"))
     assert notes == "先辨别可选择的目标与需要承担的后果。"
-    assert PRIVATE not in all_string_values(events)
+    assert "".join(e["content"] for e in of(events, "provider_reasoning_delta")) == PRIVATE
+    assert PRIVATE not in all_string_values([e for e in events if e["type"] != "provider_reasoning_delta"])
     assert "<answer>" not in all_string_values(events)
     assert "<rationale>" not in all_string_values(events)
+
+
+def test_provider_reasoning_arrives_incrementally_before_answer_generation(monkeypatch):
+    release_answer = threading.Event()
+    model = install(monkeypatch, [{"reasoning": PRIVATE,
+        "parts": [{"gate": release_answer}, {"mark": "answer_started"}, "<answer>", FIRST, LAST, "</answer>"]}])
+    received = []
+
+    def observe(event):
+        if event["type"] == "provider_reasoning_delta":
+            assert ("answer_started", 0) not in model.audit
+            assert event["source"] == "deepseek"
+            received.append(event["content"])
+            if "".join(received) == PRIVATE:
+                release_answer.set()
+
+    events = collect(observe)
+    deltas = of(events, "provider_reasoning_delta")
+    assert len(deltas) > 1
+    assert len({e["id"] for e in deltas}) == 1
+    assert "".join(e["content"] for e in deltas) == PRIVATE
+    assert PRIVATE not in all_string_values(successful_done(events))
+
+
+def test_provider_reasoning_recovery_uses_separate_round_ids(monkeypatch):
+    install(monkeypatch, [
+        {"reasoning": "first attempt", "finish": "length"},
+        {"reasoning": "second attempt", "parts": ["<answer>", FIRST, LAST, "</answer>"]},
+    ])
+    events = collect()
+    rounds = {}
+    for e in of(events, "provider_reasoning_delta"):
+        rounds[e["id"]] = rounds.get(e["id"], "") + e["content"]
+    assert list(rounds.values()) == ["first attempt", "second attempt"]
+    successful_done(events)
 
 
 def test_plan_only_recovery_cannot_publish_a_length_truncated_response(monkeypatch):
@@ -294,7 +330,7 @@ def test_reasoning_only_length_starts_a_complete_answer_without_inventing_a_pref
     recovery_request = next(content for kind, content in reversed(inputs[1]) if kind == "human")
     assert "尚未生成回答正文" in recovery_request
     assert "断点" not in recovery_request and "已有段落" not in recovery_request
-    assert PRIVATE not in all_string_values(events)
+    assert PRIVATE not in all_string_values([e for e in events if e["type"] != "provider_reasoning_delta"])
 
 
 @pytest.mark.parametrize("prefix", ["", FIRST + "因为选择的后果"])

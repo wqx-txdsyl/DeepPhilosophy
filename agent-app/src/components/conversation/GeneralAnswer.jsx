@@ -13,10 +13,39 @@ const STATUS = {
   blocked: ['未执行', 'Not executed'], reused: ['复用已有结果', 'Reused result'], cancelled: ['已停止', 'Stopped'], running: ['进行中', 'Running'],
 };
 
+export function ProviderReasoning({ message }) {
+  const { lang } = useLang();
+  const zh = lang !== 'en';
+  const [open, setOpen] = useState(() => !!message.streaming);
+  const body = useRef(null);
+  const follow = useRef(true);
+  const chunks = (message.events || message.tool_events || []).filter(e => e.t === 'provider_reasoning' && e.source === 'deepseek');
+  const length = chunks.reduce((sum, e) => sum + e.content.length, 0);
+  useEffect(() => {
+    if (open && follow.current && body.current) body.current.scrollTop = body.current.scrollHeight;
+  }, [open, length]);
+  if (!chunks.length) return null;
+  const active = message.streaming && !message.done_received;
+  const stopped = ['stopped', 'error', 'interrupted'].includes(message.stream_state);
+  return <div className="cw-activity general-reasoning">
+    <button className="cw-activity-head" aria-expanded={open} onClick={() => setOpen(v => !v)}>
+      {active ? <Loader2 size={13} className="cw-spinner" aria-hidden /> : open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
+      <span className="cw-activity-head-text">{zh ? 'DeepSeek 思考过程' : 'DeepSeek reasoning'}</span>
+      <span className="general-activity-count">{active ? (zh ? '实时' : 'Live') : stopped ? (zh ? '已中断' : 'Interrupted') : (zh ? '已完成' : 'Complete')}</span>
+    </button>
+    {open && <div className="cw-activity-body general-reasoning-body" ref={body} onScroll={event => {
+      const el = event.currentTarget;
+      follow.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+    }}>
+      {chunks.map(e => <div className="general-reasoning-text" key={e.id}>{e.content}</div>)}
+    </div>}
+  </div>;
+}
+
 function ResearchActivity({ message }) {
   const { lang, toolLabel } = useLang();
   const zh = lang !== 'en';
-  const [open, setOpen] = useState(() => !!message.streaming || !!getPref('toolTraceOpen'));
+  const [open, setOpen] = useState(() => !!getPref('toolTraceOpen'));
   const answered = useRef(!!message.content);
   useEffect(() => {
     if (message.content && !answered.current) setOpen(false);
@@ -27,40 +56,31 @@ function ResearchActivity({ message }) {
     && !(e.t === 'tool_note' && /^(登记研究需求|Registering research need|正在.*(?:…|\.\.\.)$)/i.test(e.text || '')));
   const calls = events.filter(e => e.t.startsWith('tool') && e.t !== 'tool_note');
   const running = calls.filter(e => e.t === 'tool_start').length;
-  if (!message.streaming && !events.length) return null;
+  const hasReasoning = (message.events || message.tool_events || []).some(e => e.t === 'provider_reasoning');
+  if (!events.length && (!message.streaming || hasReasoning)) return null;
   const completed = calls.filter(e => e.t === 'tool' && ['success', 'reused'].includes(e.status || 'success')).length;
-  const phase = events.filter(e => e.t === 'thinking_summary').at(-1)?.phase;
-  const phaseLabel = {
-    analysis: zh ? '正在辨析问题' : 'Examining the question',
-    evidence: zh ? '正在查阅资料' : 'Consulting sources',
-    synthesis: zh ? '正在组织回答' : 'Developing the answer',
-    UNDERSTANDING: zh ? '正在辨析问题' : 'Examining the question',
-    PRIMARY_SEARCH: zh ? '正在查找原典' : 'Searching primary texts',
-    SOURCE_VERIFY: zh ? '正在核对出处' : 'Checking sources',
-    SCHOLARLY_RESEARCH: zh ? '正在查阅学术研究' : 'Consulting scholarship',
-    ARGUMENT_SYNTHESIS: zh ? '正在组织回答' : 'Developing the answer',
-  }[phase];
-  const headline = message.done_received ? (zh ? '回答已完成' : 'Answer complete') : running > 1 ? (zh ? `${running} 项查阅并行进行` : `${running} lookups running in parallel`)
-    : message.streaming ? (message.content ? (zh ? '正在写下回答' : 'Writing the answer') : phaseLabel || plainText(message.status) || (zh ? '正在梳理问题' : 'Examining the question'))
-      : zh ? '研究过程' : 'Research activity';
+  const headline = events.length ? (zh ? '工具与研究记录' : 'Tools and research notes')
+    : message.content ? (zh ? '正在写下回答' : 'Writing the answer') : (zh ? '等待模型响应' : 'Waiting for the model');
   return <div className="cw-activity general-activity">
     <button className="cw-activity-head" aria-expanded={open} onClick={() => setOpen(v => !v)}>
       {message.streaming && !message.done_received ? <Loader2 size={13} className="cw-spinner" aria-hidden /> : open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
       <span className="cw-activity-head-text" role="status">{headline}</span>
-      {!message.streaming && completed > 0 && <span className="general-activity-count">{zh ? `${completed} 项查阅完成` : `${completed} lookups complete`}</span>}
+      {running > 0 ? <span className="general-activity-count">{zh ? `${running} 项执行中` : `${running} running`}</span>
+        : completed > 0 && <span className="general-activity-count">{zh ? `${completed} 项工具完成` : `${completed} tools complete`}</span>}
     </button>
     {open && <div className="cw-activity-body">
       {!events.length && <div className="cw-think-line">{zh ? '收到问题，准备回答。' : 'Question received. Preparing an answer.'}</div>}
       {events.map((event, i) => {
         if (event.t === 'thinking_summary' || event.t === 'tool_note') {
           const content = plainText(event.content || event.text);
-          return content ? <div className="cw-think-line" key={event.id || `note-${i}`}>{content}</div> : null;
+          return content ? <div className="cw-think-line" key={event.id || `note-${i}`}>{event.t === 'thinking_summary' && <span>{zh ? '研究说明：' : 'Research note: '}</span>}{content}</div> : null;
         }
         const name = event.tc?.name || event.name;
         const args = event.tc?.args || event.args || {};
         const webLabel = name === 'websearch' ? (args.url ? (zh ? '读取网页' : 'Read webpage') : (zh ? '联网查阅' : 'Search web')) : null;
         const scholarlyLabel = { search_scholarship: zh ? '检索学术文献' : 'Search scholarship', get_scholarly_source: zh ? '读取学术资料' : 'Read scholarly source' }[name];
-        const label = webLabel || scholarlyLabel || (toolLabel(name) !== name ? toolLabel(name) : (zh ? '查阅资料' : 'Consult source'));
+        const reasoningLabel = { analyze_argument: zh ? '论证分析（辅助模型）' : 'Argument analysis (auxiliary model)', paper_review: zh ? '文本评审（辅助模型）' : 'Text review (auxiliary model)' }[name];
+        const label = reasoningLabel || webLabel || scholarlyLabel || (toolLabel(name) !== name ? toolLabel(name) : (zh ? '工具调用' : 'Tool call'));
         let query = toolShortArgs(args);
         if (args.url) {
           try { query = new URL(args.url).hostname + (args.focus ? ` · ${args.focus}` : ''); }
@@ -101,6 +121,7 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy }
   };
   useEffect(() => { if (!copied) return; const timer = setTimeout(() => setCopied(false), 1800); return () => clearTimeout(timer); }, [copied]);
   return <>
+    <ProviderReasoning message={m} />
     <ResearchActivity message={m} />
     <div className="general-answer" aria-busy={!!m.streaming}>
       {renderMarkdown(content, code => onDrawioEdit(m.message_id, code), m.drawioXml, key => plainText(t(key)), {

@@ -1,25 +1,10 @@
 # -*- coding: utf-8 -*-
-"""O1-RP1 — Public Thinking Safety（provider 私有推理绝不出现在用户可见 SSE）
+"""Public notes remain distinct from the explicitly requested DeepSeek reasoning stream.
 
-架构契约（docs/PHIAGENT_O1_SINGLE_AGENT_CAUSAL_LOOP.md §4, RP1 修订）:
-  ① provider reasoning_content（raw chain-of-thought）是 provider-private 数据——
-     绝不进入用户可见 SSE。引擎对该通道一律内部丢弃（不转发 / 不累积 / 不落盘 /
-     不摘要冒充）; thought_stream 不再由引擎发出。
-  ② public Thinking 唯一事实来源 = thinking_summary(_delta), 内容只能来自:
-     A. Main Agent 显式公开工作笔记（工具轮内容通道, 铁律 0）;
-     B. Main Agent 显式 <rationale>…</rationale>。
-  ③ 模型没写公开内容时: 不伪造 Thinking——用户只看机械活动注记（tool_note）
-     与工具事件（允许只有 tool activity）。
-  ④ runtime 不得摘要 raw CoT 冒充 Agent: _post_reasoning_summary（mini-LLM,
-     _gen_summary 变体）与确定性 build_reasoning_summary 兜底均已删除,
-     reasoning_summary 事件不再出现在生产流。
-
-sentinel（PRIVATE_REASONING_SENTINEL_7F31）只用于测试注入, 不参与任何生产逻辑——
-实现是结构性移除发射路径, 不是生产字符串 blacklist。
-
-测试全部走 production path（真实 LangGraph 图 + 真实工具桩 + 脚本化假 LLM,
-按 DeepSeek 思考模式流形在 AIMessageChunk.additional_kwargs 上注入 reasoning_content）,
-断言对象是全部 SSE 事件的序列化整体——不是 grep 源码字符串。
+2026-09-20 user contract: general-agent reasoning_content is forwarded exactly in
+provider_reasoning_delta. It must never contaminate public notes, tool metadata,
+final prose or done. No runtime summary or fabricated reasoning is introduced.
+Persona isolation is covered in test_deep_streaming_delivery.py.
 """
 import asyncio
 import json
@@ -130,6 +115,8 @@ def _run_stream(question, script):
         evs = []
         async for ev in EG.stream_agent(question, [], agent="general", language="zh"):
             evs.append(ev)
+        actual = "".join(e["content"] for e in evs if e["type"] == "provider_reasoning_delta")
+        assert actual == "".join(part.get("reasoning", "") for part in script)
         return evs
 
     try:
@@ -171,7 +158,8 @@ def _all_strings(evs):
 
 
 def _assert_no_sentinel(evs):
-    """sentinel 不得出现在用户可见 SSE 的任何位置（按序拼接 + 全字段两口径）。"""
+    """Actual reasoning is allowed only in its dedicated provider channel."""
+    evs = [e for e in evs if e["type"] != "provider_reasoning_delta"]
     assert SENTINEL not in _visible_stream_text(evs), \
         "provider 私有推理泄漏进用户可见流（按序拼接口径）"
     assert SENTINEL not in _all_strings(evs), \

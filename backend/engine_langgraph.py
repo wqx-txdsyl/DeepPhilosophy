@@ -2,11 +2,11 @@
 """LangGraph 引擎（PhiAgent v2）——替代自研流式 ReAct 循环
 
 Claude Code 风格: 思考 → 工具调用（多工具并行）→ 观察 → 最终回答
-SSE 事件词表（O5 收敛, 实际发射 12 类）: status / thinking_summary /
+SSE 事件词表: status / thinking_summary / provider_reasoning_delta /
 thinking_summary_delta / tool_start / tool_note / tool / tool_cancel / token /
 validation_failed / error / done / suggestions
-（RP1, O1-RP1: thought_stream 不再由引擎发出——provider 私有推理一律内部丢弃,
- public Thinking 唯一事实来源 = thinking_summary(_delta);
+（2026-09-20: 通用 DeepSeek 主模型通过 provider_reasoning_delta 实时展示实际推理;
+ 公开研究说明仍单独使用 thinking_summary(_delta)，人格路径保持原行为;
  answer_retract / reasoning_summary / auto_read 同为已删词表外事件）
 工具: 复用 routes.agent 的 TOOLS 注册表（30 个工具平移为 StructuredTool, 零逻辑改动）
 """
@@ -2076,7 +2076,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 当前 agent 轮缓冲（O2: 轮文本一律只缓冲, 不再实时流出——
     # 有工具 → 轮末降级为 thinking_summary; 无工具 → Final Candidate, 校验后发布;
     # note_emitted: 本轮公开工作笔记已作为 thinking_summary 发出, flush 不再重复）
-    # O5: reasoned 标志已删（只写不读——provider reasoning 一律内部丢弃, 无观察消费方）
+    # Provider reasoning has its own stream and is never mixed into candidate prose.
     pending = {"text": "", "has_tools": False, "started": set(),
                "note_emitted": False}
     pending_tools = set()   # 本轮已发 tool_start 但尚未执行的工具 (name, tool_call_id)
@@ -2090,6 +2090,7 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     _rat_phase = "analysis"
     # O1 因果观测: Main Agent invocation 组计数（tools→agent 每次回到 agent 节点 +1）
     _agent_invocations = 1
+    _stream_runs = 0
     _saw_tools_result = False
     _main_agent_tool_decisions = 0
 
@@ -2167,7 +2168,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         nonlocal pending, _agent_invocations, _saw_tools_result
         nonlocal _main_agent_tool_decisions, _rat_tools_done, _rat_phase
         nonlocal _candidate_truncated, _rat_parser, _phrase_scr
-        nonlocal _published_prefix
+        nonlocal _published_prefix, _stream_runs
+        _stream_runs += 1
         # O6-RP1 (F2): 每次新 Main Agent invocation 从确定性干净 pending 起步——
         # 上一 invocation 的工具宣告状态必须已在其终态闭合中清除, 不跨轮泄漏
         # （repair/恢复轮的新候选不得被上一轮残留宣告的 has_tools 卡 True 丢弃）。
@@ -2224,6 +2226,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 if not chunk:
                     continue
                 if agent == "general":
+                    # 2026-09-20: user explicitly requested DeepSeek's actual reasoning stream.
+                    # Only the main agent's provider field goes into this separate channel;
+                    # public notes, auxiliary-tool reasoning, answers and logs stay separate.
+                    reasoning = (getattr(chunk, "additional_kwargs", None) or {}).get("reasoning_content")
+                    if (AG.MODEL.startswith("deepseek") and "bigmodel.cn" not in AG.API_URL
+                            and isinstance(reasoning, str) and reasoning):
+                        yield {"type": "provider_reasoning_delta", "source": "deepseek",
+                               "id": f"{trace.invocation_id}:run-{_stream_runs}:{_dg()}:reasoning",
+                               "content": reasoning, "decision_group_id": _dg()}
                     finish = (getattr(chunk, "response_metadata", None) or {}).get("finish_reason")
                     if finish == "length":
                         _candidate_truncated = True
@@ -2324,11 +2335,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                                     _published_prefix = prefix
                                     yield {"type": "token", "content": delta,
                                            "validated": True, "granularity": "paragraph"}
-                # Provider 私有推理（DeepSeek reasoning_content）→ RP1 (O1-RP1) 一律内部丢弃:
-                # raw chain-of-thought 是 provider-private 数据, 绝不进入用户可见 SSE（thought_stream
-                # 不再承载任何 raw 透传）; public Thinking 只能来自模型自己写的 <rationale>/
-                # 公开工作笔记（thinking_summary）。不转发、不累积、不落盘（A1）、不摘要冒充。
-                # （O5: 原 pending["reasoned"] 标志已删——只写不读, 无观察消费方。）
+                # Persona agents retain the existing public-note-only presentation.
+                # General DeepSeek reasoning was forwarded above without summarizing it.
             elif node == "tools":
                 # agent 输出结束 → flush（工作笔记/工具卡片穿插节奏; O1: 笔记已在宣告前归位）
                 async for ev in flush_agent():

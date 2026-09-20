@@ -40,6 +40,23 @@ await test('authoritative done.content repairs missing final tokens', () => {
   assert.equal(state.citations.length, 1);
   assert.equal(reduceGeneralEvent(state, { type: 'token', content: 'late stale token' }).content, state.content);
 });
+await test('provider reasoning preserves exact deltas, separate rounds and interrupted history', () => {
+  let state = reduce([
+    { type: 'provider_reasoning_delta', source: 'deepseek', id: 'r1', content: '先思考\n' },
+    { type: 'tool_start', name: 'analyze_argument', call_id: 'tool1' },
+    { type: 'provider_reasoning_delta', source: 'deepseek', id: 'r2', content: '第二轮' },
+    { type: 'provider_reasoning_delta', source: 'deepseek', id: 'r1', content: '  保留空格 🧠 <script>' },
+  ]);
+  assert.equal(state.content, '');
+  assert.deepEqual(state.events.filter(e => e.t === 'provider_reasoning').map(e => e.content), ['先思考\n  保留空格 🧠 <script>', '第二轮']);
+  const stopped = finishGeneralStream(state, { aborted: true });
+  const persisted = toPersistedMessage({ ...stopped, role: 'assistant', agent_id: 'general' });
+  assert.deepEqual(persisted.tool_events.filter(e => e.t === 'provider_reasoning'), state.events.filter(e => e.t === 'provider_reasoning'));
+  assert.equal(stopped.events[1].status, 'cancelled');
+  state = reduceGeneralEvent(state, { type: 'done', content: '答案', complete: true });
+  assert.equal(reduceGeneralEvent(state, { type: 'provider_reasoning_delta', source: 'deepseek', id: 'r1', content: 'late' }), state);
+  assert.equal(reduceGeneralEvent(createGeneralStream(), { type: 'provider_reasoning_delta', source: 'unknown', id: 'r1', content: 'untrusted' }).events.length, 0);
+});
 await test('stop, partial EOF and explicit failure retain answer and distinguish unfinished calls', () => {
   const state = reduce([{ type: 'token', content: '已收到正文' }, { type: 'tool_start', name: 'websearch', call_id: 'a' }]);
   const stopped = finishGeneralStream(state, { aborted: true, duration: 3.4 });
