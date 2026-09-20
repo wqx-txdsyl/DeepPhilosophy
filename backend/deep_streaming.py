@@ -36,6 +36,12 @@ def wants_suggestions(message):
         suggestion_question(message) or "", re.I)
 
 
+def has_tool_protocol_text(text):
+    """Provider tool markup outside code examples is not an executed tool call."""
+    outside_code = re.sub(r'```[\s\S]*?```', '', text or '')
+    return bool(re.search(r'<[^>\n]*DSML[^>\n]*>|</?(?:declare_research_need|search_books|get_chapter|get_book_detail|compare_views|websearch)(?:[\s">/])', outside_code, re.I))
+
+
 def complete_paragraph_prefix(text):
     """Return a closed paragraph boundary, holding unfinished markup and quotes."""
     boundary = text.rfind("\n\n")

@@ -1867,6 +1867,8 @@ def _is_plan_only_terminal(candidate, user_message):
     c = candidate or ""
     if not c.strip():
         return False
+    if DS.has_tool_protocol_text(c):
+        return True  # Tool-shaped text is an unexecuted request, never an answer.
     if _PLAN_USER_REQUEST_RE.search(user_message or ""):
         return False
     matches = list(_PLAN_INTENT_RE.finditer(c))
@@ -1897,6 +1899,12 @@ PLAN_ONLY_RECOVERY_DIRECTIVE = (
     "(1) 立即调用检索工具执行你宣布的检索; "
     "(2) 基于你已掌握的证据直接给出对用户问题的实质性回答; "
     "无法核验的部分明确标注证据边界, 不得只留下工具计划。不要再输出行动计划。")
+
+TOOL_PROTOCOL_RECOVERY_DIRECTIVE = (
+    "上一轮把工具请求写进了普通正文，服务未执行这些请求。请继续原用户任务："
+    "需要查阅原典时，使用已绑定工具的原生 tool_calls 通道和合法 JSON 参数实际调用，"
+    "不要在 content 中输出 XML、DSML、invoke 或参数标签，不要声称请求已经执行。"
+    "收到真实工具结果并完成阅读后再用 <answer> 给出正文和实际出处。")
 
 
 def _issue_snapshot(round_id, issue):
@@ -2574,13 +2582,15 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         if (candidate.strip() and _final_round_tool_calls == 0
                 and _is_plan_only_terminal(candidate, req_message)):
             _plan_gate = True
+            _protocol_gate = agent == "general" and DS.has_tool_protocol_text(candidate)
             yield {"type": "tool_note",
-                   "content": "（智能体宣布了检索计划但尚未执行——正在要求它执行检索或直接给出实质性回答……）",
+                   "content": ("工具请求未被服务识别，正在恢复实际调用。" if _protocol_gate else
+                               "（智能体宣布了检索计划但尚未执行——正在要求它执行检索或直接给出实质性回答……）"),
                    "initiated_by": "runtime_mechanical", "activity": True,
                    "decision_group_id": _dg()}
-            _recovery_msgs = list(messages) + [
-                AIMessage(content=candidate),
-                HumanMessage(content=PLAN_ONLY_RECOVERY_DIRECTIVE)]
+            _recovery_msgs = ((list(_message_checkpoint) or list(messages)) +
+                              [HumanMessage(content=TOOL_PROTOCOL_RECOVERY_DIRECTIVE)] if _protocol_gate
+                              else list(messages) + [AIMessage(content=candidate), HumanMessage(content=PLAN_ONLY_RECOVERY_DIRECTIVE)])
             _recovered = ""
             _recovery_no_tools = bool(budget is not None and budget.hard_reached())
             try:

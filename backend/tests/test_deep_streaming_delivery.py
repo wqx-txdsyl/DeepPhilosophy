@@ -203,6 +203,42 @@ def test_plan_only_recovery_cannot_publish_a_length_truncated_response(monkeypat
     assert not of(events, "done")
 
 
+def test_tool_markup_is_retried_as_native_calls_and_never_published(monkeypatch):
+    executed = []
+    def search(query: str):
+        executed.append(query)
+        return {'results': []}
+    tool = StructuredTool.from_function(search, name='search_books', description='offline search')
+    broken = '<declare_research_need">PRIMARY</declare_research_need>\n<search_books><query>原典</query></search_books>\n</｜｜DSML｜｜ calls>'
+    model = install(monkeypatch, [
+        {'parts': ['<answer>', broken, '\n\n', '</answer>']},
+        {'tool_calls': [{'name': 'search_books', 'args': {'query': '原典'}, 'id': 'native'}]},
+        {'parts': ['<answer>', FIRST, LAST, '</answer>']},
+    ], [tool])
+    events = collect()
+    successful_done(events)
+    assert executed == ['原典'] and model.idx == 3
+    assert len(of(events, 'tool_start')) == 1
+    assert answer(events) == FIRST + LAST
+    assert 'DSML' not in answer(events) and '<search_books>' not in answer(events)
+
+
+def test_tool_protocol_detection_preserves_code_examples():
+    assert DS.has_tool_protocol_text('<search_books><query>x</query></search_books>')
+    assert not DS.has_tool_protocol_text('工具名为 search_books，参数使用 JSON。')
+    assert not DS.has_tool_protocol_text('协议示例：\n```xml\n<search_books><query>x</query></search_books>\n```')
+
+
+def test_repeated_tool_markup_fails_closed_with_bounded_recovery(monkeypatch):
+    broken = '<search_books><query>原典</query></search_books>\n</｜｜DSML｜｜ calls>'
+    model = install(monkeypatch, [{'parts': ['<answer>', broken, '</answer>']}] * 4)
+    events = collect()
+    assert model.idx <= 4
+    assert 'DSML' not in answer(events) and '<search_books>' not in answer(events)
+    assert not any(e.get('complete') for e in of(events, 'done'))
+    assert not of(events, 'tool_start')
+
+
 def test_closing_general_stream_cancels_an_inflight_async_provider(monkeypatch):
     class AsyncCancellationChat(DeliveryScriptedChat):
         async def _astream(self, messages, stop=None, run_manager=None, **kwargs):
