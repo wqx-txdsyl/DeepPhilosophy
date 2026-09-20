@@ -53,6 +53,21 @@ def state_for(name, ids=("one",), agent="general"):
             "raw_tool_log": [], "tool_count": 0, "message_checkpoint": [], "request_message": "固定原问题"}
 
 
+@pytest.mark.parametrize('name', sorted(context.PRIMARY_CONTEXT_TOOLS))
+def test_primary_research_metadata_and_middle_passages_survive_transport_and_later_rounds(name):
+    data = {'text': '前文。' * 850 + '中心原文不能丢失' + '后文。' * 850,
+            'results': [{'book_id': 'actual-id', 'read_args': {'book_id': 'actual-id', 'chapter_idx': 9}}],
+            'catalogue_matches': [{'book_id': 'author-work', 'book_title': '作者的原著'}]}
+    content, delivery = context.tool_context(name, data, 'general')
+    assert len(content) > 4000 and delivery['status'] == 'complete'
+    message = ToolMessage(name=name, content=content, tool_call_id='read', additional_kwargs={'_result_full': data, '_context_delivery': delivery})
+    messages = [HumanMessage(content='问题'), message, AIMessage(content='下一轮'), ToolMessage(name='probe', content='{}', tool_call_id='probe')]
+    E._compact_consumed_tool_messages(messages, DeepResearchDiscipline(), agent='general')
+    assert json.loads(_convert_message_to_dict(message)['content']) == data
+    legacy, legacy_delivery = context.tool_context(name, data, 'nietzsche')
+    assert legacy == content[:4000] and legacy_delivery is None
+
+
 @pytest.mark.parametrize("name", ["analyze_argument", "paper_review"])
 @pytest.mark.parametrize("size", [70, 900])
 def test_fresh_and_later_main_wire_keep_the_complete_reasoning_object(monkeypatch, name, size):
@@ -184,6 +199,6 @@ def test_context_size_boundary_is_mechanical_and_omission_metadata_is_bounded():
 def test_unprotected_retrieval_retains_legacy_budget_and_reuse_content():
     raw = {"text": "来源。" * 3000}
     for agent in ("general", "nietzsche"):
-        content, metadata = context.tool_context("get_chapter", raw, agent)
+        content, metadata = context.tool_context("get_philosopher", raw, agent)
         assert content == json.dumps(raw, ensure_ascii=False)[:4000] and metadata is None
-        assert context.tool_context("get_chapter", raw, agent, fallback_content="cached reference") == ("cached reference", None)
+        assert context.tool_context("get_philosopher", raw, agent, fallback_content="cached reference") == ("cached reference", None)

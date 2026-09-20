@@ -1,17 +1,20 @@
-"""Bounded, non-semantic delivery of general reasoning and generated artifacts."""
+"""Bounded, non-semantic delivery of general research and generated artifacts."""
 import hashlib
 import json
 
 from tool_contracts import TOOL_TAXONOMY
 
 MAX_ARTIFACT_CONTEXT_CHARS = 24000
+PRIMARY_CONTEXT_TOOLS = frozenset({'search_books', 'get_chapter', 'get_book_detail', 'concept_trace'})
 
 
 def preserves_artifact(name, agent):
     capability = TOOL_TAXONOMY.get(name, {})
     return agent == "general" and bool(
         capability.get("USES_INTERNAL_LLM") or capability.get("USER_VISIBLE_ARTIFACT")
-        or name == "websearch")  # A read's URL/range must not be detached from its text.
+        or name == "websearch" or name in PRIMARY_CONTEXT_TOOLS)
+    # Keep actual book IDs, read_args, catalogue matches and passage windows
+    # together. Later turns must not reduce a primary source to its opening.
 
 
 def tool_context(name, result, agent, fallback_content=None):
