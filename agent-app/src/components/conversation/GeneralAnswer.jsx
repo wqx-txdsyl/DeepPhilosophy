@@ -43,10 +43,9 @@ export function ReasoningBlock({ text, active, zh }) {
 
 export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => name }) {
   const zh = lang !== 'en';
-  const events = (message.events || message.tool_events || []).filter(e => ['provider_reasoning', 'thinking_summary', 'tool_start', 'tool', 'tool_cancel', 'tool_note'].includes(e?.t)
+  const events = (message.events || message.tool_events || []).filter(e => ['provider_reasoning', 'tool_start', 'tool', 'tool_cancel'].includes(e?.t)
     && (e.t !== 'provider_reasoning' || e.source === 'deepseek')
-    && (e.tc?.name || e.name) !== 'declare_research_need'
-    && !(e.t === 'tool_note' && /^(登记研究需求|Registering research need|正在.*(?:…|\.\.\.)$)/i.test(e.text || '')));
+    && (e.tc?.name || e.name) !== 'declare_research_need');
   if (!events.length && !message.streaming) return null;
   const latestReasoning = events.findLastIndex(e => e.t === 'provider_reasoning');
   return <div className="general-process">
@@ -56,10 +55,6 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
           const active = !!message.streaming && !message.done_received && !message.content && i === latestReasoning
             && !events.slice(i + 1).some(e => ['tool_start', 'tool', 'tool_cancel'].includes(e.t));
           return <ReasoningBlock key={`${event.id}:${i}`} text={event.content} active={active} zh={zh} />;
-        }
-        if (event.t === 'thinking_summary' || event.t === 'tool_note') {
-          const content = plainText(event.content || event.text);
-          return content ? <div className="cw-think-line" key={event.id || `note-${i}`}>{event.t === 'thinking_summary' && <span>{zh ? '研究说明：' : 'Research note: '}</span>}{content}</div> : null;
         }
         const name = event.tc?.name || event.name;
         const args = event.tc?.args || event.args || {};

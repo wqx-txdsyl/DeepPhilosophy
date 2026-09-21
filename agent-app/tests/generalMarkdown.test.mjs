@@ -64,6 +64,8 @@ try {
   const { ReasoningTimeline } = await server.ssrLoadModule('/src/components/conversation/GeneralAnswer.jsx');
   const timeline = renderToStaticMarkup(createElement(ReasoningTimeline, { lang: 'zh', toolLabel: () => '检索原典', message: { streaming: true, events: [
     { t: 'provider_reasoning', source: 'deepseek', id: 'r1', content: '先定位原文。' },
+    { t: 'thinking_summary', id: 'note1', content: '不再展示的研究旁白' },
+    { t: 'tool_note', text: '不再展示的工具旁白' },
     { t: 'tool', call_id: 'a', status: 'success', tc: { name: 'search_books', args: { query: '责任' }, result_summary: '找到相关章节' } },
     { t: 'provider_reasoning', source: 'deepseek', id: 'r1', content: '再结合上下文分析。<script>' },
     { t: 'tool_start', call_id: 'b', name: 'get_chapter', status: 'running' },
@@ -74,6 +76,7 @@ try {
   assert.equal((timeline.match(/class="general-think-toggle"/g) || []).length, 2, 'each reasoning block has its own disclosure');
   assert.equal((timeline.match(/aria-expanded="false"/g) || []).length, 2, 'tool calls settle and collapse preceding reasoning');
   assert.ok(timeline.includes('进行中') && !timeline.includes('<script>'));
+  assert.ok(!timeline.includes('研究旁白') && !timeline.includes('工具旁白') && !timeline.includes('研究说明'));
   const researchPanel = message => renderToStaticMarkup(createElement(AnswerResearch, { message, lang: 'zh', onSend() {}, onSource() {} }));
   const emptyResearch = researchPanel({});
   assert.ok(emptyResearch.includes('原典检索') && emptyResearch.includes('本轮未检索原典') && emptyResearch.includes('检索相关原典'));
