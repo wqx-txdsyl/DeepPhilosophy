@@ -73,6 +73,18 @@ def test_author_books_remain_visible_when_other_books_mention_the_author(small_l
     assert out['catalogue_match_count'] == 1
 
 
+def test_author_scope_does_not_substitute_commentary(small_library):
+    _, chapters = small_library
+    chapters['secondary'] = [(0, '孔子', '讲师解释人不知而不愠，反复解释人不知而不愠。')]
+    out = deep.search_books({'query': '人不知而不愠', 'author': '孔子'})
+    assert {r['book_id'] for r in out['results']} == {'primary'}
+    missing = deep.search_books({'query': '自由意志', 'author': '孔子'})
+    assert missing['method'] == 'catalogue'
+    assert {r['book_id'] for r in missing['results']} == {'primary'}
+    assert deep.search_books({'query': '人不知而不愠', 'book_id': 'unknown'})['results'] == []
+    assert 'error' in deep.search_books({'query': '人不知而不愠', 'author': ['孔子']})
+
+
 def test_general_comparison_uses_general_search_without_mutating_persona_registry(monkeypatch):
     from routes import agent_tools_eval
     original = agent.TOOLS['search_books']['execute']

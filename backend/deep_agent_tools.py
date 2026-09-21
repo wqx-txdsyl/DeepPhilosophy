@@ -88,7 +88,7 @@ def _passage_result(book, idx, title, text, terms, score, focus=""):
 
 
 @lru_cache(maxsize=32)
-def _lexical_search(query, catalogue_generation, occurrences_only=False):
+def _lexical_search(query, catalogue_generation, occurrences_only=False, book_ids=None):
     """Search actual chapter text, independently of book-description matches.
 
     The catalogue object's identity changes when invalidate_agent_cache runs;
@@ -99,6 +99,8 @@ def _lexical_search(query, catalogue_generation, occurrences_only=False):
     hits, metadata, scanned, total = [], [], 0, 0
     books_with_passages = {}
     for book in core.get_books():
+        if book_ids is not None and book["id"] not in book_ids:
+            continue
         title = book.get("title", "")
         book_hay = _fold_for_terms(f"{title} {book.get('author', '')}", terms)
         remaining = terms if occurrences_only else tuple(t for t in terms if t not in book_hay)
@@ -147,14 +149,14 @@ def _lexical_search(query, catalogue_generation, occurrences_only=False):
             "book_passages": sorted(books_with_passages.values(), key=lambda r: -r["score"])}
 
 
-def _exact_results(query, occurrences_only=False):
+def _exact_results(query, occurrences_only=False, book_ids=None):
     global _catalogue_source
     if not occurrences_only:
         try:
             from research_bridge import current_library_store
             store = current_library_store(core.PUBLIC.parent.parent)
             if store:
-                return store.lexical_results(query, _terms(query))
+                return store.lexical_results(query, _terms(query), book_ids=book_ids)
         except Exception:
             pass  # Canonical JSON remains usable if the derived index is stale/offline.
     books = core.get_books()
@@ -162,7 +164,7 @@ def _exact_results(query, occurrences_only=False):
         if books is not _catalogue_source:
             _lexical_search.cache_clear()
             _catalogue_source = books
-    return _lexical_search(query, id(books), occurrences_only)
+    return _lexical_search(query, id(books), occurrences_only, book_ids)
 
 
 def _semantic_candidates(query, limit):
@@ -225,7 +227,20 @@ def search_books(args):
     if not _terms(query):
         return {"error": "缺少有效检索词"}
     limit = core._int_arg(args, "limit", 5, 1, 10)
-    exact = _exact_results(query)
+    author, bid = args.get("author") or "", args.get("book_id") or ""
+    if not isinstance(author, str) or not isinstance(bid, str):
+        return {"error": "author 和 book_id 应为字符串"}
+    scoped = bool(author.strip() or bid.strip())
+    books = [b for b in core.get_books() if (not bid or b["id"] == bid)
+             and (not author.strip() or author.strip().casefold() in b.get("author", "").casefold())] if scoped else []
+    exact = _exact_results(query, book_ids=tuple(b["id"] for b in books)) if scoped else _exact_results(query)
+    if scoped:
+        # Even a phrase miss must retain the real author's catalogue, so the
+        # model can inspect its chapters instead of substituting a commentator.
+        exact = {**exact, "metadata": [{"book_id": b["id"], "book_title": b.get("title", ""),
+                  "author": b.get("author", ""), "citation_label": retrieval._cite_label(b.get("title"), ""),
+                  "match_type": "book_metadata", "evidence_scope": "catalogue", "needs_read": True, "snippet": ""}
+                 for b in books]}
     catalogue = {"catalogue_matches": deepcopy(exact["metadata"][:limit]),
                  "catalogue_match_count": len(exact["metadata"])}
     results = exact["passages"][:limit]
@@ -236,6 +251,9 @@ def search_books(args):
     if exact["metadata"]:
         return {"query": query, "results": deepcopy(exact["metadata"][:limit]),
                 "method": "catalogue", **catalogue, "note": "仅命中书名或作者，尚未取得支持论点的原文；请查看目录并读取相关章节。"}
+    if scoped:
+        return {"query": query, "results": [], **catalogue, "method": "no_match",
+                "note": "指定作者或书籍范围内未找到材料；未扩大到其他作者，也未用他人转述替代。请核对实际作者或book_id。"}
     results, diagnostics = _semantic_candidates(query, limit)
     return {"query": query, "results": results, **catalogue, "method": "semantic_candidates" if results else "no_match",
             **diagnostics,
@@ -510,6 +528,10 @@ def install_deep_tool_overrides(tool_specs):
         specs["analyze_argument"]["parameters"]["properties"]["question"] = {
             "type": "string", "description": "可选：原用户问题，用于核对论证是否偷换人物、条件或真正问题。"}
     if "search_books" in specs:
+        specs["search_books"]["parameters"]["properties"].update({
+            "author": {"type": "string", "description": "可选：仅搜索书目作者包含此名称的著作，避免哲学史转述挤掉本人原文。比较哲学家时分别限定作者。"},
+            "book_id": {"type": "string", "description": "可选：仅搜索已经定位的这本书。不能猜测ID。"},
+        })
         specs["search_books"]["description"] = (
             "检索本地哲学书库。优先全文逐字命中，支持作者与原词组合；"
             "无逐字命中时只返回经过相关性筛选的语义阅读候选。结果明确区分原文片段、书目和未核验候选。"

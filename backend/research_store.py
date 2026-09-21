@@ -255,7 +255,7 @@ class ResearchStore:
             result['reader_url']=f"https://deepphilosophy.top/reader/{row['book_id']}?ch={row['chapter_index']}&sec={row['start_block']}"
             return result
 
-    def lexical_results(self, query, terms):
+    def lexical_results(self, query, terms, book_ids=None):
         """Same exact-match ranking contract as the legacy primary tool, from SQLite."""
         import heapq
         from deep_agent_tools import _fold_for_terms, _passage_result
@@ -263,6 +263,9 @@ class ResearchStore:
         hits=[];metadata=[];book_passages={};total=0;scanned=0
         with self.connect(readonly=True) as con:
             books={row['id']:json.loads(row['metadata_json'])['catalogue'] for row in con.execute("SELECT id,metadata_json FROM books WHERE status<>'not_in_catalogue'")}
+            if book_ids is not None:
+                allowed=set(book_ids)
+                books={bid:book for bid,book in books.items() if bid in allowed}
             for book in books.values():
                 hay=_fold_for_terms(f"{book.get('title','')} {book.get('author','')}",terms)
                 if all(t in hay for t in terms):

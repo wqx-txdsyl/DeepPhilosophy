@@ -48,6 +48,8 @@ def complete_paragraph_prefix(text):
     if boundary < 0:
         return ""
     prefix = text[:boundary + 2]
+    if not prefix.strip():
+        return ""  # Leading blank lines after <answer> are not a paragraph.
     if prefix.count("```") % 2 or prefix.count("~~~") % 2:
         return ""
     if prefix.count("`") % 2:

@@ -67,6 +67,13 @@ def test_changed_or_invalid_source_cannot_leave_old_text_in_search(store,tmp_pat
     assert store.stats()['books_by_status']['incomplete']==1
 
 
+def test_sqlite_scope_filters_before_ranking(store,tmp_path):
+    library(tmp_path);build_library(store,tmp_path)
+    assert store.lexical_results('自由', ('自由',), book_ids=('0123456789ab',))['passages']
+    absent=store.lexical_results('自由', ('自由',), book_ids=('not-in-library',))
+    assert absent['passages']==[] and absent['metadata']==[] and absent['total_passage_hits']==0
+
+
 def test_primary_tool_uses_only_current_database_snapshot(store,tmp_path,monkeypatch):
     folder=library(tmp_path);build_library(store,tmp_path)
     monkeypatch.setenv('PHI_RESEARCH_DB_ENABLED','1');monkeypatch.setenv('PHI_RESEARCH_DB_PATH',str(store.path))

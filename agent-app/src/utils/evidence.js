@@ -44,7 +44,12 @@ export function sourceHref(c = {}) {
     return `${DP_READER}/${encodeURIComponent(c.book_id)}?ch=${Number(index)}`;
   }
   for (const value of [c.reader_url, c.url]) {
-    try { const url = new URL(value); if (['https:', 'http:'].includes(url.protocol)) return url.href; } catch { /* unavailable */ }
+    try {
+      const url = new URL(value);
+      if (primary) {
+        if (url.origin === 'https://deepphilosophy.top' && /^\/(reader|book)\/[^/]+$/.test(url.pathname)) return url.href;
+      } else if (['https:', 'http:'].includes(url.protocol)) return url.href;
+    } catch { /* unavailable */ }
   }
   const doi = String(c.doi || '').replace(/^https?:\/\/(?:dx\.)?doi\.org\//i, '');
   return /^10\.\d{4,9}\/\S+$/.test(doi) ? `https://doi.org/${encodeURI(doi)}` : null;

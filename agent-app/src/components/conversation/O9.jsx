@@ -28,7 +28,7 @@ export function researchPhase(toolName, textOrLang, maybeLang) {
 export function researchPhaseKey(toolName, text) {
   return _phaseKey(toolName, text);
 }
-import { resolveCite, DP_READER as _DP_READER } from '../../utils/api';
+import { resolveCite, resolvePrimaryLink, DP_READER as _DP_READER } from '../../utils/api';
 function ReaderLink({ citation, fallback, zh }) {
   const [busy, setBusy] = _useState(false);
   const [failed, setFailed] = _useState(false);
@@ -149,16 +149,16 @@ export function GeneralReaderLink({ citation, zh }) {
     if (direct || !citation.book || scholarly) return;
     let active = true;
     setError(false); setResolved(null);
-    resolveCite(citation.book, citation.chapter || '').then(data => {
+    resolvePrimaryLink(citation.book, citation.chapter || '').then(data => {
       if (!active) return;
-      if (data.error || data.matched === false || !data.book_id) { setError(true); return; }
-      const link = sourceHref({ ...citation, book_id: data.book_id, chapter_idx: data.chapter_idx });
+      if (!data.matched || !data.url) { setError(true); return; }
+      const link = sourceHref({ book: citation.book, reader_url: data.url });
       if (!link) { setError(true); return; }
-      setResolved(link);
+      setResolved({ book: citation.book, chapter: citation.chapter, url: link });
     }).catch(() => { if (active) setError(true); });
     return () => { active = false; };
   }, [direct, citation.book, citation.chapter, scholarly, attempt]);
-  const href = direct || resolved;
+  const href = direct || (resolved?.book === citation.book && resolved?.chapter === citation.chapter ? resolved.url : null);
   if (href) return <a className="o9-drawer-link" href={href} target="_blank" rel="noopener noreferrer"><ExternalLink size={12} />{generalEvidenceLayer(citation) === 'primary' ? (zh ? '阅读原典' : 'Read primary text') : (zh ? '打开来源' : 'Open source')}</a>;
   if (!citation.book || scholarly) return <span>{zh ? '此来源未提供可打开的链接' : 'No usable link is available for this source'}</span>;
   if (error) return <button className="cw-cite-more" onClick={() => setAttempt(v => v + 1)}>{zh ? '暂未定位到原文，点击重试' : 'Source unavailable. Retry'}</button>;

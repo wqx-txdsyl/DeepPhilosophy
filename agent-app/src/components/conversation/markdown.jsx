@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Square, SquareCheck } from 'lucide-react';
-import { DP_READER, resolveCite } from '../../utils/api';
+import { DP_READER, resolveCite, resolvePrimaryLink } from '../../utils/api';
 import { useLang } from '../../utils/i18n';
 import { sourceHref } from '../../utils/evidence';
 import DrawioInline from '../DrawioInline';
@@ -42,6 +42,21 @@ export function CiteLink({ book, chapter }) {
 }
 
 /* ── 行内元素: **粗体** *斜体* `代码` [链接](url) ~~删除线~~ 【出处】 ── */
+function LegacyPrimaryLink({ book, chapter, label, direct }) {
+  const [resolved, setResolved] = useState(null);
+  useEffect(() => {
+    if (direct) return;
+    let active = true;
+    resolvePrimaryLink(book, chapter).then(data => {
+      if (active && data.matched && /^https:\/\/deepphilosophy\.top\/(reader|book)\//.test(data.url)) setResolved({ book, chapter, url: data.url });
+    }).catch(() => {});
+    return () => { active = false; };
+  }, [book, chapter, direct]);
+  const href = direct || (resolved?.book === book && resolved?.chapter === chapter ? resolved.url : null);
+  return href ? <a className="general-inline-cite" href={href} target="_blank" rel="noopener noreferrer">{label}</a>
+    : <span title="尚未定位到原典章节">{label}</span>;
+}
+
 export function renderInline(text, options = {}) {
   const parts = (text || '').split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]*\]\([^)]*\)|~~[^~]+~~|【[^】]+】|\[\d{1,3}\]|“[^”\n]{6,400}”|「[^」\n]{6,400}」|『[^』\n]{6,400}』)/g);
   return parts.map((p, i) => {
@@ -51,6 +66,17 @@ export function renderInline(text, options = {}) {
     const lm = p.match(/^\[([^\]]*)\]\(([^)]*)\)$/);
     if (lm) {
       const href = lm[2];
+      // Saved OpenAI-compatible answers used loopback /cite URLs. Resolve the
+      // actual book/chapter instead of making the user's browser visit itself.
+      try {
+        const url = new URL(href, 'https://agent.deepphilosophy.top');
+        if (['127.0.0.1', 'localhost', 'agent.deepphilosophy.top', 'deepphilosophy.top'].includes(url.hostname) && url.pathname.startsWith('/cite/')) {
+          const [book, ...rest] = url.pathname.slice(6).split('/').map(decodeURIComponent);
+          const chapter = rest.join('/');
+          const citation = options.citations?.find(c => (c.book || c.work || c.title) === book && (!chapter || c.chapter === chapter));
+          return <LegacyPrimaryLink key={i} book={book} chapter={chapter} label={lm[1]} direct={citation ? sourceHref(citation) : null} />;
+        }
+      } catch { /* malformed URL stays subject to the normal protocol check */ }
       if (/^(https?:|#|\/)/.test(href)) {
         return <a key={i} href={href} target="_blank" rel="noreferrer"
           style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{lm[1]}</a>;
