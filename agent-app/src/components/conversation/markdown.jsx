@@ -86,7 +86,7 @@ export function renderInline(text, options = {}) {
     if (p.startsWith('~~') && p.endsWith('~~')) return <del key={i} style={{ color: 'var(--text-dim)' }}>{p.slice(2, -2)}</del>;
     if (options.general) {
       const numbered = p.match(/^\[(\d+)\]$/);
-      const reference = p.match(/^【《([^》]+)》[·・]?([^】]*)】$/);
+      const reference = p.match(/^【《((?:[^《》】]|《[^《》】]*》)+)》[·・]?([^】]*)】$/);
       const citation = numbered ? options.citations?.[Number(numbered[1]) - 1]
         : reference ? options.citations?.find(c => (c.book || c.work || c.title) === reference[1] && (!reference[2] || c.chapter === reference[2])) : null;
       if (citation) {
@@ -102,7 +102,7 @@ export function renderInline(text, options = {}) {
       }
       if (p.startsWith('【') || numbered) return p;
     }
-    const cm = p.match(/^【《([^》]+)》·?([^】]*)】$/);
+    const cm = p.match(/^【《((?:[^《》】]|《[^《》】]*》)+)》[·・]?([^】]*)】$/);
     if (cm) return <CiteLink key={i} book={cm[1]} chapter={cm[2]} />;
     const cm2 = p.match(/^【([^】]+)】$/);
     if (cm2) return <CiteLink key={i} book={cm2[1]} chapter="" />;

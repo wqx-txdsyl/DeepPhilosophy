@@ -47,6 +47,8 @@ try {
   const legacy = render('[【《论语》·学而】](http://127.0.0.1:8011/cite/论语/学而)', { citations: [primaryCitation] });
   assert.ok(legacy.includes('href="https://deepphilosophy.top/reader/lunyu?ch=0"'));
   assert.ok(!legacy.includes('127.0.0.1'));
+  const nestedTitle = render('正文观点。【《康德《实践理性批判》句读》·序言】', { citations: [{ book: '康德《实践理性批判》句读', chapter: '序言', book_id: 'kant-commentary', chapter_idx: 0 }] });
+  assert.ok(nestedTitle.includes('href="https://deepphilosophy.top/reader/kant-commentary?ch=0"'), 'nested work names still produce inline reader links');
   const unresolvedLegacy = render('[【《未知》·未知章】](http://localhost:8011/cite/未知/未知章)');
   assert.ok(!unresolvedLegacy.includes('href='), 'unresolved saved reference never links to the user’s own computer');
   assert.ok(unresolvedLegacy.includes('【《未知》·未知章】'));

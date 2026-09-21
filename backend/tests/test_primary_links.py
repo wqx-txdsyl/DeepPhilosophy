@@ -79,3 +79,12 @@ def test_legacy_redirect_and_api(catalogue):
     assert "error" in missing
     assert asyncio.run(compat.resolve_primary_link("测试原典", "真实章节"))["matched"]
     assert not asyncio.run(compat.resolve_primary_link("测试原典", "不存在"))["matched"]
+
+
+def test_nested_book_title_and_adjacent_references(catalogue):
+    catalogue[0]['title']='康德《实践理性批判》句读'
+    text='观点。【《康德《实践理性批判》句读》·真实章节】和【《康德《实践理性批判》句读》】'
+    converted=compat.convert_cites(text)
+    assert converted.count('https://deepphilosophy.top/') == 2
+    assert '/reader/0123456789ab?ch=3' in converted
+    assert '/book/0123456789ab' in converted

@@ -24,7 +24,7 @@ from pydantic import BaseModel
 router = APIRouter()
 
 # 【《书名》·章节】或【《书名》】引用（AI 输出可能夹行内符号，逐字匹配闭合）
-CITE_RE = re.compile(r"【《([^》]+)》·?([^】]*)】")
+CITE_RE = re.compile(r"【《((?:[^《》】]|《[^《》】]*》)+)》[·・]?([^】]*)】")
 
 AGENT_ALIASES = {"zhe": "general", "nietzsche": "nietzsche"}
 
