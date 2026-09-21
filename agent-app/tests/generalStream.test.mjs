@@ -48,7 +48,8 @@ await test('provider reasoning preserves exact deltas, separate rounds and inter
     { type: 'provider_reasoning_delta', source: 'deepseek', id: 'r1', content: '  保留空格 🧠 <script>' },
   ]);
   assert.equal(state.content, '');
-  assert.deepEqual(state.events.filter(e => e.t === 'provider_reasoning').map(e => e.content), ['先思考\n  保留空格 🧠 <script>', '第二轮']);
+  assert.deepEqual(state.events.filter(e => e.t === 'provider_reasoning').map(e => e.content), ['先思考\n', '第二轮', '  保留空格 🧠 <script>']);
+  assert.deepEqual(state.events.map(e => e.t), ['provider_reasoning', 'tool_start', 'provider_reasoning', 'provider_reasoning'], 'reasoning resumed after a tool stays after it');
   const stopped = finishGeneralStream(state, { aborted: true });
   const persisted = toPersistedMessage({ ...stopped, role: 'assistant', agent_id: 'general' });
   assert.deepEqual(persisted.tool_events.filter(e => e.t === 'provider_reasoning'), state.events.filter(e => e.t === 'provider_reasoning'));

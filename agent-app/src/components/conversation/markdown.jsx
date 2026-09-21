@@ -243,7 +243,11 @@ export function renderMarkdown(text, onEdit, drawioXml, t, options = {}) {
       );
       i++; continue;
     }
-    if (trimmed.startsWith('> ')) {
+    if (options.general && /^#{1,4} /.test(trimmed)) {
+      const level = trimmed.match(/^#+/)[0].length;
+      const Heading = `h${level}`;
+      out.push(<Heading key={i} className="general-answer-heading">{inline(trimmed.slice(level + 1))}</Heading>);
+    } else if (trimmed.startsWith('> ')) {
       out.push(<blockquote key={i} style={{ margin: '8px 0', padding: '6px 12px', borderLeft: '3px solid var(--border)', color: 'var(--text-dim)', background: 'var(--soft)', borderRadius: 4 }}>{inline(trimmed.slice(2))}</blockquote>);
     } else if (/^[-*] \[[ xX]\] /.test(trimmed)) {
       // 任务列表 - [x] / - [ ]

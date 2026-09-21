@@ -61,6 +61,18 @@ try {
   assert.equal(sourceHref({ book: '论语', reader_url: 'http://127.0.0.1:8011/cite/论语/学而' }), null);
   assert.equal(sourceHref({ book: '论语', reader_url: 'https://deepphilosophy.top/book/lunyu' }), 'https://deepphilosophy.top/book/lunyu');
   const { AnswerResearch, AnswerExploration } = await server.ssrLoadModule('/src/components/conversation/AnswerResearch.jsx');
+  const { ReasoningTimeline } = await server.ssrLoadModule('/src/components/conversation/GeneralAnswer.jsx');
+  const timeline = renderToStaticMarkup(createElement(ReasoningTimeline, { lang: 'zh', toolLabel: () => '检索原典', message: { streaming: true, events: [
+    { t: 'provider_reasoning', source: 'deepseek', id: 'r1', content: '先定位原文。' },
+    { t: 'tool', call_id: 'a', status: 'success', tc: { name: 'search_books', args: { query: '责任' }, result_summary: '找到相关章节' } },
+    { t: 'provider_reasoning', source: 'deepseek', id: 'r1', content: '再结合上下文分析。<script>' },
+    { t: 'tool_start', call_id: 'b', name: 'get_chapter', status: 'running' },
+  ] } }));
+  assert.ok(timeline.indexOf('先定位原文。') < timeline.indexOf('general-tool-success'));
+  assert.ok(timeline.indexOf('general-tool-success') < timeline.indexOf('再结合上下文分析。'));
+  assert.ok(timeline.indexOf('再结合上下文分析。') < timeline.indexOf('general-tool-running'));
+  assert.equal((timeline.match(/class="cw-activity-head"/g) || []).length, 1, 'one disclosure holds both reasoning and tools');
+  assert.ok(timeline.includes('1 项执行中') && !timeline.includes('<script>'));
   const researchPanel = message => renderToStaticMarkup(createElement(AnswerResearch, { message, lang: 'zh', onSend() {}, onSource() {} }));
   const emptyResearch = researchPanel({});
   assert.ok(emptyResearch.includes('原典检索') && emptyResearch.includes('本轮未检索原典') && emptyResearch.includes('检索相关原典'));

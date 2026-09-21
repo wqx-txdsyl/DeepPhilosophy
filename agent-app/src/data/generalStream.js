@@ -32,8 +32,10 @@ export function reduceGeneralEvent(state, evt) {
   if (evt.type === 'provider_reasoning_delta') {
     if (state.done_received || evt.source !== 'deepseek' || !evt.id || typeof evt.content !== 'string' || !evt.content) return state;
     const events = [...state.events];
-    const i = events.findIndex(e => e.t === 'provider_reasoning' && e.id === evt.id);
-    // Preserve the provider's text exactly, including whitespace and Markdown.
+    const last = events.length - 1;
+    const i = events[last]?.t === 'provider_reasoning' && events[last]?.id === evt.id ? last : -1;
+    // Preserve exact text and arrival order. A resumed ID after a tool is a
+    // new segment, never appended above the intervening tool in the timeline.
     if (i < 0) events.push({ t: 'provider_reasoning', id: evt.id, source: evt.source, content: evt.content });
     else events[i] = { ...events[i], content: events[i].content + evt.content };
     return { ...state, events };

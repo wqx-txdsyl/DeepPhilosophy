@@ -15,63 +15,44 @@ const STATUS = {
 };
 
 export function ProviderReasoning({ message }) {
-  const { lang } = useLang();
-  const zh = lang !== 'en';
-  const [open, setOpen] = useState(() => !!message.streaming);
-  const body = useRef(null);
-  const follow = useRef(true);
-  const chunks = (message.events || message.tool_events || []).filter(e => e.t === 'provider_reasoning' && e.source === 'deepseek');
-  const length = chunks.reduce((sum, e) => sum + e.content.length, 0);
-  useEffect(() => {
-    if (open && follow.current && body.current) body.current.scrollTop = body.current.scrollHeight;
-  }, [open, length]);
-  if (!chunks.length) return null;
-  const active = message.streaming && !message.done_received;
-  const stopped = ['stopped', 'error', 'interrupted'].includes(message.stream_state);
-  return <div className="cw-activity general-reasoning">
-    <button className="cw-activity-head" aria-expanded={open} onClick={() => setOpen(v => !v)}>
-      {active ? <Loader2 size={13} className="cw-spinner" aria-hidden /> : open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
-      <span className="cw-activity-head-text">{zh ? 'DeepSeek 思考过程' : 'DeepSeek reasoning'}</span>
-      <span className="general-activity-count">{active ? (zh ? '实时' : 'Live') : stopped ? (zh ? '已中断' : 'Interrupted') : (zh ? '已完成' : 'Complete')}</span>
-    </button>
-    {open && <div className="cw-activity-body general-reasoning-body" ref={body} onScroll={event => {
-      const el = event.currentTarget;
-      follow.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
-    }}>
-      {chunks.map(e => <div className="general-reasoning-text" key={e.id}>{e.content}</div>)}
-    </div>}
-  </div>;
+  const { lang, toolLabel } = useLang();
+  return <ReasoningTimeline message={message} lang={lang} toolLabel={toolLabel} />;
 }
 
-function ResearchActivity({ message }) {
-  const { lang, toolLabel } = useLang();
+export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => name }) {
   const zh = lang !== 'en';
-  const [open, setOpen] = useState(() => !!getPref('toolTraceOpen'));
-  const answered = useRef(!!message.content);
-  useEffect(() => {
-    if (message.content && !answered.current) setOpen(false);
-    answered.current = !!message.content;
-  }, [message.content]);
-  const events = (message.events || message.tool_events || []).filter(e => ['thinking_summary', 'tool_start', 'tool', 'tool_cancel', 'tool_note'].includes(e?.t)
+  const [open, setOpen] = useState(() => !!message.streaming || !!getPref('toolTraceOpen'));
+  const body = useRef(null);
+  const follow = useRef(true);
+  const events = (message.events || message.tool_events || []).filter(e => ['provider_reasoning', 'thinking_summary', 'tool_start', 'tool', 'tool_cancel', 'tool_note'].includes(e?.t)
+    && (e.t !== 'provider_reasoning' || e.source === 'deepseek')
     && (e.tc?.name || e.name) !== 'declare_research_need'
     && !(e.t === 'tool_note' && /^(登记研究需求|Registering research need|正在.*(?:…|\.\.\.)$)/i.test(e.text || '')));
   const calls = events.filter(e => e.t.startsWith('tool') && e.t !== 'tool_note');
   const running = calls.filter(e => e.t === 'tool_start').length;
   const hasReasoning = (message.events || message.tool_events || []).some(e => e.t === 'provider_reasoning');
-  if (!events.length && (!message.streaming || hasReasoning)) return null;
+  const progress = events.reduce((n, e) => n + (e.content?.length || e.text?.length || 0) + 1, 0);
+  useEffect(() => {
+    if (open && follow.current && body.current) body.current.scrollTop = body.current.scrollHeight;
+  }, [open, progress]);
+  if (!events.length && !message.streaming) return null;
   const completed = calls.filter(e => e.t === 'tool' && ['success', 'reused'].includes(e.status || 'success')).length;
-  const headline = events.length ? (zh ? '工具与研究记录' : 'Tools and research notes')
+  const headline = events.length ? (zh ? (hasReasoning ? '思考与工具' : '研究过程') : (hasReasoning ? 'Reasoning and tools' : 'Research'))
     : message.content ? (zh ? '正在写下回答' : 'Writing the answer') : (zh ? '等待模型响应' : 'Waiting for the model');
-  return <div className="cw-activity general-activity">
+  return <div className="cw-activity general-activity general-timeline">
     <button className="cw-activity-head" aria-expanded={open} onClick={() => setOpen(v => !v)}>
       {message.streaming && !message.done_received ? <Loader2 size={13} className="cw-spinner" aria-hidden /> : open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
       <span className="cw-activity-head-text" role="status">{headline}</span>
       {running > 0 ? <span className="general-activity-count">{zh ? `${running} 项执行中` : `${running} running`}</span>
         : completed > 0 && <span className="general-activity-count">{zh ? `${completed} 项工具完成` : `${completed} tools complete`}</span>}
     </button>
-    {open && <div className="cw-activity-body">
+    {open && <div className="cw-activity-body general-timeline-body" ref={body} onScroll={event => {
+      const el = event.currentTarget;
+      follow.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+    }}>
       {!events.length && <div className="cw-think-line">{zh ? '收到问题，准备回答。' : 'Question received. Preparing an answer.'}</div>}
       {events.map((event, i) => {
+        if (event.t === 'provider_reasoning') return <div className="general-reasoning-text" key={`${event.id}:${i}`}>{event.content}</div>;
         if (event.t === 'thinking_summary' || event.t === 'tool_note') {
           const content = plainText(event.content || event.text);
           return content ? <div className="cw-think-line" key={event.id || `note-${i}`}>{event.t === 'thinking_summary' && <span>{zh ? '研究说明：' : 'Research note: '}</span>}{content}</div> : null;
@@ -122,7 +103,6 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy }
   useEffect(() => { if (!copied) return; const timer = setTimeout(() => setCopied(false), 1800); return () => clearTimeout(timer); }, [copied]);
   return <>
     <ProviderReasoning message={m} />
-    <ResearchActivity message={m} />
     <div className="general-answer" aria-busy={!!m.streaming}>
       {renderMarkdown(content, code => onDrawioEdit(m.message_id, code), m.drawioXml, key => plainText(t(key)), {
         citations, onCitation: setSource, streaming: !!m.streaming, general: true,

@@ -56,7 +56,9 @@ export function AnswerExploration({ message, lang, busy, onSend }) {
   return <section className="general-exploration-section" aria-label={zh ? '继续探索' : 'Explore further'}>
     <div className="general-section-head"><Compass size={15} /><h3>{zh ? '继续探索' : 'Explore further'}</h3></div>
     {!!message.suggestions?.length && <div className="general-topic-questions">{message.suggestions.map((q, i) => <button key={i} disabled={busy} onClick={() => onSend(q, message)}><ArrowUpRight size={14} /><span>{q}</span></button>)}</div>}
-    <div className="general-explore-directions">{DIRECTIONS.map(([label, en, prompt, promptEn]) => <button key={label} disabled={busy} onClick={() => onSend(zh ? prompt : promptEn, message)}>{zh ? label : en}</button>)}</div>
-    <DepthControls lang={lang} general kinds={['scholarly']} disabled={busy} onPick={q => onSend(q, message)} />
+    <div className="general-explore-actions">
+      <div className="general-explore-directions">{DIRECTIONS.map(([label, en, prompt, promptEn]) => <button key={label} disabled={busy} onClick={() => onSend(zh ? prompt : promptEn, message)}>{zh ? label : en}</button>)}</div>
+      <DepthControls lang={lang} general kinds={['scholarly']} disabled={busy} onPick={q => onSend(q, message)} />
+    </div>
   </section>;
 }
