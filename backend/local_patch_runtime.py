@@ -44,7 +44,7 @@ _PARAPHRASE_CUE_RE = re.compile(
     r"|第\s*[0-9一二三四五六七八九十]+\s*[章节页]|pp?\.\s*[0-9]+")
 
 
-def _unsafe_paraphrase_scan(model_output):
+def _unsafe_paraphrase_scan(model_output, preserved_citations=()):
     """扫描 patch JSON 中 PARAPHRASE_CLAIM 的 replacement_text;
     返回 (error_code, bounded_prefix) 或 None（无违规/非 JSON→交给正常错误路径）。
 
@@ -63,6 +63,10 @@ def _unsafe_paraphrase_scan(model_output):
         if not isinstance(p, dict) or p.get("action") != "PARAPHRASE_CLAIM":
             continue
         text = str(p.get("replacement_text") or "")
+        # Existing source labels are locators, not quotation prose. Their
+        # identity/support still goes through the normal evidence validator.
+        for label in preserved_citations:
+            text = text.replace(label, '')
         if _PARAPHRASE_WRAPPER_RE.search(text):
             return ("UNSAFE_PARAPHRASE_QUOTE_WRAPPER", text[:120])
         if _PAIRED_SINGLE_RE.search(text):
@@ -95,7 +99,9 @@ class LocalPatchAdapter:
             return None, ["LOCAL_PATCH_UNSUPPORTED: rebind"], {}
         # V9-F2 §1: PARAPHRASE 替换文本安全合同（admission 层机械扫描;
         # 拒绝 → apply 失败 → engine 回退 pre candidate 并给安全升级反馈）
-        unsafe = _unsafe_paraphrase_scan(model_output)
+        from evidence_contract import iter_cite_spans
+        preserved_citations = [pre_candidate[start:end] for start, end, *_ in iter_cite_spans(pre_candidate)]
+        unsafe = _unsafe_paraphrase_scan(model_output, preserved_citations)
         if unsafe:
             code, prefix = unsafe
             return None, [f"{code}: {prefix}"], {

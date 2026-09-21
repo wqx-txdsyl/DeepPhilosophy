@@ -57,6 +57,7 @@ try {
   assert.ok(render('“不患人之不己知，患不知人也”', { citations: [{ ...primaryCitation, quoted_passages: ['不患人之不己知，患不知人也'] }] }).includes('general-inline-quote'), 'verified quotations outside the preview excerpt remain linked');
   const { sourceHref } = await server.ssrLoadModule('/src/utils/evidence.js');
   assert.equal(sourceHref({ book: '未知', book_id: 'missing', chapter_idx: -1 }), null, 'unknown chapter must not silently open chapter zero');
+  assert.equal(sourceHref({ book: '原典', book_id: 'known', chapter_idx: 10, reader_available: false }), null, 'local readability does not prove an accessible website coordinate');
   assert.equal(sourceHref({ source_type: 'web', url: 'javascript:alert(1)' }), null);
   assert.equal(sourceHref({ book: '论语', reader_url: 'http://127.0.0.1:8011/cite/论语/学而' }), null);
   assert.equal(sourceHref({ book: '论语', reader_url: 'https://deepphilosophy.top/book/lunyu' }), 'https://deepphilosophy.top/book/lunyu');
@@ -83,6 +84,9 @@ try {
   const research = researchPanel({ citations: [primaryCitation], evidence: { primary_research: { status: 'complete', total: 2, sources: [primaryCitation, { ...primaryCitation, book: '相关著作', book_id: 'other', used: false, access_level: 'SEARCH_EXCERPT' }] } } });
   assert.ok(research.includes('本回答引用') && research.includes('另有 1 处检索材料') && research.includes('阅读原典'));
   assert.ok(researchPanel({ evidence: { primary_research: { sources: [{ ...primaryCitation, used: false }] } } }).includes('相关材料 · 未引用'));
+  const absentQuote = researchPanel({ evidence: { primary_research: { sources: [], status: 'no_quote_match', quote_checks: [{ book_title:'论语',quote:'算法比人更懂幸福',found:false,coverage:{searched_chapters:24,directory_consistent:true} }] } } });
+  assert.ok(absentQuote.includes('未找到原句匹配') && absentQuote.includes('24 个文本单元'));
+  assert.ok(!absentQuote.includes('换一个概念'));
   const exploration = renderToStaticMarkup(createElement(AnswerExploration, { message: { suggestions: [] }, lang: 'zh', onSend() {} }));
   assert.ok(exploration.includes('继续探索') && exploration.includes('检验反例') && exploration.includes('比较不同立场'));
   const unusedDrawer = source({ ...primaryCitation, used: false });

@@ -64,6 +64,8 @@ def scaffold_result(kind, summary, confidence=0.6, presentation_hint="", **field
 _T = lambda cls, **kw: {"TOOL_CLASS": cls, **kw}
 
 TOOL_TAXONOMY = {
+    "verify_quote": _T("READ", USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=True, USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True),
+    "review_answer": _T("REASONING_SKILL", USES_INTERNAL_LLM=True, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=False, USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=False),
     # ── 通用检索域（agent_tools_retrieval.py, 10）──
     "search_books":     _T("RETRIEVAL", USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=True,  USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True),
     "get_book_detail":  _T("READ",       USES_INTERNAL_LLM=False, RETURNS_FINAL_PROSE=False, STATEFUL=False, EVIDENCE_PRODUCING=False, USER_VISIBLE_ARTIFACT=False, SAFE_TO_REPEAT=True),
@@ -377,4 +379,3 @@ class RuntimePhraseScrubber:
     def flush(self):
         out, self._buf = strip_runtime_phrases(self._buf, cleanup=True), ""
         return out
-

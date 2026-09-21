@@ -27,16 +27,22 @@ AI_DIR = BASE.parent / "data" / "ai_author"             # 工具: role_play（AI
 
 # ── 数据加载（带缓存）────────────────────────────────
 _books_cache = None
+_books_stamp = None
 _network_cache = None
 _philosophers_cache = None
 _cache_lock = threading.Lock()
 
 def get_books():
-    global _books_cache
-    if _books_cache is None:
+    global _books_cache, _books_stamp
+    stat = BOOKS_FILE.stat()
+    stamp = (stat.st_mtime_ns, stat.st_size)
+    if _books_cache is not None and _books_stamp is None:
+        _books_stamp = stamp
+    if _books_cache is None or _books_stamp != stamp:
         with _cache_lock:
-            if _books_cache is None:
+            if _books_cache is None or _books_stamp != stamp:
                 _books_cache = json.load(open(BOOKS_FILE, encoding="utf-8"))
+                _books_stamp = stamp
     return _books_cache
 
 def get_network():
@@ -230,19 +236,33 @@ def invalidate_agent_cache():
 
 
 def _chapter_index(bid):
-    """构建/取回 章节文件索引（惰性; 一次构建后复用, 不再每请求读 meta.json/扫目录）"""
+    """按真实文件坐标缓存目录；文件签名变化时刷新目录与正文缓存。"""
+    global _CHAPTER_TEXTS_BYTES
     with _INDEX_LOCK:
+        folder = CHAPTERS_DIR / bid
+        entries = []
+        for p in folder.glob('*.json'):
+            if not p.stem.isdecimal() or p.stem != str(int(p.stem)):
+                continue
+            try:
+                stat = p.stat()
+            except FileNotFoundError:
+                continue
+            entries.append((int(p.stem),p,stat.st_mtime_ns,stat.st_size))
+        entries.sort()
+        signature = tuple((i,mtime,size) for i,_,mtime,size in entries)
         idx = _CHAPTER_INDEX.get(bid)
-        if idx is not None:
+        if idx is not None and idx.get('signature') == signature:
             return idx
+        old = _CHAPTER_TEXTS.pop(bid, None)
+        if old is not None:
+            _CHAPTER_TEXTS_BYTES = max(0,_CHAPTER_TEXTS_BYTES-sum(len(t)*2+128 for _,_,t in old))
         meta = chapter_meta(bid)
         n = (meta or {}).get("chapterCount") or 0
-        paths = []
-        for i in range(min(n, 300)):
-            p = CHAPTERS_DIR / bid / f"{i}.json"
-            if p.exists():
-                paths.append((i, p))
-        idx = {"chapterCount": n, "paths": paths}
+        # Actual filenames are the reader coordinates. Metadata can be stale,
+        # start at one, or undercount chapters; never drop those real files.
+        paths = [(i,p) for i,p,_,_ in entries]
+        idx = {"chapterCount": len(paths), "declaredChapterCount": n, "paths": paths, 'signature': signature}
         _CHAPTER_INDEX[bid] = idx
         return idx
 
@@ -251,12 +271,13 @@ def _book_chapter_texts(bid):
     """按需加载章节文本 [(idx, title, text), ...]（LRU; 超 128MB 淘汰最久未用书）"""
     global _CHAPTER_TEXTS_BYTES
     with _INDEX_LOCK:
+        index = _chapter_index(bid)
         cached = _CHAPTER_TEXTS.get(bid)
         if cached is not None:
             _CHAPTER_TEXTS.move_to_end(bid)
             return cached
         entries, size = [], 0
-        for i, p in _chapter_index(bid)["paths"]:
+        for i, p in index["paths"]:
             try:
                 ch = json.load(open(p, encoding="utf-8"))
                 title = ch.get("title", "")

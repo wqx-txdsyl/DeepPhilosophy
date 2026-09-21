@@ -21,6 +21,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from routes.agent_assets import router as agent_assets_router
 import uvicorn
 
 import config
@@ -160,6 +161,7 @@ app.include_router(openai_compat_router)
 # ============================================================
 # 静态前端（同源部署，须在 API 路由之后注册）
 # ============================================================
+app.include_router(agent_assets_router)
 _STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 if os.path.isdir(_STATIC_DIR) and os.path.isfile(os.path.join(_STATIC_DIR, "index.html")):
     # 先挂 assets，再挂根路由

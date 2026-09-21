@@ -256,6 +256,14 @@ def build_evidence_pool(raw_tool_log):
                     "text": item.get("snippet") or "",
                     "score": float(item.get("score") or 0),
                 })
+        elif name == 'verify_quote':
+            for subindex, item in enumerate(rf.get('matches') or []):
+                if not isinstance(item,dict) or not item.get('text') or not item.get('book_id'):continue
+                pool.append({'entry_index':f'{i}_verify_{subindex}','tool_index':i,'kind':'chapter','source_type':'primary_read',
+                    'book':item.get('book_title',''),'book_title_raw':item.get('book_title',''),
+                    'chapter':item.get('title',''),'chapter_title_raw':item.get('title',''),
+                    'book_id':item['book_id'],'chapter_idx':item.get('chapter_idx',-1),'author':item.get('author',''),
+                    'text':item['text'],'score':1.0})
         elif name == "get_chapter":
             b = {}
             if rf.get("book_id"):

@@ -255,24 +255,26 @@ class ResearchStore:
             result['reader_url']=f"https://deepphilosophy.top/reader/{row['book_id']}?ch={row['chapter_index']}&sec={row['start_block']}"
             return result
 
-    def lexical_results(self, query, terms, book_ids=None):
+    def lexical_results(self, query, terms, book_ids=None, minimum_matches=None):
         """Same exact-match ranking contract as the legacy primary tool, from SQLite."""
         import heapq
-        from deep_agent_tools import _fold_for_terms, _passage_result
+        from deep_agent_tools import _fold_for_terms, _passage_result, _editorial_penalty, _proximity_bonus
         from routes.agent_tools_retrieval import _canon_score, _cite_label
         hits=[];metadata=[];book_passages={};total=0;scanned=0
         with self.connect(readonly=True) as con:
-            books={row['id']:json.loads(row['metadata_json'])['catalogue'] for row in con.execute("SELECT id,metadata_json FROM books WHERE status<>'not_in_catalogue'")}
+            book_rows=list(con.execute("SELECT id,metadata_json,actual_chapters FROM books WHERE status<>'not_in_catalogue'"))
+            books={row['id']:json.loads(row['metadata_json'])['catalogue'] for row in book_rows}
             if book_ids is not None:
                 allowed=set(book_ids)
                 books={bid:book for bid,book in books.items() if bid in allowed}
+            coverage={'indexed_books':len(books),'indexed_chapter_entries':sum(row['actual_chapters'] for row in book_rows if row['id'] in books),'mode':'current_derived_index'}
             for book in books.values():
                 hay=_fold_for_terms(f"{book.get('title','')} {book.get('author','')}",terms)
                 if all(t in hay for t in terms):
                     metadata.append({'book_id':book['id'],'book_title':book.get('title',''),'author':book.get('author',''),'snippet':'','citation_label':_cite_label(book.get('title'),''),'score':_canon_score(book.get('title','')),'match_type':'book_metadata','evidence_scope':'catalogue','needs_read':True})
             indexed=[t for t in terms if len(t)>=3]
             matching_books=[bid for bid,b in books.items() if any(t in _fold_for_terms(f"{b.get('title','')} {b.get('author','')}",terms) for t in terms)]
-            if indexed:
+            if indexed and minimum_matches is None:
                 match=' OR '.join('"'+t.replace('"','""')+'"' for t in indexed)
                 condition='id IN (SELECT rowid FROM chapter_fts WHERE chapter_fts MATCH ?)'
                 params=[match]
@@ -287,9 +289,10 @@ class ResearchStore:
                 book_hay=_fold_for_terms(f"{title} {book.get('author','')}",terms)
                 remaining=tuple(t for t in terms if t not in book_hay) or terms
                 hay=_fold_for_terms(text,remaining)
-                if not text or not all(t in hay for t in remaining):continue
+                required=len(remaining) if minimum_matches is None else min(len(remaining),minimum_matches)
+                if not text or sum(t in hay for t in remaining)<required:continue
                 ch_hay=_fold_for_terms(chapter['title'],terms)
-                score=sum(t in ch_hay for t in remaining)*30+sum(min(hay.count(t),5) for t in remaining)+_canon_score(title)+sum(t in _fold_for_terms(title,terms) for t in terms)*40+(len(terms)-len(remaining))*10
+                score=sum(t in ch_hay for t in remaining)*30+sum(min(hay.count(t),5) for t in remaining)+_canon_score(title)+sum(t in _fold_for_terms(title,terms) for t in terms)*40+(len(terms)-len(remaining))*10+sum(t in hay for t in remaining)*40-_editorial_penalty(chapter['title'],title)+_proximity_bonus(text,remaining)
                 row=_passage_result(book,chapter['chapter_index'],chapter['title'],text,remaining,score,query)
                 total+=1;previous=book_passages.get(book['id']);count=(previous or {}).get('matched_chapters',0)+1
                 if previous is None or score>previous['score']:book_passages[book['id']]={**row,'matched_chapters':count}
@@ -297,7 +300,7 @@ class ResearchStore:
                 heapq.heappush(hits,(score,book['id'],chapter['chapter_index'],row))
                 if len(hits)>100:heapq.heappop(hits)
         metadata.sort(key=lambda r:(-r['score'],len(r['book_title']),r['book_id']))
-        return {'passages':sorted((h[3] for h in hits),key=lambda r:(-r['score'],r['book_id'],r['chapter_idx'])),'metadata':metadata,'scanned_chapters':scanned,'total_passage_hits':total,'book_passages':sorted(book_passages.values(),key=lambda r:-r['score']),'storage':'SQLITE_RESEARCH_INDEX'}
+        return {'passages':sorted((h[3] for h in hits),key=lambda r:(-r['score'],r['book_id'],r['chapter_idx'])),'metadata':metadata,'scanned_chapters':scanned,'total_passage_hits':total,'book_passages':sorted(book_passages.values(),key=lambda r:-r['score']),'storage':'SQLITE_RESEARCH_INDEX','search_coverage':coverage}
 
     def check_integrity(self):
         with self.connect(readonly=True) as con:

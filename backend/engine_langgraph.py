@@ -11,14 +11,14 @@ validation_failed / error / done / suggestions
 工具: 复用 routes.agent 的 TOOLS 注册表（30 个工具平移为 StructuredTool, 零逻辑改动）
 """
 import asyncio, hashlib, json, re, time, inspect, os
-from typing import Annotated, Any, TypedDict
+from typing import Annotated, Any, TypedDict, Literal
 
 from loguru import logger
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage, ToolMessage
 from langchain_core.tools import StructuredTool
-from pydantic import create_model, Field
+from pydantic import create_model, Field, ConfigDict
 
 import routes.agent as AG   # 复用 TOOLS 注册表 / API 配置
 import agents as AGENTS     # 智能体注册表（智能体广场: 通用 + 哲学家）
@@ -86,6 +86,8 @@ def _llm_for_agent(agent, repair_mode=False):
     except ValueError:
         max_tokens = 16384
     updates = {"max_tokens": max_tokens}
+    if os.getenv('DEEP_MAIN_MODEL'):
+        updates['model_name'] = os.environ['DEEP_MAIN_MODEL']
     if "deepseek" in AG.MODEL.lower():
         effort = os.getenv("DEEP_AGENT_REASONING_EFFORT", "high")
         if effort not in {"low", "high", "max"}:
@@ -101,7 +103,7 @@ def _llm_for_agent(agent, repair_mode=False):
 # raw_tool_log / ToolLoopTrace / hard 机械预算均按此集捕获（非 semantic router;
 # O7-C 能力接入 O7-E canonical Evidence Store 的管线缺口修复）
 SCHOLARLY_RETRIEVAL_TOOLS = {"search_scholarship", "get_scholarly_source"}
-RETRIEVAL_TOOLS = {"search_books", "get_chapter", "get_philosopher", "query_graph", "websearch",
+RETRIEVAL_TOOLS = {"verify_quote", "search_books", "get_chapter", "get_philosopher", "query_graph", "websearch",
                    "get_school", "get_book_detail", "list_books", "query_database", "compare_views",
                    "role_play", "concept_trace"} | SCHOLARLY_RETRIEVAL_TOOLS
 # O4 Cognitive Layer Collapse: soft 预算提示 / no-gain 提醒与强制 / 充分性收敛 /
@@ -305,8 +307,28 @@ book_id、chapter_idx、source_record_id、UNKNOWN 匹配状态、读取字符�
 def _general_executor(name, execute):
     def run(**kwargs):
         from deep_result_contracts import validate_general_result
-        return validate_general_result(name, kwargs, execute(kwargs))
+        result = validate_general_result(name, kwargs, execute(kwargs))
+        if isinstance(result, dict) and result.get('reasoning_authority') == 'MAIN_AGENT' and 'confidence' in result:
+            result = {k: v for k, v in result.items() if k != 'confidence'}
+            result.setdefault('validation_scope', 'structure_only')
+        if isinstance(result, dict) and not result.get('error') and TC.TOOL_TAXONOMY.get(name, {}).get('USES_INTERNAL_LLM'):
+            result = {**result, 'requires_main_agent_judgment': True}
+            result.setdefault('validation_scope', 'structure_only')
+        return result
     return run
+
+
+def _tool_annotation(meta):
+    if meta.get('anyOf'):
+        variants=[_tool_annotation(item) for item in meta['anyOf']]
+        annotation=variants[0]
+        for other in variants[1:]:annotation=annotation | other
+        return annotation
+    kind=meta.get('type','string')
+    if kind=='array':return list[_tool_annotation(meta.get('items') or {})]
+    if kind=='object':return dict[str,Any]
+    if kind=='null':return type(None)
+    return {'integer':int,'number':float,'boolean':bool}.get(kind,str)
 
 
 def _build_tools(general=False):
@@ -330,12 +352,17 @@ def _build_tools(general=False):
             elif ptype == "boolean":
                 ann = bool
             elif ptype == "array":
-                ann = list[str]
-            if general and pmeta.get("anyOf"):
-                ann = str | list[str]
+                ann = list[dict[str, Any]] if (pmeta.get("items") or {}).get("type") == "object" else list[str]
+            elif ptype == "object":
+                ann = dict[str, Any]
+            if general:
+                ann = _tool_annotation(pmeta)
+            if general and pmeta.get("enum"):
+                ann = Literal.__getitem__(tuple(pmeta["enum"]))
             desc = pmeta.get("description", "") or ""
-            fields[pname] = (ann, Field(description=desc) if pname in req else Field(default=None, description=desc))
-        schema = create_model(f"{name}_args", **fields) if fields or general else None
+            extra={'json_schema_extra':pmeta} if general else {}
+            fields[pname] = (ann, Field(description=desc, **extra) if pname in req else Field(default=None, description=desc, **extra))
+        schema = create_model(f"{name}_args", __config__=ConfigDict(extra='forbid') if general else ConfigDict(), **fields) if fields or general else None
 
         def _run(execute=meta["execute"], **kwargs):
             return execute(kwargs)
@@ -369,6 +396,8 @@ def _declare_tool():
             func=RD.declare_tool_stub, name=RD.DECLARE_TOOL_NAME,
             description=GENERAL_RESEARCH_TOOL_DESCRIPTION,
             args_schema=schema)
+    if _candidate_policy():
+        return _declare_tool_cache.model_copy(update={"description": _candidate_policy().RESEARCH_DESCRIPTION})
     return _declare_tool_cache
 
 # 哲学家智能体的人格保持提醒（每轮注入——多轮对话后 reasoning 易回归任务规划腔）
@@ -609,7 +638,8 @@ LOCAL_PATCH_SYSTEM_PROTOCOL = """
   内容本身，引号 wrapper 原样保留——维持逐字引文形态）或 PARAPHRASE_CLAIM（你显式
   声明：这段不再作为逐字引文。replacement_text 替换整个 claim span——含引号与
   blockquote 前缀一并移除——且必须写成纯转述，本身不得再包含任何逐字引文；如保留了
-  主语/上文，replacement 需与其语法衔接）。
+  主语/上文，replacement 需与其语法衔接）。若被替换span含已有出处标签，转述后原样保留
+  该标签；标签内的篇章名称不是逐字引文。不得因改成转述而删除就地出处。
 - kind=citation → COPY_SLICE（同上）或 REPLACE_TEXT（你自己的修正文本，只替换引用
   内容 span）。
 quote 上使用 REPLACE_TEXT、citation 上使用 PARAPHRASE_CLAIM 均为非法动作。由你决定
@@ -618,7 +648,15 @@ patch_protocol_errors 字段，那是机械错误事实，据以修正格式。
 """
 
 
+def _candidate_policy():
+    import importlib
+    version = os.getenv('DEEP_PROMPT_VERSION')
+    return importlib.import_module('deep_prompt_' + version) if version in {'v2','v3','v4','v5','v6'} else None
+
+
 def get_system_prompt(agent):
+    if agent == "general" and _candidate_policy():
+        return _candidate_policy().SYSTEM
     return AGENTS.AGENT_PROMPTS.get(agent, SYSTEM_PROMPT_LG)
 
 
@@ -661,7 +699,10 @@ def _build_context_messages(agent, language, custom_instructions=None,
     时期上下文只随完整上下文注入（persona/context snapshot, 不逐轮重复）。"""
     if reinforce:
         parts = []
-        if agent == "general" and not repair_mode:
+        candidate = _candidate_policy() if agent == "general" else None
+        if candidate:
+            parts.append(candidate.REMINDER)
+        if agent == "general" and not repair_mode and not candidate:
             parts.append(
                 "Keep the user's actors, fixed conditions and actual question unchanged. "
                 "A tool's analysis is a proposal, not a verdict: reject examples that change the comparison. "
@@ -675,7 +716,7 @@ def _build_context_messages(agent, language, custom_instructions=None,
                 "已经承认的区别。用连贯段落直接回应问题；尚未解决的部分说清楚卡在哪里，"
                 "不必为了交付一个立场而强行宣布问题已解决。开放性哲学问题在定稿前实际检索、阅读相关原典，"
                 "解释原文理由与当前争点的联系；尊重明确不用工具和仅作形式检查的要求。")
-        if agent == "general":
+        if agent == "general" and not candidate:
             parts.append(
                 "Answer the user's question before discussing texts. Preserve broad outcomes, including long-term effects; "
                 "do not narrow them to immediate feelings. Separate a theory's criterion of moral worth from all other kinds of value. "
@@ -703,7 +744,10 @@ def _build_context_messages(agent, language, custom_instructions=None,
     # O7-E RP1 §2: Scholarly Contract 仅注入 General Agent（哲学家 Agent 退出 O7-E
     # scope; 其学术化留待专门设计）——单一 canonical owner 不变
     if agent == "general":
-        prompt = prompt.rstrip() + "\n\n" + SCHOLARLY_CONTRACT
+        if _candidate_policy():
+            prompt = prompt.rstrip() + "\n\n" + _candidate_policy().EVIDENCE_CONTRACT
+        else:
+            prompt = prompt.rstrip() + "\n\n" + SCHOLARLY_CONTRACT
     # O7-E RP-SYS §3-§4 / RCA-1 H2 §B: repair protocol 经唯一 builder 注入;
     # FULL_REWRITE 与 LOCAL_PATCH 互斥（H2-01/02）——按 repair_output_mode 二选一
     if agent == "general" and repair_mode:
@@ -817,6 +861,15 @@ def _compact_consumed_tool_messages(msgs, discipline, agent=None):
             discipline.record_compaction(saved)
 
 
+def _consolidate_system_messages(messages):
+    """Keep the request policy and the current-turn rules in one system seat."""
+    systems = [m for m in messages if isinstance(m, SystemMessage)]
+    if len(systems) < 2:
+        return list(messages)
+    policy = '\n\n'.join(str(m.content) for m in systems)
+    return [systems[0].model_copy(update={'content':policy})] + [m for m in messages if not isinstance(m, SystemMessage)]
+
+
 async def agent_node(state):
     msgs = list(state["messages"])
     agent = state.get("agent", "general")
@@ -859,6 +912,8 @@ async def agent_node(state):
     _llm_t0 = time.time()
     # ── O10-R1 Token/Context Discipline: 消费过的工具结果压缩为紧凑引用 ──
     _compact_consumed_tool_messages(msgs, discipline, agent=agent)
+    if agent == 'general' and os.getenv('DEEP_SINGLE_SYSTEM') == '1':
+        msgs = _consolidate_system_messages(msgs)
     if _trace_ref is not None:
         try:
             _trace_ref.begin_group()
@@ -2115,6 +2170,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     # 核验纪律 / 来源约束 / 术语核验状态注入（Python 先解释用户问题再教模型
     # 怎么认识它的认知层——全部移除, 任务理解归还 Main Agent）。
     messages = _build_context_messages(agent, language, custom_instructions, req_message)
+    if agent == 'general' and os.getenv('DEEP_AUDIT_TOOL_PAYLOAD') == '1':
+        policy = '\n\n'.join(str(m.content) for m in messages if isinstance(m,SystemMessage))
+        yield {'type':'evaluation_metadata','prompt_version':os.getenv('DEEP_PROMPT_VERSION','legacy'),
+               'main_model':os.getenv('DEEP_MAIN_MODEL') or AG.MODEL,
+               'single_system':os.getenv('DEEP_SINGLE_SYSTEM')=='1',
+               'system_chars':len(policy),'system_sha256':hashlib.sha256(policy.encode()).hexdigest()}
     for h in (history or [])[-20:]:
         role = h.get("role", "user")
         content = h.get("content", "")
@@ -2439,6 +2500,12 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 _tool_status = DS.tool_status(result, extra.get("_budget_class", ""), reused, _delivery_status)
                 _delivery_meta = ({"delivery_status": _delivery_status, "execution_status": _execution_status,
                                    "context_delivery": _delivery} if _delivery else {})
+                if agent == 'general' and os.getenv('DEEP_AUDIT_TOOL_PAYLOAD') == '1':
+                    serialized = json.dumps(result,ensure_ascii=False)
+                    _delivery_meta.update(result_payload=result if len(serialized)<=DTC.MAX_ARTIFACT_CONTEXT_CHARS else None,
+                                          result_payload_complete=len(serialized)<=DTC.MAX_ARTIFACT_CONTEXT_CHARS,
+                                          result_sha256=hashlib.sha256(serialized.encode()).hexdigest(),
+                                          model_context=chunk.content)
                 # O1: 引擎 auto-websearch 已删除——search_books 空结果后是否上网补充
                 # 由 Main Agent 下一轮自主宣告（websearch 对模型可用且不受隐性配额挤压）,
                 # runtime 不再代执行认知性工具（T7 断言依据）。

@@ -196,6 +196,8 @@ def public_tool_summary(name, result, status, language="zh", delivery_status=Non
         return "Reused the result already retrieved." if en else "已复用本轮取得的结果。"
     if name == "get_chapter":
         return "Chapter text retrieved." if en else "已读取章节原文。"
+    if name == 'verify_quote' and isinstance(result,dict):
+        return ('Quotation located in this edition.' if en else '已在本库版本中定位原句与上下文。') if result.get('found') else ('No match in the reported local scope.' if en else '在报告的本库检索范围内未找到原句。')
     if isinstance(result, dict):
         for key in ("results", "items", "sources", "books"):
             if isinstance(result.get(key), list):

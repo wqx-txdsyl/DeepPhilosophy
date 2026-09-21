@@ -183,7 +183,7 @@ register_tool(
 )
 
 # ── 工具 2: get_book_detail ──────────────────────────
-def _resolve_book_by_name(name):
+def _book_name_candidates(name):
     """书名/作者模糊解析 → 最佳匹配 book 或 None。
     背景（2026-08-30）: 轻量模型（glm-4-flash）常无视"先搜后查"纪律, 直接把书名当
     book_id 传入——工具层自愈解析, 不依赖模型自觉, 对所有供应商模型生效。
@@ -191,7 +191,15 @@ def _resolve_book_by_name(name):
     取 ·/（ 前的主书名部分重试一次。"""
     name = (name or "").strip().strip("《》\"'“”　 ")
     if len(name) < 2:
-        return None
+        return []
+    def norm(s):
+        return re.sub(r'\s+','',s).replace('《','').replace('》','').replace('（','(').replace('）',')').casefold()
+    exact = [b for b in get_books() if norm(b.get('title','')) == norm(name)]
+    if exact:
+        return exact
+    authors = [b for b in get_books() if norm(name) in norm(b.get('author',''))]
+    if authors:
+        return authors
     terms = [t for t in re.split(r"[\s,，。；;：:、]+", name) if len(t) >= 2] or [name]
     hits = []
     for b in get_books():
@@ -204,12 +212,17 @@ def _resolve_book_by_name(name):
             if sep in name:
                 main = name.split(sep, 1)[0].strip()
                 if len(main) >= 2:
-                    alt = _resolve_book_by_name(main)
+                    alt = _book_name_candidates(main)
                     if alt:
                         return alt
-        return None
+        return []
     hits.sort(key=lambda x: -x[0])
-    return hits[0][1]
+    return [b for score,b in hits if score == hits[0][0]]
+
+
+def _resolve_book_by_name(name):
+    candidates = _book_name_candidates(name)
+    return candidates[0] if len(candidates) == 1 else None
 
 
 def _exec_book_detail(args):
@@ -344,12 +357,17 @@ def _exec_list_books(args):
                     "region": b.get("region"), "rank": b.get("rank"),
                     "summary": (b.get("summary") or "")[:150]})
     out.sort(key=lambda x: -(x.get("rank") or 0))
-    return {"books": out[:20], "total": len(out)}
+    offset = _int_arg(args, 'offset', 0, 0)
+    limit = _int_arg(args, 'limit', 20, 1, 40)
+    end = min(offset + limit, len(out))
+    return {"books": out[offset:end], "total": len(out), 'offset':offset,
+            'has_more':end < len(out),'next_offset':end if end < len(out) else None}
 
 register_tool(
     "list_books",
     "按作者/地区/流派筛选书籍列表（用于推荐阅读、书目检索）。",
-    {"type": "object", "properties": {"author": {"type": "string"}, "region": {"type": "string"}, "school": {"type": "string"}}, "required": []},
+    {"type": "object", "properties": {"author": {"type": "string"}, "region": {"type": "string"}, "school": {"type": "string"},
+       'offset':{'type':'integer','description':'分页起点，使用next_offset'},'limit':{'type':'integer','description':'每页1至40本，默认20本'}}, "required": []},
     _exec_list_books,
 )
 
@@ -362,15 +380,25 @@ def _exec_school(args):
         return {"error": "流派数据不存在"}
     files = os.listdir(SCHOOLS_DIR)
     hit = None
+    candidates = []
+    def school_key(value):
+        return re.sub(r"(?:学派|主义)$", "", (value or "").strip())
     for f in files:
         if f.endswith(".json"):
             try:
                 d = json.load(open(SCHOOLS_DIR / f, encoding="utf-8"))
-                if name in d.get("name", "") or d.get("name", "") in name:
+                title = d.get("name") or ""
+                if title == name:
                     hit = d
                     break
+                if title and (name in title or title in name or school_key(title) == school_key(name)):
+                    candidates.append(d)
             except Exception:
                 continue
+    if not hit and len(candidates) == 1:
+        hit = candidates[0]
+    if not hit and len(candidates) > 1:
+        return {"error": "流派名称不唯一", "candidates": [d['name'] for d in candidates]}
     if not hit:
         return {"error": f"未找到流派: {name}", "hint": "可尝试: 存在主义/儒家/分析哲学/现象学/斯多葛"}
     return {"name": hit.get("name"), "region": hit.get("region", ""),

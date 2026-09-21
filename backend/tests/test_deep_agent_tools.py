@@ -136,6 +136,8 @@ def test_search_read_args_reach_passages_after_the_old_6000_cutoff(small_library
 
 
 def test_directory_returns_real_indexes_and_filtered_pages(small_library, monkeypatch):
+    _, chapters = small_library
+    chapters['primary'] = [(0, '卷首', '卷首正文'), (1, '目录', '目录正文'), (2, '学而篇', '学而正文')]
     monkeypatch.setattr(deep.core, "chapter_meta", lambda _bid: {
         "chapterCount": 3, "chapterTitles": ["卷首", "目录", "学而篇"]})
     detail = deep.get_book_detail({"book_id": "primary", "focus": "学而"})

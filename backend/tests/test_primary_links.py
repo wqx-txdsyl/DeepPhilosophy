@@ -17,7 +17,7 @@ def catalogue(monkeypatch, tmp_path):
     (tmp_path / books[0]["id"] / "3.json").write_text('{}')
     monkeypatch.setattr(links.core, "get_books", lambda: books)
     monkeypatch.setattr(links.core, "CHAPTERS_DIR", tmp_path)
-    monkeypatch.setattr(links.core, "chapter_meta", lambda _: {"toc": [
+    monkeypatch.setattr(links.core, "chapter_meta", lambda _: {"chapterCount": 5, "toc": [
         {"type": "part", "title": "第一部"},
         {"type": "chapter", "title": "真实章节", "index": 3},
         {"type": "section", "title": "节内标题", "index": 3},

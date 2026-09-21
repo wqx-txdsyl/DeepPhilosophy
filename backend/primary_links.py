@@ -45,7 +45,7 @@ def primary_link(book, chapter=""):
         if item.get("type") == "part" or not (exact or short):
             continue
         idx = item.get("index")
-        if isinstance(idx, int) and not isinstance(idx, bool) and idx >= 0 and (core.CHAPTERS_DIR / bid / f"{idx}.json").is_file():
+        if isinstance(idx, int) and not isinstance(idx, bool) and 0 <= idx < int(meta.get('chapterCount') or 0) and (core.CHAPTERS_DIR / bid / f"{idx}.json").is_file():
             url = f"{SITE}/reader/{quote(bid, safe='')}?ch={idx}"
             # Reader's toc parameter locates a section within a merged chapter.
             if item.get("type") == "section":
@@ -53,7 +53,7 @@ def primary_link(book, chapter=""):
             (targets if exact else short_targets).add(url)
     if not targets:
         for idx, title in core.block_titles(bid).items():
-            if _normal(title) == wanted:
+            if _normal(title) == wanted and 0 <= idx < int(meta.get('chapterCount') or 0):
                 targets.add(f"{SITE}/reader/{quote(bid, safe='')}?ch={idx}")
     if not targets:
         targets = short_targets

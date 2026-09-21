@@ -17,6 +17,7 @@ export function AnswerResearch({ message, lang, busy, onSend, onSource }) {
   const used = research.sources.filter(c => c.used !== false);
   const initial = (used.length ? used : research.sources).slice(0, 3);
   const visible = expanded ? research.sources : initial;
+  const quoteChecks = research.quote_checks || [];
   const empty = {
     not_requested: zh ? '本轮未检索原典。可以从刚才的观点出发，查找原文并核对语境。' : 'No primary-text search was made this turn. Find passages and examine their context below.',
     empty: zh ? '本轮检索未找到合适的原典片段，可以换一个概念或线索继续查找。' : 'No suitable primary passage was found. Try another concept or lead.',
@@ -26,11 +27,18 @@ export function AnswerResearch({ message, lang, busy, onSend, onSource }) {
     <div className="general-section-head"><BookOpen size={15} /><h3>{zh ? '原典检索' : 'Primary-text research'}</h3>
       {!!research.sources.length && <span>{zh ? `${research.total || research.sources.length} 处相关材料` : `${research.total || research.sources.length} passages`}</span>}
     </div>
-    {!visible.length && <p className="general-section-note">{empty || (zh ? '暂无可展示的原典片段。' : 'No primary passages to display.')}</p>}
+    {!visible.length && !quoteChecks.length && <p className="general-section-note">{empty || (zh ? '暂无可展示的原典片段。' : 'No primary passages to display.')}</p>}
+    {quoteChecks.filter(check => check.found === false).map((check, i) => <div className="general-primary-card" key={`quote-check-${i}`}>
+      <strong>{zh ? `《${check.book_title}》：未找到原句匹配` : `${check.book_title}: no quotation match`}</strong>
+      <blockquote>{check.quote}</blockquote>
+      <p className="general-section-note">{zh ? `已检索本库该版本的 ${check.coverage?.searched_chapters ?? 0} 个文本单元，未以近义句替代。` : `Searched ${check.coverage?.searched_chapters ?? 0} local text units; no similar sentence was substituted.`}
+        {check.coverage?.directory_consistent === false && (zh ? ' 当前目录范围不完整，不能排除缺失部分。' : 'The local directory is incomplete.')}</p>
+    </div>)}
     <div className="general-primary-grid">
       {visible.map((c, i) => <article className="general-primary-card" key={c.evidence_id || `${c.book_id || c.book}:${c.chapter_idx ?? c.chapter}:${i}`}>
         <button className="general-source-title" onClick={() => onSource(c)}>{c.book || c.title}{c.chapter ? ` · ${c.chapter}` : ''}</button>
         <div className="general-source-meta">{c.author && <span>{c.author}</span>}<span>{c.used === false ? (zh ? '相关材料 · 未引用' : 'Related · not cited') : (zh ? '本回答引用' : 'Cited in this answer')}</span>
+          {c.material_role && c.material_role !== 'UNCLASSIFIED' && <span>{zh ? ({COMMENTARY_CANDIDATE:'可能为解读材料',EDITORIAL_CANDIDATE:'可能为译注或导读',PARATEXT_CANDIDATE:'书目附属材料'}[c.material_role] || '来源类型待核') : 'Source role requires review'}</span>}
           {generalAccessLabel(c.access_level, lang) && <span>{generalAccessLabel(c.access_level, lang)}</span>}
         </div>
         {c.excerpt && <blockquote>{c.excerpt}</blockquote>}

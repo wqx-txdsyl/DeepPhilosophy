@@ -70,6 +70,8 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
     """作文生成/修改——返回 (reply, citations, tool_calls_log)
     多轮修改: modify 非空且存在对应题目记忆 → 基于上次文本改写（沿用原论点与原典引用, 不重新检索）"""
     tool_calls_log = []
+    from deep_context import current_tool_agent
+    general = current_tool_agent.get() == 'general'
     slot = _mem_slot()
     prev = slot["essays"].get(topic)
     if modify and prev:
@@ -88,7 +90,19 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
     tool_calls_log.append({"name": "search_books", "args": {"query": query},
                            "result_summary": str(result)[:200], "result_full": result,
                            "thought": f"作文需原典支撑, 检索「{query}」"})
-    retrieval = json.dumps(result, ensure_ascii=False)[:6000]
+    read_material = []
+    if general:
+        from deep_agent_tools import get_chapter
+        for item in result.get('results', [])[:3]:
+            read_args = item.get('read_args') or {'book_id': item.get('book_id'), 'chapter_idx': item.get('chapter_idx'), 'focus': query}
+            if not read_args.get('book_id') or read_args.get('chapter_idx') is None:
+                continue
+            read = get_chapter(read_args)
+            tool_calls_log.append({'name': 'get_chapter', 'args': read_args,
+                                   'result_summary': read.get('citation_label') or read.get('error'), 'result_full': read})
+            if read.get('text') and not read.get('error'):
+                read_material.append(read)
+    retrieval = json.dumps(read_material, ensure_ascii=False) if general else json.dumps(result, ensure_ascii=False)[:6000]
     # 联网补充论据（避免拘泥于知识库: 当代观点/时事背景/其他学者论述）
     web_text = ""
     try:
@@ -103,15 +117,20 @@ def _essay_pipeline(topic, genre="议论文", word_count=800, extra="", modify="
     # ESSAY_PROMPT（2026-08-18 修复：拆分前即无定义，write_essay 新作文路径会 NameError）
     prompt = ESSAY_PROMPT.format(genre=genre, topic=topic, word_count=word_count,
                                  extra=extra or "无", retrieval=retrieval)
+    if general:
+        prompt += ('\n书库材料是实际读到的有界片段；只从其中引用，逐字引文旁附对应citation_label。'
+                   '标题提示译注或解读时，不冒充原作者发言。片段不支持的观点不作作者归因，'
+                   '没有合适材料就直接论证，不为凑引用添加哲学家。网络摘要只是待核验线索。')
     if web_text:
         prompt += (f"\n\n联网检索结果（当代论据/时事背景/其他论述——用于丰富论据层次, "
                    f"引用时以[标题](链接)标注来源; 若与题目无关可忽略）:\n{web_text}")
     messages = [{"role": "user", "content": prompt}]
     resp = llm_chat(messages, temperature=0.75, max_tokens=min(word_count * 2 + 500, 4000))
     reply = (resp["choices"][0]["message"].get("content") or "").strip() or "（生成失败，请重试）"
-    citations = [{"book": item.get("book_title"), "chapter": item.get("chapter_title"),
+    citation_items = [item for item in read_material if item.get('citation_label') and item['citation_label'] in reply] if general else result.get('results', [])[:4]
+    citations = [{"book": item.get("book_title"), "chapter": item.get("title") or item.get("chapter_title"),
                   "book_id": item.get("book_id"), "chapter_idx": item.get("chapter_idx")}
-                 for item in result.get("results", [])[:4]]
+                 for item in citation_items]
     for tc in tool_calls_log:
         tc.pop("result_full", None)
     slot["essays"][topic] = {"text": reply, "genre": genre, "word_count": word_count}

@@ -200,5 +200,12 @@ def test_unprotected_retrieval_retains_legacy_budget_and_reuse_content():
     raw = {"text": "来源。" * 3000}
     for agent in ("general", "nietzsche"):
         content, metadata = context.tool_context("get_philosopher", raw, agent)
-        assert content == json.dumps(raw, ensure_ascii=False)[:4000] and metadata is None
-        assert context.tool_context("get_philosopher", raw, agent, fallback_content="cached reference") == ("cached reference", None)
+        if agent == 'general':
+            assert json.loads(content) == raw and metadata['status'] == 'complete'
+        else:
+            assert content == json.dumps(raw, ensure_ascii=False)[:4000] and metadata is None
+        reused, reuse_metadata = context.tool_context("get_philosopher", raw, agent, fallback_content="cached reference")
+        if agent == 'general':
+            assert json.loads(reused) == raw and reuse_metadata['status'] == 'complete'
+        else:
+            assert (reused, reuse_metadata) == ('cached reference', None)

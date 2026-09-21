@@ -79,6 +79,7 @@ DECLARE_TOOL_NAME = "declare_research_need"
 # 通道分类（机械集合, 与 agent_runtime.RETRIEVAL_TOOLS 的遥测口径分层）
 # ═══════════════════════════════════════════════════════
 CORPUS_RETRIEVAL_TOOLS = {
+    "verify_quote",
     "search_books", "get_chapter", "get_book_detail", "get_philosopher",
     "get_school", "query_graph", "list_books", "query_database", "concept_trace",
 }

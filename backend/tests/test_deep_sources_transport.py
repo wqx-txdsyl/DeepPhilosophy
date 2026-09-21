@@ -15,7 +15,7 @@ def test_primary_cards_distinguish_read_passage_from_search_excerpt():
     log = [{"name": "get_chapter", "result_full": {"book_id": "one", "chapter_idx": 0, "text": "实际原句"}}]
     result = enrich_citations(citations, evidence, log, "实际原句【《论语》·学而篇】【《道德经》·第三章】")
     assert result[0]["access_level"] == "PASSAGE_READ" and result[0]["excerpt"] == "实际原句"
-    assert result[1]["access_level"] == "SEARCH_EXCERPT"
+    assert result[1]["access_level"] == "METADATA_ONLY", 'no retrieved text must not be presented as a search excerpt'
     assert "excerpt" not in citations[0]
 
 

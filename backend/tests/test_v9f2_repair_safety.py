@@ -72,6 +72,26 @@ def test_v9f2_l1_non_json_falls_through():
     assert LPR._unsafe_paraphrase_scan("这不是 JSON") is None
 
 
+def test_paraphrase_can_retain_existing_chapter_citation_but_not_new_quote():
+    label = '【《伦理学》·第二章 “友爱”】'
+    assert LPR._unsafe_paraphrase_scan(_patch('作者讨论友爱。'+label), [label]) is None
+    assert LPR._unsafe_paraphrase_scan(_patch('作者讨论友爱。'+label)) is not None
+    assert LPR._unsafe_paraphrase_scan(_patch('作者说“伪造原句”。'+label), [label]) is not None
+    assert LPR._unsafe_paraphrase_scan(_patch('原文写道：转述。'+label), [label]) is not None
+
+
+def test_local_paraphrase_cannot_erase_source_label_in_replaced_claim():
+    import repair_context as RC
+    label = '【《伦理学》·第二章 “友爱”】'
+    candidate = '> 近似引文' + label
+    bundle = {'issue_id': 'vi_1', 'code': 'UNSUPPORTED_EXACT_QUOTE',
+              'anchor': {'claim_start': 0, 'claim_end': len(candidate)}}
+    fixed, errors = RC.apply_main_agent_patches_v2(candidate, _patch('作者讨论友爱。'), [bundle], {})
+    assert fixed is None and 'PARAPHRASE_DROPPED_CITATION:vi_1' in errors
+    fixed, errors = RC.apply_main_agent_patches_v2(candidate, _patch('作者讨论友爱。'+label), [bundle], {})
+    assert not errors and fixed == '作者讨论友爱。'+label
+
+
 # ═══════════════════════════════════════════════════════
 # production path E2E（真实 LangGraph 图 + production LocalPatchAdapter）
 # ═══════════════════════════════════════════════════════

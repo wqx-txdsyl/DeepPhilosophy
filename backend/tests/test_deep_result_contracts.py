@@ -144,7 +144,7 @@ def test_actual_partial_agent_council_preserves_successful_members_and_explicit_
     def provider(messages, **kwargs):
         if len(messages) == 1:
             member = "synthesis"
-        elif "基于以下检索材料" in messages[-1]["content"]:
+        elif "待检验的分析立场" in messages[-1]["content"]:
             member = "deep"
         else:
             member = "nietzsche"

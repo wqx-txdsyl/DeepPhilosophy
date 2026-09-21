@@ -101,7 +101,7 @@ class TestTaxonomy:
                  "philosopher_concepts", "philosopher_user"}
         assert set(AG.TOOLS) <= set(TC.TOOL_TAXONOMY)
         assert philo <= set(TC.TOOL_TAXONOMY)
-        assert len(TC.TOOL_TAXONOMY) == 40  # O7-C +2 scholarly
+        assert set(TC.TOOL_TAXONOMY) == set(AG.TOOLS) | philo | {'review_answer','verify_quote'}
 
     def test_flags_complete(self):
         flags = {"USES_INTERNAL_LLM", "RETURNS_FINAL_PROSE", "STATEFUL",

@@ -10,6 +10,7 @@ from copy import deepcopy
 from functools import lru_cache
 import heapq
 import math
+import os
 import re
 import threading
 
@@ -66,9 +67,14 @@ def _snippet(text, terms, size=320):
 def _chapters(book):
     """Include chapters beyond the legacy cache's 300-chapter limit."""
     bid = book["id"]
-    yield from core._book_chapter_texts(bid)
+    seen = set()
+    for row in core._book_chapter_texts(bid):
+        seen.add(row[0])
+        yield row
     meta = core.chapter_meta(bid) or {}
     for idx in range(300, int(meta.get("chapterCount") or 0)):
+        if idx in seen:
+            continue
         chapter = core.read_chapter(bid, idx)
         if chapter:
             yield idx, chapter.get("title", ""), chapter.get("text", "")
@@ -84,11 +90,13 @@ def _passage_result(book, idx, title, text, terms, score, focus=""):
         "match_type": "exact_passage", "evidence_scope": "search_excerpt",
         "needs_read": True,
         "read_args": {"book_id": book["id"], "chapter_idx": idx, "focus": focus},
+        "material_role": _material_role(book.get('title',''), title),
+        "role_basis": 'title_heuristic_not_academic_review',
     }
 
 
 @lru_cache(maxsize=32)
-def _lexical_search(query, catalogue_generation, occurrences_only=False, book_ids=None):
+def _lexical_search(query, catalogue_generation, occurrences_only=False, book_ids=None, minimum_matches=None):
     """Search actual chapter text, independently of book-description matches.
 
     The catalogue object's identity changes when invalidate_agent_cache runs;
@@ -120,7 +128,8 @@ def _lexical_search(query, catalogue_generation, occurrences_only=False, book_id
             if not text:
                 continue
             hay = _fold_for_terms(text, remaining)
-            if not all(t in hay for t in remaining):
+            required = len(remaining) if minimum_matches is None else min(len(remaining), minimum_matches)
+            if sum(t in hay for t in remaining) < required:
                 continue
             ch_hay = _fold_for_terms(chapter_title, terms)
             # A focused chapter beats repeated incidental mentions. Short
@@ -129,7 +138,9 @@ def _lexical_search(query, catalogue_generation, occurrences_only=False, book_id
                      + sum(min(hay.count(t), 5) for t in remaining)
                      + retrieval._canon_score(title)
                      + sum(t in _fold_for_terms(title, terms) for t in terms) * 40
-                     + (len(terms) - len(remaining)) * 10)
+                     + (len(terms) - len(remaining)) * 10
+                     + sum(t in hay for t in remaining) * 40 - _editorial_penalty(chapter_title, title)
+                     + _proximity_bonus(text, remaining))
             total += 1
             row = _passage_result(book, idx, chapter_title, text, remaining, score, query)
             previous = books_with_passages.get(book["id"])
@@ -149,14 +160,14 @@ def _lexical_search(query, catalogue_generation, occurrences_only=False, book_id
             "book_passages": sorted(books_with_passages.values(), key=lambda r: -r["score"])}
 
 
-def _exact_results(query, occurrences_only=False, book_ids=None):
+def _exact_results(query, occurrences_only=False, book_ids=None, minimum_matches=None):
     global _catalogue_source
     if not occurrences_only:
         try:
             from research_bridge import current_library_store
             store = current_library_store(core.PUBLIC.parent.parent)
             if store:
-                return store.lexical_results(query, _terms(query), book_ids=book_ids)
+                return store.lexical_results(query, _terms(query), book_ids=book_ids, minimum_matches=minimum_matches)
         except Exception:
             pass  # Canonical JSON remains usable if the derived index is stale/offline.
     books = core.get_books()
@@ -164,7 +175,57 @@ def _exact_results(query, occurrences_only=False, book_ids=None):
         if books is not _catalogue_source:
             _lexical_search.cache_clear()
             _catalogue_source = books
-    return _lexical_search(query, id(books), occurrences_only, book_ids)
+    # JSON fallback must not reuse snippets after a chapter changed while the
+    # server stayed up. Only file identity/mtime/size is hashed, not prose.
+    import hashlib
+    revision = hashlib.sha256()
+    for book in books:
+        if book_ids is None or book['id'] in book_ids:
+            revision.update(repr((book['id'],core._chapter_index(book['id']).get('signature'))).encode())
+    return _lexical_search(query, (id(books),revision.digest()), occurrences_only, book_ids, minimum_matches)
+
+
+def _material_role(book_title, chapter_title):
+    if re.search(r'句读|解读|研究指南|导读$', book_title or ''):
+        return 'COMMENTARY_CANDIDATE'
+    if re.search(r'^(目录|封面|版权页?|扉页|出版说明|参考文献|索引)$', (chapter_title or '').strip()):
+        return 'PARATEXT_CANDIDATE'
+    if re.search(r'译者|译序|编者|编后|导读|导论者|编辑说明', chapter_title or ''):
+        return 'EDITORIAL_CANDIDATE'
+    return 'UNCLASSIFIED'
+
+
+def _editorial_penalty(title, book_title=''):
+    return 160 if _material_role(book_title, title) != 'UNCLASSIFIED' else 0
+
+
+def _proximity_bonus(text, terms):
+    """Reward terms forming one local passage, not scattered across a huge chapter."""
+    from itertools import islice
+    unique = tuple(dict.fromkeys(terms))
+    if len(unique) < 2 or len(unique) > 16 or any(len(t) < 2 for t in unique):
+        return 0
+    positions = sorted((m.start(), i) for i, term in enumerate(unique)
+                       for m in islice(re.finditer(re.escape(term), text, re.I), 4096))
+    counts = {};left = 0;best = None
+    for right, (position, key) in enumerate(positions):
+        counts[key] = counts.get(key, 0) + 1
+        while len(counts) == len(unique):
+            span = position - positions[left][0]
+            best = span if best is None else min(best, span)
+            old = positions[left][1];counts[old] -= 1
+            if not counts[old]:del counts[old]
+            left += 1
+    return max(0, 80 - best // 4) if best is not None else 0
+
+
+@lru_cache(maxsize=128)
+def _segmented_query(query):
+    import jieba
+    import logging
+    jieba.setLogLevel(logging.ERROR)
+    tokens = [t for t in jieba.cut(query) if len(t.strip()) >= 2 and re.search(r'[\w\u4e00-\u9fff]', t)]
+    return ' '.join(dict.fromkeys(tokens))
 
 
 def _semantic_candidates(query, limit):
@@ -227,7 +288,9 @@ def search_books(args):
     if not _terms(query):
         return {"error": "缺少有效检索词"}
     limit = core._int_arg(args, "limit", 5, 1, 10)
-    author, bid = args.get("author") or "", args.get("book_id") or ""
+    if any(args.get(key) is not None and not isinstance(args[key],str) for key in ('author','book_id')):
+        return {'error':'author 和 book_id 应为字符串'}
+    author, bid = (args.get("author") or "").strip(), (args.get("book_id") or "").strip()
     if not isinstance(author, str) or not isinstance(bid, str):
         return {"error": "author 和 book_id 应为字符串"}
     scoped = bool(author.strip() or bid.strip())
@@ -242,15 +305,37 @@ def search_books(args):
                   "match_type": "book_metadata", "evidence_scope": "catalogue", "needs_read": True, "snippet": ""}
                  for b in books]}
     catalogue = {"catalogue_matches": deepcopy(exact["metadata"][:limit]),
-                 "catalogue_match_count": len(exact["metadata"])}
+                 "catalogue_match_count": len(exact["metadata"]),
+                 "search_coverage": exact.get('search_coverage', {'chapter_entries_examined':exact.get('scanned_chapters',0)}),
+                 "search_scope": {'author':author or None,'book_id':bid or None}}
     results = exact["passages"][:limit]
-    if results:
+    def exact_response():
         return {"query": query, "results": deepcopy(results), "method": "exact_fulltext", **catalogue,
                 "total_passage_hits": exact["total_passage_hits"],
                 "note": "片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。"}
+    if results and (not scoped or any(r.get('material_role','UNCLASSIFIED')=='UNCLASSIFIED' for r in results)):
+        return exact_response()
+    if scoped and books:
+        ids = tuple(b['id'] for b in books if _material_role(b.get('title',''),'') == 'UNCLASSIFIED')
+        segmented = _segmented_query(query)
+        variants = []
+        if segmented and _terms(segmented) != _terms(query) and len(_terms(segmented)) > 1:
+            variants.append((segmented, None, 'segmented_candidate'))
+        if len(_terms(query)) >= 3:
+            variants.append((query, max(2, math.ceil(len(_terms(query)) * .67)), 'partial_keyword_candidate'))
+        for expanded, minimum, kind in variants:
+            candidates = _exact_results(expanded, book_ids=ids, minimum_matches=minimum)['passages'][:limit]
+            if candidates:
+                relaxed = deepcopy(candidates)
+                for row in relaxed:
+                    row.update(match_type=kind, original_query=query, query_terms=list(_terms(expanded)))
+                return {'query':query,'results':relaxed,**catalogue,'method':kind,
+                        'note':'未逐字命中完整原查询。以下仅为指定作者/书籍内的分词或部分关键词候选，不证明原句或论点存在；请按read_args核对上下文。'}
+    if results:
+        return exact_response()
     if exact["metadata"]:
         return {"query": query, "results": deepcopy(exact["metadata"][:limit]),
-                "method": "catalogue", **catalogue, "note": "仅命中书名或作者，尚未取得支持论点的原文；请查看目录并读取相关章节。"}
+                "method": "catalogue", **catalogue, "note": "本次关键词检索未命中正文，以下只是书目。核验某句话时，这是未定位到该句的结果，不必逐章重读来重复同一次检索；解释思想时可更换关键词或查看目录，但不能把书目当作观点证据。"}
     if scoped:
         return {"query": query, "results": [], **catalogue, "method": "no_match",
                 "note": "指定作者或书籍范围内未找到材料；未扩大到其他作者，也未用他人转述替代。请核对实际作者或book_id。"}
@@ -297,6 +382,19 @@ def _nonnegative_index(args, key, default=0):
     return value if value >= 0 else None
 
 
+def _book_lookup(identifier):
+    book = core.book_by_id(identifier)
+    if book:
+        return book, None
+    candidates = retrieval._book_name_candidates(identifier)
+    if len(candidates) == 1:
+        return candidates[0], None
+    if len(candidates) > 1:
+        return None, {'error':'AMBIGUOUS_BOOK','message':'书名或作者对应多个版本，请选择实际book_id。',
+                      'candidates':[{'book_id':b['id'],'title':b.get('title'),'author':b.get('author')} for b in candidates[:10]]}
+    return None, {'error':f'未找到书籍 {identifier}，请先检索取得实际book_id'}
+
+
 def get_chapter(args):
     """Read an honest, bounded source window including a requested passage."""
     bid, error = _required_text(args, "book_id")
@@ -311,25 +409,41 @@ def get_chapter(args):
         return {"error": "focus 应为字符串"}
     if len(focus) > 500:
         return {"error": "focus 应为 500 字以内的检索原词或片段"}
-    book = core.book_by_id(bid) or retrieval._resolve_book_by_name(bid)
-    if not book:
-        return {"error": f"未找到书籍 {bid}，请先检索取得实际 book_id"}
+    book, error = _book_lookup(bid)
+    if error:
+        return error
     bid = book["id"]
-    chapter = core.read_chapter(bid, idx)
+    try:
+        chapter = core.read_chapter(bid, idx)
+    except (ValueError, TypeError, AttributeError, OSError):
+        return {'error':'INVALID_CHAPTER_DATA','book_id':bid,'chapter_idx':idx,
+                'message':'章节文件无法正确读取，不能当作空白原文或已读证据。'}
     if not chapter:
         return {"error": f"章节不存在 {bid}/{idx}，请查看该书目录确认索引"}
     text = chapter.get("text", "")
+    if not text.strip():
+        return {'error':'EMPTY_CHAPTER_TEXT','book_id':bid,'chapter_idx':idx,
+                'message':'章节文件存在，但未取得可读正文，不能记为已读原典。'}
     window = 2800  # Fits the engine's 4,000-character ToolMessage including metadata.
-    positions, matched = [], []
+    positions, matched, occurrences = [], [], {}
     if focus:
         for term in _terms(focus):
-            match = re.search(re.escape(term), text, re.IGNORECASE)
-            if match:
-                positions.append(match.start())
+            matches = list(re.finditer(re.escape(term), text, re.IGNORECASE))[:128]
+            if matches:
+                positions.extend(match.start() for match in matches)
                 matched.append(term)
+                occurrences[term] = [m.start() for m in matches]
     if positions and args.get("offset") is None:
         # Focus takes effect on the initial read; explicit offsets paginate it.
-        best = max(positions, key=lambda p: sum(abs(other - p) < window // 2 for other in positions))
+        hay = text.casefold()
+        anchors = [term for term in matched if len(term)>=4 and len(occurrences[term])<=4]
+        if anchors:
+            anchor = anchors[0]
+            best = occurrences[anchor][0]
+        else:
+            best = max(positions, key=lambda p: sum(
+                term.casefold() in hay[max(0, p - 700):max(0, p - 700) + window]
+                for term in matched))
         offset = max(0, best - 700)
     start = min(offset, len(text))
     end = min(start + window, len(text))
@@ -339,11 +453,31 @@ def get_chapter(args):
            "text": text[start:end], "evidence_scope": "chapter_excerpt",
            "excerpt_start": start, "excerpt_end": end, "chapter_text_length": len(text),
            "has_more": end < len(text), "next_offset": end if end < len(text) else None,
-           "focus_found": bool(positions) if focus else None,
-           "focus_terms_matched": matched,
+           "has_previous": start > 0, "previous_offset": max(0,start-window) if start > 0 else None,
+           "focus_found": any(term.casefold() in text[start:end].casefold() for term in matched) if focus else None,
+           "focus_terms_matched": [term for term in matched if term.casefold() in text[start:end].casefold()],
+           "focus_terms_found_in_chapter": matched,
            "note": "text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。"}
+    out['material_role'] = _material_role(book.get('title',''), chapter.get('title',''))
+    out['role_basis'] = 'title_heuristic_not_academic_review'
+    locations=[]
+    for term in occurrences:
+        for position in occurrences[term][:3]:
+            locations.append({'term':term,'offset':position,
+                'read_args':{'book_id':bid,'chapter_idx':idx,'offset':max(0,position-200),'focus':term}})
+    out['focus_locations']=locations[:10]
+    if locations:
+        out['note'] += ' focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。'
+    meta = core.chapter_meta(bid) or {}
+    out['reader_coordinate_valid'] = idx < int(meta.get('chapterCount') or 0)
+    if not out['reader_coordinate_valid']:
+        out['note'] += ' 当前章节文件可读取，但官网目录范围未覆盖此索引；不能声称官网已能跳转。'
+    if out['material_role'] != 'UNCLASSIFIED':
+        out['note'] += ' 标题提示此处可能是译注/解读材料，目录作者字段不能单独证明文字出自原作者。'
     if focus and not positions:
         out["note"] += " 本章未逐字匹配 focus；当前片段不能作为该词项出现的证明。"
+    elif focus and not out['focus_found']:
+        out['note'] += ' 当前窗口没有匹配词，其他实际位置见focus_locations；这不等于全章没有。'
     biblio = retrieval._biblio_payload(bid)
     if biblio:
         out["bibliographic_metadata"] = biblio
@@ -361,9 +495,9 @@ def get_book_detail(args):
     focus = args.get("focus") or ""
     if not isinstance(focus, str):
         return {"error": "focus 应为字符串"}
-    book = core.book_by_id(book_id) or retrieval._resolve_book_by_name(book_id)
-    if not book:
-        return {"error": f"未找到书籍 {book_id}，请先检索取得实际 book_id"}
+    book, error = _book_lookup(book_id)
+    if error:
+        return error
     bid = book["id"]
     meta = core.chapter_meta(bid) or {}
     out = {"id": bid, "title": book.get("title"), "author": book.get("author"),
@@ -373,13 +507,14 @@ def get_book_detail(args):
     biblio = retrieval._biblio_payload(bid)
     if biblio:
         out["bibliographic_metadata"] = biblio
-    titles = meta.get("chapterTitles") or []
-    if titles and len(titles) == meta.get("chapterCount") and all(isinstance(t, str) for t in titles):
-        chapters = [{"index": i, "title": title} for i, title in enumerate(titles)]
-    else:
-        # Read actual block titles; toc sections/parts can share an index and
-        # their array position cannot safely be passed to get_chapter.
-        chapters = [{"index": idx, "title": title} for idx, title, _ in _chapters({"id": bid})]
+    # Read actual source filenames/titles, not the position in chapterTitles.
+    source_rows = list(_chapters({'id': bid}))
+    chapters = [{"index": idx, "title": title} for idx, title, _ in source_rows]
+    out['declared_chapter_count'] = out['chapterCount']
+    out['chapterCount'] = len(chapters)
+    out['unreadable_chapter_indices'] = [idx for idx,_,text in source_rows if not text.strip()]
+    out['readable_chapter_count'] = len(chapters) - len(out['unreadable_chapter_indices'])
+    out['readable'] = out['readable_chapter_count'] > 0
     if focus.strip():
         words = _terms(focus)
         chapters = [row for row in chapters if all(term in row["title"].casefold() for term in words)]
@@ -512,11 +647,23 @@ def compare_views(args):
 def install_deep_tool_overrides(tool_specs):
     """Return isolated specs for general only; caller owns agent routing."""
     specs = dict(tool_specs)
+    from deep_quote_verify import verify_quote
+    specs['verify_quote'] = {'description':'核验明确原句是否出现在指定书的本地版本中，并实际读取命中上下文。只有逐字或排版空白匹配，不用语义近似替代。负结果报告检索范围；无正文则不能判断。引用归属问题优先用此工具。',
+        'parameters':{'type':'object','properties':{'book_id':{'type':'string','description':'实际书ID或完整书名；多个版本不猜'},
+            'quote':{'type':'string','description':'待核验原句，不加书名和说明'},'limit':{'type':'integer','description':'展示1至5处命中，默认3；仍统计全部命中'}},'required':['book_id','quote']},'execute':verify_quote}
+    if os.getenv('DEEP_PROMPT_VERSION') == 'v6':
+        from deep_answer_review import review_answer
+        specs['review_answer'] = {'description':'对完整未公开草稿作一次题设、概念与推论核对。返回带原文定位的评议，不写替换答案，不把通过当正确性证明。',
+            'parameters':{'type':'object','properties':{'question':{'type':'string','description':'原用户问题'},
+                'draft':{'type':'string','description':'完整回答草稿，包括开头和结尾'}},'required':['question','draft']},'execute':review_answer}
     from deep_reasoning_tools import analyze_argument, paper_review
+    from deep_research_tools import confrontation, history_timeline, profile, thought_experiment
     for name, execute in (("search_books", search_books), ("concept_trace", concept_trace),
                           ("get_chapter", get_chapter), ("get_book_detail", get_book_detail),
                           ("philosopher_debate", philosopher_debate), ("analyze_argument", analyze_argument),
-                          ("paper_review", paper_review), ("websearch", websearch), ("compare_views", compare_views)):
+                          ("paper_review", paper_review), ("websearch", websearch), ("compare_views", compare_views),
+                          ("confrontation", confrontation), ("history_timeline", history_timeline),
+                          ("profile", profile), ("thought_experiment", thought_experiment)):
         if name in specs:
             specs[name] = {**specs[name], "parameters": deepcopy(specs[name]["parameters"]),
                            "execute": execute}

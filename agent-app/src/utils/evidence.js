@@ -38,6 +38,7 @@ export function generalAccessLabel(level, lang = 'zh') {
 /** Only known chapter coordinates become direct reader links; never invent chapter zero. */
 export function sourceHref(c = {}) {
   const primary = generalEvidenceLayer(c) === 'primary';
+  if (primary && (c.reader_coordinate_valid === false || c.reader_available === false)) return null;
   const index = c.chapter_idx;
   if (primary && c.book_id && index !== null && index !== undefined && index !== '' && typeof index !== 'boolean'
       && Number.isInteger(Number(index)) && Number(index) >= 0) {

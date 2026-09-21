@@ -74,11 +74,12 @@ def _exec_compare(args, search_fn=None):
               f' "comparison_axes": [{{"axis": "比较维度名", "side_a": "{a}在此维度（≤50字）", "side_b": "{b}在此维度（≤50字）", "why_it_matters": "该维度为何关键（1句）"}}],\n'
               f' "side_a_claims": [{{"claim": "{a}的可辩护主张", "basis": "检索材料/哲学史依据（不编造引文, 没有就写 reasoning）", "strength": "强在何处"}}],\n'
               f' "side_b_claims": [同上结构, 属于{b}],\n'
-              f' "strongest_divergence": "最根本的分歧点（1-2句, 指向不可通约处而非表面差异）",\n'
+              f' "strongest_divergence": "有依据的分歧及其层次；无实质分歧时如实说明，不预设不可通约",\n'
               f' "evidence_needs": ["主 Agent 综合前最好补核的证据/原典定位（可空）"],\n'
               f' "candidate_consequences": ["若接受某一方, 会引出的理论后果（各1句, 不下最终结论）"]}}\n'
               f"要求: 2-4 个 comparison_axes; 每侧 2 条 claims; 各字段文字务必紧凑（防输出截断）;\n"
-              f"严格基于检索材料与可靠哲学史, 不编造引文;\n"
+              f"检索摘要仅是待核查线索。超出材料的既有知识须标为待核查，不编造引文;\n"
+              f"不要把认识论主张扩成所有领域的断言，不把不同问题强行写成正反方;\n"
               f"你不得给出最终胜负判断——那是主 Agent 的职责。\n\n检索材料:\n{ctx}")
     scaffold = None
     try:
@@ -246,7 +247,8 @@ def _exec_council(args):
               f'  {{"advisor": "存在主义（本真选择）", "advice": "…", "assumes": "…"}}],\n'
               f' "tensions": ["三种视角之间真实的张力点（各1句, 不和稀泥）"],\n'
               f' "synthesis_hint": "综合的可能方向（1句, 只是提示不下结论）"}}\n'
-              f"你不得替用户做最终决定——那是主 Agent 结合语境的职责。用中文。")
+              f"你不得替用户做最终决定——那是主 Agent 结合语境的职责。没有提供的处境不能当成事实，"
+              f"必要假设用条件句；不推断用户隐藏动机。不同视角可以共享理由，不强行制造对立。用中文。")
     data = None
     try:
         resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.7, max_tokens=900)
@@ -402,7 +404,7 @@ def _exec_conceptual_map(args):
     graph = None
     source = "user_specified"
     # ① 用户显式给出节点+关系 → 确定性构图（不经 LLM 手写）, LLM 仅在缺 label 时可补注
-    if nodes_in and rels_in:
+    if nodes_in and args.get('relations') is not None:
         seen = set()
         nodes = []
         for n in nodes_in:
@@ -415,11 +417,15 @@ def _exec_conceptual_map(args):
             note = n.get("note") or "" if isinstance(n, dict) else ""
             nodes.append({"id": nid, "label": f"{label}｜{note}" if note else label, "group": group})
         edges = []
+        if len(rels_in) != len(args['relations']):
+            return {'error':'INVALID_GRAPH_RELATIONS','message':'relations每项必须是含from/to的对象。'}
         for r in rels_in[:20]:
             a, b = r.get("from"), r.get("to")
+            if a not in seen or b not in seen or a == b:
+                return {'error':'INVALID_GRAPH_RELATIONS','message':'from/to必须对应两个不同的已给节点，未忽略或重造关系。'}
             if a in seen and b in seen and a != b:
                 edges.append({"from": a, "to": b, "label": (r.get("label") or r.get("relation") or "").strip()})
-        if nodes and edges:
+        if nodes:
             graph = {"nodes": nodes, "edges": edges}
     # ② 未给出完整结构 → 检索 + 内部 LLM 只产生 graph JSON（不产生 Mermaid 文本）
     if graph is None:
@@ -553,7 +559,8 @@ def _exec_dialectic(args):
     if err:
         return err
     constraints = _str_arg(args, "constraints") or ""
-    prompt = (f"用辩证法剖析议题「{topic}」——把矛盾当作概念自身的运动, 而不是两个现成立场的并置。\n"
+    prompt = (f"用辩证方法检验议题「{topic}」。先判断是否真的存在概念内部矛盾，还是外部条件的张力；"
+              f"没有内在矛盾时如实说明，不预设必然综合或更高统一。每一步转化都需要理由，不能只用术语宣告。\n"
               f"从以下字段中选取该问题真正需要的（3-6 个; 不需要的字段不要输出, 也不要用别的名字硬凑三段式）:\n"
               f"- initial_concept: 起点概念及其素朴形态\n"
               f"- internal_tension: 概念内部自我分裂的张力（不在两个外在对立物之间）\n"
@@ -766,7 +773,8 @@ def _exec_school_arena(args):
             for name, profile in ((school_a, pa), (school_b, pb)):
                 ctx = "\n".join(debate[-3:])
                 inject = f"\n流派档案（发言必须体现该流派的核心主张与代表人物思想）:\n{profile}" if profile else ""
-                prompt = (f"你是{name}学派的代表发言人。针对当代议题「{topic}」，发表你的立场与论证（200字内）。{inject}"
+                prompt = (f"模拟{name}学派的一种讨论视角，针对议题「{topic}」发表立场与论证（200字内）。{inject}"
+                          "不要把模拟发言当历史原话，不编造引文；先公平复述对方理由，不把分歧自动写成自相矛盾。"
                           f"这是对抗第{r+1}轮。{'可回应对方发言, 指出其主张在当代的适用局限。' if ctx else '请先亮明核心立场。'}"
                           + (f"\n已有发言:\n{ctx}" if ctx else ""))
                 resp = llm_chat([{"role": "user", "content": prompt}], temperature=0.9, max_tokens=400)
@@ -774,8 +782,9 @@ def _exec_school_arena(args):
                 debate.append(f"{name}: {speech}")
         # 裁判总结
         d_text = "\n".join(debate)
-        sum_prompt = (f"作为哲学裁判, 总结「{school_a}」与「{school_b}」就「{topic}」的对抗（350字内）:\n"
-                      f"①各自核心立场 ②交锋点（谁对谁的哪一点构成威胁）③哪个流派更贴合当代现实 ④可借鉴的综合（区分体系内/综合视角）。\n\n辩论:\n{d_text[:3000]}")
+        sum_prompt = (f"总结「{school_a}」与「{school_b}」就「{topic}」的模拟讨论（350字内）:\n"
+                      f"说明各自理由、共同点、尚未解决的分歧和需要查证的归因。不要强行判赢家、断定谁更适合当代，"
+                      f"也不预设能够综合。指出不成立的反驳；没有查原典的发言仍属模拟。\n\n讨论:\n{d_text[:3000]}")
         sresp = llm_chat([{"role": "user", "content": sum_prompt}], temperature=0.7, max_tokens=800)
         summary = (sresp["choices"][0]["message"].get("content") or "").strip()
     except Exception as e:
@@ -783,7 +792,7 @@ def _exec_school_arena(args):
                 "note": "provider 失败不编造辩论——请主 Agent 基于流派知识直接组织对比"}
     return {"arena": {"topic": topic, "schools": [school_a, school_b], "debate": debate,
                       "summary": summary, "map_text": _debate_map_text(d_text)},
-            "note": f"随机对决: {school_a} vs {school_b} · 议题: {topic}"}
+            "note": f"模拟讨论: {school_a} vs {school_b} · 议题: {topic}；非已核验原典或历史发言。"}
 
 register_tool("school_arena",
     "哲学流派 PK 竞技场——随机抽取两个流派就当代热点议题对抗（也可指定 topic/school_a/school_b）。输出两轮交锋 + 裁判总结 + 演变图。用于'流派PK/随机对决/让两个流派辩论'类请求。",
@@ -805,11 +814,10 @@ def _exec_agent_council(args):
         return err
     # ① 深哲发言（通用视角 + 原典检索）
     def _deep_speech():
-        from engine_langgraph import get_system_prompt
         r = TOOLS["search_books"]["execute"]({"query": topic[:50], "limit": 4})
         mat = json.dumps(r, ensure_ascii=False)[:2500]
-        r1 = llm_chat([{"role": "system", "content": get_system_prompt("general")},
-                       {"role": "user", "content": f"议题: 「{topic}」。基于以下检索材料给出你的分析立场（250字内, 引用标注出处）:\n{mat}"}],
+        r1 = llm_chat([{"role": "system", "content": "你是讨论参与者，给出有理由的暂定立场。材料是搜索线索，不是已阅读原典；不写逐字引文、正式出处或声称已核验，不输出工具协议标签。没有证据的作者归因不要使用。保留原问题条件，不把重要条件升级为必要条件。"},
+                       {"role": "user", "content": f"议题: 「{topic}」。给出待检验的分析立场（250字内）:\n{mat}"}],
                       temperature=0.7, max_tokens=600)
         return (r1["choices"][0]["message"].get("content") or "").strip()
     # ② 尼采发言（人格视角）
@@ -842,13 +850,13 @@ def _exec_agent_council(args):
     # ③ 综合（第三方视角的交汇与分歧; 依赖①②, 串行）
     synthesis = ""
     try:
-        r3 = llm_chat([{"role": "user", "content": f"两位智能体就「{topic}」发言如下, 请综合（300字内）: ①各自立场 ②分歧的本质 ③可互补处。\n\n深哲: {deep_speech[:800]}\n\n尼采: {nietzsche_speech[:800]}"}],
+        r3 = llm_chat([{"role": "user", "content": f"两位智能体就「{topic}」发言如下, 请比较（300字内）: 各自立场、真实分歧与仍需核验的理由。不要默认可以综合，不得增加发言中没有的前提；重要不等于必要，模拟观点不是原典证据。\n\n深哲: {deep_speech[:800]}\n\n尼采: {nietzsche_speech[:800]}"}],
                       temperature=0.6, max_tokens=800)
         synthesis = (r3["choices"][0]["message"].get("content") or "").strip()
     except Exception as e:
         synthesis = f"（综合失败: {e}）"
     return {"council": {"topic": topic, "deep": deep_speech, "nietzsche": nietzsche_speech, "synthesis": synthesis},
-            "note": "深哲（通用·原典检索视角）与尼采（人格视角）的协议协作"}
+            "note": "两种模拟讨论视角，非已核验原典或历史发言；综合意见仍须检查。"}
 
 register_tool("agent_council",
     "多智能体协作——深哲（通用视角, 检索原典）与尼采（人格视角）就同一议题各自发言, 再综合两种视角的交汇与分歧。用于'让深哲和尼采讨论XX'类请求。",

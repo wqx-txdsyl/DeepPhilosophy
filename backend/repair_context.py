@@ -548,6 +548,9 @@ def render_patch_prompt_v2(bundles, slice_catalog, prev_errors=None):
               "verbatim quote. Your replacement_text replaces the ENTIRE claim "
               "including the surrounding quote marks / blockquote marker, and must "
               "not itself contain any verbatim quotation (write plain prose).\n"
+              "Preserve any existing citation label inside that claim verbatim after "
+              "the paraphrase. A chapter title inside an existing citation label is "
+              "a source locator, not quotation prose.\n"
               "For a lead-in quote, the deterministic verbatim cue may begin after "
               "a preserved grammatical subject/context. Write replacement_text so "
               "it connects grammatically to the preserved left context.\n"
@@ -630,16 +633,26 @@ def apply_main_agent_patches_v2(candidate, patch_json, bundles, slice_catalog,
             if not isinstance(text, str) or not text.strip():
                 errs.append(f"EMPTY_REPLACEMENT:{iid}")
                 continue
-            # PARAPHRASE_CLAIM 不得重新制造 quote（机械 QB 门）
-            if QB.extract_quotes(text):
-                errs.append(f"PARAPHRASE_CONTAINS_VERBATIM_QUOTE:{iid}")
-                continue
             t_s = a.get("claim_start", a.get("start", 0))
             t_e = a.get("claim_end", a.get("end", 0))
             # runtime anchor SHA 校验（target = claim span）
             _expected = a.get("claim_sha256") or a.get("content_sha256")
             if _expected and _sha(candidate[t_s:t_e])[:16] != _expected:
                 errs.append(f"STALE_ANCHOR:{iid}")
+                continue
+            from evidence_contract import iter_cite_spans
+            old_claim = candidate[t_s:t_e]
+            labels = [old_claim[s:e] for s, e, *_ in iter_cite_spans(old_claim)]
+            if any(label not in text for label in labels):
+                errs.append(f"PARAPHRASE_DROPPED_CITATION:{iid}")
+                continue
+            prose = text
+            for label in labels:
+                prose = prose.replace(label, '')
+            # Existing source labels are not verbatim prose; new quotations
+            # remain forbidden and all citations still undergo validation.
+            if QB.extract_quotes(prose):
+                errs.append(f"PARAPHRASE_CONTAINS_VERBATIM_QUOTE:{iid}")
                 continue
             spans.append((t_s, t_e, text, iid, True))
             continue

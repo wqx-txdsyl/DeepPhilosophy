@@ -60,9 +60,9 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
         const args = event.tc?.args || event.args || {};
         const webLabel = name === 'websearch' ? (args.url ? (zh ? '读取网页' : 'Read webpage') : (zh ? '联网查阅' : 'Search web')) : null;
         const scholarlyLabel = { search_scholarship: zh ? '检索学术文献' : 'Search scholarship', get_scholarly_source: zh ? '读取学术资料' : 'Read scholarly source' }[name];
-        const reasoningLabel = { analyze_argument: zh ? '论证分析（辅助模型）' : 'Argument analysis (auxiliary model)', paper_review: zh ? '文本评审（辅助模型）' : 'Text review (auxiliary model)' }[name];
-        const label = reasoningLabel || webLabel || scholarlyLabel || (toolLabel(name) !== name ? toolLabel(name) : (zh ? '工具调用' : 'Tool call'));
-        let query = toolShortArgs(args);
+        const reasoningLabel = { review_answer: zh ? '核对回答论证（辅助模型）' : 'Check draft reasoning (auxiliary model)', analyze_argument: zh ? '论证分析（辅助模型）' : 'Argument analysis (auxiliary model)', paper_review: zh ? '文本评审（辅助模型）' : 'Text review (auxiliary model)' }[name];
+        const label = (name === 'verify_quote' ? (zh ? '核验原文' : 'Verify quotation') : null) || reasoningLabel || webLabel || scholarlyLabel || (toolLabel(name) !== name ? toolLabel(name) : (zh ? '工具调用' : 'Tool call'));
+        let query = args.quote || toolShortArgs(args);
         if (args.url) {
           try { query = new URL(args.url).hostname + (args.focus ? ` · ${args.focus}` : ''); }
           catch { query = args.url; }
