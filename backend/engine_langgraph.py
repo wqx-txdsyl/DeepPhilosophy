@@ -671,7 +671,7 @@ def _build_context_messages(agent, language, custom_instructions=None,
                          else REPAIR_SYSTEM_PROTOCOL)
         if agent != "general":
             parts.append(PERSONA_THINK_REMINDER_EN if language == "en" else PERSONA_THINK_REMINDER)
-        if language != "en" and agent != "general":
+        if language != "en":
             # 中文模式每轮强化: 内部思考与回答都必须中文（DeepSeek 偶发英文思考的防线）
             parts.append("（语言提醒：你的内部思考过程（thinking/reasoning）与最终回答都必须使用中文。禁止用英文思考。")
         return [SystemMessage(content="\n\n".join(parts))] if parts else []
@@ -695,7 +695,7 @@ def _build_context_messages(agent, language, custom_instructions=None,
         prompt += ("\n\n【语言设置·重要】用户已切换到英文模式。以上（包括系统提示中）所有'使用中文'的指示一律作废。"
                    "思考流与回答必须全部使用英文（English），工具调用与引用也可用英文。禁止再用中文输出。")
     elif agent == "general":
-        prompt += "\n\n【语言要求】公开研究说明和回答使用中文；保留必要的原文术语与出处。"
+        prompt += "\n\n【语言要求】使用中文思考和回答：reasoning_content、公开研究说明及正文均以中文表达。原典原文、专有名词、工具名与参数可以保留原语言；不要整段切换到英文推理。"
     else:
         prompt += ("\n\n【语言要求】所有输出必须使用中文——包括内部思维过程（推理链）与回答。禁止用英文思考或输出。")
     # O6-Q1 §10/§11: 当前 responder 身份事实——并入同一条 SystemMessage（builder 单源）

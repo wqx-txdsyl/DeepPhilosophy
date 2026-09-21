@@ -4,7 +4,6 @@ import { useLang } from '../../utils/i18n';
 import { plainText } from '../../data/generalStream';
 import { toolShortArgs, toolShortSummary } from '../../data/conversationLogic';
 import { pickUsedEvidence } from '../../utils/evidence';
-import { getPref } from '../../data/localPrefs';
 import { renderMarkdown } from './markdown';
 import { DepthControls, SourceDrawer } from './O9';
 import { AnswerResearch, AnswerExploration } from './AnswerResearch';
@@ -19,40 +18,45 @@ export function ProviderReasoning({ message }) {
   return <ReasoningTimeline message={message} lang={lang} toolLabel={toolLabel} />;
 }
 
-export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => name }) {
-  const zh = lang !== 'en';
-  const [open, setOpen] = useState(() => !!message.streaming || !!getPref('toolTraceOpen'));
+export function ReasoningBlock({ text, active, zh }) {
+  const [choice, setChoice] = useState(null);
+  const open = choice?.phase === active ? choice.open : active;
   const body = useRef(null);
   const follow = useRef(true);
+  useEffect(() => {
+    if (open && follow.current && body.current) body.current.scrollTop = body.current.scrollHeight;
+  }, [open, text]);
+  const summary = text.trim().split('\n').find(line => line.trim()) || '';
+  return <section className="general-think-block" data-active={active || undefined}>
+    <button className="general-think-toggle" aria-expanded={open} onClick={() => setChoice({ phase: active, open: !open })}>
+      {active ? <Loader2 size={13} className="cw-spinner" /> : <Check size={13} />}
+      <span>{zh ? (active ? '思考中' : '已思考') : (active ? 'Thinking' : 'Thought')}</span>
+      {!open && <span className="general-think-preview">{summary.replaceAll('**', '').slice(0, 90)}</span>}
+      {open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
+    </button>
+    {open && <div className="general-think-body general-reasoning-text" ref={body} onScroll={event => {
+      const el = event.currentTarget;
+      follow.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+    }}>{text}</div>}
+  </section>;
+}
+
+export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => name }) {
+  const zh = lang !== 'en';
   const events = (message.events || message.tool_events || []).filter(e => ['provider_reasoning', 'thinking_summary', 'tool_start', 'tool', 'tool_cancel', 'tool_note'].includes(e?.t)
     && (e.t !== 'provider_reasoning' || e.source === 'deepseek')
     && (e.tc?.name || e.name) !== 'declare_research_need'
     && !(e.t === 'tool_note' && /^(登记研究需求|Registering research need|正在.*(?:…|\.\.\.)$)/i.test(e.text || '')));
-  const calls = events.filter(e => e.t.startsWith('tool') && e.t !== 'tool_note');
-  const running = calls.filter(e => e.t === 'tool_start').length;
-  const hasReasoning = (message.events || message.tool_events || []).some(e => e.t === 'provider_reasoning');
-  const progress = events.reduce((n, e) => n + (e.content?.length || e.text?.length || 0) + 1, 0);
-  useEffect(() => {
-    if (open && follow.current && body.current) body.current.scrollTop = body.current.scrollHeight;
-  }, [open, progress]);
   if (!events.length && !message.streaming) return null;
-  const completed = calls.filter(e => e.t === 'tool' && ['success', 'reused'].includes(e.status || 'success')).length;
-  const headline = events.length ? (zh ? (hasReasoning ? '思考与工具' : '研究过程') : (hasReasoning ? 'Reasoning and tools' : 'Research'))
-    : message.content ? (zh ? '正在写下回答' : 'Writing the answer') : (zh ? '等待模型响应' : 'Waiting for the model');
-  return <div className="cw-activity general-activity general-timeline">
-    <button className="cw-activity-head" aria-expanded={open} onClick={() => setOpen(v => !v)}>
-      {message.streaming && !message.done_received ? <Loader2 size={13} className="cw-spinner" aria-hidden /> : open ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
-      <span className="cw-activity-head-text" role="status">{headline}</span>
-      {running > 0 ? <span className="general-activity-count">{zh ? `${running} 项执行中` : `${running} running`}</span>
-        : completed > 0 && <span className="general-activity-count">{zh ? `${completed} 项工具完成` : `${completed} tools complete`}</span>}
-    </button>
-    {open && <div className="cw-activity-body general-timeline-body" ref={body} onScroll={event => {
-      const el = event.currentTarget;
-      follow.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
-    }}>
-      {!events.length && <div className="cw-think-line">{zh ? '收到问题，准备回答。' : 'Question received. Preparing an answer.'}</div>}
+  const latestReasoning = events.findLastIndex(e => e.t === 'provider_reasoning');
+  return <div className="general-process">
+    {!events.length && <span className="general-activity-count">{zh ? '等待模型响应' : 'Waiting for model'}</span>}
       {events.map((event, i) => {
-        if (event.t === 'provider_reasoning') return <div className="general-reasoning-text" key={`${event.id}:${i}`}>{event.content}</div>;
+        if (event.t === 'provider_reasoning') {
+          const active = !!message.streaming && !message.done_received && !message.content && i === latestReasoning
+            && !events.slice(i + 1).some(e => ['tool_start', 'tool', 'tool_cancel'].includes(e.t));
+          return <ReasoningBlock key={`${event.id}:${i}`} text={event.content} active={active} zh={zh} />;
+        }
         if (event.t === 'thinking_summary' || event.t === 'tool_note') {
           const content = plainText(event.content || event.text);
           return content ? <div className="cw-think-line" key={event.id || `note-${i}`}>{event.t === 'thinking_summary' && <span>{zh ? '研究说明：' : 'Research note: '}</span>}{content}</div> : null;
@@ -82,7 +86,6 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
           <div>{plainText(summary) || (zh ? statusZh : statusEn)}</div>
         </details>;
       })}
-    </div>}
   </div>;
 }
 

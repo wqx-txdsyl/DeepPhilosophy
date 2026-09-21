@@ -71,8 +71,9 @@ try {
   assert.ok(timeline.indexOf('先定位原文。') < timeline.indexOf('general-tool-success'));
   assert.ok(timeline.indexOf('general-tool-success') < timeline.indexOf('再结合上下文分析。'));
   assert.ok(timeline.indexOf('再结合上下文分析。') < timeline.indexOf('general-tool-running'));
-  assert.equal((timeline.match(/class="cw-activity-head"/g) || []).length, 1, 'one disclosure holds both reasoning and tools');
-  assert.ok(timeline.includes('1 项执行中') && !timeline.includes('<script>'));
+  assert.equal((timeline.match(/class="general-think-toggle"/g) || []).length, 2, 'each reasoning block has its own disclosure');
+  assert.equal((timeline.match(/aria-expanded="false"/g) || []).length, 2, 'tool calls settle and collapse preceding reasoning');
+  assert.ok(timeline.includes('进行中') && !timeline.includes('<script>'));
   const researchPanel = message => renderToStaticMarkup(createElement(AnswerResearch, { message, lang: 'zh', onSend() {}, onSource() {} }));
   const emptyResearch = researchPanel({});
   assert.ok(emptyResearch.includes('原典检索') && emptyResearch.includes('本轮未检索原典') && emptyResearch.includes('检索相关原典'));
