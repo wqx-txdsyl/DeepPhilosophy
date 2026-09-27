@@ -9,6 +9,29 @@ const reduce = events => events.reduce(reduceGeneralEvent, createGeneralStream()
 const sseResponse = chunks => new Response(new ReadableStream({ start(controller) { chunks.forEach(chunk => controller.enqueue(chunk)); controller.close(); } }), { headers: { 'content-type': 'text/event-stream; charset=utf-8' } });
 const bytes = text => new TextEncoder().encode(text);
 
+await test('interim answers remain in timeline order across tools, final text and reload', () => {
+  let state = reduce([
+    {type:'status',runtime_profile:'bare'},
+    {type:'provider_reasoning_delta',source:'deepseek',id:'r1',content:'先思考'},
+    {type:'answer_preview',content:'先说明一个区别。'},
+    {type:'assistant_commentary',id:'c1',content:'先说明一个区别。'},
+    {type:'answer_preview_reset'},
+    {type:'tool_start',name:'search_books',call_id:'t1'},
+    {type:'tool',name:'search_books',call_id:'t1',status:'success',result:'结果'},
+    {type:'provider_reasoning_delta',source:'deepseek',id:'r2',content:'再思考'},
+  ]);
+  assert.equal(state.content,'');
+  assert.deepEqual(state.events.map(e=>e.t),['provider_reasoning','assistant_commentary','tool','provider_reasoning']);
+  state=reduceGeneralEvent(state,{type:'assistant_commentary',id:'c1',content:'先说明一个区别。补充。'});
+  assert.equal(state.events.length,4);
+  state=reduceGeneralEvent(state,{type:'answer_preview',content:'最终答案。'});
+  state=reduceGeneralEvent(state,{type:'done',content:'最终答案。',complete:true});
+  const restored=normalizeMessage(toPersistedMessage({...state,role:'assistant',agent_id:'general',message_id:'interim'}));
+  assert.equal(restored.content,'最终答案。');
+  assert.equal(restored.tool_events[1].content,'先说明一个区别。补充。');
+  assert.deepEqual(reduceGeneralEvent(state,{type:'assistant_commentary',id:'late',content:'过期'}),state);
+});
+
 await test('bare mode preserves provider text and persists its rendering mode', () => {
   let state = reduce([{type:'status',runtime_profile:'bare'}, {type:'answer_preview',content:'🧭 原样输出'}]);
   assert.equal(state.content,'🧭 原样输出');

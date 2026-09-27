@@ -43,17 +43,21 @@ export function ReasoningBlock({ text, active, zh }) {
 
 export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => name }) {
   const zh = lang !== 'en';
-  const events = (message.events || message.tool_events || []).filter(e => ['provider_reasoning', 'tool_start', 'tool', 'tool_cancel'].includes(e?.t)
+  const events = (message.events || message.tool_events || []).filter(e => (['provider_reasoning', 'assistant_commentary', 'tool_start', 'tool', 'tool_cancel'].includes(e?.t)
+    || (message.runtime_profile === 'bare' && e?.t === 'thinking_summary'))
     && (e.t !== 'provider_reasoning' || e.source === 'deepseek')
     && (e.tc?.name || e.name) !== 'declare_research_need');
   if (!events.length && !message.streaming) return null;
-  const latestReasoning = events.findLastIndex(e => e.t === 'provider_reasoning');
   return <div className="general-process">
     {!events.length && <span className="general-activity-count">{zh ? '等待模型响应' : 'Waiting for model'}</span>}
       {events.map((event, i) => {
+        if (event.t === 'assistant_commentary' || event.t === 'thinking_summary') {
+          return <div className="general-answer general-interim-answer" key={event.id || `commentary-${i}`}>
+            {renderMarkdown(event.content || '', undefined, undefined, key => key, { general: true, citations: message.citations || [] })}
+          </div>;
+        }
         if (event.t === 'provider_reasoning') {
-          const active = !!message.streaming && !message.done_received && !message.content && i === latestReasoning
-            && !events.slice(i + 1).some(e => ['tool_start', 'tool', 'tool_cancel'].includes(e.t));
+          const active = !!message.streaming && !message.done_received && !message.content && i === events.length - 1;
           return <ReasoningBlock key={`${event.id}:${i}`} text={event.content} active={active} zh={zh} />;
         }
         const name = event.tc?.name || event.name;

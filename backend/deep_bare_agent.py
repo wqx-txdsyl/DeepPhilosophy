@@ -94,6 +94,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
             group = f'{invocation}:{round_index}'
             full = None
             text = ''
+            segment = 0
             announced = set()
             call_started = False
             stream = client.astream(messages)
@@ -102,16 +103,21 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                     full = chunk if full is None else full + chunk
                     reasoning = (getattr(chunk, 'additional_kwargs', {}) or {}).get('reasoning_content')
                     if reasoning:
+                        if text and not call_started:
+                            yield {'type': 'assistant_commentary', 'id': f'{group}:note:{segment}', 'content': text}
+                            yield {'type': 'answer_preview_reset'}
+                            text = ''
+                            segment += 1
                         yield {'type': 'provider_reasoning_delta', 'source': 'deepseek' if 'deepseek' in MODEL else MODEL,
-                               'id': group, 'content': reasoning, 'decision_group_id': group}
+                               'id': f'{group}:reasoning:{segment}', 'content': reasoning, 'decision_group_id': group}
                     for call in getattr(chunk, 'tool_call_chunks', None) or []:
                         if not call.get('name'):
                             continue
                         if not call_started:
                             call_started = True
                             if text:
+                                yield {'type': 'assistant_commentary', 'id': f'{group}:note:{segment}', 'content': text}
                                 yield {'type': 'answer_preview_reset'}
-                                yield {'type': 'thinking_summary', 'id': group + ':note', 'content': text}
                         key = call.get('id') or f'{group}:tool-{call.get("index", 0)}'
                         if key not in announced:
                             announced.add(key)
@@ -121,6 +127,8 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                         text += chunk.content
                         if not call_started:
                             yield {'type': 'answer_preview', 'content': chunk.content}
+                        else:
+                            yield {'type': 'assistant_commentary', 'id': f'{group}:note:{segment}', 'content': text}
             finally:
                 await stream.aclose()
             if full is None:
@@ -149,9 +157,9 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                        'finish_reason': finish, 'duration_seconds': round(time.monotonic() - started, 3)}
                 return
             if not call_started:
-                yield {'type': 'answer_preview_reset'}
                 if text:
-                    yield {'type': 'thinking_summary', 'id': group + ':note', 'content': text}
+                    yield {'type': 'assistant_commentary', 'id': f'{group}:note:{segment}', 'content': text}
+                yield {'type': 'answer_preview_reset'}
 
             async def run_call(index, call):
                 at = time.monotonic()

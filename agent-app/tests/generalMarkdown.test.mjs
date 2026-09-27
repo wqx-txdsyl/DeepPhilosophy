@@ -78,6 +78,21 @@ try {
   assert.equal((timeline.match(/aria-expanded="false"/g) || []).length, 2, 'tool calls settle and collapse preceding reasoning');
   assert.ok(timeline.includes('进行中') && !timeline.includes('<script>'));
   assert.ok(!timeline.includes('研究旁白') && !timeline.includes('工具旁白') && !timeline.includes('研究说明'));
+  const interimTimeline = renderToStaticMarkup(createElement(ReasoningTimeline, { message: {
+    runtime_profile:'bare', streaming:true, events:[
+      {t:'provider_reasoning',source:'deepseek',id:'one',content:'第一段思考'},
+      {t:'assistant_commentary',id:'speech',content:'先给一个**初步判断**。'},
+      {t:'tool',call_id:'read',status:'success',tc:{name:'get_chapter',result_summary:'原文结果'}},
+      {t:'thinking_summary',id:'legacy',content:'旧裸模式保存的中间回答'},
+      {t:'provider_reasoning',source:'deepseek',id:'two',content:'第二段思考'},
+    ],
+  } }));
+  assert.ok(interimTimeline.includes('<strong>初步判断</strong>'));
+  assert.ok(interimTimeline.indexOf('初步判断') < interimTimeline.indexOf('general-tool-success'));
+  assert.ok(interimTimeline.indexOf('general-tool-success') < interimTimeline.indexOf('旧裸模式保存的中间回答'));
+  assert.ok(interimTimeline.indexOf('旧裸模式保存的中间回答') < interimTimeline.indexOf('第二段思考'));
+  assert.equal((interimTimeline.match(/general-interim-answer/g)||[]).length,2);
+  assert.equal((interimTimeline.match(/aria-expanded="true"/g)||[]).length,1);
   const researchPanel = message => renderToStaticMarkup(createElement(AnswerResearch, { message, lang: 'zh', onSend() {}, onSource() {} }));
   const emptyResearch = researchPanel({});
   assert.ok(emptyResearch.includes('原典检索') && emptyResearch.includes('本轮未检索原典') && emptyResearch.includes('检索相关原典'));

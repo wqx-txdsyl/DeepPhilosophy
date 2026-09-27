@@ -31,6 +31,17 @@ export function reduceGeneralEvent(state, evt) {
   const displayText = state.runtime_profile === 'bare' || evt.runtime_profile === 'bare'
     ? value => String(value ?? '') : plainText;
   const text = displayText(evt.content);
+  if (evt.type === 'assistant_commentary') {
+    if (state.done_received || !evt.id || !text) return state;
+    const events = [...state.events];
+    const i = events.findIndex(e => e.t === 'assistant_commentary' && e.id === evt.id);
+    const entry = { t: 'assistant_commentary', id: evt.id, content: text };
+    if (i < 0) events.push(entry); else events[i] = entry;
+    // Promote the visible words into the timeline atomically. Later tool and
+    // reasoning events must not erase them or duplicate them in the answer.
+    return { ...state, events, content: state.previewing ? (state.validated_content || '') : state.content,
+      previewing: false, validated_content: undefined };
+  }
   if (evt.type === 'provider_reasoning_delta') {
     if (state.done_received || evt.source !== 'deepseek' || !evt.id || typeof evt.content !== 'string' || !evt.content) return state;
     const events = [...state.events];

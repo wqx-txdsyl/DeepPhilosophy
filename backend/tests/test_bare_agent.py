@@ -71,6 +71,38 @@ def test_provider_stream_cancellation_closes_generator(monkeypatch):
     assert closed == [True]
 
 
+def test_interim_answers_are_committed_before_tools_and_not_lost(monkeypatch):
+    class Model:
+        index = 0
+        def bind_tools(self, tools):return self
+        async def astream(self, messages):
+            self.index += 1
+            yield AIMessageChunk(content='', additional_kwargs={'reasoning_content': f'思考{self.index}'})
+            if self.index <= 2:
+                yield AIMessageChunk(content=f'中间回答{self.index}。')
+                yield AIMessageChunk(content='', tool_call_chunks=[{'name':'probe','args':'{}','id':f'call{self.index}','index':0}])
+                # Providers can place more content beside/after tool fragments.
+                yield AIMessageChunk(content='补充一句。')
+            else:
+                yield AIMessageChunk(content='最终回答。', response_metadata={'finish_reason':'stop'})
+    tool=StructuredTool.from_function(lambda: {'text':'材料'}, name='probe', description='Fixture')
+    async def tools():return [tool]
+    monkeypatch.setattr(bare,'load_tools',tools)
+    monkeypatch.setattr(bare,'load_model',Model)
+    monkeypatch.setattr(bare,'source_metadata',lambda *a:([],None))
+    async def run():return [e async for e in bare.stream_bare_agent('问题',[])]
+    events=asyncio.run(run())
+    notes={}
+    for index,event in enumerate(events):
+        if event['type']=='assistant_commentary':
+            if event['id'] not in notes:
+                assert events[index+1]['type']=='answer_preview_reset'
+            notes[event['id']]=event['content']
+    assert list(notes.values())==['中间回答1。补充一句。','中间回答2。补充一句。']
+    assert not any(e['type']=='thinking_summary' for e in events)
+    assert events[-1]['content']=='最终回答。'
+
+
 def test_general_route_bypasses_request_quotas_only_in_bare_mode(monkeypatch):
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
@@ -86,3 +118,23 @@ def test_general_route_bypasses_request_quotas_only_in_bare_mode(monkeypatch):
     app=FastAPI();app.include_router(agent_sse.router)
     response=TestClient(app).post('/api/agent/stream_lg',json={'message':'offline','agent':'general'})
     assert response.status_code == 200 and 'offline' in response.text
+
+
+def test_resumed_reasoning_preserves_spoken_text_without_a_tool(monkeypatch):
+    class Model:
+        def bind_tools(self, tools):return self
+        async def astream(self, messages):
+            yield AIMessageChunk(content='',additional_kwargs={'reasoning_content':'第一段思考'})
+            yield AIMessageChunk(content='先回应一句。')
+            yield AIMessageChunk(content='',additional_kwargs={'reasoning_content':'再想一下'})
+            yield AIMessageChunk(content='最终结论。',response_metadata={'finish_reason':'stop'})
+    async def tools():return []
+    monkeypatch.setattr(bare,'load_tools',tools)
+    monkeypatch.setattr(bare,'load_model',Model)
+    monkeypatch.setattr(bare,'source_metadata',lambda *a:([],None))
+    async def run():return [e async for e in bare.stream_bare_agent('问题',[])]
+    events=asyncio.run(run())
+    note=next(e for e in events if e['type']=='assistant_commentary')
+    assert note['content']=='先回应一句。'
+    assert len({e['id'] for e in events if e['type']=='provider_reasoning_delta'})==2
+    assert events[-1]['content']=='最终结论。'
