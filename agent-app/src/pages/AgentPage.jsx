@@ -264,7 +264,9 @@ export default function AgentWorkspace() {
     appendMessageLocal(convId, assistantMsg);
 
     // 历史快照: 发送前 20 条（含两种 Agent 的公开回答, §8 共享）
-    const history = (convNow?.messages || []).slice(-20).map(m => ({ role: m.role, content: agent === 'general' ? (m.context_content || m.content) : m.content }));
+    const conversationHistory = convNow?.messages || [];
+    const history = (agent === 'general' ? conversationHistory : conversationHistory.slice(-20))
+      .map(m => ({ role: m.role, content: agent === 'general' ? (m.context_content || m.content) : m.content }));
 
     const controller = new AbortController();
     markStream(convId, mid, controller, agent);

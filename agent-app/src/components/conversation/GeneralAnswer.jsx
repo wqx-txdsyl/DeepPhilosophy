@@ -69,7 +69,8 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
         }
         const status = event.t === 'tool_start' ? 'running' : event.status || (event.t === 'tool_cancel' ? 'cancelled' : 'success');
         const [statusZh, statusEn] = STATUS[status] || STATUS.success;
-        const summary = toolShortSummary(event.tc) || toolShortArgs(event.tc?.args || event.args) || event.reason;
+        const summary = message.runtime_profile === 'bare' ? event.tc?.result_summary || event.reason
+          : toolShortSummary(event.tc) || toolShortArgs(event.tc?.args || event.args) || event.reason;
         return <details className={`general-tool general-tool-${status}`} key={event.call_id || `call-${i}`}>
           <summary>
             {status === 'running' ? <Loader2 size={12} className="cw-spinner" /> : ['success', 'reused'].includes(status) ? <Check size={12} /> : <XCircle size={12} />}
@@ -78,7 +79,7 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
             <span className="general-tool-status">{zh ? statusZh : statusEn}</span>
             <ChevronDown size={12} />
           </summary>
-          <div>{plainText(summary) || (zh ? statusZh : statusEn)}</div>
+          <div>{(message.runtime_profile === 'bare' ? summary : plainText(summary)) || (zh ? statusZh : statusEn)}</div>
         </details>;
       })}
   </div>;
@@ -91,7 +92,8 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy }
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const citations = pickUsedEvidence(m.citations);
-  const content = plainText(m.content).replace(/<tool_calls>[\s\S]*?<\/tool_calls>/g, '').replace(/<invoke name="[^"]+">[\s\S]*?<\/invoke>/g, '');
+  const content = m.runtime_profile === 'bare' ? String(m.content || '')
+    : plainText(m.content).replace(/<tool_calls>[\s\S]*?<\/tool_calls>/g, '').replace(/<invoke name="[^"]+">[\s\S]*?<\/invoke>/g, '');
   const interrupted = ['stopped', 'error', 'interrupted'].includes(m.stream_state);
   const complete = !m.streaming && !!content && !interrupted;
   const copy = async () => {

@@ -7,6 +7,7 @@
 """
 import json
 import asyncio
+import os
 from typing import Optional, List
 
 from fastapi import APIRouter, Depends, Header, Request
@@ -54,13 +55,21 @@ class AgentChatRequest(BaseModel):
     conversation_id: Optional[str] = None  # Phase A (A1): tool loop 观测上下文（可选）
     message_id: Optional[str] = None       # Phase A (A1): 单条消息 id（可选, 缺省自动生成）
 
+
+def agent_access(req: AgentChatRequest, request: Request, authorization: str = Header(None)):
+    if (req.agent or 'general') == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare':
+        # Keep identity resolution and per-user memory isolation, but no
+        # experiment request rate or daily usage quota.
+        return guard.resolve_user(authorization)
+    return guard.agent_guard(request, authorization)
+
 # ═══════════════════════════════════════════════════════
 # LangGraph 引擎路由（v2）: /api/agent/stream_lg
 # Claude Code 风格: 思考 → 工具（并行）→ 最终回答; 前端协议不变
 # ═══════════════════════════════════════════════════════
 @router.post("/api/agent/stream_lg")
 async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization: str = Header(None),
-                          _g: dict = Depends(guard.agent_guard)):
+                          _g: dict = Depends(agent_access)):
     async def stream_events():
         import engine_langgraph as elg
         if not API_KEY:

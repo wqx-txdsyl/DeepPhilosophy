@@ -9,6 +9,16 @@ const reduce = events => events.reduce(reduceGeneralEvent, createGeneralStream()
 const sseResponse = chunks => new Response(new ReadableStream({ start(controller) { chunks.forEach(chunk => controller.enqueue(chunk)); controller.close(); } }), { headers: { 'content-type': 'text/event-stream; charset=utf-8' } });
 const bytes = text => new TextEncoder().encode(text);
 
+await test('bare mode preserves provider text and persists its rendering mode', () => {
+  let state = reduce([{type:'status',runtime_profile:'bare'}, {type:'answer_preview',content:'🧭 原样输出'}]);
+  assert.equal(state.content,'🧭 原样输出');
+  assert.equal(reduceGeneralEvent(state,{type:'error',content:'网络错误'}).content,'🧭 原样输出');
+  state = reduceGeneralEvent(state,{type:'done',content:'🧭 原样输出',complete:true});
+  const saved = normalizeMessage(toPersistedMessage({...state,role:'assistant',agent_id:'general',message_id:'bare'}));
+  assert.equal(saved.runtime_profile,'bare');
+  assert.equal(saved.content,'🧭 原样输出');
+});
+
 await test('provider preview paints each delta without duplicating validated tokens', () => {
   let state = reduce([{type:'answer_preview',content:'选'}]);
   assert.equal(state.content, '选');

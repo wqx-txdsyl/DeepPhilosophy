@@ -28,7 +28,9 @@ export function prepareGeneralRequest(streams, conversationId) {
 
 export function reduceGeneralEvent(state, evt) {
   if (!evt || typeof evt.type !== 'string') return state;
-  const text = plainText(evt.content);
+  const displayText = state.runtime_profile === 'bare' || evt.runtime_profile === 'bare'
+    ? value => String(value ?? '') : plainText;
+  const text = displayText(evt.content);
   if (evt.type === 'provider_reasoning_delta') {
     if (state.done_received || evt.source !== 'deepseek' || !evt.id || typeof evt.content !== 'string' || !evt.content) return state;
     const events = [...state.events];
@@ -54,7 +56,8 @@ export function reduceGeneralEvent(state, evt) {
     // Only retract a matching suffix. An unrelated/duplicate event must not erase a valid answer.
     return !state.done_received && text && state.content.endsWith(text) ? { ...state, content: state.content.slice(0, -text.length) } : state;
   }
-  if (evt.type === 'status') return { ...state, status: text };
+  if (evt.type === 'status') return { ...state, status: text,
+    ...(evt.runtime_profile ? { runtime_profile: evt.runtime_profile } : {}) };
   if (evt.type === 'thinking_summary') {
     const id = evt.id || `research-${state.events.length}`;
     const line = { t: 'thinking_summary', id, phase: evt.phase, content: text };
@@ -83,7 +86,7 @@ export function reduceGeneralEvent(state, evt) {
       ? { t: 'tool_start', call_id: resolvedId, name: evt.name, args: evt.args, status: 'running' }
       : evt.type === 'tool_cancel'
         ? { t: 'tool_cancel', call_id: resolvedId, name: evt.name, status: evt.status || 'cancelled', reason: plainText(evt.reason || '') }
-        : { t: 'tool', call_id: resolvedId, status: evt.status || inferToolStatus(evt.result), tc: { name: evt.name, args: evt.args, result_summary: typeof (evt.summary || evt.result) === 'string' ? plainText(evt.summary || evt.result) : JSON.stringify(evt.result ?? '') } };
+        : { t: 'tool', call_id: resolvedId, status: evt.status || inferToolStatus(evt.result), tc: { name: evt.name, args: evt.args, result_summary: typeof (evt.summary || evt.result) === 'string' ? displayText(evt.summary || evt.result) : JSON.stringify(evt.result ?? '') } };
     // Duplicate or late start must not resurrect a completed call.
     if (i >= 0 && evt.type === 'tool_start' && events[i].t !== 'tool_start') return state;
     if (i >= 0) events[i] = entry; else events.push(entry);
@@ -94,7 +97,7 @@ export function reduceGeneralEvent(state, evt) {
     previewing: false, validated_content: undefined,
     content: state.previewing ? (state.validated_content || '') : state.content,
     ...(evt.complete !== false ? { streaming: false, stream_state: 'complete' } : {}),
-    ...(typeof evt.content === 'string' ? { content: plainText(evt.content) } : {}),
+    ...(typeof evt.content === 'string' ? { content: text } : {}),
     ...(evt.safety === 'blocked' ? { content: plainText(evt.safety_reply) } : {}),
     citations: Array.isArray(evt.citations) ? evt.citations : [], evidence: evt.evidence || null,
     suggestions: suggestions(evt.suggestions), reasoning_summary: evt.reasoning_summary || null,
@@ -103,7 +106,7 @@ export function reduceGeneralEvent(state, evt) {
   if (evt.type === 'suggestions') return { ...state, suggestions: suggestions(evt.suggestions), suggestions_status: evt.status || (evt.suggestions?.length ? 'ready' : 'unavailable') };
   if (evt.type === 'reasoning_summary') return { ...state, reasoning_summary: text };
   if (evt.type === 'error') return { ...state, error: text || '请求未完成', stream_state: 'error',
-    content: state.previewing ? (state.validated_content || '') : state.content,
+    content: state.previewing && state.runtime_profile !== 'bare' ? (state.validated_content || '') : state.content,
     previewing: false, validated_content: undefined };
   // Legacy thought/thought_stream do not identify a verified provider channel.
   return state;

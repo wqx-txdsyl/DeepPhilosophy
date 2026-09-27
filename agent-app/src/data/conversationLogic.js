@@ -98,6 +98,7 @@ export function normalizeMessage(raw, fallbackAgentId = GENERAL_AGENT) {
     conversation_id: raw.conversation_id || null,
     role,
     ...(role === 'assistant' ? { agent_id: raw.agent_id || fallbackAgentId } : {}),
+    ...(raw.runtime_profile ? { runtime_profile: raw.runtime_profile } : {}),
     content: typeof raw.content === 'string' ? raw.content : '',
     ...(typeof raw.context_content === 'string' ? { context_content: raw.context_content } : {}),
     ...(normalizeAttachments(raw.attachments).length ? { attachments: normalizeAttachments(raw.attachments) } : {}),
@@ -284,13 +285,15 @@ export function toPersistedMessage(m) {
   const events = (m.events || m.tool_events || []).map((ev) => {
     if (ev?.t === 'tool_start') return { ...(m.agent_id === GENERAL_AGENT ? ev : {}), t: 'tool_cancel', name: ev.name, reason: m.agent_id === GENERAL_AGENT ? '执行结果未保存' : '未执行，已跳过' };
     if (ev?.t === 'tool' && ev.tc) {
-      return { ...(m.agent_id === GENERAL_AGENT ? ev : {}), t: 'tool', tc: { ...ev.tc, result_summary: String(ev.tc.result_summary || '').slice(0, 400) } };
+      const summary = String(ev.tc.result_summary || '');
+      return { ...(m.agent_id === GENERAL_AGENT ? ev : {}), t: 'tool', tc: { ...ev.tc, result_summary: m.runtime_profile === 'bare' ? summary : summary.slice(0, 400) } };
     }
     return ev;
   });
   return {
     ...base,
     agent_id: m.agent_id || GENERAL_AGENT,
+    ...(m.runtime_profile ? { runtime_profile: m.runtime_profile } : {}),
     citations: Array.isArray(m.citations) ? m.citations : [],
     ...(m.evidence ? { evidence: m.evidence } : {}),
     tool_events: events,

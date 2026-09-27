@@ -146,7 +146,7 @@ def _tool_annotation(meta):
     return {'integer':int,'number':float,'boolean':bool}.get(kind,str)
 
 
-def _build_tools(general=False):
+def _build_tools(general=False, bare=False):
     tools = []
     specs = AG.TOOLS
     if general:
@@ -183,7 +183,7 @@ def _build_tools(general=False):
             return execute(kwargs)
 
         tools.append(StructuredTool.from_function(
-            func=_general_executor(name, meta["execute"]) if general else _run,
+            func=_general_executor(name, meta["execute"]) if general and not bare else _run,
             name=name, description=DS.clean_public_text(meta["description"]) if general else meta["description"],
             args_schema=schema if schema else None))
     return tools
@@ -1966,6 +1966,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     custom_instructions: 用户自定义指令（个性化, 追加到 system prompt）
     language: zh/en——输出与思考流语言（覆盖 system 内的语言要求）
     conversation_id/message_id: Phase A (A1) 观测上下文（可选, 缺省自动生成）"""
+    if agent == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare':
+        from deep_bare_agent import stream_bare_agent
+        events = stream_bare_agent(req_message, history, language=language,
+                                   conversation_id=conversation_id, message_id=message_id)
+        try:
+            async for event in events:
+                yield event
+        finally:
+            await events.aclose()
+        return
     # O7-E Production Freeze §B: General Agent 生产启用 LOCAL_PATCH
     # （PRODUCTION_LOCAL_PATCH_ENABLED=true; LOCAL_PATCH_ADAPTER_OWNER=1——
     # 生产与评测共用 local_patch_runtime 同一 adapter）; 哲学家 Agent 继续
