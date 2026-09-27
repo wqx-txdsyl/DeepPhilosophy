@@ -158,6 +158,39 @@ def test_first_validated_paragraph_arrives_before_the_last_tokens_exist(monkeypa
     assert "<rationale>" not in all_string_values(events)
 
 
+@pytest.mark.parametrize('wrapped', [False, True])
+def test_live_text_arrives_before_a_sentence_or_paragraph_can_finish(monkeypatch, wrapped):
+    release_tail = threading.Event()
+    first = '选择'
+    tail = '意味着承担后果。'
+    parts = (['<ans', 'wer>'] if wrapped else []) + [first, {'gate': release_tail}, tail]
+    if wrapped:
+        parts += ['</ans', 'wer>']
+    model = install(monkeypatch, [{'parts': parts}])
+    def observe(event):
+        if event.get('type') == 'answer_preview' and event.get('content') == first:
+            assert ('model_finished', 0) not in model.audit
+            release_tail.set()
+    events = collect(observe)
+    assert release_tail.is_set()
+    assert ''.join(e['content'] for e in of(events, 'answer_preview')) == first + tail
+    assert successful_done(events)['content'] == first + tail
+
+
+def test_tool_round_discards_live_preamble_before_showing_final_text(monkeypatch):
+    tool = StructuredTool.from_function(lambda: {'text': '测试材料'}, name='probe', description='Offline fixture')
+    install(monkeypatch, [
+        {'parts': ['先查看材料。'], 'tool_calls': [{'name': 'probe', 'args': {}, 'id': 'read'}]},
+        {'parts': ['最终回答。']},
+    ], [tool])
+    events = collect()
+    start = next(i for i,e in enumerate(events) if e['type'] == 'tool_start')
+    before = events[:start]
+    assert any(e['type'] == 'answer_preview' for e in before)
+    assert next(e for e in reversed(before) if e['type'] in {'answer_preview','answer_preview_reset'})['type'] == 'answer_preview_reset'
+    assert successful_done(events)['content'] == '最终回答。'
+
+
 def test_provider_reasoning_arrives_incrementally_before_answer_generation(monkeypatch):
     release_answer = threading.Event()
     model = install(monkeypatch, [{"reasoning": PRIVATE,

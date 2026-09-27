@@ -9,6 +9,32 @@ const reduce = events => events.reduce(reduceGeneralEvent, createGeneralStream()
 const sseResponse = chunks => new Response(new ReadableStream({ start(controller) { chunks.forEach(chunk => controller.enqueue(chunk)); controller.close(); } }), { headers: { 'content-type': 'text/event-stream; charset=utf-8' } });
 const bytes = text => new TextEncoder().encode(text);
 
+await test('provider preview paints each delta without duplicating validated tokens', () => {
+  let state = reduce([{type:'answer_preview',content:'选'}]);
+  assert.equal(state.content, '选');
+  state = reduceGeneralEvent(state, {type:'answer_preview',content:'择。'});
+  state = reduceGeneralEvent(state, {type:'token',content:'选择。'});
+  assert.equal(state.content, '选择。');
+  state = reduceGeneralEvent(state, {type:'done',content:'选择。',complete:true});
+  assert.equal(state.content, '选择。');
+  assert.equal(state.previewing, false);
+  assert.equal(reduceGeneralEvent(state, {type:'answer_preview',content:'迟到片段'}).content, '选择。');
+});
+await test('tool or repair reset removes previews and retains only validated text', () => {
+  let state = reduce([{type:'answer_preview',content:'待核验草稿'},{type:'token',content:'已核验。'},{type:'answer_preview_reset'}]);
+  assert.equal(state.content, '已核验。');
+  state = reduceGeneralEvent(state, {type:'token',content:'修复完成。'});
+  assert.equal(state.content, '已核验。修复完成。');
+  state = reduceGeneralEvent(state, {type:'done',content:'最终正文。',complete:true});
+  assert.equal(state.content, '最终正文。');
+});
+await test('failed validation clears the live draft; stopping retains partial text', () => {
+  const draft = reduce([{type:'answer_preview',content:'尚未核验'}]);
+  assert.equal(reduceGeneralEvent(draft,{type:'error',content:'核验失败'}).content, '');
+  assert.equal(finishGeneralStream(draft,{aborted:true}).content, '尚未核验');
+  assert.equal(finishGeneralStream(draft,{aborted:true}).stream_state, 'stopped');
+});
+
 await test('same-name parallel tools resolve independently and out of order', () => {
   let state = reduce([
     { type: 'tool_start', name: 'search_books', call_id: 'a', args: { query: '康德' } },

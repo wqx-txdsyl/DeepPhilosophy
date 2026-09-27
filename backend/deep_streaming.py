@@ -119,13 +119,14 @@ class PublicNoteParser:
 class AnswerEnvelopeParser:
     """Separate an explicitly terminal answer from model work notes.
 
-    Legacy unwrapped model responses remain supported, but are held for the
-    whole-answer validator. Only an explicit opening opts in to early delivery.
+    By default unwrapped responses wait for whole-answer validation. The live
+    display parser uses allow_unwrapped without changing the canonical parser.
     """
-    def __init__(self):
+    def __init__(self, allow_unwrapped=False):
         self.buf = ""
         self.opened = False
         self.closed = False
+        self.allow_unwrapped = allow_unwrapped
 
     def push(self, text):
         if self.closed:
@@ -134,6 +135,13 @@ class AnswerEnvelopeParser:
         if not self.opened:
             pos = self.buf.find("<answer>")
             if pos < 0:
+                if self.allow_unwrapped:
+                    marker = '<answer>'
+                    hold = max((n for n in range(1, min(len(marker), len(self.buf)) + 1)
+                                if self.buf.endswith(marker[:n])), default=0)
+                    body = self.buf[:-hold] if hold else self.buf
+                    self.buf = self.buf[-hold:] if hold else ''
+                    return body
                 return ""  # May still be a legacy answer or a plain work note.
             self.buf = self.buf[pos + len("<answer>"):]
             self.opened = True

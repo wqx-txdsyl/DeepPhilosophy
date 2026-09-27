@@ -2147,6 +2147,13 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
             _phrase_scr = TC.RuntimePhraseScrubber()
         emitted_results = set()
         answer_parser = DS.AnswerEnvelopeParser() if agent == "general" else None
+        # Display provider deltas immediately, independently of the canonical
+        # validated answer. Tool rounds and repair JSON never become final text.
+        preview_parser = DS.AnswerEnvelopeParser(allow_unwrapped=True) if agent == "general" and not repair_mode else None
+        preview_text = ''
+        preview_blocked = False
+        if agent == 'general':
+            yield {'type': 'answer_preview_reset'}
         checked_boundary = 0
         async for item in APP.astream(
                     {"messages": msgs, "agent": agent, "language": language,
@@ -2211,6 +2218,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 if agent == "general" and not tool_call_chunks:
                     tool_call_chunks = getattr(chunk, "tool_calls", None)
                 if tool_call_chunks:
+                    if preview_text:
+                        yield {'type': 'answer_preview_reset'}
+                        preview_text = ''
+                    preview_blocked = True
                     if agent == "general" and answer_parser.opened:
                         raise RuntimeError("TOOL_CALL_AFTER_TERMINAL_ANSWER")
                     if answer_parser is not None and not pending["has_tools"]:
@@ -2268,6 +2279,19 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                         yield _note_event(_rat, _rat_phase, delta=agent == "general")
                     if not _emit_text:
                         continue
+                    if preview_parser is not None and not preview_blocked and not pending['has_tools']:
+                        was_opened = preview_parser.opened
+                        preview_delta = DS.clean_public_text(preview_parser.push(_emit_text))
+                        if not was_opened and preview_parser.opened and preview_text:
+                            yield {'type': 'answer_preview_reset'}
+                            preview_text = ''
+                        preview_text += preview_delta
+                        if DS.has_tool_protocol_text(preview_text):
+                            yield {'type': 'answer_preview_reset'}
+                            preview_text = ''
+                            preview_blocked = True
+                        elif preview_delta:
+                            yield {'type': 'answer_preview', 'content': preview_delta}
                     if answer_parser is not None:
                         _emit_text = answer_parser.push(_emit_text)
                     # O2: 机械净化（控制标签/内部治理措辞剥离）后只累积——
@@ -2309,6 +2333,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                     yield ev
                 pending = {"text": "", "has_tools": False,
                            "note_emitted": False}
+                if preview_parser is not None:
+                    preview_parser = DS.AnswerEnvelopeParser(allow_unwrapped=True)
+                    preview_text = ''
+                    preview_blocked = False
                 extra = chunk.additional_kwargs or {}
                 name = chunk.name or ""
                 args = extra.get("_args", {})
@@ -2381,6 +2409,10 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
                 # 由 Main Agent 自己读取原文后给出, runtime 不再先行核验再注入措辞约束。
         if answer_parser is not None:
             pending["text"] += DS.clean_public_text(answer_parser.finish())
+        if preview_parser is not None and not preview_blocked and not pending['has_tools']:
+            preview_tail = DS.clean_public_text(preview_parser.finish())
+            if preview_tail:
+                yield {'type': 'answer_preview', 'content': preview_tail}
         # ── O6-RP1 (F2): 工具宣告生命周期终态闭合 ──────────────────────
         # invocation 正常结束时, 任何仍处"已宣告未执行"的工具就地到达终态
         # （机械取消, 逐 id 绑定 tool_call_id）, pending 工具状态确定性清除。

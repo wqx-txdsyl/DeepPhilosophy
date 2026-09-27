@@ -40,7 +40,16 @@ export function reduceGeneralEvent(state, evt) {
     else events[i] = { ...events[i], content: events[i].content + evt.content };
     return { ...state, events };
   }
-  if (evt.type === 'token') return state.done_received ? state : { ...state, content: state.content + text };
+  if (evt.type === 'answer_preview') return state.done_received ? state : {
+    ...state, previewing: true, validated_content: state.previewing ? state.validated_content : state.content,
+    content: (state.previewing ? state.content : '') + text,
+  };
+  if (evt.type === 'answer_preview_reset') return state.done_received || !state.previewing ? state : {
+    ...state, content: state.validated_content || '', previewing: false, validated_content: undefined,
+  };
+  if (evt.type === 'token') return state.done_received ? state : state.previewing
+    ? { ...state, validated_content: (state.validated_content || '') + text }
+    : { ...state, content: state.content + text };
   if (evt.type === 'answer_retract') {
     // Only retract a matching suffix. An unrelated/duplicate event must not erase a valid answer.
     return !state.done_received && text && state.content.endsWith(text) ? { ...state, content: state.content.slice(0, -text.length) } : state;
@@ -82,6 +91,8 @@ export function reduceGeneralEvent(state, evt) {
   }
   if (evt.type === 'done') return {
     ...state, done_received: evt.complete !== false, safety: evt.safety,
+    previewing: false, validated_content: undefined,
+    content: state.previewing ? (state.validated_content || '') : state.content,
     ...(evt.complete !== false ? { streaming: false, stream_state: 'complete' } : {}),
     ...(typeof evt.content === 'string' ? { content: plainText(evt.content) } : {}),
     ...(evt.safety === 'blocked' ? { content: plainText(evt.safety_reply) } : {}),
@@ -91,7 +102,9 @@ export function reduceGeneralEvent(state, evt) {
   };
   if (evt.type === 'suggestions') return { ...state, suggestions: suggestions(evt.suggestions), suggestions_status: evt.status || (evt.suggestions?.length ? 'ready' : 'unavailable') };
   if (evt.type === 'reasoning_summary') return { ...state, reasoning_summary: text };
-  if (evt.type === 'error') return { ...state, error: text || '请求未完成', stream_state: 'error' };
+  if (evt.type === 'error') return { ...state, error: text || '请求未完成', stream_state: 'error',
+    content: state.previewing ? (state.validated_content || '') : state.content,
+    previewing: false, validated_content: undefined };
   // Legacy thought/thought_stream do not identify a verified provider channel.
   return state;
 }
