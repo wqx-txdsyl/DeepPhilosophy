@@ -36,7 +36,7 @@ def fetch_bytes(url, *, accept='application/json', headers=None, data=None, max_
         canonical,host,_=web.public_url(url)
         extra=headers or {}
         authorized=any(k.lower() in {'authorization','x-api-key'} for k in extra)
-        if authorized and (host not in {'api.openalex.org','api.semanticscholar.org','metaso.cn'} or not canonical.startswith('https://')):
+        if authorized and (host not in {'api.openalex.org','api.semanticscholar.org','metaso.cn','api.deepseek.com'} or not canonical.startswith('https://')):
             raise ResearchHTTPError('CREDENTIAL_DESTINATION_REFUSED')
         if any(k.lower() in {'cookie','host','proxy-authorization'} for k in extra):
             raise ResearchHTTPError('UNSUPPORTED_RESEARCH_HEADER')

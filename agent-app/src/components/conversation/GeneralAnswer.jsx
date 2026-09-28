@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown, ChevronRight, Copy, Loader2, Square, XCircle } from 'lucide-react';
 import { useLang } from '../../utils/i18n';
-import { plainText } from '../../data/generalStream';
+import { plainText, inferToolStatus } from '../../data/generalStream';
 import { toolShortArgs, toolShortSummary } from '../../data/conversationLogic';
 import { pickUsedEvidence } from '../../utils/evidence';
 import { renderMarkdown } from './markdown';
@@ -9,7 +9,8 @@ import { DepthControls, SourceDrawer } from './O9';
 import { AnswerResearch, AnswerExploration } from './AnswerResearch';
 
 const STATUS = {
-  success: ['已完成', 'Complete'], error: ['执行失败', 'Failed'], empty: ['没有找到相关结果', 'No relevant results'],
+  success: ['已完成', 'Complete'], error: ['执行失败', 'Failed'], empty: ['本次未找到结果', 'No results for this search'],
+  partial: ['部分来源失败', 'Some sources failed'],
   blocked: ['未执行', 'Not executed'], reused: ['复用已有结果', 'Reused result'], cancelled: ['已停止', 'Stopped'], running: ['进行中', 'Running'],
 };
 
@@ -71,7 +72,8 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
           try { query = new URL(args.url).hostname + (args.focus ? ` · ${args.focus}` : ''); }
           catch { query = args.url; }
         }
-        const status = event.t === 'tool_start' ? 'running' : event.status || (event.t === 'tool_cancel' ? 'cancelled' : 'success');
+        const status = event.t === 'tool_start' ? 'running' : event.t === 'tool_cancel' ? 'cancelled'
+          : event.status && event.status !== 'success' ? event.status : inferToolStatus(event.tc?.result_summary);
         const [statusZh, statusEn] = STATUS[status] || STATUS.success;
         const summary = message.runtime_profile === 'bare' ? event.tc?.result_summary || event.reason
           : toolShortSummary(event.tc) || toolShortArgs(event.tc?.args || event.args) || event.reason;

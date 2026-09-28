@@ -57,7 +57,10 @@ def live_json(url):
         key=_env_key('OPENALEX_API_KEY')
         if key:url+='&api_key='+quote(key,safe='')
     try:return fetch_json(url)
-    except ResearchHTTPError as exc:raise ProviderError(exc.code) from None
+    except ResearchHTTPError as exc:
+        error = ProviderError(exc.code, f'HTTP {exc.status}' if exc.status else '')
+        error.retry_after = exc.retry_after
+        raise error from None
 
 
 def persist_records(records):

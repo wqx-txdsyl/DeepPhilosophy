@@ -56,6 +56,20 @@ async def execute(tool, args, question):
         current_tool_agent.reset(agent_token)
 
 
+def tool_status(result):
+    if not isinstance(result, dict):
+        return 'empty' if result == [] else 'success'
+    if result.get('error') or result.get('accepted') is False:
+        return 'error'
+    if result.get('status') in {'error','blocked','partial','empty'}:
+        return result['status']
+    if result.get('provider_errors'):
+        return 'partial'
+    if any(isinstance(result.get(k), list) and not result[k] for k in ('results','items','matches')):
+        return 'empty'
+    return 'success'
+
+
 def source_metadata(calls, answer, language):
     """Display-only provenance: never changes or rejects the model's answer."""
     from evidence_contract import build_evidence_contract
@@ -186,8 +200,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
             for completed in asyncio.as_completed(tasks):
                 index, call, args, result, seconds = await completed
                 serialized = json.dumps(result, ensure_ascii=False, default=str)
-                failed = isinstance(result, dict) and bool(result.get('error') or result.get('accepted') is False)
-                status = 'error' if failed else 'success'
+                status = tool_status(result)
                 calls.append({'name': call['name'], 'args': args, 'result_full': result, 'call_id': call['id']})
                 results[index] = ToolMessage(content=serialized, name=call['name'], tool_call_id=call['id'])
                 yield {'type': 'tool', 'name': call['name'], 'args': args, 'result': serialized,

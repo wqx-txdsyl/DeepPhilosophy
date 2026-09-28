@@ -97,7 +97,7 @@ export function reduceGeneralEvent(state, evt) {
       ? { t: 'tool_start', call_id: resolvedId, name: evt.name, args: evt.args, status: 'running' }
       : evt.type === 'tool_cancel'
         ? { t: 'tool_cancel', call_id: resolvedId, name: evt.name, status: evt.status || 'cancelled', reason: plainText(evt.reason || '') }
-        : { t: 'tool', call_id: resolvedId, status: evt.status || inferToolStatus(evt.result), tc: { name: evt.name, args: evt.args, result_summary: typeof (evt.summary || evt.result) === 'string' ? displayText(evt.summary || evt.result) : JSON.stringify(evt.result ?? '') } };
+        : { t: 'tool', call_id: resolvedId, status: evt.status && evt.status !== 'success' ? evt.status : inferToolStatus(evt.result), tc: { name: evt.name, args: evt.args, result_summary: typeof (evt.summary || evt.result) === 'string' ? displayText(evt.summary || evt.result) : JSON.stringify(evt.result ?? '') } };
     // Duplicate or late start must not resurrect a completed call.
     if (i >= 0 && evt.type === 'tool_start' && events[i].t !== 'tool_start') return state;
     if (i >= 0) events[i] = entry; else events.push(entry);
@@ -128,6 +128,8 @@ export function inferToolStatus(result) {
     const data = typeof result === 'string' ? JSON.parse(result) : result;
     if (data?.error || data?.status === 'error') return 'error';
     if (data?.status === 'blocked' || data?.blocked) return 'blocked';
+    if (data?.status === 'partial' || data?.provider_errors?.length) return 'partial';
+    if (data?.status === 'empty') return 'empty';
     if (Array.isArray(data) && data.length === 0) return 'empty';
     if (data && ['results', 'items', 'matches'].some(k => Array.isArray(data[k]) && !data[k].length)) return 'empty';
   } catch { /* Historic textual tool summaries. */ }

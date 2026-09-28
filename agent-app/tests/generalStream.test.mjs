@@ -61,6 +61,15 @@ await test('tool or repair reset removes previews and retains only validated tex
   state = reduceGeneralEvent(state, {type:'done',content:'最终正文。',complete:true});
   assert.equal(state.content, '最终正文。');
 });
+await test('legacy success cannot hide empty results or failed search providers', () => {
+  const state = reduce([
+    {type:'tool',name:'websearch',status:'success',result:{results:[]}},
+    {type:'tool',name:'search_scholarship',status:'success',result:{results:[],provider_errors:[{error:'RATE_LIMITED'}]}},
+    {type:'tool',name:'websearch',status:'success',result:{status:'error',results:[]}},
+  ]);
+  assert.deepEqual(state.events.map(e => e.status), ['empty','partial','error']);
+});
+
 await test('failed validation clears the live draft; stopping retains partial text', () => {
   const draft = reduce([{type:'answer_preview',content:'尚未核验'}]);
   assert.equal(reduceGeneralEvent(draft,{type:'error',content:'核验失败'}).content, '');

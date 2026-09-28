@@ -43,6 +43,9 @@ def _exec_search_scholarship(args):
             "READABLE_RESULT_COUNT": len(_readable),
             "READABLE_SOURCE_IDS": [r.get("source_record_id") for r in _readable],
             "providers_queried": out["providers_queried"]}
+    for key in ('status','provider_attempts','relevance_gate','query_reformulation','offline_mode'):
+        if key in out:
+            resp[key] = out[key]
     if out["errors"]:
         resp["provider_errors"] = out["errors"]
         resp["note"] = ("部分 provider 检索失败（见 provider_errors）——"

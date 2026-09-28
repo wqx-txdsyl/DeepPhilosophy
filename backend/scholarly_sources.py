@@ -914,14 +914,13 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
     V8-F2 §2: live 结果过 relevance 门（离题记录不入证据链）; 相关记录为空时
     做一次有界 query reformulation 重试; 全程硬预算（重试恰一次, 无循环）。"""
     q = " ".join(filter(None, [philosopher, work, query])).strip()
-    key = json.dumps(["v8f2", q, year_from, year_to, limit], ensure_ascii=False)
+    from research_relevance import VERSION as relevance_version
+    key = json.dumps(["search-receipts-1", relevance_version, q, year_from, year_to, limit], ensure_ascii=False)
     cache = _load_cache()
     durable_enabled = os.environ.get('PHI_RESEARCH_DB_ENABLED', '').lower() in {'1','true','yes'}
     if key in cache["searches"]:
         cached = cache['searches'][key]
-        if not durable_enabled:
-            return cached
-        if time.time() - cached.get('cache_created_at', 0) < 600:
+        if not cached.get('errors') and time.time() - cached.get('cache_created_at', 0) < (600 if cached.get('results') else 60):
             result = json.loads(json.dumps(cached, ensure_ascii=False))
             result['cached'] = True
             result['providers_queried'] = []
@@ -929,24 +928,36 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
                 rec['retrieval_origin'] = rec.get('retrieval_origin', 'PROVIDER_RESULT') + '+CACHE'
             return result
 
+    provider_attempts = []
+    unavailable = set()
     def _providers_fetch(query_text):
         results, errors, live_ok = [], [], []
         for name, fn in (("crossref", search_crossref),
                          ("openalex", search_openalex)):
+            if name in unavailable:
+                provider_attempts.append({'provider':name,'query':query_text,'status':'skipped','reason':'UPSTREAM_UNAVAILABLE_THIS_CALL'})
+                continue
             try:
-                results.extend(fn(query_text, limit=limit,
-                                  year_from=year_from, year_to=year_to))
+                found = fn(query_text, limit=limit, year_from=year_from, year_to=year_to)
+                results.extend(found)
+                provider_attempts.append({'provider':name,'query':query_text,'status':'success' if found else 'empty','raw_result_count':len(found)})
                 live_ok.append(name)
             except ProviderError as e:
                 errors.append({"provider": name, "error": e.kind,
-                               "detail": e.detail})
+                               "detail": e.detail, 'query':query_text, 'retry_after':getattr(e,'retry_after',None)})
+                provider_attempts.append({**errors[-1], 'status':'error'})
+                if e.kind in {'RATE_LIMITED','PROVIDER_RATE_LIMIT','AUTHENTICATION_REQUIRED','ACCESS_DENIED'}:
+                    unavailable.add(name)
         return results, errors, live_ok
 
     q_latin, q_bigrams = _query_tokens(q)
     def relevant_record(record, other_query=None):
         if durable_enabled:
             from research_relevance import assess
-            return assess(other_query or q, record)['eligible']
+            match = assess(other_query or q, record)
+            if match['eligible']:
+                record['query_match'] = {'query':other_query or q, **match}
+            return match['eligible']
         return _is_relevant(*(_query_tokens(other_query) if other_query else (q_latin,q_bigrams)),record)
     results, errors, live_ok = _providers_fetch(q)
     canon = merge_records(results)
@@ -1007,6 +1018,8 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
     out = {"query": q, "results": merged,
            "providers_queried": ["LOCAL_CURATED", "crossref", "openalex"],
            "errors": errors,
+           "provider_attempts": provider_attempts,
+           "status": ('partial' if errors else 'success') if merged else ('partial' if live_ok else 'error') if errors else 'empty',
            # V8-F2 §2 机械 telemetry（事实, 非决策系统）
            "relevance_gate": {"dropped_irrelevant": dropped,
                               "kept_relevant": len(relevant)},
@@ -1020,8 +1033,7 @@ def search_scholarship(query, philosopher=None, work=None, year_from=None,
                        "本地学术 registry（LOCAL_CURATED, 历史发现+策展）, 非实时检索")
         if 'LOCAL_RESEARCH_DB' in out['providers_queried']:
             out['note'] = '外部检索失败；结果来自本地研究数据库与本地学术 registry 的历史记录（见 retrieval_origin），非实时检索。书目存在不等于学术质量已通过审校。'
-    if durable_enabled:
-        out['cache_created_at'] = time.time()
+    out['cache_created_at'] = time.time()
     cache["searches"][key] = out
     for r in merged:
         cache["records"][r["source_record_id"]] = r
@@ -1069,5 +1081,6 @@ def model_view(rec):
             "provider": "/".join(rec["provenance"]["providers"]),
             "source_providers": rec["provenance"]["providers"],
             "retrieval_origin": rec.get("retrieval_origin", "LIVE"),
+            "query_match": rec.get("query_match"),
             "bibliographic_verified_fields": sorted(rec.get("provenance", {}).get("field_sources", {})),
             "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"}

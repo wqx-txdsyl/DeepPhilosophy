@@ -446,25 +446,25 @@ register_tool("concept_trace",
     {"type": "object", "properties": {"concept": {"type": "string", "description": "哲学概念（如: 自由意志/存在/权力意志）"}}, "required": ["concept"]},
     _exec_concept_trace)
 
-# ── 工具 17: websearch（Wikipedia 中文——免费无需 key, 上网补充）──
+# ── 工具 17: websearch（DeepSeek 原生搜索 + 网页/百科兜底）──
 def _exec_websearch(args):
-    """联网搜索: Bing 优先（中文结果+真实链接, 国内可达）→ 英文维基 → 中文维基
-    2026-08-14: 加 TTL 缓存（同 query 10 分钟内不重复联网, 防 Bing 反爬/重复抓取）"""
+    """原生搜索优先；只缓存无来源错误的命中，缓存时明确标注。"""
     query = _str_arg(args, "query")
     if not query:
         return {"error": "缺少查询词"}
-    qkey = query.strip()[:80]
+    qkey = query.strip()
     now = time.time()
     with _web_cache_lock:
         hit = _web_cache.get(qkey)
         if hit and now - hit[0] < _WEB_TTL:
-            return hit[1]
+            return {**hit[1], "cached": True}
     result = _websearch_inner(query)
     with _web_cache_lock:
         if len(_web_cache) > 200:   # 防无限增长
             for k in list(_web_cache.keys())[:100]:
                 _web_cache.pop(k, None)
-        _web_cache[qkey] = (time.time(), result)
+        if result.get("results") and not result.get("provider_errors"):
+            _web_cache[qkey] = (time.time(), result)
     return result
 
 _web_cache = {}
@@ -472,69 +472,12 @@ _web_cache_lock = threading.Lock()
 _WEB_TTL = 600   # 10 分钟
 
 def _websearch_inner(query):
-    import urllib.parse
-    import re as _re
-    import html as _html
-
-    def _clean(s):
-        return _html.unescape(_re.sub(r"<[^>]+>", "", s or "")).strip()
-
-    # ① Bing 网页搜索（b_algo 结果块解析）
-    try:
-        q = urllib.parse.quote(query)
-        req = urllib.request.Request(f"https://cn.bing.com/search?q={q}", headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            "Accept-Language": "zh-CN,zh;q=0.9"})
-        with urllib.request.urlopen(req, timeout=15) as r:
-            html_content = r.read().decode("utf-8", errors="ignore")
-        out = []
-        for b in _re.findall(r'<li class="b_algo".*?</li>', html_content, _re.DOTALL)[:5]:
-            m = _re.search(r'<a[^>]+href="([^"]+)"[^>]*>(.*?)</a>', b, _re.DOTALL)
-            if not m:
-                continue
-            url = m.group(1)
-            title = _clean(m.group(2))
-            p = _re.search(r'<p[^>]*>(.*?)</p>', b, _re.DOTALL)
-            snippet = _clean(p.group(1))[:500] if p else ""
-            if title and url.startswith("http"):
-                out.append({"title": title, "snippet": snippet, "url": url})
-        if out:
-            return {"results": out, "query": query, "source": "bing"}
-    except Exception:
-        pass
-    # ② 英文维基百科（API, 结构化）
-    try:
-        url = ("https://en.wikipedia.org/w/api.php?action=query&list=search"
-               f"&srsearch={urllib.parse.quote(query)}&format=json&srlimit=4")
-        with urllib.request.urlopen(url, timeout=12) as r:
-            d = json.loads(r.read().decode())
-        titles = [it["title"] for it in d.get("query", {}).get("search", [])]
-        if titles:
-            out = [{"title": t, "snippet": "",
-                    "url": f"https://en.wikipedia.org/wiki/{urllib.parse.quote(t.replace(' ', '_'))}"}
-                   for t in titles[:4]]
-            return {"results": out, "query": query, "source": "en.wikipedia.org"}
-    except Exception:
-        pass
-    # ③ 中文维基百科（API）
-    try:
-        url = ("https://zh.wikipedia.org/w/api.php?action=query&list=search"
-               f"&srsearch={urllib.parse.quote(query)}&format=json&srlimit=3")
-        with urllib.request.urlopen(url, timeout=12) as r:
-            d = json.loads(r.read().decode())
-        titles = [it["title"] for it in d.get("query", {}).get("search", [])]
-        if titles:
-            out = [{"title": t, "snippet": "",
-                    "url": f"https://zh.wikipedia.org/wiki/{urllib.parse.quote(t)}"}
-                   for t in titles[:3]]
-            return {"results": out, "query": query, "source": "zh.wikipedia.org"}
-    except Exception:
-        pass
-    return {"results": [], "query": query, "note": "联网无结果（Bing 与维基百科均不可达）"}
+    from deep_web_search import search
+    return search(query)
 
 register_tool(
     "websearch",
-    "上网搜索（维基百科中文, 含摘要）。用于补充原典库之外的信息: 外部标准/政策/最新研究/现代评论/词条解释。",
+    "上网搜索（DeepSeek 原生搜索优先，网页/百科兜底；返回来源链接和摘录，不等于已读取网页全文）。用于补充原典库之外的信息: 外部标准/政策/最新研究/现代评论/词条解释。",
     {"type": "object", "properties": {"query": {"type": "string", "description": "搜索词"}}, "required": ["query"]},
     _exec_websearch,
 )
