@@ -816,7 +816,19 @@ body.dark-mode .cw-danger-btn:hover { background: #2c1d1d; }
 .general-source-actions button, .general-source-actions .o9-drawer-link { font-size: 11px; color: var(--text-dim); margin: 0; padding: 0; border: 0; background: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
 .general-source-actions button:hover, .general-source-actions a:hover { color: var(--text); text-decoration: underline; }
 .general-research-action { display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--border); border-radius: 16px; padding: 6px 11px; margin-top: 10px; background: var(--card-bg); color: var(--text); font-size: 12px; cursor: pointer; }
-.general-secondary-sources { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 14px; font-size: 11px; color: var(--text-dim); }
+.general-secondary-sources { min-width: 0; margin-top: 20px; }
+.general-secondary-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; color: var(--text-dim); }
+.general-secondary-head h4 { margin: 0; font-size: 12px; font-weight: 500; }
+.general-secondary-head > span { font-size: 11px; }
+.general-secondary-list { list-style: none; margin: 0; padding: 0; }
+.general-secondary-list > li + li { border-top: 1px solid var(--border); }
+.general-secondary-link { display: grid; grid-template-columns: 15px minmax(0, 1fr) 14px; align-items: start; gap: 10px; width: 100%; min-width: 0; padding: 10px 4px; border: 0; border-radius: 4px; background: none; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.general-secondary-link:hover { background: var(--soft); }
+.general-secondary-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.general-secondary-icon, .general-secondary-chevron { margin-top: 3px; color: var(--text-dim); }
+.general-secondary-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.general-secondary-title { font-size: 13px; font-weight: 400; line-height: 1.6; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.general-secondary-meta { font-size: 11px; line-height: 1.5; color: var(--text-dim); overflow-wrap: anywhere; }
 .general-topic-questions { display: grid; gap: 0; margin-bottom: 12px; }
 .general-topic-questions button { display: flex; flex-direction: row-reverse; align-items: baseline; justify-content: space-between; gap: 12px; min-width: 0; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: none; padding: 10px 0; color: var(--text); text-align: left; font-size: 13px; line-height: 1.65; cursor: pointer; }
 .general-topic-questions button:hover:not(:disabled) { color: var(--accent); }

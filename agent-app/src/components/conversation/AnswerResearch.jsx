@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen, Search, ArrowUpRight, Compass } from 'lucide-react';
+import { BookOpen, Search, ArrowUpRight, Compass, FileText, ChevronRight } from 'lucide-react';
 import { generalAccessLabel, generalEvidenceLayer, pickUsedEvidence, primaryResearch } from '../../utils/evidence';
 import { GeneralReaderLink, DepthControls } from './O9';
 
@@ -7,6 +7,36 @@ export const PRIMARY_PROMPT = {
   zh: '请围绕这段回答的核心问题实际检索原典，选择最相关的1～3段并读取上下文。给出原文、书名与章节，解释原文怎样支持、限制或反驳刚才的观点；找不到合适材料时如实说明。',
   en: 'Search primary texts for the central question in this answer. Read the context of 1–3 relevant passages, quote them with work and chapter, and explain how they support, limit or challenge the answer. Say clearly if no suitable passage is found.',
 };
+
+function sourcePublication(citation) {
+  if (citation.container_title || citation.venue) return citation.container_title || citation.venue;
+  try {
+    const url = new URL(citation.url || citation.reader_url);
+    return ['http:', 'https:'].includes(url.protocol) ? url.hostname.replace(/^www\./, '') : '';
+  } catch { return ''; }
+}
+
+export function SupplementarySources({ sources, zh, onSource }) {
+  if (!sources.length) return null;
+  return <section className="general-secondary-sources" aria-label={zh ? '补充资料' : 'Additional sources'}>
+    <div className="general-secondary-head"><h4>{zh ? '补充资料' : 'Additional sources'}</h4><span>{zh ? `${sources.length} 条来源` : `${sources.length} sources`}</span></div>
+    <ul className="general-secondary-list">
+      {sources.map((c, i) => {
+        const title = c.title || c.book || c.url || (zh ? '查看来源' : 'View source');
+        const meta = [sourcePublication(c), c.publication_year || c.year].filter(Boolean).join(' · ');
+        return <li key={c.evidence_id || `${c.url || c.title}:${i}`}>
+          <button type="button" className="general-secondary-link" onClick={() => onSource(c)} title={title}>
+            <FileText size={15} className="general-secondary-icon" aria-hidden="true" />
+            <span className="general-secondary-copy"><span className="general-secondary-title">{title}</span>
+              {meta && <span className="general-secondary-meta">{meta}</span>}
+            </span>
+            <ChevronRight size={14} className="general-secondary-chevron" aria-hidden="true" />
+          </button>
+        </li>;
+      })}
+    </ul>
+  </section>;
+}
 
 export function AnswerResearch({ message, lang, busy, onSend, onSource }) {
   const zh = lang !== 'en';
@@ -47,9 +77,7 @@ export function AnswerResearch({ message, lang, busy, onSend, onSource }) {
     </div>
     {research.sources.length > initial.length && <button className="cw-cite-more" onClick={() => setExpanded(v => !v)}>{expanded ? (zh ? '收起相关材料' : 'Less') : (zh ? `另有 ${research.sources.length - initial.length} 处检索材料` : `${research.sources.length - initial.length} more retrieved passages`)}</button>}
     <button className="general-research-action" disabled={busy} onClick={() => onSend(PRIMARY_PROMPT[zh ? 'zh' : 'en'], message)}><Search size={13} />{research.sources.length ? (zh ? '继续查阅原典' : 'Explore more primary texts') : (zh ? '检索相关原典' : 'Find primary texts')}</button>
-    {!!other.length && <div className="general-secondary-sources"><span>{zh ? '补充资料' : 'Additional sources'}</span>
-      {other.map((c, i) => <button className="cw-cite-chip" key={c.evidence_id || i} onClick={() => onSource(c)}>{c.title || c.book || c.url}</button>)}
-    </div>}
+    <SupplementarySources sources={other} zh={zh} onSource={onSource} />
   </section>;
 }
 
