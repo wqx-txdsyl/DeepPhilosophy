@@ -22,6 +22,8 @@ import json
 import os
 import re
 import socket
+import threading
+import tempfile
 import time
 import urllib.parse
 import urllib.request
@@ -751,23 +753,52 @@ def _top_passages(text, query_terms, n=3):
 
 # ── 缓存（§29 机械优化）─────────────────────────────────────────
 _cache = None
+_cache_lock = threading.RLock()
+_cache_recovery = None
 
 def _load_cache():
-    global _cache
-    if _cache is None:
-        try:
-            _cache = json.load(open(CACHE_PATH, encoding="utf-8"))
-        except (FileNotFoundError, json.JSONDecodeError):
-            _cache = {"searches": {}, "records": {}}
-    return _cache
+    global _cache, _cache_recovery
+    with _cache_lock:
+        if _cache is None:
+            try:
+                with open(CACHE_PATH, encoding='utf-8') as file: _cache = json.load(file)
+            except (FileNotFoundError, json.JSONDecodeError, OSError):
+                _cache = {}
+        malformed = not isinstance(_cache, dict) or any(not isinstance(_cache.get(k, {}), dict) for k in ('searches','records'))
+        if malformed:
+            # Preserve the bad artifact for diagnosis; never write null back.
+            _cache_recovery = 'INVALID_CACHE_STRUCTURE'
+            try:
+                from pathlib import Path
+                import shutil
+                path=Path(CACHE_PATH)
+                if path.is_file():
+                    digest=hashlib.sha256(path.read_bytes()).hexdigest()[:12]
+                    backup=path.with_name(path.name+'.invalid-'+digest)
+                    if not backup.exists(): shutil.copy2(path,backup)
+            except OSError: pass
+            source = _cache if isinstance(_cache,dict) else {}
+            _cache = {**source, **{k:source[k] if isinstance(source.get(k),dict) else {} for k in ('searches','records')}}
+        for key in ('searches','records'): _cache.setdefault(key,{})
+        return _cache
 
 
 def _save_cache():
-    try:
-        os.makedirs(os.path.dirname(CACHE_PATH), exist_ok=True)
-        json.dump(_cache, open(CACHE_PATH, "w", encoding="utf-8"), ensure_ascii=False)
-    except OSError:
-        pass
+    with _cache_lock:
+        temporary=None
+        try:
+            cache=_load_cache()
+            os.makedirs(os.path.dirname(CACHE_PATH), exist_ok=True)
+            payload=json.dumps(cache,ensure_ascii=False)
+            with tempfile.NamedTemporaryFile(mode='w',encoding='utf-8',dir=os.path.dirname(CACHE_PATH),delete=False) as file:
+                temporary=file.name
+                file.write(payload);file.flush();os.fsync(file.fileno())
+            os.replace(temporary,CACHE_PATH);temporary=None
+        except OSError: pass
+        finally:
+            if temporary:
+                try:os.unlink(temporary)
+                except OSError:pass
 
 
 def _local_results(q, limit, strict_only=False):

@@ -9,6 +9,7 @@ from __future__ import annotations
 from copy import deepcopy
 from functools import lru_cache
 import heapq
+import hashlib
 import math
 import os
 import re
@@ -424,7 +425,9 @@ def get_chapter(args):
     if not text.strip():
         return {'error':'EMPTY_CHAPTER_TEXT','book_id':bid,'chapter_idx':idx,
                 'message':'章节文件存在，但未取得可读正文，不能记为已读原典。'}
-    window = 2800  # Fits the engine's 4,000-character ToolMessage including metadata.
+    window = args.get('max_chars') if args.get('max_chars') is not None else 2800
+    if type(window) is not int or window < 1:
+        return {'error':'INVALID_READ_WINDOW','message':'max_chars 应为正整数，可按需要增大或使用 next_offset 续读。'}
     positions, matched, occurrences = [], [], {}
     if focus:
         for term in _terms(focus):
@@ -470,6 +473,14 @@ def get_chapter(args):
         out['note'] += ' focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。'
     meta = core.chapter_meta(bid) or {}
     out['reader_coordinate_valid'] = idx < int(meta.get('chapterCount') or 0)
+    out['chapter_content_sha256'] = hashlib.sha256(text.encode()).hexdigest()
+    out['text_origin'] = 'normalized_library_text'
+    out['layout_verified'] = False
+    if out['reader_coordinate_valid']:
+        from urllib.parse import quote
+        out['reader_url'] = f'https://deepphilosophy.top/reader/{quote(bid,safe="")}?ch={idx}'
+        out['reader_url_scope'] = 'chapter'
+    out['note'] += ' 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。'
     if not out['reader_coordinate_valid']:
         out['note'] += ' 当前章节文件可读取，但官网目录范围未覆盖此索引；不能声称官网已能跳转。'
     if out['material_role'] != 'UNCLASSIFIED':
@@ -651,7 +662,7 @@ def install_deep_tool_overrides(tool_specs):
     specs['verify_quote'] = {'description':'核验明确原句是否出现在指定书的本地版本中，并实际读取命中上下文。只有逐字或排版空白匹配，不用语义近似替代。负结果报告检索范围；无正文则不能判断。引用归属问题优先用此工具。',
         'parameters':{'type':'object','properties':{'book_id':{'type':'string','description':'实际书ID或完整书名；多个版本不猜'},
             'quote':{'type':'string','description':'待核验原句，不加书名和说明'},'limit':{'type':'integer','description':'展示1至5处命中，默认3；仍统计全部命中'}},'required':['book_id','quote']},'execute':verify_quote}
-    if os.getenv('DEEP_PROMPT_VERSION') == 'v6':
+    if os.getenv('DEEP_AGENT_RUNTIME','bare') == 'controlled' and os.getenv('DEEP_PROMPT_VERSION') == 'v6':
         from deep_answer_review import review_answer
         specs['review_answer'] = {'description':'对完整未公开草稿作一次题设、概念与推论核对。返回带原文定位的评议，不写替换答案，不把通过当正确性证明。',
             'parameters':{'type':'object','properties':{'question':{'type':'string','description':'原用户问题'},
@@ -707,6 +718,8 @@ def install_deep_tool_overrides(tool_specs):
                 "offset": {"type": "integer", "description": "分页起点；使用上次结果的 next_offset。读章节时为字符位置，查目录时为目录条目位置。"},
             })
     if "get_chapter" in specs:
+        specs['get_chapter']['parameters']['properties']['max_chars'] = {
+            'type':'integer','description':'读取窗口字符数，默认2800；连续阅读可按需要增大，或按 next_offset 续读。'}
         specs["get_chapter"]["description"] = (
             "读取指定真实章节的有界原文片段。优先原样传 search_books 的 read_args（包含 focus），"
             "以定位章内后部命中。返回原文字符范围、has_more 与 next_offset，可续读；不要把片段称为全文。"

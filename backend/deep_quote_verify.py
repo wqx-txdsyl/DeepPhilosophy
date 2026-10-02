@@ -1,5 +1,6 @@
 """Deterministic quote lookup and context read in a specifically identified book."""
-import re
+import re, hashlib
+from urllib.parse import quote
 from deep_agent_tools import _required_text, _book_lookup, _chapters, _material_role
 from routes import agent_core as core
 from routes.agent_tools_retrieval import _cite_label
@@ -40,8 +41,17 @@ def verify_quote(args):
                 'reader_coordinate_valid':idx<int(meta.get('chapterCount') or 0),'evidence_scope':'verified_quote_context'})
             matches.sort(key=lambda m:m['_priority'])
             matches=matches[:limit]
-    for match in matches:match.pop('_priority',None)
+    texts = {idx:text for idx,_,text in chapters}
+    for match in matches:
+        match.pop('_priority',None)
+        match.update(chapter_content_sha256=hashlib.sha256(texts[match['chapter_idx']].encode()).hexdigest(),
+                     text_origin='normalized_library_text',layout_verified=False)
+        if match['reader_coordinate_valid']:
+            match['reader_url']=f'https://deepphilosophy.top/reader/{quote(bid,safe="")}?ch={match["chapter_idx"]}'
+            match['reader_url_scope']='chapter'
     return {'book_id':bid,'book_title':book['title'],'quote':quotation,'found':count>0,'match_count':count,
+        'verification_status':'matched_in_this_library' if count else 'not_matched_in_this_library',
+        'author_attribution_verdict':'requires_context' if count else 'undetermined',
         'matches':matches,'matches_omitted':max(0,count-len(matches)),
         'coverage':{'scope':'present_local_chapter_files','unit':'本库文本单元，可含序言和目录，不等于传统篇章数','searched_chapters':len(chapters),'unreadable_indices':unreadable,
                     'declared_chapters':meta.get('chapterCount'),'directory_consistent':{i for i,_,_ in chapters}==set(range(int(meta.get('chapterCount') or 0)))},

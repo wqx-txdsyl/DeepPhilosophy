@@ -169,7 +169,7 @@ def test_c21_ssrf_blocked(url, monkeypatch):
 def test_c22_no_arbitrary_url_input():
     import routes.agent_tools_scholarly as ATS
     props = ATS.TOOLS["get_scholarly_source"]["parameters"]["properties"]
-    assert "url" not in props and set(props) == {"source_record_id", "requested_access"}
+    assert "url" not in props and set(props) == {"source_record_id", "requested_access", "offset", "max_chars"}
 
 
 def test_c25_model_view_compact():

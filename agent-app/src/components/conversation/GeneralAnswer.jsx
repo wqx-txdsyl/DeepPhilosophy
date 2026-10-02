@@ -128,6 +128,7 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, 
       <button type="button" className="general-action-icon" onClick={copy} aria-label={zh ? '复制回答' : 'Copy answer'}>{copied ? <Check size={16} /> : <Copy size={16} />}<span className="general-action-tooltip">{copied ? (zh ? '已复制' : 'Copied') : (zh ? '复制' : 'Copy')}</span></button>
       {complete && m.safety !== 'blocked' && <DepthControls lang={lang} disabled={busy} onPick={prompt => onSend(prompt, m)} general kinds={['simpler', 'deeper', 'scholarly']} iconOnly />}
       {copied && <span className="general-copy-status" role="status">{zh ? '已复制' : 'Copied'}</span>}
+      {m.agent_release && <span className="general-release-label" title={`PhiAgent ${m.agent_release.release_version} · Prompt ${m.agent_release.prompt_version}`}>v{m.agent_release.release_version}</span>}
     </div>}
     {copyError && <div className="general-copy-fallback" role="dialog" aria-label={zh ? '手动复制回答' : 'Copy answer manually'}>
       <p>{zh ? '浏览器未允许自动复制。长按下方文本，选择复制。' : 'Automatic copy was blocked. Select the text below and copy it.'}</p>

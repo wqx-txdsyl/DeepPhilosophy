@@ -8,7 +8,8 @@ router = APIRouter()
 
 @router.get("/api/health")
 async def health_check():
-    return {"status": "healthy", "version": "1.2.0", "timestamp": datetime.now().isoformat()}
+    from agent_release import VERSION
+    return {"status": "healthy", "version": VERSION, "timestamp": datetime.now().isoformat()}
 
 @router.get("/api/stats")
 async def get_stats():

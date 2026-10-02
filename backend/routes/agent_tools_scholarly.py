@@ -10,7 +10,7 @@ Main Agent 拥有全部研究选择（是否搜/搜什么/读不读/何时停）
 runtime 只做 execute/normalize/dedup/cache/timeout/provenance/access honesty。
 输入只接受 source_record_id（非任意 URL, §51/§52 SSRF 边界在 scholarly_sources）。
 """
-import sys, os
+import sys, os, hashlib
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import scholarly_sources as SS
@@ -72,11 +72,41 @@ def _exec_get_scholarly_source(args):
     requested = args.get("requested_access") or "ABSTRACT"
     if requested not in ("ABSTRACT", "FULL_TEXT_IF_LEGALLY_AVAILABLE"):
         return {"error": "requested_access 只支持 ABSTRACT | FULL_TEXT_IF_LEGALLY_AVAILABLE"}
+    offset=args.get('offset') if args.get('offset') is not None else 0
+    window=args.get('max_chars') if args.get('max_chars') is not None else 2800
+    if type(offset) is not int or offset<0 or type(window) is not int or window<1:
+        return {'error':'INVALID_EVIDENCE_WINDOW','message':'offset 应为非负整数，max_chars 应为正整数。'}
+    def finish(out):
+        out={**out,'requested_access':requested}
+        abstract=out.get('abstract')
+        if isinstance(abstract,dict) and isinstance(abstract.get('text'),str):
+            text=abstract['text'];start=min(offset,len(text));end=min(start+window,len(text))
+            out['abstract']={**abstract,'text':text[start:end],
+                'excerpt_start':start,'excerpt_end':end,'total_characters':len(text),
+                'has_more':end<len(text),'next_offset':end if end<len(text) else None,
+                'truncated':start>0 or end<len(text),'content_sha256':hashlib.sha256(text.encode()).hexdigest()}
+        passages=out.get('evidence_passages') or []
+        if passages:
+            out['read_scope']='full_text_excerpts'
+            out['whole_document_returned']=False
+            out['note']=out.get('note','')+' 返回的是正文节选，不能据此声称模型已通读整篇；历史证据也不证明当前网址可达。'
+        elif isinstance(out.get('abstract'),dict) and out['abstract'].get('text'):
+            out['read_scope']='abstract_excerpt' if out['abstract']['truncated'] else 'complete_abstract'
+            out['whole_document_returned']=False
+            out['note']=out.get('note','')+' 只返回摘要；若有 has_more，可按 next_offset 续读摘要，不等于论文全文。'
+        else:
+            if isinstance(abstract,dict) and abstract.get('text') and offset>=len(abstract['text']):
+                out['read_scope']='empty_window'
+                out['error']='ABSTRACT_OFFSET_OUT_OF_RANGE'
+                out['note']='摘要存在，但请求起点超出已取得摘要范围；这不是资料缺失。'
+            else:out['read_scope']='metadata_only'
+            out['whole_document_returned']=False
+        return out
     try:
         from research_bridge import evidence_result
         indexed = evidence_result(sid, requested)
         if indexed:
-            return indexed
+            return finish(indexed)
     except Exception:
         pass  # Optional DB outage must not break the existing evidence reader.
     rec = SS.get_record(sid)
@@ -96,7 +126,7 @@ def _exec_get_scholarly_source(args):
            "access_notes": info["access_notes"],
            "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容"}
     if info.get("abstract"):
-        out["abstract"] = {"text": (info["abstract"].get("text") or "")[:1800],
+        out["abstract"] = {"text": info["abstract"].get("text") or "",
                            "source": info["abstract"].get("source"),
                            "hash": info["abstract"].get("hash")}
     if info.get("historical_evidence_level"):
@@ -106,7 +136,8 @@ def _exec_get_scholarly_source(args):
     if info.get("evidence_passages"):
         out["evidence_passages"] = info["evidence_passages"]
         out["passage_locators"] = [p.get("locator") for p in info["evidence_passages"]]
-    return out
+    if info.get('full_text_attempts'):out['full_text_attempts']=info['full_text_attempts']
+    return finish(out)
 
 
 register_tool(
@@ -136,10 +167,13 @@ register_tool(
     "get_scholarly_source",
     "按 source_record_id 取得实际可读证据: requested_access=ABSTRACT 取真实摘要; "
     "FULL_TEXT_IF_LEGALLY_AVAILABLE 尝试合法开放获取全文并返回节选段落（访问边界诚实: "
-    "未读全文不会谎报已读）。输入只接受检索返回的 source_record_id。",
+    "未读全文不会谎报已读）。摘要支持 offset/max_chars 续读；read_scope 明确区分摘要、正文节选与书目。"
+    "完整摘要不是论文全文；方法/论证细节超出摘要时须实际读取对应正文或保留未知。输入只接受检索返回的 source_record_id。",
     {"type": "object",
      "properties": {"source_record_id": {"type": "string", "description": "search_scholarship 返回的记录 ID"},
-                    "requested_access": {"type": "string", "enum": ["ABSTRACT", "FULL_TEXT_IF_LEGALLY_AVAILABLE"]}},
+                    "requested_access": {"type": "string", "enum": ["ABSTRACT", "FULL_TEXT_IF_LEGALLY_AVAILABLE"]},
+                    "offset": {'type':'integer','description':'摘要字符起点，默认0；续读用上次 next_offset。'},
+                    "max_chars": {'type':'integer','description':'摘要窗口字符数，默认2800，可按需要增大。'}},
      "required": ["source_record_id"]},
     _exec_get_scholarly_source,
 )

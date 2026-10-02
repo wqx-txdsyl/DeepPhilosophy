@@ -20,6 +20,12 @@ from routes.agent_llm import API_KEY
 
 router = APIRouter()
 
+
+@router.get('/api/agent/version')
+def agent_version(language: Literal['zh','en']='zh'):
+    from agent_release import release_descriptor
+    return release_descriptor(language)
+
 def _sse(event):
     return f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
 

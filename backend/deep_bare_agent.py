@@ -32,7 +32,7 @@ def load_model():
     return type(base)(model=base.model_name, api_key=agent_llm.API_KEY,
                       base_url=agent_llm.API_URL, temperature=base.temperature,
                       extra_body=base.extra_body, max_tokens=None,
-                      max_retries=0, timeout=httpx.Timeout(None))
+                      max_retries=0, timeout=httpx.Timeout(None), stream_usage=True)
 
 
 async def execute(tool, args, question):
@@ -87,10 +87,11 @@ def source_metadata(calls, answer, language):
     return citations, evidence
 
 
-async def stream_bare_agent(question, history, language='zh', conversation_id=None, message_id=None):
-    from engine_langgraph import SYSTEM_PROMPT_LG
+async def stream_bare_agent(question, history, language='zh', conversation_id=None, message_id=None, _evaluation_prompt_profile=None):
+    from agent_release import prompt_spec, release_descriptor, fingerprint
     from routes.agent_llm import MODEL
-    messages = [SystemMessage(content=SYSTEM_PROMPT_LG)]
+    release = release_descriptor(language,_evaluation_prompt_profile)
+    messages = [SystemMessage(content=prompt_spec(language,_evaluation_prompt_profile)['text'])]
     from deep_context import current_account_id
     if user_id := current_account_id.get():
         from account_data import account_context
@@ -108,13 +109,25 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
     started = time.monotonic()
     invocation = uuid.uuid4().hex
     calls = []
+    from reading_coverage import ReadingCoverage
+    reading_coverage = ReadingCoverage()
     round_index = 0
     tasks = set()
     model = None
+    round_usage = []
+    returned_models = set()
     yield {'type': 'status', 'content': '开始思考' if language != 'en' else 'Thinking',
-           'runtime_profile': 'bare'}
+           'runtime_profile': 'bare', 'release':release}
     try:
         tools = await load_tools()
+        contracts=[{'name':t.name,'description':t.description,
+            'schema':t.args_schema.model_json_schema() if hasattr(t.args_schema,'model_json_schema')
+                else t.args_schema if isinstance(t.args_schema,dict) else {}} for t in tools]
+        import hashlib
+        release['toolset_sha256']=hashlib.sha256(json.dumps(contracts,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+        release['installed_tool_count']=len(tools)
+        release['configuration_fingerprint']=fingerprint(release)
+        yield {'type':'runtime_metadata','release':release}
         registry = {tool.name: tool for tool in tools}
         model = load_model()
         client = model.bind_tools(tools)
@@ -164,6 +177,9 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 yield {'type': 'error', 'content': '模型未返回内容。'}
                 return
             message = message_chunk_to_message(full)
+            round_usage.append(getattr(full,'usage_metadata',None))
+            actual_model=(getattr(full,'response_metadata',{}) or {}).get('model_name')
+            if actual_model: returned_models.add(actual_model)
             messages.append(message)
             requested = list(message.tool_calls or [])
             # Malformed arguments are returned to the model as tool errors;
@@ -182,7 +198,13 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                     yield {'type': 'token', 'content': text}
                 from deep_streaming import wants_suggestions
                 suggest = complete and wants_suggestions(question) and bool(text.strip())
+                usage = None
+                if round_usage and all(isinstance(item,dict) for item in round_usage):
+                    usage = {key:sum(item.get(key,0) for item in round_usage) for key in ('input_tokens','output_tokens','total_tokens')}
                 yield {'type': 'done', 'content': text, 'complete': complete, 'runtime_profile': 'bare',
+                       'release':release,'main_model_usage':{'scope':'main_agent_only','usage':usage,
+                         'round_count':len(round_usage),'reported_rounds':sum(isinstance(u,dict) for u in round_usage),
+                         'includes_auxiliary_tool_models':False,'provider_model_names':sorted(returned_models)},
                        'citations': citations, 'evidence': evidence, 'suggestions': [],
                        'suggestions_status': 'pending' if suggest else 'disabled', 'validation': {'enabled': False},
                        'finish_reason': finish, 'duration_seconds': round(time.monotonic() - started, 3)}
@@ -224,6 +246,8 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 tasks.add(asyncio.create_task(run_call(index, call)))
             for completed in asyncio.as_completed(tasks):
                 index, call, args, result, seconds = await completed
+                if call['name'] in {'get_chapter','verify_quote'}:
+                    result = reading_coverage.observe(result)
                 serialized = json.dumps(result, ensure_ascii=False, default=str)
                 status = tool_status(result)
                 calls.append({'name': call['name'], 'args': args, 'result_full': result, 'call_id': call['id']})

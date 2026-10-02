@@ -161,6 +161,7 @@ export default function SettingsPanel({ open, onClose, conversation }) {
 
           {section === 'settingsAgent' && (
             <div className="cw-settings-sec">
+              <p className="cw-settings-desc">PhiAgent {__PHIAGENT_VERSION__}</p>
               <h3 className="cw-settings-h">{t('defaultResponder')}</h3>
               <p className="cw-settings-desc">{t('defaultResponderDesc')}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10 }}>

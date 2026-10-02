@@ -68,7 +68,9 @@ export function reduceGeneralEvent(state, evt) {
     return !state.done_received && text && state.content.endsWith(text) ? { ...state, content: state.content.slice(0, -text.length) } : state;
   }
   if (evt.type === 'status') return { ...state, status: text,
+    ...(evt.release ? { agent_release:evt.release } : {}),
     ...(evt.runtime_profile ? { runtime_profile: evt.runtime_profile } : {}) };
+  if (evt.type === 'runtime_metadata') return { ...state, ...(evt.release ? { agent_release:evt.release } : {}) };
   if (evt.type === 'thinking_summary') {
     const id = evt.id || `research-${state.events.length}`;
     const line = { t: 'thinking_summary', id, phase: evt.phase, content: text };
@@ -113,6 +115,8 @@ export function reduceGeneralEvent(state, evt) {
     citations: Array.isArray(evt.citations) ? evt.citations : [], evidence: evt.evidence || null,
     suggestions: suggestions(evt.suggestions), reasoning_summary: evt.reasoning_summary || null,
     suggestions_status: evt.suggestions_status || (evt.suggestions?.length ? 'ready' : 'unavailable'),
+    ...(evt.release ? { agent_release:evt.release } : {}),
+    ...(evt.main_model_usage ? { main_model_usage:evt.main_model_usage } : {}),
   };
   if (evt.type === 'suggestions') return { ...state, suggestions: suggestions(evt.suggestions), suggestions_status: evt.status || (evt.suggestions?.length ? 'ready' : 'unavailable') };
   if (evt.type === 'reasoning_summary') return { ...state, reasoning_summary: text };

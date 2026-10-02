@@ -26,6 +26,7 @@ import uvicorn
 
 import config
 from auth import init_db
+from agent_release import VERSION
 from services.book_scanner import scan_books
 from services.summaries import load_summaries_cache
 
@@ -35,7 +36,7 @@ from services.summaries import load_summaries_cache
 app = FastAPI(
     title="DeepPhilosophy API",
     description="哲学爱好者知识库云端服务",
-    version="2.0.0",
+    version=VERSION,
 )
 
 app.add_middleware(
