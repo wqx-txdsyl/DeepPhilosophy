@@ -8,13 +8,14 @@
 import json
 import asyncio
 import os
-from typing import Optional, List
+from typing import Optional, List, Literal
 
 from fastapi import APIRouter, Depends, Header, Request
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 import guard
+from auth_deps import auth_required
 from routes.agent_llm import API_KEY
 
 router = APIRouter()
@@ -75,6 +76,18 @@ async def regenerate_exploration(req: ExplorationRequest, _g: dict = Depends(age
     return await asyncio.to_thread(generate_exploration, req.message, req.answer,
                                    req.language or 'zh', req.previous_questions)
 
+
+class HomeQuestionsRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    language: Literal["zh", "en"] = "zh"
+    refresh: bool = False
+
+
+@router.post('/api/agent/home-questions')
+async def home_questions(req: HomeQuestionsRequest, user: dict = Depends(auth_required)):
+    from home_questions import generate_home_questions
+    return await asyncio.to_thread(generate_home_questions, user["id"], req.language, req.refresh)
+
 # ═══════════════════════════════════════════════════════
 # LangGraph 引擎路由（v2）: /api/agent/stream_lg
 # Claude Code 风格: 思考 → 工具（并行）→ 最终回答; 前端协议不变
@@ -119,12 +132,13 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
             async for frame in stream_events():
                 yield frame
             return
-        from deep_context import current_memory_key, general_memory_key
+        from deep_context import current_memory_key, general_memory_key, current_account_id
         # Sync FastAPI dependencies execute in a worker context. Their
         # ContextVar writes do not propagate back into this SSE task.
         ip = guard.client_ip(request)
         identity_token = guard.current_user.set({"id": (_g or {}).get("id"), "ip": ip})
         scope_token = current_memory_key.set(general_memory_key(_g, ip, req.conversation_id))
+        account_token = current_account_id.set((_g or {}).get("id"))
         stream = stream_events()
         try:
             async for frame in stream:
@@ -134,6 +148,7 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
                 await stream.aclose()
             finally:
                 current_memory_key.reset(scope_token)
+                current_account_id.reset(account_token)
                 guard.current_user.reset(identity_token)
     return StreamingResponse(gen(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})

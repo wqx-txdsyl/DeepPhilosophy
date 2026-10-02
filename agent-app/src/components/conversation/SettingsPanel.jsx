@@ -7,6 +7,8 @@ import { getPref, setPref } from '../../data/localPrefs';
 import { useAuth } from '../../auth';
 import AuthModal from '../AuthModal';
 import { ConfirmModal } from './Modal';
+import AccountMemory from './AccountMemory';
+import { conversationStore } from '../../data/conversationStore';
 
 /**
  * SettingsPanel — 设置（spec §24/§25 Codex 式面板; 内容只含 PhiAgent 真实能力）
@@ -28,7 +30,7 @@ const SECTIONS = [
 
 export default function SettingsPanel({ open, onClose, conversation }) {
   const { t, lang, setLang } = useLang();
-  const { username, authFetch, logout } = useAuth();
+  const { username, logout, historyStatus, retryHistory } = useAuth();
   const [section, setSection] = useState('settingsGeneral');
   const [theme, setThemeState] = useState(getTheme());
   const [showCitations, setShowCitations] = useState(() => getPref('showCitations') !== false);
@@ -70,14 +72,20 @@ export default function SettingsPanel({ open, onClose, conversation }) {
     flash(perm === 'granted' ? t('notifEnabled') : t('notifDenied'));
   };
 
-  const clearLocal = () => {
+  const clearLocal = async () => {
+    if (username && historyStatus !== 'saved') {
+      await retryHistory();
+      flash(lang === 'zh' ? '请先等待账号保存完成，再清除本机缓存。' : 'Wait for account saving to finish before clearing the cache.');
+      setConfirmClear(false);
+      return;
+    }
     try {
-      localStorage.removeItem('phiagent_conversations_v1');
+      localStorage.removeItem(conversationStore.key);
+      localStorage.removeItem(`phiagent_sync_v2:${conversationStore.owner}`);
       localStorage.removeItem('dp_chat_sessions');
       localStorage.removeItem('dp_current_session');
       Object.keys(localStorage).filter(k => k.startsWith('dp_agent_msgs_v2_')).forEach(k => localStorage.removeItem(k));
     } catch (e) { /* 忽略 */ }
-    if (username) { authFetch('/api/history/chat', { method: 'DELETE' }).catch(() => {}); }
     window.location.reload();
   };
 
@@ -217,16 +225,16 @@ export default function SettingsPanel({ open, onClose, conversation }) {
           )}
 
           {section === 'settingsData' && (
-            <div className="cw-settings-sec">
+            <><AccountMemory key={username || 'guest'} lang={lang} /><div className="cw-settings-sec">
               <h3 className="cw-settings-h">{t('dataMgmt')}</h3>
               <div className="cw-toggle-row" style={{ alignItems: 'flex-start' }}>
                 <div>
-                  <div className="cw-settings-label">{t('clearLocalHistory')}</div>
-                  <div className="cw-settings-sub">{t('clearLocalHistoryDesc')}</div>
+                  <div className="cw-settings-label">{username ? (lang === 'zh' ? '本机缓存' : 'Device cache') : t('clearLocalHistory')}</div>
+                      <div className="cw-settings-sub">{username ? (lang === 'zh' ? '只清除本机缓存；账号中的对话会在下次打开时恢复。' : 'Clear this device cache; account conversations will be restored.') : t('clearLocalHistoryDesc')}</div>
                 </div>
-                <button className="cw-danger-btn" onClick={() => setConfirmClear(true)}>{t('clearHistory')}</button>
+                <button className="cw-danger-btn" onClick={() => setConfirmClear(true)}>{username ? (lang === 'zh' ? '清除本机缓存' : 'Clear device cache') : t('clearHistory')}</button>
               </div>
-            </div>
+            </div></>
           )}
 
           {section === 'settingsAccount' && (
@@ -259,7 +267,8 @@ export default function SettingsPanel({ open, onClose, conversation }) {
         </div>
       </div>
       {confirmClear && (
-        <ConfirmModal title={t('clearHistory')} message={t('clearConfirm')}
+        <ConfirmModal title={username ? (lang === 'zh' ? '清除本机缓存' : 'Clear device cache') : t('clearHistory')}
+          message={username ? (lang === 'zh' ? '账号中的对话会保留，下次打开时会自动恢复。' : 'Account conversations remain saved and will be restored next time.') : t('clearConfirm')}
           onClose={() => setConfirmClear(false)} onConfirm={clearLocal} />
       )}
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}

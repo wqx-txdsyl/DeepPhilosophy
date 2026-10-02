@@ -9,14 +9,14 @@ import { getPref, setPref } from '../data/localPrefs';
 import useAgents from '../utils/useAgents';
 import ConversationSidebar from '../components/conversation/ConversationSidebar';
 import ConversationHeader from '../components/conversation/ConversationHeader';
-import MessageList, { QUESTION_BANK } from '../components/conversation/MessageList';
-import { EpStarter } from '../components/conversation/O9';
+import MessageList from '../components/conversation/MessageList';
+import PersonalizedQuestions from '../components/conversation/PersonalizedQuestions';
 import Composer from '../components/conversation/Composer';
 import AgentPlaza from '../components/conversation/AgentPlaza';
 import SettingsPanel from '../components/conversation/SettingsPanel';
 import DrawioModal from '../components/DrawioModal';
 import Icon from '../components/Icon';
-import { TriangleAlert, BrainCircuit } from 'lucide-react';
+import { TriangleAlert } from 'lucide-react';
 import { createGeneralStream, reduceGeneralEvent, finishGeneralStream, readEventStream, prepareGeneralTurn, ownsGeneralRequest, releaseGeneralAnswer, prepareGeneralRequest } from '../data/generalStream';
 import '../conversation.css';
 
@@ -40,7 +40,7 @@ export default function AgentWorkspace() {
     ? decodeURIComponent(pathname.slice('/agent/c/'.length))
     : null;
   const { t, lang, agentName, agentSub } = useLang();
-  const { token } = useAuth();
+  const { token, profile, accountReady, historyStatus, retryHistory, authError, retryAccount, logout } = useAuth();
   const { agents, agentsLoading } = useAgents();
 
   const [conversations, setConversations] = useState([]);
@@ -87,13 +87,25 @@ export default function AgentWorkspace() {
           conversationStore.updateMessage(c.conversation_id,m.message_id,{suggestions_status:'unavailable'});
         }
       }
-      setConversations(loaded);
+      setConversations(previous => loaded.map(c => streamsRef.current.has(c.conversation_id)
+        ? previous.find(old => old.conversation_id === c.conversation_id) || c : c));
       setHydrated(true);
     } catch (e) {
       setHydrateError(true);
     }
   };
-  useEffect(() => { loadConversations(); }, []);
+  useEffect(() => {
+    if (!accountReady) { setHydrated(false); setConversations([]); return; }
+    loadConversations();
+  }, [accountReady, profile?.id]);
+  useEffect(() => {
+    window.addEventListener('phiagent-history-restored', loadConversations);
+    window.addEventListener('phiagent-account-changed', loadConversations);
+    return () => {
+      window.removeEventListener('phiagent-history-restored', loadConversations);
+      window.removeEventListener('phiagent-account-changed', loadConversations);
+    };
+  }, []);
   useEffect(() => () => {
     for (const stream of streamsRef.current.values()) if (stream.agent === 'general') stream.controller.abort();
   }, []);
@@ -101,10 +113,12 @@ export default function AgentWorkspace() {
   /* ── 登出（auth.jsx 广播）: 清内存会话 + 回草稿页（隐私, §auth）── */
   useEffect(() => {
     const onLogout = () => {
-      for (const { controller } of streamsRef.current.values()) {
+      for (const [id, { controller }] of streamsRef.current) {
+        deletedRef.current.add(id);
         try { controller.abort(); } catch (e) { /* 已中断 */ }
       }
       streamsRef.current.clear();
+      setStreamingIds(new Set());
       setConversations([]);
       navigate('/agent', { replace: true });   // 回草稿页（conversationId 由路由派生）
     };
@@ -629,34 +643,14 @@ export default function AgentWorkspace() {
           <Icon name="icon-brain" size={38} />
           <div className="cw-empty-title" style={{ marginTop: 12 }}>{name}</div>
           {sub && <div className="cw-empty-sub">{sub}</div>}
-          <div className="cw-empty-starters" style={{ flexDirection: 'column', maxWidth: 420 }}>
-            {(QUESTION_BANK[composerAgent]?.[lang] || []).map((q, i) => (
-              <button key={i} className="cw-empty-chip" onClick={() => dispatchSend({ message: q, display: q })}>
-                {q}
-              </button>
-            ))}
-          </div>
         </div>
       );
     }
-    const starters = [
-      ['oneConcept', t('emptyConcept')],
-      ['book', t('emptyBook')],
-      ['compare', t('emptyCompare')],
-    ];
     return (
-      <div className="cw-empty">
-        <BrainCircuit size={38} strokeWidth={1.4} aria-hidden />
-        <div className="cw-empty-title" style={{ marginTop: 12 }}>{name}</div>
-        <div className="cw-empty-sub">{t('emptyGreeting')}</div>
-        <EpStarter lang={lang} onPick={(q) => dispatchSend({ message: q, display: q })} />
-        <div className="cw-empty-starters">
-          {starters.map(([k, label]) => (
-            <button key={k} className="cw-empty-chip" onClick={() => document.querySelector('.cw-composer textarea')?.focus()}>
-              {label}
-            </button>
-          ))}
-        </div>
+      <div className="cw-empty cw-empty-general">
+        <h1 className="cw-brand-wordmark" aria-label="PhiAgent 深哲">PHIAGENT</h1>
+        <div className="cw-brand-caption"><span>{name}</span><span aria-hidden="true">·</span><span>{t('emptyGreeting')}</span></div>
+        <PersonalizedQuestions lang={lang} onPick={q => dispatchSend({ message: q, display: q })} />
       </div>
     );
   })();
@@ -673,7 +667,11 @@ export default function AgentWorkspace() {
       </div>
     );
   }
-  if (!hydrated) {
+  if (!accountReady || !hydrated || (conversationId && !activeConv && historyStatus === 'loading')) {
+    if (authError) return <div className="cw-auth-unavailable" role="status">
+      <p>{lang === 'zh' ? '暂时无法连接账号，历史记录已保留。' : 'Account connection is unavailable. Your history is preserved.'}</p>
+      <button onClick={retryAccount}>{t('retry')}</button><button onClick={logout}>{t('logout')}</button>
+    </div>;
     return <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-dim)' }}>…</div>;
   }
   if (conversationId && !activeConv) {
@@ -708,11 +706,15 @@ export default function AgentWorkspace() {
         onExplore={() => setPlazaOpen(true)} onRename={handleRename} onDelete={handleDelete}
         onOpenSettings={() => setSettingsOpen(true)} />
       <div className="cw-main">
+        {token && ['offline','cache-error'].includes(historyStatus) && <div className="cw-history-notice" role="status">
+          {lang === 'en' ? 'History has not finished saving to your account.' : '对话尚未保存到账号，请保持页面打开。'}
+          <button onClick={retryHistory}>{lang === 'en' ? 'Retry' : '重试'}</button>
+        </div>}
         <ConversationHeader title={activeConv?.title || (isDraft ? t('newChat') : '')} isDraft={isDraft}
           streaming={activeStreaming} onOpenNav={() => setNavOpen(true)} onToggleSidebar={handleToggleSidebar}
           onRename={(newTitle) => activeConv && handleRename(activeConv, newTitle)}
           onDelete={() => activeConv && handleDelete(activeConv)} />
-        <div className="cw-messages">
+        <div className={`cw-messages${!messages.length && composerAgent === 'general' ? ' cw-messages-home' : ''}`}>
           {unavailable && (
             <div style={{ marginBottom: 10, padding: '8px 12px', borderRadius: 8, fontSize: 12.5,
                           border: '1px solid var(--border)', background: 'var(--soft)', color: 'var(--text-dim)' }}>

@@ -324,11 +324,14 @@ def init_db():
     """初始化用户数据库表，先从云端恢复"""
     # S7（audit 2026-08-17）：GitHub Release 下载恢复默认禁用（上传已禁、下载仍开；
     # users.db 含密码哈希，资产若公开即可被下载）。需要时显式设 DP_ALLOW_GH_RESTORE=1。
-    if os.getenv("DP_ALLOW_GH_RESTORE", "0") == "1":
+    # Restore is bootstrap-only. Replacing a live account DB with an old cloud
+    # snapshot on restart would erase conversations/memories saved since then.
+    bootstrap = not os.path.exists(DB_PATH) or os.path.getsize(DB_PATH) == 0
+    if bootstrap and os.getenv("DP_ALLOW_GH_RESTORE", "0") == "1":
         restored_github = _sync_db_from_github()
     else:
         restored_github = False
-    restored_oss = _sync_db_from_cloud()      # 尝试从 OSS 恢复（需 AK/SK 签名，非公开）
+    restored_oss = _sync_db_from_cloud() if bootstrap and not restored_github else False
     conn = _get_conn()
     _ensure_profile_col(conn)   # 兼容旧库: 补 profile 列
     conn.executescript("""
@@ -390,6 +393,7 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
     """)
+    _ensure_profile_col(conn)  # Fresh databases have no users table before CREATE.
     # Migration: add avatar column (ignore error if already exists)
     try:
         conn.execute("ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT ''"); conn.commit()

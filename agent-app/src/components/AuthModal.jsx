@@ -27,10 +27,10 @@ export default function AuthModal({ onClose }) {
     setError('');
     if (!username.trim() || !password) { setError(t('needUserPwd')); return; }
     setBusy(true);
+    try {
     const d = mode === 'login'
       ? await login(username.trim(), password)
       : await register(username.trim(), password);
-    setBusy(false);
     if (d.success) {
       if (mode === 'register') {
         // 注册成功后自动登录
@@ -43,6 +43,9 @@ export default function AuthModal({ onClose }) {
     } else {
       setError(mapErr(d.error || d.detail) || t('unknownErr'));
     }
+    } catch {
+      setError(lang === 'zh' ? '暂时无法连接账号，请重试。' : 'Cannot connect to the account service. Please retry.');
+    } finally { setBusy(false); }
   };
 
   return (

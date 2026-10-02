@@ -2,7 +2,7 @@
  * ConversationStore — 会话持久化统一抽象（§12）
  *
  * 组件禁止直接操作 localStorage；未来可把 LocalConversationStore 平滑替换为
- * APIConversationStore（同接口）。本阶段匿名/登录用户统一本地存储（不引入数据库）。
+ * 登录后由 conversationSync 按会话同步服务器；本地仅作账号隔离缓存和离线队列。
  *
  * 存储键: phiagent_conversations_v1（全部会话单键 JSON）
  * legacy 迁移: dp_agent_msgs_v2_{agent} → 每智能体一个会话（迁移后删除旧键）
@@ -25,13 +25,39 @@ export class LocalConversationStore {
   constructor(storage = (typeof window !== 'undefined' ? window.localStorage : null)) {
     this.storage = storage;
     this._migrated = false;
+    this.key = STORAGE_KEY;
+    this.owner = 'legacy';
+    this.listeners = new Set();
+    this.memory = null;
+    this.volatile = false;
   }
+
+  setScope(owner, claimLegacy = false) {
+    this.owner = owner;
+    this.key = `phiagent_conversations_v2:${owner}`;
+    this.memory = null;
+    this.volatile = false;
+    this._migrated = false;
+    if (claimLegacy && this.storage && !this.storage.getItem(this.key)) {
+      const old = this.storage.getItem(STORAGE_KEY);
+      if (old) {
+        // Only the authenticated identity already present in this browser may
+        // claim old unscoped history. A different login cannot claim it.
+        this.storage.setItem(this.key, old);
+        this.storage.removeItem(STORAGE_KEY);
+      }
+    }
+  }
+
+  subscribe(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
+  replaceAll(list) { this._saveAll(list, false); }
 
   // ── 内部 ──
   _loadAll() {
+    if (this.volatile && this.memory) return structuredClone(this.memory);
     if (!this.storage) return [];
     try {
-      const raw = this.storage.getItem(STORAGE_KEY);
+      const raw = this.storage.getItem(this.key);
       if (!raw) return [];
       const parsed = JSON.parse(raw);
       if (!Array.isArray(parsed)) return [];
@@ -42,13 +68,19 @@ export class LocalConversationStore {
     }
   }
 
-  _saveAll(list) {
-    if (!this.storage) return;
+  _saveAll(list, notify = true) {
+    const previous = this._loadAll();
+    this.memory = structuredClone(list);
     try {
-      this.storage.setItem(STORAGE_KEY, JSON.stringify(list));
+      this.storage?.setItem(this.key, JSON.stringify(list));
+      this.volatile = !this.storage;
     } catch (e) {
-      console.warn('[ConversationStore] 写入失败（配额?）', e);
+      this.volatile = true;
+      // Keep the live copy and continue server saving. Surface the failure
+      // instead of silently pretending local persistence succeeded.
+      if (typeof window !== 'undefined') window.dispatchEvent(new Event('phiagent-cache-error'));
     }
+    if (notify) for (const fn of this.listeners) fn(list, previous, this.owner);
   }
 
   _mutate(id, fn) {
@@ -70,7 +102,8 @@ export class LocalConversationStore {
     if (this._migrated || !this.storage) return { migrated: 0 };
     this._migrated = true;
     try {
-      if (this.storage.getItem(STORAGE_KEY)) return { migrated: 0 };
+      if (this.storage.getItem(this.key)) return { migrated: 0 };
+      if (!['legacy', 'guest'].includes(this.owner)) return { migrated: 0 };
       const legacyByAgent = {};
       for (let i = this.storage.length - 1; i >= 0; i--) {
         const k = this.storage.key(i);
@@ -81,6 +114,7 @@ export class LocalConversationStore {
       }
       const convs = legacyMessagesToConversations(legacyByAgent);
       if (convs.length) this._saveAll(convs);
+      if (this.volatile) return { migrated: 0 }; // Never remove the only recoverable copy.
       // 清理旧键（含更早的 v1 残留, 与旧版清理逻辑一致）
       for (let i = this.storage.length - 1; i >= 0; i--) {
         const k = this.storage.key(i);

@@ -180,6 +180,11 @@ export const AGENT_SUBS = {
 // 工具名（双语）
 export const TOOL_LABELS = {
   search_books: { zh: '检索原典', en: 'Search Texts' },
+  recall_account_memory: { zh: '读取长期记忆', en: 'Recall account memory' },
+  remember_account_memory: { zh: '保存长期记忆', en: 'Save account memory' },
+  forget_account_memory: { zh: '忘记长期记忆', en: 'Forget account memory' },
+  search_account_history: { zh: '查找历史对话', en: 'Search past conversations' },
+  read_account_conversation: { zh: '读取历史对话', en: 'Read past conversation' },
   get_chapter: { zh: '读取章节', en: 'Read Chapter' },
   get_book_detail: { zh: '查书详情', en: 'Book Detail' },
   list_books: { zh: '筛选书目', en: 'List Books' },

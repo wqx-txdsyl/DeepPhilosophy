@@ -108,6 +108,7 @@ export function normalizeMessage(raw, fallbackAgentId = GENERAL_AGENT) {
           ...(raw.evidence ? { evidence: raw.evidence } : {}),
           tool_events: Array.isArray(raw.tool_events) ? raw.tool_events : (Array.isArray(raw.events) ? raw.events : []),
           ...(raw.suggestions?.length ? { suggestions: raw.suggestions } : {}),
+          ...(raw.suggestions_status ? { suggestions_status: raw.suggestions_status } : {}),
           ...(raw.reasoning_summary ? { reasoning_summary: raw.reasoning_summary } : {}),
           ...(raw.safety ? { safety: raw.safety } : {}),
           ...(raw.agent_id === GENERAL_AGENT && raw.stream_state ? { stream_state: raw.stream_state, error: raw.error || '' } : {}),

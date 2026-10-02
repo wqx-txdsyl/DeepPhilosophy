@@ -15,6 +15,7 @@ current_memory_key: ContextVar[str | None] = ContextVar("deep_memory_key", defau
 current_memory_overlay: ContextVar[dict | None] = ContextVar("deep_memory_overlay", default=None)
 current_request_question: ContextVar[str | None] = ContextVar("deep_request_question", default=None)
 current_tool_agent: ContextVar[str | None] = ContextVar("deep_tool_agent", default=None)
+current_account_id: ContextVar[int | None] = ContextVar("deep_account_id", default=None)
 
 
 def general_memory_key(user, ip, conversation_id):

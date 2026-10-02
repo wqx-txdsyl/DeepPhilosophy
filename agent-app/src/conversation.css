@@ -483,6 +483,13 @@ body.dark-mode .cw-composer-dragover-hint { background: rgba(255,255,255,.05); }
 .cw-selector-foot:hover { background: var(--soft); color: var(--text); }
 
 /* ── Empty State（§23: 简洁, Composer 近中心） ── */
+@font-face {
+  font-family: 'PhiAgent Bodoni';
+  src: url('./assets/fonts/bodoni-moda-phiagent.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+}
 .cw-empty {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   min-height: calc(100vh - 320px); text-align: center; padding: 48px 0 24px;
@@ -496,6 +503,16 @@ body.dark-mode .cw-composer-dragover-hint { background: rgba(255,255,255,.05); }
   transition: background .15s, border-color .15s;
 }
 .cw-empty-chip:hover { background: var(--soft); border-color: var(--text-dim); }
+.cw-messages.cw-messages-home { max-width: 1040px; }
+.cw-empty-general { width: 100%; container-type: inline-size; justify-content: flex-start; padding-top: clamp(38px, 7vh, 86px); }
+.cw-brand-wordmark { margin: 0; max-width: 100%; font-family: 'PhiAgent Bodoni', Didot, 'Bodoni MT', Georgia, serif; font-size: clamp(60px, 17.5cqw, 180px); font-weight: 900; font-synthesis: none; letter-spacing: -.055em; line-height: 1; white-space: nowrap; color: var(--text); }
+.cw-brand-caption { display: flex; justify-content: center; align-items: baseline; gap: 9px; margin-top: 22px; font-size: 13px; line-height: 1.8; color: var(--text-dim); }
+.cw-brand-caption > span:first-child { color: var(--text); }
+@media (max-width: 600px) {
+  .cw-empty-general { padding-top: 38px; }
+  .cw-brand-wordmark { font-size: 17.5cqw; }
+  .cw-brand-caption { margin-top: 18px; font-size: 12px; }
+}
 
 /* ── Settings（§24/§25: Codex 式面板, 内容为真实能力） ── */
 .cw-settings-scrim { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 1200; }
@@ -902,3 +919,24 @@ body.dark-mode .cw-danger-btn:hover { background: #2c1d1d; }
   .general-tool-query { max-width: 38vw; }
   .general-answer-actions { align-items: flex-start; }
 }
+
+.cw-personal-home { width: 100%; max-width: 650px; margin: 38px auto 0; text-align: left; }
+.cw-home-hint { margin: 0; text-align: center; font-size: 12px; line-height: 1.8; color: var(--text-dim); }
+.cw-home-hint button { padding: 0; background: none; border: 0; color: var(--text); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; }
+.cw-personal-heading { display: flex; align-items: center; justify-content: space-between; font-size: 11px; letter-spacing: .06em; color: var(--text-dim); margin-bottom: 4px; }
+.cw-personal-question { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; padding: 17px 0; text-align: left; border: 0; border-bottom: 1px solid var(--border); background: none; color: var(--text); cursor: pointer; }
+.cw-question-basis { display: block; margin-bottom: 6px; color: var(--text-dim); font-size: 10.5px; }
+.cw-question-text { display: block; font-size: 14px; line-height: 1.65; }
+.cw-personal-question > svg { flex-shrink: 0; color: var(--text-dim); transition: transform .18s; }
+.cw-personal-question:hover > svg { color: var(--text); transform: translate(2px,-2px); }
+.cw-personal-question:focus-visible { outline: 2px solid var(--text-dim); outline-offset: 5px; }
+.cw-history-notice { padding: 7px 14px; font-size: 11px; color: var(--text-dim); background: var(--soft); }
+.cw-history-notice button { margin-left: 12px; border: 0; background: none; color: var(--text); cursor: pointer; }
+@media (max-width: 600px) { .cw-personal-home { margin-top: 30px; } .cw-question-text { font-size: 13px; } }
+.cw-memory-list { list-style: none; margin: 12px 0; padding: 0; }
+.cw-memory-list li { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.7; }
+.cw-memory-list .cw-danger-btn { flex-shrink: 0; }
+.cw-memory-form { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-top: 12px; }
+.cw-memory-form textarea { box-sizing: border-box; width: 100%; min-height: 70px; padding: 9px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; font-size: 12px; resize: vertical; }
+.cw-auth-unavailable { padding: 60px 20px; text-align: center; color: var(--text-dim); }
+.cw-auth-unavailable button { margin: 8px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); cursor: pointer; }
