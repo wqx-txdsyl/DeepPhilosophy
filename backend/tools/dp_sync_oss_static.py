@@ -57,6 +57,7 @@ DIRS = [
     (os.path.join(ROOT, "app", "dist", "assets"), "app/assets"),
     # 书籍详情 JSON（2026-08-12 详情页提速: 前端双轨 OSS 优先 → 同源回退）
     ("book_detail", "book_detail"),
+    ("schools/data", "schools/data"),
 ]
 
 
@@ -85,9 +86,15 @@ def main():
     args = [a for a in sys.argv[1:]]
     dry = "--dry-run" in args
     workers = 16
+    only = []
     for a in args:
         if a.startswith("--workers="):
             workers = int(a.split("=", 1)[1])
+        if a.startswith("--only="):
+            only = [prefix.strip().strip('/') for prefix in a.split('=', 1)[1].split(',') if prefix.strip().strip('/')]
+
+    def selected(key):
+        return not only or any(key == prefix or key.startswith(prefix + '/') for prefix in only)
 
     env = load_env(os.path.join(ROOT, ".env"))
     ak = os.environ.get("OSS_ACCESS_KEY") or env.get("OSS_ACCESS_KEY")
@@ -111,7 +118,8 @@ def main():
         if not os.path.isfile(fp):
             print(f"  警告: 本地缺失 {rel}, 跳过")
             continue
-        local[key] = md5_file(fp)
+        if selected(key):
+            local[key] = md5_file(fp)
     for d, prefix in DIRS:
         d = d if os.path.isabs(d) else os.path.join(DP_PUBLIC, d)
         if not os.path.isdir(d):
@@ -121,16 +129,18 @@ def main():
             fp = os.path.join(d, fn)
             if not os.path.isfile(fp):
                 continue
-            local[f"{prefix}/{fn}"] = md5_file(fp)
+            key = f"{prefix}/{fn}"
+            if selected(key):
+                local[key] = md5_file(fp)
     print(f"本地: {len(local)} 个对象")
 
     # ── 2. 远端清单 ──
     print("列出远端 ...")
     remote = {}
-    prefixes = ("covers/", "app/assets/", "schools/", "gene/")
+    prefixes = ("covers/", "app/assets/", "schools/", "gene/", "book_detail/")
     for obj in oss2.ObjectIterator(bucket, prefix=""):
         # 只看本脚本管理的前缀: 根两个 json + covers/ + app/assets/ + schools/ + gene/
-        if obj.key in ("books.json", "covers.json") or obj.key.startswith(prefixes):
+        if selected(obj.key) and (obj.key in ("books.json", "covers.json", "philosophers.json") or obj.key.startswith(prefixes)):
             remote[obj.key] = (obj.etag or "").strip('"').lower()
     print(f"远端: {len(remote)} 个对象")
 
@@ -170,6 +180,8 @@ def main():
     print(f"完成: 上传 {len(ok)} / 失败 {len(fail)}")
     for k, e in fail[:10]:
         print(f"  失败 {k}: {e}")
+    if fail:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

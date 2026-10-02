@@ -36,3 +36,5 @@ npm run build
 `--normalize-legacy` 仅用于转换早期 Python 列表字符串及嵌套数组，并为未标注的旧金句设置概述类型；不要使用它代替内容审校。
 
 发布沿用 Cloudflare Pages + OSS 双轨：先验证分支预览并同步完整 JS/CSS/字体和更新的静态数据，再发布 master，确认生产提交、页面交互和 OSS 资源均可访问。
+
+静态同步脚本现已显式覆盖 `schools/data/`。只发布本功能资源时可运行 `python backend/tools/dp_sync_oss_static.py --only=schools,gene,app/assets`；用 `--dry-run` 先检查差异。脚本不删除远端历史资源，任一上传失败会返回非零状态。
