@@ -16,7 +16,7 @@
 
 退出码: 0 全过 / 1 有问题。CI 用法: python backend/tools/dp_consistency_check.py
 """
-import json, os, sys, io
+import json, os, sys, io, re, hashlib, subprocess
 
 if sys.platform == "win32":
     try:
@@ -28,8 +28,25 @@ BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 
 
 def load(p):
-    with open(p, encoding="utf-8") as f:
-        return json.load(f)
+    with open(p, "rb") as f:
+        raw = f.read()
+    # actions/checkout defaults to leaving LFS pointers. Restore the immutable
+    # tracked object, then verify its digest before comparing real metadata.
+    if raw.startswith(b"version https://git-lfs.github.com/spec/v1"):
+        match = re.search(rb"oid sha256:([a-f0-9]{64})", raw)
+        if not match:
+            raise ValueError("Invalid Git LFS metadata pointer")
+        result = subprocess.run(
+            ["git", "lfs", "smudge"], input=raw, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE, cwd=BASE, timeout=45,
+            env={**os.environ, "GIT_LFS_SKIP_SMUDGE": "0"},
+        )
+        if result.returncode or hashlib.sha256(result.stdout).hexdigest() != match.group(1).decode("ascii"):
+            raise ValueError("Git LFS metadata could not be restored; check repository read access")
+        raw = result.stdout
+        with open(p, "wb") as f:
+            f.write(raw)
+    return json.loads(raw.decode("utf-8"))
 
 
 def main():
