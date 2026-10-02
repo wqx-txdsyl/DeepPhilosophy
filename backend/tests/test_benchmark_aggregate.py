@@ -79,4 +79,4 @@ def test_no_unknown_or_partial_cohort_is_promoted_to_full_benchmark():
     for version in ['0.1.0','0.1.1']:
         assert data['runs'][version]['full_frozen_suite']['score'] is None
         assert data['runs'][version]['common_fully_scored_cases']['case_count']==64
-    assert data['runs']['0.2.0']['score'] is None
+    assert data['runs']['0.1.2']['score'] is None
