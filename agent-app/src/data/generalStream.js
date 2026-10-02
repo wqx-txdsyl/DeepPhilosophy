@@ -136,11 +136,11 @@ export function inferToolStatus(result) {
   return /^(?:错误|失败|error\b|failed\b)/i.test(String(result || '')) ? 'error' : 'success';
 }
 
-export function finishGeneralStream(state, { aborted = false, error = '', duration = 0 } = {}) {
+export function finishGeneralStream(state, { aborted = false, error = '', duration = 0, metadataFinished = true } = {}) {
   const failure = state.error || (!state.done_received ? error || (!aborted ? '连接已中断，回答可能不完整。' : '') : '');
   const stream_state = aborted && !state.done_received ? 'stopped' : failure ? 'error' : 'complete';
   return { ...state, streaming: false, status: '', stream_state, error: failure,
-    suggestions_status: state.suggestions_status === 'pending' ? 'unavailable' : state.suggestions_status,
+    suggestions_status: metadataFinished && state.suggestions_status === 'pending' ? 'unavailable' : state.suggestions_status,
     duration_seconds: Math.max(1, Math.round(duration)),
     suggestions: stream_state === 'complete' ? state.suggestions : [],
     events: state.events.map(e => e.t === 'tool_start'

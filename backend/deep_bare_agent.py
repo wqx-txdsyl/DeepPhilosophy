@@ -70,6 +70,11 @@ def tool_status(result):
     return 'success'
 
 
+async def exploration_questions(question, answer, language):
+    from deep_exploration import generate_exploration
+    return await asyncio.to_thread(generate_exploration, question, answer, language)
+
+
 def source_metadata(calls, answer, language):
     """Display-only provenance: never changes or rejects the model's answer."""
     from evidence_contract import build_evidence_contract
@@ -165,10 +170,20 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 # already painted preview deltas and will not duplicate them.
                 if text:
                     yield {'type': 'token', 'content': text}
+                from deep_streaming import wants_suggestions
+                suggest = complete and wants_suggestions(question) and bool(text.strip())
                 yield {'type': 'done', 'content': text, 'complete': complete, 'runtime_profile': 'bare',
                        'citations': citations, 'evidence': evidence, 'suggestions': [],
-                       'suggestions_status': 'unavailable', 'validation': {'enabled': False},
+                       'suggestions_status': 'pending' if suggest else 'disabled', 'validation': {'enabled': False},
                        'finish_reason': finish, 'duration_seconds': round(time.monotonic() - started, 3)}
+                if suggest:
+                    try:
+                        result = await exploration_questions(question, text, language)
+                    except asyncio.CancelledError:
+                        raise
+                    except Exception:
+                        result = {'suggestions':[], 'status':'unavailable'}
+                    yield {'type':'suggestions', **result}
                 return
             if not call_started:
                 if text:

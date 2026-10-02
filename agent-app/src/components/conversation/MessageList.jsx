@@ -470,7 +470,7 @@ function AgentActivity({ m, prefsTick }) {
 }
 
 /* ── 单条消息（memo: 流式 tick 只重渲变化消息） ── */
-const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, prefsTick, onDrawioEdit, onSend, busy }) {
+const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, prefsTick, onDrawioEdit, onSend, busy, question, onRegenerateExploration }) {
   const { t, lang } = useLang();
 
   if (m.role === 'user') {
@@ -488,7 +488,7 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
 
   if (m.agent_id === 'general') return <div className="cw-assistant" data-agent="general">
     {showIdentity && <AgentIdentity agentId={m.agent_id} agents={agents} />}
-    <GeneralAnswer message={m} onSend={onSend} onDrawioEdit={onDrawioEdit} busy={busy} />
+    <GeneralAnswer message={m} onSend={onSend} onDrawioEdit={onDrawioEdit} busy={busy} question={question} onRegenerateExploration={onRegenerateExploration} />
   </div>;
 
   return (
@@ -527,7 +527,7 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
 
 export default function MessageList({
   messages, agents, emptyState, onSend, onDrawioEdit,
-  conversationKey, prefsTick, streaming,
+  conversationKey, prefsTick, streaming, onRegenerateExploration,
 }) {
   const { t } = useLang();
   const bottomRef = useRef(null);
@@ -572,6 +572,11 @@ export default function MessageList({
 
   // identity 计算: 依历史 assistant agent 序列（与当前选择无关, §10）
   let prevAssistants = [];
+  let lastQuestion = '';
+  const sourceQuestions = (messages || []).map(m => {
+    if (m.role === 'user') lastQuestion = m.context_content || m.content || '';
+    return lastQuestion;
+  });
   const identityFlags = (messages || []).map((m) => {
     if (m.role !== 'assistant') return false;
     const flag = resolveIdentityVisible(prevAssistants, m.agent_id);
@@ -586,6 +591,8 @@ export default function MessageList({
         <MessageBubble key={m.message_id || i} m={m} agents={agents}
           showIdentity={identityFlags[i]} prefsTick={prefsTick}
           busy={streaming}
+          question={sourceQuestions[i]}
+          onRegenerateExploration={onRegenerateExploration}
           onDrawioEdit={onDrawioEdit} onSend={onSend} />
       ))}
       <div ref={bottomRef} />
@@ -614,4 +621,3 @@ export const QUESTION_BANK = {
          'How would you judge this age?', 'What does eternal recurrence mean?'],
   },
 };
-

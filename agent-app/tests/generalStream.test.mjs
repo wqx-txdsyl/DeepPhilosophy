@@ -70,6 +70,14 @@ await test('legacy success cannot hide empty results or failed search providers'
   assert.deepEqual(state.events.map(e => e.status), ['empty','partial','error']);
 });
 
+await test('answer completion keeps question generation pending until metadata arrives', () => {
+  let state=reduce([{type:'done',content:'已完成正文',suggestions_status:'pending'}]);
+  state=finishGeneralStream(state,{metadataFinished:false});
+  assert.equal(state.streaming,false); assert.equal(state.suggestions_status,'pending');
+  state=reduceGeneralEvent(state,{type:'suggestions',suggestions:['这个前提在哪种情境下会失效？'],status:'ready'});
+  assert.equal(finishGeneralStream(state).suggestions_status,'ready');
+});
+
 await test('failed validation clears the live draft; stopping retains partial text', () => {
   const draft = reduce([{type:'answer_preview',content:'尚未核验'}]);
   assert.equal(reduceGeneralEvent(draft,{type:'error',content:'核验失败'}).content, '');

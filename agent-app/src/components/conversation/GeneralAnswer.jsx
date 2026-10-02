@@ -92,7 +92,7 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
   </div>;
 }
 
-export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy }) {
+export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, question, onRegenerateExploration }) {
   const { t, lang } = useLang();
   const zh = lang !== 'en';
   const [source, setSource] = useState(null);
@@ -121,13 +121,13 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy }
       <span>{m.error || (m.stream_state === 'stopped' ? (zh ? '已停止，已生成的内容保留在此。' : 'Stopped. The answer so far has been kept.') : (zh ? '上次回答未完成，已保留收到的内容。' : 'The previous answer was interrupted. Received text was saved.'))}</span>
       <button disabled={busy} onClick={() => onSend(zh ? '请继续完成刚才未完成的回答；如果存在错误，请先修正。' : 'Please complete this interrupted answer, correcting any errors first.', m)}>{zh ? '继续回答' : 'Continue'}</button>
     </div>}
-    {!!content && !m.streaming && <div className="general-answer-actions">
-      <button className="general-copy" onClick={copy} aria-label={zh ? '复制回答' : 'Copy answer'}>{copied ? <Check size={13} /> : <Copy size={13} />}{copied ? (zh ? '已复制' : 'Copied') : (zh ? '复制' : 'Copy')}</button>
-      {copyError && <span role="status">{zh ? '复制失败，可选择正文复制。' : 'Copy failed. Select the text to copy it.'}</span>}
-      {complete && <DepthControls lang={lang} disabled={busy} onPick={prompt => onSend(prompt, m)} general kinds={['simpler', 'deeper']} />}
-    </div>}
     {complete && m.safety !== 'blocked' && <AnswerResearch message={m} lang={lang} busy={busy} onSend={onSend} onSource={setSource} />}
-    {complete && m.safety !== 'blocked' && m.suggestions_status !== 'disabled' && <AnswerExploration message={m} lang={lang} busy={busy} onSend={onSend} />}
+    {complete && m.safety !== 'blocked' && m.suggestions_status !== 'disabled' && <AnswerExploration message={m} lang={lang} busy={busy} onSend={onSend} onRegenerate={onRegenerateExploration ? () => onRegenerateExploration(m, question) : undefined} />}
+    {!!content && !m.streaming && <div className="general-answer-actions" role="group" aria-label={zh ? '回答操作' : 'Answer actions'}>
+      <button type="button" className="general-action-icon" onClick={copy} aria-label={zh ? '复制回答' : 'Copy answer'}>{copied ? <Check size={16} /> : <Copy size={16} />}<span className="general-action-tooltip">{copied ? (zh ? '已复制' : 'Copied') : (zh ? '复制' : 'Copy')}</span></button>
+      {complete && m.safety !== 'blocked' && <DepthControls lang={lang} disabled={busy} onPick={prompt => onSend(prompt, m)} general kinds={['simpler', 'deeper', 'scholarly']} iconOnly />}
+      {copyError && <span role="status">{zh ? '复制失败，可选择正文复制。' : 'Copy failed. Select the text to copy it.'}</span>}
+    </div>}
     <SourceDrawer open={!!source} citation={source} lang={lang} onClose={() => setSource(null)} general />
   </>;
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { BookOpen, Search, ArrowUpRight, Compass, FileText, ChevronRight } from 'lucide-react';
+import { BookOpen, Search, ArrowUpRight, Compass, FileText, ChevronRight, RefreshCw, Loader2 } from 'lucide-react';
 import { generalAccessLabel, generalEvidenceLayer, pickUsedEvidence, primaryResearch } from '../../utils/evidence';
-import { GeneralReaderLink, DepthControls } from './O9';
+import { GeneralReaderLink } from './O9';
 
 export const PRIMARY_PROMPT = {
   zh: '请围绕这段回答的核心问题实际检索原典，选择最相关的1～3段并读取上下文。给出原文、书名与章节，解释原文怎样支持、限制或反驳刚才的观点；找不到合适材料时如实说明。',
@@ -81,20 +81,17 @@ export function AnswerResearch({ message, lang, busy, onSend, onSource }) {
   </section>;
 }
 
-const DIRECTIONS = [
-  ['检验反例', 'Test a counterexample', '请构造一个满足这段回答原有条件、却可能推翻其核心判断的具体反例，检验原判断是否需要收窄。', 'Construct a concrete counterexample that preserves the conditions in this answer. Test whether its central judgment needs narrowing.'],
-  ['比较不同立场', 'Compare perspectives', '请围绕这段回答的核心分歧，比较两种有实质差异的哲学立场，说明各自最强理由与代价；涉及原文时实际查阅来源。', 'Compare two substantively different philosophical positions on the central disagreement in this answer, including their strongest reasons and costs. Consult sources when citing texts.'],
-  ['联系具体处境', 'Apply to a situation', '请把这段回答用于一个具体的日常处境，说明改变哪些条件会改变判断，并区分例子与我的实际经历。', 'Apply this answer to a concrete everyday situation and show which changed conditions would change the judgment. Distinguish hypothetical examples from my actual experience.'],
-];
-
-export function AnswerExploration({ message, lang, busy, onSend }) {
+export function AnswerExploration({ message, lang, busy, onSend, onRegenerate }) {
   const zh = lang !== 'en';
+  const questions = (message.suggestions || []).filter(q => typeof q === 'string' && /[?？]$/.test(q.trim()));
+  const pending = message.suggestions_status === 'pending';
   return <section className="general-exploration-section" aria-label={zh ? '继续探索' : 'Explore further'}>
-    <div className="general-section-head"><Compass size={15} /><h3>{zh ? '继续探索' : 'Explore further'}</h3></div>
-    {!!message.suggestions?.length && <div className="general-topic-questions">{message.suggestions.map((q, i) => <button key={i} disabled={busy} onClick={() => onSend(q, message)}><ArrowUpRight size={14} /><span>{q}</span></button>)}</div>}
-    <div className="general-explore-actions">
-      <div className="general-explore-directions">{DIRECTIONS.map(([label, en, prompt, promptEn]) => <button key={label} disabled={busy} onClick={() => onSend(zh ? prompt : promptEn, message)}>{zh ? label : en}</button>)}</div>
-      <DepthControls lang={lang} general kinds={['scholarly']} disabled={busy} onPick={q => onSend(q, message)} />
+    <div className="general-section-head"><Compass size={15} /><h3>{zh ? '继续探索' : 'Explore further'}</h3>
+      {onRegenerate && <button type="button" className="general-exploration-refresh" disabled={busy || pending} onClick={onRegenerate} aria-label={zh ? (questions.length ? '重新生成探索问题' : '生成探索问题') : 'Generate new exploration questions'} title={zh ? (questions.length ? '换一组问题' : '生成问题') : 'Generate questions'}>{pending ? <Loader2 size={14} className="cw-spinner" /> : <RefreshCw size={14} />}</button>}
     </div>
+    {pending && <p className="general-section-note" role="status">{zh ? '正在围绕本轮讨论生成深入问题…' : 'Generating questions for this discussion…'}</p>}
+    {!pending && questions.length > 0 && message.suggestions_status === 'unavailable' && <p className="general-section-note" role="status">{zh ? '本次生成未成功，保留上一组问题。' : 'Generation failed; the previous questions are retained.'}</p>}
+    {!!questions.length && <div className="general-topic-questions">{questions.map((q, i) => <button key={i} disabled={busy} onClick={() => onSend(q, message)}><ArrowUpRight size={14} /><span>{q}</span></button>)}</div>}
+    {!pending && !questions.length && <p className="general-section-note">{zh ? '暂未生成探索问题，可点击右侧图标重试。' : 'No questions generated yet. Use the icon to retry.'}</p>}
   </section>;
 }

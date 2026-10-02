@@ -8,6 +8,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from langchain_core.messages import AIMessageChunk
 from langchain_core.tools import StructuredTool
 import deep_bare_agent as bare
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def no_real_exploration_requests(monkeypatch):
+    async def no_suggestions(*args):return {'suggestions':[], 'status':'unavailable'}
+    monkeypatch.setattr(bare,'exploration_questions',no_suggestions)
 
 
 def test_no_round_budget_dedup_context_truncation_or_answer_rewrite(monkeypatch):
@@ -45,7 +52,8 @@ def test_no_round_budget_dedup_context_truncation_or_answer_rewrite(monkeypatch)
     assert all(sum(m.type == 'system' for m in ms) == 1 for ms in seen)
     assert seen[0][1].content == 'history-0'
     assert json.loads(next(m.content for m in seen[-1] if m.type == 'tool'))['text'] == payload
-    assert events[-1]['content'] == final and events[-1]['validation'] == {'enabled':False}
+    done=next(e for e in events if e['type']=='done')
+    assert done['content'] == final and done['validation'] == {'enabled':False}
     assert not any(e['type'] == 'validation_failed' for e in events)
 
 
@@ -100,7 +108,7 @@ def test_interim_answers_are_committed_before_tools_and_not_lost(monkeypatch):
             notes[event['id']]=event['content']
     assert list(notes.values())==['中间回答1。补充一句。','中间回答2。补充一句。']
     assert not any(e['type']=='thinking_summary' for e in events)
-    assert events[-1]['content']=='最终回答。'
+    assert next(e for e in events if e['type']=='done')['content']=='最终回答。'
 
 
 def test_general_route_bypasses_request_quotas_only_in_bare_mode(monkeypatch):
@@ -137,4 +145,4 @@ def test_resumed_reasoning_preserves_spoken_text_without_a_tool(monkeypatch):
     note=next(e for e in events if e['type']=='assistant_commentary')
     assert note['content']=='先回应一句。'
     assert len({e['id'] for e in events if e['type']=='provider_reasoning_delta'})==2
-    assert events[-1]['content']=='最终结论。'
+    assert next(e for e in events if e['type']=='done')['content']=='最终结论。'

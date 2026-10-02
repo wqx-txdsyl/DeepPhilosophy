@@ -74,7 +74,7 @@ const DEPTHS = [
     promptZh: '请针对上面的回答检索并综述相关学术研究（给出代表文献与争论点）。',
     promptEn: 'For the answer above, survey relevant scholarship (representative literature and points of debate).' },
 ];
-export function DepthControls({ onPick, disabled, lang, general = false, kinds }) {
+export function DepthControls({ onPick, disabled, lang, general = false, kinds, iconOnly = false }) {
   const en = lang === 'en';
   if (disabled && !general) return null;
   const choices = general ? DEPTHS.map(d => d.key === 'deeper' ? { ...d,
@@ -84,14 +84,14 @@ export function DepthControls({ onPick, disabled, lang, general = false, kinds }
   return (
     <div className="o9-depth" role="group" aria-label="Depth controls">
       {choices.filter(d => !kinds || kinds.includes(d.key)).map((d) => (
-        <button key={d.key} className="o9-depth-chip" disabled={disabled}
+        <button key={d.key} className={`o9-depth-chip${iconOnly ? ' general-action-icon' : ''}`} disabled={disabled}
           onClick={() => onPick(en ? d.promptEn : d.promptZh)}
           aria-label={d[en ? 'en' : 'zh']}>
-          {d.key === 'simpler' && (general ? <Minus size={11} aria-hidden /> : '◦ ')}
-          {d.key === 'deeper' && (general ? <ArrowDown size={11} aria-hidden /> : '↧ ')}
+          {d.key === 'simpler' && (general ? <Minus size={iconOnly ? 16 : 11} aria-hidden /> : '◦ ')}
+          {d.key === 'deeper' && (general ? <ArrowDown size={iconOnly ? 16 : 11} aria-hidden /> : '↧ ')}
           {d.key === 'primary' && <BookOpen size={11} style={{ verticalAlign: '-1px', marginRight: 4 }} aria-hidden />}
-          {d.key === 'scholarly' && <GraduationCap size={11} style={{ verticalAlign: '-1px', marginRight: 4 }} aria-hidden />}
-          {d[en ? 'en' : 'zh']}
+          {d.key === 'scholarly' && <GraduationCap size={iconOnly ? 16 : 11} style={iconOnly ? undefined : { verticalAlign: '-1px', marginRight: 4 }} aria-hidden />}
+          {iconOnly ? <span className="general-action-tooltip">{d[en ? 'en' : 'zh']}</span> : d[en ? 'en' : 'zh']}
         </button>
       ))}
     </div>

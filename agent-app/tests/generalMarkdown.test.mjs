@@ -111,7 +111,25 @@ try {
   assert.ok(absentQuote.includes('未找到原句匹配') && absentQuote.includes('24 个文本单元'));
   assert.ok(!absentQuote.includes('换一个概念'));
   const exploration = renderToStaticMarkup(createElement(AnswerExploration, { message: { suggestions: [] }, lang: 'zh', onSend() {} }));
-  assert.ok(exploration.includes('继续探索') && exploration.includes('检验反例') && exploration.includes('比较不同立场'));
+  assert.ok(exploration.includes('继续探索') && !exploration.includes('检验反例') && !exploration.includes('比较不同立场'));
+  const generated=renderToStaticMarkup(createElement(AnswerExploration,{message:{suggestions:['若完全没有回报期待，感激仍会形成义务吗？'],suggestions_status:'ready'},lang:'zh',onSend(){},onRegenerate(){}}));
+  assert.ok(generated.includes('若完全没有回报期待') && generated.includes('重新生成探索问题'));
+  const {DepthControls}=await server.ssrLoadModule('/src/components/conversation/O9.jsx');
+  const icons=renderToStaticMarkup(createElement(DepthControls,{general:true,iconOnly:true,kinds:['simpler','deeper','scholarly'],lang:'zh',onPick(){}}));
+  assert.equal((icons.match(/general-action-icon/g)||[]).length,3);
+  assert.ok(icons.includes('aria-label="简单一点"') && icons.includes('aria-label="看学术研究"'));
+  const {default:GeneralAnswer}=await server.ssrLoadModule('/src/components/conversation/GeneralAnswer.jsx');
+  const {AuthProvider}=await server.ssrLoadModule('/src/auth.jsx');
+  const {LangProvider}=await server.ssrLoadModule('/src/utils/i18n.jsx');
+  const oldStorage=globalThis.localStorage;
+  globalThis.localStorage={getItem(){return null;}};
+  try {
+    const footer=renderToStaticMarkup(createElement(AuthProvider,null,createElement(LangProvider,null,createElement(GeneralAnswer,{
+      message:{content:'完整回答',agent_id:'general',runtime_profile:'bare',streaming:false,suggestions:['如果只有一次善意行动，它需要什么关系前提？'],suggestions_status:'ready'},onSend(){},onDrawioEdit(){},onRegenerateExploration(){}
+    }))));
+    assert.ok(footer.indexOf('general-answer-actions')>footer.indexOf('general-exploration-section'));
+    assert.equal((footer.match(/class="[^"]*general-action-icon/g)||[]).length,4);
+  } finally {globalThis.localStorage=oldStorage;}
   const unusedDrawer = source({ ...primaryCitation, used: false });
   assert.ok(unusedDrawer.includes('未被本回答引用') && !unusedDrawer.includes('本回答使用的来源'));
   console.log('8 general markdown/source delivery checks passed');

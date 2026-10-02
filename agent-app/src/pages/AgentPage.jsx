@@ -58,6 +58,7 @@ export default function AgentWorkspace() {
   const [drawio, setDrawio] = useState(null);             // {xml, convId, messageId}
 
   const streamsRef = useRef(new Map());   // convId → {controller, messageId}
+  const explorationRequestsRef = useRef(new Set());
   const draftSendRef = useRef(false);
   const thinkQueueRef = useRef(new Map());   // convId → {list:[text]}: 思考打字机队列（逐字, 与回答同节奏）
   const thinkPlayingRef = useRef(new Set()); // convId → 正在播放
@@ -78,7 +79,15 @@ export default function AgentWorkspace() {
     setHydrateError(false);
     try {
       conversationStore.migrateLegacy();
-      setConversations(conversationStore.listConversations());
+      const loaded=conversationStore.listConversations();
+      for (const c of loaded) for (const m of c.messages || []) {
+        if (m.suggestions_status==='pending' && !streamsRef.current.has(c.conversation_id)
+            && !explorationRequestsRef.current.has(`${c.conversation_id}:${m.message_id}`)) {
+          m.suggestions_status='unavailable';
+          conversationStore.updateMessage(c.conversation_id,m.message_id,{suggestions_status:'unavailable'});
+        }
+      }
+      setConversations(loaded);
       setHydrated(true);
     } catch (e) {
       setHydrateError(true);
@@ -219,7 +228,15 @@ export default function AgentWorkspace() {
 
     if (!shown.trim() && !hasAttach) return;   // 仅附件发送允许空文本（T6）
     // 同步锁（streamsRef 是同步结构; streamingIds 状态更新是异步的, 防双击产生双会话/双流）
+    const previousMetadata=streamsRef.current.get(scopeKey);
     if (!localOnly && !prepareGeneralRequest(streamsRef.current, scopeKey)) return;
+    if (!localOnly && previousMetadata?.answerDone) {
+      const old=conversationStore.getConversation(scopeKey)?.messages.find(m=>m.message_id===previousMetadata.messageId);
+      if (old?.suggestions_status==='pending') {
+        patchMessageLocal(scopeKey,old.message_id,m=>({...m,suggestions_status:'unavailable'}));
+        conversationStore.updateMessage(scopeKey,old.message_id,{suggestions_status:'unavailable'});
+      }
+    }
     if (agent === 'general' && !conversationId && !localOnly) {
       if (draftSendRef.current) return;
       draftSendRef.current = true;
@@ -300,7 +317,7 @@ export default function AgentWorkspace() {
           if (!ownsStream()) return;
           state = reduceGeneralEvent(state, evt);
           if (evt.type === 'done' && state.done_received) {
-            state = finishGeneralStream(state, { duration: (performance.now() - _sendT0) / 1000 });
+            state = finishGeneralStream(state, { duration: (performance.now() - _sendT0) / 1000, metadataFinished: false });
             if (releaseGeneralAnswer(streamsRef.current, convId, mid)) {
               setStreamingIds(prev => { const next = new Set(prev); next.delete(convId); return next; });
             }
@@ -580,6 +597,25 @@ export default function AgentWorkspace() {
     sourceMsg ? handleSuggestion(text, sourceMsg) : dispatchSend({ message: text, display: text, agentOverride: composerAgent });
   const stableOnSend = useCallback((text, sourceMsg) => sendRef.current(text, sourceMsg), []);
 
+  const handleRegenerateExploration = useCallback(async (source, question) => {
+    const convId=source.conversation_id || conversationId, mid=source.message_id;
+    const key=`${convId}:${mid}`;
+    const alive=()=>!deletedRef.current.has(convId) && conversationStore.getConversation(convId)?.messages.some(m=>m.message_id===mid);
+    if (!alive() || explorationRequestsRef.current.has(key)) return;
+    explorationRequestsRef.current.add(key);
+    const apply=patch=>{ if (!alive()) return; patchMessageLocal(convId,mid,m=>({...m,...patch}));conversationStore.updateMessage(convId,mid,patch); };
+    apply({suggestions_status:'pending'});
+    try {
+      const response=await fetch(`${getApiBase()}/api/agent/exploration`,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},
+        body:JSON.stringify({message:question || '',answer:source.content,language:lang,agent:'general',previous_questions:source.suggestions || []})});
+      if (!response.ok) throw new Error('Generation failed');
+      const result=await response.json();
+      apply(result.status==='ready' && Array.isArray(result.suggestions) && result.suggestions.length
+        ? {suggestions:result.suggestions,suggestions_status:'ready'} : {suggestions_status:result.status || 'unavailable'});
+    } catch { apply({suggestions_status:'unavailable'}); }
+    finally { explorationRequestsRef.current.delete(key); }
+  },[token,lang,conversationId]);
+
   const handleComposerSend = ({ message, display, localOnly = false, attachments = [] }) =>
     dispatchSend({ message, display, localOnly, attachments });
 
@@ -691,6 +727,7 @@ export default function AgentWorkspace() {
             prefsTick={prefsTick}
             streaming={activeStreaming}
             onSend={stableOnSend}
+            onRegenerateExploration={handleRegenerateExploration}
             onDrawioEdit={openDrawio}
           />
         </div>

@@ -63,6 +63,18 @@ def agent_access(req: AgentChatRequest, request: Request, authorization: str = H
         return guard.resolve_user(authorization)
     return guard.agent_guard(request, authorization)
 
+
+class ExplorationRequest(AgentChatRequest):
+    answer: str
+    previous_questions: List[str] = []
+
+
+@router.post('/api/agent/exploration')
+async def regenerate_exploration(req: ExplorationRequest, _g: dict = Depends(agent_access)):
+    from deep_exploration import generate_exploration
+    return await asyncio.to_thread(generate_exploration, req.message, req.answer,
+                                   req.language or 'zh', req.previous_questions)
+
 # ═══════════════════════════════════════════════════════
 # LangGraph 引擎路由（v2）: /api/agent/stream_lg
 # Claude Code 风格: 思考 → 工具（并行）→ 最终回答; 前端协议不变
