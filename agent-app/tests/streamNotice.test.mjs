@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import { createServer } from 'vite';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { streamNotice } from '../src/data/streamNotice.js';
+const raw = "Error code: 402 - {'error': {'message': 'Insufficient Balance (request_id: e96ed523-d162-486d-8dee-d0f4c947895f)', 'type': 'unknown_error', 'param': None, 'code': 'invalid_request_error'}}";
+let n=streamNotice({state:'error',error:raw,hasQuestion:true});
+assert.equal(n.kind,'quota');assert.equal(n.action,null);assert.equal(n.code,'402');
+assert.equal(n.requestId,'e96ed523-d162-486d-8dee-d0f4c947895f');
+assert.equal(streamNotice({state:'error',error:'请求失败（HTTP 402）',hasContent:true}).action,null);
+assert.equal(streamNotice({state:'error',error:'HTTP 429 quota exceeded',hasQuestion:true}).kind,'rate');
+assert.equal(streamNotice({state:'error',error:'invalid_api_key: sk-secret',hasQuestion:true}).action,null);
+assert.equal(streamNotice({state:'error',error:'TypeError: Failed to fetch',hasQuestion:true}).action,'retry');
+assert.equal(streamNotice({state:'error',error:'TypeError: Failed to fetch',hasContent:true}).action,'continue');
+assert.equal(streamNotice({state:'interrupted',error:'',hasQuestion:false}).action,null);
+assert.equal(streamNotice({state:'stopped',hasContent:true}).kind,'stopped');
+assert.match(streamNotice({state:'error',error:raw,zh:false}).title,/Unable/);
+const server=await createServer({server:{middlewareMode:true},appType:'custom'});
+try {
+  const {StreamNotice}=await server.ssrLoadModule('/src/components/conversation/StreamNotice.jsx');
+  const props={question:'教师节要给老师送礼吗？',message:{stream_state:'error',error:raw,content:''},onSend(){}};
+  const render=extra=>renderToStaticMarkup(createElement(StreamNotice,{...props,...extra}));
+  const quota=render({});
+  assert.ok(quota.includes('模型服务额度不足') && quota.includes('<details'));
+  assert.ok(!quota.includes('继续回答') && !quota.includes('重新生成'));
+  assert.ok(!quota.includes('Insufficient Balance') && !quota.includes('invalid_request_error'));
+  assert.ok(quota.includes('Request ID: e96ed523-d162-486d-8dee-d0f4c947895f'));
+  assert.ok(!/<details[^>]*\bopen/.test(quota));
+  const partial=render({message:{...props.message,content:'已经输出的正文'}});
+  assert.ok(partial.includes('已生成的内容保留在上方'));
+  const network=render({message:{stream_state:'error',error:'Failed to fetch',content:''},busy:true});
+  assert.ok(network.includes('重新生成') && network.includes('disabled'));
+  const unknown=render({message:{stream_state:'error',error:'raw <script>payload sk-private</script>',content:''}});
+  assert.ok(!unknown.includes('sk-private') && !unknown.includes('<script>'));
+  assert.equal(props.message.error,raw,'UI leaves the original error intact');
+}finally{await server.close();}
+console.log('Error notices: quota, retry scope, bilingual UI, diagnostics and raw-error preservation passed');

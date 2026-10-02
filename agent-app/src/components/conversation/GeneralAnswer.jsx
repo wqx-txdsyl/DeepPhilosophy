@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { copyAnswerText } from '../../utils/clipboard';
-import { Check, ChevronDown, ChevronRight, Copy, Loader2, Square, XCircle, Search, TriangleAlert } from 'lucide-react';
+import { Check, ChevronDown, ChevronRight, Copy, Loader2, XCircle, Search, TriangleAlert } from 'lucide-react';
 import { useLang } from '../../utils/i18n';
 import { plainText, inferToolStatus } from '../../data/generalStream';
 import { toolShortArgs, toolShortSummary } from '../../data/conversationLogic';
@@ -9,6 +9,7 @@ import { renderMarkdown } from './markdown';
 import { DepthControls, SourceDrawer } from './O9';
 import { AnswerResearch, AnswerExploration } from './AnswerResearch';
 import { ToolResult } from './ToolResult';
+import { StreamNotice } from './StreamNotice';
 
 const STATUS = {
   success: ['已完成', 'Complete'], error: ['执行失败', 'Failed'], empty: ['本次未找到结果', 'No results for this search'],
@@ -117,11 +118,7 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, 
       })}
       {m.streaming && !m.done_received && !!content && <span className="cw-stream-cursor" aria-hidden />}
     </div>
-    {interrupted && <div className="general-stream-notice" role="status">
-      {m.stream_state === 'stopped' ? <Square size={12} /> : <XCircle size={13} />}
-      <span>{m.error || (m.stream_state === 'stopped' ? (zh ? '已停止，已生成的内容保留在此。' : 'Stopped. The answer so far has been kept.') : (zh ? '上次回答未完成，已保留收到的内容。' : 'The previous answer was interrupted. Received text was saved.'))}</span>
-      <button disabled={busy} onClick={() => onSend(zh ? '请继续完成刚才未完成的回答；如果存在错误，请先修正。' : 'Please complete this interrupted answer, correcting any errors first.', m)}>{zh ? '继续回答' : 'Continue'}</button>
-    </div>}
+    {interrupted && <StreamNotice message={m} question={question} onSend={onSend} busy={busy} zh={zh} />}
     {complete && m.safety !== 'blocked' && <AnswerResearch message={m} lang={lang} busy={busy} onSend={onSend} onSource={setSource} />}
     {complete && m.safety !== 'blocked' && m.suggestions_status !== 'disabled' && <AnswerExploration message={m} lang={lang} busy={busy} onSend={onSend} onRegenerate={onRegenerateExploration ? () => onRegenerateExploration(m, question) : undefined} />}
     {!!content && !m.streaming && <div className="general-answer-actions" role="group" aria-label={zh ? '回答操作' : 'Answer actions'}>
