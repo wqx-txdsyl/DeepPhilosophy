@@ -99,6 +99,7 @@ export default function AgentWorkspace() {
   };
   useEffect(() => {
     if (!accountReady) { setHydrated(false); setConversations([]); return; }
+    deletedRef.current.clear();
     loadConversations();
   }, [accountReady, profile?.id]);
   useEffect(() => {
@@ -253,6 +254,7 @@ export default function AgentWorkspace() {
   /* ── 发送（Streaming Ownership 冻结点） ── */
   const dispatchSend = async ({ message, display, localOnly = false, agentOverride = null, sourceMsg = null, attachments = [] }) => {
     if (!accountReady || activeConv?.messages_loaded === false) return;
+    const requestOwner = conversationStore.owner;
     const agent = agentOverride || composerAgentRef.current;
     const text = typeof message === 'string' ? message : String(message || '');
     const shown = typeof display === 'string' ? display : text;
@@ -326,7 +328,7 @@ export default function AgentWorkspace() {
       let state = createGeneralStream();
       let paintTimer = null;
       let lastSaved = 0;
-      const ownsStream = () => !deletedRef.current.has(convId) && ownsGeneralRequest(streamsRef.current, convId, mid);
+      const ownsStream = () => conversationStore.owner === requestOwner && !deletedRef.current.has(convId) && ownsGeneralRequest(streamsRef.current, convId, mid);
       const paint = () => {
         paintTimer = null;
         if (!ownsStream()) return;
@@ -401,6 +403,7 @@ export default function AgentWorkspace() {
       renderMeta();
     };
     const typingTimer = setInterval(() => {
+      if (conversationStore.owner !== requestOwner) { clearInterval(typingTimer); return; }
       if (tokenBuf) {
         // 2026-08-29 提速: 固定 12ms/字(83 字/s)对长回答太慢, 打字机感被放大。
         // 改为自适应批渲染——队列越厚每 tick 批字越多(≤12 字), 积压超 300 字直接放闸:
@@ -435,7 +438,7 @@ export default function AgentWorkspace() {
         safety: snap.safety, created_at: nowIso,
         duration_seconds: Math.max(1, Math.round((performance.now() - _sendT0) / 1000)),
       };
-      if (!deletedRef.current.has(convId)) {
+      if (conversationStore.owner === requestOwner && !deletedRef.current.has(convId)) {
         // 持久化写入最终值; UI 的引用/建议/摘要由 flushMeta(正文打字机完成)显示,
         // 不以连接关闭时刻为准(后处理 LLM 快慢不定 => "提前跳出, 时有时无"根因)
         patchMessageLocal(convId, mid, m => ({ ...m, ...extra, typing: false, streaming: false, curThought: null, duration_seconds: finalMsg.duration_seconds }));
@@ -465,7 +468,7 @@ export default function AgentWorkspace() {
         let text = q.list.shift();
         let i = 0;
         const timer = setInterval(() => {
-          if (deletedRef.current.has(convId)) { clearInterval(timer); thinkPlayingRef.current.delete(convId); return; }
+          if (conversationStore.owner !== requestOwner || deletedRef.current.has(convId)) { clearInterval(timer); thinkPlayingRef.current.delete(convId); return; }
           i += Math.max(1, Math.min(8, Math.ceil((text.length - i) / 40)));
           const slice = text.slice(0, Math.min(i, text.length));
           patchMessageLocal(convId, mid, m => {
@@ -596,6 +599,7 @@ export default function AgentWorkspace() {
       };
       while (true) {
         const { done, value } = await reader.read();
+        if (conversationStore.owner !== requestOwner) { controller.abort(); break; }
         if (done) break;
         buf += decoder.decode(value, { stream: true });
         let idx;
@@ -634,7 +638,12 @@ export default function AgentWorkspace() {
   const handleRegenerateExploration = useCallback(async (source, question) => {
     const convId=source.conversation_id || conversationId, mid=source.message_id;
     const key=`${convId}:${mid}`;
-    const alive=()=>!deletedRef.current.has(convId) && conversationStore.getConversation(convId)?.messages.some(m=>m.message_id===mid);
+    const owner=conversationStore.owner;
+    const alive=()=>{
+      if (conversationStore.owner!==owner || deletedRef.current.has(convId)) return false;
+      try { return conversationStore.getConversation(convId).messages.some(m=>m.message_id===mid); }
+      catch { return false; }
+    };
     if (!alive() || explorationRequestsRef.current.has(key)) return;
     explorationRequestsRef.current.add(key);
     const apply=patch=>{ if (!alive()) return; patchMessageLocal(convId,mid,m=>({...m,...patch}));conversationStore.updateMessage(convId,mid,patch); };
