@@ -26,7 +26,8 @@ import uuid
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO = Path(BASE).parent
 DEFAULT_SUITE = REPO / "docs/evidence/phiagent_benchmark_v0_1/prompts.jsonl"
-RUNNER_VERSION = "2.0.0"
+RUNNER_VERSION = "2.0.1"
+DEFAULT_PROMPT_PROFILE = json.loads((Path(BASE) / "agent_release.json").read_text())["active_prompt_version"]
 
 
 class ResumeConflict(ValueError):
@@ -38,7 +39,7 @@ class RunConfig:
     output: Path
     suite: Path = DEFAULT_SUITE
     cases: tuple[str, ...] | None = None
-    prompt_profile: str = "2.0.0"
+    prompt_profile: str = DEFAULT_PROMPT_PROFILE
     concurrency: int = 2
     turn_timeout: float = 600
     skip_preflight: bool = False
@@ -453,7 +454,7 @@ def main(argv=None):
     parser.add_argument("--output", required=True, type=Path, help="New evidence directory, or identical run to resume")
     parser.add_argument("--suite", type=Path, default=DEFAULT_SUITE)
     parser.add_argument("--cases", help="Comma-separated case IDs; omitted means the complete suite")
-    parser.add_argument("--prompt-profile", default="2.0.0")
+    parser.add_argument("--prompt-profile", default=DEFAULT_PROMPT_PROFILE)
     parser.add_argument("--concurrency", type=int, default=2)
     parser.add_argument("--turn-timeout", type=float, default=600)
     parser.add_argument("--skip-preflight", action="store_true", help="Explicitly record that provider checks were skipped")

@@ -18,7 +18,8 @@ def test_registered_prompt_profiles_have_distinct_fingerprints_and_no_secret_val
     assert current['prompt_matches_manifest'] and historical['prompt_matches_manifest']
     assert current['effective_prompt_sha256']!=historical['effective_prompt_sha256']
     assert current['configuration_fingerprint']!=historical['configuration_fingerprint']
-    assert current['tool_budget'] is None and historical['historical_prompt_override']
+    assert current['tool_budget'] is None and current['historical_prompt_override']
+    assert not historical['historical_prompt_override']
     assert 'must-not-appear' not in json.dumps(current)
     assert len(release.prompt_spec(profile='2.0.0')['text'])<1000
     with pytest.raises(ValueError):release.prompt_spec(profile='unknown')
@@ -69,7 +70,9 @@ def test_abstract_is_resumable_and_never_mislabelled_as_paper_full_text(monkeypa
     assert first['read_scope']=='abstract_excerpt' and not first['whole_document_returned']
     assert second['abstract']['next_offset'] is None
     whole=tool._exec_get_scholarly_source({'source_record_id':'fixture','max_chars':len(text)})
-    assert whole['read_scope']=='complete_abstract' and not whole['whole_document_returned']
+    assert whole['read_scope']=='available_abstract' and not whole['whole_document_returned']
+    assert whole['abstract']['window_covers_available_text']
+    assert whole['abstract']['source_abstract_completeness']=='unverified'
     missing=tool._exec_get_scholarly_source({'source_record_id':'fixture','offset':len(text)+1})
     assert missing['error']=='ABSTRACT_OFFSET_OUT_OF_RANGE' and missing['read_scope']=='empty_window'
     for value in [-1,False,0]:

@@ -21,6 +21,7 @@ def case(cid="A01", follow=(), ready=True):
 
 
 def config(tmp_path, **kwargs):
+    kwargs.setdefault("prompt_profile", "2.0.0")
     return bench.RunConfig(output=tmp_path / "run", skip_preflight=True, **kwargs)
 
 
@@ -48,6 +49,7 @@ def runtime(stream=plain_stream, preflight=None):
 
 
 def run_suite(tmp_path, cases=None, **kwargs):
+    kwargs.setdefault("prompt_profile", "2.0.0")
     suite = tmp_path / "suite.jsonl"
     suite.write_text("\n".join(json.dumps(c) for c in cases or [case()]) + "\n")
     return bench.RunConfig(output=tmp_path / "run", suite=suite, skip_preflight=True, **kwargs)

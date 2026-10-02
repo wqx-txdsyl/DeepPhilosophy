@@ -84,16 +84,18 @@ def _exec_get_scholarly_source(args):
             out['abstract']={**abstract,'text':text[start:end],
                 'excerpt_start':start,'excerpt_end':end,'total_characters':len(text),
                 'has_more':end<len(text),'next_offset':end if end<len(text) else None,
-                'truncated':start>0 or end<len(text),'content_sha256':hashlib.sha256(text.encode()).hexdigest()}
+                'truncated':start>0 or end<len(text),'content_sha256':hashlib.sha256(text.encode()).hexdigest(),
+                'window_covers_available_text':start==0 and end==len(text),
+                'source_abstract_completeness':'unverified'}
         passages=out.get('evidence_passages') or []
         if passages:
             out['read_scope']='full_text_excerpts'
             out['whole_document_returned']=False
             out['note']=out.get('note','')+' 返回的是正文节选，不能据此声称模型已通读整篇；历史证据也不证明当前网址可达。'
         elif isinstance(out.get('abstract'),dict) and out['abstract'].get('text'):
-            out['read_scope']='abstract_excerpt' if out['abstract']['truncated'] else 'complete_abstract'
+            out['read_scope']='abstract_excerpt' if out['abstract']['truncated'] else 'available_abstract'
             out['whole_document_returned']=False
-            out['note']=out.get('note','')+' 只返回摘要；若有 has_more，可按 next_offset 续读摘要，不等于论文全文。'
+            out['note']=out.get('note','')+' 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。'
         else:
             if isinstance(abstract,dict) and abstract.get('text') and offset>=len(abstract['text']):
                 out['read_scope']='empty_window'
