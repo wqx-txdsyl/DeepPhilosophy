@@ -20,7 +20,7 @@ const ANCHORS = [
 const collides = (a, b) => Math.abs(a.x - b.x) < (a.width + b.width) / 2 + 16
   && a.top < b.top + b.height + 17 && a.top + a.height + 17 > b.top;
 
-export function layoutConstellation(thinkers = [], relations = [], availableWidth = 700) {
+export function layoutConstellation(thinkers = [], relations = [], availableWidth = 700, options = {}) {
   const width = Math.max(220, Math.round(availableWidth));
   const people = constellationNodes(thinkers, relations);
   const degrees = new Map(people.map(person => [person.name, 0]));
@@ -54,7 +54,7 @@ export function layoutConstellation(thinkers = [], relations = [], availableWidt
         x: width * (rank % 2 ? .24 : .76), top: 38 + row * 130 + (rank % 2 ? 0 : 14),
       };
     } else {
-      const anchor = ANCHORS[rank % ANCHORS.length];
+      const anchor = rank === 0 && options.centerSubject ? [.5, .42] : ANCHORS[rank % ANCHORS.length];
       ideal = { x: anchor[0] * width, top: anchor[1] * (initialHeight - 120) + Math.floor(rank / ANCHORS.length) * 100 + 15 };
     }
     const fits = candidate => candidate.x >= labelWidth / 2 + 7

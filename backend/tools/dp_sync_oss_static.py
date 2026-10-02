@@ -58,6 +58,8 @@ DIRS = [
     # 书籍详情 JSON（2026-08-12 详情页提速: 前端双轨 OSS 优先 → 同源回退）
     ("book_detail", "book_detail"),
     ("schools/data", "schools/data"),
+    ("philosopher", "philosopher"),
+    ("philosopher/data", "philosopher/data"),
 ]
 
 
@@ -137,7 +139,7 @@ def main():
     # ── 2. 远端清单 ──
     print("列出远端 ...")
     remote = {}
-    prefixes = ("covers/", "app/assets/", "schools/", "gene/", "book_detail/")
+    prefixes = ("covers/", "app/assets/", "schools/", "gene/", "book_detail/", "philosopher/")
     for obj in oss2.ObjectIterator(bucket, prefix=""):
         # 只看本脚本管理的前缀: 根两个 json + covers/ + app/assets/ + schools/ + gene/
         if selected(obj.key) and (obj.key in ("books.json", "covers.json", "philosophers.json") or obj.key.startswith(prefixes)):

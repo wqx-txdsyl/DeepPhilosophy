@@ -38,7 +38,7 @@ export function normalizeSchool(raw = {}) {
   };
 }
 
-export function buildSchoolReferences({ books = [], philosophers = [], schools = [] } = {}) {
+export function buildSchoolReferences({ books = [], philosophers = [], schools = [], aliases: personAliases = {} } = {}) {
   const people = Array.isArray(philosophers) ? philosophers : Object.entries(philosophers).map(([name, item]) => ({ ...item, name }));
   const exactPeople = new Map(people.map(person => [key(person.name), person]));
   const spellingAliases = { '埃马纽埃尔·列维纳斯': '伊曼纽尔·列维纳斯', '爱德蒙德·胡塞尔': '埃德蒙德·胡塞尔' };
@@ -48,7 +48,7 @@ export function buildSchoolReferences({ books = [], philosophers = [], schools =
     if (last !== person.name && last.length >= 2) aliases.set(key(last), [...(aliases.get(key(last)) || []), person]);
   }
   const findPerson = (name, era) => {
-    const canonical = exactPeople.get(key(spellingAliases[name] || name));
+    const canonical = exactPeople.get(key(personAliases[name] || spellingAliases[name] || name));
     const matches = aliases.get(key(name)) || [];
     const person = canonical || (matches.length === 1 ? matches[0] : null);
     if (!person) return null;

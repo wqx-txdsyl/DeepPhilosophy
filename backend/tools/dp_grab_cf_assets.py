@@ -40,7 +40,15 @@ RE_ENTRY = re.compile(r'(?:src|href)="(?:/assets|https://deepphilosophy\.oss-cn-
 # vite/rolldown 懒加载两种形式: import(`./Xxx.js`) 反引号模板串, __vite__mapDeps 数组 "assets/Xxx.js"
 RE_LAZY = re.compile(r'import\(\s*[`\'"]\./([A-Za-z0-9_-]+\.js)[`\'"]\s*\)')
 RE_LAZY_ABS = re.compile(r'import\(\s*[`\'"]/assets/([A-Za-z0-9_-]+\.js)[`\'"]\s*\)')
-RE_MAPDEPS = re.compile(r'"assets/([A-Za-z0-9_-]+\.js)"')
+RE_MAPDEPS = re.compile(r'"assets/([A-Za-z0-9_-]+\.(?:js|css))"')
+RE_STATIC = re.compile(r'(?:from|import)\s*[\'\"]\./([A-Za-z0-9_-]+\.js)[\'\"]')
+RE_FONTS = re.compile(r'url\([\'\"]?(?:[^)\'\"]*/)?([A-Za-z0-9_-]+\.woff2?)[\'\"]?\)')
+
+
+def references(text, name):
+    if name.endswith('.css'):
+        return RE_FONTS.findall(text)
+    return RE_LAZY.findall(text) + RE_LAZY_ABS.findall(text) + RE_MAPDEPS.findall(text) + RE_STATIC.findall(text)
 
 
 def grab(url, name, allow_html=False, retries=3):
@@ -83,7 +91,8 @@ def verify_oss(names, prefix=OSS_PREFIX):
             req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "dp-verify"})
             with urllib.request.urlopen(req, timeout=20) as r:
                 ct = (r.headers.get("Content-Type") or "").lower()
-                if "javascript" not in ct and "css" not in ct and "json" not in ct:
+                is_font = name.endswith(('.woff', '.woff2')) and ('font' in ct or 'octet-stream' in ct)
+                if not is_font and "javascript" not in ct and "css" not in ct and "json" not in ct:
                     bad.append((name, f"Content-Type={ct}"))
         except Exception as e:
             bad.append((name, str(e)[:70]))
@@ -107,12 +116,16 @@ def main():
             sys.exit(1)
         html = open(html_path, encoding="utf-8").read()
         names = set(RE_ENTRY.findall(html))
-        main_js = [n for n in names if n.endswith(".js") and n.startswith("index-")]
-        if main_js:
-            mp = os.path.join(DIST_ASSETS, main_js[0])
-            if os.path.isfile(mp):
-                text = open(mp, encoding="utf-8", errors="replace").read()
-                names |= set(RE_LAZY.findall(text) + RE_LAZY_ABS.findall(text) + RE_MAPDEPS.findall(text))
+        queue = list(names)
+        while queue:
+            name = queue.pop(0)
+            path = os.path.join(DIST_ASSETS, name)
+            if name.endswith(('.js', '.css')) and os.path.isfile(path):
+                text = open(path, encoding='utf-8', errors='replace').read()
+                for reference in references(text, name):
+                    if reference not in names:
+                        names.add(reference)
+                        queue.append(reference)
         bad = verify_oss(names)
         if bad:
             print(f"❌ OSS 缺失 {len(bad)} 个资产:")
@@ -133,19 +146,21 @@ def main():
             seen.add(m)
             queue.append(m)
 
-    # BFS: 解析 JS 里的懒加载引用
+    # BFS: include lazy CSS and its fonts; local build hashes need not match Pages.
+    failed = []
     while queue:
         name = queue.pop(0)
-        if name.endswith(".css"):
-            continue
         data = grab(f"{deploy_url}/assets/{name}", name)
         if not data:
+            failed.append(name)
             continue
-        text = data.decode("utf-8", "replace")
-        for m in RE_LAZY.findall(text) + RE_LAZY_ABS.findall(text) + RE_MAPDEPS.findall(text):
+        text = data.decode("utf-8", "replace") if name.endswith(('.js', '.css')) else ''
+        for m in references(text, name):
             if m not in seen:
                 seen.add(m)
                 queue.append(m)
+    if failed:
+        sys.exit('构建产物不完整，停止同步：' + ', '.join(failed))
 
     # 本地完整性校验: seen 中的每个名字必须有真实产物
     missing_local = [n for n in seen if not os.path.isfile(os.path.join(DIST_ASSETS, n))]

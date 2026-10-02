@@ -151,8 +151,9 @@ function MainLayout() {
   const isReader = location.pathname.startsWith('/reader');
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
+  const isAuthor = location.pathname.startsWith('/author/');
   const isQA = location.pathname.startsWith('/qa');
-  const hideHeader = isHome || isReader || isSchool;
+  const hideHeader = isHome || isReader || isSchool || isAuthor;
 
   return (
     <>
@@ -170,7 +171,7 @@ function MainLayout() {
         onToggleMobileMode={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }}
       />
 
-      <main id="main-content" className={`app-main${isReader || isHome || isSchool ? ' reader-mode' : ''}${isQA ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isQA) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      <main id="main-content" className={`app-main${isReader || isHome || isSchool || isAuthor ? ' reader-mode' : ''}${isQA ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isAuthor || isQA) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
         <div key={location.pathname} className="page-enter">

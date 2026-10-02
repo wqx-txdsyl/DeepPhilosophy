@@ -21,8 +21,8 @@ import './HomePage.css';
 
 function HomePage() {
   const navigate = useNavigate();
-  const [authorCount, setAuthorCount] = useState(743);
-  const [bookCount, setBookCount] = useState(293);
+  const [authorCount, setAuthorCount] = useState(652);
+  const [bookCount, setBookCount] = useState(409);
   const [schoolCount] = useState(111);
   const [, setSchoolData] = useState({});
   const loggedIn = !!localStorage.getItem('dp_token');
@@ -47,7 +47,7 @@ function HomePage() {
       ),
     ]).then(([books, philosophers]) => {
       setBookCount(Array.isArray(books) ? books.length : 0);
-      const authors = Object.values(philosophers);
+      const authors = Object.values(philosophers).filter(person => !person.listingKind || person.listingKind === 'thinker');
       setAuthorCount(authors.length);
       // 聚合流派数据
       const map = {};

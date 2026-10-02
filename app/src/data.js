@@ -1,7 +1,8 @@
 /**
  * 数据层 — 云端优先，sessionStorage缓存 + 本地兜底
  */
-import { getApiBase } from './App';
+import { fetchSchoolJSON } from './data/schoolContent';
+import { authorFile, canonicalAuthor, loadAuthorCatalog } from './data/authorContent';
 import { cacheGet, cacheSet } from './data/cache';
 
 /** 加载书籍列表 — OSS 双轨优先（用户网络对 OSS 实测快, 同源 CF 边缘 3-6s），API 不再使用 */
@@ -52,17 +53,7 @@ export async function loadAuthors() {
 
 export async function getAuthorInfo(authorName) {
   try {
-    const resp = await fetch(`${getApiBase()}/api/authors/${encodeURIComponent(authorName)}`, {
-      signal: AbortSignal.timeout(3000),
-    });
-    if (resp.ok) return await resp.json();
-  } catch (e) { console.error('Author API unavailable:', e.message); }
-  const authors = await loadAuthors();
-  const a = authors.find(x => x.name === authorName);
-  return a ? {
-    name: a.name, region: a.region, books: a.books, book_count: a.book_count,
-    bio: `${a.name}是${a.region}哲学史上的重要思想家。详情请连接网络后查看。`,
-    wiki_url: `https://baike.baidu.com/item/${encodeURIComponent(authorName)}`,
-  } : null;
+    const catalog = await loadAuthorCatalog();
+    return await fetchSchoolJSON(authorFile(canonicalAuthor(authorName, catalog)));
+  } catch { return null; }
 }
-

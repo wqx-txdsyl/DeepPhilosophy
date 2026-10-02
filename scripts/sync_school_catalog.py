@@ -20,14 +20,16 @@ def build_catalog(public):
                 branches.setdefault(sub['name'], []).append(item['name'])
     people = []
     for name in philosophers:
-        portrait = None
-        for ext in ('webp', 'jpg', 'png', 'jpeg'):
-            file = public / 'philosopher' / f'{name}.{ext}'
-            if file.is_file():
-                portrait = '/philosopher/' + file.name
-                break
+        portrait = philosophers[name].get('portrait')
+        if 'portrait' not in philosophers[name]:
+            for ext in ('webp', 'jpg', 'png', 'jpeg'):
+                file = public / 'philosopher' / f'{name}.{ext}'
+                if file.is_file():
+                    portrait = '/philosopher/' + file.name
+                    break
         people.append({'name': name, 'portrait': portrait, 'era': philosophers[name].get('era', '')})
-    return {'schools': schools, 'branches': branches, 'philosophers': people,
+    aliases = json.loads((public / 'philosopher/catalog.json').read_text(encoding='utf-8')).get('aliases', {})
+    return {'schools': schools, 'branches': branches, 'philosophers': people, 'aliases': aliases,
             'books': [{k: book.get(k) for k in ('id', 'title', 'author', 'cover', 'chapterCount', 'file_type')} for book in books]}
 
 
