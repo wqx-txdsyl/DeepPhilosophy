@@ -133,21 +133,46 @@ def build(registry_path=REGISTRY):
         for v,r in results.items():
             runs[v]['common_fully_scored_cases'] = cohort(r, common)
             runs[v]['common_independently_reviewed_cases'] = cohort(r, paired_reviewed)
+    external_results = {}
+    for entry in registry.get('external_baselines', []):
+        if not entry.get('review'):
+            continue
+        path = ROOT / entry['review']
+        if sha(path) != entry['review_sha256']:
+            raise ValueError('external review changed; register a new snapshot: ' + entry['id'])
+        review = json.loads(path.read_text())
+        result = summarize(review['rows'], cases, rules)
+        complete = {cid for cid, item in result.items() if item['complete']}
+        external_results[entry['id']] = {
+            'display_name': entry['display_name'], 'model': entry['model_snapshot'],
+            'mode': entry['mode'], 'resource_condition': entry['resource_condition'],
+            'status': 'provisional_document_review_not_live_execution_acceptance',
+            'review_sha256': entry['review_sha256'], 'total_turns': len(review['rows']),
+            'document_reviewed_turns': review.get('document_reviewed_turns', 0),
+            'full_frozen_suite': cohort(result, set(result)),
+            'completed_cases': cohort(result, complete),
+            # Keep the existing PhiAgent comparison cohorts fixed. A new
+            # submission must not silently change historical denominators.
+            'common_fully_scored_cases': cohort(result, common) if results else None,
+            'common_independently_reviewed_cases': cohort(result, paired_reviewed) if results else None,
+            'case_bounds': {cid: {**export(item['bounds']), **{k:v for k,v in item.items() if k!='bounds'}} for cid,item in result.items()}}
     return {'aggregation_version': registry['aggregation_version'], 'scale': 100,
             'registry_sha256': sha(registry_path), 'frozen_input_sha256': registry['frozen_inputs'],
             'method': 'turn mean within case, then equal-weight case macro mean',
             'no_quality_pass_claim': True, 'unknown_bounds_are_not_confidence_intervals': True,
-            'runs': runs, 'external_baselines': registry['external_baselines']}
+            'runs': runs, 'external_baselines': registry['external_baselines'], 'external_results': external_results}
 
 
 def render_dashboard(data):
     def number(cohort):
+        if cohort['lower'] is None:
+            return '—'
         if cohort['score'] is not None:
             return f"{cohort['score']:.2f}"
         return f"{cohort['lower']:.2f}–{cohort['upper']:.2f}"
     def cohort_number(value):
         return f"{number(value)}（{value['case_count']}题）"
-    lines = ['|版本|完整70题指数 /100|已完成题集指数 /100|共同完整评分题集 /100|共同独立复核题集 /100|独立复核覆盖|',
+    lines = ['|版本或答卷|完整70题指数 /100|已完成题集指数 /100|固定64题子集 /100|固定10题复核子集 /100|评审覆盖|',
              '|---|---|---|---|---|---|']
     for version, run in data['runs'].items():
         if 'full_frozen_suite' not in run:
@@ -156,6 +181,10 @@ def render_dashboard(data):
         full = run['full_frozen_suite']
         full_label = number(full) if full['score'] is not None else '未完成；可取范围 ' + number(full)
         lines.append(f"|v{version}|{full_label}|{cohort_number(run['completed_cases'])}|{cohort_number(run['common_fully_scored_cases'])}|{cohort_number(run['common_independently_reviewed_cases'])}|{run['reviewed_turns']}/{run['total_turns']} 轮|")
+    for run in data.get('external_results', {}).values():
+        full = run['full_frozen_suite']
+        label = number(full) if full['score'] is not None else '未完成；可取范围 ' + number(full)
+        lines.append(f"|{run['display_name']} · {run['model']} {run['mode']}|{label}|{cohort_number(run['completed_cases'])}|{cohort_number(run['common_fully_scored_cases'])}|{cohort_number(run['common_independently_reviewed_cases'])}|{run['document_reviewed_turns']}/{run['total_turns']} 段文本评审|")
     return '\n'.join(lines)
 
 

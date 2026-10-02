@@ -80,3 +80,16 @@ def test_no_unknown_or_partial_cohort_is_promoted_to_full_benchmark():
         assert data['runs'][version]['full_frozen_suite']['score'] is None
         assert data['runs'][version]['common_fully_scored_cases']['case_count']==64
     assert data['runs']['0.1.2']['score'] is None
+
+
+def test_submitted_external_document_uses_fixed_cohorts_without_imputing_unknown_execution():
+    data=agg.build()
+    external=data['external_results']['chatgpt-work-sol61-high-20261002']
+    assert external['completed_cases']['case_count']==65
+    assert external['common_fully_scored_cases']['case_ids']==data['runs']['0.1.0']['common_fully_scored_cases']['case_ids']
+    assert external['common_independently_reviewed_cases']['case_ids']==data['runs']['0.1.0']['common_independently_reviewed_cases']['case_ids']
+    assert external['completed_cases']['score'] is None
+    assert external['completed_cases']['lower']<external['completed_cases']['upper']
+    assert external['full_frozen_suite']['score'] is None
+    assert external['case_bounds']['D01']['score'] is None
+    assert external['case_bounds']['K01']['present']==0
