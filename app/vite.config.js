@@ -74,6 +74,15 @@ export default defineConfig(({ mode }) => ({
   //       故 base 保持 '/', 改用 postbuild.mjs 构建后只替换 dist/index.html 的 assets 引用为 OSS URL
   //       （public 资源保持同源; 懒加载 chunk 经 mapDeps 递归, hash 以 CF 线上构建为准 → 同步走"抓 CF 产物"）
   base: '/',
+  experimental: {
+    // Route CSS gates React.lazy: its preloads must use the same CDN as JS.
+    // Keep public files (favicon, manifest, static data) on their existing paths.
+    renderBuiltUrl(filename, { hostType, type }) {
+      if (hostType === 'js' && type === 'asset') {
+        return `https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/app/${filename}`;
+      }
+    },
+  },
   server: {
     port: 5173,
     host: true,

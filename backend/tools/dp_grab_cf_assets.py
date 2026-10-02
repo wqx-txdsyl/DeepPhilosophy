@@ -40,7 +40,7 @@ RE_ENTRY = re.compile(r'(?:src|href)="(?:/assets|https://deepphilosophy\.oss-cn-
 # vite/rolldown 懒加载两种形式: import(`./Xxx.js`) 反引号模板串, __vite__mapDeps 数组 "assets/Xxx.js"
 RE_LAZY = re.compile(r'import\(\s*[`\'"]\./([A-Za-z0-9_-]+\.js)[`\'"]\s*\)')
 RE_LAZY_ABS = re.compile(r'import\(\s*[`\'"]/assets/([A-Za-z0-9_-]+\.js)[`\'"]\s*\)')
-RE_MAPDEPS = re.compile(r'"assets/([A-Za-z0-9_-]+\.(?:js|css))"')
+RE_MAPDEPS = re.compile(r'["\'`](?:assets/|https://deepphilosophy\.oss-cn-shanghai\.aliyuncs\.com/app/assets/)([A-Za-z0-9_-]+\.(?:js|css))["\'`]')
 RE_STATIC = re.compile(r'(?:from|import)\s*[\'\"]\./([A-Za-z0-9_-]+\.js)[\'\"]')
 RE_FONTS = re.compile(r'url\([\'\"]?(?:[^)\'\"]*/)?([A-Za-z0-9_-]+\.woff2?)[\'\"]?\)')
 
