@@ -245,12 +245,26 @@ export function renderMarkdown(text, onEdit, drawioXml, t, options = {}) {
       );
       i++; continue;
     }
+    // A quote is a block, not a sequence of inline strings. Keep its blank
+    // quote lines and render inner headings/lists/fences with the same options.
+    if (/^>/.test(trimmed)) {
+      const start = i;
+      const quoted = [];
+      while (i < lines.length && /^>/.test(lines[i].trimStart())) {
+        quoted.push(lines[i].trimStart().replace(/^>[ \t]?/, ''));
+        i++;
+      }
+      if (quoted.some(value => value.trim())) {
+        out.push(<blockquote key={`quote-${start}`} className="cw-markdown-quote">
+          {renderMarkdown(quoted.join('\n'), onEdit, drawioXml, t, options)}
+        </blockquote>);
+      }
+      continue;
+    }
     if (options.general && /^#{1,4} /.test(trimmed)) {
       const level = trimmed.match(/^#+/)[0].length;
       const Heading = `h${level}`;
       out.push(<Heading key={i} className="general-answer-heading">{inline(trimmed.slice(level + 1))}</Heading>);
-    } else if (trimmed.startsWith('> ')) {
-      out.push(<blockquote key={i} style={{ margin: '8px 0', padding: '6px 12px', borderLeft: '3px solid var(--border)', color: 'var(--text-dim)', background: 'var(--soft)', borderRadius: 4 }}>{inline(trimmed.slice(2))}</blockquote>);
     } else if (/^[-*] \[[ xX]\] /.test(trimmed)) {
       // 任务列表 - [x] / - [ ]
       const checked = /^[-*] \[[xX]\] /.test(trimmed);
