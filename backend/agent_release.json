@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "release_version": "2.0.0-rc.2",
-  "release_tag": "phiagent-v2.0.0-rc.2",
+  "release_version": "0.2.0",
+  "release_tag": "phiagent-v0.2.0",
   "status": "development_preview_quality_unverified",
-  "active_prompt_version": "1.1.0",
-  "tool_contract_version": "2.0.0-rc.2",
+  "active_prompt_version": "0.1.1",
+  "tool_contract_version": "0.2.0",
   "runtime_profile": "bare",
   "tool_budget": null,
   "model_default": "deepseek-flash",
@@ -15,13 +15,15 @@
       "path": "prompts/general-1.0.0.md",
       "sha256": "8c366cfb11a639f541f0669c48fc761cbe2be6f31fe33bd0f2130a662f509429",
       "characters": 23,
-      "role": "historical_comparison_only"
+      "role": "legacy_alias",
+      "canonical_version": "0.1.0"
     },
     "1.1.0": {
       "path": "prompts/general-1.1.0.md",
       "sha256": "33e9bacbeb5fbec8a977c1b339c421dcbcb575a8a9aea45626013a257667fba6",
       "characters": 642,
-      "role": "active_compatibility_baseline"
+      "role": "legacy_alias",
+      "canonical_version": "0.1.1"
     },
     "2.0.0": {
       "path": "prompts/general-2.0.0.md",
@@ -39,7 +41,26 @@
       "path": "prompts/general-2.0.0-rc.2.md",
       "sha256": "8b3f62535fad2755afb2d7a519805eb0dad7af2fb469b0eb981cd3a8e96c041e",
       "characters": 879,
-      "role": "development_candidate"
+      "role": "legacy_alias",
+      "canonical_version": "0.2.0"
+    },
+    "0.1.0": {
+      "path": "prompts/general-0.1.0.md",
+      "sha256": "8c366cfb11a639f541f0669c48fc761cbe2be6f31fe33bd0f2130a662f509429",
+      "characters": 23,
+      "role": "historical_baseline"
+    },
+    "0.1.1": {
+      "path": "prompts/general-0.1.1.md",
+      "sha256": "33e9bacbeb5fbec8a977c1b339c421dcbcb575a8a9aea45626013a257667fba6",
+      "characters": 642,
+      "role": "active_compatibility_baseline"
+    },
+    "0.2.0": {
+      "path": "prompts/general-0.2.0.md",
+      "sha256": "8b3f62535fad2755afb2d7a519805eb0dad7af2fb469b0eb981cd3a8e96c041e",
+      "characters": 879,
+      "role": "candidate_not_full_suite_tested"
     }
   },
   "runtime_sources": [
@@ -138,5 +159,10 @@
   ],
   "data_schemas": {
     "scholarly_record": "o7c-1"
+  },
+  "candidate_prompt_version": "0.2.0",
+  "version_ledger": "docs/PHIAGENT_VERSION_BENCHMARK_LEDGER.md",
+  "legacy_release_aliases": {
+    "2.0.0-rc.2": "0.2.0"
   }
 }

@@ -13,15 +13,18 @@ from reading_coverage import ReadingCoverage
 def test_registered_prompt_profiles_have_distinct_fingerprints_and_no_secret_values(monkeypatch):
     monkeypatch.setenv('LLM_API_KEY','must-not-appear')
     monkeypatch.delenv('PHIAGENT_PROMPT_VERSION',raising=False)
-    current=release.release_descriptor(profile='2.0.0')
-    historical=release.release_descriptor(profile='1.1.0')
+    current=release.release_descriptor(profile='0.2.0')
+    historical=release.release_descriptor(profile='0.1.1')
     assert current['prompt_matches_manifest'] and historical['prompt_matches_manifest']
     assert current['effective_prompt_sha256']!=historical['effective_prompt_sha256']
     assert current['configuration_fingerprint']!=historical['configuration_fingerprint']
     assert current['tool_budget'] is None and current['historical_prompt_override']
     assert not historical['historical_prompt_override']
+    assert release.prompt_spec()['version']=='0.1.1'
+    for old,new in [('1.0.0','0.1.0'),('1.1.0','0.1.1'),('2.0.0-rc.2','0.2.0')]:
+        assert release.prompt_spec(profile=old)['text']==release.prompt_spec(profile=new)['text']
     assert 'must-not-appear' not in json.dumps(current)
-    assert len(release.prompt_spec(profile='2.0.0')['text'])<1000
+    assert len(release.prompt_spec(profile='0.2.0')['text'])<1000
     with pytest.raises(ValueError):release.prompt_spec(profile='unknown')
     pkg=json.loads((release.BASE.parent/'agent-app/package.json').read_text())
     assert pkg['version']==release.VERSION
@@ -92,9 +95,9 @@ def test_main_usage_is_recorded_without_claiming_auxiliary_model_cost(monkeypatc
     async def questions(*args):return {'suggestions':[],'status':'unavailable'}
     monkeypatch.setattr(bare,'load_tools',tools);monkeypatch.setattr(bare,'load_model',Model)
     monkeypatch.setattr(bare,'source_metadata',lambda *a:([],None));monkeypatch.setattr(bare,'exploration_questions',questions)
-    async def run():return [e async for e in bare.stream_bare_agent('测试',[],_evaluation_prompt_profile='2.0.0')]
+    async def run():return [e async for e in bare.stream_bare_agent('测试',[],_evaluation_prompt_profile='0.2.0')]
     events=asyncio.run(run());done=next(e for e in events if e['type']=='done')
     assert done['main_model_usage']['usage']['total_tokens']==15
     assert not done['main_model_usage']['includes_auxiliary_tool_models']
-    assert done['release']['prompt_version']=='2.0.0' and done['release']['tool_budget'] is None
+    assert done['release']['prompt_version']=='0.2.0' and done['release']['tool_budget'] is None
     assert done['release']['toolset_sha256'] and any(e['type']=='runtime_metadata' for e in events)

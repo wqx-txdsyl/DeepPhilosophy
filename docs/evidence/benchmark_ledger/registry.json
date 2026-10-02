@@ -1,0 +1,102 @@
+{
+  "aggregation_version": "1.0.0",
+  "date": "2026-10-02",
+  "authorization": "User requested a separate suite-level percentage index; frozen questions and item rubric are unchanged.",
+  "suite": "docs/evidence/phiagent_benchmark_v0_1/suite.json",
+  "rubric": "docs/evidence/rubric_v1_2/RULES_FROZEN.json",
+  "frozen_inputs": {
+    "docs/evidence/PHIAGENT_BENCHMARK_V0_1.md": "af683379e3b18813e8e4923fc708866e1676545eb3b9d5315eaa87f55ef0ca2f",
+    "docs/evidence/PHIAGENT_PRODUCT_ISSUES_20260928.md": "03345dab763e850a6c1582c636a1c2d39ed85a13b2330da9ac793bb42f8d0dbb",
+    "docs/evidence/phiagent_benchmark_v0_1/coverage.json": "883894fdabea8a99d6febb579d12e10cfee1476e7b00be46de9b120693dc1b81",
+    "docs/evidence/phiagent_benchmark_v0_1/fixtures.json": "bae38a169a41d9d51c9659c0bd95d6735b43bd8fef0d8cbf3183ad0b7266f9c4",
+    "docs/evidence/phiagent_benchmark_v0_1/prompts.jsonl": "8d006f8e73b73c0b24bc8c78c4aac88519e310821a1f79456c1719e99bb0213a",
+    "docs/evidence/phiagent_benchmark_v0_1/review_template.json": "dce8367a3907b81cad728815c1e3852755050a3ea90b880ab879a23e4996aa88",
+    "docs/evidence/phiagent_benchmark_v0_1/suite.json": "9037ffa6547844ed676a83530ed6b95ed52f9fca1f62df089e817782b7688f7d",
+    "docs/evidence/phiagent_benchmark_v0_1/validate.py": "185a75fd162447aad585791b395110f578058b692feb3b458eb9d5d889b505bd",
+    "docs/evidence/rubric_v1_2/RULES_FROZEN.json": "8e8809b4eb81512d435c9698069a12b50306ca6d4bbc3ffbf3af42f11e8d5ecb"
+  },
+  "weighting": "Each frozen case 1/70; each turn 1/(number of turns in that case). C uses its 60-point ratio, R its 60+40 ratio, K its four binary checks.",
+  "missing": "Unknown dimensions and unrun turns remain unknown; report feasible bounds, never impute or silently exclude. Report partial/common cohorts separately.",
+  "errors": "Original confirmed/pending serious-error flags remain separate, non-compensable acceptance conditions; no new numeric penalty invented.",
+  "review_status": "Provisional arithmetic over mixed uncalibrated automated and independent model reviews; not a validated benchmark ranking.",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "reference_commit": "575955a1ef7b35aae1d611b44ba712ac27e77a21",
+      "prompt_path": "backend/prompts/general-0.1.0.md",
+      "prompt_sha256": "8c366cfb11a639f541f0669c48fc761cbe2be6f31fe33bd0f2130a662f509429",
+      "scope": "identity_only",
+      "review": "docs/evidence/phiagent_benchmark_v0_1/quality_review_v1_2_20261002/SCORES.json",
+      "review_sha256": "8db8a1b4e15b3552983484057a6ddac1049650a75963850c1df908eb7b9fe1bb",
+      "code_tag": "phiagent-v0.1.0"
+    },
+    {
+      "version": "0.1.1",
+      "reference_commit": "ea2c286bf70083c01972e5fe127761da94d298e6",
+      "prompt_path": "backend/prompts/general-0.1.1.md",
+      "prompt_sha256": "33e9bacbeb5fbec8a977c1b339c421dcbcb575a8a9aea45626013a257667fba6",
+      "scope": "first_prompt_revision_and_recovered_environment",
+      "review": "docs/evidence/phiagent_benchmark_v0_1/quality_review_run2_v1_2_20261002/SCORES.json",
+      "review_sha256": "4751205426e6c72f2d716cff722a629fd3f14f31728d8e32612407d1380d0c05",
+      "code_tag": "phiagent-v0.1.1"
+    },
+    {
+      "version": "0.2.0",
+      "reference_commit": "884fd6130c31c1a3e1f387978959bd0cf765a1e8",
+      "prompt_path": "backend/prompts/general-0.2.0.md",
+      "prompt_sha256": "8b3f62535fad2755afb2d7a519805eb0dad7af2fb469b0eb981cd3a8e96c041e",
+      "scope": "backend_contract_and_second_prompt_candidate",
+      "review": null,
+      "review_sha256": null,
+      "code_tag": "phiagent-v0.2.0",
+      "reference_commit_role": "pre_renumbering_implementation; authoritative snapshot uses code_tag"
+    }
+  ],
+  "external_baselines": [
+    {
+      "name": "DeepSeek：真心安慰",
+      "suite_score": null,
+      "suite_cases_run": 0,
+      "legacy_single_question_score": 70.3,
+      "legacy_rubric": "1.1 withdrawn",
+      "legacy_source": "docs/evidence/rubric_calibration_v1_1/SCORES.json#L1",
+      "status": "historical_only_not_comparable_with_suite_v1_2",
+      "model_snapshot": "unknown"
+    },
+    {
+      "name": "豆包：真心安慰",
+      "suite_score": null,
+      "suite_cases_run": 0,
+      "legacy_single_question_score": 58.6,
+      "legacy_rubric": "1.1 withdrawn",
+      "legacy_source": "docs/evidence/rubric_calibration_v1_1/SCORES.json#L2",
+      "status": "historical_only_not_comparable_with_suite_v1_2",
+      "model_snapshot": "unknown"
+    },
+    {
+      "name": "ChatGPT：真心安慰",
+      "suite_score": null,
+      "suite_cases_run": 0,
+      "legacy_single_question_score": 93.8,
+      "legacy_rubric": "1.1 withdrawn",
+      "legacy_source": "docs/evidence/rubric_calibration_v1_1/SCORES.json#L3",
+      "status": "historical_only_not_comparable_with_suite_v1_2",
+      "model_snapshot": "unknown"
+    },
+    {
+      "name": "PhiAgent旧答：真心安慰",
+      "suite_score": null,
+      "suite_cases_run": 0,
+      "legacy_single_question_score": 74.3,
+      "legacy_rubric": "1.1 withdrawn",
+      "legacy_source": "docs/evidence/rubric_calibration_v1_1/SCORES.json#L4",
+      "status": "historical_only_not_comparable_with_suite_v1_2",
+      "model_snapshot": "unknown"
+    }
+  ],
+  "version_aliases": {
+    "prompt:1.0.0": "0.1.0",
+    "prompt:1.1.0": "0.1.1",
+    "release:2.0.0-rc.2": "0.2.0"
+  }
+}
