@@ -1972,7 +1972,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
         from deep_bare_agent import stream_bare_agent
         events = stream_bare_agent(req_message, history, language=language,
                                    conversation_id=conversation_id, message_id=message_id,
-                                   _evaluation_prompt_profile=_evaluation_prompt_profile)
+                                   _evaluation_prompt_profile=_evaluation_prompt_profile,
+                                   custom_instructions=custom_instructions)
         try:
             async for event in events:
                 yield event

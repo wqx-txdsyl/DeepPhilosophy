@@ -231,7 +231,7 @@ export const LANGS = [
 const LangContext = createContext(null);
 
 export function LangProvider({ children }) {
-  const { profile, authFetch } = useAuth();
+  const { profile, updateProfile } = useAuth();
   const [lang, setLangState] = useState(() => localStorage.getItem('phiagent_lang') || 'zh');
 
   const setLang = useCallback((l) => {
@@ -239,11 +239,10 @@ export function LangProvider({ children }) {
     setLangState(l);
     if (profile) {
       // 登录用户同步到 profile（供后端语言注入）
-      authFetch('/api/auth/profile', {
-        method: 'PUT', body: JSON.stringify({ language: l }),
-      }).catch(() => {});
+      return updateProfile({ language: l });
     }
-  }, [profile, authFetch]);
+    return Promise.resolve();
+  }, [profile, updateProfile]);
 
   // 登录后同步 profile.language（切换/登录/刷新时生效）
   useEffect(() => {

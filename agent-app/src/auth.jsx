@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { getApiBase } from './utils/api';
 import { conversationStore } from './data/conversationStore';
 import { ConversationSync } from './data/conversationSync';
+import { accountProfile, profilePatch, clearDeviceCache, deleteConversationHistory } from './data/accountSettings';
 
 /**
  * AuthContext — 用户系统（注册/登录/档案/登出）
@@ -21,6 +22,8 @@ export function AuthProvider({ children }) {
   const [verifyAttempt, setVerifyAttempt] = useState(0);
   const syncRef = useRef(null);
   const legacyUser = useRef(localStorage.getItem(USER_KEY));
+  const tokenRef = useRef(token);
+  tokenRef.current = token;
 
   useEffect(() => {
     if (token && !profile?.id) { setAccountReady(false); return; }
@@ -57,32 +60,38 @@ export function AuthProvider({ children }) {
     if (token) {
       authFetch('/api/auth/profile', { signal: controller.signal })
         .then(d => {
-          if (controller.signal.aborted) return;
+          if (controller.signal.aborted || tokenRef.current !== token) return;
           if (d && d.username && d.id) {
-            setProfile(d);
+            setProfile(accountProfile(d));
             setUsername(d.username);
             localStorage.setItem(USER_KEY, d.username);
           } else {
             logout();
           }
         })
-        .catch(() => { if (!controller.signal.aborted) setAuthError(true); });
+        .catch(() => { if (!controller.signal.aborted && tokenRef.current === token) setAuthError(true); });
     }
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, verifyAttempt]);
 
   async function authFetch(path, options = {}) {
+    const requestToken = token;
     const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
     if (token) headers['Authorization'] = `Bearer ${token}`;
     const resp = await fetch(`${getApiBase()}${path}`, { ...options, headers });
-    if (resp.status === 401 && token) {
+    if (resp.status === 401 && requestToken) {
       // token 失效 → 自动登出
-      logout();
+      if (tokenRef.current === requestToken) logout();
       return { error: '登录已过期' };
     }
-    if (!resp.ok && !path.endsWith('/login') && !path.endsWith('/register')) throw new Error('Account request failed');
-    return resp.json().catch(() => ({}));
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok && !path.endsWith('/login') && !path.endsWith('/register')) {
+      const error = new Error('Account request failed');
+      error.status = resp.status;
+      throw error;
+    }
+    return data;
   }
 
   async function login(name, pass) {
@@ -90,6 +99,7 @@ export function AuthProvider({ children }) {
       method: 'POST', body: JSON.stringify({ username: name, password: pass }),
     });
     if (d.success) {
+      tokenRef.current = d.token;
       setToken(d.token);
       setUsername(d.username);
       setProfile(null);
@@ -107,6 +117,7 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    tokenRef.current = null;
     window.dispatchEvent(new Event('phiagent-logout'));
     syncRef.current?.close();
     syncRef.current = null;
@@ -118,9 +129,42 @@ export function AuthProvider({ children }) {
     // Guest and other accounts never read them. Never erase unsaved history.
   }
 
+  async function updateProfile(fields) {
+    const ownerToken = tokenRef.current;
+    if (!ownerToken || !accountReady) throw new Error('Account not ready');
+    const values = profilePatch(fields);
+    const result = await authFetch('/api/auth/profile', { method: 'PUT', body: JSON.stringify(values) });
+    if (tokenRef.current !== ownerToken) throw new Error('Account changed');
+    if (!result.success) throw new Error('Could not save profile');
+    setProfile(previous => ({ ...previous, ...values, ...profilePatch(result.profile) }));
+    return result;
+  }
+
+  async function deleteAccount() {
+    const ownerToken = tokenRef.current;
+    if (!ownerToken || !accountReady) throw new Error('Account not ready');
+    const ownedSync = syncRef.current;
+    const ownedKey = conversationStore.key;
+    const ownedMeta = ownedSync?.metaKey || `phiagent_sync_v2:${conversationStore.owner}`;
+    const result = await authFetch('/api/auth/account', { method: 'DELETE' });
+    if (!result.success) throw new Error('Account deletion failed');
+    await ownedSync?.discard();
+    localStorage.removeItem(ownedKey);
+    localStorage.removeItem(ownedMeta);
+    if (tokenRef.current === ownerToken) logout();
+  }
+
   return (
     <AuthContext.Provider value={{ token, username, profile, accountReady, historyStatus, authError,
-      retryAccount: () => setVerifyAttempt(n => n + 1), login, register, logout, authFetch,
+      retryAccount: () => setVerifyAttempt(n => n + 1), login, register, logout, authFetch, updateProfile, deleteAccount,
+      clearDeviceCache: () => {
+        if (token && !syncRef.current) throw new Error('SYNC_PENDING');
+        return clearDeviceCache(conversationStore, syncRef.current, localStorage);
+      },
+      deleteConversationHistory: () => {
+        if (token && !syncRef.current) return Promise.reject(new Error('HISTORY_BUSY'));
+        return deleteConversationHistory(conversationStore, syncRef.current);
+      },
       ensureConversation: id => syncRef.current ? syncRef.current.ensureConversation(id) : Promise.reject(new Error('Account not ready')),
       beginHistoryStream: id => syncRef.current?.beginStream(id),
       endHistoryStream: id => syncRef.current?.endStream(id),

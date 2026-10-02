@@ -146,3 +146,34 @@ def test_resumed_reasoning_preserves_spoken_text_without_a_tool(monkeypatch):
     assert note['content']=='先回应一句。'
     assert len({e['id'] for e in events if e['type']=='provider_reasoning_delta'})==2
     assert next(e for e in events if e['type']=='done')['content']=='最终结论。'
+
+
+def test_saved_preferences_reach_bare_model_without_replacing_identity_or_current_question(monkeypatch):
+    seen=[]
+    class Model:
+        def bind_tools(self, tools):return self
+        async def astream(self, messages):
+            seen.extend(messages)
+            yield AIMessageChunk(content='fixture answer', response_metadata={'finish_reason':'stop'})
+    async def tools():return []
+    monkeypatch.setattr(bare,'load_tools',tools);monkeypatch.setattr(bare,'load_model',Model)
+    monkeypatch.setattr(bare,'source_metadata',lambda *args:([],None))
+    async def run():return [e async for e in bare.stream_bare_agent('这次请深入展开',[],custom_instructions='通常简短回答')]
+    asyncio.run(run())
+    assert len([m for m in seen if m.type=='system'])==1
+    assert '通常简短回答' in seen[1].content and '当前请求优先' in seen[1].content
+    assert seen[-1].content=='这次请深入展开'
+
+
+def test_production_general_dispatch_forwards_saved_preferences(monkeypatch):
+    import engine_langgraph
+    received=[]
+    async def fake(question, history, **kwargs):
+        received.append((question,history,kwargs))
+        yield {'type':'done','content':'fixture'}
+    monkeypatch.setenv('DEEP_AGENT_RUNTIME','bare')
+    monkeypatch.setattr(bare,'stream_bare_agent',fake)
+    async def run():return [event async for event in engine_langgraph.stream_agent('现在展开理由',[],custom_instructions='通常简洁')]
+    asyncio.run(run())
+    assert received[0][2]['custom_instructions']=='通常简洁'
+    assert received[0][0]=='现在展开理由'

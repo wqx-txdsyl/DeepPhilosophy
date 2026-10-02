@@ -51,6 +51,7 @@ export class ConversationSync {
   }
   active() { return !this.closed && this.store.owner === this.owner; }
   saveMeta() {
+    if (this.discarded) return; // A permanently deleted account must leave no outbox behind.
     try { this.store.storage?.setItem(this.metaKey, JSON.stringify({ revisions: this.revisions, dirty: [...this.queue.keys()],
       deleted:[...this.queue].filter(([,v])=>v.data===null).map(([id])=>id) })); }
     catch { this.onStatus('cache-error'); }
@@ -170,6 +171,7 @@ export class ConversationSync {
   async _flush() {
     try {
       for (const [id, pending] of [...this.queue]) {
+        if (this.discarded) return;
         if (!this.closed && this.busy.has(id) && Date.now()-(this.lastPushed.get(id)||0)<20000) continue;
         const { response, body } = await this.request(`/${encodeURIComponent(id)}`, pending.data === null
           ? { method: 'DELETE' }
@@ -208,5 +210,10 @@ export class ConversationSync {
     this.closed = true;
     this.closing = (async()=>{ while (this.queue.size) await this.flush(); })().catch(()=>{});
     return this.closing;
+  }
+  discard() {
+    this.discarded = true;
+    this.queue.clear();
+    return this.close();
   }
 }

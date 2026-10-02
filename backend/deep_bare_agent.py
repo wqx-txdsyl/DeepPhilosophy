@@ -87,11 +87,15 @@ def source_metadata(calls, answer, language):
     return citations, evidence
 
 
-async def stream_bare_agent(question, history, language='zh', conversation_id=None, message_id=None, _evaluation_prompt_profile=None):
+async def stream_bare_agent(question, history, language='zh', conversation_id=None, message_id=None, _evaluation_prompt_profile=None, custom_instructions=None):
     from agent_release import prompt_spec, release_descriptor, fingerprint
     from routes.agent_llm import MODEL
     release = release_descriptor(language,_evaluation_prompt_profile)
     messages = [SystemMessage(content=prompt_spec(language,_evaluation_prompt_profile)['text'])]
+    if isinstance(custom_instructions, str) and custom_instructions.strip():
+        messages.append(HumanMessage(content=(
+            '用户自己保存的回答偏好；在适用于当前问题时参考，当前请求优先。\n'
+            + custom_instructions.strip())))
     from deep_context import current_account_id
     if user_id := current_account_id.get():
         from account_data import account_context

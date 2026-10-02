@@ -724,7 +724,7 @@ export default function AgentWorkspace() {
           </div>
         </div>
         <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
-        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} conversation={null} />
+        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} busy={streamingIds.size > 0} />
       </div>
     );
   }
@@ -779,7 +779,7 @@ export default function AgentWorkspace() {
         unavailable={unavailable || activeConv?.messages_loaded === false} resetKey={scopeKey} autoFocus={isDraft}
         dockLeft={sidebarCollapsed ? 0 : undefined} />
       <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
-      <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} conversation={activeConv} />
+      <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} busy={streamingIds.size > 0} />
       {drawio && <DrawioModal xml={drawio.xml} onClose={closeDrawio} />}
     </div>
   );

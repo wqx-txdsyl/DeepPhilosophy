@@ -169,6 +169,10 @@ export class LocalConversationStore {
     return list.length - next.length > 0;
   }
 
+  deleteAllConversations() {
+    this._saveAll([]); // Notify the account outbox of each deleted conversation.
+  }
+
   appendMessage(id, message) {
     const persisted = toPersistedMessage(message);
     if (!persisted) return null;

@@ -1,17 +1,14 @@
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
-import { Plus, Compass, Settings, EllipsisVertical, LogOut, CircleUserRound } from 'lucide-react';
+import { Plus, Compass, Settings, EllipsisVertical, CircleUserRound } from 'lucide-react';
 import { useAuth } from '../../auth';
 import { useLang } from '../../utils/i18n';
 import { groupConversationsByDay } from '../../data/conversationLogic';
-import AuthModal from '../AuthModal';
-import UserCenterModal from '../UserCenterModal';
 import { ConfirmModal, RenameModal, ContextMenu, anchorFromEvent } from './Modal';
 
 /**
  * ConversationSidebar — 会话历史侧栏（spec §5）
  * 顶部: 品牌 + ＋新对话 + ◇探索智能体; 中部: 今天/昨天/过去 7 天/更早 分组历史
- * （空分组不显示）; 底部固定: 设置 + 登录/用户。
+ * （空分组不显示）; 底部仅保留统一的设置与账户入口。
  * Active 仅轻微背景差异; hover 出现 ···（重命名/删除, 删除需确认）。
  * 2026-08-31 Codex-Parity: lucide 图标 + 全 aria + 设置入口（§24）。
  */
@@ -20,13 +17,11 @@ export default function ConversationSidebar({
   onSelect, onNew, onExplore, onRename, onDelete, onOpenSettings,
 }) {
   const { t, lang } = useLang();
-  const { username, logout, token, historyStatus, retryHistory } = useAuth();
+  const { username, profile, token, historyStatus, retryHistory } = useAuth();
   const [menuFor, setMenuFor] = useState(null);       // 打开了菜单的会话 id
   const [menuAnchor, setMenuAnchor] = useState(null); // {left,top,bottom} fixed 锚点
   const [renaming, setRenaming] = useState(null);     // 重命名目标会话
   const [deleting, setDeleting] = useState(null);     // 删除确认目标会话
-  const [showAuth, setShowAuth] = useState(false);
-  const [showCenter, setShowCenter] = useState(false);
   const groups = groupConversationsByDay(conversations);
 
   const openMenu = (e, convId) => {
@@ -88,26 +83,13 @@ export default function ConversationSidebar({
               </div>
             ))}
           </div>
-          {/* 底部固定: 设置 + 用户（§24 设置入口） */}
+          {/* One entry for preferences and account management. */}
           <div className="cw-side-footer">
-            <button className="cw-side-row" onClick={onOpenSettings}>
-              <Settings size={15} aria-hidden /> {t('settings')}
+            <button className="cw-side-row cw-account-entry" aria-label={lang === 'zh' ? '设置与账户' : 'Settings and account'} onClick={() => { onClose(); onOpenSettings(); }}>
+              {username ? <span className="cw-account-avatar">{(profile?.nickname || username).slice(0,1).toUpperCase()}</span> : <CircleUserRound size={23} aria-hidden="true" />}
+              <span className="cw-account-entry-copy"><span>{profile?.nickname || username || t('settings')}</span><small>{lang === 'zh' ? (username ? '设置与账户' : '登录与偏好') : (username ? 'Settings and account' : 'Sign in & preferences')}</small></span>
+              <Settings size={16} className="cw-account-entry-gear" aria-hidden="true" />
             </button>
-            {username ? (
-              <>
-                <button className="cw-side-row" onClick={() => setShowCenter(true)}>
-                  <CircleUserRound size={15} aria-hidden />
-                  <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{username}</span>
-                </button>
-                <button className="cw-side-row" onClick={logout} style={{ color: 'var(--text-dim)' }}>
-                  <LogOut size={15} aria-hidden /> {t('logout')}
-                </button>
-              </>
-            ) : (
-              <button className="cw-side-row" onClick={() => setShowAuth(true)}>
-                <CircleUserRound size={15} aria-hidden /> {t('login')}
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -141,8 +123,6 @@ export default function ConversationSidebar({
           onClose={() => setDeleting(null)}
           onConfirm={() => { onDelete(deleting); setDeleting(null); }} />
       )}
-      {showAuth && createPortal(<AuthModal onClose={() => setShowAuth(false)} />, document.body)}
-      {showCenter && createPortal(<UserCenterModal onClose={() => setShowCenter(false)} />, document.body)}
     </>
   );
 }
