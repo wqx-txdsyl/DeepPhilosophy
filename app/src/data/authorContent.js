@@ -13,6 +13,16 @@ export function loadAuthorCatalog() {
 export function canonicalAuthor(name, catalog) {
   return catalog?.aliases?.[name] || name;
 }
+export async function loadAuthorPage(name, signal, { catalogLoader = loadAuthorCatalog, jsonLoader = fetchSchoolJSON, onDetail } = {}) {
+  const detail = (async () => {
+    let raw = await jsonLoader(authorFile(name), signal);
+    if (raw.aliasOf) raw = await jsonLoader(authorFile(raw.aliasOf), signal);
+    if (!signal?.aborted) onDetail?.(raw);
+    return raw;
+  })();
+  const [raw, catalog] = await Promise.all([detail, catalogLoader()]);
+  return { raw, catalog };
+}
 export function authorBooks(author, catalog) {
   const matches = (catalog?.books || []).filter(book => key(canonicalAuthor(book.author, catalog)) === key(author.name));
   for (const item of author.books || []) {

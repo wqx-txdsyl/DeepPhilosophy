@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { AUTHOR_KINDS, authorBooks, authorFile, bibliography, canonicalAuthor, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
+import { AUTHOR_KINDS, authorBooks, authorFile, bibliography, canonicalAuthor, loadAuthorPage, normalizeAuthor, readableBook } from '../src/data/authorContent.js';
+import { OSS_BASE, staticImageSources } from '../src/data/ossUrls.js';
 import { layoutConstellation } from '../src/data/schoolConstellationLayout.js';
 import { buildSchoolReferences } from '../src/data/schoolContent.js';
 
@@ -11,6 +12,34 @@ const catalog = read('philosopher/catalog.json');
 const roster = read('philosophers.json');
 const schools = read('schools/catalog.json').schools;
 const details = Object.keys(roster).map(name => normalizeAuthor(read(decodeURIComponent(authorFile(name).slice(1)))));
+
+test('detail and hero discovery are not blocked by a slow directory download, including old aliases', async () => {
+  let finishCatalog;
+  const calls = [], ready = [];
+  const result = loadAuthorPage('奎因', undefined, {
+    catalogLoader: () => new Promise(resolve => { finishCatalog = resolve; }),
+    jsonLoader: async path => {
+      calls.push(path);
+      return path === authorFile('奎因') ? { aliasOf: '威拉德·范·奥曼·蒯因' } : { name: '威拉德·范·奥曼·蒯因' };
+    },
+    onDetail: author => ready.push(author.name),
+  });
+  await Promise.resolve(); await Promise.resolve();
+  assert.deepEqual(calls, [authorFile('奎因'), authorFile('威拉德·范·奥曼·蒯因')]);
+  assert.deepEqual(ready, ['威拉德·范·奥曼·蒯因']);
+  finishCatalog(catalog);
+  assert.equal((await result).raw.name, '威拉德·范·奥曼·蒯因');
+});
+
+test('portrait requests use sized CDN images with the unchanged original path as fallback', () => {
+  for (const person of details.filter(person => person.portrait)) {
+    const thumbnail = staticImageSources(person.portrait, 192);
+    assert.ok(thumbnail.primary.startsWith(OSS_BASE + '/philosopher/'));
+    assert.ok(thumbnail.primary.includes('image/resize,w_192/format,webp'));
+    assert.equal(thumbnail.fallback, person.portrait);
+  }
+  assert.deepEqual(staticImageSources('https://example.com/photo.jpg'), { primary: 'https://example.com/photo.jpg', fallback: 'https://example.com/photo.jpg' });
+});
 
 test('every canonical entry has its own matching detail, category and existing images', () => {
   assert.equal(details.length, 737);

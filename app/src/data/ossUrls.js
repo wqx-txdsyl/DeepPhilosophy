@@ -15,6 +15,12 @@ export function ossImg(rel, { w } = {}) {
   return `${OSS_BASE}${rel}${w ? `?x-oss-process=image/resize,w_${w}` : ''}`;
 }
 
+export function staticImageSources(src, width = 192) {
+  const local = src?.startsWith(OSS_BASE + '/') ? src.slice(OSS_BASE.length).split('?')[0] : src;
+  if (!local?.startsWith('/') || local.startsWith('//')) return { primary: src, fallback: src };
+  return { primary: `${ossImg(local, { w: width })}/format,webp/quality,q_82`, fallback: local };
+}
+
 /** <img> onError 兜底: OSS 失败 → 换同源相对路径（只换一次, 已是同源即停） */
 export function ossFallback(e) {
   const el = e.currentTarget;

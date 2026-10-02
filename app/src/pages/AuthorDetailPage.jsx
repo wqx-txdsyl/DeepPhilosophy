@@ -1,25 +1,27 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { preload } from 'react-dom';
+import { staticImageSources } from '../data/ossUrls';
 import { useSEO } from '../utils/seo';
-import { fetchSchoolJSON } from '../data/schoolContent';
+import CdnImage from '../components/CdnImage';
 import { layoutConstellation, constellationCurve } from '../data/schoolConstellationLayout';
-import { AUTHOR_KINDS, authorFile, authorPath, authorBooks, bibliography, canonicalAuthor, loadAuthorCatalog, normalizeAuthor, readableBook } from '../data/authorContent';
+import { AUTHOR_KINDS, authorPath, authorBooks, bibliography, loadAuthorPage, normalizeAuthor, readableBook } from '../data/authorContent';
 import './AuthorDetailPage.css';
 
 function Portrait({ person, className = '', priority = false }) {
   const [failed, setFailed] = useState(false);
   if (!person?.portrait || failed) return <div className={`hp-portrait-placeholder ${className}`} aria-label={`${person?.displayName || person?.name || ''}暂无已确认肖像`}><span>{person?.name?.split('·').at(-1)?.slice(0, 2)}</span><small>人物与思想</small></div>;
-  return <img className={className} src={person.portrait} alt={`${person.displayName || person.name}肖像`} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" onError={() => setFailed(true)} />;
+  return <CdnImage className={className} imageWidth={priority ? 960 : 192} src={person.portrait} alt={`${person.displayName || person.name}肖像`} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" onError={() => setFailed(true)} />;
 }
 function HeroVisual({ author, english }) {
   const [failed, setFailed] = useState(false);
   const background = !author.portrait && author.listingKind !== 'review' ? author.profile.schoolLinks[0] : null;
   const useBackground = background && !failed;
-  return <figure className="hp-hero-photo">{useBackground ? <img src={background.image} alt={`${background.name}思想背景图`} fetchPriority="high" onError={() => setFailed(true)} /> : <Portrait person={author} priority />}<figcaption className="hp-photo-caption">{useBackground ? `思想背景图 · ${background.name}` : author.listingKind === 'thinker' ? '人物 / 思想 / 原典' : AUTHOR_KINDS[author.listingKind]}</figcaption><span className="hp-photo-edge">{english || 'DEEP PHILOSOPHY'}</span></figure>;
+  return <figure className="hp-hero-photo">{useBackground ? <CdnImage imageWidth={960} src={background.image} alt={`${background.name}思想背景图`} fetchPriority="high" onError={() => setFailed(true)} /> : <Portrait person={author} priority />}<figcaption className="hp-photo-caption">{useBackground ? `思想背景图 · ${background.name}` : author.listingKind === 'thinker' ? '人物 / 思想 / 原典' : AUTHOR_KINDS[author.listingKind]}</figcaption><span className="hp-photo-edge">{english || 'DEEP PHILOSOPHY'}</span></figure>;
 }
 function Cover({ book, className }) {
   const [failed, setFailed] = useState(false);
-  return book.cover && !failed ? <img className={className} src={book.cover} alt={`《${book.title}》封面`} loading="lazy" onError={() => setFailed(true)} /> : <div className={`hp-cover-placeholder ${className}`}>{book.title}</div>;
+  return book.cover && !failed ? <CdnImage className={className} imageWidth={320} src={book.cover} alt={`《${book.title}》封面`} loading="lazy" onError={() => setFailed(true)} /> : <div className={`hp-cover-placeholder ${className}`}>{book.title}</div>;
 }
 function Section({ id, title, subtitle, number, children, className = '' }) {
   return <section className={`hp-section ${className}`} id={`hp-${id}`}><header className="hp-section-heading"><span className="hp-chapter-number">{String(number).padStart(2, '0')}</span><div><div className="hp-kicker">{subtitle}</div><h2>{title}</h2></div></header>{children}</section>;
@@ -94,10 +96,10 @@ function AuthorPortraitPage({ authorName }) {
     const controller = new AbortController();
     (async () => {
       try {
-        const catalog = await loadAuthorCatalog();
-        let name = canonicalAuthor(authorName, catalog);
-        let raw = await fetchSchoolJSON(authorFile(name), controller.signal);
-        if (raw.aliasOf) { name = raw.aliasOf; raw = await fetchSchoolJSON(authorFile(name), controller.signal); }
+        const { raw, catalog } = await loadAuthorPage(authorName, controller.signal, { onDetail: detail => {
+          const hero = detail.portrait || (detail.listingKind !== 'review' && detail.profile?.schoolLinks?.[0]?.image);
+          if (hero) preload(staticImageSources(hero, 960).primary, { as: 'image', fetchPriority: 'high' });
+        } });
         if (controller.signal.aborted) return;
         const author = normalizeAuthor(raw);
         setState({ author, catalog, loading: false });

@@ -2,11 +2,12 @@ import { useMemo, useRef, useState, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { layoutConstellation, constellationRelationKind, constellationCurve } from '../../data/schoolConstellationLayout';
 import './ConstellationMap.css';
+import CdnImage from '../CdnImage';
 
 function Portrait({ src, name, className = '' }) {
   const [failedSrc, setFailedSrc] = useState(null);
   if (!src || failedSrc === src) return <span className={`school-star-placeholder ${className}`} aria-hidden="true"><i /></span>;
-  return <img className={className} src={src} alt={name || ''} loading="lazy" onError={() => setFailedSrc(src)} />;
+  return <CdnImage imageWidth={192} className={className} src={src} alt={name || ''} loading="lazy" onError={() => setFailedSrc(src)} />;
 }
 
 export default function ConstellationMap({ thinkers = [], relations = [], references, cihai = [], selectedPerson, onSelectPerson, onSelectConcept, onLocatePerson }) {

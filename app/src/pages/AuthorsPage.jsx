@@ -4,9 +4,10 @@ import { AUTHOR_KINDS, authorPath, canonicalAuthor, loadAuthorCatalog } from '..
 import { parseSchoolYear } from '../data/schoolContent';
 import { useSEO } from '../utils/seo';
 import './AuthorsPage.css';
+import CdnImage from '../components/CdnImage';
 function Thumbnail({ author }) {
   const [failed, setFailed] = useState(false);
-  return author.portrait && !failed ? <img src={author.portrait} alt={`${author.name}肖像`} loading="lazy" decoding="async" onError={() => setFailed(true)} /> : <span className="ap-initial">{author.name.split('·').at(-1).slice(0, 2)}</span>;
+  return author.portrait && !failed ? <CdnImage imageWidth={192} src={author.portrait} alt={`${author.name}肖像`} loading="lazy" decoding="async" onError={() => setFailed(true)} /> : <span className="ap-initial">{author.name.split('·').at(-1).slice(0, 2)}</span>;
 }
 const eras = { ancient: '古代', medieval: '中世纪', early: '近代', modern: '现代与当代' };
 const eraKey = author => { const year = parseSchoolYear(author.era); return year === null ? 'unknown' : year < 500 ? 'ancient' : year < 1500 ? 'medieval' : year < 1800 ? 'early' : 'modern'; };
