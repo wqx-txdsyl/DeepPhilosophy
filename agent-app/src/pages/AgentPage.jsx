@@ -252,8 +252,8 @@ export default function AgentWorkspace() {
   };
 
   /* ── 发送（Streaming Ownership 冻结点） ── */
-  const dispatchSend = async ({ message, display, localOnly = false, agentOverride = null, sourceMsg = null, attachments = [] }) => {
-    if (!accountReady || activeConv?.messages_loaded === false) return;
+  const dispatchSend = async ({ message, display, localOnly = false, agentOverride = null, sourceMsg = null, attachments = [], newConversation = false }) => {
+    if (!accountReady || (!newConversation && activeConv?.messages_loaded === false)) return;
     const requestOwner = conversationStore.owner;
     const agent = agentOverride || composerAgentRef.current;
     const text = typeof message === 'string' ? message : String(message || '');
@@ -262,8 +262,9 @@ export default function AgentWorkspace() {
 
     if (!shown.trim() && !hasAttach) return;   // 仅附件发送允许空文本（T6）
     // 同步锁（streamsRef 是同步结构; streamingIds 状态更新是异步的, 防双击产生双会话/双流）
-    const previousMetadata=streamsRef.current.get(scopeKey);
-    if (!localOnly && !prepareGeneralRequest(streamsRef.current, scopeKey)) return;
+    const sendScope = newConversation ? DRAFT_ID : scopeKey;
+    const previousMetadata=streamsRef.current.get(sendScope);
+    if (!localOnly && !prepareGeneralRequest(streamsRef.current, sendScope)) return;
     if (!localOnly && previousMetadata?.answerDone) {
       const old=conversationStore.getConversation(scopeKey)?.messages.find(m=>m.message_id===previousMetadata.messageId);
       if (old?.suggestions_status==='pending') {
@@ -271,12 +272,12 @@ export default function AgentWorkspace() {
         conversationStore.updateMessage(scopeKey,old.message_id,{suggestions_status:'unavailable'});
       }
     }
-    if (agent === 'general' && !conversationId && !localOnly) {
+    if (agent === 'general' && (!conversationId || newConversation) && !localOnly) {
       if (draftSendRef.current) return;
       draftSendRef.current = true;
     }
 
-    let convId = conversationId;
+    let convId = newConversation ? null : conversationId;
     const isNewConv = !convId;
     if (isNewConv) {
       const created = conversationStore.createConversation({
@@ -634,6 +635,10 @@ export default function AgentWorkspace() {
   sendRef.current = (text, sourceMsg) =>
     sourceMsg ? handleSuggestion(text, sourceMsg) : dispatchSend({ message: text, display: text, agentOverride: composerAgent });
   const stableOnSend = useCallback((text, sourceMsg) => sendRef.current(text, sourceMsg), []);
+  const handleMemoryExplore = question => {
+    setSettingsOpen(false);setComposerAgent('general');
+    dispatchSend({message:question,display:question,agentOverride:'general',newConversation:true});
+  };
 
   const handleRegenerateExploration = useCallback(async (source, question) => {
     const convId=source.conversation_id || conversationId, mid=source.message_id;
@@ -724,7 +729,7 @@ export default function AgentWorkspace() {
           </div>
         </div>
         <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
-        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} busy={streamingIds.size > 0} />
+        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} busy={streamingIds.size > 0} onExploreMemory={handleMemoryExplore} />
       </div>
     );
   }
@@ -779,7 +784,7 @@ export default function AgentWorkspace() {
         unavailable={unavailable || activeConv?.messages_loaded === false} resetKey={scopeKey} autoFocus={isDraft}
         dockLeft={sidebarCollapsed ? 0 : undefined} />
       <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
-      <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} busy={streamingIds.size > 0} />
+      <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} busy={streamingIds.size > 0} onExploreMemory={handleMemoryExplore} />
       {drawio && <DrawioModal xml={drawio.xml} onClose={closeDrawio} />}
     </div>
   );

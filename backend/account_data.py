@@ -32,6 +32,9 @@ def connection():
             enabled INTEGER NOT NULL DEFAULT 1, revision INTEGER NOT NULL DEFAULT 0,
             source_hash TEXT NOT NULL DEFAULT '', status TEXT NOT NULL DEFAULT 'idle',
             updated_at TEXT NOT NULL DEFAULT '', sources TEXT NOT NULL DEFAULT '[]')""")
+        conn.execute("""CREATE TABLE IF NOT EXISTS agent_memory_profile_details (
+            user_id INTEGER PRIMARY KEY, metadata TEXT NOT NULL DEFAULT '{}',
+            proposal_metadata TEXT NOT NULL DEFAULT '{}', corrections TEXT NOT NULL DEFAULT '[]')""")
         conn.execute("CREATE INDEX IF NOT EXISTS agent_conversation_recent ON agent_conversation_records(user_id,updated_at DESC)")
         conn.execute("""CREATE TABLE IF NOT EXISTS agent_history_migrations (
             user_id INTEGER PRIMARY KEY, last_chat_id INTEGER NOT NULL DEFAULT 0)""")
@@ -204,7 +207,7 @@ def forget(user_id, memory_id):
 
 def delete_account_data(user_id):
     with connection() as conn:
-        for table in ("agent_account_memory", "agent_memory_profile", "agent_conversation_records", "agent_history_migrations"):
+        for table in ("agent_account_memory", "agent_memory_profile", "agent_memory_profile_details", "agent_conversation_records", "agent_history_migrations"):
             conn.execute(f"DELETE FROM {table} WHERE user_id=?", (user_id,))
         conn.commit()
 

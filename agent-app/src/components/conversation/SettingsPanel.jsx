@@ -27,7 +27,7 @@ function Switch({ value, onChange, label }) {
 }
 
 /** The sole settings surface; legacy UserCenterModal delegates here. */
-export default function SettingsPanel({ open, onClose, initialSection = 'general', busy = false }) {
+export default function SettingsPanel({ open, onClose, initialSection = 'general', busy = false, onExploreMemory }) {
   const { t, lang, setLang } = useLang();
   const auth = useAuth();
   const { username, token, profile, accountReady, logout, historyStatus, retryHistory, updateProfile, authFetch } = auth;
@@ -166,7 +166,7 @@ export default function SettingsPanel({ open, onClose, initialSection = 'general
             <label>{L('回答偏好', 'Response preferences')}<textarea rows={3} value={draft.custom_instructions} onChange={e => setDraft({ ...draft,custom_instructions:e.target.value })} placeholder={L('例如：先给简洁判断，再展开理由；引用原文时注明出处', 'For example: start with a concise judgment, then explain the reasoning')} /><small>{L('适用于新请求；当前提问中的要求优先。', 'Used for new requests. Instructions in your current question take precedence.')}</small></label>
             <div className="cw-settings-form-footer"><button type="submit" className="cw-settings-button cw-settings-primary" disabled={!changed || !accountReady || !!operation}>{operation === 'profile' ? <Loader2 size={14} className="cw-spinner" /> : null}{operation === 'profile' ? L('保存中…', 'Saving…') : t('save')}</button><span>{changed ? L('有未保存的修改', 'Unsaved changes') : L('已保存到账号', 'Saved to your account')}</span></div>
           </form> : signInCard)}
-          {section === 'memory' && <AccountMemory key={profile?.id || 'guest'} lang={lang} onSignIn={() => setShowAuth(true)} draftState={memoryDraftRef.current} onDraftChange={state=>{memoryDraftRef.current=state;}} />}
+          {section === 'memory' && <AccountMemory key={profile?.id || 'guest'} lang={lang} onSignIn={() => setShowAuth(true)} draftState={memoryDraftRef.current} onDraftChange={state=>{memoryDraftRef.current=state;}} onExplore={onExploreMemory} conversationBusy={busy} />}
           {section === 'account' && (signedIn ? <>
             <div className="cw-settings-account-card"><span className="cw-settings-avatar">{(profile?.nickname || username).slice(0,1).toUpperCase()}</span><div><strong>{profile?.nickname || username}</strong><span>{username}</span></div></div>
             <SettingRow title={L('对话保存', 'Conversation saving')} description={L('登录后，对话会自动同步到当前账号。', 'Conversations sync automatically to your account.')}><span className="cw-settings-status">{syncLabel}</span></SettingRow>

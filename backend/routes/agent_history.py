@@ -40,6 +40,12 @@ class MemoryProfileWrite(BaseModel):
     expected_revision: int = Field(ge=0)
 
 
+class MemoryCorrection(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    request: str = Field(min_length=1)
+    expected_revision: int = Field(ge=0)
+
+
 @router.get("/conversations")
 def get_conversations(request: Request, index: bool = False, user: dict = Depends(auth_required)):
     return history_response(request, {"records": account_data.list_conversations(user["id"], index_only=index)})
@@ -118,6 +124,20 @@ def refresh_memory_profile(background_tasks: BackgroundTasks, user: dict = Depen
     if profile['enabled']:
         background_tasks.add_task(refresh, user['id'], True)
         profile['status'] = 'updating'
+    return {'profile': profile}
+
+
+@router.post('/memory/profile/correct')
+async def correct_memory_profile(req: MemoryCorrection, user: dict = Depends(auth_required)):
+    if not req.request.strip():
+        raise HTTPException(422, '更正内容不能为空')
+    from account_memory_profile import correct_profile
+    try:
+        saved, profile = await correct_profile(user['id'], req.request.strip(), req.expected_revision)
+    except Exception:
+        raise HTTPException(503, '本次更正未完成，旧摘要未改变，请重试')
+    if not saved:
+        raise HTTPException(409, '摘要刚刚更新，更正内容已保留，请读取最新版本再提交')
     return {'profile': profile}
 
 
