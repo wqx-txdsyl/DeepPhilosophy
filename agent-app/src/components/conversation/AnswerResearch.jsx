@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BookOpen, Search, ArrowUpRight, Compass, FileText, ChevronRight, RefreshCw, Loader2 } from 'lucide-react';
 import { generalAccessLabel, generalEvidenceLayer, pickUsedEvidence, primaryResearch } from '../../utils/evidence';
 import { GeneralReaderLink } from './O9';
+import useCompactViewport from '../../utils/useCompactViewport';
 
 export const PRIMARY_PROMPT = {
   zh: '请围绕这段回答的核心问题实际检索原典，选择最相关的1～3段并读取上下文。给出原文、书名与章节，解释原文怎样支持、限制或反驳刚才的观点；找不到合适材料时如实说明。',
@@ -41,11 +42,12 @@ export function SupplementarySources({ sources, zh, onSource }) {
 export function AnswerResearch({ message, lang, busy, onSend, onSource }) {
   const zh = lang !== 'en';
   const [expanded, setExpanded] = useState(false);
+  const compact = useCompactViewport();
   const research = primaryResearch(message);
   const cited = pickUsedEvidence(message.citations);
   const other = cited.filter(c => generalEvidenceLayer(c) !== 'primary');
   const used = research.sources.filter(c => c.used !== false);
-  const initial = (used.length ? used : research.sources).slice(0, 3);
+  const initial = (used.length ? used : research.sources).slice(0, compact ? 1 : 3);
   const visible = expanded ? research.sources : initial;
   const quoteChecks = research.quote_checks || [];
   const empty = {
@@ -53,6 +55,11 @@ export function AnswerResearch({ message, lang, busy, onSend, onSource }) {
     empty: zh ? '本轮检索未找到合适的原典片段，可以换一个概念或线索继续查找。' : 'No suitable primary passage was found. Try another concept or lead.',
     failed: zh ? '本轮原典检索未完成，可以重试。' : 'Primary-text retrieval did not complete. You can retry.',
   }[research.status];
+  if (compact && !visible.length && !quoteChecks.length && !other.length) return <details className="general-research-section general-empty-research">
+    <summary><BookOpen size={15} /><span>{zh ? '原典检索' : 'Primary texts'}</span><span className="general-section-note">{zh ? '暂无原文片段' : 'No passages'}</span><ChevronRight size={14} /></summary>
+    <p className="general-section-note">{empty}</p>
+    <button className="general-research-action" disabled={busy} onClick={()=>onSend(PRIMARY_PROMPT[zh ? 'zh' : 'en'],message)}><Search size={13} />{zh ? '检索相关原典' : 'Find primary texts'}</button>
+  </details>;
   return <section className="general-research-section" aria-label={zh ? '原典检索' : 'Primary-text research'}>
     <div className="general-section-head"><BookOpen size={15} /><h3>{zh ? '原典检索' : 'Primary-text research'}</h3>
       {!!research.sources.length && <span>{zh ? `${research.total || research.sources.length} 处相关材料` : `${research.total || research.sources.length} passages`}</span>}

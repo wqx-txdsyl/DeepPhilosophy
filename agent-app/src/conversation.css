@@ -940,3 +940,52 @@ body.dark-mode .cw-danger-btn:hover { background: #2c1d1d; }
 .cw-memory-form textarea { box-sizing: border-box; width: 100%; min-height: 70px; padding: 9px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; font-size: 12px; resize: vertical; }
 .cw-auth-unavailable { padding: 60px 20px; text-align: center; color: var(--text-dim); }
 .cw-auth-unavailable button { margin: 8px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); cursor: pointer; }
+.cw-history-loading, .cw-history-empty { font-size: 12px; color: var(--text-dim); padding: 12px 8px; }
+.cw-history-loading button, .cw-history-empty button { margin-left: 10px; border: 0; background: none; color: var(--text); cursor: pointer; }
+.general-copy-status { font-size: 11px; color: var(--text-dim); margin-left: 6px; }
+.general-copy-fallback { margin: 12px 0; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; }
+.general-copy-fallback textarea { width: 100%; box-sizing: border-box; height: 130px; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px; }
+.general-copy-fallback button { padding: 8px 10px; border: 0; background: none; color: var(--text); cursor: pointer; }
+@media (max-width: 600px) {
+  .cw-root { min-height: 100dvh; }
+  .cw-sidebar { height: 100dvh; padding-bottom: env(safe-area-inset-bottom); }
+  .cw-sidebar-inner { height: 100%; }
+  .cw-header { min-height: 44px; padding: 5px 10px; }
+  .cw-header .cw-icon-btn { width: 36px; height: 36px; }
+  .cw-header-title { font-size: 13px; }
+  .cw-messages { padding: 14px 16px calc(110px + env(safe-area-inset-bottom)); min-height: calc(100dvh - 44px); }
+  .cw-empty-general { padding-top: 16px; min-height: 0; }
+  .cw-brand-wordmark { font-size: 17cqw; }
+  .cw-brand-caption { margin-top: 12px; font-size: 12px; }
+  .cw-personal-home { margin-top: 22px; }
+  .cw-personal-question { padding: 13px 0; gap: 12px; }
+  .cw-question-basis { margin-bottom: 4px; }
+  .cw-question-text { font-size: 14px; line-height: 1.65; }
+  .composer-dock { padding: 6px 10px calc(8px + env(safe-area-inset-bottom)); background: linear-gradient(transparent,var(--bg) 35%); }
+  .cw-composer { padding: 7px 10px 5px; border-radius: 16px; box-shadow: 0 1px 5px var(--ring); }
+  .cw-composer-input { font-size: 16px; line-height: 1.5; resize: none; }
+  .cw-composer-controls { padding-top: 2px; }
+  .general-answer { font-size: 15px; line-height: 1.85; overflow-wrap: anywhere; }
+  .general-answer h2, .general-answer h3 { margin-top: 20px; margin-bottom: 9px; }
+  .general-process { margin-bottom: 12px; }
+  .general-think-body { max-height: 180px; padding-left: 10px; }
+  .general-tool > summary { gap: 5px; flex-wrap: nowrap; }
+  .general-tool-query { flex: 1; min-width: 0; max-width: none; }
+  .general-tool-status { font-size: 10px; }
+  .general-research-section, .general-exploration-section { margin-top: 18px; padding-top: 12px; }
+  .general-section-head { margin-bottom: 8px; }
+  .general-primary-card { border: 0; border-left: 2px solid var(--border); border-radius: 0; padding: 5px 0 5px 11px; }
+  .general-primary-card blockquote { -webkit-line-clamp: 2; margin: 7px 0; }
+  .general-source-meta { line-height: 1.6; gap: 4px 8px; }
+  .general-source-actions { margin-top: 3px; gap: 4px 14px; }
+  .general-source-actions button, .general-source-actions .o9-drawer-link { min-height: 32px; }
+  .general-research-action { border: 0; border-radius: 0; background: none; padding: 5px 0; min-height: 32px; }
+  .general-topic-questions { margin-bottom: 4px; }
+  .general-topic-questions button { padding: 10px 0; }
+  .general-empty-research > summary { display: flex; align-items: center; gap: 7px; min-height: 32px; list-style: none; font-size: 13px; cursor: pointer; }
+  .general-empty-research > summary::-webkit-details-marker { display: none; }
+  .general-empty-research > summary .general-section-note { margin: 0 0 0 auto; font-size: 11px; }
+  .general-empty-research[open] > summary > svg:last-child { transform: rotate(90deg); }
+  .general-empty-research > p { margin-top: 7px; }
+  .general-answer-actions { margin-top: 12px; }
+}

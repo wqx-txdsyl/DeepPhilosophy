@@ -18,6 +18,19 @@ current_tool_agent: ContextVar[str | None] = ContextVar("deep_tool_agent", defau
 current_account_id: ContextVar[int | None] = ContextVar("deep_account_id", default=None)
 
 
+def reset_owned_context(variable, token):
+    """ASGI may close an async generator in a different cleanup task.
+
+    That task does not own the token. Leave its context untouched; the original
+    request task's context ends with that task. Normal completion still resets.
+    """
+    try:
+        variable.reset(token)
+        return True
+    except ValueError:
+        return False
+
+
 def general_memory_key(user, ip, conversation_id):
     user_id = (user or {}).get("id")
     authenticated = user_id is not None

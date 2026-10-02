@@ -12,6 +12,7 @@ import {
   toPersistedMessage,
   legacyMessagesToConversations,
   GENERAL_AGENT,
+  clonePersisted,
 } from './conversationLogic.js';
 
 const STORAGE_KEY = 'phiagent_conversations_v1';
@@ -54,7 +55,7 @@ export class LocalConversationStore {
 
   // ── 内部 ──
   _loadAll() {
-    if (this.volatile && this.memory) return structuredClone(this.memory);
+    if (this.volatile && this.memory) return clonePersisted(this.memory);
     if (!this.storage) return [];
     try {
       const raw = this.storage.getItem(this.key);
@@ -70,7 +71,7 @@ export class LocalConversationStore {
 
   _saveAll(list, notify = true) {
     const previous = this._loadAll();
-    this.memory = structuredClone(list);
+    this.memory = clonePersisted(list);
     try {
       this.storage?.setItem(this.key, JSON.stringify(list));
       this.volatile = !this.storage;

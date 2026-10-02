@@ -88,3 +88,56 @@ try {
   await defaultSession.hydrate(); assert.equal(defaultSession.hydrated,true);
 } finally { defaultSession?.close(); globalThis.fetch = nativeFetch; }
 console.log('Browser native fetch receiver regression passed');
+
+// A failed first pull must retry a GET, never mark an empty cache as synced.
+const flakyStore = new LocalConversationStore(storage()); flakyStore.setScope('a');
+let pulls=0, scheduledRetry;
+const states=[];
+const flaky = new ConversationSync(flakyStore,{owner:'a',token:'a',onStatus:s=>states.push(s),fetcher:async(p,o)=>{
+  if (++pulls===1) throw new TypeError('fixture network drop');
+  return remote.fetcher(p,o);
+}});
+flaky.schedule = ()=>{scheduledRetry=()=>flaky.hydrate()};
+await flaky.hydrate(); assert.equal(flaky.hydrated,false); assert.equal(states.at(-1),'offline');
+await scheduledRetry(); assert.equal(flaky.hydrated,true); assert.ok(flakyStore.listConversations().length);
+assert.ok(pulls>=2); flaky.close();
+
+// The mobile directory contains no answer/tool trace bodies; detail is fetched on opening.
+const indexedStore=new LocalConversationStore(storage()); indexedStore.setScope('a');
+let detailReads=0;
+const indexed = new ConversationSync(indexedStore,{owner:'a',token:'a',fetcher:async(p,o)=>{
+  if (p==='\/api/agent/conversations?index=true') {
+    const r=await remote.fetcher('/api/agent/conversations',o); const body=await r.json();
+    return {ok:true,status:200,json:async()=>({records:body.records.map(r=>r.deleted?r:{...r,data:{...r.data,messages:[],messages_loaded:false,message_count:r.data.messages.length}})})};
+  }
+  if (!o.method && p.includes('/conversations/')) {
+    detailReads++;
+    const id=decodeURIComponent(p.split('/conversations/')[1]);
+    return {ok:true,status:200,json:async()=>({record:remote.owners.get('Bearer a').get(id)})};
+  }
+  return remote.fetcher(p,o);
+}});
+await indexed.hydrate(); assert.equal(detailReads,0);
+assert.equal(indexedStore.getConversation('survives').messages_loaded,false);
+await indexed.ensureConversation('survives');
+assert.equal(detailReads,1); assert.notEqual(indexedStore.getConversation('survives').messages_loaded,false);
+await indexed.ensureConversation('survives'); assert.equal(detailReads,1);
+indexed.close();
+
+// Clearing just the history cache must never manufacture a deletion from dirty metadata.
+const lostCache=storage(); const lostStore=new LocalConversationStore(lostCache); lostStore.setScope('a');
+lostCache.setItem('phiagent_sync_v2:a',JSON.stringify({dirty:['survives'],revisions:{survives:1}}));
+const missing=new ConversationSync(lostStore,{owner:'a',token:'a',fetcher:remote.fetcher});
+assert.equal(missing.queue.size,0); await missing.hydrate(); await flushAll(missing);
+assert.equal(remote.owners.get('Bearer a').get('survives').deleted,false); missing.close();
+console.log('Mobile restoration: failed initial GET retries, lazy detail loading and missing-cache deletion protection passed');
+// Save stream checkpoints without re-uploading the whole trace every paint.
+const streamStore=new LocalConversationStore(storage()); const streamSync=session(streamStore,remote,'stream'); await streamSync.hydrate();
+streamStore.createConversation({conversation_id:'live'}); streamSync.beginStream('live');
+streamStore.appendMessage('live',{message_id:'stream-answer',role:'assistant',content:'第一段'});
+await streamSync.flush();
+for(let i=0;i<12;i++) { streamStore.updateMessage('live','stream-answer',{content:`第${i}段`}); await streamSync.flush(); }
+assert.equal(remote.owners.get('Bearer stream').get('live').revision,1);
+streamSync.endStream('live'); await streamSync.flush();
+assert.equal(remote.owners.get('Bearer stream').get('live').data.messages[0].content,'第11段'); streamSync.close();
+console.log('Mobile upload: stream checkpoints are coalesced and final reply saves immediately');

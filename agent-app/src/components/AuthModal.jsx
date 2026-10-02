@@ -72,12 +72,12 @@ export default function AuthModal({ onClose }) {
         </div>
         <input value={username} onChange={e => setUsername(e.target.value)} placeholder={t('usernamePh')}
           style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--border)',
-                   fontSize: 14, outline: 'none', marginBottom: 10, boxSizing: 'border-box' }} />
+                   fontSize: 16, outline: 'none', marginBottom: 10, boxSizing: 'border-box' }} />
         <input value={password} onChange={e => setPassword(e.target.value)} type="password"
           placeholder={t('passwordPh')}
           onKeyDown={e => e.key === 'Enter' && submit()}
           style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--border)',
-                   fontSize: 14, outline: 'none', marginBottom: 12, boxSizing: 'border-box' }} />
+                   fontSize: 16, outline: 'none', marginBottom: 12, boxSizing: 'border-box' }} />
         {error && <div style={{ color: '#c0392b', fontSize: 12.5, marginBottom: 10 }}>{error}</div>}
         <button onClick={submit} disabled={busy}
           style={{ width: '100%', padding: '10px 0', borderRadius: 8, border: 'none', cursor: 'pointer',

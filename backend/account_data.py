@@ -27,6 +27,8 @@ def connection():
             user_id INTEGER NOT NULL, memory_id TEXT NOT NULL, text TEXT NOT NULL,
             created_at TEXT NOT NULL, PRIMARY KEY (user_id, memory_id))""")
         conn.execute("CREATE INDEX IF NOT EXISTS agent_conversation_recent ON agent_conversation_records(user_id,updated_at DESC)")
+        conn.execute("""CREATE TABLE IF NOT EXISTS agent_history_migrations (
+            user_id INTEGER PRIMARY KEY, last_chat_id INTEGER NOT NULL DEFAULT 0)""")
         conn.commit()
         yield conn
     finally:
@@ -39,11 +41,66 @@ def record(row):
             "data": None if row["deleted"] else json.loads(row["data"])}
 
 
-def list_conversations(user_id):
+def migrate_legacy_history(user_id):
+    """Expose this account's old flat chat history without inventing threads.
+
+    Source rows remain untouched. Stable message IDs make retries idempotent;
+    a deleted archive stays deleted, even when a stale client reconnects.
+    """
     with connection() as conn:
-        return [record(row) for row in conn.execute(
+        if not conn.execute("SELECT 1 FROM sqlite_master WHERE name='chat_history'").fetchone():
+            return
+        conn.execute('BEGIN IMMEDIATE')
+        checkpoint = conn.execute('SELECT last_chat_id FROM agent_history_migrations WHERE user_id=?', (user_id,)).fetchone()
+        last_id = checkpoint[0] if checkpoint else 0
+        rows = conn.execute('SELECT id,role,content,sources,created_at FROM chat_history WHERE user_id=? AND id>? ORDER BY id',
+                            (user_id,last_id)).fetchall()
+        if not rows:
+            return
+        cid = 'conv_legacy_account_chat'
+        existing = conn.execute('SELECT * FROM agent_conversation_records WHERE user_id=? AND conversation_id=?', (user_id,cid)).fetchone()
+        if not existing or not existing['deleted']:
+            archive = json.loads(existing['data']) if existing else {
+                'conversation_id':cid, 'title':'旧版历史对话', 'default_agent_id':'general',
+                'created_at':rows[0]['created_at'], 'messages':[]}
+            seen = {m['message_id'] for m in archive['messages']}
+            for row in rows:
+                mid = f"legacy_chat_{row['id']}"
+                if mid in seen or row['role'] not in {'user','assistant'}:
+                    continue
+                msg = {'message_id':mid,'role':row['role'],'content':row['content'],
+                       'created_at':row['created_at'],'conversation_id':cid}
+                if row['role'] == 'assistant':
+                    msg.update({'agent_id':'general','stream_state':'complete'})
+                    try:
+                        sources = json.loads(row['sources'] or '[]')
+                        if isinstance(sources,list): msg['citations'] = [c for c in sources if isinstance(c,dict)]
+                    except (ValueError,TypeError): pass
+                archive['messages'].append(msg)
+            archive['updated_at'] = rows[-1]['created_at']
+            conn.execute("""INSERT INTO agent_conversation_records VALUES (?,?,?,?,0,?)
+                ON CONFLICT(user_id,conversation_id) DO UPDATE SET data=excluded.data,
+                revision=excluded.revision,updated_at=excluded.updated_at""",
+                (user_id,cid,json.dumps(archive,ensure_ascii=False),(existing['revision'] if existing else 0)+1,archive['updated_at']))
+        conn.execute('INSERT INTO agent_history_migrations VALUES (?,?) ON CONFLICT(user_id) DO UPDATE SET last_chat_id=excluded.last_chat_id',
+                     (user_id,rows[-1]['id']))
+        conn.commit()
+
+
+def list_conversations(user_id, index_only=False):
+    migrate_legacy_history(user_id)
+    with connection() as conn:
+        items = [record(row) for row in conn.execute(
             "SELECT * FROM agent_conversation_records WHERE user_id=? ORDER BY updated_at DESC",
             (user_id,)).fetchall()]
+    if index_only:
+        for item in items:
+            if item['deleted']: continue
+            data = item['data']
+            item['data'] = {k:data[k] for k in ('conversation_id','title','default_agent_id','last_used_agent_id',
+                          'created_at','updated_at','reading_context') if k in data}
+            item['data'].update({'messages':[], 'messages_loaded':False, 'message_count':len(data.get('messages',[]))})
+    return items
 
 
 def save_conversation(user_id, conversation_id, data, expected_revision):
@@ -94,6 +151,7 @@ def get_conversation(user_id, conversation_id):
 
 
 def search_history(user_id, query):
+    migrate_legacy_history(user_id)
     pattern = '%' + query.replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_') + '%'
     with connection() as conn:
         rows = conn.execute("""SELECT c.conversation_id, json_extract(c.data,'$.title') AS title,
@@ -135,7 +193,7 @@ def forget(user_id, memory_id):
 
 def delete_account_data(user_id):
     with connection() as conn:
-        for table in ("agent_account_memory", "agent_conversation_records"):
+        for table in ("agent_account_memory", "agent_conversation_records", "agent_history_migrations"):
             conn.execute(f"DELETE FROM {table} WHERE user_id=?", (user_id,))
         conn.commit()
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { copyAnswerText } from '../../utils/clipboard';
 import { Check, ChevronDown, ChevronRight, Copy, Loader2, Square, XCircle, Search, TriangleAlert } from 'lucide-react';
 import { useLang } from '../../utils/i18n';
 import { plainText, inferToolStatus } from '../../data/generalStream';
@@ -104,8 +105,8 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, 
   const interrupted = ['stopped', 'error', 'interrupted'].includes(m.stream_state);
   const complete = !m.streaming && !!content && !interrupted;
   const copy = async () => {
-    try { await navigator.clipboard.writeText(content); setCopied(true); setCopyError(false); }
-    catch { setCopyError(true); }
+    const success = await copyAnswerText(content);
+    setCopied(success); setCopyError(!success);
   };
   useEffect(() => { if (!copied) return; const timer = setTimeout(() => setCopied(false), 1800); return () => clearTimeout(timer); }, [copied]);
   return <>
@@ -126,7 +127,12 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, 
     {!!content && !m.streaming && <div className="general-answer-actions" role="group" aria-label={zh ? '回答操作' : 'Answer actions'}>
       <button type="button" className="general-action-icon" onClick={copy} aria-label={zh ? '复制回答' : 'Copy answer'}>{copied ? <Check size={16} /> : <Copy size={16} />}<span className="general-action-tooltip">{copied ? (zh ? '已复制' : 'Copied') : (zh ? '复制' : 'Copy')}</span></button>
       {complete && m.safety !== 'blocked' && <DepthControls lang={lang} disabled={busy} onPick={prompt => onSend(prompt, m)} general kinds={['simpler', 'deeper', 'scholarly']} iconOnly />}
-      {copyError && <span role="status">{zh ? '复制失败，可选择正文复制。' : 'Copy failed. Select the text to copy it.'}</span>}
+      {copied && <span className="general-copy-status" role="status">{zh ? '已复制' : 'Copied'}</span>}
+    </div>}
+    {copyError && <div className="general-copy-fallback" role="dialog" aria-label={zh ? '手动复制回答' : 'Copy answer manually'}>
+      <p>{zh ? '浏览器未允许自动复制。长按下方文本，选择复制。' : 'Automatic copy was blocked. Select the text below and copy it.'}</p>
+      <textarea readOnly value={content} aria-label={zh ? '可复制的回答正文' : 'Answer text to copy'} />
+      <button onClick={copy}>{zh ? '再试复制' : 'Try copy again'}</button><button onClick={()=>setCopyError(false)}>{zh ? '关闭' : 'Close'}</button>
     </div>}
     <SourceDrawer open={!!source} citation={source} lang={lang} onClose={() => setSource(null)} general />
   </>;

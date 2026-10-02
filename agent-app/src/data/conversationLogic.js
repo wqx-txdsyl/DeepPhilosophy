@@ -11,6 +11,12 @@
 
 export const GENERAL_AGENT = 'general';
 
+/** Persisted records are JSON data; older mobile browsers lack structuredClone. */
+export function clonePersisted(value) {
+  return typeof structuredClone === 'function' ? structuredClone(value)
+    : value == null ? value : JSON.parse(JSON.stringify(value));
+}
+
 /** 会话 id（persist 后使用）与草稿 scope（路由 /agent 上的临时 Draft） */
 export const DRAFT_ID = '__draft__';
 
@@ -317,6 +323,7 @@ export function normalizeConversation(raw) {
     last_used_agent_id: raw.last_used_agent_id || null,
     created_at: raw.created_at || new Date().toISOString(),
     updated_at: raw.updated_at || raw.created_at || new Date().toISOString(),
+    ...(raw.messages_loaded === false ? { messages_loaded: false, message_count: raw.message_count || 0 } : {}),
     reading_context: {
       book_id: raw.reading_context?.book_id ?? null,
       chapter_id: raw.reading_context?.chapter_id ?? null,

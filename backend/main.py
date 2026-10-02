@@ -99,6 +99,8 @@ async def global_middleware(request: Request, call_next):
         response.headers["Cache-Control"] = "public, max-age=3600"
     elif path.startswith("/philosopher/") and not path.startswith("/api/"):
         response.headers["Cache-Control"] = "public, max-age=3600"  # 1 hour, not 1 year (portraits get updated)
+    elif not path.startswith('/api/') and response.headers.get('content-type','').startswith('text/html'):
+        response.headers['Cache-Control'] = 'no-cache'
     return response
 
 

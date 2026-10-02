@@ -19,8 +19,8 @@ export default function ConversationSidebar({
   conversations, activeId, streamingIds, open, onClose, collapsed,
   onSelect, onNew, onExplore, onRename, onDelete, onOpenSettings,
 }) {
-  const { t } = useLang();
-  const { username, logout } = useAuth();
+  const { t, lang } = useLang();
+  const { username, logout, token, historyStatus, retryHistory } = useAuth();
   const [menuFor, setMenuFor] = useState(null);       // 打开了菜单的会话 id
   const [menuAnchor, setMenuAnchor] = useState(null); // {left,top,bottom} fixed 锚点
   const [renaming, setRenaming] = useState(null);     // 重命名目标会话
@@ -36,7 +36,7 @@ export default function ConversationSidebar({
 
   return (
     <>
-      <div className={`cw-sidebar${open ? ' cw-sidebar-open' : ''}${collapsed ? ' cw-sidebar-hidden' : ''}`}>
+      <div id="cw-history-sidebar" className={`cw-sidebar${open ? ' cw-sidebar-open' : ''}${collapsed ? ' cw-sidebar-hidden' : ''}`}>
         <div className="cw-sidebar-inner">
           {/* 品牌 */}
           <div className="cw-brand">
@@ -54,6 +54,12 @@ export default function ConversationSidebar({
           </div>
           {/* 历史会话（独立滚动） */}
           <div className="cw-conv-scroll">
+            {!conversations.length && <div className="cw-history-empty" role="status">
+              {token && ['loading','offline'].includes(historyStatus)
+                ? (lang === 'zh' ? (historyStatus === 'loading' ? '正在恢复对话…' : '历史暂未加载') : 'Restoring conversation history')
+                : (lang === 'zh' ? '还没有对话' : 'No conversations yet')}
+              {token && historyStatus === 'offline' && <button onClick={retryHistory}>{t('retry')}</button>}
+            </div>}
             {groups.map(([key, items]) => (
               <div key={key}>
                 <div className="cw-group-label">{t(`grp_${key}`)}</div>

@@ -132,7 +132,7 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
             async for frame in stream_events():
                 yield frame
             return
-        from deep_context import current_memory_key, general_memory_key, current_account_id
+        from deep_context import current_memory_key, general_memory_key, current_account_id, reset_owned_context
         # Sync FastAPI dependencies execute in a worker context. Their
         # ContextVar writes do not propagate back into this SSE task.
         ip = guard.client_ip(request)
@@ -147,8 +147,8 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
             try:
                 await stream.aclose()
             finally:
-                current_memory_key.reset(scope_token)
-                current_account_id.reset(account_token)
-                guard.current_user.reset(identity_token)
+                reset_owned_context(current_memory_key, scope_token)
+                reset_owned_context(current_account_id, account_token)
+                reset_owned_context(guard.current_user, identity_token)
     return StreamingResponse(gen(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})

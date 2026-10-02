@@ -121,6 +121,9 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={{ token, username, profile, accountReady, historyStatus, authError,
       retryAccount: () => setVerifyAttempt(n => n + 1), login, register, logout, authFetch,
+      ensureConversation: id => syncRef.current ? syncRef.current.ensureConversation(id) : Promise.reject(new Error('Account not ready')),
+      beginHistoryStream: id => syncRef.current?.beginStream(id),
+      endHistoryStream: id => syncRef.current?.endStream(id),
       retryHistory: () => syncRef.current?.hydrate() }}>
       {children}
     </AuthContext.Provider>

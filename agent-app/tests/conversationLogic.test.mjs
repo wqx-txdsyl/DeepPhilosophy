@@ -329,3 +329,12 @@ ok('Phase 3: 非 general 消息保留 citations + evidence（历史引用不丢,
 });
 
 console.log(`\n${passed} checks passed`);
+const cloneBackup=globalThis.structuredClone;
+try {
+  globalThis.structuredClone=undefined;
+  const olderStore=new LocalConversationStore(mockStorage());
+  olderStore.createConversation({conversation_id:'older-mobile'});
+  olderStore.appendMessage('older-mobile',{message_id:'m',role:'user',content:'旧浏览器仍可保存'});
+  assert.equal(olderStore.getConversation('older-mobile').messages[0].content,'旧浏览器仍可保存');
+} finally { globalThis.structuredClone=cloneBackup; }
+console.log('Older mobile browser storage fallback passed');

@@ -131,3 +131,52 @@ def test_older_history_search_and_read_stay_in_account(database):
     data.delete_conversation(1,'fixture')
     assert data.search_history(1,'康德') == []
     assert data.get_conversation(1,'fixture') is None
+
+
+def test_legacy_account_history_restores_once_without_cross_account_or_resurrection(database):
+    with auth._get_conn() as conn:
+        conn.execute('CREATE TABLE chat_history(id INTEGER PRIMARY KEY,user_id INTEGER,role TEXT,content TEXT,sources TEXT,created_at TEXT)')
+        conn.executemany('INSERT INTO chat_history VALUES(?,?,?,?,?,?)',[
+            (1,1,'user','旧问题',None,'2026-09-01T10:00:00Z'),
+            (2,1,'assistant','旧回答','[]','2026-09-01T10:01:00Z'),
+            (3,2,'user','其他账号',None,'2026-09-01T10:00:00Z')])
+    records=data.list_conversations(1)
+    assert len(records)==1 and len(records[0]['data']['messages'])==2
+    assert records[0]['data']['title']=='旧版历史对话'
+    assert len(data.list_conversations(1)[0]['data']['messages'])==2
+    assert data.search_history(1,'其他账号')==[]
+    cid=records[0]['conversation_id']
+    data.delete_conversation(1,cid)
+    with auth._get_conn() as conn: conn.execute('INSERT INTO chat_history VALUES(4,1,\'user\',\'新旧版问题\',NULL,\'2026-09-02\')')
+    assert data.list_conversations(1)[0]['deleted']
+    with auth._get_conn() as conn: assert conn.execute('SELECT count(*) FROM chat_history').fetchone()[0]==4
+
+
+def test_lightweight_directory_lazy_detail_and_compression(database):
+    app=FastAPI(); app.include_router(router)
+    app.dependency_overrides[auth_required]=lambda:{'id':1}
+    client=TestClient(app)
+    payload=conversation(content='正文'*30000)
+    payload['messages'][0]['tool_events']=[{'result':'工具轨迹'*20000}]
+    data.save_conversation(1,'fixture',payload,0)
+    index=client.get('/api/agent/conversations?index=true').json()['records'][0]['data']
+    assert index['messages']==[] and index['messages_loaded'] is False and index['message_count']==1
+    full=client.get('/api/agent/conversations/fixture',headers={'Accept-Encoding':'gzip'})
+    assert full.json()['record']['data']==payload
+    assert full.headers['content-encoding']=='gzip' and int(full.headers['content-length'])<3000
+    assert full.headers['cache-control']=='private, no-store'
+    app.dependency_overrides[auth_required]=lambda:{'id':2}
+    assert client.get('/api/agent/conversations/fixture').status_code==404
+
+
+def test_disconnect_cleanup_does_not_reset_another_task_context():
+    import contextvars
+    from deep_context import reset_owned_context
+    variable=contextvars.ContextVar('fixture',default=None)
+    original=contextvars.Context(); foreign=contextvars.Context()
+    token=original.run(variable.set,'original')
+    foreign.run(variable.set,'other request')
+    assert foreign.run(reset_owned_context,variable,token) is False
+    assert foreign.run(variable.get)=='other request'
+    assert original.run(reset_owned_context,variable,token) is True
+    assert original.run(variable.get) is None

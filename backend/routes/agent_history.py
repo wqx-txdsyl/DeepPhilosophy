@@ -1,5 +1,7 @@
 """Authenticated, revisioned PhiAgent history and explicit account memory."""
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Response, Request
+import gzip
+import json
 from pydantic import BaseModel, Field, ConfigDict
 from auth_deps import auth_required
 import account_data
@@ -9,6 +11,15 @@ def private_response(response: Response):
 
 
 router = APIRouter(prefix="/api/agent", dependencies=[Depends(private_response)])
+
+
+def history_response(request, payload):
+    headers = {'Cache-Control':'private, no-store', 'Vary':'Accept-Encoding'}
+    raw = json.dumps(payload, ensure_ascii=False).encode('utf-8')
+    if len(raw) > 2000 and 'gzip' in request.headers.get('accept-encoding','').lower():
+        raw = gzip.compress(raw, compresslevel=5)
+        headers['Content-Encoding'] = 'gzip'
+    return Response(raw, media_type='application/json', headers=headers)
 
 
 class ConversationWrite(BaseModel):
@@ -23,8 +34,18 @@ class MemoryWrite(BaseModel):
 
 
 @router.get("/conversations")
-def get_conversations(user: dict = Depends(auth_required)):
-    return {"records": account_data.list_conversations(user["id"])}
+def get_conversations(request: Request, index: bool = False, user: dict = Depends(auth_required)):
+    return history_response(request, {"records": account_data.list_conversations(user["id"], index_only=index)})
+
+
+@router.get('/conversations/{conversation_id}')
+def get_conversation(conversation_id: str, request: Request, user: dict = Depends(auth_required)):
+    # Revision must be read together with the payload, never from another call.
+    with account_data.connection() as conn:
+        row = conn.execute('SELECT * FROM agent_conversation_records WHERE user_id=? AND conversation_id=? AND deleted=0',
+                           (user['id'], conversation_id)).fetchone()
+        if not row: raise HTTPException(404, '会话不存在或已删除')
+        return history_response(request, {'record':account_data.record(row)})
 
 
 @router.put("/conversations/{conversation_id}")

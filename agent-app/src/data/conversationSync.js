@@ -1,7 +1,7 @@
 /** Account-owned outbox + per-conversation revision synchronization.
  * Token/owner are captured per session. Late responses never touch a new account.
  */
-import { normalizeConversation } from './conversationLogic.js';
+import { normalizeConversation, clonePersisted } from './conversationLogic.js';
 
 export function mergeConversation(remote, local) {
   if (!remote) return normalizeConversation(local);
@@ -26,6 +26,9 @@ export class ConversationSync {
     this.store = store; this.owner = owner; this.token = token;
     this.fetcher = fetcher; this.onStatus = onStatus; this.onChange = onChange;
     this.closed = false; this.hydrated = false; this.timer = null; this.running = null;
+    this.pulling = null;
+    this.reading = new Map();
+    this.busy = new Set(); this.lastPushed = new Map();
     this.revisions = {}; this.queue = new Map(); this.generation = 0;
     this.metaKey = `phiagent_sync_v2:${owner}`;
     try {
@@ -33,7 +36,7 @@ export class ConversationSync {
       this.revisions = meta.revisions || {};
       for (const id of meta.dirty || []) {
         const c = store._loadAll().find(c => c.conversation_id === id);
-        this.queue.set(id, { data: c || null, version: ++this.generation });
+        if (c || (meta.deleted || []).includes(id)) this.queue.set(id, { data: c || null, version: ++this.generation });
       }
     } catch { /* malformed metadata never replaces history */ }
     this.unsubscribe = store.subscribe((list, previous, scope) => {
@@ -48,17 +51,22 @@ export class ConversationSync {
   }
   active() { return !this.closed && this.store.owner === this.owner; }
   saveMeta() {
-    try { this.store.storage?.setItem(this.metaKey, JSON.stringify({ revisions: this.revisions, dirty: [...this.queue.keys()] })); }
+    try { this.store.storage?.setItem(this.metaKey, JSON.stringify({ revisions: this.revisions, dirty: [...this.queue.keys()],
+      deleted:[...this.queue].filter(([,v])=>v.data===null).map(([id])=>id) })); }
     catch { this.onStatus('cache-error'); }
   }
   enqueue(id, data) {
-    this.queue.set(id, { data: structuredClone(data), version: ++this.generation });
+    this.queue.set(id, { data: clonePersisted(data), version: ++this.generation });
     this.saveMeta(); this.onStatus('saving'); this.schedule();
   }
-  schedule(delay = 700) {
+  beginStream(id) { this.busy.add(id); }
+  endStream(id) { this.busy.delete(id); if (this.queue.has(id)) this.schedule(0); }
+  schedule(delay) {
     clearTimeout(this.timer);
-    if (this.closed || !this.hydrated) return;
-    this.timer = setTimeout(() => this.flush().catch(() => {}), delay);
+    if (this.closed) return;
+    if (delay === undefined) delay = this.queue.size ? Math.min(...[...this.queue.keys()].map(id=>
+      this.busy.has(id) ? Math.max(700,20000-(Date.now()-(this.lastPushed.get(id)||0))) : 700)) : 700;
+    this.timer = setTimeout(() => (this.hydrated ? this.flush() : this.hydrate()).catch(() => {}), delay);
   }
   async request(path, options = {}) {
     const response = await this.fetcher(`/api/agent/conversations${path}`, { ...options,
@@ -72,25 +80,46 @@ export class ConversationSync {
     this.store.replaceAll(list); this.onChange();
   }
   async hydrate() {
+    if (!this.active()) return;
+    if (this.pulling) return this.pulling;
+    this.pulling = this._hydrate();
+    try { await this.pulling; } finally { this.pulling = null; }
+  }
+  async _hydrate() {
     this.onStatus('loading');
     try {
-      const { body } = await this.request('');
+      const { body } = await this.request('?index=true');
       if (!this.active()) return;
       if (!Array.isArray(body.records)) throw new Error('invalid history response');
       const local = new Map(this.store._loadAll().map(c => [c.conversation_id, c]));
       const combined = [];
-      for (const record of body.records) {
+      for (let record of body.records) {
         const id = record.conversation_id;
+        const knownRevision = this.revisions[id];
         this.revisions[id] = record.revision;
         const cached = local.get(id); local.delete(id);
         if (record.deleted) { this.queue.delete(id); continue; }
         const pending = this.queue.get(id);
         if (pending?.data === null) continue;
+        if (record.data.messages_loaded === false && pending?.data) {
+          record = (await this.request(`/${encodeURIComponent(id)}`)).body.record;
+          if (!this.active()) return;
+          this.revisions[id] = record.revision;
+          if (record.deleted) { this.queue.delete(id); continue; }
+        }
+        if (record.data.messages_loaded === false && cached && cached.messages_loaded !== false) {
+          record.data = knownRevision === record.revision ? cached : { ...cached, ...record.data, messages:cached.messages };
+        }
         const c = pending ? mergeConversation(record.data, pending.data) : record.data;
         if (pending) this.queue.set(id, { data: c, version: ++this.generation });
         combined.push(c);
         // Old browser caches predate sync metadata; union them once safely.
-        if (cached && !pending && !this.revisions.__migrated) {
+        if (cached && cached.messages_loaded !== false && !pending && !this.revisions.__migrated) {
+          if (record.data.messages_loaded === false) {
+            record = (await this.request(`/${encodeURIComponent(id)}`)).body.record;
+            if (!this.active()) return;
+            this.revisions[id] = record.revision;
+          }
           const merged = mergeConversation(record.data, cached);
           combined[combined.length - 1] = merged;
           this.queue.set(id, { data: merged, version: ++this.generation });
@@ -98,7 +127,7 @@ export class ConversationSync {
       }
       for (const [id, c] of local) {
         combined.push(c);
-        if (!this.queue.has(id)) this.queue.set(id, { data: c, version: ++this.generation });
+        if (!this.queue.has(id) && c.messages_loaded !== false) this.queue.set(id, { data: c, version: ++this.generation });
       }
       this.revisions.__migrated = 1;
       this.apply(combined); this.saveMeta();
@@ -107,24 +136,48 @@ export class ConversationSync {
       if (this.queue.size) await this.flush();
     } catch (error) {
       console.warn('[HistorySync] restore', error.message);
-      if (this.active()) { this.hydrated = true; this.onStatus('offline'); this.schedule(10000); }
+      if (this.active()) { this.hydrated = false; this.onStatus('offline'); this.schedule(3000); }
     }
   }
   async flush() {
     clearTimeout(this.timer);
+    if (!this.hydrated && !this.closed) return this.hydrate();
     if (this.running) return this.running;
     this.running = this._flush();
     try { await this.running; } finally { this.running = null; }
   }
+  async ensureConversation(id) {
+    if (!this.active()) return;
+    const local = this.store._loadAll().find(c => c.conversation_id === id);
+    if (local && local.messages_loaded !== false) return local;
+    if (this.reading.has(id)) return this.reading.get(id);
+    const task = (async () => {
+      const { body } = await this.request(`/${encodeURIComponent(id)}`);
+      if (!this.active() || this.queue.get(id)?.data === null) return;
+      const record = body.record;
+      if (!record || record.deleted) throw new Error('conversation unavailable');
+      this.revisions[id] = record.revision;
+      const pending = this.queue.get(id);
+      const data = pending?.data ? mergeConversation(record.data,pending.data) : normalizeConversation(record.data);
+      if (pending) this.queue.set(id,{data,version:++this.generation});
+      this.apply(this.store._loadAll().map(c=>c.conversation_id===id ? data : c));
+      this.saveMeta();
+      return data;
+    })();
+    this.reading.set(id,task);
+    try { return await task; } finally { this.reading.delete(id); }
+  }
   async _flush() {
     try {
       for (const [id, pending] of [...this.queue]) {
+        if (!this.closed && this.busy.has(id) && Date.now()-(this.lastPushed.get(id)||0)<20000) continue;
         const { response, body } = await this.request(`/${encodeURIComponent(id)}`, pending.data === null
           ? { method: 'DELETE' }
           : { method: 'PUT', body: JSON.stringify({ data: pending.data, expected_revision: this.revisions[id] || 0 }) });
         const record = response.status === 409 ? body.detail?.record : body.record;
         if (!record) throw new Error('invalid record');
         this.revisions[id] = record.revision;
+        this.lastPushed.set(id,Date.now());
         const current = this.queue.get(id);
         if (record.deleted) {
           this.queue.delete(id);
@@ -149,8 +202,11 @@ export class ConversationSync {
     }
   }
   close() {
+    if (this.closing) return this.closing;
     this.unsubscribe(); clearTimeout(this.timer);
     // Flush captured data with the captured token, never the next user's token.
-    this.flush().catch(() => {}); this.closed = true;
+    this.closed = true;
+    this.closing = (async()=>{ while (this.queue.size) await this.flush(); })().catch(()=>{});
+    return this.closing;
   }
 }

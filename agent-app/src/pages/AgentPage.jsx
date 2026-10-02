@@ -40,12 +40,15 @@ export default function AgentWorkspace() {
     ? decodeURIComponent(pathname.slice('/agent/c/'.length))
     : null;
   const { t, lang, agentName, agentSub } = useLang();
-  const { token, profile, accountReady, historyStatus, retryHistory, authError, retryAccount, logout } = useAuth();
+  const { token, profile, accountReady, historyStatus, retryHistory, authError, retryAccount, logout, ensureConversation,
+    beginHistoryStream, endHistoryStream } = useAuth();
   const { agents, agentsLoading } = useAgents();
 
   const [conversations, setConversations] = useState([]);
   const [hydrated, setHydrated] = useState(false);
   const [hydrateError, setHydrateError] = useState(false);
+  const [conversationReadError, setConversationReadError] = useState(false);
+  const [readRetry, setReadRetry] = useState(0);
   const [plazaOpen, setPlazaOpen] = useState(false);
   const [navOpen, setNavOpen] = useState(false);          // 移动端侧栏抽屉
   const [settingsOpen, setSettingsOpen] = useState(false); // 设置面板（§24; portal, 不卸载会话）
@@ -98,6 +101,14 @@ export default function AgentWorkspace() {
     if (!accountReady) { setHydrated(false); setConversations([]); return; }
     loadConversations();
   }, [accountReady, profile?.id]);
+  useEffect(() => {
+    let active = true;
+    setConversationReadError(false);
+    if (accountReady && token && activeConv?.messages_loaded === false) {
+      ensureConversation(conversationId).catch(() => { if (active) setConversationReadError(true); });
+    }
+    return () => { active = false; };
+  }, [conversationId, activeConv?.messages_loaded, profile?.id, readRetry, accountReady, token]);
   useEffect(() => {
     window.addEventListener('phiagent-history-restored', loadConversations);
     window.addEventListener('phiagent-account-changed', loadConversations);
@@ -165,10 +176,12 @@ export default function AgentWorkspace() {
     });
 
   const markStream = (convId, mid, controller, agent) => {
+    beginHistoryStream(convId);
     streamsRef.current.set(convId, { controller, messageId: mid, agent });
     setStreamingIds(prev => new Set(prev).add(convId));
   };
   const unmarkStream = (convId) => {
+    endHistoryStream(convId);
     streamsRef.current.delete(convId);
     setStreamingIds(prev => { const n = new Set(prev); n.delete(convId); return n; });
   };
@@ -188,9 +201,13 @@ export default function AgentWorkspace() {
   const handleSelect = (id) => {
     if (id !== conversationId) navigate(`/agent/c/${id}`);
   };
-  const handleRename = (conv, newTitle) => {
+  const handleRename = async (conv, newTitle) => {
     const title = String(newTitle || '').trim();
     if (!title || !conv) return;
+    if (conv.messages_loaded === false) {
+      try { await ensureConversation(conv.conversation_id); }
+      catch { setConversationReadError(true); return; }
+    }
     patchConvMeta(conv.conversation_id, { title });
     conversationStore.setConversationTitle(conv.conversation_id, title);
   };
@@ -235,6 +252,7 @@ export default function AgentWorkspace() {
 
   /* ── 发送（Streaming Ownership 冻结点） ── */
   const dispatchSend = async ({ message, display, localOnly = false, agentOverride = null, sourceMsg = null, attachments = [] }) => {
+    if (!accountReady || activeConv?.messages_loaded === false) return;
     const agent = agentOverride || composerAgentRef.current;
     const text = typeof message === 'string' ? message : String(message || '');
     const shown = typeof display === 'string' ? display : text;
@@ -331,6 +349,7 @@ export default function AgentWorkspace() {
           if (!ownsStream()) return;
           state = reduceGeneralEvent(state, evt);
           if (evt.type === 'done' && state.done_received) {
+            endHistoryStream(convId);
             state = finishGeneralStream(state, { duration: (performance.now() - _sendT0) / 1000, metadataFinished: false });
             if (releaseGeneralAnswer(streamsRef.current, convId, mid)) {
               setStreamingIds(prev => { const next = new Set(prev); next.delete(convId); return next; });
@@ -344,7 +363,8 @@ export default function AgentWorkspace() {
           if (!paintTimer) paintTimer = setTimeout(paint, 32);
         });
       } catch (err) {
-        if (err.name !== 'AbortError') failure = err.message || t('reqFail');
+        if (err.name !== 'AbortError') failure = err instanceof TypeError
+          ? (lang === 'zh' ? '网络连接中断，已保留收到的内容。可以继续回答。' : 'Connection interrupted. Received text is kept; you can continue the answer.') : err.message || t('reqFail');
       } finally {
         clearTimeout(paintTimer);
         state = finishGeneralStream(state, { aborted: controller.signal.aborted, error: failure, duration: (performance.now() - _sendT0) / 1000 });
@@ -674,6 +694,10 @@ export default function AgentWorkspace() {
     </div>;
     return <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-dim)' }}>…</div>;
   }
+  if (conversationId && !activeConv && historyStatus === 'offline') return <div className="cw-auth-unavailable" role="status">
+    <p>{lang === 'zh' ? '历史暂未恢复，请重试加载。' : 'History could not be restored. Please retry.'}</p>
+    <button onClick={retryHistory}>{t('retry')}</button><button onClick={handleNew}>{t('newChat')}</button>
+  </div>;
   if (conversationId && !activeConv) {
     return (
       <div className="cw-root">
@@ -707,14 +731,19 @@ export default function AgentWorkspace() {
         onOpenSettings={() => setSettingsOpen(true)} />
       <div className="cw-main">
         {token && ['offline','cache-error'].includes(historyStatus) && <div className="cw-history-notice" role="status">
-          {lang === 'en' ? 'History has not finished saving to your account.' : '对话尚未保存到账号，请保持页面打开。'}
+          {lang === 'en' ? 'Account sync is interrupted. Retrying…' : '账号同步暂时中断，正在重试…'}
           <button onClick={retryHistory}>{lang === 'en' ? 'Retry' : '重试'}</button>
         </div>}
         <ConversationHeader title={activeConv?.title || (isDraft ? t('newChat') : '')} isDraft={isDraft}
+          navOpen={navOpen}
           streaming={activeStreaming} onOpenNav={() => setNavOpen(true)} onToggleSidebar={handleToggleSidebar}
           onRename={(newTitle) => activeConv && handleRename(activeConv, newTitle)}
           onDelete={() => activeConv && handleDelete(activeConv)} />
         <div className={`cw-messages${!messages.length && composerAgent === 'general' ? ' cw-messages-home' : ''}`}>
+          {activeConv?.messages_loaded === false && <div className="cw-history-loading" role="status">
+            {conversationReadError ? (lang === 'zh' ? '这段对话加载失败。' : 'Could not load this conversation.') : (lang === 'zh' ? '正在读取对话…' : 'Loading conversation…')}
+            {conversationReadError && <button onClick={() => setReadRetry(n=>n+1)}>{t('retry')}</button>}
+          </div>}
           {unavailable && (
             <div style={{ marginBottom: 10, padding: '8px 12px', borderRadius: 8, fontSize: 12.5,
                           border: '1px solid var(--border)', background: 'var(--soft)', color: 'var(--text-dim)' }}>
@@ -724,7 +753,7 @@ export default function AgentWorkspace() {
           <MessageList
             messages={messages}
             agents={agents}
-            emptyState={emptyState}
+            emptyState={activeConv?.messages_loaded === false ? null : emptyState}
             conversationKey={conversationId || DRAFT_ID}
             prefsTick={prefsTick}
             streaming={activeStreaming}
@@ -738,7 +767,7 @@ export default function AgentWorkspace() {
         onSend={handleComposerSend} streaming={activeStreaming}
         onStop={() => streamsRef.current.get(conversationId)?.controller.abort()}
         onExplore={() => setPlazaOpen(true)}
-        unavailable={unavailable} resetKey={scopeKey} autoFocus={isDraft}
+        unavailable={unavailable || activeConv?.messages_loaded === false} resetKey={scopeKey} autoFocus={isDraft}
         dockLeft={sidebarCollapsed ? 0 : undefined} />
       <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
       <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} conversation={activeConv} />

@@ -9,7 +9,7 @@ import { ConfirmModal, RenameModal, ContextMenu, anchorFromEvent } from './Modal
  * 2026-08-31: 桌面侧栏收起/展开开关 + 移动端抽屉按钮, 全 aria（§32）。
  */
 export default function ConversationHeader({
-  title, isDraft, streaming, onOpenNav, onToggleSidebar, onRename, onDelete,
+  title, isDraft, streaming, onOpenNav, onToggleSidebar, onRename, onDelete, navOpen,
 }) {
   const { t } = useLang();
   const [menuAnchor, setMenuAnchor] = useState(null);
@@ -17,7 +17,7 @@ export default function ConversationHeader({
   const [deleting, setDeleting] = useState(false);
   return (
     <div className="cw-header">
-      <button className="cw-nav-btn cw-icon-btn" onClick={onOpenNav} title={t('conversations')} aria-label={t('conversations')}>
+      <button className="cw-nav-btn cw-icon-btn" onClick={onOpenNav} title={t('conversations')} aria-label={t('conversations')} aria-expanded={!!navOpen} aria-controls="cw-history-sidebar">
         <Menu size={16} />
       </button>
       <button className="cw-side-toggle cw-icon-btn" onClick={onToggleSidebar}

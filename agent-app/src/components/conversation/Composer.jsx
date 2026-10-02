@@ -56,7 +56,7 @@ export default function Composer({
       dragDepthRef.current = 0;
       setDragOver(false);
     }
-    if (autoFocus) requestAnimationFrame(() => inputRef.current?.focus());
+    if (autoFocus && !window.matchMedia('(pointer: coarse)').matches) requestAnimationFrame(() => inputRef.current?.focus());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetKey]);
   useEffect(() => () => { for (const controller of uploadsRef.current.values()) controller.abort(); }, []);
