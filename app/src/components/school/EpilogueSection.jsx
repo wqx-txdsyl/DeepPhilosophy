@@ -1,52 +1,15 @@
-import { useNavigate } from 'react-router-dom';
-import { FONT, SPACE, WIDTH } from './tokens';
+import { Link } from 'react-router-dom';
+import { ossImg, ossFallback } from '../../data/ossUrls';
 
-export default function EpilogueSection({ conclusion, closingQuote, closingQuoteAuthor }) {
-  const navigate = useNavigate();
-  return (
-    <section style={{ padding: `${SPACE.hero}px ${SPACE.xl}px`, maxWidth: WIDTH.prose, margin: '0 auto', textAlign: 'center' }}>
-      {/* Ornamental divider */}
-      <div style={{ width: 48, height: 1, background: 'var(--fade)', margin: '0 auto 48px', opacity: 0.4 }} />
-      <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--ochre)', margin: '-2.5px auto 48px', opacity: 0.5 }} />
-
-      <h2 style={{ fontSize: 20, fontWeight: 400, color: 'var(--fade)', marginBottom: 40, fontFamily: FONT.serif, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Epilogue</h2>
-
-      <div style={{ fontSize: 16, lineHeight: 2.1, color: 'var(--text)', marginBottom: 56, fontFamily: FONT.sans, fontWeight: 300, textAlign: 'left' }}>
-        {(conclusion || '').split(/\n{2,}/).filter(Boolean).map((p, i) => (
-          <p key={i} style={{ margin: '0 0 1em' }}>{p.trim()}</p>
-        ))}
-      </div>
-
-      {closingQuote && (
-        <blockquote style={{
-          fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)', fontStyle: 'italic', color: 'var(--text-dim)',
-          maxWidth: 560, lineHeight: 1.7, margin: '0 auto 48px', fontWeight: 300, fontFamily: FONT.serif,
-          border: 'none', padding: 0, position: 'relative'
-        }}>
-          <span style={{ color: 'var(--ochre)', fontSize: '2.5em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.4 }}>&#x201C;</span>
-          {closingQuote}
-          <span style={{ color: 'var(--ochre)', fontSize: '2.5em', lineHeight: 0, verticalAlign: 'middle', opacity: 0.4 }}>&#x201D;</span>
-        </blockquote>
-      )}
-      {closingQuoteAuthor && (
-        <p style={{ fontSize: 13, color: 'var(--fade)', fontFamily: FONT.serif, fontStyle: 'italic', marginTop: -32, marginBottom: 48 }}>
-          —— {closingQuoteAuthor}
-        </p>
-      )}
-
-      {/* Ornamental end mark */}
-      <div style={{ width: 16, height: 1, background: 'var(--fade)', margin: '0 auto 40px', opacity: 0.3 }} />
-      <p style={{ fontSize: 10, color: 'var(--fade)', letterSpacing: '0.2em', fontFamily: FONT.sans, fontWeight: 400, textTransform: 'uppercase' }}>Fin</p>
-
-      <button onClick={() => navigate(-1)} style={{
-        marginTop: 48, background: 'none', border: 'none', cursor: 'pointer',
-        fontFamily: FONT.sans, fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.05em',
-        transition: 'color 0.25s'
-      }}
-        onMouseEnter={e => e.currentTarget.style.color = 'var(--ink)'}
-        onMouseLeave={e => e.currentTarget.style.color = 'var(--text-dim)'}>
-        &larr; 返回上一页
-      </button>
-    </section>
-  );
+export default function EpilogueSection({ conclusion, closingQuote, closingQuoteAuthor, closingQuoteKind, image }) {
+  const parts = String(closingQuote || '').split(/\s+[—–]\s*/);
+  const author = closingQuoteAuthor || parts.slice(1).join(' · ');
+  return <section className="school-section school-ending" id="school-conclusion" aria-labelledby="school-conclusion-title">
+    {image && <img className="school-ending-art" src={ossImg(image, { w: 1000 })} onError={ossFallback} alt="" loading="lazy" />}
+    <header className="school-section-heading centered"><span className="school-kicker">EPILOGUE</span><h2 id="school-conclusion-title">结语</h2></header>
+    <div className="school-prose">{String(conclusion || '').split(/\n\s*\n/).filter(Boolean).map((paragraph, i) => <p key={i}>{paragraph}</p>)}</div>
+    {closingQuote && <p className="school-closing-quote">{closingQuoteKind === 'quote' ? `“${parts[0]}”` : parts[0]}</p>}
+    {author && <p className="school-closing-author">{closingQuoteKind === 'paraphrase' ? '思想概述 · ' : ''}{author}</p>}
+    <div className="school-ending-links"><a href="#school-overview">回到简介 ↑</a><Link to="/genealogy">返回谱系 →</Link></div>
+  </section>;
 }

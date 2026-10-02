@@ -1,0 +1,60 @@
+.school-constellation{max-width:1120px;margin:auto;padding:76px 30px 42px;color:var(--ink);--star-gold:var(--ochre,#947744);--star-jade:#6f8b7b;--star-clay:#a26a57;--star-exchange:#73808f}
+.school-star-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:14px}
+.school-star-kicker{font:10px/1.4 var(--font-sans,sans-serif);letter-spacing:.22em;text-transform:uppercase;color:var(--ochre)}
+.school-star-heading h2{font:400 32px/1.35 var(--font-serif,'Songti SC',serif);margin:8px 0 0;letter-spacing:.05em}
+.school-star-count{font-size:11px;color:var(--text-dim);white-space:nowrap;padding-bottom:4px}
+.school-star-layout{display:grid;grid-template-columns:minmax(0,1fr) 225px;gap:28px}
+.school-star-canvas{position:relative;isolation:isolate;background:radial-gradient(ellipse at 46% 39%,color-mix(in srgb,var(--star-gold) 9%,transparent),transparent 62%);min-width:0}
+.school-star-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.school-star-dust{fill:var(--star-gold);opacity:.22}
+.school-star-edge{fill:none;stroke:var(--star-jade);stroke-width:1;stroke-dasharray:3 5;opacity:.16;transition:opacity .35s,stroke-width .35s;vector-effect:non-scaling-stroke}
+.school-star-edge--lineage{stroke:var(--star-gold);stroke-dasharray:none}
+.school-star-edge--criticism{stroke:var(--star-clay);stroke-dasharray:7 5}
+.school-star-edge--context{stroke:var(--star-exchange);stroke-dasharray:2 5}
+.school-star-edge.is-connected{stroke-width:1.6;opacity:.82}
+.school-star-node{position:absolute;display:block;transform:translateX(-50%);padding:0;border:0;background:none;text-align:center;cursor:pointer;color:var(--ink);opacity:.52;transition:opacity .28s;z-index:2;box-sizing:border-box}
+.school-star-node.is-connected,.school-star-node:hover,.school-star-node:focus-visible{opacity:1}
+.school-star-node:focus-visible{outline:1px solid var(--ochre);outline-offset:7px;border-radius:4px}
+.school-star-marker{display:flex;align-items:center;justify-content:center;width:var(--star-size);height:var(--star-size);margin:0 auto 10px}
+.school-star-photo{width:100%;height:100%;object-fit:cover;object-position:center 24%;border-radius:50%;filter:saturate(.55);box-shadow:0 0 0 3px var(--bg),0 0 0 4px color-mix(in srgb,var(--star-gold) 50%,transparent);transition:filter .3s,box-shadow .3s}
+.school-star-node[aria-pressed=true] .school-star-photo{filter:saturate(.9);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--star-gold),0 0 25px color-mix(in srgb,var(--star-gold) 18%,transparent)}
+.school-star-orbit,.school-star-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border:1px solid color-mix(in srgb,var(--star-gold) 40%,transparent);border-radius:50%;box-sizing:border-box}
+.school-star-orbit:before{content:'';position:absolute;width:calc(var(--star-size) - 14px);height:calc(var(--star-size) - 14px);border:1px solid color-mix(in srgb,var(--star-gold) 17%,transparent);border-radius:50%}
+.school-star-orbit i,.school-star-placeholder i{width:7px;height:7px;background:var(--star-gold);border-radius:50%}
+.school-star-orbit.is-dot{border:0;background:var(--bg);box-shadow:0 0 0 1px color-mix(in srgb,var(--star-gold) 50%,transparent)}
+.school-star-orbit.is-dot:before{display:none}
+.school-star-node[aria-pressed=true] .school-star-orbit{box-shadow:0 0 0 2px var(--star-gold),0 0 20px color-mix(in srgb,var(--star-gold) 20%,transparent)}
+.school-star-node strong{display:block;font:400 15px/23px var(--font-serif,'Songti SC',serif);overflow-wrap:anywhere;word-break:normal;background:color-mix(in srgb,var(--bg) 88%,transparent)}
+.school-star-node small{display:block;font:10px/19px var(--font-sans,sans-serif);color:var(--text-dim);background:color-mix(in srgb,var(--bg) 88%,transparent);overflow-wrap:anywhere}
+.school-star-node.is-major strong{font-size:16px}
+.school-star-legend{display:flex;gap:20px;flex-wrap:wrap;font-size:11px;color:var(--text-dim);padding-top:15px}
+.school-star-legend>span{display:flex;align-items:center;gap:6px}
+.school-star-swatch{display:block;width:22px;height:0;border-top:1px solid var(--star-gold)}
+.school-star-swatch--influence{border-color:var(--star-jade);border-top-style:dashed}
+.school-star-swatch--criticism{border-color:var(--star-clay);border-top-style:dashed}
+.school-star-swatch--context{border-color:var(--star-exchange);border-top-style:dotted}
+.school-star-profile{border-left:1px solid var(--border);padding:20px 0 0 22px;margin-top:20px;align-self:start;min-width:0}
+.school-star-profile-photo{width:104px;height:126px;object-fit:cover;object-position:center 24%;display:block;margin-bottom:17px;filter:saturate(.7);border-radius:0}
+.school-star-profile h3{font:400 26px/1.4 var(--font-serif,'Songti SC',serif);margin:5px 0 7px;overflow-wrap:anywhere}
+.school-star-profile-school,.school-star-profile-era{font-size:11px;color:var(--text-dim)}
+.school-star-key{font:18px/1.7 var(--font-serif,'Songti SC',serif);margin:18px 0 0}
+.school-star-profile-block{margin-top:24px}
+.school-star-profile h4{font:400 11px/1.4 var(--font-sans,sans-serif);color:var(--ochre);margin:0 0 8px;letter-spacing:.05em}
+.school-star-connections{display:grid;gap:4px}
+.school-star-connections button{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border:0;background:none;color:var(--ink);padding:5px 0;font:12px/1.5 var(--font-sans,sans-serif);text-align:left;cursor:pointer}
+.school-star-connections small{color:var(--text-dim);font-size:10px;flex-shrink:0;max-width:72px;text-align:right}
+.school-star-connections button:hover{color:var(--ochre)}
+.school-star-works{padding:0;list-style:none;margin:0;font-size:12px;line-height:1.9;color:var(--text-dim)}
+.school-star-works li{padding:3px 0}
+.school-star-works a{color:inherit;text-decoration:none}
+.school-star-works a:hover{color:var(--ochre)}
+.school-star-works a>span{font-size:11px;padding-left:4px;color:var(--ochre)}
+.school-star-detail-link{display:inline-flex;gap:18px;font-size:12px;color:var(--ochre);text-decoration:none;margin-top:22px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.school-star-crosslinks{display:grid;gap:9px;margin-top:20px}
+.school-star-crosslinks button{border:0;padding:0;background:none;color:var(--text-dim);font:11px/1.5 var(--font-sans,sans-serif);text-align:left;cursor:pointer}
+.school-star-crosslinks button:hover{color:var(--ochre)}
+@media(max-width:950px){.school-star-layout{grid-template-columns:minmax(0,1fr)}.school-star-profile{border-left:0;border-top:1px solid var(--border);padding:23px 0 0;display:grid;grid-template-columns:110px 1fr 1fr;gap:16px 23px;margin-top:0}.school-star-profile-photo{grid-row:1/3}.school-star-profile-intro{grid-column:2/4}.school-star-profile-block{margin-top:0;grid-column:auto}.school-star-profile-block:nth-child(3){grid-column:2}.school-star-detail-link{align-self:start;justify-self:start;margin-top:0;grid-column:2}.school-star-crosslinks{grid-column:3;margin:0}}
+@media(max-width:560px){.school-constellation{padding:48px 20px 30px}.school-star-heading{align-items:start}.school-star-heading h2{font-size:28px}.school-star-count{font-size:10px;white-space:normal;text-align:right;padding-top:20px}.school-star-kicker{font-size:9px}.school-star-profile{grid-template-columns:82px minmax(0,1fr);gap:12px 18px}.school-star-profile-photo{width:82px;height:107px;grid-row:1}.school-star-profile-intro{grid-column:2}.school-star-profile h3{font-size:24px}.school-star-key{font-size:16px;margin-top:10px}.school-star-profile-block,.school-star-profile-block:nth-child(3){grid-column:1/3}.school-star-detail-link,.school-star-crosslinks{grid-column:1/3}.school-star-profile-block{margin-top:9px}.school-star-connections{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px}.school-star-legend{gap:15px}}
+@media(prefers-reduced-motion:reduce){.school-star-node,.school-star-edge,.school-star-photo{transition:none}}
+@media(max-width:950px){.school-star-profile:not(.has-portrait){grid-template-columns:1fr 1fr}.school-star-profile:not(.has-portrait) .school-star-profile-intro{grid-column:1/-1}.school-star-profile:not(.has-portrait) .school-star-profile-block{grid-column:auto}.school-star-profile:not(.has-portrait) .school-star-detail-link{grid-column:1}.school-star-profile:not(.has-portrait) .school-star-crosslinks{grid-column:2}}
+@media(max-width:560px){.school-star-profile:not(.has-portrait) .school-star-profile-block,.school-star-profile:not(.has-portrait) .school-star-detail-link,.school-star-profile:not(.has-portrait) .school-star-crosslinks{grid-column:1/-1}}

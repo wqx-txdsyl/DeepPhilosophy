@@ -1,39 +1,13 @@
-import { useState } from 'react';
-import { FONT, SPACE, WIDTH } from './tokens';
+import { Link } from 'react-router-dom';
+import { ossImg, ossFallback } from '../../data/ossUrls';
 
-export default function WorksList({ works = [] }) {
-  const [hovered, setHovered] = useState(null);
+export default function WorksList({ works = [], references }) {
   if (!works.length) return null;
-
-  return (
-    <section style={{ padding: `${SPACE.xl}px 24px`, maxWidth: WIDTH.prose, margin: '0 auto' }}>
-      <div style={{ marginBottom: 36 }}>
-        <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', fontFamily: FONT.sans }}>Chapter 5</span>
-        <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>重要著作</h2>
-        <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px 0 0', opacity: 0.5 }} />
-      </div>
-      {(works || []).filter(Boolean).map((work, i) => {
-        const isOpen = hovered === i;
-        return (
-          <div key={i} style={{
-            padding: '14px 0', borderBottom: '1px solid var(--border)', cursor: 'pointer',
-            transition: 'border-color 0.25s'
-          }}
-            onClick={() => setHovered(isOpen ? null : i)}
-            onMouseEnter={e => e.currentTarget.style.borderBottomColor = 'var(--accent)'}
-            onMouseLeave={e => e.currentTarget.style.borderBottomColor = 'var(--border)'}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
-              <h4 style={{ fontSize: 17, fontWeight: 400, fontStyle: 'italic', color: 'var(--ink)', margin: 0, fontFamily: FONT.serif }}>
-                《{String(work.title).replace(/^《|》$/g, '')}》
-              </h4>
-              <span style={{ fontSize: 12, color: 'var(--fade)', fontFamily: FONT.sans }}>{work.author}{work.era ? ' · ' + work.era : ''}</span>
-            </div>
-            {isOpen && work.desc && (
-              <p style={{ fontSize: 13, fontWeight: 300, color: 'var(--text-dim)', lineHeight: 1.8, margin: '10px 0 0', fontFamily: FONT.sans }}>{work.desc}</p>
-            )}
-          </div>
-        );
-      })}
-    </section>
-  );
+  return <section className="school-section" id="school-works" aria-labelledby="school-works-title">
+    <header className="school-section-heading"><span className="school-kicker">PRIMARY TEXTS</span><h2 id="school-works-title">重要典籍</h2></header>
+    <div className="school-works-grid">{works.map((work, index) => { const book = references?.findBook?.(work.title, work.author); return <article className="school-work" key={`${work.title}-${index}`}>
+      {book?.cover && <Link to={book.href} aria-label={`阅读${work.title}`}><img src={ossImg(book.cover)} onError={ossFallback} alt={`《${String(work.title).replace(/^《|》$/g, '')}》封面`} loading="lazy" /></Link>}
+      <div><h3>《{String(work.title).replace(/^《|》$/g, '')}》</h3><small>{work.author}{work.era ? ` · ${work.era}` : ''}</small><p>{work.desc}</p>{book && <Link className="school-text-link" to={book.href}>{book.chapterCount > 0 ? '阅读原典' : '查看书籍'} ↗</Link>}</div>
+    </article>; })}</div>
+  </section>;
 }

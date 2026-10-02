@@ -2,8 +2,8 @@
  * 流派详情页 — 滚轮下翻式，数据按需从 JSON 加载
  * 所有流派数据存储在 /public/schools/data/school_*.json
  */
-import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { useSEO } from '../utils/seo';
 import HeroSection from '../components/school/HeroSection';
 import OverviewSection from '../components/school/OverviewSection';
@@ -13,76 +13,9 @@ import GlossaryCloud from '../components/school/GlossaryCloud';
 import QuotesGallery from '../components/school/QuotesGallery';
 import WorksList from '../components/school/WorksList';
 import EpilogueSection from '../components/school/EpilogueSection';
-
-// ─── 子流派颜色映射（静态资源，体积小，保留内联） ───
-const SUB_COLORS = {
-  '米利都学派':'#C4956A','前苏格拉底':'#B8875E','埃利亚学派':'#AC7A52','多元论':'#A06D46',
-  '古希腊哲学':'#94603A','柏拉图学派':'#88532E','犬儒学派':'#7C4622','逍遥学派':'#703916',
-  '怀疑论':'#642C0A','伊壁鸠鲁学派':'#6B3820','斯多葛学派':'#3A5A7C','新柏拉图主义':'#2E4A6A',
-  '希腊教父':'#8B4513','卡帕多西亚教父':'#6A2E4A','拉丁教父':'#3A5A7C',
-  '早期经院哲学':'#8B6914','盛期经院哲学':'#C4956A','晚期经院哲学':'#5A4A7C','阿拉伯-犹太传入':'#3A6A5C',
-  '法国笛卡尔学派':'#4A3A5C','荷兰斯宾诺莎主义':'#5C3A3A','德国莱布尼茨-沃尔夫体系':'#3A4A6C','笛卡尔主义的扩展与批判':'#5C5A3A',
-  '英国经验论奠基':'#4A5C6C','唯心论转向':'#6A4A3C','苏格兰启蒙与怀疑论':'#2A5C4A','法国经验论':'#5C3A5A','晚期发展':'#3A5C5C',
-  '法国启蒙运动':'#8B4513','德国启蒙运动':'#3A5A7C','苏格兰启蒙运动':'#2A6A4A','苏格兰常识学派':'#5A4A3C','法国唯物论':'#6A3A3A',
-  '20世纪实在论':'#3A5A6C','主观唯心主义':'#6A4A5C','先验唯心主义':'#3A5A6C','德国唯心主义':'#4A3A6A','绝对唯心主义':'#5A2A4C','意志唯心主义':'#3A3A5A',
-  '古典自由主义':'#3A6A7C','后革命自由主义':'#5A4A3C','德国自由主义':'#4A5A3C',
-  '浪漫主义先驱':'#5C3A3A','表现主义与历史主义':'#4A5C3A','古典-浪漫的张力':'#6A5A2A','耶拿浪漫派':'#3A4A6C',
-  '自由女性主义':'#5A3A6C','存在主义女性主义':'#4A3A5C','激进女性主义':'#6C3A3A','交叉性女性主义':'#3A5C4A','后现代女性主义':'#3A4A6C','法国女性主义':'#5C4A3A','关怀伦理学':'#3A6A5C',
-  '个体心理学':'#4A6A5C','互文性':'#5A4A6C','从结构到后结构':'#6A5A4A','伦理现象学':'#4A5A6C','信仰哲学':'#5C4A5A','先验现象学':'#3A6A5C','分析心理学':'#6A3A5A',
-  '列宁主义':'#5A6A3A','前驱':'#3A5A6C','反启蒙':'#6C5A3A','发生学结构主义':'#4A3A6C','叙事学':'#5A3A4C','后拉康精神分析':'#3A4A6C','后现代状况':'#6A4A4A',
-  '启蒙与德国哲学':'#4A5C3A','哲学人类学':'#5C3A5C','哲学诠释学':'#3A5C6A','基督教存在主义':'#5A3A3A','女性主义后结构':'#4A6A4A',
-  '存在主义之父':'#6A4A6A','存在主义先驱':'#3A6A6A','存在主义现象学':'#5A5A3A','存在主义神学':'#4A4A6C','存在主义精神分析':'#6A6A3A','存在主义荒诞':'#3A5A5A',
-  '存在哲学':'#5C4A4A','存在的悲剧感':'#4A6A3A','宗教存在主义':'#6A3A4A','宗教荒诞':'#3A4A5A','实用主义/生命哲学':'#5A6A5A',
-  '客体关系学派':'#4A3A5A','差异哲学':'#6A5A5C','常识哲学':'#2A5A4A','康德主义传播':'#5A2A5A','弗洛伊德-马克思主义':'#4A5A2A','意志哲学':'#2A4A5A',
-  '批判哲学':'#5A4A2A','拟像理论':'#4A2A5A','政治现象学':'#2A5A5A','文化形态学':'#5A5A2A','文化精神分析':'#3A3A6A','文学先驱':'#6A3A3A',
-  '日常语言哲学':'#3A6A3A','权力谱系学':'#2A4A6A','法兰克福学派':'#6A2A4A','法国存在主义':'#4A2A6A','现象学伦理学':'#6A4A2A','现象学存在主义':'#5C6A3A',
-  '现象学美学':'#6A3A6C','生命哲学先驱':'#3A6C5A','生命哲学社会学':'#5A3C6A','生命现象学':'#6C5A3C','生命理性主义':'#3C6A5A','直觉与绵延':'#4C5A6C',
-  '符号学/文化批评':'#6C4A5A','第一代':'#4A6A5C','第三代':'#5A4A6C','第二代':'#6A5A4A','精神分析后结构':'#4A5A6C','精神分裂分析':'#5C4A5A',
-  '精神科学':'#3A6A5C','经典精神分析':'#6A3A5A','经典马克思主义':'#5A6A3A','结构主义精神分析':'#3A5A6C','结构主义诗学':'#6C5A3A','结构人类学':'#4A3A6C',
-  '结构语义学':'#5A3A4C','结构语言学':'#3A4A6C','结构马克思主义':'#6A4A4A','自我心理学':'#4A5C3A','自然主义':'#5C3A5C','荒诞哲学':'#3A5C6A',
-  '荒诞戏剧':'#5A3A3A','荒诞文学':'#4A6A4A','西方马克思主义':'#6A4A6A','解构主义':'#3A6A6A','诗人哲学家':'#5A5A3A','诠释学现象学':'#4A4A6C',
-  '语言游戏':'#6A6A3A','身体现象学':'#3A5A5A','过程哲学':'#5C4A4A','逻辑分析':'#4A6A3A','逻辑原子主义':'#6A3A4A','逻辑图像论':'#3A4A5A',
-  '逻辑实证主义':'#5A6A5A','青年黑格尔派':'#4A3A5A','革命马克思主义':'#6A5A5C','马克思主义左翼':'#2A5A4A',
-  '义务论':'#4E6E6E','人本实用主义':'#5E6E7E','偏好功利主义':'#4E8E5A','先导':'#7E4E6E','公民共和主义':'#5E6E5A','共和主义':'#7E5E5E',
-  '内在实在论':'#5A6E6E','制度人类学':'#6E7E4E','功利主义':'#6E6E6E','历史主义':'#4E6E5E','叙事诠释学':'#6A5E5E','古代怀疑论':'#5E5A6E',
-  '古典功利主义':'#6B8E5A','后殖民批判':'#4E5A6E','后现代知识论':'#6A5A6E','唯名论':'#5E5E5A','商议民主':'#5E7E5E','复合平等':'#6E6E5A',
-  '媒介理论':'#6E5E6A','实用主义宗教哲学':'#6A5A5A','实证主义社会学':'#5E4A7E','对话人类学':'#5E4E7E','工具主义':'#7E5A6E','希望哲学':'#4E4E7E',
-  '弗洛伊德马克思主义':'#7E4E7E','形式社会学':'#7E5E4A','德性传统':'#6E5A6E','德性伦理学':'#6E6E4E','批判传统':'#8B4513','批判理性主义':'#6E5E4E',
-  '批判社会学':'#5E7E4A','技术史':'#5A4E6E','技术批判理论':'#4E6E5A','技术现象学':'#4A5E6E','技术自主论':'#6E4A5E','政治功利主义':'#7E6B5A',
-  '政治社会学':'#7E4A5E','教父哲学':'#5A5A7E','文化人类学':'#4E5E6E','文化批判':'#7E7E4E','文艺复兴怀疑论':'#6E6E5A','新实用主义':'#6E7E5A',
-  '方法论无政府主义':'#5E4E6E','方法论的怀疑':'#6E5A5E','早期斯多葛':'#4E6E5A','普遍诠释学':'#5E5E6A','本体论诠释学':'#5E6A5E',
-  '本真性伦理':'#5A6E6E','极端唯名论':'#5A5E5E','概念论':'#5E5A5E','此性论':'#5A5E5A','法国实证主义':'#5A6E7E','现象学人类学':'#4E6E7E',
-  '理解社会学':'#4A7E5E','生命哲学':'#6E4E7E','研究纲领':'#4E5E5E','社会学实证主义':'#7E6E4A','社会实用主义':'#7E6E5A','社群主义':'#5A4E7E',
-  '符号人类学':'#7E4E5E','符号社会':'#5A6A6E','经院哲学':'#7E5A5A','经验批判主义':'#4E5E8E','经验论怀疑论':'#5A6E5A','罗马斯多葛':'#6E5A4E',
-  '自由主义':'#4E7E7E','自由至上主义':'#7E4E5A','观念功利主义':'#5A7E6B','规则功利主义':'#5A7E4E','规定主义':'#6E8E4A','证明传统':'#5A5A5A',
-  '超验主义':'#4A6E8E','过程生态学':'#5E7E4E','过程社会学':'#4A5E7E','过程神学':'#4E7E6E','进化实证主义':'#6E4A5E','逻辑实用主义':'#6E5A7E',
-  '逻辑经验主义':'#5E5E4E','道德情感论':'#6E4E6E','霸权理论':'#4E7E4E','黑格尔马克思主义':'#7E4E4E',
-  '三民主义创始人':'#6E4A3A','三民主义右翼':'#A04A6E','三民主义实践':'#4AB88A','三民主义理论家':'#5E3C8B','中国化开创者':'#3A65B0','中国哲学与马克思主义':'#4A8AD4',
-  '习行派':'#3A7AC4','今文经学':'#4AB88A','体系化先驱':'#4A6EA0','元康玄学':'#6E4A8B','先秦道家':'#5A4A7E','党建理论':'#653AB0','关学':'#4A8B6E',
-  '兵家':'#8A4AD4','兵家始祖':'#3A9B7A','净土宗':'#3A7AC4','创立者':'#3A7AC4','前期墨家':'#4A6EA0','前期法家':'#4A6EA0','华严宗':'#4A8B6E',
-  '古史辨':'#6E4A3A','古文经学':'#D4884A','史学与新儒家':'#6E3A5A','合同异派':'#B03A65','名家':'#6E4A8B','名家先驱':'#C43A8B','吴派':'#7E4A6E',
-  '哲学派':'#3A7AC4','哲学观念改革':'#3A5A6E','唯物主义':'#4A8B6E','墨家创始人':'#4A6EA0','墨辩':'#3C5E6B','大众哲学':'#7A3AC4','天台宗':'#B0653A',
-  '实验主义':'#8B3C5E','律宗':'#4A8AD4','心学':'#3A8B65','思想史':'#3A7AC4','批判派':'#3A9B7A','文化哲学':'#4A6E5A','新唯识论':'#653AB0',
-  '新理学':'#3A7AC4','智慧说':'#6E4A3A','正始玄学':'#4A8AD4','毛泽东思想创立者':'#4AB88A','民生主义理论家':'#3A9B7A','法家先驱':'#D4884A',
-  '法家集大成':'#6E3A5A','法相唯识宗':'#4A5A6E','洛学':'#4A5A6E','理学先驱':'#4A8B6E','皖派':'#6E4A8B','禅宗':'#3C5E6B','禅宗北宗':'#8B5E3C',
-  '离坚白派':'#653AB0','科学方法论':'#3A6E6E','科学派':'#8B5E3C','科学社':'#6E3A5A','秦代法家':'#A04A6E','秦墨':'#7A3AC4','竹林玄学':'#C47A3A',
-  '经世派':'#4A6E5A','经济思想':'#4AB88A','统一战线':'#4A5A6E','继承与发展':'#3A6E6E','维新启蒙':'#5A4A7E','维新实践':'#3C5E6B',
-  '维新激进派':'#3A65B0','维新理论家':'#5A4A7E','维新领袖':'#4A5A6E','综合创新':'#B03A65','综合经学':'#3A9B7A','进化论传播者':'#3A5A6E',
-  '进化论信仰者':'#3A65B0','进化论应用者':'#3A8B65','进化论翻译者':'#7A3AC4','道家创始人':'#C47A3A','道德的形而上学':'#A0624A','闽学':'#3A8B65',
-  '阴阳家':'#3A5A6E','阴阳家创始人':'#7E5A4A','马克思主义哲学传播者':'#653AB0','马克思主义哲学史':'#C47A3A','魏晋玄学':'#C47A3A',
-  '黄老道家':'#3C5E6B','19世纪独立与认同哲学':'#A0624A','20世纪初文化民族主义':'#4AB88A','20世纪美洲哲学史':'#6E4A3A',
-  '20世纪解放哲学':'#3A7AC4','亚历山大里亚学派':'#A04A6E','京都学派':'#4A8B6E','伊斯兰哲学/法尔萨法':'#C47A3A',
-  '伊斯法罕学派/存在论':'#A0624A','伦理哲学':'#4A8B6E','佛教中观派':'#4A5A6E','佛教唯识派':'#C43A8B','光照哲学/神秘主义':'#4A6E5A',
-  '凯拉姆与苏非主义':'#653AB0','前伊斯兰时期/琐罗亚斯德教':'#3C5E6B','印尼女性主义哲学':'#D44A9B','印尼本土哲学':'#D44A9B',
-  '历史哲学':'#5E3C8B','吠檀多派不二论':'#8B3C5E','存在主义/对话哲学':'#7E4A6E','巴比伦学派':'#8B5E3C','批判教育学与解放实践':'#4A8AD4',
-  '政治哲学/泛非主义':'#3C6B5E','数论派':'#A0624A','曹洞宗':'#4A8B6E','概念去殖民化':'#3A6E6E','殖民时期辩护神学':'#3A5A6E',
-  '法尔萨法中期':'#6E3A5A','法尔萨法后期':'#6E4A3A','法尔萨法早期':'#4A6E5A','法尔萨法鼎盛':'#4A5A6E','泰国佛教社会主义':'#3C6B5E',
-  '潘查希拉思想':'#4A6EA0','犹太亚里士多德主义':'#3A65B0','犹太启蒙运动':'#5A7E4A','现象学/伦理哲学':'#4A6E5A',
-  '理性主义/医学哲学':'#B03A65','理性主义/泛神论':'#4AB88A','瑜伽派':'#3C5E6B','真言宗':'#D44A9B','耆那教':'#4A8B6E','苏非主义':'#6E4A3A',
-  '菲律宾启蒙哲学':'#4A8B6E','认同哲学/批判哲学':'#5E3C8B','越南儒家政治哲学':'#7E4A6E','适足经济哲学':'#8B5E3C','部族文化哲学':'#B03A65',
-  '黑人性运动':'#653AB0','两汉经学':'#3A5A9B','儒家创始人':'#7E4A6E','先秦儒家':'#C43A8B','思孟学派':'#3A5A9B','现代新儒家':'#5A4A7E',
-  '程朱理学':'#A04A6E','陆王心学':'#3A7B5A',
-};
+import SubSchoolsSection from '../components/school/SubSchoolsSection';
+import { normalizeSchool, buildSchoolReferences, fetchSchoolJSON } from '../data/schoolContent';
+import './SchoolDetailPage.css';
 
 // ─── 英文名映射 ───
 const ENG_NAMES = {
@@ -242,164 +175,79 @@ const SCHOOL_MAP = {
   '太平洋原住民哲学':{_json:'school_太平洋原住民哲学.json',bg:'url(/schools/太平洋原住民哲学.webp)'},
 };
 
-// ─── 动画包裹 ───
-function FadeSection({ children, style }) {
-  const ref = useRef(null); const [on, setOn] = useState(false);
-  useEffect(() => { const el = ref.current; if (!el) return; const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setOn(true); }, { threshold:0.05 }); o.observe(el); return () => o.disconnect(); }, []);
-  return <div ref={ref} style={{ opacity:on?1:0, transform:on?'translateY(0)':'translateY(20px)', transition:'opacity 0.6s ease, transform 0.6s ease', ...style }}>{children}</div>;
+const EMPTY_CATALOG = { books: [], philosophers: [], schools: [], branches: {} };
+
+function goToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 }
 
 export default function SchoolDetailPage() {
   const { name } = useParams();
+  const [loaded, setLoaded] = useState(null);
+  const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(0);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [selectedConcept, setSelectedConcept] = useState(null);
+  const data = loaded?.data;
+  const references = useMemo(() => buildSchoolReferences(loaded?.catalog || EMPTY_CATALOG), [loaded?.catalog]);
+  useSEO(data?.name || name, data?.subtitle || `${name}的核心思想、人物、历史与原典`);
 
-  const m = SCHOOL_MAP[name] || {};
-  const [dynamicData, setDynamicData] = useState(null);
-  const [loadError, setLoadError] = useState(false);
-  const data = dynamicData || null;
-
-  // SEO
-  useSEO(data?.name || name, data?.subtitle || `探索${name}哲学流派的核心思想与代表人物`);
-
-  // Load school data from JSON on demand
   useEffect(() => {
-    setDynamicData(null);
-    setLoadError(false);
-    if (m._json) {
-      fetch('/schools/data/' + m._json)
-        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-        .then(d => setDynamicData(d))
-        .catch(() => setLoadError(true));
+    const controller = new AbortController();
+    const direct = SCHOOL_MAP[name];
+    async function load() {
+      const [catalog, directData] = await Promise.all([
+        fetchSchoolJSON('/schools/catalog.json', controller.signal).catch(() => EMPTY_CATALOG),
+        direct ? fetchSchoolJSON('/schools/data/' + direct._json, controller.signal) : Promise.resolve(null),
+      ]);
+      const parent = !direct && catalog.branches?.[name]?.[0];
+      const item = catalog.schools.find(school => school.name === (parent || name));
+      if (!directData && !item) throw new Error('School not found');
+      const raw = directData || await fetchSchoolJSON('/schools/data/' + item.detailFile, controller.signal);
+      if (!raw?.name || typeof raw.overview !== 'string') throw new Error('Invalid school data');
+      if (!controller.signal.aborted) {
+        setLoaded({ data: normalizeSchool(raw), catalog, image: item?.image || direct?.bg?.replace(/^url\(|\)$/g, ''), branch: parent ? name : null });
+        setError(false);
+      }
     }
-  }, [name]);
-  // 2026-08-11: 背景图走 OSS 直链（同源 CF 边缘 3-6s → OSS 0.1s）, resize 压缩到 1280 宽
-  const heroImage = (m.bg || 'url(/schools/default.webp)').replace(/url\(\/schools\//g, 'url(https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/schools/').replace(/\.webp\)/, '.webp?x-oss-process=image/resize,w_1280)');
+    load().catch(() => { if (!controller.signal.aborted) setError(true); });
+    return () => controller.abort();
+  }, [name, retry]);
 
-  // Auto-generate subColors from thinkers
-  const subColors = (() => {
-    const sc = {};
-    if (data?.thinkers) {
-      data.thinkers.forEach(t => {
-        if (t.sub) {
-          t.sub.split(/[/,，、;；]/).forEach(s => {
-            s = s.trim().replace(/[（(].*[)）]/g, '');
-            if (s && !sc[s]) {
-              const hash = s.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-              const h = (hash * 137) % 360;
-              sc[s] = 'hsl(' + h + ',50%,55%)';
-            }
-          });
-        }
-      });
-    }
-    return sc;
-  })();
+  useEffect(() => {
+    if (loaded?.branch) requestAnimationFrame(() => goToSection('school-branches'));
+  }, [loaded?.branch]);
 
-  // ─── Radial force-directed layout for thinkers constellation ───
-  const thinkers = (() => {
-    const ts = data?.thinkers;
-    if (!ts?.length) return [];
-    const rels = data?.relations || [];
-    const cx = 400, cy = 280;
-    const getR = (t) => { const inf = t.influence || 5; const base = inf >= 10 ? 28 : inf >= 9 ? 24 : inf >= 8 ? 20 : inf >= 7 ? 17 : 14; return base + 14; };
+  if (error) return <div className="school-detail school-status"><h1>{name}</h1><p>暂时无法载入这一流派的资料。</p><button type="button" onClick={() => { setError(false); setRetry(value => value + 1); }}>重新载入</button><Link to="/genealogy">返回谱系 →</Link></div>;
+  if (!data) return <div className="school-detail school-status" role="status"><p className="school-kicker">DEEP PHILOSOPHY</p><h1>{name}</h1><p>正在载入流派资料…</p></div>;
 
-    const adj = {}; ts.forEach(t => { adj[t.name] = []; });
-    rels.forEach(r => { if (adj[r.from] && adj[r.to]) { adj[r.from].push(r.to); adj[r.to].push(r.from); } });
-
-    const sorted = [...ts].sort((a, b) => (b.influence || 5) - (a.influence || 5));
-    const center = sorted[0];
-    if (!center) return ts.map(t => ({...t, _x:cx, _y:cy}));
-
-    const layers = {}; const visited = new Set(); const queue = [{ name: center.name, layer: 0 }];
-    visited.add(center.name);
-    while (queue.length) {
-      const { name: cn, layer } = queue.shift();
-      if (!layers[layer]) layers[layer] = [];
-      layers[layer].push(cn);
-      (adj[cn] || []).forEach(nb => { if (!visited.has(nb)) { visited.add(nb); queue.push({ name: nb, layer: layer + 1 }); } });
-    }
-    ts.forEach(t => { if (!visited.has(t.name)) { if (!layers[99]) layers[99] = []; layers[99].push(t.name); } });
-
-    const positions = {}; const layerKeys = Object.keys(layers).map(Number).sort((a, b) => a - b);
-    const maxLayer = Math.max(...layerKeys, 1);
-    positions[center.name] = { _x: cx, _y: cy };
-
-    layerKeys.forEach(layer => {
-      if (layer === 0) return;
-      const names = layers[layer] || [];
-      const layerRadius = 70 + (layer / maxLayer) * 240;
-      const count = names.length;
-
-      names.forEach((nm, i) => {
-        const parents = rels.filter(r => r.from === nm || r.to === nm).map(r => r.from === nm ? r.to : r.from).filter(p => positions[p]);
-        let angle;
-        if (parents.length > 0) {
-          const sumAngle = parents.reduce((s, p) => { const dx = positions[p]._x - cx, dy = positions[p]._y - cy; return s + Math.atan2(dy, dx); }, 0);
-          angle = sumAngle / parents.length + (i - count / 2) * 1.2;
-        } else {
-          angle = (i / Math.max(count, 1)) * Math.PI * 2 + layer * 0.4;
-        }
-        let px = cx + Math.cos(angle) * layerRadius, py = cy + Math.sin(angle) * layerRadius * 0.7;
-        let attempts = 0, overlap = true;
-        while (overlap && attempts < 50) {
-          overlap = false;
-          for (const pName in positions) {
-            const dx2 = px - positions[pName]._x, dy2 = py - positions[pName]._y;
-            const dist = Math.sqrt(dx2*dx2 + dy2*dy2);
-            const t1 = ts.find(x => x.name === nm), t2 = ts.find(x => x.name === pName);
-            const minD = getR(t1) + getR(t2) + 12;
-            if (dist < minD) { overlap = true; const pushAngle = Math.atan2(dy2, dx2); px += Math.cos(pushAngle)*14; py += Math.sin(pushAngle)*14; break; }
-          }
-          px = Math.max(60, Math.min(740, px)); py = Math.max(45, Math.min(515, py));
-          attempts++;
-        }
-        positions[nm] = { _x: px, _y: py };
-      });
-    });
-
-    return ts.map(t => ({
-      ...t,
-      _x: (positions[t.name] || { _x: cx + (Math.random()-0.5)*300 })._x,
-      _y: (positions[t.name] || { _y: cy + (Math.random()-0.5)*200 })._y,
-    }));
-  })();
-
-  // Loading state
-  if (m._json && !data && !loadError) {
-    return (
-      <div style={{ background:'var(--bg)', minHeight:'100vh', display:'flex', justifyContent:'center', alignItems:'center' }}>
-        <div className="loading">加载流派数据...</div>
-      </div>
-    );
+  function openPerson(person) { setSelectedPerson(person); goToSection('school-graph'); }
+  function openConcept(concept) { setSelectedConcept(concept); goToSection('school-concepts'); }
+  function locatePerson(person) {
+    const event = [...document.querySelectorAll('#school-timeline [data-person]')].find(node => node.dataset.person === person);
+    if (event) event.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    else goToSection('school-timeline');
   }
-
-  // Coming soon / not found
-  if (!m._json || (loadError && !data)) {
-    return (
-      <div style={{ background:'var(--bg)', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', padding:'60px 32px' }}>
-        <p style={{ fontSize:10, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--ochre)', marginBottom:24, fontFamily:'var(--font-sans)' }}>Coming Soon</p>
-        <h1 style={{ fontSize:'clamp(2rem,5vw,3rem)', fontWeight:400, color:'var(--ink)', letterSpacing:'0.04em', marginBottom:16, fontFamily:'"Playfair Display","PingFang SC",serif' }}>{name}</h1>
-        <div style={{ width:32, height:1.5, background:'var(--ochre)', marginBottom:20, opacity:0.4 }} />
-        <p style={{ fontSize:'1rem', fontWeight:300, color:'var(--text-dim)', lineHeight:2.0, maxWidth:500, fontFamily:'var(--font-sans)' }}>该流派详情页正在建设中，敬请期待。</p>
-        <button onClick={() => window.history.back()} style={{ marginTop:32, background:'none', border:'1px solid rgba(145,118,71,0.2)', borderRadius:6, padding:'10px 28px', fontSize:13, color:'var(--ochre)', cursor:'pointer', letterSpacing:'0.06em', fontFamily:'var(--font-sans)' }}>← 返回</button>
-      </div>
-    );
-  }
-
-  const subSchools = data.subSchools || {};
-  const cihai = data.cihai || [];
-
-  return (
-    <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: '"Playfair Display","PingFang SC",serif' }}>
-      <HeroSection name={data.name} subtitle={data.subtitle} quote={data.quote} quoteAuthor={data.quoteAuthor} heroImage={heroImage} englishName={ENG_NAMES[data.name]} />
-      <div id="school-content">
-      <FadeSection><OverviewSection overview={data.overview} subSchools={subSchools} /></FadeSection>
-      <FadeSection><ConstellationMap thinkers={thinkers} relations={data.relations} SUB_COLORS={{...SUB_COLORS, ...subColors}} /></FadeSection>
-      <FadeSection><TimelineSection timeline={data.timeline} /></FadeSection>
-      <FadeSection><GlossaryCloud cihai={cihai} /></FadeSection>
-      <FadeSection><QuotesGallery quotes={data.quotes} /></FadeSection>
-      <FadeSection><WorksList works={data.works} /></FadeSection>
-      <FadeSection><EpilogueSection conclusion={data.conclusion} closingQuote={data.closingQuote} closingQuoteAuthor={data.closingQuoteAuthor} /></FadeSection>
-      </div>
+  const chapters = [
+    ['school-overview', '简介', true], ['school-branches', '子流派', data.subSchools.length], ['school-graph', '星图', data.thinkers.length || data.relations.length],
+    ['school-timeline', '时间轴', data.timeline.length], ['school-concepts', '词海', data.cihai.length], ['school-quotes', '金句', data.quotes.length],
+    ['school-works', '典籍', data.works.length], ['school-conclusion', '结语', data.conclusion],
+  ].filter(([, , visible]) => visible);
+  return <div className="school-detail">
+    <HeroSection name={data.name} subtitle={data.subtitle} quote={data.quote} quoteAuthor={data.quoteAuthor} quoteKind={data.quoteKind} heroImage={loaded.image} englishName={ENG_NAMES[data.name]} />
+    <div className="school-reading" id="school-content">
+      <nav className="school-chapter-nav" aria-label="流派章节">{chapters.map(([id, label], index) => <a key={id} href={`#${id}`} onClick={event => { event.preventDefault(); goToSection(id); }}><small>{['I','II','III','IV','V','VI','VII','VIII'][index]}</small>{label}</a>)}</nav>
+      {loaded.branch && <p className="school-branch-context">正在{data.name}中阅读“{loaded.branch}”。<Link to={`/school/${encodeURIComponent(data.name)}`}>查看所属流派</Link></p>}
+      <OverviewSection overview={data.overview} />
+      <SubSchoolsSection key={loaded.branch || data.name} schoolName={data.name} subSchools={data.subSchools} thinkers={data.thinkers} cihai={data.cihai} references={references} initialBranch={loaded.branch} onSelectPerson={openPerson} onSelectConcept={openConcept} />
+      <div id="school-graph" className="school-module-anchor"><ConstellationMap thinkers={data.thinkers} relations={data.relations} cihai={data.cihai} references={references} selectedPerson={selectedPerson || data.thinkers[0]?.name} onSelectPerson={setSelectedPerson} onSelectConcept={openConcept} onLocatePerson={locatePerson} /></div>
+      <div id="school-timeline" className="school-module-anchor"><TimelineSection timeline={data.timeline} thinkers={data.thinkers} cihai={data.cihai} references={references} onSelectPerson={openPerson} onSelectConcept={openConcept} /></div>
+      <div id="school-concepts" className="school-module-anchor"><GlossaryCloud cihai={data.cihai} references={references} selectedConcept={selectedConcept} onSelectConcept={setSelectedConcept} /></div>
+      <div id="school-quotes" className="school-module-anchor"><QuotesGallery quotes={data.quotes} /></div>
+      <WorksList works={data.works} references={references} />
+      <EpilogueSection conclusion={data.conclusion} closingQuote={data.closingQuote} closingQuoteAuthor={data.closingQuoteAuthor} closingQuoteKind={data.closingQuoteKind} image={loaded.image} />
+      {data.sources.length > 0 && <section className="school-sources" aria-labelledby="school-sources-title"><h2 id="school-sources-title">参考资料</h2><ul>{data.sources.map((source, i) => <li key={`${source.url}-${i}`}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title} ↗</a></li>)}</ul></section>}
+      <footer className="school-footer"><span>DeepPhilosophy</span><Link to="/genealogy">继续探索思想谱系 →</Link></footer>
     </div>
-  );
+  </div>;
 }

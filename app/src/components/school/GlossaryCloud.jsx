@@ -1,56 +1,119 @@
-import { useState } from 'react';
-import { FONT, SPACE } from './tokens';
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './GlossaryCloud.css';
 
-export default function GlossaryCloud({ cihai = [] }) {
-  const [hovered, setHovered] = useState(null);
+const plainWord = word => String(word || '').replace(/[（(].*?[)）]/g, '').trim();
+const wordKey = word => plainWord(word).replace(/[\s·•—–-]/g, '').toLocaleLowerCase();
+const hashWord = word => [...word].reduce((hash, character) => (hash * 31 + character.codePointAt(0)) >>> 0, 0);
+function groupTerms(cihai) {
+  const groups = new Map();
+  cihai.filter(item => item?.word).forEach(item => {
+    const key = wordKey(item.word);
+    if (!groups.has(key)) groups.set(key, { key, name: plainWord(item.word), items: [] });
+    groups.get(key).items.push(item);
+  });
+  return [...groups.values()];
+}
 
-  return (
-    <section style={{ padding: `${SPACE.xxxl}px 30px`, maxWidth: 900, margin: '0 auto' }}>
-      <div style={{ textAlign: 'center', marginBottom: 40 }}>
-        <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fade)', fontFamily: FONT.sans }}>Chapter 4</span>
-        <h2 style={{ fontSize: 26, fontWeight: 400, color: 'var(--ink)', margin: '4px 0 0', fontFamily: FONT.serif, letterSpacing: '0.03em' }}>辞海</h2>
-        <div style={{ width: 24, height: 1.5, background: 'var(--ochre)', margin: '12px auto 0', opacity: 0.5 }} />
-      </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'baseline', gap: '2px 12px', padding: '20px 8px' }}>
-        {cihai.filter(item => item && item.word && item.def).map((item, i) => {
-          const hash = item.word.split('').reduce((s, c) => s + c.charCodeAt(0), 0);
-          const si = (hash * 7919 + i * 3571) % 53;
-          const ss = [10, 28, 14, 20, 32, 11, 18, 34, 12, 15, 26, 10, 13, 30, 15, 22, 11, 17, 36, 12, 14, 24, 10, 27, 13, 19, 33, 11, 16, 29, 13, 15, 25, 10, 14, 21, 12, 15, 20, 11, 14, 26, 13, 17, 10, 16, 24, 12, 15, 18, 10, 28, 14];
-          const ws = [300, 800, 400, 600, 900, 300, 400, 900, 300, 500, 700, 300, 300, 800, 400, 600, 300, 500, 900, 300, 400, 700, 300, 800, 300, 500, 900, 300, 400, 800, 300, 400, 600, 300, 400, 600, 300, 400, 500, 300, 400, 700, 300, 500, 300, 400, 600, 300, 400, 500, 300, 800, 400];
-          const size = ss[si % ss.length];
-          const weight = ws[si % ws.length];
-          const r = (hash * 3571 + i * 719) % 41 - 20;
-          const rot = r / 10;
-          const extraPad = size > 22 ? '6px 10px' : size > 17 ? '4px 7px' : size > 13 ? '2px 5px' : '1px 3px';
-          const topShift = (hash * 79 + i * 113) % 7 - 3;
-          const isHov = hovered === item.word;
-          return (
-            <span key={i} style={{
-              fontSize: size, fontWeight: weight, padding: extraPad, cursor: 'pointer', position: 'relative',
-              top: topShift + 'px', zIndex: isHov ? 20 : 1,
-              color: isHov ? 'var(--ochre)' : 'var(--ink)',
-              opacity: hovered ? (isHov ? 1 : 0.3) : 0.62 + (size - 10) * 0.013,
-              transition: 'all 0.35s cubic-bezier(0.4,0,0.2,1)',
-              fontFamily: size > 16 ? FONT.serif : FONT.sans,
-              transform: isHov ? 'scale(1.3) rotate(0deg)' : `rotate(${rot}deg)`,
-            }}
-              onMouseEnter={() => setHovered(item.word)} onMouseLeave={() => setHovered(null)}>
-              {item.word}
-              {isHov && (
-                <div style={{
-                  position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
-                  background: 'rgba(248,244,238,0.98)', border: '1px solid var(--border)',
-                  borderRadius: 10, padding: '14px 20px', zIndex: 30, width: 320,
-                  boxShadow: '0 6px 30px rgba(0,0,0,0.15)', marginBottom: 10,
-                }}>
-                  <div style={{ fontSize: 14, lineHeight: 1.7, color: 'var(--text)', marginBottom: 8, fontFamily: FONT.sans }}>{item.def}</div>
-                  <div style={{ fontSize: 11, color: 'var(--ochre)', fontStyle: 'italic', borderTop: '1px solid var(--border)', paddingTop: 6, fontFamily: FONT.sans }}>{item.source}</div>
-                </div>
-              )}
-            </span>
-          );
+export default function GlossaryCloud({ cihai = [], references, selectedConcept, onSelectConcept, onLocatePerson }) {
+  const groups = useMemo(() => groupTerms(cihai), [cihai]);
+  const [query, setQuery] = useState('');
+  const [activeKey, setActiveKey] = useState(null);
+  const [pinned, setPinned] = useState(false);
+  const [previousConcept, setPreviousConcept] = useState(undefined);
+  const [position, setPosition] = useState({ left: 8, top: 0 });
+  const wrapRef = useRef(null);
+  const panelRef = useRef(null);
+  const wordRefs = useRef(new Map());
+  const suppressFocus = useRef(false);
+  const suppressHover = useRef(false);
+  const suppressionTimer = useRef(null);
+  useEffect(() => () => clearTimeout(suppressionTimer.current), []);
+  const panelId = useId();
+  const active = groups.find(group => group.key === activeKey);
+  const item = active?.items[0];
+  const matches = groups.filter(group => group.items.some(term => `${term.word} ${term.def || ''} ${term.source || ''}`.toLocaleLowerCase().includes(query.toLocaleLowerCase())));
+  // A changed parent selection is consumed once; hover and close remain local afterwards.
+  if (previousConcept !== selectedConcept) {
+    setPreviousConcept(selectedConcept);
+    if (selectedConcept) {
+      const key = wordKey(selectedConcept);
+      const match = groups.find(group => group.key === key) || groups.find(group => key.length > 1 && (group.key.includes(key) || key.includes(group.key)));
+      if (match) { setActiveKey(match.key); setPinned(true); setQuery(''); }
+    }
+  }
+  useLayoutEffect(() => {
+    if (!active) return;
+    function reposition() {
+      const wrap = wrapRef.current;
+      const panel = panelRef.current;
+      const anchor = wordRefs.current.get(active.key);
+      if (!wrap || !panel || !anchor) return;
+      const frame = wrap.getBoundingClientRect();
+      const box = anchor.getBoundingClientRect();
+      const popup = panel.getBoundingClientRect();
+      const left = Math.max(8, Math.min(frame.width - popup.width - 8, box.left + box.width / 2 - frame.left - popup.width / 2));
+      const above = box.top - frame.top - popup.height - 12;
+      const top = above >= 0 && box.bottom + popup.height > window.innerHeight ? above : box.bottom - frame.top + 12;
+      setPosition(previous => Math.abs(previous.left - left) < .5 && Math.abs(previous.top - top) < .5 ? previous : { left, top });
+    }
+    reposition();
+    const observer = new ResizeObserver(reposition);
+    observer.observe(wrapRef.current);
+    if (panelRef.current) observer.observe(panelRef.current);
+    window.addEventListener('resize', reposition);
+    return () => { observer.disconnect(); window.removeEventListener('resize', reposition); };
+  }, [active, query]);
+  useEffect(() => {
+    if (!activeKey) return;
+    const dismiss = event => {
+      if (!wrapRef.current?.contains(event.target)) { setActiveKey(null); setPinned(false); }
+    };
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
+  }, [activeKey]);
+  function show(group, pin = false) {
+    if (!pin && (pinned || suppressHover.current)) return;
+    setActiveKey(group.key);
+    if (pin) { setPinned(true); onSelectConcept?.(group.name); }
+  }
+  function close(restoreFocus = false) {
+    suppressHover.current = true;
+    clearTimeout(suppressionTimer.current);
+    suppressionTimer.current = setTimeout(() => { suppressHover.current = false; }, 500);
+    if (restoreFocus) {
+      suppressFocus.current = true;
+      wordRefs.current.get(activeKey)?.focus({ preventScroll: true });
+      queueMicrotask(() => { suppressFocus.current = false; });
+    }
+    setActiveKey(null);
+    setPinned(false);
+  }
+  const sourceTitles = [...String(item?.source || '').matchAll(/《([^》]+)》/g)].map(match => match[1]);
+  const sourceBook = sourceTitles.map(title => references?.findBook?.(title)).find(Boolean);
+  const original = item?.word.match(/[（(](.*?)[)）]/)?.[1];
+  if (!groups.length) return null;
+  return <section className="school-glossary" aria-labelledby="school-glossary-title">
+    <header className="school-glossary-heading"><div><span className="school-glossary-kicker">A sea of ideas</span><h2 id="school-glossary-title">词海</h2></div><label className="school-glossary-search"><span className="school-glossary-sr">查找词语</span><input type="search" placeholder="查找词语" value={query} onChange={event => { setQuery(event.target.value); setActiveKey(null); setPinned(false); }} /></label></header>
+    <div className="school-glossary-wrap" ref={wrapRef} onMouseLeave={() => { if (!pinned) setActiveKey(null); }} onBlur={event => { if (!pinned && !event.currentTarget.contains(event.relatedTarget)) setActiveKey(null); }} onKeyDown={event => { if (event.key === 'Escape' && activeKey) { event.preventDefault(); close(true); } }}>
+      <div className="school-glossary-cloud" aria-label="概念词云">
+        {matches.map((group, index) => {
+          const hash = hashWord(group.name);
+          const prominent = index < 4 || hash % 7 === 0;
+          const size = Math.max(17, (prominent ? 31 + hash % 9 : 18 + hash % 11) - Math.max(0, group.name.length - 7) * 1.1);
+          return <button key={group.key} type="button" ref={element => { if (element) wordRefs.current.set(group.key, element); else wordRefs.current.delete(group.key); }} className={`school-glossary-word ${activeKey && activeKey !== group.key ? 'is-dimmed' : ''}`} style={{ '--word-size': `${size}px`, '--word-angle': `${((hash % 17) - 8) / 5}deg`, '--word-weight': prominent ? 500 : 400 }} aria-label={group.items[0].word} aria-expanded={activeKey === group.key} aria-controls={activeKey === group.key ? panelId : undefined} aria-pressed={pinned && activeKey === group.key} onMouseEnter={() => show(group)} onFocus={() => { if (!suppressFocus.current) show(group); }} onClick={() => show(group, true)}>{group.name}</button>;
         })}
+        {!matches.length && <p className="school-glossary-empty">没有找到匹配的词语</p>}
       </div>
-    </section>
-  );
+      {active && <aside className="school-glossary-popover" id={panelId} ref={panelRef} style={position} aria-label={`${active.name}的释义`} aria-live={pinned ? 'polite' : 'off'}>
+        <button className="school-glossary-close" type="button" aria-label="关闭释义" onClick={() => close(true)}>×</button>
+        <h3>{active.name}</h3>{original && <div className="school-glossary-original">{original}</div>}
+        {item.def && <p className="school-glossary-definition">{item.def}</p>}
+        {item.source && <p className="school-glossary-source">{item.source}</p>}
+        {active.items.length > 1 && <details className="school-glossary-variants"><summary>其他解释 · {active.items.length - 1}</summary>{active.items.slice(1).map((alternative, index) => <div key={index}><h4>{alternative.word}</h4><p>{alternative.def}</p>{alternative.source && <small>{alternative.source}</small>}</div>)}</details>}
+        {sourceBook?.href && <Link to={sourceBook.href} className="school-glossary-book">{sourceBook.cover && <img src={sourceBook.cover} alt="" loading="lazy" onError={event => { event.currentTarget.style.display = 'none'; }} />}<span><strong>《{sourceBook.title}》</strong>{sourceBook.author && <small>{sourceBook.author}</small>}<em>{sourceBook.chapterCount > 0 ? '打开原典' : '查看书目'} <span aria-hidden="true">↗</span></em></span></Link>}
+        {onLocatePerson && item.source && <button className="school-glossary-person" type="button" onClick={() => onLocatePerson(item.source)}>在星图中寻找作者 <span aria-hidden="true">→</span></button>}
+      </aside>}
+    </div>
+  </section>;
 }
