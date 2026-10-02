@@ -7,7 +7,13 @@ import account_data
 def recall_account_memory():
     """读取当前登录账号明确保存的长期记忆。匿名用户不保存账号记忆。"""
     uid = current_account_id.get()
-    return {"memories": account_data.list_memories(uid)} if uid else {"error": "LOGIN_REQUIRED"}
+    if not uid:
+        return {"error": "LOGIN_REQUIRED"}
+    from account_memory_profile import get_profile
+    profile = get_profile(uid)
+    if not profile['enabled']:
+        return {"error": "MEMORY_DISABLED"}
+    return {"memories": account_data.list_memories(uid), "memory_profile": profile['text']}
 
 
 def remember_account_memory(source_quote: str):
@@ -20,6 +26,9 @@ def remember_account_memory(source_quote: str):
     markers = ("记住", "记着", "记下来", "remember", "keep in mind")
     if not uid:
         return {"error": "LOGIN_REQUIRED"}
+    from account_memory_profile import get_profile
+    if not get_profile(uid)['enabled']:
+        return {"error": "MEMORY_DISABLED"}
     refusals = ("不要记住", "别记住", "不许记住", "don't remember", "do not remember")
     if (any(marker in question.lower() for marker in refusals)
             or not any(marker in question.lower() for marker in markers)

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Compass, Settings, EllipsisVertical, CircleUserRound } from 'lucide-react';
+import { Plus, Compass, Settings, EllipsisVertical, CircleUserRound, LogOut } from 'lucide-react';
 import { useAuth } from '../../auth';
 import { useLang } from '../../utils/i18n';
 import { groupConversationsByDay } from '../../data/conversationLogic';
@@ -8,7 +8,7 @@ import { ConfirmModal, RenameModal, ContextMenu, anchorFromEvent } from './Modal
 /**
  * ConversationSidebar — 会话历史侧栏（spec §5）
  * 顶部: 品牌 + ＋新对话 + ◇探索智能体; 中部: 今天/昨天/过去 7 天/更早 分组历史
- * （空分组不显示）; 底部仅保留统一的设置与账户入口。
+ * （空分组不显示）; 底部统一设置与账户入口，以及独立登出按钮。
  * Active 仅轻微背景差异; hover 出现 ···（重命名/删除, 删除需确认）。
  * 2026-08-31 Codex-Parity: lucide 图标 + 全 aria + 设置入口（§24）。
  */
@@ -17,7 +17,7 @@ export default function ConversationSidebar({
   onSelect, onNew, onExplore, onRename, onDelete, onOpenSettings,
 }) {
   const { t, lang } = useLang();
-  const { username, profile, token, historyStatus, retryHistory } = useAuth();
+  const { username, profile, token, historyStatus, retryHistory, logout } = useAuth();
   const [menuFor, setMenuFor] = useState(null);       // 打开了菜单的会话 id
   const [menuAnchor, setMenuAnchor] = useState(null); // {left,top,bottom} fixed 锚点
   const [renaming, setRenaming] = useState(null);     // 重命名目标会话
@@ -90,6 +90,9 @@ export default function ConversationSidebar({
               <span className="cw-account-entry-copy"><span>{profile?.nickname || username || t('settings')}</span><small>{lang === 'zh' ? (username ? '设置与账户' : '登录与偏好') : (username ? 'Settings and account' : 'Sign in & preferences')}</small></span>
               <Settings size={16} className="cw-account-entry-gear" aria-hidden="true" />
             </button>
+            {token && <button className="cw-side-row cw-logout" onClick={() => { onClose(); logout(); }}>
+              <LogOut size={17} aria-hidden="true" /><span>{lang === 'zh' ? '登出' : 'Sign out'}</span>
+            </button>}
           </div>
         </div>
       </div>

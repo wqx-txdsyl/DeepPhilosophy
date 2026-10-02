@@ -26,6 +26,12 @@ def connection():
         conn.execute("""CREATE TABLE IF NOT EXISTS agent_account_memory (
             user_id INTEGER NOT NULL, memory_id TEXT NOT NULL, text TEXT NOT NULL,
             created_at TEXT NOT NULL, PRIMARY KEY (user_id, memory_id))""")
+        conn.execute("""CREATE TABLE IF NOT EXISTS agent_memory_profile (
+            user_id INTEGER PRIMARY KEY, text TEXT NOT NULL DEFAULT '',
+            proposal TEXT NOT NULL DEFAULT '', manual INTEGER NOT NULL DEFAULT 0,
+            enabled INTEGER NOT NULL DEFAULT 1, revision INTEGER NOT NULL DEFAULT 0,
+            source_hash TEXT NOT NULL DEFAULT '', status TEXT NOT NULL DEFAULT 'idle',
+            updated_at TEXT NOT NULL DEFAULT '', sources TEXT NOT NULL DEFAULT '[]')""")
         conn.execute("CREATE INDEX IF NOT EXISTS agent_conversation_recent ON agent_conversation_records(user_id,updated_at DESC)")
         conn.execute("""CREATE TABLE IF NOT EXISTS agent_history_migrations (
             user_id INTEGER PRIMARY KEY, last_chat_id INTEGER NOT NULL DEFAULT 0)""")
@@ -130,6 +136,8 @@ def delete_conversation(user_id, conversation_id):
             ON CONFLICT(user_id,conversation_id) DO UPDATE SET data='{}', deleted=1,
             revision=agent_conversation_records.revision+1, updated_at=excluded.updated_at""",
             (user_id, conversation_id, now()))
+        from account_memory_profile import invalidate_generated
+        invalidate_generated(conn, user_id)
         conn.commit()
         return record(conn.execute(
             "SELECT * FROM agent_conversation_records WHERE user_id=? AND conversation_id=?",
@@ -187,13 +195,16 @@ def forget(user_id, memory_id):
     with connection() as conn:
         cur = conn.execute("DELETE FROM agent_account_memory WHERE user_id=? AND memory_id=?",
                            (user_id, memory_id))
+        if cur.rowcount:
+            from account_memory_profile import invalidate_generated
+            invalidate_generated(conn, user_id)
         conn.commit()
         return cur.rowcount > 0
 
 
 def delete_account_data(user_id):
     with connection() as conn:
-        for table in ("agent_account_memory", "agent_conversation_records", "agent_history_migrations"):
+        for table in ("agent_account_memory", "agent_memory_profile", "agent_conversation_records", "agent_history_migrations"):
             conn.execute(f"DELETE FROM {table} WHERE user_id=?", (user_id,))
         conn.commit()
 
@@ -217,6 +228,10 @@ def account_context(user_id, conversation_id=None):
                 break
         if len(questions) == 4:
             break
-    return {"explicit_memories": list_memories(user_id),
-            "profile": {key: profile[key] for key in ("about", "custom_instructions") if profile.get(key)},
-            "recent_questions": questions}
+    from account_memory_profile import get_profile
+    memory = get_profile(user_id)
+    return {"explicit_memories": list_memories(user_id) if memory['enabled'] else [],
+            "memory_profile": memory['text'] if memory['enabled'] else '',
+            "memory_profile_user_edited": memory['manual'] if memory['enabled'] else False,
+            "profile": {key: profile[key] for key in ("about",) if profile.get(key)},
+            "recent_questions": questions if memory['enabled'] else []}
