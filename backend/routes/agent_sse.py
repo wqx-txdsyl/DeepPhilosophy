@@ -11,7 +11,7 @@ import os
 from typing import Optional, List, Literal
 
 from fastapi import APIRouter, Depends, Header, Request
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, JSONResponse
 from pydantic import BaseModel, ConfigDict
 
 import guard
@@ -92,7 +92,8 @@ class HomeQuestionsRequest(BaseModel):
 @router.post('/api/agent/home-questions')
 async def home_questions(req: HomeQuestionsRequest, user: dict = Depends(auth_required)):
     from home_questions import generate_home_questions
-    return await asyncio.to_thread(generate_home_questions, user["id"], req.language, req.refresh)
+    result = await asyncio.to_thread(generate_home_questions, user["id"], req.language, req.refresh)
+    return JSONResponse(result, headers={"Cache-Control":"private, no-store"})
 
 # ═══════════════════════════════════════════════════════
 # LangGraph 引擎路由（v2）: /api/agent/stream_lg

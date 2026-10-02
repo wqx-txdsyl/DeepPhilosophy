@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-02",
+  "product_version": "0.1.2",
+  "active_answer_prompt": "0.1.1",
+  "main_system_prompt_changed": false,
+  "tool_budget": null,
+  "root_cause": "Homepage directly read raw legacy chat_history in addition to canonical migrated conversations, ignoring the deleted archive tombstone.",
+  "changes": [
+    "Read recent discussions only through canonical nondeleted conversation records",
+    "Revalidate all source signals after generation and on cache hits; discard mixed-source results on any change",
+    "Hide cached questions while account history changes are unsynced; retry after stale source response",
+    "Homepage endpoint uses private, no-store"
+  ],
+  "verification": {
+    "backend_tests_passed": 31,
+    "frontend": "npm test passed",
+    "build": "passed",
+    "regressions": [
+      "legacy raw rows remain but deleted archive produces no discussion",
+      "reading, notes, explicit memory and other accounts preserved",
+      "deletion during model generation drops even reading-tagged mixed-source questions",
+      "deletion on cache hit returns no cached discussion"
+    ],
+    "browser_actual_AgentPage_settings_delete_flow": {
+      "disposable_fixture_only": true,
+      "empty_sidebar": true,
+      "recent_discussion_visible": false,
+      "reading_recommendations_visible": true
+    }
+  },
+  "production_account_records_deleted_by_agent": false,
+  "real_model_requests_for_verification": false,
+  "screenshots": {
+    "before": "outputs/deleted-home-recommendations-20261002/before.png",
+    "after": "outputs/deleted-home-recommendations-20261002/after.png"
+  }
+}

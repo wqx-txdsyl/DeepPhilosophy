@@ -61,10 +61,6 @@ def load_signals(user_id, language="zh"):
             "SELECT book_id, note_text, updated_at FROM book_notes "
             "WHERE user_id = ? AND trim(note_text) != '' ORDER BY updated_at DESC, id DESC LIMIT 6",
             (user_id,)).fetchall()]
-        discussions = [dict(row) for row in conn.execute(
-            "SELECT id, content, created_at FROM chat_history "
-            "WHERE user_id = ? AND role = 'user' AND trim(content) != '' "
-            "ORDER BY created_at DESC, id DESC LIMIT 6", (user_id,)).fetchall()]
     finally:
         conn.close()
 
@@ -99,13 +95,8 @@ def load_signals(user_id, language="zh"):
         signals.append({"source_id": f"note:{bid}", "kind": "note", "basis": basis,
                         "book_id": bid, "title": title, "text": text,
                         "recorded_at": note["updated_at"]})
-    for discussion in discussions:
-        content = _text(discussion["content"])
-        if content:
-            signals.append({"source_id": f"discussion:{discussion['id']}",
-                            "kind": "discussion", "text": content,
-                            "basis": "Recent discussion" if en else "最近讨论",
-                            "recorded_at": discussion["created_at"]})
+    # Legacy rows are migrated by list_conversations. Never also read the raw
+    # table: deleted archives retain their source rows and tombstones must win.
     from account_data import list_conversations, list_memories
     recent = 0
     for item in list_conversations(user_id):
@@ -187,6 +178,19 @@ def _validated_suggestions(questions, signals):
     return output if len(output) >= 2 else []
 
 
+def _source_change(user_id, language, original):
+    """Never deliver/cache generated questions using records deleted in flight."""
+    try:
+        latest = load_signals(user_id, language)
+    except Exception:
+        return {"status": "unavailable", "suggestions": [], "cached": False}
+    if latest != original:
+        # A surviving reading record does not authorize questions synthesized
+        # from the deleted discussion. Discard the whole mixed-source result.
+        return {"status": "stale" if latest else "empty", "suggestions": [], "cached": False}
+    return None
+
+
 def generate_home_questions(user_id, language="zh", refresh=False):
     """Called only with an auth_required-derived ID, never a client ID."""
     if not isinstance(user_id, int) or isinstance(user_id, bool) or user_id <= 0:
@@ -207,14 +211,22 @@ def generate_home_questions(user_id, language="zh", refresh=False):
             if _cache[old_key][0] <= now:
                 del _cache[old_key]
         entry = _cache.get(key)
-        if entry and not refresh:
-            _cache.move_to_end(key)
-            return {"status": "ready", "suggestions": deepcopy(entry[1]), "cached": True}
+        cached = deepcopy(entry[1]) if entry and not refresh else None
         previous = [item["question"] for item in entry[1]] if entry else []
+    if cached is not None:
+        # Check again outside the cache lock: another device may have deleted
+        # history between reading the signals and finding this cached response.
+        changed = _source_change(user_id, language, signals)
+        if changed is not None:
+            return changed
+        return {"status": "ready", "suggestions": cached, "cached": True}
     try:
         suggestions = _validated_suggestions(_model_questions(signals, language, previous), signals)
     except Exception:
         suggestions = []
+    changed = _source_change(user_id, language, signals)
+    if changed is not None:
+        return changed
     if not suggestions:
         return {"status": "unavailable", "suggestions": [], "cached": False}
     with _cache_lock:

@@ -12,6 +12,8 @@ import account_data
 def db(tmp_path, monkeypatch):
     monkeypatch.setattr(auth, 'DB_PATH', str(tmp_path / 'fixture.db'))
     monkeypatch.setattr(auth, '_sync_db_from_cloud', lambda: None)
+    monkeypatch.setattr(auth, '_sync_db', lambda: None)
+    monkeypatch.setenv('DP_ALLOW_GH_RESTORE','0')
     auth.init_db()
     with auth._get_conn() as conn:
         conn.execute("INSERT INTO users (id,username,password_hash,salt,profile) VALUES(1,'fixture','','','{}')")
@@ -55,3 +57,62 @@ def test_generation_failure_does_not_fallback_to_static_samples(db, monkeypatch)
     account_data.remember(1,'我在读亚里士多德')
     monkeypatch.setattr(home, '_model_questions', lambda *args: [{'question':'编造来源的问题？','source_id':'invented'}])
     assert home.generate_home_questions(1) == {'status':'unavailable','suggestions':[],'cached':False}
+
+
+def test_deleting_legacy_archive_removes_recent_discussion_even_when_raw_rows_remain(db, monkeypatch):
+    with auth._get_conn() as conn:
+        conn.execute("INSERT INTO chat_history(user_id,role,content) VALUES(1,'user','语言是存在之家与语言使用如何比较？')")
+    signals=home.load_signals(1)
+    assert [s['source_id'] for s in signals]==['agent:conv_legacy_account_chat:legacy_chat_1']
+    def model(signals,*args):
+        return [{'question':'语言使用与存在之家能否解释同一种意义？','source_id':signals[0]['source_id']},
+                {'question':'两种语言观对沉默的解释有什么不同？','source_id':signals[0]['source_id']}]
+    monkeypatch.setattr(home,'_model_questions',model)
+    assert home.generate_home_questions(1)['status']=='ready'
+    assert home.generate_home_questions(1)['cached']
+    account_data.delete_conversation(1,'conv_legacy_account_chat')
+    with auth._get_conn() as conn: assert conn.execute('SELECT count(*) FROM chat_history WHERE user_id=1').fetchone()[0]==1
+    assert home.load_signals(1)==[]
+    assert home.generate_home_questions(1)['status']=='empty'
+    assert home.load_signals(1)==[]  # reload/migration must not resurrect the archive
+
+
+def test_reading_notes_and_saved_memory_are_separate_from_deleted_discussions(db, monkeypatch):
+    auth.save_reading_progress(1,'fixture-book','测试书目','作者',1,5)
+    auth.save_book_note(1,'fixture-book','我记录的阅读笔记')
+    account_data.remember(1,'请记住我的阅读目标')
+    account_data.save_conversation(1,'a',{'messages':[{'role':'user','message_id':'u','content':'需要删除的讨论'}]},0)
+    account_data.save_conversation(2,'b',{'messages':[{'role':'user','message_id':'u','content':'他人记录'}]},0)
+    account_data.delete_conversation(1,'a')
+    signals=home.load_signals(1)
+    assert {s['kind'] for s in signals}=={'reading','note','explicit_memory'}
+    assert '需要删除的讨论' not in json.dumps(signals,ensure_ascii=False)
+    assert len([s for s in home.load_signals(2) if s['kind']=='discussion'])==1
+
+
+def test_deletion_while_model_generates_drops_mixed_reading_and_discussion_result(db, monkeypatch):
+    auth.save_reading_progress(1,'fixture-book','测试书目','作者',1,5)
+    account_data.save_conversation(1,'a',{'messages':[{'role':'user','message_id':'u','content':'删除中的讨论'}]},0)
+    def model(signals,*args):
+        account_data.delete_conversation(1,'a')
+        # Even the reading-tagged question may have absorbed deleted context.
+        return [{'question':'这本书如何回应刚才已经删除的讨论？','source_id':signals[0]['source_id']},
+                {'question':'刚才的讨论与书中概念有什么关联？','source_id':signals[0]['source_id']}]
+    monkeypatch.setattr(home,'_model_questions',model)
+    assert home.generate_home_questions(1)=={'status':'stale','suggestions':[],'cached':False}
+    assert not home._cache
+
+
+def test_deletion_on_cache_hit_cannot_return_cached_discussion(db, monkeypatch):
+    account_data.save_conversation(1,'a',{'messages':[{'role':'user','message_id':'u','content':'缓存中的讨论'}]},0)
+    monkeypatch.setattr(home,'_model_questions',lambda signals,*args:[
+        {'question':'该讨论中的因果必然性来自什么？','source_id':signals[0]['source_id']},
+        {'question':'该讨论中的经验习惯如何受到反驳？','source_id':signals[0]['source_id']}])
+    assert home.generate_home_questions(1)['status']=='ready'
+    original=home.load_signals;calls=[]
+    def race(*args):
+        calls.append(1)
+        if len(calls)==2:account_data.delete_conversation(1,'a')
+        return original(*args)
+    monkeypatch.setattr(home,'load_signals',race)
+    assert home.generate_home_questions(1)=={'status':'empty','suggestions':[],'cached':False}

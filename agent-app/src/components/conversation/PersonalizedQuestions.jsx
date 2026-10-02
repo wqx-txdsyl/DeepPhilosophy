@@ -4,14 +4,15 @@ import { useAuth } from '../../auth';
 import AuthModal from '../AuthModal';
 
 export default function PersonalizedQuestions({ lang, onPick }) {
-  const { token, profile, historyStatus } = useAuth();
+  const { token, profile, historyStatus, retryHistory } = useAuth();
   const [result, setResult] = useState(null);
   const [loginOpen, setLoginOpen] = useState(false);
   const [refresh, setRefresh] = useState(0);
+  const [sourcesChanged, setSourcesChanged] = useState(0);
   const requestRef = useRef(0);
   const key = `${profile?.id || 'guest'}:${token || ''}:${lang}`;
   const en = lang === 'en';
-  const waitingHistory = ['loading', 'saving'].includes(historyStatus);
+  const waitingHistory = ['loading', 'saving', 'offline', 'cache-error'].includes(historyStatus);
   useEffect(() => {
     const controller = new AbortController();
     const request = ++requestRef.current;
@@ -23,13 +24,16 @@ export default function PersonalizedQuestions({ lang, onPick }) {
     }).then(async r => {
       if (!r.ok) throw new Error('home questions unavailable');
       const data = await r.json();
-      if (request === requestRef.current && !controller.signal.aborted) setResult({ ...data, key });
+      if (request === requestRef.current && !controller.signal.aborted) {
+        if (data.status === 'stale') { setResult(null); setSourcesChanged(n=>n+1); }
+        else setResult({ ...data, key });
+      }
     }).catch(() => {
       if (!controller.signal.aborted && request === requestRef.current) setResult({ key, status: 'unavailable', suggestions: [] });
     });
     return () => controller.abort();
-  }, [key, refresh, waitingHistory]);
-  const current = result?.key === key ? result : null;
+  }, [key, refresh, sourcesChanged, waitingHistory]);
+  const current = !waitingHistory && result?.key === key ? result : null;
   return <div className="cw-personal-home">
     {!token ? <p className="cw-home-hint">
       <button onClick={() => setLoginOpen(true)}>{en ? 'Sign in' : '登录'}</button>
@@ -45,7 +49,7 @@ export default function PersonalizedQuestions({ lang, onPick }) {
             <ArrowUpRight size={18} aria-hidden="true" />
           </button>)}</div>
       </>}
-      {(!current || current.status === 'loading') && <p className="cw-home-hint" role="status">{en ? 'Connecting your recent explorations…' : '正在接续你的阅读与思考…'}</p>}
+      {(!current || current.status === 'loading') && <p className="cw-home-hint" role="status">{historyStatus==='offline' ? (en ? 'Sync your conversation changes before showing questions.' : '对话变更尚未同步，暂不显示旧推荐。') : (en ? 'Connecting your recent explorations…' : '正在接续你的阅读与思考…')}{historyStatus==='offline' && <button onClick={retryHistory}>{en?'Retry sync':'重新同步'}</button>}</p>}
       {current?.status === 'empty' && <p className="cw-home-hint">{en ? 'Your reading, notes and conversations will shape the questions here.' : '你的阅读、笔记与对话，会成为这里下一次提问的起点。'}</p>}
       {current?.status === 'unavailable' && <p className="cw-home-hint">{en ? 'Questions are temporarily unavailable.' : '个性化提问暂时未能生成。'} <button onClick={() => setRefresh(n => n + 1)}>{en ? 'Retry' : '重试'}</button></p>}
     </>}
