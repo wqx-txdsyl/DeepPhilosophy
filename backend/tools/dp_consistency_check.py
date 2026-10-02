@@ -2,12 +2,13 @@
 """dp_consistency_check.py — 仓库内元数据一致性校验（CI 用, 无本地依赖）
 
 仅依赖 git 跟踪数据（GitHub Actions 可跑）:
-  app/public/books.json ↔ app/src/assets/books.json ↔ app/public/book_detail/*.json
+  app/public/books.json ↔ app/public/book_detail/*.json
+  app/src/assets/books.json（旧 Android 镜像，存在时才查）
   ↔ backend/data/book_chapters/{bid}/meta.json
   backend/data/books_catalog.json（被 gitignore, 本地存在才查）
 
 校验项:
-  ① 两份 books.json 的 id 集/每条字段一致
+  ① 旧 Android books.json 镜像存在时：id 集/每条字段一致
   ② books.json ↔ book_detail: id 双向一致 + chapterCount 一致
   ③ file_type=txt ⟹ chapterCount==0
   ④ chapterCount>0 ⟹ 有 meta.json 且 chapterCount 一致
@@ -38,7 +39,7 @@ def main():
     pub = load(os.path.join(root, "app", "public", "books.json"))
     assert isinstance(pub, list), "books.json 应为列表"
 
-    # ① 两份 books.json 一致
+    # ① public 是唯一正式源；旧 Android 镜像已经解除跟踪，存在时仍校验。
     ast = os.path.join(root, "app", "src", "assets", "books.json")
     if os.path.exists(ast):
         ast_b = load(ast)
@@ -50,8 +51,6 @@ def main():
             for k in ("title", "author", "file_type", "chapterCount"):
                 if a.get(k) != b.get(k):
                     problems.append(f"assets 与 public books.json 字段不一致: {a['id']} {k} public={a.get(k)} assets={b.get(k)}")
-    else:
-        problems.append("app/src/assets/books.json 缺失")
 
     # id 唯一
     seen = set()

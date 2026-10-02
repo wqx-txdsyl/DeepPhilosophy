@@ -1,0 +1,154 @@
+.genealogy-atlas {
+  --atlas-paper: #f2efe6;
+  --atlas-card: #f8f5ed;
+  --atlas-ink: #263c35;
+  --atlas-muted: #697268;
+  --atlas-rule: #d3cfbf;
+  --atlas-gold: #99794b;
+  --atlas-jade: #52776a;
+  --atlas-shadow: rgba(73, 69, 50, .16);
+  background: var(--atlas-paper);
+  color: var(--atlas-ink);
+  position: relative;
+  isolation: isolate;
+  font-family: var(--font-sans);
+  min-height: 70vh;
+}
+html.dark-mode .genealogy-atlas {
+  --atlas-paper: #20231f;
+  --atlas-card: #29312b;
+  --atlas-ink: #e9e4d6;
+  --atlas-muted: #b4bdac;
+  --atlas-rule: #4b584c;
+  --atlas-gold: #c9ab75;
+  --atlas-jade: #98bdab;
+  --atlas-shadow: rgba(8, 15, 9, .45);
+}
+.genealogy-atlas *, .genealogy-atlas *::before, .genealogy-atlas *::after { box-sizing: border-box; }
+.genealogy-atlas button, .genealogy-atlas input, .genealogy-atlas select { font: inherit; }
+.genealogy-atlas button { cursor: pointer; }
+.genealogy-atlas button:focus-visible, .genealogy-atlas a:focus-visible, .genealogy-atlas input:focus-visible, .genealogy-atlas select:focus-visible { outline: 2px solid var(--atlas-gold); outline-offset: 4px; }
+.atlas-grain { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: .14; mix-blend-mode: multiply; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); }
+.atlas-hero { padding: 46px 44px 34px; min-height: 230px; position: relative; isolation: isolate; overflow: hidden; }
+.atlas-hero-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 43%; z-index: -3; opacity: .65; filter: saturate(.7); mask-image: linear-gradient(90deg, transparent 15%, #000 64%), linear-gradient(#000 64%, transparent); mask-composite: intersect; }
+.atlas-hero-wash { position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, var(--atlas-paper) 10%, color-mix(in srgb, var(--atlas-paper) 82%, transparent) 43%, transparent 85%), linear-gradient(0deg, var(--atlas-paper), transparent 65%), radial-gradient(ellipse at 23% 20%, color-mix(in srgb, var(--atlas-gold) 8%, transparent), transparent 60%); }
+.atlas-kicker { display: flex; align-items: center; gap: 12px; font: 11px/1.5 Georgia, serif; letter-spacing: .2em; color: var(--atlas-gold); }
+.atlas-kicker::before { content: ''; width: 22px; height: 1px; background: var(--atlas-gold); }
+.genealogy-atlas h1 { font: 400 clamp(36px, 6vw, 63px)/1.15 'Songti SC', 'SimSun', serif; letter-spacing: .1em; margin: 14px 0 18px; color: var(--atlas-ink); }
+.atlas-hero-count { font-size: 12px; color: var(--atlas-muted); margin: 0; }
+.atlas-hero-count span { margin: 0 10px; color: var(--atlas-gold); }
+.atlas-content { padding: 0 38px 26px; }
+.atlas-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 9px 0; border-top: 1px solid var(--atlas-rule); border-bottom: 1px solid var(--atlas-rule); }
+.atlas-mode-options { display: flex; gap: 4px; }
+.atlas-mode { border: 0; padding: 11px 17px; background: transparent; color: var(--atlas-muted); font-size: 13px !important; min-height: 42px; transition: background .25s, color .25s; }
+.atlas-mode[aria-pressed='true'] { color: var(--atlas-ink); background: var(--atlas-card); box-shadow: inset 0 -1px var(--atlas-gold); }
+.atlas-mode:hover { color: var(--atlas-ink); }
+.atlas-filters { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.atlas-filters input, .atlas-filters select, .atlas-question-select select { border: 1px solid var(--atlas-rule); color: var(--atlas-ink); background: var(--atlas-paper); padding: 9px 10px; font-size: 12px; border-radius: 2px; min-height: 40px; max-width: 100%; }
+.atlas-filters input { width: 205px; }
+.atlas-filters input::placeholder { color: var(--atlas-muted); opacity: 1; }
+.atlas-question-bar { border-bottom: 1px solid var(--atlas-rule); padding: 17px 0; }
+.atlas-question-select { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--atlas-muted); }
+.atlas-question-select select { min-width: 230px; }
+.atlas-quick-questions { display: flex; gap: 8px 20px; flex-wrap: wrap; margin-top: 12px; }
+.atlas-quick-questions button, .atlas-detail-topics button { font-size: 12px; color: var(--atlas-muted); background: none; border: 0; padding: 7px 0; }
+.atlas-quick-questions button[aria-pressed='true'] { color: var(--atlas-gold); box-shadow: inset 0 -1px var(--atlas-gold); }
+.atlas-map-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding: 22px 0 13px; color: var(--atlas-muted); font-size: 12px; }
+.atlas-result-count { color: var(--atlas-gold); margin-left: 12px; font-variant-numeric: tabular-nums; }
+.atlas-legend { display: flex; gap: 18px; font-size: 11px; }
+.atlas-map-note { font-size: 11px; }
+.atlas-canvas { position: relative; width: 100%; background-image: repeating-linear-gradient(167deg, transparent 0px, transparent 85px, color-mix(in srgb, var(--atlas-jade) 7%, transparent) 86px, transparent 87px, transparent 172px); }
+.atlas-relation, .atlas-question { background-image: radial-gradient(ellipse at 53% 20%, color-mix(in srgb, var(--atlas-gold) 6%, transparent), transparent 50%); }
+.atlas-lines { display: block; position: absolute; inset: 0; pointer-events: none; overflow: visible; max-width: none; }
+.atlas-river-bed { fill: none; stroke: var(--atlas-jade); stroke-width: 28px; opacity: .075; stroke-linecap: round; }
+.atlas-river-inner { fill: none; stroke: var(--atlas-gold); stroke-width: 9px; opacity: .085; stroke-linecap: round; }
+.atlas-river-line { fill: none; stroke: var(--atlas-jade); stroke-width: 1.2; opacity: .55; }
+.atlas-river-pin path { fill: none; stroke: var(--atlas-gold); stroke-width: 1; opacity: .6; }
+.atlas-river-pin circle { fill: var(--atlas-card); stroke: var(--atlas-gold); stroke-width: 1; }
+.atlas-river-pin.is-active circle { fill: var(--atlas-gold); }
+.atlas-star-dust { fill: var(--atlas-gold); opacity: .24; }
+.atlas-edge { fill: none; stroke: var(--atlas-jade); stroke-width: 1; opacity: .28; transition: opacity .3s; }
+.atlas-edge-topic { stroke-dasharray: 3 5; }
+.atlas-edge.is-active { stroke: var(--atlas-gold); stroke-width: 1.5; opacity: .75; animation: atlas-edge-reveal .5s ease-out; }
+.atlas-era-label, .atlas-group-label { position: absolute; color: var(--atlas-gold); font-size: 12px; padding: 2px 5px; background: var(--atlas-paper); pointer-events: none; }
+.atlas-group-label { font-family: 'Songti SC', 'SimSun', serif; font-size: 17px; color: var(--atlas-ink); }
+.atlas-node { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; position: absolute; transform: translateX(-50%); text-align: left; border: 0; padding: 0; color: var(--atlas-ink); background: transparent; z-index: 2; transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .3s; content-visibility: auto; contain-intrinsic-size: auto 210px; }
+.atlas-node:hover, .atlas-node:focus-visible { transform: translate(-50%, -5px); }
+.atlas-node.is-muted { opacity: .48; }
+.atlas-artwork { display: block; padding: 4px; background: var(--atlas-card); box-shadow: 0 6px 15px var(--atlas-shadow), 0 0 0 1px color-mix(in srgb, var(--atlas-gold) 26%, transparent); position: relative; overflow: hidden; transition: box-shadow .35s; }
+.atlas-artwork::after { content: ''; position: absolute; inset: 4px; border: 1px solid color-mix(in srgb, var(--atlas-paper) 26%, transparent); pointer-events: none; }
+.atlas-artwork img { display: block; width: 100%; height: 98px; object-fit: cover; background: var(--atlas-rule); filter: saturate(.78); transition: transform .6s, filter .4s; }
+.atlas-node:hover img, .atlas-node:focus-visible img { transform: scale(1.05); filter: saturate(1); }
+.atlas-node.is-selected .atlas-artwork { box-shadow: 0 9px 24px var(--atlas-shadow), 0 0 0 1px var(--atlas-gold); }
+.atlas-artwork-mark { position: absolute; bottom: 9px; right: 9px; padding: 2px 6px; font-size: 11px; color: var(--atlas-card); background: var(--atlas-ink); opacity: 0; }
+.atlas-node.is-selected .atlas-artwork-mark { opacity: 1; }
+.atlas-school-name { display: block; font: 400 17px/1.35 'Songti SC', 'SimSun', serif; margin: 11px 0 5px; overflow-wrap: anywhere; }
+.atlas-school-date { display: block; color: var(--atlas-muted); font-size: 11px; line-height: 1.5; }
+.atlas-empty { padding: 50px 15px; text-align: center; color: var(--atlas-muted); }
+.atlas-empty button { color: var(--atlas-gold); background: none; border: 1px solid var(--atlas-rule); padding: 8px 14px; margin: 12px 6px; }
+.atlas-footer { border-top: 1px solid var(--atlas-rule); padding: 18px 0 0; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font: italic 12px Georgia, serif; color: var(--atlas-muted); }
+.atlas-footer > div { display: flex; gap: 20px; font: 12px var(--font-sans); flex-wrap: wrap; }
+.atlas-footer a { color: var(--atlas-gold); }
+.genealogy-atlas.has-selection { padding-bottom: 180px; }
+.atlas-detail { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); width: min(1060px, calc(100% - 40px)); padding: 19px 42px 19px 19px; display: grid; grid-template-columns: 135px minmax(0, 1fr) auto; gap: 22px; align-items: center; color: var(--atlas-ink); background: var(--atlas-card); border: 1px solid var(--atlas-rule); box-shadow: 0 12px 38px var(--atlas-shadow); z-index: 40; animation: atlas-detail-enter .35s cubic-bezier(.2,.8,.2,1); }
+.atlas-detail-image { width: 135px; height: 106px; object-fit: cover; display: block; }
+.atlas-detail-period { color: var(--atlas-gold); font-size: 11px; }
+.atlas-detail h2 { font: 400 24px/1.35 'Songti SC', 'SimSun', serif; margin: 4px 0 6px; color: var(--atlas-ink); overflow-wrap: anywhere; }
+.atlas-detail-copy p { color: var(--atlas-muted); font-size: 12px; line-height: 1.7; margin: 0; }
+.atlas-detail-thinkers { color: var(--atlas-muted); font-size: 11px; margin-top: 8px; }
+.atlas-detail-topics { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 3px; }
+.atlas-detail-topics button { font-size: 11px; color: var(--atlas-gold); padding: 3px 0; }
+.atlas-detail-link { display: inline-flex; justify-content: center; align-items: center; gap: 12px; padding: 13px 17px; min-height: 44px; color: var(--atlas-card); background: var(--atlas-ink); border: 1px solid var(--atlas-ink); white-space: nowrap; text-decoration: none; font-size: 13px; transition: background .25s; }
+.atlas-detail-link:hover { background: var(--atlas-jade); color: var(--atlas-card); }
+.atlas-detail-close { position: absolute; right: 8px; top: 6px; color: var(--atlas-muted); font-size: 23px !important; line-height: 1; background: none; border: 0; width: 32px; height: 32px; }
+@keyframes atlas-detail-enter { from { opacity: 0; translate: 0 10px; } to { opacity: 1; translate: 0 0; } }
+@keyframes atlas-edge-reveal { from { opacity: .1; } to { opacity: .75; } }
+@media (max-width: 760px) {
+  .atlas-hero { padding: 34px 26px 28px; min-height: 207px; }
+  .atlas-content { padding: 0 24px 22px; }
+  .atlas-toolbar { gap: 9px; }
+  .atlas-filters { width: 100%; justify-content: space-between; }
+  .atlas-search { flex: 1; min-width: 130px; }
+  .atlas-filters input { width: 100%; }
+  .atlas-detail { grid-template-columns: 105px minmax(0, 1fr); gap: 16px; padding: 17px 35px 17px 17px; }
+  .atlas-detail-image { width: 105px; height: 116px; grid-row: 1 / 3; }
+  .atlas-detail-link { grid-column: 2; justify-self: start; padding: 9px 14px; }
+  .atlas-detail h2 { font-size: 21px; }
+  .atlas-detail-topics { display: none; }
+  .genealogy-atlas.has-selection { padding-bottom: 240px; }
+}
+@media (max-width: 520px) {
+  .atlas-hero { padding: 29px 20px 25px; min-height: 194px; }
+  .atlas-hero-image { opacity: .43; mask-image: linear-gradient(90deg, transparent 0%, #000 100%); }
+  .atlas-content { padding: 0 16px 20px; }
+  .atlas-mode { padding: 10px 15px; }
+  .atlas-filters { gap: 8px; }
+  .atlas-filters input, .atlas-filters select, .atlas-question-select select { font-size: 16px; padding: 9px 8px; }
+  .atlas-filters > label:last-child { max-width: 46%; }
+  .atlas-map-meta { font-size: 11px; }
+  .atlas-legend { gap: 12px; }
+  .atlas-quick-questions { gap: 4px 16px; }
+  .atlas-quick-questions button { font-size: 11px; }
+  .atlas-question-select select { min-width: 0; width: 100%; }
+  .atlas-artwork img { height: 80px; }
+  .atlas-school-name { font-size: 15px; }
+  .atlas-group-label { font-size: 16px; }
+  .atlas-detail { width: calc(100% - 20px); bottom: max(10px, env(safe-area-inset-bottom)); grid-template-columns: 78px minmax(0, 1fr); gap: 12px; padding: 13px 28px 13px 13px; }
+  .atlas-detail-image { width: 78px; height: 125px; }
+  .atlas-detail-copy p { display: none; }
+  .atlas-detail h2 { font-size: 19px; }
+  .atlas-detail-thinkers { line-height: 1.7; }
+  .atlas-detail-link { font-size: 12px; padding: 9px 12px; }
+  .atlas-footer > div { gap: 16px; }
+}
+@media (pointer: coarse) { .atlas-mode, .atlas-quick-questions button, .atlas-detail-close, .atlas-detail-topics button { min-height: 44px; } .atlas-detail-close { min-width: 36px; } }
+@media (prefers-reduced-motion: reduce) { .genealogy-atlas *, .genealogy-atlas *::before { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+html.mobile-mode .atlas-content { padding-left: 16px; padding-right: 16px; }
+html.mobile-mode .atlas-toolbar { flex-direction: column; align-items: stretch; }
+html.mobile-mode .atlas-artwork img { height: 80px; }
+html.mobile-mode .atlas-filters { flex-wrap: wrap; }
+html.mobile-mode .atlas-filters input, html.mobile-mode .atlas-filters select { font-size: 16px; }
+
+body:has(.genealogy-atlas.has-selection) .scroll-top-btn { bottom: 240px; }
+
+.atlas-detail.genealogy-atlas { min-height: 0; isolation: auto; }
