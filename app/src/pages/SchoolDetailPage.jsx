@@ -188,6 +188,7 @@ export default function SchoolDetailPage() {
   const [retry, setRetry] = useState(0);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedConcept, setSelectedConcept] = useState(null);
+  const [conceptRequest, setConceptRequest] = useState(0);
   const data = loaded?.data;
   const references = useMemo(() => buildSchoolReferences(loaded?.catalog || EMPTY_CATALOG), [loaded?.catalog]);
   useSEO(data?.name || name, data?.subtitle || `${name}的核心思想、人物、历史与原典`);
@@ -222,7 +223,7 @@ export default function SchoolDetailPage() {
   if (!data) return <div className="school-detail school-status" role="status"><p className="school-kicker">DEEP PHILOSOPHY</p><h1>{name}</h1><p>正在载入流派资料…</p></div>;
 
   function openPerson(person) { setSelectedPerson(person); goToSection('school-graph'); }
-  function openConcept(concept) { setSelectedConcept(concept); goToSection('school-concepts'); }
+  function openConcept(concept) { setSelectedConcept(concept); setConceptRequest(value => value + 1); goToSection('school-concepts'); }
   function locatePerson(person) {
     const event = [...document.querySelectorAll('#school-timeline [data-person]')].find(node => node.dataset.person === person);
     if (event) event.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
@@ -242,7 +243,7 @@ export default function SchoolDetailPage() {
       <SubSchoolsSection key={loaded.branch || data.name} schoolName={data.name} subSchools={data.subSchools} thinkers={data.thinkers} cihai={data.cihai} references={references} initialBranch={loaded.branch} onSelectPerson={openPerson} onSelectConcept={openConcept} />
       <div id="school-graph" className="school-module-anchor"><ConstellationMap thinkers={data.thinkers} relations={data.relations} cihai={data.cihai} references={references} selectedPerson={selectedPerson || data.thinkers[0]?.name} onSelectPerson={setSelectedPerson} onSelectConcept={openConcept} onLocatePerson={locatePerson} /></div>
       <div id="school-timeline" className="school-module-anchor"><TimelineSection timeline={data.timeline} thinkers={data.thinkers} cihai={data.cihai} references={references} onSelectPerson={openPerson} onSelectConcept={openConcept} /></div>
-      <div id="school-concepts" className="school-module-anchor"><GlossaryCloud cihai={data.cihai} references={references} selectedConcept={selectedConcept} onSelectConcept={setSelectedConcept} /></div>
+      <div id="school-concepts" className="school-module-anchor"><GlossaryCloud key={conceptRequest} cihai={data.cihai} references={references} selectedConcept={selectedConcept} onSelectConcept={setSelectedConcept} /></div>
       <div id="school-quotes" className="school-module-anchor"><QuotesGallery quotes={data.quotes} /></div>
       <WorksList works={data.works} references={references} />
       <EpilogueSection conclusion={data.conclusion} closingQuote={data.closingQuote} closingQuoteAuthor={data.closingQuoteAuthor} closingQuoteKind={data.closingQuoteKind} image={loaded.image} />
