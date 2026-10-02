@@ -21,7 +21,7 @@ def primary_link(book, chapter=""):
     Ambiguous editions/titles and missing chapters stay unlinked. In particular,
     there is no vector-search fallback to an unrelated hit or chapter zero.
     """
-    from evidence_contract import _split_book_chapter
+    from evidence_contract import _split_book_chapter, chapter_locator_match
 
     book, chapter = _split_book_chapter(book, chapter)
     books = [b for b in core.get_books() if _normal(b.get("title")) == _normal(book)]
@@ -42,6 +42,7 @@ def primary_link(book, chapter=""):
         actual = _normal(item.get("title"))
         exact = actual == wanted
         short = bool(re.fullmatch(r"第[一二三四五六七八九十百千零〇两\d]+[卷编章篇讲节]", wanted) and actual.startswith(wanted))
+        short = short or (item.get('type') != 'section' and chapter_locator_match(item.get('title'), chapter) is True)
         if item.get("type") == "part" or not (exact or short):
             continue
         idx = item.get("index")

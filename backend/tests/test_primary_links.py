@@ -7,6 +7,30 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import primary_links as links
+
+
+def test_displayed_numbers_resolve_to_catalogue_index_not_guessed_number(monkeypatch,tmp_path):
+    bid='0123456789ab'
+    folder=tmp_path/bid;folder.mkdir();(folder/'4.json').write_text('{}')
+    monkeypatch.setattr(links.core,'CHAPTERS_DIR',tmp_path)
+    monkeypatch.setattr(links.core,'get_books',lambda:[{'id':bid,'title':'测试原典'}])
+    monkeypatch.setattr(links.core,'chapter_meta',lambda _: {'chapterCount':5,'toc':[{'type':'chapter','title':'17 作者《作品》 主题','index':4}]})
+    monkeypatch.setattr(links.core,'block_titles',lambda _: {})
+    assert links.primary_link('测试原典','第17章').endswith('?ch=4')
+    assert links.primary_link('测试原典','第十七章').endswith('?ch=4')
+    assert links.primary_link('测试原典','第117章') is None
+
+
+def test_section_range_navigation_matches_actual_catalogue(monkeypatch,tmp_path):
+    bid='0123456789ab'
+    folder=tmp_path/bid;folder.mkdir();(folder/'3.json').write_text('{}')
+    monkeypatch.setattr(links.core,'CHAPTERS_DIR',tmp_path)
+    monkeypatch.setattr(links.core,'get_books',lambda:[{'id':bid,'title':'哲学研究'}])
+    monkeypatch.setattr(links.core,'chapter_meta',lambda _: {'chapterCount':4,'toc':[{'type':'chapter','title':'§357-§408','index':3}]})
+    monkeypatch.setattr(links.core,'block_titles',lambda _: {})
+    assert links.primary_link('哲学研究','§357–§408').endswith('?ch=3')
+    assert links.primary_link('哲学研究','§359').endswith('?ch=3')
+    assert links.primary_link('哲学研究','§409') is None
 from routes import openai_compat as compat
 
 

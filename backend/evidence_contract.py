@@ -49,7 +49,7 @@ LOG_FILE = BASE / "data" / "evidence_contract.jsonl"   # 运行时记录（backe
 #   variant ①   【《书名·章节》】（·在《》内 → _split_book_chapter 拆分）
 #   variant ②   【《书名》47】（节数/页码, 无·; 落在区间章节内即核验通过）
 #   variant ③   【作者·《作品》】（作者署名格式——书名级核验, 章节未知）
-_CITE_RE = re.compile(r"【《([^》]+)》·?([^】]*)】")
+_CITE_RE = re.compile(r"[【\[]\s*《((?:[^《》\n]|《[^《》\n]*》)+)》\s*[·・]?\s*([^】\]\n]*)[】\]]")
 _CITE_AUTHOR_WORK_RE = re.compile(r"【([^·《】]{2,16})\s*·\s*《([^》]+)》】")
 
 # 章节名尾段（供《书·章》变体拆分: 仅当 · 后是这类词才拆, 防含·真书名被误拆）
@@ -170,6 +170,9 @@ def _chapter_match(ev_ch, cited_ch):
     a, b = _norm(ev_ch), _norm(cited_ch)
     if not a or not b:
         return True
+    located = chapter_locator_match(ev_ch, cited_ch)
+    if located is not None:
+        return located
     m = _APH_RANGE_RE.search(ev_ch or "")
     if m and re.fullmatch(r"\d{1,4}", (cited_ch or "").strip()):
         n = int(cited_ch.strip())
@@ -178,6 +181,46 @@ def _chapter_match(ev_ch, cited_ch):
     if len(a) < 2 or len(b) < 2:
         return a == b
     return a in b or b in a
+
+
+def _locator(value):
+    s = (value or '').strip()
+    r = re.fullmatch(r'(?:§+\s*|第\s*)?(\d+)\s*[-—–~]\s*§*\s*(\d+)\s*节?', s)
+    if r and ('§' in s or s.endswith('节')):
+        return '节', int(r[1]), int(r[2])
+    r = re.fullmatch(r'§+\s*(\d+)', s)
+    if r:
+        return '节', int(r[1]), int(r[1])
+    r = re.match(r'第\s*([\d一二三四五六七八九十百千零〇两]+)\s*([章卷篇节编讲部])', s)
+    if r:
+        number = _chinese_number(r[1])
+        return r[2], number, number
+    r = re.match(r'(\d+)(?:\s|[.、]|$)', s)
+    if r:
+        return '章', int(r[1]), int(r[1])
+    return None
+
+
+def _chinese_number(value):
+    if value.isdecimal():
+        return int(value)
+    digits = dict(zip('零〇一二两三四五六七八九', (0,0,1,2,2,3,4,5,6,7,8,9)))
+    total, digit = 0, 0
+    for char in value:
+        if char in digits:
+            digit = digits[char]
+        else:
+            total += (digit or 1) * {'十':10,'百':100,'千':1000}[char]
+            digit = 0
+    return total + digit
+
+
+def chapter_locator_match(actual, requested):
+    """Match displayed locators, never infer a block index from a number."""
+    a, b = _locator(actual), _locator(requested)
+    if a and b:
+        return a[0] == b[0] and a[1] <= b[1] <= b[2] <= a[2]
+    return None
 
 
 def _cite_markers(text):

@@ -3,6 +3,7 @@ import { Square, SquareCheck } from 'lucide-react';
 import { DP_READER, resolveCite, resolvePrimaryLink } from '../../utils/api';
 import { useLang } from '../../utils/i18n';
 import { sourceHref } from '../../utils/evidence';
+import { parsePrimaryReference, findPrimaryCitation } from '../../utils/primaryReference';
 import DrawioInline from '../DrawioInline';
 
 /**
@@ -58,7 +59,7 @@ function LegacyPrimaryLink({ book, chapter, label, direct }) {
 }
 
 export function renderInline(text, options = {}) {
-  const parts = (text || '').split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]*\]\([^)]*\)|~~[^~]+~~|【[^】]+】|\[\d{1,3}\]|“[^”\n]{6,400}”|「[^」\n]{6,400}」|『[^』\n]{6,400}』)/g);
+  const parts = (text || '').split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]*\]\([^)]*\)|~~[^~]+~~|【[^】]+】|\[\s*《(?:[^《》\n]|《[^《》\n]*》)+》[^\]\n]*\]|\[\d{1,3}\]|“[^”\n]{6,400}”|「[^」\n]{6,400}」|『[^』\n]{6,400}』)/g);
   return parts.map((p, i) => {
     if (p.startsWith('**') && p.endsWith('**')) return <strong key={i}>{p.slice(2, -2)}</strong>;
     if (p.startsWith('*') && p.endsWith('*') && p.length > 2) return <em key={i}>{p.slice(1, -1)}</em>;
@@ -86,14 +87,15 @@ export function renderInline(text, options = {}) {
     if (p.startsWith('~~') && p.endsWith('~~')) return <del key={i} style={{ color: 'var(--text-dim)' }}>{p.slice(2, -2)}</del>;
     if (options.general) {
       const numbered = p.match(/^\[(\d+)\]$/);
-      const reference = p.match(/^【《((?:[^《》】]|《[^《》】]*》)+)》[·・]?([^】]*)】$/);
+      const reference = parsePrimaryReference(p);
       const citation = numbered ? options.citations?.[Number(numbered[1]) - 1]
-        : reference ? options.citations?.find(c => (c.book || c.work || c.title) === reference[1] && (!reference[2] || c.chapter === reference[2])) : null;
+        : reference ? findPrimaryCitation(options.citations, reference) : null;
       if (citation) {
         const href = sourceHref(citation);
         if (href) return <a key={i} className="general-inline-cite" href={href} target="_blank" rel="noopener noreferrer" aria-label={`阅读来源 ${p}`}>{p}</a>;
         return <button key={i} type="button" className="general-inline-cite" onClick={() => options.onCitation?.(citation)} aria-label={`查看来源 ${p}`}>{p}</button>;
       }
+      if (reference) return <LegacyPrimaryLink key={i} book={reference.book} chapter={reference.chapter} label={p} direct={null} />;
       if (/^[“「『]/.test(p)) {
         const quote = p.slice(1, -1);
         const matches = (options.citations || []).filter(c => c.access_level === 'PASSAGE_READ'

@@ -49,6 +49,14 @@ try {
   assert.ok(!legacy.includes('127.0.0.1'));
   const nestedTitle = render('正文观点。【《康德《实践理性批判》句读》·序言】', { citations: [{ book: '康德《实践理性批判》句读', chapter: '序言', book_id: 'kant-commentary', chapter_idx: 0 }] });
   assert.ok(nestedTitle.includes('href="https://deepphilosophy.top/reader/kant-commentary?ch=0"'), 'nested work names still produce inline reader links');
+  const variantCitation = {book:'50堂经典哲学思维课',book_id:'327e5a1db152',chapter:'17 约翰·塞尔《心灵、大脑与程序》 人工智能为何无法取代人？',chapter_idx:17};
+  const variants = render('([《50堂经典哲学思维课》 第17章]) 【《50堂经典哲学思维课》·第十七章】', {citations:[variantCitation]});
+  assert.equal((variants.match(/href="https:\/\/deepphilosophy.top\/reader\/327e5a1db152\?ch=17"/g)||[]).length,2);
+  assert.ok(render('[《哲学研究》 §357–§408]',{citations:[{book:'哲学研究',book_id:'wittgenstein',chapter:'§357-§408',chapter_idx:10}]}).includes('wittgenstein?ch=10'));
+  assert.ok(render('[《尼各马可伦理学[注释导读本]》 第八卷]',{citations:[{book:'尼各马可伦理学[注释导读本]',book_id:'aristotle',chapter:'第八卷 友爱论',chapter_idx:8}]}).includes('aristotle?ch=8'));
+  assert.ok(!render('[《50堂经典哲学思维课》 第117章]',{citations:[variantCitation]}).includes('href='),'mismatched locator cannot inherit a different chapter');
+  assert.ok(!render('[《论语》]',{citations:[primaryCitation,{...primaryCitation,chapter:'为政',chapter_idx:2}]}).includes('href='),'ambiguous book-only references do not choose the first chapter');
+  assert.ok(!render('`[《50堂经典哲学思维课》 第17章]`',{citations:[variantCitation]}).includes('href='),'literal code remains code');
   const unresolvedLegacy = render('[【《未知》·未知章】](http://localhost:8011/cite/未知/未知章)');
   assert.ok(!unresolvedLegacy.includes('href='), 'unresolved saved reference never links to the user’s own computer');
   assert.ok(unresolvedLegacy.includes('【《未知》·未知章】'));

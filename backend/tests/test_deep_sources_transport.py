@@ -8,6 +8,20 @@ from deep_sources import enrich_citations, primary_research
 from routes.agent_sse import _heartbeat_stream
 
 
+def test_square_reference_keeps_observed_chapter_citation():
+    import evidence_contract as ec
+    answer = '正文判断。([《测试原典》 第17章])'
+    assert ec._cite_markers(answer) == [('测试原典','第17章')]
+    assert ec._chapter_match('17 作者《作品》 章节主题','第17章')
+    assert ec._chapter_match('§357-§408','§357–§408')
+    assert not ec._chapter_match('117 作者','第17章')
+    assert not ec._chapter_match('§409-§458','§357–§408')
+    citation={'book':'测试原典','book_id':'work','chapter':'17 作者《作品》 章节主题','chapter_idx':4}
+    log=[{'name':'get_chapter','result_full':{'book_id':'work','chapter_idx':4,'text':'实际原文'}}]
+    result=enrich_citations([citation],{},log,answer)
+    assert len(result)==1 and result[0]['chapter_idx']==4, 'chapter number is not a block index'
+
+
 def test_primary_cards_distinguish_read_passage_from_search_excerpt():
     citations = [{"evidence_id": "a", "book_id": "one", "chapter_idx": 0, "book": "论语", "chapter": "学而篇"},
                  {"evidence_id": "b", "book_id": "two", "chapter_idx": 2, "book": "道德经", "chapter": "第三章"}]
