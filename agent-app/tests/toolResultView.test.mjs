@@ -1,0 +1,47 @@
+import assert from 'node:assert/strict';
+import {toolResultView, safeResultUrl} from '../src/data/toolResultView.js';
+
+const empty = {query:'后出师表 诸葛亮',results:[],catalogue_matches:[],search_coverage:{indexed_books:410,indexed_chapter_entries:12435},semantic_gate:{min_cosine:0.5}};
+const view = toolResultView('search_books', JSON.stringify(empty));
+assert.match(view.headline,/未检索到/);
+assert.match(view.meta.join(' '),/索引覆盖 410/);
+assert.match(view.meta.join(' '),/12,435/);
+assert.match(view.note,/不代表/);
+assert.deepEqual(JSON.parse(view.rawText),empty);
+assert.ok(!view.headline.includes('semantic_gate'));
+
+const metadata = toolResultView('search_books',{results:[{book_title:'论语',match_type:'book_metadata',evidence_scope:'catalogue'}]});
+assert.match(metadata.headline,/书目线索/);
+assert.match(metadata.note,/尚未取得/);
+const partial = toolResultView('search_scholarship',{results:[{title:'A paper'}],READABLE_RESULT_COUNT:0,provider_errors:[{provider:'openalex',error:'RATE_LIMITED'}]});
+assert.equal(partial.items.length,1);
+assert.match(partial.warnings[0],/限流/);
+assert.match(partial.meta[0],/0 条/);
+assert.match(partial.note,/不等于已读/);
+const failure = toolResultView('search_scholarship',{error:"'NoneType' object is not subscriptable"});
+assert.match(failure.headline,/工具执行未成功/);
+assert.ok(failure.rawText.includes('NoneType'));
+const mixed = toolResultView('websearch',{error:'upstream failed',results:[{title:'Returned source'}]});
+assert.equal(mixed.items.length,1);
+assert.match(mixed.note,/部分记录/);
+assert.match(toolResultView('unknown',{status:'blocked',message:'暂时不可用'}).headline,/未执行/);
+
+const noQuote = toolResultView('verify_quote',{found:false,matches:[],coverage:{searched_chapters:22,directory_consistent:false}});
+assert.match(noQuote.headline,/未找到/);
+assert.match(noQuote.note,/只限本次版本/);
+assert.match(noQuote.warnings[0],/不完整/);
+const read = toolResultView('get_chapter',{title:'原文',text:'内容'.repeat(500),has_more:true});
+assert.match(read.headline,/片段/);
+assert.match(read.note,/并非全文/);
+assert.equal(JSON.parse(read.rawText).text.length,1000);
+const broken = toolResultView('search_books','{"results":[...');
+assert.match(broken.headline,/未能完整解析/);
+assert.equal(broken.rawText,'{"results":[...');
+assert.equal(toolResultView('unknown',false).headline,'false');
+assert.equal(toolResultView('unknown',0).headline,'0');
+assert.equal(toolResultView('unknown',null).headline,'');
+assert.equal(safeResultUrl('javascript:alert(1)'),null);
+assert.equal(safeResultUrl('https://user:secret@example.com'),null);
+assert.equal(safeResultUrl('https://example.com/paper'),'https://example.com/paper');
+assert.match(toolResultView('search_books',empty,false).headline,/No sufficiently/);
+console.log('Tool result presentation: evidence scope, failures, raw preservation and link safety passed');

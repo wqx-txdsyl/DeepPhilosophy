@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Check, ChevronDown, ChevronRight, Copy, Loader2, Square, XCircle } from 'lucide-react';
+import { Check, ChevronDown, ChevronRight, Copy, Loader2, Square, XCircle, Search, TriangleAlert } from 'lucide-react';
 import { useLang } from '../../utils/i18n';
 import { plainText, inferToolStatus } from '../../data/generalStream';
 import { toolShortArgs, toolShortSummary } from '../../data/conversationLogic';
@@ -7,6 +7,7 @@ import { pickUsedEvidence } from '../../utils/evidence';
 import { renderMarkdown } from './markdown';
 import { DepthControls, SourceDrawer } from './O9';
 import { AnswerResearch, AnswerExploration } from './AnswerResearch';
+import { ToolResult } from './ToolResult';
 
 const STATUS = {
   success: ['已完成', 'Complete'], error: ['执行失败', 'Failed'], empty: ['本次未找到结果', 'No results for this search'],
@@ -79,13 +80,13 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
           : toolShortSummary(event.tc) || toolShortArgs(event.tc?.args || event.args) || event.reason;
         return <details className={`general-tool general-tool-${status}`} key={event.call_id || `call-${i}`}>
           <summary>
-            {status === 'running' ? <Loader2 size={12} className="cw-spinner" /> : ['success', 'reused'].includes(status) ? <Check size={12} /> : <XCircle size={12} />}
+            {status === 'running' ? <Loader2 size={12} className="cw-spinner" /> : ['success', 'reused'].includes(status) ? <Check size={12} /> : status === 'empty' ? <Search size={12} /> : status === 'partial' ? <TriangleAlert size={12} /> : <XCircle size={12} />}
             <span>{label}</span>
             <span className="general-tool-query">{plainText(query)}</span>
             <span className="general-tool-status">{zh ? statusZh : statusEn}</span>
             <ChevronDown size={12} />
           </summary>
-          <div>{(message.runtime_profile === 'bare' ? summary : plainText(summary)) || (zh ? statusZh : statusEn)}</div>
+          <ToolResult name={name} raw={event.tc?.result_summary || summary || (zh ? statusZh : statusEn)} zh={zh} />
         </details>;
       })}
   </div>;
