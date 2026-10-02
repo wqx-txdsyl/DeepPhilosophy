@@ -1,4 +1,4 @@
-"""Identity + tools + provider messages. No research/answer policy or budgets.
+"""One canonical system prompt + tools + provider messages; no runtime budgets.
 
 The original controlled engine remains available with DEEP_AGENT_RUNTIME=controlled.
 Provider capacity and individual tool implementations remain their own contracts.
