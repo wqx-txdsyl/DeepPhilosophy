@@ -146,7 +146,9 @@ def build(registry_path=REGISTRY):
         external_results[entry['id']] = {
             'display_name': entry['display_name'], 'model': entry['model_snapshot'],
             'mode': entry['mode'], 'resource_condition': entry['resource_condition'],
-            'status': 'provisional_document_review_not_live_execution_acceptance',
+            'status': 'provisional_browser_review_not_expert_acceptance' if entry.get('surface') == 'official_web_chat' else 'provisional_document_review_not_live_execution_acceptance',
+            'review_method': entry.get('review_method', 'codex_document_review'),
+            'review_coverage_label': entry.get('review_coverage_label'),
             'review_sha256': entry['review_sha256'], 'total_turns': len(review['rows']),
             'document_reviewed_turns': review.get('document_reviewed_turns', 0),
             'full_frozen_suite': cohort(result, set(result)),
@@ -184,7 +186,8 @@ def render_dashboard(data):
     for run in data.get('external_results', {}).values():
         full = run['full_frozen_suite']
         label = number(full) if full['score'] is not None else '未完成；可取范围 ' + number(full)
-        lines.append(f"|{run['display_name']} · {run['model']} {run['mode']}|{label}|{cohort_number(run['completed_cases'])}|{cohort_number(run['common_fully_scored_cases'])}|{cohort_number(run['common_independently_reviewed_cases'])}|{run['document_reviewed_turns']}/{run['total_turns']} 段文本评审|")
+        coverage = run.get('review_coverage_label') or f"{run['document_reviewed_turns']}/{run['total_turns']} 段文本评审"
+        lines.append(f"|{run['display_name']} · {run['model']} {run['mode']}|{label}|{cohort_number(run['completed_cases'])}|{cohort_number(run['common_fully_scored_cases'])}|{cohort_number(run['common_independently_reviewed_cases'])}|{coverage}|")
     return '\n'.join(lines)
 
 

@@ -93,3 +93,17 @@ def test_submitted_external_document_uses_fixed_cohorts_without_imputing_unknown
     assert external['full_frozen_suite']['score'] is None
     assert external['case_bounds']['D01']['score'] is None
     assert external['case_bounds']['K01']['present']==0
+
+
+@pytest.mark.parametrize('platform',['deepseek','doubao'])
+def test_browser_baselines_use_original_frozen_cohorts_and_leave_unknowns(platform):
+    data=agg.build()
+    run=data['external_results'][f'{platform}-browser-run1-20261002']
+    assert run['total_turns']==77
+    assert run['completed_cases']['case_count']==65
+    assert run['common_fully_scored_cases']['case_ids']==data['runs']['0.1.0']['common_fully_scored_cases']['case_ids']
+    assert run['common_independently_reviewed_cases']['case_ids']==data['runs']['0.1.0']['common_independently_reviewed_cases']['case_ids']
+    assert run['completed_cases']['score'] is None
+    assert run['full_frozen_suite']['score'] is None
+    assert run['case_bounds']['K01']['present']==0
+    assert '77/77' in run['review_coverage_label']

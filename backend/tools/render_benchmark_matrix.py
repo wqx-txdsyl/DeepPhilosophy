@@ -52,7 +52,8 @@ def matrix():
     scored=[json.loads((ROOT/c['review']).read_text())['rows'] if c['review'] else None for c in specs]
     rows=[]
     for label,note,key in [('综合指数','固定64题子集 · 暂定 /100','common_fully_scored_cases'),
-                           ('复核子集指数','固定10题子集 · /100','common_independently_reviewed_cases')]:
+                           ('已完成题集指数','65题宏平均 · 暂定 /100','completed_cases'),
+                           ('固定10题指数','原PhiAgent复核题目子集 · /100','common_independently_reviewed_cases')]:
         vals=[]
         for c in specs:
             value=(c['summary'] or {}).get(key)
@@ -72,11 +73,19 @@ def matrix():
         summary=c['summary'] or {};coverage=summary.get('completed_cases')
         values.append(str(coverage['case_count'])+' / 70' if coverage else '未跑全套' if c['own'] else '未测')
     rows.append({'label':'答卷覆盖题数','note':'固定70题 · 非百分分数','values':values,'primary':False})
+    rows.append({'label':'评审覆盖','note':'评审方法有差异 · 非分数','values':[
+        (f"{c['summary']['reviewed_turns']}/{c['summary']['total_turns']}轮复核" if c['own'] and c['summary'].get('total_turns') else
+         c['summary'].get('review_coverage_label') or (str(c['summary'].get('document_reviewed_turns',0))+'轮文本评审') if not c['own'] and c['summary'] else '未测')
+        for c in specs],'primary':False})
     return {'scale':100,'product_version':'0.1.2','aggregate_source_sha256':aggregate.sha(OUT/'aggregate.json'),
-            'current':{'title':'冻结 v1.2 · 当前测试集（开发暂定）','subtitle':'每题等权；PhiAgent多数为自动初评，ChatGPT Work为提交答卷的逐轮文本评审，执行条件不同。','columns':current_cols,'rows':rows},
+            'current':{'title':'冻结 v1.2 · 当前测试集（开发暂定）','subtitle':'每题等权、题内各轮先平均。DeepSeek/豆包为官方网页采集；不同产品的工具条件与评审覆盖不同。','columns':current_cols,'rows':rows},
             'notes':['— 表示未测或不适用，绝非0分；区间表示已有未知项。所有评分行均以100为满分。',
                      '上表分维度只统计适用题：C为60题，R为24题，K为5道纯核验题；不是未实测的K故障组。',
                      '综合指数采用固定64题子集；完整70题仍缺测。各维度仅统计适用题，不能再平均复算总分。',
+                     '固定10题来自PhiAgent两次都经过复核的题目，并不代表其他列也完成了同等复核。',
+                     'DeepSeek：深度思考＋联网；豆包：快速默认档。各65题77轮，K故障组未运行；网页模型的具体版本未记录。',
+                     '浏览器答卷由DeepSeek匿名模型初评、统一重评表达维度，再作Codex定向复核；同族评审偏差与证据缺口仍可能存在。',
+                     'PhiAgent混合自动初评与部分复核；ChatGPT Work为Codex全文开发评审。评审者与条件不一致，本表不是统一盲评排行榜。',
                      'ChatGPT Work：桌面6.1 Sol high、声明使用本地书库；不是网页端逐题回执，K4执行事实有4项未知。']}
 
 
@@ -102,7 +111,7 @@ def html_page(data):
         sections.append(f'<section id="{name}"><h2>{esc(t["title"])}</h2><p>{esc(t["subtitle"])}</p><p class="hint">横向滚动可查看全部对象。</p><div class="scroll"><table><thead>{head}</thead><tbody>{body}</tbody></table></div></section>')
     return '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PhiAgent 多维评测记录</title><style>'+'''
 *{box-sizing:border-box}body{margin:0;background:#f7f7f5;color:#252622;font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:1500px;margin:auto;padding:48px 32px}h1{font-size:32px;margin:8px 0}header p,section>p{color:#70726c}header .eyebrow{letter-spacing:.16em;font-size:12px}nav{display:flex;gap:8px;margin:24px 0}button{border:1px solid #ddd;background:white;border-radius:6px;padding:10px 18px;color:#333;cursor:pointer}button.active{background:#292e29;color:white}section{background:white;border:1px solid #e6e7e2;border-radius:12px;padding:28px;margin:24px 0}h2{font-size:20px;margin:0}section>p{margin:6px 0 22px}.hint{display:none;font-size:12px;color:#8a9083}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:940px;table-layout:fixed}th,td{padding:12px 6px;text-align:center;border-bottom:1px solid #edeee9;font-variant-numeric:tabular-nums}thead th{border-bottom:2px solid #c6cbc3;font-size:17px}thead th:first-child,tbody th{width:240px;text-align:left;font-weight:500}small{display:block;color:#93968f;font-size:11px;font-weight:400;margin-top:3px}.own{background:#f0f3ee;border-top:3px solid #52674d}.primary{background:#f5f7f3;font-weight:600}.primary td{font-size:20px}td.muted{color:#babdb5}footer{color:#777c72;font-size:13px}footer li{margin:5px 0}a{color:#52674d}section[hidden]{display:none}@media(max-width:1100px){.hint{display:block}}@media(max-width:650px){main{padding:24px 12px}section{padding:16px}h1{font-size:26px}}@media print{body{background:white}main{padding:0}nav{display:none}section{break-inside:avoid}table{min-width:0}th,td{font-size:10px;padding:6px}small{font-size:8px}}
-'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>多维评测记录</h1><p>v0.1.0 → v0.1.1 → v0.1.2 · 满分100 · 截至2026-10-02</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md">版本与评分长期台账</a> · <a href="matrix.json">可追溯数据</a></footer></main></html>'
+'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>多维评测记录</h1><p>v0.1.0 → v0.1.1 → v0.1.2 · 满分100 · 截至2026-10-03</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md">版本与评分长期台账</a> · <a href="matrix.json">可追溯数据</a></footer></main></html>'
 
 
 def png(data, target):
@@ -117,7 +126,7 @@ def png(data, target):
         d.text((x,y),s,font=fonts[size],fill=color)
     text(72,38,'PHIAGENT / EVALUATION RECORD',20,'#7e857a')
     text(72,75,'多维百分制评测记录',46)
-    text(1200,95,'v0.1.0  →  v0.1.1  →  v0.1.2    ·    2026-10-02',22,'#7e857a')
+    text(1200,95,'v0.1.0  →  v0.1.1  →  v0.1.2    ·    2026-10-03',22,'#7e857a')
     y=170
     for name in ['current']:
         t=data[name];text(72,y,t['title'],32);y+=48;text(72,y,t['subtitle'],22,'#7e857a');y+=48
