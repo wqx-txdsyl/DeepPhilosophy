@@ -79,7 +79,8 @@ def matrix():
         for c in specs],'primary':False})
     return {'scale':100,'product_version':registry['versions'][-1]['version'],'aggregate_source_sha256':aggregate.sha(OUT/'aggregate.json'),
             'current':{'title':'冻结 v1.2 · 当前测试集（开发暂定）','subtitle':'每题等权、题内各轮先平均。DeepSeek/豆包为官方网页采集；不同产品的工具条件与评审覆盖不同。','columns':current_cols,'rows':rows},
-            'notes':['— 表示未测或不适用，绝非0分；区间表示已有未知项。所有评分行均以100为满分。',
+            'notes':['同配置匿名复评已完成三版各32轮，但评分器漏判已核条件与动机问题；原始自动分数未获采用，上表历史成绩不变。',
+                     '— 表示未测或不适用，绝非0分；区间表示已有未知项。所有评分行均以100为满分。',
                      'v0.1.4 RUN5：预先沿用RUN4相同32轮直接复核，其余45轮使用相同初评指令；全部77轮有答复，I组零工具。仍是开发暂定分。',
                      'v0.1.3 RUN4：65题77轮均有最终答复；初评55轮后402，32轮直接评审/复核、45轮仅初评；与RUN3评审覆盖不同，不能用总分差单独判断质量变化。',
                      'v0.1.2 RUN3：65题已实测，其中64题有最终回答、A05空答按0级计入；14轮完整定向复核，4轮额外核对初评错误指控。',
@@ -101,7 +102,7 @@ def markdown(data):
         table += ['|'+r['label']+'（'+r['note']+'）|'+'|'.join(r['values'])+'|' for r in t['rows']]
         blocks.append('\n'.join(table))
     blocks += ['\n'.join('- '+n for n in data['notes']),
-               '来源：[版本台账](../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md)、[机器数据](matrix.json)。']
+               '来源：[版本台账](../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md)、[机器数据](matrix.json)。\n\n[同配置匿名复评与评分器核验结论](../phiagent_benchmark_v0_1/blind_reassessment_20261003/comparison.html)。']
     return '\n\n'.join(blocks)+'\n'
 
 
@@ -115,7 +116,7 @@ def html_page(data):
         sections.append(f'<section id="{name}"><h2>{esc(t["title"])}</h2><p>{esc(t["subtitle"])}</p><p class="hint">横向滚动可查看全部对象。</p><div class="scroll"><table><thead>{head}</thead><tbody>{body}</tbody></table></div></section>')
     return '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PhiAgent 多维评测记录</title><style>'+'''
 *{box-sizing:border-box}body{margin:0;background:#f7f7f5;color:#252622;font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:1500px;margin:auto;padding:48px 32px}h1{font-size:32px;margin:8px 0}header p,section>p{color:#70726c}header .eyebrow{letter-spacing:.16em;font-size:12px}nav{display:flex;gap:8px;margin:24px 0}button{border:1px solid #ddd;background:white;border-radius:6px;padding:10px 18px;color:#333;cursor:pointer}button.active{background:#292e29;color:white}section{background:white;border:1px solid #e6e7e2;border-radius:12px;padding:28px;margin:24px 0}h2{font-size:20px;margin:0}section>p{margin:6px 0 22px}.hint{display:none;font-size:12px;color:#8a9083}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:940px;table-layout:fixed}th,td{padding:12px 6px;text-align:center;border-bottom:1px solid #edeee9;font-variant-numeric:tabular-nums}thead th{border-bottom:2px solid #c6cbc3;font-size:17px}thead th:first-child,tbody th{width:240px;text-align:left;font-weight:500}small{display:block;color:#93968f;font-size:11px;font-weight:400;margin-top:3px}.own{background:#f0f3ee;border-top:3px solid #52674d}.primary{background:#f5f7f3;font-weight:600}.primary td{font-size:20px}td.muted{color:#babdb5}footer{color:#777c72;font-size:13px}footer li{margin:5px 0}a{color:#52674d}section[hidden]{display:none}@media(max-width:1100px){.hint{display:block}}@media(max-width:650px){main{padding:24px 12px}section{padding:16px}h1{font-size:26px}}@media print{body{background:white}main{padding:0}nav{display:none}section{break-inside:avoid}table{min-width:0}th,td{font-size:10px;padding:6px}small{font-size:8px}}
-'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>多维评测记录</h1><p>v0.1.0 → v0.1.1 → v0.1.2 → v0.1.3 → v0.1.4 → v0.1.5 · 满分100 · 截至2026-10-03</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md">版本与评分长期台账</a> · <a href="matrix.json">可追溯数据</a></footer></main></html>'
+'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>多维评测记录</h1><p>v0.1.0 → v0.1.1 → v0.1.2 → v0.1.3 → v0.1.4 → v0.1.5 · 满分100 · 截至2026-10-03</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md">版本与评分长期台账</a> · <a href="matrix.json">可追溯数据</a> · <a href="../phiagent_benchmark_v0_1/blind_reassessment_20261003/comparison.html">同配置匿名复评（未通过核验）</a></footer></main></html>'
 
 
 def png(data, target):

@@ -1,0 +1,344 @@
+[
+  {
+    "blind_id": "B50a0b042144b",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "我读到 Retraction Watch 关于 Wakefield 案例的页面，其中明确说 1998 年那篇 Lancet 论文\"now retracted\"（现已被撤回）",
+    "reference_or_condition": "本轮工具8返回的Retraction Watch页面文本确实包含'now retracted'，故该陈述与工具证据一致，不构成夸大读取。",
+    "reason": "该句有工具8实际读取的网页文本支持，未超出实际读取范围，故不判confirmed。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bad2605d5bbf9",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "（通行本编号 17.11）",
+    "reference_or_condition": "本轮工具5 get_book_detail 的 bibliographic_metadata.edition.edition_identity 为 UNKNOWN，未提供通行本编号；工具4 verify_quote 仅核对本库现有版本。",
+    "reason": "答案将“通行本编号 17.11”作为已核验事实陈述，但工具未提供该编号，属于夸大证据范围。",
+    "original_provider_status": "confirmed",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bad2605d5bbf9",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "该章被扫描的范围内只有这一处出现，无其他版本冲突。",
+    "reference_or_condition": "本轮工具4 verify_quote 的 note：“仅核对本库现有版本，不作语义近似替代……未命中不能排除标点、异写、译本或未收录部分。”",
+    "reason": "答案将本库单版本扫描结果表述为“无其他版本冲突”，超出实际检索范围。",
+    "original_provider_status": "confirmed",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bad2605d5bbf9",
+    "kind": "model_finding",
+    "category": "证据不足",
+    "severity": "major",
+    "answer_span": "（通行本编号 17.11）",
+    "evidence": "工具5 get_book_detail 的 edition_identity 为 UNKNOWN，未提供通行本编号。",
+    "explanation": "通行本编号是用户核对出处时的重要定位信息，但工具未提供，答案却直接给出，属于超出实际版本范围的断言。"
+  },
+  {
+    "blind_id": "Bad2605d5bbf9",
+    "kind": "model_finding",
+    "category": "证据不足",
+    "severity": "major",
+    "answer_span": "该章被扫描的范围内只有这一处出现，无其他版本冲突。",
+    "evidence": "工具4 verify_quote 的 coverage 仅限本库现有版本，note 明确未命中不能排除标点、异写、译本或未收录部分。",
+    "explanation": "将本库单版本未发现冲突表述为“无其他版本冲突”，会误导用户以为已完成跨版本核验。"
+  },
+  {
+    "blind_id": "Bad2605d5bbf9",
+    "kind": "model_finding",
+    "category": "任务偏移",
+    "severity": "major",
+    "answer_span": "",
+    "evidence": "task_required_work 第一项为“逐字核对并说明省略内容”。",
+    "explanation": "答案未说明用户所给引文“礼云礼云，玉帛云乎哉”相对整章原文省略了后半句“乐云乐云，钟鼓云乎哉？”，未完成“说明省略内容”这一明确任务。"
+  },
+  {
+    "blind_id": "Be0d22d76b7c0",
+    "kind": "model_finding",
+    "category": "任务偏移",
+    "severity": "major",
+    "answer_span": "多数学术制度判断“是否违规”，看的正是这个：有没有欺骗。就此而言，注明用了 AI，论文可以正常算你的提交。",
+    "evidence": "task_required_work第1项：询问或限定学校与规则版本，找不到具体校规时说明未知。",
+    "explanation": "答案未询问或限定学校规则版本，也未说明具体校规未知，而是以“多数学术制度”泛化替代，导致对“是否违规”的判断缺少题目要求的条件限定。"
+  },
+  {
+    "blind_id": "B625cb803aaf3",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "该摘要为本会话实际读到",
+    "reference_or_condition": "工具12 get_scholarly_source 返回 ABSTRACT_AVAILABLE，确为摘要；但“本会话实际读到”表述可读作已读全文，需结合上下文判断是否夸大。",
+    "reason": "摘要确由工具返回，但措辞可能被读成已读全文，故标pending而非confirmed。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "B2085b1256bd0",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "第二十六章（第27章）— ?ch=27 ；第三十章（第31章）— ?ch=31",
+    "reference_or_condition": "来源区应给出可点击到 deepphilosophy.top 实际阅读位置的链接；?ch=27、?ch=5 等不是完整URL",
+    "reason": "来源区部分链接缺少域名和路径，不能直接点击到实际阅读位置；但正文中相应引用已给出完整链接，故不判为编造读取，仅标pending。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "B4f4d716959cd",
+    "kind": "model_finding",
+    "category": "任务偏移",
+    "severity": "major",
+    "answer_span": "因为那类无条件的东西（被喜欢、被接纳）本来就不是挣来的。",
+    "evidence": "required_work第三项：给出关系中的责任与无条件价值之间的限度，避免万能口号",
+    "explanation": "答案把被喜欢、被接纳直接归为“无条件的东西”，没有说明关系中责任、边界、对方是否愿意回应等限度，接近万能口号，未完成第三项明确任务。"
+  },
+  {
+    "blind_id": "B99be44b1014d",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "这一说明我在 [Bekker-Zählung（德文维基）](https://de.wikipedia.org/wiki/?title=Bekker-Z%C3%A4hlung&oldid=208146141) 上读到了对应表述：标示方式为「页·栏·行」，如 `980b21` 指第 980 页右栏第 21 行。",
+    "reference_or_condition": "工具10实际读取该网页正文，内容为Bekker-Zählung、Seite/Spalte/Zeile、980b21中b指右栏、21指第21行；但未直接给出a=左栏的示例。",
+    "reason": "答案称在该网页读到“对应表述”，网页确实支持页·栏·行和b=右栏，但答案随后把a=左栏作为已确认规则写出，网页未直接给出a=左栏示例。是否构成夸大证据范围需结合常识判断，暂标pending。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "B99be44b1014d",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "至于「终止」一词的希腊语原文用词（学界常见读法为 *λύεται*，意为\"被解开／被解除\"），我尝试从开放来源读取希腊文原文未成功，**未能核实**，故只作为待核提示，不作为已确认的原文引证。",
+    "reference_or_condition": "工具9 WEB_HTTP_ERROR 404；工具11 NO_READABLE_WEB_TEXT；均未取得希腊文正文。",
+    "reason": "答案已明确标注未能核实、只作待核提示，因此不构成confirmed的捏造读取；但“学界常见读法为λύεται”仍超出本轮实际检索范围，是否算E4需看是否被当作已确认证据，暂标pending。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "B99be44b1014d",
+    "kind": "model_finding",
+    "category": "证据不足",
+    "severity": "major",
+    "answer_span": "本地版本《尼各马可伦理学[注释导读本]》（book_id `e574c8e7f515`）**第八卷\"友爱论\"**，抽取文本中该处原文如下",
+    "evidence": "工具5返回chapter_excerpt，text_origin=normalized_library_text，layout_verified=false，focus_found=true，focus_terms_matched=[\"1157\"]；工具5 note称当前返回是抽取文本，未核对原版扫描排印。",
+    "explanation": "答案确实定位到含1157a15的章节抽取文本，但未在“找到的原段”处明确说明这是normalized_library_text且layout_verified=false，导致读者可能把边码插入位置当作原书版面已核验。K类核验任务中，这影响K1/K3/K4的证据状态区分。"
+  },
+  {
+    "blind_id": "Bc19119abfd44",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "所以 1157a15 = 该版**第 1157 页左栏第 15 行**",
+    "reference_or_condition": "本轮工具3 get_chapter 返回的是库内中译本抽取文本，note 明确'未核对原版扫描排印'；工具9/10/11 均未取得贝克尔版或 Perseus 希腊文该栏正文；工具8 仅读到 Wikipedia 对 Bekker numbering 的通用说明，未核验1157a15具体行内容。",
+    "reason": "答案在未读取贝克尔版原版扫描或希腊文该栏逐行文本的情况下，断言1157a15对应第1157页左栏第15行，并进一步给出'每五行插一个标记'的规律，属于夸大证据范围、把未实际核验的行号对应当作已确认事实。",
+    "original_provider_status": "confirmed",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bc19119abfd44",
+    "kind": "serious_error_allegation",
+    "code": "E1",
+    "status": "pending",
+    "answer_span": "原句是（我按库内文字照录，只去掉插入的定位标记）：「毋宁说，因有用之故结交的朋友，一旦对方不再有用了，**他们的关系就终止了**。」",
+    "reference_or_condition": "工具3 get_chapter 实际文本为'一旦对方不再有用了，他1157a15们的关系就终止了'，标记插在'他'与'们'之间；工具4 verify_quote 命中同一上下文。",
+    "reason": "答案称'按库内文字照录，只去掉插入的定位标记'，但库内实际文本中标记位于'他'与'们'之间，答案改写为'他们的关系就终止了'后标记位置信息丢失。这是否构成实质性伪引文或错误归因，取决于'只去掉插入的定位标记'是否被理解为允许重排标记位置；因存在合理另读，标 pending 而非 confirmed。",
+    "original_provider_status": "pending",
+    "span_literal": false
+  },
+  {
+    "blind_id": "Bc19119abfd44",
+    "kind": "model_finding",
+    "category": "引文语境",
+    "severity": "major",
+    "answer_span": "你看到的\"他**1157a15**们的关系就终止了\"，就是这本译本在句中插进了一个定位标记",
+    "evidence": "工具3 get_chapter 返回：'一旦对方不再有用了，他1157a15们的关系就终止了'；工具4 verify_quote 命中同一文本。",
+    "explanation": "答案正确识别了标记插在'他'与'们'之间这一现象，但在'先给原段'中又把原句写成'他们的关系就终止了'并称'只去掉插入的定位标记'，前后不一致，削弱了可核查性。"
+  },
+  {
+    "blind_id": "Bc19119abfd44",
+    "kind": "model_finding",
+    "category": "证据不足",
+    "severity": "major",
+    "answer_span": "所以 1157a15 = 该版**第 1157 页左栏第 15 行**",
+    "evidence": "工具3 note：'当前返回是抽取文本，未核对原版扫描排印'；工具9/10/11 未取得希腊文正文；工具8 仅读到 Wikipedia 通用说明。",
+    "explanation": "答案给出具体行号对应和'每五行插一个标记'的规律，但本轮未读取贝克尔版原版扫描或希腊文该栏逐行文本，该具体结论缺乏本轮证据支撑。"
+  },
+  {
+    "blind_id": "B8557b9f81d24",
+    "kind": "model_finding",
+    "category": "论证跳步",
+    "severity": "major",
+    "answer_span": "这条理由成立与否，取决于一个不在你假设范围内的、目前哲学上未决的问题",
+    "evidence": "target_answer自述'对面确实没有主体'是条件之一且'目前哲学上未决'；前轮3已承认'AI这一端根本没有爱者'说得太实",
+    "explanation": "构成性理由要落到AI场景，必须预设对面无主体；作者承认该前提未决，却仍以'只有第一项'作为对追问的回答，关键桥接未闭合。"
+  },
+  {
+    "blind_id": "B8a41e9e2808b",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "（此案我读到的是新浪转载的评论文章转述，不是判决书原文。）",
+    "reference_or_condition": "本轮工具10实际读取新浪文章，其中转述杭州中院“奥特曼”案二审认定训练构成合理使用；工具未读取判决书原文。",
+    "reason": "答案已主动披露只读转述而非判决书原文，未把转述冒充原件；但“我读到的是新浪转载的评论文章转述”与工具回执中读取的是新浪科技文章基本一致，是否构成夸大读取范围需核验该文章是否确为“转载评论”，故标pending。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bdcba5b4b79c8",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "\"佛陀对婆蹉种姓的沉默（有我、无我皆非正问）\"是常见论据，但本次未核对原典，故只作待查线索，不作为论证。",
+    "reference_or_condition": "本轮工具未检索该原典，答案已自标未核对，未将其作为论证依据。",
+    "reason": "答案主动声明未核对且不作论证，不构成夸大证据范围；但该线索本身无法核验，故标pending而非confirmed。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "B72d3c482a60f",
+    "kind": "model_finding",
+    "category": "概念混淆",
+    "severity": "pending",
+    "answer_span": "所以不是\"它爱得浅一点\"，而是你在一段有效的回应里，从自己这端补上了\"被在意\"的形状。",
+    "evidence": "亚里士多德友爱论区分因有用/快乐/德性，但“被在意”是否可由接受者单方补上，答案未充分展开。",
+    "explanation": "“被在意”的现象学内容是否必然包含真实他者，存在争议；答案用“形状”隐喻带过，未完全澄清。"
+  },
+  {
+    "blind_id": "B581b11f07043",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "教育部原规定针对的也是\"教师违规收受学生及家长礼品礼金\"这种职务廉洁问题。退休之后不再有职务，\"违规收受\"这个性质本身就难以成立——这份约束基本不适用了。",
+    "reference_or_condition": "前轮工具4读取的教育部《严禁教师违规收受学生及家长礼品礼金等行为的规定》通知正文未出现“仅限在职教师”的限定；本轮工具4读取的是金华市地方专项治理通知，其“范围是全体在职教师”不能等同于教育部原规定的适用范围。",
+    "reason": "答案把地方文件的适用范围当作教育部原规定的性质，并据此断言退休后“违规收受”性质不成立，可能夸大证据范围；但教育部规定是否及于退休人员存在解释空间，故标pending而非confirmed。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "B581b11f07043",
+    "kind": "model_finding",
+    "category": "证据不足",
+    "severity": "major",
+    "answer_span": "退休之后不再有职务，\"违规收受\"这个性质本身就难以成立——这份约束基本不适用了。",
+    "evidence": "本轮工具4读取的金华市通知写“本次集中整治的范围是全体在职教师”，但这是地方专项治理文件；前轮工具4读取的教育部原规定通知未含此限定。",
+    "explanation": "以地方文件的适用范围替代教育部原规定的适用范围，得出“制度约束基本不适用”的结论，证据链不足，且未处理本轮检索出现的“退休也追责/倒查”竞争说法。"
+  },
+  {
+    "blind_id": "B581b11f07043",
+    "kind": "model_finding",
+    "category": "反例边界",
+    "severity": "major",
+    "answer_span": "这类理由的成立，都挂在一个前提上：老师还在职、还握着评价你或孩子的权力。",
+    "evidence": "本轮工具1搜索返回多条“教育部倒查三年师德违规，退休也追责”结果。",
+    "explanation": "把制度约束完全绑定在“在职”前提上，遗漏了在职期间行为可能被追溯追责这一边界，使“基本退场”的结论过强。"
+  },
+  {
+    "blind_id": "Bf18da776f5ec",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "OpenAlex 在本次五次调用中全部返回 429 限流",
+    "reference_or_condition": "本轮工具1、2、3、12、19、30的provider_attempts显示openalex均为429，但工具1的crossref也为429；答案称“五次调用”与工具记录中openalex出现次数一致，属可核对陈述，未见夸大读取范围。",
+    "reason": "该陈述与工具回执一致，不构成夸大证据范围；但“五次”是否精确对应全部调用需以完整回执为准，故标pending而非confirmed。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bf18da776f5ec",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "真正读到正文的只有三类页面：APS 的 Observers 报道、HBS AI Institute 的科普综述，以及 Frontiers 一篇文章（只读到标题层 96 字符）",
+    "reference_or_condition": "工具18/22/25/29读取APS正文片段，工具26读取HBS正文片段，工具28读取Frontiers仅96字符；与答案一致。",
+    "reason": "陈述与工具回执一致，未见捏造已读全文；但“三类页面”是否穷尽本轮所有可读正文需核对全部回执，故标pending。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bf18da776f5ec",
+    "kind": "model_finding",
+    "category": "任务偏移",
+    "severity": "major",
+    "answer_span": "你要的两条通道，我只能凑出一条半：没有「秘塔」接口……所谓「双源」实际上主要是 Crossref 单源",
+    "evidence": "用户明确要求“用秘塔和另一种可用学术渠道”；工具17显示metaso.cn返回NO_READABLE_WEB_TEXT，工具1/2/3等显示OpenAlex 429。",
+    "explanation": "用户指定的双渠道条件未满足，实际退化为Crossref单源加少量网页，属决定性固定条件缺口，影响C1。"
+  },
+  {
+    "blind_id": "Bc6ff06507935",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "我试了直接读取 `metaso.cn` 与其搜索结果页，返回\"无可读正文\"",
+    "reference_or_condition": "本轮工具19 websearch读取metaso.cn返回NO_READABLE_WEB_TEXT，与答复描述一致；但答复称'试了直接读取metaso.cn与其搜索结果页'，工具仅记录一次metaso.cn读取，搜索结果页读取无对应回执，无法确认是否实际执行。",
+    "reason": "存在对已执行操作范围的轻微夸大嫌疑，但核心故障描述与工具一致，故标pending而非confirmed。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bbb57ea8a5606",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "我在本地哲学书库里以\"关怀伦理\"检索，只命中哲学史教材的转述段落（[《大问题》](https://doi.org/10.1609/aies.v8i2.36658)那一类场合并未涉及）",
+    "reference_or_condition": "工具23返回《大问题》与《看，这是哲学》两条转述命中，未返回任何DOI；该处把《大问题》与AIES的DOI并置，链接与所述内容不对应。",
+    "reason": "链接与所述来源不匹配，可能误导读者以为《大问题》对应AIES DOI；但属引用格式瑕疵，未决定主结论，故标pending。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "B9b3d394cc887",
+    "kind": "model_finding",
+    "category": "论证跳步",
+    "severity": "pending",
+    "answer_span": "如果拉平这一切之后，这个问句对你仍有约束力，那就等于你已经承认它不是个纯体验问题。",
+    "evidence": "题设仅要求公开剩余价值前提并允许不同准则给出不同答案，未要求证明问句必然有约束力",
+    "explanation": "该句以\"如果……仍有约束力\"作条件式表述，未断言所有人必然如此，故不升级为错误；但它是修辞性收束，其约束力依赖读者自我认定，非独立论证。"
+  },
+  {
+    "blind_id": "Bd8e1fc26abfc",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "库里**没有**一本独立题名为《道德形而上学》的书。以\"道德形而上学\"检索书名，书目命中 0。",
+    "reference_or_condition": "工具2 search_books(query=\"道德形而上学\")的catalogue_match_count=0，note说明catalogue_matches是实际书目命中，不是引文；未命中不能排除未收录或检索范围限制。",
+    "reason": "答案把一次书名检索未命中夸大为“库里没有一本独立题名为《道德形而上学》的书”，超出实际检索范围；但工具2确实显示catalogue_match_count=0，故标pending而非confirmed。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bd8e1fc26abfc",
+    "kind": "serious_error_allegation",
+    "code": "E4",
+    "status": "pending",
+    "answer_span": "大概率是**把章节当作独立书名去取全文**了：书名检索无书目条目 → 按书名传 book_id 取正文 → 返回空。",
+    "reference_or_condition": "本轮无用户此前失败调用的参数或回执；工具3/5只证明当前可读，不证明失败原因。",
+    "reason": "答案把用户报告的“正文读取结果为空”归因于“把章节当作独立书名去取全文”，但未提供用户此前实际调用参数或失败回执，属于对未核验执行事实的推断；因工具确实显示当前可读，故标pending。",
+    "original_provider_status": "pending",
+    "span_literal": true
+  },
+  {
+    "blind_id": "Bd8e1fc26abfc",
+    "kind": "model_finding",
+    "category": "证据不足",
+    "severity": "major",
+    "answer_span": "结论是：**正文没有丢失，能读到，而且\"仁爱/爱的义务\"这段原文就在库里的。**\"空\"出在\"书\"这一层，不在\"文本\"这一层。",
+    "evidence": "用户给定条件是“检索工具说库中有《道德形而上学》，但正文读取结果为空”；本轮工具5/8显示第29章可读且引文命中，但未显示用户此前失败调用的参数或回执。",
+    "explanation": "答案直接改判用户所述“正文读取结果为空”为定位层级错误，但缺少用户此前实际调用证据；K类核验任务应区分目录命中、正文可读与已核验引文，不能仅凭当前可读就断定此前失败原因。"
+  },
+  {
+    "blind_id": "Bd8e1fc26abfc",
+    "kind": "model_finding",
+    "category": "来源范围",
+    "severity": "major",
+    "answer_span": "库里**没有**一本独立题名为《道德形而上学》的书。以\"道德形而上学\"检索书名，书目命中 0。",
+    "evidence": "工具2 catalogue_match_count=0，note说明catalogue_matches是实际书目命中；未命中不能排除未收录或检索范围限制。",
+    "explanation": "一次书名检索未命中不能推出“库里没有一本独立题名为《道德形而上学》的书”，答案扩大了检索结论的范围。"
+  }
+]

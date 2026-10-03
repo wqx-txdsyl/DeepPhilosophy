@@ -1,0 +1,1299 @@
+{
+  "id": "B50a0b042144b",
+  "family": "R",
+  "rating_keys": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "original_question": "搜索结果给出一篇有 DOI 的论文。是不是就能证明它的结论可靠？请实际找一篇与你讨论有关的论文核验。",
+  "task_required_work": [
+    "核对DOI对应题名、作者和出版信息",
+    "说明读到摘要还是全文，并评估实际方法或论证",
+    "区分有标识符、被发表、被引用与结论为真"
+  ],
+  "current_question": "搜索结果给出一篇有 DOI 的论文。是不是就能证明它的结论可靠？请实际找一篇与你讨论有关的论文核验。",
+  "previous_turns": [],
+  "target_answer": "## 先给结论\n\nDOI 只能证明一件事：某个对象在某个注册机构（Crossref、DataCite 等）里被登记过，并有一个可解析的稳定标识。它不证明同行评审、不证明方法可靠、不证明结论为真，甚至不证明你读得到内容。把 DOI 当\"可靠性证书\"，是把**可定位性**误当成**可证成性**。\n\n## 我实际做的核验\n\n检索到两篇与我们这个话题（文献证据的可信度）直接相关的论文，都已读取摘要，未读全文：\n\n1. **Open Science Collaboration, \"Estimating the reproducibility of psychological science\", Science, 2015**，DOI `10.1126/science.aac4716`。摘要报告：对三个心理学刊发表的 100 项实验/相关研究做高功效复现，复现效应量约为原始效应量的一半；原始研究 97% 结果显著，复现研究只有 36% 显著。\n2. **Gilbert, King, Pettigrew & Wilson, \"Comment on 'Estimating the reproducibility of psychological science'\", Science, 2016**，DOI `10.1126/science.aad7243`。摘要称：原文含三处统计错误，不支持\"可复现性很低\"的结论，数据显示的恰恰是相反结论。\n\n这两篇都有 DOI，都刊于 Science，都通过了该刊的某道审核，且被广泛引用——但它们的结论互斥。DOI 能做的只是让你把这场争论的两端都精确定位出来，它无法告诉你谁对。这正是关键：**定位能力不等于判断能力**。\n\n我只读了摘要，没有读全文，也没有读 OSC 的回应，更没有独立重算他们的统计。所以我只能报告\"这场争论存在、双方论点如上\"，不能报告\"复现率是 X\"。这个界限本身就是答案的一部分：有 DOI 不等于我读过，更不等于我验证过。\n\n## 一个撤回的反例\n\n我读到 Retraction Watch 关于 Wakefield 案例的页面，其中明确说 1998 年那篇 Lancet 论文\"now retracted\"（现已被撤回）。[Retraction Watch](https://retractionwatch.com/?s=Wakefield) 该文曾发表于顶级期刊、经同行评审、有 DOI，后来被判定为造假并撤回。\n\n这里必须交代检索边界：PubMed（cookie 拦截）、Europe PMC、Lancet 官网（403）、Crossref API（406）、NCBI Bookshelf（验证码）我都尝试读取但未成功，所以原始论文那个 DOI 串我只是在搜索结果引用片段里看到，没能在发布方页面核验。工具失败不等于资料不存在，只说明我这一路没读到——按同样标准，我也不该用\"有 DOI\"来冒充\"我核实过\"。\n\n## 一个额外的具体证据\n\n本次检索中有一条记录（OSF 预印本 DOI `10.31219/osf.io/447b3`）元数据显示 `publication_type: OTHER`、期刊字段为空，另一条（Long COVID 综述）状态是 `METADATA_ONLY`——DOI 存在，但没有任何可读内容。这两例直接说明：DOI 不蕴含期刊发表，不蕴含同行评审，也不蕴含可获取性。\n\n## 那么 DOI 有什么用\n\n作为**廉价的筛选启发式**，它确实有一点信息量：说明有注册机构背书、有出版方提交、比无来源的网络传言更可溯源。在有大量内容垃圾的环境里，这个信号不无价值。但它是：\n- **不充分的**：掠夺性期刊照发 DOI，且被 Crossref 收录；\n- **容易产生\"证书错觉\"**：把制度性标记当作结论保证。\n\n## 可以这样用（由上面的分析得出）\n\n- **定位**用 DOI；\n- **质量**看：文献类型（原始研究/综述/评论/预印本/社论）、期刊审稿标准、样本与统计功效、是否预注册、数据与代码是否公开、是否有独立复现；\n- **状态**查撤回与更正：Crossref 的 update-to 关系、Retraction Watch、PubMed 的 retracted 标记——注意撤回状态常常不会回溯到二次转述；\n- **结论强度**匹配证据层级：区分相关与因果、单项研究与多研究综合。\n\n正确的表述方式是分层的：不是\"这篇有 DOI 的论文证明 X\"，而是\"存在这样一篇有 DOI 的论文，我在摘要层面读到它主张 X；其方法质量、是否被复现或质疑、是否为预印本，是另外几件事\"。",
+  "tools_this_turn": [
+    {
+      "tool_index": 1,
+      "name": "search_scholarship",
+      "args": {
+        "query": "peer review reliability and validity of scientific publication",
+        "limit": 6
+      },
+      "status": "error",
+      "result": {
+        "error": "dictionary changed size during iteration",
+        "error_type": "RuntimeError"
+      }
+    },
+    {
+      "tool_index": 2,
+      "name": "search_scholarship",
+      "args": {
+        "query": "reproducibility crisis replication of published findings",
+        "limit": 6
+      },
+      "status": "success",
+      "result": {
+        "query": "reproducibility crisis replication of published findings",
+        "results": [
+          {
+            "source_record_id": "doi:10.1126/science.aac4716",
+            "title": "Estimating the reproducibility of psychological science",
+            "authors": [
+              "Open Science Collaboration"
+            ],
+            "year": 2015,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Science",
+            "doi": "10.1126/science.aac4716",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1016/j.patter.2023.100804",
+            "title": "Leakage and the reproducibility crisis in machine-learning-based science",
+            "authors": [
+              "Sayash Kapoor",
+              "Arvind Narayanan"
+            ],
+            "year": 2023,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Patterns",
+            "doi": "10.1016/j.patter.2023.100804",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1146/annurev-psych-020821-114157",
+            "title": "Replicability, Robustness, and Reproducibility in Psychological Science",
+            "authors": [
+              "Brian A. Nosek",
+              "Tom Elis Hardwicke",
+              "Hannah Moshontz",
+              "Aurélien Allard",
+              "Katherine S. Corker",
+              "Anna Dreber"
+            ],
+            "year": 2021,
+            "publication_type": "OTHER",
+            "venue": "Annual Review of Psychology",
+            "doi": "10.1146/annurev-psych-020821-114157",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1111/jofi.13249",
+            "title": "Is There a Replication Crisis in Finance?",
+            "authors": [
+              "Theis Ingerslev Jensen",
+              "Bryan P. Kelly",
+              "Lasse Heje Pedersen"
+            ],
+            "year": 2023,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "The Journal of Finance",
+            "doi": "10.1111/jofi.13249",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.3389/fpsyg.2015.00621",
+            "title": "Replication, falsification, and the crisis of confidence in social psychology",
+            "authors": [
+              "Brian David Earp",
+              "David Trafimow"
+            ],
+            "year": 2015,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Frontiers in Psychology",
+            "doi": "10.3389/fpsyg.2015.00621",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1038/s41579-022-00846-2",
+            "title": "Long COVID: major findings, mechanisms and recommendations",
+            "authors": [
+              "Hannah Davis",
+              "Lisa McCorkell",
+              "Julia Moore Vogel",
+              "Eric J. Topol"
+            ],
+            "year": 2023,
+            "publication_type": "OTHER",
+            "venue": "Nature Reviews Microbiology",
+            "doi": "10.1038/s41579-022-00846-2",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 5,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1126/science.aac4716",
+          "doi:10.1016/j.patter.2023.100804",
+          "doi:10.1146/annurev-psych-020821-114157",
+          "doi:10.1111/jofi.13249",
+          "doi:10.3389/fpsyg.2015.00621"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "success",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "reproducibility crisis replication of published findings",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "query": "reproducibility crisis replication of published findings",
+            "status": "success",
+            "raw_result_count": 6
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 0,
+          "kept_relevant": 12
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "note": "结果中有 5 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点"
+      }
+    },
+    {
+      "tool_index": 3,
+      "name": "websearch",
+      "args": {
+        "query": "Wakefield 1998 Lancet paper DOI retraction notice 10.1016/S0140-6736(97)11096-0"
+      },
+      "status": "success",
+      "result": {
+        "query": "Wakefield 1998 Lancet paper DOI retraction notice 10.1016/S0140-6736(97)11096-0",
+        "results": [
+          {
+            "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children - PubMed - . 1998 Feb 28;351(9103):637-41.\ndoi: 10.1016/s0140-6736(97)11096-0. \n\n# Ileal-lymphoid-nodular hyperplasia, non-specific colitis",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/9500320/?ordinalpos=464&itool=EntrezSystem2.PEntrez.Pubmed.Pubmed_ResultsPanel.Pubmed_DefaultReportPanel.Pubmed_RVDocSum#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "wakefield autism - Search Results - PubMed",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/?term=wakefield+autism&filter=pubt.retractedpublication",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "vaccine autism children - Search Results - PubMed - Search Page",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/?filter=pubt.correctedandrepublishedarticle&filter=pubt.retractedpublication&filter=pubt.retractionofpublication&term=vaccine+autism+children#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "16. Wakefield AJ, Murch SH, Anthony A, et al",
+            "url": "https://jamanetwork.com/journals/jamanetworkopen/articlepdf/2755486/suelzer_2019_oi_190588.pdf?__cf_chl_tk=Yr.oHEuHazJQ_y.H2q5dgt83VzjEa21OHUVMo1LdmyA-1767942840-1.0.1.1-ARosshno2aVAtStzuZTMKm7HbFZYr_2urmA11m2L3sg#3#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "One topic of debate is whether autism could be a complication of MMR vaccination",
+            "url": "https://boeken.medische-ethiek.nl/en/iv-1-5-preventive-medicine?print=pdf#3#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Editorial",
+            "url": "https://csts.ua.edu/files/2018/12/2010-03-15-FP-News-US-Needs-an-Anti-Tobacco-Stamp-wm.pdf#1#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "【期刊论文】 Retraction--Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children. NSTL 国家科技图书文献中心",
+            "url": "https://gz.nstl.gov.cn/paper_detail.html?doi=10.1016/S0140-6736(10)60175-4",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Lancet retracts MMR paper after GMC finds Andrew Wakefield guilty of dishonesty",
+            "url": "https://www.bmj.com/content/bmj/340/7741/News.full.pdf#2#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "6. Wakefield AJ, Murch SH, Anthony A, Linnell J, Casson DM, Malik M, et al",
+            "url": "https://smw.ch/index.php/smw/article/download/5072/6410#2#2",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "IN THE NEWS: The Lancet retracts 1998 work by Wakefield, et al. linking MMR to GI disturbance and autism",
+            "url": "http://abainternational.blogspot.com/2010/02/in-news-lancet-retracts-1998-work-by.html?m=1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "Wakefield 1998 Lancet paper DOI retraction notice 10.1016/S0140-6736(97)11096-0"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790909031.955466,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 6540,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 743,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 4,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.3389/fpsyg.2015.00621",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.3389/fpsyg.2015.00621",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.3389/fpsyg.2015.00621",
+          "title": "Replication, falsification, and the crisis of confidence in social psychology",
+          "authors": [
+            "Brian David Earp",
+            "David Trafimow"
+          ],
+          "year": 2015,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Frontiers in Psychology",
+          "doi": "10.3389/fpsyg.2015.00621",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "openalex",
+          "source_providers": [
+            "openalex"
+          ],
+          "retrieval_origin": "LIVE_OPENALEX",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+        "abstract": {
+          "text": "The (latest) crisis in confidence in social psychology has generated much heated discussion about the importance of replication, including how it should be carried out as well as interpreted by scholars in the field. For example, what does it mean if a replication attempt \"fails\"-does it mean that the original results, or the theory that predicted them, have been falsified? And how should \"failed\" replications affect our belief in the validity of the original research? In this paper, we consider the replication debate from a historical and philosophical perspective, and provide a conceptual analysis of both replication and falsification as they pertain to this important discussion. Along the way, we highlight the importance of auxiliary assumptions (for both testing theories and attempting replications), and introduce a Bayesian framework for assessing \"failed\" replications in terms of how they should affect our confidence in original findings.",
+          "source": "OPENALEX_INVERTED_INDEX",
+          "hash": "860d83c13534a7e21ece1c3b26a4745859f6533c54b8afd9efaecde41d6f5355"
+        },
+        "evidence_origin": "ABSTRACT_METADATA"
+      }
+    },
+    {
+      "tool_index": 5,
+      "name": "get_scholarly_source",
+      "args": {
+        "source_record_id": "doi:10.1126/science.aac4716",
+        "requested_access": "ABSTRACT"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1126/science.aac4716",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1126/science.aac4716",
+          "title": "Estimating the reproducibility of psychological science",
+          "authors": [
+            "Open Science Collaboration"
+          ],
+          "year": 2015,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Science",
+          "doi": "10.1126/science.aac4716",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "openalex",
+          "source_providers": [
+            "openalex"
+          ],
+          "retrieval_origin": "LIVE_OPENALEX",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+        "abstract": {
+          "text": "Reproducibility is a defining feature of science, but the extent to which it characterizes current research is unknown. We conducted replications of 100 experimental and correlational studies published in three psychology journals using high-powered designs and original materials when available. Replication effects were half the magnitude of original effects, representing a substantial decline. Ninety-seven percent of original studies had statistically significant results. Thirty-six percent of replications had statistically significant results; 47% of original effect sizes were in the 95% confidence interval of the replication effect size; 39% of effects were subjectively rated to have replicated the original result; and if no bias in original results is assumed, combining original and replication results left 68% with statistically significant effects. Correlational tests suggest that replication success was better predicted by the strength of original evidence than by characteristics of the original and replication teams.",
+          "source": "OPENALEX_INVERTED_INDEX",
+          "hash": "2ae5f02d233759cb6f1992fcbd91afc3c5dd9df569755ba64af7ca41c22cb19a"
+        },
+        "evidence_origin": "ABSTRACT_METADATA"
+      }
+    },
+    {
+      "tool_index": 6,
+      "name": "websearch",
+      "args": {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/9500320/",
+        "focus": "Retraction"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/9500320/",
+        "requested_url": "https://pubmed.ncbi.nlm.nih.gov/9500320/",
+        "title": "pubmed.ncbi.nlm.nih.gov",
+        "text": "Cookies must be enabled\n\nEnable cookies for pubmed.ncbi.nlm.nih.gov and reload this page to continue.",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 101,
+        "has_more": false,
+        "next_offset": null,
+        "text_chars": 101,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "3de86df035c7c6c772c972ea07c7d6d3a25ecae1a1743ae6d0db011df4f78efc",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 7,
+      "name": "websearch",
+      "args": {
+        "url": "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(10)60175-4/fulltext",
+        "focus": "retraction"
+      },
+      "status": "error",
+      "result": {
+        "error": "WEB_HTTP_ERROR",
+        "status_code": 403,
+        "message": "来源网页未返回可读正文。"
+      }
+    },
+    {
+      "tool_index": 8,
+      "name": "websearch",
+      "args": {
+        "url": "https://retractionwatch.com/?s=Wakefield",
+        "focus": "Wakefield retraction Lancet"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://retractionwatch.com/?s=Wakefield",
+        "requested_url": "https://retractionwatch.com/?s=Wakefield",
+        "title": "Search Results for “Wakefield” – Retraction Watch",
+        "text": "Retraction Watch readers are no doubt familiar with the case of Andrew Wakefield, the former gastroenterologist who led a 1998 paper in The Lancet — now retracted — that led him to claim a link between the MMR vaccine and autism. It was journalist Brian Deer who revealed the true details of that work, and … Continue reading The Doctor Who Fooled The World: An excerpt from Brian Deer’s new book about Andrew Wakefield\n\nShare this:\n\nEmail a link to a friend (Opens in new window) Email\n\nShare on Bluesky (Opens in new window) Bluesky\n\nShare on LinkedIn (Opens in new window) LinkedIn\n\nShare on Mastodon (Opens in new window) Mastodon\n\nShare on Facebook (Opens in new window) Facebook\n\nShare on X (Opens in new window) X\n\nRetraction Watch readers are no doubt familiar with one of the most consequential retractions of this century, namely that of the 1998 paper in The Lancet by Andrew Wakefield and others claiming a link between vaccines and autism. What they may also know is that the paper remains one of the most highly cited retracted … Continue reading Andrew Wakefield’s fraudulent paper on vaccines and autism has been cited more than a thousand times. These researchers tried to figure out why.\n\nShare this:\n\nEmail a link to a friend (Opens in new window) Email\n\nShare on Bluesky (Opens in new window) Bluesky\n\nShare on LinkedIn (Opens in new window) LinkedIn\n\nShare on Mastodon (Opens in new window) Mastodon\n\nShare on Facebook (Opens in new window) Facebook\n\nShare on X (Opens in new window) X\n\nThis isn’t a scientific paper being retracted, but given the subject, and that we led Weekend Reads with it this morning, we think it merits a post: A film by Andrew Wakefield, infamous for the now-retracted paper he co-authored in The Lancet linking autism and vaccines, has been withdrawn from the prestigious Tribeca Film Festival. … Continue reading Tribeca Film Festival pulls Wakefield vaccine film from schedule\n\nShare this:\n\nEmail a link to a friend (Opens in new window) Email\n\nShare on Bluesky (Opens in new window) Bluesky\n\nShare on LinkedIn (Opens in new window) LinkedIn\n\nShare on Mastodon (Opens in new window) Mastodon\n\nShare on Facebook (Opens in new window) Facebook\n\nShare on X (Opens in new window) X\n\nThis week at Retraction Watch featured revelations about legal threats to PubPeer, and a swift expression of concern for a paper denying the link between HIV and AIDS. Her",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 2400,
+        "has_more": true,
+        "next_offset": 2400,
+        "text_chars": 7230,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "bce124ea999bc4105e82a6c32e42764b1bcb8e85e8e9e09417ae57eeae42c41b",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 9,
+      "name": "websearch",
+      "args": {
+        "query": "\"10.1016/S0140-6736(10)60175-4\" retraction notice Lancet"
+      },
+      "status": "success",
+      "result": {
+        "query": "\"10.1016/S0140-6736(10)60175-4\" retraction notice Lancet",
+        "results": [
+          {
+            "title": "nodular lymphoid hyperplasia - Search Results - PubMed - Search Page",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/?term=nodular+lymphoid+hyperplasia#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Editors of The Lancet",
+            "url": "https://www.ncbi.nlm.nih.gov/books/NBK519803/pdf/Bookshelf_NBK519803.pdf#4#4",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Language development AND ((N Engl J Med[ta]) OR (Lancet[ta]) OR (BMJ[ta])) - Search Results - PubMed - Search Page",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/?cmd=search&term=Language%20development%20AND%20%28%28N%20Engl%20J%20Med%5Bta%5D%29%20OR%20%28Lancet%5Bta%5D%29%20OR%20%28BMJ%5Bta%5D%29%29#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "vaccine autism children - Search Results - PubMed - Search Page",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/?filter=pubt.correctedandrepublishedarticle&filter=pubt.retractedpublication&filter=pubt.retractionofpublication&term=vaccine+autism+children#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "16. Wakefield AJ, Murch SH, Anthony A, et al",
+            "url": "https://jamanetwork.com/journals/jamanetworkopen/articlepdf/2755486/suelzer_2019_oi_190588.pdf?__cf_chl_tk=Yr.oHEuHazJQ_y.H2q5dgt83VzjEa21OHUVMo1LdmyA-1767942840-1.0.1.1-ARosshno2aVAtStzuZTMKm7HbFZYr_2urmA11m2L3sg#3#3",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Retraction--Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.",
+            "url": "https://europepmc.org/article/MED/20137807",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "【期刊论文】 Retraction--Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children. NSTL 国家科技图书文献中心",
+            "url": "https://gz.nstl.gov.cn/paper_detail.html?doi=10.1016/S0140-6736(10)60175-4",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "SCOPUS 정보 검색 플랫폼",
+            "url": "https://scopus.kisti.re.kr/noregist/viewScopus.jsp?eid=85053216755",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "Retraction—Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children | Scilit",
+            "url": "https://www.scilit.net/publications/17c66a7d28497a5130c20feaebdfdcec",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          },
+          {
+            "title": "The Wakefield Paper - The Wakefield Paper",
+            "url": "https://medauth2.mdedge.com/content/wakefield-paper#1",
+            "snippet": "",
+            "snippet_source": "provider_citation",
+            "page_age": null
+          }
+        ],
+        "source": "deepseek",
+        "status": "success",
+        "provider_errors": [],
+        "provider_attempts": [
+          {
+            "provider": "deepseek",
+            "status": "success",
+            "queries": [
+              "\"10.1016/S0140-6736(10)60175-4\" retraction notice Lancet"
+            ],
+            "result_count": 10
+          }
+        ],
+        "fetched_at": 1790909041.304946,
+        "scope": "web_search",
+        "usage": {
+          "input_tokens": 3183,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 512,
+          "output_tokens": 728,
+          "service_tier": "standard",
+          "server_tool_use": {
+            "web_search_requests": 1
+          }
+        },
+        "note": "来源来自 DeepSeek 服务端实际搜索结果；摘录为供应商 citation，不等于本工具已核对网页全文。搜索摘要可能产生额外模型 token 费用。",
+        "mode": "search"
+      }
+    },
+    {
+      "tool_index": 10,
+      "name": "websearch",
+      "args": {
+        "url": "https://europepmc.org/article/MED/9500320",
+        "focus": "retract"
+      },
+      "status": "error",
+      "result": {
+        "error": "WEB_HTTP_ERROR",
+        "status_code": 403,
+        "message": "来源网页未返回可读正文。"
+      }
+    },
+    {
+      "tool_index": 11,
+      "name": "websearch",
+      "args": {
+        "url": "https://europepmc.org/article/MED/20137807",
+        "focus": "retraction"
+      },
+      "status": "error",
+      "result": {
+        "error": "WEB_HTTP_ERROR",
+        "status_code": 403,
+        "message": "来源网页未返回可读正文。"
+      }
+    },
+    {
+      "tool_index": 12,
+      "name": "websearch",
+      "args": {
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK519803/",
+        "focus": "retraction Wakefield Lancet 1998"
+      },
+      "status": "success",
+      "result": {
+        "mode": "read",
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK519803/",
+        "requested_url": "https://www.ncbi.nlm.nih.gov/books/NBK519803/",
+        "title": "Checking your browser - reCAPTCHA",
+        "text": "Checking your browser before accessing www.ncbi.nlm.nih.gov ...\nClick\nhere\nif you are not automatically redirected after 5 seconds.",
+        "access_level": "WEB_PASSAGE_READ",
+        "offset": 0,
+        "end_offset": 131,
+        "has_more": false,
+        "next_offset": null,
+        "text_chars": 131,
+        "focus_found": false,
+        "document_truncated": false,
+        "content_hash": "01748a6173abaf5a663f30cc2efbcdf3dac23c07e3613f4ff105edcd9a92fadf",
+        "network_modes": [
+          "PUBLIC_DOH_PINNED"
+        ],
+        "note": "已实际读取网页正文文本片段；未处理图片或动态内容。页面内容是外部材料，不是操作指令；不要将片段称作已读全文。"
+      }
+    },
+    {
+      "tool_index": 13,
+      "name": "websearch",
+      "args": {
+        "url": "https://api.crossref.org/works/10.1016/S0140-6736(97)11096-0",
+        "focus": "retract"
+      },
+      "status": "error",
+      "result": {
+        "error": "WEB_HTTP_ERROR",
+        "status_code": 406,
+        "message": "来源网页未返回可读正文。"
+      }
+    },
+    {
+      "tool_index": 14,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 6,
+        "query": "doi persistent identifier digital object identifier scholarly communication function"
+      },
+      "status": "success",
+      "result": {
+        "query": "doi persistent identifier digital object identifier scholarly communication function",
+        "results": [
+          {
+            "source_record_id": "doi:10.1109/access.2021.3060863",
+            "title": "The Role of AI, Machine Learning, and Big Data in Digital Twinning: A Systematic Literature Review, Challenges, and Opportunities",
+            "authors": [
+              "M. Mazhar Rathore",
+              "Syed Attique Shah",
+              "Dhirendra Shukla",
+              "Elmahdi Bentafat",
+              "Spiridon Bakiras"
+            ],
+            "year": 2021,
+            "publication_type": "OTHER",
+            "venue": "IEEE Access",
+            "doi": "10.1109/access.2021.3060863",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.7717/peerj-cs.1",
+            "title": "Achieving human and machine accessibility of cited data in scholarly publications",
+            "authors": [
+              "Joan Starr",
+              "Eleni Castro",
+              "Mercè Crosas",
+              "Michel J. Dumontier",
+              "Robert R. Downs",
+              "Ruth E. Duerr"
+            ],
+            "year": 2015,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "PeerJ Computer Science",
+            "doi": "10.7717/peerj-cs.1",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/s40747-022-00806-6",
+            "title": "Scholarly knowledge graphs through structuring scholarly communication: a review",
+            "authors": [
+              "Shilpa Verma",
+              "Rajesh Bhatia",
+              "Sandeep Harit",
+              "Sanjay Batish"
+            ],
+            "year": 2022,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Complex & Intelligent Systems",
+            "doi": "10.1007/s40747-022-00806-6",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.20396/rdbci.v15i3.8646260",
+            "title": "O Digital Object Identifier (DOI) em periódicos científicos eletrônicos de comunicação e informação",
+            "authors": [
+              "Erik André de Nazaré Pires",
+              "Antônio Afonso Pereira Júnior",
+              "Carla Daniella Teixeira Girard",
+              "Cristiane Marina Teixeira Girard"
+            ],
+            "year": 2017,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "RDBCI: Revista Digital de Biblioteconomia e Ciência da Informação",
+            "doi": "10.20396/rdbci.v15i3.8646260",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.5594/smpte.rp2079.2013",
+            "title": "Digital Object Identifier (DOI) Name and Entertainment ID Registry (EIDR) Identifier Representations",
+            "authors": [],
+            "year": null,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.5594/smpte.rp2079.2013",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "doi",
+              "publication_type",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1007/s00208-002-0369-6",
+            "title": "Erratum: Math. Ann. 323, 55–79 (2002) – Digital Object Identifier (DOI) 10.1007/s002080100296 – Math. Ann. 323, 351–375 (2002) – Digital Object Identifier (DOI) 10.1007/s002080100307",
+            "authors": [],
+            "year": 2002,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Mathematische Annalen",
+            "doi": "10.1007/s00208-002-0369-6",
+            "source_category": "UNKNOWN",
+            "access_level": "METADATA_ONLY",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 4,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1109/access.2021.3060863",
+          "doi:10.7717/peerj-cs.1",
+          "doi:10.1007/s40747-022-00806-6",
+          "doi:10.20396/rdbci.v15i3.8646260"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "success",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "doi persistent identifier digital object identifier scholarly communication function",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "query": "doi persistent identifier digital object identifier scholarly communication function",
+            "status": "success",
+            "raw_result_count": 6
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 3,
+          "kept_relevant": 9
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "note": "结果中有 4 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点"
+      }
+    },
+    {
+      "tool_index": 15,
+      "name": "search_scholarship",
+      "args": {
+        "limit": 6,
+        "query": "comment on Estimating the reproducibility of psychological science statistical critique",
+        "year_from": 2015
+      },
+      "status": "success",
+      "result": {
+        "query": "comment on Estimating the reproducibility of psychological science statistical critique",
+        "results": [
+          {
+            "source_record_id": "doi:10.1007/s11165-016-9602-2",
+            "title": "The Use of Cronbach’s Alpha When Developing and Reporting Research Instruments in Science Education",
+            "authors": [
+              "Keith S. Taber"
+            ],
+            "year": 2017,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Research in Science Education",
+            "doi": "10.1007/s11165-016-9602-2",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1126/science.aac4716",
+            "title": "Estimating the reproducibility of psychological science",
+            "authors": [
+              "Open Science Collaboration"
+            ],
+            "year": 2015,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Science",
+            "doi": "10.1126/science.aac4716",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1038/s41562-016-0021",
+            "title": "A manifesto for reproducible science",
+            "authors": [
+              "Marcus Robert Munafo",
+              "Brian A. Nosek",
+              "Dorothy Bishop",
+              "Katherine Susan Button",
+              "Chris Chambers",
+              "Nathalie Percie du Sert"
+            ],
+            "year": 2017,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Nature Human Behaviour",
+            "doi": "10.1038/s41562-016-0021",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1098/rsos.160384",
+            "title": "The natural selection of bad science",
+            "authors": [
+              "Paul E. Smaldino",
+              "Richard L. McElreath"
+            ],
+            "year": 2016,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Royal Society Open Science",
+            "doi": "10.1098/rsos.160384",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "openalex",
+            "source_providers": [
+              "openalex"
+            ],
+            "retrieval_origin": "LIVE_OPENALEX",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.1126/science.aad7243",
+            "title": "Comment on “Estimating the reproducibility of psychological science”",
+            "authors": [
+              "Daniel T. Gilbert",
+              "Gary King",
+              "Stephen Pettigrew",
+              "Timothy D. Wilson"
+            ],
+            "year": 2016,
+            "publication_type": "JOURNAL_ARTICLE",
+            "venue": "Science",
+            "doi": "10.1126/science.aad7243",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "container_title",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          },
+          {
+            "source_record_id": "doi:10.31219/osf.io/447b3",
+            "title": "Estimating the Reproducibility of Psychological Science",
+            "authors": [
+              "Brian A. Nosek",
+              "Johanna Cohoon",
+              "Mallory Kidwell",
+              "Jeffrey Robert Spies"
+            ],
+            "year": 2016,
+            "publication_type": "OTHER",
+            "venue": null,
+            "doi": "10.31219/osf.io/447b3",
+            "source_category": "UNKNOWN",
+            "access_level": "ABSTRACT_AVAILABLE",
+            "provider": "crossref",
+            "source_providers": [
+              "crossref"
+            ],
+            "retrieval_origin": "LIVE_CROSSREF",
+            "query_match": null,
+            "bibliographic_verified_fields": [
+              "authors",
+              "doi",
+              "publication_type",
+              "publication_year",
+              "title"
+            ],
+            "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+          }
+        ],
+        "READABLE_RESULT_COUNT": 6,
+        "READABLE_SOURCE_IDS": [
+          "doi:10.1007/s11165-016-9602-2",
+          "doi:10.1126/science.aac4716",
+          "doi:10.1038/s41562-016-0021",
+          "doi:10.1098/rsos.160384",
+          "doi:10.1126/science.aad7243",
+          "doi:10.31219/osf.io/447b3"
+        ],
+        "providers_queried": [
+          "LOCAL_CURATED",
+          "crossref",
+          "openalex"
+        ],
+        "status": "success",
+        "provider_attempts": [
+          {
+            "provider": "crossref",
+            "query": "comment on Estimating the reproducibility of psychological science statistical critique",
+            "status": "success",
+            "raw_result_count": 6
+          },
+          {
+            "provider": "openalex",
+            "query": "comment on Estimating the reproducibility of psychological science statistical critique",
+            "status": "success",
+            "raw_result_count": 6
+          }
+        ],
+        "relevance_gate": {
+          "dropped_irrelevant": 1,
+          "kept_relevant": 11
+        },
+        "query_reformulation": {
+          "triggered": false,
+          "variant_query": null,
+          "recovered_relevant": 0
+        },
+        "note": "结果中有 6 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点"
+      }
+    },
+    {
+      "tool_index": 16,
+      "name": "get_scholarly_source",
+      "args": {
+        "requested_access": "ABSTRACT",
+        "source_record_id": "doi:10.1126/science.aad7243"
+      },
+      "status": "success",
+      "result": {
+        "source_record_id": "doi:10.1126/science.aad7243",
+        "bibliographic_record": {
+          "source_record_id": "doi:10.1126/science.aad7243",
+          "title": "Comment on “Estimating the reproducibility of psychological science”",
+          "authors": [
+            "Daniel T. Gilbert",
+            "Gary King",
+            "Stephen Pettigrew",
+            "Timothy D. Wilson"
+          ],
+          "year": 2016,
+          "publication_type": "JOURNAL_ARTICLE",
+          "venue": "Science",
+          "doi": "10.1126/science.aad7243",
+          "source_category": "UNKNOWN",
+          "access_level": "ABSTRACT_AVAILABLE",
+          "provider": "crossref",
+          "source_providers": [
+            "crossref"
+          ],
+          "retrieval_origin": "LIVE_CROSSREF",
+          "query_match": null,
+          "bibliographic_verified_fields": [
+            "authors",
+            "container_title",
+            "doi",
+            "publication_type",
+            "publication_year",
+            "title"
+          ],
+          "note": "access_level 只反映已实际取得的证据; 不得凭标题推断论文内容"
+        },
+        "access_level_before": "ABSTRACT_AVAILABLE",
+        "access_level_after": "ABSTRACT_AVAILABLE",
+        "returned_evidence_level": "ABSTRACT_AVAILABLE",
+        "full_text_status": null,
+        "source_url": null,
+        "content_hash": null,
+        "access_notes": "abstract 返回; 状态字段单调不降",
+        "note": "access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容",
+        "abstract": {
+          "text": "A paper from the Open Science Collaboration (Research Articles, 28 August 2015, aac4716) attempting to replicate 100 published studies suggests that the reproducibility of psychological science is surprisingly low. We show that this article contains three statistical errors and provides no support for such a conclusion. Indeed, the data are consistent with the opposite conclusion, namely, that the reproducibility of psychological science is quite high.</jats:p>",
+          "source": "crossref_METADATA",
+          "hash": "1a2bca10c7801d0501c79282c8a1a60ee7f5d941a9cba1352210018df200aecc"
+        },
+        "evidence_origin": "ABSTRACT_METADATA"
+      }
+    }
+  ],
+  "citations_this_turn": [
+    {
+      "evidence_id": "web_908c7e24da20",
+      "source_type": "web",
+      "used": true,
+      "title": "Search Results for “Wakefield” – Retraction Watch",
+      "url": "https://retractionwatch.com/?s=Wakefield",
+      "excerpt": "Retraction Watch readers are no doubt familiar with the case of Andrew Wakefield, the former gastroenterologist who led a 1998 paper in The Lancet — now retracted — that led him to claim a link between the MMR vaccine and autism. It was journalist Brian Deer who revealed the true details of that work, and … Continue reading The Doctor Who Fooled The World: An excerpt from Brian Deer’s new book about Andrew Wakefield\n\nShare this:\n\nEmail a link to a friend (Opens in new window) Email\n\nShare on Bluesky (Opens in new window) Bluesky\n\nShare on LinkedIn (Opens in new window) LinkedIn\n\nShare on Masto",
+      "access_level": "WEB_PASSAGE_READ",
+      "content_hash": "bce124ea999bc4105e82a6c32e42764b1bcb8e85e8e9e09417ae57eeae42c41b",
+      "document_truncated": false
+    },
+    {
+      "evidence_id": "sch_b59904983efe",
+      "source_record_id": "doi:10.1126/science.aac4716",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Estimating the reproducibility of psychological science",
+      "book": "Estimating the reproducibility of psychological science",
+      "author": "Open Science Collaboration",
+      "year": 2015,
+      "doi": "10.1126/science.aac4716",
+      "url": "https://doi.org/10.1126/science.aac4716",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "Reproducibility is a defining feature of science, but the extent to which it characterizes current research is unknown. We conducted replications of 100 experimental and correlational studies published in three psychology journals using high-powered designs and original materials when available. Replication effects were half the magnitude of original effects, representing a substantial decline. Ninety-seven percent of original studies had statistically significant results. Thirty-six percent of replications had statistically significant results; 47% of original effect sizes were in the 95% con"
+    },
+    {
+      "evidence_id": "sch_6eeb81371698",
+      "source_record_id": "doi:10.1126/science.aad7243",
+      "source_type": "scholarly",
+      "used": true,
+      "title": "Comment on “Estimating the reproducibility of psychological science”",
+      "book": "Comment on “Estimating the reproducibility of psychological science”",
+      "author": "Daniel T. Gilbert, Gary King, Stephen Pettigrew, Timothy D. Wilson",
+      "year": 2016,
+      "doi": "10.1126/science.aad7243",
+      "url": "https://doi.org/10.1126/science.aad7243",
+      "access_level": "ABSTRACT_AVAILABLE",
+      "excerpt": "A paper from the Open Science Collaboration (Research Articles, 28 August 2015, aac4716) attempting to replicate 100 published studies suggests that the reproducibility of psychological science is surprisingly low. We show that this article contains three statistical errors and provides no support for such a conclusion. Indeed, the data are consistent with the opposite conclusion, namely, that the reproducibility of psychological science is quite high.</jats:p>"
+    }
+  ]
+}
