@@ -11,6 +11,7 @@ import { useLang } from '../../utils/i18n';
 export default function AgentSelector({ agents, value, onChange, onExplore, unavailable }) {
   const { t, agentName, agentSub } = useLang();
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
   const rootRef = useRef(null);
   const current = (agents || []).find(a => a.key === value);
 
@@ -24,7 +25,8 @@ export default function AgentSelector({ agents, value, onChange, onExplore, unav
   }, [open]);
 
   const general = (agents || []).find(a => a.key === 'general');
-  const authors = (agents || []).filter(a => a.key !== 'general');
+  const authors = (agents || []).filter(a => a.key !== 'general'
+    && `${a.name} ${a.name_en || ''} ${a.tradition || ''} ${a.tagline || ''}`.toLowerCase().includes(query.toLowerCase()));
 
   const entry = (a) => (
     <button key={a.key} role="menuitemcheckbox" aria-checked={a.key === value}
@@ -32,7 +34,8 @@ export default function AgentSelector({ agents, value, onChange, onExplore, unav
       className="cw-selector-item">
       <span style={{ flex: 1, minWidth: 0 }}>
         <span className="cw-selector-name">
-          {agentName(a.key) || a.name}
+          {agentName(a.key, a) || a.name}
+          {a.status === 'preview' && <span className="cw-preview-badge">{t('preview')}</span>}
           {a.key === value && <Check size={12} style={{ color: 'var(--text-dim)' }} aria-hidden />}
         </span>
         <span className="cw-selector-desc">{agentSub(a.key) || a.subtitle || a.tagline || ''}</span>
@@ -45,13 +48,15 @@ export default function AgentSelector({ agents, value, onChange, onExplore, unav
       <button className={`cw-responder${unavailable ? ' cw-responder-disabled' : ''}`}
         onClick={() => setOpen(o => !o)}
         aria-haspopup="menu" aria-expanded={open} aria-label={t('agentSelector')}
-        title={unavailable ? t('agentUnavailable') : `${t('responder')}：${agentName(value) || current?.name || value}`}>
+        title={unavailable ? t('agentUnavailable') : `${t('responder')}：${agentName(value, current) || value}`}>
         <span className="cw-responder-label" style={{ flexShrink: 0 }}>{t('responder')}</span>
-        <span className="cw-responder-name">{unavailable ? `${agentName(value) || current?.name || value}` : (agentName(value) || current?.name || value)}</span>
+        <span className="cw-responder-name">{agentName(value, current) || value}</span>
         <ChevronsUpDown size={11} aria-hidden />
       </button>
       {open && (
         <div className="cw-selector-menu" role="menu" aria-label={t('agentSelector')}>
+          <input className="cw-agent-search" aria-label={t('searchAgents')} placeholder={t('searchAgents')}
+            value={query} onChange={e => setQuery(e.target.value)} />
           {general && (
             <>
               <div className="cw-selector-group">{t('secGeneral')}</div>

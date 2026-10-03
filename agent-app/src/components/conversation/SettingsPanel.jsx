@@ -27,7 +27,7 @@ function Switch({ value, onChange, label }) {
 }
 
 /** The sole settings surface; legacy UserCenterModal delegates here. */
-export default function SettingsPanel({ open, onClose, initialSection = 'general', busy = false, onExploreMemory }) {
+export default function SettingsPanel({ open, onClose, initialSection = 'general', busy = false, onExploreMemory, agents = [] }) {
   const { t, lang, setLang } = useLang();
   const auth = useAuth();
   const { username, token, profile, accountReady, logout, historyStatus, retryHistory, updateProfile, authFetch } = auth;
@@ -155,7 +155,7 @@ export default function SettingsPanel({ open, onClose, initialSection = 'general
             <SettingRow title={t('language')} description={L('用于界面、回答和思考过程。', 'Used for the interface, answers and reasoning.')}><select aria-label={t('language')} value={lang} disabled={!!operation} onChange={e => { const value=e.target.value;run('language', () => setLang(value), value==='zh' ? '语言偏好已保存' : 'Language preference saved'); }}><option value="zh">中文</option><option value="en">English</option></select></SettingRow>
           </>}
           {section === 'conversation' && <>
-            <SettingRow title={t('defaultResponder')} description={t('defaultResponderDesc')}><select aria-label={t('defaultResponder')} value={responder} onChange={e => changeLocal('defaultResponder',e.target.value,setResponder)}>{['general','nietzsche'].map(key => <option key={key} value={key}>{AGENT_NAMES[key]?.[lang] || key}</option>)}</select></SettingRow>
+            <SettingRow title={t('defaultResponder')} description={t('defaultResponderDesc')}><select aria-label={t('defaultResponder')} value={responder} onChange={e => changeLocal('defaultResponder',e.target.value,setResponder)}>{(agents.length ? agents : [{key:'general'}, {key:'nietzsche'}]).map(a => <option key={a.key} value={a.key}>{AGENT_NAMES[a.key]?.[lang] || (lang === 'en' ? a.name_en : a.name) || a.name || a.key}</option>)}</select></SettingRow>
             <SettingRow title={L('显示回答来源', 'Show answer sources')} description={L('展示回答下方的原典与补充资料，正文引用仍可点击。', 'Show sources below answers. Inline citations remain available.')}><Switch label={L('显示回答来源', 'Show answer sources')} value={sources} onChange={v => changeLocal('showCitations',v,setSources)} /></SettingRow>
             <SettingRow title={L('展开工具结果', 'Expand tool results')} description={L('默认展示检索与工具调用的详细结果。', 'Show retrieval and tool results expanded by default.')}><Switch label={L('展开工具结果', 'Expand tool results')} value={tools} onChange={v => changeLocal('toolTraceOpen',v,setTools)} /></SettingRow>
           </>}

@@ -88,6 +88,8 @@ async def list_agents():
         out.append({"key": key, "name": spec.get("name", key),
                     "subtitle": spec.get("title", ""), "tagline": spec.get("tagline", ""),
                     "portrait": spec.get("portrait")})
+    from soul_agents import public_agents
+    out.extend(public_agents())
     return {"agents": out}
 
 # ═══════════════════════════════════════════════════════

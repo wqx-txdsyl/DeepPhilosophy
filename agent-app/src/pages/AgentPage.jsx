@@ -669,8 +669,9 @@ export default function AgentWorkspace() {
 
   /* ── 空状态（§23: 简洁, Composer 近中心; Agent 依 Composer 选择变化） ── */
   const emptyState = (() => {
-    const name = agentName(composerAgent) || '深哲';
-    const sub = agentSub(composerAgent) || '';
+    const spec = agents.find(a => a.key === composerAgent);
+    const name = agentName(composerAgent, spec) || '深哲';
+    const sub = agentSub(composerAgent) || spec?.subtitle || '';
     if (composerAgent !== 'general') {
       return (
         <div className="cw-empty">
@@ -729,7 +730,7 @@ export default function AgentWorkspace() {
           </div>
         </div>
         <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
-        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} busy={streamingIds.size > 0} onExploreMemory={handleMemoryExplore} />
+        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} busy={streamingIds.size > 0} onExploreMemory={handleMemoryExplore} agents={agents} />
       </div>
     );
   }
@@ -784,7 +785,7 @@ export default function AgentWorkspace() {
         unavailable={unavailable || activeConv?.messages_loaded === false} resetKey={scopeKey} autoFocus={isDraft}
         dockLeft={sidebarCollapsed ? 0 : undefined} />
       <AgentPlaza open={plazaOpen} onClose={() => setPlazaOpen(false)} agents={agents} loading={agentsLoading} onPick={handlePickAgent} />
-      <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} busy={streamingIds.size > 0} onExploreMemory={handleMemoryExplore} />
+      <SettingsPanel open={settingsOpen} onClose={() => { setSettingsOpen(false); setPrefsTick(v => v + 1); }} busy={streamingIds.size > 0} onExploreMemory={handleMemoryExplore} agents={agents} />
       {drawio && <DrawioModal xml={drawio.xml} onClose={closeDrawio} />}
     </div>
   );

@@ -192,6 +192,7 @@ export function toolShortArgs(args) {
 
 /** 检索/查阅类工具: Level 1 可合并为「查阅了 N 项资料」 */
 export const RETRIEVAL_TOOLS = new Set([
+  'search_primary_texts', 'read_primary_text',
   'search_books', 'get_chapter', 'get_book_detail', 'get_philosopher', 'get_school',
   'list_books', 'query_graph', 'query_database', 'concept_trace',
 ]);
@@ -215,6 +216,10 @@ export function toolHumanSummary(name, args, shortResult) {
   const n = m ? Number(m[1]) : null;
   const cut = (s, max = 22) => (s.length > max ? s.slice(0, max) + '…' : s);
   switch (name) {
+    case 'search_primary_texts':
+      return query ? `已查找原典：${cut(query)}` : '已查找原典';
+    case 'read_primary_text':
+      return '已读取原典片段';
     case 'search_books':
       return query ? `已检索《${cut(query)}》` : (n != null ? `已检索到 ${n} 项资料` : '已检索原典');
     case 'get_chapter':

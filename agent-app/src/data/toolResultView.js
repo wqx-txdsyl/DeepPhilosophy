@@ -70,6 +70,16 @@ export function toolResultView(name, raw, zh = true) {
     view.items = list(data.matches).map(item);
     view.note = data.found === false ? say('结论只限本次版本与检索范围，不能推及所有版本。', 'This result applies only to the checked edition and search scope.') : '';
     if (data.coverage?.directory_consistent === false) view.warnings.push(say('本库目录范围不完整', 'Local coverage is incomplete'));
+  } else if (name === 'search_primary_texts') {
+    view.items = [...list(data.results), ...list(data.sources)].map(item);
+    view.headline = say(`找到 ${view.items.length} 条原典线索`, `${view.items.length} primary-text leads found`);
+    view.meta.push(say(`${list(data.books).length} 本本地书目`, `${list(data.books).length} local catalogue entries`));
+    view.note = text(data.note);
+  } else if (name === 'read_primary_text') {
+    view.items = [{ title: text(data.book_title || data.title), url: safeResultUrl(data.url),
+      meta: text(data.chapter_title), excerpt: excerpt(data.text, 1000) }];
+    view.headline = say('已读取原典候选片段', 'Source passage read');
+    view.note = text(data.note) || say('已读取片段；不代表读过整本书。', 'A passage was read, not the complete book.');
   } else if (name === 'search_books') {
     const hits = list(data.results);
     const catalogue = list(data.catalogue_matches);

@@ -9,6 +9,7 @@ import { useAuth } from '../auth';
 
 const UI = {
   zh: {
+    preview: '测试版', searchAgents: '搜索哲学家、传统或思想主题',
     sidebarTitle: '智能体广场', agentNote: '哲学家智能体基于其著作语料与人格数据构建',
     login: '登录 / 注册', logout: '登出', userCenter: '用户中心',
     placeholder: '问一个哲学问题…', send: '↑', stop: '■',
@@ -86,6 +87,7 @@ const UI = {
     collapseSidebar: '收起侧栏', expandSidebar: '展开侧栏',
   },
   en: {
+    preview: 'Preview', searchAgents: 'Search philosophers, traditions or themes',
     sidebarTitle: 'Agent Plaza', agentNote: 'Philosopher agents built from their corpus & persona data',
     login: 'Sign in / Register', logout: 'Sign out', userCenter: 'User Center',
     placeholder: 'Ask a philosophy question…', send: '↑', stop: '■',
@@ -180,6 +182,8 @@ export const AGENT_SUBS = {
 // 工具名（双语）
 export const TOOL_LABELS = {
   search_books: { zh: '检索原典', en: 'Search Texts' },
+  search_primary_texts: { zh: '查找原典', en: 'Find primary texts' },
+  read_primary_text: { zh: '阅读原典', en: 'Read primary text' },
   recall_account_memory: { zh: '读取长期记忆', en: 'Recall account memory' },
   remember_account_memory: { zh: '保存长期记忆', en: 'Save account memory' },
   forget_account_memory: { zh: '忘记长期记忆', en: 'Forget account memory' },
@@ -257,7 +261,8 @@ export function LangProvider({ children }) {
     if (params) for (const [k2, v2] of Object.entries(params)) s = s.replaceAll(`{${k2}}`, String(v2));
     return s;
   }, [lang]);
-  const agentName = useCallback((key) => (AGENT_NAMES[key] || {})[lang] || key, [lang]);
+  const agentName = useCallback((key, spec) => (AGENT_NAMES[key] || {})[lang]
+    || (lang === 'en' ? spec?.name_en : spec?.name) || spec?.name || '', [lang]);
   const agentSub = useCallback((key) => (AGENT_SUBS[key] || {})[lang] || '', [lang]);
   const toolLabel = useCallback((key) => (TOOL_LABELS[key] || {})[lang] || key, [lang]);
 

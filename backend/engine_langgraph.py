@@ -1968,6 +1968,16 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     custom_instructions: 用户自定义指令（个性化, 追加到 system prompt）
     language: zh/en——输出与思考流语言（覆盖 system 内的语言要求）
     conversation_id/message_id: Phase A (A1) 观测上下文（可选, 缺省自动生成）"""
+    from soul_agents import is_soul_agent
+    if is_soul_agent(agent):
+        from soul_agent_runtime import stream_soul_agent
+        events = stream_soul_agent(req_message, history, agent, language, custom_instructions)
+        try:
+            async for event in events:
+                yield event
+        finally:
+            await events.aclose()
+        return
     if agent == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare':
         from deep_bare_agent import stream_bare_agent
         events = stream_bare_agent(req_message, history, language=language,

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLang } from '../../utils/i18n';
 import { resolvePortrait } from '../../utils/api';
 import Icon from '../Icon';
@@ -8,9 +9,11 @@ import Icon from '../Icon';
  * （不进入永久 /nietzsche 聊天孤岛）。由前端调用方处理会话创建, 本组件只负责展示与回调。
  */
 export default function AgentPlaza({ open, onClose, agents, loading, onPick }) {
-  const { t, agentName, agentSub } = useLang();
+  const { t, lang, agentName, agentSub } = useLang();
+  const [query, setQuery] = useState('');
   if (!open) return null;
-  const cards = (agents || []).filter(a => a.key !== 'general');
+  const cards = (agents || []).filter(a => a.key !== 'general'
+    && `${a.name} ${a.name_en || ''} ${a.tradition || ''} ${a.tagline || ''}`.toLowerCase().includes(query.toLowerCase()));
   const general = (agents || []).find(a => a.key === 'general');
   return (
     <>
@@ -23,6 +26,9 @@ export default function AgentPlaza({ open, onClose, agents, loading, onPick }) {
         </div>
         <div className="cw-plaza-body">
           <div style={{ fontSize: 12, color: 'var(--text-dim)', margin: '2px 0 12px' }}>{t('plazaSub')}</div>
+          <input className="cw-agent-search" aria-label={t('searchAgents')} placeholder={t('searchAgents')}
+            value={query} onChange={e => setQuery(e.target.value)} />
+          <div className="cw-agent-count">{cards.length} {lang === 'en' ? 'philosophers' : '位哲学家'}</div>
           {loading && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 4px',
                           fontSize: 12.5, color: 'var(--text-dim)' }}>
@@ -56,10 +62,17 @@ export default function AgentPlaza({ open, onClose, agents, loading, onPick }) {
             <div key={a.key} className="cw-plaza-card">
               {renderAvatar(a)}
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 13.5, fontWeight: 600 }}>{agentName(a.key) || a.name}</div>
+                <div style={{ fontSize: 13.5, fontWeight: 600 }}>{agentName(a.key, a) || a.name}
+                  {a.status === 'preview' && <span className="cw-preview-badge">{t('preview')}</span>}
+                </div>
                 <div style={{ fontSize: 11.5, color: 'var(--text-dim)', marginTop: 2, lineHeight: 1.5 }}>
                   {agentSub(a.key) || a.subtitle || '·'}
                 </div>
+                {a.status === 'preview' && <div className="cw-agent-count">
+                  {a.tradition} · {a.local_primary_book_count > 0
+                    ? (lang === 'en' ? `${a.local_primary_book_count} local texts` : `${a.local_primary_book_count} 本本地可读原典`)
+                    : (lang === 'en' ? 'Find original texts online' : '需在线查找原典')}
+                </div>}
                 {a.tagline && (
                   <div style={{ fontSize: 10.5, color: 'var(--text-dim)', marginTop: 6, lineHeight: 1.5 }}>
                     {a.tagline}
@@ -81,7 +94,7 @@ export default function AgentPlaza({ open, onClose, agents, loading, onPick }) {
 
 function renderAvatar(a) {
   if (a.portrait) {
-    return <img src={resolvePortrait(a.portrait)} alt="" style={{ width: 42, height: 42, borderRadius: '50%', objectFit: 'cover',
+    return <img src={resolvePortrait(a.portrait)} alt="" loading="lazy" onError={e => { e.currentTarget.style.visibility = 'hidden'; }} style={{ width: 42, height: 42, borderRadius: '50%', objectFit: 'cover',
                    border: '1px solid var(--border)', flexShrink: 0 }} />;
   }
   return <span style={{ width: 42, height: 42, borderRadius: '50%', background: 'var(--soft)',

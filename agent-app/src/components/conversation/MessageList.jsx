@@ -29,6 +29,8 @@ import GeneralAnswer from './GeneralAnswer';
  */
 
 const TOOL_META = {
+  search_primary_texts: { icon: 'icon-search', label: '查找原典' },
+  read_primary_text: { icon: 'icon-book-open', label: '阅读原典' },
   search_books: { icon: 'icon-search', label: '检索原典' },
   get_chapter: { icon: 'icon-book-open', label: '读取章节' },
   get_book_detail: { icon: 'nav-books', label: '查书详情' },
@@ -395,9 +397,9 @@ const cleanContent = (text) => (text || '')
 
 /* ── AgentIdentity（§10: 依 resolveIdentityVisible 决定是否显示; 始终来自 message.agent_id） ── */
 function AgentIdentity({ agentId, agents }) {
-  const { agentName, agentSub } = useLang();
+  const { t, agentName, agentSub } = useLang();
   const spec = (agents || []).find((a) => a.key === agentId);
-  const name = agentName(agentId) || spec?.name || agentId;
+  const name = agentName(agentId, spec) || agentId;
   const portrait = resolvePortrait(spec?.portrait);
   return (
     <div className="cw-agent-identity">
@@ -407,10 +409,12 @@ function AgentIdentity({ agentId, agents }) {
         <span className="cw-agent-avatar-fallback">{(name || '?')[0]}</span>
       )}
       <span className="cw-agent-name">{name}</span>
+      {spec?.status === 'preview' && <span className="cw-preview-badge">{t('preview')}</span>}
       {agentSub(agentId) && <span className="cw-agent-sub">{agentSub(agentId)}</span>}
     </div>
   );
 }
+
 
 /* ── Agent Activity（P0: Thinking + inline Tool Activity 同一时间流; 无 card container） ──
  * 语义: “Agent 当前如何理解问题、为什么下一步这样做”（用户可见的安全 thinking 流,

@@ -123,7 +123,8 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
                 pass
         events = elg.stream_agent(req.message, req.history or [], req.agent or "general", custom, language,
                                  conversation_id=req.conversation_id, message_id=req.message_id)
-        if (req.agent or "general") == "general":
+        from soul_agents import is_soul_agent
+        if (req.agent or "general") == "general" or is_soul_agent(req.agent):
             frames = _heartbeat_stream(events)
             try:
                 async for frame in frames:
