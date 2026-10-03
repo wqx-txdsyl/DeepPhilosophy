@@ -79,7 +79,10 @@ def test_no_unknown_or_partial_cohort_is_promoted_to_full_benchmark():
     for version in ['0.1.0','0.1.1']:
         assert data['runs'][version]['full_frozen_suite']['score'] is None
         assert data['runs'][version]['common_fully_scored_cases']['case_count']==64
-    assert data['runs']['0.1.2']['score'] is None
+    assert data['runs']['0.1.2']['full_frozen_suite']['score'] is None
+    assert data['runs']['0.1.2']['completed_cases']['case_count']==65
+    assert data['runs']['0.1.2']['case_bounds']['A05']['score']==0
+    assert 'A05' in data['runs']['0.1.2']['common_fully_scored_cases']['case_ids']
 
 
 def test_submitted_external_document_uses_fixed_cohorts_without_imputing_unknown_execution():

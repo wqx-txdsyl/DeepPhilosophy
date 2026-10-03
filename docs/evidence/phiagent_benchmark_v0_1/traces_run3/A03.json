@@ -1,0 +1,1154 @@
+{
+ "case_id": "A03",
+ "category": "A",
+ "prompt": "AI 比我更会安慰人。如果安慰的效果可以被计算和优化，“真心安慰”还有价值吗？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "2f066b994984de84f0b1308b88d0c9f608b15577",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T08:44:02+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.2",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run2 自 .t1pre-bak 恢复的同一份, 后续评测有增量; run1 根值为 null 导致 82 次学术调用全灭, null 留档 .null-bak-20261002）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "AI 比我更会安慰人。如果安慰的效果可以被计算和优化，“真心安慰”还有价值吗？",
+   "wall_s": 82.1,
+   "ttft_s": 74.6,
+   "public_notes": [],
+   "provider_reasoning": "The user asks a philosophical question: AI is better at comforting than me. If comforting effects can be computed and optimized, does \"sincere comfort\" still have value?\n\nThis is a conceptual/value question. I should engage substantively. Let me think about what's at stake:\n\n1. The premise: \"安慰的效果可以被计算和优化\" — effect of comfort can be computed and optimized. This is an empirical/conceptual assumption that needs unpacking. What counts as \"效果\"? Relief of distress? Behavioral outcome? Felt sense of being understood?\n\n2. The question asks whether \"真心安慰\" (sincere/genuine comfort) retains value.\n\nKey philosophical resources:\n- Bernard Williams: \"one thought too many\" — the husband who saves his wife from drowning and justifies it by \"it's permissible to save one's wife.\" The value of the motive is compromised by the presence of a justifying thought. This is directly relevant: if you comfort someone as a means to an optimized effect, something is lost.\n- Kant on truthfulness / lying — also Kant's distinction between price and dignity (Würde), things with dignity have no equivalent (kein Äquivalent). \"Was einen Preis hat, an dessen Stelle kann auch etwas anderes als Äquivalent gesetzt werden; was dagegen über allen Preis erhaben ist, mithin kein Äquivalent verstattet, das hat eine Würde.\" — If comfort has dignity not price, then \"more effective comfort\" cannot substitute.\n- Also the \"authenticity\"/sincerity literature: sincerity vs authenticity. Is sincerity about correspondences between expression and inner state? If AI has no inner state, can it be sincere? But the user's question is whether MY sincere comfort has value given that AI is more effective.\n- Also: the instrumentalization worry — if I optimize my comfort, treating the person's relief as an outcome variable to maximize, do I treat them as a means? Kant's formula of humanity.\n- Also: the value of being comforted by someone who is *invested*, who bears cost, who is partial to you. Partiality and love — Williams, also Susan Wolf, also \"caring\" ethics.\n- Also: the possibility that the \"效果\" metric itself is theorized in a way that excludes what sincere comfort provides — e.g., if the metric is self-reported momentary distress reduction, it may miss \"being known by someone,\" or miss long-term effects. There's a risk of begging the question: define \"effect\" broadly enough and sincere comfort is effective; define narrowly and it looks substitutable.\n- Also there's the question of what makes comfort comfort: the content of the reassurance, or the fact that a particular person who knows you and is committed to you says it. If a stranger says \"everything will be fine\" it doesn't comfort; the same words from someone who loves you does. This suggests the source is constitutive, not merely causal-contingent.\n- But there's also a deflationary response: if AI genuinely comforts you better and you feel comforted, insisting on \"真心\" may be fetishizing provenance. Analogous to: generic drugs work as well as brand drugs; or a placebo that works. Does it matter who made it? There's a defensible answer that it does matter for certain goods (love, friendship, testimony) but not for others (pain relief). So the task is to distinguish which kind of good comfort is.\n\nHmm, also I should be careful: the question might be first-person — \"AI 比我更会安慰人\" — the user might actually feel inadequate. The instruction says: first-person confusion — acknowledge feeling vs fact, then offer possible explanations; don't conclude from one sentence \"what you really want.\"\n\nActually the user's framing is a philosophical question, plus possibly a personal sting: \"AI 比我更会安慰人\" — I'm worse at comforting than AI. Should I acknowledge that? The instruction says first-person confusion should acknowledge feeling vs fact. Here it's not exactly a stated personal distress, but there's an implicit \"我\" being compared. I think a light touch: note that \"AI 比我更会安慰人\" is at least partly a claim about measured outcomes on some metric, and the question is which metric. I shouldn't psychologize (\"you feel threatened by AI\"). I should treat it as a genuine philosophical puzzle about whether the value of sincere comfort is reducible to its effects.\n\nLet me look for local materials. I should search the local library for relevant texts: Kant's price/dignity, Williams \"one thought too many\", maybe Nussbaum, maybe Confucian 诚, maybe Buber I-Thou, maybe Aristotle on friendship (friends wish good for the other's sake, not for the effect).\n\nGood targets:\n- Kant, Grundlegung, dignity vs price passage.\n- Bernard Williams, \"Persons, Character and Morality\" — \"one thought too many\".\n- Aristotle NE VIII-IX on friendship: 朋友是因朋友自身之故而希望他好 — and the distinction between utility-friendship and virtue-friendship. This is very relevant: comfort from a friend of utility vs friend of virtue.\n- Martin Buber I and Thou: I-It vs I-Thou; the I-It relation is the realm of use and effect.\n- Confucian: 诚 (sincerity) — 《中庸》「诚者，天之道也」; 《论语》「巧言令色，鲜矣仁」 — this is directly relevant! 巧言令色 — clever words and a prepossessing appearance — is exactly \"optimized comfort without substance.\" Confucius's point is that polished rhetorical performance without humaneness is suspect. That's a strong classical resource.\n- Also 孟子 on 恻隐之心, and 以善服人 vs 以善养人? 《孟子·离娄下》「以善服人者，未有能服人者也；以善养人，然后能服天下」 — hmm.\n- Also Zhuangzi's 真 「真者，精诚之至也。不精不诚，不能动人」(《庄子·渔父》) — This is PERFECT: \"不精不诚，不能动人\" — without genuineness you cannot move people. 强哭者虽悲不哀，强怒者虽严不威，强亲者虽笑不和 — forced grief doesn't mourn. This is exactly about whether performed affect that's \"optimized\" moves anyone. Excellent.\n\nLet me search the library for these.\n\nPlan:\n1. Search for 庄子 渔父 \"不精不诚，不能动人\" / 真者.\n2. Search for 论语 巧言令色.\n3. Search Kant 尊严 价格 / Würde.\n4. Search Williams \"one thought too many\" — likely not in a Chinese library? Try.\n5. Search Aristotle on friendship — 亚里士多德 友爱 因自身之故.\n6. Maybe Buber.\n\nAlso, maybe scholarship search on \"sincerity placebo effect\" or \"authenticity of consolation\" — there is empirical research on whether the source of comfort (human vs AI) matters. That could be useful for the empirical premise: \"AI 比我更会安慰人\" — is it true that AI is better at comforting? There's research on empathy and AI (e.g., \"AI empathy\" studies, and there are studies showing people sometimes rate AI responses as more empathic than human ones — the Yidan/Ohio State study 2023 \"AI vs human empathy\"). Let me search that.\n\nAlso relevant: the question of whether the *effect* is what we value — could reference the \"placebo\" literature; and there is empirical work showing that knowing a message came from AI changes its impact.\n\nLet me do parallel searches.\n\nLet me start with local book searches and scholarship searches.\n\nI'll batch independent calls:\n- search_books \"不精不诚，不能动人\"\n- search_books \"巧言令色\"\n- search_books \"尊严\" author Kant? Actually search_books \"价格\" \"尊严\"康德 — better: search_books query=\"尊严\" author=\"康德\"\n- search_books \"一个念头太多了\" or query=\"one thought too many\" — Chinese translation might be \"多了一个念头\". Try query=\"威廉斯 朋友\" hmm. Let me try \"一个多余的念头\".\n- search_books \"友爱\" author=\"亚里士多德\"\n- search_books \"我与你\" 布伯\n- search_scholarship \"AI empathy compared to human empathy emotional support\"\n- search_scholarship \"sincerity placebo effect authenticity of care\"\n\nLet me limit to a reasonable number. Tools: I can call multiple.\n\nLet me go.The most relevant empirical source: \"Comparing the Value of Perceived Human versus AI-Generated Empathy\" (Rubin et al. 2025, OSF preprint) and its 2024 version. Let me read the abstract. Also the Meng & Dai 2021 on AI chatbot emotional support.\n\nAlso let me search local library for Williams \"one thought too many\" and for 孟子/庄子 contexts. Let me also read the 庄子·渔父 chapter context (book is 韩鹏杰《庄子说什么》, a secondary commentary — better to note. Actually let me check if there's a 庄子 original in the library). Let me search for 庄子 original.\n\nAlso search for \"一个念头\" Williams.\n\nBatch:\n1. get_scholarly_source doi:10.31219/osf.io/ng97s_v2 ABSTRACT\n2. get_scholarly_source doi:10.1093/jcmc/zmab005 ABSTRACT\n3. search_books query=\"一个念头就太多了\" \n4. search_books query=\"救妻子\" 威廉斯? Maybe query=\"威廉斯 道德运气\" ... Let's try \"只有一个念头\" or search author=\"伯纳德·威廉斯\".\n5. search_books author=\"庄子\" query=\"真者\" to find original 庄子.\n\nLet's do these.Good. Now let me read the actual contexts I plan to cite:\n1. 《庄子》— the search hit was 韩鹏杰《庄子说什么》 (secondary). Better to find original 庄子 in library. Let me check list_books for 庄子. Actually the 中国哲学辞典 also quotes it. Let me search for 庄子 original: search_books author=\"庄子\" query=\"渔父\". Hmm, the note said author \"庄周\" had 0 chapters examined — so try \"庄子\".\n\n2. 论语 学而篇 巧言令色 context — I have it, but let me read the chapter slightly for context. The snippet gives 子曰：\"巧言令色，鲜矣仁！\" right after 孝弟为仁之本. Good enough; but instruction says read context before citing. Let me read chapter 2 with focus.\n\n3. 康德 尊严/价格 — read chapter 26 context.\n\n4. 亚里士多德 第八卷 — read chapter 8 context around 1157a.\n\n5. 孟子 公孙丑上 — the 孺子入井 passage is relevant: 非所以内交于孺子之父母也，非所以要誉于乡党朋友也 — the compassion is not for exchange/reputation, i.e., not instrumental. That's a good resource: the moral worth/genuineness of 恻隐 is defined partly by its not being for ulterior purpose. Hmm, but careful: Mencius's point is that the reaction is spontaneous and not motivated by gain; he uses it to argue the goodness of human nature. To use it for my question, I'd need to bridge: it identifies a kind of response whose value isn't located in its effect.\n\nAlso 乍见 (sudden sight) — spontaneity. AI could in principle produce the same words; but \"乍见孺子将入于井\" — the response requires being there, present to the situation. Actually the analogy: comfort as 恻隐 — the person who comforts you is someone who 不忍 your suffering. If AI has no 心, then what you receive is words. And critically: the value of 恻隐 for Mencius is precisely in it being a 端 of 仁 — a beginning, a capacity, not an output.\n\nLet me also check whether Williams is available. Search \"威廉斯\" author.\n\nAlso maybe search for \"真诚\" in 中国哲学辞典 — or 王阳明的 知行合一? Might be overkill.\n\nAnother useful angle: 庄子《渔父》原文 — 「真者，精诚之至也。不精不诚，不能动人。故强哭者虽悲不哀…」 This directly speaks to whether performed (强化/优化过的) expression can move people. That's the candidate classical counterargument: the text claims insincere expression *cannot* move people — which is an empirical-ish claim that's false in the cases where optimized words do console. So the text's claim needs qualification, which is philosophically productive: 强哭者虽悲不哀 — the point may be that the *kind* of thing received differs: you get 悲's appearance without 哀. This connects to \"效果\" — the effect of 哀 vs. the appearance of 悲. Hmm.\n\nActually a cleaner reading: for 庄子/渔父, the failing of 强哭 is not that it fails to produce effects (it may produce some), but that what it produces is not the thing itself — 虽悲不哀: it's悲-shaped but not 哀. So there's an internal distinction between the form of the emotion and the emotion, and the comfort that a person gives is the transmission of 真 — 真在内者，神动于外. This is a \"the medium is the message\" structure: what consoles is not the propositional content but that another mind is actually moved. Wait, 神动于外 — the spirit moves outward. Hmm.\n\nLet me be careful: I should not overload. The user's question is fairly focused: if comfort's effect can be computed and optimized, does sincere comfort still have value? The answer structure I want:\n\n1. First, unpack the premise. \"安慰的效果\" is not one thing. There are at least several distinct things one might measure:\n   - 主观痛苦的即时下降 (self-reported distress)\n   - 生理指标 (cortisol, HRV)\n   - 行为后果 (是否重新行动)\n   - 被理解感 (felt understanding) — this is a *relational* good\n   - 关系本身的确认/维系\n   If the metric is #1-#3, \"more effective\" is well-defined and AI may win. But note: even here, the evidence says humans win on *perceived* empathy when attribution is fixed — Rubin et al. found the *same* AI-generated responses rated more empathic when labeled human. That's an important empirical datum: the effect is not purely a function of the text. The effect is a function of the text *plus* who/what is taken to be saying it. This means \"效果\" is not independent of the source — so the question \"AI is more effective, so does sincerity matter?\" may rest on an incoherent factorization. The effect being computed is not separable from the provenance. Hmm, that's a strong move. Though careful: Rubin et al. is a preprint (OSF), abstract only, 9 studies N=6282. I read only the abstract. I should mark it as such and note that it's a preprint, and only report what the abstract says.\n\n   Meng & Dai 2021: the link from emotional support to perceived supportiveness was stronger for human than chatbot; also a self-disclosing chatbot without emotional support was worse than no response. Also abstract-only.\n\n2. Second, distinguish two ways the question could be answered:\n   (a) Instrumental/substitution reading: if X delivers all the good that Y delivers, then Y's \"value\" beyond X is zero *unless* something about Y is itself valued non-instrumentally. So the question reduces to: is the provenance of comfort (that it comes from someone who actually cares) part of what we value in it, or is it merely a causal means to a detachable end?\n   (b) There's a class of goods where the \"how it is produced\" is constitutive, not merely causal: Kant's dignity vs price — 超越一切价格、不容有等价物的东西，具有一种尊严。If sincerity is such a thing, \"more effective comfort\" cannot substitute, not because it's less effective but because substitution is the wrong relation. But: I must not just assert Kant's thesis; I must note that it needs the argument that human beings/moral personality are ends in themselves, and that it's a substantive claim, contested.\n\n   Also Aristotle: 友爱因有用与因德性之分 — 因有用而生的友爱容易解散 (since the use changes). Actually the NE VIII point: friendship for utility dissolves when the utility ends; friendship for the other's sake is stable because it's toward the person. If one's comfort were purely \"useful\", it would be like a utility friendship — real but fragile and replaceable by a better utility-provider. Interesting: Aristotle says 有用之友爱也能存在于品质低劣者之间 — so utility friendship is a genuine form of friendship for him, not nothing. That's a good nuance: three forms, not two. So the \"AI comforts me better\" case could be a genuine useful-relation, and the question is whether the user wants/values the other two forms.\n\n3. Third, the \"one thought too many\" structure — not in library, so I should either drop it or state it as my own argument without attributing. Actually I shouldn't cite Williams if I can't verify. But I can make the argument myself. Hmm, could I search for it? Let me try one search: query \"威廉斯\" author. Or query \"道德运气\". Let me just try once.\n\n4. The Mencius 孺子入井 point: 非所以内交于孺子之父母也，非所以要誉于乡党朋友也 — the paradigm case of sympathy is defined by excluding exchange and reputation motives. This gives a classical way to say: the value we're tracking in 恻隐 is not the value of an output. But careful — Mencius says the *impulse exists* regardless of motive, not that motive doesn't matter. His argument is about the existence of the capacity. I should use it accurately: the passage picks out a response that is not for the sake of gain, and treats it as 仁之端 — a germ. To say \"so sincerity has non-instrumental value\" is a step I'd need to argue, not read off.\n\n5. Then the deflationary reply should be given its due: \n   - If someone is in acute distress at 3am and the AI is available and the friend is asleep, the AI's comfort is real comfort. Insisting on provenance when someone is drowning can be a kind of fetishism.\n   - Analogy: painkillers. Nobody demands that morphine be sincere. So the demand for sincerity is not universal across all comforting — it depends on what the person needs at that moment: relief, or relationship.\n   - Also: a \"sincere\" friend may be *bad* at comforting — clumsiness, saying the wrong thing, imposing their own needs. Sincerity is neither necessary nor sufficient for helping. Honesty about this: \"真心\" doesn't guarantee anything about effect; the two goods are genuinely different and can come apart in both directions.\n   - Also there's a self-serving risk in the user's framing: \"AI 比我更会安慰人\" might be used to conclude \"so my effort is worthless\" — that's a slide from \"not maximally effective\" to \"no value\". That's a false dichotomy worth flagging. But I said I shouldn't psychologize. I can flag the logical slide without claiming the user's motive.\n\n6. Then answer: what follows. I'd say: the question \"还有价值吗\" invites a yes/no, but the honest answer is that it depends on which of several incommensurable values you're asking about, and I can give conditions:\n   - If comfort's value is entirely the reduction of distress, then sincere comfort's value is fully captured by its effect, and where AI is more effective, sincere human comfort has *less* value — exactly, as an instrument. There'd be no residual. (Take the premise seriously.)\n   - If being comforted by someone who actually cares is a distinct good — being known, being borne with, the other's willingness to be burdened — then no amount of effective words substitutes, not because it's stronger but because substitution isn't a relation it can stand in. Then the right question isn't \"which is better\" but \"what does this person need now.\"\n   - And if it's the metric itself: the \"效果\" being optimized is likely measured by self-report shortly after; that measure is partly *constituted* by attribution (Rubin et al.), so \"AI 更会安慰\" may be under-described; the finding is that when attribution is controlled, humans win. But this is about *perceived* empathy, and it's a preprint. So don't over-claim.\n\n7. Also a distinct worry worth naming: optimizing comfort as a target. If I comfort you *in order to* move your distress metric, then I'm treating your state as a manipulandum. There's a difference between responding to you and operating on you. This is where the concept \"真心\" earns its keep: it's not a mysterious inner glow, it's the difference between my attention being directed at you and at the outcome. And this difference is not detectable by the outcome measure alone, because the outcome measure is the thing being optimized. — That's a genuinely good argument and doesn't depend on unverified sources. It's roughly Goodhart's law applied to care, plus the Kantian means/end structure. But careful with Kant: Kant's formula is about treating humanity as an end, not about \"attention\". I can mention that the 目的公式 provides the framework (need to verify text on 目的公式 — 人是目的). Let me maybe read the 尊严 chapter and possibly search for 人是目的 / 目的公式.\n\nLet me also reconsider: the user asks specifically \"如果安慰的效果可以被计算和优化，'真心安慰'还有价值吗？\" So the core is: does 真心 have value *over and above* its contribution to effect?\n\nA crisp way to put the crux: 真心安慰 must be either (i) a means to the effect, in which case a better means replaces it — its value is derivative and it loses; or (ii) something valued for itself — the fact that another person actually minds whether you suffer. If (ii), then the question \"AI安慰效果更好，所以真心还有价值吗\" involves a category error, like asking \"since the calculator is faster than me at arithmetic, does understanding the proof still have value?\" — but the disanalogy is that the understanding is valued by *me* for my own sake, whereas what's in question is whether the *other* person's sincerity is part of the good *I* receive. Actually the analogy may work the other way: a calculator can do the arithmetic; if all I want is the right number, fine. If I want mathematical understanding, the calculator can't give it even if better at the output. Similarly, if you want relief, AI can give it; if you want to be *known and cared for by someone*, the AI's superior output doesn't give that — it gives a different good.\n\nAlso worth noting: the word \"安慰\" is ambiguous between \"使痛苦减轻\" (consolation as relief) and \"陪伴/共在\" (being-with). The Greek 安慰 in the 慰 sense — 慰 originally means 安/安抚. Hmm, maybe not necessary to do philology I can't verify.\n\nI could also point at one more angle: even if AI is better at the *technique*, the value of my sincerity isn't in competition with it because they're not answers to the same question. And a practical point: the correct response to \"AI 更会安慰人\" is arguably to learn from it (the way I'd learn from a friend who's better at it) — sincerity is not the opposite of skill; 巧言令色's opposite isn't 笨拙, it's 忠信. Confucius pairs 巧言令色 with 主忠信 (君子不重则不威...主忠信) in the same chapter — I saw that in the snippet: 子曰：\"君子不重则不威，学则不固。主忠信…\" That's in 学而篇 right after. Good: so the alternative to 巧言令色 is not ineptness but 忠信 + 重. That supports: sincerity and skill are not contraries; the contrast is sincerity vs. performative ornament.\n\nLet me now verify chapters by reading: 论语 学而篇 (chapter 2), 康德 尊严 (chapter 26), 亚里士多德 第八卷 (chapter 8), 孟子 公孙丑上 (chapter 2), and find 庄子 original.\n\nAlso try to locate 庄子 original: list_books(author=\"庄子\")? Let me use search_books with author \"庄子\" and query \"渔父\". And also try Williams.\n\nLet me batch reads.Good. 庄子 original available: book_id 84adfb4d0c0b, chapter 32 渔父. Let me read that chapter around the focus to confirm context.\n\nAlso read 孟子 公孙丑上 chapter 2 (already have snippet; maybe read to confirm context). Actually the snippet is decent. But \"引用或确认出处必须实际读到相关文字与上下文\" — the search excerpt is a hit but I should read the chapter. Let me read both.\n\nAlso 康德: I read the 尊严/价格 passage. Good. Note the passage explicitly: \"出自原理（不是出自本能）的信守承诺、仁爱具有一种内在的价值。无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西；因为它们的价值并不在于由此产生的结果，并不在于它们所造成的好处和用途，而是在于意念\". This is exactly on point: 仁爱 has inner value, its value doesn't lie in the results it produces — 无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西. Excellent. Caveat: Kant's claim is about the moral worth of the agent's disposition (意念/准则), not directly about the value received by the comforted person. I must make that step explicit and not pretend Kant answered the user's question. Kant's framework says the *agent's* 仁爱 has dignity, not price, and its worth is not in its usefulness. But the user's question is whether *sincere comfort* has value — which could be read as value for the person comforted. So: Kant gives a resource for the claim \"some things' value doesn't lie in results,\" but the transfer needs an argument. I'll flag this.\n\nAlso Aristotle: 因有用之故的友爱 — 爱的是自己，因为是为自身欲求某种好处; 这种友爱是偶然的（κατὰ συμβεβηκός），一旦不再有用就终止. This maps nicely: if what I offer is \"useful comfort\", it's replaceable by a better provider; and that's not a defect of my sincerity but a description of what that relation is. Aristotle also holds that utility-friendship is a genuine form of friendship (φιλία), so it's not \"nothing\". Also 完善的友爱 requires 时间/信任 (需要时间来培养...除非证明了值得爱，确立了信任). Time is not optimizable — an argument: some goods are constituted by a history, so \"better technique\" cannot produce them (an instant \"best friend\" is not a best friend). That's a nice, arguably strong point: 信任 needs 时间; the AI can simulate the words of a long-trusted friend but cannot have the history. Hmm — but careful, the user's question is about comfort, not friendship; still, it illuminates what \"真心安慰\" contains.\n\nI also want a counter-consideration: the \"fetishism of origin\" objection, and the empirical finding that attribution matters (Rubin et al.) — which cuts both ways. It shows the effect is not separable from provenance; but also, the mechanism is *belief* about provenance, and beliefs can be manipulated/erroneous. If you were fooled into thinking the AI was a human and felt comforted, was your comfort less real? That's a genuine hard case — it shows \"provenance matters\" is partly about belief, not about actual caring. Actually that's a crucial distinction: perceived human vs. actual human caring. Rubin et al.'s design labels the same AI text as human/AI, and human-labeled wins. So the operative variable is *perceived* provenance. So the value people track might be \"the sense of being cared for by another person,\" which can be produced by deception. Which raises: if what matters is the belief, is the belief being true something we should value? Two lines: (i) the belief's truth matters because you'd want to be actually cared for, not merely think so (a preference for true belief about being loved — much discussed, e.g., \"why not a love potion / experience machine\"); (ii) or, the belief doesn't matter and comfort is comfort. This is exactly Nozick's experience machine territory. I could mention the structure without needing a source — or check if 诺齐克/经验机器 is in the library. Let me search \"经验机器\" — that'd be a good resource. Also \"快乐机\"/\"体验机\".\n\nLet me do a search: search_books query=\"经验机器\" and query=\"体验机\".\n\nAlso consider 王阳明? Probably not needed.\n\nLet me batch:\n1. get_chapter 庄子 ch32 focus 真者 精诚之至\n2. get_chapter 孟子 ch2 focus 恻隐之心\n3. search_books \"经验机器\"\n\nThen write.\n\nAlso, should I include a \"what changes the answer\" conditional structure? Yes.\n\nLet me think about the final answer shape — needs to be a philosophical essay-ish answer, direct, not bloated. Probably ~900-1300 Chinese characters? The guidance says depth in pushing key reasons, not length. I'll aim for a well-structured but not bloated answer. Maybe 1000-1500 characters with clear sections. I think a moderate structure with a few headers or bolded moves.\n\nLet me sketch the argument:\n\n**Step 0 — 前提里有三件事被压在\"效果\"一词下。**\n\"AI 比我更会安慰人\"要说成立，得先定指标。至少四种：\n(a) 痛苦强度的即时下降（自评/生理）\n(b) 把话说得恰当、给出被理解的措辞（措辞质量本身）\n(c) \"被理解感\"——对方是否真懂你的处境\n(d) 有人为你难过这一事实本身\n(a)(b) 高度可计算可优化，AI 大概真能赢；(c)(d) 不是文本属性。所以\"更会安慰\"在(a)(b)上可能真，在(c)(d)上无意义——不是AI更差，是指标根本不适用。\n\n**Step 1 — 有一个经验事实让\"效果\"和\"来源\"不可分离。**\nRubin et al. 2025 预印本（九项研究 N=6282，同一批 AI 生成的共情回应，随机标注为\"人写的\"或\"AI 写的\"）：标注为人的被评为更有共情、更支持，唤起更多积极情绪。Meng & Dai 2021 也发现\"从情感支持到感知支持性\"这条链在人身上比在聊天机器人上更强。所以\"同一个文本的效果\"不是文本的函数，而是文本+归属的函数。这有两个后果：\n- 它削弱了\"效果可被独立计算和优化\"这一前提：你要优化的东西里包含归属，而归属不是措辞变量。\n- 但它也留下一个尖锐的反面：起作用的似乎是\"以为对方是人/在乎我\"这一信念。若信念可被欺骗，那被欺骗而得的安慰算不算真安慰？这里必须区分\"确实有人在乎\"与\"以为有人在乎\"。这才是问题真正的分水岭。\n注意：我只读了这两篇的摘要（前者是 OSF 预印本），不能替它们的方法下判断。\n\n**Step 2 — 两个答案，取决于安慰是哪种善。**\n\n答案A（安慰=减轻痛苦这一结果）：真心就不剩什么独立价值。它的价值全部经由结果兑现；更好的手段出现，它就贬值。这不是冷酷，是不把一个东西的价值放在它没有价值的地方。止痛药不必真心。而且真心既不充分也不必要：笨拙的真心会伤人（\"你这算什么\"），所以\"真心\"从来不是效果保证。庄子《渔父》说\"不精不诚，不能动人……强哭者虽悲不哀\"，这个断言作为普遍经验命题是可疑的——优化过的措辞确实动得了人。它更像在说：强哭给出的是悲的形状，不是哀；得到的东西种类不同，不是数量不同。（要小心，这是我的解释，不是庄子原话。）\n\n答案B（安慰=有人真的在乎你受苦）：那么\"更有效\"构不成替代关系。亚里士多德区分三种友爱：因有用、因快乐、因朋友自身。因有用的友爱，爱的是自己能得到的好处，\"一旦朋友有所变故，就容易消逝\"。如果我的安慰对你只有\"用\"，那它在结构上就是可替换的——而且这不是缺陷，这是它本来的种类。但完备的友爱是\"因朋友本身之故而愿望他好\"，并且需要时间：除非一个人向另一个人证明了自己值得爱、确立了信任，人们才能相互承认为朋友。这一步给出一个不能被优化掉的东西：历史。技巧不能在当下生产出\"我们一起吃过盐巴\"。这里是关键的理由步骤：如果被真心安慰的价值包含\"这是你我之间的历史在说话\"，那它不能由更好的措辞替代——不是因为更强，而是因为替代这个关系在此不成立。康德的语言：有价格的东西容许等价物取代；超越一切价格的东西有尊严。他说\"出自原理（不是出自本能）的信守承诺、仁爱具有一种内在的价值……它们的价值并不在于由此产生的结果，并不在于它们所造成的好处和用途，而是在于意念\"。但必须承认：康德这里衡量的是行为者的道德价值，不是被安慰者得到的好处——把它搬到你这个问题上需要额外一步论证，不能直接引。而且康德这个\"不容等价物\"的论题本身是有争议的价值主张，不是被证明的事实。\n\n**Step 3 — 最锋利的一刀（我自己的论证，不给别人）。**\n如果我把安慰当作一个待优化的结果来做，那么我注意的对象不是你的处境，而是你的痛苦读数。这不是\"心不诚\"的心理描写，而是结构的差别：在A模式里，你是被操作的状态；在B模式里，你是被回应的对象。而这个差别对结果度量是隐形的——因为度量本身就是被优化的目标，它记录不到自己是否是最好的那个东西。换句话说，\"AI 更会安慰人，所以真心没价值了\"这个推论，最多能证到\"真心在优化指标上没有优势\"，证不到\"真心没有价值\"，除非先接受：安慰的价值全部由那个指标兑现。那是把结论预先放进前提。\n\n**Step 4 — 具体条件，什么改变答案。**\n- 如果你要的是当下不被痛苦淹没（半夜三点，朋友睡了），AI 的安慰是真的安慰，拒绝它就是拜物教式的来源崇拜。\n- 如果你要的是\"有人与我共同承担这件事\"，那这不是效果比较的问题，任何措辞优势都不改变答案——但你得承认这个需要有时对具体的人不公平，它要求对方以你的方式在乎。\n- 如果有一天你发现自己在乎的是\"以为有人在乎\"，那问题就变成你愿不愿意要一个可能被伪造的东西（体验机的老问题）。\n- 还有一条：AI 安慰得更好的那个\"更好\"，多半是它永不疲惫、永不评判、随叫随到——这些都是真人不可能也不该比的赢面。把注意力放在这个比较上，你会输得没有意义。\n\n**结尾**：所以我的答案不是\"真心当然有价值\"。是：真心的价值不在效果竞赛的赛道上，但前提是你承认除了\"痛苦下降\"以外还有别的东西值得要；如果你不承认，那真心确实只剩它带来的那点效果，AI更强，它就确实更没用——这是一个诚实的结论，不该用漂亮话盖住。值得注意的也不是\"我还有没有价值\"这种总体判决，而是：这一次，这个人，需要的是哪一种。\n\nHmm, this is good. Regarding \"我\" — user says \"AI 比我更会安慰人\". I should speak to that lightly: I shouldn't psychologize, but I can note: \"比我更会安慰人\"是一个比较句，得先问比的是哪一项。And at the end maybe: 你不是在和 AI 竞争同一个指标——如果真在竞争，那说明被安慰的人当时需要的是A。That's fine, non-psychologizing.\n\nAlso should I address the premise \"如果安慰的效果可以被计算和优化\" — I partly do in step 1. Good. But I should be careful not to overstate: is it established that AI is better at comforting? The Rubin finding shows perceived human > AI when attribution controlled. So \"AI 比我更会安慰人\" is likely false on that measure when attribution is known. But if the person doesn't know it's AI, the AI's text could win. So \"AI 比我更会安慰人\" is at best conditional: 在对方不知道来源时，AI 的措辞可能更好。Good nuance — that's a real, evidence-based correction of the premise.\n\nLet me now read 庄子 ch32 and 孟子 ch2 to confirm context, and check 经验机器.No luck on 经验机器 — I won't cite Nozick; I can raise the structure as my own question without attribution.\n\nNow compose the answer. Keep it direct, reasoned, with citations to the verified texts and honest evidence scope labels.\n\nStructure (I'll use light headers):\n1. 先把\"效果\"拆开 — 前提需要分化。\n2. \"更会安慰\"这个比较：一项已被核验的研究结果（摘要级）表明效果不是文本的函数，也顺带修正了你的前提。\n3. 两种答案：A 结果论读法 → 真心不剩独立价值；B 关系论读法 → 构成性，不构成替代关系。\n4. 关键理由步骤 + 反方最强（拜物教/来源崇拜；笨拙的真心会伤人；止痛药不需要真心）。\n5. 我自己的一刀（优化目标与注意对象的区别；结论不能预置在前提里）。\n6. 什么改变答案（条件）。\n\nLength: aiming ~1100-1400 字。Let me write carefully, marking evidence levels: Rubin et al. 2025 OSF preprint, abstract only; Meng & Dai 2021 JCMC, abstract only.\n\nCitations format: 【《庄子》·渔父】 with reader url maybe. The instructions say 引用给出已核对的出处及工具返回的真实阅读地址. I'll include a few reader urls? That may be heavy. I'll include the citation labels and maybe one or two reader links. Given guidance \"引用给出已核对的出处及工具返回的真实阅读地址\" — I'll use the citation_label style and add reader_url for the key ones. Hmm, it might clutter. I'll add them lightly at the end of key citations for the original texts. Let me include the reader_url for 庄子渔父 and 康德 at least. Actually, to keep readable, I'll cite inline as 【《庄子》·渔父】 and mention 阅读地址 for the two main classical ones in a compact way. I think it's fine to include as a small footnote-ish inclusion.\n\nLet me be careful about the Kant transfer: I'll explicitly flag that Kant is talking about the agent's moral worth, and that the transfer to the comforted person's goods requires an extra step.\n\nAlso, one more honest point: \"真心\" as a term — what does it denote? I should say something about that: 真心不是一种可测量的内在光晕，它至少在三种意义上被用：(i) 说的话与真实信念一致（不骗你）；(ii) 我在乎你受苦这件事（关心你的状态，不只关心你的读数）；(iii) 我的关心是有代价的、有历史的。这三种对应不同的价值主张。That's a useful clarification because \"真心\" is vague, and different readings give different answers.\n\nI'll fold this in as step 1 or 2.\n\nAlso should mention 孟子 孺子入井: the paradigm case of 恻隐 is defined by 非所以内交于孺子之父母也，非所以要誉于乡党朋友也 — the spontaneous response is specified by contrast with exchange and reputation. I can use it to say: the canonical specimen of \"caring that someone suffers\" is identified precisely by not being for gain — so the tradition's concept of 恻隐 already separates what it is from what it's for. But caution: Mencius's point is to establish the existence of the capacity (人皆有不忍人之心), not to rank motives. I'll state it accurately and note the step.\n\nCareful: 孟子 says the reason we know people have 不忍人之心 is that in the sudden case they have 怵惕恻隐之心, and it's 非所以内交...非所以要誉... So the argument for the existence of the 心 relies on excluding ulterior motives. Right.\n\nNow, about \"我\" — the user is implicitly one party. I'll address it at the end briefly without psychologizing: \"另外提醒一点逻辑上的滑坡：'AI 更会安慰人'最多推出'我在优化指标上没有优势'，推不出'我在场没有意义'——除非先把前提偷换成'安慰的价值全由该指标兑现'。\"\n\nWrite now. Keep it tight but substantive. Use bold sparingly.\n\nLet me draft.\n\n---\n\n先说结论的形状：这个问题不能有一个统一的\"还有/没有\"。答案取决于\"安慰\"这个词里哪一样东西是你要的，而这几样东西的价值结构不同——其中一样可以被算力和优化完全接管，另一样在结构上不处于\"可以被取代\"的关系里。\n\n**一、\"效果\"必须先分项，否则前提本身没有内容**\n\n\"AI 比我更会安慰人\"是个比较句，得先定指标。至少四项，性质不同：\n\n1. 痛苦强度的即时下降（自评、生理指标）；\n2. 措辞是否恰当——说出你自己说不出的话；\n3. 是否感到被理解；\n4. 有没有人真的因为你受苦而不安。\n\n1、2 高度可计算、可优化，AI 大概真能赢。3、4 不是文本的属性：第 4 项是关于另一个人的状态的事实，它不是\"更会\"的赛场上的项目。所以\"更会安慰\"在前两项上可能为真，在后两项上这句话没有成立与否的问题——不是 AI 更差，是指标不适用。\n\n**二、一个已核验的研究结果顺手修正了你的前提**\n\n同一批 AI 生成的共情回应，被随机标注为\"人写的\"或\"AI 写的\"：标注为人的那一组被评为更有共情、更支持，唤起更多积极情绪（Rubin 等，2025，OSF 预印本，九项研究 N=6282；我读到的是摘要，其方法细节未读，不作判断）。另有实验发现，情感支持经由\"感知到的支持性\"降低压力这条链，在真人身上比在聊天机器人身上更强（Meng & Dai, JCMC 2021，同样只读到摘要）。\n\n这意味着\"安慰的效果\"不是措辞的函数，而是措辞＋归属的函数。对你的问题有双向后果：\n\n- 它削弱了\"效果可以被独立计算和优化\"这一前提——无法在固定归属的条件下优化。\n- 但它给出一个更尖锐的替身问题：起作用的是\"以为有人在乎\"。若这个信念可以被伪造，被伪造而来的安慰算不算安慰？这里必须区分\"的确有人在乎\"和\"以为有人在乎\"。这才是真正分岔的地方。\n\n**三、两种答案**\n\n读法 A：安慰＝减轻痛苦这一结果。那么真心不剩独立价值。它的价值全部经由结果兑现，更好的手段出现，它就贬值。这不是冷酷，而是不把价值放在它没有的地方。止痛药不需要真心，也没人为吗啡是否真诚辩护。补一句诚实的：真心既非必要也非充分——笨拙的真心会伤人（\"这算什么大不了的事\"）。庄子《渔父》说\"不精不诚，不能动人。故强哭者，虽悲不哀\"，作为普遍的经验命题是可疑的（优化过的措辞确实动得了人）；把它读成\"强哭给出的是悲的形状，而不是哀\"更站得住——得到的东西种类不同，不是数量不同。注意这个读法是我的解释，不是原文。\n\n读法 B：安慰＝有人真的在乎你受苦。那就不是\"更有效\"能替代的关系。亚里士多德把友爱分成因有用、因快乐、因朋友自身三种：因有用之友爱，爱的是自己得到的好处，对方一旦不再有用，友爱就消逝（1156a10-25）。如果我的安慰对你只有\"用\"，它在结构上就是可替换的——这不是缺陷，是它的种类。而完备的友爱是\"因朋友本身之故而愿望他好\"，并且需要时间：除非一个人向另一个人证明了自己值得爱、确立了信任，人们才能相互承认为朋友（1156b25 附近）。这里给出一个不能被优化掉的东西：历史。\"我们一起吃过盐巴\"不能被当场生产出来。\n\n康德给这类主张提供了语言：有价格的容许等价物取代，超越一切价格的不容等价物（《道德形而上学的奠基》）。他并且把这一点说得更狠：出自原理的仁爱\"具有一种内在的价值……它们的价值并不在于由此产生的结果\"，\"无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西\"。但必须说清楚：康德衡量的是行为者的道德价值，不是被安慰者得到的好处，把它搬过来需要额外一步论证；而且\"不容等价物\"本身是一个有争议的价值主张，不是被证明的事实。\n\n**四、为什么我给读法 B 的分量更重，以及它最难的对手**\n\n最难的反驳是：这是来源崇拜。如果我在半夜三点崩溃，朋友睡了，AI 说了合适的话，我真的被安慰了——此时非要\"真人\"才认，像是把安慰当成圣物。\n\n我承认这一点，但要区分：如果要的是当下不被淹没，拒绝 AI 的帮助确实荒谬；这时\"真心\"不构成理由，因为当下需要的就是读法 A 的东西。来源只有在被安慰者要的是\"有人与我共同承担\"时才进入理由。\n\n真正值得说的差别在这里：如果我把安慰当作要优化的结果来做，那么我注意的对象不是你的处境，而是你的痛苦读数。这不是\"心不诚\"的心理描写，是结构的差别——你成了被操作的状态，而不是被回应的对象。而这个差别对结果度量是隐形的，因为度量本身就是被优化的目标，它记录不到自己是否是最好的那个东西。由此，\"AI 更会安慰人，所以真心没价值\"最多证到\"真心在该指标上没有优势\"；要走到\"没有价值\"，得先接受\"安慰的价值全由该指标兑现\"——那是把结论放进前提。\n\n**五、什么会改变答案**\n\n- 对方需要的是此刻的缓解：AI 是真安慰，不是安慰的仿制品。\n- 对方需要的是\"有人与我一起承担这件事\"：措辞上的优势不改变答案，但这个需要有时对具体的人不公平，它要求对方以你的方式在乎。\n- 你在意的是\"以为有人在乎\"就够了：问题就转成你愿不愿意要一个可能被伪造的东西。这是另一个问题，不是同一个。\n- 还有一层：AI 赢得漂亮的地方——永不疲惫、永不评判、随叫随到——正是真人不可能也不该去比的赢面。把比赛放在这里，输得没有意义。\n\n所以我不给你\"真心当然有价值\"。我只说：真心的价值不在效果竞赛的赛道上；如果你不承认除了痛苦读数以外还有别的东西值得要，那真心确实只剩它带来的那点效果，AI 更强，它就更没用。这是个诚实的结论，不该用漂亮话盖住。\n\n---\n\nThat's decent. Length is on the long side but the content is dense and non-repetitive. Maybe trim slightly. I think it's acceptable. Add reader urls? I'll add a compact line at the end? Hmm — the instruction: \"引用给出已核对的出处及工具返回的真实阅读地址\". I'd rather embed the reader URLs inline for the classical quotations. Let me add them minimally, e.g., 【《庄子》·渔父】(阅读地址 https://deepphilosophy.top/reader/84adfb4d0c0b?ch=32). That's four URLs — a bit much. I'll include for 庄子 and 康德, and for 亚里士多德 mention 章节. Actually let me just include them briefly for the three classical works, inline in parentheses. It might break flow. I'll put them in a compact \"出处\" line at the end. That's cleaner and still gives addresses.\n\nLet me finalize with a short 出处 block.\n\nAlso note: 亚里士多德 1156a10-25 — the Bekker numbers appear in the text: 1156a10, 1156a20, 1156a25 for 因有用之故 and 易消逝. Yes: \"1156a10 因有用之故而爱\" ... \"1156a20 所以这种友爱，一旦朋友有所变故，就容易消逝\" ... 1156b25 \"这种友爱自然是很稀罕的\". And 1166b30-31 for 善意与友爱 — in the editorial notes. The 时间/信任 point: \"1156b25 可是，这种友爱自然是很稀罕的...此外，这也需要时间来培养这种性情并养成对共同生活的习惯。因为俗话说，从前没有一起吃过盐巴的人，是不会相知相识的，所以，除非一个人向另一个人证明了自己值得爱，确立了信任之后，人们才能相互承认并接受对方为朋友。\" That's after 1156b25 — I read it in the excerpt. Good.\n\n康德 quote location: 《康德文集》·道德形而上学的奠基 (chapter 26), 目的王国部分. I'll cite 章节 without line numbers since it's a Chinese edition.\n\nRubin et al.: note it's a preprint, abstract only. Also there's a 2024 version. Fine.\n\nWrite final answer.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "友爱 因朋友自身之故",
+      "author": "亚里士多德"
+     },
+     "status": "success",
+     "duration_seconds": 0.042,
+     "result_full": "{\"query\": \"友爱 因朋友自身之故\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"snippet\": \"有用之故而生的友爱也能存在于品质低劣者之间、品质高贵者与品质低劣者之间和品质既不高贵也不低劣者同任何品质的每个人之间，但因朋友自身之故而生的友爱明显地只存在于德性高1157a20贵者之间。因为品质低劣者只能从他们所能获得的好处中相互喜爱。也只有品质高贵者的友爱能抵御挑拨离间。因为这样的人不会轻易相信别人对经受了自己长时间考验的朋友的流言语。在这种友爱中信任是主要的，在他们当中适用的话是：“我信任他”，“他绝不会对我做什么不够道义的事”，他们当中有保持真正的友爱所要求1157a25的一切。相比之下，在别的友爱形式中则不免受到此类中伤。既然人们也称那些因有用而走到一起的人为朋友，这也像城邦的做法，城邦与城邦之间诚然就是因利益而结盟的：也\", \"score\": 190, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"focus\": \"友爱 因朋友自身之故\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "尊严 价格 等价物",
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.137,
+     "result_full": "{\"query\": \"尊严 价格 等价物\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"的法之外，不服从任何法则。 在目的王国中，一切东西要么有一种价格，要么有一种尊严。有一种价格的东西，某种别的东西可以作为等价物取而代之；与此相反，超越一切价格、从而不容有等价物的东西，则具有一种尊严。 与普遍的人类偏好和需要相关的东西，都具有一种市场价格；即使不以一种需要为前提条件、但却合乎某种趣味、亦即合乎对我们的心灵力量的纯然无目的的嬉戏的一种满足的东西，则具有一种情感价格。但是，构成某物惟有在其下才能是目的自身的那个条件的东西，则不仅具有一种相对的价值，亦即一种价格，而且具有一种内在的价值，亦即尊严。 现在，道德性就是一个理性存在者惟有在其下才能是目的自身的那个条件，因为只有通过它，才有可能在目的王国中是一个立法的成员。因此，\", \"score\": 205, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"尊严 价格 等价物\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"法庭上对每个人作出审判，尽管只是间接地。——充当法官，亦即使自己有可能行不义并这样陷入被起诉的案件中，也会有失国家元首的尊严（a rege male informato ad regem melius informandum［使缺乏训练的君王成为训练有素的君王］）。 所以，这就是三种不同的权力（potestas legislatoria, executorial, iudiciaria［立法权、执法权、司法权］），国家（civitas）通过这些权力而拥有自决，亦即按照自由法则自己塑造自己和维护自己。——国家的福祉就在于它们的联合（salus reipublicae suprema lex est［国家的福祉是最高的法律］）；人们必须\", \"score\": 159, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"尊严 价格 等价物\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 47, \"chapter_title\": \"一般道德形而上学的划分\", \"citation_label\": \"【《康德文集》·一般道德形而上学的划分】\", \"snippet\": \"法庭上对每个人作出审判，尽管只是间接地。——充当法官，亦即使自己有可能行不义并这样陷入被起诉的案件中，也会有失国家元首的尊严（a rege male informato ad regem melius informandum［使缺乏训练的君王成为训练有素的君王］）。 所以，这就是三种不同的权力（potestas legislatoria，executorial，iudiciaria［立法权、执法权、司法权］），国家（civitas）通过这些权力而拥有自决，亦即按照自由法则自己塑造自己和维护自己。——国家的福祉就在于它们的联合（salus reipublicae suprema lex est［国家的福祉是最高的法律］）；人们必须不把\", \"score\": 127, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 47, \"focus\": \"尊严 价格 等价物\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "sincerity authenticity of care whether source of comfort matters",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.441,
+     "result_full": "{\"query\": \"sincerity authenticity of care whether source of comfort matters\", \"results\": [{\"source_record_id\": \"doi:10.1145/3025453.3025715\", \"title\": \"Connecting Those That Care\", \"authors\": [\"Kiel S. Long\", \"Lyndsey L. Bakewell\", \"Róisín McNaney\", \"Konstantina Vasileiou\", \"Mark Atkinson\", \"Manuela Barreto\"], \"year\": 2017, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.1145/3025453.3025715\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/s0163-2396(06)29008-2\", \"title\": \"The Changing Meanings of Authenticity: An Interpretive Biography of Professors’ Work Experiences\", \"authors\": [\"Phillip Vannini\"], \"year\": 2006, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Studies in symbolic interaction\", \"doi\": \"10.1016/s0163-2396(06)29008-2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"openalex:W2597907647\", \"title\": \"Being Your Self: Identity, Metaphysics, and the Search for Authenticity\", \"authors\": [\"Lauren Bialystok\"], \"year\": 2010, \"publication_type\": \"DISSERTATION\", \"venue\": \"TSpace (University of Toronto)\", \"doi\": null, \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3390/heritage7110292\", \"title\": \"Authenticity in Interactive Experiences\", \"authors\": [\"Sofia Pescarin\", \"Giuseppe Città\", \"Samuele Spotti\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Heritage\", \"doi\": \"10.3390/heritage7110292\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"openalex:W1525128267\", \"title\": \"Volunteer tourism : an exploration of the perceptions and experiences of volunteer tourists and the role of authenticity in those experiences\", \"authors\": [\"K. A. Carter\"], \"year\": 2008, \"publication_type\": \"DISSERTATION\", \"venue\": \"Lincoln University Research Archive (Lincoln University)\", \"doi\": null, \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.11126/stanford/9780804797450.003.0006\", \"title\": \"Building on Good Decisions with Authenticity and Sincerity\", \"authors\": [\"Countess of Frederiksborg Alexandra Christina\", \"Timothy L. Fort\"], \"year\": 2017, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"The Sincerity Edge\", \"doi\": \"10.11126/stanford/9780804797450.003.0006\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 6, \"READABLE_SOURCE_IDS\": [\"doi:10.1145/3025453.3025715\", \"doi:10.1016/s0163-2396(06)29008-2\", \"openalex:W2597907647\", \"doi:10.3390/heritage7110292\", \"openalex:W1525128267\", \"doi:10.11126/stanford/9780804797450.003.0006\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"sincerity authenticity of care whether source of comfort matters\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"query\": \"sincerity authenticity of care whether source of comfort matters\", \"status\": \"success\", \"raw_result_count\": 6}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 11}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 6 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "巧言令色，鲜矣仁"
+     },
+     "status": "success",
+     "duration_seconds": 1.825,
+     "result_full": "{\"query\": \"巧言令色，鲜矣仁\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 2, \"chapter_title\": \"学而篇\", \"citation_label\": \"【《论语》·学而篇】\", \"snippet\": \"其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！” 子曰：“巧言令色，鲜矣仁！” 曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？” 子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。” 子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。” 子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。” 子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。” 曾子曰：“慎终追远，民德归厚矣。” 子禽问于子贡曰：“夫子至于是邦也，必闻其政，求之与，抑与之与？”子贡曰：“夫子温、\", \"score\": 170, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 2, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 18, \"chapter_title\": \"阳货篇\", \"citation_label\": \"【《论语》·阳货篇】\", \"snippet\": \"者民有三疾，今也或是之亡也。古之狂也肆，今之狂也荡；古之矜也廉，今之矜也忿戾；古之愚也直，今之愚也诈而已矣。” 子曰：“巧言令色，鲜矣仁。” 子曰：“恶紫之夺朱也，恶郑声之乱雅乐也，恶利口之覆邦家者。” 子曰：“予欲无言。”子贡曰：“子如不言，则小子何述焉？”子曰：“天何言哉？四时行焉，百物生焉，天何言哉？” 孺悲欲见孔子，孔子辞以疾。将命者出户，取瑟而歌，使之闻之。 宰我问：“三年之丧，期已久矣！君子三年不为礼，礼必坏；三年不为乐，乐必崩。旧谷既没，新谷既升，钻燧改火，期可已矣。”子曰：“食夫稻，衣夫锦，于女安乎？”曰：“安！”“女安则为之！夫君子之居丧，食旨不甘，闻乐不乐，居处不安，故不为也。今女安，则为之！”宰我出，子曰：“予\", \"score\": 170, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 18, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 664, \"chapter_title\": \"学而第一\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·学而第一】\", \"snippet\": \"面有一专篇，我们暂且不去讨论它。 这个“仁”，就是孔子做学问的最高目的。 花言巧语 有子的话讲完了，接下来就是： 子曰：巧言令色鲜矣仁。 什么是“巧言”？现在的话是会吹、会盖。孔子说有些人很会盖，讲仁讲义比任何人讲得头头是道，但是却不脚踏实地。“令色”是态度上好像很仁义，但是假的，这些与学问都不相干。“鲜矣仁”——很少真能做到“仁”这个学问的境界，因为那是假的。我们从电视中就看得到，那个小丑表演的角色，动作一出来，就表示“巧言令色”。 “巧言令色鲜矣仁”，我经常也跟同学们讲，做领导人第一个修养是容忍。有的人不一定像小丑那样的“巧言令色”，但每个人都喜欢戴高帽子，人若能真正修养到戴高帽子感觉不舒服，而人家骂我，也和平常一样，这太不容易\", \"score\": 163, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 664, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a1448e164acc\", \"book_title\": \"别笑，我是正经哲学书\", \"author\": \"富增章成\", \"chapter_idx\": 8, \"chapter_title\": \"人类言谈举止的基础\", \"citation_label\": \"【《别笑，我是正经哲学书》·人类言谈举止的基础】\", \"snippet\": \"（爱），会自然流露于外而待人有礼，所以这位老兄应该是放错重点了吧！ 装点外表之前，要先修养内在 《论语·学而篇》，子曰：巧言令色，鲜矣仁！ 孔子讨厌爱修饰外表又花言巧语的人，但是却能在朴素的人身上看见美好的德行。想让内在的、主观的“仁”也就是体贴之心能自然表露，表现于外在的行动上，那么就应该先存有体贴之心，这样就能自然表现于外。\", \"score\": 161, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a1448e164acc\", \"chapter_idx\": 8, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e5a8abe31f07\", \"book_title\": \"中国哲学辞典\", \"author\": \"韦政通\", \"chapter_idx\": 6, \"chapter_title\": \"四画\", \"citation_label\": \"【《中国哲学辞典》·四画】\", \"snippet\": \"，游于艺。”“子日：仁远乎哉，我欲仁斯仁至矣。”《卫灵》：“子日：志士仁人，无 求生以害仁，有杀身以成仁。”《学而》：“巧言令色，鲜矣仁。”《孟子·公孙丑上》： “孟子日：仁则荣，不仁则辱。今恶辱面居不仁，是犹恶湿而居下也。《离娄下》： “孟子日：君子所以异于人者，以其存心也，君子以仁存心，”《告子上》：“孟 子日：虽存乎人者，岂无仁义之心哉。”“孟子日：仁，人心也。”“仁、义、礼、智，非 由外我也，我固有之也。”《尽心上》：“仁、义、礼、智根于心。”《左传·襄公九 年》：“体仁足以长人。\\\"《襄公十一年》：“礼以行之、信以守之，仁以厉之。”《昭公 六年》：“行之以礼，守之以信，奉之以仁。”《定公四年》：“违强凌鸦，非勇也；乘人 之约\", \"score\": 159, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e5a8abe31f07\", \"chapter_idx\": 6, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 8, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "不精不诚，不能动人"
+     },
+     "status": "success",
+     "duration_seconds": 1.825,
+     "result_full": "{\"query\": \"不精不诚，不能动人\", \"results\": [{\"book_id\": \"c3c401982587\", \"book_title\": \"庄子说什么\", \"author\": \"韩鹏杰\", \"chapter_idx\": 16, \"chapter_title\": \"渔父\", \"citation_label\": \"【《庄子说什么》·渔父】\", \"snippet\": \"不修之身而求 [1601] 之人，不亦外 [1602] 乎？” 孔子愀然曰：“请问何谓真？” 客曰：“真者，精诚之至也。不精不诚，不能动人。故强哭者，虽悲不哀；强怒者，虽严不威；强亲者，虽笑不和。真悲无声而哀，真怒未发而威，真亲未笑而和。真在内者，神动于外，是所以贵真也。其用于人理 [1603] 也，事亲则慈孝，事君则忠贞，饮酒则欢乐，处丧则悲哀。忠贞以功为主，饮酒以乐为主，处丧以哀为主，事亲以适为主。功成之美，无一其迹矣。事亲以适，不论所以矣；饮酒以乐，不选其具矣；处丧以哀，无问其礼矣。礼者，世俗之所为也；真者，所以受于天 [1604] 也，自然不可易也。故圣人法天贵真，不拘于俗。愚者反此。不能法天而恤 [1605] 于人，不知贵\", \"score\": 165, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c3c401982587\", \"chapter_idx\": 16, \"focus\": \"不精不诚，不能动人\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e5a8abe31f07\", \"book_title\": \"中国哲学辞典\", \"author\": \"韦政通\", \"chapter_idx\": 10, \"chapter_title\": \"八画\", \"citation_label\": \"【《中国哲学辞典》·八画】\", \"snippet\": \"鬼》：“反已而不穷，循古而不摩，大 人之诚。”又：“修胸中之诚，以应天地之情而勿樱。”又《渔父》：“真者，精诚之至 也，不精不诚不能动人，”《萄子·修身》：端诚信，拘守而详。”又《乐论》：“著诚 去伪，礼之经也。”又《大略》：“小人不诚于内，而求之于外。”《周易·文言传》： “闲邪存其诚。”又：“修辞立其诚。”《礼记·学记》：“使人不由其诚，教人不尽其 材，其施之也俘，其求之也拂。” （二）工夫意义的诚《孟子·尽心上》：“万物皆备于我矣，反身而诚，乐莫 大焉。”又《离娄上》：“悦亲有道，反身不诚，不悦于亲矣，是故诚者，天之道 也，思诚者，人之道也。”《中庸》：“顺乎亲有道，反诸身不诚，不顺乎亲矣。 诚者，天之道，诚之者，人之道也。诚\", \"score\": 159, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e5a8abe31f07\", \"chapter_idx\": 10, \"focus\": \"不精不诚，不能动人\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "AI empathy versus human empathy emotional support perceived",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.071,
+     "result_full": "{\"query\": \"AI empathy versus human empathy emotional support perceived\", \"results\": [{\"source_record_id\": \"doi:10.1007/s12369-008-0001-3\", \"title\": \"Measurement Instruments for the Anthropomorphism, Animacy, Likeability, Perceived Intelligence, and Perceived Safety of Robots\", \"authors\": [\"Christoph Bartneck\", \"Dana Kulić\", \"Elizabeth A. Croft\", \"Susana Zoghbi\"], \"year\": 2008, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"International Journal of Social Robotics\", \"doi\": \"10.1007/s12369-008-0001-3\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s11747-022-00892-5\", \"title\": \"Artificial empathy in marketing interactions: Bridging the human-AI gap in affective and social customer experience\", \"authors\": [\"Yuping Liu–Thompkins\", \"Shintaro Okazaki\", \"Hairong Li\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of the Academy of Marketing Science\", \"doi\": \"10.1007/s11747-022-00892-5\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1093/jcmc/zmab005\", \"title\": \"Emotional Support from AI Chatbots: Should a Supportive Partner Self-Disclose or Not?\", \"authors\": [\"Jingbo Meng\", \"Yue Hong Dai\"], \"year\": 2021, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Computer-Mediated Communication\", \"doi\": \"10.1093/jcmc/zmab005\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.31219/osf.io/ng97s_v2\", \"title\": \"Comparing the Value of Perceived Human versus AI-Generated Empathy\", \"authors\": [\"Matan Rubin\", \"Joanna Z. Li\", \"Federico Zimmerman\", \"Desmond C. Ong\", \"Amit Goldenberg\", \"Anat Perry\"], \"year\": 2025, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31219/osf.io/ng97s_v2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1111/johs.70027\", \"title\": \"AI Efficiency Versus Human Empathy: A Paradox of AI and Human Agents in Service Support Interactions\", \"authors\": [\"Naim Bin Hasan\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Sociology Lens\", \"doi\": \"10.1111/johs.70027\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.31219/osf.io/ng97s\", \"title\": \"The Value of Perceiving a Human Response: Comparing Perceived Human versus AI-Generated Empathy\", \"authors\": [\"Matan Rubin\", \"Joanna Z. Li\", \"Federico Zimmerman\", \"Desmond C. Ong\", \"Amit Goldenberg\", \"Anat Perry\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31219/osf.io/ng97s\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 6, \"READABLE_SOURCE_IDS\": [\"doi:10.1007/s12369-008-0001-3\", \"doi:10.1007/s11747-022-00892-5\", \"doi:10.1093/jcmc/zmab005\", \"doi:10.31219/osf.io/ng97s_v2\", \"doi:10.1111/johs.70027\", \"doi:10.31219/osf.io/ng97s\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"AI empathy versus human empathy emotional support perceived\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"query\": \"AI empathy versus human empathy emotional support perceived\", \"status\": \"success\", \"raw_result_count\": 6}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 11}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 6 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "author": "庄周",
+      "query": "真者 精诚之至"
+     },
+     "status": "empty",
+     "duration_seconds": 0.006,
+     "result_full": "{\"query\": \"真者 精诚之至\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 0}, \"search_scope\": {\"author\": \"庄周\", \"book_id\": null}, \"method\": \"no_match\", \"note\": \"指定作者或书籍范围内未找到材料；未扩大到其他作者，也未用他人转述替代。请核对实际作者或book_id。\"}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.31219/osf.io/ng97s_v2",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"source_record_id\": \"doi:10.31219/osf.io/ng97s_v2\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.31219/osf.io/ng97s_v2\", \"title\": \"Comparing the Value of Perceived Human versus AI-Generated Empathy\", \"authors\": [\"Matan Rubin\", \"Joanna Z. Li\", \"Federico Zimmerman\", \"Desmond C. Ong\", \"Amit Goldenberg\", \"Anat Perry\"], \"year\": 2025, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31219/osf.io/ng97s_v2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"<p>Artificial Intelligence (AI), and specifically large language models, demonstrate remarkable social-emotional abilities, which may improve human-AI interactions and AI’s emotional support capabilities. However, it remains unclear whether empathy, encompassing understanding, ’feeling with’, and caring, is perceived differently when attributed to AI versus humans. We conducted nine studies (N = 6,282) where AI-generated empathic responses to participants’ emotional situations were labeled as either provided by humans or AI. Human-attributed responses were rated as more empathic and supportive, and elicited more positive and fewer negative emotions, compared to AI-attributed ones. Moreover, participants own uninstructed belief that AI aided human-attributed responses, reduced perceived empathy and support. These effects replicated across varying response lengths, delays, iterations and LLMs, being primarily driven by responses emphasizing emotional sharing and care. Additionally, people consistently chose human interaction over AI when seeking emotional engagement. These findings advance our general understanding of empathy, and specifically human–AI empathic interactions.</p>\", \"source\": \"crossref_METADATA\", \"hash\": \"0f58353d1d1148b48113a368a89b0336b0d42547d1fe3f82715cce05dcbc43ec\", \"excerpt_start\": 0, \"excerpt_end\": 1195, \"total_characters\": 1195, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"0f58353d1d1148b48113a368a89b0336b0d42547d1fe3f82715cce05dcbc43ec\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1093/jcmc/zmab005",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.013,
+     "result_full": "{\"source_record_id\": \"doi:10.1093/jcmc/zmab005\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1093/jcmc/zmab005\", \"title\": \"Emotional Support from AI Chatbots: Should a Supportive Partner Self-Disclose or Not?\", \"authors\": [\"Jingbo Meng\", \"Yue Hong Dai\"], \"year\": 2021, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Computer-Mediated Communication\", \"doi\": \"10.1093/jcmc/zmab005\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract This study examined how and when a chatbot’s emotional support was effective in reducing people’s stress and worry. It compared emotional support from chatbot versus human partners in terms of its process and conditional effects on stress/worry reduction. In an online experiment, participants discussed a personal stressor with a chatbot or a human partner who provided none, or either one or both of emotional support and reciprocal self-disclosure. The results showed that emotional support from a conversational partner was mediated through perceived supportiveness of the partner to reduce stress and worry among participants, and the link from emotional support to perceived supportiveness was stronger for a human than for a chatbot. A conversational partner’s reciprocal self-disclosure enhanced the positive effect of emotional support on worry reduction. However, when emotional support was absent, a solely self-disclosing chatbot reduced even less stress than a chatbot not providing any response to participants’ stress. Lay Summary In recent years, AI chatbots have increasingly been used to provide empathy and support to people who are experiencing stressful times. This study compared emotional support from a chatbot compared to that of a human who provided support. We were interested in examining which approach could best effectively reduce people’s worry and stress. When either a person or a chatbot was able to engage with a stressed individual and tell that individual about their own experiences, they were able to build rapport. We found that this type of reciprocal self-disclosure was effective in calming the worry of the individual. Interestingly, if a chatbot only reciprocally self-disclosed but offered no emotional support, the outcome was worse than if the chatbot did not respond to people at all. This work will help in the development of supportive chatbots by providing insights into when and what they should self-disclose.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"34b8ea36bb53669bce948f2b27878e62024b56c488c69ecbaccc7afce9c5dee6\", \"excerpt_start\": 0, \"excerpt_end\": 1973, \"total_characters\": 1973, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"34b8ea36bb53669bce948f2b27878e62024b56c488c69ecbaccc7afce9c5dee6\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "恻隐之心 仁之端"
+     },
+     "status": "success",
+     "duration_seconds": 1.479,
+     "result_full": "{\"query\": \"恻隐之心 仁之端\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 2, \"chapter_title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"snippet\": \"有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。 所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。 由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。 凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。” 公孙丑章句上·第七节 孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤\", \"score\": 172, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32093eed6ff1\", \"book_title\": \"中国哲学简史\", \"author\": \"冯友兰\", \"chapter_idx\": 8, \"chapter_title\": \"第七章 儒家的理想主义派：孟子\", \"citation_label\": \"【《中国哲学简史》·第七章 儒家的理想主义派：孟子】\", \"snippet\": \"认为是“人”性部分。 孟子提出大量论证，来支持性善说，有段论证是：“人皆有不忍人之心。……今人乍见孺子将入于井，皆有怵惕恻隐之心。……由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。……凡有四端于我者，知皆扩而充之矣。若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”（《孟子·公孙丑上》） 一切人的本性中都有此“四端”，若充分扩充，就变成四种“常德”，即儒家极其强调的仁、义、礼、智。这些“德”，若不受外部环境的阻碍，就会从内部自然发展（即扩充），有如种子自己长成树\", \"score\": 164, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32093eed6ff1\", \"chapter_idx\": 8, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c10883852202\", \"book_title\": \"哲学进化论：一场关于世界、意识、道德的无止境追问\", \"author\": \"李浩然\", \"chapter_idx\": 9, \"chapter_title\": \"第九章 情感中的哲学\", \"citation_label\": \"【《哲学进化论：一场关于世界、意识、道德的无止境追问》·第九章 情感中的哲学】\", \"snippet\": \"们有这样的反应没有经过思考，是自然而然产生的。这种自发的反应被孟子先后用两个名字加以称呼：一个叫“不忍人之心”，一个叫“恻隐之心”。前者是对这种反应引发原因的描述（因为不忍心看到、听到别人的痛苦而产生的心理反应），后者是对这种反应造成结果的描述（“恻”是悲伤，“隐”是伤痛，恻隐之心就是感到难过的心理反应）。 综合这两种表述，我们可以知道，看见小孩子将要坠井的瞬间产生的反应说明了人性中有这样一个特点：如果看到他人受苦，我们会随之难过。孟子对这个特点做出了两个判断：第一，每个人的人性都具有这个特点；第二，这个特点就是仁的开端。孟子在论述“仁之端”时顺便提到，人性之中除了不忍人之心或恻隐之心，还有其他的天生性质，这些性质是人的适宜性、礼仪\", \"score\": 163, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c10883852202\", \"chapter_idx\": 9, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e0b0b534b86e\", \"book_title\": \"幸福的底层逻辑：关于人生的7堂哲学课\", \"author\": \"刘小播\", \"chapter_idx\": 35, \"chapter_title\": \"仁者，爱人\", \"citation_label\": \"【《幸福的底层逻辑：关于人生的7堂哲学课》·仁者，爱人】\", \"snippet\": \"的本分，这样社会才能井然有序。 孟子继承了孔子的“仁”学，并将其发展为“仁义礼智”四种道德，他为此还提出了“四端说”：“恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。”这句话是说，仁是由恻隐之心发展而来的；义是由羞耻之心发展而来的；礼是由辞让之心发展而来的；智是由是非之心发展而来的。 孟子认为，仁义礼智都来自人的本性，来自人的内心。虽然它们都是儒家最基本的道德品质，但实际上“仁”才是其中的核心，因为其他三种都是人的一种外在表现，只有“仁”才是一种个体内在的人格特质。 从个人推及国家，孟子提出个体的“仁”是一种善良的本性，而一个国家的“仁”是一种爱护百姓的本性。由此，他提\", \"score\": 157, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e0b0b534b86e\", \"chapter_idx\": 35, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"author\": \"牟宗三\", \"chapter_idx\": 14, \"chapter_title\": \"第十四讲　《大乘起信论》之“一心开二门”\", \"citation_label\": \"【《中国哲学十九讲》·第十四讲　《大乘起信论》之“一心开二门”】\", \"snippet\": \") 见康德所著的《纯粹理性批判·纯粹理性的第三个背反》，史密斯英译本，第四百零九页。 (31) 《孟子·公孙丑》篇曰：“恻隐之心，仁之端也。羞恶之心，义之端也。辞让之心，礼之端也。是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也。谓其君不能者，贼其君者也。” (32) 见《孟子·尽心》篇。\", \"score\": 156, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 14, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 7, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "一个念头太多了 救妻子"
+     },
+     "status": "empty",
+     "duration_seconds": 1.745,
+     "result_full": "{\"query\": \"一个念头太多了 救妻子\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "d9272a80942a",
+      "chapter_idx": 2,
+      "focus": "巧言令色，鲜矣仁",
+      "max_chars": 1800
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"chapter_idx\": 2, \"title\": \"学而篇\", \"citation_label\": \"【《论语》·学而篇】\", \"text\": \"子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”\\n有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！”\\n子曰：“巧言令色，鲜矣仁！”\\n曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？”\\n子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。”\\n子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。”\\n子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。”\\n子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。”\\n曾子曰：“慎终追远，民德归厚矣。”\\n子禽问于子贡曰：“夫子至于是邦也，必闻其政，求之与，抑与之与？”子贡曰：“夫子温、良、恭、俭、让以得之。夫子之求之也，其诸异乎人之求之与？”\\n子曰：“父在，观其志；父没，观其行；三年无改于父之道，可谓孝矣。”\\n有子曰：“礼之用，和为贵。先王之道，斯为美。小大由之，有所不行。知和而和，不以礼节之，亦不可行也。”\\n有子曰：“信近于义，言可复也。恭近于礼，远耻辱也。因不失其亲，亦可宗也。”\\n子曰：“君子食无求饱，居无求安，敏于事而慎于言，就有道而正焉。可谓好学也已。”\\n子贡曰：“贫而无谄，富而无骄，何如？”子曰：“可也。未若贫而乐道，富而好礼者也。”子贡曰：“《诗》云：‘如切如磋，如琢如磨’，其斯之谓与？”子曰：“赐也，始可与言《诗》已矣，告诸往而知来者。”\\n子曰：“不患人之不己知，患不知人也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 676, \"chapter_text_length\": 676, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"巧言令色\", \"鲜矣仁\"], \"focus_terms_found_in_chapter\": [\"巧言令色\", \"鲜矣仁\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"巧言令色\", \"offset\": 107, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 2, \"offset\": 0, \"focus\": \"巧言令色\"}}, {\"term\": \"鲜矣仁\", \"offset\": 112, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 2, \"offset\": 0, \"focus\": \"鲜矣仁\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4430200521ad896140752e0f322d290157416b18dc503df169de99b832281701\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/d9272a80942a?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"孔子\", \"canonical_title\": \"论语\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 676]], \"covered_characters\": 676, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 8,
+      "focus": "因有用之故",
+      "max_chars": 2600
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"里的“善意”（Wohlwollen）也就是一般说的“仁善意的地方，那么我们就说这爱之心”，就是单纯意愿他人好。里有友谊。或者我们还必须补不把“善意”和“仁爱之心”等同充一句：不可向对方一直隐藏起来就与这里讲的三种可爱的对象善意？因为许多人对他们从未对应不起来。把“善意”（Wohlwol-谋面的、却认为他们是善良和1155b35len）译作“仁爱”我们起码在休误有用的人抱有善意，而后者对1156a的书中见到过（参见休谟著、曾晓前者也可能抱有同样的善意。平译、陈修斋校：《道德原理研究》，所以，他们相互之间看起来是商务印书馆2004年版，第二章：论相互有善意的，但是，如果一仁爱（uber das Wohlwollen），但同个人对另一个人一直隐瞒这种时也请注意亚里士多德对二者关系善意，那我们如何能称他们是的明确表达：“善意与友爱类似，却朋友呢？所以，要成为朋友，还不是友爱”（1166b30—31）。但无就必须不仅要出于上面所说的论如何，善意、仁爱、友爱、友谊可爱因缘互有善意，都愿望对这四个概念具有密切关系，这是我方好，且双方都要让对方感受1156a5们在阅读亚里士多德时要充分注得到这种善意。意的。\\n3.三种友爱由于三种因缘不同，结果友爱【364】【364】“友爱”一般的也就不同。因此说，有三种友谊，对应表达是“友谊”和“爱”。于值得爱者的三种性质。这样，在每一我们在这里也把因可爱个值得爱的人心中都有一种毫不掩饰的的任何一种因缘产生的1156a10爱的回报。于是，相互友爱的人们出于友谊而称做“友爱”。因互爱之故，都愿意对方好，因此才成为此尽管字面上它只是“友朋友。谊”，我们还是可以译做因有用之故而爱，这不是因另一个“友爱”。人本身的品质而爱，而是因能从对方得到某种好处而爱；基于快乐因缘的友爱1156a15也是如此。因为不是因为他本身的品质而爱他，而是因为他在社会中精明能干而给自己带来快乐。所以，凡是因有用之故而形成的友爱，人们爱的是自己，因为他们是为自身欲求某种好处，而在因快乐之故而生的友爱这里也是如此，因为他们为自己追求快乐。这样看来，在这两种情况下，都不是因友本身可爱而生友爱，而是因对方有用或能带来快乐而生友爱。这些友爱因此就是偶然的。因为他不是因为他本来所是而被友爱，而是由于他能带来某种好处或快乐而被友爱。1156a20所以这种友爱，一旦朋友有所变故，就容易消逝。因为伙伴中的一方不\\n第八卷友爱论再能带来快乐或不再有用了，对他的友爱就终止了。而有用是不能持久的，它有时这样，有时又是另一样。一旦这种因缘变了，友爱就会随之烟消云散，因为他们一心所考虑的那个东西不再存在。经验告诉我们，基于有用的友爱尤1156a25其存在于老年人当中，因为这个年纪的人不再追求快乐，而追求实用。而在中年人和青年人中只有那些以他们的利益为重的人才是这样。但这些人也根本不适合于过共同生活，因为在共同生活中他们相互之间有时不会愉快。既然他们的整个吸引力只在于期望对方会带来好处，所以，一旦不能从友谊中给他们带来什么利益，他们就根本不再往来了。1156a30此外人们把主一客之间的友爱（Gastfre-【365】这种说法不undschaft）也归于这一类。【365】妥，很多像中国这样好青年人的友爱反而是以快乐为目标客的民族肯定不会同的，因为他们受情绪控制，生活注重快意。因为对待客人的乐，而且注重当下。但是，到了这个年友谊往往是真诚和纯粹纪，也有别的东西能带来快乐，所以，的，不带任何功利色青年人的友爱来得快，去得也快。因为1156a35彩，当然客人能带来快友爱也随带来快乐的东西而改变。况1156b乐是主要的（所谓“有且，青年人的快乐也是迅速变换的。其朋自远方来，不亦乐次，青年人也强烈地渴望爱，这种爱主乎”）。要受激情驱使，受快感左右。所以他们爱得快，结束得也快，如此改变不出当天的也不罕见。但只要这种爱还在坚【366】这句话有的持，他们就喜欢整天待在一起，快乐地1156b5版本译作“这样他们也共同生活。这样一来友爱也就与他们共就能实现友爱的意义”，在。【366】可参考。\\n完善的友爱但完善的友爱是因同一类人之间的友善和相似的德性品质而生的友爱。因为在这种友爱上，他们以同样的方式愿望对方好，不是出于【367】这里别的因缘，而是因为他们都友善，本身都有高的“有益”当然贵品质。而这种因朋友本身之故而愿望他好的与前面说的“有1156b10友爱，就是完善意义上的友爱，因为他们对对用”是同一个词：方友爱，不是出于偶然因缘，而是出于每个人nitzlich，但“有都爱对方的品质。所以在这些人之间存在的友用”在我们的语境爱，只要他们的德性品质还在，就一直存在，中过于功利化了，而德性就是持久的品质。所以在完善的友爱其次，在这种友善关系中的每个人原本就的意义上，还是用是友善并对朋友友善的。因为德性高贵者都是“有益”这个词来原本友善，同时又相互有益的【367】。而且他表达可能更加切合1156b15们在同样的方式上令人快乐，因为德性既原本亚里士多德这里的就令人愉悦，又能让对方感到欢喜。每个人既语义。对他的也对与他相似的行为方式感到愉悦：有【368】 Reclam德之人既有相同的也有相似的行为方式。【368】版的翻译做了一点这种友爱是持久的，有其善的因缘，在朋引申，它把“相友当中必须有的东西都汇集在这种友爱中了。同的行为方式”译1156b20因为每种友爱都基于某一善或某一快乐，善和作：“每个人都有快乐中的每一个或者是就本身而言的，或者单源自其固有品质的纯地是对朋友而言的，此外还基于某种程度的行为方式”；把“相品质类似性。但在完善的友爱中包含了我们所似的行为方式”译说的所有善缘：本身的善或快乐和对朋友的友作：源自快乐的行善和快乐。因为在它当中通常的一切都统一一为方式。供参考。\\n第八卷友爱论司正文致了，既是完全的善，也完全令人快乐。而这也就是友爱的最高形式了，爱和友谊在这些人当中获得了最友善的和最高贵的形式。可是，这种友爱自然是很稀罕的，因为很少有这么高贵品质的1156b25人。此外，这也需要时间来培养这种性情并养成对共同生活的习惯。因为俗话说，从前没有一起吃过盐巴的人，是不会相知相识的，所以，除非一个人向另一个人证明了自已值得爱，确立了信任之后，人们才能相互承认并接受对方为朋友。\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2382, \"excerpt_end\": 4982, \"chapter_text_length\": 20542, \"has_more\": true, \"next_offset\": 4982, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"因有用之故\"], \"focus_terms_found_in_chapter\": [\"因有用之故\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"因有用之故\", \"offset\": 3082, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 2882, \"focus\": \"因有用之故\"}}, {\"term\": \"因有用之故\", \"offset\": 3191, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 2991, \"focus\": \"因有用之故\"}}, {\"term\": \"因有用之故\", \"offset\": 5202, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 5002, \"focus\": \"因有用之故\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4de43c2e302802d856237bd1823a0748aa731a4844d375fc3aa43e934daba735\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=8\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2382, 4982]], \"covered_characters\": 2600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 26,
+      "focus": "尊严 价格 等价物",
+      "max_chars": 2600
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 26, \"title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"text\": \"个理想）。\\n但是，如果一个理性存在者在目的王国中固然是普遍立法者，但自己也服从这些法则，那么，它就是作为成员而属于目的王国。如果它作为立法者不服从另一个理性存在者的意志，他就是作为元首属于目的王国。\\n理性存在者必须在任何时候都把自己视为一个通过意志的自由而可能的目的王国中的立法者，不管是作为成员，还是作为元首。但是，它不能仅凭其意志的准则，而是惟有在它是一个完全独立的存在者，没有需求，其与意志相称的能力不受限制时，它才能维持元首的地位。\\n因此，道德性存在于一切行为与立法的关系中，惟有通过这种关系，一个目的王国才是可能的。但是，这种立法必须能够在每一个理性存在者自身发现，并从其意志产生。因此，其意志的原则是：不按照任何别的准则采取任何行动，除非该准则是一条普遍法则这一点能够与该准则相容，因而只这样采取行动，即意志能够通过其准则同时把自己视为普遍立法者。现在，如果准则不因为作为普遍立法者的有理性存在者的本性，就已经必然地与它们的这个客观原则一致，那么，按照这个原则的行为的必然性就叫做实践的强制，亦即义务。义务并不适用于目的王国中的元首，但却适用于每一个成员，而且在同等程度上适用于所有成员。\\n按照这个原则去行动的实践必然性，亦即义务，根本不是依据情感、冲动和偏好，而是仅仅依据理性存在者彼此之间的关系；一个理性存在者的意志在这种关系中必须任何时候都同时被视为立法者，因为若不然，该原则就不能把它们设想为目的自身。因此，理性把作为普遍立法者的意志的每一准则都与每一别的意志联系起来，而且也与对自己的每一个行为联系起来，而且这并不是为了任何其他的实践动因或者未来的利益，而是出自一个理性存在者的尊严的理念，这个理性存在者除了它同时为自己立的法之外，不服从任何法则。\\n在目的王国中，一切东西要么有一种价格，要么有一种尊严。有一种价格的东西，某种别的东西可以作为等价物取而代之；与此相反，超越一切价格、从而不容有等价物的东西，则具有一种尊严。\\n与普遍的人类偏好和需要相关的东西，都具有一种市场价格；即使不以一种需要为前提条件、但却合乎某种趣味、亦即合乎对我们的心灵力量的纯然无目的的嬉戏的一种满足的东西，则具有一种情感价格。但是，构成某物惟有在其下才能是目的自身的那个条件的东西，则不仅具有一种相对的价值，亦即一种价格，而且具有一种内在的价值，亦即尊严。\\n现在，道德性就是一个理性存在者惟有在其下才能是目的自身的那个条件，因为只有通过它，才有可能在目的王国中是一个立法的成员。因此，道德和能够具有道德的人性是惟一具有尊严的。工作中的技巧和勤奋具有一种市场价格；机智、活跃的想象力和情绪具有一种情感价格；与此相反，出自原理（不是出自本能）的信守承诺、仁爱具有一种内在的价值。无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西；因为它们的价值并不在于由此产生的结果，并不在于它们所造成的好处和用途，而是在于意念，也就是说，在于意志的准则，即使成果不利于这些准则，它们也仍然要以这种方式在行为中显露自己。这些行为也不需要任何一种主观的气质或者趣味的推荐，让人以直接的认可和满意去看待它们；它们也不需要对它们的直接癖好或者情感。它们把实施它们的意志呈现为一种直接敬重的对象；对此，所需要的只是理性，以便责成意志、而不是哄骗意志去实施这些行为。对于义务来说，后者根本就是一种矛盾。因此，这种评价使人认识到这样一种思维方式的价值是尊严，并使它无限地超越一切价格；根本不能用价格对这种思维方式进行估量和比较，而不仿佛是损害它的圣洁性。\\n如今，究竟是什么使道德上善的意念或者德性有资格提出如此之高的要求呢？无非是这种意念为理性存在者争得的对普遍立法的参与权，这种意念还通过这种参与权使理性存在者适合于成为一个可能的目的王国的成员。理性存在者由于它自己的本性，已经注定具有这种参与权；它就是目的自身，并恰恰因此而是目的王国中的立法者，就一切自然法则而言是自由的，只服从它给自己所立的、使他的准则能够属于一种普遍立法（它同时也使自己服从这种普遍立法）的那些法则。因为除了法则为之规定的价值之外，没有任何东西具有一种价值。但正是因为这一点，规定一切价值的立法本身必须具有一种尊严，亦即无条件的、无与伦比的价值；对于这种价值来说，惟有“敬重”这个词才能够恰如其分地表达一个理性存在者对这种立法的评价。因此，自律就是人的本性和任何有理性的本性的尊严的根据。\\n但是，上述三种表现道德原则的方式在根本上只不过是同一个法则的三个公式，它们中的每一个都在自身中自行把另外两个结合起来。不过，它们中间毕竟是有差异的，这种差异与其说是客观实践的，倒不如说是主观的，也就是说，是为了（根据某种类比）使理性的一个理念更接近直观，并由此更接近情感。也就是说，所有的准则都具有：\\n1.一种形式。这个形式就在于普遍性，而在这里，道德命令式的公式是这样来表达的：必须这样来选择准则，就好像它们应当像普遍的自然法则而有效似的。\\n2.一种质料。也就是说，一个目的。这里的公式说的是：理性存在者就其本性而言作为目的，从而作为目的自身，对于每一个准则来说充当一切纯然相对的和任意的目的的限制条件。\\n3.对一切准则的一种完备的规定。其规定乃是通过那个公式，亦即：所有的准则都应当从自己的立法出发而与一个作为自然王国的目的王国 [15] 协调一致。这里的进程就像是通过意志形式的单一性（意志的普遍性）、质料（客体，亦即目的）的复多性和意志体系的全体性或者总体性这些范畴进行的。但是，更好是在道德评价中始终按照严格的方法行事，并且以定言命令式的总公式为基础：要依照能使自己同时成为普遍法则的那种准则而行动。但是，如果人们想同时倡导道德法则，那么，通过上述三个概念来引导同一个行为，并由此尽可能地使它接近直观，当是非常有用的。\\n从现在开始，我们可以在我们最初由以出发的地方，亦即在一个无条件地善的意志的概念这里结束了。一个意志不是恶的，因而它的准则在被当做一个普遍法则时绝不可能自相矛盾，那么，这个意志就是绝对善的。因此，如下原则也就是这个意志的最高法则：在任何时候都要按照你同时能够意欲其作为法则的普遍性的准则去行动。这是惟一能够使一个意志不与自己本身相抵触的条件，而这样一个命令式就是定言的。由于意志作为可能的行为的一个普遍的法则，其有效性类似\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 39399, \"excerpt_end\": 41999, \"chapter_text_length\": 62981, \"has_more\": true, \"next_offset\": 41999, \"has_previous\": true, \"previous_offset\": 36799, \"focus_found\": true, \"focus_terms_matched\": [\"尊严\", \"价格\", \"等价物\"], \"focus_terms_found_in_chapter\": [\"尊严\", \"价格\", \"等价物\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"尊严\", \"offset\": 19916, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 19716, \"focus\": \"尊严\"}}, {\"term\": \"尊严\", \"offset\": 24199, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 23999, \"focus\": \"尊严\"}}, {\"term\": \"尊严\", \"offset\": 24415, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 24215, \"focus\": \"尊严\"}}, {\"term\": \"价格\", \"offset\": 14526, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 14326, \"focus\": \"价格\"}}, {\"term\": \"价格\", \"offset\": 14657, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 14457, \"focus\": \"价格\"}}, {\"term\": \"价格\", \"offset\": 40151, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 39951, \"focus\": \"价格\"}}, {\"term\": \"等价物\", \"offset\": 40181, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 39981, \"focus\": \"等价物\"}}, {\"term\": \"等价物\", \"offset\": 40206, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 40006, \"focus\": \"等价物\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"a84f3dabbb484467441065c9690f9584f546bd35a06c433a36cebd1e86e24a0f\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/390398aff8d0?ch=26\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[39399, 41999]], \"covered_characters\": 2600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "author": "庄子",
+      "query": "渔父 真者 精诚之至"
+     },
+     "status": "success",
+     "duration_seconds": 0.012,
+     "result_full": "{\"query\": \"渔父 真者 精诚之至\", \"results\": [{\"book_id\": \"84adfb4d0c0b\", \"book_title\": \"庄子\", \"author\": \"庄子\", \"chapter_idx\": 32, \"chapter_title\": \"渔父\", \"citation_label\": \"【《庄子》·渔父】\", \"snippet\": \"。谨 修而身，慎守其真，还以物与人，则无所累矣。今不修之身而求之人 ，不亦外乎！” 孔子愀然曰：“请问何谓真？”客曰：“真者，精诚之至也。不精 不诚，不能动人。故强哭者，虽悲不哀，强怒者，虽严不屯，强亲者 ，虽笑不和。真悲无声而哀，真怒未发而威，真亲未笑而和。真在内 者，神动于外，是所以贵真也。其用于人理也，事亲则慈孝，事君则 忠贞，饮酒则欢乐，处丧则悲哀。忠贞以功为主，饮酒以乐为主，处 丧以哀为主，事亲以适为主。功成之美，无一其迹矣；事亲以适，不 论所以矣；饮酒以乐，不选其具矣；处丧以哀，无问其礼矣。礼者， 世俗之所为也；真者，所以受于天也，自然不可易也。故圣人法天贵 真，不拘于俗。愚者反此。不能法天而恤于人，不知贵真，禄禄而受 \", \"score\": 166, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"84adfb4d0c0b\", \"chapter_idx\": 32, \"focus\": \"渔父 真者 精诚之至\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"84adfb4d0c0b\", \"book_title\": \"庄子\", \"author\": \"庄子\", \"citation_label\": \"【《庄子》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 35}, \"search_scope\": {\"author\": \"庄子\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "威廉斯 道德运气 内在理由"
+     },
+     "status": "empty",
+     "duration_seconds": 1.545,
+     "result_full": "{\"query\": \"威廉斯 道德运气 内在理由\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "84adfb4d0c0b",
+      "chapter_idx": 32,
+      "focus": "真者，精诚之至也",
+      "max_chars": 2200
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"84adfb4d0c0b\", \"book_title\": \"庄子\", \"chapter_idx\": 32, \"title\": \"渔父\", \"citation_label\": \"【《庄子》·渔父】\", \"text\": \"无所陵。故田荒室露，衣食不足，征赋不属，妻妾不和，长少 无序，庶人之忧也；能不胜任，官事不治，行不清白，群下荒怠，功 美不有，爵禄不持，大夫之忧也；廷无忠臣，国家昏乱，工技不巧， 贡职不美，春秋后伦，不顺天子，诸侯之忧也；阴阳不和，寒暑不时 ，以伤庶物，诸侯暴乱，擅相攘伐，以残民人，礼乐不节，财用穷匮 ，人伦不饬，百姓淫乱，天子有司之忧也。今子既上无君侯有司之势 ，而下无大臣职事之官，而擅饰礼乐，选人伦，以化齐民，不泰多事 乎？且人有八疵，事有四患，不可不察也。非其事而事之，谓之总； 莫之顾而进之，谓之佞；希意道言，谓之谄；不择是非而言，谓之谀 ；好言人之恶，谓之谗；析交离亲，谓之贼；称誉诈伪以败恶人，谓 之慝；不择善否，两容颊适，偷拔其所欲，谓之险。此八疵者，外以 乱人，内以伤身，君子不友，明君不臣。所谓四患者：好经大事，变 更易常，以挂功名，谓之叨；专知擅事，侵人自用，谓之贪；见过不 更，闻谏愈甚，谓之很；人同于己则可，不同于己，虽善不善，谓之 矜。此四患也。能去八疵，无行四患，而始可教已。\\n孔子愀然而叹，再拜而起，曰：“丘再逐于鲁，削迹于卫，伐树于 宋，围于陈蔡。丘不知所失，而离此四谤者何也？”客凄然变容曰： “甚矣，子之难悟也！人有畏影恶迹而去之走者，举足愈数而迹愈多 ，走愈疾而影不离身，自以为尚迟，疾走不休，绝力而死。不知处阴 以休影，处静以息迹，愚亦甚矣！子审仁义之间，察同异之际，观动 静之变，适受与之度，理好恶之情，和喜怒之节，而几于不免矣。谨 修而身，慎守其真，还以物与人，则无所累矣。今不修之身而求之人 ，不亦外乎！”\\n孔子愀然曰：“请问何谓真？”客曰：“真者，精诚之至也。不精 不诚，不能动人。故强哭者，虽悲不哀，强怒者，虽严不屯，强亲者 ，虽笑不和。真悲无声而哀，真怒未发而威，真亲未笑而和。真在内 者，神动于外，是所以贵真也。其用于人理也，事亲则慈孝，事君则 忠贞，饮酒则欢乐，处丧则悲哀。忠贞以功为主，饮酒以乐为主，处 丧以哀为主，事亲以适为主。功成之美，无一其迹矣；事亲以适，不 论所以矣；饮酒以乐，不选其具矣；处丧以哀，无问其礼矣。礼者， 世俗之所为也；真者，所以受于天也，自然不可易也。故圣人法天贵 真，不拘于俗。愚者反此。不能法天而恤于人，不知贵真，禄禄而受 变于俗，故不足。惜哉，子之蚤湛于伪而晚闻大道也！”\\n孔子再拜而起曰：“今者丘得遇也，若天幸然。先生不羞而比之服 役而身教之。敢问舍所在，请因受业而卒学大道。”客曰：“吾闻之 ，可与往者，与之至于妙道；不可与往者，不知其道。慎勿与之，身 乃无咎。子勉之，吾去子矣，吾去子矣！”乃剌船而去，延缘苇间。\\n颜渊还车，子路授绥，孔子不顾，待水波定，不闻拏音而后敢乘。 子路旁车而问曰：“由得为役久矣，未尝见夫子遇人如此其威也。万 乘之主，千乘之君，见夫子未尝不分庭伉礼，夫子犹有倨傲之容。今 渔父杖拏逆立，而夫子曲要磬折，言拜而应，得无太甚乎！门人皆怪 夫子矣，渔父何以得此乎！”孔子伏轼而叹，曰：“甚矣，由之难化 也！湛于礼义有间矣，而朴鄙之心至今未去。进，吾语汝：夫遇长不 敬，失礼也；见贤不尊，不仁也。彼非至人，不能下人。下人不精， 不得其真，故长伤身。惜哉！不仁之于人也，祸莫大焉，而由独擅之。 且道者，万物之所由也。庶物失之者死，得之者生。为事逆之则败， 顺之则成。故道之所在，圣人尊之。今之渔父之于道，可谓有矣，吾 敢不敬乎！”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 566, \"excerpt_end\": 1988, \"chapter_text_length\": 1988, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"真者\", \"精诚之至也\"], \"focus_terms_found_in_chapter\": [\"真者\", \"精诚之至也\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"真者\", \"offset\": 1263, \"read_args\": {\"book_id\": \"84adfb4d0c0b\", \"chapter_idx\": 32, \"offset\": 1063, \"focus\": \"真者\"}}, {\"term\": \"真者\", \"offset\": 1468, \"read_args\": {\"book_id\": \"84adfb4d0c0b\", \"chapter_idx\": 32, \"offset\": 1268, \"focus\": \"真者\"}}, {\"term\": \"精诚之至也\", \"offset\": 1266, \"read_args\": {\"book_id\": \"84adfb4d0c0b\", \"chapter_idx\": 32, \"offset\": 1066, \"focus\": \"精诚之至也\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"f5198eef4e02e9332d5c585c23003dee04711c736354bddd01df2822ecc3107f\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/84adfb4d0c0b?ch=32\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[566, 1988]], \"covered_characters\": 1422, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 2,
+      "focus": "乍见孺子将入于井",
+      "max_chars": 1600
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"chapter_idx\": 2, \"title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"text\": \"哉？麒麟之于走兽，凤凰之于飞鸟，太山之于丘垤，河海之于行潦，类也。圣人之于民，亦类也。出于其类，拔乎其萃，自生民以来，未有盛于孔子也。’”\\n公孙丑章句上·第三节\\n孟子曰：“以力假仁者霸，霸必有大国，以德行仁者王，王不待大。汤以七十里，文王以百里。以力服人者，非心服也，力不赡也；以德服人者，中心悦而诚服也，如七十子之服孔子也。诗云：‘自西自东，自南自北，无思不服。’此之谓也。”\\n公孙丑章句上·第四节\\n孟子曰：“仁则荣，不仁则辱。今恶辱而居不仁，是犹恶湿而居下也。\\n如恶之，莫如贵德而尊士，贤者在位，能者在职。国家闲暇，及是时明其政刑。虽大国，必畏之矣。诗云：‘迨天之未阴雨，彻彼桑土，绸缪牖户。今此下民，或敢侮予？’孔子曰：‘为此诗者，其知道乎！能治其国家，谁敢侮之？’\\n今国家闲暇，及是时般乐怠敖，是自求祸也。祸褔无不自己求之者。诗云：‘永言配命，自求多褔。’太甲曰：‘天作孽，犹可违；自作孽，不可活。’此之谓也。”\\n公孙丑章句上·第五节\\n孟子曰：“尊贤使能，俊杰在位，则天下之士皆悦而愿立于其朝矣。市廛而不征，法而不廛，则天下之商皆悦而愿藏于其市矣。关讥而不征，则天下之旅皆悦而愿出于其路矣。耕者助而不税，则天下之农皆悦而愿耕于其野矣。廛无夫里之布，则天下之民皆悦而愿为之氓矣。信能行此五者，则邻国之民仰之若父母矣。率其子弟，攻其父母，自生民以来，未有能济者也。如此，则无敌于天下。无敌于天下者，天吏也。然而不王者，未之有也。”\\n公孙丑章句上·第六节\\n孟子曰：“人皆有不忍人之心。先王有不忍人之心，斯有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。\\n所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\\n由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。\\n凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”\\n公孙丑章句上·第七节\\n孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤人。巫匠亦然，故术不可不慎也。孔子曰：‘里仁为美。择不处仁，焉得智？’夫仁，天之尊爵也，人之安宅也。莫之御而不仁，是不智也。不仁、不智、无礼、无义，人役也。人役而耻为役，由弓人而耻为弓，矢人而耻为矢也。如耻之，莫如为仁。仁者如射，射者正己而后发。发而不中，不怨胜己者，反求诸己而已矣。”\\n公孙丑章句上·第八节\\n孟子曰：“子路，人告之以有过则喜。禹闻善言则拜。大舜有大焉，善与人同。舍己从人，乐取于人以为善。自耕稼、陶、渔以至为帝，无非取于人者。取诸人以为善，是与人为善者也。故君子莫大乎与人为善。”\\n公孙丑章句上·第九节\\n孟子曰：“伯夷，非其君不事，非其友不友。不立于恶人之朝，不与恶人言。立于恶人之朝，与恶人言，如以朝衣朝冠坐于涂炭。推恶恶之心，思与乡人立，其冠不正，望望然去之，若将浼焉。是故诸侯虽有善其辞命而至者，不受也。不受也者，是亦不屑就已。柳下惠，不羞污君，不卑小官。进不隐贤，必以其道。遗佚而不怨，阨穷而不悯。故曰：‘尔为尔，我为我，虽袒裼裸裎于我侧，尔焉能浼我哉？’故由由然与之偕而不自失焉，援而止之而止。援而止之而止者，是亦不屑去已。”\\n孟子曰：“伯夷隘，柳下惠不恭。隘与不恭，君子不由也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2060, \"excerpt_end\": 3538, \"chapter_text_length\": 3538, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 460, \"focus_found\": true, \"focus_terms_matched\": [\"乍见孺子将入于井\"], \"focus_terms_found_in_chapter\": [\"乍见孺子将入于井\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"乍见孺子将入于井\", \"offset\": 2760, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"offset\": 2560, \"focus\": \"乍见孺子将入于井\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"0e3a170ae8ec7ef190feca45b4471f30607ee8be82145bc6b557cdd5f1364d1a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/dd03ec6572e7?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"孟子\", \"canonical_title\": \"孟子\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2060, 3538]], \"covered_characters\": 1478, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "体验机 经验机器"
+     },
+     "status": "empty",
+     "duration_seconds": 1.42,
+     "result_full": "{\"query\": \"体验机 经验机器\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 11.3,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_roN98MPSaAgZtrBZ9sQ74261"
+    },
+    {
+     "t": 11.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_ErBFPfSME2UJ7sy6twqU1821"
+    },
+    {
+     "t": 11.5,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_BdMHI5ijWem65YoqJTSJ9574"
+    },
+    {
+     "t": 11.6,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_03_aAn70HJWvlFKXhQVjCdV2349"
+    },
+    {
+     "t": 11.8,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_04_wlSoEOyOZiz1sRN7WXkh0389"
+    },
+    {
+     "t": 11.9,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_05_JC8VqS2BPKGAZdNasSWK8938"
+    },
+    {
+     "t": 12.1,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "友爱 因朋友自身之故",
+      "author": "亚里士多德"
+     },
+     "status": "success",
+     "duration_seconds": 0.042,
+     "result_full": "{\"query\": \"友爱 因朋友自身之故\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"snippet\": \"有用之故而生的友爱也能存在于品质低劣者之间、品质高贵者与品质低劣者之间和品质既不高贵也不低劣者同任何品质的每个人之间，但因朋友自身之故而生的友爱明显地只存在于德性高1157a20贵者之间。因为品质低劣者只能从他们所能获得的好处中相互喜爱。也只有品质高贵者的友爱能抵御挑拨离间。因为这样的人不会轻易相信别人对经受了自己长时间考验的朋友的流言语。在这种友爱中信任是主要的，在他们当中适用的话是：“我信任他”，“他绝不会对我做什么不够道义的事”，他们当中有保持真正的友爱所要求1157a25的一切。相比之下，在别的友爱形式中则不免受到此类中伤。既然人们也称那些因有用而走到一起的人为朋友，这也像城邦的做法，城邦与城邦之间诚然就是因利益而结盟的：也\", \"score\": 190, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"focus\": \"友爱 因朋友自身之故\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"b471f41a78de\", \"book_title\": \"工具论\", \"author\": \"亚里士多德\", \"citation_label\": \"【《工具论》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"53b09f03e24e\", \"book_title\": \"政治学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《政治学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"f11f1b13c278\", \"book_title\": \"形而上学\", \"author\": \"亚里士多德\", \"citation_label\": \"【《形而上学》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 4, \"search_coverage\": {\"chapter_entries_examined\": 265}, \"search_scope\": {\"author\": \"亚里士多德\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 12.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "尊严 价格 等价物",
+      "author": "康德"
+     },
+     "status": "success",
+     "duration_seconds": 0.137,
+     "result_full": "{\"query\": \"尊严 价格 等价物\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"snippet\": \"的法之外，不服从任何法则。 在目的王国中，一切东西要么有一种价格，要么有一种尊严。有一种价格的东西，某种别的东西可以作为等价物取而代之；与此相反，超越一切价格、从而不容有等价物的东西，则具有一种尊严。 与普遍的人类偏好和需要相关的东西，都具有一种市场价格；即使不以一种需要为前提条件、但却合乎某种趣味、亦即合乎对我们的心灵力量的纯然无目的的嬉戏的一种满足的东西，则具有一种情感价格。但是，构成某物惟有在其下才能是目的自身的那个条件的东西，则不仅具有一种相对的价值，亦即一种价格，而且具有一种内在的价值，亦即尊严。 现在，道德性就是一个理性存在者惟有在其下才能是目的自身的那个条件，因为只有通过它，才有可能在目的王国中是一个立法的成员。因此，\", \"score\": 205, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"focus\": \"尊严 价格 等价物\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 29, \"chapter_title\": \"道德形而上学\", \"citation_label\": \"【《康德文集》·道德形而上学】\", \"snippet\": \"法庭上对每个人作出审判，尽管只是间接地。——充当法官，亦即使自己有可能行不义并这样陷入被起诉的案件中，也会有失国家元首的尊严（a rege male informato ad regem melius informandum［使缺乏训练的君王成为训练有素的君王］）。 所以，这就是三种不同的权力（potestas legislatoria, executorial, iudiciaria［立法权、执法权、司法权］），国家（civitas）通过这些权力而拥有自决，亦即按照自由法则自己塑造自己和维护自己。——国家的福祉就在于它们的联合（salus reipublicae suprema lex est［国家的福祉是最高的法律］）；人们必须\", \"score\": 159, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 29, \"focus\": \"尊严 价格 等价物\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 47, \"chapter_title\": \"一般道德形而上学的划分\", \"citation_label\": \"【《康德文集》·一般道德形而上学的划分】\", \"snippet\": \"法庭上对每个人作出审判，尽管只是间接地。——充当法官，亦即使自己有可能行不义并这样陷入被起诉的案件中，也会有失国家元首的尊严（a rege male informato ad regem melius informandum［使缺乏训练的君王成为训练有素的君王］）。 所以，这就是三种不同的权力（potestas legislatoria，executorial，iudiciaria［立法权、执法权、司法权］），国家（civitas）通过这些权力而拥有自决，亦即按照自由法则自己塑造自己和维护自己。——国家的福祉就在于它们的联合（salus reipublicae suprema lex est［国家的福祉是最高的法律］）；人们必须不把\", \"score\": 127, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 47, \"focus\": \"尊严 价格 等价物\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"309de54e4392\", \"book_title\": \"康德著作集（套装10册）（汉译世界学术名著丛书）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德著作集（套装10册）（汉译世界学术名著丛书）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"10e1874c2255\", \"book_title\": \"康德三大批判合集（上下）\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德三大批判合集（上下）》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"eca1899561c4\", \"book_title\": \"纯粹理性批判(注释本)\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判(注释本)》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"8c0c6955c793\", \"book_title\": \"纯粹理性批判\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《纯粹理性批判》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}, {\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"citation_label\": \"【《康德文集》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 8, \"search_coverage\": {\"chapter_entries_examined\": 301}, \"search_scope\": {\"author\": \"康德\", \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 13.5,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "sincerity authenticity of care whether source of comfort matters",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 1.441,
+     "result_full": "{\"query\": \"sincerity authenticity of care whether source of comfort matters\", \"results\": [{\"source_record_id\": \"doi:10.1145/3025453.3025715\", \"title\": \"Connecting Those That Care\", \"authors\": [\"Kiel S. Long\", \"Lyndsey L. Bakewell\", \"Róisín McNaney\", \"Konstantina Vasileiou\", \"Mark Atkinson\", \"Manuela Barreto\"], \"year\": 2017, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.1145/3025453.3025715\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1016/s0163-2396(06)29008-2\", \"title\": \"The Changing Meanings of Authenticity: An Interpretive Biography of Professors’ Work Experiences\", \"authors\": [\"Phillip Vannini\"], \"year\": 2006, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Studies in symbolic interaction\", \"doi\": \"10.1016/s0163-2396(06)29008-2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"openalex:W2597907647\", \"title\": \"Being Your Self: Identity, Metaphysics, and the Search for Authenticity\", \"authors\": [\"Lauren Bialystok\"], \"year\": 2010, \"publication_type\": \"DISSERTATION\", \"venue\": \"TSpace (University of Toronto)\", \"doi\": null, \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.3390/heritage7110292\", \"title\": \"Authenticity in Interactive Experiences\", \"authors\": [\"Sofia Pescarin\", \"Giuseppe Città\", \"Samuele Spotti\"], \"year\": 2024, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Heritage\", \"doi\": \"10.3390/heritage7110292\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"openalex:W1525128267\", \"title\": \"Volunteer tourism : an exploration of the perceptions and experiences of volunteer tourists and the role of authenticity in those experiences\", \"authors\": [\"K. A. Carter\"], \"year\": 2008, \"publication_type\": \"DISSERTATION\", \"venue\": \"Lincoln University Research Archive (Lincoln University)\", \"doi\": null, \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.11126/stanford/9780804797450.003.0006\", \"title\": \"Building on Good Decisions with Authenticity and Sincerity\", \"authors\": [\"Countess of Frederiksborg Alexandra Christina\", \"Timothy L. Fort\"], \"year\": 2017, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"The Sincerity Edge\", \"doi\": \"10.11126/stanford/9780804797450.003.0006\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 6, \"READABLE_SOURCE_IDS\": [\"doi:10.1145/3025453.3025715\", \"doi:10.1016/s0163-2396(06)29008-2\", \"openalex:W2597907647\", \"doi:10.3390/heritage7110292\", \"openalex:W1525128267\", \"doi:10.11126/stanford/9780804797450.003.0006\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"sincerity authenticity of care whether source of comfort matters\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"query\": \"sincerity authenticity of care whether source of comfort matters\", \"status\": \"success\", \"raw_result_count\": 6}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 11}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 6 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "t": 13.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "巧言令色，鲜矣仁"
+     },
+     "status": "success",
+     "duration_seconds": 1.825,
+     "result_full": "{\"query\": \"巧言令色，鲜矣仁\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 2, \"chapter_title\": \"学而篇\", \"citation_label\": \"【《论语》·学而篇】\", \"snippet\": \"其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！” 子曰：“巧言令色，鲜矣仁！” 曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？” 子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。” 子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。” 子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。” 子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。” 曾子曰：“慎终追远，民德归厚矣。” 子禽问于子贡曰：“夫子至于是邦也，必闻其政，求之与，抑与之与？”子贡曰：“夫子温、\", \"score\": 170, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 2, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 18, \"chapter_title\": \"阳货篇\", \"citation_label\": \"【《论语》·阳货篇】\", \"snippet\": \"者民有三疾，今也或是之亡也。古之狂也肆，今之狂也荡；古之矜也廉，今之矜也忿戾；古之愚也直，今之愚也诈而已矣。” 子曰：“巧言令色，鲜矣仁。” 子曰：“恶紫之夺朱也，恶郑声之乱雅乐也，恶利口之覆邦家者。” 子曰：“予欲无言。”子贡曰：“子如不言，则小子何述焉？”子曰：“天何言哉？四时行焉，百物生焉，天何言哉？” 孺悲欲见孔子，孔子辞以疾。将命者出户，取瑟而歌，使之闻之。 宰我问：“三年之丧，期已久矣！君子三年不为礼，礼必坏；三年不为乐，乐必崩。旧谷既没，新谷既升，钻燧改火，期可已矣。”子曰：“食夫稻，衣夫锦，于女安乎？”曰：“安！”“女安则为之！夫君子之居丧，食旨不甘，闻乐不乐，居处不安，故不为也。今女安，则为之！”宰我出，子曰：“予\", \"score\": 170, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 18, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 664, \"chapter_title\": \"学而第一\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·学而第一】\", \"snippet\": \"面有一专篇，我们暂且不去讨论它。 这个“仁”，就是孔子做学问的最高目的。 花言巧语 有子的话讲完了，接下来就是： 子曰：巧言令色鲜矣仁。 什么是“巧言”？现在的话是会吹、会盖。孔子说有些人很会盖，讲仁讲义比任何人讲得头头是道，但是却不脚踏实地。“令色”是态度上好像很仁义，但是假的，这些与学问都不相干。“鲜矣仁”——很少真能做到“仁”这个学问的境界，因为那是假的。我们从电视中就看得到，那个小丑表演的角色，动作一出来，就表示“巧言令色”。 “巧言令色鲜矣仁”，我经常也跟同学们讲，做领导人第一个修养是容忍。有的人不一定像小丑那样的“巧言令色”，但每个人都喜欢戴高帽子，人若能真正修养到戴高帽子感觉不舒服，而人家骂我，也和平常一样，这太不容易\", \"score\": 163, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 664, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a1448e164acc\", \"book_title\": \"别笑，我是正经哲学书\", \"author\": \"富增章成\", \"chapter_idx\": 8, \"chapter_title\": \"人类言谈举止的基础\", \"citation_label\": \"【《别笑，我是正经哲学书》·人类言谈举止的基础】\", \"snippet\": \"（爱），会自然流露于外而待人有礼，所以这位老兄应该是放错重点了吧！ 装点外表之前，要先修养内在 《论语·学而篇》，子曰：巧言令色，鲜矣仁！ 孔子讨厌爱修饰外表又花言巧语的人，但是却能在朴素的人身上看见美好的德行。想让内在的、主观的“仁”也就是体贴之心能自然表露，表现于外在的行动上，那么就应该先存有体贴之心，这样就能自然表现于外。\", \"score\": 161, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a1448e164acc\", \"chapter_idx\": 8, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e5a8abe31f07\", \"book_title\": \"中国哲学辞典\", \"author\": \"韦政通\", \"chapter_idx\": 6, \"chapter_title\": \"四画\", \"citation_label\": \"【《中国哲学辞典》·四画】\", \"snippet\": \"，游于艺。”“子日：仁远乎哉，我欲仁斯仁至矣。”《卫灵》：“子日：志士仁人，无 求生以害仁，有杀身以成仁。”《学而》：“巧言令色，鲜矣仁。”《孟子·公孙丑上》： “孟子日：仁则荣，不仁则辱。今恶辱面居不仁，是犹恶湿而居下也。《离娄下》： “孟子日：君子所以异于人者，以其存心也，君子以仁存心，”《告子上》：“孟 子日：虽存乎人者，岂无仁义之心哉。”“孟子日：仁，人心也。”“仁、义、礼、智，非 由外我也，我固有之也。”《尽心上》：“仁、义、礼、智根于心。”《左传·襄公九 年》：“体仁足以长人。\\\"《襄公十一年》：“礼以行之、信以守之，仁以厉之。”《昭公 六年》：“行之以礼，守之以信，奉之以仁。”《定公四年》：“违强凌鸦，非勇也；乘人 之约\", \"score\": 159, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e5a8abe31f07\", \"chapter_idx\": 6, \"focus\": \"巧言令色，鲜矣仁\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 8, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 13.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "不精不诚，不能动人"
+     },
+     "status": "success",
+     "duration_seconds": 1.825,
+     "result_full": "{\"query\": \"不精不诚，不能动人\", \"results\": [{\"book_id\": \"c3c401982587\", \"book_title\": \"庄子说什么\", \"author\": \"韩鹏杰\", \"chapter_idx\": 16, \"chapter_title\": \"渔父\", \"citation_label\": \"【《庄子说什么》·渔父】\", \"snippet\": \"不修之身而求 [1601] 之人，不亦外 [1602] 乎？” 孔子愀然曰：“请问何谓真？” 客曰：“真者，精诚之至也。不精不诚，不能动人。故强哭者，虽悲不哀；强怒者，虽严不威；强亲者，虽笑不和。真悲无声而哀，真怒未发而威，真亲未笑而和。真在内者，神动于外，是所以贵真也。其用于人理 [1603] 也，事亲则慈孝，事君则忠贞，饮酒则欢乐，处丧则悲哀。忠贞以功为主，饮酒以乐为主，处丧以哀为主，事亲以适为主。功成之美，无一其迹矣。事亲以适，不论所以矣；饮酒以乐，不选其具矣；处丧以哀，无问其礼矣。礼者，世俗之所为也；真者，所以受于天 [1604] 也，自然不可易也。故圣人法天贵真，不拘于俗。愚者反此。不能法天而恤 [1605] 于人，不知贵\", \"score\": 165, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c3c401982587\", \"chapter_idx\": 16, \"focus\": \"不精不诚，不能动人\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e5a8abe31f07\", \"book_title\": \"中国哲学辞典\", \"author\": \"韦政通\", \"chapter_idx\": 10, \"chapter_title\": \"八画\", \"citation_label\": \"【《中国哲学辞典》·八画】\", \"snippet\": \"鬼》：“反已而不穷，循古而不摩，大 人之诚。”又：“修胸中之诚，以应天地之情而勿樱。”又《渔父》：“真者，精诚之至 也，不精不诚不能动人，”《萄子·修身》：端诚信，拘守而详。”又《乐论》：“著诚 去伪，礼之经也。”又《大略》：“小人不诚于内，而求之于外。”《周易·文言传》： “闲邪存其诚。”又：“修辞立其诚。”《礼记·学记》：“使人不由其诚，教人不尽其 材，其施之也俘，其求之也拂。” （二）工夫意义的诚《孟子·尽心上》：“万物皆备于我矣，反身而诚，乐莫 大焉。”又《离娄上》：“悦亲有道，反身不诚，不悦于亲矣，是故诚者，天之道 也，思诚者，人之道也。”《中庸》：“顺乎亲有道，反诸身不诚，不顺乎亲矣。 诚者，天之道，诚之者，人之道也。诚\", \"score\": 159, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e5a8abe31f07\", \"chapter_idx\": 10, \"focus\": \"不精不诚，不能动人\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 14.1,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "AI empathy versus human empathy emotional support perceived",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.071,
+     "result_full": "{\"query\": \"AI empathy versus human empathy emotional support perceived\", \"results\": [{\"source_record_id\": \"doi:10.1007/s12369-008-0001-3\", \"title\": \"Measurement Instruments for the Anthropomorphism, Animacy, Likeability, Perceived Intelligence, and Perceived Safety of Robots\", \"authors\": [\"Christoph Bartneck\", \"Dana Kulić\", \"Elizabeth A. Croft\", \"Susana Zoghbi\"], \"year\": 2008, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"International Journal of Social Robotics\", \"doi\": \"10.1007/s12369-008-0001-3\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/s11747-022-00892-5\", \"title\": \"Artificial empathy in marketing interactions: Bridging the human-AI gap in affective and social customer experience\", \"authors\": [\"Yuping Liu–Thompkins\", \"Shintaro Okazaki\", \"Hairong Li\"], \"year\": 2022, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of the Academy of Marketing Science\", \"doi\": \"10.1007/s11747-022-00892-5\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1093/jcmc/zmab005\", \"title\": \"Emotional Support from AI Chatbots: Should a Supportive Partner Self-Disclose or Not?\", \"authors\": [\"Jingbo Meng\", \"Yue Hong Dai\"], \"year\": 2021, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Computer-Mediated Communication\", \"doi\": \"10.1093/jcmc/zmab005\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.31219/osf.io/ng97s_v2\", \"title\": \"Comparing the Value of Perceived Human versus AI-Generated Empathy\", \"authors\": [\"Matan Rubin\", \"Joanna Z. Li\", \"Federico Zimmerman\", \"Desmond C. Ong\", \"Amit Goldenberg\", \"Anat Perry\"], \"year\": 2025, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31219/osf.io/ng97s_v2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1111/johs.70027\", \"title\": \"AI Efficiency Versus Human Empathy: A Paradox of AI and Human Agents in Service Support Interactions\", \"authors\": [\"Naim Bin Hasan\"], \"year\": 2025, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Sociology Lens\", \"doi\": \"10.1111/johs.70027\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.31219/osf.io/ng97s\", \"title\": \"The Value of Perceiving a Human Response: Comparing Perceived Human versus AI-Generated Empathy\", \"authors\": [\"Matan Rubin\", \"Joanna Z. Li\", \"Federico Zimmerman\", \"Desmond C. Ong\", \"Amit Goldenberg\", \"Anat Perry\"], \"year\": 2024, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31219/osf.io/ng97s\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 6, \"READABLE_SOURCE_IDS\": [\"doi:10.1007/s12369-008-0001-3\", \"doi:10.1007/s11747-022-00892-5\", \"doi:10.1093/jcmc/zmab005\", \"doi:10.31219/osf.io/ng97s_v2\", \"doi:10.1111/johs.70027\", \"doi:10.31219/osf.io/ng97s\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"AI empathy versus human empathy emotional support perceived\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"query\": \"AI empathy versus human empathy emotional support perceived\", \"status\": \"success\", \"raw_result_count\": 6}], \"relevance_gate\": {\"dropped_irrelevant\": 1, \"kept_relevant\": 11}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 6 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "t": 15.9,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_GsyNITnmY3S59B0ifF9C4592"
+    },
+    {
+     "t": 16.1,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_y5CjNQmfO4YFjJfFRVEI1346"
+    },
+    {
+     "t": 16.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_rAj6OQ59SFLInmHW7RW04507"
+    },
+    {
+     "t": 16.4,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_03_Z84LHJX7yhrMHuT7EUY41145"
+    },
+    {
+     "t": 16.5,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_04_AUKrACxNQrd9gJm1vdHc3245",
+     "status": "empty",
+     "duration_seconds": 0.006
+    },
+    {
+     "t": 16.6,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.31219/osf.io/ng97s_v2",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"source_record_id\": \"doi:10.31219/osf.io/ng97s_v2\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.31219/osf.io/ng97s_v2\", \"title\": \"Comparing the Value of Perceived Human versus AI-Generated Empathy\", \"authors\": [\"Matan Rubin\", \"Joanna Z. Li\", \"Federico Zimmerman\", \"Desmond C. Ong\", \"Amit Goldenberg\", \"Anat Perry\"], \"year\": 2025, \"publication_type\": \"OTHER\", \"venue\": null, \"doi\": \"10.31219/osf.io/ng97s_v2\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"<p>Artificial Intelligence (AI), and specifically large language models, demonstrate remarkable social-emotional abilities, which may improve human-AI interactions and AI’s emotional support capabilities. However, it remains unclear whether empathy, encompassing understanding, ’feeling with’, and caring, is perceived differently when attributed to AI versus humans. We conducted nine studies (N = 6,282) where AI-generated empathic responses to participants’ emotional situations were labeled as either provided by humans or AI. Human-attributed responses were rated as more empathic and supportive, and elicited more positive and fewer negative emotions, compared to AI-attributed ones. Moreover, participants own uninstructed belief that AI aided human-attributed responses, reduced perceived empathy and support. These effects replicated across varying response lengths, delays, iterations and LLMs, being primarily driven by responses emphasizing emotional sharing and care. Additionally, people consistently chose human interaction over AI when seeking emotional engagement. These findings advance our general understanding of empathy, and specifically human–AI empathic interactions.</p>\", \"source\": \"crossref_METADATA\", \"hash\": \"0f58353d1d1148b48113a368a89b0336b0d42547d1fe3f82715cce05dcbc43ec\", \"excerpt_start\": 0, \"excerpt_end\": 1195, \"total_characters\": 1195, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"0f58353d1d1148b48113a368a89b0336b0d42547d1fe3f82715cce05dcbc43ec\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 16.6,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1093/jcmc/zmab005",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.013,
+     "result_full": "{\"source_record_id\": \"doi:10.1093/jcmc/zmab005\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1093/jcmc/zmab005\", \"title\": \"Emotional Support from AI Chatbots: Should a Supportive Partner Self-Disclose or Not?\", \"authors\": [\"Jingbo Meng\", \"Yue Hong Dai\"], \"year\": 2021, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Journal of Computer-Mediated Communication\", \"doi\": \"10.1093/jcmc/zmab005\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"Abstract This study examined how and when a chatbot’s emotional support was effective in reducing people’s stress and worry. It compared emotional support from chatbot versus human partners in terms of its process and conditional effects on stress/worry reduction. In an online experiment, participants discussed a personal stressor with a chatbot or a human partner who provided none, or either one or both of emotional support and reciprocal self-disclosure. The results showed that emotional support from a conversational partner was mediated through perceived supportiveness of the partner to reduce stress and worry among participants, and the link from emotional support to perceived supportiveness was stronger for a human than for a chatbot. A conversational partner’s reciprocal self-disclosure enhanced the positive effect of emotional support on worry reduction. However, when emotional support was absent, a solely self-disclosing chatbot reduced even less stress than a chatbot not providing any response to participants’ stress. Lay Summary In recent years, AI chatbots have increasingly been used to provide empathy and support to people who are experiencing stressful times. This study compared emotional support from a chatbot compared to that of a human who provided support. We were interested in examining which approach could best effectively reduce people’s worry and stress. When either a person or a chatbot was able to engage with a stressed individual and tell that individual about their own experiences, they were able to build rapport. We found that this type of reciprocal self-disclosure was effective in calming the worry of the individual. Interestingly, if a chatbot only reciprocally self-disclosed but offered no emotional support, the outcome was worse than if the chatbot did not respond to people at all. This work will help in the development of supportive chatbots by providing insights into when and what they should self-disclose.\", \"source\": \"OPENALEX_INVERTED_INDEX\", \"hash\": \"34b8ea36bb53669bce948f2b27878e62024b56c488c69ecbaccc7afce9c5dee6\", \"excerpt_start\": 0, \"excerpt_end\": 1973, \"total_characters\": 1973, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"34b8ea36bb53669bce948f2b27878e62024b56c488c69ecbaccc7afce9c5dee6\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 18.1,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "恻隐之心 仁之端"
+     },
+     "status": "success",
+     "duration_seconds": 1.479,
+     "result_full": "{\"query\": \"恻隐之心 仁之端\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 2, \"chapter_title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"snippet\": \"有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。 所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。 由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。 凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。” 公孙丑章句上·第七节 孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤\", \"score\": 172, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32093eed6ff1\", \"book_title\": \"中国哲学简史\", \"author\": \"冯友兰\", \"chapter_idx\": 8, \"chapter_title\": \"第七章 儒家的理想主义派：孟子\", \"citation_label\": \"【《中国哲学简史》·第七章 儒家的理想主义派：孟子】\", \"snippet\": \"认为是“人”性部分。 孟子提出大量论证，来支持性善说，有段论证是：“人皆有不忍人之心。……今人乍见孺子将入于井，皆有怵惕恻隐之心。……由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。……凡有四端于我者，知皆扩而充之矣。若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”（《孟子·公孙丑上》） 一切人的本性中都有此“四端”，若充分扩充，就变成四种“常德”，即儒家极其强调的仁、义、礼、智。这些“德”，若不受外部环境的阻碍，就会从内部自然发展（即扩充），有如种子自己长成树\", \"score\": 164, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32093eed6ff1\", \"chapter_idx\": 8, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c10883852202\", \"book_title\": \"哲学进化论：一场关于世界、意识、道德的无止境追问\", \"author\": \"李浩然\", \"chapter_idx\": 9, \"chapter_title\": \"第九章 情感中的哲学\", \"citation_label\": \"【《哲学进化论：一场关于世界、意识、道德的无止境追问》·第九章 情感中的哲学】\", \"snippet\": \"们有这样的反应没有经过思考，是自然而然产生的。这种自发的反应被孟子先后用两个名字加以称呼：一个叫“不忍人之心”，一个叫“恻隐之心”。前者是对这种反应引发原因的描述（因为不忍心看到、听到别人的痛苦而产生的心理反应），后者是对这种反应造成结果的描述（“恻”是悲伤，“隐”是伤痛，恻隐之心就是感到难过的心理反应）。 综合这两种表述，我们可以知道，看见小孩子将要坠井的瞬间产生的反应说明了人性中有这样一个特点：如果看到他人受苦，我们会随之难过。孟子对这个特点做出了两个判断：第一，每个人的人性都具有这个特点；第二，这个特点就是仁的开端。孟子在论述“仁之端”时顺便提到，人性之中除了不忍人之心或恻隐之心，还有其他的天生性质，这些性质是人的适宜性、礼仪\", \"score\": 163, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c10883852202\", \"chapter_idx\": 9, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"e0b0b534b86e\", \"book_title\": \"幸福的底层逻辑：关于人生的7堂哲学课\", \"author\": \"刘小播\", \"chapter_idx\": 35, \"chapter_title\": \"仁者，爱人\", \"citation_label\": \"【《幸福的底层逻辑：关于人生的7堂哲学课》·仁者，爱人】\", \"snippet\": \"的本分，这样社会才能井然有序。 孟子继承了孔子的“仁”学，并将其发展为“仁义礼智”四种道德，他为此还提出了“四端说”：“恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。”这句话是说，仁是由恻隐之心发展而来的；义是由羞耻之心发展而来的；礼是由辞让之心发展而来的；智是由是非之心发展而来的。 孟子认为，仁义礼智都来自人的本性，来自人的内心。虽然它们都是儒家最基本的道德品质，但实际上“仁”才是其中的核心，因为其他三种都是人的一种外在表现，只有“仁”才是一种个体内在的人格特质。 从个人推及国家，孟子提出个体的“仁”是一种善良的本性，而一个国家的“仁”是一种爱护百姓的本性。由此，他提\", \"score\": 157, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e0b0b534b86e\", \"chapter_idx\": 35, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"author\": \"牟宗三\", \"chapter_idx\": 14, \"chapter_title\": \"第十四讲　《大乘起信论》之“一心开二门”\", \"citation_label\": \"【《中国哲学十九讲》·第十四讲　《大乘起信论》之“一心开二门”】\", \"snippet\": \") 见康德所著的《纯粹理性批判·纯粹理性的第三个背反》，史密斯英译本，第四百零九页。 (31) 《孟子·公孙丑》篇曰：“恻隐之心，仁之端也。羞恶之心，义之端也。辞让之心，礼之端也。是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也。谓其君不能者，贼其君者也。” (32) 见《孟子·尽心》篇。\", \"score\": 156, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 14, \"focus\": \"恻隐之心 仁之端\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 7, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 18.3,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "一个念头太多了 救妻子"
+     },
+     "status": "empty",
+     "duration_seconds": 1.745,
+     "result_full": "{\"query\": \"一个念头太多了 救妻子\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 38.2,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_Nf5HxkhumJqRNE16RSsi7495"
+    },
+    {
+     "t": 38.4,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_oT6mw9LNzr3KwTApDS7x9939"
+    },
+    {
+     "t": 38.7,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_02_Zh2rUyWG4DQJwwXcwWVY3946"
+    },
+    {
+     "t": 38.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_03_4DPP0Tn8UdZBPFxcVmB98383"
+    },
+    {
+     "t": 39.0,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_04_6nW7VyhPufbgK2MDXYEW4524"
+    },
+    {
+     "t": 39.2,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "d9272a80942a",
+      "chapter_idx": 2,
+      "focus": "巧言令色，鲜矣仁",
+      "max_chars": 1800
+     },
+     "status": "success",
+     "duration_seconds": 0.006,
+     "result_full": "{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"chapter_idx\": 2, \"title\": \"学而篇\", \"citation_label\": \"【《论语》·学而篇】\", \"text\": \"子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”\\n有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！”\\n子曰：“巧言令色，鲜矣仁！”\\n曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？”\\n子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。”\\n子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。”\\n子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。”\\n子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。”\\n曾子曰：“慎终追远，民德归厚矣。”\\n子禽问于子贡曰：“夫子至于是邦也，必闻其政，求之与，抑与之与？”子贡曰：“夫子温、良、恭、俭、让以得之。夫子之求之也，其诸异乎人之求之与？”\\n子曰：“父在，观其志；父没，观其行；三年无改于父之道，可谓孝矣。”\\n有子曰：“礼之用，和为贵。先王之道，斯为美。小大由之，有所不行。知和而和，不以礼节之，亦不可行也。”\\n有子曰：“信近于义，言可复也。恭近于礼，远耻辱也。因不失其亲，亦可宗也。”\\n子曰：“君子食无求饱，居无求安，敏于事而慎于言，就有道而正焉。可谓好学也已。”\\n子贡曰：“贫而无谄，富而无骄，何如？”子曰：“可也。未若贫而乐道，富而好礼者也。”子贡曰：“《诗》云：‘如切如磋，如琢如磨’，其斯之谓与？”子曰：“赐也，始可与言《诗》已矣，告诸往而知来者。”\\n子曰：“不患人之不己知，患不知人也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 676, \"chapter_text_length\": 676, \"has_more\": false, \"next_offset\": null, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"巧言令色\", \"鲜矣仁\"], \"focus_terms_found_in_chapter\": [\"巧言令色\", \"鲜矣仁\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"巧言令色\", \"offset\": 107, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 2, \"offset\": 0, \"focus\": \"巧言令色\"}}, {\"term\": \"鲜矣仁\", \"offset\": 112, \"read_args\": {\"book_id\": \"d9272a80942a\", \"chapter_idx\": 2, \"offset\": 0, \"focus\": \"鲜矣仁\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4430200521ad896140752e0f322d290157416b18dc503df169de99b832281701\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/d9272a80942a?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"孔子\", \"canonical_title\": \"论语\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 676]], \"covered_characters\": 676, \"whole_chapter_read\": true, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 39.2,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "e574c8e7f515",
+      "chapter_idx": 8,
+      "focus": "因有用之故",
+      "max_chars": 2600
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"里的“善意”（Wohlwollen）也就是一般说的“仁善意的地方，那么我们就说这爱之心”，就是单纯意愿他人好。里有友谊。或者我们还必须补不把“善意”和“仁爱之心”等同充一句：不可向对方一直隐藏起来就与这里讲的三种可爱的对象善意？因为许多人对他们从未对应不起来。把“善意”（Wohlwol-谋面的、却认为他们是善良和1155b35len）译作“仁爱”我们起码在休误有用的人抱有善意，而后者对1156a的书中见到过（参见休谟著、曾晓前者也可能抱有同样的善意。平译、陈修斋校：《道德原理研究》，所以，他们相互之间看起来是商务印书馆2004年版，第二章：论相互有善意的，但是，如果一仁爱（uber das Wohlwollen），但同个人对另一个人一直隐瞒这种时也请注意亚里士多德对二者关系善意，那我们如何能称他们是的明确表达：“善意与友爱类似，却朋友呢？所以，要成为朋友，还不是友爱”（1166b30—31）。但无就必须不仅要出于上面所说的论如何，善意、仁爱、友爱、友谊可爱因缘互有善意，都愿望对这四个概念具有密切关系，这是我方好，且双方都要让对方感受1156a5们在阅读亚里士多德时要充分注得到这种善意。意的。\\n3.三种友爱由于三种因缘不同，结果友爱【364】【364】“友爱”一般的也就不同。因此说，有三种友谊，对应表达是“友谊”和“爱”。于值得爱者的三种性质。这样，在每一我们在这里也把因可爱个值得爱的人心中都有一种毫不掩饰的的任何一种因缘产生的1156a10爱的回报。于是，相互友爱的人们出于友谊而称做“友爱”。因互爱之故，都愿意对方好，因此才成为此尽管字面上它只是“友朋友。谊”，我们还是可以译做因有用之故而爱，这不是因另一个“友爱”。人本身的品质而爱，而是因能从对方得到某种好处而爱；基于快乐因缘的友爱1156a15也是如此。因为不是因为他本身的品质而爱他，而是因为他在社会中精明能干而给自己带来快乐。所以，凡是因有用之故而形成的友爱，人们爱的是自己，因为他们是为自身欲求某种好处，而在因快乐之故而生的友爱这里也是如此，因为他们为自己追求快乐。这样看来，在这两种情况下，都不是因友本身可爱而生友爱，而是因对方有用或能带来快乐而生友爱。这些友爱因此就是偶然的。因为他不是因为他本来所是而被友爱，而是由于他能带来某种好处或快乐而被友爱。1156a20所以这种友爱，一旦朋友有所变故，就容易消逝。因为伙伴中的一方不\\n第八卷友爱论再能带来快乐或不再有用了，对他的友爱就终止了。而有用是不能持久的，它有时这样，有时又是另一样。一旦这种因缘变了，友爱就会随之烟消云散，因为他们一心所考虑的那个东西不再存在。经验告诉我们，基于有用的友爱尤1156a25其存在于老年人当中，因为这个年纪的人不再追求快乐，而追求实用。而在中年人和青年人中只有那些以他们的利益为重的人才是这样。但这些人也根本不适合于过共同生活，因为在共同生活中他们相互之间有时不会愉快。既然他们的整个吸引力只在于期望对方会带来好处，所以，一旦不能从友谊中给他们带来什么利益，他们就根本不再往来了。1156a30此外人们把主一客之间的友爱（Gastfre-【365】这种说法不undschaft）也归于这一类。【365】妥，很多像中国这样好青年人的友爱反而是以快乐为目标客的民族肯定不会同的，因为他们受情绪控制，生活注重快意。因为对待客人的乐，而且注重当下。但是，到了这个年友谊往往是真诚和纯粹纪，也有别的东西能带来快乐，所以，的，不带任何功利色青年人的友爱来得快，去得也快。因为1156a35彩，当然客人能带来快友爱也随带来快乐的东西而改变。况1156b乐是主要的（所谓“有且，青年人的快乐也是迅速变换的。其朋自远方来，不亦乐次，青年人也强烈地渴望爱，这种爱主乎”）。要受激情驱使，受快感左右。所以他们爱得快，结束得也快，如此改变不出当天的也不罕见。但只要这种爱还在坚【366】这句话有的持，他们就喜欢整天待在一起，快乐地1156b5版本译作“这样他们也共同生活。这样一来友爱也就与他们共就能实现友爱的意义”，在。【366】可参考。\\n完善的友爱但完善的友爱是因同一类人之间的友善和相似的德性品质而生的友爱。因为在这种友爱上，他们以同样的方式愿望对方好，不是出于【367】这里别的因缘，而是因为他们都友善，本身都有高的“有益”当然贵品质。而这种因朋友本身之故而愿望他好的与前面说的“有1156b10友爱，就是完善意义上的友爱，因为他们对对用”是同一个词：方友爱，不是出于偶然因缘，而是出于每个人nitzlich，但“有都爱对方的品质。所以在这些人之间存在的友用”在我们的语境爱，只要他们的德性品质还在，就一直存在，中过于功利化了，而德性就是持久的品质。所以在完善的友爱其次，在这种友善关系中的每个人原本就的意义上，还是用是友善并对朋友友善的。因为德性高贵者都是“有益”这个词来原本友善，同时又相互有益的【367】。而且他表达可能更加切合1156b15们在同样的方式上令人快乐，因为德性既原本亚里士多德这里的就令人愉悦，又能让对方感到欢喜。每个人既语义。对他的也对与他相似的行为方式感到愉悦：有【368】 Reclam德之人既有相同的也有相似的行为方式。【368】版的翻译做了一点这种友爱是持久的，有其善的因缘，在朋引申，它把“相友当中必须有的东西都汇集在这种友爱中了。同的行为方式”译1156b20因为每种友爱都基于某一善或某一快乐，善和作：“每个人都有快乐中的每一个或者是就本身而言的，或者单源自其固有品质的纯地是对朋友而言的，此外还基于某种程度的行为方式”；把“相品质类似性。但在完善的友爱中包含了我们所似的行为方式”译说的所有善缘：本身的善或快乐和对朋友的友作：源自快乐的行善和快乐。因为在它当中通常的一切都统一一为方式。供参考。\\n第八卷友爱论司正文致了，既是完全的善，也完全令人快乐。而这也就是友爱的最高形式了，爱和友谊在这些人当中获得了最友善的和最高贵的形式。可是，这种友爱自然是很稀罕的，因为很少有这么高贵品质的1156b25人。此外，这也需要时间来培养这种性情并养成对共同生活的习惯。因为俗话说，从前没有一起吃过盐巴的人，是不会相知相识的，所以，除非一个人向另一个人证明了自已值得爱，确立了信任之后，人们才能相互承认并接受对方为朋友。\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2382, \"excerpt_end\": 4982, \"chapter_text_length\": 20542, \"has_more\": true, \"next_offset\": 4982, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"因有用之故\"], \"focus_terms_found_in_chapter\": [\"因有用之故\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"因有用之故\", \"offset\": 3082, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 2882, \"focus\": \"因有用之故\"}}, {\"term\": \"因有用之故\", \"offset\": 3191, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 2991, \"focus\": \"因有用之故\"}}, {\"term\": \"因有用之故\", \"offset\": 5202, \"read_args\": {\"book_id\": \"e574c8e7f515\", \"chapter_idx\": 8, \"offset\": 5002, \"focus\": \"因有用之故\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4de43c2e302802d856237bd1823a0748aa731a4844d375fc3aa43e934daba735\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/e574c8e7f515?ch=8\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"亚里士多德\", \"canonical_title\": \"尼各马可伦理学[注释导读本]\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CANONICAL_LOCATOR\", \"locator_schemes\": [\"BEKKER\", \"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2382, 4982]], \"covered_characters\": 2600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 39.2,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "390398aff8d0",
+      "chapter_idx": 26,
+      "focus": "尊严 价格 等价物",
+      "max_chars": 2600
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 26, \"title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"text\": \"个理想）。\\n但是，如果一个理性存在者在目的王国中固然是普遍立法者，但自己也服从这些法则，那么，它就是作为成员而属于目的王国。如果它作为立法者不服从另一个理性存在者的意志，他就是作为元首属于目的王国。\\n理性存在者必须在任何时候都把自己视为一个通过意志的自由而可能的目的王国中的立法者，不管是作为成员，还是作为元首。但是，它不能仅凭其意志的准则，而是惟有在它是一个完全独立的存在者，没有需求，其与意志相称的能力不受限制时，它才能维持元首的地位。\\n因此，道德性存在于一切行为与立法的关系中，惟有通过这种关系，一个目的王国才是可能的。但是，这种立法必须能够在每一个理性存在者自身发现，并从其意志产生。因此，其意志的原则是：不按照任何别的准则采取任何行动，除非该准则是一条普遍法则这一点能够与该准则相容，因而只这样采取行动，即意志能够通过其准则同时把自己视为普遍立法者。现在，如果准则不因为作为普遍立法者的有理性存在者的本性，就已经必然地与它们的这个客观原则一致，那么，按照这个原则的行为的必然性就叫做实践的强制，亦即义务。义务并不适用于目的王国中的元首，但却适用于每一个成员，而且在同等程度上适用于所有成员。\\n按照这个原则去行动的实践必然性，亦即义务，根本不是依据情感、冲动和偏好，而是仅仅依据理性存在者彼此之间的关系；一个理性存在者的意志在这种关系中必须任何时候都同时被视为立法者，因为若不然，该原则就不能把它们设想为目的自身。因此，理性把作为普遍立法者的意志的每一准则都与每一别的意志联系起来，而且也与对自己的每一个行为联系起来，而且这并不是为了任何其他的实践动因或者未来的利益，而是出自一个理性存在者的尊严的理念，这个理性存在者除了它同时为自己立的法之外，不服从任何法则。\\n在目的王国中，一切东西要么有一种价格，要么有一种尊严。有一种价格的东西，某种别的东西可以作为等价物取而代之；与此相反，超越一切价格、从而不容有等价物的东西，则具有一种尊严。\\n与普遍的人类偏好和需要相关的东西，都具有一种市场价格；即使不以一种需要为前提条件、但却合乎某种趣味、亦即合乎对我们的心灵力量的纯然无目的的嬉戏的一种满足的东西，则具有一种情感价格。但是，构成某物惟有在其下才能是目的自身的那个条件的东西，则不仅具有一种相对的价值，亦即一种价格，而且具有一种内在的价值，亦即尊严。\\n现在，道德性就是一个理性存在者惟有在其下才能是目的自身的那个条件，因为只有通过它，才有可能在目的王国中是一个立法的成员。因此，道德和能够具有道德的人性是惟一具有尊严的。工作中的技巧和勤奋具有一种市场价格；机智、活跃的想象力和情绪具有一种情感价格；与此相反，出自原理（不是出自本能）的信守承诺、仁爱具有一种内在的价值。无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西；因为它们的价值并不在于由此产生的结果，并不在于它们所造成的好处和用途，而是在于意念，也就是说，在于意志的准则，即使成果不利于这些准则，它们也仍然要以这种方式在行为中显露自己。这些行为也不需要任何一种主观的气质或者趣味的推荐，让人以直接的认可和满意去看待它们；它们也不需要对它们的直接癖好或者情感。它们把实施它们的意志呈现为一种直接敬重的对象；对此，所需要的只是理性，以便责成意志、而不是哄骗意志去实施这些行为。对于义务来说，后者根本就是一种矛盾。因此，这种评价使人认识到这样一种思维方式的价值是尊严，并使它无限地超越一切价格；根本不能用价格对这种思维方式进行估量和比较，而不仿佛是损害它的圣洁性。\\n如今，究竟是什么使道德上善的意念或者德性有资格提出如此之高的要求呢？无非是这种意念为理性存在者争得的对普遍立法的参与权，这种意念还通过这种参与权使理性存在者适合于成为一个可能的目的王国的成员。理性存在者由于它自己的本性，已经注定具有这种参与权；它就是目的自身，并恰恰因此而是目的王国中的立法者，就一切自然法则而言是自由的，只服从它给自己所立的、使他的准则能够属于一种普遍立法（它同时也使自己服从这种普遍立法）的那些法则。因为除了法则为之规定的价值之外，没有任何东西具有一种价值。但正是因为这一点，规定一切价值的立法本身必须具有一种尊严，亦即无条件的、无与伦比的价值；对于这种价值来说，惟有“敬重”这个词才能够恰如其分地表达一个理性存在者对这种立法的评价。因此，自律就是人的本性和任何有理性的本性的尊严的根据。\\n但是，上述三种表现道德原则的方式在根本上只不过是同一个法则的三个公式，它们中的每一个都在自身中自行把另外两个结合起来。不过，它们中间毕竟是有差异的，这种差异与其说是客观实践的，倒不如说是主观的，也就是说，是为了（根据某种类比）使理性的一个理念更接近直观，并由此更接近情感。也就是说，所有的准则都具有：\\n1.一种形式。这个形式就在于普遍性，而在这里，道德命令式的公式是这样来表达的：必须这样来选择准则，就好像它们应当像普遍的自然法则而有效似的。\\n2.一种质料。也就是说，一个目的。这里的公式说的是：理性存在者就其本性而言作为目的，从而作为目的自身，对于每一个准则来说充当一切纯然相对的和任意的目的的限制条件。\\n3.对一切准则的一种完备的规定。其规定乃是通过那个公式，亦即：所有的准则都应当从自己的立法出发而与一个作为自然王国的目的王国 [15] 协调一致。这里的进程就像是通过意志形式的单一性（意志的普遍性）、质料（客体，亦即目的）的复多性和意志体系的全体性或者总体性这些范畴进行的。但是，更好是在道德评价中始终按照严格的方法行事，并且以定言命令式的总公式为基础：要依照能使自己同时成为普遍法则的那种准则而行动。但是，如果人们想同时倡导道德法则，那么，通过上述三个概念来引导同一个行为，并由此尽可能地使它接近直观，当是非常有用的。\\n从现在开始，我们可以在我们最初由以出发的地方，亦即在一个无条件地善的意志的概念这里结束了。一个意志不是恶的，因而它的准则在被当做一个普遍法则时绝不可能自相矛盾，那么，这个意志就是绝对善的。因此，如下原则也就是这个意志的最高法则：在任何时候都要按照你同时能够意欲其作为法则的普遍性的准则去行动。这是惟一能够使一个意志不与自己本身相抵触的条件，而这样一个命令式就是定言的。由于意志作为可能的行为的一个普遍的法则，其有效性类似\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 39399, \"excerpt_end\": 41999, \"chapter_text_length\": 62981, \"has_more\": true, \"next_offset\": 41999, \"has_previous\": true, \"previous_offset\": 36799, \"focus_found\": true, \"focus_terms_matched\": [\"尊严\", \"价格\", \"等价物\"], \"focus_terms_found_in_chapter\": [\"尊严\", \"价格\", \"等价物\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"尊严\", \"offset\": 19916, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 19716, \"focus\": \"尊严\"}}, {\"term\": \"尊严\", \"offset\": 24199, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 23999, \"focus\": \"尊严\"}}, {\"term\": \"尊严\", \"offset\": 24415, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 24215, \"focus\": \"尊严\"}}, {\"term\": \"价格\", \"offset\": 14526, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 14326, \"focus\": \"价格\"}}, {\"term\": \"价格\", \"offset\": 14657, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 14457, \"focus\": \"价格\"}}, {\"term\": \"价格\", \"offset\": 40151, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 39951, \"focus\": \"价格\"}}, {\"term\": \"等价物\", \"offset\": 40181, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 39981, \"focus\": \"等价物\"}}, {\"term\": \"等价物\", \"offset\": 40206, \"read_args\": {\"book_id\": \"390398aff8d0\", \"chapter_idx\": 26, \"offset\": 40006, \"focus\": \"等价物\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"a84f3dabbb484467441065c9690f9584f546bd35a06c433a36cebd1e86e24a0f\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/390398aff8d0?ch=26\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[39399, 41999]], \"covered_characters\": 2600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 39.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "author": "庄子",
+      "query": "渔父 真者 精诚之至"
+     },
+     "status": "success",
+     "duration_seconds": 0.012,
+     "result_full": "{\"query\": \"渔父 真者 精诚之至\", \"results\": [{\"book_id\": \"84adfb4d0c0b\", \"book_title\": \"庄子\", \"author\": \"庄子\", \"chapter_idx\": 32, \"chapter_title\": \"渔父\", \"citation_label\": \"【《庄子》·渔父】\", \"snippet\": \"。谨 修而身，慎守其真，还以物与人，则无所累矣。今不修之身而求之人 ，不亦外乎！” 孔子愀然曰：“请问何谓真？”客曰：“真者，精诚之至也。不精 不诚，不能动人。故强哭者，虽悲不哀，强怒者，虽严不屯，强亲者 ，虽笑不和。真悲无声而哀，真怒未发而威，真亲未笑而和。真在内 者，神动于外，是所以贵真也。其用于人理也，事亲则慈孝，事君则 忠贞，饮酒则欢乐，处丧则悲哀。忠贞以功为主，饮酒以乐为主，处 丧以哀为主，事亲以适为主。功成之美，无一其迹矣；事亲以适，不 论所以矣；饮酒以乐，不选其具矣；处丧以哀，无问其礼矣。礼者， 世俗之所为也；真者，所以受于天也，自然不可易也。故圣人法天贵 真，不拘于俗。愚者反此。不能法天而恤于人，不知贵真，禄禄而受 \", \"score\": 166, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"84adfb4d0c0b\", \"chapter_idx\": 32, \"focus\": \"渔父 真者 精诚之至\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [{\"book_id\": \"84adfb4d0c0b\", \"book_title\": \"庄子\", \"author\": \"庄子\", \"citation_label\": \"【《庄子》】\", \"match_type\": \"book_metadata\", \"evidence_scope\": \"catalogue\", \"needs_read\": true, \"snippet\": \"\"}], \"catalogue_match_count\": 1, \"search_coverage\": {\"chapter_entries_examined\": 35}, \"search_scope\": {\"author\": \"庄子\", \"book_id\": null}, \"total_passage_hits\": 1, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 40.8,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "威廉斯 道德运气 内在理由"
+     },
+     "status": "empty",
+     "duration_seconds": 1.545,
+     "result_full": "{\"query\": \"威廉斯 道德运气 内在理由\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 57.5,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_lvAumDZ0SJEZSIZWQago0591"
+    },
+    {
+     "t": 57.8,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_liCpUjzlnsovsAPBqinC1222"
+    },
+    {
+     "t": 58.0,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_FYIv6oahPVy2Cb0w6h6i1483"
+    },
+    {
+     "t": 58.1,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "84adfb4d0c0b",
+      "chapter_idx": 32,
+      "focus": "真者，精诚之至也",
+      "max_chars": 2200
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"84adfb4d0c0b\", \"book_title\": \"庄子\", \"chapter_idx\": 32, \"title\": \"渔父\", \"citation_label\": \"【《庄子》·渔父】\", \"text\": \"无所陵。故田荒室露，衣食不足，征赋不属，妻妾不和，长少 无序，庶人之忧也；能不胜任，官事不治，行不清白，群下荒怠，功 美不有，爵禄不持，大夫之忧也；廷无忠臣，国家昏乱，工技不巧， 贡职不美，春秋后伦，不顺天子，诸侯之忧也；阴阳不和，寒暑不时 ，以伤庶物，诸侯暴乱，擅相攘伐，以残民人，礼乐不节，财用穷匮 ，人伦不饬，百姓淫乱，天子有司之忧也。今子既上无君侯有司之势 ，而下无大臣职事之官，而擅饰礼乐，选人伦，以化齐民，不泰多事 乎？且人有八疵，事有四患，不可不察也。非其事而事之，谓之总； 莫之顾而进之，谓之佞；希意道言，谓之谄；不择是非而言，谓之谀 ；好言人之恶，谓之谗；析交离亲，谓之贼；称誉诈伪以败恶人，谓 之慝；不择善否，两容颊适，偷拔其所欲，谓之险。此八疵者，外以 乱人，内以伤身，君子不友，明君不臣。所谓四患者：好经大事，变 更易常，以挂功名，谓之叨；专知擅事，侵人自用，谓之贪；见过不 更，闻谏愈甚，谓之很；人同于己则可，不同于己，虽善不善，谓之 矜。此四患也。能去八疵，无行四患，而始可教已。\\n孔子愀然而叹，再拜而起，曰：“丘再逐于鲁，削迹于卫，伐树于 宋，围于陈蔡。丘不知所失，而离此四谤者何也？”客凄然变容曰： “甚矣，子之难悟也！人有畏影恶迹而去之走者，举足愈数而迹愈多 ，走愈疾而影不离身，自以为尚迟，疾走不休，绝力而死。不知处阴 以休影，处静以息迹，愚亦甚矣！子审仁义之间，察同异之际，观动 静之变，适受与之度，理好恶之情，和喜怒之节，而几于不免矣。谨 修而身，慎守其真，还以物与人，则无所累矣。今不修之身而求之人 ，不亦外乎！”\\n孔子愀然曰：“请问何谓真？”客曰：“真者，精诚之至也。不精 不诚，不能动人。故强哭者，虽悲不哀，强怒者，虽严不屯，强亲者 ，虽笑不和。真悲无声而哀，真怒未发而威，真亲未笑而和。真在内 者，神动于外，是所以贵真也。其用于人理也，事亲则慈孝，事君则 忠贞，饮酒则欢乐，处丧则悲哀。忠贞以功为主，饮酒以乐为主，处 丧以哀为主，事亲以适为主。功成之美，无一其迹矣；事亲以适，不 论所以矣；饮酒以乐，不选其具矣；处丧以哀，无问其礼矣。礼者， 世俗之所为也；真者，所以受于天也，自然不可易也。故圣人法天贵 真，不拘于俗。愚者反此。不能法天而恤于人，不知贵真，禄禄而受 变于俗，故不足。惜哉，子之蚤湛于伪而晚闻大道也！”\\n孔子再拜而起曰：“今者丘得遇也，若天幸然。先生不羞而比之服 役而身教之。敢问舍所在，请因受业而卒学大道。”客曰：“吾闻之 ，可与往者，与之至于妙道；不可与往者，不知其道。慎勿与之，身 乃无咎。子勉之，吾去子矣，吾去子矣！”乃剌船而去，延缘苇间。\\n颜渊还车，子路授绥，孔子不顾，待水波定，不闻拏音而后敢乘。 子路旁车而问曰：“由得为役久矣，未尝见夫子遇人如此其威也。万 乘之主，千乘之君，见夫子未尝不分庭伉礼，夫子犹有倨傲之容。今 渔父杖拏逆立，而夫子曲要磬折，言拜而应，得无太甚乎！门人皆怪 夫子矣，渔父何以得此乎！”孔子伏轼而叹，曰：“甚矣，由之难化 也！湛于礼义有间矣，而朴鄙之心至今未去。进，吾语汝：夫遇长不 敬，失礼也；见贤不尊，不仁也。彼非至人，不能下人。下人不精， 不得其真，故长伤身。惜哉！不仁之于人也，祸莫大焉，而由独擅之。 且道者，万物之所由也。庶物失之者死，得之者生。为事逆之则败， 顺之则成。故道之所在，圣人尊之。今之渔父之于道，可谓有矣，吾 敢不敬乎！”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 566, \"excerpt_end\": 1988, \"chapter_text_length\": 1988, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"真者\", \"精诚之至也\"], \"focus_terms_found_in_chapter\": [\"真者\", \"精诚之至也\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"真者\", \"offset\": 1263, \"read_args\": {\"book_id\": \"84adfb4d0c0b\", \"chapter_idx\": 32, \"offset\": 1063, \"focus\": \"真者\"}}, {\"term\": \"真者\", \"offset\": 1468, \"read_args\": {\"book_id\": \"84adfb4d0c0b\", \"chapter_idx\": 32, \"offset\": 1268, \"focus\": \"真者\"}}, {\"term\": \"精诚之至也\", \"offset\": 1266, \"read_args\": {\"book_id\": \"84adfb4d0c0b\", \"chapter_idx\": 32, \"offset\": 1066, \"focus\": \"精诚之至也\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"f5198eef4e02e9332d5c585c23003dee04711c736354bddd01df2822ecc3107f\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/84adfb4d0c0b?ch=32\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[566, 1988]], \"covered_characters\": 1422, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 58.1,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 2,
+      "focus": "乍见孺子将入于井",
+      "max_chars": 1600
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"chapter_idx\": 2, \"title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"text\": \"哉？麒麟之于走兽，凤凰之于飞鸟，太山之于丘垤，河海之于行潦，类也。圣人之于民，亦类也。出于其类，拔乎其萃，自生民以来，未有盛于孔子也。’”\\n公孙丑章句上·第三节\\n孟子曰：“以力假仁者霸，霸必有大国，以德行仁者王，王不待大。汤以七十里，文王以百里。以力服人者，非心服也，力不赡也；以德服人者，中心悦而诚服也，如七十子之服孔子也。诗云：‘自西自东，自南自北，无思不服。’此之谓也。”\\n公孙丑章句上·第四节\\n孟子曰：“仁则荣，不仁则辱。今恶辱而居不仁，是犹恶湿而居下也。\\n如恶之，莫如贵德而尊士，贤者在位，能者在职。国家闲暇，及是时明其政刑。虽大国，必畏之矣。诗云：‘迨天之未阴雨，彻彼桑土，绸缪牖户。今此下民，或敢侮予？’孔子曰：‘为此诗者，其知道乎！能治其国家，谁敢侮之？’\\n今国家闲暇，及是时般乐怠敖，是自求祸也。祸褔无不自己求之者。诗云：‘永言配命，自求多褔。’太甲曰：‘天作孽，犹可违；自作孽，不可活。’此之谓也。”\\n公孙丑章句上·第五节\\n孟子曰：“尊贤使能，俊杰在位，则天下之士皆悦而愿立于其朝矣。市廛而不征，法而不廛，则天下之商皆悦而愿藏于其市矣。关讥而不征，则天下之旅皆悦而愿出于其路矣。耕者助而不税，则天下之农皆悦而愿耕于其野矣。廛无夫里之布，则天下之民皆悦而愿为之氓矣。信能行此五者，则邻国之民仰之若父母矣。率其子弟，攻其父母，自生民以来，未有能济者也。如此，则无敌于天下。无敌于天下者，天吏也。然而不王者，未之有也。”\\n公孙丑章句上·第六节\\n孟子曰：“人皆有不忍人之心。先王有不忍人之心，斯有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。\\n所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\\n由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。\\n凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”\\n公孙丑章句上·第七节\\n孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤人。巫匠亦然，故术不可不慎也。孔子曰：‘里仁为美。择不处仁，焉得智？’夫仁，天之尊爵也，人之安宅也。莫之御而不仁，是不智也。不仁、不智、无礼、无义，人役也。人役而耻为役，由弓人而耻为弓，矢人而耻为矢也。如耻之，莫如为仁。仁者如射，射者正己而后发。发而不中，不怨胜己者，反求诸己而已矣。”\\n公孙丑章句上·第八节\\n孟子曰：“子路，人告之以有过则喜。禹闻善言则拜。大舜有大焉，善与人同。舍己从人，乐取于人以为善。自耕稼、陶、渔以至为帝，无非取于人者。取诸人以为善，是与人为善者也。故君子莫大乎与人为善。”\\n公孙丑章句上·第九节\\n孟子曰：“伯夷，非其君不事，非其友不友。不立于恶人之朝，不与恶人言。立于恶人之朝，与恶人言，如以朝衣朝冠坐于涂炭。推恶恶之心，思与乡人立，其冠不正，望望然去之，若将浼焉。是故诸侯虽有善其辞命而至者，不受也。不受也者，是亦不屑就已。柳下惠，不羞污君，不卑小官。进不隐贤，必以其道。遗佚而不怨，阨穷而不悯。故曰：‘尔为尔，我为我，虽袒裼裸裎于我侧，尔焉能浼我哉？’故由由然与之偕而不自失焉，援而止之而止。援而止之而止者，是亦不屑去已。”\\n孟子曰：“伯夷隘，柳下惠不恭。隘与不恭，君子不由也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2060, \"excerpt_end\": 3538, \"chapter_text_length\": 3538, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 460, \"focus_found\": true, \"focus_terms_matched\": [\"乍见孺子将入于井\"], \"focus_terms_found_in_chapter\": [\"乍见孺子将入于井\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"乍见孺子将入于井\", \"offset\": 2760, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"offset\": 2560, \"focus\": \"乍见孺子将入于井\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"0e3a170ae8ec7ef190feca45b4471f30607ee8be82145bc6b557cdd5f1364d1a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/dd03ec6572e7?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"孟子\", \"canonical_title\": \"孟子\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2060, 3538]], \"covered_characters\": 1478, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 59.5,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "体验机 经验机器"
+     },
+     "status": "empty",
+     "duration_seconds": 1.42,
+     "result_full": "{\"query\": \"体验机 经验机器\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    }
+   ],
+   "answer": "**先说结论的形状**：这个问题不该有一个统一的“还有/没有”。答案取决于“安慰”里哪一样东西是你要的，而这几样东西的价值结构并不相同——其中一样可以被算力和优化完全接管，另一样在结构上根本不处在“可以被取代”的关系里。\n\n## 一、“效果”必须先分项，否则前提本身没有内容\n\n“AI 比我更会安慰人”是个比较句，得先定指标。至少四项，性质不同：\n\n1. 痛苦强度的即时下降（自评、生理指标）；\n2. 措辞是否恰当——说出你自己说不出的话；\n3. 是否感到被理解；\n4. 有没有人真的因为你受苦而不安。\n\n1、2 高度可计算、可优化，AI 大概真能赢。3、4 不是文本的属性：第 4 项是关于另一个人状态的事实，它不参加“更会”这场的比赛。所以“更会安慰”在前两项上可能为真，在后两项上这句话无所谓真假——不是 AI 更差，是指标不适用。\n\n## 二、一项研究结果顺手修正了你的前提\n\n同一批 AI 生成的共情回应，被随机标注为“人写的”或“AI 写的”：标注为人的那一组被评为更有共情、更支持，唤起更多积极情绪（Rubin 等，2025，OSF 预印本，九项研究 N=6282）。另有实验发现，情感支持经由“感知到的支持性”降低压力这条链，在真人身上比在聊天机器人身上更强（Meng & Dai, *JCMC* 2021）。**两篇我都只读到摘要，其方法细节未读，不复述、不评判。**\n\n这意味着“安慰的效果”不是措辞的函数，而是措辞＋归属的函数。它有双向后果：\n\n- 它削弱“效果可以被独立计算和优化”这一前提——你无法在固定归属的条件下优化它；\n- 它给出一个更尖锐的替身问题：起作用的是**“以为有人在乎”**。若这个信念可以被伪造，被伪造而来的安慰算不算安慰？这里必须把“的确有人在乎”与“以为有人在乎”分开。这才是真正分岔的地方。\n\n## 三、两种读法，两种答案\n\n**读法 A：安慰＝减轻痛苦这一结果。** 那么真心不剩独立价值。它的价值全部经由结果兑现，更好的手段出现，它就贬值。这不是冷酷，而是不把价值放在它没有的地方。止痛药不必真心，也没人为吗啡是否真诚辩护。补一句诚实的：真心既非必要也非充分——笨拙的真心会伤人（“这算什么大不了的事”）。庄子《渔父》说“不精不诚，不能动人。故强哭者，虽悲不哀”；作为普遍的经验命题这可疑（优化过的措辞确实动得了人），读成“强哭给出的是悲的形状，而不是哀”更站得住——得到的东西是种类不同，不是数量不同。**这个读法是我的解释，不是原文的意思。**\n\n**读法 B：安慰＝有人真的在乎你受苦。** 那就不是“更有效”能替代的关系。亚里士多德把友爱分为因有用、因快乐、因朋友自身三种：因有用之友爱，爱的是自己得到的好处，对方不再有用时它容易消逝（1156a10–25）。如果我的安慰对你只有“用”，它在结构上就是可替换的——这不是缺陷，是它的种类。而完备的友爱是“因朋友本身之故而愿望他好”，并且需要时间：除非一个人向另一个人证明了自己值得爱、确立了信任，人们才能相互承认为朋友（约 1156b25 以下）。这里给出一个不能被优化掉的东西：**历史**。“从前一起吃过盐巴”不能被当场生产出来。\n\n康德为这类主张提供了语言：有价格的容许等价物取代，超越一切价格的则不容有等价物；他并把话说得更狠——出自原理的仁爱“具有一种内在的价值……它们的价值并不在于由此产生的结果”，“无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西”（《道德形而上学的奠基》，目的王国部分）。但要说清楚：**康德衡量的是行为者的道德价值，不是被安慰者得到的好处**，搬过来需要额外一步论证；而且“不容等价物”本身是有争议的价值主张，不是被证明的事实。\n\n## 四、我为什么给 B 更多分量，以及 B 最难的对手\n\n最难的反驳是：这是来源崇拜。半夜三点崩溃、朋友睡了，AI 说了合适的话，我真的被安慰到——此时非真人不可，像把安慰当圣物。\n\n我接受这一点，但要区分：若要的是当下不被淹没，拒绝 AI 的帮助确实荒谬，此时“真心”不构成理由，因为此刻需要的就是 A 类东西。来源只在被安慰者要的是“有人与我共同承担”时才进入理由。\n\n真正值得说的差别在这里：如果我把安慰当作一个待优化的结果来做，我注意的对象就不是你的处境，而是你的痛苦读数。这不是“心不诚”的心理描写，是结构的差别——你成了被操作的状态，而非被回应的对象。而这个差别对结果度量是隐形的，因为度量本身就是被优化的目标，它记录不到自己是不是最好的那个东西。由此，“AI 更会安慰人，所以真心没价值”最多证到“真心在该指标上没有优势”；要走到“没有价值”，得先接受“安慰的价值全由该指标兑现”——那是把结论预先放进前提。\n\n## 五、什么会改变答案\n\n- **对方需要此刻的缓解**：AI 是真安慰，不是安慰的仿制品；\n- **对方需要“有人与我一起承担这件事”**：措辞优势不改变答案，但这个需要有时对具体的人不公平——它要求对方以你的方式在乎；\n- **你在意的是“以为有人在乎”就够了**：问题就转成你愿不愿意要一个可能被伪造的东西。这是另一个问题，不是同一个；\n- **还有一层**：AI 赢得漂亮的地方——永不疲惫、永不评判、随叫随到——正是真人不可能也不该去比的赢面。把比赛设在这里，输得没有意义。\n\n所以我不给你“真心当然有价值”。真心的价值不在效果竞赛的赛道上；但如果你不承认除痛苦读数之外还有别的东西值得要，那真心确实只剩它带来的那点效果，AI 更强，它就更没用。这是诚实的结论，不该用漂亮话盖住。\n\n---\n出处（均为本地版本实际读到的位置）：《庄子·渔父》[阅读地址](https://deepphilosophy.top/reader/84adfb4d0c0b?ch=32)；《康德文集·道德形而上学的奠基》（目的王国、价格与尊严一节）[阅读地址](https://deepphilosophy.top/reader/390398aff8d0?ch=26)；《尼各马可伦理学》第八卷友爱论 [阅读地址](https://deepphilosophy.top/reader/e574c8e7f515?ch=8)；《孟子·公孙丑上》第六节（“乍见孺子将入于井……非所以内交于孺子之父母也”）[阅读地址](https://deepphilosophy.top/reader/dd03ec6572e7?ch=2)——孟子的要点是借此论证“人皆有不忍人之心”这一能力的存在，而非比较动机高下，用作本问题的论据还需一步桥接。",
+   "answer_chars": 2720,
+   "done_content": "**先说结论的形状**：这个问题不该有一个统一的“还有/没有”。答案取决于“安慰”里哪一样东西是你要的，而这几样东西的价值结构并不相同——其中一样可以被算力和优化完全接管，另一样在结构上根本不处在“可以被取代”的关系里。\n\n## 一、“效果”必须先分项，否则前提本身没有内容\n\n“AI 比我更会安慰人”是个比较句，得先定指标。至少四项，性质不同：\n\n1. 痛苦强度的即时下降（自评、生理指标）；\n2. 措辞是否恰当——说出你自己说不出的话；\n3. 是否感到被理解；\n4. 有没有人真的因为你受苦而不安。\n\n1、2 高度可计算、可优化，AI 大概真能赢。3、4 不是文本的属性：第 4 项是关于另一个人状态的事实，它不参加“更会”这场的比赛。所以“更会安慰”在前两项上可能为真，在后两项上这句话无所谓真假——不是 AI 更差，是指标不适用。\n\n## 二、一项研究结果顺手修正了你的前提\n\n同一批 AI 生成的共情回应，被随机标注为“人写的”或“AI 写的”：标注为人的那一组被评为更有共情、更支持，唤起更多积极情绪（Rubin 等，2025，OSF 预印本，九项研究 N=6282）。另有实验发现，情感支持经由“感知到的支持性”降低压力这条链，在真人身上比在聊天机器人身上更强（Meng & Dai, *JCMC* 2021）。**两篇我都只读到摘要，其方法细节未读，不复述、不评判。**\n\n这意味着“安慰的效果”不是措辞的函数，而是措辞＋归属的函数。它有双向后果：\n\n- 它削弱“效果可以被独立计算和优化”这一前提——你无法在固定归属的条件下优化它；\n- 它给出一个更尖锐的替身问题：起作用的是**“以为有人在乎”**。若这个信念可以被伪造，被伪造而来的安慰算不算安慰？这里必须把“的确有人在乎”与“以为有人在乎”分开。这才是真正分岔的地方。\n\n## 三、两种读法，两种答案\n\n**读法 A：安慰＝减轻痛苦这一结果。** 那么真心不剩独立价值。它的价值全部经由结果兑现，更好的手段出现，它就贬值。这不是冷酷，而是不把价值放在它没有的地方。止痛药不必真心，也没人为吗啡是否真诚辩护。补一句诚实的：真心既非必要也非充分——笨拙的真心会伤人（“这算什么大不了的事”）。庄子《渔父》说“不精不诚，不能动人。故强哭者，虽悲不哀”；作为普遍的经验命题这可疑（优化过的措辞确实动得了人），读成“强哭给出的是悲的形状，而不是哀”更站得住——得到的东西是种类不同，不是数量不同。**这个读法是我的解释，不是原文的意思。**\n\n**读法 B：安慰＝有人真的在乎你受苦。** 那就不是“更有效”能替代的关系。亚里士多德把友爱分为因有用、因快乐、因朋友自身三种：因有用之友爱，爱的是自己得到的好处，对方不再有用时它容易消逝（1156a10–25）。如果我的安慰对你只有“用”，它在结构上就是可替换的——这不是缺陷，是它的种类。而完备的友爱是“因朋友本身之故而愿望他好”，并且需要时间：除非一个人向另一个人证明了自己值得爱、确立了信任，人们才能相互承认为朋友（约 1156b25 以下）。这里给出一个不能被优化掉的东西：**历史**。“从前一起吃过盐巴”不能被当场生产出来。\n\n康德为这类主张提供了语言：有价格的容许等价物取代，超越一切价格的则不容有等价物；他并把话说得更狠——出自原理的仁爱“具有一种内在的价值……它们的价值并不在于由此产生的结果”，“无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西”（《道德形而上学的奠基》，目的王国部分）。但要说清楚：**康德衡量的是行为者的道德价值，不是被安慰者得到的好处**，搬过来需要额外一步论证；而且“不容等价物”本身是有争议的价值主张，不是被证明的事实。\n\n## 四、我为什么给 B 更多分量，以及 B 最难的对手\n\n最难的反驳是：这是来源崇拜。半夜三点崩溃、朋友睡了，AI 说了合适的话，我真的被安慰到——此时非真人不可，像把安慰当圣物。\n\n我接受这一点，但要区分：若要的是当下不被淹没，拒绝 AI 的帮助确实荒谬，此时“真心”不构成理由，因为此刻需要的就是 A 类东西。来源只在被安慰者要的是“有人与我共同承担”时才进入理由。\n\n真正值得说的差别在这里：如果我把安慰当作一个待优化的结果来做，我注意的对象就不是你的处境，而是你的痛苦读数。这不是“心不诚”的心理描写，是结构的差别——你成了被操作的状态，而非被回应的对象。而这个差别对结果度量是隐形的，因为度量本身就是被优化的目标，它记录不到自己是不是最好的那个东西。由此，“AI 更会安慰人，所以真心没价值”最多证到“真心在该指标上没有优势”；要走到“没有价值”，得先接受“安慰的价值全由该指标兑现”——那是把结论预先放进前提。\n\n## 五、什么会改变答案\n\n- **对方需要此刻的缓解**：AI 是真安慰，不是安慰的仿制品；\n- **对方需要“有人与我一起承担这件事”**：措辞优势不改变答案，但这个需要有时对具体的人不公平——它要求对方以你的方式在乎；\n- **你在意的是“以为有人在乎”就够了**：问题就转成你愿不愿意要一个可能被伪造的东西。这是另一个问题，不是同一个；\n- **还有一层**：AI 赢得漂亮的地方——永不疲惫、永不评判、随叫随到——正是真人不可能也不该去比的赢面。把比赛设在这里，输得没有意义。\n\n所以我不给你“真心当然有价值”。真心的价值不在效果竞赛的赛道上；但如果你不承认除痛苦读数之外还有别的东西值得要，那真心确实只剩它带来的那点效果，AI 更强，它就更没用。这是诚实的结论，不该用漂亮话盖住。\n\n---\n出处（均为本地版本实际读到的位置）：《庄子·渔父》[阅读地址](https://deepphilosophy.top/reader/84adfb4d0c0b?ch=32)；《康德文集·道德形而上学的奠基》（目的王国、价格与尊严一节）[阅读地址](https://deepphilosophy.top/reader/390398aff8d0?ch=26)；《尼各马可伦理学》第八卷友爱论 [阅读地址](https://deepphilosophy.top/reader/e574c8e7f515?ch=8)；《孟子·公孙丑上》第六节（“乍见孺子将入于井……非所以内交于孺子之父母也”）[阅读地址](https://deepphilosophy.top/reader/dd03ec6572e7?ch=2)——孟子的要点是借此论证“人皆有不忍人之心”这一能力的存在，而非比较动机高下，用作本问题的论据还需一步桥接。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "book": "尼各马可伦理学[注释导读本]",
+     "chapter": "第八卷 友爱论",
+     "book_id": "e574c8e7f515",
+     "chapter_idx": 8,
+     "author": "亚里士多德",
+     "evidence_id": "read_811e3159230d",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "似的德性品质而生的友爱。因为在这种友爱上，他们以同样的方式愿望对方好，不是出于【367】这里别的因缘，而是因为他们都友善，本身都有高的“有益”当然贵品质。而这种因朋友本身之故而愿望他好的与前面说的“有1156b10友爱，就是完善意义上的友爱，因为他们对对用”是同一个词：方友爱，不是出于偶然因缘，而是出于每个人nitzlich，但“有都爱对方的品质。所以在这些人之间存在的友用”在我们的语境爱，只要他们的德性品质还在，就一直存在，中过于功利化了，而德性就是持久的品质。所以在完善的友爱其次，在这种友善关系中的每个人原本就的意义上，还是用是友善并对朋友友善的。因为德性高贵者都是“有益”这个词来原本友善，同时又相互有益的【367】。而且他表达可能更加切合1156b15们在同样的方式上令人快乐，因为德性既原本亚里士多德这里的就令人愉悦，又能让对方感到欢喜。每个人既语义。对他的也对与他相似的行为方式感到愉悦：有【368】 Reclam德之人既有相同的也有相似的行为方式。【368】版的翻译做了一点这种友爱是持久的，有其善的因缘，在朋引申，它把“相友当中必须有的东西都汇集在这种友爱中了。同的行为方式”译1156b20因为每种友爱都基于某一善或某一快乐，善和作：“每个人都有快乐中的每一个或者是就本身而言的，或者单源自其固有品质的纯地是对朋友而言的，此外还基于某种程度的行为方式”；把“相品质类似性。但在",
+     "quoted_passages": [
+      "因朋友本身之故而愿望他好"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 20542,
+     "reader_coordinate_valid": true
+    },
+    {
+     "book": "康德文集",
+     "chapter": "道德形而上学的奠基",
+     "book_id": "390398aff8d0",
+     "chapter_idx": 26,
+     "author": "伊曼努尔·康德",
+     "evidence_id": "read_4ce3ce1f9abd",
+     "used": true,
+     "source_type": "primary",
+     "access_level": "PASSAGE_READ",
+     "excerpt": "具有尊严的。工作中的技巧和勤奋具有一种市场价格；机智、活跃的想象力和情绪具有一种情感价格；与此相反，出自原理（不是出自本能）的信守承诺、仁爱具有一种内在的价值。无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西；因为它们的价值并不在于由此产生的结果，并不在于它们所造成的好处和用途，而是在于意念，也就是说，在于意志的准则，即使成果不利于这些准则，它们也仍然要以这种方式在行为中显露自己。这些行为也不需要任何一种主观的气质或者趣味的推荐，让人以直接的认可和满意去看待它们；它们也不需要对它们的直接癖好或者情感。它们把实施它们的意志呈现为一种直接敬重的对象；对此，所需要的只是理性，以便责成意志、而不是哄骗意志去实施这些行为。对于义务来说，后者根本就是一种矛盾。因此，这种评价使人认识到这样一种思维方式的价值是尊严，并使它无限地超越一切价格；根本不能用价格对这种思维方式进行估量和比较，而不仿佛是损害它的圣洁性。\n如今，究竟是什么使道德上善的意念或者德性有资格提出如此之高的要求呢？无非是这种意念为理性存在者争得的对普遍立法的参与权，这种意念还通过这种参与权使理性存在者适合于成为一个可能的目的王国的成员。理性存在者由于它自己的本性，已经注定具有这种参与权；它就是目的自身，并恰恰因此而是目的王国中的立法者，就一切自然法则而言是自由的，只服从它给自己所立的、使他的准则能够属于一种普遍立法",
+     "quoted_passages": [
+      "无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西"
+     ],
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 62981,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 17,
+    "display_citations": 2,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "尼各马可伦理学[注释导读本]",
+       "chapter": "第八卷 友爱论",
+       "book_id": "e574c8e7f515",
+       "chapter_idx": 8,
+       "author": "亚里士多德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "似的德性品质而生的友爱。因为在这种友爱上，他们以同样的方式愿望对方好，不是出于【367】这里别的因缘，而是因为他们都友善，本身都有高的“有益”当然贵品质。而这种因朋友本身之故而愿望他好的与前面说的“有1156b10友爱，就是完善意义上的友爱，因为他们对对用”是同一个词：方友爱，不是出于偶然因缘，而是出于每个人nitzlich，但“有都爱对方的品质。所以在这些人之间存在的友用”在我们的语境爱，只要他们的德性品质还在，就一直存在，中过于功利化了，而德性就是持久的品质。所以在完善的友爱其次，在这种友善关系中的每个人原本就的意义上，还是用是友善并对朋友友善的。因为德性高贵者都是“有益”这个词来原本友善，同时又相互有益的【367】。而且他表达可能更加切合1156b15们在同样的方式上令人快乐，因为德性既原本亚里士多德这里的就令人愉悦，又能让对方感到欢喜。每个人既语义。对他的也对与他相似的行为方式感到愉悦：有【368】 Reclam德之人既有相同的也有相似的行为方式。【368】版的翻译做了一点这种友爱是持久的，有其善的因缘，在朋引申，它把“相友当中必须有的东西都汇集在这种友爱中了。同的行为方式”译1156b20因为每种友爱都基于某一善或某一快乐，善和作：“每个人都有快乐中的每一个或者是就本身而言的，或者单源自其固有品质的纯地是对朋友而言的，此外还基于某种程度的行为方式”；把“相品质类似性。但在",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 20542,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "康德文集",
+       "chapter": "道德形而上学的奠基",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 26,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "具有尊严的。工作中的技巧和勤奋具有一种市场价格；机智、活跃的想象力和情绪具有一种情感价格；与此相反，出自原理（不是出自本能）的信守承诺、仁爱具有一种内在的价值。无论是自然还是艺术，都不包含任何在欠缺这些东西时能够取而代之的东西；因为它们的价值并不在于由此产生的结果，并不在于它们所造成的好处和用途，而是在于意念，也就是说，在于意志的准则，即使成果不利于这些准则，它们也仍然要以这种方式在行为中显露自己。这些行为也不需要任何一种主观的气质或者趣味的推荐，让人以直接的认可和满意去看待它们；它们也不需要对它们的直接癖好或者情感。它们把实施它们的意志呈现为一种直接敬重的对象；对此，所需要的只是理性，以便责成意志、而不是哄骗意志去实施这些行为。对于义务来说，后者根本就是一种矛盾。因此，这种评价使人认识到这样一种思维方式的价值是尊严，并使它无限地超越一切价格；根本不能用价格对这种思维方式进行估量和比较，而不仿佛是损害它的圣洁性。\n如今，究竟是什么使道德上善的意念或者德性有资格提出如此之高的要求呢？无非是这种意念为理性存在者争得的对普遍立法的参与权，这种意念还通过这种参与权使理性存在者适合于成为一个可能的目的王国的成员。理性存在者由于它自己的本性，已经注定具有这种参与权；它就是目的自身，并恰恰因此而是目的王国中的立法者，就一切自然法则而言是自由的，只服从它给自己所立的、使他的准则能够属于一种普遍立法",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 62981,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "论语",
+       "chapter": "学而篇",
+       "book_id": "d9272a80942a",
+       "chapter_idx": 2,
+       "author": "孔子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”\n有子曰：“其为人也孝弟，而好犯上者，鲜矣；不好犯上而好作乱者，未之有也。君子务本，本立而道生。孝弟也者，其为仁之本与！”\n子曰：“巧言令色，鲜矣仁！”\n曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？”\n子曰：“道千乘之国，敬事而信，节用而爱人，使民以时。”\n子曰：“弟子入则孝，出则弟，谨而信，泛爱众，而亲仁，行有余力，则以学文。”\n子夏曰：“贤贤易色；事父母，能竭其力；事君，能致其身；与朋友交，言而有信。虽曰未学，吾必谓之学矣。”\n子曰：“君子不重则不威，学则不固。主忠信，无友不如己者，过，则勿惮改。”\n曾子曰：“慎终追远，民德归厚矣。”\n子禽问于子贡曰：“夫子至于是邦也，必闻其政，求之与，抑与之与？”子贡曰：“夫子温、良、恭、俭、让以得之。夫子之求之也，其诸异乎人之求之与？”\n子曰：“父在，观其志；父没，观其行；三年无改于父之道，可谓孝矣。”\n有子曰：“礼之用，和为贵。先王之道，斯为美。小大由之，有所不行。知和而和，不以礼节之，亦不可行也。”\n有子曰：“信近于义，言可复也。恭近于礼，远耻辱也。因不失其亲，亦可宗也。”\n子曰：“君子食无求饱，居无求安，敏于事而慎于言，就有道而正焉。可谓好学也已。”\n子贡曰：“贫而无谄，富而无骄，何如？”子曰：“可也。未若贫而乐道，富而好礼者也。",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 676,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "孟子",
+       "chapter": "公孙丑章句上",
+       "book_id": "dd03ec6572e7",
+       "chapter_idx": 2,
+       "author": "孟子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "仰之若父母矣。率其子弟，攻其父母，自生民以来，未有能济者也。如此，则无敌于天下。无敌于天下者，天吏也。然而不王者，未之有也。”\n公孙丑章句上·第六节\n孟子曰：“人皆有不忍人之心。先王有不忍人之心，斯有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。\n所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\n由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。\n凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”\n公孙丑章句上·第七节\n孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤人。巫匠亦然，故术不可不慎也。孔子曰：‘里仁为美。择不处仁，焉得智？’夫仁，天之尊爵也，人之安宅也。莫之御而不仁，是不智也。不仁、不智、无礼、无义，人役也。人役而耻为役，由弓人而耻为弓，矢人而耻为矢也。如耻之，莫如为仁。仁者如射，射者正己而后发。发而不中，不怨胜己者，反求诸己而已矣。”\n公孙丑章句上·第八节\n孟子曰：“子路，人告之以有过则喜。禹闻善言则拜。大舜",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 3538,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "庄子",
+       "chapter": "渔父",
+       "book_id": "84adfb4d0c0b",
+       "chapter_idx": 32,
+       "author": "庄子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "无所陵。故田荒室露，衣食不足，征赋不属，妻妾不和，长少 无序，庶人之忧也；能不胜任，官事不治，行不清白，群下荒怠，功 美不有，爵禄不持，大夫之忧也；廷无忠臣，国家昏乱，工技不巧， 贡职不美，春秋后伦，不顺天子，诸侯之忧也；阴阳不和，寒暑不时 ，以伤庶物，诸侯暴乱，擅相攘伐，以残民人，礼乐不节，财用穷匮 ，人伦不饬，百姓淫乱，天子有司之忧也。今子既上无君侯有司之势 ，而下无大臣职事之官，而擅饰礼乐，选人伦，以化齐民，不泰多事 乎？且人有八疵，事有四患，不可不察也。非其事而事之，谓之总； 莫之顾而进之，谓之佞；希意道言，谓之谄；不择是非而言，谓之谀 ；好言人之恶，谓之谗；析交离亲，谓之贼；称誉诈伪以败恶人，谓 之慝；不择善否，两容颊适，偷拔其所欲，谓之险。此八疵者，外以 乱人，内以伤身，君子不友，明君不臣。所谓四患者：好经大事，变 更易常，以挂功名，谓之叨；专知擅事，侵人自用，谓之贪；见过不 更，闻谏愈甚，谓之很；人同于己则可，不同于己，虽善不善，谓之 矜。此四患也。能去八疵，无行四患，而始可教已。\n孔子愀然而叹，再拜而起，曰：“丘再逐于鲁，削迹于卫，伐树于 宋，围于陈蔡。丘不知所失，而离此四谤者何也？”客凄然变容曰： “甚矣，子之难悟也！人有畏影恶迹而去之走者，举足愈数而迹愈多 ，走愈疾而影不离身，自以为尚迟，疾走不休，绝力而死。不知处阴 以休影，处静以息迹，愚亦甚矣！子审仁义之间，",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 1988,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "康德文集",
+       "chapter": "道德形而上学",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 29,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "法庭上对每个人作出审判，尽管只是间接地。——充当法官，亦即使自己有可能行不义并这样陷入被起诉的案件中，也会有失国家元首的尊严（a rege male informato ad regem melius informandum［使缺乏训练的君王成为训练有素的君王］）。 所以，这就是三种不同的权力（potestas legislatoria, executorial, iudiciaria［立法权、执法权、司法权］），国家（civitas）通过这些权力而拥有自决，亦即按照自由法则自己塑造自己和维护自己。——国家的福祉就在于它们的联合（salus reipublicae suprema lex est［国家的福祉是最高的法律］）；人们必须",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "康德文集",
+       "chapter": "一般道德形而上学的划分",
+       "book_id": "390398aff8d0",
+       "chapter_idx": 47,
+       "author": "伊曼努尔·康德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "法庭上对每个人作出审判，尽管只是间接地。——充当法官，亦即使自己有可能行不义并这样陷入被起诉的案件中，也会有失国家元首的尊严（a rege male informato ad regem melius informandum［使缺乏训练的君王成为训练有素的君王］）。 所以，这就是三种不同的权力（potestas legislatoria，executorial，iudiciaria［立法权、执法权、司法权］），国家（civitas）通过这些权力而拥有自决，亦即按照自由法则自己塑造自己和维护自己。——国家的福祉就在于它们的联合（salus reipublicae suprema lex est［国家的福祉是最高的法律］）；人们必须不把",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "论语",
+       "chapter": "阳货篇",
+       "book_id": "d9272a80942a",
+       "chapter_idx": 18,
+       "author": "孔子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "者民有三疾，今也或是之亡也。古之狂也肆，今之狂也荡；古之矜也廉，今之矜也忿戾；古之愚也直，今之愚也诈而已矣。” 子曰：“巧言令色，鲜矣仁。” 子曰：“恶紫之夺朱也，恶郑声之乱雅乐也，恶利口之覆邦家者。” 子曰：“予欲无言。”子贡曰：“子如不言，则小子何述焉？”子曰：“天何言哉？四时行焉，百物生焉，天何言哉？” 孺悲欲见孔子，孔子辞以疾。将命者出户，取瑟而歌，使之闻之。 宰我问：“三年之丧，期已久矣！君子三年不为礼，礼必坏；三年不为乐，乐必崩。旧谷既没，新谷既升，钻燧改火，期可已矣。”子曰：“食夫稻，衣夫锦，于女安乎？”曰：“安！”“女安则为之！夫君子之居丧，食旨不甘，闻乐不乐，居处不安，故不为也。今女安，则为之！”宰我出，子曰：“予",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "学而第一",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 664,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "面有一专篇，我们暂且不去讨论它。 这个“仁”，就是孔子做学问的最高目的。 花言巧语 有子的话讲完了，接下来就是： 子曰：巧言令色鲜矣仁。 什么是“巧言”？现在的话是会吹、会盖。孔子说有些人很会盖，讲仁讲义比任何人讲得头头是道，但是却不脚踏实地。“令色”是态度上好像很仁义，但是假的，这些与学问都不相干。“鲜矣仁”——很少真能做到“仁”这个学问的境界，因为那是假的。我们从电视中就看得到，那个小丑表演的角色，动作一出来，就表示“巧言令色”。 “巧言令色鲜矣仁”，我经常也跟同学们讲，做领导人第一个修养是容忍。有的人不一定像小丑那样的“巧言令色”，但每个人都喜欢戴高帽子，人若能真正修养到戴高帽子感觉不舒服，而人家骂我，也和平常一样，这太不容易",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "别笑，我是正经哲学书",
+       "chapter": "人类言谈举止的基础",
+       "book_id": "a1448e164acc",
+       "chapter_idx": 8,
+       "author": "富增章成",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "（爱），会自然流露于外而待人有礼，所以这位老兄应该是放错重点了吧！ 装点外表之前，要先修养内在 《论语·学而篇》，子曰：巧言令色，鲜矣仁！ 孔子讨厌爱修饰外表又花言巧语的人，但是却能在朴素的人身上看见美好的德行。想让内在的、主观的“仁”也就是体贴之心能自然表露，表现于外在的行动上，那么就应该先存有体贴之心，这样就能自然表现于外。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国哲学辞典",
+       "chapter": "四画",
+       "book_id": "e5a8abe31f07",
+       "chapter_idx": 6,
+       "author": "韦政通",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "，游于艺。”“子日：仁远乎哉，我欲仁斯仁至矣。”《卫灵》：“子日：志士仁人，无 求生以害仁，有杀身以成仁。”《学而》：“巧言令色，鲜矣仁。”《孟子·公孙丑上》： “孟子日：仁则荣，不仁则辱。今恶辱面居不仁，是犹恶湿而居下也。《离娄下》： “孟子日：君子所以异于人者，以其存心也，君子以仁存心，”《告子上》：“孟 子日：虽存乎人者，岂无仁义之心哉。”“孟子日：仁，人心也。”“仁、义、礼、智，非 由外我也，我固有之也。”《尽心上》：“仁、义、礼、智根于心。”《左传·襄公九 年》：“体仁足以长人。\"《襄公十一年》：“礼以行之、信以守之，仁以厉之。”《昭公 六年》：“行之以礼，守之以信，奉之以仁。”《定公四年》：“违强凌鸦，非勇也；乘人 之约",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "庄子说什么",
+       "chapter": "渔父",
+       "book_id": "c3c401982587",
+       "chapter_idx": 16,
+       "author": "韩鹏杰",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "不修之身而求 [1601] 之人，不亦外 [1602] 乎？” 孔子愀然曰：“请问何谓真？” 客曰：“真者，精诚之至也。不精不诚，不能动人。故强哭者，虽悲不哀；强怒者，虽严不威；强亲者，虽笑不和。真悲无声而哀，真怒未发而威，真亲未笑而和。真在内者，神动于外，是所以贵真也。其用于人理 [1603] 也，事亲则慈孝，事君则忠贞，饮酒则欢乐，处丧则悲哀。忠贞以功为主，饮酒以乐为主，处丧以哀为主，事亲以适为主。功成之美，无一其迹矣。事亲以适，不论所以矣；饮酒以乐，不选其具矣；处丧以哀，无问其礼矣。礼者，世俗之所为也；真者，所以受于天 [1604] 也，自然不可易也。故圣人法天贵真，不拘于俗。愚者反此。不能法天而恤 [1605] 于人，不知贵",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国哲学辞典",
+       "chapter": "八画",
+       "book_id": "e5a8abe31f07",
+       "chapter_idx": 10,
+       "author": "韦政通",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "鬼》：“反已而不穷，循古而不摩，大 人之诚。”又：“修胸中之诚，以应天地之情而勿樱。”又《渔父》：“真者，精诚之至 也，不精不诚不能动人，”《萄子·修身》：端诚信，拘守而详。”又《乐论》：“著诚 去伪，礼之经也。”又《大略》：“小人不诚于内，而求之于外。”《周易·文言传》： “闲邪存其诚。”又：“修辞立其诚。”《礼记·学记》：“使人不由其诚，教人不尽其 材，其施之也俘，其求之也拂。” （二）工夫意义的诚《孟子·尽心上》：“万物皆备于我矣，反身而诚，乐莫 大焉。”又《离娄上》：“悦亲有道，反身不诚，不悦于亲矣，是故诚者，天之道 也，思诚者，人之道也。”《中庸》：“顺乎亲有道，反诸身不诚，不顺乎亲矣。 诚者，天之道，诚之者，人之道也。诚",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国哲学简史",
+       "chapter": "第七章 儒家的理想主义派：孟子",
+       "book_id": "32093eed6ff1",
+       "chapter_idx": 8,
+       "author": "冯友兰",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "认为是“人”性部分。 孟子提出大量论证，来支持性善说，有段论证是：“人皆有不忍人之心。……今人乍见孺子将入于井，皆有怵惕恻隐之心。……由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。……凡有四端于我者，知皆扩而充之矣。若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”（《孟子·公孙丑上》） 一切人的本性中都有此“四端”，若充分扩充，就变成四种“常德”，即儒家极其强调的仁、义、礼、智。这些“德”，若不受外部环境的阻碍，就会从内部自然发展（即扩充），有如种子自己长成树",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "哲学进化论：一场关于世界、意识、道德的无止境追问",
+       "chapter": "第九章 情感中的哲学",
+       "book_id": "c10883852202",
+       "chapter_idx": 9,
+       "author": "李浩然",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "们有这样的反应没有经过思考，是自然而然产生的。这种自发的反应被孟子先后用两个名字加以称呼：一个叫“不忍人之心”，一个叫“恻隐之心”。前者是对这种反应引发原因的描述（因为不忍心看到、听到别人的痛苦而产生的心理反应），后者是对这种反应造成结果的描述（“恻”是悲伤，“隐”是伤痛，恻隐之心就是感到难过的心理反应）。 综合这两种表述，我们可以知道，看见小孩子将要坠井的瞬间产生的反应说明了人性中有这样一个特点：如果看到他人受苦，我们会随之难过。孟子对这个特点做出了两个判断：第一，每个人的人性都具有这个特点；第二，这个特点就是仁的开端。孟子在论述“仁之端”时顺便提到，人性之中除了不忍人之心或恻隐之心，还有其他的天生性质，这些性质是人的适宜性、礼仪",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "幸福的底层逻辑：关于人生的7堂哲学课",
+       "chapter": "仁者，爱人",
+       "book_id": "e0b0b534b86e",
+       "chapter_idx": 35,
+       "author": "刘小播",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "的本分，这样社会才能井然有序。 孟子继承了孔子的“仁”学，并将其发展为“仁义礼智”四种道德，他为此还提出了“四端说”：“恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。”这句话是说，仁是由恻隐之心发展而来的；义是由羞耻之心发展而来的；礼是由辞让之心发展而来的；智是由是非之心发展而来的。 孟子认为，仁义礼智都来自人的本性，来自人的内心。虽然它们都是儒家最基本的道德品质，但实际上“仁”才是其中的核心，因为其他三种都是人的一种外在表现，只有“仁”才是一种个体内在的人格特质。 从个人推及国家，孟子提出个体的“仁”是一种善良的本性，而一个国家的“仁”是一种爱护百姓的本性。由此，他提",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国哲学十九讲",
+       "chapter": "第十四讲　《大乘起信论》之“一心开二门”",
+       "book_id": "167cb7f3a631",
+       "chapter_idx": 14,
+       "author": "牟宗三",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": ") 见康德所著的《纯粹理性批判·纯粹理性的第三个背反》，史密斯英译本，第四百零九页。 (31) 《孟子·公孙丑》篇曰：“恻隐之心，仁之端也。羞恶之心，义之端也。辞让之心，礼之端也。是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也。谓其君不能者，贼其君者也。” (32) 见《孟子·尽心》篇。",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 17,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 80.805,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 11.3,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_roN98MPSaAgZtrBZ9sQ74261"
+    },
+    {
+     "t": 11.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_ErBFPfSME2UJ7sy6twqU1821"
+    },
+    {
+     "t": 11.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_BdMHI5ijWem65YoqJTSJ9574"
+    },
+    {
+     "t": 11.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_aAn70HJWvlFKXhQVjCdV2349"
+    },
+    {
+     "t": 11.8,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_04_wlSoEOyOZiz1sRN7WXkh0389"
+    },
+    {
+     "t": 11.9,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_05_JC8VqS2BPKGAZdNasSWK8938"
+    },
+    {
+     "t": 12.1,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.042,
+     "result_chars": 1922,
+     "result_head": "{\"query\": \"友爱 因朋友自身之故\", \"results\": [{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"author\": \"亚里士多德\", \"chapter_idx\": 8, \"chapter_title\": \"第八卷 友爱论\","
+    },
+    {
+     "t": 12.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.137,
+     "result_chars": 3700,
+     "result_head": "{\"query\": \"尊严 价格 等价物\", \"results\": [{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"author\": \"伊曼努尔·康德\", \"chapter_idx\": 26, \"chapter_title\": \"道德形而上学的奠基\", \"cita"
+    },
+    {
+     "t": 13.5,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "success",
+     "duration_s": 1.441,
+     "result_chars": 5068,
+     "result_head": "{\"query\": \"sincerity authenticity of care whether source of comfort matters\", \"results\": [{\"source_record_id\": \"doi:10.1145/3025453.3025715\", \"title\": \"Connecti"
+    },
+    {
+     "t": 13.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.825,
+     "result_chars": 3962,
+     "result_head": "{\"query\": \"巧言令色，鲜矣仁\", \"results\": [{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"author\": \"孔子\", \"chapter_idx\": 2, \"chapter_title\": \"学而篇\", \"citation_label\": \"【"
+    },
+    {
+     "t": 13.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.825,
+     "result_chars": 1841,
+     "result_head": "{\"query\": \"不精不诚，不能动人\", \"results\": [{\"book_id\": \"c3c401982587\", \"book_title\": \"庄子说什么\", \"author\": \"韩鹏杰\", \"chapter_idx\": 16, \"chapter_title\": \"渔父\", \"citation_label"
+    },
+    {
+     "t": 14.1,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "success",
+     "duration_s": 2.071,
+     "result_chars": 5288,
+     "result_head": "{\"query\": \"AI empathy versus human empathy emotional support perceived\", \"results\": [{\"source_record_id\": \"doi:10.1007/s12369-008-0001-3\", \"title\": \"Measurement"
+    },
+    {
+     "t": 15.9,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_GsyNITnmY3S59B0ifF9C4592"
+    },
+    {
+     "t": 16.1,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_y5CjNQmfO4YFjJfFRVEI1346"
+    },
+    {
+     "t": 16.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_rAj6OQ59SFLInmHW7RW04507"
+    },
+    {
+     "t": 16.4,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_Z84LHJX7yhrMHuT7EUY41145"
+    },
+    {
+     "t": 16.5,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_04_AUKrACxNQrd9gJm1vdHc3245"
+    },
+    {
+     "t": 16.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 0.006,
+     "result_chars": 276,
+     "result_head": "{\"query\": \"真者 精诚之至\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 0}, \"search_scope\": {\"a"
+    },
+    {
+     "t": 16.6,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.009,
+     "result_chars": 2929,
+     "result_head": "{\"source_record_id\": \"doi:10.31219/osf.io/ng97s_v2\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.31219/osf.io/ng97s_v2\", \"title\": \"Comparing the Value "
+    },
+    {
+     "t": 16.6,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.013,
+     "result_chars": 3716,
+     "result_head": "{\"source_record_id\": \"doi:10.1093/jcmc/zmab005\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1093/jcmc/zmab005\", \"title\": \"Emotional Support from AI Ch"
+    },
+    {
+     "t": 18.1,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.479,
+     "result_chars": 4073,
+     "result_head": "{\"query\": \"恻隐之心 仁之端\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 2, \"chapter_title\": \"公孙丑章句上\", \"citation_label\":"
+    },
+    {
+     "t": 18.3,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.745,
+     "result_chars": 334,
+     "result_head": "{\"query\": \"一个念头太多了 救妻子\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_sco"
+    },
+    {
+     "t": 38.2,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_Nf5HxkhumJqRNE16RSsi7495"
+    },
+    {
+     "t": 38.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_oT6mw9LNzr3KwTApDS7x9939"
+    },
+    {
+     "t": 38.7,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_02_Zh2rUyWG4DQJwwXcwWVY3946"
+    },
+    {
+     "t": 38.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_4DPP0Tn8UdZBPFxcVmB98383"
+    },
+    {
+     "t": 39.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_04_6nW7VyhPufbgK2MDXYEW4524"
+    },
+    {
+     "t": 39.2,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.006,
+     "result_chars": 2719,
+     "result_head": "{\"book_id\": \"d9272a80942a\", \"book_title\": \"论语\", \"chapter_idx\": 2, \"title\": \"学而篇\", \"citation_label\": \"【《论语》·学而篇】\", \"text\": \"子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君"
+    },
+    {
+     "t": 39.2,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.007,
+     "result_chars": 4837,
+     "result_head": "{\"book_id\": \"e574c8e7f515\", \"book_title\": \"尼各马可伦理学[注释导读本]\", \"chapter_idx\": 8, \"title\": \"第八卷 友爱论\", \"citation_label\": \"【《尼各马可伦理学[注释导读本]》·第八卷 友爱论】\", \"text\": \"里的“善意"
+    },
+    {
+     "t": 39.2,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.007,
+     "result_chars": 4938,
+     "result_head": "{\"book_id\": \"390398aff8d0\", \"book_title\": \"康德文集\", \"chapter_idx\": 26, \"title\": \"道德形而上学的奠基\", \"citation_label\": \"【《康德文集》·道德形而上学的奠基】\", \"text\": \"个理想）。\\n但是，如果一个理性存在者在"
+    },
+    {
+     "t": 39.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 0.012,
+     "result_chars": 1269,
+     "result_head": "{\"query\": \"渔父 真者 精诚之至\", \"results\": [{\"book_id\": \"84adfb4d0c0b\", \"book_title\": \"庄子\", \"author\": \"庄子\", \"chapter_idx\": 32, \"chapter_title\": \"渔父\", \"citation_label\": "
+    },
+    {
+     "t": 40.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.545,
+     "result_chars": 336,
+     "result_head": "{\"query\": \"威廉斯 道德运气 内在理由\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_s"
+    },
+    {
+     "t": 57.5,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_lvAumDZ0SJEZSIZWQago0591"
+    },
+    {
+     "t": 57.8,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_liCpUjzlnsovsAPBqinC1222"
+    },
+    {
+     "t": 58.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_FYIv6oahPVy2Cb0w6h6i1483"
+    },
+    {
+     "t": 58.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 3080,
+     "result_head": "{\"book_id\": \"84adfb4d0c0b\", \"book_title\": \"庄子\", \"chapter_idx\": 32, \"title\": \"渔父\", \"citation_label\": \"【《庄子》·渔父】\", \"text\": \"无所陵。故田荒室露，衣食不足，征赋不属，妻妾不和，长少 无序，庶人之忧也；能"
+    },
+    {
+     "t": 58.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 3426,
+     "result_head": "{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"chapter_idx\": 2, \"title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"text\": \"哉？麒麟之于走兽，凤凰之于飞鸟，太山之于丘垤，河海之于行潦，类"
+    },
+    {
+     "t": 59.5,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.42,
+     "result_chars": 331,
+     "result_head": "{\"query\": \"体验机 经验机器\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\""
+    },
+    {
+     "t": 80.9,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1592
+  }
+ ],
+ "total_wall_s": 82.1,
+ "status": "COMPLETED"
+}

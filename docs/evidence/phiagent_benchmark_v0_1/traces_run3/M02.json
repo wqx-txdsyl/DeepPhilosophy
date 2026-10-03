@@ -1,0 +1,877 @@
+{
+ "case_id": "M02",
+ "category": "M",
+ "prompt": "“科学理论迟早都会被推翻，所以科学和迷信没区别。”这个论证成立吗？请用一个真实科学史案例说明。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "2f066b994984de84f0b1308b88d0c9f608b15577",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T08:44:02+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.2",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run2 自 .t1pre-bak 恢复的同一份, 后续评测有增量; run1 根值为 null 导致 82 次学术调用全灭, null 留档 .null-bak-20261002）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "“科学理论迟早都会被推翻，所以科学和迷信没区别。”这个论证成立吗？请用一个真实科学史案例说明。",
+   "wall_s": 54.5,
+   "ttft_s": 7.6,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "65b0a23d90164730bb5376ac544960ac:1:note:0",
+     "content": "我先把这个论证的结构和几个关键术语查一下材料，再回答。"
+    }
+   ],
+   "provider_reasoning": "The user asks: \"科学理论迟早都会被推翻，所以科学和迷信没区别。\" Is this argument valid? Please use a real case from history of science to illustrate.\n\nI should analyze the argument: premise \"scientific theories will eventually be overturned\" → conclusion \"science is no different from superstition\". The inference is invalid: even if premise true (which is itself overstated), the conclusion doesn't follow. Need to distinguish: falsifiability, self-correction, evidential warrant, convergence, etc.\n\nI should use a real scientific history case. Good candidates: Newtonian mechanics replaced by relativity/quantum — but note it wasn't \"overturned\" wholesale: Newtonian mechanics remains a limiting case. Phlogiston theory → oxygen. Caloric theory → thermodynamics. Luminiferous aether → special relativity (Michelson-Morley). Steady state → Big Bang. Geocentrism → heliocentrism.\n\nA good case showing the contrast: aether vs. relativity: aether wasn't simply discarded—the concept of an absolute rest frame was abandoned; and Newtonian mechanics was retained as a limit. Or phlogiston: Lavoisier's oxygen theory—phlogiston theory made novel predictions (it did), was discarded; the shift was based on quantitative evidence (mass conservation in combustion, Priestley, Cavendish).\n\nI should also consider the asymmetry between science and superstition: falsifiability, mechanisms of error correction, novel predictions, intersubjective testing. But be careful not to overclaim: Popper's falsifiability is itself contested; Lakatos, Kuhn, Feyerabend. And \"科学和迷信没区别\" — the difference need not be that scientific theories never get overturned; rather, what is overturned and how, and whether revision is driven by evidence.\n\nAlso I should be careful with phrasing: \"迟早都会被推翻\" — this is a strong claim (a pessimistic meta-induction, Laudan). Actually the pessimistic meta-induction is a serious argument in philosophy of science (Laudan 1981, \"A Confutation of Convergent Realism\"): many past successful theories turned out false (phlogiston, aether, caloric), so current theories may be false too. This targets scientific realism, not \"science = superstition\". So the first premise has a respectable version directed at realism, but the conclusion about science vs superstition doesn't follow.\n\nI should probably check local books for relevant material: Popper's falsifiability, Kuhn's structure of scientific revolutions, maybe Feyerabend. Let me search the local library. Also possibly search scholarship on Laudan's pessimistic meta-induction.\n\nLet me do tool calls. The answer is essentially a philosophy-of-science argumentation question. Also I should consider whether there's a distinction between \"science\" as a body of claims vs. a method/institution. The conclusion conflates: even if every particular theory is eventually revised, the epistemic practice might differ from superstition in error-correction.\n\nAlso note: \"被推翻\" ambiguity — refuted vs. superseded as a limiting case. Newton → Einstein: Newtonian mechanics is not \"false\" in its domain; it's an approximation. That's a real case worth studying carefully.\n\nLet me search local books: \"波普尔 证伪\", \"库恩 科学革命\", \"可证伪性\".\n\nLet me also check available books list.\n\nPlan:\n1. search_books for 可证伪性 / 波普尔, and 库恩 范式.\n2. Maybe search_scholarship for Laudan pessimistic meta-induction.\n3. Get chapter text for verified quotes.\n\nLet me start with parallel calls.\n\nThen write answer: \n- 拆解论证结构：前提P、结论C；缺桥接前提。\n- 前提本身的两种解读：(a) 强解读：每个具体理论最终都会被推翻——大致成立但需限定；(b) 由此推出\"科学方法无效\"——不成立。\n- 关键：结论需要桥接前提\"凡会被修正的信念系统都与迷信无异\"，这个前提本身需要论证，而且反例（数学？逻辑？日常经验？）——其实每个知识领域都在修正。\n- 区分：科学≠某一具体理论。迷信的定义特征：免疫于反驳、无独立检验、诉诸权威/不可检验实体、缺乏纠错机制。\n- 案例：以太/相对论，或 燃素说/氧化说。\n- 我认为最好的案例：光的本性问题或 牛顿力学→相对论（说明\"推翻\"≠\"抛弃\"）。另一个：燃素说→拉瓦锡氧化说（说明科学内部如何通过定量证据和预测来纠正）。\n- 可能用 Michelson-Morley 实验 + 爱因斯坦：以太被放弃不是因为\"迟早会\"，而是因为具体证据。\n- 还有\"科学也会犯错\"与\"科学与迷信无区别\"是两回事。\n\n也可以用反向案例：占星术的不可证伪性（Popper）——占星术可以总是被解释得通。这能支持不对称性。但需注意 Popper 的观点本身有争议（例如他对占星术的批评有争议）。\n\nLet's also address: \"迟早都会被推翻\"的一个可敬版本 = 悲观元归纳 (pessimistic meta-induction, Laudan)。它真正针对的是科学实在论（\"成熟科学的理论近似为真\"），而不是\"科学与迷信无区别\"。因此即使我们承认它，结论也不成立——它最多支持\"我们没有理由相信当前最好的理论完全为真\"，这不等于\"科学方法与占星术、巫术没有认知差别\"。\n\nAlso careful: 不能把\"科学可靠\"当成已证明的价值判断；但这里的问题是论证有效性 (validity) 和前提真假。\n\nLet me run tools.Let me read the Popper chapter 18 (科学与形而上学的分界) for the astrology discussion, and also get the abstract of Doppelt 2007 and Saatsi 2005. Also, I want a real science-history case. Local books: 《科学革命的结构》. Perhaps also look for a book with the aether / Newtonian mechanics case. Let me search for \"以太\" and \"牛顿力学 相对论 极限\".\n\nLet me do parallel calls: get_chapter Popper ch18, get_scholarly_source for Doppelt, and search_books for 以太 / 燃素.Good. I have Popper on demarcation and astrology, Kuhn on aether/Michelson-Morley, and a scholarly abstract on pessimistic meta-induction (Doppelt 2007) - it's about the realism debate, notably: \"the pessimistic meta-induction from the many past successful-but-false theories to the likelihood that our best current theories are likewise false.\" That's precisely the respectable version of the premise — and note the conclusion there is only about likelihood current theories are false, not \"science = superstition.\"\n\nNow let me get the aether/relativity case details. Let's read the 德威特 chapter 23 area on Michelson-Morley, and also Kuhn ch7 context. Also maybe search for a book on Newtonian mechanics as limiting case of relativity. Let me search for \"牛顿力学 相对论 近似\" or \"对应原理\".\n\nAlso I want a case where a superseded theory was replaced by better one driven by evidence, with details. Michelson–Morley (1887) → Lorentz-Fitzgerald contraction → Einstein 1905. Good.\n\nLet me read 德威特 chapter 23 near the Michelson-Morley mention, and also get more of it. Use read_args from the search: book_id fa4934527602, chapter_idx 23, focus 以太.\n\nAlso search books for \"牛顿力学 是 相对论 的 极限情形\" to support the \"not wholesale overturned\" point.Let me read Kuhn's Structure ch8 (第九章 科学革命的本质与必然性) around the Newton/Einstein passage to get a fuller quote about \"相对论力学不能证明牛顿力学是错的\" and Kuhn's response (that this is a logical relation but the paradigm change still involves meaning change). This is a subtle point: Kuhn actually argues that despite derivability, one cannot say Newton is simply a special case — because the meaning of terms changes. That nuance is good: even Kuhn, who emphasizes revolutions, doesn't think science is like superstition.\n\nLet me read that passage.I have plenty. I might also want a source on the \"宗教/迷信与科学的分野\" or on \"science vs pseudoscience demarcation is contested\" — e.g., Lakatos or Feyerabend. Also maybe consider Laudan's actual paper title: \"A Confutation of Convergent Realism\" (1981, Philosophy of Science). I have Doppelt's abstract mentioning the pessimistic meta-induction. Good enough. Maybe search scholarship for Laudan's original paper to cite it properly. Let me search.\n\nActually, do I need it? I'd like to attribute the meta-induction to Laudan 1981 accurately. Let me do a quick search_scholarship for \"A Confutation of Convergent Realism Laudan 1981\" to have a verified bibliographic record.\n\nAlso consider Feyerabend (\"反对方法\") for the \"science is not superior\" thesis — but Feyerabend doesn't say science = superstition exactly; he says there's no universal method and that science shouldn't be privileged in a free society. Could mention as the strongest version of the user's conclusion, noting it still isn't \"no difference in cognitive warrant\"—Feyerabend actually argued for equal treatment (in education/state) not identity.\n\nLet me search for Laudan.I don't need Feyerabend locally. Let me get the Laudan abstract to accurately state what it argues.\n\nActually let me get the Laudan abstract (doi:10.1086/288975), so I can accurately characterize it (it's about convergent realism: the claim that successful theories' central terms refer; Laudan argues the historical record of theories that were successful but whose central terms didn't refer confutes it).Now I have enough. Let me write the answer.\n\nStructure:\n1. 结论先行：论证不成立——不是前提一定错，而是从一个弱前提跳到了一个强结论；中间缺了桥接前提，且结论混淆了几个不同的问题。\n2. 论证形式化：\n   P1: 每个科学理论最终都会被推翻（被后继理论取代）。\n   C: 科学与迷信没有区别。\n   缺的桥接：凡是被修正过的信念系统就与迷信无认知差别。这个桥接要么是假的，要么是循环。\n3. 检验P1：\n   - \"被推翻\"歧义：驳倒（证明了假）vs 被取代/被限定。牛顿力学→相对论不是简单推翻：它的方程在v<<c时仍是极好的近似，只是不再是\"关于时空的最终真理\"。Kuhn 那段正好两面都有：实证论者说牛顿是相对论的极限情形；Kuhn 反驳说这不等于牛顿定律（因为质量、时间概念的意义变了）。引Kuhn。\n   - 案例：以太。19世纪末牛顿体系内光需要机械以太；德沙内尔教科书（1885）的原文；迈克尔逊-莫雷实验（1880s末）预期两束光有时间差，结果总是同时返回。这个案例说明：(a) 科学确实会推翻自己刚当作基础的东西（以太整个被删掉，不是修补）；(b) 但推翻的方式不是\"换一个说法继续信\"，而是由实验和理论的内在矛盾逼出来的，而且旧理论中真正起作用的部分（麦克斯韦方程组、洛伦兹变换的形式）被保留下来。\n   - 关键对比：以太案例中，若要走\"和迷信一样\"的路，只需引入特设性假设（拖曳以太、洛伦兹-斐兹杰拉德的收缩）就可以保住以太。这类特设手段\"总是办得到的\"，但波普尔指出那要付代价：破坏或降低理论的科学地位。这正是科学与迷信的分界所在——不是\"从不被推翻\"，而是\"允许自己被推翻，并且不用代价地保住自己\"。\n4. 另一个逻辑问题：结论的范围跳跃。\n   - 从\"理论会被修正\"到\"科学与迷信没区别\"，需要额外前提。可以用\"元归纳\"(pessimistic meta-induction, Laudan 1981)作为前提的最强版本。但即使承认 Laudan 的论证，它得出的结论是\"我们没有理由认为当前最好理论的中心术语有所指称/近似为真\"，这是针对科学实在论的反驳，它没有得出\"科学方法与占星术没有认知差别\"。Laudan 的靶子是实在论，不是\"科学=迷信\"。这里要小心：我读的是摘要，摘要说\"neither reference nor approximate truth will do the explanatory jobs that realists expect\"，\"the history of science... decisively confutes several extant versions of ... scientific realism\"。这是对实在论的反驳，不是对科学认知资格的否定。\n   - 另外注意 P1 本身也不是无条件的经验事实：它有反例（如能量守恒？其实也被修正过；更好的说法是：有些理论内容被保留下来——如地球是球体、物质由原子构成、DNA双螺旋，这些被修正但并非\"推翻\"，或者说推翻的程度不一）。要谨慎：我不该断言\"某些理论永远不会被推翻\"（这是不可证实的强断言）。更好的说法是：P1 是模糊的全称预测，无法在现在验证；它把\"被修正\"\"被限定\"\"被证明为假\"混为一谈，而这三者后果不同。\n5. 分界标准的问题——不能替波普尔背书太多。波普尔的可证伪性标准本身受到批评（科学史上有很多\"特设\"救theory，也是科学常态；库恩指出常规科学正是拒绝反驳）。所以正确说法是：即使波普尔的标准不是无争议的、即使划界有程度差别（波普尔自己说\"分界标准不可能绝对分明，但它本身有程度之差\"），也不需要\"科学永远正确\"来区分科学与迷信；只需要指出可纠正性、证据约束、可检验性、机制公开等差异。这里要区分：\n   - \"科学与迷信有根本区别\"是一个弱命题，容易证成；\n   - \"科学理论永真\"是强命题，用户反驳的其实只是后者，而没人需要它。\n6. 但要公平：用户的直觉里有一个真东西——(a) 科学的权威往往被过度使用（\"科学证明了\"），(b) 科学也会犯错、也会被社会因素污染，甚至有伪科学冒充科学。这些是真的，但它们是\"科学有不完善之处\"，不等于\"科学与迷信同类\"。承认程度差别与\"有污染\"并不动摇不对称性。这是\"承认一种标准有争议，不等于已证明它\"的反面用法：指出科学的缺陷也不能自动证明它与迷信无别。\n7. 什么样的证据/条件会改变答案？给出：\n   - 如果\"迷信\"被定义得极宽（任何未经证成就被相信的信念），那么科学家也确实难免有此类信念——但那时结论变得平庸且不再针对科学；\n   - 如果\"推翻\"指\"任何具体断言都会被修正\"，那么数学、日常经验也逃不掉，论证会过度推广到荒谬；\n   - 如果\"没区别\"只是指\"科学理论与迷信都以非理性方式被接受\"，那就需要科学社会学经验证据，而非从\"会被推翻\"推出。\n8. 结论：论证无效（non sequitur）；它反驳的是一个没人主张的强命题。真正受影响的是\"当前最好理论完全为真\"这类断言。\n\n字数控制：中等偏长但不冗长。使用中文。引用带出处。\n\nCitation format: 引用【《猜想与反驳》·十一、科学与形而上学的分界】等。我应该给出实际阅读地址？工具说明：引用给出已核对的出处及工具返回的真实阅读地址。reader_url: https://deepphilosophy.top/reader/ff783ce7c481?ch=18 等。可以给出。\n\nLet me be careful about the quote from 德威特: 书是德威特《世界观》第3版第22章（chapter_idx 23, 标题\"第22章 1700～1900年牛顿世界观的发展\"）。Note the chapter numbering discrepancy: chapter_idx=23 but title says 第22章. I should cite as 第22章 as titled.\n\nAlso the Michelson-Morley date: text says \"最重要的几个发生于19世纪80年代末期\" and refers to 德沙内尔 textbook 1885. I should not state \"1887\" as from the book unless stated. I can say \"19世纪80年代末\" per text. Actually the standard date is 1887 but I should stick to what the source says, or state it as commonly given. Safer: \"19世纪80年代末\"（德威特原文）。\n\nRegarding Kuhn's quote: \"相对论力学不能证明牛顿力学是错的\" is actually Kuhn describing the opposing view (the popular objection). Careful! In the search snippet, Kuhn says \"这些反对意见的要旨如下：相对论力学不能证明牛顿力学是错的……\" So it's Kuhn reporting the objection, and then he goes on to say the derivation is \"似是而非\" (specious), giving his own argument that Newton's laws can't be derived as a limiting case because meanings change. I must represent it correctly: Kuhn 先复述这一反对意见，再反驳\"似是而非\"。So my use: Kuhn notes the \"special case\" claim and his counter — but both sides agree Newtonian mechanics remains predictive-successful in its domain (Kuhn: \"如果一个汽车司机的行为表现出他似乎生活于牛顿力学所描述的宇宙，那是有充足理由的\"). Good, I can quote that.\n\nNow write. I'll keep it structured with headings, ~900-1200 characters... actually more like 1200-1800 Chinese characters. Let's aim for a solid, well-organized answer.\n\nLet me draft.\n\n---\n\n**结论：不成立。** 不是因为前提一定假，而是从前提推不出结论——中间缺一个桥接前提，而那个桥接前提既不是显然的，也基本是假的。\n\n**一、把论证写清楚**\n\n它实际的形式是：\n- P1：一切科学理论终将被后继理论取代。\n- C：科学与迷信没有认知上的区别。\n\n要让它有效，至少要补：\n- P2：凡是被后续修正过的信念系统，就与迷信在认知上没有区别。\n\nP2 一旦明说，问题就露出来了。数学、地图、日常经验（\"太阳从东边升起\"）、法庭证据规则都在被修正，P2 会把它们一并归入迷信。P2 若只针对科学，则它需要独立论证，而且它恰好就是结论的改写——循环。\n\n**二、一个真实案例：以太**\n\n（讲 19世纪末牛顿体系里光需要机械以太；德沙内尔1885教科书；迈克尔逊-莫雷实验预期时间差，结果总是同时返回；\"乌云\"。）\n\n这个案例的两面：\n(1) 科学确实会推翻自己当时当作基础的东西。以太不是被修补，而是整个从本体论里删除。所以前提里那点真理是真的。\n(2) 但推翻的方式不是\"换一个说法继续信\"，而是……麦克斯韦方程组被保留，洛伦兹变换的形式被保留。而且——这是最关键的一点——当时完全可以保住以太：引入拖曳以太或洛伦兹-斐兹杰拉德收缩就可以把否定结果解释过去。波普尔：\"这种方法总是办得到的，但是这样营救理论免于被驳倒，却付出了破坏或至少降低理论的科学地位的代价。\" 科学与迷信的分界不在\"是否被推翻\"，而在于是否愿意为此付出代价、是否让理论暴露在可能失败的风险中。\n\n**三、前提里藏着一个歧义**\n\n\"被推翻\"至少三义：被证明为假；被限定在更小范围（汽车司机的牛顿）；被换掉整个概念框架（质量、同时性）。\n牛顿→爱因斯坦：Kuhn 记载的争论正好说明复杂性。有人说牛顿可以从相对论导出（v/c≪1），Kuhn 反驳说这不是牛顿定律，因为质量、时间的物理蕴涵变了。但 Kuhn 同时承认：\"如果一个汽车司机的行为表现出他似乎生活于牛顿力学所描述的宇宙，那是有充足理由的。\" 所以\"被取代\"不等于\"过去的一切都是错的、都作废\"。用户的P1把三者混成一个模糊词。\n\n**四、前提有一个可敬版本，但它的结论比用户的弱得多**\n\nLaudan 1981《A Confutation of Convergent Realism》：科学史上一批曾非常成功、但其中心术语并不指称任何东西的理论（我看的是摘要，摘要说：指称与近似真都无法承担实在论者期待的解释职责；科学史\"决定性地驳倒\"了几种自然主义的科学实在论版本）。这是\"悲观元归纳\"——它的靶子是科学实在论（\"成功的理论近似为真\"），不是\"科学与占星术没有认知差别\"。\nDoppelt 2007 的摘要也把这一论证表述为：\"从许多过去成功但为假的理论，推出我们当前最好的理论同样可能为假\"。\n所以最强版本的前提最多能推出：我们没有理由相信当前最好的理论完全为真。这跟\"科学和迷信没区别\"之间还差一整个论证。\n\n**五、也不必用\"科学永远正确\"来挡**\n\n不用替科学辩护成\"不会错\"。反过来说，波普尔的划界标准本身也有争议（他自己说\"分界标准不可能绝对分明，但它本身有程度之差\"；库恩的常规科学恰恰要求在一段时间内不因反例就放弃范式）。所以更稳的说法是：\n- 科学会被推翻，会犯系统性错误，会被社会因素污染，也有伪科学冒充科学——这些都真；\n- 但这些是\"科学不完善/有程度差别\"，而不是\"与迷信同类\"。指出科学有缺陷，和指出科学永真，是两个方向的过度主张。\n- 占星术与天文学的差别不在\"是否出错\"，而在出错之后发生什么：有没有公开的、可重复的、会被承认的失败标准，以及失败是否真的导致放弃。（波普尔提到占星术士声称以大量归纳材料为基础，却\"从未听说过有人想批判审查它这些所谓归纳材料\"。）\n\n**六、什么条件会改变结论**\n\n- 削弱：如果\"迷信\"被定义为\"任何在充分证成之前就被持有的信念\"，那么科学家的日常信念也符合——但这时结论变得平庸，且不再针对科学（因为人人都符合）。\n- 加强：如果能证明（经验科学社会学证据）科学共识的形成与占星术共识的形成使用同一种机制——权威、无法检验的承诺、不承认失败——那么结论就有了实质内容。这是可以做经验研究的，不能靠\"迟早被推翻\"一句话推出来。\n- 该做的区分：如果问题只是\"科学声称的确定性\"是否过高，答案是它也过高——但那就得到一个不同的、合理的结论，而不是\"科学=迷信\"。\n\n结论：这是 non sequitur（推不出）。它成立的唯一方式是把\"科学\"偷换成\"科学理论永真\"这个没人需要的主张，再把\"被推翻\"偷换成\"没有任何认识上的约束\"。\n\nAdd sources with links at the end? I'll integrate citations inline with reader_url. Maybe a short 出处 list.\n\nLength: This is long but appropriate. Let me trim a bit and make it tight. Keep citations accurate.\n\nSources to list:\n1. 波普尔《猜想与反驳》\"十一、科学与形而上学的分界\" — https://deepphilosophy.top/reader/ff783ce7c481?ch=18 （我读的是该章 1756–4756 字符片段）\n2. 德威特《世界观》第3版 第22章 — https://deepphilosophy.top/reader/fa4934527602?ch=23\n3. 库恩《科学革命的结构》第九章 — https://deepphilosophy.top/reader/36725cea3e3c?ch=8\n4. Laudan 1981, \"A Confutation of Convergent Realism\", Philosophy of Science, doi:10.1086/288975 （摘要）\n5. Doppelt 2007, \"Reconstructing Scientific Realism to Rebut the Pessimistic Meta-induction\", Philosophy of Science, doi:10.1086/520685（摘要）\n\nI should note that I read excerpts/abstracts, not whole books/papers. The tool notes say 片段是原文命中；need read context — I did read context. I'll note \"我读的是节选/摘要，不是全章/全文\".\n\nWrite it now.",
+   "tool_calls_full": [
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "pessimistic meta-induction scientific realism Laudan",
+      "limit": 5
+     },
+     "status": "success",
+     "duration_seconds": 1.574,
+     "result_full": "{\"query\": \"pessimistic meta-induction scientific realism Laudan\", \"results\": [{\"source_record_id\": \"doi:10.1086/508959\", \"title\": \"On the Pessimistic Induction and Two Fallacies\", \"authors\": [\"Juha T. Saatsi\"], \"year\": 2005, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/508959\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1007/978-0-230-29719-7_3\", \"title\": \"Optimism about the Pessimistic Induction\", \"authors\": [\"Sherrilyn Roush\"], \"year\": 2010, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Palgrave Macmillan UK eBooks\", \"doi\": \"10.1007/978-0-230-29719-7_3\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1111/1468-2478.00229\", \"title\": \"Scientific Realism as a Meta-Theory of International Politics\", \"authors\": [\"Fred Chernoff\"], \"year\": 2002, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"International Studies Quarterly\", \"doi\": \"10.1111/1468-2478.00229\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"openalex\", \"source_providers\": [\"openalex\"], \"retrieval_origin\": \"LIVE_OPENALEX\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1086/520685\", \"title\": \"Reconstructing Scientific Realism to Rebut the Pessimistic Meta-induction\", \"authors\": [\"Gerald Doppelt\"], \"year\": 2007, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/520685\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1093/oso/9780190946814.003.0013\", \"title\": \"We Think, They Thought\", \"authors\": [\"Ludwig Fahrbach\"], \"year\": 2021, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Contemporary Scientific Realism\", \"doi\": \"10.1093/oso/9780190946814.003.0013\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 5, \"READABLE_SOURCE_IDS\": [\"doi:10.1086/508959\", \"doi:10.1007/978-0-230-29719-7_3\", \"doi:10.1111/1468-2478.00229\", \"doi:10.1086/520685\", \"doi:10.1093/oso/9780190946814.003.0013\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"pessimistic meta-induction scientific realism Laudan\", \"status\": \"success\", \"raw_result_count\": 5}, {\"provider\": \"openalex\", \"query\": \"pessimistic meta-induction scientific realism Laudan\", \"status\": \"success\", \"raw_result_count\": 5}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 10}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 5 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "可证伪性 科学 迷信",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.198,
+     "result_full": "{\"query\": \"可证伪性 科学 迷信\", \"results\": [{\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 8, \"chapter_title\": \"一、科学：猜想和反驳\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·一、科学：猜想和反驳】\", \"snippet\": \"如人们时常设想的）一个理论的长处，而是它的短处。 （5）对一种理论的任何真正的检验，都是企图否证它或驳倒它。可检验性就是可证伪性；但是可检验性有程度上的不同：有些理论比别的理论容易检验，容易反驳；它们就像担当了更大的风险似的。 （6）进行确证的证据，除非是真正检验一项理论的结果，是不算数的；而这就是说，它可以看作是一项认真的但是不成功的证伪理论的尝试。（我现在把这些事例称为“确证证据”。） （7）有些真正可检验的理论，被发现是假理论，仍旧被赞美者抱着不放——例如专为它引进某种特设性假说，或者特地为这个目的重新解释这个理论，使它逃避反驳。这种方法总是办得到的，但是这样营救理论免于被驳倒，却付出了破坏或至少降低理论的科学地位的代价。（我\", \"score\": 202, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 8, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 18, \"chapter_title\": \"十一、科学与形而上学的分界\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·十一、科学与形而上学的分界】\", \"snippet\": \"”。而且最好的物理学理论一般也都类似于培根所不予考虑的“心灵的预期”。 另一方面，在许多流行的历书和圆梦书中可以找到许多迷信观念和粗糙的方法（种植法等等），它们倒是与观察联系得更紧密，而且往往明显建立在某种归纳的基础上。特别是占星术士们总是声称他们的“科学”以大量归纳材料为基础。这种声明大概没有什么根据，但从未听说过有人想批判审查它这些所谓归纳材料以便否定占星术。相反，占星术之所以为现代科学所不容，是因为它不符合公认的理论和方法。 因此，显然需要另外一种分界标准，我建议（尽管几年以后才发表这个建议）应当把理论系统的可反驳性或可证伪性作为分界标准。按照我仍然坚持的这个观点，一个系统只有作出可能与观察相冲突的论断，才可以看作是科学的；实\", \"score\": 188, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 17, \"chapter_title\": \"十、真理、合理性和科学知识增长\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·十、真理、合理性和科学知识增长】\", \"snippet\": \"种标准，比我同时提出、得到广泛讨论的比较简单的证伪准则更重要、更实在。不过这个比较简单的标准也是需要的。为了说明需要这种可证伪性或可检验性标准作为科学理论的经验特点的标准，我将举例讨论一个以纯粹经验术语所表达的简单的、纯粹的存在陈述。我希望这个例子也可以回答一个一再重复的批评：从经验科学中排除纯粹存在陈述并把它归之于形而上学陈述，是违反常情的。 我的例子包含以下的纯粹存在理论： “有一连串拉丁文的哀歌体对句，如果在一定的时间地点以适当方式读出来，立即就会出现魔鬼——一种有两只小角和分趾蹄的类人生物。” 显然，这种不可检验的理论在原则上是可以证实的。尽管根据我的分界标准，由于它是非经验的和非科学的，或者也可以说是形而上学的，因而排除它\", \"score\": 159, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 17, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a325bbdc496e\", \"book_title\": \"哲学100问（套装共3册）\", \"author\": \"书杰\", \"chapter_idx\": 180, \"chapter_title\": \"04 波普尔：科学意味着真理吗\", \"citation_label\": \"【《哲学100问（套装共3册）》·04 波普尔：科学意味着真理吗】\", \"snippet\": \"达真理的彼岸。科学研究永远处于“在路上”的状态，科学只能接近真理、逼近真理，但无法成为真理。 可证伪度与可检验度 在具有可证伪性的理论中，如何区分不同理论的优劣？这就涉及可证伪度（可检验度）的问题。 一些理论更容易被证伪，因而可证伪度就高；一些理论不容易被证伪，可证伪度就相对较低。但哪些理论更容易证伪，哪些理论难以证伪呢？ 在波普尔看来，命题所包含的信息量越少，便越难以被证伪。反之，命题的信息量越大，就越容易被证伪。比如，下面两个都是具有可证伪性的命题： ①东北将会下雪 ②东北的哈尔滨将会在明天中午12点下雪 相比而言，命题②比命题①更容易被证伪，因为命题②包含的信息量比命题①大。命题①只陈述了“东北将会下雪”这一事实，而命题②则精\", \"score\": 154, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a325bbdc496e\", \"chapter_idx\": 180, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a325bbdc496e\", \"book_title\": \"哲学100问（套装共3册）\", \"author\": \"书杰\", \"chapter_idx\": 185, \"chapter_title\": \"小结：科学哲学\", \"citation_label\": \"【《哲学100问（套装共3册）》·小结：科学哲学】\", \"snippet\": \"普尔选择了和归纳主义不同的道路。归纳主义是验证理论的正确性，而波普尔则是要想办法通过经验证伪这个假说。如果这个理论具备了可证伪性，则它就具备了成为科学知识的可能性。 基于证伪主义，波普尔提出了科学发展的模式：问题—猜想—反驳—新的问题—再猜想—再反驳……科学研究像一趟没有终点的接力跑，科学系统也是一个动态发展的系统。 因而，科学永远都在追求真理的路上，科学只能接近真理而无法成为真理。 波普尔的真理观 库恩 关于库恩，我们重点把握他的“范式”理论。 库恩：范式 所谓范式，就是科学共同体成员对如何从事自己专业的研究秉持着共同的理论和信念。通俗理解，范式就是科学共同体的各个成员共同遵循的东西，可以是一种观念，一种模式或者框架。所有的共同体\", \"score\": 152, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a325bbdc496e\", \"chapter_idx\": 185, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 5, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "科学革命 范式 常规科学",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.21,
+     "result_full": "{\"query\": \"科学革命 范式 常规科学\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 4, \"chapter_title\": \"第五章　范式的优先性\", \"citation_label\": \"【《科学革命的结构》·第五章　范式的优先性】\", \"snippet\": \"第五章范式的优先性 为了找出规则、范式与常规科学之间的关系，首先让我们考虑，历史学家怎样将前面已描述过的作为公认规则的承诺之特殊地位分离出来。对某一时期某一专业做仔细的历史研究，就能发现一组反复出现面类标准式的实例，体现各种理论在其概念的、观察的和仪器的应用中。这些实例就是共同体的范式，它们存在于教科书、课堂讲演和实验室的实验中。研究它们并用它们去实践，相应的共同体成员就能学会他们的专业。当然，历史学家此外还会发现由一些其地位仍被怀疑的成就所占据的边缘地区，但已解决了的问题和技巧的核心通常是明确的。除了偶尔的模棱两可外，一个成熟科学共同体的那些范式是能够被相对容易地确定的。 然面，共有范式的确定不是共有规则的确定。确定共有规则还要求\", \"score\": 250, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 4, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 1, \"chapter_title\": \"第二章　通向常规科学之路\", \"citation_label\": \"【《科学革命的结构》·第二章　通向常规科学之路】\", \"snippet\": \"。同时，这些成就又足以无限制地为重新组成的一批实践者留下有待解决的种种问题。 凡是共有这两个特征的成就，我此后便称之为“范式”，这是一个与“常规科学”密切相关的术语。我选择这个术语，意欲提示出某些实际科学实践的公认范例一它们包括定律、理论、应用和仅器在一起一为特定的连贯的科学研究的传统提供模型。这些传统就是历史学家们在“托勒密天文学”（或“哥白尼天文学”）、“亚里士多德动力学”（或“牛顿动力学”）、“微粒光学”（或“波动光学”）等等标题下所描述的传统。研究范式，包括研究许多比上面所列举的那些名称更加专门的范式，主要是为以后将参与实践面成为特定科学共同体成员的学生准备的。因为他将要加入的共同体，其成员都是从相同的模型中 第二章通向常规\", \"score\": 249, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 1, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 2, \"chapter_title\": \"第三章　常规科学的本质\", \"citation_label\": \"【《科学革命的结构》·第三章　常规科学的本质】\", \"snippet\": \"第三章常规科学的本质一个团体接受了一个单一的范式之后，这种范式所容许的更专业23化、更深奥的研究其本质是什么呢？如果范式代表了最终所做的工作，那么，还有什么进一步的问题留待这个已统一的团体去解决呢？如果我们现在注意到已使用的术语可能误导读者，那么，这些问题似乎将更为迫切，按照其已确定的用法，一个范式就是一个公认的模型或模式（Patterm），在这一意义1，在我找不出更好的词汇的情况下，使用\\\"Par-adigm”（范式）一词似颜合适。但人们将很快就会看出，许可这种合适的模型和模式的意义，并不完全是在“范式”定义中通常包含的意义。例如，在文法中，”amo，amas，amat”就是一种范式，因为它展示出一种模式，可用来构成大量其他拉丁文动\", \"score\": 248, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 2, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 3, \"chapter_title\": \"第四章　常规科学即是解谜\", \"citation_label\": \"【《科学革命的结构》·第四章　常规科学即是解谜】\", \"snippet\": \"盘式大平之类的仪器测量电吸引的实验很少为人所注意。因为这些实验所得的结果既不一致又不简单，不能被用来闸明这些实验所依据的范式。因此，它们仅仅是一些纯粹的事实，与电学研究的继续进步毫无关联，面且也不可能有关联。只是有了后来的范式反观它们时，我们才能看出它们所展示的电学现象的那些特征。36当然，库仑和他的同时代人也掌握了这种后来的范式，或者是掌握了当应用于吸引问题时能产生相向预期的一种范式。这就是为什么库仑能够设计出一种仪器，由这种仪器所得结果能为范式的阐明所需求。但也正是这个原因，库仑的结果并不令人惊奇，而且有些库仑的同辈也能事先预见到这个结果。即使其目标在于阐明范式的研究计划面不希求发现始料未及的新事物。 但是，如果常规科学的目的不\", \"score\": 245, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 3, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 5, \"chapter_title\": \"第六章　反常与科学发现的突现\", \"citation_label\": \"【《科学革命的结构》·第六章　反常与科学发现的突现】\", \"snippet\": \"已经发展出了一套强有力的独特技巧，以产生这类令人惊讶的现象和理论。如果科学的这一特征与我们前面已经说过的相一致，那么，在范式指导下的研究，必定是一种引起范式改变的特别有效的方式。这就是事实和理论的根本新颖性所导致的结果。在一套规则指导下进行的游戏，无意中产生了某些新东西，为了消化这些新东西就需要精心制作另一套规则。当这些新东西成为科学的组成部分之后，科学事业，至少是这些新东西所在之特殊领域的那些专家们的事业，就再也不会与以往相同了。 我们现在必须要问，到底是怎么会发生这类变化的。让我们先考虑第一类发现，即事实的新额性，然后再考虑发明，即理论的新颖性。 不过，发现与发明之间的区别，或者说事实和理论之间的区别，我们很快就会看到，乃是非常\", \"score\": 219, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 5, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 6, \"chapter_title\": \"第七章　危机与科学理论的突现\", \"citation_label\": \"【《科学革命的结构》·第七章　危机与科学理论的突现】\", \"snippet\": \"第七章危机与科学理论的突现第六章所讨论的科学发现既是范式变化的原因，又是范式变化的 结果；面且隐含在这些发现中的变化，既是建设性的，又是破坏性的。在发现被同化了以后，科学家就能说明更大范围的自然现象，或者能更精确地说明某些先前已知的现象。但要达到这一点，只有通过放弃某些以前的标准信念或程序，同时用其他新成分代替先前范式中的那些原有成分。我已论证过，这类转变与通过常规科学活动所达到的所有发现密切相关，只有那些除细节之外、其余早被预言的毫无新奇可言的发现不在此列。然而，发现并不是这些破坏性一建设性的范式变化的唯一原因。在本章中，我们将开始考虑由新理论的发明所导致的类似的、但一般规模更大的范式变化。 我们已经论证过，在科学中，事实和理论、\", \"score\": 219, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 6, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 23, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "ff783ce7c481",
+      "chapter_idx": 18,
+      "focus": "占星术 可证伪性 分界标准",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.035,
+     "result_full": "{\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"chapter_idx\": 18, \"title\": \"十一、科学与形而上学的分界\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·十一、科学与形而上学的分界】\", \"text\": \"我的目标虽然不在于历史完备性，却在于历史的准确性。\\n2. 我自己对这个问题的看法\\n在1919年我第一次碰上了这个分界问题，即在这二者之间画出一条界线来：一方面是理应说是属于经验科学的陈述和陈述系统，另一方面是那种也许可称为“伪科学”或者（某种情况下）“形而上学”的命题，或者是那些也许属于纯粹逻辑或纯粹数学的命题。\\n这个问题从培根时代以来就一直使许多哲学家激动，尽管我还没有看见过一种很明确的表述。大多数人都认为，科学的特征在于它的观察基础，或它的归纳方法，而伪科学或形而上学的特征却在于思辨方法，或如培根所说，在于它们运用的都是“心灵的预期”——它十分类似于假说。\\n这个观点是我永远无法接受的。现代物理学理论，特别是爱因斯坦理论（1919年曾受到广泛讨论），是高度思辨、高度抽象的，远远离开了可称为其“观察基础”的东西。一切表明这种理论多少也是“以观察为基础”的企图，都是没有说服力的。甚至牛顿理论也是这样。培根曾经反对哥白尼系统，根据就是它“不必要地歪曲了我们的感觉”。而且最好的物理学理论一般也都类似于培根所不予考虑的“心灵的预期”。\\n另一方面，在许多流行的历书和圆梦书中可以找到许多迷信观念和粗糙的方法（种植法等等），它们倒是与观察联系得更紧密，而且往往明显建立在某种归纳的基础上。特别是占星术士们总是声称他们的“科学”以大量归纳材料为基础。这种声明大概没有什么根据，但从未听说过有人想批判审查它这些所谓归纳材料以便否定占星术。相反，占星术之所以为现代科学所不容，是因为它不符合公认的理论和方法。\\n因此，显然需要另外一种分界标准，我建议（尽管几年以后才发表这个建议）应当把理论系统的可反驳性或可证伪性作为分界标准。按照我仍然坚持的这个观点，一个系统只有作出可能与观察相冲突的论断，才可以看作是科学的；实际上通过设法造成这样的冲突，也即通过设法驳倒它，一个系统才受到检验。因而可检验性即等于可反驳性，所以也同样可以作为分界标准。\\n这种科学观以批判态度为自己最重要的特征。由此科学家看一种理论应当看它是否能受到批判讨论：看它是否使自己受到各种批评，又是否经受得住这些批评。例如，牛顿理论预言了当时没有观察到的偏离开普勒定律的现象（由于行星之间的相互作用）。由此反使自己受到有意的经验反驳，反驳的失败则意味着理论的成功。爱因斯坦理论也受到类似的检验。一切真正的检验实际上都是有意的反驳。只有当一种理论成功地顶住了这些反驳的压力，我们才能声称它已为经验所确证或确认。\\n另外还有（如我后来发现的(7)）可检验度的问题：有的理论比其他理论更敢于接受可能的反驳。例如有这样两种理论：一种可推导出不同强度的磁场中原子所发射光谱线分裂的精确预测值，一种则只是预言磁场可影响光的发射，显然，前者比后者更易于遭到实验的反驳。一种理论愈是精确，愈易于遭到反驳，也就愈使人感到兴趣。它既然愈是大胆，也就愈少概然性。但是更易于检验，因为我们可以使检验更精确、更严格。如果它经受住了严格的检验，它将由这种检验所更好地确证或更好地验证。因此可确证性（或者可验证性或可确认性）必将随着可检验性的提高而提高。\\n这表明，分界标准不可能绝对分明，但它本身有程度之差。有完全可以检验的理论，有难于检验的理论，还有不可检验的理论。对那些不可检验的理论，经验科学家毫无兴趣。可以把它们称为形而上学的。\\n这里我必须再一次强调经常受到误解的一点。我这样来说明这一点，也许可以避免这种误解。取一正方形代表一种语言的所有陈述的类，我们用这种语言表述一门科学；再画一条明显的水平线把正方形分为上下两半，上一半写上“科学”、“可检验的”，下一半写上“形而上学”、“不可检验的”。我希望你能意识到，我并不是要画一条分界线来像确定语言的限度一样，把科学留在里面，把形而上学从有意义的陈述类中驱逐出去。相反，从我最早发表的论述这个问题的文章开始，(8)我就强调这一事实：要想在科学同形而上学之间画条界线以便把形而上学作为胡说从有意义的语言中排除出去，是不妥当的。\\n我已指出这里的原因之一是我们决不能把这条界线画得过于分明。如果我们还记得大多数科学理论都起源于神话，这一点就清楚了。例如，哥白尼系统就受到过新柏拉图主义崇拜太阳光的鼓舞，太阳由于其崇高必须占据“中心”。这表明神话怎样可能发展可检验成分。它们可以在讨论过程中成为对科学有效而重要的东西。在《科学发现的逻辑》(9)中我举了几个对科学变得极为重要的神话的例子，其中包括原子论和光微粒说。如果我们说这些理论在其某一发展阶段上是胡言乱语，而在另一阶段上又突然变得很有意义，那是无助于澄清问题的。\\n另一论证如下。有可能出现这样的（并可证明是重要的）情况：某一陈述既然可检验，就属于科学；其否定则成为不可检验的，必须置于界线之下。最重要的、可经受最严格检验的陈述——科学的普遍定律——的确就是这样。我在《科学发现的逻辑》中曾建议，可以为一定目的而把它们表述为“不存在任何永动机”（有时称为“热力学第一定律的普朗克表述”）这种形式，也即存在陈述的否定形式。我看与此相对应的存在陈述——“存在一种永动机”——同“存在一条海蛇”一样，都是属于分界线以下的，这同“有一条海蛇在英国博物馆展览”不同，后者完全是分界线以上的，因为立即可加以检验。但是我们不知道如何检验一个孤立的纯粹存在判断。\\n这里我无法论证这一观点的合理性：应当把孤立的纯粹存在陈述列入不可检验的、科学家关注范围之外的一类。(10)我只想说清楚，如果接受这一观点，再说形而上学陈述无意义，(11)或者把它排除于我们的语言以外，就很奇怪了。如果我们承认一个存在陈述的否定是有意义的，那么我们也就必须承认这个存在陈述本身也是有意义的。\\n我不得不强调这一点，因为人们一再说我建议把可证伪性或可反驳性作为意义标准（而不是分界标准），或者说我建议从我们的语言或许科学语言中排除这种存在陈述。甚至曾经详细探讨并正确转述过我的见解的卡尔纳普也觉得，他不得不把我的见解说成是建议从这种那种语言中排除形而上学陈述。(12)\\n但是事实是，从我发表关于这个问题的第一篇文章（见本书第368页注②）开始，我就一直把这个无意义问题作为假问题而取消，我还一直反对把这一问题与分界问题等同起来的想法。现在我的观点仍然是这样。\\n3. 卡尔纳普最早的无意义理论\\n我在一份手稿中（后来在《科学发现的逻辑》中更简要地）批评过这样一种理论，它断言形而上学毫无意义，由一些胡说八道的假命题所组成。人们以为这样一种理论(13)能导致“推翻”形而上学，而且能比以前任何一种反形而上学的哲学更加彻底、更加有效地摧毁形而上学。但我在我的批评中指出，这个理论建立在对意义问题的朴素的、“自然主义”(14)观点基础上，而其鼓吹者一面在渴望赶走形而上学，一面却忽略了他们把一切科学理论统统抛进了同一个“无意义的”形而上学理论垃圾堆。所有这一切，我认为都是只想摧毁形而上学却不想寻求分界标准的结果。\\n卡尔纳普在《结构》一书中追随维特根斯坦《逻辑哲学论》而持有的关于有意义同无意义的“自然主义”理论（我的叫法），他自己很久以前就放弃了，代之以一个更为复杂的学说：某一给定的表述在某种（人工）语言中是有意义的句子，当且仅当它遵循用这种语言来组成适当公式或句子的形成规则时。\\n在我看来，从朴素的或自然主义的理论到这\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 1756, \"excerpt_end\": 4756, \"chapter_text_length\": 43493, \"has_more\": true, \"next_offset\": 4756, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"占星术\", \"可证伪性\", \"分界标准\"], \"focus_terms_found_in_chapter\": [\"占星术\", \"可证伪性\", \"分界标准\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"占星术\", \"offset\": 2304, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2104, \"focus\": \"占星术\"}}, {\"term\": \"占星术\", \"offset\": 2370, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2170, \"focus\": \"占星术\"}}, {\"term\": \"占星术\", \"offset\": 2377, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2177, \"focus\": \"占星术\"}}, {\"term\": \"可证伪性\", \"offset\": 2456, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2256, \"focus\": \"可证伪性\"}}, {\"term\": \"可证伪性\", \"offset\": 4118, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 3918, \"focus\": \"可证伪性\"}}, {\"term\": \"可证伪性\", \"offset\": 32270, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 32070, \"focus\": \"可证伪性\"}}, {\"term\": \"分界标准\", \"offset\": 2420, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2220, \"focus\": \"分界标准\"}}, {\"term\": \"分界标准\", \"offset\": 2462, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2262, \"focus\": \"分界标准\"}}, {\"term\": \"分界标准\", \"offset\": 2568, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2368, \"focus\": \"分界标准\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"571b996be1043b19cffb981a030b71e8d7f2b5ea2905932dc3209ab36eb0b723\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/ff783ce7c481?ch=18\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[1756, 4756]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1086/520685",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.036,
+     "result_full": "{\"source_record_id\": \"doi:10.1086/520685\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1086/520685\", \"title\": \"Reconstructing Scientific Realism to Rebut the Pessimistic Meta-induction\", \"authors\": [\"Gerald Doppelt\"], \"year\": 2007, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/520685\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"This paper develops a stronger version of ‘inference-to-the-best explanation’ scientific realism. I argue against three standard assumptions of current realists: (1) realism is confirmed if it provides the best explanation of theories’ predictive success; (2) the realist claim that successful theories are always approximately true provides the best explanation of their success; and (3) realists are committed to giving the same sort of truth-based explanation of superseded theories’ success that they give to explain our best current theories’ success. On the positive side, I argue that (1) the confirmation of realism requires explaining theories’ explanatory success, not just their predictive success; (2) in turn this task requires a richer realist model of explanation that brings into the explanans both (a) successful theories’ epistemic virtues (e.g., unification and simplicity) and (b) the standards governing these virtues, as well as truth; (3) this richer realist model is further confirmed because it can better explain the success of theories in gaining wide acceptance among scientists; and (4) the model is further supported because it is superior to ‘preservative realism’ in providing a plausible rebuttal of the pessimistic meta-induction from the many past successful-but-false theories to the likelihood that our best current theories are likewise false.</jats:p>\", \"source\": \"crossref_METADATA\", \"hash\": \"83c4caf3d260d19bdbd4f65ad22db9a08152d37a4fa8c0e925f0e49189a5cad9\", \"excerpt_start\": 0, \"excerpt_end\": 1390, \"total_characters\": 1390, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"83c4caf3d260d19bdbd4f65ad22db9a08152d37a4fa8c0e925f0e49189a5cad9\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "limit": 6,
+      "query": "以太 迈克尔逊 实验 相对论"
+     },
+     "status": "success",
+     "duration_seconds": 1.83,
+     "result_full": "{\"query\": \"以太 迈克尔逊 实验 相对论\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 6, \"chapter_title\": \"第七章　危机与科学理论的突现\", \"citation_label\": \"【《科学革命的结构》·第七章　危机与科学理论的突现】\", \"snippet\": \"体拖曳了某一部分以太随着它一起运动。而每一种阐释都能足够成功地解释这种否定结果，不仅是天体观察，也包括地面实验，如著名的迈克尔逊（Michelson）和莫雷（Morley）实验的否定结果。）除了各家闸释之间有冲突之外，依然不存在别的冲突。在缺乏有关实验技术的条件下，即使各家阐释之间的彼此冲突也不会变得尖锐起来的。 只是到19世纪最后20年，随着麦克斯韦电磁理论被逐渐接受，这种局面才开始改变。麦克斯韦本人属于牛顿派，他相信光和电磁波一 般都是通过一种机械性以太粒子可变动的位移来传播的。他的电磁理论的最初形式都使用了他赋予这种以太媒质的假设性质。这些性质虽然在他最后的理论中都放弃了，但他仍然相信，他的电磁理论可与牛顿 [ 1  Jose\", \"score\": 176, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 6, \"focus\": \"以太 迈克尔逊 实验 相对论\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"fa4934527602\", \"book_title\": \"世界观：现代人必须要懂的科学哲学和科学史（原书第3版）\", \"author\": \"理查德·德威特\", \"chapter_idx\": 23, \"chapter_title\": \"第22章 1700～1900年牛顿世界观的发展\", \"citation_label\": \"【《世界观：现代人必须要懂的科学哲学和科学史（原书第3版）》·第22章 1700～1900年牛顿世界观的发展】\", \"snippet\": \"假设存在一种远比普通物质更为稀薄的介质……【这种介质】可以用远远超过声速的速度来传播震动。……这种假设存在的介质被称为“以太”。（德沙内尔，1885，p.947） “以太”（ether）这个名字源于过去的“以太”概念，也就是在亚里士多德世界观里被认为可以在月上区域中找到的元素以太。然而，除了名字，亚里士多德世界观里的以太和被当作是光传播所需基础介质的以太并没有什么相似点。 请注意，这个关于光传播的观点是如何与牛顿科学体系内机械论的宇宙拼合在一起的。与声波和水波等现象一样，光传播被认为需要某个基础介质的机械干涉。迈克尔逊-莫雷实验的目的是找出更多直接证据来证明以太的存在。实验的核心设想是，从一个点发射出两道光，夹角为90度，随后（通过\", \"score\": 175, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"focus\": \"以太 迈克尔逊 实验 相对论\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "fa4934527602",
+      "chapter_idx": 23,
+      "focus": "迈克尔逊-莫雷实验 以太",
+      "max_chars": 3200
+     },
+     "status": "success",
+     "duration_seconds": 0.001,
+     "result_full": "{\"book_id\": \"fa4934527602\", \"book_title\": \"世界观：现代人必须要懂的科学哲学和科学史（原书第3版）\", \"chapter_idx\": 23, \"title\": \"第22章 1700～1900年牛顿世界观的发展\", \"citation_label\": \"【《世界观：现代人必须要懂的科学哲学和科学史（原书第3版）》·第22章 1700～1900年牛顿世界观的发展】\", \"text\": \"泛应用于实际生活了）。法拉第的这个观点，也就是电力、磁力和光从某个意义上来说是同一个根本现象的不同方面，很快得到了发展，成了由詹姆斯·克拉克·麦克斯韦（1831—1879）在19世纪中期提出的电磁理论。法拉第的发现主要是定性描述，但是麦克斯韦则发现了光、电力和磁力现象背后的基本数学方程式。这些方程式通常被称为“麦克斯韦方程式”，它们将光、电力和磁力现象统一了起来，被广泛认为是这一时期最重要的发现。\\n再强调一下，以上对有关电力、磁力和光的部分关键研究发展的概述是非常简短且有所选择的。但是，请再次注意一下其中大致相同的模式：在这段时期，这些领域都出现了超乎寻常的发展，许多现象过去都曾经被认为是独特的，而且要用定性的方法进行研究，此时却逐渐统一了起来，而且都可以用牛顿科学体系中的基础数学定量方法来进行研究。\\n概括评述\\n尽管我们只是具体研究了三个科学领域，但也应该已经足以让我们体会到在1700～1900年间，科学的诸多领域是如何被纳入牛顿科学体系中的。值得注意的是，这一时期长达200年，其间许多不同的科学领域都出现了令人印象深刻的成果和发现。总的来说，到了1900年，科学的多个分支都在快速发展。牛顿科学体系内具有普遍性的方法被证明极为富有成效。到了大约1900年，有一种感觉是我们已经几乎完全了解了自然，只剩下几个相当无足轻重的问题还有待解决。接下来，让我们对其中几个问题进行一下探讨。\\n｜几块小乌云｜\\n英国著名物理学家之一开尔文爵士在1900年发表了一段经常被引用的谈话，在谈话中他指出，在现代科学本应晴朗的天空里，现在只有几块“小乌云”了。开尔文所指的“小乌云”中，有两块比较重要，分别是迈克尔逊-莫雷实验结果和对黑体辐射理解上的某些问题。下面我们将对这两个问题分别进行讨论，同时还会对在1900年左右时仍有问题的某些其他领域进行简要探讨。\\n事实上，对迈克尔逊-莫雷实验结果的理解有赖于爱因斯坦相对论的确立，而对与黑体辐射相关命题的理解，以及对下面要讨论的其他命题的理解，都有赖于量子理论的创立。这些理论是现代物理学最重要的两个分支，两者都对牛顿科学和牛顿世界观的某些方面产生了举足轻重的影响。考虑到以上几点，开尔文所说的小乌云实际上一点都不小。在本章剩余的篇幅中，我们将简要了解迈克尔逊-莫雷实验、与黑体辐射相关的命题，以及其他看起来无足轻重的命题。在后续的章节中，我们将探讨相对论和量子理论，以及这些理论对牛顿世界观的影响。\\n迈克尔逊-莫雷实验\\n迈克尔逊-莫雷实验涉及光速和光传播的方式。阿尔伯特·迈克尔逊（1852—1931）和爱德华·莫雷（1838—1923）进行了大量有关这些命题的实验，最重要的几个发生于19世纪80年代末期。一些背景信息将有所帮助。\\n思考一下水波的运动。波是介质之间机械干涉的结果，而正是通过这种介质，波才得以运动，这种介质就是水。当然，在没有基础介质也就是没有水的情况下，就不可能有水波的运动。\\n声波与此相似。声波也是介质之间机械干涉的结果，也是通过介质才可以传播。空气是典型的介质，尽管声波也可以通过其他多种介质进行传播。同样地，基础介质对声波传播也是必需的，没有基础介质，也就没有波。\\n总的来说，为了与整体牛顿科学体系保持一致，任何波的运动都被认为是需要某种基础介质的机械干涉。由于我们有很好的理由来认为光是波，所以，在牛顿科学体系内，光的传播就需要依赖于某种基础介质。下面这段话摘自德沙内尔所著的《自然哲学》，对光的传播进行了精准总结。这本书在19世纪80年代末期是物理学的标准教科书。（在“科学”这个单词成为标准之前，“自然哲学”就用来指代我们所说的科学。顺带提一下，德沙内尔的书出版于迈克尔逊-莫雷实验之前，后来，这个实验给书中牛顿科学体系内关于光传播的观点带来了大量问题。）\\n跟声音一样，光被认为是来源于震动的；但是，跟声音一样，它也不需要空气或其他有形物质的存在来使其震动从源头传播到周边。……似乎需要假设存在一种远比普通物质更为稀薄的介质……【这种介质】可以用远远超过声速的速度来传播震动。……这种假设存在的介质被称为“以太”。（德沙内尔，1885，p.947）\\n“以太”（ether）这个名字源于过去的“以太”概念，也就是在亚里士多德世界观里被认为可以在月上区域中找到的元素以太。然而，除了名字，亚里士多德世界观里的以太和被当作是光传播所需基础介质的以太并没有什么相似点。\\n请注意，这个关于光传播的观点是如何与牛顿科学体系内机械论的宇宙拼合在一起的。与声波和水波等现象一样，光传播被认为需要某个基础介质的机械干涉。迈克尔逊-莫雷实验的目的是找出更多直接证据来证明以太的存在。实验的核心设想是，从一个点发射出两道光，夹角为90度，随后（通过镜子反射）使两道光从两个方向反射回来。如果光通过以太这样的介质来传播，那么由于地球很有可能像船在水面上划过那样在介质以太中运动，预计将看到的两道光反射回来时有微小的时间差。举个与这个实验核心想法相似的例子，假设让两个人从运动着的船上出发去游泳。思考一下图22-1所展示的关于船和游泳者的类比。假设三条船都以同样的速度在水中运动，船B1与船B3之间的距离和船B2与船B3之间的距离相等。其中一人（也就是图中的S1）的任务是游到位于图示上方的船B1，然后回到他最初出发的船上（也就是B3）。由于船在水中运动，因此这个人需要以一定的角度游向船B1，然后同样以一定的角度游回船B3。另一个人（图中的S2）的任务是追上位于他出发的船B3前面的船B2，然后回到船B3。\\n图22-1　船和游泳者的类比\\n相对于最初的船B3，两个人往返的距离相等。但是，请注意，相对于两个人所游过的介质（也就是水），两人游过的距离就不相等了。具体来说，相对于水，S1游过的距离比S2稍微短一些。（如果你感兴趣，可以运用勾股定理和一些代数算法算出每个人所游的确切距离。）由于相对于他们运动所在的介质，两个人游过的距离不同，因此他们将在不同时间点回到最初的船上，如图22-2所示。\\n图22-2　在不同时间点返回的人\\n迈克尔逊-莫雷实验的核心想法完全可以与这个船和游泳者的例子进行类比。在实验中，迈克尔逊和莫雷从一个定点发射出两道光，这个定点就相当于类比中两个人出发的船B3。两道光发出时夹角为直角，而这两道光就相当于类比中的两个人S1和S2。两道光分别通过与光源距离相等的两面镜子反射回来，这两面镜子就相当于船B1和船B2。\\n如果牛顿科学体系内关于光传播的机械论观点是正确的，也就是光通过介质以太来传播，那么光源和镜子应该在以太中运动。这是因为光源和镜子本身在地球上，而地球在围绕太阳运转的时候就将在以太中运动。那么，以太就相当于船与游泳者类比中的水。尽管相对于光源，两道光传播的距离相等，但是由于光源和镜子同时在以太中运动，那么对于以太，两道光传播的距离将是不相等的（造成这种情况的确切原因，与两个人相对于其所在介质游过的距离不同是一样的）。因此，我们预计可以看到两道光回到光源处时有微小的时间差。\\n然而，与大家所预期的相反，两道光总是在相同时间点回到光源处。这个结果非常出人意料，在这种情况下，应该反复进行这个实验，不断验证。事实也正是如此。但是每次实验结果都相同，也就是两道光总是同时回到光源处。\\n请注意，这一点符合第4章讨论过的不证实推理模式：如果牛顿科学体系内关于光传播的机械论描述是正确的，那么光应该在不同的时间点回到光源处。然而，它们并非如此，所以，一定是哪里有问题。\\n由于牛顿科学体系非常成功，因此科学家如果因为这个实验结果而放弃牛顿科学体系内的观点，将是非常不明智的。但是，一定有哪里不太对，正如开尔文爵士提到过的，迈克尔逊-莫雷实验的结果似乎是本应晴朗的天空中为数不多的几块乌云之一。后来证明，这些有关光的命题根本不是\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 4270, \"excerpt_end\": 7470, \"chapter_text_length\": 10752, \"has_more\": true, \"next_offset\": 7470, \"has_previous\": true, \"previous_offset\": 1070, \"focus_found\": true, \"focus_terms_matched\": [\"迈克尔逊-莫雷实验\", \"以太\"], \"focus_terms_found_in_chapter\": [\"迈克尔逊-莫雷实验\", \"以太\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"迈克尔逊-莫雷实验\", \"offset\": 4970, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 4770, \"focus\": \"迈克尔逊-莫雷实验\"}}, {\"term\": \"迈克尔逊-莫雷实验\", \"offset\": 5052, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 4852, \"focus\": \"迈克尔逊-莫雷实验\"}}, {\"term\": \"迈克尔逊-莫雷实验\", \"offset\": 5216, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 5016, \"focus\": \"迈克尔逊-莫雷实验\"}}, {\"term\": \"以太\", \"offset\": 5960, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 5760, \"focus\": \"以太\"}}, {\"term\": \"以太\", \"offset\": 5983, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 5783, \"focus\": \"以太\"}}, {\"term\": \"以太\", \"offset\": 6003, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 5803, \"focus\": \"以太\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"59ec640cd58879e5dc12f95c991ccd3c2866bd0ae1e7fd561133ae2b6a3ca6ba\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/fa4934527602?ch=23\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[4270, 7470]], \"covered_characters\": 3200, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "limit": 6,
+      "query": "牛顿力学 相对论 近似 极限 情形"
+     },
+     "status": "success",
+     "duration_seconds": 2.114,
+     "result_full": "{\"query\": \"牛顿力学 相对论 近似 极限 情形\", \"results\": [{\"book_id\": \"96df36369f8b\", \"book_title\": \"结构之后的路\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 9, \"chapter_title\": \"第七章 作为结构变化的理论变化：对斯尼德形式主义的评论\", \"citation_label\": \"【《结构之后的路》·第七章 作为结构变化的理论变化：对斯尼德形式主义的评论】\", \"snippet\": \"之类的物理混合物。1）道尔顿之后，相似性模式改变了，从而溶液、合金程式构造的，而且这些方程式不论是直接设定，还是从相对论极限方程中和大气从化学应用集合转变为物理应用集合（从化学的化合物转变为物导出，都保持不变。但是，在斯尼德形式主义中，被还原的理论是有序偶理的混合物）。（K，1），它与原始的（K，7>不同，因为1从系统上不同于1。如果区别仅由于没有对化学作哪怕最简略的形式主义研究，我无法继续推进这仅存在于两个集合的各项之间，那么这种区别就不重要，因为被排除的应个例子，但是，从牛顿力学到相对论力学的转换中，这种同类的变化是显用一律都是错的。然而，通过对1.和1中各项之确定方式的密切观察得见的。在牛顿力学中，在确定一个1集合的候选项和该\", \"score\": 218, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"96df36369f8b\", \"chapter_idx\": 9, \"focus\": \"牛顿力学 相对论 近似 极限 情形\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"96df36369f8b\", \"book_title\": \"结构之后的路\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 8, \"chapter_title\": \"第六章 回应我的批评者\", \"citation_label\": \"【《结构之后的路》·第六章 回应我的批评者】\", \"snippet\": \"式上，爱因斯坦的广义相对论更类同样范围自然现象的诸理论进行比较时，我更加小心谨慎。如果它们是似于亚里士多德物理学，而不是牛顿力学。无论如何，得出本体论极限之历史上的理论，就像上述那些理论一样，那么我就可以采用卡尔爵士的说结论的证据都不是对整个理论的比较，面是对它们的经验推论的比较。法：每个理论在当前都被认为是真的，但后来被当作错的而放弃。此外，这是一个重大的跳跃，特别在面对下述定理时，即一个给定理论的任何有我可以说，作为常规科学的实践工具，较后的理论更好，我还可以希望加限的推论都可以来源于另一个不相容的理论。人足够的意义，在这些意义上更适合说明诸科学的主要发展特征。当我卡尔爵士对塔尔斯基的涉及突出了另一个难题，这是个更加根本的能够走\", \"score\": 216, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"96df36369f8b\", \"chapter_idx\": 8, \"focus\": \"牛顿力学 相对论 近似 极限 情形\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 8, \"chapter_title\": \"第九章　科学革命的本质与必然性\", \"citation_label\": \"【《科学革命的结构》·第九章　科学革命的本质与必然性】\", \"snippet\": \"因斯坦的理论。在今天我的这一观 点仍未被广泛接受，2因此我必须先考虑一下反对它的最流行的观点。 这些反对意见的要旨如下：相对论力学不能证明牛顿力学是错的，因为牛顿力学仍被绝大多数的工程师成功地应用着，许多物理学家在某些情况中也使用它。此外，使用旧理论的适当性，可以从在其他应用上取代了它的新理论得到证明。爱因斯坦理论可以证明，在某些条件的限制下，牛顿方程的预测与仪器测量的结果颇为一致。例如，如果想用牛顿理论得到满意的近似解，物体的相对速度必须远小于光速。在这个以及其他条件限制下，牛顿理论似乎可从爱因斯坦理论导出，因此 [ 1 ] Silvanus P. Thompson, Life of Williem 7homson Beron K\", \"score\": 215, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"focus\": \"牛顿力学 相对论 近似 极限 情形\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "36725cea3e3c",
+      "chapter_idx": 8,
+      "focus": "牛顿力学 错的 相对论 极限",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"chapter_idx\": 8, \"title\": \"第九章　科学革命的本质与必然性\", \"citation_label\": \"【《科学革命的结构》·第九章　科学革命的本质与必然性】\", \"text\": \"燃素说的成就的最完整、也最间情的论著是H.Metzger，Newton，Stahf，Boerhaase el ladoctrine ehimique ( Paris, 1930 ) , Part I1.\\n度内。）再进一步（一旦迈出第一步就难免这一步），这样的限制就会禁正科学家对任何尚未观察过的现象做任何“科学的”推测。这样一来，只要科学家的研究涉及的领域在过去从未应用过某一理论，或他的研究需要得到比过去应用某一理论所得到的资料更为精确的资料时，他就无法依赖这个理论了。这些禁令在逻辑上是讲得通的。但接受了这种禁令之后，研究工作根本无法进行，科学也就无法开展了。\\n我现在的这个论点事实上是一个恒真式。若科学家不对某种范式做出承诺，则不会有常规科学。甚至科学家在踏入新的研究领域，或对理论与实际之间的吻合程度有较高的要求时，都必须坚持对既有范式的承诺，否则范式就不可能提供尚未解决的谜题，让科学家从事研究。\\n此外，不仅常规科学研究依赖于对范式的承诺。若科学家只在有例可循时才利用现有理论，那就不可能有意外发现、反常或危机了。而意外发现、反常和危机正是指向非常规科学的路标。若我们同意实证论者对理论的正当应用范围所做的限制，则那种告知科学共同体什么样的问题会导致重大变迁的机制必然会停止运作。当这种情况发生时，科学共同体将不可避免地回复到前范式时期的状态一所有的人都在从事科学研究，但他们的总成果却根本不像科学。难怪为了成就重大的科学进展，我们必须付出的代价是：承诺一个可能会出错的范式。\\n更为重要的是，在实证论者的论辩中有一个逻辑上的漏洞，这个漏洞会使我们的讨论立刻回到革命性变迁的本质这一问题上来。牛顿力学真的能从爱因斯坦的相对论力学中导出吗？这种推导过程会是什么样的呢？设想有一组陈述，E，E，\\\"\\\".，E。，共同组成相对论的所有定律。这组陈述包含代表空间位置、时间、静止质量等等的变量和参数。利用逻辑和数学工具，可以从这组陈述导出另一组可以由观察来检验的陈述。要想证明牛顿力学的确是相对论力学的一个特例，我们必须在上述这组陈述（E，s）之外，再加上额外的陈述，例如（v/c）”<<1（物\\n[1]请与用另一种极不相间的方法所获得的结论比较，参见R.B.BraithwaiteScientifiec Explonation ( Cambridge, 1953 ) pp. 50-87 , esp. p. 76.\\n第九章科学革命的本质与必然性87体运动速度远小于光速），来限制参数和变量的范围。这组扩大后的陈述可用来导出另一组新陈述，N，N，，N，其形式与牛顿运动定律、方有引力定律等完全相同。显然，只要加上一些限制条件，牛顿力学就可以从爱因斯坦理论中推导出来。\\n然面这种推导至少在这一点上是似是而非的。虽然（N，'s）是相对论力学定律的特例，它们并非牛顿定律。因为这些陈述的意义只能以爱因斯坦理论的方式加以解释，它们怎么能还是牛顿定律呢？在爱因斯坦理论的陈述Es中代表空间位置、时间、质量等的变量和参数，依然出现于陈述N，s中，并依然代表爱因斯坦的空间、时间和质量等概\\n念。但这些概念在爱因斯坦理论中的物理蕴涵与在牛顿体系中的截然不同（牛顿理论中的质量是守恒的，而爱因斯坦理论中的质量可转变为能量。只有在相对速度很低的情况下这两种质量才能以相同的方式来测量，但即使这样我们也不能认为它们是相同的）。除非我们改变N's陈述中的物理变量的定义，否则导出的这些陈述就不是牛顿理论中的定律。如果我们真这么做了，至少就现在公认的推导的意义而言，就不能说我们从爱因斯坦理论中推导出牛顿定律了。实证论的论辩当然已经解释了为什么牛顿定律似乎仍然有效。因此，如果一个汽车司机的行为表现出他似乎生活于牛顿力学所描述的宇宙，那是有充足理由的。我们同样有理由去教土地测量员们以地球为中心的天文学。但这论瓣仍未达到它的目标，即没能证明牛顿定律是爱因斯坦理论的一种极限情况。因为这两个理论的差异并不仅仅是形式上的，为了二者间的过渡，我们还不得不同时改动他们所描述的宇宙体系的基本构成要素。\\n必须改变已经确立、且为大家所熟悉的概念的含义，这正是爱因斯坦理论的革命性影响的核心。虽然较之地心说到日心说、燃素说到氧化说、光的微粒说到波动说等范式转换，它要更为精微难辨，但它所导致的概念转换对前已确立的范式的决定性摧毁却毫不逊色。我们甚至可以把这个事件看作科学史上革命性重新整合的原型。正因为它并未涉及引人新的研究对象或概念，牛顿力学到爱因斯坦力学的转变才特\\n别清断地显示出：科学革命就是科学家据以观察世界的概念网络的变更。\\n上述讨论足以表明，在另一种哲学观照下，理所当然的观点是什么。至少对科学家而言，在一个被抛弃的科学理论与其后继者之间，绝大多数表面上的差异都是真实的。虽然过时理论总可以被看作现行理论的特例，但只是为了一定的目的才会这么说，而且这也只有借助于后\\n见之明、即更晚近的理论的指导才能完成。此外，即使这种转换是诠释旧理论的正当工具，其结果也只是一个极受限制的理论，它只能重述已知的现象。正因为其简化性，这种重述有用，但不足以指导常规科学的研究。\\n因此，现在我们应承认相继范式之间的差异是必然的和不可调和的。那么我们是否能更清楚地分辨出这些差异有哪些类？我已反复闸明过其中最明显的那一类，即相继范式对于宇宙的构成要素及其行为有不同看法。例如，对关于亚原子粒子的存在、光的物质构成、热或能量的守恒性等问题意见不同。这些都属于实质性差异，下不赘言。但范式间的差异不仅仅是关于实质的，因为范式不仅指涉自然，而且支撑着产生它们的那门科学。范式是一个成熟的科学共同体在某段时间内所认可的研究方法、问题领域和解题标准的源头活水。因此，接受新范式，常常需要重新定义相应的科学。有些老问题会移交给别一门科学去研究，或被宜布为完全“不科学”的问题。以前不存在的或认为无足轻重的问题，随着新范式的出现，可能会成为能导致重大科学成就的基本向题。随着问题的改变，那些把科学解答从形而上学思辨、文字游戏或数学谜题中分辨出来的标准也要改变。科学革命中出现的新的常规科学传统，与以前的传统不仅在逻辑上不相容，而且实际上是不可通约的。\\n牛顿的研究工作对于17世纪常规科学实践传统的冲击，为范式转换所产生的这类较为细致的效应提供了明显的例证。在牛顿以前，17\\n世纪的“新科学”已最终成功地推翻了亚里士多德学派和经院学者以物质的本质来解释其现象的学说。像石头往下掉落是因为它的“本\\n第九章科学革命的本质与必然性89质”驱使它向宇宙中心运动这种说法，已被看作是一种同义反复的文学游戏，而不再是公认的科学陈述。从这以后，多种多样可以知觉的现象，诸如物质的颜色、味道、甚至重量都必须用构成该物质的基本微粒的大小、形状、位置和运动加以解释。如果有人认为构成物质的基本微粒还有其他性质，就会被当作出于一种神秘思维而非科学思考。莫里哀在嘲笑一个医生把鸦片的安眠效能解释为它具有催眠的潜能时，他正是准确地捕捉到了这种时代的新精神。在17世纪后半叶，许多科学家宁愿解释为：鸦片粒子是圆形的，所以它们沿着神经运动时能够镇静神经。1]\\n在17世纪以前，用神秘的性质来解释现象，乃是正常的科学研究不可或缺的一部分。然面在17世纪接受了机械一微粒模型以后，证明这一模型在许多学科都能\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 5844, \"excerpt_end\": 8844, \"chapter_text_length\": 13104, \"has_more\": true, \"next_offset\": 8844, \"has_previous\": true, \"previous_offset\": 2844, \"focus_found\": true, \"focus_terms_matched\": [\"牛顿力学\", \"错的\", \"相对论\", \"极限\"], \"focus_terms_found_in_chapter\": [\"牛顿力学\", \"错的\", \"相对论\", \"极限\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"牛顿力学\", \"offset\": 4032, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 3832, \"focus\": \"牛顿力学\"}}, {\"term\": \"牛顿力学\", \"offset\": 4603, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 4403, \"focus\": \"牛顿力学\"}}, {\"term\": \"牛顿力学\", \"offset\": 4613, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 4413, \"focus\": \"牛顿力学\"}}, {\"term\": \"错的\", \"offset\": 4608, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 4408, \"focus\": \"错的\"}}, {\"term\": \"错的\", \"offset\": 5232, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 5032, \"focus\": \"错的\"}}, {\"term\": \"错的\", \"offset\": 6482, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 6282, \"focus\": \"错的\"}}, {\"term\": \"相对论\", \"offset\": 4594, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 4394, \"focus\": \"相对论\"}}, {\"term\": \"相对论\", \"offset\": 6557, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 6357, \"focus\": \"相对论\"}}, {\"term\": \"相对论\", \"offset\": 6604, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 6404, \"focus\": \"相对论\"}}, {\"term\": \"极限\", \"offset\": 7462, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"offset\": 7262, \"focus\": \"极限\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"d3908c769f82dd1744776298886bb0733cc74219023cefd40105b12f16ce93f9\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/36725cea3e3c?ch=8\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[5844, 8844]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "A Confutation of Convergent Realism Laudan",
+      "year_from": 1980,
+      "year_to": 1982,
+      "limit": 4
+     },
+     "status": "success",
+     "duration_seconds": 1.186,
+     "result_full": "{\"query\": \"A Confutation of Convergent Realism Laudan\", \"results\": [{\"source_record_id\": \"doi:10.1086/288975\", \"title\": \"A Confutation of Convergent Realism\", \"authors\": [\"Larry Laudan\"], \"year\": 1981, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/288975\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref/openalex\", \"source_providers\": [\"crossref\", \"openalex\"], \"retrieval_origin\": \"LIVE_COMBINED\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1086/289080\", \"title\": \"In Defense of Convergent Realism\", \"authors\": [\"Clyde L. Hardin\", \"Alexander Rosenberg\"], \"year\": 1982, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/289080\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 2, \"READABLE_SOURCE_IDS\": [\"doi:10.1086/288975\", \"doi:10.1086/289080\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"A Confutation of Convergent Realism Laudan\", \"status\": \"success\", \"raw_result_count\": 4}, {\"provider\": \"openalex\", \"query\": \"A Confutation of Convergent Realism Laudan\", \"status\": \"success\", \"raw_result_count\": 2}], \"relevance_gate\": {\"dropped_irrelevant\": 3, \"kept_relevant\": 2}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 2 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "limit": 5,
+      "query": "反对方法 科学 神话 平等"
+     },
+     "status": "empty",
+     "duration_seconds": 1.764,
+     "result_full": "{\"query\": \"反对方法 科学 神话 平等\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1086/288975",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.052,
+     "result_full": "{\"source_record_id\": \"doi:10.1086/288975\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1086/288975\", \"title\": \"A Confutation of Convergent Realism\", \"authors\": [\"Larry Laudan\"], \"year\": 1981, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/288975\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref/openalex\", \"source_providers\": [\"crossref\", \"openalex\"], \"retrieval_origin\": \"LIVE_COMBINED\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"This essay contains a partial exploration of some key concepts associated with the epistemology of realist philosophies of science. It shows that neither reference nor approximate truth will do the explanatory jobs that realists expect of them. Equally, several widely-held realist theses about the nature of inter-theoretic relations and scientific progress are scrutinized and found wanting. Finally, it is argued that the history of science, far from confirming scientific realism, decisively confutes several extant versions of avowedly ‘naturalistic’ forms of scientific realism.</jats:p> The positive argument for realism is that it is the only philosophy that doesn't make the success of science a miracle.</jats:p> -H. Putnam (1975)</jats:p>\", \"source\": \"crossref_METADATA\", \"hash\": \"fb3648b265b50c701e93e18430d3c66e86a6f1f698402634790f1ac60793aae2\", \"excerpt_start\": 0, \"excerpt_end\": 749, \"total_characters\": 749, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"fb3648b265b50c701e93e18430d3c66e86a6f1f698402634790f1ac60793aae2\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 7.8,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_qkbeEOrlGnKYuTcypy4A5547"
+    },
+    {
+     "t": 7.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_0VJHJ4GLM4LDj7aSFu0Q7718"
+    },
+    {
+     "t": 8.1,
+     "phase": "result",
+     "name": "search_scholarship",
+     "call_id": "call_02_Hso1oK4xdanal0o2JsX78845",
+     "status": "success",
+     "duration_seconds": 1.574
+    },
+    {
+     "t": 10.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "可证伪性 科学 迷信",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.198,
+     "result_full": "{\"query\": \"可证伪性 科学 迷信\", \"results\": [{\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 8, \"chapter_title\": \"一、科学：猜想和反驳\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·一、科学：猜想和反驳】\", \"snippet\": \"如人们时常设想的）一个理论的长处，而是它的短处。 （5）对一种理论的任何真正的检验，都是企图否证它或驳倒它。可检验性就是可证伪性；但是可检验性有程度上的不同：有些理论比别的理论容易检验，容易反驳；它们就像担当了更大的风险似的。 （6）进行确证的证据，除非是真正检验一项理论的结果，是不算数的；而这就是说，它可以看作是一项认真的但是不成功的证伪理论的尝试。（我现在把这些事例称为“确证证据”。） （7）有些真正可检验的理论，被发现是假理论，仍旧被赞美者抱着不放——例如专为它引进某种特设性假说，或者特地为这个目的重新解释这个理论，使它逃避反驳。这种方法总是办得到的，但是这样营救理论免于被驳倒，却付出了破坏或至少降低理论的科学地位的代价。（我\", \"score\": 202, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 8, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 18, \"chapter_title\": \"十一、科学与形而上学的分界\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·十一、科学与形而上学的分界】\", \"snippet\": \"”。而且最好的物理学理论一般也都类似于培根所不予考虑的“心灵的预期”。 另一方面，在许多流行的历书和圆梦书中可以找到许多迷信观念和粗糙的方法（种植法等等），它们倒是与观察联系得更紧密，而且往往明显建立在某种归纳的基础上。特别是占星术士们总是声称他们的“科学”以大量归纳材料为基础。这种声明大概没有什么根据，但从未听说过有人想批判审查它这些所谓归纳材料以便否定占星术。相反，占星术之所以为现代科学所不容，是因为它不符合公认的理论和方法。 因此，显然需要另外一种分界标准，我建议（尽管几年以后才发表这个建议）应当把理论系统的可反驳性或可证伪性作为分界标准。按照我仍然坚持的这个观点，一个系统只有作出可能与观察相冲突的论断，才可以看作是科学的；实\", \"score\": 188, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 17, \"chapter_title\": \"十、真理、合理性和科学知识增长\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·十、真理、合理性和科学知识增长】\", \"snippet\": \"种标准，比我同时提出、得到广泛讨论的比较简单的证伪准则更重要、更实在。不过这个比较简单的标准也是需要的。为了说明需要这种可证伪性或可检验性标准作为科学理论的经验特点的标准，我将举例讨论一个以纯粹经验术语所表达的简单的、纯粹的存在陈述。我希望这个例子也可以回答一个一再重复的批评：从经验科学中排除纯粹存在陈述并把它归之于形而上学陈述，是违反常情的。 我的例子包含以下的纯粹存在理论： “有一连串拉丁文的哀歌体对句，如果在一定的时间地点以适当方式读出来，立即就会出现魔鬼——一种有两只小角和分趾蹄的类人生物。” 显然，这种不可检验的理论在原则上是可以证实的。尽管根据我的分界标准，由于它是非经验的和非科学的，或者也可以说是形而上学的，因而排除它\", \"score\": 159, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 17, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a325bbdc496e\", \"book_title\": \"哲学100问（套装共3册）\", \"author\": \"书杰\", \"chapter_idx\": 180, \"chapter_title\": \"04 波普尔：科学意味着真理吗\", \"citation_label\": \"【《哲学100问（套装共3册）》·04 波普尔：科学意味着真理吗】\", \"snippet\": \"达真理的彼岸。科学研究永远处于“在路上”的状态，科学只能接近真理、逼近真理，但无法成为真理。 可证伪度与可检验度 在具有可证伪性的理论中，如何区分不同理论的优劣？这就涉及可证伪度（可检验度）的问题。 一些理论更容易被证伪，因而可证伪度就高；一些理论不容易被证伪，可证伪度就相对较低。但哪些理论更容易证伪，哪些理论难以证伪呢？ 在波普尔看来，命题所包含的信息量越少，便越难以被证伪。反之，命题的信息量越大，就越容易被证伪。比如，下面两个都是具有可证伪性的命题： ①东北将会下雪 ②东北的哈尔滨将会在明天中午12点下雪 相比而言，命题②比命题①更容易被证伪，因为命题②包含的信息量比命题①大。命题①只陈述了“东北将会下雪”这一事实，而命题②则精\", \"score\": 154, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a325bbdc496e\", \"chapter_idx\": 180, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a325bbdc496e\", \"book_title\": \"哲学100问（套装共3册）\", \"author\": \"书杰\", \"chapter_idx\": 185, \"chapter_title\": \"小结：科学哲学\", \"citation_label\": \"【《哲学100问（套装共3册）》·小结：科学哲学】\", \"snippet\": \"普尔选择了和归纳主义不同的道路。归纳主义是验证理论的正确性，而波普尔则是要想办法通过经验证伪这个假说。如果这个理论具备了可证伪性，则它就具备了成为科学知识的可能性。 基于证伪主义，波普尔提出了科学发展的模式：问题—猜想—反驳—新的问题—再猜想—再反驳……科学研究像一趟没有终点的接力跑，科学系统也是一个动态发展的系统。 因而，科学永远都在追求真理的路上，科学只能接近真理而无法成为真理。 波普尔的真理观 库恩 关于库恩，我们重点把握他的“范式”理论。 库恩：范式 所谓范式，就是科学共同体成员对如何从事自己专业的研究秉持着共同的理论和信念。通俗理解，范式就是科学共同体的各个成员共同遵循的东西，可以是一种观念，一种模式或者框架。所有的共同体\", \"score\": 152, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a325bbdc496e\", \"chapter_idx\": 185, \"focus\": \"可证伪性 科学 迷信\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 5, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 10.4,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "科学革命 范式 常规科学",
+      "limit": 6
+     },
+     "status": "success",
+     "duration_seconds": 2.21,
+     "result_full": "{\"query\": \"科学革命 范式 常规科学\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 4, \"chapter_title\": \"第五章　范式的优先性\", \"citation_label\": \"【《科学革命的结构》·第五章　范式的优先性】\", \"snippet\": \"第五章范式的优先性 为了找出规则、范式与常规科学之间的关系，首先让我们考虑，历史学家怎样将前面已描述过的作为公认规则的承诺之特殊地位分离出来。对某一时期某一专业做仔细的历史研究，就能发现一组反复出现面类标准式的实例，体现各种理论在其概念的、观察的和仪器的应用中。这些实例就是共同体的范式，它们存在于教科书、课堂讲演和实验室的实验中。研究它们并用它们去实践，相应的共同体成员就能学会他们的专业。当然，历史学家此外还会发现由一些其地位仍被怀疑的成就所占据的边缘地区，但已解决了的问题和技巧的核心通常是明确的。除了偶尔的模棱两可外，一个成熟科学共同体的那些范式是能够被相对容易地确定的。 然面，共有范式的确定不是共有规则的确定。确定共有规则还要求\", \"score\": 250, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 4, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 1, \"chapter_title\": \"第二章　通向常规科学之路\", \"citation_label\": \"【《科学革命的结构》·第二章　通向常规科学之路】\", \"snippet\": \"。同时，这些成就又足以无限制地为重新组成的一批实践者留下有待解决的种种问题。 凡是共有这两个特征的成就，我此后便称之为“范式”，这是一个与“常规科学”密切相关的术语。我选择这个术语，意欲提示出某些实际科学实践的公认范例一它们包括定律、理论、应用和仅器在一起一为特定的连贯的科学研究的传统提供模型。这些传统就是历史学家们在“托勒密天文学”（或“哥白尼天文学”）、“亚里士多德动力学”（或“牛顿动力学”）、“微粒光学”（或“波动光学”）等等标题下所描述的传统。研究范式，包括研究许多比上面所列举的那些名称更加专门的范式，主要是为以后将参与实践面成为特定科学共同体成员的学生准备的。因为他将要加入的共同体，其成员都是从相同的模型中 第二章通向常规\", \"score\": 249, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 1, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 2, \"chapter_title\": \"第三章　常规科学的本质\", \"citation_label\": \"【《科学革命的结构》·第三章　常规科学的本质】\", \"snippet\": \"第三章常规科学的本质一个团体接受了一个单一的范式之后，这种范式所容许的更专业23化、更深奥的研究其本质是什么呢？如果范式代表了最终所做的工作，那么，还有什么进一步的问题留待这个已统一的团体去解决呢？如果我们现在注意到已使用的术语可能误导读者，那么，这些问题似乎将更为迫切，按照其已确定的用法，一个范式就是一个公认的模型或模式（Patterm），在这一意义1，在我找不出更好的词汇的情况下，使用\\\"Par-adigm”（范式）一词似颜合适。但人们将很快就会看出，许可这种合适的模型和模式的意义，并不完全是在“范式”定义中通常包含的意义。例如，在文法中，”amo，amas，amat”就是一种范式，因为它展示出一种模式，可用来构成大量其他拉丁文动\", \"score\": 248, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 2, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 3, \"chapter_title\": \"第四章　常规科学即是解谜\", \"citation_label\": \"【《科学革命的结构》·第四章　常规科学即是解谜】\", \"snippet\": \"盘式大平之类的仪器测量电吸引的实验很少为人所注意。因为这些实验所得的结果既不一致又不简单，不能被用来闸明这些实验所依据的范式。因此，它们仅仅是一些纯粹的事实，与电学研究的继续进步毫无关联，面且也不可能有关联。只是有了后来的范式反观它们时，我们才能看出它们所展示的电学现象的那些特征。36当然，库仑和他的同时代人也掌握了这种后来的范式，或者是掌握了当应用于吸引问题时能产生相向预期的一种范式。这就是为什么库仑能够设计出一种仪器，由这种仪器所得结果能为范式的阐明所需求。但也正是这个原因，库仑的结果并不令人惊奇，而且有些库仑的同辈也能事先预见到这个结果。即使其目标在于阐明范式的研究计划面不希求发现始料未及的新事物。 但是，如果常规科学的目的不\", \"score\": 245, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 3, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 5, \"chapter_title\": \"第六章　反常与科学发现的突现\", \"citation_label\": \"【《科学革命的结构》·第六章　反常与科学发现的突现】\", \"snippet\": \"已经发展出了一套强有力的独特技巧，以产生这类令人惊讶的现象和理论。如果科学的这一特征与我们前面已经说过的相一致，那么，在范式指导下的研究，必定是一种引起范式改变的特别有效的方式。这就是事实和理论的根本新颖性所导致的结果。在一套规则指导下进行的游戏，无意中产生了某些新东西，为了消化这些新东西就需要精心制作另一套规则。当这些新东西成为科学的组成部分之后，科学事业，至少是这些新东西所在之特殊领域的那些专家们的事业，就再也不会与以往相同了。 我们现在必须要问，到底是怎么会发生这类变化的。让我们先考虑第一类发现，即事实的新额性，然后再考虑发明，即理论的新颖性。 不过，发现与发明之间的区别，或者说事实和理论之间的区别，我们很快就会看到，乃是非常\", \"score\": 219, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 5, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 6, \"chapter_title\": \"第七章　危机与科学理论的突现\", \"citation_label\": \"【《科学革命的结构》·第七章　危机与科学理论的突现】\", \"snippet\": \"第七章危机与科学理论的突现第六章所讨论的科学发现既是范式变化的原因，又是范式变化的 结果；面且隐含在这些发现中的变化，既是建设性的，又是破坏性的。在发现被同化了以后，科学家就能说明更大范围的自然现象，或者能更精确地说明某些先前已知的现象。但要达到这一点，只有通过放弃某些以前的标准信念或程序，同时用其他新成分代替先前范式中的那些原有成分。我已论证过，这类转变与通过常规科学活动所达到的所有发现密切相关，只有那些除细节之外、其余早被预言的毫无新奇可言的发现不在此列。然而，发现并不是这些破坏性一建设性的范式变化的唯一原因。在本章中，我们将开始考虑由新理论的发明所导致的类似的、但一般规模更大的范式变化。 我们已经论证过，在科学中，事实和理论、\", \"score\": 219, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 6, \"focus\": \"科学革命 范式 常规科学\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 23, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 11.5,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_luwjLcQDqme61LIBD07x7556"
+    },
+    {
+     "t": 11.8,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_LjUlTuDYesccBCC7WrDq9244"
+    },
+    {
+     "t": 11.9,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_02_iLmH5YEIFAFr9ffluS0z9770"
+    },
+    {
+     "t": 12.1,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "ff783ce7c481",
+      "chapter_idx": 18,
+      "focus": "占星术 可证伪性 分界标准",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.035,
+     "result_full": "{\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"chapter_idx\": 18, \"title\": \"十一、科学与形而上学的分界\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·十一、科学与形而上学的分界】\", \"text\": \"我的目标虽然不在于历史完备性，却在于历史的准确性。\\n2. 我自己对这个问题的看法\\n在1919年我第一次碰上了这个分界问题，即在这二者之间画出一条界线来：一方面是理应说是属于经验科学的陈述和陈述系统，另一方面是那种也许可称为“伪科学”或者（某种情况下）“形而上学”的命题，或者是那些也许属于纯粹逻辑或纯粹数学的命题。\\n这个问题从培根时代以来就一直使许多哲学家激动，尽管我还没有看见过一种很明确的表述。大多数人都认为，科学的特征在于它的观察基础，或它的归纳方法，而伪科学或形而上学的特征却在于思辨方法，或如培根所说，在于它们运用的都是“心灵的预期”——它十分类似于假说。\\n这个观点是我永远无法接受的。现代物理学理论，特别是爱因斯坦理论（1919年曾受到广泛讨论），是高度思辨、高度抽象的，远远离开了可称为其“观察基础”的东西。一切表明这种理论多少也是“以观察为基础”的企图，都是没有说服力的。甚至牛顿理论也是这样。培根曾经反对哥白尼系统，根据就是它“不必要地歪曲了我们的感觉”。而且最好的物理学理论一般也都类似于培根所不予考虑的“心灵的预期”。\\n另一方面，在许多流行的历书和圆梦书中可以找到许多迷信观念和粗糙的方法（种植法等等），它们倒是与观察联系得更紧密，而且往往明显建立在某种归纳的基础上。特别是占星术士们总是声称他们的“科学”以大量归纳材料为基础。这种声明大概没有什么根据，但从未听说过有人想批判审查它这些所谓归纳材料以便否定占星术。相反，占星术之所以为现代科学所不容，是因为它不符合公认的理论和方法。\\n因此，显然需要另外一种分界标准，我建议（尽管几年以后才发表这个建议）应当把理论系统的可反驳性或可证伪性作为分界标准。按照我仍然坚持的这个观点，一个系统只有作出可能与观察相冲突的论断，才可以看作是科学的；实际上通过设法造成这样的冲突，也即通过设法驳倒它，一个系统才受到检验。因而可检验性即等于可反驳性，所以也同样可以作为分界标准。\\n这种科学观以批判态度为自己最重要的特征。由此科学家看一种理论应当看它是否能受到批判讨论：看它是否使自己受到各种批评，又是否经受得住这些批评。例如，牛顿理论预言了当时没有观察到的偏离开普勒定律的现象（由于行星之间的相互作用）。由此反使自己受到有意的经验反驳，反驳的失败则意味着理论的成功。爱因斯坦理论也受到类似的检验。一切真正的检验实际上都是有意的反驳。只有当一种理论成功地顶住了这些反驳的压力，我们才能声称它已为经验所确证或确认。\\n另外还有（如我后来发现的(7)）可检验度的问题：有的理论比其他理论更敢于接受可能的反驳。例如有这样两种理论：一种可推导出不同强度的磁场中原子所发射光谱线分裂的精确预测值，一种则只是预言磁场可影响光的发射，显然，前者比后者更易于遭到实验的反驳。一种理论愈是精确，愈易于遭到反驳，也就愈使人感到兴趣。它既然愈是大胆，也就愈少概然性。但是更易于检验，因为我们可以使检验更精确、更严格。如果它经受住了严格的检验，它将由这种检验所更好地确证或更好地验证。因此可确证性（或者可验证性或可确认性）必将随着可检验性的提高而提高。\\n这表明，分界标准不可能绝对分明，但它本身有程度之差。有完全可以检验的理论，有难于检验的理论，还有不可检验的理论。对那些不可检验的理论，经验科学家毫无兴趣。可以把它们称为形而上学的。\\n这里我必须再一次强调经常受到误解的一点。我这样来说明这一点，也许可以避免这种误解。取一正方形代表一种语言的所有陈述的类，我们用这种语言表述一门科学；再画一条明显的水平线把正方形分为上下两半，上一半写上“科学”、“可检验的”，下一半写上“形而上学”、“不可检验的”。我希望你能意识到，我并不是要画一条分界线来像确定语言的限度一样，把科学留在里面，把形而上学从有意义的陈述类中驱逐出去。相反，从我最早发表的论述这个问题的文章开始，(8)我就强调这一事实：要想在科学同形而上学之间画条界线以便把形而上学作为胡说从有意义的语言中排除出去，是不妥当的。\\n我已指出这里的原因之一是我们决不能把这条界线画得过于分明。如果我们还记得大多数科学理论都起源于神话，这一点就清楚了。例如，哥白尼系统就受到过新柏拉图主义崇拜太阳光的鼓舞，太阳由于其崇高必须占据“中心”。这表明神话怎样可能发展可检验成分。它们可以在讨论过程中成为对科学有效而重要的东西。在《科学发现的逻辑》(9)中我举了几个对科学变得极为重要的神话的例子，其中包括原子论和光微粒说。如果我们说这些理论在其某一发展阶段上是胡言乱语，而在另一阶段上又突然变得很有意义，那是无助于澄清问题的。\\n另一论证如下。有可能出现这样的（并可证明是重要的）情况：某一陈述既然可检验，就属于科学；其否定则成为不可检验的，必须置于界线之下。最重要的、可经受最严格检验的陈述——科学的普遍定律——的确就是这样。我在《科学发现的逻辑》中曾建议，可以为一定目的而把它们表述为“不存在任何永动机”（有时称为“热力学第一定律的普朗克表述”）这种形式，也即存在陈述的否定形式。我看与此相对应的存在陈述——“存在一种永动机”——同“存在一条海蛇”一样，都是属于分界线以下的，这同“有一条海蛇在英国博物馆展览”不同，后者完全是分界线以上的，因为立即可加以检验。但是我们不知道如何检验一个孤立的纯粹存在判断。\\n这里我无法论证这一观点的合理性：应当把孤立的纯粹存在陈述列入不可检验的、科学家关注范围之外的一类。(10)我只想说清楚，如果接受这一观点，再说形而上学陈述无意义，(11)或者把它排除于我们的语言以外，就很奇怪了。如果我们承认一个存在陈述的否定是有意义的，那么我们也就必须承认这个存在陈述本身也是有意义的。\\n我不得不强调这一点，因为人们一再说我建议把可证伪性或可反驳性作为意义标准（而不是分界标准），或者说我建议从我们的语言或许科学语言中排除这种存在陈述。甚至曾经详细探讨并正确转述过我的见解的卡尔纳普也觉得，他不得不把我的见解说成是建议从这种那种语言中排除形而上学陈述。(12)\\n但是事实是，从我发表关于这个问题的第一篇文章（见本书第368页注②）开始，我就一直把这个无意义问题作为假问题而取消，我还一直反对把这一问题与分界问题等同起来的想法。现在我的观点仍然是这样。\\n3. 卡尔纳普最早的无意义理论\\n我在一份手稿中（后来在《科学发现的逻辑》中更简要地）批评过这样一种理论，它断言形而上学毫无意义，由一些胡说八道的假命题所组成。人们以为这样一种理论(13)能导致“推翻”形而上学，而且能比以前任何一种反形而上学的哲学更加彻底、更加有效地摧毁形而上学。但我在我的批评中指出，这个理论建立在对意义问题的朴素的、“自然主义”(14)观点基础上，而其鼓吹者一面在渴望赶走形而上学，一面却忽略了他们把一切科学理论统统抛进了同一个“无意义的”形而上学理论垃圾堆。所有这一切，我认为都是只想摧毁形而上学却不想寻求分界标准的结果。\\n卡尔纳普在《结构》一书中追随维特根斯坦《逻辑哲学论》而持有的关于有意义同无意义的“自然主义”理论（我的叫法），他自己很久以前就放弃了，代之以一个更为复杂的学说：某一给定的表述在某种（人工）语言中是有意义的句子，当且仅当它遵循用这种语言来组成适当公式或句子的形成规则时。\\n在我看来，从朴素的或自然主义的理论到这\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 1756, \"excerpt_end\": 4756, \"chapter_text_length\": 43493, \"has_more\": true, \"next_offset\": 4756, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"占星术\", \"可证伪性\", \"分界标准\"], \"focus_terms_found_in_chapter\": [\"占星术\", \"可证伪性\", \"分界标准\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"占星术\", \"offset\": 2304, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2104, \"focus\": \"占星术\"}}, {\"term\": \"占星术\", \"offset\": 2370, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2170, \"focus\": \"占星术\"}}, {\"term\": \"占星术\", \"offset\": 2377, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2177, \"focus\": \"占星术\"}}, {\"term\": \"可证伪性\", \"offset\": 2456, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2256, \"focus\": \"可证伪性\"}}, {\"term\": \"可证伪性\", \"offset\": 4118, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 3918, \"focus\": \"可证伪性\"}}, {\"term\": \"可证伪性\", \"offset\": 32270, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 32070, \"focus\": \"可证伪性\"}}, {\"term\": \"分界标准\", \"offset\": 2420, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2220, \"focus\": \"分界标准\"}}, {\"term\": \"分界标准\", \"offset\": 2462, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2262, \"focus\": \"分界标准\"}}, {\"term\": \"分界标准\", \"offset\": 2568, \"read_args\": {\"book_id\": \"ff783ce7c481\", \"chapter_idx\": 18, \"offset\": 2368, \"focus\": \"分界标准\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"571b996be1043b19cffb981a030b71e8d7f2b5ea2905932dc3209ab36eb0b723\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/ff783ce7c481?ch=18\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[1756, 4756]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 12.1,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.1086/520685",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.036,
+     "result_full": "{\"source_record_id\": \"doi:10.1086/520685\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1086/520685\", \"title\": \"Reconstructing Scientific Realism to Rebut the Pessimistic Meta-induction\", \"authors\": [\"Gerald Doppelt\"], \"year\": 2007, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/520685\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"ABSTRACT_AVAILABLE\", \"access_level_after\": \"ABSTRACT_AVAILABLE\", \"returned_evidence_level\": \"ABSTRACT_AVAILABLE\", \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 返回; 状态字段单调不降\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容 只返回当前来源提供的摘要文本；has_more/total_characters 仅针对已取得文本，上游可能已截断，不能据此认定原始摘要完整。若有 has_more，可按 next_offset 续读，不等于论文全文。\", \"abstract\": {\"text\": \"This paper develops a stronger version of ‘inference-to-the-best explanation’ scientific realism. I argue against three standard assumptions of current realists: (1) realism is confirmed if it provides the best explanation of theories’ predictive success; (2) the realist claim that successful theories are always approximately true provides the best explanation of their success; and (3) realists are committed to giving the same sort of truth-based explanation of superseded theories’ success that they give to explain our best current theories’ success. On the positive side, I argue that (1) the confirmation of realism requires explaining theories’ explanatory success, not just their predictive success; (2) in turn this task requires a richer realist model of explanation that brings into the explanans both (a) successful theories’ epistemic virtues (e.g., unification and simplicity) and (b) the standards governing these virtues, as well as truth; (3) this richer realist model is further confirmed because it can better explain the success of theories in gaining wide acceptance among scientists; and (4) the model is further supported because it is superior to ‘preservative realism’ in providing a plausible rebuttal of the pessimistic meta-induction from the many past successful-but-false theories to the likelihood that our best current theories are likewise false.</jats:p>\", \"source\": \"crossref_METADATA\", \"hash\": \"83c4caf3d260d19bdbd4f65ad22db9a08152d37a4fa8c0e925f0e49189a5cad9\", \"excerpt_start\": 0, \"excerpt_end\": 1390, \"total_characters\": 1390, \"has_more\": false, \"next_offset\": null, \"truncated\": false, \"content_sha256\": \"83c4caf3d260d19bdbd4f65ad22db9a08152d37a4fa8c0e925f0e49189a5cad9\", \"window_covers_available_text\": true, \"source_abstract_completeness\": \"unverified\"}, \"evidence_origin\": \"ABSTRACT_METADATA\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"available_abstract\", \"whole_document_returned\": false}"
+    },
+    {
+     "t": 13.9,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "limit": 6,
+      "query": "以太 迈克尔逊 实验 相对论"
+     },
+     "status": "success",
+     "duration_seconds": 1.83,
+     "result_full": "{\"query\": \"以太 迈克尔逊 实验 相对论\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 6, \"chapter_title\": \"第七章　危机与科学理论的突现\", \"citation_label\": \"【《科学革命的结构》·第七章　危机与科学理论的突现】\", \"snippet\": \"体拖曳了某一部分以太随着它一起运动。而每一种阐释都能足够成功地解释这种否定结果，不仅是天体观察，也包括地面实验，如著名的迈克尔逊（Michelson）和莫雷（Morley）实验的否定结果。）除了各家闸释之间有冲突之外，依然不存在别的冲突。在缺乏有关实验技术的条件下，即使各家阐释之间的彼此冲突也不会变得尖锐起来的。 只是到19世纪最后20年，随着麦克斯韦电磁理论被逐渐接受，这种局面才开始改变。麦克斯韦本人属于牛顿派，他相信光和电磁波一 般都是通过一种机械性以太粒子可变动的位移来传播的。他的电磁理论的最初形式都使用了他赋予这种以太媒质的假设性质。这些性质虽然在他最后的理论中都放弃了，但他仍然相信，他的电磁理论可与牛顿 [ 1  Jose\", \"score\": 176, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 6, \"focus\": \"以太 迈克尔逊 实验 相对论\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"fa4934527602\", \"book_title\": \"世界观：现代人必须要懂的科学哲学和科学史（原书第3版）\", \"author\": \"理查德·德威特\", \"chapter_idx\": 23, \"chapter_title\": \"第22章 1700～1900年牛顿世界观的发展\", \"citation_label\": \"【《世界观：现代人必须要懂的科学哲学和科学史（原书第3版）》·第22章 1700～1900年牛顿世界观的发展】\", \"snippet\": \"假设存在一种远比普通物质更为稀薄的介质……【这种介质】可以用远远超过声速的速度来传播震动。……这种假设存在的介质被称为“以太”。（德沙内尔，1885，p.947） “以太”（ether）这个名字源于过去的“以太”概念，也就是在亚里士多德世界观里被认为可以在月上区域中找到的元素以太。然而，除了名字，亚里士多德世界观里的以太和被当作是光传播所需基础介质的以太并没有什么相似点。 请注意，这个关于光传播的观点是如何与牛顿科学体系内机械论的宇宙拼合在一起的。与声波和水波等现象一样，光传播被认为需要某个基础介质的机械干涉。迈克尔逊-莫雷实验的目的是找出更多直接证据来证明以太的存在。实验的核心设想是，从一个点发射出两道光，夹角为90度，随后（通过\", \"score\": 175, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"focus\": \"以太 迈克尔逊 实验 相对论\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 16.1,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_MA3g2OxVOkN2zlBcj6VL0856"
+    },
+    {
+     "t": 16.3,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_00ETZRrrAP5hpAred17o0296"
+    },
+    {
+     "t": 16.5,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "fa4934527602",
+      "chapter_idx": 23,
+      "focus": "迈克尔逊-莫雷实验 以太",
+      "max_chars": 3200
+     },
+     "status": "success",
+     "duration_seconds": 0.001,
+     "result_full": "{\"book_id\": \"fa4934527602\", \"book_title\": \"世界观：现代人必须要懂的科学哲学和科学史（原书第3版）\", \"chapter_idx\": 23, \"title\": \"第22章 1700～1900年牛顿世界观的发展\", \"citation_label\": \"【《世界观：现代人必须要懂的科学哲学和科学史（原书第3版）》·第22章 1700～1900年牛顿世界观的发展】\", \"text\": \"泛应用于实际生活了）。法拉第的这个观点，也就是电力、磁力和光从某个意义上来说是同一个根本现象的不同方面，很快得到了发展，成了由詹姆斯·克拉克·麦克斯韦（1831—1879）在19世纪中期提出的电磁理论。法拉第的发现主要是定性描述，但是麦克斯韦则发现了光、电力和磁力现象背后的基本数学方程式。这些方程式通常被称为“麦克斯韦方程式”，它们将光、电力和磁力现象统一了起来，被广泛认为是这一时期最重要的发现。\\n再强调一下，以上对有关电力、磁力和光的部分关键研究发展的概述是非常简短且有所选择的。但是，请再次注意一下其中大致相同的模式：在这段时期，这些领域都出现了超乎寻常的发展，许多现象过去都曾经被认为是独特的，而且要用定性的方法进行研究，此时却逐渐统一了起来，而且都可以用牛顿科学体系中的基础数学定量方法来进行研究。\\n概括评述\\n尽管我们只是具体研究了三个科学领域，但也应该已经足以让我们体会到在1700～1900年间，科学的诸多领域是如何被纳入牛顿科学体系中的。值得注意的是，这一时期长达200年，其间许多不同的科学领域都出现了令人印象深刻的成果和发现。总的来说，到了1900年，科学的多个分支都在快速发展。牛顿科学体系内具有普遍性的方法被证明极为富有成效。到了大约1900年，有一种感觉是我们已经几乎完全了解了自然，只剩下几个相当无足轻重的问题还有待解决。接下来，让我们对其中几个问题进行一下探讨。\\n｜几块小乌云｜\\n英国著名物理学家之一开尔文爵士在1900年发表了一段经常被引用的谈话，在谈话中他指出，在现代科学本应晴朗的天空里，现在只有几块“小乌云”了。开尔文所指的“小乌云”中，有两块比较重要，分别是迈克尔逊-莫雷实验结果和对黑体辐射理解上的某些问题。下面我们将对这两个问题分别进行讨论，同时还会对在1900年左右时仍有问题的某些其他领域进行简要探讨。\\n事实上，对迈克尔逊-莫雷实验结果的理解有赖于爱因斯坦相对论的确立，而对与黑体辐射相关命题的理解，以及对下面要讨论的其他命题的理解，都有赖于量子理论的创立。这些理论是现代物理学最重要的两个分支，两者都对牛顿科学和牛顿世界观的某些方面产生了举足轻重的影响。考虑到以上几点，开尔文所说的小乌云实际上一点都不小。在本章剩余的篇幅中，我们将简要了解迈克尔逊-莫雷实验、与黑体辐射相关的命题，以及其他看起来无足轻重的命题。在后续的章节中，我们将探讨相对论和量子理论，以及这些理论对牛顿世界观的影响。\\n迈克尔逊-莫雷实验\\n迈克尔逊-莫雷实验涉及光速和光传播的方式。阿尔伯特·迈克尔逊（1852—1931）和爱德华·莫雷（1838—1923）进行了大量有关这些命题的实验，最重要的几个发生于19世纪80年代末期。一些背景信息将有所帮助。\\n思考一下水波的运动。波是介质之间机械干涉的结果，而正是通过这种介质，波才得以运动，这种介质就是水。当然，在没有基础介质也就是没有水的情况下，就不可能有水波的运动。\\n声波与此相似。声波也是介质之间机械干涉的结果，也是通过介质才可以传播。空气是典型的介质，尽管声波也可以通过其他多种介质进行传播。同样地，基础介质对声波传播也是必需的，没有基础介质，也就没有波。\\n总的来说，为了与整体牛顿科学体系保持一致，任何波的运动都被认为是需要某种基础介质的机械干涉。由于我们有很好的理由来认为光是波，所以，在牛顿科学体系内，光的传播就需要依赖于某种基础介质。下面这段话摘自德沙内尔所著的《自然哲学》，对光的传播进行了精准总结。这本书在19世纪80年代末期是物理学的标准教科书。（在“科学”这个单词成为标准之前，“自然哲学”就用来指代我们所说的科学。顺带提一下，德沙内尔的书出版于迈克尔逊-莫雷实验之前，后来，这个实验给书中牛顿科学体系内关于光传播的观点带来了大量问题。）\\n跟声音一样，光被认为是来源于震动的；但是，跟声音一样，它也不需要空气或其他有形物质的存在来使其震动从源头传播到周边。……似乎需要假设存在一种远比普通物质更为稀薄的介质……【这种介质】可以用远远超过声速的速度来传播震动。……这种假设存在的介质被称为“以太”。（德沙内尔，1885，p.947）\\n“以太”（ether）这个名字源于过去的“以太”概念，也就是在亚里士多德世界观里被认为可以在月上区域中找到的元素以太。然而，除了名字，亚里士多德世界观里的以太和被当作是光传播所需基础介质的以太并没有什么相似点。\\n请注意，这个关于光传播的观点是如何与牛顿科学体系内机械论的宇宙拼合在一起的。与声波和水波等现象一样，光传播被认为需要某个基础介质的机械干涉。迈克尔逊-莫雷实验的目的是找出更多直接证据来证明以太的存在。实验的核心设想是，从一个点发射出两道光，夹角为90度，随后（通过镜子反射）使两道光从两个方向反射回来。如果光通过以太这样的介质来传播，那么由于地球很有可能像船在水面上划过那样在介质以太中运动，预计将看到的两道光反射回来时有微小的时间差。举个与这个实验核心想法相似的例子，假设让两个人从运动着的船上出发去游泳。思考一下图22-1所展示的关于船和游泳者的类比。假设三条船都以同样的速度在水中运动，船B1与船B3之间的距离和船B2与船B3之间的距离相等。其中一人（也就是图中的S1）的任务是游到位于图示上方的船B1，然后回到他最初出发的船上（也就是B3）。由于船在水中运动，因此这个人需要以一定的角度游向船B1，然后同样以一定的角度游回船B3。另一个人（图中的S2）的任务是追上位于他出发的船B3前面的船B2，然后回到船B3。\\n图22-1　船和游泳者的类比\\n相对于最初的船B3，两个人往返的距离相等。但是，请注意，相对于两个人所游过的介质（也就是水），两人游过的距离就不相等了。具体来说，相对于水，S1游过的距离比S2稍微短一些。（如果你感兴趣，可以运用勾股定理和一些代数算法算出每个人所游的确切距离。）由于相对于他们运动所在的介质，两个人游过的距离不同，因此他们将在不同时间点回到最初的船上，如图22-2所示。\\n图22-2　在不同时间点返回的人\\n迈克尔逊-莫雷实验的核心想法完全可以与这个船和游泳者的例子进行类比。在实验中，迈克尔逊和莫雷从一个定点发射出两道光，这个定点就相当于类比中两个人出发的船B3。两道光发出时夹角为直角，而这两道光就相当于类比中的两个人S1和S2。两道光分别通过与光源距离相等的两面镜子反射回来，这两面镜子就相当于船B1和船B2。\\n如果牛顿科学体系内关于光传播的机械论观点是正确的，也就是光通过介质以太来传播，那么光源和镜子应该在以太中运动。这是因为光源和镜子本身在地球上，而地球在围绕太阳运转的时候就将在以太中运动。那么，以太就相当于船与游泳者类比中的水。尽管相对于光源，两道光传播的距离相等，但是由于光源和镜子同时在以太中运动，那么对于以太，两道光传播的距离将是不相等的（造成这种情况的确切原因，与两个人相对于其所在介质游过的距离不同是一样的）。因此，我们预计可以看到两道光回到光源处时有微小的时间差。\\n然而，与大家所预期的相反，两道光总是在相同时间点回到光源处。这个结果非常出人意料，在这种情况下，应该反复进行这个实验，不断验证。事实也正是如此。但是每次实验结果都相同，也就是两道光总是同时回到光源处。\\n请注意，这一点符合第4章讨论过的不证实推理模式：如果牛顿科学体系内关于光传播的机械论描述是正确的，那么光应该在不同的时间点回到光源处。然而，它们并非如此，所以，一定是哪里有问题。\\n由于牛顿科学体系非常成功，因此科学家如果因为这个实验结果而放弃牛顿科学体系内的观点，将是非常不明智的。但是，一定有哪里不太对，正如开尔文爵士提到过的，迈克尔逊-莫雷实验的结果似乎是本应晴朗的天空中为数不多的几块乌云之一。后来证明，这些有关光的命题根本不是\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 4270, \"excerpt_end\": 7470, \"chapter_text_length\": 10752, \"has_more\": true, \"next_offset\": 7470, \"has_previous\": true, \"previous_offset\": 1070, \"focus_found\": true, \"focus_terms_matched\": [\"迈克尔逊-莫雷实验\", \"以太\"], \"focus_terms_found_in_chapter\": [\"迈克尔逊-莫雷实验\", \"以太\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"迈克尔逊-莫雷实验\", \"offset\": 4970, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 4770, \"focus\": \"迈克尔逊-莫雷实验\"}}, {\"term\": \"迈克尔逊-莫雷实验\", \"offset\": 5052, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 4852, \"focus\": \"迈克尔逊-莫雷实验\"}}, {\"term\": \"迈克尔逊-莫雷实验\", \"offset\": 5216, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 5016, \"focus\": \"迈克尔逊-莫雷实验\"}}, {\"term\": \"以太\", \"offset\": 5960, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 5760, \"focus\": \"以太\"}}, {\"term\": \"以太\", \"offset\": 5983, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 5783, \"focus\": \"以太\"}}, {\"term\": \"以太\", \"offset\": 6003, \"read_args\": {\"book_id\": \"fa4934527602\", \"chapter_idx\": 23, \"offset\": 5803, \"focus\": \"以太\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"59ec640cd58879e5dc12f95c991ccd3c2866bd0ae1e7fd561133ae2b6a3ca6ba\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/fa4934527602?ch=23\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[4270, 7470]], \"covered_characters\": 3200, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 18.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "limit": 6,
+      "query": "牛顿力学 相对论 近似 极限 情形"
+     },
+     "status": "success",
+     "duration_seconds": 2.114,
+     "result_full": "{\"query\": \"牛顿力学 相对论 近似 极限 情形\", \"results\": [{\"book_id\": \"96df36369f8b\", \"book_title\": \"结构之后的路\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 9, \"chapter_title\": \"第七章 作为结构变化的理论变化：对斯尼德形式主义的评论\", \"citation_label\": \"【《结构之后的路》·第七章 作为结构变化的理论变化：对斯尼德形式主义的评论】\", \"snippet\": \"之类的物理混合物。1）道尔顿之后，相似性模式改变了，从而溶液、合金程式构造的，而且这些方程式不论是直接设定，还是从相对论极限方程中和大气从化学应用集合转变为物理应用集合（从化学的化合物转变为物导出，都保持不变。但是，在斯尼德形式主义中，被还原的理论是有序偶理的混合物）。（K，1），它与原始的（K，7>不同，因为1从系统上不同于1。如果区别仅由于没有对化学作哪怕最简略的形式主义研究，我无法继续推进这仅存在于两个集合的各项之间，那么这种区别就不重要，因为被排除的应个例子，但是，从牛顿力学到相对论力学的转换中，这种同类的变化是显用一律都是错的。然而，通过对1.和1中各项之确定方式的密切观察得见的。在牛顿力学中，在确定一个1集合的候选项和该\", \"score\": 218, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"96df36369f8b\", \"chapter_idx\": 9, \"focus\": \"牛顿力学 相对论 近似 极限 情形\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"96df36369f8b\", \"book_title\": \"结构之后的路\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 8, \"chapter_title\": \"第六章 回应我的批评者\", \"citation_label\": \"【《结构之后的路》·第六章 回应我的批评者】\", \"snippet\": \"式上，爱因斯坦的广义相对论更类同样范围自然现象的诸理论进行比较时，我更加小心谨慎。如果它们是似于亚里士多德物理学，而不是牛顿力学。无论如何，得出本体论极限之历史上的理论，就像上述那些理论一样，那么我就可以采用卡尔爵士的说结论的证据都不是对整个理论的比较，面是对它们的经验推论的比较。法：每个理论在当前都被认为是真的，但后来被当作错的而放弃。此外，这是一个重大的跳跃，特别在面对下述定理时，即一个给定理论的任何有我可以说，作为常规科学的实践工具，较后的理论更好，我还可以希望加限的推论都可以来源于另一个不相容的理论。人足够的意义，在这些意义上更适合说明诸科学的主要发展特征。当我卡尔爵士对塔尔斯基的涉及突出了另一个难题，这是个更加根本的能够走\", \"score\": 216, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"96df36369f8b\", \"chapter_idx\": 8, \"focus\": \"牛顿力学 相对论 近似 极限 情形\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 8, \"chapter_title\": \"第九章　科学革命的本质与必然性\", \"citation_label\": \"【《科学革命的结构》·第九章　科学革命的本质与必然性】\", \"snippet\": \"因斯坦的理论。在今天我的这一观 点仍未被广泛接受，2因此我必须先考虑一下反对它的最流行的观点。 这些反对意见的要旨如下：相对论力学不能证明牛顿力学是错的，因为牛顿力学仍被绝大多数的工程师成功地应用着，许多物理学家在某些情况中也使用它。此外，使用旧理论的适当性，可以从在其他应用上取代了它的新理论得到证明。爱因斯坦理论可以证明，在某些条件的限制下，牛顿方程的预测与仪器测量的结果颇为一致。例如，如果想用牛顿理论得到满意的近似解，物体的相对速度必须远小于光速。在这个以及其他条件限制下，牛顿理论似乎可从爱因斯坦理论导出，因此 [ 1 ] Silvanus P. Thompson, Life of Williem 7homson Beron K\", \"score\": 215, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"36725cea3e3c\", \"chapter_idx\": 8, \"focus\": \"牛顿力学 相对论 近似 极限 情形\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 19.9,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_0Zho7pMcIZlYQHT2LDyq3053",
+     "status": "success",
+     "duration_seconds": 0.003
+    },
+    {
+     "t": 22.4,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_00_44nqAIe609cvzgtPsnld9901"
+    },
+    {
+     "t": 22.7,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_NOBlf6qkxafKbg6C4XHJ3832"
+    },
+    {
+     "t": 24.0,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "A Confutation of Convergent Realism Laudan",
+      "year_from": 1980,
+      "year_to": 1982,
+      "limit": 4
+     },
+     "status": "success",
+     "duration_seconds": 1.186,
+     "result_full": "{\"query\": \"A Confutation of Convergent Realism Laudan\", \"results\": [{\"source_record_id\": \"doi:10.1086/288975\", \"title\": \"A Confutation of Convergent Realism\", \"authors\": [\"Larry Laudan\"], \"year\": 1981, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/288975\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref/openalex\", \"source_providers\": [\"crossref\", \"openalex\"], \"retrieval_origin\": \"LIVE_COMBINED\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1086/289080\", \"title\": \"In Defense of Convergent Realism\", \"authors\": [\"Clyde L. Hardin\", \"Alexander Rosenberg\"], \"year\": 1982, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Philosophy of Science\", \"doi\": \"10.1086/289080\", \"source_category\": \"UNKNOWN\", \"access_level\": \"ABSTRACT_AVAILABLE\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 2, \"READABLE_SOURCE_IDS\": [\"doi:10.1086/288975\", \"doi:10.1086/289080\"], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"A Confutation of Convergent Realism Laudan\", \"status\": \"success\", \"raw_result_count\": 4}, {\"provider\": \"openalex\", \"query\": \"A Confutation of Convergent Realism Laudan\", \"status\": \"success\", \"raw_result_count\": 2}], \"relevance_gate\": {\"dropped_irrelevant\": 3, \"kept_relevant\": 2}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"结果中有 2 条可读来源（access_level ≥ ABSTRACT_AVAILABLE, 见 READABLE_SOURCE_IDS）。access_level 只反映已实际取得的证据; 对任何来源作内容性归因前必须先用 get_scholarly_source 读取, 不得仅凭标题/记忆陈述其观点\"}"
+    },
+    {
+     "t": 24.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "limit": 5,
+      "query": "反对方法 科学 神话 平等"
+     },
+     "status": "empty",
+     "duration_seconds": 1.764,
+     "result_full": "{\"query\": \"反对方法 科学 神话 平等\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 25.8,
+     "phase": "result",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_gnkEtPEv5j4gtxRCe8Na6221",
+     "status": "success",
+     "duration_seconds": 0.052
+    }
+   ],
+   "answer": "## 结论：不成立\n\n不是因为它的事实前提一定错，而是**从这个前提推不出这个结论**——中间缺一个桥接前提，而那个桥接前提既不明说也不成立。\n\n## 一、先把它的实际形式写出来\n\n- P1：一切科学理论终将被后继理论取代。\n- C：科学与迷信没有（认知上的）区别。\n\n要让它有效，至少要补一句：\n\n- P2：**凡是被后续修正过的信念系统，就与迷信在认知上没有区别。**\n\nP2 一旦写出来，问题就露了：地图、法庭证据规则、医学指南、日常经验命题（\"太阳从东边升起\"）都在被修正，P2 会把它们一并归入迷信。如果 P2 只针对科学，那它本身就需要独立论证，而且它几乎就是结论的改写——循环。所以这个论证要么推广到荒谬，要么循环。\n\n## 二、一个真实案例：机械以太的消失\n\n19 世纪末的牛顿体系里，光既然是波，就必须有传播介质。1885 年出版的德沙内尔《自然哲学》是当时的物理学标准教科书，其中写道：\"似乎需要假设存在一种远比普通物质更为稀薄的介质……这种假设存在的介质被称为'以太'。\"【《世界观》第22章】\n\n迈克尔逊和莫雷（19 世纪 80 年代末）按这套机械论设计了实验：若地球在以太中运动，两束垂直的光返回光源应有微小时间差。结果**每次都同时返回**。德威特的表述：这符合\"不证实推理\"模式——如果牛顿体系关于光传播的机械论描述正确，就应看到时间差；没有看到，所以一定哪里有问题。\n\n这个案例同时展示两面，缺一不可：\n\n**（1）科学确实会推翻自己当时当作基础的东西。** 以太不是被小修小补，而是整个从物理学本体论里删掉了。前提中那一点真理是真的。\n\n**（2）但推翻的方式不是\"换个说法继续信\"。** 当时完全可以保住以太：引入拖曳以太，或者洛伦兹-斐兹杰拉德收缩，就能把否定结果解释过去。波普尔的原话是：\"这种方法总是办得到的，但是这样营救理论免于被驳倒，却付出了破坏或至少降低理论的科学地位的代价。\"【《猜想与反驳》·十一、科学与形而上学的分界】\n\n这就是分界所在：**不在\"是否被推翻\"，而在\"是否愿意为一套信念付出被推翻的代价\"**——理论是否让自身暴露在可能失败的风险中，失败是否被公开承认并导致放弃。\n\n## 三、\"被推翻\"这个词至少有三义，论证把它们混成了一个\n\n1. **被证明为假**（燃素说的燃素不存在）；\n2. **被限定在更小的适用域**（牛顿力学在 v≪c 时仍可用于工程）；\n3. **整个概念框架被换掉**（质量、同时性的意义改变）。\n\n牛顿到爱因斯坦恰好教人别急着说\"推翻\"。库恩记载了这场争论的两面：一方说牛顿力学可以从相对论导出（加条件 v/c≪1）；库恩反驳说这\"似是而非\"，因为导出式里的质量、时间仍是爱因斯坦意义上的概念，\"牛顿理论中的质量是守恒的，而爱因斯坦理论中的质量可转变为能量\"。但即便如此，库恩也承认：\"如果一个汽车司机的行为表现出他似乎生活于牛顿力学所描述的宇宙，那是有充足理由的。\"【《科学革命的结构》第九章】\n\n所以\"被取代\"不等于\"过去的一切都作废\"。P1 把这三件事压成一个模糊的词，然后让它承担整个结论的重量。\n\n## 四、前提有一个可敬版本，但它的结论比用户的弱得多\n\n\"成功理论过去多被推翻，所以现在的也会\"是有严肃版本的，叫**悲观元归纳**。劳丹 1981 年《A Confutation of Convergent Realism》是代表：科学史上一批曾极为成功、但其中心术语并不指称任何实际存在的理论。我读的是该文摘要，它说：指称与近似真都无法承担实在论者期待的解释职责，并且科学史\"决定性地驳倒\"了几种自然主义的科学实在论版本。（doi:10.1086/288975）\n\n请注意它的**靶子**：科学实在论（\"成功的成熟理论近似为真\"），不是\"科学与占星术没有认知差别\"。多普尔特 2007 年那篇的摘要也把这一论证表述为例：\"从许多过去成功但为假的理论，推出我们当前最好的理论同样可能为假\"。（doi:10.1086/520685）\n\n所以即便全盘接受它，最多推出：**我们没有理由相信当前最好的理论完全为真。** 从\"不确定\"到\"和迷信无别\"，中间还差一整个论证——而且这一步正是最难的那一步。\n\n## 五、也不必靠\"科学永不出错\"来挡\n\n不需要替科学辩护成不犯错。波普尔的划界标准本身就有争议，他自己也说：\"分界标准不可能绝对分明，但它本身有程度之差。\"库恩更指出常规科学恰恰要求在一段时间内不因反例就丢弃范式。\n\n更稳的说法是：\n\n- 科学会出错、有系统性偏差、受社会因素污染，也有伪科学冒充科学——这些都真；\n- 但这些是\"科学不完善、有程度之别\"，不是\"与迷信同类\"。**指出科学有缺陷，和断言科学永真，是两个相反方向的过度主张**，用户的论证只是把前者的材料搬来支持了后者所对应的反面结论；\n- 具体差别在出错之后发生什么。波普尔谈到占星术时说的是另一件相关的事：占星术士声称自己的\"科学\"建立在大量归纳材料上，\"这种声明大概没有什么根据，但从未听说过有人想批判审查它这些所谓归纳材料\"，占星术之所以为现代科学所不容，是因为它不符合公认的理论和方法【同上】。差别在于：有没有公开、可重复、可以被共同体承认的失败标准，以及失败是否真的换来放弃。\n\n## 六、什么条件会改变答案\n\n- **让它变弱的条件**：若\"迷信\"被定义为\"任何在充分证成前就被持有的信念\"，那科学家的日常信念也符合——但结论立即变得平庸，且不再专门针对科学（人人符合）。\n- **让它变强的条件**：若能给出经验证据（科学社会学、认知科学）表明科学共识与占星共识以**同一机制**形成（诉诸权威、不可检验的承诺、不承认失败），结论才有实质内容。这是可以做实证研究的，不能靠\"迟早被推翻\"一句话推出来。\n- 如果用户的真实关切只是\"科学常被说成绝对确定，这种确定性被高估了\"——那么答案完全不同：是的，它常被高估。但这得到的是一个合理且更弱的结论，不是\"科学=迷信\"。\n\n**一句话**：这是不成立的推论。它只有在把\"科学\"偷换成\"科学理论永真\"（一个没人需要的主张）、再把\"被推翻\"偷换成\"全无认识约束\"时，才能看起来成立。以太的案例恰恰说明：科学的可错性不是它与迷信相同之处，而是它区别于迷信的方式——**它错得能被承认，也得付代价**。\n\n---\n\n**已核验出处**（均为节选/摘要，非全章全文）：\n\n- 波普尔《猜想与反驳》\"十一、科学与形而上学的分界\"：[reader/ff783ce7c481?ch=18](https://deepphilosophy.top/reader/ff783ce7c481?ch=18)（读 1756–4756 字符片段）\n- 库恩《科学革命的结构》第九章：[reader/36725cea3e3c?ch=8](https://deepphilosophy.top/reader/36725cea3e3c?ch=8)（读 5844–8844 字符片段）\n- 德威特《世界观》第3版 第22章：[reader/fa4934527602?ch=23](https://deepphilosophy.top/reader/fa4934527602?ch=23)（读 4270–7470 字符片段）\n- Larry Laudan, \"A Confutation of Convergent Realism,\" *Philosophy of Science* 48(1), 1981, doi:10.1086/288975（仅摘要）\n- Gerald Doppelt, \"Reconstructing Scientific Realism to Rebut the Pessimistic Meta-induction,\" *Philosophy of Science*, 2007, doi:10.1086/520685（仅摘要）",
+   "answer_chars": 3273,
+   "done_content": "## 结论：不成立\n\n不是因为它的事实前提一定错，而是**从这个前提推不出这个结论**——中间缺一个桥接前提，而那个桥接前提既不明说也不成立。\n\n## 一、先把它的实际形式写出来\n\n- P1：一切科学理论终将被后继理论取代。\n- C：科学与迷信没有（认知上的）区别。\n\n要让它有效，至少要补一句：\n\n- P2：**凡是被后续修正过的信念系统，就与迷信在认知上没有区别。**\n\nP2 一旦写出来，问题就露了：地图、法庭证据规则、医学指南、日常经验命题（\"太阳从东边升起\"）都在被修正，P2 会把它们一并归入迷信。如果 P2 只针对科学，那它本身就需要独立论证，而且它几乎就是结论的改写——循环。所以这个论证要么推广到荒谬，要么循环。\n\n## 二、一个真实案例：机械以太的消失\n\n19 世纪末的牛顿体系里，光既然是波，就必须有传播介质。1885 年出版的德沙内尔《自然哲学》是当时的物理学标准教科书，其中写道：\"似乎需要假设存在一种远比普通物质更为稀薄的介质……这种假设存在的介质被称为'以太'。\"【《世界观》第22章】\n\n迈克尔逊和莫雷（19 世纪 80 年代末）按这套机械论设计了实验：若地球在以太中运动，两束垂直的光返回光源应有微小时间差。结果**每次都同时返回**。德威特的表述：这符合\"不证实推理\"模式——如果牛顿体系关于光传播的机械论描述正确，就应看到时间差；没有看到，所以一定哪里有问题。\n\n这个案例同时展示两面，缺一不可：\n\n**（1）科学确实会推翻自己当时当作基础的东西。** 以太不是被小修小补，而是整个从物理学本体论里删掉了。前提中那一点真理是真的。\n\n**（2）但推翻的方式不是\"换个说法继续信\"。** 当时完全可以保住以太：引入拖曳以太，或者洛伦兹-斐兹杰拉德收缩，就能把否定结果解释过去。波普尔的原话是：\"这种方法总是办得到的，但是这样营救理论免于被驳倒，却付出了破坏或至少降低理论的科学地位的代价。\"【《猜想与反驳》·十一、科学与形而上学的分界】\n\n这就是分界所在：**不在\"是否被推翻\"，而在\"是否愿意为一套信念付出被推翻的代价\"**——理论是否让自身暴露在可能失败的风险中，失败是否被公开承认并导致放弃。\n\n## 三、\"被推翻\"这个词至少有三义，论证把它们混成了一个\n\n1. **被证明为假**（燃素说的燃素不存在）；\n2. **被限定在更小的适用域**（牛顿力学在 v≪c 时仍可用于工程）；\n3. **整个概念框架被换掉**（质量、同时性的意义改变）。\n\n牛顿到爱因斯坦恰好教人别急着说\"推翻\"。库恩记载了这场争论的两面：一方说牛顿力学可以从相对论导出（加条件 v/c≪1）；库恩反驳说这\"似是而非\"，因为导出式里的质量、时间仍是爱因斯坦意义上的概念，\"牛顿理论中的质量是守恒的，而爱因斯坦理论中的质量可转变为能量\"。但即便如此，库恩也承认：\"如果一个汽车司机的行为表现出他似乎生活于牛顿力学所描述的宇宙，那是有充足理由的。\"【《科学革命的结构》第九章】\n\n所以\"被取代\"不等于\"过去的一切都作废\"。P1 把这三件事压成一个模糊的词，然后让它承担整个结论的重量。\n\n## 四、前提有一个可敬版本，但它的结论比用户的弱得多\n\n\"成功理论过去多被推翻，所以现在的也会\"是有严肃版本的，叫**悲观元归纳**。劳丹 1981 年《A Confutation of Convergent Realism》是代表：科学史上一批曾极为成功、但其中心术语并不指称任何实际存在的理论。我读的是该文摘要，它说：指称与近似真都无法承担实在论者期待的解释职责，并且科学史\"决定性地驳倒\"了几种自然主义的科学实在论版本。（doi:10.1086/288975）\n\n请注意它的**靶子**：科学实在论（\"成功的成熟理论近似为真\"），不是\"科学与占星术没有认知差别\"。多普尔特 2007 年那篇的摘要也把这一论证表述为例：\"从许多过去成功但为假的理论，推出我们当前最好的理论同样可能为假\"。（doi:10.1086/520685）\n\n所以即便全盘接受它，最多推出：**我们没有理由相信当前最好的理论完全为真。** 从\"不确定\"到\"和迷信无别\"，中间还差一整个论证——而且这一步正是最难的那一步。\n\n## 五、也不必靠\"科学永不出错\"来挡\n\n不需要替科学辩护成不犯错。波普尔的划界标准本身就有争议，他自己也说：\"分界标准不可能绝对分明，但它本身有程度之差。\"库恩更指出常规科学恰恰要求在一段时间内不因反例就丢弃范式。\n\n更稳的说法是：\n\n- 科学会出错、有系统性偏差、受社会因素污染，也有伪科学冒充科学——这些都真；\n- 但这些是\"科学不完善、有程度之别\"，不是\"与迷信同类\"。**指出科学有缺陷，和断言科学永真，是两个相反方向的过度主张**，用户的论证只是把前者的材料搬来支持了后者所对应的反面结论；\n- 具体差别在出错之后发生什么。波普尔谈到占星术时说的是另一件相关的事：占星术士声称自己的\"科学\"建立在大量归纳材料上，\"这种声明大概没有什么根据，但从未听说过有人想批判审查它这些所谓归纳材料\"，占星术之所以为现代科学所不容，是因为它不符合公认的理论和方法【同上】。差别在于：有没有公开、可重复、可以被共同体承认的失败标准，以及失败是否真的换来放弃。\n\n## 六、什么条件会改变答案\n\n- **让它变弱的条件**：若\"迷信\"被定义为\"任何在充分证成前就被持有的信念\"，那科学家的日常信念也符合——但结论立即变得平庸，且不再专门针对科学（人人符合）。\n- **让它变强的条件**：若能给出经验证据（科学社会学、认知科学）表明科学共识与占星共识以**同一机制**形成（诉诸权威、不可检验的承诺、不承认失败），结论才有实质内容。这是可以做实证研究的，不能靠\"迟早被推翻\"一句话推出来。\n- 如果用户的真实关切只是\"科学常被说成绝对确定，这种确定性被高估了\"——那么答案完全不同：是的，它常被高估。但这得到的是一个合理且更弱的结论，不是\"科学=迷信\"。\n\n**一句话**：这是不成立的推论。它只有在把\"科学\"偷换成\"科学理论永真\"（一个没人需要的主张）、再把\"被推翻\"偷换成\"全无认识约束\"时，才能看起来成立。以太的案例恰恰说明：科学的可错性不是它与迷信相同之处，而是它区别于迷信的方式——**它错得能被承认，也得付代价**。\n\n---\n\n**已核验出处**（均为节选/摘要，非全章全文）：\n\n- 波普尔《猜想与反驳》\"十一、科学与形而上学的分界\"：[reader/ff783ce7c481?ch=18](https://deepphilosophy.top/reader/ff783ce7c481?ch=18)（读 1756–4756 字符片段）\n- 库恩《科学革命的结构》第九章：[reader/36725cea3e3c?ch=8](https://deepphilosophy.top/reader/36725cea3e3c?ch=8)（读 5844–8844 字符片段）\n- 德威特《世界观》第3版 第22章：[reader/fa4934527602?ch=23](https://deepphilosophy.top/reader/fa4934527602?ch=23)（读 4270–7470 字符片段）\n- Larry Laudan, \"A Confutation of Convergent Realism,\" *Philosophy of Science* 48(1), 1981, doi:10.1086/288975（仅摘要）\n- Gerald Doppelt, \"Reconstructing Scientific Realism to Rebut the Pessimistic Meta-induction,\" *Philosophy of Science*, 2007, doi:10.1086/520685（仅摘要）",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_2",
+     "book": "猜想与反驳（二十世纪西方哲学经典）",
+     "chapter": "十一、科学与形而上学的分界",
+     "book_id": "ff783ce7c481",
+     "chapter_idx": 18,
+     "author": "卡尔·波普尔",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_24"
+     ],
+     "excerpt": "更精确、更严格。如果它经受住了严格的检验，它将由这种检验所更好地确证或更好地验证。因此可确证性（或者可验证性或可确认性）必将随着可检验性的提高而提高。\n这表明，分界标准不可能绝对分明，但它本身有程度之差。有完全可以检验的理论，有难于检验的理论，还有不可检验的理论。对那些不可检验的理论，经验科学家毫无兴趣。可以把它们称为形而上学的。\n这里我必须再一次强调经常受到误解的一点。我这样来说明这一点，也许可以避免这种误解。取一正方形代表一种语言的所有陈述的类，我们用这种语言表述一门科学；再画一条明显的水平线把正方形分为上下两半，上一半写上“科学”、“可检验的”，下一半写上“形而上学”、“不可检验的”。我希望你能意识到，我并不是要画一条分界线来像确定语言的限度一样，把科学留在里面，把形而上学从有意义的陈述类中驱逐出去。相反，从我最早发表的论述这个问题的文章开始，(8)我就强调这一事实：要想在科学同形而上学之间画条界线以便把形而上学作为胡说从有意义的语言中排除出去，是不妥当的。\n我已指出这里的原因之一是我们决不能把这条界线画得过于分明。如果我们还记得大多数科学理论都起源于神话，这一点就清楚了。例如，哥白尼系统就受到过新柏拉图主义崇拜太阳光的鼓舞，太阳由于其崇高必须占据“中心”。这表明神话怎样可能发展可检验成分。它们可以在讨论过程中成为对科学有效而重要的东西。在《科学发现的逻辑》(9)中我举了几个",
+     "quoted_passages": [
+      "分界标准不可能绝对分明，但它本身有程度之差。"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 43493,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_14",
+     "book": "世界观：现代人必须要懂的科学哲学和科学史（原书第3版）",
+     "chapter": "第22章 1700～1900年牛顿世界观的发展",
+     "book_id": "fa4934527602",
+     "chapter_idx": 23,
+     "author": "理查德·德威特",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_12",
+      "claim_13"
+     ],
+     "excerpt": "泛应用于实际生活了）。法拉第的这个观点，也就是电力、磁力和光从某个意义上来说是同一个根本现象的不同方面，很快得到了发展，成了由詹姆斯·克拉克·麦克斯韦（1831—1879）在19世纪中期提出的电磁理论。法拉第的发现主要是定性描述，但是麦克斯韦则发现了光、电力和磁力现象背后的基本数学方程式。这些方程式通常被称为“麦克斯韦方程式”，它们将光、电力和磁力现象统一了起来，被广泛认为是这一时期最重要的发现。\n再强调一下，以上对有关电力、磁力和光的部分关键研究发展的概述是非常简短且有所选择的。但是，请再次注意一下其中大致相同的模式：在这段时期，这些领域都出现了超乎寻常的发展，许多现象过去都曾经被认为是独特的，而且要用定性的方法进行研究，此时却逐渐统一了起来，而且都可以用牛顿科学体系中的基础数学定量方法来进行研究。\n概括评述\n尽管我们只是具体研究了三个科学领域，但也应该已经足以让我们体会到在1700～1900年间，科学的诸多领域是如何被纳入牛顿科学体系中的。值得注意的是，这一时期长达200年，其间许多不同的科学领域都出现了令人印象深刻的成果和发现。总的来说，到了1900年，科学的多个分支都在快速发展。牛顿科学体系内具有普遍性的方法被证明极为富有成效。到了大约1900年，有一种感觉是我们已经几乎完全了解了自然，只剩下几个相当无足轻重的问题还有待解决。接下来，让我们对其中几个问题进行一下探讨。\n｜几",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 10752,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_18",
+     "book": "科学革命的结构",
+     "chapter": "第九章　科学革命的本质与必然性",
+     "book_id": "36725cea3e3c",
+     "chapter_idx": 8,
+     "author": "托马斯·库恩",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_34"
+     ],
+     "excerpt": "燃素说的成就的最完整、也最间情的论著是H.Metzger，Newton，Stahf，Boerhaase el ladoctrine ehimique ( Paris, 1930 ) , Part I1.\n度内。）再进一步（一旦迈出第一步就难免这一步），这样的限制就会禁正科学家对任何尚未观察过的现象做任何“科学的”推测。这样一来，只要科学家的研究涉及的领域在过去从未应用过某一理论，或他的研究需要得到比过去应用某一理论所得到的资料更为精确的资料时，他就无法依赖这个理论了。这些禁令在逻辑上是讲得通的。但接受了这种禁令之后，研究工作根本无法进行，科学也就无法开展了。\n我现在的这个论点事实上是一个恒真式。若科学家不对某种范式做出承诺，则不会有常规科学。甚至科学家在踏入新的研究领域，或对理论与实际之间的吻合程度有较高的要求时，都必须坚持对既有范式的承诺，否则范式就不可能提供尚未解决的谜题，让科学家从事研究。\n此外，不仅常规科学研究依赖于对范式的承诺。若科学家只在有例可循时才利用现有理论，那就不可能有意外发现、反常或危机了。而意外发现、反常和危机正是指向非常规科学的路标。若我们同意实证论者对理论的正当应用范围所做的限制，则那种告知科学共同体什么样的问题会导致重大变迁的机制必然会停止运作。当这种情况发生时，科学共同体将不可避免地回复到前范式时期的状态一所有的人都在从事科学研究，但他们的总成果却根本",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 13104,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "sch_2afe5fe8c037",
+     "source_record_id": "doi:10.1086/520685",
+     "source_type": "scholarly",
+     "used": true,
+     "title": "Reconstructing Scientific Realism to Rebut the Pessimistic Meta-induction",
+     "book": "Reconstructing Scientific Realism to Rebut the Pessimistic Meta-induction",
+     "author": "Gerald Doppelt",
+     "year": 2007,
+     "doi": "10.1086/520685",
+     "url": "https://doi.org/10.1086/520685",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "excerpt": "This paper develops a stronger version of ‘inference-to-the-best explanation’ scientific realism. I argue against three standard assumptions of current realists: (1) realism is confirmed if it provides the best explanation of theories’ predictive success; (2) the realist claim that successful theories are always approximately true provides the best explanation of their success; and (3) realists are committed to giving the same sort of truth-based explanation of superseded theories’ success that they give to explain our best current theories’ success. On the positive side, I argue that (1) the "
+    },
+    {
+     "evidence_id": "sch_b566c355a157",
+     "source_record_id": "doi:10.1086/288975",
+     "source_type": "scholarly",
+     "used": true,
+     "title": "A Confutation of Convergent Realism",
+     "book": "A Confutation of Convergent Realism",
+     "author": "Larry Laudan",
+     "year": 1981,
+     "doi": "10.1086/288975",
+     "url": "https://doi.org/10.1086/288975",
+     "access_level": "ABSTRACT_AVAILABLE",
+     "excerpt": "This essay contains a partial exploration of some key concepts associated with the epistemology of realist philosophies of science. It shows that neither reference nor approximate truth will do the explanatory jobs that realists expect of them. Equally, several widely-held realist theses about the nature of inter-theoretic relations and scientific progress are scrutinized and found wanting. Finally, it is argued that the history of science, far from confirming scientific realism, decisively confutes several extant versions of avowedly ‘naturalistic’ forms of scientific realism.</jats:p> The po"
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 15,
+    "display_citations": 5,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "猜想与反驳（二十世纪西方哲学经典）",
+       "chapter": "十一、科学与形而上学的分界",
+       "book_id": "ff783ce7c481",
+       "chapter_idx": 18,
+       "author": "卡尔·波普尔",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "更精确、更严格。如果它经受住了严格的检验，它将由这种检验所更好地确证或更好地验证。因此可确证性（或者可验证性或可确认性）必将随着可检验性的提高而提高。\n这表明，分界标准不可能绝对分明，但它本身有程度之差。有完全可以检验的理论，有难于检验的理论，还有不可检验的理论。对那些不可检验的理论，经验科学家毫无兴趣。可以把它们称为形而上学的。\n这里我必须再一次强调经常受到误解的一点。我这样来说明这一点，也许可以避免这种误解。取一正方形代表一种语言的所有陈述的类，我们用这种语言表述一门科学；再画一条明显的水平线把正方形分为上下两半，上一半写上“科学”、“可检验的”，下一半写上“形而上学”、“不可检验的”。我希望你能意识到，我并不是要画一条分界线来像确定语言的限度一样，把科学留在里面，把形而上学从有意义的陈述类中驱逐出去。相反，从我最早发表的论述这个问题的文章开始，(8)我就强调这一事实：要想在科学同形而上学之间画条界线以便把形而上学作为胡说从有意义的语言中排除出去，是不妥当的。\n我已指出这里的原因之一是我们决不能把这条界线画得过于分明。如果我们还记得大多数科学理论都起源于神话，这一点就清楚了。例如，哥白尼系统就受到过新柏拉图主义崇拜太阳光的鼓舞，太阳由于其崇高必须占据“中心”。这表明神话怎样可能发展可检验成分。它们可以在讨论过程中成为对科学有效而重要的东西。在《科学发现的逻辑》(9)中我举了几个",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 43493,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "世界观：现代人必须要懂的科学哲学和科学史（原书第3版）",
+       "chapter": "第22章 1700～1900年牛顿世界观的发展",
+       "book_id": "fa4934527602",
+       "chapter_idx": 23,
+       "author": "理查德·德威特",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "泛应用于实际生活了）。法拉第的这个观点，也就是电力、磁力和光从某个意义上来说是同一个根本现象的不同方面，很快得到了发展，成了由詹姆斯·克拉克·麦克斯韦（1831—1879）在19世纪中期提出的电磁理论。法拉第的发现主要是定性描述，但是麦克斯韦则发现了光、电力和磁力现象背后的基本数学方程式。这些方程式通常被称为“麦克斯韦方程式”，它们将光、电力和磁力现象统一了起来，被广泛认为是这一时期最重要的发现。\n再强调一下，以上对有关电力、磁力和光的部分关键研究发展的概述是非常简短且有所选择的。但是，请再次注意一下其中大致相同的模式：在这段时期，这些领域都出现了超乎寻常的发展，许多现象过去都曾经被认为是独特的，而且要用定性的方法进行研究，此时却逐渐统一了起来，而且都可以用牛顿科学体系中的基础数学定量方法来进行研究。\n概括评述\n尽管我们只是具体研究了三个科学领域，但也应该已经足以让我们体会到在1700～1900年间，科学的诸多领域是如何被纳入牛顿科学体系中的。值得注意的是，这一时期长达200年，其间许多不同的科学领域都出现了令人印象深刻的成果和发现。总的来说，到了1900年，科学的多个分支都在快速发展。牛顿科学体系内具有普遍性的方法被证明极为富有成效。到了大约1900年，有一种感觉是我们已经几乎完全了解了自然，只剩下几个相当无足轻重的问题还有待解决。接下来，让我们对其中几个问题进行一下探讨。\n｜几",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 10752,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第九章　科学革命的本质与必然性",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 8,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "燃素说的成就的最完整、也最间情的论著是H.Metzger，Newton，Stahf，Boerhaase el ladoctrine ehimique ( Paris, 1930 ) , Part I1.\n度内。）再进一步（一旦迈出第一步就难免这一步），这样的限制就会禁正科学家对任何尚未观察过的现象做任何“科学的”推测。这样一来，只要科学家的研究涉及的领域在过去从未应用过某一理论，或他的研究需要得到比过去应用某一理论所得到的资料更为精确的资料时，他就无法依赖这个理论了。这些禁令在逻辑上是讲得通的。但接受了这种禁令之后，研究工作根本无法进行，科学也就无法开展了。\n我现在的这个论点事实上是一个恒真式。若科学家不对某种范式做出承诺，则不会有常规科学。甚至科学家在踏入新的研究领域，或对理论与实际之间的吻合程度有较高的要求时，都必须坚持对既有范式的承诺，否则范式就不可能提供尚未解决的谜题，让科学家从事研究。\n此外，不仅常规科学研究依赖于对范式的承诺。若科学家只在有例可循时才利用现有理论，那就不可能有意外发现、反常或危机了。而意外发现、反常和危机正是指向非常规科学的路标。若我们同意实证论者对理论的正当应用范围所做的限制，则那种告知科学共同体什么样的问题会导致重大变迁的机制必然会停止运作。当这种情况发生时，科学共同体将不可避免地回复到前范式时期的状态一所有的人都在从事科学研究，但他们的总成果却根本",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 13104,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "猜想与反驳（二十世纪西方哲学经典）",
+       "chapter": "一、科学：猜想和反驳",
+       "book_id": "ff783ce7c481",
+       "chapter_idx": 8,
+       "author": "卡尔·波普尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "证据”。） （7）有些真正可检验的理论，被发现是假理论，仍旧被赞美者抱着不放——例如专为它引进某种特设性假说，或者特地为这个目的重新解释这个理论，使它逃避反驳。这种方法总是办得到的，但是这样营救理论免于被驳倒，却付出了破坏或至少降低理论的科学地位的代价。（我",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "猜想与反驳（二十世纪西方哲学经典）",
+       "chapter": "十、真理、合理性和科学知识增长",
+       "book_id": "ff783ce7c481",
+       "chapter_idx": 17,
+       "author": "卡尔·波普尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "种标准，比我同时提出、得到广泛讨论的比较简单的证伪准则更重要、更实在。不过这个比较简单的标准也是需要的。为了说明需要这种可证伪性或可检验性标准作为科学理论的经验特点的标准，我将举例讨论一个以纯粹经验术语所表达的简单的、纯粹的存在陈述。我希望这个例子也可以回答一个一再重复的批评：从经验科学中排除纯粹存在陈述并把它归之于形而上学陈述，是违反常情的。 我的例子包含以下的纯粹存在理论： “有一连串拉丁文的哀歌体对句，如果在一定的时间地点以适当方式读出来，立即就会出现魔鬼——一种有两只小角和分趾蹄的类人生物。” 显然，这种不可检验的理论在原则上是可以证实的。尽管根据我的分界标准，由于它是非经验的和非科学的，或者也可以说是形而上学的，因而排除它",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "哲学100问（套装共3册）",
+       "chapter": "04 波普尔：科学意味着真理吗",
+       "book_id": "a325bbdc496e",
+       "chapter_idx": 180,
+       "author": "书杰",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "达真理的彼岸。科学研究永远处于“在路上”的状态，科学只能接近真理、逼近真理，但无法成为真理。 可证伪度与可检验度 在具有可证伪性的理论中，如何区分不同理论的优劣？这就涉及可证伪度（可检验度）的问题。 一些理论更容易被证伪，因而可证伪度就高；一些理论不容易被证伪，可证伪度就相对较低。但哪些理论更容易证伪，哪些理论难以证伪呢？ 在波普尔看来，命题所包含的信息量越少，便越难以被证伪。反之，命题的信息量越大，就越容易被证伪。比如，下面两个都是具有可证伪性的命题： ①东北将会下雪 ②东北的哈尔滨将会在明天中午12点下雪 相比而言，命题②比命题①更容易被证伪，因为命题②包含的信息量比命题①大。命题①只陈述了“东北将会下雪”这一事实，而命题②则精",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "哲学100问（套装共3册）",
+       "chapter": "小结：科学哲学",
+       "book_id": "a325bbdc496e",
+       "chapter_idx": 185,
+       "author": "书杰",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "普尔选择了和归纳主义不同的道路。归纳主义是验证理论的正确性，而波普尔则是要想办法通过经验证伪这个假说。如果这个理论具备了可证伪性，则它就具备了成为科学知识的可能性。 基于证伪主义，波普尔提出了科学发展的模式：问题—猜想—反驳—新的问题—再猜想—再反驳……科学研究像一趟没有终点的接力跑，科学系统也是一个动态发展的系统。 因而，科学永远都在追求真理的路上，科学只能接近真理而无法成为真理。 波普尔的真理观 库恩 关于库恩，我们重点把握他的“范式”理论。 库恩：范式 所谓范式，就是科学共同体成员对如何从事自己专业的研究秉持着共同的理论和信念。通俗理解，范式就是科学共同体的各个成员共同遵循的东西，可以是一种观念，一种模式或者框架。所有的共同体",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第五章　范式的优先性",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 4,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "第五章范式的优先性 为了找出规则、范式与常规科学之间的关系，首先让我们考虑，历史学家怎样将前面已描述过的作为公认规则的承诺之特殊地位分离出来。对某一时期某一专业做仔细的历史研究，就能发现一组反复出现面类标准式的实例，体现各种理论在其概念的、观察的和仪器的应用中。这些实例就是共同体的范式，它们存在于教科书、课堂讲演和实验室的实验中。研究它们并用它们去实践，相应的共同体成员就能学会他们的专业。当然，历史学家此外还会发现由一些其地位仍被怀疑的成就所占据的边缘地区，但已解决了的问题和技巧的核心通常是明确的。除了偶尔的模棱两可外，一个成熟科学共同体的那些范式是能够被相对容易地确定的。 然面，共有范式的确定不是共有规则的确定。确定共有规则还要求",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第二章　通向常规科学之路",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 1,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "。同时，这些成就又足以无限制地为重新组成的一批实践者留下有待解决的种种问题。 凡是共有这两个特征的成就，我此后便称之为“范式”，这是一个与“常规科学”密切相关的术语。我选择这个术语，意欲提示出某些实际科学实践的公认范例一它们包括定律、理论、应用和仅器在一起一为特定的连贯的科学研究的传统提供模型。这些传统就是历史学家们在“托勒密天文学”（或“哥白尼天文学”）、“亚里士多德动力学”（或“牛顿动力学”）、“微粒光学”（或“波动光学”）等等标题下所描述的传统。研究范式，包括研究许多比上面所列举的那些名称更加专门的范式，主要是为以后将参与实践面成为特定科学共同体成员的学生准备的。因为他将要加入的共同体，其成员都是从相同的模型中 第二章通向常规",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第三章　常规科学的本质",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 2,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "第三章常规科学的本质一个团体接受了一个单一的范式之后，这种范式所容许的更专业23化、更深奥的研究其本质是什么呢？如果范式代表了最终所做的工作，那么，还有什么进一步的问题留待这个已统一的团体去解决呢？如果我们现在注意到已使用的术语可能误导读者，那么，这些问题似乎将更为迫切，按照其已确定的用法，一个范式就是一个公认的模型或模式（Patterm），在这一意义1，在我找不出更好的词汇的情况下，使用\"Par-adigm”（范式）一词似颜合适。但人们将很快就会看出，许可这种合适的模型和模式的意义，并不完全是在“范式”定义中通常包含的意义。例如，在文法中，”amo，amas，amat”就是一种范式，因为它展示出一种模式，可用来构成大量其他拉丁文动",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第四章　常规科学即是解谜",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 3,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "盘式大平之类的仪器测量电吸引的实验很少为人所注意。因为这些实验所得的结果既不一致又不简单，不能被用来闸明这些实验所依据的范式。因此，它们仅仅是一些纯粹的事实，与电学研究的继续进步毫无关联，面且也不可能有关联。只是有了后来的范式反观它们时，我们才能看出它们所展示的电学现象的那些特征。36当然，库仑和他的同时代人也掌握了这种后来的范式，或者是掌握了当应用于吸引问题时能产生相向预期的一种范式。这就是为什么库仑能够设计出一种仪器，由这种仪器所得结果能为范式的阐明所需求。但也正是这个原因，库仑的结果并不令人惊奇，而且有些库仑的同辈也能事先预见到这个结果。即使其目标在于阐明范式的研究计划面不希求发现始料未及的新事物。 但是，如果常规科学的目的不",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第六章　反常与科学发现的突现",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 5,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "已经发展出了一套强有力的独特技巧，以产生这类令人惊讶的现象和理论。如果科学的这一特征与我们前面已经说过的相一致，那么，在范式指导下的研究，必定是一种引起范式改变的特别有效的方式。这就是事实和理论的根本新颖性所导致的结果。在一套规则指导下进行的游戏，无意中产生了某些新东西，为了消化这些新东西就需要精心制作另一套规则。当这些新东西成为科学的组成部分之后，科学事业，至少是这些新东西所在之特殊领域的那些专家们的事业，就再也不会与以往相同了。 我们现在必须要问，到底是怎么会发生这类变化的。让我们先考虑第一类发现，即事实的新额性，然后再考虑发明，即理论的新颖性。 不过，发现与发明之间的区别，或者说事实和理论之间的区别，我们很快就会看到，乃是非常",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "科学革命的结构",
+       "chapter": "第七章　危机与科学理论的突现",
+       "book_id": "36725cea3e3c",
+       "chapter_idx": 6,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "体拖曳了某一部分以太随着它一起运动。而每一种阐释都能足够成功地解释这种否定结果，不仅是天体观察，也包括地面实验，如著名的迈克尔逊（Michelson）和莫雷（Morley）实验的否定结果。）除了各家闸释之间有冲突之外，依然不存在别的冲突。在缺乏有关实验技术的条件下，即使各家阐释之间的彼此冲突也不会变得尖锐起来的。 只是到19世纪最后20年，随着麦克斯韦电磁理论被逐渐接受，这种局面才开始改变。麦克斯韦本人属于牛顿派，他相信光和电磁波一 般都是通过一种机械性以太粒子可变动的位移来传播的。他的电磁理论的最初形式都使用了他赋予这种以太媒质的假设性质。这些性质虽然在他最后的理论中都放弃了，但他仍然相信，他的电磁理论可与牛顿 [ 1  Jose",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "结构之后的路",
+       "chapter": "第七章 作为结构变化的理论变化：对斯尼德形式主义的评论",
+       "book_id": "96df36369f8b",
+       "chapter_idx": 9,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "之类的物理混合物。1）道尔顿之后，相似性模式改变了，从而溶液、合金程式构造的，而且这些方程式不论是直接设定，还是从相对论极限方程中和大气从化学应用集合转变为物理应用集合（从化学的化合物转变为物导出，都保持不变。但是，在斯尼德形式主义中，被还原的理论是有序偶理的混合物）。（K，1），它与原始的（K，7>不同，因为1从系统上不同于1。如果区别仅由于没有对化学作哪怕最简略的形式主义研究，我无法继续推进这仅存在于两个集合的各项之间，那么这种区别就不重要，因为被排除的应个例子，但是，从牛顿力学到相对论力学的转换中，这种同类的变化是显用一律都是错的。然而，通过对1.和1中各项之确定方式的密切观察得见的。在牛顿力学中，在确定一个1集合的候选项和该",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "结构之后的路",
+       "chapter": "第六章 回应我的批评者",
+       "book_id": "96df36369f8b",
+       "chapter_idx": 8,
+       "author": "托马斯·库恩",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "式上，爱因斯坦的广义相对论更类同样范围自然现象的诸理论进行比较时，我更加小心谨慎。如果它们是似于亚里士多德物理学，而不是牛顿力学。无论如何，得出本体论极限之历史上的理论，就像上述那些理论一样，那么我就可以采用卡尔爵士的说结论的证据都不是对整个理论的比较，面是对它们的经验推论的比较。法：每个理论在当前都被认为是真的，但后来被当作错的而放弃。此外，这是一个重大的跳跃，特别在面对下述定理时，即一个给定理论的任何有我可以说，作为常规科学的实践工具，较后的理论更好，我还可以希望加限的推论都可以来源于另一个不相容的理论。人足够的意义，在这些意义上更适合说明诸科学的主要发展特征。当我卡尔爵士对塔尔斯基的涉及突出了另一个难题，这是个更加根本的能够走",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 15,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 52.744,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 7.8,
+     "ev": "assistant_commentary",
+     "chars": 27
+    },
+    {
+     "t": 7.8,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 7.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_qkbeEOrlGnKYuTcypy4A5547"
+    },
+    {
+     "t": 7.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_0VJHJ4GLM4LDj7aSFu0Q7718"
+    },
+    {
+     "t": 8.1,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_02_Hso1oK4xdanal0o2JsX78845"
+    },
+    {
+     "t": 9.7,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "success",
+     "duration_s": 1.574,
+     "result_chars": 4103,
+     "result_head": "{\"query\": \"pessimistic meta-induction scientific realism Laudan\", \"results\": [{\"source_record_id\": \"doi:10.1086/508959\", \"title\": \"On the Pessimistic Induction "
+    },
+    {
+     "t": 10.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.198,
+     "result_chars": 4308,
+     "result_head": "{\"query\": \"可证伪性 科学 迷信\", \"results\": [{\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"author\": \"卡尔·波普尔\", \"chapter_idx\": 8, \"chapter_title\": \"一、科学："
+    },
+    {
+     "t": 10.4,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.21,
+     "result_chars": 5014,
+     "result_head": "{\"query\": \"科学革命 范式 常规科学\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 4, \"chapter_title\": \"第五章　范式的优先性\", "
+    },
+    {
+     "t": 11.5,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_luwjLcQDqme61LIBD07x7556"
+    },
+    {
+     "t": 11.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_LjUlTuDYesccBCC7WrDq9244"
+    },
+    {
+     "t": 11.9,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_02_iLmH5YEIFAFr9ffluS0z9770"
+    },
+    {
+     "t": 12.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.035,
+     "result_chars": 5513,
+     "result_head": "{\"book_id\": \"ff783ce7c481\", \"book_title\": \"猜想与反驳（二十世纪西方哲学经典）\", \"chapter_idx\": 18, \"title\": \"十一、科学与形而上学的分界\", \"citation_label\": \"【《猜想与反驳（二十世纪西方哲学经典）》·十一、科学与形而上学的分"
+    },
+    {
+     "t": 12.1,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.036,
+     "result_chars": 3063,
+     "result_head": "{\"source_record_id\": \"doi:10.1086/520685\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1086/520685\", \"title\": \"Reconstructing Scientific Realism to Reb"
+    },
+    {
+     "t": 13.9,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.83,
+     "result_chars": 1973,
+     "result_head": "{\"query\": \"以太 迈克尔逊 实验 相对论\", \"results\": [{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 6, \"chapter_title\": \"第七章　危机与科学理论"
+    },
+    {
+     "t": 16.1,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_MA3g2OxVOkN2zlBcj6VL0856"
+    },
+    {
+     "t": 16.3,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_00ETZRrrAP5hpAred17o0296"
+    },
+    {
+     "t": 16.5,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.001,
+     "result_chars": 5389,
+     "result_head": "{\"book_id\": \"fa4934527602\", \"book_title\": \"世界观：现代人必须要懂的科学哲学和科学史（原书第3版）\", \"chapter_idx\": 23, \"title\": \"第22章 1700～1900年牛顿世界观的发展\", \"citation_label\": \"【《世界观：现代人必须要懂"
+    },
+    {
+     "t": 18.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.114,
+     "result_chars": 2726,
+     "result_head": "{\"query\": \"牛顿力学 相对论 近似 极限 情形\", \"results\": [{\"book_id\": \"96df36369f8b\", \"book_title\": \"结构之后的路\", \"author\": \"托马斯·库恩\", \"chapter_idx\": 9, \"chapter_title\": \"第七章 作为结构变"
+    },
+    {
+     "t": 19.9,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_0Zho7pMcIZlYQHT2LDyq3053"
+    },
+    {
+     "t": 20.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 5606,
+     "result_head": "{\"book_id\": \"36725cea3e3c\", \"book_title\": \"科学革命的结构\", \"chapter_idx\": 8, \"title\": \"第九章　科学革命的本质与必然性\", \"citation_label\": \"【《科学革命的结构》·第九章　科学革命的本质与必然性】\", \"text\": \"燃素说"
+    },
+    {
+     "t": 22.4,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_00_44nqAIe609cvzgtPsnld9901"
+    },
+    {
+     "t": 22.7,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_NOBlf6qkxafKbg6C4XHJ3832"
+    },
+    {
+     "t": 24.0,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "success",
+     "duration_s": 1.186,
+     "result_chars": 2064,
+     "result_head": "{\"query\": \"A Confutation of Convergent Realism Laudan\", \"results\": [{\"source_record_id\": \"doi:10.1086/288975\", \"title\": \"A Confutation of Convergent Realism\", \""
+    },
+    {
+     "t": 24.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.764,
+     "result_chars": 336,
+     "result_head": "{\"query\": \"反对方法 科学 神话 平等\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_s"
+    },
+    {
+     "t": 25.8,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_gnkEtPEv5j4gtxRCe8Na6221"
+    },
+    {
+     "t": 26.0,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.052,
+     "result_chars": 2401,
+     "result_head": "{\"source_record_id\": \"doi:10.1086/288975\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.1086/288975\", \"title\": \"A Confutation of Convergent Realism\", \"a"
+    },
+    {
+     "t": 52.8,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1856
+  }
+ ],
+ "total_wall_s": 54.5,
+ "status": "COMPLETED"
+}

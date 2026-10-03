@@ -52,7 +52,7 @@ def matrix():
     scored=[json.loads((ROOT/c['review']).read_text())['rows'] if c['review'] else None for c in specs]
     rows=[]
     for label,note,key in [('综合指数','固定64题子集 · 暂定 /100','common_fully_scored_cases'),
-                           ('已完成题集指数','65题宏平均 · 暂定 /100','completed_cases'),
+                           ('已实测题集指数','65题宏平均 · 含失败 /100','completed_cases'),
                            ('固定10题指数','原PhiAgent复核题目子集 · /100','common_independently_reviewed_cases')]:
         vals=[]
         for c in specs:
@@ -80,6 +80,8 @@ def matrix():
     return {'scale':100,'product_version':'0.1.2','aggregate_source_sha256':aggregate.sha(OUT/'aggregate.json'),
             'current':{'title':'冻结 v1.2 · 当前测试集（开发暂定）','subtitle':'每题等权、题内各轮先平均。DeepSeek/豆包为官方网页采集；不同产品的工具条件与评审覆盖不同。','columns':current_cols,'rows':rows},
             'notes':['— 表示未测或不适用，绝非0分；区间表示已有未知项。所有评分行均以100为满分。',
+                     'v0.1.2 RUN3：65题已实测，其中64题有最终回答、A05空答按0级计入；14轮完整定向复核，4轮额外核对初评错误指控。',
+                     'RUN3采集器未保存逐轮生效prompt/运行时代码指纹；分数不能代表严格的单因素prompt改进。',
                      '上表分维度只统计适用题：C为60题，R为24题，K为5道纯核验题；不是未实测的K故障组。',
                      '综合指数采用固定64题子集；完整70题仍缺测。各维度仅统计适用题，不能再平均复算总分。',
                      '固定10题来自PhiAgent两次都经过复核的题目，并不代表其他列也完成了同等复核。',

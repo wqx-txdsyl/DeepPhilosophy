@@ -1,0 +1,249 @@
+{
+ "case_id": "G04",
+ "category": "G",
+ "prompt": "人都会自私，所以帮助别人其实也只是自私。这个论证有什么问题？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "2f066b994984de84f0b1308b88d0c9f608b15577",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T08:44:02+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.2",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run2 自 .t1pre-bak 恢复的同一份, 后续评测有增量; run1 根值为 null 导致 82 次学术调用全灭, null 留档 .null-bak-20261002）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "人都会自私，所以帮助别人其实也只是自私。这个论证有什么问题？",
+   "wall_s": 51.1,
+   "ttft_s": 46.5,
+   "public_notes": [],
+   "provider_reasoning": "The user asks about a classic argument: \"Everyone is selfish, so helping others is also just selfish.\" They ask what's wrong with this argument.\n\nThis is a logical/philosophical analysis question. Let me analyze the argument.\n\nThe argument:\nP1: 人都会自私 (everyone is/acts selfishly)\nC: 帮助别人其实也只是自私 (helping others is also just selfish)\n\nProblems:\n1. Ambiguity of \"自私\" (selfish). There are several distinct meanings:\n   - Psychological egoism: all actions are ultimately motivated by self-interest (descriptive claim)\n   - Selfishness as a moral vice (normative, implies disregard for others)\n   - Acting with self-regard / having any self-interest at all\n\n2. Concept confusion: from \"an action is motivated by some self-interest\" doesn't follow \"the action is selfish\" in the moral sense. A mother saving her child, or someone donating — if there's some satisfaction, that doesn't make it \"selfish\" in the vice sense.\n\n3. Logical structure: This is often circular/vacuous. Psychological egoism is unfalsifiable — any apparent altruism is reinterpreted as hidden selfishness. If \"selfish\" means \"any action you choose,\" it becomes trivially true but then carries no normative punch.\n\n4. The premise \"人都会自私\" is ambiguous:\n   - If it means \"all actions are self-interested\" → this is psychological egoism, a contested empirical claim.\n   - If it means \"people sometimes act selfishly\" → doesn't support the conclusion about all helping.\n\n5. Equivocation between \"self-interest\" and \"selfishness\" — acting in one's own interest (which can include others' welfare as part of one's interest) is not the same as selfishness.\n\n6. Motive/benefit distinction: Even if the helper gets satisfaction, the primary object of the action is the other's welfare. Getting pleasure from helping doesn't make the help selfish — it would need to be that the help was merely instrumental to the pleasure. And even that can be contested.\n\n7. Counterexamples: actions that seem genuinely altruistic — someone throwing themselves on a grenade, knowingly dying. Hard to construe as self-interested.\n\nLet me think about whether I should use tools. The question is philosophical — about a logical fallacy. I could use analyze_argument to stress-test. Actually the argument is the user's given argument. Let me use analyze_argument to structure the premise/conclusion/最小反例/推理缺口. That's exactly its purpose: \"检验单个论证\".\n\nLet me also consider searching original texts — e.g., psychological egoism, Butler, Hume, Nagel's \"The Possibility of Altruism,\" Feinberg's \"Psychological Egoism.\" But the local library may not have these. Let me do a quick search.\n\nActually, let me be efficient. The core task: analyze what's wrong with the argument. I should:\n1. Use analyze_argument on the argument.\n2. Maybe search for relevant philosophical material.\n\nLet me do both in parallel.\n\nLet me call analyze_argument with the argument, and search_books for 心理利己主义 / 利他.\n\nLet me do that.Let me read the relevant chapter section from 《大问题》 to get the exact treatment, and maybe look for the standard critique (Feinberg, or the \"selfishness\" analysis).\n\nLet me read chapter 11 with focus on 心理利己主义.I have a solid source. Now I can synthesize an answer.\n\nThe question is a logic analysis. Let me structure the answer:\n\nCore: the argument commits an equivocation (概念滑移) between two senses of \"自私,\" and the premise doesn't support the sweeping conclusion. Also the \"selfishness\" move is often unfalsifiable/vacuous.\n\nLet me write a clear, direct answer.\n\nKey points:\n1. 先分清两个词:利己(self-interest)/自私(selfishness in the moral sense),以及这个论证常被当成\"心理利己主义\"命题的通俗版。\n2. 前提\"人都会自私\"有歧义:\n   - 读法A(弱):每个人都有自私的时候/有自私的一面 → 推不出\"帮助别人也只是自私\"\n   - 读法B(强):每个人、每个行为最终唯一动机都是自我利益 → 这是心理利己主义,一个高度争议且(若这样定义)近乎不可反驳的经验主张\n3. 概念滑移/歧义谬误:前提的自私≠结论的自私。日常生活里\"自私\"是道德贬义(只顾自己、不顾/损他人),而\"满足自己的欲望/追求自我利益\"不等于道德意义上的自私。所罗门:根据自我利益行动并不必然都是自私——自私意味着违背或无视他人利益而行动。\n4. \"只是\"的问题:单一动机谬误/虚假二分。一个行为可以同时含自利与利他成分;存在自我满足不排斥利他,更不等于\"只是\"自私。林肯的例子。\n5. 循环/不可证伪:心理利己主义的辩护方式——把任何表面利他都重新解释为隐藏的自利(\"他其实是为了心里安宁\")。这种解释无法被任何可能的观察反驳,于是\"所有行为都自私\"变成一个空转的定义,而非有内容的经验发现。巴特勒的三点反驳。\n6. 逻辑形式上的断裂:从\"人都会自私\"(quantifier: 有时/有一面)跳到\"帮助别人这一行为也只是自私\"(该行为的唯一性质),是范围与性质的双重扩大。要让它成立,必须偷偷加上\"所有行为的唯一最终动机都是自身利益\"——而那正是待证的结论,于是循环。\n\nThen: 要让这个论证变强,可以怎么改（收窄结论 or 加强前提并承担举证）。\n\nI should note this is 逻辑分析, not asserting which side is true. Also note the distinction: even if psychological egoism were true, it wouldn't show helping is \"只是自私\" in the moral sense — because \"self-interest\" and \"selfishness as a vice\" are different.\n\nAlso worth a nuance: There's a subtle issue — the argument might be read as valid if \"自私\" is defined purely extensionally as \"由自己动机驱动\". But then the conclusion is trivially true and carries no normative weight, which is usually what the arguer wants (to deflate altruism).\n\nLet me also mention: 动机与利益/效果的区分。Even if helping produces benefits to the helper, benefiting ≠ motive. And \"I did it because I wanted to\" — wanting is not automatically selfish desire.\n\nLet me be careful and not overclaim. Write in Chinese.\n\nLet me structure with a heading approach but keep it direct. Use the 大问题 source citation with reader url.\n\nCitation: 【《大问题》·第八章 道德和好的生活】 with reader url https://deepphilosophy.top/reader/2cbf90eb6f69?ch=11\n\nLet me draft.\n\nI'll aim for a moderately detailed but not bloated answer.\n\nFormat: This is a conceptual/logical question, so prose with some structure. Let me use a few short sections or bold lead-ins. Should be readable.\n\nDraft:\n\n这个论证的毛病，主要不在结论对不对，而在从前提走到结论的这几步。至少有三处断裂，而且是层层嵌套的。\n\n**一、\"自私\"在前提和结论里不是同一个词**\n\n前提\"人都会自私\"里的\"自私\"，通常只是说\"每个人都有为自己打算的一面、有时会优先自己\"。这是弱读法，几乎人人都会同意。\n\n结论\"帮助别人也只是自私\"里的\"自私\"，是道德贬义：只顾自己、不顾甚至损害他人。\n\n而\"满足自己的欲望\"\"追求自己的利益\"和道德意义上的\"自私\"是两回事。所罗门在《大问题》里说得很直白：\"根据一个人的自我利益行动也并不必然都是自私——也就是违背或无视他人的利益而行动。\"（引文里\"也就是\"是在给\"自私\"下定义）\n\n一个人救落水的人，行动时满足了\"想救人\"这个自己的欲望——但这不等于他违背或无视了谁的利益。所以从\"有自利成分\"跳到\"自私\"，词义已经换了。\n\n**二、即使有自利成分，也不等于\"只是\"自私**\n\n\"只是\"是个很强的词，它主张该行为唯一性质就是自私。但一个行为完全可以同时有利他和自利的成分，也可以主要出于同情。存在某种自我满足，不能推出这种满足是唯一动机，更不能推出行为\"只\"为这个。\n\n林肯救小猪那个著名例子就是：他说\"如果我不救，我心里整日不得安宁，我这样做是为了心灵的安宁\"。就算他事后真有这种自我满足，也不表示救猪的唯一目的就是这满足感。所罗门随后转述巴特勒主教的批评：我们许多行动由以他人利益为目标的欲望（同情）驱动，与对自己是否有利无关；\"在我们出于欲望而行动的每一种情况下，我们都通过行动满足了自己的一种欲望。但这并不等于说我们是自私的。\"\n\n**三、这个论证的支撑方式本身是循环/不可证伪的**\n\n这类论证最强、也最常见的辩护是：把\"自私\"定义成\"任何行为的最终动机都是自我利益\"。于是无论你举出多无私的例子，它都能重述为\"他其实还是为了自己心里舒服\"。\n\n问题在于：这样一来，这个主张无法被任何可能的事实反驳——它不再是一项经验发现，而成了一个定义。定义当然\"永远为真\"，但也就不再有力量去打击利他。而且此时它偷用了隐藏前提：\"所有行为唯一的最终动机都是自身利益\"。这个前提恰恰就是结论想说的事，于是循环。\n\n**四、逻辑形式上：量词和性质被双重放大**\n\n- 前提的\"都\"覆盖的是\"人\"（每个人都有自私的一面/有时会）。\n- 结论却把\"都\"移到了\"这一具体行为的唯一性质\"上。\n\n从\"每个人都有自私倾向\"到\"每一次帮助的唯一下场也只是自私\"，中间需要补上\"所有人在所有行为中的唯一最终动机都是自身利益\"。没有这条，\"帮助别人也只是自私\"就不成立；有了这条，又回到上面的循环。\n\n**那这论证要怎样才能站住**\n\n两条路：\n- 要么收窄结论：帮助别人也可能掺杂自利动机，不能仅凭表面利他就断定毫无自利。——这个较弱结论通常是对的，但它不再有原来那股\"揭穿一切利他\"的劲。\n- 要么坚持强结论，那就得公开承担举证：证明所有行为的唯一最终动机都是自身利益，且关心他人不能成为真实动机（而不只是重新定义\"自私\"）。\n\n顺带一句：即便心理利己主义（\"人总是为自己的私利行动\"）是真的，也推不出道德贬义上的\"帮助别人只是自私\"——因为\"自利\"和\"自私\"作为德行评价是两回事。它在道德上想达到的\"祛魅\"效果，其实靠这个概念滑移是拿不到的。\n\n好，这个比较完整。Let me tighten and make sure citations are accurate.\n\nActually let me double check the quote: \"因此，根据一个人的自我利益行动也并不必然都是自私——也就是违背或无视他人的利益而行动。\" Yes that's in the text. Good.\n\nAnd \"在我们出于欲望而行动的每一种情况下，我们都通过行动满足了自己的一种欲望。但这并不等于说我们是自私的或利己的，自私和利己主义意味着不仅要满足自已的欲望，而且只是为了自己的利益而满足欲望。\" Good.\n\nNote the source is a textbook (罗伯特·所罗门《大问题》), a secondary source presenting Butler's arguments. I should be honest about that — it's a philosophy textbook summarizing Butler. I can mention Butler as cited.\n\nLet me finalize. Keep it direct and not overly long. I think the structure is good.\n\nI'll note the citation label and reader url.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "心理利己主义 利他 自私"
+     },
+     "status": "success",
+     "duration_seconds": 1.311,
+     "result_full": "{\"query\": \"心理利己主义 利他 自私\", \"results\": [{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 11, \"chapter_title\": \"第八章 道德和好的生活\", \"citation_label\": \"【《大问题》·第八章 道德和好的生活】\", \"snippet\": \"认为，每个人实际上都是按照自己的利益行动的，我们的心理就是这样的，以至于我们不得不按照这种方式行动。因此，这种观点被称为心理利己主义；而第二种观点必须独立于第一种观点来进行捍卫或抨击：这种观点认为，人们应当为了满足自身的利益而行动，这预设了人能够选择是否按照这种方式去行动。这种观点被称为伦理利己主义。 这两种利己主义的观点都与一种通常被称为利他主义的观点相对，即为了他人的利益而行动。利他主义可分为不同程度。我们既可以因为认识到了自己对于他人负有的义务而道德地行动，从而是利他的；也可以因为将另一个人的利益看得与自己的同样重要甚至更重要，从而是利他的，这种情况可见于恋人之间或兄弟姐妹之间。对于利他主义，我们也可以区分出两种非常不同的说法\", \"score\": 210, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"focus\": \"心理利己主义 利他 自私\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 15, \"chapter_title\": \"附录一 写作哲学\", \"citation_label\": \"【《大问题》·附录一 写作哲学】\", \"snippet\": \"有些解释中）和自由行动都可以是真的。决定论并不排除自由行动，自由行动的可能性也并不要求决定论是假的。它们是相容的立场。 心理利己主义（psychological egoism）：这种观点认为，人总是为自己的私利而行动的，即使他们看起来像是为了他人的利益而行动，那也只是表面现象（比如当一个人向慈善团体捐款时，利己主义者会说，这个人只是为了使自己能够体验到一种正直的感觉）。 心理利他主义（psychological altruism）：这种观点认为，人“天然地”就是为了他人的福祉而行动的。 心-身问题（mind-body problem）：精神事件（疼痛、思想、感觉）是怎样与身体——特别是大脑——相关的。 信仰（faith）：通俗地说，\", \"score\": 134, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 15, \"focus\": \"心理利己主义 利他 自私\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "analyze_argument",
+     "args": {
+      "text": "人都会自私，所以帮助别人其实也只是自私。",
+      "question": "这个论证有什么问题？"
+     },
+     "status": "success",
+     "duration_seconds": 29.549,
+     "result_full": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"帮助别人其实也只是自私。\", \"premises\": [{\"premise\": \"人都会自私。\", \"kind\": \"explicit\"}], \"hidden_assumptions\": [\"“自私”在前提和结论中含义相同，且指所有行为的唯一或最终动机都是自我利益。\", \"人有自私动机或行为会带来自我满足，就意味着该行为“只是”自私，不能同时包含利他动机。\", \"从“人都会自私”（有自私倾向/有时自私）可推出“任何具体帮助行为也只是自私”。\"], \"fallacies\": [{\"name\": \"概念滑移/歧义\", \"where\": \"从前提“人都会自私”到结论“帮助别人也只是自私”的关键一步\", \"why\": \"前提的“自私”可指有自利倾向或有时优先自己；结论的“自私”是道德贬义的只顾自己、不顾他人。词义一旦改变，前提真不保证结论真。\"}, {\"name\": \"量词与范围不当扩大\", \"where\": \"结论\", \"why\": \"“人都会自私”若只表示每个人都有自私的一面或某些自私行为，不能推出每一次帮助别人、以及该行为的唯一性质都只是自私。\"}, {\"name\": \"虚假二分/动机单一化\", \"where\": \"把帮助行为归为“只是自私”时\", \"why\": \"一个行为可以同时有自利成分和利他成分，也可以主要出于同情、责任等；存在自我满足或自我利益并不排斥利他，也不等于“只是自私”。\"}], \"counterexample\": {\"scenario\": \"小李平时会插队、为自己多拿好处，符合“人都会自私”的通常读法；但他匿名给陌生人捐献骨髓，承受痛苦和收入损失，不告诉受助者，不期待回报，主要因为同情对方而做，甚至不因这件事感到快乐。\", \"premises_still_hold\": \"“人都会自私”按通常读法指每个人都有自私的一面或有时会自私；小李在插队、多拿好处等事上确实如此，所以该前提仍成立。\", \"conclusion_fails\": \"小李这次帮助别人并非“只是自私”：他不求回报、不顾自身重大损失、不以自我利益为唯一目的；即使可事后找到某种自我认同因素，也不能证明该帮助的唯一性质是自私。因此结论不成立。\"}, \"strongest_reply\": \"原论证最强回应是把“自私”广义化为“最终由自我利益/偏好满足驱动”，主张即使牺牲生命也可解释为满足自我理想或避免内疚，因此帮助别人也只是自利。其限度是：这已把“自私”从日常道德贬义改成技术性“自利”，而“自利”不排斥关心他人；有自利成分也不等于“只是自私”，所以仍需额外且很强的隐藏前提才能推出结论。\", \"weakest_point\": \"最关键缺口是从“每个人都有自私倾向/有时自私”跳到“帮助别人这一行为唯一动机只是自私”。没有“所有行为的唯一最终动机都是自私”这一隐藏前提，推理不成立。\", \"strengthening\": [\"先定义“自私”和“自利”，并说明是否允许混合动机。\", \"若要坚持结论，前提应改为更强命题：所有人在所有行为中的唯一最终动机都是自身利益，且关心他人不能成为真实动机。\", \"若不加强前提，应把结论收窄为：帮助别人也可能含有自利动机，或不能仅凭表面利他断定没有自利成分。\"], \"question_fidelity\": \"原问题与待检验论证都问“人都会自私，所以帮助别人其实也只是自私”有什么问题；论证没有改动人物或条件。但若把“人都会自私”直接解释为“所有行为都只是自私”，则改动了原前提，把待证结论塞进了前提。\"}, \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"中间分析，不是已证明的裁决。核对题设与反例后自行综合，不照搬JSON或编号模板。\", \"validation_scope\": \"structure_only\", \"requires_main_agent_judgment\": true, \"question_context_truncated\": false}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "2cbf90eb6f69",
+      "chapter_idx": 11,
+      "focus": "心理利己主义 利他 自私"
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"chapter_idx\": 11, \"title\": \"第八章 道德和好的生活\", \"citation_label\": \"【《大问题》·第八章 道德和好的生活】\", \"text\": \"教和幸福等都是关于好的生活的不同观念。其中有些是毎个人都能得到的（比如简单快乐的生活），而有些则仅仅是少数幸运的人才能得到的（比如创造性的生活）。现在，你一定已经惊奇地发现，所有这些关于好的生活的观念都漏掉了某些东西。无论快乐主义与宗教生活，成功伦理与禁欲生活，追求财富的生活与追求自由、创造性或一般幸福的生活之间存在着多么根本的不同，它们仍在一点上是共通的，那就是它们都以自我为中心，而没有注意到其他人。尽管形式各有不同，但它们都是种种的利己主义。我们将会看到，这对亚里士多德所提出的伦理学来说并不准确，对苏格拉底的道德生活来说也不正确。我们也许不愿将一个离群索居的僧侣或苦行修道者的生活归结为任何意义上的“自私”，但僧侣式的生活很少注意到我们与他人之间的关系，而将重点放在了单个人的好的生活上面。\\n利己主义对利他主义\\n利己主义主张每个人总是按照各自的利益行动，人们在行动时之所以彼此谦恭和友善，只是因为礼貌和慷慨由于这样那样的原因也对他们有利。他们也许是由于害怕惩罚才“正确地”行动的；有些人藏有“隐蔽的动机”，也就是说他们还期待以后的东西，这或是报答，或是他们死后在天堂的回报，或是避免内疚，或是追求一种自我满足的感觉。在通俗的语言中，利己主义的立场经常被称为“自私”。\\n当代被阅读最多的利己主义者之一艾安·兰德写过一本《自私的美德》一书。根据她的理论，我们应当按照我们自己的利益行动。在此，我们必须对两种形式非常不同的利己主义做出区分，人们往往把这两者混为一谈。第一种观点认为，每个人实际上都是按照自己的利益行动的，我们的心理就是这样的，以至于我们不得不按照这种方式行动。因此，这种观点被称为心理利己主义；而第二种观点必须独立于第一种观点来进行捍卫或抨击：这种观点认为，人们应当为了满足自身的利益而行动，这预设了人能够选择是否按照这种方式去行动。这种观点被称为伦理利己主义。\\n这两种利己主义的观点都与一种通常被称为利他主义的观点相对，即为了他人的利益而行动。利他主义可分为不同程度。我们既可以因为认识到了自己对于他人负有的义务而道德地行动，从而是利他的；也可以因为将另一个人的利益看得与自己的同样重要甚至更重要，从而是利他的，这种情况可见于恋人之间或兄弟姐妹之间。对于利他主义，我们也可以区分出两种非常不同的说法，虽然这种区分通常并不明显。心理利他主义主张，人们“天然地”为了彼此的利益而行动；而伦理利他主义则认为，人们应当铭记为彼此的利益而行动。当然，这是一条基本的道德陈述，它在所谓的“黄金规则”中得到了最好的概括：“己所不欲，勿施于人。”然而，利他主义并不必然意味着自我牺牲，利他主义意味着（有意）为他人的利益而行动——但不必然违反自己的利益。因此，根据一个人的自我利益行动也并不必然都是自私——也就是违背或无视他人的利益而行动。\\n最常见也是最困难的一个问题是有关心理利己主义的：人们真的只按照自己的自我利益行动吗？有一个关于林肯的著名故事有助于说明这一论题。正当林肯与一个朋友为心理利己主义的观点而争得不可开交时，他的马车经过一个泥流，那里有一头母猪因它的小猪崽们即将被淹死而大声嚎叫。林肯停下马车救出了小猪崽，然后继续赶路。他的朋友问他，这难道不显然是一个利他主义的例子吗，林肯回答说：“为什么，这恰恰是自私的需要啊。如果我不顾母猪对于猪崽的担心扬长而去，我的心里整日都不会得到安宁。我这样做是为了获得心灵的安宁，你难道没看出来吗？”\\nPS.利己主义和利他主义\\n心理利己主义         心理利他主义\\n“所有的行为从根本上说都是自私的。”  “我们有些行为‘天然’就是利他的”\\n伦理利己主义         伦理利他主义\\n“你应当自私地行动。”       “你应当为了他人的利益行动。”\\nPS.差异的规则\\n子贡问曰：“有一言而可以终身行之乎？”子曰：“其‘恕’乎！己所不欲，勿施于人。”\\n——孔子，《论语》，公元前6世纪\\n有些行动是以自我利益为基础的，它们毫无疑问是“自私的”。但不以自我利益为基础的行动是否存在？林肯的回答是一个很好的例子，他的行动虽然表面看来根本不是出于自私的原因，但按照他的说法，在他行动的背后仍然隐藏着一个自私的原因——他自己的满足感和“心灵的安宁”。这对于我们所有的行动来说都是真的吗？\\n人们已经提出了许多论证来反驳“所有的行动在本质上都是自私的”这种观点，在这些论证中，有三种论证是几百年前由一位英国的神职人员约瑟夫·巴特勒主教[Joseph Butler（1692-1752），英格兰教会主教，道德哲学家]提出来的，在那之后它们就经常被重复引用：\\n1.我们的许多行动都是由一些以他人的利益为目标的欲望驱动的，它们与对我们是否有利无关。林肯也许会预先反思并想到：“如果不救那些小猪崽，我将会痛苦一整天。”但事实上他不大可能这样做。他只需稍稍麻烦一下，就可以将一个几乎我们毎个人都会有的动机付诸行动，即帮助那些遇到困难的人或生物的强烈欲望，或者就是我们所说的同情。尤其是对朋友或者我们所爱的人，我们经常被驱策以这种方式行动，如果这时还说我们是为了满足自己或是为了避免内疚，那就显得非常荒谬。当然，在我们出于欲望而行动的每一种情况下，我们都通过行动满足了自己的一种欲望。但这并不等于说我们是自私的或利己的，自私和利己主义意味着不仅要满足自已的欲望，而且只是为了自己的利益而满足欲望。\\n2.生活中，我们的许多欲望必须得到他人的赞同和认可。因此，为了得到我们想要的东西（也就是他们的赞同），我们的行动还要代表他们的利益并且符合他们的欲望和需要。我们在何种程度上是为了满足自己的强烈欲望而行动的，在何种程度上又是由为他人服务的欲望而驱动的，这是一个有时无法回答的怪题。但说我们行动总是为了获得赞同，绝不是为了帮助他人，这肯定是不合情理的。确实，我们绝大多数人在生活中最想得到的东西之一就是“自尊”，一种做“好人”的感觉，除非我们不但帮助他人，而且只是为帮助他人而帮助他人（即使此后我们能够享受到帮助他人的自我满足感），否则这是根本不可能的。\\n3.我们所有人都有一种是非感，它有时被我们称为“良心”。无论良心只是我们内心中父母的声音（按照弗洛伊德的主张，可称此为“超我”），还是上帝的声音（就像许多宗教人士所笃信的那样），还是对于惩罚的恐惧（就像许多心理学家已经论证的那样），这对于我们目前的论证无关紧要。重要的是我们的确有这么个良心，而且按照它的要求行动不是仅仅出于自己的利益而行动，即使我们知道不服从自已的良心将来很可能会使我们感到痛苦和内疚。我们必须进一步追问，除了良心的原因，除了我们的确希望或者感到有必要为了他人的利益而无视（有时甚至要违背）自己的利益来行动这一事实，为什么这种内疚会如此痛苦？即使在极少数情况下，我们中的一些人只是为了逃避将来的自我\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 8841, \"excerpt_end\": 11641, \"chapter_text_length\": 29616, \"has_more\": true, \"next_offset\": 11641, \"has_previous\": true, \"previous_offset\": 6041, \"focus_found\": true, \"focus_terms_matched\": [\"心理利己主义\", \"利他\", \"自私\"], \"focus_terms_found_in_chapter\": [\"心理利己主义\", \"利他\", \"自私\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"心理利己主义\", \"offset\": 9541, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9341, \"focus\": \"心理利己主义\"}}, {\"term\": \"心理利己主义\", \"offset\": 10030, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9830, \"focus\": \"心理利己主义\"}}, {\"term\": \"心理利己主义\", \"offset\": 10088, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9888, \"focus\": \"心理利己主义\"}}, {\"term\": \"利他\", \"offset\": 9197, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 8997, \"focus\": \"利他\"}}, {\"term\": \"利他\", \"offset\": 9652, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9452, \"focus\": \"利他\"}}, {\"term\": \"利他\", \"offset\": 9674, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9474, \"focus\": \"利他\"}}, {\"term\": \"自私\", \"offset\": 373, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 173, \"focus\": \"自私\"}}, {\"term\": \"自私\", \"offset\": 9146, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 8946, \"focus\": \"自私\"}}, {\"term\": \"自私\", \"offset\": 9375, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9175, \"focus\": \"自私\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"529645f01bca628120b354851ec053d5cd333a596fbc2f8f44c391590c6da3b7\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/2cbf90eb6f69?ch=11\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[8841, 11641]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 4.5,
+     "phase": "start",
+     "name": "analyze_argument",
+     "call_id": "call_00_w9NlZ9yrhur4fnnQ1wnM3763"
+    },
+    {
+     "t": 4.6,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_01_UR2qlxbWcgVDUnoSPomA9801",
+     "status": "success",
+     "duration_seconds": 1.311
+    },
+    {
+     "t": 34.3,
+     "phase": "result_orphan",
+     "name": "analyze_argument",
+     "args": {
+      "text": "人都会自私，所以帮助别人其实也只是自私。",
+      "question": "这个论证有什么问题？"
+     },
+     "status": "success",
+     "duration_seconds": 29.549,
+     "result_full": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"帮助别人其实也只是自私。\", \"premises\": [{\"premise\": \"人都会自私。\", \"kind\": \"explicit\"}], \"hidden_assumptions\": [\"“自私”在前提和结论中含义相同，且指所有行为的唯一或最终动机都是自我利益。\", \"人有自私动机或行为会带来自我满足，就意味着该行为“只是”自私，不能同时包含利他动机。\", \"从“人都会自私”（有自私倾向/有时自私）可推出“任何具体帮助行为也只是自私”。\"], \"fallacies\": [{\"name\": \"概念滑移/歧义\", \"where\": \"从前提“人都会自私”到结论“帮助别人也只是自私”的关键一步\", \"why\": \"前提的“自私”可指有自利倾向或有时优先自己；结论的“自私”是道德贬义的只顾自己、不顾他人。词义一旦改变，前提真不保证结论真。\"}, {\"name\": \"量词与范围不当扩大\", \"where\": \"结论\", \"why\": \"“人都会自私”若只表示每个人都有自私的一面或某些自私行为，不能推出每一次帮助别人、以及该行为的唯一性质都只是自私。\"}, {\"name\": \"虚假二分/动机单一化\", \"where\": \"把帮助行为归为“只是自私”时\", \"why\": \"一个行为可以同时有自利成分和利他成分，也可以主要出于同情、责任等；存在自我满足或自我利益并不排斥利他，也不等于“只是自私”。\"}], \"counterexample\": {\"scenario\": \"小李平时会插队、为自己多拿好处，符合“人都会自私”的通常读法；但他匿名给陌生人捐献骨髓，承受痛苦和收入损失，不告诉受助者，不期待回报，主要因为同情对方而做，甚至不因这件事感到快乐。\", \"premises_still_hold\": \"“人都会自私”按通常读法指每个人都有自私的一面或有时会自私；小李在插队、多拿好处等事上确实如此，所以该前提仍成立。\", \"conclusion_fails\": \"小李这次帮助别人并非“只是自私”：他不求回报、不顾自身重大损失、不以自我利益为唯一目的；即使可事后找到某种自我认同因素，也不能证明该帮助的唯一性质是自私。因此结论不成立。\"}, \"strongest_reply\": \"原论证最强回应是把“自私”广义化为“最终由自我利益/偏好满足驱动”，主张即使牺牲生命也可解释为满足自我理想或避免内疚，因此帮助别人也只是自利。其限度是：这已把“自私”从日常道德贬义改成技术性“自利”，而“自利”不排斥关心他人；有自利成分也不等于“只是自私”，所以仍需额外且很强的隐藏前提才能推出结论。\", \"weakest_point\": \"最关键缺口是从“每个人都有自私倾向/有时自私”跳到“帮助别人这一行为唯一动机只是自私”。没有“所有行为的唯一最终动机都是自私”这一隐藏前提，推理不成立。\", \"strengthening\": [\"先定义“自私”和“自利”，并说明是否允许混合动机。\", \"若要坚持结论，前提应改为更强命题：所有人在所有行为中的唯一最终动机都是自身利益，且关心他人不能成为真实动机。\", \"若不加强前提，应把结论收窄为：帮助别人也可能含有自利动机，或不能仅凭表面利他断定没有自利成分。\"], \"question_fidelity\": \"原问题与待检验论证都问“人都会自私，所以帮助别人其实也只是自私”有什么问题；论证没有改动人物或条件。但若把“人都会自私”直接解释为“所有行为都只是自私”，则改动了原前提，把待证结论塞进了前提。\"}, \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"中间分析，不是已证明的裁决。核对题设与反例后自行综合，不照搬JSON或编号模板。\", \"validation_scope\": \"structure_only\", \"requires_main_agent_judgment\": true, \"question_context_truncated\": false}"
+    },
+    {
+     "t": 35.7,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_Uc4L21ApNlUBOO8MtEFl3289",
+     "status": "success",
+     "duration_seconds": 0.003
+    }
+   ],
+   "answer": "这个论证的问题不在于结论\"对不对\"，而在于从\"人都会自私\"走到\"帮助别人也只是自私\"这几步里，词义和推理范围都被悄悄换掉了。至少有三处断裂，而且层层嵌套。\n\n**一、\"自私\"在前提和结论里不是同一个词**\n\n前提\"人都会自私\"通常只是弱读法：每个人都有为自己打算的一面、有时会优先自己。几乎人人同意。\n\n结论\"帮助别人也只是自私\"里的\"自私\"是道德贬义：只顾自己、不顾甚至损害他人。\n\n而\"追求自己的利益\"和道德意义上的\"自私\"是两回事。所罗门在《大问题》里说得很直白：\"根据一个人的自我利益行动也并不必然都是自私——也就是违背或无视他人的利益而行动。\"（【《大问题》·第八章 道德和好的生活】，[原文](https://deepphilosophy.top/reader/2cbf90eb6f69?ch=11)）\n\n一个人下水救人，行动时确实满足了自己\"想救人\"的欲望——但这没有谁的利益被\"违背或无视\"。所以从\"有自利成分\"跳到\"自私\"，词已经换过了。\n\n**二、即使有自利成分，也不等于\"只是\"自私**\n\n\"只是\"是个很强的词，它主张该行为的唯一性质就是自私。但一个行为完全可以同时有利他和自利的成分，也可以主要出于同情。存在某种自我满足，推不出这满足是唯一动机，更推不出行为\"只\"为它。\n\n林肯救小猪那个著名例子：他说\"如果我不救，我心里整日不得安宁，我这样做是为了心灵的安宁\"。就算他事后真有这份满足感，也不表示救猪的唯一目的就是这个。所罗门随后转述巴特勒主教的批评：我们许多行动由以他人利益为目标的欲望（同情）驱动，与对自己是否有利无关；\"在我们出于欲望而行动的每一种情况下，我们都通过行动满足了自己的一种欲望。但这并不等于说我们是自私的。\"\n\n**三、这个论证的支撑方式本身是循环、不可反驳的**\n\n这类论证最强的辩护是：把\"自私\"直接定义成\"任何行为的最终动机都是自我利益\"。于是无论你举出多无私的例子，它都能重述为\"他其实还是为了自己心里舒服\"。\n\n代价是：这个主张无法被任何可能的事实反驳——它不再是经验发现，而成了一个定义。定义当然\"永远为真\"，但也就失去了打击利他的力量。而且此时它已经偷用了隐藏前提：\"所有行为唯一的最终动机都是自身利益\"——这正是结论想说的话，于是循环。\n\n**四、逻辑形式上：量词和性质被双重放大**\n\n前提的\"都\"覆盖的是**人**（每个人都有自私的一面、有时会自私）；结论却把这种\"都\"移到了**某一具体行为的唯一性质**上。从\"每个人都有自私倾向\"到\"每次帮助的唯一性质也只是自私\"，中间必须补上\"所有人在所有行为中的唯一最终动机都是自身利益\"。没有这条，结论不成立；有了这条，又落回上面的循环。\n\n---\n\n**要让这个论证站得住，只有两条路：**\n\n- 收窄结论：帮助别人**也可能**掺杂自利，不能仅凭表面利他就断定毫无自利。这个弱结论通常成立，但它没有原来那股\"揭穿一切利他\"的劲。\n- 坚持强结论，就得公开举证：证明所有行为的唯一最终动机都是自身利益、且关心他人不能成为真实动机——而不是靠重新定义\"自私\"来让它自动为真。\n\n顺带一句：即便心理利己主义（\"人总是为自己的私利行动\"）成立，也推不出道德贬义上的\"帮助别人只是自私\"。因为\"自利\"和作为德行评价的\"自私\"本就是两回事——它想在道德上达到的\"祛魅\"效果，靠这个概念滑移是拿不到的。",
+   "answer_chars": 1401,
+   "done_content": "这个论证的问题不在于结论\"对不对\"，而在于从\"人都会自私\"走到\"帮助别人也只是自私\"这几步里，词义和推理范围都被悄悄换掉了。至少有三处断裂，而且层层嵌套。\n\n**一、\"自私\"在前提和结论里不是同一个词**\n\n前提\"人都会自私\"通常只是弱读法：每个人都有为自己打算的一面、有时会优先自己。几乎人人同意。\n\n结论\"帮助别人也只是自私\"里的\"自私\"是道德贬义：只顾自己、不顾甚至损害他人。\n\n而\"追求自己的利益\"和道德意义上的\"自私\"是两回事。所罗门在《大问题》里说得很直白：\"根据一个人的自我利益行动也并不必然都是自私——也就是违背或无视他人的利益而行动。\"（【《大问题》·第八章 道德和好的生活】，[原文](https://deepphilosophy.top/reader/2cbf90eb6f69?ch=11)）\n\n一个人下水救人，行动时确实满足了自己\"想救人\"的欲望——但这没有谁的利益被\"违背或无视\"。所以从\"有自利成分\"跳到\"自私\"，词已经换过了。\n\n**二、即使有自利成分，也不等于\"只是\"自私**\n\n\"只是\"是个很强的词，它主张该行为的唯一性质就是自私。但一个行为完全可以同时有利他和自利的成分，也可以主要出于同情。存在某种自我满足，推不出这满足是唯一动机，更推不出行为\"只\"为它。\n\n林肯救小猪那个著名例子：他说\"如果我不救，我心里整日不得安宁，我这样做是为了心灵的安宁\"。就算他事后真有这份满足感，也不表示救猪的唯一目的就是这个。所罗门随后转述巴特勒主教的批评：我们许多行动由以他人利益为目标的欲望（同情）驱动，与对自己是否有利无关；\"在我们出于欲望而行动的每一种情况下，我们都通过行动满足了自己的一种欲望。但这并不等于说我们是自私的。\"\n\n**三、这个论证的支撑方式本身是循环、不可反驳的**\n\n这类论证最强的辩护是：把\"自私\"直接定义成\"任何行为的最终动机都是自我利益\"。于是无论你举出多无私的例子，它都能重述为\"他其实还是为了自己心里舒服\"。\n\n代价是：这个主张无法被任何可能的事实反驳——它不再是经验发现，而成了一个定义。定义当然\"永远为真\"，但也就失去了打击利他的力量。而且此时它已经偷用了隐藏前提：\"所有行为唯一的最终动机都是自身利益\"——这正是结论想说的话，于是循环。\n\n**四、逻辑形式上：量词和性质被双重放大**\n\n前提的\"都\"覆盖的是**人**（每个人都有自私的一面、有时会自私）；结论却把这种\"都\"移到了**某一具体行为的唯一性质**上。从\"每个人都有自私倾向\"到\"每次帮助的唯一性质也只是自私\"，中间必须补上\"所有人在所有行为中的唯一最终动机都是自身利益\"。没有这条，结论不成立；有了这条，又落回上面的循环。\n\n---\n\n**要让这个论证站得住，只有两条路：**\n\n- 收窄结论：帮助别人**也可能**掺杂自利，不能仅凭表面利他就断定毫无自利。这个弱结论通常成立，但它没有原来那股\"揭穿一切利他\"的劲。\n- 坚持强结论，就得公开举证：证明所有行为的唯一最终动机都是自身利益、且关心他人不能成为真实动机——而不是靠重新定义\"自私\"来让它自动为真。\n\n顺带一句：即便心理利己主义（\"人总是为自己的私利行动\"）成立，也推不出道德贬义上的\"帮助别人只是自私\"。因为\"自利\"和作为德行评价的\"自私\"本就是两回事——它想在道德上达到的\"祛魅\"效果，靠这个概念滑移是拿不到的。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_1",
+     "book": "大问题",
+     "chapter": "第八章 道德和好的生活",
+     "book_id": "2cbf90eb6f69",
+     "chapter_idx": 11,
+     "author": "罗伯特•所罗门",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_8"
+     ],
+     "excerpt": "教和幸福等都是关于好的生活的不同观念。其中有些是毎个人都能得到的（比如简单快乐的生活），而有些则仅仅是少数幸运的人才能得到的（比如创造性的生活）。现在，你一定已经惊奇地发现，所有这些关于好的生活的观念都漏掉了某些东西。无论快乐主义与宗教生活，成功伦理与禁欲生活，追求财富的生活与追求自由、创造性或一般幸福的生活之间存在着多么根本的不同，它们仍在一点上是共通的，那就是它们都以自我为中心，而没有注意到其他人。尽管形式各有不同，但它们都是种种的利己主义。我们将会看到，这对亚里士多德所提出的伦理学来说并不准确，对苏格拉底的道德生活来说也不正确。我们也许不愿将一个离群索居的僧侣或苦行修道者的生活归结为任何意义上的“自私”，但僧侣式的生活很少注意到我们与他人之间的关系，而将重点放在了单个人的好的生活上面。\n利己主义对利他主义\n利己主义主张每个人总是按照各自的利益行动，人们在行动时之所以彼此谦恭和友善，只是因为礼貌和慷慨由于这样那样的原因也对他们有利。他们也许是由于害怕惩罚才“正确地”行动的；有些人藏有“隐蔽的动机”，也就是说他们还期待以后的东西，这或是报答，或是他们死后在天堂的回报，或是避免内疚，或是追求一种自我满足的感觉。在通俗的语言中，利己主义的立场经常被称为“自私”。\n当代被阅读最多的利己主义者之一艾安·兰德写过一本《自私的美德》一书。根据她的理论，我们应当按照我们自己的利益行动。在此，我",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 29616,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 2,
+    "display_citations": 1,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "大问题",
+       "chapter": "第八章 道德和好的生活",
+       "book_id": "2cbf90eb6f69",
+       "chapter_idx": 11,
+       "author": "罗伯特•所罗门",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "教和幸福等都是关于好的生活的不同观念。其中有些是毎个人都能得到的（比如简单快乐的生活），而有些则仅仅是少数幸运的人才能得到的（比如创造性的生活）。现在，你一定已经惊奇地发现，所有这些关于好的生活的观念都漏掉了某些东西。无论快乐主义与宗教生活，成功伦理与禁欲生活，追求财富的生活与追求自由、创造性或一般幸福的生活之间存在着多么根本的不同，它们仍在一点上是共通的，那就是它们都以自我为中心，而没有注意到其他人。尽管形式各有不同，但它们都是种种的利己主义。我们将会看到，这对亚里士多德所提出的伦理学来说并不准确，对苏格拉底的道德生活来说也不正确。我们也许不愿将一个离群索居的僧侣或苦行修道者的生活归结为任何意义上的“自私”，但僧侣式的生活很少注意到我们与他人之间的关系，而将重点放在了单个人的好的生活上面。\n利己主义对利他主义\n利己主义主张每个人总是按照各自的利益行动，人们在行动时之所以彼此谦恭和友善，只是因为礼貌和慷慨由于这样那样的原因也对他们有利。他们也许是由于害怕惩罚才“正确地”行动的；有些人藏有“隐蔽的动机”，也就是说他们还期待以后的东西，这或是报答，或是他们死后在天堂的回报，或是避免内疚，或是追求一种自我满足的感觉。在通俗的语言中，利己主义的立场经常被称为“自私”。\n当代被阅读最多的利己主义者之一艾安·兰德写过一本《自私的美德》一书。根据她的理论，我们应当按照我们自己的利益行动。在此，我",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 29616,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "大问题",
+       "chapter": "附录一 写作哲学",
+       "book_id": "2cbf90eb6f69",
+       "chapter_idx": 15,
+       "author": "罗伯特•所罗门",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "有些解释中）和自由行动都可以是真的。决定论并不排除自由行动，自由行动的可能性也并不要求决定论是假的。它们是相容的立场。 心理利己主义（psychological egoism）：这种观点认为，人总是为自己的私利而行动的，即使他们看起来像是为了他人的利益而行动，那也只是表面现象（比如当一个人向慈善团体捐款时，利己主义者会说，这个人只是为了使自己能够体验到一种正直的感觉）。 心理利他主义（psychological altruism）：这种观点认为，人“天然地”就是为了他人的福祉而行动的。 心-身问题（mind-body problem）：精神事件（疼痛、思想、感觉）是怎样与身体——特别是大脑——相关的。 信仰（faith）：通俗地说，",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 2,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 49.653,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 4.5,
+     "ev": "tool_start",
+     "name": "analyze_argument",
+     "call_id": "call_00_w9NlZ9yrhur4fnnQ1wnM3763"
+    },
+    {
+     "t": 4.6,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_UR2qlxbWcgVDUnoSPomA9801"
+    },
+    {
+     "t": 6.0,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.311,
+     "result_chars": 1878,
+     "result_head": "{\"query\": \"心理利己主义 利他 自私\", \"results\": [{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 11, \"chapter_title\": \"第八章 道德和好的生活\", \""
+    },
+    {
+     "t": 34.3,
+     "ev": "tool",
+     "name": "analyze_argument",
+     "status": "success",
+     "duration_s": 29.549,
+     "result_chars": 1792,
+     "result_head": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"帮助别人其实也只是自私。\", \"premises\": [{\"premise\": \"人都会自私。\", \"kind\":"
+    },
+    {
+     "t": 35.7,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_Uc4L21ApNlUBOO8MtEFl3289"
+    },
+    {
+     "t": 35.8,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 5276,
+     "result_head": "{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"chapter_idx\": 11, \"title\": \"第八章 道德和好的生活\", \"citation_label\": \"【《大问题》·第八章 道德和好的生活】\", \"text\": \"教和幸福等都是关于好的生活的不同观念"
+    },
+    {
+     "t": 49.7,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 810
+  }
+ ],
+ "total_wall_s": 51.1,
+ "status": "COMPLETED"
+}

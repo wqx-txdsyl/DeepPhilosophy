@@ -128,8 +128,16 @@ def build(registry_path=REGISTRY):
             'case_bounds': {cid: {**export(item['bounds']), **{k:v for k,v in item.items() if k!='bounds'}} for cid,item in result.items()},
             'group_bounds': {group: cohort(result, {c for c in result if c[0] == group}) for group in sorted({c[0] for c in result})}}
     if results:
-        common = set.intersection(*[{c for c,v in r.items() if v['complete'] and v['bounds'][0]==v['bounds'][1]} for r in results.values()])
-        paired_reviewed = {c for c in common if all(r[c]['reviewed'] for r in results.values())}
+        fixed = registry.get('comparison_cohorts')
+        if fixed:
+            common = set(fixed['fully_scored_case_ids'])
+            paired_reviewed = set(fixed['reviewed_case_ids'])
+            eligible = {c['id'] for c in cases if c['manual_prompt_ready']}
+            if not paired_reviewed <= common <= eligible:
+                raise ValueError('invalid fixed comparison cohort')
+        else:
+            common = set.intersection(*[{c for c,v in r.items() if v['complete'] and v['bounds'][0]==v['bounds'][1]} for r in results.values()])
+            paired_reviewed = {c for c in common if all(r[c]['reviewed'] for r in results.values())}
         for v,r in results.items():
             runs[v]['common_fully_scored_cases'] = cohort(r, common)
             runs[v]['common_independently_reviewed_cases'] = cohort(r, paired_reviewed)
@@ -174,7 +182,7 @@ def render_dashboard(data):
         return f"{cohort['lower']:.2f}–{cohort['upper']:.2f}"
     def cohort_number(value):
         return f"{number(value)}（{value['case_count']}题）"
-    lines = ['|版本或答卷|完整70题指数 /100|已完成题集指数 /100|固定64题子集 /100|固定10题复核子集 /100|评审覆盖|',
+    lines = ['|版本或答卷|完整70题指数 /100|已实测题集指数 /100|固定64题子集 /100|固定10题复核子集 /100|评审覆盖|',
              '|---|---|---|---|---|---|']
     for version, run in data['runs'].items():
         if 'full_frozen_suite' not in run:

@@ -1,0 +1,640 @@
+[
+  {
+    "id": "A05-T1",
+    "case_id": "A05",
+    "ratings": {
+      "C1": 0,
+      "C2": 0,
+      "C3": 0,
+      "C4": 0,
+      "C5": 0
+    },
+    "reasons": {
+      "C1": {
+        "reason": "最终回答为空，未交付任务答复；两句公开笔记只说明计划，没有回答问题。",
+        "span": "",
+        "evidence": "INTAKE_AUDIT A05；answer=done_content=\"\"；public_notes为查找计划"
+      },
+      "C2": {
+        "reason": "最终回答为空，未交付概念分析；两句公开笔记只说明计划，没有回答问题。",
+        "span": "",
+        "evidence": "INTAKE_AUDIT A05；answer=done_content=\"\"；public_notes为查找计划"
+      },
+      "C3": {
+        "reason": "最终回答为空，未交付论证；两句公开笔记只说明计划，没有回答问题。",
+        "span": "",
+        "evidence": "INTAKE_AUDIT A05；answer=done_content=\"\"；public_notes为查找计划"
+      },
+      "C4": {
+        "reason": "最终回答为空，未交付异议与边界；两句公开笔记只说明计划，没有回答问题。",
+        "span": "",
+        "evidence": "INTAKE_AUDIT A05；answer=done_content=\"\"；public_notes为查找计划"
+      },
+      "C5": {
+        "reason": "最终回答为空，未交付可用的最终答复；两句公开笔记只说明计划，没有回答问题。",
+        "span": "",
+        "evidence": "INTAKE_AUDIT A05；answer=done_content=\"\"；public_notes为查找计划"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "50b2d84e4247bbc6af06340910f31adaedabf63d98f4f583821389db5e9520d7",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "D01-T1",
+    "case_id": "D01",
+    "ratings": {
+      "K1": 1,
+      "K2": 1,
+      "K3": 1,
+      "K4": 1
+    },
+    "reasons": {
+      "K1": {
+        "reason": "工具逐字命中目标句，返回全章；作者篇名一致。",
+        "span": "出处：《论语·阳货篇》",
+        "evidence": "tool1 verify_quote found=true；tool3 title=阳货篇"
+      },
+      "K2": {
+        "reason": "明确限定本库版本与章节定位，不借同句他处出现断言最早来源。",
+        "span": "两者孰为原始出处属于文献学判断",
+        "evidence": "tool2并列荀子命中；tool1 coverage"
+      },
+      "K3": {
+        "reason": "全章读取与1393字符回执一致，并区分抽取文本与原版排印。",
+        "span": "共 1393 字，无截断",
+        "evidence": "tool3 excerpt_start=0/end=1393/has_more=false"
+      },
+      "K4": {
+        "reason": "引用与工具原句一致，链接为工具真实reader_url。",
+        "span": "https://deepphilosophy.top/reader/d9272a80942a?ch=18",
+        "evidence": "tool1 matches[0].reader_url；tool3 text"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "3cc97f05eb2ce7c8f68e83a539513be26af0f1a8438572f6eb78628af8b36878",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "D02-T1",
+    "case_id": "D02",
+    "ratings": {
+      "K1": 1,
+      "K2": 1,
+      "K3": 1,
+      "K4": 0
+    },
+    "reasons": {
+      "K1": {
+        "reason": "康德署名八书逐字核验零命中、301文本单元与八份回执一致。",
+        "span": "八种全部零命中（合计 301 个文本单元",
+        "evidence": "tools3/4/5/7/8/9/10/11 coverage相加301"
+      },
+      "K2": {
+        "reason": "最终否定结论明确限定本库，不排除异译或未收录部分。",
+        "span": "也不能据此宣称康德在任何语言下从未写下类似句子",
+        "evidence": "本题实际八书核验范围"
+      },
+      "K3": {
+        "reason": "明确区别零命中、检索片段和已读康德段落。",
+        "span": "我只读到检索返回的片段",
+        "evidence": "tool2 search vs tool13 get_chapter"
+      },
+      "K4": {
+        "reason": "附带把相近措辞说成目标整句在其他作者中出现，违背不得近义替代的要求。",
+        "span": "这串措辞在本库里确实出现过，但属于别人",
+        "evidence": "tool2只有“想做什么就做什么”等片段，不是含“真正的自由，就是”的待核整句；答案随后的柏拉图引句自身也不同"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "a4d8ba72dbd86e39758b1b936707902e1d3fce5533a3134b2b0515e7d60871be",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "D04-T1",
+    "case_id": "D04",
+    "ratings": {
+      "K1": 1,
+      "K2": 1,
+      "K3": 1,
+      "K4": 1
+    },
+    "reasons": {
+      "K1": {
+        "reason": "正确找回实用友爱原段和嵌入的标号，未换成快乐友爱。",
+        "span": "因有用之故结交的朋友",
+        "evidence": "tools3/9 原句与匹配位置"
+      },
+      "K2": {
+        "reason": "限定中文片段及未核原版排印、希腊行文，没有宣称已读全章。",
+        "span": "未通读全章",
+        "evidence": "tool3 excerpt范围；工具13/14/16失败"
+      },
+      "K3": {
+        "reason": "实际区分取到页脚、读取失败、中文片段等状态。",
+        "span": "未取到正文本",
+        "evidence": "tool10正文未实际返回对应希腊段；tool13/16错误"
+      },
+      "K4": {
+        "reason": "目标引文逐字符合回执，贝克编号解释与所读资料相符。",
+        "span": "1157a15",
+        "evidence": "tools3/9文本；tool19贝克尔页码说明"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "cfea69c160ec95ddb36fe239f95ea567ab18093d49be4dade858a7bfb7d560a8",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "D05-T1",
+    "case_id": "D05",
+    "ratings": {
+      "K1": 1,
+      "K2": 1,
+      "K3": 1,
+      "K4": 1
+    },
+    "reasons": {
+      "K1": {
+        "reason": "目录结果仅有冯友兰简史，未冒充两卷本；作者与章节正确。",
+        "span": "只有一本：《中国哲学简史》",
+        "evidence": "tools1/3/4目录；tool7书目"
+      },
+      "K2": {
+        "reason": "关于未收录明确限制为书库，区别其他书的二手提及。",
+        "span": "不能当作原书正文来用",
+        "evidence": "tools2/5/9命中角色"
+      },
+      "K3": {
+        "reason": "区分目录存在、二手引述和实读的孔子/荀子章。",
+        "span": "不是孔子本人的",
+        "evidence": "tools10/11/12原文"
+      },
+      "K4": {
+        "reason": "译者、出版社、ISBN由书目已核字段支持，定位未混淆他人。",
+        "span": "ISBN 978-7-301-17395-4",
+        "evidence": "tool7 bibliographic_metadata verified_fields；章节索引5/14"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "f87fc5b466a3f102afcff47c68b5440addbb5f6b8a51c6b29bdd09e254e6bb28",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "E05-T1",
+    "case_id": "E05",
+    "ratings": {
+      "K1": 0,
+      "K2": 0,
+      "K3": 1,
+      "K4": 1
+    },
+    "reasons": {
+      "K1": {
+        "reason": "没有在题设的空正文条件下给出下一步，而用本次成功读取否定此前情境。",
+        "span": "这个前提站不住",
+        "evidence": "题设明确正文读取为空；tool3/7仅证明此次重读取得片段"
+      },
+      "K2": {
+        "reason": "由本次成功解释此前空结果为异常，超出实际诊断；还把已完整读到的小节说成需先读完。",
+        "span": "如果你那次确实返回空，属于异常",
+        "evidence": "无此前失败日志；tool7包括完整3.人类之爱及4.敬重标题"
+      },
+      "K3": {
+        "reason": "明确区分书目存在与读到目标论点，说明规范化文本未核扫描。",
+        "span": "书目存在",
+        "evidence": "tool4目录元数据与tool7原文"
+      },
+      "K4": {
+        "reason": "引句确实在工具返回中，reader URL及读过两段可核；错误在推论，不另捏造执行罪名。",
+        "span": "https://deepphilosophy.top/reader/390398aff8d0?ch=29",
+        "evidence": "tool3和tool7实读；tool7原句"
+      }
+    },
+    "errors": [
+      {
+        "code": "E2",
+        "status": "confirmed",
+        "answer_span": "这个前提站不住",
+        "reference_or_condition": "用户明确给定正文读取为空，询问该条件下能否直接引用；本次成功不反驳原条件。",
+        "reason": "以新读取情境替换待评的空正文情境，改变主线问题。"
+      }
+    ],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "8ebeeb33eb091ebdb5bd1c1712ae322780f09a6c89ccb0a99b47c7ba5bc4a571",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "A01-T1",
+    "case_id": "A01",
+    "ratings": {
+      "C1": 3,
+      "C2": 3,
+      "C3": 3,
+      "C4": 3,
+      "C5": 3
+    },
+    "reasons": {
+      "C1": {
+        "reason": "对关系、地域、财物种类条件化，实际读制度转载并承认没有核到最新官网。",
+        "span": "具体文号与最新修订请以官方发布为准",
+        "evidence": "tools2/3检索及高校转载全文；tool4官网读取失败"
+      },
+      "C2": {
+        "reason": "区分感谢、互惠与利益冲突，并讨论第三方压力；混合动机仍被分类表述简化。",
+        "span": "三件不同的事",
+        "evidence": "题设；正文随后承认小礼物也可能受禁令覆盖"
+      },
+      "C3": {
+        "reason": "给出不涉财物、不指向优待的条件建议；开头“正确答案正好相反”比已论证内容更强。",
+        "span": "不涉及财物、也不指向任何差别对待",
+        "evidence": "正文对公平和制度风险的连接"
+      },
+      "C4": {
+        "reason": "讨论小礼物与善意不能自动豁免、第三方压力与教师风险。",
+        "span": "不能替你断言“送花一定没问题”",
+        "evidence": "tool3禁令无金额下限"
+      },
+      "C5": {
+        "reason": "结构清楚并能落实条件建议，但重复“想表达什么”的引导，不是充分精练的4级。",
+        "span": "所以不替你回答“送不送”",
+        "evidence": "required_work要求由分析推出有条件回答"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "17aa36809080c5a2d42314635395004e27bfbb49ffefc96609359d2b79a18fe6",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "G01-T1",
+    "case_id": "G01",
+    "ratings": {
+      "C1": 3,
+      "C2": 2,
+      "C3": 2,
+      "C4": 3,
+      "C5": 3
+    },
+    "reasons": {
+      "C1": {
+        "reason": "大部分保留效果相同，并主动标出反事实问题不同；结尾把学生不知扩成任何人不可验证。",
+        "span": "任何人永远看不见、也永远无法验证",
+        "evidence": "题设只固定学生永不知情，不含老师或所有人不可知道动机"
+      },
+      "C2": {
+        "reason": "能区分履职的义务动机与避责，但把关心只当爱好、把不同传统当作直接判决。",
+        "span": "唯一有道德价值的一方",
+        "evidence": "题设关心不排除出于义务；正文虽有条件句但没有处理动机共存"
+      },
+      "C3": {
+        "reason": "价值标准被罗列而未充分给出采用理由；“理论有异议”不能单独证明必然命题为假。",
+        "span": "仅凭这一点",
+        "evidence": "required_work公开标准并说明理由；须区分非公认与论证不成立"
+      },
+      "C4": {
+        "reason": "正面讨论行为价值、效果和反事实可靠性边界，没有直接把履职当作恶。",
+        "span": "若它指",
+        "evidence": "康德商人与义务两读；正文明确反事实更换论题"
+      },
+      "C5": {
+        "reason": "可读且层次清楚，但四传统和反事实扩展超过核心判断需要。",
+        "span": "四个传统，四种答案。",
+        "evidence": "本题要求保留同效果下的内在价值争点"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "680659a06707e80b079ef630f16628b7c396cbd5b4c578eb5a1300eac00ebfab",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "I04-T1",
+    "case_id": "I04",
+    "ratings": {
+      "C1": 3,
+      "C2": 3,
+      "C3": 3,
+      "C4": 2,
+      "C5": 3
+    },
+    "reasons": {
+      "C1": {
+        "reason": "解释了给定推理且没有猜作者，但新增分级公正情形偏离固定谓词。",
+        "span": "否定后件",
+        "evidence": "题设与正文形式化"
+      },
+      "C2": {
+        "reason": "必要与充分条件区分正确；最后把分级谓词当作削弱既定蕴含的理由不妥。",
+        "span": "必要条件",
+        "evidence": "题设∀x(P→Q)、¬Q(a)"
+      },
+      "C3": {
+        "reason": "主要推导有效，也区分前提真与形式有效；“唯一承重墙”忽略小前提真实性。",
+        "span": "唯一的承重墙",
+        "evidence": "给定推导需要两前提；答案此前已列两前提"
+      },
+      "C4": {
+        "reason": "分级性不推翻给定全称前提下的结论，该边界没有成立。",
+        "span": "结论\"它不是公正制度\"就说得太满",
+        "evidence": "即使P含程度，固定的P→Q与¬Q仍推出¬P；需改前提才换结论"
+      },
+      "C5": {
+        "reason": "组织清楚，无须原典完成；不必要的边界略增混淆。",
+        "span": "形式有效",
+        "evidence": "task_required_work三项"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "e2bbe6331153bace780f2f4af8ce064bf29772dd07cd440df6aa2664c6eb56ca",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "M01-T1",
+    "case_id": "M01",
+    "ratings": {
+      "C1": 4,
+      "C2": 3,
+      "C3": 3,
+      "C4": 3,
+      "C5": 3
+    },
+    "reasons": {
+      "C1": {
+        "reason": "直答真信念不足，并区分独立校验如何改变知识状态。",
+        "span": "真是必要的，但不充分",
+        "evidence": "题设与正文三种情况"
+      },
+      "C2": {
+        "reason": "区分真、信念、证成与偶然，解释敏感性、安全性；知道钟停与无理由相信正常运行被过度合并。",
+        "span": "你知道、或至少没有理由认为这只钟在走",
+        "evidence": "缺乏积极根据不等于知道故障；不是决定主结论的错误"
+      },
+      "C3": {
+        "reason": "说明真与获取方式脱节，但从研究摘要推出本例绝大多数人回答不知道没有样本依据。",
+        "span": "绝大多数人会答",
+        "evidence": "tool13只说相对非盖梯尔例更不愿归知，不给本停钟案例比例"
+      },
+      "C4": {
+        "reason": "承认无假前提方案的反例和知识定义尚未解决；不过经验段外推超过摘要。",
+        "span": "无假前提的葛梯尔案例",
+        "evidence": "正文对修正方向限度的讨论"
+      },
+      "C5": {
+        "reason": "结构易读但条件、结论和修正重复；不存在字数本身扣分。",
+        "span": "什么会改变答案",
+        "evidence": "前文已列相同条件"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "9e9d163d5ae63f9a6892edcb81299017a9c4d6bc060ed7a300c3ccddc1dfdc51",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "F01-T1",
+    "case_id": "F01",
+    "ratings": {
+      "C1": 3,
+      "C2": 3,
+      "C3": 3,
+      "C4": 3,
+      "C5": 3,
+      "R1": 3,
+      "R2": 3,
+      "R3": 3
+    },
+    "reasons": {
+      "C1": {
+        "reason": "取得双方原典及多个可辨研究分歧，完成主任务；共识措辞仍过强。",
+        "span": "不是共识",
+        "evidence": "tools5/6/10/12/13/14/20/36/37/38"
+      },
+      "C2": {
+        "reason": "分开问题身份与论证效力，但“不同本体论故不同层面”还需论证。",
+        "span": "他换掉的是因果性的本体论框架",
+        "evidence": "tool10 Watkins摘要不自动推出不能回答同一怀疑难题"
+      },
+      "C3": {
+        "reason": "能用实质异议限制彻底解决，未说明仅有异议为何足以排除较弱意义共识。",
+        "span": "三层都有活跃分歧",
+        "evidence": "共识不等于无人异议；末尾也承认无样本统计"
+      },
+      "C4": {
+        "reason": "说明未读对方全文及争论另一方立场，结论范围多数受控。",
+        "span": "不能说“全领域无人持此说”",
+        "evidence": "摘要/书目/全文片段层级清楚"
+      },
+      "C5": {
+        "reason": "材料组织清楚但用四轴展开且结论重复，属于充分而非精练满分。",
+        "span": "判断与限度",
+        "evidence": "回答整体"
+      },
+      "R1": {
+        "reason": "原典摘录与检索回执可核，但SEP、Watkins等解释仍是部分正文或摘要。",
+        "span": "只读到摘要",
+        "evidence": "tools10/12/13/14/20及SEP片段"
+      },
+      "R2": {
+        "reason": "能定位Lambeth反驳与Hutton诠释的区别；它们不构成已核查的直接对辩。",
+        "span": "同一轴线上",
+        "evidence": "tool13/14摘要提供不同关注，未获直接互驳论证"
+      },
+      "R3": {
+        "reason": "给真实章节链接和可识别研究书目，未假称全文；部分二级资料无直接定位链接。",
+        "span": "https://deepphilosophy.top/reader/eca1899561c4?ch=20",
+        "evidence": "tool36 reader_url；学术回执书目"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "46c5e2eb1a71dca811606960d89fefd565a3d81a7d49fad184c489f86a0ed318",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "F02-T1",
+    "case_id": "F02",
+    "ratings": {
+      "C1": 2,
+      "C2": 3,
+      "C3": 3,
+      "C4": 3,
+      "C5": 3,
+      "R1": 3,
+      "R2": 3,
+      "R3": 3
+    },
+    "reasons": {
+      "C1": {
+        "reason": "诚实报告秘塔不可用，但近五年起点设为2020，与2026运行日期不符；未完成指定双渠道。",
+        "span": "年份限 2020 起",
+        "evidence": "本轮日期2026-10-03；实际结果2022–2025未混入过期结果，但范围设定未完成"
+      },
+      "C2": {
+        "reason": "区分体验研究、规范构成条件、真实性话语，不把主观体验等同关怀事实。",
+        "span": "问题B(规范)",
+        "evidence": "题目真实关怀与方法比较"
+      },
+      "C3": {
+        "reason": "方法类别与结论相连，但四类理论文章被统一说成大致否认，差异仍需细读支持。",
+        "span": "四篇理论文章大致答",
+        "evidence": "tool9摘要是伦理张力与指导，不直接判AI不可能真正关怀"
+      },
+      "C4": {
+        "reason": "明确列出样本、量表、设计等未核项目，未把摘要当全文方法审读。",
+        "span": "我没读到任何一篇的**方法细节全貌**",
+        "evidence": "tools4–12摘要/开头节选"
+      },
+      "C5": {
+        "reason": "表格适合比较，渠道及读到范围交代清楚；技术状态字段略多。",
+        "span": "证据边界",
+        "evidence": "正文表格与边界段"
+      },
+      "R1": {
+        "reason": "实读资料足以概括所述方法类型，Frontiers并非摘要也有注明；不能判完整论证成立。",
+        "span": "两篇 Frontiers 只读了开头",
+        "evidence": "tools7/12 abstract实际为Introduction，source completeness unverified"
+      },
+      "R2": {
+        "reason": "研究材料用于区分两种命题，尚未比较设计如何支持因果判断或代表性。",
+        "span": "不反驳",
+        "evidence": "题目要求比较方法；缺实读方法细节已如实承认"
+      },
+      "R3": {
+        "reason": "作者、期刊、年份足以在工具回执内定位，未编造秘塔执行；正文缺完整标题和链接。",
+        "span": "Crossref + OpenAlex 双源",
+        "evidence": "tools1/2/3渠道回执；tools4–12bibliographic_record"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "b54a4ebc029e75779bd5e77d690c0b974e65f0dd196e90ece5d1072371a1861f",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "F03-T1",
+    "case_id": "F03",
+    "ratings": {
+      "C1": 3,
+      "C2": 2,
+      "C3": 2,
+      "C4": 3,
+      "C5": 3,
+      "R1": 3,
+      "R2": 3,
+      "R3": 3
+    },
+    "reasons": {
+      "C1": {
+        "reason": "找到真实论文并说明可核层级，但没有对一篇研究的方法证据形成实质可靠性评估。",
+        "span": "正文未读",
+        "evidence": "明确任务为实际核验一篇相关论文，不只是例示检索"
+      },
+      "C2": {
+        "reason": "把DOI不保证真与期刊身份绝无证据价值混同；标识与发表机制的可撤销认识价值应区分。",
+        "span": "有没有 DOI、登在哪本刊",
+        "evidence": "正文把两种证据一概否认"
+      },
+      "C3": {
+        "reason": "由不充分保证跳到完全不支持，论证强度越界；其余重复率判据比较有理由支持。",
+        "span": "完全不支持第二类",
+        "evidence": "不能从不蕴含可靠推出没有任何概率性或程序性支持"
+      },
+      "C4": {
+        "reason": "说明不同领域重复标准不能直接对比，且未读取不等于不可靠。",
+        "span": "这**不是**直接冲突的两篇论文",
+        "evidence": "所述心理学与金融对象不同"
+      },
+      "C5": {
+        "reason": "阅读层级明晰，但多篇扩展和清单重复主结论。",
+        "span": "本次核验的边界",
+        "evidence": "整篇结构"
+      },
+      "R1": {
+        "reason": "准确说明摘要数字和正文节选的内容范围，没有将版权段当论证。",
+        "span": "利益冲突声明和 CC-BY 授权条款",
+        "evidence": "get_scholarly_source的evidence_passages"
+      },
+      "R2": {
+        "reason": "用重复率的不同判据说明评估需核定义，但未推进具体研究可靠性裁决。",
+        "span": "取决于你采用哪个判据",
+        "evidence": "Science摘要四种操作指标"
+      },
+      "R3": {
+        "reason": "DOI及文章身份可由回执定位；“完整摘要”仅凭取得全文字段仍需谨慎。",
+        "span": "doi:10.1126/science.aac4716",
+        "evidence": "实际返回摘要的source_abstract_completeness并非出版社完整性核验"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "20b99cf829429dd0f9bd33d0b0344f2d3a2b0fc2bcfe9936b7947c4e66bbce50",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  },
+  {
+    "id": "F04-T1",
+    "case_id": "F04",
+    "ratings": {
+      "C1": 3,
+      "C2": 3,
+      "C3": 3,
+      "C4": 3,
+      "C5": 3,
+      "R1": 3,
+      "R2": 2,
+      "R3": 3
+    },
+    "reasons": {
+      "C1": {
+        "reason": "找到媒体与学术来源，但主要选取的两个来源并无同一命题冲突，实际冲突核验仍不完整。",
+        "span": "回答的不是同一个问题",
+        "evidence": "required_work要求比较真实相反主张；新增Frazer仅摘要"
+      },
+      "C2": {
+        "reason": "区分道德起源、社会等级、评价与应用，避免把奴隶道德等同奴隶身份。",
+        "span": "道德的起源与尼采的评价",
+        "evidence": "正文分层比较"
+      },
+      "C3": {
+        "reason": "解释可撤销信任和原文验证，但“类型只决定严查动作”与后文初始信任优势张力未澄清。",
+        "span": "统计上的、可撤销的优势",
+        "evidence": "没有查统计研究；可作为程序性理由但不能当已证统计结论"
+      },
+      "C4": {
+        "reason": "承认博客身份、论文只读摘要，且不把表面分歧误说成同一问题。",
+        "span": "不是全文",
+        "evidence": "工具阅读范围与答案声明"
+      },
+      "C5": {
+        "reason": "结构清楚，比较与判据部分有重复，未形成比材料概括更短的直接裁决。",
+        "span": "可操作的判据",
+        "evidence": "全文"
+      },
+      "R1": {
+        "reason": "所引原典和摘要支持怨恨与同情区分；未核全文不能推出完整学术解释优劣。",
+        "span": "我上面读的是摘要",
+        "evidence": "据全答原典与摘要层级"
+      },
+      "R2": {
+        "reason": "原典主要检查通俗概括，未真正裁决所要求的同层次两方反对解释。",
+        "span": "才是真正同层次的对立",
+        "evidence": "虽然指出Frazer与通俗同情批判的张力，未展开比对其最强理由"
+      },
+      "R3": {
+        "reason": "可定位媒体URL及论文DOI；博客署名缺失有披露，非虚构。",
+        "span": "DOI 10.1353/hph.2014.0020",
+        "evidence": "实际工具书目与已读页面"
+      }
+    },
+    "errors": [],
+    "review_level": "Codex targeted review",
+    "packet_sha256": "173317d27223614b15eee40e74983f12a74bec9133bc7de1930fd04307e7a3d6",
+    "limits": "基于题设、完整回答与采集工具回执复核；不是人类专家验收，不补造当时执行证据。"
+  }
+]
