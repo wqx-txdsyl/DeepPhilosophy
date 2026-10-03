@@ -2,7 +2,7 @@
 
 > 写给接手者：读完这一篇就能回答「网站是怎么跑起来的、每个域名指向哪里、改了代码要发布到哪里」。
 > 机器迁移史：~~Windows（wqx_0）~~ → **本机 Mac**（2026-09-06 起，PhiAgent 后端 + agent 隧道已迁至本机）。
-> 旧版 Windows 迁移说明存档于 [PhiAgent_agent_deploy.md](PhiAgent_agent_deploy.md)（已过时，仅作历史参考）。
+> 旧版 Windows 迁移说明存档于 [PhiAgent_agent_deploy.md](agent-deployment.md)（已过时，仅作历史参考）。
 
 ---
 
@@ -79,7 +79,7 @@
 ### 2.3 Cloudflare Workers —— 平台生产 API（主体）
 - `workers/auth` → worker `deepphilosophy-auth`，route `deepphilosophy.top/api/auth/*`（登录注册 JWT）
 - `workers/api`  → worker `deepphilosophy-api`，route `deepphilosophy.top/api/*`（AI 流式/问答/历史/笔记/文件 302）
-- 数据库：D1 `deepphilosophy-db`（id `7db39390-6088-4cf5-a283-4697fc876091`），schema 见 [DATABASE.md](DATABASE.md)
+- 数据库：D1 `deepphilosophy-db`（id `7db39390-6088-4cf5-a283-4697fc876091`），schema 见 [DATABASE.md](database.md)
 - 密钥全部走 `wrangler secret put`（JWT_SECRET 双 worker **必须同值**；DEEPSEEK_API_KEY；ADMIN_PASSWORD），`wrangler.toml` 里只留明文可公开 vars
 - 部署：`cd workers/api && wrangler deploy`（auth 同理）
 - 健康检查：`https://deepphilosophy.top/api/health`

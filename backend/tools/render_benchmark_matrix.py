@@ -132,7 +132,7 @@ def markdown(data):
         table += ['|'+r['label']+'（'+r['note']+'）|'+'|'.join(r['values'])+'|' for r in t['rows']]
         blocks.append('\n'.join(table))
     blocks += ['\n'.join('- '+n for n in data['notes']),
-               '来源：[冻结记录与核验状态](frozen_r1_20261003/SUMMARY.md)、[机器数据](frozen_r1_20261003/SCORES.json)、[版本台账](../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md)。']
+               '来源：[冻结记录与核验状态](frozen_r1_20261003/SUMMARY.md)、[机器数据](frozen_r1_20261003/SCORES.json)、[版本台账](../../evaluation/benchmark-ledger.md)。']
     return '\n\n'.join(blocks)+'\n'
 
 
@@ -147,7 +147,7 @@ def html_page(data):
         if name=='verification':sections[-1]='<details><summary>查看5道原典纯核验的完成状态</summary>'+sections[-1]+'</details>'
     return '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PhiAgent 多维评测记录</title><style>'+'''
 *{box-sizing:border-box}body{margin:0;background:#f7f7f5;color:#252622;font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:1500px;margin:auto;padding:48px 32px}h1{font-size:32px;margin:8px 0}header p,section>p{color:#70726c}header .eyebrow{letter-spacing:.16em;font-size:12px}nav{display:flex;gap:8px;margin:24px 0}button{border:1px solid #ddd;background:white;border-radius:6px;padding:10px 18px;color:#333;cursor:pointer}button.active{background:#292e29;color:white}section{background:white;border:1px solid #e6e7e2;border-radius:12px;padding:28px;margin:24px 0}h2{font-size:20px;margin:0}section>p{margin:6px 0 22px}.hint{display:none;font-size:12px;color:#8a9083}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:940px;table-layout:fixed}th,td{padding:12px 6px;text-align:center;border-bottom:1px solid #edeee9;font-variant-numeric:tabular-nums}thead th{border-bottom:2px solid #c6cbc3;font-size:17px}thead th:first-child,tbody th{width:240px;text-align:left;font-weight:500}small{display:block;color:#93968f;font-size:11px;font-weight:400;margin-top:3px}.own{background:#f0f3ee;border-top:3px solid #52674d}.primary{background:#f5f7f3;font-weight:600}.primary td{font-size:20px}td.muted{color:#babdb5}footer{color:#777c72;font-size:13px}footer li{margin:5px 0}a{color:#52674d}section[hidden]{display:none}details{margin:18px 0}summary{cursor:pointer;color:#52674d;padding:10px 0}@media(max-width:1100px){.hint{display:block}}@media(max-width:650px){main{padding:24px 12px}section{padding:16px}h1{font-size:26px}}@media print{body{background:white}main{padding:0}nav{display:none}section{break-inside:avoid}table{min-width:0}th,td{font-size:10px;padding:6px}small{font-size:8px}}
-'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>已冻结的跑分记录</h1><p>记录 R1 · 原冻结题集中的统一60题 · 满分100 · 2026-10-03</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md">版本与评分长期台账</a> · <a href="frozen_r1_20261003/SUMMARY.md">冻结范围与核验状态</a> · <a href="frozen_r1_20261003/SCORES.json">冻结评分数据</a></footer></main></html>'
+'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>已冻结的跑分记录</h1><p>记录 R1 · 原冻结题集中的统一60题 · 满分100 · 2026-10-03</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../evaluation/benchmark-ledger.md">版本与评分长期台账</a> · <a href="frozen_r1_20261003/SUMMARY.md">冻结范围与核验状态</a> · <a href="frozen_r1_20261003/SCORES.json">冻结评分数据</a></footer></main></html>'
 
 
 def png(data, target):

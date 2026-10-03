@@ -21,7 +21,7 @@ import { createGeneralStream, reduceGeneralEvent, finishGeneralStream, readEvent
 import '../conversation.css';
 
 /**
- * AgentWorkspace — PhiAgent「会话优先」工作区（docs/PhiAgent_Conversation_Workspace_Refactor.md）
+ * AgentWorkspace — PhiAgent「会话优先」工作区（docs/ui/conversation-workspace-refactor.md）
  *
  * Routing: /agent（临时 Draft）与 /agent/c/:conversationId（稳定会话身份）
  * Streaming Ownership（§9）: 每次 Invocation 创建时冻结 {conversation_id, message_id, agent_id},

@@ -25,4 +25,4 @@
 - DeepSeek为深度思考＋联网；豆包为快速档；ChatGPT为Work 6.1 Sol high并使用本地书库。评审方法与工具条件有差异，这是开发记录，不是受控模型排行榜。
 - 评分器未宣称校准通过。后续新增证据或复评须发布明确的R2等修订记录，不覆盖R1。
 
-来源：[冻结记录与核验状态](frozen_r1_20261003/SUMMARY.md)、[机器数据](frozen_r1_20261003/SCORES.json)、[版本台账](../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md)。
+来源：[冻结记录与核验状态](frozen_r1_20261003/SUMMARY.md)、[机器数据](frozen_r1_20261003/SCORES.json)、[版本台账](../../evaluation/benchmark-ledger.md)。

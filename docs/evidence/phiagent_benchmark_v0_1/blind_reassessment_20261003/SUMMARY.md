@@ -53,6 +53,6 @@
 - [有效响应选择](EFFECTIVE_SELECTION.json) / [原始等级及诊断汇总](RESULTS.json)
 - [来源核对与18条候选审计](SOURCE_AUDIT.json) / [决策记录](VERDICT.json)
 - [完整性与历史不变验证](VALIDATION.json)
-- [长期版本台账](../../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md)
+- [长期版本台账](../../../evaluation/benchmark-ledger.md)
 
 原始旧评分与新匿名自动评分并存，后者没有覆盖前者。生产仍为v0.1.5，预算、工具、数据库及冻结输入未改。

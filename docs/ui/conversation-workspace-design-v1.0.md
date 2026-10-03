@@ -1,11 +1,11 @@
 # PhiAgent Conversation Workspace Design Specification v1.0
 
-> 文档类型：UI/UX Reconstruction PRD + Engineering Design Specification  
-> 适用范围：PhiAgent 前端 Conversation Workspace  
-> 目标基准：Codex 当前桌面会话工作区的交互结构、视觉密度与状态行为  
-> 产品约束：保留 PhiAgent 自身哲学 Agent、Evidence、Citation、Reader Context、Tool Trace 等能力  
-> 仓库存放位置：`~/docs/PhiAgent_Conversation_Workspace_Design_Spec_v1.0.md`  
-> 状态：IMPLEMENTATION-READY  
+> 文档类型：UI/UX Reconstruction PRD + Engineering Design Specification
+> 适用范围：PhiAgent 前端 Conversation Workspace
+> 目标基准：Codex 当前桌面会话工作区的交互结构、视觉密度与状态行为
+> 产品约束：保留 PhiAgent 自身哲学 Agent、Evidence、Citation、Reader Context、Tool Trace 等能力
+> 仓库存放位置：`~/docs/ui/conversation-workspace-design-v1.0.md`
+> 状态：IMPLEMENTATION-READY
 > 版本：v1.0
 
 ---
@@ -561,7 +561,7 @@ KNOWN_ISSUES=
 将本文件保存为：
 
 ```text
-~/docs/PhiAgent_Conversation_Workspace_Design_Spec_v1.0.md
+~/docs/ui/conversation-workspace-design-v1.0.md
 ```
 
 建议同时保存执行提示词：

@@ -16,7 +16,7 @@ import re
 BASE = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ROOT = BASE.parent
 REGISTRY = ROOT / 'docs/evidence/benchmark_ledger/registry.json'
-LEDGER = ROOT / 'docs/PHIAGENT_VERSION_BENCHMARK_LEDGER.md'
+LEDGER = ROOT / 'docs/evaluation/benchmark-ledger.md'
 START = '<!-- benchmark-dashboard:start -->'
 END = '<!-- benchmark-dashboard:end -->'
 REVIEWED = {'Codex targeted review', 'independent_model_development_review'}

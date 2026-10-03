@@ -1,7 +1,7 @@
 /**
  * Conversation 纯逻辑（无 React / 无 window 依赖, Node 可直接测试）
  *
- * 设计文档: docs/PhiAgent_Conversation_Workspace_Refactor.md
+ * 设计文档: docs/ui/conversation-workspace-refactor.md
  * - §4  标题: deterministic 规则, 中文约 8~20 字, 不做额外 LLM 调用
  * - §6  打开旧会话 Composer Agent 优先级: last_used → default → general
  * - §10 "可继续探索" Agent 规则: 未主动切 Agent → 沿用来源回答的 agent_id;

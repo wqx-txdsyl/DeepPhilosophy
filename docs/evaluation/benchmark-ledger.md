@@ -6,7 +6,7 @@
 
 ## 多维对照表
 
-[打开横向对照表](evidence/benchmark_ledger/matrix.html) · [查看 Markdown 表格](evidence/benchmark_ledger/MATRIX.md)。仅显示冻结 v1.2 的 C/R/K 各维度百分制汇总。已撤回的旧标准记录不再展示；原始档案保留以便追溯。
+[打开横向对照表](../evidence/benchmark_ledger/matrix.html) · [查看 Markdown 表格](../evidence/benchmark_ledger/MATRIX.md)。仅显示冻结 v1.2 的 C/R/K 各维度百分制汇总。已撤回的旧标准记录不再展示；原始档案保留以便追溯。
 
 ## 当前总览
 
@@ -52,7 +52,7 @@
 |共同完整评分集|相同的 64 题：排除未测 K01–K05 及 v0.1.0 有 U 的 D04|便于同题算术对比，但不是 70 题完整成绩|
 |共同独立复核集|A01、D01、D02、D05、E05、F01、F02、G01、I04、M01|两轮均有复核且无 U；不是随机抽样，不能估计整体缺陷率|
 
-机器结果包含全部题号、原始评分文件 hash、各组范围和复核覆盖：[aggregate.json](evidence/benchmark_ledger/aggregate.json)。协议与输入登记在 [registry.json](evidence/benchmark_ledger/registry.json)。自动评分体系本身尚未校准；不能仅凭本指数做市场能力排名或宣布学术验收通过。
+机器结果包含全部题号、原始评分文件 hash、各组范围和复核覆盖：[aggregate.json](../evidence/benchmark_ledger/aggregate.json)。协议与输入登记在 [registry.json](../evidence/benchmark_ledger/registry.json)。自动评分体系本身尚未校准；不能仅凭本指数做市场能力排名或宣布学术验收通过。
 
 ## v0.1.0 极简基线
 
@@ -60,7 +60,7 @@
 
 > 你是深哲（PhiAgent），一个哲学智能体。
 
-原文归档：[general-0.1.0.md](../backend/prompts/general-0.1.0.md)，SHA-256：`8c366cfb11a639f541f0669c48fc761cbe2be6f31fe33bd0f2130a662f509429`。
+原文归档：[general-0.1.0.md](../../backend/prompts/general-0.1.0.md)，SHA-256：`8c366cfb11a639f541f0669c48fc761cbe2be6f31fe33bd0f2130a662f509429`。
 
 ### 实际架构与执行逻辑
 
@@ -88,11 +88,11 @@
 
 65 完成、5 跳过、77 轮、1033 次工具；元数据墙钟 31分58秒，逐题耗时合计 62.9 分钟。学术缓存根值 null 导致 82 次学术调用全部失败，影响 17 题；网页读取 80/123 成功。这是受工具故障影响的基线。
 
-百分制见总览；原始评分：[v0.1.0 SCORES](evidence/phiagent_benchmark_v0_1/quality_review_v1_2_20261002/SCORES.json)。[逐项评审报告](evidence/phiagent_benchmark_v0_1/PHIAGENT_BENCHMARK_V0_1_QUALITY_REVIEW_V1_2.md)与[执行审计](evidence/phiagent_benchmark_v0_1/LIVE_RUN1_EXECUTION_AUDIT.md)保留原口径。历史报告“不发布总分”是当时决定；本台账按此次要求另建汇总层，不修改历史报告或原分。
+百分制见总览；原始评分：[v0.1.0 SCORES](../evidence/phiagent_benchmark_v0_1/quality_review_v1_2_20261002/SCORES.json)。[逐项评审报告](../evidence/phiagent_benchmark_v0_1/PHIAGENT_BENCHMARK_V0_1_QUALITY_REVIEW_V1_2.md)与[执行审计](../evidence/phiagent_benchmark_v0_1/LIVE_RUN1_EXECUTION_AUDIT.md)保留原口径。历史报告“不发布总分”是当时决定；本台账按此次要求另建汇总层，不修改历史报告或原分。
 
 ## v0.1.1 首次提示词修订
 
-代码参考：`ea2c286bf70083c01972e5fe127761da94d298e6`。实测批次：2026-10-02 的 run2。主提示词 **642 字符**，完整原文：[general-0.1.1.md](../backend/prompts/general-0.1.1.md)，SHA-256：`33e9bacbeb5fbec8a977c1b339c421dcbcb575a8a9aea45626013a257667fba6`。
+代码参考：`ea2c286bf70083c01972e5fe127761da94d298e6`。实测批次：2026-10-02 的 run2。主提示词 **642 字符**，完整原文：[general-0.1.1.md](../../backend/prompts/general-0.1.1.md)，SHA-256：`33e9bacbeb5fbec8a977c1b339c421dcbcb575a8a9aea45626013a257667fba6`。
 
 新增判断原则：
 
@@ -108,7 +108,7 @@
 
 结果：65 完成、5 跳过、77 轮、1218 次工具、墙钟 46分01秒。学术工具 157 次返回中 123 success、24 partial、10 error；75 次学术读取中 74 次有摘要、1 次仅元数据，**没有论文全文证据返回**。网页读取 137/198 成功。
 
-百分制见总览；原始评分：[v0.1.1 SCORES](evidence/phiagent_benchmark_v0_1/quality_review_run2_v1_2_20261002/SCORES.json)。[维度理由](evidence/phiagent_benchmark_v0_1/quality_review_run2_v1_2_20261002/SCORES_AND_REASONS.md)与[执行对照](evidence/phiagent_benchmark_v0_1/LIVE_RUN2_EXECUTION_AUDIT.md)可追溯。SP、环境、日期及在线来源同时变化，因此成绩差异不是提示词的单独效果。
+百分制见总览；原始评分：[v0.1.1 SCORES](../evidence/phiagent_benchmark_v0_1/quality_review_run2_v1_2_20261002/SCORES.json)。[维度理由](../evidence/phiagent_benchmark_v0_1/quality_review_run2_v1_2_20261002/SCORES_AND_REASONS.md)与[执行对照](../evidence/phiagent_benchmark_v0_1/LIVE_RUN2_EXECUTION_AUDIT.md)可追溯。SP、环境、日期及在线来源同时变化，因此成绩差异不是提示词的单独效果。
 
 ## v0.1.2 后端与提示词候选修订
 
@@ -135,7 +135,7 @@ bare 主循环仍不加工具预算，不增设答案正则改写或强制研究
 
 ### Prompt 改动与当前启用状态
 
-候选原文 **879 字符**：[general-0.1.2.md](../backend/prompts/general-0.1.2.md)，SHA-256：`8b3f62535fad2755afb2d7a519805eb0dad7af2fb469b0eb981cd3a8e96c041e`。
+候选原文 **879 字符**：[general-0.1.2.md](../../backend/prompts/general-0.1.2.md)，SHA-256：`8b3f62535fad2755afb2d7a519805eb0dad7af2fb469b0eb981cd3a8e96c041e`。
 
 相对 v0.1.1，进一步强调：提问不等于断言；不替用户补造心理成因；在原假设内分析；事实/类型不同不自动证明价值更高；责任、理解与贡献不能混成资格；制度定义和例外必须核查；类比应说明限度；结论不能偷偷扩大范围。
 
@@ -147,7 +147,7 @@ bare 主循环仍不加工具预算，不增设答案正则改写或强制研究
 
 旧编号第一候选在相同新后端下与 1.1.0 各测 10 题，外加 3 个新问题；第二候选完成 A03、A04，B04 遇 DeepSeek 402 余额不足，另外 3 题未执行，新问题复测被 preflight 阻止。随后又修正了摘要完整性字段；最终契约未跑全套。
 
-此前局部结果显示心理诊断与价值论证越界仍存在，当时 v0.1.2 分数留空，不以 2 题或 10 题外推。2026-10-03 已补 RUN3 的65道实测题评分（含A05空答）；故障组5题仍未实测，完整70题确定分数依然不存在。[历史修复报告](PHIAGENT_RELEASE_2_0.md)保留详细过程。代码验证 156 通过、2 跳过，前端测试与构建通过；它们不是哲学质量分。
+此前局部结果显示心理诊断与价值论证越界仍存在，当时 v0.1.2 分数留空，不以 2 题或 10 题外推。2026-10-03 已补 RUN3 的65道实测题评分（含A05空答）；故障组5题仍未实测，完整70题确定分数依然不存在。[历史修复报告](../archive/agent/release-2-0.md)保留详细过程。代码验证 156 通过、2 跳过，前端测试与构建通过；它们不是哲学质量分。
 
 ## 外部产品与提交答卷
 
@@ -162,15 +162,15 @@ bare 主循环仍不加工具预算，不增设答案正则改写或强制研究
 
 本次为Codex全文开发评审，非盲评、非人类专家验收、无第二评审者；与PhiAgent的原有自动初评混合记录在审查覆盖上不同。分数可用于找缺口，但不能单独证明模型或产品总体领先。
 
-[本次答卷与评审摘要](evidence/phiagent_benchmark_v0_1/submitted_chatgpt_20261002/SUMMARY.md) · [逐维评分](evidence/phiagent_benchmark_v0_1/submitted_chatgpt_20261002/REVIEW.md) · [原答卷](evidence/phiagent_benchmark_v0_1/submitted_chatgpt_20261002/answers.md)。原文件hash与70题/追问对应审计见SOURCE.json。
+[本次答卷与评审摘要](../evidence/phiagent_benchmark_v0_1/submitted_chatgpt_20261002/SUMMARY.md) · [逐维评分](../evidence/phiagent_benchmark_v0_1/submitted_chatgpt_20261002/REVIEW.md) · [原答卷](../evidence/phiagent_benchmark_v0_1/submitted_chatgpt_20261002/answers.md)。原文件hash与70题/追问对应审计见SOURCE.json。
 
-DeepSeek、豆包的官方网页答卷现已由用户补交完成：每家65题77轮，共130道题目记录、154轮。DeepSeek为深度思考＋联网，豆包为用户选定的快速默认档，具体网页模型版本未记录。两家均完成匿名模型初评、统一C5重评及Codex定向复核；评审方法与ChatGPT Work的全文开发评审不同，结果只作开发暂定指数，不能直接作为统一盲评排名。详见[浏览器答卷评审](evidence/phiagent_benchmark_v0_1/browser_review_v1_2_20261002/SUMMARY.md)。本次仅评审已有答卷，没有恢复此前暂停的浏览器提问操作。
+DeepSeek、豆包的官方网页答卷现已由用户补交完成：每家65题77轮，共130道题目记录、154轮。DeepSeek为深度思考＋联网，豆包为用户选定的快速默认档，具体网页模型版本未记录。两家均完成匿名模型初评、统一C5重评及Codex定向复核；评审方法与ChatGPT Work的全文开发评审不同，结果只作开发暂定指数，不能直接作为统一盲评排名。详见[浏览器答卷评审](../evidence/phiagent_benchmark_v0_1/browser_review_v1_2_20261002/SUMMARY.md)。本次仅评审已有答卷，没有恢复此前暂停的浏览器提问操作。
 
 旧 v1.1 的原典与LLM单样本分数不在当前视图展示；归档未删除。冻结题集、追问和评分权重均未改动。
 
 ## 长期维护与版本控制
 
-唯一入口为本台账；机器登记用 [registry.json](evidence/benchmark_ledger/registry.json)，运行版本用 [agent_release.json](../backend/agent_release.json)。
+唯一入口为本台账；机器登记用 [registry.json](../evidence/benchmark_ledger/registry.json)，运行版本用 [agent_release.json](../../backend/agent_release.json)。
 
 |产品版本|历史提示词 profile / 发行别名|对应记录|
 |---|---|---|
@@ -202,7 +202,7 @@ DeepSeek、豆包的官方网页答卷现已由用户补交完成：每家65题7
 
 - **2026-10-02 首次补录**：统一 v0.1.0/v0.1.1/v0.1.2 命名；录入两轮实测、两套已有评审及旧单题 LLM 记录；新增 aggregation 1.0.0，补齐百分制汇总、未知范围与共同复核样本；冻结题集和评分文件保持原样。本次仅离线重算，没有生成新答案或使用新的付费评审调用。
 
-本次实现验证：汇总、版本与采集器相关测试 43 项通过；别名兼容补充核验后相关 21 项再次通过；前端构建通过。70 题清单指纹及评分规范的 112 份冻结文件均核验一致。详见 [验证记录](evidence/benchmark_ledger/VALIDATION.json)。没有部署生产服务。
+本次实现验证：汇总、版本与采集器相关测试 43 项通过；别名兼容补充核验后相关 21 项再次通过；前端构建通过。70 题清单指纹及评分规范的 112 份冻结文件均核验一致。详见 [验证记录](../evidence/benchmark_ledger/VALIDATION.json)。没有部署生产服务。
 
 - **2026-10-02 编号勘误与矩阵补录**：按用户更正，最新版本为 v0.1.2，先前 v0.2.0 编号停用，仅留作兼容别名；添加多维百分制矩阵，原典与 LLM 旧样本记录保留独立历史分区。
 
@@ -210,37 +210,37 @@ DeepSeek、豆包的官方网页答卷现已由用户补交完成：每家65题7
 
 - **2026-10-02 ChatGPT Work答卷补录**：接收用户文件并确认6.1 Sol/high，核对70题82段；排除5项未执行fixture，评审65题77段并补入冻结矩阵。保留4个执行未知项；没有恢复已暂停的网页端测试。
 
-- **2026-10-02 前端报错提示优化**：错误卡改为中文说明、折叠诊断与复制；余额不足不提供立即续答，网络中断按已有正文决定继续或重试原问题。仅前端静态资源上线并核对线上JS/CSS指纹，没有改变主prompt、引擎或测试集。验证记录：[ERROR_NOTICE_UI_20261002.json](evidence/ERROR_NOTICE_UI_20261002.json)。
+- **2026-10-02 前端报错提示优化**：错误卡改为中文说明、折叠诊断与复制；余额不足不提供立即续答，网络中断按已有正文决定继续或重试原问题。仅前端静态资源上线并核对线上JS/CSS指纹，没有改变主prompt、引擎或测试集。验证记录：[ERROR_NOTICE_UI_20261002.json](../evidence/ERROR_NOTICE_UI_20261002.json)。
 
-- **2026-10-02 统一设置**：侧栏仅保留设置与账户入口，用户中心兼容入口转入同一设置组件；重排外观与语言、对话、个性化、长期记忆、账户、数据管理。修复资料/语言同步、当前回答展示偏好及bare引擎接收已保存偏好。缓存清理与账号对话删除分离，删除账户清理本机outbox。主SP模板、工具预算和冻结评分未改；本次没有新的模型质量评分。验证：[UNIFIED_SETTINGS_20261002.json](evidence/UNIFIED_SETTINGS_20261002.json)。
+- **2026-10-02 统一设置**：侧栏仅保留设置与账户入口，用户中心兼容入口转入同一设置组件；重排外观与语言、对话、个性化、长期记忆、账户、数据管理。修复资料/语言同步、当前回答展示偏好及bare引擎接收已保存偏好。缓存清理与账号对话删除分离，删除账户清理本机outbox。主SP模板、工具预算和冻结评分未改；本次没有新的模型质量评分。验证：[UNIFIED_SETTINGS_20261002.json](../evidence/UNIFIED_SETTINGS_20261002.json)。
 
 ### 2026-10-02 · v0.1.2 设置：主题化账号记忆
 
 恢复左下角独立登出入口。长期记忆从逐条原话改为历史自动整理的可编辑主题摘要，手动更正优先，后续更新单独作为建议；支持关闭记忆、版本冲突保留草稿和账号隔离。回答主 SP 仍为 v0.1.1，候选 v0.1.2 未启用，不增加工具预算；冻结题集和既有跑分不变。后台加入独立资料整理步骤，因此有账号记忆的真实对话行为需后续单独评价，不能从 UI 测试推出质量得分提升。
 
-[实现说明](../docs/PHIAGENT_ACCOUNT_MEMORY.md) · [验证与发布记录](evidence/ACCOUNT_MEMORY_20261002.json)。
+[实现说明](../agent/account-memory.md) · [验证与发布记录](../evidence/ACCOUNT_MEMORY_20261002.json)。
 
 ### 2026-10-02 · v0.1.2 记忆摘要结构 v2
 
 记忆编辑器改为自然主题与概览，可描述长期项目、阶段和阅读线索；新增针对性探索问题、独立会话询问与自然语言更正。自动整理保留，用户更正继续优先。变更的是记忆整理逻辑与独立整理 prompt，主回答 prompt 仍为 v0.1.1，无工具预算变化。冻结测试集/原评分不变，这轮的功能验证不是新增 benchmark 跑分。
 
-[验证与发布记录](evidence/ACCOUNT_MEMORY_SUMMARY_V2_20261002.json)。
+[验证与发布记录](../evidence/ACCOUNT_MEMORY_SUMMARY_V2_20261002.json)。
 
 ### 2026-10-02 · v0.1.2 删除对话后的首页推荐修复
 
 首页曾同时读取旧版原始 `chat_history` 和有效会话记录，绕过已删除旧会话的 tombstone，导致清空后仍出现“最近讨论”。改为统一读取会话源；生成及缓存命中后复核来源，期间发生删除就丢弃结果；前端在对话变更尚未同步时隐藏旧推荐，并处理来源变化后重新生成。阅读记录、笔记和明确保存的记忆独立管理，不跟随对话删除。31 项相关后端测试与实际 AgentPage 隔离删除流程通过；主 prompt/工具预算/冻结跑分不变。
 
-[验证与发布记录](evidence/DELETED_HISTORY_HOME_20261002.json)。
+[验证与发布记录](../evidence/DELETED_HISTORY_HOME_20261002.json)。
 
 ### 2026-10-02 · v0.1.2 引用块 Markdown 渲染修复
 
 聊天回答此前逐行把 `> ...` 当作行内引用，导致被引用的记忆摘要中 `##` 标题裸露、空引用行显示 `>`、每段独立成灰块。改为连续引用块收集并递归渲染内部 Markdown，保留标题、列表、表格、代码、原典链接与嵌套引用，流式块外层 key 稳定。只改前端显示，消息与记忆原文不变；不改主 prompt、预算或冻结评分。前端测试、构建、桌面/390px 手机浏览器验证通过。
 
-[验证与发布记录](evidence/QUOTE_RENDER_FIX_20261002.json)。
+[验证与发布记录](../evidence/QUOTE_RENDER_FIX_20261002.json)。
 
 ### 2026-10-03 · 外部网页答卷加入冻结 v1.2 对照
 
-新增DeepSeek（深度思考＋联网）及豆包（快速默认）各65题77轮的开发暂定评分。原始答卷、初评、表达维度重评、定向修订分别保留，评分规范与历史64/10题分母不变。网页采集模式和内部执行缺口独立标注；不把缺回执直接判作伪造，不把平台推荐按钮计入正文冗余。详见[本批评审摘要](evidence/phiagent_benchmark_v0_1/browser_review_v1_2_20261002/SUMMARY.md)。
+新增DeepSeek（深度思考＋联网）及豆包（快速默认）各65题77轮的开发暂定评分。原始答卷、初评、表达维度重评、定向修订分别保留，评分规范与历史64/10题分母不变。网页采集模式和内部执行缺口独立标注；不把缺回执直接判作伪造，不把平台推荐按钮计入正文冗余。详见[本批评审摘要](../evidence/phiagent_benchmark_v0_1/browser_review_v1_2_20261002/SUMMARY.md)。
 
 ### 2026-10-03 · 正式启用 v0.1.2 默认提示词
 
@@ -254,11 +254,11 @@ RUN3按冻结v1.2评分：65道实测题、77轮，64题有最终答复，A05空
 
 运行声明为git `2f066b994`、prompt0.1.2，但实际旧采集器没有保存逐轮`runtime_metadata`、`done.release`、工具集与生效提示词hash，且开跑工作区有192项未提交记录；不能将本轮视为严格锁定提交或单因素实验。A01更快也不能归因于“prompt更精简”：v0.1.2模板879字符，v0.1.1为642字符。A05有两句公开工作笔记和27个preview事件，最终正文为空；“77轮DONE”只证明事件结束。
 
-[评审摘要与缺陷](evidence/phiagent_benchmark_v0_1/quality_review_run3_v1_2_20261003/SUMMARY.md)；[逐轮评分](evidence/phiagent_benchmark_v0_1/quality_review_run3_v1_2_20261003/SCORES_AND_REASONS.md)。本轮没有修改生产提示词或修复运行时，A05空答成功状态及E05条件替换留待下一轮修复。
+[评审摘要与缺陷](../evidence/phiagent_benchmark_v0_1/quality_review_run3_v1_2_20261003/SUMMARY.md)；[逐轮评分](../evidence/phiagent_benchmark_v0_1/quality_review_run3_v1_2_20261003/SCORES_AND_REASONS.md)。本轮没有修改生产提示词或修复运行时，A05空答成功状态及E05条件替换留待下一轮修复。
 
 ## v0.1.3 · RUN3 后的提示词修订（已补 RUN4）
 
-2026-10-03 按用户要求仅做提示词工程。主提示词为 [general-0.1.3.md](../backend/prompts/general-0.1.3.md)，1139字符；基于v0.1.2的879字符模板重组判断原则，不写题号、参考答案或逐题补丁。默认启用v0.1.3，工具契约仍为0.1.2，bare运行、预算、工具实现、数据库与哲学家人格均不改。
+2026-10-03 按用户要求仅做提示词工程。主提示词为 [general-0.1.3.md](../../backend/prompts/general-0.1.3.md)，1139字符；基于v0.1.2的879字符模板重组判断原则，不写题号、参考答案或逐题补丁。默认启用v0.1.3，工具契约仍为0.1.2，bare运行、预算、工具实现、数据库与哲学家人格均不改。
 
 |RUN3发现|v0.1.3提示词调整|边界|
 |---|---|---|
@@ -285,7 +285,7 @@ RUN3按冻结v1.2评分：65道实测题、77轮，64题有最终答复，A05空
 
 本次只评审已有答卷，不运行答题、不改生产SP或工具。问题包括A04心理归因、B04把责任当作者资格、D04将贝克坐标当中文断行、I01违反禁止查询、E05在未逐字核验时宣称全库零命中。下一步v0.2.0按既定计划调优工具与运行层，并保留这些推理案例作为回归样本。
 
-[RUN4评审摘要](evidence/phiagent_benchmark_v0_1/quality_review_run4_v1_2_20261003/SUMMARY.md) · [逐轮评分](evidence/phiagent_benchmark_v0_1/quality_review_run4_v1_2_20261003/SCORES_AND_REASONS.md)。
+[RUN4评审摘要](../evidence/phiagent_benchmark_v0_1/quality_review_run4_v1_2_20261003/SUMMARY.md) · [逐轮评分](../evidence/phiagent_benchmark_v0_1/quality_review_run4_v1_2_20261003/SCORES_AND_REASONS.md)。
 
 ## v0.1.4 · RUN4 后的提示词补修（已补 RUN5）
 
@@ -302,7 +302,7 @@ RUN3按冻结v1.2评分：65道实测题、77轮，64题有最终答复，A05空
 |结论检查|B04必要条件变充分，J02无普遍证明变无理由|责任/贡献/资格分查；强量词检查同条件反例；总结保留全部必要条件|
 |材料状态|D04臆测版面、F02误认长度、E05误认目标未读完|区分坐标、总长度与实际窗口、目标段与整章；禁止用未见排印作确定事实|
 
-主提示词：[general-0.1.4.md](../backend/prompts/general-0.1.4.md)。不写入题号、固定答案、禁用工具名单、次数或token预算，不增设分类器、正则、答案改写或自动重试。工具契约保持0.1.2，运行源码与数据库不变。仅检查配置指纹、版本一致性、旧分数不变及线上启用状态；不调用模型答题或评测，v0.1.4评分留空。
+主提示词：[general-0.1.4.md](../../backend/prompts/general-0.1.4.md)。不写入题号、固定答案、禁用工具名单、次数或token预算，不增设分类器、正则、答案改写或自动重试。工具契约保持0.1.2，运行源码与数据库不变。仅检查配置指纹、版本一致性、旧分数不变及线上启用状态；不调用模型答题或评测，v0.1.4评分留空。
 
 ### 2026-10-03 · RUN5 评审补录
 
@@ -314,11 +314,11 @@ RUN3按冻结v1.2评分：65道实测题、77轮，64题有最终答复，A05空
 
 数据口径补充：J01/J02各4轮，J03/J04/J05各3轮，不是5题各3个追问。1277字符含末尾换行，manifest按去掉末尾换行计为1276，二者不代表提示词不一致。批次墙钟35.38分钟，逐题累计71.48分钟。61次partial均为学术检索且均有结果，provider错误含OpenAlex限流61条、Crossref限流1条；37次error为网页31、学术检索5、哲学家信息1。缓存“dict（2条）”只是根键数，不是两篇缓存论文。旧采集器仍未保存逐轮生效配置，不能称严格单因素对照。
 
-[RUN5评审报告](evidence/phiagent_benchmark_v0_1/quality_review_run5_v1_2_20261003/SUMMARY.md) · [逐轮分数](evidence/phiagent_benchmark_v0_1/quality_review_run5_v1_2_20261003/SCORES_AND_REASONS.md)。本轮只评审已有答卷，未生成新答案、未改生产prompt/工具。
+[RUN5评审报告](../evidence/phiagent_benchmark_v0_1/quality_review_run5_v1_2_20261003/SUMMARY.md) · [逐轮分数](../evidence/phiagent_benchmark_v0_1/quality_review_run5_v1_2_20261003/SCORES_AND_REASONS.md)。本轮只评审已有答卷，未生成新答案、未改生产prompt/工具。
 
 ## v0.1.5 · RUN5 后的提示词修订（已补 RUN6）
 
-按用户要求继续仅做prompt，v0.2.0工具调优仍暂缓。主提示词 [general-0.1.5.md](../backend/prompts/general-0.1.5.md) 为1193字符（不含末尾换行），较v0.1.4的1276字符缩短；重新组织任务、证据与结论之间的检查，不写入基准题号或参考答案。
+按用户要求继续仅做prompt，v0.2.0工具调优仍暂缓。主提示词 [general-0.1.5.md](../../backend/prompts/general-0.1.5.md) 为1193字符（不含末尾换行），较v0.1.4的1276字符缩短；重新组织任务、证据与结论之间的检查，不写入基准题号或参考答案。
 
 |RUN5遗留问题|v0.1.5修订|
 |---|---|
@@ -341,7 +341,7 @@ B04能核政策并区分披露与合规，G01较少把关心与义务当互斥�
 
 技术层面77轮DONE且token一致，但A05最后一句停在“有一件事我无法替你判断，也不该替他”。有正文与主结论，非空答；记录语义收尾问题，根因未知，不重跑掩盖。1091工具：932成功、64部分成功、41错误、54空结果；部分学术检索均有结果，OpenAlex限流64次。批次墙钟42.08分钟，累计84.25分钟，首token中位数7.5秒。旧采集器缺逐轮生效指纹，192项脏工作区及可变网页/缓存/模型别名仍妨碍严格归因。
 
-[RUN6评审报告](evidence/phiagent_benchmark_v0_1/quality_review_run6_v1_2_20261003/SUMMARY.md) · [逐轮评分](evidence/phiagent_benchmark_v0_1/quality_review_run6_v1_2_20261003/SCORES_AND_REASONS.md)。本轮只评审已有答卷，未生成新答案，未改生产prompt/工具/数据库，v0.2.0仍暂缓。
+[RUN6评审报告](../evidence/phiagent_benchmark_v0_1/quality_review_run6_v1_2_20261003/SUMMARY.md) · [逐轮评分](../evidence/phiagent_benchmark_v0_1/quality_review_run6_v1_2_20261003/SCORES_AND_REASONS.md)。本轮只评审已有答卷，未生成新答案，未改生产prompt/工具/数据库，v0.2.0仍暂缓。
 
 ## 2026-10-03 · 同配置匿名复评（不覆盖版本成绩）
 
@@ -353,7 +353,7 @@ B04能核政策并区分披露与合规，G01较少把关心与义务当互斥�
 
 11条定向来源检查与全部18条major/pending候选审计已落盘，不选择性改自动等级，不宣称估计全套漏判率。下一步先核验评分器对已有原句与合理反例的敏感性，沿用冻结v1.2标准。本轮不写或启用0.1.6，生产仍为0.1.5，0.2.0工具调优仍暂缓。
 
-[复评结论](evidence/phiagent_benchmark_v0_1/blind_reassessment_20261003/SUMMARY.md) · [原始多维表](evidence/phiagent_benchmark_v0_1/blind_reassessment_20261003/comparison.html) · [来源审计](evidence/phiagent_benchmark_v0_1/blind_reassessment_20261003/SOURCE_AUDIT.json)。
+[复评结论](../evidence/phiagent_benchmark_v0_1/blind_reassessment_20261003/SUMMARY.md) · [原始多维表](../evidence/phiagent_benchmark_v0_1/blind_reassessment_20261003/comparison.html) · [来源审计](../evidence/phiagent_benchmark_v0_1/blind_reassessment_20261003/SOURCE_AUDIT.json)。
 
 ## 2026-10-03 · 冻结跑分记录 R1
 
@@ -365,4 +365,4 @@ R1主分依次为PhiAgent v0.1.0 84.49、v0.1.1 88.75、v0.1.2 91.89、v0.1.3 84
 
 已封存原始逐轮等级、来源指纹、固定题号、核验未决状态、严重错误标记、书目核验更正及注册表快照。记录文件受FREEZE_MANIFEST保护，后续新增证据必须发布R2等显式修订，不覆盖R1。旧数字及评审过程继续可追溯；未宣称自动评审器校准成功或正式学术验收。不同模型、工具条件和评审方式仍限制能力排行与因果解释。
 
-[冻结R1说明](evidence/benchmark_ledger/frozen_r1_20261003/SUMMARY.md) · [冻结等级与分数](evidence/benchmark_ledger/frozen_r1_20261003/SCORES.json) · [冻结清单](evidence/benchmark_ledger/frozen_r1_20261003/FREEZE_MANIFEST.json)。当前生产prompt仍为v0.1.5，不修改工具预算、模型、数据库或运行逻辑。
+[冻结R1说明](../evidence/benchmark_ledger/frozen_r1_20261003/SUMMARY.md) · [冻结等级与分数](../evidence/benchmark_ledger/frozen_r1_20261003/SCORES.json) · [冻结清单](../evidence/benchmark_ledger/frozen_r1_20261003/FREEZE_MANIFEST.json)。当前生产prompt仍为v0.1.5，不修改工具预算、模型、数据库或运行逻辑。
