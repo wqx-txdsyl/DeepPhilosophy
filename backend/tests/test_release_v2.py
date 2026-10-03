@@ -18,9 +18,9 @@ def test_registered_prompt_profiles_have_distinct_fingerprints_and_no_secret_val
     assert current['prompt_matches_manifest'] and historical['prompt_matches_manifest']
     assert current['effective_prompt_sha256']!=historical['effective_prompt_sha256']
     assert current['configuration_fingerprint']!=historical['configuration_fingerprint']
-    assert current['tool_budget'] is None and current['historical_prompt_override']
-    assert not historical['historical_prompt_override']
-    assert release.prompt_spec()['version']=='0.1.1'
+    assert current['tool_budget'] is None and not current['historical_prompt_override']
+    assert historical['historical_prompt_override']
+    assert release.prompt_spec()['version']=='0.1.2'
     for old,new in [('1.0.0','0.1.0'),('1.1.0','0.1.1'),('2.0.0-rc.2','0.1.2'),('0.2.0','0.1.2')]:
         assert release.prompt_spec(profile=old)['text']==release.prompt_spec(profile=new)['text']
     assert 'must-not-appear' not in json.dumps(current)
@@ -83,19 +83,21 @@ def test_abstract_is_resumable_and_never_mislabelled_as_paper_full_text(monkeypa
 
 
 def test_main_usage_is_recorded_without_claiming_auxiliary_model_cost(monkeypatch):
+    monkeypatch.delenv('PHIAGENT_PROMPT_VERSION',raising=False)
     import deep_bare_agent as bare
     from langchain_core.messages import AIMessageChunk
     class Model:
         def bind_tools(self,tools):return self
         async def astream(self,messages):
             assert sum(m.type=='system' for m in messages)==1
+            assert messages[0].content == release.prompt_spec(profile='0.1.2')['text']
             yield AIMessageChunk(content='测试回答',response_metadata={'finish_reason':'stop','model_name':'fixture'},
                 usage_metadata={'input_tokens':10,'output_tokens':5,'total_tokens':15})
     async def tools():return []
     async def questions(*args):return {'suggestions':[],'status':'unavailable'}
     monkeypatch.setattr(bare,'load_tools',tools);monkeypatch.setattr(bare,'load_model',Model)
     monkeypatch.setattr(bare,'source_metadata',lambda *a:([],None));monkeypatch.setattr(bare,'exploration_questions',questions)
-    async def run():return [e async for e in bare.stream_bare_agent('测试',[],_evaluation_prompt_profile='0.1.2')]
+    async def run():return [e async for e in bare.stream_bare_agent('测试',[])]
     events=asyncio.run(run());done=next(e for e in events if e['type']=='done')
     assert done['main_model_usage']['usage']['total_tokens']==15
     assert not done['main_model_usage']['includes_auxiliary_tool_models']
