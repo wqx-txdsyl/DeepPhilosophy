@@ -1,0 +1,90 @@
+{
+ "case_id": "I03",
+ "category": "I",
+ "prompt": "我不需要哲学分析，只想知道怎么向学校确认能不能送感谢卡。请给两步操作。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "60675439c081c8db8150a2196de28c96e354f432",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T14:01:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.5",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（2 条）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "我不需要哲学分析，只想知道怎么向学校确认能不能送感谢卡。请给两步操作。",
+   "wall_s": 7.6,
+   "ttft_s": 4.2,
+   "public_notes": [],
+   "provider_reasoning": "The user wants practical two steps to confirm with school whether they can send thank-you cards. No philosophy. I should just answer practically. Should I search? The rules: only search when needed. The user asks a practical question. I could give two steps. But maybe I should be careful: I don't know jurisdiction, what kind of school (child's school? teacher? university admissions?). The request is about \"送感谢卡\" — sending thank-you cards to school.\n\nActually, there's ambiguity: is this a student wanting to thank teachers? A parent? Is it about a gift policy? Many schools have policies on gifts to teachers.\n\nTwo steps: (1) find the rule/ask the right office; (2) get written confirmation.\n\nI should give a concrete two-step operation. Since jurisdiction/rule unknown, I shouldn't declare compliance. I can give steps that work generically.\n\nLet me think about what's genuinely helpful and honest:\n\nStep 1: 找准有权答复的人和渠道 — 不要问门卫或随口问某位老师；向学校办公室/教务处/学生处（或班主任）用书面方式（邮件/办公电话）提出，明确说明对象、形式、时间、是否含实物/金额。先查学校官网\"家长手册/学生手册/礼品与馈赠政策/师德规定\"。\n\nStep 2: 取得书面确认并留存 — 要求明确答复\"可以/不可以/有条件\"，若是\"可以\"再确认细节（是否允许实物、金额上限、是否需走流程登记、由谁收）。保存邮件或短信截图。\n\nMaybe I should ask a clarifying question? The user wants two steps, no philosophy. I can give the two steps but note the key unknown variables that change wording. I shouldn't over-hedge.\n\nShould I use websearch? The rule says \"现实规则影响判断且用户未禁止查询时，主动核查日期、法域、对象、允许范围与例外\" — but I don't know the jurisdiction (which country/region, school type). Searching without a jurisdiction would be useless. Better to give the two steps and ask for the one detail (region + school type) to check specific rules. Actually the user asked for exactly two steps — I can deliver them and offer to check specific rules if they tell me the region.\n\nI think a short, direct answer is right. No tools needed — the question is about how to inquire, not about a specific rule I can verify without jurisdiction.\n\nKeep it tight. Maybe give the actual wording template for the email — that's practical and useful.\n\nTwo steps:\n1. 确认渠道和书面提问\n2. 拿到书面答复并固定细节\n\nI'll include a template sentence they can copy. And note: 若答复含糊（\"应该没问题\"），要求明确化。\n\nI'll keep it short.",
+   "tool_calls_full": [],
+   "tool_timeline": [],
+   "answer": "**第一步：找对人，用书面方式问**\n别问门卫、前台或随口拦一位老师——他们无权代表学校。找学校办公室（或教务处/学生处/班主任，按你孩子/你所在的学段定），用邮件或办公电话提出，把问题问具体：\n\n> \"我是×年级×班××的家长/学生。我们想给×老师送一张感谢卡（纸卡，不含现金/购物卡/实物礼品），计划×月×日由学生本人带到班级。请问学校是否允许？是否需要走登记或报备流程？\"\n\n关键是**把场景要素说全**：给谁、什么形式、有没有附带金钱或实物、什么时间、怎么送达。缺一样，对方答的\"可以\"可能只管另一件事。同时先翻一遍学校官网的《学生手册》《家长手册》或师德/礼品馈赠相关规定，很多答案已经写在那里。\n\n**第二步：要一个明确的书面答复，并追问细节**\n拿到\"可以/不可以/有条件\"的书面回复（邮件、微信、办公系统消息均可），保存截图。如果对方只说\"应该没问题\"\"一般不管\"这类含糊话，再追一句：\n\n> \"麻烦确认一下：是允许，还是不允许，还是需要附加条件？如需要登记，走哪个流程、由谁受理？\"\n\n只有明确答复才能当依据；口头谅解事后追责不了，也不等于学校正式许可。\n\n---\n\n不确定的地方我如实说：能不能送、算不算违规，取决于**所在地区和学生学段**——中小学对教师收受礼品的规定通常比大学严格得多，部分地区教育部门有明文禁令。告诉我地区和学校类型（小学/中学/大学），我可以帮你查该地现行的具体规定和例外条款。",
+   "answer_chars": 612,
+   "done_content": "**第一步：找对人，用书面方式问**\n别问门卫、前台或随口拦一位老师——他们无权代表学校。找学校办公室（或教务处/学生处/班主任，按你孩子/你所在的学段定），用邮件或办公电话提出，把问题问具体：\n\n> \"我是×年级×班××的家长/学生。我们想给×老师送一张感谢卡（纸卡，不含现金/购物卡/实物礼品），计划×月×日由学生本人带到班级。请问学校是否允许？是否需要走登记或报备流程？\"\n\n关键是**把场景要素说全**：给谁、什么形式、有没有附带金钱或实物、什么时间、怎么送达。缺一样，对方答的\"可以\"可能只管另一件事。同时先翻一遍学校官网的《学生手册》《家长手册》或师德/礼品馈赠相关规定，很多答案已经写在那里。\n\n**第二步：要一个明确的书面答复，并追问细节**\n拿到\"可以/不可以/有条件\"的书面回复（邮件、微信、办公系统消息均可），保存截图。如果对方只说\"应该没问题\"\"一般不管\"这类含糊话，再追一句：\n\n> \"麻烦确认一下：是允许，还是不允许，还是需要附加条件？如需要登记，走哪个流程、由谁受理？\"\n\n只有明确答复才能当依据；口头谅解事后追责不了，也不等于学校正式许可。\n\n---\n\n不确定的地方我如实说：能不能送、算不算违规，取决于**所在地区和学生学段**——中小学对教师收受礼品的规定通常比大学严格得多，部分地区教育部门有明文禁令。告诉我地区和学校类型（小学/中学/大学），我可以帮你查该地现行的具体规定和例外条款。",
+   "done_matches_tokens": true,
+   "citations": [],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 0,
+    "display_citations": 0,
+    "primary_research": {
+     "status": "not_requested",
+     "sources": [],
+     "total": 0,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 6.545,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 6.6,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 362
+  }
+ ],
+ "total_wall_s": 7.6,
+ "status": "COMPLETED"
+}
