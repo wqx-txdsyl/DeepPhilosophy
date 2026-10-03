@@ -1,5 +1,6 @@
 # UI
 
+- [项目工作空间设计草案](project-workspace-design.md)：研究、研讨与实践共用一个项目；尚未实现。
 - [设计系统](design-system.md)
 - [信息架构](information-architecture.md)
 - [响应式规范](responsive-spec.md)
