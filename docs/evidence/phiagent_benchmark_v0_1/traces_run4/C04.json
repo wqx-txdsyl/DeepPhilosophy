@@ -1,0 +1,1183 @@
+{
+ "case_id": "C04",
+ "category": "C",
+ "prompt": "“应无所住而生其心”是不是让人什么都不要在乎？请从《金刚经》的上下文解释，而不是给心灵鸡汤。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ccdf54ee96744440592d7dbd9c435445e1c07253",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T10:17:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.3",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run3 同源延续, 后续评测有增量）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "“应无所住而生其心”是不是让人什么都不要在乎？请从《金刚经》的上下文解释，而不是给心灵鸡汤。",
+   "wall_s": 66.0,
+   "ttft_s": 59.2,
+   "public_notes": [],
+   "provider_reasoning": "The user asks about \"应无所住而生其心\" — is it saying to not care about anything? They want explanation from the context of the Diamond Sutra (《金刚经》), not chicken soup.\n\nLet me search the local library for 《金刚经》 and the phrase.\n\nLet me do parallel searches: search_books for 应无所住而生其心, and search for 金刚经 book.\n\nI should also possibly search scholarship on this. But first locate the text.\n\nNote: \"应无所住而生其心\" is actually from 《金刚经》 but the famous phrasing appears in the 大正藏 version as \"應無所住而生其心\" — actually the standard Kumārajīva translation reads \"不應住色生心，不應住聲香味觸法生心，應無所住而生其心\". This is in the 庄严净土分第十. Note the well-known story that 六祖慧能 heard this. Let me verify in the local library.\n\nLet me call tools.The library seems to lack a primary text of 《金刚经》 itself. Let me check whether there's a version of the Diamond Sutra in the library. Search for \"金刚般若波罗蜜经\" or list books. Also search for 南怀瑾 chapter 467 which contains the 第十品 庄严净土分 with the actual sutra text quoted.\n\nLet me check catalogue: search_books with query \"金刚般若波罗蜜经\", and also list_books to see Buddhist texts. Also get_chapter on a26240ee8f45 chapter 467 to read the context.\n\nLet me do parallel calls.Good — I have the 第十品 庄严净土分 in 南怀瑾's explanation, which quotes the sutra text. But the user wants context from 《金刚经》 itself. The library might not have the sutra text as a standalone book. Let me check list_books for Buddhist texts, or search for a specific phrase from the sutra like \"不应住色生心\" or \"过去心不可得\" or \"如来说世界\".\n\nKey context to develop:\n1. The phrase occurs in 第十品（庄严净土分）: 佛告须菩提... \"是故须菩提，诸菩萨摩诃萨应如是生清净心，不应住色生心，不应住声香味触法生心，应无所住而生其心。\"\n2. Context before: 佛问须菩提，\"菩萨庄严佛土不？\" 须菩提言\"不也，世尊。何以故？庄严佛土者，即非庄严，是名庄严。\" So the context is about 菩萨的净土庄严 — the \"庄严\" is not a \"place/land\" — already the point that 清净 is not an object.\n3. Context after: 佛说\"譬如有人，身如须弥山王...\" 身大 vs 非身，是名大身. This connects to 我相/身见.\n4. Key: \"生其心\" — the phrase is not \"灭其心\"/\"无心\"; it says 生心. The negation is on 住 (abiding/dwelling), not on 心 (the arising of mind/citta). So it's not \"don't care about anything\" — it's \"don't let the mind be stationed/fixated on the objects of the six senses (色声香味触法)\"; but a mind still arises (生其心), and it should be 清净心 (a purified mind), and it should function — 庄严佛土, 度众生.\n\nImportant structural point: 无所住 is not 无 — the 三句义 pattern (A, 非A, 是名A) shows the sutra does not abolish the practice; 庄严 — 即非庄严 — 是名庄严: it denies the self-sufficient substantial reality of \"庄严佛土\", then re-affirms it as conventional name (假名), i.e., the practice still goes on, only without reifying it. Same with \"灭度无量无数无边众生，实无众生得灭度者\" (第三品) — the activity continues but without 我相人相众生相寿者相.\n\nAlso key: 第二品 须菩提问 \"云何应住？云何降伏其心？\" — the question about \"住\" (abiding) is the framing question of the whole sutra. So \"应无所住\" is an answer to the question of where the mind should dwell. And 第四品 \"菩萨于法，应无所住，行于布施\" — \"应无所住行于布施\" — this is the crucial proof that 无所住 doesn't mean 无所为/不在乎: it's attached to 行于布施 (giving/practice), and even \"不住色布施，不住声香味触法布施\". That's a strong argument. Actually 第四品 妙行无住分: \"菩萨于法，应无所住，行于布施。所谓不住色布施，不住声香味触法布施。须菩提，菩萨应如是布施，不住于相。\" So the very title 妙行无住分 — 妙行 (wondrous practice) with 无住.\n\nAlso 第十四品 离相寂灭分: \"应生无所住心。若心有住，则为非住。\" — Hmm, actually 第十四品 in Kumārajīva: \"是故佛说菩萨心不应住色布施... 应生无所住心。若心有住，则为非住。\" So \"若心有住，则为非住\" — if the mind abides, that's not-abiding (i.e., it fails). Good.\n\nAlso relevant: \"过去心不可得，现在心不可得，未来心不可得\" (第十八品 一体同观分) — 三心不可得, this supports that 无所住 isn't about having no object but about the temporality of mind.\n\nAnd 应化非真分 / 第三十二品: \"一切有为法，如梦幻泡影，如露亦如电，应作如是观\" — again a 观 (a way of seeing), not an injunction to feel nothing.\n\nAlso 大乘正宗分第三: \"所有一切众生之类…我皆令入无余涅槃而灭度之。如是灭度无量无数无边众生，实无众生得灭度者。何以故？须菩提，若菩萨有我相、人相、众生相、寿者相，即非菩萨。\" — this shows the maximal compassionate engagement (度一切众生) combined with 无相. So 无所住 is compatible with the most demanding commitment, indeed it's the condition for it (if you 住相, you get tired, partial, self-referential).\n\nNow, the \"什么都不要在乎\" reading — what in the text could seem to support it? \"不应住色生心\" could be heard as \"don't let anything matter\". But 住 is not 在乎/感受; 住 = abiding, fixation, taking as a settled basis (the term 住 in 住色生心 means the mind stations itself on that object). The objection to 住 isn't that the object is worthless, but that the mind's mode is 执取 — and the sutra's own reason is given in the 三句义 structure: 相 is 虚妄 (凡所有相，皆是虚妄 — 第五品), and \"若心有住，则为非住\" — 住 produces its own failure.\n\nAlso worth distinguishing: 无所住 ≠ 无记/断灭空. The sutra itself warns about that? Actually 《金刚经》 doesn't explicitly warn against 断灭见 as much as e.g. 楞伽 or 中论. But there's the concern that hearing \"无相\" leads to abandoning practice — the sutra counters by \"莫作是念\" ... Actually in 第二十七品 无断无灭分: \"须菩提，汝若作是念：如来不以具足相故，得阿耨多罗三藐三菩提。须菩提，莫作是念：如来不以具足相故，得阿耨多罗三藐三菩提。须菩提，汝若作是念，发阿耨多罗三藐三菩提心者，说诸法断灭。莫作是念。何以故？发阿耨多罗三藐三菩提心者，于法不说断灭相。\" — That's a decisive textual counter to \"什么都不要在乎/一切断灭\": the sutra explicitly forbids 断灭相. Excellent. That's the strongest single textual point: 无断无灭分 — \"于法不说断灭相\".\n\nI should verify these quotes. The library may not have the sutra text. Let me search for specific phrases to see if they exist verbatim in library: \"于法不说断灭相\", \"应无所住行于布施\", \"若心有住\", \"过去心不可得\", \"不应住色生心\". Actually verify_quote needs a book_id. Since there's no sutra book, I could try verify_quote with 南怀瑾's book (which quotes many sutra lines) — but the book's chapter 467 quoted \"不应住色生心。不应住声香味触法生心。应无所住。而生其心。\" That's confirmed verbatim in that chapter's returned text. Good.\n\nLet me search library for the other phrases to see if any book quotes them, and check whether a Diamond Sutra text exists in the library at all. Also maybe use websearch for a reliable full text of 金刚经 (e.g., CBETA or a public text) to verify the surrounding sections. Better: try search_books first, then websearch if needed.\n\nLet me run: search_books \"于法不说断灭相\", search_books \"应无所住行于布施\", list_books(school=\"佛教\") maybe. Let me do parallel.The library has 南怀瑾's 金刚经说什么 (a modern commentary), 牟宗三《中国哲学十九讲》 (which places 应无所住而生其心 in 般若), 王德峰 on 三句义, 蒋维乔《中国佛教史》. There's no standalone sutra text with book_id? Actually the 南怀瑾 book contains the sutra text quoted section by section (the chapters 458-489 are 《金刚经说什么》 with each 品). So I can read the relevant 品 chapters for the sutra text and context: 第三品(460), 第四品(461), 第二十七品(484), 第十品(467).\n\nAlso I want 第十四品 离相寂灭分 (\"应生无所住心。若心有住，则为非住\") and 第十七品/第十八品 三心不可得. Let me find the chapter indices. Let me get_book_detail with focus \"金刚经\" or focus on 品 names to locate chapters. Actually chapter 467 = 第十品, 484 = 第二十七品. So 品 chapters are sequential: 458? Let's compute: if 467 = 10th, then 458 = 1st? 467-458=9, so 458=第一品, 459=第二品, 460=第三品, 461=第四品, ..., 467=第十品. Then 第十四品 = 471, 十八品 = 475, 二十七品 = 484. Yes: 484-467=17, 10+17=27. Consistent.\n\nLet me read 第十四品 (471) and 第十八品 (475) focusing on \"应生无所住心\" and \"过去心不可得\". Also read 第四品 (461) beginning for the sutra lines \"菩萨于法，应无所住，行于布施\" — I have the commentary but want the sutra text quoted. Let me read chapter 461 with focus.\n\nAlso the key 第二品 question \"云何应住？云何降伏其心\" — chapter 459.\n\nLet me batch reads: get_chapter 471 focus \"应生无所住心\", get_chapter 475 focus \"过去心不可得\", get_chapter 459 focus \"云何应住\".\n\nAlso maybe use websearch for the standard Kumārajīva text to confirm wording of 第四品 and 第十四品. But the 南怀瑾 book quotes the sutra text verbatim in these chapters, which serves as a readable source. Still, for accuracy I could verify with an external full text (e.g., CBETA). Let's do a websearch to confirm 第十四品 and 第二十七品 wording. Actually careful: websearch results may be unreliable. Let me at least try a reliable source.\n\nFirst, library reads.I now have:\n- 第十品（庄严净土分）: sutra text with \"不应住色生心。不应住声香味触法生心。应无所住。而生其心。\" plus preceding context (庄严佛土者即非庄严是名庄严).\n- 第十四品: \"不应住色生心。不应住声香味触法生心。应生无所住心。若心有住。即为非住。是故佛说菩萨心。不应住色布施。须菩提。菩萨为利益一切众生故。应如是布施。\" — Excellent, this gives \"菩萨为利益一切众生故。应如是布施\" — the reason given is benefiting all beings. This is a decisive textual link: 无所住 is for 利益众生.\n- 第十八品: 三心不可得.\n- 第二十七品: 于法不说断灭相 (need the sutra text; the snippet confirms \"发阿耨多罗三藐三菩提心者。于法不说断灭相。\").\n- 第四品: 应无所住行于布施 — need the sutra text verbatim. Chapter 461 begins mid-way; the sutra text of 第四品 was in earlier part (offset 0-1077 not read). Let me read chapter 460 (第三品) and 461 offset 0 to get the 第四品 sutra text fully, plus the 第二品 question \"云何应住？云何降伏其心？\" (chapter 459).\n\nLet me read: 461 offset 0 max_chars ~1200; 459 focus \"云何应住\"; 484 focus \"于法不说断灭相\" to read 第二十七品 context. Also maybe 460 (第三品) for \"我皆令入无余涅槃而灭度之…实无众生得灭度者\".\n\nLet me batch these.I have strong material. Now I might want:\n- 第三品 (chapter 460): \"我皆令入无余涅槃而灭度之…实无众生得灭度者\" — to show that 无住 coexists with maximal engagement. Let me read chapter 460 briefly.\n- Also 牟宗三's placement of 般若/无住 in Chinese philosophy (中国哲学十九讲 chapter 15) — he explains 般若 as \"无知亦无得\"、\"不坏假名而说诸法实相\" — that's a nice scholarly frame: 般若 is not a doctrine of nothingness; it's 融通淘汰, 不坏假名. Let me read a bit of chapter 15 of 中国哲学十九讲 around the passage.\n- Perhaps also 王德峰's 三句义 explanation (寻觅意义 chapter 1) — useful for explaining 即非/是名 pattern.\n\nAlso consider scholarship (search_scholarship) on \"应无所住而生其心\" interpretation — maybe there's academic literature. It could strengthen: e.g., studies on \"无住\" in 般若经 and 禅宗. But is it necessary? The user wants text-contextual explanation. Local primary-ish quotes are enough. Maybe one scholarly search to check whether there is debate about the reading — e.g., whether 应无所住而生其心 should be parsed as 应\"无所住而生其心\" vs 应无所住而\"生其心\". There is a known philological point: 玄奘译 \"不应住色生心...\" vs Kumārajīva; and the 禅宗 interpretation (慧能's 悟) vs the literal sense in the sutra context. Also the 敦煌本《坛经》 relates 慧能 hearing it.\n\nActually a valuable scholarly point: some scholars note that in the sutra's own context the phrase answers the question of 如何生清净心 for bodhisattvas adorning buddha-fields, and that later Chan reading (六祖) shifted it toward 本心. Should I search scholarship to check? Let me try one or two searches: \"apraṇihita\" / \"無住\" \"Vajracchedikā\" \"cittam utpādayitavyam\" — a scholarly discussion of \"應無所住而生其心\". Let's do search_scholarship with query \"應無所住而生其心\" and \"apratiṣṭhita-citta Vajracchedikā\".\n\nAlso try searching the library for \"无住\" concept trace? concept_trace \"无住\" could show distribution. Maybe useful but not necessary.\n\nLet me do a couple of parallel calls: search_scholarship for \"應無所住而生其心\", and read chapter 460 (第三品) focus on \"实无众生得灭度者\", plus 中国哲学十九讲 chapter 15 focus \"应无所住而生其心\".\n\nActually simpler: the response can be built mainly on sutra passages. But value-adding: the 牟宗三 point that 般若 is not 空无 doctrine but \"不坏假名而说诸法实相\" supports the non-quietist reading from a Chinese Buddhist philosophy scholar. Let me read that.\n\nLet me batch: \n1) get_chapter a26240ee8f45 ch 460 focus \"实无众生得灭度者\"\n2) get_chapter 167cb7f3a631 ch 15 focus \"应无所住而生其心\"\n3) search_scholarship query \"應無所住而生其心 Vajracchedikā apraṇihita\"Scholarship returns METADATA_ONLY, so I can't use content from them. I will not rely on them. Maybe try get_scholarly_source on the 聖嚴/無住 one — but access level METADATA_ONLY means no readable content. I could try requested_access=ABSTRACT to check if an abstract exists. It might be useful for showing scholarly discussion. But it's marginal. Let me try one: doi:10.5840/ntuphilreview2013465 (聖嚴禪教之安心法門—「看話禪」與「無住」思想是融貫的嗎？). If abstract available, it might support the point that Chan readings of 無住 diverge from sutra usage. Let's try; cheap.\n\nAlso, one more useful check: 慧能 hearing the phrase — the 南怀瑾 chapter 658 mentions it. Not needed.\n\nAnother consideration: the user asks \"是不是让人什么都不要在乎？\" I should answer: No — with textual reasons. Key distinctions:\n\n1. 语句的语法/词义：反对的是\"住\"，不是\"心\"。原句是\"不应住色生心…应无所住而生其心\"，重点是心要生（生其心），只是不住在色声香味触法上。\"住\"在佛教语境指心的止住、执取、依止；不是\"在乎\"（情感上有所谓）。所以文本要求的是心的生起方式改变，不是心的活动停止。第十品前的语境还说要\"生清净心\"。（并指出《金刚经》中同为第十品的文本：是故须菩提，诸菩萨摩诃萨应如是生清净心。）\n\n2. 位置：这句出现在第十品\"庄严净土分\"，前一段讨论\"菩萨庄严佛土不？\"——\"庄严佛土者，即非庄严，是名庄严\"。所以它出现的地方不是叫人退出世界，而是回答\"菩萨如何在这个世界上建设/庄严\"的问题：行动照做，但不要把\"我在庄严一个国土\"当作实体。三句义（即非/是名）的格式表明：否定的是\"实有自性\"，不是取消事情本身。（可引王德峰对三句义的说明作为通俗解释，但要标明是转述。）\n\n3. 同一部经内的平行句：第四品\"菩萨于法，应无所住，行于布施\"——句子有宾语的：行于布施。而且第十四品给了明确的动机：\"菩萨为利益一切众生故，应如是布施\"。所以\"无所住\"与\"利益一切众生\"的实践并置，是它的通行语境，不是\"什么都不在乎\"。\n\n4. 反面警戒：第二十七品\"莫作是念…发阿耨多罗三藐三菩提心者，于法不说断灭相。\"经本身明确禁止把\"无相/空\"读成\"一切都无、什么都不必做\"。所以\"什么都不要在乎\"的读法，在《金刚经》自身里是被预先否定的（断灭见/拨无因果）。注意用词严谨：经中说的是\"断灭相\"，\"断灭见\"一词是南怀瑾注解用语（东汉译？其实\"断灭见\"是佛教通用术语），南怀瑾的解说把断见/断灭见称为拨无因果。我要区分：经文原文=\"于法不说断灭相\"；南怀瑾把这里读成对\"断灭见/拨无因果\"的警戒 — 这是注解，不是经文原话。\n\n5. 第十四品\"若心有住，即为非住\" — 说明\"住\"本身是失败模式：心一旦固定在某处，那个\"住\"就不成立/不是真正的住。这解释了为什么\"住\"不是道德缺陷而是认知/存在方式的问题。\n\n6. 第十八品\"过去心不可得，现在心不可得，未来心不可得\" + \"如来说诸心，皆为非心，是名为心\" — 说明\"心\"在经中不是一个可以被固定持有的东西；这与\"无所住\"同构：不是不动心，而是心本来就无法被固定，以为可以固定才是问题。\n\nWait, careful with \"过去心不可得\" — it appears in 第十八品. Note the 三心不可得 formula does not itself say \"无所谓/不在乎\".\n\n7. 另外一点：二品的问题框架——须菩提问\"云何应住？云何降伏其心？\"，佛的回答（应如是住，如是降伏其心）与第三品\"应如是降伏其心\"配套；\"无住\"是对\"应住何处\"的回答，不是对\"该不该有情感/关切\"的回答。这说明\"住\"是\"心住在哪里/以什么为依止\"的问题。\n\n8. 关于\"在乎\"：区分两种\"在乎\"。(a) 情感上关心、承当、负责——经里不但不反对，还要求\"为利益一切众生故\"布施、\"灭度无量无数无边众生\"（第三品）；(b) 执取式的固着：把某个对象当作心必须依止的基地，以它为实在的支点，从而产生我相人相众生相寿者相。经所反对的是(b)。但要诚实：经文没有专门讨论\"情感强度\"（如悲伤、爱、愤怒是否许可）。它讨论的是\"住/相\"的结构，而不是情绪的分量。所以严格说：《金刚经》不能直接回答\"我该不该很在意某事\"，它不是情感伦理手册。若要说\"在乎\"的正当范围，需要引入其他材料（如大乘的慈悲/菩萨戒，或《维摩诘经》）——本库不在此直接支持。\n\nAlso worth noting: 慧能的悟 — 南怀瑾说六祖\"初步悟道\"就是听到这一句。说明这一句在禅宗史中被当作核心印证句，也因此被后世大量鸡汤化；但经文本身在它自己的位置上是关于菩萨如何庄严佛土/如何生清净心。这是\"文本的出场语境\"与\"后世的接受语境\"的差别——这是个好点：用户问的是《金刚经》的上下文，所以应该把重点放在经文本身的语境，同时承认禅宗传统对此句的再解释（慧能）。要标注：慧能听了此句开悟一事见《坛经》与南怀瑾转述（chapter 658 / 467），我这里只是转述南怀瑾，并没有读《坛经》原文——我应该说清楚\"这是南怀瑾的叙述，我没有核对《坛经》原文\"。Actually 南怀瑾 chapter 467 says \"禅宗六祖初步悟道，就是这一句话，听到了'应无所住而生其心'就开悟了\" — that's a commentary claim, not sutra. I can mention it as later tradition with citation to 南怀瑾's book, noting it's his statement.\n\nNow about the phrase's exact positioning: 第十品 has \"应无所住。而生其心\" (with 句读 after 无所住). 第十四品 has \"应生无所住心\". Note the 三句义 and the difference between the two: 第十品: 不应住色生心，不应住声香味触法生心，应无所住而生其心。第十四品: 不应住色生心，不应住声香味触法生心，应生无所住心。若心有住，即为非住。\n\nAlso important: some might parse \"应无所住而生其心\" as \"should produce a mind which is without abiding\" i.e., 生无所住心. Both are the same. Note the point: the sentence structure is an injunction to 生心 (arise/produce mind/aspiration) — 菩提心? In context \"诸菩萨摩诃萨应如是生清净心\" — so 生其心 = 生清净心 = 发菩提心/起心 practice. So \"生其心\" isn't a passive state; it's an arising of resolve. Note 第十四品 says 菩萨应离一切相，发阿耨多罗三藐三菩提心 — 发心 immediately followed by the 不应住色生心 clause. Yes! In 第十四品: \"是故须菩提。菩萨应离一切相。发阿耨多罗三藐三菩提心。不应住色生心。不应住声香味触法生心。应生无所住心。\" So 无所住生心 is directly juxtaposed with 发阿耨多罗三藐三菩提心 — the most committed act possible in Mahayana. That's a killer textual point: 无住 closest neighbor is 发无上菩提心 (the resolve to save all beings), not indifference.\n\nThat's strong. Great.\n\nStructure of answer:\n- Direct answer: 不是\"什么都不要在乎\"，但它也不是\"要在乎一切\"；它针对的是\"住\"（心的执取/依止），不是心本身，也不是情绪的强度或事情的重要程度。区分三层：住 ≠ 有情绪 ≠ 有行动。\n- 上下文1：出处在第十品（庄严净土分），说的是菩萨如何\"生清净心\"。前文是\"庄严佛土即非庄严\"。三句义格式。\n- 上下文2：同经平行句——第四品\"应无所住，行于布施\"；第十四品\"为利益一切众生故应如是布施\"、\"菩萨应离一切相，发阿耨多罗三藐三菩提心…应生无所住心。若心有住，即为非住\"。所以\"无住\"与最重的承担绑在一起。\n- 上下文3：经本身禁止把它读成断灭——第二十七品\"于法不说断灭相\"。南怀瑾把这里解为对断灭见/拨无因果的警戒（注明是注解）。\n- 上下文4：第十八品三心不可得 —— 不是不动心，是心无法被固定。\n- 语法/词义：住 = 心止住于色声香味触法；\"生其心\"要求心仍然生起。经文自身给的\"理由\"是什么？（第十四品：若心有住，即为非住；住相布施如人入暗；不住法布施如人有目。）→ 理由不是\"事物无价值\"，而是住会使人看不见（无所见）。\n- 那什么被否定了？被否定的是\"我相人相众生相寿者相\"式的把握，即把对象当作支点。\n- 诚实的边界：经文没谈情绪强度/在意的分寸。它不能说\"你该不该为此难过\"；\"在乎的程度\"不是《金刚经》的论题。若把\"什么都不要在乎\"当经文结论，那是把\"不住\"扩大成\"无心\"（断灭/无记），经文明确说过\"不说断灭相\"。也要说明：禅宗传统（慧能闻此句悟道）把它当作见性的印证句，后世鸡汤化多源于此；但那是接受史，不是本段经文的语境。\n- 最后给一个不是鸡汤的总结：这句话要求的不是减少在乎的强度，而是改变在乎的结构——心仍生起、仍去做（布施、利益众生、发菩提心），但不以任何一个色声香味触法的对象为最终的立足点。\n\nAlso note that the quotation of the sutra text itself comes from an edited modern text (南怀瑾's book) — I should be honest: 我读到的经句是通过本库中南怀瑾《金刚经说什么》所引的经文段；南怀瑾的解释是注解，不是经文。Also the 经文 quoted: Kumārajīva translation, per 南怀瑾 chapter 459 mentioning 鸠摩罗什 as translator. I saw 南怀瑾 mention \"鸠摩罗什翻译的这一本\" in chapter 459. Good — I can attribute the passage to 鸠摩罗什译本 as quoted there (南怀瑾 says 鸠摩罗什也翻译过《金刚经》，其他也有人翻译).\n\nAlso 牟宗三: 般若精神是\"应无所住而生其心\"，\"是一法不立，是无知亦无得，是不坏假名而说诸法实相\" — 这是解释性说明 by 牟宗三 (a scholar's interpretation). Useful: \"不坏假名而说诸法实相\" supports non-nihilistic reading. And he notes 般若 is 共法 — common to 大小乘. Good.\n\nShould I quote 王德峰's 三句义? Maybe briefly as a modern gloss on 即非/是名. Could be useful but keep it lean. The user wants no 心灵鸡汤 — so keep it textual and analytic. Maybe skip 王德峰, or a single line as a modern explanation. I'll skip to keep tight, or mention briefly? I think mention 牟宗三 once (as scholarly reading) is enough. Actually 牟宗三's \"不坏假名而说诸法实相\" helps explain the 三句义 structure legitimately. Keep it.\n\nOne more check I could do: verify the exact sutra wording via 牟宗三's footnote (1) which references 《金刚般若波罗蜜经》 — already seen.\n\nDo I need to double check \"应无所住而生其心\" is in 第十品 only? Yes 467 = 第十品. The phrase with 应生无所住心 in 第十四品. Fine.\n\nAlso I should double-check the claim \"第十品前一段说 庄严佛土\" — chapter 467 text shows \"何以故。庄严佛土者。即非庄严。是名庄严。\" — yes.\n\nNow, the 三句义 in this section as quoted: \"庄严佛土者。即非庄严。是名庄严\" — note 南怀瑾's rendering. Fine.\n\nLet me also decide whether to attempt get_scholarly_source for the 聖嚴 無住 article. It may return no abstract. Marginal usefulness: showing that scholars debate whether 無住 in sutra vs Chan 看話禪/安心 are consistent — that's actually relevant to my honest point about 接受史 vs 经文语境. But METADATA_ONLY suggests I can't. Let me try once — it's cheap and if abstract exists it strengthens with a real scholarly reference. I'll try ABSTRACT access.\n\nActually the tool says access_level METADATA_ONLY \"只反映已实际取得的证据\". Trying requested_access=ABSTRACT may fetch it. Let's try.No abstracts available. So I won't use scholarship content. I'll note that I checked but only obtained metadata (maybe brief mention — actually should I mention? The instruction says give partial results and unknowns. I think mentioning briefly that recent secondary literature records exist but I could only get metadata is fine but not necessary. Keep it minimal — maybe one sentence at the end under \"证据边界\"? Better: mention only if it matters. I'd say the answer doesn't need it. However, honesty about sources: I should state clearly where the sutra text comes from (南怀瑾's book quoting the sutra), that his commentary is commentary, and that I did not have a standalone critical edition of the sutra in the library.\n\nLet me write the answer now. Chinese. Direct, no chicken soup. Reasonably structured but not overly long. Include citations to book chapters with the reader links perhaps. Format: use the citation labels.\n\nCitation format: 【《南怀瑾经典合集（共24册）》·第十品 庄严净土分】 and link https://deepphilosophy.top/reader/a26240ee8f45?ch=467. I'll include links for main ones.\n\nDraft:\n\n结论先说：不是。至少不是\"什么都不要在乎\"的意思——它讲的是心\"住\"在哪里，不是心\"有没有\"、也不是情绪有多强。经文反对的对象是\"住\"（心止住、执取、以之为支点），而不是\"心\"本身；而且这一句在被说出来时，紧接着要求的是\"生其心\"。\n\n一、这句的出处和它在经文里的位置\n\"应无所住，而生其心\"在鸠摩罗什译《金刚经》第十品（庄严净土分）。完整句子是：佛说\"是故须菩提，诸菩萨摩诃萨应如是生清净心。不应住色生心，不应住声香味触法生心。应无所住，而生其心。\"（经文见【南怀瑾...第十品】）\n三点要看清：\n1. 否定的是\"住\"这个动词，宾语是色、声、香、味、触、法——六种被认知/感受的对象。\"住\"在此指心止住、粘着、以其为立足处。\n2. 句子结尾是\"而生其心\"——心要生起。经不是要求把心生灭掉。\n3. 前半句说的是\"应如是生清净心\"。所以它是一句关于\"如何生心\"的指示，不是关于\"要不要有心\"的指示。\n而且它出场的语境是：佛问\"菩萨庄严佛土不\"，须菩提答\"庄严佛土者，即非庄严，是名庄严\"。也就是说，这一段讨论的是菩萨要不要、如何进行\"庄严佛土\"这件事——不是退出世界，而是不要把\"我在庄严一个国土\"当成实在的事情来抓。这个\"即非—是名\"的格式贯穿全经：否定的是\"实有自性\"，而不是取消事情。（牟宗三把般若的这层意思概括为\"一法不立……不坏假名而说诸法实相\"，并说\"应无所住而生其心\"是《大般若经》般若精神的一句表达。）\n\n二、同一部经里对这句的三个限制\n1. 它和\"发菩提心\"绑在一起，不是和冷淡绑在一起。第十四品（离相寂灭分）：\"是故须菩提，菩萨应离一切相，发阿耨多罗三藐三菩提心。不应住色生心……应生无所住心。若心有住，即为非住。是故佛说菩萨心不应住色布施。须菩提，菩萨为利益一切众生故，应如是布施。\"——动机写得很明确：为利益一切众生。所以\"无所住\"的直接邻居是全经承担最重的那件事（发无上菩提心、度一切众生），不是\"算了，无所谓\"。\n2. 它是\"行于\"某种实践的方式，不是实践的对立面。第四品（妙行无住分）：\"菩萨于法，应无所住，行于布施。所谓不住色布施，不住声香味触法布施。\"品名\"妙行无住\"——行还在，只是不住。第十四品还给了一个为什么：心住于法而行布施，\"如人入暗，即无所见\"；心不住法而行布施，\"如人有目，日光明照，见种种色\"。理由是\"住\"使人看不见，不是\"对象无价值\"。\n3. 经文自己禁止把它读成断灭。第二十七品（无断无灭分）：\"汝若作是念，发阿耨多罗三藐三菩提心者，说诸法断灭。莫作是念。何以故？发阿耨多罗三藐三菩提心者，于法不说断灭相。\"——\"什么都不要在乎\"若落成\"一切皆无、都无所谓\"，就是这里被点名禁止的读法。（南怀瑾把这句解为对\"断灭见/拨无因果\"的警戒，那是注解，不是经文原话。）\n\n三、能推出什么，不能推出什么\n可以推出的：《金刚经》所反对的\"住\"，是心以某个色声香味触法的对象为最终支点（并由此生我相、人相、众生相、寿者相，见第三品与第十四品）；\"无住\"不是心的熄灭，而是心仍然生起、仍然行动，但不把任何对象当成可以停靠的基座。第十八品\"过去心不可得，现在心不可得，未来心不可得\"说的也是同一类结构：心不是一件可以被捧住的东西。\n不能推出的：经文没有讨论\"在乎的强度\"。它讲\"住/相\"的结构，不讲\"我该不该为这件事难过、该多在意\"。所以严格说，《金刚经》回答不了\"是否应该很在乎某个人/某件事\"这种关于分寸的问题——它既不要求冷漠，也不为任何具体的情感量级背书。把\"无所住\"扩展成\"什么都不要在乎\"，是把一个关于执取方式的词（住）换成了一个关于情感强度的词（在乎），两者不是同一层级的东西。这种转换在禅宗接受史上很常见（南怀瑾记六祖\"初步悟道\"就是听到这一句），但那属于这一句的后世影响史，不是第十品经文的语境。\n\n证据边界：本库没有独立的《金刚经》校勘本，我读到的经句来自南怀瑾《金刚经说什么》分品引录并讲解的经文段（每品开头引原文，其后是注解）；他的讲解是现代注解，我在上面凡引用他的解释处都已标明。我也检索了近期二次文献，\"無住\"/《金剛經》相关论文只有书目记录，摘要未取得，所以上面没有依赖任何论文的结论。\n\nThat last section is good. Maybe also mention 牟宗三 citation with the book. Use citation labels.\n\nLength: moderate-long, fine. Avoid over-formatting? The user asked a substantive question; headings help. I'll use a few headers but keep tight. Maybe fewer headers — use three short sections.\n\nNote about \"应无所住。而生其心\" 句读 — South's text has 句号; fine.\n\nOne caution: I attributed \"第十品\" and \"第十四品\" chapter titles to 昭明太子's division as in 南怀瑾's book (he mentions 昭明太子的标题 in 第四品 chapter). The 品名 (庄严净土分 etc.) come from the text itself. Fine.\n\nAlso should I note that \"应无所住而生其心\" as a continuous phrase without break appears as such in the user's quotation and in 南怀瑾's chapter 658; the sutra text in ch.467 has 句读 \"应无所住。而生其心。\" I'll mention briefly in footnote style? Maybe a short note: 我读到的文本作\"应无所住。而生其心。\"（第十品），第十四品则作\"应生无所住心\"。That's a nice textual detail. Include in section one.\n\nWrite it now.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "金刚经"
+     },
+     "status": "success",
+     "duration_seconds": 2.714,
+     "result_full": "{\"query\": \"金刚经\", \"results\": [{\"book_id\": \"e95b30f28a11\", \"book_title\": \"寻觅意义\", \"author\": \"王德峰\", \"chapter_idx\": 1, \"chapter_title\": \"中西方文化差异的渊源\", \"citation_label\": \"【《寻觅意义》·中西方文化差异的渊源】\", \"snippet\": \" 这种事情，跟中国人讲，全明白的；跟欧洲人讲，怎么能明白呢？中国思想和西方思想的差别在这里我们也能看到。 佛家三句义 《金刚经》中有三句义，这是一种表达式，在经文中经常出现： 如来说世界，非世界，是名世界。 第一句话，“如来说世界”（如来说，有一个世界）；第二句话随即来了，“非世界”（就不是世界）；第三句又来了，“是名世界”（所以称它为世界）。 这叫三句义。又如：“如来说，第一波罗密，即非第一波罗密，是名第一波罗密。” …… 我当初念中学时，有幸读到了《金刚经》，读到三句义时脑子就乱了，我搞不懂这是在说什么。 而今看来，其义大抵如下。 第一句，“如来说世界”，就是有一个世界，但你千万别把这个世界看成是实体。西方的宇宙观长期以来是实体\", \"score\": 46, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"e95b30f28a11\", \"chapter_idx\": 1, \"focus\": \"金刚经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c3c401982587\", \"book_title\": \"庄子说什么\", \"author\": \"韩鹏杰\", \"chapter_idx\": 16, \"chapter_title\": \"渔父\", \"citation_label\": \"【《庄子说什么》·渔父】\", \"snippet\": \"，这是第一种解释。 第二种解释可谓之“佛解”。如若按佛家理解，“朝彻”讲的是对事物生灭次序幻相执着的放下，其次序也类似《金刚经》里所说的无四相：“无我相，无人相，无众生相，无寿者相。”所谓“外天下”是指圣人之才须摆脱社会的束缚，开始转向对生命本身进行探求；“外物”即摆脱事物的束缚；“外生”指摆脱生命的束缚，进入对万法唯识的认知，是佛家无我相的境界；“朝彻”是说摆脱识的束缚，洞彻了真如究竟，是佛家无人相的境界，不再单纯从人的观点出发看待问题；“见独”指摆脱因缘的束缚，是佛家无众生相脱俗入圣的境界；“无古今”是讲摆脱时间的束缚，超越成心；“不死不生”是说摆脱生死的束缚，即非死非生，正是佛家不生不灭的无寿者相的境界。 第三种解释可谓之“禅\", \"score\": 44, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c3c401982587\", \"chapter_idx\": 16, \"focus\": \"金刚经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"1201d003be31\", \"book_title\": \"中国佛教史\", \"author\": \"蒋维乔\", \"chapter_idx\": 20, \"chapter_title\": \"第十八章 近世各宗\", \"citation_label\": \"【《中国佛教史》·第十八章 近世各宗】\", \"snippet\": \"戒者数万人。入寂于顺治丁酉十四年，寿八十。著有《寤言》《补灯录》《继灯录》《禅余内外集》，共八十余卷；更有《楞严经疏》《金刚经疏》《心经指掌》《四分约义》《律学发轫》《弘释录》等书。 道霈，字为霖，建安丁氏子。年十四，出家；十八参方，历诸讲肆。后参鼓山贤，看庭前柏树子，三年无所入。辞别出游两浙。复归鼓山，充维那；一日，与师问答，被呵出，一夜不安；至四鼓，卷帘出门，忽然大彻；自此商榷玄奥，无不吻合。贤年八十，付属大法；寂后遂继其席。住鼓山二十余年，海内瞻依，以为东南一大法窟。著有《拂语录》《餐香录》《圣箭堂述古》诸书行世。 道霈于经疏，著述甚富。昔智者大师有《仁王般若经疏》，安史之乱，佚失；宋初，四明祖师多方求之，勿获；数百载至元丰初\", \"score\": 43, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"1201d003be31\", \"chapter_idx\": 20, \"focus\": \"金刚经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"87b26c6b10e6\", \"book_title\": \"哲学和我们的时代\", \"author\": \"周龙辉\", \"chapter_idx\": 27, \"chapter_title\": \"割断下来的胳膊不再是胳膊\", \"citation_label\": \"【《哲学和我们的时代》·割断下来的胳膊不再是胳膊】\", \"snippet\": \"在世界的关系首先是现象世界与规律世界的关系，规律世界是现象的静止的内容，现象世界与规律世界具有同一性。 与佛学相比较，《金刚经》中说，“凡所有相皆是虚妄。若见诸相非相，即见如来”。佛学与黑格尔共同承认现象界的非独立性，“诸相非相”“五蕴皆空”，佛学全盘否定了现象，把它们当作空幻的泡影，以此从生死烦扰中得到解脱，但是黑格尔并没有全盘否定现象，认为现象是本质的显现，二者具有同一性。另外，必须提一句，在我们这个时代流传极广的唯物主义与唯心主义的区分，其实二者的区别并不是“物质与意识何为第一性”，关键在于是否承认现象的自足与独立，那些被看作唯心主义的思想家，大多认为个别的东西、现象的东西不是自足的，因此必须从更为普遍的全体与系统来看待某一现\", \"score\": 41, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"87b26c6b10e6\", \"chapter_idx\": 27, \"focus\": \"金刚经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"1201d003be31\", \"book_title\": \"中国佛教史\", \"author\": \"蒋维乔\", \"chapter_idx\": 19, \"chapter_title\": \"第十七章 近世之佛教\", \"citation_label\": \"【《中国佛教史》·第十七章 近世之佛教】\", \"snippet\": \"有宋世隆、毕奇、周梦颜、彭绍升诸人；可谓为近世居士之先导。今依次述其历史如下： 宋世隆，字文森，长洲人。年四岁，听父读《金刚经》，即能诵四句偈。既长，补诸生；年五十余，有疾；偶触《华严经》无着无缚解脱句有会；遂长斋断欲，日诵《金刚经》；月余，病起；中秋夕，见堂前角灯，光不透脱；不觉感慨，默坐参究；久之，忽汗下通身，胸中廓然；作偈曰：“主主宾宾无主宾，分明指点愈迷津；偶然风触灯中火，却遇当家旧主人。”时天笠珍禅师，过苏之大云庵；世隆往谒，既见；即云：“龙脑薄荷，香闻天下。”师云：“可要干矢橛么？”随问云：“如何是干矢橛？”世隆云：“八面春风。”师云：“来此作么？”世隆云：“不求佛，不求法，要讨个了当。”师厉声曰：“万劫千生不得了。”世\", \"score\": 40, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"1201d003be31\", \"chapter_idx\": 19, \"focus\": \"金刚经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 106, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "应无所住而生其心"
+     },
+     "status": "success",
+     "duration_seconds": 2.714,
+     "result_full": "{\"query\": \"应无所住而生其心\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 658, \"chapter_title\": \"禅宗与佛学\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·禅宗与佛学】\", \"snippet\": \"他的父亲宦于广东，便落籍于新州。三岁丧父，其母守志抚孤至于成立，家贫，采樵为生，一日，因负薪到市上，听到别人读金刚经到“应无所住而生其心”一段，便有所领悟，别人告诉他这是黄梅（湖北）的禅宗第五代祖师弘忍禅师，平常教人读的佛经，他便设法到黄梅去求学习禅（这时他并未出家为僧）。五祖弘忍禅师初见他时，便问：“汝自何来？”他便答道：“岭南。”五祖说：“欲须何事？”他答：“唯求作佛。”五祖说：“岭南人无佛性，怎么做佛？”他答道：“人地即有南北，佛性岂有东西？”五祖听了，便叫他跟着大家去做苦工，他说：“弟子自心常生智慧，不离自性，即是福田，和尚要我做何事？”五祖说他根性太利，便叫他到槽厂去做舂米的苦工，他做了八个月的苦工，有一天，五祖宣布要传授\", \"score\": 40, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 658, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 467, \"chapter_title\": \"第十品 庄严净土分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十品 庄严净土分】\", \"snippet\": \"佛解释什么叫清净心？“不应住色生心。不应住声香味触法生心。应无所住。而生其心。”禅宗六祖初步悟道，就是这一句话，听到了“应无所住而生其心”就开悟了。此心本来无所住的啊！因为你不明白此心无所住，无所住是毕竟空；有个空的境界，就不对了，就有所住了，就住在空上了，那是住法而生心，住在空法上。 所以真正的清净心，不是有个光，有个境界，而是不住色，不住声香味触法，他说真正的修行，应无所住而生其心。应该随时随地无所住，坦坦然，物来则应，过去不留。用我们常谈的这两句话，勉强来描写，就是此心无事，像个镜子，心如明镜台，有境界来就照，用过了就没有。当年我有个朋友，学佛有点心得，那个时候刚刚有打火机，人家问他，佛是什么？他说就像个打火机一样，卡达！用它\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 467, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 448, \"chapter_title\": \"第六章 清净慧菩萨\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第六章 清净慧菩萨】\", \"snippet\": \"萨境界是常觉不住，不住在觉的境界中，也不抱着一个觉照的境界，有一个觉照的境界就有所住了。禅宗的六祖因《金刚经》里的一句“应无所住而生其心”而悟道。“应无所住而生其心”是修行的一个方法，如果以圆觉的境界来讲，应该改为“本无所住而生其心”，悟了道以后，就是本无所住了，此心本无所住，物来则应，过去不留。“照与照者”，第一个照是能照，下面的照者是所照，例如妄念是所照。能照与所照，同时寂灭，同时都空了，这才是得道的境界。 “譬如有人，自断其首，首已断故，无能断者，则以碍心自灭诸碍，碍已断灭，无灭碍者。” 你说什么叫作空呢？你说打起坐来，有个清静，有个空，还有个境界，那就糟了，那是意识形态妄想所造成的，搞鬼的就有个鬼境界，玩神的就有个神境界，修\", \"score\": 37, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 448, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"author\": \"牟宗三\", \"chapter_idx\": 15, \"chapter_title\": \"第十五讲　佛教中圆教的意义\", \"citation_label\": \"【《中国哲学十九讲》·第十五讲　佛教中圆教的意义】\", \"snippet\": \"而说。圆通无碍是般若的妙用。如果round teaching对应这个意思讲，则是恰当的。照《大般若经》所讲，般若精神是“应无所住而生其心” (1) ，是“佛说般若波罗蜜，即非般若波罗蜜，是名般若波罗蜜” (2) 。般若是一法不立，是无知亦无得，是不坏假名而说诸法实相，它就是圆，所以圆通无碍说的是般若，而照这个意义说圆，即可翻译成round。 但是圆有两个意义，一方面是指般若的圆通无碍，另一方面则是指华严宗所说的“圆满无尽，主伴俱足”。照华严宗所说的圆，不但是圆通（或圆融）无碍，而且也是圆满无尽。所以它的圆具有圆通与圆满两层意义。圆满无尽就是perfect，而圆通无碍则可以翻译成round。所以凡是说圆通无碍，是就般若说的。又如华严宗\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 15, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 14, \"chapter_title\": \"第一讲\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第一讲】\", \"snippet\": \"论国内国外，对宗教修持功夫都很内行，修就是修定。大家修定观念的最大错误是什么呢？是以为所谓“定”就是什么都不知道，这与“应无所住而生其心”的意义是相违背的。此其一。 其次严重的是，现在一般人都去搞神秘了。灵感啊！神通啊！第六感啊！超越冥想啊！各种神秘名称都加上去了，这是一个非常严重的错误。大家要知道，神通与神经是双胞胎，这一点真是很严重的问题，因为失之毫厘，差之千里。 话又说回来了，什么是定？一定要认清楚。四禅八定，是佛教修证方法的中心基础，不过佛法不在定上，定是共法。但是佛法也不离开定，历代的高僧传记中，功夫修证到“定”的比丘及比丘尼非常多。甚至南北朝的皇帝，也是与佛教有关，如刘裕小名寄奴；梁武帝、隋文帝等与佛教关系都很深。 佛告\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 14, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 14, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 467,
+      "focus": "应无所住而生其心"
+     },
+     "status": "success",
+     "duration_seconds": 0.008,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 467, \"title\": \"第十品 庄严净土分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十品 庄严净土分】\", \"text\": \"有多大小。\\n循业发现，有些人同样的学佛打坐，但所看到的佛都不一定，你那个佛鼻子高一点，我那个佛鼻子塌一点，总有点不同。这是什么道理？是个人心境业力的发现不同。宁有方所，没有一个固定的方向，没有一个固定的心所作用，是绝对的唯心，纯粹的唯心。\\n所以佛在这里问，“菩萨庄严佛土不”？须菩提说不是的，他否认所谓的庄严佛土世界存在。\\n“何以故。庄严佛土者。即非庄严。是名庄严。”\\n《金刚经》常用这种论辩方法，所谓庄严佛土，只是一句形容的话；“即非庄严”，实际上不是我们想象的那种庄严。我们想象的庄严，一定是地方清净，大家闭着眼一想啊，一定想一个什么都没有，空空洞洞的境界。但是这只是你想象的，有这么一个境界相，已经是不庄严了。绝对的清净，绝对的空，绝对不是你想象的，是名庄严，所以叫做不可思议。\\n这三句话，正，反，最后的综合，告诉你毕竟的空灵，而你所讲的空，想象当中的空，已经是不空了。真正佛土的庄严，你没有亲自证到过，不要空洞地想。这是须菩提回答的道理。\\n打火机\\n“是故须菩提。诸菩萨摩诃萨。应如是生清净心。不应住色生心。不应住声香味触法生心。应无所住。而生其心。”\\n教我们修行的方法来了，注意啊！《金刚经》讲到这里，就告诉我们一个修行的方法，是第二等的方法，因为第一等的大家不懂，是没有字的；第二等是有字的，应无所住。什么叫无所住呢？应随时生清净心。譬如有人讲，老师啊，这两天修行很好呢！有清净心。现在大家听过《金刚经》，很内行了，他只要有一个清净心，已经是所知量，范围很有限了。\\n现在佛解释什么叫清净心？“不应住色生心。不应住声香味触法生心。应无所住。而生其心。”禅宗六祖初步悟道，就是这一句话，听到了“应无所住而生其心”就开悟了。此心本来无所住的啊！因为你不明白此心无所住，无所住是毕竟空；有个空的境界，就不对了，就有所住了，就住在空上了，那是住法而生心，住在空法上。\\n所以真正的清净心，不是有个光，有个境界，而是不住色，不住声香味触法，他说真正的修行，应无所住而生其心。应该随时随地无所住，坦坦然，物来则应，过去不留。用我们常谈的这两句话，勉强来描写，就是此心无事，像个镜子，心如明镜台，有境界来就照，用过了就没有。当年我有个朋友，学佛有点心得，那个时候刚刚有打火机，人家问他，佛是什么？他说就像个打火机一样，卡达！用它就有，不用就没有。\\n因师而瞎的眼\\n“须菩提。譬如有人。身如须弥山王。于意云何。是身为大不。须菩提言。甚大。世尊。何以故。佛说非身。是名大身。”\\n“譬如有人，身如须弥山王”，注意这一句话喔！须弥山王就是讲法身，得到应无所住，而生其心，可以初步证到一点法身了。法身是不生不灭，不垢不净，不增不减，所以法身也是大身，也叫做无边身。他说你要得到应无所住而生其心啊！对佛的法身庄严净土，都知道了，佛的世界，佛的净土，就是这个样子。他说，我再告诉你啊！假使我讲一个人，身体大得像须弥山一样，像喜马拉雅山那么大，胖得比昆仑山还要胖，你说他大不大？那是一个譬喻，是说法身无量无边的大，永远的不生不死。佛告诉他最后的结论，“佛说非身，是名大身”。摆脱了我们肉体的身见，身见就是八十八结使第一个解脱不了的疙瘩，把身见空掉了以后，就可以证得不生不死的法身。\\n不生不死的法身，也是一句抽象的话，佛法只有实证，你证到了以后才知道，是法不可说，不可说，凡是说的都不对，这个就是法身。所以禅宗讲的悟道，第一步就是要证得这个空性的法身，身见才能够脱掉，才可以说学禅。\\n这两天你们考试的题目禅是什么？大家答的都是牛头不对马嘴；禅是佛的心法，根据《楞伽经》，或根据《金刚经》，佛讲得很清楚；可是大家没有留意，随便说要学禅，观念、见地上都不清楚。这个见地不清楚就一错再错，所有的修持做功夫，走的都是歪路，因为起步走错了。这不能瞎搞的，不能乱玩的，所以禅宗祖师有一句话：“我眼本明，因师故瞎。”这是一个大禅师悟道后讲的两句话，因为原来的师父指导错误，以至本来明亮的眼睛，等于被老师弄瞎了，看不清楚。所以那些乱七八糟的著作，与我一样，乱搞的，经常会把人家的眼睛搞瞎了的，这一点要注意，要特别注意！\\n这一品庄严净土，我们给它的结论偈子如下：\\n第十品偈颂\\n外我无身是大身，若留净土即留尘。\\n然灯吩咐庄严地，挂角羚羊何处寻？\\n“外我无身是大身”，外我无身是引用老子的话，“外其身而后身存”。我们学佛修道，先把身见能够解脱了，所以外我无身，到达了无身见的境界，那第一步的学佛，已经证得了。法身也就是大身。\\n“若留净土即留尘”，你心中还有一个净土，认为是佛境界，这个清净就是尘，留尘就是障碍。\\n“然灯吩咐庄严地”，佛不是说吗？他在然灯佛那里悟道，所以然灯佛给他授记，说他悟了，再转身修持，将来在这个世界上成佛，做教主，说这个证道是庄严净土。名词上叫做净土，叫心净，叫心印，并没有个实际的境界啊！若有个实际境界，若留净土即留尘。所以然灯吩咐庄严地，就像禅宗祖师说的：“挂角羚羊何处寻。”据说羚羊睡觉的时候，把身体一翘，羊角挂在树上就睡觉了，打猎的人不知道，在地上找这个羚羊也找不到。所以说我们一切应无所住而生其心，此心本如羚羊挂角。其实，只是譬喻而已。\\n譬如我们两个钟头来研究《金刚经》，这一百二十分钟的时间，所说的，所听的，都是挂角羚羊何处寻，现在就在净土中了。\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 1397, \"excerpt_end\": 3562, \"chapter_text_length\": 3562, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"应无所住而生其心\"], \"focus_terms_found_in_chapter\": [\"应无所住而生其心\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"应无所住而生其心\", \"offset\": 2097, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 467, \"offset\": 1897, \"focus\": \"应无所住而生其心\"}}, {\"term\": \"应无所住而生其心\", \"offset\": 2223, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 467, \"offset\": 2023, \"focus\": \"应无所住而生其心\"}}, {\"term\": \"应无所住而生其心\", \"offset\": 2525, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 467, \"offset\": 2325, \"focus\": \"应无所住而生其心\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"10c57b48ed6692830c28df99df7d5800a5b90eb1dfb07839781b17f731455cae\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=467\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[1397, 3562]], \"covered_characters\": 2165, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "金刚般若波罗蜜经"
+     },
+     "status": "success",
+     "duration_seconds": 1.098,
+     "result_full": "{\"query\": \"金刚般若波罗蜜经\", \"results\": [{\"book_id\": \"1201d003be31\", \"book_title\": \"中国佛教史\", \"author\": \"蒋维乔\", \"chapter_idx\": 15, \"chapter_title\": \"第十三章 会昌以前之佛教概说\", \"citation_label\": \"【《中国佛教史》·第十三章 会昌以前之佛教概说】\", \"snippet\": \"四百部，合五十万颂；其已译者，六十一部，二百三十九卷。据《开元录》所载。初译《金光明最胜王经》（十卷）；继成密部之《能断金刚般若波罗蜜经》（一卷）、《大孔雀咒王经》（三卷）、《佛顶尊胜陀罗尼经》（一卷）；又有关于《因明》及法相宗之《因明正理门论》（一卷）、《观所缘论释》（一卷）、《取因假摄论》（一卷）；其所译大部，则有部律为多，例如《根本说一切有部毗奈耶》（五十卷）、《根本说一切有部苾刍尼毗奈耶》（二十卷）、《根本说一切有部毗奈耶杂事》（四十卷）、《根本说一切有部尼陀那目得迦》（十卷）、《根本萨婆多部律摄》（二十卷）等是。此外尚著《南海寄归内法传》（四卷）、《大唐西域求法高僧传》（二卷）。入寂于先天二年（713），春秋七十有九。又译\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"1201d003be31\", \"chapter_idx\": 15, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"1201d003be31\", \"book_title\": \"中国佛教史\", \"author\": \"蒋维乔\", \"chapter_idx\": 16, \"chapter_title\": \"第十四章 唐之诸宗\", \"citation_label\": \"【《中国佛教史》·第十四章 唐之诸宗】\", \"snippet\": \"那摩提译 《深密解脱经》五卷…………………………………………菩提流支译 《十地经论》十二卷天亲造（以下六部译者同上） 《金刚般若波罗蜜经论》三卷 《胜思惟梵天所问经论》四卷 《法华经论》二卷 《无量寿优波提舍经论》一卷 《文殊师利菩萨问菩提经论》三卷 《摄大乘论》二卷天亲造……………………………………佛陀扇多译 此外三人之翻译尚多；今兹所举，惟择其与世亲关系密接者。又摩提、流支合译者，有《宝积经论》（四卷）、《宝性论》（四卷）；流支又译《入楞伽经》（十卷）。由此等书目考之：三人为世亲系统，殆无可疑。 就《十地论》之翻译言之，亦极有兴味。盖翻译此论，始于宣武永平元年（508）；初摩提、流支，本在一处；《续高僧传》曰：“当翻经日，于洛阳\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"1201d003be31\", \"chapter_idx\": 16, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"author\": \"牟宗三\", \"chapter_idx\": 15, \"chapter_title\": \"第十五讲　佛教中圆教的意义\", \"citation_label\": \"【《中国哲学十九讲》·第十五讲　佛教中圆教的意义】\", \"snippet\": \"先了解《般若经》的特殊性格，也就是必须先了解分别说与非分别说的观念，才能确实把握住圆教之意义。 尤惠贞记录 (1) 见《金刚般若波罗蜜经》。 (2) 同上。 (3) 康德论最高善主要见于《实践理性批判》的第一部第二卷，即《纯粹理性的辩证论》。 (4) 见《孟子·公孙丑》篇。\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 15, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"author\": \"牟宗三\", \"chapter_idx\": 16, \"chapter_title\": \"第十六讲　分别说与非分别说以及“表达圆教”之模式\", \"citation_label\": \"【《中国哲学十九讲》·第十六讲　分别说与非分别说以及“表达圆教”之模式】\", \"snippet\": \"故，说《般若波罗蜜经》……复次余经中佛说五众无常苦空无我相，今欲以异法门说五众故，说《般若波罗蜜经》。” (23) 见《金刚般若波罗蜜经》。 (24) 三界指欲界、色界、无色界。参看《佛性与般若》下册，第四章第八节。 (25) 《法华玄义》卷五上有云：“通诸位论粗妙者……中草（二乘）虽复动出，智不穷源，恩不及物……大树（别教）实事，同缘中道，皆破无明，俱有界外功用，故此位为妙。而别教从方便门，曲径纡回，所因处拙，其位亦粗。圆教真门，是故为妙。”关于别教所以为“曲径纡回，所因处拙”，请参看《佛性与般若》上册，第五六〇至五六一页。 (26) 天台宗以《法华经》为圆教的大纲。《法华玄义》卷第十有云：“当知此经唯论如来设教大纲，不委微细纲目\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 16, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 528, \"chapter_title\": \"中国佛教原始的禅与禅宗四祖的风格\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·中国佛教原始的禅与禅宗四祖的风格】\", \"snippet\": \"经》印心的传统了。四祖教人念摩诃般若（《大般若经》是佛法中阐言体性空的要典），从此，自五祖弘忍付授六祖慧能以来，便改用《金刚般若波罗蜜经》以印心，因此而开启初唐以后中国禅宗的特色。除此以外，四祖道信大师，又为后世学者留下不慕虚荣，轻生死，重去就的清风亮节，作为世出世间的典范。唐、宋以后许多儒家的“高士”、“处士”和道家的神仙们，亦多有相同的志趣。这是中国文化另一面的精神，也是中华民族的血统中特别强烈的一种特殊精神，应当尊重注意，然后才能谈——中国文化的气节。 “贞观癸卯岁（公元六四三年）太宗向师道味，欲瞻风采。诏赴京，祖上表逊谢，前后三返。第四度命使曰：如果不起，取首来。使至山谕旨，祖乃引颈就刃，神色俨然。使回，以状闻，帝弥钦重。 \", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 528, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 6, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "list_books",
+     "args": {
+      "school": "佛教"
+     },
+     "status": "success",
+     "duration_seconds": 0.003,
+     "result_full": "{\"books\": [{\"id\": \"958d02ba12f5\", \"title\": \"洞见：从科学到哲学，打开人类的认知真相\", \"author\": \"罗伯特·赖特\", \"region\": \"西方\", \"rank\": 36.6, \"summary\": \"《洞见》是美国学者罗伯特·赖特的一部跨学科著作，融合了现代科学（尤其是进化心理学、认知科学和神经科学）与佛教哲学（特别是正念冥想）的视角，探讨人类认知的真相。赖特指出，人类的思维和情感是自然选择进化的产物，其设计目标是基因的繁衍，而非揭示客观真理。因此，我们常常被幻觉和偏见所蒙蔽，产生痛苦和不满。佛\"}, {\"id\": \"077532e4515e\", \"title\": \"僧侣与哲学家\", \"author\": \"让-弗朗索瓦何维勒/马修·理查德\", \"region\": \"西方\", \"rank\": 33.3, \"summary\": \"本书是法国哲学家让-弗朗索瓦·何维勒与其子、前分子生物学家、后出家为僧的马修·李卡德之间的一场深刻对话。何维勒代表西方理性主义传统，质疑佛教的哲学基础；而李卡德则以亲身修行体验和佛学知识回应，阐释佛教的智慧与慈悲。对话围绕生命的意义、自我、意识、幸福、科学与宗教等主题展开，展现了东西方思想在根本问题\"}], \"total\": 2, \"offset\": 0, \"has_more\": false, \"next_offset\": null}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "于法不说断灭相"
+     },
+     "status": "success",
+     "duration_seconds": 1.315,
+     "result_full": "{\"query\": \"于法不说断灭相\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 484, \"chapter_title\": \"第二十七品 无断无灭分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第二十七品 无断无灭分】\", \"snippet\": \"耨多罗三藐三菩提。须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。 三界六道之外 “须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。” 佛叫须菩提，“汝若作是念”，你假使有一个观念，认为“如来不以具足相故，得阿耨多罗三藐三菩提”，认为不著相就可以见佛，就可以大彻大悟的话，他说须菩提啊，你千万不要这样想，不要认为没有功德成就也能够悟道成佛，你有这种观念就错了。 前面我们明明听须菩提讲的嘛！不要以三十二相见如来。佛则说若以色见我，以音声求我，是人行邪道，不能见如来。可是佛现在又说，须菩提你不要搞错了\", \"score\": 38, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 484, \"focus\": \"于法不说断灭相\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 489, \"chapter_title\": \"第三十二品 应化非真分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第三十二品 应化非真分】\", \"snippet\": \"它只告诉你“一切有为法，如梦幻泡影”。梦幻泡影是叫你不要执著，不住，并没有叫你空不空。你如果说空是没有，《金刚经》说：“于法不说断灭相”，说一个空就是断灭相，同唯物的断见思想是一样的，那是错的。当梦幻来的时候，梦幻是真，当梦幻过去了，梦幻是不存在的；但是梦幻再来的时候，它又俨然是真的一样。只要认识清楚，现在都在梦幻中，此心不住，要在梦幻中不取于相，如如不动，重点在这里。 当你在梦中时要不着梦之相；当你做官的时候，不要被官相困住了；当你做生意的时候，不要被钞票困住了；当你要儿女的时候，这个叫爸爸，那个叫妈妈，不要被儿女骗住了；要不住于相，如如不动，一切如梦幻泡影。下面，“如露亦如电”，早晨的露水也是很短暂的，很偶然地凑合在一起，是因缘\", \"score\": 37, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 489, \"focus\": \"于法不说断灭相\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 48, \"chapter_title\": \"经义之部\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·经义之部】\", \"snippet\": \"身非相分。经云：若以色见我，以音声求我，是人行邪道，不能见如来。 第二十七，无断无灭分。经云：发阿耨多罗三藐三菩提心者，于法不说断灭相。 第二十八，不受不贪分。经云：菩萨所作福德，不应贪着，是故说不受福德。 第二十九，威仪寂静分。经云：若有人言如来若来、若去、若坐、若卧，是人不解我所说义。何以故，如来者，无所从来，亦无所去，故名如来。 第三十，一合理相分。经云：若世界实有者，即是一合相。但凡夫之人，贪著其事。 第三十一，知见不生分。义如品名，不必拈提。 第三十二，应化非真分。经云：云何为人演说，不取于相，如如不动。又云：一切有为法，如梦幻泡影，如露亦如电，应作如是观。 （一九六八年，台北） 为《金刚》《楞伽》《楞严》三经重印首语 释\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 48, \"focus\": \"于法不说断灭相\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "应无所住行于布施"
+     },
+     "status": "success",
+     "duration_seconds": 1.315,
+     "result_full": "{\"query\": \"应无所住行于布施\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 461, \"chapter_title\": \"第四品 妙行无住分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第四品 妙行无住分】\", \"snippet\": \"宙中间的这一些东西，称之为极迥色。 这些就是色法，简单地说，色就是地、水、火、风四大，也就是我们这个身体。所谓“菩萨于法应无所住行于布施”，是叫我们不要住在色相上布施，不要有对象的观念。譬如说要做一点功德，出一点钱，或者救济一个人，然后说救济了某一个人，那是住相布施。学佛的人帮助人、救助人，应该不觉得有对象，有对象的观念要丢掉，不要留一念在心中。 布施善行的福德，叫做人天福德，是小果报，并不是学佛的大福报。福德跟功德大有差别，《金刚经》专讲福德，重点在福德，不在功德。什么是人生最大的福德？悟道，成道。智慧是人生最大的福报，所谓智慧的成就，指的并不是普通的知识。 再说我们在身上做功夫，闭着眼睛坐在那里，心里念佛也好、参禅也好、念咒子也\", \"score\": 37, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 461, \"focus\": \"应无所住行于布施\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 460, \"chapter_title\": \"第三品 大乘正宗分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第三品 大乘正宗分】\", \"snippet\": \"保持住。佛先答复他：就是这样。因为须菩提不懂，所以佛接着在下章就说了一段理由，说大乘菩萨道的修行方法，也包括精神的生命，应无所住行于布施，任何事情一做便休，无所住。应该无所住行于布施，这个叫修行。你心理的行为随时做到无所住，一切都布施，都丢开了，这是我们普通的话，都丢掉了。禅宗经常用一句话，放下，就是丢掉了。做了好事马上须要丢掉，这是菩萨道；相反的，有痛苦的事情，也是要丢掉。有些人说，好事我可以丢得，就是痛苦丢不掉啊！ 实际上，好事跟痛苦是一体的两面而已，一个是手背，一个是手心。假使说，好事他能够真丢开的话，痛苦来一样可以丢开，所以痛苦也是一个很好的测验。如果一个人碰到烦恼、痛苦、逆境的时候丢不开，说他碰到好事能丢得开，那是不可能的\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 460, \"focus\": \"应无所住行于布施\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 461,
+      "focus": "应无所住行于布施"
+     },
+     "status": "success",
+     "duration_seconds": 0.011,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 461, \"title\": \"第四品 妙行无住分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第四品 妙行无住分】\", \"text\": \"都错了，因为那不是无所住。\\n“应无所住，行于布施”，什么叫修行？念念皆空，随时丢，物来则应，过去不留；就算做了一件好事，做完了就没有了，心中不存。连好事都不存在心中，坏事当然不会去做了，处处行于布施，随时随地无所住。\\n譬如今天，有人批评你，骂你两句，你气得三天都睡不着觉，那你早住在那个气上。今天有一个人瞪你一眼，害你夜里失眠，你早住在人家那个眼睛上了。任何境界都无所住，我们看这一边，那一边就如梦一样过去了，没有了；回头看另一边，这一边做梦一样就过去了。但是我们做不到无所住，我们永远放不下，小狗没有喂啦！老爷没有回来啦……这一切都不要去管它，无所住行于布施，布施就是统统放下。下面告诉我们所谓不住色的布施。\\n不住色\\n什么是色？色法在佛学里，分为有表色、无表色、极微色、极迥色。\\n“有表色”指世界上的光色，青、黄、蓝、白、黑，以及长、短、高、矮等，是可以表示出来的。就连我们地、水、火、风，物质世界的东西，包括我们肉体，都可以表示出来。\\n“无表色”是属于精神方面的，是抽象的，没有办法表示。譬如说，我们大家都晓得原子能，那个能是什么东西？老实讲，除了正式学物理、科学的以外，一般人并不清楚。能的本身是空的，因为空，它的能力无比的大，甚至最后在科学仪器上都看不出来，只知道是这么一个东西，但却是无法表达的，称为无表色。\\n“极微色”，等于现在讲原子、核子，微小到几乎看不见的程度，经由科学仪器还可以看得出来，故称为极微色。\\n“极迥色”，远大得很，延伸到银河系统那一边的，包括了整个宇宙中间的这一些东西，称之为极迥色。\\n这些就是色法，简单地说，色就是地、水、火、风四大，也就是我们这个身体。所谓“菩萨于法应无所住行于布施”，是叫我们不要住在色相上布施，不要有对象的观念。譬如说要做一点功德，出一点钱，或者救济一个人，然后说救济了某一个人，那是住相布施。学佛的人帮助人、救助人，应该不觉得有对象，有对象的观念要丢掉，不要留一念在心中。\\n布施善行的福德，叫做人天福德，是小果报，并不是学佛的大福报。福德跟功德大有差别，《金刚经》专讲福德，重点在福德，不在功德。什么是人生最大的福德？悟道，成道。智慧是人生最大的福报，所谓智慧的成就，指的并不是普通的知识。\\n再说我们在身上做功夫，闭着眼睛坐在那里，心里念佛也好、参禅也好、念咒子也好，都在那里住色布施。嘴里说要放下，放下，结果什么都放不下，两个腿在那里发麻，受不了。为什么两腿发麻受不了？因为他住在色法上，念头住在色身上。如果念头不住在色身上，感觉就可以空掉，感觉空了，两腿两脚发麻你也不会感觉了。所以一切众生都在住色修持，而菩萨所谓“不住色布施”，是不住于这个色身上面，一切都放下，身体也放下。\\n不住声香味\\n“不住声香味触法布施”，有些同学们，用功好一点时，听到念佛念咒的声音，然后自己觉得得道了，最后道没有得，得了个神经。真的，好几个就是那么就走了，走到阴国去了，因为他不懂不住声的道理。有些人打坐，在座好多同学都有经验，坐得好的时候，突然一阵檀香味来了，其实并无檀香味，可是他的确闻到了。香味哪里来的？是你内在定境到了极点，人体内部清净光明就会发出香味来。实际上每个人都不臭的，真的健康的人，口液口水也都不臭的，只有另外一股人味；像《西游记》上说的，一闻就知道这里有人味，妖怪非要吃不可了。也像我们到猪栏一闻，就知道那里有猪味，狗窝里一闻，就知道那里有狗味。那个神仙到我们这里一闻，唉呀！都是人味，受不了。\\n这个经验我也有过，在高山顶上住了三年，一下来离都市还有五六里，就受不了那个人味了。其实我也是人啊！只因为在那个山顶，四顾无人的地方住惯了，下来以后觉得人味扑鼻，受不了，要隔很久很久才能习惯。学医学的就晓得，人体内部并不脏，但是身体内部的东西，一接触到外面的空气，与细菌一碰，马上就有味道了。当我们坐得好，内部发出一种香的时候，如果自认功德无量，闻到菩萨的香味，那你就住香了，那就不对！要应无所住，赶快放下。\\n内触妙乐的菩萨\\n“香味触”这个触很重要，尤其在座有些用功的朋友，真坐得好的时候，不愿下坐。你们初学的两腿发麻难过，坐得好的人，功夫够了，两个腿发舒服快乐，快乐得你决不愿意把腿放下来。这叫菩萨内触妙乐，身体内在奇妙的接触到从未有过的快乐。菩萨的戒律，不准入这种定，因为耽着这种禅定，就不肯去度众生了！谁都愿意享受内触妙乐，哪个人还愿意跑来站在这里讲课啊！所以说，菩萨境界是内触妙乐，触是身体的感受，但是一个真正学大乘佛法的人，是不应该住于内触妙乐的境界，是要应无所住行于布施。\\n“法”是意识境界，是属于观念、思想、精神方面。如果你心里还有个空空洞洞清清净净，就已经落在法上。所以说，把身体外面的一切丢完空完了，再把意识方面的也丢下了，这才叫做学佛，也就是不住色布施，不住声香味触法布施，佛说要这个样子才对。\\n讲到这里，佛又叫了一声，须菩提呀！我告诉你呀！你看这个老人家对弟子多亲切，他意思是说孩子啊，下面我再给你讲。\\n雁过长空\\n“须菩提。菩萨应如是布施。不住于相。何以故。若菩萨不住相布施。其福德不可思量。”\\n一个学大乘菩萨道的人，应该是这个样子来布施来修行，应该不住相，一切现象不留，心中若留一点现象，已经不是学佛的境界了。我们拿中国的文学形容它，就是：“风来竹面，雁过长空。”等于风吹过竹林子，竹林子飒……一阵响风过了，风绝对不停留在那个树叶子上，风早过去了；修行人的胸襟应该也是这样。又像天上的飞鸟，鸟在空中飞，是绝对不留一点痕迹的，雁过长空，飞过去了就飞过去了。修行要有胸襟，要有这个境界，这叫做内布施，苏东坡有一首名诗，也是由佛学里头来的：\\n人生到处知何似，应似飞鸿踏雪泥。\\n雪上偶然留指爪，鸿飞那复计东西。\\n他说人生一辈子像什么？像下雪天那个鸟，在雪地上站了一下，留一个爪印，飞走了以后，雪又下来，把那个印子又盖住了。雪上偶然留一个爪印，那个鸟一飞了以后，早把东南西北一起跑掉了，那个爪印啊也就不留了。\\n人生一辈子说要成家立业，子子孙孙，等到你两眼一闭，两手一张，鸿飞哪复计东西啊？什么都没有了。这是苏东坡的名句，也就是风来竹面，雁过长空的道理，就是说菩萨应不住于相。\\n年轻的同学要特别注意啊！最近我发现年轻的同学特别喜欢学佛修道，我都有些担心，我常常跟年轻的同学们谈，你年纪轻轻，学这个干什么？我这个话你不要难过，这有两重意义。首先世界上什么都容易学，唯有学佛是最难最难的事；第二重意义啊，人生画虎不成反类犬，老虎没有画成反画成了狗，学佛学不成，我不晓得你变成什么！所以啊，希望先把做人的道理完成，再来搞这个学佛的事。但是既然要学佛了，千万要注意不住于相四个字；一住相，什么都学不成了。\\n功德和福德\\n刚才讲到不住于相这个重点，下面佛又说了：“何以故？若菩萨不住相布施，其福德不可思量。”这里突然冒出福德二字，他说假使一个修大乘\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 1077, \"excerpt_end\": 3877, \"chapter_text_length\": 9576, \"has_more\": true, \"next_offset\": 3877, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"应无所住行于布施\"], \"focus_terms_found_in_chapter\": [\"应无所住行于布施\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"应无所住行于布施\", \"offset\": 1777, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 461, \"offset\": 1577, \"focus\": \"应无所住行于布施\"}}, {\"term\": \"应无所住行于布施\", \"offset\": 2936, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 461, \"offset\": 2736, \"focus\": \"应无所住行于布施\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"afaace5db102ee6b7ee7bbdc054b03496eb80bb1fe0e9e8c37ceb8de68851ca3\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=461\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[1077, 3877]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 471,
+      "focus": "应生无所住心"
+     },
+     "status": "success",
+     "duration_seconds": 0.012,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 471, \"title\": \"第十四品 离相寂灭分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十四品 离相寂灭分】\", \"text\": \"尔时须菩提。闻说是经。深解义趣。涕泪悲泣。而白佛言。希有世尊。佛说如是甚深经典。我从昔来所得慧眼。未曾得闻如是之经。世尊。若复有人。得闻是经。信心清净。即生实相。当知是人。成就第一希有功德。世尊。是实相者。即是非相。是故如来说名实相。世尊。我今得闻如是经典。信解受持。不足为难。若当来世。后五百岁。其有众生。得闻是经。信解受持。是人即为第一希有。何以故。此人无我相。无人相。无众生相。无寿者相。所以者何。我相即是非相。人相众生相寿者相。即是非相。何以故。离一切诸相。即名诸佛。佛告须菩提。如是如是。若复有人。得闻是经。不惊不怖不畏。当知是人。甚为希有。何以故。须菩提。如来说第一波罗密。即非第一波罗密。是名第一波罗密。须菩提。忍辱波罗密。如来说非忍辱波罗密。是名忍辱波罗密。何以故。须菩提。如我昔为歌利王割截身体。我于尔时。无我相。无人相。无众生相。无寿者相。何以故。我于往昔节节支解时。若有我相人相众生相寿者相。应生瞋恨。须菩提。又念过去于五百世。作忍辱仙人。于尔所世。无我相。无人相。无众生相。无寿者相。是故须菩提。菩萨应离一切相。发阿耨多罗三藐三菩提心。不应住色生心。不应住声香味触法生心。应生无所住心。若心有住。即为非住。是故佛说菩萨心。不应住色布施。须菩提。菩萨为利益一切众生故。应如是布施。如来说一切诸相。即是非相。又说一切众生。即非众生。须菩提。如来是真语者。实语者。如语者。不诳语者。不异语者。须菩提。如来所得法。此法无实无虚。须菩提。若菩萨心。住于法而行布施。如人入暗。即无所见。若菩萨心。不住法而行布施。如人有目。日光明照。见种种色。须菩提。当来之世。若有善男子。善女人。能于此经受持读诵。即为如来。以佛智慧。悉知是人。悉见是人。皆得成就无量无边功德。\\n我们今天讲《金刚经》第十四品，《金刚经》开始到现在，讲了十三品，这其中再提起大家注意，《金刚经》虽然在说大般若的修持，这个般若不是纯粹的般若，他讲的是般若的体，就是道体，及见道之体的修行方法。开始先告诉我们，如何是修戒的般若，就是“善护念”这个要点，由开始发心修行到最后的成佛，就是善护念。接着下来，就说善护什么念？无住。无住就是定，善护念就是戒，《金刚经》的般若，本身就是慧，这是拿戒定慧的道理，来说明《金刚经》的本身，般若法门就是如此。\\n如果以六度来讲，《金刚经》首先讲的无住，所以令一切众生入无余依涅槃而灭度之。这是布施，布施度，由布施而到达般若的成就，证得阿耨多罗三藐三菩提，就是大彻大悟而成佛。布施以后持戒，持的什么戒？持的菩萨大戒，无我相，无人相，无众生相，无寿者相，善护此念就是持戒波罗密，而到达般若波罗密，到达智慧得度，智慧的成就，这是一个基本修持的阶段；由此而学佛，由此而修行，由此而成佛。说到十三品这里，差不多作了一个结论。\\n现在第十四品开始，是讲由忍辱波罗密，到达般若波罗密，我们今天这一段，重点就在这里。\\n解悟　喜极而泣\\n“尔时须菩提。闻说是经。深解义趣。涕泪悲泣。而白佛言。希有世尊。佛说如是甚深经典。我从昔来所得慧眼。未曾得闻如是之经。世尊。若复有人。得闻是经。信心清净。即生实相。当知是人。成就第一希有功德。”\\n这里只有三个小节，是另起一个阶段，前面都是须菩提与佛的对话，一问一答，记录下来，就是经典。\\n“尔时”，这时候，就是当问话的时候，须菩提听了这个经典的感受，听了佛说般若成就法门的感受。“深解义趣”，希望大家特别注意这四个字，大家念经时，很容易轻易把它念过去，深解义趣是深深的，很深刻的理解到了。这个理解到是我们现在讲的话，就是真正的悟到了那个道。\\n后世禅宗门下，把它分成两个阶段：一个叫解悟，一个叫证悟。解悟就是知见上的，所知所见到达了，但是还不是普通的学术思想所说的理解，而是这个身心马上感受到有一种脱落感、脱滞感，这就是解悟的一种境界。所以他说深解义趣，深深的得到解悟，不谈证悟。\\n“义”就是解悟到佛法修证至高无上的道理，义也就是义理，义在古文就代表理，最高的道理。“趣”并不是兴趣的趣，而是趋向的趋，就是向那个方向，到那个路上，目标的趋向。佛经上经常看到这个“趣”字，趋向，已经到达这个境界，已经进入了这种情况。深解义趣是一件事实，不是文学上空洞的赞叹名词。须菩提深解义趣以后哭了，他为什么哭呢？人往往喜极而泣，高兴到了极点，会痛哭流涕。人所追求的，始终没有追求到的，忽然追求到了，会哭起来；这个哭是无上的欢喜，所以也是一种悲心的流露。\\n学佛修道的人，在自己自性清净面快要现前的时候，自然会涕泪悲泣，这是自然的现象，否则就是一个疯子了。当这个人性自然的清净面，所谓本性，本来的面目呈现的时候，自己有无比的欢喜，但是找不到欢喜的痕迹，自然会哭起来。而你问他哭什么，他并不伤心，而是自然的，天性的流露。等于说，自己失掉的东西忽然找到了，那个时候就有无比的欢喜，但是也没有欢喜的意思，是自然涕泪悲泣的感受。\\n因此，须菩提一边哭一边讲，希有世尊啊！伟大了不起的佛啊！希有难得的佛啊！这都是赞叹之词。“佛说如是甚深经典”，他说，你现在讲这样高深的道理，什么道理？就是般若，智慧的解脱，智慧的成就，这个经典重点在这里。“我从昔来所得慧眼”，这位须菩提，是佛弟子有名的谈空第一，他天生有慧眼，所以在佛的修持行列中，般若智慧成就最高。所以他说，自从我有慧眼以来，“未曾得闻如是之经”，从没有听到过这样深刻究竟道理的经典。\\n信心清净\\n讲到这里，又加上称呼了，等于我们讲话，经常说老兄啊！老弟啊！“世尊。若复有人。得闻是经。信心清净。即生实相。”他说：假定有一个人，听到这个般若波罗密经，听到佛说的如何以智慧来自度、成佛的这个法门，“信心清净，即生实相”。这八个字是这一品重点的中心，千万记住。也就是我们后世众生，要想成佛的必经之路，必要的法门。达不到这个程度，与成佛的距离还很大，只能说你刚开始在学，一点影子都没有。达到了这八个字的程度，也可以说你进入了般若之门，建立学佛的基础了。\\n信心清净有两种意义：一种是专讲个人的信仰，因为真正的信仰并不是迷信。为什么不是迷信呢？因为是深解义趣，把道理彻底了解了来学佛，才是一个真正学佛的人。假定说佛学的理不透，盲目地去信仰、盲目地去礼拜，那不能说他是不信；不过，严格地说，还属于盲目迷信的阶段。真正佛法的正信，是要达到深解义趣这四个字；先懂得理论以后，再由这个理论着手修持。所以说，一个真正学佛的人，必须要深解义趣，这个信心才是绝对的正信，这一个法门，才是真正的佛法，才是宇宙中一切众生，自求解脱成佛之路。\\n所谓正信，要信什么呢？信我们此心，信一切众生皆是佛，心即是佛，我们都有心，所以一切众生都是佛。只是我们找不到自己，不明我们自己的心，不能自己见到自己的本性，因此隔了一层，蒙住了，变成凡夫。\\n凡夫跟佛很近，一张纸都不隔的，只要自己的心性见到了，清楚了\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 15314, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"应生无所住心\"], \"focus_terms_found_in_chapter\": [\"应生无所住心\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"应生无所住心\", \"offset\": 498, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 471, \"offset\": 298, \"focus\": \"应生无所住心\"}}, {\"term\": \"应生无所住心\", \"offset\": 11020, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 471, \"offset\": 10820, \"focus\": \"应生无所住心\"}}, {\"term\": \"应生无所住心\", \"offset\": 11264, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 471, \"offset\": 11064, \"focus\": \"应生无所住心\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"6d7189ac6836062edb6b756af76be19eb12cc32ab1fcca5a632071b523382000\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=471\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 475,
+      "focus": "过去心不可得"
+     },
+     "status": "success",
+     "duration_seconds": 0.012,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 475, \"title\": \"第十八品 一体同观分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十八品 一体同观分】\", \"text\": \"须菩提。于意云何。如来有肉眼不。如是。世尊。如来有肉眼。须菩提。于意云何。如来有天眼不。如是。世尊。如来有天眼。须菩提。于意云何。如来有慧眼不。如是。世尊。如来有慧眼。须菩提。于意云何。如来有法眼不。如是。世尊。如来有法眼。须菩提。于意云何。如来有佛眼不。如是。世尊。如来有佛眼。须菩提。于意云何。如恒河中所有沙。佛说是沙不。如是。世尊。如来说是沙。须菩提。于意云何。如一恒河中所有沙。有如是沙等恒河。是诸恒河所有沙数佛世界。如是宁为多不。甚多。世尊。佛告须菩提。尔所国土中。所有众生。若干种心。如来悉知。何以故。如来说诸心。皆为非心。是名为心。所以者何。须菩提。过去心不可得。现在心不可得。未来心不可得。\\n眼者心之机\\n“须菩提。于意云何。如来有肉眼不。如是。世尊。如来有肉眼。须菩提。于意云何。如来有天眼不。如是。世尊。如来有天眼。须菩提。于意云何。如来有慧眼不。如是。世尊。如来有慧眼。须菩提。于意云何。如来有法眼不。如是。世尊。如来有法眼。须菩提。于意云何。如来有佛眼不。如是。世尊。如来有佛眼。”\\n这是佛学里佛法的五眼，五种眼睛的分类，文字都差不多。是佛先提出来问，“须菩提，于意云何”，你的意思怎么样？佛有没有肉眼、天眼、慧眼、法眼、佛眼？\\n佛经的三藏十二部，就是把佛经作十二种的分类，其中有一种是“自说”，就是自己开始讲，不是人家提出来问的。这一节就代表了十二分类的自说，是佛提出来的问题。\\n这里没有讲“佛”字，而讲“如来”。如来这个名词代表形而上的道体，一切众生同于诸佛菩萨心性之体，就是生命的根源。他说这个里头有五种功能，所以叫做五眼。第一种是肉眼，就是与我们一样的，是父母所生的肉眼，也就是现在我们的眼睛。肉眼能看物质世界，我们一切的感觉、知觉，都经由它而来。\\n这个肉眼跟心是连带一起的，所以很多的经典，心与眼同论，在讲到心的道理时，先提到眼。眼睛是心的一个开关，所以心与眼关系非常密切。道家的《阴符经》就说：眼者心之机，眼是心的开关，所以古人很多地方都提到心眼的关系，譬如孟子讲到观察人，特别要观察眼睛。\\n任何人都有眼睛，但是每一双眼睛所看的都不同。就我们人来讲，譬如这个墙壁，我们大家看都是白的，实际上每个人感受白的程度、白的形象，完全不同。因为有人是散光，有些是近视，有些是一只眼睛近视，一只眼睛散光，有些色盲，各种各样不同。所以一切众生的心不同，眼也不同。\\n过去我们有句老话，人心不同各如其面；每个人思想不同，就像人的面孔不同一样。世界上的人类，没有面孔相同的，因此说明世界上的人，心里想法也没有相同的，眼睛的看法，也没有尽相同的。不要以为这个白色黄色大家看起来都差不多，实际上差得很远，老花与不老花，老花度数又不同，因为每人的业力不同。\\n所以我们这个肉体及头脑思想健康与否，都因种性、业力不同而有差异。有人对气候特别敏感，今天很热，有些人不大怕热，却怕冷！因为每个人身体不同、健康不同，都是因为业力不同。\\n所谓一切病由业而生，善有善业，恶有恶业，业由心造，是绝对唯心的道理。\\n现在佛问，一个成了佛的人，有没有普通的肉眼？那当然有，肉眼就是看物理世界这些现象的。\\n天眼是什么\\n第二种是天眼，我们普通人几乎是没有的。天眼的能力是超乎物质世界，譬如说看到鬼魂、看到天神，甚至于看到其他的世界。现在人讲的千里眼，是根据道家的传说而翻译的。天眼能够看到欲界系统里面的东西，包括太阳、月亮、其他星球等的人事；也可以看到银河系统外面的东西，这是属于真正的天眼。有些人打起坐来看到些影子啊、星光点点啊，认为是天眼，那个不是的。那个只能说是，我们无法名之，叫做眼天吧！眼啊、天啊，不晓得什么东西！（众笑）\\n宗教里形容天眼，是把塑的佛像多塑一只眼睛，以代表天眼，也代表了慧眼。有些人和有些生物，不但有三只眼睛，有的还有四只眼。所以佛法里有修天眼的，也有修十只眼的方法，前面、后面、头顶、心里头、喉咙里头，都有眼睛。当然，这与普通眼睛不一样，而是像摄影机、录像机一样，能够照射东西罢了！天眼有两种：一种是报得，是多生多世修持，修定，才有这一生的天眼业报；是与生俱来的，自然有这个能力，因为善行的报应所得的结果。另一种是修得，是这一生修来的，因为修戒、定、慧的成就，这一生成就了天眼。\\n天眼不是多长出一只眼睛来，是肉眼的本身，起了另一种功能。得天眼通的人，也与我们普通人一样，但他自然会看到多重的世界。\\n修持做功夫的人，气脉到了后脑，视觉神经受到刺激，眼睛里经常出现许多幻象，那可不是天眼通！不要弄错。真正有了天眼通的时候，此人目光清澈如电，看得非常透彻；换句话说，物质东西不能障碍他，他的眼睛自然有透视的能力。\\n春秋战国时候有一个医生名叫扁鹊，据说他有一次碰到一个神仙，给他一个能透视的宝贝，他的眼睛就变得比X光还要厉害，可以看到人的五脏六腑，所以他的诊断就不会有错。还有许多唐代以后的记载，有人的眼睛天生就会看风水，能看地下几丈深，不需要探测器，地下的水脉，他看得很清楚。\\n像这一类的眼还不算是天眼，只能算是报通的鬼眼，所以真正的天眼，就是《法华经》上所说父母所生眼，必须修持定力到了，这双肉眼就能够看见十方世界一切东西。\\n肉眼是观看物质世界通常的现象，天眼则能够透视到肉眼所不能见到的世界；所以天眼是定力所生，是定中所得的神通力量。当人的生命功能充沛到极点时，可以穿过一切物理的障碍，就是所谓的神通。神通必须要定力够了，所谓精、气、神充沛了，才能做到。\\n慧眼　法眼　佛眼\\n再进一步是慧眼，慧眼也离不开肉眼，也是通过父母所生的肉眼而起作用的。所谓慧眼就是智眼，是戒、定、慧的功力显现；因为修定而发慧。这不是普通的智慧，是慧变成了力量、成了慧力，才有这个智眼。\\n智慧怎么变成力量呢？我们普通聪明人，想一个道理想通了；譬如说抽烟对肺不好，应该改，道理上通了，但习气上不行，慧没有力量，改不过来。又譬如脾气坏，贪、瞋、痴，道理上都晓得，就是扭转不过来。尽管研究佛法，道理上讲得很通，碰到事扭转不过来，这是慧的力量不够，也就是不能证果、不能成道的原因。\\n所以真正的慧眼，是智慧的力量够了才能成的。\\n法眼又是什么眼呢？慧眼观空。而能够真正认识自性空、空性的体，就是法眼。法眼观一切众生平等，非空非有。光落在空，还是小乘果的一边，要能够真正观空里的妙有才行。在凡夫的境界来说，是性空缘起；在悟道智慧境界里来说，是真空起妙有，这是法眼的道理，是平等而观。\\n第五种是佛眼，佛眼不只是平等，而是观一切众生只有慈悲，只有慈爱。慈悲是两个观念组合起来的佛学名词，慈是父性，代表男性的爱，至善的爱；悲代表了母性至善的爱，慈悲是父母所共性的仁德。是至善，无条件，平等，所以叫大慈大悲。佛眼看来，一切众生皆值得怜悯，所以要布施众生，救众生，这也就是佛眼的慈悲平等。\\n真正学佛依法修持而有所成就者，本身一定具备了这五眼。如\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 8704, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"过去心不可得\"], \"focus_terms_found_in_chapter\": [\"过去心不可得\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"过去心不可得\", \"offset\": 282, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 475, \"offset\": 82, \"focus\": \"过去心不可得\"}}, {\"term\": \"过去心不可得\", \"offset\": 6597, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 475, \"offset\": 6397, \"focus\": \"过去心不可得\"}}, {\"term\": \"过去心不可得\", \"offset\": 6708, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 475, \"offset\": 6508, \"focus\": \"过去心不可得\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"03eeaec33aa042fd6ccd6412ffdcbb627b36a010c90a80a4fa88533a453a9ec3\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=475\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 461,
+      "max_chars": 1200,
+      "offset": 0
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 461, \"title\": \"第四品 妙行无住分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第四品 妙行无住分】\", \"text\": \"复次。须菩提。菩萨于法。应无所住。行于布施。所谓不住色布施。不住声香味触法布施。须菩提。菩萨应如是布施。不住于相。何以故。若菩萨不住相布施。其福德不可思量。须菩提。于意云何。东方虚空。可思量不。不也。世尊。须菩提。南西北方。四维上下。虚空可思量不。不也。世尊。须菩提。菩萨无住相布施。福德亦复如是。不可思量。须菩提。菩萨但应如所教住。\\n第一等和次等\\n昭明太子的标题叫做“妙行无住分”。妙行无住的行不是走路，是讲修行，妙行修佛法的意思。\\n“复次。须菩提。菩萨于法。应无所住。行于布施。所谓不住色布施。不住声香味触法布施。”\\n这就是我们上一次讲的布施，也是内在的用功。大致上布施分内布施、外布施。我们中国禅宗后来流行一句话——放下，这个话就是布施，一切丢开。人生最难的就是丢开，真丢开了就是真放下，放下就是内布施。做到了内布施就可以成就，就可以成道。这里佛告诉须菩提内布施的法门，复次，白话文就是其次的，次一等的告诉你。第一等的，佛怎么说我们还记得吧？须菩提问如何住？如何降伏其心？佛就告诉他，就是这样住，就是这样降伏其心。等于没有说，这是第一义。\\n第一义很难懂，大家都看过《西游记》唐僧取经，唐僧到了西天，见到了佛，佛就把大徒弟迦叶尊者找来，说他们从东方震旦中国来的，很辛苦啦，功德圆满，你把书库打开，把最上等的佛经给他们带回去。当唐僧带领三个徒弟到图书馆门口取经的时候，守门的说：拿红包来。孙悟空气得拿起棍子就想打。唐僧说：你不要动粗了，这是最后一步，不然我们那么辛苦，不是白费了吗？我们没有钱却有一件袈裟，拿到当铺里当了，给他红包。孙悟空又气又骂的，迦叶尊者很难为情，所以庙子里塑的迦叶尊者，都是歪着脖子缩着头。其实《西游记》只是小说，最后拿到了经典到了山门口，孙悟空跟师父吵，说那个老和尚靠不住，还要我们红包，要把经打开看看，结果发现佛经上一个字都没有，只是白纸。孙悟空立刻大吵大闹，被佛听见了，就叫迦叶尊者来问，迦叶尊者说：你老人家吩咐，给他们最上品的经嘛！我就拿最上等的给他们。佛说：唉呀！那些众生不懂啦！没有文字的经他们看不懂，你还是拿有字的给他换一下，拿那个差一点的。所以复次是差一点的，有字的经。真正的经典啊，一个字都不需要，本来空嘛！应如是住，如是降伏其心，这个是第一义，就是一张白纸。既然第一等的不懂，现在复次只好讲差一点的。\\n无所住\\n佛告诉须菩提：我告诉你，一个真正修行的人怎么修？“菩萨于法应无所住”，就是这一句话。\\n此心应该随时随地无所住，如果你此心随时在空的境界上，那已经错了，因为你住在空上；如说此心住在光明上，或住在气脉上，都错了，因为那不是无所住。\\n“应无所住，行于布施”，什么叫修行？念念皆空，随时丢，物来则应，过去不留；就算做了一件好事，做完了就没有了，心中不存。连好事都不存在心中，坏事当然不会去做了，处处行于布施，随时随地无所住。\\n譬如今天，有人批评你，骂你两\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 1200, \"chapter_text_length\": 9576, \"has_more\": true, \"next_offset\": 1200, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": null, \"focus_terms_matched\": [], \"focus_terms_found_in_chapter\": [], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"afaace5db102ee6b7ee7bbdc054b03496eb80bb1fe0e9e8c37ceb8de68851ca3\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=461\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 3877]], \"covered_characters\": 3877, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 484,
+      "focus": "于法不说断灭相"
+     },
+     "status": "success",
+     "duration_seconds": 0.013,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 484, \"title\": \"第二十七品 无断无灭分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第二十七品 无断无灭分】\", \"text\": \"须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。\\n三界六道之外\\n“须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。”\\n佛叫须菩提，“汝若作是念”，你假使有一个观念，认为“如来不以具足相故，得阿耨多罗三藐三菩提”，认为不著相就可以见佛，就可以大彻大悟的话，他说须菩提啊，你千万不要这样想，不要认为没有功德成就也能够悟道成佛，你有这种观念就错了。\\n前面我们明明听须菩提讲的嘛！不要以三十二相见如来。佛则说若以色见我，以音声求我，是人行邪道，不能见如来。可是佛现在又说，须菩提你不要搞错了啊，假如你认为不具足一切功德圆满就能大彻大悟的话，须菩提你注意啊！“莫作是念”，你千万不要那么想啊！千万不能认为不要具足功德就可以大彻大悟。\\n“须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。”\\n你如果以为人只要悟了道以后，什么都好了，什么都空了，这个观念是很严重的错误啊！这是佛明白交代给须菩提的。\\n关于这一点，我个人倒也碰到过很多。几十年前在大陆云南，找一位很有名的禅宗大师，也是一位八指头陀。后来我到昆明碰面了，我说：法师，我听说你悟道以后有一个观念，认为证得涅槃以后，生死已了不再来了，有没有这样说法？他承认了，我就请教他《楞伽经》中的话“无有涅槃佛。无有佛涅槃”，你不来到哪里去啊？跳出三界外，跳到哪里去呀？佛没有说有个第四界呀？不在五行中，那你在哪一行中啊？了了生死就不来，这不是佛法吧！后来为这个问题我们辩论了很久。\\n很多人学佛都有这个观念，都认为学了佛，悟了道，两条腿一盘，了了生死，再也不到这个世界上来受苦了。这个观念是绝对错误的，是修道学佛上最大的错误观念。\\n常常有人告诉我，殡仪馆有很多稀奇古怪的事情，可以证明佛法的事也很多。今天一位同学说，殡仪馆的人告诉他，有个十几岁的女孩子，父母逼她赶快结婚，逼急了，她两腿一盘，就涅槃了，就走了。死了以后送殡仪馆，没有办法装棺材，因为两个腿盘着，骨头也硬了放不开，没办法，只好给她特别设计一个方柜子，把她放在里头。我说：此乃再来人也！就是所谓修行并不一定证到罗汉果，有所成就的，七还人间、五还、三还、一还人间等等的现象。又有一位同学告诉我，有一个四十多岁出家的太太，八九十岁死了，结果烧化后头顶骨不坏，舍利子都在那里。这些都是比较实际的资料。\\n断灭见\\n回头再说有人认为悟了道以后就不来，好像有个地方可以躲似的，这是个错误的观念。这个错误的观念，在佛法上就叫做见地上的错。一个人学佛，不管在家出家能够证果的，最重要的是断见思二惑。见惑、思惑，在前面第九品已经谈到过，见地不清楚有了偏差，就落于偏见。五种错误的见解就是身见、边见、邪见、见取见、戒禁取见；这五见障碍了修道，也就是不能悟道的原因。思惑就是烦恼惑，内心的贪瞋痴慢疑。\\n现在人类的唯物哲学就是落于断见，认为人死如灯灭，没有三世因果，六道轮回，因为还拿不出来证据；认为人死了就是完了，这是属于断灭见，也是邪见的一种。所以佛就告诉须菩提，你千万不要落在一个错误的观念，一个断灭见的思想见解。\\n前面刚刚说不能著相来看佛，现在又告诉他，也不能落在不著相看佛；著相是错，不著相也是错。假使落在不著相看佛，一切本空，又何必做善事，佛也空，善也空嘛！一切皆空，我杀人也没有关系呀！杀也空嘛！偷骗抢做坏事都空，这样的见解，就叫做拨无因果，落于空见。空见的错误，这一点大家要特别留意。\\n拨无因果就是把因果这个道理拨开了，不承认有因果的存在，这是现在人类思想潮流最可怕的一面，也就是佛说的断灭见的思想。佛就怕须菩提搞错见解，上面先告诉他不能著相见如来，但是又怕须菩提落在不著相；不著相的结果就变成断灭见，拨无因果了。所以他就再三告诫，“莫作是念”，你不要搞错了。\\n不说断灭相\\n“何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。”\\n所以一个真正学佛的人，想求得大彻大悟，首先要注意不能落入断灭相。断灭相是什么呢？断灭相落空，认为佛法的究竟是空的，见到个空果，就是断灭。现在《金刚经》快讲完了，《金刚经》中有没有告诉你一个空字啊？我们后世的注解，说《金刚经》是讲空的，那是你的注解，佛可没有这样说！佛只说过去心不可得，现在心不可得，未来心不可得；以色见我，以音声求我，是人行邪道，不能见如来。那是教育方法，处处把你的错误挡住，他并没有告诉你是什么，只告诉你不是什么。《心经》也只是告诉你照见五蕴皆空，最后告诉你真实不虚，并没有讲空啊！是照见五蕴皆空，它并没有说般若波罗密多都是空的啊！这些就是我们研究佛学、佛经、佛法，必须要特别注意的地方，不然很容易落在邪见的错误上。\\n空，同断灭见是一模一样的，有许多人学佛，自认什么都看得空了，其实那不叫做空，从心理学来讲，是你灰心了，或者年纪大了，或者环境不得已，或者倒霉透顶，所以说自己看得空得很了！还有个灰心在，就不是空，那个灰心非常厉害。还有许多搞哲学的学佛，经常喜欢吹这个牛，看空了，看通了等等。他只要开口讲这个话，就证明他一点也没有看通，因为他真通的话，连说这个通、这个空都不会了。空的啊！空的啊！他在感叹嘛！对不对？他既然感叹就心有戚戚焉，这正有个东西，一点也没有空。换句话说，这不过是不吃西瓜，却吃了一个大冬瓜，还是一个瓜嘛！傻瓜嘛！\\n所以再三提醒诸位注意，“空”是方便的说法，是个形容词，如果把空当作真正空得一无所有，那不是空见，那就叫做断灭见。所以佛吩咐，“发阿耨多罗三藐三菩提心者，于法不说断灭相”，这是一句非常严重的话，绝对不是断灭，更没有说空。这一节的题目——无断无灭，梁昭明太子标得非常好，不断不灭，不是断灭相。现在科学晓得物质是能量互变，它并没有灭过，要认识清楚。这一品偈语如下：\\n第二十七品偈颂\\n翻云覆雨雨成云，点滴如丝乱不分。\\n冻作冰河冰化水，漫从光影捉斜曛。\\n“翻云覆雨雨成云”，看到宇宙的变化，今天下雨明天晴，雨变成云，云又变成雨。反正啊，是点水气，是这个水蒸气的分子在变化。\\n“点滴如丝乱不分”，等到蒸气冷热接触，变成雨点下来以后，每一颗雨点本身自成一个范围，自成一个系统。等于我们一切众生同一个本性，可是构成我们个人的自体以后，我的我与你的你，绝对不一样，可是根根是一个。就像蒸气在空中碰到冷气层，变云变雨，每一雨点各有范围一样。但是所有的雨点，都是水蒸气变的。\\n“冻作冰河冰化水”，冰化了就变成水，水冻了就变成冰，这些是现象界万般的变化，各种的变化。变化归变化，本体不变。因为本体无相，亦无着。讲本体是空吗？也错了，讲它是常住，也错了，讲它是断灭，也错了，这一些都\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 2919, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"于法不说断灭相\"], \"focus_terms_found_in_chapter\": [\"于法不说断灭相\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"于法不说断灭相\", \"offset\": 110, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 484, \"offset\": 0, \"focus\": \"于法不说断灭相\"}}, {\"term\": \"于法不说断灭相\", \"offset\": 1685, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 484, \"offset\": 1485, \"focus\": \"于法不说断灭相\"}}, {\"term\": \"于法不说断灭相\", \"offset\": 2348, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 484, \"offset\": 2148, \"focus\": \"于法不说断灭相\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"94ff9be1c185c517aecd455fc4d03dda48e79363183ef2d7fbc69ecc20616125\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=484\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 459,
+      "focus": "云何应住"
+     },
+     "status": "success",
+     "duration_seconds": 0.013,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 459, \"title\": \"第二品 善现启请分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第二品 善现启请分】\", \"text\": \"时长老须菩提。在大众中。即从座起。偏袒右肩。右膝著地。合掌恭敬。而白佛言。希有世尊。如来善护念诸菩萨。善付嘱诸菩萨。世尊。善男子。善女人。发阿耨多罗三藐三菩提心。云何应住。云何降伏其心。佛言。善哉善哉。须菩提。如汝所说。如来善护念诸菩萨。善付嘱诸菩萨。汝今谛听。当为汝说。善男子。善女人。发阿耨多罗三藐三菩提心。应如是住。如是降伏其心。唯然。世尊。愿乐欲闻。\\n善现就是“须菩提”，是中文的意译，意思是他的人生境界，是道德的至善。须菩提表现出来的是长寿，另有舍利子这些人也比佛的年龄大。所以，有些经典把“须菩提”翻译为“具寿”就是长寿的意思。等于我们中国人所称鹤发童颜，南极仙翁，老寿星。不过须菩提不仅是老寿星，他的道德修持，他的智慧，以及他生活的仪轨，都足以领导当时佛的弟子们。他年高德劭，威仪气度在佛的十大弟子之中，是非常有名的。\\n佛教一般知道须菩提谈空第一，这一本经就是空和有的研究。后世佛教，称须菩提为尊者，连中国民间对他也非常熟悉。怎么熟悉呢？大家都看过《西游记》，孙悟空大闹天宫及七十二变的本事，都是从须菩提那里学的，这是小说上写的。孙悟空找到尊者，小说上把六祖见五祖那个故事，影射孙悟空访道访到了须菩提。《西游记》中这一段，描写得非常有趣，因此，须菩提尊者的名字，就在中国的民间十分流传了。\\n善现须菩提\\n“时长老须菩提。在大众中。即从座起。偏袒右肩。右膝著地。合掌恭敬。而白佛言。希有世尊。如来善护念诸菩萨。善付嘱诸菩萨。”\\n这一段文字，好像给我们写了一段剧本，描写当时的现场。“时”就是当时，就是佛把饭也吃好了，脚洗好了，打坐位置也铺好了，两腿也盘好了，准备休息。可是我们这一位须菩提老学长，不放过他，意思是你老人家慢一点休息吧！我还有问题，代表大家提出来问。时长老须菩提，所谓长老，照佛学解释“长老”的内涵，还有许多意思。总而言之，就是中文的年高德劭。前面我们提到过二百六十个字的《心经》，在《心经》里，向佛提问题的主角是舍利子，也是佛的十大弟子之一。《金刚经》的主角则是须菩提，另如《楞严经》的主角是阿难，每人的问题不同，所以佛的答复方式也不同。本经是从须菩提问问题开始的，因为他谈空第一，在大众中，在所有同学里，他要起立发言。我们现在发言要举个手，佛时代的规矩，是从座位上站起来。当时，大家都在坐着，须菩提站起来，偏袒右肩，这也是印度规矩，披着袈裟，一边膀子露出来。\\n关于偏袒右肩有很多说法，一种说法是右手空着好做事，在跟佛走路时，可以用这个手膀，把年纪大的扶持过去。另有说法，认为右手是吉祥的手，左手不是吉祥的手，所以用袈裟盖着。还有一种说法，认为杀人等坏事，都是这右手去做，所以，在佛前上香时，要左手去插，不许右手近佛。但是另外也有一说，插香要用右手，因为右手是吉祥之手，总之，这些都是后人的解释。上古的许多礼节，有时代及地区的意义，后世那些习惯又加上各种解释，有花招之嫌，我们姑且不管。\\n现在，须菩提“偏袒右肩”，披好袈裟，“右膝著地”，就跪下了。单跪右腿，“合掌恭敬”，合掌是印度当时的礼貌，中国也有合掌，也有作揖。印度是伸开十指合掌，有空心的合法，有实心的合法。顺便给青年同学们也讲一声，许多人写信给我，有的称我“南法师”，我不是法师啊！我没有出家。许多人写信用佛家的规矩“合十”，合十就是两个手合拢来，合十问讯，也是一种礼貌。还有些同学来信问“和南”是什么意思，和南是译音，意思就是跪地拜顶礼，五体投地跪拜，叫做和南。结果有一位同学就对我说：老师也姓南，南无阿弥陀佛也姓南，拜拜也和南，好像你投胎的时候，是选一个南字来的。我说那我不知道，我当时也许选错了呢！这是有关与年轻同学们的趣味对话，由合掌顺便提到。\\n现在须菩提合掌，就是向老师先行个礼，“而白佛言”。白就是说话，古文叫道白，是南北朝时候的说法，后来唱戏的也有道白，唱的时候是唱，不唱的时候说几句话，就是道白。“希有世尊”，佛经上记载印度的礼貌，向长辈请示以前，要先来一套赞叹之词。等于我们中国人看到前辈就说：“唉呀，你老人家真好啊，上一次蒙你老人家照顾，你老人家给我启发太多了！”我也经常碰到年轻人对我这样说。《金刚经》已经把赞叹的话浓缩成四个字了，其他的经典中，弟子们起来问佛，都是先说一大堆恭维话。佛是很有定力的，等你恭维完了，然后才张开眼睛说：你说吧！这里的浓缩就是鸠摩罗什翻译的手笔，只用四字：“希有世尊”，世间少有，少见不可得的世尊。前面提到玄奘法师也翻译过《金刚经》，还有其他人的翻译，我个人的观点和研究，鸠摩罗什翻译的这一本，扼要简单，妙不可言。\\n古代翻译的规定是信、达、雅，我们看到很多佛经的翻译，信则有之，很忠实原典；达，表达得清楚也有，但文字却不大雅。像鸠摩罗什的翻译，信、达、雅，皆兼而有之，非常难得。所以，我个人是非常喜欢这个译本。\\n须菩提接着说：“如来善护念诸菩萨。善付嘱诸菩萨。”现在我们先来解释两个佛学名词，一个是如来，一个是菩萨。\\n如来　菩萨\\n我们晓得“如来”也是“佛”的代号，实际上佛有十种不同名称，如来是一种，佛是一种，世尊也是一种。不过，中国人搞惯了，经常听到如来佛的称法，把它连起来也蛮好。现在我们先说“如来”，这是对成道成佛者的通称。释迦牟尼就称释迦如来，或者称释迦如来佛，阿弥陀佛又称阿弥陀如来。\\n阿弥陀、释迦牟尼，那是个人的名字，就是特称。如来及佛是通称，等于我们中国称圣人，孔子也是圣人，周公也是圣人，文王、尧舜都是圣人。圣人就是通称，而孔子、周公就是特称。“如来”二字翻译得很高明，所以，我经常对其他宗教的朋友说：你们想个办法把经典再翻一翻好不好？你们要弘扬一个宗教文化，那是离不开文学的啊！文学的境界不好是吃不开的。\\n佛经翻译的文学境界太高明了，它赢得了一切。譬如“如来”这个翻法，真是非常高明。我们注意啊！来的相对就是去，他没有翻“如去”，如果翻成如去，大家也不想学了，一学就跑掉了。翻译成“如来”，永远是来的；来，终归是好的。佛已成了道，所以就叫如来。《金刚经》上有句话，是佛自己下的注解：“无所从来，亦无所去，故名如来。”无来也无去，换句话说，不生也不灭，不动也不静，当然无喜亦无忧，不高也不矮，都是平等，永远存在，这个道理就是如来。用现在的观念说，他永远在你这里，永远在你的前面，只要有人一念虔信，佛就在这里。所以后世我们中国有一首诗，描写得非常好：\\n佛在心中莫浪求，灵山只在汝心头。\\n人人有个灵山塔，只向灵山塔下修。\\n浪字是古文的说法，就是乱，浪求就是乱求。不必到灵鹫山求佛，不要跑那么远了，因为灵山只在你的心头。每一个人自己的本身，就有一个灵山塔，只向灵山塔下修就行了。也有另外一种说法：“不向灵山塔下求”。总之，这只是说明佛、道都在每一个人自己的心中，个个心中有佛，照后世禅宗所讲：心即是佛，佛即是心，不是心外求法。以佛法来讲，心外求法都属于外\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 12884, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"云何应住\"], \"focus_terms_found_in_chapter\": [\"云何应住\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"云何应住\", \"offset\": 81, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 459, \"offset\": 0, \"focus\": \"云何应住\"}}, {\"term\": \"云何应住\", \"offset\": 6395, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 459, \"offset\": 6195, \"focus\": \"云何应住\"}}, {\"term\": \"云何应住\", \"offset\": 7667, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 459, \"offset\": 7467, \"focus\": \"云何应住\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"d0bad86ffa31e9603d23191c06fa2faf944570c99fa2826d060443809c8e7afc\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=459\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "167cb7f3a631",
+      "chapter_idx": 15,
+      "focus": "应无所住而生其心"
+     },
+     "status": "success",
+     "duration_seconds": 0.008,
+     "result_full": "{\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"chapter_idx\": 15, \"title\": \"第十五讲　佛教中圆教的意义\", \"citation_label\": \"【《中国哲学十九讲》·第十五讲　佛教中圆教的意义】\", \"text\": \"答复你。当然，只要是一个alternative system，就不可能是绝对圆满。假定是个alternative system，又认为自身是绝对圆满，这种说法就算不是独断，也自相矛盾（self-contradiction），因为既然是alternative system，就不可能是最究竟而绝对的圆满。\\n所以在这里，我把这个问题提出来，让大家注意思考，它的确是个哲学问题，而且是个高级的哲学问题。两千多年来哲学上没有这个问题，此问题之提出，不是往前推进了一步吗？它可以用现代的哲学和逻辑知识来处理，也需要用高度的科技来处理这个非科技的问题。\\n说到这个地方，照圆教的词语讲，翻译成perfect teaching也是可以的，但为什么译者不用呢？因为翻译的人不了解圆教的内容与意义，只是望文生义，照字面的意思翻译成round teaching。当然说round teaching也可以表意，也不是完全错。也就是说翻译成perfect teaching和round teaching都可以，那为什么有这两可呢？当用round teaching来翻译时，它对应的圆教是什么意义呢？也许用round来翻译不是很中肯，不是很essential，但一般人对圆教的了解本来就模糊而不中肯，那么顺此来了解他们用round teaching来翻译圆教，他们心中是对应什么意义而说的呢？用round来说圆教，是就看《大般若经》里所说的般若的意义而说，也就是说round teaching是相应于圆通无碍而说。圆通无碍是般若的妙用。如果round teaching对应这个意思讲，则是恰当的。照《大般若经》所讲，般若精神是“应无所住而生其心” (1) ，是“佛说般若波罗蜜，即非般若波罗蜜，是名般若波罗蜜” (2) 。般若是一法不立，是无知亦无得，是不坏假名而说诸法实相，它就是圆，所以圆通无碍说的是般若，而照这个意义说圆，即可翻译成round。\\n但是圆有两个意义，一方面是指般若的圆通无碍，另一方面则是指华严宗所说的“圆满无尽，主伴俱足”。照华严宗所说的圆，不但是圆通（或圆融）无碍，而且也是圆满无尽。所以它的圆具有圆通与圆满两层意义。圆满无尽就是perfect，而圆通无碍则可以翻译成round。所以凡是说圆通无碍，是就般若说的。又如华严宗所说的十玄门、一即一切、一切即一等，凡说到“即”“摄”的，都是指圆融无碍的般若精神。至于圆满无尽则是就着十法门而说的，《华严经》说法门必定说十法门，而说佛亦必说十身佛，因为“十”是最圆满的。在此，“十”不是一个随意数目，而是表示一个有必然性的义理。其所列举的内容可以是随意的，可以是变动的，但一定要是十个法门，这是必然的。因为唯有说十法门，才能表示“圆满无尽，主伴俱足”。“十”并不只是数目的“十”，而是代表无穷、无尽，也就是表示任何一个法都是无限。所以“圆满无尽，主伴俱足”是就着如来藏恒沙佛法佛性而说的。假定我们照“圆满无尽，主伴俱足”来了解圆教，则翻译成perfect teaching是恰当的，而且这个意思正好是圆教的essential meaning。因为圆教所以为圆教，是从“圆满无尽，主伴俱足”处来说的，所以这是它的essential meaning。当然在“圆满无尽，主伴俱足”之中，也都是圆通无碍的，但这并非圆教的essential meaning。\\n何以圆通无碍不是圆教的essential meaning呢？因为般若精神是个共法，是common element，它是共通的，小乘有小乘的般若，而大乘也有大乘的般若。大、小乘之分，并非般若所能决定。大之所以为大与小之所以为小，必顺依佛性来决定。小乘虽小，也可以表现它般若精神的圆通无碍。这就好像《庄子·逍遥游》篇中所说的，大鹏鸟“抟扶摇而上者九万里”，这可以说是逍遥自在、圆通无碍了。可是蜩与鸠在树林中跳来跳去，也是圆通无碍，它一样可以逍遥自在！从这个意思上来讲，可以看出一般人所了解的都是很表面很肤浅的，所以他们用round teaching来翻译圆教，并不是很谛当，倒是用perfect这个字较恰当。由此，我们知道“圆教”这个词有两层意思，圆通无碍的般若精神是通大小乘的，它是个共法；而佛性之“圆满无尽，主伴俱足”才是决定大小乘圆不圆的关键。\\n不过佛性之所以“圆满无尽，主伴俱足”，并不是由分解的方式得来。所谓“无始时来界，一切法等依”，把一切法等依之于阿赖耶识或等依之于如来藏，好像只要整个series完整起来，就是圆满了。如果真是如此，阿赖耶识和如来藏系统都是很完整的，但为什么仍然属于别教而非圆教呢？所以光是系统完整，并不表示就是圆教的意义。\\n照“圆满无尽，主伴俱足”而说，则圆教中实已蕴含了无限的意义，而这种无限是“现实的无限”（actual infinite）。这种现实的无限，康德是不承认的，因为他只承认有potential infinite。而现在数学上所讲的有限论，就是根据康德而来的。因为“无限”不能肯定，我们无法客观地肯定世界就是无限，我们毫无根据可言。至于罗素则是肯定无限，因为他用无限类（infinite class）来规定无限数（infinite number），这种无限之讲法是“现实的无限论”，也叫作“实在论的无限论”。但是以罗素之聪明，他当然知道这种无限的肯定只是一种假定，是无法证明的。既然是一种假定，那么也就没有什么好反对的了。\\n但是佛教里面所说的圆教，它所蕴含的无限是现实的无限，是从如来藏恒沙佛法佛性而来，它不是一种假定，也不是像罗素所说的逻辑意义的假定。如来藏恒沙佛法佛性的“圆满无尽，主伴俱足”是一种ontological infinite，而且可以确实呈现。就表面的意义而言，只要如来藏恒沙佛法佛性呈现，成佛就有可能性。但如果往里追问，成佛如何可能？如来藏恒沙佛法佛性何以能呈现呢？它当然就不是一个假定，也不是一个逻辑的假定。因为假定我们说佛只是个理想，我们永远无法达到，那么actual infinite就不是个呈现，而只是如康德所说的postulate。但是佛教不会承认这种思想，佛教认为现实上是有佛的，而且过去、现在、未来三世诸佛，随时可以呈现。也就是说如来藏恒沙佛法佛性随时可以呈现，所以现实上是有佛的。如此一来，所谓的actual infinite或ontological infinite就不只是个假定，亦不只是罗素所说的logical assumption。\\n要答复这个问题，关键在于“智的直觉”（intellectual intuition）的肯定。当然佛教并没有这个名词，这是借用康德的词语。我们不能只是肯定有佛，必须实际上真正可能有佛才行。而这个所以可能有佛的关键即在于肯定人有智的直觉。不仅佛教，儒道二家亦须肯定智的直觉。儒家认为现实上有\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 6209, \"excerpt_end\": 9009, \"chapter_text_length\": 11752, \"has_more\": true, \"next_offset\": 9009, \"has_previous\": true, \"previous_offset\": 3409, \"focus_found\": true, \"focus_terms_matched\": [\"应无所住而生其心\"], \"focus_terms_found_in_chapter\": [\"应无所住而生其心\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"应无所住而生其心\", \"offset\": 6909, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 15, \"offset\": 6709, \"focus\": \"应无所住而生其心\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"00e5b3104bdb483a64d36dd6f69f2d1a3277141f01c6a9e7667368867604ea16\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/167cb7f3a631?ch=15\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[6209, 9009]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 460,
+      "focus": "实无众生得灭度者"
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 460, \"title\": \"第三品 大乘正宗分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第三品 大乘正宗分】\", \"text\": \"佛告须菩提。诸菩萨摩诃萨。应如是降伏其心。所有一切众生之类。若卵生。若胎生。若湿生。若化生。若有色。若无色。若有想。若无想。若非有想。非无想。我皆令入无余涅槃而灭度之。如是灭度无量无数无边众生。实无众生得灭度者。何以故。须菩提。若菩萨有我相。人相。众生相。寿者相。即非菩萨。\\n一切众生\\n“佛告须菩提。诸菩萨摩诃萨。应如是降伏其心。”\\n佛告诉须菩提，当你问怎么样安心时，就安心了。佛过了许久，看须菩提还是不懂，没有办法，只好退而求其次，第二步再来讲一讲，因为那个时机过去了，禅宗所谓机，这个禅机过去了，须菩提没有懂。现在第二步来讲了，佛说：我告诉你，一切菩萨摩诃萨。“摩诃”的中文意思是“大”，一切大菩萨们。\\n古代也有将菩萨翻成“大士”或者“开士”，表示是开悟的人。所以我们的白衣大士就是白衣菩萨。摩诃萨是唐宋以后念的，真正梵文发音是马哈，诃字念成哈字。在座很多客家的同学，客家话、广东话、闽南话比较接近唐音，国语反而距离很远了。\\n佛说菩萨摩诃萨是倒装的文句，就是一切大菩萨们，应如是降伏其心，应该有一个方法，把自己的心降伏下去。什么方法呢？他说：“所有一切众生之类”，现在先解释什么叫众生。佛经里众生这个名词，庄子先说过，一切有生命的东西谓之众生，并不是单指人！人不过是众生的一种，一切的动物、生物，乃至细菌、有生命的动物都是众生。有灵性的生命，有感情，有知觉生命的动物，就是众生的正报。所以众生不是光指人。佛要教化一切众生，慈爱一切众生，对好的要慈悲，对坏的更要慈悲。好人要度，要教化，坏人更要教化。天堂的人要度，地狱里的更可怜，更要度。这是佛法的精神，所以说要度一切众生。\\n“一切”两个字是没有范围的，任何东西都在一切之内。不过讲到众生这个名词，使我想起几十年以前的一桩事；那次在成都四川大学讲中国哲学，提到佛法讲众生，有一个学生就提出来问，植物及矿物有没有包括在众生里头？我说：那是众生的依报，不是正报，依报是附属的，同我们有连带关系。他说：譬如含羞草，你不能说它没有灵性！我问他学什么的，他说他是学农的，我说你学农的问这个问题有点奇了。\\n我那个时候年纪还轻，比较爱弄玄虚，就说：既然学农的，应该知道，含羞草根里头有一水泡，人手的热气一接触，水就下降，叶子就像怕羞一样缩下去了。这是机械性，并不是情感，也不是知觉。其实这是头一天晚上，跟一个学农的教授讨论含羞草听来的，也可以说佛法有灵，知道第二天有人会问这个问题吧！\\n谭子《化书》\\n“所有一切众生之类。若卵生。若胎生。若湿生。若化生。若有色。若无色。若有想。若无想。若非有想。非无想。我皆令入无余涅槃而灭度之。”\\n现在佛学提出来众生，佛把一切的生命分成十二类。第一是卵生，像鸟、鸡、鸭等，都是属于卵生。胎生是指人、马，及各种由胞胎里生的。湿生包括了鱼、蚊子、苍蝇等。化生就是变化的东西，如蝉蜕、蜻蜓、蝴蝶等。又照中国古老的传说，真假不能确定，海里的鲨鱼活到几百年以上，会跳到沙滩上，一变就是鹿，长一个头角的鹿，这些都是化生。中国化生的书，几乎没有人肯去研究；《道藏》里有一本书就叫做《化书》，作者是谭子，名谭峭，他学佛也学道，是有名的神仙。谭峭的父亲是唐朝的官，也就是唐朝唯一大学的校长，地位很高，只有谭峭一个儿子。\\n可是谭峭十几岁离家出走，他父亲丢了这个儿子，很难过。后来过了一二十年，他回来了，身上穿个道士的衣服，拖个破鞋子，戴个破帽子，怪里怪气，嬉皮笑脸，就像前几年那种嬉皮的样子。他回来劝父亲一块修道去，这是著名的道家人物，学问也非常好。谭子著了这部《化书》，认为宇宙生命的变化自己可以掌握，人可以永远地活下去。他究竟仍然活着没有？说不定他跑到我们这里来，我们也不知道。后来因为人家问他，道是怎么样修？他就写了一首诗，也像是《金刚经》的偈子一样，很简单的，有禅宗的境界：\\n线作长江扇作天，靸鞋抛向海东边。\\n蓬莱此去无多路，只在谭生拄杖前。\\n他说，整个的宇宙是这么渺小，线就像长江，扇就像天。靸鞋就是古代的拖鞋，鞋子后跟不拉起来，踢哩踢拉拖起来走。靸鞋抛向海东边不要了，蓬莱是代表道家的神仙境界，蓬莱此去无多路，他说那个神仙的境界不远，就在这里。在哪里啊？他说，只在谭生，就在我的手指，手里拿个手杖，就在这里。这个道理也就等于佛告诉须菩提，“应如是住，如是降伏其心”，就在这里，佛不在西天，就在你这里。\\n不过谭子的《化书》很奇怪，讲了化生的道理以后，由科学再归到哲学，由哲学再归到政治学，讲人生的境界，及如何教化别人，改变别人。他认为坏的时代，坏的世界，是可以变化过来的，他的理论和哲学境界非常之高。所以讲到中国文化，这不能说不是中国文化啊！中国文化的精华，我们不能说连个影子都不知道啊！\\n有色无色的众生\\n除了胎生、卵生、湿生、化生四种之外，另有一种生命为“有色”，是有形象，有物质可以看见的。另有一种生命是“无色”，不是我们所知，也看不见，可是它确实的存在。譬如说鬼吧！到底有没有？当然可以告诉大家确实有的，并没有什么可怕，那是“无色”的生命，跟我们阴阳电子不同而已。\\n我们姑且讲活鬼，大家也许没有看过，如果到贵州、云南的边界，就可以听到活鬼的故事。活鬼称为山魈，这个山魈，我们拿佛经来解释就很简单了，他是“若有色”、“若无色”的众生。他有时候给你看见，有时候不给你看见，高兴给你看见就看见，不高兴就看不见。人走到山里，看到走路的脚印子同我们相反，脚趾头在后面，脚后跟在前面的地方，就知道有山魈。他们非常讲礼貌，你不要说这是山鬼啊，那你就吃亏了。你要说有山先生在这里！他会觉得你这个人知礼，就不会找你麻烦。\\n这些住在山里的山魈，很有意思，他们有事的时候，要跑到别人家里借锅子和碗筷。他们的样子很丑陋，矮矮的，就像人倒着脚走来。讲的话我们也不懂，必须要用手去指要借的东西，那些山里头的人都知道，有些坏心眼的人，却准备一套骗他们的。准备什么呢？纸做的锅，纸做的碗，他就很高兴地借回去了，结果火上一烧就完了。可是山魈非常守信用，不知道他用什么方法，有钱人家的东西就到他那里去了，但是他一百英里范围以内不偷的，他要到外地弄个锅碗来还你。许多山里的穷人都拿这些玩意骗鬼，所以鬼不可怕，而人是真正的坏，连鬼都要骗。\\n有想无想的众生\\n另有一类众生是“若有想”，有思想感觉。另有一类众生是“若无想”，没有思想、感觉。细分之下，有些生命没有思想，没有知觉，但有感觉。\\n另有众生是神的境界，照佛学的分类，神的类别太多了，小则分为三十多种，大则分为六十多种，再细分析下去，有几百种。神也有他的等次，一类叫“非有想”，不是没有想，但是看起来没有想。譬如有些人在打坐，你看他好像不知道，可是他又知道，真知道吗？又不知道。其实，世界上还有更多种类的生命，不过佛法大致归纳为十二类。\\n世界上的生命有这么多种类，唯有人很坏，但人也最具备一切。我们不要认为人类是胎生，在\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 12844, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"实无众生得灭度者\"], \"focus_terms_found_in_chapter\": [\"实无众生得灭度者\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"实无众生得灭度者\", \"offset\": 97, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 460, \"offset\": 0, \"focus\": \"实无众生得灭度者\"}}, {\"term\": \"实无众生得灭度者\", \"offset\": 6594, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 460, \"offset\": 6394, \"focus\": \"实无众生得灭度者\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"43b458505727ced7feffe4dcb3a6f2de365845eef9bffd9b96b79308a0308920\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=460\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "\"應無所住而生其心\" 金剛經 無住 般若"
+     },
+     "status": "success",
+     "duration_seconds": 2.022,
+     "result_full": "{\"query\": \"\\\"應無所住而生其心\\\" 金剛經 無住 般若\", \"results\": [{\"source_record_id\": \"doi:10.14711/spcol/b860726\", \"title\": \"摩訶般若波羅蜜多心經\", \"authors\": [\"無垢子\"], \"year\": null, \"publication_type\": \"OTHER\", \"venue\": \"Rare &amp; Special e-Zone\", \"doi\": \"10.14711/spcol/b860726\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.24956/ssc.24.4\", \"title\": \"Study on a single substance(一體) and prajñā(般若) of deśanā(戱論) in the vajracchedikā - parajñāpāramitā - sūtra (\\\"金剛般若波羅蜜經\\\")\", \"authors\": [\"Hag - Bae (Ven. Wol - Mook) Kim\"], \"year\": 2018, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Studies of Seon Culture\", \"doi\": \"10.24956/ssc.24.4\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.14711/spcol/b1135488\", \"title\": \"趙松雪書金剛般若波羅密經\", \"authors\": [\"趙孟頫\"], \"year\": null, \"publication_type\": \"OTHER\", \"venue\": \"Rare &amp; Special e-Zone\", \"doi\": \"10.14711/spcol/b1135488\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.14711/spcol/b1135428\", \"title\": \"佛說般若波羅蜜多心經贊\", \"authors\": [\"圓測\"], \"year\": null, \"publication_type\": \"OTHER\", \"venue\": \"Rare &amp; Special e-Zone\", \"doi\": \"10.14711/spcol/b1135428\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.5840/ntuphilreview2013465\", \"title\": \"聖嚴禪教之安心法門─「看話禪」與「無住」 思想是融貫的嗎？\", \"authors\": [\"National Taiwan University\"], \"year\": 2013, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"NTU Philosophical Review\", \"doi\": \"10.5840/ntuphilreview2013465\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"\\\"應無所住而生其心\\\" 金剛經 無住 般若\", \"status\": \"success\", \"raw_result_count\": 8}, {\"provider\": \"openalex\", \"query\": \"\\\"應無所住而生其心\\\" 金剛經 無住 般若\", \"status\": \"success\", \"raw_result_count\": 8}], \"relevance_gate\": {\"dropped_irrelevant\": 11, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"记录为真实检索所得, 但全部为 METADATA_ONLY（无可读内容）——只能陈述书目存在性, 不得凭标题推断内容\"}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.5840/ntuphilreview2013465",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.082,
+     "result_full": "{\"source_record_id\": \"doi:10.5840/ntuphilreview2013465\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.5840/ntuphilreview2013465\", \"title\": \"聖嚴禪教之安心法門─「看話禪」與「無住」 思想是融貫的嗎？\", \"authors\": [\"National Taiwan University\"], \"year\": 2013, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"NTU Philosophical Review\", \"doi\": \"10.5840/ntuphilreview2013465\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"METADATA_ONLY\", \"access_level_after\": \"METADATA_ONLY\", \"returned_evidence_level\": null, \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 未取得: 不得凭 title 推断论文内容; 状态保持不变\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"metadata_only\", \"whole_document_returned\": false}"
+    },
+    {
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.24956/ssc.24.4",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.087,
+     "result_full": "{\"source_record_id\": \"doi:10.24956/ssc.24.4\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.24956/ssc.24.4\", \"title\": \"Study on a single substance(一體) and prajñā(般若) of deśanā(戱論) in the vajracchedikā - parajñāpāramitā - sūtra (\\\"金剛般若波羅蜜經\\\")\", \"authors\": [\"Hag - Bae (Ven. Wol - Mook) Kim\"], \"year\": 2018, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Studies of Seon Culture\", \"doi\": \"10.24956/ssc.24.4\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"METADATA_ONLY\", \"access_level_after\": \"METADATA_ONLY\", \"returned_evidence_level\": null, \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 未取得: 不得凭 title 推断论文内容; 状态保持不变\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"metadata_only\", \"whole_document_returned\": false}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 1.7,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_2y1EjfVoq5STVzDKyVli9218"
+    },
+    {
+     "t": 1.8,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_01_4g9c4PTYKa6XKIJGi7r80427",
+     "status": "success",
+     "duration_seconds": 2.714
+    },
+    {
+     "t": 4.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "应无所住而生其心"
+     },
+     "status": "success",
+     "duration_seconds": 2.714,
+     "result_full": "{\"query\": \"应无所住而生其心\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 658, \"chapter_title\": \"禅宗与佛学\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·禅宗与佛学】\", \"snippet\": \"他的父亲宦于广东，便落籍于新州。三岁丧父，其母守志抚孤至于成立，家贫，采樵为生，一日，因负薪到市上，听到别人读金刚经到“应无所住而生其心”一段，便有所领悟，别人告诉他这是黄梅（湖北）的禅宗第五代祖师弘忍禅师，平常教人读的佛经，他便设法到黄梅去求学习禅（这时他并未出家为僧）。五祖弘忍禅师初见他时，便问：“汝自何来？”他便答道：“岭南。”五祖说：“欲须何事？”他答：“唯求作佛。”五祖说：“岭南人无佛性，怎么做佛？”他答道：“人地即有南北，佛性岂有东西？”五祖听了，便叫他跟着大家去做苦工，他说：“弟子自心常生智慧，不离自性，即是福田，和尚要我做何事？”五祖说他根性太利，便叫他到槽厂去做舂米的苦工，他做了八个月的苦工，有一天，五祖宣布要传授\", \"score\": 40, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 658, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 467, \"chapter_title\": \"第十品 庄严净土分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十品 庄严净土分】\", \"snippet\": \"佛解释什么叫清净心？“不应住色生心。不应住声香味触法生心。应无所住。而生其心。”禅宗六祖初步悟道，就是这一句话，听到了“应无所住而生其心”就开悟了。此心本来无所住的啊！因为你不明白此心无所住，无所住是毕竟空；有个空的境界，就不对了，就有所住了，就住在空上了，那是住法而生心，住在空法上。 所以真正的清净心，不是有个光，有个境界，而是不住色，不住声香味触法，他说真正的修行，应无所住而生其心。应该随时随地无所住，坦坦然，物来则应，过去不留。用我们常谈的这两句话，勉强来描写，就是此心无事，像个镜子，心如明镜台，有境界来就照，用过了就没有。当年我有个朋友，学佛有点心得，那个时候刚刚有打火机，人家问他，佛是什么？他说就像个打火机一样，卡达！用它\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 467, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 448, \"chapter_title\": \"第六章 清净慧菩萨\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第六章 清净慧菩萨】\", \"snippet\": \"萨境界是常觉不住，不住在觉的境界中，也不抱着一个觉照的境界，有一个觉照的境界就有所住了。禅宗的六祖因《金刚经》里的一句“应无所住而生其心”而悟道。“应无所住而生其心”是修行的一个方法，如果以圆觉的境界来讲，应该改为“本无所住而生其心”，悟了道以后，就是本无所住了，此心本无所住，物来则应，过去不留。“照与照者”，第一个照是能照，下面的照者是所照，例如妄念是所照。能照与所照，同时寂灭，同时都空了，这才是得道的境界。 “譬如有人，自断其首，首已断故，无能断者，则以碍心自灭诸碍，碍已断灭，无灭碍者。” 你说什么叫作空呢？你说打起坐来，有个清静，有个空，还有个境界，那就糟了，那是意识形态妄想所造成的，搞鬼的就有个鬼境界，玩神的就有个神境界，修\", \"score\": 37, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 448, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"author\": \"牟宗三\", \"chapter_idx\": 15, \"chapter_title\": \"第十五讲　佛教中圆教的意义\", \"citation_label\": \"【《中国哲学十九讲》·第十五讲　佛教中圆教的意义】\", \"snippet\": \"而说。圆通无碍是般若的妙用。如果round teaching对应这个意思讲，则是恰当的。照《大般若经》所讲，般若精神是“应无所住而生其心” (1) ，是“佛说般若波罗蜜，即非般若波罗蜜，是名般若波罗蜜” (2) 。般若是一法不立，是无知亦无得，是不坏假名而说诸法实相，它就是圆，所以圆通无碍说的是般若，而照这个意义说圆，即可翻译成round。 但是圆有两个意义，一方面是指般若的圆通无碍，另一方面则是指华严宗所说的“圆满无尽，主伴俱足”。照华严宗所说的圆，不但是圆通（或圆融）无碍，而且也是圆满无尽。所以它的圆具有圆通与圆满两层意义。圆满无尽就是perfect，而圆通无碍则可以翻译成round。所以凡是说圆通无碍，是就般若说的。又如华严宗\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 15, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 14, \"chapter_title\": \"第一讲\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第一讲】\", \"snippet\": \"论国内国外，对宗教修持功夫都很内行，修就是修定。大家修定观念的最大错误是什么呢？是以为所谓“定”就是什么都不知道，这与“应无所住而生其心”的意义是相违背的。此其一。 其次严重的是，现在一般人都去搞神秘了。灵感啊！神通啊！第六感啊！超越冥想啊！各种神秘名称都加上去了，这是一个非常严重的错误。大家要知道，神通与神经是双胞胎，这一点真是很严重的问题，因为失之毫厘，差之千里。 话又说回来了，什么是定？一定要认清楚。四禅八定，是佛教修证方法的中心基础，不过佛法不在定上，定是共法。但是佛法也不离开定，历代的高僧传记中，功夫修证到“定”的比丘及比丘尼非常多。甚至南北朝的皇帝，也是与佛教有关，如刘裕小名寄奴；梁武帝、隋文帝等与佛教关系都很深。 佛告\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 14, \"focus\": \"应无所住而生其心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 14, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 5.9,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_Zaph0jp7csKYM2CKnvoC3324"
+    },
+    {
+     "t": 6.0,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_01_9ZTc4KhHPreAPS2LPeYb7518",
+     "status": "success",
+     "duration_seconds": 0.008
+    },
+    {
+     "t": 7.2,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "金刚般若波罗蜜经"
+     },
+     "status": "success",
+     "duration_seconds": 1.098,
+     "result_full": "{\"query\": \"金刚般若波罗蜜经\", \"results\": [{\"book_id\": \"1201d003be31\", \"book_title\": \"中国佛教史\", \"author\": \"蒋维乔\", \"chapter_idx\": 15, \"chapter_title\": \"第十三章 会昌以前之佛教概说\", \"citation_label\": \"【《中国佛教史》·第十三章 会昌以前之佛教概说】\", \"snippet\": \"四百部，合五十万颂；其已译者，六十一部，二百三十九卷。据《开元录》所载。初译《金光明最胜王经》（十卷）；继成密部之《能断金刚般若波罗蜜经》（一卷）、《大孔雀咒王经》（三卷）、《佛顶尊胜陀罗尼经》（一卷）；又有关于《因明》及法相宗之《因明正理门论》（一卷）、《观所缘论释》（一卷）、《取因假摄论》（一卷）；其所译大部，则有部律为多，例如《根本说一切有部毗奈耶》（五十卷）、《根本说一切有部苾刍尼毗奈耶》（二十卷）、《根本说一切有部毗奈耶杂事》（四十卷）、《根本说一切有部尼陀那目得迦》（十卷）、《根本萨婆多部律摄》（二十卷）等是。此外尚著《南海寄归内法传》（四卷）、《大唐西域求法高僧传》（二卷）。入寂于先天二年（713），春秋七十有九。又译\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"1201d003be31\", \"chapter_idx\": 15, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"1201d003be31\", \"book_title\": \"中国佛教史\", \"author\": \"蒋维乔\", \"chapter_idx\": 16, \"chapter_title\": \"第十四章 唐之诸宗\", \"citation_label\": \"【《中国佛教史》·第十四章 唐之诸宗】\", \"snippet\": \"那摩提译 《深密解脱经》五卷…………………………………………菩提流支译 《十地经论》十二卷天亲造（以下六部译者同上） 《金刚般若波罗蜜经论》三卷 《胜思惟梵天所问经论》四卷 《法华经论》二卷 《无量寿优波提舍经论》一卷 《文殊师利菩萨问菩提经论》三卷 《摄大乘论》二卷天亲造……………………………………佛陀扇多译 此外三人之翻译尚多；今兹所举，惟择其与世亲关系密接者。又摩提、流支合译者，有《宝积经论》（四卷）、《宝性论》（四卷）；流支又译《入楞伽经》（十卷）。由此等书目考之：三人为世亲系统，殆无可疑。 就《十地论》之翻译言之，亦极有兴味。盖翻译此论，始于宣武永平元年（508）；初摩提、流支，本在一处；《续高僧传》曰：“当翻经日，于洛阳\", \"score\": 39, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"1201d003be31\", \"chapter_idx\": 16, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"author\": \"牟宗三\", \"chapter_idx\": 15, \"chapter_title\": \"第十五讲　佛教中圆教的意义\", \"citation_label\": \"【《中国哲学十九讲》·第十五讲　佛教中圆教的意义】\", \"snippet\": \"先了解《般若经》的特殊性格，也就是必须先了解分别说与非分别说的观念，才能确实把握住圆教之意义。 尤惠贞记录 (1) 见《金刚般若波罗蜜经》。 (2) 同上。 (3) 康德论最高善主要见于《实践理性批判》的第一部第二卷，即《纯粹理性的辩证论》。 (4) 见《孟子·公孙丑》篇。\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 15, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"author\": \"牟宗三\", \"chapter_idx\": 16, \"chapter_title\": \"第十六讲　分别说与非分别说以及“表达圆教”之模式\", \"citation_label\": \"【《中国哲学十九讲》·第十六讲　分别说与非分别说以及“表达圆教”之模式】\", \"snippet\": \"故，说《般若波罗蜜经》……复次余经中佛说五众无常苦空无我相，今欲以异法门说五众故，说《般若波罗蜜经》。” (23) 见《金刚般若波罗蜜经》。 (24) 三界指欲界、色界、无色界。参看《佛性与般若》下册，第四章第八节。 (25) 《法华玄义》卷五上有云：“通诸位论粗妙者……中草（二乘）虽复动出，智不穷源，恩不及物……大树（别教）实事，同缘中道，皆破无明，俱有界外功用，故此位为妙。而别教从方便门，曲径纡回，所因处拙，其位亦粗。圆教真门，是故为妙。”关于别教所以为“曲径纡回，所因处拙”，请参看《佛性与般若》上册，第五六〇至五六一页。 (26) 天台宗以《法华经》为圆教的大纲。《法华玄义》卷第十有云：“当知此经唯论如来设教大纲，不委微细纲目\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 16, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 528, \"chapter_title\": \"中国佛教原始的禅与禅宗四祖的风格\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·中国佛教原始的禅与禅宗四祖的风格】\", \"snippet\": \"经》印心的传统了。四祖教人念摩诃般若（《大般若经》是佛法中阐言体性空的要典），从此，自五祖弘忍付授六祖慧能以来，便改用《金刚般若波罗蜜经》以印心，因此而开启初唐以后中国禅宗的特色。除此以外，四祖道信大师，又为后世学者留下不慕虚荣，轻生死，重去就的清风亮节，作为世出世间的典范。唐、宋以后许多儒家的“高士”、“处士”和道家的神仙们，亦多有相同的志趣。这是中国文化另一面的精神，也是中华民族的血统中特别强烈的一种特殊精神，应当尊重注意，然后才能谈——中国文化的气节。 “贞观癸卯岁（公元六四三年）太宗向师道味，欲瞻风采。诏赴京，祖上表逊谢，前后三返。第四度命使曰：如果不起，取首来。使至山谕旨，祖乃引颈就刃，神色俨然。使回，以状闻，帝弥钦重。 \", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 528, \"focus\": \"金刚般若波罗蜜经\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 6, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 17.1,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_7WN9y98tacWuLXGaUYIr2991"
+    },
+    {
+     "t": 17.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_XU5i8hBI2C7JlKtRf2xq7914"
+    },
+    {
+     "t": 17.2,
+     "phase": "result",
+     "name": "list_books",
+     "call_id": "call_02_cvGddfrs3hddZUr3wEpG3343",
+     "status": "success",
+     "duration_seconds": 0.003
+    },
+    {
+     "t": 18.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "于法不说断灭相"
+     },
+     "status": "success",
+     "duration_seconds": 1.315,
+     "result_full": "{\"query\": \"于法不说断灭相\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 484, \"chapter_title\": \"第二十七品 无断无灭分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第二十七品 无断无灭分】\", \"snippet\": \"耨多罗三藐三菩提。须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。 三界六道之外 “须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。” 佛叫须菩提，“汝若作是念”，你假使有一个观念，认为“如来不以具足相故，得阿耨多罗三藐三菩提”，认为不著相就可以见佛，就可以大彻大悟的话，他说须菩提啊，你千万不要这样想，不要认为没有功德成就也能够悟道成佛，你有这种观念就错了。 前面我们明明听须菩提讲的嘛！不要以三十二相见如来。佛则说若以色见我，以音声求我，是人行邪道，不能见如来。可是佛现在又说，须菩提你不要搞错了\", \"score\": 38, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 484, \"focus\": \"于法不说断灭相\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 489, \"chapter_title\": \"第三十二品 应化非真分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第三十二品 应化非真分】\", \"snippet\": \"它只告诉你“一切有为法，如梦幻泡影”。梦幻泡影是叫你不要执著，不住，并没有叫你空不空。你如果说空是没有，《金刚经》说：“于法不说断灭相”，说一个空就是断灭相，同唯物的断见思想是一样的，那是错的。当梦幻来的时候，梦幻是真，当梦幻过去了，梦幻是不存在的；但是梦幻再来的时候，它又俨然是真的一样。只要认识清楚，现在都在梦幻中，此心不住，要在梦幻中不取于相，如如不动，重点在这里。 当你在梦中时要不着梦之相；当你做官的时候，不要被官相困住了；当你做生意的时候，不要被钞票困住了；当你要儿女的时候，这个叫爸爸，那个叫妈妈，不要被儿女骗住了；要不住于相，如如不动，一切如梦幻泡影。下面，“如露亦如电”，早晨的露水也是很短暂的，很偶然地凑合在一起，是因缘\", \"score\": 37, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 489, \"focus\": \"于法不说断灭相\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 48, \"chapter_title\": \"经义之部\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·经义之部】\", \"snippet\": \"身非相分。经云：若以色见我，以音声求我，是人行邪道，不能见如来。 第二十七，无断无灭分。经云：发阿耨多罗三藐三菩提心者，于法不说断灭相。 第二十八，不受不贪分。经云：菩萨所作福德，不应贪着，是故说不受福德。 第二十九，威仪寂静分。经云：若有人言如来若来、若去、若坐、若卧，是人不解我所说义。何以故，如来者，无所从来，亦无所去，故名如来。 第三十，一合理相分。经云：若世界实有者，即是一合相。但凡夫之人，贪著其事。 第三十一，知见不生分。义如品名，不必拈提。 第三十二，应化非真分。经云：云何为人演说，不取于相，如如不动。又云：一切有为法，如梦幻泡影，如露亦如电，应作如是观。 （一九六八年，台北） 为《金刚》《楞伽》《楞严》三经重印首语 释\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 48, \"focus\": \"于法不说断灭相\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 3, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 18.6,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "应无所住行于布施"
+     },
+     "status": "success",
+     "duration_seconds": 1.315,
+     "result_full": "{\"query\": \"应无所住行于布施\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 461, \"chapter_title\": \"第四品 妙行无住分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第四品 妙行无住分】\", \"snippet\": \"宙中间的这一些东西，称之为极迥色。 这些就是色法，简单地说，色就是地、水、火、风四大，也就是我们这个身体。所谓“菩萨于法应无所住行于布施”，是叫我们不要住在色相上布施，不要有对象的观念。譬如说要做一点功德，出一点钱，或者救济一个人，然后说救济了某一个人，那是住相布施。学佛的人帮助人、救助人，应该不觉得有对象，有对象的观念要丢掉，不要留一念在心中。 布施善行的福德，叫做人天福德，是小果报，并不是学佛的大福报。福德跟功德大有差别，《金刚经》专讲福德，重点在福德，不在功德。什么是人生最大的福德？悟道，成道。智慧是人生最大的福报，所谓智慧的成就，指的并不是普通的知识。 再说我们在身上做功夫，闭着眼睛坐在那里，心里念佛也好、参禅也好、念咒子也\", \"score\": 37, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 461, \"focus\": \"应无所住行于布施\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 460, \"chapter_title\": \"第三品 大乘正宗分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第三品 大乘正宗分】\", \"snippet\": \"保持住。佛先答复他：就是这样。因为须菩提不懂，所以佛接着在下章就说了一段理由，说大乘菩萨道的修行方法，也包括精神的生命，应无所住行于布施，任何事情一做便休，无所住。应该无所住行于布施，这个叫修行。你心理的行为随时做到无所住，一切都布施，都丢开了，这是我们普通的话，都丢掉了。禅宗经常用一句话，放下，就是丢掉了。做了好事马上须要丢掉，这是菩萨道；相反的，有痛苦的事情，也是要丢掉。有些人说，好事我可以丢得，就是痛苦丢不掉啊！ 实际上，好事跟痛苦是一体的两面而已，一个是手背，一个是手心。假使说，好事他能够真丢开的话，痛苦来一样可以丢开，所以痛苦也是一个很好的测验。如果一个人碰到烦恼、痛苦、逆境的时候丢不开，说他碰到好事能丢得开，那是不可能的\", \"score\": 36, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 460, \"focus\": \"应无所住行于布施\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 21.8,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_vTKwVLGuwVFmO1YNkhlx8337"
+    },
+    {
+     "t": 21.9,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_LdRDMj2xCYNnrTvhg3Jz5153"
+    },
+    {
+     "t": 22.1,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_02_XpiUhZvWhAHSKIaHSBgU6369",
+     "status": "success",
+     "duration_seconds": 0.011
+    },
+    {
+     "t": 22.3,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 471,
+      "focus": "应生无所住心"
+     },
+     "status": "success",
+     "duration_seconds": 0.012,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 471, \"title\": \"第十四品 离相寂灭分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十四品 离相寂灭分】\", \"text\": \"尔时须菩提。闻说是经。深解义趣。涕泪悲泣。而白佛言。希有世尊。佛说如是甚深经典。我从昔来所得慧眼。未曾得闻如是之经。世尊。若复有人。得闻是经。信心清净。即生实相。当知是人。成就第一希有功德。世尊。是实相者。即是非相。是故如来说名实相。世尊。我今得闻如是经典。信解受持。不足为难。若当来世。后五百岁。其有众生。得闻是经。信解受持。是人即为第一希有。何以故。此人无我相。无人相。无众生相。无寿者相。所以者何。我相即是非相。人相众生相寿者相。即是非相。何以故。离一切诸相。即名诸佛。佛告须菩提。如是如是。若复有人。得闻是经。不惊不怖不畏。当知是人。甚为希有。何以故。须菩提。如来说第一波罗密。即非第一波罗密。是名第一波罗密。须菩提。忍辱波罗密。如来说非忍辱波罗密。是名忍辱波罗密。何以故。须菩提。如我昔为歌利王割截身体。我于尔时。无我相。无人相。无众生相。无寿者相。何以故。我于往昔节节支解时。若有我相人相众生相寿者相。应生瞋恨。须菩提。又念过去于五百世。作忍辱仙人。于尔所世。无我相。无人相。无众生相。无寿者相。是故须菩提。菩萨应离一切相。发阿耨多罗三藐三菩提心。不应住色生心。不应住声香味触法生心。应生无所住心。若心有住。即为非住。是故佛说菩萨心。不应住色布施。须菩提。菩萨为利益一切众生故。应如是布施。如来说一切诸相。即是非相。又说一切众生。即非众生。须菩提。如来是真语者。实语者。如语者。不诳语者。不异语者。须菩提。如来所得法。此法无实无虚。须菩提。若菩萨心。住于法而行布施。如人入暗。即无所见。若菩萨心。不住法而行布施。如人有目。日光明照。见种种色。须菩提。当来之世。若有善男子。善女人。能于此经受持读诵。即为如来。以佛智慧。悉知是人。悉见是人。皆得成就无量无边功德。\\n我们今天讲《金刚经》第十四品，《金刚经》开始到现在，讲了十三品，这其中再提起大家注意，《金刚经》虽然在说大般若的修持，这个般若不是纯粹的般若，他讲的是般若的体，就是道体，及见道之体的修行方法。开始先告诉我们，如何是修戒的般若，就是“善护念”这个要点，由开始发心修行到最后的成佛，就是善护念。接着下来，就说善护什么念？无住。无住就是定，善护念就是戒，《金刚经》的般若，本身就是慧，这是拿戒定慧的道理，来说明《金刚经》的本身，般若法门就是如此。\\n如果以六度来讲，《金刚经》首先讲的无住，所以令一切众生入无余依涅槃而灭度之。这是布施，布施度，由布施而到达般若的成就，证得阿耨多罗三藐三菩提，就是大彻大悟而成佛。布施以后持戒，持的什么戒？持的菩萨大戒，无我相，无人相，无众生相，无寿者相，善护此念就是持戒波罗密，而到达般若波罗密，到达智慧得度，智慧的成就，这是一个基本修持的阶段；由此而学佛，由此而修行，由此而成佛。说到十三品这里，差不多作了一个结论。\\n现在第十四品开始，是讲由忍辱波罗密，到达般若波罗密，我们今天这一段，重点就在这里。\\n解悟　喜极而泣\\n“尔时须菩提。闻说是经。深解义趣。涕泪悲泣。而白佛言。希有世尊。佛说如是甚深经典。我从昔来所得慧眼。未曾得闻如是之经。世尊。若复有人。得闻是经。信心清净。即生实相。当知是人。成就第一希有功德。”\\n这里只有三个小节，是另起一个阶段，前面都是须菩提与佛的对话，一问一答，记录下来，就是经典。\\n“尔时”，这时候，就是当问话的时候，须菩提听了这个经典的感受，听了佛说般若成就法门的感受。“深解义趣”，希望大家特别注意这四个字，大家念经时，很容易轻易把它念过去，深解义趣是深深的，很深刻的理解到了。这个理解到是我们现在讲的话，就是真正的悟到了那个道。\\n后世禅宗门下，把它分成两个阶段：一个叫解悟，一个叫证悟。解悟就是知见上的，所知所见到达了，但是还不是普通的学术思想所说的理解，而是这个身心马上感受到有一种脱落感、脱滞感，这就是解悟的一种境界。所以他说深解义趣，深深的得到解悟，不谈证悟。\\n“义”就是解悟到佛法修证至高无上的道理，义也就是义理，义在古文就代表理，最高的道理。“趣”并不是兴趣的趣，而是趋向的趋，就是向那个方向，到那个路上，目标的趋向。佛经上经常看到这个“趣”字，趋向，已经到达这个境界，已经进入了这种情况。深解义趣是一件事实，不是文学上空洞的赞叹名词。须菩提深解义趣以后哭了，他为什么哭呢？人往往喜极而泣，高兴到了极点，会痛哭流涕。人所追求的，始终没有追求到的，忽然追求到了，会哭起来；这个哭是无上的欢喜，所以也是一种悲心的流露。\\n学佛修道的人，在自己自性清净面快要现前的时候，自然会涕泪悲泣，这是自然的现象，否则就是一个疯子了。当这个人性自然的清净面，所谓本性，本来的面目呈现的时候，自己有无比的欢喜，但是找不到欢喜的痕迹，自然会哭起来。而你问他哭什么，他并不伤心，而是自然的，天性的流露。等于说，自己失掉的东西忽然找到了，那个时候就有无比的欢喜，但是也没有欢喜的意思，是自然涕泪悲泣的感受。\\n因此，须菩提一边哭一边讲，希有世尊啊！伟大了不起的佛啊！希有难得的佛啊！这都是赞叹之词。“佛说如是甚深经典”，他说，你现在讲这样高深的道理，什么道理？就是般若，智慧的解脱，智慧的成就，这个经典重点在这里。“我从昔来所得慧眼”，这位须菩提，是佛弟子有名的谈空第一，他天生有慧眼，所以在佛的修持行列中，般若智慧成就最高。所以他说，自从我有慧眼以来，“未曾得闻如是之经”，从没有听到过这样深刻究竟道理的经典。\\n信心清净\\n讲到这里，又加上称呼了，等于我们讲话，经常说老兄啊！老弟啊！“世尊。若复有人。得闻是经。信心清净。即生实相。”他说：假定有一个人，听到这个般若波罗密经，听到佛说的如何以智慧来自度、成佛的这个法门，“信心清净，即生实相”。这八个字是这一品重点的中心，千万记住。也就是我们后世众生，要想成佛的必经之路，必要的法门。达不到这个程度，与成佛的距离还很大，只能说你刚开始在学，一点影子都没有。达到了这八个字的程度，也可以说你进入了般若之门，建立学佛的基础了。\\n信心清净有两种意义：一种是专讲个人的信仰，因为真正的信仰并不是迷信。为什么不是迷信呢？因为是深解义趣，把道理彻底了解了来学佛，才是一个真正学佛的人。假定说佛学的理不透，盲目地去信仰、盲目地去礼拜，那不能说他是不信；不过，严格地说，还属于盲目迷信的阶段。真正佛法的正信，是要达到深解义趣这四个字；先懂得理论以后，再由这个理论着手修持。所以说，一个真正学佛的人，必须要深解义趣，这个信心才是绝对的正信，这一个法门，才是真正的佛法，才是宇宙中一切众生，自求解脱成佛之路。\\n所谓正信，要信什么呢？信我们此心，信一切众生皆是佛，心即是佛，我们都有心，所以一切众生都是佛。只是我们找不到自己，不明我们自己的心，不能自己见到自己的本性，因此隔了一层，蒙住了，变成凡夫。\\n凡夫跟佛很近，一张纸都不隔的，只要自己的心性见到了，清楚了\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 15314, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"应生无所住心\"], \"focus_terms_found_in_chapter\": [\"应生无所住心\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"应生无所住心\", \"offset\": 498, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 471, \"offset\": 298, \"focus\": \"应生无所住心\"}}, {\"term\": \"应生无所住心\", \"offset\": 11020, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 471, \"offset\": 10820, \"focus\": \"应生无所住心\"}}, {\"term\": \"应生无所住心\", \"offset\": 11264, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 471, \"offset\": 11064, \"focus\": \"应生无所住心\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"6d7189ac6836062edb6b756af76be19eb12cc32ab1fcca5a632071b523382000\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=471\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 22.3,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 475,
+      "focus": "过去心不可得"
+     },
+     "status": "success",
+     "duration_seconds": 0.012,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 475, \"title\": \"第十八品 一体同观分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十八品 一体同观分】\", \"text\": \"须菩提。于意云何。如来有肉眼不。如是。世尊。如来有肉眼。须菩提。于意云何。如来有天眼不。如是。世尊。如来有天眼。须菩提。于意云何。如来有慧眼不。如是。世尊。如来有慧眼。须菩提。于意云何。如来有法眼不。如是。世尊。如来有法眼。须菩提。于意云何。如来有佛眼不。如是。世尊。如来有佛眼。须菩提。于意云何。如恒河中所有沙。佛说是沙不。如是。世尊。如来说是沙。须菩提。于意云何。如一恒河中所有沙。有如是沙等恒河。是诸恒河所有沙数佛世界。如是宁为多不。甚多。世尊。佛告须菩提。尔所国土中。所有众生。若干种心。如来悉知。何以故。如来说诸心。皆为非心。是名为心。所以者何。须菩提。过去心不可得。现在心不可得。未来心不可得。\\n眼者心之机\\n“须菩提。于意云何。如来有肉眼不。如是。世尊。如来有肉眼。须菩提。于意云何。如来有天眼不。如是。世尊。如来有天眼。须菩提。于意云何。如来有慧眼不。如是。世尊。如来有慧眼。须菩提。于意云何。如来有法眼不。如是。世尊。如来有法眼。须菩提。于意云何。如来有佛眼不。如是。世尊。如来有佛眼。”\\n这是佛学里佛法的五眼，五种眼睛的分类，文字都差不多。是佛先提出来问，“须菩提，于意云何”，你的意思怎么样？佛有没有肉眼、天眼、慧眼、法眼、佛眼？\\n佛经的三藏十二部，就是把佛经作十二种的分类，其中有一种是“自说”，就是自己开始讲，不是人家提出来问的。这一节就代表了十二分类的自说，是佛提出来的问题。\\n这里没有讲“佛”字，而讲“如来”。如来这个名词代表形而上的道体，一切众生同于诸佛菩萨心性之体，就是生命的根源。他说这个里头有五种功能，所以叫做五眼。第一种是肉眼，就是与我们一样的，是父母所生的肉眼，也就是现在我们的眼睛。肉眼能看物质世界，我们一切的感觉、知觉，都经由它而来。\\n这个肉眼跟心是连带一起的，所以很多的经典，心与眼同论，在讲到心的道理时，先提到眼。眼睛是心的一个开关，所以心与眼关系非常密切。道家的《阴符经》就说：眼者心之机，眼是心的开关，所以古人很多地方都提到心眼的关系，譬如孟子讲到观察人，特别要观察眼睛。\\n任何人都有眼睛，但是每一双眼睛所看的都不同。就我们人来讲，譬如这个墙壁，我们大家看都是白的，实际上每个人感受白的程度、白的形象，完全不同。因为有人是散光，有些是近视，有些是一只眼睛近视，一只眼睛散光，有些色盲，各种各样不同。所以一切众生的心不同，眼也不同。\\n过去我们有句老话，人心不同各如其面；每个人思想不同，就像人的面孔不同一样。世界上的人类，没有面孔相同的，因此说明世界上的人，心里想法也没有相同的，眼睛的看法，也没有尽相同的。不要以为这个白色黄色大家看起来都差不多，实际上差得很远，老花与不老花，老花度数又不同，因为每人的业力不同。\\n所以我们这个肉体及头脑思想健康与否，都因种性、业力不同而有差异。有人对气候特别敏感，今天很热，有些人不大怕热，却怕冷！因为每个人身体不同、健康不同，都是因为业力不同。\\n所谓一切病由业而生，善有善业，恶有恶业，业由心造，是绝对唯心的道理。\\n现在佛问，一个成了佛的人，有没有普通的肉眼？那当然有，肉眼就是看物理世界这些现象的。\\n天眼是什么\\n第二种是天眼，我们普通人几乎是没有的。天眼的能力是超乎物质世界，譬如说看到鬼魂、看到天神，甚至于看到其他的世界。现在人讲的千里眼，是根据道家的传说而翻译的。天眼能够看到欲界系统里面的东西，包括太阳、月亮、其他星球等的人事；也可以看到银河系统外面的东西，这是属于真正的天眼。有些人打起坐来看到些影子啊、星光点点啊，认为是天眼，那个不是的。那个只能说是，我们无法名之，叫做眼天吧！眼啊、天啊，不晓得什么东西！（众笑）\\n宗教里形容天眼，是把塑的佛像多塑一只眼睛，以代表天眼，也代表了慧眼。有些人和有些生物，不但有三只眼睛，有的还有四只眼。所以佛法里有修天眼的，也有修十只眼的方法，前面、后面、头顶、心里头、喉咙里头，都有眼睛。当然，这与普通眼睛不一样，而是像摄影机、录像机一样，能够照射东西罢了！天眼有两种：一种是报得，是多生多世修持，修定，才有这一生的天眼业报；是与生俱来的，自然有这个能力，因为善行的报应所得的结果。另一种是修得，是这一生修来的，因为修戒、定、慧的成就，这一生成就了天眼。\\n天眼不是多长出一只眼睛来，是肉眼的本身，起了另一种功能。得天眼通的人，也与我们普通人一样，但他自然会看到多重的世界。\\n修持做功夫的人，气脉到了后脑，视觉神经受到刺激，眼睛里经常出现许多幻象，那可不是天眼通！不要弄错。真正有了天眼通的时候，此人目光清澈如电，看得非常透彻；换句话说，物质东西不能障碍他，他的眼睛自然有透视的能力。\\n春秋战国时候有一个医生名叫扁鹊，据说他有一次碰到一个神仙，给他一个能透视的宝贝，他的眼睛就变得比X光还要厉害，可以看到人的五脏六腑，所以他的诊断就不会有错。还有许多唐代以后的记载，有人的眼睛天生就会看风水，能看地下几丈深，不需要探测器，地下的水脉，他看得很清楚。\\n像这一类的眼还不算是天眼，只能算是报通的鬼眼，所以真正的天眼，就是《法华经》上所说父母所生眼，必须修持定力到了，这双肉眼就能够看见十方世界一切东西。\\n肉眼是观看物质世界通常的现象，天眼则能够透视到肉眼所不能见到的世界；所以天眼是定力所生，是定中所得的神通力量。当人的生命功能充沛到极点时，可以穿过一切物理的障碍，就是所谓的神通。神通必须要定力够了，所谓精、气、神充沛了，才能做到。\\n慧眼　法眼　佛眼\\n再进一步是慧眼，慧眼也离不开肉眼，也是通过父母所生的肉眼而起作用的。所谓慧眼就是智眼，是戒、定、慧的功力显现；因为修定而发慧。这不是普通的智慧，是慧变成了力量、成了慧力，才有这个智眼。\\n智慧怎么变成力量呢？我们普通聪明人，想一个道理想通了；譬如说抽烟对肺不好，应该改，道理上通了，但习气上不行，慧没有力量，改不过来。又譬如脾气坏，贪、瞋、痴，道理上都晓得，就是扭转不过来。尽管研究佛法，道理上讲得很通，碰到事扭转不过来，这是慧的力量不够，也就是不能证果、不能成道的原因。\\n所以真正的慧眼，是智慧的力量够了才能成的。\\n法眼又是什么眼呢？慧眼观空。而能够真正认识自性空、空性的体，就是法眼。法眼观一切众生平等，非空非有。光落在空，还是小乘果的一边，要能够真正观空里的妙有才行。在凡夫的境界来说，是性空缘起；在悟道智慧境界里来说，是真空起妙有，这是法眼的道理，是平等而观。\\n第五种是佛眼，佛眼不只是平等，而是观一切众生只有慈悲，只有慈爱。慈悲是两个观念组合起来的佛学名词，慈是父性，代表男性的爱，至善的爱；悲代表了母性至善的爱，慈悲是父母所共性的仁德。是至善，无条件，平等，所以叫大慈大悲。佛眼看来，一切众生皆值得怜悯，所以要布施众生，救众生，这也就是佛眼的慈悲平等。\\n真正学佛依法修持而有所成就者，本身一定具备了这五眼。如\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 8704, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"过去心不可得\"], \"focus_terms_found_in_chapter\": [\"过去心不可得\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"过去心不可得\", \"offset\": 282, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 475, \"offset\": 82, \"focus\": \"过去心不可得\"}}, {\"term\": \"过去心不可得\", \"offset\": 6597, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 475, \"offset\": 6397, \"focus\": \"过去心不可得\"}}, {\"term\": \"过去心不可得\", \"offset\": 6708, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 475, \"offset\": 6508, \"focus\": \"过去心不可得\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"03eeaec33aa042fd6ccd6412ffdcbb627b36a010c90a80a4fa88533a453a9ec3\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=475\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 24.3,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_d9l2DUsqkND0uk0pUECE1902"
+    },
+    {
+     "t": 24.5,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_2MWf5FDlTJrnRmCAPPGD5728"
+    },
+    {
+     "t": 24.7,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_02_NRexQDzG5wFnwQ2XEGj35499",
+     "status": "success",
+     "duration_seconds": 0.007
+    },
+    {
+     "t": 24.9,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 484,
+      "focus": "于法不说断灭相"
+     },
+     "status": "success",
+     "duration_seconds": 0.013,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 484, \"title\": \"第二十七品 无断无灭分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第二十七品 无断无灭分】\", \"text\": \"须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。\\n三界六道之外\\n“须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。”\\n佛叫须菩提，“汝若作是念”，你假使有一个观念，认为“如来不以具足相故，得阿耨多罗三藐三菩提”，认为不著相就可以见佛，就可以大彻大悟的话，他说须菩提啊，你千万不要这样想，不要认为没有功德成就也能够悟道成佛，你有这种观念就错了。\\n前面我们明明听须菩提讲的嘛！不要以三十二相见如来。佛则说若以色见我，以音声求我，是人行邪道，不能见如来。可是佛现在又说，须菩提你不要搞错了啊，假如你认为不具足一切功德圆满就能大彻大悟的话，须菩提你注意啊！“莫作是念”，你千万不要那么想啊！千万不能认为不要具足功德就可以大彻大悟。\\n“须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。”\\n你如果以为人只要悟了道以后，什么都好了，什么都空了，这个观念是很严重的错误啊！这是佛明白交代给须菩提的。\\n关于这一点，我个人倒也碰到过很多。几十年前在大陆云南，找一位很有名的禅宗大师，也是一位八指头陀。后来我到昆明碰面了，我说：法师，我听说你悟道以后有一个观念，认为证得涅槃以后，生死已了不再来了，有没有这样说法？他承认了，我就请教他《楞伽经》中的话“无有涅槃佛。无有佛涅槃”，你不来到哪里去啊？跳出三界外，跳到哪里去呀？佛没有说有个第四界呀？不在五行中，那你在哪一行中啊？了了生死就不来，这不是佛法吧！后来为这个问题我们辩论了很久。\\n很多人学佛都有这个观念，都认为学了佛，悟了道，两条腿一盘，了了生死，再也不到这个世界上来受苦了。这个观念是绝对错误的，是修道学佛上最大的错误观念。\\n常常有人告诉我，殡仪馆有很多稀奇古怪的事情，可以证明佛法的事也很多。今天一位同学说，殡仪馆的人告诉他，有个十几岁的女孩子，父母逼她赶快结婚，逼急了，她两腿一盘，就涅槃了，就走了。死了以后送殡仪馆，没有办法装棺材，因为两个腿盘着，骨头也硬了放不开，没办法，只好给她特别设计一个方柜子，把她放在里头。我说：此乃再来人也！就是所谓修行并不一定证到罗汉果，有所成就的，七还人间、五还、三还、一还人间等等的现象。又有一位同学告诉我，有一个四十多岁出家的太太，八九十岁死了，结果烧化后头顶骨不坏，舍利子都在那里。这些都是比较实际的资料。\\n断灭见\\n回头再说有人认为悟了道以后就不来，好像有个地方可以躲似的，这是个错误的观念。这个错误的观念，在佛法上就叫做见地上的错。一个人学佛，不管在家出家能够证果的，最重要的是断见思二惑。见惑、思惑，在前面第九品已经谈到过，见地不清楚有了偏差，就落于偏见。五种错误的见解就是身见、边见、邪见、见取见、戒禁取见；这五见障碍了修道，也就是不能悟道的原因。思惑就是烦恼惑，内心的贪瞋痴慢疑。\\n现在人类的唯物哲学就是落于断见，认为人死如灯灭，没有三世因果，六道轮回，因为还拿不出来证据；认为人死了就是完了，这是属于断灭见，也是邪见的一种。所以佛就告诉须菩提，你千万不要落在一个错误的观念，一个断灭见的思想见解。\\n前面刚刚说不能著相来看佛，现在又告诉他，也不能落在不著相看佛；著相是错，不著相也是错。假使落在不著相看佛，一切本空，又何必做善事，佛也空，善也空嘛！一切皆空，我杀人也没有关系呀！杀也空嘛！偷骗抢做坏事都空，这样的见解，就叫做拨无因果，落于空见。空见的错误，这一点大家要特别留意。\\n拨无因果就是把因果这个道理拨开了，不承认有因果的存在，这是现在人类思想潮流最可怕的一面，也就是佛说的断灭见的思想。佛就怕须菩提搞错见解，上面先告诉他不能著相见如来，但是又怕须菩提落在不著相；不著相的结果就变成断灭见，拨无因果了。所以他就再三告诫，“莫作是念”，你不要搞错了。\\n不说断灭相\\n“何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。”\\n所以一个真正学佛的人，想求得大彻大悟，首先要注意不能落入断灭相。断灭相是什么呢？断灭相落空，认为佛法的究竟是空的，见到个空果，就是断灭。现在《金刚经》快讲完了，《金刚经》中有没有告诉你一个空字啊？我们后世的注解，说《金刚经》是讲空的，那是你的注解，佛可没有这样说！佛只说过去心不可得，现在心不可得，未来心不可得；以色见我，以音声求我，是人行邪道，不能见如来。那是教育方法，处处把你的错误挡住，他并没有告诉你是什么，只告诉你不是什么。《心经》也只是告诉你照见五蕴皆空，最后告诉你真实不虚，并没有讲空啊！是照见五蕴皆空，它并没有说般若波罗密多都是空的啊！这些就是我们研究佛学、佛经、佛法，必须要特别注意的地方，不然很容易落在邪见的错误上。\\n空，同断灭见是一模一样的，有许多人学佛，自认什么都看得空了，其实那不叫做空，从心理学来讲，是你灰心了，或者年纪大了，或者环境不得已，或者倒霉透顶，所以说自己看得空得很了！还有个灰心在，就不是空，那个灰心非常厉害。还有许多搞哲学的学佛，经常喜欢吹这个牛，看空了，看通了等等。他只要开口讲这个话，就证明他一点也没有看通，因为他真通的话，连说这个通、这个空都不会了。空的啊！空的啊！他在感叹嘛！对不对？他既然感叹就心有戚戚焉，这正有个东西，一点也没有空。换句话说，这不过是不吃西瓜，却吃了一个大冬瓜，还是一个瓜嘛！傻瓜嘛！\\n所以再三提醒诸位注意，“空”是方便的说法，是个形容词，如果把空当作真正空得一无所有，那不是空见，那就叫做断灭见。所以佛吩咐，“发阿耨多罗三藐三菩提心者，于法不说断灭相”，这是一句非常严重的话，绝对不是断灭，更没有说空。这一节的题目——无断无灭，梁昭明太子标得非常好，不断不灭，不是断灭相。现在科学晓得物质是能量互变，它并没有灭过，要认识清楚。这一品偈语如下：\\n第二十七品偈颂\\n翻云覆雨雨成云，点滴如丝乱不分。\\n冻作冰河冰化水，漫从光影捉斜曛。\\n“翻云覆雨雨成云”，看到宇宙的变化，今天下雨明天晴，雨变成云，云又变成雨。反正啊，是点水气，是这个水蒸气的分子在变化。\\n“点滴如丝乱不分”，等到蒸气冷热接触，变成雨点下来以后，每一颗雨点本身自成一个范围，自成一个系统。等于我们一切众生同一个本性，可是构成我们个人的自体以后，我的我与你的你，绝对不一样，可是根根是一个。就像蒸气在空中碰到冷气层，变云变雨，每一雨点各有范围一样。但是所有的雨点，都是水蒸气变的。\\n“冻作冰河冰化水”，冰化了就变成水，水冻了就变成冰，这些是现象界万般的变化，各种的变化。变化归变化，本体不变。因为本体无相，亦无着。讲本体是空吗？也错了，讲它是常住，也错了，讲它是断灭，也错了，这一些都\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 2919, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"于法不说断灭相\"], \"focus_terms_found_in_chapter\": [\"于法不说断灭相\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"于法不说断灭相\", \"offset\": 110, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 484, \"offset\": 0, \"focus\": \"于法不说断灭相\"}}, {\"term\": \"于法不说断灭相\", \"offset\": 1685, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 484, \"offset\": 1485, \"focus\": \"于法不说断灭相\"}}, {\"term\": \"于法不说断灭相\", \"offset\": 2348, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 484, \"offset\": 2148, \"focus\": \"于法不说断灭相\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"94ff9be1c185c517aecd455fc4d03dda48e79363183ef2d7fbc69ecc20616125\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=484\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 24.9,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 459,
+      "focus": "云何应住"
+     },
+     "status": "success",
+     "duration_seconds": 0.013,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 459, \"title\": \"第二品 善现启请分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第二品 善现启请分】\", \"text\": \"时长老须菩提。在大众中。即从座起。偏袒右肩。右膝著地。合掌恭敬。而白佛言。希有世尊。如来善护念诸菩萨。善付嘱诸菩萨。世尊。善男子。善女人。发阿耨多罗三藐三菩提心。云何应住。云何降伏其心。佛言。善哉善哉。须菩提。如汝所说。如来善护念诸菩萨。善付嘱诸菩萨。汝今谛听。当为汝说。善男子。善女人。发阿耨多罗三藐三菩提心。应如是住。如是降伏其心。唯然。世尊。愿乐欲闻。\\n善现就是“须菩提”，是中文的意译，意思是他的人生境界，是道德的至善。须菩提表现出来的是长寿，另有舍利子这些人也比佛的年龄大。所以，有些经典把“须菩提”翻译为“具寿”就是长寿的意思。等于我们中国人所称鹤发童颜，南极仙翁，老寿星。不过须菩提不仅是老寿星，他的道德修持，他的智慧，以及他生活的仪轨，都足以领导当时佛的弟子们。他年高德劭，威仪气度在佛的十大弟子之中，是非常有名的。\\n佛教一般知道须菩提谈空第一，这一本经就是空和有的研究。后世佛教，称须菩提为尊者，连中国民间对他也非常熟悉。怎么熟悉呢？大家都看过《西游记》，孙悟空大闹天宫及七十二变的本事，都是从须菩提那里学的，这是小说上写的。孙悟空找到尊者，小说上把六祖见五祖那个故事，影射孙悟空访道访到了须菩提。《西游记》中这一段，描写得非常有趣，因此，须菩提尊者的名字，就在中国的民间十分流传了。\\n善现须菩提\\n“时长老须菩提。在大众中。即从座起。偏袒右肩。右膝著地。合掌恭敬。而白佛言。希有世尊。如来善护念诸菩萨。善付嘱诸菩萨。”\\n这一段文字，好像给我们写了一段剧本，描写当时的现场。“时”就是当时，就是佛把饭也吃好了，脚洗好了，打坐位置也铺好了，两腿也盘好了，准备休息。可是我们这一位须菩提老学长，不放过他，意思是你老人家慢一点休息吧！我还有问题，代表大家提出来问。时长老须菩提，所谓长老，照佛学解释“长老”的内涵，还有许多意思。总而言之，就是中文的年高德劭。前面我们提到过二百六十个字的《心经》，在《心经》里，向佛提问题的主角是舍利子，也是佛的十大弟子之一。《金刚经》的主角则是须菩提，另如《楞严经》的主角是阿难，每人的问题不同，所以佛的答复方式也不同。本经是从须菩提问问题开始的，因为他谈空第一，在大众中，在所有同学里，他要起立发言。我们现在发言要举个手，佛时代的规矩，是从座位上站起来。当时，大家都在坐着，须菩提站起来，偏袒右肩，这也是印度规矩，披着袈裟，一边膀子露出来。\\n关于偏袒右肩有很多说法，一种说法是右手空着好做事，在跟佛走路时，可以用这个手膀，把年纪大的扶持过去。另有说法，认为右手是吉祥的手，左手不是吉祥的手，所以用袈裟盖着。还有一种说法，认为杀人等坏事，都是这右手去做，所以，在佛前上香时，要左手去插，不许右手近佛。但是另外也有一说，插香要用右手，因为右手是吉祥之手，总之，这些都是后人的解释。上古的许多礼节，有时代及地区的意义，后世那些习惯又加上各种解释，有花招之嫌，我们姑且不管。\\n现在，须菩提“偏袒右肩”，披好袈裟，“右膝著地”，就跪下了。单跪右腿，“合掌恭敬”，合掌是印度当时的礼貌，中国也有合掌，也有作揖。印度是伸开十指合掌，有空心的合法，有实心的合法。顺便给青年同学们也讲一声，许多人写信给我，有的称我“南法师”，我不是法师啊！我没有出家。许多人写信用佛家的规矩“合十”，合十就是两个手合拢来，合十问讯，也是一种礼貌。还有些同学来信问“和南”是什么意思，和南是译音，意思就是跪地拜顶礼，五体投地跪拜，叫做和南。结果有一位同学就对我说：老师也姓南，南无阿弥陀佛也姓南，拜拜也和南，好像你投胎的时候，是选一个南字来的。我说那我不知道，我当时也许选错了呢！这是有关与年轻同学们的趣味对话，由合掌顺便提到。\\n现在须菩提合掌，就是向老师先行个礼，“而白佛言”。白就是说话，古文叫道白，是南北朝时候的说法，后来唱戏的也有道白，唱的时候是唱，不唱的时候说几句话，就是道白。“希有世尊”，佛经上记载印度的礼貌，向长辈请示以前，要先来一套赞叹之词。等于我们中国人看到前辈就说：“唉呀，你老人家真好啊，上一次蒙你老人家照顾，你老人家给我启发太多了！”我也经常碰到年轻人对我这样说。《金刚经》已经把赞叹的话浓缩成四个字了，其他的经典中，弟子们起来问佛，都是先说一大堆恭维话。佛是很有定力的，等你恭维完了，然后才张开眼睛说：你说吧！这里的浓缩就是鸠摩罗什翻译的手笔，只用四字：“希有世尊”，世间少有，少见不可得的世尊。前面提到玄奘法师也翻译过《金刚经》，还有其他人的翻译，我个人的观点和研究，鸠摩罗什翻译的这一本，扼要简单，妙不可言。\\n古代翻译的规定是信、达、雅，我们看到很多佛经的翻译，信则有之，很忠实原典；达，表达得清楚也有，但文字却不大雅。像鸠摩罗什的翻译，信、达、雅，皆兼而有之，非常难得。所以，我个人是非常喜欢这个译本。\\n须菩提接着说：“如来善护念诸菩萨。善付嘱诸菩萨。”现在我们先来解释两个佛学名词，一个是如来，一个是菩萨。\\n如来　菩萨\\n我们晓得“如来”也是“佛”的代号，实际上佛有十种不同名称，如来是一种，佛是一种，世尊也是一种。不过，中国人搞惯了，经常听到如来佛的称法，把它连起来也蛮好。现在我们先说“如来”，这是对成道成佛者的通称。释迦牟尼就称释迦如来，或者称释迦如来佛，阿弥陀佛又称阿弥陀如来。\\n阿弥陀、释迦牟尼，那是个人的名字，就是特称。如来及佛是通称，等于我们中国称圣人，孔子也是圣人，周公也是圣人，文王、尧舜都是圣人。圣人就是通称，而孔子、周公就是特称。“如来”二字翻译得很高明，所以，我经常对其他宗教的朋友说：你们想个办法把经典再翻一翻好不好？你们要弘扬一个宗教文化，那是离不开文学的啊！文学的境界不好是吃不开的。\\n佛经翻译的文学境界太高明了，它赢得了一切。譬如“如来”这个翻法，真是非常高明。我们注意啊！来的相对就是去，他没有翻“如去”，如果翻成如去，大家也不想学了，一学就跑掉了。翻译成“如来”，永远是来的；来，终归是好的。佛已成了道，所以就叫如来。《金刚经》上有句话，是佛自己下的注解：“无所从来，亦无所去，故名如来。”无来也无去，换句话说，不生也不灭，不动也不静，当然无喜亦无忧，不高也不矮，都是平等，永远存在，这个道理就是如来。用现在的观念说，他永远在你这里，永远在你的前面，只要有人一念虔信，佛就在这里。所以后世我们中国有一首诗，描写得非常好：\\n佛在心中莫浪求，灵山只在汝心头。\\n人人有个灵山塔，只向灵山塔下修。\\n浪字是古文的说法，就是乱，浪求就是乱求。不必到灵鹫山求佛，不要跑那么远了，因为灵山只在你的心头。每一个人自己的本身，就有一个灵山塔，只向灵山塔下修就行了。也有另外一种说法：“不向灵山塔下求”。总之，这只是说明佛、道都在每一个人自己的心中，个个心中有佛，照后世禅宗所讲：心即是佛，佛即是心，不是心外求法。以佛法来讲，心外求法都属于外\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 12884, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"云何应住\"], \"focus_terms_found_in_chapter\": [\"云何应住\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"云何应住\", \"offset\": 81, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 459, \"offset\": 0, \"focus\": \"云何应住\"}}, {\"term\": \"云何应住\", \"offset\": 6395, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 459, \"offset\": 6195, \"focus\": \"云何应住\"}}, {\"term\": \"云何应住\", \"offset\": 7667, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 459, \"offset\": 7467, \"focus\": \"云何应住\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"d0bad86ffa31e9603d23191c06fa2faf944570c99fa2826d060443809c8e7afc\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=459\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 29.6,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_t6uPBTZcKqG5DxwFKv660064"
+    },
+    {
+     "t": 29.8,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_JyvIU3ABNTCku5oFBMOi3483"
+    },
+    {
+     "t": 29.9,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_02_4x5Av7dwUJ8HrIaJuOOD2173"
+    },
+    {
+     "t": 30.1,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "167cb7f3a631",
+      "chapter_idx": 15,
+      "focus": "应无所住而生其心"
+     },
+     "status": "success",
+     "duration_seconds": 0.008,
+     "result_full": "{\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"chapter_idx\": 15, \"title\": \"第十五讲　佛教中圆教的意义\", \"citation_label\": \"【《中国哲学十九讲》·第十五讲　佛教中圆教的意义】\", \"text\": \"答复你。当然，只要是一个alternative system，就不可能是绝对圆满。假定是个alternative system，又认为自身是绝对圆满，这种说法就算不是独断，也自相矛盾（self-contradiction），因为既然是alternative system，就不可能是最究竟而绝对的圆满。\\n所以在这里，我把这个问题提出来，让大家注意思考，它的确是个哲学问题，而且是个高级的哲学问题。两千多年来哲学上没有这个问题，此问题之提出，不是往前推进了一步吗？它可以用现代的哲学和逻辑知识来处理，也需要用高度的科技来处理这个非科技的问题。\\n说到这个地方，照圆教的词语讲，翻译成perfect teaching也是可以的，但为什么译者不用呢？因为翻译的人不了解圆教的内容与意义，只是望文生义，照字面的意思翻译成round teaching。当然说round teaching也可以表意，也不是完全错。也就是说翻译成perfect teaching和round teaching都可以，那为什么有这两可呢？当用round teaching来翻译时，它对应的圆教是什么意义呢？也许用round来翻译不是很中肯，不是很essential，但一般人对圆教的了解本来就模糊而不中肯，那么顺此来了解他们用round teaching来翻译圆教，他们心中是对应什么意义而说的呢？用round来说圆教，是就看《大般若经》里所说的般若的意义而说，也就是说round teaching是相应于圆通无碍而说。圆通无碍是般若的妙用。如果round teaching对应这个意思讲，则是恰当的。照《大般若经》所讲，般若精神是“应无所住而生其心” (1) ，是“佛说般若波罗蜜，即非般若波罗蜜，是名般若波罗蜜” (2) 。般若是一法不立，是无知亦无得，是不坏假名而说诸法实相，它就是圆，所以圆通无碍说的是般若，而照这个意义说圆，即可翻译成round。\\n但是圆有两个意义，一方面是指般若的圆通无碍，另一方面则是指华严宗所说的“圆满无尽，主伴俱足”。照华严宗所说的圆，不但是圆通（或圆融）无碍，而且也是圆满无尽。所以它的圆具有圆通与圆满两层意义。圆满无尽就是perfect，而圆通无碍则可以翻译成round。所以凡是说圆通无碍，是就般若说的。又如华严宗所说的十玄门、一即一切、一切即一等，凡说到“即”“摄”的，都是指圆融无碍的般若精神。至于圆满无尽则是就着十法门而说的，《华严经》说法门必定说十法门，而说佛亦必说十身佛，因为“十”是最圆满的。在此，“十”不是一个随意数目，而是表示一个有必然性的义理。其所列举的内容可以是随意的，可以是变动的，但一定要是十个法门，这是必然的。因为唯有说十法门，才能表示“圆满无尽，主伴俱足”。“十”并不只是数目的“十”，而是代表无穷、无尽，也就是表示任何一个法都是无限。所以“圆满无尽，主伴俱足”是就着如来藏恒沙佛法佛性而说的。假定我们照“圆满无尽，主伴俱足”来了解圆教，则翻译成perfect teaching是恰当的，而且这个意思正好是圆教的essential meaning。因为圆教所以为圆教，是从“圆满无尽，主伴俱足”处来说的，所以这是它的essential meaning。当然在“圆满无尽，主伴俱足”之中，也都是圆通无碍的，但这并非圆教的essential meaning。\\n何以圆通无碍不是圆教的essential meaning呢？因为般若精神是个共法，是common element，它是共通的，小乘有小乘的般若，而大乘也有大乘的般若。大、小乘之分，并非般若所能决定。大之所以为大与小之所以为小，必顺依佛性来决定。小乘虽小，也可以表现它般若精神的圆通无碍。这就好像《庄子·逍遥游》篇中所说的，大鹏鸟“抟扶摇而上者九万里”，这可以说是逍遥自在、圆通无碍了。可是蜩与鸠在树林中跳来跳去，也是圆通无碍，它一样可以逍遥自在！从这个意思上来讲，可以看出一般人所了解的都是很表面很肤浅的，所以他们用round teaching来翻译圆教，并不是很谛当，倒是用perfect这个字较恰当。由此，我们知道“圆教”这个词有两层意思，圆通无碍的般若精神是通大小乘的，它是个共法；而佛性之“圆满无尽，主伴俱足”才是决定大小乘圆不圆的关键。\\n不过佛性之所以“圆满无尽，主伴俱足”，并不是由分解的方式得来。所谓“无始时来界，一切法等依”，把一切法等依之于阿赖耶识或等依之于如来藏，好像只要整个series完整起来，就是圆满了。如果真是如此，阿赖耶识和如来藏系统都是很完整的，但为什么仍然属于别教而非圆教呢？所以光是系统完整，并不表示就是圆教的意义。\\n照“圆满无尽，主伴俱足”而说，则圆教中实已蕴含了无限的意义，而这种无限是“现实的无限”（actual infinite）。这种现实的无限，康德是不承认的，因为他只承认有potential infinite。而现在数学上所讲的有限论，就是根据康德而来的。因为“无限”不能肯定，我们无法客观地肯定世界就是无限，我们毫无根据可言。至于罗素则是肯定无限，因为他用无限类（infinite class）来规定无限数（infinite number），这种无限之讲法是“现实的无限论”，也叫作“实在论的无限论”。但是以罗素之聪明，他当然知道这种无限的肯定只是一种假定，是无法证明的。既然是一种假定，那么也就没有什么好反对的了。\\n但是佛教里面所说的圆教，它所蕴含的无限是现实的无限，是从如来藏恒沙佛法佛性而来，它不是一种假定，也不是像罗素所说的逻辑意义的假定。如来藏恒沙佛法佛性的“圆满无尽，主伴俱足”是一种ontological infinite，而且可以确实呈现。就表面的意义而言，只要如来藏恒沙佛法佛性呈现，成佛就有可能性。但如果往里追问，成佛如何可能？如来藏恒沙佛法佛性何以能呈现呢？它当然就不是一个假定，也不是一个逻辑的假定。因为假定我们说佛只是个理想，我们永远无法达到，那么actual infinite就不是个呈现，而只是如康德所说的postulate。但是佛教不会承认这种思想，佛教认为现实上是有佛的，而且过去、现在、未来三世诸佛，随时可以呈现。也就是说如来藏恒沙佛法佛性随时可以呈现，所以现实上是有佛的。如此一来，所谓的actual infinite或ontological infinite就不只是个假定，亦不只是罗素所说的logical assumption。\\n要答复这个问题，关键在于“智的直觉”（intellectual intuition）的肯定。当然佛教并没有这个名词，这是借用康德的词语。我们不能只是肯定有佛，必须实际上真正可能有佛才行。而这个所以可能有佛的关键即在于肯定人有智的直觉。不仅佛教，儒道二家亦须肯定智的直觉。儒家认为现实上有\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 6209, \"excerpt_end\": 9009, \"chapter_text_length\": 11752, \"has_more\": true, \"next_offset\": 9009, \"has_previous\": true, \"previous_offset\": 3409, \"focus_found\": true, \"focus_terms_matched\": [\"应无所住而生其心\"], \"focus_terms_found_in_chapter\": [\"应无所住而生其心\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"应无所住而生其心\", \"offset\": 6909, \"read_args\": {\"book_id\": \"167cb7f3a631\", \"chapter_idx\": 15, \"offset\": 6709, \"focus\": \"应无所住而生其心\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"00e5b3104bdb483a64d36dd6f69f2d1a3277141f01c6a9e7667368867604ea16\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/167cb7f3a631?ch=15\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[6209, 9009]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 30.1,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "a26240ee8f45",
+      "chapter_idx": 460,
+      "focus": "实无众生得灭度者"
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 460, \"title\": \"第三品 大乘正宗分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第三品 大乘正宗分】\", \"text\": \"佛告须菩提。诸菩萨摩诃萨。应如是降伏其心。所有一切众生之类。若卵生。若胎生。若湿生。若化生。若有色。若无色。若有想。若无想。若非有想。非无想。我皆令入无余涅槃而灭度之。如是灭度无量无数无边众生。实无众生得灭度者。何以故。须菩提。若菩萨有我相。人相。众生相。寿者相。即非菩萨。\\n一切众生\\n“佛告须菩提。诸菩萨摩诃萨。应如是降伏其心。”\\n佛告诉须菩提，当你问怎么样安心时，就安心了。佛过了许久，看须菩提还是不懂，没有办法，只好退而求其次，第二步再来讲一讲，因为那个时机过去了，禅宗所谓机，这个禅机过去了，须菩提没有懂。现在第二步来讲了，佛说：我告诉你，一切菩萨摩诃萨。“摩诃”的中文意思是“大”，一切大菩萨们。\\n古代也有将菩萨翻成“大士”或者“开士”，表示是开悟的人。所以我们的白衣大士就是白衣菩萨。摩诃萨是唐宋以后念的，真正梵文发音是马哈，诃字念成哈字。在座很多客家的同学，客家话、广东话、闽南话比较接近唐音，国语反而距离很远了。\\n佛说菩萨摩诃萨是倒装的文句，就是一切大菩萨们，应如是降伏其心，应该有一个方法，把自己的心降伏下去。什么方法呢？他说：“所有一切众生之类”，现在先解释什么叫众生。佛经里众生这个名词，庄子先说过，一切有生命的东西谓之众生，并不是单指人！人不过是众生的一种，一切的动物、生物，乃至细菌、有生命的动物都是众生。有灵性的生命，有感情，有知觉生命的动物，就是众生的正报。所以众生不是光指人。佛要教化一切众生，慈爱一切众生，对好的要慈悲，对坏的更要慈悲。好人要度，要教化，坏人更要教化。天堂的人要度，地狱里的更可怜，更要度。这是佛法的精神，所以说要度一切众生。\\n“一切”两个字是没有范围的，任何东西都在一切之内。不过讲到众生这个名词，使我想起几十年以前的一桩事；那次在成都四川大学讲中国哲学，提到佛法讲众生，有一个学生就提出来问，植物及矿物有没有包括在众生里头？我说：那是众生的依报，不是正报，依报是附属的，同我们有连带关系。他说：譬如含羞草，你不能说它没有灵性！我问他学什么的，他说他是学农的，我说你学农的问这个问题有点奇了。\\n我那个时候年纪还轻，比较爱弄玄虚，就说：既然学农的，应该知道，含羞草根里头有一水泡，人手的热气一接触，水就下降，叶子就像怕羞一样缩下去了。这是机械性，并不是情感，也不是知觉。其实这是头一天晚上，跟一个学农的教授讨论含羞草听来的，也可以说佛法有灵，知道第二天有人会问这个问题吧！\\n谭子《化书》\\n“所有一切众生之类。若卵生。若胎生。若湿生。若化生。若有色。若无色。若有想。若无想。若非有想。非无想。我皆令入无余涅槃而灭度之。”\\n现在佛学提出来众生，佛把一切的生命分成十二类。第一是卵生，像鸟、鸡、鸭等，都是属于卵生。胎生是指人、马，及各种由胞胎里生的。湿生包括了鱼、蚊子、苍蝇等。化生就是变化的东西，如蝉蜕、蜻蜓、蝴蝶等。又照中国古老的传说，真假不能确定，海里的鲨鱼活到几百年以上，会跳到沙滩上，一变就是鹿，长一个头角的鹿，这些都是化生。中国化生的书，几乎没有人肯去研究；《道藏》里有一本书就叫做《化书》，作者是谭子，名谭峭，他学佛也学道，是有名的神仙。谭峭的父亲是唐朝的官，也就是唐朝唯一大学的校长，地位很高，只有谭峭一个儿子。\\n可是谭峭十几岁离家出走，他父亲丢了这个儿子，很难过。后来过了一二十年，他回来了，身上穿个道士的衣服，拖个破鞋子，戴个破帽子，怪里怪气，嬉皮笑脸，就像前几年那种嬉皮的样子。他回来劝父亲一块修道去，这是著名的道家人物，学问也非常好。谭子著了这部《化书》，认为宇宙生命的变化自己可以掌握，人可以永远地活下去。他究竟仍然活着没有？说不定他跑到我们这里来，我们也不知道。后来因为人家问他，道是怎么样修？他就写了一首诗，也像是《金刚经》的偈子一样，很简单的，有禅宗的境界：\\n线作长江扇作天，靸鞋抛向海东边。\\n蓬莱此去无多路，只在谭生拄杖前。\\n他说，整个的宇宙是这么渺小，线就像长江，扇就像天。靸鞋就是古代的拖鞋，鞋子后跟不拉起来，踢哩踢拉拖起来走。靸鞋抛向海东边不要了，蓬莱是代表道家的神仙境界，蓬莱此去无多路，他说那个神仙的境界不远，就在这里。在哪里啊？他说，只在谭生，就在我的手指，手里拿个手杖，就在这里。这个道理也就等于佛告诉须菩提，“应如是住，如是降伏其心”，就在这里，佛不在西天，就在你这里。\\n不过谭子的《化书》很奇怪，讲了化生的道理以后，由科学再归到哲学，由哲学再归到政治学，讲人生的境界，及如何教化别人，改变别人。他认为坏的时代，坏的世界，是可以变化过来的，他的理论和哲学境界非常之高。所以讲到中国文化，这不能说不是中国文化啊！中国文化的精华，我们不能说连个影子都不知道啊！\\n有色无色的众生\\n除了胎生、卵生、湿生、化生四种之外，另有一种生命为“有色”，是有形象，有物质可以看见的。另有一种生命是“无色”，不是我们所知，也看不见，可是它确实的存在。譬如说鬼吧！到底有没有？当然可以告诉大家确实有的，并没有什么可怕，那是“无色”的生命，跟我们阴阳电子不同而已。\\n我们姑且讲活鬼，大家也许没有看过，如果到贵州、云南的边界，就可以听到活鬼的故事。活鬼称为山魈，这个山魈，我们拿佛经来解释就很简单了，他是“若有色”、“若无色”的众生。他有时候给你看见，有时候不给你看见，高兴给你看见就看见，不高兴就看不见。人走到山里，看到走路的脚印子同我们相反，脚趾头在后面，脚后跟在前面的地方，就知道有山魈。他们非常讲礼貌，你不要说这是山鬼啊，那你就吃亏了。你要说有山先生在这里！他会觉得你这个人知礼，就不会找你麻烦。\\n这些住在山里的山魈，很有意思，他们有事的时候，要跑到别人家里借锅子和碗筷。他们的样子很丑陋，矮矮的，就像人倒着脚走来。讲的话我们也不懂，必须要用手去指要借的东西，那些山里头的人都知道，有些坏心眼的人，却准备一套骗他们的。准备什么呢？纸做的锅，纸做的碗，他就很高兴地借回去了，结果火上一烧就完了。可是山魈非常守信用，不知道他用什么方法，有钱人家的东西就到他那里去了，但是他一百英里范围以内不偷的，他要到外地弄个锅碗来还你。许多山里的穷人都拿这些玩意骗鬼，所以鬼不可怕，而人是真正的坏，连鬼都要骗。\\n有想无想的众生\\n另有一类众生是“若有想”，有思想感觉。另有一类众生是“若无想”，没有思想、感觉。细分之下，有些生命没有思想，没有知觉，但有感觉。\\n另有众生是神的境界，照佛学的分类，神的类别太多了，小则分为三十多种，大则分为六十多种，再细分析下去，有几百种。神也有他的等次，一类叫“非有想”，不是没有想，但是看起来没有想。譬如有些人在打坐，你看他好像不知道，可是他又知道，真知道吗？又不知道。其实，世界上还有更多种类的生命，不过佛法大致归纳为十二类。\\n世界上的生命有这么多种类，唯有人很坏，但人也最具备一切。我们不要认为人类是胎生，在\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2800, \"chapter_text_length\": 12844, \"has_more\": true, \"next_offset\": 2800, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"实无众生得灭度者\"], \"focus_terms_found_in_chapter\": [\"实无众生得灭度者\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"实无众生得灭度者\", \"offset\": 97, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 460, \"offset\": 0, \"focus\": \"实无众生得灭度者\"}}, {\"term\": \"实无众生得灭度者\", \"offset\": 6594, \"read_args\": {\"book_id\": \"a26240ee8f45\", \"chapter_idx\": 460, \"offset\": 6394, \"focus\": \"实无众生得灭度者\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"43b458505727ced7feffe4dcb3a6f2de365845eef9bffd9b96b79308a0308920\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/a26240ee8f45?ch=460\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2800]], \"covered_characters\": 2800, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 32.1,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "\"應無所住而生其心\" 金剛經 無住 般若"
+     },
+     "status": "success",
+     "duration_seconds": 2.022,
+     "result_full": "{\"query\": \"\\\"應無所住而生其心\\\" 金剛經 無住 般若\", \"results\": [{\"source_record_id\": \"doi:10.14711/spcol/b860726\", \"title\": \"摩訶般若波羅蜜多心經\", \"authors\": [\"無垢子\"], \"year\": null, \"publication_type\": \"OTHER\", \"venue\": \"Rare &amp; Special e-Zone\", \"doi\": \"10.14711/spcol/b860726\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.24956/ssc.24.4\", \"title\": \"Study on a single substance(一體) and prajñā(般若) of deśanā(戱論) in the vajracchedikā - parajñāpāramitā - sūtra (\\\"金剛般若波羅蜜經\\\")\", \"authors\": [\"Hag - Bae (Ven. Wol - Mook) Kim\"], \"year\": 2018, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Studies of Seon Culture\", \"doi\": \"10.24956/ssc.24.4\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.14711/spcol/b1135488\", \"title\": \"趙松雪書金剛般若波羅密經\", \"authors\": [\"趙孟頫\"], \"year\": null, \"publication_type\": \"OTHER\", \"venue\": \"Rare &amp; Special e-Zone\", \"doi\": \"10.14711/spcol/b1135488\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.14711/spcol/b1135428\", \"title\": \"佛說般若波羅蜜多心經贊\", \"authors\": [\"圓測\"], \"year\": null, \"publication_type\": \"OTHER\", \"venue\": \"Rare &amp; Special e-Zone\", \"doi\": \"10.14711/spcol/b1135428\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.5840/ntuphilreview2013465\", \"title\": \"聖嚴禪教之安心法門─「看話禪」與「無住」 思想是融貫的嗎？\", \"authors\": [\"National Taiwan University\"], \"year\": 2013, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"NTU Philosophical Review\", \"doi\": \"10.5840/ntuphilreview2013465\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"success\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"\\\"應無所住而生其心\\\" 金剛經 無住 般若\", \"status\": \"success\", \"raw_result_count\": 8}, {\"provider\": \"openalex\", \"query\": \"\\\"應無所住而生其心\\\" 金剛經 無住 般若\", \"status\": \"success\", \"raw_result_count\": 8}], \"relevance_gate\": {\"dropped_irrelevant\": 11, \"kept_relevant\": 5}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"note\": \"记录为真实检索所得, 但全部为 METADATA_ONLY（无可读内容）——只能陈述书目存在性, 不得凭标题推断内容\"}"
+    },
+    {
+     "t": 49.4,
+     "phase": "start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_0B2MVTcuYjvLn3CMLLlD7117"
+    },
+    {
+     "t": 49.5,
+     "phase": "result",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_OeaCa1r1OLV2q6DjNv1x9598",
+     "status": "success",
+     "duration_seconds": 0.082
+    },
+    {
+     "t": 49.8,
+     "phase": "result_orphan",
+     "name": "get_scholarly_source",
+     "args": {
+      "source_record_id": "doi:10.24956/ssc.24.4",
+      "requested_access": "ABSTRACT"
+     },
+     "status": "success",
+     "duration_seconds": 0.087,
+     "result_full": "{\"source_record_id\": \"doi:10.24956/ssc.24.4\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.24956/ssc.24.4\", \"title\": \"Study on a single substance(一體) and prajñā(般若) of deśanā(戱論) in the vajracchedikā - parajñāpāramitā - sūtra (\\\"金剛般若波羅蜜經\\\")\", \"authors\": [\"Hag - Bae (Ven. Wol - Mook) Kim\"], \"year\": 2018, \"publication_type\": \"JOURNAL_ARTICLE\", \"venue\": \"Studies of Seon Culture\", \"doi\": \"10.24956/ssc.24.4\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, \"access_level_before\": \"METADATA_ONLY\", \"access_level_after\": \"METADATA_ONLY\", \"returned_evidence_level\": null, \"full_text_status\": null, \"source_url\": null, \"content_hash\": null, \"access_notes\": \"abstract 未取得: 不得凭 title 推断论文内容; 状态保持不变\", \"note\": \"access_notes 明确说明实际读到了什么; 不得超出该证据描述文献内容\", \"requested_access\": \"ABSTRACT\", \"read_scope\": \"metadata_only\", \"whole_document_returned\": false}"
+    }
+   ],
+   "answer": "## 结论\n\n不是。这句话针对的是心\"**住**\"在哪里，不是心\"有没有\"、也不是情感有多强。经文所否定的宾语是\"住\"（心止住、粘着、以之为立足处），而且这一句的结尾恰恰是要求\"**生其心**\"——心要生起。\n\n## 一、这句在经文里的位置\n\n\"应无所住，而生其心\"在鸠摩罗什译《金刚经》第十品（庄严净土分），完整语境是：\n\n> \"是故须菩提。诸菩萨摩诃萨。应如是生清净心。不应住色生心。不应住声香味触法生心。应无所住。而生其心。\"【《南怀瑾经典合集（共24册）》·第十品 庄严净土分】\n\n三点值得看清：\n\n1. 被否定的是\"住\"这个动词，宾语是色、声、香、味、触、法——六类被感知、被认知的对象。\"住\"指心停靠其上、以之为支点。\n2. 落点是\"生其心\"，不是\"灭其心\"。\n3. 前半句说的是\"应如是生清净心\"。所以整句是一句关于**如何生心**的指示，不是关于要不要有心的指示。\n\n它出场的语境也说明这一点：此前佛问\"菩萨庄严佛土不\"，须菩提答\"庄严佛土者。即非庄严。是名庄严。\"这一段谈的是菩萨**要不要、怎样做**\"庄严佛土\"这件事——不是退出世界，而是不要把\"我在庄严一个国土\"当成一件实有的事来抓。这种\"即非—是名\"的格式贯穿全经：被否定的是自性实有，不是事情本身。牟宗三把般若的这一层概括为\"一法不立，是无知亦无得，是**不坏假名而说诸法实相**\"，并说\"应无所住而生其心\"就是《大般若经》般若精神的一句表达【《中国哲学十九讲》·第十五讲】——注意这是他对般若的概括，不是经句的直白意思。\n\n## 二、同一部经内对这句话的三重约束\n\n**1. 它和\"发菩提心\"绑在一起，而不是和冷淡绑在一起。** 第十四品（离相寂灭分）：\n\n> \"菩萨应离一切相。发阿耨多罗三藐三菩提心。不应住色生心。不应住声香味触法生心。应生无所住心。若心有住。即为非住。是故佛说菩萨心。不应住色布施。须菩提。菩萨为利益一切众生故。应如是布施。\"【《南怀瑾经典合集（共24册）》·第十四品 离相寂灭分】\n\n动机写得极明确：**为利益一切众生故**。\"无所住\"的直接邻居，是全经里承担最重的那件事，不是\"算了，无所谓\"。同一品的比喻也很要紧：心住于法而行布施，\"如人入暗，即无所见\"；心不住法而行布施，\"如人有目，日光明照，见种种色\"。理由不是\"对象没有价值\"，而是\"住\"使人看不见。\n\n**2. 它是\"行于\"某种实践的方式，不是实践的对立面。** 第四品（妙行无住分）：\"菩萨于法。应无所住。行于布施。\"品名就叫\"妙行无住\"——行还在，只是不住。【《南怀瑾经典合集（共24册）》·第四品 妙行无住分】\n\n**3. 经文自己禁止把它读成断灭。** 第二十七品（无断无灭分）：\n\n> \"汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。\"【《南怀瑾经典合集（共24册）》·第二十七品 无断无灭分】\n\n\"什么都不要在乎\"如果落成\"一切皆无、都无所谓\"，正落在这一品点名禁止的读法上。南怀瑾把这里解为对\"断灭见\"\"拨无因果\"的警戒——这是他的注解，不是经文原话。\n\n## 三、能推出什么，不能推出什么\n\n**能推出**：《金刚经》所反对的\"住\"，是心以某一色声香味触法的对象为最终支点，由此生起我相、人相、众生相、寿者相（第三品、第十四品）；\"无住\"不是心的熄灭，而是心照常生起、照常行动，但不把任何对象当作可停靠的基座。第十八品\"过去心不可得，现在心不可得，未来心不可得\"讲的是同一结构：心不是一件可以被捧住的东西。\n\n**不能推出**：经文没有讨论\"在乎的强度\"。它讲\"住／相\"的结构，不讲\"我该不该为这件事难过、该在意几分\"。所以严格来说，《金刚经》回答不了\"是否应该很在乎某个人或某件事\"这类关于分寸的问题——它既不要求冷漠，也不为任何具体的情感量级背书。把\"无所住\"读成\"什么都不要在乎\"，是把一个关于**执取方式**的词（住）换成了一个关于**情感强度**的词（在乎），二者不在同一层级。这种转写在禅宗接受史里很常见（南怀瑾记六祖\"初步悟道\"就是听到这一句），但那属于这一句的后世影响史，不是第十品经文的语境。\n\n## 证据边界\n\n本库没有独立的《金刚经》校勘本，我读到的经句来自南怀瑾《金刚经说什么》分品引录经文并逐品讲解的段落（每品开头引原文，其后是注解）。上文中凡属他的解释，我都已标明。另外我对近年的二次文献做了检索，\"《金刚经》／无住\"相关论文只拿到书目记录，摘要未取得，所以上面的判断没有依赖任何论文结论。",
+   "answer_chars": 1882,
+   "done_content": "## 结论\n\n不是。这句话针对的是心\"**住**\"在哪里，不是心\"有没有\"、也不是情感有多强。经文所否定的宾语是\"住\"（心止住、粘着、以之为立足处），而且这一句的结尾恰恰是要求\"**生其心**\"——心要生起。\n\n## 一、这句在经文里的位置\n\n\"应无所住，而生其心\"在鸠摩罗什译《金刚经》第十品（庄严净土分），完整语境是：\n\n> \"是故须菩提。诸菩萨摩诃萨。应如是生清净心。不应住色生心。不应住声香味触法生心。应无所住。而生其心。\"【《南怀瑾经典合集（共24册）》·第十品 庄严净土分】\n\n三点值得看清：\n\n1. 被否定的是\"住\"这个动词，宾语是色、声、香、味、触、法——六类被感知、被认知的对象。\"住\"指心停靠其上、以之为支点。\n2. 落点是\"生其心\"，不是\"灭其心\"。\n3. 前半句说的是\"应如是生清净心\"。所以整句是一句关于**如何生心**的指示，不是关于要不要有心的指示。\n\n它出场的语境也说明这一点：此前佛问\"菩萨庄严佛土不\"，须菩提答\"庄严佛土者。即非庄严。是名庄严。\"这一段谈的是菩萨**要不要、怎样做**\"庄严佛土\"这件事——不是退出世界，而是不要把\"我在庄严一个国土\"当成一件实有的事来抓。这种\"即非—是名\"的格式贯穿全经：被否定的是自性实有，不是事情本身。牟宗三把般若的这一层概括为\"一法不立，是无知亦无得，是**不坏假名而说诸法实相**\"，并说\"应无所住而生其心\"就是《大般若经》般若精神的一句表达【《中国哲学十九讲》·第十五讲】——注意这是他对般若的概括，不是经句的直白意思。\n\n## 二、同一部经内对这句话的三重约束\n\n**1. 它和\"发菩提心\"绑在一起，而不是和冷淡绑在一起。** 第十四品（离相寂灭分）：\n\n> \"菩萨应离一切相。发阿耨多罗三藐三菩提心。不应住色生心。不应住声香味触法生心。应生无所住心。若心有住。即为非住。是故佛说菩萨心。不应住色布施。须菩提。菩萨为利益一切众生故。应如是布施。\"【《南怀瑾经典合集（共24册）》·第十四品 离相寂灭分】\n\n动机写得极明确：**为利益一切众生故**。\"无所住\"的直接邻居，是全经里承担最重的那件事，不是\"算了，无所谓\"。同一品的比喻也很要紧：心住于法而行布施，\"如人入暗，即无所见\"；心不住法而行布施，\"如人有目，日光明照，见种种色\"。理由不是\"对象没有价值\"，而是\"住\"使人看不见。\n\n**2. 它是\"行于\"某种实践的方式，不是实践的对立面。** 第四品（妙行无住分）：\"菩萨于法。应无所住。行于布施。\"品名就叫\"妙行无住\"——行还在，只是不住。【《南怀瑾经典合集（共24册）》·第四品 妙行无住分】\n\n**3. 经文自己禁止把它读成断灭。** 第二十七品（无断无灭分）：\n\n> \"汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。\"【《南怀瑾经典合集（共24册）》·第二十七品 无断无灭分】\n\n\"什么都不要在乎\"如果落成\"一切皆无、都无所谓\"，正落在这一品点名禁止的读法上。南怀瑾把这里解为对\"断灭见\"\"拨无因果\"的警戒——这是他的注解，不是经文原话。\n\n## 三、能推出什么，不能推出什么\n\n**能推出**：《金刚经》所反对的\"住\"，是心以某一色声香味触法的对象为最终支点，由此生起我相、人相、众生相、寿者相（第三品、第十四品）；\"无住\"不是心的熄灭，而是心照常生起、照常行动，但不把任何对象当作可停靠的基座。第十八品\"过去心不可得，现在心不可得，未来心不可得\"讲的是同一结构：心不是一件可以被捧住的东西。\n\n**不能推出**：经文没有讨论\"在乎的强度\"。它讲\"住／相\"的结构，不讲\"我该不该为这件事难过、该在意几分\"。所以严格来说，《金刚经》回答不了\"是否应该很在乎某个人或某件事\"这类关于分寸的问题——它既不要求冷漠，也不为任何具体的情感量级背书。把\"无所住\"读成\"什么都不要在乎\"，是把一个关于**执取方式**的词（住）换成了一个关于**情感强度**的词（在乎），二者不在同一层级。这种转写在禅宗接受史里很常见（南怀瑾记六祖\"初步悟道\"就是听到这一句），但那属于这一句的后世影响史，不是第十品经文的语境。\n\n## 证据边界\n\n本库没有独立的《金刚经》校勘本，我读到的经句来自南怀瑾《金刚经说什么》分品引录经文并逐品讲解的段落（每品开头引原文，其后是注解）。上文中凡属他的解释，我都已标明。另外我对近年的二次文献做了检索，\"《金刚经》／无住\"相关论文只拿到书目记录，摘要未取得，所以上面的判断没有依赖任何论文结论。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_7",
+     "book": "南怀瑾经典合集（共24册）",
+     "chapter": "第十品 庄严净土分",
+     "book_id": "a26240ee8f45",
+     "chapter_idx": 467,
+     "author": "南怀瑾",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_4",
+      "claim_5",
+      "claim_14",
+      "claim_43"
+     ],
+     "excerpt": "。身如须弥山王。于意云何。是身为大不。须菩提言。甚大。世尊。何以故。佛说非身。是名大身。”\n“譬如有人，身如须弥山王”，注意这一句话喔！须弥山王就是讲法身，得到应无所住，而生其心，可以初步证到一点法身了。法身是不生不灭，不垢不净，不增不减，所以法身也是大身，也叫做无边身。他说你要得到应无所住而生其心啊！对佛的法身庄严净土，都知道了，佛的世界，佛的净土，就是这个样子。他说，我再告诉你啊！假使我讲一个人，身体大得像须弥山一样，像喜马拉雅山那么大，胖得比昆仑山还要胖，你说他大不大？那是一个譬喻，是说法身无量无边的大，永远的不生不死。佛告诉他最后的结论，“佛说非身，是名大身”。摆脱了我们肉体的身见，身见就是八十八结使第一个解脱不了的疙瘩，把身见空掉了以后，就可以证得不生不死的法身。\n不生不死的法身，也是一句抽象的话，佛法只有实证，你证到了以后才知道，是法不可说，不可说，凡是说的都不对，这个就是法身。所以禅宗讲的悟道，第一步就是要证得这个空性的法身，身见才能够脱掉，才可以说学禅。\n这两天你们考试的题目禅是什么？大家答的都是牛头不对马嘴；禅是佛的心法，根据《楞伽经》，或根据《金刚经》，佛讲得很清楚；可是大家没有留意，随便说要学禅，观念、见地上都不清楚。这个见地不清楚就一错再错，所有的修持做功夫，走的都是歪路，因为起步走错了。这不能瞎搞的，不能乱玩的，所以禅宗祖师有一句话：“我眼本明，因师故瞎。",
+     "quoted_passages": [
+      "应无所住，而生其心",
+      "是故须菩提。诸菩萨摩诃萨。应如是生清净心。不应住色生心。不应住声香味触法生心。应无所住。而生其心。",
+      "应如是生清净心",
+      "菩萨庄严佛土不",
+      "庄严佛土者。即非庄严。是名庄严。",
+      "应无所住而生其心"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 3562,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_9",
+     "book": "中国哲学十九讲",
+     "chapter": "第十五讲　佛教中圆教的意义",
+     "book_id": "167cb7f3a631",
+     "chapter_idx": 15,
+     "author": "牟宗三",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_4",
+      "claim_14"
+     ],
+     "excerpt": "und teaching是相应于圆通无碍而说。圆通无碍是般若的妙用。如果round teaching对应这个意思讲，则是恰当的。照《大般若经》所讲，般若精神是“应无所住而生其心” (1) ，是“佛说般若波罗蜜，即非般若波罗蜜，是名般若波罗蜜” (2) 。般若是一法不立，是无知亦无得，是不坏假名而说诸法实相，它就是圆，所以圆通无碍说的是般若，而照这个意义说圆，即可翻译成round。\n但是圆有两个意义，一方面是指般若的圆通无碍，另一方面则是指华严宗所说的“圆满无尽，主伴俱足”。照华严宗所说的圆，不但是圆通（或圆融）无碍，而且也是圆满无尽。所以它的圆具有圆通与圆满两层意义。圆满无尽就是perfect，而圆通无碍则可以翻译成round。所以凡是说圆通无碍，是就般若说的。又如华严宗所说的十玄门、一即一切、一切即一等，凡说到“即”“摄”的，都是指圆融无碍的般若精神。至于圆满无尽则是就着十法门而说的，《华严经》说法门必定说十法门，而说佛亦必说十身佛，因为“十”是最圆满的。在此，“十”不是一个随意数目，而是表示一个有必然性的义理。其所列举的内容可以是随意的，可以是变动的，但一定要是十个法门，这是必然的。因为唯有说十法门，才能表示“圆满无尽，主伴俱足”。“十”并不只是数目的“十”，而是代表无穷、无尽，也就是表示任何一个法都是无限。所以“圆满无尽，主伴俱足”是就着如来藏恒沙佛法佛性而说的。假定我们照“",
+     "quoted_passages": [
+      "应无所住而生其心"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 11752,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_17",
+     "book": "南怀瑾经典合集（共24册）",
+     "chapter": "第二十七品 无断无灭分",
+     "book_id": "a26240ee8f45",
+     "chapter_idx": 484,
+     "author": "南怀瑾",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_30",
+      "claim_31",
+      "claim_32"
+     ],
+     "excerpt": "须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。\n三界六道之外\n“须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。”\n佛叫须菩提，“汝若作是念”，你假使有一个观念，认为“如来不以具足相故，得阿耨多罗三藐三菩提”，认为不著相就可以见佛，就可以大彻大悟的话，他说须菩提啊，你千万不要这样想，不要认为没有功德成就也能够悟道成佛，你有这种观念就错了。\n前面我们明明听须菩提讲的嘛！不要以三十二相见如来。佛则说若以色见我，以音声求我，是人行邪道，不能见如来。可是佛现在又说，须菩提你不要搞错了啊，假如你认为不具足一切功德圆满就能大彻大悟的话，须菩提你注意啊！“莫作是念”，你千万不要那么想啊！千万不能认为不要具足功德就可以大彻大悟。\n“须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。”\n你如果以为人只要悟了道以后，什么都好了，什么都空了，这个观念是很严重的错误啊！这是佛明白交代给须菩提的。\n关于这一点，我个人倒也碰到过很多。几十年前在大陆云南，找一位很有名的禅宗大师，也是一位八指头陀。后来我到昆明碰面了，我说：法师，我听说你悟",
+     "quoted_passages": [
+      "汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 2919,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_20",
+     "book": "南怀瑾经典合集（共24册）",
+     "chapter": "第四品 妙行无住分",
+     "book_id": "a26240ee8f45",
+     "chapter_idx": 461,
+     "author": "南怀瑾",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_27"
+     ],
+     "excerpt": "都错了，因为那不是无所住。\n“应无所住，行于布施”，什么叫修行？念念皆空，随时丢，物来则应，过去不留；就算做了一件好事，做完了就没有了，心中不存。连好事都不存在心中，坏事当然不会去做了，处处行于布施，随时随地无所住。\n譬如今天，有人批评你，骂你两句，你气得三天都睡不着觉，那你早住在那个气上。今天有一个人瞪你一眼，害你夜里失眠，你早住在人家那个眼睛上了。任何境界都无所住，我们看这一边，那一边就如梦一样过去了，没有了；回头看另一边，这一边做梦一样就过去了。但是我们做不到无所住，我们永远放不下，小狗没有喂啦！老爷没有回来啦……这一切都不要去管它，无所住行于布施，布施就是统统放下。下面告诉我们所谓不住色的布施。\n不住色\n什么是色？色法在佛学里，分为有表色、无表色、极微色、极迥色。\n“有表色”指世界上的光色，青、黄、蓝、白、黑，以及长、短、高、矮等，是可以表示出来的。就连我们地、水、火、风，物质世界的东西，包括我们肉体，都可以表示出来。\n“无表色”是属于精神方面的，是抽象的，没有办法表示。譬如说，我们大家都晓得原子能，那个能是什么东西？老实讲，除了正式学物理、科学的以外，一般人并不清楚。能的本身是空的，因为空，它的能力无比的大，甚至最后在科学仪器上都看不出来，只知道是这么一个东西，但却是无法表达的，称为无表色。\n“极微色”，等于现在讲原子、核子，微小到几乎看不见的程度，经由科学仪器还可以看得",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 9576,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_23",
+     "book": "南怀瑾经典合集（共24册）",
+     "chapter": "第十四品 离相寂灭分",
+     "book_id": "a26240ee8f45",
+     "chapter_idx": 471,
+     "author": "南怀瑾",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_18"
+     ],
+     "excerpt": "何以故。我于往昔节节支解时。若有我相人相众生相寿者相。应生瞋恨。须菩提。又念过去于五百世。作忍辱仙人。于尔所世。无我相。无人相。无众生相。无寿者相。是故须菩提。菩萨应离一切相。发阿耨多罗三藐三菩提心。不应住色生心。不应住声香味触法生心。应生无所住心。若心有住。即为非住。是故佛说菩萨心。不应住色布施。须菩提。菩萨为利益一切众生故。应如是布施。如来说一切诸相。即是非相。又说一切众生。即非众生。须菩提。如来是真语者。实语者。如语者。不诳语者。不异语者。须菩提。如来所得法。此法无实无虚。须菩提。若菩萨心。住于法而行布施。如人入暗。即无所见。若菩萨心。不住法而行布施。如人有目。日光明照。见种种色。须菩提。当来之世。若有善男子。善女人。能于此经受持读诵。即为如来。以佛智慧。悉知是人。悉见是人。皆得成就无量无边功德。\n我们今天讲《金刚经》第十四品，《金刚经》开始到现在，讲了十三品，这其中再提起大家注意，《金刚经》虽然在说大般若的修持，这个般若不是纯粹的般若，他讲的是般若的体，就是道体，及见道之体的修行方法。开始先告诉我们，如何是修戒的般若，就是“善护念”这个要点，由开始发心修行到最后的成佛，就是善护念。接着下来，就说善护什么念？无住。无住就是定，善护念就是戒，《金刚经》的般若，本身就是慧，这是拿戒定慧的道理，来说明《金刚经》的本身，般若法门就是如此。\n如果以六度来讲，《金刚经》首先讲的无住，所以",
+     "quoted_passages": [
+      "菩萨应离一切相。发阿耨多罗三藐三菩提心。不应住色生心。不应住声香味触法生心。应生无所住心。若心有住。即为非住。是故佛说菩萨心。不应住色布施。须菩提。菩萨为利益一切众生故。应如是布施。"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 15314,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 22,
+    "display_citations": 5,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第十品 庄严净土分",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 467,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "。身如须弥山王。于意云何。是身为大不。须菩提言。甚大。世尊。何以故。佛说非身。是名大身。”\n“譬如有人，身如须弥山王”，注意这一句话喔！须弥山王就是讲法身，得到应无所住，而生其心，可以初步证到一点法身了。法身是不生不灭，不垢不净，不增不减，所以法身也是大身，也叫做无边身。他说你要得到应无所住而生其心啊！对佛的法身庄严净土，都知道了，佛的世界，佛的净土，就是这个样子。他说，我再告诉你啊！假使我讲一个人，身体大得像须弥山一样，像喜马拉雅山那么大，胖得比昆仑山还要胖，你说他大不大？那是一个譬喻，是说法身无量无边的大，永远的不生不死。佛告诉他最后的结论，“佛说非身，是名大身”。摆脱了我们肉体的身见，身见就是八十八结使第一个解脱不了的疙瘩，把身见空掉了以后，就可以证得不生不死的法身。\n不生不死的法身，也是一句抽象的话，佛法只有实证，你证到了以后才知道，是法不可说，不可说，凡是说的都不对，这个就是法身。所以禅宗讲的悟道，第一步就是要证得这个空性的法身，身见才能够脱掉，才可以说学禅。\n这两天你们考试的题目禅是什么？大家答的都是牛头不对马嘴；禅是佛的心法，根据《楞伽经》，或根据《金刚经》，佛讲得很清楚；可是大家没有留意，随便说要学禅，观念、见地上都不清楚。这个见地不清楚就一错再错，所有的修持做功夫，走的都是歪路，因为起步走错了。这不能瞎搞的，不能乱玩的，所以禅宗祖师有一句话：“我眼本明，因师故瞎。",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 3562,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "中国哲学十九讲",
+       "chapter": "第十五讲　佛教中圆教的意义",
+       "book_id": "167cb7f3a631",
+       "chapter_idx": 15,
+       "author": "牟宗三",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "und teaching是相应于圆通无碍而说。圆通无碍是般若的妙用。如果round teaching对应这个意思讲，则是恰当的。照《大般若经》所讲，般若精神是“应无所住而生其心” (1) ，是“佛说般若波罗蜜，即非般若波罗蜜，是名般若波罗蜜” (2) 。般若是一法不立，是无知亦无得，是不坏假名而说诸法实相，它就是圆，所以圆通无碍说的是般若，而照这个意义说圆，即可翻译成round。\n但是圆有两个意义，一方面是指般若的圆通无碍，另一方面则是指华严宗所说的“圆满无尽，主伴俱足”。照华严宗所说的圆，不但是圆通（或圆融）无碍，而且也是圆满无尽。所以它的圆具有圆通与圆满两层意义。圆满无尽就是perfect，而圆通无碍则可以翻译成round。所以凡是说圆通无碍，是就般若说的。又如华严宗所说的十玄门、一即一切、一切即一等，凡说到“即”“摄”的，都是指圆融无碍的般若精神。至于圆满无尽则是就着十法门而说的，《华严经》说法门必定说十法门，而说佛亦必说十身佛，因为“十”是最圆满的。在此，“十”不是一个随意数目，而是表示一个有必然性的义理。其所列举的内容可以是随意的，可以是变动的，但一定要是十个法门，这是必然的。因为唯有说十法门，才能表示“圆满无尽，主伴俱足”。“十”并不只是数目的“十”，而是代表无穷、无尽，也就是表示任何一个法都是无限。所以“圆满无尽，主伴俱足”是就着如来藏恒沙佛法佛性而说的。假定我们照“",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 11752,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第二十七品 无断无灭分",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 484,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。何以故。发阿耨多罗三藐三菩提心者。于法不说断灭相。\n三界六道之外\n“须菩提。汝若作是念。如来不以具足相故。得阿耨多罗三藐三菩提。须菩提。莫作是念。如来不以具足相故。得阿耨多罗三藐三菩提。”\n佛叫须菩提，“汝若作是念”，你假使有一个观念，认为“如来不以具足相故，得阿耨多罗三藐三菩提”，认为不著相就可以见佛，就可以大彻大悟的话，他说须菩提啊，你千万不要这样想，不要认为没有功德成就也能够悟道成佛，你有这种观念就错了。\n前面我们明明听须菩提讲的嘛！不要以三十二相见如来。佛则说若以色见我，以音声求我，是人行邪道，不能见如来。可是佛现在又说，须菩提你不要搞错了啊，假如你认为不具足一切功德圆满就能大彻大悟的话，须菩提你注意啊！“莫作是念”，你千万不要那么想啊！千万不能认为不要具足功德就可以大彻大悟。\n“须菩提。汝若作是念。发阿耨多罗三藐三菩提心者。说诸法断灭。莫作是念。”\n你如果以为人只要悟了道以后，什么都好了，什么都空了，这个观念是很严重的错误啊！这是佛明白交代给须菩提的。\n关于这一点，我个人倒也碰到过很多。几十年前在大陆云南，找一位很有名的禅宗大师，也是一位八指头陀。后来我到昆明碰面了，我说：法师，我听说你悟",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 2919,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第四品 妙行无住分",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 461,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "都错了，因为那不是无所住。\n“应无所住，行于布施”，什么叫修行？念念皆空，随时丢，物来则应，过去不留；就算做了一件好事，做完了就没有了，心中不存。连好事都不存在心中，坏事当然不会去做了，处处行于布施，随时随地无所住。\n譬如今天，有人批评你，骂你两句，你气得三天都睡不着觉，那你早住在那个气上。今天有一个人瞪你一眼，害你夜里失眠，你早住在人家那个眼睛上了。任何境界都无所住，我们看这一边，那一边就如梦一样过去了，没有了；回头看另一边，这一边做梦一样就过去了。但是我们做不到无所住，我们永远放不下，小狗没有喂啦！老爷没有回来啦……这一切都不要去管它，无所住行于布施，布施就是统统放下。下面告诉我们所谓不住色的布施。\n不住色\n什么是色？色法在佛学里，分为有表色、无表色、极微色、极迥色。\n“有表色”指世界上的光色，青、黄、蓝、白、黑，以及长、短、高、矮等，是可以表示出来的。就连我们地、水、火、风，物质世界的东西，包括我们肉体，都可以表示出来。\n“无表色”是属于精神方面的，是抽象的，没有办法表示。譬如说，我们大家都晓得原子能，那个能是什么东西？老实讲，除了正式学物理、科学的以外，一般人并不清楚。能的本身是空的，因为空，它的能力无比的大，甚至最后在科学仪器上都看不出来，只知道是这么一个东西，但却是无法表达的，称为无表色。\n“极微色”，等于现在讲原子、核子，微小到几乎看不见的程度，经由科学仪器还可以看得",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 9576,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第十四品 离相寂灭分",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 471,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "何以故。我于往昔节节支解时。若有我相人相众生相寿者相。应生瞋恨。须菩提。又念过去于五百世。作忍辱仙人。于尔所世。无我相。无人相。无众生相。无寿者相。是故须菩提。菩萨应离一切相。发阿耨多罗三藐三菩提心。不应住色生心。不应住声香味触法生心。应生无所住心。若心有住。即为非住。是故佛说菩萨心。不应住色布施。须菩提。菩萨为利益一切众生故。应如是布施。如来说一切诸相。即是非相。又说一切众生。即非众生。须菩提。如来是真语者。实语者。如语者。不诳语者。不异语者。须菩提。如来所得法。此法无实无虚。须菩提。若菩萨心。住于法而行布施。如人入暗。即无所见。若菩萨心。不住法而行布施。如人有目。日光明照。见种种色。须菩提。当来之世。若有善男子。善女人。能于此经受持读诵。即为如来。以佛智慧。悉知是人。悉见是人。皆得成就无量无边功德。\n我们今天讲《金刚经》第十四品，《金刚经》开始到现在，讲了十三品，这其中再提起大家注意，《金刚经》虽然在说大般若的修持，这个般若不是纯粹的般若，他讲的是般若的体，就是道体，及见道之体的修行方法。开始先告诉我们，如何是修戒的般若，就是“善护念”这个要点，由开始发心修行到最后的成佛，就是善护念。接着下来，就说善护什么念？无住。无住就是定，善护念就是戒，《金刚经》的般若，本身就是慧，这是拿戒定慧的道理，来说明《金刚经》的本身，般若法门就是如此。\n如果以六度来讲，《金刚经》首先讲的无住，所以",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 15314,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第三品 大乘正宗分",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 460,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "佛告须菩提。诸菩萨摩诃萨。应如是降伏其心。所有一切众生之类。若卵生。若胎生。若湿生。若化生。若有色。若无色。若有想。若无想。若非有想。非无想。我皆令入无余涅槃而灭度之。如是灭度无量无数无边众生。实无众生得灭度者。何以故。须菩提。若菩萨有我相。人相。众生相。寿者相。即非菩萨。\n一切众生\n“佛告须菩提。诸菩萨摩诃萨。应如是降伏其心。”\n佛告诉须菩提，当你问怎么样安心时，就安心了。佛过了许久，看须菩提还是不懂，没有办法，只好退而求其次，第二步再来讲一讲，因为那个时机过去了，禅宗所谓机，这个禅机过去了，须菩提没有懂。现在第二步来讲了，佛说：我告诉你，一切菩萨摩诃萨。“摩诃”的中文意思是“大”，一切大菩萨们。\n古代也有将菩萨翻成“大士”或者“开士”，表示是开悟的人。所以我们的白衣大士就是白衣菩萨。摩诃萨是唐宋以后念的，真正梵文发音是马哈，诃字念成哈字。在座很多客家的同学，客家话、广东话、闽南话比较接近唐音，国语反而距离很远了。\n佛说菩萨摩诃萨是倒装的文句，就是一切大菩萨们，应如是降伏其心，应该有一个方法，把自己的心降伏下去。什么方法呢？他说：“所有一切众生之类”，现在先解释什么叫众生。佛经里众生这个名词，庄子先说过，一切有生命的东西谓之众生，并不是单指人！人不过是众生的一种，一切的动物、生物，乃至细菌、有生命的动物都是众生。有灵性的生命，有感情，有知觉生命的动物，就是众生的正报。所以众生不是",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 12844,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第十八品 一体同观分",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 475,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "须菩提。于意云何。如来有肉眼不。如是。世尊。如来有肉眼。须菩提。于意云何。如来有天眼不。如是。世尊。如来有天眼。须菩提。于意云何。如来有慧眼不。如是。世尊。如来有慧眼。须菩提。于意云何。如来有法眼不。如是。世尊。如来有法眼。须菩提。于意云何。如来有佛眼不。如是。世尊。如来有佛眼。须菩提。于意云何。如恒河中所有沙。佛说是沙不。如是。世尊。如来说是沙。须菩提。于意云何。如一恒河中所有沙。有如是沙等恒河。是诸恒河所有沙数佛世界。如是宁为多不。甚多。世尊。佛告须菩提。尔所国土中。所有众生。若干种心。如来悉知。何以故。如来说诸心。皆为非心。是名为心。所以者何。须菩提。过去心不可得。现在心不可得。未来心不可得。\n眼者心之机\n“须菩提。于意云何。如来有肉眼不。如是。世尊。如来有肉眼。须菩提。于意云何。如来有天眼不。如是。世尊。如来有天眼。须菩提。于意云何。如来有慧眼不。如是。世尊。如来有慧眼。须菩提。于意云何。如来有法眼不。如是。世尊。如来有法眼。须菩提。于意云何。如来有佛眼不。如是。世尊。如来有佛眼。”\n这是佛学里佛法的五眼，五种眼睛的分类，文字都差不多。是佛先提出来问，“须菩提，于意云何”，你的意思怎么样？佛有没有肉眼、天眼、慧眼、法眼、佛眼？\n佛经的三藏十二部，就是把佛经作十二种的分类，其中有一种是“自说”，就是自己开始讲，不是人家提出来问的。这一节就代表了十二分类的自说，是佛提出来的问题",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 8704,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第二品 善现启请分",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 459,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "时长老须菩提。在大众中。即从座起。偏袒右肩。右膝著地。合掌恭敬。而白佛言。希有世尊。如来善护念诸菩萨。善付嘱诸菩萨。世尊。善男子。善女人。发阿耨多罗三藐三菩提心。云何应住。云何降伏其心。佛言。善哉善哉。须菩提。如汝所说。如来善护念诸菩萨。善付嘱诸菩萨。汝今谛听。当为汝说。善男子。善女人。发阿耨多罗三藐三菩提心。应如是住。如是降伏其心。唯然。世尊。愿乐欲闻。\n善现就是“须菩提”，是中文的意译，意思是他的人生境界，是道德的至善。须菩提表现出来的是长寿，另有舍利子这些人也比佛的年龄大。所以，有些经典把“须菩提”翻译为“具寿”就是长寿的意思。等于我们中国人所称鹤发童颜，南极仙翁，老寿星。不过须菩提不仅是老寿星，他的道德修持，他的智慧，以及他生活的仪轨，都足以领导当时佛的弟子们。他年高德劭，威仪气度在佛的十大弟子之中，是非常有名的。\n佛教一般知道须菩提谈空第一，这一本经就是空和有的研究。后世佛教，称须菩提为尊者，连中国民间对他也非常熟悉。怎么熟悉呢？大家都看过《西游记》，孙悟空大闹天宫及七十二变的本事，都是从须菩提那里学的，这是小说上写的。孙悟空找到尊者，小说上把六祖见五祖那个故事，影射孙悟空访道访到了须菩提。《西游记》中这一段，描写得非常有趣，因此，须菩提尊者的名字，就在中国的民间十分流传了。\n善现须菩提\n“时长老须菩提。在大众中。即从座起。偏袒右肩。右膝著地。合掌恭敬。而白佛言。希有世尊",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 12884,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "寻觅意义",
+       "chapter": "中西方文化差异的渊源",
+       "book_id": "e95b30f28a11",
+       "chapter_idx": 1,
+       "author": "王德峰",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": " 这种事情，跟中国人讲，全明白的；跟欧洲人讲，怎么能明白呢？中国思想和西方思想的差别在这里我们也能看到。 佛家三句义 《金刚经》中有三句义，这是一种表达式，在经文中经常出现： 如来说世界，非世界，是名世界。 第一句话，“如来说世界”（如来说，有一个世界）；第二句话随即来了，“非世界”（就不是世界）；第三句又来了，“是名世界”（所以称它为世界）。 这叫三句义。又如：“如来说，第一波罗密，即非第一波罗密，是名第一波罗密。” …… 我当初念中学时，有幸读到了《金刚经》，读到三句义时脑子就乱了，我搞不懂这是在说什么。 而今看来，其义大抵如下。 第一句，“如来说世界”，就是有一个世界，但你千万别把这个世界看成是实体。西方的宇宙观长期以来是实体",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "庄子说什么",
+       "chapter": "渔父",
+       "book_id": "c3c401982587",
+       "chapter_idx": 16,
+       "author": "韩鹏杰",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "，这是第一种解释。 第二种解释可谓之“佛解”。如若按佛家理解，“朝彻”讲的是对事物生灭次序幻相执着的放下，其次序也类似《金刚经》里所说的无四相：“无我相，无人相，无众生相，无寿者相。”所谓“外天下”是指圣人之才须摆脱社会的束缚，开始转向对生命本身进行探求；“外物”即摆脱事物的束缚；“外生”指摆脱生命的束缚，进入对万法唯识的认知，是佛家无我相的境界；“朝彻”是说摆脱识的束缚，洞彻了真如究竟，是佛家无人相的境界，不再单纯从人的观点出发看待问题；“见独”指摆脱因缘的束缚，是佛家无众生相脱俗入圣的境界；“无古今”是讲摆脱时间的束缚，超越成心；“不死不生”是说摆脱生死的束缚，即非死非生，正是佛家不生不灭的无寿者相的境界。 第三种解释可谓之“禅",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国佛教史",
+       "chapter": "第十八章 近世各宗",
+       "book_id": "1201d003be31",
+       "chapter_idx": 20,
+       "author": "蒋维乔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "戒者数万人。入寂于顺治丁酉十四年，寿八十。著有《寤言》《补灯录》《继灯录》《禅余内外集》，共八十余卷；更有《楞严经疏》《金刚经疏》《心经指掌》《四分约义》《律学发轫》《弘释录》等书。 道霈，字为霖，建安丁氏子。年十四，出家；十八参方，历诸讲肆。后参鼓山贤，看庭前柏树子，三年无所入。辞别出游两浙。复归鼓山，充维那；一日，与师问答，被呵出，一夜不安；至四鼓，卷帘出门，忽然大彻；自此商榷玄奥，无不吻合。贤年八十，付属大法；寂后遂继其席。住鼓山二十余年，海内瞻依，以为东南一大法窟。著有《拂语录》《餐香录》《圣箭堂述古》诸书行世。 道霈于经疏，著述甚富。昔智者大师有《仁王般若经疏》，安史之乱，佚失；宋初，四明祖师多方求之，勿获；数百载至元丰初",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "哲学和我们的时代",
+       "chapter": "割断下来的胳膊不再是胳膊",
+       "book_id": "87b26c6b10e6",
+       "chapter_idx": 27,
+       "author": "周龙辉",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "在世界的关系首先是现象世界与规律世界的关系，规律世界是现象的静止的内容，现象世界与规律世界具有同一性。 与佛学相比较，《金刚经》中说，“凡所有相皆是虚妄。若见诸相非相，即见如来”。佛学与黑格尔共同承认现象界的非独立性，“诸相非相”“五蕴皆空”，佛学全盘否定了现象，把它们当作空幻的泡影，以此从生死烦扰中得到解脱，但是黑格尔并没有全盘否定现象，认为现象是本质的显现，二者具有同一性。另外，必须提一句，在我们这个时代流传极广的唯物主义与唯心主义的区分，其实二者的区别并不是“物质与意识何为第一性”，关键在于是否承认现象的自足与独立，那些被看作唯心主义的思想家，大多认为个别的东西、现象的东西不是自足的，因此必须从更为普遍的全体与系统来看待某一现",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国佛教史",
+       "chapter": "第十七章 近世之佛教",
+       "book_id": "1201d003be31",
+       "chapter_idx": 19,
+       "author": "蒋维乔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "有宋世隆、毕奇、周梦颜、彭绍升诸人；可谓为近世居士之先导。今依次述其历史如下： 宋世隆，字文森，长洲人。年四岁，听父读《金刚经》，即能诵四句偈。既长，补诸生；年五十余，有疾；偶触《华严经》无着无缚解脱句有会；遂长斋断欲，日诵《金刚经》；月余，病起；中秋夕，见堂前角灯，光不透脱；不觉感慨，默坐参究；久之，忽汗下通身，胸中廓然；作偈曰：“主主宾宾无主宾，分明指点愈迷津；偶然风触灯中火，却遇当家旧主人。”时天笠珍禅师，过苏之大云庵；世隆往谒，既见；即云：“龙脑薄荷，香闻天下。”师云：“可要干矢橛么？”随问云：“如何是干矢橛？”世隆云：“八面春风。”师云：“来此作么？”世隆云：“不求佛，不求法，要讨个了当。”师厉声曰：“万劫千生不得了。”世",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "禅宗与佛学",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 658,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "他的父亲宦于广东，便落籍于新州。三岁丧父，其母守志抚孤至于成立，家贫，采樵为生，一日，因负薪到市上，听到别人读金刚经到“应无所住而生其心”一段，便有所领悟，别人告诉他这是黄梅（湖北）的禅宗第五代祖师弘忍禅师，平常教人读的佛经，他便设法到黄梅去求学习禅（这时他并未出家为僧）。五祖弘忍禅师初见他时，便问：“汝自何来？”他便答道：“岭南。”五祖说：“欲须何事？”他答：“唯求作佛。”五祖说：“岭南人无佛性，怎么做佛？”他答道：“人地即有南北，佛性岂有东西？”五祖听了，便叫他跟着大家去做苦工，他说：“弟子自心常生智慧，不离自性，即是福田，和尚要我做何事？”五祖说他根性太利，便叫他到槽厂去做舂米的苦工，他做了八个月的苦工，有一天，五祖宣布要传授",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第六章 清净慧菩萨",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 448,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "萨境界是常觉不住，不住在觉的境界中，也不抱着一个觉照的境界，有一个觉照的境界就有所住了。禅宗的六祖因《金刚经》里的一句“应无所住而生其心”而悟道。“应无所住而生其心”是修行的一个方法，如果以圆觉的境界来讲，应该改为“本无所住而生其心”，悟了道以后，就是本无所住了，此心本无所住，物来则应，过去不留。“照与照者”，第一个照是能照，下面的照者是所照，例如妄念是所照。能照与所照，同时寂灭，同时都空了，这才是得道的境界。 “譬如有人，自断其首，首已断故，无能断者，则以碍心自灭诸碍，碍已断灭，无灭碍者。” 你说什么叫作空呢？你说打起坐来，有个清静，有个空，还有个境界，那就糟了，那是意识形态妄想所造成的，搞鬼的就有个鬼境界，玩神的就有个神境界，修",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "第一讲",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 14,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "论国内国外，对宗教修持功夫都很内行，修就是修定。大家修定观念的最大错误是什么呢？是以为所谓“定”就是什么都不知道，这与“应无所住而生其心”的意义是相违背的。此其一。 其次严重的是，现在一般人都去搞神秘了。灵感啊！神通啊！第六感啊！超越冥想啊！各种神秘名称都加上去了，这是一个非常严重的错误。大家要知道，神通与神经是双胞胎，这一点真是很严重的问题，因为失之毫厘，差之千里。 话又说回来了，什么是定？一定要认清楚。四禅八定，是佛教修证方法的中心基础，不过佛法不在定上，定是共法。但是佛法也不离开定，历代的高僧传记中，功夫修证到“定”的比丘及比丘尼非常多。甚至南北朝的皇帝，也是与佛教有关，如刘裕小名寄奴；梁武帝、隋文帝等与佛教关系都很深。 佛告",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国佛教史",
+       "chapter": "第十三章 会昌以前之佛教概说",
+       "book_id": "1201d003be31",
+       "chapter_idx": 15,
+       "author": "蒋维乔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "四百部，合五十万颂；其已译者，六十一部，二百三十九卷。据《开元录》所载。初译《金光明最胜王经》（十卷）；继成密部之《能断金刚般若波罗蜜经》（一卷）、《大孔雀咒王经》（三卷）、《佛顶尊胜陀罗尼经》（一卷）；又有关于《因明》及法相宗之《因明正理门论》（一卷）、《观所缘论释》（一卷）、《取因假摄论》（一卷）；其所译大部，则有部律为多，例如《根本说一切有部毗奈耶》（五十卷）、《根本说一切有部苾刍尼毗奈耶》（二十卷）、《根本说一切有部毗奈耶杂事》（四十卷）、《根本说一切有部尼陀那目得迦》（十卷）、《根本萨婆多部律摄》（二十卷）等是。此外尚著《南海寄归内法传》（四卷）、《大唐西域求法高僧传》（二卷）。入寂于先天二年（713），春秋七十有九。又译",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国佛教史",
+       "chapter": "第十四章 唐之诸宗",
+       "book_id": "1201d003be31",
+       "chapter_idx": 16,
+       "author": "蒋维乔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "那摩提译 《深密解脱经》五卷…………………………………………菩提流支译 《十地经论》十二卷天亲造（以下六部译者同上） 《金刚般若波罗蜜经论》三卷 《胜思惟梵天所问经论》四卷 《法华经论》二卷 《无量寿优波提舍经论》一卷 《文殊师利菩萨问菩提经论》三卷 《摄大乘论》二卷天亲造……………………………………佛陀扇多译 此外三人之翻译尚多；今兹所举，惟择其与世亲关系密接者。又摩提、流支合译者，有《宝积经论》（四卷）、《宝性论》（四卷）；流支又译《入楞伽经》（十卷）。由此等书目考之：三人为世亲系统，殆无可疑。 就《十地论》之翻译言之，亦极有兴味。盖翻译此论，始于宣武永平元年（508）；初摩提、流支，本在一处；《续高僧传》曰：“当翻经日，于洛阳",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "中国哲学十九讲",
+       "chapter": "第十六讲　分别说与非分别说以及“表达圆教”之模式",
+       "book_id": "167cb7f3a631",
+       "chapter_idx": 16,
+       "author": "牟宗三",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "故，说《般若波罗蜜经》……复次余经中佛说五众无常苦空无我相，今欲以异法门说五众故，说《般若波罗蜜经》。” (23) 见《金刚般若波罗蜜经》。 (24) 三界指欲界、色界、无色界。参看《佛性与般若》下册，第四章第八节。 (25) 《法华玄义》卷五上有云：“通诸位论粗妙者……中草（二乘）虽复动出，智不穷源，恩不及物……大树（别教）实事，同缘中道，皆破无明，俱有界外功用，故此位为妙。而别教从方便门，曲径纡回，所因处拙，其位亦粗。圆教真门，是故为妙。”关于别教所以为“曲径纡回，所因处拙”，请参看《佛性与般若》上册，第五六〇至五六一页。 (26) 天台宗以《法华经》为圆教的大纲。《法华玄义》卷第十有云：“当知此经唯论如来设教大纲，不委微细纲目",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "南怀瑾经典合集（共24册）",
+       "chapter": "中国佛教原始的禅与禅宗四祖的风格",
+       "book_id": "a26240ee8f45",
+       "chapter_idx": 528,
+       "author": "南怀瑾",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "经》印心的传统了。四祖教人念摩诃般若（《大般若经》是佛法中阐言体性空的要典），从此，自五祖弘忍付授六祖慧能以来，便改用《金刚般若波罗蜜经》以印心，因此而开启初唐以后中国禅宗的特色。除此以外，四祖道信大师，又为后世学者留下不慕虚荣，轻生死，重去就的清风亮节，作为世出世间的典范。唐、宋以后许多儒家的“高士”、“处士”和道家的神仙们，亦多有相同的志趣。这是中国文化另一面的精神，也是中华民族的血统中特别强烈的一种特殊精神，应当尊重注意，然后才能谈——中国文化的气节。 “贞观癸卯岁（公元六四三年）太宗向师道味，欲瞻风采。诏赴京，祖上表逊谢，前后三返。第四度命使曰：如果不起，取首来。使至山谕旨，祖乃引颈就刃，神色俨然。使回，以状闻，帝弥钦重。 ",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 22,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 64.32,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 1.7,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_2y1EjfVoq5STVzDKyVli9218"
+    },
+    {
+     "t": 1.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_4g9c4PTYKa6XKIJGi7r80427"
+    },
+    {
+     "t": 4.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.714,
+     "result_chars": 4118,
+     "result_head": "{\"query\": \"金刚经\", \"results\": [{\"book_id\": \"e95b30f28a11\", \"book_title\": \"寻觅意义\", \"author\": \"王德峰\", \"chapter_idx\": 1, \"chapter_title\": \"中西方文化差异的渊源\", \"citation_label"
+    },
+    {
+     "t": 4.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.714,
+     "result_chars": 4211,
+     "result_head": "{\"query\": \"应无所住而生其心\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 658, \"chapter_title\": \"禅宗与佛学\", \"cit"
+    },
+    {
+     "t": 5.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_Zaph0jp7csKYM2CKnvoC3324"
+    },
+    {
+     "t": 6.0,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_9ZTc4KhHPreAPS2LPeYb7518"
+    },
+    {
+     "t": 6.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.008,
+     "result_chars": 3909,
+     "result_head": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 467, \"title\": \"第十品 庄严净土分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十品 庄严净土分】\", \"text\": \"有"
+    },
+    {
+     "t": 7.2,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.098,
+     "result_chars": 4053,
+     "result_head": "{\"query\": \"金刚般若波罗蜜经\", \"results\": [{\"book_id\": \"1201d003be31\", \"book_title\": \"中国佛教史\", \"author\": \"蒋维乔\", \"chapter_idx\": 15, \"chapter_title\": \"第十三章 会昌以前之佛教概说\", \"cit"
+    },
+    {
+     "t": 17.1,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_7WN9y98tacWuLXGaUYIr2991"
+    },
+    {
+     "t": 17.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_XU5i8hBI2C7JlKtRf2xq7914"
+    },
+    {
+     "t": 17.2,
+     "ev": "tool_start",
+     "name": "list_books",
+     "call_id": "call_02_cvGddfrs3hddZUr3wEpG3343"
+    },
+    {
+     "t": 17.3,
+     "ev": "tool",
+     "name": "list_books",
+     "status": "success",
+     "duration_s": 0.003,
+     "result_chars": 615,
+     "result_head": "{\"books\": [{\"id\": \"958d02ba12f5\", \"title\": \"洞见：从科学到哲学，打开人类的认知真相\", \"author\": \"罗伯特·赖特\", \"region\": \"西方\", \"rank\": 36.6, \"summary\": \"《洞见》是美国学者罗伯特·赖特的一部跨学科著作，融合了现代科学（"
+    },
+    {
+     "t": 18.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.315,
+     "result_chars": 2670,
+     "result_head": "{\"query\": \"于法不说断灭相\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 484, \"chapter_title\": \"第二十七品 无断无灭分\","
+    },
+    {
+     "t": 18.6,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.315,
+     "result_chars": 1898,
+     "result_head": "{\"query\": \"应无所住行于布施\", \"results\": [{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"author\": \"南怀瑾\", \"chapter_idx\": 461, \"chapter_title\": \"第四品 妙行无住分\", "
+    },
+    {
+     "t": 21.8,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_vTKwVLGuwVFmO1YNkhlx8337"
+    },
+    {
+     "t": 21.9,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_LdRDMj2xCYNnrTvhg3Jz5153"
+    },
+    {
+     "t": 22.1,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_02_XpiUhZvWhAHSKIaHSBgU6369"
+    },
+    {
+     "t": 22.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.011,
+     "result_chars": 4411,
+     "result_head": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 461, \"title\": \"第四品 妙行无住分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第四品 妙行无住分】\", \"text\": \"都"
+    },
+    {
+     "t": 22.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.012,
+     "result_chars": 4523,
+     "result_head": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 471, \"title\": \"第十四品 离相寂灭分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十四品 离相寂灭分】\", \"text\": "
+    },
+    {
+     "t": 22.3,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.012,
+     "result_chars": 4527,
+     "result_head": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 475, \"title\": \"第十八品 一体同观分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第十八品 一体同观分】\", \"text\": "
+    },
+    {
+     "t": 24.3,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_d9l2DUsqkND0uk0pUECE1902"
+    },
+    {
+     "t": 24.5,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_2MWf5FDlTJrnRmCAPPGD5728"
+    },
+    {
+     "t": 24.7,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_02_NRexQDzG5wFnwQ2XEGj35499"
+    },
+    {
+     "t": 24.9,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.007,
+     "result_chars": 2444,
+     "result_head": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 461, \"title\": \"第四品 妙行无住分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第四品 妙行无住分】\", \"text\": \"复"
+    },
+    {
+     "t": 24.9,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.013,
+     "result_chars": 4535,
+     "result_head": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 484, \"title\": \"第二十七品 无断无灭分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第二十七品 无断无灭分】\", \"text\""
+    },
+    {
+     "t": 24.9,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.013,
+     "result_chars": 4499,
+     "result_head": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 459, \"title\": \"第二品 善现启请分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第二品 善现启请分】\", \"text\": \"时"
+    },
+    {
+     "t": 29.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_t6uPBTZcKqG5DxwFKv660064"
+    },
+    {
+     "t": 29.8,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_JyvIU3ABNTCku5oFBMOi3483"
+    },
+    {
+     "t": 29.9,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_02_4x5Av7dwUJ8HrIaJuOOD2173"
+    },
+    {
+     "t": 30.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.008,
+     "result_chars": 4251,
+     "result_head": "{\"book_id\": \"167cb7f3a631\", \"book_title\": \"中国哲学十九讲\", \"chapter_idx\": 15, \"title\": \"第十五讲　佛教中圆教的意义\", \"citation_label\": \"【《中国哲学十九讲》·第十五讲　佛教中圆教的意义】\", \"text\": \"答复你。当然"
+    },
+    {
+     "t": 30.1,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.009,
+     "result_chars": 4400,
+     "result_head": "{\"book_id\": \"a26240ee8f45\", \"book_title\": \"南怀瑾经典合集（共24册）\", \"chapter_idx\": 460, \"title\": \"第三品 大乘正宗分\", \"citation_label\": \"【《南怀瑾经典合集（共24册）》·第三品 大乘正宗分】\", \"text\": \"佛"
+    },
+    {
+     "t": 32.1,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "success",
+     "duration_s": 2.022,
+     "result_chars": 3587,
+     "result_head": "{\"query\": \"\\\"應無所住而生其心\\\" 金剛經 無住 般若\", \"results\": [{\"source_record_id\": \"doi:10.14711/spcol/b860726\", \"title\": \"摩訶般若波羅蜜多心經\", \"authors\": [\"無垢子\"], \"year\": null, \"pub"
+    },
+    {
+     "t": 49.4,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_00_0B2MVTcuYjvLn3CMLLlD7117"
+    },
+    {
+     "t": 49.5,
+     "ev": "tool_start",
+     "name": "get_scholarly_source",
+     "call_id": "call_01_OeaCa1r1OLV2q6DjNv1x9598"
+    },
+    {
+     "t": 49.8,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.082,
+     "result_chars": 1087,
+     "result_head": "{\"source_record_id\": \"doi:10.5840/ntuphilreview2013465\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.5840/ntuphilreview2013465\", \"title\": \"聖嚴禪教之安心法門─「看"
+    },
+    {
+     "t": 49.8,
+     "ev": "tool",
+     "name": "get_scholarly_source",
+     "status": "success",
+     "duration_s": 0.087,
+     "result_chars": 1151,
+     "result_head": "{\"source_record_id\": \"doi:10.24956/ssc.24.4\", \"bibliographic_record\": {\"source_record_id\": \"doi:10.24956/ssc.24.4\", \"title\": \"Study on a single substance(一體) an"
+    },
+    {
+     "t": 64.4,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1310
+  }
+ ],
+ "total_wall_s": 66.0,
+ "status": "COMPLETED"
+}

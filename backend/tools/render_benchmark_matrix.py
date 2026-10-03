@@ -80,6 +80,7 @@ def matrix():
     return {'scale':100,'product_version':registry['versions'][-1]['version'],'aggregate_source_sha256':aggregate.sha(OUT/'aggregate.json'),
             'current':{'title':'冻结 v1.2 · 当前测试集（开发暂定）','subtitle':'每题等权、题内各轮先平均。DeepSeek/豆包为官方网页采集；不同产品的工具条件与评审覆盖不同。','columns':current_cols,'rows':rows},
             'notes':['— 表示未测或不适用，绝非0分；区间表示已有未知项。所有评分行均以100为满分。',
+                     'v0.1.3 RUN4：65题77轮均有最终答复；初评55轮后402，32轮直接评审/复核、45轮仅初评；与RUN3评审覆盖不同，不能用总分差单独判断质量变化。',
                      'v0.1.2 RUN3：65题已实测，其中64题有最终回答、A05空答按0级计入；14轮完整定向复核，4轮额外核对初评错误指控。',
                      'RUN3采集器未保存逐轮生效prompt/运行时代码指纹；分数不能代表严格的单因素prompt改进。',
                      '上表分维度只统计适用题：C为60题，R为24题，K为5道纯核验题；不是未实测的K故障组。',

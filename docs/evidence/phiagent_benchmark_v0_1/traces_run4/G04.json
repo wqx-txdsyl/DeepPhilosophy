@@ -1,0 +1,573 @@
+{
+ "case_id": "G04",
+ "category": "G",
+ "prompt": "人都会自私，所以帮助别人其实也只是自私。这个论证有什么问题？",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ccdf54ee96744440592d7dbd9c435445e1c07253",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T10:17:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.3",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run3 同源延续, 后续评测有增量）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "人都会自私，所以帮助别人其实也只是自私。这个论证有什么问题？",
+   "wall_s": 70.0,
+   "ttft_s": 9.5,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "b2b50d39f60e4b1385f3414fa983af09:1:note:0",
+     "content": "我先把这个论证的形式理出来，同时查一下有没有可以检验你我判断的原文材料。"
+    }
+   ],
+   "provider_reasoning": "The user asks: \"人都会自私，所以帮助别人其实也只是自私。这个论证有什么问题？\" This is an argument-analysis question. The user wants to know what's wrong with the argument. I should analyze it. Should I use tools? The analyze_argument tool is for pressure-testing arguments. The task is a logic analysis task — the user asks about the logical structure problem. This is a classic philosophical issue: psychological egoism, and the \"selfishness\" equivocation. Let me think whether to call tools.\n\nThe instruction: tools by need, not by count. The question is a philosophical argument analysis. I could use analyze_argument to pressure test. But I also should be careful: the tool returns \"final text not returned\" — it's a scaffold. I could use it and then synthesize. Also could check local books for relevant text, e.g., about psychological egoism, Butler's critique, or 休谟/康德 on moral motivation, 孟子 on 孺子入井 (child about to fall into well) — that's a good Chinese-classical counterexample: 恻隐之心. Also 斯密的同情. Also 边沁? Also Rand's egoism.\n\nThe key logical problems:\n1. Ambiguity/equivocation of \"自私\" (selfish). Two senses: descriptive/formal sense (all action springs from one's own desires — trivially true, \"自我关涉\" or \"自利\" as motivation source) vs substantive sense (seeking own benefit at the expense of others, or priority of own interests). The premise uses the trivial sense; the conclusion uses the thick sense. If any action is by definition motivated by the agent's own desires, then it's trivially true that helping is motivated by one's own desires — but that doesn't show the aiding is for the sake of self-benefit, nor that it's at the expense of others.\n2. The premise \"人都会自私\" is itself dubious — psychological egoism is a substantive empirical/psychological thesis that's hard to confirm; it's often unfalsifiable (自证倾向): any apparent altruism is reinterpreted as disguised self-interest. Circular reasoning / immunizing strategy.\n3. Even if helping produces satisfaction to the helper, that doesn't make the *object* of the act self-benefit — the fact that I feel good by helping doesn't mean I helped in order to feel good. Distinguish motive/object of action from byproduct (副现象). Logical form: \"X brings pleasure to the agent\" ≠ \"agent's aim was that pleasure\". Butler's classic point: the pleasure of satisfying a desire presupposes the desire; if you only helped for the pleasure, then... Actually Butler: \"self-love and particular affection are not the same; benevolence is a distinct affection whose satisfaction yields pleasure, but the pleasure is not the object.\"\n4. Also the trivial premise makes the conclusion trivially true — if \"自私\" means \"any action originates in the agent's own desire\", then \"helping is selfish\" is trivially true but empty, and it doesn't support the usual normative use. If it means the substantive claim, the premise doesn't establish it. Either way, either trivial/vacuous or unproven — 二难.\n5. Concealed normative leap: from descriptive \"all actions are self-interested\" to evaluative \"helping is not genuinely morally valuable\" — is-ought gap. The argument as stated only concerns description, but the implication carried is normative demotion of helping.\n6. Also scope shift: \"人都会自私\" (all people sometimes act selfishly / have selfish tendencies) → \"帮助别人其实也只是自私\" (every act of helping is nothing but selfish). Quantifier shift and negation of category: from \"some/tendency\" to \"all/only\". \"都\" 是含糊的; and \"只是\" (nothing but) needs the exclusion claim.\n\nAlso: the conclusion \"帮助别人其实也只是自私\" — to make the inference valid, you need an extra premise: that whenever an act is motivated by the agent's own desire, its object/content is the agent's own benefit. That's the missing premise, and it's exactly the contentious one.\n\nAlso: the argument form \"所有行为都由自己的欲望驱动 → 所有行为都是自私的\" — 前提的真实性可争论,但即便承认前提,推理也无效 unless equivocation.\n\nAlso a point about \"selfish\" as a moral-criticism term: even if all action were self-regarding in origin, the distinction between self-regarding and other-regarding survives at the level of the object/aim and at the level of the standard of evaluation.\n\nPossible strongest versions of the argument: \n- The \"受恩者期待回报\" or \"动机不可知论\" — we can never know others' motives, so...\n- The strongest version: 心理利己主义 that claims all ultimate desires are self-directed desires. But even this claim, as a thesis about ultimate desires, is separate from \"helping is at bottom selfish\" in the pejorative sense. And it faces the falsification problem: what would count as evidence against it? If nothing, it's not empirical.\n\nAlso there's a classic counter: 孟子 孺子入井 (Child at the well) — 怵惕恻隐之心, \"非所以内交于孺子之父母也,非所以要誉于乡党朋友也,非恶其声而然也\" — Mencius explicitly considers and rejects the self-interested explanations (making friends with parents, reputation, dislike of the child's cry). That's a good textual material. Also there's 休谟 on 人道/benevolence? Or 斯密《道德情操论》. Or 巴特勒(Bishop Butler) 的讲道集 — famous against Hobbes.\n\nI should check the local library for these. Let me do searches: 孟子 孺子入井, and 休谟/斯密 on 同情/仁爱, and possibly 边沁/密尔. Also 心理利己主义 might appear in ethics textbooks (e.g., 斯马特/威廉斯, or 摩尔?).\n\nLet me also consider whether to use analyze_argument. The instruction says: \"检验单个论证或自己的关键暂定判断\" — yes appropriate here. And paper_review is for 评审框架 — not needed.\n\nLet me plan: parallel calls — search_books for 孺子入井/孟子, search_books for 心理利己主义, and analyze_argument on the argument. Then possibly get_chapter to read the Mencius context.\n\nLet me start with a batch.\n\nActually careful: analyze_argument may return a scaffold; I should use it and then critically check. Also verify_quote if I quote Mencius.\n\nLet me do the first batch:\n1. search_books query \"孺子入井\" or \"恻隐之心\" \n2. search_books query \"心理利己主义\" \n3. analyze_argument with the argument text and question.\n\nThen follow-up reads.\n\nLet me be careful about tool result authenticity — cite actual returned text.\n\nLet's go.Good. Mencius not found with that query. Let me try again with 孟子 / 恻隐 and also search for 巴特勒 (Butler) or 休谟 仁爱, and 斯密 同情. Also read the 大问题 chapter 11 context around 心理利己主义 for the standard criticisms.\n\nLet me batch: get_chapter for 大问题 ch11 with focus; search_books \"孟子\" author? Actually search \"恻隐\" alone; search \"仁爱 利他 人性\" ; search \"巴特勒 自爱 仁爱\".\n\nLet's do a batch of parallel calls.I have good material: 《大问题》 chapter 11 gives the standard critique (Butler's three arguments), and 《孟子》公孙丑上 孺子入井 passage. Let me verify the Mencius quote context by reading the chapter (real read, to confirm the passage boundary). The search snippet already gives exact passage. But I should read the chapter to confirm context and boundary. Let's do get_chapter on 孟子 book dd03ec6572e7 chapter 2 with focus 恻隐之心.\n\nActually the snippet is already an exact_passage hit with sufficient text. But guidance says \"引用前用 get_chapter 阅读上下文\". Let me read it to be safe and to get accurate framing (孟子的论证结构：乍见→怵惕恻隐→非所以内交...).\n\nAlso, should I check for 巴特勒 original? Probably not in library. Let me do one quick search for \"巴特勒\" to see if there's原典. Not necessary — the 大问题 excerpt attributes to Butler, which I can report as 转述 (secondary). I'll be careful: attribute the three arguments as presented in 《大问题》 (a textbook), noting Butler as the origin per that text.\n\nLet me read Mencius chapter context. And maybe also check 斯密《道德情操论》 for 同情 - not strictly needed.\n\nLet me do one call: get_chapter 孟子 ch2 focus 恻隐之心.\n\nAlso possibly worth checking whether there's a psychological egoism debate in scholarship — e.g., Batson's empirical work on empathy-altruism. The user's question is logical, not empirical, but a note on the empirical side might be useful. Hmm — could search_scholarship for \"psychological egoism altruism\" to see if there's literature. That might add value: the empirical testability point (Batson). But is this needed? The core is logical. I could add a brief note that the descriptive premise is an empirical thesis that's hard to falsify, and mention that there's empirical literature. If I mention empirical findings, I need to check them. I could do a search_scholarship to ground it. Let's do that in parallel with the Mencius read — cheap and it strengthens the \"premise is contestable\" part.\n\nActually, careful about scope: the user asked what's wrong with the argument (logic). The main answer is logical. The empirical literature can be a short aside. I'll do one search to see if something relevant comes up; if it's thin, I'll just say the premise is an empirical thesis without citing.\n\nLet me batch: get_chapter(孟子) + search_scholarship(\"psychological egoism altruism empathy\").The scholarship search returned only metadata, no readable content. I won't cite it as evidence about content. I could try one more targeted search for Batson, but it may not be worth it. Actually, the empirical point could be relevant: psychological egoism's unfalsifiability is a standard critique. I have the 大问题 textbook material. I think that's enough; I don't need empirical literature. I'll avoid claiming empirical findings I haven't read.\n\nNow let me think about the substance carefully and write the answer.\n\nThe argument: \nP: 人都会自私 (everyone is selfish)\nC: 帮助别人其实也只是自私 (helping others is actually just selfishness)\n\nProblems:\n\n1. **词义滑移 (歧义/偷换概念)** — the core issue. \"自私\" has (at least) two readings:\n   - 弱/形式读法: 任何行为都出于行动者自己的欲望/动机 — \"行为总是我的行为，欲望总是我的欲望\". This is nearly trivially true (有人称\"自我关涉\"或\"动机的自属性\")。它并不含有\"只顾自己利益、不顾他人\"的意思。\n   - 强/评价读法: 以自身利益为行为目标，且贬义上指无视或损害他人利益。\n   前提若取弱读，为真但推不出结论的评价含义；若取强读，则前提是很有争议的经验/心理命题，不是常识自明。而且结论\"也只是自私\"里的\"只是\"（nothing but）要求额外的排除性主张：助人的动机中不含对他人的关切。这是前提完全没有提供的。\n\n   注意：前提的\"人都会自私\"还有一个量词问题。它自然读作\"人（有时候/在某种程度上）会自私\"或\"人都有自私的一面\"。\"都\"有歧义。结论需要\"每个人的每一次助人行为在动机上完全是自利的\"。\n\n2. **从欲望满足推出自私：一个无效的推论（\"满足了自己的欲望 ⇒ 自私\"）**。任何有意行为都伴随着行动者某个欲望的满足——因为如果不满足任何欲望就不会去做。所以\"他帮了人，他因此感到满足/心安\"不能证明他是为满足而帮人的。\n   这里的关键区分：**动机（为什么做）/ 对象（为了谁）/ 结果（得到了什么）**。\n   - \"帮助给我带来满足\" 是对结果的描述；\n   - \"我帮助是为了得到满足\" 是动机主张。\n   两者不同。大问题里表述得很好:\"决定一个行为是否自私的东西是欲望的'对象'，而不仅仅是一个人遵照自己的欲望而行动这一事实。伴随着好的行为的满足本身并不是行为的动机。\"\n   还有一个更细的逻辑点(巴特勒式): 利他欲望的满足之所以令我愉快,恰恰预设了我先有利他的欲望;愉悦是欲望被满足的副产品,而不是欲望的对象。若愉悦是对象,则\"我帮助是为了愉快\"这个说法就要另有解释。\n\n   还有一个逻辑陷阱要注意: \"帮他是因为不帮我会不安\" —— 这实际上恰恰证明了我在意他的处境(不安的来源是他的处境),而不是证明我只在意自己。把\"因为不做会不安\"一律读成自利,是把\"不安的内容\"抽掉只看\"不安\"的形式。这是**抽象化/抽掉内容**的错误。\n\n3. **可证伪性问题 / 免疫化策略(如果坚持强读)**。若无论什么行为都被解释为自私——捐钱是为了自我感觉良好,不捐是为了避免麻烦,牺牲也是为了满足自我形象——那么这个命题就排除了任何可能的反例,因而失去了经验内容。\"人都会自私\"变得不可否证。不可否证不等于错,但它不再是关于人怎样行动的经验主张,而成了一条重新定义用词的规则;此时结论不过是用新定义重述前提(接近循环)。\n\n4. **实然推应然**。这个论证通常被用来说\"所以不必真心感谢/助人也无可厚非/道德是假象\"。但从\"人的动机都如此\"推不出\"助人没有道德价值\"或\"我们不该感谢\"。这是另一层跳跃,需要独立的规范性前提。\n\n5. **前提本身是可争的**: 心理利己主义是一个实质的经验/心理学命题,不是自明真理。而且有很多看似支持它的证据其实是同义反复式的重新描述(把\"他想帮人\"描述成\"他想满足自己帮人的欲望\")。这是概念改写而非发现。\n\n6. **更强版本要付的代价**。最强的版本是这样: 人最终总是被自己的欲望驱动,不存在不由行动者自己的欲望驱动的动机。这个版本我倾向于同意——但它是重言式的,被它覆盖的\"自私\"已经不再有道德贬义、不再与利他相对;于是\"帮助别人其实也只是自私\"听上去是发现,实际是取消了\"自私/利他\"的区分,等于说\"帮助别人也是人做的\"。\n\n   另外,即便承认欲望都归属于自己,还有一个反驳: 利己/利他的区分不在\"欲望属于谁\",而在\"欲望指向谁的利益\"。这两个维度是独立的。\n\n7. **孟子式的反例材料**可以在两点上用力:\n   - 孟子明确列出并否证三种自利解释: \"非所以内交于孺子之父母也,非所以要誉于乡党朋友也,非恶其声而然也。\" 他说这三种都不是那个当下反应的动机。这是\"排除性论证\"的一个早期范例——面对同一个行为,利己解释与利他解释都可用,我们需要判断哪个是动机。\n   - 但也要诚实指出: 孟子的\"乍见\"正是为了排除计算和反思——不是\"我决定做好人\",而是当下被触动。这段材料支持\"至少有些行为的直接动机指向他人\"。不过它本身是个断言(以及对情境的诉诸),不是对心理利己主义者的决定性反驳:利己主义者可以回应说\"你感到怵惕,是因为你不忍,而你不忍是因为...\"——但那已经不是原来的论证,而是要另外提出一套理论。而且\"怵惕\"本身是痛苦,利己主义者会说他是为了消除自己的痛苦。这里的正解是前面第2点的区分。\n\n我不应该把这看成裁决。用户问\"这个论证有什么问题\",我要给出诊断,但要标明:这不是说利他行为必然存在;而是说这个论证从前提推不出结论。\n\n关于\"这个论证有什么问题\"的最简洁总结,我可以给一个三段式:\n- 最重要的: 一个词在两句里意思不同(歧义/偷换)。给出两种读法各自的代价。\n- 其次: 缺少一个必需的桥梁前提(\"凡出于自己欲望的行为,其目的都是自己受益\")。这个前提要么是重言式(于是结论无信息),要么是待证的经验主张。\n- 第三: 即便前提为真,从描述跳到评价还需要另一个前提。\n\n还要说明: 这不等于说\"帮助别人从不含自利成分\"。混合动机很常见,而且很值得承认。正确的反驳不是\"助人都是纯粹的\",而是\"前提不必真、推理也不成立,而结论通常带的贬义用法没有依据\"。\n\n关于引用格式: 引用《大问题》和《孟子》。我要说明《大问题》是教材/二级转述,其中关于巴特勒三条论证是转述,不是巴特勒原文。这点必须交代。\n\nLet me now also think: is there any sense in which the argument is valid? If we define 自私 as \"由自己的欲望驱动\" then premise is true and conclusion follows — but it's a verbal stipulation, and the conclusion then loses the punch. This is worth stating clearly: the argument can be made valid only by redefining, and the redefinition costs the conclusion its critical force. That's the \"either vacuous or unproven\" dilemma.\n\nAlso, a note on the premise's \"都\": Actually a very common informal version goes: \"人都是自私的\" — often meant as \"人人都有私心\", which is nearly everyone's observation; then conclusion uses it as the strong claim. That's the slide.\n\nOne more logical point worth mentioning: **结论的\"只是\"(nothing but)是一个否定性全称主张**——它要求\"不存在任何非自利的动机成分\"。这种主张需要排除性证据,而不只是一个概括性的前提。举证责任在这种\"只是/无非/不过是\"式的还原论主张上更重。 This is a good point: \"不过是/只是/无非\" 型还原主张需要论证被还原项没有剩余。\n\nStructure of my answer:\n1. 一句话诊断: 这个论证的毛病不在\"人不自私\"(那是另一回事),而在于前提和结论里的\"自私\"不是一个意思;要让它有效,必须补一个要么空洞要么待证的前提。\n2. 拆解: 前提弱读/强读;结论需要\"只是\"。\n3. 关键区分: 欲望的满足 ≠ 自私;动机/对象/结果三分。此处引用《大问题》的表述。补一个更细的: 巴特勒式——满足的愉快预设了欲望本身(这在大问题里第1条也有)。\n4. 若坚持强读,则不可否证——排除一切反例,成为定义而非发现;循环。\n5. 还要注意实然/应然那一步(如果这论证被用来贬低助人)。\n6. 用孟子那段做压力测试: 它正是针对这个论证的早期版本提出排除性反例;同时诚实地说明它的力量边界——它是一段断言加情境,不是决定性反驳,利己主义者还能怎么回,以及回应要靠第3点的区分。\n7. 收束: 这个论证最多能支持什么——\"助人行为常混杂自利动机\"\"人普遍有自利倾向\"。不能支持\"只是自私\"。以及: 承认混合动机不影响道德评价的独立问题。\n\nShould I be concise? The user asked a focused logical question. I'd aim for maybe 700-1000 Chinese characters... probably a bit more given the richness. Let's keep it tight, avoid bullet-list bloat but use structure sparingly. I'll write mostly prose with a few short enumerations.\n\nLet me write.\n\nRegarding citation labels: 【《大问题》·第八章 道德和好的生活】 and 【《孟子》·公孙丑章句上】.\n\nI should note: the 大问题 passage I read is a textbook's presentation, Butler's three arguments are 转述 there. And the \"反驳心理利己主义者的论证用一句话说就是\" paragraph is 所罗门's own summary — good, I can quote it as the textbook's formulation, attributing properly.\n\nAlso note the Mencius text: \"今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\" Verified from chapter read. Good.\n\nNow write the final answer.\n\nDraft:\n\n诊断先说: 这个论证不是\"前提假\"这么简单。它真正的毛病是: 前提和结论里的\"自私\"不是一个意思,而补上那个能让推理成立的桥梁前提之后,前提就变成了空转。\n\n一、歧义在哪里\n\"自私\"至少两种读法:\n(A) 形式读法: 任何行为都出于行动者自己的欲望——人做不出不是自己想做(或不想不做)的事。这几乎是人作为行动者的定义,没人会反对。\n(B) 实质读法: 以自身利益为行为目标,且贬义上指不顾或损害他人。\n前提\"人都会自私\"听着像(A)的日常版(\"谁没点私心\"),响亮、近乎无争议;结论\"帮助别人也只是自私\"用的是(B),而且加了\"只是\",这是个排除性主张——助人动机里不含任何指向他人的成分。用一个几乎人人同意的读法去做前提,用一个人人争议的读法去做结论,这就是概念滑移。\n\n二、让推理成立需要什么前提\n需要补: \"凡出于自己欲望的行为,其目的都是自己受益。\" 这一步要么假,要么空。\n假的理由: 行为由我的欲望驱动,和这个欲望指向谁的利益,是两个独立的维度。我想让他脱离危险,这个欲望确实是我的,但它的对象是他。\n空的理由: 若把\"自己受益\"定义成\"满足了自己某个欲望\",那任何有意行为都必然满足某个欲望(否则不会做),于是桥梁前提成了重言式,结论也就成了\"帮助别人也是人做的事\"。它不再与\"自私\"的道德贬义有任何关系,也就不再是否定利他——它取消了利己/利他这对区分。\n\n三、把\"满足\"当成动机,是最常见的隐蔽错误\n(引 大问题 那句: 决定一个行为是否自私的东西是欲望的\"对象\"…满足本身并不是行为的动机。)\n也就是区分三件事: 为谁做(对象)、为什么做(动机)、做完得到了什么(结果)。\"我帮了他,所以我心里好受\"只报告了结果。\"不帮我会不安\"这一句常被当作自利的铁证,但它其实相反: 我的不安的内容正是他的处境——把不安的内容抽掉只留\"不安\"这个形式,是让论证好看的最省力的手法。\n更细一点(巴特勒式的老论点,大问题里是转述): 因行善而感到的愉快,恰恰预设了我先有那份关切;愉快是欲望被满足的副产品,不是欲望的对象。若说\"我只是为了愉快\",那还得另外解释为什么这份愉快恰恰需要他去脱险才能得到。\n\n四、如果坚持强读,它就不能被反驳,这才是最麻烦的地方\n任何表面利他的行为都能被重新描述为\"为了自我感觉良好/避免内疚\",不帮则是\"为了省麻烦\"。一个排除一切反例的命题,已经不再是对人的经验描述,而是重新规定\"自私\"一词怎么用;这时结论不过是用新定义重述前提,是真前提加偷换。\n(顺带: 从\"人的动机都如此\"到\"助人没有道德价值/不必真心感谢\",还要再跨一步实然到应然,这一步这个论证根本没做。)\n\n五、反例可以怎么用,以及它的边界\n孟子早在两千多年前就针对这个论证的雏形做了一次排除性检验: \"今人乍见孺子将入于井,皆有怵惕恻隐之心。非所以内交于孺子之父母也,非所以要誉于乡党朋友也,非恶其声而然也。\" (公孙丑章句上·第六节) 他先承认有这种行为,再逐一排除三种自利解释(结交其父母、博取乡党朋友声誉、受不了哭声)。\"乍见\"两字是关键: 它绕开了\"我决定做个好人\"式的计算,把注意力放在不假思索的当下反应上。\n但这不能当作决定性反驳。它是一段对情境的断言加诉诸,不是针对普遍利己理论的反证;利己主义者完全可以答: 那个怵惕本身就是痛苦,他下水是为了去掉自己的痛苦。这个回应的破绽正在第三点里——痛苦的内容是孩子要掉下去,不是\"我不舒服\"。所以真正管用的不是孟子这段本身,而是它逼出来的那个区分: 欲望都被\"我\"拥有,不等于欲望都指向\"我\"的利益。\n\n结论: 这个论证能支持的顶多是\"人普遍有自利倾向\"和\"许多助人行为混杂自利动机\"。这两个主张都值得承认,而且不算小。\"帮助别人只是自私\"推不出来——除非把\"自私\"定义成无所不包,那时它也就不再是批评。\n\nI think that's good. Let me trim slightly and make sure prose flows. Also mention potential care: the argument's premise truth is separate; I'm not claiming altruism is proven. I state that in 结论.\n\nLength is OK. Format: use a few bolded headings? The guidance says avoid templates but structure helps. I'll use short paragraph breaks with minimal headers, maybe none — but for readability I'll keep some light structure. I'll avoid heavy headers, use prose with occasional bold lead-ins. Keep moderately.\n\nCitations format: 【《大问题》·第八章 道德和好的生活】【《孟子》·公孙丑章句上】 as given labels. I'll note the Butler attributions are the textbook's 转述.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "心理利己主义 自私 利他"
+     },
+     "status": "success",
+     "duration_seconds": 1.674,
+     "result_full": "{\"query\": \"心理利己主义 自私 利他\", \"results\": [{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 11, \"chapter_title\": \"第八章 道德和好的生活\", \"citation_label\": \"【《大问题》·第八章 道德和好的生活】\", \"snippet\": \"认为，每个人实际上都是按照自己的利益行动的，我们的心理就是这样的，以至于我们不得不按照这种方式行动。因此，这种观点被称为心理利己主义；而第二种观点必须独立于第一种观点来进行捍卫或抨击：这种观点认为，人们应当为了满足自身的利益而行动，这预设了人能够选择是否按照这种方式去行动。这种观点被称为伦理利己主义。 这两种利己主义的观点都与一种通常被称为利他主义的观点相对，即为了他人的利益而行动。利他主义可分为不同程度。我们既可以因为认识到了自己对于他人负有的义务而道德地行动，从而是利他的；也可以因为将另一个人的利益看得与自己的同样重要甚至更重要，从而是利他的，这种情况可见于恋人之间或兄弟姐妹之间。对于利他主义，我们也可以区分出两种非常不同的说法\", \"score\": 210, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"focus\": \"心理利己主义 自私 利他\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 15, \"chapter_title\": \"附录一 写作哲学\", \"citation_label\": \"【《大问题》·附录一 写作哲学】\", \"snippet\": \"有些解释中）和自由行动都可以是真的。决定论并不排除自由行动，自由行动的可能性也并不要求决定论是假的。它们是相容的立场。 心理利己主义（psychological egoism）：这种观点认为，人总是为自己的私利而行动的，即使他们看起来像是为了他人的利益而行动，那也只是表面现象（比如当一个人向慈善团体捐款时，利己主义者会说，这个人只是为了使自己能够体验到一种正直的感觉）。 心理利他主义（psychological altruism）：这种观点认为，人“天然地”就是为了他人的福祉而行动的。 心-身问题（mind-body problem）：精神事件（疼痛、思想、感觉）是怎样与身体——特别是大脑——相关的。 信仰（faith）：通俗地说，\", \"score\": 134, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 15, \"focus\": \"心理利己主义 自私 利他\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 2, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "孺子入井 恻隐之心 非所以内交于孺子之父母"
+     },
+     "status": "empty",
+     "duration_seconds": 1.917,
+     "result_full": "{\"query\": \"孺子入井 恻隐之心 非所以内交于孺子之父母\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "analyze_argument",
+     "args": {
+      "text": "人都会自私，所以帮助别人其实也只是自私。",
+      "question": "人都会自私，所以帮助别人其实也只是自私。这个论证有什么问题？"
+     },
+     "status": "success",
+     "duration_seconds": 24.254,
+     "result_full": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"帮助别人其实也只是自私\", \"premises\": [{\"premise\": \"人都会自私\", \"kind\": \"explicit\"}], \"hidden_assumptions\": [\"每个人的每一个具体行为，包括帮助别人的行为，最终都完全由自利动机驱动。\", \"帮助别人若带来心理满足、避免内疚或符合自我价值，就足以被定义为‘自私’。\", \"‘自私’在前提和结论中含义相同，且可涵盖无意识动机与任何欲望满足。\", \"从‘人作为类有自私属性/倾向’可以推出‘帮助行为这一具体行为也只是自私’。\"], \"fallacies\": [{\"name\": \"概念滑移/偷换\", \"where\": \"从前提‘人都会自私’到结论‘帮助别人其实也只是自私’\", \"why\": \"前提中的‘自私’通常指人有自利倾向或有时自利；结论中的‘自私’指助人行为的唯一或真实动机是自私。词义被扩大后，结论才显得成立。\"}, {\"name\": \"量词与范围错误\", \"where\": \"从‘人都会自私’推出具体助人行为也只是自私\", \"why\": \"即使所有人都有自私属性，也不能推出每个人的每个行为都是自私行为；类属性不能直接传递为个别行为的唯一动机。\"}, {\"name\": \"把非充分条件当充分条件\", \"where\": \"前提与结论之间\", \"why\": \"‘人有自私倾向’不是‘帮助别人只是自私’的充分条件；还需要额外前提说明该次助人行为的动机完全自利。\"}, {\"name\": \"循环/重言（若强读前提）\", \"where\": \"把‘人都会自私’解释为‘所有行为最终都只自私’时\", \"why\": \"这时结论已包含在前提中，论证不再是推出结论，而是用更强且待辩护的前提重述结论。\"}], \"counterexample\": {\"scenario\": \"张三平时会自私，例如争奖金、护自己的利益，符合‘人都会自私’的弱读。某天他看到陌生儿童溺水，明知危险且不图回报，仍因同情和认为应该救人而跳水，结果自己重伤，没有得到名誉、金钱或事先计算的自我好处。\", \"premises_still_hold\": \"原前提‘人都会自私’若按其自然弱读，指每个人都有自私的时候或倾向，则张三作为人仍然有自私的时候/倾向，前提仍成立；原前提并未明说每个人的每个行为都自私。\", \"conclusion_fails\": \"这次帮助行为的直接动机指向儿童获救，而非张三个人利益；不能仅凭‘人都会自私’就断言它‘也只是自私’。若要把张三的同情、受伤或不图回报也说成自私，就必须额外把‘自私’重新定义为任何欲望满足，这不是原前提已经给出的。\"}, \"strongest_reply\": \"原论证可作最强回应：把‘自私’理解为心理利己主义式命题——人最终总是被自己的欲望、利益或心理满足驱动，因此帮助别人也是满足自己的利他欲望，所以仍是自私。限度是：这需要额外且很强的动机理论前提，并把‘自私’扩展到几乎无所不包，使前提接近重言式；它没有从原句‘人都会自私’中推出，也取消了自私与利他的区分。\", \"weakest_point\": \"最关键缺口是从‘人有自私倾向/有时自私’跳到‘所有助人行为只是自私’，同时把‘自私’从道德评价或自利倾向扩张为任何行为背后的唯一致动机制。\", \"strengthening\": [\"收窄结论：许多帮助行为可能混杂自利动机，或可被自利因素解释；这比‘只是自私’弱得多。\", \"修改前提：若坚持结论，应明确写出‘每个人的每个行为最终都只由自利动机驱动’，并独立论证该强命题。\", \"区分概念：把‘自私’限定为损害他人利益以利己，而不是把任何获得满足或避免内疚都叫作自私。\", \"增加可检验桥梁：具体说明在帮助行为中，自利动机如何是唯一动机，而非与他人福祉、同情或义务并存。\", \"避免从个案或一般倾向推出全部行为：若要全称结论，需要全称且排除例外的动机前提。\"], \"question_fidelity\": \"原问题就是询问该论证有什么问题；待检验论证与原句一致，未改动人物、条件或真正问题。\"}, \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"中间分析，不是已证明的裁决。核对题设与反例后自行综合，不照搬JSON或编号模板。\", \"validation_scope\": \"structure_only\", \"requires_main_agent_judgment\": true, \"question_context_truncated\": false}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "2cbf90eb6f69",
+      "chapter_idx": 11,
+      "focus": "心理利己主义 自私 利他",
+      "max_chars": 3200
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"chapter_idx\": 11, \"title\": \"第八章 道德和好的生活\", \"citation_label\": \"【《大问题》·第八章 道德和好的生活】\", \"text\": \"教和幸福等都是关于好的生活的不同观念。其中有些是毎个人都能得到的（比如简单快乐的生活），而有些则仅仅是少数幸运的人才能得到的（比如创造性的生活）。现在，你一定已经惊奇地发现，所有这些关于好的生活的观念都漏掉了某些东西。无论快乐主义与宗教生活，成功伦理与禁欲生活，追求财富的生活与追求自由、创造性或一般幸福的生活之间存在着多么根本的不同，它们仍在一点上是共通的，那就是它们都以自我为中心，而没有注意到其他人。尽管形式各有不同，但它们都是种种的利己主义。我们将会看到，这对亚里士多德所提出的伦理学来说并不准确，对苏格拉底的道德生活来说也不正确。我们也许不愿将一个离群索居的僧侣或苦行修道者的生活归结为任何意义上的“自私”，但僧侣式的生活很少注意到我们与他人之间的关系，而将重点放在了单个人的好的生活上面。\\n利己主义对利他主义\\n利己主义主张每个人总是按照各自的利益行动，人们在行动时之所以彼此谦恭和友善，只是因为礼貌和慷慨由于这样那样的原因也对他们有利。他们也许是由于害怕惩罚才“正确地”行动的；有些人藏有“隐蔽的动机”，也就是说他们还期待以后的东西，这或是报答，或是他们死后在天堂的回报，或是避免内疚，或是追求一种自我满足的感觉。在通俗的语言中，利己主义的立场经常被称为“自私”。\\n当代被阅读最多的利己主义者之一艾安·兰德写过一本《自私的美德》一书。根据她的理论，我们应当按照我们自己的利益行动。在此，我们必须对两种形式非常不同的利己主义做出区分，人们往往把这两者混为一谈。第一种观点认为，每个人实际上都是按照自己的利益行动的，我们的心理就是这样的，以至于我们不得不按照这种方式行动。因此，这种观点被称为心理利己主义；而第二种观点必须独立于第一种观点来进行捍卫或抨击：这种观点认为，人们应当为了满足自身的利益而行动，这预设了人能够选择是否按照这种方式去行动。这种观点被称为伦理利己主义。\\n这两种利己主义的观点都与一种通常被称为利他主义的观点相对，即为了他人的利益而行动。利他主义可分为不同程度。我们既可以因为认识到了自己对于他人负有的义务而道德地行动，从而是利他的；也可以因为将另一个人的利益看得与自己的同样重要甚至更重要，从而是利他的，这种情况可见于恋人之间或兄弟姐妹之间。对于利他主义，我们也可以区分出两种非常不同的说法，虽然这种区分通常并不明显。心理利他主义主张，人们“天然地”为了彼此的利益而行动；而伦理利他主义则认为，人们应当铭记为彼此的利益而行动。当然，这是一条基本的道德陈述，它在所谓的“黄金规则”中得到了最好的概括：“己所不欲，勿施于人。”然而，利他主义并不必然意味着自我牺牲，利他主义意味着（有意）为他人的利益而行动——但不必然违反自己的利益。因此，根据一个人的自我利益行动也并不必然都是自私——也就是违背或无视他人的利益而行动。\\n最常见也是最困难的一个问题是有关心理利己主义的：人们真的只按照自己的自我利益行动吗？有一个关于林肯的著名故事有助于说明这一论题。正当林肯与一个朋友为心理利己主义的观点而争得不可开交时，他的马车经过一个泥流，那里有一头母猪因它的小猪崽们即将被淹死而大声嚎叫。林肯停下马车救出了小猪崽，然后继续赶路。他的朋友问他，这难道不显然是一个利他主义的例子吗，林肯回答说：“为什么，这恰恰是自私的需要啊。如果我不顾母猪对于猪崽的担心扬长而去，我的心里整日都不会得到安宁。我这样做是为了获得心灵的安宁，你难道没看出来吗？”\\nPS.利己主义和利他主义\\n心理利己主义         心理利他主义\\n“所有的行为从根本上说都是自私的。”  “我们有些行为‘天然’就是利他的”\\n伦理利己主义         伦理利他主义\\n“你应当自私地行动。”       “你应当为了他人的利益行动。”\\nPS.差异的规则\\n子贡问曰：“有一言而可以终身行之乎？”子曰：“其‘恕’乎！己所不欲，勿施于人。”\\n——孔子，《论语》，公元前6世纪\\n有些行动是以自我利益为基础的，它们毫无疑问是“自私的”。但不以自我利益为基础的行动是否存在？林肯的回答是一个很好的例子，他的行动虽然表面看来根本不是出于自私的原因，但按照他的说法，在他行动的背后仍然隐藏着一个自私的原因——他自己的满足感和“心灵的安宁”。这对于我们所有的行动来说都是真的吗？\\n人们已经提出了许多论证来反驳“所有的行动在本质上都是自私的”这种观点，在这些论证中，有三种论证是几百年前由一位英国的神职人员约瑟夫·巴特勒主教[Joseph Butler（1692-1752），英格兰教会主教，道德哲学家]提出来的，在那之后它们就经常被重复引用：\\n1.我们的许多行动都是由一些以他人的利益为目标的欲望驱动的，它们与对我们是否有利无关。林肯也许会预先反思并想到：“如果不救那些小猪崽，我将会痛苦一整天。”但事实上他不大可能这样做。他只需稍稍麻烦一下，就可以将一个几乎我们毎个人都会有的动机付诸行动，即帮助那些遇到困难的人或生物的强烈欲望，或者就是我们所说的同情。尤其是对朋友或者我们所爱的人，我们经常被驱策以这种方式行动，如果这时还说我们是为了满足自己或是为了避免内疚，那就显得非常荒谬。当然，在我们出于欲望而行动的每一种情况下，我们都通过行动满足了自己的一种欲望。但这并不等于说我们是自私的或利己的，自私和利己主义意味着不仅要满足自已的欲望，而且只是为了自己的利益而满足欲望。\\n2.生活中，我们的许多欲望必须得到他人的赞同和认可。因此，为了得到我们想要的东西（也就是他们的赞同），我们的行动还要代表他们的利益并且符合他们的欲望和需要。我们在何种程度上是为了满足自己的强烈欲望而行动的，在何种程度上又是由为他人服务的欲望而驱动的，这是一个有时无法回答的怪题。但说我们行动总是为了获得赞同，绝不是为了帮助他人，这肯定是不合情理的。确实，我们绝大多数人在生活中最想得到的东西之一就是“自尊”，一种做“好人”的感觉，除非我们不但帮助他人，而且只是为帮助他人而帮助他人（即使此后我们能够享受到帮助他人的自我满足感），否则这是根本不可能的。\\n3.我们所有人都有一种是非感，它有时被我们称为“良心”。无论良心只是我们内心中父母的声音（按照弗洛伊德的主张，可称此为“超我”），还是上帝的声音（就像许多宗教人士所笃信的那样），还是对于惩罚的恐惧（就像许多心理学家已经论证的那样），这对于我们目前的论证无关紧要。重要的是我们的确有这么个良心，而且按照它的要求行动不是仅仅出于自己的利益而行动，即使我们知道不服从自已的良心将来很可能会使我们感到痛苦和内疚。我们必须进一步追问，除了良心的原因，除了我们的确希望或者感到有必要为了他人的利益而无视（有时甚至要违背）自己的利益来行动这一事实，为什么这种内疚会如此痛苦？即使在极少数情况下，我们中的一些人只是为了逃避将来的自我惩罚而服从自己的良心，但我们所有人肯定不是在任何时间都这样做的，而这正是心理利己主义者所要证明的东西。由此可见，他们的结论明显是错误的。\\n反驳心理利己主义者的论证用一句话说就是：仅仅依照我们自己的欲望而行动——假定我们总是这样做——并未使一个行动成为自私的，因为从某种意义上说，所有的行动都基于我们的欲望，但这些欲望中至少有一些是为他人的利益服务的。于是，决定一个行为是否自私的东西是欲望的“对象”，而不仅仅是—个人遵照自己的欲望而行动这一事实。伴随着好的行为的满足本身并不是行为的动机。我们可以这样来回答林肯：无论他的哲学主张是什么，他的行动都是利他的，他的满足不是行为的动机，而只是它的结果。而且，如果心理利己主义并不总是正确的，那么利他主义至少是可能的。\\n然而，即便利他主义是可能的，它是否是令人满意的仍是一个有待解决的问题。例如，伦理利己主义者承认利他主义是可能的，但他们仍会对它进行抨击。艾\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 8841, \"excerpt_end\": 12041, \"chapter_text_length\": 29616, \"has_more\": true, \"next_offset\": 12041, \"has_previous\": true, \"previous_offset\": 5641, \"focus_found\": true, \"focus_terms_matched\": [\"心理利己主义\", \"自私\", \"利他\"], \"focus_terms_found_in_chapter\": [\"心理利己主义\", \"自私\", \"利他\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"心理利己主义\", \"offset\": 9541, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9341, \"focus\": \"心理利己主义\"}}, {\"term\": \"心理利己主义\", \"offset\": 10030, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9830, \"focus\": \"心理利己主义\"}}, {\"term\": \"心理利己主义\", \"offset\": 10088, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9888, \"focus\": \"心理利己主义\"}}, {\"term\": \"自私\", \"offset\": 373, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 173, \"focus\": \"自私\"}}, {\"term\": \"自私\", \"offset\": 9146, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 8946, \"focus\": \"自私\"}}, {\"term\": \"自私\", \"offset\": 9375, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9175, \"focus\": \"自私\"}}, {\"term\": \"利他\", \"offset\": 9197, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 8997, \"focus\": \"利他\"}}, {\"term\": \"利他\", \"offset\": 9652, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9452, \"focus\": \"利他\"}}, {\"term\": \"利他\", \"offset\": 9674, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9474, \"focus\": \"利他\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"529645f01bca628120b354851ec053d5cd333a596fbc2f8f44c391590c6da3b7\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/2cbf90eb6f69?ch=11\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[8841, 12041]], \"covered_characters\": 3200, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "恻隐之心"
+     },
+     "status": "success",
+     "duration_seconds": 1.642,
+     "result_full": "{\"query\": \"恻隐之心\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 2, \"chapter_title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"snippet\": \"有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。 所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。 由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。 凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。” 公孙丑章句上·第七节 孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤\", \"score\": 52, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 10, \"chapter_title\": \"告子章句上\", \"citation_label\": \"【《孟子》·告子章句上】\", \"snippet\": \"子启、王子比干。’今曰‘性善’，然则彼皆非与？” 孟子曰：“乃若其情，则可以为善矣，乃所谓善也。若夫为不善，非才之罪也。恻隐之心，人皆有之；羞恶之心，人皆有之；恭敬之心，人皆有之；是非之心，人皆有之。恻隐之心，仁也；羞恶之心，义也；恭敬之心，礼也；是非之心，智也。仁义礼智，非由外铄我也，我固有之也，弗思耳矣。故曰：‘求则得之，舍则失之。’或相倍蓰而无算者，不能尽其才者也。诗曰：‘天生蒸民，有物有则。民之秉夷，好是懿德。’孔子曰：‘为此诗者，其知道乎！故有物必有则，民之秉夷也，故好是懿德。’” 告子章句上·第七节 孟子曰：“富岁，子弟多赖；凶岁，子弟多暴，非天之降才尔殊也，其所以陷溺其心者然也。 今夫麰麦，播种而耰之，其地同，树之时又\", \"score\": 51, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 10, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"5135fe68ee4a\", \"book_title\": \"瓦尔登湖\", \"author\": \"亨利·戴维·梭罗\", \"chapter_idx\": 11, \"chapter_title\": \"更高的法则\", \"citation_label\": \"【《瓦尔登湖》·更高的法则】\", \"snippet\": \"哲学出发，和我的感受无关。现在我只谈捕鱼，因为我对打鸟的感觉早就有所改变，搬到森林里生活之前便已经把枪卖掉。倒不是说我的恻隐之心比别人少，而是我压根就没有什么感觉。我既不可怜鱼，也不怜悯蚯蚓。这纯粹是习惯。至于打鸟，在我没把枪卖掉之前那年，我给自己找的借口是我正在钻研鸟类学，所以只打没见过的或者稀有的鸟。但是坦白说，现在我认为要研究鸟类，有比这更好的方法。那种方法就是在近处观察飞鸟的习性，哪怕只是为了这个原因，我也愿意放弃猎枪。然而尽管有许多人从人道的立场来反对渔猎，我还是觉得它们很有价值，是其他体育运动无法取代的；朋友们有时会忧心忡忡地问我，到底该不该让他们的孩子去打猎，我的回答总是肯定的，因为我记得打猎是我受过最好的教育，让他们\", \"score\": 46, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"5135fe68ee4a\", \"chapter_idx\": 11, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32e4ebd33ddc\", \"book_title\": \"爱弥儿\", \"author\": \"让-雅克·卢梭\", \"chapter_idx\": 4, \"chapter_title\": \"第四卷\", \"citation_label\": \"【《爱弥儿》·第四卷】\", \"snippet\": \"觉的情景，那还是不够的。 怜悯，这个按照自然秩序第一个触动人心的相对的情感，就是这样产生的。为了使孩子变成一个有感情和有恻隐之心的人，就必须使他知道，有一些跟他相同的人也遭受到他曾经遭受过的痛苦，也感受到他曾经感受过的悲哀，而且，还须使他知道其他的人还有另外的痛苦和悲哀，因为现在他也能够感觉到这些痛苦和悲哀了。如果我们不能忘掉自己的形骸，把自己同那个受痛苦的动物看作一体，替它设身处地地想一想，我们怎么能动怜悯之心呢？我们只有在判明它确实在受痛苦的时候，我们才会感到痛苦；我们所痛苦的不是我们自己而是那个动物。因此，任何人都只有在他的想象力已开始活跃，能使他忘掉自己，他才能成为一个有感情的人。 为了激发和培养这种日益增长的感情，为了按它\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32e4ebd33ddc\", \"chapter_idx\": 4, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"960c47f35066\", \"book_title\": \"规训与惩罚\", \"author\": \"米歇尔·福柯\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 断头台的场面\", \"citation_label\": \"【《规训与惩罚》·第二章 断头台的场面】\", \"snippet\": \"计算：鞭答的次数、打烙印的位置，在火刑柱或刑轮上制造死亡痛苦的时间（由法庭决定，罪犯应被即刻处死还是慢慢处死，在何处表现恻隐之心），投残身体的方法（断手或割嘴、割舍）。这些各种不同的因素扩大了惩罚方式，并根据法庭情况和罪行而加以组合。正如罗西（ROSSi）所形容的：“但丁的诗进入了法律”。总之，这是肉体刑罚知识中一门需要长期学习的课程。 其次，酷刑应成为某种仪式的一部分。它是惩罚仪式上的一个因素，必须满足两个要求。它应该标明受刑者。它应给受刑者打上耻辱的烙印，或者是通过在其身体上留下疤痕，或者是通过酷刑的场面。即使其功能是“清除”罪恶，酷刑也不会就此罢休。它在犯人的身体周围，更准确地说，是在犯人的身体上留下不可抹去的印记。无论如何，\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"960c47f35066\", \"chapter_idx\": 2, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 98, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "自爱 仁爱 两种情感 不能互相还原"
+     },
+     "status": "empty",
+     "duration_seconds": 1.897,
+     "result_full": "{\"query\": \"自爱 仁爱 两种情感 不能互相还原\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 2,
+      "focus": "恻隐之心",
+      "max_chars": 1600
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"chapter_idx\": 2, \"title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"text\": \"飞鸟，太山之于丘垤，河海之于行潦，类也。圣人之于民，亦类也。出于其类，拔乎其萃，自生民以来，未有盛于孔子也。’”\\n公孙丑章句上·第三节\\n孟子曰：“以力假仁者霸，霸必有大国，以德行仁者王，王不待大。汤以七十里，文王以百里。以力服人者，非心服也，力不赡也；以德服人者，中心悦而诚服也，如七十子之服孔子也。诗云：‘自西自东，自南自北，无思不服。’此之谓也。”\\n公孙丑章句上·第四节\\n孟子曰：“仁则荣，不仁则辱。今恶辱而居不仁，是犹恶湿而居下也。\\n如恶之，莫如贵德而尊士，贤者在位，能者在职。国家闲暇，及是时明其政刑。虽大国，必畏之矣。诗云：‘迨天之未阴雨，彻彼桑土，绸缪牖户。今此下民，或敢侮予？’孔子曰：‘为此诗者，其知道乎！能治其国家，谁敢侮之？’\\n今国家闲暇，及是时般乐怠敖，是自求祸也。祸褔无不自己求之者。诗云：‘永言配命，自求多褔。’太甲曰：‘天作孽，犹可违；自作孽，不可活。’此之谓也。”\\n公孙丑章句上·第五节\\n孟子曰：“尊贤使能，俊杰在位，则天下之士皆悦而愿立于其朝矣。市廛而不征，法而不廛，则天下之商皆悦而愿藏于其市矣。关讥而不征，则天下之旅皆悦而愿出于其路矣。耕者助而不税，则天下之农皆悦而愿耕于其野矣。廛无夫里之布，则天下之民皆悦而愿为之氓矣。信能行此五者，则邻国之民仰之若父母矣。率其子弟，攻其父母，自生民以来，未有能济者也。如此，则无敌于天下。无敌于天下者，天吏也。然而不王者，未之有也。”\\n公孙丑章句上·第六节\\n孟子曰：“人皆有不忍人之心。先王有不忍人之心，斯有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。\\n所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\\n由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。\\n凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”\\n公孙丑章句上·第七节\\n孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤人。巫匠亦然，故术不可不慎也。孔子曰：‘里仁为美。择不处仁，焉得智？’夫仁，天之尊爵也，人之安宅也。莫之御而不仁，是不智也。不仁、不智、无礼、无义，人役也。人役而耻为役，由弓人而耻为弓，矢人而耻为矢也。如耻之，莫如为仁。仁者如射，射者正己而后发。发而不中，不怨胜己者，反求诸己而已矣。”\\n公孙丑章句上·第八节\\n孟子曰：“子路，人告之以有过则喜。禹闻善言则拜。大舜有大焉，善与人同。舍己从人，乐取于人以为善。自耕稼、陶、渔以至为帝，无非取于人者。取诸人以为善，是与人为善者也。故君子莫大乎与人为善。”\\n公孙丑章句上·第九节\\n孟子曰：“伯夷，非其君不事，非其友不友。不立于恶人之朝，不与恶人言。立于恶人之朝，与恶人言，如以朝衣朝冠坐于涂炭。推恶恶之心，思与乡人立，其冠不正，望望然去之，若将浼焉。是故诸侯虽有善其辞命而至者，不受也。不受也者，是亦不屑就已。柳下惠，不羞污君，不卑小官。进不隐贤，必以其道。遗佚而不怨，阨穷而不悯。故曰：‘尔为尔，我为我，虽袒裼裸裎于我侧，尔焉能浼我哉？’故由由然与之偕而不自失焉，援而止之而止。援而止之而止者，是亦不屑去已。”\\n孟子曰：“伯夷隘，柳下惠不恭。隘与不恭，君子不由也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2073, \"excerpt_end\": 3538, \"chapter_text_length\": 3538, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 473, \"focus_found\": true, \"focus_terms_matched\": [\"恻隐之心\"], \"focus_terms_found_in_chapter\": [\"恻隐之心\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"恻隐之心\", \"offset\": 2773, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"offset\": 2573, \"focus\": \"恻隐之心\"}}, {\"term\": \"恻隐之心\", \"offset\": 2818, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"offset\": 2618, \"focus\": \"恻隐之心\"}}, {\"term\": \"恻隐之心\", \"offset\": 2857, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"offset\": 2657, \"focus\": \"恻隐之心\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"0e3a170ae8ec7ef190feca45b4471f30607ee8be82145bc6b557cdd5f1364d1a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/dd03ec6572e7?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"孟子\", \"canonical_title\": \"孟子\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2073, 3538]], \"covered_characters\": 1465, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "search_scholarship",
+     "args": {
+      "query": "psychological egoism altruism falsifiability empathy altruistic motivation",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 0.994,
+     "result_full": "{\"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"results\": [{\"source_record_id\": \"doi:10.1093/acprof:oso/9780195143584.003.0026\", \"title\": \"Empathy, Evolution, and Altruism\", \"authors\": [\"William B. Hurlbut\"], \"year\": 2002, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Altruism and Altruistic LoveScience, Philosophy, and Religion in Dialogue\", \"doi\": \"10.1093/acprof:oso/9780195143584.003.0026\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137031297.0021\", \"title\": \"Promoting Altruistic Constructivist Education\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Motivation, Altruism, Personality and Social Psychology\", \"doi\": \"10.1057/9781137031297.0021\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315008158-12\", \"title\": \"Egoism and altruism\", \"authors\": [\"Martha Wolfenstein\"], \"year\": 2018, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Disaster\", \"doi\": \"10.4324/9781315008158-12\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137031297.0020\", \"title\": \"Aligning Governing Systems and Altruistic Values\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Motivation, Altruism, Personality and Social Psychology\", \"doi\": \"10.1057/9781137031297.0020\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1037/e689932007-001\", \"title\": \"Altruism, Egoism, and College Student Motivation: A Phenomenological Look\", \"authors\": [\"Cody D. Christopherson\"], \"year\": 2007, \"publication_type\": \"OTHER\", \"venue\": \"PsycEXTRA Dataset\", \"doi\": \"10.1037/e689932007-001\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203857304-8\", \"title\": \"ALTRUISTIC EMOTIONS AS MORAL MOTIVATION\", \"authors\": [], \"year\": 2009, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Friendship, Altruism and Morality (Routledge Revivals)\", \"doi\": \"10.4324/9780203857304-8\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 9.6,
+     "phase": "start",
+     "name": "analyze_argument",
+     "call_id": "call_00_ek89Cxb0LpwZL6Xe8A2Y2596"
+    },
+    {
+     "t": 9.8,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_Wl9sIjTSvwhMGF4ADqXh1152"
+    },
+    {
+     "t": 9.9,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_02_yzizv9GP9pxsHHoDEOMs9862",
+     "status": "success",
+     "duration_seconds": 1.674
+    },
+    {
+     "t": 12.0,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "孺子入井 恻隐之心 非所以内交于孺子之父母"
+     },
+     "status": "empty",
+     "duration_seconds": 1.917,
+     "result_full": "{\"query\": \"孺子入井 恻隐之心 非所以内交于孺子之父母\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 34.3,
+     "phase": "result_orphan",
+     "name": "analyze_argument",
+     "args": {
+      "text": "人都会自私，所以帮助别人其实也只是自私。",
+      "question": "人都会自私，所以帮助别人其实也只是自私。这个论证有什么问题？"
+     },
+     "status": "success",
+     "duration_seconds": 24.254,
+     "result_full": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"帮助别人其实也只是自私\", \"premises\": [{\"premise\": \"人都会自私\", \"kind\": \"explicit\"}], \"hidden_assumptions\": [\"每个人的每一个具体行为，包括帮助别人的行为，最终都完全由自利动机驱动。\", \"帮助别人若带来心理满足、避免内疚或符合自我价值，就足以被定义为‘自私’。\", \"‘自私’在前提和结论中含义相同，且可涵盖无意识动机与任何欲望满足。\", \"从‘人作为类有自私属性/倾向’可以推出‘帮助行为这一具体行为也只是自私’。\"], \"fallacies\": [{\"name\": \"概念滑移/偷换\", \"where\": \"从前提‘人都会自私’到结论‘帮助别人其实也只是自私’\", \"why\": \"前提中的‘自私’通常指人有自利倾向或有时自利；结论中的‘自私’指助人行为的唯一或真实动机是自私。词义被扩大后，结论才显得成立。\"}, {\"name\": \"量词与范围错误\", \"where\": \"从‘人都会自私’推出具体助人行为也只是自私\", \"why\": \"即使所有人都有自私属性，也不能推出每个人的每个行为都是自私行为；类属性不能直接传递为个别行为的唯一动机。\"}, {\"name\": \"把非充分条件当充分条件\", \"where\": \"前提与结论之间\", \"why\": \"‘人有自私倾向’不是‘帮助别人只是自私’的充分条件；还需要额外前提说明该次助人行为的动机完全自利。\"}, {\"name\": \"循环/重言（若强读前提）\", \"where\": \"把‘人都会自私’解释为‘所有行为最终都只自私’时\", \"why\": \"这时结论已包含在前提中，论证不再是推出结论，而是用更强且待辩护的前提重述结论。\"}], \"counterexample\": {\"scenario\": \"张三平时会自私，例如争奖金、护自己的利益，符合‘人都会自私’的弱读。某天他看到陌生儿童溺水，明知危险且不图回报，仍因同情和认为应该救人而跳水，结果自己重伤，没有得到名誉、金钱或事先计算的自我好处。\", \"premises_still_hold\": \"原前提‘人都会自私’若按其自然弱读，指每个人都有自私的时候或倾向，则张三作为人仍然有自私的时候/倾向，前提仍成立；原前提并未明说每个人的每个行为都自私。\", \"conclusion_fails\": \"这次帮助行为的直接动机指向儿童获救，而非张三个人利益；不能仅凭‘人都会自私’就断言它‘也只是自私’。若要把张三的同情、受伤或不图回报也说成自私，就必须额外把‘自私’重新定义为任何欲望满足，这不是原前提已经给出的。\"}, \"strongest_reply\": \"原论证可作最强回应：把‘自私’理解为心理利己主义式命题——人最终总是被自己的欲望、利益或心理满足驱动，因此帮助别人也是满足自己的利他欲望，所以仍是自私。限度是：这需要额外且很强的动机理论前提，并把‘自私’扩展到几乎无所不包，使前提接近重言式；它没有从原句‘人都会自私’中推出，也取消了自私与利他的区分。\", \"weakest_point\": \"最关键缺口是从‘人有自私倾向/有时自私’跳到‘所有助人行为只是自私’，同时把‘自私’从道德评价或自利倾向扩张为任何行为背后的唯一致动机制。\", \"strengthening\": [\"收窄结论：许多帮助行为可能混杂自利动机，或可被自利因素解释；这比‘只是自私’弱得多。\", \"修改前提：若坚持结论，应明确写出‘每个人的每个行为最终都只由自利动机驱动’，并独立论证该强命题。\", \"区分概念：把‘自私’限定为损害他人利益以利己，而不是把任何获得满足或避免内疚都叫作自私。\", \"增加可检验桥梁：具体说明在帮助行为中，自利动机如何是唯一动机，而非与他人福祉、同情或义务并存。\", \"避免从个案或一般倾向推出全部行为：若要全称结论，需要全称且排除例外的动机前提。\"], \"question_fidelity\": \"原问题就是询问该论证有什么问题；待检验论证与原句一致，未改动人物、条件或真正问题。\"}, \"reasoning_authority\": \"MAIN_AGENT\", \"presentation_hint\": \"中间分析，不是已证明的裁决。核对题设与反例后自行综合，不照搬JSON或编号模板。\", \"validation_scope\": \"structure_only\", \"requires_main_agent_judgment\": true, \"question_context_truncated\": false}"
+    },
+    {
+     "t": 35.5,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_UrbcYLA98mgWo6lYp5141391"
+    },
+    {
+     "t": 35.7,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_w39HRWz43gvM876c0azR5230"
+    },
+    {
+     "t": 35.8,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_hqeSWrDtENXavfcLSQbY3277"
+    },
+    {
+     "t": 35.9,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "2cbf90eb6f69",
+      "chapter_idx": 11,
+      "focus": "心理利己主义 自私 利他",
+      "max_chars": 3200
+     },
+     "status": "success",
+     "duration_seconds": 0.005,
+     "result_full": "{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"chapter_idx\": 11, \"title\": \"第八章 道德和好的生活\", \"citation_label\": \"【《大问题》·第八章 道德和好的生活】\", \"text\": \"教和幸福等都是关于好的生活的不同观念。其中有些是毎个人都能得到的（比如简单快乐的生活），而有些则仅仅是少数幸运的人才能得到的（比如创造性的生活）。现在，你一定已经惊奇地发现，所有这些关于好的生活的观念都漏掉了某些东西。无论快乐主义与宗教生活，成功伦理与禁欲生活，追求财富的生活与追求自由、创造性或一般幸福的生活之间存在着多么根本的不同，它们仍在一点上是共通的，那就是它们都以自我为中心，而没有注意到其他人。尽管形式各有不同，但它们都是种种的利己主义。我们将会看到，这对亚里士多德所提出的伦理学来说并不准确，对苏格拉底的道德生活来说也不正确。我们也许不愿将一个离群索居的僧侣或苦行修道者的生活归结为任何意义上的“自私”，但僧侣式的生活很少注意到我们与他人之间的关系，而将重点放在了单个人的好的生活上面。\\n利己主义对利他主义\\n利己主义主张每个人总是按照各自的利益行动，人们在行动时之所以彼此谦恭和友善，只是因为礼貌和慷慨由于这样那样的原因也对他们有利。他们也许是由于害怕惩罚才“正确地”行动的；有些人藏有“隐蔽的动机”，也就是说他们还期待以后的东西，这或是报答，或是他们死后在天堂的回报，或是避免内疚，或是追求一种自我满足的感觉。在通俗的语言中，利己主义的立场经常被称为“自私”。\\n当代被阅读最多的利己主义者之一艾安·兰德写过一本《自私的美德》一书。根据她的理论，我们应当按照我们自己的利益行动。在此，我们必须对两种形式非常不同的利己主义做出区分，人们往往把这两者混为一谈。第一种观点认为，每个人实际上都是按照自己的利益行动的，我们的心理就是这样的，以至于我们不得不按照这种方式行动。因此，这种观点被称为心理利己主义；而第二种观点必须独立于第一种观点来进行捍卫或抨击：这种观点认为，人们应当为了满足自身的利益而行动，这预设了人能够选择是否按照这种方式去行动。这种观点被称为伦理利己主义。\\n这两种利己主义的观点都与一种通常被称为利他主义的观点相对，即为了他人的利益而行动。利他主义可分为不同程度。我们既可以因为认识到了自己对于他人负有的义务而道德地行动，从而是利他的；也可以因为将另一个人的利益看得与自己的同样重要甚至更重要，从而是利他的，这种情况可见于恋人之间或兄弟姐妹之间。对于利他主义，我们也可以区分出两种非常不同的说法，虽然这种区分通常并不明显。心理利他主义主张，人们“天然地”为了彼此的利益而行动；而伦理利他主义则认为，人们应当铭记为彼此的利益而行动。当然，这是一条基本的道德陈述，它在所谓的“黄金规则”中得到了最好的概括：“己所不欲，勿施于人。”然而，利他主义并不必然意味着自我牺牲，利他主义意味着（有意）为他人的利益而行动——但不必然违反自己的利益。因此，根据一个人的自我利益行动也并不必然都是自私——也就是违背或无视他人的利益而行动。\\n最常见也是最困难的一个问题是有关心理利己主义的：人们真的只按照自己的自我利益行动吗？有一个关于林肯的著名故事有助于说明这一论题。正当林肯与一个朋友为心理利己主义的观点而争得不可开交时，他的马车经过一个泥流，那里有一头母猪因它的小猪崽们即将被淹死而大声嚎叫。林肯停下马车救出了小猪崽，然后继续赶路。他的朋友问他，这难道不显然是一个利他主义的例子吗，林肯回答说：“为什么，这恰恰是自私的需要啊。如果我不顾母猪对于猪崽的担心扬长而去，我的心里整日都不会得到安宁。我这样做是为了获得心灵的安宁，你难道没看出来吗？”\\nPS.利己主义和利他主义\\n心理利己主义         心理利他主义\\n“所有的行为从根本上说都是自私的。”  “我们有些行为‘天然’就是利他的”\\n伦理利己主义         伦理利他主义\\n“你应当自私地行动。”       “你应当为了他人的利益行动。”\\nPS.差异的规则\\n子贡问曰：“有一言而可以终身行之乎？”子曰：“其‘恕’乎！己所不欲，勿施于人。”\\n——孔子，《论语》，公元前6世纪\\n有些行动是以自我利益为基础的，它们毫无疑问是“自私的”。但不以自我利益为基础的行动是否存在？林肯的回答是一个很好的例子，他的行动虽然表面看来根本不是出于自私的原因，但按照他的说法，在他行动的背后仍然隐藏着一个自私的原因——他自己的满足感和“心灵的安宁”。这对于我们所有的行动来说都是真的吗？\\n人们已经提出了许多论证来反驳“所有的行动在本质上都是自私的”这种观点，在这些论证中，有三种论证是几百年前由一位英国的神职人员约瑟夫·巴特勒主教[Joseph Butler（1692-1752），英格兰教会主教，道德哲学家]提出来的，在那之后它们就经常被重复引用：\\n1.我们的许多行动都是由一些以他人的利益为目标的欲望驱动的，它们与对我们是否有利无关。林肯也许会预先反思并想到：“如果不救那些小猪崽，我将会痛苦一整天。”但事实上他不大可能这样做。他只需稍稍麻烦一下，就可以将一个几乎我们毎个人都会有的动机付诸行动，即帮助那些遇到困难的人或生物的强烈欲望，或者就是我们所说的同情。尤其是对朋友或者我们所爱的人，我们经常被驱策以这种方式行动，如果这时还说我们是为了满足自己或是为了避免内疚，那就显得非常荒谬。当然，在我们出于欲望而行动的每一种情况下，我们都通过行动满足了自己的一种欲望。但这并不等于说我们是自私的或利己的，自私和利己主义意味着不仅要满足自已的欲望，而且只是为了自己的利益而满足欲望。\\n2.生活中，我们的许多欲望必须得到他人的赞同和认可。因此，为了得到我们想要的东西（也就是他们的赞同），我们的行动还要代表他们的利益并且符合他们的欲望和需要。我们在何种程度上是为了满足自己的强烈欲望而行动的，在何种程度上又是由为他人服务的欲望而驱动的，这是一个有时无法回答的怪题。但说我们行动总是为了获得赞同，绝不是为了帮助他人，这肯定是不合情理的。确实，我们绝大多数人在生活中最想得到的东西之一就是“自尊”，一种做“好人”的感觉，除非我们不但帮助他人，而且只是为帮助他人而帮助他人（即使此后我们能够享受到帮助他人的自我满足感），否则这是根本不可能的。\\n3.我们所有人都有一种是非感，它有时被我们称为“良心”。无论良心只是我们内心中父母的声音（按照弗洛伊德的主张，可称此为“超我”），还是上帝的声音（就像许多宗教人士所笃信的那样），还是对于惩罚的恐惧（就像许多心理学家已经论证的那样），这对于我们目前的论证无关紧要。重要的是我们的确有这么个良心，而且按照它的要求行动不是仅仅出于自己的利益而行动，即使我们知道不服从自已的良心将来很可能会使我们感到痛苦和内疚。我们必须进一步追问，除了良心的原因，除了我们的确希望或者感到有必要为了他人的利益而无视（有时甚至要违背）自己的利益来行动这一事实，为什么这种内疚会如此痛苦？即使在极少数情况下，我们中的一些人只是为了逃避将来的自我惩罚而服从自己的良心，但我们所有人肯定不是在任何时间都这样做的，而这正是心理利己主义者所要证明的东西。由此可见，他们的结论明显是错误的。\\n反驳心理利己主义者的论证用一句话说就是：仅仅依照我们自己的欲望而行动——假定我们总是这样做——并未使一个行动成为自私的，因为从某种意义上说，所有的行动都基于我们的欲望，但这些欲望中至少有一些是为他人的利益服务的。于是，决定一个行为是否自私的东西是欲望的“对象”，而不仅仅是—个人遵照自己的欲望而行动这一事实。伴随着好的行为的满足本身并不是行为的动机。我们可以这样来回答林肯：无论他的哲学主张是什么，他的行动都是利他的，他的满足不是行为的动机，而只是它的结果。而且，如果心理利己主义并不总是正确的，那么利他主义至少是可能的。\\n然而，即便利他主义是可能的，它是否是令人满意的仍是一个有待解决的问题。例如，伦理利己主义者承认利他主义是可能的，但他们仍会对它进行抨击。艾\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 8841, \"excerpt_end\": 12041, \"chapter_text_length\": 29616, \"has_more\": true, \"next_offset\": 12041, \"has_previous\": true, \"previous_offset\": 5641, \"focus_found\": true, \"focus_terms_matched\": [\"心理利己主义\", \"自私\", \"利他\"], \"focus_terms_found_in_chapter\": [\"心理利己主义\", \"自私\", \"利他\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"心理利己主义\", \"offset\": 9541, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9341, \"focus\": \"心理利己主义\"}}, {\"term\": \"心理利己主义\", \"offset\": 10030, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9830, \"focus\": \"心理利己主义\"}}, {\"term\": \"心理利己主义\", \"offset\": 10088, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9888, \"focus\": \"心理利己主义\"}}, {\"term\": \"自私\", \"offset\": 373, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 173, \"focus\": \"自私\"}}, {\"term\": \"自私\", \"offset\": 9146, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 8946, \"focus\": \"自私\"}}, {\"term\": \"自私\", \"offset\": 9375, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9175, \"focus\": \"自私\"}}, {\"term\": \"利他\", \"offset\": 9197, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 8997, \"focus\": \"利他\"}}, {\"term\": \"利他\", \"offset\": 9652, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9452, \"focus\": \"利他\"}}, {\"term\": \"利他\", \"offset\": 9674, \"read_args\": {\"book_id\": \"2cbf90eb6f69\", \"chapter_idx\": 11, \"offset\": 9474, \"focus\": \"利他\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"529645f01bca628120b354851ec053d5cd333a596fbc2f8f44c391590c6da3b7\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/2cbf90eb6f69?ch=11\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[8841, 12041]], \"covered_characters\": 3200, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 37.5,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "恻隐之心"
+     },
+     "status": "success",
+     "duration_seconds": 1.642,
+     "result_full": "{\"query\": \"恻隐之心\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 2, \"chapter_title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"snippet\": \"有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。 所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。 由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。 凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。” 公孙丑章句上·第七节 孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤\", \"score\": 52, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 10, \"chapter_title\": \"告子章句上\", \"citation_label\": \"【《孟子》·告子章句上】\", \"snippet\": \"子启、王子比干。’今曰‘性善’，然则彼皆非与？” 孟子曰：“乃若其情，则可以为善矣，乃所谓善也。若夫为不善，非才之罪也。恻隐之心，人皆有之；羞恶之心，人皆有之；恭敬之心，人皆有之；是非之心，人皆有之。恻隐之心，仁也；羞恶之心，义也；恭敬之心，礼也；是非之心，智也。仁义礼智，非由外铄我也，我固有之也，弗思耳矣。故曰：‘求则得之，舍则失之。’或相倍蓰而无算者，不能尽其才者也。诗曰：‘天生蒸民，有物有则。民之秉夷，好是懿德。’孔子曰：‘为此诗者，其知道乎！故有物必有则，民之秉夷也，故好是懿德。’” 告子章句上·第七节 孟子曰：“富岁，子弟多赖；凶岁，子弟多暴，非天之降才尔殊也，其所以陷溺其心者然也。 今夫麰麦，播种而耰之，其地同，树之时又\", \"score\": 51, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 10, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"5135fe68ee4a\", \"book_title\": \"瓦尔登湖\", \"author\": \"亨利·戴维·梭罗\", \"chapter_idx\": 11, \"chapter_title\": \"更高的法则\", \"citation_label\": \"【《瓦尔登湖》·更高的法则】\", \"snippet\": \"哲学出发，和我的感受无关。现在我只谈捕鱼，因为我对打鸟的感觉早就有所改变，搬到森林里生活之前便已经把枪卖掉。倒不是说我的恻隐之心比别人少，而是我压根就没有什么感觉。我既不可怜鱼，也不怜悯蚯蚓。这纯粹是习惯。至于打鸟，在我没把枪卖掉之前那年，我给自己找的借口是我正在钻研鸟类学，所以只打没见过的或者稀有的鸟。但是坦白说，现在我认为要研究鸟类，有比这更好的方法。那种方法就是在近处观察飞鸟的习性，哪怕只是为了这个原因，我也愿意放弃猎枪。然而尽管有许多人从人道的立场来反对渔猎，我还是觉得它们很有价值，是其他体育运动无法取代的；朋友们有时会忧心忡忡地问我，到底该不该让他们的孩子去打猎，我的回答总是肯定的，因为我记得打猎是我受过最好的教育，让他们\", \"score\": 46, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"5135fe68ee4a\", \"chapter_idx\": 11, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32e4ebd33ddc\", \"book_title\": \"爱弥儿\", \"author\": \"让-雅克·卢梭\", \"chapter_idx\": 4, \"chapter_title\": \"第四卷\", \"citation_label\": \"【《爱弥儿》·第四卷】\", \"snippet\": \"觉的情景，那还是不够的。 怜悯，这个按照自然秩序第一个触动人心的相对的情感，就是这样产生的。为了使孩子变成一个有感情和有恻隐之心的人，就必须使他知道，有一些跟他相同的人也遭受到他曾经遭受过的痛苦，也感受到他曾经感受过的悲哀，而且，还须使他知道其他的人还有另外的痛苦和悲哀，因为现在他也能够感觉到这些痛苦和悲哀了。如果我们不能忘掉自己的形骸，把自己同那个受痛苦的动物看作一体，替它设身处地地想一想，我们怎么能动怜悯之心呢？我们只有在判明它确实在受痛苦的时候，我们才会感到痛苦；我们所痛苦的不是我们自己而是那个动物。因此，任何人都只有在他的想象力已开始活跃，能使他忘掉自己，他才能成为一个有感情的人。 为了激发和培养这种日益增长的感情，为了按它\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32e4ebd33ddc\", \"chapter_idx\": 4, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"960c47f35066\", \"book_title\": \"规训与惩罚\", \"author\": \"米歇尔·福柯\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 断头台的场面\", \"citation_label\": \"【《规训与惩罚》·第二章 断头台的场面】\", \"snippet\": \"计算：鞭答的次数、打烙印的位置，在火刑柱或刑轮上制造死亡痛苦的时间（由法庭决定，罪犯应被即刻处死还是慢慢处死，在何处表现恻隐之心），投残身体的方法（断手或割嘴、割舍）。这些各种不同的因素扩大了惩罚方式，并根据法庭情况和罪行而加以组合。正如罗西（ROSSi）所形容的：“但丁的诗进入了法律”。总之，这是肉体刑罚知识中一门需要长期学习的课程。 其次，酷刑应成为某种仪式的一部分。它是惩罚仪式上的一个因素，必须满足两个要求。它应该标明受刑者。它应给受刑者打上耻辱的烙印，或者是通过在其身体上留下疤痕，或者是通过酷刑的场面。即使其功能是“清除”罪恶，酷刑也不会就此罢休。它在犯人的身体周围，更准确地说，是在犯人的身体上留下不可抹去的印记。无论如何，\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"960c47f35066\", \"chapter_idx\": 2, \"focus\": \"恻隐之心\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 98, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 37.8,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "自爱 仁爱 两种情感 不能互相还原"
+     },
+     "status": "empty",
+     "duration_seconds": 1.897,
+     "result_full": "{\"query\": \"自爱 仁爱 两种情感 不能互相还原\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"method\": \"no_match\", \"semantic_gate\": {\"min_cosine\": 0.5, \"min_corpus_z\": 4.0}, \"note\": \"本库未检索到足够相关的原文。此结果不能证明该概念不存在；可换用原词、作者或书名检索。\"}"
+    },
+    {
+     "t": 41.3,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_vcUTpfg6eJyas99miWNz2360"
+    },
+    {
+     "t": 41.5,
+     "phase": "start",
+     "name": "search_scholarship",
+     "call_id": "call_01_sAIFunZsyMdQfAUYrsmo5472"
+    },
+    {
+     "t": 41.7,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "dd03ec6572e7",
+      "chapter_idx": 2,
+      "focus": "恻隐之心",
+      "max_chars": 1600
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"chapter_idx\": 2, \"title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"text\": \"飞鸟，太山之于丘垤，河海之于行潦，类也。圣人之于民，亦类也。出于其类，拔乎其萃，自生民以来，未有盛于孔子也。’”\\n公孙丑章句上·第三节\\n孟子曰：“以力假仁者霸，霸必有大国，以德行仁者王，王不待大。汤以七十里，文王以百里。以力服人者，非心服也，力不赡也；以德服人者，中心悦而诚服也，如七十子之服孔子也。诗云：‘自西自东，自南自北，无思不服。’此之谓也。”\\n公孙丑章句上·第四节\\n孟子曰：“仁则荣，不仁则辱。今恶辱而居不仁，是犹恶湿而居下也。\\n如恶之，莫如贵德而尊士，贤者在位，能者在职。国家闲暇，及是时明其政刑。虽大国，必畏之矣。诗云：‘迨天之未阴雨，彻彼桑土，绸缪牖户。今此下民，或敢侮予？’孔子曰：‘为此诗者，其知道乎！能治其国家，谁敢侮之？’\\n今国家闲暇，及是时般乐怠敖，是自求祸也。祸褔无不自己求之者。诗云：‘永言配命，自求多褔。’太甲曰：‘天作孽，犹可违；自作孽，不可活。’此之谓也。”\\n公孙丑章句上·第五节\\n孟子曰：“尊贤使能，俊杰在位，则天下之士皆悦而愿立于其朝矣。市廛而不征，法而不廛，则天下之商皆悦而愿藏于其市矣。关讥而不征，则天下之旅皆悦而愿出于其路矣。耕者助而不税，则天下之农皆悦而愿耕于其野矣。廛无夫里之布，则天下之民皆悦而愿为之氓矣。信能行此五者，则邻国之民仰之若父母矣。率其子弟，攻其父母，自生民以来，未有能济者也。如此，则无敌于天下。无敌于天下者，天吏也。然而不王者，未之有也。”\\n公孙丑章句上·第六节\\n孟子曰：“人皆有不忍人之心。先王有不忍人之心，斯有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。\\n所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\\n由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。\\n凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”\\n公孙丑章句上·第七节\\n孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤人。巫匠亦然，故术不可不慎也。孔子曰：‘里仁为美。择不处仁，焉得智？’夫仁，天之尊爵也，人之安宅也。莫之御而不仁，是不智也。不仁、不智、无礼、无义，人役也。人役而耻为役，由弓人而耻为弓，矢人而耻为矢也。如耻之，莫如为仁。仁者如射，射者正己而后发。发而不中，不怨胜己者，反求诸己而已矣。”\\n公孙丑章句上·第八节\\n孟子曰：“子路，人告之以有过则喜。禹闻善言则拜。大舜有大焉，善与人同。舍己从人，乐取于人以为善。自耕稼、陶、渔以至为帝，无非取于人者。取诸人以为善，是与人为善者也。故君子莫大乎与人为善。”\\n公孙丑章句上·第九节\\n孟子曰：“伯夷，非其君不事，非其友不友。不立于恶人之朝，不与恶人言。立于恶人之朝，与恶人言，如以朝衣朝冠坐于涂炭。推恶恶之心，思与乡人立，其冠不正，望望然去之，若将浼焉。是故诸侯虽有善其辞命而至者，不受也。不受也者，是亦不屑就已。柳下惠，不羞污君，不卑小官。进不隐贤，必以其道。遗佚而不怨，阨穷而不悯。故曰：‘尔为尔，我为我，虽袒裼裸裎于我侧，尔焉能浼我哉？’故由由然与之偕而不自失焉，援而止之而止。援而止之而止者，是亦不屑去已。”\\n孟子曰：“伯夷隘，柳下惠不恭。隘与不恭，君子不由也。”\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 2073, \"excerpt_end\": 3538, \"chapter_text_length\": 3538, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 473, \"focus_found\": true, \"focus_terms_matched\": [\"恻隐之心\"], \"focus_terms_found_in_chapter\": [\"恻隐之心\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"恻隐之心\", \"offset\": 2773, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"offset\": 2573, \"focus\": \"恻隐之心\"}}, {\"term\": \"恻隐之心\", \"offset\": 2818, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"offset\": 2618, \"focus\": \"恻隐之心\"}}, {\"term\": \"恻隐之心\", \"offset\": 2857, \"read_args\": {\"book_id\": \"dd03ec6572e7\", \"chapter_idx\": 2, \"offset\": 2657, \"focus\": \"恻隐之心\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"0e3a170ae8ec7ef190feca45b4471f30607ee8be82145bc6b557cdd5f1364d1a\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/dd03ec6572e7?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"孟子\", \"canonical_title\": \"孟子\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[2073, 3538]], \"covered_characters\": 1465, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 42.7,
+     "phase": "result_orphan",
+     "name": "search_scholarship",
+     "args": {
+      "query": "psychological egoism altruism falsifiability empathy altruistic motivation",
+      "limit": 6
+     },
+     "status": "partial",
+     "duration_seconds": 0.994,
+     "result_full": "{\"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"results\": [{\"source_record_id\": \"doi:10.1093/acprof:oso/9780195143584.003.0026\", \"title\": \"Empathy, Evolution, and Altruism\", \"authors\": [\"William B. Hurlbut\"], \"year\": 2002, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Altruism and Altruistic LoveScience, Philosophy, and Religion in Dialogue\", \"doi\": \"10.1093/acprof:oso/9780195143584.003.0026\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137031297.0021\", \"title\": \"Promoting Altruistic Constructivist Education\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Motivation, Altruism, Personality and Social Psychology\", \"doi\": \"10.1057/9781137031297.0021\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9781315008158-12\", \"title\": \"Egoism and altruism\", \"authors\": [\"Martha Wolfenstein\"], \"year\": 2018, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Disaster\", \"doi\": \"10.4324/9781315008158-12\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1057/9781137031297.0020\", \"title\": \"Aligning Governing Systems and Altruistic Values\", \"authors\": [], \"year\": null, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Motivation, Altruism, Personality and Social Psychology\", \"doi\": \"10.1057/9781137031297.0020\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.1037/e689932007-001\", \"title\": \"Altruism, Egoism, and College Student Motivation: A Phenomenological Look\", \"authors\": [\"Cody D. Christopherson\"], \"year\": 2007, \"publication_type\": \"OTHER\", \"venue\": \"PsycEXTRA Dataset\", \"doi\": \"10.1037/e689932007-001\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"authors\", \"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}, {\"source_record_id\": \"doi:10.4324/9780203857304-8\", \"title\": \"ALTRUISTIC EMOTIONS AS MORAL MOTIVATION\", \"authors\": [], \"year\": 2009, \"publication_type\": \"BOOK_CHAPTER\", \"venue\": \"Friendship, Altruism and Morality (Routledge Revivals)\", \"doi\": \"10.4324/9780203857304-8\", \"source_category\": \"UNKNOWN\", \"access_level\": \"METADATA_ONLY\", \"provider\": \"crossref\", \"source_providers\": [\"crossref\"], \"retrieval_origin\": \"LIVE_CROSSREF\", \"query_match\": null, \"bibliographic_verified_fields\": [\"container_title\", \"doi\", \"publication_type\", \"publication_year\", \"title\"], \"note\": \"access_level 只反映已实际取得的证据; 不得凭标题推断论文内容\"}], \"READABLE_RESULT_COUNT\": 0, \"READABLE_SOURCE_IDS\": [], \"providers_queried\": [\"LOCAL_CURATED\", \"crossref\", \"openalex\"], \"status\": \"partial\", \"provider_attempts\": [{\"provider\": \"crossref\", \"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"status\": \"success\", \"raw_result_count\": 6}, {\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"retry_after\": null, \"status\": \"error\"}], \"relevance_gate\": {\"dropped_irrelevant\": 0, \"kept_relevant\": 6}, \"query_reformulation\": {\"triggered\": false, \"variant_query\": null, \"recovered_relevant\": 0}, \"provider_errors\": [{\"provider\": \"openalex\", \"error\": \"PROVIDER_RATE_LIMIT\", \"detail\": \"429\", \"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"retry_after\": null}], \"note\": \"部分 provider 检索失败（见 provider_errors）——检索失败不等于没有相关文献\"}"
+    }
+   ],
+   "answer": "## 诊断\n\n这个论证的问题不主要在\"人到底自不自私\"上，而在：前提和结论里的\"自私\"不是一个意思；而一旦补上能让推理成立的桥梁前提，前提就变成了空转。\n\n**一、\"自私\"的两种读法**\n\n一种是形式读法：任何行为都出于行动者自己的欲望——人做不出自己完全不想做的事。这几乎等于\"行动者\"的定义，没人会反对。另一种是实质读法：以自身利益为目标，贬义上指不顾或损害他人利益。\n\n前提\"人都会自私\"听起来像前者的日常版（\"谁没点私心\"），响亮而近乎无争议；结论\"帮助别人也只是自私\"用的是后者，而且加了\"只是\"——这是个排除性主张：助人动机里不含任何指向他人的成分。用一个几乎人人同意的读法做前提，用一个争议极大的读法做结论，这就是概念滑移。\n\n**二、让推理成立需要补什么前提**\n\n需要补上：\"凡出于自己欲望的行为，其目的都是自己受益。\"这一步要么假、要么空。\n\n说它假：行为由我的欲望驱动，和这个欲望指向谁的利益，是两个独立维度。我想让他脱险，这个欲望当然是我的，但它的对象是他。\n\n说它空：若把\"自己受益\"定义成\"满足了自己某个欲望\"，那任何有意行为都必然满足某个欲望（否则就不会去做），桥梁前提成了重言式，结论也就成了\"帮助别人也是人做的事\"。此时它不再与\"自私\"的贬义有关，也不再是否定利他——它取消了利己/利他这对区分本身。\n\n**三、把\"满足\"当作动机，是最常见的隐蔽错误**\n\n《大问题》讲心理利己主义时把这个区分说得比较干净：决定一个行为是否自私的是欲望的**对象**，而不只是\"一个人遵照自己的欲望行动\"这一事实；行善伴随的满足本身并不是行为的动机【《大问题》·第八章 道德和好的生活】。也就是要分出三件事：为谁做（对象）、为什么做（动机）、做完得到了什么（结果）。\"我帮了他，所以我心里好受\"只报告了结果。\n\n\"不帮他我会不安\"常被当成自利的铁证，其实恰好相反：我不安的内容正是他的处境。把不安的内容抽掉、只留\"不安\"这个形式，是让论证显得成立的最省力手法。同一本书里转述的巴特勒的一条老论点也指向这里：因行善而感到愉快，恰恰预设了我先有那份关切，愉快是欲望被满足的副产品而非欲望的对象（这一条是教材的转述，非巴特勒原文）。\n\n**四、坚持强读的代价：不可反驳**\n\n如果无论什么行为都能被描述成自私——捐钱是为了自我感觉良好，不捐是为了省麻烦，牺牲是为了满足自我形象——这个命题就排除了任何可能的反例，因而不再是对人的经验描述，而是重新规定\"自私\"一词怎么用。那时结论只是用新定义重述前提。另外，如果这论证接下来要得出\"助人没有道德价值、不必真心感谢\"，那还得从实然跨到应然，这一步它没有做。\n\n**五、反例怎么用，以及它的边界**\n\n孟子早就对这个论证的雏形做过一次排除性检验：\"今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\"【《孟子》·公孙丑章句上】（第六节）他先承认有这种行为，再逐一排除三种自利解释——结交其父母、博取乡党朋友声誉、受不了哭声。\"乍见\"两字是关键：它绕开\"我决定做个好人\"式的计算，把注意力放在不假思索的当下反应。\n\n但这不能当决定性反驳。它是对情境的断言加诉诸，不是针对普遍利己理论的反证；利己主义者可以答：那阵怵惕本身就是痛苦，他下水是为了消除自己的痛苦。而这个回应的破绽正在第三点——痛苦的内容是孩子要掉下去，不是\"我不舒服\"。所以真正管用的不是这段文本本身，而是它逼出的那个区分：欲望都被\"我\"拥有，不等于欲望都指向\"我\"的利益。\n\n**收束**\n\n这个论证能支持的顶多是\"人普遍有自利倾向\"和\"许多助人行为混杂自利动机\"——这两条都值得承认，也不小。\"帮助别人**只是**自私\"推不出来，除非把\"自私\"定义得无所不包，而那时它也就不再是批评了。至于利他动机究竟在何种程度上存在，那是一个另外的经验问题，本论证既没有回答，也没有资格替它下结论。",
+   "answer_chars": 1630,
+   "done_content": "## 诊断\n\n这个论证的问题不主要在\"人到底自不自私\"上，而在：前提和结论里的\"自私\"不是一个意思；而一旦补上能让推理成立的桥梁前提，前提就变成了空转。\n\n**一、\"自私\"的两种读法**\n\n一种是形式读法：任何行为都出于行动者自己的欲望——人做不出自己完全不想做的事。这几乎等于\"行动者\"的定义，没人会反对。另一种是实质读法：以自身利益为目标，贬义上指不顾或损害他人利益。\n\n前提\"人都会自私\"听起来像前者的日常版（\"谁没点私心\"），响亮而近乎无争议；结论\"帮助别人也只是自私\"用的是后者，而且加了\"只是\"——这是个排除性主张：助人动机里不含任何指向他人的成分。用一个几乎人人同意的读法做前提，用一个争议极大的读法做结论，这就是概念滑移。\n\n**二、让推理成立需要补什么前提**\n\n需要补上：\"凡出于自己欲望的行为，其目的都是自己受益。\"这一步要么假、要么空。\n\n说它假：行为由我的欲望驱动，和这个欲望指向谁的利益，是两个独立维度。我想让他脱险，这个欲望当然是我的，但它的对象是他。\n\n说它空：若把\"自己受益\"定义成\"满足了自己某个欲望\"，那任何有意行为都必然满足某个欲望（否则就不会去做），桥梁前提成了重言式，结论也就成了\"帮助别人也是人做的事\"。此时它不再与\"自私\"的贬义有关，也不再是否定利他——它取消了利己/利他这对区分本身。\n\n**三、把\"满足\"当作动机，是最常见的隐蔽错误**\n\n《大问题》讲心理利己主义时把这个区分说得比较干净：决定一个行为是否自私的是欲望的**对象**，而不只是\"一个人遵照自己的欲望行动\"这一事实；行善伴随的满足本身并不是行为的动机【《大问题》·第八章 道德和好的生活】。也就是要分出三件事：为谁做（对象）、为什么做（动机）、做完得到了什么（结果）。\"我帮了他，所以我心里好受\"只报告了结果。\n\n\"不帮他我会不安\"常被当成自利的铁证，其实恰好相反：我不安的内容正是他的处境。把不安的内容抽掉、只留\"不安\"这个形式，是让论证显得成立的最省力手法。同一本书里转述的巴特勒的一条老论点也指向这里：因行善而感到愉快，恰恰预设了我先有那份关切，愉快是欲望被满足的副产品而非欲望的对象（这一条是教材的转述，非巴特勒原文）。\n\n**四、坚持强读的代价：不可反驳**\n\n如果无论什么行为都能被描述成自私——捐钱是为了自我感觉良好，不捐是为了省麻烦，牺牲是为了满足自我形象——这个命题就排除了任何可能的反例，因而不再是对人的经验描述，而是重新规定\"自私\"一词怎么用。那时结论只是用新定义重述前提。另外，如果这论证接下来要得出\"助人没有道德价值、不必真心感谢\"，那还得从实然跨到应然，这一步它没有做。\n\n**五、反例怎么用，以及它的边界**\n\n孟子早就对这个论证的雏形做过一次排除性检验：\"今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\"【《孟子》·公孙丑章句上】（第六节）他先承认有这种行为，再逐一排除三种自利解释——结交其父母、博取乡党朋友声誉、受不了哭声。\"乍见\"两字是关键：它绕开\"我决定做个好人\"式的计算，把注意力放在不假思索的当下反应。\n\n但这不能当决定性反驳。它是对情境的断言加诉诸，不是针对普遍利己理论的反证；利己主义者可以答：那阵怵惕本身就是痛苦，他下水是为了消除自己的痛苦。而这个回应的破绽正在第三点——痛苦的内容是孩子要掉下去，不是\"我不舒服\"。所以真正管用的不是这段文本本身，而是它逼出的那个区分：欲望都被\"我\"拥有，不等于欲望都指向\"我\"的利益。\n\n**收束**\n\n这个论证能支持的顶多是\"人普遍有自利倾向\"和\"许多助人行为混杂自利动机\"——这两条都值得承认，也不小。\"帮助别人**只是**自私\"推不出来，除非把\"自私\"定义得无所不包，而那时它也就不再是批评了。至于利他动机究竟在何种程度上存在，那是一个另外的经验问题，本论证既没有回答，也没有资格替它下结论。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_1",
+     "book": "大问题",
+     "chapter": "第八章 道德和好的生活",
+     "book_id": "2cbf90eb6f69",
+     "chapter_idx": 11,
+     "author": "罗伯特•所罗门",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_18"
+     ],
+     "excerpt": "教和幸福等都是关于好的生活的不同观念。其中有些是毎个人都能得到的（比如简单快乐的生活），而有些则仅仅是少数幸运的人才能得到的（比如创造性的生活）。现在，你一定已经惊奇地发现，所有这些关于好的生活的观念都漏掉了某些东西。无论快乐主义与宗教生活，成功伦理与禁欲生活，追求财富的生活与追求自由、创造性或一般幸福的生活之间存在着多么根本的不同，它们仍在一点上是共通的，那就是它们都以自我为中心，而没有注意到其他人。尽管形式各有不同，但它们都是种种的利己主义。我们将会看到，这对亚里士多德所提出的伦理学来说并不准确，对苏格拉底的道德生活来说也不正确。我们也许不愿将一个离群索居的僧侣或苦行修道者的生活归结为任何意义上的“自私”，但僧侣式的生活很少注意到我们与他人之间的关系，而将重点放在了单个人的好的生活上面。\n利己主义对利他主义\n利己主义主张每个人总是按照各自的利益行动，人们在行动时之所以彼此谦恭和友善，只是因为礼貌和慷慨由于这样那样的原因也对他们有利。他们也许是由于害怕惩罚才“正确地”行动的；有些人藏有“隐蔽的动机”，也就是说他们还期待以后的东西，这或是报答，或是他们死后在天堂的回报，或是避免内疚，或是追求一种自我满足的感觉。在通俗的语言中，利己主义的立场经常被称为“自私”。\n当代被阅读最多的利己主义者之一艾安·兰德写过一本《自私的美德》一书。根据她的理论，我们应当按照我们自己的利益行动。在此，我",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 29616,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_4",
+     "book": "孟子",
+     "chapter": "公孙丑章句上",
+     "book_id": "dd03ec6572e7",
+     "chapter_idx": 2,
+     "author": "孟子",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_29",
+      "claim_30",
+      "claim_31"
+     ],
+     "excerpt": "公孙丑章句上·第六节\n孟子曰：“人皆有不忍人之心。先王有不忍人之心，斯有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。\n所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\n由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。\n凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”\n公孙丑章句上·第七节\n孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤人。巫匠亦然，故术不可不慎也。孔子曰：‘里仁为美。择不处仁，焉得智？’夫仁，天之尊爵也，人之安宅也。莫之御而不仁，是不智也。不仁、不智、无礼、无义，人役也。人役而耻为役，由弓人而耻为弓，矢人而耻为矢也。如耻之，莫如为仁。仁者如射，射者正己而后发。发而不中，不怨胜己者，反求诸己而已矣。”\n公孙丑章句上·第八节\n孟子曰：“子路，人告之以有过则喜。禹闻善言则拜。大舜有大焉，善与人同。舍己从人，乐取于人以为善。自耕稼、陶、渔以至为帝，无非取于人者。取诸人以为善，是与人为善者也。故君子莫大乎与人",
+     "quoted_passages": [
+      "今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。"
+     ],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 3538,
+     "reader_coordinate_valid": true
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 7,
+    "display_citations": 2,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "大问题",
+       "chapter": "第八章 道德和好的生活",
+       "book_id": "2cbf90eb6f69",
+       "chapter_idx": 11,
+       "author": "罗伯特•所罗门",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "教和幸福等都是关于好的生活的不同观念。其中有些是毎个人都能得到的（比如简单快乐的生活），而有些则仅仅是少数幸运的人才能得到的（比如创造性的生活）。现在，你一定已经惊奇地发现，所有这些关于好的生活的观念都漏掉了某些东西。无论快乐主义与宗教生活，成功伦理与禁欲生活，追求财富的生活与追求自由、创造性或一般幸福的生活之间存在着多么根本的不同，它们仍在一点上是共通的，那就是它们都以自我为中心，而没有注意到其他人。尽管形式各有不同，但它们都是种种的利己主义。我们将会看到，这对亚里士多德所提出的伦理学来说并不准确，对苏格拉底的道德生活来说也不正确。我们也许不愿将一个离群索居的僧侣或苦行修道者的生活归结为任何意义上的“自私”，但僧侣式的生活很少注意到我们与他人之间的关系，而将重点放在了单个人的好的生活上面。\n利己主义对利他主义\n利己主义主张每个人总是按照各自的利益行动，人们在行动时之所以彼此谦恭和友善，只是因为礼貌和慷慨由于这样那样的原因也对他们有利。他们也许是由于害怕惩罚才“正确地”行动的；有些人藏有“隐蔽的动机”，也就是说他们还期待以后的东西，这或是报答，或是他们死后在天堂的回报，或是避免内疚，或是追求一种自我满足的感觉。在通俗的语言中，利己主义的立场经常被称为“自私”。\n当代被阅读最多的利己主义者之一艾安·兰德写过一本《自私的美德》一书。根据她的理论，我们应当按照我们自己的利益行动。在此，我",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 29616,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "孟子",
+       "chapter": "公孙丑章句上",
+       "book_id": "dd03ec6572e7",
+       "chapter_idx": 2,
+       "author": "孟子",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "公孙丑章句上·第六节\n孟子曰：“人皆有不忍人之心。先王有不忍人之心，斯有不忍人之政矣。以不忍人之心，行不忍人之政，治天下可运之掌上。\n所以谓人皆有不忍人之心者，今人乍见孺子将入于井，皆有怵惕恻隐之心。非所以内交于孺子之父母也，非所以要誉于乡党朋友也，非恶其声而然也。\n由是观之，无恻隐之心，非人也；无羞恶之心，非人也；无辞让之心，非人也；无是非之心，非人也。恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。人之有是四端也，犹其有四体也。有是四端而自谓不能者，自贼者也；谓其君不能者，贼其君者也。\n凡有四端于我者，知皆扩而充之矣，若火之始然，泉之始达。苟能充之，足以保四海；苟不充之，不足以事父母。”\n公孙丑章句上·第七节\n孟子曰：“矢人岂不仁于函人哉？矢人唯恐不伤人，函人唯恐伤人。巫匠亦然，故术不可不慎也。孔子曰：‘里仁为美。择不处仁，焉得智？’夫仁，天之尊爵也，人之安宅也。莫之御而不仁，是不智也。不仁、不智、无礼、无义，人役也。人役而耻为役，由弓人而耻为弓，矢人而耻为矢也。如耻之，莫如为仁。仁者如射，射者正己而后发。发而不中，不怨胜己者，反求诸己而已矣。”\n公孙丑章句上·第八节\n孟子曰：“子路，人告之以有过则喜。禹闻善言则拜。大舜有大焉，善与人同。舍己从人，乐取于人以为善。自耕稼、陶、渔以至为帝，无非取于人者。取诸人以为善，是与人为善者也。故君子莫大乎与人",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 3538,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "大问题",
+       "chapter": "附录一 写作哲学",
+       "book_id": "2cbf90eb6f69",
+       "chapter_idx": 15,
+       "author": "罗伯特•所罗门",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "有些解释中）和自由行动都可以是真的。决定论并不排除自由行动，自由行动的可能性也并不要求决定论是假的。它们是相容的立场。 心理利己主义（psychological egoism）：这种观点认为，人总是为自己的私利而行动的，即使他们看起来像是为了他人的利益而行动，那也只是表面现象（比如当一个人向慈善团体捐款时，利己主义者会说，这个人只是为了使自己能够体验到一种正直的感觉）。 心理利他主义（psychological altruism）：这种观点认为，人“天然地”就是为了他人的福祉而行动的。 心-身问题（mind-body problem）：精神事件（疼痛、思想、感觉）是怎样与身体——特别是大脑——相关的。 信仰（faith）：通俗地说，",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "孟子",
+       "chapter": "告子章句上",
+       "book_id": "dd03ec6572e7",
+       "chapter_idx": 10,
+       "author": "孟子",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "子启、王子比干。’今曰‘性善’，然则彼皆非与？” 孟子曰：“乃若其情，则可以为善矣，乃所谓善也。若夫为不善，非才之罪也。恻隐之心，人皆有之；羞恶之心，人皆有之；恭敬之心，人皆有之；是非之心，人皆有之。恻隐之心，仁也；羞恶之心，义也；恭敬之心，礼也；是非之心，智也。仁义礼智，非由外铄我也，我固有之也，弗思耳矣。故曰：‘求则得之，舍则失之。’或相倍蓰而无算者，不能尽其才者也。诗曰：‘天生蒸民，有物有则。民之秉夷，好是懿德。’孔子曰：‘为此诗者，其知道乎！故有物必有则，民之秉夷也，故好是懿德。’” 告子章句上·第七节 孟子曰：“富岁，子弟多赖；凶岁，子弟多暴，非天之降才尔殊也，其所以陷溺其心者然也。 今夫麰麦，播种而耰之，其地同，树之时又",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "瓦尔登湖",
+       "chapter": "更高的法则",
+       "book_id": "5135fe68ee4a",
+       "chapter_idx": 11,
+       "author": "亨利·戴维·梭罗",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "哲学出发，和我的感受无关。现在我只谈捕鱼，因为我对打鸟的感觉早就有所改变，搬到森林里生活之前便已经把枪卖掉。倒不是说我的恻隐之心比别人少，而是我压根就没有什么感觉。我既不可怜鱼，也不怜悯蚯蚓。这纯粹是习惯。至于打鸟，在我没把枪卖掉之前那年，我给自己找的借口是我正在钻研鸟类学，所以只打没见过的或者稀有的鸟。但是坦白说，现在我认为要研究鸟类，有比这更好的方法。那种方法就是在近处观察飞鸟的习性，哪怕只是为了这个原因，我也愿意放弃猎枪。然而尽管有许多人从人道的立场来反对渔猎，我还是觉得它们很有价值，是其他体育运动无法取代的；朋友们有时会忧心忡忡地问我，到底该不该让他们的孩子去打猎，我的回答总是肯定的，因为我记得打猎是我受过最好的教育，让他们",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "爱弥儿",
+       "chapter": "第四卷",
+       "book_id": "32e4ebd33ddc",
+       "chapter_idx": 4,
+       "author": "让-雅克·卢梭",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "觉的情景，那还是不够的。 怜悯，这个按照自然秩序第一个触动人心的相对的情感，就是这样产生的。为了使孩子变成一个有感情和有恻隐之心的人，就必须使他知道，有一些跟他相同的人也遭受到他曾经遭受过的痛苦，也感受到他曾经感受过的悲哀，而且，还须使他知道其他的人还有另外的痛苦和悲哀，因为现在他也能够感觉到这些痛苦和悲哀了。如果我们不能忘掉自己的形骸，把自己同那个受痛苦的动物看作一体，替它设身处地地想一想，我们怎么能动怜悯之心呢？我们只有在判明它确实在受痛苦的时候，我们才会感到痛苦；我们所痛苦的不是我们自己而是那个动物。因此，任何人都只有在他的想象力已开始活跃，能使他忘掉自己，他才能成为一个有感情的人。 为了激发和培养这种日益增长的感情，为了按它",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "规训与惩罚",
+       "chapter": "第二章 断头台的场面",
+       "book_id": "960c47f35066",
+       "chapter_idx": 2,
+       "author": "米歇尔·福柯",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "计算：鞭答的次数、打烙印的位置，在火刑柱或刑轮上制造死亡痛苦的时间（由法庭决定，罪犯应被即刻处死还是慢慢处死，在何处表现恻隐之心），投残身体的方法（断手或割嘴、割舍）。这些各种不同的因素扩大了惩罚方式，并根据法庭情况和罪行而加以组合。正如罗西（ROSSi）所形容的：“但丁的诗进入了法律”。总之，这是肉体刑罚知识中一门需要长期学习的课程。 其次，酷刑应成为某种仪式的一部分。它是惩罚仪式上的一个因素，必须满足两个要求。它应该标明受刑者。它应给受刑者打上耻辱的烙印，或者是通过在其身体上留下疤痕，或者是通过酷刑的场面。即使其功能是“清除”罪恶，酷刑也不会就此罢休。它在犯人的身体周围，更准确地说，是在犯人的身体上留下不可抹去的印记。无论如何，",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 7,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 68.385,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 9.6,
+     "ev": "assistant_commentary",
+     "chars": 36
+    },
+    {
+     "t": 9.6,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 9.6,
+     "ev": "tool_start",
+     "name": "analyze_argument",
+     "call_id": "call_00_ek89Cxb0LpwZL6Xe8A2Y2596"
+    },
+    {
+     "t": 9.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_Wl9sIjTSvwhMGF4ADqXh1152"
+    },
+    {
+     "t": 9.9,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_yzizv9GP9pxsHHoDEOMs9862"
+    },
+    {
+     "t": 11.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.674,
+     "result_chars": 1878,
+     "result_head": "{\"query\": \"心理利己主义 自私 利他\", \"results\": [{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"author\": \"罗伯特•所罗门\", \"chapter_idx\": 11, \"chapter_title\": \"第八章 道德和好的生活\", \""
+    },
+    {
+     "t": 12.0,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.917,
+     "result_chars": 344,
+     "result_head": "{\"query\": \"孺子入井 恻隐之心 非所以内交于孺子之父母\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \""
+    },
+    {
+     "t": 34.3,
+     "ev": "tool",
+     "name": "analyze_argument",
+     "status": "success",
+     "duration_s": 24.254,
+     "result_chars": 2010,
+     "result_head": "{\"kind\": \"argument_structure\", \"summary\": \"已取得论证结构与反例检验；仍须检查反例是否实际满足原前提。\", \"argument\": {\"conclusion\": \"帮助别人其实也只是自私\", \"premises\": [{\"premise\": \"人都会自私\", \"kind\": \""
+    },
+    {
+     "t": 35.5,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_UrbcYLA98mgWo6lYp5141391"
+    },
+    {
+     "t": 35.7,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_w39HRWz43gvM876c0azR5230"
+    },
+    {
+     "t": 35.8,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_hqeSWrDtENXavfcLSQbY3277"
+    },
+    {
+     "t": 35.9,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.005,
+     "result_chars": 5678,
+     "result_head": "{\"book_id\": \"2cbf90eb6f69\", \"book_title\": \"大问题\", \"chapter_idx\": 11, \"title\": \"第八章 道德和好的生活\", \"citation_label\": \"【《大问题》·第八章 道德和好的生活】\", \"text\": \"教和幸福等都是关于好的生活的不同观念"
+    },
+    {
+     "t": 37.5,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 1.642,
+     "result_chars": 4079,
+     "result_head": "{\"query\": \"恻隐之心\", \"results\": [{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"author\": \"孟子\", \"chapter_idx\": 2, \"chapter_title\": \"公孙丑章句上\", \"citation_label\": \"【《"
+    },
+    {
+     "t": 37.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "empty",
+     "duration_s": 1.897,
+     "result_chars": 340,
+     "result_head": "{\"query\": \"自爱 仁爱 两种情感 不能互相还原\", \"results\": [], \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"sear"
+    },
+    {
+     "t": 41.3,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_vcUTpfg6eJyas99miWNz2360"
+    },
+    {
+     "t": 41.5,
+     "ev": "tool_start",
+     "name": "search_scholarship",
+     "call_id": "call_01_sAIFunZsyMdQfAUYrsmo5472"
+    },
+    {
+     "t": 41.7,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 3651,
+     "result_head": "{\"book_id\": \"dd03ec6572e7\", \"book_title\": \"孟子\", \"chapter_idx\": 2, \"title\": \"公孙丑章句上\", \"citation_label\": \"【《孟子》·公孙丑章句上】\", \"text\": \"飞鸟，太山之于丘垤，河海之于行潦，类也。圣人之于民，亦类也。出"
+    },
+    {
+     "t": 42.7,
+     "ev": "tool",
+     "name": "search_scholarship",
+     "status": "partial",
+     "duration_s": 0.994,
+     "result_chars": 4758,
+     "result_head": "{\"query\": \"psychological egoism altruism falsifiability empathy altruistic motivation\", \"results\": [{\"source_record_id\": \"doi:10.1093/acprof:oso/9780195143584.0"
+    },
+    {
+     "t": 68.5,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1028
+  }
+ ],
+ "total_wall_s": 70.0,
+ "status": "COMPLETED"
+}

@@ -1,0 +1,955 @@
+{
+ "case_id": "E02",
+ "category": "E",
+ "prompt": "同一个哲学术语不同译本译法不同，是不是其中一个一定错了？请从书库找一个实际例子，比较上下文。",
+ "follow_up_turns": [],
+ "manual_prompt_ready": true,
+ "fixture_id": null,
+ "runner": {
+  "git_head": "ccdf54ee96744440592d7dbd9c435445e1c07253",
+  "git_dirty_files": 192,
+  "started": "2026-10-03T10:17:15+08:00",
+  "engine": "engine_langgraph.stream_agent → bare runtime (deep_bare_agent), = /api/agent/stream_lg",
+  "agent": "general",
+  "language": "zh",
+  "turn_timeout_s": 600,
+  "active_prompt_version": "0.1.3",
+  "scholarly_network_mode": "TRUSTED_PROXY",
+  "scholarly_cache_note": "scholarly_cache.json 根值为 dict（run3 同源延续, 后续评测有增量）",
+  "note": "done 即停, 跳过 suggestions 后处理"
+ },
+ "turns": [
+  {
+   "turn": 1,
+   "question": "同一个哲学术语不同译本译法不同，是不是其中一个一定错了？请从书库找一个实际例子，比较上下文。",
+   "wall_s": 36.0,
+   "ttft_s": 1.9,
+   "public_notes": [
+    {
+     "source": "assistant_commentary",
+     "id": "d340abe3568a4bd988610fee898f8778:1:note:0",
+     "content": "我先在书库里找实际的译法分歧例子，再比较上下文。"
+    },
+    {
+     "source": "assistant_commentary",
+     "id": "d340abe3568a4bd988610fee898f8778:2:note:0",
+     "content": "书库里正好有几处同一德语词的不同处理，我读一下上下文。"
+    }
+   ],
+   "provider_reasoning": "The user asks: same philosophical term, different translations differ — does that mean one must be wrong? Provide a real example from the book library, compare contexts.\n\nI should search the library for a term with divergent translations. Good candidates: \"Dasein\" (此在/存在/亲在), \"Aufhebung\" (扬弃/既扬弃又保留), \"Geist\" (精神/心灵), \"Substanz\" (实体), \"Vorstellung\" (表象/观念), \"causa sui\", \"resentment\"... A classic: Dasein translated as 此在 (陈嘉映) vs 亲在 vs 存在. Or Kant's \"Vorstellung\" 表象. Or \"transcendental\" 先验 vs 超验 (which is a real distinction). Or \"Aufhebung\" 扬弃.\n\nLet me search the library for \"此在\" and \"亲在\" and \"Dasein\" to see actual texts. Also maybe search for a book containing both translations.\n\nLet me do searches.\n\nLet me try search_books for 此在, 亲在, Dasein; also verify_quote maybe.\n\nLet's start.Great. We have two promising cases:\n\n1. Dasein: 《存在与时间》 translated as 此在; 柏拉图对话集 王太庆 discusses Dasein as 是在那里/存在; 尼采《悲剧的诞生》译注 says 尼采未必在哲学术语意义使用Dasein，取\"人生、生命\"之义，译文处理为\"此在\"或\"人生此在\"; 《快乐的科学》 translates Dasein as 此在 with 人生此在; 德里达《文学行动》 keeps Dasein untranslated.\n\n2. Aufhebung: 扬弃.\n\nLet's pick Dasein as a good example but also maybe 扬弃. Actually a nice contrast: same German word Dasein, in 海德格尔 rendered 此在, in 尼采 rendered 人生此在 (and 译注 says 尼采 often means 人生/生命). And 王太庆 in 柏拉图对话集 discusses the 是/在 problem and Dasein's literal structure (Sein + da). That's a real, verifiable example with contexts.\n\nLet me read the actual context:\n- 《存在与时间》 chapter 1, focus 此在 — read a chunk to see how 此在 is used and whether translator explains.\n- 柏拉图对话集 chapter 16 王太庆论柏拉图哲学和翻译问题, focus Dasein.\n- 悲剧的诞生 chapter 2 译注.\n- 快乐的科学 chapter 23/25 for 人生此在.\n\nAlso check 存在与时间 for a translator note on 此在 vs 亲在. Let me search \"亲在\" within 存在与时间 (didn't hit). Maybe search \"陈嘉映\" or translator's notes. Let's search for \"此在\" in 存在与时间 front matter. Actually the search results show chapter titles like \"第一章 该说准备性的此在分析之任务\" — odd OCR. Let's check book detail for 存在与时间 to find 译注/前言 chapters.\n\nLet me also consider whether there's a good example where the difference is a genuine mistake vs. interpretive choice. The 王太庆 text is about the 是/存在 translation debate — 王太庆 argues 是 should be translated as 是, and 在/存在... That's a rich example: \"存在\" vs \"是\" for einai/Sein.\n\nPlan: read contexts.\n\nLet me get book details and chapters.\n\nCalls:\n- get_chapter(book_id=\"c5013f33fe01\", chapter_idx=1, focus=\"此在\", max_chars=2800)\n- get_chapter(book_id=\"35279e2e439d\", chapter_idx=16, focus=\"Dasein\", max_chars=3000)\n- get_chapter(book_id=\"29b3de571c12\", chapter_idx=2, focus=\"Dasein\", max_chars=2500)\n- get_chapter(book_id=\"48f7bf321598\", chapter_idx=23, focus=\"Dasein\")\n\nAlso get_book_detail for 存在与时间 to see if there's a translator preface discussing 此在/亲在.\n\nLet me batch.Excellent. Now I have a strong example: Dasein.\n\nCase A: 海德格尔《存在与时间》(中译) — Dasein → 此在, and the translator explicitly says \"我们用'此在'这个名称来指这个存在者，并不表达它是什么…而是表达其存在\". Also 尼采《悲剧的诞生》译注: 尼采未必在哲学术语意义上使用Dasein，而经常取\"人生、生命\"之义，译文处理为\"此在\"或\"人生此在\"。And 《快乐的科学》 renders Dasein as 此在 or 人生此在. And 王太庆: Dasein 字面 = \"是在那里\" (Sein + da)，把\"存在\"用来译 existence 和 Dasein 会看不出区别；他认为\"存在\"只适于译 existence 和 Dasein，不能表示 to on。\n\nWait — 王太庆 says \"首先，它的含义与时间、空间不可分，只适于翻译existence和Dasein，不能表示to on（being，Sein或Seiende）\". Hmm, that's his argument that \"存在\" as a translation for to on is inadequate — it fits existence and Dasein but not being. So 王太庆 himself suggests 存在 could map to Dasein. Interesting: he'd presumably render Dasein as \"是在那里\" or 存在.\n\nActually 王太庆's own point: Dasein = 是在那里. He notes the Chinese translation renders both existence and Dasein as 存在, so the distinction is lost.\n\nSo there's a triple contrast on Dasein:\n1. 海德格尔中译《存在与时间》: 此在 (a coined term, chosen deliberately to avoid reading it as \"what it is\")\n2. 尼采中译（《悲剧的诞生》《快乐的科学》同一位译者/同一套尼采四书）: 此在 或 人生此在, with 译注 explaining 尼采 often means 人生/生命, not the technical sense\n3. 王太庆（《柏拉图对话集》附录文章）: Dasein 字面是\"是在那里\"; 主张区分 being/Dasein/existence, 认为把 Dasein 与 existence 同译为\"存在\"看不出区别\n4. 德里达《文学行动》: 保留 Dasein 不译\n\nThat's a great example. And I can also give a second example: Aufhebung 扬弃 vs 既取消又保存. But the question asks for \"一个实际例子\". One good example suffices; maybe mention a second briefly. Actually let me consider: are these \"同一个哲学术语不同译本译法不同\"? Yes.\n\nNow, is one of them necessarily wrong? The answer: No, not necessarily. Reasons:\n1. Different source works / different authors' use of the word: 尼采's Dasein isn't Heidegger's Dasein. The \"same term\" is not the \"same concept\" — so different renderings can each be faithful. This is the key: the identity of the term doesn't guarantee identity of meaning.\n2. Where the same author and same passage is translated differently, then it's a genuine conflict of fidelity — but \"wrong\" still needs a standard: (a) factual/lexical adequacy (does the word mean that?), (b) preserving the terminological system (Dasein must be rendered consistently as one word to keep the network Sein/Dasein/Sosein/Existenz), (c) the interpretive commitments. 王太庆's point about \"存在\" collapsing Dasein/existence is a system-consistency argument, not just taste.\n3. But there ARE cases where a translation is straightforwardly mistaken — e.g., a rendering that reverses the sense, or contradicts the author's own gloss, or is internally inconsistent. So the answer isn't relativism: \"different ≠ wrong\" doesn't mean \"anything goes\". Criteria that can adjudicate: fidelity to the word's literal morphology and to the author's own definitions; conserving the systematic oppositions; consistency within a translation; distinguishability from neighboring terms.\n4. Also: \"错\" for a term is different from \"错\" for a sentence. A term choice can be defensible but inferior for a given purpose (e.g. for a philosophical study vs. for a general reader). And \"存在\" for Dasein isn't flatly wrong at the lexical level — 王太庆 admits 存在 \"只适于翻译 existence 和 Dasein\" — yet it fails to distinguish them; so it's a defect of a different kind (inadequacy for a specific function), not a falsehood.\n\nLet me verify a couple more things:\n- 快乐的科学 rendering Dasein as 此在 with 人生此在? Let me check chapter 23 snippet: \"那是此前被此在（Dasein）的波浪冲到海岸上的贝壳\" — hmm, printed as 此在 with parenthetical Dasein. Actually snippet shows \"此在（Dasein）\". And chapter 25 \"关于人生此在（Dasein）的特性\". So both 此在 and 人生此在. Good, that supports 尼采四书 translation practice. Let me read the 快乐的科学 chapter 25 or 23 briefly to confirm the exact wording. Actually the snippet already shows \"人生此在（Dasein）\" — that's from search excerpt of the actual text. But to be careful, I could verify. It's probably fine to cite; but let me verify one quote with verify_quote to be safe. Hmm, verify_quote checks a quote in a book. Let me verify \"人生此在\" in 快乐的科学. Actually let's just do a targeted read of 快乐的科学 chapter 25 near \"人生此在\". And also check whether 存在与时间's translation has a translator note about 此在 vs 亲在. The book has 13 chapters; there might be a \"译后记\". Let me look at the chapter list.\n\nActually get_book_detail returned chapters: [] because focus=\"译\" and limit; hmm it returned empty chapters. Let me re-query without focus to get the chapter list.\n\nLet me also check 《存在与时间释义》 张汝伦 for discussion of 此在 translation — that could give the 亲在/此在 history. Search \"亲在\" in the library gave nothing relevant. Maybe search \"此在\" together with \"译\" hmm.\n\nMaybe better: search for \"Dasein\" translation debate in scholarship? Not necessary.\n\nLet me do:\n1. get_book_detail(book_id=\"c5013f33fe01\", limit=40) — chapter list\n2. get_chapter(48f7bf321598, chapter_idx=25, focus=\"人生此在\")\n\nAlso maybe check 德里达《文学行动》 keeping Dasein untranslated — chapter 4 snippet already shows it uses \"Dasein\" in Chinese text. Good.\n\nLet's run these.I have what I need. Let me also quickly consider a second example to strengthen: Aufhebung. But the user asked for one example. I'll focus on Dasein and maybe mention 王太庆's \"存在/是\" as a related case (same word being/Sein).\n\nActually the 王太庆 case is really about to on / being → \"有/存在/是\" — the classic debate about translating being. That's a related but distinct example: same term (being) rendered 有/存在/是者. That's a nice second layer within the same source. And 王太庆 notes \"有人提出'存在'...又有不足之处\" — showing the debate is about adequacy for a function, not truth/falsity.\n\nI should be careful about the details:\n- 存在与时间 translation: uses 此在 conspicuously and explicitly says the name 此在 \"并不表达它是什么…而是表达其存在\". This is quoted from the text at chapter 1. Good.\n- 悲剧的诞生 translator's note: \"尼采未必是在哲学术语意义上使用Dasein（此在）的，而经常取其'人生、生命'之义。我们在译文中把尼采使用的Dasein处理为'此在'或'人生此在'\". That's from 《悲剧的诞生》\"一种自我批评的尝试\" notes. This is a 译注 — explicitly a translator.\n- 快乐的科学: \"关于人生此在（Dasein）的特性\" — 人生此在. Confirmed by reading.\n- 王太庆: Dasein = Sein + da = \"是在那里\"; and he criticizes \"存在\" as rendering to on, saying it \"只适于翻译 existence 和 Dasein\". Also \"我们的翻译把它与existence同译为存在，就看不出区别了\".\n- 德里达《文学行动》 keeps Dasein untranslated (from search snippet). I should be careful — the snippet is a search excerpt of actual text; I haven't read the context. I could either read it or state cautiously. Let me maybe read it briefly to be safe, or just say \"另有译著直接保留Dasein不译（《文学行动》中文本）\" — but I should verify. The search snippet does show the Chinese text containing \"Dasein\" untranslated. That's an exact passage hit. I think it's fine but let me read a bit for context to be accurate. Actually it's a minor point; I could drop it or verify. Let me verify quickly with a read since it costs little.\n\nActually, I'll skip 德里达 or mention it only if verified. Let me do one read.\n\nAlso, I want to check: does the 存在与时间 file identify translator? No (null). So I should say \"书库中的《存在与时间》中译本\" without attributing to 陈嘉映/王庆节. Good—important for accuracy. The 此在 rendering with 〔Zu-sein〕 brackets style is characteristic of 陈嘉映/王庆节译本, but metadata doesn't confirm; I'll not assert the translator.\n\nSimilarly 尼采四书 volumes — the notes mention 孙周兴 for another work; the 悲剧的诞生 译注 style \"尼采四书\" suggests a collected translation. I shouldn't attribute translator names since metadata is null. Actually the 快乐的科学 text includes \"一译注尼采四书快乐的科学\" which indicates the series \"尼采四书\". I can mention that the same series' translation uses 人生此在. That's textual.\n\nFor 柏拉图对话集 chapter 16 title \"王太庆论柏拉图哲学和翻译问题\" — that's the chapter given, so I can attribute to 王太庆. Good. The text header \"我们怎样认识西方人的'是'？\" suggests the article title.\n\nLet me quickly read 德里达 context to decide. I'll do it.\n\nActually, do I need it? It adds a fourth data point: 保留原文不译. Nice for the argument that translation choices track different functions. Let me read it in one call.Confirmed: 《文学行动》中文本保留 Dasein 不译，并且引原文时把 Dasein 留着（\"Der Angerufene ist eben dieses Dasein\"）。\n\nNow compose the answer.\n\nStructure:\n1. 直接回答：不一定。译法不同 ≠ 有一方错。要区分三种情况：(a) 源词相同但作者用法/所属概念系统不同——那本就该译得不同；(b) 同一作者同一处出现两种译法——这才是真正的对错争执，但仍要问\"按什么标准算错\"；(c) 一个译法在词义上可行，但在功能上有缺陷（区分度、系统性、一致性）——这叫\"不足\"，不叫\"错\"。\n\n2. 书库实例：德语 Dasein。\n   - 海德格尔《存在与时间》中译：此在。原文自陈：\"我们用'此在'这个名称来指这个存在者，并不表达它是什么〔如桌子、椅子、树〕，而是〔表达它怎样去是，〕表达其存在。\" → 译名是有意造的术语，配合 Sein/Existenz/existentia 一组区分（\"为避免混乱起见，我们将始终用现成状态…来代替existentia…而把生存专用于此在\"）。\n   - 尼采中译（《悲剧的诞生》译注）：\"尼采未必是在哲学术语意义上使用Dasein（此在）的，而经常取其'人生、生命'之义。我们在译文中把尼采使用的Dasein处理为'此在'或'人生此在'\"；《快乐的科学》正文即有\"关于人生此在（Dasein）的特性\"。→ 同一德语词，因作者不是术语用法，译成\"人生此在\"。\n   - 王太庆（《柏拉图对话集》所收《我们怎样认识西方人的\"是\"？》）：从构词讲\"Dasein…Sein加上da（那里）就成了Dasein（是在那里）\"，并指出\"我们的翻译把它与existence同译为存在，就看不出区别了\"。→ 他认为把 Dasein 与 existence 同译\"存在\"损失了区别；同时他自己说\"存在\"这个词\"只适于翻译existence和Dasein，不能表示to on（being，Sein或Seiende）\" —— 注意这里\"存在\"用于译 Dasein 在他看来是可行的，问题在于不能译 being。所以同一篇里，对\"存在\"的评判是分功能的，不是笼统的对错。\n   - 德里达《文学行动》中文本：直接保留 Dasein 不译（\"海德格尔的Dasein也是个被电话呼叫的存在\"），连引文也保留原词。\n\n3. 比较上下文后能得出什么：\n   - 决定译法的不是\"词\"而是\"词的用法与它在体系中的位置\"。尼采的 Dasein 与海德格尔的 Dasein 不是同一概念，所以\"人生此在\"和\"此在\"不构成互相否证。\n   - 在真正同一处出现分歧时，仍然有可辩护的判准，而不是各说各话：(i) 是否忠实词形/词义；(ii) 是否保住作者的区分（Dasein/Sein/existentia；being/existence）；(iii) 译本内部是否一致（同一术语同一译名）；(iv) 是否与邻近术语区分开。按这些标准，\"存在\"译 Dasein 不算词义错误（王太庆也承认可通），但若同时译 existence，就丧失了区分度——那是\"不足\"，性质上不同于\"错\"。\n   - 所以\"一定有一个错\"这个推理预设了：同一术语必对应同一概念，且译名与概念一一对应。这两个预设都不成立。反过来也不是\"怎么译都行\"：(a) 若译名把作者的区分抹掉或引入作者明确否认的含义，就是实质错误；(b) 若译名与作者自己在同书中的定义冲突，也可判为错。\n\n4. 一点限度说明：书库里这几本书的译本信息（译者、版本）元数据未标注，所以我按\"各书实际文本中的用词\"来引用，不指认具体译者；王太庆的文章有署名标题可确认。尼采的 Dasein 是否在别处也有术语用法，需另核。\n\nAlso maybe note: 我核验的是库内文本用词，不是原版排印。\n\nShould I mention \"亲在\" as a historical alternative? I have no evidence in the library for 亲在 as a rendering of Dasein. Don't assert. I could say the library didn't turn up 亲在 as a rendering (searching 亲在 returned only unrelated hits). Hmm, that could be worth one sentence as a scope note: 我检索了\"亲在\"，书库中没有以\"亲在\"译 Dasein 的实例，所以不拿它举例。That's honest and useful. But careful: absence in this library ≠ never used. I'll phrase accordingly. Maybe keep brief or drop. I'll include one short line since it guards against over-claiming.\n\nLength: moderate, use headings sparingly. Write in Chinese.\n\nCitations: use the format 【《存在与时间》·第一章…】with reader url? The tool returns reader_url. Guidance says 引用用已核对的出处及工具返回的真实地址. I'll include book titles and chapter, maybe a link. I'll include reader links for main quotes.\n\nLet me write.",
+   "tool_calls_full": [
+    {
+     "name": "search_books",
+     "args": {
+      "query": "亲在",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 2.311,
+     "result_full": "{\"query\": \"亲在\", \"results\": [{\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 38, \"chapter_title\": \"难二\", \"citation_label\": \"【《韩非子》·难二】\", \"snippet\": \"人烛过之一言也。” 或曰：行人未有以说也，乃道惠公以此人是败，文公以此人是霸，未见所以用人也。简子未可以速去盾、橹也。严亲在围，轻犯矢石，孝子之所爱亲也。孝子爱亲，百数之一也。今以为身处危而人尚可战，是以百族之子于上皆若孝子之爱亲也，是行人之诬也。好利恶害，夫人之所有也。赏厚而信，人轻敌矣；刑重而必，失人不比矣。长行徇上，数百不一失；喜利畏罪，人莫不然。将众者不出乎莫不然之数，而道乎百无失人之行，人未知众之道也。\", \"score\": 50, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"6ec167f8492b\", \"chapter_idx\": 38, \"focus\": \"亲在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"3138fe5c9f12\", \"book_title\": \"性欲三论\", \"author\": \"西格蒙德·弗洛伊德\", \"chapter_idx\": 5, \"chapter_title\": \"第一章 临床现象\", \"citation_label\": \"【《性欲三论》·第一章 临床现象】\", \"snippet\": \"由父母双方的遗传性聚合而成的。就这个女孩的遗传情况而言，我认为还有一一个更为重要的方面、即遗传的结构性倾向。我曾提及她父亲在婚前曾染过梅毒。到目前为止，在我用精神分析治疗过的病人中，得过脊髓疗或全身性麻痹症的人，所占的比例高得惊人。有许多治疗多年而无收效的病人，我运用新奇独特的方法加以治疗，往往能见成效。根据厄尔布·福尼埃（Erb一Fourmier）理论，脊髓痨或全身性麻痹症在男人身上出现，即可认为是原先感染梅毒的症状：我的医疗实践证明了这一理论。在最近对病人后代的讨论中（第13届国际医学会议于1900年8月2日至9日在巴黎举行）并没有人提到我还是一位神经症理学者时早已得出的结论，即上一代男人的梅毒是导致下一代神经症的重要国素。！1\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"3138fe5c9f12\", \"chapter_idx\": 5, \"focus\": \"亲在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"ad61ed0fd976\", \"book_title\": \"变形记\", \"author\": \"弗朗茨·卡夫卡\", \"chapter_idx\": 24, \"chapter_title\": \"变形记\", \"citation_label\": \"【《变形记》·变形记】\", \"snippet\": \"这一切，还是未能下定决心离开这张床——闹钟恰好打响六点三刻，这时有人小心翼翼敲他床头的房门。“格里高尔，”有人喊——是母亲在喊，“现在六点三刻。你不想出门了？”好和蔼的声音！格里高尔听到自己的回答声时大吃一惊，这分明是他从前的声音，但这个声音中却搀和着一种从下面发出来的、无法压制下去的痛苦的叽喳声，这叽喳声简直是只在最初一瞬间让那句话保持清晰可听，随后便彻底毁坏了那句话的余音，以致人们竟不知道，是否听真切了。格里高尔本想回答得详细些并把一切解释清楚，可是在这样的情形下他只得简单地说：“是，是，谢谢母亲，我这就起床。”隔着木头门外面大概觉察不出格里高尔声音中的变化，因为一听到这句话母亲便放下心来，踢踢踏踏地走了。但是这场简短的谈话却使\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ad61ed0fd976\", \"chapter_idx\": 24, \"focus\": \"亲在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"3138fe5c9f12\", \"book_title\": \"性欲三论\", \"author\": \"西格蒙德·弗洛伊德\", \"chapter_idx\": 6, \"chapter_title\": \"第二章 第一个梦\", \"citation_label\": \"【《性欲三论》·第二章 第一个梦】\", \"snippet\": \"象这意外之事发生在孩提时代，那除了尿床还会是什么呢？大人们通常怎样来预防小孩尿床呢？不就是把小孩从睡梦中弄醒，就如同你父亲在梦中把你叫醒一般。实际上发生的事情就是这样，它使你以自已的父亲取代K先生，K先生实际上想把你从睡梦中弄醒。由此我不得不作出结论，你比正常小孩迟得多才戒除尿床这一习性，你哥哥也是如此；因为你父亲说：‘我不能让我两个孩子被火烧死。”你哥哥与你在K家发生的一切没有任何关系，他也没有跟你去L地，你对此有何话说？” “我对我自己一无所知。”她答道，“但我哥哥一直到六七岁还尿床，有时在白天他也常常如此。”我正要对她说记住她哥哥这样的事情比记住自已这样的事情要容易得多时，杜拉的记忆又活联起来，她说：“是的，有一段时间我也常常\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"3138fe5c9f12\", \"chapter_idx\": 6, \"focus\": \"亲在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32e4ebd33ddc\", \"book_title\": \"爱弥儿\", \"author\": \"让-雅克·卢梭\", \"chapter_idx\": 5, \"chapter_title\": \"第五卷\", \"citation_label\": \"【《爱弥儿》·第五卷】\", \"snippet\": \"所感到的束缚。但是，如果她觉得管理她的人是一个眼中钉，则她在那个管理人面前做任何事情都是做得不痛快的。有些女孩子觉得同母亲在一起不如同别人在一起快乐，这样的女孩子是很难变成好孩子的；不过，要判明她们真正的情感，就必须对她们的情感进行研究，而不能单凭她们所说的话，因为她们会甜言蜜语地说一番假话来掩饰她们的思想的。我们也不能够规定她们硬要爱她们的母亲，不能说由于女孩子有服从母亲的义务因而必然要对母亲产生爱的，在这方面是一点也不能勉强的。只要母亲不使得她的女儿讨厌她，则她对女儿的爱护、照顾和平日的习惯，就会使她的女儿爱她的。做母亲的人即使管束她的女儿，只要管得恰当，则不仅不会减少反而会增加她对母亲的爱的，因为，既然妇女生来就处在隶属他人的\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32e4ebd33ddc\", \"chapter_idx\": 5, \"focus\": \"亲在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"ad61ed0fd976\", \"book_title\": \"变形记\", \"author\": \"弗朗茨·卡夫卡\", \"chapter_idx\": 23, \"chapter_title\": \"判决\", \"citation_label\": \"【《变形记》·判决】\", \"snippet\": \"能是：身居异乡的他对此类悲痛已无法产生同感共鸣。不过自那时起格奥尔格便更加坚毅果敢地处理一切事务，也包括他的商务。也许母亲在世时父亲在经营上独断专行，阻碍了他真正按自己意志行事的能力；也许是自母亲去世后父亲虽然还在商行里工作，但已经比较淡泊，不再事必躬亲；也许是幸运的偶然事件起到了——甚至很可能是这样——重要得多的作用；但是，不管怎么说，在这两年里商行有了意想不到的发展，帮工不得不增加了一倍，营业额增加了五倍，往后的买卖无疑会更加兴隆。 可格奥尔格的这位朋友却对这种变化一无所知。先前，最后一次也许就在那封吊唁信里，他曾想劝说格奥尔格移居俄国，并详细阐述了格奥尔格在彼得堡设分号的前景。他所列举的数字同格奥尔格现在所经营的范围相比简直微\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ad61ed0fd976\", \"chapter_idx\": 23, \"focus\": \"亲在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"274c59617693\", \"book_title\": \"存在与虚无\", \"author\": \"让-保罗·萨特\", \"chapter_idx\": 13, \"chapter_title\": \"第一章 存在与作为：自由\", \"citation_label\": \"【《存在与虚无》·第一章 存在与作为：自由】\", \"snippet\": \"然性，也就是说，一直推到不再把我推至任何地方的我的诸多位置中的那个位置上去：即诞生为我确定的那个位置。事实上，要通过我母亲在把我送到世界上时占据的那个位置来解释这最后一个位置是毫无用处的：链条已断，我的父母自由地选择下的位置对解释我的位置是完全无用的；而人们之所以在其与我的原始位置的连系中来考察一个位置一比如当人们说：我生在波尔多，因为我父亲在那里为官一我生在图尔，因为我的外祖父母有产业在那里，我的母亲在他们身边栖身，当她怀孕时候，有人告诉她说我父亲去世了—是为了更好地证明对我来说出生和出生为我确定的位置是多么偶然的事情。于是，出生，就是在其他的特征之间取得其位置，或者不如按我们刚才说的，接受这个位置。而由于这个原始位置将是我从之出\", \"score\": 46, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"274c59617693\", \"chapter_idx\": 13, \"focus\": \"亲在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"ad61ed0fd976\", \"book_title\": \"变形记\", \"author\": \"弗朗茨·卡夫卡\", \"chapter_idx\": 46, \"chapter_title\": \"附录\", \"citation_label\": \"【《变形记》·附录】\", \"snippet\": \"你表面上对母亲讲话，但实际上是冲着坐在一旁的我来的，如：“这事当然不能要求儿子先生去做了”，等等。（这种话的后果是，有母亲在旁，我就不敢直接向你问话，后来习惯成自然，我连直接问你的念头都不会产生了。对才于孩子来说，向坐在你旁边的母亲问你的情况，危险要小得多，比如问母亲：“父亲好吗？”这样就防止了任何答复可能会带来的震惊。）当然，有时人家 (7) 会非常赞同最刻薄的讥讽的，也就是说，如果牵涉到的是别人，比如艾莉，我有好多年一直生她的气。当几乎每次吃饭时都这么说时，对于我来说堪称是恶毒和幸灾乐祸的节庆：“那个胖姑娘喜欢坐在离桌子十米远的地方。”然后你生气地坐在你的椅子上，毫无喜悦或带感情色彩地、像个死敌般地夸张地模仿她那不合你胃口的坐相\", \"score\": 46, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"ad61ed0fd976\", \"chapter_idx\": 46, \"focus\": \"亲在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 308, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "扬弃",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 2.311,
+     "result_full": "{\"query\": \"扬弃\", \"results\": [{\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 1, \"chapter_title\": \"序言\", \"citation_label\": \"【《精神现象学》·序言】\", \"snippet\": \"认为，在绝对者之内，“本质”和\\\"形式\\\"是同一个东西。一译者注 是对于理性的误解。正是这个反映使得真相成为一个结果，同时还扬弃 了结果与转变过程之间的对立，因为转变过程同样也是单纯的，所以它与 真相的那个形式一即在结果里表明自己是单纯的一也没有区别。实 际上，真相恰恰是一个已经返回到单纯性之内的东西。一如果说胎儿 是一个自在的人，那么它还不是一个自为的人。只有作为一个经受了教 化的理性，把自已造成它自在所是的东西，它才是一个自为的人。这才是 理性的现实性。但是，结果本身是一种单纯的直接性，因为它是一种具有 [26]自我意识的自由，在自身之内止息，不是把对立面撤在一边置之不理，而 是与之达成了和解。 前面所说的内容也可以这样来表达：理性\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 1, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 3, \"chapter_title\": \"第一部分 意识\", \"citation_label\": \"【《精神现象学》·第一部分 意识】\", \"snippet\": \"，感性确定性的真理依赖于意谓。对象存 在着，因为我认识到了它。也就是说，感性确定性尽管被驱逐出了对象， 但并没有因此遭到扬弃，而是仅仅被驱赶到我之内。我们得看看，关于感 性确定性的这种实在性，经验揭示出了什么。 现在，感性确定性的真理的力量依赖于我，依赖于我的直接的看、听 等活动。由于我坚守着我们意谓中的个别的”这时”和个别的”这里”，它 们还不至于消失。“这时”是白天，因为我看到白天；“这里”是一棵树，因 为我看到一棵树。但在这个关系中，感性确定性在自己身上经验到同样 一种辩证法，就和在前面那个关系中一样。我，这一个我，看到一棵树，于 是宣称：“这里”是一棵树。但另一个我却看到一栋房屋并宣称，“这里” 不是一棵树，而是一栋房屋。两\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 3, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 4, \"chapter_title\": \"第二部分 自我意识\", \"citation_label\": \"【《精神现象学》·第二部分 自我意识】\", \"snippet\": \"的力，都表明自己真正说来并未存在着，反倒是真相 这个自在体将上述对象规定为一种为他存在。真相的概念在一个现实的 对象那里扬弃了自身，换言之，最初的直接表象已经消失在经验里，确定 性已经消失在真理中。但从现在起，那在过去的关系里未曾出现的某种 东西，亦即一种与自己的真理相一致的确定性，产生出来了。确切地说， 确定性如今把它自己当作一个对象，而意识也知道自已就是真相。诚然， 在这个过程中也存在着一个他者，也就是说，意识区分出一个东西，同时 这个东西对意识而言又是无差别的。如果我们把知识的运动称作概念， 把知识这个静态的统一体或自我称作对象，那么就会发现，不管是对我们 还是对知识自身而言，对象都与概念契合。一或者换一个说法，如果我 们把自\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 4, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 5, \"chapter_title\": \"第三部分 理性\", \"citation_label\": \"【《精神现象学》·第三部分 理性】\", \"snippet\": \"为存在排斥出去，使之成 为一个存在。在这个过程中，意识知道，它与这个普遍者实现了统一，而 在我们看来，由于个别事物在遭到扬弃之后转变为普遍者，所以意识与普 遍者的统一不再落于意识之外，而且，由于意识是通过自身否定才保存下 来的，所以这个统一就是严格意义上的意识的本质。在一个环环相扣的 推论里，相互对立的两端曾经以彻底分裂的方式出现，而意识的真理就是 那个在推论里显现为中项的东西，因为中项一边告诉持久不变的意识，个 别事物已经放弃了自己，另一边又告诉个别事物，持久不变者已经不再与 它对立，而是与它达成了和解。这个中项是一个直接认知着对立两端、并 且把它们关联在一起的统一体，它对意识从而也对它自已说出了这种统 一关系；意识到这种统一关系\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 5, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 6, \"chapter_title\": \"第四部分 精神\", \"citation_label\": \"【《精神现象学》·第四部分 精神】\", \"snippet\": \"一体，或者说自为存在与自在存在的纯粹统一体，被规定 为自在体或存在，理性的意识发现了自己。但真正说来，观察的真理就在 于扬弃这个只懂得直接发现的本能，扬弃理性的这个无意识的实存。直 观到的范畴，亦即一个已被发现的物，进入意识，进入到我的自为存在里 面，而我在一个客观的本质那里认识到自己是自主体。范畴作为一个自 为存在，与自在存在相对立一但这个规定同样也是一个片面的、自己扬 弃着自己的环节。所以，对于意识来说，范畴是通过其普遍的真理而被规 定为一个自在且自为存在着的本质。这个仍然抽象的规定一它构成了 事情本身一只能说是一个精神性本质，它的意识是一种形式上的自我 认知，围绕着精神性本质的某些内容兜圈子。事实上，它作为一个个别的 事物仍然\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 6, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 7, \"chapter_title\": \"第五部分 宗教\", \"citation_label\": \"【《精神现象学》·第五部分 宗教】\", \"snippet\": \"什么东 西。然而个别的自主体是这一个个别的阴影，它已经使自己摆脱了那个 堪称命运的普遍性。诚然，它是一个阴影，是已经遭到扬弃的这一个阴 影，因此是一个普遍的自主体；但是此前那种否定的意义还没有转化为现 在这种肯定的意义，就此而言，已经遗到扬弃的自主体同时仍然直接意味 着这一个特殊的和缺乏本质的东西。一另一方面，缺乏自主体的命运 始终是一个无意识的黑夜，既不能在自身内作出区分，也不能达到明澈的 目我认知。 这种以必然性的虚无和阴间为对象的信仰转变为对于关国的信仰， 因为已逝的自主体必须与它的普遍性形成一个统一体，在这个统一体里 面，自主体的内容必须分开罗列，并且清楚地呈现出来。但正如我们曾经 看到的，这个信仰王国仅仅是在思维的要素里展\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 7, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 8, \"chapter_title\": \"第六部分 绝对知识\", \"citation_label\": \"【《精神现象学》·第六部分 绝对知识】\", \"snippet\": \"些在它之 内区分开的环节，都归属于表象活动，归属于客观性这一形式。表象活动 的内容是绝对精神。只不过这个单纯的形式还得被扬弃，或更确切地说， 因为这个形式隶属于严格意义上的意识，所以它的真理必须已经体现在 意识的各种形态分化之中。一说到对于意识的对象的克服，我们不应 当片面地去理解，以为这仅仅意味着对象已经返回到自主体之内。其实 更确切的理解应该是这样的，也就是说，诚然，严格意义上的对象已经呈 现为一种对自主体而言转瞬即逝的东西，但更重要的地方在于，正是自我 意识的外化活动设定了物性，而且这种外化活动不仅具有否定的意义，而 且具有肯定的意义，不仅对我们而言或自在地看来，而且对于自我意识本 身而言也具有这些意义。一方面，对于自我意识而\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 8, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"17c85f942c78\", \"book_title\": \"法哲学原理\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 1, \"chapter_title\": \"黑格尔著《法哲学原理》一书评述\", \"citation_label\": \"【《法哲学原理》·黑格尔著《法哲学原理》一书评述】\", \"snippet\": \"是现实的都是合理的这个命题，就变为另一个命题：凡是现存的，都是应当灭亡的。” [15] 这乃是从左边去解释、批判、改造、扬弃黑格尔的公式所得出的革命的结论。这正是批判改造黑格尔的唯心辩证法的典范。 三、另一点值得注意的就是在“序言”中黑格尔对于哲学与时代的关系的看法。他说：“每个人都是他那 时代的产儿 。哲学也是这样，它是 被把握在思想中的它的时代 。妄想一种哲学可以超出它那个时代，这与妄想个人可以跳出他的时代，跳出罗陀斯岛，是同样愚蠢的。” [16] 这段话承认时代决定个人，个人是时代的产物，承认哲学是它的时代或时代精神在思想中的反映或把握，似乎有一定的唯物主义因素。但是联系到时代和阶级内容来看，他这段话的目的是说哲学要使人“对现\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"17c85f942c78\", \"chapter_idx\": 1, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 494, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "Dasein",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 2.314,
+     "result_full": "{\"query\": \"Dasein\", \"results\": [{\"book_id\": \"301890458a11\", \"book_title\": \"文学行动\", \"author\": \"雅克·德里达\", \"chapter_idx\": 4, \"chapter_title\": \"《尤利西斯》留声机\", \"citation_label\": \"【《文学行动》·《尤利西斯》留声机】\", \"snippet\": \"在于电话旁。他与嗜杂的混合声音和回话机拴在一起。他之存在于此就是存在于电话旁，一个为了电话的存在，就像海德格尔所说的是为Dasein之死的存在一样。 我说这话不是在玩弄字眼，海德格尔的Dasein也是个被电话呼叫的存在，正如我们从《存在与时间》里得知的那样，它永远是那样一个存在。正像我的朋友山姆·韦伯提醒我的那样，是一个只在电话里呼唤（derRuf）的基础上对自已做出承诺的Dasein，那个呼唤来自远方，不一定非借助词语，而且以某种方式不说什么。 我们可以把《存在与时间》里关于derRuf主题的整个第57章的每一个细节作这样一个分析，比如选用这样的句子：Der Angerufene ist eben dieses Dasein; a\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"301890458a11\", \"chapter_idx\": 4, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"35279e2e439d\", \"book_title\": \"柏拉图对话集\", \"author\": \"柏拉图\", \"chapter_idx\": 16, \"chapter_title\": \"王太庆论柏拉图哲学和翻译问题\", \"citation_label\": \"【《柏拉图对话集》·王太庆论柏拉图哲学和翻译问题】\", \"snippet\": \"才给它凑上一个tere，译成“我思故我在”，其实原来并没有“在”的意思。加上there的“是”才是在或存在，德国人把它叫Dasein。Dasein这个字和Sosein一样，里头都有一个Sein（“是”）；Sein加上so（样子）就成了Sosein（是什么样子）， sein加上da（那里）就成了Dasein（是在那里）。 这个加上时空的“是”，即“在”或“存在”，后来在拉丁文里又出现了一个“existentia”来表示它，其动词形式existere出于ex（外面）+sistere（安放），也是出现在外面时空中的意思。这个字后来的发展偏向生命方面，几乎等于“生活”或“人生”。存在主义者所讲的主要是这个意思，不过他们并不是劈头就讲人生而且\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"35279e2e439d\", \"chapter_idx\": 16, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 11, \"chapter_title\": \"第一篇中的讨论，参看尼采：《善恶的彼岸·论道德的谱系》，科利版《尼采著\", \"citation_label\": \"【《快乐的科学》·第一篇中的讨论，参看尼采：《善恶的彼岸·论道德的谱系》，科利版《尼采著】\", \"snippet\": \"注2.没落]在誉清稿上之后补充了以下文字（后又删除了）：也即关于某个存在物、它在两种匮乏和没落中看到了【寻求这个」此在（Dasein）的目的！关于无私的学说必然地只在[悲观的虚无主义嘴里（举例说来也就是在佛陀的嘴里）]，只在一种关于此在之绝对被抛扔状态（Verworfenheit）的教师嘴里。一编注尼采四书快乐的科学 当”与“你不应当”就会一口气得到说教！1国王的日程安排2。3—一天开始了：让我们开始来安排今天的事务，以及现在还在安睡中的我们最仁慈的主人的节庆。陛下，今天是个坏天气：我们得小心，别说坏天气；不要谈论天气，一但我们今天将把事务弄得比通常更庄重一些，把节庆弄得比通常更喜庆一些。陛下也许竞要生病了：早餐时我们将向他呈献昨晚\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 11, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 25, \"chapter_title\": \"第五部我们无畏者（第343一383节）\", \"citation_label\": \"【《快乐的科学》·第五部我们无畏者（第343一383节）】\", \"snippet\": \"一种功利，而对此，人们是可以公正地提出反对意见的：怎么？不愿自已受骗真的更少伤害、更少危险、更少灾难性吗？关于人生此在（Dasein）的特性，你们自始就知道些什么，方能裁定更大的优势在绝对猜疑者一边还是在绝对信赖者一边？而如若大大的信赖与大大的猜疑，这两者都是必需的，那么，科学可能从何处获得它所依据的绝对信仰，它的信念，即坚信真理比其他任何一个事物都更重要，也比其他一切信念都更重要？倘若真理与非真理两者都能持续不断地表明自身的有用性（实际情形正是如此），那么，恰恰上面这种信念就不可能产生出来。也就是说一一现在终究无可争辩地存在的对于科学的信仰，可能并不是从这样一种功利计算中获得其根源的，而毋宁说，尽管如此，尽管“求真理的意志”或“不\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 25, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 26, \"chapter_title\": \"第五部我们无畏者（第343-383节）\", \"citation_label\": \"【《快乐的科学》·第五部我们无畏者（第343-383节）】\", \"snippet\": \"都最需要温和、平静和仁慈；若可能，还需要一个神，它G21完全本真地是一个病人的神，一个“救世主”；同样还需要逻辑，此在（Dasein）本身的概念上的可理解性一一因为逻辑使人镇静，让人信赖一简言之，需要某种温暖的、抵御恐惧的狭窄空间，需要把自己纳入那种东观视野中··如此，我渐渐地学会了理解伊壁鸠鲁，一个狄奥尼索斯的悲观者的对立面，同样我也学会了理解基督徒，后者实际上只是一种伊壁鸠鲁主义者，并且就像那种本质上的浪漫主义者，一我的目光变得越来越犀利，善于洞察那种最困难的1.此句中的动词“能够”用的是单数vermag，而“后者”（即“力量”）为复数，故句子的主语似乎是单数的“沃土”。但从句子意义上了解，主语应为“后者”（即“力量”）疑为作者\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 26, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 23, \"chapter_title\": \"第四部圣雅努斯（第276一342节）\", \"citation_label\": \"【《快乐的科学》·第四部圣雅努斯（第276一342节）】\", \"snippet\": \"这种荷马的幸福，人们也就成了太阳底下最能忍受痛苦的生灵了！而且只是以此为代价，人们购买那些最珍贵的贝壳，那是此前被此在（Dasein）的波浪冲到海岸上的贝壳！作为它们的所有者，人们会变得越来越敏于痛苦，最后变得太过敏感了：终于，有一种小小的不快和厌恶就足以败坏荷马对于生活的兴趣。荷马竞猜不出年轻的渔夫们给他出的一道愚蠢的小谜语！是的，这些小谜语就是最幸福者的危险啊！1.此处“精细的”和“优雅的”与下文讲的“敏感的”，都是德语形容词fein。一译注尼采四书快乐的科学 两个幸福的人。一真的，这个人虽然年轻，却擅长于生活的即兴表演，使最敏感的观察者也惊不已：一一因为看起来，尽管他持续不断地玩着最大胆冒险的游戏，但没有出现任何失误。这就让我\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 23, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"91bddbb32dce\", \"book_title\": \"小说理论\", \"author\": \"格奥尔格·卢卡奇\", \"chapter_idx\": 4, \"chapter_title\": \"第一部分　二、诸形式的历史哲学难题\", \"citation_label\": \"【《小说理论》·第一部分　二、诸形式的历史哲学难题】\", \"snippet\": \"活森林里被砍下的树十搭建起悲剧的舞台，而是，要么在没落生活所有死亡残余物的燃烧中必然产生出短暂的现场火焰（Flammendasein），要么全然不理踩这整个混乱，并逃进一个完全纯本质性的抽象领域中。这就是本质与自身外在于戏剧的生活的关系一一它使近代悲剧的二元化风格成为必然，其[对立]的两极以莎士比亚和阿尔费耶里（Alfieri）*为标志。希腊悲剧置身于贴近生活或抽象的两难困境之外，因为对它而言，丰富多彩并不是走近生活的问题，对话的透明性并不是扬弃它的直接性。不管[古希腊戏剧中的]合唱队产生于何种历史的偶然或必然，它的艺术含义都是：人在超然于一切生活中变得生气勃勃和丰富多彩。因此，合唱队可以提供一个仅只执行结束功能的背景，像浮雕形象之\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"91bddbb32dce\", \"chapter_idx\": 4, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"29b3de571c12\", \"book_title\": \"悲剧的诞生\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 2, \"chapter_title\": \"一种自我批评的尝试\", \"citation_label\": \"【《悲剧的诞生》·一种自我批评的尝试】\", \"snippet\": \"注（6此为全称，简称为《悲剧的诞生》，——译注（2L艺术作品]付印稿：问题。——编注（8)尼采未必是在哲学术语意义上使用Dasein（此在）的，而经常取其“人生、生命\\\"之义。我们在译文中把尼采使用的Dasein处理为\\\"此在\\\"或\\\"人生此在\\\"——译注（2)了解什么是-恐惧”]影射瓦格纳的西格弗里德。—编注（1Q）长”，带有“狂飚突进\\\"色彩】付印稿：大量”，它的“从不及时”。一编注（LL)“它那个时代最优秀的人物\\\"]参看席勒：《华伦斯坦的阵营》序幕。一编注（12）随生的】付印稿：全新的.—编注（13)）_伯里克利（Perikles，约前495—约前429年）：古希脂政治家，雅典民主派领导人。——译注（14）修昔底德（Thukydides，\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"29b3de571c12\", \"chapter_idx\": 2, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 182, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "search_books",
+     "args": {
+      "query": "此在",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 2.318,
+     "result_full": "{\"query\": \"此在\", \"results\": [{\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 1, \"chapter_title\": \"第一章 该说准备性的此在分析之任务\", \"citation_label\": \"【《存在与时间》·第一章 该说准备性的此在分析之任务】\", \"snippet\": \"第九节 此在分析的课题 任务是分析存在者，而在这里所分析的存在者总是我们自己。这种存在者的存在总是我的存在。这一存在者在其存在中对自己的存在有所作为。作为这样一种存在的存在者，它已被交托给它自己的存在了。对这种存在者来说，关键全在于〔怎样去〕存在。这样来描绘此在的特征，就引出了下面两点： 1．这种存在者的“本质”在于它去存在〔Zu-sein〕。如果竟谈得上这种存在者是什么，那么它“是什么”〔essentia〕也必须从它怎样去是、从它的存在〔existentia〕来理解。而存在论的任务恰恰是要指出：如果我们挑选生存〔Existenz〕这个用语来称呼这种存在者的存在，那么这个名称却没有而且不能有流传下来的existentia这个术语的存\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 1, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 一般的“在世界之中存在”——此在的基本建构\", \"citation_label\": \"【《存在与时间》·第二章 一般的“在世界之中存在”——此在的基本建构】\", \"snippet\": \"中我们已曾把存在的某些基本性质崭露出来。这些性质定当照亮进一步的探索；同时，它们又将在这一探索过程中获得结构上的具体化。此在是这样一种存在者：它在其存在中有所领会地对这一存在有所作为。这一点提示出了形式上的生存概念。此在生存着，另外此在又是我自己向来所是的那个存在者。生存着的此在包含有向来我属性，那是本真状态与非本真状态之所以可能的条件。此在向来生存在这种或那种样式中，或生存在这两种样式未经分化的状态中。 但我们现象必须先天地依据于我们称为“在世界之中“的这一存在建构来看待和领会此在的这些存在规定。此在分析工作的正确入手方式即在于这一建构的解释中。 “在世界之中存在”这个复合名词的造词法就表示它意指一个统一的现象。这一首要的存在实情\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 2, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 6, \"chapter_title\": \"第六章 操心——此在的存在\", \"citation_label\": \"【《存在与时间》·第六章 操心——此在的存在】\", \"snippet\": \"第三十九节 此在结构整体的源始整体性问题 “在世界之中存在”源始地、始终地是一整体结构。在前面几章〔第一篇第二——五章〕里，这一结构是被当作整体而从现象上加以说明的，这一结构的组建环节也是在这一整体的基础上从现象上加以说明的。在一开始投向这一现象整体的眼光难免有些空洞，现在则已消除了最初进行一般性描绘时的那种空洞。当然，结构整体建构及其日常存在方式在现象上的多样性颇容易障蔽着眼于整体本身的统一的现象学眼光。但若我们现在提出下面这个问题来，那么统一的现象学眼光就势必愈加自由，而且也就准备得愈加牢靠；这个问题，其实也就是准备性的此在基础分析根本致力求解的问题：应得如何从生存论存在论上规定业经展示的结构整体的整体性？ 此在实际生存着。所追\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 6, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 7, \"chapter_title\": \"第一章 此在之可能的整体存在，与向死存在\", \"citation_label\": \"【《存在与时间》·第一章 此在之可能的整体存在，与向死存在】\", \"snippet\": \"第四十六节 从存在论上把握和规定此在式的整体存在的表面上的不可能性 前此的此在分析所源出的诠释学处境不够充分，这一缺陷应予克服。鉴于必须获得整体此在的先行具有，就必得问一问：从根本上说能不能就这一存在者的整体存在通达这一作为生存者的存在者。在此在本身的存在建构之中似乎就有一些重要的理由，说明上面所要求的先行给予是不可能的。 操心构成了此在的结构整体的整体性。但按照操心的存在论意义，这一存在者的可能的整体存在是同操心相矛盾的。操心的首要环节是“先行于白身”，这却等于说：此在为它自己之故而生存。“只要此在存在”，它直至其终都对它自己的能在有所作为。而且，即使当它虽还生存着，却不再有任何东西“在自己面前”时，当“它已经了账”时，它的存在还\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 7, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 8, \"chapter_title\": \"第二章 一种本真能在的此在式的见证，决心\", \"citation_label\": \"【《存在与时间》·第二章 一种本真能在的此在式的见证，决心】\", \"snippet\": \"第五十四节 一种本真的生存上的可能性的见证问题 所寻求的是此在的一种本真能在；这种本真能在是由此在本身在其生存可能性中见证的。但这一见证自身首先必须能够被找到。如果这种见证可以“让”此在在其可能的本真生存中领会自己本身，那它就会在此在的存在中有其根苗。从而，对这样一种见证的现象学展示就包含着对它源出于此在的存在建构的证明。 这种见证应供人领会一种本真的能自身存在。我们曾用“自己”这个词来回答此在为谁的问题。我们曾从形式上把此在的自己之所以为自己规定为一种去生存的方式，也就是说并非规定为一种现成存在者。此在之谁首先并非我自己，而是常人自己。本真的自己存在规定自身为常人的一种生存变式，这种生存变式可以从生存论上加以界说。这种变式中含有些\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 8, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 9, \"chapter_title\": \"第三章 此在的本真整体能在与时间性之为操心的存在论意义\", \"citation_label\": \"【《存在与时间》·第三章 此在的本真整体能在与时间性之为操心的存在论意义】\", \"snippet\": \"第六十一节 从对此在式的本真整体存在的界说到对时间性的现象剖析 ——这一进程的方法步骤之草描 我们已从生存论上筹划出了此在的一种本真的整体能在。这一现象的解释把本真的向死存在展露为先行。在从生存上证实此在的本真能在时，这种本真能在曾作为决心展示出来并从生存论上得到了阐释。应得怎样合聚这两种现象？对本真的整体能在的存在论筹划把此在引至的那一维度，同决心现象岂不风马牛不相及吗？死与做事的“具体处境”会有什么共同之处呢？把决心与先行硬凑到一起，这种尝试岂不误引向某种不可容忍的、完全不是现象学的虚构吗？这种虚构岂不无可再自称具有基于现象的筹划性质了吗？ 当然要禁止从外部把两种现象系到一起。在方法上还只留下一条可能的道路—从我们业经在其生存的\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 9, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32bcb0d7a466\", \"book_title\": \"《存在与时间》释义\", \"author\": \"张汝伦\", \"chapter_idx\": 6, \"chapter_title\": \"第一部 依时间性解释此在和将时间解说为存在问题的超越境域\", \"citation_label\": \"【《《存在与时间》释义》·第一部 依时间性解释此在和将时间解说为存在问题的超越境域】\", \"snippet\": \"第一部的标题是“依时间性解释此在和将时间解说为存在问题的超越境域”。根据其所含意义，这个标题可以分为两部分，那个“和”字将这两部分区分开来又关联在一起。根据海德格尔给出的此书的提纲，“依时间性解释此在”应该是第一篇《准备性的对此在的基本分析》和第二篇《此在与时间性》的任务；而“将时间解说为存在问题的超越境域”则是计划中第三篇的主题，但因为海德格尔在出版《存在与时间》时将第三篇撤了回去，所以《存在与时间》实际最终没有处理把时间解说为存在问题的超越境域的问题，而只完成了第一个任务。 我们现在看到的《存在与时间》可以说就是“依时间性解释此在”。它的第一篇将生存分解为它的各生存论结构，根据其生存论意义将它解释为操心。而第一部的第二篇则是根据\", \"score\": 75, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32bcb0d7a466\", \"chapter_idx\": 6, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32bcb0d7a466\", \"book_title\": \"《存在与时间》释义\", \"author\": \"张汝伦\", \"chapter_idx\": 7, \"chapter_title\": \"第一章 此在的准备性分析之任务的说明\", \"citation_label\": \"【《《存在与时间》释义》·第一章 此在的准备性分析之任务的说明】\", \"snippet\": \"这篇的题目叫“准备性的对此在基本分析”，所谓“准备性”显然是针对第二篇“此在与时间性”而言的，是为后者做准备。在第一章前有个对第一篇要处理的对象和结构的简短说明。对象是“具有此在性质的存在者”，它是在存在问题中首先被问及者。存在的问题只有从它着手才能得以切入和解决。可是，此在又是海德格尔哲学中最容易引起误解的一个概念，人们对海德格尔哲学的误解往往由此而生。例如，海德格尔的老师胡塞尔就认为，海德格尔对此在的生存论分析是一种具体的现象学的人类学。直到今天仍有不少人持与胡塞尔相似的观点。海德格尔此在这个概念的原创性，这些人完全没有看到。他们仍然从主体和自我意识来理解海德格尔的此在，而没有看到，主体和自我意识以此在为基础；另一方面，此在不仅\", \"score\": 75, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32bcb0d7a466\", \"chapter_idx\": 7, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 1457, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "c5013f33fe01",
+      "chapter_idx": 1,
+      "focus": "此在",
+      "max_chars": 2600
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"chapter_idx\": 1, \"title\": \"第一章 该说准备性的此在分析之任务\", \"citation_label\": \"【《存在与时间》·第一章 该说准备性的此在分析之任务】\", \"text\": \"第九节 此在分析的课题\\n任务是分析存在者，而在这里所分析的存在者总是我们自己。这种存在者的存在总是我的存在。这一存在者在其存在中对自己的存在有所作为。作为这样一种存在的存在者，它已被交托给它自己的存在了。对这种存在者来说，关键全在于〔怎样去〕存在。这样来描绘此在的特征，就引出了下面两点：\\n1．这种存在者的“本质”在于它去存在〔Zu-sein〕。如果竟谈得上这种存在者是什么，那么它“是什么”〔essentia〕也必须从它怎样去是、从它的存在〔existentia〕来理解。而存在论的任务恰恰是要指出：如果我们挑选生存〔Existenz〕这个用语来称呼这种存在者的存在，那么这个名称却没有而且不能有流传下来的existentia这个术语的存在论含义，因为，按照流传下来的含义，existentia在存在论差不多等于说现成存在：而现成存在这种存在方式本质上和具有此在性质的存在者的存在方式了不相干。为避免混乱起见，我们将始终用现成状态这个具有解释作用的表达式来代替existentia这个名称，而把生存专用于此在，用来规定此在的存在。\\n此在的“本质”在于它的生存。所以，在这个存在者身上所能清理出来的各种性质都不是“看上去”如此这般的现成存在者的现成“属性”，而是对它来说总是去存在的种种可能方式，并且仅此而已。这个存在者的一切“如此存在”首先就是存在本身。因此我们用“此在”这个名称来指这个存在者，并不表达它是什么〔如桌子、椅子、树〕，而是〔表达它怎样去是，〕表达其存在。\\n2．这个存在者在其存在中对之有所作为的那个存在，总是我的存在。因而此在永不可能从存在论上被把捉为某种现成存在者族类中的一员和样本。现成存在者的存在对这种存在者本身是“无关紧要的”；或更确切些说，这种存在者是这样“存在”的：它的存在对它既不可能是“无关紧要”的又不可能是“有关紧要”的。而按照此在这种向来我属的性质，言语涉及此在的时候总必须连带说出人称代名词来：“我是〔ich bin，我存在〕”，“你是〔du bist，你存在〕。”\\n而此在又总以这样或那样去存在的方式是我的存在。此在以何种方式向来我属，它无论如何总已决定好了。这个在其存在中对自己的存在有所作为的存在者把自己的存在作为它最本己的可能性来对之有所作为。此在总作为它的可能性来存在。它不仅只是把它的可能性作为现成的属性来“具有”它的可能性。因为此在本质上总是它的可能性，所以这个存在者可以在它的存在中“选择”自己本身、获得自己本身；它也可能失去自身，或者说绝非获得自身而只是“貌似”获得自身。只有当它就其本质而言可能是本真的存在者时，也就是说，可能是拥有最本己的存在者时，它才可能已经失去自身，它才可能还没有获得自身。存在有本真状态与非本真状态——这两个词是按照严格的字义挑选来作术语的〕——两种样式，这是由于此在根本是由向来我属这一点来规定的。但是，此在的非本真状态并不意味着“较少”存在或“较低”存在。非本真状态反而可以按照此在最充分的具体化情况而在此在的忙碌、激动、兴致、嗜好中规定此在。\\n此在的两种性质已经勾画出来了；一是它的existentia对essentia的优势地位，一是它的向来我属性质。这两种性质已经提示，在对这种存在者进行分析时，我们面对的是一个独特的现象领域。这个存在者没有而且绝不会有只是作为在世界范围之内的现成东西的存在方式，因而也不应采用发现现成东西的方式来使它成为课题。的确，如何正确地现行给出这种存在者远不是不言而喻的，其实对这种先行给予者进行规定本身就构成了这种存在者的存在论分析工作的一个本质部分。只有在以正确可靠的给出这种存在者的同时，才有可能获得这种存在者的存在之领会。无论这一分析尚是如何地浅近，它总已经要求确保从正确的入手处入手了。\\n此在总是从它所是的一种可能性、从它在其存在中这样那样领会到的一种可能性来规定自身为存在者。这就是此在的生存建构的形式上的意义。但其中就有这种存在者的存在论阐释所需的提示：要从这种存在者的存在的生存论建构中发展出它的存在问题的提法来。然而这却不是说，要用一个具体的可能的生存观念来组建此在。此在在分析之处恰恰不应在一种确定的生存活动的差别相中来被阐释，而是要在生存活动的无差别的当下情况和大多情况中来被发现。此在的日常状态的这种无差别相并不是无，而是这种存在者的一种积极的现象性质。一切如其所是的生存活动都从这一存在方式中来而又回到这一存在方式中去。我们把此在的这种日常的无差别相称作平均状态。\\n正因为平均的日常状态构成了这种存在者层次上的当下情况，所以它过去和现在都在对此在的解说中一再被跳过了。这种存在者层次上最近的和最熟知的东西，在存在论上却是最远的和最不为人知的东西，而就其存在论意义而言又是不断被漏看的东西。奥古斯丁问道：谁能揭开这个疑案？他不得不答：主，我正在探索，在我身内探索：我自身成为我们辛勤耕耘的田地。这段话不仅适用于此在存在者层次上的及前存在论上的未被透视的情况，而且更适用于存在论的任务：不仅不可错过这个存在者在其现象上的最切近的存在方式，而且还要通过正面的特征描述使得这种存在方式成为可以通达的。\\n但此在的平均日常状态却不可被单单看作它的一个“方面”。在平均日常状态中，甚至在非本真模式中也先天地具有生存论结构。即使在平均日常状态中，此在仍以某种方式为它的存在而存在，只不过这里此在处于平均日常状态的样式中而已，甚或处于逃避它的存在和遗忘它的存在这类方式中。\\n但是，对处于平均的日常状态中的此在的说明所得出的并不仅仅是在摇摆游移的不确定性那种意义上的平均结构。凡在存在者层次上以平均状态的方式存在的东西，在存在论上都满可以在一些适切的结构中被把捉到，而这些结构同此在的本真存在的种种存在论规定在结构上并无分别。\\n从对此在的分析而来的所有说明，都是着眼于此在的生存结构而获得规定的，所以我们把此在的存在特性成为生存论性质。非此在式的存在者的存在规定则称作范畴。这两者须得加以严格区别。这里所用的“范畴”这个术语始终取其本来的存在论含义。古代存在论把在世界之内照面的存在者拿来作为它解释存在的基本样本。或则被认为是通达这种存在者的方式，而存在者就在其中来照面。但是这种存在者的存在必须在一种与众不同的〔让看〕中才成为可把捉的，结果这一存在——作为它所是的而且在任\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2600, \"chapter_text_length\": 7965, \"has_more\": true, \"next_offset\": 2600, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"此在\"], \"focus_terms_found_in_chapter\": [\"此在\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"此在\", \"offset\": 4, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 1, \"offset\": 0, \"focus\": \"此在\"}}, {\"term\": \"此在\", \"offset\": 129, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 1, \"offset\": 0, \"focus\": \"此在\"}}, {\"term\": \"此在\", \"offset\": 380, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 1, \"offset\": 180, \"focus\": \"此在\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"29e03a2004dea0e482508aca6fa963db4d99d99a208fc8380a84bfe44c772263\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/c5013f33fe01?ch=1\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"马丁·海德格尔\", \"canonical_title\": \"存在与时间\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2600]], \"covered_characters\": 2600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "35279e2e439d",
+      "chapter_idx": 16,
+      "focus": "Dasein",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.008,
+     "result_full": "{\"book_id\": \"35279e2e439d\", \"book_title\": \"柏拉图对话集\", \"chapter_idx\": 16, \"title\": \"王太庆论柏拉图哲学和翻译问题\", \"citation_label\": \"【《柏拉图对话集》·王太庆论柏拉图哲学和翻译问题】\", \"text\": \"尼德。这门研究on的哲学名叫ontologia，是用onta（beings）这个字命名的，我们译为“本体论”\\n是利用了中国传统的哲学范畴“本体”，不能表现onta，所以过去有人曾经利用中国传统哲学范畴“有”命名的“万有论”，近来也有人利用现在将being译为“存在”的办法命名的“存在论”，而照我们\\n我们怎样认识西方人的“是”？\\n735\\n的想法该译为“是者论”。\\n亚里士多德认为 to on是ousia（本体，substance），ousia有许多标志，其中的一个是他所谓totieneinai（它是什么），即英译的\\nessence。这个字出于拉丁文的essentia（所是者），还保留着“是”的意思，中文译成“本质”，看不出词的来源了。totieneinai就是判断中的谓项，即上面说的Sosein。\\n西方人的这个“是”和时间、空间放在一起，就成了我们中国人说的那个“在”。例如英语中的“thereis”，德语中的“ist da”，又如上文举的例子“Estmihiliber”（书在我这里是），都是这样。西方人没有我们中国人的“在”这个动词，说在何时何地的时候用的还是那个“是”，如“我在北大”就说成“1aminPekingUniversity”。\\n他们觉得这个am跟说“1amaman”的am意思完全一样。至于笛卡尔说的“Ithink thereforeIam”，也是同样的am，只是我们中国人认为单单一个“是”不能懂，（汉语普通话的“是”只是系词，有主语缺宾语就系不成了），才给它凑上一个tere，译成“我思故我在”，其实原来并没有“在”的意思。加上there的“是”才是在或存在，德国人把它叫Dasein。Dasein这个字和Sosein一样，里头都有一个Sein（“是”）；Sein加上so（样子）就成了Sosein（是什么样子），\\nsein加上da（那里）就成了Dasein（是在那里）。\\n这个加上时空的“是”，即“在”或“存在”，后来在拉丁文里又出现了一个“existentia”来表示它，其动词形式existere出于ex（外面）+sistere（安放），也是出现在外面时空中的意思。这个字后来的发展偏向生命方面，几乎等于“生活”或“人生”。存在主义者所讲的主要是这个意思，不过他们并不是劈头就讲人生而且只讲人生，却是\\n从那个toon（是者）讲起的，如海德格尔就大讲其Sein，萨特也大讲其etre。我们的翻译把它与existence同译为存在，就看不出区别了。\\n三我们摄取食品，是为了通过消化和吸收，使它进入自己的机体，\\n变成我们的一部分，为我们所用。我们学习古人的、外国人的哲学思想也是一样，要它为我们所用。但是学习哲学思想不同于拿来就吃，还有个方法问题。如果学的方法不对头，就可能吸收不进来，\\n达不到目的。我们学习西方是鹅片战争以后的事情，最初的目的是教亡图存：在西方人面前打败了仗，看到戈矛敌不过枪炮，于是想\\n“师夷之长技”，学习西方制造枪炮的技术来自卫。可是有了江南制造局、汉阳兵工厂造的枪炮还是打败仗，这才考虑到西方人的枪炮后面还有更厉害的东西，他们的科技后面还有他们的经国济世之学，\\n不能死抱着孔孟之道挨打，要师法他们更大的长技一哲学。于是\\n《天演论》来了。有人以为这就是救亡的灵丹妙药，一丸就成。可是单单这丸灵丹加在我们树大根深的传统思想上面不管九牛一毛，还是不能起我们所盼望的自立富强的作用。于是我们一方面要彻底否定我国传统的统治哲学，打倒“孔家店”，另一方面要到西方寻找更灵的金丹，希望药到病除，代替“孔家店”收长治久安的效果。由于大量涌进了西方的、我们原来没有的新思想，我们的思想界不能不起这样或那样的变化，这是我们衷心欢迎的。\\n可是我们学习外国思想的方法却还是传统的，好像进菜市场买菜，挑顺眼的买。尝尝对了自己的口味，就认定专吃这一种，别的\\n我们怎样认识西方人的“是”？\\n737\\n看也不看一眼。至于烹调的办法还是老的，认为天下只此一法。也就是说，基本上还是离“中学为体、西学为用”不远：照自己的希望挑选，按自己的想象理解，凭自己的爱好吸收。外国人到底是怎么想的，我们并不深究，遇到与自已的想法不合或者相反的就轻轻带过，忽略不计，看见似乎与自己相投的就浓圈密点，由此出发面浮想联，自以为尚友千古。至于为什么外国人会这样想，以及这样想会产生什么结果，就更加不注意了。读书之后自已做文章的人，\\n过去在科举考试中守一条原则，就是“代圣人立言”。等到孔家店打倒之后，孔孟没了，这条老规矩却还没有多大变化，只是换上自己选中的哲学家，要为他们立言。真正的自已不在考虑之列，客观实际可以马虎，这样就很难掌握西方思想的本来面目，难免在自己的想象中兜圈子了。\\n知己知彼才能百战不殆，我们在学习西方思想上面也必须这样做。我们和西方人同样是人，同时也有很大的差异。只有从异中见同，又在同中见异，反复端详，才能逐步加深认识。本体论哲学问题是我们与西方人都有的，必须抓紧这一共同点，一定要从哲学的角度去看西方哲学，不能只抱着思古之幽情去欣赏它的古色斑斓，\\n也不能把它当作野味咬上几口，或者视为虎豹狼打它几棍。我们不仅要看它与我们的相似之点，还要注视它与我们差异甚至矛盾之处。\\n上面提出的这个西方本体论哲学中的基本范畴being，支配了他们上下几千年的思想，是我们了解西方哲学的关键所在。记得十来年前齐良骥先生曾在一次讨论会上提出“being是什么”的问题，当时无人发言，那是思想上没有准备所致。这个问题提得语重心长，至今言犹在耳，我觉得在先生作古后的今天还是很有必要重新提出的。\\n在本文的前两部分我们已经指出：我们中国哲学中的本体论范畴“有”，是从手持的观念发展出来的，西方哲学中的本体论范畴\\n\\\"toon”（即英语的being）则是从eimi（即英语的tobe）的观念发展出来的。eimmi的本意是“起作用”，它用在判断中表示主体在起什么作用，它与时间、空间相联则表示主体在哪里起作用。\\n“有”和“to on”指的是本体（ousia，substance），这一点是中西哲学的共同处。\\n“有”没有“是”的意义，不像“eimi”那样可以用于判断中当作系词；“有”也没有“在”的意义，不像“eimi”那样可以联到时间、\\n空间上表示“存在”（existence）。这是中西本体范畴的区别所在。\\n我们过去用“有”来翻译“toon”，从同为本体这点说，是正确的。但“有”的确没有“是”和“在”的意义，用“有”来译“to\\non”又是有缺点的。“toon”这个范畴同时兼有“本体”、“是”和\\n“在”这三重意义于一身，译语应当表现，所以有另铸新名之必要。\\n过去批评“有”这个译名有缺点是对的，但是提出来代替的\\n“存在”这个译名又有它的不足之处。首先，它的含义与时间、空间不可分，只适于翻译existence和Dasein，不能表示to on（being，\\nSein或Seiende）。这种情况有如我们不能把“food”译成“馒头”一样，因为馒头虽是food，food却不等于馒头。其次，“存在”这个词不能明确地表明“本体”而非“属性”（如说“人存在”、“鬼不存在”，就是指“属性”而非“本体”）。我们的口语中常常并不严格区分这两个范畴，容易混淆，哲学术语应当把它们明确地分开。不但汉语有此必要，其他语言也是\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 15125, \"excerpt_end\": 18125, \"chapter_text_length\": 59724, \"has_more\": true, \"next_offset\": 18125, \"has_previous\": true, \"previous_offset\": 12125, \"focus_found\": true, \"focus_terms_matched\": [\"dasein\"], \"focus_terms_found_in_chapter\": [\"dasein\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"dasein\", \"offset\": 15825, \"read_args\": {\"book_id\": \"35279e2e439d\", \"chapter_idx\": 16, \"offset\": 15625, \"focus\": \"dasein\"}}, {\"term\": \"dasein\", \"offset\": 15832, \"read_args\": {\"book_id\": \"35279e2e439d\", \"chapter_idx\": 16, \"offset\": 15632, \"focus\": \"dasein\"}}, {\"term\": \"dasein\", \"offset\": 15912, \"read_args\": {\"book_id\": \"35279e2e439d\", \"chapter_idx\": 16, \"offset\": 15712, \"focus\": \"dasein\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"fa9a50a764fa050bf94920ba3dffcc4ca9873ea8fdc1273f0074054a40fd4820\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/35279e2e439d?ch=16\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[15125, 18125]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "29b3de571c12",
+      "chapter_idx": 2,
+      "focus": "Dasein",
+      "max_chars": 2000
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"book_id\": \"29b3de571c12\", \"book_title\": \"悲剧的诞生\", \"chapter_idx\": 2, \"title\": \"一种自我批评的尝试\", \"citation_label\": \"【《悲剧的诞生》·一种自我批评的尝试】\", \"text\": \"既使人陶醉又令人发告，是有双重危险的。现在，哪里有一个与在瓦格纳信徒那里一样的由模翻和病态神秘组成的泥潭呢？我有幸在某个时刻恍然大悟自己是归属于何方的一—：在这个时刻，理查德瓦格纳跟我谈论他善于从基督教圣餐中获得的心醉神迷。后来他还为此[+++】制作了音乐-[108]关于笔记本W18，第108页的第一段文字：求悲观主义的意志全新视角，可参看《人性的，太人性的》（1886年版），序言第7节。一编注（2)沃尔特（Worth）：德国西南小城，1870年8月上旬法国军队与普鲁士军队在此会战，法国落败。—译注（3当沃尔特会战的炮声..]最初稿本：当沃尔特会战的炮声响彻震惊的欧洲时—我在阿尔卑斯山的一两记下了本书的关键思想：根本上不怎么为我自己，而是为理查德·瓦格纳，直到那时，没有人对瓦格纳的希腊化和南方化特别上心。笔记本W18，第97页。—编注（4)_梅斯（Metz）：法国东北部城市.—译注（5_此处~明朗-德语原文为Heiterkeit，基本含义为明亮“和“喜悦”，英译本作serenity（宁静、明朗），前有“乐天”、“达观\\\"之类的汉语译名，我以为并不恰当。尼采这里所指，或与温克尔曼在描述希腊古典时期雕塑作品时的著名说法“高责的\\n单纯，静穆的伟大”（edle Einfaltund stille Gr6Be）相关，尽管后者并没有使用Heiterkeit一词。我们试把这个Heiterkeit译为\\\"明朗”，似未尽其\\\"喜悦\\\"之义，不过中文的\\\"朗\\\"亦附带着一点欢快色彩的。——译注（6此为全称，简称为《悲剧的诞生》，——译注（2L艺术作品]付印稿：问题。——编注（8)尼采未必是在哲学术语意义上使用Dasein（此在）的，而经常取其“人生、生命\\\"之义。我们在译文中把尼采使用的Dasein处理为\\\"此在\\\"或\\\"人生此在\\\"——译注（2)了解什么是-恐惧”]影射瓦格纳的西格弗里德。—编注（1Q）长”，带有“狂飚突进\\\"色彩】付印稿：大量”，它的“从不及时”。一编注（LL)“它那个时代最优秀的人物\\\"]参看席勒：《华伦斯坦的阵营》序幕。一编注（12）随生的】付印稿：全新的.—编注（13)）_伯里克利（Perikles，约前495—约前429年）：古希脂政治家，雅典民主派领导人。——译注（14）修昔底德（Thukydides，约前460-约前400年）：古希腊历史学家，曾任雅典将军。著有（伯罗奔尼撒战争史）八卷。—译注（15)_海勒人（Hellene）：古希腊人的自称。—译注（16)萨蒂尔（Satyr）：希腊神话中耽于淫微的森林之神，有尾巴和羊足。一—译注（17）还有，在生理上来追问..-]最初稿本：最艰难的心理学问题之一：希腊人出于何种需要发明了萨蒂尔？根据何种体验？本地特有的心醉神迷，使整个城邦得以直观它所虚构和祈求的神，这一点似乎是所有古老文化所共有的（幻觉作为画家的原始力量传布于城邦）；各种程式，为的是达到这样一种高度的感性的和崇拜的激动。笔记本W18，第109页。一编注（18）柏拉图的一句话]参看《斐德若篇》，244a：该引文也见于（人性的，太人性的》1878年版第144节和《曙光）1881年版第14节。—编注（19）正文中的表述不尽相同，如第5节中谓：唯有作为审美现象，此在与世界才是永远合理的。第24节中谓：唯有作为审美现象，此在与世界才显得是合理的。—译注（20)）_此处“艺术家形而上学\\\"原文为Aristen-Metapbysik。尼采在本书中把艺术理解为\\\"真正的形而上学活动\\\"。——译注（21）尼采有同名著作《超善恶》（1886年），常被汉译为《善恶的彼岸》。—译注（22）叔本华】参看《补遗》第2卷，第107页。—编注（22)此处\\\"心智反常“原文为Perversitit derGesinmung，是叔本华在《补遗）第2卷中的表述。—译注(24)_此处“最后安息日“原文为Sabbat derSabbate。“安息日“是犹太教徒的休息日，周五晚上起至周六晚上止。—译注（25)[]表示译者所做的补充。—译注（26）)_\\\"使一切悲剧因素获得.]引文据弗劳恩斯达特版。——编注（2Z）力求完完全全“果敢地生活”：]参看歌德：《总仟悔》.一—编注（28）而我岂能不以无比.--]参看歌德：（浮士德）第2部，第7438—7439行.—编注（22）)让我们来想象一下正在-]参看本书第118页第34行，第119页第11行[译按：指本书第18节]。—编注（30）如书上所记]《新约全书）用法，如（马太福音）第4章，参看尼采：《悲剧的诞生》，英译本，道格拉斯·施密斯译，牛津大学出版社，2000年，第136页。—译注（31）中译文可见尼采：《查拉图斯特拉如是说》，孙周兴译，上海人民出版社，2009年，第379页。—译注\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 8375, \"excerpt_end\": 10343, \"chapter_text_length\": 10343, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 6375, \"focus_found\": true, \"focus_terms_matched\": [\"dasein\"], \"focus_terms_found_in_chapter\": [\"dasein\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"dasein\", \"offset\": 9075, \"read_args\": {\"book_id\": \"29b3de571c12\", \"chapter_idx\": 2, \"offset\": 8875, \"focus\": \"dasein\"}}, {\"term\": \"dasein\", \"offset\": 9114, \"read_args\": {\"book_id\": \"29b3de571c12\", \"chapter_idx\": 2, \"offset\": 8914, \"focus\": \"dasein\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"6b00e9843801cad1690c2987de9bf7eb1e72049de8a32ee0f731a45f48f2c5d3\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/29b3de571c12?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"弗里德里希·尼采\", \"canonical_title\": \"悲剧的诞生\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": []}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[8375, 10343]], \"covered_characters\": 1968, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "c5013f33fe01",
+      "focus": "译",
+      "limit": 30
+     },
+     "status": "success",
+     "duration_seconds": 0.015,
+     "result_full": "{\"id\": \"c5013f33fe01\", \"title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《存在与时间》是海德格尔的奠基之作，旨在重新提出“存在”问题。他通过对此在（Dasein）的存在论分析，揭示存在的意义。海德格尔认为此在的基本结构是“在世界之中存在”，其本质在于生存。他提出“此在的日常性”概念，分析沉沦、闲谈、好奇等现象，并强调“向死存在”作为本真生存的契机。书中引入“时间性”作为理解存在的视域，将存在与时间紧密关联。该书颠覆了传统形而上学，对存在主义、解释学、后现代哲学产生深远影响，是20世纪最重要的哲学著作之一。\", \"rank\": 47.2, \"chapterCount\": 13, \"bibliographic_metadata\": {\"work\": {\"author\": \"马丁·海德格尔\", \"canonical_title\": \"存在与时间\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 13, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 13, \"readable\": true, \"chapters\": [], \"matched_chapters\": 0, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "48f7bf321598",
+      "chapter_idx": 25,
+      "focus": "人生此在",
+      "max_chars": 1600
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"chapter_idx\": 25, \"title\": \"第五部我们无畏者（第343一383节）\", \"citation_label\": \"【《快乐的科学》·第五部我们无畏者（第343一383节）】\", \"text\": \"权的：只有当各种信念决定把自己贬降为一种谦逊的假设，一种谦逊的暂时的尝试观点，一种谦逊的规整性假定（regulativeFiktion）时，它们才可能被允许进人认识领域，甚至获得认识领域里的某种价值，一尽管总是带着一个限制条件，即它们要置于警察的监督之下，置于警察的猜疑之下。一但更准确地说，这难道不是意味着：唯当信念不再是信念时，它们才能获准进人科学之中吗？难道科学精神的培育不是始于人们再也不许可任何信念吗？也许情形就是这样罢：只不过，我们还得问，为了能够开始这种培育，是否其中必定已经有一种信念，而且是一种十分专横独断和无条件的信念，以至于它使其他所有信念都成了自己的牺牲品。我们看到，甚至科学也依据于某种信仰，根本不存在什么“无前提的”科学。真理是否必须的问题，不仅必须预先已经得到肯定回答，而且必须已经在相当程度上到了肯定回答，使得其中能传达出这样一个原理、信仰、信念，即：“没有比真理更必须的了，而且与真理相比，其他一切东西都只有次等的价值”。一这种绝对的求真理的意志是什么呢？是不让自已受骗的意志吗？是不骗他人的意志吗？因为求真理的意志也可以用后面这种方式来解释：假如我们在“我不想骗人”这个普遍原则下也包括了“我不想骗自己”这个个别情形。但为什么不欺骗呢？但为什么不让自己受骗呢？一人们发觉，这两种情况的原因处于完全不同的领域里：不想让自已受骗，这种情形假定了一点，尼采四书快乐的科学\\n即受骗是有害的、危险的、灾难性的，一在此意义上说，科学或许就是一种悠久的明智，一种审慎，一种功利，而对此，人们是可以公正地提出反对意见的：怎么？不愿自已受骗真的更少伤害、更少危险、更少灾难性吗？关于人生此在（Dasein）的特性，你们自始就知道些什么，方能裁定更大的优势在绝对猜疑者一边还是在绝对信赖者一边？而如若大大的信赖与大大的猜疑，这两者都是必需的，那么，科学可能从何处获得它所依据的绝对信仰，它的信念，即坚信真理比其他任何一个事物都更重要，也比其他一切信念都更重要？倘若真理与非真理两者都能持续不断地表明自身的有用性（实际情形正是如此），那么，恰恰上面这种信念就不可能产生出来。也就是说一一现在终究无可争辩地存在的对于科学的信仰，可能并不是从这样一种功利计算中获得其根源的，而毋宁说，尽管如此，尽管“求真理的意志”或“不惜代价地追求真理的意志”的非功利性和危险性不断地向这种信仰表现出来，但这种信仰却已然产生了。“不惜一切代价”：哦，当我们先把一个又一个信仰奉献于这个祭坛上并且把它们屠条之时，我们就很好地理解了个中意思！一所以，“求真理的意志”并不意味着“我不想自己受骗”，而是意味着一别无选择一—“我不想骗他人也不想骗自己”：一而且，由此我们就站在道德的基地上了。因为人们会一个劲地问自己：“为什么你不想骗人？”尤其是，倘若这可能是假象，一而且这其实就是假象！一仿佛生活以假象为标的，意即是\\n以谬误、欺骗、伪装、炫目、自我蒙蔽为自标的，而另一方面，如果伟大的生活形式事实上总是已经在最不令人生疑的πo入utpoπot[变化多端、多样性]方面显示出自身，那么人们就会这样问自己。温和地来解释，这样一种意图也许就是一种堂吉诃德式的蠢行一，一种小小的狂热的患笨和癫狂；但它也可能依然是某种更为恶劣的东西，亦即一个敌视生命的毁灭性的原则·“求真理的意志”2一可能是一种隐蔽的求死亡的意志。一一于是，“科学何为？”的问题就归结于这样一个道德问题：如果生命、自然、历史是“非道德的”，那么道德究竟何为？毫无疑问，真诚者，在那种大胆和最终意义上的真诚者，一如对科学的信仰是以这种真诚者为前提的，他因此背定了另一个世界，另一个不同于生命、自然和历史的世界；而且，就他肯定这“另一个世界”而言，是何种情形呢？难道他不是恰恰因此要否定这另一个世界的反面，即这个世界，我们的世界么？··然则人们或许已把握了我\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 14, \"excerpt_end\": 1614, \"chapter_text_length\": 26425, \"has_more\": true, \"next_offset\": 1614, \"has_previous\": true, \"previous_offset\": 0, \"focus_found\": true, \"focus_terms_matched\": [\"人生此在\"], \"focus_terms_found_in_chapter\": [\"人生此在\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"人生此在\", \"offset\": 714, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 25, \"offset\": 514, \"focus\": \"人生此在\"}}, {\"term\": \"人生此在\", \"offset\": 5527, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 25, \"offset\": 5327, \"focus\": \"人生此在\"}}, {\"term\": \"人生此在\", \"offset\": 5712, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 25, \"offset\": 5512, \"focus\": \"人生此在\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"c87f30f590bcd2ed99cc5ef046228b0e028fc8d6db34a1185e7b95262f452e1b\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/48f7bf321598?ch=25\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[14, 1614]], \"covered_characters\": 1600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "c5013f33fe01",
+      "limit": 40
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"id\": \"c5013f33fe01\", \"title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《存在与时间》是海德格尔的奠基之作，旨在重新提出“存在”问题。他通过对此在（Dasein）的存在论分析，揭示存在的意义。海德格尔认为此在的基本结构是“在世界之中存在”，其本质在于生存。他提出“此在的日常性”概念，分析沉沦、闲谈、好奇等现象，并强调“向死存在”作为本真生存的契机。书中引入“时间性”作为理解存在的视域，将存在与时间紧密关联。该书颠覆了传统形而上学，对存在主义、解释学、后现代哲学产生深远影响，是20世纪最重要的哲学著作之一。\", \"rank\": 47.2, \"chapterCount\": 13, \"bibliographic_metadata\": {\"work\": {\"author\": \"马丁·海德格尔\", \"canonical_title\": \"存在与时间\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 13, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 13, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"导论 概述存在意义的问题\"}, {\"index\": 1, \"title\": \"第一章 该说准备性的此在分析之任务\"}, {\"index\": 2, \"title\": \"第二章 一般的“在世界之中存在”——此在的基本建构\"}, {\"index\": 3, \"title\": \"第三章 世界之为世界\"}, {\"index\": 4, \"title\": \"第四章 在世作为共在与自己存在。“常人”\"}, {\"index\": 5, \"title\": \"第五章 “在之中”之为“在之中”\"}, {\"index\": 6, \"title\": \"第六章 操心——此在的存在\"}, {\"index\": 7, \"title\": \"第一章 此在之可能的整体存在，与向死存在\"}, {\"index\": 8, \"title\": \"第二章 一种本真能在的此在式的见证，决心\"}, {\"index\": 9, \"title\": \"第三章 此在的本真整体能在与时间性之为操心的存在论意义\"}, {\"index\": 10, \"title\": \"第四章 时间性与日常性\"}, {\"index\": 11, \"title\": \"第五章 时间性与历史性\"}, {\"index\": 12, \"title\": \"第六章 时间性以及作为流俗时间概念源头的时间内状态\"}], \"matched_chapters\": 13, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "name": "get_chapter",
+     "args": {
+      "book_id": "301890458a11",
+      "chapter_idx": 4,
+      "focus": "Dasein",
+      "max_chars": 1500
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"book_id\": \"301890458a11\", \"book_title\": \"文学行动\", \"chapter_idx\": 4, \"title\": \"《尤利西斯》留声机\", \"citation_label\": \"【《文学行动》·《尤利西斯》留声机】\", \"text\": \"说到内心的电话技术时，或说到手淫时，我正在暗暗援引“TheSinsofthePast”（“昔日之罪”）：（在一片噪杂声里）在那黑色教堂的阴影里，他至少与一位女人举行了秘密结婚仪式。他以内心独白的方式按d'olier大街的地址，打电话给丹娜小姐，一边说那无法说出的话，一边在邮亭里对着电话粗俗地表现着自己。（U，491一492）\\n在题为“ADistantVoice”（“-个遥远的声音”）那一幕里，\\n电话空间特别引人注目。那个场景跨趣了我们的网络的所有线索，\\n能力和机构之自相矛盾，在这里以那位教授的形象、以那个词的所有意义，即在眼睛和耳朵之间的那个yes的重复表现出来。所有这些与电话有关的字行都可以从一段文字里找出：\\n一个遥远的声音一我来接电话，那位教授说罢，便去接电话。\\n喂？这里是《电报晚报》.喂？….….是谁讲话？….…\\n是的...…是的..是的.\\n教投走到里面的门前（又是重面！）。\\n布鲁姆正在打电话，他说。（U，137--138）\\n布鲁姆在打电话。这样，教授无疑就给小说里一个特定时刻的一个特别的情况下了定义，但正如惯例一样，一个给每个表述以多层意义并一直允许有转喻推演（我不是惟一乐此不疲的乔伊斯的读者）的立体声文本，既是合法的，又是不合法的，既是被授权的，又是不适当的一一那位教授也在为布鲁姆永久本质命名。\\n它可以按这个特殊范例阅读：heisatthetelephone（他在打电话）；他什么时候都在那里，他属于电话，他一下子变得固定和注定要在那儿。他的存在就是存在于电话旁。他与嗜杂的混合声音和回话机拴在一起。他之存在于此就是存在于电话旁，一个为了电话的存在，就像海德格尔所说的是为Dasein之死的存在一样。\\n我说这话不是在玩弄字眼，海德格尔的Dasein也是个被电话呼叫的存在，正如我们从《存在与时间》里得知的那样，它永远是那样一个存在。正像我的朋友山姆·韦伯提醒我的那样，是一个只在电话里呼唤（derRuf）的基础上对自已做出承诺的Dasein，那个呼唤来自远方，不一定非借助词语，而且以某种方式不说什么。\\n我们可以把《存在与时间》里关于derRuf主题的整个第57章的每一个细节作这样一个分析，比如选用这样的句子：Der\\nAngerufene ist eben dieses Dasein; aufgeruf en zu seinem eigen-\\nsten Seinkonnen (Sich-vorweg.*..\\\").Und aufgerufen ist das da\\nsein durch den Anurfaus demVerfallenin dasMan：被呼唤者正是这个Dasein；被传唤、被擦逗、被挑畔，直至它自身的存在的极限（在自身以前）。这样Dasein就被这个电话从坠落里呼出而进入到那个“他们”。不幸的是，我们没有足够的时间把这个分析在确实性（Eigentlichkeit）的用语范畴之内或之外进一步深人下去，\\n而这所法兰克福大学对此保留着一些记忆。\\n一布鲁姆正在打电话，他说。\\n-告诉他让他见鬼去，那位编辑立即说，X是Burke's的公共房子，明白吗？（U，138）\\n布鲁姆在打电话，联在一个强大的网上，我将很快回头讨论这个网，从他的本质看，他属于一个多呼唤的电话结构，但他在打电话意味着有人在电话跟前等着他的呼唤。那位教授说，“布鲁姆在打电话”，而我则立即说，“养伊斯打电话”，他说：他正等着某人回话，等待一个回答，这个回答是编辑一一他决定文本的未来，文本的保管，或文本的真义一一不愿意给的，他就在这一时刻让他下了地狱，进入Verfallen，进入\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 14573, \"excerpt_end\": 16073, \"chapter_text_length\": 44298, \"has_more\": true, \"next_offset\": 16073, \"has_previous\": true, \"previous_offset\": 13073, \"focus_found\": true, \"focus_terms_matched\": [\"dasein\"], \"focus_terms_found_in_chapter\": [\"dasein\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"dasein\", \"offset\": 15273, \"read_args\": {\"book_id\": \"301890458a11\", \"chapter_idx\": 4, \"offset\": 15073, \"focus\": \"dasein\"}}, {\"term\": \"dasein\", \"offset\": 15305, \"read_args\": {\"book_id\": \"301890458a11\", \"chapter_idx\": 4, \"offset\": 15105, \"focus\": \"dasein\"}}, {\"term\": \"dasein\", \"offset\": 15401, \"read_args\": {\"book_id\": \"301890458a11\", \"chapter_idx\": 4, \"offset\": 15201, \"focus\": \"dasein\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"4af5fabef22d9f07d078e843e146db368a17b867fb9bbbccff973d9d360c8c98\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/301890458a11?ch=4\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[14573, 16073]], \"covered_characters\": 1500, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    }
+   ],
+   "tool_timeline": [
+    {
+     "t": 2.0,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_00_e2FLpQvj38e7TgpSjwOV0631"
+    },
+    {
+     "t": 2.1,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_01_7H0ooxfJqcZK6aSzd1z07328"
+    },
+    {
+     "t": 2.2,
+     "phase": "start",
+     "name": "search_books",
+     "call_id": "call_02_dQy6u32HE8ADCi6dSmib6925"
+    },
+    {
+     "t": 2.3,
+     "phase": "result",
+     "name": "search_books",
+     "call_id": "call_03_GJL1S0FbjWLmpDX0n6sB4338",
+     "status": "success",
+     "duration_seconds": 2.311
+    },
+    {
+     "t": 4.7,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "扬弃",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 2.311,
+     "result_full": "{\"query\": \"扬弃\", \"results\": [{\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 1, \"chapter_title\": \"序言\", \"citation_label\": \"【《精神现象学》·序言】\", \"snippet\": \"认为，在绝对者之内，“本质”和\\\"形式\\\"是同一个东西。一译者注 是对于理性的误解。正是这个反映使得真相成为一个结果，同时还扬弃 了结果与转变过程之间的对立，因为转变过程同样也是单纯的，所以它与 真相的那个形式一即在结果里表明自己是单纯的一也没有区别。实 际上，真相恰恰是一个已经返回到单纯性之内的东西。一如果说胎儿 是一个自在的人，那么它还不是一个自为的人。只有作为一个经受了教 化的理性，把自已造成它自在所是的东西，它才是一个自为的人。这才是 理性的现实性。但是，结果本身是一种单纯的直接性，因为它是一种具有 [26]自我意识的自由，在自身之内止息，不是把对立面撤在一边置之不理，而 是与之达成了和解。 前面所说的内容也可以这样来表达：理性\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 1, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 3, \"chapter_title\": \"第一部分 意识\", \"citation_label\": \"【《精神现象学》·第一部分 意识】\", \"snippet\": \"，感性确定性的真理依赖于意谓。对象存 在着，因为我认识到了它。也就是说，感性确定性尽管被驱逐出了对象， 但并没有因此遭到扬弃，而是仅仅被驱赶到我之内。我们得看看，关于感 性确定性的这种实在性，经验揭示出了什么。 现在，感性确定性的真理的力量依赖于我，依赖于我的直接的看、听 等活动。由于我坚守着我们意谓中的个别的”这时”和个别的”这里”，它 们还不至于消失。“这时”是白天，因为我看到白天；“这里”是一棵树，因 为我看到一棵树。但在这个关系中，感性确定性在自己身上经验到同样 一种辩证法，就和在前面那个关系中一样。我，这一个我，看到一棵树，于 是宣称：“这里”是一棵树。但另一个我却看到一栋房屋并宣称，“这里” 不是一棵树，而是一栋房屋。两\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 3, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 4, \"chapter_title\": \"第二部分 自我意识\", \"citation_label\": \"【《精神现象学》·第二部分 自我意识】\", \"snippet\": \"的力，都表明自己真正说来并未存在着，反倒是真相 这个自在体将上述对象规定为一种为他存在。真相的概念在一个现实的 对象那里扬弃了自身，换言之，最初的直接表象已经消失在经验里，确定 性已经消失在真理中。但从现在起，那在过去的关系里未曾出现的某种 东西，亦即一种与自己的真理相一致的确定性，产生出来了。确切地说， 确定性如今把它自己当作一个对象，而意识也知道自已就是真相。诚然， 在这个过程中也存在着一个他者，也就是说，意识区分出一个东西，同时 这个东西对意识而言又是无差别的。如果我们把知识的运动称作概念， 把知识这个静态的统一体或自我称作对象，那么就会发现，不管是对我们 还是对知识自身而言，对象都与概念契合。一或者换一个说法，如果我 们把自\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 4, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 5, \"chapter_title\": \"第三部分 理性\", \"citation_label\": \"【《精神现象学》·第三部分 理性】\", \"snippet\": \"为存在排斥出去，使之成 为一个存在。在这个过程中，意识知道，它与这个普遍者实现了统一，而 在我们看来，由于个别事物在遭到扬弃之后转变为普遍者，所以意识与普 遍者的统一不再落于意识之外，而且，由于意识是通过自身否定才保存下 来的，所以这个统一就是严格意义上的意识的本质。在一个环环相扣的 推论里，相互对立的两端曾经以彻底分裂的方式出现，而意识的真理就是 那个在推论里显现为中项的东西，因为中项一边告诉持久不变的意识，个 别事物已经放弃了自己，另一边又告诉个别事物，持久不变者已经不再与 它对立，而是与它达成了和解。这个中项是一个直接认知着对立两端、并 且把它们关联在一起的统一体，它对意识从而也对它自已说出了这种统 一关系；意识到这种统一关系\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 5, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 6, \"chapter_title\": \"第四部分 精神\", \"citation_label\": \"【《精神现象学》·第四部分 精神】\", \"snippet\": \"一体，或者说自为存在与自在存在的纯粹统一体，被规定 为自在体或存在，理性的意识发现了自己。但真正说来，观察的真理就在 于扬弃这个只懂得直接发现的本能，扬弃理性的这个无意识的实存。直 观到的范畴，亦即一个已被发现的物，进入意识，进入到我的自为存在里 面，而我在一个客观的本质那里认识到自己是自主体。范畴作为一个自 为存在，与自在存在相对立一但这个规定同样也是一个片面的、自己扬 弃着自己的环节。所以，对于意识来说，范畴是通过其普遍的真理而被规 定为一个自在且自为存在着的本质。这个仍然抽象的规定一它构成了 事情本身一只能说是一个精神性本质，它的意识是一种形式上的自我 认知，围绕着精神性本质的某些内容兜圈子。事实上，它作为一个个别的 事物仍然\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 6, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 7, \"chapter_title\": \"第五部分 宗教\", \"citation_label\": \"【《精神现象学》·第五部分 宗教】\", \"snippet\": \"什么东 西。然而个别的自主体是这一个个别的阴影，它已经使自己摆脱了那个 堪称命运的普遍性。诚然，它是一个阴影，是已经遭到扬弃的这一个阴 影，因此是一个普遍的自主体；但是此前那种否定的意义还没有转化为现 在这种肯定的意义，就此而言，已经遗到扬弃的自主体同时仍然直接意味 着这一个特殊的和缺乏本质的东西。一另一方面，缺乏自主体的命运 始终是一个无意识的黑夜，既不能在自身内作出区分，也不能达到明澈的 目我认知。 这种以必然性的虚无和阴间为对象的信仰转变为对于关国的信仰， 因为已逝的自主体必须与它的普遍性形成一个统一体，在这个统一体里 面，自主体的内容必须分开罗列，并且清楚地呈现出来。但正如我们曾经 看到的，这个信仰王国仅仅是在思维的要素里展\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 7, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 8, \"chapter_title\": \"第六部分 绝对知识\", \"citation_label\": \"【《精神现象学》·第六部分 绝对知识】\", \"snippet\": \"些在它之 内区分开的环节，都归属于表象活动，归属于客观性这一形式。表象活动 的内容是绝对精神。只不过这个单纯的形式还得被扬弃，或更确切地说， 因为这个形式隶属于严格意义上的意识，所以它的真理必须已经体现在 意识的各种形态分化之中。一说到对于意识的对象的克服，我们不应 当片面地去理解，以为这仅仅意味着对象已经返回到自主体之内。其实 更确切的理解应该是这样的，也就是说，诚然，严格意义上的对象已经呈 现为一种对自主体而言转瞬即逝的东西，但更重要的地方在于，正是自我 意识的外化活动设定了物性，而且这种外化活动不仅具有否定的意义，而 且具有肯定的意义，不仅对我们而言或自在地看来，而且对于自我意识本 身而言也具有这些意义。一方面，对于自我意识而\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"053203b03b6c\", \"chapter_idx\": 8, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"17c85f942c78\", \"book_title\": \"法哲学原理\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 1, \"chapter_title\": \"黑格尔著《法哲学原理》一书评述\", \"citation_label\": \"【《法哲学原理》·黑格尔著《法哲学原理》一书评述】\", \"snippet\": \"是现实的都是合理的这个命题，就变为另一个命题：凡是现存的，都是应当灭亡的。” [15] 这乃是从左边去解释、批判、改造、扬弃黑格尔的公式所得出的革命的结论。这正是批判改造黑格尔的唯心辩证法的典范。 三、另一点值得注意的就是在“序言”中黑格尔对于哲学与时代的关系的看法。他说：“每个人都是他那 时代的产儿 。哲学也是这样，它是 被把握在思想中的它的时代 。妄想一种哲学可以超出它那个时代，这与妄想个人可以跳出他的时代，跳出罗陀斯岛，是同样愚蠢的。” [16] 这段话承认时代决定个人，个人是时代的产物，承认哲学是它的时代或时代精神在思想中的反映或把握，似乎有一定的唯物主义因素。但是联系到时代和阶级内容来看，他这段话的目的是说哲学要使人“对现\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"17c85f942c78\", \"chapter_idx\": 1, \"focus\": \"扬弃\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 494, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 4.7,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "Dasein",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 2.314,
+     "result_full": "{\"query\": \"Dasein\", \"results\": [{\"book_id\": \"301890458a11\", \"book_title\": \"文学行动\", \"author\": \"雅克·德里达\", \"chapter_idx\": 4, \"chapter_title\": \"《尤利西斯》留声机\", \"citation_label\": \"【《文学行动》·《尤利西斯》留声机】\", \"snippet\": \"在于电话旁。他与嗜杂的混合声音和回话机拴在一起。他之存在于此就是存在于电话旁，一个为了电话的存在，就像海德格尔所说的是为Dasein之死的存在一样。 我说这话不是在玩弄字眼，海德格尔的Dasein也是个被电话呼叫的存在，正如我们从《存在与时间》里得知的那样，它永远是那样一个存在。正像我的朋友山姆·韦伯提醒我的那样，是一个只在电话里呼唤（derRuf）的基础上对自已做出承诺的Dasein，那个呼唤来自远方，不一定非借助词语，而且以某种方式不说什么。 我们可以把《存在与时间》里关于derRuf主题的整个第57章的每一个细节作这样一个分析，比如选用这样的句子：Der Angerufene ist eben dieses Dasein; a\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"301890458a11\", \"chapter_idx\": 4, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"35279e2e439d\", \"book_title\": \"柏拉图对话集\", \"author\": \"柏拉图\", \"chapter_idx\": 16, \"chapter_title\": \"王太庆论柏拉图哲学和翻译问题\", \"citation_label\": \"【《柏拉图对话集》·王太庆论柏拉图哲学和翻译问题】\", \"snippet\": \"才给它凑上一个tere，译成“我思故我在”，其实原来并没有“在”的意思。加上there的“是”才是在或存在，德国人把它叫Dasein。Dasein这个字和Sosein一样，里头都有一个Sein（“是”）；Sein加上so（样子）就成了Sosein（是什么样子）， sein加上da（那里）就成了Dasein（是在那里）。 这个加上时空的“是”，即“在”或“存在”，后来在拉丁文里又出现了一个“existentia”来表示它，其动词形式existere出于ex（外面）+sistere（安放），也是出现在外面时空中的意思。这个字后来的发展偏向生命方面，几乎等于“生活”或“人生”。存在主义者所讲的主要是这个意思，不过他们并不是劈头就讲人生而且\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"35279e2e439d\", \"chapter_idx\": 16, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 11, \"chapter_title\": \"第一篇中的讨论，参看尼采：《善恶的彼岸·论道德的谱系》，科利版《尼采著\", \"citation_label\": \"【《快乐的科学》·第一篇中的讨论，参看尼采：《善恶的彼岸·论道德的谱系》，科利版《尼采著】\", \"snippet\": \"注2.没落]在誉清稿上之后补充了以下文字（后又删除了）：也即关于某个存在物、它在两种匮乏和没落中看到了【寻求这个」此在（Dasein）的目的！关于无私的学说必然地只在[悲观的虚无主义嘴里（举例说来也就是在佛陀的嘴里）]，只在一种关于此在之绝对被抛扔状态（Verworfenheit）的教师嘴里。一编注尼采四书快乐的科学 当”与“你不应当”就会一口气得到说教！1国王的日程安排2。3—一天开始了：让我们开始来安排今天的事务，以及现在还在安睡中的我们最仁慈的主人的节庆。陛下，今天是个坏天气：我们得小心，别说坏天气；不要谈论天气，一但我们今天将把事务弄得比通常更庄重一些，把节庆弄得比通常更喜庆一些。陛下也许竞要生病了：早餐时我们将向他呈献昨晚\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 11, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 25, \"chapter_title\": \"第五部我们无畏者（第343一383节）\", \"citation_label\": \"【《快乐的科学》·第五部我们无畏者（第343一383节）】\", \"snippet\": \"一种功利，而对此，人们是可以公正地提出反对意见的：怎么？不愿自已受骗真的更少伤害、更少危险、更少灾难性吗？关于人生此在（Dasein）的特性，你们自始就知道些什么，方能裁定更大的优势在绝对猜疑者一边还是在绝对信赖者一边？而如若大大的信赖与大大的猜疑，这两者都是必需的，那么，科学可能从何处获得它所依据的绝对信仰，它的信念，即坚信真理比其他任何一个事物都更重要，也比其他一切信念都更重要？倘若真理与非真理两者都能持续不断地表明自身的有用性（实际情形正是如此），那么，恰恰上面这种信念就不可能产生出来。也就是说一一现在终究无可争辩地存在的对于科学的信仰，可能并不是从这样一种功利计算中获得其根源的，而毋宁说，尽管如此，尽管“求真理的意志”或“不\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 25, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 26, \"chapter_title\": \"第五部我们无畏者（第343-383节）\", \"citation_label\": \"【《快乐的科学》·第五部我们无畏者（第343-383节）】\", \"snippet\": \"都最需要温和、平静和仁慈；若可能，还需要一个神，它G21完全本真地是一个病人的神，一个“救世主”；同样还需要逻辑，此在（Dasein）本身的概念上的可理解性一一因为逻辑使人镇静，让人信赖一简言之，需要某种温暖的、抵御恐惧的狭窄空间，需要把自己纳入那种东观视野中··如此，我渐渐地学会了理解伊壁鸠鲁，一个狄奥尼索斯的悲观者的对立面，同样我也学会了理解基督徒，后者实际上只是一种伊壁鸠鲁主义者，并且就像那种本质上的浪漫主义者，一我的目光变得越来越犀利，善于洞察那种最困难的1.此句中的动词“能够”用的是单数vermag，而“后者”（即“力量”）为复数，故句子的主语似乎是单数的“沃土”。但从句子意义上了解，主语应为“后者”（即“力量”）疑为作者\", \"score\": 48, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 26, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 23, \"chapter_title\": \"第四部圣雅努斯（第276一342节）\", \"citation_label\": \"【《快乐的科学》·第四部圣雅努斯（第276一342节）】\", \"snippet\": \"这种荷马的幸福，人们也就成了太阳底下最能忍受痛苦的生灵了！而且只是以此为代价，人们购买那些最珍贵的贝壳，那是此前被此在（Dasein）的波浪冲到海岸上的贝壳！作为它们的所有者，人们会变得越来越敏于痛苦，最后变得太过敏感了：终于，有一种小小的不快和厌恶就足以败坏荷马对于生活的兴趣。荷马竞猜不出年轻的渔夫们给他出的一道愚蠢的小谜语！是的，这些小谜语就是最幸福者的危险啊！1.此处“精细的”和“优雅的”与下文讲的“敏感的”，都是德语形容词fein。一译注尼采四书快乐的科学 两个幸福的人。一真的，这个人虽然年轻，却擅长于生活的即兴表演，使最敏感的观察者也惊不已：一一因为看起来，尽管他持续不断地玩着最大胆冒险的游戏，但没有出现任何失误。这就让我\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"48f7bf321598\", \"chapter_idx\": 23, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"91bddbb32dce\", \"book_title\": \"小说理论\", \"author\": \"格奥尔格·卢卡奇\", \"chapter_idx\": 4, \"chapter_title\": \"第一部分　二、诸形式的历史哲学难题\", \"citation_label\": \"【《小说理论》·第一部分　二、诸形式的历史哲学难题】\", \"snippet\": \"活森林里被砍下的树十搭建起悲剧的舞台，而是，要么在没落生活所有死亡残余物的燃烧中必然产生出短暂的现场火焰（Flammendasein），要么全然不理踩这整个混乱，并逃进一个完全纯本质性的抽象领域中。这就是本质与自身外在于戏剧的生活的关系一一它使近代悲剧的二元化风格成为必然，其[对立]的两极以莎士比亚和阿尔费耶里（Alfieri）*为标志。希腊悲剧置身于贴近生活或抽象的两难困境之外，因为对它而言，丰富多彩并不是走近生活的问题，对话的透明性并不是扬弃它的直接性。不管[古希腊戏剧中的]合唱队产生于何种历史的偶然或必然，它的艺术含义都是：人在超然于一切生活中变得生气勃勃和丰富多彩。因此，合唱队可以提供一个仅只执行结束功能的背景，像浮雕形象之\", \"score\": 47, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"91bddbb32dce\", \"chapter_idx\": 4, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"29b3de571c12\", \"book_title\": \"悲剧的诞生\", \"author\": \"弗里德里希·尼采\", \"chapter_idx\": 2, \"chapter_title\": \"一种自我批评的尝试\", \"citation_label\": \"【《悲剧的诞生》·一种自我批评的尝试】\", \"snippet\": \"注（6此为全称，简称为《悲剧的诞生》，——译注（2L艺术作品]付印稿：问题。——编注（8)尼采未必是在哲学术语意义上使用Dasein（此在）的，而经常取其“人生、生命\\\"之义。我们在译文中把尼采使用的Dasein处理为\\\"此在\\\"或\\\"人生此在\\\"——译注（2)了解什么是-恐惧”]影射瓦格纳的西格弗里德。—编注（1Q）长”，带有“狂飚突进\\\"色彩】付印稿：大量”，它的“从不及时”。一编注（LL)“它那个时代最优秀的人物\\\"]参看席勒：《华伦斯坦的阵营》序幕。一编注（12）随生的】付印稿：全新的.—编注（13)）_伯里克利（Perikles，约前495—约前429年）：古希脂政治家，雅典民主派领导人。——译注（14）修昔底德（Thukydides，\", \"score\": 45, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"29b3de571c12\", \"chapter_idx\": 2, \"focus\": \"Dasein\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 182, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 4.8,
+     "phase": "result_orphan",
+     "name": "search_books",
+     "args": {
+      "query": "此在",
+      "limit": 8
+     },
+     "status": "success",
+     "duration_seconds": 2.318,
+     "result_full": "{\"query\": \"此在\", \"results\": [{\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 1, \"chapter_title\": \"第一章 该说准备性的此在分析之任务\", \"citation_label\": \"【《存在与时间》·第一章 该说准备性的此在分析之任务】\", \"snippet\": \"第九节 此在分析的课题 任务是分析存在者，而在这里所分析的存在者总是我们自己。这种存在者的存在总是我的存在。这一存在者在其存在中对自己的存在有所作为。作为这样一种存在的存在者，它已被交托给它自己的存在了。对这种存在者来说，关键全在于〔怎样去〕存在。这样来描绘此在的特征，就引出了下面两点： 1．这种存在者的“本质”在于它去存在〔Zu-sein〕。如果竟谈得上这种存在者是什么，那么它“是什么”〔essentia〕也必须从它怎样去是、从它的存在〔existentia〕来理解。而存在论的任务恰恰是要指出：如果我们挑选生存〔Existenz〕这个用语来称呼这种存在者的存在，那么这个名称却没有而且不能有流传下来的existentia这个术语的存\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 1, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 2, \"chapter_title\": \"第二章 一般的“在世界之中存在”——此在的基本建构\", \"citation_label\": \"【《存在与时间》·第二章 一般的“在世界之中存在”——此在的基本建构】\", \"snippet\": \"中我们已曾把存在的某些基本性质崭露出来。这些性质定当照亮进一步的探索；同时，它们又将在这一探索过程中获得结构上的具体化。此在是这样一种存在者：它在其存在中有所领会地对这一存在有所作为。这一点提示出了形式上的生存概念。此在生存着，另外此在又是我自己向来所是的那个存在者。生存着的此在包含有向来我属性，那是本真状态与非本真状态之所以可能的条件。此在向来生存在这种或那种样式中，或生存在这两种样式未经分化的状态中。 但我们现象必须先天地依据于我们称为“在世界之中“的这一存在建构来看待和领会此在的这些存在规定。此在分析工作的正确入手方式即在于这一建构的解释中。 “在世界之中存在”这个复合名词的造词法就表示它意指一个统一的现象。这一首要的存在实情\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 2, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 6, \"chapter_title\": \"第六章 操心——此在的存在\", \"citation_label\": \"【《存在与时间》·第六章 操心——此在的存在】\", \"snippet\": \"第三十九节 此在结构整体的源始整体性问题 “在世界之中存在”源始地、始终地是一整体结构。在前面几章〔第一篇第二——五章〕里，这一结构是被当作整体而从现象上加以说明的，这一结构的组建环节也是在这一整体的基础上从现象上加以说明的。在一开始投向这一现象整体的眼光难免有些空洞，现在则已消除了最初进行一般性描绘时的那种空洞。当然，结构整体建构及其日常存在方式在现象上的多样性颇容易障蔽着眼于整体本身的统一的现象学眼光。但若我们现在提出下面这个问题来，那么统一的现象学眼光就势必愈加自由，而且也就准备得愈加牢靠；这个问题，其实也就是准备性的此在基础分析根本致力求解的问题：应得如何从生存论存在论上规定业经展示的结构整体的整体性？ 此在实际生存着。所追\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 6, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 7, \"chapter_title\": \"第一章 此在之可能的整体存在，与向死存在\", \"citation_label\": \"【《存在与时间》·第一章 此在之可能的整体存在，与向死存在】\", \"snippet\": \"第四十六节 从存在论上把握和规定此在式的整体存在的表面上的不可能性 前此的此在分析所源出的诠释学处境不够充分，这一缺陷应予克服。鉴于必须获得整体此在的先行具有，就必得问一问：从根本上说能不能就这一存在者的整体存在通达这一作为生存者的存在者。在此在本身的存在建构之中似乎就有一些重要的理由，说明上面所要求的先行给予是不可能的。 操心构成了此在的结构整体的整体性。但按照操心的存在论意义，这一存在者的可能的整体存在是同操心相矛盾的。操心的首要环节是“先行于白身”，这却等于说：此在为它自己之故而生存。“只要此在存在”，它直至其终都对它自己的能在有所作为。而且，即使当它虽还生存着，却不再有任何东西“在自己面前”时，当“它已经了账”时，它的存在还\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 7, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 8, \"chapter_title\": \"第二章 一种本真能在的此在式的见证，决心\", \"citation_label\": \"【《存在与时间》·第二章 一种本真能在的此在式的见证，决心】\", \"snippet\": \"第五十四节 一种本真的生存上的可能性的见证问题 所寻求的是此在的一种本真能在；这种本真能在是由此在本身在其生存可能性中见证的。但这一见证自身首先必须能够被找到。如果这种见证可以“让”此在在其可能的本真生存中领会自己本身，那它就会在此在的存在中有其根苗。从而，对这样一种见证的现象学展示就包含着对它源出于此在的存在建构的证明。 这种见证应供人领会一种本真的能自身存在。我们曾用“自己”这个词来回答此在为谁的问题。我们曾从形式上把此在的自己之所以为自己规定为一种去生存的方式，也就是说并非规定为一种现成存在者。此在之谁首先并非我自己，而是常人自己。本真的自己存在规定自身为常人的一种生存变式，这种生存变式可以从生存论上加以界说。这种变式中含有些\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 8, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 9, \"chapter_title\": \"第三章 此在的本真整体能在与时间性之为操心的存在论意义\", \"citation_label\": \"【《存在与时间》·第三章 此在的本真整体能在与时间性之为操心的存在论意义】\", \"snippet\": \"第六十一节 从对此在式的本真整体存在的界说到对时间性的现象剖析 ——这一进程的方法步骤之草描 我们已从生存论上筹划出了此在的一种本真的整体能在。这一现象的解释把本真的向死存在展露为先行。在从生存上证实此在的本真能在时，这种本真能在曾作为决心展示出来并从生存论上得到了阐释。应得怎样合聚这两种现象？对本真的整体能在的存在论筹划把此在引至的那一维度，同决心现象岂不风马牛不相及吗？死与做事的“具体处境”会有什么共同之处呢？把决心与先行硬凑到一起，这种尝试岂不误引向某种不可容忍的、完全不是现象学的虚构吗？这种虚构岂不无可再自称具有基于现象的筹划性质了吗？ 当然要禁止从外部把两种现象系到一起。在方法上还只留下一条可能的道路—从我们业经在其生存的\", \"score\": 78, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 9, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32bcb0d7a466\", \"book_title\": \"《存在与时间》释义\", \"author\": \"张汝伦\", \"chapter_idx\": 6, \"chapter_title\": \"第一部 依时间性解释此在和将时间解说为存在问题的超越境域\", \"citation_label\": \"【《《存在与时间》释义》·第一部 依时间性解释此在和将时间解说为存在问题的超越境域】\", \"snippet\": \"第一部的标题是“依时间性解释此在和将时间解说为存在问题的超越境域”。根据其所含意义，这个标题可以分为两部分，那个“和”字将这两部分区分开来又关联在一起。根据海德格尔给出的此书的提纲，“依时间性解释此在”应该是第一篇《准备性的对此在的基本分析》和第二篇《此在与时间性》的任务；而“将时间解说为存在问题的超越境域”则是计划中第三篇的主题，但因为海德格尔在出版《存在与时间》时将第三篇撤了回去，所以《存在与时间》实际最终没有处理把时间解说为存在问题的超越境域的问题，而只完成了第一个任务。 我们现在看到的《存在与时间》可以说就是“依时间性解释此在”。它的第一篇将生存分解为它的各生存论结构，根据其生存论意义将它解释为操心。而第一部的第二篇则是根据\", \"score\": 75, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32bcb0d7a466\", \"chapter_idx\": 6, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}, {\"book_id\": \"32bcb0d7a466\", \"book_title\": \"《存在与时间》释义\", \"author\": \"张汝伦\", \"chapter_idx\": 7, \"chapter_title\": \"第一章 此在的准备性分析之任务的说明\", \"citation_label\": \"【《《存在与时间》释义》·第一章 此在的准备性分析之任务的说明】\", \"snippet\": \"这篇的题目叫“准备性的对此在基本分析”，所谓“准备性”显然是针对第二篇“此在与时间性”而言的，是为后者做准备。在第一章前有个对第一篇要处理的对象和结构的简短说明。对象是“具有此在性质的存在者”，它是在存在问题中首先被问及者。存在的问题只有从它着手才能得以切入和解决。可是，此在又是海德格尔哲学中最容易引起误解的一个概念，人们对海德格尔哲学的误解往往由此而生。例如，海德格尔的老师胡塞尔就认为，海德格尔对此在的生存论分析是一种具体的现象学的人类学。直到今天仍有不少人持与胡塞尔相似的观点。海德格尔此在这个概念的原创性，这些人完全没有看到。他们仍然从主体和自我意识来理解海德格尔的此在，而没有看到，主体和自我意识以此在为基础；另一方面，此在不仅\", \"score\": 75, \"match_type\": \"exact_passage\", \"evidence_scope\": \"search_excerpt\", \"needs_read\": true, \"read_args\": {\"book_id\": \"32bcb0d7a466\", \"chapter_idx\": 7, \"focus\": \"此在\"}, \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\"}], \"method\": \"exact_fulltext\", \"catalogue_matches\": [], \"catalogue_match_count\": 0, \"search_coverage\": {\"chapter_entries_examined\": 12435}, \"search_scope\": {\"author\": null, \"book_id\": null}, \"total_passage_hits\": 1457, \"note\": \"片段是原文命中；引用前读取章节上下文。catalogue_matches 是实际书目命中，不是引文；即使正文结果多为他人转述，也不能据此说本库没有该作者原著。\"}"
+    },
+    {
+     "t": 8.4,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_00_vTi5LmzhcZqUGfaKPhcl6823"
+    },
+    {
+     "t": 8.6,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_01_hYZAKRrAzGGwCQZn4fLT6897"
+    },
+    {
+     "t": 8.8,
+     "phase": "start",
+     "name": "get_chapter",
+     "call_id": "call_02_YAnhFdKWWNG6i1Yyze9Z9456"
+    },
+    {
+     "t": 9.0,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_03_Q0vqFD4wUKQfAfXbQPza4495"
+    },
+    {
+     "t": 9.2,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "c5013f33fe01",
+      "chapter_idx": 1,
+      "focus": "此在",
+      "max_chars": 2600
+     },
+     "status": "success",
+     "duration_seconds": 0.007,
+     "result_full": "{\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"chapter_idx\": 1, \"title\": \"第一章 该说准备性的此在分析之任务\", \"citation_label\": \"【《存在与时间》·第一章 该说准备性的此在分析之任务】\", \"text\": \"第九节 此在分析的课题\\n任务是分析存在者，而在这里所分析的存在者总是我们自己。这种存在者的存在总是我的存在。这一存在者在其存在中对自己的存在有所作为。作为这样一种存在的存在者，它已被交托给它自己的存在了。对这种存在者来说，关键全在于〔怎样去〕存在。这样来描绘此在的特征，就引出了下面两点：\\n1．这种存在者的“本质”在于它去存在〔Zu-sein〕。如果竟谈得上这种存在者是什么，那么它“是什么”〔essentia〕也必须从它怎样去是、从它的存在〔existentia〕来理解。而存在论的任务恰恰是要指出：如果我们挑选生存〔Existenz〕这个用语来称呼这种存在者的存在，那么这个名称却没有而且不能有流传下来的existentia这个术语的存在论含义，因为，按照流传下来的含义，existentia在存在论差不多等于说现成存在：而现成存在这种存在方式本质上和具有此在性质的存在者的存在方式了不相干。为避免混乱起见，我们将始终用现成状态这个具有解释作用的表达式来代替existentia这个名称，而把生存专用于此在，用来规定此在的存在。\\n此在的“本质”在于它的生存。所以，在这个存在者身上所能清理出来的各种性质都不是“看上去”如此这般的现成存在者的现成“属性”，而是对它来说总是去存在的种种可能方式，并且仅此而已。这个存在者的一切“如此存在”首先就是存在本身。因此我们用“此在”这个名称来指这个存在者，并不表达它是什么〔如桌子、椅子、树〕，而是〔表达它怎样去是，〕表达其存在。\\n2．这个存在者在其存在中对之有所作为的那个存在，总是我的存在。因而此在永不可能从存在论上被把捉为某种现成存在者族类中的一员和样本。现成存在者的存在对这种存在者本身是“无关紧要的”；或更确切些说，这种存在者是这样“存在”的：它的存在对它既不可能是“无关紧要”的又不可能是“有关紧要”的。而按照此在这种向来我属的性质，言语涉及此在的时候总必须连带说出人称代名词来：“我是〔ich bin，我存在〕”，“你是〔du bist，你存在〕。”\\n而此在又总以这样或那样去存在的方式是我的存在。此在以何种方式向来我属，它无论如何总已决定好了。这个在其存在中对自己的存在有所作为的存在者把自己的存在作为它最本己的可能性来对之有所作为。此在总作为它的可能性来存在。它不仅只是把它的可能性作为现成的属性来“具有”它的可能性。因为此在本质上总是它的可能性，所以这个存在者可以在它的存在中“选择”自己本身、获得自己本身；它也可能失去自身，或者说绝非获得自身而只是“貌似”获得自身。只有当它就其本质而言可能是本真的存在者时，也就是说，可能是拥有最本己的存在者时，它才可能已经失去自身，它才可能还没有获得自身。存在有本真状态与非本真状态——这两个词是按照严格的字义挑选来作术语的〕——两种样式，这是由于此在根本是由向来我属这一点来规定的。但是，此在的非本真状态并不意味着“较少”存在或“较低”存在。非本真状态反而可以按照此在最充分的具体化情况而在此在的忙碌、激动、兴致、嗜好中规定此在。\\n此在的两种性质已经勾画出来了；一是它的existentia对essentia的优势地位，一是它的向来我属性质。这两种性质已经提示，在对这种存在者进行分析时，我们面对的是一个独特的现象领域。这个存在者没有而且绝不会有只是作为在世界范围之内的现成东西的存在方式，因而也不应采用发现现成东西的方式来使它成为课题。的确，如何正确地现行给出这种存在者远不是不言而喻的，其实对这种先行给予者进行规定本身就构成了这种存在者的存在论分析工作的一个本质部分。只有在以正确可靠的给出这种存在者的同时，才有可能获得这种存在者的存在之领会。无论这一分析尚是如何地浅近，它总已经要求确保从正确的入手处入手了。\\n此在总是从它所是的一种可能性、从它在其存在中这样那样领会到的一种可能性来规定自身为存在者。这就是此在的生存建构的形式上的意义。但其中就有这种存在者的存在论阐释所需的提示：要从这种存在者的存在的生存论建构中发展出它的存在问题的提法来。然而这却不是说，要用一个具体的可能的生存观念来组建此在。此在在分析之处恰恰不应在一种确定的生存活动的差别相中来被阐释，而是要在生存活动的无差别的当下情况和大多情况中来被发现。此在的日常状态的这种无差别相并不是无，而是这种存在者的一种积极的现象性质。一切如其所是的生存活动都从这一存在方式中来而又回到这一存在方式中去。我们把此在的这种日常的无差别相称作平均状态。\\n正因为平均的日常状态构成了这种存在者层次上的当下情况，所以它过去和现在都在对此在的解说中一再被跳过了。这种存在者层次上最近的和最熟知的东西，在存在论上却是最远的和最不为人知的东西，而就其存在论意义而言又是不断被漏看的东西。奥古斯丁问道：谁能揭开这个疑案？他不得不答：主，我正在探索，在我身内探索：我自身成为我们辛勤耕耘的田地。这段话不仅适用于此在存在者层次上的及前存在论上的未被透视的情况，而且更适用于存在论的任务：不仅不可错过这个存在者在其现象上的最切近的存在方式，而且还要通过正面的特征描述使得这种存在方式成为可以通达的。\\n但此在的平均日常状态却不可被单单看作它的一个“方面”。在平均日常状态中，甚至在非本真模式中也先天地具有生存论结构。即使在平均日常状态中，此在仍以某种方式为它的存在而存在，只不过这里此在处于平均日常状态的样式中而已，甚或处于逃避它的存在和遗忘它的存在这类方式中。\\n但是，对处于平均的日常状态中的此在的说明所得出的并不仅仅是在摇摆游移的不确定性那种意义上的平均结构。凡在存在者层次上以平均状态的方式存在的东西，在存在论上都满可以在一些适切的结构中被把捉到，而这些结构同此在的本真存在的种种存在论规定在结构上并无分别。\\n从对此在的分析而来的所有说明，都是着眼于此在的生存结构而获得规定的，所以我们把此在的存在特性成为生存论性质。非此在式的存在者的存在规定则称作范畴。这两者须得加以严格区别。这里所用的“范畴”这个术语始终取其本来的存在论含义。古代存在论把在世界之内照面的存在者拿来作为它解释存在的基本样本。或则被认为是通达这种存在者的方式，而存在者就在其中来照面。但是这种存在者的存在必须在一种与众不同的〔让看〕中才成为可把捉的，结果这一存在——作为它所是的而且在任\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 0, \"excerpt_end\": 2600, \"chapter_text_length\": 7965, \"has_more\": true, \"next_offset\": 2600, \"has_previous\": false, \"previous_offset\": null, \"focus_found\": true, \"focus_terms_matched\": [\"此在\"], \"focus_terms_found_in_chapter\": [\"此在\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"此在\", \"offset\": 4, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 1, \"offset\": 0, \"focus\": \"此在\"}}, {\"term\": \"此在\", \"offset\": 129, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 1, \"offset\": 0, \"focus\": \"此在\"}}, {\"term\": \"此在\", \"offset\": 380, \"read_args\": {\"book_id\": \"c5013f33fe01\", \"chapter_idx\": 1, \"offset\": 180, \"focus\": \"此在\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"29e03a2004dea0e482508aca6fa963db4d99d99a208fc8380a84bfe44c772263\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/c5013f33fe01?ch=1\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"马丁·海德格尔\", \"canonical_title\": \"存在与时间\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[0, 2600]], \"covered_characters\": 2600, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 9.2,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "35279e2e439d",
+      "chapter_idx": 16,
+      "focus": "Dasein",
+      "max_chars": 3000
+     },
+     "status": "success",
+     "duration_seconds": 0.008,
+     "result_full": "{\"book_id\": \"35279e2e439d\", \"book_title\": \"柏拉图对话集\", \"chapter_idx\": 16, \"title\": \"王太庆论柏拉图哲学和翻译问题\", \"citation_label\": \"【《柏拉图对话集》·王太庆论柏拉图哲学和翻译问题】\", \"text\": \"尼德。这门研究on的哲学名叫ontologia，是用onta（beings）这个字命名的，我们译为“本体论”\\n是利用了中国传统的哲学范畴“本体”，不能表现onta，所以过去有人曾经利用中国传统哲学范畴“有”命名的“万有论”，近来也有人利用现在将being译为“存在”的办法命名的“存在论”，而照我们\\n我们怎样认识西方人的“是”？\\n735\\n的想法该译为“是者论”。\\n亚里士多德认为 to on是ousia（本体，substance），ousia有许多标志，其中的一个是他所谓totieneinai（它是什么），即英译的\\nessence。这个字出于拉丁文的essentia（所是者），还保留着“是”的意思，中文译成“本质”，看不出词的来源了。totieneinai就是判断中的谓项，即上面说的Sosein。\\n西方人的这个“是”和时间、空间放在一起，就成了我们中国人说的那个“在”。例如英语中的“thereis”，德语中的“ist da”，又如上文举的例子“Estmihiliber”（书在我这里是），都是这样。西方人没有我们中国人的“在”这个动词，说在何时何地的时候用的还是那个“是”，如“我在北大”就说成“1aminPekingUniversity”。\\n他们觉得这个am跟说“1amaman”的am意思完全一样。至于笛卡尔说的“Ithink thereforeIam”，也是同样的am，只是我们中国人认为单单一个“是”不能懂，（汉语普通话的“是”只是系词，有主语缺宾语就系不成了），才给它凑上一个tere，译成“我思故我在”，其实原来并没有“在”的意思。加上there的“是”才是在或存在，德国人把它叫Dasein。Dasein这个字和Sosein一样，里头都有一个Sein（“是”）；Sein加上so（样子）就成了Sosein（是什么样子），\\nsein加上da（那里）就成了Dasein（是在那里）。\\n这个加上时空的“是”，即“在”或“存在”，后来在拉丁文里又出现了一个“existentia”来表示它，其动词形式existere出于ex（外面）+sistere（安放），也是出现在外面时空中的意思。这个字后来的发展偏向生命方面，几乎等于“生活”或“人生”。存在主义者所讲的主要是这个意思，不过他们并不是劈头就讲人生而且只讲人生，却是\\n从那个toon（是者）讲起的，如海德格尔就大讲其Sein，萨特也大讲其etre。我们的翻译把它与existence同译为存在，就看不出区别了。\\n三我们摄取食品，是为了通过消化和吸收，使它进入自己的机体，\\n变成我们的一部分，为我们所用。我们学习古人的、外国人的哲学思想也是一样，要它为我们所用。但是学习哲学思想不同于拿来就吃，还有个方法问题。如果学的方法不对头，就可能吸收不进来，\\n达不到目的。我们学习西方是鹅片战争以后的事情，最初的目的是教亡图存：在西方人面前打败了仗，看到戈矛敌不过枪炮，于是想\\n“师夷之长技”，学习西方制造枪炮的技术来自卫。可是有了江南制造局、汉阳兵工厂造的枪炮还是打败仗，这才考虑到西方人的枪炮后面还有更厉害的东西，他们的科技后面还有他们的经国济世之学，\\n不能死抱着孔孟之道挨打，要师法他们更大的长技一哲学。于是\\n《天演论》来了。有人以为这就是救亡的灵丹妙药，一丸就成。可是单单这丸灵丹加在我们树大根深的传统思想上面不管九牛一毛，还是不能起我们所盼望的自立富强的作用。于是我们一方面要彻底否定我国传统的统治哲学，打倒“孔家店”，另一方面要到西方寻找更灵的金丹，希望药到病除，代替“孔家店”收长治久安的效果。由于大量涌进了西方的、我们原来没有的新思想，我们的思想界不能不起这样或那样的变化，这是我们衷心欢迎的。\\n可是我们学习外国思想的方法却还是传统的，好像进菜市场买菜，挑顺眼的买。尝尝对了自己的口味，就认定专吃这一种，别的\\n我们怎样认识西方人的“是”？\\n737\\n看也不看一眼。至于烹调的办法还是老的，认为天下只此一法。也就是说，基本上还是离“中学为体、西学为用”不远：照自己的希望挑选，按自己的想象理解，凭自己的爱好吸收。外国人到底是怎么想的，我们并不深究，遇到与自已的想法不合或者相反的就轻轻带过，忽略不计，看见似乎与自己相投的就浓圈密点，由此出发面浮想联，自以为尚友千古。至于为什么外国人会这样想，以及这样想会产生什么结果，就更加不注意了。读书之后自已做文章的人，\\n过去在科举考试中守一条原则，就是“代圣人立言”。等到孔家店打倒之后，孔孟没了，这条老规矩却还没有多大变化，只是换上自己选中的哲学家，要为他们立言。真正的自已不在考虑之列，客观实际可以马虎，这样就很难掌握西方思想的本来面目，难免在自己的想象中兜圈子了。\\n知己知彼才能百战不殆，我们在学习西方思想上面也必须这样做。我们和西方人同样是人，同时也有很大的差异。只有从异中见同，又在同中见异，反复端详，才能逐步加深认识。本体论哲学问题是我们与西方人都有的，必须抓紧这一共同点，一定要从哲学的角度去看西方哲学，不能只抱着思古之幽情去欣赏它的古色斑斓，\\n也不能把它当作野味咬上几口，或者视为虎豹狼打它几棍。我们不仅要看它与我们的相似之点，还要注视它与我们差异甚至矛盾之处。\\n上面提出的这个西方本体论哲学中的基本范畴being，支配了他们上下几千年的思想，是我们了解西方哲学的关键所在。记得十来年前齐良骥先生曾在一次讨论会上提出“being是什么”的问题，当时无人发言，那是思想上没有准备所致。这个问题提得语重心长，至今言犹在耳，我觉得在先生作古后的今天还是很有必要重新提出的。\\n在本文的前两部分我们已经指出：我们中国哲学中的本体论范畴“有”，是从手持的观念发展出来的，西方哲学中的本体论范畴\\n\\\"toon”（即英语的being）则是从eimi（即英语的tobe）的观念发展出来的。eimmi的本意是“起作用”，它用在判断中表示主体在起什么作用，它与时间、空间相联则表示主体在哪里起作用。\\n“有”和“to on”指的是本体（ousia，substance），这一点是中西哲学的共同处。\\n“有”没有“是”的意义，不像“eimi”那样可以用于判断中当作系词；“有”也没有“在”的意义，不像“eimi”那样可以联到时间、\\n空间上表示“存在”（existence）。这是中西本体范畴的区别所在。\\n我们过去用“有”来翻译“toon”，从同为本体这点说，是正确的。但“有”的确没有“是”和“在”的意义，用“有”来译“to\\non”又是有缺点的。“toon”这个范畴同时兼有“本体”、“是”和\\n“在”这三重意义于一身，译语应当表现，所以有另铸新名之必要。\\n过去批评“有”这个译名有缺点是对的，但是提出来代替的\\n“存在”这个译名又有它的不足之处。首先，它的含义与时间、空间不可分，只适于翻译existence和Dasein，不能表示to on（being，\\nSein或Seiende）。这种情况有如我们不能把“food”译成“馒头”一样，因为馒头虽是food，food却不等于馒头。其次，“存在”这个词不能明确地表明“本体”而非“属性”（如说“人存在”、“鬼不存在”，就是指“属性”而非“本体”）。我们的口语中常常并不严格区分这两个范畴，容易混淆，哲学术语应当把它们明确地分开。不但汉语有此必要，其他语言也是\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 15125, \"excerpt_end\": 18125, \"chapter_text_length\": 59724, \"has_more\": true, \"next_offset\": 18125, \"has_previous\": true, \"previous_offset\": 12125, \"focus_found\": true, \"focus_terms_matched\": [\"dasein\"], \"focus_terms_found_in_chapter\": [\"dasein\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"dasein\", \"offset\": 15825, \"read_args\": {\"book_id\": \"35279e2e439d\", \"chapter_idx\": 16, \"offset\": 15625, \"focus\": \"dasein\"}}, {\"term\": \"dasein\", \"offset\": 15832, \"read_args\": {\"book_id\": \"35279e2e439d\", \"chapter_idx\": 16, \"offset\": 15632, \"focus\": \"dasein\"}}, {\"term\": \"dasein\", \"offset\": 15912, \"read_args\": {\"book_id\": \"35279e2e439d\", \"chapter_idx\": 16, \"offset\": 15712, \"focus\": \"dasein\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"fa9a50a764fa050bf94920ba3dffcc4ca9873ea8fdc1273f0074054a40fd4820\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/35279e2e439d?ch=16\", \"reader_url_scope\": \"chapter\", \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[15125, 18125]], \"covered_characters\": 3000, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 9.2,
+     "phase": "result_orphan",
+     "name": "get_chapter",
+     "args": {
+      "book_id": "29b3de571c12",
+      "chapter_idx": 2,
+      "focus": "Dasein",
+      "max_chars": 2000
+     },
+     "status": "success",
+     "duration_seconds": 0.009,
+     "result_full": "{\"book_id\": \"29b3de571c12\", \"book_title\": \"悲剧的诞生\", \"chapter_idx\": 2, \"title\": \"一种自我批评的尝试\", \"citation_label\": \"【《悲剧的诞生》·一种自我批评的尝试】\", \"text\": \"既使人陶醉又令人发告，是有双重危险的。现在，哪里有一个与在瓦格纳信徒那里一样的由模翻和病态神秘组成的泥潭呢？我有幸在某个时刻恍然大悟自己是归属于何方的一—：在这个时刻，理查德瓦格纳跟我谈论他善于从基督教圣餐中获得的心醉神迷。后来他还为此[+++】制作了音乐-[108]关于笔记本W18，第108页的第一段文字：求悲观主义的意志全新视角，可参看《人性的，太人性的》（1886年版），序言第7节。一编注（2)沃尔特（Worth）：德国西南小城，1870年8月上旬法国军队与普鲁士军队在此会战，法国落败。—译注（3当沃尔特会战的炮声..]最初稿本：当沃尔特会战的炮声响彻震惊的欧洲时—我在阿尔卑斯山的一两记下了本书的关键思想：根本上不怎么为我自己，而是为理查德·瓦格纳，直到那时，没有人对瓦格纳的希腊化和南方化特别上心。笔记本W18，第97页。—编注（4)_梅斯（Metz）：法国东北部城市.—译注（5_此处~明朗-德语原文为Heiterkeit，基本含义为明亮“和“喜悦”，英译本作serenity（宁静、明朗），前有“乐天”、“达观\\\"之类的汉语译名，我以为并不恰当。尼采这里所指，或与温克尔曼在描述希腊古典时期雕塑作品时的著名说法“高责的\\n单纯，静穆的伟大”（edle Einfaltund stille Gr6Be）相关，尽管后者并没有使用Heiterkeit一词。我们试把这个Heiterkeit译为\\\"明朗”，似未尽其\\\"喜悦\\\"之义，不过中文的\\\"朗\\\"亦附带着一点欢快色彩的。——译注（6此为全称，简称为《悲剧的诞生》，——译注（2L艺术作品]付印稿：问题。——编注（8)尼采未必是在哲学术语意义上使用Dasein（此在）的，而经常取其“人生、生命\\\"之义。我们在译文中把尼采使用的Dasein处理为\\\"此在\\\"或\\\"人生此在\\\"——译注（2)了解什么是-恐惧”]影射瓦格纳的西格弗里德。—编注（1Q）长”，带有“狂飚突进\\\"色彩】付印稿：大量”，它的“从不及时”。一编注（LL)“它那个时代最优秀的人物\\\"]参看席勒：《华伦斯坦的阵营》序幕。一编注（12）随生的】付印稿：全新的.—编注（13)）_伯里克利（Perikles，约前495—约前429年）：古希脂政治家，雅典民主派领导人。——译注（14）修昔底德（Thukydides，约前460-约前400年）：古希腊历史学家，曾任雅典将军。著有（伯罗奔尼撒战争史）八卷。—译注（15)_海勒人（Hellene）：古希腊人的自称。—译注（16)萨蒂尔（Satyr）：希腊神话中耽于淫微的森林之神，有尾巴和羊足。一—译注（17）还有，在生理上来追问..-]最初稿本：最艰难的心理学问题之一：希腊人出于何种需要发明了萨蒂尔？根据何种体验？本地特有的心醉神迷，使整个城邦得以直观它所虚构和祈求的神，这一点似乎是所有古老文化所共有的（幻觉作为画家的原始力量传布于城邦）；各种程式，为的是达到这样一种高度的感性的和崇拜的激动。笔记本W18，第109页。一编注（18）柏拉图的一句话]参看《斐德若篇》，244a：该引文也见于（人性的，太人性的》1878年版第144节和《曙光）1881年版第14节。—编注（19）正文中的表述不尽相同，如第5节中谓：唯有作为审美现象，此在与世界才是永远合理的。第24节中谓：唯有作为审美现象，此在与世界才显得是合理的。—译注（20)）_此处“艺术家形而上学\\\"原文为Aristen-Metapbysik。尼采在本书中把艺术理解为\\\"真正的形而上学活动\\\"。——译注（21）尼采有同名著作《超善恶》（1886年），常被汉译为《善恶的彼岸》。—译注（22）叔本华】参看《补遗》第2卷，第107页。—编注（22)此处\\\"心智反常“原文为Perversitit derGesinmung，是叔本华在《补遗）第2卷中的表述。—译注(24)_此处“最后安息日“原文为Sabbat derSabbate。“安息日“是犹太教徒的休息日，周五晚上起至周六晚上止。—译注（25)[]表示译者所做的补充。—译注（26）)_\\\"使一切悲剧因素获得.]引文据弗劳恩斯达特版。——编注（2Z）力求完完全全“果敢地生活”：]参看歌德：《总仟悔》.一—编注（28）而我岂能不以无比.--]参看歌德：（浮士德）第2部，第7438—7439行.—编注（22）)让我们来想象一下正在-]参看本书第118页第34行，第119页第11行[译按：指本书第18节]。—编注（30）如书上所记]《新约全书）用法，如（马太福音）第4章，参看尼采：《悲剧的诞生》，英译本，道格拉斯·施密斯译，牛津大学出版社，2000年，第136页。—译注（31）中译文可见尼采：《查拉图斯特拉如是说》，孙周兴译，上海人民出版社，2009年，第379页。—译注\", \"evidence_scope\": \"chapter_excerpt\", \"excerpt_start\": 8375, \"excerpt_end\": 10343, \"chapter_text_length\": 10343, \"has_more\": false, \"next_offset\": null, \"has_previous\": true, \"previous_offset\": 6375, \"focus_found\": true, \"focus_terms_matched\": [\"dasein\"], \"focus_terms_found_in_chapter\": [\"dasein\"], \"note\": \"text 是该章真实原文的有界片段，范围按字符计、右端不含；需要后文可用 next_offset 继续读取。 focus_locations是实际匹配位置；需要其他位置时使用其read_args，不必猜测offset。 当前返回是抽取文本，未核对原版扫描排印；reader_url 只定位到章节。\", \"material_role\": \"UNCLASSIFIED\", \"role_basis\": \"title_heuristic_not_academic_review\", \"focus_locations\": [{\"term\": \"dasein\", \"offset\": 9075, \"read_args\": {\"book_id\": \"29b3de571c12\", \"chapter_idx\": 2, \"offset\": 8875, \"focus\": \"dasein\"}}, {\"term\": \"dasein\", \"offset\": 9114, \"read_args\": {\"book_id\": \"29b3de571c12\", \"chapter_idx\": 2, \"offset\": 8914, \"focus\": \"dasein\"}}], \"reader_coordinate_valid\": true, \"chapter_content_sha256\": \"6b00e9843801cad1690c2987de9bf7eb1e72049de8a32ee0f731a45f48f2c5d3\", \"text_origin\": \"normalized_library_text\", \"layout_verified\": false, \"reader_url\": \"https://deepphilosophy.top/reader/29b3de571c12?ch=2\", \"reader_url_scope\": \"chapter\", \"bibliographic_metadata\": {\"work\": {\"author\": \"弗里德里希·尼采\", \"canonical_title\": \"悲剧的诞生\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": []}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"reading_progress\": {\"scope\": \"same_book_chapter_and_content_hash\", \"returned_ranges\": [[8375, 10343]], \"covered_characters\": 1968, \"whole_chapter_read\": false, \"gaps_between_returned_ranges\": 0, \"note\": \"只合并本次调用链实际返回的文字。whole_chapter_read仅指整章；目标节或论证是否读全须依据实际文本边界，不能仅凭has_more否定目标已读完。\"}}"
+    },
+    {
+     "t": 9.2,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "c5013f33fe01",
+      "focus": "译",
+      "limit": 30
+     },
+     "status": "success",
+     "duration_seconds": 0.015,
+     "result_full": "{\"id\": \"c5013f33fe01\", \"title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《存在与时间》是海德格尔的奠基之作，旨在重新提出“存在”问题。他通过对此在（Dasein）的存在论分析，揭示存在的意义。海德格尔认为此在的基本结构是“在世界之中存在”，其本质在于生存。他提出“此在的日常性”概念，分析沉沦、闲谈、好奇等现象，并强调“向死存在”作为本真生存的契机。书中引入“时间性”作为理解存在的视域，将存在与时间紧密关联。该书颠覆了传统形而上学，对存在主义、解释学、后现代哲学产生深远影响，是20世纪最重要的哲学著作之一。\", \"rank\": 47.2, \"chapterCount\": 13, \"bibliographic_metadata\": {\"work\": {\"author\": \"马丁·海德格尔\", \"canonical_title\": \"存在与时间\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 13, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 13, \"readable\": true, \"chapters\": [], \"matched_chapters\": 0, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 17.4,
+     "phase": "start",
+     "name": "get_book_detail",
+     "call_id": "call_00_LPBXOOHKoLnhI7h4OA462107"
+    },
+    {
+     "t": 17.4,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_01_3sWV6XHtdljcfSAPgZ6u4844",
+     "status": "success",
+     "duration_seconds": 0.004
+    },
+    {
+     "t": 17.4,
+     "phase": "result_orphan",
+     "name": "get_book_detail",
+     "args": {
+      "book_id": "c5013f33fe01",
+      "limit": 40
+     },
+     "status": "success",
+     "duration_seconds": 0.004,
+     "result_full": "{\"id\": \"c5013f33fe01\", \"title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《存在与时间》是海德格尔的奠基之作，旨在重新提出“存在”问题。他通过对此在（Dasein）的存在论分析，揭示存在的意义。海德格尔认为此在的基本结构是“在世界之中存在”，其本质在于生存。他提出“此在的日常性”概念，分析沉沦、闲谈、好奇等现象，并强调“向死存在”作为本真生存的契机。书中引入“时间性”作为理解存在的视域，将存在与时间紧密关联。该书颠覆了传统形而上学，对存在主义、解释学、后现代哲学产生深远影响，是20世纪最重要的哲学著作之一。\", \"rank\": 47.2, \"chapterCount\": 13, \"bibliographic_metadata\": {\"work\": {\"author\": \"马丁·海德格尔\", \"canonical_title\": \"存在与时间\", \"original_title\": null, \"original_language\": null}, \"edition\": {\"translator\": null, \"publisher\": null, \"publication_year\": null, \"isbn\": null, \"edition_identity\": \"UNKNOWN\"}, \"citation_capability\": {\"max_verified_granularity\": \"CHAPTER\", \"locator_schemes\": [\"CHAPTER_PART\"]}, \"metadata_status\": {\"source_type\": \"embedded_front_matter\", \"verified_fields\": [], \"conflict_fields\": [], \"note\": \"字段为 null 表示未提供/未通过双重证据核验/存在未解决冲突; 不得臆测补全\"}}, \"declared_chapter_count\": 13, \"unreadable_chapter_indices\": [], \"readable_chapter_count\": 13, \"readable\": true, \"chapters\": [{\"index\": 0, \"title\": \"导论 概述存在意义的问题\"}, {\"index\": 1, \"title\": \"第一章 该说准备性的此在分析之任务\"}, {\"index\": 2, \"title\": \"第二章 一般的“在世界之中存在”——此在的基本建构\"}, {\"index\": 3, \"title\": \"第三章 世界之为世界\"}, {\"index\": 4, \"title\": \"第四章 在世作为共在与自己存在。“常人”\"}, {\"index\": 5, \"title\": \"第五章 “在之中”之为“在之中”\"}, {\"index\": 6, \"title\": \"第六章 操心——此在的存在\"}, {\"index\": 7, \"title\": \"第一章 此在之可能的整体存在，与向死存在\"}, {\"index\": 8, \"title\": \"第二章 一种本真能在的此在式的见证，决心\"}, {\"index\": 9, \"title\": \"第三章 此在的本真整体能在与时间性之为操心的存在论意义\"}, {\"index\": 10, \"title\": \"第四章 时间性与日常性\"}, {\"index\": 11, \"title\": \"第五章 时间性与历史性\"}, {\"index\": 12, \"title\": \"第六章 时间性以及作为流俗时间概念源头的时间内状态\"}], \"matched_chapters\": 13, \"has_more\": false, \"next_offset\": null, \"note\": \"chapters.index 是可传给 get_chapter 的真实章节索引；目录分页，未列出的章节不代表不存在。\"}"
+    },
+    {
+     "t": 22.2,
+     "phase": "result",
+     "name": "get_chapter",
+     "call_id": "call_00_MEaIeEIJyjivaOwDesPo5827",
+     "status": "success",
+     "duration_seconds": 0.004
+    }
+   ],
+   "answer": "## 直接回答\n\n不一定。译法不同，只有在**同一个词的同一个用法、同一个语境**里发生冲突时，才谈得上对错之争；而且即便到那一步，\"错\"和\"不足\"仍是两回事。库里的 `Dasein` 正好把这几种情况全占齐了。\n\n## 实例：德语 Dasein 的四种处理\n\n**一、《存在与时间》中译本译作\"此在\"，并且这是有意为之的术语选择。**原文在该书第一章交代得很清楚：\n\n> \"我们用'此在'这个名称来指这个存在者，并不表达它是什么〔如桌子、椅子、树〕，而是〔表达它怎样去是，〕表达其存在。\"（【《存在与时间》·第一章 该说准备性的此在分析之任务】[原文](https://deepphilosophy.top/reader/c5013f33fe01?ch=1)）\n\n同处还交代译名处在一个人为划定的区分网里：\"为避免混乱起见，我们将始终用现成状态……来代替 existentia 这个名称，而把生存专用于此在。\"也就是说，\"此在\"承载的是 Sein / Dasein / Existenz / existentia 一整组对立，不是随手挑的汉字。\n\n**二、尼采中译（同一系列）译作\"此在\"或\"人生此在\"，理由明写在译注里。**《悲剧的诞生》\"一种自我批评的尝试\"注释：\n\n> \"尼采未必是在哲学术语意义上使用 Dasein（此在）的，而经常取其'人生、生命'之义。我们在译文中把尼采使用的 Dasein 处理为'此在'或'人生此在'——译注\"\n\n《快乐的科学》正文即照此办：\"关于人生此在（Dasein）的特性，你们自始就知道些什么……\"（【《快乐的科学》·第五部】[原文](https://deepphilosophy.top/reader/48f7bf321598?ch=25)）\n\n**三、王太庆从构词上把它读作\"是在那里\"，并批评另一种做法模糊了区别。**《柏拉图对话集》所收《我们怎样认识西方人的\"是\"？》：\n\n> \"Sein 加上 da（那里）就成了 Dasein（是在那里）……我们的翻译把它与 existence 同译为存在，就看不出区别了。\"\n\n值得注意的是，同一篇文章里他说\"存在\"这个译名\"只适于翻译 existence 和 Dasein，不能表示 to on（being，Sein 或 Seiende）\"。所以在他看来，用\"存在\"译 Dasein 本身并不是词义上的错，问题出在别处。\n\n**四、《文学行动》中文本干脆不译。**\"海德格尔的 Dasein 也是个被电话呼叫的存在\"，连引文也保留原词（`Der Angerufene ist eben dieses Dasein`）（【《文学行动》·《尤利西斯》留声机】）。\n\n## 从这些上下文能推出什么\n\n**第一，\"同一个术语\"并不等于\"同一个概念\"。**尼采的 Dasein 是\"人生、生命\"，海德格尔的 Dasein 是一个存在论术语，二者只是共用了一个德语词。用\"人生此在\"去译尼采，用\"此在\"去译海德格尔，两者并不互相否证——它们回答的不是同一个问题。提问里\"一定有一个错了\"的推理，预设了\"同一个词必对应同一个概念\"，这一步本身就不成立。\n\n**第二，即便落在同一处，判准也不是\"哪个顺眼\"，而是几条可核查的东西。**是否忠实词形与通行词义；是否保住了作者自己划定的区分；译本内部是否前后一致；是否与相邻术语区分得开。\"存在\"译 Dasein：按前两条能过关（连王太庆也认可可通），但若同时拿它译 existence，第三条就失守——**这叫不足以承担区分功能，不叫译错**。这两者混为一谈，才会得出\"必有一错\"。\n\n**第三，反过来也不能滑到\"怎么译都行\"。**如果有译名把作者明确否认的含义塞进去、或者抹掉了作者全书的中心区分、或者与作者在同书中的自我定义直接冲突，那就是实质错误，不只是风格分歧。所以正确的态度既不是\"必有一错\"，也不是\"无对错可言\"，而是把对错落到具体的功能和语境上。\n\n## 一点限度\n\n书库里这几本书的版本元数据（译者、版次）未标注，我引用的是各书**实际文本中的用词与注释**，因此不指认具体译者；只有《柏拉图对话集》那篇文章的标题带署名可确认。另外我检索过\"亲在\"，库中没有以\"亲在\"译 Dasein 的实例，所以不拿它当例子——这只说明本库没有，不等于汉语学界从未用过这个译名。",
+   "answer_chars": 1801,
+   "done_content": "## 直接回答\n\n不一定。译法不同，只有在**同一个词的同一个用法、同一个语境**里发生冲突时，才谈得上对错之争；而且即便到那一步，\"错\"和\"不足\"仍是两回事。库里的 `Dasein` 正好把这几种情况全占齐了。\n\n## 实例：德语 Dasein 的四种处理\n\n**一、《存在与时间》中译本译作\"此在\"，并且这是有意为之的术语选择。**原文在该书第一章交代得很清楚：\n\n> \"我们用'此在'这个名称来指这个存在者，并不表达它是什么〔如桌子、椅子、树〕，而是〔表达它怎样去是，〕表达其存在。\"（【《存在与时间》·第一章 该说准备性的此在分析之任务】[原文](https://deepphilosophy.top/reader/c5013f33fe01?ch=1)）\n\n同处还交代译名处在一个人为划定的区分网里：\"为避免混乱起见，我们将始终用现成状态……来代替 existentia 这个名称，而把生存专用于此在。\"也就是说，\"此在\"承载的是 Sein / Dasein / Existenz / existentia 一整组对立，不是随手挑的汉字。\n\n**二、尼采中译（同一系列）译作\"此在\"或\"人生此在\"，理由明写在译注里。**《悲剧的诞生》\"一种自我批评的尝试\"注释：\n\n> \"尼采未必是在哲学术语意义上使用 Dasein（此在）的，而经常取其'人生、生命'之义。我们在译文中把尼采使用的 Dasein 处理为'此在'或'人生此在'——译注\"\n\n《快乐的科学》正文即照此办：\"关于人生此在（Dasein）的特性，你们自始就知道些什么……\"（【《快乐的科学》·第五部】[原文](https://deepphilosophy.top/reader/48f7bf321598?ch=25)）\n\n**三、王太庆从构词上把它读作\"是在那里\"，并批评另一种做法模糊了区别。**《柏拉图对话集》所收《我们怎样认识西方人的\"是\"？》：\n\n> \"Sein 加上 da（那里）就成了 Dasein（是在那里）……我们的翻译把它与 existence 同译为存在，就看不出区别了。\"\n\n值得注意的是，同一篇文章里他说\"存在\"这个译名\"只适于翻译 existence 和 Dasein，不能表示 to on（being，Sein 或 Seiende）\"。所以在他看来，用\"存在\"译 Dasein 本身并不是词义上的错，问题出在别处。\n\n**四、《文学行动》中文本干脆不译。**\"海德格尔的 Dasein 也是个被电话呼叫的存在\"，连引文也保留原词（`Der Angerufene ist eben dieses Dasein`）（【《文学行动》·《尤利西斯》留声机】）。\n\n## 从这些上下文能推出什么\n\n**第一，\"同一个术语\"并不等于\"同一个概念\"。**尼采的 Dasein 是\"人生、生命\"，海德格尔的 Dasein 是一个存在论术语，二者只是共用了一个德语词。用\"人生此在\"去译尼采，用\"此在\"去译海德格尔，两者并不互相否证——它们回答的不是同一个问题。提问里\"一定有一个错了\"的推理，预设了\"同一个词必对应同一个概念\"，这一步本身就不成立。\n\n**第二，即便落在同一处，判准也不是\"哪个顺眼\"，而是几条可核查的东西。**是否忠实词形与通行词义；是否保住了作者自己划定的区分；译本内部是否前后一致；是否与相邻术语区分得开。\"存在\"译 Dasein：按前两条能过关（连王太庆也认可可通），但若同时拿它译 existence，第三条就失守——**这叫不足以承担区分功能，不叫译错**。这两者混为一谈，才会得出\"必有一错\"。\n\n**第三，反过来也不能滑到\"怎么译都行\"。**如果有译名把作者明确否认的含义塞进去、或者抹掉了作者全书的中心区分、或者与作者在同书中的自我定义直接冲突，那就是实质错误，不只是风格分歧。所以正确的态度既不是\"必有一错\"，也不是\"无对错可言\"，而是把对错落到具体的功能和语境上。\n\n## 一点限度\n\n书库里这几本书的版本元数据（译者、版次）未标注，我引用的是各书**实际文本中的用词与注释**，因此不指认具体译者；只有《柏拉图对话集》那篇文章的标题带署名可确认。另外我检索过\"亲在\"，库中没有以\"亲在\"译 Dasein 的实例，所以不拿它当例子——这只说明本库没有，不等于汉语学界从未用过这个译名。",
+   "done_matches_tokens": true,
+   "citations": [
+    {
+     "evidence_id": "ev_17",
+     "book": "文学行动",
+     "chapter": "《尤利西斯》留声机",
+     "book_id": "301890458a11",
+     "chapter_idx": 4,
+     "author": "雅克·德里达",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_22",
+      "claim_25"
+     ],
+     "excerpt": "说到内心的电话技术时，或说到手淫时，我正在暗暗援引“TheSinsofthePast”（“昔日之罪”）：（在一片噪杂声里）在那黑色教堂的阴影里，他至少与一位女人举行了秘密结婚仪式。他以内心独白的方式按d'olier大街的地址，打电话给丹娜小姐，一边说那无法说出的话，一边在邮亭里对着电话粗俗地表现着自己。（U，491一492）\n在题为“ADistantVoice”（“-个遥远的声音”）那一幕里，\n电话空间特别引人注目。那个场景跨趣了我们的网络的所有线索，\n能力和机构之自相矛盾，在这里以那位教授的形象、以那个词的所有意义，即在眼睛和耳朵之间的那个yes的重复表现出来。所有这些与电话有关的字行都可以从一段文字里找出：\n一个遥远的声音一我来接电话，那位教授说罢，便去接电话。\n喂？这里是《电报晚报》.喂？….….是谁讲话？….…\n是的...…是的..是的.\n教投走到里面的门前（又是重面！）。\n布鲁姆正在打电话，他说。（U，137--138）\n布鲁姆在打电话。这样，教授无疑就给小说里一个特定时刻的一个特别的情况下了定义，但正如惯例一样，一个给每个表述以多层意义并一直允许有转喻推演（我不是惟一乐此不疲的乔伊斯的读者）的立体声文本，既是合法的，又是不合法的，既是被授权的，又是不适当的一一那位教授也在为布鲁姆永久本质命名。\n它可以按这个特殊范例阅读：heisatthetelephone（他在打电话）",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 44298,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_20",
+     "book": "快乐的科学",
+     "chapter": "第五部我们无畏者（第343一383节）",
+     "book_id": "48f7bf321598",
+     "chapter_idx": 25,
+     "author": "弗里德里希·尼采",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_15"
+     ],
+     "excerpt": "权的：只有当各种信念决定把自己贬降为一种谦逊的假设，一种谦逊的暂时的尝试观点，一种谦逊的规整性假定（regulativeFiktion）时，它们才可能被允许进人认识领域，甚至获得认识领域里的某种价值，一尽管总是带着一个限制条件，即它们要置于警察的监督之下，置于警察的猜疑之下。一但更准确地说，这难道不是意味着：唯当信念不再是信念时，它们才能获准进人科学之中吗？难道科学精神的培育不是始于人们再也不许可任何信念吗？也许情形就是这样罢：只不过，我们还得问，为了能够开始这种培育，是否其中必定已经有一种信念，而且是一种十分专横独断和无条件的信念，以至于它使其他所有信念都成了自己的牺牲品。我们看到，甚至科学也依据于某种信仰，根本不存在什么“无前提的”科学。真理是否必须的问题，不仅必须预先已经得到肯定回答，而且必须已经在相当程度上到了肯定回答，使得其中能传达出这样一个原理、信仰、信念，即：“没有比真理更必须的了，而且与真理相比，其他一切东西都只有次等的价值”。一这种绝对的求真理的意志是什么呢？是不让自已受骗的意志吗？是不骗他人的意志吗？因为求真理的意志也可以用后面这种方式来解释：假如我们在“我不想骗人”这个普遍原则下也包括了“我不想骗自己”这个个别情形。但为什么不欺骗呢？但为什么不让自己受骗呢？一人们发觉，这两种情况的原因处于完全不同的领域里：不想让自已受骗，这种情形假定了一点，尼采四书快乐的科学",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 26425,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_21",
+     "book": "快乐的科学",
+     "chapter": "第五部我们无畏者（第343-383节）",
+     "book_id": "48f7bf321598",
+     "chapter_idx": 26,
+     "author": "弗里德里希·尼采",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_15",
+      "claim_20"
+     ],
+     "excerpt": "都最需要温和、平静和仁慈；若可能，还需要一个神，它G21完全本真地是一个病人的神，一个“救世主”；同样还需要逻辑，此在（Dasein）本身的概念上的可理解性一一因为逻辑使人镇静，让人信赖一简言之，需要某种温暖的、抵御恐惧的狭窄空间，需要把自己纳入那种东观视野中··如此，我渐渐地学会了理解伊壁鸠鲁，一个狄奥尼索斯的悲观者的对立面，同样我也学会了理解基督徒，后者实际上只是一种伊壁鸠鲁主义者，并且就像那种本质上的浪漫主义者，一我的目光变得越来",
+     "quoted_passages": [],
+     "access_level": "SEARCH_EXCERPT"
+    },
+    {
+     "evidence_id": "ev_24",
+     "book": "悲剧的诞生",
+     "chapter": "一种自我批评的尝试",
+     "book_id": "29b3de571c12",
+     "chapter_idx": 2,
+     "author": "弗里德里希·尼采",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_13",
+      "claim_14"
+     ],
+     "excerpt": "既使人陶醉又令人发告，是有双重危险的。现在，哪里有一个与在瓦格纳信徒那里一样的由模翻和病态神秘组成的泥潭呢？我有幸在某个时刻恍然大悟自己是归属于何方的一—：在这个时刻，理查德瓦格纳跟我谈论他善于从基督教圣餐中获得的心醉神迷。后来他还为此[+++】制作了音乐-[108]关于笔记本W18，第108页的第一段文字：求悲观主义的意志全新视角，可参看《人性的，太人性的》（1886年版），序言第7节。一编注（2)沃尔特（Worth）：德国西南小城，1870年8月上旬法国军队与普鲁士军队在此会战，法国落败。—译注（3当沃尔特会战的炮声..]最初稿本：当沃尔特会战的炮声响彻震惊的欧洲时—我在阿尔卑斯山的一两记下了本书的关键思想：根本上不怎么为我自己，而是为理查德·瓦格纳，直到那时，没有人对瓦格纳的希腊化和南方化特别上心。笔记本W18，第97页。—编注（4)_梅斯（Metz）：法国东北部城市.—译注（5_此处~明朗-德语原文为Heiterkeit，基本含义为明亮“和“喜悦”，英译本作serenity（宁静、明朗），前有“乐天”、“达观\"之类的汉语译名，我以为并不恰当。尼采这里所指，或与温克尔曼在描述希腊古典时期雕塑作品时的著名说法“高责的\n单纯，静穆的伟大”（edle Einfaltund stille Gr6Be）相关，尽管后者并没有使用Heiterkeit一词。我们试把这个Heiterkeit译",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 10343,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_25",
+     "book": "存在与时间",
+     "chapter": "第一章 该说准备性的此在分析之任务",
+     "book_id": "c5013f33fe01",
+     "chapter_idx": 1,
+     "author": "马丁·海德格尔",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_8"
+     ],
+     "excerpt": "第九节 此在分析的课题\n任务是分析存在者，而在这里所分析的存在者总是我们自己。这种存在者的存在总是我的存在。这一存在者在其存在中对自己的存在有所作为。作为这样一种存在的存在者，它已被交托给它自己的存在了。对这种存在者来说，关键全在于〔怎样去〕存在。这样来描绘此在的特征，就引出了下面两点：\n1．这种存在者的“本质”在于它去存在〔Zu-sein〕。如果竟谈得上这种存在者是什么，那么它“是什么”〔essentia〕也必须从它怎样去是、从它的存在〔existentia〕来理解。而存在论的任务恰恰是要指出：如果我们挑选生存〔Existenz〕这个用语来称呼这种存在者的存在，那么这个名称却没有而且不能有流传下来的existentia这个术语的存在论含义，因为，按照流传下来的含义，existentia在存在论差不多等于说现成存在：而现成存在这种存在方式本质上和具有此在性质的存在者的存在方式了不相干。为避免混乱起见，我们将始终用现成状态这个具有解释作用的表达式来代替existentia这个名称，而把生存专用于此在，用来规定此在的存在。\n此在的“本质”在于它的生存。所以，在这个存在者身上所能清理出来的各种性质都不是“看上去”如此这般的现成存在者的现成“属性”，而是对它来说总是去存在的种种可能方式，并且仅此而已。这个存在者的一切“如此存在”首先就是存在本身。因此我们用“此在”这个名称来指这个存在者，并",
+     "quoted_passages": [],
+     "access_level": "PASSAGE_READ",
+     "material_role": "UNCLASSIFIED",
+     "role_basis": "title_heuristic_not_academic_review",
+     "chapter_text_length": 7965,
+     "reader_coordinate_valid": true
+    },
+    {
+     "evidence_id": "ev_28",
+     "book": "存在与时间",
+     "chapter": "第一章 此在之可能的整体存在，与向死存在",
+     "book_id": "c5013f33fe01",
+     "chapter_idx": 7,
+     "author": "马丁·海德格尔",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_8"
+     ],
+     "excerpt": "第四十六节 从存在论上把握和规定此在式的整体存在的表面上的不可能性 前此的此在分析所源出的诠释学处境不够充分，这一缺陷应予克服。鉴于必须获得整体此在的先行具有，就必得问一问：从根本上说能不能就这一存在者的整体存在通达这一作为生存者的存在者。在此在本身的存在建构之中似乎就有一些重要的理由，说明上面所要求的先行给予是不可能的。 操心构成了此在的结构整体的整体性。但按照操心的存在论意义，这一存在者的可能的整体存在是同操心相矛盾的。操心的首要环",
+     "quoted_passages": [],
+     "access_level": "SEARCH_EXCERPT"
+    },
+    {
+     "evidence_id": "ev_32",
+     "book": "《存在与时间》释义",
+     "chapter": "第一章 此在的准备性分析之任务的说明",
+     "book_id": "32bcb0d7a466",
+     "chapter_idx": 7,
+     "author": "张汝伦",
+     "source_type": "primary",
+     "used": true,
+     "supports_claim_ids": [
+      "claim_8"
+     ],
+     "excerpt": "这篇的题目叫“准备性的对此在基本分析”，所谓“准备性”显然是针对第二篇“此在与时间性”而言的，是为后者做准备。在第一章前有个对第一篇要处理的对象和结构的简短说明。对象是“具有此在性质的存在者”，它是在存在问题中首先被问及者。存在的问题只有从它着手才能得以切入和解决。可是，此在又是海德格尔哲学中最容易引起误解的一个概念，人们对海德格尔哲学的误解往往由此而生。例如，海德格尔的老师胡塞尔就认为，海德格尔对此在的生存论分析是一种具体的现象学的人",
+     "quoted_passages": [],
+     "access_level": "SEARCH_EXCERPT"
+    }
+   ],
+   "evidence_stats": {
+    "keys": [
+     "candidate_evidence",
+     "citations",
+     "claims",
+     "display_citations",
+     "primary_research",
+     "retrieved_count",
+     "retrieved_evidence",
+     "scholarly_access",
+     "scholarly_evidence",
+     "scholarly_facts",
+     "scholarly_records",
+     "unverified_citations",
+     "used_count",
+     "used_evidence"
+    ],
+    "retrieved_count": 32,
+    "display_citations": 7,
+    "primary_research": {
+     "status": "complete",
+     "sources": [
+      {
+       "book": "文学行动",
+       "chapter": "《尤利西斯》留声机",
+       "book_id": "301890458a11",
+       "chapter_idx": 4,
+       "author": "雅克·德里达",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "说到内心的电话技术时，或说到手淫时，我正在暗暗援引“TheSinsofthePast”（“昔日之罪”）：（在一片噪杂声里）在那黑色教堂的阴影里，他至少与一位女人举行了秘密结婚仪式。他以内心独白的方式按d'olier大街的地址，打电话给丹娜小姐，一边说那无法说出的话，一边在邮亭里对着电话粗俗地表现着自己。（U，491一492）\n在题为“ADistantVoice”（“-个遥远的声音”）那一幕里，\n电话空间特别引人注目。那个场景跨趣了我们的网络的所有线索，\n能力和机构之自相矛盾，在这里以那位教授的形象、以那个词的所有意义，即在眼睛和耳朵之间的那个yes的重复表现出来。所有这些与电话有关的字行都可以从一段文字里找出：\n一个遥远的声音一我来接电话，那位教授说罢，便去接电话。\n喂？这里是《电报晚报》.喂？….….是谁讲话？….…\n是的...…是的..是的.\n教投走到里面的门前（又是重面！）。\n布鲁姆正在打电话，他说。（U，137--138）\n布鲁姆在打电话。这样，教授无疑就给小说里一个特定时刻的一个特别的情况下了定义，但正如惯例一样，一个给每个表述以多层意义并一直允许有转喻推演（我不是惟一乐此不疲的乔伊斯的读者）的立体声文本，既是合法的，又是不合法的，既是被授权的，又是不适当的一一那位教授也在为布鲁姆永久本质命名。\n它可以按这个特殊范例阅读：heisatthetelephone（他在打电话）",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 44298,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "快乐的科学",
+       "chapter": "第五部我们无畏者（第343一383节）",
+       "book_id": "48f7bf321598",
+       "chapter_idx": 25,
+       "author": "弗里德里希·尼采",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "权的：只有当各种信念决定把自己贬降为一种谦逊的假设，一种谦逊的暂时的尝试观点，一种谦逊的规整性假定（regulativeFiktion）时，它们才可能被允许进人认识领域，甚至获得认识领域里的某种价值，一尽管总是带着一个限制条件，即它们要置于警察的监督之下，置于警察的猜疑之下。一但更准确地说，这难道不是意味着：唯当信念不再是信念时，它们才能获准进人科学之中吗？难道科学精神的培育不是始于人们再也不许可任何信念吗？也许情形就是这样罢：只不过，我们还得问，为了能够开始这种培育，是否其中必定已经有一种信念，而且是一种十分专横独断和无条件的信念，以至于它使其他所有信念都成了自己的牺牲品。我们看到，甚至科学也依据于某种信仰，根本不存在什么“无前提的”科学。真理是否必须的问题，不仅必须预先已经得到肯定回答，而且必须已经在相当程度上到了肯定回答，使得其中能传达出这样一个原理、信仰、信念，即：“没有比真理更必须的了，而且与真理相比，其他一切东西都只有次等的价值”。一这种绝对的求真理的意志是什么呢？是不让自已受骗的意志吗？是不骗他人的意志吗？因为求真理的意志也可以用后面这种方式来解释：假如我们在“我不想骗人”这个普遍原则下也包括了“我不想骗自己”这个个别情形。但为什么不欺骗呢？但为什么不让自己受骗呢？一人们发觉，这两种情况的原因处于完全不同的领域里：不想让自已受骗，这种情形假定了一点，尼采四书快乐的科学",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 26425,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "悲剧的诞生",
+       "chapter": "一种自我批评的尝试",
+       "book_id": "29b3de571c12",
+       "chapter_idx": 2,
+       "author": "弗里德里希·尼采",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "既使人陶醉又令人发告，是有双重危险的。现在，哪里有一个与在瓦格纳信徒那里一样的由模翻和病态神秘组成的泥潭呢？我有幸在某个时刻恍然大悟自己是归属于何方的一—：在这个时刻，理查德瓦格纳跟我谈论他善于从基督教圣餐中获得的心醉神迷。后来他还为此[+++】制作了音乐-[108]关于笔记本W18，第108页的第一段文字：求悲观主义的意志全新视角，可参看《人性的，太人性的》（1886年版），序言第7节。一编注（2)沃尔特（Worth）：德国西南小城，1870年8月上旬法国军队与普鲁士军队在此会战，法国落败。—译注（3当沃尔特会战的炮声..]最初稿本：当沃尔特会战的炮声响彻震惊的欧洲时—我在阿尔卑斯山的一两记下了本书的关键思想：根本上不怎么为我自己，而是为理查德·瓦格纳，直到那时，没有人对瓦格纳的希腊化和南方化特别上心。笔记本W18，第97页。—编注（4)_梅斯（Metz）：法国东北部城市.—译注（5_此处~明朗-德语原文为Heiterkeit，基本含义为明亮“和“喜悦”，英译本作serenity（宁静、明朗），前有“乐天”、“达观\"之类的汉语译名，我以为并不恰当。尼采这里所指，或与温克尔曼在描述希腊古典时期雕塑作品时的著名说法“高责的\n单纯，静穆的伟大”（edle Einfaltund stille Gr6Be）相关，尽管后者并没有使用Heiterkeit一词。我们试把这个Heiterkeit译",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 10343,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "存在与时间",
+       "chapter": "第一章 该说准备性的此在分析之任务",
+       "book_id": "c5013f33fe01",
+       "chapter_idx": 1,
+       "author": "马丁·海德格尔",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "第九节 此在分析的课题\n任务是分析存在者，而在这里所分析的存在者总是我们自己。这种存在者的存在总是我的存在。这一存在者在其存在中对自己的存在有所作为。作为这样一种存在的存在者，它已被交托给它自己的存在了。对这种存在者来说，关键全在于〔怎样去〕存在。这样来描绘此在的特征，就引出了下面两点：\n1．这种存在者的“本质”在于它去存在〔Zu-sein〕。如果竟谈得上这种存在者是什么，那么它“是什么”〔essentia〕也必须从它怎样去是、从它的存在〔existentia〕来理解。而存在论的任务恰恰是要指出：如果我们挑选生存〔Existenz〕这个用语来称呼这种存在者的存在，那么这个名称却没有而且不能有流传下来的existentia这个术语的存在论含义，因为，按照流传下来的含义，existentia在存在论差不多等于说现成存在：而现成存在这种存在方式本质上和具有此在性质的存在者的存在方式了不相干。为避免混乱起见，我们将始终用现成状态这个具有解释作用的表达式来代替existentia这个名称，而把生存专用于此在，用来规定此在的存在。\n此在的“本质”在于它的生存。所以，在这个存在者身上所能清理出来的各种性质都不是“看上去”如此这般的现成存在者的现成“属性”，而是对它来说总是去存在的种种可能方式，并且仅此而已。这个存在者的一切“如此存在”首先就是存在本身。因此我们用“此在”这个名称来指这个存在者，并",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 7965,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "快乐的科学",
+       "chapter": "第五部我们无畏者（第343-383节）",
+       "book_id": "48f7bf321598",
+       "chapter_idx": 26,
+       "author": "弗里德里希·尼采",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "都最需要温和、平静和仁慈；若可能，还需要一个神，它G21完全本真地是一个病人的神，一个“救世主”；同样还需要逻辑，此在（Dasein）本身的概念上的可理解性一一因为逻辑使人镇静，让人信赖一简言之，需要某种温暖的、抵御恐惧的狭窄空间，需要把自己纳入那种东观视野中··如此，我渐渐地学会了理解伊壁鸠鲁，一个狄奥尼索斯的悲观者的对立面，同样我也学会了理解基督徒，后者实际上只是一种伊壁鸠鲁主义者，并且就像那种本质上的浪漫主义者，一我的目光变得越来越犀利，善于洞察那种最困难的1.此句中的动词“能够”用的是单数vermag，而“后者”（即“力量”）为复数，故句子的主语似乎是单数的“沃土”。但从句子意义上了解，主语应为“后者”（即“力量”）疑为作者",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "存在与时间",
+       "chapter": "第一章 此在之可能的整体存在，与向死存在",
+       "book_id": "c5013f33fe01",
+       "chapter_idx": 7,
+       "author": "马丁·海德格尔",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "第四十六节 从存在论上把握和规定此在式的整体存在的表面上的不可能性 前此的此在分析所源出的诠释学处境不够充分，这一缺陷应予克服。鉴于必须获得整体此在的先行具有，就必得问一问：从根本上说能不能就这一存在者的整体存在通达这一作为生存者的存在者。在此在本身的存在建构之中似乎就有一些重要的理由，说明上面所要求的先行给予是不可能的。 操心构成了此在的结构整体的整体性。但按照操心的存在论意义，这一存在者的可能的整体存在是同操心相矛盾的。操心的首要环节是“先行于白身”，这却等于说：此在为它自己之故而生存。“只要此在存在”，它直至其终都对它自己的能在有所作为。而且，即使当它虽还生存着，却不再有任何东西“在自己面前”时，当“它已经了账”时，它的存在还",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "《存在与时间》释义",
+       "chapter": "第一章 此在的准备性分析之任务的说明",
+       "book_id": "32bcb0d7a466",
+       "chapter_idx": 7,
+       "author": "张汝伦",
+       "source_type": "primary",
+       "used": true,
+       "excerpt": "这篇的题目叫“准备性的对此在基本分析”，所谓“准备性”显然是针对第二篇“此在与时间性”而言的，是为后者做准备。在第一章前有个对第一篇要处理的对象和结构的简短说明。对象是“具有此在性质的存在者”，它是在存在问题中首先被问及者。存在的问题只有从它着手才能得以切入和解决。可是，此在又是海德格尔哲学中最容易引起误解的一个概念，人们对海德格尔哲学的误解往往由此而生。例如，海德格尔的老师胡塞尔就认为，海德格尔对此在的生存论分析是一种具体的现象学的人类学。直到今天仍有不少人持与胡塞尔相似的观点。海德格尔此在这个概念的原创性，这些人完全没有看到。他们仍然从主体和自我意识来理解海德格尔的此在，而没有看到，主体和自我意识以此在为基础；另一方面，此在不仅",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "柏拉图对话集",
+       "chapter": "王太庆论柏拉图哲学和翻译问题",
+       "book_id": "35279e2e439d",
+       "chapter_idx": 16,
+       "author": "柏拉图",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "尼德。这门研究on的哲学名叫ontologia，是用onta（beings）这个字命名的，我们译为“本体论”\n是利用了中国传统的哲学范畴“本体”，不能表现onta，所以过去有人曾经利用中国传统哲学范畴“有”命名的“万有论”，近来也有人利用现在将being译为“存在”的办法命名的“存在论”，而照我们\n我们怎样认识西方人的“是”？\n735\n的想法该译为“是者论”。\n亚里士多德认为 to on是ousia（本体，substance），ousia有许多标志，其中的一个是他所谓totieneinai（它是什么），即英译的\nessence。这个字出于拉丁文的essentia（所是者），还保留着“是”的意思，中文译成“本质”，看不出词的来源了。totieneinai就是判断中的谓项，即上面说的Sosein。\n西方人的这个“是”和时间、空间放在一起，就成了我们中国人说的那个“在”。例如英语中的“thereis”，德语中的“ist da”，又如上文举的例子“Estmihiliber”（书在我这里是），都是这样。西方人没有我们中国人的“在”这个动词，说在何时何地的时候用的还是那个“是”，如“我在北大”就说成“1aminPekingUniversity”。\n他们觉得这个am跟说“1amaman”的am意思完全一样。至于笛卡尔说的“Ithink thereforeIam”，也是同样的am，只是我们中国人认",
+       "access_level": "PASSAGE_READ",
+       "material_role": "UNCLASSIFIED",
+       "role_basis": "title_heuristic_not_academic_review",
+       "chapter_text_length": 59724,
+       "reader_coordinate_valid": true
+      },
+      {
+       "book": "韩非子",
+       "chapter": "难二",
+       "book_id": "6ec167f8492b",
+       "chapter_idx": 38,
+       "author": "韩非",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "人烛过之一言也。” 或曰：行人未有以说也，乃道惠公以此人是败，文公以此人是霸，未见所以用人也。简子未可以速去盾、橹也。严亲在围，轻犯矢石，孝子之所爱亲也。孝子爱亲，百数之一也。今以为身处危而人尚可战，是以百族之子于上皆若孝子之爱亲也，是行人之诬也。好利恶害，夫人之所有也。赏厚而信，人轻敌矣；刑重而必，失人不比矣。长行徇上，数百不一失；喜利畏罪，人莫不然。将众者不出乎莫不然之数，而道乎百无失人之行，人未知众之道也。",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "性欲三论",
+       "chapter": "第一章 临床现象",
+       "book_id": "3138fe5c9f12",
+       "chapter_idx": 5,
+       "author": "西格蒙德·弗洛伊德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "由父母双方的遗传性聚合而成的。就这个女孩的遗传情况而言，我认为还有一一个更为重要的方面、即遗传的结构性倾向。我曾提及她父亲在婚前曾染过梅毒。到目前为止，在我用精神分析治疗过的病人中，得过脊髓疗或全身性麻痹症的人，所占的比例高得惊人。有许多治疗多年而无收效的病人，我运用新奇独特的方法加以治疗，往往能见成效。根据厄尔布·福尼埃（Erb一Fourmier）理论，脊髓痨或全身性麻痹症在男人身上出现，即可认为是原先感染梅毒的症状：我的医疗实践证明了这一理论。在最近对病人后代的讨论中（第13届国际医学会议于1900年8月2日至9日在巴黎举行）并没有人提到我还是一位神经症理学者时早已得出的结论，即上一代男人的梅毒是导致下一代神经症的重要国素。！1",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "变形记",
+       "chapter": "变形记",
+       "book_id": "ad61ed0fd976",
+       "chapter_idx": 24,
+       "author": "弗朗茨·卡夫卡",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "这一切，还是未能下定决心离开这张床——闹钟恰好打响六点三刻，这时有人小心翼翼敲他床头的房门。“格里高尔，”有人喊——是母亲在喊，“现在六点三刻。你不想出门了？”好和蔼的声音！格里高尔听到自己的回答声时大吃一惊，这分明是他从前的声音，但这个声音中却搀和着一种从下面发出来的、无法压制下去的痛苦的叽喳声，这叽喳声简直是只在最初一瞬间让那句话保持清晰可听，随后便彻底毁坏了那句话的余音，以致人们竟不知道，是否听真切了。格里高尔本想回答得详细些并把一切解释清楚，可是在这样的情形下他只得简单地说：“是，是，谢谢母亲，我这就起床。”隔着木头门外面大概觉察不出格里高尔声音中的变化，因为一听到这句话母亲便放下心来，踢踢踏踏地走了。但是这场简短的谈话却使",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "性欲三论",
+       "chapter": "第二章 第一个梦",
+       "book_id": "3138fe5c9f12",
+       "chapter_idx": 6,
+       "author": "西格蒙德·弗洛伊德",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "象这意外之事发生在孩提时代，那除了尿床还会是什么呢？大人们通常怎样来预防小孩尿床呢？不就是把小孩从睡梦中弄醒，就如同你父亲在梦中把你叫醒一般。实际上发生的事情就是这样，它使你以自已的父亲取代K先生，K先生实际上想把你从睡梦中弄醒。由此我不得不作出结论，你比正常小孩迟得多才戒除尿床这一习性，你哥哥也是如此；因为你父亲说：‘我不能让我两个孩子被火烧死。”你哥哥与你在K家发生的一切没有任何关系，他也没有跟你去L地，你对此有何话说？” “我对我自己一无所知。”她答道，“但我哥哥一直到六七岁还尿床，有时在白天他也常常如此。”我正要对她说记住她哥哥这样的事情比记住自已这样的事情要容易得多时，杜拉的记忆又活联起来，她说：“是的，有一段时间我也常常",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "爱弥儿",
+       "chapter": "第五卷",
+       "book_id": "32e4ebd33ddc",
+       "chapter_idx": 5,
+       "author": "让-雅克·卢梭",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "所感到的束缚。但是，如果她觉得管理她的人是一个眼中钉，则她在那个管理人面前做任何事情都是做得不痛快的。有些女孩子觉得同母亲在一起不如同别人在一起快乐，这样的女孩子是很难变成好孩子的；不过，要判明她们真正的情感，就必须对她们的情感进行研究，而不能单凭她们所说的话，因为她们会甜言蜜语地说一番假话来掩饰她们的思想的。我们也不能够规定她们硬要爱她们的母亲，不能说由于女孩子有服从母亲的义务因而必然要对母亲产生爱的，在这方面是一点也不能勉强的。只要母亲不使得她的女儿讨厌她，则她对女儿的爱护、照顾和平日的习惯，就会使她的女儿爱她的。做母亲的人即使管束她的女儿，只要管得恰当，则不仅不会减少反而会增加她对母亲的爱的，因为，既然妇女生来就处在隶属他人的",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "变形记",
+       "chapter": "判决",
+       "book_id": "ad61ed0fd976",
+       "chapter_idx": 23,
+       "author": "弗朗茨·卡夫卡",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "能是：身居异乡的他对此类悲痛已无法产生同感共鸣。不过自那时起格奥尔格便更加坚毅果敢地处理一切事务，也包括他的商务。也许母亲在世时父亲在经营上独断专行，阻碍了他真正按自己意志行事的能力；也许是自母亲去世后父亲虽然还在商行里工作，但已经比较淡泊，不再事必躬亲；也许是幸运的偶然事件起到了——甚至很可能是这样——重要得多的作用；但是，不管怎么说，在这两年里商行有了意想不到的发展，帮工不得不增加了一倍，营业额增加了五倍，往后的买卖无疑会更加兴隆。 可格奥尔格的这位朋友却对这种变化一无所知。先前，最后一次也许就在那封吊唁信里，他曾想劝说格奥尔格移居俄国，并详细阐述了格奥尔格在彼得堡设分号的前景。他所列举的数字同格奥尔格现在所经营的范围相比简直微",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "存在与虚无",
+       "chapter": "第一章 存在与作为：自由",
+       "book_id": "274c59617693",
+       "chapter_idx": 13,
+       "author": "让-保罗·萨特",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "然性，也就是说，一直推到不再把我推至任何地方的我的诸多位置中的那个位置上去：即诞生为我确定的那个位置。事实上，要通过我母亲在把我送到世界上时占据的那个位置来解释这最后一个位置是毫无用处的：链条已断，我的父母自由地选择下的位置对解释我的位置是完全无用的；而人们之所以在其与我的原始位置的连系中来考察一个位置一比如当人们说：我生在波尔多，因为我父亲在那里为官一我生在图尔，因为我的外祖父母有产业在那里，我的母亲在他们身边栖身，当她怀孕时候，有人告诉她说我父亲去世了—是为了更好地证明对我来说出生和出生为我确定的位置是多么偶然的事情。于是，出生，就是在其他的特征之间取得其位置，或者不如按我们刚才说的，接受这个位置。而由于这个原始位置将是我从之出",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "变形记",
+       "chapter": "附录",
+       "book_id": "ad61ed0fd976",
+       "chapter_idx": 46,
+       "author": "弗朗茨·卡夫卡",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "你表面上对母亲讲话，但实际上是冲着坐在一旁的我来的，如：“这事当然不能要求儿子先生去做了”，等等。（这种话的后果是，有母亲在旁，我就不敢直接向你问话，后来习惯成自然，我连直接问你的念头都不会产生了。对才于孩子来说，向坐在你旁边的母亲问你的情况，危险要小得多，比如问母亲：“父亲好吗？”这样就防止了任何答复可能会带来的震惊。）当然，有时人家 (7) 会非常赞同最刻薄的讥讽的，也就是说，如果牵涉到的是别人，比如艾莉，我有好多年一直生她的气。当几乎每次吃饭时都这么说时，对于我来说堪称是恶毒和幸灾乐祸的节庆：“那个胖姑娘喜欢坐在离桌子十米远的地方。”然后你生气地坐在你的椅子上，毫无喜悦或带感情色彩地、像个死敌般地夸张地模仿她那不合你胃口的坐相",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "精神现象学",
+       "chapter": "序言",
+       "book_id": "053203b03b6c",
+       "chapter_idx": 1,
+       "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "认为，在绝对者之内，“本质”和\"形式\"是同一个东西。一译者注 是对于理性的误解。正是这个反映使得真相成为一个结果，同时还扬弃 了结果与转变过程之间的对立，因为转变过程同样也是单纯的，所以它与 真相的那个形式一即在结果里表明自己是单纯的一也没有区别。实 际上，真相恰恰是一个已经返回到单纯性之内的东西。一如果说胎儿 是一个自在的人，那么它还不是一个自为的人。只有作为一个经受了教 化的理性，把自已造成它自在所是的东西，它才是一个自为的人。这才是 理性的现实性。但是，结果本身是一种单纯的直接性，因为它是一种具有 [26]自我意识的自由，在自身之内止息，不是把对立面撤在一边置之不理，而 是与之达成了和解。 前面所说的内容也可以这样来表达：理性",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "精神现象学",
+       "chapter": "第一部分 意识",
+       "book_id": "053203b03b6c",
+       "chapter_idx": 3,
+       "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "，感性确定性的真理依赖于意谓。对象存 在着，因为我认识到了它。也就是说，感性确定性尽管被驱逐出了对象， 但并没有因此遭到扬弃，而是仅仅被驱赶到我之内。我们得看看，关于感 性确定性的这种实在性，经验揭示出了什么。 现在，感性确定性的真理的力量依赖于我，依赖于我的直接的看、听 等活动。由于我坚守着我们意谓中的个别的”这时”和个别的”这里”，它 们还不至于消失。“这时”是白天，因为我看到白天；“这里”是一棵树，因 为我看到一棵树。但在这个关系中，感性确定性在自己身上经验到同样 一种辩证法，就和在前面那个关系中一样。我，这一个我，看到一棵树，于 是宣称：“这里”是一棵树。但另一个我却看到一栋房屋并宣称，“这里” 不是一棵树，而是一栋房屋。两",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "精神现象学",
+       "chapter": "第二部分 自我意识",
+       "book_id": "053203b03b6c",
+       "chapter_idx": 4,
+       "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "的力，都表明自己真正说来并未存在着，反倒是真相 这个自在体将上述对象规定为一种为他存在。真相的概念在一个现实的 对象那里扬弃了自身，换言之，最初的直接表象已经消失在经验里，确定 性已经消失在真理中。但从现在起，那在过去的关系里未曾出现的某种 东西，亦即一种与自己的真理相一致的确定性，产生出来了。确切地说， 确定性如今把它自己当作一个对象，而意识也知道自已就是真相。诚然， 在这个过程中也存在着一个他者，也就是说，意识区分出一个东西，同时 这个东西对意识而言又是无差别的。如果我们把知识的运动称作概念， 把知识这个静态的统一体或自我称作对象，那么就会发现，不管是对我们 还是对知识自身而言，对象都与概念契合。一或者换一个说法，如果我 们把自",
+       "access_level": "SEARCH_EXCERPT"
+      },
+      {
+       "book": "精神现象学",
+       "chapter": "第三部分 理性",
+       "book_id": "053203b03b6c",
+       "chapter_idx": 5,
+       "author": "格奥尔格·威廉·弗里德里希·黑格尔",
+       "source_type": "primary",
+       "used": false,
+       "excerpt": "为存在排斥出去，使之成 为一个存在。在这个过程中，意识知道，它与这个普遍者实现了统一，而 在我们看来，由于个别事物在遭到扬弃之后转变为普遍者，所以意识与普 遍者的统一不再落于意识之外，而且，由于意识是通过自身否定才保存下 来的，所以这个统一就是严格意义上的意识的本质。在一个环环相扣的 推论里，相互对立的两端曾经以彻底分裂的方式出现，而意识的真理就是 那个在推论里显现为中项的东西，因为中项一边告诉持久不变的意识，个 别事物已经放弃了自己，另一边又告诉个别事物，持久不变者已经不再与 它对立，而是与它达成了和解。这个中项是一个直接认知着对立两端、并 且把它们关联在一起的统一体，它对意识从而也对它自已说出了这种统 一关系；意识到这种统一关系",
+       "access_level": "SEARCH_EXCERPT"
+      }
+     ],
+     "total": 32,
+     "quote_checks": []
+    }
+   },
+   "safety": null,
+   "suggestions_status": "pending",
+   "finish_reason": "stop",
+   "engine_duration_s": 34.453,
+   "validation": {
+    "enabled": false
+   },
+   "token_usage": null,
+   "scholarly_sources_count": null,
+   "timing_phases": null,
+   "stream_error": null,
+   "events": [
+    {
+     "t": 0.1,
+     "ev": "status",
+     "content": "开始思考"
+    },
+    {
+     "t": 2.0,
+     "ev": "assistant_commentary",
+     "chars": 24
+    },
+    {
+     "t": 2.0,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 2.0,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_00_e2FLpQvj38e7TgpSjwOV0631"
+    },
+    {
+     "t": 2.1,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_01_7H0ooxfJqcZK6aSzd1z07328"
+    },
+    {
+     "t": 2.2,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_02_dQy6u32HE8ADCi6dSmib6925"
+    },
+    {
+     "t": 2.3,
+     "ev": "tool_start",
+     "name": "search_books",
+     "call_id": "call_03_GJL1S0FbjWLmpDX0n6sB4338"
+    },
+    {
+     "t": 4.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.311,
+     "result_chars": 6207,
+     "result_head": "{\"query\": \"亲在\", \"results\": [{\"book_id\": \"6ec167f8492b\", \"book_title\": \"韩非子\", \"author\": \"韩非\", \"chapter_idx\": 38, \"chapter_title\": \"难二\", \"citation_label\": \"【《韩非子》"
+    },
+    {
+     "t": 4.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.311,
+     "result_chars": 6462,
+     "result_head": "{\"query\": \"扬弃\", \"results\": [{\"book_id\": \"053203b03b6c\", \"book_title\": \"精神现象学\", \"author\": \"格奥尔格·威廉·弗里德里希·黑格尔\", \"chapter_idx\": 1, \"chapter_title\": \"序言\", \"citation"
+    },
+    {
+     "t": 4.7,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.314,
+     "result_chars": 6586,
+     "result_head": "{\"query\": \"Dasein\", \"results\": [{\"book_id\": \"301890458a11\", \"book_title\": \"文学行动\", \"author\": \"雅克·德里达\", \"chapter_idx\": 4, \"chapter_title\": \"《尤利西斯》留声机\", \"citation_"
+    },
+    {
+     "t": 4.8,
+     "ev": "tool",
+     "name": "search_books",
+     "status": "success",
+     "duration_s": 2.318,
+     "result_chars": 6599,
+     "result_head": "{\"query\": \"此在\", \"results\": [{\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"chapter_idx\": 1, \"chapter_title\": \"第一章 该说准备性的此在分析之任务\", \"cit"
+    },
+    {
+     "t": 8.4,
+     "ev": "assistant_commentary",
+     "chars": 27
+    },
+    {
+     "t": 8.4,
+     "ev": "answer_preview_reset"
+    },
+    {
+     "t": 8.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_vTi5LmzhcZqUGfaKPhcl6823"
+    },
+    {
+     "t": 8.6,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_hYZAKRrAzGGwCQZn4fLT6897"
+    },
+    {
+     "t": 8.8,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_02_YAnhFdKWWNG6i1Yyze9Z9456"
+    },
+    {
+     "t": 9.0,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_03_Q0vqFD4wUKQfAfXbQPza4495"
+    },
+    {
+     "t": 9.2,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.007,
+     "result_chars": 4780,
+     "result_head": "{\"book_id\": \"c5013f33fe01\", \"book_title\": \"存在与时间\", \"chapter_idx\": 1, \"title\": \"第一章 该说准备性的此在分析之任务\", \"citation_label\": \"【《存在与时间》·第一章 该说准备性的此在分析之任务】\", \"text\": \"第九节"
+    },
+    {
+     "t": 9.2,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.008,
+     "result_chars": 4748,
+     "result_head": "{\"book_id\": \"35279e2e439d\", \"book_title\": \"柏拉图对话集\", \"chapter_idx\": 16, \"title\": \"王太庆论柏拉图哲学和翻译问题\", \"citation_label\": \"【《柏拉图对话集》·王太庆论柏拉图哲学和翻译问题】\", \"text\": \"尼德。这门研"
+    },
+    {
+     "t": 9.2,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.009,
+     "result_chars": 4049,
+     "result_head": "{\"book_id\": \"29b3de571c12\", \"book_title\": \"悲剧的诞生\", \"chapter_idx\": 2, \"title\": \"一种自我批评的尝试\", \"citation_label\": \"【《悲剧的诞生》·一种自我批评的尝试】\", \"text\": \"既使人陶醉又令人发告，是有双重危险的。"
+    },
+    {
+     "t": 9.2,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.015,
+     "result_chars": 1148,
+     "result_head": "{\"id\": \"c5013f33fe01\", \"title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《存在与时间》是海德格尔的奠基之作，旨在重新提出“存在”问题。他通过对此在（Dasein）的存在论"
+    },
+    {
+     "t": 17.4,
+     "ev": "tool_start",
+     "name": "get_book_detail",
+     "call_id": "call_00_LPBXOOHKoLnhI7h4OA462107"
+    },
+    {
+     "t": 17.4,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_01_3sWV6XHtdljcfSAPgZ6u4844"
+    },
+    {
+     "t": 17.4,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 3284,
+     "result_head": "{\"book_id\": \"48f7bf321598\", \"book_title\": \"快乐的科学\", \"chapter_idx\": 25, \"title\": \"第五部我们无畏者（第343一383节）\", \"citation_label\": \"【《快乐的科学》·第五部我们无畏者（第343一383节）】\", \"text\":"
+    },
+    {
+     "t": 17.4,
+     "ev": "tool",
+     "name": "get_book_detail",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 1728,
+     "result_head": "{\"id\": \"c5013f33fe01\", \"title\": \"存在与时间\", \"author\": \"马丁·海德格尔\", \"region\": \"西方\", \"file_type\": \"epub\", \"summary\": \"《存在与时间》是海德格尔的奠基之作，旨在重新提出“存在”问题。他通过对此在（Dasein）的存在论"
+    },
+    {
+     "t": 22.2,
+     "ev": "tool_start",
+     "name": "get_chapter",
+     "call_id": "call_00_MEaIeEIJyjivaOwDesPo5827"
+    },
+    {
+     "t": 22.4,
+     "ev": "tool",
+     "name": "get_chapter",
+     "status": "success",
+     "duration_s": 0.004,
+     "result_chars": 3212,
+     "result_head": "{\"book_id\": \"301890458a11\", \"book_title\": \"文学行动\", \"chapter_idx\": 4, \"title\": \"《尤利西斯》留声机\", \"citation_label\": \"【《文学行动》·《尤利西斯》留声机】\", \"text\": \"说到内心的电话技术时，或说到手淫时，我正在"
+    },
+    {
+     "t": 34.5,
+     "ev": "done"
+    }
+   ],
+   "status": "DONE",
+   "preview_events": 1093
+  }
+ ],
+ "total_wall_s": 36.0,
+ "status": "COMPLETED"
+}
