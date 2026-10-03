@@ -13,14 +13,14 @@ from reading_coverage import ReadingCoverage
 def test_registered_prompt_profiles_have_distinct_fingerprints_and_no_secret_values(monkeypatch):
     monkeypatch.setenv('LLM_API_KEY','must-not-appear')
     monkeypatch.delenv('PHIAGENT_PROMPT_VERSION',raising=False)
-    current=release.release_descriptor(profile='0.1.2')
-    historical=release.release_descriptor(profile='0.1.1')
+    current=release.release_descriptor()
+    historical=release.release_descriptor(profile='0.1.2')
     assert current['prompt_matches_manifest'] and historical['prompt_matches_manifest']
     assert current['effective_prompt_sha256']!=historical['effective_prompt_sha256']
     assert current['configuration_fingerprint']!=historical['configuration_fingerprint']
     assert current['tool_budget'] is None and not current['historical_prompt_override']
     assert historical['historical_prompt_override']
-    assert release.prompt_spec()['version']=='0.1.2'
+    assert release.prompt_spec()['version']==release.MANIFEST['active_prompt_version']
     for old,new in [('1.0.0','0.1.0'),('1.1.0','0.1.1'),('2.0.0-rc.2','0.1.2'),('0.2.0','0.1.2')]:
         assert release.prompt_spec(profile=old)['text']==release.prompt_spec(profile=new)['text']
     assert 'must-not-appear' not in json.dumps(current)
@@ -90,7 +90,7 @@ def test_main_usage_is_recorded_without_claiming_auxiliary_model_cost(monkeypatc
         def bind_tools(self,tools):return self
         async def astream(self,messages):
             assert sum(m.type=='system' for m in messages)==1
-            assert messages[0].content == release.prompt_spec(profile='0.1.2')['text']
+            assert messages[0].content == release.prompt_spec(profile=release.MANIFEST['active_prompt_version'])['text']
             yield AIMessageChunk(content='测试回答',response_metadata={'finish_reason':'stop','model_name':'fixture'},
                 usage_metadata={'input_tokens':10,'output_tokens':5,'total_tokens':15})
     async def tools():return []
@@ -101,5 +101,5 @@ def test_main_usage_is_recorded_without_claiming_auxiliary_model_cost(monkeypatc
     events=asyncio.run(run());done=next(e for e in events if e['type']=='done')
     assert done['main_model_usage']['usage']['total_tokens']==15
     assert not done['main_model_usage']['includes_auxiliary_tool_models']
-    assert done['release']['prompt_version']=='0.1.2' and done['release']['tool_budget'] is None
+    assert done['release']['prompt_version']==release.MANIFEST['active_prompt_version'] and done['release']['tool_budget'] is None
     assert done['release']['toolset_sha256'] and any(e['type']=='runtime_metadata' for e in events)
