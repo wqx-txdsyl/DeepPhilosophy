@@ -1,4 +1,6 @@
 """Audit every published author; field presence is not evidence of scholarly review."""
+import argparse
+import datetime
 import json
 import os
 from urllib.parse import urlparse
@@ -56,6 +58,11 @@ def assess(profile, editorial=None, kind='thinker'):
         if editorial.get('debateAssessment', {}).get('status') not in ['included', 'not-required', 'insufficient-evidence']:
             errors.append('missing-debate-assessment')
         debate = profile.get('debate')
+        status = editorial.get('debateAssessment', {}).get('status')
+        if status == 'included' and not debate:
+            errors.append('debate-assessment-without-body')
+        if status != 'included' and debate:
+            errors.append('debate-body-without-included-assessment')
         if debate and (not debate.get('sourceRefs') or any(ref not in source_ids for ref in debate['sourceRefs'])):
             errors.append('debate:missing-source-reference')
         if editorial.get('chronologyPolicy') == 'limited-evidence' and not editorial.get('evidenceLimits'):
@@ -71,6 +78,9 @@ def assess(profile, editorial=None, kind='thinker'):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--date', default=datetime.date.today().isoformat(), help='审计执行日期（YYYY-MM-DD）；同参数重复运行输出幂等，历史基线文件不受影响')
+    args = parser.parse_args()
     people = read(PUBLIC / 'philosophers.json')
     rows = []
     packets = []
@@ -87,9 +97,9 @@ def main():
     for group in ['all', 'thinker']:
         selected = [row for row in rows if group == 'all' or row['kind'] == group]
         summary[group] = {'records': len(selected), 'levels': dict(Counter(row['level'] for row in selected)), 'coverage': {field: sum(row['counts'][field] > 0 for row in selected) for field in FIELDS}, 'debate': sum(row['debate'] for row in selected), 'missing': dict(Counter(gap for row in selected for gap in row['gaps']))}
-    result = {'date': '2026-10-03', 'standard': 'author-assets-v1', 'note': 'source-backed 表示本轮按所列来源编写并通过逐项出处和结构检查，不表示学界无争议或完成外部同行评审。争议栏目按证据适用性评估，不以政治争议数量评分。', 'summary': summary, 'records': rows}
+    result = {'date': args.date, 'standard': 'author-assets-v1', 'note': 'source-backed 表示本轮按所列来源编写并通过逐项出处和结构检查，不表示学界无争议或完成外部同行评审。争议栏目按证据适用性评估，不以政治争议数量评分。', 'summary': summary, 'records': rows}
     (Path(BASE) / 'docs/author-assets-audit.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    index = {'schemaVersion': 1, 'updatedAt': '2026-10-03', 'standard': 'author-assets-v1', 'profiles': packets, 'coverage': summary['thinker']}
+    index = {'schemaVersion': 1, 'updatedAt': args.date, 'standard': 'author-assets-v1', 'profiles': packets, 'coverage': summary['thinker']}
     (PUBLIC / 'philosopher/editorial-index.json').write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(summary, ensure_ascii=False))
     invalid = [row['name'] for row in rows if row['errors']]
