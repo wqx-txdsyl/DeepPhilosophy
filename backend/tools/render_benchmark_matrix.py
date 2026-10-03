@@ -34,7 +34,7 @@ def dimension(rows,key):
     return aggregate.mean_bounds([aggregate.mean_bounds(v) for v in per_case.values()]),len(per_case)
 
 
-def matrix():
+def legacy_matrix():
     registry=json.loads(aggregate.REGISTRY.read_text());data=aggregate.build()
     if json.loads((OUT/'aggregate.json').read_text())!=data:
         raise ValueError('Run aggregate_benchmark_scores.py first; aggregate is stale')
@@ -94,29 +94,60 @@ def matrix():
                      'ChatGPT Work：桌面6.1 Sol high、声明使用本地书库；不是网页端逐题回执，K4执行事实有4项未知。']}
 
 
+def matrix():
+    import freeze_benchmark_results as seal
+    seal.verify()
+    record=json.loads((seal.OUT/'SCORES.json').read_text())
+    subjects=record['subjects'];rules=json.loads((ROOT/'docs/evidence/rubric_v1_2/RULES_FROZEN.json').read_text())
+    cols=[{'name':s['name'],'sub':s['label'],'own':s['kind']=='phiagent'} for s in subjects]
+    rows=[{'label':'统一60题总分','note':'唯一主成绩 · 满分100','values':[f"{s['primary']['score']:.2f}" for s in subjects],'primary':True}]
+    for layer in ['C','R']:
+        for key,spec in rules[layer].items():
+            rows.append({'label':key+' '+spec['name'],'note':f"{subjects[0]['dimensions'][key]['applicable_cases']}道适用题 · /100",'values':[f"{s['dimensions'][key]['score']:.1f}" for s in subjects],'primary':False})
+    rows.append({'label':'主成绩评分覆盖','note':'所有对象同一题目范围','values':['60题 / 72轮']*len(subjects),'primary':False})
+    verification=[]
+    names={'D01':'引文出处与跳转','D02':'误引逐字核验','D04':'原段与学术坐标','D05':'书目版本定位','E05':'正文可达与引用'}
+    for cid in record['verification_case_ids']:
+        vals=[]
+        for subject in subjects:
+            r=next(r for r in subject['verification']['rows'] if r['case_id']==cid)
+            unknown=sum(v=='U' for v in r['ratings'].values())
+            vals.append(f'待核（{unknown}项）' if unknown else f"{sum(r['ratings'].values())} / 4")
+        verification.append({'label':cid+' '+names[cid],'note':'四项二元检查 · 不混入主成绩','values':vals,'primary':False})
+    return {'scale':100,'product_version':'0.1.5','record_id':record['record_id'],'record_sha256':aggregate.sha(seal.OUT/'SCORES.json'),
+            'current':{'title':'冻结记录 R1 · 统一60题','subtitle':'原70题集中的同一60道分析与研究题。每题等权，多轮先在题内平均；总分只有一个口径。','columns':cols,'rows':rows},
+            'verification':{'title':'原典纯核验 · 5题','subtitle':'历史执行缺证据的项保持待核，不填零，不取区间中点。未计入统一60题总分。','columns':cols,'rows':verification},
+            'notes':['冻结的是当前开发评审记录；原70题集、v1.2量尺、已有答卷均未改，不宣称完整70题已完成。',
+                     '主成绩只含共同60道分析与研究题；5道纯核验单列，5道故障fixture尚未实测。A05空答仍按原评分0计入，不删除失败题。',
+                     '旧65题、64题、10题和无效自动复评均已归档，不与这份主成绩并列。',
+                     'DeepSeek为深度思考＋联网；豆包为快速档；ChatGPT为Work 6.1 Sol high并使用本地书库。评审方法与工具条件有差异，这是开发记录，不是受控模型排行榜。',
+                     '评分器未宣称校准通过。后续新增证据或复评须发布明确的R2等修订记录，不覆盖R1。']}
+
+
 def markdown(data):
-    blocks=['# PhiAgent 多维百分制记录表',f"最新版本：v{data['product_version']}。只展示冻结 v1.2 测试集，不宣称已通过质量验收。"]
+    blocks=['# PhiAgent 多维百分制记录表',f"记录：{data['record_id']}。主成绩统一60题；评分标准仍为冻结v1.2。"]
     for name in ['current']:
         t=data[name];blocks += ['## '+t['title'],t['subtitle']]
         table=['|维度|'+ '|'.join(c['name']+' '+c['sub'] for c in t['columns'])+'|','|---|'+'---|'*len(t['columns'])]
         table += ['|'+r['label']+'（'+r['note']+'）|'+'|'.join(r['values'])+'|' for r in t['rows']]
         blocks.append('\n'.join(table))
     blocks += ['\n'.join('- '+n for n in data['notes']),
-               '来源：[版本台账](../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md)、[机器数据](matrix.json)。\n\n[同配置匿名复评与评分器核验结论](../phiagent_benchmark_v0_1/blind_reassessment_20261003/comparison.html)。']
+               '来源：[冻结记录与核验状态](frozen_r1_20261003/SUMMARY.md)、[机器数据](frozen_r1_20261003/SCORES.json)、[版本台账](../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md)。']
     return '\n\n'.join(blocks)+'\n'
 
 
 def html_page(data):
     esc=html.escape
     sections=[]
-    for name in ['current']:
+    for name in ['current','verification']:
         t=data[name]
         head='<tr><th>评分维度 <small>百分制</small></th>'+''.join(f'<th class="{"own" if c["own"] else ""}">{esc(c["name"])}<small>{esc(c["sub"])}</small></th>' for c in t['columns'])+'</tr>'
         body=''.join('<tr class="'+('primary' if r['primary'] else '')+'"><th>'+esc(r['label'])+'<small>'+esc(r['note'])+'</small></th>'+''.join('<td class="'+('muted' if v in ['—','未测','未跑全套'] else '')+'">'+esc(v)+'</td>' for v in r['values'])+'</tr>' for r in t['rows'])
         sections.append(f'<section id="{name}"><h2>{esc(t["title"])}</h2><p>{esc(t["subtitle"])}</p><p class="hint">横向滚动可查看全部对象。</p><div class="scroll"><table><thead>{head}</thead><tbody>{body}</tbody></table></div></section>')
+        if name=='verification':sections[-1]='<details><summary>查看5道原典纯核验的完成状态</summary>'+sections[-1]+'</details>'
     return '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PhiAgent 多维评测记录</title><style>'+'''
-*{box-sizing:border-box}body{margin:0;background:#f7f7f5;color:#252622;font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:1500px;margin:auto;padding:48px 32px}h1{font-size:32px;margin:8px 0}header p,section>p{color:#70726c}header .eyebrow{letter-spacing:.16em;font-size:12px}nav{display:flex;gap:8px;margin:24px 0}button{border:1px solid #ddd;background:white;border-radius:6px;padding:10px 18px;color:#333;cursor:pointer}button.active{background:#292e29;color:white}section{background:white;border:1px solid #e6e7e2;border-radius:12px;padding:28px;margin:24px 0}h2{font-size:20px;margin:0}section>p{margin:6px 0 22px}.hint{display:none;font-size:12px;color:#8a9083}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:940px;table-layout:fixed}th,td{padding:12px 6px;text-align:center;border-bottom:1px solid #edeee9;font-variant-numeric:tabular-nums}thead th{border-bottom:2px solid #c6cbc3;font-size:17px}thead th:first-child,tbody th{width:240px;text-align:left;font-weight:500}small{display:block;color:#93968f;font-size:11px;font-weight:400;margin-top:3px}.own{background:#f0f3ee;border-top:3px solid #52674d}.primary{background:#f5f7f3;font-weight:600}.primary td{font-size:20px}td.muted{color:#babdb5}footer{color:#777c72;font-size:13px}footer li{margin:5px 0}a{color:#52674d}section[hidden]{display:none}@media(max-width:1100px){.hint{display:block}}@media(max-width:650px){main{padding:24px 12px}section{padding:16px}h1{font-size:26px}}@media print{body{background:white}main{padding:0}nav{display:none}section{break-inside:avoid}table{min-width:0}th,td{font-size:10px;padding:6px}small{font-size:8px}}
-'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>多维评测记录</h1><p>v0.1.0 → v0.1.1 → v0.1.2 → v0.1.3 → v0.1.4 → v0.1.5 · 满分100 · 截至2026-10-03</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md">版本与评分长期台账</a> · <a href="matrix.json">可追溯数据</a> · <a href="../phiagent_benchmark_v0_1/blind_reassessment_20261003/comparison.html">同配置匿名复评（未通过核验）</a></footer></main></html>'
+*{box-sizing:border-box}body{margin:0;background:#f7f7f5;color:#252622;font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:1500px;margin:auto;padding:48px 32px}h1{font-size:32px;margin:8px 0}header p,section>p{color:#70726c}header .eyebrow{letter-spacing:.16em;font-size:12px}nav{display:flex;gap:8px;margin:24px 0}button{border:1px solid #ddd;background:white;border-radius:6px;padding:10px 18px;color:#333;cursor:pointer}button.active{background:#292e29;color:white}section{background:white;border:1px solid #e6e7e2;border-radius:12px;padding:28px;margin:24px 0}h2{font-size:20px;margin:0}section>p{margin:6px 0 22px}.hint{display:none;font-size:12px;color:#8a9083}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:940px;table-layout:fixed}th,td{padding:12px 6px;text-align:center;border-bottom:1px solid #edeee9;font-variant-numeric:tabular-nums}thead th{border-bottom:2px solid #c6cbc3;font-size:17px}thead th:first-child,tbody th{width:240px;text-align:left;font-weight:500}small{display:block;color:#93968f;font-size:11px;font-weight:400;margin-top:3px}.own{background:#f0f3ee;border-top:3px solid #52674d}.primary{background:#f5f7f3;font-weight:600}.primary td{font-size:20px}td.muted{color:#babdb5}footer{color:#777c72;font-size:13px}footer li{margin:5px 0}a{color:#52674d}section[hidden]{display:none}details{margin:18px 0}summary{cursor:pointer;color:#52674d;padding:10px 0}@media(max-width:1100px){.hint{display:block}}@media(max-width:650px){main{padding:24px 12px}section{padding:16px}h1{font-size:26px}}@media print{body{background:white}main{padding:0}nav{display:none}section{break-inside:avoid}table{min-width:0}th,td{font-size:10px;padding:6px}small{font-size:8px}}
+'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>已冻结的跑分记录</h1><p>记录 R1 · 原冻结题集中的统一60题 · 满分100 · 2026-10-03</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../PHIAGENT_VERSION_BENCHMARK_LEDGER.md">版本与评分长期台账</a> · <a href="frozen_r1_20261003/SUMMARY.md">冻结范围与核验状态</a> · <a href="frozen_r1_20261003/SCORES.json">冻结评分数据</a></footer></main></html>'
 
 
 def png(data, target):
