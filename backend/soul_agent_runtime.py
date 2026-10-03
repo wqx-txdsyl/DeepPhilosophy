@@ -10,7 +10,7 @@ async def stream_soul_agent(question, history, key, language='zh', custom_instru
     texts = PrimaryTexts(key)
 
     class Persona:
-        prompt_version = 'soul-shared-1'
+        prompt_version = 'soul-persona-2'
 
         def system_text(self, language, question):
             return soul_prompt(key, language)

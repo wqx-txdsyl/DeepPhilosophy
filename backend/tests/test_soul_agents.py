@@ -16,14 +16,21 @@ def test_complete_roster_with_independent_souls_and_no_nietzsche():
     assert len(catalog()) == 119
     assert not is_soul_agent('nietzsche') and not is_soul_agent('general')
     contents = []
+    cognitive_paths, voices = [], []
     for key, spec in catalog().items():
         prompt = soul_prompt(key)
         assert spec['name'] in prompt and spec['name_en'] in prompt
         assert spec['works'] and all(w in prompt for w in spec['works'])
         assert '## 思想立场' in prompt and '## 原典驱动' in prompt
+        assert f'我是{spec["name"]}（{spec["name_en"]}）' in prompt
+        cognition = prompt.split('## 我的认知路径\n', 1)[1].split('\n', 1)[0]
+        voice = prompt.split('## 我的语气与交往\n', 1)[1].split('\n', 1)[0]
+        cognitive_paths.append(cognition)
+        voices.append(voice)
         assert '未取得' not in spec['works']
         contents.append(prompt)
     assert len(set(contents)) == 119
+    assert len(set(cognitive_paths)) == 119 and len(set(voices)) == 119
 
 
 def test_only_primary_tools_for_every_agent():
@@ -109,6 +116,7 @@ def test_stream_uses_soul_not_general_or_nietzsche_and_returns_tool_errors(monke
     assert json.loads(tool['result'])['error'] == 'OUTSIDE_AUTHOR_CORPUS'
     done = next(e for e in events if e['type'] == 'done')
     assert done['agent_id'] == 'kant' and done['primary_passages_read'] == 0 and done['complete']
+    assert done['release']['prompt_version'] == 'soul-persona-2'
 
 
 async def _collect(key):
