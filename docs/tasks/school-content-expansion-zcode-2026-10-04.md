@@ -24,6 +24,7 @@
 - 完整可读清单：[school-content-gap-list-2026-10-04.md](school-content-gap-list-2026-10-04.md)。
 - 逐项任务、旧资料位置和研究起点：[school-content-gap-tasks-2026-10-04.json](school-content-gap-tasks-2026-10-04.json)。
 - 111项与556条子项的不可覆盖快照：[school-inventory-baseline-2026-10-04.json](school-inventory-baseline-2026-10-04.json)。
+- Codex负责的分类与子项审校：[专门审校任务书](school-subschool-audit-taskbook-2026-10-04.md)。该审校将决定名称、归属和缺口的最终处置，zcode按本单的独立资料包范围继续工作。
 
 首批12项：F01认识论、F02形而上学、F03逻辑与逻辑哲学、F04心灵哲学、F05语言哲学、F06美学、T01佛教哲学、I01正理派、I02胜论派、I06耆那教哲学、J01京都学派、A01非洲智者哲学。
 
