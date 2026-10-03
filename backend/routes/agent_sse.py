@@ -64,7 +64,8 @@ class AgentChatRequest(BaseModel):
 
 
 def agent_access(req: AgentChatRequest, request: Request, authorization: str = Header(None)):
-    if (req.agent or 'general') == 'nietzsche' or ((req.agent or 'general') == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare'):
+    from soul_agents import is_soul_agent
+    if is_soul_agent(req.agent) or (req.agent or 'general') == 'nietzsche' or ((req.agent or 'general') == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare'):
         # Keep identity resolution and per-user memory isolation, but no
         # experiment request rate or daily usage quota.
         return guard.resolve_user(authorization)
@@ -136,7 +137,8 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
                 yield _sse(ev)
 
     async def gen():
-        if (req.agent or "general") not in {"general", "nietzsche"}:
+        from soul_agents import is_soul_agent
+        if (req.agent or "general") not in {"general", "nietzsche"} and not is_soul_agent(req.agent):
             async for frame in stream_events():
                 yield frame
             return

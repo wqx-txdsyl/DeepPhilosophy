@@ -6,7 +6,7 @@
 
 - 清单：`backend/philosopher_agents/catalog.json`，保存名称、传统、作者别名及原典检索线索。
 - 每人唯一人格来源：`backend/philosopher_agents/{key}/soul.md`，含立场、方法、误读边界、原典与引用纪律。
-- 运行：`backend/soul_agent_runtime.py`，只安装 `search_primary_texts` 和 `read_primary_text`。不加载尼采数据包、额外人格记忆、知识图谱、时期快照或 MCP 工具。
+- 运行：`backend/soul_agent_runtime.py` 以人格适配层复用深哲的 `deep_bare_agent` 无预算流式循环，只安装 `search_primary_texts` 和 `read_primary_text`。不加载尼采数据包、额外人格记忆、知识图谱、时期快照或 MCP 工具。
 - 每个角色使用现有模型服务，不代表 119 个独立训练模型。前端显示“测试版”。
 
 ## 原典范围
@@ -22,3 +22,7 @@
 ## 检查
 
 `pytest backend/tests/test_soul_agents.py` 覆盖全员注册与执行、原典工具范围、跨作者隔离、外部候选、读取分页、来源展示及 SSE。现有前端测试、构建与深哲/尼采回归另外执行；这不等同全部哲学回答质量已验证。
+
+## 2026-10-03 交互统一
+
+全部已上线哲学家复用深哲的分段思考、工具结果、逐 token 正文、停止恢复与复制交互。保留每人的 soul.md 与专用原典工具；尼采保留既有人格包。哲学家回答不显示“原典检索”和“继续探索”区域，后端也不额外生成探索问题。正文引用仍可跳转，底部保留复制、简单一点、深入一点、学术研究四个图标。深哲自己的两个区域不变。

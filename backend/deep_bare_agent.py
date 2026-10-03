@@ -87,18 +87,20 @@ def source_metadata(calls, answer, language):
     return citations, evidence
 
 
-async def stream_bare_agent(question, history, language='zh', conversation_id=None, message_id=None, _evaluation_prompt_profile=None, custom_instructions=None, agent='general'):
+async def stream_bare_agent(question, history, language='zh', conversation_id=None, message_id=None, _evaluation_prompt_profile=None, custom_instructions=None, agent='general', _persona=None):
     from agent_release import prompt_spec, release_descriptor, fingerprint
     from routes.agent_llm import MODEL
     release = release_descriptor(language,_evaluation_prompt_profile)
-    persona = None
-    if agent == 'nietzsche':
+    persona = _persona
+    if agent == 'nietzsche' and persona is None:
         import nietzsche_runtime as persona
+    if persona is not None:
         system = persona.system_text(language, question)
         import hashlib
-        release = {**release, 'responder':'nietzsche', 'prompt_version':'nietzsche-shared-1',
+        persona_version = getattr(persona, 'prompt_version', 'nietzsche-shared-1')
+        release = {**release, 'responder':agent, 'prompt_version':persona_version,
                    'effective_prompt_sha256':hashlib.sha256(system.encode()).hexdigest(),
-                   'prompt_matches_manifest':None,'persona_prompt_version':'nietzsche-shared-1'}
+                   'prompt_matches_manifest':None,'persona_prompt_version':persona_version}
     else:
         system = prompt_spec(language,_evaluation_prompt_profile)['text']
     messages = [SystemMessage(content=system)]
@@ -205,7 +207,7 @@ async def stream_bare_agent(question, history, language='zh', conversation_id=No
                 if text:
                     yield {'type': 'token', 'content': text}
                 from deep_streaming import wants_suggestions
-                suggest = complete and wants_suggestions(question) and bool(text.strip())
+                suggest = agent == 'general' and complete and wants_suggestions(question) and bool(text.strip())
                 usage = None
                 if round_usage and all(isinstance(item,dict) for item in round_usage):
                     usage = {key:sum(item.get(key,0) for item in round_usage) for key in ('input_tokens','output_tokens','total_tokens')}

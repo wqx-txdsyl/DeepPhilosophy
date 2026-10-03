@@ -30,7 +30,7 @@ import '../conversation.css';
  *   - A Streaming 中打开 B → token 只写回 A
  *   - 删除 Streaming 会话 → 先 abort; late event 经 deletedRef + 缺失会话守卫不复活
  */
-const sharedRuntime = agent => agent === 'general' || agent === 'nietzsche';
+const sharedRuntime = agent => typeof agent === 'string' && agent.length > 0;
 const genId = (p) => `${p}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 
 export default function AgentWorkspace() {

@@ -49,7 +49,8 @@ for (const key of ['simpler', 'deeper', 'primary', 'scholarly']) {
 assert.ok(/onPick\(en \? d\.promptEn : d\.promptZh\)/.test(src), 'DepthControls picks prompt by lang');
 // MessageBubble 传递真实 lang（不再 lang={undefined}）
 const ml = readFileSync(new URL('../src/components/conversation/MessageList.jsx', import.meta.url), 'utf8');
-assert.ok(/<DepthControls lang=\{lang\}/.test(ml), 'MessageBubble passes lang to DepthControls');
+const answer = readFileSync(new URL('../src/components/conversation/GeneralAnswer.jsx', import.meta.url), 'utf8');
+assert.ok(/<GeneralAnswer message=/.test(ml) && /<DepthControls lang=\{lang\}/.test(answer), 'shared answer passes lang to DepthControls');
 assert.ok(!/lang=\{undefined\}/.test(ml), 'no lang=undefined left');
 // MessageList 已接线 researchPhase（PhasePill）
 assert.ok(/researchPhase\(name, text, lang\)/.test(ml), 'PhasePill uses researchPhase');

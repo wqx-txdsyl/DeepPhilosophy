@@ -147,6 +147,15 @@ try {
     }))));
     assert.ok(footer.indexOf('general-answer-actions')>footer.indexOf('general-exploration-section'));
     assert.equal((footer.match(/class="[^"]*general-action-icon/g)||[]).length,4);
+    for(const agent_id of ['nietzsche','kant','confucius']) {
+      const rendered=renderToStaticMarkup(createElement(AuthProvider,null,createElement(LangProvider,null,createElement(GeneralAnswer,{
+        message:{content:'观点【《论语》·学而】',agent_id,runtime_profile:'bare',streaming:false,citations:[primaryCitation],suggestions:['旧的探索问题'],suggestions_status:'ready'},onSend(){},onDrawioEdit(){}
+      }))));
+      assert.ok(!rendered.includes('general-research-section') && !rendered.includes('general-exploration-section'));
+      assert.ok(!rendered.includes('原典检索') && !rendered.includes('继续探索') && !rendered.includes('旧的探索问题'));
+      assert.equal((rendered.match(/class="[^"]*general-action-icon/g)||[]).length,4);
+      assert.ok(rendered.includes('https://deepphilosophy.top/reader/lunyu?ch=0'), 'inline citations remain usable');
+    }
   } finally {globalThis.localStorage=oldStorage;}
   const unusedDrawer = source({ ...primaryCitation, used: false });
   assert.ok(unusedDrawer.includes('未被本回答引用') && !unusedDrawer.includes('本回答使用的来源'));

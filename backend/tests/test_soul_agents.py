@@ -74,6 +74,16 @@ def test_sources_are_neither_fabricated_nor_unread_candidates():
     assert used_citations([read], '【《论语》·学而】')[0]['verified'] is False
 
 
+def test_pdf_reader_uses_actual_page_boundaries(monkeypatch):
+    import research_transport, research_access
+    from soul_agent_tools import read_pdf_source
+    monkeypatch.setattr(research_transport, 'fetch_bytes', lambda *a, **kw: {'body': b'%PDF', 'url': a[0]})
+    monkeypatch.setattr(research_access, 'parse_pdf', lambda _: ['first\n\nparagraph', 'second page'])
+    result = read_pdf_source('https://example.org/text.pdf', offset=18)
+    assert result['pdf_page'] == 2 and result['access_level'] == 'PDF_PASSAGE_READ'
+    assert result['text'] == 'second page'
+
+
 def test_stream_uses_soul_not_general_or_nietzsche_and_returns_tool_errors(monkeypatch):
     import deep_bare_agent
     seen = []
@@ -116,3 +126,30 @@ def test_each_registered_agent_can_complete_a_turn(monkeypatch, key):
     monkeypatch.setattr(deep_bare_agent, 'load_model', Model)
     events = asyncio.run(_collect(key))
     assert next(e for e in events if e['type'] == 'done')['content'] == catalog()[key]['name']
+
+
+def test_shared_stream_preserves_deltas_and_interim_without_exploration(monkeypatch):
+    import deep_bare_agent
+    class Model:
+        turn=0
+        def bind_tools(self,tools):return self
+        async def astream(self,messages):
+            self.turn+=1
+            yield AIMessageChunk(content='',additional_kwargs={'reasoning_content':'分段思考'})
+            if self.turn==1:
+                yield AIMessageChunk(content='先回答一部分。')
+                yield AIMessageChunk(content='',tool_call_chunks=[{'name':'read_primary_text','args':'{"book_id":"outside"}','id':'p1','index':0}])
+            else:
+                yield AIMessageChunk(content='第一句。')
+                yield AIMessageChunk(content='第二句。',response_metadata={'finish_reason':'stop'})
+    async def forbidden(*args):raise AssertionError('No philosopher exploration request')
+    monkeypatch.setattr(deep_bare_agent,'load_model',Model)
+    monkeypatch.setattr(deep_bare_agent,'exploration_questions',forbidden)
+    events=asyncio.run(_collect('kant'))
+    assert [e['content'] for e in events if e['type']=='answer_preview']==['先回答一部分。','第一句。','第二句。']
+    assert any(e['type']=='assistant_commentary' and e['content']=='先回答一部分。' for e in events)
+    assert len({e['id'] for e in events if e['type']=='provider_reasoning_delta'})==2
+    done=next(e for e in events if e['type']=='done')
+    assert done['suggestions_status']=='disabled' and done['runtime_profile']=='bare'
+    assert done['content']=='第一句。第二句。'
+    assert not any(e['type']=='suggestions' for e in events)

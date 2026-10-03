@@ -1,6 +1,7 @@
 import asyncio
 import json
 import sys
+import pytest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from account_context_messages import personalization_messages
@@ -32,7 +33,8 @@ def test_recall_returns_only_editable_personalization(monkeypatch):
     finally:current_account_id.reset(token)
 
 
-def test_nietzsche_sse_carries_authenticated_scope_and_no_old_quota(monkeypatch):
+@pytest.mark.parametrize('agent',['nietzsche','kant','confucius'])
+def test_persona_sse_carries_authenticated_scope_and_no_old_quota(monkeypatch,agent):
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
     from routes import agent_sse
@@ -46,12 +48,12 @@ def test_nietzsche_sse_carries_authenticated_scope_and_no_old_quota(monkeypatch)
         yield {'type':'done','content':'scope correct','complete':True}
     monkeypatch.setattr(engine_langgraph,'stream_agent',stream)
     app=FastAPI();app.include_router(agent_sse.router)
-    response=TestClient(app).post('/api/agent/stream_lg',json={'agent':'nietzsche','message':'测试'})
+    response=TestClient(app).post('/api/agent/stream_lg',json={'agent':agent,'message':'测试'})
     assert response.status_code==200 and 'scope correct' in response.text
     assert current_account_id.get() is None
 
 
-def test_nietzsche_shared_stream_preserves_interim_and_dynamic_questions(monkeypatch):
+def test_nietzsche_shared_stream_preserves_interim_without_exploration(monkeypatch):
     import deep_bare_agent as bare
     import nietzsche_runtime as persona
     from langchain_core.messages import AIMessageChunk
@@ -59,7 +61,7 @@ def test_nietzsche_shared_stream_preserves_interim_and_dynamic_questions(monkeyp
     seen=[]
     tool=StructuredTool.from_function(lambda:{'text':'原文'},name='probe',description='Fixture')
     async def tools():return [tool]
-    async def suggestions(*args):return {'suggestions':['针对本轮的追问？'],'status':'ready'}
+    async def suggestions(*args):raise AssertionError('Philosophers must not generate exploration')
     monkeypatch.setattr(persona,'tools',tools)
     monkeypatch.setattr(persona,'system_text',lambda *a:'尼采身份')
     monkeypatch.setattr(persona,'citations',lambda *a:([],None))
@@ -81,4 +83,5 @@ def test_nietzsche_shared_stream_preserves_interim_and_dynamic_questions(monkeyp
     assert any(e['type']=='assistant_commentary' and e['content']=='先回应。' for e in events)
     done=next(e for e in events if e['type']=='done')
     assert done['content']=='完成。'
-    assert any('针对本轮的追问？' in json.dumps(e,ensure_ascii=False) for e in events)
+    assert done['suggestions_status']=='disabled'
+    assert not any(e['type']=='suggestions' for e in events)

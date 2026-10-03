@@ -490,43 +490,12 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
     );
   }
 
-  if (['general','nietzsche'].includes(m.agent_id)) return <div className="cw-assistant" data-agent={m.agent_id}>
+  return <div className="cw-assistant" data-agent={m.agent_id}>
     {showIdentity && <AgentIdentity agentId={m.agent_id} agents={agents} />}
-    <GeneralAnswer message={m.agent_id==='nietzsche' && m.runtime_profile!=='bare' ? {...m,suggestions:[],suggestions_status:'unavailable'} : m} onSend={onSend} onDrawioEdit={onDrawioEdit} busy={busy} question={question} onRegenerateExploration={onRegenerateExploration} />
+    <GeneralAnswer message={m} onSend={onSend} onDrawioEdit={onDrawioEdit} busy={busy} question={question} onRegenerateExploration={onRegenerateExploration}
+      primaryOnly={agents.some(a => a.key === m.agent_id && a.status === 'preview')} />
   </div>;
 
-  return (
-    <div className="cw-assistant">
-      {showIdentity && <AgentIdentity agentId={m.agent_id} agents={agents} />}
-      {m.safety === 'warning' && (
-        <div className="cw-reasoning" style={{ marginTop: 0, color: 'var(--text-dim)' }}>{t('warning')}</div>
-      )}
-      <AgentActivity m={m} prefsTick={prefsTick} />
-      <div style={{ lineHeight: 'var(--cw-line-body)', fontSize: 14.5 }}>
-        {renderMarkdown(cleanContent(m.content), (code) => onDrawioEdit(m.message_id, code), m.drawioXml, t)}
-        {m.streaming && m.content && (
-          <span className="cw-stream-cursor" style={{ display: 'inline-block', width: 6, height: 14, marginLeft: 3,
-            background: 'var(--accent)', animation: 'pulse 1s infinite', verticalAlign: 'middle' }} />
-        )}
-      </div>
-      {getPref('showCitations') && <EvidenceChips citations={m.citations} evidence={m.evidence} />}
-      {!m.streaming && m.content && (
-        <DepthControls lang={lang} disabled={false}
-          onPick={(prompt) => onSend(prompt)} />
-      )}
-      {m.suggestions?.length > 0 && !m.streaming && (
-        <div className="cw-followups">
-          <div className="cw-followups-cap">{t('explore')}</div>
-          {m.suggestions.map((s, i) => (
-            <button key={i} className="cw-followup-chip" onClick={() => onSend(s, m)}>
-              <CornerDownRight size={11} style={{ marginRight: 6, verticalAlign: '-2px', color: 'var(--text-dim)' }} aria-hidden />
-              {s}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
 });
 
 export default function MessageList({

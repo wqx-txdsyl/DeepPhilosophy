@@ -1982,7 +1982,8 @@ async def stream_agent(req_message, history, agent="general", custom_instruction
     from soul_agents import is_soul_agent
     if is_soul_agent(agent):
         from soul_agent_runtime import stream_soul_agent
-        events = stream_soul_agent(req_message, history, agent, language, custom_instructions)
+        events = stream_soul_agent(req_message, history, agent, language, custom_instructions,
+                                   conversation_id=conversation_id, message_id=message_id)
         try:
             async for event in events:
                 yield event

@@ -50,7 +50,7 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
   const zh = lang !== 'en';
   const toolOpen = useLocalPref('toolTraceOpen');
   const events = (message.events || message.tool_events || []).filter(e => (['provider_reasoning', 'assistant_commentary', 'tool_start', 'tool', 'tool_cancel'].includes(e?.t)
-    || (message.runtime_profile === 'bare' && e?.t === 'thinking_summary'))
+    || (['bare', 'soul_preview'].includes(message.runtime_profile) && e?.t === 'thinking_summary'))
     && (e.t !== 'provider_reasoning' || e.source === 'deepseek')
     && (e.tc?.name || e.name) !== 'declare_research_need');
   if (!events.length && !message.streaming) return null;
@@ -96,13 +96,14 @@ export function ReasoningTimeline({ message, lang = 'zh', toolLabel = name => na
   </div>;
 }
 
-export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, question, onRegenerateExploration }) {
+export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, question, onRegenerateExploration, primaryOnly = false }) {
   const { t, lang } = useLang();
   const zh = lang !== 'en';
   const [source, setSource] = useState(null);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const showSources = useLocalPref('showCitations') !== false;
+  const showAnswerSections = !m.agent_id || m.agent_id === 'general';
   const citations = pickUsedEvidence(m.citations);
   const content = m.runtime_profile === 'bare' ? String(m.content || '')
     : plainText(m.content).replace(/<tool_calls>[\s\S]*?<\/tool_calls>/g, '').replace(/<invoke name="[^"]+">[\s\S]*?<\/invoke>/g, '');
@@ -122,11 +123,11 @@ export default function GeneralAnswer({ message: m, onSend, onDrawioEdit, busy, 
       {m.streaming && !m.done_received && !!content && <span className="cw-stream-cursor" aria-hidden />}
     </div>
     {interrupted && <StreamNotice message={m} question={question} onSend={onSend} busy={busy} zh={zh} />}
-    {showSources && complete && m.safety !== 'blocked' && <AnswerResearch message={m} lang={lang} busy={busy} onSend={onSend} onSource={setSource} />}
-    {complete && m.safety !== 'blocked' && m.suggestions_status !== 'disabled' && <AnswerExploration message={m} lang={lang} busy={busy} onSend={onSend} onRegenerate={onRegenerateExploration ? () => onRegenerateExploration(m, question) : undefined} />}
+    {(showAnswerSections || primaryOnly) && showSources && complete && m.safety !== 'blocked' && <AnswerResearch message={m} lang={lang} busy={busy} onSend={onSend} onSource={setSource} />}
+    {showAnswerSections && complete && m.safety !== 'blocked' && m.suggestions_status !== 'disabled' && <AnswerExploration message={m} lang={lang} busy={busy} onSend={onSend} onRegenerate={onRegenerateExploration ? () => onRegenerateExploration(m, question) : undefined} />}
     {!!content && !m.streaming && <div className="general-answer-actions" role="group" aria-label={zh ? '回答操作' : 'Answer actions'}>
       <button type="button" className="general-action-icon" onClick={copy} aria-label={zh ? '复制回答' : 'Copy answer'}>{copied ? <Check size={16} /> : <Copy size={16} />}<span className="general-action-tooltip">{copied ? (zh ? '已复制' : 'Copied') : (zh ? '复制' : 'Copy')}</span></button>
-      {complete && m.safety !== 'blocked' && <DepthControls lang={lang} disabled={busy} onPick={prompt => onSend(prompt, m)} general kinds={['simpler', 'deeper', 'scholarly']} iconOnly />}
+      {complete && m.safety !== 'blocked' && <DepthControls lang={lang} disabled={busy} onPick={prompt => onSend(prompt, m)} general kinds={primaryOnly ? ['simpler', 'deeper'] : ['simpler', 'deeper', 'scholarly']} iconOnly />}
       {copied && <span className="general-copy-status" role="status">{zh ? '已复制' : 'Copied'}</span>}
       {m.agent_release && <span className="general-release-label" title={`PhiAgent ${m.agent_release.release_version} · Prompt ${m.agent_release.prompt_version}`}>v{m.agent_release.release_version}</span>}
     </div>}

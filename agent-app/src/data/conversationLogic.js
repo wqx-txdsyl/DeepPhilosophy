@@ -119,7 +119,7 @@ export function normalizeMessage(raw, fallbackAgentId = GENERAL_AGENT) {
           ...(raw.suggestions_status ? { suggestions_status: raw.suggestions_status } : {}),
           ...(raw.reasoning_summary ? { reasoning_summary: raw.reasoning_summary } : {}),
           ...(raw.safety ? { safety: raw.safety } : {}),
-          ...([GENERAL_AGENT,'nietzsche'].includes(raw.agent_id || fallbackAgentId) && raw.stream_state ? { stream_state: raw.stream_state, error: raw.error || '' } : {}),
+          ...(raw.stream_state ? { stream_state: raw.stream_state, error: raw.error || '' } : {}),
         }
       : {}),
     created_at: raw.created_at || new Date().toISOString(),
@@ -297,10 +297,10 @@ export function toPersistedMessage(m) {
   if (typeof m.context_content === 'string') base.context_content = m.context_content;
   if (m.role !== 'assistant') return base;
   const events = (m.events || m.tool_events || []).map((ev) => {
-    if (ev?.t === 'tool_start') return { ...([GENERAL_AGENT,'nietzsche'].includes(m.agent_id) ? ev : {}), t: 'tool_cancel', name: ev.name, reason: [GENERAL_AGENT,'nietzsche'].includes(m.agent_id) ? '执行结果未保存' : '未执行，已跳过' };
+    if (ev?.t === 'tool_start') return { ...ev, t: 'tool_cancel', name: ev.name, reason: '执行结果未保存' };
     if (ev?.t === 'tool' && ev.tc) {
       const summary = String(ev.tc.result_summary || '');
-      return { ...([GENERAL_AGENT,'nietzsche'].includes(m.agent_id) ? ev : {}), t: 'tool', tc: { ...ev.tc, result_summary: m.runtime_profile === 'bare' ? summary : summary.slice(0, 400) } };
+      return { ...ev, t: 'tool', tc: { ...ev.tc, result_summary: m.runtime_profile === 'bare' ? summary : summary.slice(0, 400) } };
     }
     return ev;
   });
@@ -314,11 +314,11 @@ export function toPersistedMessage(m) {
     ...(m.evidence ? { evidence: m.evidence } : {}),
     tool_events: events,
     ...(m.suggestions?.length ? { suggestions: m.suggestions } : {}),
-    ...([GENERAL_AGENT,'nietzsche'].includes(m.agent_id) && m.suggestions_status ? { suggestions_status: m.suggestions_status } : {}),
+    ...(m.suggestions_status ? { suggestions_status: m.suggestions_status } : {}),
     ...(m.reasoning_summary ? { reasoning_summary: m.reasoning_summary } : {}),
     ...(m.safety ? { safety: m.safety } : {}),
-    ...([GENERAL_AGENT,'nietzsche'].includes(m.agent_id) && m.stream_state ? { stream_state: m.stream_state, error: m.error || '' } : {}),
-    ...([GENERAL_AGENT,'nietzsche'].includes(m.agent_id) && Number.isFinite(m.duration_seconds) ? { duration_seconds: m.duration_seconds } : {}),
+    ...(m.stream_state ? { stream_state: m.stream_state, error: m.error || '' } : {}),
+    ...(Number.isFinite(m.duration_seconds) ? { duration_seconds: m.duration_seconds } : {}),
   };
 }
 
