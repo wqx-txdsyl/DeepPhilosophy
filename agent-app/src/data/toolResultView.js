@@ -1,3 +1,4 @@
+import {extraToolView, genericToolView} from './toolResultExtras.js';
 // Presentation only: preserve the received return for inspection; never rewrite
 // tool evidence, execution status, or the model's context.
 const text = value => typeof value === 'string' ? value : '';
@@ -19,11 +20,14 @@ export function toolResultView(name, raw, zh = true) {
     try { data = JSON.parse(raw); parsed = true; } catch { /* Legacy or truncated return. */ }
   }
   const rawText = parsed ? JSON.stringify(data, null, 2) ?? '' : text(raw);
-  const view = { headline: '', meta: [], note: '', items: [], rawText, structured: parsed, warnings: [] };
+  const view = { documents: [], headline: '', meta: [], note: '', items: [], rawText, structured: parsed, warnings: [] };
   if (!parsed || data === null || typeof data !== 'object') {
     const looksStructured = !parsed && /^[\s]*[\[{]/.test(rawText);
     view.headline = looksStructured ? say('这条历史返回未能完整解析', 'This stored return could not be parsed') : excerpt(parsed ? String(data ?? '') : rawText, 320);
     view.note = looksStructured ? say('可展开查看保留下来的原始内容。', 'Expand the retained raw content below.') : '';
+    if (!looksStructured && typeof data==='string' && (data.includes('\n') || data.length>320)) {
+      view.headline=say('返回内容','Returned content');view.documents.push({title:'',text:data});
+    }
     return view;
   }
   const count = n => Number(n).toLocaleString(zh ? 'zh-CN' : 'en-US');
@@ -33,12 +37,12 @@ export function toolResultView(name, raw, zh = true) {
     const url = safeResultUrl(r.url || r.source_url || r.reader_url);
     const author = text(r.author) || list(r.authors).map(a => typeof a === 'string' ? a : text(a?.name)).filter(Boolean).join(', ');
     const meta = [author, text(r.chapter || r.chapter_title), url ? new URL(url).hostname.replace(/^www\./, '') : ''].filter(Boolean);
-    return { title: text(r.book_title || r.book || r.title || r.name) || say('相关资料', 'Related source'),
+    return { title: text(r.book_title || r.book || r.title || r.name || r.term || r.event || r.claim) || say('相关资料', 'Related source'),
       meta: [...new Set(meta)].join(' · '), url,
-      excerpt: excerpt(r.snippet || r.excerpt || r.text || r.matched_text || r.abstract?.text),
+      excerpt: excerpt(r.snippet || r.excerpt || r.text || r.matched_text || r.canon || r.significance || r.fact || r.abstract?.text),
       catalogue: r.evidence_scope === 'catalogue' || r.match_type === 'book_metadata' };
   };
-  const errors = { RATE_LIMITED: ['来源暂时限流', 'Source rate-limited'], PROVIDER_RATE_LIMIT: ['来源暂时限流', 'Source rate-limited'],
+  const errors = { LOGIN_REQUIRED:['请先登录再查看账号信息','Sign in to access account information'], MEMORY_DISABLED:['长期记忆已关闭','Memory is turned off'], CONVERSATION_NOT_FOUND:['这段对话不存在或已删除','Conversation not found or deleted'], EXPLICIT_MEMORY_REQUEST_REQUIRED:['需要你明确要求保存这条记忆','An explicit request to remember is required'], EXPLICIT_FORGET_REQUEST_REQUIRED:['需要你明确要求删除记忆','An explicit request to forget is required'], QUERY_REQUIRED:['请先提供检索内容','A search query is required'], RATE_LIMITED: ['来源暂时限流', 'Source rate-limited'], PROVIDER_RATE_LIMIT: ['来源暂时限流', 'Source rate-limited'],
     AUTHENTICATION_REQUIRED: ['来源需要授权', 'Source authentication required'], ACCESS_DENIED: ['来源拒绝访问', 'Source denied access'],
     UNSUPPORTED_WEB_FORMAT: ['当前阅读器不支持该格式', 'Unsupported document format'],
     NO_READABLE_WEB_TEXT: ['页面没有返回可读正文', 'No readable page text returned'],
@@ -47,7 +51,7 @@ export function toolResultView(name, raw, zh = true) {
   if (data.status === 'blocked' || data.blocked) {
     view.headline = say('本次未执行', 'Not executed');
     view.note = text(data.message || data.reason || data.note);
-  } else if (data.error || data.status === 'error' || data.accepted === false) {
+  } else if (data.error || data.status === 'error' || data.accepted === false || data.success === false || data.ok === false) {
     view.headline = errors[data.error]?.[zh ? 0 : 1] || say('工具执行未成功', 'Tool execution did not succeed');
     view.items = list(data.results).map(item);
     view.note = text(data.message) || (view.items.length
@@ -61,6 +65,8 @@ export function toolResultView(name, raw, zh = true) {
   if (data.cached) view.meta.push(say('使用已有缓存', 'Cached result'));
   if (data.offline_mode) view.meta.push(say('外部来源不可用，返回本地记录', 'External sources unavailable; local records returned'));
   if (view.headline) return view;
+
+  if (extraToolView(name,data,view,zh,item,safeResultUrl)) return view;
 
   if (name === 'verify_quote') {
     view.headline = data.found === true ? say('找到原句匹配', 'Quotation match found')
@@ -118,6 +124,7 @@ export function toolResultView(name, raw, zh = true) {
     view.headline = text(data.summary || data.message) || say('工具已返回结果', 'Tool result returned');
     view.items = (Array.isArray(data) ? data : list(data.results || data.books || data.items)).map(item);
     view.note = text(data.note);
+    genericToolView(data,view,zh,item);
   }
   return view;
 }

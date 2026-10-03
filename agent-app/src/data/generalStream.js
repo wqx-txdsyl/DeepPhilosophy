@@ -130,7 +130,7 @@ export function reduceGeneralEvent(state, evt) {
 export function inferToolStatus(result) {
   try {
     const data = typeof result === 'string' ? JSON.parse(result) : result;
-    if (data?.error || data?.status === 'error') return 'error';
+    if (data?.error || data?.status === 'error' || data?.accepted === false || data?.success === false || data?.ok === false) return 'error';
     if (data?.status === 'blocked' || data?.blocked) return 'blocked';
     if (data?.status === 'partial' || data?.provider_errors?.length) return 'partial';
     if (data?.status === 'empty') return 'empty';

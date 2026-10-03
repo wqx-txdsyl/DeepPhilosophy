@@ -275,3 +275,18 @@ await test('general UI strips pictographs without removing mathematical symbols'
   assert.equal(plainText('🧭思考 ⚠️ A → B ∀x 1️⃣ 🇨🇳 👩‍💻'), '思考  A → B ∀x   ');
 });
 console.log(`${passed} general stream delivery checks passed`);
+
+await test('Nietzsche stores the same complete tool timeline and interrupted state',()=>{
+  const payload='原文'.repeat(4000);
+  let state=reduce([{type:'status',runtime_profile:'bare'},
+    {type:'tool_start',name:'philosopher_corpus',call_id:'n1',args:{query:'生命'}},
+    {type:'tool',name:'philosopher_corpus',call_id:'n1',result:JSON.stringify({text:payload})},
+    {type:'answer_preview',content:'未完成回答'}]);
+  state=finishGeneralStream(state,{aborted:true});
+  const restored=normalizeMessage(toPersistedMessage({...state,agent_id:'nietzsche',role:'assistant',message_id:'n1'}));
+  assert.equal(restored.stream_state,'stopped');
+  assert.equal(restored.runtime_profile,'bare');
+  const tool=restored.tool_events.find(e=>e.t==='tool');
+  assert.equal(tool.call_id,'n1');
+  assert.equal(JSON.parse(tool.tc.result_summary).text,payload);
+});

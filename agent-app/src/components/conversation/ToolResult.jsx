@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ChevronRight, ArrowUpRight } from 'lucide-react';
 import { toolResultView } from '../../data/toolResultView';
+import { renderMarkdown } from './markdown';
 
 export function ToolResult({ name, raw, zh = true }) {
   const [expanded, setExpanded] = useState(false);
@@ -11,6 +12,10 @@ export function ToolResult({ name, raw, zh = true }) {
     {view.headline && <p className="general-result-headline">{view.headline}</p>}
     {!!view.meta.length && <p className="general-result-meta">{view.meta.join(' · ')}</p>}
     {!!view.warnings.length && <div className="general-result-warning">{view.warnings.map(w => <p key={w}>{w}</p>)}</div>}
+    {view.documents.map((document,i)=><section className="general-result-document" key={i}>
+      {document.title && <h4>{document.title}</h4>}
+      <div className="general-tool-markdown">{renderMarkdown(document.text,null,null,key=>key,{general:true,images:false})}</div>
+    </section>)}
     {!!shown.length && <ul className="general-result-items">{shown.map((r, i) => <li key={`${r.url || r.title}:${i}`}>
       {r.title && (r.url ? <a href={r.url} target="_blank" rel="noopener noreferrer">{r.title}<ArrowUpRight size={12} aria-hidden="true" /></a> : <span className="general-result-item-title">{r.title}</span>)}
       {r.meta && <span className="general-result-meta">{r.meta}</span>}

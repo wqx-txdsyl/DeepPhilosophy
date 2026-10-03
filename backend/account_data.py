@@ -237,4 +237,5 @@ def account_context(user_id, conversation_id=None):
             "memory_profile": memory['text'] if memory['enabled'] else '',
             "memory_profile_user_edited": memory['manual'] if memory['enabled'] else False,
             "profile": {key: profile[key] for key in ("about",) if profile.get(key)},
+            "user_settings": {key:profile[key] for key in ('nickname','occupation','about','custom_instructions') if profile.get(key)},
             "recent_questions": questions if memory['enabled'] else []}

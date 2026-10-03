@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-03",
+  "scope": [
+    "用户设置与自动记忆摘要区分来源和优先级",
+    "尼采复用深哲流式循环、账号上下文及回答UI",
+    "长期记忆、历史、人格检索、书目信息和通用工具结果可读展示"
+  ],
+  "validation": {
+    "backend_tests": 162,
+    "frontend_suite": "passed including new Nietzsche persistence and memory result cases",
+    "production_build": "passed",
+    "browser": {
+      "isolated_fixture": true,
+      "memory_markdown_headings": true,
+      "mobile_width": 390,
+      "mobile_scroll_width": 390,
+      "nietzsche_action_buttons": 4,
+      "interim_response_visible": true,
+      "dynamic_suggestion_visible": true
+    },
+    "live_model_probes": [
+      "PERSONALIZATION_PARITY_PROBE_20261003.json",
+      "NIETZSCHE_SHARED_PROBE_20261003.json"
+    ]
+  },
+  "limits": [
+    "工具展示核验不是逐一验证所有外部工具服务可用性",
+    "真实模型探针使用合成资料，没有修改用户账号或历史",
+    "当前版本未重新运行完整哲学质量测试集"
+  ],
+  "release": {
+    "version": "0.1.2",
+    "general_prompt_version": "0.1.1",
+    "general_and_nietzsche_tool_budget": null,
+    "nietzsche_persona_preserved": true
+  },
+  "deployment": null
+}

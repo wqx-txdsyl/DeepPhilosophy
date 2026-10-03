@@ -64,7 +64,7 @@ class AgentChatRequest(BaseModel):
 
 
 def agent_access(req: AgentChatRequest, request: Request, authorization: str = Header(None)):
-    if (req.agent or 'general') == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare':
+    if (req.agent or 'general') == 'nietzsche' or ((req.agent or 'general') == 'general' and os.getenv('DEEP_AGENT_RUNTIME', 'bare') == 'bare'):
         # Keep identity resolution and per-user memory isolation, but no
         # experiment request rate or daily usage quota.
         return guard.resolve_user(authorization)
@@ -124,7 +124,7 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
         events = elg.stream_agent(req.message, req.history or [], req.agent or "general", custom, language,
                                  conversation_id=req.conversation_id, message_id=req.message_id)
         from soul_agents import is_soul_agent
-        if (req.agent or "general") == "general" or is_soul_agent(req.agent):
+        if (req.agent or "general") in {"general", "nietzsche"} or is_soul_agent(req.agent):
             frames = _heartbeat_stream(events)
             try:
                 async for frame in frames:
@@ -136,7 +136,7 @@ async def agent_stream_lg(req: AgentChatRequest, request: Request, authorization
                 yield _sse(ev)
 
     async def gen():
-        if (req.agent or "general") != "general":
+        if (req.agent or "general") not in {"general", "nietzsche"}:
             async for frame in stream_events():
                 yield frame
             return

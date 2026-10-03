@@ -490,9 +490,9 @@ const MessageBubble = memo(function MessageBubble({ m, agents, showIdentity, pre
     );
   }
 
-  if (m.agent_id === 'general') return <div className="cw-assistant" data-agent="general">
+  if (['general','nietzsche'].includes(m.agent_id)) return <div className="cw-assistant" data-agent={m.agent_id}>
     {showIdentity && <AgentIdentity agentId={m.agent_id} agents={agents} />}
-    <GeneralAnswer message={m} onSend={onSend} onDrawioEdit={onDrawioEdit} busy={busy} question={question} onRegenerateExploration={onRegenerateExploration} />
+    <GeneralAnswer message={m.agent_id==='nietzsche' && m.runtime_profile!=='bare' ? {...m,suggestions:[],suggestions_status:'unavailable'} : m} onSend={onSend} onDrawioEdit={onDrawioEdit} busy={busy} question={question} onRegenerateExploration={onRegenerateExploration} />
   </div>;
 
   return (

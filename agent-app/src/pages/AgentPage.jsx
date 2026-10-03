@@ -30,6 +30,7 @@ import '../conversation.css';
  *   - A Streaming 中打开 B → token 只写回 A
  *   - 删除 Streaming 会话 → 先 abort; late event 经 deletedRef + 缺失会话守卫不复活
  */
+const sharedRuntime = agent => agent === 'general' || agent === 'nietzsche';
 const genId = (p) => `${p}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 
 export default function AgentWorkspace() {
@@ -119,7 +120,7 @@ export default function AgentWorkspace() {
     };
   }, []);
   useEffect(() => () => {
-    for (const stream of streamsRef.current.values()) if (stream.agent === 'general') stream.controller.abort();
+    for (const stream of streamsRef.current.values()) if (sharedRuntime(stream.agent)) stream.controller.abort();
   }, []);
 
   /* ── 登出（auth.jsx 广播）: 清内存会话 + 回草稿页（隐私, §auth）── */
@@ -272,7 +273,7 @@ export default function AgentWorkspace() {
         conversationStore.updateMessage(scopeKey,old.message_id,{suggestions_status:'unavailable'});
       }
     }
-    if (agent === 'general' && (!conversationId || newConversation) && !localOnly) {
+    if (sharedRuntime(agent) && (!conversationId || newConversation) && !localOnly) {
       if (draftSendRef.current) return;
       draftSendRef.current = true;
     }
@@ -297,7 +298,7 @@ export default function AgentWorkspace() {
     // 发送瞬间 snapshot attachments → immutable metadata（§12）; draft 由 Composer 清空
     const attachMeta = (attachments || []).filter(a => a && a.filename);
     const convNow = conversations.find(c => c.conversation_id === convId);
-    const generalTurn = agent === 'general' ? prepareGeneralTurn(text, sourceMsg, convNow?.messages, hasAttach) : null;
+    const generalTurn = sharedRuntime(agent) ? prepareGeneralTurn(text, sourceMsg, convNow?.messages, hasAttach) : null;
     const userMsg = {
       message_id: genId('msg'), conversation_id: convId, role: 'user', content: shown, created_at: nowIso,
       ...(generalTurn?.context_content !== undefined ? { context_content: generalTurn.context_content } : {}),
@@ -317,15 +318,15 @@ export default function AgentWorkspace() {
 
     // 历史快照: 发送前 20 条（含两种 Agent 的公开回答, §8 共享）
     const conversationHistory = convNow?.messages || [];
-    const history = (agent === 'general' ? conversationHistory : conversationHistory.slice(-20))
-      .map(m => ({ role: m.role, content: agent === 'general' ? (m.context_content || m.content) : m.content }));
+    const history = (sharedRuntime(agent) ? conversationHistory : conversationHistory.slice(-20))
+      .map(m => ({ role: m.role, content: sharedRuntime(agent) ? (m.context_content || m.content) : m.content }));
 
     const controller = new AbortController();
     markStream(convId, mid, controller, agent);
 
     // General owns its canonical network snapshot. Painting is batched, persistence never lags it.
-    // Nietzsche retains its existing stream protocol and presentation below.
-    if (agent === 'general') {
+    // General and Nietzsche share stream ownership, previews and recovery.
+    if (sharedRuntime(agent)) {
       let state = createGeneralStream();
       let paintTimer = null;
       let lastSaved = 0;
@@ -626,7 +627,7 @@ export default function AgentWorkspace() {
   const handleSuggestion = (text, sourceMsg) => {
     const agent = resolveFollowupAgent(selectorTouched, composerAgent, sourceMsg?.agent_id);
     setComposerAgent(agent);
-    dispatchSend({ message: text, display: text, agentOverride: agent, ...(agent === 'general' ? { sourceMsg } : {}) });
+    dispatchSend({ message: text, display: text, agentOverride: agent, ...(sharedRuntime(agent) ? { sourceMsg } : {}) });
   };
 
   // 稳定回调引用: MessageBubble 是 memo 组件, 流式 tick 期间若 onSend 引用每帧重建,

@@ -237,6 +237,10 @@ export function renderMarkdown(text, onEdit, drawioXml, t, options = {}) {
     }
     const imgMatch = trimmed.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
     if (imgMatch) {
+      if (options.images === false) {
+        out.push(<span key={i}>{imgMatch[1] || '图片'}</span>);
+        i++; continue;
+      }
       out.push(
         <div key={i} style={{ margin: '8px 0' }}>
           <img src={imgMatch[2]} alt={imgMatch[1]}

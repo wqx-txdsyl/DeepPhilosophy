@@ -13,7 +13,12 @@ def recall_account_memory():
     profile = get_profile(uid)
     if not profile['enabled']:
         return {"error": "MEMORY_DISABLED"}
-    return {"memories": account_data.list_memories(uid), "memory_profile": profile['text']}
+    import auth
+    settings = auth.get_profile(uid)
+    return {"memories": account_data.list_memories(uid), "memory_profile": profile['text'],
+            "memory_profile_user_edited": profile['manual'],
+            "user_settings": {key:settings[key] for key in ('nickname','occupation','about','custom_instructions') if settings.get(key)},
+            "source_note": "user_settings为用户亲自在设置中填写的自述与偏好；不是自动推断，优先于旧摘要。"}
 
 
 def remember_account_memory(source_quote: str):
