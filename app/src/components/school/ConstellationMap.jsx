@@ -1,3 +1,4 @@
+import { formatBookTitle } from '../../data/bookTitles';
 import { useMemo, useRef, useState, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { layoutConstellation, constellationRelationKind, constellationCurve } from '../../data/schoolConstellationLayout';
@@ -85,7 +86,7 @@ export default function ConstellationMap({ thinkers = [], relations = [], refere
           {Array.isArray(selected.works) && selected.works.length > 0 && <div className="school-star-profile-block"><h4>代表著作</h4><ul className="school-star-works">{selected.works.map((work, index) => {
             const title = typeof work === 'string' ? work : work.title;
             const book = references?.findBook?.(title, selected.name);
-            return <li key={`${title}-${index}`}>{book?.href ? <Link to={book.href}>《{title}》<span aria-hidden="true">↗</span></Link> : `《${title}》`}</li>;
+            return <li key={`${title}-${index}`}>{book?.href ? <Link to={book.href}>{formatBookTitle(title)}<span aria-hidden="true">↗</span></Link> : formatBookTitle(title)}</li>;
           })}</ul></div>}
           {person?.href && <Link className="school-star-detail-link" to={person.href}>进入人物详情 <span aria-hidden="true">↗</span></Link>}
           {!person?.href && references?.findSchool?.(selected.name) && <Link className="school-star-detail-link" to={`/school/${encodeURIComponent(selected.name)}`}>进入流派详情 <span aria-hidden="true">↗</span></Link>}

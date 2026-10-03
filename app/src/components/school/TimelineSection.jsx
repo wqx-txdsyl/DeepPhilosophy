@@ -1,3 +1,4 @@
+import { formatBookTitle } from '../../data/bookTitles';
 import { useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ossFallback, ossImg } from '../../data/ossUrls';
@@ -42,7 +43,7 @@ function EventArtwork({ book, person, kind }) {
   return <img
     className={book?.cover ? 'school-river-book' : 'school-river-portrait'}
     src={path.startsWith('/') ? ossImg(path, { w: 280 }) : path}
-    alt={book?.cover ? `《${book.title}》封面` : person.name}
+    alt={book?.cover ? `${formatBookTitle(book.title)}封面` : person.name}
     loading="lazy"
     onError={event => {
       if (!event.currentTarget.dataset.fb && event.currentTarget.src.startsWith('https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/')) ossFallback(event);
@@ -145,7 +146,7 @@ export default function TimelineSection({ timeline = [], thinkers = [], referenc
                       {person && onSelectPerson && <button type="button" onClick={() => onSelectPerson(person.schoolName)}>{person.schoolName} · 星图 ↗</button>}
                       {person?.href && !onSelectPerson && <Link to={person.href}>认识{person.schoolName} ↗</Link>}
                       {onSelectConcept && relatedTerms.map(term => <button type="button" key={term.term || term.word} onClick={() => onSelectConcept(term.term || term.word)}>{String(term.term || term.word).split(/[（(]/)[0]} ↗</button>)}
-                      {book?.href && <Link to={book.href}>{book.chapterCount > 0 ? '阅读' : '查看'}《{book.title}》 ↗</Link>}
+                      {book?.href && <Link to={book.href}>{book.chapterCount > 0 ? '阅读' : '查看'}{formatBookTitle(book.title)} ↗</Link>}
                     </div>}
                   </div></div>
                 </div>

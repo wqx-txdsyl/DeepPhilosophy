@@ -1,3 +1,4 @@
+import { formatBookTitle } from '../../data/bookTitles';
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './GlossaryCloud.css';
@@ -111,7 +112,7 @@ export default function GlossaryCloud({ cihai = [], references, selectedConcept,
         {item.def && <p className="school-glossary-definition">{item.def}</p>}
         {item.source && <p className="school-glossary-source">{item.source}</p>}
         {active.items.length > 1 && <details className="school-glossary-variants"><summary>其他解释 · {active.items.length - 1}</summary>{active.items.slice(1).map((alternative, index) => <div key={index}><h4>{alternative.word}</h4><p>{alternative.def}</p>{alternative.source && <small>{alternative.source}</small>}</div>)}</details>}
-        {sourceBook?.href && <Link to={sourceBook.href} className="school-glossary-book">{sourceBook.cover && <img src={sourceBook.cover} alt="" loading="lazy" onError={event => { event.currentTarget.style.display = 'none'; }} />}<span><strong>《{sourceBook.title}》</strong>{sourceBook.author && <small>{sourceBook.author}</small>}<em>{sourceBook.chapterCount > 0 ? '打开原典' : '查看书目'} <span aria-hidden="true">↗</span></em></span></Link>}
+        {sourceBook?.href && <Link to={sourceBook.href} className="school-glossary-book">{sourceBook.cover && <img src={sourceBook.cover} alt="" loading="lazy" onError={event => { event.currentTarget.style.display = 'none'; }} />}<span><strong>{formatBookTitle(sourceBook.title)}</strong>{sourceBook.author && <small>{sourceBook.author}</small>}<em>{sourceBook.chapterCount > 0 ? '打开原典' : '查看书目'} <span aria-hidden="true">↗</span></em></span></Link>}
         {onLocatePerson && item.source && <button className="school-glossary-person" type="button" onClick={() => onLocatePerson(item.source)}>在星图中寻找作者 <span aria-hidden="true">→</span></button>}
       </aside>}
     </div>
