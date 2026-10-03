@@ -39,6 +39,11 @@ class AuthorAssetsTests(unittest.TestCase):
         packet['profile']['concepts'][0]['sourceRefs'] = ['missing-source']
         self.assertEqual(assess(packet['profile'], packet)['level'], 'needs-review')
 
+    def test_empty_content_cannot_pass_with_valid_reference_ids(self):
+        packet = copy.deepcopy(self.packets[0])
+        packet['profile']['concepts'][0]['definition'] = ''
+        self.assertEqual(assess(packet['profile'], packet)['level'], 'needs-review')
+
     def test_limited_evidence_requires_an_explicit_explanation(self):
         packet = copy.deepcopy(next(packet for packet in self.packets if packet['name'] == '老子'))
         packet['evidenceLimits'] = ''

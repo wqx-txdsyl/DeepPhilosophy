@@ -39,6 +39,16 @@ def assess(profile, editorial=None, kind='thinker'):
             errors.append('invalid-source-ids')
         for field in ['life', 'concepts', 'people', 'relations', 'bibliography', 'readingRoutes']:
             for index, item in enumerate(profile.get(field, [])):
+                required = {
+                    'life': ['year', 'title', 'body'],
+                    'concepts': ['name', 'definition', 'source'],
+                    'people': ['name', 'role', 'summary'],
+                    'relations': ['from', 'to', 'label'],
+                    'bibliography': ['title', 'year', 'kind', 'description'],
+                    'readingRoutes': ['title', 'description'],
+                }[field]
+                if any(not str(item.get(key, '')).strip() or item.get(key) is None for key in required):
+                    errors.append(f'{field}[{index}]:missing-content')
                 if not item.get('sourceRefs') or any(ref not in source_ids for ref in item['sourceRefs']):
                     errors.append(f'{field}[{index}]:missing-source-reference')
         if not editorial.get('overviewSourceRefs') or any(ref not in source_ids for ref in editorial['overviewSourceRefs']):
