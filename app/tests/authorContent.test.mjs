@@ -64,7 +64,7 @@ test('all former aliases still resolve to an existing canonical detail', () => {
   assert.equal(references.findPerson('维特根斯坦').name, '路德维希·维特根斯坦');
 });
 test('corrected identities do not inherit unrelated portraits or fabricated biographies', () => {
-  assert.equal(roster['维雷杜·维雷杜'].era, '1931–2022');
+  assert.match(roster['维雷杜·维雷杜'].era, /^1931[–—-]2022$/);
   assert.equal(roster['卡蒂尼'].era, '1879–1904');
   assert.equal(roster['玛丽·格雷厄姆（Mary Graham）'].country, '澳大利亚');
   for (const person of details.filter(person => person.listingKind === 'review')) {
@@ -92,13 +92,18 @@ test('every relationship endpoint is present, with context distinguished from hi
     for (const relation of person.profile.relations) {
       assert.ok(names.has(relation.from), `${person.name}: ${relation.from}`);
       assert.ok(names.has(relation.to), `${person.name}: ${relation.to}`);
-      if (relation.type === 'context') assert.equal(relation.label, '共同思想背景');
+      if (relation.type === 'context') {
+        if (['editorial-comparison', 'historical-contact'].includes(relation.evidenceKind)) {
+          assert.ok(relation.detail);
+          assert.doesNotMatch(relation.label, /师承|师生/);
+        } else assert.equal(relation.label, '共同思想背景');
+      }
     }
   }
 });
 test('all author graph groups fit six responsive widths without losing names or overlapping', () => {
   for (const person of details) {
-    const others = person.profile.people.filter(other => other.name !== person.name && catalog.people[other.name] && catalog.people[other.name].listingKind !== 'review');
+    const others = person.profile.people.filter(other => other.name !== person.name && catalog.people[other.name]?.listingKind !== 'review');
     for (let page = 0; page < Math.ceil(others.length / 12); page++) for (const width of [220, 274, 320, 390, 620, 900]) {
       const people = [{ name: person.name, era: person.era, influence: 100 }, ...others.slice(page * 12, (page + 1) * 12)];
       const names = new Set(people.map(other => other.name));

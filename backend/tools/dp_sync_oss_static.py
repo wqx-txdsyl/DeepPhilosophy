@@ -60,6 +60,7 @@ DIRS = [
     ("schools/data", "schools/data"),
     ("philosopher", "philosopher"),
     ("philosopher/data", "philosopher/data"),
+    ("philosopher/editorial", "philosopher/editorial"),
 ]
 
 

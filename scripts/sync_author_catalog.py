@@ -6,11 +6,13 @@ never converted into a personal teacher/student relationship. Legacy generated
 philosopher_network.json is deliberately not used as historical evidence.
 """
 import json
+import os
 import re
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = Path(BASE)
 PUBLIC = ROOT / 'app/public'
 CURATION = ROOT / 'scripts/author-curation'
 
@@ -45,6 +47,7 @@ def paragraphs(value):
 def main():
     people = read(PUBLIC / 'philosophers.json')
     roster = read(CURATION / 'roster.json')
+    portrait_audit = read(PUBLIC / 'philosopher/portrait-audit.json').get('records', {})
     aliases = roster['aliases']
     merged = []
     for old, name in aliases.items():
@@ -68,6 +71,15 @@ def main():
     people['马丁·海德格尔']['bio'] = '\n\n'.join(heidegger['overview'])
     people['马丁·海德格尔']['sources'] = heidegger['sources']
     people['马丁·海德格尔']['wiki_url'] = 'https://en.wikipedia.org/wiki/Martin_Heidegger'
+    editorial = {record['name']: record for record in (read(path) for path in (PUBLIC / 'philosopher/editorial').glob('*.json'))}
+    for name, record in editorial.items():
+        if name not in people:
+            raise ValueError(f'Editorial record has no canonical author: {name}')
+        people[name].update(record.get('identity', {}))
+        if record['profile'].get('englishName'):
+            people[name]['englishName'] = record['profile']['englishName']
+        people[name]['bio'] = '\n\n'.join(record['profile']['overview'])
+        people[name]['sources'] = record['profile']['sources']
 
     for name, person in people.items():
         person['name'] = name
@@ -169,13 +181,20 @@ def main():
     for name, profile in profiles.items():
         if name == '马丁·海德格尔':
             profile.update(heidegger)
+        if name in editorial:
+            record = editorial[name]
+            # Authored arrays replace derived context; legacy book links remain below.
+            profile.update(record['profile'])
+            profile['editorial'] = {key: record.get(key) for key in ['schemaVersion', 'reviewedAt', 'chronologyPolicy', 'worksPolicy', 'evidenceLimits', 'overviewSourceRefs', 'debateAssessment', 'regionCohort']}
         def event_year(item):
             raw = str(item['year'])
             number = int((re.search(r'\d{1,4}', raw) or ['9999'])[0])
             if '世纪' in raw:
                 number = number * 100 if '前' in raw else (number - 1) * 100 + 1
             return -number if '前' in raw else number
-        profile['life'].sort(key=event_year)
+        # Preserve reviewed ordering where dates are ranges, unknown, or text-history.
+        if name not in editorial:
+            profile['life'].sort(key=event_year)
         profile['schoolLinks'] = list({item['name']: item for item in profile['schoolLinks']}.values())
         profile['schoolLinks'].sort(key=lambda school: school['name'] not in re.split(r'[/、，;；]', people[name].get('school', '')))
         # Exact canonical author matching, including old book-author spellings.
@@ -187,8 +206,10 @@ def main():
         photo_names = [name] + [old for old, target in aliases.items() if target == name]
         portrait = next((f'/philosopher/{photo}.{ext}' for photo in photo_names for ext in ['webp', 'jpg', 'png'] if (PUBLIC / f'philosopher/{photo}.{ext}').exists()), None)
         # Corrected identities cannot inherit an unverified picture of a different person.
-        if corrections.get(name, {}).get('portraitVerified') is False or people[name]['listingKind'] == 'review':
+        if corrections.get(name, {}).get('portraitVerified') is False or people[name]['listingKind'] == 'review' or portrait_audit.get(name, {}).get('allowAsPortrait') is False:
             portrait = None
+        if name in portrait_audit:
+            people[name]['portraitReview'] = portrait_audit[name]
         people[name]['portrait'] = portrait
         detail = {**people[name], 'profile': profile}
         write(PUBLIC / 'philosopher/data' / (name.replace('/', '-').replace(':', '：') + '.json'), detail)
