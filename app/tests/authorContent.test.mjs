@@ -101,6 +101,11 @@ test('every relationship endpoint is present, with context distinguished from hi
     }
   }
 });
+
+test('reviewed bibliographies do not silently regain unsupported legacy titles', () => {
+  const author = { name: '示例', books: ['旧资料中的待核实书名'], profile: { editorial: { schemaVersion: 1 }, bibliography: [{ title: '有出处的著述' }] } };
+  assert.deepEqual(bibliography(author, { books: [] }).map(work => work.title), ['有出处的著述']);
+});
 test('all author graph groups fit six responsive widths without losing names or overlapping', () => {
   for (const person of details) {
     const others = person.profile.people.filter(other => other.name !== person.name && catalog.people[other.name]?.listingKind !== 'review');

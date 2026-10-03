@@ -33,7 +33,8 @@ export function authorBooks(author, catalog) {
 }
 export function bibliography(author, catalog) {
   const owned = new Set(authorBooks(author, catalog).map(book => key(book.title)));
-  const items = [...(author.profile?.bibliography || []), ...(author.books || []).map(item => typeof item === 'string' ? { title: item } : item)];
+  const legacy = author.profile?.editorial ? [] : (author.books || []).map(item => typeof item === 'string' ? { title: item } : item);
+  const items = [...(author.profile?.bibliography || []), ...legacy];
   return [...new Map(items.filter(item => item?.title && !owned.has(key(item.title))).map(item => [key(item.title), item])).values()];
 }
 export function normalizeAuthor(raw) {
