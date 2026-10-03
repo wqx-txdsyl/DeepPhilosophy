@@ -142,6 +142,7 @@ export default function AgentWorkspace() {
 
   /* ── 打开会话 → Composer Agent 优先级（§6）: last_used → default → general ── */
   useEffect(() => {
+    if (!hydrated) return;
     draftSendRef.current = false;
     setSelectorTouched(false);
     if (conversationId) {
@@ -154,7 +155,7 @@ export default function AgentWorkspace() {
       setComposerAgent(draftAgent || conversations[0]?.last_used_agent_id || conversations[0]?.default_agent_id || 'general');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [conversationId]);
+  }, [conversationId, hydrated]);
 
   /* ── 本地状态变更（内存即真相; store 只做写穿持久化） ── */
   const addConversationLocal = (conv) =>

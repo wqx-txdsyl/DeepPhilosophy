@@ -119,10 +119,16 @@ def read_pdf_source(url, offset=0, focus=''):
         if offset >= len(text):
             return {'error': 'OFFSET_OUT_OF_RANGE', 'text_chars': len(text)}
         end = min(offset + 4000, len(text))
+        cursor, page_number = 0, 1
+        for number, page in enumerate(pages, 1):
+            if offset < cursor + len(page) + 2:
+                page_number = number
+                break
+            cursor += len(page) + 2
         return {'url': response['url'], 'text': text[offset:end], 'offset': offset, 'end_offset': end,
                 'has_more': end < len(text), 'next_offset': end if end < len(text) else None,
                 'access_level': 'PDF_PASSAGE_READ', 'parsed_pages': len(pages),
-                'parsed_page_limit': MAX_PDF_PAGES, 'document_truncated': True,
-                'pdf_page': text[:offset].count('\n\n') + 1}
+                'parsed_page_limit': MAX_PDF_PAGES, 'document_truncated': len(pages) >= MAX_PDF_PAGES,
+                'pdf_page': page_number, 'page_number_basis': 'PDF page order, not printed pagination'}
     except Exception as exc:
         return {'error': 'PDF_READ_UNAVAILABLE', 'message': str(exc)[:200]}
