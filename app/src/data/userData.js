@@ -1,6 +1,6 @@
 /**
  * UserData —— 本地用户数据管理
- * 自动保存阅读进度 + 聊天历史到 localStorage
+ * 自动保存阅读进度到 localStorage
  * 每10分钟刷新一次时间戳
  */
 const STORAGE_KEY = 'dp_userdata';
@@ -31,32 +31,12 @@ export function relativeTime(dateStr) {
   return then.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 }
 
-function _normalizeSources(src) {
-  if (Array.isArray(src)) return src;
-  if (typeof src === 'string') {
-    try { return JSON.parse(src); } catch { return []; }
-  }
-  return [];
-}
-
 export function loadUserData() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const data = JSON.parse(raw);
       let fixed = false;
-      // 修正历史遗留问题：云端同步时 sources 被 JSON.stringify 转成了字符串
-      if (Array.isArray(data.chatHistory)) {
-        const origLen = JSON.stringify(data.chatHistory).length;
-        data.chatHistory = data.chatHistory.map(m => ({
-          ...m,
-          sources: _normalizeSources(m.sources),
-        }));
-        if (JSON.stringify(data.chatHistory).length !== origLen) fixed = true;
-      } else {
-        data.chatHistory = [];
-        fixed = true;
-      }
       if (!Array.isArray(data.readingHistory)) {
         data.readingHistory = [];
         fixed = true;
@@ -74,7 +54,6 @@ export function loadUserData() {
     created: now(),
     updated: now(),
     readingHistory: [],
-    chatHistory: [],
   };
 }
 
@@ -120,43 +99,10 @@ export function saveReadingProgress(bookId, bookTitle, bookAuthor, page, percent
   }
 }
 
-import { getApiBase } from '../utils/api';
+import { getApiBase } from '../utils/api.js';
 
 export function getReadingHistory() {
   return loadUserData().readingHistory;
-}
-
-// ============================================================
-// Chat History
-// ============================================================
-export function saveChatMessage(role, content, sources) {
-  const data = loadUserData();
-  data.chatHistory.push({ role, content, sources: sources || [], createdAt: now() });
-  if (data.chatHistory.length > 500) data.chatHistory = data.chatHistory.slice(-500);
-  saveUserData(data);
-
-  // Cloud sync
-  const token = localStorage.getItem('dp_token');
-  if (token && role === 'assistant') {
-    fetch(`${getApiBase()}/api/history/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ role, content, sources: JSON.stringify(sources || []) }),
-      signal: AbortSignal.timeout(5000),
-    }).catch(() => {});
-  }
-}
-
-export function getChatHistory() {
-  return loadUserData().chatHistory;
-}
-
-export function clearChatHistory() {
-  const data = loadUserData();
-  data.chatHistory = [];
-  saveUserData(data);
-  // 2026-08-12: 会话列表与消息同源清空（否则列表读 dp_chat_sessions 复活）
-  localStorage.removeItem('dp_chat_sessions');
 }
 
 // ============================================================
@@ -179,7 +125,7 @@ export function importFromFile(file) {
     reader.onload = (e) => {
       try {
         const data = JSON.parse(e.target.result);
-        if (data.version && data.readingHistory && data.chatHistory) {
+        if (data.version && Array.isArray(data.readingHistory)) {
           saveUserData(data);
           resolve(data);
         } else {

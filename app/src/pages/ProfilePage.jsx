@@ -1,5 +1,5 @@
 /**
- * 个人中心 —— 用户登录/注册、阅读历史、聊天历史
+ * 个人中心 —— 用户登录/注册、阅读历史
  * 登录后数据云端同步，未登录本地存储
  */
 import { useState, useEffect } from 'react';
@@ -13,44 +13,11 @@ import {
   getReadingHistory,
   getAllUserData, relativeTime,
 } from '../data/userData';
-import { getSessions, deleteSession } from '../data/chatSessions';
-
-/**
- * 2026-08-12: 按天分组重建会话 —— 聊天历史 tab 读 chatSessions(本地),
- * 统计读 dp_userdata.chatHistory(本地+云端同步)。两源不一致时列表空但统计有数。
- * 传入任一来源的消息数组, 按天分组生成会话(仅保留 user 首条做标题)。
- */
-function rebuildSessions(msgs) {
-  const byDay = {};
-  for (const m of msgs) {
-    const day = (m.created_at || '').slice(0, 10) || 'unknown';
-    if (!byDay[day]) byDay[day] = [];
-    byDay[day].push(m);
-  }
-  return Object.entries(byDay)
-    .sort((a, b) => (a[0] < b[0] ? 1 : -1))
-    .map(([day, msgsOfDay]) => {
-      const first = msgsOfDay.find(m => m.role === 'user') || msgsOfDay[0] || {};
-      const text = typeof first.content === 'string' ? first.content : '';
-      const t0 = msgsOfDay[0]?.created_at ? new Date(msgsOfDay[0].created_at).getTime() : Date.now();
-      const t1 = msgsOfDay[msgsOfDay.length - 1]?.created_at ? new Date(msgsOfDay[msgsOfDay.length - 1].created_at).getTime() : t0;
-      return {
-        id: 'cloud_' + day.replace(/[^0-9]/g, ''),
-        title: text.replace(/\n/g, ' ').slice(0, 30) || '历史对话 · ' + day,
-        messages: msgsOfDay.map(m => ({ role: m.role, content: m.content, sources: m.sources || [] })),
-        createdAt: t0,
-        updatedAt: t1,
-      };
-    });
-}
 
 function ProfilePage() {
   const navigate = useNavigate();
   const toast = useToast();
-  const [tab, setTab] = useState('reading');
   const [readingHistory, setReadingHistory] = useState([]);
-  const [, setChatHistory] = useState([]);
-  const [chatSessions, setChatSessions] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
@@ -91,46 +58,7 @@ function ProfilePage() {
       setChecking(false);
     }
     setReadingHistory(getReadingHistory());
-    let sessions = getSessions();
-    // 2026-08-12: 聊天历史 tab 读 chatSessions(本地), 统计读 dp_userdata.chatHistory(本地+云端同步) —
-    // 两源不一致时列表空但统计有数。挂载时若本地会话为空但消息存在 → 按天分组重建会话
-    if (sessions.length === 0) {
-      try {
-        const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
-        if (msgs.length > 0) {
-          sessions = rebuildSessions(msgs);
-          localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
-        }
-      } catch {}
-    }
-    setChatSessions(sessions);
-    // 兼容旧统计数据格式
-    const allMsgs = sessions.reduce((arr, s) => arr.concat(s.messages), []);
-    setChatHistory(allMsgs);
   }, []); // 只在挂载时运行，切换 tab 不重复请求
-
-  // 刷新会话 state；本地会话为空但消息存在(dp_userdata.chatHistory) → 现场重建兜底
-  const refreshSessions = () => {
-    let sessions = getSessions();
-    if (sessions.length === 0) {
-      try {
-        const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
-        if (msgs.length > 0) {
-          sessions = rebuildSessions(msgs);
-          localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
-        }
-      } catch {}
-    }
-    setChatSessions(sessions);
-  };
-
-  const switchTab = (t) => {
-    setTab(t);
-    if (t === 'chat') refreshSessions();
-    window.scrollTo(0, 0);
-    const m = document.querySelector('.app-main');
-    if (m) m.style.transform = 'translateY(0)';
-  };
 
   // ========== Auth ==========
   const api = (path, body) =>
@@ -172,12 +100,10 @@ function ProfilePage() {
     // 清除本地用户数据
     const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
     data.readingHistory = [];
-    data.chatHistory = [];
     localStorage.setItem('dp_userdata', JSON.stringify(data));
     setLoggedIn(false);
     setLoginUser('');
     setReadingHistory([]);
-    setChatHistory([]);
   };
 
   // ========== Cloud Sync ==========
@@ -218,41 +144,6 @@ function ProfilePage() {
         // 云端为空且非新登录 → 保留本地数据不变
         localStorage.setItem('dp_userdata', JSON.stringify(local));
         setReadingHistory(local.readingHistory || localHistory);
-      }
-      // Pull chat history
-      const ch = await fetch(`${getApiBase()}/api/history/chat`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(10000),
-      });
-      if (ch.ok) {
-        const d = await ch.json();
-        // 规范化 sources：云端存储的是 JSON 字符串，需转回数组
-        const _normalizeSources = (src) => {
-          if (Array.isArray(src)) return src;
-          if (typeof src === 'string') {
-            try { return JSON.parse(src); } catch { return []; }
-          }
-          return [];
-        };
-        const cloudChat = (d.messages || []).map(m => ({
-          ...m,
-          sources: _normalizeSources(m.sources),
-        }));
-        const local = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        const localChat = local.chatHistory || [];
-        if (isFreshLogin || cloudChat.length > 0) {
-          local.chatHistory = cloudChat;
-        }
-        localStorage.setItem('dp_userdata', JSON.stringify(local));
-        setChatHistory(local.chatHistory || localChat);
-        // 2026-08-12: 云端消息重建本地会话——云端权威: 只要有云端消息就重建覆盖本地,
-        // 列表与统计(云端消息数)同源一致。若仅在本地区会话为空时重建,
-        // 本地测试残留(如 PhiAgent 对话)会占住列表而云端真实对话只进统计, 两源脱节
-        if (cloudChat.length > 0) {
-          const rebuilt = rebuildSessions(cloudChat);
-          localStorage.setItem('dp_chat_sessions', JSON.stringify(rebuilt));
-          setChatSessions(rebuilt);
-        }
       }
       // Pull book notes
       const notes = await fetch(`${getApiBase()}/api/notes`, {
@@ -306,7 +197,7 @@ function ProfilePage() {
               {syncing ? <><Icon name="icon-refresh" size={14} /> 同步中...</> : <><Icon name="icon-cloud" size={14} /> 数据已云端同步</>}
             </div>
             <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 8 }}>
-              <Icon name="icon-book-open" size={14} /> {userData.readingHistory.length} 条阅读 · <Icon name="nav-qa" size={14} /> {userData.chatHistory.length} 条对话
+              <Icon name="icon-book-open" size={14} /> {userData.readingHistory.length} 条阅读
             </div>
             <button className="btn btn-secondary" style={{ marginTop: 10, padding: '6px 20px', fontSize: 12 }}
               onClick={handleLogout}>退出登录</button>
@@ -393,18 +284,10 @@ function ProfilePage() {
         )}
       </div>
 
-      {/* Tabs */}
-      <div style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
-        <button className={`btn ${tab === 'reading' ? 'btn-primary' : 'btn-secondary'}`}
-          style={{ flex: 1, padding: '8px', fontSize: 13 }}
-          onClick={() => switchTab('reading')}><Icon name="icon-book-open" size={16} /> 阅读历史</button>
-        <button className={`btn ${tab === 'chat' ? 'btn-primary' : 'btn-secondary'}`}
-          style={{ flex: 1, padding: '8px', fontSize: 13 }}
-          onClick={() => switchTab('chat')}><Icon name="nav-qa" size={16} /> 聊天历史</button>
-      </div>
+      <h2 className="section-title" style={{ marginTop: 24 }}>阅读历史</h2>
 
       {/* Reading History */}
-      {tab === 'reading' && (
+      {(
         readingHistory.length === 0 ? (
           <div className="empty-state"><p>暂无阅读记录</p></div>
         ) : (
@@ -445,68 +328,6 @@ function ProfilePage() {
         )
       )}
 
-      {/* Chat History — 会话列表 */}
-      {tab === 'chat' && (
-        <div key="chat-tab">
-          {(() => {
-            // 渲染兜底: state 为空但消息存在 → 现场重建展示并写回 localStorage（下次 getSessions 生效）
-            let sessions = chatSessions.filter(s => s.messages.length > 0);
-            if (sessions.length === 0) {
-              try {
-                const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
-                if (msgs.length > 0) {
-                  sessions = rebuildSessions(msgs);
-                  localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
-                }
-              } catch {}
-            }
-            if (sessions.length === 0) {
-              return (
-                <div className="empty-state">
-                  <p>暂无聊天记录</p>
-                  <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4 }}>
-                    在问答页面进行的对话会自动保存在这里
-                  </p>
-                </div>
-              );
-            }
-            return sessions.map(s => {
-              const lastMsg = s.messages[s.messages.length - 1] || {};
-              const preview = typeof lastMsg.content === 'string'
-                ? lastMsg.content.replace(/\n/g, ' ').slice(0, 60)
-                : '';
-              return (
-                <div key={s.id} className="card"
-                  style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  onClick={() => {
-                    localStorage.setItem('dp_current_session', s.id);
-                    navigate('/qa');
-                  }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div className="card-title" style={{ fontSize: 14 }}>{s.title}</div>
-                    <div className="card-subtitle" style={{ fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {preview || '（空对话）'}
-                    </div>
-                    <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: 4 }}>
-                      {new Date(s.updatedAt).toLocaleString('zh-CN')} · {s.messages.length} 条消息
-                    </div>
-                  </div>
-                  <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 10, marginLeft: 8, flexShrink: 0 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (window.confirm('删除该对话？')) {
-                        deleteSession(s.id);
-                        refreshSessions();
-                      }
-                    }}>
-                    <Icon name="icon-trash" size={12} />
-                  </button>
-                </div>
-              );
-            });
-          })()}
-        </div>
-      )}
     </div>
   );
 }

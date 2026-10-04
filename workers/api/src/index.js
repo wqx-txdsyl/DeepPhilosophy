@@ -1,24 +1,19 @@
 /**
- * deepphilosophy-api — 业务 API Worker（替代 Render FastAPI 剩余依赖）
+ * deepphilosophy-api — 业务 API Worker
  * 路由 deepphilosophy.top/api/*（与 auth worker 的 /api/auth/* 最长前缀匹配共存）
  *
- * 端点（响应字段与 Render main.py 语义一致，错误统一 {error, detail} 双字段：
+ * 端点（错误统一 {error, detail} 双字段：
  *   前端有的解析 e.error、有的解析 d.detail，两个都给）：
  *   GET  /api/health                     → {status:'healthy', version, timestamp}
- *   POST /api/ai/stream                  → SSE 纯透传 api.deepseek.com（不解析不 TransformStream，免费版 10ms CPU 够用）
- *   POST /api/qa                         → {answer, sources:[], question}；带 JWT 则插 chat_history 两条
  *   GET  /api/books/{id}/file            → oss: 302 直链（零流量）；仅 github: Range 代理 206；无 Range 且 >100MB → 302 直链
  *   GET  /api/stats                      → 构建产物 stats.json
  *   GET  /api/admin/stats?password=      → {stats, users, user_count}（stats 为迁移时刻快照，访问统计冻结）
  *   ── 以下全部 JWT（payload.user_id）鉴权 ──
  *   GET/POST /api/history/reading        → {history:[{book_id,book_title,book_author,progress_page,progress_percent,last_read_at}]} / upsert {success:true}
- *   GET/POST/DELETE /api/history/chat    → {messages:[{role,content,sources,created_at}]} ASC / {success:true}
  *   POST /api/notes/save                 → upsert {success:true}
- *   GET  /api/notes/load?book_id=        → {note_text}（ReaderPage 在用，Render 上一直 404 的遗留，此处补上）
+ *   GET  /api/notes/load?book_id=        → {note_text}（ReaderPage 使用）
  *   GET  /api/notes/{book_id}            → {note_text}
  *   GET  /api/notes                      → {notes:{book_id:note_text}}
- *   POST /api/book-chat/save             → {success:true}
- *   GET/DELETE /api/book-chat/{book_id}  → {messages:[{role,content,created_at}]} / {success:true}
  *   PUT  /api/user/profile               → 改用户名 → {status:'ok', username}（JWT 含 user_id，改名后旧 token 仍有效）
  *   PUT  /api/user/password              → 校验旧密码（checkPw 三格式）→ {status:'ok'}
  *   GET/POST /api/user/avatar            → {avatar} / {status:'ok'}
@@ -27,9 +22,9 @@
  */
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import booksData from './books.json';
-import statsData from './stats.json';
-import adminStatsData from './admin_stats.json';
+import booksData from './books.json' with { type: 'json' };
+import statsData from './stats.json' with { type: 'json' };
+import adminStatsData from './admin_stats.json' with { type: 'json' };
 
 const ALLOWED_ORIGINS = [
   'https://deepphilosophy.top',
@@ -131,154 +126,11 @@ app.get('/api/health', (c) => c.json({
   status: 'healthy', version: '1.1.0', timestamp: new Date().toISOString(),
 }));
 
-// ============ AI 流式代理 — 纯透传（免费版 10ms CPU 够用：不解析、不 TransformStream） ============
-// ── /api/ai/stream 限流（2026-08-17 审计 S1 加固: 同 auth worker 的 _rateLimit 滑窗风格; 防匿名刷爆余额）──
-const AI_STREAM_LIMIT = 60, AI_WINDOW_MS = 15 * 60 * 1000;
-const _aiCalls = new Map();   // ip -> {count, start}
-function _rateLimit(ip, limit) {
-  const now = Date.now();
-  // 顺带清理过期条目, 防 Map 无限增长
-  if (_aiCalls.size > 500) {
-    for (const [k, v] of _aiCalls) if (now - v.start > AI_WINDOW_MS) _aiCalls.delete(k);
-  }
-  const rec = _aiCalls.get(ip);
-  if (!rec || now - rec.start > AI_WINDOW_MS) {
-    _aiCalls.set(ip, { count: 1, start: now });
-    return true;
-  }
-  rec.count += 1;
-  return rec.count <= limit;
+// Retired main-site AI endpoints: cached clients must never reach a model provider.
+const retiredAI = c => c.json({ error: '主站 AI 功能已下线', detail: '主站 AI 功能已下线', code: 'FEATURE_REMOVED' }, 410);
+for (const path of ['/api/ai', '/api/ai/*', '/api/qa', '/api/history/chat', '/api/book-chat', '/api/book-chat/*']) {
+  app.all(path, retiredAI);
 }
-function _clientIp(c) {
-  // N1（audit 2026-08-18）：与后端 guard.py 一致——cf-connecting-ip 优先（CF 注入不可伪造），
-  // 其次 x-real-ip；不再信任 x-forwarded-for 首段（客户端可伪造绕过限流）
-  const cf = c.req.header('cf-connecting-ip');
-  if (cf) return cf.trim();
-  return c.req.header('x-real-ip') || 'unknown';
-}
-// model 白名单 + max_tokens 钳制（与 backend config.AI_ALLOWED_MODELS / AI_MAX_TOKENS_CAP 同规格）
-const AI_ALLOWED_MODELS = ['deepseek-chat', 'deepseek-v4-pro'];
-const AI_MAX_TOKENS_CAP = 4096;
-
-app.post('/api/ai/stream', async (c) => {
-  const ip = _clientIp(c);
-  if (!_rateLimit(ip, AI_STREAM_LIMIT)) {
-    return c.json({ error: '请求过于频繁，请稍后再试', detail: '请求过于频繁，请稍后再试' }, 429);
-  }
-  const key = c.env.DEEPSEEK_API_KEY;
-  if (!key) return c.json({ error: 'Server API key not configured', detail: 'Server API key not configured' }, 500);
-  try {
-    const body = await c.req.json();
-    const model = body.model || c.env.DEFAULT_MODEL || 'deepseek-chat';
-    if (!AI_ALLOWED_MODELS.includes(model)) {
-      return c.json({ error: `不支持的模型: ${model}`, detail: `不支持的模型: ${model}` }, 400);
-    }
-    let maxTokens = parseInt(body.max_tokens, 10);
-    if (!Number.isFinite(maxTokens) || maxTokens < 1) maxTokens = 1024;
-    maxTokens = Math.min(maxTokens, AI_MAX_TOKENS_CAP);
-    const base = (c.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com').replace(/\/+$/, '');
-    const upstream = await fetch(`${base}/v1/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${key}`,
-      },
-      body: JSON.stringify({
-        ...body,
-        model,
-        max_tokens: maxTokens,
-      }),
-      signal: AbortSignal.timeout(120000),
-    });
-    if (!upstream.ok) {
-      // 读一段错误体透传（SSE 错误也常是 JSON）
-      const text = await upstream.text();
-      return c.json({ error: `DeepSeek ${upstream.status}: ${text.slice(0, 300)}`, detail: `DeepSeek ${upstream.status}: ${text.slice(0, 300)}` }, upstream.status >= 500 ? 502 : upstream.status);
-    }
-    return new Response(upstream.body, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'X-Accel-Buffering': 'no',
-      },
-    });
-  } catch (e) {
-    return c.json({ error: `AI 服务异常: ${e.message}`, detail: `AI 服务异常: ${e.message}` }, 500);
-  }
-});
-
-// ============ RAG 问答（Worker 无向量库 → 直连 LLM，sources 恒空；语义与 Render kb_ready=false 一致） ============
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
-async function callLLM(apiKey, baseUrl, model, question) {
-  const resp = await fetch(`${(baseUrl || 'https://api.deepseek.com').replace(/\/+$/, '')}/v1/chat/completions`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-    body: JSON.stringify({
-      model: model || 'deepseek-chat',
-      messages: [
-        { role: 'system', content: '你是一个哲学知识助手。请用中文回答用户的问题，尽可能准确和详细。如果不知道，请如实说明。' },
-        { role: 'user', content: question },
-      ],
-      temperature: 0.7,
-      max_tokens: 1024,
-    }),
-    signal: AbortSignal.timeout(60000),
-  });
-  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-  const data = await resp.json();
-  return data.choices?.[0]?.message?.content || '';
-}
-
-app.post('/api/qa', async (c) => {
-  let body;
-  try { body = await c.req.json(); } catch { return c.json({ error: '请求体非法', detail: '请求体非法' }, 400); }
-  const question = (body.question || '').trim();
-  if (!question) return c.json({ error: '问题不能为空', detail: '问题不能为空' }, 400);
-
-  let answer = '';
-  let lastErr = '';
-  if (body.api_key) {
-    // 用户自带 Key：直连 DeepSeek，3 次指数退避
-    for (let attempt = 0; attempt < 3; attempt++) {
-      try {
-        answer = await callLLM(body.api_key, 'https://api.deepseek.com', body.model || null, question);
-        break;
-      } catch (e) { lastErr = e.message; if (attempt < 2) await sleep(500 * (2 ** attempt)); }
-    }
-  } else if (c.env.DEEPSEEK_API_KEY) {
-    for (let attempt = 0; attempt < 3; attempt++) {
-      try {
-        answer = await callLLM(c.env.DEEPSEEK_API_KEY, c.env.DEEPSEEK_BASE_URL, body.model || c.env.DEFAULT_MODEL, question);
-        break;
-      } catch (e) { lastErr = e.message; if (attempt < 2) await sleep(500 * (2 ** attempt)); }
-    }
-  } else {
-    lastErr = 'Server API key not configured';
-  }
-
-  const result = answer
-    ? { answer, sources: [], question }
-    : { answer: `问答服务暂时不可用: ${lastErr}\n\n请确认已在设置中配置了有效的 API Key。`, sources: [], question };
-
-  // 带 JWT 则保存聊天历史（Render 语义；前端 QAPage 实际不传 Authorization，此处保险）
-  const token = (c.req.header('Authorization') || '').replace('Bearer ', '');
-  if (token) {
-    try {
-      const payload = await verifyJWT(token, c.env.JWT_SECRET);
-      if (payload?.user_id) {
-        const db = c.env.deepphilosophy_db;
-        const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
-        await db.prepare('INSERT INTO chat_history (user_id, role, content, sources, created_at) VALUES (?, ?, ?, ?, ?)')
-          .bind(payload.user_id, 'user', question, null, now).run();
-        await db.prepare('INSERT INTO chat_history (user_id, role, content, sources, created_at) VALUES (?, ?, ?, ?, ?)')
-          .bind(payload.user_id, 'assistant', result.answer, JSON.stringify([]), now).run();
-      }
-    } catch { /* 历史保存失败不影响回答 */ }
-  }
-  return c.json(result);
-});
 
 // ============ 书籍文件下载 — oss 302 直链零流量；仅 github 的走 Range 代理 ============
 const MIME = { '.pdf': 'application/pdf', '.epub': 'application/epub+zip', '.txt': 'text/plain', '.md': 'text/markdown' };
@@ -379,30 +231,6 @@ app.delete('/api/history/reading', requireAuth, async (c) => {
   return c.json({ success: true });
 });
 
-// ============ 聊天历史 ============
-app.get('/api/history/chat', requireAuth, async (c) => {
-  const uid = c.get('uid');
-  const { results } = await c.env.deepphilosophy_db.prepare(
-    'SELECT role, content, sources, created_at FROM chat_history WHERE user_id = ? ORDER BY created_at ASC LIMIT 100'
-  ).bind(uid).all();
-  return c.json({ messages: results });
-});
-
-app.post('/api/history/chat', requireAuth, async (c) => {
-  const uid = c.get('uid');
-  const b = await c.req.json();
-  const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
-  await c.env.deepphilosophy_db.prepare(
-    'INSERT INTO chat_history (user_id, role, content, sources, created_at) VALUES (?, ?, ?, ?, ?)'
-  ).bind(uid, b.role || 'user', b.content || '', b.sources || null, now).run();
-  return c.json({ success: true });
-});
-
-app.delete('/api/history/chat', requireAuth, async (c) => {
-  await c.env.deepphilosophy_db.prepare('DELETE FROM chat_history WHERE user_id = ?').bind(c.get('uid')).run();
-  return c.json({ success: true });
-});
-
 // ============ 批注笔记 ============
 app.post('/api/notes/save', requireAuth, async (c) => {
   const uid = c.get('uid');
@@ -416,7 +244,7 @@ app.post('/api/notes/save', requireAuth, async (c) => {
   return c.json({ success: true });
 });
 
-// 新端点：ReaderPage 一直用 /notes/load?book_id= 但 Render 只有 /notes/{book_id} —— 此处补上
+// 批注读取：同时支持查询参数与书籍路径。
 app.get('/api/notes/load', requireAuth, async (c) => {
   const uid = c.get('uid');
   const bookId = c.req.query('book_id') || '';
@@ -442,32 +270,6 @@ app.get('/api/notes', requireAuth, async (c) => {
   const notes = {};
   for (const r of results) notes[r.book_id] = r.note_text;
   return c.json({ notes });
-});
-
-// ============ 书内 AI 对话 ============
-app.post('/api/book-chat/save', requireAuth, async (c) => {
-  const uid = c.get('uid');
-  const b = await c.req.json();
-  const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
-  await c.env.deepphilosophy_db.prepare(
-    'INSERT INTO book_chat (user_id, book_id, role, content, created_at) VALUES (?, ?, ?, ?, ?)'
-  ).bind(uid, b.book_id || '', b.role || 'user', b.content || '', now).run();
-  return c.json({ success: true });
-});
-
-app.get('/api/book-chat/:book_id', requireAuth, async (c) => {
-  const uid = c.get('uid');
-  const { results } = await c.env.deepphilosophy_db.prepare(
-    'SELECT role, content, created_at FROM book_chat WHERE user_id = ? AND book_id = ? ORDER BY id ASC LIMIT 50'
-  ).bind(uid, c.req.param('book_id')).all();
-  return c.json({ messages: results });
-});
-
-app.delete('/api/book-chat/:book_id', requireAuth, async (c) => {
-  await c.env.deepphilosophy_db.prepare(
-    'DELETE FROM book_chat WHERE user_id = ? AND book_id = ?'
-  ).bind(c.get('uid'), c.req.param('book_id')).run();
-  return c.json({ success: true });
 });
 
 // ============ 用户资料 ============

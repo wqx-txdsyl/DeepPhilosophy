@@ -124,7 +124,7 @@ function HomePage() {
           <div className="home-showcase-card" onClick={() => navigate('/books')}>
             <span className="home-showcase-eyebrow" style={{ color: 'var(--ochre)' }}>Library</span>
             <h2 className="home-showcase-title">{bookCount} 部哲学著作</h2>
-            <p className="home-showcase-desc">PDF · EPUB · TXT 三格式，涵盖古希腊至当代的中西方哲学经典。支持在线阅读、AI批注与笔记。</p>
+            <p className="home-showcase-desc">PDF · EPUB · TXT 三格式，涵盖古希腊至当代的中西方哲学经典。支持在线阅读、批注与阅读记录。</p>
           </div>
           <div className="home-showcase-card card-philosophers" onClick={() => navigate('/authors')}>
             <span className="home-showcase-eyebrow" style={{ color: 'var(--prussian)' }}>Philosophers</span>

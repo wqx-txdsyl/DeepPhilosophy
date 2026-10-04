@@ -14,15 +14,6 @@ const columns = [
     ],
   },
   {
-    title: '互动',
-    links: [
-      { label: 'AI 问答', path: '/qa' },
-      { label: '答案之书', path: '/games/answer-book' },
-      { label: 'PHTI 人格测试', path: '/games/phti' },
-      { label: 'PHTI 沙雕版', path: '/games/phti-silly' },
-    ],
-  },
-  {
     title: '更多',
     links: [
       { label: '个人中心', path: '/profile' },
