@@ -90,3 +90,11 @@
 - en.wikisource.org/wiki/Meditations_on_First_Philosophy → 仅为索引页（正文在各子页），未逐页抓取；《沉思集》引文改由 S5/S6（SEP 所引英译）承载。
 - Gutenberg 英译《沉思集》检得 #23306（拉丁文）与 #70091（Six metaphysical meditations），未采；#59/#9662 经全文 grep 无 1637/1748 出版年，改以 S6/S7 系年。
 - https://plato.stanford.edu/entries/hume/ 之外未另觅休谟《人性论》原典（站内书 178e7d06d42d 仅作关联建议）。
+
+## 九、二次复核补记（2026-10-04，第二名研究员；本节覆盖上文相应条目）
+
+1. **独立重开全部 15 个旧来源**：WebFetch/web_reader 逐一重新打开并读取相关段落，全部在点、与引用断言相符（含 S4 古代怀疑论、S8 自然化、S12《谈谈方法》、S13《人类理解研究》、S14《非命上》三表段、S15 葛梯尔转录本的逐句核对；S6 笛卡尔主条目另补核 1596–1650/1637/1641/1642）。书籍 9 个 ID、evidence 全部 JSON Pointer、sourceRefs 可解析性均重新校验通过。
+2. **补入康德（填平原包诚实标注的缺口）**：新增 S16（SEP Kant）、S17（SEP Kant's Transcendental Arguments）、S18（Gutenberg #52821《导论》公版英译），并在 packet 增补：thinkers 追加伊曼努尔·康德（站内姓名实查命中）、timeline 插入 1781/1787 节点、relations 追加休谟→康德（"独断迷梦"自述，引语只系于《导论》原典并在 evidenceLimits 声明转写与编排位置）、works 追加《纯粹理性批判》、overview 第三段与结论各补一句、proposal.scope 与书籍建议理由同步。第七节"康德未核读"一条自此作废；洛克 1690 一句仍维持不系年（二次复核经 SEP Locke 确认 1689/扉页1690 之别，包内仍不使用该年份，保持原状）。
+3. **数量更新**：来源 18、时间线 11（插入康德后略超"约6—10"参考值，因康德为先验转向不可省的文献节点；其余参考区间不变）、evidence 74 条（timeline/6—9 指针已相应 +1 平移并全部重新解析通过）。
+4. **未改动**：cihai、subSchools、quotes、引语、五个 relatedBranches 的边界决定、皮浪学说概要署名纠错建议——均维持原样。
+5. 校验：packet.json / evidence.json 均以 `python3 -m json.tool` 通过（2026-10-04 二次复核记录）。

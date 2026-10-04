@@ -22,7 +22,7 @@
 ## 三、查重与既有内容
 
 - 无同名顶级条目、无同名分支（任务 JSON 两个 exact 数组为空）；mentions-only 9 项（印度哲学、高加索-草原、魏晋玄学、隋唐佛学、西藏哲学、东南亚哲学、日本哲学、哲学入词、蒙古中亚）。
-- 人物：站内 philosophers.json 实查有 释迦牟尼/龙树/世亲/智顗/慧能/玄奘/法藏（全部采用站内姓名与纪年）；陈那、法称、鸠摩罗什、宗喀巴、觉音站内无——陈那/法称按来源实情收入 relations 并标注站外，其余不设条目。
+- 人物：站内 philosophers.json 实查有 释迦牟尼/龙树/世亲/智顗/慧能/玄奘/法藏（全部采用站内姓名与纪年）；陈那、法称、鸠摩罗什、觉音站内无——陈那/法称按来源实情收入 relations 并标注站外，其余不设条目。**宗喀巴·罗桑扎巴站内已有**（纪年"14世纪-15世纪"），本包因未核读格鲁派哲学专文不设 thinker 条目，展开建议由站内《西藏哲学》承载（初稿误记"站内无宗喀巴"，第二遍复核已更正）。
 - 书籍：books.json python 检索（佛/禅/经/论/梵等关键词）仅《中国佛教史》1201d003be31 一种佛学专门藏书，建议关联只列该种；站内无《金刚经》《心经》《坛经》原典藏书，不做关联建议。
 
 ## 四、复核方法与结果
@@ -53,3 +53,16 @@
 12. https://en.wikipedia.org/wiki/Theravada （curl 定位）
 13. https://en.wikipedia.org/wiki/Xuanzang （curl 定位）
 - 放弃：https://plato.stanford.edu/entries/epistemology-indian/ → 404（改用 epistemology-india）；维基文库心经消歧义页 → 改玄奘译本专页。
+
+## 七、同日第二遍复核与处置（2026-10-04）
+
+发现 `T01/` 目录已有当日早间（09:02–09:06）生成的完整四件草稿，未盲信，逐源重开核实后处置如下：
+
+1. **逐源重核**（第二遍，全部当日完成）：
+   - SEP×7（buddha/vasubandhu/madhyamaka/buddhism-tiantai/buddhism-huayan/epistemology-india/nagarjuna）经 WebFetch 打开并逐字核对引文——S1 年代两说句、S3 "appearance only"句、S4 hallmark 与三位注释家句、S5 三代表与三谛/一念三千节标题、S6 "one is all"与椽喻/传播/思想来源句、S7 两大名字与 pramāṇa-śāstra 句、S13 150—250 与 450 颂句全部命中。
+   - SEP abhidharma：WebFetch 小模型两次误触内容过滤，改 curl 抓全文 + grep 定位，所有被引句子（前3世纪分裂句、carefully defined 句、dharma theory 句、Kośa "most influential"句、Sūtrānta 对比句、"in seeing these four truths one realizes the ultimate truth"句）逐字命中。
+   - 维基文库×2、Wikipedia×3：curl 全文 + 定位核对，S10 四派年代句、S11 巴利藏句、S12 602–664/Śīlabhadra/行记句均命中。
+2. **处置决定：保留草稿，改正两处硬伤后维持 ready-for-review**：
+   - **引文更正**：《坛经》悟道语第五句草稿作"何期自性**性**能生万法"，维基文库原文为"何期自性**能**生万法"（多一"性"字）——packet.json overview/thinkers/quotes 与 evidence.json 两处 locator 已同步改正。
+   - **事实更正**：初稿 evidenceLimits 与本文件查重节记"站内 philosophers.json 无……宗喀巴"，python 实查站内实有"宗喀巴·罗桑扎巴"（14世纪-15世纪）——两处已更正；不为其设 thinker 的决定不变（本包未核读其哲学专文，S10 仅为参考级四派年代）。
+3. 其余内容（结构、边界决定、13 个来源、全部数量项）经第二遍核实无出参，予以保留；reviewMethod 字段已改写为反映两遍自查。
