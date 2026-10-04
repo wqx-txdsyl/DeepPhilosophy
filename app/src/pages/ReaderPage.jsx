@@ -7,6 +7,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getApiBase } from '../App';
+import { writeLocalNote, notePending, markNoteSynced } from '../data/readingRoom';
 import { saveReadingProgress } from '../data/userData';
 import ChapterReader from '../components/ChapterReader';
 
@@ -80,31 +81,28 @@ function ReaderPage() {
   const [showNotes, setShowNotes] = useState(false);
   const [noteText, setNoteText] = useState('');
   const notesKey = `dp_notes_${bookId}`;
-
-  // Load saved notes on book change — cloud first, localStorage fallback
+  const noteDirty = useRef(false);
   useEffect(() => {
+    let active = true;
+    noteDirty.current = false;
+    const token = localStorage.getItem('dp_token');
     const loadNotes = async () => {
-      const token = localStorage.getItem('dp_token');
-      if (token) {
-        try {
-          const r = await fetch(`${getApiBase()}/api/notes/load?book_id=${encodeURIComponent(bookId)}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-            signal: AbortSignal.timeout(5000),
-          });
-          if (r.ok) {
-            const d = await r.json();
-            if (d.note_text) { setNoteText(d.note_text); localStorage.setItem(notesKey, d.note_text); return; }
-          }
-        } catch { /* network error, fall through to local */ }
-      }
+      try { setNoteText(localStorage.getItem(notesKey) || ''); } catch { setNoteText(''); }
+      if (!token || notePending(bookId)) return;
       try {
-        const saved = localStorage.getItem(notesKey);
-        if (saved) setNoteText(saved);
-        else setNoteText('');
-      } catch { setNoteText(''); }
+        const r = await fetch(`${getApiBase()}/api/notes/load?book_id=${encodeURIComponent(bookId)}`, {
+          headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(5000),
+        });
+        if (!r.ok) return;
+        const d = await r.json();
+        if (active && localStorage.getItem('dp_token') === token && !noteDirty.current && !notePending(bookId) && typeof d.note_text === 'string') {
+          setNoteText(d.note_text); localStorage.setItem(notesKey, d.note_text);
+        }
+      } catch { /* Keep the local draft when offline. */ }
     };
     loadNotes();
-  }, [bookId]);
+    return () => { active = false; };
+  }, [bookId, notesKey]);
 
   // Save progress on unmount（章节阅读统一 'text' 类型）
   const chapterPosRef = useRef({ bookId: '', title: '', author: '', ch: 0, total: 0 });
@@ -120,36 +118,19 @@ function ReaderPage() {
     };
   }, []);
 
-  // Save notes — local + cloud
+  // Share pending-note tracking with the reading room; late cloud reads must not overwrite drafts.
   const saveNotes = () => {
+    if (!noteDirty.current && !notePending(bookId)) return;
     try {
-      localStorage.setItem(notesKey, noteText);
-      // Cloud sync
+      writeLocalNote(bookId, noteText);
       const token = localStorage.getItem('dp_token');
-      if (token) {
-        fetch(`${getApiBase()}/api/notes/save`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({ book_id: bookId, note_text: noteText }),
-          signal: AbortSignal.timeout(5000),
-        }).catch(() => {});
-      }
+      if (token) fetch(`${getApiBase()}/api/notes/save`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ book_id: bookId, note_text: noteText }), signal: AbortSignal.timeout(5000),
+      }).then(r => { if (r.ok && localStorage.getItem('dp_token') === token) markNoteSynced(bookId, noteText); }).catch(() => {});
+      noteDirty.current = false;
     } catch {}
   };
-
-  // Load notes from cloud on book open (if logged in)
-  useEffect(() => {
-    if (!bookId) return;
-    const token = localStorage.getItem('dp_token');
-    if (!token) return;
-    // Load notes
-    fetch(`${getApiBase()}/api/notes/${bookId}`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-      signal: AbortSignal.timeout(5000),
-    }).then(r => r.ok && r.json()).then(d => {
-      if (d?.note_text) setNoteText(d.note_text);
-    }).catch(() => {});
-  }, [bookId]);
 
   // 秒开：meta → 立即显示 → 按需加载章节（所有书统一章节阅读，不再有 PDF/EPUB 原始渲染）
   const loadTextBook = async () => {
@@ -356,7 +337,7 @@ function ReaderPage() {
             </div>
             <textarea
               value={noteText}
-              onChange={e => setNoteText(e.target.value)}
+              onChange={e => { noteDirty.current = true; setNoteText(e.target.value); try { writeLocalNote(bookId, e.target.value); } catch {} }}
               onBlur={saveNotes}
               placeholder="在这里写下你的思考和笔记..."
               style={{

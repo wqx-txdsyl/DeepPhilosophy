@@ -17,11 +17,12 @@ import AuthorsPage from './pages/AuthorsPage';
 import GenealogyPage from './pages/GenealogyPage';
 import HomePage from './pages/HomePage';
 import SettingsPage from './pages/SettingsPage';       // 3.5KB, 常用
-import ProfilePage from './pages/ProfilePage';         // 9KB, 常用
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 // 中型页面（lazy：点击才加载）
 const BookDetailPage = lazy(() => import('./pages/BookDetailPage'));
 const AuthorDetailPage = lazy(() => import('./pages/AuthorDetailPage'));
 const SchoolDetailPage = lazy(() => import('./pages/SchoolDetailPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 const DeveloperPage = lazy(() => import('./pages/DeveloperPage'));
 const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
@@ -183,6 +184,7 @@ function MainLayout() {
           <Route path="/eastern-philosophies" element={<EasternPhilosophiesPage />} />
           <Route path="/qa" element={<Navigate to="/books" replace />} />
           <Route path="/games/*" element={<Navigate to="/books" replace />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/DEVELOPER_IS_TXDSYL" element={<DeveloperPage />} />
           <Route path="/profile" element={<ProfilePage />} />

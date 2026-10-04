@@ -3,6 +3,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { switchReadingOwner } from '../data/readingRoom';
 import { getApiBase } from '../App';
 import Icon from '../components/Icon';
 
@@ -16,6 +17,7 @@ function SettingsPage() {
   const username = localStorage.getItem('dp_username');
 
   const handleLogout = () => {
+    switchReadingOwner('guest');
     localStorage.removeItem('dp_token');
     localStorage.removeItem('dp_username');
     navigate('/profile');
@@ -49,8 +51,8 @@ function SettingsPage() {
           <span style={{ fontSize: 18, color: 'var(--text-dim)' }}>→</span>
         </div>
 
-        <div className="card" style={{ cursor: 'default', marginTop: 16 }}>
-          <h3 style={{ fontSize: 15, marginBottom: 8 }}><Icon name="mode-mobile" size={16} /> 关于</h3>
+        <div className="card" style={{ cursor: 'pointer', marginTop: 16 }} onClick={() => navigate('/about')} role="link" tabIndex={0} onKeyDown={e => { if(e.key === 'Enter') navigate('/about'); }}>
+          <h3 style={{ fontSize: 15, marginBottom: 8 }}><Icon name="mode-mobile" size={16} /> 关于本站 ↗</h3>
           <p style={{ fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.6 }}>
             <strong>DeepPhilosophy</strong> v2.0.0<br />
             开发者: @txdsyl_<br />
