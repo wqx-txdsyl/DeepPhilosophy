@@ -1,514 +1,78 @@
-/**
- * 个人中心 —— 用户登录/注册、阅读历史、聊天历史
- * 登录后数据云端同步，未登录本地存储
- */
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getApiBase } from '../App';
-import { getAuthBase } from '../utils/api';
-import Icon from '../components/Icon';
+import { useState, useEffect, useRef } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { getApiBase, getAuthBase } from '../utils/api';
+import { loadBooks } from '../data';
+import { getReadingHistory, relativeTime } from '../data/userData';
+import { localNotes, switchReadingOwner, writeLocalNote, notePending, markNoteSynced, mergeCloudNotes, mergeReadingHistory, readingView } from '../data/readingRoom';
+import { SiteFooter, RoomCover } from '../components/SitePageParts';
 import AvatarUpload from '../components/AvatarUpload';
-import { useToast } from '../contexts/ToastContext';
-import {
-  getReadingHistory,
-  getAllUserData, relativeTime,
-} from '../data/userData';
-import { getSessions, deleteSession } from '../data/chatSessions';
+import { useSEO } from '../utils/seo';
+import './SitePages.css';
 
-/**
- * 2026-08-12: 按天分组重建会话 —— 聊天历史 tab 读 chatSessions(本地),
- * 统计读 dp_userdata.chatHistory(本地+云端同步)。两源不一致时列表空但统计有数。
- * 传入任一来源的消息数组, 按天分组生成会话(仅保留 user 首条做标题)。
- */
-function rebuildSessions(msgs) {
-  const byDay = {};
-  for (const m of msgs) {
-    const day = (m.created_at || '').slice(0, 10) || 'unknown';
-    if (!byDay[day]) byDay[day] = [];
-    byDay[day].push(m);
+async function request(path,{token,auth=false,body,method='GET'}={}){
+  const response=await fetch(`${auth?getAuthBase():getApiBase()}${path}`,{method,headers:{...(token?{Authorization:`Bearer ${token}`}:{ }),...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(10000)});
+  const data=await response.json().catch(()=>({}));if(!response.ok){const error=new Error(data.detail||data.error||'请求失败，请稍后重试');error.status=response.status;throw error;}return data;
+}
+export default function ProfilePage(){
+  const [params,setParams]=useSearchParams();const tab=['reading','notes','account'].includes(params.get('tab'))?params.get('tab'):'reading';
+  const [books,setBooks]=useState([]),[history,setHistory]=useState([]),[notes,setNotes]=useState({}),[session,setSession]=useState(null);
+  const [checking,setChecking]=useState(true),[busy,setBusy]=useState(false),[syncing,setSyncing]=useState(false),[syncMessage,setSyncMessage]=useState('');
+  const [username,setUsername]=useState(''),[password,setPassword]=useState(''),[authMode,setAuthMode]=useState('login'),[message,setMessage]=useState('');
+  const [selected,setSelected]=useState(''),[noteQuery,setNoteQuery]=useState(''),[saving,setSaving]=useState(false),[avatar,setAvatar]=useState('');
+  const generation=useRef(0);const syncingRef=useRef(false);
+  useSEO('我的书房','继续阅读，整理批注，管理你的阅读记录与账户。');
+  function refreshLocal(){setHistory(getReadingHistory());setNotes(localNotes());setAvatar(localStorage.getItem('dp_avatar')||'');}
+  async function synchronize(token){
+    if(syncingRef.current)return;syncingRef.current=true;setSyncing(true);setSyncMessage('正在同步…');const ticket=generation.current;
+    try{
+      const results=await Promise.allSettled([request('/api/history/reading',{token}),request('/api/notes',{token}),request('/api/user/avatar',{token})]);
+      if(ticket!==generation.current||localStorage.getItem('dp_token')!==token)return;
+      const [reading,annotations,picture]=results;
+      if(reading.status==='fulfilled'){
+        const merged=mergeReadingHistory(getReadingHistory(),reading.value.history||[]);const data=JSON.parse(localStorage.getItem('dp_userdata')||'{}');localStorage.setItem('dp_userdata',JSON.stringify({...data,readingHistory:merged}));setHistory(merged);
+      }
+      if(annotations.status==='fulfilled')setNotes(mergeCloudNotes(annotations.value.notes||{}));
+      if(picture.status==='fulfilled'){const value=picture.value.avatar||'';if(value)localStorage.setItem('dp_avatar',value);else localStorage.removeItem('dp_avatar');setAvatar(value);}
+      const failed=results.some(r=>r.status==='rejected');const pending=Object.keys(localNotes()).some(id=>notePending(id));setSyncMessage(failed?'部分同步失败，本地记录仍保留。':pending?'阅读记录已同步；有批注仅保存在本机。':'已读取云端记录');
+    }catch{if(ticket===generation.current)setSyncMessage('同步失败，本地记录仍保留。');}finally{if(ticket===generation.current){syncingRef.current=false;setSyncing(false);}}
   }
-  return Object.entries(byDay)
-    .sort((a, b) => (a[0] < b[0] ? 1 : -1))
-    .map(([day, msgsOfDay]) => {
-      const first = msgsOfDay.find(m => m.role === 'user') || msgsOfDay[0] || {};
-      const text = typeof first.content === 'string' ? first.content : '';
-      const t0 = msgsOfDay[0]?.created_at ? new Date(msgsOfDay[0].created_at).getTime() : Date.now();
-      const t1 = msgsOfDay[msgsOfDay.length - 1]?.created_at ? new Date(msgsOfDay[msgsOfDay.length - 1].created_at).getTime() : t0;
-      return {
-        id: 'cloud_' + day.replace(/[^0-9]/g, ''),
-        title: text.replace(/\n/g, ' ').slice(0, 30) || '历史对话 · ' + day,
-        messages: msgsOfDay.map(m => ({ role: m.role, content: m.content, sources: m.sources || [] })),
-        createdAt: t0,
-        updatedAt: t1,
-      };
+  useEffect(()=>{
+    let active=true;const requestGeneration=generation;const token=localStorage.getItem('dp_token'),name=localStorage.getItem('dp_username');
+    loadBooks().then(data=>{if(active)setBooks(data);}).catch(()=>{});
+    Promise.resolve().then(async()=>{
+      if(!active)return;try{switchReadingOwner(name||null);refreshLocal();}catch{setMessage('本机存储空间不足，部分记录暂无法保存。');}
+      if(!token||!name){setChecking(false);return;}
+      try{const data=await request('/api/auth/profile',{token,auth:true});if(!active)return;setSession({token,name:data.username||name});setChecking(false);synchronize(token);}
+      catch(error){if(!active)return;if(error.status===401||error.status===403||error.status===404){setMessage('登录已过期，请重新登录。');setUsername(name);}else{setSession({token,name});setSyncMessage('暂时离线，正在使用本机记录。');}setChecking(false);}
     });
+    return()=>{active=false;requestGeneration.current++;};
+  // This restoration runs once; user actions perform subsequent syncs explicitly.
+  },[]);
+  function chooseTab(value){setParams(previous=>{const next=new URLSearchParams(previous);next.set('tab',value);return next;},{replace:true,preventScrollReset:true});setMessage('');}
+  async function authenticate(event){event.preventDefault();if(busy)return;setBusy(true);setMessage('');try{
+    const result=await request(`/api/auth/${authMode}`,{auth:true,method:'POST',body:{username:username.trim(),password}});
+    if(authMode==='register'){setMessage('注册成功，请登录。');setAuthMode('login');setPassword('');return;}
+    generation.current++;switchReadingOwner(result.username||username.trim());localStorage.setItem('dp_token',result.token);localStorage.setItem('dp_username',result.username||username.trim());setSession({token:result.token,name:result.username||username.trim()});setPassword('');refreshLocal();setChecking(false);await synchronize(result.token);
+  }catch(error){setMessage(error.message);}finally{setBusy(false);}}
+  function logout(){try{generation.current++;syncingRef.current=false;switchReadingOwner(null);localStorage.removeItem('dp_token');localStorage.removeItem('dp_username');setSession(null);setSyncMessage('');setSyncing(false);setSelected('');refreshLocal();setMessage('已退出登录。');}catch{setMessage('退出失败，请检查本机存储空间。');}}
+  const lookup=id=>books.find(b=>b.id===id);
+  const current=history[0];const currentBook=current&&(lookup(current.bookId)||{id:current.bookId,title:current.bookTitle,author:current.bookAuthor});
+  const progress=current&&readingView(current,currentBook);
+  const entries=Object.entries(notes).filter(([,text])=>text.trim()).map(([id,text])=>({id,text,book:lookup(id)||{id,title:history.find(h=>h.bookId===id)?.bookTitle||'未匹配的书籍',author:''}}));
+  const selectedEntry=entries.find(n=>n.id===selected)||entries[0];const noteId=selected&&Object.hasOwn(notes,selected)?selected:selectedEntry?.id;
+  const noteBook=noteId&&(lookup(noteId)||entries.find(n=>n.id===noteId)?.book||{title:'阅读批注'});
+  const filteredNotes=entries.filter(n=>`${n.book.title} ${n.book.author}`.includes(noteQuery.trim()));
+  async function saveNote(){if(!noteId||saving)return;const id=noteId,text=notes[id]||'',ticket=generation.current;setSaving(true);setMessage('');let savedLocally=false;try{
+    writeLocalNote(id,text);savedLocally=true;if(session){await request('/api/notes/save',{token:session.token,method:'POST',body:{book_id:id,note_text:text}});if(ticket!==generation.current)return;markNoteSynced(id,text);setMessage('批注已保存并同步。');}else setMessage('批注已保存在本机。');
+  }catch{setMessage(savedLocally?'批注已保存在本机，云端同步失败，可稍后重试。':'本机保存失败，请先复制你的批注后再重试。');}finally{setSaving(false);}}
+  async function clearHistory(){if(!window.confirm('确定清空阅读记录？批注会保留。'))return;const ticket=generation.current;try{if(session)await request('/api/history/reading',{token:session.token,method:'DELETE'});if(ticket!==generation.current)return;const data=JSON.parse(localStorage.getItem('dp_userdata')||'{}');localStorage.setItem('dp_userdata',JSON.stringify({...data,readingHistory:[]}));setHistory([]);setMessage('阅读记录已清空。');}catch(error){setMessage(`未能清空：${error.message}`);}}
+  const guestBooks=[books.find(b=>b.id==='c5013f33fe01'),books.find(b=>b.id==='84adfb4d0c0b')].filter(Boolean);
+  return <div className="site-pages"><div className="s-shell"><header className="s-page-heading"><div><p className="s-kicker">Your reading room</p><h1 className="s-serif">我的书房</h1><p>从上次停下的地方，继续读。</p></div>{session?<div className="s-profile-identity">{avatar?<img className="room-avatar" src={avatar} alt="我的头像"/>:<span className="s-seal">{session.name.slice(0,1)}</span>}<div><strong>{session.name}</strong><p className="s-small" role="status">{syncing?'正在同步…':syncMessage}</p><button onClick={()=>chooseTab('account')}>账户设置 ↗</button></div></div>:<span className="s-small">{checking?'正在恢复登录…':'本机书房'}</span>}</header>
+    {!session&&!checking&&<section className="s-guest"><div><p className="s-kicker">A place to return</p><h2>给你的阅读，<br/>留一个位置。</h2><p>登录后同步阅读记录与批注。<br/>浏览书库和在线阅读无需先登录。</p><form className="s-account-form" onSubmit={authenticate}><label className="s-field">用户名<input value={username} onChange={e=>setUsername(e.target.value)} autoComplete="username" required/></label><label className="s-field">密码<input type="password" value={password} onChange={e=>setPassword(e.target.value)} autoComplete={authMode==='register'?'new-password':'current-password'} minLength={authMode==='register'?8:undefined} required/></label><div className="s-current-actions"><button className="s-primary" disabled={busy||syncing}>{busy?'请稍候…':authMode==='register'?'注册':'登录'} ↗</button><button className="s-textlink" type="button" onClick={()=>{setAuthMode(authMode==='register'?'login':'register');setMessage('');}}>{authMode==='register'?'已有账户，去登录':'注册新账户'}</button></div>{authMode==='register'&&<p className="s-small">注册前请阅读 <Link to="/terms">用户协议</Link> 与 <Link to="/privacy">隐私政策</Link>。</p>}</form></div><div className="s-guest-books">{guestBooks.map(b=><RoomCover key={b.id} book={b} hero/>)}</div></section>}
+    {message&&<p className="s-toast" role="status">{message}</p>}
+    <nav className="s-profile-tabs" aria-label="我的书房">{[['reading','阅读记录'],['notes','我的批注'],['account','账户设置']].map(([id,title])=><button key={id} aria-pressed={tab===id} onClick={()=>chooseTab(id)}>{title}</button>)}<span>{history.length} 本读过 · {entries.length} 本有批注</span></nav>
+    {tab==='reading'&&<>{current?<><section className="s-current-book"><div className="s-current-book-art"><RoomCover key={currentBook.id} book={currentBook} hero/></div><div><span className="s-kicker">接着上次读</span><h2>{currentBook.title}</h2><p className="s-small">{currentBook.author}</p><p className="s-current-chapter">已读至第 {progress.chapter+1} 章</p><div className="s-progress" role="progressbar" aria-label="阅读进度" aria-valuenow={progress.percent} aria-valuemin={0} aria-valuemax={100}><span style={{width:`${progress.percent}%`}}/></div><div className="s-progress-caption"><span>{progress.total?`${progress.chapter+1} / ${progress.total} 章`:relativeTime(current.lastReadAt)}</span><span>{progress.percent}%</span></div><div className="s-current-actions"><Link className="s-primary" to={progress.href}>继续阅读 ↗</Link><button className="s-textlink" onClick={()=>{if(!Object.hasOwn(notes,current.bookId))setNotes(n=>({...n,[current.bookId]:''}));setSelected(current.bookId);chooseTab('notes');}}>整理这本书的批注</button></div></div></section><div className="s-profile-columns"><section><h2>也在阅读</h2>{history.slice(1).map(item=>{const b=lookup(item.bookId)||{title:item.bookTitle,author:item.bookAuthor};return <div className="s-reading-row" key={item.bookId}><RoomCover book={b}/><div><h3>{b.title}</h3><p>{b.author}</p><small>{relativeTime(item.lastReadAt)}</small></div><Link to={readingView(item,b).href}>翻开 ↗</Link></div>;})}{history.length===1&&<p className="s-small">下一本书，等你从书库中发现。</p>}</section><section><h2>留在页边的话</h2>{entries[0]?<div className="s-notecard"><small>{entries[0].book.title} / 阅读批注</small><p className="room-note-excerpt">{entries[0].text}</p><button className="s-textlink" onClick={()=>{setSelected(entries[0].id);chooseTab('notes');}}>继续整理这条笔记 ↗</button></div>:<p className="s-small">阅读时打开批注，记下你的想法。</p>}</section></div></>:<div className="s-empty"><h2 className="s-serif">从第一本书开始</h2><p>读过的作品会出现在这里。</p><Link className="s-textlink" to="/books">去书库挑一本 ↗</Link></div>}</>}
+    {tab==='notes'&&<><div className="s-note-toolbar"><label className="s-search"><span aria-hidden="true">⌕</span><input type="search" value={noteQuery} onChange={e=>setNoteQuery(e.target.value)} placeholder="按书名或作者查找批注" aria-label="查找批注" spellCheck={false}/></label><span className="s-small">{entries.length} 本书的批注</span></div><div className="s-notes-layout"><div className="s-note-list">{filteredNotes.map(n=><button key={n.id} aria-pressed={noteId===n.id} onClick={()=>setSelected(n.id)}><strong>{n.book.title}</strong><small>{notePending(n.id)?'仅保存在本机':'阅读批注'}</small></button>)}{!filteredNotes.length&&<p className="s-small">{noteQuery?'没有匹配的批注':'从阅读器中写下第一条批注。'}</p>}</div>{noteId?<section className="s-note-editor"><p className="s-kicker">Reading notes</p><h2>{noteBook.title}</h2><textarea value={notes[noteId]||''} aria-label="编辑批注" placeholder="在这里记下你的思考…" onChange={e=>{const text=e.target.value;setNotes(n=>({...n,[noteId]:text}));try{writeLocalNote(noteId,text);}catch{setMessage('本机存储失败，请先复制保存你的批注。');}}}/><div className="s-note-editor-footer"><span className="s-small">{session?'保存后同步到当前账户':'未登录，批注保存在本机'}</span><button className="s-textlink" disabled={saving} onClick={saveNote}>{saving?'保存中…':'保存批注'}</button></div><Link className="s-textlink" to={`/book/${encodeURIComponent(noteId)}`}>返回书籍详情 ↗</Link></section>:<div className="s-empty">选择一本书，整理页边的想法。</div>}</div></>}
+    {tab==='account'&&<section className="s-account-form">{session?<><div className="room-account-avatar"><AvatarUpload key={`${session.name}:${avatar}`} size={64} avatar={avatar} onSave={async value=>{setAvatar(value);try{await request('/api/user/avatar',{token:session.token,method:'POST',body:{avatar:value}});setMessage('头像已同步。');}catch{setMessage('头像已保存在本机，云端同步失败。');}}}/><div><strong>{session.name}</strong><p className="s-small">更换头像，或管理账户资料。</p></div></div><div className="s-account-links"><Link to="/profile/edit">修改用户名与密码 ↗</Link><button disabled={syncing} onClick={()=>synchronize(session.token)}>{syncing?'同步中…':'重新同步记录'}</button></div><div className="s-account-links"><button onClick={logout}>退出登录</button>{history.length>0&&<button onClick={clearHistory}>清空阅读记录</button>}</div>{session.name==='txdsyl_'&&<Link className="s-textlink" to="/DEVELOPER_IS_TXDSYL">进入管理后台 ↗</Link>}</>:<p>登录后可管理账户并同步数据。本机阅读记录与批注仍可使用。</p>}<div className="s-account-links"><Link to="/settings">阅读与网站设置 ↗</Link><Link to="/about">关于本站 ↗</Link></div></section>}
+    </div><SiteFooter/></div>;
 }
-
-function ProfilePage() {
-  const navigate = useNavigate();
-  const toast = useToast();
-  const [tab, setTab] = useState('reading');
-  const [readingHistory, setReadingHistory] = useState([]);
-  const [, setChatHistory] = useState([]);
-  const [chatSessions, setChatSessions] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [loginUser, setLoginUser] = useState('');
-  const [authMsg, setAuthMsg] = useState('');
-  const [syncing, setSyncing] = useState(false);
-  const [checking, setChecking] = useState(true);  // 正在验证登录状态
-  const [cloudAvatar, setCloudAvatar] = useState('');  // 云端头像（换设备登录后 sync 拉到）
-
-  // Restore login from token — verify with backend (只执行一次)
-  useEffect(() => {
-    const token = localStorage.getItem('dp_token');
-    const user = localStorage.getItem('dp_username');
-    if (token && user) {
-      // 先验证 token 是否仍然有效
-      fetch(`${getAuthBase()}/api/auth/profile`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(6000),
-      }).then(r => {
-        setChecking(false);
-        if (r.ok) {
-          setLoggedIn(true);
-          setLoginUser(user);
-          syncFromCloud(token, false);
-        } else {
-          // Token 失效 → 不清除本地凭据！仅显示未登录状态
-          // （后端可能刚重启，等几秒重试就能恢复；清除会导致反复登录）
-          setLoggedIn(false);
-          setLoginUser(user);
-        }
-      }).catch(() => {
-        setChecking(false);
-        // 网络错误 → 保持登录状态，使用本地缓存
-        setLoggedIn(true);
-        setLoginUser(user);
-      });
-    } else {
-      setChecking(false);
-    }
-    setReadingHistory(getReadingHistory());
-    let sessions = getSessions();
-    // 2026-08-12: 聊天历史 tab 读 chatSessions(本地), 统计读 dp_userdata.chatHistory(本地+云端同步) —
-    // 两源不一致时列表空但统计有数。挂载时若本地会话为空但消息存在 → 按天分组重建会话
-    if (sessions.length === 0) {
-      try {
-        const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
-        if (msgs.length > 0) {
-          sessions = rebuildSessions(msgs);
-          localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
-        }
-      } catch {}
-    }
-    setChatSessions(sessions);
-    // 兼容旧统计数据格式
-    const allMsgs = sessions.reduce((arr, s) => arr.concat(s.messages), []);
-    setChatHistory(allMsgs);
-  }, []); // 只在挂载时运行，切换 tab 不重复请求
-
-  // 刷新会话 state；本地会话为空但消息存在(dp_userdata.chatHistory) → 现场重建兜底
-  const refreshSessions = () => {
-    let sessions = getSessions();
-    if (sessions.length === 0) {
-      try {
-        const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
-        if (msgs.length > 0) {
-          sessions = rebuildSessions(msgs);
-          localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
-        }
-      } catch {}
-    }
-    setChatSessions(sessions);
-  };
-
-  const switchTab = (t) => {
-    setTab(t);
-    if (t === 'chat') refreshSessions();
-    window.scrollTo(0, 0);
-    const m = document.querySelector('.app-main');
-    if (m) m.style.transform = 'translateY(0)';
-  };
-
-  // ========== Auth ==========
-  const api = (path, body) =>
-    fetch(`${getApiBase()}${path}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(10000),
-    }).then(r => r.ok ? r.json() : r.json().then(e => { throw new Error(e.detail || e.error || '失败'); }));
-
-  const handleRegister = async () => {
-    if (!username.trim() || !password.trim()) { setAuthMsg('请填写用户名和密码'); return; }
-    try {
-      setAuthMsg('');
-      const r = await api('/api/auth/register', { username, password });
-      setAuthMsg(`注册成功！请登录 — ${r.username}`);
-      setPassword('');
-    } catch (e) { setAuthMsg(e.message); }
-  };
-
-  const handleLogin = async () => {
-    if (!username.trim() || !password.trim()) { setAuthMsg('请填写用户名和密码'); return; }
-    try {
-      setAuthMsg('');
-      const r = await api('/api/auth/login', { username, password });
-      localStorage.setItem('dp_token', r.token);
-      localStorage.setItem('dp_username', username);
-      setLoggedIn(true);
-      setLoginUser(username);
-      setPassword('');
-      setAuthMsg('');
-      syncFromCloud(r.token, true);  // fresh login: replace with cloud data
-    } catch (e) { setAuthMsg(e.message); }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('dp_token');
-    localStorage.removeItem('dp_username');
-    // 清除本地用户数据
-    const data = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-    data.readingHistory = [];
-    data.chatHistory = [];
-    localStorage.setItem('dp_userdata', JSON.stringify(data));
-    setLoggedIn(false);
-    setLoginUser('');
-    setReadingHistory([]);
-    setChatHistory([]);
-  };
-
-  // ========== Cloud Sync ==========
-  // isFreshLogin=true: 新登录 → 云端数据完全替换本地（切换账号场景）
-  // isFreshLogin=false: token恢复 → 合并，避免云端为空时清空本地数据
-  const syncFromCloud = async (token, isFreshLogin = false) => {
-    setSyncing(true);
-    try {
-      // Pull reading history — normalize snake_case → camelCase
-      const rh = await fetch(`${getApiBase()}/api/history/reading`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(10000),
-      });
-      if (rh.ok) {
-        const d = await rh.json();
-        const cloudHistory = (d.history || []).map(h => ({
-          bookId: h.book_id || '',
-          bookTitle: h.book_title || '',
-          bookAuthor: h.book_author || '',
-          page: h.progress_page || h.page || 0,
-          percent: h.progress_percent || h.percent || 0,
-          fileType: h.file_type || h.fileType || '',
-          lastReadAt: h.last_read_at || h.lastReadAt || h.created_at || '',
-        }));
-        const local = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        const localHistory = local.readingHistory || [];
-        if (isFreshLogin || cloudHistory.length > 0) {
-          // 新登录或云端有数据 → 云端优先，但保留本地独有的
-          const cloudIds = new Set(cloudHistory.map(h => h.bookId));
-          const merged = [...cloudHistory];
-          for (const h of localHistory) {
-            if (h.bookId && !cloudIds.has(h.bookId)) {
-              merged.push(h);
-            }
-          }
-          local.readingHistory = merged;
-        }
-        // 云端为空且非新登录 → 保留本地数据不变
-        localStorage.setItem('dp_userdata', JSON.stringify(local));
-        setReadingHistory(local.readingHistory || localHistory);
-      }
-      // Pull chat history
-      const ch = await fetch(`${getApiBase()}/api/history/chat`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(10000),
-      });
-      if (ch.ok) {
-        const d = await ch.json();
-        // 规范化 sources：云端存储的是 JSON 字符串，需转回数组
-        const _normalizeSources = (src) => {
-          if (Array.isArray(src)) return src;
-          if (typeof src === 'string') {
-            try { return JSON.parse(src); } catch { return []; }
-          }
-          return [];
-        };
-        const cloudChat = (d.messages || []).map(m => ({
-          ...m,
-          sources: _normalizeSources(m.sources),
-        }));
-        const local = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-        const localChat = local.chatHistory || [];
-        if (isFreshLogin || cloudChat.length > 0) {
-          local.chatHistory = cloudChat;
-        }
-        localStorage.setItem('dp_userdata', JSON.stringify(local));
-        setChatHistory(local.chatHistory || localChat);
-        // 2026-08-12: 云端消息重建本地会话——云端权威: 只要有云端消息就重建覆盖本地,
-        // 列表与统计(云端消息数)同源一致。若仅在本地区会话为空时重建,
-        // 本地测试残留(如 PhiAgent 对话)会占住列表而云端真实对话只进统计, 两源脱节
-        if (cloudChat.length > 0) {
-          const rebuilt = rebuildSessions(cloudChat);
-          localStorage.setItem('dp_chat_sessions', JSON.stringify(rebuilt));
-          setChatSessions(rebuilt);
-        }
-      }
-      // Pull book notes
-      const notes = await fetch(`${getApiBase()}/api/notes`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        signal: AbortSignal.timeout(10000),
-      });
-      if (notes.ok) {
-        const d = await notes.json();
-        Object.entries(d.notes || {}).forEach(([bid, txt]) => {
-          if (txt) localStorage.setItem(`dp_notes_${bid}`, txt);
-        });
-      }
-      // Pull avatar
-      try {
-        const ar = await fetch(`${getApiBase()}/api/user/avatar`, {
-          headers: { 'Authorization': `Bearer ${token}` },
-          signal: AbortSignal.timeout(5000),
-        });
-        if (ar.ok) {
-          const ad = await ar.json();
-          if (ad.avatar) { localStorage.setItem('dp_avatar', ad.avatar); setCloudAvatar(ad.avatar); }
-          else { localStorage.removeItem('dp_avatar'); setCloudAvatar(''); }
-        }
-      } catch {}
-    } catch {}
-    setSyncing(false);
-  };
-
-  const userData = getAllUserData();
-
-  return (
-    <div className="page-container">
-      {/* Auth Card */}
-      <div className="card" style={{ cursor: 'default', textAlign: 'center' }}>
-        {loggedIn ? (
-          <>
-            <AvatarUpload size={72} avatar={cloudAvatar} onSave={(dataUrl) => {
-            // 云端同步头像
-            const token = localStorage.getItem('dp_token');
-            if (token) {
-              fetch(`${getApiBase()}/api/user/avatar`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ avatar: dataUrl }),
-                signal: AbortSignal.timeout(10000),
-              }).catch(() => {});
-            }
-          }} />
-            <h2 style={{ fontSize: 18, color: 'var(--accent)' }}>{loginUser}</h2>
-            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
-              {syncing ? <><Icon name="icon-refresh" size={14} /> 同步中...</> : <><Icon name="icon-cloud" size={14} /> 数据已云端同步</>}
-            </div>
-            <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 8 }}>
-              <Icon name="icon-book-open" size={14} /> {userData.readingHistory.length} 条阅读 · <Icon name="nav-qa" size={14} /> {userData.chatHistory.length} 条对话
-            </div>
-            <button className="btn btn-secondary" style={{ marginTop: 10, padding: '6px 20px', fontSize: 12 }}
-              onClick={handleLogout}>退出登录</button>
-            {loginUser === 'txdsyl_' && (
-              <button className="btn btn-primary" style={{ marginTop: 6, padding: '6px 20px', fontSize: 12 }}
-                onClick={() => navigate('/DEVELOPER_IS_TXDSYL')}><Icon name="wrench" size={16} /> 开发者后台</button>
-            )}
-          </>
-        ) : checking ? (
-          // 正在验证 token...
-          <div style={{ textAlign: 'center', padding: 20 }}>
-            <div style={{ width:28, height:28, border:'2px solid var(--border)', borderTopColor:'var(--accent)', borderRadius:'50%', animation:'spin 0.8s linear infinite', margin:'0 auto 12px' }} />
-            <p style={{ fontSize:13, color:'var(--text-dim)' }}>验证登录状态...</p>
-          </div>
-        ) : loginUser && !loggedIn ? (
-          // Token 验证失败（后端可能刚重启），显示重试
-          <>
-            <div style={{ fontSize: 36, marginBottom: 4 }}><Icon name="icon-refresh" size={36} /></div>
-            <h2 style={{ fontSize: 16, marginBottom: 8 }}>{loginUser}</h2>
-            <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 16, maxWidth: 260 }}>
-              会话已过期，请重新登录
-            </p>
-            <button className="btn btn-secondary" style={{ padding: '6px 20px', fontSize: 12, marginBottom: 8 }}
-              onClick={() => {
-                // 重试：重新检查 token
-                setChecking(true);
-                const t = localStorage.getItem('dp_token');
-                if (t) {
-                  fetch(`${getAuthBase()}/api/auth/profile`, {
-                    headers: { 'Authorization': `Bearer ${t}` },
-                    signal: AbortSignal.timeout(6000),
-                  }).then(r => {
-                    setChecking(false);
-                    if (r.ok) { setLoggedIn(true); setLoginUser(localStorage.getItem('dp_username')||''); }
-                    else { setLoggedIn(false); }
-                  }).catch(() => { setChecking(false); setLoggedIn(true); });
-                } else { setChecking(false); }
-              }}><Icon name="refresh" size={16} /> 重试</button>
-            <button className="btn btn-danger" style={{ padding: '6px 20px', fontSize: 12 }}
-              onClick={() => {
-                localStorage.removeItem('dp_token');
-                localStorage.removeItem('dp_username');
-                setLoginUser('');
-                setLoggedIn(false);
-              }}>退出并重新登录</button>
-          </>
-        ) : (
-          // 未登录状态
-          <>
-            <div style={{ fontSize: 36, marginBottom: 4 }}><Icon name="icon-lock-key" size={36} /></div>
-            <h2 style={{ fontSize: 16, marginBottom: 12 }}>登录 / 注册</h2>
-            <input
-              placeholder="用户名"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-              style={{ width: '100%', maxWidth: 260, padding: '8px 12px', borderRadius: 8,
-                border: '1px solid var(--border)', background: 'var(--secondary)',
-                color: 'var(--text)', fontSize: 14, marginBottom: 8, textAlign: 'center' }}
-            />
-            <input
-              type="password"
-              placeholder="密码"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              style={{ width: '100%', maxWidth: 260, padding: '8px 12px', borderRadius: 8,
-                border: '1px solid var(--border)', background: 'var(--secondary)',
-                color: 'var(--text)', fontSize: 14, marginBottom: 10, textAlign: 'center' }}
-            />
-            <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
-              <button className="btn btn-primary" style={{ padding: '8px 24px', fontSize: 13 }}
-                onClick={handleLogin}>登录</button>
-              <button className="btn btn-secondary" style={{ padding: '8px 24px', fontSize: 13 }}
-                onClick={handleRegister}>注册</button>
-            </div>
-            {authMsg && (
-              <div style={{ fontSize: 12, marginTop: 8, color: authMsg.includes('成功') ? 'var(--success, #4caf50)' : 'var(--danger, #f44336)' }}>
-                {authMsg}
-              </div>
-            )}
-            <p style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 8 }}>
-              一次注册，多设备同步阅读进度
-            </p>
-          </>
-        )}
-      </div>
-
-      {/* Tabs */}
-      <div style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
-        <button className={`btn ${tab === 'reading' ? 'btn-primary' : 'btn-secondary'}`}
-          style={{ flex: 1, padding: '8px', fontSize: 13 }}
-          onClick={() => switchTab('reading')}><Icon name="icon-book-open" size={16} /> 阅读历史</button>
-        <button className={`btn ${tab === 'chat' ? 'btn-primary' : 'btn-secondary'}`}
-          style={{ flex: 1, padding: '8px', fontSize: 13 }}
-          onClick={() => switchTab('chat')}><Icon name="nav-qa" size={16} /> 聊天历史</button>
-      </div>
-
-      {/* Reading History */}
-      {tab === 'reading' && (
-        readingHistory.length === 0 ? (
-          <div className="empty-state"><p>暂无阅读记录</p></div>
-        ) : (
-          <>
-            <button className="btn btn-secondary" style={{ marginBottom: 8, padding: '4px 12px', fontSize: 12 }}
-              onClick={() => {
-                if (!window.confirm('确定清空所有阅读记录？此操作不可撤销。')) return;
-                const d = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-                d.readingHistory = [];
-                localStorage.setItem('dp_userdata', JSON.stringify(d));
-                setReadingHistory([]);
-                // 2026-08-12: 云端同步清空——否则 sync 会把云端旧记录合并回来"复活"
-                const token = localStorage.getItem('dp_token');
-                if (token) {
-                  fetch(`${getApiBase()}/api/history/reading`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` },
-                    signal: AbortSignal.timeout(10000),
-                  }).catch(() => {});
-                }
-                toast.success('阅读记录已清空');
-              }}><Icon name="icon-trash" size={14} /> 清空阅读记录</button>
-            {readingHistory.map((item, i) => (
-            <div key={i} className="card" style={{ cursor: 'pointer' }}
-              onClick={() => navigate(`/reader/${item.bookId}`)}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div className="card-title" style={{ fontSize: 14, flex: 1 }}>{item.bookTitle}</div>
-              </div>
-              <div className="card-subtitle">
-                {item.bookAuthor} 进度: {Math.round((item.percent || 0) * 100)}%
-              </div>
-              <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>
-                {relativeTime(item.lastReadAt)}
-              </div>
-            </div>
-          ))}
-          </>
-        )
-      )}
-
-      {/* Chat History — 会话列表 */}
-      {tab === 'chat' && (
-        <div key="chat-tab">
-          {(() => {
-            // 渲染兜底: state 为空但消息存在 → 现场重建展示并写回 localStorage（下次 getSessions 生效）
-            let sessions = chatSessions.filter(s => s.messages.length > 0);
-            if (sessions.length === 0) {
-              try {
-                const msgs = (JSON.parse(localStorage.getItem('dp_userdata') || '{}').chatHistory) || [];
-                if (msgs.length > 0) {
-                  sessions = rebuildSessions(msgs);
-                  localStorage.setItem('dp_chat_sessions', JSON.stringify(sessions));
-                }
-              } catch {}
-            }
-            if (sessions.length === 0) {
-              return (
-                <div className="empty-state">
-                  <p>暂无聊天记录</p>
-                  <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4 }}>
-                    在问答页面进行的对话会自动保存在这里
-                  </p>
-                </div>
-              );
-            }
-            return sessions.map(s => {
-              const lastMsg = s.messages[s.messages.length - 1] || {};
-              const preview = typeof lastMsg.content === 'string'
-                ? lastMsg.content.replace(/\n/g, ' ').slice(0, 60)
-                : '';
-              return (
-                <div key={s.id} className="card"
-                  style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  onClick={() => {
-                    localStorage.setItem('dp_current_session', s.id);
-                    navigate('/qa');
-                  }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div className="card-title" style={{ fontSize: 14 }}>{s.title}</div>
-                    <div className="card-subtitle" style={{ fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {preview || '（空对话）'}
-                    </div>
-                    <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: 4 }}>
-                      {new Date(s.updatedAt).toLocaleString('zh-CN')} · {s.messages.length} 条消息
-                    </div>
-                  </div>
-                  <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: 10, marginLeft: 8, flexShrink: 0 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (window.confirm('删除该对话？')) {
-                        deleteSession(s.id);
-                        refreshSessions();
-                      }
-                    }}>
-                    <Icon name="icon-trash" size={12} />
-                  </button>
-                </div>
-              );
-            });
-          })()}
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default ProfilePage;

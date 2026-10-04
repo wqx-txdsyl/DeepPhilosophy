@@ -1,5 +1,5 @@
 /**
- * 哲学家星丛 — AI 识别的真实思想关系可视化
+ * 哲学家星丛 — 哲学家思想关系可视化
  * 关系类型：师承 / 影响 / 论敌 / 友·合作
  */
 import { useState, useEffect, useMemo } from 'react';
@@ -111,7 +111,7 @@ export default function PhilosopherConstellation({ name, region }) {
         <Icon name="icon-sparkles" size={20} /> 思想星丛
       </h3>
       <p style={{ fontSize: 11, color: 'var(--text-dim)', margin: '0 0 16px' }}>
-        基于 AI 识别的真实思想关系 · 越近关联越强 · 点击跳转
+        思想关系 · 越近关联越强 · 点击跳转
       </p>
 
       {/* 图例 */}

@@ -1,10 +1,10 @@
 /**
  * DeepPhilosophy - 哲学爱好者移动应用
  * 开发者: @txdsyl_
- * 四个分区: 书籍 | 谱图 | 问答 | 我的
+ * 主站：书库、哲人、谱系与个人阅读记录
  */
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigationType } from 'react-router-dom';
 import { startAutoSave, stopAutoSave } from './data/userData';
 import ErrorBoundary from './components/ErrorBoundary';
 import NavBar from './components/NavBar';
@@ -15,27 +15,23 @@ import { ToastProvider } from './contexts/ToastContext';
 import BooksPage from './pages/BooksPage';
 import AuthorsPage from './pages/AuthorsPage';
 import GenealogyPage from './pages/GenealogyPage';
-import QAPage from './pages/QAPage';
 import HomePage from './pages/HomePage';
 import SettingsPage from './pages/SettingsPage';       // 3.5KB, 常用
-import ProfilePage from './pages/ProfilePage';         // 9KB, 常用
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 // 中型页面（lazy：点击才加载）
 const BookDetailPage = lazy(() => import('./pages/BookDetailPage'));
 const AuthorDetailPage = lazy(() => import('./pages/AuthorDetailPage'));
 const SchoolDetailPage = lazy(() => import('./pages/SchoolDetailPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 const DeveloperPage = lazy(() => import('./pages/DeveloperPage'));
 const ProfileEditPage = lazy(() => import('./pages/ProfileEditPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
-const GamesPage = lazy(() => import('./pages/GamesPage'));
 const WorldPhilosophiesPage = lazy(() => import('./pages/WorldPhilosophiesPage'));
 const WesternPhilosophiesPage = lazy(() => import('./pages/WesternPhilosophiesPage'));
 const EasternPhilosophiesPage = lazy(() => import('./pages/EasternPhilosophiesPage'));
-// 重型页面（lazy：PDF/EPUB reader + 游戏）
+// 阅读器按需加载
 const ReaderPage = lazy(() => import('./pages/ReaderPage'));
-const AnswerBookPage = lazy(() => import('./pages/AnswerBookPage'));
-const PHTIPage = lazy(() => import('./pages/PHTIPage'));
-const PHTISillyPage = lazy(() => import('./pages/PHTISillyPage'));
 import './App.css';
 
 // 懒加载骨架屏占位
@@ -152,7 +148,6 @@ function MainLayout() {
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
   const isAuthor = location.pathname.startsWith('/author/');
-  const isQA = location.pathname.startsWith('/qa');
   const hideHeader = isHome || isReader || isSchool || isAuthor;
 
   return (
@@ -171,7 +166,7 @@ function MainLayout() {
         onToggleMobileMode={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }}
       />
 
-      <main id="main-content" className={`app-main${isReader || isHome || isSchool || isAuthor ? ' reader-mode' : ''}${isQA ? ' qa-mode' : ''}`} style={(isReader || isHome || isSchool || isAuthor || isQA) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      <main id="main-content" className={`app-main${isReader || isHome || isSchool || isAuthor ? ' reader-mode' : ''}`} style={(isReader || isHome || isSchool || isAuthor) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
         <div key={location.pathname} className="page-enter">
@@ -187,11 +182,9 @@ function MainLayout() {
           <Route path="/world-philosophies" element={<WorldPhilosophiesPage />} />
           <Route path="/western-philosophies" element={<WesternPhilosophiesPage />} />
           <Route path="/eastern-philosophies" element={<EasternPhilosophiesPage />} />
-          <Route path="/qa" element={<QAPage />} />
-          <Route path="/games" element={<GamesPage />} />
-          <Route path="/games/answer-book" element={<AnswerBookPage />} />
-          <Route path="/games/phti" element={<PHTIPage />} />
-          <Route path="/games/phti-silly" element={<PHTISillyPage />} />
+          <Route path="/qa" element={<Navigate to="/books" replace />} />
+          <Route path="/games/*" element={<Navigate to="/books" replace />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/DEVELOPER_IS_TXDSYL" element={<DeveloperPage />} />
           <Route path="/profile" element={<ProfilePage />} />
