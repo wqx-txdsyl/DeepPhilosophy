@@ -8,8 +8,8 @@ const publicRoot = new URL('../public/', import.meta.url);
 const SCHOOLS = JSON.parse(fs.readFileSync(new URL('gene/atlas.json', publicRoot), 'utf8'));
 const filterCatalog = options => filterSchools(SCHOOLS, options);
 test('every existing school has its original artwork and a working detail mapping', () => {
-  assert.equal(SCHOOLS.length, 111);
-  assert.equal(new Set(SCHOOLS.map(school => school.id)).size, 111);
+  assert.equal(SCHOOLS.length, 175);
+  assert.equal(new Set(SCHOOLS.map(school => school.id)).size, 175);
   const detailSource = fs.readFileSync(new URL('../src/pages/SchoolDetailPage.jsx', import.meta.url), 'utf8');
   for (const school of SCHOOLS) {
     assert.ok(fs.existsSync(new URL(school.image.slice(1), publicRoot)), school.name);
@@ -44,7 +44,7 @@ test('chronology orders BCE and early/mid/late centuries consistently', () => {
   assert.equal((layout.path.match(/M /g) || []).length, 1, 'one continuous river');
 });
 function assertGeometry(layout) {
-  assert.equal(layout.nodes.length, 111);
+  assert.equal(layout.nodes.length, 175);
   for (const a of layout.nodes) {
     assert.ok(a.x - a.width / 2 >= 0, a.school.name);
     assert.ok(a.x + a.width / 2 <= layout.width, a.school.name);
@@ -84,7 +84,7 @@ test('invalid CDN responses fall back to the canonical public JSON', async () =>
     return calls.length === 1 ? new Response('<html>fallback</html>', { status: 200 }) : new Response(JSON.stringify(SCHOOLS), { status: 200 });
   });
   try {
-    assert.equal((await loadGenealogyCatalog()).length, 111);
+    assert.equal((await loadGenealogyCatalog()).length, 175);
     assert.equal(calls.length, 2);
     assert.equal(calls[1], '/gene/atlas.json');
   } finally { fetchMock.mock.restore(); }
