@@ -34,7 +34,7 @@
 ## 五、复核方法与结果
 
 1. 5 个来源全部 curl 全文抓取（/tmp/u03_research/：sep_shankara.txt 86,786 字符、iep_advaita.txt 28,160、wiki_advaita.txt 413,844、gretil_gaudapada_agamashastra.txt 30,837、gretil_shankara_gitabhashya.txt 520,003），逐关键词定位亲读相关段落；evidence.json 42 条，locator 均含亲眼核读的 verbatim 短引（学术来源英文原文、原典梵文转写），写稿后以脚本对 15 处关键引文逐字回对抓取原文全部命中（2 处初判失配经空白符规范化后确认命中，系抓取文本换行差异）。
-2. 原典亲读：GRETIL《Āgamaśāstra》GpK_2.31/2.32/2.33—2.37/3.9—3.11 段落直接核读（quote 与 closingQuote 逐字取自该文件）；GRETIL《薄伽梵歌》+注 ||bhg_2.16|| 颂文与商羯罗注（sat/asat 判据段）直接核读。文件头版本信息（Apate 1921、AnSS 10、录入者 Schreiner）已录。
+2. 原典亲读：GRETIL《Āgamaśāstra》GpK_2.31/2.32/2.33—2.37/3.9—3.11 段落直接核读（quote 与 closingQuote 逐字取自该文件）；GRETIL《薄伽梵歌》+注 ||bhg_2.16|| 颂文与商羯罗注（sat/asat 判据段）直接核读。文件头版本信息（Apate 1921、AnSS 10、录入者 Schreiner）已录。节标约定经实测确认：该文件节标缀于所标节文之后（GpK_1.1、GpK_2.1 上下文可见），四章节数 29/38/48/100 与通行编本一致。
 3. 引语纪律：所有中文译文标注"编辑译"；三条 quotes 的 kind 分别标"经 SEP 核读转引"（tat tvam asi，ChU 原典未另行核读）、"原典直引"（GRETIL 两处）、"传诵韵文"（匿名，IEP 明言 anonymous verse）；无一署名为商羯罗原话的未经核对引语。
 4. 结构契约自检：schemaVersion/taskId/status/reviewedAt/reviewMethod/proposal/sources/overviewSourceRefs/conclusionSourceRefs/school/readingRoutes/evidenceLimits 均在顶层；sub_schools 未作顶层键（subSchools 在 school 内）；relations 6 条的 from/to 全部是本包 thinkers 七人；term 10、timeline 9、works 8、thinkers 7、subSchools 4，均在契约通常区间。
 5. 两个 JSON 已过 `python3 -m json.tool` 校验；sourceRefs 引用的 S1—S5 在 sources 中唯一且可解析；evidence.json 的 fieldPath 指针抽查可解析到 packet.json 对应位置。
@@ -60,3 +60,11 @@
 - 学派标题不用"商羯罗创立"（SEP/维基/IEP 三源一致：体系化者非创始人；站内分支简介"由商羯罗创立"一句接入时建议核对）。
 - "世界为幻"一律带 anirvacanīya/二谛限定语，避免虚无主义误读；māyāvādin 保持"论敌贬称"定性。
 - 与 I05 互链建议：论敌关系（critique/counter-critique），非承继关系。
+
+## 九、修订记录（2026-10-04 独立审计复核）
+
+1. **审计主张"节标系统性 +1 偏移"（2.32→2.31、2.31→2.30、2.34→2.33、3.10→3.9）：复核后不改号。** 实测证据：GRETIL《Āgamaśāstra》明文本节标缀于所标节文之后（文件首节 `(bahiṣ...)prajño... // GpK_1.1`、第二品首节 `vaitathyaṃ sarvabhāvānāṃ... // GpK_2.1` 上下文直接可见），四章节数 29/38/48/100 与通行编本一致，SEP Shankara 条目所引 "GK 2.34"（anirvacanīya）与文件中 nānedaṃ 节的节标 2.34 吻合，外部检索亦见 na nirodho 一节多数引作 2.32（个别编本确有 2.31/2.33 的计数出入）。审计给出的数字恰为"节前标记"读法所得，疑将节后缀标误读为节前标。故文件节标即 Apate 1921 编本编号，本包原节号维持不变。
+2. **按审计方案 B 执行"统一加注"**：quote/closingQuote 的 kind 字段、thinkers[乔荼波陀]、works[1]、subSchools[无生论]、readingRoutes[0] 一律注明"节号从 Apate 1921/GRETIL 文件，个别编本相邻节号有 ±1 出入"，检索以 GRETIL 节标为准；evidence[/school/works/1] locator 补记节标约定与章节数实测。
+3. **审计对 [check!] 注记的批评成立，已改**：所引 saṃghātāḥ 节（GpK_3.10）首句确带 GRETIL 编辑 [check!] 疑误标记（'sarve' 异读处）；原 note 仅以 GpK_3.9 为例、易误读为所引节均干净。已改为如实披露（全文件 [check!] 共 3 处：GpK_3.9、3.10、3.25；所引 2.31—2.36 区间无）。
+4. conclusion 段英文残留"reading 不二论"已改为通顺中文（"因此，阅读不二论要同时读它的两层"）。
+5. 两个 JSON 重过 `python3 -m json.tool`；sourceRefs 与 fieldPath 一致性复检通过。

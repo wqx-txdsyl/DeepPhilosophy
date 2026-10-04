@@ -1,0 +1,625 @@
+{
+  "schemaVersion": 1,
+  "taskId": "U08",
+  "name": "关怀伦理学",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "逐源实际抓取并阅读相关小节：SEP《Feminist Ethics》（2019-05-27 首发，2025-08-22 实质性修订，curl 全文抓取后按小节解析）、IEP《Care Ethics》（全文抓取解析）、OpenStax《Psychology 2e》§9.2（全文抓取）；另抓取 SEP《Virtue Ethics》（2026-05-03 修订）与 SEP《Deontological Ethics》（2024-12-11 修订）核对分类与对照；站内 philosophers.json、books.json、school_*.json 以 python3/grep 脚本核对。三外部源互证，未依赖搜索摘要。本自检为研究员自查，非独立同行评审。",
+  "proposal": {
+    "kind": "position",
+    "positionNote": "立场深化包：站内『伦理学』分支下已有同名子项『关怀伦理学』（school_伦理学.json branches[3]，仅一行简介），本包不重复其通史框架，只深化该立场本身的论证史、内部争论与政治延伸。",
+    "scope": "吉利根（Carol Gilligan）《不同的声音》（1982）的起点地位与对科尔伯格（Lawrence Kohlberg）道德发展框架的批评；诺丁斯（Nel Noddings）对关怀的哲学化（关怀关系、one-caring/cared-for、engrossment）；关怀伦理与德性伦理、义务论的理论定位之争；政治延伸（特隆托、赫尔德、基泰、罗宾逊）。",
+    "exclusions": "不使用『女性天生善于关怀』一类本质主义概括：吉利根对性别差异的表述按来源如实呈现——她自己把差异定性为『主题而非性别』（IEP），后期更明确称之为对抗『父权之声』的『人的声音』（SEP 转引其 2023 年著作）；与 U06 德性伦理包（同日已交付）和 U07 义务论包的跨包关系只作编辑性对照，不写成历史影响。",
+    "period": "1979 年（吉利根早期论文）至 2023 年（吉利根《In a Human Voice》），主体为 1982—2006",
+    "regionContext": "20 世纪后期以来英语学界的女性主义伦理学与道德发展研究；政治延伸涉及全球照护劳动研究",
+    "existingEntries": [
+      {
+        "path": "app/public/schools/data/school_伦理学.json",
+        "relation": "母分支",
+        "note": "branches[3] 即『关怀伦理学』（era：20世纪晚期；desc：『吉利根等女性主义学者提出，强调人际关系、情感与责任，反对抽象原则的绝对优先性。』）。2026-10-04 复核一致。现有 desc 方向正确但过简，且未提诺丁斯、特隆托；本包可直接为其 detail 提供全文。"
+      },
+      {
+        "path": "app/public/schools/data/school_女性主义.json",
+        "relation": "亲缘分支",
+        "note": "grep 实查含『关怀伦理学』2 处提及；关怀伦理出自女性主义伦理学脉络，建议互相链接。"
+      },
+      {
+        "path": "app/public/schools/data/school_南岛哲学.json",
+        "relation": "提及",
+        "note": "grep 实查含『关怀伦理学』1 处；具体语境为提及性引用，未逐一深核。"
+      },
+      {
+        "path": "app/public/schools/data/school_北欧哲学.json",
+        "relation": "提及",
+        "note": "grep 实查含『关怀伦理』2 处。"
+      },
+      {
+        "path": "app/public/schools/data/school_环境哲学.json",
+        "relation": "提及",
+        "note": "grep 实查含『关怀伦理』1 处（环境关怀伦理一线）。"
+      },
+      {
+        "path": "app/public/schools/data/school_澳洲原住民哲学.json",
+        "relation": "提及",
+        "note": "grep 实查含『关怀伦理』2 处。"
+      },
+      {
+        "path": "docs/content-proposals/schools/U06/（德性伦理学立场包，同日交付）",
+        "relation": "跨包编辑对照",
+        "note": "U06 review 已记录：SEP《Virtue Ethics》现行版（2026-05-03 修订，本包另行抓取复核一致）的变体四分类（幸福主义／基于行动者与典范／目标中心／柏拉图主义）不列关怀伦理；吉利根等人归本包。"
+      },
+      {
+        "path": "（U07 义务论包）",
+        "relation": "跨包对照（预留）",
+        "note": "2026-10-04 检查 docs/content-proposals/schools/：U07 目录未建，义务论包尚未交付；本包的义务论对照以 SEP《Deontological Ethics》（2024-12-11 修订版全文不含 care ethics 字样）与 S1 §2.4.1 为据。"
+      }
+    ],
+    "relationSuggestions": [
+      "与『伦理学』：作为其 branches[3] 的立场深化 detail（父子关系）。",
+      "与『女性主义』：历史来源关系——关怀伦理由女性主义伦理学脉络提出（S1/S2），建议互相链接但保持两个页面分工。",
+      "与 U06 德性伦理：编辑比较——两说并录（一说把关怀伦理视为德性伦理的一种/子集，一说坚持其独立性），不写成历史传承（S1 §2.4；S2 §5）。",
+      "与 U07 义务论（待建）：编辑对照——关怀伦理对康德式义务论的三点批评与双方的兼容论方案（S1 §2.4.1；S2 §5）。"
+    ],
+    "linkageEvidence": "books.json 全文 grep『不同的声音/吉利根/诺丁斯/关怀』：无关怀伦理相关藏书（仅‘人文关怀’一类泛词命中），无书可挂，未造任何书籍 ID。"
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Feminist Ethics（斯坦福哲学百科 SEP；2019-05-27 首发，2025-08-22 实质性修订，抓取核实）",
+      "url": "https://plato.stanford.edu/entries/feminism-ethics/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "§2.2 关怀伦理与关系伦理（吉利根对科尔伯格的批评、妇女研究中公正与关怀两种视角、后期『人的声音』、诺丁斯、赫尔德/特隆托/拉迪克/基泰的政治延伸、照护劳动与关怀链条、批评谱系、关系伦理扩展）；§2.4.1 关怀伦理对康德式义务论的批评；§2.4 关怀伦理与德性伦理的分类争论（一说视为子集及其批评）；书目（Gilligan 1982/2023、Noddings 1984、Tronto 1993、Held 1993、Kittay 1999、Ruddick 1989、Robinson 2013、Slote 1998 等）。"
+    },
+    {
+      "id": "S2",
+      "title": "Care Ethics（互联网哲学百科 IEP；作者 Maureen Sander-Staudt，亚利桑那州立大学）",
+      "url": "https://iep.utm.edu/care-ethics/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "§1a 吉利根专节（不同声音、Jake 与 Amy、主题而非性别的定性、对性别化解读的抵制）；§1b 诺丁斯专节（one-caring/cared-for、engrossment、natural caring、caring-for/caring-about、近人优先及其后期修正）；§1c 拜尔/赫尔德/基泰/拉迪克/特隆托五人专节；§2 关怀的诸定义（Fischer 与特隆托定义、四要素）；§3 六类批评（奴隶道德、经验缺陷、理论上不独立、狭隘、本质主义、含混）；§4 女性的/女性主义的；§5 与德性伦理、儒家、康德主义的关系；§6 母性思考；§7 国际关系（罗宾逊）；§8 政治理论（贝纳哈比、特隆托三大边界）；H12 参考书目。"
+    },
+    {
+      "id": "S3",
+      "title": "Psychology 2e §9.2 Lifespan Theories（OpenStax，莱斯大学开放教科书）",
+      "url": "https://openstax.org/books/psychology-2e/pages/9-2-lifespan-theories/",
+      "type": "university",
+      "accessedAt": "2026-10-04",
+      "coverage": "科尔伯格（Lawrence Kohlberg，1927—1987）道德发展理论：海因茨困境原文（Kohlberg 1969, p.379）、三水平（前习俗／习俗／后习俗）及年龄锚点、重视推理而非答案；科尔伯格 1969 认为更多男性越过第四阶段、视女性道德推理『有缺陷』；吉利根为其研究助手，1982 年批评该理论仅基于上层白人男性与男孩样本，主张女性并非推理能力缺陷而是取向不同（重视联结与人际关系）。（取证路径：OpenStax 直连为JS应用壳，本条经 Wayback Machine 2026-04-22 快照核实）"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2",
+    "S3"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S2"
+  ],
+  "school": {
+    "name": "关怀伦理学",
+    "subtitle": "从『不同的声音』到关怀的政治：以关系与依赖为中心的道德立场",
+    "overview": "关怀伦理学（Ethics of Care）是 20 世纪后期兴起于英语学界的道德哲学立场。它把关怀（care）——维系具体关系中的人的实践与价值——置于道德生活的中心，而不是把道德首先理解为对普遍原则的服从或对最大总量的计算。它的直接起点是一项心理学研究：劳伦斯·科尔伯格（Lawrence Kohlberg，1927—1987）把道德发展描述为由前习俗、习俗到后习俗水平的递进，并以海因茨困境这类两难故事测量被试的推理水平；他 1969 年提出，更多男性能越过第四阶段，而女性的道德推理似乎『有缺陷』。吉利根当时是科尔伯格的研究助手，她对这一结论的批评构成了《不同的声音：心理学理论与妇女的发展》（In a Different Voice，1982，哈佛大学出版社）的起点：该书的经验基础只是白人中上层男性与男孩，其评分方式把对具体关系与责任的关注当成发展不充分；吉利根听到的却是另一种同样成熟的道德『声音』——以关怀与对他人的回应为核心、以维系关系网络而非运用抽象权利计算为特征（S1 §2.2；S2 §1a；S3）。\n\n吉利根所记录的差异，在最经典的表述中是『海因茨困境』里的两种推理：男孩杰克把它当作一道可以算出答案的数学题（生命权高于财产权，所以该偷药），女孩艾米则把它看作一段需要通过沟通来修复的关系叙事（偷药入狱会让妻子陷入更糟的处境）。关键在于吉利根对这一差异的定性：她明确说这是『主题』上的差异而非性别本质——男性与女性都会在不同场合发出这两种声音，只是在既有研究中，关怀之声因与妇女经验相连而几乎被排除在『道德发展』的定义之外（S2 §1a）。后来的发展心理学教科书把她的立场简化为『两性推理方式不同』（S3），而 SEP 记录了她更晚近的修正：关怀视角不是『女性的声音』，而是对抗她所称『父权之声』（patriarchal voice）的『人的声音』（human voice）（S1 §2.2，转引吉利根 2023）。本包严格按这一谱系呈现，不作『女性天生善于关怀』的概括。\n\n把吉利根的心理学发现转化为规范伦理理论的，首推内尔·诺丁斯（Nel Noddings）的《关怀：女性取向的伦理学与道德教育进路》（Caring，1984，加州大学出版社）。诺丁斯把关怀关系理解为人类存在与意识的基本单元，区分了关系中的两极——关怀者（one-caring）与被关怀者（cared-for）；关怀被刻画为一种『全神贯注』（engrossment）：关怀者按被关怀者自身的样子接纳对方、不把自己投射到对方身上，并让自己的动机让位于对方的需要。她从『自然关怀』（natural caring）的情感回应与对被关怀经验的记忆中寻找道德动机的源头，拒斥以普遍原则规约行动与判断，坚持关怀必须情境化地施行。她的『关怀的伦理』因此是一种偏倚论：人际关系的优先性得到道德辩护，而对遥远他人的义务即便存在也更弱、更难完成——这一立场后来被她自己部分修正（S2 §1b、§3d；S1 §2.2）。\n\n关怀伦理内部最持久的争论是它的理论定位：它是独立的道德框架，还是传统理论的一个变种或补充？一派认为关怀伦理可以并入德性伦理（virtue ethics）——詹姆斯·雷切尔斯、迈克尔·斯洛特、玛格丽特·麦克拉伦、拉贾·哈尔瓦尼等把关怀理解为一种核心美德或动机性态度（S2 §2、§5；S1 §2.4 转述 Groenhout 1998、Slote 1998、McLaren 2001、Halwani 2003『女性主义关怀伦理就是德性伦理的一种或子集』之说）；另一派以赫尔德、基泰为代表坚决抵制这种同化：关怀『是对一种社会关系的刻画，而非对个人气质的描述』，把它美德化会让人看不见关怀是劳动（Held 2006，转引自 S2 §2）。此外，关怀伦理以关系与依赖为中心的人格观，也与儒家伦理、非洲哲学、休谟情感主义被反复作亲缘比较——SEP 记录这类『关系伦理』（relational ethics）的扩展，但这类比较是概念亲缘的编辑性观察，不是历史传承（S1 §2.2；S2 §5）。\n\n关怀伦理最有生命力的延伸是政治性的。琼·特隆托（Joan Tronto）的《道德边界：关怀伦理的政治论证》（Moral Boundaries，1993）指出，伦理与政治、特殊与抽象、公共与私人的三重边界把关怀囚禁在私域，遮蔽了照护劳动主要由妇女与其他边缘群体承担、其收益归于社会精英的结构；她给出著名的关怀定义与四要素——留意（attentiveness）、责任（responsibility）、能力（competence）、回应（responsiveness）——并铸造『特权者的免责』（privileged irresponsibility）刻画最优势群体购买照护、转手工、逃避责任的现象（S2 §1.c.v、§2、§8）。弗吉尼亚·赫尔德（Virginia Held）把关怀推进为『个人—政治—全球』三层的系统立场（The Ethics of Care，2006）；伊娃·费德·基泰（Eva Feder Kittay）以『依赖工作者』重构平等理论，要求制度性支持照护者（Love's Labor，1999）；菲奥娜·罗宾逊（Fiona Robinson）把批判关怀伦理带入国际关系，分析全球依赖与脆弱性结构（Globalizing Care，1999）。与 U06 德性伦理包的分工在此：SEP 现行《德性伦理学》条目的变体分类（2026-05-03 修订）并未把关怀伦理列为德性伦理变体，SEP 亦无独立的『Ethics of Care』条目，关怀伦理的系统覆盖位于《女性主义伦理学》条目（2025-08-22 修订）§2.2——分类问题在学界两说并存（S1 §2.4；S2 §5；SEP 德性伦理/义务论条目另行实查）。与 U07 义务论包的对照则是：关怀伦理对康德式义务论的三点标准批评——绝对主义原则压倒具体处境、把理性与情感切割、过度理想化行动者的选择能力（S1 §2.4.1）——同时它也承认可与康德主义兼容地重构（S2 §5）。",
+    "conclusion": "关怀伦理留下的第一个未决问题是性别与经验的关系。吉利根本人把『不同的声音』定性为主题差异而非性别本质，并在四十年后重申关怀之声是『人的声音』；但批评者持续质疑其经验基础——样本过窄（名校学生、考虑堕胎的妇女），更宽的样本产生更多样而非二元性别的道德图景（Haan 1976；Brabeck 1983；Walker 与 Snarey 2004 提示海因茨的种族身份会改变答案），『奴隶道德』式批评则警告：美化从压迫处境中生长出来的自我牺牲，可能把道德成熟错认成自我抹除（Puka、Card、Davion，见 S2 §3a、§3b、§3e）。这两组批评都没有形成定论，本包只能并录。\n\n第二个未决问题是学科定位。『关怀伦理就是德性伦理的一种』之说（Rachels、Slote、McLaren、Halwani）与赫尔德—基泰的独立论（关怀是社会关系的刻画而非个人气质；美德化会抹去其作为劳动的维度）至今对峙；SEP 现行《德性伦理学》条目（2026-05-03 修订）的变体分类不含关怀伦理，SEP 也没有独立的 Ethics of Care 条目——关怀伦理在英语百科建制中的『户口』仍未解决（S1 §2.4；S2 §5）。对儒家『仁』（ren）与关怀概念的平行比较同样只到『亲缘但不兼容之处在于角色等级』的程度（S2 §5），跨传统的深入比较仍是开放工作。\n\n第三个未决问题是理论与实践的落差。特隆托揭示的『特权者的免责』在全球化照护链中变本加厉：富裕国家的照护需求由移民妇女承担，关怀被全球性地不均分配（S1 §2.2 转述 Hochschild、Yeates 等的社会学研究）。赫尔德设想的『关怀关系的全球化』与基泰的『照护者的照护者』（doula）制度构想，距任何现实政策方案都还有相当距离；罗宾逊提醒，普遍原则通常生成不了减轻真实苦难的回应，但『更有关怀的世界』能否彻底消除贫困与苦难，她自己也表示怀疑（S2 §7）。换言之，关怀伦理成功地把照护变成了政治问题，但把它变成制度安排的任务远未完成。",
+    "thinkers": [
+      {
+        "name": "吉利根",
+        "sub": "Carol Gilligan；发展心理学家与性别研究学者，科尔伯格研究助手出身，站内已有条目",
+        "era": "1936—",
+        "key": "提出『不同的声音』：批评科尔伯格道德发展研究以白人中上层男性与男孩为样本、把对关系与责任的关注误判为发展不充分；关怀视角是同等正当的另一形态道德推理，与正义视角构成主题差异而非性别本质；后期明确称之为对抗『父权之声』的『人的声音』。",
+        "works": "《不同的声音：心理学理论与妇女的发展》（In a Different Voice，1982）；Mapping the Moral Domain（1988，合编）；Making Connections（1990，合编）；In a Human Voice（2023）",
+        "sourceRefs": [
+          "S1",
+          "S2",
+          "S3"
+        ]
+      },
+      {
+        "name": "内尔·诺丁斯",
+        "sub": "Nel Noddings；教育哲学家，把吉利根的发现哲学化为规范理论，站外人物",
+        "era": "20—21世纪",
+        "key": "关怀关系是人类存在与意识的基本单元：区分关怀者（one-caring）与被关怀者（cared-for），以『全神贯注』（engrossment）刻画按对方自身样子接纳对方；道德动机源于自然关怀的情感回应与被关怀的记忆；拒斥普遍原则、主张情境化；早期主张对近人义务优先，后期在 Starting at Home（2002）加强了对遥远人类的关怀义务。",
+        "works": "《关怀：女性取向的伦理学与道德教育进路》（Caring，1984）；Starting at Home: Caring and Social Policy（2002）",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "name": "萨拉·拉迪克",
+        "sub": "Sara Ruddick；哲学家，『母性思考』进路的开创者，站外人物",
+        "era": "20—21世纪",
+        "key": "从养育实践中提炼『母性思考』（maternal thinking）：保护性之爱、促成成长、为社会可接受性而训练三种工作塑造认知能力与美德；『母性的人』（maternal persons）可为男性或女性；由此引出一种女性主义的和平政治。赫尔德称其 1980 年论文是关怀伦理最早的清晰表述。",
+        "works": "『Maternal Thinking』（论文，1980）；《母性思考：走向和平的政治》（Maternal Thinking，1989）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "安内特·拜尔",
+        "sub": "Annette Baier；哲学家，休谟传统与关怀伦理的沟通者，站外人物",
+        "era": "20—21世纪",
+        "key": "指出关怀伦理与休谟道德哲学的亲缘（都否认道德在于服从普遍法则、都重视温情与同情等情感性品质）；把信任——具体个人之间的基本关系——确立为道德的根本概念，批评抽象自主行动者理论遮蔽信任。",
+        "works": "Moral Prejudices: Essays on Ethics（1994，含『Hume: The Woman's Moral Theorist?』）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "弗吉尼亚·赫尔德",
+        "sub": "Virginia Held；哲学家，关怀伦理系统化者，站外人物",
+        "era": "20—21世纪",
+        "key": "把关怀定义为实践与价值的簇（clusters），主张关怀是最基本的道德价值；关怀『是对社会关系的刻画，而非对个人气质的描述』，抵制把关怀伦理并入德性伦理；主张限制照护的市场化供给，把关怀伦理推广到政治与全球层次，设想以关怀关系为基础的全球市民社会。",
+        "works": "Feminist Morality: Transforming Culture, Society, and Politics（1993）；The Ethics of Care（2006）；主编 Justice and Care: Essential Readings in Feminist Ethics（2006）",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "name": "伊娃·费德·基泰",
+        "sub": "Eva Feder Kittay；哲学家，依赖与照护的政治哲学，站外人物",
+        "era": "20—21世纪",
+        "key": "以『依赖工作者』（dependency workers）与『依赖关系』重构平等理论，避开妇女与关怀的本质主义绑定；论证罗尔斯式正义原则以更根本的关怀实践为前提，否则自我瓦解；提出第三正义原则并主张公共供养照护者的『照护者的照护者』（doula）制度。",
+        "works": "Women and Moral Theory（1987，与 Diana T. Meyers 合编）；Love's Labor: Essays on Women, Equality, and Dependency（1999）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "琼·特隆托",
+        "sub": "Joan Tronto；政治学家，关怀伦理政治化的代表，站外人物",
+        "era": "20—21世纪",
+        "key": "拆除伦理/政治、特殊/抽象、公共/私人三重边界，把关怀变成政治概念；给出被广泛采用的关怀定义与四阶段（caring about／taking care of／care-giving／care-receiving）、四要素（留意、责任、能力、回应）；铸造『特权者的免责』（privileged irresponsibility）刻画优势群体购买照护并逃避责任。",
+        "works": "《道德边界：关怀伦理的政治论证》（Moral Boundaries: A Political Argument for an Ethic of Care，1993）",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "name": "菲奥娜·罗宾逊",
+        "sub": "Fiona Robinson；国际关系学者，全球关怀伦理的代表，站外人物",
+        "era": "20—21世纪",
+        "key": "发展『批判关怀伦理』：把全球秩序理解为利用差异进行排斥、边缘化与支配的结构（『忽视的文化』），主张以对全球依赖与脆弱性关系的关注取代以民族国家为中心的宇宙主义/社群主义框架；普遍原则通常生成不了减轻真实苦难的回应。",
+        "works": "Globalizing Care: Ethics, Feminist Theory, and International Relations（1999）；『Global Care Ethics: Beyond Distribution, Beyond Justice』（Journal of Global Ethics，2013）",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "吉利根",
+        "to": "内尔·诺丁斯",
+        "label": "实证发现→哲学化",
+        "type": "接受（理论应用）",
+        "detail": "诺丁斯是把吉利根的心理学结果应用于伦理理论的哲学家代表：其《关怀》（1984）把『不同的声音』的关怀视角论证为规范上可取的道德立场（feminine 的取向，后来明确称为 feminist）；SEP 概述这一应用谱系时即以诺丁斯为第一例。",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "from": "弗吉尼亚·赫尔德",
+        "to": "萨拉·拉迪克",
+        "label": "追认为源头",
+        "type": "接受（学科史追认）",
+        "detail": "IEP 记载：赫尔德确认拉迪克为关怀伦理理论的『original pioneer』，其 1980 年论文《Maternal Thinking》是对一种独特女性取向伦理的最早表述。",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "from": "伊娃·费德·基泰",
+        "to": "吉利根",
+        "label": "批判性继承",
+        "type": "接受（批判性整理）",
+        "detail": "基泰与迈耶斯主编的《Women and Moral Theory》（1987）以吉利根的工作为出发点，批判兼同情地绘制其启发的概念版图（自我与自主、原则与普遍性、女性主义道德理论、妇女与政治）。",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "from": "琼·特隆托",
+        "to": "内尔·诺丁斯",
+        "label": "批评近人优先",
+        "type": "批评",
+        "detail": "特隆托（1995，111–112）批评诺丁斯『对近人义务优先于远人』的设定会豁免优势关怀者去关注国际生活水平差异及其成因，隐含精英偏袒；诺丁斯后来承认关怀伦理中明确的正义主题、反对任意偏袒，但仍坚持家庭领域是正义的源头。",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "from": "菲奥娜·罗宾逊",
+        "to": "内尔·诺丁斯",
+        "label": "批评并全球扩展",
+        "type": "批评",
+        "detail": "罗宾逊（1999，31）与特隆托同调，批评以近人为先的关怀伦理遮蔽更大的社会动力；她把关怀扩展为对全球规模依赖与脆弱性关系的批判性关注，回应『狭隘』批评。",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "1979",
+        "event": "吉利根发表《Women's Place in Man's Life Cycle》",
+        "detail": "刊于 Harvard Educational Review，是《不同的声音》之前对发展理论男性中心的先行批判。",
+        "type": "文献",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "1980",
+        "event": "拉迪克发表《Maternal Thinking》论文",
+        "detail": "被赫尔德追认为关怀伦理最早的清晰表述；从养育实践中提炼认知能力与美德，『母性的人』不分性别；1989 年扩展为同名专著。",
+        "type": "文献",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "1982",
+        "event": "《不同的声音》出版（哈佛大学出版社）",
+        "detail": "对科尔伯格道德发展研究提出性别偏见的批评：其经验基础只是白人中上层男性与男孩，评分把关系与责任取向的推理误判为发展不充分；提出关怀取向是同等正当的另一形态。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1",
+          "S2",
+          "S3"
+        ]
+      },
+      {
+        "year": "1984",
+        "event": "诺丁斯《关怀》出版（加州大学出版社）",
+        "detail": "关怀伦理的第一个系统规范理论：关怀关系两极、engrossment、自然关怀、情境优先、偏倚论与对近人义务优先。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "year": "1986—1987",
+        "event": "回应批评与理论化：吉利根《Reply》与贝纳哈比、基泰—迈耶斯文集",
+        "detail": "吉利根在 Signs（1986）回应批评者，强调关怀与正义伦理的和谐；贝纳哈比《一般化的他者与具体的他者》（Praxis International，1986）把 Kohlberg–Gilligan 之争引入政治理论；基泰与迈耶斯主编《Women and Moral Theory》（1987）整理概念版图。",
+        "type": "争论",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "1988—1990",
+        "event": "实证延伸：《Mapping the Moral Domain》与《Making Connections》",
+        "detail": "前者（吉利根、Ward、Taylor 合编，1988）追溯『正义视角』在心理学与教育学的支配地位；后者（1990）追踪 11—16 岁女孩如何学会压抑内在道德直觉（青春期『失声』研究）。",
+        "type": "研究计划",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "1993",
+        "event": "特隆托《道德边界》出版",
+        "detail": "关怀伦理的政治转折点：三大边界批判、关怀定义与四阶段/四要素、『特权者的免责』；关怀从私德变成政治概念。",
+        "type": "政治延伸",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "year": "1999—2002",
+        "event": "全球扩展与内部修正",
+        "detail": "罗宾逊《Globalizing Care》（1999）把批判关怀伦理带入国际关系；基泰《Love's Labor》（1999）提出依赖平等与 doula 制度构想；诺丁斯《Starting at Home》（2002）加强对遥远人类的关怀义务、部分修正近人优先。",
+        "type": "政治延伸",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "2006",
+        "event": "赫尔德《The Ethics of Care》（牛津大学出版社）出版",
+        "detail": "把关怀确立为最基本的道德价值，系统论证关怀伦理对政治、社会与全球问题的效力，主张限制照护的市场化；同年主编读本 Justice and Care。",
+        "type": "文献",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "2020—2023",
+        "event": "疫情后照护结构研究与吉利根《In a Human Voice》",
+        "detail": "SEP 记录：2020 年新冠疫情期间以来，关怀伦理聚焦照护与家务劳动的结构、全球关怀链条（care chains）与外包实践，并扩展到道德伤害分析；吉利根出版《In a Human Voice》（Polity，2023），重申关怀视角是挑战『父权之声』的『人的声音』。",
+        "type": "当代发展",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "关怀（care）",
+        "def": "被广泛采用的定义（费舍尔与特隆托）：『我们为维持、容纳与修复我们的「世界」——包括我们的身体、自我与环境——以便在其中尽可能好地生活而做的一切活动』；学界亦按实践、价值、气质或美德等不同取径界定，概念本身持续争议。",
+        "source": "Fischer 与 Tronto 的定义，转引自 IEP『Care Ethics』§2（Definitions of Care）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "不同的声音（a different voice）",
+        "def": "吉利根的用语：道德推理中与科尔伯格模型预设的正义之声不同的关怀之声——以关系、责任与对具体他人的回应为核心；她强调两种声音是主题差异，两性都会发出，只是关怀之声在既有研究中被系统性忽略。",
+        "source": "In a Different Voice（1982）；概述见 IEP §1a、SEP《Feminist Ethics》§2.2",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "word": "人的声音（a human voice）／父权之声（patriarchal voice）",
+        "def": "吉利根后期表述：关怀视角不是女性的专属声音，而是一种挑战父权之声的『人的声音』。",
+        "source": "In a Human Voice（Polity，2023）；转述见 SEP《Feminist Ethics》§2.2",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "关怀关系（caring relation）",
+        "def": "诺丁斯把关怀关系当作人类存在与意识的基本单元：由关怀者与被关怀者两极构成，双方以不同方式相互负有回应义务。",
+        "source": "Caring（1984），概念经 IEP §1b 转述定位",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "关怀者与被关怀者（one-caring / cared-for）",
+        "def": "关怀关系的两极：关怀者施行关怀，被关怀者接受并回应；双方义务互惠但形式不同。",
+        "source": "诺丁斯术语，IEP §1b（Nel Noddings）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "全神贯注（engrossment）",
+        "def": "诺丁斯刻画关怀之行的术语：关怀者按被关怀者自身的样子接纳对方，抵制把自我投射到对方身上，并让自己的动机让位于为被关怀者行动。",
+        "source": "Caring（1984）术语，IEP §1b 引述",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "自然关怀（natural caring）",
+        "def": "诺丁斯道德动机论的第一源头：人对他者的自然情感性回应；与其并置的是被关怀的记忆——它催生理想自我，构成『我必须』的伦理根基。",
+        "source": "Caring（1984），IEP §1b 转述（‘natural caring sentiment’）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "关怀四要素（attentiveness, responsibility, competence, responsiveness）",
+        "def": "特隆托在关怀定义下区分的四个子要素，可同时理解为阶段、德性倾向或目标：留意（觉察需要）、责任（愿意回应）、能力（把关怀做好）、回应（按他人对自身处境的理解确认关怀）。",
+        "source": "Moral Boundaries（1993），转引自 IEP §2",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "特权者的免责（privileged irresponsibility）",
+        "def": "特隆托铸造的术语：社会中最优势者可以购买照护服务、把照护工作层层转手，却逃避对实际照护质量的责任。",
+        "source": "Moral Boundaries（1993），IEP §1c.v 引述",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "母性思考（maternal thinking）",
+        "def": "拉迪克的术语：从『母性的人』（可为男性或女性）的养育实践中生长出的认知能力、态度与美德——保护性之爱、促成成长、训练社会可接受性——并由此导出对暴力与战争的 principled 抵制和女性主义和平政治。",
+        "source": "『Maternal Thinking』（1980）与同名专著（1989），IEP §1c.iv、§6 转述",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "不同的声音：心理学理论与妇女的发展（In a Different Voice: Psychological Theory and Women's Development）",
+        "author": "卡罗尔·吉利根（Carol Gilligan）",
+        "era": "1982，哈佛大学出版社",
+        "desc": "关怀伦理的奠基文本。基于对堕胎决定等道德冲突的经验访谈，批评科尔伯格式道德发展研究把正义取向当作成熟标准；以杰克与艾米对海因茨困境的不同回应呈现两种道德『声音』，主张关怀取向是同等正当的形态。出版后引发 Kohlberg–Gilligan 之争与大量后续研究。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S1",
+          "S2",
+          "S3"
+        ]
+      },
+      {
+        "title": "关怀：女性取向的伦理学与道德教育进路（Caring: A Feminine Approach to Ethics and Moral Education）",
+        "author": "内尔·诺丁斯（Nel Noddings）",
+        "era": "1984，加州大学出版社",
+        "desc": "把吉利根的发现哲学化为第一个系统的关怀伦理规范理论：关怀关系的两极结构、engrossment、自然关怀与被关怀记忆的动机论、对普遍原则的拒斥及情境化道德教育。后多次再版（SEP 引 2013 年版序言称其立场为 feminist）。注：IEP 参考书目年份误作 1982，正文与 SEP 书目均作 1984。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "title": "母性思考：走向和平的政治（Maternal Thinking: Towards a Politics of Peace）",
+        "author": "萨拉·拉迪克（Sara Ruddick）",
+        "era": "1989（1980 年同题论文为先导）",
+        "desc": "从养育实践提炼『母性思考』的概念系统，论证母亲式的关怀工作孕育对暴力与战争的批判性抵制；开创『母性思考』进路。出版社两源异文（SEP 书目：伦敦 The Women's Press；IEP 书目：纽约 Ballantine Books），疑为英美两版。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "title": "道德边界：关怀伦理的政治论证（Moral Boundaries: A Political Argument for an Ethic of Care）",
+        "author": "琼·特隆托（Joan Tronto）",
+        "era": "1993，Routledge",
+        "desc": "关怀伦理政治化的里程碑：批判伦理/政治、特殊/抽象、公共/私人三重边界如何把关怀囚禁于私域；提出关怀的定义、四阶段与四要素；铸造『特权者的免责』。注：IEP 参考书目年份误作 1994，正文与 SEP 书目均作 1993。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "title": "女性的道德性：变革文化、社会与政治（Feminist Morality: Transforming Culture, Society, and Politics）",
+        "author": "弗吉尼亚·赫尔德（Virginia Held）",
+        "era": "1993，芝加哥大学出版社",
+        "desc": "论证以母亲与儿童的关系为模型重塑社会关系的变革潜力：一个以『儿童茁壮成长与人际关系的创造』为最重要任务的社会将具有不同的文化与政治；界定女性主义伦理忠于实际经验、情理并重、以具体而非假想的人为对象的方法论。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "title": "爱的劳动：论妇女、平等与依赖（Love's Labor: Essays on Women, Equality, and Dependency）",
+        "author": "伊娃·费德·基泰（Eva Feder Kittay）",
+        "era": "1999，Routledge",
+        "desc": "以对重度依赖者的照护为根基重构平等理论：罗尔斯式正义原则依赖更根本的关怀原则与实践；提出『依赖工作者』概念与第三正义原则（各按所需获得，各按关怀能力付出，社会制度支持照护者），并主张公共供养照护者的 doula 制度。",
+        "kind": "研究",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "title": "关怀伦理学（The Ethics of Care）",
+        "author": "弗吉尼亚·赫尔德（Virginia Held）",
+        "era": "2006，牛津大学出版社",
+        "desc": "关怀伦理的系统化之作：把关怀理解为实践与价值的簇，论证其对政治、社会与全球问题的适用性；主张限制照护的市场供给与伦理中的法条主义思维，设想以关怀关系为纽带、依靠关怀型 NGO 的全球互赖市民社会。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "title": "全球化的关怀：伦理学、女性主义理论与国际关系（Globalizing Care: Ethics, Feminist Theory, and International Relations）",
+        "author": "菲奥娜·罗宾逊（Fiona Robinson）",
+        "era": "1999，Westview Press",
+        "desc": "把批判关怀伦理引入国际关系研究：分析全球依赖与脆弱性的结构性不平等及以民族国家为中心的理论如何造成『忽视的文化』；主张以回应性与留意于他者差异的关怀伦理替代普遍主义式回应。后续论文『Global Care Ethics: Beyond Distribution, Beyond Justice』（Journal of Global Ethics 9(2)，2013）续有发展。",
+        "kind": "研究",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "母性思考进路（Maternalism）",
+        "era": "1980 年代起",
+        "desc": "以拉迪克为代表，从养育实践提炼道德认知与美德并引向和平政治；被批评为过度浪漫化母子二元模型、不能代表所有人的经验，因而也推动了以友谊、公民身份等其他关怀范式扩展理论的努力。",
+        "kind": "分支",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "关怀的政治理论（Care as Political Theory）",
+        "era": "1993 年起",
+        "desc": "以特隆托为先驱：拆除伦理/政治、特殊/抽象、公共/私人三重边界，发展关怀公民身份（Sevenhuijsen）、照护劳动的剥削分析（Bubeck，借鉴马克思主义）、依赖平等（基泰）等政治构想。",
+        "kind": "分支",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "全球关怀伦理与国际关系（Global Care Ethics / IR）",
+        "era": "1999 年起",
+        "desc": "以罗宾逊为代表：把关怀伦理应用于国际关系与全球正义，分析跨国照护链与『忽视的文化』；赫尔德亦主张以关怀关系重构国家间关系。",
+        "kind": "分支",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "name": "女性的关怀伦理 vs 女性主义的关怀伦理（Feminine vs Feminist Care Ethics）",
+        "era": "1980 年代起的内部争论",
+        "desc": "核心分歧在于对『妇女—关怀』关联的批判性程度：偏 feminine 的一侧承接传统女性气质联想（诺丁斯早期），偏 feminist 的一侧（赫尔德、基泰、特隆托）保留又挑战性别化联想，追问权力意涵；斯洛特与恩格斯特则发展严格性别中立的关怀理论。",
+        "kind": "主题",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "定位之争：独立框架还是德性伦理子集（Care Ethics as Virtue Ethics?）",
+        "era": "1990 年代末起",
+        "desc": "一说（Rachels、Slote、McLaren、Halwani；SEP 转述 Groenhout 1998 等）把关怀伦理归类为德性伦理的一种或子集，动机部分是为其补足规范框架；反对者（赫尔德、基泰、Sander-Staudt）主张关怀是实践与社会关系而非个人气质，同化会稀释其独特焦点。SEP 现行《德性伦理学》条目的变体分类不含关怀伦理，问题在学界未决。",
+        "kind": "主题",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      }
+    ],
+    "quotes": [
+      {
+        "text": "关怀是一种活动：它包括我们所做的一切维持、容纳与修复我们的『世界』的事，使我们能尽可能好地生活在其中。这个世界包括我们的身体、我们自己与我们的环境。",
+        "author": "琼·特隆托（与贝尔尼丝·费舍尔）",
+        "exp": "关怀伦理中被引用最多的关怀定义：把关怀确立为维护生活世界的基本实践，为特隆托的四阶段与四要素分析奠定基础，也因此被批评为覆盖面过宽。（审计注记 2026-10-04：IEP §2 印作 'maintain, contain, and repair'，本包照录；Tronto 1993 通行转写作 'continue'，系异文。）",
+        "kind": "直引（经 S2 §2 转引，Fischer 与 Tronto 定义）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "text": "（对男孩和男人而言）分离与个体化与性别认同至关重要地绑在一起。",
+        "author": "卡罗尔·吉利根（Carol Gilligan）",
+        "exp": "吉利根对男性气质形成的刻画：『正义视角』与自主、分离的男性社会化经验相关，而非普遍人性的默认形态——这是她质疑科尔伯格把男性经验当作人类标准的关键一步。",
+        "kind": "直引（SEP《Feminist Ethics》§2.2 转引吉利根 1982, p.8）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "text": "嵌入更大社会中的家庭与友谊的小社会由关怀关系构成……关怀关系的全球化将有助于让不同国家与文化的人们和平共处、尊重彼此的权利、共同关怀他们的环境，并改善他们孩子的生活。",
+        "author": "弗吉尼亚·赫尔德（Virginia Held）",
+        "exp": "关怀伦理全球政治构想的代表性表述：从家庭与友谊的关怀关系出发推广到国际层次——也是被质疑为理想化的部分。",
+        "kind": "直引（经 S2 §1c.ii 转引，Held 2006, 168）",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "quote": "妇女『经由一扇不同的门进入道德行动的实践领域』",
+    "quoteAuthor": "内尔·诺丁斯（Nel Noddings）（经 IEP『Care Ethics』§1b 转引）",
+    "quoteKind": "转引直译（原句出自《Caring》，本包经 S2 核对其转引）"
+  },
+  "readingRoutes": [
+    {
+      "route": "从案例进入（作品路线）：先读《不同的声音》讨论杰克与艾米回应海因茨困境的章节（S3 给出该困境的完整原文与科尔伯格三水平模型），体会『正义之声』与『关怀之声』的推理差异；再到诺丁斯《关怀》的核心概念（关怀关系两极、engrossment、自然关怀，经 S2 §1b 转述定位）；最后读特隆托《道德边界》的四阶段/四要素与『特权者的免责』（S2 §1c.v、§2），看关怀如何从私德变成政治概念。",
+      "sourceRefs": [
+        "S2",
+        "S3"
+      ]
+    },
+    {
+      "route": "从争论进入（问题路线）：带着『关怀伦理是独立的道德框架，还是德性伦理的一个变种？』这一问题，先读 S1 §2.4（两说并录：『女性主义关怀伦理就是德性伦理的一种/子集』之说及其批评）与 S2 §5（并入德性伦理的战略理由与女性主义批评者的抵制）；再读 S2 §3 的六类批评（奴隶道德、经验缺陷、理论上不独立、狭隘、本质主义、含混）检验两种定位各自的代价；最后回到 S1 §2.2 检查性别问题：吉利根『主题而非性别』的定性与『人的声音』的后期修正。",
+      "sourceRefs": [
+        "S1",
+        "S2"
+      ]
+    }
+  ],
+  "evidenceLimits": [
+    "科尔伯格模型常被表述为『三水平六阶段』；本包三个来源仅核实了三水平划分与年龄锚点（前习俗 9 岁前、习俗于青春期早期、后习俗仅少数人完全达成）及『第四阶段』的提法，未逐一核实六个阶段的名称与内容，故正文只写三水平，不展开六阶段。",
+    "科尔伯格研究的样本规模（常见转述作『84 名男孩』）未在任何已核来源出现，一律不写具体人数，只按 S3 的批评表述写『以白人中上层男性与男孩为样本』。",
+    "诺丁斯术语 motivational displacement 与 ethical caring 未在本包所核两百科条目中以原词出现（IEP 仅出现 engrossment 与 natural caring，并以『让自己的动机让位于为被关怀者行动』转述前者），故未列为独立词条，只在 engrossment 词条内描述其机制；如需引用原词，应先核《Caring》原书。",
+    "吉利根生年 1936 取自站内 philosophers.json 条目，已核外部来源未载；thinkers era 据此标注，建议编辑部以权威传记复核。",
+    "书目异文三处，均以 SEP 书目+条目正文为准并在 works 备注冲突：IEP 参考书目作 Noddings《Caring》1982（SEP 与正文作 1984）、Tronto《Moral Boundaries》1994（SEP 与正文作 1993）、诺丁斯书名作 Starting From Home（参考书目正文作 Starting at Home: Caring and Social Policy, 2002）；拉迪克 1989 年专著出版社两源异文（The Women's Press / Ballantine Books），疑为英美两版，正文不注出版社。",
+    "SEP 现行《德性伦理学》条目（2026-05-03 修订）变体四分类不含关怀伦理，且 SEP 无独立『Ethics of Care』条目（含对 2024 夏/2021 冬两处存档路径的 404 探针）；『关怀伦理是德性伦理子集』之说依 S1 §2.4 与 S2 §5 的转述，属文献中一说，本包两说并录。",
+    "U07 义务论包截至 2026-10-04 尚未建包交付；本包与义务论的对照以 SEP《Deontological Ethics》（2024-12-11 修订，全文无 care ethics 字样）与 S1 §2.4.1 为据，跨包衔接留待 U07 建包后再行核对。",
+    "quotes 与 quote 均为经 S1/S2 转引的直译，未直接核对《Caring》《The Ethics of Care》等原书版本与页码；locator 已注明转引链条。",
+    " Britannica 的 Carol Gilligan 与 Lawrence Kohlberg 词条抓取被拒（HTTP 403，curl 与 WebFetch 均然），未采用；web_search/web_reader 服务当日多次限流，检索面窄于常规，若复核建议补 Britannica 与 PhilPapers 分类页。",
+    "站内提及文件（南岛/北欧/环境/澳洲原住民/女性主义哲学）仅 grep 确认关键词命中与出现次数，未逐一核对上下文语境。"
+  ]
+}
