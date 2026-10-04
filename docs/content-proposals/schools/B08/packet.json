@@ -1,0 +1,440 @@
+{
+  "schemaVersion": 1,
+  "taskId": "B08",
+  "name": "宁玛派思想",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "研究员自查（非独立同行评审，主会话直研——初版研究代理因内容过滤中断）：SEP 探测 dzogchen 条目 404 实测；维基百科四页（Nyingma/Dzogchen/Longchenpa/Terma）与 SEP Tsongkhapa 条目以 curl 全文抓取+grep 定位逐字核对；人物姓名与纪年对照 app/public/philosophers.json（python 子串实查，站内有莲花生大士/龙钦巴等4位）；书籍以 python 实查 books.json；两个 JSON 经 python3 -m json.tool 校验。本包实质来源以 reference 级为主，为全部12包中来源等级最弱者，已在 review.md 与 evidenceLimits 显式声明。",
+  "proposal": {
+    "kind": "school",
+    "scope": "宁玛派（rNying ma，'古译派'）的哲学内容：九乘判教的独特性、大圆满（Dzogchen）的本觉（rigpa）与立断/顿超两种行法、口传（Kama）与伏藏（Terma）双传承的文本结构、龙钦巴对大圆满义理的经院化。传承叙事（莲花生创立）与文献学处理分开呈现；宗教宣称（伏藏的埋藏-掘出）按来源原文照录并标注其性质，不作裁断。",
+    "period": "8世纪（前弘期译经与桑耶建寺）至19世纪（利美运动与经院化）",
+    "traditionContext": "藏传佛教最古一系；与后弘期新译诸派（噶当/萨迦/噶举/格鲁）的判教与术语系统不同源；19世纪经利美运动与萨迦、噶举诸派互动。",
+    "relatedExisting": [
+      {
+        "name": "西藏哲学",
+        "path": "app/public/schools/data/school_西藏哲学.json",
+        "note": "mentions-only（'宁玛派/Nyingma' 提及）；本包为其宁玛内容提供独立学案，建议互链导流。"
+      }
+    ],
+    "relationSuggestions": [
+      "与 T01 佛教哲学包互链：T01 藏传节点仅有四派年代（参考级），本包承担宁玛深度。",
+      "与 B09 萨迦派包互链：萨迦班智达的量论路径与宁玛的大圆满路径是藏地义理的两种建制。",
+      "与 B04 佛教逻辑包互链：格鲁-宗喀巴的中观建构（S5）是藏地论辩的另一极，宁玛的相关立场本包未获直接来源，不写。"
+    ],
+    "suggestedBookLinks": [],
+    "coverageNote": "coverage=mentions-only：无同名顶级条目或分支；仅《西藏哲学》正文提及。本包不修改任何既有条目。",
+    "evidenceNote": "边界决定、分歧与查重见 review.md；断言级核验见 evidence.json。"
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Nyingma (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Nyingma",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "'old school/古译派'词义；四大派中最古；莲花生与8世纪首译；堪布·洛本·却松（寂护+莲花生+赤松德赞）三尊；桑耶为西藏第一寺；九乘判教独特；大圆满传承自普贤王如来至极喜金刚，益西措嘉记录，无垢友/毗卢遮那/Buddhaguhya 为奠基期大师；Kama 口传8—11世纪主流；1848年佐钦讲学院与利美/经院化；Patrul《普作摄义》为加行要典。"
+    },
+    {
+      "id": "S2",
+      "title": "Dzogchen (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Dzogchen",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "大圆满传统定位（印度-西藏佛教中的教法传统）；rigpa/ma rigpa（本觉/迷）；基-道-果结构；极喜金刚（约665，据传自乌仗那）三句教言（Tsik Sum Né Dek）；三句融入宁提传承——最流行者为 Jigme Lingpa（1730—1798）《龙钦宁提》；trekchö（立断/'切断紧张'）与 tögal（顿超）两种独特行法；中阴成就教法。"
+    },
+    {
+      "id": "S3",
+      "title": "Longchenpa (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Longchenpa",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "龙钦巴（1308—1364）宁玛派学者-瑜伽士；Germano：其著作使《龙钦宁提》传承压倒其他大圆满传统；'对大圆满思想作经院式系统化'；《七宝藏》（mdzod bdun）为其最具影响的原创论书、阐释宁玛世界观与大圆满义理。"
+    },
+    {
+      "id": "S4",
+      "title": "Terma (religion) (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Terma_(religion)",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "terma='隐藏的珍宝'；宁玛两传承：口传 Kama 与掘发 Terma；伏藏由8世纪莲花生与益西措嘉所 conceal、待时机由伏藏师（tertön）掘出；'连续启示的传统'；印度先例。"
+    },
+    {
+      "id": "S5",
+      "title": "Tsongkhapa (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/tsongkhapa/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "仅作藏地义理论辩的背景条目：gzhan stong（他空/'emptiness of other'）哲学定义（多波巴：胜义'与寻常显现世界根本相异'）；该条目无宁玛/Dzogchen 内容（0 命中实测）——本包不据此对宁玛立场作断言。"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "school": {
+    "name": "宁玛派思想",
+    "subtitle": "古译派、九乘判教与大圆满：藏传佛教最古一系的哲学与文本结构",
+    "overview": "宁玛（rNying ma，字义'旧派/古译派'）是藏传佛教四大派中最古的一系：它的形成被系于8世纪佛教典籍从梵语译入藏语的第一波译经运动。维基条目记述其建制叙事：宁玛由莲花生（Padmasambhava）所创立，其确立被共同归于'堪布·洛本·却松'三尊——寂护（堪布）、莲花生（洛本）、赤松德赞（却松/法王）；宁玛传统'实体上建立于桑耶——西藏第一座寺院'。这一叙事需要与批判史学区分：'创立者'表述在条目内部即与莲花生传记的传说性质并存，本包按来源照录并标注层级。\n\n宁玛的教义组织以判教的独特性著称：'宁玛传统用来统摄全部佛道的大门分类（doxography）是独一无二的'——它把佛道分为九乘（nine yānas），从声闻乘、独觉乘、菩萨乘，经事续、行续、瑜伽续，到内三续的马哈瑜伽（Mahayoga）、阿努瑜伽与阿底瑜伽（Atiyoga，即大圆满）——大圆满被定位为'终极之乘；大圆满'。大圆满的核心概念是 rigpa（本觉/本知）与 ma rigpa（迷）：修行结构按'基-道-果'展开，其中'极喜金刚的三句教言'概括了学人的展开路径。两种独特行法被明确指出：立断（trekchö，'切断紧张'）与顿超（tögal）——'在立断中，行者首先认出本然清净的觉知，然后在一切活动中保任这种认出'；顿超则与'天空凝视'类禅法相关，中阴成就教法亦是该传统的独特内容。\n\n文本与传承的结构是理解宁玛的钥匙。其传承分两线：口传（Kama）与掘发伏藏（Terma）——'伏藏是多种形式的隐藏教法……在金刚乘宁玛派传统中，发生两系传承：口传的 Kama 传承与掘发的 Terma 传承'；伏藏教法'原由8世纪金刚乘大师莲花生与益西措嘉所隐藏，待时机成熟时由称为伏藏师（tertön）的掘藏者发现'，由此构成'藏传佛教金刚乘中连续启示的传统'。口传一线'从8世纪到11世纪保持主流'。义理的经院化集中于龙钦巴（kLong chen pa，1308—1364）：这位'宁玛派的学者-瑜伽士''对大圆满思想作了经院式系统化'；其《七宝藏》（mdzod bdun）'阐释宁玛派世界观与大圆满的义理，是他最具影响与最著名的原创论书'。据藏学家 David Germano，龙钦巴的著作使《龙钦宁提》传承'压倒其他大圆满传统'——而《龙钦宁提》本身是18世纪 Jigme Lingpa（1730—1798）掘出的伏藏集成，'最为流行'。19世纪，利美（Rimé）运动与经院化浪潮中，1848年康区建立了佐钦吉祥讲学院（Dzogchen Shri Sengha）。\n\n在藏地义理的整体图景中，宁玛的'九乘'与后弘期新译诸派（尤其格鲁的宗喀巴中观建构）使用不同的判教与术语系统。关于'他空'（gzhan stong）——SEP 宗喀巴条目定义为'空于他'的哲学：胜义'与寻常显现的世界根本相异'——这类论辩涉及宁玛与觉囊等派的复杂立场史，本包未获宁玛侧的直接来源，不作断言（见 evidenceLimits）。",
+    "conclusion": "宁玛研究的第一重困难是传承叙事与批判史学的分层：莲花生'创立'宁玛、极喜金刚'约665年'为人间第一位大圆满导师、伏藏为莲师与措嘉所埋——这些表述在来源内部就是传统自述的形态（purportedly、traditionally held、said to be），文献学处理要求把它们与8—11世纪译经的可考史分开。本包对两类表述均照录并标注层级，不调和。\n\n第二重困难是术语系统的不可通约：九乘判教、立断/顿超、基道果的三位结构，都难以无损耗地译入新译诸派的中观-量论语言；本包的术语条目因此尽量以藏文转写加来源英译呈现。第三重是来源等级：本包实质来源全部为 reference 级（SEP 无宁玛或大圆满专条，404 实测），'本净/任运'（ka dag/lhun grub）等核心术语未获定位句即不写。宁玛哲学的学术级来源升级（如 Germano、Dorje 等专研究）留待补强批——这既是本包的限度，也是它为后续工作划出的任务。",
+    "thinkers": [
+      {
+        "name": "莲花生大士",
+        "sub": "Padmasambhava（站内人物，era'约8世纪'）",
+        "era": "约8世纪",
+        "key": "宁玛建制叙事的创立者（S1：'founded by Padmasambhava'，传说层与史实层的区分见 evidenceLimits）；'堪布·洛本·却松'三尊之洛本；8世纪伏藏教法的两位隐藏者之一。",
+        "works": [
+          "（传统归属的伏藏教法体系）"
+        ],
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "name": "极喜金刚",
+        "sub": "Garab Dorje（站外人物；维基转写 Garab Dorje，汉译名目本包未核藏汉对音，以通行名目呈现）",
+        "era": "约665（S2 口径，'purportedly from Oddiyana'）",
+        "key": "'传统上被奉为大圆满第一位人间导师'；以'三句教言'（Tsik Sum Né Dek）概括大圆满教学——'据说为其临终之言'。",
+        "works": [],
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "龙钦巴",
+        "sub": "kLong chen rab 'byams pa（站内人物，era'14世纪'；S3 系年 1308—1364）",
+        "era": "1308—1364",
+        "key": "'宁玛派的学者-瑜伽士'；'对大圆满思想作了经院式系统化'；《七宝藏》作者——'阐释宁玛派世界观与大圆满义理的最具影响、最著名的原创论书'。",
+        "works": [
+          "《七宝藏》（mdzod bdun）"
+        ],
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "name": "益西措嘉",
+        "sub": "Yeshe Tsogyal（站外人物）",
+        "era": "约8世纪",
+        "key": "S1：'Yeshe Tsogyal recorded the teachings'（记录教法）；S4：伏藏的两位隐藏者之一（与莲花生并称）——记录者与伏藏者双重角色。",
+        "works": [],
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "极喜金刚",
+        "to": "莲花生大士",
+        "label": "大圆满传承序列",
+        "type": "师承传统（传承叙事层）",
+        "detail": "S1：'宁玛传统把其大圆满传承追溯自初佛普贤王如来至极喜金刚'，奠基期大师另有无垢友、毗卢遮那等——莲花生处于这一传承叙事之中。传承叙事与批判史学分层已声明。",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "from": "莲花生大士",
+        "to": "益西措嘉",
+        "label": "教法的记录与隐藏",
+        "type": "师承传统（传承叙事层）",
+        "detail": "S1：'Yeshe Tsogyal recorded the teachings'；S4：伏藏'原由8世纪金刚乘大师莲花生与益西措嘉所隐藏，待时机成熟时由伏藏师发现'。",
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "from": "极喜金刚",
+        "to": "龙钦巴",
+        "label": "从三句教言到经院化",
+        "type": "编辑比较（重构层）",
+        "detail": "极喜金刚三句教言'被融入宁提传承'（S2），龙钦巴则'对大圆满思想作经院式系统化'（S3）——从根本教言到系统论书，中间隔着数个世纪的传承与文本化；本关系为编辑性重构说明，不写成直接师承。",
+        "sourceRefs": [
+          "S2",
+          "S3"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "约665（S2 口径，存传疑）",
+        "event": "极喜金刚与三句教言",
+        "detail": "'Garab Dorje (c. 665), an Indian sage purportedly from Oddiyana. He is traditionally held to be the first human teacher of Dzogchen'；其'三句教言'（Tsik Sum Né Dek）'据说为其临终之言'。",
+        "type": "传承叙事层",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "8世纪",
+        "event": "前弘期译经与桑耶建寺",
+        "detail": "'宁玛派由莲花生所创立，其时佛教典籍首次从巴利语与梵语译入藏语发生于8世纪'；'宁玛传统实体上建立于桑耶——西藏第一座寺院'；建制叙事归于寂护、莲花生、赤松德赞三尊。",
+        "type": "建制",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "8—11世纪",
+        "event": "口传（Kama）主流期",
+        "detail": "'Kama 传承从8世纪到11世纪保持主流，Kama 上师们从该传承的教法中施教'——与后起的伏藏（Terma）线相对。",
+        "type": "传承",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "1308—1364",
+        "event": "龙钦巴：大圆满的经院化",
+        "detail": "龙钦巴（1308—1364）'对大圆满思想作了经院式系统化'；《七宝藏》为其'最具影响与最著名的原创论书'。",
+        "type": "文献",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "year": "1730—1798（Jigme Lingpa 在世期）",
+        "event": "《龙钦宁提》成为最流行的宁提传承",
+        "detail": "'极喜金刚三句教言被融入宁提传统，其中最流行者为 Jigme Lingpa（1730—1798）的《龙钦宁提》'；Germano：龙钦巴著作使其传承'压倒其他大圆满传统'。",
+        "type": "文献/传承",
+        "sourceRefs": [
+          "S2",
+          "S3"
+        ]
+      },
+      {
+        "year": "1848",
+        "event": "佐钦吉祥讲学院建立（利美与经院化）",
+        "detail": "'1848年，宁玛僧院佐钦吉祥讲学院（rdzogs chen shri sengha）在康区由 Zhanphan Thaye（gzhan phan mtha' yas, 1800–）建立'——宁玛经院化与19世纪利美运动的节点。",
+        "type": "建制",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "宁玛（rNying ma / 古译派）",
+        "def": "字义'旧派'（lit. 'old school'），又名 Ngagyur（snga 'gyur rnying ma，前译）；藏传四大派中最古一系，得名于8世纪前弘期旧译。",
+        "source": "Wikipedia Nyingma 开篇",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "九乘（nine yānas）",
+        "def": "'宁玛传统用来统摄全部佛道的判教是独一无二的'：声闻/独觉/菩萨三乘，事续/行续/瑜伽续三外续，马哈瑜伽/阿努瑜伽/阿底瑜伽三内续——阿底瑜伽即大圆满。",
+        "source": "Wikipedia Nyingma（Nine Yānas 节）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "大圆满（rdzogs pa chen po / Dzogchen）",
+        "def": "宁玛九乘之顶的教法传统；结构按'基-道-果'展开；核心为本觉（rigpa）与迷（ma rigpa）的区分。",
+        "source": "Wikipedia Dzogchen 开篇与 Etymology/concepts 节目",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "本觉（rigpa）",
+        "def": "'本然清净的觉知'——立断行法中首先被认出、继而在一切活动中保任的对象；其反面为 ma rigpa（迷）。",
+        "source": "Wikipedia Dzogchen（trekchö 段；Rigpa 节标）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "立断（trekchö / khregs chod）",
+        "def": "'大圆满独有的关键禅修方法'之一，字面'切断紧张'：'首先认出本然清净的觉知，然后在一切活动中保任这种认出'。",
+        "source": "Wikipedia Dzogchen（trekchö 段）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "顿超（tögal / thod rgal）",
+        "def": "与大圆满相关的'天空凝视'禅法（the most comprehensive study of sky-gazing meditation, known as tögal）；通行译'Direct Transcendence / Leap Over'，Geisshuesler 主张实义为'Skullward Leap'。",
+        "source": "Wikipedia Dzogchen（tögal 段）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "Kama（口传）与 Terma（伏藏）",
+        "def": "宁玛的两系传承：'口传的 Kama 传承与掘发的 Terma 传承'；Kama 于8—11世纪为主流；Terma 构成'连续启示的传统'。",
+        "source": "Wikipedia Terma 开篇；Wikipedia Nyingma（Kama 段）",
+        "sourceRefs": [
+          "S4",
+          "S1"
+        ]
+      },
+      {
+        "word": "伏藏师（tertön）",
+        "def": "'掘藏者'——'待时机成熟时发现（伏藏）的掘藏者'；伏藏传统'非西藏独有，在印度有先例'。",
+        "source": "Wikipedia Terma（tertön 段与 Background 节）",
+        "sourceRefs": [
+          "S4"
+        ]
+      },
+      {
+        "word": "七宝藏（mdzod bdun）",
+        "def": "龙钦巴'最具影响与最著名的原创论书'，'阐释宁玛派世界观与大圆满的义理'；首部为《如意宝藏》（yid bzhin mdzod，有长行自注《白莲花》）。",
+        "source": "Wikipedia Longchenpa（Seven treasuries 节）",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "word": "堪布·洛本·却松（Khen Lop Chos Sum）",
+        "def": "宁玛建制的三尊叙事：寂护（堪布）、莲花生（洛本）、赤松德赞（却松/法王）——'藏传佛教之确立与宁玛传统的建立被共同归于三者'。",
+        "source": "Wikipedia Nyingma（三尊段）",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "《七宝藏》（mdzod bdun）",
+        "author": "龙钦巴",
+        "era": "1308—1364年间",
+        "desc": "'阐释宁玛派世界观与大圆满的义理'的七部原创论书；首部《如意宝藏》有长行自注《白莲花》。",
+        "kind": "论书（原典）",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "title": "《龙钦宁提》（kLong chen snying thig）",
+        "author": "Jigme Lingpa（掘藏）",
+        "era": "Jigme Lingpa（1730—1798）",
+        "desc": "极喜金刚三句教言所融入的宁提传承中'最为流行'者；据 Germano，其主导地位源于龙钦巴著作的支撑。",
+        "kind": "伏藏集成",
+        "sourceRefs": [
+          "S2",
+          "S3"
+        ]
+      },
+      {
+        "title": "宁玛十万续（Nyingma Gyubum）",
+        "author": "宁玛传统结集",
+        "era": "结集年代本包未获来源",
+        "desc": "宁玛教法总集（条目以 Scriptural canon 子目'Nyingma Gyubum'标目，含 Mahayoga/Dzogchen/Termas 分类）——编成细节未获来源，仅作书目名目。",
+        "kind": "总集（名目）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "《普作摄义》（The Words of My Perfect Teacher）",
+        "author": "巴珠仁波切（Patrul Rinpoche，站外）",
+        "era": "本包未获系年",
+        "desc": "'宁玛加行（preliminaries）的关键文本'（S1）。",
+        "kind": "教科书（原典）",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "口传（Kama）传承",
+        "era": "8—11世纪为主流期",
+        "desc": "'Kama 传承从8世纪到11世纪保持主流'——自印度师承的译文与教授线。",
+        "kind": "传承线",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "伏藏（Terma）传承",
+        "era": "自8世纪（埋藏叙事）持续启示",
+        "desc": "'连续启示的传统'：莲花生与益西措嘉所隐藏的教法由历代伏藏师待时掘出；《龙钦宁提》即其18世纪例。",
+        "kind": "传承线",
+        "sourceRefs": [
+          "S4",
+          "S2"
+        ]
+      },
+      {
+        "name": "大圆满三系列（Three series）",
+        "era": "本包未获系年",
+        "desc": "Dzogchen 条目以'Three series'为节标（传统上对应心部/界部/窍诀部）——本包仅获节标定位，三部内容未核读，不作展开。",
+        "kind": "教法分类（节标级）",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "quote": "In trekchö, one first identifies the innate pure awareness, and then sustains recognition of it in all activities.",
+    "quoteAuthor": "Wikipedia《Dzogchen》（英文原文照录；汉译为本包转译）",
+    "quoteKind": "quote（转译）",
+    "quotes": [
+      {
+        "text": "The doxography employed by the Nyingma tradition to categorize the whole of the Buddhist path is unique.",
+        "author": "Wikipedia《Nyingma》（英文原文照录）",
+        "exp": "九乘判教的独特性是宁玛教义组织的标志：它不以新译诸派的四部续或三乘框架，而以九乘统摄全道。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "text": "Terma teachings were originally concealed by eighth-century Vajrayana masters Padmasambhava and Yeshe Tsogyal, to be discovered by treasure revealers known as tertöns, when the time was ripe.",
+        "author": "Wikipedia《Terma (religion)》（英文原文照录）",
+        "exp": "伏藏传统的完整表述：埋藏者、掘出者与'时机'——宗教宣称按来源原文照录，其文献学性质另见 evidenceLimits。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S4"
+        ]
+      }
+    ],
+    "closingQuote": "The Nyingma tradition traces its Dzogchen lineage from the first Buddha Samantabhadra to Garab Dorje, and its other lineages from Indian mahasiddhas such as Sri Singha and Jnanasutra.",
+    "closingQuoteAuthor": "Wikipedia《Nyingma》（英文原文照录；汉译为本包转译）",
+    "closingQuoteKind": "quote（转译）"
+  },
+  "readingRoutes": [
+    {
+      "title": "从大圆满的概念结构读起（编辑建议）",
+      "desc": "先读维基 Dzogchen 条目的 Rigpa 与 Base-Path-Fruit 两节把握本觉/迷与基道果；再读 trekchö/tögal 段对照两种行法；最后读 Longchenpa 条目看这一义理如何在14世纪被系统化。",
+      "sourceRefs": [
+        "S2",
+        "S3"
+      ]
+    },
+    {
+      "title": "从文本传承读起（编辑建议）",
+      "desc": "先读维基 Terma 条目开头（Kama/Terma 两系与 tertön），再读 Nyingma 条目的 Nine Yānas 与 canon 各节，注意'口传8—11世纪主流'与伏藏传统的接续关系；全程区分'传统自述'与'可考史'两种层级。",
+      "sourceRefs": [
+        "S4",
+        "S1"
+      ]
+    }
+  ],
+  "evidenceLimits": [
+    "来源等级为本批最弱：SEP 无 dzogchen/nyingma 专条（/entries/dzogchen/ 404 实测），学术级来源仅 S5（SEP Tsongkhapa）的语境句且与宁玛非直接相关（条目内 Nyingma/Dzogchen 均 0 命中）——实质来源全部为维基 reference 级。建议补强批以 Germano、Dorje 等学术研究升级。",
+    "莲花生'创立'宁玛为建制叙事（S1 用 founded by）；同一来源同时呈现'三尊'共同建制——传统自述与批判史学的分层照录，不作调和。朗达玛灭佛与后弘期起点本包未获来源，不写。",
+    "极喜金刚 c. 665 为 S2 口径且原文自带 purportedly/traditionally held 限定——照录不作定论。",
+    "'本净'（ka dag）与'任运'（lhun grub）未获定位句，正文不写；大圆满'三系列'仅节标定位（心/界/窍诀的通行汉译未核对，正文只用节标）。",
+    "他空（gzhan stong）与宁玛的立场关联未获直接来源：S5 仅为多波巴他空定义（SEP 宗喀巴条目），正文只作藏地论辩背景提及，不对宁玛立场作断言。",
+    "伏藏的宗教宣称（莲师/措嘉埋藏、时机掘出）按 S4 原文照录并标注为传统自述；不对其真伪作断言。",
+    "站内 philosophers.json（python 子串实查）有 莲花生大士/龙钦巴/麦彭仁波切/顶果钦哲仁波切 4位宁玛人物；本包 thinkers 收 前2位（有直接来源）；麦彭仅见于 S1 节标语境（来源不足以立条）、顶果未见于核读来源——均不入 thinkers。",
+    "books.json（python 实查）无宁玛/大圆满相关藏书，书籍建议为空。",
+    "任务条目 coverage=mentions-only（仅《西藏哲学》提及）；无同名条目或分支；scopeAndCautions '不按五派配额造分支'已遵守（subSchools 仅 3 项且为传承线/节标级）。"
+  ]
+}
