@@ -1,0 +1,719 @@
+{
+  "schemaVersion": 1,
+  "taskId": "F04",
+  "name": "心灵哲学",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "经 WebSearch 定位候选来源后，用 curl 抓取全部11个URL的页面全文（SEP 六个条目、IEP 一个条目、查默斯1995年论文作者页面、SEP 伊丽莎白条目、SEP 印度佛教心灵条目；Britannica 同页返回反爬拦截页，未收录），并用 python 对核读断言做逐字字符串匹配复核：evidence.json 全部53条 locator 的 verbatim 短引文均经全文命中，未命中者已改写为页面实际措辞或降级为转述标注。人物中文名逐一经 app/public/philosophers.json 键名核对；书籍ID经 app/public/books.json 核对；packet.json 与 evidence.json 经 python3 -m json.tool 校验通过。自检范围限于来源可达性与断言—来源对应，非独立同行评审。",
+  "proposal": {
+    "kind": "field",
+    "nameRationale": "沿用任务名「心灵哲学」；「心智哲学」为同义别称，仅作检索别名，不另立条目。",
+    "scope": "以意识、意向性、身心关系、心理因果、他心问题与机器心智为主线的心灵哲学领域总览。明确划界：不等同于心理学（经验科学，研究记忆、注意、情绪如何实际运作），也不等同于精神分析（关于无意识动机的临床解释传统）；心灵哲学追问的是心智「是什么」、心理描述与物理描述如何挂钩。",
+    "period": "17世纪中叶（笛卡尔《第一哲学沉思集》，1641年）至当代；古代灵魂论（柏拉图、亚里士多德）仅作背景提及，不展开。",
+    "regionContext": "以欧美分析传统为主线；现象学传统以布伦塔诺—胡塞尔的意向性源流形式进入（与站内「现象学」条目分工：本条目只交代源流接口，不展开现象学内部）；印度佛教心识论仅作教义层面的平行参照，不写成历史影响。",
+    "relatedExistingEntries": [
+      {
+        "name": "分析哲学",
+        "role": "方法论近邻",
+        "note": "赖尔、普特南的工作位于分析哲学脉络之中；本条目聚焦心灵哲学问题本身，人物词条互链即可。"
+      },
+      {
+        "name": "人工智能哲学",
+        "role": "主题交叉",
+        "note": "图灵测试与中文屋是两条目共享的核心案例；建议本条目保留论证的哲学结构，人工智能哲学条目承接技术与伦理向度。"
+      },
+      {
+        "name": "现象学",
+        "role": "边界条目",
+        "note": "布伦塔诺—胡塞尔意向性源流是两处的接口（见 proposal.relations），建议互链并避免重复展开现象学内容。"
+      },
+      {
+        "name": "实在论",
+        "role": "提及相关",
+        "note": "现有正文提及「心灵哲学」（mentions-only），本条目上线后可互链。"
+      },
+      {
+        "name": "太平洋原住民哲学 / 凯尔特哲学 / 罗马哲学 / 北欧哲学",
+        "role": "提及相关",
+        "note": "四处现有正文均出现「心灵哲学」字样（任务清单 mentionFiles），属 mentions-only 来源；建议本条目上线后以链接收束这些悬空提法。"
+      }
+    ],
+    "relations": [
+      {
+        "from": "弗朗茨·布伦塔诺",
+        "to": "埃德蒙德·胡塞尔（站内「现象学」）",
+        "label": "意向性源流",
+        "type": "历史接触（师承）",
+        "detail": "SEP Intentionality 条目记胡塞尔「既是现象学的奠基人，也是布伦塔诺的学生」，在《逻辑研究》（1900）与《观念》（1913）中发展出noema（意向对象的内部结构）与悬搁（epoché）方法，主张意向指向并不依赖实在对象是否存在；IEP Intentionality 条目同证胡塞尔的noematic刻画与现象学还原。建议两条目互链，本包不重复展开。",
+        "sourceRefs": [
+          "S2",
+          "S10"
+        ]
+      },
+      {
+        "from": "约翰·塞尔",
+        "to": "人工智能哲学（站内条目）",
+        "label": "中文屋",
+        "type": "编辑比较",
+        "detail": "中文屋论证针对「强人工智能」，是心灵哲学与人工智能哲学的共享案例；建议本包保留1980年原论证结构与各方回应，AI向度的后续讨论归入人工智能哲学条目。",
+        "sourceRefs": [
+          "S5"
+        ]
+      }
+    ],
+    "bookSuggestions": [
+      {
+        "id": "88b56fb4da52",
+        "title": "第一哲学沉思集",
+        "author": "勒内·笛卡尔",
+        "verifiedIn": "app/public/books.json",
+        "reason": "心身二元论的奠基原典，readingRoutes 作品线的首站。"
+      },
+      {
+        "id": "f6af30aab723",
+        "title": "笛卡尔的错误",
+        "author": "安东尼奥·达马西奥",
+        "verifiedIn": "app/public/books.json",
+        "reason": "神经科学家对笛卡尔式身心分离的著名批评，可作现代反方延伸读物。"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Consciousness（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/consciousness/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "意识问题的三重提问；内格尔1974「something that it is like」；查默斯1995难问题（§5.4）；杰克逊1982知识论证；副现象论（Huxley 1874起）；感受质的传统刻画与丹尼特1990/1991的拒斥；Place 1956/Smart 1959同一论；高阶理论、全局工作空间、多重草稿等理论谱系。"
+    },
+    {
+      "id": "S2",
+      "title": "Intentionality（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/intentionality/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "意向性定义；布伦塔诺1874《从经验立场出发的心理学》与「意向性的内存在」（含原文短引）；布伦塔诺三条论题；中世纪经院词源；胡塞尔（布伦塔诺学生，《逻辑研究》《观念》）的修正；Dretske、Millikan、Fodor、丹尼特等自然化方案。"
+    },
+    {
+      "id": "S3",
+      "title": "Functionalism（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/functionalism/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "功能主义定义；普特南1960/1967机器状态功能主义及1988年自我怀疑（“Putnam 1988, for subsequent doubts about machine functionalism”）；刘易斯、阿姆斯特朗、福多、布洛克等变体；§2.2思维机器与图灵测试（随文引 Turing 1950）；主要反驳（倒转感受质、中国国民、僵尸论证——条目记其 “derives from Descartes's well-known argument in the Sixth Meditation (1641)”、知识论证、金在权1989/1998因果排除）。"
+    },
+    {
+      "id": "S4",
+      "title": "Dualism（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/dualism/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "实体二元论定义与二元论诸类型；笛卡尔（1596–1650）的怀疑—我思路径（Meditations I–II）与可分离性论证（Meditation V）；伊丽莎白对交互作用的质疑；斯温伯恩、艾克尔斯、查默斯等当代立场。"
+    },
+    {
+      "id": "S5",
+      "title": "The Chinese Room Argument（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/chinese-room/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "塞尔（1932–2025）1980年「Minds, Brains and Programs」（Behavioral and Brain Sciences，SEP 页面题名作此式）；强AI靶子；思想实验设置；系统/机器人/大脑模拟/他心回应；「句法不生语义」核心命题；丹尼特「直觉泵」批评；27位认知科学研究者的同行评论与作者回应（丹尼特、福多的1980年评论经条目正文证实；丘奇兰德夫妇的回应文章为1990年《科学美国人》，非27篇之列）。"
+    },
+    {
+      "id": "S6",
+      "title": "Gilbert Ryle（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/ryle/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "赖尔生平（1900–1976，牛津，《心灵》杂志主编1947–1971）；《心的概念》（1949）对「官方学说」的批判；范畴错误（含原书例子）；「机器中的幽灵」；「理智主义传奇」的无穷倒退；对当代心灵哲学的影响。"
+    },
+    {
+      "id": "S7",
+      "title": "Facing Up to the Problem of Consciousness（David Chalmers, Journal of Consciousness Studies 2(3): 200–19, 1995；作者个人页面全文）",
+      "url": "https://consc.net/papers/facing.html",
+      "type": "primary-text",
+      "accessedAt": "2026-10-04",
+      "coverage": "易问题与难问题的划分；「为什么这些功能的执行伴随着经验」；对内格尔1974的两处引用（参考文献著录 Philosophical Review 4:435–50）；自然主义二元论、结构协调、组织不变性（跳舞感受质）、信息双面论；「We need an extra ingredient」等原句。"
+    },
+    {
+      "id": "S8",
+      "title": "The Identity Theory of Mind（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/mind-identity/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "同一论定义；奠基文献系年（Place「Is Consciousness a Brain Process?」1956；Feigl 1958；Smart「Sensations and Brain Processes」Philosophical Review 1959）；普特南「Minds and Machines」（1960）；阿姆斯特朗1968；刘易斯1966；克里普克《命名与必然性》（1980）反驳。"
+    },
+    {
+      "id": "S9",
+      "title": "Mind in Indian Buddhist Philosophy（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/mind-indian-buddhism/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "佛陀言教（约公元前450年）至阿毘昙（约前150–公元450年）的心的分析；瑜伽行派阿赖耶识（Asaṅga：「所知的依持」）；世亲《三十颂》「识之转变」下能取/所取的显现；Vaibhāṣika「一切识皆有意向对象」；§3.5 Intentionality 与 §7.3 反身意识与意向性专节。"
+    },
+    {
+      "id": "S10",
+      "title": "Intentionality（Internet Encyclopedia of Philosophy, Cathal O'Madagain）",
+      "url": "https://iep.utm.edu/intentio/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "「意向性即关于性（aboutness）」定义；布伦塔诺「心灵的标志」与意向性内存在（参考文献系年1874/1911）；胡塞尔的noematic刻画与现象学还原；当代人物谱。"
+    },
+    {
+      "id": "S11",
+      "title": "Elisabeth of Bohemia（Stanford Encyclopedia of Philosophy）",
+      "url": "https://plato.stanford.edu/entries/elisabeth-bohemia/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "伊丽莎白生卒（1618-12-26–1680-02-08）；1643年由她发起的笛卡尔通信；她对「非物质实体作用于物质实体」之可能的追问；笛卡尔借经院「重量」比喻的回避式回应；其机制论因果观等正面立场。"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S6",
+    "S7",
+    "S9",
+    "S11"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S3",
+    "S5",
+    "S7"
+  ],
+  "school": {
+    "name": "心灵哲学",
+    "subtitle": "从身心问题到意识难问题：心智如何安放于自然世界",
+    "overview": "心灵哲学处理一个随身携带却难以说明的对象：心灵本身。它的现代形态通常从笛卡尔算起——1641年《第一哲学沉思集》里，他把感官世界与身体的存在置于怀疑之下，唯一无法怀疑的是「正在怀疑的我」，由此推出心灵与身体分属两类实体：心灵是思维之物（res cogitans），身体是广延之物（res extensa）。这个立场随即遇到一个直白的问题：无形体的心灵如何推动物质身体？1643年，波希米亚的伊丽莎白公主在给笛卡尔的第一封信里就把这一点挑明——非物质的东西凭什么作用于物质的东西。笛卡尔借经院哲学「重量」的比喻作答，并未让问题消失。此后三百多年，「身心问题」一直是这门学科的支点。\n\n当代心灵哲学的问题域环绕几个相互纠缠的议题。其一是心身问题：心理与物理究竟是什么关系——实体二元论、心脑同一论、功能主义、取消式唯物论给出了彼此不相容的答案。其二是意识：为什么信息加工会「伴随着经验」，主观视角为何无法被第三人称描述穷尽——内格尔1974年的追问「作为一只蝙蝠是什么感觉」至今仍是这一问题的标准表述。其三是意向性：心理状态凭什么能够「关于」世界上的事物。其四是心理因果：如果物理世界因果闭合，心理解释的位置在哪里。此外还有他心问题与「机器能否拥有心智」。需要划清两条边界：心灵哲学不是心理学——心理学是经验科学，研究记忆、注意与情绪如何实际运作，心灵哲学追问的是心智「是什么」、心理描述与物理描述如何挂钩；它也不是精神分析——后者是关于无意识动机的临床解释传统，与这里的核心争论分属不同谱系。\n\n这门学科靠持续的攻防而非共识前进。布伦塔诺1874年提出意向性是「心灵的标志」，经其学生胡塞尔在《逻辑研究》中修正，成为横跨现象学与分析传统的问题。赖尔1949年以「范畴错误」清算笛卡尔式的「机器中的幽灵」。1950年代末，普莱斯与斯马特主张感受即脑过程（心脑同一论）；1960年代普特南把心理状态等同于图灵机的「机器表状态」——心理状态由因果角色而非内部材料定义，因此可以多重实现。1974年内格尔的蝙蝠论证让主观性重回中心；1980年塞尔的中文屋把「程序即心智」的计算主义逼入守势；1995年查默斯命名意识的「难问题」，把解释鸿沟重新提上议程。每个立场都招致反驳：同一论遇上多重可实现性，功能主义遇上倒转感受质与中文屋，二元论遇上因果闭环——这门学科并没有一本教科书的「标准模型」。\n\n对意识与认知的严格分析并不专属欧美。印度佛教的阿毘昙与瑜伽行派传统对认知的意向指向、反身意识与意识层次有系统的理论建构：《斯坦福哲学百科》「印度佛教中的心灵」条目设专节讨论「意向性」与「反身意识」，并记述世亲《三十颂》把能取与所取视作「识之转变」的显现、阿赖耶识作为「所知的依持」。当代学界亦有将这一传统与现象学、心灵哲学互相参照的研究方向；本条目只陈述这一教义层面的平行，不主张任何历史影响或师承关系。",
+    "conclusion": "难问题仍悬而未决。物理主义是当前英语学界的主流默认立场，但蝙蝠论证、知识论证与僵尸论证施加的压力并未解除：查默斯主张把经验当作世界的基本特征并辅以心物定律（「自然主义二元论」），丹尼特一系则拒斥支撑难问题的感受质传统直觉（「内在、私人、不可言说」，1990），认为问题随该图景消解——双方数十年的僵持本身就是学科现状的一部分。心理因果同样没有定论：因果排除问题（金在权1989、1998年的系统表述）仍是功能主义乃至一切非还原立场的共用软肋——若心理状态随附于物理状态，它们似乎难以保有自己的因果工作。\n\n机器心智的争论在新的技术形态下延续。中文屋引出的系统回应、机器人回应与「直觉泵」之争，为「程序是否理解」提供了延续至今的概念工具，对当代机器语言系统的同类讨论仍在这些坐标内进行（此为编辑观察）。本条目的局限也需说明：叙事以英语学界主流为主线，现象学传统只作源流交代（详见站内「现象学」条目），佛教等跨传统内容只作教义平行陈述，非洲与美洲原住民传统对心灵、梦与身体的观念未覆盖——这些方向值得后续条目展开。",
+    "thinkers": [
+      {
+        "name": "勒内·笛卡尔",
+        "sub": "近代身心二元论的奠基者",
+        "era": "1596—1650",
+        "key": "心灵与身体是两类根本不同的实体：第一、二沉思以怀疑方法达至「我思」的不可怀疑性，第五沉思的论证支持心灵可与身体分离。无形体之物如何作用于广延之物，是他未能令人信服地解决的问题（伊丽莎白1643年的追问即针对此）。",
+        "works": [
+          "《第一哲学沉思集》（1641）"
+        ],
+        "sourceRefs": [
+          "S4",
+          "S11"
+        ]
+      },
+      {
+        "name": "弗朗茨·布伦塔诺",
+        "sub": "意向性论题的提出者",
+        "era": "1838—1917",
+        "key": "每个心理现象都把某物作为对象包含于自身；「意向性的内存在」为心理现象所独有，意向性由此成为心灵的标志（《从经验立场出发的心理学》，1874，第一卷）。",
+        "works": [
+          "《从经验立场出发的心理学》（Psychologie vom empirischen Standpunkt，1874；IEP 参考文献另系1911年修订版）"
+        ],
+        "sourceRefs": [
+          "S2",
+          "S10"
+        ]
+      },
+      {
+        "name": "吉尔伯特·赖尔",
+        "sub": "「机器中的幽灵」的批判者",
+        "era": "1900—1976",
+        "key": "笛卡尔「官方学说」源于范畴错误：把心灵当作与身体并列的又一台「机器中的幽灵」。《心的概念》（1949）还攻击「理智主义传奇」——用先行的内在理论操作解释聪明行动会陷入无穷倒退；他以倾向性分析替代内在剧场模型。",
+        "works": [
+          "《心的概念》（The Concept of Mind，1949）"
+        ],
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "name": "希拉里·普特南",
+        "sub": "机器功能主义的提出者",
+        "era": "1926—2016",
+        "key": "心理状态的类型由其因果角色（对感觉刺激、其他心理状态与行为的关系）定义，可由图灵机的「机器表状态」刻画；心理状态的本质不在内部构成，因而可多重实现（1960、1967年论文；1988年起自我批评）。",
+        "works": [
+          "《论机器与心灵》（“Minds and Machines”，1960；题目经 SEP Identity Theory 条目著录核实）"
+        ],
+        "sourceRefs": [
+          "S3",
+          "S8"
+        ]
+      },
+      {
+        "name": "托马斯·内格尔",
+        "sub": "主观视角问题的提出者",
+        "era": "1937—",
+        "key": "有意识即「作为该有机体有某种感觉」（there is something it is like to be that organism）：蝙蝠回声定位的经验只能从蝙蝠型视角理解，第三人称的物理描述无法穷尽主观性（1974）。",
+        "works": [
+          "《成为一只蝙蝠是什么感觉？》（“What Is It Like to Be a Bat?”，Philosophical Review，1974）"
+        ],
+        "sourceRefs": [
+          "S1",
+          "S7"
+        ]
+      },
+      {
+        "name": "约翰·塞尔",
+        "sub": "中文屋论证的提出者",
+        "era": "1932—2025",
+        "key": "不懂中文的人按规则手册操作符号，可以对中文提问给出正确答案而理解一个字也没有——句法本身不足以产生、也不构成语义；以此反对「强人工智能」（1980）。",
+        "works": [
+          "《心智、大脑与程序》（“Minds, Brains, and Programs”，Behavioral and Brain Sciences，1980，附同行评论与作者回应）"
+        ],
+        "sourceRefs": [
+          "S5"
+        ]
+      },
+      {
+        "name": "丹尼尔·丹尼特",
+        "sub": "意识自然化方案的代表",
+        "era": "1942—2024",
+        "key": "拒斥感受质「内在、私人、不可言说」的传统图景（1990）；主张多重草稿模型——大脑中多路并行的内容被持续修订，无需「笛卡尔剧场」式的中心舞台（1991）；批评中文屋论证是依赖不可靠直觉的「直觉泵」。",
+        "works": [
+          "《意识解释》（Consciousness Explained，1991）"
+        ],
+        "sourceRefs": [
+          "S1",
+          "S5"
+        ]
+      },
+      {
+        "name": "大卫·查默斯",
+        "sub": "「难问题」的命名者",
+        "era": "1966—",
+        "key": "认知科学的标准方法能解释辨别、报告、注意控制等功能（「易问题」），却未触及「为何这些功能的执行伴随着经验」；主张自然主义二元论——经验如质量、电荷一样是世界的基本特征，辅以心物定律（1995；1996年以僵尸论证系统化）。",
+        "works": [
+          "《直面意识问题》（“Facing Up to the Problem of Consciousness”，Journal of Consciousness Studies 2(3): 200–19，1995）",
+          "《有意识的心灵》（The Conscious Mind，1996）"
+        ],
+        "sourceRefs": [
+          "S7",
+          "S1",
+          "S4"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "勒内·笛卡尔",
+        "to": "吉尔伯特·赖尔",
+        "label": "「机器中的幽灵」之驳",
+        "type": "批评",
+        "detail": "赖尔《心的概念》（1949）以「官方学说」称呼笛卡尔式二元论，讥之为「机器中的幽灵」，并诊断其为范畴错误——把心灵与身体当作同一逻辑类型的两个并立项。SEP Ryle 条目称此书「给笛卡尔二元论的棺木钉上最后一颗钉」。",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "from": "勒内·笛卡尔",
+        "to": "大卫·查默斯",
+        "label": "可想象论证的当代延长线",
+        "type": "编辑比较",
+        "detail": "查默斯的僵尸论证与笛卡尔的可分离性论证共享「可设想即形而上可能」的直觉结构：SEP Functionalism 记僵尸论证 “derives from Descartes's well-known argument in the Sixth Meditation (1641)”，SEP Dualism 记可分离性（disembodiment）论证 “originating in Descartes (Meditation V)”（两条目对沉思序号的著录不同，本包分别照录）。注意：查默斯本人主张性质层面的自然主义二元论，并非笛卡尔式实体二元论（SEP Dualism 条目亦作此区分）。",
+        "sourceRefs": [
+          "S3",
+          "S4",
+          "S7"
+        ]
+      },
+      {
+        "from": "托马斯·内格尔",
+        "to": "大卫·查默斯",
+        "label": "从「是什么感觉」到难问题",
+        "type": "接受",
+        "detail": "查默斯1995年两度引用内格尔1974（参考文献著录 Philosophical Review 4: 435–50），把「作为某物是什么感觉」的主观性事实推进为意识难问题的系统表述。",
+        "sourceRefs": [
+          "S7",
+          "S1"
+        ]
+      },
+      {
+        "from": "约翰·塞尔",
+        "to": "丹尼尔·丹尼特",
+        "label": "「直觉泵」之争",
+        "type": "批评",
+        "detail": "1980年 Behavioral and Brain Sciences 同行评论中，丹尼特批评中文屋论证是「直觉泵」；他1990/1991年拒斥「内在、私人、不可言说」的感受质图景，与塞尔「句法不生语义」的不可还原论立场构成当代心灵哲学最持久的争论轴之一。",
+        "sourceRefs": [
+          "S5",
+          "S1"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "1641",
+        "event": "笛卡尔《第一哲学沉思集》出版",
+        "detail": "第一、二沉思以怀疑方法达至「我思」，第五沉思的论证支持心灵可与身体分离——心身二元论的现代经典表述。",
+        "type": "文献",
+        "sourceRefs": [
+          "S4"
+        ]
+      },
+      {
+        "year": "1643",
+        "event": "伊丽莎白公主致笛卡尔首函",
+        "detail": "她追问非物质实体如何作用于物质实体，笛卡尔以经院「重量」比喻回避；身心交互难题由此获得最早的清晰表述。",
+        "type": "通信",
+        "sourceRefs": [
+          "S11",
+          "S4"
+        ]
+      },
+      {
+        "year": "1874",
+        "event": "布伦塔诺《从经验立场出发的心理学》",
+        "detail": "第一卷提出意向性论题：「意向性的内存在」为心理现象所独有，意向性成为心灵的标志；当代意向性讨论由此启动。",
+        "type": "文献",
+        "sourceRefs": [
+          "S2",
+          "S10"
+        ]
+      },
+      {
+        "year": "1949",
+        "event": "赖尔《心的概念》",
+        "detail": "以「机器中的幽灵」讥评笛卡尔「官方学说」，提出范畴错误与「理智主义传奇」的无穷倒退论证；SEP 称其「给笛卡尔二元论的棺木钉上最后一颗钉」。",
+        "type": "文献",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "year": "1956—1959",
+        "event": "心脑同一论奠基",
+        "detail": "普莱斯「Is Consciousness a Brain Process?」（1956）、费格尔（1958）与斯马特「Sensations and Brain Processes」（Philosophical Review，1959）主张心理状态与脑状态严格同一，而非仅仅相关。",
+        "type": "文献",
+        "sourceRefs": [
+          "S8",
+          "S1"
+        ]
+      },
+      {
+        "year": "1960—1967",
+        "event": "普特南提出机器状态功能主义",
+        "detail": "以图灵机「机器表状态」刻画心理状态：心理类型由因果角色定义、可多重实现；该纲领成为认知科学的工作假设，普特南本人1988年起转而批评。",
+        "type": "文献",
+        "sourceRefs": [
+          "S3",
+          "S8"
+        ]
+      },
+      {
+        "year": "1974",
+        "event": "内格尔《成为一只蝙蝠是什么感觉？》",
+        "detail": "「有意识即作为该有机体有某种感觉」：主观视角对第三人称科学的限制成为感受质讨论的标准出发点。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1",
+          "S7"
+        ]
+      },
+      {
+        "year": "1980",
+        "event": "塞尔中文屋论证发表",
+        "detail": "「Minds, Brains, and Programs」刊于 Behavioral and Brain Sciences，附27位认知科学研究者的同行评论与塞尔的逐条回应，成为计算主义论战的原点；评论者中丹尼特与福多的1980年回应经 SEP Chinese Room 条目正文证实。",
+        "type": "文献",
+        "sourceRefs": [
+          "S5"
+        ]
+      },
+      {
+        "year": "1982",
+        "event": "杰克逊的「玛丽的房间」知识论证",
+        "detail": "黑白房间里长大的色彩科学家首次见到红色时是否学到新东西？SEP Consciousness 以杰克逊1982年思想论证第三人称物理知识对经验知识的限度。",
+        "type": "争论",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "1995",
+        "event": "查默斯命名意识「难问题」",
+        "detail": "「Facing Up to the Problem of Consciousness」刊于 Journal of Consciousness Studies 2(3): 200–19：功能解释穷尽之后，「为何伴随经验」仍然悬空；自然主义二元论方案随之提出。",
+        "type": "文献",
+        "sourceRefs": [
+          "S7",
+          "S1"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "心身问题",
+        "def": "心灵（或心理性质）与身体（或物理过程）关系为何的问题：它们是否同一种东西、如何相互作用。现代形态由笛卡尔的实体二元论定型。",
+        "source": "笛卡尔《第一哲学沉思集》（1641）及其后争论；SEP Dualism 条目",
+        "sourceRefs": [
+          "S4"
+        ]
+      },
+      {
+        "word": "意向性",
+        "def": "心灵状态「关于」「指向」或「代表」某物的能力，口语化说法是「关于性（aboutness）」；须与「意图（intention）」和语言的「内涵性（intensionality）」区分。",
+        "source": "布伦塔诺《从经验立场出发的心理学》（1874）第一卷；SEP / IEP Intentionality 条目",
+        "sourceRefs": [
+          "S2",
+          "S10"
+        ]
+      },
+      {
+        "word": "意向性的内存在",
+        "def": "布伦塔诺的术语：心理现象的对象以「内在于心灵」的方式存在，区别于物理对象的实在存在；中世纪经院哲学「intentio」概念的近代转世。",
+        "source": "布伦塔诺《从经验立场出发的心理学》（1874）第一卷（SEP Intentionality 所引段落）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "范畴错误",
+        "def": "把概念归入错误的逻辑类型：如把「她含泪而归」与「她乘车而归」并列，推出她「乘着两样东西」回家。赖尔据此诊断身心二元论——把心灵当作与身体并列的又一台机器内的幽灵。",
+        "source": "赖尔《心的概念》（1949）第一章",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "word": "机器中的幽灵",
+        "def": "赖尔对笛卡尔「官方学说」的讥称：设想身体这台机器里还住着一个幽灵般的心灵。",
+        "source": "赖尔《心的概念》（1949；短语见原书，SEP Ryle 条目述评）",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "word": "感受质",
+        "def": "经验的定性特征（「原始感官质感」），传统上被刻画为「内在、私人、不可言说」；这一刻画本身正是丹尼特等人拒斥的对象（1990）。",
+        "source": "SEP Consciousness 条目（§8 及理论谱系各节）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "功能主义",
+        "def": "心理状态由其在系统中的因果角色（对感觉刺激、其他心理状态与行为的关系）定义，而非由内部构成定义；同一心理状态可由不同材料实现。",
+        "source": "普特南1960、1967年论文；SEP Functionalism 条目 §1、§3.1",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "word": "意识的难问题",
+        "def": "查默斯1995年的命名：解释注意、报告、辨别等功能（「易问题」）之后，「为何这些功能的执行伴随着主观经验」仍未被触及；它抵抗标准的还原解释。",
+        "source": "查默斯 “Facing Up to the Problem of Consciousness”（1995，JCS 2(3): 200–19）",
+        "sourceRefs": [
+          "S7",
+          "S1"
+        ]
+      },
+      {
+        "word": "副现象论",
+        "def": "认为心理事件（尤其感受）是物理过程的伴生结果而缺乏独立因果效力的立场；SEP Consciousness 记围绕感受质 「被主张缺乏因果地位（lack causal status）」的担忧自赫胥黎（1874）延续至杰克逊（1982）与查默斯（1996）。",
+        "source": "SEP Consciousness（Huxley 1874、Jackson 1982、Chalmers 1996 所引脉络）；SEP Dualism 条目变体清单",
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "第一哲学沉思集（Meditationes de prima philosophia）",
+        "author": "勒内·笛卡尔",
+        "era": "1641（拉丁文初版）",
+        "desc": "心身二元论的奠基原典。第一、二沉思的怀疑方法达至「我思」，第五沉思支持心灵可与身体分离（SEP Dualism 所引论证路径）。站内已收录中译本（见 proposal.bookSuggestions）。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S4"
+        ]
+      },
+      {
+        "title": "从经验立场出发的心理学（Psychologie vom empirischen Standpunkt）",
+        "author": "弗朗茨·布伦塔诺",
+        "era": "1874（德文；IEP 参考文献另系1911年修订版）",
+        "desc": "第一卷提出意向性论题与「意向性的内存在」，意向性由此进入当代哲学的核心词汇。SEP Intentionality 条目逐句引述其关键段落。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S2",
+          "S10"
+        ]
+      },
+      {
+        "title": "心的概念（The Concept of Mind）",
+        "author": "吉尔伯特·赖尔",
+        "era": "1949",
+        "desc": "以「官方学说」「机器中的幽灵」「范畴错误」重塑对笛卡尔二元论的批判；SEP Ryle 条目称其「给笛卡尔二元论的棺木钉上最后一颗钉」。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "title": "感觉与脑过程（“Sensations and Brain Processes”）",
+        "author": "J. J. C. 斯马特",
+        "era": "1959（Philosophical Review）",
+        "desc": "心脑同一论的奠基论文，与普莱斯1956年论文、费格尔1958年著作并列（SEP Identity Theory 条目所引）；主张感受与脑过程严格同一。",
+        "kind": "论文",
+        "sourceRefs": [
+          "S8",
+          "S1"
+        ]
+      },
+      {
+        "title": "成为一只蝙蝠是什么感觉？（“What Is It Like to Be a Bat?”）",
+        "author": "托马斯·内格尔",
+        "era": "1974（Philosophical Review，页435–50）",
+        "desc": "主观视角问题的标准出处；出处经查默斯1995年论文参考文献核实。SEP Consciousness 多处征引。",
+        "kind": "论文",
+        "sourceRefs": [
+          "S7",
+          "S1"
+        ]
+      },
+      {
+        "title": "心智、大脑与程序（“Minds, Brains, and Programs”）",
+        "author": "约翰·塞尔",
+        "era": "1980（Behavioral and Brain Sciences）",
+        "desc": "中文屋论证原文，刊出时附27位认知科学研究者的同行评论与作者回应——这种「靶子论文+公开评论」的体例本身就是该争论史的一部分；评论者中丹尼特、福多的1980年回应经 SEP Chinese Room 条目正文证实。",
+        "kind": "论文",
+        "sourceRefs": [
+          "S5"
+        ]
+      },
+      {
+        "title": "直面意识问题（“Facing Up to the Problem of Consciousness”）",
+        "author": "大卫·查默斯",
+        "era": "1995（Journal of Consciousness Studies 2(3): 200–19）",
+        "desc": "难问题的命名文献；全文可于作者个人页面（consc.net）阅读。提出易/难问题划分与自然主义二元论框架。",
+        "kind": "论文",
+        "sourceRefs": [
+          "S7"
+        ]
+      },
+      {
+        "title": "意识解释（Consciousness Explained）",
+        "author": "丹尼尔·丹尼特",
+        "era": "1991",
+        "desc": "提出多重草稿模型，拒斥「笛卡尔剧场」与「内在、私人、不可言说」的感受质图景；SEP Consciousness 条目将其列为叙述—诠释路径的代表（1991）。",
+        "kind": "研究",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "实体二元论（substance dualism）",
+        "era": "1641—（当代仍有辩护者）",
+        "desc": "心与身是根本不同的实体。经典形态为笛卡尔式交互作用论；谱系变体包括副现象论、平行论与性质二元论，当代辩护者如斯温伯恩（1986）、艾克尔斯（1980、1987）。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S4",
+          "S1"
+        ]
+      },
+      {
+        "name": "心脑同一论（mind–brain identity theory）",
+        "era": "1956—1960年代",
+        "desc": "心理状态与脑状态是同一事物，而非仅仅相关。奠基文献为普莱斯（1956）、费格尔（1958）、斯马特（1959）；阿姆斯特朗《心的唯物主义理论》（1968）发展为「中央状态唯物论」；克里普克《命名与必然性》（1980）以严格指示词提出著名反驳。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S8"
+        ]
+      },
+      {
+        "name": "功能主义（functionalism）",
+        "era": "1960—",
+        "desc": "心理状态由因果角色定义。变体包括机器状态功能主义（普特南）、拉姆塞语句式的分析功能主义（刘易斯、阿姆斯特朗）、心理功能主义（福多、布洛克）等；主要困难为感受质、中文屋与因果排除问题。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "name": "取消式唯物论（eliminative materialism）",
+        "era": "1980年代—",
+        "desc": "主张常识心理学的信念、愿望等范畴可能被成熟的神经科学取代；与 P. S. 丘奇兰德（1983）及丹尼特对传统感受质图景的拒斥相关联。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "感受质与难问题研究",
+        "era": "1974—",
+        "desc": "以蝙蝠论证（内格尔1974）、知识论证（杰克逊1982）、僵尸论证（查默斯1996）为主线的争论群，聚焦主观经验能否被功能性或物理解释穷尽；倒转感受质（布洛克等）为其标准测试场。",
+        "kind": "主题",
+        "sourceRefs": [
+          "S1",
+          "S3",
+          "S7"
+        ]
+      },
+      {
+        "name": "机器心智争论",
+        "era": "1950—",
+        "desc": "从「思维机器与图灵测试」（SEP Functionalism §2.2）到强人工智能之争；1980年中文屋引发系统回应、机器人回应、大脑模拟回应与「直觉泵」反批评，至今是心灵哲学与人工智能哲学的接口。",
+        "kind": "主题",
+        "sourceRefs": [
+          "S3",
+          "S5"
+        ]
+      }
+    ],
+    "quotes": [
+      {
+        "text": "这种意向性的内存在，为心理现象所独有；没有任何物理现象表现出与之类似的东西。",
+        "author": "弗朗茨·布伦塔诺",
+        "exp": "英文原文 “This intentional inexistence is characteristic exclusively of mental phenomena. No physical phenomenon exhibits anything like it.”，出自《从经验立场出发的心理学》（1874）第一卷，经 SEP Intentionality 条目引述；中文为译文。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "text": "按规则正确操作中文符号的人可以给出对答如流的输出，却仍不理解一个汉字——句法本身并不足以产生语义。",
+        "author": "约翰·塞尔",
+        "exp": "SEP Chinese Room 条目概括中文屋论证的核心命题（原文径称 “Syntax is not by itself sufficient for, nor constitutive of, semantics.”）；本条按转引作意译，未逐字核对1980年原刊。",
+        "kind": "paraphrase",
+        "sourceRefs": [
+          "S5"
+        ]
+      }
+    ]
+  },
+  "closingQuote": "我们的解释还需要一个额外的成分。",
+  "closingQuoteKind": "quote",
+  "readingRoutes": [
+    {
+      "route": "作品线：笛卡尔 → 赖尔 → 查默斯（编辑建议）",
+      "detail": "先读《第一哲学沉思集》第一、二沉思（怀疑方法与「我思」），再读《心的概念》第一章（「官方学说」与范畴错误的诊断），最后读查默斯1995年论文（难问题的命名与论证）。三步覆盖问题的起点、一次著名清算与当代前沿。",
+      "sourceRefs": [
+        "S4",
+        "S6",
+        "S7"
+      ]
+    },
+    {
+      "route": "问题线：意向性 → 功能主义 → 难问题（编辑建议）",
+      "detail": "从 SEP「Intentionality」条目入手（什么使心理状态「关于」世界、布伦塔诺论题及其限度），转到 SEP「Functionalism」（因果角色进路如何定义心理状态、遭遇哪些反驳），最后读 SEP「Consciousness」§5.4（难问题的提出与各派回应）。",
+      "sourceRefs": [
+        "S2",
+        "S3",
+        "S1"
+      ]
+    }
+  ],
+  "evidenceLimits": [
+    "人物生卒年：笛卡尔（1596—1650）、赖尔（1900—1976）、塞尔（1932—2025）为本次核读页面所载；布伦塔诺、普特南、内格尔、丹尼特、查默斯的生卒年取自通行参考数据，未逐条经本次核读页面确认。",
+    "《第一哲学沉思集》出版年1641为标准系年，本次核读的 SEP Dualism 条目明确未载该年份。",
+    "杰克逊1982年「玛丽的房间」知识论证的年份与内容经 SEP Consciousness 核实，但其论文题名（通作 “Epiphenomenal Qualia”）未在核读段落中出现，故本包不著录该题名；普特南1967年论文同此处理（仅年份经 SEP Functionalism 核实）。",
+    "《有意识的心灵》（The Conscious Mind，1996）书名与「僵尸论证」内容分别依通行书目与 SEP Dualism/Consciousness 的引用（Chalmers 1996）写入；书名本身未在核读段落中逐字出现。",
+    "佛教心识论与现象学（布伦塔诺/胡塞尔）的直接比较研究（如 Lusthaus《Buddhist Phenomenology》、Coseru《Perceiving Reality》）仅经检索见题、未逐页核读，故正文只作教义平行陈述；SEP「Mind in Indian Buddhist Philosophy」核读段落中亦未出现布伦塔诺/胡塞尔的比较讨论（该条目可比照的西方人物为亚里士多德、康德、笛卡尔、贝克莱、休谟）。",
+    "Britannica「philosophy of mind」页面返回403未能核读；SEP 无 umbrella 式「Philosophy of Mind」条目（/entries/mind/ 返回404），领域总览由多个条目综合而成，属编辑综述；IEP 未见「Philosophy of Mind」独立条目（/phil-mind/ 返回404）。",
+    "「27位同行评论者」出自 SEP Chinese Room 条目（“comments and criticisms by 27 cognitive science researchers”）；条目正文仅证实丹尼特与福多为1980年评论者，丘奇兰德夫妇的回应为1990年《科学美国人》文章；塞尔1980年原文的逐字引文未直接核对原刊，相关表述以转引/意译标注（quotes[1] kind=paraphrase）。",
+    "图灵1950年论文未单独核读（SEP Functionalism §2.2 正文与其题名式引注 “Turing 1950” 已核，论文题名 “Computing Machinery and Intelligence” 未在核读段落出现），时间线未设图灵测试节点；「机器中的幽灵」短语据 SEP Ryle 条目说明见原书，但核读页面未给出逐字原文与页码，故 cihai 条目不标页码。",
+    "跨传统比较纪律：瑜伽行派与 phenomenology/心灵哲学的「互相参照」仅作为当代研究方向提及，未写成历史影响或师承。",
+    "来源自身笔误备查：SEP Dualism 页面把伊丽莎白生卒误作 (1596–1552)，本包采用 SEP Elisabeth 条目的 1618–1680（1618-12-26生、1680-02-08卒）；SEP Chinese Room 页面论文题名作 “Minds, Brains and Programs”（无顿号式），works 条目按通行书目形式著录为 “Minds, Brains, and Programs”，两式并存已在 evidence.json 注明。"
+  ]
+}
