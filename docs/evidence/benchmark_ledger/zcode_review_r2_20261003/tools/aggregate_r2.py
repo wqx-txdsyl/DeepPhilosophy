@@ -15,14 +15,14 @@ import collections
 
 _d = os.path.dirname(os.path.abspath(__file__))
 ROOT = _d
-while not os.path.isdir(os.path.join(ROOT, 'docs')):
+while not os.path.isdir(os.path.join(ROOT, 'docs', 'evidence')):
     ROOT = os.path.dirname(ROOT)
 
 REVIEWS = os.path.join(ROOT, 'docs/evidence/benchmark_ledger/zcode_review_r2_20261003/reviews')
 OUTDIR = os.path.join(ROOT, 'docs/evidence/benchmark_ledger/zcode_review_r2_20261003')
 PACKETS = os.path.join(ROOT, 'docs/evidence/benchmark_ledger/review_r2_20261003/full_review/packets')
 KEY = os.path.join(ROOT, 'docs/evidence/benchmark_ledger/review_r2_20261003/full_review/PRIVATE_KEY.json')
-ADJ = os.path.join(ROOT, 'backend/tools/_tmp/r2_zcode_work/final_adjudication.json')
+ADJ = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'final_adjudication.json')
 
 C_WEIGHTS = {'C1': 10, 'C2': 15, 'C3': 20, 'C4': 10, 'C5': 5}
 R_WEIGHTS = {'R1': 15, 'R2': 15, 'R3': 10}

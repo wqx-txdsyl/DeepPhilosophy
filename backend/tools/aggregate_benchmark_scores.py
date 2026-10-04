@@ -174,6 +174,16 @@ def build(registry_path=REGISTRY):
 
 
 def render_dashboard(data):
+    r21_dir=ROOT/'docs/evidence/benchmark_ledger/frozen_r2_1_20261004'
+    if (r21_dir/'FREEZE_MANIFEST.json').exists():
+        manifest=json.loads((r21_dir/'FREEZE_MANIFEST.json').read_text())
+        if sha(r21_dir/'SCORES.json')!=manifest['record_files_sha256']['SCORES.json']:
+            raise ValueError('frozen R2.1 scores changed')
+        sealed=json.loads((r21_dir/'SCORES.json').read_text())
+        lines=['|对象|统一60题总分 /100|记录|','|---|---:|---|']
+        for subject in sealed['subjects']:
+            lines.append(f"|{subject['name']} {subject['label']}|{subject['primary']['score']:.2f}|R2.1 已冻结（主记录）|")
+        return '\n'.join(lines)
     r2_dir=ROOT/'docs/evidence/benchmark_ledger/frozen_r2_20261004'
     if (r2_dir/'FREEZE_MANIFEST.json').exists():
         manifest=json.loads((r2_dir/'FREEZE_MANIFEST.json').read_text())

@@ -11,7 +11,13 @@ import collections
 from pathlib import Path
 
 _d = Path(os.path.dirname(os.path.abspath(__file__)))
-ROOT = _d.parents[3]  # backend/tools/_tmp/r2_zcode_work -> repo root
+# 归档副本：从本文件位置向上找仓库根（docs/evidence/...）
+ROOT = Path(os.path.abspath(__file__))
+while not os.path.isdir(os.path.join(ROOT, 'docs', 'evidence')):
+    ROOT = ROOT.parent
+    if str(ROOT) == '/':
+        raise SystemExit('repo root not found')
+ROOT = Path(ROOT)
 BATCH = ROOT / 'docs/evidence/benchmark_ledger/zcode_review_r2_20261003'
 OUT = ROOT / 'docs/evidence/benchmark_ledger/frozen_r2_20261004'
 PACKETS = ROOT / 'docs/evidence/benchmark_ledger/review_r2_20261003/full_review/packets'

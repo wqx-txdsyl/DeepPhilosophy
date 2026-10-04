@@ -94,6 +94,30 @@ def legacy_matrix():
                      'ChatGPT Work：桌面6.1 Sol high、声明使用本地书库；不是网页端逐题回执，K4执行事实有4项未知。']}
 
 
+
+def matrix_r2_1():
+    out=ROOT/'docs/evidence/benchmark_ledger/frozen_r2_1_20261004'
+    record=json.loads((out/'SCORES.json').read_text())
+    rules=json.loads((ROOT/'docs/evidence/rubric_v1_2/RULES_FROZEN.json').read_text())
+    subjects=record['subjects']
+    cols=[{'name':s['name'],'sub':s['label'],'own':s['kind']=='phiagent'} for s in subjects]
+    rows=[{'label':'统一60题总分','note':'唯一主成绩 · 满分100 · R2定向修订（73行重审，其余继承）','values':[f"{s['primary']['score']:.2f}" for s in subjects],'primary':True}]
+    rows.append({'label':'通过题数','note':'冻结pass规则 · /60','values':[f"{s.get('cases_pass',0)} / 60" for s in subjects],'primary':False})
+    rows.append({'label':'严重错误（裁定后）','note':'confirmed / pending','values':[f"{s['primary_serious_error_records'].get('confirmed',0)} / {s['primary_serious_error_records'].get('pending',0)}" for s in subjects],'primary':False})
+    for layer in ['C','R']:
+        for key,spec in rules[layer].items():
+            rows.append({'label':key+' '+spec['name'],'note':f"{subjects[0]['dimensions'][key]['applicable_cases']}道适用题 · 按题等权 /100",'values':[f"{s['dimensions'][key]['score']:.1f}" for s in subjects],'primary':False})
+    rows.append({'label':'主成绩评分覆盖','note':'60题 / 72轮 · 同一冻结协议+修订补充','values':['60题 / 72轮']*len(subjects),'primary':False})
+    return {'scale':100,'product_version':'0.1.5','record_id':record['record_id'],'record_sha256':aggregate.sha(out/'SCORES.json'),
+            'current':{'title':'冻结记录 R2.1 · 统一60题（R2定向修订）','subtitle':'同一60道分析与研究题；修正判据（浏览器采集无回执不作未执行证据、豆包横幅按产品UI剥离、空答不列E4、条件保真与假设边界重审、维度按题等权C/60与R/40）。73行重审，其余显式继承R2。','columns':cols,'rows':rows},
+            'verification':None,
+            'notes':['R2.1为当前主成绩记录；R2、R1保持冻结留档，不与本表并列。R2.1为定向修订，不是新的全量独立重评。',
+                     '浏览器采集主体（DeepSeek/豆包/ChatGPT）无工具回执层：执行宣称记不可核验、不据此扣分；豆包"搜索N个关键词"横幅经解盲证实为产品UI，已从模型正文评价剥离。',
+                     'A05空答按0计入分母（完整性缺陷，不列执行造假）；J01-T4条件虚构1处已修正（v0.1.5 C1 4→3）；A04-T1无标记动机归因1处已修正（v0.1.1 C1/C3 4→3）。',
+                     '单一评审族（zcode），无评分者间一致性；PhiAgent与评审同属本项目（从属偏差风险登记）；不构成受控模型排行榜。',
+                     'DeepSeek为深度思考＋联网；豆包为快速档；ChatGPT为Work 6.1 Sol high并使用本地书库（非网页原生逐题回执）。',
+                     'R1评审方法为混合抽样：PhiAgent各版9-28轮直接复核+模型初评；ChatGPT为合并文档审读生成77条逐轮评分，无独立运行轨迹。5道纯核验题与5道故障fixture各记录均不测。']}
+
 def matrix_r2():
     out=ROOT/'docs/evidence/benchmark_ledger/frozen_r2_20261004'
     record=json.loads((out/'SCORES.json').read_text())
@@ -213,8 +237,8 @@ def png(data, target):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--png',type=Path);p.add_argument('--record',choices=['r2','r1'],default='r2');args=p.parse_args()
-    data=matrix_r2() if args.record=='r2' else matrix()
+    p=argparse.ArgumentParser();p.add_argument('--png',type=Path);p.add_argument('--record',choices=['r2_1','r2','r1'],default='r2_1');args=p.parse_args()
+    data={'r2_1':matrix_r2_1,'r2':matrix_r2,'r1':matrix}[args.record]()
     (OUT/'matrix.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
     (OUT/'MATRIX.md').write_text(markdown(data));(OUT/'matrix.html').write_text(html_page(data))
     if args.png:args.png.parent.mkdir(parents=True,exist_ok=True);png(data,args.png)
