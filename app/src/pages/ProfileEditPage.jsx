@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from '../App';
+import { renameReadingOwner } from '../data/readingRoom';
 import Icon from '../components/Icon';
 import AvatarUpload from '../components/AvatarUpload';
 
@@ -32,6 +33,7 @@ function ProfileEditPage() {
       });
       if (r.ok) {
         localStorage.setItem('dp_username', newUsername.trim());
+        renameReadingOwner(newUsername.trim());
         setUsername(newUsername.trim());
         showMsg('✅ 用户名已更新', 'success');
       } else {

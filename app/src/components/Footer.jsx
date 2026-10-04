@@ -14,20 +14,11 @@ const columns = [
     ],
   },
   {
-    title: '互动',
-    links: [
-      { label: 'AI 问答', path: '/qa' },
-      { label: '答案之书', path: '/games/answer-book' },
-      { label: 'PHTI 人格测试', path: '/games/phti' },
-      { label: 'PHTI 沙雕版', path: '/games/phti-silly' },
-    ],
-  },
-  {
     title: '更多',
     links: [
-      { label: '个人中心', path: '/profile' },
+      { label: '我的书房', path: '/profile' },
       { label: '设置', path: '/settings' },
-      { label: '开发者', path: '/DEVELOPER_IS_TXDSYL' },
+      { label: '关于本站', path: '/about' },
     ],
   },
 ];

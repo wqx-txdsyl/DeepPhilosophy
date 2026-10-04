@@ -1,12 +1,13 @@
 /**
  * 阅读器 — 章节文本阅读（所有书统一方式，PDF/EPUB 原始渲染已移除）
- * 支持：章跳转、目录、批注笔记、AI 问答、阅读进度自动保存
+ * 支持：章跳转、目录、批注笔记、阅读进度自动保存
  * URL 参数：ch（章）、sec（详情页目录节跳转）
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { getApiBase } from '../App';
+import { writeLocalNote, notePending, markNoteSynced } from '../data/readingRoom';
 import { saveReadingProgress } from '../data/userData';
 import ChapterReader from '../components/ChapterReader';
 
@@ -80,46 +81,28 @@ function ReaderPage() {
   const [showNotes, setShowNotes] = useState(false);
   const [noteText, setNoteText] = useState('');
   const notesKey = `dp_notes_${bookId}`;
-
-  // AI Chat state
-  const [showAiChat, setShowAiChat] = useState(false);
-  const [aiQuestion, setAiQuestion] = useState('');
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiHistory, setAiHistory] = useState([]);
-  const aiChatRef = useRef(null);
-  const aiBottomRef = useRef(null);
-
-  // AI 聊天自动滚动
+  const noteDirty = useRef(false);
   useEffect(() => {
-    if (aiBottomRef.current) {
-      aiBottomRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [aiHistory]);
-
-  // Load saved notes on book change — cloud first, localStorage fallback
-  useEffect(() => {
+    let active = true;
+    noteDirty.current = false;
+    const token = localStorage.getItem('dp_token');
     const loadNotes = async () => {
-      const token = localStorage.getItem('dp_token');
-      if (token) {
-        try {
-          const r = await fetch(`${getApiBase()}/api/notes/load?book_id=${encodeURIComponent(bookId)}`, {
-            headers: { 'Authorization': `Bearer ${token}` },
-            signal: AbortSignal.timeout(5000),
-          });
-          if (r.ok) {
-            const d = await r.json();
-            if (d.note_text) { setNoteText(d.note_text); localStorage.setItem(notesKey, d.note_text); return; }
-          }
-        } catch { /* network error, fall through to local */ }
-      }
+      try { setNoteText(localStorage.getItem(notesKey) || ''); } catch { setNoteText(''); }
+      if (!token || notePending(bookId)) return;
       try {
-        const saved = localStorage.getItem(notesKey);
-        if (saved) setNoteText(saved);
-        else setNoteText('');
-      } catch { setNoteText(''); }
+        const r = await fetch(`${getApiBase()}/api/notes/load?book_id=${encodeURIComponent(bookId)}`, {
+          headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(5000),
+        });
+        if (!r.ok) return;
+        const d = await r.json();
+        if (active && localStorage.getItem('dp_token') === token && !noteDirty.current && !notePending(bookId) && typeof d.note_text === 'string') {
+          setNoteText(d.note_text); localStorage.setItem(notesKey, d.note_text);
+        }
+      } catch { /* Keep the local draft when offline. */ }
     };
     loadNotes();
-  }, [bookId]);
+    return () => { active = false; };
+  }, [bookId, notesKey]);
 
   // Save progress on unmount（章节阅读统一 'text' 类型）
   const chapterPosRef = useRef({ bookId: '', title: '', author: '', ch: 0, total: 0 });
@@ -135,167 +118,19 @@ function ReaderPage() {
     };
   }, []);
 
-  // Save notes — local + cloud
+  // Share pending-note tracking with the reading room; late cloud reads must not overwrite drafts.
   const saveNotes = () => {
+    if (!noteDirty.current && !notePending(bookId)) return;
     try {
-      localStorage.setItem(notesKey, noteText);
-      // Cloud sync
+      writeLocalNote(bookId, noteText);
       const token = localStorage.getItem('dp_token');
-      if (token) {
-        fetch(`${getApiBase()}/api/notes/save`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({ book_id: bookId, note_text: noteText }),
-          signal: AbortSignal.timeout(5000),
-        }).catch(() => {});
-      }
+      if (token) fetch(`${getApiBase()}/api/notes/save`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ book_id: bookId, note_text: noteText }), signal: AbortSignal.timeout(5000),
+      }).then(r => { if (r.ok && localStorage.getItem('dp_token') === token) markNoteSynced(bookId, noteText); }).catch(() => {});
+      noteDirty.current = false;
     } catch {}
   };
-
-  // 获取当前页文字（从已加载章节内容提取）
-  const getCurrentPageText = async () => {
-    const ch = textChapters[textChapter];
-    if (ch?.content) {
-      return String(ch.content).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 3000);
-    }
-    return '';
-  };
-
-  // AI 问答：基于当前阅读内容（流式输出）
-  const askAI = async () => {
-    if (!aiQuestion.trim() || aiLoading) return;
-    const q = aiQuestion.trim();
-    const pageText = await getCurrentPageText();
-    setAiQuestion('');
-    setAiHistory(prev => [...prev, { role: 'user', content: q }, { role: 'assistant', content: '', _streaming: true }]);
-    setAiLoading(true);
-
-    const config = JSON.parse(localStorage.getItem('dp_api_config') || '{}');
-    // Decrypt if needed
-    let apiKey = config.apiKey;
-    if (config._encrypted && apiKey && apiKey.includes(':')) {
-      const { decryptApiKey } = await import('../data/crypto');
-      apiKey = await decryptApiKey(apiKey);
-    }
-    const apiConfig = { ...config, apiKey };
-    const locInfo = textReady ? `第${textChapter + 1}章（共${textChapters.length}章）` : '';
-    const textContext = pageText ? `\n当前章节文字内容（节选）：\n"""\n${pageText}\n"""\n` : '';
-    const systemPrompt = `你是一位博学的哲学导师。读者正在阅读哲学著作，需要你的帮助理解文本。
-
-当前阅读上下文：
-- 书名：《${book?.title}》
-- 作者：${book?.author}
-- ${locInfo}
-${book?.region ? `- 所属传统：${book.region}哲学` : ''}
-${textContext}
-请根据读者的问题，结合你看到的章节内容以及对这本书和该作者哲学思想的了解，给出深入浅出的解答。`;
-
-    let answer = '';
-    try {
-      if (apiConfig.apiKey) {
-        const baseUrl = (apiConfig.apiUrl || 'https://api.deepseek.com').replace(/\/+$/, '');
-        const resp = await fetch(`${baseUrl}/v1/chat/completions`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiConfig.apiKey}` },
-          body: JSON.stringify({
-            model: 'deepseek-chat',
-            messages: [
-              { role: 'system', content: systemPrompt },
-              ...aiHistory.filter(m => !m._streaming).map(m => ({ role: m.role, content: m.content })),
-              { role: 'user', content: q },
-            ],
-            temperature: 0.7, max_tokens: 1024, stream: true,
-          }),
-          signal: AbortSignal.timeout(60000),
-        });
-
-        if (resp.ok) {
-          const reader = resp.body.getReader();
-          const decoder = new TextDecoder();
-          let buffer = '';
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            buffer = lines.pop() || '';
-            for (const line of lines) {
-              if (line.startsWith('data: ')) {
-                const data = line.slice(6).trim();
-                if (data === '[DONE]') continue;
-                try {
-                  const delta = JSON.parse(data).choices?.[0]?.delta?.content || '';
-                  if (delta) {
-                    answer += delta;
-                    setAiHistory(prev => {
-                      const u = [...prev];
-                      const l = { ...u[u.length - 1] };
-                      l.content = answer;
-                      u[u.length - 1] = l;
-                      return u;
-                    });
-                  }
-                } catch {}
-              }
-            }
-          }
-        }
-      }
-    } catch {
-      // 静默：回答失败时走兜底文案
-    }
-
-    if (!answer) answer = '无法获取回答。请检查网络连接或在设置中配置 API Key。';
-    setAiLoading(false);
-    setAiHistory(prev => {
-      const u = [...prev];
-      const l = { ...u[u.length - 1] };
-      l.content = answer;
-      delete l._streaming;
-      u[u.length - 1] = l;
-      return u;
-    });
-
-    // Cloud sync: save both user question + AI answer
-    const token = localStorage.getItem('dp_token');
-    if (token) {
-      fetch(`${getApiBase()}/api/book-chat/save`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ book_id: bookId, role: 'user', content: q }),
-        signal: AbortSignal.timeout(5000),
-      }).catch(() => {});
-      if (answer && answer !== '无法获取回答。请检查网络连接或在设置中配置 API Key。') {
-        fetch(`${getApiBase()}/api/book-chat/save`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({ book_id: bookId, role: 'assistant', content: answer }),
-          signal: AbortSignal.timeout(5000),
-        }).catch(() => {});
-      }
-    }
-  };
-
-  // Load AI chat + notes from cloud on book open (if logged in)
-  useEffect(() => {
-    if (!bookId) return;
-    const token = localStorage.getItem('dp_token');
-    if (!token) return;
-    // Load notes
-    fetch(`${getApiBase()}/api/notes/${bookId}`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-      signal: AbortSignal.timeout(5000),
-    }).then(r => r.ok && r.json()).then(d => {
-      if (d?.note_text) setNoteText(d.note_text);
-    }).catch(() => {});
-    // Load AI chat
-    fetch(`${getApiBase()}/api/book-chat/${bookId}`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-      signal: AbortSignal.timeout(5000),
-    }).then(r => r.ok && r.json()).then(d => {
-      if (d?.messages?.length) setAiHistory(d.messages.map(m => ({ role: m.role, content: m.content })));
-    }).catch(() => {});
-  }, [bookId]);
 
   // 秒开：meta → 立即显示 → 按需加载章节（所有书统一章节阅读，不再有 PDF/EPUB 原始渲染）
   const loadTextBook = async () => {
@@ -454,19 +289,15 @@ ${textContext}
           </button>
         )}
         <button className="btn btn-secondary" style={{ padding: '2px 8px', fontSize: 10 }}
-          onClick={() => { setShowNotes(!showNotes); if (!showNotes) setShowAiChat(false); }}>
+          onClick={() => setShowNotes(!showNotes)}>
           <Icon name="icon-edit" size={16} />批注
-        </button>
-        <button className="btn btn-primary" style={{ padding: '2px 8px', fontSize: 10 }}
-          onClick={() => { setShowAiChat(!showAiChat); if (!showAiChat) setShowNotes(false); }}>
-          {showAiChat ? '关闭' : <><Icon name="nav-qa" size={16} /> AI</>}
         </button>
       </div>
 
       {/* Main area: reader + optional notes panel */}
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Reader */}
-        <div style={{ flex: (showNotes || showAiChat) ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'auto', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ flex: showNotes ? '0 0 60%' : 1, display: 'flex', flexDirection: 'column', overflow: 'auto', background: 'var(--card-bg)', position: 'relative', WebkitOverflowScrolling: 'touch' }}>
           <div className="reader-text-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
             {textLoading ? (
               <div className="loading">加载中...</div>
@@ -506,7 +337,7 @@ ${textContext}
             </div>
             <textarea
               value={noteText}
-              onChange={e => setNoteText(e.target.value)}
+              onChange={e => { noteDirty.current = true; setNoteText(e.target.value); try { writeLocalNote(bookId, e.target.value); } catch {} }}
               onBlur={saveNotes}
               placeholder="在这里写下你的思考和笔记..."
               style={{
@@ -526,81 +357,6 @@ ${textContext}
           </div>
         )}
 
-        {/* AI Chat sidebar — inside flex container, side-by-side with reader */}
-        {showAiChat && (
-          <div style={{
-            flex: '0 0 40%', borderLeft: '1px solid var(--border)',
-            background: 'var(--primary)', display: 'flex', flexDirection: 'column',
-            overflow: 'hidden',
-          }}>
-            {/* Header — compact */}
-            <div style={{
-              padding: '4px 10px', borderBottom: '1px solid var(--border)',
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              flexShrink: 0,
-            }}>
-              <span style={{ fontSize: 11, color: 'var(--accent)' }}><Icon name="nav-qa" size={16} /> AI · {book?.title?.slice(0,8)}</span>
-              <button onClick={() => setShowAiChat(false)}
-                style={{ background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: 14, cursor: 'pointer' }}><Icon name="icon-close" size={16} /></button>
-            </div>
-
-            {/* Chat history */}
-            <div ref={aiChatRef} style={{
-              flex: 1, overflow: 'auto', padding: '4px 8px',
-              display: 'flex', flexDirection: 'column', gap: 4,
-            }}>
-              {aiHistory.map((msg, i) => (
-                <div key={i} style={{
-                  alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                  maxWidth: '90%',
-                  background: msg.role === 'user' ? 'var(--accent)' : 'var(--secondary)',
-                  color: msg.role === 'user' ? 'var(--primary)' : 'var(--text)',
-                  padding: '6px 10px', borderRadius: 10,
-                  fontSize: 12, lineHeight: 1.5, whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-                }}>
-                  {msg.content}
-                </div>
-              ))}
-              {aiLoading && (
-                <div style={{ alignSelf: 'flex-start', display: 'flex', gap: 4, padding: '6px 10px' }}>
-                  {[0,1,2].map(i => (
-                    <span key={i} style={{
-                      width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
-                      animation: `pulse 0.6s ease-in-out ${i * 0.15}s infinite`,
-                    }}/>
-                  ))}
-                </div>
-              )}
-              <div ref={aiBottomRef} />
-            </div>
-
-            {/* Input */}
-            <div style={{
-              display: 'flex', gap: 4, padding: '4px 8px',
-              borderTop: '1px solid var(--border)', flexShrink: 0,
-            }}>
-              <input
-                value={aiQuestion}
-                onChange={e => setAiQuestion(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askAI(); }}}
-                placeholder="问AI..."
-                disabled={aiLoading}
-                autoFocus
-                style={{
-                  flex: 1, padding: '8px 12px', borderRadius: 18,
-                  border: '1px solid var(--accent)', background: 'var(--secondary)',
-                  color: 'var(--text)', fontSize: 13, outline: 'none',
-                }}
-              />
-              <button onClick={askAI} disabled={aiLoading}
-                style={{
-                  width: 34, height: 34, borderRadius: '50%', flexShrink: 0,
-                  border: 'none', background: 'var(--accent)', color: 'var(--primary)',
-                  fontSize: 16, cursor: 'pointer', fontWeight: 700,
-                }}>↑</button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
