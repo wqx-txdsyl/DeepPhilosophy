@@ -58,3 +58,8 @@ WebSearch 仅用于发现候选来源；所有进入 sources 的 URL 均为上�
 - packet.json / evidence.json 均以 `python3 -m json.tool` 校验通过（见最终报告）。
 - 字段契约核对：schemaVersion=1；顶层无 sub_schools（在 school.subSchools）；sources id 唯一且日期真实；relations 的 from/to 全部在本包 thinkers 名单内；timeline 无伪造年代（范围年份均标注证据限度）；quote/quotes/closingQuote 仅含逐字核对或明确标为 paraphrase 者；reviewMethod 如实声明为自检复核。
 - 本包未改动 J01 目录以外任何文件，未执行任何 git 写操作。
+
+
+## 主控修订记录（2026-10-04）
+
+- 补齐契约要求的顶层 evidenceLimits（内容取自本文件复核记录）。

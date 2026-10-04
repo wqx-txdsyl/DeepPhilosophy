@@ -1,7 +1,7 @@
 # I01 正理派（Nyāya）—— 资料包复核记录
 
 - 任务：`docs/tasks/school-content-gap-tasks-2026-10-04.json` → `I01`（proposedKind=school，P1-content-packet，cohort=南亚，coverage=mentions-only）
-- 状态：ready-for-review（reviewedAt 2026-10-04；研究员自查，非独立同行评审）
+- 状态：ready-for-review（reviewedAt 2026-10-04；研究员自查，非独立同行评审；含同日草稿的第二轮逐源复核，见第八节）
 - 输出：packet.json / evidence.json / review.md / artwork-brief.md，共四个文件；未改动其他任何文件，未做任何 git 写操作。
 
 ## 一、边界决定
@@ -53,18 +53,37 @@
 - 站内旧系年（公元前300／公元前2-公元2世纪）与《正理经》归名年代差（约百年）的调和——需另一层来源（如带文献学的原典导论）。
 - 无阻塞：三来源全部可核读，本项可进入 Codex 审读。
 
-## 七、实际核读 URL 清单（2026-10-04）
+## 七、实际核读 URL 清单（2026-10-04，两轮）
 
 已核读并采为 sources：
 
-1. https://plato.stanford.edu/entries/epistemology-india/ （S1；WebFetch + curl 全文缓存，DC.creator=Phillips, Stephen；2024-03-13 修订；逐字引文11处）
-2. https://iep.utm.edu/nyaya/ （S2；WebFetch 超时后 curl 成功，86KB；作者信息：Matthew R. Dasti, Bridgewater State University；逐字引文27处）
-3. https://plato.stanford.edu/entries/early-modern-india/ （S3；WebFetch + curl 全文缓存，DC.creator=Ganeri, Jonardon；2023-11-05 修订；逐字引文9处，4处以抓取摘要＋关键词逐字复核）
+1. https://plato.stanford.edu/entries/epistemology-india/ （S1；WebFetch + curl 全文缓存，DC.creator=Phillips, Stephen 与 Vaidya, Anand（2024-03-13 修订版起合著，packet S1 题名已补）；两轮逐字引文核验）
+2. https://iep.utm.edu/nyaya/ （S2；WebFetch 超时后 curl 成功，86KB；作者信息：Matthew R. Dasti, Bridgewater State University；两轮逐字引文核验）
+3. https://plato.stanford.edu/entries/early-modern-india/ （S3；WebFetch + curl 全文缓存，DC.creator=Ganeri, Jonardon；2023-11-05 修订；两轮逐字引文核验，初轮4处"据抓取摘要"的句子第二轮全部缓存逐字命中）
 
 站内核对（python3，非网络来源）：
 
 - `app/public/philosophers.json`（查重：无本包人物）
 - `app/public/books.json`（查重：无正理相关藏书）
-- `app/public/schools/data/school_印度哲学.json`（mentions-only 复核，"正理"12处定位）
+- `app/public/schools/data/school_印度哲学.json`（mentions-only 复核，"正理"12处定位；第二轮再核：时间线"公元前300"、works"公元前2-公元2世纪"、乔答摩3处/乔达摩1处（佛陀）逐条确认）
 - `app/public/schools/catalog.json` 与 `app/public/schools/data/` 目录（无同名条目）
 - `docs/tasks/school-content-gap-tasks-2026-10-04.json`（I01 条目）
+
+## 八、同日草稿的第二轮处置记录（2026-10-04）
+
+- **发现**：开工 `ls` 显示输出目录已有同日草稿（08:47–08:49，packet/evidence/review/artwork 四件齐）。按任务纪律不盲信，全部四文件重读，并对三个 sources 逐源重开核验。
+- **方法**：WebFetch 对每源按断言清单逐点质询；再以 curl 抓全文缓存去标签，对 evidence.json 全部 locator 中的英文引文逐字 `str.find` 比对（含弯引号形态与 HTML 去标签后的空格粘连带，如 IEP 书目行 "JanakiVallabhaBhattacaryya"）；站内 books.json/philosophers.json/印度哲学.json 以 python3 重查。
+- **处置决定：保留草稿主体，修正 6 处，不重写**。三来源真实、互不转抄、与断言对得上；草稿证据纪律总体良好（"拿不准就写进 evidenceLimits"执行到位）。修正项：
+  1. **cihai/9（avacchinna）例句中译误置**：S3 原例为 "the property being-in-contact-with-the-monkey in the tree, is delimited by (avacchinna) the branch"——'与猴相触'的属性在树中被枝限定；初稿误作"与枝相触的出现，被枝所限定"。已改并写入 evidence 对应 note。
+  2. **overview 默认信任句的 Matilal 归属精度**：S1 原文是正理原则 "Innocent until reasonably challenged"，Matilal 1986, 314 系证言语境的 "innocent until proven guilty"，S1 明言前者是其轻微弱化。初稿把该语直接系于 Matilal，已改写归属链。
+  3. **overview 年代出入表述**：两来源系年差约一个世纪（c. 100／c. 200），初稿"近两个世纪的出入"失准，改为"约一个世纪的出入"。
+  4. **S1 题名补合著者**：DC.creator 证实 2024 修订版起 Phillips 与 Vaidya 合著，packet S1 题名已补。
+  5. **conclusion"约六百年的注疏链"**：来源不支持该具体时长（自伐差耶那 c. 450 至 Udayana c. 975 约 525 年，自经文 c. 200 计约 775 年），改为"绵延数百年的注疏链"。
+  6. **圣言量经号分歧入 limits**：S2 系 śabda 定义于 NS 1.1.5，S1 系 āpta 定义于 NS 1.1.7——新增 evidenceLimits 第13条，works/0 与 cihai/6 相应注明。
+- **另核**：初轮 4 处标注"据抓取摘要"的关系/分支/词条长句（relations/3、subSchools/1、cihai/3、cihai/9）第二轮全部在缓存文本逐字命中，uncertainty 已清或改注"已逐字核对"；thinkers/3 补记 S1 称 Jayanta 为"eighth-century"与 S2 c. 875 的年代小异；"a position taken by Gautama himself, the 'sūtra-maker'"（thinkers/0 的经文作者归属）已逐字验证成立。artwork-brief 无事实性断言，未改。
+- **结论**：packet 仍为 ready-for-review；evidence.json 同步更新（cihai/3、cihai/9、relations/3、subSchools/1、thinkers/3、overview 事实性条目共 6 条 locator/note/uncertainty 修订）；两个 JSON 已重过 `python3 -m json.tool`。
+
+
+## 主控修订记录（2026-10-04）
+
+- 结构校验发现 overview 含未完全转述的'最伟大'措辞，已改为带出处的间接转述（SEP 原话经主控二次 WebFetch 核实）。

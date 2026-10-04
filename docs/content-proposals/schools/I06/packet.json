@@ -4,7 +4,7 @@
   "name": "耆那教哲学",
   "status": "ready-for-review",
   "reviewedAt": "2026-10-04",
-  "reviewMethod": "研究员自查（非独立同行评审）：七个网络来源（SEP 三条目、IEP 一条目、BBC Religion 三页）于 2026-10-04 以 curl/WebFetch 实际抓取并逐段核读；evidence 各 locator 中的英文 verbatim 引文经 python 脚本对缓存文本两轮逐字比对（共105处，其中6处按原文措辞修正后命中，含1处保留 BBC 原文拼写笔误 Svetamabara）；站内 philosophers.json、books.json、school_印度哲学.json、catalog.json 以 python3 实际查询查重；两个 JSON 经 python3 -m json.tool 校验。",
+  "reviewMethod": "两轮核验。第一轮（同日早前草稿作者）：七个网络来源（SEP 三条目、IEP 一条目、BBC Religion 三页）于 2026-10-04 以 curl/WebFetch 实际抓取并逐段核读；evidence 各 locator 中的英文 verbatim 引文经 python 脚本对缓存文本两轮逐字比对（共105处，其中6处按原文措辞修正后命中）；站内 philosophers.json、books.json、school_印度哲学.json、catalog.json 以 python3 实际查询查重。第二轮（独立复核，同日）：换用不同会话对全部七个来源逐源重开核读（SEP 三条目另以 citation_author/DC.creator 元数据确认署名 Gorisse/Fiala/Chadha；Jaina 条目 'First published Mon Feb 13, 2023' 确认），并抽验约20处关键英文原文（七支谓词句、'Notably absent from the list is inference'、'set of philosophical investigations'、'oldest extant Jaina treatise in Sanskrit'、'karmic matter is never genuinely mixed'、'close to Sāṃkhya conceptions'、甘地句全句、BBC 三页各要点）均命中；发现并修正两处编辑性问题（'不自合/不自洽'用词不统一→统一为'不自洽'共5处；S5 coverage '自认更近大雄时代'改为'（BBC 页面表述）其方式更接近大雄时代'以贴合原文的页面表述性质）。两个 JSON 经 python3 -m json.tool 校验通过。",
   "proposal": {
     "kind": "school",
     "suggestedName": "耆那教哲学",
@@ -33,7 +33,7 @@
     {"id": "S2", "title": "Jain Philosophy — Internet Encyclopedia of Philosophy（Mark Owen Webb，Texas Tech University）", "url": "https://iep.utm.edu/jain/", "type": "academic-encyclopedia", "accessedAt": "2026-10-04", "coverage": "耆那教哲学英文通览：传统自称教法永恒无创立者；大雄为公元前6世纪人、佛陀同时代人、其教义是对婆罗门教的反应与拒斥；非正统 darsanas 定位（与佛教、顺世论并称）；形上学：六实体（jīva、pudgala、dharma、adharma、ākāśa、kāla）、宇宙永恒、常见'无神论'（所否认者是创世神）、业为物质、生命按感官数分级、素食与绝食至死的理想、五誓（ahiṃsā/satya/asteya/brahmacarya/aparigraha）；认识论：实在多面（anekānta '非一边'）、盲人摸象喻、pramāṇa 清单（感知、可信 testimony、超感官、他心、kevala；推理后补）、naya 部分谓词说、七式谓词表（Perhaps a is F…）、'非七个真值'辨、商羯罗式不自洽批评与自指难题（'始于可赞的可谬主义，终于站不住的相对主义'）；伦理：四业源、业物质使一切业（善/恶）皆系轮回"},
     {"id": "S3", "title": "Pacifism — Stanford Encyclopedia of Philosophy（Andrew Fiala）", "url": "https://plato.stanford.edu/entries/pacifism/", "type": "academic-encyclopedia", "accessedAt": "2026-10-04", "coverage": "ahiṃsā 的现代接受史：'印度教徒、耆那教徒与佛教徒共享对 ahiṃsā/非暴力的关切，视为基本道德德性'；'Mohandas Gandhi is perhaps the most famous adherent of ahimsa of the last century'；甘地以自我克制（brahmacarya）与 satyagraha（真理的力量）为非暴力奠基；甘地将 ahiṃsā 最大化扩展至一切有情感生命；印度传统中非暴力植根于业力互依、苦行自制与慈悲的形上学图景——用于本条目的现代影响一节，不承担耆那教内部学理论证"},
     {"id": "S4", "title": "Perceptual Experience and Concepts in Classical Indian Philosophy — Stanford Encyclopedia of Philosophy（Monima Chadha）", "url": "https://plato.stanford.edu/entries/perception-india/", "type": "academic-encyclopedia", "accessedAt": "2026-10-04", "coverage": "古典印度感知之争中的耆那教位置一句话定位：强实在论由正理—胜论与弥曼差主张、唯名论由佛教主张、概念论（conceptualism）由吠檀多与耆那教主张——本条目仅用于显示耆那教在感知—概念之争中的学派位置；该条目明言不展开概念论论证（任务 researchLead 之一，如实记录其限度）"},
-    {"id": "S5", "title": "Jain sects — BBC Religion & Ethics（Jainism: Subdivisions；2009-09-11 最后更新，页面已归档）", "url": "https://www.bbc.co.uk/religion/religions/jainism/subdivisions/subdivisions.shtml", "type": "educational-broadcaster", "accessedAt": "2026-10-04", "coverage": "两教派总览：Digambara（sky clad，天衣）与 Svetambara（white clad，白衣）；两派分歧五项（大雄生平细节、女性灵性地位、僧侣是否着衣、仪轨、正典范围）；天衣派更苦行并自认更近大雄时代；天衣派女性须先转男身方可解脱之说；天衣僧全裸、两派尼众皆着衣；白衣僧可持少数物（白衣、乞钵、扫虫帚、书籍文具）；造像差异——仅用于教派组织事实，不用于学理论证"},
+    {"id": "S5", "title": "Jain sects — BBC Religion & Ethics（Jainism: Subdivisions；2009-09-11 最后更新，页面已归档）", "url": "https://www.bbc.co.uk/religion/religions/jainism/subdivisions/subdivisions.shtml", "type": "educational-broadcaster", "accessedAt": "2026-10-04", "coverage": "两教派总览：Digambara（sky clad，天衣）与 Svetambara（white clad，白衣）；两派分歧五项（大雄生平细节、女性灵性地位、僧侣是否着衣、仪轨、正典范围）；天衣派更苦行、（BBC 页面表述）其方式更接近大雄时代的耆那教；天衣派女性须先转男身方可解脱之说；天衣僧全裸、两派尼众皆着衣；白衣僧可持少数物（白衣、乞钵、扫虫帚、书籍文具）；造像差异——仅用于教派组织事实，不用于学理论证"},
     {"id": "S6", "title": "Mahavira — BBC Religion & Ethics（Jainism: History；2009-09-10 最后更新，页面已归档）", "url": "https://www.bbc.co.uk/religion/religions/jainism/history/mahavira.shtml", "type": "educational-broadcaster", "accessedAt": "2026-10-04", "coverage": "大雄传（传统叙事层）：生于599 BCE（'一些现代学者倾向前540年甚至更晚'）；刹帝利种姓、其父母为 Pārśva（帕尔沙）教法 follower；30岁出家、修苦行12年半、证 kevala-jñāna 后称 Mahāvīra；'有时被错误地称作耆那教创始人'、更宜视为古老生活之道的改革者与普及者；将'贞洁'补入 Pārśva 已有的四原则（不暴力、不妄语、不偷盗、不占有）；527 BCE 入灭（依 Śvetāmbara 文本）、传统称建立14000僧/36000尼社团——仅用于生平的传统叙事与证据边界说明"},
     {"id": "S7", "title": "Sacred texts — BBC Religion & Ethics（Jainism: Texts；2009-09-11 最后更新，页面已归档）", "url": "https://www.bbc.co.uk/religion/religions/jainism/texts/texts.shtml", "type": "educational-broadcaster", "accessedAt": "2026-10-04", "coverage": "正典传承：大雄言教称 Āgamas、为 Śvetāmbara 正典；弟子结集、因'不持有'誓而口传记忆；约前350年饥馑（传统叙事）致经典散失——天衣派谓所有 Āgamas 尽失、白衣派谓大部留存；两派共认 Purvas 失传；白衣派此后多次结集存经；文末引 Paul Dundas：教法是'无始无终、固定的真理系列，一个无人类或神圣起源的传统'——仅用于文献传承背景"}
   ],
@@ -105,7 +105,7 @@
         "name": "商羯罗（Śaṅkara）",
         "sub": "不二论吠檀多注释家（站内 philosophers.json 已收录，era '约7—8世纪（具体纪年有争议）'）——作为七支谓词说的批评者收录，非耆那教人物",
         "era": "约7—8世纪（站内纪年，具体有争议）",
-        "key": "IEP：七支谓词'从历史上看曾受（以商羯罗为代表的一些人）以明显不自合为由的批评'——矛盾联言永不可能真。此为耆那教认识论在古典时期遭遇的最著名外部批判，站内商羯罗条目可作关联点（站内条目未载此批评，接入时建议补）。",
+        "key": "IEP：七支谓词'从历史上看曾受（以商羯罗为代表的一些人）以明显不自洽为由的批评'——矛盾联言永不可能真。此为耆那教认识论在古典时期遭遇的最著名外部批判，站内商羯罗条目可作关联点（站内条目未载此批评，接入时建议补）。",
         "works": [],
         "sourceRefs": ["S2"]
       },
@@ -162,9 +162,9 @@
       {
         "from": "商羯罗（Śaṅkara）",
         "to": "Umāsvāmin／Umāsvāti",
-        "label": "批判：对七支谓词的不自合指控（针对该学说在其传统中的形态）",
+        "label": "批判：对七支谓词的不自洽指控（针对该学说在其传统中的形态）",
         "type": "批判（学说层面）",
-        "detail": "IEP：七支谓词'从历史上看曾受（以商羯罗为代表的一些人）以明显不自合为由的批评'。批判对象是七支说本身；落实为对 Umāsvāti 传统是学理定位而非可考的个人论战记录——IEP 未指明商羯罗所批的具体文本与论主。",
+        "detail": "IEP：七支谓词'从历史上看曾受（以商羯罗为代表的一些人）以明显不自洽为由的批评'。批判对象是七支说本身；落实为对 Umāsvāti 传统是学理定位而非可考的个人论战记录——IEP 未指明商羯罗所批的具体文本与论主。",
         "sourceRefs": ["S2"]
       },
       {
@@ -436,7 +436,7 @@
     },
     {
       "title": "从多面论与其批评入手（认识论—逻辑线）",
-      "route": "编辑建议：先读 IEP 'Jain Philosophy' §2（Epistemology and Logic）：pramāṇa 清单、盲人摸象、naya 与七式表、'非七个真值'辨、商羯罗式不自合批评与自指难题；再读 SEP 'Jaina Philosophy' §3.4（vibhajya 实例、Āmī 14 四性、七式、视角论），最后回到 IEP 结尾自评'始于可赞的可谬主义，终于站不住的相对主义'检验辩护是否成功；可补看 SEP 感知条目中耆那教的概念论定位（S4）一处即可。问题顺序：一个陈述能否穷尽真理→七式如何使用→这一主张是否削弱自身。",
+      "route": "编辑建议：先读 IEP 'Jain Philosophy' §2（Epistemology and Logic）：pramāṇa 清单、盲人摸象、naya 与七式表、'非七个真值'辨、商羯罗式不自洽批评与自指难题；再读 SEP 'Jaina Philosophy' §3.4（vibhajya 实例、Āmī 14 四性、七式、视角论），最后回到 IEP 结尾自评'始于可赞的可谬主义，终于站不住的相对主义'检验辩护是否成功；可补看 SEP 感知条目中耆那教的概念论定位（S4）一处即可。问题顺序：一个陈述能否穷尽真理→七式如何使用→这一主张是否削弱自身。",
       "sourceRefs": ["S2", "S1", "S4"]
     }
   ],

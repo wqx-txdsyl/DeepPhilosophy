@@ -93,3 +93,25 @@
 - `app/public/schools/data/school_印度哲学.json`（mentions-only 复核，"耆那"15处定位）
 - `app/public/schools/catalog.json` 与 `app/public/schools/data/`（无同名条目）
 - `docs/tasks/school-content-gap-tasks-2026-10-04.json`（I06 条目提取）
+
+## 九、同日草稿处置记录（2026-10-04 第二轮独立复核）
+
+按流程要求，发现目录内已有同日草稿（10:26—10:32 写成）后未盲信，换用独立会话对全部七个来源逐源重开核实，再决定保留/重写。
+
+**逐源复核结果（2026-10-04，全部命中，保留采信）：**
+
+1. S1 SEP "Jaina Philosophy"：WebFetch 逐段核读＋curl 原始 HTML。署名经 `citation_author`/`DC.creator` 元数据确认为 "Gorisse, Marie-Hélène"；"First published Mon Feb 13, 2023" 确认。抽验命中（逐字）：`set of philosophical investigations`、`the oldest extant Jaina treatise in Sanskrit`、`karmic matter is never genuinely mixed (with the self)`、`close to Sāṃkhya conceptions`、`not two, but seven modes of predication`、`Haribhadra is deeply influenced by the Investigation on Authority (Āptamīmāṃsā [Āmī]) of Samantabhadra`、Āmī 14 四性句、vibhajya 句（`instead of answering philosophical questions in a one-sided way, the teacher was analyzing (vibhajya) them`）、七式句（原文用 `inexpressible`，非 `unspeakable`）、`considered by some Jains as scientific treatises`、TS 1.4 七谛、TSBh（Umāsvāti, 400–450, jñāna/darśana）、PKM gloss、JDS 770 CE、Siddhasena/Akalaṅka＋注疏链、Bhagavatīsūtra loka 之问与层累年代。另确认：七式展开句位于 AJP 语境，SEP 原文句为 "The Jaina author who spends the most time on elucidating… is probably Haribhadrasūri in his Victory banner… (AJP)"＋"Now, Jainas are known to go further…"——草稿将七式系统化与 AJP/Haribhadra 相系、四性溯至 Āmī 14 的写法与原文相符（且草稿已用"相系"等审慎措辞）。
+2. S2 IEP "Jain Philosophy"：全要点命中，作者信息确认为 Mark Owen Webb, Texas Tech。逐字修正两处以贴原文：pramāṇa 清单句实为 `Notably absent from the list is inference`（evidence.json 本已记录正确原文，草稿中文转述无碍）；商羯罗批评实为 `obvious ground of inconsistency`（草稿译"明显不自洽"准确）；结尾句 `What begins as a laudable fallibilism ends as an untenable relativism` 命中。
+3. S3 SEP "Pacifism"：命中 `Mohandas Gandhi is perhaps the most famous adherent of ahimsa of the last century.`（全句含 "Mohandas"）与 `Hindus, Jains, and Buddhists share a concern for ahimsa or nonviolence as a basic moral virtue.`；satyagraha 原文为 `the force of love or force of truth that he called satyagraha`、brahmacarya 为 self-renunciation——草稿"奠基"措辞与其相容。署名经元数据确认为 Fiala, Andrew。
+4. S4 SEP "Perception…India"：分类句逐字命中（`robust realist… Nyāya-Vaiśeṣika and Mīmāṃsā… nominalist by the Buddhist schools… conceptualist by the Vedāntins and Jainas`）＋明言不展开概念论论证。署名元数据 Chadha, Monima。
+5. S5 BBC subdivisions：七要点全命中；"more austere… closer in its ways to the Jains at the time of Mahavira" 系页面表述而非天衣派自述——已把 S5 coverage 中"自认更近大雄时代"改为"（BBC 页面表述）其方式更接近大雄时代"。"两派尼众皆着衣"命中（未着白色，草稿未作白色断言，正确）。
+6. S6 BBC mahavira：七要点全命中（599 BCE＋"540 BCE, or even later"；kshatriya；父母为 Parshva follower；"sometimes wrongly called 'the founder of Jainism'"；12年半；527 BCE 依 Śvetāmbara 文本；14000僧/36000尼；归档 2009-09-10）。
+7. S7 BBC texts：六要点全命中（Āgamas 句、口传与非持有誓、约前350年饥馑、天衣全失/白衣大部存、Purvas 失传、Dundas `beginningless, endless and fixed truths, a tradition without any origin, human or divine`；归档 2009-09-11）。
+
+**草稿处置决定：保留主体，两处小修。**
+
+- 修正一：packet.json 与 evidence.json 中"不自合/不自洽"混用（4+1 处 vs 4 处）→ 统一为"不自洽"（共5处替换），与 IEP 原文 `obvious ground of inconsistency` 及草稿 overview/conclusion 的主流用词一致。
+- 修正二：S5 coverage 的"自认更近大雄时代"改为"（BBC 页面表述）其方式更接近大雄时代"（原文性质是 BBC 页面的比较表述，非教派自述）。
+- 其余内容（overview/conclusion/人物/关系/时间线/术语/著述/分支/阅读路线/evidenceLimits/evidence.json 76 条/artwork-brief）经逐源复核与抽查均与来源相符，原样保留；evidence.json 的英文 verbatim 记录抽查未见与原文冲突（`Notably absent…` 等抽查项记录的即正确原文）。
+- 复核后两个 JSON 经 `python3 -m json.tool` 校验通过；reviewMethod 已更新为两轮核验说明。
+- 范围自检：本轮仅改动 I06 目录内 packet.json（2处）、review.md（本节）、此前一轮的 5 处用词替换；未动其他任何文件，未做任何 git 写操作。
