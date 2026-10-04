@@ -1,0 +1,465 @@
+{
+  "schemaVersion": 1,
+  "taskId": "U03",
+  "name": "不二论吠檀多",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "自检：5 个来源全部 curl 全文抓取至 /tmp/u03_research/ 并逐条以关键词定位亲读相关段落（SEP Shankara 86,786 字符、IEP Advaita 28,160、维基 Advaita 413,844、GRETIL《Āgamaśāstra》30,837、GRETIL《薄伽梵歌》+注 520,003）；evidence.json 各条 locator 含亲眼核读的原文短引，写稿后逐条回对抓取文本；两 JSON 经 python3 -m json.tool 校验。自检性质，非独立同行评审。",
+  "proposal": {
+    "kind": "school",
+    "scope": "不二论吠檀多（Advaita Vedānta）作为吠檀多注释传统中的无二论支的深度包：围绕梵我同一（brahman–ātman）、无明（avidyā）与幻（māyā）、二谛（胜义 pāramārthika／世俗 vyāvahārika）与解脱（mokṣa）的论证结构展开。以商羯罗（Śaṅkara）对《梵经》《薄伽梵歌》与十主要奥义书的注疏进路为轴心（三始 prasthānatrayī），上溯乔荼波陀（Gauḍapāda）的无生论（ajātivāda），下及波陀摩帕陀、苏雷什瓦罗、曼陀纳·弥湿罗、伐差斯帕底·弥湿罗与维底罗尼耶的传承与内部争论（无明载体之争、Bhāmatī／Vivaraṇa 两系、mūlāvidyā 说）；与正理—胜论、弥曼差、佛教（中观、唯识自证说）的论辩按来源转述；受罗摩奴阇与摩陀婆批评的节点只立接口，两家学说本体归各自包。",
+    "period": "约6—14世纪（形成、注疏与内部争论期）；14—17世纪接受史节点（传记成书、道院建制文献化）；19世纪后的新吠檀多与现代西传归 I04 包，本包不承担",
+    "region": "印度梵语学术圈；14世纪接受史节点与南印度维查耶纳伽尔（Vijayanagara）宫廷资助相关",
+    "traditionContext": "奥义书—《梵经》注释传统（吠檀多）内的无二论支；与弥曼差共享吠陀释经学前史（'前弥曼差／后弥曼差'称谓史由 I03 包交代，本包不重复）",
+    "relatedExistingEntries": [
+      "站内《印度哲学》条目下分支'不二论吠檀多'（school_印度哲学.json index 0，本包为其深化扩展，不改动该分支数据）",
+      "站内《印度哲学》分支'限定不二论'（index 1，罗摩奴阇系，非本包范围）",
+      "站内人物'商羯罗'（philosophers.json 在库，era 作约7—8世纪/788—820，与 SEP'8世纪盛年'口径并陈不裁决；本包不修改站内数据）",
+      "I04 吠檀多传统总览包（docs/content-proposals/schools/I04/，其 proposal 明言'U03 留接口'）",
+      "I05 二元论吠檀多包（…/I05/，摩陀婆学说本体归彼包）"
+    ],
+    "relationSuggestions": [
+      "与 I04 的分工接口（I04 包 review.md 第4条已约定）：乔荼波陀—商羯罗师承细节、māyā—avidyā—adhyāsa 机制、不二论内部诸阶段（Bhāmatī／Vivaraṇa、mūlāvidyā 争论）归本包；I04 商羯罗条只留'最早现存完整注释＋托名问题＋māyāvādin 贬称'接口层——本包以完整论证兑现该接口",
+      "与 I05 的边界：摩陀婆对不二论的批评（五别、对幻论的驳斥）是 I05 学说本体；本包只在时间线与综述中写'不二论被批评'一侧（Bhāskara 的 māyāvāda 指责、罗摩奴阇'隐蔽佛教徒'指控、摩陀婆专驳著作名目），不代述二元论立场内容",
+      "Advaita 与 Dvaita 为对立学派：接入站内时两学案互链应标注'论敌关系'，不得写成前后相承",
+      "商羯罗年代三口径（SEP 8世纪盛年／站内 788—820／传统三十二岁寿）在本包并陈不裁决，与 I04 包口径一致"
+    ],
+    "evidenceNotes": "见 evidence.json（约40条断言—来源—定位核验记录）与 review.md 第四节复核方法。所有直接引语的原文均经 GRETIL 或 SEP/IEP 正文亲读核对，译文一律标注'编辑译'。",
+    "publicationNote": "publication 字段按任务 JSON：not-authorized-by-this-content-handoff；本包仅交付资料，不含发布授权。"
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Śaṅkara (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/shankara/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "商羯罗年代（8世纪盛年）、系谱（Govinda—乔荼波陀，据传统）、三始注疏与著作真伪分层、adhyāsa／avidyā／māyā／anirvacanīya、二谛（vyāvahārikasattā／pāramārthikasattā）、mahāvākya 与 anvaya-vyatireka 释经法、深睡意识论证与正理—胜论之争、对中观与唯识自证说的批评、jīvanmukti、亲传弟子与道院、身后无明争论"
+    },
+    {
+      "id": "S2",
+      "title": "Advaita Vedanta (Internet Encyclopedia of Philosophy, Sangeetha Menon)",
+      "url": "https://iep.utm.edu/advaita-vedanta/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "Advaita 词义（'非第二性'）、商羯罗前史与 sampradāya、乔荼波陀与 Govinda、māyā／avidyā 的宇宙面（samaṣṭi）与个体面（vyaṣṭi）、Bhāmatī／Vivaraṇa 两系与无明载体之争、anirvacanīya-khyāti 错误论与叠加注、śruti＋yukti＋anubhava、曼陀纳·弥湿罗与 sphoṭa、后期人物与里程碑著作名单"
+    },
+    {
+      "id": "S3",
+      "title": "Advaita Vedanta (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Advaita_Vedanta",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "商羯罗为体系化者非创始人、著作清单与《Vivekacūḍāmaṇi》真伪质疑、曼陀纳两个世纪内的主导地位、两子派与 mūlāvidyā、Bhāskara／罗摩奴阇／摩陀婆的批评原文转述、Śaṅkaravijaya 成书年代（14—17世纪）、四道院与 Hacker'14世纪前无记载'、维底罗尼耶与不二论地位确立、佛教影响争论"
+    },
+    {
+      "id": "S4",
+      "title": "Gauḍapāda: Āgamaśāstra (GRETIL 明文本，Apate 1921 编本，Anandasrama Sanskrit Series 10)",
+      "url": "https://gretil.sub.uni-goettingen.de/gretil/corpustei/transformations/plaintext/sa_gauDapAda-AgamazAstra.txt",
+      "type": "primary-text",
+      "accessedAt": "2026-10-04",
+      "coverage": "乔荼波陀原典亲读：GpK_2.31（睡梦—乾闼婆城喻）、GpK_2.32（无灭无生无缚无解脱，胜义）、GpK_2.34（非异非不异）、GpK_3.10（ātmamāyā）等节原文核读"
+    },
+    {
+      "id": "S5",
+      "title": "Bhagavadgītā with the commentary ascribed to Śaṃkara, Adhyāyas 1–17 (GRETIL 明文本)",
+      "url": "https://gretil.sub.uni-goettingen.de/gretil/corpustei/transformations/plaintext/sa_bhagavadgItA-comm.txt",
+      "type": "primary-text",
+      "accessedAt": "2026-10-04",
+      "coverage": "商羯罗注疏进路的原典层亲读：BG 2.16 颂（nāsato vidyate bhāvaḥ）原文与其注的 sat／asat 判据（认知不偏离 avyabhicāra）；注意该文件标题作'commentary ascribed to Śaṃkara'且仅含 1—17 章"
+    }
+  ],
+  "overviewSourceRefs": ["S1", "S2", "S3"],
+  "conclusionSourceRefs": ["S1", "S2", "S3"],
+  "school": {
+    "name": "不二论吠檀多",
+    "subtitle": "梵我同一与幻的无二论：商羯罗的注释传统",
+    "overview": "不二论（Advaita，直译'非第二性'，常译'不二论／非二元论'）是吠檀多（Vedānta）诸注释传统中的一支。它的经典基座是'三始'（prasthānatrayī）：《奥义书》、《梵经》（Brahma-sūtra）与《薄伽梵歌》——梵文语法家兼注释家商羯罗（Śaṅkara，斯坦福哲学百科记其'活跃于公元8世纪'）为三者写下现存最早且完整的注疏。不过按斯坦福百科与维基百科的一致口径，商羯罗是这一传统的'体系化者'而非创始人：他自己便自称承自师传（sampradāya）；据传统，其师为哥文达（Govinda），师祖即乔荼波陀（Gauḍapāda，约6—7世纪）。乔荼波陀为《蛙氏奥义书》（Māṇḍūkya Upaniṣad）而作的《Māṇḍūkya Kārikā》（又名 Āgamaśāstra）至今存世，是现存最早完整的不二论文本，其'无生论'（ajātivāda）——'无灭、无生；无缚者、无修者；无求解脱者，亦无已解脱者'——已把世界的显现性推到极致，也开启了延续至今的'不二论是否为隐蔽佛教'的归属争论。\n\n学说的核心命题是梵（brahman）与我（ātman）的数同（numerically identical）：个体经验自我在真实层面就是那不二的无限存在。论证不是宣告而是辨识。其一，商羯罗在《薄伽梵歌》2.16 注中把'存在'（sat）与'非存在'（asat）的判据放在认知的'不偏离'（avyabhicāra）上：罐、布、象等具体形态之识会随物坏而失效（偏离），故为'非存在'一面；而'存在'之识无处不成立，故变异世界没有独立的有性。其二，意识不是意向性的：正理—胜论一系以'意识即对象化经验'反对商羯罗在深睡中意识持续的立场，商羯罗则反驳——你不能'直接知觉到无意识'，深睡中自我与对象区分坍缩而意识仍无缝延续（斯坦福百科）。其三，释经层面，'汝即彼'（tat tvam asi，《歌者奥义书》6.8.7）与'我即梵'（ahaṃ brahmāsmi，《大森林奥义书》1.4.10）这类'大语句'（mahāvākya）以语法同位强行同一两个内涵不合的词，正是这种逻辑失衡逼出'存续—不存续'（anvaya-vyatireka）的辨析方法：剥去彼此不持久者，显出数同的纯粹意识与无差别存在。\n\n那么差异与苦难从何而来？《梵经注》开篇专设'叠加注'（adhyāsabhāṣya）：自与非自相互误叠，如暮色中把绳认作蛇。这一认识失败的根子是无明（avidyā）——无始的、遮蔽又投射的根本错误；个体由此自视为受限者，向外追逐永不能满足的圆满。世界作为整体显现，被归于幻（māyā）：它在经验当下显得真实，却不具终极存在。国际哲学百科指出 māyā 有宇宙面（samaṣṭi，属自在主 īśvara）与个体面（vyaṣṭi，即各 jīva 的无明）之分，自在主不受 māyā 制约，个体命我却受无明压伏。要紧的边界是：'māyāvādin'（幻论者）其实是论敌给的贬称，商羯罗本人罕用 māyā 一词（斯坦福百科引 Paul Hacker 的研究），其世界图像是'不可描述'（anirvacanīya）的'次于真实'的显现——既非梵、亦非梵外之物，而非绝对虚无；为避免自相矛盾，他区分两种存在层级：经验的、主体间有效的世俗存在（vyāvahārika-sattā）与终极存在（pāramārthika-sattā），两层不对称，胜义视角最终'吞没'经验层。\n\n解脱（mokṣa）因此是知的问题而非行的问题。弥曼差式的献祭与业行不能带来不死的亲证，因为有限行为的果报本身有限；吠陀天启（śruti）是不可替代的来源，但须辅以理性（yukti）与亲身体证（anubhava）方能实际化。商羯罗的教学法是听闻—反思—观照的递进，指向'直接而解放性的不二识'。已悟者未必立时离身：由于现行业报未尽，他'活在这个身体上却已解脱'（jīvanmukti），如魔术师看自己的幻术而不被迷惑（斯坦福百科）。这一定位也让不二论与弥曼差决裂：曼陀纳·弥湿罗（Maṇḍana Miśra，8世纪）出身伐多弥曼差却写出不二论纲领《Brahma-siddhi》，仍主张知与业并重，而商羯罗视知识为唯一解脱之因——两系张力贯穿此后数百年。\n\n不二论的历史并非商羯罗一人的直线展开。维基百科引学者研究指出：10世纪前，商羯罗的声名为其年长同时代人曼陀纳所掩，直到曼陀纳的弟子伐差斯帕底·弥湿罗（Vācaspati Miśra，9世纪）作《Bhāmatī》调和两家，商羯罗之学方才走显；而以波陀摩帕陀《Pañcapādikā》为源头的'广注'（Vivaraṇa）一系，经 Prakāśātman（约1200—1300；国际哲学百科作10世纪，两说并陈）首倡'根本无明'（mūlāvidyā）为'实有而无始'，遂与 Bhāmatī 系就无明载体（在 jīva 还是在 brahman）展开数百年论辩——斯坦福百科把这场争论列为商羯罗身后最持久的内部议题。对外，9世纪的 Bhedābheda 论师 Bhāskara 斥不二论为'大乘佛教徒诵持的可鄙 Māyāvāda'，12世纪罗摩奴阇（Rāmāṇuja）指商羯罗为'隐蔽的佛教徒'（prachanna bauddha），13—14世纪的摩陀婆（Madhva）更专撰《Upadhikhaṇḍana》等书驳斥。直到14世纪维底罗尼耶（Vidyāraṇya，Śṛṅgeri 法席 1380—1386、维查耶纳伽尔帝国重臣）的时代，不二论的历史声名与道院建制才真正确立——而按维基百科转述 Paul Hacker 的考证，四道院的叙事在此之前没有任何文献痕迹。",
+    "conclusion": "不二论留下最著名的哲学难题是它自己承认无法轻易摆脱的'无明载体'问题：若无明安在于个体（jīva），个体又以无明为成因，解释循环；若安在于 brahman，纯意识便被无明沾染，与'自在主不受 māyā 制约'的自身规定冲突。Bhāmatī 与 Vivaraṇa 两系各执一端，Prakāśātman 的 mūlāvidyā'实有而无始'说又招致'把无明实体化'的批评——这场争论没有无争议的裁决，斯坦福百科将其与'无明是单纯误认还是具遮、投二力'等问题一并列为商羯罗身后悬而未决的议程。同理，'世界为幻'的表述始终承受被读成虚无主义的压力：商羯罗以 anirvacanīya 与二谛层次自辩，但论敌（自 Bhāskara、罗摩奴阇到摩陀婆）正是抓住这一点指其为隐蔽佛教。\n\n史学层面，本包可确认的内容远比传说少。商羯罗生平几乎不可知：三十二岁寿、行化全印、四道院建制等叙事出自身后数百年（14—17世纪）成书的 Śaṅkaravijaya 类传记，四道院在14世纪前没有任何文献提及（Hacker，经维基转述）；现存数百部托名商羯罗的著作多出自后世持'Śaṅkarācārya'称号者之手，学界普遍只承认三始注疏与《Upadeśasāhasrī》等少数真作，连《Vivekacūḍāmaṇi》的真伪也遭现代学者普遍质疑。同时，'商羯罗＝印度哲学顶峰'的经典形象有明确的接受史成分：维基百科指出，正是19世纪西方学术经由托名（归属维底罗尼耶）的《Sarvadarśanasaṅgraha》过度强调不二论，才使其成为'印度灵性的典范'——远超其在虔信为主的宗教人口中的实际份额。 reading 不二论，因此要同时读两层：一层是层层叠架的论证（sat 的判据、深睡意识、大语句释义、anirvacanīya），一层是论证背后这个传统如何一次次重写自己的谱系与声名。",
+    "thinkers": [
+      {
+        "name": "乔荼波陀",
+        "sub": "Gauḍapāda；商羯罗师祖（传统口径）",
+        "era": "约6—7世纪（SEP 作6世纪；维基兼有6/7两说）",
+        "key": "无生论（ajātivāda）：于胜义无灭无生、无缚无修、无求解脱者亦无已解脱者（GRETIL GpK_2.32 原文核读）；以睡梦、幻象、乾闼婆城论证世界之显现性（GpK_2.31）；借用佛教术语而仍立于吠檀多立场，成为后世'隐蔽佛教'争论的源头",
+        "works": ["《Māṇḍūkya Kārikā》（Āgamaśāstra）"],
+        "sourceRefs": ["S1", "S2", "S3", "S4"]
+      },
+      {
+        "name": "商羯罗",
+        "sub": "Ādi Śaṅkara；站内人物（philosophers.json 在库）",
+        "era": "8世纪盛年（SEP）；生卒纪年有争议——站内页作约788—820，传统传三十二岁寿（传记性文献，14—17世纪成书，不可作史实）",
+        "key": "体系化者而非创始人；梵与我数同；以叠加（adhyāsa）立无明论，以世俗／胜义两层存在消解'世界为幻'与经验实在的矛盾；知（而非行）为解脱之因，教学指向听闻—反思—观照的直接不二识",
+        "works": ["《梵经注》（Brahmasūtrabhāṣya）", "《薄伽梵歌注》（Bhagavadgītābhāṣya）", "十主要奥义书注", "《Upadeśasāhasrī》"],
+        "sourceRefs": ["S1", "S2", "S3", "S5"]
+      },
+      {
+        "name": "波陀摩帕陀",
+        "sub": "Padmapāda；商羯罗亲传弟子中最早者（IEP）",
+        "era": "约公元800年（维基）",
+        "key": "《Pañcapādikā》疏商羯罗《梵经注》开篇诸颂，主张叠加必有所依（'无基底的叠加从未被经验'，IEP 转述）；其注成为后世 Vivaraṇa 系的源头文本",
+        "works": ["《Pañcapādikā》"],
+        "sourceRefs": ["S1", "S2", "S3"]
+      },
+      {
+        "name": "苏雷什瓦罗",
+        "sub": "Sureśvara；商羯罗亲传弟子（SEP）",
+        "era": "约8—9世纪（商羯罗直传弟子时期）",
+        "key": "传统归属《Naiṣkarmya-siddhi》（'无业成就'，四 siddhi 之一）；有现代不二论者主张唯苏雷什瓦罗正确代表商羯罗、波陀摩帕陀误解师说（维基转述 Satchidanandendra 一系观点）",
+        "works": ["《Naiṣkarmya-siddhi》（传统归属）"],
+        "sourceRefs": ["S1", "S2", "S3"]
+      },
+      {
+        "name": "曼陀纳·弥湿罗",
+        "sub": "Maṇḍana Miśra；商羯罗的年长同时代人（维基）",
+        "era": "8世纪（IEP）",
+        "key": "出身伐多弥曼差（Bhāṭṭa Mīmāṃsā）而写出不二论纲领《Brahma-siddhi》，其错误论成为后世规范不二论错误论（维基）；主张知与业并重（较商羯罗更宽），并持 Bhartr̥hari 的 sphoṭa 语义理论（IEP）；10世纪前其地位高于商羯罗",
+        "works": ["《Brahma-siddhi》"],
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "name": "伐差斯帕底·弥湿罗",
+        "sub": "Vācaspati Miśra；曼陀纳的有影响弟子（维基）",
+        "era": "9世纪（IEP）",
+        "key": "作《Bhāmatī》注商羯罗《梵经注》，调和商羯罗与曼陀纳两家，商羯罗之学由此走显；主张个体命我（jīva）为无明之载体与对象——Bhāmatī 系得名者",
+        "works": ["《Bhāmatī》", "《Brahmatattva-samīkṣā》"],
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "name": "维底罗尼耶",
+        "sub": "Vidyāraṇya；又名 Madhava（维基）",
+        "era": "14世纪；Śṛṅgeri Śārada Pīṭha 法席 1380—1386（维基）",
+        "key": "兼维查耶纳伽尔帝国重臣；《Pañcadaśī》作者（IEP 列为后期里程碑）；商羯罗与不二论的历史声名在其时代确立——Śṛṅgeri 获维查耶纳伽尔王室资助、诸派争宠背景中的中心人物",
+        "works": ["《Pañcadaśī》（IEP 列名）"],
+        "sourceRefs": ["S2", "S3"]
+      }
+    ],
+    "relations": [
+      {
+        "from": "乔荼波陀",
+        "to": "商羯罗",
+        "label": "师承（传统谱系）",
+        "type": "师承（传统口径，非史实定论）",
+        "detail": "SEP：'商羯罗之师名 Govinda；据传统，Govinda 之师为乔荼波陀'；IEP 同口径（'teacher's teacher'）；商羯罗《Māṇḍūkya》注即附于其乔荼波陀 Kārikā 注之内（SEP）",
+        "sourceRefs": ["S1", "S2"]
+      },
+      {
+        "from": "商羯罗",
+        "to": "波陀摩帕陀",
+        "label": "亲传弟子（最早者）",
+        "type": "师承",
+        "detail": "SEP：Padmapāda 与 Sureśvara 为直传弟子、其法脉'延续发展捍卫其哲学至今'；IEP：四弟子传统中 Padmapāda 被说成最早学生",
+        "sourceRefs": ["S1", "S2"]
+      },
+      {
+        "from": "商羯罗",
+        "to": "苏雷什瓦罗",
+        "label": "亲传弟子",
+        "type": "师承",
+        "detail": "SEP 列 Padmapāda、Sureśvara 为直传弟子；IEP：苏雷什瓦罗'据说'著《Naiṣkarmya-siddhi》；现代部分不二论者以其为师说唯一忠实代表（维基转述）",
+        "sourceRefs": ["S1", "S2", "S3"]
+      },
+      {
+        "from": "曼陀纳·弥湿罗",
+        "to": "商羯罗",
+        "label": "同时代学术竞争",
+        "type": "历史接触（同时代人）",
+        "detail": "维基：曼陀纳为商羯罗'年长的同时代人'，弥曼差学者而兼写不二论纲领；10世纪前被视为不二论主要代表，商羯罗声名一度为其所掩（两世纪后经伐差斯帕底调和方显）",
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "from": "曼陀纳·弥湿罗",
+        "to": "伐差斯帕底·弥湿罗",
+        "label": "师承与学说调和",
+        "type": "师承",
+        "detail": "维基：伐差斯帕底为曼陀纳'有影响的弟子'，作《Bhāmatī》与《Brahmatattva-samīkṣā》（疏曼陀纳《Brahma-siddhi》），思想'主要受曼陀纳启发'而调和两家",
+        "sourceRefs": ["S3"]
+      },
+      {
+        "from": "维底罗尼耶",
+        "to": "商羯罗",
+        "label": "追认与建制化",
+        "type": "接受史",
+        "detail": "维基：正是在维底罗尼耶时代（Śṛṅgeri 法席1380—1386、维查耶纳伽尔重臣），商羯罗与不二论的历史声名与文化影响才得以确立；同期 Śaṅkaravijaya 类传记成书、四道院叙事文献化（14世纪前无记载）",
+        "sourceRefs": ["S3"]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "约公元前1世纪（传统口径；现代学界对编成年代分歧大）",
+        "event": "《梵经》成书与不二论系谱回溯",
+        "detail": "SEP：不二论者将其系谱上溯至《梵经》作者跋达罗衍那（Bādarāyaṇa，'约公元前1世纪'口径）乃至奥义书诸师——此为传统系谱框架而非现代定年；三始（prasthānatrayī）结构于此定型",
+        "type": "文献",
+        "sourceRefs": ["S1"]
+      },
+      {
+        "year": "约6—7世纪",
+        "event": "乔荼波陀作《Māṇḍūkya Kārikā》",
+        "detail": "现存最早完整的不二论文本（维基）；无生论与睡梦—幻象论证（GRETIL GpK_2.31—2.36 原文核读）；其对佛教术语的借用成为千年'隐蔽佛教'争论的起点，现代学界通说：受佛教影响但非佛教徒（维基）",
+        "type": "文献",
+        "sourceRefs": ["S1", "S3", "S4"]
+      },
+      {
+        "year": "8世纪",
+        "event": "商羯罗盛年与三始注疏",
+        "detail": "SEP：'活跃于8世纪'；作现存最早完整的三始注疏（《梵经》《薄伽梵歌》与十主要奥义书注），另有独立著作《Upadeśasāhasrī》；数百部托名著作多出自后世持'Śaṅkarācārya'称号者之手（SEP 引 Potter/Hacker/Mayeda）",
+        "type": "人物/文献",
+        "sourceRefs": ["S1", "S3", "S5"]
+      },
+      {
+        "year": "约公元800年",
+        "event": "波陀摩帕陀《Pañcapādikā》",
+        "detail": "维基作 c. 800；疏商羯罗《梵经注》开篇诸颂，立'叠加必有所依'；IEP 称其为商羯罗最早的学生",
+        "type": "文献",
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "year": "8—10世纪",
+        "event": "曼陀纳系主导与 Bhāmatī 调和",
+        "detail": "IEP：曼陀纳（8世纪）出弥曼差而立不二论版本；维基：10世纪前商羯罗为其年长同时代人曼陀纳所掩，直至曼陀纳弟子伐差斯帕底（IEP 作9世纪）作《Bhāmatī》调和两家，商羯罗之学方显",
+        "type": "论争/接受",
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "year": "9—14世纪",
+        "event": "论敌的'幻论者'（māyāvādin）指控链",
+        "detail": "9世纪 Bhedābheda 论师 Bhāskara 斥不二论为'大乘佛教徒诵持的可鄙 Māyāvāda'，指其侵蚀吠陀正法的仪式义务；12世纪罗摩奴阇指商羯罗为'隐蔽的佛教徒'（prachanna bauddha）；13—14世纪摩陀婆撰《Upadhikhaṇḍana》等专驳不二论，并称不二论与大乘同为虚无论（维基本页作14世纪口径）",
+        "type": "论争",
+        "sourceRefs": ["S3"]
+      },
+      {
+        "year": "11—14世纪",
+        "event": "Bhāmatī 与 Vivaraṇa 两子派成型",
+        "detail": "两系围绕无明载体（jīva 或 brahman）之争制度化（IEP）；Prakāśātman（维基 c. 1200—1300；IEP 作10世纪，并陈）作《Pañcapādika-Vivaraṇa》，首倡 mūlāvidyā 为'实有而无始'（维基），Vivaraṇa 系取认识论取向、Bhāmatī 系取本体论取向",
+        "type": "分支",
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "year": "14—17世纪",
+        "event": "传记与道院建制的文献化",
+        "detail": "Śaṅkaravijaya 类传记成书于商羯罗身后数百年（14—17世纪，维基引 Dalal）；四道院（西 Dvārakā、东 Purī、南 Śṛṅgeri、北 Badrī）叙事按 Hacker 考证在14世纪前无任何文献提及，或迟至14世纪方起源",
+        "type": "接受史",
+        "sourceRefs": ["S3"]
+      },
+      {
+        "year": "14世纪起",
+        "event": "维底罗尼耶与不二论地位的确立",
+        "detail": "Śṛṅgeri 获维查耶纳伽尔王室资助，不二论成为最有影响的正统派别（darśana）的过程在诸派争夺宫廷资助的背景中成型（维基）；19世纪西方学术又经《Sarvadarśanasaṅgraha》过度强调不二论地位，使其被视为'印度灵性典范'",
+        "type": "接受史",
+        "sourceRefs": ["S2", "S3"]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "梵（brahman）",
+        "def": "不二的、无第二者的无限存在；无任何形式构成存在的根基，与个体我数同；商羯罗在 BG 2.16 注中以认知'不偏离'（avyabhicāra）为'存在'（sat）的判据",
+        "source": "SEP Shankara §2.1；GRETIL《薄伽梵歌》+注 bhg_2.16 及其注",
+        "sourceRefs": ["S1", "S5"]
+      },
+      {
+        "word": "我（ātman）",
+        "def": "个体经验自我之真实，非身心复合物；醒、梦、深睡三态中无缝持续的见证意识，深睡中自我—对象区分坍缩而意识仍延续",
+        "source": "SEP Shankara §2.3（深睡论证）、§3",
+        "sourceRefs": ["S1"]
+      },
+      {
+        "word": "梵我同一",
+        "def": "个体命我（jīva）与宇宙之我的真实（ātman）在真实层面同一、皆是梵——如罐中空间之于整体空间（IEP 喻）；mahāvākya'汝即彼''我即梵'为其经证",
+        "source": "IEP §Metaphysics and Philosophy；SEP Shankara §1、§5",
+        "sourceRefs": ["S1", "S2"]
+      },
+      {
+        "word": "无明（avidyā）",
+        "def": "无始的根本错误，一切生存苦难之根：遮蔽自性之不二本面、并投射出受限个体；商羯罗认为追问无明自身的起源即是以无明求无明，徒劳无功（IEP）",
+        "source": "SEP Shankara §3；IEP §Brahman, Jīva, Īśvara, and Māyā",
+        "sourceRefs": ["S1", "S2"]
+      },
+      {
+        "word": "幻（māyā）",
+        "def": "使梵显现为世界而不自变（非 parināma）的创造性能量：经验当下显真而终极不存在；有宇宙面（samaṣṭi，属自在主 īśvara）与个体面（vyaṣṭi，即各 jīva 的无明）；注意：'māyāvādin'系论敌贬称，商羯罗本人罕用此词",
+        "source": "IEP §Brahman, Jīva, Īśvara, and Māyā；SEP Shankara §2.2（引 Hacker）",
+        "sourceRefs": ["S1", "S2"]
+      },
+      {
+        "word": "叠加（adhyāsa）",
+        "def": "自与非自的相互误叠——如暮色中绳被认作蛇；《梵经注》开篇'叠加注'（Adhyāsabhāṣya）以此解释一切错误知觉乃至超验层面的误认",
+        "source": "SEP Shankara §3；IEP §Error, True Knowledge and Practical Teachings",
+        "sourceRefs": ["S1", "S2"]
+      },
+      {
+        "word": "不可描述（anirvacanīya）",
+        "def": "世界既非梵、亦非梵外之物的第三种存在地位——'次于真实'的显现，非绝对虚无（不如兔角之无）；不二论错误论因此称 anirvacanīya-khyāti（不可描述者的显现）",
+        "source": "SEP Shankara §2.2（BrSūBh 2.1.14、2.1.17；GK 2.34）；IEP §Error",
+        "sourceRefs": ["S1", "S2"]
+      },
+      {
+        "word": "二谛／两种存在（vyāvahārika-sattā／pāramārthika-sattā）",
+        "def": "主体间有效的经验存在与终极的不二存在两层，不对称：世界依梵而在、梵不依世界；胜义视角最终'吞没'经验层及其因果",
+        "source": "SEP Shankara §2.2",
+        "sourceRefs": ["S1"]
+      },
+      {
+        "word": "大语句（mahāvākya）",
+        "def": "凝定不二义的奥义书短语，如'汝即彼'（tat tvam asi，《歌者奥义书》6.8.7）、'我即梵'（ahaṃ brahmāsmi，《大森林奥义书》1.4.10）；四个大语句的集中讨论系商羯罗之后的不二论者所为；商羯罗以存续—不存续（anvaya-vyatireka）、转义（lakṣaṇā）、遮诠（neti neti）等法解其同位失衡",
+        "source": "SEP Shankara §5",
+        "sourceRefs": ["S1"]
+      },
+      {
+        "word": "生前解脱（jīvanmukti）",
+        "def": "已悟者因现行业报未尽而继续以个体身份生活的状态——'如魔术师不觉惑于自己的幻术'；具体经证见《歌者奥义书注》6.14.2",
+        "source": "SEP Shankara §6（引 ChUbh 6.14.2）",
+        "sourceRefs": ["S1"]
+      }
+    ],
+    "works": [
+      {
+        "title": "《梵经》及商羯罗注（Brahma-sūtra／Brahmasūtrabhāṣya）",
+        "author": "跋达罗衍那（Bādarāyaṇa）／商羯罗",
+        "era": "《梵经》编成年代多口径（传统约前1世纪，见 evidenceLimits）；注疏约8世纪",
+        "desc": "吠檀多三始之纲；商羯罗注为现存最早完整注疏（SEP），开篇叠加注以绳蛇误认立无明论；不二论内部一切争论（无明载体等）皆围绕此注展开",
+        "kind": "原典+注疏",
+        "sourceRefs": ["S1", "S2"]
+      },
+      {
+        "title": "《Māṇḍūkya Kārikā》（又名 Āgamaśāstra）",
+        "author": "乔荼波陀",
+        "era": "约6—7世纪",
+        "desc": "现存最早完整不二论文本（维基）；第二品无生论与睡梦—乾闼婆城喻；本包经 GRETIL 明文本（Apate 1921 编本，Anandasrama Sanskrit Series 10；录入 Peter Schreiner）亲读 GpK_2.31—2.36 原文",
+        "kind": "原典",
+        "sourceRefs": ["S1", "S3", "S4"]
+      },
+      {
+        "title": "《薄伽梵歌注》（Bhagavadgītābhāṣya）",
+        "author": "商羯罗（归属）",
+        "era": "约8世纪",
+        "desc": "三始注之一；2.16 注以认知不偏离辨 sat/asat（GRETIL 原文核读）；GRETIL 本标题作'commentary ascribed to Śaṃkara'且仅含 1—17 章；真伪经 Mayeda（1965）等专项研究（SEP 书目）",
+        "kind": "注疏",
+        "sourceRefs": ["S1", "S3", "S5"]
+      },
+      {
+        "title": "十主要奥义书注（Īśa 自在、Kena 由谁、Kaṭha 迦塔、Praśna 六问、Muṇḍaka 秃顶、Māṇḍūkya 蛙氏、Aitareya 爱多列雅、Taittirīya 泰提利耶、Chāndogya 歌者、Bṛhadāraṇyaka 大森林）",
+        "author": "商羯罗",
+        "era": "约8世纪",
+        "desc": "SEP 列名十注：Īśa、Kena、Kaṭha、Praśna、Muṇḍaka、Māṇḍūkya、Aitareya、Taittirīya、Chāndogya、Bṛhadāraṇyaka；维基：学者普遍视为真作；Māṇḍūkya 注与乔荼波陀 Kārikā 注合为一体",
+        "kind": "注疏",
+        "sourceRefs": ["S1", "S3"]
+      },
+      {
+        "title": "《Upadeśasāhasrī》（千句教）",
+        "author": "商羯罗",
+        "era": "约8世纪",
+        "desc": "商羯罗唯一确定的独立哲学著作，被称其'最重要的原创哲学著作'（维基引 Koller）；Mayeda 校勘并全译（A Thousand Teachings, 1992）；真伪经 Mayeda（1965b）论证（SEP 书目）",
+        "kind": "原典论书",
+        "sourceRefs": ["S1", "S3"]
+      },
+      {
+        "title": "《Pañcapādikā》（五分注）",
+        "author": "波陀摩帕陀",
+        "era": "约公元800年",
+        "desc": "疏商羯罗《梵经注》开篇诸颂（IEP：对开头诸颂的明晰注释）；其中'叠加无基底则从未被经验、不可设想'的基底的论点（IEP 转述）成为 Vivaraṇa 系源头文本",
+        "kind": "注疏",
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "title": "《Brahma-siddhi》（梵之成就）",
+        "author": "曼陀纳·弥湿罗",
+        "era": "8世纪",
+        "desc": "弥曼差学者写就的不二论纲领：其错误论成为规范不二论错误论（维基）；持 sphoṭa 语义理论与知业并重（IEP）；与 Iṣṭasiddhi、Naiṣkarmya-siddhi、Advaitasiddhi 并称四 siddhi（维基）",
+        "kind": "原典论书",
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "title": "《Naiṣkarmya-siddhi》（无业成就）",
+        "author": "苏雷什瓦罗（传统归属；IEP 用语'supposed to have written'）",
+        "era": "约8—9世纪",
+        "desc": "独立论书，论解脱唯在真知、业行非解脱之因；四 siddhi 之一（维基）",
+        "kind": "原典论书",
+        "sourceRefs": ["S2", "S3"]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "Bhāmatī 系（婆摩提系）",
+        "era": "得名注疏作于9世纪（IEP）；学派成型于11—14世纪（维基）",
+        "desc": "以伐差斯帕底·弥湿罗注商羯罗《梵经注》的《Bhāmatī》得名；本体论取向；主张个体命我（jīva）为无明之载体与对象、梵只能作为自在主（īśvara）'调御'无明而不可为其载体（IEP）；以观思为解脱主因、吠陀研读与反思为辅（维基）",
+        "kind": "分支",
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "name": "Vivaraṇa 系（广注系）",
+        "era": "成型于11—14世纪（维基）",
+        "desc": "以 Prakāśātman（维基 c. 1200—1300；IEP 作10世纪）注波陀摩帕陀《Pañcapādikā》的《Pañcapādika-Vivaraṇa》得名；认识论取向：拒斥行为、直取'梵之现观'（维基）；主张 brahman 为无明载体，并首倡 mūlāvidyā（根本无明）为'实有而无始'——遭'纯意识不能是无明之源、知识与无明矛盾属性并赋于梵'的批评（维基）；Roodurmun 称其思路成为此后不二论演进的主导动机（维基转述）",
+        "kind": "分支",
+        "sourceRefs": ["S2", "S3"]
+      },
+      {
+        "name": "无生论（ajātivāda）",
+        "era": "约6—7世纪（乔荼波陀）",
+        "desc": "严格说是一项学说而非教团分支：胜义上无灭无生、无缚无修无解脱（GRETIL GpK_2.32 原文）；因与中观术语亲缘而卷入'不二论是否隐蔽佛教'的争论，现代学界通说：借用佛教术语的不二论吠檀多、非佛教（维基）",
+        "kind": "学说",
+        "sourceRefs": ["S3", "S4"]
+      },
+      {
+        "name": "瑜伽化不二论（yogic Advaita）",
+        "era": "中世纪晚期（约14世纪前后）",
+        "desc": "维基：商羯罗之后的活态不二论传统吸收瑜伽传统与《Yoga-Vāsiṣṭha》《Bhāgavata Purāṇa》等文本；维底罗尼耶即受（略本）Yoga-Vāsiṣṭha 影响——与'以商羯罗体系为唯一正统'的学术设定（Hacker/Halbfass）相对",
+        "kind": "主题",
+        "sourceRefs": ["S3"]
+      }
+    ],
+    "quote": "na nirodho na cotpattir na baddho na ca sādhakaḥ / na mumukṣur na vai mukta ity eṣā paramārthatā（无灭、无生；无缚者、无修者；无求解脱者，亦无已解脱者——此即胜义。）",
+    "quoteAuthor": "乔荼波陀《Māṇḍūkya Kārikā》2.32",
+    "quoteKind": "原典直引（GRETIL《Āgamaśāstra》节标 GpK_2.32，Apate 1921 编本；译文为编辑译）",
+    "quotes": [
+      {
+        "text": "tat tvam asi（汝即彼）",
+        "author": "《歌者奥义书》6.8.7（位置经 SEP 条目核读）",
+        "exp": "同一性大语句的典型：以语法同位强令'你'（tvam）与'彼'（tat）同一，其逻辑失衡逼出 anvaya-vyatireka 辨析——tvam 否定'彼'的外在性，tat 否定'你'的受限性，所余即数同的纯粹意识与无差别存在（SEP §5）",
+        "kind": "经文短语（经 SEP 核读转引；译文为编辑译）",
+        "sourceRefs": ["S1"]
+      },
+      {
+        "text": "nāsato vidyate bhāvo nābhāvo vidyate sataḥ（非存在中无有性，存在中无非存在）",
+        "author": "《薄伽梵歌》2.16；商羯罗注辨 sat/asat",
+        "exp": "商羯罗注以认知是否'偏离'（avyabhicāra）定真妄：罐、布等形态之识随物坏而失效，故属'非存在'一面；'存在'之识无处不成立——存在自证且贯穿变异（SEP §2.1 即以 BG 2.16 为据）",
+        "kind": "原典直引（GRETIL《薄伽梵歌》+注 节标 bhg_2.16 及商羯罗注；译文为编辑译）",
+        "sourceRefs": ["S1", "S5"]
+      },
+      {
+        "text": "brahma satyam jagan mithyā; jīvo brahmaiva nāparaḥ（梵为真，世界为妄计；个体我即梵，非异）",
+        "author": "匿名传诵韵文（IEP 明言 anonymous verse，不可署名商羯罗）",
+        "exp": "后世概括不二论三义（梵真、世界妄计、我即梵）最常见的口诀；IEP 以其代表不二论'唯心一元论'的骨架；注意 mithyā 是'妄计／非终极'而非绝对虚无，与 anirvacanīya 相接",
+        "kind": "传诵韵文（经 IEP 核读；译文为编辑译）",
+        "sourceRefs": ["S2"]
+      }
+    ],
+    "closingQuote": "svapnamāye yathā dṛṣṭe gandharvanagaraṃ yathā / tathā viśvam idaṃ dṛṣṭaṃ vedānteṣu vicakṣaṇaiḥ（如睡梦之幻中所见、如乾闼婆城——通达吠檀多者如此观见此世界。）",
+    "closingQuoteKind": "原典直引（GRETIL《Āgamaśāstra》节标 GpK_2.31，Apate 1921 编本；译文为编辑译）"
+  },
+  "readingRoutes": [
+    {
+      "title": "作品顺序：从唯一确定的独立著作到原典现场",
+      "desc": "先读商羯罗《Upadeśasāhasrī》（Mayeda 校译本）感受其教学法的直接性；再读《梵经注》开篇'叠加注'（Adhyāsabhāṣya）体会以绳蛇误认立无明论的进路（SEP §3 有逐层解析）；最后以乔荼波陀《Māṇḍūkya Kārikā》第二品（GRETIL 原文 GpK_2.31—2.36 可直接在线核读）收束于无生论，回看商羯罗与师祖之间的张力",
+      "kind": "编辑建议",
+      "sourceRefs": ["S1", "S2", "S4", "S5"]
+    },
+    {
+      "title": "问题顺序：从错误如何可能到亲证",
+      "desc": "以'错误如何可能'（adhyāsa → anirvacanīya）切入，经二谛（vyāvahārika／pāramārthika）理解'世界为幻'指控为何失准；再进无明载体之争（Bhāmatī 系 vs Vivaraṇa 系、mūlāvidyā），终于认知判据（非可除性 bādha、亲证 anubhava）与生前解脱（jīvanmukti）——一条从形而上学走向解脱论的路径",
+      "kind": "编辑建议",
+      "sourceRefs": ["S1", "S2", "S3"]
+    }
+  ],
+  "evidenceLimits": [
+    "商羯罗生卒多口径并陈不裁决：SEP 作'8世纪盛年'；站内人物页作约788—820（本包不改动站内数据）；三十二岁寿与 digvijaya 神行叙事出自传记类文本（IEP 明言其'近乎超凡'），Śaṅkaravijaya 类传记成书于14—17世纪（维基引 Dalal），不可作史实",
+    "乔荼波陀年代：SEP 作6世纪，维基一处作6世纪、另一处作7世纪，本包取'约6—7世纪'区间",
+    "《梵经》编成年代学界分歧大；本包仅引 SEP'系谱回溯至跋达罗衍那（约前1世纪传统口径）'作为系谱框架。《梵经》原典文本本包未核读（I04 包已核 GRETIL 梵经文本并注意其'NOT PROOF-READ'声明），故《梵经》经义一律经 SEP/IEP 引述层使用",
+    "Prakāśātman 年代两说：IEP 作10世纪，维基作 c. 1200—1300（并陈不裁决）；另 IEP 页面内部有一处称《Vivaraṇa》为伐差斯帕底所作的自相矛盾句，与该页前文（Prakāśātman 作注）及维基口径不符，未采信",
+    "四道院（四 amnāya maṭha）建制叙事按维基转述 Hacker 的考证处理：14世纪前无任何文献提及，或迟至14世纪方起源；'商羯罗创建四道院'不得作为史实陈述",
+    "GRETIL《薄伽梵歌》注本标题作'commentary ascribed to Śaṃkara'且仅含 1—17 章：文本层面不能证真伪，真伪判定引 Mayeda（1965，经 SEP 书目转引）",
+    "《Vivekacūḍāmaṇi》《Ātma-bodha》等托名著作真伪存疑（维基：现代学者'倾向于否认'前者为商羯罗作），本包一律不收入 works，也不引其文句",
+    "māyā 一词严格限于不二论脉络；站内《印度哲学》分支简介'现象世界为虚幻（Maya）'的表述，按 SEP/IEP 口径应理解为 anirvacanīya 的'次于真实'而非绝对虚无——接入站内时建议核对该句",
+    "站内 philosophers.json（737 人）仅'商羯罗'在库；乔荼波陀、波陀摩帕陀、苏雷什瓦罗、曼陀纳·弥湿罗、伐差斯帕底·弥湿罗、维底罗尼耶均为站外人物（中文译名系编辑拟定的通行译名并附梵文转写）",
+    "站内 books.json（409 本）经检索无奥义书／梵经／薄伽梵歌／吠檀多／商羯罗相关书籍，故本包不含任何站内书籍 ID 或荐书链接"
+  ]
+}
