@@ -16,9 +16,9 @@ const columns = [
   {
     title: '更多',
     links: [
-      { label: '个人中心', path: '/profile' },
+      { label: '我的书房', path: '/profile' },
       { label: '设置', path: '/settings' },
-      { label: '开发者', path: '/DEVELOPER_IS_TXDSYL' },
+      { label: '关于本站', path: '/about' },
     ],
   },
 ];
