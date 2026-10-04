@@ -83,3 +83,47 @@
 7. https://zh.wikipedia.org/wiki/華嚴宗 （curl 全文＋定位）
 - 说明：SEP buddhism-huayan 本日 T01 工作曾核读数处片段（一即一切句、Fazang 生卒、Rafter Dialogue、词源、中观/瑜伽行/起信论兼取、朝鲜日本传播句）；本包按任务提示**独立重抓全文深挖**（多轮 grep：四法界、六相、五教、宗密、澄观、理学、当代诸主题），未复用 T01 片段。
 - 未用：CBETA 在线版（JS 渲染抓不到正文）；未尝试 Britannica（B05 已实测反爬页无正文，本包 6 源已足）。
+
+## 十一、二轮独立核验与修订（2026-10-04 下午，第二名研究员）
+
+首轮交付后，任务方派第二名研究员对本包做独立二轮复核。方法：WebFetch 逐项复验六源（SEP 四轮定向提问、维基文库两原典三轮、en/zh 维基百科各两轮）＋ **en.wikipedia raw wikitext（`action=raw` 全文检索）作裁决通道**（HTML 抓取对该 843KB 页面会截断，raw wikitext 可全检）＋ python 实查 philosophers.json / books.json / 隋唐佛学 / 韩国哲学。结论分三类：
+
+### A. 证伪并修正（13 处）
+
+1. **timeline[3] 智俨"661 年受晋王（Prince Pei）命"**：SEP 原文作 "Prince Pei"，直译"晋王"属误译（Pei≠晋）；已改按原文直录"Prince Pei（SEP 原文如此，汉文封号不作断言）"。首轮 uncertainty 中"齐王李恪？"的猜测一并删除。
+2. **李通玄"日食七枚枣椹之饼"**：SEP 原文 "a daily meal of only seven rice cakes made with dates and cypress"——枣与**柏**，非"椹"；已改。另"迷悟"无实然分离系添加（SEP 只说 sacred/secular、Buddha/sentient beings），已删。
+3. **法藏"以金狮子喻教武后"**（overview＋thinkers＋artwork-brief）：SEP 只记金狮像之喻，未说为武后而设；S6 仅列《华严金獅子章》书名。已改"金狮子像为喻（《华严金狮子章》，S6）"，不再系于教武后。
+4. **海印三昧条**：初版称"SEP/en 维基记华严举 haiyin sanmei 与 huayan sanmei 为两种关键三昧"并录 S5 英文原句——经 raw wikitext 全文检索，en.wikipedia **不含** ocean-seal／haiyin sanmei 字样，该句判为不成立引文；zh.wikipedia 亦无海印三昧概念性记载。词目改为仅凭《分齐章》开篇原文（S2），释义句标注"编辑释义"，sourceRefs 收缩为 [S2]。evidence.json 对应条目已改写并记录裁决过程。
+5. **四法界"同一真性"**（overview＋cihai）：zh 维基逐字释义为"雖有差別，而**同一體性**"，非"同一真性"；两处已改从页面原文（四条释义均已逐字核对）。
+6. **cihai 四法界"en 维基：sifajie…终成华严禅观的中心框架"**："sifajie"拼法与"中心框架"定性未在 en 维基核得；已改"en 维基设 'Meditation and the fourfold Dharmadhatu' 专节（洞山五位即基于四法界建立，S5 原句）"。
+7. **overview"事法界（'conditioned, akin to an illusion'）"**：该英文短语未在 SEP 核得；改为不引号的白描（"一一差别、各有分齐的现象界"，后者恰与 zh 维基释义"各有分齊"相合）。
+8. **SEP"以智俨为'法界缘起'说的建立者"**：SEP 未用单一"建立者"措辞（系于智俨 panjiao、承杜顺）；已改"系于智俨（承杜顺而阐）"并补 en 维基原句佐证。
+9. **"以《起信论》的体用两分调停三性之争"**：SEP 原文为 "adapting the perspective-taking tactic of the Awakening of Faith to the three nature theory, ascribing two aspects to each nature"，"体用两分／不变随缘"是以传统名相冒充 SEP 术语；已改按原义转述。
+10. **"SEP 记其历仕九朝"**：SEP 原文 "lived through the reigns of nine Tang emperors"（身历，非历仕）；已改。
+11. **杜顺"俗家事功见于乡野教化"、智俨"晚年居长安"**：两处均无来源支撑；已删（分别代以 SEP 记载的活跃时段与至相寺）。
+12. **义湘《法性偈》"又名华严法界图"**：en 维基原句为 "also known as the Diagram of the Realm of Reality"（无"华严"前缀），且未给出 hanja——"法性偈"三字为通译写法。thinkers/subSchools/timeline/S5 coverage 四处已改，并在 evidenceLimits 性质的说明中标注。混入的英文 "摄华严 teaching" 已统一为"摄华严教学"。
+13. **overview 两处引号断言**：'独具中国特色的佛教形态'（SEP 原文未见此前提，改为编辑概括并补 intrinsic value 原句）；新儒家宣言"'圆而神'之智"（SEP 原文 rounded and spiritual wisdom，汉字回译性质已标注）；另删 "화엄" 谚文（未核）。works[0]《华严经》desc 的"五十三参"（未核）与 dragon girl 系属（龙女故事出自《法华经》，SEP 系于李通玄段）已改写。S1/S2/S5/S6 四条 sources coverage 的相应描述同步订正。
+
+### B. 裁决为真并保留（HTML 抓取截断曾致误疑）
+
+- en 维基宗密句 **"displaces the Avataṃsaka in favor of the Awakening of Faith (which emphasizes the One Mind)"**——raw wikitext 证实存在，overview 与 thinkers[5] 的"置换"表述保留。
+- en 维基法藏句 **"the Buddhist teacher of the Empress Wu Zetian (684–705)"**——证实存在，"武曌的佛教教师"保留（locator 已补 raw wikitext 原句）。
+- 首轮自检修正的两处引文（closingQuote 标点、五等判教括注）经复验无误。
+
+### C. 站内核对（python 实查，2026-10-04）
+
+- philosophers.json：法藏（643-712年，隋唐佛学）、义湘（7世纪，华严宗/佛教）、元晓 (Wonhyo)（617–686）站内实有；杜顺、智俨、李通玄、澄观、宗密无条目——与本包 sub 标注一致。
+- books.json：无华严专门藏书；蒋维乔《中国佛教史》1201d003be31 实有（epub 21章），仅作通史关联建议。
+- 《隋唐佛学》：thinkers 有法藏（works 仅《华严经探玄记》）、cihai 有"华严/法界缘起/六相圆融/法界缘起 (Dharmadhatu Dependent Arising)"、subSchools[2] 华严宗五教判释系（era 唐至宋）——与 proposal.relatedExisting 描述一致。
+
+### D. 二轮核读 URL 清单（均为 2026-10-04）
+
+1. https://plato.stanford.edu/entries/buddhism-huayan/ （WebFetch 四轮定向提问，20+ 断言逐字）
+2. https://zh.wikisource.org/wiki/華嚴一乘教義分齊章 （三轮：15 项逐字＋6 项精确串＋顿/终教引经）
+3. https://zh.wikisource.org/wiki/原人論 （10 项逐字）
+4. https://zh.wikisource.org/wiki/大乘起信論_(真諦) （未完成页性质确认）
+5. https://en.wikipedia.org/wiki/Huayan （HTML 两轮＋raw wikitext 裁决一轮）
+6. https://zh.wikipedia.org/wiki/華嚴宗 （16 项逐字＋四法界/三观释义补轮）
+7. en.wikipedia raw 通道：https://en.wikipedia.org/w/index.php?title=Huayan&action=raw
+
+修订后自检：packet.json / evidence.json 经 `python3 -m json.tool` 校验通过；relations 端点、sourceRefs、fieldPath 全部回解析通过（见 evidence.json 新增 12 条二轮记录，总 86 条）。
