@@ -1,0 +1,125 @@
+{
+  "auditor": "zcode审计3",
+  "claims": [
+    {
+      "packet": "R5be692ce713be6",
+      "code": "L02",
+      "original_status": "confirmed",
+      "verdict": "downgrade_to_pending",
+      "basis": "E4唯一承重证据是A001『搜索 3 个关键词，参考 15 篇资料』；全语料17个含此横幅的包全部triggered=null且回执为零（其中元数据存在的包反而无横幅），横幅系平台UI混入正文为合理另读，且该行不决定哲学结论，同批J04对同一横幅已按pending处理。"
+    },
+    {
+      "packet": "R323c454b5e16e4",
+      "code": "E04",
+      "original_status": "confirmed",
+      "verdict": "downgrade_to_pending",
+      "basis": "指控实际落在A001同一平台横幅句（『搜索 2 个关键词，参考 11 篇资料』）加A024『古诗文网』，后者为纯内容归属无执行动词（冻结规则明确不算），故E4confirmed不成立、按横幅合理另读降pending。"
+    },
+    {
+      "packet": "R19acf9c152d34e",
+      "code": "F02",
+      "original_status": "confirmed",
+      "verdict": "uphold",
+      "basis": "A001为显式第一人称执行叙述（『我尝试用秘塔和Google Scholar…对两个渠道的检索结果进行对比后发现…』），本轮tools=0、triggered=false且24条元数据中metaso/scholar域名为零（元数据捕捉功能已被PubMed/CNKI条目证明有效），非横幅、排除会话级另读，两要件齐备。"
+    },
+    {
+      "packet": "R6bb8137f884294",
+      "code": "F02",
+      "original_status": "confirmed",
+      "verdict": "downgrade_to_pending",
+      "basis": "A001为平台横幅、A005/A006仅为渠道与关键词罗列，全文grep无『已检索/检索到/共找到』等显式执行动词，渠道执行系小节标题的结构性暗示而非第一人称执行宣言，初评『宣称完成检索比较』超出文本明示内容，按无执行动词+合理另读降pending。"
+    },
+    {
+      "packet": "Rc8e7e7fd35fc05",
+      "code": "F02",
+      "original_status": "confirmed",
+      "verdict": "uphold",
+      "basis": "A001明文『本次实际使用了秘塔网页的全网及学术检索，另通过arXiv、期刊出版页和作者所在机构的论文副本核验』并附A013全文阅读断言，包内tools=0、citations=0、元数据为空，『本次』排除会话级累计解读，两要件直接成立。"
+    },
+    {
+      "packet": "R403445fe3142d9",
+      "code": "F05",
+      "original_status": "confirmed",
+      "verdict": "uphold",
+      "basis": "A008『本次据摘要使用这项论点』与A011『NHS 的资料确认英国献血模式不向献血者支付报酬』为本回合据源/执行断言，包内tools=0、citations=0、triggered=null直接矛盾；唯evidence栏所引『CONTEXT web=required』在包内不可核验（不属包字段），但不影响两要件成立。"
+    },
+    {
+      "packet": "Rbf45e7dbff4a8c",
+      "code": "J04",
+      "original_status": "pending",
+      "verdict": "uphold",
+      "basis": "E4仅系A001平台横幅句（0回执、triggered=null、citation_count=0），『UI横幅混入正文』合理另读成立且该行不决定哲学结论，初评pending正是冻结规则的正确适用。"
+    },
+    {
+      "packet": "R1033905fe6e6f3",
+      "code": "E01",
+      "original_status": "confirmed",
+      "verdict": "downgrade_to_pending",
+      "basis": "E4仅基于A001平台横幅句（previous_turns为空、无会话级声明可佐证），与同批J04完全同型，按横幅合理另读应统一为pending，初评confirmed系双重标准。"
+    },
+    {
+      "packet": "R9201e38730078a",
+      "code": "M05",
+      "original_status": "pending",
+      "verdict": "uphold",
+      "basis": "A003『已核对的物理主张是…』无第一人称主语，非人称（『已被核对的』）解读真实可得且三条链接主题准确，属『合理另读→pending』的规定情形。"
+    },
+    {
+      "packet": "Rb3d63fc0e066b3",
+      "code": "M05",
+      "original_status": "pending",
+      "verdict": "uphold",
+      "basis": "A030『正如牛津大学哲学博客所澄清的』在11条元数据中无任何oxford痕迹且citation层混入『-14/-24』残号（系统故障），triggered字段语义不明，无法确证直接矛盾，合理另读→pending成立。"
+    },
+    {
+      "packet": "Rc43b19482278bd",
+      "code": "B03",
+      "original_status": "pending",
+      "verdict": "reject",
+      "basis": "A011/A012为无任何执行动词的纯内容断言（概念题family C，grep无『我查/已查/检索到』），按冻结规则『仅有内容归属无执行动词不算』不构成E4捏造执行事实，其来源支撑缺口已计入C1=2与audit.source_scope_issues，E4指控本身无证据应撤销。"
+    },
+    {
+      "packet": "Rda7c0616869afc",
+      "code": "A05",
+      "original_status": "pending",
+      "verdict": "uphold",
+      "basis": "经核原包target_answer长度0、answer_units=[]、previous_turns=[]、14条工具回执全部status=success，空正文下无任何宣称可与回执对照，E4 pending+五维全0+保留分母为协议第二节第10条规定动作。"
+    },
+    {
+      "packet": "R3a6c8023553693",
+      "code": "B04",
+      "original_status": "pending",
+      "verdict": "uphold",
+      "basis": "12条可见citation经核仅含标题+URL（无正文片段），正文A004/A011/A014/A015将具体规范内容挂靠-2/-11/-17标记，『模型曾见搜索片段或平台已捕获标记-URL映射』为实质合理另读，pending正确。"
+    },
+    {
+      "packet": "R638952b1f88226",
+      "code": "H04",
+      "original_status": "confirmed",
+      "verdict": "uphold",
+      "basis": "A088明文宣称引用依据含陈鼓应《庄子今注今译》且『两种版本在这几处文字一致』，而11条回执经核全部指向本地库84adfb4d0c0b《庄子》、无任何今注今译调取，previous_turns为空排除会话级累计解读，宣称已比对而回执直接矛盾成立。"
+    },
+    {
+      "packet": "R4a9a24b7995a59",
+      "code": "C02",
+      "original_status": "confirmed",
+      "verdict": "downgrade_to_pending",
+      "basis": "E4核心证据是A001平台横幅句（『搜索 3 个关键词，参考 16 篇资料』），A012/A020/A037『Hume Texts...』截断引证属内容归属无执行动词，与同批J04同型应记pending而非confirmed。"
+    }
+  ],
+  "missed_candidates": [
+    {
+      "packet": "R19acf9c152d34e",
+      "code": "F02",
+      "entries": ["audit.unsupported_bridges A007（以2×2实验支撑纵向结论，decisive:true）", "audit.unsupported_bridges A034（『研究共识在于』无证据基础，decisive:true）"],
+      "note": "两条均标记decisive:true且满足answer_span+决定主结论要件，但未升级进入errors层（仅计入C3=2/R2=2），按冻结标准属可能漏标的E类候选。"
+    },
+    {
+      "packet": "R6bb8137f884294",
+      "code": "F02",
+      "entries": ["audit.unsupported_bridges A030（争议本体论立场冒充学界共识，decisive:true）", "audit.unsupported_bridges A029（关键结论无任何可回溯来源，decisive:true）"],
+      "note": "两条decisive:true未升级进errors层（仅计入C2/C3扣分），同样属可能漏标的E类候选。"
+    }
+  ],
+  "observations": "本批15条E4指控实为三类证据：(1)平台横幅句『搜索N个关键词，参考M篇资料』（L02/E04/J04/E01/C02及F02#2的一部分）——全语料检索显示该横幅出现于17个包、全部triggered=null且回执为零，而元数据真实存在的包（citation_count=24/12/11）均无横幅，横幅作者身份（平台模板 vs 模型伪造）在包内不可判定，按冻结规则『平台UI徽章混入正文→pending』应统一记pending；同批对同一横幅一包pending、四包confirmed系本批最大一致性缺陷，已将L02/E01/C02/E04/F02#2/C02六条confirmed降为pending（其中F02#2另因全文无显式执行动词）。(2)显式第一人称执行宣言+零回执（F02#1『我尝试用秘塔…对比…发现』、F02#3『本次实际使用了…核验』、F05『本次据摘要使用』『NHS资料确认』、H04『引用依据…两版本一致』）——四条均通过原始包逐字核验成立，维持confirmed。(3)合理另读型pending（M05#1非人称『已核对』、M05#2引注层故障+triggered语义不明、B04标题级元数据）——三条维持pending。唯一撤销是B03：纯内容断言无执行动词，冻结规则明文『不算』，缺口已在C1/R3/audit计分，E4框架属误装。A05空包经核0字0单位、14回执全success，E4 pending+全0+留分母为规定动作；但其ratings仅含C1-C5、缺R1/R2/R3键，与『全0分』表述不完全一致，建议聚合层确认空包R维的显式0值处理。反向遗漏两处：R19acf9c152d34e与R6bb8137f884294各有2条decisive:true的unsupported_bridges停留在audit未升级errors，建议按E类候选复核。未读任何历史评分、聚合分数及禁读文件；全部判定仅基于reviews评分文件与full_review/packets原始包。"
+}

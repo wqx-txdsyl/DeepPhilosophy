@@ -1,0 +1,66 @@
+{
+  "id": "R2ed23a29161edf",
+  "ratings": {
+    "C1": 4,
+    "C2": 4,
+    "C3": 4,
+    "C4": 4,
+    "C5": 4,
+    "R1": 4,
+    "R2": 4,
+    "R3": 4
+  },
+  "reasons": {
+    "C1": {
+      "reason": "三项必做工作全部完成：核对两篇论文的DOI/题名/作者/刊名/年份（A007、A009）；逐层声明读取状态（A006已读摘要未读全文，A014未读回应未重算统计）；以互斥结论、撤稿反例与预印本/METADATA_ONLY记录完成标识符/发表/被引/为真的区分（A003、A011、A024-25、A030-31）。且对Wakefield那个DOI串如实交代'只在搜索结果引用片段里看到，没能在发布方页面核验'（A021），未冒充已核。主体与固定条件未变。",
+      "answer_unit_ids": ["A006", "A007", "A014", "A021"],
+      "evidence": "工具回执#4/#5/#16（get_scholarly_source 两篇 Science 记录）；pool 条目1/2摘要数字一致"
+    },
+    "C2": {
+      "reason": "核心区分'可定位性≠可证成性'（A004）贯穿全文，并落地为 DOI 只证明登记、不蕴含同行评审/发表/可获取/结论为真的分层判断（A003、A024-25、A030-31），每处区分都改变结论适用范围，非术语罗列。",
+      "answer_unit_ids": ["A004", "A024", "A025", "A037"],
+      "evidence": ""
+    },
+    "C3": {
+      "reason": "决定性桥接全部由本轮实际读取的材料承担：同刊同DOI机制下两篇结论互斥（A011-13）直接证明DOI无裁决力；Wakefield经评审、有DOI仍被撤回（A018-20）与OSF预印本/Long COVID仅元数据记录（A024-25）分别封死'有DOI=可信'与'有DOI=已发表/可读'两条逃逸路径；结论严格不越界（A014-16明确不报告复现率X）。",
+      "answer_unit_ids": ["A011", "A012", "A014", "A024", "A025"],
+      "evidence": "回执#5/#16（OSC与Gilbert摘要）；回执#8（Retraction Watch）；pool条目1/2"
+    },
+    "C4": {
+      "reason": "处理了最强反方——DOI至少是弱质量信号：承认其为'廉价的筛选启发式'并给出适用与失效条件（A027-31）；交代全部检索失败边界并申明'工具失败不等于资料不存在'（A021-22）；指出撤回状态不会回溯到二次转述（A035）。",
+      "answer_unit_ids": ["A021", "A022", "A027", "A030"],
+      "evidence": ""
+    },
+    "C5": {
+      "reason": "1950字紧凑分层：结论先行、核验居中、边界后置，满足'实际找一篇论文核验'的显式要求，无重复注水。",
+      "answer_unit_ids": ["A001", "A037"],
+      "evidence": ""
+    },
+    "R1": {
+      "reason": "对OSC摘要的转述（100项/效应量减半/97%显著/36%显著）与pool条目1逐字吻合；对Gilbert评论摘要的转述（三处统计错误、相反结论）与pool条目2一致；对Retraction Watch页面'now retracted'的解读有回执#8支撑；未混淆任何作者/译注/时代。",
+      "answer_unit_ids": ["A008", "A010", "A018"],
+      "evidence": "pool条目1、2；回执#8"
+    },
+    "R2": {
+      "reason": "每条材料驱动具体论证步骤：OSC/Gilbert互斥→DOI无裁决力（A011-13）；Wakefield撤稿→有DOI经评审仍不可信（A020）；447b3 OTHER与Long COVID METADATA_ONLY→DOI不蕴含发表与可获取（A024-25）。无堆引用。",
+      "answer_unit_ids": ["A011", "A020", "A024"],
+      "evidence": "原包回执中447b3记录publication_type=OTHER/venue=null、Long COVID记录METADATA_ONLY已核"
+    },
+    "R3": {
+      "reason": "三条引用均有回执；读取层级与失败路径（PubMed cookie、Lancet 403、Crossref 406、NCBI验证码）逐一如实交代（A021），并明确声明Wakefield DOI未能在发布方核验——范围声明诚实完整。",
+      "answer_unit_ids": ["A021", "A022"],
+      "evidence": "回执#6/#7/#10/#11/#12/#13状态与正文声明一致"
+    }
+  },
+  "audit": {
+    "condition_changes": [],
+    "unsupported_bridges": [],
+    "source_scope_issues": []
+  },
+  "errors": [],
+  "strength": "以同刊同DOI机制下互斥结论做直接否证，且对检索失败边界的如实交代本身就是对'有DOI≠我核实过'的自我示范。",
+  "limits": [
+    "pool不含Wakefield条目，撤稿与'判定为造假'的细节只能对Retraction Watch页片段与回执核对，无法逐字核验原页全文",
+    "PubMed/Lancet等被403/验证码拦截页面的内容无法离线核验"
+  ]
+}

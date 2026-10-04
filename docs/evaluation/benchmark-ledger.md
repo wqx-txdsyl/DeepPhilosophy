@@ -10,23 +10,23 @@
 
 ## 当前总览
 
-下表现只展示**冻结记录R1的统一60题主成绩**：原70题集中的同一60道分析与研究题，每份答卷72轮，单值、每题等权。5道纯核验题另记证据状态，5道故障fixture未测。原题集和量尺不改，不能将本表称作完整70题跑分。旧65题、64题与10题汇总保留在历史档案，不与R1并列。
+下表现展示**冻结记录R2的统一60题主成绩（zcode统一重评）**：原70题集中的同一60道分析与研究题，每份答卷72轮，单值、每题等权。R2由zcode按冻结v1.2单一协议对九份答卷全部648回合独立重评（控制样本T1–T6通过；错误指控经"主体感知回执可得性"规则裁定）。R1为混合方法抽样评审（每对象仅9–28轮直接复核，ChatGPT为全文文档评审），保持冻结留档，不与本表并列。5道纯核验题与5道故障fixture两记录均不测。原题集和量尺不改，不能将本表称作完整70题跑分。旧65题、64题与10题汇总保留在历史档案。
 
 <!-- benchmark-dashboard:start -->
 |对象|统一60题总分 /100|记录|
 |---|---:|---|
-|PhiAgent v0.1.0|84.49|R1 已冻结|
-|PhiAgent v0.1.1|88.75|R1 已冻结|
-|PhiAgent v0.1.2|91.89|R1 已冻结|
-|PhiAgent v0.1.3|84.37|R1 已冻结|
-|PhiAgent v0.1.4|86.40|R1 已冻结|
-|PhiAgent v0.1.5|86.21|R1 已冻结|
-|DeepSeek 网页型号未记录 · 深度思考＋联网|79.70|R1 已冻结|
-|豆包 网页型号未记录 · 快速默认档|69.71|R1 已冻结|
-|ChatGPT Work · 6.1 Sol · high|94.95|R1 已冻结|
+|PhiAgent v0.1.0|95.27|R2 已冻结（主记录）|
+|PhiAgent v0.1.1|99.42|R2 已冻结（主记录）|
+|PhiAgent v0.1.2|97.12|R2 已冻结（主记录）|
+|PhiAgent v0.1.3|98.60|R2 已冻结（主记录）|
+|PhiAgent v0.1.4|99.14|R2 已冻结（主记录）|
+|PhiAgent v0.1.5|99.24|R2 已冻结（主记录）|
+|DeepSeek 网页型号未记录 · 深度思考＋联网|77.83|R2 已冻结（主记录）|
+|豆包 网页型号未记录 · 快速默认档|70.37|R2 已冻结（主记录）|
+|ChatGPT Work · 6.1 Sol · high|80.36|R2 已冻结（主记录）|
 <!-- benchmark-dashboard:end -->
 
-这些数值均为**开发暂定分**：v0.1.0 的 77 轮中仅 17 轮、v0.1.1 中仅 27 轮经过独立模型复核；其余仍是未经校准的自动初评，没有人类专家验收。因此 83.89 → 86.72 不能直接解释为质量提升。两轮都独立复核的同组 10 题是 65.71 → 65.50，亦只是有目的的缺陷样本，不能外推到全套。
+这些数值均为**开发暂定分**：R2为单一评审族（zcode子代理，单一冻结协议）的匿名重评，无评分者间一致性检验，且PhiAgent与评审同属本项目（从属偏差风险已登记）；R1的旧总览为混合方法抽样，v0.1.0 的 77 轮中仅 17 轮、v0.1.1 中仅 27 轮经过独立模型复核。两个记录都不构成受控模型排行榜，R1→R2的分数变化是"评分方法变化"与"答卷表现"的混合，不能作单因素因果解释。
 
 在 RUN3 之前，v0.1.2 是**最终契约未跑全套**，不是从未做过任何局部测试：旧编号下试跑过第一候选 10 题对照和 3 个新问题，第二候选仅完成 2 题即遇 API 402；这些不能算作 v0.1.2 的完整测试成绩。
 
@@ -190,15 +190,20 @@ DeepSeek、豆包的官方网页答卷现已由用户补交完成：每家65题7
 ```sh
 .venv/bin/python backend/tools/aggregate_benchmark_scores.py
 .venv/bin/python backend/tools/aggregate_benchmark_scores.py --check
-.venv/bin/python backend/tools/render_benchmark_matrix.py
+.venv/bin/python backend/tools/render_benchmark_matrix.py            # 主入口=R2
+.venv/bin/python backend/tools/render_benchmark_matrix.py --record r1  # R1留档视图
 .venv/bin/python backend/tools/check_agent_release.py
 .venv/bin/python docs/evidence/phiagent_benchmark_v0_1/validate.py
 .venv/bin/python docs/evidence/rubric_v1_2/verify_freeze.py
+.venv/bin/python backend/tools/freeze_benchmark_results.py verify    # R1冻结校验
+.venv/bin/python backend/tools/prepare_benchmark_r2.py verify        # R2输入包校验（648）
 ```
 
-第一条同时更新机器汇总和本台账的总览表，其余内容保留。`--check` 检查数值可复算、原评分与冻结输入指纹一致。这里的“长期”是可持续续写与 Git 留史，不是已创建自动定时评测任务。
+总览表由第一条从冻结记录（优先R2，无则R1）再生成；matrix主入口为R2，`--record r1`可再生成R1留档视图。`--check` 检查数值可复算、原评分与冻结输入指纹一致。这里的“长期”是可持续续写与 Git 留史，不是已创建自动定时评测任务。
 
 ## 更新记录
+
+- **2026-10-04 冻结跑分记录 R2（zcode统一重评，替代R1成为主记录）**：按任务书要求，zcode以自身审读能力对九份已测答卷的同一60题全部648回合按冻结v1.2统一重评，替代此前"DeepSeek部分初评+混合方法抽样"的R1口径成为主表。控制样本T1–T6盲评全部通过（决定性错误敏感性6/6、正确短答不受罚、冗长不加分、立场公平、简答=详答）。输入为匿名包；解盲仅发生在评分完成后，用于两项结构性核查：(1)"搜索N个关键词"横幅100%来自豆包产品UI（17/17包解盲为豆包；6个PhiAgent轨迹与ChatGPT答卷0处）；(2)浏览器采集主体无工具回执层（DeepSeek/豆包0回执、ChatGPT 0回执0引用0元数据），PhiAgent每包59–69条真实回执。据此裁定：浏览器主体"宣称已查而回执为零"类指控一律pending封顶；PhiAgent包宣称-回执矛盾可confirmed（仅R638952b1f88226维持confirmed）。三批独立审计复核全部45条指控+2个无E包audit轨；三项同源复核（A04-T1心理归因、J01-T4条件扩大、F03-T1研究假冲突）发现并修正1处真实误判（R55b1aa681153f5 C3/R2 4→3，假冲突桥接），另登记3处审计轨补记（不改分）。R2主分：v0.1.0 95.27、v0.1.1 99.42、v0.1.2 97.12、v0.1.3 98.60、v0.1.4 99.14、v0.1.5 99.24；DeepSeek 77.83、豆包 70.37、ChatGPT 80.36。与R1差异来源：ChatGPT -14.59主要因R1对其仅做文档级评审（逐轮0轮）；PhiAgent +5~+14部分反映全量引文核验下的真实完成度，部分可能为评审从属与天花板效应，已如实登记。R1保持冻结不动；R2冻结于[frozen_r2_20261004](../evidence/benchmark_ledger/frozen_r2_20261004/SUMMARY.md)，评审批次全档在[zcode_review_r2_20261003](../evidence/benchmark_ledger/zcode_review_r2_20261003/summary.md)。本轮零外部API评分调用、零重新答题、零生产改动。
 
 - **2026-10-02 首次补录**：统一 v0.1.0/v0.1.1/v0.1.2 命名；录入两轮实测、两套已有评审及旧单题 LLM 记录；新增 aggregation 1.0.0，补齐百分制汇总、未知范围与共同复核样本；冻结题集和评分文件保持原样。本次仅离线重算，没有生成新答案或使用新的付费评审调用。
 

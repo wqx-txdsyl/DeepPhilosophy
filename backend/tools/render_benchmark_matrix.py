@@ -94,6 +94,29 @@ def legacy_matrix():
                      'ChatGPT Work：桌面6.1 Sol high、声明使用本地书库；不是网页端逐题回执，K4执行事实有4项未知。']}
 
 
+def matrix_r2():
+    out=ROOT/'docs/evidence/benchmark_ledger/frozen_r2_20261004'
+    record=json.loads((out/'SCORES.json').read_text())
+    subjects=record['subjects'];rules=json.loads((ROOT/'docs/evidence/rubric_v1_2/RULES_FROZEN.json').read_text())
+    cols=[{'name':s['name'],'sub':s['label'],'own':s['kind']=='phiagent'} for s in subjects]
+    rows=[{'label':'统一60题总分','note':'唯一主成绩 · 满分100 · zcode统一重评648/648轮','values':[f"{s['primary']['score']:.2f}" for s in subjects],'primary':True}]
+    rows.append({'label':'通过题数','note':'冻结pass规则 · 裁定后confirmed/pending任一即不通过 · /60','values':[f"{s.get('cases_pass',0)} / 60" for s in subjects],'primary':False})
+    rows.append({'label':'严重错误（裁定后）','note':'confirmed / pending · 主成绩覆盖60题内','values':[f"{s['primary_serious_error_records'].get('confirmed',0)} / {s['primary_serious_error_records'].get('pending',0)}" for s in subjects],'primary':False})
+    for layer in ['C','R']:
+        for key,spec in rules[layer].items():
+            rows.append({'label':key+' '+spec['name'],'note':f"{subjects[0]['dimensions'][key]['applicable_cases']}道适用题 · /100",'values':[f"{s['dimensions'][key]['score']:.1f}" for s in subjects],'primary':False})
+    rows.append({'label':'主成绩评分覆盖','note':'所有对象同一题目范围 · 同一冻结协议','values':['60题 / 72轮']*len(subjects),'primary':False})
+    return {'scale':100,'product_version':'0.1.5','record_id':record['record_id'],'record_sha256':aggregate.sha(out/'SCORES.json'),
+            'current':{'title':'冻结记录 R2 · 统一60题（zcode统一重评）','subtitle':'同一60道分析与研究题；九对象全部648回合由zcode按冻结v1.2单一协议独立重评。每题等权，多轮先在题内平均；总分只有一个口径。','columns':cols,'rows':rows},
+            'verification':None,
+            'notes':['R2为唯一主成绩记录；R1（混合方法抽样评审）保持冻结留档，不与本表并列。',
+                     '评审为zcode子代理单一协议匿名评审：控制样本T1-T6通过（敏感性/短答不罚/冗长不加分/立场公平）；未宣称评分器校准、专家一致性或总体效度。',
+                     '浏览器采集主体（DeepSeek/豆包/ChatGPT）无工具回执层：执行捏造类指控一律pending封顶；PhiAgent回执为真实执行日志。「搜索N个关键词」横幅经解盲核实为豆包产品UI文本。',
+                     'PhiAgent与评审同属本项目（从属偏差风险已登记）；主分高分不构成受控模型排行榜。A05空答按0计入分母。',
+                     'DeepSeek为深度思考＋联网；豆包为快速档；ChatGPT为Work 6.1 Sol high并使用本地书库（非网页原生逐题回执）。',
+                     '5道纯核验题与5道故障fixture不在本记录范围（与R1口径一致）；新增证据须另建R3等修订记录，不覆盖R1/R2。']}
+
+
 def matrix():
     import freeze_benchmark_results as seal
     seal.verify()
@@ -132,22 +155,26 @@ def markdown(data):
         table += ['|'+r['label']+'（'+r['note']+'）|'+'|'.join(r['values'])+'|' for r in t['rows']]
         blocks.append('\n'.join(table))
     blocks += ['\n'.join('- '+n for n in data['notes']),
-               '来源：[冻结记录与核验状态](frozen_r1_20261003/SUMMARY.md)、[机器数据](frozen_r1_20261003/SCORES.json)、[版本台账](../../evaluation/benchmark-ledger.md)。']
+               ('来源：[冻结记录](frozen_r2_20261004/SUMMARY.md)、[机器数据](frozen_r2_20261004/SCORES.json)、[zcode评审批次](zcode_review_r2_20261003/summary.md)、[版本台账](../../evaluation/benchmark-ledger.md)。' if data['record_id'].startswith('R2') else '来源：[冻结记录与核验状态](frozen_r1_20261003/SUMMARY.md)、[机器数据](frozen_r1_20261003/SCORES.json)、[版本台账](../../evaluation/benchmark-ledger.md)。')]
     return '\n\n'.join(blocks)+'\n'
 
 
 def html_page(data):
     esc=html.escape
     sections=[]
-    for name in ['current','verification']:
+    names=[n for n in ['current','verification'] if data.get(n)]
+    for name in names:
         t=data[name]
         head='<tr><th>评分维度 <small>百分制</small></th>'+''.join(f'<th class="{"own" if c["own"] else ""}">{esc(c["name"])}<small>{esc(c["sub"])}</small></th>' for c in t['columns'])+'</tr>'
         body=''.join('<tr class="'+('primary' if r['primary'] else '')+'"><th>'+esc(r['label'])+'<small>'+esc(r['note'])+'</small></th>'+''.join('<td class="'+('muted' if v in ['—','未测','未跑全套'] else '')+'">'+esc(v)+'</td>' for v in r['values'])+'</tr>' for r in t['rows'])
         sections.append(f'<section id="{name}"><h2>{esc(t["title"])}</h2><p>{esc(t["subtitle"])}</p><p class="hint">横向滚动可查看全部对象。</p><div class="scroll"><table><thead>{head}</thead><tbody>{body}</tbody></table></div></section>')
-        if name=='verification':sections[-1]='<details><summary>查看5道原典纯核验的完成状态</summary>'+sections[-1]+'</details>'
+        if name=='verification' and t.get('rows'):sections[-1]='<details><summary>查看5道原典纯核验的完成状态</summary>'+sections[-1]+'</details>'
+    r2=data['record_id'].startswith('R2')
+    header_date='2026-10-04' if r2 else '2026-10-03'
+    freeze_dir='frozen_r2_20261004' if r2 else 'frozen_r1_20261003'
     return '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PhiAgent 多维评测记录</title><style>'+'''
 *{box-sizing:border-box}body{margin:0;background:#f7f7f5;color:#252622;font:15px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:1500px;margin:auto;padding:48px 32px}h1{font-size:32px;margin:8px 0}header p,section>p{color:#70726c}header .eyebrow{letter-spacing:.16em;font-size:12px}nav{display:flex;gap:8px;margin:24px 0}button{border:1px solid #ddd;background:white;border-radius:6px;padding:10px 18px;color:#333;cursor:pointer}button.active{background:#292e29;color:white}section{background:white;border:1px solid #e6e7e2;border-radius:12px;padding:28px;margin:24px 0}h2{font-size:20px;margin:0}section>p{margin:6px 0 22px}.hint{display:none;font-size:12px;color:#8a9083}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:940px;table-layout:fixed}th,td{padding:12px 6px;text-align:center;border-bottom:1px solid #edeee9;font-variant-numeric:tabular-nums}thead th{border-bottom:2px solid #c6cbc3;font-size:17px}thead th:first-child,tbody th{width:240px;text-align:left;font-weight:500}small{display:block;color:#93968f;font-size:11px;font-weight:400;margin-top:3px}.own{background:#f0f3ee;border-top:3px solid #52674d}.primary{background:#f5f7f3;font-weight:600}.primary td{font-size:20px}td.muted{color:#babdb5}footer{color:#777c72;font-size:13px}footer li{margin:5px 0}a{color:#52674d}section[hidden]{display:none}details{margin:18px 0}summary{cursor:pointer;color:#52674d;padding:10px 0}@media(max-width:1100px){.hint{display:block}}@media(max-width:650px){main{padding:24px 12px}section{padding:16px}h1{font-size:26px}}@media print{body{background:white}main{padding:0}nav{display:none}section{break-inside:avoid}table{min-width:0}th,td{font-size:10px;padding:6px}small{font-size:8px}}
-'''+ '</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>已冻结的跑分记录</h1><p>记录 R1 · 原冻结题集中的统一60题 · 满分100 · 2026-10-03</p></header>'+''.join(sections)+'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+'</ul><a href="../../evaluation/benchmark-ledger.md">版本与评分长期台账</a> · <a href="frozen_r1_20261003/SUMMARY.md">冻结范围与核验状态</a> · <a href="frozen_r1_20261003/SCORES.json">冻结评分数据</a></footer></main></html>'
+'''+ f'</style><main><header><div class="eyebrow">PHIAGENT / EVALUATION RECORD</div><h1>已冻结的跑分记录</h1><p>记录 {esc(data["record_id"])} · 原冻结题集中的统一60题 · 满分100 · {header_date}</p></header>'+''.join(sections)+f'<footer><ul>'+''.join('<li>'+esc(n)+'</li>' for n in data['notes'])+f'</ul><a href="../../evaluation/benchmark-ledger.md">版本与评分长期台账</a> · <a href="{freeze_dir}/SUMMARY.md">冻结范围与核验状态</a> · <a href="{freeze_dir}/SCORES.json">冻结评分数据</a>'+(f' · <a href="zcode_review_r2_20261003/summary.md">评审批次报告</a>' if r2 else '')+'</footer></main></html>'
 
 
 def png(data, target):
@@ -186,11 +213,12 @@ def png(data, target):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--png',type=Path);args=p.parse_args()
-    data=matrix();(OUT/'matrix.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+    p=argparse.ArgumentParser();p.add_argument('--png',type=Path);p.add_argument('--record',choices=['r2','r1'],default='r2');args=p.parse_args()
+    data=matrix_r2() if args.record=='r2' else matrix()
+    (OUT/'matrix.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
     (OUT/'MATRIX.md').write_text(markdown(data));(OUT/'matrix.html').write_text(html_page(data))
     if args.png:args.png.parent.mkdir(parents=True,exist_ok=True);png(data,args.png)
-    print('Matrix generated; frozen v1.2 only; source scores preserved.')
+    print('Matrix generated:',data['record_id'],'; frozen v1.2 only; source scores preserved.')
 
 
 if __name__=='__main__':main()

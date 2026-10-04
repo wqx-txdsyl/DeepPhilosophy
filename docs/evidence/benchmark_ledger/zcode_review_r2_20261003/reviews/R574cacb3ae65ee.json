@@ -1,0 +1,80 @@
+{
+  "id": "R574cacb3ae65ee",
+  "ratings": {
+    "C1": 2,
+    "C2": 3,
+    "C3": 2,
+    "C4": 3,
+    "C5": 3,
+    "R1": 2,
+    "R2": 2,
+    "R3": 2
+  },
+  "reasons": {
+    "C1": {
+      "reason": "概念骨架正确（DOI是'存在'的证明而非'正确'的保证，A012；'身份证'vs'质量认证章'，A019），检查步骤覆盖必做工作3的区分；但必做工作1只完成一半（给出题名/期刊/DOI，通篇未给作者）；必做工作2未说明读到摘要还是全文；决定性的'核验'以已完成呈现（'我们核验一篇真实的撤稿论文'、转述官方撤稿声明内容），而全轮工具回执为0——决定性核验环节缺失且被宣称完成。",
+      "answer_unit_ids": ["A004", "A005", "A012"],
+      "evidence": "原包tools_this_turn=0、citations_this_turn=0"
+    },
+    "C2": {
+      "reason": "'身份证/质量认证章'的区分清楚（A012、A019），撤稿/更正/关注声明/撤稿后重发的状态分类与doi.org解析核验步骤有实义（A013-A015）；但未触及标识符层的关键区分（预印本、数据集、掠夺性期刊同样有DOI），概念精度中等。",
+      "answer_unit_ids": ["A012", "A013", "A015"],
+      "evidence": ""
+    },
+    "C3": {
+      "reason": "论证结构依赖'核验案例'这一决定性桥接（A004-08），而案例的关键内容（作者重算后承认、官方撤稿声明的转述）无任何回执支撑，且所给撤稿时间'2026年3月12日'与可见引用中撤稿声明标注'Phys. Rev. D 111, 115005 (2025)'直接冲突——决定性桥接未成立，案例支撑的主结论段不可靠。",
+      "answer_unit_ids": ["A005", "A006", "A007", "A008"],
+      "evidence": "原包visible_search_metadata引用#2：'Retraction: Entanglement witnesses mediated via axionlike particles [Phys. Rev. D 111, 115005 (2025)]'"
+    },
+    "C4": {
+      "reason": "边界部分是全文最扎实处：期刊通常不因方法分歧撤稿、许多方法学局限不留任何正式出版后通知（A016-18）；后验状态核查的分类与操作步骤（Correction/EoC/Retraction/Corrected-and-Republished，A013-15）切合本题，属相关且正确的适用边界讨论。",
+      "answer_unit_ids": ["A013", "A015", "A016", "A018"],
+      "evidence": ""
+    },
+    "C5": {
+      "reason": "行文清楚紧凑（1047字，结论→案例→步骤→总结），但引用以悬空编号呈现（'-1'、'-11'、'-4'、以及A010处的空标记'-。'），其中空标记明显是排版残缺，损害可读性与可查性。",
+      "answer_unit_ids": ["A003", "A008", "A010"],
+      "evidence": ""
+    },
+    "R1": {
+      "reason": "案例本身在可见搜索引用中有据：引用#2给出撤稿声明题名、期刊卷号与APS链接（含DOI 10.1103/hjvh-mvmh），题名/期刊/撤稿状态与答案表述一致；但对撤稿声明内容的转述（A007-08）超出题名级元数据、无任何已读回执，撤稿日期与元数据(2025)冲突——释义部分有据、决定性部分无源。",
+      "answer_unit_ids": ["A005", "A007"],
+      "evidence": "原包visible_search_metadata引用#2及#6（'-11'解析到撤稿PDF链接）"
+    },
+    "R2": {
+      "reason": "'有DOI+经同行评审仍被撤稿→DOI不能防错'这一贡献结构正确，且案例真实存在于可见引用中；但支撑该步骤的关键材料（撤稿声明正文）未在本轮读取，贡献的呈现超出材料实际提供的范围。",
+      "answer_unit_ids": ["A006", "A008", "A009"],
+      "evidence": ""
+    },
+    "R3": {
+      "reason": "正文引用标记经平台解析到具体URL（'-1'→PMC PDF、'-11'→APS撤稿PDF、'-4'→研究指南页），出处可部分追溯；但全轮无任何已读回执，访问层级未声明，'同行评审机制有效性证据有限'的'-。'处无来源。",
+      "answer_unit_ids": ["A003", "A008", "A010"],
+      "evidence": "原包visible_search_metadata.citations #5-#8"
+    }
+  },
+  "audit": {
+    "condition_changes": [],
+    "unsupported_bridges": [
+      {
+        "unit_id": "A006",
+        "issue": "'根据官方撤稿声明，作者在重新计算后承认……'——声明内容超出可见引用的题名级元数据，全轮无读取回执，且撤稿日期与元数据(2025)冲突",
+        "decisive": true
+      }
+    ],
+    "source_scope_issues": []
+  },
+  "errors": [
+    {
+      "code": "E4",
+      "status": "confirmed",
+      "answer_unit_ids": ["A004", "A005", "A007", "A008"],
+      "reference_or_condition": "原包tools_this_turn=0、citations_this_turn=0；可见引用仅提供题名级元数据（'Retraction: Entanglement witnesses mediated via axionlike particles [Phys. Rev. D 111, 115005 (2025)]'）。正文却宣称'我们核验一篇真实的撤稿论文'（A005）并逐句转述'官方撤稿声明'内容（A007-08），撤稿时间'2026年3月12日'（A005）与元数据标注(2025)直接矛盾。",
+      "reason": "该案例是全文唯一证据支柱，'核验过程与发现'的完成方式完全建立在无回执的声明内容读取上（补充裁定c：宣称已查/已读而回执为零→E4 confirmed）；日期矛盾进一步表明转述不可靠，决定主结论的呈现。"
+    }
+  ],
+  "strength": "撤稿状态核查（Correction/Expression of Concern/Retraction/Corrected-and-Republished）与'期刊不因方法分歧撤稿'的边界意识正确且实用。",
+  "limits": [
+    "无法离线核验该PRD论文与撤稿声明的实际正文内容",
+    "可见引用#0-#4的完整文本不可得，同行评审有效性的一般性说法无法溯源到具体研究"
+  ]
+}
