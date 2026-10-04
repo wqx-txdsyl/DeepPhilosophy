@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigationType, useSearchParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { ossImg, ossFallback } from '../data/ossUrls';
 import { useSEO } from '../utils/seo';
@@ -28,12 +28,25 @@ function SchoolArtwork({ node, selected, related, focused, onSelect, onHover }) 
 
 export default function GenealogyPage() {
   const [params, setParams] = useSearchParams();
+  const location = useLocation();
+  const navigationType = useNavigationType();
   const latestParams = useRef(params);
   useEffect(() => { latestParams.current = params; }, [params]);
   const mode = MODES.some(item => item.id === params.get('view')) ? params.get('view') : 'time';
   const question = QUESTIONS.find(item => item.id === params.get('question')) || QUESTIONS[0];
   const tradition = TRADITIONS.some(item => item.id === params.get('region')) ? params.get('region') : 'all';
   const query = params.get('q') || '';
+  // Router navigation can be deferred; the input must echo native edits synchronously.
+  const [searchInput, setSearchInput] = useState({ locationKey: location.key, text: query });
+  if (searchInput.locationKey !== location.key) {
+    setSearchInput({ locationKey: location.key, text: navigationType === 'POP' ? query : searchInput.text });
+  }
+  const searchText = searchInput.text;
+  function setSearchText(text) { setSearchInput(current => ({ ...current, text })); }
+  const composing = useRef(false);
+  useEffect(() => {
+    if (navigationType === 'POP') composing.current = false;
+  }, [location.key, navigationType]);
   const [catalog, setCatalog] = useState([]);
   const [loadError, setLoadError] = useState(false);
   const [reload, setReload] = useState(0);
@@ -46,14 +59,28 @@ export default function GenealogyPage() {
   useSEO('哲学谱系', '按时间、关联与哲学问题浏览哲学流派。');
 
   function update(values) {
+    if (Object.hasOwn(values, 'q')) setSearchText(values.q || '');
     const next = new URLSearchParams(latestParams.current);
     for (const [key, value] of Object.entries(values)) {
       if (value === null || value === '' || (key === 'region' && value === 'all')) next.delete(key);
       else next.set(key, value);
     }
-    latestParams.current = next;
-    setParams(next, { replace: true });
+    if (next.toString() !== latestParams.current.toString()) {
+      latestParams.current = next;
+      setParams(next, { replace: true });
+    }
     setHovered(null);
+  }
+
+  function changeSearch(event) {
+    const value = event.currentTarget.value;
+    setSearchText(value);
+    if (!composing.current && !event.nativeEvent.isComposing) update({ q: value });
+  }
+
+  function finishSearchComposition(event) {
+    composing.current = false;
+    update({ q: event.currentTarget.value });
   }
 
   useEffect(() => {
@@ -76,6 +103,7 @@ export default function GenealogyPage() {
   useEffect(() => {
     if (!selected) return;
     const close = event => {
+      if (composing.current || event.isComposing || event.keyCode === 229) return;
       if (event.key === 'Escape') setParams(current => { const next = new URLSearchParams(current); next.delete('focus'); return next; }, { replace: true });
     };
     window.addEventListener('keydown', close);
@@ -106,7 +134,7 @@ export default function GenealogyPage() {
             {MODES.map(item => <button type="button" key={item.id} className="atlas-mode" aria-pressed={mode === item.id} onClick={() => update({ view: item.id })}>{item.title}</button>)}
           </div>
           <div className="atlas-filters">
-            <label className="atlas-search"><span className="sr-only">查找流派、哲人或关键词</span><input type="search" placeholder="流派、哲人、关键词" value={query} onChange={event => update({ q: event.target.value })} /></label>
+            <label className="atlas-search"><span className="sr-only">查找流派、哲人或关键词</span><input type="search" placeholder="流派、哲人、关键词" value={searchText} onChange={changeSearch} onCompositionStart={() => { composing.current = true; }} onCompositionEnd={finishSearchComposition} spellCheck={false} /></label>
             <label><span className="sr-only">筛选地区</span><select aria-label="筛选地区" value={tradition} onChange={event => update({ region: event.target.value })}>{TRADITIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
           </div>
         </div>
