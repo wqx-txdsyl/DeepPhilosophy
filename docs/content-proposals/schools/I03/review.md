@@ -38,3 +38,8 @@
 3. https://en.wikipedia.org/wiki/Kumārila_Bhaṭṭa （同上）
 4. https://en.wikipedia.org/wiki/Jaimini （同上）
 - 探测后放弃：SEP /entries/mimamsa|kumarila|prabhakara/ → 404；IEP /mimamsa/ → 404；GRETIL mimans 目录与全站索引 → 404/0 命中。
+
+
+## 审计会话修订记录（2026-10-04）
+
+- 契约修订 2026-10-04：2条端点非本包人物的关系迁入 proposal.relationSuggestions（内容未删，证据保留于 evidence.json 原 locator）；补 readingRoutes/evidenceLimits。
