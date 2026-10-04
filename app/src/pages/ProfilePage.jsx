@@ -40,7 +40,7 @@ export default function ProfilePage(){
     let active=true;const requestGeneration=generation;const token=localStorage.getItem('dp_token'),name=localStorage.getItem('dp_username');
     loadBooks().then(data=>{if(active)setBooks(data);}).catch(()=>{});
     Promise.resolve().then(async()=>{
-      if(!active)return;try{switchReadingOwner(name||'guest');refreshLocal();}catch{setMessage('本机存储空间不足，部分记录暂无法保存。');}
+      if(!active)return;try{switchReadingOwner(name||null);refreshLocal();}catch{setMessage('本机存储空间不足，部分记录暂无法保存。');}
       if(!token||!name){setChecking(false);return;}
       try{const data=await request('/api/auth/profile',{token,auth:true});if(!active)return;setSession({token,name:data.username||name});setChecking(false);synchronize(token);}
       catch(error){if(!active)return;if(error.status===401||error.status===403||error.status===404){setMessage('登录已过期，请重新登录。');setUsername(name);}else{setSession({token,name});setSyncMessage('暂时离线，正在使用本机记录。');}setChecking(false);}
@@ -54,7 +54,7 @@ export default function ProfilePage(){
     if(authMode==='register'){setMessage('注册成功，请登录。');setAuthMode('login');setPassword('');return;}
     generation.current++;switchReadingOwner(result.username||username.trim());localStorage.setItem('dp_token',result.token);localStorage.setItem('dp_username',result.username||username.trim());setSession({token:result.token,name:result.username||username.trim()});setPassword('');refreshLocal();setChecking(false);await synchronize(result.token);
   }catch(error){setMessage(error.message);}finally{setBusy(false);}}
-  function logout(){try{generation.current++;syncingRef.current=false;switchReadingOwner('guest');localStorage.removeItem('dp_token');localStorage.removeItem('dp_username');setSession(null);setSyncMessage('');setSyncing(false);setSelected('');refreshLocal();setMessage('已退出登录。');}catch{setMessage('退出失败，请检查本机存储空间。');}}
+  function logout(){try{generation.current++;syncingRef.current=false;switchReadingOwner(null);localStorage.removeItem('dp_token');localStorage.removeItem('dp_username');setSession(null);setSyncMessage('');setSyncing(false);setSelected('');refreshLocal();setMessage('已退出登录。');}catch{setMessage('退出失败，请检查本机存储空间。');}}
   const lookup=id=>books.find(b=>b.id===id);
   const current=history[0];const currentBook=current&&(lookup(current.bookId)||{id:current.bookId,title:current.bookTitle,author:current.bookAuthor});
   const progress=current&&readingView(current,currentBook);

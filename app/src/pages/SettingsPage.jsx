@@ -17,7 +17,7 @@ function SettingsPage() {
   const username = localStorage.getItem('dp_username');
 
   const handleLogout = () => {
-    switchReadingOwner('guest');
+    switchReadingOwner(null);
     localStorage.removeItem('dp_token');
     localStorage.removeItem('dp_username');
     navigate('/profile');

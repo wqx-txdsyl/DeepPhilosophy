@@ -3,12 +3,15 @@ const parse = (storage,key,fallback) => { try { return JSON.parse(storage.getIte
 const keys = storage => Array.from({length:storage.length},(_,i)=>storage.key(i)).filter(Boolean);
 export function localNotes(storage=localStorage){return Object.fromEntries(keys(storage).filter(k=>k.startsWith(NOTE)).map(k=>[k.slice(NOTE.length),storage.getItem(k)||'']));}
 export function switchReadingOwner(name,storage=localStorage){
-  const next=name||'guest';const previous=storage.getItem('dp_room_owner')||storage.getItem('dp_username')||'guest';
+  const next=name ? `account:${name}` : 'guest';
+  const storedOwner=storage.getItem('dp_room_owner');
+  const previous=storedOwner ? (storedOwner.startsWith('account:') || storedOwner==='guest' ? storedOwner : `account:${storedOwner}`) : storage.getItem('dp_username') ? `account:${storage.getItem('dp_username')}` : 'guest';
   if(previous!==next){
     const data=parse(storage,'dp_userdata',{});
     const current={history:data.readingHistory||[],notes:localNotes(storage),pending:Object.fromEntries(keys(storage).filter(k=>k.startsWith(PENDING)).map(k=>[k,storage.getItem(k)])),avatar:storage.getItem('dp_avatar')||''};
     storage.setItem(SNAPSHOT+encodeURIComponent(previous),JSON.stringify(current));
-    const target=parse(storage,SNAPSHOT+encodeURIComponent(next),{history:[],notes:{},pending:{},avatar:''});
+    const legacy=name && name!=='guest' ? parse(storage,SNAPSHOT+encodeURIComponent(name),null) : null;
+    const target=parse(storage,SNAPSHOT+encodeURIComponent(next),legacy||{history:[],notes:{},pending:{},avatar:''});
     storage.setItem('dp_userdata',JSON.stringify({...data,readingHistory:target.history||[]}));
     keys(storage).filter(k=>k.startsWith(NOTE)||k.startsWith(PENDING)).forEach(k=>storage.removeItem(k));
     Object.entries(target.notes||{}).forEach(([id,text])=>storage.setItem(NOTE+id,text));
@@ -17,7 +20,7 @@ export function switchReadingOwner(name,storage=localStorage){
   }
   storage.setItem('dp_room_owner',next);
 }
-export function renameReadingOwner(name,storage=localStorage){storage.setItem('dp_room_owner',name);}
+export function renameReadingOwner(name,storage=localStorage){storage.setItem('dp_room_owner',`account:${name}`);}
 export function writeLocalNote(id,text,storage=localStorage){storage.setItem(PENDING+id,'1');storage.setItem(NOTE+id,text);}
 export function notePending(id,storage=localStorage){return storage.getItem(PENDING+id)==='1';}
 export function markNoteSynced(id,text,storage=localStorage){if(storage.getItem(NOTE+id)===text)storage.removeItem(PENDING+id);}

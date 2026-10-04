@@ -6,7 +6,7 @@ test('switching accounts separates notes/history and restores guest and account 
  const s=storage({dp_username:'alice',dp_userdata:JSON.stringify({version:1,readingHistory:[{bookId:'a'}]}),dp_notes_a:'Alice note',dp_avatar:'avatar'});
  switchReadingOwner('alice',s);writeLocalNote('a','Alice draft',s);switchReadingOwner('bob',s);assert.deepEqual(localNotes(s),{});assert.deepEqual(JSON.parse(s.getItem('dp_userdata')).readingHistory,[]);assert.equal(s.getItem('dp_avatar'),null);
  writeLocalNote('b','Bob draft',s);switchReadingOwner('alice',s);assert.equal(localNotes(s).a,'Alice draft');assert.ok(notePending('a',s));assert.equal(localNotes(s).b,undefined);assert.equal(s.getItem('dp_avatar'),'avatar');
- switchReadingOwner('guest',s);assert.deepEqual(localNotes(s),{});writeLocalNote('g','guest note',s);switchReadingOwner('bob',s);assert.equal(localNotes(s).b,'Bob draft');switchReadingOwner('guest',s);assert.equal(localNotes(s).g,'guest note');
+ switchReadingOwner(null,s);assert.deepEqual(localNotes(s),{});writeLocalNote('g','guest note',s);switchReadingOwner('bob',s);assert.equal(localNotes(s).b,'Bob draft');switchReadingOwner(null,s);assert.equal(localNotes(s).g,'guest note');
 });
 test('cloud sync and an old save response cannot overwrite or acknowledge a newer draft',()=>{
  const s=storage();writeLocalNote('a','new draft',s);mergeCloudNotes({a:'old cloud text',b:'other note'},s);assert.equal(localNotes(s).a,'new draft');assert.equal(localNotes(s).b,'other note');markNoteSynced('a','old draft',s);assert.ok(notePending('a',s));markNoteSynced('a','new draft',s);assert.ok(!notePending('a',s));mergeCloudNotes({a:''},s);assert.equal(localNotes(s).a,'');
@@ -17,3 +17,5 @@ test('reading merge uses latest timestamps and resume clamps to actual chapter c
  assert.equal(readingView({bookId:'a',page:99,percent:1.3},{chapterCount:13}).href,'/reader/a?ch=12');assert.equal(readingView({bookId:'a',page:-2,percent:-1},{chapterCount:13}).percent,0);
 });
 test('renaming an account preserves the active cache under its new identity',()=>{const s=storage({dp_username:'alice',dp_room_owner:'alice',dp_notes_a:'draft'});renameReadingOwner('alicia',s);switchReadingOwner('alicia',s);assert.equal(localNotes(s).a,'draft');});
+
+test('an account named guest never shares the anonymous reading room',()=>{const s=storage();switchReadingOwner(null,s);writeLocalNote('a','anonymous',s);switchReadingOwner('guest',s);assert.deepEqual(localNotes(s),{});s.setItem('dp_username','guest');writeLocalNote('a','private account',s);switchReadingOwner(null,s);assert.equal(localNotes(s).a,'anonymous');s.removeItem('dp_username');switchReadingOwner('guest',s);assert.equal(localNotes(s).a,'private account');});
