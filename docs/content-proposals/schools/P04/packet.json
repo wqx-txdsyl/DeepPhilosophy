@@ -1,0 +1,771 @@
+{
+  "schemaVersion": 1,
+  "taskId": "P04",
+  "name": "二元论",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "研究员自查（非独立同行评审，子代理直研）：16 个来源全部经 WebFetch/curl 实际打开并读到相关段落——SEP 六个条目（Dualism、Elisabeth of Bohemia、Descartes and the Pineal Gland 归档版、Spinoza、Leibniz、Gilbert Ryle、Karl Popper 中取六）、IEP 两个条目（René Descartes: The Mind-Body Distinction、Karl Popper）、查默斯官网 consc.net 论文全文（curl 剥离标签核对出版信息与属性二元论定义句）、Project Gutenberg 两个原典全文（拉丁《沉思集》#23306、Molyneux 1680 英译 #70091）、维基三个词条仅用于生卒年与『机器中的幽灵』措辞定位。关键命题用 python 在原典 HTML 中逐字定位（tantum res cogitans、realiter、mens autem plane indivisibilis、1641 初版书名与出版地）。人物姓名以 python 子串匹配 app/public/philosophers.json（笛卡尔、伊丽莎白公主、斯宾诺莎、莱布尼茨、赖尔、波普尔、柏拉图在站内；查默斯、埃克尔斯不在）；书籍以 python 实查 app/public/books.json；两个 JSON 经 python3 -m json.tool 校验；开档前 P04 目录不存在，无旧稿处置问题。Britannica dualism 条目两次尝试（WebFetch 403、curl 过 Cloudflare 验证页）不可达，未列为来源。",
+  "proposal": {
+    "kind": "position",
+    "scope": "西方心身二元论（mind-body dualism）立场谱系总览：定义与分类（实体二元论 substance dualism、属性二元论 property dualism、谓词二元论 predicate dualism；按因果形态分交互二元论 interactionism、副现象论 epiphenomenalism、平行论 parallelism，另有形质二元论 hylomorphic dualism）；笛卡尔原典论证（第六沉思实在区分与不可分论证）；松果腺与交互难题；伊丽莎白公主 1643 年质疑；早期近代替代方案（斯宾诺莎平行论、莱布尼茨前定和谐、马勒伯朗士中间立场）；20 世纪批判与辩护（赖尔范畴错误、波普尔—埃克尔斯交互主义、查默斯属性二元论）。价值二元论与事实—价值二分仅在概述与术语表点到（有 S1 一般定义与 S9 是—应当条目支撑），不展开。",
+    "period": "约公元前5世纪—公元2020年；主体时段 1641（《第一哲学沉思集》）—2020（PhilPapers 调查，分析报告 2023 年出版）",
+    "regionContext": "西方哲学传统：古希腊源头（柏拉图）、近代欧陆（笛卡尔—斯宾诺莎—莱布尼茨）、当代英美分析哲学（赖尔、查默斯）；不涉及印度或宗教传统内部的二元论立场",
+    "relatedExistingEntries": [
+      "I05 二元论吠檀多（docs/content-proposals/schools/I05/，已交付）：名称相近、传统不同，接口见 interfaceNotes",
+      "理性主义（app/public/schools/data/school_理性主义.json，站内条目提及『二元论/Dualism』）：笛卡尔为共同人物，建议互链",
+      "唯心主义（app/public/schools/data/school_唯心主义.json）：站内已有的相近立场入口，建议页面互见",
+      "任务 mentionFiles 所列 21 个流派条目（古埃及、印度、波斯、古希腊、宋明理学、女性主义、技术哲学等）均含『二元论』字样，属提及级；若本立场页上线，可从这些条目的相关表述链接过来"
+    ],
+    "relationSuggestions": [
+      "与 I05 二元论吠檀多：仅作跨传统『同名异实』编辑说明，不建历史影响关系（见 interfaceNotes）",
+      "与 P03 一元论（同批并行任务）：作为直接对立面互链，共同问题域为『世界/人由几类根本实在构成』",
+      "与理性主义条目：笛卡尔共享，双向引用",
+      "哲学家页已有勒内·笛卡尔、伊丽莎白公主、斯宾诺莎、莱布尼茨、赖尔、波普尔、柏拉图，均可直挂；查默斯、埃克尔斯为站外人物，如建页需先走 add-author 流程"
+    ],
+    "interfaceNotes": {
+      "withI05_DvaitaVedanta": "『二元论』与『二元论吠檀多（Dvaita Vedanta）』仅名称相近：本包是西方心身立场谱系（实体/属性、交互/平行，主轴为笛卡尔 1641 以来的身心问题）；I05 是 13—14 世纪摩陀婆创立的毗湿奴宗义学派（svatantra/paratantra 两界实在、五别、毗湿奴至上）。两者无历史传承或直接影响关系，站内若互链只能作『同名异实』的编辑比较注记，不得写成同一学派或师承。",
+      "withP03_Monism": "P03 一元论包（同日并行交付中）是本包的直接对照：二元论主张某领域有两类根本实在，一元论主张一类。接口建议：两包 proposal 互设『对立立场』链接，页面共同问题域写心身关系与世界的构成类数；本包无法核对 P03 的最终内容，对照以任务约定为准。"
+    },
+    "evidenceNotes": "分类学与人物归属以 SEP Dualism 条目为主轴（S1）；笛卡尔论证以 IEP 笛卡尔条目（S2）加拉丁/英译原典（S10/S11）双重支撑；交互难题以 SEP 伊丽莎白条目（S3）、SEP 松果腺归档条目（S4）与 IEP（S2）三方互证；查默斯属性二元论定义直接取自其论文官网全文（S12）并由 S1 旁证（Chalmers 1996 与 2020 调查，分析报告 2023 年出版）。全部 timeline 节点、书目与人物生卒均有对应 locator，见 evidence.json。"
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Dualism (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/dualism/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "SEP 双元论条目全文：一般定义（『对某个特定领域，存在两种根本不同的类』）；§3 变体分类——§3.1 实体二元论（substance 两义：独立自存/经时持存；柏拉图、奥古斯丁、笛卡尔为代表；Nida-Rümelin 主体—身体二元论、Lowe 两实体说、阿奎那灵魂为『不完全实体』）、§3.2 属性二元论（Jackson 1982、Chalmers 1996、Kim 2005 就意识作辩护）与谓词二元论（Nagel 1961 意义，与戴维森式唯物论相容）、§3.3 交互主义（能量守恒、因果闭合、过度决定反驳；量子不确定性辩护引 Eccles/Popper）、§3.4 副现象论（Huxley 1893；瑜伽—数论古代先例；威廉·詹姆斯演化论反驳）、§3.5 平行论（莱布尼茨前定和谐；马勒伯朗士中间立场）、§3.6 形质二元论；§2.2 希腊传统（柏拉图《美诺》《斐多》《斐德罗》灵魂先在与不朽）；§2.4 笛卡尔两大转变（与机械论科学结合、论证基础从理智转向意识；脱体论证系于第五沉思；Ryle 1949 称之为 official doctrine）；§4 当代辩护者名录与『 received view：实体二元论不再是可敬选项、属性二元论须认真对待』；PhilPapers 2020 survey（条目明引；Bourget & Chalmers 分析报告 2023 年出版）22% 接受/倾向二元论对 51% 物理主义、8% 泛心论；查默斯 2016 转向实体二元论；杰克逊放弃知识论证。"
+    },
+    {
+      "id": "S2",
+      "title": "René Descartes: The Mind-Body Distinction (Internet Encyclopedia of Philosophy，作者 Justin Skirry)",
+      "url": "https://iep.utm.edu/descartes/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "IEP 笛卡尔心身区分专条全文：实在区分定义与动机（宗教/科学）；第六沉思论证两版（清楚分明的思维—非广延之我对广延—非思维之身；身体『by its very nature always divisible, while the mind is utterly indivisible』），并指出论证弱点（未排除心灵类脑的广延物）；身心问题（伽桑狄与伊丽莎白的接触—表面质疑）；笛卡尔的回应（原始概念学说；1643-05-21 致伊丽莎白信『as regards the soul and the body together, we have only the notion of their union』；重力类比；霍夫曼式『总体实体 ens per se』少数派解读）；不涉及松果腺。"
+    },
+    {
+      "id": "S3",
+      "title": "Princess Elisabeth of Bohemia (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/elisabeth-bohemia/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "SEP 伊丽莎白条目：生平（Elisabeth Simmern van Pallandt，1618-12-26 生，1680-02-08 卒于 Herford；腓特烈五世第三女，流居海牙，1660 入 Herford 修院、1667 任院长）；§4 与笛卡尔通信（1643 年由她主动开启，追问非物质实体如何作用于物质实体；她把问题定向为心灵作用于身体；要求笛卡尔要么给出专属心身的因果说明要么改写心灵实体描述；笛卡尔的回应被学界（Garber 1983、Mattern 1978、Rozemond 1999）评为回避；她拒绝重力类比因与机械论不自洽）；出版史（她拒约 Chanut 出版；笛卡尔方信件见 Clerselier 1657—67 遗编；她方 1876 年在 Rosendael 发现、Foucher de Careil 1879 首刊；收 Adam & Tannery；Shapiro 2007 英译）；其他贡献（解阿波罗尼奥斯三圆问题、自然哲学、道德与政治哲学）。"
+    },
+    {
+      "id": "S4",
+      "title": "Descartes and the Pineal Gland (Stanford Encyclopedia of Philosophy，作者 Gert-Jan Lokhorst；Summer 2026 归档版)",
+      "url": "https://plato.stanford.edu/archives/sum2026/entries/pineal-gland/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "SEP 松果腺条目（正条已归档，按 2026 夏季归档版核读）：松果腺学说文本史——《论人》（1637 前写成，死后拉丁 1662/法文 1664 出版）、《屈光学》1637（共同感觉之所）、1640—41 书信首次明确为理性灵魂主要居所、《论灵魂的激情》1649 最系统（AT XI:351『灵魂直接行使功能的处所既不是心脏也不是全部脑髓』；AT XI:359 灵魂以意愿使小腺移动；AT XI:371 精气搅动小腺为激情之最近因）；《沉思集》中不出现松果腺（第六组答复发明重力类比）；选腺理由（1640 信：『全脑中唯一单一 (single) 的实体部分』、居中、轻巧易动；排除垂体与蠕突）；后史批评（Willis 1664、Stensen 1669、Zinn 1749、Camper 1784）；提及斯宾诺莎对交互说的讥评；1646-01-12 信记录『灵魂若非物质如何推动身体』之问。"
+    },
+    {
+      "id": "S5",
+      "title": "Spinoza (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/spinoza/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "SEP 斯宾诺莎条目：1632 生阿姆斯特丹、1677 卒海牙，身后友人『soon published』其未刊著作（含《伦理学》）；§2.2 人论：思维与广延是『两种毫无共同的完全不同本质』、各自因果封闭；IIp7『观念的次序和联系与事物的次序和联系相同』、IIp7s 一个样式与其观念是『同一物的两种表达』；人的心灵是人身之观念；否认人是两种实体的联合，『心身之间无因果交互，所谓身心问题严格说不发生』；§2.1 实体定义（『在自身内并通过自身被理解』）。"
+    },
+    {
+      "id": "S6",
+      "title": "Leibniz (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/leibniz/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "SEP 莱布尼茨条目：1646 生莱比锡、1716 卒；年表系《单子论》于 1714（与《自然与神恩的原则》同年）；§4.4 前定和谐：从笛卡尔继承的心身问题出发，『否认有限实体之间因果交互的可能』；摆钟隐喻——上帝把世界（和摆钟）造得完美，使其各按本性摆动而完美一致；新体系论证第五步『在每个实体中预先规定的相互关系产生了我们所谓的交通』；实体系『能够行动的存在者』。"
+    },
+    {
+      "id": "S7",
+      "title": "Gilbert Ryle (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/ryle/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "SEP 赖尔条目：1900-08-19 生 Brighton、1976-10-06 卒；《心的概念》1949 出版；§6 The Official Doctrine（笛卡尔式『两个世界』学说及其当代变体）；§7 Intellectualist Legend；范畴错误/类型错置（1938 例与《心的概念》『雪佛兰与眼泪』例）；『mind 与 body 分属不同逻辑或语法类型』，其合取/析取无意义；他不是行为主义者；哲学作为『逻辑地理』制图。注：本次抓取部分未含 ghost in the machine 措辞（该短语经 S13 核对）。"
+    },
+    {
+      "id": "S8",
+      "title": "Karl Popper (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/popper/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "SEP 波普尔条目：文献表著录 The Self and Its Brain: An Argument for Interactionism（与 John C. Eccles 合著，London: Springer International, 1977），另著录 Knowledge and the Mind-Body Problem: In Defence of Interactionism（1994, ed. Notturno）；§7 三世界本体论：世界1物理状态/过程、世界2心理过程、世界3『人类心灵的产物』（语言、神话、科学理论、艺术品），世界3 经世界2 因果作用于世界1。"
+    },
+    {
+      "id": "S9",
+      "title": "Hume's Moral Philosophy (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/hume-moral/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "SEP 休谟道德哲学条目 §5 Is and ought：《人性论》（1739—40）3.1.1.27——道德作者常不自觉地从『是』系词前提跳到『应当』系词结论，此推论『似乎完全不可想象』，指出它将『推翻一切流俗的道德体系』；20 世纪主流读法（『休谟法则』：纯事实前提推不出应然结论）及其困难；『休谟著作中很少有段落引发更多解释争论』。用于事实—价值二分这一二元论旁支维度的定位。"
+    },
+    {
+      "id": "S10",
+      "title": "Meditationes de prima philosophia（笛卡尔《第一哲学沉思集》拉丁语原典，Project Gutenberg EBook #23306）",
+      "url": "https://www.gutenberg.org/files/23306/23306-h/23306-h.htm",
+      "type": "primary-text",
+      "accessedAt": "2026-10-04",
+      "coverage": "拉丁原典全文（电子版据 Adam & Tannery《全集》第七卷 1904 与 Göttler 1912 第二版）；编者前言载：初版书名全称『Renati Des-Cartes, Meditationes de prima philosophia…Parisiis, Apud Michaelem Soli』（1641，巴黎，Michael Soly 坊，Mersenne 监印）、1642 阿姆斯特丹 Elzevir 第二版增第七组反驳。原典中逐字定位：第六沉思『corpus ex natura sua sit semper divisibile, mens autem plane indivisibilis』（身体按本性常可分，心灵全然不可分）；第二沉思 tantum res cogitans；答辩部分『凡被清楚分明地设想为不同实体者……实为 mutual realiter distinct 实体』； synopsis（rerum praefatio）与编号结构。"
+    },
+    {
+      "id": "S11",
+      "title": "Six Metaphysical Meditations（笛卡尔《六篇形而上学沉思》William Molyneux 英译本，伦敦 1680；Project Gutenberg EBook #70091）",
+      "url": "https://www.gutenberg.org/files/70091/70091-h/70091-h.htm",
+      "type": "primary-text",
+      "accessedAt": "2026-10-04",
+      "coverage": "1680 年伦敦本（Printed by B.G. for Benj. Tooke；『Written Originally in Latin By RENATUS DES-CARTES』，附霍布斯反驳与作者答辩，Molyneux 译并附笛卡尔生平短记）；副题即『证明有上帝、人心与身体实在不同（mans mind is really distinct from his body）』；英译中定位第二沉思『I am only a thinking thing, that is to say, a mind, or a soul, or understanding, or Reason』与『I am, I exist…as long as I think』段落。"
+    },
+    {
+      "id": "S12",
+      "title": "Chalmers, David J., “Consciousness and its Place in Nature”（作者官网全文）",
+      "url": "https://consc.net/papers/nature.html",
+      "type": "academic-paper",
+      "accessedAt": "2026-10-04",
+      "coverage": "查默斯论文官网版全文（curl 剥离标签核读）：出版信息——结集于 (S. Stich & F. Warfield eds) Blackwell Guide to the Philosophy of Mind (Blackwell, 2003) 与 (D. Chalmers ed) Philosophy of Mind: Classical and Contemporary Readings (Oxford, 2002)；§2 易问题与难问题（『The hard problem of consciousness is the problem of experience』）；Type-A/B/C 物理主义三型与二维论证；Type-D 二元论（交互：现象属性『play an irreducible role in affecting the physical properties』，兼容量子意识—坍缩解释）；Type-E 二元论（副现象：物理产生现象、『but not vice versa』）；Type-F 一元论（泛原型心理）；属性二元论定义句（『just one sort of substance or entity with both physical and phenomenal fundamental properties』／『one sort of substance or entity and two sorts of properties』），与实体二元论（『separate interacting mental and physical substances or entities』）对比。"
+    },
+    {
+      "id": "S13",
+      "title": "The Concept of Mind (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/The_Concept_of_Mind",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "仅用于赖尔措辞定位：The Concept of Mind（Gilbert Ryle，1949；2002 年 Dennett 导言再版）；『the dogma of the Ghost in the machine（机器中的幽灵教条）』出自第一章 Descartes' Myth；赖尔称之为『entirely false, and false not in detail but in principle』并判为『a category-mistake』；范畴错误之牛津访客例；『There are no mental processes that are distinct from intelligent acts.』"
+    },
+    {
+      "id": "S14",
+      "title": "René Descartes (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Ren%C3%A9_Descartes",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "仅用于人物生卒与成书年：笛卡尔 1596-03-31 生、1650-02-11 卒；《第一哲学沉思集》出版于 1641 年（此二点亦与 S10 古腾堡编者前言、与站内 philosophers.json 的 era 字段一致）。"
+    },
+    {
+      "id": "S15",
+      "title": "Plato (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Plato",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "仅用于柏拉图生卒年：约前 428/427—前 348/347（与站内 philosophers.json 的 era 字段一致）。"
+    },
+    {
+      "id": "S16",
+      "title": "Karl Popper (Internet Encyclopedia of Philosophy)",
+      "url": "https://iep.utm.edu/karl-popper/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "仅用于波普尔生卒年 1902—1994。该条目不涉《自我及其大脑》与心身交互（此点记入 review，相关内容以 S8 与 S1 为准）。"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2",
+    "S10",
+    "S11"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S12",
+    "S8",
+    "S4"
+  ],
+  "school": {
+    "name": "二元论",
+    "subtitle": "从笛卡尔式心身之别到当代属性二元论",
+    "overview": "二元论（dualism）在哲学上的一般定义是：对某个特定领域而言，存在两种根本不同的类（斯坦佛哲学百科的表述）。它最核心、争论最久的适用域是心与身：心灵（或灵魂）与身体在根本性质上属于两种不同的存在。围绕『不同在哪里』可以分出不同版本——实体二元论（substance dualism）主张心灵与身体是两类实体，柏拉图、奥古斯丁与笛卡尔是其传统代表；属性二元论（property dualism）不假设非物质实体，只主张存在两类根本不同的性质；谓词二元论（predicate dualism）则退到描述层面，认为心理谓词不可还原为物理谓词。按心灵与身体之间因果关系的形态，又有交互二元论（interactionism，双向因果）、副现象论（epiphenomenalism，单向因果：物理产生心理而心理不影响物理）、平行论（parallelism，两序列无因果而对应运行）等变体；亚里士多德—阿奎那的形质论（hylomorphism，灵魂作为身体之形式）也被列为一种独特的二元论形态。这个词的适用面比心身问题更广——『两种根本类』的框架同样见于宗教善恶之争或价值领域，但本条以心身问题为主线，其他维度仅点到为止。\n\n近现代意义上的实体二元论定型于笛卡尔。在《第一哲学沉思集》（1641）第六沉思中他给出两个论证：其一，我能清楚分明地设想自己『只是一个思维着的东西』（res cogitans）——思维而不广延，又能同样清楚分明地设想身体只是广延而不思维的东西，凡能被如此设想为分离的，就实在是两种实体（实在区分论证）；其二，『身体按其本性永远是可分的，而心灵则完全是不可分的』（不可分论证）。斯坦佛哲学百科指出笛卡尔带来两大转变：把二元论与机械论科学结合起来（身体=机器，灵魂不占空间），并把论证的基础从古代的理智转向意识本身。两个论证的强度至今聚讼不已：仅从『能设想分离』到『实可分离』的推论，与『不可分』是否真的排除心灵是某种广延物（如大脑）的可能，都是标准的攻击点。\n\n二元论最著名的代价在因果上。笛卡尔需要一个心身交互的接口，他选中了大脑中的松果腺（pineal gland）：在 1640—41 年的书信中他首次明确它是理性灵魂的『主要居所』，理由是它是全脑中唯一单一、又居于诸脑室中央的固体部分；《论灵魂的激情》（1649）把机制说得更系统——灵魂只需意愿，即可使这个小腺偏转，从而把动物精气导向肌肉；反过来，精气的搅动则是激情的最切近原因。1643 年，波希米亚的伊丽莎白公主去信直问要害：一个非物质、无广延的心灵如何能推动物质身体？因果推动的概念来自接触与表面，而心灵没有表面。笛卡尔答复说，关于灵魂与身体的『联合』我们有一个不可再分析的原始概念，并请她回忆灵魂是『身体的真正实体形式』——学界普遍认为这些回应并未解除疑问，伊丽莎白本人即拒绝了他『重量』的类比。交互难题由此定型，至今仍是心灵哲学的标准考题。\n\n对笛卡尔的系统性反放在 17 世纪下半叶接踵而至，并构成二元论内部的另一条谱系：问题不在『有没有两种东西』，而在『它们如何相干』。斯宾诺莎《伦理学》（身后 1677 年结集出版）以一元论釜底抽薪——思维与广延只是同一实体的两个属性，『观念的次序和联系与事物的次序和联系相同』，身心之间根本没有因果交互，所谓身心问题严格说不复存在；莱布尼茨则保留两类实体而取消其因果交通，主张上帝把心与身造得如两座校准一致的钟（前定和谐，《单子论》1714）；马勒伯朗士的偶因论居于其间——每次『交互』都是上帝的 occasion。斯坦佛哲学百科把这些统称为对『心灵—物理因果关系』的不同安排，它们共同承认：笛卡尔式双向交互并非二元论的必然形态。\n\n20 世纪的攻击与辩护把战线推移到语言与意识。赖尔《心的概念》（1949）把笛卡尔学说讥为『官方学说』（the official doctrine）与『机器中的幽灵』（the Ghost in the Machine）教条，认为它源于范畴错误——把心理谓词错置于与物理谓词同一的逻辑类型之下；这使实体二元论在英语世界长期失势。但辩护并未绝迹：波普尔与神经生理学家埃克尔斯合著《自我及其大脑：为交互主义一辩》（1977），并诉诸量子不确定性为心灵对物理世界的作用留出余地。1990 年代以来，查默斯以『意识的难问题』重启心身鸿沟，其属性二元论主张：世界上可能只有一类实体，却有两类根本属性——物理属性与不可还原的现象属性；这不必假设笛卡尔式的非物质实体，却保留了『意识不属于物理故事』的二元论直觉。PhilPapers 2020 年大调查（分析报告 2023 年出版）中，22% 的受访哲学人士接受或倾向二元论，仅次于物理主义（51%）——二元论仍是活着的立场，而非思想史标本。",
+    "conclusion": "二元论最顽固的遗留问题是因果。对交互二元论，物理学的因果闭合与能量守恒构成正面约束：若心灵对物理世界施加作用而能量不增减，要么改写物理学，要么承认过度决定，后者被批评为双记帐；副现象论避开了这一刀，却付出了意识的因果无用为代价——威廉·詹姆斯式的演化论反驳（一个不 affecting 行为的性质如何在演化中被选择）与关于他心认知的自败难题随之而来；平行论与偶因论则以把协调责任整体托付给上帝为代价。各种安排都未被普遍接受，这正是伊丽莎白 1643 年那个问题在当代的延长线。当代二元论内部的裂痕同样具体：通行看法是实体二元论『不再是可敬选项』而属性二元论『须认真对待』，但属性二元论自身也不稳定——它的因果野心把它推向交互主义与量子解释，因果节制则把它推向副现象论乃至泛心论式的 Type-F 一元论；经验上，杰克逊放弃了曾为属性二元论张目的知识论证，查默斯也在 2016 年转向了实体二元论。立场地图仍在移动，没有一格是空的。\n\n本条的边界需要说清：其一，它处理的是西方心身立场谱系，『二元论』一词在宗教善恶对立、价值二分等语境中的用法只在定义与术语层点到（事实—价值一侧以休谟《人性论》3.1.1.27 的『是—应当』段落为定位锚），不展开成第二个主题；其二，它与站内『二元论吠檀多』条目同名异实，后者是 13—14 世纪印度摩陀婆的宗义体系，与本包无历史传承关系；其三，笛卡尔身心『联合』学说在现象学、神经科学与情感研究中的漫长后裔（梅洛-庞蒂、达马西奥等）超出本包证据范围，未作断言。",
+    "thinkers": [
+      {
+        "name": "柏拉图",
+        "sub": "Plato（站内人物）",
+        "era": "约前428/427—前348/347",
+        "key": "西方传统中最早完整保存的灵魂—身体二元讨论：灵魂不可见、身体可见，灵魂不朽且先在；《斐多》以灵魂与永恒理念的『亲和』论证不朽，SEP 将其视为西方二元论论述的希腊源头",
+        "works": "《斐多》《美诺》《斐德罗》",
+        "sourceRefs": [
+          "S1",
+          "S15"
+        ]
+      },
+      {
+        "name": "勒内·笛卡尔",
+        "sub": "René Descartes（站内人物）",
+        "era": "1596—1650",
+        "key": "实体二元论的近代经典形态：心灵的本质是思维（res cogitans）、身体的本质是广延；第六沉思以实在区分与不可分两论证主张心身可以离存；另以松果腺学说与『身心联合』的原始概念处理交互",
+        "works": "《第一哲学沉思集》（1641）、《论灵魂的激情》（1649）、《谈谈方法》",
+        "sourceRefs": [
+          "S2",
+          "S10",
+          "S11",
+          "S14"
+        ]
+      },
+      {
+        "name": "伊丽莎白公主",
+        "sub": "Elisabeth Simmern van Pallandt / Princess Elisabeth of Bohemia（站内人物）",
+        "era": "1618—1680",
+        "key": "1643 年起以书信迫使笛卡尔说明非物质实体如何作用于物质实体——交互难题的经典提出者；拒绝其重力类比；在道德哲学、自然哲学与政治哲学上另有独立贡献（SEP 专条）",
+        "works": "与笛卡尔通信（1643—1649；她方信件 1879 年由 Foucher de Careil 首刊，Lisa Shapiro 2007 年英译）",
+        "sourceRefs": [
+          "S3",
+          "S2"
+        ]
+      },
+      {
+        "name": "巴鲁赫·斯宾诺莎",
+        "sub": "Baruch Spinoza（站内人物）",
+        "era": "1632—1677",
+        "key": "对笛卡尔的釜底抽薪式回应：一实体两属性（思维/广延），『观念的次序和联系与事物的次序和联系相同』（IIp7）；否认人是两种实体的联合，心身无因果交互",
+        "works": "《伦理学》（1677 年身后结集出版）",
+        "sourceRefs": [
+          "S5"
+        ]
+      },
+      {
+        "name": "戈特弗里德·威廉·莱布尼茨",
+        "sub": "Gottfried Wilhelm Leibniz（站内人物）",
+        "era": "1646—1716",
+        "key": "前定和谐：否认有限实体之间的因果交互，主张上帝把心与身造得如校准一致的摆钟、各按内在法则展开而完美对应",
+        "works": "《单子论》（1714）、《神义论》",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "name": "吉尔伯特·赖尔",
+        "sub": "Gilbert Ryle（站内人物）",
+        "era": "1900—1976",
+        "key": "笛卡尔式二元论是『官方学说』与『机器中的幽灵』教条，其根源是范畴错误——把心理谓词错置为与物理谓词同一逻辑类型；『mind』与『body』分属不同逻辑/语法类型",
+        "works": "《心的概念》（1949）",
+        "sourceRefs": [
+          "S7",
+          "S13",
+          "S1"
+        ]
+      },
+      {
+        "name": "卡尔·波普尔",
+        "sub": "Karl Popper（站内人物）",
+        "era": "1902—1994",
+        "key": "三世界本体论（世界1物理、世界2心理、世界3客观知识）与 20 世纪罕见的交互主义辩护：与埃克尔斯合著《自我及其大脑：为交互主义一辩》；SEP 双元论条目将其与诉诸量子不确定性的辩护路径并提",
+        "works": "《自我及其大脑》（1977，与约翰·C·埃克尔斯合著）",
+        "sourceRefs": [
+          "S8",
+          "S16",
+          "S1"
+        ]
+      },
+      {
+        "name": "大卫·查默斯",
+        "sub": "David J. Chalmers（站外人物：philosophers.json 经 python 子串查证无『查默/查尔默』匹配）",
+        "era": "当代（活跃于 1990 年代至今；生年未核实，故不写具体年份）",
+        "key": "以『难问题』重述心身鸿沟；属性二元论：仅一类实体而兼具物理与现象两类根本属性，无须笛卡尔式非物质实体；其 Type-D（交互）/Type-E（副现象）分类构成当代二元论形态地图",
+        "works": "《有意识的心灵》（1996；S1 提及）、“Consciousness and its Place in Nature”（2002/2003 结集）",
+        "sourceRefs": [
+          "S12",
+          "S1"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "柏拉图",
+        "to": "勒内·笛卡尔",
+        "label": "同谱系的编辑比较",
+        "type": "编辑比较（无直接师承证据）",
+        "detail": "SEP 双元论条目将柏拉图与笛卡尔同列为实体二元论代表，并把《斐多》等视为西方二元论论述的最早完整保存；笛卡尔的转变在于结合机械论科学、把论证基础移到意识。二者相隔近两千年，仅作谱系定位，不写成影响关系",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "伊丽莎白公主",
+        "to": "勒内·笛卡尔",
+        "label": "1643 年通信批评",
+        "type": "批评（书信对话）",
+        "detail": "她主动开启通信，追问非物质实体如何作用于物质实体（接触需要表面，心灵无广延无表面），并要求要么给出专属心身的因果理论要么修改对心灵实体的描述；笛卡尔以原始概念与『联合』回应，她拒绝重量类比，学界普遍评笛卡尔的回应为未解除疑问",
+        "sourceRefs": [
+          "S3",
+          "S2",
+          "S4"
+        ]
+      },
+      {
+        "from": "巴鲁赫·斯宾诺莎",
+        "to": "勒内·笛卡尔",
+        "label": "一元论改造",
+        "type": "批评（接受问题、改造框架）",
+        "detail": "否认人是两种实体的联合：思维与广延是同一实体的两个属性，同一事物『以两种方式被表达』；既然无交互，笛卡尔的身心问题『严格说不发生』",
+        "sourceRefs": [
+          "S5"
+        ]
+      },
+      {
+        "from": "戈特弗里德·威廉·莱布尼茨",
+        "to": "勒内·笛卡尔",
+        "label": "前定和谐替代",
+        "type": "批评（替代方案）",
+        "detail": "从笛卡尔式心身问题出发，否认有限实体之间任何因果交互，以『每个实体中预先规定的相互关系』（摆钟隐喻）解释心身对应",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "from": "吉尔伯特·赖尔",
+        "to": "勒内·笛卡尔",
+        "label": "范畴错误批判",
+        "type": "批评",
+        "detail": "1949 年《心的概念》把笛卡尔式二元论重述为『官方学说』/『机器中的幽灵』教条并判为范畴错误——错误在于把心理描述放进与物理描述同一的逻辑类型；SEP 双元论条目确认这一称呼与 1949 年节点",
+        "sourceRefs": [
+          "S7",
+          "S13",
+          "S1"
+        ]
+      },
+      {
+        "from": "卡尔·波普尔",
+        "to": "勒内·笛卡尔",
+        "label": "交互主义辩护",
+        "type": "接受（辩护）",
+        "detail": "在反二元论的世纪逆流中为心身双向因果辩护：《自我及其大脑：为交互主义一辩》（1977，与埃克尔斯）；SEP 双元论条目提及二人与量子不确定性辩护路径",
+        "sourceRefs": [
+          "S8",
+          "S1"
+        ]
+      },
+      {
+        "from": "大卫·查默斯",
+        "to": "勒内·笛卡尔",
+        "label": "属性二元论的当代复兴",
+        "type": "编辑比较（隔代回应）",
+        "detail": "保留心身鸿沟但不设两种实体：一类实体、两类根本属性（物理+现象）；SEP 双元论条目将查默斯列为属性二元论就意识的当代辩护者（1996），并把该形态与笛卡尔式实体二元论相区别",
+        "sourceRefs": [
+          "S12",
+          "S1"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "约公元前5—前4世纪",
+        "event": "柏拉图：灵魂—身体区分的最早完整论述",
+        "detail": "《美诺》《斐多》《斐德罗》主张灵魂先在、不朽、与永恒理念有亲和；《斐多》追加多组论证。SEP 称希腊传统提供了西方二元论最早完整保存的讨论",
+        "type": "文献节点",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "1641",
+        "event": "《第一哲学沉思集》巴黎初版",
+        "detail": "初版（Michael Soly 坊，Mersenne 监印）含六组反驳与答辩；1642 年阿姆斯特丹 Elzevir 第二版增第七组反驳。第六沉思提出实在区分与不可分论证，实体二元论自此有标准文本",
+        "type": "文献节点",
+        "sourceRefs": [
+          "S10",
+          "S2",
+          "S14"
+        ]
+      },
+      {
+        "year": "1640—1643",
+        "event": "松果腺学说定型与交互难题提出",
+        "detail": "1640—41 年书信首次明确松果腺为理性灵魂『主要居所』（『全脑中唯一单一的实体部分』）；1643 年伊丽莎白公主来信开启通信，直接质询非物质实体的因果作用",
+        "type": "争论节点",
+        "sourceRefs": [
+          "S4",
+          "S3"
+        ]
+      },
+      {
+        "year": "1649",
+        "event": "《论灵魂的激情》出版",
+        "detail": "松果腺机制最系统的表述：灵魂以意愿使小腺移动（AT XI:359）、精气搅动小腺为激情最近因（AT XI:371）；灵魂直接行使功能的处所『既非心脏亦非全脑』（AT XI:351）",
+        "type": "文献节点",
+        "sourceRefs": [
+          "S4"
+        ]
+      },
+      {
+        "year": "1677",
+        "event": "斯宾诺莎去世，《伦理学》等遗著随即结集出版",
+        "detail": "一实体两属性与平行序列：『观念的次序和联系与事物的次序和联系相同』（IIp7）；否认心身因果交互。SEP 未明言出版年（卒年+『友人 soon published』），年份标注见 evidenceLimits",
+        "type": "文献节点",
+        "sourceRefs": [
+          "S5"
+        ]
+      },
+      {
+        "year": "1714",
+        "event": "莱布尼茨《单子论》",
+        "detail": "前定和谐的成熟表述（SEP 年表系于是年，与《自然与神恩的原则》同年）：否认有限实体因果交互，心身如两座神造的同步摆钟",
+        "type": "文献节点",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "year": "1949",
+        "event": "赖尔《心的概念》",
+        "detail": "笛卡尔式二元论被重述为『官方学说』与『机器中的幽灵』教条（第一章 Descartes' Myth），判词是范畴错误；SEP 双元论条目以此标志反二元论的世纪转向",
+        "type": "文献节点",
+        "sourceRefs": [
+          "S7",
+          "S13",
+          "S1"
+        ]
+      },
+      {
+        "year": "1977",
+        "event": "波普尔与埃克尔斯《自我及其大脑》",
+        "detail": "副题『为交互主义一辩』（London: Springer International）——20 世纪少见的系统交互二元论辩护；SEP 双元论条目并提二人诉诸量子不确定性的路径",
+        "type": "文献节点",
+        "sourceRefs": [
+          "S8",
+          "S1"
+        ]
+      },
+      {
+        "year": "1996—2003",
+        "event": "查默斯：难问题与属性二元论复兴",
+        "detail": "《有意识的心灵》（1996，S1 提及）；“Consciousness and its Place in Nature”先后结集于 Oxford 2002 与 Blackwell 2003 文集，给出 Type-A/B/C 物理主义与 Type-D/E/F 非还原立场的完整地图，属性二元论成为当代须认真对待的形态",
+        "type": "文献节点",
+        "sourceRefs": [
+          "S1",
+          "S12"
+        ]
+      },
+      {
+        "year": "2020",
+        "event": "PhilPapers 全球哲学人士调查",
+        "detail": "22% 受访者接受或倾向二元论，物理主义 51%、泛心论 8%——二元论为第二大立场（调查于 2020 年进行；Bourget & Chalmers 分析报告 2023 年出版，SEP 双元论条目明引）",
+        "type": "接受史节点",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "二元论（dualism）",
+        "def": "对某个特定领域而言，存在两种根本不同的类（SEP 一般定义）；哲学核心用法在心身领域，但词义外延亦覆盖宗教善恶、价值等其他『两分』语境",
+        "source": "SEP “Dualism” 条目首节定义",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "实体二元论（substance dualism）",
+        "def": "心灵与身体是两类根本不同的实体；『substance』取『独立自存』或『经时持存』二义。代表：柏拉图、奥古斯丁、笛卡尔",
+        "source": "SEP “Dualism” §3.1",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "word": "属性二元论（property dualism）",
+        "def": "不设非物质实体，但主张存在两类根本不同的性质（物理性质与现象性质）；当代就意识的辩护者如 Jackson（1982）、Chalmers（1996）、Kim（2005）",
+        "source": "SEP “Dualism” §3.2；查默斯论文对属性二元论的界定句",
+        "sourceRefs": [
+          "S1",
+          "S12"
+        ]
+      },
+      {
+        "word": "身心问题（mind-body problem）",
+        "def": "非物质、无广延的心灵如何与广延的身体发生因果联系（随意动作与感觉两个方向）；由 1643 年伊丽莎白—笛卡尔通信与伽桑狄的反驳定型",
+        "source": "IEP “René Descartes: The Mind-Body Distinction” §4",
+        "sourceRefs": [
+          "S2",
+          "S3"
+        ]
+      },
+      {
+        "word": "松果腺（pineal gland）",
+        "def": "笛卡尔设定的灵魂在身体中的『主要居所』与心身交互点；选择理由：全脑中唯一单一、居中、轻巧易动的固体部分",
+        "source": "SEP “Descartes and the Pineal Gland” §2.2（1640 年书信引文）",
+        "sourceRefs": [
+          "S4"
+        ]
+      },
+      {
+        "word": "交互二元论（interactionism）",
+        "def": "心与身彼此因果作用的立场（查默斯记为 Type-D）；面临能量守恒与物理因果闭合的反驳，辩护路径含量子不确定性",
+        "source": "SEP “Dualism” §3.3；Chalmers §9",
+        "sourceRefs": [
+          "S1",
+          "S12",
+          "S4"
+        ]
+      },
+      {
+        "word": "副现象论（epiphenomenalism）",
+        "def": "物理状态产生心理状态，而心理对物理无因果影响（Type-E）；近代节点为赫胥黎 1893，古代先例见瑜伽—数论；詹姆斯式演化论反驳为其常备批评",
+        "source": "SEP “Dualism” §3.4；Chalmers §10",
+        "sourceRefs": [
+          "S1",
+          "S12"
+        ]
+      },
+      {
+        "word": "平行论与前定和谐（parallelism / pre-established harmony）",
+        "def": "取消交互的二元论安排：两序列各自独立运行而处处对应；斯宾诺莎型（一实体两属性）与莱布尼茨型（神造的预先调谐）为两大版本，马勒伯朗士的偶因论居其间",
+        "source": "SEP “Dualism” §3.5；SEP “Leibniz” §4.4；SEP “Spinoza” §2.2",
+        "sourceRefs": [
+          "S1",
+          "S6",
+          "S5"
+        ]
+      },
+      {
+        "word": "范畴错误（category mistake）",
+        "def": "把概念放进不属于它的逻辑类型而产生的错误；赖尔以此诊断笛卡尔式二元论——把心理谓词当作与物理谓词同一逻辑类型（如『见到学院与图书馆还问大学在哪』式的错置）",
+        "source": "SEP “Gilbert Ryle” §3、§6；Wikipedia “The Concept of Mind”（措辞定位）",
+        "sourceRefs": [
+          "S7",
+          "S13"
+        ]
+      },
+      {
+        "word": "是—应当（is–ought）",
+        "def": "休谟《人性论》（1739—40）3.1.1.27：从『是』系词前提到『应当』系词结论的推论『似乎完全不可想象』——事实与价值二分的经典源头，属『两种根本类』框架在价值维度的代表（本条点到为止）",
+        "source": "SEP “Hume's Moral Philosophy” §5",
+        "sourceRefs": [
+          "S9"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "《第一哲学沉思集》（Meditationes de prima philosophia）",
+        "author": "勒内·笛卡尔",
+        "era": "1641（巴黎 Michael Soly 初版）；1642（阿姆斯特丹 Elzevir 二版增第七组反驳）",
+        "desc": "实体二元论的标准原典：第六沉思『实在区分』与『不可分』论证；反驳者含霍布斯、伽桑狄、阿尔诺等。拉丁原典电子全文见 Gutenberg #23306（据 Adam & Tannery VII 1904、Göttler 1912 校本）；英译有 Molyneux 1680 伦敦本（Gutenberg #70091），其副题即『证明人心与身体实在不同』。站内藏书：第一哲学沉思集（id 88b56fb4da52）、谈谈方法（id 8c3044772b18）",
+        "kind": "原典",
+        "sourceRefs": [
+          "S10",
+          "S11",
+          "S2"
+        ]
+      },
+      {
+        "title": "《论灵魂的激情》（Les Passions de l'âme）",
+        "author": "勒内·笛卡尔",
+        "era": "1649",
+        "desc": "松果腺学说最系统的文本：灵魂以意愿使小腺移动、精气搅动小腺为激情最近因（AT XI:351/359/371，SEP 松果腺条目引）。站内藏书：方法论·情志论（id 49c80096b16d）",
+        "kind": "原典",
+        "sourceRefs": [
+          "S4"
+        ]
+      },
+      {
+        "title": "笛卡尔—伊丽莎白通信（1643—1649）",
+        "author": "勒内·笛卡尔 / 伊丽莎白公主",
+        "era": "1643—1649；笛卡尔方信件入 Clerselier 遗编（1657—67），伊丽莎白方 1879 年由 Foucher de Careil 首刊（1876 年 Rosendael 发现），收 Adam & Tannery；Lisa Shapiro 2007 年英译",
+        "desc": "交互难题的定型文献：1643-05-21 笛卡尔信提出『原始概念』与身心『联合』学说（IEP/SEP 引）；通信还覆盖道德哲学与激情理论。信件为早期近代哲学史第一手材料，非托名文献（SEP 专条考订其真伪与传抄）",
+        "kind": "原典（书信）",
+        "sourceRefs": [
+          "S3",
+          "S2"
+        ]
+      },
+      {
+        "title": "《伦理学》（Ethica ordine geometrico demonstrata）",
+        "author": "巴鲁赫·斯宾诺莎",
+        "era": "1677 年身后随遗著结集出版（SEP 未明言出版年，见 evidenceLimits）",
+        "desc": "平行论替代方案的原典：IIp7『观念的次序和联系与事物的次序和联系相同』；否认人是两种实体的联合。站内藏书：伦理学（id 32fb0956b9b1）",
+        "kind": "原典（对照立场）",
+        "sourceRefs": [
+          "S5"
+        ]
+      },
+      {
+        "title": "《单子论》（La Monadologie）",
+        "author": "戈特弗里德·威廉·莱布尼茨",
+        "era": "1714",
+        "desc": "前定和谐的成熟表述（SEP 年表系于是年，与《自然与神恩的原则》同年）。站内藏书：单子论（id 676cac465f6f）、神正论（id 83eb8857a597）",
+        "kind": "原典（对照立场）",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "title": "《心的概念》（The Concept of Mind）",
+        "author": "吉尔伯特·赖尔",
+        "era": "1949",
+        "desc": "对笛卡尔『官方学说』的范畴错误批判；第一章 Descartes' Myth 提出『机器中的幽灵』（措辞与章节经维基条目核对；SEP 赖尔条目确认 1949 年出版与『官方学说』称呼）。站内藏书：心的概念（id 2110a49aec94）",
+        "kind": "研究",
+        "sourceRefs": [
+          "S7",
+          "S13"
+        ]
+      },
+      {
+        "title": "《自我及其大脑：为交互主义一辩》（The Self and Its Brain: An Argument for Interactionism）",
+        "author": "卡尔·波普尔 / 约翰·C·埃克尔斯（埃克尔斯为站外人物）",
+        "era": "1977（London: Springer International）",
+        "desc": "20 世纪少见的系统性交互二元论辩护；书名副题与出版信息经 SEP 波普尔条目文献表核实；SEP 双元论条目另提及二人诉诸量子不确定性的辩护",
+        "kind": "研究",
+        "sourceRefs": [
+          "S8",
+          "S1"
+        ]
+      },
+      {
+        "title": "“Consciousness and its Place in Nature”（《意识及其在自然中的位置》）",
+        "author": "大卫·查默斯",
+        "era": "结集于 Philosophy of Mind: Classical and Contemporary Readings（Oxford, 2002）与 Blackwell Guide to the Philosophy of Mind（Blackwell, 2003）",
+        "desc": "属性二元论的当代标尺文本：区分难问题与易问题，给出 Type-A/B/C 物理主义与 Type-D 交互、Type-E 副现象、Type-F 泛心论式一元论的立场地图；作者官网 consc.net 提供全文并注明两处结集信息",
+        "kind": "研究（论文）",
+        "sourceRefs": [
+          "S12"
+        ]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "笛卡尔式实体二元论（Cartesian substance dualism）",
+        "era": "1641 至今",
+        "kind": "学说",
+        "desc": "思维实体与广延实体实在区分且可离存；SEP 概括的通行看法是它在当代『不再是可敬选项』，但仍有人辩护",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "name": "属性二元论（property dualism）",
+        "era": "1990 年代复兴至今",
+        "kind": "学说",
+        "desc": "一类实体、两类根本性质（物理+现象）；难问题论证的主要受益者，代价是滑向副现象论或泛心论的压力",
+        "sourceRefs": [
+          "S1",
+          "S12"
+        ]
+      },
+      {
+        "name": "交互二元论（interactionism）",
+        "era": "1643 年难题定型后持续至今",
+        "kind": "学说",
+        "desc": "心身双向因果；笛卡尔的原始立场，经松果腺机制具体化，20 世纪由波普尔—埃克尔斯以量子路径复兴",
+        "sourceRefs": [
+          "S1",
+          "S4",
+          "S8"
+        ]
+      },
+      {
+        "name": "副现象主义（epiphenomenalism）",
+        "era": "19 世纪末（赫胥黎 1893）至今",
+        "kind": "学说",
+        "desc": "单向因果：物理产生心理而心理不影响物理；以牺牲意识的因果效力换取与物理因果闭合的相容",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "平行论（parallelism）",
+        "era": "17 世纪",
+        "kind": "学说",
+        "desc": "无交互的对应：斯宾诺莎型（一实体两属性，观念序=事物序）与莱布尼茨型（前定和谐）；马勒伯朗士偶因论为其中间立场",
+        "sourceRefs": [
+          "S1",
+          "S5",
+          "S6"
+        ]
+      },
+      {
+        "name": "形质二元论（hylomorphic dualism）",
+        "era": "亚里士多德—中世纪阿奎那传统",
+        "kind": "学说",
+        "desc": "以质料/形式分析心身：灵魂作为身体之形式；阿奎那称灵魂为『不完全实体』（『我的灵魂不是我』）；SEP 单列的二元论变体，可缓和交互之谜但未消解因果闭合反驳",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "quote": "corpus ex natura sua sit semper divisibile, mens autem plane indivisibilis.（身体按其本性永远是可分的，而心灵则完全是不可分的）",
+    "quoteAuthor": "勒内·笛卡尔，《第一哲学沉思集》第六沉思",
+    "quoteKind": "direct（拉丁原文经 Gutenberg #23306 逐字定位）",
+    "quotes": [
+      {
+        "text": "I am only a thinking thing, that is to say, a mind, or a soul, or understanding, or Reason.（我只是一个思维着的东西，也就是说，一个心灵、一个灵魂、一个理智或理性）",
+        "author": "勒内·笛卡尔",
+        "exp": "第二沉思『我思』段落，经 1680 年 Molyneux 英译本（Gutenberg #70091）逐字核对；拉丁原典相应处作 tantum res cogitans（S10 定位）。这是实体二元论的出发点：把『我』首先认定为思维之物",
+        "kind": "direct（历史英译）",
+        "sourceRefs": [
+          "S11",
+          "S10"
+        ]
+      },
+      {
+        "text": "as regards the soul and the body together, we have only the notion of their union.（至于灵魂与身体合在一起，我们只有它们之『联合』的原始概念）",
+        "author": "勒内·笛卡尔（致伊丽莎白公主，1643年5月21日）",
+        "exp": "对交互难题的正面回应：心身『联合』是不可再分析的基本概念；IEP 笛卡尔条目引此句为对伊丽莎白的答复，SEP 松果腺条目另记 1643-06-28 信中『无法同时清楚设想心身之区分与联合』。学界普遍视之为未解除伊丽莎白的疑问",
+        "kind": "direct（英译，中译自该英译）",
+        "sourceRefs": [
+          "S2",
+          "S4"
+        ]
+      },
+      {
+        "text": "just one sort of substance or entity with both physical and phenomenal fundamental properties.（仅有一种实体，却兼具物理与现象两类根本属性）",
+        "author": "大卫·查默斯",
+        "exp": "查默斯对属性二元论的界定，与实体二元论（『分离且交互的精神与物理实体』）相对；出自 “Consciousness and its Place in Nature” 作者官网版，官网另注明 Oxford 2002 与 Blackwell 2003 两处结集",
+        "kind": "direct",
+        "sourceRefs": [
+          "S12"
+        ]
+      },
+      {
+        "text": "the dogma of the Ghost in the Machine（『机器中的幽灵』教条）",
+        "author": "吉尔伯特·赖尔",
+        "exp": "《心的概念》第一章 Descartes' Myth 对笛卡尔式二元论的判词；措辞与章节定位经维基百科 The Concept of Mind 条目核对，SEP 赖尔条目确认 1949 年出版并以 The Official Doctrine 称呼该学说、指出 mind 与 body 分属不同逻辑/语法类型",
+        "kind": "direct",
+        "sourceRefs": [
+          "S13",
+          "S7"
+        ]
+      }
+    ],
+    "closingQuote": "The hard problem of consciousness is the problem of experience.（意识的难问题，就是经验的问题）",
+    "closingQuoteAuthor": "大卫·查默斯，“Consciousness and its Place in Nature” §2",
+    "closingQuoteKind": "direct（官网版逐字核对）"
+  },
+  "readingRoutes": [
+    {
+      "title": "从原典切入：第六沉思的两种论证及其代价",
+      "kind": "编辑建议",
+      "desc": "先读《第一哲学沉思集》第六沉思（拉丁原典 Gutenberg #23306；Molyneux 1680 英译 #70091，副题直指心身实在区分），用 IEP 笛卡尔条目的两版论证重构对照阅读；随后读 1643 年伊丽莎白通信（SEP 专条 + IEP）看同一论证必须付出的因果代价；以赖尔《心的概念》第一章作为 20 世纪的反驳回声",
+      "sourceRefs": [
+        "S10",
+        "S11",
+        "S2",
+        "S3",
+        "S7"
+      ]
+    },
+    {
+      "title": "从当代问题切入：难问题与二元论形态地图",
+      "kind": "编辑建议",
+      "desc": "先读 SEP “Dualism” 条目的分类学（§3.1—3.6 与 §4.2），再读查默斯 “Consciousness and its Place in Nature”（难问题与 Type-D/E/F 地图），然后回到 1643 年通信看『交互难题』的原型表述，最后以 SEP 波普尔条目与《自我及其大脑》看 20 世纪的辩护与 2020 年调查中的位置",
+      "sourceRefs": [
+        "S1",
+        "S12",
+        "S3",
+        "S8"
+      ]
+    }
+  ],
+  "evidenceLimits": [
+    "价值二元论与事实—价值二分仅点到为止：本次核读来源中，SEP “Dualism” 条目只给出『某领域两种根本类』的一般定义、未设价值二元论专节；事实—价值一侧以 SEP “Hume's Moral Philosophy” §5（T 3.1.1.27『是—应当』）定位，『fact-value dichotomy』作为独立术语的哲学史梳理未在核读来源中展开，故不入时间线、只在概述与术语表出现",
+    "《伦理学》『1677 年出版』在 SEP 斯宾诺莎条目中仅为暗示（明文是卒年 1677 与身后『友人 soon published』），条目未点名 Opera Posthuma；时间线节点因此写为『1677 年去世、遗著随即结集出版』",
+    "笛卡尔生卒（1596—1650）与《沉思集》1641 年初版由维基百科（S14）与古腾堡 #23306 编者前言（S10）双重支撑；SEP/IEP 条目正文未给出这两个年份",
+    "查默斯生年未在核读来源中出现，人物条目 era 只写『当代（活跃于 1990 年代至今）』；站内无此人，如需建页须另行核证",
+    "赖尔『机器中的幽灵』的确切措辞与章节（第一章 Descartes' Myth）经维基百科（S13，reference 型）核对；SEP 赖尔条目本次抓取部分不含该短语，但确认 1949 年出版与『官方学说』称呼，两源互证",
+    "SEP “Descartes and the Pineal Gland” 正条已归档，本包按 Summer 2026 归档版核读（URL 含 /archives/sum2026/）；该条目未展开伊丽莎白 1643 之问（此事由 S3/S2 支撑）",
+    "Britannica “dualism (philosophy)” 条目两次尝试均不可达（WebFetch 403；curl 过 Cloudflare 验证页），其宗教/价值二元论内容未采信，未列为来源",
+    "与 P03 一元论包（同日并行交付）的对照接口按任务约定单方面声明，未与对方最终内容交叉核对",
+    "SEP 双元论条目本次抓取未含『pairing problem（配对问题）』与『neural dependence』的明确表述，conclusion 未将这两项写成有来源支撑的独立反驳"
+  ]
+}

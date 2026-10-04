@@ -1,0 +1,24 @@
+// Content hashes for approved artwork replacements; canonical public paths stay unchanged.
+export const SCHOOL_ARTWORK_VERSIONS = {
+  "/schools/名家.webp": "55f8a90bd4eb",
+  "/schools/两汉经学.webp": "adfcc806b65d",
+  "/schools/宋明理学.webp": "f66b7f132d87",
+  "/schools/明清实学.webp": "2ecf7087d1f6",
+  "/schools/乾嘉朴学.webp": "0ad73dfd59ec",
+  "/schools/天演论.webp": "322b8bab2571",
+  "/schools/三民主义.webp": "05f45cb32781",
+  "/schools/旧民主主义.webp": "077433c330de",
+  "/schools/毛泽东思想.webp": "5319b9b81157",
+  "/schools/中国马克思主义哲学.webp": "fb74cfadd563",
+  "/schools/新民主主义.webp": "98fe18347d26",
+  "/schools/现代新儒家.webp": "6422a0ea6d10",
+  "/schools/中国实证哲学.webp": "70e3945c7b09",
+  "/schools/马克思主义哲学的中国化与体系化.webp": "849ba66b4365",
+  "/schools/习近平新时代中国特色社会主义思想.webp": "e3d71cbe67b6",
+  "/schools/印度哲学.webp": "1b11f51c0efa",
+  "/schools/结构主义.webp": "9b16b267ca0e",
+  "/schools/犹太哲学.webp": "346e940a3282",
+  "/schools/魏晋玄学.webp": "dbf5d1878d63",
+  "/schools/隋唐佛学.webp": "062345e4db0b",
+  "/schools/教父哲学.webp": "bfe1e10365b5"
+};

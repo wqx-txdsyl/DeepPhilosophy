@@ -1,218 +1,97 @@
-/**
- * 书籍详情页 — 封面 + 章节列表 + 阅读入口
- */
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Icon from '../components/Icon';
-import { getBookById } from '../data';
-import { getApiBase } from '../App';
+import { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { loadBooks } from '../data';
+import CdnImage from '../components/CdnImage';
 import { useSEO } from '../utils/seo';
-import { cacheSet } from '../data/cache';
-import { getCoverUrl, getCoverOssUrl } from '../data/coverUrls';
+import { loadAuthorCatalog, readableBook } from '../data/authorContent';
+import { BOOK_TOPICS, classifyBook } from '../data/bookLibrary';
+import { mergeBook, normalizeBookToc, groupBookToc, bookReaderPath, resumedChapter, bookAuthors, relatedBooks } from '../data/bookDetail';
+import { BOOK_EDITORIAL } from '../data/bookEditorial';
+import './BookDetailPage.css';
 
-function BookDetailPage() {
-  const { bookId } = useParams();
-  const navigate = useNavigate();
-  const [book, setBook] = useState(null);
-  const [meta, setMeta] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [coverOss, setCoverOss] = useState(false);  // 同源封面失败 → 回退 OSS 直链 (CF 边缘缓存旧 HTML 场景)
-
-  useSEO(book?.title || '书籍详情', book?.author ? `${book.author} · ${book.title}` : '哲学经典著作详情');
-
-  useEffect(() => { fetchBook(); }, [bookId]);
-
-  const fetchBook = async () => {
-    setLoading(true);
-    // 1. 静态 JSON（毫秒级，含目录/封面）— OSS 上海双轨: 先试 OSS（~80ms）, 2.5s 超时回退同源
+async function readDetail(id, signal) {
+  const path = `/book_detail/${encodeURIComponent(id)}.json`;
+  for (const url of [`https://deepphilosophy.oss-cn-shanghai.aliyuncs.com${path}`, path]) {
     try {
-      const tryFetch = async (url, timeout) => {
-        try {
-          const resp = await fetch(url, timeout ? { signal: AbortSignal.timeout(timeout) } : undefined);
-          return resp.ok ? resp.json() : null;
-        } catch { return null; }
-      };
-      const d = await tryFetch(`https://deepphilosophy.oss-cn-shanghai.aliyuncs.com/book_detail/${bookId}.json?v=4`, 2500)
-        || await fetch(`/book_detail/${bookId}.json?v=3`).then(r => r.ok ? r.json() : null);
-      if (d) {
-        // file_type 以 detail 为准（修复: 曾写死 epub, 导致 pdf/txt 书详情页显示 EPUB）
-        const enriched = { ...d, file_type: d.file_type || 'epub', file_size: d.file_size || 0 };
-        setBook(enriched);
-        setMeta(d);
-        setLoading(false);
-        // 2. 后台补标签和简介
-        fetch(`${getApiBase()}/api/books/${bookId}`).then(r => r.ok && r.json()).then(bd => {
-          if (bd) setBook(prev => ({ ...prev, summary: bd.summary, tags: bd.tags || bd.keywords || [], keywords: bd.keywords || [], file_size: bd.file_size || 0 }));
-        }).catch(() => {});
-        return;
-      }
-    } catch {}
-    // 2. 回退书单API
-    try {
-      const r = await fetch(`${getApiBase()}/api/books/${bookId}`, { signal: AbortSignal.timeout(8000) });
-      if (r.ok) { const d = await r.json(); cacheSet('book_v2_' + bookId, d); setBook(d); setLoading(false); return; }
-    } catch {}
-    // 3. 本地
-    const b = await getBookById(bookId);
-    cacheSet('book_v2_' + bookId, b);
-    setBook(b);
-    setLoading(false);
-  };
-
-  if (loading) return <div className="loading">加载中...</div>;
-  if (!book) return (
-    <div className="page-container" style={{ textAlign: 'center' }}>
-      <button className="btn btn-secondary" onClick={() => navigate(-1)} style={{ marginBottom: 16 }}>← 返回</button>
-      <div className="empty-state"><p><Icon name="nav-books" size={16} /></p><p>书籍未找到</p></div>
-    </div>
-  );
-
-  const isTxt = book.file_type === 'txt';
-  const openReader = () => {
-    // 优先历史记录，无则 ch=0
-    let ch = 0;
-    try {
-      const ud = JSON.parse(localStorage.getItem('dp_userdata') || '{}');
-      const entry = (ud.readingHistory || []).find(r => r.bookId === bookId);
-      if (entry?.page > 0) ch = entry.page - 1;
-    } catch {}
-    navigate(`/reader/${bookId}?ch=${ch}`);
-  };
-  // 封面：优先静态文件 /covers/；同源加载失败(CF 边缘缓存旧 HTML) → onError 回退 OSS 直链
-  const coverUrl = coverOss ? (getCoverOssUrl(bookId) || meta?.cover || null) : (getCoverUrl(bookId) || meta?.cover || null);
-  const coverOnError = () => { if (!coverOss) setCoverOss(true); };
-  // 优先 chapterTitles（与实际章节文件索引一致），回退 toc（可能含无对应文件的条目）
-  // 防御: 过滤非字符串条目（历史数据可能把层级 toc 对象混入 chapterTitles）
-  const chapterTitles = (meta?.chapterTitles?.length ? meta.chapterTitles : (meta?.toc || []))
-    .filter(t => typeof t === 'string');
-  // 层级目录（编级 part 分组 + 章级跳转）; 无 toc 层级时退化为 chapterTitles 平铺
-  const tocList = (meta?.toc?.length && typeof meta.toc[0] === 'object')
-    ? meta.toc
-    : chapterTitles.map((t, i) => ({ type: 'chapter', title: t, index: i }));
-
-  return (
-    <div className="page-container" style={{ maxWidth: 800, margin: '0 auto', paddingBottom: 40 }}>
-      <button className="btn btn-secondary" onClick={() => navigate(-1)} style={{ marginBottom: 20 }}>← 返回</button>
-
-      {/* 封面 + 基本信息 */}
-      <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: 28 }}>
-        {/* 封面 */}
-        <div style={{
-          width: 160, height: 220, flexShrink: 0,
-          borderRadius: 6, overflow: 'hidden',
-          background: 'var(--card-bg)', border: '1px solid var(--border)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          {coverUrl ? (
-            <img src={coverUrl} alt={book.title}
-              loading="lazy" decoding="async" onError={coverOnError}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          ) : (
-            <Icon name="nav-books" size={48} />
-          )}
-        </div>
-
-        {/* 信息 */}
-        <div style={{ flex: 1, minWidth: 240 }}>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-            <span className={`badge ${book.region === '东方' ? 'badge-east' : 'badge-west'}`}>{book.region}</span>
-          </div>
-          <h1 style={{
-            fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 400,
-            color: 'var(--ink)', margin: '0 0 6px', letterSpacing: '0.03em',
-          }}>{book.title}</h1>
-          <p style={{ fontSize: 14, color: 'var(--text-dim)', margin: '0 0 12px' }}>
-            {book.author}
-          </p>
-          <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0 }}>
-            {(book.file_size > 0) && `${(book.file_size / 1024 / 1024).toFixed(1)} MB · `}
-            {meta?.chapterCount ? `${meta.chapterCount}章` : ''}
-          </p>
-          {/* 标签 */}
-          {book.tags?.length > 0 && (
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
-              {book.tags.slice(0, 6).map((t, i) => (
-                <span key={i} className="tag" style={{ fontSize: 10, padding: '2px 8px' }}>{typeof t === 'string' ? t : t.word || t}</span>
-              ))}
-            </div>
-          )}
-          {!isTxt && (
-            <button className="btn btn-primary" style={{ marginTop: 16, padding: '10px 28px', fontSize: 14 }}
-              onClick={openReader}>
-              <Icon name="icon-book-open" size={16} /> 开始阅读
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* 简介 + 标签 */}
-      {book.summary && (
-        <div style={{ padding: '20px 0', borderTop: '1px solid var(--border)', fontSize: 14, color: 'var(--text-dim)', lineHeight: 1.9 }}>
-          {book.summary}
-        </div>
-      )}
-      {book.keywords?.length > 0 && (
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 12 }}>
-          {book.keywords.map((kw, i) => (
-            <span key={i} className="tag" style={{ fontSize: 12, padding: '4px 10px', background: 'var(--secondary)', color: 'var(--accent)', borderRadius: 12, border: '1px solid var(--border)' }}>
-              {kw.word || kw}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* 章节目录 */}
-      {tocList.length > 0 && (
-        <div style={{ marginTop: 24 }}>
-          <h2 style={{
-            fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 400,
-            color: 'var(--ink)', marginBottom: 16, letterSpacing: '0.03em',
-          }}>目录</h2>
-          <div style={{ borderTop: '1px solid var(--border)' }}>
-            {tocList.map((item, i) => {
-              const isPart = item.type === 'part';
-              const isSection = item.type === 'section';
-              const isSub = isPart && item.level === 1;   // 部/集/卷/篇级（书内分组）
-              // 目录规则: 章/节名可点击（箭头/光标/悬停变色）; 篇名/书名一律不可点击（即使带锚点 index）
-              return (
-                <div key={i} style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: isPart ? (isSub ? '8px 0 4px' : '12px 0 6px') : (isSection ? '5px 0' : '10px 0'),
-                  borderBottom: '1px solid var(--border)',
-                  cursor: isPart ? 'default' : 'pointer', transition: 'background 0.2s',
-                  fontSize: isPart ? (isSub ? 11 : 12) : (isSection ? 11.5 : 13),
-                  fontWeight: isPart ? 700 : 400,
-                  color: isPart ? 'var(--ochre)' : (isSection ? 'var(--text-dim)' : 'var(--text)'),
-                  letterSpacing: isPart ? '0.15em' : '0',
-                }}
-                  onClick={() => {
-                    if (isPart) return;
-                    // 节跳转: 传 toc 数组下标(标题锚点 sec-{tocIdx} 用), 不依赖 sec 数字
-                    // —— 缺 sec 字段的书(25本)也能精确跳节
-                    navigate(`/reader/${bookId}?ch=${item.index}${isSection ? `&toc=${i}` : ''}`);
-                  }}
-                  onMouseEnter={e => { if (!isPart) e.currentTarget.style.background = 'var(--card-bg)'; }}
-                  onMouseLeave={e => { if (!isPart) e.currentTarget.style.background = 'transparent'; }}>
-                  <span style={{ flex: 1, paddingLeft: isPart ? (isSub ? 28 : 0) : (isSection ? 42 : 14) }}>
-                    {isPart ? `— ${item.title} —` : item.title}
-                  </span>
-                  {!isPart && <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>→</span>}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* 待收录提示 */}
-      {isTxt && (
-        <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-dim)' }}>
-          <p style={{ fontSize: 36, margin: 0 }}><Icon name="icon-edit" size={16} /></p>
-          <p style={{ marginTop: 12 }}>该书籍尚未收录，正在筹备中</p>
-        </div>
-      )}
-    </div>
-  );
+      const response = await fetch(url, { signal: AbortSignal.any([signal, AbortSignal.timeout(4500)]), cache: 'no-cache' });
+      if (response.ok) { const value = await response.json(); if (value?.title) return value; }
+    } catch { if (signal.aborted) return null; }
+  }
+  return null;
 }
-
-export default BookDetailPage;
+function Cover({ book, hero = false }) {
+  const [failed, setFailed] = useState(false);
+  return book.cover?.startsWith('/covers/') && !failed
+    ? <CdnImage src={book.cover} imageWidth={hero ? 640 : 320} alt={`${book.title}封面`} loading={hero ? 'eager' : 'lazy'} decoding="async" fetchPriority={hero ? 'high' : 'auto'} onError={() => setFailed(true)} />
+    : <div className="bd-cover-placeholder"><span>{book.title}</span><small>{book.author}</small></div>;
+}
+function TocNode({ node, book, depth = 0 }) {
+  const href = bookReaderPath(book.id, node, book.chapterCount);
+  if (node.type === 'part' || node.children.length) return <details className={node.type === 'part' ? 'dp-part' : 'dp-chapter'} id={`bd-toc-${node.tocIndex}`} open={depth === 0 && node.tocIndex === 0}>
+    <summary>{node.title}</summary><div className="bd-toc-children">{href && <Link className="bd-chapter-start" to={href}>从本章开始阅读 ↗</Link>}{node.children.map(child => <TocNode key={child.tocIndex} node={child} book={book} depth={depth+1} />)}</div>
+  </details>;
+  return <div className={`bd-toc-leaf${node.type === 'section' ? ' bd-toc-section' : ''}`} id={`bd-toc-${node.tocIndex}`}>{href ? <Link to={href}><span>{node.title}</span><span aria-hidden="true">↗</span></Link> : <span>{node.title}</span>}</div>;
+}
+export default function BookDetailPage() {
+  const { bookId } = useParams();
+  return <BookDetailContent key={bookId} bookId={bookId} />;
+}
+function BookDetailContent({ bookId }) {
+  const [data, setData] = useState(null), [authors, setAuthors] = useState(null), [retry, setRetry] = useState(0);
+  const [selectedConcept, setSelectedConcept] = useState(0);
+  const [tocExpanded, setTocExpanded] = useState(false);
+  const [history] = useState(() => { try { return JSON.parse(localStorage.getItem('dp_userdata') || '{}').readingHistory || []; } catch { return []; } });
+  const navigate = useNavigate(), location = useLocation();
+  const tocRef = useRef(null);
+  const editorial = BOOK_EDITORIAL[bookId];
+  const book = data?.book;
+  useSEO(book?.title || '书籍详情', book?.summary || `${book?.author || ''} · 哲学著作与阅读目录`);
+  useEffect(() => {
+    const controller = new AbortController();
+    Promise.allSettled([loadBooks(), readDetail(bookId, controller.signal)]).then(([list, detail]) => {
+      if (controller.signal.aborted) return;
+      const catalog = list.status === 'fulfilled' && Array.isArray(list.value) ? list.value : [];
+      setData({ catalog, book: mergeBook(bookId, catalog.find(b => b.id === bookId), detail.status === 'fulfilled' ? detail.value : null) });
+    });
+    loadAuthorCatalog().then(value => { if (!controller.signal.aborted) setAuthors(value); }).catch(() => {});
+    return () => controller.abort();
+  }, [bookId, retry]);
+  const libraryReturn = typeof location.state?.libraryReturn === 'string' && /^\/books(?:\?|$)/.test(location.state.libraryReturn) ? location.state.libraryReturn : '/books';
+  const returnLink = <Link className="dp-back" to={libraryReturn}>← 返回书库</Link>;
+  if (!data) return <div id="dp-book-detail" className="bd-status" role="status"><p className="dp-eyebrow">DeepPhilosophy · Library</p><h1 className="dp-serif">正在翻开书页…</h1></div>;
+  if (!book) return <div id="dp-book-detail" className="bd-status">{returnLink}<h1 className="dp-serif">暂时无法打开这本书</h1><p>书目可能暂不可用，请稍后重试。</p><button onClick={() => { setData(null); setRetry(n => n+1); }}>重新加载</button></div>;
+  const readable = readableBook(book);
+  const flatToc = normalizeBookToc(book), groups = groupBookToc(flatToc);
+  const resume = resumedChapter(history, bookId, Number(book.chapterCount));
+  const topics = classifyBook(book).topics.map(id => BOOK_TOPICS.find(t => t.id === id)).filter(Boolean);
+  const authorLinks = bookAuthors(book.author, authors);
+  const concepts = editorial?.concepts || [];
+  const concept = concepts[selectedConcept] || concepts[0];
+  const conceptTarget = concept && flatToc.find(item => item.type === 'section' && item.index === concept.ch && item.sec === concept.sec);
+  const conceptLink = conceptTarget && readable ? bookReaderPath(bookId, conceptTarget, book.chapterCount) : null;
+  const related = relatedBooks(book, data.catalog, editorial);
+  const sections = [
+    { id:'bd-intro', title:'作品简介', en:'About' },
+    { id:'bd-concepts', title:concepts.length ? '核心概念' : '阅读线索', en:'Vocabulary' },
+    ...(readable && groups.length ? [{ id:'bd-contents', title:'阅读与目录', en:'Reading' }] : []),
+    ...(related.length ? [{ id:'bd-related', title:'延伸阅读', en:'Further reading' }] : []),
+  ];
+  const sectionNumber = id => String(sections.findIndex(s => s.id === id) + 1).padStart(2,'0');
+  const overview = editorial?.overview || String(book.summary || '').replaceAll('\\n','\n').split(/\n+/).filter(Boolean);
+  const lead = editorial?.lead || (overview[0] ? (overview[0].split('。')[0] + '。') : '从作品出发，走近它所讨论的思想与问题。');
+  const routes = (editorial?.routes || []).map(route => ({ ...route, target: flatToc.find(node => node.type === 'part' && node.title === route.part) })).filter(route => route.target);
+  function openPart(index) { const target = document.getElementById(`bd-toc-${index}`); if (!target) return; let current = target; while (current && current !== tocRef.current) { if (current.tagName === 'DETAILS') current.open = true; current = current.parentElement; } target.scrollIntoView({ block:'start' }); }
+  const readAction = (first = false) => readable ? <Link className="dp-primary" to={`/reader/${encodeURIComponent(bookId)}?ch=${first ? 0 : (resume ?? 0)}`}>{!first && resume !== null ? `继续阅读 · 第 ${resume+1} 章` : first ? '翻开第一章' : '开始阅读'}<span aria-hidden="true">↗</span></Link> : <p className="bd-unavailable">当前仅收录书目资料，正文尚未开放阅读。</p>;
+  const heading = (id, en, title) => <div className="dp-section-caption"><small>{sectionNumber(id)} / {en}</small><h2 className="dp-serif">{title}</h2></div>;
+  return <article id="dp-book-detail">
+    {returnLink}
+    <section className="dp-detail-hero"><div className="dp-plinth"><span className="dp-volume-mark" aria-hidden="true">{editorial?.originalTitle || 'LIBRARY'}</span><Cover book={book} hero /><p>DEEP PHILOSOPHY · LIBRARY</p></div><div className="dp-detail-title"><p className="dp-eyebrow">{topics.slice(0,2).map(t=>t.label).join(' / ') || '哲学藏书馆'}</p><h1 className="dp-serif">{book.title}</h1>{editorial?.originalTitle && <p className="dp-original">{editorial.originalTitle}</p>}<div className="dp-detail-author">{authorLinks.map((author,i) => <span key={`${author.name}-${i}`}>{i>0 && ' / '}{author.path ? <Link to={author.path}>{author.name} ↗</Link> : author.name}</span>)}</div><p className="dp-lead">{lead}</p><div className="dp-meta">{editorial?.firstPublished && <span>原著初版 · {editorial.firstPublished}</span>}{readable && <span>{book.chapterCount} 个阅读章节</span>}<span>{readable ? '在线阅读' : '书目资料'}</span></div><div className="dp-actions">{readAction()}{readable && groups.length>0 && <a className="bd-text-link" href="#bd-contents">浏览目录 ↓</a>}</div></div></section>
+    <nav className="dp-section-nav" aria-label="书籍详情章节">{sections.map((s,i) => <a key={s.id} href={`#${s.id}`}><small>{String(i+1).padStart(2,'0')}</small>{s.title}</a>)}</nav>
+    <section className="dp-detail-section" id="bd-intro">{heading('bd-intro','About','走近这本书')}<div className="dp-prose">{editorial?.opening && <p className="dp-intro-opening">{editorial.opening}</p>}{overview.length ? overview.map((p,i)=><p key={i}>{p}</p>) : <p>这本书的简介尚待整理。可先查看书目信息与相关作品。</p>}{editorial && book.summary && <details className="bd-original-summary"><summary>查看馆藏简介</summary><p>{book.summary}</p></details>}</div></section>
+    <section className="dp-concept-section" id="bd-concepts"><div className="dp-concept-heading"><div><p className="dp-eyebrow">{sectionNumber('bd-concepts')} / {concepts.length ? 'Vocabulary' : 'Reading paths'}</p><h2 className="dp-serif">{concepts.length ? '先认识几个词' : '这本书谈到什么'}</h2></div><p>{concepts.length ? '在词义之间，找到进入原文的线索。' : '从主题出发，寻找可以对照阅读的作品。'}</p></div>{concept ? <><div className="dp-concept-terms" role="group" aria-label="核心概念">{concepts.map((item,i) => <button key={item.name} aria-pressed={i===selectedConcept} onClick={() => setSelectedConcept(i)}>{item.name}</button>)}</div><div className="dp-concept-note" aria-live="polite"><div><small>{concept.en}</small><h3 className="dp-serif">{concept.name}</h3></div><div><p>{concept.text}</p>{conceptLink && <Link to={conceptLink}>{concept.link} ↗</Link>}</div></div></> : <div className="bd-topic-links">{topics.length ? topics.map(topic=><Link key={topic.id} to={`/books?topic=${topic.id}`}>{topic.label}<span aria-hidden="true">↗</span></Link>) : <Link to={`/books?q=${encodeURIComponent(book.author)}`}>查看作者相关作品 ↗</Link>}</div>}</section>
+    {readable && groups.length>0 && <section className="dp-detail-section" id="bd-contents">{heading('bd-contents','Reading',routes.length ? '从哪里开始' : '沿着目录阅读')}<div>{routes.length>0 && <><div className="dp-reading-routes">{routes.map((route,i)=><button key={route.title} onClick={()=>openPart(route.target.tocIndex)}><span>{String(i+1).padStart(2,'0')}</span><div><strong>{route.title}</strong><p>{route.note}</p></div><b aria-hidden="true">↓</b></button>)}</div><p className="dp-route-note">第一次阅读建议从导论开始；上方入口可定位对应篇章。</p></>}<div className="dp-toc-head"><span>完整目录 · 篇 / 章 / 节</span><button aria-expanded={tocExpanded} onClick={() => { const next = !tocExpanded; tocRef.current?.querySelectorAll('details').forEach(node => { node.open=next; }); setTocExpanded(next); }}>{tocExpanded ? '收起目录' : '展开目录'}</button></div><div ref={tocRef} className="bd-toc">{groups.map(node=><TocNode key={node.tocIndex} node={node} book={book} />)}</div></div></section>}
+    {related.length>0 && <section className="dp-continuation" id="bd-related"><header><div><p className="dp-eyebrow">{sectionNumber('bd-related')} / Further reading</p><h2 className="dp-serif">沿着这本书，继续读</h2></div><Link to={libraryReturn}>浏览全部藏书 ↗</Link></header><div className="dp-reading-books">{related.map(item=><Link key={item.id} to={`/book/${item.id}`} state={{ libraryReturn }}><div className="dp-reading-book-art"><Cover book={item} /></div><small>{item.reason}</small><h3 className="dp-serif">{item.title}</h3><p>{item.author}</p><div>{item.note}</div></Link>)}</div><div className="dp-world-links">{authorLinks.filter(a=>a.path).slice(0,2).map(author=><Link key={author.canonical} to={author.path}><small>认识作者</small><span>{author.name} ↗</span></Link>)}{editorial?.school ? <Link to={`/school/${encodeURIComponent(editorial.school)}`}><small>走进思想传统</small><span>{editorial.school} ↗</span></Link> : <Link to="/genealogy"><small>思想之间</small><span>探索哲学谱系 ↗</span></Link>}</div></section>}
+    <section className="dp-detail-ending">{(editorial?.atmosphere || book.cover) && <CdnImage src={editorial?.atmosphere || book.cover} imageWidth={1100} alt="" aria-hidden="true" loading="lazy" />}<div><p className="dp-eyebrow">{readable ? 'Return to the text' : 'Continue exploring'}</p><h2 className="dp-serif">{readable ? <>问题的下一步，<br />在书页之中。</> : <>从一本书，<br />走向更多思想。</>}</h2>{readable ? readAction(true) : <Link className="dp-primary" to={libraryReturn}>继续浏览书库 ↗</Link>}</div></section>
+    <footer className="dp-bottom"><span>DeepPhilosophy · {book.title}</span><button onClick={() => navigate(libraryReturn)}>回到书库 ↑</button></footer>
+  </article>;
+}

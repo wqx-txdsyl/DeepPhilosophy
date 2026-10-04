@@ -1,0 +1,456 @@
+{
+  "schemaVersion": 1,
+  "taskId": "I03",
+  "name": "弥曼差派",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "研究员自查（非独立同行评审，主会话直研）：SEP 印度认识论条目与维基百科三页（Mīmāṃsā / Kumārila Bhaṭṭa / Jaimini）以 curl 全文抓取+grep 定位逐字核对；IEP 无弥曼差条目（404 实测）、GRETIL 无《弥曼差经》文本（索引检索 0 命中、目录路径 404 实测），均如实记入 evidenceLimits；人物姓名以 python 子串匹配 philosophers.json（737人），书籍以 python 实查 books.json；两个 JSON 经 python3 -m json.tool 校验。",
+  "proposal": {
+    "kind": "school",
+    "scope": "弥曼差（Mīmāṃsā）作为有传承、有原典、有组织性论辩的印度哲学学派：吠陀解释学、仪式行动（dharma）理论、量论（声/圣言量、不可得量）、声常与无作者吠陀学说、自证论（svataḥ prāmāṇya）与两大注释传统（跋吒派/普拉帕迦罗派）之争。范围限定于前弥曼差（Pūrva-Mīmāṃsā）；后弥曼差（Uttara-Mīmāṃsā）即吠檀多，站内另有独立任务（I04），本包不代述、只在关系与词条中说明称谓史。",
+    "period": "阇弥尼（约前400—200年间，单一来源口径）至7世纪两大注释家建制，后续接受至近代",
+    "traditionContext": "印度；与正理-胜论同属吠陀系'正统六派'叙事中的仪式学与语言学派；与佛教量论（尤其陈那-法称系）为论辩对手。",
+    "relatedExisting": [
+      {
+        "name": "印度哲学",
+        "path": "app/public/schools/data/school_印度哲学.json",
+        "note": "mentions-only（'弥曼差派/Mimamsa' 提及）；本包为其弥曼差内容提供独立学案，建议互链导流。"
+      }
+    ],
+    "relationSuggestions": [
+      "与 I01 正理派包互链：两派同属量论论辩场域（SEP 印度认识论条目以同一框架处理）。",
+      "与 I04 吠檀多任务衔接：'后弥曼差'称谓史由本包词条交代，吠檀多学说本体由 I04 承载，不重复。",
+      "与 T01 佛教哲学包互链：弥曼差与佛教在声常/声无常、自证、量论上的论辩是印度哲学史主战场之一（S1 有直接定位）。",
+      "[由 school.relations 迁入（端点非本包人物，不符契约）] 弥曼差派→吠檀多（站内任务 I04 承载）｜'前—后'弥曼差：奠基影响与称谓史｜接受/影响｜维基：弥曼差'对吠檀多诸派具有奠基性与影响力'，后者自称'后弥曼差'；SEP：其领袖'为众多吠檀多派所随'，且弥曼差与吠檀多共享 svataḥ prāmāṇya 自证论。吠檀多学说本体由站内 I04 任务承载，本包不代述。｜来源 ['S2', 'S1']",
+      "[由 school.relations 迁入（端点非本包人物，不符契约）] 枯马立罗·跋吒→佛教量论（站内任务 B04/T01 承载）｜对佛教认识论的批判｜批评（论辩对手）｜现代专书以其《颂释》'知觉决定'章为对象：Taber（John Taber 英译本）《一个对佛教认识论的印度批判——枯马立罗〈颂释〉\"知觉决定\"章》（S1 文献表）；维基载其'与佛教徒与耆那教徒论辩'（生地诸说之一）。佛教侧的量论体系由站内 B04 任务承载。｜来源 ['S1', 'S3']"
+    ],
+    "suggestedBookLinks": [],
+    "coverageNote": "coverage=mentions-only：现有目录无同名顶级条目或分支；仅《印度哲学》正文提及。本包不修改任何既有条目。",
+    "evidenceNote": "边界决定、分歧与查重见 review.md；断言级核验见 evidence.json。"
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Epistemology in Classical Indian Philosophy (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/epistemology-india/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "弥曼差无神论与吠陀无作者说（'吠陀原初回响于宇宙四周之太虚'句）；svataḥ prāmāṇya 自证论与吠檀多共享；跋吒派（自枯马立罗，普拉帕迦罗之师）的知识真实性经由推理而知；枯马立罗《颂释》知觉章第112颂婴儿认知例（含页码）；'弥曼差领袖枯马立罗与普拉帕迦罗为众多吠檀多派与部分正理派所随'；Taber（John Taber 英译本） 2005《一个对佛教认识论的印度批判——枯马立罗〈颂释〉'知觉决定'章》。"
+    },
+    {
+      "id": "S2",
+      "title": "Mīmāṃsā (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/M%C4%ABm%C4%81%E1%B9%83s%C4%81",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "吠陀（尤其梵书与赞歌集）解释学定位；Pūrva-/Karma-Mīmāṃsā 名称由来；六派之一的 āstika 定位；dharma=仪式与社会义务、'神只徒有其名'；阇弥尼第五经：词义关系原初；普拉帕迦罗派五量（现/比/譬喻/义准/圣言）与跋吒派第六量不可得（anupalabdhi）；根本典籍链（阇弥尼经—萨跋罗注—枯马立罗颂释）；非有神论论证（'无需求助世界的制造者，正如无需求助吠陀的作者'）。"
+    },
+    {
+      "id": "S3",
+      "title": "Kumārila Bhaṭṭa (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Kum%C4%81rila_Bha%E1%B9%AD%E1%B9%ADa",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "枯马立罗约活动于7世纪；对萨跋罗注的三部复注（《颂释》《教法释》《补提记》）；'前弥曼差之捍卫者、彻底的仪式主义者'；出生地三说并存（多罗那他：南印；阿难陀吉里：北印；迦摩缕波说）；自焚传说该页自带 citation needed 标记（本包作传说处理）；abhihitānvaya 组合论语义（Arnold 称其接近 Fodorian 语言观）。"
+    },
+    {
+      "id": "S4",
+      "title": "Jaimini (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Jaimini",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "阇弥尼约生于前400—200年间；学派 Mimamsa；主要兴趣：伦理学、解释学、语言、仪式、语言学；著《前弥曼差经》。"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S2"
+  ],
+  "school": {
+    "name": "弥曼差派",
+    "subtitle": "吠陀解释学、仪式理论与声常之学：前弥曼差学派",
+    "overview": "弥曼差（Mīmāṃsā，意为'审察/解释'）是印度吠陀系哲学中把'解释'本身做成学问的学派。其领域是吠陀的解释学——'尤其是梵书与赞歌集诸层文献'；因聚焦于吠陀较早部分中处理仪式行动的文本，它又被称为'前弥曼差'（Pūrva-Mīmāṃsā）或'业弥曼差'（Karma-Mīmāṃsā）。这一称谓的后半其实是一个家族谱系：吠檀多派因关注吠陀'较后'部分（奥义书）而自称'后弥曼差'（Uttara-Mīmāṃsā）——维基百科弥曼差条目指出，该学派'对吠檀多诸派具有奠基性与影响力'，尽管前后弥曼差虽同究'人的行动之目的'，'对仪式实践的必要性的态度却各不相同'。\n\n学派的哲学贡献集中于三个层面。其一是对'达摩'（dharma）的界定：对弥曼差而言，'达摩意味着仪式与社会义务，而非诸神——因为神只徒有其名'；它系统追问'什么是神？''献给神的仪式有效吗？''是什么使任何事物有效？'这类问题，把有效性（而非崇拜）当作核心议题。其二是语言与解释的哲学：学派主张吠陀'无创世者、无特定作者、其权威自我成立'——阇弥尼在《弥曼差经》第五经中解释道，吠陀中词与义的对应关系是'原初的'，即'自时间之始即存在'。这一'声常'立场使弥曼差与佛教的声无常论发生正面论辩；SEP 印度认识论条目如此刻画其动机：'弥曼差——其领袖枯马立罗与普拉帕迦罗为众多吠檀多派与部分正理派哲学家所随——带着明确的意图投入证言之辩，即为吠陀权威辩护。'\n\n其三是量论（知识工具论）。普拉帕迦罗派列出五种可靠的认识来源——现量（感知）、比量（推理）、譬喻量（比较与类比）、义准量（由情境而设准）、圣言量（可靠者的言语）；跋吒派则从枯马立罗出发增加第六种——不可得量（anupalabdhi，'由认知之阙如而证'，如'嫌疑人手上没有火药'）。两派在'知识如何自知为真'上亦有分工：SEP 条目指出，'跋吒弥曼差（出自枯马立罗——普拉帕迦罗之师）主张真实性经由推理而知'，而弥曼差与吠檀多共同主张'知识是自我成立的（svataḥ prāmāṇya）'——无限回溯的威胁表明知识'其证成性挂在袖口上'，如同日常认知那样初信度近乎绝对。\n\n在学派史上，阇弥尼（约前400—200年间，单一来源口径）的《弥曼差经》经萨跋罗《萨跋罗注》（Śabarabhāṣya）成为经典；约7世纪，枯马立罗·跋吒（fl. 约7世纪）为之写出三部复注（《颂释》《教法释》《补提记》），'是前弥曼差的捍卫者、彻底的仪式主义者'，其出生地至今三说并存；与他相衔接（据 SEP：他是普拉帕迦罗之师）的普拉帕迦罗（7世纪）则另立一派。枯马立罗还是佛教认识论的著名批判者——现代研究以其《颂释》'知觉决定'章为专书对象（Taber（John Taber 英译本） 2005：《一个对佛教认识论的印度批判》）。弥曼差的无神论面貌同样鲜明：'弥曼差是无神论的，视吠陀为原初之物、回响于宇宙四周的太虚之中，由心地澄澈的仙人听闻并记诵'——维基条目概括其论证：'没有需求助世界的制造者，正如没有需求助吠陀的作者。'",
+    "conclusion": "弥曼差留下的问题清单非常具体：声常论与佛教声无常论的论辩如何收场、义准量与不可得量的认识论地位、仪式有效性语言的分析——这些都进入后世正理与吠檀多的工具箱（SEP：其领袖'为众多吠檀多派与部分正理派所随'）。它对'解释'的制度化——从经文层次划分到句义组合（枯马立罗的 abhihitānvaya 组合论语义，被当代学者 Arnold 与 Fodorian 语言观并比）——使它成为前近代世界少有的以'文本有效性'为核心问题的学派。\n\n边界上须诚实：本包的证据面偏窄——IEP 无弥曼差条目（404 实测）、GRETIL 无《弥曼差经》可核文本（索引检索 0 命中），原典经句只能经 SEP/维基的引述层使用；三页维基来源均为 reference 级，其中枯马立罗的'自焚'传说该页自带 citation needed 标记，本包不作为事实陈述。'无神论'标签按 SEP 与维基的双源口径呈现为'拒斥创世神、维护吠陀权威'的结构，学界对如何翻译与评价这一立场仍有讨论空间，本包不引入未经核读的评论文献。",
+    "thinkers": [
+      {
+        "name": "阇弥尼",
+        "sub": "Jaimini（站外人物；站内无弥曼差人物，python 子串查证）",
+        "era": "约前400—200年间（维基口径，单一来源）",
+        "key": "学派奠基者，《前弥曼差经》作者；兴趣覆盖伦理学、解释学、语言、仪式与语言学；第五经主张吠陀中词义关系'自时间之始即存在'。",
+        "works": [
+          "《前弥曼差经》（Pūrva Mīmāṃsā Sūtras）"
+        ],
+        "sourceRefs": [
+          "S4",
+          "S2"
+        ]
+      },
+      {
+        "name": "萨跋罗",
+        "sub": "Śabara（站外人物）",
+        "era": "年代未获来源，不系年",
+        "key": "《萨跋罗注》（Śabarabhāṣya）作者：阇弥尼经的'历史上影响深远的注释'，成为两大注释传统的共同底本。",
+        "works": [
+          "《萨跋罗注》（Śabarabhāṣya）"
+        ],
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "枯马立罗·跋吒",
+        "sub": "Kumārila Bhaṭṭa（站外人物）",
+        "era": "约活动于7世纪（fl. roughly 7th century CE）",
+        "key": "跋吒派（Bhāṭṭa）之名所自：对萨跋罗注作三部复注（《颂释》《教法释》《补提记》）；'前弥曼差之捍卫者、彻底的仪式主义者'；按 SEP 为普拉帕迦罗之师；语义学上持 abhihitānvaya 组合论；出生地三说并存；佛教认识论的著名批判者。",
+        "works": [
+          "《颂释》（Ślokavārttika）",
+          "《教法释》（Tantravārttika）",
+          "《补提记》（Ṭupṭīkā）"
+        ],
+        "sourceRefs": [
+          "S3",
+          "S1"
+        ]
+      },
+      {
+        "name": "普拉帕迦罗",
+        "sub": "Prabhākara（站外人物）",
+        "era": "7世纪",
+        "key": "普拉帕迦罗派之名所自：立五量（现/比/譬喻/义准/圣言），不取不可得量；其师承按 SEP 记为枯马立罗弟子；两派在自证与真实性问题上的分歧成为弥曼差内部主线。",
+        "works": [],
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "阇弥尼",
+        "to": "萨跋罗",
+        "label": "经—注传承",
+        "type": "师承传统（文本接受）",
+        "detail": "《弥曼差经》经萨跋罗注成为经典底本；维基：根本典籍是'阇弥尼的《弥曼差经》，伴以历史上影响深远的萨跋罗注（Śabarabhāṣya）'。",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "from": "萨跋罗",
+        "to": "枯马立罗·跋吒",
+        "label": "注—复注传承",
+        "type": "师承传统（文本接受）",
+        "detail": "枯马立罗'对萨跋罗的注释写了三部复注，即《颂释》《教法释》《补提记》'。",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "from": "枯马立罗·跋吒",
+        "to": "普拉帕迦罗",
+        "label": "师承与学派分途",
+        "type": "师承（历史接触）",
+        "detail": "SEP：'跋吒弥曼差（出自枯马立罗——普拉帕迦罗之师）'；两派在量论（五量/六量）与自证问题上的分歧构成弥曼差内部论辩主线。",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "约前400—前200年间",
+        "event": "阇弥尼与《前弥曼差经》",
+        "detail": "维基阇弥尼页系年'~ 400 to 200 BCE'（单一来源口径）；经文确立吠陀解释与仪式有效性的基本框架；第五经主张词义关系原初。",
+        "type": "文献",
+        "sourceRefs": [
+          "S4",
+          "S2"
+        ]
+      },
+      {
+        "year": "年代未获来源",
+        "event": "萨跋罗注成立",
+        "detail": "《萨跋罗注》成为阇弥尼经'历史上影响深远的注释'与后世复注的共同底本；本包未获其年代来源，不系年。",
+        "type": "注疏",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "约7世纪",
+        "event": "枯马立罗三部复注与跋吒派",
+        "detail": "枯马立罗（fl. roughly 7th century CE）作《颂释》《教法释》《补提记》；跋吒派增第六量'不可得'；其《颂释》知觉章成为对佛教认识论批判的代表文本。",
+        "type": "文献/建制",
+        "sourceRefs": [
+          "S3",
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "year": "7世纪",
+        "event": "普拉帕迦罗派建制",
+        "type": "建制",
+        "detail": "普拉帕迦罗（7世纪）立五量之说，与跋吒派并立；两派分歧贯穿后世弥曼差内部史。",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "后世延续",
+        "event": "对吠檀多与正理的持续影响",
+        "type": "接受",
+        "detail": "'后弥曼差'称谓（吠檀多自称）与'其领袖为众多吠檀多派与部分正理派所随'的接受格局；svataḥ prāmāṇya 自证论为弥曼差—吠檀多共享。",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "year": "2005",
+        "event": "枯马立罗研究的现代专书",
+        "detail": "Taber（John Taber 英译本）《一个对佛教认识论的印度批判——枯马立罗〈颂释〉'知觉决定'章》（伦敦 Routledge，S1 文献表）——本包仅录书目信息，未核读其内容。",
+        "type": "研究文献",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "弥曼差（mīmāṃsā）",
+        "def": "'审察/解释'之学：吠陀（尤其梵书与赞歌集）的解释学；作为学派名兼指前弥曼差传统。",
+        "source": "Wikipedia Mīmāṃsā（hermeneutics of the Vedas 句）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "前弥曼差／业弥曼差（Pūrva-/Karma-Mīmāṃsā）",
+        "def": "本学派的两个别名：前者因关注吠陀'较早'部分中的仪式行动文本，后者因聚焦仪式行动（karma）本身。",
+        "source": "Wikipedia Mīmāṃsā（名称由来段）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "后弥曼差（Uttara-Mīmāṃsā）",
+        "def": "吠檀多诸派的自称：因关注吠陀'较后'部分（奥义书）；与'前弥曼差'同究行动目的而态度不同。学说本体由站内 I04 任务承载。",
+        "source": "Wikipedia Mīmāṃsā（Vedāntic schools 段）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "达摩（dharma）",
+        "def": "对弥曼差而言'达摩意味着仪式与社会义务，而非诸神——因为神只徒有其名'。",
+        "source": "Wikipedia Mīmāṃsā（Dharma 段）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "圣言量（śabda）",
+        "def": "'言语，或过去与现在的可靠者的证言'；普拉帕迦罗派五量之末；弥曼差为吠陀权威辩护的理论支点。",
+        "source": "Wikipedia Mīmāṃsā（pramāṇa 分支段）；SEP 印度认识论（'为吠陀权威辩护'句）",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "不可得量（anupalabdhi）",
+        "def": "跋吒派第六量：'非感知，或由认知之阙如而得的证明'（维基例：嫌疑人手上没有火药）。",
+        "source": "Wikipedia Mīmāṃsā（Bhāṭṭa sub-school 段）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "自证（svataḥ prāmāṇya）",
+        "def": "知识自我成立：'弥曼差与吠檀多哲学家论证，回溯的威胁表明知识是自我成立的'；SEP 另句：知识'把其证成性穿在袖口上'。",
+        "source": "SEP Epistemology in Classical Indian Philosophy（svataḥ prāmāṇya 两句）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "无作者吠陀（apauruṣeya 观念）",
+        "def": "吠陀'无创世者、无特定作者、其权威自我成立'；SEP 转述其宇宙论想象：吠陀'原初……回响于宇宙四周的太虚之中'。",
+        "source": "Wikipedia Mīmāṃsā（uncreated 段）；SEP 印度认识论（atheistic 句）",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "组合论语义（abhihitānvaya）",
+        "def": "跋吒派语义学：'句义只有在先理解个别词义之后才被理解'，词的指称是独立完整的对象——Arnold 称其接近 Fodorian 语言观。",
+        "source": "Wikipedia Kumārila Bhaṭṭa（Philosophy of Language 段）",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "word": "义准量（arthāpatti）",
+        "def": "'设准与从情境推导的使用'：普拉帕迦罗派五量之一（如'胖的提婆达多白天不食'设准其夜间而食——此例为通行讲解，本包未引原典，仅录五量名目）。",
+        "source": "Wikipedia Mīmāṃsā（Prabhākara sub-school 段）",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "《前弥曼差经》（Pūrva Mīmāṃsā Sūtras）",
+        "author": "阇弥尼",
+        "era": "作者约前400—200年间（维基口径）",
+        "desc": "学派根本经典；第五经论吠陀词义关系的原初性。GRETIL 无此经可核文本（本包实测），经句仅经二手引述层使用。",
+        "kind": "原典（经）",
+        "sourceRefs": [
+          "S2",
+          "S4"
+        ]
+      },
+      {
+        "title": "《萨跋罗注》（Śabarabhāṣya）",
+        "author": "萨跋罗",
+        "era": "年代未获来源",
+        "desc": "'历史上影响深远的注释'，两大复注传统的共同底本。",
+        "kind": "注疏（原典）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "title": "《颂释》（Ślokavārttika）",
+        "author": "枯马立罗·跋吒",
+        "era": "约7世纪",
+        "desc": "对萨跋罗注的颂体复注；其'知觉决定'章为对佛教认识论批判的代表（Taber（John Taber 英译本） 2005 专书对象）；SEP 引其知觉章第112颂婴儿认知例。",
+        "kind": "论书（原典）",
+        "sourceRefs": [
+          "S3",
+          "S1"
+        ]
+      },
+      {
+        "title": "《教法释》（Tantravārttika）",
+        "author": "枯马立罗·跋吒",
+        "era": "约7世纪",
+        "desc": "三部复注之一（对萨跋罗注）。",
+        "kind": "论书（原典）",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "title": "《补提记》（Ṭupṭīkā）",
+        "author": "枯马立罗·跋吒",
+        "era": "约7世纪",
+        "desc": "三部复注之一（对萨跋罗注）。",
+        "kind": "论书（原典）",
+        "sourceRefs": [
+          "S3"
+        ]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "跋吒派（Bhāṭṭa）",
+        "era": "自约7世纪",
+        "desc": "自枯马立罗：六量（加'不可得'）；组合论语义（abhihitānvaya）；知识真实性经由推理而知（SEP）。",
+        "kind": "学派分支",
+        "sourceRefs": [
+          "S2",
+          "S3",
+          "S1"
+        ]
+      },
+      {
+        "name": "普拉帕迦罗派（Prabhākara）",
+        "era": "自7世纪",
+        "desc": "自普拉帕迦罗：五量（现/比/譬喻/义准/圣言），不取不可得量；与跋吒派在自证问题上的分歧构成内部主线。",
+        "kind": "学派分支",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      }
+    ],
+    "quote": "Mīmāṃsā, however, is atheistic, viewing the Veda as primordial, resounding in the ether that surrounds the universe, heard and memorized by great rishis in their pellucid consciousness.",
+    "quoteAuthor": "斯坦福哲学百科《Epistemology in Classical Indian Philosophy》（英文原文照录；汉译为本包转译）",
+    "quoteKind": "quote（转译）",
+    "quotes": [
+      {
+        "text": "There was no need to postulate a maker for the world, just as there was no need for an author to compose the Vedas.",
+        "author": "维基百科《Mīmāṃsā》对弥曼差无神论论证的概括（英文照录）",
+        "exp": "弥曼差反创世论证的短式：世界无需预设制造者，正如吠陀无需预设作者——仪式有效性理论与其无神论立场同构。",
+        "kind": "quote（转述）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "text": "Mīmāṃsā, whose leaders Kumārila and Prabhākara are followed by many Vedāntins and by some Nyāya philosophers, comes to the debate about testimony with an axe to grind, namely, to defend Vedic authority.",
+        "author": "斯坦福哲学百科《Epistemology in Classical Indian Philosophy》（英文原文照录）",
+        "exp": "证言之辩的学派动机与接受格局：为吠陀权威辩护是其量论的'意图所在'，其领袖为吠檀多与部分正理所随。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "closingQuote": "Jaimini explains in his fifth Mīmāṁsā Sutra that the relationship between words and their meanings in the Vedas is primordial, meaning it has existed since the beginning of time.",
+    "closingQuoteAuthor": "维基百科《Mīmāṃsā》对《弥曼差经》第五经的转述（英文照录）",
+    "closingQuoteKind": "quote（转述）",
+    "evidenceLimits": [
+      "原典不可直接核读：GRETIL 无《弥曼差经》（全站索引检索 0 命中、vedang 目录路径 404 实测）；《颂释》仅经 SEP 引述（知觉章第112颂，含页码）与 Taber（John Taber 英译本） 2005 书目信息使用；维基文库与 Gutenberg 未检索到可信英译全本。原典经句一律标注引述层。",
+      "IEP 无弥曼差条目（/mimamsa/ 404 实测）；Britannica 历来被反爬拦截（本批未尝试，沿用 F02/I02 备案）。",
+      "学术级来源仅 SEP 印度认识论条目一种；Mīmāṃsā / Kumārila Bhaṭṭa / Jaimini 三页均为维基 reference 级。断言密度已相应压缩：两派分歧的细节（如 PRĀBHĀKARA 对自证的独特立场）未获来源，不写。",
+      "阇弥尼年代为维基单一来源口径（~400–200 BCE）；萨跋罗年代未获来源，不系年；枯马立罗生地三说并存（多罗那他/阿难陀吉里/迦摩缕波），本包不采任何一说。",
+      "枯马立罗'自焚于恒河边'的传说在维基页自带 citation needed 标记——本包不作为事实陈述，仅在 review.md 备案。",
+      "Kumārila 为 Prabhākara 之师出自 S1；学界关于两人先后与关系的其他说法未核读，本包从 S1。",
+      "弥曼差经文的分卷结构（十二卷等通识）未在核读来源出现，不写。",
+      "站内 philosophers.json（737人，python 子串查证）无阇弥尼/萨跋罗/枯马立罗/普拉帕迦罗；thinkers 全部为站外人物，已标注。",
+      "books.json 无弥曼差相关藏书（'弥曼差/吠陀/声/量论'检索仅得无关书《声音与现象》），书籍建议为空数组。",
+      "任务条目 mentions-only：仅《印度哲学》提及（'弥曼差派/Mimamsa'），无同名条目或分支（exact 两数组为空）。"
+    ]
+  },
+  "evidenceLimits": [
+    "萨跋罗注的成立年代未获来源，时间线相应节点以'年代未获来源'标示。",
+    "阇弥尼与《前弥曼差经》编成用证据范围（约前400—前200年间），不精确到单一年份。",
+    "枯马立罗生地诸说并存（维基列多说），本包不裁断。",
+    "佛教侧与吠檀多侧的学说本体分别由站内 B04/T01 与 I04 任务承载，本包仅在关系建议层指涉。",
+    "普拉帕迦罗生平材料薄弱（维基级），仅作学派建制节点使用。"
+  ],
+  "readingRoutes": [
+    {
+      "title": "经典路径：从仪式解释学到认识论",
+      "path": "《前弥曼差经》+《萨跋罗注》→ 枯马立罗《颂释》'知觉决定'章 → 跋吒/普拉帕迦罗两派量论分歧",
+      "order": "先把握'前弥曼差'对吠陀仪式行为的解释学框架，再看枯马立罗如何把声常论与自证论做成认识论论证，最后比较两派的量目分歧",
+      "note": "编辑建议",
+      "sourceRefs": [
+        "S2",
+        "S3",
+        "S1"
+      ]
+    },
+    {
+      "title": "边界路径：与吠檀多及佛教量论的关系",
+      "path": "本包 cihai '前弥曼差/后弥曼差'词条 → 导流 I04 吠檀多任务 → 导流 B04 佛教量论任务",
+      "order": "先读本包对'后弥曼差'称谓史的交代，吠檀多学说本体与佛教量论体系分别由 I04/B04 承载，不在本包展开",
+      "note": "编辑建议",
+      "sourceRefs": [
+        "S1",
+        "S2"
+      ]
+    }
+  ]
+}

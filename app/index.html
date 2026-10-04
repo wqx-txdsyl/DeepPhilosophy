@@ -59,15 +59,11 @@
          meta CSP 由 vite.config.js 在「生产构建时」注入（本文件不常驻, 避免 dev 被拦:
          vite HMR WebSocket ws://localhost:5173 与用户自配 http://localhost:8000 后端会被 connect-src 拦）。
          策略与 backend/main.py 中间件同源, 修改需两处同步。script-src 无 'unsafe-inline':
-         启动脚本已外置 public/config-bootstrap.js（同源 'self'）; JSON-LD 为 data block 不受 script-src 限制;
+         JSON-LD 为 data block 不受 script-src 限制;
          'unsafe-eval' 从未启用, 构建产物无 eval/new Function。style-src 保留 'unsafe-inline'（React 内联样式）。 -->
   </head>
   <body>
     <div id="root"></div>
-    <!-- 启动时从 config.json 加载 API 地址，写入 localStorage（优先级低于用户手动设置）
-         N5（audit 2026-08-18）: 由内联改为外置 public/config-bootstrap.js（同源 'self'），
-         使 script-src 可去掉 'unsafe-inline'。 -->
-    <script src="/config-bootstrap.js"></script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

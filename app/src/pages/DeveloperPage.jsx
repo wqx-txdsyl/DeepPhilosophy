@@ -1,118 +1,42 @@
-/**
- * 开发者管理后台 — 访问统计 + 用户管理
- */
-import { useState, useEffect } from 'react';
-import { getApiBase } from '../App';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { getApiBase } from '../utils/api';
+import { loadBooks } from '../data';
+import { loadAuthorCatalog, readableBook } from '../data/authorContent';
+import { BOOK_TOPICS, classifyBook } from '../data/bookLibrary';
+import { SITE_RELEASES } from '../data/siteReleases';
+import { SiteFooter } from '../components/SitePageParts';
+import CdnImage from '../components/CdnImage';
+import './SitePages.css';
 
-function DeveloperPage() {
-  const [password, setPassword] = useState('');
-  const [authed, setAuthed] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
-  const [error, setError] = useState('');
-
-  const fetchData = async (pw) => {
-    setLoading(true);
-    try {
-      const r = await fetch(`${getApiBase()}/api/admin/stats`, {
-        headers: { 'X-Admin-Password': pw },   // 2026-08-14: 密码改 header（不再进 URL/日志）
-      });
-      if (r.ok) {
-        const d = await r.json();
-        setData(d);
-        setAuthed(true);
-        setError('');
-      } else {
-        setError('密码错误');
-      }
-    } catch { setError('无法连接后端'); }
-    setLoading(false);
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    fetchData(password);
-  };
-
-  useEffect(() => {
-    const saved = localStorage.getItem('dp_admin_pw');
-    if (saved) { setPassword(saved); fetchData(saved); }
-  }, []);
-
-  useEffect(() => {
-    if (authed && password) localStorage.setItem('dp_admin_pw', password);
-  }, [authed]);
-
-  if (!authed) {
-    return (
-      <div className="page-container" style={{ maxWidth: 400, margin: '80px auto', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 20, marginBottom: 16 }}>🔐 开发者后台</h2>
-        <form onSubmit={handleLogin}>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)}
-            placeholder="管理员密码" autoFocus
-            style={{ width: '100%', padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--secondary)', color: 'var(--text)', fontSize: 15, marginBottom: 12, textAlign: 'center', outline: 'none' }} />
-          <button className="btn btn-primary btn-block" type="submit" disabled={loading}
-            style={{ padding: '10px', fontSize: 14 }}>{loading ? '验证中...' : '进入'}</button>
-        </form>
-        {error && <p style={{ color: 'var(--danger)', fontSize: 13, marginTop: 8 }}>{error}</p>}
-      </div>
-    );
-  }
-
-  const s = data?.stats || {};
-  const users = data?.users || [];
-  const today = new Date().toISOString().slice(0, 10);
-  const todayVisits = s.daily_visits?.[today] || 0;
-
-  return (
-    <div className="page-container">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h2 style={{ fontSize: 18 }}>📊 开发者后台</h2>
-        <button className="btn btn-secondary" onClick={() => { setAuthed(false); setData(null); localStorage.removeItem('dp_admin_pw'); }}
-          style={{ fontSize: 12, padding: '4px 12px' }}>退出</button>
-      </div>
-
-      {/* Stats cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 24 }}>
-        {[
-          { label: '总访问量', value: s.total_visits || 0, icon: '👁' },
-          { label: '今日访问', value: todayVisits, icon: '📅' },
-          { label: '注册用户', value: data?.user_count || 0, icon: '👤' },
-          { label: '启动时间', value: s.started_at?.slice(0, 10) || '-', icon: '🚀' },
-        ].map(card => (
-          <div key={card.label} className="card" style={{ cursor: 'default', textAlign: 'center', padding: '16px 12px' }}>
-            <div style={{ fontSize: 24 }}>{card.icon}</div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--ink)', margin: '4px 0' }}>{card.value}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{card.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Page views */}
-      <h3 style={{ fontSize: 15, marginBottom: 8 }}>📄 页面访问排行</h3>
-      <div className="card" style={{ cursor: 'default', marginBottom: 20 }}>
-        {Object.entries(s.page_views || {}).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([path, count]) => (
-          <div key={path} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--border)', fontSize: 13 }}>
-            <span style={{ color: 'var(--text)' }}>{path}</span>
-            <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{count}</span>
-          </div>
-        ))}
-        {!Object.keys(s.page_views || {}).length && <p style={{ fontSize: 13, color: 'var(--text-dim)', padding: '8px 0' }}>暂无数据</p>}
-      </div>
-
-      {/* Users */}
-      <h3 style={{ fontSize: 15, marginBottom: 8 }}>👥 注册用户 ({users.length})</h3>
-      <div className="card" style={{ cursor: 'default' }}>
-        {users.map(u => (
-          <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--border)', fontSize: 13 }}>
-            <span style={{ color: 'var(--text)' }}>{u.username}</span>
-            <span style={{ color: 'var(--text-dim)' }}>ID:{u.id} · {u.created_at?.slice(0, 10) || '-'}</span>
-          </div>
-        ))}
-        {!users.length && <p style={{ fontSize: 13, color: 'var(--text-dim)', padding: '8px 0' }}>暂无注册用户</p>}
-      </div>
-    </div>
-  );
+export default function DeveloperPage(){
+  const [password,setPassword]=useState(''),[data,setData]=useState(null),[loading,setLoading]=useState(false),[error,setError]=useState('');
+  const [books,setBooks]=useState(null),[people,setPeople]=useState(null),[catalogError,setCatalogError]=useState(false),[tab,setTab]=useState('overview');
+  const [query,setQuery]=useState(''),[status,setStatus]=useState('all'),[selected,setSelected]=useState(null),[userQuery,setUserQuery]=useState(''),[page,setPage]=useState(1);
+  const credential=useRef('');const requestId=useRef(0);
+  useEffect(()=>{
+    let active=true;const pendingRequest=requestId;
+    loadBooks().then(value=>{if(active){setBooks(value);if(!value.length)setCatalogError(true);}}).catch(()=>{if(active)setCatalogError(true);});
+    loadAuthorCatalog().then(value=>{if(active)setPeople(value.counts?.thinker??null);}).catch(()=>{});
+    return()=>{active=false;pendingRequest.current++;};
+  },[]);
+  async function authenticate(event){event?.preventDefault();if(loading)return;const pw=password||credential.current;if(!pw)return;const id=++requestId.current;setLoading(true);setError('');try{
+    const response=await fetch(`${getApiBase()}/api/admin/stats`,{headers:{'X-Admin-Password':pw},signal:AbortSignal.timeout(10000)});const payload=await response.json().catch(()=>({}));if(id!==requestId.current)return;
+    if(!response.ok){if(response.status===401||response.status===403){setData(null);credential.current='';}throw new Error(payload.detail||payload.error||'暂时无法读取管理信息');}
+    credential.current=pw;setPassword('');setData(payload);
+  }catch(e){if(id===requestId.current)setError(e.message);}finally{if(id===requestId.current)setLoading(false);}}
+  function logout(){requestId.current++;credential.current='';setPassword('');setData(null);setError('');setLoading(false);localStorage.removeItem('dp_admin_pw');}
+  const missingSummary=(books||[]).filter(b=>!b.summary?.trim()),missingCover=(books||[]).filter(b=>!b.cover),catalogOnly=(books||[]).filter(b=>!readableBook(b));
+  const filtered=(books||[]).filter(b=>(b.title+' '+b.author).toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())&&(status==='all'||status==='readable'&&readableBook(b)||status==='catalog'&&!readableBook(b)||status==='summary'&&!b.summary?.trim()||status==='cover'&&!b.cover));
+  const pages=Math.max(1,Math.ceil(filtered.length/25)),currentPage=Math.min(page,pages);
+  const users=(data?.users||[]).filter(u=>`${u.username} ${u.id}`.toLocaleLowerCase().includes(userQuery.trim().toLocaleLowerCase()));
+  function openCatalog(filter){setStatus(filter);setQuery('');setPage(1);setTab('catalog');}
+  function heading(title,description){return <header className="s-admin-heading"><div><p className="s-kicker">Site management</p><h1>{title}</h1><p>{description}</p></div><div className="room-admin-actions"><button className="s-textlink" disabled={loading} onClick={()=>authenticate()}>{loading?'读取中…':'刷新'}</button><button className="s-textlink" onClick={logout}>退出</button></div></header>;}
+  const releases=SITE_RELEASES.map(r=><div className="s-release" key={r.title}><time>{r.date}</time><div><span className="s-chip">已发布</span><h2>{r.title}</h2><p>{r.description}</p>{r.commit&&<a href={`https://github.com/wqx-txdsyl/DeepPhilosophy/commit/${r.commit}`} target="_blank" rel="noopener noreferrer"><code>{r.commit}</code></a>}</div></div>);
+  return <div className="site-pages">{!data?<div className="s-shell"><section className="s-guest"><div><p className="s-kicker">Editorial workspace</p><h1 className="room-login-heading">管理入口</h1><p>维护内容、查看账户与发布记录。</p><form className="s-account-form" onSubmit={authenticate}><label className="s-field">管理员口令<input type="password" value={password} onChange={e=>setPassword(e.target.value)} autoComplete="current-password" required/></label><button className="s-primary" disabled={loading}>{loading?'正在验证…':'进入管理后台'} ↗</button></form>{error&&<p className="room-error" role="alert">{error}</p>}<Link className="s-textlink" to="/about">关于本站 ↗</Link></div><div className="s-about-image"><CdnImage src="/schools/现象学.webp" imageWidth={640} alt="现象学环境绘画"/></div></section></div>:<div className="s-admin-layout"><aside className="s-admin-sidebar"><p>工作空间</p>{[['overview','概览'],['catalog','内容目录'],['users','用户记录'],['releases','发布记录']].map(([id,title])=><button key={id} aria-pressed={tab===id} onClick={()=>setTab(id)}>{title}</button>)}<div className="s-admin-side-note">内容维护 · 阅读服务<br/>整理每一条资料，记录每一次修订。</div></aside><section className="s-admin-main">{error&&<p className="room-error" role="alert">{error}</p>}{catalogError&&<p role="status" className="room-error">目录暂时无法加载，请刷新页面重试。</p>}
+    {tab==='overview'&&<>{heading('概览','馆藏、内容状态与近期发布。')}<div className="s-admin-metrics"><div><span>馆藏著作</span><strong>{books?.length??'—'}</strong><button className="s-textlink" onClick={()=>openCatalog('all')}>查看目录 ↗</button></div><div><span>可在线阅读</span><strong>{books?books.filter(readableBook).length:'—'}</strong><span>按当前目录统计</span></div><div><span>哲学家与思想家</span><strong>{people??'—'}</strong><span>独立人物目录</span></div></div><div className="s-admin-section-title"><h2>内容待完善</h2><span>根据当前目录生成</span></div>{[{name:'简介待补充',description:'没有简介的书籍条目',count:missingSummary.length,filter:'summary'},{name:'封面待补充',description:'尚未指定封面的书目',count:missingCover.length,filter:'cover'},{name:'仅有书目资料',description:'正文暂未开放；包括已佚失或待整理作品',count:catalogOnly.length,filter:'catalog'}].map(item=><button className="room-review-row" key={item.filter} onClick={()=>openCatalog(item.filter)}><div><strong>{item.name}</strong><p>{item.description}</p></div><span>{books?item.count:'—'} 项 ↗</span></button>)}<details className="s-stat-notice"><summary>访问统计 · 历史快照</summary><p>当前没有实时访问统计，下列为历史累计记录。</p><p>累计访问：{data.stats?.total_visits??'未提供'} 记录起点：{data.stats?.started_at?.slice(0,10)||'未提供'}</p><div className="room-stats-list">{Object.entries(data.stats?.page_views||{}).sort((a,b)=>b[1]-a[1]).slice(0,20).map(([path,count])=><div key={path}><span>{path}</span><span>{count}</span></div>)}</div></details><div className="s-admin-section-title"><h2>最近发布</h2><button className="s-textlink" onClick={()=>setTab('releases')}>查看记录 ↗</button></div>{releases.slice(0,1)}</>}
+    {tab==='catalog'&&<>{heading('内容目录','检索书目并查看收录状态。')}<div className="s-admin-filter"><label className="s-search"><span aria-hidden="true">⌕</span><input type="search" value={query} onChange={e=>{setQuery(e.target.value);setPage(1);}} aria-label="搜索目录" placeholder="搜索书名或作者" spellCheck={false}/></label><select aria-label="收录状态" value={status} onChange={e=>{setStatus(e.target.value);setPage(1);}}><option value="all">全部状态</option><option value="readable">可在线阅读</option><option value="catalog">仅书目资料</option><option value="summary">简介待补充</option><option value="cover">封面待补充</option></select></div><p className="s-small">{books?`${filtered.length} 条结果`:'正在加载目录…'}</p><table className="s-data-table"><thead><tr><th>书籍 / 作者</th><th>状态</th><th>章节</th><th>操作</th></tr></thead><tbody>{filtered.slice((currentPage-1)*25,currentPage*25).map(b=><tr key={b.id}><td><strong>{b.title}</strong><small>{b.author}</small></td><td><span className="s-table-status">{readableBook(b)?'可读':'书目'}</span></td><td>{b.chapterCount||'—'}</td><td><button onClick={()=>setSelected(b.id)}>查看 ↗</button></td></tr>)}</tbody></table>{books&&!filtered.length&&<p className="s-empty">没有匹配条目。</p>}{pages>1&&<nav className="room-pagination" aria-label="目录分页"><button disabled={currentPage===1} onClick={()=>setPage(n=>n-1)}>← 上一页</button><span>{currentPage} / {pages}</span><button disabled={currentPage===pages} onClick={()=>setPage(n=>n+1)}>下一页 →</button></nav>}{selected&&(()=>{const b=books?.find(b=>b.id===selected);if(!b)return null;return <section className="s-admin-inspector"><header><h2>{b.title}</h2><button aria-label="关闭条目详情" onClick={()=>setSelected(null)}>×</button></header><dl><dt>作者</dt><dd>{b.author}</dd><dt>阅读主题</dt><dd>{classifyBook(b).topics.map(id=>BOOK_TOPICS.find(t=>t.id===id)?.label).join(' / ')||'未标注'}</dd><dt>正文状态</dt><dd>{readableBook(b)?'可在线阅读':'仅有书目资料'}</dd></dl><p>{b.summary||'简介尚待补充。'}</p><Link className="s-textlink" to={`/book/${b.id}`}>打开前台详情 ↗</Link></section>;})()}</>}
+    {tab==='users'&&<>{heading('用户记录',`${data.user_count??data.users?.length??0} 个注册账户`)}<label className="s-search"><span aria-hidden="true">⌕</span><input type="search" value={userQuery} onChange={e=>setUserQuery(e.target.value)} aria-label="搜索账户" placeholder="搜索用户名或编号" spellCheck={false}/></label><table className="s-data-table"><thead><tr><th>用户名</th><th>编号</th><th>注册日期</th></tr></thead><tbody>{users.map(u=><tr key={u.id}><td><strong>{u.username}</strong></td><td>{u.id}</td><td>{u.created_at?.slice(0,10)||'未记录'}</td></tr>)}</tbody></table>{!users.length&&<p className="s-empty">没有匹配账户。</p>}</>}
+    {tab==='releases'&&<>{heading('发布记录','已上线版本与更新摘要。')}{releases}</>}
+    </section></div>}<SiteFooter/></div>;
 }
-
-export default DeveloperPage;

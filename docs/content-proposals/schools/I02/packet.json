@@ -1,0 +1,646 @@
+{
+  "schemaVersion": 1,
+  "taskId": "I02",
+  "name": "胜论派",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "研究员自查（非独立同行评审）：四个来源（SEP 两个条目、GRETIL 两部梵文原典电子文本）于 2026-10-04 实际抓取并逐段核读，全部 locator 中的 verbatim 引文（英文经缓存 HTML 去标签、梵文经 GRETIL 明文转换文件）均经逐字比对；比对以字母/声符层面为准，SEP 弯引号统一为直双引号、HTML 标签边界造成的引号/破折号内侧空格一并规整、GRETIL 词界点统一为空格、{5...} 校勘记夹注与 avagraha（'）及 `iha' 等标记字符原样保留；写成后另以脚本对全部 locator 片段做原文回查并修正转录偏差；IEP 无独立胜论条目（本日用其站内 REST API 检索确认）、Britannica 条目返回 403，均记入 evidenceLimits；站内 philosophers.json、books.json、school_印度哲学.json、catalog.json 以 python3 实际查询查重；两个 JSON 经 python3 -m json.tool 校验。 2026-10-04 第二轮：另一研究员的同日全量草稿（10:01—10:15 写入）经逐源重开核实（4/4 来源通过，其中 S1 'some claim' 句经原始 HTML grep 命中原文），决定保留该稿为主干并合并第一轮独立核读的 5 个补充来源（S5—S9），合并明细见 review.md 第九节。",
+  "proposal": {
+    "kind": "school",
+    "suggestedName": "胜论派",
+    "aliases": [
+      "Vaiśeṣika",
+      "Vaisheshika",
+      "Vaiśeṣika（胜论）",
+      "胜论学派"
+    ],
+    "scope": "胜论派（Vaiśeṣika）的范畴本体论（句义 padārtha 体系：实/德/业/普遍/特殊/内属六句义，及后加的无句义）、极微（paramāṇu/aṇu）原子论与运动—动因理论（重体、不见力 adṛṣṭa、动量 vega）、迦那陀《胜论经》与普拉沙斯塔帕达《摄句义法论》的文献链、与正理派的历史合流、佛教论师对胜论学说的批判节点。知识来源问题只写与本条直接相关者（胜论仅承认现量、比量二量）；正理的量论、五支论式与论辩理论属姊妹任务 I01，不移植。原子论作为哲学主张与自然哲学书写，不写成'近代科学先声'一类的过度赞誉。",
+    "period": "约公元前1世纪—公元3世纪（《胜论经》编成期；核读来源系年三说并陈：S1 约前100年、S6 约1世纪、S5 记2—3世纪存疑；站内旧系年'公元前300'未获支持）；普拉沙斯塔帕达约公元4—6世纪（S1/S9 两说并存）。下限至17—18世纪（新正理手册期，胜论范畴体系经手册传承）",
+    "traditions": [
+      "南亚（印度）正统六派（āstika，承认吠陀权威的 Vedic schools）之一（S4 列名）",
+      "与正理派（Nyāya）为姊妹学派：S1 概括胜论'dealing mainly with ontology'（以本体论为主业），正理以逻辑、知识论与论辩为主业；两传统平行发展至11—12世纪合流为新正理（S1）",
+      "实在论阵营：与弥曼差、正理同属'知识源于事实中的正确来源'立场（S4），与佛教瑜伽行派的刹那论、唯识立场长期对峙（S4）"
+    ],
+    "coverageGap": "站内《印度哲学》条目共8处提及'胜论'：概述（'以原子论解释物质世界'）、relations（'世亲→胜论派：批判'）、时间线（'公元前300 正理派和胜论派兴起……迦那陀著《胜论经》'）、quotes（'万物皆由原子构成'引语卡）、cihai（'胜论'词条，'分析实在的六种范畴'）；但无独立条目（mentions-only）；任务 evidence.exactTopLevelEntries 与 exactBranches 均为空；app/public/schools/catalog.json 与 schools/data/ 目录经查无同名条目。",
+    "relatedExistingEntries": [
+      "印度哲学"
+    ],
+    "relationSuggestions": [
+      "关联《印度哲学》：胜论派为该条目'正统六派'框架之一支。其旧时间线'公元前300 正理派和胜论派兴起'与引语卡'万物皆由原子构成……早于古希腊原子论'未获本包核读来源支持（后者与 S1 系年约公元前100年不相容，且与原典不符——仅地水火风四实为极微所成），接入时建议按本包 evidenceLimits 第10条复核。",
+      "关联《正理派》（I01 包）：两包为姊妹任务——I01 侧重量论与推理，本包侧重范畴与本体论；11—12世纪合流事件两包各记一次（措辞一致，同出 S1），互见即可，不必重复展开；正理侧详情（四量、五支论式、新正理技术语言）以 I01 为准。",
+      "关联《佛教哲学》（站内若设立）：法称'无之认知是不可得推理'的批判（S1）与瑜伽行派刹那论对永恒实体的否定（S4）是胜论—佛教对峙的可据节点；本包把法称作为对手方收录，其推理理论详于 I01。"
+    ],
+    "relatedBookIds": []
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Analytic Philosophy in Early Modern India — Stanford Encyclopedia of Philosophy（Jonardon Ganeri；2009-03-10 初版，2023-11-05 实质修订）",
+      "url": "https://plato.stanford.edu/entries/early-modern-india/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "胜论范畴体系的现代通述：早期正理与胜论平行发展、11—12世纪合流为 Navya-Nyāya；七句义全列（前六为《胜论经》已见的古典目录、'无'为后加）；padārtha 词源与'范畴是语言结构的形而上对应物'；九实、廿四德；五 physical substances 与可感性质的对应表；原子论（TS 10–14：极微三特征、triad/dyad、须弥山—芥子反无限分割论证及其'question-begging'评语）；普拉沙斯塔帕达（6世纪）起的运动理论、vega 动量与 adṛṣṭa 不见力；普遍（TS 82）、特殊（TS 83）、内属；无（abhāva）的本体论与法称 anupalabdhi-hetu 批判；Gaṅgeśa §7.3；Īśvara 因果论证（TSD 17b）；Annambhaṭṭa《推理撮要》及其自注 Dīpikā"
+    },
+    {
+      "id": "S2",
+      "title": "Kaṇāda: Vaiśeṣikasūtra — GRETIL（Göttingen Register of Electronic Texts in Indian Languages，SUB Göttingen；Nozawa Masanobu 录入，2020-07-31 版；源自 Sansknet 项目）",
+      "url": "https://gretil.sub.uni-goettingen.de/gretil/corpustei/transformations/plaintext/sa_kaNAda-vaizeSikasUtra.txt",
+      "type": "primary-text-etext",
+      "accessedAt": "2026-10-04",
+      "coverage": "《胜论经》梵文全文（10品）：开篇 dharma 界定与'由之得 abhyudaya 与 niḥśreyasa'；九实列举；十七德；五业；sāmānya/viśeṣa 界定经；极微不可见论证（大者以多体与色可见、极微以无体量不可见）；重体坠落；adṛṣṭa 所致诸运动（磁石引针、火苗上升、风横行、意之初动）；瑜伽与解脱定义；内属为因果关系经；'永恒者呈球形'；Veda 权威经；文本内嵌 u、v、bhv、c、s 传本异读"
+    },
+    {
+      "id": "S3",
+      "title": "Praśastapāda: Pādārthadharmasaṃgraha（with Śrīdhara's Nyāyakandalī） — GRETIL（Muneo Tokunaga & Muroya 录入，2020-07-31 版；所据编本：The Prasastapadabhasya with Commentary Nyayakandali of Sridhara, ed. V. P. Dvivedin, Benares 1895 / Delhi 重印）",
+      "url": "https://gretil.sub.uni-goettingen.de/gretil/corpustei/transformations/plaintext/sa_prazastapAda-pAdArthadharmasaMgraha.txt",
+      "type": "primary-text-etext",
+      "accessedAt": "2026-10-04",
+      "coverage": "《摄句义法论》梵文全文：归敬迦那陀偈；六句义总纲（'六句义同异真实性之知是最上善之因'、'由自在之策励所显的 dharma 而得'）；九实；十七德加七成廿四德（kaṇṭhoktāḥ saptadaśa / caturviṃśatir guṇāḥ）；五业；普遍二分（sattā 为最普遍）与定义 anuvṛttipratyayakāraṇam；特殊定义 nityadravyavṛttayo 'ntyā viśeṣāḥ；内属定义 ayutasiddhānām ādhāryādhārabhūtānām yaḥ sambandhaḥ；六句义皆有'存在、可称谓、可知'三性；极微恒常（paramāṇulakṣaṇā nityā）；大自在天创世论（风极微起业、经二微等聚成大风）；内属遍在唯一之辩；dharma 定义与解脱（火烧薪之喻）"
+    },
+    {
+      "id": "S4",
+      "title": "Epistemology in Classical Indian Philosophy — Stanford Encyclopedia of Philosophy（Stephen Phillips；2011-03-03 初版，2024-03-13 实质修订）",
+      "url": "https://plato.stanford.edu/entries/epistemology-india/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "胜论在印度知识论地图中的位置：与弥曼差、正理同列'实在论者'（知识之真在于事实中的正确来源）；Vedic schools 六派列名；瑜伽行派刹那论（presentism）与诸实在论学派的对照；胜论与佛教徒一同否认圣言量为独立知识来源、把证言还原为推理（听者以'说话者可信'为前提推出命题为真）；Udayana 十一世纪（Nyāya-kusumāñjalī）；Vaiśeṣika-sūtra 未系年"
+    },
+    {
+      "id": "S5",
+      "title": "Vaisheshika | Atomism, Realism, Dualism — Encyclopaedia Britannica",
+      "url": "https://www.britannica.com/topic/Vaisheshika",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "以 naturalism 概括胜论在六派中的特色；迦那陀·迦湿耶波（Kanada Kashyapa）约2—3世纪（条目自带存疑问号）；六句义与后加第七句义『无』及其四种非存在；九实；廿四德；极微由神意借不可见业力（adṛṣṭa）驱动；注家普拉斯塔帕达、乌达衍那、室利达罗；两派合流约11世纪完成，此后统称 Nyāya-Vaiśeṣika。核读方式：WebFetch 与 curl 均 403，经 web_reader 抓取正文（引文为转述定位，不作逐字引）"
+    },
+    {
+      "id": "S6",
+      "title": "Hindu Philosophy — Internet Encyclopedia of Philosophy（Shyam Ranganathan）",
+      "url": "https://iep.utm.edu/hindu-ph/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "『胜论由苦行者迦那陀创立（公元1世纪）』（'Kaṇāḍa (1st cent. C.E.)'，逐字）；其名意为 atom-eater（一说因其原子论、一说因拾粒为食）；《胜论经》I.1.1–2 以法为宗旨（abhyudaya 与 niḥreyasa）、I.1.4 列六句义与彻底形而上学实在论；原子论（引 VS VII.1.8）；后期与正理结成 sister darśanas；商羯罗·弥湿罗（15世纪）以 nivṛtti/tattva-jñāna 读 dharma、接受吠陀有效性系于神为作者（标记为受正理影响）"
+    },
+    {
+      "id": "S7",
+      "title": "Nyāya — Internet Encyclopedia of Philosophy（Matthew R. Dasti）",
+      "url": "https://iep.utm.edu/nyaya/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "正理范畴表『大体承自其姊妹学派胜论』（'largely adapted…from its sister school Vaiśeṣika'，逐字；实、德、业、同、异、和合、无七项）；正理四量；『地水火风之不灭原子』为范式实体；瞿昙约200 CE、筏蹉衍那约450、乌达衍那约975、甘盖沙约1325开创新正理；书目 Halbfass《论存在与存在者：古典胜论与印度本体论史》（SUNY Press 1992）"
+    },
+    {
+      "id": "S8",
+      "title": "Vaisheshika-sutra with Commentary（Nandalal Sinha 1923 英译；wisdomlib 数字版）",
+      "url": "https://www.wisdomlib.org/hinduism/book/vaisheshika-sutra-commentary",
+      "type": "primary-text",
+      "accessedAt": "2026-10-04",
+      "coverage": "十卷二十章结构与逐经页；本轮逐页核对 VS 1.1.1、1.1.2、1.1.4、4.1.1、4.1.2、4.1.3、4.1.6 七则经文的英译；附《光释》（Śaṅkara Miśra）、《别释》（Jayanārāyaṇa-Tarkapañcānana）与旃陀罗甘塔（Candrakānta）注；公有领域。逐经页如 doc427554（1.1.1）、doc427555（1.1.2）、doc427557（1.1.4）、doc485806/485807/485808/485811（4.1.1–4.1.6）"
+    },
+    {
+      "id": "S9",
+      "title": "Padarthadharmasamgraha（wisdomlib 词条；底层为 Shodhganga 论文《正理—胜论范畴研究》）",
+      "url": "https://www.wisdomlib.org/definition/padarthadharmasamgraha",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "《摄句义法论》为现存最早的《胜论经》释论，但『不合注疏之体，如独立论书』；普拉沙斯塔帕达约公元4世纪末（与 S1 的6世纪说并存）；又名 Praśastapādabhāṣya；维持六句义；德目十七加七成廿四为后世定论；兼论世界成坏、过失与推理"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S8"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S7"
+  ],
+  "school": {
+    "name": "胜论派",
+    "subtitle": "以六句义范畴体系与极微原子论立宗的印度正统学派——从《胜论经》到《摄句义法论》",
+    "overview": "胜论派（Vaiśeṣika）是南亚所谓'正统六派'（承认吠陀权威的 Vedic schools，S4 列名：弥曼差、吠檀多、正理、胜论、数论、瑜伽）之一。它的得名，S1 记有一说：胜论传统'独特地'把一类叫'基本差异者'（viśeṣa，特殊）的东西纳入本体论，'有人声称学派之名即由此而来'。在印度的学派地图上，它与正理派（Nyāya）是姊妹学派：S1 概括早期正理'主要处理逻辑、知识论与论辩理论'，而胜论'根基于迦那陀的《胜论经》（约公元前100年），以本体论为主业'（dealing mainly with ontology）——《胜论经》系年按证据范围处理：本包核读来源三说并陈（S1 约前100年、S6 约1世纪、S5 记2—3世纪存疑），见 evidenceLimits 第1条；两个传统平行发展，直到'11或12世纪的某一点，它们合流形成一个新学派，称为 Navya-Nyāya'。本条目按任务分工专注于胜论的一侧：范畴与本体论、极微原子论、以及它与正理和佛教的关系；正理的量论与论辩术见姊妹包 I01。\n\n胜论的核心事业是给'存在的东西'开一张完整的清单。S1 概括：'胜论的范畴（padārtha）体系，是试图以系统的方式对存在的所有类型加以分类'。padārtha 一词，《推理撮要》以词源作解——'padārtha 即词（pada）之义（artha）'，胜论范畴'以某种方式是语言结构的形而上对应物'（S1）。合流后的新正理开列七句义：实（dravya）、德（guṇa）、业（karma）、普遍（sāmānya）、特殊（viśeṣa）、内属（samavāya）、无（abhāva）；S1 明言'前六项构成古典目录，连《胜论经》中也已可见，而第七项（无）是后期学派的独特增补'。古典目录本身，普拉沙斯塔帕达《摄句义法论》开篇即给出纲领：'实、德、业、普遍、特殊、内属——此六句义之同与异的真实性知识，是最上善（niḥśreyasa）之因'（S3，自梵文直译）；又说此知'由自在天（Īśvara）之策励所显的 dharma 而得'。清单的内部结构原典写得极细：九种实体——'地、水、火、风、空（ākāśa）、时、方、我、意'（S2，《胜论经》九实列举经；《摄句义法论》重复此九而总结'唯此九者'，S3）；德十七种'经口所宣'，再加七种，'如是廿四德'（S3）；业五种——'上抛、下掷、收缩、舒展、行进'（S2/S3）；普遍二分，最普遍者为'存在'（sattā），定义为'引起（对诸物）遍同认知的原因'（anuvṛttipratyayakāraṇam，S3），S1 载《推理撮要》的标准定义是'（一）永恒的、（二）单一的、（三）位于众多事物之中的'（TS 82）；特殊是'住于诸永恒实体、作为其终极区分者的那些实在'（S3），S1 载其《推理撮要》定义：'安住于诸永恒实体（即极微）之中、作为其区分者的那些存在，称为 viśeṣa'（TS 83）——极微彼此不可辨析，胜论便为每一极微安设一个独有的差异者，这是胜论本体论中最有争议、也最具辨识度的部件之一；内属，《摄句义法论》定义为'不可分全（ayutasiddha）的能依与所依之间的关系，即引起\"此在此\"之认知者'（S3），《胜论经》则从因果上界定：'（说到）\"此\"，即是果与因之间的内属'（S2）。\n\n胜论的原子论就安放在这张清单里。九实之中，前四实（地水火风）各分两类：原子性的与复合的。S1 载《推理撮要》（TS 10–14）的'常规胜论理论'：'极微（paramāṇu）不可灭、不可分（即非复合），并有一种叫做\"小\"（aṇu）的特殊维度'——同句中 SEP 给极微标注的梵文（anitya）与原典相抵，《摄句义法论》明言'以极微为相者是恒常的，以果为相者是非恒常的'（S3），本条从原典并已注明此异文。极微存在的论证，《推理撮要》给出标准版（S1）：'凡被感知者皆是复合的'是经验真理，故最小可感物——阳光中的一点浮尘——也有部分；胜论称最小可感物为'三微'（tryaṇuka），它有三个部分，每个部分称'二微'（dyaṇuka）；二微再分，即得极微。为何分割不能无限进行？《推理撮要》的答案颇有戏剧性：'若如此，须弥山与芥子将一样大，因为二者有同样（无限多）的组成部分'（S1）——S1 随即评点，其隐含前提是'整体之大小是其部分之大小、数目与空间排列的函数'，'该论证看起来是预设结论的'（question-begging）。原典一翼同样可核：《胜论经》论可感性——'大者，因具多体、有色，故被感知'，'极微则以无（可感）体量故不被感知'（S2，两经相承）。运动的解释是胜论自然哲学的另一半：《胜论经》说'无和合（接触）时，（物体）因重体（gurutva）而坠落'，磁石引针、火苗上升、风之横行、乃至意之初动，皆'为不见力（adṛṣṭa）所致'（S2）；S1 记'自普拉沙斯塔帕达（公元6世纪）起，早期胜论作者对抛射体等运动物体的行为表现出理性的、科学的兴趣'，其理论'可与菲洛波努斯的\"动量\"（impetus）理论相比较'——掷出的标枪靠注入的动量（vega）继续飞行；创世论同样从极微讲起：《摄句义法论》说，大自在天创世之愿一动，'风极微中生起业，它们相互和合，依次经二微等步骤，生起大风'，水、地、火相继而成（S3）。\n\n这套本体论的另一半是知识论立场与宗教目标。知识来源上，胜论与它的姊妹学派分手了：S4 明载'胜论，在诸 Vedic 学派中，与佛教徒——他们当然非难吠陀的\"圣言\"——一起，不承认圣言为独立的知识来源（pramāṇa）'，胜论与瑜伽行派'共同认为'听者的知识'实际产生自一个推理'，其前提是'说话者可信'且'说话者说了 p'（S4）；《胜论经》自己把吠陀权威论证为'由其言说（故吠陀有权威性）'（S2）——即诉诸一位可信的作者。目标上，《胜论经》以 dharma 开篇：'如今（我们）将解释 dharma'，'由之得兴盛（abhyudaya）与最上善（niḥśreyasa）者，是 dharma'（S2）；解脱在经中被定义为和合的不再现起（S2），《摄句义法论》喻之为'如火薪已尽之火，（自我与身心诸元素的）平息即是解脱'（S3）。11—12世纪胜论与正理合流后，这套形而上学并未消失：'尽管有此名，新正理吸收并发展了古典胜论形而上学与古典正理知识论'（S1），胜论范畴理论此后经由新正理教科书与手册传承——S1 正是以 Annambhaṭṭa《推理撮要》及其自注为窗口概述胜论，称其'呈现胜论范畴理论（物理理论、形而上学与心理哲学的混合物）'（S1）。",
+    "conclusion": "胜论留下的哲学问题至今可辩。其一，极微论证的效力：从'凡被感知者皆复合'出发，经三微、二微步步下行到不可分的极微，再以'否则须弥山与芥子等大'堵住无限分割——S1 的评语是，这依赖'整体大小是部分大小、数目与排列的函数'这一隐含前提，而论证'看起来是预设结论的'。这个批评恰好把胜论原子论放回它自己的语境：它是一个本体论假说加认识论证的方案，不是物理实验的结论——把它写成'近代原子科学的先声'，既非来源所载，也错置了它的性质；S1 说胜论的运动理论'可与'菲洛波努斯比较，是学术比较，不是影响关系。其二，内属（samavāya）的范畴地位：胜论需要一个关系把性质、普遍、极微绑定到其载体上，又须与'和合'（接触）区分——《摄句义法论》的辩护是：内属不可能是和合，'因为（所涉双方）是不可分全的'，且内属'如存在一样遍在而唯一'（S3）；一个遍在的唯一关系实体是否本体论上过度昂贵，是古典论敌与今日形而上学家可以共享的问题。其三，'无'（abhāva）的准入：后期学派把'无'增为第七范畴，其感知地位随即遭佛教批判——法称论证对'房间里没有大象'的认知'实际上是出自不可得（anupalabdhi-hetu）的推理'（S1），合流后的传统（Gaṅgeśa）则以新的感知定义回应（S1 §7.3）；'负事实是否被感知'至今仍是知识论与心灵哲学的活跃题目（此处为编辑比较，非影响关系）。\n\n证据边界上要诚实。《胜论经》的编成年代在本包核读来源之间即不一致：S1（SEP Ganeri）记约公元前100年，S6（IEP）记约公元1世纪，S5（Britannica）记2—3世纪并自带存疑标记；站内旧时间线'公元前300 正理派和胜论派兴起'同样未获支持。经文本身是多传本的：GRETIL 电子文本内嵌 u、v、bhv、c、s 等传本异读（如吠陀权威经一则在诸传本中或作 āmnāyaprāmāṇyam 或作 āmnāyasya prāmāṇyam），经号依编本而异——本包凡引经文均附 GRETIL 转写本属性与逐字梵文，不单独依赖经号。'胜论得名于 viśeṣa 范畴'是 S1 记录的一说（'some claim'），副标题与正文保持'一说'措辞。站内引语卡'万物皆由原子构成（《胜论经》）……早于古希腊原子论'有两重问题：'早于古希腊'与 S1 的约前100年系年不相容；'万物皆由原子构成'与原典不符——九实中仅地水火风为极微所成，空、时、方、我并非极微（意为极微，但那是'认知器官'意义上的小，非四大之微）。此两处已提交复核建议，不改动站内数据。\n\n'保留为独立学派'的依据充分：有归名原典与完整的注疏链（《胜论经》—《摄句义法论》（自称 bhāṣya）—Śrīdhara 注—合流后手册）、有独家的范畴清单与定义序列、有从极微到解脱的一体化体系。但两条边界要守住：其一，范畴本体论与宗教实践分开——原典确有 dharma、Īśvara、解脱框架（S2/S3），本条如实呈现，但 Īśvara 论证（如'二微有其制造者，因为是果'（TSD 17b，S1））是哲学论证，不等于教团仪轨；其二，与 I01 的分工——本条不展开量论、五支论式与新正理推理技术，凡两包共载的人物（Gaṅgeśa、Annambhaṭṭa）与事件（合流），只写胜论一侧并互指对方包。佛教批判一翼，本包只就有据的三点落笔（法称的不可得批判、刹那论对照、Diṅnāga 式文本结构被合流后传统沿用）；站内'世亲批判胜论派'的关系未获本包来源核验，已列入 evidenceLimits 交 Codex 复核。",
+    "thinkers": [
+      {
+        "name": "迦那陀（Kaṇāda）",
+        "sub": "《胜论经》归名作者；'迦那陀'写法沿用站内《印度哲学》时间线",
+        "era": "约公元前1世纪—公元3世纪（证据范围；S1 约前100年、S6 约1世纪、S5 记2—3世纪存疑；生卒无考）",
+        "key": "传为《胜论经》所出：以 dharma 开篇，界 abhyudaya 与 niḥśreyasa 为其目标；九实、十七德、五业的列举与 sāmānya/viśeṣa 的界定经；极微不可见的认识论证与 adṛṣṭa 所致的诸运动；S1 概括其传统'dealing mainly with ontology'。注意：归名作者不等于单一作者一次性写成。",
+        "works": [
+          "胜论经（Vaiśeṣika-sūtra）"
+        ],
+        "sourceRefs": [
+          "S2",
+          "S1",
+          "S6",
+          "S5"
+        ]
+      },
+      {
+        "name": "普拉沙斯塔帕达（Praśastapāda）",
+        "sub": "《摄句义法论》（Padārthadharmasaṃgraha，文本自称 Praśastapādabhāṣya）作者",
+        "era": "约公元4—6世纪（证据范围；S1 记6世纪，S9 记约4世纪末）",
+        "key": "胜论教义的系统重述者：六句义总纲与定义序列（普遍/特殊/内属的定义皆在此定型）、廿四德的合计、极微恒常论、大自在天创世论（风极微起业、经二微等成大风）、内属遍在唯一之辩、dharma 定义与火烧薪之喻的解脱论；S1：其运动理论为后期传统所本，'可部分上溯到《胜论经》自身'。",
+        "works": [
+          "摄句义法论（Padārthadharmasaṃgraha / Praśastapādabhāṣya）"
+        ],
+        "sourceRefs": [
+          "S3",
+          "S1",
+          "S9"
+        ]
+      },
+      {
+        "name": "Śrīdhara",
+        "sub": "《Nyāyakandalī》作者，注《摄句义法论》",
+        "era": "未获本包来源系年（仅存文献学证据）",
+        "key": "GRETIL 所用编本即 Dvivedin 的《Prasastapadabhasya with Commentary Nyayakandali of Sridhara》（Benares 1895）——Śrīdhara 的注与《摄句义法论》本文同篇流传，是读解该书的传统随行文本；本包经此证据收录其人，年代待补。",
+        "works": [
+          "Nyāyakandalī（正理甘露，编辑意译）"
+        ],
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "name": "法称（Dharmakīrti）",
+        "sub": "佛教瑜伽行派论师（本包作为胜论—正理实在论阵营的主要批判对手方收录；其推理三分类详于 I01）",
+        "era": "7世纪初（S4）",
+        "key": "对后期'无'范畴的感知地位给出经典批判：对'房间里无象'的认知'实际上是出自不可得（anupalabdhi-hetu）的推理'（S1 引）——负事实不是被感知的对象，而是推理的结论；与瑜伽行派刹那论（presentism）一道，构成对胜论永恒实体—极微体系的最大外部压力（S4）。",
+        "works": [],
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "name": "Gaṅgeśa Upādhyāya",
+        "sub": "新正理（Navya-Nyāya）奠基者（正理侧详于 I01；本条记其胜论形而上学一侧）",
+        "era": "生卒未获本包来源直接系年（I01 依 IEP 记其人约1325年）",
+        "key": "合流后传统把胜论形而上学作为自家本体论的载体：S1 记其文本结构沿用佛教论师 Diṅnāga 的按知识来源分章的模式；在'无'的感知之辩上，S1 §7.3 载'Gaṅgeśa 的批评与新定义'——为感知负事实的立场重构定义，回应法称式批判；《真理如意珠》以降，胜论七句义成为新正理教科书的标准清单。",
+        "works": [
+          "真理如意珠（Tattvacintāmaṇi）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "Annambhaṭṭa",
+        "sub": "《推理撮要》（Tarkasaṃgraha）及其自注《Dīpikā》（TSD）作者",
+        "era": "17—18世纪（新正理手册编写期，S1）",
+        "key": "S1：因新正理技术语言艰深，17—18世纪出现多部简化手册，'其中最成功者'即其《推理撮要》'及其自注《Dīpikā》'；该书'呈现胜论范畴理论（物理理论、形而上学与心理哲学的混合物）'——极微论（TS 10–14）、普遍（TS 82）、特殊（TS 83）、动量与潜能（TS 30–31、80）俱在；S1 概述胜论—新正理即以此书为底本。（I01 亦收此书，角度为新正理手册史与感知定义的盖梯尔问题；本条记其胜论范畴呈现，两包分工。）",
+        "works": [
+          "推理撮要（Tarkasaṃgraha）",
+          "Tarkasaṃgrahadīpikā（自注）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "商羯罗·弥湿罗（Śaṅkara Miśra）",
+        "sub": "《胜论经》注家（《光释》作者）",
+        "era": "约15世纪（S6，逐字：'Śaṅkara-Misra, 15th cent. C.E.'）",
+        "key": "作《光释》（Upaskāra）逐经疏解《胜论经》；把『法』读作出离（nivṛtti）与谛知（tattva-jñāna），并接受吠陀有效性系于神为作者的正理化读法（S6 明确标记为受正理影响的综合读法）——显示晚期胜论的正理化。胜论侧注家，与姊妹包 I01 无立卡重叠。",
+        "works": [
+          "光释（Upaskāra）"
+        ],
+        "sourceRefs": [
+          "S6",
+          "S8"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "迦那陀（Kaṇāda）",
+        "to": "普拉沙斯塔帕达（Praśastapāda）",
+        "label": "经与释经：范畴体系的第一次系统综合",
+        "type": "注疏/接受",
+        "detail": "GRETIL 题注称《摄句义法论》为'commentary on Kaṇāda's Vaiśeṣikasūtra'，文本首词自题 praśastapādabhāṣyam，归敬偈先礼'因与自在天，再礼仙人迦那陀'（S3）；六句义列举、九实、十七德、五业皆承经文而以定义序列重铸。S1：《推理撮要》的运动学说'与普拉沙斯塔帕达已见者大体一致，后者可部分上溯到《胜论经》自身'——经—释—手册三级链条由此成形。",
+        "sourceRefs": [
+          "S3",
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "from": "普拉沙斯塔帕达（Praśastapāda）",
+        "to": "Śrīdhara",
+        "label": "注疏随行：《Nyāyakandalī》与《摄句义法论》同篇流传",
+        "type": "注疏/接受",
+        "detail": "S3 的 GRETIL 编本题名即'The Prasastapadabhasya with Commentary Nyayakandali of Sridhara'（Dvivedin 编，Benares 1895）：Śrīdhara 的注是《摄句义法论》传播史上的标准随行文本。本包仅据编本证据收录其人其书，其年代与注的细节不在核读来源内。",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "from": "普拉沙斯塔帕达（Praśastapāda）",
+        "to": "Annambhaṭṭa",
+        "label": "千年一脉：手册对综合体系的复述",
+        "type": "接受/传承",
+        "detail": "S1：《推理撮要》'大体重述常规胜论理论'（TS 10–14 极微论等），'其所述与普拉沙斯塔帕达已见者 substantially agrees，后者可部分上溯到《胜论经》自身'——《摄句义法论》的定义序列（六句义、廿四德、五业、动量、不见力）经由新正理手册完整进入17—18世纪的教学。人物之间的直接阅读关系不在来源内，此条按文本传承措辞。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "法称（Dharmakīrti）",
+        "to": "Gaṅgeśa Upādhyāya",
+        "label": "无之感知：批判与回应（学派层面论题线，非个人论战）",
+        "type": "论辩（学派层面）",
+        "detail": "S1 §7.2：正理—胜论阵营主张'无'是可感知的实在对象；'佛教徒法称论证这实际上是出自不可得（anupalabdhi-hetu）的推理'（'我看见房间的墙；若有大象我不会看不见……故无大象'）；§7.3 载'Gaṅgeśa 的批评与新定义'对感知原则作出三重批评并重构——七世纪的批判与十四世纪前后的回应共享同一论题，但无个人接触之证，故标学派层面。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "Gaṅgeśa Upādhyāya",
+        "to": "Annambhaṭṭa",
+        "label": "从《真理如意珠》到手册：新正理的普及化",
+        "type": "发展阶段（学派分期）",
+        "detail": "S1：新正理奠基作《真理如意珠》之后，学派经约四个世纪发展、在 Raghunātha、Jagadīśa、Gadādhara 达于高峰；因技术语言'愈来愈难以进入'，17—18世纪'若干手册或纲要'以简化语言解释学派基本义，'其中最成功的'即 Annambhaṭṭa《推理撮要》（绰号 Bāla-gādādharī，'初学者的 Gadādhara 指南'）。胜论形而上学即沿此线传承。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "迦那陀（Kaṇāda）",
+        "to": "商羯罗·弥湿罗（Śaṅkara Miśra）",
+        "label": "晚期逐经注疏",
+        "type": "注疏/接受",
+        "detail": "《光释》逐经解释《胜论经》，并作为主注收录于辛哈1923年英译本（S8）；其对『法』的正理化解读被 IEP 标记为受正理影响（S6）。",
+        "sourceRefs": [
+          "S8",
+          "S6"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "约公元前1世纪—公元3世纪（证据范围）",
+        "event": "《胜论经》编成（归名迦那陀）",
+        "detail": "核读来源系年三说并陈：S1（SEP Ganeri）记『约公元前100年』，S6（IEP）记迦那陀『公元1世纪』，S5（Britannica）记迦那陀·迦湿耶波『2—3世纪』并自带存疑问号——正文一律取范围。站内《印度哲学》旧时间线作『公元前300』，未获本包来源支持。经文的多传本性质（GRETIL 文件内嵌 u/v/bhv/c/s 异读）提示编成史可能复杂，但具体阶段划分无来源。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1",
+          "S6",
+          "S5",
+          "S2"
+        ]
+      },
+      {
+        "year": "约公元4—6世纪（诸家不一）",
+        "event": "普拉沙斯塔帕达《摄句义法论》",
+        "detail": "S1：『自普拉沙斯塔帕达（公元6世纪）起』，胜论对运动的研究展开；S9（wisdomlib 词条，底层 Shodhganga 论文）记『约公元4世纪末』——两说并存，正文取范围；S3：六句义总纲、定义序列、廿四德、创世论与解脱论在此书定型，文本自称 praśastapādabhāṣyam。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1",
+          "S3",
+          "S9"
+        ]
+      },
+      {
+        "year": "7世纪初",
+        "event": "法称批判'无之感知'为不可得推理",
+        "detail": "S4 系法称于7世纪初；S1 §7.2 载其对'感知负事实'的批判（anupalabdhi-hetu）；同时期瑜伽行派刹那论（presentism）与胜论永恒极微构成体系性对峙（S4）。",
+        "type": "论辩节点",
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "year": "约公元975年前后—11世纪",
+        "event": "Udayana：胜论—正理两边的大家",
+        "detail": "S7（IEP《Nyāya》）系乌达衍那约975年（'Udayana, c. 975'，逐字）并列《正理花束》《自我谛实抉择》；S4 系其于11世纪（Nyāya-kusumāñjalī）；S1 称『伟大的正理—胜论作者 Udayana』并以他的体系重构为范本——合流前夜的学者已兼跨两家。其正理侧设计论详于 I01。",
+        "type": "人物节点",
+        "sourceRefs": [
+          "S7",
+          "S4",
+          "S1"
+        ]
+      },
+      {
+        "year": "11—12世纪",
+        "event": "正理与胜论合流为新正理；'无'增为第七句义",
+        "detail": "S1：两传统平行发展'直到11或12世纪的某一点，它们合流形成新学派 Navya-Nyāya'；'新正理吸收并发展古典胜论形而上学'；'向迦那陀原有的六句义清单，因此增加第七项，无（abhāva）'。 Britannica 记合流『于11世纪完成』，此后统称正理—胜论（Nyāya-Vaiśeṣika）（S5，转述）。",
+        "type": "学派分期",
+        "sourceRefs": [
+          "S1",
+          "S5"
+        ]
+      },
+      {
+        "year": "合流后（Gaṅgeśa 期；人物约1325年说见 I01，未获本包来源系年）",
+        "event": "Gaṅgeśa 与新正理技术语言",
+        "detail": "S1：《真理如意珠》为新正理奠基作；其按知识来源分章的结构沿用 Diṅnāga 模式；'Gaṅgeśa 的批评与新定义'（§7.3）处理负事实感知。胜论七句义自此以新正理教科书语言传承。",
+        "type": "文献/学派分期",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "17—18世纪",
+        "event": "Annambhaṭṭa《推理撮要》及自注",
+        "detail": "S1：新正理技术语言艰深，故17—18世纪'写成若干手册或纲要，以简化语言解释学派的基本义'，最成功者为《推理撮要》及其自注《Dīpikā》，得绰号 Bāla-gādādharī；胜论范畴理论（TS 10–14、82、83）经此普及。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "2020-07-31",
+        "event": "《胜论经》与《摄句义法论》GRETIL 电子文本现行版",
+        "detail": "S2/S3 文件头标注版本日期：前者由 Nozawa Masanobu 录入（源自 Sansknet 项目），后者由 Muneo Tokunaga 与 Muroya 录入（据 Dvivedin 1895 编本）；哥廷根州立大学图书馆 GRETIL 开放发布，S1 条目亦在'Other Internet Resources'中提示该库藏有正理—胜论多部文本。此为文献可及性节点，非学术事件。",
+        "type": "文献/数字化",
+        "sourceRefs": [
+          "S2",
+          "S3",
+          "S1"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "句义（padārtha）",
+        "def": "'词（pada）之义（artha）'（S1 载《推理撮要》的词源分析）；胜论以之指'存在的类型'的范畴清单——'对存在的所有类型加以系统分类的尝试'（S1）。六句义同异真实性之知被《摄句义法论》定为最上善之因；后期增'无'为第七。",
+        "source": "SEP 'Analytic Philosophy in Early Modern India' §1.2；GRETIL《摄句义法论》2.1",
+        "sourceRefs": [
+          "S1",
+          "S3"
+        ]
+      },
+      {
+        "word": "实（dravya）",
+        "def": "九种：地、水、火、风、空（ākāśa）、时、方、我、意（《胜论经》九实经，《摄句义法论》'唯此九者'）。其中地水火风有极微；五实（地水火风空）名 bhūta，'物理实体'，各以一特有可感性质为标识——地香、水味、火色、风触、空声（S1 对应表）。",
+        "source": "GRETIL《胜论经》九实列举经；GRETIL《摄句义法论》2.2；SEP 同上 §2.1",
+        "sourceRefs": [
+          "S2",
+          "S3",
+          "S1"
+        ]
+      },
+      {
+        "word": "德（guṇa）",
+        "def": "依附于实的性质：《胜论经》列举十七种（色味香触、数、量、别体、合、离、彼性此性、觉、乐、苦、欲、嗔、勤勇）；《摄句义法论》称为'经口所宣者十七'（kaṇṭhoktāḥ saptadaśa），再加七种，'如是廿四德'（caturviṃśatir guṇāḥ）。觉（认知）虽在技术上只是一德，其分析占手册近半篇幅（S1）。",
+        "source": "GRETIL《胜论经》十七德经；GRETIL《摄句义法论》2.2(10)；SEP 同上 §5.1",
+        "sourceRefs": [
+          "S2",
+          "S3",
+          "S1"
+        ]
+      },
+      {
+        "word": "业（karma）",
+        "def": "运动/行为，五种：上抛（utkṣepaṇa）、下掷（avakṣepaṇa）、收缩（ākuñcana）、舒展（prasāraṇa）、行进（gamana）；旋转、喷发、流淌、上升燃烧、斜行风、意的抬起等皆是'行进'的特例，非另立类（S3）。《胜论经》五业经同此列举（S2）。",
+        "source": "GRETIL《摄句义法论》2.2(11)；GRETIL《胜论经》五业经",
+        "sourceRefs": [
+          "S3",
+          "S2"
+        ]
+      },
+      {
+        "word": "普遍（sāmānya）",
+        "def": "使诸物被认作'同一'的东西：定义为'遍同认知（anuvṛtti-pratyaya）的原因'（S3）；《推理撮要》标准定义三条件：永恒、单一、遍在众多处（TS 82，S1）；二分为最普遍的'存在'（sattā）与较窄的'实体性'（dravyatva）等（S3）。胜论以此区分'自然'分类与约定分类（S1）。",
+        "source": "GRETIL《摄句义法论》2.2(11)；SEP 同上 §10.1",
+        "sourceRefs": [
+          "S3",
+          "S1"
+        ]
+      },
+      {
+        "word": "特殊（viśeṣa）",
+        "def": "终极差异者：'住于诸永恒实体的、终极的（antyā）viśeṣa'，是'终极区分认知的原因'（S3）；《推理撮要》定义（TS 83，S1 引）：'安住于诸永恒实体（即极微）之中、作为其区分者的那些存在'。每一极微各有一独有的差异者——S1 称胜论'传统上且独特地'接纳这一范畴，'有人声称学派之名由此而来'。",
+        "source": "GRETIL《摄句义法论》2.2(13) 与 11；SEP 同上 §10.2",
+        "sourceRefs": [
+          "S3",
+          "S1"
+        ]
+      },
+      {
+        "word": "内属（samavāya）",
+        "def": "不可分全（ayutasiddha）的能依—所依之间的关系，即引起'此在此'认知者（S3 定义）；《胜论经》自因果界定：'（言）\"此\"，即果与因之间的内属'（S2）。与'和合'（接触，可分全者间、可始于分离）相对；《摄句义法论》辩内属非和合、且'如存在一般遍在而唯一'（S3）。",
+        "source": "GRETIL《摄句义法论》2.2(14) 与 12；GRETIL《胜论经》内属因果经",
+        "sourceRefs": [
+          "S3",
+          "S2"
+        ]
+      },
+      {
+        "word": "无（abhāva）",
+        "def": "第七句义，后期学派的增补：'向迦那陀原有的六句义清单，因此增加第七项，无'（S1）。其动机有现象学的一面（负认知有独立的显相）与语义学的一面（否定句）；'此处无象'被正理—胜论视为可感知，遭法称批判为不可得推理（S1）。",
+        "source": "SEP 'Analytic Philosophy in Early Modern India' §11、§7.2",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "极微（paramāṇu / aṇu）",
+        "def": "地水火风四实的最小构成单元：不可灭、不可分、具'小'（aṇu）维度（S1 载 TS 10–14；注：S1 同句标注的梵文 anitya 与原典相抵，《摄句义法论》明言'以极微为相者恒常'）。原典的认识论证：大者以多体与色可见，'极微以无（可感）体量故不被感知'（S2）。二微（dvaṇuka）由两极微成，三微（tryaṇuka）为最小可见物（S1）。意（manas）亦为极微但属认知器官，非四大（S2/S1）。",
+        "source": "SEP 同上 §2.2；GRETIL《胜论经》可感性诸经；GRETIL《摄句义法论》4.1",
+        "sourceRefs": [
+          "S1",
+          "S2",
+          "S3"
+        ]
+      },
+      {
+        "word": "不见力（adṛṣṭa）",
+        "def": "'不可见的'力：磁石引针、火苗上升、风之横行、意之初动、植物的向攀，皆'为 adṛṣṭa 所致'（S2 原典；《胜论经》屡言'tad viśeṣeṇādṛṣṭakāritam'）；S1 概括为胜论在重体、流性、弹性之外新设的力，用以解释这些运动。它与 dharma/adharma 相连，是把道德历程接入物理世界的枢纽（S3 布施、祭祀等'为 adṛṣṭa'）。",
+        "source": "GRETIL《胜论经》5.1–5.2 诸经；GRETIL《摄句义法论》6.2；SEP 同上 §3.3",
+        "sourceRefs": [
+          "S2",
+          "S3",
+          "S1"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "胜论经（Vaiśeṣika-sūtra）",
+        "author": "迦那陀（Kaṇāda）（归名）",
+        "era": "约公元前1世纪—公元3世纪（证据范围；系年三说并陈；生卒与成书年份无直接证据）",
+        "desc": "胜论根本经典，10品：开篇 dharma 界定（'由之得 abhyudaya 与 niḥśreyasa'）、九实/十七德/五业列举、sāmānya-viśeṣa 界定、极微与可感性、gurutva 与 adṛṣṭa 的运动学、瑜伽与解脱定义、吠陀权威论证。文献学提示：现存多传本，GRETIL 转写本内嵌 u、v、bhv、c、s 异读（同一吠陀权威经两种读法并存），经号依编本而异——引用宜以逐字经文为准，不宜孤证依赖经号。",
+        "kind": "原典（归名，多传本）",
+        "sourceRefs": [
+          "S2",
+          "S1",
+          "S6",
+          "S5"
+        ]
+      },
+      {
+        "title": "摄句义法论（Padārthadharmasaṃgraha，又称 Praśastapādabhāṣya）",
+        "author": "普拉沙斯塔帕达（Praśastapāda）",
+        "era": "约公元4—6世纪（S1 记6世纪，S9 记约4世纪末；证据范围）",
+        "desc": "胜论教义的系统重述（GRETIL 题注：'commentary on Kaṇāda's Vaiśeṣikasūtra'；文本首词自题 praśastapādabhāṣyam）：归敬迦那陀偈、六句义总纲（'……同异真实性之知是最上善之因'）、定义序列（普遍/特殊/内属）、廿四德合计、极微恒常、大自在天创世论、内属遍在唯一之辩、dharma 定义与火烧薪之喻。中文题名'摄句义法论'为学界通行译名，本包沿用并附梵文原名。",
+        "kind": "原典（释经体系书）",
+        "sourceRefs": [
+          "S3",
+          "S1",
+          "S9"
+        ]
+      },
+      {
+        "title": "Nyāyakandalī（正理甘露，编辑意译）",
+        "author": "Śrīdhara",
+        "era": "未获本包来源系年",
+        "desc": "《摄句义法论》的随行注疏：本包所据 GRETIL 编本即 Dvivedin 编《The Prasastapadabhasya with Commentary Nyayakandali of Sridhara》（Benares 1895，Vizianagram Sanskrit Series 6；Delhi 重印）——注与本文同篇流传，是读解《摄句义法论》的传统文本。其人年代、注的具体义例不在核读来源内，收录仅据编本证据。 Britannica 亦列室利达罗为胜论重要注家之一（S5，转述）。",
+        "kind": "原典注疏",
+        "sourceRefs": [
+          "S3",
+          "S5"
+        ]
+      },
+      {
+        "title": "推理撮要（Tarkasaṃgraha）及其自注 Tarkasaṃgrahadīpikā（TSD）",
+        "author": "Annambhaṭṭa",
+        "era": "17—18世纪（手册编写期，S1）",
+        "desc": "新正理简化手册中'最成功者'（S1）：呈现胜论范畴理论——'物理理论、形而上学与心理哲学的混合物'；极微论（TS 10–14：三微/二微/极微、须弥山—芥子论证）、运动与动量（TS 5、30–31、80）、普遍（TS 82）、特殊（TS 83）、自我诸德（TS 73–79）俱经此传；自注《Dīpikā》同出其手（S1：'together with its auto-commentary'）。S1 概述胜论—新正理即以之为底本。注意：I01 亦收此书（新正理手册史与盖梯尔问题角度），本包记其胜论范畴呈现，属两包分工。",
+        "kind": "纲要手册（含自注）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "胜论经英译本（Vaisheshika-sutra with Commentary）",
+        "author": "南达拉尔·辛哈（Nandalal Sinha）译",
+        "era": "1923年（wisdomlib 数字版著录；公有领域）",
+        "desc": "《胜论经》完整英译，词对词对照体，附商羯罗·弥湿罗《光释》、阇耶那罗延那·逻辑五顶《别释》（Vivṛti）与旃陀罗甘塔《注》；全书十卷二十章。本轮逐经页核对七则经文（1.1.1、1.1.2、1.1.4、4.1.1、4.1.2、4.1.3、4.1.6）。注意：该译本以 Combination 译 samavāya、Species 译 viśeṣa，与现代译语不同。",
+        "kind": "译本",
+        "sourceRefs": [
+          "S8",
+          "S2"
+        ]
+      },
+      {
+        "title": "论存在与存在者：古典胜论与印度本体论史（On Being and What There Is: Classical Vaiśeṣika and the History of Indian Ontology）",
+        "author": "威廉·哈尔伯法斯（Wilhelm Halbfass）",
+        "era": "1992年（S7 书目逐字：SUNY Press 1992）",
+        "desc": "以古典胜论与印度本体论史为对象的现代研究；IEP《Nyāya》条目书目将其列为理解正理—胜论形而上学交叠的关联文献。本包未核读书内页码，仅列书目。",
+        "kind": "研究",
+        "sourceRefs": [
+          "S7"
+        ]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "早期胜论（经传时期）",
+        "era": "约公元前1世纪—公元3世纪起（证据范围）",
+        "desc": "以归名《胜论经》为中心的时期：六句义古典目录'连《胜论经》中也已可见'（S1）；九实、十七德、五业、极微、adṛṣṭa、解脱与吠陀权威的框架在经中成形。经文多传本（GRETIL 异读），注疏前史细节不在本包来源内。",
+        "kind": "历史阶段",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "name": "摄句义法论体系（教义综合期）",
+        "era": "约公元4—6世纪起（诸家不一）",
+        "desc": "普拉沙斯塔帕达以定义序列重铸胜论：六句义总纲与逐一定义、廿四德、极微恒常论、创世论（自在天—极微—二微—大风）、内属遍在唯一之辩、dharma 与解脱论；S1 记后期传统（含《推理撮要》）的运动学说'与普拉沙斯塔帕达已见者大体一致'。随行注疏传统（Śrīdhara《Nyāyakandalī》）属于此期文献链。",
+        "kind": "文献传统/学派阶段",
+        "sourceRefs": [
+          "S3",
+          "S1",
+          "S9"
+        ]
+      },
+      {
+        "name": "合流后：新正理中的胜论形而上学",
+        "era": "11—12世纪合流起；高峰在 Raghunātha、Jagadīśa、Gadādhara；手册期17—18世纪（皆 S1）",
+        "desc": "S1：'尽管有此名，新正理吸收并发展古典胜论形而上学'；增'无'为第七句义；胜论范畴清单以新正理技术语言（定义即区分性标记等）重述，经 Gaṅgeśa《真理如意珠》与 Annambhaṭṭa《推理撮要》传承。新正理的推理技术与量论详见 I01，本包不重复。",
+        "kind": "学派阶段",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "运动与动因理论（gurutva—vega—adṛṣṭa）",
+        "era": "6世纪起（S1 系年）",
+        "desc": "主题性分支而非组织分支：《胜论经》以重体释坠落、以 adṛṣṭa释诸非常规运动（S2）；普拉沙斯塔帕达起对抛体运动作系统处理，动量（vega）为注入的内向力，S1 称其理论'可与菲洛波努斯的动量理论相比较'（学术比较，非影响关系）；S1 同段提醒 theories of space and time in Nyāya-Vaiśeṣika texts '研究得还很少'。",
+        "kind": "主题",
+        "sourceRefs": [
+          "S2",
+          "S1",
+          "S3"
+        ]
+      }
+    ],
+    "quote": "实、德、业、普遍、特殊、内属——此六句义同与异的真实性知识，是最上善之因。",
+    "quoteAuthor": "普拉沙斯塔帕达《摄句义法论》2.1（本包自 GRETIL 梵文原本直译；梵文逐字原文见 evidence.json 对应条目）",
+    "quoteKind": "quote",
+    "quotes": [
+      {
+        "text": "安住于诸永恒实体（即极微）之中、作为其区分者的那些存在，被称为特殊（viśeṣa）。",
+        "author": "《推理撮要》83（TS 83，自 Ganeri 的英译回译）",
+        "exp": "极微彼此在性质上不可辨析，胜论便为每一极微安设一个独有的'基本差异者'——这是胜论本体论中最独特的部件，也可能是其得名之由（S1：'some claim'）。S1 英文原文：'those entities which reside in the eternal substances [i.e. the atoms] and function as their differentiators are called viśeṣa'。中译为本包自英译回译，定位明确（TS 83），但属转译而非直接核读梵文《推理撮要》。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "text": "彼等（结合之因）不在时，和合不存在，（自我之德）不再现起——是即解脱。",
+        "author": "《胜论经》解脱经（GRETIL 转写本 kvs_5,2 段；本包自梵文直译）",
+        "exp": "胜论的范畴体系不是纯描述：它通往一个宗教—哲学目标。经文以 dharma 开篇、以 abhyudaya 与 niḥśreyasa 为鹄的，而解脱在此被定义为自我与意、感官诸元素之'和合'（saṃyoga）的不再现起——《摄句义法论》喻为火薪已尽之火的平息（S3）。梵文逐字原文见 evidence.json 对应条目；中译为直译，非通行汉译。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S2",
+          "S3"
+        ]
+      }
+    ],
+    "closingQuote": "永恒者呈球形。",
+    "closingQuoteKind": "paraphrase"
+  },
+  "readingRoutes": [
+    {
+      "title": "从六句义清单入手（范畴主线）",
+      "route": "编辑建议：先读 GRETIL《摄句义法论》开篇两页（归敬偈与 Pdhs_2.1–2.2 的六句义总纲及实/德/业列举，梵文短小可读），对上 SEP 'Analytic Philosophy in Early Modern India' §1.2 的七句义全列与 padārtha 词源分析；再读同条目 §10（普遍/特殊/基本差异者）与 §11（无的本体论与语义学动机）；最后回到 §2.1 看九实与可感性质的对应表。问题顺序：存在物有哪些类型→这张清单与语言结构有什么关系→'没有'是不是一种存在。 无梵文基础的读者，可先用 wisdomlib 上辛哈1923年英译的逐经页对应阅读（VS 1.1.1–1.1.5 与 4.1.1–4.1.7 都有独立页面）；注意该译本以 Combination 译 samavāya、Species 译 viśeṣa，与现代译语不同（S8）。",
+      "sourceRefs": [
+        "S3",
+        "S1",
+        "S8"
+      ]
+    },
+    {
+      "title": "从极微论证入手（自然哲学线）",
+      "route": "编辑建议：先读 SEP 同条目 §2.2（Vaiśeṣika Atomism）：三微—二微—极微的下行情梯、'须弥山与芥子'的反无限分割论证、以及 Ganeri 'question-begging' 的评语；对照 GRETIL《胜论经》的可感性诸经（大者可见/极微不可见两则）；再读 §3.3（运动理论：gurutva、vega 动量、adṛṣṭa 不见力与 Philoponus 比较）与 GRETIL《胜论经》坠落经、磁石引针经；最后以《摄句义法论》创世段（自在天之愿→风极微起业→大风）收束。问题顺序：可感物为何分割有底→极微如何被论证→运动与秩序由什么推动。",
+      "sourceRefs": [
+        "S1",
+        "S2",
+        "S3"
+      ]
+    }
+  ],
+  "evidenceLimits": [
+    "《胜论经》编成年代：核读来源三说并陈——S1（SEP Ganeri）约公元前100年、S6（IEP）约公元1世纪、S5（Britannica）2—3世纪且条目自带存疑问号；正文一律取范围『约公元前1世纪—公元3世纪』。站内《印度哲学》旧时间线『公元前300』仍未获支持；更早系年（如部分通史的公元前2世纪说）未核。'多阶段编成'的具体阶段划分无来源，不写。",
+    "迦那陀生卒无考；'迦那陀'汉译沿用站内《印度哲学》时间线的既有写法，其作为通行汉译的独立性未另核。",
+    "《胜论经》经号依编本而异，且 GRETIL 转写文件的 kvs 标记与经文正文的相对位置存在一位偏移的读法歧义；文件内嵌 u、v、bhv、c、s 传本异读（如吠陀权威经 āmnāyaprāmāṇyam / āmnāyasya prāmāṇyam 两读并存）。本包引经文均附逐字梵文并注明 GRETIL 转写本属性；另一 alt 版文件被 GRETIL 自注'THE TEXT IS NOT PROOF-READ'，未采用。",
+    "S1 极微定义句'An atom (paramāṇu) is indestructible (anitya)'中的梵文标注 anitya（非常）与原典相抵：《摄句义法论》明言'paramāṇulakṣaṇā nityā'（以极微为相者是恒常），《胜论经》7.1 段亦通篇论 nitya/anitya 之分。疑为 SEP 条目笔误；本包正文从原典（极微恒常），引 S1 时保留原文并在 evidence 注明。",
+    "'胜论得名于 viśeṣa 范畴'是 S1 记录的一说（'from which, some claim, they derive their name'）；本包副标题与正文保持'一说/有人声称'措辞，不写成定论。",
+    "普拉沙斯塔帕达年代：核读来源两说并存——S1 记6世纪（'Beginning with Praśastapāda (6th century C.E.)'，逐字），S9（wisdomlib 词条，底层 Shodhganga 论文）记『约公元4世纪末』；正文取范围『约公元4—6世纪』。其生平与《摄句义法论》之外的著述归属（如 Kiraṇāvalī 一类的传统说法）未核。",
+    "Śrīdhara 的年代与其《Nyāyakandalī》成书年代未获本包来源系年（仅有 Dvivedin 编本题名的文献学证据）；'正理甘露'为编辑意译，非通行汉译定名。 Britannica 亦仅列室利达罗为胜论重要注家而未系年（S5，转述）。",
+    "Gaṅgeśa 生卒与《真理如意珠》成书年份未获本包来源直接系年；时间线该节点不系年，'约1325年'仅以'I01 依 IEP 记其人'的方式转引，不重复计入本包来源。",
+    "佛教对胜论范畴的批判，本包仅就有据三点展开：法称'无之认知=不可得推理'（S1 逐字）、瑜伽行派刹那论对照（S4 逐字）、Diṅnāga 式文本结构被 Gaṅgeśa 沿用（S1 逐字）。站内《印度哲学》relations 中'世亲→胜论派：批判'未获本包来源核验（世亲与胜论直接论辩的文献未核），不写入本包 relations；接入时建议 Codex 另行复核。",
+    "站内旧数据复核建议（不改站内数据，处置留 Codex）：其一，时间线'公元前300 迦那陀著《胜论经》'与 S1 的'c. 100 B.C.E.'相差约两百年，未获本包来源支持；其二，引语卡'万物皆由原子构成（《胜论经》）……这一理论早于古希腊原子论'——'早于古希腊'与 S1 系年不相容，且未见于任何核读来源；'万物皆由原子构成'与原典不符（九实中仅地水火风为极微所成，空、时、方、我非极微；意为极微但属认知器官）。本包 quote/quotes 另选原典定位明确的句子。",
+    "廿四德的完整名目：本包逐字核对的是《摄句义法论》的合计表述（'经口所宣者十七'+加七+'如是廿四德'）与《胜论经》的十七德经（色味香触、数、量、别体、合、离、彼性此性、觉、乐、苦、欲、嗔、勤勇）；后加七种的名目在 GRETIL 明文中的逐字拼写有 edition 层面的讹形（如 ūṣṭaśabdāḥ 处疑似讹误），故词条不逐项列举后七德，仅在德词条写'再加七种'。",
+    "Britannica『Vaisheshika』条目 WebFetch 与 curl 均返回 HTTP 403；第二轮改经 web_reader 抓取正文并核读（自然主义定位、九实廿四德、注家名单、约11世纪合流、神意借 adṛṣṭa 驱动极微），采为来源 S5——其引文均标『转述』，不作逐字引。IEP 无独立胜论条目属实（站内 REST API 检索确认），但其《Hindu Philosophy》与《Nyāya》条目含实质胜论内容，已逐字核读并采为 S6、S7。",
+    "S1 运动理论一节称胜论作者'表现出理性的、科学的兴趣'并以 Philoponus 比较——本包原样转述 S1 措辞并标明为学术比较；'胜论原子论是近代科学先声'一类拔高无来源支持，不写。",
+    "quote/quotes/closingQuote 的中文均为本包翻译（两条自 GRETIL 梵文直译、一条自 S1 英译回译），kind 与署名已注明转译性质，不能当作通行汉译引文使用；GRETIL 明文以'.'作词界，本包引文将'.'规整为空格，SEP 弯引号（单/双）一律转写为直双引号、HTML 标签边界造成的引号/破折号内侧空格一并规整，字母/声符层面逐字未动，{5...} 校勘记夹注等标记字符在 locator 中原样保留。",
+    "胜论原子论与古希腊德谟克利特原子论（以及 S1 提到的菲洛波努斯动量理论）之间无历史影响关系；正文与 evidence 中的一切跨传统对照均标为编辑比较或学术比较，不作影响断言。",
+    "辛哈1923年英译本（S8）经逐经页核对七则经文（1.1.1、1.1.2、1.1.4、4.1.1、4.1.2、4.1.3、4.1.6），其 1.1.2 英译（'accomplishment of Exaltation and of the Supreme Good'）与 GRETIL 梵文义一致；但该译本译名与现代译语不同（Combination 译 samavāya、Species 译 viśeṣa），已在 works 与 readingRoutes 提示。1923 年为 wisdomlib 版著录，原版出版社信息未核。",
+    "同日草稿处置：本目录 2026-10-04 09:56 首查为空，10:01—10:15 出现另一研究员的同日全量草稿；第二轮研究员对其 4 个来源逐源重开核实（4/4 通过，S1 的 'some claim' 句经原始 HTML grep 命中原文，WebFetch 摘要器首查漏检），决定保留该稿为主干并合并第一轮新增来源 S5—S9。合并明细见 review.md 第九节。"
+  ]
+}

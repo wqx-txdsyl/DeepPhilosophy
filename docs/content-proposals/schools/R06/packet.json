@@ -1,0 +1,686 @@
+{
+  "schemaVersion": 1,
+  "taskId": "R06",
+  "name": "社会认识论",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "研究员自查（非独立同行评审）：11个来源（6外部+5本地）全部于2026-10-04当日实际核读——SEP 社会认识论条目以三轮定向抽取读毕定义、学科史、证言、同侪分歧、群体信念、群体证成、民主与专家、形式进路与社会应用各节；IEP 认识不义条目两轮（定义/两类不义/扩展谱系与书目）；SEP 集体意向性条目（塞尔1990出处、吉尔伯特共同承诺原句）；SEP 里德条目（1764书名与生卒）；SEP 休谟条目（1748出版史）；休谟《人类理解研究》公版全文经 curl 取回后本地抽取第十节逐字核对两条原句；本地核读 F01 packet.json 与 review.md、任务JSON R06条目、贝叶斯主义与实用主义两处正文段。承同日 R06 研究备忘录已核结论升级成包。evidence.json 以 JSON Pointer 对位 packet.json；两个 JSON 经 python3 -m json.tool 校验通过。",
+  "proposal": {
+    "kind": "field-branch",
+    "suggestedName": "社会认识论",
+    "aliases": [
+      "Social Epistemology"
+    ],
+    "hierarchySuggestion": "建议新建为《认识论》（F01）之下的分支条目（field-branch），路由挂载与最终归属由 Codex 决断。分工：F01 管领域骨架（知识定义、辩护结构、怀疑论、自然化与社会转向的指认），本条管社会维度的问题域深化——证言、同侪分歧、群体认识与知识制度、认识不义四块。F01 包内既有'社会认识论'与'女性主义认识论与认识不义研究'两个 subSchools 摘要保留为门户级概述，加'参见'指向本条；F01 timeline 的1987、2007两节点与本条 timeline 相应节点互指，两包不重复维护细节。先例：F01 对'无政府主义认识论'的处理即'由《科学哲学》承载、从本领域入口参见'（S8）——子领域单独成条、父领域做门户是既有分工方式。F01 两块问题域（群体认识、知识制度）完全缺席、另两块（证言、认识不义）仅两三句骨架，且 F01 自我定位为'领域骨架，不代述各传统内部认识论'（S8），并入方案会迫使其突破既定边界；社会认识论有两条专门期刊线（1987/2004）与权威百科的结构化独立条目，单独成条成熟度充分（S1）。",
+    "scope": "研究社会互动、实践、规范与系统的认识效应的分支领域：关心'人们如何在他人的帮助下、或有时顶着他人及相关社会制度与实践，最好地追求真理'。四大问题域：证言的认识论（还原论对反还原论，休谟—里德轴）；同侪分歧（等权重观及其反方）；群体认识与知识制度（群体信念四方案、群体证成三方案、信用经济与认知劳动分工、系统取向与民主认识论、专家识别）；认识不义（证言不义与诠释不义及其扩展谱系）。另含形式社会认识论一节（判断聚合、孔多塞定理、网络认识论、多样性模型）与集体意向性的交界。以核心问题、代表性争论与文献节点组织；1987年期刊创刊是学科制度史节点而非问题史起点（休谟—里德之争早于此近一个半世纪）。",
+    "period": "个体主义背景远点1660年（皇家学会会训）；问题远源1748—1764年（休谟—里德证言之争）；学科主轴1987—2007年（期刊创刊至《认识不义》出版）的文献与争论节点",
+    "traditions": [
+      "古希腊—欧洲—英美分析传统（'social epistemology'术语与主问题群所在）",
+      "与心灵哲学/社会本体论（集体意向性）在吉尔伯特群体信念处交界，本条不代述其全局",
+      "与知识的社会研究（STS）在富勒进路处相邻，两条纲领的差异按SEP条目转述有专文对勘"
+    ],
+    "coverageGap": "coverage=mentions-only：任务JSON evidence 字段显示 exactTopLevelEntries、exactBranches、relatedBranches 均为空数组——站内既无同名顶级条目也无同名分支（S9）；仅贝叶斯主义、实用主义两处父页有正文级顺带提及（S10、S11），不构成领域入口。F01 已交付包有骨架级覆盖：subSchools 含'社会认识论'与'女性主义认识论与认识不义研究'两个摘要、timeline 含1987/2007两节点，但其自我定位为领域骨架、每子项仅两三句（S7、S8）；群体认识（Quinton/Gilbert/Bird/Lackey全系）、知识制度与信用经济（Merton/Kitcher/Strevens）、形式社会认识论（判断聚合/网络/多样性）、民主与专家的系统取向、认识不义扩展谱系在 F01 均无覆盖——本包承接四大问题域。",
+    "relatedExistingEntries": [
+      "认识论",
+      "贝叶斯主义",
+      "实用主义",
+      "女性主义",
+      "科学哲学",
+      "印度哲学"
+    ],
+    "relationSuggestions": [
+      "父子关系：《认识论》（F01）为领域入口，本条为其下分支条目；F01 原'社会认识论'与'女性主义认识论与认识不义研究'子项建议降为门户摘要并设'参见'指向本条（S7、S8）。",
+      "关联《贝叶斯主义》：该条目正文已写'贝叶斯认识论与形式认识论、社会认识论融合，研究群体信念聚合和网络传播中的理性问题'（S10）；形式社会认识论的判断聚合与可信度聚合工具两处互见，问题主导权在社会认识论一侧。",
+      "关联《实用主义》：该条目以詹姆斯真理观'为后来的建构主义和社会认识论提供了先声'（S11）——此为站内既有表述，本条不代述实用主义内部论证，仅作延伸阅读关联。",
+      "关联《女性主义》：弗里克的认识不义研究是女性主义认识论与主流知识论的当代交点（S2）；女性主义认识论整体史与性别科学批判细节留给可能的专门条目，本条只在认识不义处交界。",
+      "《印度哲学》（量论声量śabda证言传统）与当代证言之争的可比性未获一手核读，本包不作跨传统断言、不设关系（见 evidenceLimits），留待相关专门研究处理。"
+    ],
+    "suggestedBookIds": [
+      {
+        "id": "178e7d06d42d",
+        "title": "人性论（全4册）",
+        "author": "大卫·休谟",
+        "reason": "站内在库休谟认识论主要著作（pdf）。注意：SEP社会认识论条目仅将证言还原论系于'休谟'之名而未系具体文本；本条核心文献《人类理解研究》（1748）站内未见单行本（在库另有《自然宗教对话录》9c9e77918c07），此条仅作休谟认识论的关联阅读建议，内容未核实。"
+      }
+    ],
+    "coverageNote": "关系建议仅在本proposal内表达；既有111项目录、子项数据、人物数据与配图均未改动，路由与最终展示由 Codex 接入时决断。",
+    "evidenceNote": "全部11个来源于2026-10-04当日实际打开并读到相关段落（WebFetch 定向抽取原句；休谟原典经 curl 取全文后本地逐字抽取第十节），搜索片段一律不作为依据；每个关键节点、术语定义、书目、人物归属与关系在 evidence.json 有 JSON Pointer 对位记录，locator 含逐字短引文或定位描述；两个JSON经 python3 -m json.tool 校验通过。"
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Social Epistemology — Stanford Encyclopedia of Philosophy",
+      "url": "https://plato.stanford.edu/entries/epistemology-social/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "领域定义（'how people can best pursue the truth…'）；个体主义背景（笛卡尔1637、洛克1690、皇家学会1660与Nullius in verba）；学科史（1987 Fuller创刊与Schmitt专号、2004 Episteme、Goldman 1999奠基辩护与真主义纲领、Collin 2013对勘）；证言（休谟还原论、里德1764反还原论、Fricker 1994'轻信配方'、Coady 1990、Burge 1993《Content Preservation》书目）；同侪分歧（等权重观Christensen 2007/Elga 2007/Feldman 2006, 2007、Kelly 2005/2010、Lackey 2010、Fogelin 1985深层分歧）；群体信念（加总论Quinton 1976: 17、吉尔伯特公式、Wray 2001群体接受、Bird 2014/2022分布式、Lackey 2021群体行动者）；群体证成（Schmitt 1994a: 265、Goldman 2014过程可靠主义、Lackey 2021充分披露、Brown 2024）；民主与专家（Goldman 2010系统取向、Anderson 2006三模型、Goldman 2001 locus classicus）；形式进路三范式（信用经济：Merton/Kitcher 1990/Strevens 2003/马太效应1968；网络：Bala–Goyal 1998/Zollman效应/极化；多样性：Hong & Page 2004）与判断聚合（教义悖论Kornhauser & Sager 1986、孔多塞1785定理、信息级联1992）；社会应用（误/误导信息之分、Nguyen 2020回音室与认识泡泡、Fricker 2007两类不义含《杀死一只知更鸟》例、Mills 2007白人无知、gaslighting等）"
+    },
+    {
+      "id": "S2",
+      "title": "Epistemic Injustice — Internet Encyclopedia of Philosophy",
+      "url": "https://iep.utm.edu/epistemic-injustice/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "认识不义定义（'a wrong…specifically in their capacity as a knower'）；'第一个明确且开山性的论述由弗里克2007年给出'；证言不义（偏见致可信度折损；identity-prejudicial credibility deficit, Fricker 2007: 28）；诠释不义（集体诠释资源缺口；Fricker 2007: 155定义句）；例证（产后抑郁、性骚扰概念命名前，2007: 149-150）；扩展（Medina 2011可信度过剩、Dotson 2012贡献不义、Anderson 2012结构性矫正与群体整合、Pohlhaus Jr 2012故意诠释无知）；权力概念（Fricker 2007: 13操作性定义；agential与structural之分）；书目载Fricker 2007全书名（Epistemic Injustice: Power and The Ethics of Knowing, Oxford University Press）"
+    },
+    {
+      "id": "S3",
+      "title": "Collective Intentionality — Stanford Encyclopedia of Philosophy",
+      "url": "https://plato.stanford.edu/entries/collective-intentionality/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "集体意向性定义（'the power of minds to be jointly directed at objects, matters of fact, states of affairs, goals, or values'）；术语由塞尔1990年论文'Collective Intentions and Actions'引入（书目：Cohen, Morgan & Pollack编Intentions in Communication, Bradford Books/MIT Press）；吉尔伯特共同承诺（'a kind of commitment of the will…'，Gilbert 2006: 134；'jointly committed to doing something as a body'即多元主体定义，2006: 145；不要求个人承诺cf. Gilbert 2009；定向义务与相互问责）；集体意向态度在社会世界构成中的作用；List & Pettit 2011《Group Agency》与'collectivise reason'"
+    },
+    {
+      "id": "S4",
+      "title": "Thomas Reid — Stanford Encyclopedia of Philosophy",
+      "url": "https://plato.stanford.edu/entries/reid/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "里德生卒1710—1796；1764年著作书名An Inquiry Into the Human Mind on the Principles of Common Sense（IHM）；该条目声明不展开证言与社会知识论题（'it is especially prominent in Reid'但本文不讨论）——里德的证言立场因此只系于S1 §3.1的转述"
+    },
+    {
+      "id": "S5",
+      "title": "David Hume — Stanford Encyclopedia of Philosophy",
+      "url": "https://plato.stanford.edu/entries/hume/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "休谟生卒1711—1776；《人性论》卷1–2于1739年匿名出版、卷3与'摘要'1740年；《人类理解研究》1748年出版，初名Philosophical Essays concerning Human Understanding，1758年版改今名；神迹论证（'Hume's Maxim'：证言确立神迹仅当其虚假比事件更神奇；Bayesian解读之争）"
+    },
+    {
+      "id": "S6",
+      "title": "An Enquiry Concerning Human Understanding (David Hume; Reprinted from the Posthumous Edition of 1777, ed. L. A. Selby-Bigge, 2nd edn. 1902, Project Gutenberg eBook #9662)",
+      "url": "https://www.gutenberg.org/cache/epub/9662/pg9662.txt",
+      "type": "primary-text",
+      "accessedAt": "2026-10-04",
+      "coverage": "curl取全文（373KB）后本地抽取第十节逐字核对：节题'SECTION X. OF MIRACLES.'分Part I/II；'A wise man, therefore, proportions his belief to the evidence.'；§91'no testimony is sufficient to establish a miracle, unless the testimony be of such a kind, that its falsehood would be more miraculous, than the fact, which it endeavours to establish'；扉页载1777年身后定本、Selby-Bigge 1902第二版"
+    },
+    {
+      "id": "S7",
+      "title": "F01 packet.json（认识论已交付包）",
+      "url": "file:docs/content-proposals/schools/F01/packet.json",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "F01已有骨架级覆盖的定位：subSchools含'社会认识论'（证言还原论/反还原论、同侪分歧、专家识别、Goldman 1999，sourceRefs=S9）与'女性主义认识论与认识不义研究'（Fricker 2007，S10）；timeline含1987创刊与2007《认识不义》两节点；thinkers无戈德曼、富勒、弗里克、吉尔伯特；站内在库书目（休谟《人性论》178e7d06d42d等）"
+    },
+    {
+      "id": "S8",
+      "title": "F01 review.md（认识论包审读记录）",
+      "url": "file:docs/content-proposals/schools/F01/review.md",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "F01自我定位'本条目只做领域骨架'（不代述各传统内部认识论）；对'无政府主义认识论'的处理先例：'由《科学哲学》承载、从本领域入口参见'——子领域单独成条、父领域做门户的既有分工方式"
+    },
+    {
+      "id": "S9",
+      "title": "docs/tasks/school-content-gap-tasks-2026-10-04.json（R06任务条目）",
+      "url": "file:docs/tasks/school-content-gap-tasks-2026-10-04.json",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "R06：priority=P2-research-only、routingAndParentDecisionOwner=Codex；evidence字段exactTopLevelEntries/exactBranches/relatedBranches均为空数组；mentionFiles为贝叶斯主义与实用主义两父页"
+    },
+    {
+      "id": "S10",
+      "title": "app/public/schools/data/school_贝叶斯主义.json",
+      "url": "file:app/public/schools/data/school_贝叶斯主义.json",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "'社会认识论'唯一出现处为正文级顺带提及：'近年来，贝叶斯认识论与形式认识论、社会认识论融合，研究群体信念聚合和网络传播中的理性问题。'——不构成领域入口"
+    },
+    {
+      "id": "S11",
+      "title": "app/public/schools/data/school_实用主义.json",
+      "url": "file:app/public/schools/data/school_实用主义.json",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "'社会认识论'唯一出现处为正文级顺带提及：'该金句挑战了客观主义真理观，也为后来的建构主义和社会认识论提供了先声。'——不构成领域入口"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2",
+    "S3",
+    "S5",
+    "S6"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "school": {
+    "name": "社会认识论",
+    "subtitle": "知识的社会之维：证言、分歧、群体、制度与认识不义",
+    "overview": "社会认识论（social epistemology）研究社会互动、实践、规范与系统的认识效应。斯坦福哲学百科的定义是：这一领域'关心人们如何在他人的帮助下、或有时顶着他人及相关社会制度与实践，最好地追求真理'。它是对一段漫长个体主义传统的纠偏：笛卡尔（1637）几乎只问个体认知者如何用自己的认知官能、凭自己清楚分明的观念稳妥求真；洛克（1690）认为他人的意见只是'漂浮在脑中'之物，不构成真正的知识；1660年创设的伦敦皇家学会以 Nullius in verba（约'不轻信任何人的话'）为会训，被条目引为这种气质的标志。学科化的制度标志有二：1987年富勒创办期刊《社会认识论：知识、文化与政策》（同年施密特编辑了 Synthese 的社会化进路专号）；2004年戈德曼为创办更贴近'主流'认识论的刊物而设立 Episteme。分析阵营内的奠基性辩护公认是戈德曼1999年的专著：其'真主义'（veritistic）纲领以各种社会实践产出真信念的可靠性来评价实践（Goldman 1999: 5）；富勒的进路更近知识的社会研究，两条纲领的差异，条目注明由 Collin（2013）专文对勘。\n\n证言（testimony）——别人告诉我们的事——是第一个主战场：它究竟是不是知识与辩护的基本来源，还是必须还原为知觉、记忆与推理的支撑？还原论由休谟辩护：听者需要充分的独立理由来相信说话者可信。反还原论由里德在1764年的《按常识原则对人类心灵的探究》中辩护：说话者倾向诚实、听者倾向轻信（credulity），二者同属自然的禀赋，与知觉一样值得默认信赖。当代战场沿这条轴展开：科迪（Coady 1990）论证听众通常缺乏核验说话者可靠性的证据，因此否认反还原论是'通向怀疑论的配方'；弗里克（1994）反驳说，否定还原论是'轻信的配方'（recipe for gullibility）；伯格（Burge 1993）则主张，可理解的言语本身就表明它出自一个本性求真的理性来源（《Content Preservation》，载《哲学评论》）。\n\n第二个主战场是同侪分歧（peer disagreement）：当认识能力与你相当的人在同一问题上得出相反结论，你是否必须降低自信？调和主义的最强形态'等权重观'（Equal Weight View）主张：对同侪的意见应与对自己意见赋予同等权重（Christensen 2007、Elga 2007、Feldman 2006与2007）。凯利（Kelly 2005）的'正确理由'立场反驳：分歧这一事实本身并不是关于问题的证据——就像'利率是否上涨'的例子所显示的——因此与应当相信什么无关；他2010年的'总证据观'给出更精细的版本。莱克（Lackey 2010）的'证成主义'主张：理性取决于把分歧证据加入后总证据支持什么，有时须大幅修正、有时无须改动。福格林（Fogelin 1985）划出'深层分歧'的边界：长期无共识、连解决分歧的程序都无共识的争论，可能根本不在常规解决机制的作用范围之内。\n\n第三个战场是群体与制度。群体能否'相信'什么？加总论（summativism，Quinton 1976: 17）说：群体相信p，当且仅当全体或几乎全体成员相信p。吉尔伯特以'共同承诺'（joint commitment）反驳：'当且仅当G的成员作为一体共同承诺相信p，群体G才相信p'——共同承诺由两个或更多人的意志创造并约束他们，造成相互问责的定向义务，且不要求成员个人持该态度。批评与替代接踵而至：雷（Wray 2001）指出该说明关注的是同伴间的责任而非成员的信念状态，宜改称'群体接受'；伯德（Bird 2014、2022）提出'分布式模型'，处理科学中常见的多人分头收集、他人协调完成的情形；莱克（2021）提出'群体行动者'说明，自认为'加总论的但非还原论的'。群体证成之争延续同一战场：施密特（1994）要求逐成员证成（被批评过苛），戈德曼（2014）以过程可靠主义处理（多数决聚合可以是产出真群体信念的可靠过程），莱克（2021）提出充分披露条件。这一带与心灵哲学/社会本体论的'集体意向性'研究在吉尔伯特处交界——该术语由塞尔在1990年论文《集体意向性与行动》中引入，共同注意、共享信念、货币等制度事实的研究由此汇为一个工程；李斯特与佩蒂特的《群体行动者》（2011）主张群体通过'集体化理性'成为意向主体。制度层面的追问由戈德曼（2010）的'系统取向'概括：把认识论问题转为如何设计以认识善为目标之一的'系统'；安德森（2006）给出民主认识论的三种模型——孔多塞陪审团定理、'多样性胜过能力'与杜威式实验主义，她本人支持最后者；非专家如何识别专家，戈德曼2001年的论文被条目称为'经典出处'（locus classicus）。形式进路为此提供模型库：信用经济范式源于默顿'科学家追逐信用'的洞见——基彻（1990）的《认知劳动分工》论证受信用驱动的科学家比纯求真者更好地分工（后者会一窝蜂涌向同一最有希望的问题），斯特雷文斯（2003）补上优先权规则的论证（批评者称它抑制重复验证）；网络认识论研究沟通结构（佐尔曼效应：社区沟通更频繁'一般更糟'，因为误导性证据传播得更快）；多样性研究有 Hong 与 Page（2004）的'多样性胜过能力'结果；判断聚合的'教义悖论'（Kornhauser 与 Sager 1986年的三法官案）引出一串不可能性定理；孔多塞1785年的陪审团定理——独立性前提下多数正确的概率随人数增长、极限趋近1——则是'群体智慧'的数学原型，其独立性假定恰是软肋（信息级联研究）。\n\n第四个战场把权力带入知识评价。认识不义（epistemic injustice）被定义为'一种特定类型的不义：过错专落在某人作为认识者（knower）的身份之上'；弗里克2007年的《认识不义：力量与认识的伦理》（牛津大学出版社）给出'第一个明确且开山性的论述'，区分两种基本形式。证言不义：偏见使听者对说话者'给出折损的可信度'，中心情形是'身份偏见性可信度折损'（Fricker 2007: 28）——条目常用《杀死一只知更鸟》中汤姆·鲁滨逊受审的情节作例。诠释不义：'其社会经验的某块重要领域，因集体诠释资源中的结构性身份偏见而被遮蔽于集体理解之外'（Fricker 2007: 155）——如'性骚扰'概念获得命名之前受害者无从理解自身处境、产后抑郁被当作可疑借口的年代。弗里克把权力定义为'控制他人行动的、实践上身处社会之中的能力'，它可由特定行动者行使，也可纯结构地运作；后续研究沿结构维度扩展：梅迪纳（2011）论证有偏见的可信度过剩同样是不义，多特森（Dotson 2012）提出'贡献不义'，波尔豪斯（Pohlhaus 2012）提出'故意诠释无知'，安德森（2012）主张结构性认识不义需要制度矫正（如提高群体的整合度）。米尔斯（2007）的'白人无知'与无知认识论、回音室与认识泡泡之别（Nguyen 2020）、煤气灯效应等，也都被归入社会认识论的当代应用问题域——知识的社会条件本身，成了正义问题。",
+    "conclusion": "社会认识论留下的多是进行中的争论，而非待普及的定论。群体信念之争没有裁决：加总论、吉尔伯特的共同承诺、伯德的分布式模型与莱克的'群体行动者'各有代价，批评与替代方案（雷的'群体接受'、布朗2024年的证言路线）仍在轮替；群体证成的三种方案（逐成员证成、过程可靠主义、充分披露条件）互相批评的格局未变。同侪分歧一侧，'分歧证据到底是不是对象层证据'仍是等权重观与凯利—莱克路线的分水岭。形式进路内部也有反噬：优先权规则被批评抑制重复验证、奖励草率乃至造假的工作；'多样性胜过能力'结果受到模型层面的批评；网络认识论对极化的建模仍在扩充。富勒与戈德曼两条纲领的关系，依赖未核读的专文（Collin 2013），本条只按百科条目的转述处理。\n\n认识不义研究的快速扩展带来它自己的边界问题：可信度过剩算不算不义（梅迪纳）、行动者性不义与结构性不义如何分工矫正（安德森的'群体整合'方案），都还在争论；它与女性主义认识论、种族哲学的交界（如米尔斯的'白人无知'）提示本条不应吞并这些领域的整体史——站内若设专门条目，此处只留概要与参见。证据上也要诚实：SEP 的'Epistemic Injustice'专条在本次核读当日（2026-10-04）仍显示'Not Yet Available'，认识不义的论述暂以 IEP 条目承载，待其上线应复核原句。\n\n本条自我定位为《认识论》（F01）之下的分支条目：F01 管领域骨架，本条管社会维度的四块问题域深化；F01 原'社会认识论'子项建议降为门户摘要并设'参见'。边界上：集体意向性的社会本体论细节（塞尔、图奥梅拉一系）指向心灵哲学，本条只在吉尔伯特群体信念处交界；印度量论的'声量'（śabda）证言传统与当代证言之争的可比性未经一手核读，本条不作跨传统断言；1987年创刊是学科制度史节点，不得写成问题的起点——休谟与里德的证言之争早于此近一个半世纪。译名上：epistemic injustice 有'认识不义''认识不公''认知不义'诸译，本条以'认识不义'为主并注明异译；testimony 通译'证言'，亦有'见证'之译。",
+    "thinkers": [
+      {
+        "name": "大卫·休谟",
+        "sub": "苏格兰启蒙哲学家，经验主义代表（站内在册）",
+        "era": "1711—1776",
+        "key": "证言还原论的近代源头：SEP社会认识论条目将'证言辩护须还原为相信说话者可信的独立理由'系于休谟。《人类理解研究》（1748）第十节'论神迹'给出证言评价的格言：'明智的人使信念与证据成比例'；'任何证言都不足以确立一个神迹，除非其虚假比它试图确立的事实更为神奇'——对证言证据设最强门槛的表述。",
+        "works": [
+          "人类理解研究（1748）"
+        ],
+        "sourceRefs": [
+          "S1",
+          "S5",
+          "S6"
+        ]
+      },
+      {
+        "name": "托马斯·里德",
+        "sub": "苏格兰常识学派创立者（站内在册）",
+        "era": "1710—1796",
+        "key": "反还原论的源头（Reid 1764/1983）：说话者的诚实倾向与听者的轻信倾向同为自然禀赋，与知觉一样可靠，接受证言由此获得默认地位、无须逐案还原。SEP里德条目注明证言与社会知识论题在其哲学中'尤为突出'，但声明该条目本身不展开——故其证言立场的具体表述只系于SEP社会认识论条目的转述。",
+        "works": [
+          "按常识原则对人类心灵的探究（1764）"
+        ],
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "name": "阿尔文·戈德曼",
+        "sub": "美国哲学家，分析社会认识论的主要奠基者",
+        "era": "活跃于20世纪后期至21世纪初（生卒年未在核读来源内，不作断言）",
+        "key": "1999年专著为社会认识论'真主义'进路的奠基性辩护——以社会实践产出真信念的可靠性评价实践（Goldman 1999: 5；书名未在核读来源逐字出现）；2004年创办 Episteme 期刊；2010年提出'系统取向'（如何设计以认识善为目标的系统）；2001年论非专家如何识别专家，被条目称为'经典出处'；2014年以过程可靠主义处理群体证成（多数决聚合）。",
+        "works": [],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "史蒂夫·富勒",
+        "sub": "美国社会认识论学者，进路近知识的社会研究（STS）",
+        "era": "活跃于20世纪后期至21世纪初（生卒年未在核读来源内，不作断言）",
+        "key": "1987年创办期刊《社会认识论：知识、文化与政策》，为社会认识论学科化的制度标志之一；同年 Schmitt 编辑 Synthese 社会化进路专号。其纲领与戈德曼的分析进路之别，SEP注明由 Collin（2013）专文对勘——该文本包未核读，不作具体转述。",
+        "works": [],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "米兰达·弗里克",
+        "sub": "英国哲学家，认识不义理论提出者",
+        "era": "活跃于20世纪末至21世纪初（生卒年未在核读来源内，不作断言）",
+        "key": "2007年《认识不义：力量与认识的伦理》（牛津大学出版社）给出认识不义'第一个明确且开山性的论述'：证言不义——偏见使听者对说话者给出折损的可信度（中心情形为身份偏见性可信度折损，2007: 28）；诠释不义——重要社会经验因集体诠释资源中的结构性身份偏见而被遮蔽（2007: 155）。更早（1994）称否定证言还原论为'轻信的配方'。",
+        "works": [
+          "认识不义：力量与认识的伦理（2007）"
+        ],
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "name": "玛格丽特·吉尔伯特",
+        "sub": "德国出生的美国哲学家，多元主体（plural subject）理论创立者",
+        "era": "活跃于20世纪后期至21世纪初（生卒年未在核读来源内，不作断言）",
+        "key": "以'共同承诺'说明群体信念：'当且仅当G的成员作为一体共同承诺相信p，群体G才相信p'；共同承诺'由两个或更多人的意志创造，也由两个或更多人所承担'（Gilbert 2006: 134），只能共同形成或解除，造成相互问责的定向义务，且不要求成员个人持该态度。对加总论的主要替代方案，也是群体认识与集体意向性研究的交界人物。",
+        "works": [],
+        "sourceRefs": [
+          "S1",
+          "S3"
+        ]
+      },
+      {
+        "name": "菲利普·基彻",
+        "sub": "美国科学哲学家",
+        "era": "活跃于20世纪后期至21世纪初（生卒年未在核读来源内，不作断言）",
+        "key": "1990年论文《认知劳动分工》：受信用驱动的科学家群体比纯求真者更好地分工——纯求真者会涌向同一最有希望的问题，受信用驱动者则因问题梯度而分散，使共同体的整体产出更优；该文是形式社会认识论'信用经济'范式的支点文献。",
+        "works": [
+          "认知劳动分工（1990）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "托马斯·里德",
+        "to": "大卫·休谟",
+        "label": "反还原论对还原论：证言的默认信赖之争",
+        "type": "批评（按SEP条目对置；直接论战细节未核）",
+        "detail": "SEP社会认识论条目把证言还原论系于休谟（听者须有独立理由相信说话者可信），把反还原论系于里德1764年（诚实与轻信同为自然禀赋、与知觉同样可靠）。两说在条目中以'还原论—反还原论'对置呈现；里德1764年原书是否逐句针对休谟文本，本包未核读原书，不作断言。",
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "from": "米兰达·弗里克",
+        "to": "托马斯·里德",
+        "label": "'轻信的配方'：对默认信赖传统的批评",
+        "type": "批评",
+        "detail": "弗里克（1994）称否定证言还原论是'轻信的配方'（recipe for gullibility）——若听者无须独立理由即可信赖证言，可疑的说话者将被默认采信。此批评直接落在里德式反还原论的传统上；Fricker 1994 原文未核读，系SEP条目转述。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "阿尔文·戈德曼",
+        "to": "史蒂夫·富勒",
+        "label": "社会认识论的两种纲领",
+        "type": "编辑比较",
+        "detail": "两人分别代表学科制度化的两条线：富勒1987年创办《社会认识论：知识、文化与政策》（取向近知识的社会研究），戈德曼2004年创办 Episteme 以更贴近主流认识论，1999年专著为'真主义'进路的奠基性辩护。SEP注明两条纲领的差异由 Collin（2013）对勘——该文本包未核读，只按条目转述，不作具体比较。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "玛格丽特·吉尔伯特",
+        "to": "阿尔文·戈德曼",
+        "label": "从群体信念到群体证成的接力",
+        "type": "编辑比较",
+        "detail": "SEP条目在'群体信念'一节以吉尔伯特的共同承诺公式对加总论，在'群体证成'一节载戈德曼2014年的过程可靠主义说明（多数决聚合为产出真群体信念的可靠过程之一）。两者分属'群体认识状态如何成立'与'何时得到证成'两问，条目将其排为同一场群体认识论运动的两个环节——此编排为编辑概括，非历史师承。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "菲利普·基彻",
+        "to": "阿尔文·戈德曼",
+        "label": "认知劳动分工与真主义纲领",
+        "type": "编辑比较",
+        "detail": "基彻（1990）在'信用经济'范式中论证受信用驱动的分工优于纯求真者的一窝蜂；戈德曼的真主义进路同样以实践产出真信念的可靠性为评价标准（Goldman 1999: 5），2010年的'系统取向'进一步问如何设计以认识善为目标的系统。两者都以'产生真理的效率'评价社会安排——此并列是编辑比较，不写历史影响。",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "1660",
+        "event": "伦敦皇家学会创立，会训 Nullius in verba",
+        "detail": "SEP社会认识论条目：伦敦皇家学会'创设于1660年'，会训 Nullius in verba（约'不轻信任何人的话'），被条目引为说明社会认识论为何晚近才兴起的个体主义气质标志。这是背景节点，不是本领域起点。",
+        "type": "学科史（背景）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "1748",
+        "event": "休谟《人类理解研究》出版",
+        "detail": "SEP休谟条目：1748年出版，初名 Philosophical Essays concerning Human Understanding，1758年版改今名。第十节'论神迹'是证言认识论的经典源头文本：'明智的人使信念与证据成比例'与'任何证言都不足以确立一个神迹……'两条格言在本包核读的公版（Selby-Bigge 1902第二版）第十节逐字核对。",
+        "type": "文献",
+        "sourceRefs": [
+          "S5",
+          "S6"
+        ]
+      },
+      {
+        "year": "1764",
+        "event": "里德《按常识原则对人类心灵的探究》",
+        "detail": "书名据SEP里德条目（An Inquiry Into the Human Mind on the Principles of Common Sense）；SEP社会认识论条目将该书的证言立场（说话者的诚实与听者的轻信同为自然禀赋、与知觉同样可靠）作为反还原论的源头（Reid 1764/1983）。原书本包未核读。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "year": "1785",
+        "event": "孔多塞陪审团定理",
+        "detail": "SEP：孔多塞1785年证明——若各人独立形成判断且每人正确率高于50%，多数票正确的概率随人数增长，极限趋近1；该定理是'群体智慧'论证的数学原型。其独立性假定是软肋：信息级联研究（Bikhchandani et al. 1992）表明对前人行为的依赖会淹没私人信息。",
+        "type": "文献（形式进路先声）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "1987",
+        "event": "《社会认识论》期刊创刊：学科制度化的起点",
+        "detail": "富勒创办期刊 Social Epistemology: A Journal of Knowledge, Culture, and Policy；同年施密特编辑 Synthese 社会化进路专号。这是'社会认识论'作为学科自认领域的制度起点——问题史起点更早（休谟—里德之争），两类节点不可混写。",
+        "type": "学科史",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "1990",
+        "event": "基彻《认知劳动分工》",
+        "detail": "信用经济范式的支点文献：受信用驱动的科学家比纯求真者更好地分工；斯特雷文斯（2003）补上优先权规则的论证（仅首发现者获信用，改善分工——批评者称其抑制重复验证）。期刊出处未在核读来源内，不作断言。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "1990",
+        "event": "塞尔提出'集体意向性'",
+        "detail": "SEP集体意向性条目：术语由塞尔在1990年论文《集体意向性与行动》（载 Cohen, Morgan & Pollack 编 Intentions in Communication，Bradford Books/MIT Press）中引入；共同注意、共享信念、制度事实等研究由此汇为社会本体论工程，与吉尔伯特的多元主体理论相接。本条目只取其与群体认识的交界。",
+        "type": "概念",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "year": "1999",
+        "event": "戈德曼的分析转向奠基",
+        "detail": "SEP：'这一进路的奠基性辩护是戈德曼1999年'——'真主义'纲领以社会实践产出真信念的可靠性评价实践（Goldman 1999: 5）。书名未在核读来源逐字出现，正文与词条均不写书名，只系年份。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "2004",
+        "event": "Episteme 期刊创办",
+        "detail": "戈德曼出于创办更贴近'主流'认识论的社会认识论期刊之愿，设立 Episteme: A Journal of Individual and Social Epistemology——与1987年富勒期刊并为本领域两条制度线；两条纲领之别有专文（Collin 2013，未核读）。",
+        "type": "学科史",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "2007",
+        "event": "弗里克《认识不义》出版",
+        "detail": "IEP：认识不义的'第一个明确且开山性的论述'由弗里克2007年给出（牛津大学出版社；书名 Epistemic Injustice: Power and The Ethics of Knowing 据IEP书目）。证言不义（偏见致可信度折损，Fricker 2007: 28）与诠释不义（集体诠释资源中的结构性身份偏见遮蔽经验，2007: 155）之分，使权力与伦理进入知识论核心。",
+        "type": "文献",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "社会认识论（social epistemology）",
+        "def": "研究社会互动、实践、规范与系统的认识效应的分支领域：'关心人们如何在他人的帮助下、或有时顶着他人及相关社会制度与实践，最好地追求真理'。1987年专门期刊创刊是学科制度节点；分析进路的奠基辩护为戈德曼1999年'真主义'纲领。",
+        "source": "SEP 'Social Epistemology' 导言与学科史部分",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "证言（testimony）",
+        "def": "说话者告知他人之事，作为知识与辩护的来源。核心争论：接受证言是否需要知觉、记忆、推理等独立来源的支持（还原论），还是证言本身即是基本来源（反还原论）。通译'证言'，亦有译'见证'者。",
+        "source": "SEP 'Social Epistemology' §3.1 Testimony",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "证言还原论（reductionism about testimony）",
+        "def": "听者须有充分的独立理由相信说话者可信，证言辩护才成立；近代源头为休谟。批评者警告它潜藏怀疑论后果（Coady 1990：听众通常缺乏核验说话者可靠性的证据）。",
+        "source": "SEP 'Social Epistemology' §3.1（休谟部分与Coady部分）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "反还原论（anti-reductionism）",
+        "def": "里德（1764）：说话者的诚实倾向与听者的轻信倾向（credulity）同为自然禀赋，与知觉一样可靠，接受证言由此获得默认地位。当代辩护：Burge 1993——可理解的言语本身即表明其出自本性求真的理性来源；批评：Fricker 1994——否认还原论是'轻信的配方'。",
+        "source": "SEP 'Social Epistemology' §3.1（Reid/Coady/Burge/Fricker部分；1764书名据SEP里德条目）",
+        "sourceRefs": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "word": "同侪分歧与等权重观（peer disagreement; Equal Weight View）",
+        "def": "认识能力相当者的分歧应如何处理。等权重观：对同侪的意见与对自己意见赋予同等权重（Christensen 2007、Elga 2007、Feldman 2006/2007）；反方：凯利'正确理由'立场（2005）——分歧事实本身不是关于问题的证据；Lackey 2010证成主义——取决于加入分歧证据后的总证据支持什么；Fogelin 1985'深层分歧'划出边界。",
+        "source": "SEP 'Social Epistemology' §3.2 Peer Disagreement",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "群体信念（group belief）",
+        "def": "群体能否作为信念主体。加总论（Quinton 1976: 17）：全体或几乎全体成员相信即群体相信；吉尔伯特：成员'作为一体共同承诺相信'即群体相信；Wray 2001主张改称'群体接受'；Bird 2014/2022分布式模型（多人分头收集、他人协调）；Lackey 2021'群体行动者'说明（'加总论的但非还原论的'）。",
+        "source": "SEP 'Social Epistemology' §3.3 Group Belief",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "共同承诺（joint commitment）",
+        "def": "吉尔伯特的核心概念：'意志的一种承诺——它由两个或更多人的意志创造，也由两个或更多人所承担'（Gilbert 2006: 134）；只能共同形成或解除（'作为一体去做X'，2006: 145），造成相互问责的定向义务，且不要求成员个人持相应态度（cf. Gilbert 2009）。",
+        "source": "SEP 'Collective Intentionality'（吉尔伯特部分）",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "word": "集体意向性（collective intentionality）",
+        "def": "'心智共同指向对象、事实、事态、目标或价值的能力'；术语由塞尔1990年论文《集体意向性与行动》引入。共同注意、共享信念、制度事实（如货币）的研究由此汇为社会本体论工程。与群体认识论在吉尔伯特处交界，本条不代述其全局。",
+        "source": "SEP 'Collective Intentionality' 开篇与塞尔部分",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "word": "证言不义（testimonial injustice；又译证言不公）",
+        "def": "偏见或偏倚使听者对说话者'给出折损的可信度'；中心情形是'身份偏见性可信度折损'（Fricker 2007: 28）——如因种族或性别身份而在证言场合被系统性地打折扣。弗里克2007年给出该领域的第一个系统论述。",
+        "source": "IEP 'Epistemic Injustice'（testimonial injustice部分）",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "诠释不义（hermeneutical injustice；又译诠释性不公）",
+        "def": "'其社会经验的某块重要领域，因集体诠释资源中的结构性身份偏见而被遮蔽于集体理解之外'（Fricker 2007: 155）；经典例证：'性骚扰'概念命名前受害者的处境、产后抑郁被当作可疑借口的年代。与'证言不义'并列为认识不义的两种基本形式；'认识不义'又有'认识不公''认知不义'诸译。",
+        "source": "IEP 'Epistemic Injustice'（hermeneutical injustice部分，引Fricker 2007: 155）",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "人类理解研究（An Enquiry Concerning Human Understanding）",
+        "author": "大卫·休谟",
+        "era": "1748（初名 Philosophical Essays concerning Human Understanding，1758年版改今名）",
+        "desc": "第十节'论神迹'（OF MIRACLES，分Part I/II）是证言认识论的经典源头文本：'明智的人使信念与证据成比例'与'任何证言都不足以确立一个神迹，除非其虚假比它试图确立的事实更为神奇'（§91）两条格言均在本节。本包核读1777年身后定本的 Selby-Bigge 1902年第二版（Project Gutenberg #9662），curl取全文后逐字核对第十节。站内在库休谟著作为《人性论》（178e7d06d42d）与《自然宗教对话录》（9c9e77918c07），未见本书单行本。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S5",
+          "S6"
+        ]
+      },
+      {
+        "title": "按常识原则对人类心灵的探究（An Inquiry Into the Human Mind on the Principles of Common Sense）",
+        "author": "托马斯·里德",
+        "era": "1764",
+        "desc": "反还原论的源头文本：说话者的诚实与听者的轻信同为自然禀赋、与知觉同样可靠（此立场表述据SEP社会认识论条目的转述，Reid 1764/1983）；书名与年代据SEP里德条目——该条目同时声明不展开证言论题。原书本包未核读，不代述章节结构。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S4",
+          "S1"
+        ]
+      },
+      {
+        "title": "内容保存（Content Preservation）",
+        "author": "泰勒·伯格（Tyler Burge）",
+        "era": "1993",
+        "desc": "载《哲学评论》（Philosophical Review）第102卷第4期457–488页（书目信息据SEP社会认识论条目）。主张可理解的言语本身就是出自理性来源的标志——该来源本性求真——为证言反还原论提供当代辩护。",
+        "kind": "论文",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "认知劳动分工（The Division of Cognitive Labor）",
+        "author": "菲利普·基彻（Philip Kitcher）",
+        "era": "1990",
+        "desc": "形式社会认识论'信用经济'范式的支点论文：受信用驱动的科学家比纯求真者更好地分工——后者会一窝蜂涌向同一最有希望的问题，前者因问题梯度而分散。期刊出处未在核读来源内出现，不作断言。",
+        "kind": "论文",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "集体意向性与行动（Collective Intentions and Actions）",
+        "author": "约翰·塞尔（John Searle）",
+        "era": "1990",
+        "desc": "'集体意向性'术语的提出文献；载 P. Cohen, J. Morgan, M. E. Pollack 编《Intentions in Communication》（Bradford Books/MIT Press，书目信息据SEP集体意向性条目）。内容本包仅按条目转述：个体心智中的'我们意向'不可还原为个人意向的简单相加。",
+        "kind": "论文",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "title": "认识不义：力量与认识的伦理（Epistemic Injustice: Power and The Ethics of Knowing）",
+        "author": "米兰达·弗里克（Miranda Fricker）",
+        "era": "2007",
+        "desc": "牛津大学出版社（书名含副题据IEP书目）。给出认识不义的第一个明确且开山性的系统论述：证言不义（偏见致可信度折损；中心定义见p. 28）与诠释不义（集体诠释资源中的结构性身份偏见遮蔽经验；定义见p. 155）；并给出权力的操作性定义（p. 13，可由行动者行使或纯结构地运作）。",
+        "kind": "专著",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "title": "群体行动者（Group Agency）",
+        "author": "克里斯蒂安·李斯特与菲利普·佩蒂特（Christian List & Philip Pettit）",
+        "era": "2011",
+        "desc": "群体作为意向主体的纲领性著作（书名与年份据SEP集体意向性条目）：主张群体若'集体化理性'（collectivise reason）即可成为意向主体。本包仅按条目转述该纲领句，其余内容未核读。",
+        "kind": "研究",
+        "sourceRefs": [
+          "S3"
+        ]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "证言认识论",
+        "era": "近代源头1748/1764，1980s—1990s当代复兴",
+        "desc": "还原论（休谟：听者须有独立理由）对反还原论（里德：诚实与轻信同为自然禀赋）之争为纲；当代支点文献：Coady 1990（否认反还原论是'通向怀疑论的配方'）、Burge 1993《内容保存》（言语即理性来源之标志）、Fricker 1994（否认还原论是'轻信的配方'）。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "同侪分歧研究",
+        "era": "1985（Fogelin'深层分歧'）起，2007年前后成热点",
+        "desc": "等权重观（Christensen 2007、Elga 2007、Feldman 2006/2007）对凯利'正确理由'（2005）与'总证据观'（2010）、Lackey 2010证成主义；深层分歧（Fogelin 1985）划出常规解决机制失效的边界。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "群体认识论",
+        "era": "1976（Quinton加总论）起",
+        "desc": "群体信念四方案（加总论、吉尔伯特共同承诺、伯德分布式模型、Lackey群体行动者）与群体证成三方案（Schmitt 1994逐成员证成、Goldman 2014过程可靠主义、Lackey 2021充分披露）；与集体意向性研究在吉尔伯特处交界。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S1",
+          "S3"
+        ]
+      },
+      {
+        "name": "制度认识论与信用经济",
+        "era": "1968（默顿马太效应）—1990s起成形",
+        "desc": "默顿'科学家追逐信用'洞见之下的认知劳动分工（Kitcher 1990）、优先权规则（Strevens 2003，批评者称其抑制重复验证）与马太效应（Merton 1968）；戈德曼2010'系统取向'；民主认识论三模型（Anderson 2006：孔多塞、'多样性胜过能力'、杜威实验主义）；专家识别（Goldman 2001，'经典出处'）。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "形式社会认识论",
+        "era": "1785（孔多塞定理）为远源，1980s—2000s成形",
+        "desc": "判断聚合与教义悖论（Kornhauser & Sager 1986三法官案及一串不可能性定理）、孔多塞陪审团定理与信息级联、网络认识论（佐尔曼效应：沟通更频繁'一般更糟'；极化模型）、多样性模型（Hong & Page 2004'多样性胜过能力'及其批评）。与《贝叶斯主义》条目互见形式工具。",
+        "kind": "研究方向",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "认识不义研究",
+        "era": "2007（《认识不义》）为标志",
+        "desc": "证言不义与诠释不义（弗里克2007）及其扩展：可信度过剩（Medina 2011）、贡献不义（Dotson 2012）、故意诠释无知（Pohlhaus 2012）、结构性矫正与群体整合（Anderson 2012）；相邻论题：白人无知与无知认识论（Mills 2007）、回音室与认识泡泡（Nguyen 2020）、煤气灯效应。",
+        "kind": "学说",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      }
+    ],
+    "quote": "明智的人使信念与证据成比例。",
+    "quoteAuthor": "大卫·休谟（《人类理解研究》第十节）",
+    "quoteKind": "quote",
+    "quotes": [
+      {
+        "text": "任何证言都不足以确立一个神迹，除非该证言属于这样一种：它的虚假比它试图确立的事实更为神奇。",
+        "author": "大卫·休谟（《人类理解研究》第十节第91段）",
+        "exp": "英文逐字核读（Selby-Bigge 1902年第二版，Project Gutenberg #9662）：'no testimony is sufficient to establish a miracle, unless the testimony be of such a kind, that its falsehood would be more miraculous, than the fact, which it endeavours to establish'；中译为本包转写。这是对证言证据设最强门槛的表述，是休谟式还原论态度的极端案例。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "text": "共同承诺是意志的一种承诺：它由两个或更多人的意志所创造，也由两个或更多人所承担。",
+        "author": "玛格丽特·吉尔伯特",
+        "exp": "英文原句经SEP集体意向性条目转引并逐字核读：'a kind of commitment of the will. In this case, the wills of two or more people create it, and two or more people are committed by it'（Gilbert 2006: 134）；中译为本包转写。共同承诺只能共同形成或解除，且不要求成员个人持相应态度。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S3"
+        ]
+      },
+      {
+        "text": "一种特定类型的不义：过错专落在某人作为认识者（knower）的身份之上。",
+        "author": "IEP《认识不义》条目的定义句（非哲学家原话）",
+        "exp": "英文原句逐字核读：'a distinctive type of injustice in which a wrong is done to someone specifically in their capacity as a knower'；中译为本包转写。署名为条目定义，不冒充哲学家原话。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "text": "其社会经验的某块重要领域，因集体诠释资源中的结构性身份偏见而被遮蔽于集体理解之外。",
+        "author": "米兰达·弗里克（《认识不义》，2007，第155页）",
+        "exp": "英文原句经IEP条目逐字转引并核读：'the injustice of having some significant area of one's social experience obscured from collective understanding owing to a structural identity prejudice in the collective hermeneutical resource'；中译为本包转写。这是诠释不义的定义句。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "closingQuote": "不轻信任何人的话。（Nullius in verba）",
+    "closingQuoteKind": "quote"
+  },
+  "readingRoutes": [
+    {
+      "title": "从证言之争读起：休谟的门槛与里德的默认信赖",
+      "route": "编辑建议：先读休谟《人类理解研究》第十节'论神迹'（Project Gutenberg #9662 公版英译，1777年身后定本），抓住'明智的人使信念与证据成比例'与两条神迹格言所在的论证，体会还原论态度的极端形式；再读 SEP 'Social Epistemology' §3.1，看清还原论—反还原论的当代坐标（Coady 1990、Burge 1993、Fricker 1994 各在哪一侧）；然后查 SEP 'Thomas Reid' 条目的生平与1764年著作背景（注意该条目声明不展开证言论题）；最后读 IEP 'Epistemic Injustice' 开头两节，看弗里克如何把'可信度折损'从认识论问题转写为正义问题。",
+      "sourceRefs": [
+        "S6",
+        "S1",
+        "S4",
+        "S2"
+      ]
+    },
+    {
+      "title": "从个体到群体与制度：分歧、群体信念与认识不义",
+      "route": "编辑建议：先读 SEP 'Social Epistemology' §3.2–§3.3（同侪分歧的等权重观与反方、群体信念的四种方案与吉尔伯特公式），再读 §4 把信用经济、网络、多样性三组模型当一份'社会认识论的工程图'看，并对照 SEP 'Collective Intentionality' 的吉尔伯特部分接上社会本体论的交界；随后读 §5.1–§5.3 看民主、专家与在线误导内容的当代应用；最后以 IEP 'Epistemic Injustice' 收尾，对照弗里克两类不义的定义句（Fricker 2007: 28、155）。",
+      "sourceRefs": [
+        "S1",
+        "S3",
+        "S2"
+      ]
+    }
+  ],
+  "evidenceLimits": [
+    "SEP 的 'Epistemic Injustice' 专条在2026-10-04实际访问显示 'Not Yet Available'，认识不义部分改以 IEP 条目（S2）承载；该SEP条目正式上线后宜复核相关原句与谱系表述。",
+    "术语译法不统一：epistemic injustice 有'认识不义''认识不公''认知不义'诸译（任务标题用'认识不公'，F01包用'认识不义'），本包以'认识不义'为主、在词条处注明异译；testimonial injustice 亦译'证言不公'；testimony 通译'证言'，亦有'见证'之译。",
+    "富勒与戈德曼两条纲领的实义分歧依赖 Collin (2013) 专文，该文未核读，本包只按SEP条目转述其存在与分工，不转述其论点。",
+    "大量一手文献未核读、仅按SEP条目转述其论点与年份：Quinton 1976、Wray 2001、Bird 2014/2022、Lackey 2010/2016/2021、Schmitt 1994、Goldman 2001/2010/2014、Anderson 2006/2012、Kitcher 1990、Strevens 2003、Merton 1968、Hong & Page 2004、Kornhauser & Sager 1986、Bikhchandani et al. 1992、Fogelin 1985、Kelly 2005/2010、Christensen 2007、Elga 2007、Feldman 2006/2007、Coady 1990、Fricker 1994、Medina 2011、Dotson 2012、Pohlhaus 2012、Mills 2007、Nguyen 2020、List & Pettit 2011（其中最后者书名据SEP集体意向性条目书目）。条目写作只应表述二手权威来源已证实的内容。",
+    "里德1764年原书未核读：书名与年代据SEP里德条目，其证言立场的具体表述只系于SEP社会认识论条目的转述（该里德条目明确声明不展开证言论题）；里德是否逐句针对休谟文本不作断言。",
+    "戈德曼1999年专著的书名未在核读来源逐字出现（S1只作'Alvin Goldman (1999)'），正文与词条只写'1999年的专著'，不写书名。",
+    "'1987年创刊'是学科制度史断言而非问题史断言：SEP同时记录 Schmitt 同年编辑 Synthese 专号；休谟—里德的证言之争远早于此，正式条目不得把1987写成问题起点。",
+    "跨传统证言的可比性未核：印度量论 śabda、弥曼差声量证言传统与当代 testimony debate 的可比性未读一手来源，本包不作任何断言、不设关系，留待相关专门研究处理。",
+    "跨传统与相邻领域的边界：集体意向性的社会本体论细节（塞尔、图奥梅拉一系）属心灵哲学，本条只在吉尔伯特群体信念处交界；女性主义认识论整体史与性别科学批判细节留给专门条目；知识社会学史（曼海姆等）不入本条主体。",
+    "孔多塞1785年定理的表述按SEP条目转述，原书未核；其生卒与《人类理解研究》之外的书目细节本包不写。孔多塞为站内在册哲学家，但本包未将其列为 thinker（其在包内仅以定理命名出现）。",
+    "站内两位相关人物的姓名消歧：philosophers.json 中的'玛格丽特·富勒'是美国超验主义者（非史蒂夫·富勒）、'吉尔伯特·赖尔'是英国分析哲学家（非玛格丽特·吉尔伯特），本包人物均不与之混同；戈德曼、弗里克、吉尔伯特（玛格丽特）、富勒（史蒂夫）、基彻均不在站内人物库，用通行译名。",
+    "休谟引语的两个版本注意：本包核读的 Gutenberg #9662 为1777年身后定本的 Selby-Bigge 1902年第二版，'明智的人使信念与证据成比例'与§91神迹格言均在此版第十节逐字核得；中文均为本包转写，未核对通行中译本措辞。",
+    "贝叶斯主义、实用主义两处站内提及（S10、S11）为正文级顺带提及，本包原样引用其句子作 coverageGap 证据，不代述两页的内部论证，也不核实其表述的学术准确性。"
+  ]
+}

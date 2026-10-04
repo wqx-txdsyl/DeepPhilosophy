@@ -141,11 +141,14 @@ def main():
             works = thinker.get('works', [])
             if isinstance(works, str):
                 works = re.findall(r"['\"]([^'\"]+)['\"]", works) or re.split('[、；;]', works)
+            works = [work for work in works if isinstance(work, str)]
             for title in works:
                 if isinstance(title, str) and clean(title) not in {clean(item['title']) for item in profile['bibliography']}:
                     profile['bibliography'].append({'title': title, 'sourceSchool': school['name']})
             for event in school.get('timeline', []):
                 title = event.get('event', '')
+                if not isinstance(title, str):
+                    continue
                 explicit_person = any(token and token in title for token in tokens)
                 work_event = any(f'《{work}》' in title and not re.search(rf'《{re.escape(work)}》\s*(?:释义|导读|研究|评注)', title) for work in works)
                 another_person = any(other['name'] in title and other_name != name for other, other_name in members)
@@ -154,7 +157,9 @@ def main():
                     if not any(item['title'] == old['title'] for old in profile['life']):
                         profile['life'].append(item)
             for concept in school.get('cihai', []):
-                text = concept.get('def', '') + concept.get('source', '')
+                def text_of(value):
+                    return value if isinstance(value, str) else ''
+                text = text_of(concept.get('def', '')) + text_of(concept.get('source', ''))
                 if any(token and token in text for token in tokens) or any(title and title in concept.get('source', '') for title in works):
                     word = concept.get('word', '')
                     if word and not any(old['name'] == word for old in profile['concepts']):

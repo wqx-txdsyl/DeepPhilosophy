@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "taskId": "I07",
+  "name": "顺世论",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "研究员自查（非独立同行评审，主会话直研）：SEP 印度认识论条目与维基百科两页（Charvaka / Ānvīkṣikī）以 curl 全文抓取+grep 定位逐字核对；IEP 两个候选 URL（charvaka/indian-materialism）404 实测；原典佚失本身作为证据限度写入正文；人物与书籍以 python 子串实查站内数据；两个 JSON 经 python3 -m json.tool 校验。",
+  "proposal": {
+    "kind": "school",
+    "scope": "顺世论（Cārvāka，又名 Lokāyata）：古印度唯物论与感觉经验主义传统。核心主张：仅现量（感知）为量、对推理作为知识来源的归纳难题批判、拒斥解脱论与仪式主义。本包的证据结构必须如实呈现：其原典几乎佚失，学说主要经由论敌文献（佛教、正理等）与现代研究转述层可得——'经论敌转述'不是背景噪音而是本课题的核心证据性质。",
+    "period": "证据跨度：约前6世纪（传说人物与《大疏》前引书）至《实有坏灭狮子》（Jayarāśi 著；其年代未获来源，本包不系年），近代研究为重构层",
+    "traditionContext": "印度非吠陀系（维基归为'异流'叙述层）；与佛教、正理、耆那教为论辩对手；其立场被论敌文献作为'需要反驳的立场'系统记录。",
+    "relatedExisting": [
+      {
+        "name": "印度哲学",
+        "path": "app/public/schools/data/school_印度哲学.json",
+        "note": "mentions-only 线索见任务条目；本包为其顺世论内容提供独立学案，建议互链导流。"
+      }
+    ],
+    "relationSuggestions": [
+      "与 I01 正理包互链：正理文献是顺世论学说的重要转述与反驳来源（S2 火烟例即正理式推理批判）。",
+      "与 T01 佛教哲学包互链：SEP 载佛教对顺世论归纳批判的吸收（转化为可错论论证）。",
+      "与 I02/I03 包互链：同属印度哲学学案序列，转述层的引用规范保持一致。"
+    ],
+    "suggestedBookLinks": [],
+    "coverageNote": "coverage=mentions-only：无同名顶级条目或分支；本包不修改任何既有条目。",
+    "evidenceNote": "边界决定、分歧与查重见 review.md；断言级核验见 evidence.json。"
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Epistemology in Classical Indian Philosophy (Stanford Encyclopedia of Philosophy)",
+      "url": "https://plato.stanford.edu/entries/epistemology-india/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "顺世论仅认现量、拒斥推理与其他候选量；'推理依赖超出知觉证据的概括，凡F皆G——无人能知此，顺世论宣称'；其归纳难题被佛教与正理转化为可错论论证；顺世论'整体拒斥解脱论'列于外人学派（outsider schools）之列。"
+    },
+    {
+      "id": "S2",
+      "title": "Charvaka (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Charvaka",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "定义（古印度唯物论学派，又名 Lokāyata）；Bṛhaspati'有时被称为创立者……其他学者有争议'；Billington 1997:43 口径——名为 Charvaka 的哲人约活于前6世纪、以《Bṛhaspati Sūtra》立论，该经早于前150年（见《大疏》引用）；《利论》三明（Yoga/Samkhya/Lokāyata）；'现量与直接经验是唯一有效可靠的知识来源'；Jayarāśi Bhaṭṭa《实有坏灭狮子》（Tattvopaplavasimha，带中观影响）为重要来源；怀疑论、拒斥仪式主义；火—烟认识论论证示例；Vidyāraṇya《见闻疏》顺世论章（Acharya 1894 译）。"
+    },
+    {
+      "id": "S3",
+      "title": "Ānvīkṣikī (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/%C4%80nv%C4%ABk%E1%B9%A3ik%C4%AB",
+      "type": "reference",
+      "accessedAt": "2026-10-04",
+      "coverage": "梵语术语，约指'探究之学'；'至迟约前650年已被承认为独立学习分支'（单一来源口径）。"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2",
+    "S3"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S2"
+  ],
+  "school": {
+    "name": "顺世论",
+    "subtitle": "古印度的唯物论与感觉经验主义：仅现量为量的批判传统",
+    "overview": "顺世论（Cārvāka，又名 Lokāyata）是古印度的唯物论学派——维基百科开篇即以'ancient Indian school of materialism'定性。它的知识论立场在印度哲学诸派中最为激进：'把感知与直接经验当作唯一有效可靠的知识来源'。SEP 印度认识论条目如此刻画：'着眼于推理被声称具有的、证明神之存在或个人死后延续的力量，顺世论这一唯物论学派承认感知是知识来源，但不承认推理或任何其他候选。'其论证要点是归纳难题：'推理依赖超出知觉证据的概括——凡 F 皆是 G；顺世论宣称，无人能知道这一点。'维基条目以火与烟为例说明这一论证：见烟时人们倾向于断言它必由火引起，而这一跳跃超出了知觉所给予的证据。有趣的是，这一批判并未被论敌简单驳倒——SEP 记载，'顺世论指认归纳难题的论证，被佛教与正理哲学家转化为关于推理之可错性的论证'。\n\n这一立场的语言学痕迹留在名称上：'Cārvāka'与'Lokāyata'（意为'世间流行之说'）两个名目并行使用，其关系本身是学术问题，本包不作裁断。传统叙事把学派经文归于 Bṛhaspati（毗诃跋提/祭主仙人）名下——'Bṛhaspati 有时被称为顺世论或 Lokāyata 哲学的创立者，尽管其他学者对此有争议'；维基转引 Billington（1997: 43）的口径：约前6世纪有一位名为 Charvaka 的哲人，以《Bṛhaspati Sūtra》的形式发展了这一哲学的前提，'这些经早于前150年，因为《大疏》（Mahābhāṣya）已经提及它们'。这些经文本身已经佚失——本包所能依据的，是论敌文献与现代研究构成的转述层：佛教文献（如《Divyāvadāna》）、正理论书对'现量独一量'的系统反驳，以及约成书于8世纪的《实有坏灭狮子》（Tattvopaplavasimha）——'Jayarāśi Bhaṭṭa 所著、带中观影响的《实有坏灭狮子》是顺世论哲学的重要来源'。\n\n在印度思想的制度史里，顺世论被列入'探究之学'（Ānvīkṣikī）的谱系：《利论》（Arthaśāstra）'提到三種探究之学（ānvīkṣikīs，字面义：以理审察）——瑜伽、数论与顺世论（Lokāyata）'；而梵语术语 Ānvīkṣikī 本身'至迟约前650年已被承认为一个独立的学习分支'（单一来源口径）。顺世论同时以'怀疑论并拒斥仪式主义'的面貌出现在这些分类中；SEP 把它的'对解脱论的整体拒斥'与佛教涅槃、耆那教阿罗汉并列，作为'外人学派'（outsider schools）的目标谱系。14世纪 Vidyāraṇya 的《见闻疏》（Sarvadarśanasaṃgraha）为首章即写顺世论（Acharya 1894 英译），说明直到晚期它仍被当作必须'如实转述然后反驳'的立场——这正是本包证据结构的缩影：顺世论的声音，几乎全部经由愿意反驳它的文献传下来。",
+    "conclusion": "顺世论研究的第一困难是证据性质：原典佚失，转述者皆为论敌。'仅现量为量'的精确内容、其伦理学说（维基有专节但本包未提取到可引定位的原始表述）与仪式批判的细节，都需要在佛教、正理、耆那文献的转述与现代重构之间反复校勘；本包因此只保留转述层可证的核心断言，不做细节铺陈。第二困难是名实关系：'Cārvāka'与'Lokāyata'两名的所指是否始终同一、Bṛhaspati 经的作者归属，来源本身即标注争议，本包如实并陈。\n\n它的哲学史意义则是清楚的：SEP 把顺世论对推理的归纳批判定位为印度认识论的一块试金石——佛教与正理正是通过对它的回应发展出可错论立场。换言之，顺世论作为'被系统反驳的对象'参与了印度主流认识论的塑形；评价这个传统时，'论敌转述'既是证据的限度，也是其影响力的直接痕迹。",
+    "thinkers": [
+      {
+        "name": "Charvaka（传说哲人）",
+        "sub": "站外人物；billington 口径约前6世纪，归属本身有争议",
+        "era": "约前6世纪（Billington 1997:43 转述层，存争议）",
+        "key": "传统叙事中以《Bṛhaspati Sūtra》形式发展该哲学前提的哲人；名字成为学派名目之一。",
+        "works": [
+          "（传）《Bṛhaspati Sūtra》"
+        ],
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "Bṛhaspati（毗诃跋提/祭主仙人）",
+        "sub": "站外人物；经文托名对象",
+        "era": "年代不可考",
+        "key": "'有时被称为顺世论或 Lokāyata 哲学的创立者，尽管其他学者对此有争议'；托名经文已佚，早于前150年（《大疏》已提及）。",
+        "works": [
+          "（托名/佚）《Bṛhaspati Sūtra》"
+        ],
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "Jayarāśi Bhaṭṭa",
+        "sub": "站外人物；通行汉译名目'般若罗制'未获来源核对，正文以梵名转写为主）",
+        "era": "年代本包未获来源",
+        "key": "《实有坏灭狮子》（Tattvopaplavasimha）作者，'带中观影响'——顺世论哲学的重要来源文献。",
+        "works": [
+          "《实有坏灭狮子》（Tattvopaplavasimha）"
+        ],
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "Charvaka（传说哲人）",
+        "to": "Bṛhaspati（毗诃跋提/祭主仙人）",
+        "label": "名目与托名经的归属争议",
+        "type": "编辑说明（归属争议）",
+        "detail": "维基：Bṛhaspati '有时被称为创立者……其他学者有争议'；Billington 口径把'Charvaka 哲人'与《Bṛhaspati Sūtra》连写。两者关系本包不作裁断。",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "from": "Bṛhaspati（毗诃跋提/祭主仙人）",
+        "to": "Jayarāśi Bhaṭṭa",
+        "label": "佚失经书与存世论书",
+        "type": "文本接受（重构层）",
+        "detail": "托名经书佚失后，Jayarāśi 的《实有坏灭狮子》成为顺世论哲学的重要存世来源（带中观影响）——这是现代重构所依赖的少数直接文献之一。",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "from": "Charvaka（传说哲人）",
+        "to": "Jayarāśi Bhaṭṭa",
+        "label": "立场传承（经转述与重构）",
+        "type": "编辑比较（重构层）",
+        "detail": "从'仅现量为量'的立场到 Jayarāśi 的怀疑论展开，中间隔着论敌转述层；本关系为编辑性重构说明，不写成师承。",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "约前650年（单一来源口径）",
+        "event": "Ānvīkṣikī（探究之学）成为独立学习分支",
+        "detail": "维基 Ānvīkṣikī 条目：'至迟约前650年已被承认为独立分支'——顺世论后来被列入此谱系（《利论》三明之一）。此节点为语境性定位，非顺世论本身系年。",
+        "type": "制度语境",
+        "sourceRefs": [
+          "S3",
+          "S2"
+        ]
+      },
+      {
+        "year": "约前6世纪（存争议）",
+        "event": "传说哲人 Charvaka",
+        "detail": "Billington（1997:43）口径：名为 Charvaka 的哲人约活于前6世纪前后，以《Bṛhaspati Sūtra》立论；归属有争议，本包如实标注。",
+        "type": "传说/转述层",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "早于前150年",
+        "event": "《Bṛhaspati Sūtra》成书下限",
+        "detail": "维基（转 Billington）：《大疏》（Mahābhāṣya）已提及这些经，故其成书早于前150年；经文今佚。",
+        "type": "文献下限",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "年代跨度（转述层）",
+        "event": "论敌文献中的顺世论",
+        "detail": "佛教（《Divyāvadāna》等）、正理与耆那文献以反驳形式转述顺世论；SEP 印度认识论条目把'仅现量为量'与归纳难题纳入其叙述框架。具体各文献年代本包未逐一核读。",
+        "type": "转述层",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "year": "年代本包未获来源",
+        "event": "Jayarāśi《实有坏灭狮子》",
+        "detail": "'带中观影响的《实有坏灭狮子》是顺世论哲学的重要来源'——存世直接文献之一；年代未在核读来源出现，不系年。",
+        "type": "文献",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "year": "14世纪（Vidyāraṇya 通行定位，本包未单独核年）",
+        "event": "《见闻疏》首章写顺世论",
+        "detail": "维基引 Vidyāraṇya《见闻疏》（Sarvadarśanasaṃgraha）顺世论章（Acharya 1894 英译）——'诸见皆须如实转述再反驳'传统的例证。其作者年代为通行说法，本包未单独核读。",
+        "type": "文献",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "顺世论（Cārvāka）",
+        "def": "古印度唯物论学派的名称之一；维基开篇定性：'ancient Indian school of materialism'。",
+        "source": "Wikipedia Charvaka 开篇",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "Lokāyata（世间行说）",
+        "def": "同一传统的另一名目，《利论》三明清单所用名称；两名关系是学术问题，本包不裁断。",
+        "source": "Wikipedia Charvaka（'also known as Lokāyata'；Arthaśāstra 段用 Lokāyata）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "现量独一量（perception as the only pramāṇa）",
+        "def": "'把感知与直接经验当作唯一有效可靠的知识来源'；SEP：'承认感知是知识来源，但不承认推理或任何其他候选'。",
+        "source": "Wikipedia Charvaka；SEP 印度认识论",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "归纳难题（problem of induction，顺世论形态）",
+        "def": "推理依赖'凡F皆G'式超出知觉的概括，而'无人能知道这一点'；火—烟例：见烟推断火超出了知觉证据。",
+        "source": "SEP 印度认识论；Wikipedia Charvaka（fire and smoke 段）",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "word": "可错论转化",
+        "def": "'顺世论指认归纳难题的论证，被佛教与正理哲学家转化为关于推理之可错性的论证'——论辩对手吸收其批判的产物。",
+        "source": "SEP 印度认识论（Skepticism 节）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "Ānvīkṣikī（探究之学）",
+        "def": "梵语术语，约指'以理审察的学问'；'至迟约前650年已被承认为独立学习分支'；《利论》以之为三明总目（瑜伽、数论、顺世论）。",
+        "source": "Wikipedia Ānvīkṣikī；Wikipedia Charvaka（Arthaśāstra 段）",
+        "sourceRefs": [
+          "S3",
+          "S2"
+        ]
+      },
+      {
+        "word": "《实有坏灭狮子》（Tattvopaplavasimha）",
+        "def": "Jayarāśi Bhaṭṭa 所著论书，'带中观影响'——顺世论哲学的重要来源；书名的通行汉译名目本包未获来源核对。",
+        "source": "Wikipedia Charvaka（Jayarāśi 段）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "解脱论之拒斥",
+        "def": "SEP 把顺世论'对解脱论的整体拒斥'与佛教涅槃、耆那教阿罗汉并列为'外人学派'的目标谱系对照项。",
+        "source": "SEP 印度认识论（outsider schools 句）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "怀疑论与反仪式主义",
+        "def": "维基对顺世论面貌的概括：'skepticism, and rejects ritualism'。",
+        "source": "Wikipedia Charvaka（概览句）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "word": "论敌转述层（hostile-source problem）",
+        "def": "本包方法论名目：顺世论原典佚失，学说主要经佛教、正理等论敌文献转述——证据使用必须标注转述层（本包名目，性质由来源结构支持）。",
+        "source": "由 S2 来源结构（论敌文献引用链）支持",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "《Bṛhaspati Sūtra》（毗诃跋提经，佚）",
+        "author": "托名 Bṛhaspati",
+        "era": "早于前150年（《大疏》已提及，转 Billington）",
+        "desc": "学派根本经文，今佚；内容仅可经论敌文献与现代研究重构。",
+        "kind": "原典（佚失）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "title": "《实有坏灭狮子》（Tattvopaplavasimha）",
+        "author": "Jayarāśi Bhaṭṭa",
+        "era": "年代本包未获来源",
+        "desc": "'带中观影响……顺世论哲学的重要来源'；存世直接文献之一。",
+        "kind": "论书（存世）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "title": "《利论》（Arthaśāstra）中的顺世论段落",
+        "author": "考底利耶传统（作者与本包来源口径一致性地仅以书名为引）",
+        "era": "本包未核其成书年代",
+        "desc": "'提到三種探究之学——瑜伽、数论与顺世论'；顺世论作为ānvīkṣikī之一的制度性定位。",
+        "kind": "制度文献（转引）",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "title": "《见闻疏》（Sarvadarśanasaṃgraha）顺世论章",
+        "author": "Vidyāraṇya（Acharya 1894 英译）",
+        "era": "作者通行定位14世纪（本包未单独核年）",
+        "desc": "诸见总录的首章即顺世论——晚期印度学术史仍将其列为必须转述的第一立场；引文如 'None can escape Death's searching eye...'（Acharya 英译）。",
+        "kind": "哲学总录（转述层）",
+        "sourceRefs": [
+          "S2"
+        ]
+      }
+    ],
+    "subSchools": [],
+    "quote": "the Cārvāka materialist school recognizes perception as a knowledge source but not inference nor any other candidate",
+    "quoteAuthor": "斯坦福哲学百科《Epistemology in Classical Indian Philosophy》（英文原文照录；汉译为本包转译）",
+    "quoteKind": "quote（转译）",
+    "quotes": [
+      {
+        "text": "Inference depends upon generalizations which outstrip perceptual evidence, everything F as a G. No one can know that, Cārvāka claims.",
+        "author": "斯坦福哲学百科《Epistemology in Classical Indian Philosophy》（英文原文照录）",
+        "exp": "顺世论归纳难题的短式：推理建立在超出知觉的普遍化之上，而这类普遍化的知识恰是顺世论否认可能的。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "text": "The Cārvāka argument identifying the problem of induction is turned by both Buddhist and Nyāya philosophers into an argument for fallibilism about inference.",
+        "author": "斯坦福哲学百科《Epistemology in Classical Indian Philosophy》（英文原文照录）",
+        "exp": "论敌的吸收：归纳难题被转化为推理可错论的论证——顺世论以'被反驳者'身份参与塑造印度认识论。",
+        "kind": "quote",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "closingQuote": "None can escape Death's searching eye: When once this frame of ours they burn, How shall it e'er again return?",
+    "closingQuoteAuthor": "Vidyāraṇya《见闻疏》顺世论章（Acharya 1894 英译，经维基百科 Charvaka 条目转引）",
+    "closingQuoteKind": "quote（转引）"
+  },
+  "readingRoutes": [
+    {
+      "title": "从知识论批判读起（编辑建议）",
+      "desc": "先读 SEP 印度认识论条目 Skepticism 节（'仅现量为量'与归纳难题两段），再读维基 Charvaka 条目 Epistemology 节的火—烟示例，体会同一个论证的抽象表述与例示形态；最后对照站内 I01 正理包看论敌（正理）一侧如何回应。",
+      "sourceRefs": [
+        "S1",
+        "S2"
+      ]
+    },
+    {
+      "title": "从证据结构读起（编辑建议）",
+      "desc": "先读维基 Charvaka 条目的 Origin 节（Bṛhaspati 归属争议、《大疏》下限、Jayarāśi 论书），再读《利论》三明段与 Ānvīkṣikī 条目——注意全程区分'存世文献'与'论敌转述'两种证据性质，这正是本领域的核心训练。",
+      "sourceRefs": [
+        "S2",
+        "S3"
+      ]
+    }
+  ],
+  "evidenceLimits": [
+    "原典佚失：本包无任何顺世论原典直读；《Bṛhaspati Sūtra》内容仅经转述层（维基转 Billington 等）使用。",
+    "学术级来源仅 SEP 印度认识论条目一种（其中顺世论为配角性段落）；Charvaka 与 Ānvīkṣikī 两页均为维基 reference 级。Chattopadhyaya《Lokayata》1959、Namai/Gokhale 等专书研究均未核读，不引用。",
+    "IEP 无顺世论条目（charvaka/indian-materialism 两 URL 404 实测）；GRETIL 未探测（无独立经文本可期）；Britannica 沿用反爬备案。",
+    "Jayarāśi 年代未获来源，不系年；其汉译名目（般若罗制等）未获核对，正文以梵名转写为主。",
+    "《利论》成书年代未核读，timeline 不系年；Vidyāraṇya 14世纪为通行定位，本包未单独核实，已标注。",
+    "'四大元素'说为通行归纳，本包核读段落未获得直接定位句，不写入正文。",
+    "'及时行乐'颂（yāvajjīvam sukhaṃ jīvet）未在核读来源获得可引定位，不写入正文（Acharya 1894 译诗仅作 closingQuote 的转引并注明）。",
+    "伦理学/意识诸节的细节（维基有专节）未获可引定位，不展开。",
+    "站内 philosophers.json（python 子串查证）无顺世论人物，thinkers 全部站外；books.json 无相关藏书，书籍建议为空。",
+    "任务条目 coverage=mentions-only；无同名条目或分支。",
+    "closingQuote（Acharya 1894 诗）按原页转录，换行合并为空格（与 B02 同规；2026-10-04 审计补充声明）。"
+  ]
+}

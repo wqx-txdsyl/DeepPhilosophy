@@ -1,0 +1,667 @@
+{
+  "schemaVersion": 1,
+  "taskId": "I06",
+  "name": "耆那教哲学",
+  "status": "ready-for-review",
+  "reviewedAt": "2026-10-04",
+  "reviewMethod": "两轮核验。第一轮（同日早前草稿作者）：七个网络来源（SEP 三条目、IEP 一条目、BBC Religion 三页）于 2026-10-04 以 curl/WebFetch 实际抓取并逐段核读；evidence 各 locator 中的英文 verbatim 引文经 python 脚本对缓存文本两轮逐字比对（共105处，其中6处按原文措辞修正后命中）；站内 philosophers.json、books.json、school_印度哲学.json、catalog.json 以 python3 实际查询查重。第二轮（独立复核，同日）：换用不同会话对全部七个来源逐源重开核读（SEP 三条目另以 citation_author/DC.creator 元数据确认署名 Gorisse/Fiala/Chadha；Jaina 条目 'First published Mon Feb 13, 2023' 确认），并抽验约20处关键英文原文（七支谓词句、'Notably absent from the list is inference'、'set of philosophical investigations'、'oldest extant Jaina treatise in Sanskrit'、'karmic matter is never genuinely mixed'、'close to Sāṃkhya conceptions'、甘地句全句、BBC 三页各要点）均命中；发现并修正两处编辑性问题（'不自合/不自洽'用词不统一→统一为'不自洽'共5处；S5 coverage '自认更近大雄时代'改为'（BBC 页面表述）其方式更接近大雄时代'以贴合原文的页面表述性质）。两个 JSON 经 python3 -m json.tool 校验通过。",
+  "proposal": {
+    "kind": "school",
+    "suggestedName": "耆那教哲学",
+    "aliases": [
+      "Jain Philosophy",
+      "Jaina Philosophy",
+      "耆那哲学"
+    ],
+    "scope": "耆那教哲学（Jaina Philosophy）作为有原典、有连续注疏传统的宗教—哲学传统：本体论（jīva/ajīva 二分、六种实体、原子论）、业物质说（karma 为细物质）、解脱论（kevala-jñāna）；认识论与逻辑（多面论 anekāntavāda、七支谓词 syādvāda、视角论 nayavāda、推理与辩论厅）；伦理（非暴力 ahiṃsā、五誓、生命层级与素食）。按任务范围要求，哲学主张与教团组织、仪式实践分开呈现；正典传承史（两派正典之争）作为文献背景收录。站内《印度哲学》条目的既有定位（'由大雄创立，强调非暴力、苦行和灵魂的解脱'）在'非暴力为伦理首位'一点上与来源一致，但'创立'措辞与其自身传统'教法无始、无创立者'的自我表述相悖（见 evidenceLimits）。",
+    "period": "约公元前6—前5世纪（大雄传教，传统纪年 599—527/510 BCE，年代有争议）至17—18世纪（Yaśovijaya 的逻辑手册期），作为活的宗教—哲学传统延续至今；现代接受史仅按来源收录甘地与 ahiṃsā 一节",
+    "traditions": [
+      "南亚（印度）'非正统'（不承认吠陀权威）沙门传统之一，与佛教、顺世论并列（S2）；站内《印度哲学》条目同此分类",
+      "教团内分天衣派（Digambara）与白衣派（Śvetāmbara）两大教派，正典范围与僧团仪轨有别，教义共享基本哲学框架（S5、S7）",
+      "哲学文本传统横跨俗语（Prakrit 诸方言）与梵语，后有阿波abhraṃśa及诸地方语言（S1）"
+    ],
+    "coverageGap": "站内《印度哲学》条目共15处出现'耆那'（subtitle、overview、thinkers/4'大雄'、relations/3、timeline/2'筏驮摩那出生'、timeline/9'商羯罗对抗佛教和耆那教'、quotes/3、cihai'耆那教'词条、cihai'涅槃'、cihai'Moksha'、cihai'Ahimsa'），但无独立条目（mentions-only）；任务 evidence.exactTopLevelEntries 与 exactBranches 均为空；app/public/schools/catalog.json 与 schools/data/ 目录经查无同名或'耆那'条目。站内哲学家库（737人）无大雄/筏驮摩那/Umāsvāti/Kundakunda 等耆那教人物（有'凯格姆尼'条目，见 review.md 存疑记录）。",
+    "relatedExistingEntries": [
+      "印度哲学"
+    ],
+    "relationSuggestions": [
+      "关联《印度哲学》：耆那教为该条目'非正统派'框架之一支；旧时间线'公元前599 耆那教创始人筏驮摩那出生'系年与传统纪年一致，但'创始人'措辞与其自我表述（教法无始、无创立者）及 BBC（'有时被错误地称作耆那教创始人'）相悖，接入时建议改为'此世劫最后一位祖师大雄（传统纪年）'；thinkers'大雄 works《阿含经》'与 cihai'耆那教 source《阿含经》'建议改指耆那教阿含（Āgama），避免与佛教《阿含经》混淆。",
+      "关联《佛教哲学》（站内若设立）：anekāntavāda 明言'反对佛教的实在观'（S1 逐字：against the Buddhist conception, according to which only what is a non-complex unity is real），两者是辩论厅中的长期对手（S1 §3.3）；建议互设参见，不写成师承或影响。",
+      "关联正理派（I01，站内若设立）：耆那教逻辑传统（Siddhasena、Akalaṅka 起，S1）与正理派同处南亚论辩生态；本包不写两者间具体人物会面（来源未载），仅建议作为'辩论厅'共同背景互见。",
+      "关联站内人物'甘地'（philosophers.json 已收录，school=印度哲学）：S3 记甘地为'上世纪最著名的 ahiṃsā 奉行者'，而 ahiṃsā 为耆那教伦理的根本规则（S1、S2）；建议双向参见。直接师承渠道（如通说的早年导师 Śrīmad Rājacandra）不在核读来源内，不作断言；站内甘地小传将其思想来源归为印度教非暴力观念与托尔斯泰、梭罗，未提耆那教——两点兼容但各有侧重，处置留 Codex。",
+      "关联站内人物'商羯罗'（philosophers.json 已收录）：S2 记七支谓词说'曾受（商羯罗等人）以明显不自洽为由的批评'，可作站内人物与本条目的批判性关联点。",
+      "关联《认识论》（F01，站内若设立）：S2 将耆那认识论概括为一种'认识论上的可谬主义'（fallibilism），与知识论条目的可谬主义主题有跨传统对照价值（编辑比较，非影响关系）。"
+    ],
+    "relatedBookIds": []
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Jaina Philosophy — Stanford Encyclopedia of Philosophy（Marie-Hélène Gorisse；2023-02-13 初版）",
+      "url": "https://plato.stanford.edu/entries/jaina-philosophy/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "耆那教哲学总览与学理主线：Jinas 教法自我表述与大雄传统纪年（599–527/510 BCE）；出离伦理（自我祭祀→非暴力→全知）；《谛义证得经》（Tattvārthasūtra）归名 Umāsvāmin、约150—400年、可能多作者、现存最古梵语耆那教论书，Umāsvāti 注（400—450年）与七谛（TS 1.1、1.4、5.38）；六种实体与原子论；自我与业物质的双重论；知识类型（八种认知）；Siddhasena Mahāmati（710–780）与 Akalaṅka Bhaṭṭa（720–780）的推理分析传统及注疏链（Siddharṣigaṇi 900、Prabhācandra 980–1065、Vādi Devasūri 1143、Yaśovijaya 1638–1688《Jainatarkabhāṣā》）；Kundakunda 文本传统（集体作者、3—8世纪、Prakrit、卡纳塔卡地区、《Samayasāra》、近数论）；vibhajya 回答实践与 Bhagavatīsūtra 例（loka 永恒/非永恒之问；旧分5—2世纪BCE、新分2世纪BCE—1世纪CE）；多面论（反对胜论内在属性说与佛教'唯非复合统一者为实在'）；Samantabhadra《Āptamīmāṃsā》' somehow' 四性（Āmī 14）与 Haribhadrasūri《Anekāntajayapatākā》七支谓词七式；视角论（nayavāda）为元认识论装置；宇宙志文本（Haribhadra Sūri 770 CE《Jambūdvīpasaṃgrahaṇī》）；结语定位哲学为解脱之手段、经卷'被一些耆那教徒视为科学论著'"
+    },
+    {
+      "id": "S2",
+      "title": "Jain Philosophy — Internet Encyclopedia of Philosophy（Mark Owen Webb，Texas Tech University）",
+      "url": "https://iep.utm.edu/jain/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "耆那教哲学英文通览：传统自称教法永恒无创立者；大雄为公元前6世纪人、佛陀同时代人、其教义是对婆罗门教的反应与拒斥；非正统 darsanas 定位（与佛教、顺世论并称）；形上学：六实体（jīva、pudgala、dharma、adharma、ākāśa、kāla）、宇宙永恒、常见'无神论'（所否认者是创世神）、业为物质、生命按感官数分级、素食与绝食至死的理想、五誓（ahiṃsā/satya/asteya/brahmacarya/aparigraha）；认识论：实在多面（anekānta '非一边'）、盲人摸象喻、pramāṇa 清单（感知、可信 testimony、超感官、他心、kevala；推理后补）、naya 部分谓词说、七式谓词表（Perhaps a is F…）、'非七个真值'辨、商羯罗式不自洽批评与自指难题（'始于可赞的可谬主义，终于站不住的相对主义'）；伦理：四业源、业物质使一切业（善/恶）皆系轮回"
+    },
+    {
+      "id": "S3",
+      "title": "Pacifism — Stanford Encyclopedia of Philosophy（Andrew Fiala）",
+      "url": "https://plato.stanford.edu/entries/pacifism/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "ahiṃsā 的现代接受史：'印度教徒、耆那教徒与佛教徒共享对 ahiṃsā/非暴力的关切，视为基本道德德性'；'Mohandas Gandhi is perhaps the most famous adherent of ahimsa of the last century'；甘地以自我克制（brahmacarya）与 satyagraha（真理的力量）为非暴力奠基；甘地将 ahiṃsā 最大化扩展至一切有情感生命；印度传统中非暴力植根于业力互依、苦行自制与慈悲的形上学图景——用于本条目的现代影响一节，不承担耆那教内部学理论证"
+    },
+    {
+      "id": "S4",
+      "title": "Perceptual Experience and Concepts in Classical Indian Philosophy — Stanford Encyclopedia of Philosophy（Monima Chadha）",
+      "url": "https://plato.stanford.edu/entries/perception-india/",
+      "type": "academic-encyclopedia",
+      "accessedAt": "2026-10-04",
+      "coverage": "古典印度感知之争中的耆那教位置一句话定位：强实在论由正理—胜论与弥曼差主张、唯名论由佛教主张、概念论（conceptualism）由吠檀多与耆那教主张——本条目仅用于显示耆那教在感知—概念之争中的学派位置；该条目明言不展开概念论论证（任务 researchLead 之一，如实记录其限度）"
+    },
+    {
+      "id": "S5",
+      "title": "Jain sects — BBC Religion & Ethics（Jainism: Subdivisions；2009-09-11 最后更新，页面已归档）",
+      "url": "https://www.bbc.co.uk/religion/religions/jainism/subdivisions/subdivisions.shtml",
+      "type": "educational-broadcaster",
+      "accessedAt": "2026-10-04",
+      "coverage": "两教派总览：Digambara（sky clad，天衣）与 Svetambara（white clad，白衣）；两派分歧五项（大雄生平细节、女性灵性地位、僧侣是否着衣、仪轨、正典范围）；天衣派更苦行、（BBC 页面表述）其方式更接近大雄时代的耆那教；天衣派女性须先转男身方可解脱之说；天衣僧全裸、两派尼众皆着衣；白衣僧可持少数物（白衣、乞钵、扫虫帚、书籍文具）；造像差异——仅用于教派组织事实，不用于学理论证"
+    },
+    {
+      "id": "S6",
+      "title": "Mahavira — BBC Religion & Ethics（Jainism: History；2009-09-10 最后更新，页面已归档）",
+      "url": "https://www.bbc.co.uk/religion/religions/jainism/history/mahavira.shtml",
+      "type": "educational-broadcaster",
+      "accessedAt": "2026-10-04",
+      "coverage": "大雄传（传统叙事层）：生于599 BCE（'一些现代学者倾向前540年甚至更晚'）；刹帝利种姓、其父母为 Pārśva（帕尔沙）教法 follower；30岁出家、修苦行12年半、证 kevala-jñāna 后称 Mahāvīra；'有时被错误地称作耆那教创始人'、更宜视为古老生活之道的改革者与普及者；将'贞洁'补入 Pārśva 已有的四原则（不暴力、不妄语、不偷盗、不占有）；527 BCE 入灭（依 Śvetāmbara 文本）、传统称建立14000僧/36000尼社团——仅用于生平的传统叙事与证据边界说明"
+    },
+    {
+      "id": "S7",
+      "title": "Sacred texts — BBC Religion & Ethics（Jainism: Texts；2009-09-11 最后更新，页面已归档）",
+      "url": "https://www.bbc.co.uk/religion/religions/jainism/texts/texts.shtml",
+      "type": "educational-broadcaster",
+      "accessedAt": "2026-10-04",
+      "coverage": "正典传承：大雄言教称 Āgamas、为 Śvetāmbara 正典；弟子结集、因'不持有'誓而口传记忆；约前350年饥馑（传统叙事）致经典散失——天衣派谓所有 Āgamas 尽失、白衣派谓大部留存；两派共认 Purvas 失传；白衣派此后多次结集存经；文末引 Paul Dundas：教法是'无始无终、固定的真理系列，一个无人类或神圣起源的传统'——仅用于文献传承背景"
+    }
+  ],
+  "overviewSourceRefs": [
+    "S1",
+    "S2"
+  ],
+  "conclusionSourceRefs": [
+    "S1",
+    "S2"
+  ],
+  "school": {
+    "name": "耆那教哲学",
+    "subtitle": "以非暴力、业物质与多面论为核心的实在论传统——从大雄与圣典结集到古典梵语论书及其注疏",
+    "overview": "耆那教（Jaina）之名出自 jina（'胜者'）：该传统的自我表述是——全知 Jinas（祖师）的教法是宇宙永恒本质的表达（S1）。按其自身传统的说法，教法本身无始、无创立者（S2）；此世劫的传承则被追溯到 Mahāvīra（'大雄'，在家名 Vardhamāna/筏驮摩那）：SEP 给出的传统纪年为公元前599—前527/510年，IEP 称他是'公元前六世纪的教师、佛陀的同时代人'，其教义'作为对当时正在成形的婆罗门教的反应与拒斥而被系统表述'。在与佛教、顺世论（Cārvāka）并称的'非正统 darsanas'中，耆那教与佛教一样不承认吠陀与奥义书的权威（S2）——站内《印度哲学》条目把耆那教列入'非正统派'与这一分类一致。必须从一开始就区分两个层面：教团与仪式的组织史，与散见于圣典、注疏和系统论书中的哲学探究本身——SEP 正是把 'Jaina Philosophy' 界定为'这些文献载体中出现的思想家们所发展的哲学探究的总和'，本条目只处理后者，教派组织与仪轨仅作为文献传承的背景。\n\n耆那教的形上学是一种实在论的二元论：实在的基本构成是命（jīva，灵魂）与非命（ajīva）。IEP 列出的基本实体是：'灵魂（jīva）、物质（pudgala）、运动（dharma）、静止（adharma）、空间（ākāśa）与时间（kāla）'；《谛义证得经》的整理则是'七谛六实体'——谛义经 1.4 列七谛（我、非我、业入、系缚、遮制、灭、解脱），5.38 补时间后得出'如是七谛六实体'（S1）。它同时是一种原子论（S1）。最独特的是业物质说：业被理解为'一种物质'，其积聚把灵魂重新拉回身体（S2）；SEP 概括耆那教形上学'聚焦于自我的本性、业物质的本性，以及二者结合的原理'——从谛义经的七谛看，'业入、系缚、遮制、灭'四个谛全部围绕灵魂与业物质的分合展开。由此推出伦理：'每一个生命都有灵魂，所以每一个生命都可被伤害或被帮助'（S2），生命按感官数目分级、感官越多可被伤害的方式越多；根本规则是 ahiṃsā（不害），耆那教徒因此必须素食，传统的理想之死是绝食而终，'据传大雄本人即以此方式离世'（S2）。这个体系常被称作无神论——'所否认的是凌驾于一切之上的创世神'，宇宙中的诸神同样受业与轮回支配（S2）。\n\n认识论上，耆那教以 kevala-jñāna（ perfected soul 的全知）为顶点；IEP 列出的知识来源清单是感知、可信言说（含经书）、超感官知觉、他心通与 kevala——'值得注意的是清单中没有推理'，推理在早期被默认并入其余诸量的前提获取，后期思想家才把它与记忆、tarka 并列为独立范畴。既然实在多面，除 kevala 外'没有一个量给出绝对或完全的知识'，一切所得知识'只是暂定的、临时的'（S2）。这套可谬主义落在两个著名学说上。其一是多面论（anekāntavāda，'非一边之论'）：'没有一个单一陈述或陈述集能完全把握对象们的真理'（S2），SEP 把它放在实在论框架下——我们认识的是一个不依赖认识而存在的复杂对象；其论证矛头双向：'它明确地反对胜论的实在观'（属性独立于实体、以内在性关系相系），'也反对佛教的实在观——唯非复合的统一者才是实在'（S1）。其二是七支谓词法：源头上是 Samantabhadra《Āptamīmāṃsā》的'四性'表述——'一个实体在某种意义上'是'，在某种意义上'不是'，在某种意义上既是又非，在某种意义上不可言说——这四性依说话者的意趣而立，而非绝对地立'（Āmī 14，S1），Haribhadrasūri 承此而立七式：'我可以说某物存在；不存在；存在且不存在；不可言说；存在且不可言说；不存在且不可言说；或存在、不存在且不可言说'（S1）；IEP 用 Perhaps a is F 的公式表给出同构的七式，并立刻加上一个关键辨析：'这七种谓词不该被理解为七个真值，因为它们全部七者都被认为是真的'。每式之前的限定词 syāt（IEP 译 perhaps，或译'从某视角''在某种意义上'）标记的正是对实在多面性的尊重。视角论（nayavāda）则是配套的'元认识论装置'——对认识一个本质上复杂的对象所可取的主要认识视角作穷尽分类（S1）。这套实践的源头被 SEP 系于大雄时代的沙门外道风气：'不对哲学问题作一边倒的回答，而是分析（vibhajya）它们，揭示其不同预设与可能含义'，《Bhagavatīsūtra》里弟子问'loka'（此处兼指'世界'与'自我'）'是永恒的还是非永恒的'而令答者困惑的著名段落即是实例。\n\n在辩论场上，这套学说与各家长期交涉：SEP 有专节写'推理与辩论厅'，耆那教自己发展出从 Siddhasena Mahāmati（710–780，Śvetāmbara）与 Akalaṅka Bhaṭṭa（720–780，Digambara）开始的系统推理分析，经 Siddharṣigaṇi（900）、Prabhācandra（980–1065）、Vādi Devasūri（1143）的注疏链直到 Yaśovijaya（1638–1688）的《Jainatarkabhāṣā》。在感知哲学的'无概念感知'之争中，耆那教被 SEP 感知条目归入概念论（conceptualism）一方，与吠檀多同列、与佛教的唯名论和正理—胜论的强实在论对峙（S4）。批评同样经典：七支谓词'从历史上看曾受（以商羯罗为代表的一些人）以明显不自洽为由的批评'——两个矛盾式联言似乎永远不可能为真（S2）；IEP 还指出自指难题：若实在多面使一切绝对判断失效，多面论自身的断言也必须以 syāt 式给出，'始于可赞的可谬主义，终于站不住的相对主义'。本条目对这两条批评照实录出：它们不是已了结的历史公案。\n\n文本传承上，两大脉络并行：一是《谛义证得经》（Tattvārthasūtra，'论有什么'）——归名 Umāsvāmin、约150—400年间、很可能多作者写成，'传统上被视为古典耆那教哲学的第一部著作与主要代表，是现存最古的梵语耆那教论书'（S1），开篇即立'解脱之道由正见（darśana）、正智与正行构成'（TS 1.1），Umāsvāti 的注（400—450年）是标准注；二是 Kundakunda 文本传统——'Kundakunda 实际上不是单一作者'，而是3—8世纪间在印度南方卡纳塔卡地区以俗语写成的文本共同体的署名，其《Samayasāra》'业物质从不真正与自我混杂'的教导'接近数论的观念，同时保持耆那教特有的能动的自我'（S1）。正典层面，Śvetāmbara 的 Āgamas 由弟子结集口传；约前350年的饥馑（传统叙事）之后，两派正典观分道——'天衣派认为所有 Āgamas 在此次饥馑中尽失；白衣派认为大部留存'（S7）——这既是文献问题，也是两派身份的分界。这一有组织、有原典、有连续注疏的传统延续到近代：文末 BBC 引 Paul Dundas 概括其经书观为'一个无始无终、固定的真理系列，一个无人类或神圣起源的传统'（S7）；现代接受史上，SEP 和平主义条目记'印度教徒、耆那教徒与佛教徒共享对 ahiṃsā 或非暴力的关切，视为基本道德德性'，而'甘地也许是上世纪最著名的 ahiṃsā 奉行者'（S3）——甘地与耆那教之间的具体师承渠道不在本次核读来源内，本条目不作断言（见 evidenceLimits）。",
+    "conclusion": "耆那教哲学留下的问题至今没有过时。其一，七支谓词的逻辑地位：七式'都被认为是真的'而非七个真值（S2），那么矛盾联言式（第三、第七式）如何成立？商羯罗式的不自洽批评与把 syāt 读作'从某视角'的辩护至今对峙；与之相连的是自指难题——多面论应用于自身时，'始于可赞的可谬主义，终于站不住的相对主义'（S2）。这与当代关于真与断言资格、语用限制与矛盾宽容的讨论结构相似（编辑比较，非影响关系）。其二，业物质说：把业当作一种细物质，使道德因果获得了本体论的承载，也使'一切业——善恶——都系缚于轮回'（S2），解脱于是要求彻底止息而非积累善业；这一设计在哲学上是否融贯（业如何'粘附'于灵魂、身心如何交互）是古典注疏传统反复处理的问题。其三，视角论（nayavāda）作为元认识论装置（S1）——对'我们如何取视角'作系统分类——与当代视角主义（perspectivism）的对照是有待学界继续检验的课题。\n\n证据边界上要诚实。大雄年代是传统纪年且来源间有出入：SEP 作传统纪年 599—527/510 BCE，BBC 作 599—527 BCE 并注明'一些现代学者倾向前540年甚至更晚'，'与佛陀同时'仅出自 IEP；'与佛陀同时代'是可信的传统定位，不是有共同纪年锚点的断言。Pārśva（帕尔沙）传统——大雄父母是其教法 follower、四原则之上加贞洁为五（BBC）——同样属于传统叙事，无独立年代。正典史的'约前350年饥馑、Purvas 失传、两派正典分歧'（BBC）是教团内部传统叙事，本包如实标注其性质。尤其要抵制两类无据拔高：一是'科学性'——SEP 原文只说经卷'被一些耆那教徒视为科学论著'，这是对社群自我理解的记录，不是本百科的背书，本条目不写'最古老的生态哲学''古代科学'一类话；二是普世赞誉——生命层级与素食伦理（S2）就写到其为传统的伦理后果为止，不附加无据的现代引申。\n\n'保留为独立学派'的依据是充分的：有圣典与古典论书（Āgamas、Tattvārthasūtra 及其标准注）、有两千年连续的注疏与辩论传统（从 Siddhasena/Akalaṅka 到 Yaśovijaya）、有至今活着的教团（S1）。但接入时须保持三组分界：哲学立场与教团仪轨之分（本条目写多面论与七谛，不写造像、斋戒与朝圣——BBC 各页有载，属宗教实践）；耆那教内部辩论与'耆那教=非暴力主义'的化约之分（ahiṃsā 是其伦理根本规则，但学理核心是实在的多面性）；历史影响与学理相似之分（Kundakunda'接近数论'、甘地奉 ahiṃsā，都按来源的原文措辞写，不放大）。站内哲学家库中无任何耆那教人物（'凯格姆尼'条目存疑，见 review.md），人物一律为站外人物，姓名用站内已用的'大雄''筏驮摩那'与梵文拉丁转写。",
+    "thinkers": [
+      {
+        "name": "大雄（Mahāvīra，筏驮摩那 Vardhamāna）",
+        "sub": "此世劫最后一位 Jina（祖师），耆那教此世传承的 traced 起点；站内《印度哲学》已用'大雄''筏驮摩那'写法",
+        "era": "传统纪年约公元前599—前527年（S1 作 599—527/510；S6 注'一些现代学者倾向前540年甚至更晚'）",
+        "key": "其言教构成此世耆那教传承的源头（S1：'The only extant teaching is that of Mahāvīra'）；与佛陀同时代（S2）；教义以 vibhajya 式回答为风（S1：其时代沙门'分析（vibhajya）问题，揭示预设与可能含义'）；传统称其教法生涯持续至527 BCE 入灭、建立僧团（S6，传统叙事）；站内时间线'公元前599 筏驮摩那出生'即传统纪年，但'创始人'措辞须按 S6/S2 修正。",
+        "works": [
+          "耆那教阿含（Āgamas，弟子结集、口传）"
+        ],
+        "sourceRefs": [
+          "S1",
+          "S2",
+          "S6"
+        ]
+      },
+      {
+        "name": "Umāsvāmin／Umāsvāti",
+        "sub": "《谛义证得经》（Tattvārthasūtra）归名者与该经标准注（Tattvārthasūtrabhāṣya）作者；两名并存于来源",
+        "era": "经约150—400年（很可能多作者，S1）；注约400—450年（S1）",
+        "key": "SEP：该经'传统上被视为古典耆那教哲学的第一部著作与主要代表，是现存最古的梵语耆那教论书'；TS 1.1 立解脱之道三要素（正见、正智、正行），TS 1.4 列七谛，TS 5.38 定'七谛六实体'；Umāsvāti 注把自我经验分为认知（jñāna）与无分别感知（darśana）（TSBh 2.9.1）。",
+        "works": [
+          "谛义证得经（Tattvārthasūtra）",
+          "谛义证得经注（Tattvārthasūtrabhāṣya）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "Kundakunda",
+        "sub": "以俗语写成的耆那教文本传统之署名（SEP：'实际上不是单一作者，而是…集体作者权之名'）",
+        "era": "约3—8世纪（文本传统跨度，S1）",
+        "key": "其文本传统'与《谛义证得经》同样有影响，并常在耆那教寺庙中作为圣典受尊奉'（S1）；《Samayasāra》中心教导：'业物质从不真正与自我混杂'——'接近数论的观念，同时保持耆那教特有的能动的自我'（S1）；代表传统内部'聚焦于自我、以自我知识为要务'的一脉。",
+        "works": [
+          "Samayasāra（自我之精华）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "Samantabhadra",
+        "sub": "《Āptamīmāṃsā》（权威之研究）作者，多面论'四性'表述的早期出处",
+        "era": "年代未在核读来源内注明",
+        "key": "SEP：其《Āptamīmāṃsā》'是最早主张'者之一：Āmī 14 立实体'在某种意义上是、在某种意义上非、在某种意义上既是又非、在某种意义上不可言说'四性'依说话者意趣而立，非绝对地立'；Āmī 15 以'自体等所摄的'是'与'相对处的'非''论证恒体，否则'此实体将无固定自性'。",
+        "works": [
+          "Āptamīmāṃsā（权威之研究）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "Siddhasena Mahāmati",
+        "sub": "Śvetāmbara 哲学家，耆那教系统推理分析的起点人物之一",
+        "era": "710—780 CE（S1）",
+        "key": "SEP：'耆那教中更系统的推理分析始于 Śvetāmbara 哲学家 Siddhasena Mahāmati 与其更年轻的 Digambara 同代人 Akalaṅka Bhaṭṭa'；其《Nyāyāvatāra》（逻辑入门）主张'无分别感知在有细节的知觉经验中已与认知融合'，此辨其后被多数认识论者弃置（S1）；视角论作为技术装置即'从 Siddhasena Mahāmati、Akalaṅka 及其各自的注疏世系'展开（S1）。",
+        "works": [
+          "Nyāyāvatāra（逻辑入门）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "Akalaṅka Bhaṭṭa",
+        "sub": "Digambara 论师，Siddhasena 的'更年轻的同代人'",
+        "era": "720—780 CE（S1）",
+        "key": "以《Rājavārttika》（御注）——'对《论有什么》的王家注'——把《谛义证得经》纳入系统推理分析的注疏框架（S1）；与 Siddhasena 分属两派而同代并立，是耆那教逻辑传统跨教派展开的标志。",
+        "works": [
+          "Rājavārttika（御注）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "Haribhadrasūri",
+        "sub": "七支谓词法的系统化者；《Anekāntajayapatākā》（非一边论胜利幢）作者",
+        "era": "770 CE（S1 于宇宙志一节系年）",
+        "key": "SEP：'耆那教徒进一步引入的不是两种、而是七种谓词方式'，其七式系统化与《Anekāntajayapatākā》相系；'Haribhadra 深受 Samantabhadra《Āptamīmāṃsā》的影响'（S1）；另著《Jambūdvīpasaṃgrahaṇī》（中洲辑要，S1 系年 770 CE）。",
+        "works": [
+          "Anekāntajayapatākā（非一边论胜利幢）",
+          "Jambūdvīpasaṃgrahaṇī（中洲辑要）"
+        ],
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "商羯罗（Śaṅkara）",
+        "sub": "不二论吠檀多注释家（站内 philosophers.json 已收录，era '约7—8世纪（具体纪年有争议）'）——作为七支谓词说的批评者收录，非耆那教人物",
+        "era": "约7—8世纪（站内纪年，具体有争议）",
+        "key": "IEP：七支谓词'从历史上看曾受（以商羯罗为代表的一些人）以明显不自洽为由的批评'——矛盾联言永不可能真。此为耆那教认识论在古典时期遭遇的最著名外部批判，站内商羯罗条目可作关联点（站内条目未载此批评，接入时建议补）。",
+        "works": [],
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "name": "甘地（Mohandas Karamchand Gandhi）",
+        "sub": "非暴力抵抗的实践者与思想家（站内 philosophers.json 已收录，school=印度哲学）——作为 ahiṃsā 现代接受史人物收录，非耆那教徒",
+        "era": "1869—1948年（站内纪年）",
+        "key": "SEP 和平主义条目：'Mohandas Gandhi is perhaps the most famous adherent of ahimsa of the last century'；其非暴力以自我克制（brahmacarya）与 satyagraha（真理的力量）奠基，并把 ahiṃsā'最大化地扩展到避免伤害一切有情感的生命'（S3）；印度教徒、耆那教徒与佛教徒共享 ahiṃsā 为基本道德德性（S3）。甘地接受耆那教影响的直接渠道不在核读来源内（见 evidenceLimits）。",
+        "works": [],
+        "sourceRefs": [
+          "S3"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "from": "大雄（Mahāvīra，筏驮摩那 Vardhamāna）",
+        "to": "Umāsvāmin／Umāsvāti",
+        "label": "从言教到体系：《谛义证得经》对圣典主题的系统化",
+        "type": "接受/体系化",
+        "detail": "S1：《谛义证得经》'旨在把圣典文献处理的主题整合为一个连贯的哲学体系'，并'传统上被视为古典耆那教哲学的第一部著作与主要代表'；七谛（TS 1.4）与'七谛六实体'（TS 5.38）即对圣典散见主题的定理化。此为文本间的体系化关系，非可考的师授链条。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "Umāsvāmin／Umāsvāti",
+        "to": "Kundakunda",
+        "label": "两大文本传统并行：《谛义证得经》传统与 Kundakunda 传统",
+        "type": "学派内部平行传统（编辑并置）",
+        "detail": "S1 明言 Kundakunda 是'紧挨着《论有什么》传统的第二传统'，其文本'与 TS 同样有影响，并常在寺庙作为圣典受尊奉'；两者旨趣有别——TS 重范畴体系，Kundakunda 重'业物质从不真正与自我混杂'的内在论，后者'接近数论'。并置不等于同时互证，两传统的直接接触细节不在来源内。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "Samantabhadra",
+        "to": "Haribhadrasūri",
+        "label": "四性到七式：Haribhadra 深受《Āptamīmāṃsā》影响",
+        "type": "阅读/接受",
+        "detail": "S1 逐字：'Haribhadra is deeply influenced by the Investigation on Authority (Āptamīmāṃsā [Āmī]) of Samantabhadra, which is amongst the first to teach that…'——Āmī 14 的'某种意义上'四性经 Haribhadra《非一边论胜利幢》扩为七式。这是来源明载的文本影响关系。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "Siddhasena Mahāmati",
+        "to": "Akalaṅka Bhaṭṭa",
+        "label": "跨教派的同代并立：推理分析传统的双起点",
+        "type": "同代并立（教派归属有据）",
+        "detail": "S1：'更系统的推理分析始于 Śvetāmbara 哲学家 Siddhasena Mahāmati 与其更年轻的 Digambara 同代人 Akalaṅka Bhaṭṭa (720–780)'——教派归属与先后关系为来源明载；二人私人交往不在来源内，不写。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "Akalaṅka Bhaṭṭa",
+        "to": "Umāsvāmin／Umāsvāti",
+        "label": "御注：古典体系的经院化",
+        "type": "注疏",
+        "detail": "S1：Akalaṅka 著《Rājavārttika》——'对《论有什么》的王家注'；耆那教推理的系统分析'经由一条连续的注疏链'发展（Siddharṣigaṇi 900 → Prabhācandra 980–1065 → Vādi Devasūri 1143 → Yaśovijaya 1638–1688）。",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "from": "商羯罗（Śaṅkara）",
+        "to": "Umāsvāmin／Umāsvāti",
+        "label": "批判：对七支谓词的不自洽指控（针对该学说在其传统中的形态）",
+        "type": "批判（学说层面）",
+        "detail": "IEP：七支谓词'从历史上看曾受（以商羯罗为代表的一些人）以明显不自洽为由的批评'。批判对象是七支说本身；落实为对 Umāsvāti 传统是学理定位而非可考的个人论战记录——IEP 未指明商羯罗所批的具体文本与论主。",
+        "sourceRefs": [
+          "S2"
+        ]
+      },
+      {
+        "from": "大雄（Mahāvīra，筏驮摩那 Vardhamāna）",
+        "to": "甘地（Mohandas Karamchand Gandhi）",
+        "label": "ahiṃsā 的现代接受：从耆那教根本规则到'最著名的奉行者'",
+        "type": "接受/共鸣（渠道细节未获来源）",
+        "detail": "S1/S2：ahiṃsā 是耆那教的标志性 imperative 与伦理根本规则；S3：'Mohandas Gandhi is perhaps the most famous adherent of ahimsa of the last century'，且印度教徒、耆那教徒与佛教徒共享此德。此关系止于'同一德性的传统与实践者'层面：甘地受耆那教影响的直接渠道（导师、文本、社群）不在核读来源内，不写师承或影响；站内甘地小传未提耆那教，处置建议见 proposal.relationSuggestions。",
+        "sourceRefs": [
+          "S1",
+          "S2",
+          "S3"
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "year": "约公元前6—前5世纪（传统纪年 599—527/510 BCE）",
+        "event": "大雄传教与 vibhajya 回答风气",
+        "detail": "S1：'在 Mahāvīra 的时代，约公元前五—六世纪'，诸多游方苦行团中通行不对问题作一边倒的回答、而是加以分析（vibhajya）；S2 称大雄为公元前六世纪人、佛陀同时代人；S6 记传统叙事：30岁出家、苦行证 kevala 后传教至527 BCE 入灭（依 Śvetāmbara 文本）。所有年代均为传统纪年。",
+        "type": "人物/风气",
+        "sourceRefs": [
+          "S1",
+          "S2",
+          "S6"
+        ]
+      },
+      {
+        "year": "先于大雄（年代未在来源内）",
+        "event": "Pārśva（帕尔沙）传统",
+        "detail": "S6：大雄父母是'Pārśva 教法的 follower'；大雄'把贞洁原则加到 Pārśva 已给出的四条耆那教原则（不暴力、不妄语、不偷盗、不占有）之上'。站内时间线'第24位祖师'的序数表述不在核读来源内（S1 只说'此世劫最后的 Jina'）。",
+        "type": "前史（传统叙事）",
+        "sourceRefs": [
+          "S6"
+        ]
+      },
+      {
+        "year": "约公元前350年（传统叙事）",
+        "event": "饥馑与正典散失之争",
+        "detail": "S7：'约公元前350年前后的一场饥馑使许多耆那教僧死去'；'天衣派认为所有 Āgamas 在此次饥馑中尽失；白衣派认为大部留存'；两派共认 Purvas 失传；白衣派此后多次结集存经。这是教团内部的传统叙事，非独立可考的编年事实。",
+        "type": "正典危机（传统叙事）",
+        "sourceRefs": [
+          "S7"
+        ]
+      },
+      {
+        "year": "旧分5—前2世纪，新分前2—公元1世纪",
+        "event": "《Bhagavatīsūtra》的层累与 vibhajya 实例",
+        "detail": "S1 系年（'old parts 5th–2nd centuries BCE, new 2nd century BCE to 1st century CE'）并载'loka（兼指世界与自我）是永恒还是非永恒'之问——七支谓词实践的经典语境。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "约150—400年（注约400—450年）",
+        "event": "《谛义证得经》编成与 Umāsvāti 注",
+        "detail": "S1：归名 Umāsvāmin、很可能多作者；'现存最古的梵语耆那教论书'；TS 1.1 立三要素、1.4 列七谛、5.38 定'七谛六实体'；Umāsvāti 注（400—450）把自我经验分为认知与无分别感知。任务提示的'约2—5世纪有争论'与来源给出的区间相容。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "约3—8世纪",
+        "event": "Kundakunda 文本传统（俗语）",
+        "detail": "S1：集体作者权之名，Prakrit（Jaina Śaurasenī），印度南方卡纳塔卡地区；《Samayasāra》'业物质从不真正与自我混杂'，'接近数论而保持能动的自我'；其文本'与 TS 同样有影响'并在寺庙受尊奉。",
+        "type": "文献/传统",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "约710—780年 / 720—780年",
+        "event": "Siddhasena《Nyāyāvatāra》与 Akalaṅka《Rājavārttika》",
+        "detail": "S1：'耆那教中更系统的推理分析'自此二人开始（Śvetāmbara/Digambara 各一）；Siddhasena 主张无分别感知在有细节的知觉中已与认知融合；视角论装置从二人的注疏世系展开；其后 Siddharṣigaṇi《Nyāyâvatāravivṛtti》（900 CE）、Prabhācandra《Prameyakāmalamārtaṇḍa》（980–1065 CE）、Vādi Devasūri（1143 CE）连续成注。",
+        "type": "文献/辩论厅",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "约770年",
+        "event": "Haribhadrasūri 与七支谓词的系统化",
+        "detail": "S1：《非一边论胜利幢》（Anekāntajayapatākā）与七式的系统化相系，其思想深受 Samantabhadra《Āptamīmāṃsā》影响；宇宙志专著《中洲辑要》系年 770 CE（S1 宇宙志一节）。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "约1638—1688年",
+        "event": "Yaśovijaya《Jainatarkabhāṣā》",
+        "detail": "S1：注疏链延续'直到 Yaśovijaya (1638–1688 CE) and his Manual of Jain Logic (Jainatarkabhāṣā [JTBh])'——耆那教逻辑手册期的代表节点。",
+        "type": "文献",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "year": "19—20世纪",
+        "event": "传统复兴与 ahiṃsā 的现代实践",
+        "detail": "S6：19世纪 Śvetāmbara 改革者（最著名者 Atmaramji, 1837–96）复兴传统，20世纪 Digambara 经 Ācārya Shantisagar 而重振；S3：甘地为'上世纪最著名的 ahiṃsā 奉行者'。甘地与耆那教的直接渠道不在核读来源内。",
+        "type": "现代",
+        "sourceRefs": [
+          "S3",
+          "S6"
+        ]
+      }
+    ],
+    "cihai": [
+      {
+        "word": "不害（ahiṃsā，非暴力）",
+        "def": "耆那教伦理的根本规则：'与诸命交互的根本规则是不害之规'（S2）；SEP 称'耆那教的独特之处在于把这些出离的解脱实践与非暴力（ahiṃsā）的命令本质上结合起来'（S1）；由此推出素食（S2）。站内 cihai'Ahimsa (不害)'词条定位一致。",
+        "source": "IEP 'Jain Philosophy' §3 Ethics；SEP 'Jaina Philosophy' §1.2",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "命（jīva，灵魂/命我）",
+        "def": "实在的第一类基本构成：'每一个生命都有灵魂，所以每一个生命都可被伤害或被帮助'（S2）；SEP 定义自我为'认知与无分别感知的经验'（S1）；其规定性是'无碍的意识'，众生皆其'暂时化身的永恒神性自我'（S1 §1.2）。",
+        "source": "IEP §1 Metaphysics；SEP §1.2、§3.1",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "非命（ajīva）与物质（pudgala）",
+        "def": "实在的另一极：IEP 实体清单中 soul 之外的运动（dharma）、静止（adharma）、空间（ākāśa）、时间（kāla）与物质（pudgala）俱属非命；谛义经'非我'谛摄后五实体（TS 5.1–5.38，S1）。",
+        "source": "IEP §1 Metaphysics；SEP §1.3（TS 引文）",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "业物质（karmic matter，业为细物质）",
+        "def": "业被理解为'一种物质'，其积聚把灵魂拉回身体（S2）；七谛中的'业入（āsrava）、系缚（bandha）、遮制（saṃvara）、灭（nirjarā）'四个谛全部描述灵魂与业物质的分合机制（S1 引 TS 1.4）； Kundakunda 传统则主张'业物质从不真正与自我混杂'（S1）——两种业—我关系的张力是内部重要议题。",
+        "source": "IEP §1、§3；SEP §1.3、§2.4",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "一切智（kevala-jñāna，全知）",
+        "def": "perfected soul 的知识状态，pramāṇa 清单之末（S2：'kevala, the state of omniscience of a perfected soul'）；除 kevala 外没有一个量给出绝对知识，且 kevala'不可用语言表达'（S2）；大雄传统叙事中苦行12年半后证得（S6）。",
+        "source": "IEP §2 Epistemology and Logic；S6",
+        "sourceRefs": [
+          "S2",
+          "S6"
+        ]
+      },
+      {
+        "word": "多面论（anekāntavāda，非一边论）",
+        "def": "'实在多面（anekānta，'非一边'），没有任何单一视角能完全把握'（S2）；SEP 定位为'以多面性为中心的实在论认识论'的核心（S1）；论证上'明确反对胜论'的属性—实体内在性说与'佛教唯非复合统一者为实在'的实在观（S1）。",
+        "source": "IEP §2；SEP §3.4",
+        "sourceRefs": [
+          "S2",
+          "S1"
+        ]
+      },
+      {
+        "word": "七支谓词（saptabhaṅgī）与 syādvāda",
+        "def": "以限定词 syāt（'在某种意义上/从某视角/或许'）领起的七种谓词方式：存在；不存在；存在且不存在；不可言说；存在且不可言说；不存在且不可言说；存在、不存在且不可言说（S1）；IEP 公式表 Perhaps a is F… 同构。关键辨析：'这七种谓词不该被理解为七个真值，因为它们全部七者都被认为是真的'（S2）——中文'七值判断'的说法易生误解，本条用'七支谓词'。源头为 Āmī 14 的四性表述，系统化于 Haribhadrasūri（S1）。",
+        "source": "SEP §3.4.3；IEP §2",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "word": "视角论（nayavāda）",
+        "def": "对认识本质上复杂的对象所可取的主要认识视角的'穷尽分类'，SEP 称之为'元认识论装置'（a meta-epistemology）；技术形态从 Siddhasena Mahāmati 与 Akalaṅka 的注疏世系展开（S1）。IEP 以'部分谓词说'（naya, or partial predication）作通俗表述：'任何判断只对判断者的视角为真，且应当如此表达'（S2）。",
+        "source": "SEP §3.4.4；IEP §2",
+        "sourceRefs": [
+          "S1",
+          "S2"
+        ]
+      },
+      {
+        "word": "三要素（正见、正智、正行）",
+        "def": "谛义经开篇纲领：'解脱之道由正见（darśana）、正智与正行构成'（TS 1.1，S1）；'正见是对诸谛的信心'（TS 1.2）。与站内 BBC 页'三宝'常识表述相容，但本包以此经文定位为准。",
+        "source": "SEP §1.3（TS 1.1–1.2 引文）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "word": "分析回答（vibhajya）",
+        "def": "大雄时代沙门间的回答风格：'不对哲学问题作一边倒的回答，而是分析它们，揭示其不同预设与可能含义'（S1）；经典实例为《Bhagavatīsūtra》中'loka 是永恒还是非永恒'之问（S1）；七支谓词与视角论是这一实践的技术化后果。",
+        "source": "SEP §3.4.1",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "works": [
+      {
+        "title": "耆那教阿含（Āgamas，Śvetāmbara 正典）",
+        "author": "大雄弟子结集（归名传承）",
+        "era": "结集与口传期；代表文献《Bhagavatīsūtra》旧分约前5—前2世纪、新分前2—公元1世纪（S1）",
+        "desc": "大雄言教的结集：'载有大雄教法的文本称作 Āgamas'，因'不持有'之誓而以记忆口传（S7）；约前350年饥馑（传统叙事）后两派正典观分歧——天衣派谓 Āgamas 尽失、白衣派谓大部留存，两派共认 Purvas 失传（S7）；本包引《Bhagavatīsūtra》（' venerable exposition'，S1 作 Vyākhyāprajñaptisūtra）为该正典中 vibhajya 实例之所在。注意：站内'大雄 works《阿含经》'的写法易与佛教《阿含经》混淆，建议改指'耆那教阿含（Āgama）'。",
+        "kind": "圣典（归名结集，层累文本）",
+        "sourceRefs": [
+          "S7",
+          "S1"
+        ]
+      },
+      {
+        "title": "谛义证得经（Tattvārthasūtra，'论有什么'）",
+        "author": "Umāsvāmin（归名；很可能多作者）",
+        "era": "约150—400年（S1）；标准注 Tattvārthasūtrabhāṣya 约400—450年（Umāsvāti）",
+        "desc": "现存最古的梵语耆那教论书，'传统上被视为古典耆那教哲学的第一部著作与主要代表'（S1）；TS 1.1 立解脱之道三要素；1.4 列七谛（我、非我、业入、系缚、遮制、灭、解脱）；5.38 定'七谛六实体'； Umāsvāti 注把自我经验分为认知与无分别感知（TSBh 2.9.1）。题名中文《谛义证得经》为学界通行译法（本次核读来源未含汉译）。两派共尊：两教派后各有此经的注释传统（来源未展开，不写）。",
+        "kind": "原典（古典体系论书）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "Samayasāra（自我之精华）",
+        "author": "Kundakunda（文本传统署名）",
+        "era": "约3—8世纪间（传统跨度，S1）",
+        "desc": "Kundakunda 传统的中心文本：'业物质从不真正与自我混杂'（S1）；'接近数论的观念，同时保持耆那教特有的能动的自我'（S1）；其传统'与 TS 同样有影响，并常在寺庙作为圣典受尊奉'。题名汉译未获核实，正文以 SEP 英文题旨（Essence of the self）意译并保留梵文原名。",
+        "kind": "原典（俗语，内在论一脉）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "Āptamīmāṃsā（权威之研究）",
+        "author": "Samantabhadra",
+        "era": "年代未在核读来源内注明",
+        "desc": "多面论'四性'表述的早期出处：Āmī 14（'一个实体在某种意义上是…非…既是又非…不可言说——依说话者意趣而立'）与 Āmī 15（恒体论证）均为 S1 直引；'Haribhadra 深受其影响'（S1）。题名汉译未获核实。",
+        "kind": "原典",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "Nyāyāvatāra（逻辑入门）",
+        "author": "Siddhasena Mahāmati",
+        "era": "710—780 CE（S1）",
+        "desc": "耆那教系统推理分析的起点之作之一（S1）；主张'无分别感知在有细节的知觉经验中已与认知融合'——此后为多数认识论者所弃的辨析（S1）；视角论装置自其注疏世系（Siddharṣigaṇi《Nyāyâvatāravivṛtti》，900 CE）技术化（S1）。题名汉译未获核实（依 SEP 英文 gloss 'Guide of Logic' 意译）。",
+        "kind": "原典（逻辑）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "Rājavārttika（御注）",
+        "author": "Akalaṅka Bhaṭṭa",
+        "era": "720—780 CE（S1）",
+        "desc": "'对《论有什么》的王家注'（S1）——把《谛义证得经》纳入系统推理分析框架；Akalaṅka 为 Digambara、Siddhasena 的'更年轻的同代人'（S1）。题名汉译未获核实（依 SEP 英文 gloss 'Royal Commentary' 意译）。",
+        "kind": "原典注疏",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "Anekāntajayapatākā（非一边论胜利幢）",
+        "author": "Haribhadrasūri",
+        "era": "作者系年 770 CE（S1 宇宙志一节据《中洲辑要》系年；本篇无独立系年）",
+        "desc": "七支谓词七式系统化的标志文本（S1：'耆那教徒进一步引入的不是两种、而是七种谓词方式'）；承 Samantabhadra《Āptamīmāṃsā》四性而扩展（S1）。题名汉译未获核实（依 SEP 英文 gloss 'Victory banner of the theory of non-one-sidedness' 意译）。",
+        "kind": "原典（认识论）",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "title": "Prameyakāmalamārtaṇḍa（所知莲之日）",
+        "author": "Prabhācandra",
+        "era": "980—1065 CE（S1 括注）",
+        "desc": "视角论技术化谱系的另一标志文本（S1：'Prabhācandra's Sun [that opens] the lotus of the knowable'）；与 Siddharṣigaṇi《Nyāyâvatāravivṛtti》（900 CE）同为该装置的经典注本。括注年代区间照录 S1 原文（其语义为著作/传统区间，细节来源未说明）。题名汉译未获核实。",
+        "kind": "原典注疏",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "subSchools": [
+      {
+        "name": "天衣派（Digambara，'空衣'）",
+        "era": "分派年代不在核读来源内；其僧团形态延续至现代（S6 记 20 世纪经 Ācārya Shantisagar 重振）",
+        "desc": "两教派之一（S5）：僧侣全裸——'以示无世间财物、对羞耻等世间情感无动于衷'；尼众两派皆着衣；教义上主张'女性须先转生为男子方可解脱'；正典立场：约前350年饥馑中所有 Āgamas 尽失（S7）。注意：这是教派组织与信条事实（S5、S7），其哲学后果（如对'着衣即占有'的论证）本包来源未展开，不写。",
+        "kind": "教派",
+        "sourceRefs": [
+          "S5",
+          "S7",
+          "S6"
+        ]
+      },
+      {
+        "name": "白衣派（Śvetāmbara，'白衣'）",
+        "era": "分派年代不在核读来源内；19 世纪经 Atmaramji 等改革（S6）",
+        "desc": "两教派之一（S5）：僧侣可持少数物——白衣、乞钵、扫虫帚、书籍文具；正典立场：大部 Āgamas 存续并经多次结集（S7）；Siddhasena Mahāmati 的教派归属为 Śvetāmbara（S1）。派下 subgroup 之目 S5 仅提及其存在，本包不列举（名目不在来源内）。",
+        "kind": "教派",
+        "sourceRefs": [
+          "S5",
+          "S7",
+          "S1",
+          "S6"
+        ]
+      },
+      {
+        "name": "Kundakunda 文本传统（内在论一脉）",
+        "era": "约3—8世纪（S1）",
+        "desc": "主题性传统而非组织分支：以俗语写作、署名 Kundakunda 的文本群，聚焦'自我'，'要紧的宗教实践是作为自我知识的内在经验'（S1）；《Samayasāra》主张业物质从不真正与自我混杂，'接近数论'而保持耆那教能动的自我观（S1）；与《谛义证得经》范畴体系传统并行且同受尊奉。",
+        "kind": "文本传统/主题",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "name": "耆那逻辑与视角论传统（辩论厅一脉）",
+        "era": "约710—780年至17—18世纪（S1）",
+        "desc": "学说传统而非组织分支：自 Siddhasena Mahāmati 与 Akalaṅka Bhaṭṭa 始的'更系统的推理分析'，经 Siddharṣigaṇi（900）、Prabhācandra（980–1065）、Vādi Devasūri（1143）至 Yaśovijaya（1638–1688）的逻辑手册；七支谓词与视角论的技术化、与各家在'辩论厅'的交涉为此脉主线（S1）。与正理派（I01）的学理对勘是编辑比较（来源未载两派具体人物会面）。",
+        "kind": "学说传统",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "quote": "解脱之道由正见、正智与正行构成。",
+    "quoteAuthor": "《谛义证得经》1.1（依 Gorisse 英译回译）",
+    "quoteKind": "paraphrase",
+    "quotes": [
+      {
+        "text": "一个实体在某种意义上具有'是'之性，在某种意义上具有'非'之性，在某种意义上兼具两者，在某种意义上不可言说——这四性皆依说话者的意趣而立，而非绝对地立。",
+        "author": "Samantabhadra（《Āptamīmāṃsā》14，依 Gorisse 英译回译）",
+        "exp": "七支谓词法的源头表述：从'某种意义上'（syāt）的四性可展开为七式（Haribhadra 承之而系统化，S1）。中译为本包自英译回译，kind 标为 quote（经文与编号定位明确），但属转译而非直接核读梵文原典。",
+        "kind": "paraphrase",
+        "sourceRefs": [
+          "S1"
+        ]
+      },
+      {
+        "text": "'洛迦'（此处兼指'世界'与'自我'）是永恒的，还是非永恒的，迦摩离？",
+        "author": "《Bhagavatīsūtra》中 Indrabhūti Gautama 对 Jamāli 之问（依 Gorisse 英译回译）",
+        "exp": "vibhajya 回答实践的经典语境（S1）：弟子以此两难之问使答者陷入困惑，展示对'一边倒'回答的拒斥——多面论与视角论的技术化即从这类实践中生长。该经旧分约前5—前2世纪、新分前2—公元1世纪（S1）。中译为回译，性质同上条。",
+        "kind": "paraphrase",
+        "sourceRefs": [
+          "S1"
+        ]
+      }
+    ],
+    "closingQuote": "一切存在者同时是恒住的，又是变化的。",
+    "closingQuoteKind": "paraphrase"
+  },
+  "readingRoutes": [
+    {
+      "title": "从非暴力与业物质入手（伦理—形上学主线）",
+      "route": "编辑建议：先读 IEP 'Jain Philosophy' §1（Metaphysics）与 §3（Ethics）：六实体清单、'每一个生命都有灵魂'的层级、业为物质、五誓与素食，看清 ahiṃsā 何以不是单纯美德而是形上学的伦理后果；再读 SEP 'Jaina Philosophy' §1（出离伦理与 TS 七谛）与 §2.4（自我与业物质的双重论），对照 Kundakunda'业物质从不真正与自我混杂'的内在论选项。问题顺序：为什么非暴力是知识问题→灵魂与业是怎样的实体→解脱意味着什么。",
+      "sourceRefs": [
+        "S2",
+        "S1"
+      ]
+    },
+    {
+      "title": "从多面论与其批评入手（认识论—逻辑线）",
+      "route": "编辑建议：先读 IEP 'Jain Philosophy' §2（Epistemology and Logic）：pramāṇa 清单、盲人摸象、naya 与七式表、'非七个真值'辨、商羯罗式不自洽批评与自指难题；再读 SEP 'Jaina Philosophy' §3.4（vibhajya 实例、Āmī 14 四性、七式、视角论），最后回到 IEP 结尾自评'始于可赞的可谬主义，终于站不住的相对主义'检验辩护是否成功；可补看 SEP 感知条目中耆那教的概念论定位（S4）一处即可。问题顺序：一个陈述能否穷尽真理→七式如何使用→这一主张是否削弱自身。",
+      "sourceRefs": [
+        "S2",
+        "S1",
+        "S4"
+      ]
+    }
+  ],
+  "evidenceLimits": [
+    "大雄年代为传统纪年且来源间有出入：S1 作 'traditional dates 599–527/510 BCE'，S6 作生于 599 BCE、卒于 527 BCE（'according to Svetambara texts'）并注'一些现代学者倾向前540年甚至更晚'。本包一律写'传统纪年约公元前599—前527年'并注明，不采用任何单一精确年份。",
+    "'与佛陀同时代'仅出自 S2（'a contemporary of the Buddha'）；佛陀本人的年代不在本包来源内，两系纪年无法互校。",
+    "Pārśva（帕尔沙）传统：仅 S6 载（大雄父母为其 follower、四原则加大雄所加贞洁）；无年代；'第23/24位祖师'的序数不在核读来源内（S1 只说 'the last Jina of the current cosmic period'），站内时间线'第24位祖师'的写法与之相容但序数未获支持。",
+    "《谛义证得经》年代与作者：S1 作'归名 Umāsvāmin、很可能多作者、约150—400年'，注（Umāsvāti）400—450年；任务提示的'约2—5世纪有争论'与之相容但非逐字；Umāsvāmin 与 Umāsvāti 是否同一人（经主与注主同名异写问题）不在来源讨论范围内，本包并录两名不作裁决。",
+    "天衣派/白衣派的分派年代：S5、S7 均未给出；本包不写分派纪年，教派差异只写 S5 列举的五项分歧与正典立场。",
+    "Kundakunda 的教派归属（通说为天衣派）在 S1 文本中未标注；本包不作断言。S1 对 'Kundakunda' 采集体作者权说（'实际上不是单一作者'），与通说'约2世纪僧人'的个人传记写法不同，本包从 S1。",
+    "甘地受耆那教影响的直接渠道（如通说的早年导师 Śrīmad Rājacandra）不在核读来源内：S3 只载'perhaps the most famous adherent of ahimsa of the last century'与三教共享 ahiṃsā。站内甘地小传将其思想来源归为印度教'非暴力'与托尔斯泰、梭罗，未提耆那教——两条记载兼容但各为侧影，本包不作师承或影响断言，建议 Codex 增补时另核传记研究。",
+    "任务提示术语'七值判断（syādvāda）'：S2 明辨'这七种谓词不该被理解为七个真值'；本包正文与词条用'七支谓词（saptabhaṅgī）'，syāt 的译法（'在某种意义上/从某视角/或许'）在来源间不一致（S2 用 perhaps，并注或译 'from a perspective'/'somehow'），照实并列。",
+    "站内哲学家条目'凯格姆尼'（school='耆那教/非暴力哲学'，约前6—前5世纪）自称'早期耆那教思想体系中的关键人物、非暴力哲学重要奠基者'，并载'灵魂平等的系统化论证''与佛教僧侣辩论''业力物质说的独特解释'等：本包三个学术来源（S1、S2、S6）均无此人；其所述形态与核读来源中的任何人物不合，疑似对正典传统（如《上支经》中 Kesi 与 Gautama 的对话——检索线索指向 Lecture 23，原文页 herenow4u/sacred-texts 均为 403 未获）的讹变。本包不采用、不驳斥定论，仅记录存疑与线索，提请 Codex 复核该条目。",
+    "站内《印度哲学》thinkers 条目'大雄 works《阿含经》'与 cihai'耆那教'词条 source'《阿含经》'：'阿含'为佛教早期经典通名，耆那教正典通行称 Āgamas（S7），站内写法易混淆；本包不继承，建议改写（处置留 Codex）。",
+    "站内《印度哲学》quotes/3'非暴力是最高的法'（author 耆那教经典，kind paraphrase）：与教义一致，但对应原文（通传语句 ahiṃsā paramo dharmaḥ）不在核读来源内，本包不引；站内 timeline '公元前599 耆那教创始人筏驮摩那出生'的纪年与传统纪年相容，但'创始人'措辞与 S6（'有时被错误地称作耆那教创始人'）及 S2（'其自身传统…没有创立者'）相悖。",
+    "Haribhadrasūri 的 770 CE 系年出自 S1 宇宙志一节（据《中洲辑要》），《Anekāntajayapatākā》无独立系年；Samantabhadra、Prabhācandra（仅括注 980–1065 CE 区间，语义细节来源未说明）、Vādi Devasūri（1143 CE）各按 S1 原文照录。",
+    "Siddhasena 的通行年代通说（约5—6世纪 Siddhasena Divākara 与约7世纪 Siddhasena Mahāmati 之分）不在核读来源内；本包从 S1 作 710—780 CE，不作两 Siddhasena 之辨。",
+    "站内无耆那教相关藏书：books.json 以'耆那/Jain/筏驮摩那/Mahavira/大雄/甘地/Gandhi'检索均无（含'印度'的4种书为《悉达多》、叔本华两种、《世界哲学简史》，均非耆那教相关），故 relatedBookIds 为空，readingRoutes 全部指向站外来源。",
+    "S5—S7（BBC Religion）三页均标注 'This page has been archived and is no longer updated'（最后更新 2009-09）；本包仅以其承担教派组织、大雄生平传统叙事与正典传承背景，学理论证不依赖之。",
+    "人物汉译名政策：仅采用站内已用写法'大雄''筏驮摩那'（school_印度哲学.json）与站内人物'商羯罗''甘地'；Umāsvāmin/Umāsvāti、Kundakunda、Samantabhadra、Siddhasena Mahāmati、Akalaṅka Bhaṭṭa、Haribhadrasūri、Prabhācandra 的通行汉译未获核实，条目主名用梵文拉丁转写；作品中文题名《谛义证得经》为学界通行译法（任务单同用，未见于核读来源），其余（'御注''逻辑入门'等）为依英文 gloss 的编辑意译并已注明。",
+    "站内《印度哲学》timeline '公元788 商羯罗出生…对抗佛教和耆那教'：'对抗耆那教'与 S2 所载商羯罗对七支谓词的批评方向一致，但 S2 未提供论战细节；站内商羯罗条目（约7—8世纪）与站内时间线（788年生）纪年亦不一致，均留 Codex 处置，本包不裁断。"
+  ]
+}
