@@ -5,6 +5,8 @@ School concepts/events are attributed to their source school; shared membership 
 never converted into a personal teacher/student relationship. Legacy generated
 philosopher_network.json is deliberately not used as historical evidence.
 """
+import argparse
+import datetime
 import json
 import os
 import re
@@ -45,6 +47,9 @@ def paragraphs(value):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--date', default=datetime.date.today().isoformat(), help='目录整理报告日期（YYYY-MM-DD）；同参数重复运行输出幂等')
+    args = parser.parse_args()
     people = read(PUBLIC / 'philosophers.json')
     roster = read(CURATION / 'roster.json')
     portrait_audit = read(PUBLIC / 'philosopher/portrait-audit.json').get('records', {})
@@ -136,11 +141,14 @@ def main():
             works = thinker.get('works', [])
             if isinstance(works, str):
                 works = re.findall(r"['\"]([^'\"]+)['\"]", works) or re.split('[、；;]', works)
+            works = [work for work in works if isinstance(work, str)]
             for title in works:
                 if isinstance(title, str) and clean(title) not in {clean(item['title']) for item in profile['bibliography']}:
                     profile['bibliography'].append({'title': title, 'sourceSchool': school['name']})
             for event in school.get('timeline', []):
                 title = event.get('event', '')
+                if not isinstance(title, str):
+                    continue
                 explicit_person = any(token and token in title for token in tokens)
                 work_event = any(f'《{work}》' in title and not re.search(rf'《{re.escape(work)}》\s*(?:释义|导读|研究|评注)', title) for work in works)
                 another_person = any(other['name'] in title and other_name != name for other, other_name in members)
@@ -149,7 +157,9 @@ def main():
                     if not any(item['title'] == old['title'] for old in profile['life']):
                         profile['life'].append(item)
             for concept in school.get('cihai', []):
-                text = concept.get('def', '') + concept.get('source', '')
+                def text_of(value):
+                    return value if isinstance(value, str) else ''
+                text = text_of(concept.get('def', '')) + text_of(concept.get('source', ''))
                 if any(token and token in text for token in tokens) or any(title and title in concept.get('source', '') for title in works):
                     word = concept.get('word', '')
                     if word and not any(old['name'] == word for old in profile['concepts']):
@@ -221,7 +231,7 @@ def main():
     counts = dict(Counter(person['listingKind'] for person in people.values()))
     catalog = {'version': 1, 'counts': counts, 'aliases': aliases, 'people': {name: {key: value for key, value in person.items() if key not in ['bio', 'books', 'wiki_url']} for name, person in people.items()}, 'books': [{key: book.get(key) for key in ['id', 'title', 'author', 'cover', 'chapterCount', 'file_type']} for book in books]}
     write(PUBLIC / 'philosopher/catalog.json', catalog)
-    audit = {'date': '2026-10-02', 'policy': roster['policy'], 'counts': counts, 'canonicalRecords': len(people), 'originalRecords': 744, 'duplicateRecordsMerged': {old: aliases[old] for old in list(aliases)[:7]}, 'legacyAliases': aliases, 'identityCorrections': list(corrections), 'classified': {kind: roster[kind] for kind in ['tradition', 'context', 'review']}, 'scope': '全目录查重与分类、全部详情结构及链接检查、重点身份错配纠正。普通旧简介未逐句完成学术核验；来源薄弱条目仍需持续审读。', 'relationshipPolicy': '不采用旧 AI 星丛作为历史证据；采用已整理的流派关系并保留语境，共同流派关系明确标作思想背景，海德格尔使用核验的人物关系。'}
+    audit = {'date': args.date, 'policy': roster['policy'], 'counts': counts, 'canonicalRecords': len(people), 'originalRecords': 744, 'duplicateRecordsMerged': {old: aliases[old] for old in list(aliases)[:7]}, 'legacyAliases': aliases, 'identityCorrections': list(corrections), 'classified': {kind: roster[kind] for kind in ['tradition', 'context', 'review']}, 'scope': '全目录查重与分类、全部详情结构及链接检查、重点身份错配纠正。普通旧简介未逐句完成学术核验；来源薄弱条目仍需持续审读。', 'relationshipPolicy': '不采用旧 AI 星丛作为历史证据；采用已整理的流派关系并保留语境，共同流派关系明确标作思想背景，海德格尔使用核验的人物关系。'}
     write(ROOT / 'docs/author-content-audit.json', audit)
     print(json.dumps({'records': len(people), 'counts': counts, 'detailProfiles': len(profiles), 'aliases': len(aliases)}, ensure_ascii=False))
 
