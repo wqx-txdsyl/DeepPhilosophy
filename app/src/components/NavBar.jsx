@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import Icon from './Icon';
 import './NavBar.css';
-const TABS=[{key:'books',icon:'nav-books',text:'书籍',path:'/books'},{key:'authors',icon:'nav-authors',text:'哲人',path:'/authors'},{key:'genealogy',icon:'nav-genealogy',text:'谱系',path:'/genealogy'}];
+const TABS=[{key:'books',icon:'nav-books',text:'书籍',path:'/books'},{key:'authors',icon:'nav-authors',text:'哲人',path:'/authors'},{key:'genealogy',icon:'nav-genealogy',text:'谱系',path:'/genealogy'},{key:'more',icon:'icon-sparkles',text:'更多',path:'/more'}];
 function activeSection(path){
   if(/^\/(books?|reader)(\/|$)/.test(path))return 'books';
   if(/^\/authors?(\/|$)/.test(path))return 'authors';
   if(/^\/(genealogy|school|world-philosophies|western-philosophies|eastern-philosophies)(\/|$)/.test(path))return 'genealogy';
+  if(/^\/more(\/|$)/.test(path))return 'more';
   return null;
 }
 export default function NavBar({variant='sticky',darkMode,mobileMode,onToggleDarkMode,onToggleMobileMode,loggedIn,username,userAvatar}){
