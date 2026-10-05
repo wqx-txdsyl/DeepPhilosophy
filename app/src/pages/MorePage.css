@@ -1,0 +1,389 @@
+/* ═══════════════════════════════════════════════════════════
+   更多 — 学科索引（Editorial Atlas 延伸）
+   羊皮纸手稿 × 编辑排版：与 HomePage / 世界哲学 同一语汇
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Hero（纯排版，六学科代号作低语水印） ── */
+.more-hero {
+  min-height: 52vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 88px 32px 56px;
+  position: relative; overflow: hidden;
+}
+.more-hero-codes { position: absolute; inset: 0; pointer-events: none; }
+.more-hero-codes span {
+  position: absolute;
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 108px; line-height: 1;
+  opacity: 0.06; user-select: none;
+  transition: opacity 0.6s;
+}
+.more-hero-content { position: relative; z-index: 1; }
+.more-hero-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--ochre); margin: 0 0 22px;
+}
+.more-hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  font-weight: 400; font-style: italic;
+  color: var(--ink);
+  letter-spacing: 0.06em; line-height: 1.15;
+  margin: 0 0 22px;
+}
+.more-hero-divider {
+  width: 56px; height: 1.5px;
+  background: var(--ochre);
+  margin: 0 auto 26px; opacity: 0.7;
+}
+.more-hero-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  font-weight: 400; color: var(--text-dim);
+  line-height: 2.0; max-width: 560px;
+  margin: 0 auto;
+}
+.more-hero-stats {
+  margin-top: 34px;
+  display: flex; gap: 28px; align-items: center; justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 11px; letter-spacing: 0.14em;
+  color: var(--fade); text-transform: uppercase;
+}
+.more-hero-stats b {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 17px; font-weight: 400; letter-spacing: 0.02em;
+  color: var(--ink); margin-right: 5px;
+}
+.more-hero-stats i {
+  font-style: normal; opacity: 0.45;
+}
+
+/* ── 学科索引（编辑目录） ── */
+.more-index {
+  max-width: 1020px; margin: 0 auto;
+  padding: 8px 32px 88px;
+}
+.more-index-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding-bottom: 14px; margin-bottom: 4px;
+  border-bottom: 2px solid var(--ink);
+}
+.more-index-head h2 {
+  font-family: var(--font-sans);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--ink); margin: 0;
+}
+.more-index-head span {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 13px; color: var(--fade);
+}
+
+/* 学科行 */
+.more-row {
+  display: grid;
+  grid-template-columns: 104px 1fr auto;
+  gap: 22px; align-items: start;
+  padding: 30px 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer; position: relative;
+  transition: background 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s, box-shadow 0.3s;
+}
+.more-row::before {
+  content: ''; position: absolute; left: 0; top: 22%; bottom: 22%;
+  width: 2px; background: var(--disc);
+  opacity: 0; transition: opacity 0.3s;
+}
+.more-row:hover {
+  background: var(--card-bg);
+  border-bottom-color: var(--disc);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.more-row:hover::before { opacity: 0.85; }
+
+.more-row-code {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 42px; line-height: 1;
+  color: var(--disc);
+  opacity: 0.55; padding-top: 4px;
+  transition: opacity 0.3s;
+}
+.more-row:hover .more-row-code { opacity: 1; }
+
+.more-row-body { min-width: 0; }
+.more-row-name-line {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+}
+.more-row-name {
+  font-family: var(--font-serif);
+  font-size: 25px; font-weight: 400;
+  color: var(--ink); letter-spacing: 0.05em;
+  margin: 0; transition: color 0.3s;
+}
+.more-row:hover .more-row-name { color: var(--disc); }
+.more-row-en {
+  font-family: var(--font-sans);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--fade);
+}
+.more-row-desc {
+  font-family: var(--font-sans);
+  font-size: 13.5px; font-weight: 300;
+  color: var(--text-dim); line-height: 1.85;
+  margin: 8px 0 0; max-width: 640px;
+}
+.more-row-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 14px; align-items: center;
+}
+.more-row-chips .tag { text-transform: none; letter-spacing: 0.05em; }
+.more-row-chips-note {
+  font-family: var(--font-sans); font-size: 12px; font-style: italic;
+  color: var(--fade); margin-right: 4px;
+}
+.tag-ghost {
+  border-style: dashed !important;
+  color: var(--fade) !important;
+  opacity: 0.85;
+}
+
+/* 行右侧元信息 */
+.more-row-meta {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 10px;
+  padding-top: 6px; min-width: 76px;
+}
+.more-row-count {
+  text-align: right;
+}
+.more-row-count b {
+  display: block;
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 24px; font-weight: 400; color: var(--ink);
+  line-height: 1;
+}
+.more-row-count span {
+  font-family: var(--font-sans);
+  font-size: 10px; letter-spacing: 0.18em;
+  color: var(--fade); text-transform: uppercase;
+}
+.more-row-badge {
+  font-family: var(--font-sans);
+  font-size: 10px; letter-spacing: 0.14em;
+  color: var(--fade);
+  border: 1px dashed var(--border);
+  border-radius: 4px; padding: 3px 8px;
+  text-transform: uppercase;
+}
+.more-row-arrow {
+  font-family: var(--font-serif);
+  font-size: 18px; color: var(--disc);
+  opacity: 0; transform: translateX(-8px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.more-row:hover .more-row-arrow { opacity: 1; transform: translateX(0); }
+
+/* ── 学科页（二级） ── */
+.more-disc-hero {
+  min-height: 40vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 72px 32px 48px;
+  position: relative; overflow: hidden;
+}
+.more-disc-hero-codes {
+  position: absolute; right: -1%; bottom: -14%;
+  font-family: var(--font-serif); font-style: italic;
+  font-size: clamp(160px, 24vw, 280px); line-height: 1;
+  opacity: 0.05; pointer-events: none; user-select: none;
+}
+.more-back {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-sans); font-size: 13px;
+  color: var(--text-dim); letter-spacing: 0.04em;
+  padding: 0; transition: color 0.2s;
+}
+.more-back:hover { color: var(--ochre); }
+.more-disc-hero .more-hero-eyebrow { margin: 26px 0 16px; }
+.more-disc-hero .more-hero-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 18px; }
+.more-disc-divider {
+  width: 44px; height: 1.5px;
+  margin: 0 auto 24px; opacity: 0.7;
+}
+.more-disc-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  font-weight: 400; color: var(--text-dim);
+  line-height: 1.95; max-width: 580px;
+  margin: 0 auto;
+}
+
+/* 主题网格（与世界哲学页同一编辑画廊语汇） */
+.more-topics {
+  max-width: 1020px; margin: 0 auto;
+  padding: 24px 32px 72px;
+}
+.more-topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 8px 36px;
+}
+.more-topic {
+  padding: 22px 4px; cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.25s, background 0.25s;
+}
+.more-topic:hover { border-bottom-color: var(--disc); background: color-mix(in srgb, var(--card-bg) 60%, transparent); }
+.more-topic-name {
+  font-family: var(--font-serif);
+  font-size: 20px; font-weight: 400;
+  color: var(--ink); letter-spacing: 0.03em;
+  margin: 0 0 7px;
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+}
+.more-topic:hover .more-topic-name { color: var(--disc); }
+.more-topic-note {
+  font-family: var(--font-sans);
+  font-size: 13px; font-weight: 300;
+  color: var(--text-dim); line-height: 1.8; margin: 0;
+}
+.more-topic-children {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px;
+}
+.more-topic-children .tag { text-transform: none; letter-spacing: 0.05em; }
+.more-topic-flag {
+  font-family: var(--font-sans);
+  font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+  color: var(--ochre);
+  border: 1px solid color-mix(in srgb, var(--ochre) 35%, transparent);
+  border-radius: 4px; padding: 2px 7px;
+  white-space: nowrap;
+}
+
+/* 规划中空态 */
+.more-planned {
+  text-align: center;
+  padding: 56px 24px 24px;
+  max-width: 640px; margin: 0 auto;
+}
+.more-planned-icon { opacity: 0.5; margin-bottom: 18px; }
+.more-planned h3 {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 24px; font-weight: 400; color: var(--ink);
+  margin: 0 0 12px; letter-spacing: 0.04em;
+}
+.more-planned p {
+  font-family: var(--font-sans); font-size: 13.5px;
+  color: var(--text-dim); line-height: 1.9; margin: 0 0 20px;
+}
+.more-planned-chips {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+}
+.more-planned-chips .tag { text-transform: none; letter-spacing: 0.05em; }
+
+/* ── 详情占位页（三级） ── */
+.more-topic-body {
+  max-width: 720px; margin: 0 auto;
+  padding: 8px 32px 96px;
+}
+.more-topic-hero { text-align: center; padding: 56px 24px 40px; position: relative; }
+.more-topic-hero .more-hero-eyebrow { margin-bottom: 14px; }
+.more-topic-hero h1 {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  font-weight: 400; color: var(--ink);
+  letter-spacing: 0.05em; margin: 0 0 16px;
+}
+.more-topic-hero p {
+  font-family: var(--font-sans); font-size: 14px;
+  color: var(--text-dim); line-height: 1.9;
+  max-width: 560px; margin: 0 auto;
+}
+.more-topic-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 34px 36px;
+  box-shadow: var(--shadow-sm);
+}
+.more-topic-card h2 {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 21px; font-weight: 400; color: var(--ink);
+  letter-spacing: 0.04em; margin: 0 0 6px;
+}
+.more-topic-card > p {
+  font-family: var(--font-sans); font-size: 12.5px;
+  color: var(--fade); margin: 0 0 22px;
+}
+.more-outline { display: flex; flex-direction: column; }
+.more-outline-row {
+  display: grid; grid-template-columns: 148px 1fr; gap: 16px;
+  padding: 13px 2px;
+  border-top: 1px solid var(--border);
+  align-items: baseline;
+}
+.more-outline-row:first-child { border-top: none; }
+.more-outline-label {
+  font-family: var(--font-serif);
+  font-size: 15px; color: var(--ink); letter-spacing: 0.03em;
+}
+.more-outline-desc {
+  font-family: var(--font-sans);
+  font-size: 12.5px; font-weight: 300;
+  color: var(--text-dim); line-height: 1.75;
+}
+.more-topic-card-note {
+  margin-top: 20px;
+  font-family: var(--font-sans); font-size: 11.5px; font-style: italic;
+  color: var(--fade); text-align: right;
+}
+
+/* 页脚注记 */
+.more-footnote {
+  text-align: center; color: var(--fade);
+  font-size: 12px; font-family: var(--font-sans);
+  font-weight: 300; padding: 0 24px 28px;
+  letter-spacing: 0.06em;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 720px) {
+  .more-hero { padding: 64px 20px 44px; min-height: 46vh; }
+  .more-hero-codes span { font-size: 72px; }
+  .more-index { padding: 4px 18px 64px; }
+  .more-row { grid-template-columns: 56px 1fr; gap: 14px; padding: 22px 8px; }
+  .more-row-code { font-size: 28px; }
+  .more-row-meta { display: none; }
+  .more-row-name { font-size: 20px; }
+  .more-topics { padding: 16px 18px 56px; }
+  .more-topics-grid { grid-template-columns: 1fr; }
+  .more-topic-body { padding: 0 18px 64px; }
+  .more-topic-card { padding: 24px 20px; }
+  .more-outline-row { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* 手机版预览（html.mobile-mode 强制 480px 容器） */
+html.mobile-mode .more-hero { padding: 48px 14px 36px !important; min-height: 42vh !important; }
+html.mobile-mode .more-hero-codes span { font-size: 64px !important; }
+html.mobile-mode .more-index { padding: 0 10px 48px !important; }
+html.mobile-mode .more-row { grid-template-columns: 44px 1fr !important; gap: 12px !important; padding: 18px 6px !important; }
+html.mobile-mode .more-row-code { font-size: 24px !important; }
+html.mobile-mode .more-row-meta { display: none !important; }
+html.mobile-mode .more-row-name { font-size: 18px !important; }
+html.mobile-mode .more-row-desc { font-size: 12.5px !important; }
+html.mobile-mode .more-topics { padding: 8px 10px 48px !important; }
+html.mobile-mode .more-topics-grid { grid-template-columns: 1fr !important; }
+html.mobile-mode .more-disc-hero { padding: 52px 14px 36px !important; }
+html.mobile-mode .more-disc-hero-codes { font-size: 150px !important; }
+html.mobile-mode .more-topic-body { padding: 0 10px 48px !important; }
+html.mobile-mode .more-topic-card { padding: 20px 16px !important; }

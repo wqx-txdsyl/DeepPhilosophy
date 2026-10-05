@@ -30,6 +30,9 @@ const TermsPage = lazy(() => import('./pages/TermsPage'));
 const WorldPhilosophiesPage = lazy(() => import('./pages/WorldPhilosophiesPage'));
 const WesternPhilosophiesPage = lazy(() => import('./pages/WesternPhilosophiesPage'));
 const EasternPhilosophiesPage = lazy(() => import('./pages/EasternPhilosophiesPage'));
+const MorePage = lazy(() => import('./pages/MorePage'));
+const MoreDisciplinePage = lazy(() => import('./pages/MoreDisciplinePage'));
+const MoreTopicPage = lazy(() => import('./pages/MoreTopicPage'));
 // 阅读器按需加载
 const ReaderPage = lazy(() => import('./pages/ReaderPage'));
 import './App.css';
@@ -148,7 +151,10 @@ function MainLayout() {
   const isHome = location.pathname === '/';
   const isSchool = location.pathname.startsWith('/school/');
   const isAuthor = location.pathname.startsWith('/author/');
-  const hideHeader = isHome || isReader || isSchool || isAuthor;
+  // 「更多」三级详情页：同流派/哲人，全屏无头部（更多索引与学科页保留头部）
+  const isMoreTopic = /^\/more\/[^/]+\/.+/.test(location.pathname);
+  const immersive = isReader || isHome || isSchool || isAuthor || isMoreTopic;
+  const hideHeader = immersive;
 
   return (
     <>
@@ -166,7 +172,7 @@ function MainLayout() {
         onToggleMobileMode={() => { setMobileMode(!mobileMode); localStorage.setItem('dp_mobile_mode', !mobileMode ? '1' : '0'); }}
       />
 
-      <main id="main-content" className={`app-main${isReader || isHome || isSchool || isAuthor ? ' reader-mode' : ''}`} style={(isReader || isHome || isSchool || isAuthor) ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
+      <main id="main-content" className={`app-main${immersive ? ' reader-mode' : ''}`} style={immersive ? { padding: 0, minHeight: 'auto', transform: 'none' } : undefined}>
         <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
         <div key={location.pathname} className="page-enter">
@@ -182,6 +188,9 @@ function MainLayout() {
           <Route path="/world-philosophies" element={<WorldPhilosophiesPage />} />
           <Route path="/western-philosophies" element={<WesternPhilosophiesPage />} />
           <Route path="/eastern-philosophies" element={<EasternPhilosophiesPage />} />
+          <Route path="/more" element={<MorePage />} />
+          <Route path="/more/:discipline" element={<MoreDisciplinePage />} />
+          <Route path="/more/:discipline/:topic" element={<MoreTopicPage />} />
           <Route path="/qa" element={<Navigate to="/books" replace />} />
           <Route path="/games/*" element={<Navigate to="/books" replace />} />
           <Route path="/about" element={<AboutPage />} />
