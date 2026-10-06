@@ -135,6 +135,10 @@ function HomePage() {
     // 3) 飞行动画：短暂颤动 → 弧线飞向星位 → 缩小没入星图（dpr 上限 1.5 保帧率）
     const dpr = Math.min(1.5, window.devicePixelRatio || 1);
     canvas.width = W * dpr; canvas.height = H * dpr;
+    // 显式指定 CSS 尺寸：高 DPI 屏若 inset 拉伸失效，画布会按位图原始尺寸
+    // 显示 → 粒子文字放大 2 倍偏移到右下角（线上实测 bug）
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const t0 = performance.now();
